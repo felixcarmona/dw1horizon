@@ -1,0 +1,137 @@
+// Readable form of script 73 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 73 {
+    npc slot0 = 5;
+    npc slot1 = 6;
+    npc slot2 = 7;
+    npc shamamon3 = 8;
+    npc shamamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 8, 9;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 39, 59);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 62, 89);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 11) {
+            spawn_item(item("Digimushrm"), 40, 24);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Digimushrm"), 61, 35);
+        }
+        clear_trigger(338);
+    }
+
+    on step(0) replace {    // section 51
+        unless (!leomon_rescue_seen && !trigger(338)) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        wait(5);
+        leomon_rescue_seen = true;
+        set_digimon(species(151), 0, 0);
+        set_digimon(species(125), 1, 0);
+        camera_to(-205, 1478, speed: 15);
+        await camera;
+        run(slot0, -254, 439);
+        run(slot1, -254, 1039);
+        wait(45);
+        entity_set_rotation(slot0, 0);
+        entity_set_rotation(slot1, 0);
+        camera_on(slot0, speed: 25);
+        await camera;
+        say(tamer, text("s073.sec51.u0"));
+        await slot0;
+        face(slot0, tamer);
+        wait(5);
+        say(slot0, text("s073.sec51.u1"));
+        animate(tamer, 7);
+        wait(15);
+        say(tamer, text("s073.sec51.u2"));
+        animate(tamer, anim.idle);
+        run(tamer, -150, -550);
+        run(partner, -80, -300);
+        say(narrator, text("s073.sec51.u3"));
+        engine.music_mode = 3;
+        set_bgm(11);
+        set_digimon(species(166), 2, 0);
+        camera_to(-677, 509, speed: 20);
+        await camera;
+        face(slot2, slot1);
+        face(tamer, slot2);
+        wait(10);
+        say(tamer, text("s073.sec51.u4"));
+        face(slot0, slot2);
+        face(slot1, slot2);
+        wait(10);
+        face(slot2, slot1);
+        run(slot1, -254, 1039);
+        wait(5);
+        entity_move_to_axis(slot2, 0, 1, 1);
+        wait(2);
+        animate(slot2, 28);
+        wait(1s);
+        animate(slot2, anim.idle);
+        sound(8, 1);
+        face(tamer, slot2);
+        face(slot0, slot2);
+        face(slot1, slot2);
+        await tamer;
+        await slot0;
+        await slot1;
+        animate(slot1, 40);
+        wait(1s);
+        run(slot1, 0, 4000);
+        await slot1;
+        remove(slot1);
+        face(slot0, slot2);
+        wait(5);
+        face(slot2, slot0);
+        wait(5);
+        say(slot2, text("s073.sec51.u5"));
+        say(slot0, text("s073.sec51.u6"));
+        say(slot2, text("s073.sec51.u7"));
+        run(slot2, -2323, 1264);
+        wait(1s);
+        say(slot0, text("s073.sec51.u8"));
+        run(slot0, -2323, 1264);
+        wait(2s);
+        await slot0;
+        await slot2;
+        remove(slot2);
+        remove(slot0);
+        camera_on(tamer, speed: 10);
+        await camera;
+        say(tamer, text("s073.sec51.u9"));
+        animate(tamer, anim.idle);
+        leomon_rescue_seen = true;
+    }
+
+    on step(1) replace {    // section 52
+        set_trigger(338);
+    }
+
+    on talk(shamamon3) replace {    // section 8
+        say(shamamon3, text("s073.sec8.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon4) replace {    // section 9
+        say(shamamon4, text("s073.sec9.u0"));
+        battle();
+        recruit(species("Shamamon"));
+        return;
+    }
+}

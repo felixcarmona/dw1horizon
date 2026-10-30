@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP14/ROOM13.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Greymon178",
+      "at": [133, 1154],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [55, 57, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1311, 2991],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

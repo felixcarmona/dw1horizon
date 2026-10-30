@@ -1,0 +1,306 @@
+From b72da12ca14cb255e86b91e0904d3fa47cba4b80 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 05:49:39 +0000
+Subject: [PATCH] Patch 0193: OPTIONS at the title shows the options of the
+ newest save on the cards, the ones a Continue applies: each save's header
+ keeps a copy in its PocketStation bytes (0x50: "O", their count, a save
+ number one past the highest seen, the SAVE_TAG_OPTIONS bytes;
+ modTitleOptions), read when OPTIONS opens and nothing was changed there yet
+ (modCardOptions, no card error screens). The option bytes are built and
+ applied in one place (modOptionBytes, modApplyOptions)
+
+---
+ src/main/main_menu.c | 207 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 163 insertions(+), 44 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 640cd1c3..f1c92c20 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -256,6 +256,8 @@ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
++#define MOD_OPT_BYTES	9 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes) */
++static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #if FONT_SWITCH
+ #define MOD_OPT_ROWS	9 /* MOD (options): and FONT, in a build with both fonts */
+ #define MOD_OPT_ROW_LANG	7
+@@ -422,6 +424,9 @@ static int32_t getSaveFileBytes(void);
+ static int32_t loadSaveCopy(int32_t copy);
+ static int32_t isSaveCopyValid(int32_t copy);
+ static void prepareSaveFile(int32_t fromRam);
++static void modTitleOptions(void); /* MOD (options) */
++static void modCardOptions(void);
++static int32_t modHeaderSaveNumber(const uint8_t *header);
+ static int32_t writeSaveFile(void);
+ static long saveFileStart(int32_t write);
+ static void saveFileSync(MemCardSyncWord *command, MemCardSyncWord *result);
+@@ -2655,7 +2660,8 @@ void tickMainMenu(void)
+ 				TARGET_MENU = 0x32;
+ 				MAIN_MENU_ACTION = 5;
+ 				break;
+-			case 4: /* MOD (options) */
++			case 4: /* MOD (options): showing the newest save's */
++				modCardOptions();
+ 				TARGET_MENU = 4;
+ 				break;
+ 			}
+@@ -2927,6 +2933,7 @@ void tickMainMenu(void)
+ 		memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 		modTitleNameTail(); /* MOD (long names) */
+ 		modTitlePlayerName(); /* MOD (language) */
++		modTitleOptions(); /* MOD (options) */
+ #endif
+ 		prepareSaveFile(0); /* MOD (save v2): checksums, extension, mirror */
+ 		status = writeSaveFile();
+@@ -3296,6 +3303,7 @@ void tickMainMenu(void)
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 			modTitleNameTail(); /* MOD (long names) */
+ 			modTitlePlayerName(); /* MOD (language) */
++			modTitleOptions(); /* MOD (options) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -3650,6 +3658,7 @@ void tickMainMenu(void)
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 			modTitleNameTail(); /* MOD (long names) */
+ 			modTitlePlayerName(); /* MOD (language) */
++			modTitleOptions(); /* MOD (options) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -4129,6 +4138,9 @@ int32_t loadSaveSlotData(int32_t channel, char *filename, SaveSlotPreview *slots
+ 		MemCardSync(0, &cmd, &result);
+ 		if (result == 0) {
+ 			slots[slot].valid = 1;
++			if (modHeaderSaveNumber(data) > MOD_SAVE_NUMBER) { /* MOD (options) */
++				MOD_SAVE_NUMBER = modHeaderSaveNumber(data);
++			}
+ #if !VERSION_IS(US)
+ 			strncpy(slots[slot].playerName, (char *)&data[0x12], 12);
+ 			slots[slot].playerName[12] = '\0';
+@@ -4628,6 +4640,153 @@ static uint8_t *putRecord(uint8_t *p, int32_t tag, void *data, int32_t len)
+  * default save of a new game, from its v1 payload; the version word, both
+  * checksums and the mirror copy.
+  */
++/* MOD (options): the options as the save keeps them, SAVE_TAG_OPTIONS and the header's copy (modTitleOptions) */
++static void modOptionBytes(uint8_t *d)
++{
++	d[0] = MOD_OPT_BUTTONS;
++	d[1] = MOD_OPT_CLOCK;
++	d[2] = modFrameRate();
++	d[3] = MOD_OPT_BARS;
++#if FONT_SWITCH
++	d[4] = MOD_FONT == MOD_FONT_NEW ? 1 : MOD_FONT == MOD_FONT_CLASSIC ? 2 : 0; /* FONT */
++#else
++	d[4] = 0;
++#endif
++	d[5] = MOD_OPT_EVO_GUIDE;
++	d[6] = MOD_OPT_NEW_DIGIMON;
++	d[7] = MOD_LANG; /* MOD (language) */
++	d[8] = MOD_OPT_SIGNS;
++}
++
++/* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
++static void modApplyOptions(const uint8_t *d, int32_t len)
++{
++	if (MOD_OPT_TOUCHED) {
++		return;
++	}
++	if (len >= 1) {
++		modSetButtons(d[0]);
++	}
++	if (len >= 2) {
++		MOD_OPT_CLOCK = d[1] != 0;
++	}
++	if (len >= 3 && (d[2] == 20 || d[2] == 30 || d[2] == 60)) {
++		modSetFrameRate(d[2]);
++	}
++	if (len >= 4) {
++		MOD_OPT_BARS = d[3] != 0;
++	}
++#if FONT_SWITCH
++	if (len >= 5) {
++		modSetFont(d[4] == 0 ? MOD_FONT_ORIGINAL : d[4] == 2 ? MOD_FONT_CLASSIC : MOD_FONT_NEW);
++	}
++#endif
++	if (len >= 6) {
++		MOD_OPT_EVO_GUIDE = d[5] != 0;
++	}
++	if (len >= 7) {
++		MOD_OPT_NEW_DIGIMON = d[6] != 0;
++	}
++	if (len >= 8) { /* MOD (language) */
++		modSetLanguage(d[7]);
++	}
++	if (len >= 9) {
++		modSetSigns(d[8]);
++	}
++}
++
++/*
++ * MOD (options): the header's PocketStation bytes (0x50, unused by this game) keep a copy of the options after "O",
++ * their count and a save number one past the highest seen (MOD_SAVE_NUMBER), so the title menu's OPTIONS shows the
++ * newest save's before one is loaded (modCardOptions). Run after modTitleNameTail.
++ */
++static void modTitleOptions(void)
++{
++	uint8_t *p;
++
++	p = SAVE_FILE.pocketStation;
++	memset(p, 0, sizeof(SAVE_FILE.pocketStation));
++	MOD_SAVE_NUMBER = (MOD_SAVE_NUMBER + 1) & 0xffff;
++	p[0] = 'O';
++	p[1] = MOD_OPT_BYTES;
++	p[2] = MOD_SAVE_NUMBER;
++	p[3] = MOD_SAVE_NUMBER >> 8;
++	modOptionBytes(&p[4]);
++}
++
++/* MOD (options): the save number in a save's header (modTitleOptions), -1 without one */
++static int32_t modHeaderSaveNumber(const uint8_t *header)
++{
++	if (header[0x50] != 'O' || header[0x51] == 0 || header[0x51] > 12) {
++		return -1;
++	}
++	return header[0x52] | header[0x53] << 8;
++}
++
++/*
++ * MOD (options): OPTIONS opened at the title before any change shows the options of the newest save on the cards
++ * (the highest header save number), the ones a Continue of it applies. A card missing, unformatted or unreadable is
++ * skipped without the card error screens.
++ */
++static void modCardOptions(void)
++{
++	MemCardSyncWord cmd;
++	MemCardSyncWord result;
++	long count;
++	uint8_t data[0x80];
++	uint8_t best[12];
++	int32_t bestNumber;
++	int32_t bestLen;
++	int32_t number;
++	int32_t c;
++	int32_t i;
++
++	if (MOD_OPT_TOUCHED) {
++		return;
++	}
++	bestNumber = -1;
++	bestLen = 0;
++	for (c = 0; c < 2; c++) {
++		if (!(CONNECTED_CARDS & (c ? 0x10 : 1))) {
++			continue;
++		}
++		MemCardSync(0, &cmd, &result);
++		if (MemCardAccept(c ? 0x10 : 0) == 0) {
++			continue;
++		}
++		MemCardSync(0, &cmd, &result);
++		if (isMemcardUnformatted(c ? 0x10 : 0, result) != 0) {
++			continue;
++		}
++		SAVE_FILE_NAME[0xF] = 0x3F;
++		i = MemCardGetDirentry(c ? 0x10 : 0, SAVE_FILE_NAME, MEMCARD_DIRENTRIES, &count, 0, 15);
++		if (i != 0 && i != 3) {
++			continue;
++		}
++		for (i = 0; i < count; i++) {
++			if (MemCardReadFile(c ? 0x10 : 0, MEMCARD_DIRENTRIES[i].name, (void *)data, 0, 0x80) != 1) {
++				break;
++			}
++			MemCardSync(0, &cmd, &result);
++			if (result != 0) {
++				break;
++			}
++			number = modHeaderSaveNumber(data);
++			if (number > bestNumber) {
++				bestNumber = number;
++				bestLen = data[0x51];
++				memcpy(best, &data[0x54], bestLen);
++			}
++		}
++	}
++	if (bestNumber > MOD_SAVE_NUMBER) {
++		MOD_SAVE_NUMBER = bestNumber;
++	}
++	if (bestNumber >= 0) {
++		modApplyOptions(best, bestLen);
++	}
++}
++
+ static void prepareSaveFile(int32_t fromRam)
+ {
+ 	SavegamePayload *savegame;
+@@ -4638,7 +4797,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[9]; /* MOD (options) */
++	uint8_t options[MOD_OPT_BYTES]; /* MOD (options) */
+ 	int16_t swap[2];
+ 	int32_t size;
+ 	int32_t i;
+@@ -4692,19 +4851,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_SPECIES_RAISED, SPECIES_RAISED_BITS, NUM_DIGIMON / 8);
+ 		p = putRecord(p, SAVE_TAG_SPECIES_RECRUITED, SPECIES_RECRUITED_BITS, NUM_DIGIMON / 8);
+ 	}
+-	options[0] = MOD_OPT_BUTTONS; /* MOD (options) */
+-	options[1] = MOD_OPT_CLOCK;
+-	options[2] = modFrameRate();
+-	options[3] = MOD_OPT_BARS;
+-#if FONT_SWITCH
+-	options[4] = MOD_FONT == MOD_FONT_NEW ? 1 : MOD_FONT == MOD_FONT_CLASSIC ? 2 : 0; /* FONT */
+-#else
+-	options[4] = 0;
+-#endif
+-	options[5] = MOD_OPT_EVO_GUIDE;
+-	options[6] = MOD_OPT_NEW_DIGIMON;
+-	options[7] = MOD_LANG; /* MOD (language) */
+-	options[8] = MOD_OPT_SIGNS;
++	modOptionBytes(options); /* MOD (options) */
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	if (MOD_SWAP_TO > 0 && MOD_SWAP_TO == partnerType) { /* MOD (options): the partner NEW DIGIMON off turned */
+ 		swap[0] = MOD_SWAP_FROM;
+@@ -5036,35 +5183,7 @@ static void applyRecords(uint8_t *e)
+ 			}
+ 			break;
+ 		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
+-			if (len >= 1 && !MOD_OPT_TOUCHED) {
+-				modSetButtons(d[0]);
+-			}
+-			if (len >= 2 && !MOD_OPT_TOUCHED) {
+-				MOD_OPT_CLOCK = d[1] != 0;
+-			}
+-			if (len >= 3 && !MOD_OPT_TOUCHED && (d[2] == 20 || d[2] == 30 || d[2] == 60)) {
+-				modSetFrameRate(d[2]);
+-			}
+-			if (len >= 4 && !MOD_OPT_TOUCHED) {
+-				MOD_OPT_BARS = d[3] != 0;
+-			}
+-#if FONT_SWITCH
+-			if (len >= 5 && !MOD_OPT_TOUCHED) {
+-				modSetFont(d[4] == 0 ? MOD_FONT_ORIGINAL : d[4] == 2 ? MOD_FONT_CLASSIC : MOD_FONT_NEW);
+-			}
+-#endif
+-			if (len >= 6 && !MOD_OPT_TOUCHED) {
+-				MOD_OPT_EVO_GUIDE = d[5] != 0;
+-			}
+-			if (len >= 7 && !MOD_OPT_TOUCHED) {
+-				MOD_OPT_NEW_DIGIMON = d[6] != 0;
+-			}
+-			if (len >= 8 && !MOD_OPT_TOUCHED) { /* MOD (language) */
+-				modSetLanguage(d[7]);
+-			}
+-			if (len >= 9 && !MOD_OPT_TOUCHED) {
+-				modSetSigns(d[8]);
+-			}
++			modApplyOptions(d, len);
+ 			break;
+ 		}
+ 	}
+-- 
+2.53.0
+

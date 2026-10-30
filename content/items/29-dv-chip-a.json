@@ -1,0 +1,15 @@
+{
+  "id": 29,
+  "name": "DV Chip A",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 4,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "lifetime": -24,
+    "addOffense": 100,
+    "addBrain": 100
+  }
+}

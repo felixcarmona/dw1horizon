@@ -1,0 +1,26 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+maphead {
+    section(1237) replace {    // section 1237 (literal)
+        goto l1;
+        goto l2;
+        goto l3;
+        goto l4;
+        goto l5;
+        goto l6;
+        l1:
+        show_textbox(text("m1237.u0"));
+        l2:
+        show_textbox(text("m1237.u1"));
+        l3:
+        show_textbox(text("m1237.u2"));
+        l4:
+        show_textbox(text("m1237.u3"));
+        l5:
+        show_textbox(text("m1237.u4"));
+        l6:
+        show_textbox(text("m1237.u5"));
+        end_section();
+    }
+}

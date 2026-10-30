@@ -1,0 +1,92 @@
+From 4d3ae97778bfbda57186a6bc6c102b348e7cb3ed Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 22:01:07 +0000
+Subject: [PATCH 104/105] Font: the map caption centred by its measured width
+
+The US map names are centred with spaces made for the original's letters ("      Native Forest     ") and the
+caption's rectangle came from strlen, so with a font placed to the pixel the name sat some 25 pixels left of the
+centre. Under FONT_PROPORTIONAL the name is drawn without its padding and its rectangle (measureStringMode) centred
+on the screen. FONT=original keeps the original code.
+---
+ src/main/map.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index a513325..6412708 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -15,6 +15,7 @@
+ #include <dw/item.h>
+ #include <dw/map.h>
+ #include <dw/math.h>
++#include <dw/mod_font.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+@@ -5682,13 +5683,48 @@ int32_t scriptTickChangeMap(int16_t mapId, int16_t exitId, int32_t showName)
+ 	return 0;
+ }
+ 
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++/*
++ * MOD (font): the US map names are centred with spaces made for the original's letters ("      Native Forest     ")
++ * and the caption's rectangle is computed from strlen. With a font placed to the pixel the spaces and letters are
++ * narrower, so the name is drawn without them and its rectangle centred on its measured width.
++ */
++#define MAP_CAPTION_MAX 48
++static char *mapCaption(int16_t mapId, char *buf)
++{
++	char *s;
++	int32_t n;
++
++	s = MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName];
++	while (*s == ' ') {
++		s++;
++	}
++	for (n = 0; s[n] != '\0' && n < MAP_CAPTION_MAX - 1; n++) {
++		buf[n] = s[n];
++	}
++	while (n > 0 && buf[n - 1] == ' ') {
++		n--;
++	}
++	buf[n] = '\0';
++	return buf;
++}
++#endif
++
+ // clang-format off
+ void addMapNameObject(mapId)
+ 	int16_t mapId;
+ // clang-format on
+ {
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	char buf[MAP_CAPTION_MAX];
++#endif
++
+ 	clearTextArea();
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	drawString(mapCaption(mapId, buf), 0, 0);
++#else
+ 	drawString(MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName], 0, 0);
++#endif
+ 	addObject(0xfa1, mapId, NULL, renderMapName);
+ }
+ 
+@@ -5792,7 +5828,14 @@ void renderMapName(mapId)
+ // clang-format on
+ {
+ 	int32_t length;
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	char buf[MAP_CAPTION_MAX];
+ 
++	/* the name's ink and a column of shadow, centred on the screen (x 0) */
++	length = measureStringMode(mapCaption(mapId, buf), FIT_VANILLA) + 2;
++	renderString(0, -length / 2, -6, length, 12, 0, 0, 0, 0);
++	return;
++#endif
+ 	length = strlen(MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName]);
+ #if !VERSION_IS(US)
+ 	renderString(0, -12 - (length / 2) * 6, -6, (length / 2) * 12, 12, 0,
+-- 
+2.53.0
+

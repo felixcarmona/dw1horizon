@@ -1,0 +1,12 @@
+// Who stands on screen 223 (Arena Lobby), and when. Read out of MAPHEAD.SCN section 223 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(223) {                              // Arena Lobby
+            npc 178 slot 0;
+            npc 131 slot 1 when trigger(50);
+            npc 179 slot 2 when trigger(50);
+        }
+    }
+}

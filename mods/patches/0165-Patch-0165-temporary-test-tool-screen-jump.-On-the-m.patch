@@ -1,0 +1,168 @@
+From 299eab0fa313dde95f813209d65ed64809f2fc2c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 11:02:26 +0000
+Subject: [PATCH] Patch 0165 (temporary test tool): screen jump. On the map,
+ SELECT + R2 walks the tamer into the next new screen of the disc (SCRN.DAT)
+ and SELECT + L2 into the previous one, wrapping, arriving at exit 0 by a
+ warp's fade (findNewScreen in mod_screen.c remembers the empty ids); the
+ roster switch keeps SELECT + L1/R1
+
+---
+ include/dw/screen.h   |  1 +
+ src/main/mod_lab.c    | 41 ++++++++++++++++++++++++++++++++++++----
+ src/main/mod_screen.c | 44 +++++++++++++++++++++++++++++++++++++++++++
+ src/main/tamer.c      |  2 +-
+ 4 files changed, 83 insertions(+), 5 deletions(-)
+
+diff --git a/include/dw/screen.h b/include/dw/screen.h
+index ad73382b..0dd497bb 100644
+--- a/include/dw/screen.h
++++ b/include/dw/screen.h
+@@ -62,5 +62,6 @@ char *getScreenCaption(int32_t id);
+ ToiletData *getScreenToilet(int32_t id);
+ void *getScreenDoor(int32_t id); /* a DoorStruct */
+ uint8_t *getMapHeadScript(int32_t section);
++int32_t findNewScreen(int32_t from, int32_t step); /* MOD (screen jump, temporary test tool) */
+ 
+ #endif
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 735fb91c..586660e4 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -50,6 +50,9 @@
+ #include <dw/species.h>
+ #include <dw/font.h>
+ #include <dw/script.h>
++#include <dw/screen.h>
++#include <dw/tamer.h>
++#include <dw/clock.h>
+ #include <dw/sound.h>
+ #include <text/main/mod_lab.h>   /* MOD (text sources): the lab menu's text, keyed (main.LAB_STR_*) */
+ #include <dw/species.h>
+@@ -436,8 +439,8 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ }
+ 
+ /*
+- * MOD (roster switch, temporary test tool): on the map, SELECT + L1 or L2 turns the partner into the next species of
+- * the roster and SELECT + R1 or R2 into the previous one, at once (no evolution scene), and a caption at the top of
++ * MOD (roster switch, temporary test tool): on the map, SELECT + L1 turns the partner into the next species of
++ * the roster and SELECT + R1 into the previous one (L2 and R2 are the screen jump, below), at once (no evolution scene), and a caption at the top of
+  * the screen shows its name and level for a few seconds. The roster is every partner species in id order: the
+  * original partners (1..65), the NPC partners of the lab menu and the partner species of DIGI.DAT; a model too big
+  * for the partner buffer is skipped. The partner is reloaded as Continue loads it (loadMMD, its sounds), keeps its
+@@ -599,7 +602,34 @@ static void modRosterSwitch(int32_t type)
+ 	setDigimonRaised(type); /* raised, as an evolution marks it (the chart, the raised count) */
+ }
+ 
+-/* returns 1 when it switched the partner (the tamer's tick ends there) */
++/*
++ * MOD (screen jump, temporary test tool): on the map, SELECT + R2 walks the tamer into the next new screen of the
++ * disc (SCRN.DAT, ids 255..) and SELECT + L2 into the previous one, wrapping; from an original screen R2 goes to
++ * the first and L2 to the last. The tamer arrives at the screen's exit 0, by the fade and caption of a warp tile.
++ */
++void unsetCameraFollowPlayer(void);
++
++extern ScreenId TARGET_MAP;
++extern uint8_t CURRENT_EXIT;
++
++static int32_t modScreenJump(int32_t step)
++{
++	int32_t id = findNewScreen(CURRENT_SCREEN, step);
++
++	if (id < 0 || id == CURRENT_SCREEN) {
++		playSound(0, 4);
++		return 0;
++	}
++	playSound(0, 2);
++	TARGET_MAP = id;
++	CURRENT_EXIT = 0;
++	tamerSetState(5);
++	unsetCameraFollowPlayer();
++	stopGameTime();
++	return 1;
++}
++
++/* returns 1 when it switched the partner or started a screen jump (the tamer's tick ends there) */
+ int32_t modRosterTick(void)
+ {
+ 	uint32_t pressed;
+@@ -614,7 +644,10 @@ int32_t modRosterTick(void)
+ 		playSound(0, 4); /* not now: the press was heard */
+ 		return 0;
+ 	}
+-	step = (pressed & (PAD_L1 | PAD_L2)) ? 1 : -1;
++	if (pressed & (PAD_L2 | PAD_R2)) {
++		return modScreenJump((pressed & PAD_R2) ? 1 : -1);
++	}
++	step = (pressed & PAD_L1) ? 1 : -1;
+ 	type = modRosterStep(step);
+ 	if (type != PARTNER_ENTITY.digimonEntity.entity.type) {
+ 		modRosterSwitch(type);
+diff --git a/src/main/mod_screen.c b/src/main/mod_screen.c
+index 7e758207..0a47daed 100644
+--- a/src/main/mod_screen.c
++++ b/src/main/mod_screen.c
+@@ -136,3 +136,47 @@ uint8_t *getMapHeadScript(int32_t section)
+ 	}
+ 	return MAPHEAD_SCRIPT_PTR;
+ }
++
++/*
++ * MOD (screen jump, temporary test tool): the new screen the disc has `step` (1 or -1) away from `from` in id order,
++ * wrapping at the ends of SCRN.DAT's range; from an original screen, the first (step 1) or the last. -1 when the
++ * disc has none. A sector found empty is remembered, so a gap in the ids is read once.
++ */
++static uint8_t SCREEN_ABSENT[NUM_SCREENS / 8];
++
++int32_t findNewScreen(int32_t from, int32_t step)
++{
++	FileLookup lookup;
++	int32_t count;
++	int32_t i;
++	int32_t k;
++
++	if (lookupFileTable(&lookup, SCREEN_FILE_NAME) == 0) {
++		return -1;
++	}
++	count = lookup.size / SCREEN_RECORD_SIZE - 1;
++	if (count > NUM_SCREENS - NUM_ORIGINAL_SCREENS) {
++		count = NUM_SCREENS - NUM_ORIGINAL_SCREENS;
++	}
++	if (count <= 0) {
++		return -1;
++	}
++	k = from - NUM_ORIGINAL_SCREENS;
++	if (k < 0 || k >= count) {
++		k = step > 0 ? -1 : count;
++	}
++	for (i = 0; i < count; i++) {
++		int32_t id;
++
++		k = (k + step + count) % count;
++		id = NUM_ORIGINAL_SCREENS + k;
++		if (SCREEN_ABSENT[id >> 3] & (1 << (id & 7))) {
++			continue;
++		}
++		if (readScreenRecord(id)) {
++			return id;
++		}
++		SCREEN_ABSENT[id >> 3] |= 1 << (id & 7);
++	}
++	return -1;
++}
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 6bcc4c04..857d3ca6 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -495,7 +495,7 @@ void tamerTickWalkingState(void)
+ 
+ 	tickTamerWaypoints();
+ 
+-	if (modRosterTick()) { /* MOD (roster switch): SELECT + L1/L2/R1/R2, mod_lab.c */
++	if (modRosterTick()) { /* MOD (roster switch): SELECT + L1/R1; screen jump: SELECT + L2/R2, mod_lab.c */
+ 		return;
+ 	}
+ 
+-- 
+2.53.0
+

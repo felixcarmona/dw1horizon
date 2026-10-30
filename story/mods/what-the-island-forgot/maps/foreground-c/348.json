@@ -1,0 +1,2741 @@
+{
+  "screen": 348,
+  "name": "great-chamber",
+  "pieces": [
+    {
+      "name": "hoist-left",
+      "depth_px": [
+        390,
+        355
+      ],
+      "block": [],
+      "at": [
+        361,
+        139
+      ],
+      "png": "348-hoist-left.png",
+      "size": [
+        60,
+        219
+      ],
+      "sam": [
+        {
+          "box": [
+            358,
+            138,
+            423,
+            355
+          ],
+          "positive": [
+            [
+              397,
+              297
+            ],
+            [
+              394,
+              150
+            ],
+            [
+              393,
+              205
+            ]
+          ],
+          "negative": [
+            [
+              358,
+              138
+            ],
+            [
+              423,
+              138
+            ],
+            [
+              358,
+              355
+            ],
+            [
+              423,
+              355
+            ]
+          ],
+          "scores": [
+            0.9324502944946289,
+            0.9539961814880371,
+            0.9352009296417236
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "2eea31ea475e42bc101be2385f3c21e96e1e05ed64511e7a8171e499ec242432",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "hoist-frame",
+      "depth_px": [
+        450,
+        397
+      ],
+      "block": [],
+      "at": [
+        396,
+        101
+      ],
+      "png": "348-hoist-frame.png",
+      "size": [
+        111,
+        308
+      ],
+      "sam": [
+        {
+          "box": [
+            405,
+            98,
+            494,
+            398
+          ],
+          "positive": [
+            [
+              448,
+              211
+            ],
+            [
+              443,
+              327
+            ],
+            [
+              417,
+              115
+            ],
+            [
+              474,
+              378
+            ]
+          ],
+          "negative": [
+            [
+              484,
+              190
+            ],
+            [
+              477,
+              340
+            ],
+            [
+              423,
+              284
+            ],
+            [
+              488,
+              396
+            ]
+          ],
+          "scores": [
+            0.8559466004371643
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "f4b269695034736f293386951ff7db76412ea6e7478115d0bb114894aabab6e1",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "hoist-crossbar",
+      "depth_px": [
+        414,
+        355
+      ],
+      "block": [],
+      "at": [
+        394,
+        146
+      ],
+      "png": "348-hoist-crossbar.png",
+      "size": [
+        47,
+        42
+      ],
+      "sam": [
+        {
+          "box": [
+            387,
+            142,
+            447,
+            185
+          ],
+          "positive": [
+            [
+              410,
+              166
+            ]
+          ],
+          "negative": [
+            [
+              387,
+              142
+            ],
+            [
+              447,
+              142
+            ],
+            [
+              387,
+              185
+            ],
+            [
+              447,
+              185
+            ]
+          ],
+          "scores": [
+            0.737737238407135,
+            0.8108031749725342,
+            0.8026275634765625
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "12d03c73a489656e74cd3c9f42f72659138bdb0b52f39e82fbef6da9c0676ea5",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "boiler",
+      "depth_px": [
+        528,
+        401
+      ],
+      "block": [],
+      "at": [
+        447,
+        147
+      ],
+      "png": "348-boiler.png",
+      "size": [
+        150,
+        261
+      ],
+      "sam": [
+        {
+          "box": [
+            443,
+            142,
+            606,
+            405
+          ],
+          "positive": [
+            [
+              516,
+              228
+            ],
+            [
+              529,
+              290
+            ],
+            [
+              571,
+              331
+            ],
+            [
+              520,
+              154
+            ],
+            [
+              580,
+              253
+            ],
+            [
+              481,
+              379
+            ]
+          ],
+          "negative": [
+            [
+              454,
+              230
+            ],
+            [
+              601,
+              354
+            ],
+            [
+              595,
+              385
+            ],
+            [
+              474,
+              354
+            ]
+          ],
+          "scores": [
+            0.909625768661499
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "2112c74652e7f955e120952c8b221ff1593bca65c5259d93e971daf264132aa6",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "west-door",
+      "depth_px": [
+        270,
+        232
+      ],
+      "block": [],
+      "at": [
+        211,
+        91
+      ],
+      "png": "348-west-door.png",
+      "size": [
+        130,
+        47
+      ],
+      "sam": [
+        {
+          "box": [
+            195,
+            88,
+            341,
+            133
+          ],
+          "positive": [
+            [
+              212,
+              119
+            ],
+            [
+              330,
+              96
+            ],
+            [
+              274,
+              104
+            ]
+          ],
+          "negative": [
+            [
+              195,
+              88
+            ],
+            [
+              341,
+              88
+            ],
+            [
+              195,
+              133
+            ],
+            [
+              341,
+              133
+            ]
+          ],
+          "scores": [
+            0.9117218852043152,
+            0.9220519065856934,
+            0.9015183448791504
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "0109df8f5cdc95c44ab7373103ea35a18dd8d2faad813e4276efa63f53313f30",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "east-door",
+      "depth_px": [
+        730,
+        232
+      ],
+      "block": [],
+      "at": [
+        673,
+        99
+      ],
+      "png": "348-east-door.png",
+      "size": [
+        122,
+        58
+      ],
+      "sam": [
+        {
+          "box": [
+            653,
+            107,
+            793,
+            158
+          ],
+          "positive": [
+            [
+              672,
+              120
+            ],
+            [
+              727,
+              128
+            ],
+            [
+              781,
+              141
+            ]
+          ],
+          "negative": [
+            [
+              653,
+              107
+            ],
+            [
+              793,
+              107
+            ],
+            [
+              653,
+              158
+            ],
+            [
+              793,
+              158
+            ]
+          ],
+          "scores": [
+            0.9382172226905823,
+            0.936813473701477,
+            0.8875375986099243
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "ffe751e834b20fc4749129caa6b931ce1ca0e23bb96aff7e3edd8ce68640e1e2",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-door",
+      "depth_px": [
+        713,
+        597
+      ],
+      "block": [],
+      "at": [
+        695,
+        400
+      ],
+      "png": "348-near-door.png",
+      "size": [
+        174,
+        197
+      ],
+      "sam": [
+        {
+          "box": [
+            687,
+            397,
+            875,
+            600
+          ],
+          "positive": [
+            [
+              763,
+              477
+            ],
+            [
+              824,
+              436
+            ],
+            [
+              716,
+              551
+            ],
+            [
+              704,
+              582
+            ],
+            [
+              837,
+              462
+            ],
+            [
+              730,
+              504
+            ]
+          ],
+          "negative": [
+            [
+              761,
+              449
+            ],
+            [
+              752,
+              517
+            ],
+            [
+              691,
+              537
+            ],
+            [
+              866,
+              538
+            ],
+            [
+              739,
+              584
+            ],
+            [
+              710,
+              463
+            ]
+          ],
+          "scores": [
+            0.9547485709190369
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "4e210098b17e0a3975c24e4385db6f74bc78c7b32298f41b6492ecfb942bd782",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "hoist-screw",
+      "depth_px": [
+        435,
+        365
+      ],
+      "block": [],
+      "at": [
+        417,
+        186
+      ],
+      "png": "348-hoist-screw.png",
+      "size": [
+        26,
+        162
+      ],
+      "sam": [
+        {
+          "box": [
+            422,
+            175,
+            442,
+            347
+          ],
+          "positive": [
+            [
+              432,
+              189
+            ],
+            [
+              429,
+              244
+            ],
+            [
+              430,
+              299
+            ]
+          ],
+          "negative": [
+            [
+              422,
+              175
+            ],
+            [
+              442,
+              175
+            ],
+            [
+              422,
+              347
+            ],
+            [
+              442,
+              347
+            ]
+          ],
+          "scores": [
+            0.6498039364814758,
+            0.6691912412643433,
+            0.7293746471405029
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "dbd7a083130f869d379201cb891e49dfa9f3de59b10100b9476b1d321db16554",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "hoist-brace",
+      "depth_px": [
+        490,
+        367
+      ],
+      "block": [],
+      "at": [
+        459,
+        133
+      ],
+      "png": "348-hoist-brace.png",
+      "size": [
+        48,
+        190
+      ],
+      "sam": [
+        {
+          "box": [
+            454,
+            142,
+            505,
+            348
+          ],
+          "positive": [
+            [
+              492,
+              315
+            ],
+            [
+              461,
+              154
+            ],
+            [
+              472,
+              208
+            ]
+          ],
+          "negative": [
+            [
+              454,
+              142
+            ],
+            [
+              505,
+              142
+            ],
+            [
+              454,
+              348
+            ],
+            [
+              505,
+              348
+            ]
+          ],
+          "scores": [
+            0.8674034476280212,
+            0.8423975706100464,
+            0.8244149684906006
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "5dfbb39a8b0d2716f0433523a9a6b5996ef9901d10cc1782d4c751405c23081a",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "west-left-jamb",
+      "depth_px": [
+        242,
+        235
+      ],
+      "block": [],
+      "at": [
+        217,
+        126
+      ],
+      "png": "348-west-left-jamb.png",
+      "size": [
+        34,
+        108
+      ],
+      "sam": [
+        {
+          "box": [
+            221,
+            121,
+            253,
+            238
+          ],
+          "positive": [
+            [
+              240,
+              210
+            ],
+            [
+              232,
+              129
+            ]
+          ],
+          "negative": [
+            [
+              221,
+              121
+            ],
+            [
+              253,
+              121
+            ],
+            [
+              221,
+              238
+            ],
+            [
+              253,
+              238
+            ]
+          ],
+          "scores": [
+            0.919145405292511,
+            0.9433417320251465,
+            0.9481769800186157
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "38d67c50092025b8ac0ae4e72f03d9b86b4c350c0906773d36acb9a13b2578fb",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "west-right-jamb",
+      "depth_px": [
+        331,
+        207
+      ],
+      "block": [],
+      "at": [
+        314,
+        108
+      ],
+      "png": "348-west-right-jamb.png",
+      "size": [
+        26,
+        96
+      ],
+      "sam": [
+        {
+          "box": [
+            315,
+            110,
+            341,
+            210
+          ],
+          "positive": [
+            [
+              327,
+              150
+            ]
+          ],
+          "negative": [
+            [
+              315,
+              110
+            ],
+            [
+              341,
+              110
+            ],
+            [
+              315,
+              210
+            ],
+            [
+              341,
+              210
+            ]
+          ],
+          "scores": [
+            0.9264925122261047,
+            0.9141390323638916,
+            0.927269458770752
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "f070eb454d5a237b01e445594e237a351f157886f5d8c75830a602ef1e3c7c26",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "east-left-jamb",
+      "depth_px": [
+        661,
+        204
+      ],
+      "block": [],
+      "at": [
+        663,
+        120
+      ],
+      "png": "348-east-left-jamb.png",
+      "size": [
+        32,
+        91
+      ],
+      "sam": [
+        {
+          "box": [
+            652,
+            127,
+            691,
+            206
+          ],
+          "positive": [
+            [
+              679,
+              141
+            ],
+            [
+              660,
+              193
+            ]
+          ],
+          "negative": [
+            [
+              652,
+              127
+            ],
+            [
+              691,
+              127
+            ],
+            [
+              652,
+              206
+            ],
+            [
+              691,
+              206
+            ]
+          ],
+          "scores": [
+            0.8594794273376465,
+            0.8096853494644165,
+            0.8630183935165405
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "ec2ee100f308ae6ba91542f13558c4ec531bf519d79716edaf94d459444e03a2",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "east-right-jamb",
+      "depth_px": [
+        759,
+        250
+      ],
+      "block": [],
+      "at": [
+        744,
+        150
+      ],
+      "png": "348-east-right-jamb.png",
+      "size": [
+        43,
+        101
+      ],
+      "sam": [
+        {
+          "box": [
+            747,
+            148,
+            783,
+            252
+          ],
+          "positive": [
+            [
+              760,
+              238
+            ],
+            [
+              775,
+              155
+            ]
+          ],
+          "negative": [
+            [
+              747,
+              148
+            ],
+            [
+              783,
+              148
+            ],
+            [
+              747,
+              252
+            ],
+            [
+              783,
+              252
+            ]
+          ],
+          "scores": [
+            0.8742350935935974,
+            0.9397494792938232,
+            0.9546102285385132
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "01a36ba92b83f441c4f095369aa13e0a5e966ae8da9e64d42261b6359dbaf959",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-left-post",
+      "depth_px": [
+        94,
+        569
+      ],
+      "block": [],
+      "at": [
+        64,
+        447
+      ],
+      "png": "348-near-left-post.png",
+      "size": [
+        59,
+        122
+      ],
+      "sam": [
+        {
+          "box": [
+            57,
+            447,
+            146,
+            582
+          ],
+          "positive": [
+            [
+              77,
+              466
+            ],
+            [
+              108,
+              512
+            ],
+            [
+              133,
+              561
+            ]
+          ],
+          "negative": [
+            [
+              57,
+              447
+            ],
+            [
+              146,
+              447
+            ],
+            [
+              57,
+              582
+            ],
+            [
+              146,
+              582
+            ]
+          ],
+          "scores": [
+            0.8369237780570984,
+            0.7662864923477173,
+            0.8244494199752808
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "ad125d83908c191c626838a23c4b22cfc6ac93ceb05ac2f2ae9361ef35fe59be",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "great-chamber.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "Keep both routes around the central hoist separate from its blocked body. Cut the two uprights, crossbar and boiler/wheel silhouette, retaining the holes. Cut the rear tunnel lintels and near doorway beam/post. Tracks remain ground, not overhead bridges. Tile review: restore 180 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts. SAM silhouette review restores 10 additional reachable floor tiles: floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid.",
+  "collision_tiles": [
+    {
+      "tile": [
+        44,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        59,
+        38
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        44,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        59,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        44,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        44,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        44,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        44,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        59,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        59,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        45,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        46,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        47,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        52,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        53,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        54,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        55,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        56,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        57,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        58,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        50
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        50
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        50
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        50
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        48,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        49,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        50,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        51,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the hoist and boiler; keep all three ground supports solid"
+    },
+    {
+      "tile": [
+        62,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        690,
+        482
+      ]
+    },
+    {
+      "tile": [
+        63,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        710,
+        482
+      ]
+    },
+    {
+      "tile": [
+        62,
+        63
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        693,
+        497
+      ]
+    },
+    {
+      "tile": [
+        63,
+        63
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        713,
+        497
+      ]
+    },
+    {
+      "tile": [
+        62,
+        64
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        697,
+        513
+      ]
+    },
+    {
+      "tile": [
+        63,
+        64
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        717,
+        513
+      ]
+    },
+    {
+      "tile": [
+        62,
+        65
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        700,
+        529
+      ]
+    },
+    {
+      "tile": [
+        63,
+        65
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        720,
+        529
+      ]
+    },
+    {
+      "tile": [
+        61,
+        66
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        683,
+        546
+      ]
+    },
+    {
+      "tile": [
+        62,
+        66
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised near doorway post and its hanging lantern; keep the post base and stored barrels solid",
+      "pixel": [
+        704,
+        546
+      ]
+    }
+  ],
+  "sam_source": {
+    "path": "G-great-chamber/camara-intento-2.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "9b1dfe04c85f1ff94aae76c2ba46bd049a29d103",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  },
+  "atlas_priority": [
+    "boiler",
+    "hoist-left",
+    "hoist-screw",
+    "hoist-brace",
+    "hoist-crossbar",
+    "hoist-frame"
+  ]
+}

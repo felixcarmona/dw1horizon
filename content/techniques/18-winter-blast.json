@@ -1,0 +1,17 @@
+{
+  "id": 18,
+  "name": "Winter Blast",
+  "element": "ice",
+  "power": 120,
+  "mpCost": 55,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 90,
+  "status": 3,
+  "statusChance": 15,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [20, 12, 7]
+}

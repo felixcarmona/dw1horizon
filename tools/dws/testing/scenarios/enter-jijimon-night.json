@@ -1,0 +1,17 @@
+{
+  "name": "enter-jijimon-night",
+  "doc": "Screen entry at night: clock set to 23:30, warp into Jijimon's house (218) from File City (204): MAPHEAD section 218 chooses who is placed by the hour.",
+  "setup": { "hour": 23, "minute": 30 },
+  "pre": [
+    "warp 204 0",
+    "until screen==204 and free max 2500",
+    "wait 30"
+  ],
+  "run": [
+    "warp 218 0",
+    "until screen==218 and free max 2500",
+    "wait 60"
+  ],
+  "max_frames": 5000,
+  "expect": {"digest": "4790beb98b6d5bc00d5c0850c54b54a371bda985", "instructions": 16}
+}

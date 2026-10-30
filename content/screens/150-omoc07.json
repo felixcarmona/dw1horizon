@@ -1,0 +1,12 @@
+{
+  "id": 150,
+  "file": "OMOC07",
+  "tims8": 1,
+  "tims4": 1,
+  "sound_bank": 9,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 14,
+  "toilet": 0,
+  "caption": 61
+}

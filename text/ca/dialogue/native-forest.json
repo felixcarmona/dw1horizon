@@ -1,0 +1,378 @@
+{
+ "s001.sec5.u0": [
+  [
+   "Vinga, que això acaba de",
+   "començar!"
+  ]
+ ],
+ "s001.sec6.u0": [
+  [
+   "Aúpa... aúpa... A dalt... i a",
+   "baix..."
+  ]
+ ],
+ "s001.sec7.u0": [
+  [
+   "Ara jo menjar-te sencer, sí?!"
+  ]
+ ],
+ "s001.sec8.u0": [
+  [
+   "Si us plau, esperar un",
+   "momentet, sí?!"
+  ]
+ ],
+ "s001.sec9.u0": [
+  [
+   "Allà vaig!"
+  ]
+ ],
+ "s001.sec10.u0": [
+  [
+   "Què? Però què t'he fet jo?"
+  ]
+ ],
+ "s001.sec11.u0": [
+  [
+   "Ja sabia que no m'hi havia de",
+   "ficar..."
+  ]
+ ],
+ "s001.sec12.u0": [
+  [
+   "El que cal aguantar... Grumf,",
+   "grumf, grumf..."
+  ]
+ ],
+ "s003.sec5.u0": [
+  [
+   "Vinga, vinga!"
+  ]
+ ],
+ "s003.sec6.u0": [
+  [
+   "Graaaah!"
+  ]
+ ],
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   "......Sóc una flor."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......Que només sóc una flor,",
+   "val?"
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Que sóc una flor, et dic! Que",
+   "pesat que ets!"
+  ]
+ ],
+ "s003.sec7.u4": [
+  [
+   "Ai, d'acord! És que odio",
+   "lluitar, de debò!"
+  ]
+ ],
+ "s003.sec7.u5": [
+  [
+   "Doncs llavors..."
+  ]
+ ],
+ "s003.sec7.u6": [
+  [
+   "Vine a la ciutat. Allà s'està",
+   "tranquil."
+  ]
+ ],
+ "s003.sec7.u7": [
+  [
+   "La ciutat? Sembla divertit.",
+   "Potser sí que hi aniré! Sóc",
+   "Palmon. Ja veuràs que puc ser",
+   "útil!"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon s'ha unit a la ciutat!",
+ "s003.sec8.u0": [
+  [
+   "Meu!"
+  ]
+ ],
+ "s003.sec9.u0": [
+  [
+   "T'he enxampat!"
+  ]
+ ],
+ "s004.sec6.u0": [
+  [
+   "Només sortiràs mal parat,",
+   "saps?"
+  ]
+ ],
+ "s004.sec6_dup4.u0": [
+  [
+   "El que cal veure... Quina",
+   "criatura."
+  ]
+ ],
+ "s004.sec7.u0": [
+  [
+   "Molt bé. No m'hi esforçaré",
+   "gaire."
+  ]
+ ],
+ "s004.sec8.u0": [
+  [
+   "Et partiré aquest nas!"
+  ]
+ ],
+ "s004.sec9.u0": [
+  [
+   "Et partiré com una branqueta!"
+  ]
+ ],
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Fins i tot els micos cauen",
+   "de..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Cop de genoll... Volador... Des",
+   "de daaalt!!!"
+  ]
+ ],
+ "s004.sec51.u1": [
+  [
+   "Uk! El gran jo, derrotat...?",
+   "No, no! Vosaltres no sou res",
+   "de l'altre món!"
+  ]
+ ],
+ "s004.sec51.u2": [
+  [
+   "...Quin mal perdre té. I això",
+   "que va ser ell qui ens va",
+   "atacar per sorpresa..."
+  ]
+ ],
+ "s004.sec51.u3": [
+  [
+   "Uk-uk! Grrr... Molt bé,",
+   "doncs..."
+  ],
+  [
+   "Us ensenyaré del que sóc capaç",
+   "en aquesta ciutat vostra! Ja",
+   "veureu! Uk!"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon s'ha unit a la ciutat!",
+ "s004.sec81.u0": [
+  [
+   "Mm? Aquí hi ha alguna cosa",
+   "gravada."
+  ]
+ ],
+ "s004.sec81.u1": [
+  [
+   "No hi ha ningú! Llarg!"
+  ]
+ ],
+ "s004.sec81.u2": [
+  [
+   "Viu algú aquí?"
+  ]
+ ],
+ "s105.sec5.u0": [
+  [
+   "N-no sé res!"
+  ]
+ ],
+ "s105.sec6.u0": "Uau!",
+ "s105.sec6.u1": [
+  [
+   "......? ...! ...Je, je!"
+  ]
+ ],
+ "s105.sec6.u2": [
+  [
+   "Eh, així, sense avisar! Val,",
+   "per tu!"
+  ]
+ ],
+ "s105.sec6.u3": [
+  [
+   "He perdut. Caram."
+  ]
+ ],
+ "s105.sec6.u4": [
+  [
+   "Ah, és veritat. L'haig de",
+   "convidar a la ciutat."
+  ]
+ ],
+ "s105.sec6.u5": [
+  [
+   "...Això, escolta, veuràs..."
+  ]
+ ],
+ "s105.sec6.u6": [
+  [
+   "Potser... voldries... venir a",
+   "la ciutat?"
+  ]
+ ],
+ "s105.sec6.u7": [
+  [
+   "Eh? A la ciutat?"
+  ],
+  [
+   "Et refereixes a... aquest lloc",
+   "vell que cau a trossos?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Mmm..."
+  ],
+  [
+   "Mmmmm......"
+  ],
+  [
+   "Mmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": [
+  [
+   "Bé, val. Sóc Agumon. Encantat."
+  ]
+ ],
+ "s105.sec6.u10": "Agumon s'ha unit a la ciutat!",
+ "s105.sec6.u11": [
+  [
+   "Vaja, preguntar no costa res!",
+   "Convidaré tothom que trobi!"
+  ]
+ ],
+ "s105.sec7.u0": [
+  [
+   "Aquest és el meu territori!"
+  ]
+ ],
+ "s105.sec8.u0": [
+  [
+   "Eh!?"
+  ]
+ ],
+ "s105.sec9.u0": [
+  [
+   "Ara és la meva oportunitat!"
+  ]
+ ],
+ "s105.sec52.u0": [
+  [
+   "...si fujo ara, ja no hi ha",
+   "volta enrere."
+  ]
+ ],
+ "s106.sec5.u0": [
+  [
+   "Prova de combat!"
+  ],
+  [
+   "És broma. Era mentida."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Canviar els atributs",
+ "s106.sec6.m0.o1": "Avançar el temps",
+ "s106.sec6.m0.o2": "Aprendre totes les tècniques",
+ "s106.sec6.m1.o0": "Pujar",
+ "s106.sec6.m1.o1": "Baixar",
+ "s106.sec6.m1.o2": "Restablir els atributs",
+ "s106.sec6.m2.o0": "Avançar 1 hora",
+ "s106.sec6.m2.o1": "Avançar 6 hores",
+ "s106.sec6.m2.o2": "Avançar 24 hores",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": [
+  [
+   "Sóc el Senyor Manetes! Què",
+   "vols fer?"
+  ]
+ ],
+ "s106.sec81.u0": [
+  [
+   "Un despreniment de roques",
+   "bloqueja el camí..."
+  ]
+ ],
+ "s107.sec5.u0": [
+  [
+   "Ara mateix és el mes",
+   "{pstat 105}, dia {pstat 106},",
+   "hora"
+  ],
+  [
+   "{pstat 107}, minut",
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": [
+  [
+   "{color 10}{partner}{color 1} és de tipus",
+   "Dades, eh?"
+  ]
+ ],
+ "s107.sec5.u2": [
+  [
+   "{color 10}{partner}{color 1} és de tipus",
+   "Vacuna, eh?"
+  ]
+ ],
+ "s107.sec5.u3": [
+  [
+   "{color 10}{partner}{color 1} és de tipus",
+   "Virus, eh?"
+  ]
+ ],
+ "s107.sec6.m0.o0": "Canviar els atributs",
+ "s107.sec6.m0.o1": "Avançar el temps",
+ "s107.sec6.m0.o2": "Convertir en botiga",
+ "s107.sec6.m1.o0": "Fer-lo el més fort",
+ "s107.sec6.m1.o1": "Fer-lo el més feble",
+ "s107.sec6.m1.o2": "Fer-lo mitjà",
+ "s107.sec6.m2.o0": "Avançar 1 hora",
+ "s107.sec6.m2.o1": "Avançar 6 hores",
+ "s107.sec6.m2.o2": "Avançar 24 hores",
+ "s107.sec6.u0": [
+  [
+   "Sóc el Senyor Manetes! Què",
+   "vols fer?"
+  ]
+ ],
+ "s107.sec51.u0": [
+  [
+   "El terratrèmol d'abans s'ha",
+   "emportat les roques caigudes!"
+  ]
+ ]
+}

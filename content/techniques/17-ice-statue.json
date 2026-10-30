@@ -1,0 +1,17 @@
+{
+  "id": 17,
+  "name": "Ice Statue",
+  "element": "ice",
+  "power": 424,
+  "mpCost": 62,
+  "distance": 490000,
+  "range": 2,
+  "accuracy": 79,
+  "status": 3,
+  "statusChance": 38,
+  "iframes": 17,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 8, 0]
+}

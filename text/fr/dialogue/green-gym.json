@@ -1,0 +1,388 @@
+{
+ "s108.sec5.m0.o0": "Qu'est-ce que l'entraînement ?",
+ "s108.sec5.m0.o1": "Comment m'entraîner ?",
+ "s108.sec5.m0.o2": "Rien, merci.",
+ "s108.sec5.u0": [
+  [
+   "Hé, hé, du nouveau ! Euh...",
+   "Tant que ton Digimon est",
+   "encore un bébé, essaie de"
+  ],
+  [
+   "répéter le même entraînement.",
+   "Il paraît que ça donne un bon",
+   "résultat !"
+  ]
+ ],
+ "s108.sec5.u1": [
+  [
+   "Hé, hé, du nouveau ! Euh...",
+   "Pendant un entraînement bonus,",
+   "si tu alignes les mêmes images"
+  ],
+  [
+   "que sur le panneau, tes stats",
+   "augmentent encore plus !"
+  ]
+ ],
+ "s108.sec5.u2": [
+  [
+   "Ah oui, je devais te parler des",
+   "techniques ! En général, après",
+   "un combat, ton Digimon peut"
+  ],
+  [
+   "apprendre une technique que",
+   "l'ennemi a utilisée contre lui.",
+   "Mais seulement une qu'il peut"
+  ],
+  [
+   "équiper sous sa forme actuelle.",
+   "Ça ne marche pas à chaque",
+   "fois, mais c'est le moyen le"
+  ],
+  [
+   "plus rapide d'en apprendre",
+   "davantage. Et puis... c'est",
+   "très rare, mais l'entraînement"
+  ],
+  [
+   "permet aussi d'en apprendre.",
+   "Quand son Esprit est assez",
+   "élevé, les cours de"
+  ],
+  [
+   "{color 6}{player}{color 1} peuvent lui en",
+   "enseigner, paraît-il. Je me",
+   "répète, mais les chances sont"
+  ],
+  [
+   "vraiment faibles, alors ne",
+   "compte pas trop dessus. Tout",
+   "est une question d'équilibre !"
+  ]
+ ],
+ "s108.sec5.u3": [
+  [
+   "Hé, hé, je suis Koromon ! Jiji",
+   "m'a demandé de t'expliquer",
+   "l'entraînement. Tu veux savoir"
+  ],
+  [
+   "quelque chose ?"
+  ]
+ ],
+ "s108.sec5.u4": [
+  [
+   "L'entraînement ici augmente les",
+   "stats de ton Digimon. Mais il",
+   "le fatigue et prend du temps."
+  ],
+  [
+   "Ça reste un moyen plus sûr",
+   "d'améliorer ses stats que les",
+   "combats. Et très rarement, ton"
+  ],
+  [
+   "Digimon apprend une nouvelle",
+   "technique ! Je t'en parlerai",
+   "une autre fois."
+  ]
+ ],
+ "s108.sec5.u5": [
+  [
+   "Il y a six appareils",
+   "d'entraînement ici, chacun avec",
+   "un panneau à côté."
+  ]
+ ],
+ "s108.sec5.u6": [
+  [
+   "D'abord, place-toi devant un",
+   "panneau et appuie sur {color 6}×{color 1}.",
+   "Lis-le pour savoir quelles"
+  ],
+  [
+   "stats augmentent. Certains",
+   "Digimon améliorent facilement",
+   "certaines stats, et d'autres"
+  ],
+  [
+   "moins. Il faut essayer pour le",
+   "savoir ! Choisis S'entraîner,",
+   "puis Entraînement normal : ton"
+  ],
+  [
+   "Digimon s'entraînera une heure.",
+   "Tu peux accélérer le temps",
+   "avec {color 5}△{color 1}. Ah oui, parlons de"
+  ],
+  [
+   "l'entraînement bonus ! Si tu",
+   "réussis, la stat augmente",
+   "beaucoup. Mais si tu rates..."
+  ],
+  [
+   "elle augmente à peine. Essaie,",
+   "tu verras."
+  ]
+ ],
+ "s108.sec5.u7": [
+  [
+   "Ah, d'accord... Je vais te",
+   "dénicher de nouvelles infos."
+  ]
+ ],
+ "s108.sec6.u0": [
+  [
+   "Moi aller en ville. Ville trop",
+   "ville pour moi. Moi pas à ma",
+   "place. Alors moi venir ici. Moi"
+  ],
+  [
+   "refaire machines ici. Mieux",
+   "marcher qu'avant. Toi beaucoup",
+   "entraîner."
+  ]
+ ],
+ "s108.sec7.u0": [
+  [
+   "Moi aller en ville. Ville trop",
+   "ville pour moi. Moi pas à ma",
+   "place. Alors moi venir ici. Moi"
+  ],
+  [
+   "refaire machines ici. Mieux",
+   "marcher qu'avant. Toi beaucoup",
+   "entraîner."
+  ]
+ ],
+ "s108.sec81.m0.o0": "S'entraîner",
+ "s108.sec81.m0.o1": "Cet entraînement",
+ "s108.sec81.m0.o2": "Quitter",
+ "s108.sec81.m1.o0": "Entraînement normal",
+ "s108.sec81.m1.o1": "Entraînement bonus",
+ "s108.sec81.m1.o2": "Laisse tomber",
+ "s108.sec81.m2.o0": "Explique encore",
+ "s108.sec81.m2.o1": "S'entraîner",
+ "s108.sec81.m2.o2": "Quitter",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Entraînement amélioré :",
+   "Poussée de rocher{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "{color 5}Entraînement : Poussée de",
+   "rocher{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": [
+  [
+   "Pousser un énorme rocher",
+   "développe la force brute. Les",
+   "HP max. augmentent beaucoup,"
+  ],
+  [
+   "et l'Attaque aussi."
+  ]
+ ],
+ "s108.sec81.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s108.sec82.m0.o0": "S'entraîner",
+ "s108.sec82.m0.o1": "Cet entraînement",
+ "s108.sec82.m0.o2": "Quitter",
+ "s108.sec82.m1.o0": "Entraînement normal",
+ "s108.sec82.m1.o1": "Entraînement bonus",
+ "s108.sec82.m1.o2": "Laisse tomber",
+ "s108.sec82.m2.o0": "Explique encore",
+ "s108.sec82.m2.o1": "S'entraîner",
+ "s108.sec82.m2.o2": "Quitter",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Entraînement amélioré :",
+   "Cascade{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "{color 5}Entraînement : Cascade{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": [
+  [
+   "Rester sous une cascade",
+   "renforce l'esprit. Les MP max.",
+   "augmentent beaucoup, et la"
+  ],
+  [
+   "Défense aussi."
+  ]
+ ],
+ "s108.sec82.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s108.sec83.m0.o0": "S'entraîner",
+ "s108.sec83.m0.o1": "Cet entraînement",
+ "s108.sec83.m0.o2": "Quitter",
+ "s108.sec83.m1.o0": "Entraînement normal",
+ "s108.sec83.m1.o1": "Entraînement bonus",
+ "s108.sec83.m1.o2": "Laisse tomber",
+ "s108.sec83.m2.o0": "Explique encore",
+ "s108.sec83.m2.o1": "S'entraîner",
+ "s108.sec83.m2.o2": "Quitter",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Entraînement amélioré : Frappe",
+   "d'arbre{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "{color 5}Entraînement : Frappe d'arbre{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": [
+  [
+   "Exerce tes techniques sur un",
+   "arbre. L'Attaque augmente",
+   "beaucoup, et la Vitesse aussi."
+  ]
+ ],
+ "s108.sec83.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s108.sec84.m0.o0": "S'entraîner",
+ "s108.sec84.m0.o1": "Cet entraînement",
+ "s108.sec84.m0.o2": "Quitter",
+ "s108.sec84.m1.o0": "Entraînement normal",
+ "s108.sec84.m1.o1": "Entraînement bonus",
+ "s108.sec84.m1.o2": "Laisse tomber",
+ "s108.sec84.m2.o0": "Explique encore",
+ "s108.sec84.m2.o1": "S'entraîner",
+ "s108.sec84.m2.o2": "Quitter",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Entraînement amélioré : Gant",
+   "de boxe{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "{color 5}Entraînement : Gant de boxe{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": [
+  [
+   "Encaisse les coups d'une",
+   "machine de boxe géante. La",
+   "Défense augmente beaucoup, et"
+  ],
+  [
+   "l'Esprit aussi."
+  ]
+ ],
+ "s108.sec84.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s108.sec85.m0.o0": "S'entraîner",
+ "s108.sec85.m0.o1": "Cet entraînement",
+ "s108.sec85.m0.o2": "Quitter",
+ "s108.sec85.m1.o0": "Entraînement normal",
+ "s108.sec85.m1.o1": "Entraînement bonus",
+ "s108.sec85.m1.o2": "Laisse tomber",
+ "s108.sec85.m2.o0": "Explique encore",
+ "s108.sec85.m2.o1": "S'entraîner",
+ "s108.sec85.m2.o2": "Quitter",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Entraînement amélioré :",
+   "Course{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "{color 5}Entraînement : Course{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": [
+  [
+   "Fais des tours de piste,",
+   "encore et encore. La Vitesse",
+   "augmente beaucoup, et les HP"
+  ],
+  [
+   "max. aussi."
+  ]
+ ],
+ "s108.sec85.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s108.sec86.m0.o0": "S'entraîner",
+ "s108.sec86.m0.o1": "Cet entraînement",
+ "s108.sec86.m0.o2": "Quitter",
+ "s108.sec86.m1.o0": "Entraînement normal",
+ "s108.sec86.m1.o1": "Entraînement bonus",
+ "s108.sec86.m1.o2": "Laisse tomber",
+ "s108.sec86.m2.o0": "Explique encore",
+ "s108.sec86.m2.o1": "S'entraîner",
+ "s108.sec86.m2.o2": "Quitter",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Cours amélioré de {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Cours de {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": "{color 6}{player}{color 1} joue au professeur et enseigne toutes sortes de choses. L'Esprit augmente beaucoup, ainsi que les MP max.",
+ "s108.sec86.u3": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ]
+}

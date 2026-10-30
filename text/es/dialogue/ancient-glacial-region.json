@@ -1,0 +1,128 @@
+{
+ "s077.sec5.u0": "¡Eh, tú! ¡Ven aquí si te atreveees!",
+ "s077.sec6.u0": "¡Bzzz, bzzz, bzzz!",
+ "s077.sec7.u0": "¡No te pongas nunca detrás de mííí!",
+ "s077.sec8.u0": "¡Fiu-fiu-fiuuuuu!",
+ "s077.sec9.u0": "¡Estoy que ardo! ¡Me hierve la sangre!",
+ "s077.sec10.u0": "¡Ganar, ganar, ganar! ¡Voy a GANAAAR!",
+ "s078.sec5.u0": "Creo que alguien de mi especie se marchó para hacerse comerciante... Dicen que ha abierto una tienda en alguna parte. Como amigo te sería más útil él que yo...",
+ "s078.sec5.u1": "¿Por qué aquí el tiempo pasa distinto que fuera? Desde luego, es un lugar cómodo para vivir, pero...",
+ "s078.sec6.u0": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "Al norte hay hielo y nieve que no se",
+   "derriten nunca. Quien viva allí está",
+   "como una cabra."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "Al oeste hay un pueblecito de hierro,",
+   "pero su puerta sigue cerrada. Yo",
+   "entraría volando. Ke, je."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "Al suroeste hay una aldea de",
+   "Digimon raros con cuernos y",
+   "pinzas. Viven en los árboles."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "Al noroeste hay un bosque con niebla",
+   "y un edificio dentro. Eso sí, queda",
+   "lejísimos."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "¿Has estado ya en el Gran Cañón,",
+   "al este? Aquello es un laberinto",
+   "de los buenos. Ke, je."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "He volado alto y he visto lejos..."
+  ],
+  [
+   "¿Qué hay justo en el centro de la isla?",
+   "Ni yo lo sé. Siempre está cubierto de",
+   "nubes espesas."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Probar",
+ "s078.sec81.m0.o1": "Dejarlo",
+ "s078.sec81.u0": "Máquina expendedora",
+ "s078.sec81.u1": "«Lo que sale es una sorpresa...» ¿200 Bits cada vez...? Tiene mala pinta. ¿Pruebo?",
+ "s078.sec81.u2": "No me llega el dinero...",
+ "s078.sec81.u3": "¡Ha salido {color 6}Carne{color 1}!",
+ "s078.sec81.u4": "¡Ups! Llevo la bolsa llena. Tengo que tirar algo.",
+ "s078.sec81.u5": "¡Ha salido {color 6}Cura pequeña{color 1}!",
+ "s078.sec81.u6": "¡Ups! Llevo la bolsa llena. Tengo que tirar algo.",
+ "s078.sec81.u7": "¡Ha salido {color 6}Carne mohosa{color 1}!",
+ "s078.sec81.u8": "¡Ups! Llevo la bolsa llena. Tengo que tirar algo.",
+ "s078.sec81.u9": "¡Ha salido una {color 6}Cura MP{color 1}!",
+ "s078.sec81.u10": "¡Ups! Llevo la bolsa llena. Tengo que tirar algo.",
+ "s078.sec82.u0": "...Supongo que ya te lo habrán contado.",
+ "s078.sec82.u1": "Aquí el tiempo pasa despacio. Mientras fuera pasa un día, aquí solo pasa medio.",
+ "s078.sec82.u2": "En fin, es un buen lugar para quien quiera tomarse las cosas con calma.",
+ "s078.sec82.u3": "Más adentro, en la Región Speedy, el tiempo pasa deprisa. Allí transcurren dos días mientras fuera pasa uno.",
+ "s078.sec82.u4": "Se podría decir que así se crece más rápido... pero cuando ya eres huesos, es demasiado tarde.",
+ "s079.sec6.u0": "Pasado este punto, el tiempo corre el doble de rápido que fuera. Llévate comida de sobra. Y vigila cuánta vida te queda, claro.",
+ "s079.sec6.u1": "¿Qué? ¿Has encontrado algo?",
+ "s079.sec6.u2": "No, todavía no...",
+ "s079.sec6.u3": "Mi maestro, que vigilaba este lugar antes que yo, decía que por aquí hay un «pasadizo secreto». Pero a mí no me preguntes dónde.",
+ "s079.sec6.u4": "Ah, ¿qué tal...?",
+ "s079.sec6.u5": "El meteorito... resulta que no tenía nada que ver. Ay...",
+ "s079.sec6.u6": "Vaya. Conque sí. Pues mala suerte. Lo siento, pero no sé nada más.",
+ "s079.sec6.u7": "...Bueno, hasta luego.",
+ "s079.sec6.u8": "¡¡Eeeh, túúú!!",
+ "s079.sec6.u9": "¡Por ESTO te digo siempre que todavía estás a medio entrenar!",
+ "s079.sec6.u10": "¿¡M-m-maestro!?",
+ "s079.sec6.u11": "¡Cabeza de chorlito! ¡No me puedo creer que sigas aquí haciendo el vago!",
+ "s079.sec6.u12": "¿¡Su maestro!? ¿¡Qué está pasando!?",
+ "s079.sec6.u13": "P-pero ¿quién vigilará la Antigua Región Dino...?",
+ "s079.sec6.u14": "¡Zoquete! ¡La isla corre un grave peligro! ¡Ve a la ciudad y hazte útil para todos, insensato!",
+ "s079.sec6.u15": "S... sí, señor...",
+ "s079.sec6.u16": "¿Eh, en serio?",
+ "s079.sec6.u17": "Chico del mundo analógico, todavía está verde, pero ¿lo pondrás a trabajar en tu ciudad? Yo vigilaré este lugar.",
+ "s079.sec6.u18": "Maestro...",
+ "s079.sec6.u19": "Pues ya ves, {color 6}{player}{color 1}. ¿Puedo ir a la ciudad?",
+ "s079.sec6.u20": "Claro. Pero arrima el hombro, ¿eh?",
+ "s079.sec6.u21": "¡Dalo por hecho! ¡Maestro, me voy!",
+ "s079.sec6.u22": "¡Tyrannomon se ha unido a la ciudad!",
+ "s079.sec6.u23": "A ver hasta dónde llega... Je.",
+ "s079.sec7.u0": "Je... ¿Cuántos años hacía que no montaba guardia aquí? Ah, puedes ir y venir a tu antojo. Aprovéchalo bien.",
+ "s079.sec8.u0": "Je... ¿Cuántos años hacía que no montaba guardia aquí? Ah, puedes ir y venir a tu antojo. Aprovéchalo bien.",
+ "s079.sec51.m0.o0": "¿Nos ayudarás?",
+ "s079.sec51.m0.o1": "No... déjalo...",
+ "s079.sec51.u0": "Ah, sois vosotros. Ahí delante está la Región Speedy. Mejor no os acerquéis mucho.",
+ "s079.sec51.u1": "Como ya te dije, tenemos dos objetivos. Descubrir qué hay detrás de todos los disturbios y traer Digimon a la ciudad.",
+ "s079.sec51.u2": "Ah, es verdad, ya me lo dijiste. ¿Y?",
+ "s079.sec51.u3": "Conmigo no contéis. Tengo el importante trabajo de vigilar este bosque.",
+ "s079.sec51.u4": "Entonces, sobre los disturbios de la isla... ¿sabes algo?",
+ "s079.sec51.u5": "No, nada de nada... ¿Mm...? Espera un momento... Ahora que lo dices, hace un tiempo cayó del cielo una roca enorme... Eso fue...",
+ "s079.sec51.u6": "¿Eh? ¿¡Dónde cayó!?",
+ "s079.sec51.u7": "...En la Región Speedy. Por aquí mismo...",
+ "s079.sec51.u8": "¡Déjanos pasar, por favor! ¡Puede que allí haya una pista!",
+ "s079.sec51.u9": "..................... Ay... Si tanto te empeñas, supongo que no me queda otra... Al fin y al cabo, me ganaste. Venga, id a echar un vistazo.",
+ "s079.sec51.u10": "Pasado este punto, el tiempo corre el doble de rápido que fuera. Llévate comida de sobra. Y vigila cuánta vida te queda, claro.",
+ "s079.sec51.u11": "Prueba a preguntar en otra parte."
+}

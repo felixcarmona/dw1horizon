@@ -1,0 +1,364 @@
+{
+  "screen": 354,
+  "name": "the-stair",
+  "pieces": [
+    {
+      "name": "upper-rock-lip",
+      "depth_px": [
+        230,
+        342
+      ],
+      "block": [],
+      "at": [
+        2,
+        176
+      ],
+      "png": "354-upper-rock-lip.png",
+      "size": [
+        396,
+        195
+      ],
+      "sam": [
+        {
+          "box": [
+            0,
+            201,
+            395,
+            360
+          ],
+          "positive": [
+            [
+              64,
+              266
+            ],
+            [
+              114,
+              232
+            ],
+            [
+              203,
+              232
+            ],
+            [
+              282,
+              237
+            ],
+            [
+              337,
+              242
+            ],
+            [
+              158,
+              266
+            ],
+            [
+              240,
+              273
+            ],
+            [
+              305,
+              287
+            ],
+            [
+              368,
+              288
+            ],
+            [
+              26,
+              306
+            ]
+          ],
+          "negative": [
+            [
+              0,
+              201
+            ],
+            [
+              395,
+              201
+            ],
+            [
+              0,
+              360
+            ],
+            [
+              395,
+              360
+            ]
+          ],
+          "scores": [
+            0.9427407383918762,
+            0.9767849445343018,
+            0.9738575220108032
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "5969bfeffe6e9bfd67f78172441958f3734acb58c8b503113586f1849246ac3d",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "lower-rock-lip",
+      "depth_px": [
+        420,
+        548
+      ],
+      "block": [],
+      "at": [
+        230,
+        379
+      ],
+      "png": "354-lower-rock-lip.png",
+      "size": [
+        409,
+        191
+      ],
+      "sam": [
+        {
+          "box": [
+            225,
+            371,
+            639,
+            549
+          ],
+          "positive": [
+            [
+              630,
+              438
+            ],
+            [
+              582,
+              411
+            ],
+            [
+              528,
+              430
+            ],
+            [
+              476,
+              449
+            ],
+            [
+              421,
+              457
+            ],
+            [
+              336,
+              465
+            ],
+            [
+              571,
+              465
+            ],
+            [
+              266,
+              471
+            ],
+            [
+              518,
+              485
+            ],
+            [
+              382,
+              496
+            ],
+            [
+              455,
+              501
+            ],
+            [
+              304,
+              511
+            ]
+          ],
+          "negative": [
+            [
+              225,
+              371
+            ],
+            [
+              639,
+              371
+            ],
+            [
+              225,
+              549
+            ],
+            [
+              639,
+              549
+            ]
+          ],
+          "scores": [
+            0.940939724445343,
+            0.9729381799697876,
+            0.97635817527771
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "abda13b30d205d9acb74c071d4976296510dc73257b2712cdc6234e82816c0eb",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "upper-door",
+      "depth_px": [
+        158,
+        78
+      ],
+      "block": [],
+      "at": [
+        87,
+        0
+      ],
+      "png": "354-upper-door.png",
+      "size": [
+        141,
+        21
+      ],
+      "sam": [
+        {
+          "box": [
+            88,
+            0,
+            235,
+            24
+          ],
+          "positive": [
+            [
+              111,
+              0
+            ],
+            [
+              167,
+              0
+            ],
+            [
+              223,
+              0
+            ]
+          ],
+          "negative": [
+            [
+              88,
+              0
+            ],
+            [
+              235,
+              0
+            ],
+            [
+              88,
+              24
+            ],
+            [
+              235,
+              24
+            ]
+          ],
+          "scores": [
+            0.9573094248771667,
+            0.9831632375717163,
+            0.9787980318069458
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "2bfffaabc8e3d9a7a3a18267d36984d43f26c172c355ae084bbe5d801efd87f9",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-lintel",
+      "depth_px": [
+        310,
+        746
+      ],
+      "block": [],
+      "at": [
+        251,
+        656
+      ],
+      "png": "354-near-lintel.png",
+      "size": [
+        140,
+        93
+      ],
+      "sam": [
+        {
+          "box": [
+            249,
+            651,
+            395,
+            753
+          ],
+          "positive": [
+            [
+              270,
+              689
+            ],
+            [
+              375,
+              695
+            ],
+            [
+              315,
+              711
+            ]
+          ],
+          "negative": [
+            [
+              320,
+              681
+            ],
+            [
+              320,
+              734
+            ],
+            [
+              316,
+              727
+            ],
+            [
+              249,
+              717
+            ],
+            [
+              391,
+              715
+            ]
+          ],
+          "scores": [
+            0.9604932069778442
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "fedeb215f9ef30d79567e89004cb847fbd5575f91a4715d9779a375c3f225942",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "the-stair.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The two rock shelves separate the switchbacks; keep their solid bodies blocked. Cut both entire lips, the upper doorway lintel and the near doorway lintel. The floor crosses the visible central stairs only; no connection through the rock shelves is introduced. Tile review: restore 0 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [],
+  "sam_source": {
+    "path": "G-the-stair/the-stair-intento-2.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      38,
+      1856,
+      2265
+    ],
+    "sha1": "39bf8166a451932c6bc0b30f645c2f7ac5827b50",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

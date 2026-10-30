@@ -1,0 +1,98 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M446BKNM",
+ "type": 307,
+ "name": "BK-KingNumemon",
+ "source": {
+  "type": 42,
+  "mmd": "extracted/CHDAT/MMD1/ETEM.MMD"
+ },
+ "map": {
+  "1": 15,
+  "4": 22,
+  "6": 1,
+  "7": 3,
+  "8": 5,
+  "9": 4,
+  "11": 11,
+  "14": 9,
+  "15": 24,
+  "16": 18
+ },
+ "hips": [
+  1,
+  1,
+  1.643
+ ],
+ "root_scale": 1.643,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x3b": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 92,
+   "speed": 0.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 220
+  },
+  "0x39": {
+   "anim": "anim_14",
+   "start": 39,
+   "end": 104,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 220
+  },
+  "0x3a": {
+   "anim": "anim_38",
+   "start": 1,
+   "end": 94,
+   "speed": 0.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 220
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.209835,
+ "hub_roots": true
+}

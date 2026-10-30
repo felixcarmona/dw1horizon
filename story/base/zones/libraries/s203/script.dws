@@ -1,0 +1,32 @@
+// Readable form of script 203 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+script 203 {
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        face(tamer, partner);
+        await tamer;
+        say(tamer, text("s203.sec51.u0"));
+        entity_walk_to_entity(partner, 0, tamer);
+        await partner;
+        face(tamer, partner);
+        face(partner, tamer);
+        animate(partner, 23);
+        wait(30);
+        sound(8, 1);
+        wait(30);
+        sound(8, 2);
+        wait(30);
+        animate(partner, 43);
+        say(tamer, text("s203.sec51.u1"));
+        animate(partner, anim.sleepy);
+        warp_to(137, 1, 51);
+        return;
+    }
+}

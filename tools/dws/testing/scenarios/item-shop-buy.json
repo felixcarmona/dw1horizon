@@ -1,0 +1,23 @@
+{
+  "name": "item-shop-buy",
+  "doc": "Item Shop (screen 216): press X on the counter tile 81 (script 176), the shopkeeper talks, open the shop (C routine 8), buy the first item (money and inventory change); the run ends back in the shop menu.",
+  "setup": { "set": { "money": 2000 }, "triggers": { "231": 1, "65": 1 } },
+  "pre": [
+    "warp 216 0",
+    "until screen==216 and free max 2500",
+    "wait 30"
+  ],
+  "run": [
+    "move -550 250",
+    "wait 20",
+    "wait 100",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until ACTIVE_INSTRUCTION==100 max 1500",
+    "wait 150",
+    "press CROSS 3", "wait 90", "press CROSS 3", "wait 90", "press CROSS 3", "wait 90", "press CROSS 3", "wait 150",
+    "wait 100"
+    
+  ],
+  "max_frames": 8000,
+  "expect": {"digest": "0013ea6c78fce7d7c9b2a478a92b23ef1d50b976", "instructions": 32}
+}

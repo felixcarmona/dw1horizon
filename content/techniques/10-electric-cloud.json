@@ -1,0 +1,17 @@
+{
+  "id": 10,
+  "name": "Electric Cloud",
+  "element": "air",
+  "power": 120,
+  "mpCost": 23,
+  "distance": 810000,
+  "range": 2,
+  "accuracy": 60,
+  "status": 3,
+  "statusChance": 9,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [32, 19, 15]
+}

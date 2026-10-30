@@ -1,0 +1,14 @@
+// Who stands on screen 2 (Native Forest), and when. Read out of MAPHEAD.SCN section 2 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(2) {                              // Native Forest
+            npc Goblimon slot 0 autotalk when recruited(Palmon);
+            npc Goblimon slot 1 autotalk when recruited(Palmon);
+            npc 164 slot 2 when not recruited(Palmon);
+            npc Goblimon slot 3 autotalk when recruited(Palmon);
+            npc Goblimon slot 4 autotalk when recruited(Palmon);
+        }
+    }
+}

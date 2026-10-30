@@ -1,0 +1,81 @@
+// Readable form of script 34 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 34 {
+    npc darklizardmon0 = 5;
+    npc darklizardmon1 = 6;
+    npc darklizardmon2 = 7;
+    npc darklizardmon3 = 8;
+    npc darklizardmon4 = 9;
+    npc darklizardmon5 = 10;
+    npc tsukaimon6 = 11;
+    npc tsukaimon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 12;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 21, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 59, 78);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Deluxmushrm"), 60, 51);
+        }
+    }
+
+    on talk(darklizardmon0) replace {    // section 5
+        say(darklizardmon0, text("s034.sec5.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon1) replace {    // section 6
+        say(darklizardmon1, text("s034.sec6.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon2) replace {    // section 7
+        say(darklizardmon2, text("s034.sec7.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon3) replace {    // section 8
+        say(darklizardmon3, text("s034.sec8.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon4) replace {    // section 9
+        say(darklizardmon4, text("s034.sec9.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon5) replace {    // section 10
+        say(darklizardmon5, text("s034.sec10.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(tsukaimon6) replace {    // section 11
+        say(tsukaimon6, text("s034.sec11.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon7) replace {    // section 12
+        say(tsukaimon7, text("s034.sec12.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+        return;
+    }
+}

@@ -1,0 +1,173 @@
+// Readable form of script 11 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 11 {
+    npc modokibetamon0 = 5;
+    npc modokibetamon1 = 6;
+    npc aruraumon = 7;
+    npc tsukaimon3 = 8;
+    npc tsukaimon4 = 9;
+    npc tsukaimon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 7, 8, 9, 10, 6, 52;
+
+    on enter replace {    // section 254
+        if (is_recruited(species("Kunemon"))) {
+            set_obj_visibility(68, 1);
+            set_obj_visibility(69, 1);
+            set_obj_visibility(70, 1);
+        } else {
+            set_rect_impassable(0, 22, 16, 3, 12);
+        }
+        if (is_recruited(species("Kunemon")) && engine.prosperity >= 35) {
+            set_obj_visibility(71, 0);
+            set_obj_visibility(72, 0);
+            set_obj_visibility(73, 0);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 39) {
+            spawn_item(item("Digimushrm"), 37, 48);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Blue apple"), 38, 52);
+        }
+    }
+
+    on talk(modokibetamon0) replace {    // section 5
+        say(modokibetamon0, text("s011.sec5.u0"));
+        battle();
+        recruit(species("ModokiBetamon"));
+    }
+
+    on talk(aruraumon) replace {    // section 7
+        say(aruraumon, text("s011.sec7.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(tsukaimon3) replace {    // section 8
+        say(tsukaimon3, text("s011.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon4) replace {    // section 9
+        say(tsukaimon4, text("s011.sec9.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon5) replace {    // section 10
+        say(tsukaimon5, text("s011.sec10.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(modokibetamon1) replace {    // section 6
+        say(modokibetamon1, text("s011.sec6.u0"));
+        battle();
+        recruit(species("ModokiBetamon"));
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2800, 3000);
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(192, 2, 255);
+                        return;
+                    }
+                    warp_to(191, 2, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(193, 2, 255);
+                    return;
+                }
+                warp_to(190, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(195, 2, 255);
+                    return;
+                }
+                warp_to(194, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(196, 2, 255);
+                return;
+            }
+            warp_to(189, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Betamon")) || is_recruited(species("Coelamon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(184, 2, 255);
+                        return;
+                    }
+                    warp_to(183, 2, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(185, 2, 255);
+                    return;
+                }
+                warp_to(182, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(187, 2, 255);
+                    return;
+                }
+                warp_to(186, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(188, 2, 255);
+                return;
+            }
+            warp_to(181, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(199, 2, 255);
+                    return;
+                }
+                warp_to(198, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(200, 2, 255);
+                return;
+            }
+            warp_to(197, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Centarumon"))) {
+            if (is_recruited(species("Greymon"))) {
+                warp_to(202, 2, 255);
+                return;
+            }
+            warp_to(201, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            warp_to(203, 2, 255);
+            return;
+        }
+        warp_to(180, 2, 255);
+        return;
+    }
+}

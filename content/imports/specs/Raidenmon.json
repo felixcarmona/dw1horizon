@@ -1,0 +1,98 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M438RIDN",
+ "type": 336,
+ "name": "Raidenmon",
+ "source": {
+  "type": 51,
+  "mmd": "extracted/CHDAT/MMD1/KUWA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 27,
+  "8": 3,
+  "9": 19,
+  "10": 24,
+  "12": 9,
+  "18": 26,
+  "22": 29,
+  "23": 20
+ },
+ "hips": [
+  1,
+  1,
+  0.681
+ ],
+ "root_scale": 0.681,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x38": {
+   "anim": "anim_12",
+   "start": 3,
+   "end": 95,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  },
+  "0x30": {
+   "anim": "anim_14",
+   "start": 23,
+   "end": 92,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  },
+  "0x31": {
+   "anim": "anim_44",
+   "start": 1,
+   "end": 85,
+   "speed": 1.37,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.033656,
+ "hub_roots": true,
+ "quad_angle": 40.0
+}

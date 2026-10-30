@@ -1,0 +1,45 @@
+{
+ "first_id": 367,
+ "out": "build/batch18",
+ "digimon": [
+  {
+   "name": "Tsukaimon",
+   "game": "dw1",
+   "type": 96
+  },
+  {
+   "name": "IceDevimon",
+   "game": "dw1",
+   "type": 100,
+   "from": [
+    236
+   ]
+  },
+  {
+   "name": "BlueMeramon",
+   "game": "dw1",
+   "type": 104,
+   "from": [
+    235
+   ]
+  },
+  {
+   "name": "Saberdramon",
+   "game": "dw1",
+   "type": 106,
+   "from": [
+    184
+   ]
+  },
+  {
+   "name": "Otamamon",
+   "game": "dw1",
+   "type": 109
+  },
+  {
+   "name": "WaruSeadramon",
+   "game": "dw1",
+   "type": 112
+  }
+ ]
+}

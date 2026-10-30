@@ -1,0 +1,275 @@
+{
+  "screen": 318,
+  "art": "iron-hills-2",
+  "review": "Great gear and three fallen tower struts hide actors on visible grass beneath the lattice. Open only the grass pocket under these struts; keep actual leg footings solid. Tower vessel, wall machinery and ground cables need no overlay. The connected vessel and thin lattice use one SAM object with separately segmented opaque drum faces; foreground/floor color refinement removes grass inside the struts. Depth follows the real support feet, including the former gaps between separately traced bars. Polish: low tower braces obstruct the standing body; keep the surrounding grass open.",
+  "pieces": [
+    {
+      "name": "great-gear",
+      "png": "318-great-gear.png",
+      "at": [
+        505,
+        19
+      ],
+      "depth": [
+        604,
+        311
+      ]
+    },
+    {
+      "name": "tower-complete",
+      "png": "318-tower-complete.png",
+      "at": [
+        16,
+        238
+      ],
+      "depth": null,
+      "depth_line": [
+        [
+          280,
+          467
+        ],
+        [
+          315,
+          410
+        ]
+      ]
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        39,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        39,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        40,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        41,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        39,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        40,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        41,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        42,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        43,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        41,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        42,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        43,
+        57
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        44,
+        57
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        40,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        41,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        42,
+        58
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        43,
+        58
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        41,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        42,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Visible grass between the fallen tower struts; its foreground beams now cover actors here."
+    },
+    {
+      "tile": [
+        43,
+        59
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        44,
+        58
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        45,
+        58
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        44,
+        59
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        45,
+        59
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    },
+    {
+      "tile": [
+        44,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: low tower braces obstruct the standing body; keep the surrounding grass open."
+    }
+  ],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/318.json."
+}

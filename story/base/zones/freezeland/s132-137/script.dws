@@ -1,0 +1,115 @@
+// Readable form of script 132 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 132 {
+    npc frigimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        remove_condition(32);
+        remove_condition(64);
+        face(frigimon, tamer);
+        face(partner, tamer);
+        animate(tamer, 24);
+        wait(15);
+        say(tamer, text("s132.sec51.u0"));
+        animate(tamer, anim.idle);
+        entity_set_rotation(tamer, 1050);
+        wait(1s);
+        entity_set_rotation(tamer, 1561);
+        wait(1s);
+        face(tamer, frigimon);
+        animate(tamer, 15);
+        wait(15);
+        say(tamer, text("s132.sec51.u1"));
+        animate(tamer, anim.idle);
+        entity_set_rotation(tamer, 1050);
+        wait(5);
+        face(tamer, frigimon);
+        say(frigimon, text("s132.sec51.u2"));
+        entity_set_rotation(tamer, 25);
+        wait(5);
+        face(tamer, partner);
+        say(tamer, text("s132.sec51.u3"));
+        say(frigimon, text("s132.sec51.u4"));
+        face(tamer, frigimon);
+        animate(tamer, 25);
+        wait(15);
+        say(tamer, text("s132.sec51.u5"));
+        animate(tamer, anim.idle);
+        wait(30);
+        face(tamer, partner);
+        animate(tamer, 7);
+        wait(15);
+        say(tamer, text("s132.sec51.u6"));
+        animate(tamer, anim.idle);
+        store_digimon_type(partner_type);
+        say(frigimon, text("s132.sec51.u7"));
+        face(tamer, frigimon);
+        wait(1s);
+        face(tamer, partner);
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s132.sec51.u8"));
+        animate(tamer, anim.idle);
+        face(tamer, frigimon);
+        say(tamer, text("s132.sec51.u9"));
+        say(frigimon, text("s132.sec51.u10"));
+        say(tamer, text("s132.sec51.u11"));
+        run(tamer, 93, -1700);
+        wait(1s);
+        run(partner, 93, -1700);
+        wait(1s);
+        face(frigimon, tamer);
+        await tamer;
+        await partner;
+        say(frigimon, text("s132.sec51.u12"));
+        digivolve_scene_seen = true;
+        warp_to(94, 2, 255);
+    }
+
+    on talk(frigimon) replace {    // section 5
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+        } else if (partner_type in [19, 32, 51, 1, 2]) {
+        } else if (partner_type in [15, 16, 29, 30, 43]) {
+        } else if (partner_type != 44 && partner_type != 21) {
+            say(tamer, text("s132.sec5.u0"));
+            say(frigimon, text("s132.sec5.u1"));
+            say(tamer, text("s132.sec5.u2"));
+            face(frigimon, partner);
+            say(frigimon, text("s132.sec5.u3"));
+            face(frigimon, tamer);
+            say(tamer, text("s132.sec5.u4"));
+            say(frigimon, text("s132.sec5.u5"));
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s132.sec5.u6"));
+            animate(tamer, anim.idle);
+            animate(frigimon, 11);
+            wait(5);
+            say(frigimon, text("s132.sec5.u7"));
+            say(tamer, text("s132.sec5.u8"));
+            say(frigimon, text("s132.sec5.u9"));
+            run(frigimon, -540, -336);
+            await frigimon;
+            walk_away(frigimon, 93, -1700, looks: 3);
+            join_city(frigimon, species("Frigimon"), 8, 11, text("s132.sec5.u10"), prosperity: 2);
+            return;
+        }
+        say(frigimon, text("s132.sec5.u11"));
+        animate(tamer, 15);
+        wait(15);
+        say(tamer, text("s132.sec5.u12"));
+        animate(tamer, anim.idle);
+    }
+}

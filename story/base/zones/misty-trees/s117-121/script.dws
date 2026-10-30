@@ -1,0 +1,118 @@
+// Readable form of script 117 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 117 {
+    npc fugamon0 = 5;
+    npc fugamon1 = 6;
+    npc fugamon2 = 7;
+    npc goblimon3 = 8;
+    npc goblimon4 = 9;
+    npc fugamon5 = 10;
+    npc tsukaimon6 = 11;
+    npc tsukaimon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 12, 51, 52;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 35, 19);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 16) {
+            spawn_item(item("Digimushrm"), 55, 50);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Digimushrm"), 47, 4);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Digipine"), 40, 45);
+        }
+        misty_trees_visited = true;
+    }
+
+    on talk(fugamon0) replace {    // section 5
+        say(fugamon0, text("s117.sec5.u0"));
+        battle();
+        recruit(species("Fugamon"));
+    }
+
+    on talk(fugamon1) replace {    // section 6
+        say(fugamon1, text("s117.sec6.u0"));
+        battle();
+        recruit(species("Fugamon"));
+    }
+
+    on talk(fugamon2) replace {    // section 7
+        say(fugamon2, text("s117.sec7.u0"));
+        battle();
+        recruit(species("Fugamon"));
+    }
+
+    on talk(goblimon3) replace {    // section 8
+        say(goblimon3, text("s117.sec8.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon4) replace {    // section 9
+        say(goblimon4, text("s117.sec9.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(fugamon5) replace {    // section 10
+        say(fugamon5, text("s117.sec10.u0"));
+        battle();
+        recruit(species("Fugamon"));
+    }
+
+    on talk(tsukaimon6) replace {    // section 11
+        say(tsukaimon6, text("s117.sec11.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon7) replace {    // section 12
+        say(tsukaimon7, text("s117.sec12.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1700, -1800);
+        if (misty_trees_fog_spell_cast || cherrymon_met) {
+            warp_to(117, 1, 255);
+        }
+        store_random(random_roll, 99);
+        if (random_roll < 69) {
+            warp_to(117, 1, 255);
+            goto sec52;
+        }
+        warp_to(118, 1, 255);
+        goto sec52;
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2600, 4000);
+        if (misty_trees_fog_spell_cast || cherrymon_met) {
+            warp_to(119, 1, 255);
+        }
+        misty_trees_maze_steps += 1;
+        if (misty_trees_maze_steps == 10) {
+            misty_trees_maze_steps = 0;
+            warp_to(119, 1, 255);
+        }
+        store_random(random_roll, 99);
+        if (random_roll < 69) {
+            warp_to(117, 1, 255);
+        } else {
+            warp_to(121, 2, 255);
+        }
+        end_script();
+    }
+}

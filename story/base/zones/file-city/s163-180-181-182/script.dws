@@ -1,0 +1,457 @@
+// Readable form of script 163 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 163 {
+    npc bakemon = 5;
+    npc shellmon = 6;
+    npc betamon = 7;
+    npc kunemon = 8;
+    npc tsunomon = 9;
+    npc elecmon = 10;
+    npc megadramon = 11;
+    npc ogremon = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 12, 81, 82, 51, 53, 54, 55, 56, 57, 52;
+
+    on enter replace {    // section 254
+        store_date(date_year);
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Betamon"))) {
+                set_rect_impassable(0, 47, 48, 7, 8);
+                set_obj_visibility(0, 0);
+                set_obj_visibility(1, 0);
+                set_obj_visibility(2, 0);
+                set_obj_visibility(3, 0);
+                set_obj_visibility(4, 0);
+                set_obj_visibility(5, 0);
+                set_obj_visibility(6, 0);
+                set_obj_visibility(65, 0);
+                set_obj_visibility(66, 0);
+            }
+        }
+        if (engine.game_beaten) {
+            set_rect_impassable(0, 47, 48, 7, 8);
+            set_obj_visibility(0, 0);
+            set_obj_visibility(1, 0);
+            set_obj_visibility(2, 0);
+            set_obj_visibility(3, 0);
+            set_obj_visibility(4, 0);
+            set_obj_visibility(5, 0);
+            set_obj_visibility(6, 0);
+            set_obj_visibility(7, 0);
+            set_obj_visibility(8, 0);
+            set_obj_visibility(9, 0);
+            set_obj_visibility(10, 0);
+            set_obj_visibility(11, 0);
+            set_obj_visibility(12, 0);
+            set_obj_visibility(65, 0);
+            set_obj_visibility(66, 1);
+            set_obj_visibility(67, 0);
+        }
+        if (is_recruited(species("Shellmon"))) {
+            set_rect_impassable(0, 71, 50, 1, 9);
+            set_obj_visibility(13, 0);
+            set_obj_visibility(14, 0);
+            set_obj_visibility(15, 0);
+            set_obj_visibility(16, 0);
+            set_obj_visibility(17, 0);
+            set_obj_visibility(18, 0);
+            set_obj_visibility(19, 0);
+            set_obj_visibility(20, 0);
+            set_obj_visibility(21, 0);
+            set_obj_visibility(22, 0);
+            set_obj_visibility(23, 0);
+        }
+        if (date_hour < 7 || date_hour >= 19) {
+            if (is_recruited(species("Elecmon")) && is_recruited(species("Shellmon"))) {
+                set_obj_visibility(68, 0);
+                set_obj_visibility(69, 0);
+                set_obj_visibility(70, 0);
+                set_obj_visibility(71, 0);
+                set_obj_visibility(72, 0);
+                set_obj_visibility(73, 0);
+            }
+        }
+        if (is_recruited(species("Kunemon"))) {
+            set_obj_visibility(24, 1);
+            set_obj_visibility(25, 1);
+        } else {
+            set_rect_impassable(0, 79, 38, 2, 4);
+            set_rect_impassable(0, 80, 42, 2, 8);
+        }
+        if (!is_recruited(species("Centarumon"))) {
+        } else if (date_hour < 7 || date_hour >= 19) {
+            if (is_recruited(species("Elecmon"))) {
+                set_obj_visibility(49, 0);
+                set_obj_visibility(50, 0);
+            }
+        }
+        if (is_recruited(species("Elecmon"))) {
+            set_obj_visibility(53, 0);
+            set_obj_visibility(54, 0);
+            set_obj_visibility(55, 0);
+            set_obj_visibility(56, 0);
+        }
+        if (date_hour < 7 || date_hour >= 19) {
+            if (is_recruited(species("Elecmon"))) {
+                set_obj_visibility(57, 0);
+                set_obj_visibility(58, 0);
+                set_obj_visibility(59, 0);
+                set_obj_visibility(60, 0);
+            }
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (date_hour < 7 || date_hour >= 19) {
+                if (is_recruited(species("Elecmon"))) {
+                    set_obj_visibility(61, 0);
+                    set_obj_visibility(62, 0);
+                    set_obj_visibility(63, 0);
+                    set_obj_visibility(64, 0);
+                }
+            }
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 2) {
+            set_obj_visibility(108, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 3) {
+            set_obj_visibility(109, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 4) {
+            set_obj_visibility(111, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 5) {
+            set_obj_visibility(143, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 6) {
+            set_obj_visibility(139, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 7) {
+            set_obj_visibility(108, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 8) {
+            set_obj_visibility(140, 1);
+        }
+        if (!is_recruited(species("Coelamon")) && city_layout == 9) {
+            set_obj_visibility(138, 1);
+        }
+        curling_opponent = 255;
+        unless (is_recruited(species("Betamon"))) return;
+        if (!is_recruited(species("Patamon")) && !is_recruited(species("Biyomon")) && !is_recruited(species("Unimon")) && !is_recruited(species("Monochromon"))) {
+            entity_move_to(betamon, -1232, 2903, 10, 0);
+            wait(15);
+            entity_set_rotation(betamon, 3664);
+            wait(5);
+        }
+    }
+
+    on talk(bakemon) replace {    // section 5
+        city_resident_met.bakemon = true;
+        say(bakemon, text("s163.sec5.u0"));
+        say(tamer, text("s163.sec5.u1"));
+        store_digimon_type(partner_type);
+        if (partner_type == 37) {
+            face(tamer, partner);
+            wait(5);
+            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+            wait(10);
+            face(tamer, partner);
+            wait(5);
+            say(tamer, text("s163.sec5.u2"));
+        }
+    }
+
+    on talk(shellmon) replace {    // section 6
+        if (!shellmon_newspaper_started) {
+            shellmon_newspaper_started = true;
+            say(shellmon, text("s163.sec6.u0"));
+            say(shellmon, text("s163.sec6.u1"));
+            say(shellmon, text("s163.sec6.u2"));
+            return;
+        }
+        say(shellmon, text("s163.sec6.u3"));
+    }
+
+    on talk(betamon) replace {    // section 7
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            say(betamon, text("s163.sec7.u0"));
+            return;
+        }
+        if (is_recruited(species("Betamon")) && !betamon_shop_met.opened && !is_recruited(species("Coelamon"))) {
+            betamon_shop_met.opened = true;
+            say(betamon, text("s163.sec7.u1"));
+            return;
+        }
+        if (is_recruited(species("Betamon")) && is_recruited(species("Coelamon")) && !betamon_shop_met.coelamon_joined) {
+            betamon_shop_met.coelamon_joined = true;
+            say(betamon, text("s163.sec7.u2"));
+            say(narrator, text("s163.sec7.u3"));
+            return;
+        }
+        if (is_recruited(species("Betamon")) && is_recruited(species("Coelamon"))) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.meat = true;
+            engine.picker_mode = false;
+            engine.arg = 7;
+            call_routine(routine("shop"));
+            shop_stock.sm_recovery = false;
+            shop_stock.med_recovery = false;
+            shop_stock.mp_floppy = false;
+            shop_stock.various = false;
+            shop_stock.auto_pilot = false;
+            shop_stock.meat = false;
+            return;
+        }
+        shop_stock.sm_recovery = true;
+        shop_stock.mp_floppy = true;
+        shop_stock.meat = true;
+        engine.picker_mode = false;
+        engine.arg = 7;
+        call_routine(routine("shop"));
+        shop_stock.sm_recovery = false;
+        shop_stock.mp_floppy = false;
+        shop_stock.meat = false;
+    }
+
+    on talk(kunemon) replace {    // section 8
+        if (!city_resident_met.kunemon) {
+            city_resident_met.kunemon = true;
+            say(kunemon, text("s163.sec8.u0"));
+            return;
+        }
+        if (engine.prosperity <= 30) {
+            say(kunemon, text("s163.sec8.u1"));
+            say(kunemon, text("s163.sec8.u2"));
+            return;
+        }
+        match (p37, clamp) {
+            0 => {
+                say(kunemon, text("s163.sec8.u3"));
+                p37 += 1;
+            }
+            1 => {
+                say(kunemon, text("s163.sec8.u4"));
+                p37 += 1;
+            }
+            2 => {
+                say(kunemon, text("s163.sec8.u5"));
+            }
+            3 => {
+                say(kunemon, text("s163.sec8.u6"));
+            }
+            4 => {
+                say(kunemon, text("s163.sec8.u7"));
+            }
+            5 => {
+                say(kunemon, text("s163.sec8.u8"));
+            }
+            6 => {
+                say(kunemon, text("s163.sec8.u9"));
+            }
+            7 => {
+                say(kunemon, text("s163.sec8.u10"));
+            }
+        }
+    }
+
+    on talk(tsunomon) replace {    // section 9
+        if (engine.prosperity >= 20 && eastern_bridge_seen) {
+            say(tsunomon, text("s163.sec9.u0"));
+            choice(open) {
+                text("s163.sec9.m0.o0") => {
+                    if (engine.prosperity >= 25) {
+                        say(tsunomon, text("s163.sec9.u4"));
+                        return;
+                    }
+                    say(tsunomon, text("s163.sec9.u5"));
+                    return;
+                }
+                text("s163.sec9.m0.o1") => {
+                    say(tsunomon, text("s163.sec9.u6"));
+                    return;
+                }
+                cancel => {}
+            }
+        }
+        if (eastern_bridge_seen) {
+            say(tsunomon, text("s163.sec9.u1"));
+            return;
+        }
+        if (engine.prosperity >= 2 && !eastern_bridge_seen) {
+            say(tsunomon, text("s163.sec9.u2"));
+            return;
+        }
+        say(tsunomon, text("s163.sec9.u3"));
+    }
+
+    on talk(elecmon) replace {    // section 10
+        if (!city_resident_met.elecmon) {
+            city_resident_met.elecmon = true;
+            say(elecmon, text("s163.sec10.u0"));
+            say(elecmon, text("s163.sec10.u1"));
+            return;
+        }
+        say(elecmon, text("s163.sec10.u2"));
+        say(elecmon, text("s163.sec10.u3"));
+    }
+
+    on talk(megadramon) replace {    // section 11
+        say(megadramon, text("s163.sec11.u0"));
+    }
+
+    on talk(ogremon) replace {    // section 12
+        say(ogremon, text("s163.sec12.u0"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 1024);
+        sound(0, 0);
+        wait(5);
+        set_textbox_origin(-628, 0, 2226);
+        if (is_recruited(species("Coelamon")) && !betamon_shop_met.opened && !is_recruited(species("Betamon"))) {
+            betamon_shop_met.opened = true;
+            say(entity(203), text("s163.sec81.u0"));
+            return;
+        }
+        if (is_recruited(species("Betamon")) && !betamon_shop_met.opened && !is_recruited(species("Coelamon"))) {
+            betamon_shop_met.opened = true;
+            say(entity(202), text("s163.sec81.u1"));
+            sound(0, 1);
+            return;
+        }
+        if (is_recruited(species("Betamon")) && is_recruited(species("Coelamon")) && !betamon_shop_met.coelamon_joined) {
+            betamon_shop_met.coelamon_joined = true;
+            say(entity(202), text("s163.sec81.u2"));
+            say(narrator, text("s163.sec81.u3"));
+            sound(0, 1);
+            return;
+        }
+        if (is_recruited(species("Betamon")) && is_recruited(species("Coelamon"))) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.meat = true;
+            engine.picker_mode = false;
+            engine.arg = 255;
+            call_routine(routine("shop"));
+            shop_stock.sm_recovery = false;
+            shop_stock.med_recovery = false;
+            shop_stock.mp_floppy = false;
+            shop_stock.various = false;
+            shop_stock.auto_pilot = false;
+            shop_stock.meat = false;
+            return;
+        }
+        shop_stock.sm_recovery = true;
+        shop_stock.mp_floppy = true;
+        shop_stock.meat = true;
+        engine.picker_mode = false;
+        if (is_recruited(species("Coelamon"))) {
+            engine.arg = 255;
+        } else {
+            engine.arg = 7;
+        }
+        call_routine(routine("shop"));
+        shop_stock.sm_recovery = false;
+        shop_stock.mp_floppy = false;
+        shop_stock.meat = false;
+    }
+
+    on use(2) replace {    // section 82
+        if (is_recruited(species("Shellmon"))) {
+            jump_to_file(208, 82);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -3000, 492);
+        warp_to(109, 2, 255);
+    }
+
+    on step(2) replace {    // section 53
+        unless (is_recruited(species("Kunemon"))) return;
+        if (eastern_bridge_seen) {
+            walk(tamer, 3500, 952);
+            warp_to(9, 0, 255);
+        } else {
+            walk(tamer, 3500, 952);
+            warp_to(10, 0, 255);
+        }
+    }
+
+    on step(3) replace {    // section 54
+        walk(tamer, -1464, 1954);
+        warp_to(216, 0, 255);
+    }
+
+    on step(4) replace {    // section 55
+        walk(tamer, 1853, 1853);
+        if (is_recruited(species("Giromon"))) {
+            warp_to(215, 0, 255);
+        }
+        warp_to(214, 0, 255);
+    }
+
+    on step(5) replace {    // section 56
+        walk(tamer, -1291, -1863);
+        warp_to(213, 0, 255);
+    }
+
+    on step(6) replace {    // section 57
+        walk(tamer, 1481, -3326);
+        if (engine.game_beaten) {
+            warp_to(223, 1, 255);
+            return;
+        }
+        warp_to(208, 1, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 0, 5000);
+        if (!is_recruited(species("Agumon"))) {
+            warp_to(204, 0, 255);
+        }
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 0, 255);
+                }
+                warp_to(168, 0, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 0, 255);
+            }
+            warp_to(171, 0, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 0, 255);
+            }
+            warp_to(174, 0, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 0, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 0, 255);
+        }
+        warp_to(177, 0, 255);
+    }
+}

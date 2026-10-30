@@ -1,0 +1,17 @@
+{
+  "id": 31,
+  "name": "Reverse Prog",
+  "element": "mech",
+  "power": 256,
+  "mpCost": 99,
+  "distance": 490000,
+  "range": 2,
+  "accuracy": 100,
+  "status": 4,
+  "statusChance": 12,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [32, 24, 15]
+}

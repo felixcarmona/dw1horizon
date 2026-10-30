@@ -1,0 +1,17 @@
+{
+  "id": 15,
+  "name": "Hurricane",
+  "element": "air",
+  "power": 366,
+  "mpCost": 85,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 73,
+  "status": 2,
+  "statusChance": 13,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [12, 8, 0]
+}

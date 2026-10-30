@@ -1,0 +1,33 @@
+{
+  "id": 152,
+  "name": "Kunemon",
+  "level": "rookie",
+  "attribute": "virus",
+  "specialties": ["nature", null, "air"],
+  "techniques": ["Static Elect", "Electric Cloud", "Poison Claw", "Danger Sting", "Electric Thread"],
+  "drop": {"item": "MP Chip", "percent": 100},
+  "effects_like": 32,
+  "model": {"name": "EKUN", "bones": 28, "radius": 120, "height": 210},
+  "voice": 28,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

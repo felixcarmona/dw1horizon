@@ -1,0 +1,677 @@
+{
+ "s084.sec5.u0": [
+  [
+   "Ahhh, quina escalforeta!"
+  ]
+ ],
+ "s084.sec6.u0": [
+  [
+   "Que vols passar per aquí? No",
+   "em facis riure!"
+  ]
+ ],
+ "s084.sec7.u0": [
+  [
+   "Pobret... Fua, ha, ha, ha, ha!"
+  ]
+ ],
+ "s084.sec8.u0": [
+  [
+   "Plourà sang!"
+  ]
+ ],
+ "s084.sec81.u0": [
+  [
+   "A partir d'aquí: terra gelada.",
+   "Prohibit el pas a qui no sigui",
+   "{color 3}resistent al fred{color 1}."
+  ]
+ ],
+ "s085.sec5.u0": [
+  [
+   "Xaval, et menjaré senceeer!"
+  ]
+ ],
+ "s085.sec6.u0": [
+  [
+   "Hora d'armar escàndol!"
+  ]
+ ],
+ "s085.sec7.u0": [
+  [
+   "Maleeix la teva pròpia feblesa!"
+  ]
+ ],
+ "s085.sec8.u0": [
+  [
+   "Vine, doncs. Et faré trossos!"
+  ]
+ ],
+ "s086.sec5.u0": [
+  [
+   "Lluita amb miii!!"
+  ]
+ ],
+ "s086.sec6.u0": [
+  [
+   "Maleït sigaaai!"
+  ]
+ ],
+ "s086.sec7.u0": [
+  [
+   "Vols que et deixi morat?"
+  ]
+ ],
+ "s086.sec8.u0": [
+  [
+   "Et partiré com una branqueta!"
+  ]
+ ],
+ "s087.sec5.u0": [
+  [
+   "Les teves coses ara són",
+   "meves!"
+  ]
+ ],
+ "s087.sec6.u0": [
+  [
+   "Je, je, ho sento molt!"
+  ]
+ ],
+ "s087.sec7.u0": [
+  [
+   "És impossible que puguis amb",
+   "algú com jo!"
+  ]
+ ],
+ "s087.sec8.u0": [
+  [
+   "Vés a l'infern!"
+  ]
+ ],
+ "s087.sec9.u0": [
+  [
+   "Je. No em facis riure."
+  ]
+ ],
+ "s087.sec10.u0": [
+  [
+   "No puc deixar que segueixis",
+   "endavant."
+  ]
+ ],
+ "s088.sec51.u0": [
+  [
+   "Un misteriós poder blanc",
+   "bloqueja el pas!"
+  ]
+ ],
+ "s088.sec51.u1": [
+  [
+   "Q-què passa? Les cames se'm",
+   "mouen soles..."
+  ]
+ ],
+ "s089.sec5.u0": [
+  [
+   "Deixa aquí les teves coses de",
+   "valor, col·lega."
+  ]
+ ],
+ "s089.sec6.u0": [
+  [
+   "Et deixaré congelat!"
+  ]
+ ],
+ "s089.sec7.u0": [
+  [
+   "D'aquí no te'n vas, ni a",
+   "l'esquerra NI a la dreta."
+  ]
+ ],
+ "s089.sec8.u0": [
+  [
+   "Et tancaré en gel!"
+  ]
+ ],
+ "s089.sec9.u0": [
+  [
+   "Deixa que t'ensenyi un infern",
+   "gelat..."
+  ]
+ ],
+ "s089.sec10.u0": [
+  [
+   "Vols morir congelat?"
+  ]
+ ],
+ "s089.sec81.u0": [
+  [
+   "Oest: Bosc boirós. Est: Platja",
+   "Iceberg."
+  ]
+ ],
+ "s090.sec5.u0": [
+  [
+   "Has vingut des de molt lluny,",
+   "eh?"
+  ]
+ ],
+ "s090.sec6.u0": [
+  [
+   "Vols baralla? Per mi, encantat!"
+  ]
+ ],
+ "s090.sec7.u0": [
+  [
+   "Hmpf. Sembles molt feble, la",
+   "veritat."
+  ]
+ ],
+ "s090.sec8.u0": [
+  [
+   "Sóc perfecte."
+  ]
+ ],
+ "s091.sec5.m0.o0": "Pot ser que tinguis raó",
+ "s091.sec5.m0.o1": "No siguis mal perdedor",
+ "s091.sec5.m1.o0": "D'acord, accepto",
+ "s091.sec5.m1.o1": "Quina mandra",
+ "s091.sec5.u0": [
+  [
+   "Qui vulgui passar per aquí",
+   "haurà de barallar abans amb mi!"
+  ]
+ ],
+ "s091.sec5.u1": [
+  [
+   "Tsk, he abaixat la guàrdia.",
+   "Però dos contra un... no és",
+   "una mica deslleial?"
+  ]
+ ],
+ "s091.sec5.u2": [
+  [
+   "Escolta: un contra un, mai",
+   "perdo! Et repto a un duel un",
+   "contra un! Torna aquí demà a",
+   "les 4 de la tarda. Aquesta"
+  ],
+  [
+   "vegada només barallen els",
+   "Digimon."
+  ]
+ ],
+ "s091.sec5.u3": [
+  [
+   "És una promesa. Fins demà!"
+  ]
+ ],
+ "s091.sec5.u4": [
+  [
+   "Has vingut i no has fugit. Gens",
+   "malament. Avui toca un contra",
+   "un, com vam prometre!"
+  ]
+ ],
+ "s091.sec5.u5": [
+  [
+   "No t'has presentat a l'hora",
+   "acordada, quin paio! Però així",
+   "m'he pogut recuperar bé, així",
+   "que t'ho perdono. Allà vaig!"
+  ]
+ ],
+ "s091.sec5.u6": [
+  [
+   "Mmm. Jo només miraré.",
+   "Endavant."
+  ]
+ ],
+ "s091.sec5.u7": [
+  [
+   "Compto amb tu, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s091.sec5.u8": [
+  [
+   "Ets... fort! Qui dimonis ets",
+   "tu?"
+  ]
+ ],
+ "s091.sec5.u9": [
+  [
+   "Estem de viatge per a salvar",
+   "aquesta illa del perill."
+  ]
+ ],
+ "s091.sec5.u10": [
+  [
+   "Què has dit?"
+  ]
+ ],
+ "s091.sec5.u11": [
+  [
+   "{color 6}{player}{color 1} s'ha esforçat molt",
+   "per convèncer-lo!"
+  ]
+ ],
+ "s091.sec5.u12": [
+  [
+   "Està bé. T'ajudaré. Encara",
+   "que no puc decidir res fins a",
+   "veure aquesta ciutat vostra."
+  ]
+ ],
+ "s091.sec5.u13": "Garurumon s'ha unit a la ciutat!",
+ "s091.sec6.u0": [
+  [
+   "Et guanyarééé!"
+  ]
+ ],
+ "s091.sec7.u0": [
+  [
+   "Ni de broma perdo contra TU!"
+  ]
+ ],
+ "s091.sec8.u0": [
+  [
+   "Ke, je, je, je! Mala sort."
+  ]
+ ],
+ "s091.sec9.u0": [
+  [
+   "Eh, passaràs de llarg sense",
+   "més?"
+  ]
+ ],
+ "s092.sec5.u0": [
+  [
+   "Vaig amb tot!"
+  ]
+ ],
+ "s092.sec6.u0": [
+  [
+   "Això sí que em fa sortir de",
+   "polleguera!"
+  ]
+ ],
+ "s092.sec7.u0": [
+  [
+   "Ni se t'ocorri dir «fred»!"
+  ]
+ ],
+ "s092.sec8.u0": [
+  [
+   "No facis cap bogeria!"
+  ]
+ ],
+ "s127.sec5.u0": [
+  [
+   "T'importa si et dono una",
+   "pallissa?"
+  ]
+ ],
+ "s127.sec6.u0": [
+  [
+   "No et passis de llest!"
+  ]
+ ],
+ "s127.sec7.u0": [
+  [
+   "No et donis tants aires,",
+   "miserable!"
+  ]
+ ],
+ "s127.sec8.u0": [
+  [
+   "No serà tan fàcil."
+  ]
+ ],
+ "s128.sec5.u0": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec5.u1": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec5.u2": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec5.u3": [
+  [
+   "Home, has tornat a veure'm!"
+  ]
+ ],
+ "s128.sec5.u4": [
+  [
+   "Molt bones, sóc Mojyamon!"
+  ]
+ ],
+ "s128.sec5.u5": "{color 6}{player}{color 1}, tot el que has fet per nosaltres m'ha arribat a l'ànima! Ja ho he decidit: me'n vaig a la ciutat. Cuida'm bé!",
+ "s128.sec5.u6": "Mojyamon s'ha unit a la ciutat!",
+ "s130.sec5.u0": [
+  [
+   "T'obriré el cap!"
+  ]
+ ],
+ "s130.sec7.u0": [
+  [
+   "Vés a l'infeeern."
+  ]
+ ],
+ "s130.sec81.m0.o0": "He vingut a ajudar",
+ "s130.sec81.m0.o1": "Encara no estic llest...",
+ "s130.sec81.m1.o0": "Val. T'ajudaré",
+ "s130.sec81.m1.o1": "Tinc altres coses a fer...",
+ "s130.sec81.u0": [
+  [
+   "Ah, ets tu."
+  ]
+ ],
+ "s130.sec81.u1": [
+  [
+   "Hi ha algú... aquí...?"
+  ]
+ ],
+ "s130.sec81.u2": [
+  [
+   "No pots veure!?"
+  ]
+ ],
+ "s130.sec81.u3": [
+  [
+   "Sóc Whamon. Normalment visc al",
+   "mar. No tinc ulls, però puc",
+   "percebre gairebé tot."
+  ]
+ ],
+ "s130.sec81.u4": [
+  [
+   "Sóc {color 6}{player}{color 1}, un humà.",
+   "I aquest és... Bé,",
+   "no el pots veure, però és..."
+  ],
+  [
+   "{digimon 103},",
+   "{color 10}{partner}{color 1}. El meu company."
+  ]
+ ],
+ "s130.sec81.u5": [
+  [
+   "Oh... Percebo un gran poder..."
+  ]
+ ],
+ "s130.sec81.u6": [
+  [
+   "Mmm... Vols escoltar la meva",
+   "història? No gaire lluny d'aquí",
+   "hi ha una cova vora el mar on",
+   "vaig a descansar. Però fa poc"
+  ],
+  [
+   "s'hi van instal·lar uns tipus",
+   "molt desagradables i em van fer",
+   "fora. En fugir, em va caure un",
+   "tresor molt valuós."
+  ]
+ ],
+ "s130.sec81.u7": [
+  [
+   "Tipus desagradables, eh? Això",
+   "és preocupant."
+  ]
+ ],
+ "s130.sec81.u8": [
+  [
+   "Et vull demanar un favor.",
+   "Ajuda'm, si us plau, a fer-los",
+   "fora i recuperar el meu tresor."
+  ]
+ ],
+ "s130.sec81.u9": [
+  [
+   "Ja veig..."
+  ]
+ ],
+ "s130.sec81.u10": [
+  [
+   "Doncs puja al meu llom, si us",
+   "plau."
+  ]
+ ],
+ "s130.sec81.u11": [
+  [
+   "Anem!"
+  ]
+ ],
+ "s132.sec5.u0": [
+  [
+   "Hola, hola! Ja he tornat."
+  ]
+ ],
+ "s132.sec5.u1": [
+  [
+   "Ets tu... Què ha passat amb el",
+   "Digimon que portaves abans?"
+  ]
+ ],
+ "s132.sec5.u2": [
+  [
+   "Què dius? És el mateix, el",
+   "mateix."
+  ]
+ ],
+ "s132.sec5.u3": [
+  [
+   "Eh? Ah... d-de debò? Ho",
+   "era...?"
+  ]
+ ],
+ "s132.sec5.u4": [
+  [
+   "He tornat a demanar-te un",
+   "favor. En poques paraules:",
+   "m'agradaria que vinguessis a la",
+   "ciutat."
+  ]
+ ],
+ "s132.sec5.u5": [
+  [
+   "Eh? Hi ha una cosa bona allí?",
+   "És divertit?"
+  ]
+ ],
+ "s132.sec5.u6": [
+  [
+   "Això... Pots obrir la botiga",
+   "que vulguis."
+  ]
+ ],
+ "s132.sec5.u7": [
+  [
+   "Quèèè? Una botiga? Sempre ho",
+   "he somiat! Ai, ai, hi aniré, hi",
+   "aniré!"
+  ]
+ ],
+ "s132.sec5.u8": [
+  [
+   "Ah, genial, genial. Doncs",
+   "anem-hi ara mateix."
+  ]
+ ],
+ "s132.sec5.u9": [
+  [
+   "Una botiga, una botiga!",
+   "Granissat! Gelat! Quines ganes!"
+  ]
+ ],
+ "s132.sec5.u10": "Frigimon s'ha unit a la ciutat!",
+ "s132.sec5.u11": [
+  [
+   "Eh, tu! Ja et vaig dir que",
+   "aquest Digimon no aguanta el",
+   "fred!"
+  ]
+ ],
+ "s132.sec5.u12": [
+  [
+   "Uf, ja tornaaaré!"
+  ]
+ ],
+ "s132.sec51.u0": [
+  [
+   "Q... què és aquest lloc...? Un",
+   "somni...?"
+  ]
+ ],
+ "s132.sec51.u1": [
+  [
+   "Hala! Qui ets tu!? On està",
+   "{color 10}{partner}{color 1}!? D-d-on està?"
+  ]
+ ],
+ "s132.sec51.u2": [
+  [
+   "Val, val, tranquil. Sóc",
+   "Frigimon, un Digimon del gel i",
+   "la neu. Aquesta és la meva",
+   "casa. Us havíeu desmaiat els"
+  ],
+  [
+   "dos en la neu. Us vaig recollir",
+   "i us he cuidat. Entès?"
+  ]
+ ],
+ "s132.sec51.u3": [
+  [
+   "Ah, {color 10}{partner}{color 1}, estàs bé!",
+   "Uf!"
+  ]
+ ],
+ "s132.sec51.u4": [
+  [
+   "Eh! M'estàs escoltant? Si no",
+   "us hagués cuidat, NO estaríeu",
+   "bé!"
+  ]
+ ],
+ "s132.sec51.u5": [
+  [
+   "Je, je, perdona, perdona.",
+   "Moltes gràcies."
+  ]
+ ],
+ "s132.sec51.u6": [
+  [
+   "Au, va, {color 10}{partner}{color 1}! Et vas",
+   "desplomar de cop i jo també em",
+   "vaig donar un cop al cap!"
+  ]
+ ],
+ "s132.sec51.u7": [
+  [
+   "Sent, no saps que",
+   "{digimon 103}",
+   "no aguanta el fred? Has fet"
+  ],
+  [
+   "una bogeria. El que ha de",
+   "demanar perdó ets tu."
+  ]
+ ],
+ "s132.sec51.u8": [
+  [
+   "No ho sabia... Perdona,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s132.sec51.u9": [
+  [
+   "...Gràcies per tot, Frigimon.",
+   "I, això, ja que t'estic donant",
+   "la llauna, hi ha alguna cosa",
+   "que vull demanar-te..."
+  ]
+ ],
+ "s132.sec51.u10": [
+  [
+   "Au, va! I què faràs si",
+   "{digimon 103}",
+   "es torna a desplomar?",
+   "Corre cap a casa!"
+  ]
+ ],
+ "s132.sec51.u11": [
+  [
+   "D-d'acord. Aniré a fer que",
+   "{color 10}{partner}{color 1} digievolucioni en",
+   "un altre Digimon."
+  ]
+ ],
+ "s132.sec51.u12": [
+  [
+   "??? Digievolucionar...?"
+  ]
+ ],
+ "s128.sec6.u0": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec6.u1": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec6.u2": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s128.sec6.u3": [
+  [
+   "Home, has tornat a veure'm!"
+  ]
+ ],
+ "s128.sec6.u4": [
+  [
+   "Molt bones, sóc Mojyamon!"
+  ]
+ ],
+ "s128.sec6.u5": "{color 6}{player}{color 1}, tot el que has fet per nosaltres m'ha arribat a l'ànima! Ja ho he decidit: me'n vaig a la ciutat. Cuida'm bé!",
+ "s128.sec6.u6": "Mojyamon s'ha unit a la ciutat!",
+ "s129.sec7.u0": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s129.sec7.u1": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s129.sec7.u2": [
+  [
+   "Caram, si és {color 6}{player}{color 1}!"
+  ]
+ ],
+ "s129.sec7.u3": [
+  [
+   "Home, has tornat a veure'm!"
+  ]
+ ],
+ "s129.sec7.u4": [
+  [
+   "Molt bones, sóc Mojyamon!"
+  ]
+ ],
+ "s129.sec7.u5": "{color 6}{player}{color 1}, tot el que has fet per nosaltres m'ha arribat a l'ànima! Ja ho he decidit: me'n vaig a la ciutat. Cuida'm bé!",
+ "s129.sec7.u6": "Mojyamon s'ha unit a la ciutat!"
+}

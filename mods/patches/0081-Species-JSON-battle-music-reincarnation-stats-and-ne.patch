@@ -1,0 +1,224 @@
+From c70a51137df3147619a6c1f35dab23f5d41d777a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 13 Oct 2026 20:19:52 +0000
+Subject: [PATCH] Species JSON: battle music, reincarnation stats and new-game
+ techniques as tables written from content/species
+
+SPECIES_BATTLE_MUSIC[180] (was ENEMY_MUSIC_MAPPING[48], types 67..111; rows 45..47 were never read) read by
+getSpeciesBattleMusic, which takes DIGI.DAT records' new battleMusic byte (0x52) for ids >= 180;
+REINCARNATION_STATS[4] and NEW_GAME_TECHNIQUES[2] replace the literals of initializeReincarnatedPartner and
+initializePartner. tools/balance.py build writes all three from the species files after linking.
+---
+ include/dw/species.h    |  6 ++++-
+ src/main/btl.c          | 32 ++++++++++++++---------
+ src/main/mod_species.c  | 15 +++++++++++
+ src/main/partner_impl.c | 58 ++++++++++++++++++++++++++++++-----------
+ 4 files changed, 82 insertions(+), 29 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 39ecca3..edefd8e 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -120,7 +120,8 @@ typedef struct {
+ 	uint8_t vballId;		/* 0x04E VBALL voice */
+ 	uint8_t vlallId;		/* 0x04F VLALL voice (partners) */
+ 	uint16_t flags;			/* 0x050 SPECIES_FLAG_* */
+-	uint16_t reserved52;
++	uint8_t battleMusic;		/* 0x052 battle track (font 0x21) as a wild enemy: SPECIES_BATTLE_MUSIC */
++	uint8_t reserved53;
+ 	SkeletonBone bones[SPECIES_MAX_BONES]; /* 0x054 para.boneCount used */
+ 	/* partner block (SPECIES_FLAG_PARTNER) */
+ 	RaiseData raise;		/* 0x0D4 */
+@@ -143,6 +144,7 @@ typedef struct {
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+ SPECIES_LAYOUT_CHECK(size, sizeof(SpeciesRecord) == SPECIES_RECORD_SIZE);
+ SPECIES_LAYOUT_CHECK(para, sizeof(DigimonPara) == 0x34);
++SPECIES_LAYOUT_CHECK(music, __builtin_offsetof(SpeciesRecord, battleMusic) == 0x52);
+ SPECIES_LAYOUT_CHECK(bones, __builtin_offsetof(SpeciesRecord, bones) == 0x54);
+ SPECIES_LAYOUT_CHECK(raise, __builtin_offsetof(SpeciesRecord, raise) == 0xD4);
+ SPECIES_LAYOUT_CHECK(evoReqs, __builtin_offsetof(SpeciesRecord, evoReqs) == 0xF0);
+@@ -207,6 +209,8 @@ SkeletonBone *getDigimonSkeleton(int32_t type);
+ /* the 4-letter model name (CHDAT\MMDn\NAME.MMD); empty for a model inside DIGI.DAT */
+ char *getDigimonModelName(int32_t type);
+ int32_t getDigimonVballId(int32_t type);
++/* the battle track (font 0x21) of a wild enemy of the type (SPECIES_BATTLE_MUSIC, the record for ids >= 180) */
++int32_t getSpeciesBattleMusic(int32_t type);
+ /* where the model and the texture of a type are: file name (or NULL for the
+  * CHDAT\MMDn\NAME.MMD path), first sector and size */
+ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *size);
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 0dbb066..4bcc71b 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -9,6 +9,7 @@
+ #include <dw/garbage.h>
+ #include <dw/graphics.h>
+ #include <dw/ids.h>
++#include <dw/species.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
+@@ -88,13 +89,22 @@ uint8_t FLEE_BUBBLE_SCALE[10] = {
+ 	0x6c, 0x68,
+ };
+ 
+-uint8_t ENEMY_MUSIC_MAPPING[48] = {
+-	0x02, 0x02, 0x02, 0x02, 0x02, 0x01, 0x02, 0x02,
+-	0x02, 0x01, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+-	0x02, 0x02, 0x01, 0x02, 0x02, 0x01, 0x01, 0x01,
+-	0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02,
+-	0x02, 0x01, 0x02, 0x02, 0x02, 0x01, 0x01, 0x01,
+-	0x02, 0x01, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00,
++/* MOD (species JSON): the battle track (font 0x21) of a wild enemy, by type; was ENEMY_MUSIC_MAPPING[48]
++ * (types 67..111; rows 45..47 were never read). Written from content/species/*.json "battle_music"
++ * after linking (tools/balance.py build); types >= 180 read their DIGI.DAT record. */
++uint8_t SPECIES_BATTLE_MUSIC[NUM_ORIGINAL_DIGIMON] = {
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x02, 0x02, 0x02, 0x02, 0x02, 0x01, 0x02, 0x02, 0x02, 0x01, 0x02, 0x02, 0x02,
++	0x02, 0x02, 0x02, 0x02, 0x02, 0x01, 0x02, 0x02, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x02, 0x02,
++	0x02, 0x02, 0x02, 0x02, 0x01, 0x02, 0x02, 0x02, 0x01, 0x01, 0x01, 0x02, 0x01, 0x02, 0x02, 0x02,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
++	0x01, 0x01, 0x01, 0x01,
+ };
+ 
+ uint8_t FLEE_CHANCES[12] = {
+@@ -346,12 +356,8 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 		if (IS_PREDEFINED_BATTLE == 1) {
+ 			playMusic(0x21, 0);
+ 		} else {
+-			if ((ENTITY_TABLE[entityId]->type >= 0x43) &&
+-			    (ENTITY_TABLE[entityId]->type < 0x70L)) {
+-				playMusic(0x21, ENEMY_MUSIC_MAPPING[ENTITY_TABLE[entityId]->type - 0x43]);
+-			} else {
+-				playMusic(0x21, 1);
+-			}
++			/* MOD (species JSON): was ENEMY_MUSIC_MAPPING for types 0x43..0x6F, else 1 */
++			playMusic(0x21, getSpeciesBattleMusic(ENTITY_TABLE[entityId]->type));
+ 		}
+ 	} else if (IS_PREDEFINED_BATTLE == 1) {
+ 		playMusic(0x21, 0);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 1111a2f..82fc8c8 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -394,6 +394,21 @@ int32_t getDigimonVballId(int32_t type)
+ 	return rec->vballId;
+ }
+ 
++extern uint8_t SPECIES_BATTLE_MUSIC[NUM_ORIGINAL_DIGIMON];
++
++int32_t getSpeciesBattleMusic(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return SPECIES_BATTLE_MUSIC[type];
++	}
++	if ((rec = getSpeciesRecord(type)) == NULL) {
++		return 1;
++	}
++	return rec->battleMusic;
++}
++
+ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *size)
+ {
+ 	SpeciesRecord *rec;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 07f20c0..9ff4295 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -277,6 +277,35 @@ SleepPattern SLEEP_PATTERN[8] = {
+ 	{0, 0, 0, 0, 8, 3},
+ };
+ 
++/*
++ * MOD (species JSON): the stats a Fresh species hatches with from the reincarnation egg, and the technique the
++ * new-game partner starts with; were literals in initializeReincarnatedPartner and initializePartner. Written from
++ * content/species/*.json ("reincarnation_stats", "new_game_technique") after linking (tools/balance.py build);
++ * unused rows have type -1.
++ */
++typedef struct {
++	int16_t type;
++	int16_t hp, mp, offense, defense, speed, brains;
++} ReincarnationStats;
++
++typedef struct {
++	int16_t type;
++	uint8_t technique;	/* learnMove id */
++	uint8_t animation;	/* 0x2E + its index in the species' techniques: moves[0] */
++} NewGameTechnique;
++
++ReincarnationStats REINCARNATION_STATS[4] = {
++	{ 1, 90, 110, 10, 11, 9, 10 },
++	{ 15, 120, 100, 16, 8, 8, 6 },
++	{ 29, 100, 140, 12, 6, 6, 8 },
++	{ 43, 100, 120, 8, 8, 8, 8 },
++};
++
++NewGameTechnique NEW_GAME_TECHNIQUES[2] = {
++	{ 3, 2, 0x2e },
++	{ 0x11, 0x2b, 0x30 },
++};
++
+ int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	10, 10, 10, 10, 15, 10, 10, 15, 10, 15, 10, 15, 10, 10, 10, 10, 10,
+ 	10, 15, 10, 10, 15, 10, 15, 10, 25, 10, 10, 10, 10, 10, 10, 10, 10,
+@@ -568,13 +597,11 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ #endif
+ 
+ 	PARTNER_ENTITY.lives = 3;
+-	if (type == 3) {
+-		PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = 0x2e;
+-		learnMove(2);
+-	}
+-	if (type == 0x11) {
+-		PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = 0x30;
+-		learnMove(0x2b);
++	for (i = 0; i < 2; i++) {	/* MOD (species JSON): was Agumon and Gabumon by literal */
++		if (NEW_GAME_TECHNIQUES[i].type == type) {
++			PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = NEW_GAME_TECHNIQUES[i].animation;
++			learnMove(NEW_GAME_TECHNIQUES[i].technique);
++		}
+ 	}
+ 
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[1] = 0xff;
+@@ -831,6 +858,8 @@ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+ 				    int32_t posZ, int32_t rotX, int32_t rotY,
+ 				    int32_t rotZ)
+ {
++	int32_t i;
++
+ 	removeObject((int16_t)type, 1);
+ 	applyMMD(type, 3,
+ 		 (EvoModelData *)&DOOA_REINCARNATION_SEQ.modelData);
+@@ -845,14 +874,13 @@ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+ 	STOP_DISTANCE_TIMER = 0;
+ 	PARTNER_ENTITY.digimonEntity.stats.current.vabId = 4;
+ 
+-	if (type == 1)
+-		setReincarnateStats(90, 110, 10, 11, 9, 10);
+-	if (type == 15)
+-		setReincarnateStats(120, 100, 16, 8, 8, 6);
+-	if (type == 29)
+-		setReincarnateStats(100, 140, 12, 6, 6, 8);
+-	if (type == 43)
+-		setReincarnateStats(100, 120, 8, 8, 8, 8);
++	for (i = 0; i < 4; i++) {	/* MOD (species JSON): was four literal rows */
++		if (REINCARNATION_STATS[i].type == type) {
++			setReincarnateStats(REINCARNATION_STATS[i].hp, REINCARNATION_STATS[i].mp,
++					    REINCARNATION_STATS[i].offense, REINCARNATION_STATS[i].defense,
++					    REINCARNATION_STATS[i].speed, REINCARNATION_STATS[i].brains);
++		}
++	}
+ 
+ 	PARTNER_PARA.condition = 0;
+ 	setSleepTimes(&PARTNER_PARA, type);
+-- 
+2.53.0
+

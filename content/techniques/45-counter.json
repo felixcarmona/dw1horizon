@@ -1,0 +1,17 @@
+{
+  "id": 45,
+  "name": "Counter",
+  "element": "battle",
+  "power": 285,
+  "mpCost": 55,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 100,
+  "status": 2,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [20, 11, 8]
+}

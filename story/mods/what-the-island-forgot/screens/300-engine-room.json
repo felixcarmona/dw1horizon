@@ -1,0 +1,17 @@
+{
+  "id": 300,
+  "file": "ENGN01",
+  "tims8": 3,
+  "tims4": 1,
+  "sound_bank": 6,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": "Engine Room",
+  "concave": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

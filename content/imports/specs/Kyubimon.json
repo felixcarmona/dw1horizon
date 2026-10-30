@@ -1,0 +1,185 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M374KYBI",
+ "type": 409,
+ "name": "Kyubimon",
+ "source": {
+  "type": 22,
+  "mmd": "extracted/CHDAT/MMD0/GARU.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 2,
+  "3": 12,
+  "4": 13,
+  "6": 6,
+  "7": 8,
+  "8": 9,
+  "9": 3,
+  "12": 5,
+  "15": 21,
+  "17": 24,
+  "18": 25,
+  "19": 15,
+  "21": 17,
+  "26": 16
+ },
+ "hips": [
+  1,
+  1,
+  1.292
+ ],
+ "root_scale": 1.292,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x39": {
+   "anim": "anim_34",
+   "start": 24,
+   "end": 134,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 221
+  },
+  "0x2e": {
+   "anim": "anim_28",
+   "start": 28,
+   "end": 75,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 221
+  },
+  "0x2f": {
+   "anim": "anim_13",
+   "start": 1,
+   "end": 85,
+   "speed": 1.37,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 221
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x32",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "meshfix": {
+  "kappa": 0.3,
+  "kmove": 0.3,
+  "quad_angle": 40.0
+ },
+ "root_slots": {
+  "0x02": 0.67,
+  "0x03": 0.67,
+  "0x04": 0.55,
+  "0x1b": 0.67,
+  "0x23": 0.67,
+  "0x24": 0.55
+ },
+ "gait": {
+  "legs": [
+   [
+    5,
+    3.142,
+    0
+   ],
+   [
+    10,
+    3.142,
+    0
+   ],
+   [
+    11,
+    0.0,
+    0
+   ],
+   [
+    13,
+    3.142,
+    0
+   ],
+   [
+    14,
+    3.142,
+    1
+   ],
+   [
+    16,
+    0.0,
+    0
+   ]
+  ],
+  "stride": 89.3,
+  "amp": 26
+ },
+ "scale": 0.174159,
+ "hub_roots": true,
+ "rigfix": {
+  "hidden": true,
+  "max_bones": 33
+ },
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

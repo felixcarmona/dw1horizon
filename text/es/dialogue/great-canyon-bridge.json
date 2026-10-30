@@ -1,0 +1,44 @@
+{
+ "s039.sec6.u0": "¿Te estorbo?",
+ "s039.sec51.u0": [
+  "{color 7}??? {color 1}",
+  "¡Socorrooo!"
+ ],
+ "s039.sec51.u1": "Mmm, una voz desde arriba... ¿Hay alguien ahí?",
+ "s039.sec51.u2": [
+  "{color 7}??? {color 1}",
+  "¡Oh! ¿¡Hay alguien ahí abajo!?"
+ ],
+ "s039.sec51.u3": "Sí, aquí estoy.",
+ "s039.sec51.u4": [
+  "{color 7}??? {color 1}",
+  "¡Socorro! ¡El suelo se ha",
+  "levantado de repente!"
+ ],
+ "s039.sec51.u5": "Eso es una locura.",
+ "s039.sec51.u6": [
+  "{color 7}??? {color 1}",
+  "¡Es verdad! ¡He oído un ruido,",
+  "como de una máquina!"
+ ],
+ "s039.sec51.u7": "Una máquina... ¿Será la guarida de Ogremon?",
+ "s039.sec51.u8": [
+  "{color 7}??? {color 1}",
+  "¿No has hecho allí algo",
+  "distinto?"
+ ],
+ "s039.sec51.u9": [
+  [
+   "Bueno, de todo un poco. El",
+   "ascensor, por ejemplo..."
+  ],
+  [
+   "Vale, volveré a la guarida",
+   "a echar un vistazo."
+  ]
+ ],
+ "s039.sec51.u10": [
+  "{color 7}??? {color 1}",
+  "¡Cuento contigooo!"
+ ]
+}

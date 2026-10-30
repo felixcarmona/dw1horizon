@@ -1,0 +1,71 @@
+// Readable form of script 16 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 16 {
+    npc betamon = 5;
+    npc modokibetamon = 6;
+    npc j_mojyamon = 7;
+    npc slot3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 23, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Happymushrm"), 67, 47);
+        }
+    }
+
+    on talk(betamon) replace {    // section 5
+        say(betamon, text("s016.sec5.u0"));
+        animate(tamer, 16);
+        say(betamon, text("s016.sec5.u1"));
+        sound(8, 0);
+        face(tamer, partner);
+        face(partner, tamer);
+        wait(1s);
+        say(tamer, text("s016.sec5.u2"));
+        say(betamon, text("s016.sec5.u3"));
+        face(tamer, betamon);
+        face(partner, betamon);
+        await tamer;
+        say(tamer, text("s016.sec5.u4"));
+        say(betamon, text("s016.sec5.u5"));
+        animate(tamer, 19);
+        say(tamer, text("s016.sec5.u6"));
+        sound(8, 4);
+        say(betamon, text("s016.sec5.u7"));
+        walk_away(betamon, 421, -1390, looks: 10, pause: 10);
+        join_city(betamon, species("Betamon"), 8, 3, text("s016.sec5.u8"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(modokibetamon) replace {    // section 6
+        say(modokibetamon, text("s016.sec6.u0"));
+        battle();
+        recruit(species("ModokiBetamon"));
+    }
+
+    on talk(j_mojyamon) replace {    // section 7
+        say(j_mojyamon, text("s016.sec7.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on talk(slot3) replace {    // section 8
+        say(slot3, text("s016.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+        return;
+    }
+}

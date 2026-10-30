@@ -1,0 +1,17 @@
+{
+  "id": 44,
+  "name": "Dynamite Kick",
+  "element": "battle",
+  "power": 193,
+  "mpCost": 33,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 62,
+  "status": 3,
+  "statusChance": 3,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [24, 17, 12]
+}

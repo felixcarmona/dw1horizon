@@ -1,0 +1,11 @@
+{
+  "id": 100,
+  "name": "Fatal Bone",
+  "value": 9999,
+  "meritValue": 0,
+  "sortingValue": 4,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "evolution_target": 26
+}

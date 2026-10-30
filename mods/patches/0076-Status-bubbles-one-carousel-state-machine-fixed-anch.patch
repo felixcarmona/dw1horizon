@@ -1,0 +1,457 @@
+From becb74521e72059a3eac8147c8ba447a127dd486 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 16:41:17 +0000
+Subject: [PATCH] Status bubbles: one carousel state machine (fixed anchor, 0.5
+ s eased steps per render pass, slots reassigned at step end, queued, never
+ cancelled), tail grows with size, MOD_RING_SHOWN for tools/bubblecheck.py
+
+The anchor is the partner's root (posData location), not the head bone the
+original bubble follows: the head moves with every animation.
+
+---
+ src/main/bubble.c | 322 +++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 233 insertions(+), 89 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index b3777dd..f372640 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -557,15 +557,32 @@ static void drawConditionIcon(int32_t icon, int32_t fc, int32_t x, int32_t y,
+ int32_t MOD_STATUS_BUBBLES = 1;
+ 
+ /*
+- * MOD (status-bubbles): the ACTIVE conditions only: one big bubble and
+- * (N - 1) small ones on a symmetric arc over it. Each condition has a smoothed
+- * position and size (x, y in 1/16 texel from the big bubble's centre, size
+- * 0..256); the targets change when the big bubble moves on to the next active
+- * condition or a condition appears or goes, and the bubbles slide there.
++ * MOD (status-bubbles): the ACTIVE conditions as a carousel: one big bubble
++ * at a fixed anchor over the partner (where the original bubble is) and the
++ * other active conditions as small bubbles on an arc around that anchor. The
++ * layout is a function of (anchor, number of active conditions, rank from the
++ * big one), never of the bubbles' own positions, so the cluster cannot move.
++ *
++ * One state machine: each condition has a slot it rests in (FROM) and, during
++ * a step, the slot it goes to (TO). A step lasts RING_STEP_TICKS ticks and is
++ * drawn with the render pass's fraction of the tick (MOD_RENDER_ALPHA), eased
++ * in and out, so it is smooth at 60 fps. Slots are only reassigned when a
++ * step ends; a step is never cancelled: what changes meanwhile (a rotation
++ * that falls due, a condition that appears or goes) is looked at when it
++ * ends. In a rotation the next condition (the left end of the arc) grows into
++ * the centre along a path that bows to the left, the big one shrinks to the
++ * right end of the arc along a path that bows to the right (the leaving one
++ * moves in the first 65 % of the step, the arriving one in the last 65 %, so
++ * two icons never share the centre), and the others slide one slot along the
++ * arc. A condition that appears grows in its slot, one that goes shrinks.
+  * Stored in .data (initialised) so that the linker keeps them.
+  */
+-#define RING_HOLD_TICKS	50
+-#define RING_RADIUS	28
++#define RING_HOLD_TICKS	40	/* ticks at rest before the next rotation (+ a step = 2.5 s, the original bubble's 50 ticks) */
++#define RING_STEP_TICKS	10	/* ticks per step: 0.5 s */
++#define RING_RADIUS	28	/* texels from the anchor to the small bubbles */
++#define RING_BULGE	12	/* texels a centre <-> arc path bows sideways */
++#define RING_NONE	0x1000	/* slot codes: no bubble, */
++#define RING_CENTRE	0x2000	/* the big bubble, else the angle (512 = turn) */
+ 
+ /* conditions in a fixed order: hungry, poopy, sleepy, tired, sick, injured */
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+@@ -574,44 +591,135 @@ static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
+ static const uint8_t RING_SPAN[6] = { 0, 0, 36, 60, 72, 82 };
+ 
+ int32_t MOD_RING_CLOCK = 1;
+-int32_t MOD_RING_BIG = 1; /* the big condition, +1 */
+-int32_t MOD_RING_HOLD = 1;
+-int32_t MOD_RING_POS[18] = { 1 }; /* x, y, size per condition */
+-int32_t MOD_RING_PREV[18] = { 1 }; /* the same before the last tick */
++int32_t MOD_RING_BIG = 0;	/* the big condition (index in RING_BIT) */
++int32_t MOD_RING_HOLD = 0;	/* ticks since the big condition last changed */
++int32_t MOD_RING_T = -1;	/* ticks into the running step, -1 = at rest */
++int32_t MOD_RING_STEPS = 0;	/* steps started (for tools/bubblecheck.py) */
++int32_t MOD_RING_FROM[6] = { RING_NONE, RING_NONE, RING_NONE,
++			     RING_NONE, RING_NONE, RING_NONE };
++int32_t MOD_RING_TO[6] = { RING_NONE, RING_NONE, RING_NONE,
++			   RING_NONE, RING_NONE, RING_NONE };
++/* what the last render pass drew, one word each (tools/bubblecheck.py):
++ * [0] passes drawn, [1] anchor before the bob (x | y << 16, screen pixels),
++ * [2] biggest bubble: condition << 24 | shown size (0..256) << 8 | 1 if a
++ * second bubble is above 90 % too, [3] step phase (0..4096) | steps << 16,
++ * [4] the big slot's centre as drawn (bob and top clamp included) */
++int32_t MOD_RING_SHOWN[5] = { 0, 0, 0, 0, 0 };
+ extern int32_t MOD_RENDER_ALPHA;
+ 
+-static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+-			   uint32_t scale, int32_t size, int32_t k)
++static int32_t ringSlotSize(int32_t slot)
+ {
+-	uint32_t s = (scale * size) >> 8;
+-	int32_t iconY = cy + ((18 * k * size) >> 20);
+-	int32_t icon = RING_ICON[j];
++	return slot == RING_NONE ? 0 : (slot == RING_CENTRE ? 256 : 128);
++}
+ 
+-	if (icon == 4) {
+-		icon = 4 + ((MOD_RING_CLOCK / 8) % 5);
++static void ringSlotPos(int32_t slot, int32_t *x, int32_t *y)
++{
++	if (slot == RING_NONE || slot == RING_CENTRE) {
++		*x = 0;
++		*y = 0;
++		return;
+ 	}
+-	drawConditionIcon(icon, MOD_RING_CLOCK, cx, iconY, depth, s);
+-	if (size >= 192) {
+-		renderSprite(&CONDITION_SPRITES[11], cx, iconY, depth, s, s);
++	*x = (RING_RADIUS * 16 * _sin(slot)) >> 12;
++	*y = -((RING_RADIUS * 16 * _cos(slot)) >> 12);
++}
++
++/* ease in and out: 3p^2 - 2p^3, p and the result in 0..4096 */
++static int32_t ringEase(int32_t p)
++{
++	if (p <= 0) {
++		return 0;
++	}
++	if (p >= 4096) {
++		return 4096;
++	}
++	return (((p * p) >> 12) * (3 * 4096 - 2 * p)) >> 12;
++}
++
++/* the step's phase this render pass shows: 0..4096 (0 at rest) */
++static int32_t ringPhase(void)
++{
++	int32_t p;
++
++	if (MOD_RING_T < 0) {
++		return 0;
++	}
++	p = ((MOD_RING_T - 1) * 4096 + MOD_RENDER_ALPHA) / RING_STEP_TICKS;
++	return p < 0 ? 0 : (p > 4096 ? 4096 : p);
++}
++
++/* where condition j is drawn at phase p: x, y in 1/16 texel from the anchor,
++ * size 0..256 */
++static void ringBubbleAt(int32_t j, int32_t p, int32_t *x, int32_t *y,
++			 int32_t *size)
++{
++	int32_t from = MOD_RING_FROM[j];
++	int32_t to = MOD_RING_T < 0 ? from : MOD_RING_TO[j];
++	int32_t x0, y0, x1, y1, s0, s1, e;
++
++	ringSlotPos(from, &x0, &y0);
++	ringSlotPos(to, &x1, &y1);
++	s0 = ringSlotSize(from);
++	s1 = ringSlotSize(to);
++	if (from == to) {
++		*x = x0;
++		*y = y0;
++		*size = s0;
++		return;
++	}
++	if (from == RING_CENTRE) {
++		p = (p * 100) / 65; /* leaving the centre: the first 65 % */
++	} else if (to == RING_CENTRE) {
++		p = ((p - 4096 * 35 / 100) * 100) / 65; /* arriving: the last 65 % */
++	}
++	e = ringEase(p);
++	*size = s0 + (((s1 - s0) * e) >> 12);
++	if (from == RING_NONE) {
++		*x = x1;
++		*y = y1;
++	} else if (to == RING_NONE) {
++		*x = x0;
++		*y = y0;
++	} else if (from != RING_CENTRE && to != RING_CENTRE) {
++		/* along the arc */
++		ringSlotPos(from + (((to - from) * e) >> 12), x, y);
+ 	} else {
+-		CONDITION_SPRITES[11].h = 26;
+-		CONDITION_SPRITES[11].my = 13;
+-		renderSprite(&CONDITION_SPRITES[11], cx, cy, depth, s, s);
+-		CONDITION_SPRITES[11].h = 32;
+-		CONDITION_SPRITES[11].my = 0x1f;
++		int32_t bow = (RING_BULGE * 16 * _sin((e * 256) >> 12)) >> 12;
++
++		*x = x0 + (((x1 - x0) * e) >> 12) + (from == RING_CENTRE ? bow : -bow);
++		*y = y0 + (((y1 - y0) * e) >> 12);
+ 	}
+ }
+ 
+-static int32_t ringAnySize(void)
++/* one bubble: its circle centred on (cx, cy); the tail of the big bubble
++ * grows with the size from half to full */
++static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
++			   uint32_t scale, int32_t size, int32_t k)
+ {
+-	int32_t j;
++	GsSPRITE *bg = &CONDITION_SPRITES[11];
++	uint32_t s = (scale * size) >> 8;
++	int32_t kk = (k * size) >> 8; /* screen pixels per texel, 4096 = 1 */
++	int32_t icon = RING_ICON[j];
++	int32_t tail = (size - 128) * 2;
+ 
+-	for (j = 0; j < 6; ++j) {
+-		if (MOD_RING_POS[j * 3 + 2] > 4) {
+-			return 1;
+-		}
++	if (icon == 4) {
++		icon = 4 + ((MOD_RING_CLOCK / 8) % 5);
+ 	}
+-	return 0;
++	/* icon pivots are 18 texels under the circle's centre */
++	drawConditionIcon(icon, MOD_RING_CLOCK, cx, cy + ((18 * kk) >> 12),
++			  depth, s);
++	bg->h = 26;
++	bg->my = 13;
++	renderSprite(bg, cx, cy, depth, s, s);
++	if (tail > 0) {
++		bg->v += 26;
++		bg->h = 6;
++		bg->my = 0;
++		renderSprite(bg, cx, cy + ((13 * kk) >> 12), depth, s,
++			     (s * (tail > 256 ? 256 : tail)) >> 8);
++		bg->v -= 26;
++	}
++	bg->h = 32;
++	bg->my = 0x1f;
+ }
+ 
+ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+@@ -619,33 +727,57 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+ {
+ 	int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
+ 	int32_t cy0 = y - ((18 * k) >> 12);
++	int32_t p = ringPhase();
++	int32_t bx[6], by[6], bs[6];
++	int32_t drawn = 0;
++	int32_t big = -1;
++	int32_t full = 0;
+ 	int32_t j;
+ 
+ 	for (j = 0; j < 6; ++j) {
+-		int32_t *v = &MOD_RING_POS[j * 3];
+-		int32_t *o = &MOD_RING_PREV[j * 3];
+-		int32_t a = MOD_RENDER_ALPHA;
+-		int32_t px = o[0] + (((v[0] - o[0]) * a) >> 12);
+-		int32_t py = o[1] + (((v[1] - o[1]) * a) >> 12);
+-		int32_t ps = o[2] + (((v[2] - o[2]) * a) >> 12);
+-
+-		if (ps > 4) {
+-			drawRingBubble(j, x + ((px * k) >> 16),
+-				       cy0 + ((py * k) >> 16), depth, scale,
+-				       ps, k);
++		ringBubbleAt(j, p, &bx[j], &by[j], &bs[j]);
++		if (bs[j] > 230) {
++			++full;
++		}
++		if (bs[j] > 24 && (big < 0 || bs[j] > bs[big])) {
++			big = j;
++		}
++	}
++	/* the biggest first: drawn first is on top (same depth) */
++	while (drawn < 6) {
++		int32_t b = -1;
++
++		for (j = 0; j < 6; ++j) {
++			if (bs[j] > 24 && (b < 0 || bs[j] > bs[b])) {
++				b = j;
++			}
++		}
++		if (b < 0) {
++			break;
+ 		}
++		drawRingBubble(b, x + ((bx[b] * k) >> 16), cy0 + ((by[b] * k) >> 16),
++			       depth, scale, bs[b], k);
++		bs[b] = -bs[b];
++		++drawn;
+ 	}
++	MOD_RING_SHOWN[2] = big < 0 ? 0 :
++			    ((big << 24) | (-bs[big] << 8) | (full > 1));
++	MOD_RING_SHOWN[3] = p | (MOD_RING_STEPS << 16);
++	MOD_RING_SHOWN[4] = (x & 0xFFFF) | (cy0 << 16);
++	MOD_RING_SHOWN[0]++;
+ }
+ 
+-static int32_t ringStep(int32_t v, int32_t target)
++static int32_t ringAnyBubble(void)
+ {
+-	int32_t d = target - v;
++	int32_t j;
+ 
+-	/* a quarter of the way per tick: about half a second to settle */
+-	if ((d / 4) == 0) {
+-		return (d > 3 || d < -3) ? v + ((d > 0) ? 1 : -1) : target;
++	for (j = 0; j < 6; ++j) {
++		if (MOD_RING_FROM[j] != RING_NONE ||
++		    (MOD_RING_T >= 0 && MOD_RING_TO[j] != RING_NONE)) {
++			return 1;
++		}
+ 	}
+-	return v + d / 4;
++	return 0;
+ }
+ 
+ void renderConditionRingObject(int32_t instanceId)
+@@ -656,18 +788,29 @@ void renderConditionRingObject(int32_t instanceId)
+ 	int32_t depth;
+ 	int32_t value;
+ 	int32_t top;
++	int32_t base;
+ 	uint32_t scale = 0x6000;
+ 
+ 	if ((MOD_STATUS_BUBBLES == 0) || (IS_IN_MENU == 1) || (GAME_STATE != 0) ||
+ 	    ((PARTNER_STATE != 1) && (PARTNER_STATE != 0xa)) ||
+-	    (entity == NULL) || (ringAnySize() == 0)) {
++	    (entity == NULL) || (ringAnyBubble() == 0)) {
++		MOD_RING_SHOWN[2] = 0;
+ 		return;
+ 	}
+ 
+-	translateConditionFXToEntity(entity, &pos);
+-	pos.vy = -DIGI_PARA(entity->type).height + 20 - 65 +
+-		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12) +
+-		 entity->posData->location.vy;
++	/* the anchor is the partner's root, not the head bone the original
++	 * bubble follows (translateConditionFXToEntity): the head moves with
++	 * every animation and the cluster jumped with it */
++	pos.vx = entity->posData->location.vx;
++	pos.vz = entity->posData->location.vz;
++	base = -DIGI_PARA(entity->type).height + 20 - 65 +
++	       entity->posData->location.vy;
++	/* the anchor without the bob, for tools/bubblecheck.py */
++	pos.vy = base;
++	worldPosToScreenPos(&pos, &screen);
++	MOD_RING_SHOWN[1] = (screen.vx & 0xFFFF) | (screen.vy << 16);
++	pos.vy = base +
++		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
+ 	depth = worldPosToScreenPos(&pos, &screen);
+ 	if (depth <= 0) {
+ 		return;
+@@ -696,11 +839,13 @@ void renderConditionRingObject(int32_t instanceId)
+ void tickConditionRingObject(int32_t instanceId)
+ {
+ 	uint32_t cond = PARTNER_PARA.condition;
+-	int32_t big = MOD_RING_BIG - 1;
++	int32_t big = MOD_RING_BIG;
+ 	int32_t act[6];
++	int32_t to[6];
+ 	int32_t n = 0;
+ 	int32_t rankBig = 0;
+ 	int32_t rank = 0;
++	int32_t change = 0;
+ 	int32_t j;
+ 	int32_t m;
+ 
+@@ -709,67 +854,68 @@ void tickConditionRingObject(int32_t instanceId)
+ 	}
+ 	++MOD_RING_CLOCK;
+ 
++	/* a running step goes on to its end; it ends the tick after its last
++	 * frame, so that every pass of that tick still shows it */
++	if (MOD_RING_T >= 0) {
++		if (MOD_RING_T < RING_STEP_TICKS) {
++			++MOD_RING_T;
++			return;
++		}
++		for (j = 0; j < 6; ++j) {
++			MOD_RING_FROM[j] = MOD_RING_TO[j];
++		}
++		MOD_RING_T = -1;
++	}
++	++MOD_RING_HOLD;
++
+ 	for (j = 0; j < 6; ++j) {
+ 		act[j] = (cond & RING_BIT[j]) != 0;
+ 		n += act[j];
+ 	}
+ 
+-	/* the big bubble: stays RING_HOLD_TICKS, then the next active one */
+-	++MOD_RING_HOLD;
+-	if ((n != 0) && ((!act[big]) || (MOD_RING_HOLD > RING_HOLD_TICKS))) {
++	/* the big bubble: the next active condition when its own has gone or
++	 * its time is up */
++	if ((n != 0) && ((!act[big]) || (MOD_RING_HOLD >= RING_HOLD_TICKS))) {
+ 		for (j = 1; j <= 6; ++j) {
+ 			if (act[(big + j) % 6]) {
+ 				big = (big + j) % 6;
+ 				break;
+ 			}
+ 		}
+-		MOD_RING_BIG = big + 1;
+-		MOD_RING_HOLD = 1;
++		MOD_RING_BIG = big;
++		MOD_RING_HOLD = 0;
+ 	}
+ 
+ 	for (j = 0; j < big; ++j) {
+ 		rankBig += act[j];
+ 	}
+ 	m = n - 1;
+-
+ 	for (j = 0; j < 6; ++j) {
+-		int32_t *v = &MOD_RING_POS[j * 3];
+-		int32_t tx = v[0];
+-
+-		MOD_RING_PREV[j * 3] = v[0];
+-		MOD_RING_PREV[j * 3 + 1] = v[1];
+-		MOD_RING_PREV[j * 3 + 2] = v[2];
+-		int32_t ty = v[1];
+-		int32_t ts = 0;
+-
++		to[j] = RING_NONE;
+ 		if (act[j]) {
+ 			int32_t r = (rank - rankBig + n) % n;
+ 
+ 			++rank;
+ 			if (r == 0) {
+-				tx = 0;
+-				ty = 0;
+-				ts = 256;
++				to[j] = RING_CENTRE;
+ 			} else {
+ 				int32_t span = RING_SPAN[m];
+ 				int32_t a = (m > 1) ?
+ 					    (-span + (2 * span * (r - 1)) / (m - 1)) : 0;
+-				int32_t ang = (a * 512) / 360; /* 512 = full turn */
+ 
+-				tx = (RING_RADIUS * 16 * _sin(ang)) >> 12;
+-				ty = -((RING_RADIUS * 16 * _cos(ang)) >> 12);
+-				ts = 128;
+-			}
+-			if (v[2] <= 4) {
+-				v[0] = tx;
+-				v[1] = ty;
+-				MOD_RING_PREV[j * 3] = tx;
+-				MOD_RING_PREV[j * 3 + 1] = ty;
++				to[j] = (a * 512) / 360;
+ 			}
+ 		}
+-		v[0] = ringStep(v[0], tx);
+-		v[1] = ringStep(v[1], ty);
+-		v[2] = ringStep(v[2], ts);
++		if (to[j] != MOD_RING_FROM[j]) {
++			change = 1;
++		}
++	}
++	if (change) {
++		for (j = 0; j < 6; ++j) {
++			MOD_RING_TO[j] = to[j];
++		}
++		MOD_RING_T = 0;
++		MOD_RING_STEPS++;
+ 	}
+ }
+ 
+@@ -778,8 +924,6 @@ void renderConditionBubble(int32_t instanceId)
+ 	ConditionBubble *bubble;
+ 	SVECTOR pos;
+ 	DVECTOR screen;
+-	int32_t icon;
+-	GsSPRITE **sprites;
+ 	int32_t top;
+ 	int32_t value;
+ 	uint32_t scale;
+-- 
+2.53.0
+

@@ -1,0 +1,283 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 207 {
+    npc slot6 = 11;
+    sections 254, 11;
+    on enter replace {    // enter
+    }
+    on talk(slot6) replace {    // talk
+        if (is_recruited(species(25))) {
+            if (!trigger(186)) {
+                set_trigger(186);
+                say(slot6, text("s207.sec11.u44"));
+                camera_to(-2243, 1914, speed: 30);
+                await camera;
+                wait(20);
+                camera_on(tamer, speed: 20);
+                await camera;
+                say(slot6, text("s207.sec11.u45"));
+            }
+            store_random(random_roll, 3);
+            if (meat_farm_days >= 1 && random_roll <= 0) {
+                say(slot6, text("s207.sec11.u46"));
+                if (has(item(40)) >= 99) {
+                    say(slot6, text("s207.sec11.u47"));
+                    return;
+                }
+                if (has(item(40)) >= 95) {
+                    say(slot6, text("s207.sec11.u48"));
+                    give(item(40), 5);
+                    say(narrator, text("s207.sec11.u49"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(40), 5);
+                if (engine.item_did_not_fit) {
+                    show_textbox(text("s207.sec11.u50"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u51"));
+                say(slot6, text("s207.sec11.u52"));
+                meat_farm_days = 0;
+                return;
+            }
+            if (meat_farm_days >= 1) {
+                say(slot6, text("s207.sec11.u53"));
+                if (has(item(40)) >= 99) {
+                    say(slot6, text("s207.sec11.u54"));
+                    return;
+                }
+                if (has(item(40)) >= 97) {
+                    say(slot6, text("s207.sec11.u55"));
+                    give(item(40), 3);
+                    say(narrator, text("s207.sec11.u56"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(40), 3);
+                if (engine.item_did_not_fit) {
+                    say(slot6, text("s207.sec11.u57"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u58"));
+                meat_farm_days = 0;
+                return;
+            }
+            say(slot6, text("s207.sec11.u59"));
+            choice {
+                text("s207.sec11.m2.o0") => {
+                    loop {
+                        choice {
+                            text("s207.sec11.m3.o0") => {
+                                if (bits < 500) {
+                                    say(slot6, text("s207.sec11.u60"));
+                                    return;
+                                }
+                                give(item(41));
+                                if (engine.item_did_not_fit) {
+                                    show_textbox(text("s207.sec11.u61"));
+                                    return;
+                                }
+                            }
+                            text("s207.sec11.m3.o1") => {
+                                if (bits < 500) {
+                                    say(slot6, text("s207.sec11.u62"));
+                                    return;
+                                }
+                                give(item(42));
+                                if (engine.item_did_not_fit) {
+                                    show_textbox(text("s207.sec11.u63"));
+                                    return;
+                                }
+                            }
+                            text("s207.sec11.m3.o2") or cancel => {
+                                break;
+                            }
+                        }
+                        take_bits(500);
+                        sound(0, 5);
+                        wait(5);
+                        say(slot6, text("s207.sec11.u64"));
+                        choice {
+                            text("s207.sec11.m4.o0") => {}
+                            text("s207.sec11.m4.o1") or cancel => {
+                                break;
+                            }
+                        }
+                    }
+                }
+                text("s207.sec11.m2.o1") or cancel => {}
+            }
+            say(slot6, text("s207.sec11.u65"));
+            return;
+        }
+        if (is_recruited(species(46))) {
+            if (!meat_farm_expanded_explained) {
+                meat_farm_expanded_explained = true;
+                say(slot6, text("s207.sec11.u25"));
+            }
+            store_random(random_roll, 3);
+            if (meat_farm_days >= 1 && random_roll <= 0) {
+                say(slot6, text("s207.sec11.u26"));
+                if (has(item(39)) >= 99) {
+                    say(slot6, text("s207.sec11.u27"));
+                    return;
+                }
+                if (has(item(39)) >= 95) {
+                    say(slot6, text("s207.sec11.u28"));
+                    give(item(39), 5);
+                    say(narrator, text("s207.sec11.u29"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(39), 5);
+                if (engine.item_did_not_fit) {
+                    show_textbox(text("s207.sec11.u30"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u31"));
+                say(slot6, text("s207.sec11.u32"));
+                meat_farm_days = 0;
+                return;
+            }
+            if (meat_farm_days >= 1) {
+                say(slot6, text("s207.sec11.u33"));
+                if (has(item(39)) >= 99) {
+                    say(slot6, text("s207.sec11.u34"));
+                    return;
+                }
+                if (has(item(39)) >= 97) {
+                    say(slot6, text("s207.sec11.u35"));
+                    give(item(39), 3);
+                    say(narrator, text("s207.sec11.u36"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(39), 3);
+                if (engine.item_did_not_fit) {
+                    show_textbox(text("s207.sec11.u37"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u38"));
+                meat_farm_days = 0;
+                return;
+            }
+            say(slot6, text("s207.sec11.u39"));
+            choice {
+                text("s207.sec11.m0.o0") => {
+                    loop {
+                        unless (bits >= 500) break;
+                        give(item(39));
+                        if (engine.item_did_not_fit) {
+                            show_textbox(text("s207.sec11.u41"));
+                            return;
+                        }
+                        take_bits(500);
+                        sound(0, 5);
+                        wait(5);
+                        say(slot6, text("s207.sec11.u42"));
+                        choice {
+                            text("s207.sec11.m1.o0") => {}
+                            text("s207.sec11.m1.o1") or cancel => {
+                                say(slot6, text("s207.sec11.u43"));
+                                return;
+                            }
+                        }
+                    }
+                    say(slot6, text("s207.sec11.u40"));
+                    return;
+                }
+                text("s207.sec11.m0.o1") or cancel => {}
+            }
+            say(slot6, text("s207.sec11.u43"));
+            return;
+        }
+        if (meat_farm_explained) {
+            store_random(random_roll, 3);
+            if (meat_farm_days >= 1 && random_roll <= 0) {
+                say(slot6, text("s207.sec11.u10"));
+                if (has(item(38)) >= 99) {
+                    say(slot6, text("s207.sec11.u11"));
+                    return;
+                }
+                if (has(item(38)) >= 95) {
+                    say(slot6, text("s207.sec11.u12"));
+                    give(item(38), 5);
+                    say(narrator, text("s207.sec11.u13"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(38), 5);
+                if (engine.item_did_not_fit) {
+                    say(slot6, text("s207.sec11.u14"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u15"));
+                say(slot6, text("s207.sec11.u16"));
+                meat_farm_days = 0;
+                return;
+            }
+            if (meat_farm_days >= 1) {
+                say(slot6, text("s207.sec11.u17"));
+                if (has(item(38)) >= 99) {
+                    say(slot6, text("s207.sec11.u18"));
+                    return;
+                }
+                if (has(item(38)) >= 97) {
+                    say(slot6, text("s207.sec11.u19"));
+                    give(item(38), 3);
+                    say(narrator, text("s207.sec11.u20"));
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(38), 3);
+                if (engine.item_did_not_fit) {
+                    say(slot6, text("s207.sec11.u21"));
+                    return;
+                }
+                say(narrator, text("s207.sec11.u22"));
+                say(slot6, text("s207.sec11.u23"));
+                meat_farm_days = 0;
+                return;
+            }
+            say(slot6, text("s207.sec11.u24"));
+            return;
+        }
+        meat_farm_explained = true;
+        say(slot6, text("s207.sec11.u0"));
+        say(tamer, text("s207.sec11.u1"));
+        say(slot6, text("s207.sec11.u2"));
+        say(tamer, text("s207.sec11.u3"));
+        say(slot6, text("s207.sec11.u4"));
+        if (has(item(38)) >= 99) {
+            say(slot6, text("s207.sec11.u5"));
+            meat_farm_days = 1;
+            return;
+        }
+        if (has(item(38)) >= 97) {
+            say(slot6, text("s207.sec11.u6"));
+            give(item(38), 3);
+            say(narrator, text("s207.sec11.u7"));
+            meat_farm_explained = true;
+            meat_farm_days = 0;
+            return;
+        }
+        give(item(38), 3);
+        if (engine.item_did_not_fit) {
+            say(slot6, text("s207.sec11.u8"));
+            return;
+        }
+        say(narrator, text("s207.sec11.u9"));
+        meat_farm_days = 0;
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "kunemon-give-meat",
+  "doc": "Kunemon's Bed: give Meat (item 38): item menu (C routine), the food branch, the 'Let's fight!' text and START_BATTLE (the run ends when the battle starts).",
+  "setup": { "items": [[38, 2]] },
+  "pre": [
+    "warp 1 0",
+    "until screen==1 and free max 2500",
+    "wait 30"
+  ],
+  "run": [
+    "approach 1",
+    "wait 20",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until ACTIVE_INSTRUCTION==16 max 1500",
+    "wait 40",
+    "press CROSS 3",
+    "until ACTIVE_INSTRUCTION==100 max 300",
+    "wait 40",
+    "press CROSS 3",
+    "wait 40",
+    "press CROSS 3",
+    "talk until free max 3000"
+  ],
+  "end_on_battle": true,
+  "max_frames": 8000,
+  "expect": {"digest": "832c51ebffe232871486ade61b8df2d0493c858f", "instructions": 29}
+}

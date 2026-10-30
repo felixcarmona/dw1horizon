@@ -1,0 +1,679 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "source": "build/batch/Angewomon.MMD",
+      "source_sha256": "2e4653ef8c52ac73422d0e520c6c5a6372be975ab251646b583751b56cb355f7",
+      "bones": 31,
+      "scale": 1.263022262908361,
+      "target": "build/sizes-out/models/Angewomon.MMD",
+      "sha256": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da"
+    },
+    {
+      "source": "build/batch/MetalGarurumon.MMD",
+      "source_sha256": "d3095cff234e7fffc86c518e710f57817945cce073325c63d53d010e819feb7a",
+      "bones": 23,
+      "scale": 1.5995399825797194,
+      "target": "build/sizes-out/models/MetalGarurumon.MMD",
+      "sha256": "54fd9aa6ca3963e17703758cc376e15804b50b2f8d9cd32e599adea2740b20ec"
+    },
+    {
+      "source": "build/batch/Imperialdramon.MMD",
+      "source_sha256": "23e404ebeac9af270a9ee29bd0e2a58e04698ae4737705119105a3d834665a98",
+      "bones": 27,
+      "scale": 1.6540181616074519,
+      "target": "build/sizes-out/models/Imperialdramon.MMD",
+      "sha256": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd"
+    },
+    {
+      "source": "build/batch2/Paildramon.MMD",
+      "source_sha256": "098eb5c9075862f82ceda3d45ee29acedd1a49b2d43a6039ec3b5f50e7091e8a",
+      "bones": 31,
+      "scale": 1.3081326948251264,
+      "target": "build/sizes-out/models/Paildramon.MMD",
+      "sha256": "0e42c6f1ae43d4bddadb66b659098e646921cb8c83b339b72cfa6322988311ce"
+    },
+    {
+      "source": "build/batch3/MegaKabuterimon.MMD",
+      "source_sha256": "58572629d1a97db082909931f3b9ae926bdb961ac09a5e148b35dfd0b95fb52b",
+      "bones": 23,
+      "scale": 1.2730211027277223,
+      "target": "build/sizes-out/models/MegaKabuterimon.MMD",
+      "sha256": "69aea2c217f378d9d62738999b66b40494e0fcac620090aa44fe2196f8658e75"
+    },
+    {
+      "source": "build/batch3/MagnaAngemon.MMD",
+      "source_sha256": "87043c7e8e68846ff0a4f18839ba9d7b370ecfb16544ff4513f278deab988267",
+      "bones": 26,
+      "scale": 1.216158000246493,
+      "target": "build/sizes-out/models/MagnaAngemon.MMD",
+      "sha256": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02"
+    },
+    {
+      "source": "build/batch3/Seraphimon.MMD",
+      "source_sha256": "6e927a13f287916a4f7f26b2b5ac956f70ce1ab9a803b2c776447a05e4bc8008",
+      "bones": 31,
+      "scale": 1.31155857291898,
+      "target": "build/sizes-out/models/Seraphimon.MMD",
+      "sha256": "dacb6f4e022667988955c18d817f8c4afa97f9f4cd2662f17eba5d683e70df2f"
+    },
+    {
+      "source": "build/batch3/Lillymon.MMD",
+      "source_sha256": "c6fa0db507116d489b573cb7216050abb32560f06f6ab277107faed3f4f79789",
+      "bones": 23,
+      "scale": 1.2460507973991077,
+      "target": "build/sizes-out/models/Lillymon.MMD",
+      "sha256": "b7d77ee64a948c7072dde6473252ce44ca8017633b637851a215dfaa7b647d7a"
+    },
+    {
+      "source": "build/batch3/GranKuwagamon.MMD",
+      "source_sha256": "da3ffdac5b370ecbd80ef03e94b42c1f0adb6e737a87a4308a591c082ea64102",
+      "bones": 23,
+      "scale": 1.317731130133652,
+      "target": "build/sizes-out/models/GranKuwagamon.MMD",
+      "sha256": "416ce610eee01832e783503eb7e1c32819d89a6e0eccf5084211729eb5733dc9"
+    },
+    {
+      "source": "build/batch3/MetalSeadramon.MMD",
+      "source_sha256": "de17dd75e2f9311cd85ee4bfc304807eabcb07d699d99dd30d0f75f09e637115",
+      "bones": 18,
+      "scale": 1.2670960358156047,
+      "target": "build/sizes-out/models/MetalSeadramon.MMD",
+      "sha256": "3bb98cb693c8eaf7a65999dbd08f1422587a93da6e426754b02a1b67a73684bb"
+    },
+    {
+      "source": "build/batch3/VenomMyotismon.MMD",
+      "source_sha256": "121d24e6114f2e54111a58c05dc4539ddc8cabd90969f06c2b715dbcd8d9fc12",
+      "bones": 28,
+      "scale": 1.3420869686808048,
+      "target": "build/sizes-out/models/VenomMyotismon.MMD",
+      "sha256": "3308a2dd54cf017dff32e2190a948def19d1afd53047d4703ea44c663bdda814"
+    },
+    {
+      "source": "build/batch3/AeroVeedramon.MMD",
+      "source_sha256": "74f1a96702b3e0cb810b9f131128d050ccab306983fe6dcb95933c5de98c7fcc",
+      "bones": 25,
+      "scale": 1.339680839790652,
+      "target": "build/sizes-out/models/AeroVeedramon.MMD",
+      "sha256": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68"
+    },
+    {
+      "source": "build/batch3/Shakkoumon.MMD",
+      "source_sha256": "0e00144e75371a5f36d89c792afd9ca48122ec7c6966978f9d215518a5e77222",
+      "bones": 23,
+      "scale": 1.2726729924769133,
+      "target": "build/sizes-out/models/Shakkoumon.MMD",
+      "sha256": "ed1df8dbc28b54e25ac6923a5ce272b533fb8fdf8acdb4f87af7ffde7f9046d3"
+    },
+    {
+      "source": "build/batch3/Magnadramon.MMD",
+      "source_sha256": "6f5a00e441697e1741a43c48521c07601b8cad82cdf61c4e4b69341fac036ebe",
+      "bones": 30,
+      "scale": 1.5079477007927309,
+      "target": "build/sizes-out/models/Magnadramon.MMD",
+      "sha256": "c3c1fffa9a15755bd9152bda0b5da44e968ef3a7c6ac0775a9eda107431abf84"
+    },
+    {
+      "source": "build/batch4/Zudomon.MMD",
+      "source_sha256": "c220b35c67a1d4b4747670db6d6a3cc051883500e930348d35e95c7774a3e5f7",
+      "bones": 22,
+      "scale": 1.1995638249631584,
+      "target": "build/sizes-out/models/Zudomon.MMD",
+      "sha256": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89"
+    },
+    {
+      "source": "build/batch4/Vikemon.MMD",
+      "source_sha256": "619e1ca103df3709926ba0369854a7a75b3cd4dc2c6058a6b3fe984b11cfaedf",
+      "bones": 28,
+      "scale": 1.220078258539744,
+      "target": "build/sizes-out/models/Vikemon.MMD",
+      "sha256": "dfa097cce958773538c5e1d99a71ad1f5d8ef9b316dffe662b762ece1ea2b8cf"
+    },
+    {
+      "source": "build/batch4/LadyDevimon.MMD",
+      "source_sha256": "845783739b48b4a129b63204df046acf35b046cf4f7d049b58411752d52cba26",
+      "bones": 29,
+      "scale": 1.2379780705113643,
+      "target": "build/sizes-out/models/LadyDevimon.MMD",
+      "sha256": "ad514973087e35e6dc4ba9d73741857e7922fe3e783cc946042142090e02cc56"
+    },
+    {
+      "source": "build/batch4/RealMetalGreymon.MMD",
+      "source_sha256": "7966accfe5d2550b314a78bf5928ec09d14c87ca250c26c0a829826eb1849394",
+      "bones": 23,
+      "scale": 1.3087210991109037,
+      "target": "build/sizes-out/models/RealMetalGreymon.MMD",
+      "sha256": "41aa710ca8bfbe3df9988b5507d7387c93e0ea9b355f148373fce0578ce53ae0"
+    },
+    {
+      "source": "build/batch4/Sylphymon.MMD",
+      "source_sha256": "3917d5f6bf18411099bc184e4f4d62602ae442a90ee1a391ef89261782a4134a",
+      "bones": 21,
+      "scale": 1.2587089801472464,
+      "target": "build/sizes-out/models/Sylphymon.MMD",
+      "sha256": "26e3359d16f1e61d72cf2a44577cdec2d759f4d54e9f1a9d1285ee29b259da07"
+    },
+    {
+      "source": "build/batch5/Phantomon.MMD",
+      "source_sha256": "152ca0fa0c6d6f830f4bf79df3baccbbe824ae663d446331582df99d9d4d6d53",
+      "bones": 20,
+      "scale": 1.2707927982343856,
+      "target": "build/sizes-out/models/Phantomon.MMD",
+      "sha256": "8e50919dd7155f80c8d862ac6add472256d6bb41e09f607c6c31c378160f3e35"
+    },
+    {
+      "source": "build/batch5/Rosemon.MMD",
+      "source_sha256": "10f5777fbd6470c8d15ba940eb472932b586c25a1106111528c24236daddc094",
+      "bones": 27,
+      "scale": 1.3199971782730564,
+      "target": "build/sizes-out/models/Rosemon.MMD",
+      "sha256": "b8ac5d02615f8645751974015114db69333adde0b2af28db13c489fc3cccd613"
+    },
+    {
+      "source": "build/batch5/R-Gatomon.MMD",
+      "source_sha256": "1b3ad9f21bb9799437eb2c28e352dc591e618d846af353ff0b0b31eb27ab4fb3",
+      "bones": 19,
+      "scale": 1.005178680562257,
+      "target": "build/sizes-out/models/R-Gatomon.MMD",
+      "sha256": "73cff8c0dd35e227821fc43c51c901ac3fa0de198559bd88c4279a7ea713afcb"
+    },
+    {
+      "source": "build/batch5/Diaboromon.MMD",
+      "source_sha256": "fa42f0ba946e13c3994d54fb1582afa2a96717ecd704a57adc3b1ef057b9314f",
+      "bones": 24,
+      "scale": 1.277262445523302,
+      "target": "build/sizes-out/models/Diaboromon.MMD",
+      "sha256": "87a7b62c7cdb5ccf8e53e88fcc2bb3e8e0aa3edd7b4cf5a9d2885e4ec06e7cfd"
+    },
+    {
+      "source": "build/batch6/SuperStarmon.MMD",
+      "source_sha256": "a41bb0d3fcaaab1ac72b4bcb7841679a8958d76dad8bb4ce3fdc798f59243e48",
+      "bones": 27,
+      "scale": 1.2184996141814393,
+      "target": "build/sizes-out/models/SuperStarmon.MMD",
+      "sha256": "48e0b9b4cca62b95de5fa7e586d0ca218a4e786ab71ddea66b44c6ed1de97fec"
+    },
+    {
+      "source": "build/batch6/Piedmon.MMD",
+      "source_sha256": "9567ba3dcbd917ae7350b68c6ef7a1c3a0f61380271f626fef8c972cbaa5554d",
+      "bones": 28,
+      "scale": 1.2761493729666904,
+      "target": "build/sizes-out/models/Piedmon.MMD",
+      "sha256": "c047308a699fef9ffb5f2ca0393c3724bb14dd869c3961bb1f599f92cf7af080"
+    },
+    {
+      "source": "build/batch6/Infermon.MMD",
+      "source_sha256": "6c8a207e4a14b5791bc67b17c7702a0e9a3b46d49e7c8de3b005b362368d0429",
+      "bones": 30,
+      "scale": 1.35,
+      "target": "build/sizes-out/models/Infermon.MMD",
+      "sha256": "2cb0f769b360b53b63c5a98e2d61d78cf27fe996069010d36c731110a8ebffe8"
+    },
+    {
+      "source": "build/batch6/MarineAngemon.MMD",
+      "source_sha256": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
+      "bones": 26,
+      "scale": 1.3472243202440486,
+      "target": "build/sizes-out/models/MarineAngemon.MMD",
+      "sha256": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993"
+    },
+    {
+      "source": "build/batch7/Valkyrimon.MMD",
+      "source_sha256": "3aa9bad1690d021ec4bd6177d487eee926dd6fa58fc0301da79c5b6687c00c0f",
+      "bones": 30,
+      "scale": 1.2167973659071827,
+      "target": "build/sizes-out/models/Valkyrimon.MMD",
+      "sha256": "315abccc851c40b91116f6e9aea68b6bf7e051488e8008c77b1a1f6314c40469"
+    },
+    {
+      "source": "build/batch7/Triceramon.MMD",
+      "source_sha256": "8fc6dfaf172264a7db55558a5dded445e1368d216d9bb3d0c4df43125395b21f",
+      "bones": 21,
+      "scale": 1.2897983998776785,
+      "target": "build/sizes-out/models/Triceramon.MMD",
+      "sha256": "cc6f6f037b7604d4f69bf2e2de6b101cfbcebd03e54ee927feea09538a86630e"
+    },
+    {
+      "source": "build/batch7/SaberLeomon.MMD",
+      "source_sha256": "56d43e444498c937a888d1b645e6561017d4d6976144fdd9729d2af913e2c1ea",
+      "bones": 23,
+      "scale": 1.2159853806522734,
+      "target": "build/sizes-out/models/SaberLeomon.MMD",
+      "sha256": "4ca99e8c82c8384f982251665a815d2950a8e2af512f4b997e33d804b9067cad"
+    },
+    {
+      "source": "build/batch7/Okuwamon.MMD",
+      "source_sha256": "2ab00f90bbccf662141038a5a4329085d4e298f8b78485e31447b8dc199d7838",
+      "bones": 24,
+      "scale": 1.2626645017411378,
+      "target": "build/sizes-out/models/Okuwamon.MMD",
+      "sha256": "4f2c5584c8a99a694c308dd4fdb1ab2a545b02d24e8804e78ca922ad350e871d"
+    },
+    {
+      "source": "build/batch7/MetalTyrannomon.MMD",
+      "source_sha256": "0f84ab6f8b619ecb305e4def4cf1381dc8b0c2d72a7c8b0e0fd253b46f1cd8bf",
+      "bones": 24,
+      "scale": 1.313205548194095,
+      "target": "build/sizes-out/models/MetalTyrannomon.MMD",
+      "sha256": "0f21bb858adc621bee9e716f5a5f98f28700871e4576ce722159eb2bad47bc64"
+    },
+    {
+      "source": "build/batch7/Raremon.MMD",
+      "source_sha256": "5d84c43c02b124d3482b4aaf08ead0bfc47700b05151dae76e7bcb8f16886848",
+      "bones": 18,
+      "scale": 1.35,
+      "target": "build/sizes-out/models/Raremon.MMD",
+      "sha256": "a0b4dde500fe68bbd9fe3999c026f5684f25b34e9857da19e66a71def6d24b75"
+    },
+    {
+      "source": "build/batch8/DarkTyrannomon.MMD",
+      "source_sha256": "b8c286d198810082141144aaee8de7a3a08850890e2f7f8e8ff2651b067ffca1",
+      "bones": 22,
+      "scale": 1.275101902614048,
+      "target": "build/sizes-out/models/DarkTyrannomon.MMD",
+      "sha256": "87b4c7d7e4469484312d7967160336d0ff110894a76bd16869a69131be977f43"
+    },
+    {
+      "source": "build/batch8/ExTyrannomon.MMD",
+      "source_sha256": "71b3ab3dc651886d75034b6d6754416ff7792508232c5b43c4170172c4d1f190",
+      "bones": 9,
+      "scale": 1.345362540025767,
+      "target": "build/sizes-out/models/ExTyrannomon.MMD",
+      "sha256": "b5beb977eb5b9bba3af05546b72181b54942367d2e9d96b6339eec04a7d4f834"
+    },
+    {
+      "source": "build/batch8/Mammothmon.MMD",
+      "source_sha256": "e3ae2bc0b7b08125e1fcb95342357919542778292a479c761cf8f95b983d5e0e",
+      "bones": 27,
+      "scale": 1.2380344550849045,
+      "target": "build/sizes-out/models/Mammothmon.MMD",
+      "sha256": "9bc148d9687090167d839e24ccffd0d25091d23e34baaf6af06f43b6e856db60"
+    },
+    {
+      "source": "build/batch8/SkullMammothmon.MMD",
+      "source_sha256": "ed8b4d6e5b67289d8754a3bfaa23c1ad4663b6a89ccf5efb7ab39cf6924d51c4",
+      "bones": 29,
+      "scale": 1.3080558616892477,
+      "target": "build/sizes-out/models/SkullMammothmon.MMD",
+      "sha256": "620d3e4e752f7686f365ee0a2953fc5a472ba11f9d23207a3e16347580b79ad5"
+    },
+    {
+      "source": "build/batch8/Garbagemon.MMD",
+      "source_sha256": "2a36165330df48071b1aef80a29f2c0f84077aeb0a8fe461b32720fbfcb3284a",
+      "bones": 22,
+      "scale": 1.35,
+      "target": "build/sizes-out/models/Garbagemon.MMD",
+      "sha256": "0b319bd13356f4fb00e03e8385a1189cc5b56c0b85e29676a9ee1ef558425d14"
+    },
+    {
+      "source": "build/batch8/PrinceMamemon.MMD",
+      "source_sha256": "20fafba112661ae105a3797c17ba068fd16bb0f40f2a41d8f7afc7d30d0a86ba",
+      "bones": 24,
+      "scale": 1.344862915599615,
+      "target": "build/sizes-out/models/PrinceMamemon.MMD",
+      "sha256": "e5d6d0742ecb39552a969ff737926bd7b8997c8e82bdc600066c01e6403bc8c6"
+    },
+    {
+      "source": "build/batch8/Plesiomon.MMD",
+      "source_sha256": "acf8decdc135f21c40364dd454d7e13de40cf20d4333327ee98082b769b1e763",
+      "bones": 21,
+      "scale": 1.6657709578259159,
+      "target": "build/sizes-out/models/Plesiomon.MMD",
+      "sha256": "53567a06481ef22b1284da2134efe7334aa03c83fd122af7ac41ccbc09a98625"
+    },
+    {
+      "source": "build/batch8/Anomalocarimon.MMD",
+      "source_sha256": "f21420999a8266f828c348a5ac2afaca388bd0d2d9db1e7d7657db0aee70523c",
+      "bones": 23,
+      "scale": 1.6640450033839544,
+      "target": "build/sizes-out/models/Anomalocarimon.MMD",
+      "sha256": "2476a0ba4a147910db4fc8323ca83afb3925cb6f50c0f86d8144410073ea9c5b"
+    },
+    {
+      "source": "build/batch8/Baihumon.MMD",
+      "source_sha256": "48fde7f85c9689470c44ab1b2246156209ddcabf3fc1aaf2ee889a44a32f8d1e",
+      "bones": 28,
+      "scale": 1.6,
+      "target": "build/sizes-out/models/Baihumon.MMD",
+      "sha256": "99b2d785e8a201cf28997a67e3ac7162df884489c84e4dd192186196c5831ca7"
+    },
+    {
+      "source": "build/batch9/SkullMeramon.MMD",
+      "source_sha256": "da5973b15baff9810f9558dd0e9353ac58934b2c58c3da80cffa8c622de562f2",
+      "bones": 17,
+      "scale": 1.2584680950601839,
+      "target": "build/sizes-out/models/SkullMeramon.MMD",
+      "sha256": "78e2809d258f506315a8c5864cc59ced977fdc86bf7ca9aa4894920df67baff1"
+    },
+    {
+      "source": "build/batch9/MarineDevimon.MMD",
+      "source_sha256": "7fe3e10007ab8c10138814acbe81460f2601ee9591877dfa88ce579a120fec9c",
+      "bones": 32,
+      "scale": 1.2509394070116275,
+      "target": "build/sizes-out/models/MarineDevimon.MMD",
+      "sha256": "54e7d40e8ce7ed1b5c44d2551e5b95508fd23aca84b1042efb544c0b19d3ef1c"
+    },
+    {
+      "source": "build/batch9/Pumpkinmon.MMD",
+      "source_sha256": "ff350960878f73bec24a201b304e5ede856f0e5ad8fd3b04106c87eb41461023",
+      "bones": 15,
+      "scale": 1.2873896150441713,
+      "target": "build/sizes-out/models/Pumpkinmon.MMD",
+      "sha256": "8ccbab70a8f14ab2c214c83b4e0b1929c829a06a11b698818582c6854ced6e38"
+    },
+    {
+      "source": "build/batch9/Cyclonemon.MMD",
+      "source_sha256": "cbbf16f621774b9fef48e0b364ad6118e62a7fceadd109add502f29235a7802d",
+      "bones": 23,
+      "scale": 1.3478911466810668,
+      "target": "build/sizes-out/models/Cyclonemon.MMD",
+      "sha256": "fe890cf792f4dd43a9278a2c3e4ae0ba86e6a680715b7b8da3ce4716bb28083c"
+    },
+    {
+      "source": "build/batch9/Boltmon.MMD",
+      "source_sha256": "6105eb3312c1849dfede47e00486cfef30506bdc7d52e67271850b127ceca722",
+      "bones": 17,
+      "scale": 1.2411913308485214,
+      "target": "build/sizes-out/models/Boltmon.MMD",
+      "sha256": "77a2cbf4357c230e492d337d06a38a4bc761ed0f766b4fdee73d6642e4f7b3ea"
+    },
+    {
+      "source": "build/batch10/ChaosLord.MMD",
+      "source_sha256": "4222cac809bffd8600d786aabd34e93ac30d40cf22d702941ecea861be93eb25",
+      "bones": 29,
+      "scale": 2.0063263047773296,
+      "target": "build/sizes-out/models/ChaosLord.MMD",
+      "sha256": "3f5516ceae854a21fc19434fee9b7c8aeabee43b37f03f01334c0cff0ae03073"
+    },
+    {
+      "source": "build/batch10/Clockmon.MMD",
+      "source_sha256": "a5dc947be89aa1f57f6e72609a918bc7884b8758250210f88c03ea2517b51f82",
+      "bones": 21,
+      "scale": 1.2100144137477948,
+      "target": "build/sizes-out/models/Clockmon.MMD",
+      "sha256": "eb90094a1eea7f476e4a87dcce683cbd49d3a6c9fb5c38e543b5b79d0487403c"
+    },
+    {
+      "source": "build/batch10/Dagomon.MMD",
+      "source_sha256": "0255b4a798900a01604ab37a389b68c6539e8e1bfe16e3dc9ff83c55666f0912",
+      "bones": 20,
+      "scale": 1.2073917662819922,
+      "target": "build/sizes-out/models/Dagomon.MMD",
+      "sha256": "195126ab7f59cf95559f3fc42e6b5a0664c17d89a6a3e93387347628d1996468"
+    },
+    {
+      "source": "build/batch10/Deltamon.MMD",
+      "source_sha256": "bfe472665d3da54f97bd8592aebb7f236e6476bea83528ff8f9c2f2da491698c",
+      "bones": 25,
+      "scale": 1.287719592035931,
+      "target": "build/sizes-out/models/Deltamon.MMD",
+      "sha256": "feac94f7d741e1e89db30a6c6b9b9bc45e1cb7c6c9d6e65a6f48a316e9938bee"
+    },
+    {
+      "source": "build/batch10/Gryphonmon.MMD",
+      "source_sha256": "a56287120f8c2062b635f852a3927e86f03707866a749223b55c7e2cae1af6c9",
+      "bones": 25,
+      "scale": 1.5213143625412342,
+      "target": "build/sizes-out/models/Gryphonmon.MMD",
+      "sha256": "6872d49bc55949002d4cc9cf72a904ed4590feb6f4ad4ef9c735977c79c55850"
+    },
+    {
+      "source": "build/batch10/Nanomon.MMD",
+      "source_sha256": "d63aaab72db40142c76bb24e5c3eb46d9b9f1a256ce9a7c715235a32cf7696b9",
+      "bones": 28,
+      "scale": 1.35,
+      "target": "build/sizes-out/models/Nanomon.MMD",
+      "sha256": "05b511d837396d973a0bc316010fa71223b757e8a182e3b87ac683d0896d15a1"
+    },
+    {
+      "source": "build/batch10/Grizzlymon.MMD",
+      "source_sha256": "0ef7306fa69dfca4a040ed1df96989e71d6761067e14230d51fe669cad89cb27",
+      "bones": 20,
+      "scale": 0.9589373800515513,
+      "target": "build/sizes-out/models/Grizzlymon.MMD",
+      "sha256": "c591fb700586c929abaa3ea8cf52c142fc16712a7eaf162c628bf502ac481077"
+    },
+    {
+      "source": "build/batch10/Marsmon.MMD",
+      "source_sha256": "9f5e9ca9d320e3c595cbe7210d1c8fec1bcc0e7d0e03b5065bcf08c6eae80c89",
+      "bones": 21,
+      "scale": 1.2534386848078942,
+      "target": "build/sizes-out/models/Marsmon.MMD",
+      "sha256": "853564fdabe73a38f1efcf40473a46c2501110de88c559846600175f58b16960"
+    },
+    {
+      "source": "build/batch10/GuardiAngemon.MMD",
+      "source_sha256": "81413640dcad2c5cb5d98cd6243120ce645f9c614d5ddfb3198c5f4af537f9b7",
+      "bones": 31,
+      "scale": 1.2365563536489368,
+      "target": "build/sizes-out/models/GuardiAngemon.MMD",
+      "sha256": "0e50ae1ced12cb28fb4f21e25dd163c77547493e9b869ba10b83cda2f25cbfa1"
+    },
+    {
+      "source": "build/batch11/HiAndromon.MMD",
+      "source_sha256": "493fd9ded170738172826eec68d856b9a1b730482283c2a0f7b11463485f6090",
+      "bones": 26,
+      "scale": 1.4700520908384735,
+      "target": "build/sizes-out/models/HiAndromon.MMD",
+      "sha256": "c3af668f2802e879132524d9c698c23d0688af5c7b8b0f0b14fbb05a88826700"
+    },
+    {
+      "source": "build/batch11/KingEtemon.MMD",
+      "source_sha256": "9e6a5fb0034659d4b9c3a1a6444af47d2b8dfc5f17547591410fe3f0907c309d",
+      "bones": 23,
+      "scale": 1.2771291564802274,
+      "target": "build/sizes-out/models/KingEtemon.MMD",
+      "sha256": "5cd1ffc6b118f828e68b00ed6ab3f598479dd2f5f799af6902fd1dff99f04014"
+    },
+    {
+      "source": "build/batch11/GrapLeomon.MMD",
+      "source_sha256": "11d32f0a904d7d9889cbffc2d8a8b0e143ddf3e65e73ae30a720bcec35c9fe22",
+      "bones": 28,
+      "scale": 0.9037823602929491,
+      "target": "build/sizes-out/models/GrapLeomon.MMD",
+      "sha256": "503158cbe9c5a7e63b0c30aaffac5908e28cd97104a37da3b692e0ca36ffeb38",
+      "legacy_source_sha256": "08e5a485e95b16b95cb96de22ce74f788a80062b65f2343cffa5d570223bd1c7",
+      "legacy_sha256": "31abeda53694265798d1d155155c9ba9631afaa6839fc660b7b70b51961a8472"
+    },
+    {
+      "source": "build/batch11/BK-KingNumemon.MMD",
+      "source_sha256": "9806fefa63c045307fc866d70e10af63a9b0ede325dfd4fac8a3de9aa84b7cf9",
+      "bones": 18,
+      "scale": 0.9593672895095345,
+      "target": "build/sizes-out/models/BK-KingNumemon.MMD",
+      "sha256": "606f1489afd5b9110a201c26fbaa2c4edbc65c134e4de86000f939300dc27e61"
+    },
+    {
+      "source": "build/batch11/Antylamon.MMD",
+      "source_sha256": "bd6cef2d6834bf048dc90a235d96ff91f1d00039e35cd9b766ed9c5d3bc9da1f",
+      "bones": 22,
+      "scale": 1.2900950704889997,
+      "target": "build/sizes-out/models/Antylamon.MMD",
+      "sha256": "75197950a83c9138304b3034d43201724bfa9d0e8a35f038ea10483d5f60e8d1"
+    },
+    {
+      "source": "build/batch11/Armormon.MMD",
+      "source_sha256": "d916fbf182bf1f543ff02d96de2a0159078c3cd94713c9c1444eb6536df0260c",
+      "bones": 29,
+      "scale": 1.083879797650215,
+      "target": "build/sizes-out/models/Armormon.MMD",
+      "sha256": "de841556f22114e517d220efa4e5a2abcdaa5aba6a014663ab2eae43ccc21431",
+      "legacy_source_sha256": "570433cc5ba961b7ae7779621ea4ffea39ed073adc2be13a9931a4bca9957115",
+      "legacy_sha256": "c419e8fd5ddbf535d1879ee9e071484f634192ba4e16bf941468cde4877fa0d4"
+    },
+    {
+      "source": "build/batch11/Arukenimon.MMD",
+      "source_sha256": "92c7cc57cf6d864704dec520244ce27be90cfdeeaff69966818974f83b95f344",
+      "bones": 25,
+      "scale": 1.186683143340057,
+      "target": "build/sizes-out/models/Arukenimon.MMD",
+      "sha256": "88de70088ae50d31f06cb35d49d3e509b768dd62cfc51040253c29bc1168a62c",
+      "legacy_source_sha256": "e570e71dba79815e4cda2856ec3abc8ec60f7ea1c1cc57a44c9f6a2a197c5374",
+      "legacy_sha256": "f575a51d7e72fd3e0d6c17679245ee0ada7a6a806372b604136e367b1349d13c"
+    },
+    {
+      "source": "build/batch11/Daemon.MMD",
+      "source_sha256": "9907671bd9bad281ddaa6bf82f2e09a4834abc7c8a7355087331384ec12e9f93",
+      "bones": 20,
+      "scale": 1.324711825589315,
+      "target": "build/sizes-out/models/Daemon.MMD",
+      "sha256": "367180a4684b364816d6d69995a5c280103b7bbb7a7db8ce36149b8296832136",
+      "legacy_source_sha256": "0283eb613f82b254ac64a319ce41478682a6314ee83b3fd8261884239a14899c",
+      "legacy_sha256": "435c31a426fa6d2ce148e032b106ac17e0da5ceb0010e2aab2224ee847d0d245"
+    },
+    {
+      "source": "build/batch12/SkullSatamon.MMD",
+      "source_sha256": "83af1b3d1782afb57b07b95d367827d16c9716dfc498d9de665f161b709e52e1",
+      "bones": 25,
+      "scale": 1.3085256285359539,
+      "target": "build/sizes-out/models/SkullSatamon.MMD",
+      "sha256": "2bd8db23e42499f89d64e325fc30c82d429d77ec0170fe65ccd25e5497c5e65e",
+      "legacy_source_sha256": "4fc69a5d7d6b0a26eb40c12cbe0c7662cbba254bcdfa8a9cf972c49c96bcf115",
+      "legacy_sha256": "5f579b52fdbc14a18b12d62ccf814d83629a6b92dba59caf6a3b6a6e39beeb45"
+    },
+    {
+      "source": "build/batch12/Taomon.MMD",
+      "source_sha256": "ee87cf87b3b433dbf26aee0d6b18159f525fd3585506cc8f41b2acd00bfddaec",
+      "bones": 29,
+      "scale": 0.9618341781458025,
+      "target": "build/sizes-out/models/Taomon.MMD",
+      "sha256": "abea58b80629ba70e64a2d091f2d26d31bfb5276c9393073f9dcafa55c82cb1a"
+    },
+    {
+      "source": "build/batch12/Sakuyamon.MMD",
+      "source_sha256": "e53b9901d1f16877e5bcfb8d7f1db6afaa9cf7668f97e86b3cc4339590b06f1c",
+      "bones": 27,
+      "scale": 1.2660163113468463,
+      "target": "build/sizes-out/models/Sakuyamon.MMD",
+      "sha256": "bfad51f26a53247ffcdb1feb650528abd6869737f46240d1cc732417b8ace08c",
+      "legacy_source_sha256": "53844bf5d1277fa06ee13a6041b5c4f2e2301ac18be74a0f3ba66130709be20a",
+      "legacy_sha256": "c5131685795a4b0bca074956b72e180f095d3596333c98b42fdf5e14fc7807d1"
+    },
+    {
+      "source": "build/batch12/Fujinmon.MMD",
+      "source_sha256": "e8a2f61d62403096fdd581a599fa525b8e1cfcff332ef31f26ef0c274a80bf8a",
+      "bones": 25,
+      "scale": 1.327167873218654,
+      "target": "build/sizes-out/models/Fujinmon.MMD",
+      "sha256": "9b40888f64b2450573e60e0691e10adc27bb3756915a56030dbf78ae02796d08"
+    },
+    {
+      "source": "build/batch12/Gallantmon.MMD",
+      "source_sha256": "a15a038608f536ffb1d204c62f66f5064c72f09aea094d337684c95f1da4b5e7",
+      "bones": 28,
+      "scale": 1.7203307271844468,
+      "target": "build/sizes-out/models/Gallantmon.MMD",
+      "sha256": "c3da9ad781580688de4fbaeeeb7720bdaa3944d1855c363cc0c881c5d3dcdab2",
+      "legacy_source_sha256": "eb41074ae3dc464bc51e716315c6735f4d79f8bb7cca1a733071df07c787ad87",
+      "legacy_sha256": "a66a33cbe2c2552cee795fc8b00b6bfad03cef4da6ed8d99dca2306d526dd687"
+    },
+    {
+      "source": "build/batch12/Pharaohmon.MMD",
+      "source_sha256": "45c624e95104bfd613343416c88819d68edf48c195a1ff9be2f8533ff201ae32",
+      "bones": 22,
+      "scale": 1.6263755408424068,
+      "target": "build/sizes-out/models/Pharaohmon.MMD",
+      "sha256": "5bf1eb7da946e94ef7ff53e9c22d25e647c18d441d0c410d4b630fb26e934dd5"
+    },
+    {
+      "source": "build/batch12/Knightmon.MMD",
+      "source_sha256": "f0ebeddc73b3d6172133df19a592ce2fac74a58d4b850b041124acd3041ba6b8",
+      "bones": 27,
+      "scale": 1.387076681852601,
+      "target": "build/sizes-out/models/Knightmon.MMD",
+      "sha256": "5f4f01fe45d19834aef49f9835ec65fe1186136c78fe2d3529eaf257ec762861"
+    },
+    {
+      "source": "build/batch12/Kyukimon.MMD",
+      "source_sha256": "1b0bfee793af4d93ee1f5e933d4a2b9e557768d9d84e6b72b101b23e5a58cecb",
+      "bones": 27,
+      "scale": 1.5714386807592606,
+      "target": "build/sizes-out/models/Kyukimon.MMD",
+      "sha256": "88bb9a8413ad78ab116322e3cc7be980c8f0f7b49473104730fe52ec8fc3db60"
+    },
+    {
+      "source": "build/batch12/Lynxmon.MMD",
+      "source_sha256": "4d9173fb0e3b2e079b922f96e935f23a7244c256db9a205410c0413654b203e0",
+      "bones": 24,
+      "scale": 1.2261996192541043,
+      "target": "build/sizes-out/models/Lynxmon.MMD",
+      "sha256": "f2b2fa4284686d5f20f9c1f3efd9d3046ccadf997f03245d5e54e811160abd41"
+    },
+    {
+      "source": "build/batch12/Maildramon.MMD",
+      "source_sha256": "14a33f059e33e3c2eca59384021cc7b86208fcd3af80a8fc440736e7ba34877e",
+      "bones": 30,
+      "scale": 1.3042336718197847,
+      "target": "build/sizes-out/models/Maildramon.MMD",
+      "sha256": "2c03904d93a3adb811d719f7e4e2e5ad11d3a5a31d98ae73757c993222ab9121",
+      "legacy_source_sha256": "35be4ad61d2563275d2fee099783327b2fe2c4e547ebba14e37d25c415b9e215",
+      "legacy_sha256": "8f96f1e99062dcaaa5fa9d7c8b137c4c7826b50637153c20637441848c9049fb"
+    },
+    {
+      "source": "build/batch12/Musyamon.MMD",
+      "source_sha256": "dd033620b3262d0d98519aae1bcadecc7272e518b97c089ee21cc06111704f78",
+      "bones": 28,
+      "scale": 1.1025456466906165,
+      "target": "build/sizes-out/models/Musyamon.MMD",
+      "sha256": "01e743d5d5b0cc2ba1154d3eae609d35860b8991f024336632234fd4bd8cf1f8",
+      "legacy_source_sha256": "f0c1d039e5b1479e0eb5441bc94d61df0c50b2a7345a99f439fe82b3db80a0b0",
+      "legacy_sha256": "c27bc901a83c761fbd9484733cba137161e62af5138d73a30d86f5031f9c61c0"
+    },
+    {
+      "source": "build/batch13/WarGrowlmon.MMD",
+      "source_sha256": "2e4818d36c6ada38a0bd66260614f6a37d2948f2192fb95245fb5b815cacbdc7",
+      "bones": 27,
+      "scale": 1.6650084767960134,
+      "target": "build/sizes-out/models/WarGrowlmon.MMD",
+      "sha256": "44a7c29f9cde2a29224ee7c750488091eb2ba493200ae582ff37bf25390d6840"
+    },
+    {
+      "source": "build/batch13/Snimon.MMD",
+      "source_sha256": "4f4e355a971a9e9a12aa12e12fa51a17f022ed0a383c0fd48f719e96a7222b58",
+      "bones": 30,
+      "scale": 1.0895385707287482,
+      "target": "build/sizes-out/models/Snimon.MMD",
+      "sha256": "e9937afdb1a565682467a7cfec660bd741ca4d016e73ee0664fdd136fb1d3097"
+    },
+    {
+      "source": "build/batch13/Ghoulmon.MMD",
+      "source_sha256": "ddbd9f96617dc0e6dc9f9ce6a3bebfaf43bee8edba6c8dc265f7ebd2cdb1e111",
+      "bones": 30,
+      "scale": 1.2952072610328282,
+      "target": "build/sizes-out/models/Ghoulmon.MMD",
+      "sha256": "0ab66b6933c8f622ab1eccba45ce03db075259dad0b80e817a0b7642ff9b4247"
+    },
+    {
+      "source": "build/batch13/Raijinmon.MMD",
+      "source_sha256": "1c6a193189a6ebde0d0eacd22e809ba54742237d1422c720d4fc5f1abac025bf",
+      "bones": 24,
+      "scale": 1.3172392215125368,
+      "target": "build/sizes-out/models/Raijinmon.MMD",
+      "sha256": "3ef42bed545cc48f12de1a24db2cea3325da3441724e76dfe3ee22ac5d54998e"
+    },
+    {
+      "source": "build/batch13/Mummymon.MMD",
+      "source_sha256": "111764d5049b841b584b56f67e28b68c16fad261895d096a0cd07e649b753d93",
+      "bones": 22,
+      "scale": 1.0850563863186846,
+      "target": "build/sizes-out/models/Mummymon.MMD",
+      "sha256": "258fd8a8a7ef0bbfd399b4350df9f09c780f17b873048abded13fd0e36d74456"
+    },
+    {
+      "source": "build/batch13/MegaGargomon.MMD",
+      "source_sha256": "dff80b60f1b572437ca4f24d0d2060cccd83564ac9c78140bd9afb76b6edc656",
+      "bones": 27,
+      "scale": 1.5378509623236152,
+      "target": "build/sizes-out/models/MegaGargomon.MMD",
+      "sha256": "aa18e4528e95bdf7db0c553002d8f7f0f70d736399b81314539ff75303dc1fc4"
+    },
+    {
+      "source": "build/batch13/Raidenmon.MMD",
+      "source_sha256": "a32d4cd6c4670ca12ff3636dfd796a4e569810d51d42688714fb7d6b2698ac28",
+      "bones": 24,
+      "scale": 1.6679278981456473,
+      "target": "build/sizes-out/models/Raidenmon.MMD",
+      "sha256": "aa88bc4fc671ead839a68d87bde1d6d1ee8d62ad4ec00607bb376090e25fae96"
+    }
+  ]
+}

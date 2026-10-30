@@ -1,0 +1,15 @@
+{
+  "id": 43,
+  "name": "Spiny green",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 9,
+    "weight": 1,
+    "tiredness": 50
+  }
+}

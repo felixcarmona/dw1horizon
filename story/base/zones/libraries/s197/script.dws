@@ -1,0 +1,44 @@
+// Readable form of script 197 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 197 {
+    npc piddomon0 = 5;
+    npc golemon = 6;
+    npc piddomon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7;
+
+    on enter replace {    // section 254
+        spawn_chest(item("sup.recovery"), 2053, 0, 3532, 0, 689);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -2779, 3457);
+        warp_to(254, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 2765, -2087);
+        warp_to(249, 1, 255);
+    }
+
+    on talk(piddomon0) replace {    // section 5
+        say(piddomon0, text("s197.sec5.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(golemon) replace {    // section 6
+        say(golemon, text("s197.sec6.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(piddomon2) replace {    // section 7
+        say(piddomon2, text("s197.sec7.u0"));
+        battle();
+        recruit(species("Piddomon"));
+        return;
+    }
+}

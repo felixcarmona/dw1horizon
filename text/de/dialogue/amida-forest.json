@@ -1,0 +1,212 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Geht es dir gut,",
+   "{color 10}{partner}{color 1}?! Gehen wir erst",
+   "mal zurück..."
+  ]
+ ],
+ "s018.sec10.u1": [
+  [
+   "Ups! Ich muss {color 10}{partner}{color 1}",
+   "heilen."
+  ]
+ ],
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Eindringling bestätigt..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Eindringling bestätigt...",
+   "Eindringling bestätigt..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Eindringling bestätigt...",
+   "Eindringling bestätigt... Feuer",
+   "wird vorbereitet..."
+  ]
+ ],
+ "s018.sec68.u0": [
+  [
+   "Dass du diesen ganzen Wald",
+   "durchquert hast... Ich muss",
+   "sagen, das ist beeindruckend."
+  ],
+  [
+   "Ich bin Centarumon.",
+   "Entschuldige bitte meine",
+   "bisherige Unhöflichkeit. Es tut"
+  ],
+  [
+   "mir leid. Ich habe dich nicht",
+   "aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich"
+  ],
+  [
+   "dir helfen."
+  ]
+ ],
+ "s018.sec68.u1": [
+  [
+   "Du hast diesen ganzen Wald",
+   "durchquert... Ich muss sagen,",
+   "du bist beeindruckend. Ich bin"
+  ],
+  [
+   "Centarumon. Verzeih mir mein",
+   "bisheriges grobes Verhalten.",
+   "Es tut mir leid. Ich habe dich"
+  ],
+  [
+   "nicht aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich",
+   "dir helfen."
+  ]
+ ],
+ "s018.sec68.u2": [
+  [
+   "Geh nun weiter. Ich erwarte",
+   "dich in der Stadt."
+  ]
+ ],
+ "s018.sec68.u3": "Centarumon ist in die Stadt gezogen!",
+ "s018.sec68.u4": [
+  [
+   "{color 10}{partner}{color 1}, wir werden wohl",
+   "ziemlich berühmt, hehe!"
+  ]
+ ],
+ "s018.sec68.u5": [
+  [
+   "Machen wir so weiter!"
+  ]
+ ],
+ "s018.sec68.u6": [
+  [
+   "Daneben!"
+  ]
+ ],
+ "s018.sec69.u0": [
+  [
+   "Dass du diesen ganzen Wald",
+   "durchquert hast... Ich muss",
+   "sagen, das ist beeindruckend."
+  ],
+  [
+   "Ich bin Centarumon.",
+   "Entschuldige bitte meine",
+   "bisherige Unhöflichkeit. Es tut"
+  ],
+  [
+   "mir leid. Ich habe dich nicht",
+   "aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich"
+  ],
+  [
+   "dir helfen."
+  ]
+ ],
+ "s018.sec69.u1": [
+  [
+   "Du hast diesen ganzen Wald",
+   "durchquert... Ich muss sagen,",
+   "du bist beeindruckend. Ich bin"
+  ],
+  [
+   "Centarumon. Verzeih mir mein",
+   "bisheriges grobes Verhalten.",
+   "Es tut mir leid. Ich habe dich"
+  ],
+  [
+   "nicht aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich",
+   "dir helfen."
+  ]
+ ],
+ "s018.sec69.u2": [
+  [
+   "Geh nun weiter. Ich erwarte",
+   "dich in der Stadt."
+  ]
+ ],
+ "s018.sec69.u3": "Centarumon ist in die Stadt gezogen!",
+ "s018.sec69.u4": [
+  [
+   "{color 10}{partner}{color 1}, wir werden wohl",
+   "ziemlich berühmt, hehe!"
+  ]
+ ],
+ "s018.sec69.u5": [
+  [
+   "Machen wir so weiter!"
+  ]
+ ],
+ "s018.sec69.u6": [
+  [
+   "Daneben!"
+  ]
+ ],
+ "s018.sec70.u0": [
+  [
+   "Dass du diesen ganzen Wald",
+   "durchquert hast... Ich muss",
+   "sagen, das ist beeindruckend."
+  ],
+  [
+   "Ich bin Centarumon.",
+   "Entschuldige bitte meine",
+   "bisherige Unhöflichkeit. Es tut"
+  ],
+  [
+   "mir leid. Ich habe dich nicht",
+   "aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich"
+  ],
+  [
+   "dir helfen."
+  ]
+ ],
+ "s018.sec70.u1": [
+  [
+   "Du hast diesen ganzen Wald",
+   "durchquert... Ich muss sagen,",
+   "du bist beeindruckend. Ich bin"
+  ],
+  [
+   "Centarumon. Verzeih mir mein",
+   "bisheriges grobes Verhalten.",
+   "Es tut mir leid. Ich habe dich"
+  ],
+  [
+   "nicht aus einer Laune heraus",
+   "geprüft. Von nun an möchte ich",
+   "dir helfen."
+  ]
+ ],
+ "s018.sec70.u2": [
+  [
+   "Geh nun weiter. Ich erwarte",
+   "dich in der Stadt."
+  ]
+ ],
+ "s018.sec70.u3": "Centarumon ist in die Stadt gezogen!",
+ "s018.sec70.u4": [
+  [
+   "{color 10}{partner}{color 1}, wir werden wohl",
+   "ziemlich berühmt, hehe!"
+  ]
+ ],
+ "s018.sec70.u5": [
+  [
+   "Machen wir so weiter!"
+  ]
+ ],
+ "s018.sec70.u6": [
+  [
+   "Daneben!"
+  ]
+ ]
+}

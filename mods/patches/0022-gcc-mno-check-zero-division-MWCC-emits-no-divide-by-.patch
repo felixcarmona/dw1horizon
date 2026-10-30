@@ -1,0 +1,32 @@
+From 24b481e5b7f464fe75827df8474cf08d50191fc5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 02:34:59 +0000
+Subject: [PATCH] gcc: -mno-check-zero-division (MWCC emits no divide-by-zero
+ trap)
+
+GCC guards every div with 'break 7'. The original code (MWCC) has none, so
+a division by zero just gives an undefined quotient there; in the GCC build
+it stopped the console (seen in processSomeArenaArrays while the arena win
+camera ran on corrupted data). The 40 'break 7' left are the PsyQ library's,
+the same as in the original executable.
+
+---
+ mk/toolchain/gcc.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mk/toolchain/gcc.mk b/mk/toolchain/gcc.mk
+index 217e293..bd6d54f 100644
+--- a/mk/toolchain/gcc.mk
++++ b/mk/toolchain/gcc.mk
+@@ -2,7 +2,7 @@ GCC_FLAGS = -g -Wall -Wextra -std=c99 -Os $(ARCHFLAGS) -G8 \
+ 	    -ffunction-sections -fdata-sections -fno-common \
+ 	    -fno-zero-initialized-in-bss -fno-builtin \
+ 	    -fno-strict-aliasing -fwrapv -fno-tree-switch-conversion \
+-	    -fno-delete-null-pointer-checks \
++	    -fno-delete-null-pointer-checks -mno-check-zero-division \
+ 	    -finput-charset=UTF-8 -fexec-charset=CP932
+ 
+ $(BUILD_DIR)/%.c.o: %.c
+-- 
+2.53.0
+

@@ -1,0 +1,122 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 212,
+ "type": 227,
+ "name": "Apemon",
+ "source": {
+  "type": 60,
+  "mmd": "extracted/CHDAT/MMD2/HKAB.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 4,
+  "3": 9,
+  "4": 11,
+  "5": 21,
+  "6": 12,
+  "7": 8,
+  "9": 19,
+  "10": 1,
+  "11": 20,
+  "12": 22,
+  "14": 24,
+  "15": 23,
+  "16": 18
+ },
+ "hips": [
+  9,
+  1,
+  0.751
+ ],
+ "root_scale": 0.751,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 68,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 68,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 78,
+   "end": 168,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 117,
+   "end": 197,
+   "hz": 0.3
+  },
+  "0x3c": {
+   "anim": "anim_03",
+   "start": 127,
+   "end": 223,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 26,
+   "end": 118,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 133,
+   "end": 234,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x35",
+  "0x36",
+  "0x38",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

@@ -1,0 +1,132 @@
+{
+  "screen": 342,
+  "review": "The raised rear walkway, supports, lamp and rope stay above the blocked flooded void, with no reachable underpass or stair. Both lower entry posts intersect character bodies near the side paths and receive SAM foreground silhouettes. The upper and lower levels remain disconnected.",
+  "collision": [],
+  "pieces": [
+    {
+      "png": "342-west-entry-post.png",
+      "depth": [
+        78,
+        327
+      ],
+      "at": [
+        40,
+        194
+      ],
+      "segmentation": {
+        "box": [
+          40,
+          189,
+          98,
+          339
+        ],
+        "positive": [
+          [
+            60,
+            212
+          ],
+          [
+            70,
+            270
+          ],
+          [
+            80,
+            317
+          ]
+        ],
+        "negative": [
+          [
+            95,
+            275
+          ],
+          [
+            44,
+            300
+          ],
+          [
+            104,
+            330
+          ]
+        ],
+        "score": 0.9698036909103394,
+        "area": 3217,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "342-east-entry-post.png",
+      "depth": [
+        847,
+        490
+      ],
+      "at": [
+        830,
+        333
+      ],
+      "segmentation": {
+        "box": [
+          824,
+          284,
+          878,
+          495
+        ],
+        "positive": [
+          [
+            860,
+            321
+          ],
+          [
+            853,
+            400
+          ],
+          [
+            844,
+            470
+          ]
+        ],
+        "negative": [
+          [
+            822,
+            400
+          ],
+          [
+            880,
+            430
+          ],
+          [
+            823,
+            490
+          ]
+        ],
+        "score": 0.9250813126564026,
+        "area": 4109,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/flooded-gallery-2400x1792.png",
+    "source_sha1": "ce1dc9dd7b4fd33a4d60387e3370cce056068cc5",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact."
+}

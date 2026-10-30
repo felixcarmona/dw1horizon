@@ -1,0 +1,46 @@
+From 5117d2084f6da29860e5d611af18fc48db515f19 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 03:13:04 +0000
+Subject: [PATCH] 60 fps step 4: new-game scene through the helper
+
+newGameScene (Jijimon's questions and the naming screen) renders through
+modTickStart/modPresent with MOD_PRESENT_BATTLE (it sets the 2D origin
+after VSync). A new game played to free control in File City with 3
+renders per tick shows 3.0 renders per tick in the scene (dynarec).
+
+---
+ src/main/main.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 6eb150c..472d369 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3696,6 +3696,8 @@ void newGameScene(void)
+ 	loadNewGameScene();
+ 
+ 	do {
++		/* MOD (fps): rendered by the shared tick / present helper */
++		modTickStart(MOD_PRESENT_BATTLE);
+ 		pollInputGame();
+ 		ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 		ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+@@ -3713,14 +3715,7 @@ void newGameScene(void)
+ 		}
+ 
+ 		tickObjects();
+-		renderObjects();
+-		applyDrawOffset(ACTIVE_FRAMEBUFFER);
+-		DrawSync(0);
+-		VSync(3);
+-		GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+-		GsSwapDispBuff();
+-		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+-		GsDrawOt(ACTIVE_ORDERING_TABLE);
++		modPresent(MOD_PRESENT_BATTLE, NULL);
+ 
+ 		if ((done == 1) && (FADE_OUT_CURRENT == 0)) {
+ 			fadeToBlack(0x28);
+-- 
+2.53.0
+

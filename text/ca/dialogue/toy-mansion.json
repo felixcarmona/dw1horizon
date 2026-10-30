@@ -1,0 +1,264 @@
+{
+ "s141.sec81.u0": [
+  [
+   "No s'obre."
+  ]
+ ],
+ "s142.sec5.u0": [
+  [
+   "A veure, quin és el premiat?"
+  ]
+ ],
+ "s142.sec6.u0": [
+  [
+   "D'aquí no passes!"
+  ]
+ ],
+ "s142.sec7.u0": [
+  [
+   "Només un de cada tres té",
+   "premi!"
+  ]
+ ],
+ "s143.sec5.u0": [
+  [
+   "ELIMINEU L'ENEMIC!"
+  ]
+ ],
+ "s143.sec6.u0": [
+  [
+   "INTRUSIÓ ENEMIGA",
+   "CONFIRMADA!"
+  ]
+ ],
+ "s144.sec5.u0": "QuÈ pAsSa ArAa?",
+ "s144.sec6.u0": "FoRa D'aQuÍ!",
+ "s144.sec7.u0": [
+  [
+   "No Et FiQuIs AmB mI!"
+  ]
+ ],
+ "s145.sec5.m0.o0": "La caixa gran!",
+ "s145.sec5.m0.o1": "La caixa petita!",
+ "s145.sec5.u0": [
+  [
+   "Tu! S'han acabat les",
+   "entremaliadures, entesos?"
+  ]
+ ],
+ "s145.sec5.u1": [
+  [
+   "Sí, sí. Segur que nooo."
+  ]
+ ],
+ "s145.sec5.u2": [
+  [
+   "Mmm, sembla que aquesta és",
+   "l'última habitació."
+  ]
+ ],
+ "s145.sec5.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Quiiina serà?"
+  ]
+ ],
+ "s145.sec5.u4": [
+  [
+   "Aquesta veu... WaruMonzaemon!",
+   "Una caixa gran i una petita,",
+   "eh? Je, et tinc calat!"
+  ]
+ ],
+ "s145.sec5.u5": [
+  [
+   "Eh? Aaaaaah!"
+  ]
+ ],
+ "s145.sec5.u6": [
+  [
+   "Buahaha! Ximple, ximple!",
+   "Erraaaada!"
+  ]
+ ],
+ "s145.sec5.u7": [
+  [
+   "Així que m'havies descobeeert,",
+   "eh?! He, he, he. El cor t'ha",
+   "fet un salt?"
+  ]
+ ],
+ "s145.sec5.u8": [
+  [
+   "Renoi! Deixa de prendre'm el",
+   "pèl!"
+  ]
+ ],
+ "s145.sec5.u9": [
+  [
+   "Vaja, vaja, quin geni que",
+   "tenim! I què vols? Véns a ser",
+   "un dels meus sequaços? He, he."
+  ]
+ ],
+ "s145.sec5.u10": [
+  [
+   "Torna'm l'amic que has",
+   "segrestat!"
+  ]
+ ],
+ "s145.sec5.u11": [
+  [
+   "Un amic? No sé de què em",
+   "parles. Tinc jo pinta de fer",
+   "una cosa així?"
+  ]
+ ],
+ "s145.sec5.u12": [
+  [
+   "...Doncs sí."
+  ]
+ ],
+ "s145.sec5.u13": [
+  [
+   "Buahaha! Sí? Ding, ding! Sííí,",
+   "he estat jooo! Però no penso",
+   "tornar-lo. Que sóc",
+   "WaruMonzaemon, oi?"
+  ]
+ ],
+ "s145.sec5.u14": [
+  [
+   "Si és així, ho recuperaré per",
+   "la força!"
+  ]
+ ],
+ "s145.sec5.u15": [
+  [
+   "Eh? Eh? Què has dit? Era un",
+   "acudit? Tu, guanyar-me a mi?",
+   "Ah, ja ho veig. Sí, sí. Vaja,",
+   "has de baixar dels núvols!"
+  ]
+ ],
+ "s145.sec5.u16": [
+  [
+   "I ara, torna'm l'amic que has",
+   "segrestat."
+  ]
+ ],
+ "s145.sec5.u17": [
+  [
+   "Aaargh... Que fort... No pot",
+   "seeer... No puc perdre contra",
+   "tuuu..."
+  ]
+ ],
+ "s145.sec5.u18": [
+  [
+   "Vinga!"
+  ]
+ ],
+ "s145.sec5.u19": [
+  [
+   "D'acooord, com vulguis. Té."
+  ]
+ ],
+ "s145.sec5.u20": [
+  [
+   "Eh? Aaaaaah... Eh, espera un",
+   "moment!"
+  ]
+ ],
+ "s145.sec5.u21": [
+  [
+   "T-tu! Para d'una vegada!!"
+  ]
+ ],
+ "s145.sec5.u22": [
+  [
+   "Era només una broma, val? Aquí",
+   "tens el de debò!"
+  ]
+ ],
+ "s145.sec5.u23": [
+  [
+   "Eh, i això què és? No és més",
+   "que un engranatge."
+  ]
+ ],
+ "s145.sec5.u24": [
+  [
+   "Doncs clar."
+  ]
+ ],
+ "s145.sec5.u25": [
+  [
+   "...Així que aquest és l'amic?"
+  ]
+ ],
+ "s145.sec5.u26": [
+  [
+   "No em vaig emportar res més.",
+   "Paraula."
+  ]
+ ],
+ "s145.sec5.u27": [
+  [
+   "Suposo que de moment m'ho",
+   "emporto..."
+  ]
+ ],
+ "s145.sec5.u28": [
+  [
+   "Tu! S'han acabat les",
+   "entremaliadures, entesos?"
+  ]
+ ],
+ "s145.sec5.u29": [
+  [
+   "Sí, sí. Segur que nooo."
+  ]
+ ],
+ "s145.sec5.u30": [
+  [
+   "Uf, no m'ho crec. Però no puc",
+   "perdre tot el temps amb tu."
+  ]
+ ],
+ "s145.sec5.u31": [
+  [
+   "Oh, no! Porto massa objectes.",
+   "N'haig de llençar algun."
+  ]
+ ],
+ "s145.sec5.u32": [
+  [
+   "Has aconseguit l'{color 6}Engranatge{color 1}!"
+  ]
+ ],
+ "s145.sec6.u0": [
+  [
+   "Eh? I tu qui ets!?"
+  ]
+ ],
+ "s145.sec6.u1": [
+  [
+   "Nanimon, això és el que sóc!"
+  ]
+ ],
+ "s145.sec6.u2": [
+  [
+   "Has aconseguit el {color 4}Clauer",
+   "dimensional{color 1}! Ara pots portar",
+   "fins a 20 objectes!"
+  ]
+ ],
+ "s145.sec6.u3": [
+  [
+   "Has aconseguit el {color 4}Clauer",
+   "dimensional{color 1}! Ara pots portar",
+   "fins a 30 objectes!"
+  ]
+ ]
+}

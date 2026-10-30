@@ -1,0 +1,135 @@
+{
+ "s040.sec5.u0": [
+  [
+   "Hä? Wer zum Henker bist du?",
+   "Hau ab!"
+  ]
+ ],
+ "s040.sec5.u1": [
+  [
+   "Was, ist das dein Zuhause?"
+  ]
+ ],
+ "s040.sec5.u2": [
+  [
+   "Das darf ich dir nicht sagen!"
+  ]
+ ],
+ "s040.sec5.u3": [
+  [
+   "...Also hältst du hier Wache",
+   "oder so?"
+  ]
+ ],
+ "s040.sec5.u4": [
+  [
+   "Was, willst du Streit?! Ich",
+   "mache dich platt!"
+  ]
+ ],
+ "s040.sec5.m0.o0": "Gut, kämpfen wir",
+ "s040.sec5.m0.o1": "Ich falle nicht darauf rein",
+ "s040.sec5.u5": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u6": [
+  [
+   "Oh nein...! ...Heee!"
+  ]
+ ],
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hihihihi..."
+  ]
+ ],
+ "s040.sec5.u8": [
+  [
+   "Huh? Wer ist da?"
+  ]
+ ],
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "Wir haben nichts verbrochen.",
+   "Platze nicht einfach bei",
+   "anderen rein! Hehe."
+  ]
+ ],
+ "s040.sec5.u10": [
+  [
+   ". . Ich muss später",
+   "wiederkommen."
+  ]
+ ],
+ "s040.sec5.u11": [
+  [
+   "Na dann, viel Glück beim",
+   "Wachehalten."
+  ]
+ ],
+ "s040.sec5.u12": [
+  [
+   "Hm...? Habe ich dich nicht",
+   "schon mal gesehen...? Genau, du",
+   "warst in Ogremons"
+  ],
+  [
+   "Räuberbande! Das ist also euer",
+   "Versteck."
+  ]
+ ],
+ "s040.sec5.u13": [
+  [
+   "...W-wovon redest du?"
+  ]
+ ],
+ "s040.sec5.u14": [
+  [
+   "Letztes Mal bist du mir",
+   "entwischt! Jetzt mach dich",
+   "bereit!"
+  ]
+ ],
+ "s040.sec5.m1.o0": "Gut, kämpfen wir",
+ "s040.sec5.m1.o1": "Ich falle nicht darauf rein",
+ "s040.sec5.u15": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u16": [
+  [
+   "Letztes Mal hast du mich ganz",
+   "schön reingelegt. Ich dachte,",
+   "ihr hättet euer Versteck"
+  ],
+  [
+   "verlegt, aber... ihr lasst es",
+   "euch gut gehen!"
+  ]
+ ],
+ "s040.sec5.u17": [
+  [
+   "...W-wovon redest du?"
+  ]
+ ],
+ "s040.sec5.u18": [
+  [
+   "Diesmal entkommst du mir nicht!"
+  ]
+ ],
+ "s040.sec5.u19": [
+  [
+   "Komm, lass mich rein."
+  ]
+ ],
+ "s040.sec5.u20": [
+  [
+   "Was, willst du Streit?! Ich",
+   "mache dich platt!"
+  ]
+ ]
+}

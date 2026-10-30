@@ -1,0 +1,102 @@
+// Readable form of script 31 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 31 {
+    npc meramon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Off. Chip"), -582, 0, 1062, 0, 694);
+        spawn_chest(item("Medicine"), -1129, 0, 1032, 0, 695);
+    }
+
+    on step(0) replace {    // section 51
+        if (is_recruited(species("Tokomon"))) {
+            unless (!is_recruited(species("Meramon"))) return;
+            camera_on(meramon, speed: 20);
+            await camera;
+            say(meramon, text("s031.sec51.u14"));
+            face(meramon, tamer);
+            entity_walk_to_entity(partner, 1, tamer);
+            await partner;
+            battle(foes: [meramon]);
+            face(tamer, meramon);
+            face(meramon, tamer);
+            face(partner, meramon);
+            say(meramon, text("s031.sec51.u15"));
+            say(tamer, text("s031.sec51.u16"));
+        } else {
+            recruit(species("Tokomon"));
+            say(tamer, text("s031.sec51.u0"));
+            face(tamer, meramon);
+            face(partner, meramon);
+            camera_on(meramon, speed: 20);
+            await camera;
+            say(meramon, text("s031.sec51.u1"));
+            animate(meramon, 28);
+            wait(1s);
+            call_routine(routine("meramon_shake"));
+            sound(8, 4);
+            wait(1s);
+            sound(8, 4);
+            wait(1s);
+            sound(8, 4);
+            wait(10);
+            run(tamer, -1210, -193);
+            run(partner, -1468, -473);
+            await tamer;
+            await partner;
+            face(tamer, meramon);
+            face(partner, meramon);
+            native_forest_rockslide_cleared = true;
+            wait(1s);
+            animate(tamer, 7);
+            wait(1s);
+            say(tamer, text("s031.sec51.u2"));
+            wait(1s);
+            face(meramon, tamer);
+            say(meramon, text("s031.sec51.u3"));
+            battle(foes: [meramon]);
+            face(tamer, meramon);
+            face(meramon, tamer);
+            face(partner, meramon);
+            say(meramon, text("s031.sec51.u4"));
+            animate(tamer, 7);
+            wait(1s);
+            say(tamer, text("s031.sec51.u5"));
+            say(meramon, text("s031.sec51.u6"));
+        }
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s031.sec51.u7"));
+        say(meramon, text("s031.sec51.u8"));
+        animate(tamer, 7);
+        wait(1s);
+        say(tamer, text("s031.sec51.u9"));
+        say(meramon, text("s031.sec51.u10"));
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s031.sec51.u11"));
+        wait(1s);
+        say(meramon, text("s031.sec51.u12"));
+        walk_away(meramon, 691, -1990, looks: 10, pause: 10);
+        join_city(meramon, species("Meramon"), 8, 8, text("s031.sec51.u13"), prosperity: 2);
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 1000, -4200);
+        if (is_recruited(species("Meramon"))) {
+            warp_to(122, 1, 255);
+        }
+        warp_to(30, 1, 255);
+        return;
+    }
+}

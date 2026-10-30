@@ -1,0 +1,129 @@
+From 82bada25a50390921f8d910165103d0e8f31f01b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 03:04:53 +0000
+Subject: [PATCH] Move helpers used only by loaded overlays out of main
+
+---
+ config/us/overlay.ld | 57 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index f8c0a7df..e2141f26 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -85,6 +85,16 @@ SECTIONS
+ 			BUILD_DIR/src/main/battle_ui.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/btl.c.o(.text.modBattleFleeStart);
++            BUILD_DIR/src/main/btl.c.o(.text.modBattleLoadFinish);
++            BUILD_DIR/src/main/buff_model.c.o(.text.removeBuffModelObject);
++            BUILD_DIR/src/main/item.c.o(.text.spawnDroppedItems);
++            BUILD_DIR/src/main/map.c.o(.text.getRViewCopy);
++            BUILD_DIR/src/main/map.c.o(.text.getViewportDistanceCopy);
++            BUILD_DIR/src/main/script_common.c.o(.text.econPercent);
++            . = ALIGN(., 4);
++
+ 			/* Trailer */
+ 			LONG(0);
+ 
+@@ -115,6 +125,10 @@ SECTIONS
+ 			LONG(0);
+ 
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/script_common.c.o(.text.renderVerticalLine);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -172,6 +186,16 @@ SECTIONS
+ 			LONG(0);
+ 
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/efe.c.o(.text.setEFEFlashOffset);
++            BUILD_DIR/src/main/evolution.c.o(.text.reincarnatePartner);
++            BUILD_DIR/src/main/map.c.o(.text.DOOA_getStoredDigimonY);
++            BUILD_DIR/src/main/map.c.o(.text.DOOA_storeDigimonY);
++            BUILD_DIR/src/main/partner.c.o(.text.setSomeDyingState);
++            BUILD_DIR/src/main/partner_impl.c.o(.text.initializeReincarnatedPartner);
++            BUILD_DIR/src/main/partner_impl.c.o(.text.setReincarnateStats);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -256,6 +280,14 @@ SECTIONS
+ 
+ 			BUILD_DIR/src/evl/evl.c.o(.bss.*);
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/evolution.c.o(.text.evoFlag);
++            BUILD_DIR/src/main/map.c.o(.text.downloadCLUT2);
++            BUILD_DIR/src/main/map.c.o(.text.fadeoutCLUT2);
++            BUILD_DIR/src/main/partner_impl.c.o(.text.initializeEvolvedPartner);
++            BUILD_DIR/src/main/script_interp.c.o(.text.forceUpdateBGM);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -289,6 +321,12 @@ SECTIONS
+ 			BUILD_DIR/src/fish/fish.c.o(.bss.*);
+ 			BUILD_DIR/src/fish/fish_model.c.o(.bss.*);
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/vecmath.c.o(.text.mapToWorldPosition);
++            BUILD_DIR/src/main/vecmath.c.o(.text.rotateVector);
++            BUILD_DIR/src/main/vecmath.c.o(.text.transposeRefMatrix);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -627,6 +665,10 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			BUILD_DIR/src/trn/trn_slots.c.o(.bss.*);
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/overworld.c.o(.text.moveMapObjects);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -728,6 +770,10 @@ SECTIONS
+ 			LONG(0);
+ 
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/sound.c.o(.text.VSLoadSounds);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ 
+@@ -826,6 +872,17 @@ SECTIONS
+ 
+ 			LONG(0);
+ 			. = ALIGN(., 4);
++            /* Resident helpers reached only by this loaded overlay (xref). */
++            BUILD_DIR/src/main/main_menu.c.o(.text.modFlagPixel);
++            BUILD_DIR/src/main/main_menu.c.o(.text.modFlagRect);
++            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionBytes);
++            BUILD_DIR/src/main/main_menu.c.o(.text.modOptionCount);
++            BUILD_DIR/src/main/main_menu.c.o(.text.swapPartnerSpecies);
++            BUILD_DIR/src/main/mod_options.c.o(.text.modFrameRate);
++            BUILD_DIR/src/main/mod_species.c.o(.text.getSpeciesVanillaAs);
++            BUILD_DIR/src/main/sjis.c.o(.text.asciiToShiftJIS);
++            . = ALIGN(., 4);
++
+ 		}
+ 	}
+ }
+-- 
+2.55.0
+

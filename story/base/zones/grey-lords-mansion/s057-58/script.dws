@@ -1,0 +1,27 @@
+// Readable form of script 57 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 57 {
+    npc tsukaimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 81;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(tsukaimon) replace {    // section 5
+        say(tsukaimon, text("s057.sec5.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -1400, 300);
+        warp_to(57, 3, 255);
+        return;
+    }
+}

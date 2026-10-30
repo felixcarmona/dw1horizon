@@ -1,0 +1,31 @@
+{
+  "format": 1,
+  "music": [
+    {
+      "screen": 218,
+      "font": 34
+    },
+    {
+      "screen": 13,
+      "font": 35
+    }
+  ],
+  "banks": {
+    "indexed": [
+      "VBALL",
+      "VLALL",
+      "ESALL"
+    ],
+    "music": "FAALL",
+    "instruments_font": 28,
+    "theme_font": 34,
+    "program_map": "0=7,6=8",
+    "pad_program": 7,
+    "bell_program": 8,
+    "sources": {
+      "song": "content/sound/house-theme/canon.mid",
+      "pad": "content/sound/house-theme/pad.wav",
+      "bell": "content/sound/house-theme/bell.wav"
+    }
+  }
+}

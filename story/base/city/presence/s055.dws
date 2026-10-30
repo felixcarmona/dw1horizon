@@ -1,0 +1,10 @@
+// Who stands on screen 55 (Grey Lord's Mansion), and when. Read out of MAPHEAD.SCN section 55 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(55) {                              // Grey Lord's Mansion
+            npc 177 slot 0 when trigger(128) and not trigger(356) or recruited(Skullgreymon);
+        }
+    }
+}

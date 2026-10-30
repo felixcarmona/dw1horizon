@@ -1,0 +1,33 @@
+{
+  "id": 139,
+  "name": "Gabumon",
+  "level": "rookie",
+  "attribute": "data",
+  "specialties": ["battle", null, "fire"],
+  "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Tremar", "War Cry", "Blue Blaster"],
+  "drop": {"item": "MP Chip", "percent": 0},
+  "effects_like": 17,
+  "model": {"name": "EGAB", "bones": 22, "radius": 130, "height": 260},
+  "voice": 15,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 1100, "mp": 1400, "off": 390, "def": 200, "speed": 70, "brain": 100, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

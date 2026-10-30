@@ -1,0 +1,636 @@
+From 4ab126aa8256a6ff40e634aebf918ba7262b3d4d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:12:05 +0000
+Subject: [PATCH] 60 fps step 1: map camera, map sprites, mist, snow and
+ Ninjamon in the late tick
+
+renderMap scrolled the camera (tickCameraFollowPlayer, with its VRAM tile
+uploads and DrawSync), checked the daytime transition, animated the map
+sprites, mist and snow (snow drew from the gameplay rand()) and stored
+CAMERA_*_PREVIOUS. All of that is now lateTickMap, the late tick of the map
+object 0xFA0, in the same order; renderMap only builds the tile and sprite
+prims.
+
+The map sprites were advanced after each one's prim was built, so the late
+tick (tickMapOverlays) first records what the render has to draw this tick
+(frame, position, layer, kind) and then advances: renderMapOverlays draws
+exactly what the original drew. Snowflakes move x before drawing and y after,
+plus a per-tick jitter, also recorded. The Ninjamon effect (object 0xFBA,
+render only, moved the sprites with randomLimit) becomes a late tick.
+
+rand() is consumed once per tick by the snow, as with one render per tick.
+
+---
+ include/dw/map.h     |   1 +
+ src/main/map.c       |  55 +++---
+ src/main/overworld.c | 390 ++++++++++++++++++++++++++-----------------
+ 3 files changed, 273 insertions(+), 173 deletions(-)
+
+diff --git a/include/dw/map.h b/include/dw/map.h
+index 299a342..75a671c 100644
+--- a/include/dw/map.h
++++ b/include/dw/map.h
+@@ -77,5 +77,6 @@ void initializeDrawingOffsets(MapTileData *tiles);
+ void clearMapObjects(LocalMapObjectInstance *instances);
+ void calcMapObjectOrder(LocalMapObjectInstance *instances);
+ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX, int16_t screenY);
++void tickMapOverlays(LocalMapObjectInstance *instances, int16_t screenX, int16_t screenY);
+ 
+ #endif
+diff --git a/src/main/map.c b/src/main/map.c
+index e12526b..a04f957 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -143,6 +143,12 @@ void moveCameraByDiff(VECTOR *from, VECTOR *to);
+ void readMapTFS(int32_t mapId);
+ void renderFXParticle(SVECTOR *pos, int32_t size, RGB8 *color);
+ void renderMap(int32_t arg0);
++void lateTickMap(int32_t arg0);
++/* MOD (fps): see dw/mod_fps.h (not included: this file declares addObject
++ * with other parameter types) */
++int32_t addObjectLate(int32_t objectId, int32_t instanceId,
++		      void (*tick)(int32_t), void (*lateTick)(int32_t),
++		      void (*render)(int32_t));
+ void renderMapName(int32_t instanceId);
+ void renderSprite(GsSPRITE *sprite, int16_t x, int16_t y, int32_t distance, int32_t width, int32_t height);
+ void setCameraFollowPlayer(void);
+@@ -4068,30 +4074,21 @@ void initializeMap(void)
+ 	CURRENT_TIME_OF_DAY = 0;
+ 	CAMERA_UPDATE_TILES = 0;
+ 	SKIP_MAP_FILE_READ = 0;
+-	addObject(0xfa0, 0, 0, renderMap);
++	addObjectLate(0xfa0, 0, NULL, lateTickMap, renderMap);
+ 	DAYTIME_TRANSITION_ACTIVE = 0;
+ 	SKIP_DAYTIME_TRANSITION = 0;
+ }
+ 
+-void renderMap(int32_t arg0)
++/* MOD (fps): what renderMap used to change, once per tick after all the
++ * object ticks (the camera follow with its tile uploads, the daytime check,
++ * the map sprite/mist/snow animation, the previous camera position), in the
++ * order renderMap did it. */
++void lateTickMap(int32_t arg0)
+ {
+-	POLY_FT4 *prim;
+-	GsOT_TAG *ot;
+-	int16_t startTile;
+-	int16_t stride;
+-	int16_t columns;
+ 	int8_t skipTimeOfDay;
+-	int32_t col;
+-	int32_t row;
+ 
+ 	tickCameraFollowPlayer();
+ 
+-	startTile = MAP_TILE_X + ((long)MAP_TILE_Y * MAP_TILE_DATA.width);
+-	columns = stride = MAP_TILE_DATA.width;
+-	if (stride > 3) {
+-		columns = 4;
+-	}
+-
+ 	skipTimeOfDay = MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40;
+ 	if ((skipTimeOfDay == 0) && ((CURRENT_FRAME % 1200) == 0)) {
+ 		if (HOUR == 16) {
+@@ -4107,6 +4104,29 @@ void renderMap(int32_t arg0)
+ 		}
+ 	}
+ 
++	tickMapOverlays(MAP_TILE_DATA.objects,
++			MAP_TILE_DATA.cameraX, MAP_TILE_DATA.cameraY);
++
++	CAMERA_X_PREVIOUS = MAP_TILE_DATA.cameraX;
++	CAMERA_Y_PREVIOUS = MAP_TILE_DATA.cameraY;
++}
++
++void renderMap(int32_t arg0)
++{
++	POLY_FT4 *prim;
++	GsOT_TAG *ot;
++	int16_t startTile;
++	int16_t stride;
++	int16_t columns;
++	int32_t col;
++	int32_t row;
++
++	startTile = MAP_TILE_X + ((long)MAP_TILE_Y * MAP_TILE_DATA.width);
++	columns = stride = MAP_TILE_DATA.width;
++	if (stride > 3) {
++		columns = 4;
++	}
++
+ 	ot = ACTIVE_ORDERING_TABLE->org;
+ 
+ 	for (row = 0; row < 3; row++) {
+@@ -4139,9 +4159,6 @@ void renderMap(int32_t arg0)
+ 
+ 	renderMapOverlays(MAP_TILE_DATA.objects,
+ 			  MAP_TILE_DATA.cameraX, MAP_TILE_DATA.cameraY);
+-
+-	CAMERA_X_PREVIOUS = MAP_TILE_DATA.cameraX;
+-	CAMERA_Y_PREVIOUS = MAP_TILE_DATA.cameraY;
+ }
+ 
+ void loadMap(int16_t mapId)
+@@ -5569,7 +5586,7 @@ void renderMapName(mapId)
+ void reinitializeAfterTournament(void)
+ {
+ 	addObject(0xfa2, 0, tickGameClock, renderGameClock);
+-	addObject(0xfa0, 0, NULL, renderMap);
++	addObjectLate(0xfa0, 0, NULL, lateTickMap, renderMap);
+ #if VERSION_IS(JP)
+ 	addObject(0xfa6, 0, tickConditions, NULL);
+ #endif
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 641351f..439a2da 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -4,6 +4,7 @@
+ #include <dw/clock.h>
+ #include <dw/ids.h>
+ #include <dw/map.h>
++#include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/partner.h>
+ #include <dw/std.h>
+@@ -85,6 +86,10 @@ void scriptNPCStartAnimation(uint8_t scriptId, int8_t animId);
+ 
+ void renderPlayerMenu(void);
+ void renderMist(void);
++void tickMist(void);
++int32_t isMistActive(void);
++int8_t tickSnowflake(LocalMapObjectInstance *inst);
++void lateTickNinjamonEffect(int32_t instanceId);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int32_t posX, int32_t posY,
+                        int32_t width, int32_t height);
+ void setUVDataPolyFT4(POLY_FT4 *prim, int32_t uPos, int32_t vPos,
+@@ -430,12 +435,40 @@ void calcMapObjectOrder(LocalMapObjectInstance *instances)
+ 	}
+ }
+ 
+-void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+-                       int16_t screenY)
++/* MOD (fps): the map sprites (animated overlays, mist, snow) used to be
++ * advanced while they were drawn, after each sprite's prim was built. The
++ * advance now runs once per tick in tickMapOverlays (late tick of the map
++ * object, see lateTickMap), which first records what renderMapOverlays has to
++ * draw this tick (the state before the advance, as the original drew it). */
++typedef struct {
++	int16_t x;
++	int16_t y;
++	int16_t orderValue;
++	int8_t frame;
++	int8_t kind; /* 0 not drawn, 1 map sprite, 2 screen sprite, 3 snowflake */
++} ModOverlayDraw;
++
++static ModOverlayDraw MOD_OVERLAY_DRAW[188];
++
++static void advanceMapOverlayFrame(LocalMapObjectInstance *instances,
++                                   int16_t startFrame)
++{
++	instances->timer++;
++	if (instances->timer == instances->animTimes[startFrame]) {
++		instances->currentFrame++;
++		instances->timer = 0;
++		if (instances->animSprites[instances->currentFrame] == -1 ||
++		    instances->currentFrame >= 8) {
++			instances->currentFrame = 0;
++		}
++	}
++}
++
++void tickMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
++                     int16_t screenY)
+ {
+-	POLY_FT4 *prim;
+ 	LocalMapObject *obj;
+-	GsOT_TAG *org;
++	ModOverlayDraw *draw;
+ 	int32_t i;
+ 	int16_t startFrame;
+ 
+@@ -443,14 +476,13 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 		return;
+ 	}
+ 
+-	if ((CURRENT_SCREEN >= 115 && CURRENT_SCREEN < 120) ||
+-	    CURRENT_SCREEN == 121 || CURRENT_SCREEN == 163 ||
+-	    CURRENT_SCREEN == 220) {
+-		renderMist();
++	if (isMistActive()) {
++		tickMist();
+ 	}
+ 
+-	org = ACTIVE_ORDERING_TABLE->org;
+ 	for (i = 0; i < 188; i++) {
++		draw = &MOD_OVERLAY_DRAW[i];
++		draw->kind = 0;
+ 		startFrame = instances->currentFrame;
+ 		if (instances->animSprites[startFrame] == -1 || startFrame == -1) {
+ 			instances++;
+@@ -466,169 +498,206 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 			     (instances->y < screenY + 300)) ||
+ 			    (instances->flag & 0x80) ||
+ 			    (instances->orderValue < 20)) {
+-				prim = (POLY_FT4 *)GsGetWorkBase();
+-				SetPolyFT4(prim);
+-				if (obj->transparency == 4) {
+-					SetSemiTrans(prim, 0);
+-				} else {
+-					SetSemiTrans(prim, 1);
+-				}
+-
++				draw->frame = startFrame;
++				draw->orderValue = instances->orderValue;
++				draw->y = instances->y;
+ 				if (instances->flag & 0x80) {
+-					buildSnowflakePrim(prim, instances, obj);
+-				} else if (instances->orderValue < 20) {
+-					buildMapOverlayPrim(prim, instances, obj,
+-					                    screenX, screenY, 1);
++					draw->kind = 3;
++					/* x moves before the flake is drawn, y after */
++					draw->x = tickSnowflake(instances);
++					draw->x += instances->x;
+ 				} else {
+-					buildMapOverlayPrim(prim, instances, obj,
+-					                    screenX, screenY, 0);
+-				}
+-
+-				AddPrim(&org[instances->orderValue], prim);
+-				prim++;
+-				GsSetWorkBase((PACKET *)prim);
+-			}
+-			instances->timer++;
+-			if (instances->timer == instances->animTimes[startFrame]) {
+-				instances->currentFrame++;
+-				instances->timer = 0;
+-				if (instances->animSprites[instances->currentFrame] == -1 ||
+-				    instances->currentFrame >= 8) {
+-					instances->currentFrame = 0;
+-				}
+-			}
+-		} else {
+-			instances->timer++;
+-			if (instances->timer == instances->animTimes[startFrame]) {
+-				instances->currentFrame++;
+-				instances->timer = 0;
+-				if (instances->animSprites[instances->currentFrame] == -1 ||
+-				    instances->currentFrame >= 8) {
+-					instances->currentFrame = 0;
++					draw->kind = (instances->orderValue < 20) ? 2 : 1;
++					draw->x = instances->x;
+ 				}
+ 			}
+ 		}
++		advanceMapOverlayFrame(instances, startFrame);
+ 		instances++;
+ 	}
+ }
+ 
+-void renderMist(void)
++void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
++                       int16_t screenY)
+ {
+ 	POLY_FT4 *prim;
+-	int16_t cameraDeltaX;
+-	int16_t cameraDeltaY;
++	LocalMapObject *obj;
++	LocalMapObjectInstance pos;
++	ModOverlayDraw *draw;
++	GsOT_TAG *org;
+ 	int32_t i;
+ 
+-	if (((CURRENT_SCREEN != 0xa3) && (CURRENT_SCREEN != 0xdc)) ||
+-	    (isTriggerSet(0x155) != 1)) {
+-		if ((CURRENT_SCREEN != 0xdc) && (isTriggerSet(0x94) == 1)) {
+-			MIST_CLUT_Y[0] = 0xc0;
+-			MIST_CLUT_Y[1] = 0x80;
+-		}
++	if (!MAP_LAYER_ENABLED) {
++		return;
++	}
+ 
+-		cameraDeltaX = CAMERA_X_PREVIOUS - (int16_t)MAP_TILE_DATA.cameraX;
+-		cameraDeltaY = CAMERA_Y_PREVIOUS - (int16_t)MAP_TILE_DATA.cameraY;
+-		MIST_X_OFFSETS[0] += cameraDeltaX;
+-		if (PLAYTIME_FRAMES % 2 == 0) {
+-			MIST_X_OFFSETS[0]--;
+-		}
+-		if (MIST_X_OFFSETS[0] >= 0xa0) {
+-			MIST_X_OFFSETS[0] -= 0x280;
+-		}
+-		if (MIST_X_OFFSETS[0] < -0x1df) {
+-			MIST_X_OFFSETS[0] += 0x280;
+-		}
++	if (isMistActive()) {
++		renderMist();
++	}
+ 
+-		MIST_X_OFFSETS[1] = MIST_X_OFFSETS[0] + 0x140;
+-		if (MIST_X_OFFSETS[1] >= 0xa0) {
+-			MIST_X_OFFSETS[1] -= 0x280;
++	org = ACTIVE_ORDERING_TABLE->org;
++	for (i = 0; i < 188; i++, instances++) {
++		draw = &MOD_OVERLAY_DRAW[i];
++		if (draw->kind == 0) {
++			continue;
+ 		}
+-		if (MIST_X_OFFSETS[1] < -0x1df) {
+-			MIST_X_OFFSETS[1] += 0x280;
++		obj = &LOCAL_MAP_OBJECTS[instances->animSprites[draw->frame]];
++		prim = (POLY_FT4 *)GsGetWorkBase();
++		SetPolyFT4(prim);
++		if (obj->transparency == 4) {
++			SetSemiTrans(prim, 0);
++		} else {
++			SetSemiTrans(prim, 1);
+ 		}
+ 
+-		MAIN_D_80134228[0] += (int16_t)(cameraDeltaX * 12 / 10);
+-		if (PLAYTIME_FRAMES % 2 == 0) {
+-			MAIN_D_80134228[0]++;
+-		}
+-		if (MAIN_D_80134228[0] >= 0x1e0) {
+-			MAIN_D_80134228[0] -= 0x280;
+-		}
+-		if (MAIN_D_80134228[0] < -0x9f) {
+-			MAIN_D_80134228[0] += 0x280;
++		pos.x = draw->x;
++		pos.y = draw->y;
++		if (draw->kind == 3) {
++			buildSnowflakePrim(prim, &pos, obj);
++		} else {
++			buildMapOverlayPrim(prim, &pos, obj, screenX, screenY,
++			                    draw->kind == 2);
+ 		}
+ 
+-		MAIN_D_80134228[1] = MAIN_D_80134228[0] + 0x140;
+-		if (MAIN_D_80134228[1] >= 0x1e0) {
+-			MAIN_D_80134228[1] -= 0x280;
+-		}
+-		if (MAIN_D_80134228[1] < -0x9f) {
+-			MAIN_D_80134228[1] += 0x280;
+-		}
+-		if (MAIN_D_80134228[1] >= 0x1e0) {
+-			MAIN_D_80134228[1] -= 0x280;
+-		}
+-		if (MAIN_D_80134228[1] < -0x9f) {
+-			MAIN_D_80134228[1] += 0x280;
+-		}
++		AddPrim(&org[draw->orderValue], prim);
++		prim++;
++		GsSetWorkBase((PACKET *)prim);
++	}
++}
+ 
+-		MIST_Y_OFFSETS[0] += cameraDeltaY;
+-		if (MIST_Y_OFFSETS[0] >= 0x78) {
+-			MIST_Y_OFFSETS[0] -= 0x1e0;
+-		}
+-		if (MIST_Y_OFFSETS[0] < -0x167) {
+-			MIST_Y_OFFSETS[0] += 0x1e0;
+-		}
+-		MIST_Y_OFFSETS[1] = MIST_Y_OFFSETS[0] + 0xf0;
+-		if (MIST_Y_OFFSETS[1] >= 0x78) {
+-			MIST_Y_OFFSETS[1] -= 0x1e0;
+-		}
+-		if (MIST_Y_OFFSETS[1] < -0x167) {
+-			MIST_Y_OFFSETS[1] += 0x1e0;
+-		}
++int32_t isMistActive(void)
++{
++	if (!((CURRENT_SCREEN >= 115 && CURRENT_SCREEN < 120) ||
++	      CURRENT_SCREEN == 121 || CURRENT_SCREEN == 163 ||
++	      CURRENT_SCREEN == 220)) {
++		return 0;
++	}
++	if (((CURRENT_SCREEN != 0xa3) && (CURRENT_SCREEN != 0xdc)) ||
++	    (isTriggerSet(0x155) != 1)) {
++		return 1;
++	}
++	return 0;
++}
+ 
+-		for (i = 0; i < 8; i++) {
+-			prim = (POLY_FT4 *)GsGetWorkBase();
+-			SetPolyFT4(prim);
+-			SetSemiTrans(prim, 1);
+-			if (i < 4) {
+-				prim->tpage = GetTPage(0, 3, 0x2c0, 0);
++void tickMist(void)
++{
++	int16_t cameraDeltaX;
++	int16_t cameraDeltaY;
++
++	if ((CURRENT_SCREEN != 0xdc) && (isTriggerSet(0x94) == 1)) {
++		MIST_CLUT_Y[0] = 0xc0;
++		MIST_CLUT_Y[1] = 0x80;
++	}
++
++	cameraDeltaX = CAMERA_X_PREVIOUS - (int16_t)MAP_TILE_DATA.cameraX;
++	cameraDeltaY = CAMERA_Y_PREVIOUS - (int16_t)MAP_TILE_DATA.cameraY;
++	MIST_X_OFFSETS[0] += cameraDeltaX;
++	if (PLAYTIME_FRAMES % 2 == 0) {
++		MIST_X_OFFSETS[0]--;
++	}
++	if (MIST_X_OFFSETS[0] >= 0xa0) {
++		MIST_X_OFFSETS[0] -= 0x280;
++	}
++	if (MIST_X_OFFSETS[0] < -0x1df) {
++		MIST_X_OFFSETS[0] += 0x280;
++	}
++
++	MIST_X_OFFSETS[1] = MIST_X_OFFSETS[0] + 0x140;
++	if (MIST_X_OFFSETS[1] >= 0xa0) {
++		MIST_X_OFFSETS[1] -= 0x280;
++	}
++	if (MIST_X_OFFSETS[1] < -0x1df) {
++		MIST_X_OFFSETS[1] += 0x280;
++	}
++
++	MAIN_D_80134228[0] += (int16_t)(cameraDeltaX * 12 / 10);
++	if (PLAYTIME_FRAMES % 2 == 0) {
++		MAIN_D_80134228[0]++;
++	}
++	if (MAIN_D_80134228[0] >= 0x1e0) {
++		MAIN_D_80134228[0] -= 0x280;
++	}
++	if (MAIN_D_80134228[0] < -0x9f) {
++		MAIN_D_80134228[0] += 0x280;
++	}
++
++	MAIN_D_80134228[1] = MAIN_D_80134228[0] + 0x140;
++	if (MAIN_D_80134228[1] >= 0x1e0) {
++		MAIN_D_80134228[1] -= 0x280;
++	}
++	if (MAIN_D_80134228[1] < -0x9f) {
++		MAIN_D_80134228[1] += 0x280;
++	}
++	if (MAIN_D_80134228[1] >= 0x1e0) {
++		MAIN_D_80134228[1] -= 0x280;
++	}
++	if (MAIN_D_80134228[1] < -0x9f) {
++		MAIN_D_80134228[1] += 0x280;
++	}
++
++	MIST_Y_OFFSETS[0] += cameraDeltaY;
++	if (MIST_Y_OFFSETS[0] >= 0x78) {
++		MIST_Y_OFFSETS[0] -= 0x1e0;
++	}
++	if (MIST_Y_OFFSETS[0] < -0x167) {
++		MIST_Y_OFFSETS[0] += 0x1e0;
++	}
++	MIST_Y_OFFSETS[1] = MIST_Y_OFFSETS[0] + 0xf0;
++	if (MIST_Y_OFFSETS[1] >= 0x78) {
++		MIST_Y_OFFSETS[1] -= 0x1e0;
++	}
++	if (MIST_Y_OFFSETS[1] < -0x167) {
++		MIST_Y_OFFSETS[1] += 0x1e0;
++	}
++}
++
++void renderMist(void)
++{
++	POLY_FT4 *prim;
++	int32_t i;
++
++	for (i = 0; i < 8; i++) {
++		prim = (POLY_FT4 *)GsGetWorkBase();
++		SetPolyFT4(prim);
++		SetSemiTrans(prim, 1);
++		if (i < 4) {
++			prim->tpage = GetTPage(0, 3, 0x2c0, 0);
++			prim->clut = GetClut(0, 0x1e6);
++			setPosDataPolyFT4(prim, MIST_X_OFFSETS[i % 2],
++			                  MIST_Y_OFFSETS[i / 2], 0x140,
++			                  0xf0);
++			setRGB0(prim, 0x96, 0x96, 0x96);
++		} else {
++			prim->tpage = GetTPage(0, 1, 0x2c0, 0);
++			if (CURRENT_SCREEN == 0xa3 || CURRENT_SCREEN == 0xdc) {
+ 				prim->clut = GetClut(0, 0x1e6);
+-				setPosDataPolyFT4(prim, MIST_X_OFFSETS[i % 2],
+-				                  MIST_Y_OFFSETS[i / 2], 0x140,
+-				                  0xf0);
+-				setRGB0(prim, 0x96, 0x96, 0x96);
++			} else if (CURRENT_SCREEN == 0x77) {
++				prim->clut = GetClut(MIST_CLUT_Y[0],
++				                     0x1e6);
+ 			} else {
+-				prim->tpage = GetTPage(0, 1, 0x2c0, 0);
+-				if (CURRENT_SCREEN == 0xa3 || CURRENT_SCREEN == 0xdc) {
+-					prim->clut = GetClut(0, 0x1e6);
+-				} else if (CURRENT_SCREEN == 0x77) {
+-					prim->clut = GetClut(MIST_CLUT_Y[0],
+-					                     0x1e6);
+-				} else {
+-					prim->clut = GetClut(MIST_CLUT_Y[1],
+-					                     0x1e6);
+-				}
+-				prim->x0 = MAIN_D_80134228[i % 2];
+-				prim->x1 = MAIN_D_80134228[i % 2] - 0x140;
+-				prim->x2 = MAIN_D_80134228[i % 2];
+-				prim->x3 = MAIN_D_80134228[i % 2] - 0x140;
+-				prim->y0 = MIST_Y_OFFSETS[(i - 4) / 2];
+-				prim->y1 = MIST_Y_OFFSETS[(i - 4) / 2];
+-				prim->y2 = MIST_Y_OFFSETS[(i - 4) / 2] + 0xf0;
+-				prim->y3 = MIST_Y_OFFSETS[(i - 4) / 2] + 0xf0;
+-				setRGB0(prim, 0x50, 0x50, 0x50);
++				prim->clut = GetClut(MIST_CLUT_Y[1],
++				                     0x1e6);
+ 			}
+-			setUVDataPolyFT4(prim, 0, 0, 0xff, 0xc8);
+-			AddPrim(&ACTIVE_ORDERING_TABLE->org[20], prim);
+-			prim++;
+-			GsSetWorkBase((PACKET *)prim);
+-		}
++			prim->x0 = MAIN_D_80134228[i % 2];
++			prim->x1 = MAIN_D_80134228[i % 2] - 0x140;
++			prim->x2 = MAIN_D_80134228[i % 2];
++			prim->x3 = MAIN_D_80134228[i % 2] - 0x140;
++			prim->y0 = MIST_Y_OFFSETS[(i - 4) / 2];
++			prim->y1 = MIST_Y_OFFSETS[(i - 4) / 2];
++			prim->y2 = MIST_Y_OFFSETS[(i - 4) / 2] + 0xf0;
++			prim->y3 = MIST_Y_OFFSETS[(i - 4) / 2] + 0xf0;
++			setRGB0(prim, 0x50, 0x50, 0x50);
++		}
++		setUVDataPolyFT4(prim, 0, 0, 0xff, 0xc8);
++		AddPrim(&ACTIVE_ORDERING_TABLE->org[20], prim);
++		prim++;
++		GsSetWorkBase((PACKET *)prim);
+ 	}
+ }
+ 
+-void buildSnowflakePrim(POLY_FT4 *prim, LocalMapObjectInstance *inst,
+-                        LocalMapObject *obj)
++/* The snowflake's movement (late tick). Returns this tick's horizontal
++ * jitter, which is added to x where the flake is drawn. */
++int8_t tickSnowflake(LocalMapObjectInstance *inst)
+ {
+ 	uint8_t randomRange;
+ 	uint8_t fallSpeed;
+@@ -667,15 +736,6 @@ void buildSnowflakePrim(POLY_FT4 *prim, LocalMapObjectInstance *inst,
+ 		}
+ 	}
+ 
+-	setPosDataPolyFT4(prim, inst->x - 0xa0 + horizontalMovement,
+-	                  inst->y - 0x78, obj->width, obj->height);
+-	setRGB0(prim, 0x80, 0x80, 0x80);
+-	setUVDataPolyFT4(prim, obj->texX % 256, obj->texY % 256,
+-	                 obj->width - 1, obj->height - 1);
+-	prim->tpage = GetTPage(0, obj->transparency,
+-	                       (obj->texX / 256 << 6) + 0x180, 0);
+-	prim->clut = GetClut(obj->clut * 16, 0x1e6);
+-
+ 	inst->y += fallSpeed;
+ 	if ((inst->y >= 0x83) && (inst->animSprites[0] != 2)) {
+ 		chance = randomLimit(10);
+@@ -692,6 +752,21 @@ void buildSnowflakePrim(POLY_FT4 *prim, LocalMapObjectInstance *inst,
+ 	if (inst->y >= 0xf1) {
+ 		inst->y = 0;
+ 	}
++	return horizontalMovement;
++}
++
++/* inst->x already includes the jitter (see tickMapOverlays) */
++void buildSnowflakePrim(POLY_FT4 *prim, LocalMapObjectInstance *inst,
++                        LocalMapObject *obj)
++{
++	setPosDataPolyFT4(prim, inst->x - 0xa0,
++	                  inst->y - 0x78, obj->width, obj->height);
++	setRGB0(prim, 0x80, 0x80, 0x80);
++	setUVDataPolyFT4(prim, obj->texX % 256, obj->texY % 256,
++	                 obj->width - 1, obj->height - 1);
++	prim->tpage = GetTPage(0, obj->transparency,
++	                       (obj->texX / 256 << 6) + 0x180, 0);
++	prim->clut = GetClut(obj->clut * 16, 0x1e6);
+ }
+ 
+ void buildMapOverlayPrim(POLY_FT4 *prim, LocalMapObjectInstance *inst,
+@@ -749,7 +824,7 @@ void createNinjamonEffect(void)
+ 		NINJAMON_EFFECT_X_OFFSET[i] = randomLimit(10) + 12;
+ 		NINJAMON_EFFECT_Y_OFFSET[i] = randomLimit(10) + 3;
+ 	}
+-	addObject(0xfba, 0, NULL, renderNinjamonEffect);
++	addObjectLate(0xfba, 0, NULL, lateTickNinjamonEffect, NULL);
+ }
+ 
+ void storeMapObjectPosition(int16_t *outX, int16_t *outY, uint8_t startIndex,
+@@ -763,7 +838,14 @@ void storeMapObjectPosition(int16_t *outX, int16_t *outY, uint8_t startIndex,
+ 	}
+ }
+ 
++/* MOD (fps): it only moves the map sprites, so it runs as a late tick (it
++ * used to be the object's render). */
+ void renderNinjamonEffect(int32_t instanceId)
++{
++	lateTickNinjamonEffect(instanceId);
++}
++
++void lateTickNinjamonEffect(int32_t instanceId)
+ {
+ 	LocalMapObjectInstance *data;
+ 	int32_t i;
+-- 
+2.53.0
+

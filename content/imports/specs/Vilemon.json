@@ -1,0 +1,121 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M170IVRU",
+ "type": 295,
+ "name": "Vilemon",
+ "source": {
+  "type": 12,
+  "mmd": "extracted/CHDAT/MMD0/MTGR.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 18,
+  "3": 23,
+  "4": 24,
+  "5": 25,
+  "7": 27,
+  "8": 28,
+  "9": 29,
+  "11": 17,
+  "12": 15,
+  "13": 11,
+  "14": 12,
+  "15": 13,
+  "16": 7,
+  "17": 8,
+  "18": 9,
+  "19": 4,
+  "20": 3
+ },
+ "hips": [
+  1,
+  1,
+  0.752
+ ],
+ "root_scale": 0.752,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 55,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 55,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.01
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.01
+  },
+  "0x3c": {
+   "anim": "anim_38",
+   "start": 1,
+   "end": 78,
+   "speed": 1.01,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  },
+  "0x33": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 73,
+   "speed": 1.37,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  },
+  "0x31": {
+   "anim": "anim_14",
+   "start": 20,
+   "end": 67,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.121263,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

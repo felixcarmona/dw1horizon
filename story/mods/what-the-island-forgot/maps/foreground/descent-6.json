@@ -1,0 +1,963 @@
+{
+  "screen": 335,
+  "review": "The ossuary threshold remains inside its drawn shadow, behind the rock rim. SAM silhouettes cover the lintel, near jamb, tree trunk and branches, and the leaning grave beside the lower floor. Their solid bases remain blocked; no second level is connected.",
+  "collision": [
+    {
+      "tile": [
+        38,
+        37
+      ],
+      "before": 128,
+      "after": 112,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        38
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        38
+      ],
+      "before": 128,
+      "after": 112,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        38
+      ],
+      "before": 128,
+      "after": 112,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        39
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        39
+      ],
+      "before": 128,
+      "after": 112,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        39
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        41
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        41
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        41
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        41
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        41
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        42
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        44
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        44
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        44
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        44
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        41,
+        44
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        45
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        45
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        45
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        45
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        41,
+        45
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        37,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        38,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        39,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        40,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        41,
+        46
+      ],
+      "before": 112,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        35,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        36,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Move the ossuary trigger into the mouth shadow; keep the approach on drawn sand and rock steps"
+    },
+    {
+      "tile": [
+        34,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid root contact of the cave-side tree; the rear approach remains open"
+    },
+    {
+      "tile": [
+        37,
+        38
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        37,
+        39
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        39,
+        39
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        36,
+        40
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        37,
+        40
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        38,
+        40
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        39,
+        40
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        36,
+        41
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        37,
+        41
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        38,
+        41
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        39,
+        41
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        40,
+        41
+      ],
+      "before": 0,
+      "after": 112
+    },
+    {
+      "tile": [
+        40,
+        42
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid near jamb foot; the adjacent mouth approach and trigger remain open"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "335-cave-lintel.png",
+      "at": [
+        93,
+        207
+      ],
+      "depth": [
+        131,
+        329
+      ],
+      "segmentation": {
+        "box": [
+          60,
+          209,
+          216,
+          294
+        ],
+        "positive": [
+          [
+            103,
+            260
+          ],
+          [
+            146,
+            252
+          ],
+          [
+            184,
+            236
+          ],
+          [
+            196,
+            228
+          ]
+        ],
+        "negative": [
+          [
+            87,
+            282
+          ],
+          [
+            106,
+            291
+          ],
+          [
+            147,
+            288
+          ],
+          [
+            179,
+            271
+          ],
+          [
+            220,
+            244
+          ],
+          [
+            125,
+            214
+          ]
+        ],
+        "score": 0.9513856172561646,
+        "area": 4531,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "335-cave-front-jamb.png",
+      "at": [
+        177,
+        199
+      ],
+      "depth": [
+        208,
+        327
+      ],
+      "segmentation": {
+        "box": [
+          175,
+          190,
+          246,
+          330
+        ],
+        "positive": [
+          [
+            222,
+            213
+          ],
+          [
+            212,
+            248
+          ],
+          [
+            208,
+            295
+          ],
+          [
+            210,
+            312
+          ]
+        ],
+        "negative": [
+          [
+            165,
+            180
+          ],
+          [
+            165,
+            235
+          ],
+          [
+            175,
+            290
+          ],
+          [
+            246,
+            300
+          ],
+          [
+            260,
+            230
+          ],
+          [
+            235,
+            330
+          ],
+          [
+            190,
+            330
+          ]
+        ],
+        "score": 0.9581153392791748,
+        "area": 4615,
+        "min_component_area": 128
+      },
+      "review": "Extend the real near rock column above the former cropped seam; remove detached bush islands and leave the sand outside its foot transparent.",
+      "vertical_face": true,
+      "strip_height": 32,
+      "sorting_review": "Sort each upright 32-pixel face band at its actual height so raised model polygons stay behind the rock; ground in front stays visible."
+    },
+    {
+      "png": "335-cave-tree.png",
+      "depth": [
+        116,
+        399
+      ],
+      "at": [
+        28,
+        188
+      ],
+      "segmentation": {
+        "box": [
+          26,
+          215,
+          135,
+          402
+        ],
+        "positive": [
+          [
+            71,
+            270
+          ],
+          [
+            98,
+            327
+          ],
+          [
+            118,
+            375
+          ],
+          [
+            48,
+            238
+          ],
+          [
+            35,
+            220
+          ],
+          [
+            80,
+            245
+          ]
+        ],
+        "negative": [
+          [
+            142,
+            370
+          ],
+          [
+            127,
+            405
+          ],
+          [
+            146,
+            321
+          ],
+          [
+            133,
+            353
+          ],
+          [
+            84,
+            355
+          ],
+          [
+            74,
+            209
+          ],
+          [
+            76,
+            221
+          ],
+          [
+            77,
+            221
+          ],
+          [
+            86,
+            203
+          ],
+          [
+            65,
+            225
+          ]
+        ],
+        "score": 0.9068883061408997,
+        "area": 5113,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "335-leaning-grave.png",
+      "depth": [
+        163,
+        665
+      ],
+      "at": [
+        125,
+        537
+      ],
+      "segmentation": {
+        "box": [
+          117,
+          529,
+          198,
+          671
+        ],
+        "positive": [
+          [
+            153,
+            576
+          ],
+          [
+            166,
+            615
+          ],
+          [
+            173,
+            650
+          ]
+        ],
+        "negative": [
+          [
+            202,
+            610
+          ],
+          [
+            119,
+            623
+          ],
+          [
+            199,
+            664
+          ]
+        ],
+        "score": 0.995521068572998,
+        "area": 5471,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "335-cave-upper-rock.png",
+      "at": [
+        134,
+        59
+      ],
+      "depth": [
+        131,
+        329
+      ],
+      "segmentation": {
+        "box": [
+          115,
+          62,
+          224,
+          251
+        ],
+        "positive": [
+          [
+            171,
+            122
+          ],
+          [
+            176,
+            180
+          ],
+          [
+            153,
+            215
+          ],
+          [
+            196,
+            212
+          ]
+        ],
+        "negative": [
+          [
+            225,
+            180
+          ],
+          [
+            106,
+            180
+          ],
+          [
+            158,
+            276
+          ],
+          [
+            233,
+            250
+          ]
+        ],
+        "score": 0.9553700685501099,
+        "area": 9663,
+        "min_component_area": 12,
+        "max_hole_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/descent-6-1856x2304.png",
+    "source_sha1": "cf9069c693c27209b68fe6af0a63fa9105ae21a2",
+    "top": 38,
+    "scale": 2.9,
+    "size": [
+      640,
+      768
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "exit_review": "The cave portal covers the full reachable opening, including its left edge and the front row beneath the rim. This prevents walking around the old narrow trigger into the solid rock face; the returning arrival stays outside the portal.",
+  "upper_wall_review": "The solid rock above the doorway also occludes tall partners behind the entrance plane. SAM follows that rock object; small enclosed speck holes are filled, without repainting its pixels."
+}

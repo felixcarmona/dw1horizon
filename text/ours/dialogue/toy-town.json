@@ -1,0 +1,40 @@
+{
+ "s138.sec5.m0.o0": "Give them",
+ "s138.sec5.m0.o1": "Don't give them",
+ "s138.sec5.u0": "I'm a Digimon card collector. If you give me a set of three cards, Hagurumon, ToyAgumon and WaruMonzaemon, I'll give you something nice.",
+ "s138.sec5.u1": "Sorry, I don't have any.",
+ "s138.sec5.u2": "Then here. A {color 6}Love Bandage{color 1}.",
+ "s138.sec5.u3": "Carrying too many items, huh.",
+ "s138.sec6.u0": "Have you tried curling yet? If you can get a perfect 10 at that, you're really something.",
+ "s138.sec7.u0": [
+  [
+   "Not sure this has anything",
+   "to do with anything, but I'll",
+   "teach you some fishing tricks."
+  ],
+  [
+   "First, the rod. A good rod",
+   "casts farther, and the gauge",
+   "gives you a bit more room."
+  ],
+  [
+   "Next, the bait. Each fish",
+   "likes something different, so",
+   "remember what caught what."
+  ],
+  [
+   "And when you cast, let go",
+   "at {color 6}×{color 1} for a full-power throw!",
+   "Bet you didn't know that."
+  ],
+  [
+   "Last, the guardian of the",
+   "lake: they say he only shows",
+   "up at certain times."
+  ],
+  [
+   "Morning and evening look",
+   "suspicious to me."
+  ]
+ ]
+}

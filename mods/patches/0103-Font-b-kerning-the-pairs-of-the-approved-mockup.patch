@@ -1,0 +1,162 @@
+From a054b7bfd78587c46bfcedbe0f3f9fd64f6fac3d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 21:56:45 +0000
+Subject: [PATCH 103/105] Font b: kerning, the pairs of the approved mockup
+
+tools/font/b.txt `kern` lines (fontgen.py font-header b writes KERN_RULES into font_b.h): T F V Y P W before lowercase
+letters, the period and the comma, r f before those two, 1 pixel closer; pairs whose ink would touch in b are left
+out. drawGlyph kerns a glyph drawn where the previous glyph's advance ended, on its row (not in the original's cells,
+not in the name keyboard's 12-pixel cells): drawn k pixels further and its advance returned k longer, so every
+caller's pen follows. measureStringMode counts the same pairs.
+---
+ src/main/font.c   | 62 +++++++++++++++++++++++++++++++++++++++++++++++
+ src/main/font_b.h | 22 +++++++++++++++++
+ 2 files changed, 84 insertions(+)
+
+diff --git a/src/main/font.c b/src/main/font.c
+index 90738cd..19eab15 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1334,6 +1334,13 @@ extern int32_t MOD_RENDER_PASS;
+ static int16_t GLYPH_CARRY_X;
+ static int16_t GLYPH_CARRY_Y = -1;
+ static uint8_t *GLYPH_CARRY_SLOT;
++#ifdef FONT_KERN
++/* MOD (font): the last glyph drawGlyph drew (its Shift-JIS code, row, where its advance ended), for the kerning */
++static uint16_t KERN_PREV_CODE;
++static int16_t KERN_PREV_Y = -1;
++static int16_t KERN_PREV_END;
++extern int8_t DRAW_STRING2_IS_FIXED_WIDTH; /* dw/script.h: the name keyboard's 12-pixel cells */
++#endif
+ #endif
+ 
+ void clearTextSubArea(RECT *rect)
+@@ -1347,6 +1354,9 @@ void clearTextSubArea(RECT *rect)
+ 	ClearImage(rect, 0, 0, 0);
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+ 	GLYPH_CARRY_Y = -1; /* the previous glyph's cell may be cleared: never copy its pixels back */
++#ifdef FONT_KERN
++	KERN_PREV_Y = -1;
++#endif
+ #endif
+ }
+ 
+@@ -1380,6 +1390,35 @@ static uint16_t *glyphRows(uint16_t codepoint)
+ 	return GLYPH_DATA[n].pixelData;
+ }
+ 
++#ifdef FONT_KERN
++/*
++ * MOD (font): font b's kerning (tools/font/b.txt `kern`, generated KERN_RULES): what the pen moves when the glyph `code`
++ * comes right after `prev` (Shift-JIS codes), 0 for most pairs. The mockup the owner approved draws T V W Y P F closer
++ * to the lowercase letters and the period and comma after them, r f before those two.
++ */
++int32_t kernOf(uint16_t prev, uint16_t code)
++{
++	const uint16_t *r;
++	const uint16_t *right;
++	int32_t i;
++
++	for (r = KERN_RULES; r[0] != 0; r = right + r[2]) {
++		right = r + 3 + r[1];
++		for (i = 0; i < r[1] && r[3 + i] != prev; i++) {
++		}
++		if (i == r[1]) {
++			continue;
++		}
++		for (i = 0; i < r[2]; i++) {
++			if (right[i] == code) {
++				return (int16_t)r[0];
++			}
++		}
++	}
++	return 0;
++}
++#endif
++
+ /* the advance of a glyph in pixels (script_textbox.c centres the name keyboard's letters in their 12-pixel cells) */
+ int32_t glyphWidth(uint16_t codepoint)
+ {
+@@ -1436,6 +1475,23 @@ int32_t drawGlyph(codepoint, x, y)
+ 		x += shift;
+ 		adv = p[GLYPH_HEIGHT] >> 8; /* from the cell's start, the caller's pen */
+ 	}
++#ifdef FONT_KERN
++	/* a glyph drawn where the previous one's advance ended, on its row, kerns with it: drawn `k` pixels further and
++	 * its advance returned k longer, so the caller's pen follows (cells and the name keyboard's cells never kern) */
++	k = ((codepoint & 0xff) << 8) | (codepoint >> 8);
++	if (FONT_CELLS == 0 && DRAW_STRING2_IS_FIXED_WIDTH == 0) {
++		if (KERN_PREV_Y == (int16_t)y && KERN_PREV_END == (int16_t)x) {
++			shift = kernOf(KERN_PREV_CODE, k);
++			x += shift;
++			adv += shift;
++		}
++		KERN_PREV_CODE = k;
++		KERN_PREV_Y = y;
++		KERN_PREV_END = x + adv;
++	} else {
++		KERN_PREV_Y = -1;
++	}
++#endif
+ 	if (x >= TEXT_DRAW_LIMIT || y >= TEXT_DRAW_LIMIT) {
+ 		return 0;
+ 	}
+@@ -1705,10 +1761,12 @@ void drawString(str, x, y)
+ int32_t measureStringMode(char *str, int32_t mode)
+ {
+ 	uint16_t codepoint;
++	uint16_t prev;
+ 	int32_t w;
+ 
+ 	(void)mode;
+ 	w = 0;
++	prev = 0;
+ 	while (*str != '\0') {
+ 		if (isAsciiEncoded(str) != 0) {
+ 			if (*str == '.') {
+@@ -1725,6 +1783,10 @@ int32_t measureStringMode(char *str, int32_t mode)
+ 			str += 2;
+ 		}
+ 		w += glyphWidth(codepoint);
++#ifdef FONT_KERN
++		w += kernOf(prev, swapShortBytes(codepoint)); /* as drawGlyph draws the pair */
++		prev = swapShortBytes(codepoint);
++#endif
+ 	}
+ 	return w > 0 ? w - 1 : 0; /* the last glyph's blank column is not ink */
+ }
+diff --git a/src/main/font_b.h b/src/main/font_b.h
+index 5c76e36..8099d51 100644
+--- a/src/main/font_b.h
++++ b/src/main/font_b.h
+@@ -134,5 +134,27 @@ static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+ 	{ { 0xdfff, 0xcfff, 0xd7ff, 0xdfff, 0xdfff, 0x9fff, 0x1fff, 0x1fff, 0xbfff, 0xffff, 0xffff, }, 6 | 12 << 8 }, /* F06B ♪ */
+ };
+ 
++/* kerning (tools/font/b.txt `kern`, font.c kernOf): DELTA, the number of LEFT codes, of RIGHT
++ * codes, then the codes (Shift-JIS); 0 ends the table */
++#define FONT_KERN 1
++static const uint16_t KERN_RULES[] = {
++	(uint16_t)-1, 2, 26, /* TF | aceomnrsuvwxyz.,áàéèóòúüñç */
++	0x8273, 0x8265, 0x8281, 0x8283, 0x8285, 0x828f, 0x828d, 0x828e, 0x8292, 0x8293, 0x8295, 0x8296,
++	0x8297, 0x8298, 0x8299, 0x829a, 0x8142, 0x8143, 0xf040, 0xf044, 0xf041, 0xf045, 0xf042, 0xf046,
++	0xf043, 0xf049, 0xf04a, 0xf04b,
++	(uint16_t)-1, 2, 25, /* VY | aceomnrsuvwxyz.,áàéèóòúüç */
++	0x8275, 0x8278, 0x8281, 0x8283, 0x8285, 0x828f, 0x828d, 0x828e, 0x8292, 0x8293, 0x8295, 0x8296,
++	0x8297, 0x8298, 0x8299, 0x829a, 0x8142, 0x8143, 0xf040, 0xf044, 0xf041, 0xf045, 0xf042, 0xf046,
++	0xf043, 0xf049, 0xf04b,
++	(uint16_t)-1, 1, 14, /* P | aceos.,áàéèóòç */
++	0x826f, 0x8281, 0x8283, 0x8285, 0x828f, 0x8293, 0x8142, 0x8143, 0xf040, 0xf044, 0xf041, 0xf045,
++	0xf042, 0xf046, 0xf04b,
++	(uint16_t)-1, 1, 1, /* W | , */
++	0x8276, 0x8143,
++	(uint16_t)-1, 2, 2, /* rf | ., */
++	0x8292, 0x8286, 0x8142, 0x8143,
++	0,
++};
++
+ /* FONT_FIGURE_SPACE (dw/mod_font.h): a blank as wide as a digit, in the cell of a dialogue space */
+ static const GlyphData FIGURE_SPACE_GLYPH = { { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 6 | 8 << 8 };
+-- 
+2.53.0
+

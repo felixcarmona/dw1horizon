@@ -1,0 +1,341 @@
+# The Python view of script 15 of DG.SCN: screen 14 Tropical Jungle.
+# Made from the disc by `dws story-base`; the source of the story since 2026-10-15: edit it (no file = no script). Keys only, never the
+# game's words. `story-build` reads this file (lowered); the DWS beside it is the proven intermediate; mods import `dw.base`.
+from dw import *
+from dw.text import text
+from dw.names import *
+
+jungle = screen(Screen.tropical_jungle_14)
+redvegiemon0 = jungle.npc(Species.RedVegiemon, slot=0)
+slot1 = jungle.npc(None, slot=1)    # the .MAP has Vegiemon147 here; the script spawns what stands here
+redvegiemon2 = jungle.npc(Species.RedVegiemon, slot=2)
+tsukaimon = jungle.npc(Species.Tsukaimon, slot=3)
+j_mojyamon = jungle.npc(Species.JMojyamon, slot=4)
+t5 = text.s015.sec5
+t51 = text.s015.sec51
+t7 = text.s015.sec7
+t8 = text.s015.sec8
+t9 = text.s015.sec9
+
+@jungle.on_enter
+def enter():    # section 254
+    roll = random.roll(99)
+    if roll <= 14:
+        spawn_item(Item.Digimushrm, at=(-150, -3050))
+    roll = random.roll(99)
+    if roll <= 6:
+        spawn_item(Item.Happymushrm, at=(-950, -1050))
+    if strange_plant_rumor_heard and not recruited(Species.Vegiemon):
+        objects[0].hide()
+        objects[1].hide()
+        objects[2].hide()
+        objects[3].hide()
+
+@redvegiemon0.on_talk
+def talk():    # section 5
+    recruitable(redvegiemon0, line=t5.u0)
+
+@redvegiemon2.on_talk
+def talk():    # section 7
+    recruitable(redvegiemon2, line=t7.u0)
+
+@tsukaimon.on_talk
+def talk():    # section 8
+    recruitable(tsukaimon, line=t8.u0)
+
+@j_mojyamon.on_talk
+def talk():    # section 9
+    recruitable(j_mojyamon, line=t9.u0)
+
+@jungle.on_step(0)
+def step0():    # section 51
+    if recruited(Species.Vegiemon):
+        return
+    if not strange_plant_rumor_heard:
+        return
+    tamer.walk(-715, -2329, camera=True, wait=False)
+    wait(1000)
+    tamer.turn(1024)
+    wait(250)
+    if trigger(186):
+        tamer.say(t51.u0)
+    else:
+        trigger(186).set()
+        tamer.say(t51.u1)
+        wait(1000)
+        tamer.play(16)
+        wait(1000)
+        tamer.say(t51.u2)
+        tamer.play(22)
+        wait(1000)
+        tamer.say(t51.u3)
+        tamer.play(anim.idle)
+    narrator.say(t51.u4)
+    if ask(yes=t51.m0.o0, no=t51.m0.o1):
+        pick = pick_item()
+        if pick is Picked.EMPTY:
+            tamer.say(t51.u5)
+        elif pick is Picked.CANCELLED:
+            tamer.say(t51.u6)
+        else:
+            if engine.arg == 121:
+                hide_hud()
+                take_picked()
+                load(Species.Vegiemon147)
+                objects[3].hide()
+                objects[4].hide()
+                objects[5].hide()
+                objects[6].hide()
+                objects[7].hide()
+                objects[8].hide()
+                objects[9].hide()
+                objects[10].hide()
+                objects[11].hide()
+                objects[12].hide()
+                objects[13].hide()
+                objects[14].hide()
+                objects[15].hide()
+                objects[3].animate(13)
+                objects[16].hide()
+                objects[17].hide()
+                objects[18].hide()
+                objects[19].hide()
+                objects[16].animate(4)
+                objects[20].hide()
+                objects[21].hide()
+                objects[22].hide()
+                objects[23].hide()
+                objects[24].hide()
+                objects[25].hide()
+                objects[26].hide()
+                objects[27].hide()
+                objects[28].hide()
+                objects[29].hide()
+                objects[30].hide()
+                objects[31].hide()
+                objects[32].hide()
+                objects[20].animate(13)
+                wait(2500)
+                sound(8, 1)
+                wait(5000)
+                objects[3].show()
+                objects[4].show()
+                objects[5].show()
+                objects[6].show()
+                objects[7].show()
+                objects[8].show()
+                objects[9].show()
+                objects[10].show()
+                objects[11].show()
+                objects[12].show()
+                objects[13].show()
+                objects[14].show()
+                objects[15].show()
+                objects[16].show()
+                objects[17].show()
+                objects[18].show()
+                objects[19].show()
+                objects[20].show()
+                objects[21].show()
+                objects[22].show()
+                objects[23].show()
+                objects[24].show()
+                objects[25].show()
+                objects[26].show()
+                objects[27].show()
+                objects[28].show()
+                objects[29].show()
+                objects[30].show()
+                objects[31].show()
+                objects[32].show()
+                objects[33].hide()
+                objects[34].hide()
+                objects[35].hide()
+                objects[36].hide()
+                objects[37].hide()
+                objects[38].hide()
+                objects[39].hide()
+                objects[40].hide()
+                objects[41].hide()
+                objects[42].hide()
+                objects[43].hide()
+                objects[44].hide()
+                objects[45].hide()
+                objects[46].hide()
+                objects[47].hide()
+                objects[48].hide()
+                objects[49].hide()
+                objects[50].hide()
+                objects[51].hide()
+                objects[52].hide()
+                objects[53].hide()
+                objects[54].hide()
+                objects[55].hide()
+                objects[56].hide()
+                objects[57].hide()
+                objects[58].hide()
+                objects[59].hide()
+                objects[60].hide()
+                objects[61].hide()
+                objects[62].hide()
+                objects[63].hide()
+                objects[64].hide()
+                objects[65].hide()
+                objects[66].hide()
+                objects[67].hide()
+                objects[68].hide()
+                objects[69].hide()
+                objects[70].hide()
+                objects[71].hide()
+                objects[72].hide()
+                objects[73].hide()
+                objects[74].hide()
+                objects[75].hide()
+                objects[76].hide()
+                objects[33].animate(44)
+                wait(1500)
+                objects[0].show()
+                objects[1].show()
+                objects[2].show()
+                objects[3].show()
+                wait(2000)
+                sound(8, 2)
+                spawn(Species.Vegiemon147, slot=1)
+                wait(250)
+                slot1.play(28, wait=True)
+                slot1.play(anim.idle)
+                wait(1000)
+                objects[33].show()
+                objects[34].show()
+                objects[35].show()
+                objects[36].show()
+                objects[37].show()
+                objects[38].show()
+                objects[39].show()
+                objects[40].show()
+                objects[41].show()
+                objects[42].show()
+                objects[43].show()
+                objects[44].show()
+                objects[45].show()
+                objects[46].show()
+                objects[47].show()
+                objects[48].show()
+                objects[49].show()
+                objects[50].show()
+                objects[51].show()
+                objects[52].show()
+                objects[53].show()
+                objects[54].show()
+                objects[55].show()
+                objects[56].show()
+                objects[57].show()
+                objects[58].show()
+                objects[59].show()
+                objects[60].show()
+                objects[61].show()
+                objects[62].show()
+                objects[63].show()
+                objects[64].show()
+                objects[65].show()
+                objects[66].show()
+                objects[67].show()
+                objects[68].show()
+                objects[69].show()
+                objects[70].show()
+                objects[71].show()
+                objects[72].show()
+                objects[73].show()
+                objects[74].show()
+                objects[75].show()
+                tamer.play(15)
+                wait(500)
+                sound(8, 2)
+                slot1.play(28)
+                wait(1000)
+                sound(8, 2)
+                slot1.play(28)
+                raw.entity_move_to(slot1, -977, -1946, 3, 0)
+                wait(1000)
+                sound(8, 2)
+                slot1.play(28)
+                raw.entity_move_to(slot1, -1254, -2263, 3, 0)
+                wait(1000)
+                sound(8, 2)
+                slot1.play(28)
+                raw.entity_move_to(slot1, -1025, -2799, 3, 0)
+                wait(1000)
+                sound(8, 2)
+                slot1.play(28)
+                raw.entity_move_to(slot1, -1025, -2349, 3, 0)
+                wait(1000)
+                slot1.face(tamer)
+                wait(250)
+                slot1.say(t51.u8)
+                tamer.play(15)
+                wait(1000)
+                tamer.say(t51.u9)
+                slot1.say(t51.u10)
+                sound(8, 5)
+                tamer.play(16)
+                wait(1000)
+                tamer.say(t51.u11)
+                engine.no_cancel.set()
+                dws(r"""
+                    choice(open) {
+                        text("s015.sec51.m1.o0") => {
+                            engine.no_cancel = false;
+                            sound(8, 5);
+                            say(slot1, text("s015.sec51.u13"));
+                        }
+                        text("s015.sec51.m1.o1") => {
+                            engine.no_cancel = false;
+                            sound(8, 5);
+                            say(slot1, text("s015.sec51.u14"));
+                        }
+                        cancel => {
+                            say(tamer, text("s015.sec51.u12"));
+                            return;
+                        }
+                    }
+                """)
+                tamer.say(t51.u15)
+                slot1.say(t51.u16)
+                tamer.play(19)
+                wait(1000)
+                tamer.say(t51.u17)
+                sound(8, 5)
+                slot1.say(t51.u18)
+                tamer.say(t51.u19)
+                slot1.say(t51.u20)
+                tamer.play(20)
+                wait(500)
+                tamer.say(t51.u21)
+                tamer.play(anim.idle)
+                sound(8, 5)
+                slot1.say(t51.u22)
+                tamer.run(-1024, -1820, camera=True, wait=False)
+                partner.run(-741, -1923, wait=False)
+                while True:
+                    slot1.run(911, -2266, wait=False)
+                    if glances >= 10:
+                        break
+                    glances.add(1)
+                    wait(500)
+                    tamer.face(slot1)
+                    partner.face(slot1)
+                slot1.arrived()
+                slot1.leave()
+                glances.set(0)
+                sound(8, 3)
+                narrator.say(t51.u23)
+                camera.on(tamer, speed=10)
+                camera.arrived()
+                recruit(Species.Vegiemon)
+                engine.prosperity.add(2)
+                return
+            tamer.say(t51.u7)
+    tamer.walk(-61, -2273, camera=True)
+
+# the section table, in the order of the original header
+sections(254, 5, 7, 8, 9, 51)

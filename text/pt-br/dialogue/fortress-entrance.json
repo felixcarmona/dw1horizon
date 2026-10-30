@@ -1,0 +1,46 @@
+{
+ "s040.sec5.u0": "Huh? Quem diabos é você? Cai fora!",
+ "s040.sec5.u1": "O que, esta casa é sua?",
+ "s040.sec5.u2": "Eu não posso te dizer!",
+ "s040.sec5.u3": "Você é vigia ou algo assim?",
+ "s040.sec5.u4": "O que, você está procurando por uma briga? Eu vou te bater!",
+ "s040.sec5.m0.o0": "Certo, vamos lutar",
+ "s040.sec5.m0.o1": "Não vou cair nessa",
+ "s040.sec5.u5": "W-waaah!",
+ "s040.sec5.u6": "Oh, não! ...Heeey!",
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hee hee hee hee hee..."
+  ]
+ ],
+ "s040.sec5.u8": "Huh, quem está aí?",
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "Não fizemos nada de errado.",
+   "Não invada a casa dos outros!",
+   "He he."
+  ]
+ ],
+ "s040.sec5.u10": "Acho que terei que voltar mais tarde.",
+ "s040.sec5.u11": "Boa sorte com o trabalho de vigia.",
+ "s040.sec5.u12": "Hm...? Não te vi em algum lugar...? É isso aí, você estava na gangue de bandidos do Ogremon! Então este é o seu esconderijo.",
+ "s040.sec5.u13": "Do que está falando?",
+ "s040.sec5.u14": "Você fugiu de mim da última vez! Agora, preparem-se!",
+ "s040.sec5.m1.o0": "Certo, vamos lutar",
+ "s040.sec5.m1.o1": "Não vou cair nessa",
+ "s040.sec5.u15": "W-waaah!",
+ "s040.sec5.u16": [
+  [
+   "Você me enganou da última vez.",
+   "Pensei que tivessem mudado de",
+   "esconderijo, mas... está aí, na",
+   "maior tranquilidade!"
+  ]
+ ],
+ "s040.sec5.u17": "Do que está falando?",
+ "s040.sec5.u18": "Você não vai escapar desta vez!",
+ "s040.sec5.u19": "Vamos, deixe-me entrar.",
+ "s040.sec5.u20": "O que, você está procurando por uma briga? Eu vou te bater!"
+}

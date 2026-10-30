@@ -1,0 +1,11 @@
+// Who stands on screen 39 (Great Canyon Bridge), and when. Read out of MAPHEAD.SCN section 39 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(39) {                              // Great Canyon Bridge
+            npc 155 slot 0 when trigger(175) and trigger(180) and not recruited(Shellmon);
+            npc Goblimon slot 1 autotalk;
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "file": "MAP/MAP2/MIHA03.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Centarumon156",
+      "at": [-2601, 570],
+      "facing": 3072,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "off": "-40",
+      "def": "+50",
+      "speed": "+50",
+      "brain": "+50",
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-218, 1839],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Unimon153",
+      "at": [765, 1786],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-218, 1839],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+From a13e0fe07f9b81e3c322f3ca4f2ead23ffc12b4a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 21 Oct 2026 20:43:58 +0000
+Subject: [PATCH] Patch 0151: care menu. The feed menu answers every need at
+ once: X in front of the partner lists Sleep first when it is sleepy
+ (partnerSetState(3), as the triangle menu's Sleep, with that menu's bed
+ icon), then in inventory order the items for a need it has: food when hungry,
+ the food that lowers tiredness (effect row) when tired, the Port. potty when
+ it needs to go, Bandage and Medicine (handleStatusItems with a cure in the
+ effect row) when injured or sick. With nothing to offer X does nothing here
+ (no refusal sound)
+
+---
+ src/main/mod_feed.c | 98 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 73 insertions(+), 25 deletions(-)
+
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 7008ec2a..50843b0f 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -1,13 +1,15 @@
+ /*
+- * MOD (feed menu): X in front of a hungry partner opens a list of the food in the inventory.
++ * MOD (care menu): X in front of the partner opens a list of what answers its needs.
+  *
+- * On the map, with the partner hungry (condition bit 2), the tamer facing it (within 45 degrees) and close enough
+- * (its item take distance plus FEED_SLACK, as checkEatDistance measures), X opens a box laid out as the inventory's
+- * (two columns of icon, name and amount, the description box under it) with only the items the partner eats
+- * (ITEM_FUNCTIONS[type] == handleFood: Meat..., Rain Plant, Steak). X gives the chosen one as Items > Use does
+- * (startFeedingItem: the partner comes, eats it or refuses it, one unit is used), triangle closes the box. With no
+- * food in the inventory X only plays the refusal sound. While the box is open the clock stops, as with the
+- * triangle menu.
++ * On the map, with the tamer facing the partner (within 45 degrees) and close enough (its item take distance plus
++ * FEED_SLACK, as checkEatDistance measures), X opens a box laid out as the inventory's (two columns of icon, name
++ * and amount, the description box under it) with what the partner's condition asks for, every need at once:
++ * Sleep first when it is sleepy (the triangle menu's Sleep), then in inventory order the items that answer a need
++ * it has: food when hungry (ITEM_FUNCTIONS[type] == handleFood), the food that lowers tiredness when tired, the
++ * Port. potty when it needs to go, what cures an injury or a sickness when it has one (handleStatusItems with a
++ * cure in its effect row: Bandage, Medicine). X gives the chosen item as Items > Use does (startFeedingItem: the
++ * partner comes, takes it or refuses it, one unit is used) or puts it to sleep, triangle closes the box. With
++ * nothing to offer X does nothing here. While the box is open the clock stops, as with the triangle menu.
+  * Hooked from tamerTickWalkingState() (tamer.c), after checkMapInteraction(): talking to an NPC, a chest or a
+  * press tile take the X first.
+  */
+@@ -19,6 +21,7 @@
+ #include <dw/font.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
++#include <dw/level.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -33,8 +36,10 @@
+ #define FEED_ROWS_SHOWN	5	/* rows of two items, as the 10-slot inventory */
+ #define FEED_SLACK	12	/* added to the item take distance (x 20 units in checkEatDistance) */
+ #define FEED_FACING	0x200	/* 45 degrees either side */
+-#define HUNGRY		4	/* PARTNER_PARA.condition bit */
+ #define PARTNER_NORMAL	1	/* PARTNER_STATE */
++#define PARTNER_SLEEP	3	/* PARTNER_STATE: partnerTickSleep, as the triangle menu's Sleep */
++#define PORT_POTTY	0x20
++#define FEED_SLEEP	0xFF	/* feedSlots entry: the Sleep command, not an inventory slot */
+ 
+ enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING };
+ 
+@@ -65,16 +70,36 @@ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t l
+ void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer);
+ void renderItemAmount(int32_t color, int32_t n, int32_t x, int32_t y, int32_t value, int32_t layer);
+ void clearTextSubArea(RECT *rect);
++void renderRectPolyFT4(int16_t posX, int16_t posY, uint8_t width, uint8_t height, uint8_t texX, uint8_t texY,
++                       int16_t texturePage, int16_t clut, int32_t zIndex, int8_t flag);
++u_short GetClut(int32_t x, int32_t y);
+ 
+-static uint8_t feedSlots[30]; /* the inventory slots shown, in inventory order */
++static char FEED_SLEEP_NAME[] = "Sleep";
++static char FEED_SLEEP_DESC[] = "Put it to bed until morning.";
++
++static uint8_t feedSlots[31]; /* Sleep, then the inventory slots shown, in inventory order */
+ static int32_t feedCount;
+ static int32_t feedCursor;
+ static int32_t feedRowOffset;
+ static int32_t feedState;
+ 
+-static int32_t isFood(ItemId type)
++/* the item answers one of the needs in condition */
++static int32_t answersNeed(ItemId type, uint32_t condition)
+ {
+-	return type != ITEM_NONE && ITEM_FUNCTIONS[type] == (ItemFunction)handleFood;
++	const int16_t *fx;
++
++	if (type == ITEM_NONE) {
++		return 0;
++	}
++	fx = itemFx(type);
++	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleFood) {
++		return (condition & CONDITION_HUNGRY) || ((condition & CONDITION_TIRED) && MOD_FX(fx, MOD_FX_TIREDNESS) > 0);
++	}
++	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleStatusItems) {
++		return ((condition & CONDITION_INJURED) && MOD_FX(fx, MOD_FX_CURE_INJURY) > 0) ||
++		       ((condition & CONDITION_SICK) && MOD_FX(fx, MOD_FX_CURE_SICK) > 0);
++	}
++	return type == PORT_POTTY && (condition & CONDITION_POOPY);
+ }
+ 
+ static int32_t feedCollect(void)
+@@ -82,14 +107,22 @@ static int32_t feedCollect(void)
+ 	int32_t i;
+ 
+ 	feedCount = 0;
++	if (PARTNER_PARA.condition & CONDITION_SLEEPY) {
++		feedSlots[feedCount++] = FEED_SLEEP;
++	}
+ 	for (i = 0; i < INVENTORY.size; i++) {
+-		if (isFood(INVENTORY.types.array[i]) && INVENTORY.amounts.array[i] != 0) {
++		if (INVENTORY.amounts.array[i] != 0 && answersNeed(INVENTORY.types.array[i], PARTNER_PARA.condition)) {
+ 			feedSlots[feedCount++] = i;
+ 		}
+ 	}
+ 	return feedCount;
+ }
+ 
++static char *feedName(int32_t i)
++{
++	return feedSlots[i] == FEED_SLEEP ? FEED_SLEEP_NAME : ITEM_NAME(INVENTORY.types.array[feedSlots[i]]);
++}
++
+ /* the partner is within FEED_FACING of where the tamer looks, and close enough to take an item */
+ static int32_t feedPartnerAhead(void)
+ {
+@@ -123,7 +156,7 @@ static void feedDrawNames(void)
+ 
+ 	clearTextArea();
+ 	for (i = 0; i < feedCount; i++) {
+-		name = ITEM_NAME(INVENTORY.types.array[feedSlots[i]]);
++		name = feedName(i);
+ 		drawStringMode(name, (i & 1) * 0x60, (i / 2) * 0xC, fitStringMode(name, ITEM_FIELD_W));
+ 	}
+ 	DrawSync(0);
+@@ -135,7 +168,9 @@ static void feedDrawDescription(void)
+ 
+ 	setRECT(&area, 0, 0xB4, 0xFC, 0xC);
+ 	clearTextSubArea(&area);
+-	drawString(ITEM_DESCS[INVENTORY.types.array[feedSlots[feedCursor]]], 0, 0xB4);
++	drawString(feedSlots[feedCursor] == FEED_SLEEP ? FEED_SLEEP_DESC
++	                                                : ITEM_DESCS[INVENTORY.types.array[feedSlots[feedCursor]]],
++	           0, 0xB4);
+ 	DrawSync(0);
+ }
+ 
+@@ -149,10 +184,17 @@ static void feedRenderList(int32_t boxId)
+ 	ItemId type;
+ 
+ 	for (i = feedRowOffset * 2; i < feedCount && i < (feedRowOffset + FEED_ROWS_SHOWN) * 2; i++) {
+-		type = INVENTORY.types.array[feedSlots[i]];
+ 		row = i / 2 - feedRowOffset;
+ 		x = box->finalPos.x + ((i & 1) ? 0x9A : 0xA);
+ 		y = box->finalPos.y + 8 + row * 0x12;
++		if (feedSlots[i] == FEED_SLEEP) {
++			/* the triangle menu's Sleep icon (MENU_OPTIONS[6]), 20 x 20 centred on the 16 x 16 item icon */
++			renderRectPolyFT4(x - 2, y - 2, 0x14, 0x14, 0x28, 0x28 + 0xC0, 0x1E, GetClut(0x100, 0xD + 0x1F0),
++			                  6 - boxId, 0);
++			renderString(8, x + 0x13, y + 2, 0x60, 0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
++			continue;
++		}
++		type = INVENTORY.types.array[feedSlots[i]];
+ 		renderItemSprite(type, x, y, 6 - boxId);
+ 		renderString(ITEM_PARA[type].itemColor == 0xFF ? 8 : ITEM_PARA[type].itemColor + 5, x + 0x13, y + 2, 0x60,
+ 		             0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
+@@ -220,7 +262,9 @@ static void feedMoveCursor(int32_t cursor)
+ 	if (feedCursor / 2 >= feedRowOffset + FEED_ROWS_SHOWN) {
+ 		feedRowOffset = feedCursor / 2 - FEED_ROWS_SHOWN + 1;
+ 	}
+-	INVENTORY_POINTER = feedSlots[feedCursor]; /* removeOneSelectedItem takes the eaten unit from this slot */
++	if (feedSlots[feedCursor] != FEED_SLEEP) {
++		INVENTORY_POINTER = feedSlots[feedCursor]; /* removeOneSelectedItem takes the used unit from this slot */
++	}
+ 	feedDrawDescription();
+ }
+ 
+@@ -267,6 +311,12 @@ static void feedTick(int32_t instanceId)
+ 	case FEED_GIVING:
+ 		if (UI_BOX_DATA[FEED_LIST_BOX].state == 0 && UI_BOX_DATA[FEED_DESC_BOX].state == 0) {
+ 			removeObject(FEED_OBJECT_ID, 0);
++			if (feedSlots[feedCursor] == FEED_SLEEP) {
++				partnerSetState(PARTNER_SLEEP); /* the tamer, the camera and the clock as Sleep has them */
++				IS_IN_MENU = 0;
++				startGameTime();
++				break;
++			}
+ 			INVENTORY_POINTER = feedSlots[feedCursor];
+ 			startFeedingItem(INVENTORY.types.array[feedSlots[feedCursor]]); /* clock back on, tamer and partner */
+ 		}
+@@ -274,24 +324,22 @@ static void feedTick(int32_t instanceId)
+ 	}
+ }
+ 
+-/* from tamerTickWalkingState: 1 when X opened the menu (or was answered with the refusal sound) */
++/* from tamerTickWalkingState: 1 when X opened the menu */
+ int32_t modFeedTick(void)
+ {
+ 	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
+ 	    UI_BOX_DATA[FEED_LIST_BOX].state != 0 || UI_BOX_DATA[FEED_LIST_BOX].frame != 0 ||
+ 	    UI_BOX_DATA[FEED_DESC_BOX].state != 0 || UI_BOX_DATA[FEED_DESC_BOX].frame != 0 ||
+-	    PARTNER_STATE != PARTNER_NORMAL || (PARTNER_PARA.condition & HUNGRY) == 0 ||
+-	    TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead()) {
++	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead() ||
++	    feedCollect() == 0) {
+ 		return 0;
+ 	}
+-	if (feedCollect() == 0) {
+-		playSound(0, 4);
+-		return 1;
+-	}
+ 	feedCursor = 0;
+ 	feedRowOffset = 0;
+ 	feedState = FEED_OPENING;
+-	INVENTORY_POINTER = feedSlots[0];
++	if (feedSlots[0] != FEED_SLEEP) {
++		INVENTORY_POINTER = feedSlots[0];
++	}
+ 	feedDrawNames();
+ 	feedDrawDescription();
+ 
+-- 
+2.53.0
+

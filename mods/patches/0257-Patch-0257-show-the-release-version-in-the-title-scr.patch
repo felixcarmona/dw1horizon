@@ -1,0 +1,154 @@
+From 90ac9e7be31ed0cb47b93b23313d91165cacd752 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 20:54:47 +0000
+Subject: [PATCH] Patch 0257: show the release version in the title screen
+ corner
+
+Carry MOD_VERSION through a generated header into a fixed 32-byte string and render it at (8, 224) on the title screen and title menu. Empty MOD_VERSION leaves the corner blank. Regenerated after current main's complete translation-title fixes, through patch 0256, on pinned decomp 83f99c5c.
+---
+ Makefile                 | 12 ++++++++++++
+ include/dw/mod_version.h | 22 ++++++++++++++++++++++
+ src/main/main.c          | 31 +++++++++++++++++++++++++++++++
+ src/main/main_menu.c     |  4 ++++
+ 4 files changed, 69 insertions(+)
+ create mode 100644 include/dw/mod_version.h
+
+diff --git a/Makefile b/Makefile
+index 80e9ac11..9db0aa08 100644
+--- a/Makefile
++++ b/Makefile
+@@ -92,6 +92,18 @@ $(shell mkdir -p $(GEN_DIR); printf '#define NUM_NEW_FILES %s\n' '$(words $(NEW_
+ 	|| mv $(GEN_DIR)/file_table_count.h.tmp $(GEN_DIR)/file_table_count.h)
+ $(shell python3 tools/gen_lang_files.py $(GEN_DIR)/lang_files.h --lang '$(LANG_FILES)' --new '$(NEW_FILES)' --table src/main/file_table_us.c >&2)
+ 
++# MOD (version): the release's version the title screen and the title menu show in a corner ("v0.1.0"; the project's
++# tools/version.py, given by its tools/build-full.sh). Digits, letters and . + - only, at most 31 characters; empty by
++# default: nothing is drawn. The text fills a fixed 32-byte array (main.c MOD_VERSION_TEXT): another version changes
++# those bytes only.
++MOD_VERSION ?=
++ifneq ($(shell printf '%s' '$(MOD_VERSION)' | grep -Ecv '^[0-9A-Za-z.+-]{0,31}$$'),0)
++$(error MOD_VERSION=$(MOD_VERSION): digits, letters and . + - only, at most 31 characters)
++endif
++$(shell mkdir -p $(GEN_DIR); printf '#define MOD_VERSION_STRING "%s"\n' '$(MOD_VERSION)' > $(GEN_DIR)/version_text.h.tmp; \
++	cmp -s $(GEN_DIR)/version_text.h.tmp $(GEN_DIR)/version_text.h && rm $(GEN_DIR)/version_text.h.tmp \
++	|| mv $(GEN_DIR)/version_text.h.tmp $(GEN_DIR)/version_text.h)
++
+ PYTHON := python3
+ 
+ .DEFAULT_GOAL := all
+diff --git a/include/dw/mod_version.h b/include/dw/mod_version.h
+new file mode 100644
+index 00000000..4d5a8e49
+--- /dev/null
++++ b/include/dw/mod_version.h
+@@ -0,0 +1,22 @@
++#ifndef DW_MOD_VERSION_H
++#define DW_MOD_VERSION_H
++
++#include <version_text.h> /* MOD_VERSION_STRING: the Makefile's MOD_VERSION (generated) */
++
++/*
++ * MOD (version): the release's version in the bottom left corner of the title screen (renderPressStartToContinue) and
++ * of the title menu's first view (renderInitialMenu), main.c. Drawn into the text area's row MOD_VERSION_ROW, shown
++ * in TEXT_COLORS[MOD_VERSION_COLOR] (a dim grey) with a drop shadow, from MOD_VERSION_LEFT, MOD_VERSION_TOP (screen pixels;
++ * the bottom right holds TITLE2's logo). The sprite is MOD_VERSION_W wide: the row's pixels past the text are clear.
++ */
++#define MOD_VERSION_ROW		0x3C /* the title menu's rows are 0..0x30 (OPTIONS) */
++#define MOD_VERSION_LEFT	8
++#define MOD_VERSION_W		0xFF /* the whole row (a u of 8 bits) */
++#define MOD_VERSION_TOP		224
++#define MOD_VERSION_COLOR	8 /* 0x50 grey */
++
++extern char MOD_VERSION_TEXT[32];
++void modVersionDraw(void);
++void modVersionRender(void);
++
++#endif
+diff --git a/src/main/main.c b/src/main/main.c
+index 582451bf..6ae803e4 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -28,6 +28,7 @@ void modCheatsCleanup(void);
+ #include <dw/map_object.h>
+ #include <dw/mod_fps.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+@@ -3702,6 +3703,7 @@ void runLandingScreen(void)
+ 	SECRET_CODE = -1;
+ #endif
+ 	addObject(0xfa3, 0, NULL, (RenderFunction)renderPressStartToContinue);
++	modVersionDraw(); /* MOD (version) */
+ 	FADE_OUT_CURRENT = 0;
+ 	fadeFromBlack(0x28);
+ 
+@@ -5717,6 +5719,35 @@ void renderPressStartToContinue(void)
+ 	setClut(prim, 0, 480);
+ 	AddPrim(ot + 30, prim++);
+ 	GsSetWorkBase((PACKET *)prim);
++	modVersionRender(); /* MOD (version) */
++}
++
++/*
++ * MOD (version): the release's version ("v0.1.0", the project's tools/version.py through the Makefile's MOD_VERSION) in
++ * the bottom left corner of the title screen and of the title menu's first view, small and dim. It is drawn once into
++ * the text area's row MOD_VERSION_ROW (free on the title screen; on the menu, the row under OPTIONS: drawMainMenuStrings
++ * draws it with the view's own strings) and shown from there with a drop shadow (renderString). Empty: nothing.
++ */
++char MOD_VERSION_TEXT[32] = MOD_VERSION_STRING;
++
++void modVersionDraw(void)
++{
++	RECT rect;
++
++	if (MOD_VERSION_TEXT[0] == '\0') {
++		return;
++	}
++	setRECT(&rect, 0, MOD_VERSION_ROW, 0x100, 0xC);
++	clearTextSubArea(&rect);
++	drawString(MOD_VERSION_TEXT, 0, MOD_VERSION_ROW);
++}
++
++void modVersionRender(void)
++{
++	if (MOD_VERSION_TEXT[0] != '\0') {
++		renderString(MOD_VERSION_COLOR, MOD_VERSION_LEFT - 0xA0, MOD_VERSION_TOP - 0x78, MOD_VERSION_W, 0xC, 0,
++			     MOD_VERSION_ROW, 0, 1);
++	}
+ }
+ 
+ void renderMainMenuBackground(void)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d138f636..7a2b5df3 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -11,6 +11,7 @@ extern int MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE;
+ #include <dw/font.h>
+ #include <dw/ids.h>
+ #include <dw/mod_options.h>
++#include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
+ #include <dw/save_tags.h>
+ #include <dw/input.h>
+@@ -2130,6 +2131,8 @@ void drawMainMenuStrings(int32_t menu)
+ 		drawStringMode(TITLE_MENU_ITEMS[3], 0, 0x24, fitStringMode(TITLE_MENU_ITEMS[3], 0xA4));
+ 		DrawSync(0);
+ 		drawString(MOD_OPT_STR_OPTIONS, 0, 0x30); /* MOD (options) */
++		DrawSync(0);
++		modVersionDraw(); /* MOD (version) */
+ 		break;
+ 	case 22: /* MOD (options) */
+ 		drawOptionsText();
+@@ -5829,6 +5832,7 @@ void renderInitialMenu(void)
+ 	renderText(cur++, 0x52, 0x67, 0, 0x30, 0xB0, 0xC, 0); /* MOD (options): OPTIONS */
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x48, 0x32, 0xB0, 0x46); /* MOD (options): was 0x3A high */
++	modVersionRender(); /* MOD (version) */
+ #endif
+ }
+ 
+-- 
+2.55.0
+

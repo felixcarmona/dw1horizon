@@ -1,0 +1,11 @@
+// Who stands on screen 111 (Native Forest), and when. Read out of MAPHEAD.SCN section 111 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(111) {                              // Native Forest
+            npc Sukamon slot 0 when not trigger(54);
+            npc Sukamon slot 1 when not trigger(54);
+        }
+    }
+}

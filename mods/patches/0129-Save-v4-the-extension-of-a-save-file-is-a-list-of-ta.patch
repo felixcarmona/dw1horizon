@@ -1,0 +1,512 @@
+From 0ef1f8d0e0c30b9947b70a013fb16a09a3827bb6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 21:27:57 +0000
+Subject: [PATCH] Save v4: the extension of a save file is a list of tagged
+ records (u16 tag, u16 length, data; include/dw/save_tags.h): a record this
+ build knows is copied as far as both sides have room, an unknown one is
+ skipped, an unknown required one (bit 15) makes the file unreadable; v1 and
+ v2 files still load, the build writes v4
+
+---
+ include/dw/save_tags.h |  36 +++++
+ src/main/main_menu.c   | 334 ++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 318 insertions(+), 52 deletions(-)
+ create mode 100644 include/dw/save_tags.h
+
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+new file mode 100644
+index 00000000..070ad00d
+--- /dev/null
++++ b/include/dw/save_tags.h
+@@ -0,0 +1,36 @@
++#ifndef DW_SAVE_TAGS_H
++#define DW_SAVE_TAGS_H
++
++/*
++ * MOD (save v4, docs/mods/save-format.md): the extension of a save file is a list of records
++ *
++ *     u16 tag, u16 length, length bytes        (little endian, no padding)
++ *
++ * ended by a record of tag 0 and length 0. A build reads the records it knows and skips the others, so new data never
++ * breaks an old reader and a changed size (more species, more flags) never breaks a new one: a known record is copied
++ * as far as both sides have room, and whatever it does not cover keeps the value the v1 part of the file or the
++ * defaults gave it.
++ *
++ * The rules that keep every save readable by every later build:
++ *  - A tag number is never reused or given another meaning; a record whose elements change gets a new tag.
++ *  - A record may only grow at its end.
++ *  - Bit 15 of the tag marks a record the file cannot be read without (the story state of the engine tier 2): a build
++ *    that does not know it refuses the file ("Data Error") instead of dropping what it holds.
++ *
++ * tools/mcd.py mirrors this table to print a save as JSON.
++ */
++#define SAVE_TAG_END			0x0000
++#define SAVE_TAG_SCREENS		0x0001 /* i16 current screen, i16 previous screen (authoritative; the v1 bytes are the low byte) */
++#define SAVE_TAG_INVENTORY		0x0002 /* i16[n] item ids of the inventory slots, -1 = empty */
++#define SAVE_TAG_PARTNER_TYPE		0x0003 /* i32 species of the partner */
++#define SAVE_TAG_WREGS			0x0004 /* u16[n] the script registers w0.. */
++#define SAVE_TAG_REGISTERED		0x0005 /* i16[n] species of the registered Digimon of the VS mode (kept for reading tools) */
++#define SAVE_TAG_POOP_MAPS		0x0006 /* i16[n] screens of the poop in the world, -1 = none (kept for reading tools) */
++#define SAVE_TAG_SPECIES_RAISED		0x0007 /* bit array: species the tamer has raised */
++#define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
++#define SAVE_TAG_REQUIRED		0x8000
++/* engine tier 2 */
++#define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
++#define SAVE_TAG_STORY_VARS		0x8002 /* i32[n] story variables */
++
++#endif
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d565aeac..a8293c5b 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -9,6 +9,7 @@
+ #include <dw/font.h>
+ #include <dw/ids.h>
+ #include <dw/mod_rules.h>
++#include <dw/save_tags.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -172,7 +173,8 @@ SAVE_LAYOUT_CHECK(versionWord, __builtin_offsetof(SavegamePayload, unknown4E1) +
+  *   Without room for the extension (a one-block file on a full card) it is
+  *   written as a plain v1 file instead, readable by both.
+  */
+-#define SAVE_FORMAT_VERSION	2
++#define SAVE_LEGACY_VERSION	2	/* the extension of v2 files: a fixed struct (SaveExtension), still read */
++#define SAVE_FORMAT_VERSION	4	/* the extension is a list of tagged records (include/dw/save_tags.h, docs/mods/save-format.md) */
+ #define SAVE_V1_BYTES		0x2000
+ #define SAVE_V2_BYTES		0x4000
+ #define SAVE_EXT_SAVED_WREGS	16	/* w0..w15 are saved, w16..w63 are scratch */
+@@ -219,6 +221,23 @@ SAVE_LAYOUT_CHECK(file, sizeof(SaveFile) == SAVE_V1_BYTES);
+ #define SAVE_EXT ((SaveExtension *)SAVE_EXT_ADDR)
+ SAVE_LAYOUT_CHECK(extArea, 2 * sizeof(SaveExtension) <= SAVE_EXT_MAX);
+ 
++/*
++ * MOD (save v4): a v4 extension is SaveExtHead, the records, a record of tag 0, and at the end of the extension's bytes
++ * the byte sum of everything before it. Its size is the file layout's (SAVE_EXT_BYTES: 0x1000 in a two-block file).
++ */
++typedef struct {
++	char magic[4];			/* "DW4E" */
++	uint16_t version;		/* SAVE_FORMAT_VERSION */
++	uint16_t size;			/* the extension's bytes, the checksum included */
++	int32_t v1Checksum;		/* the checksum of the v1 payload saved with it */
++} SaveExtHead;
++
++#define SAVE_EXT_BYTES		0x1000
++SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
++/* the most a build writes: the head, the records (4 bytes each and their data), the end record and the checksum */
++#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 8 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 4 + 4)
++SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_EXT_BYTES);
++
+ uint32_t CONNECTED_CARDS;
+ int32_t MAIN_MENU_ACTION;
+ int32_t SAVE_SLOT_SCROLL_TENTHS;
+@@ -4323,6 +4342,23 @@ void writeSavegame(SavegamePayload *savegame)
+ 
+ /* MOD (save v2) ------------------------------------------------------------ */
+ 
++/* the version words this build reads: 1 (no word), the v2 fixed extension, its own tagged one; any other is a layout it does not know */
++static int32_t isTaggedVersion(int32_t version)
++{
++	return version == SAVE_FORMAT_VERSION;
++}
++
++static int32_t isSaveVersionReadable(int32_t version)
++{
++	return version == 1 || version == SAVE_LEGACY_VERSION || isTaggedVersion(version);
++}
++
++/* the version word and extension version this build writes for the file in SAVE_FILE */
++static int32_t saveLayoutVersion(void)
++{
++	return SAVE_FORMAT_VERSION;
++}
++
+ static int32_t getSaveVersion(SavegamePayload *savegame)
+ {
+ 	uint8_t *w;
+@@ -4339,34 +4375,106 @@ static int32_t createExtensionChecksum(SaveExtension *ext)
+ 	return createByteSum((uint8_t *)ext, __builtin_offsetof(SaveExtension, checksum));
+ }
+ 
++/* the bytes of one copy's extension in the file being handled (SAVE_FILE_BYTES); a one-block file has none, but one is still built */
++static int32_t saveExtSize(void)
++{
++	int32_t n = (SAVE_FILE_BYTES - SAVE_V1_BYTES) / 2;
++
++	return n > 0 ? n : SAVE_EXT_BYTES;
++}
++
++static uint8_t *saveExtOf(int32_t copy)
++{
++	return (uint8_t *)SAVE_EXT_ADDR + copy * saveExtSize();
++}
++
+ /* MOD (save v2): content the original executable cannot represent */
+-static int32_t needsNewExecutable(SaveExtension *ext)
++static int32_t needsNewExecutable(int32_t partnerType, int32_t currentScreen, int32_t previousScreen, int16_t *inventory)
+ {
+ 	int32_t i;
+ 
+-	if ((uint32_t)ext->partnerType >= NUM_ORIGINAL_DIGIMON || ext->currentScreen >= NUM_SCREENS ||
+-	    ext->previousScreen >= NUM_SCREENS) {
++	if ((uint32_t)partnerType >= NUM_ORIGINAL_DIGIMON || currentScreen >= NUM_SCREENS || previousScreen >= NUM_SCREENS) {
+ 		return 1;
+ 	}
+ 	for (i = 0; i < 30; i++) {
+-		if (ext->inventoryTypes[i] >= NUM_ITEMS) {
++		if (inventory[i] >= NUM_ITEMS) {
+ 			return 1;
+ 		}
+ 	}
+ 	return 0;
+ }
+ 
+-static int32_t isExtensionValid(int32_t copy)
++/* a v2 file's extension: the fixed struct */
++static int32_t isLegacyExtensionValid(int32_t copy)
+ {
+ 	SaveExtension *ext;
+ 
+-	ext = &SAVE_EXT[copy];
++	ext = (SaveExtension *)saveExtOf(copy);
+ 	return SAVE_FILE_BYTES >= SAVE_V2_BYTES && ext->magic[0] == 'D' && ext->magic[1] == 'W' &&
+-	       ext->magic[2] == '2' && ext->magic[3] == 'E' && ext->version == SAVE_FORMAT_VERSION &&
++	       ext->magic[2] == '2' && ext->magic[3] == 'E' && ext->version == SAVE_LEGACY_VERSION &&
+ 	       ext->size == sizeof(SaveExtension) && ext->checksum == createExtensionChecksum(ext) &&
+ 	       ext->v1Checksum == SAVE_FILE.saves[copy].checksum;
+ }
+ 
++/* the records of a v4 extension all lie inside it and end with the end record */
++static int32_t areRecordsWellFormed(uint8_t *e, int32_t size)
++{
++	int32_t at = sizeof(SaveExtHead);
++	int32_t tag, len;
++
++	for (;;) {
++		if (at + 4 > size - 4) {
++			return 0;
++		}
++		tag = e[at] | (e[at + 1] << 8);
++		len = e[at + 2] | (e[at + 3] << 8);
++		if (tag == SAVE_TAG_END) {
++			return len == 0;
++		}
++		at += 4 + len;
++	}
++}
++
++static int32_t isTaggedExtensionValid(int32_t copy)
++{
++	SaveExtHead *h;
++	uint8_t *e;
++	int32_t size;
++
++	size = saveExtSize();
++	e = saveExtOf(copy);
++	h = (SaveExtHead *)e;
++	return SAVE_FILE_BYTES >= SAVE_V2_BYTES && h->magic[0] == 'D' && h->magic[1] == 'W' && h->magic[2] == '4' &&
++	       h->magic[3] == 'E' && h->version == saveLayoutVersion() && h->size == size &&
++	       *(int32_t *)(e + size - 4) == createByteSum(e, size - 4) && h->v1Checksum == SAVE_FILE.saves[copy].checksum &&
++	       areRecordsWellFormed(e, size);
++}
++
++static int32_t isExtensionValid(int32_t copy)
++{
++	int32_t version = getSaveVersion(&SAVE_FILE.saves[copy]);
++
++	if (isTaggedVersion(version)) {
++		return isTaggedExtensionValid(copy);
++	}
++	return version == SAVE_LEGACY_VERSION && isLegacyExtensionValid(copy);
++}
++
++/* appends a record at p (the room is checked at the build: SAVE_RECORDS_MAX); returns where the next one goes */
++static uint8_t *putRecord(uint8_t *p, int32_t tag, void *data, int32_t len)
++{
++	int32_t i;
++
++	p[0] = tag;
++	p[1] = tag >> 8;
++	p[2] = len;
++	p[3] = len >> 8;
++	for (i = 0; i < len; i++) {
++		p[4 + i] = ((uint8_t *)data)[i];
++	}
++	return p + 4 + len;
++}
++
+ /*
+  * The extension of copy 0 from the game state in RAM (fromRam) or, for the
+  * default save of a new game, from its v1 payload; the version word, both
+@@ -4375,62 +4483,83 @@ static int32_t isExtensionValid(int32_t copy)
+ static void prepareSaveFile(int32_t fromRam)
+ {
+ 	SavegamePayload *savegame;
+-	SaveExtension *ext;
++	SaveExtHead *head;
++	uint8_t *e;
+ 	uint8_t *p;
++	int16_t words[100];
++	int16_t screens[2];
++	int16_t inventory[30];
++	int32_t partnerType;
++	int32_t size;
+ 	int32_t i;
+ 
+ 	savegame = &SAVE_FILE.saves[0];
+-	ext = &SAVE_EXT[0];
+-	for (p = (uint8_t *)ext, i = 0; i < (int32_t)sizeof(SaveExtension); i++) {
++	size = saveExtSize();
++	e = saveExtOf(0);
++	for (p = e, i = 0; i < size; i++) {
+ 		*p++ = 0;
+ 	}
+-	ext->magic[0] = 'D';
+-	ext->magic[1] = 'W';
+-	ext->magic[2] = '2';
+-	ext->magic[3] = 'E';
+-	ext->version = SAVE_FORMAT_VERSION;
+-	ext->size = sizeof(SaveExtension);
++	head = (SaveExtHead *)e;
++	head->magic[0] = 'D';
++	head->magic[1] = 'W';
++	head->magic[2] = '4';
++	head->magic[3] = 'E';
++	head->version = saveLayoutVersion();
++	head->size = size;
++	p = e + sizeof(SaveExtHead);
+ 	if (fromRam) {
+-		ext->currentScreen = CURRENT_SCREEN;
+-		ext->previousScreen = PREVIOUS_SCREEN;
++		screens[0] = CURRENT_SCREEN;
++		screens[1] = PREVIOUS_SCREEN;
+ 		for (i = 0; i < 30; i++) {
+-			ext->inventoryTypes[i] = INVENTORY.types.array[i];
+-		}
+-		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
+-			ext->wregs[i] = SCRIPT_STATE_PTR->wregs[i];
+-		}
+-		for (i = 0; i < NUM_DIGIMON / 8; i++) {
+-			ext->speciesRaised[i] = SPECIES_RAISED_BITS[i];
+-			ext->speciesRecruited[i] = SPECIES_RECRUITED_BITS[i];
++			inventory[i] = INVENTORY.types.array[i];
+ 		}
+ 	} else {
+-		ext->currentScreen = savegame->currentScreen;
+-		ext->previousScreen = savegame->previousScreen;
++		screens[0] = savegame->currentScreen;
++		screens[1] = savegame->previousScreen;
+ 		for (i = 0; i < 30; i++) {
+-			ext->inventoryTypes[i] = itemFromLegacy(savegame->inventory.types.array[i]);
++			inventory[i] = itemFromLegacy(savegame->inventory.types.array[i]);
+ 		}
+ 	}
+-	ext->partnerType = savegame->partnerType;
++	partnerType = savegame->partnerType;
++	p = putRecord(p, SAVE_TAG_SCREENS, screens, sizeof(screens));
++	p = putRecord(p, SAVE_TAG_INVENTORY, inventory, sizeof(inventory));
++	p = putRecord(p, SAVE_TAG_PARTNER_TYPE, &partnerType, sizeof(partnerType));
++	if (fromRam) {
++		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
++			words[i] = SCRIPT_STATE_PTR->wregs[i];
++		}
++		p = putRecord(p, SAVE_TAG_WREGS, words, 2 * SAVE_EXT_SAVED_WREGS);
++	}
+ 	for (i = 0; i < 40; i++) {
+-		ext->registeredTypes[i] = savegame->battleRegistrationData[i].digimonId;
++		words[i] = savegame->battleRegistrationData[i].digimonId;
+ 	}
++	p = putRecord(p, SAVE_TAG_REGISTERED, words, 2 * 40);
+ 	for (i = 0; i < 100; i++) {
+-		ext->poopMaps[i] = savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
++		words[i] = savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
++	}
++	p = putRecord(p, SAVE_TAG_POOP_MAPS, words, 2 * 100);
++	if (fromRam) {
++		p = putRecord(p, SAVE_TAG_SPECIES_RAISED, SPECIES_RAISED_BITS, NUM_DIGIMON / 8);
++		p = putRecord(p, SAVE_TAG_SPECIES_RECRUITED, SPECIES_RECRUITED_BITS, NUM_DIGIMON / 8);
+ 	}
++	/* MOD (tier 2): the story state's records go here */
++	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+ 	p[0] = 'D';
+ 	p[1] = 'W';
+ 	p[2] = '2';
+ 	p[3] = '\0';
+-	p[4] = SAVE_FORMAT_VERSION;
++	p[4] = saveLayoutVersion();
+ 	savegame->checksum = createSavegameChecksum(0);
+-	if (needsNewExecutable(ext)) {
++	if (needsNewExecutable(partnerType, screens[0], screens[1], inventory)) {
+ 		savegame->checksum = ~savegame->checksum; /* the original refuses it */
+ 	}
+-	ext->v1Checksum = savegame->checksum;
+-	ext->checksum = createExtensionChecksum(ext);
++	head->v1Checksum = savegame->checksum;
++	*(int32_t *)(e + size - 4) = createByteSum(e, size - 4);
+ 	SAVE_FILE.saves[1] = SAVE_FILE.saves[0];
+-	SAVE_EXT[1] = SAVE_EXT[0];
++	for (i = 0; i < size; i++) {
++		saveExtOf(1)[i] = e[i];
++	}
+ 	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
+ }
+ 
+@@ -4544,6 +4673,97 @@ static void dropAbsentSaveContent(void)
+ 	}
+ }
+ 
++static int32_t readRecord16(uint8_t *p)
++{
++	return (int16_t)(p[0] | (p[1] << 8));
++}
++
++/* a record this build knows; an unknown one is skipped, an unknown required one (bit 15) makes the file unreadable */
++static int32_t isRecordKnown(int32_t tag)
++{
++	switch (tag) {
++	case SAVE_TAG_SCREENS:
++	case SAVE_TAG_INVENTORY:
++	case SAVE_TAG_PARTNER_TYPE:
++	case SAVE_TAG_WREGS:
++	case SAVE_TAG_REGISTERED:
++	case SAVE_TAG_POOP_MAPS:
++	case SAVE_TAG_SPECIES_RAISED:
++	case SAVE_TAG_SPECIES_RECRUITED:
++		return 1;
++	}
++	return 0;
++}
++
++static int32_t hasUnreadableRecord(uint8_t *e)
++{
++	int32_t at = sizeof(SaveExtHead);
++	int32_t tag;
++
++	for (;;) {
++		tag = e[at] | (e[at + 1] << 8);
++		if (tag == SAVE_TAG_END) {
++			return 0;
++		}
++		if ((tag & SAVE_TAG_REQUIRED) && !isRecordKnown(tag)) {
++			return 1;
++		}
++		at += 4 + (e[at + 2] | (e[at + 3] << 8));
++	}
++}
++
++/*
++ * The records of a valid extension into the game state: each known record is copied as far as it and this build both
++ * have room; what it does not cover keeps what the v1 part (or resetSpeciesFlags and the zeroed registers) gave it.
++ */
++static void applyRecords(uint8_t *e)
++{
++	int32_t at = sizeof(SaveExtHead);
++	int32_t tag, len, i, n;
++	uint8_t *d;
++
++	for (;;) {
++		tag = e[at] | (e[at + 1] << 8);
++		len = e[at + 2] | (e[at + 3] << 8);
++		d = e + at + 4;
++		at += 4 + len;
++		switch (tag) {
++		case SAVE_TAG_END:
++			return;
++		case SAVE_TAG_SCREENS:
++			if (len >= 2) {
++				SAVED_STATE.currentScreen = readRecord16(d);
++			}
++			if (len >= 4) {
++				SAVED_STATE.previousScreen = readRecord16(d + 2);
++			}
++			break;
++		case SAVE_TAG_INVENTORY:
++			for (i = 0; i < len / 2 && i < 30; i++) {
++				INVENTORY.types.array[i] = readRecord16(d + 2 * i);
++			}
++			break;
++		case SAVE_TAG_WREGS:
++			for (i = 0; i < len / 2 && i < SAVE_EXT_SAVED_WREGS; i++) {
++				SCRIPT_STATE_PTR->wregs[i] = readRecord16(d + 2 * i);
++			}
++			break;
++		case SAVE_TAG_SPECIES_RAISED:
++			n = len < NUM_DIGIMON / 8 ? len : NUM_DIGIMON / 8;
++			for (i = 0; i < n; i++) {
++				SPECIES_RAISED_BITS[i] = d[i];
++			}
++			break;
++		case SAVE_TAG_SPECIES_RECRUITED:
++			n = len < NUM_DIGIMON / 8 ? len : NUM_DIGIMON / 8;
++			for (i = 0; i < n; i++) {
++				SPECIES_RECRUITED_BITS[i] = d[i];
++			}
++			break;
++		}
++	}
++}
++
+ /*
+  * Loads copy 0 or 1 (isSaveCopyValid): the v1 payload, then
+  * the extension when it is valid. 0 = a newer format this build cannot read.
+@@ -4553,12 +4773,18 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	SaveExtension *ext;
+ 	int32_t i;
+ 
+-	if (getSaveVersion(&SAVE_FILE.saves[copy]) > SAVE_FORMAT_VERSION) {
++	if (!isSaveVersionReadable(getSaveVersion(&SAVE_FILE.saves[copy]))) {
+ 		return 0;
+ 	}
+ 	if (copy != 0) {
+ 		SAVE_FILE.saves[0] = SAVE_FILE.saves[1];
+-		SAVE_EXT[0] = SAVE_EXT[1];
++		for (i = 0; i < saveExtSize(); i++) {
++			saveExtOf(0)[i] = saveExtOf(1)[i];
++		}
++	}
++	if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0])) && isExtensionValid(0) &&
++	    hasUnreadableRecord(saveExtOf(0))) {
++		return 0; /* it holds something this build would silently drop */
+ 	}
+ 	loadSavegame(&SAVE_FILE.saves[0]);
+ 	for (i = 0; i < SCRIPT_NUM_WREGS; i++) {
+@@ -4566,18 +4792,22 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	}
+ 	resetSpeciesFlags();
+ 	if (isExtensionValid(0)) {
+-		ext = &SAVE_EXT[0];
+-		for (i = 0; i < NUM_DIGIMON / 8; i++) {
+-			SPECIES_RAISED_BITS[i] = ext->speciesRaised[i];
+-			SPECIES_RECRUITED_BITS[i] = ext->speciesRecruited[i];
+-		}
+-		SAVED_STATE.currentScreen = ext->currentScreen;
+-		SAVED_STATE.previousScreen = ext->previousScreen;
+-		for (i = 0; i < 30; i++) {
+-			INVENTORY.types.array[i] = ext->inventoryTypes[i];
+-		}
+-		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
+-			SCRIPT_STATE_PTR->wregs[i] = ext->wregs[i];
++		if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0]))) {
++			applyRecords(saveExtOf(0));
++		} else {
++			ext = (SaveExtension *)saveExtOf(0);
++			for (i = 0; i < NUM_DIGIMON / 8; i++) {
++				SPECIES_RAISED_BITS[i] = ext->speciesRaised[i];
++				SPECIES_RECRUITED_BITS[i] = ext->speciesRecruited[i];
++			}
++			SAVED_STATE.currentScreen = ext->currentScreen;
++			SAVED_STATE.previousScreen = ext->previousScreen;
++			for (i = 0; i < 30; i++) {
++				INVENTORY.types.array[i] = ext->inventoryTypes[i];
++			}
++			for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
++				SCRIPT_STATE_PTR->wregs[i] = ext->wregs[i];
++			}
+ 		}
+ 	}
+ 	dropAbsentSaveContent();
+-- 
+2.53.0
+

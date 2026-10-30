@@ -1,0 +1,381 @@
+From 6bb24e1883dfa0816f96197886d7b4594aacf8dd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:21:30 +0000
+Subject: [PATCH] Scripts: wide opcodes 0x80-0x93, wide IF conditions and
+ registers
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 2 of docs/mods/ids.md (§ 8.3, § 10). Every original opcode keeps
+its bytes and meaning; the new ones live in 0x80-0x9F, which the
+original interpreter treats as "end of script".
+
+- 0x80-0x8B: LOAD/SET/UNLOAD_DIGIMON16, WARP_TO16, GIVE/REMOVE_ITEM16,
+  SPAWN_ITEM16, SPAWN_CHEST16, LEARN_MOVE16, GIVE/TAKE_CARD16 and
+  SET_BGM16 read the id as a u16 (at an even offset) and do what the
+  8-bit opcode does. The callees still take u8 ids until step 3.
+- 0x8C-0x93: SET_WREG, STORE_DIGIMON_TYPE_W, STORE_MAP_ID_W,
+  TELEPORT_W, COPY_W, ADD_W, SUB_W and SWITCH_W on 64 u16 wide
+  registers appended to ScriptState (offsets unchanged; not saved yet).
+  0x94-0x9F are reserved and still end the script.
+- IF: 0x26 item16, 0x27 wreg, 0x28 move16, 0x29 card16. These codes
+  read no arguments before and no original script uses them.
+- CALL_ROUTINE 0 (choose an item) also leaves the item in w62
+  (0xFFFF = none), next to p254.
+
+---
+ include/dw/script.h      |  43 ++++++++
+ src/main/script_common.c |   6 +-
+ src/main/script_interp.c | 217 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 263 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/script.h b/include/dw/script.h
+index cc274b9..47bfc3e 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -118,6 +118,35 @@
+ #define SCRIPT_OP_SET_RECT_IMPASSABLE		0x7C	/* u8, s16 x, s16 z, u8 w, u8 h */
+ #define SCRIPT_OP_SPAWN_SPRITE_AT_LOCATION	0x7D	/* u8 sprite, s16 x, y, z, w */
+ #define SCRIPT_OP_SPAWN_SPRITE_AT_ENTITY	0x7E	/* id, u8 node, u8 sprite */
++/*
++ * MOD: wide opcodes (docs/mods/ids.md § 8.3). 16-bit variants of the
++ * opcodes that carry a Digimon, screen, item, technique, card or music id,
++ * and the wide registers w0..w63. Every u16 sits at an even offset and
++ * every instruction has an even length. 0x94-0x9F are reserved: like
++ * every other unknown opcode, they end the script.
++ */
++#define SCRIPT_OP_WIDE_FIRST			0x80
++#define SCRIPT_OP_LOAD_DIGIMON16		0x80	/* _, u16 digimon */
++#define SCRIPT_OP_SET_DIGIMON16			0x81	/* _, u16 digimon, u8 slot, u8 autotalk */
++#define SCRIPT_OP_UNLOAD_DIGIMON16		0x82	/* _, u16 digimon */
++#define SCRIPT_OP_WARP_TO16			0x83	/* _, u16 screen, u8 exit, u8 section */
++#define SCRIPT_OP_GIVE_ITEM16			0x84	/* _, u16 item, u8 amount, _ */
++#define SCRIPT_OP_REMOVE_ITEM16			0x85	/* _, u16 item, u8 amount, _ */
++#define SCRIPT_OP_SPAWN_ITEM16			0x86	/* _, u16 item, s16 x, s16 z */
++#define SCRIPT_OP_SPAWN_CHEST16			0x87	/* _, u16 item, s16 x, y, z, w, u16 trigger */
++#define SCRIPT_OP_LEARN_MOVE16			0x88	/* _, u16 move */
++#define SCRIPT_OP_GIVE_CARD16			0x89	/* _, u16 card */
++#define SCRIPT_OP_TAKE_CARD16			0x8A	/* _, u16 card */
++#define SCRIPT_OP_SET_BGM16			0x8B	/* _, u16 bgm (0xFFFF stops it, like 0xFF) */
++#define SCRIPT_OP_SET_WREG			0x8C	/* wreg, u16 value */
++#define SCRIPT_OP_STORE_DIGIMON_TYPE_W		0x8D	/* wreg */
++#define SCRIPT_OP_STORE_MAP_ID_W		0x8E	/* wreg */
++#define SCRIPT_OP_TELEPORT_W			0x8F	/* wreg: screen in wN, exit in wN+1 */
++#define SCRIPT_OP_COPY_W			0x90	/* _, wreg from, wreg to */
++#define SCRIPT_OP_ADD_W				0x91	/* wreg, u16 value; saturates at 0xFFFF */
++#define SCRIPT_OP_SUB_W				0x92	/* wreg, u16 value; stops at 0 */
++#define SCRIPT_OP_SWITCH_W			0x93	/* wreg, u16 count, u16 offsets[count] */
++#define SCRIPT_OP_WIDE_END			0xA0	/* first opcode after the wide block */
+ #define SCRIPT_OP_SET_SCRIPT			0xFB	/* _, u16 script, u16 map */
+ #define SCRIPT_OP_UNUSED_FC			0xFC
+ #define SCRIPT_OP_UNUSED_FD			0xFD
+@@ -155,14 +184,28 @@ typedef struct {
+ 	uint8_t smth[2];
+ } StackEntry;
+ 
++/*
++ * MOD: wide registers w0..w63 (docs/mods/ids.md § 8.3): u16 script
++ * variables for ids that do not fit in a pstat. They are appended to
++ * ScriptState, so every original offset stays the same; they are zeroed
++ * with the rest at boot and are not saved yet (save v2, ids.md § 8.4).
++ * CALL_ROUTINE 0 (choose an item) also leaves the item in
++ * SCRIPT_WREG_CHOSEN_ITEM (0xFFFF = none), next to p254.
++ */
++#define SCRIPT_NUM_WREGS		64
++#define SCRIPT_WREG_CHOSEN_ITEM		62
++
+ typedef struct {
+ 	uint8_t smth[212];
+ 	uint8_t cards[33];
+ 	uint8_t triggers[100];
+ 	uint8_t pstats[256];
+ 	StackEntry stack[8];
++	uint16_t wregs[SCRIPT_NUM_WREGS]; /* MOD */
+ } ScriptState;
+ 
++void scriptSetChosenItem(int32_t item); /* MOD: p254 and SCRIPT_WREG_CHOSEN_ITEM */
++
+ typedef struct {
+ 	uint8_t mapId;
+ 	uint8_t unk_0x1;
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index e66104f..dd573a4 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -810,7 +810,7 @@ void tickItemMenu(void)
+ 			SCRIPT_STATE_2 = 0xa;
+ 		} else if (ITEM_MENU_TYPE == 5) {
+ 			if (isTriggerSet(3) != 0) {
+-				writePStat(0xfe, 0xff);
++				scriptSetChosenItem(0xff); /* MOD: also w62 */
+ 				unsetTrigger(3);
+ 				SCRIPT_STATE_2 = 4;
+ 			}
+@@ -1069,7 +1069,7 @@ void tickSingleCardShop(void)
+ 				SCRIPT_STATE_2 = 4;
+ 				playShopSoundOnlyInSavannah();
+ 			} else {
+-				writePStat(0xfe, SHOP_ITEM_TYPE);
++				scriptSetChosenItem(SHOP_ITEM_TYPE); /* MOD: also w62 */
+ 				unsetTrigger(3);
+ 				SCRIPT_STATE_2 = 4;
+ 				playSound(0, 3);
+@@ -1782,7 +1782,7 @@ void openDiscardItem(void)
+ 		}
+ 
+ 		setTrigger(3);
+-		writePStat(0xfe, 0xff);
++		scriptSetChosenItem(0xff); /* MOD: also w62 */
+ 		SCRIPT_STATE_2 = 2;
+ 		SCRIPT_TEXTBOX_MODE = 0;
+ 	case 1:
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index f308691..c15f45e 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -80,6 +80,8 @@ void runMapHeadScript(int32_t section);
+ void setupMap(int32_t param_1, int32_t param_2);
+ void loadMap(uint16_t mapId);
+ uint8_t *getScriptSection(uint8_t *script, int32_t section);
++void scriptInstruction80to9F(uint8_t op); /* MOD: wide opcodes */
++static int32_t scriptCompareWide(uint8_t condOp);
+ int32_t addFileReadRequestPath(char *path, int32_t buffer, uint8_t *isRunning,
+                                void *callback, void *callbackParam);
+ 
+@@ -545,6 +547,8 @@ setjmp_retry:
+ 			scriptInstruction5Ato5F(op);
+ 		} else if (op >= 0x64 && op < 0x7f) {
+ 			scriptInstruction64to7E(op);
++		} else if (op >= SCRIPT_OP_WIDE_FIRST && op < SCRIPT_OP_WIDE_END) {
++			scriptInstruction80to9F(op); /* MOD: wide opcodes */
+ 		} else {
+ 			IS_SCRIPT_PAUSED = 1;
+ 			longjmp(SCRIPT_JMP_BUF, 2);
+@@ -908,6 +912,16 @@ void scriptIfInstruction(void)
+ 			case 5:
+ 				cond = scriptCompareMoney();
+ 				break;
++			case 6: /* MOD: item16 */
++			case 7: /* MOD: wreg */
++				cond = scriptCompareWide(condOp);
++				break;
++			}
++			break;
++		case (5 << 3):
++			/* MOD: move16 (0x28) and card16 (0x29); 0x2A-0x2F stay free */
++			if ((condOp & 7) < 2) {
++				cond = scriptCompareWide(condOp);
+ 			}
+ 			break;
+ 		}
+@@ -2782,3 +2796,206 @@ void scriptInstructionFBtoFF(op)
+ 		break;
+ 	}
+ }
++
++/*
++ * MOD: wide opcodes 0x80-0x9F and wide IF conditions (docs/mods/ids.md
++ * § 8.3, docs/mods/scripts.md). Each one does what its 8-bit original does,
++ * with the id read as a u16, or works on the wide registers w0..w63. The
++ * callees still take u8 ids (giveItem, spawnItem, playBGM...), so ids
++ * above 255 are cut to their low byte until the carriers are widened
++ * (ids.md § 10, step 3).
++ */
++#define WREG(n) (SCRIPT_STATE_PTR->wregs[(n) & (SCRIPT_NUM_WREGS - 1)])
++
++void scriptSetChosenItem(int32_t item)
++{
++	writePStat(PSTAT_254, item);
++	WREG(SCRIPT_WREG_CHOSEN_ITEM) = (item == LEGACY_ID_NONE) ? 0xffff : item;
++}
++
++/*
++ * IF conditions; the condition byte and its padding are already read.
++ *   0x26 item16  u16 item, u8 compare, _, u16 count
++ *   0x27 wreg    u8 wreg, u8 compare, u16 value
++ *   0x28 move16  u16 move, u8 negate, _
++ *   0x29 card16  u16 card, u8 compare, _, u16 count
++ */
++static int32_t scriptCompareWide(uint8_t condOp)
++{
++	uint16_t id;
++	uint16_t value;
++	uint8_t op;
++	uint8_t pad;
++	int32_t res;
++
++	if (condOp & 0x08) {
++		/* 0x28, 0x29 */
++		pollNextScriptUShort(&id);
++		pollNextTwoScriptBytes(&op, &pad);
++		if ((condOp & 7) == 0) {
++			res = _hasMove(id);
++			if (op == 0) {
++				return res;
++			}
++			return (res != 0) ^ 1;
++		}
++		pollNextScriptUShort(&value);
++		return scriptCompareValue(op, getCardAmount(id), value);
++	}
++	if ((condOp & 7) == 6) {
++		pollNextScriptUShort(&id);
++		pollNextTwoScriptBytes(&op, &pad);
++		pollNextScriptUShort(&value);
++		return scriptCompareValue(op, getItemCount(id), value);
++	}
++	pollNextTwoScriptBytes(&pad, &op);
++	pollNextScriptUShort(&value);
++	return scriptCompareValue(op, WREG(pad), value);
++}
++
++void scriptInstruction80to9F(uint8_t op)
++{
++	StackEntry entry;
++	int16_t posX;
++	int16_t posY;
++	int16_t posZ;
++	int16_t posW;
++	uint16_t id;
++	uint16_t value;
++	uint8_t byteArg1;
++	uint8_t byteArg2;
++	int32_t newValue;
++
++	switch (op) {
++	case SCRIPT_OP_LOAD_DIGIMON16:
++		skipOneReadOneUShort(&id);
++		scriptLoadModel(id);
++		break;
++	case SCRIPT_OP_SET_DIGIMON16:
++		scriptPauseGame(0xff);
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptBytes(&byteArg1, &byteArg2);
++		scriptSetDigimon(id, byteArg1, byteArg2);
++		break;
++	case SCRIPT_OP_UNLOAD_DIGIMON16:
++		skipOneReadOneUShort(&id);
++		scriptUnloadModel(id);
++		break;
++	case SCRIPT_OP_WARP_TO16:
++		scriptPauseGame(0xff);
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptBytes(&byteArg1, &byteArg2);
++		SCRIPT_PARAM_1 = id;
++		SCRIPT_STATE_2 = byteArg1;
++		consumeMapChangeShowName();
++		entry.smth[0] = 4;
++		entry.smth[1] = byteArg2;
++		pushScriptStack(&entry);
++		longjmp(SCRIPT_JMP_BUF, 3);
++	case SCRIPT_OP_GIVE_ITEM16:
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptBytes(&byteArg1, &byteArg2);
++		if (giveItem(id, byteArg1) != 0) {
++			unsetTrigger(0);
++		} else {
++			setTrigger(0);
++		}
++		break;
++	case SCRIPT_OP_REMOVE_ITEM16:
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptBytes(&byteArg1, &byteArg2);
++		removeItem(id, byteArg1);
++		break;
++	case SCRIPT_OP_SPAWN_ITEM16:
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptShorts(&posX, &posY);
++		spawnItem(id, posX, posY);
++		break;
++	case SCRIPT_OP_SPAWN_CHEST16:
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptShorts(&posX, &posY);
++		pollNextTwoScriptShorts(&posZ, &posW);
++		pollNextScriptUShort(&value);
++		spawnChest(posX, posY, posZ, posW, id, value);
++		break;
++	case SCRIPT_OP_LEARN_MOVE16:
++		skipOneReadOneUShort(&id);
++		learnMove(id);
++		break;
++	case SCRIPT_OP_GIVE_CARD16:
++		skipOneReadOneUShort(&id);
++		byteArg1 = getCardAmount(id);
++		if (byteArg1 < 9) {
++			setCardAmount(id, byteArg1 + 1);
++		}
++		break;
++	case SCRIPT_OP_TAKE_CARD16:
++		skipOneReadOneUShort(&id);
++		byteArg1 = getCardAmount(id);
++		if (byteArg1 != 0) {
++			setCardAmount(id, byteArg1 - 1);
++		}
++		break;
++	case SCRIPT_OP_SET_BGM16:
++		skipOneReadOneUShort(&id);
++		playBGM(id == 0xffff ? 0xff : id);
++		break;
++	case SCRIPT_OP_SET_WREG:
++		pollOneUByteOneUShort(&byteArg1, &value);
++		WREG(byteArg1) = value;
++		break;
++	case SCRIPT_OP_STORE_DIGIMON_TYPE_W:
++		pollNextScriptUByte(&byteArg1);
++		WREG(byteArg1) = PARTNER_ENTITY.digimonEntity.entity.type;
++		break;
++	case SCRIPT_OP_STORE_MAP_ID_W:
++		pollNextScriptUByte(&byteArg1);
++		WREG(byteArg1) = CURRENT_SCREEN_ID;
++		break;
++	case SCRIPT_OP_TELEPORT_W:
++		scriptPauseGame(0xff);
++		pollNextScriptUByte(&byteArg1);
++		SCRIPT_PARAM_1 = WREG(byteArg1);
++		SCRIPT_STATE_2 = WREG(byteArg1 + 1);
++		consumeMapChangeShowName();
++		entry.smth[0] = 4;
++		entry.smth[1] = 0xff;
++		pushScriptStack(&entry);
++		longjmp(SCRIPT_JMP_BUF, 3);
++	case SCRIPT_OP_COPY_W:
++		skipOnePollTwoScriptBytes(&byteArg1, &byteArg2);
++		WREG(byteArg2) = WREG(byteArg1);
++		break;
++	case SCRIPT_OP_ADD_W:
++		pollOneUByteOneUShort(&byteArg1, &value);
++		newValue = WREG(byteArg1) + value;
++		if (newValue > 0xffff) {
++			newValue = 0xffff;
++		}
++		WREG(byteArg1) = newValue;
++		break;
++	case SCRIPT_OP_SUB_W:
++		pollOneUByteOneUShort(&byteArg1, &value);
++		newValue = WREG(byteArg1) - value;
++		if (newValue < 0) {
++			newValue = 0;
++		}
++		WREG(byteArg1) = newValue;
++		break;
++	case SCRIPT_OP_SWITCH_W:
++		pollOneUByteOneUShort(&byteArg1, &id);
++		value = WREG(byteArg1);
++		if (value >= id) {
++			value = id - 1;
++		}
++		value = *(uint16_t *)(SCRIPT_POINTER + (value << 1));
++		SCRIPT_POINTER = (uint8_t *)((uint32_t)ACTIVE_SCRIPT + value);
++		break;
++	default:
++		/* 0x94-0x9F: reserved, they end the script like any unknown opcode */
++		IS_SCRIPT_PAUSED = 1;
++		longjmp(SCRIPT_JMP_BUF, 2);
++	}
++
++	longjmp(SCRIPT_JMP_BUF, 1);
++}
+-- 
+2.53.0
+

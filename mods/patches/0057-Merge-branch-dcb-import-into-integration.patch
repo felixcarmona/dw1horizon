@@ -1,0 +1,326 @@
+From 73fe62445613ce81ea0d40eb0018c15d1ba868d2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:20:31 +0000
+Subject: [PATCH] Merge branch 'dcb-import' into integration
+
+mod_lab.c: Veemon, Puppetmon and Kimeramon appended to the one evolve list;
+dcb-import's skip of species missing from DIGI.DAT and its "Not on this
+disc" message kept.
+
+---
+ include/dw/species.h    | 33 +++++++++++++++++++++++++++++-
+ src/btl/battle_effect.c |  6 ++++++
+ src/main/map.c          |  2 +-
+ src/main/mod_lab.c      | 54 ++++++++++++++++++++++++++++++++++++-------------
+ src/main/mod_species.c  | 39 +++++++++++++++++++++++++++++++++++
+ src/std/std_effect.c    |  6 ++++++
+ src/vs/vs_effect.c      |  6 ++++++
+ 7 files changed, 130 insertions(+), 16 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 0c931f5..d8a25ec 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -42,6 +42,10 @@
+ /* SpeciesRecord.flags */
+ #define SPECIES_FLAG_DEFINED	0x01	/* the id exists */
+ #define SPECIES_FLAG_PARTNER	0x02	/* the partner block is valid: it can be a partner */
++#define SPECIES_FLAG_COND_FX	0x04	/* conditionFx replaces CONDITION_FX_OFFSETS[originalType] */
++
++#define SPECIES_EFFECT_ORIGINS	8
++#define SPECIES_ANY_OFFSET	(-0x8000)	/* EffectOrigin.from[1]: any offset of that bone */
+ 
+ /* SpeciesRecord.texFile */
+ #define SPECIES_TEX_ALLTIM	0	/* CHDAT\ALLTIM.TIM */
+@@ -57,6 +61,20 @@ typedef struct {
+ 	uint32_t totalSectors;
+ } SpeciesHeader;
+ 
++/*
++ * MOD (dcb-import): where this species' technique effects start. The EFE data
++ * of each technique lists, per original type, a bone and an offset in that
++ * bone's space (EfeTechBoneOffset). A new species borrows the entries of its
++ * originalType, whose bone numbers belong to another skeleton: an entry here
++ * whose `from` equals the borrowed {bone, x, y, z} (or {bone, ANY_OFFSET, ..})
++ * replaces it with `to`, one of this species' bones and a point in it. Bone 0
++ * (the entity) offsets are skeleton-independent and are normally left alone.
++ */
++typedef struct {
++	int16_t from[4];		/* bone, x, y, z of the originalType's entry */
++	int16_t to[4];			/* bone, x, y, z for this species (an EfeBoneOffset) */
++} SpeciesEffectOrigin;
++
+ typedef struct {
+ 	DigimonPara para;		/* 0x000 name, bones, radius, height, level, specials, drop, techniques */
+ 	char modelName[8];		/* 0x034 "AGUM" = CHDAT\MMDn\AGUM.MMD; empty: the model is in DIGI.DAT */
+@@ -79,7 +97,13 @@ typedef struct {
+ 	int8_t itemTakeDistance;	/* 0x130 */
+ 	int8_t trainingAnims[2];	/* 0x131 TRN_TRAINING_ANIM_IDS row */
+ 	int8_t training2Anims[2];	/* 0x133 TRN2_TRAINING_ANIM_IDS row */
+-	uint8_t reserved135[SPECIES_RECORD_SIZE - 0x135];
++	uint8_t reserved135;
++	/* MOD (dcb-import): effect origins of a species with its own skeleton */
++	int16_t conditionFx[4];		/* 0x136 x, y, z, bone (SPECIES_FLAG_COND_FX) */
++	uint8_t numEffectOrigins;	/* 0x13E */
++	uint8_t reserved13F;
++	SpeciesEffectOrigin effectOrigins[SPECIES_EFFECT_ORIGINS]; /* 0x140 */
++	uint8_t reserved1C0[SPECIES_RECORD_SIZE - 0x1C0];
+ } SpeciesRecord;
+ 
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+@@ -91,6 +115,8 @@ SPECIES_LAYOUT_CHECK(evoReqs, __builtin_offsetof(SpeciesRecord, evoReqs) == 0xF0
+ SPECIES_LAYOUT_CHECK(evoGains, __builtin_offsetof(SpeciesRecord, evoGains) == 0x10C);
+ SPECIES_LAYOUT_CHECK(evoPaths, __builtin_offsetof(SpeciesRecord, evoPaths) == 0x11A);
+ SPECIES_LAYOUT_CHECK(item, __builtin_offsetof(SpeciesRecord, itemTakeDistance) == 0x130);
++SPECIES_LAYOUT_CHECK(condfx, __builtin_offsetof(SpeciesRecord, conditionFx) == 0x136);
++SPECIES_LAYOUT_CHECK(origins, __builtin_offsetof(SpeciesRecord, effectOrigins) == 0x140);
+ SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x14);
+ 
+ /* ids 0..SPECIES_COUNT-1 exist (NUM_ORIGINAL_DIGIMON without DIGI.DAT) */
+@@ -115,6 +141,11 @@ int32_t getDigimonTextureRef(int32_t type, char **file, int32_t *sector, int32_t
+ /* the evolution paths of a type (EVOLUTION_PATHS covers types 1..62, new
+  * species have their own rows; any other type has none) */
+ EvolutionPath *getEvolutionPath(int32_t type);
++/* MOD (dcb-import): the bone offset a technique effect of `type` starts
++ * from: `borrowed` (the originalType's EFE entry) or this species' own one */
++int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed);
++/* the condition icon offset (x, y, z, bone) of a type */
++SVECTOR *getConditionFxOffset(int32_t type);
+ /* a training animation row (TRN/TRN2 tables live in the overlays) */
+ int8_t *getTrainingAnimRow(int8_t (*table)[2], int32_t type, int32_t which);
+ 
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 1d85339..d160424 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -71,6 +71,7 @@ void calculateBoneMatrix(Entity *entity, int32_t boneId, MATRIX *out);
+ int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
+ void BTL_renderConfusionEffect(int32_t i);
+ int32_t getOriginalType(int32_t type);
++int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed); /* MOD (dcb-import) */
+ void BTL_loadNextEFEFile(EfeLoad *arg);
+ void BTL_runEFESlotScript(int32_t i);
+ void getRViewCopy(GsRVIEW2 *view);
+@@ -4555,6 +4556,11 @@ void BTL_checkTechCompatibility(void)
+ 	}
+ 
+ 	EFE_BONE_OFFSET = &entry->offset;
++	/* MOD (dcb-import): a new species with its own skeleton moves the borrowed origin */
++	if (entry->type >= 0) {
++		EFE_BONE_OFFSET = (EfeBoneOffset *)getSpeciesEffectOrigin(EFE_SCRIPT_CONTEXT->sourceEntity->type,
++									  (int16_t *)&entry->offset);
++	}
+ 	EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
+ }
+ 
+diff --git a/src/main/map.c b/src/main/map.c
+index 865b7ea..b426454 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -5829,7 +5829,7 @@ void translateConditionFXToEntity(Entity *entity, SVECTOR *out)
+ 	SVECTOR *offset;
+ 	MATRIX *matrix;
+ 
+-	offset = &CONDITION_FX_OFFSETS[getOriginalType(entity->type)];
++	offset = getConditionFxOffset(entity->type); /* MOD (dcb-import): new species may have their own */
+ 	matrix = &entity->posData[offset->pad].posMatrix.workm;
+ 	ApplyMatrixSV(matrix, offset, out);
+ 	out->vx += (int16_t)matrix->t[0];
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index ee7fb98..b6345f2 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -10,17 +10,19 @@
+  *                      afterwards it says the gift was already taken
+  *   - "Frame rate  60 fps"  X (or right) cycles 20 -> 30 -> 60 fps, left
+  *                      goes back (MOD_FPS_MODE, main.c; experimental branch)
+- *   - "To MasterTyrannomon"  starts the real evolution sequence into
+- *                      MasterTyrannomon (type 124) when the game is unpaused,
+- *                      the way an evolution item does, but with the natural
+- *                      stat gains (HAS_USED_EVOITEM = 0). Left/right choose
+- *                      the target: "To MasterTyrannomon", "To Cherrymon"
+- *                      (type 121; MOD cherrymon), "To King of Sukamon"
+- *                      (type 120; MOD partners-npc-a), "To Icemon" (94),
+- *                      "To Meteormon" (113), the partners of MOD
+- *                      partners-npc-b, "To Machinedramon" (type 115; MOD
+- *                      machinedramon), "To Jijimon" (117), "To Analogman"
+- *                      (116)
++ *   - "To MasterTyrannomon"  starts the real evolution sequence into the shown
++ *                      species when the game is unpaused, the way an
++ *                      evolution item does, but with the natural stat gains
++ *                      (HAS_USED_EVOITEM = 0). Left/right choose the target:
++ *                      "To MasterTyrannomon" (124), "To Cherrymon" (121; MOD
++ *                      cherrymon), "To King of Sukamon" (120; MOD
++ *                      partners-npc-a), "To Icemon" (94), "To Meteormon"
++ *                      (113), the partners of MOD partners-npc-b, "To
++ *                      Machinedramon" (115; MOD machinedramon), "To Jijimon"
++ *                      (117), "To Analogman" (116), and the species imported
++ *                      from other games, Veemon (182), Puppetmon (183),
++ *                      Kimeramon (184) (MOD dcb-import); a species the disc's
++ *                      DIGI.DAT does not define is skipped
+  *   - "Close"
+  *
+  * The result of an option replaces the stats line until the next key, so the
+@@ -38,6 +40,7 @@
+ #include <dw/entity.h>
+ #include <dw/ids.h>
+ #include <dw/params.h>
++#include <dw/species.h>
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -109,6 +112,12 @@ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_MACHINEDRAMON, /* MOD (machinedramon) */
+ 	DIGIMON_JIJIMON,       /* MOD (jijimon) */
+ 	DIGIMON_ANALOGMAN,     /* MOD (analogman) */
++	/* MOD (dcb-import): the species imported from other games
++	 * (content/species/: 182 Veemon and 183 Puppetmon from Digimon Digital
++	 * Card Battle, 184 Kimeramon from Digimon World 2003) */
++	182,
++	183,
++	184,
+ };
+ 
+ static char *MOD_LAB_EVO_TEXT[] = {
+@@ -123,9 +132,25 @@ static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To Machinedramon", /* MOD (machinedramon) */
+ 	"To Jijimon",       /* MOD (jijimon) */
+ 	"To Analogman",     /* MOD (analogman) */
++	"To Veemon",        /* MOD (dcb-import) */
++	"To Puppetmon",
++	"To Kimeramon",
+ };
+ #define MOD_LAB_EVO_COUNT ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
++/* MOD (dcb-import): next target (step 1 or COUNT-1) whose species exists */
++static void modLabStepEvoChoice(int32_t step)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_LAB_EVO_COUNT; i++) {
++		modLabEvoChoice = (modLabEvoChoice + step) % MOD_LAB_EVO_COUNT;
++		if (isValidDigimonType(MOD_LAB_EVO_TARGETS[modLabEvoChoice])) {
++			break;
++		}
++	}
++}
++
+ static char *MOD_LAB_FPS_TEXT[3] = {
+ 	"Frame rate  20 fps",
+ 	"Frame rate  30 fps",
+@@ -277,7 +302,9 @@ static void modLabApply(void)
+ 		break;
+ 	case MOD_LAB_OPT_EVOLVE:
+ 		/* MOD (master-tyrannomon): as handleEvoItems does, with natural gains */
+-		if (PARTNER_ENTITY.digimonEntity.entity.type == MOD_LAB_EVO_TARGETS[modLabEvoChoice]) {
++		if (!isValidDigimonType(MOD_LAB_EVO_TARGETS[modLabEvoChoice])) {
++			modLabShowMessage("Not on this disc");
++		} else if (PARTNER_ENTITY.digimonEntity.entity.type == MOD_LAB_EVO_TARGETS[modLabEvoChoice]) {
+ 			modLabShowMessage("Already evolved");
+ 		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+ 			modLabShowMessage("Not now, try later");
+@@ -336,8 +363,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_EVOLVE) {
+ 			/* MOD (cherrymon): choose the evolution target */
+ 			playSound(0, 2);
+-			modLabEvoChoice = (modLabEvoChoice + ((pressed & PAD_RIGHT) ? 1 : MOD_LAB_EVO_COUNT - 1)) %
+-					  MOD_LAB_EVO_COUNT;
++			modLabStepEvoChoice((pressed & PAD_RIGHT) ? 1 : MOD_LAB_EVO_COUNT - 1);
+ 		} else if (pressed & PAD_CROSS) {
+ 			if (modLabCursor == MOD_LAB_OPTIONS - 1) {
+ 				break;
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index cf4142b..6f9ff70 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -336,3 +336,42 @@ int8_t *getTrainingAnimRow(int8_t (*table)[2], int32_t type, int32_t which)
+ 	}
+ 	return which == 0 ? rec->trainingAnims : rec->training2Anims;
+ }
++
++/* MOD (dcb-import): effect origins (include/dw/species.h, SpeciesEffectOrigin) */
++extern SVECTOR CONDITION_FX_OFFSETS[177];
++int32_t getOriginalType(int32_t type);
++
++int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed)
++{
++	SpeciesRecord *rec;
++	SpeciesEffectOrigin *o;
++	int32_t i;
++
++	rec = getSpeciesRecord(type);
++	if (rec == NULL) {
++		return borrowed;
++	}
++	for (i = 0; i < rec->numEffectOrigins && i < SPECIES_EFFECT_ORIGINS; i++) {
++		o = &rec->effectOrigins[i];
++		if (o->from[0] != borrowed[0]) {
++			continue;
++		}
++		if (o->from[1] == SPECIES_ANY_OFFSET ||
++		    (o->from[1] == borrowed[1] && o->from[2] == borrowed[2] && o->from[3] == borrowed[3])) {
++			/* lives in the record cache slot, which is kept while the model is in use */
++			return o->to;
++		}
++	}
++	return borrowed;
++}
++
++SVECTOR *getConditionFxOffset(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	if (rec != NULL && (rec->flags & SPECIES_FLAG_COND_FX)) {
++		return (SVECTOR *)rec->conditionFx;
++	}
++	return &CONDITION_FX_OFFSETS[getOriginalType(type)];
++}
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 5592a6f..0adcc23 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -69,6 +69,7 @@ void renderTMDModel(uint8_t *buffer, int32_t id, GsCOORDINATE2 *coord, GsCOORDIN
+ void calculateBoneMatrix(Entity *entity, int32_t boneId, MATRIX *out);
+ int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
+ int32_t getOriginalType(int32_t type);
++int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed); /* MOD (dcb-import) */
+ void createCloudFX(SVECTOR *pos);
+ int32_t addEntityParticleFX(Entity *owner, int32_t timer);
+ void setInt16WithStride(int16_t *ptr, int16_t value, int32_t count, int32_t stride);
+@@ -4706,6 +4707,11 @@ void STD_checkTechCompatibility(void)
+ 	}
+ 
+ 	EFE_BONE_OFFSET = &entry->offset;
++	/* MOD (dcb-import): a new species with its own skeleton moves the borrowed origin */
++	if (entry->type >= 0) {
++		EFE_BONE_OFFSET = (EfeBoneOffset *)getSpeciesEffectOrigin(EFE_SCRIPT_CONTEXT->sourceEntity->type,
++									  (int16_t *)&entry->offset);
++	}
+ 	EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
+ }
+ 
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 30a99dd..5cfd467 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -245,6 +245,7 @@ void createCloudFX(SVECTOR *pos);
+ int32_t addEntityParticleFX(Entity *owner, int32_t timer);
+ int32_t lerp(int32_t start, int32_t end, int32_t t0, int32_t t1, int32_t t);
+ int32_t getOriginalType(int32_t type);
++int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed); /* MOD (dcb-import) */
+ int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
+ void calculateBoneMatrix(Entity *entity, int32_t boneId, MATRIX *out);
+ void entityLookAtLocation(Entity *entity, VECTOR *pos);
+@@ -4306,6 +4307,11 @@ void VS_checkTechCompatibility(void)
+ 	}
+ 
+ 	EFE_BONE_OFFSET = &entry->offset;
++	/* MOD (dcb-import): a new species with its own skeleton moves the borrowed origin */
++	if (entry->type >= 0) {
++		EFE_BONE_OFFSET = (EfeBoneOffset *)getSpeciesEffectOrigin(EFE_SCRIPT_CONTEXT->sourceEntity->type,
++									  (int16_t *)&entry->offset);
++	}
+ 	EFE_SCRIPT_CONTEXT->boneOffset = EFE_BONE_OFFSET;
+ }
+ 

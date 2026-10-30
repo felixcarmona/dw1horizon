@@ -1,0 +1,88 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Are you okay, {color 10}{partner}{color 1}?!"
+  ],
+  [
+   "Let's head back for now..."
+  ]
+ ],
+ "s018.sec10.u1": "Oops! I need to heal {color 10}{partner}{color 1}.",
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intruder confirmed..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruder confirmed... Intruder",
+   "confirmed..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruder confirmed...",
+   "Intruder confirmed...",
+   "Preparing to open fire..."
+  ]
+ ],
+ "s018.sec68.u0": "!!",
+ "s018.sec68.u1": [
+  [
+   "To make it all the way through this forest... I",
+   "must say, you are impressive."
+  ],
+  [
+   "I am Centarumon. Allow me to apologize for",
+   "my rudeness until now. I am sorry."
+  ],
+  [
+   "I did not test you on a whim. From now on, I",
+   "intend to lend you my aid."
+  ]
+ ],
+ "s018.sec68.u2": "Now, go on. I will be waiting for you in the city.",
+ "s018.sec68.u3": "Centarumon joined the city!",
+ "s018.sec68.u4": "{color 10}{partner}{color 1}, looks like we're getting pretty famous, heh heh!",
+ "s018.sec68.u5": "Let's keep it up!",
+ "s018.sec68.u6": "Miss!",
+ "s018.sec69.u0": "!!",
+ "s018.sec69.u1": [
+  [
+   "To make it all the way through this forest... I",
+   "must say, you are impressive."
+  ],
+  [
+   "I am Centarumon. Allow me to apologize for",
+   "my rudeness until now. I am sorry."
+  ],
+  [
+   "I did not test you on a whim. From now on, I",
+   "intend to lend you my aid."
+  ]
+ ],
+ "s018.sec69.u2": "Now, go on. I will be waiting for you in the city.",
+ "s018.sec69.u3": "Centarumon joined the city!",
+ "s018.sec69.u4": "{color 10}{partner}{color 1}, looks like we're getting pretty famous, heh heh!",
+ "s018.sec69.u5": "Let's keep it up!",
+ "s018.sec69.u6": "Miss!",
+ "s018.sec70.u0": "!!",
+ "s018.sec70.u1": [
+  [
+   "To make it all the way through this forest... I",
+   "must say, you are impressive."
+  ],
+  [
+   "I am Centarumon. Allow me to apologize for",
+   "my rudeness until now. I am sorry."
+  ],
+  [
+   "I did not test you on a whim. From now on, I",
+   "intend to lend you my aid."
+  ]
+ ],
+ "s018.sec70.u2": "Now, go on. I will be waiting for you in the city.",
+ "s018.sec70.u3": "Centarumon joined the city!",
+ "s018.sec70.u4": "{color 10}{partner}{color 1}, looks like we're getting pretty famous, heh heh!",
+ "s018.sec70.u5": "Let's keep it up!",
+ "s018.sec70.u6": "Miss!"
+}

@@ -1,0 +1,33 @@
+{
+  "id": 164,
+  "name": "Palmon",
+  "level": "rookie",
+  "attribute": "data",
+  "specialties": ["nature", null, "ice"],
+  "techniques": ["Poison Claw", "Poison Powder", "Water Blit", "Poison Ivy"],
+  "drop": {"item": "Brain Chip", "percent": 100},
+  "effects_like": 46,
+  "model": {"name": "EPAL", "bones": 31, "radius": 100, "height": 260},
+  "voice": 40,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

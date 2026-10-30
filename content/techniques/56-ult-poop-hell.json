@@ -1,0 +1,17 @@
+{
+  "id": 56,
+  "name": "Ult Poop Hell",
+  "element": "filth",
+  "power": 333,
+  "mpCost": 111,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 100,
+  "status": 4,
+  "statusChance": 83,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [9, 7, 0]
+}

@@ -1,0 +1,178 @@
+{
+ "s158.sec5.u0": "¡No tienes ni pizca de talento!",
+ "s158.sec6.u0": "¡Biepiiié!",
+ "s158.sec7.u0": "¡Basuppi, bosuppi!",
+ "s158.sec8.u0": "¡Bopiiiié!",
+ "s158.sec9.u0": "¿De verdad eso es todo lo que tienes?",
+ "s158.sec10.u0": "¡Ve a lavarte la cara y vuelve a intentarlo!",
+ "s159.sec6.m0.o0": "Cambiar",
+ "s159.sec6.m0.o1": "No cambiar",
+ "s159.sec6.u0": [
+  [
+   "¿Mmm? Verás, colecciono cartas Digimon."
+  ],
+  [
+   "Quiero una carta de KingSukamon. ¿Me la",
+   "cambias por una de Etemon?"
+  ]
+ ],
+ "s159.sec6.u1": "Lo siento, no tengo ninguna.",
+ "s159.sec6.u2": [
+  [
+   "Puaj, qué peste... ¿Esto es",
+   "uno de esos vertederos?"
+  ],
+  [
+   "O sea, que en el mundo",
+   "Digimon también hay."
+  ]
+ ],
+ "s159.sec6.u3": "¿Mmm? Vaya, bienvenidos. ¡Aquí los nuevos amigos siempre son bienvenidos, sí, señor!",
+ "s159.sec6.u4": "¿Esto es un pueblo de la tribu Sukamon?",
+ "s159.sec6.u5": [
+  [
+   "Así es. Esto es el paraíso de los Sukamon,",
+   "el Reino Dust."
+  ],
+  [
+   "Aquí vive también Su Majestad KingSukamon."
+  ]
+ ],
+ "s159.sec6.u6": "KingSukamon...",
+ "s159.sec6.u7": "Su Majestad es asombroso. ¡Si le llevas la contraria, te convierte en otra especie!",
+ "s159.sec6.u8": "¿¡Hala!? ¿O sea, que dejarías de ser un Sukamon? Entonces... ¿¡también puede devolverte a como eras!?",
+ "s159.sec6.u9": "Sí... mmm, es una historia que da miedo. Horrible.",
+ "s159.sec6.u10": "¡Qué bien saberlo!",
+ "s159.sec6.u11": "¿¡Eh, un Sukamon!?",
+ "s159.sec6.u12": "¿Mmm? ¿Sabes quién soy?",
+ "s159.sec6.u13": "B-bueno, más o menos. Mmm, ¿también tenemos que llevar a los Sukamon a la ciudad...?",
+ "s159.sec6.u14": "¿Mmm? ¡Vaya, esto sí que no se ve todos los días, sí, señor!",
+ "s159.sec6.u15": "¡Puaj, la caca se mueve y habla!",
+ "s159.sec6.u16": "¿Mmm? ¿Lo dices por mí? Soy Sukamon, un Digimon mutante.",
+ "s159.sec6.u17": "¿O sea, que no eres caca?",
+ "s159.sec6.u18": "En cierto modo, sí. Estamos hechos de restos de datos digitales.",
+ "s159.sec6.u19": "Mmm... ¿Invitamos a este también a la ciudad? Bueno, no está bien discriminar.",
+ "s159.sec6.u20": "¿Pensáis vivir aquí?",
+ "s159.sec6.u21": "¿Eh? Ni se me había pasado por la cabeza.",
+ "s159.sec6.u22": [
+  [
+   "Mmm, esto es un paraíso solo para la tribu",
+   "Sukamon."
+  ],
+  [
+   "Lo siento, pero aquí no pueden vivir otras",
+   "especies, sí, señor."
+  ]
+ ],
+ "s159.sec6.u23": "Entonces, ¿vosotros no podéis vivir en ningún otro sitio?",
+ "s159.sec6.u24": "¡Pues claro!",
+ "s159.sec6.u25": "Ah, claro, ya me lo imaginaba... Uf.",
+ "s159.sec6.u26": "¿Mmm? Aquí no podéis vivir, pero podéis echar un vistazo, distinguidos invitados, sí, señor.",
+ "s159.sec6.u27": "Ah, esto, sí. Solo estamos mirando.",
+ "s159.sec6.u28": [
+  [
+   "Ah, por cierto: no enfadéis a Su Majestad."
+  ],
+  [
+   "Si su magia os convierte en algo penoso,",
+   "¡no me echéis la culpa, sí, señor!"
+  ]
+ ],
+ "s159.sec6.u29": "¡Eh, eh, tienes demasiadas cartas de Etemon! Mejor no.",
+ "s159.sec6.u30": "¡Oh, gracias!",
+ "s159.sec7.u0": [
+  [
+   "¿Mmm? Oye, vosotros. ¿Venís",
+   "de esa ciudad o lo que",
+   "sea?"
+  ],
+  [
+   "Mmm, aquí entre nosotros,",
+   "me tiene un poco intrigado."
+  ],
+  [
+   "Un día de estos me paso."
+  ]
+ ],
+ "s159.sec7.u1": [
+  [
+   "¿Mmm? Oye, vosotros. ¿Sabéis",
+   "cuál es el talento especial",
+   "de la tribu Sukamon?"
+  ],
+  [
+   "¡Metemos en el cuerpo la caca",
+   "que hay en el camino y la",
+   "convertimos en energía!"
+  ]
+ ],
+ "s159.sec8.u0": [
+  [
+   "¿Mmm? Esto es el Reino Dust. Para ti",
+   "seguro que es solo un montón de basura."
+  ],
+  [
+   "Pero puede que haya cosas útiles por ahí."
+  ],
+  [
+   "Ahora que lo pienso, por allí he visto algo",
+   "como un palo largo, sí, señor."
+  ]
+ ],
+ "s159.sec51.u0": "¡Eh, una {color 6}Caña vieja{color 1}!",
+ "s159.sec81.m0.o0": "Queremos vivir aquí",
+ "s159.sec81.m0.o1": "¡Devuélvelo a como era!",
+ "s159.sec81.u0": "¡Hmpf! ¡Otra vez tú! ¡Fuera de mi vista!",
+ "s159.sec81.u1": "Esto...",
+ "s159.sec81.u2": "¡Bah, qué pesado! ¡Ya está! ¿Contento?",
+ "s159.sec81.u3": "¡Hmpf! ¡Otra vez tú! ¡Fuera de mi vista!",
+ "s159.sec81.u4": "¡Mmm! Bienvenido, hermano Sukamon. Si deseas vivir aquí, te concedo mi permiso.",
+ "s159.sec81.u5": "¡Mmm! Muy bien, muy bien. ¿Mm? Tú no, criatura analógica.",
+ "s159.sec81.u6": "¡Tenemos que estar juntos!",
+ "s159.sec81.u7": "¡Hmpf, pues fuera de aquí, juntos!",
+ "s159.sec81.u8": "¿Q-qué? ¿Qué estás diciendo?",
+ "s159.sec81.u9": "Para empezar, él no era un Sukamon. ¡Rey, por favor, devuélvelo a como era!",
+ "s159.sec81.u10": "Pero ¿no es maravilloso? Ha llegado a ser un Sukamon.",
+ "s159.sec81.u11": "No, ahora mismo es un problema. ¡Por favor!",
+ "s159.sec81.u12": [
+  [
+   "Si crees que uno se convierte en Sukamon así,",
+   "sin más, ¡estás muy equivocado!"
+  ],
+  [
+   "¡Solo quien se esfuerza llega a ser Sukamon!"
+  ]
+ ],
+ "s159.sec81.u13": "Pues él se ha convertido en Sukamon así, sin más. Ese es el problema...",
+ "s159.sec81.u14": "¡Hmpf, no tienes remedio! ¡Basta! ¡Esto es lo que mereces!",
+ "s159.sec81.u15": "¡Hala, gracias, Rey!",
+ "s159.sec81.u16": "¡Y ahora, fuera de mi vista!",
+ "s159.sec81.u17": "¡Hmpf! ¿Qué se te ofrece?",
+ "s159.sec81.u18": "Esto...",
+ "s159.sec81.u19": "¡Hmpf, no atiendo peticiones! ¡Soy el rey de los Sukamon, y solo de los Sukamon!",
+ "s159.sec81.u20": "O sea, que no puedo invitarlo a la ciudad...",
+ "s159.sec82.m0.o0": "Entrenar",
+ "s159.sec82.m0.o1": "Explícamelo",
+ "s159.sec82.m0.o2": "Salir",
+ "s159.sec82.m1.o0": "Entrenamiento normal",
+ "s159.sec82.m1.o1": "Intento extra",
+ "s159.sec82.m1.o2": "Mejor no",
+ "s159.sec82.m2.o0": "Explícamelo otra vez",
+ "s159.sec82.m2.o1": "Entrenar",
+ "s159.sec82.m2.o2": "Salir",
+ "s159.sec82.u0": [
+  [
+   "",
+   "{color 5}Entrenamiento: Enterrarse{color 1}"
+  ]
+ ],
+ "s159.sec82.u1": "Entiérrate en basura asquerosa para entrenar la fuerza de voluntad. Sube mucho los MP máx.",
+ "s159.sec82.u2": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ]
+}

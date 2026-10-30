@@ -1,0 +1,80 @@
+{
+  "screen": 339,
+  "review": "The centre rail gap stays open between the two collapse shoulders. A perspective body check reaches the left diagonal brace at the gap, so it receives a SAM foreground silhouette. Side lamps, the right brace, wheel and plaques stay beyond reachable bodies.",
+  "collision": [],
+  "pieces": [
+    {
+      "png": "339-left-diagonal-brace.png",
+      "depth": [
+        212,
+        458
+      ],
+      "at": [
+        99,
+        285
+      ],
+      "segmentation": {
+        "box": [
+          82,
+          278,
+          225,
+          467
+        ],
+        "positive": [
+          [
+            105,
+            307
+          ],
+          [
+            153,
+            367
+          ],
+          [
+            204,
+            442
+          ]
+        ],
+        "negative": [
+          [
+            128,
+            370
+          ],
+          [
+            173,
+            393
+          ],
+          [
+            217,
+            432
+          ]
+        ],
+        "score": 0.7436436414718628,
+        "area": 4187,
+        "min_component_area": 100
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/gallery-north-2-1856x2304.png",
+    "source_sha1": "b854b8ef518ae54d93d763c3aabfad7a86e19140",
+    "top": 38,
+    "scale": 2.9,
+    "size": [
+      640,
+      768
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  }
+}

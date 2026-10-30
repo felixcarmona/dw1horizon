@@ -1,0 +1,94 @@
+From 6b6612fd38fc7a14435ed629592b898fade42139 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 07:53:56 +0000
+Subject: [PATCH] Patch 0204: the evolution's skip hint sits in the bottom
+ right corner with no plate: light grey letters of the game's font with a dark
+ outline (the line drawn eight times in black around it), readable on the
+ black close-up and the white flash (design B)
+
+---
+ src/main/mod_qol.c | 44 ++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 34 insertions(+), 10 deletions(-)
+
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index d52f566d..cc61f5f6 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -2,8 +2,8 @@
+  * MOD (quality of life): what the speed-ups share (docs/mods/quality-of-life.md).
+  *
+  * Plates. A battle shows the pad's R2 button and fast-forward arrows in the bottom right corner (patches 0184, 0196, 0197),
+- * an evolution a line "Press START to skip the animation" at the bottom (0185, 0196), on a plate in the digital clock's
+- * style: dark, with a light blue edge. modPlate draws a plate of 3x5 letters; its letters are the ones these need.
++ * an evolution a line "Press START to skip the animation" in the bottom right corner (0185, 0196, 0200, 0201). modPlate
++ * draws a plate of 3x5 letters in the digital clock's style; its letters are the ones these need.
+  *
+  * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
+  * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
+@@ -31,8 +31,9 @@
+ #include "common.h"
+ 
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+-void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h, int32_t u, int32_t v, int32_t layer,
+-                  int32_t shadow);
++void initStringFT4(POLY_FT4 *p);
++void setUVDataPolyFT4(POLY_FT4 *prim, int16_t xPos, int16_t yPos, int16_t width, int16_t height);
++void setPosDataPolyFT4(POLY_FT4 *prim, int16_t posX, int16_t posY, int16_t width, int16_t height);
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+ extern uint8_t PAUSE_STATE;
+@@ -116,8 +117,8 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 	modPlateText(x + 3, y + 2, text, hi, r, g, b);
+ }
+ 
+-/* the evolution's skip hint: a line of the game's font (in the language shown), drawn once into a row of the text area
+-   when the scene begins, then shown each frame on a dark plate at the bottom of the screen, its shadow on */
++/* the evolution's skip hint: a line of the game's font (in the language shown), drawn into a row of the text area,
++   then shown each frame in the bottom right corner */
+ #define MOD_SKIP_ROW 0xD8
+ static int16_t MOD_SKIP_W;
+ static int16_t modSkipState;
+@@ -151,13 +152,36 @@ void modEvoSkipInput(void)
+ 	modSkipState = EVO_SEQUENCE_DATA.state;
+ }
+ 
++/* one copy of the line, its colour (r, g, b) multiplying the font's white (0x80 = as drawn) */
++static void modSkipLine(int32_t x, int32_t y, int32_t r, int32_t g, int32_t b, int32_t layer)
++{
++	POLY_FT4 *p = (POLY_FT4 *)GsGetWorkBase();
++
++	initStringFT4(p);
++	setRGB0(p, r, g, b);
++	setUVDataPolyFT4(p, 0, MOD_SKIP_ROW, MOD_SKIP_W, 12);
++	setPosDataPolyFT4(p, x, y, MOD_SKIP_W, 12);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + layer, p++);
++	GsSetWorkBase((PACKET *)p);
++}
++
++/* bottom right, no plate: light grey letters with a dark outline (the line eight times in black around it), so it
++   reads on the black close-up and on the white flash alike (owner's choice B, 2026-10-24) */
+ void modSkipPlate(void)
+ {
+-	int32_t x = -MOD_SKIP_W / 2;
++	int32_t x = 0x98 - MOD_SKIP_W;
++	int32_t y = 0x68;
++	int32_t dx;
++	int32_t dy;
+ 
+-	modPlateRect(x - 6, 0x58, MOD_SKIP_W + 12, 18, 0x62, 0xB4, 0xF6, 6);
+-	modPlateRect(x - 5, 0x59, MOD_SKIP_W + 10, 16, 0x18, 0x18, 0x18, 5);
+-	renderString(0, x, 0x5B, MOD_SKIP_W, 12, 0, MOD_SKIP_ROW, 4, 1);
++	modSkipLine(x, y, 0x68, 0x68, 0x68, 4);
++	for (dy = -1; dy <= 1; dy++) {
++		for (dx = -1; dx <= 1; dx++) {
++			if (dx != 0 || dy != 0) {
++				modSkipLine(x + dx, y + dy, 0, 0, 0, 5);
++			}
++		}
++	}
+ }
+ 
+ /* the battle speed of the three battle overlays (BTL field battles, STD arena and tournaments, VS): R2 switches x1 /
+-- 
+2.53.0
+

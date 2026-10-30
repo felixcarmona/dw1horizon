@@ -1,0 +1,61 @@
+{
+  "_comment": "The numbers of fishing. The C holds none of them: a key left out means that rule does not exist (an amount reads as 0, a roll or poll span as 1). tension: the gauge's limit by rod; the change per frame by the fish's size (between sizeMin and sizeMax: the small fish's value and the big fish's) when the line is slack (slackRelease, goes down), held, pulled or both; snapSteps* give the steps at the limit before the line snaps, by size, each snapStepMs long (real milliseconds, a multiple of 50). hook: bigFishSize and the nibble and strike windows (frames) of small and big fish, powerBase/powerReserve (the fish's strength = size + base), the step divisors fresh and tired, the rest roll, pressedMsForPull (real ms the button is held before the pull counts), the length of a run (moveTime) and of a pause. bite: radius, polls (every n frames) and the roll for bites and for the Seadramon. theft: after fromFrame, every everyMs (real ms) the bait is stolen when roll < below. population: the pool is topped up below poolBelow fish; lifetime of a fish in frames.",
+  "fishingRules": {
+    "tension": {
+      "limitSmallRod": 5000,
+      "limitBigRod": 10000,
+      "sizeMin": 50,
+      "sizeMax": 300,
+      "slackRelease": 166,
+      "holdSmall": 41,
+      "holdBig": 83,
+      "pullSmall": 71,
+      "pullBig": 125,
+      "pullStruggleSmall": 166,
+      "pullStruggleBig": 500,
+      "snapStepsBase": 4,
+      "snapStepsSmall": 1,
+      "snapStepsBig": 3,
+      "snapStepMs": 250
+    },
+    "hook": {
+      "bigFishSize": 150,
+      "nibbleSmallMin": 20,
+      "nibbleSmallMax": 40,
+      "nibbleBigMin": 40,
+      "nibbleBigMax": 60,
+      "strikeWindowSmall": 30,
+      "strikeWindowBig": 60,
+      "powerBase": 150,
+      "powerReserve": 100,
+      "tiredPowerDivisor": 10,
+      "tiredStepDivisor": 15,
+      "freshStepDivisor": 8,
+      "restRoll": 20,
+      "restBelow": 3,
+      "pressedMsForPull": 3050,
+      "moveTimeMin": 20,
+      "moveTimeMax": 50,
+      "pauseMin": 9,
+      "pauseMax": 19
+    },
+    "bite": {
+      "radius": 201,
+      "seadramonPoll": 8,
+      "seadramonChance": 20,
+      "poll": 20,
+      "roll": 100
+    },
+    "theft": {
+      "fromFrame": 31,
+      "everyMs": 1000,
+      "roll": 10000,
+      "below": 1001
+    },
+    "population": {
+      "poolBelow": 32,
+      "lifetimeMin": 600,
+      "lifetimeMax": 1200
+    }
+  }
+}

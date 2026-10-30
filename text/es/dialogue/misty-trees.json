@@ -1,0 +1,195 @@
+{
+ "s111.sec5.u0": "Qué idiota...",
+ "s111.sec6.u0": "¡Te voy a dejar hecho un desastre!",
+ "s111.sec7.u0": "Mmm, no hay nada como el bosque.",
+ "s111.sec8.u0": "Nadie ha escapado nunca de mí con vida.",
+ "s111.sec9.u0": "Deja que acabe con tu sufrimiento...",
+ "s111.sec10.u0": "¡Mira quién fue a hablar!",
+ "s112.sec5.u0": "¿Querías algo de este señor?",
+ "s112.sec6.u0": "Ja, ja, ja, ja... No hay que tener tanta prisa.",
+ "s112.sec7.u0": "Tómatelo con calma mientras estés aquí.",
+ "s112.sec8.u0": "¿Quieres que te convierta en abono?",
+ "s112.sec9.u0": "¿Y tú quién narices eres?",
+ "s112.sec10.u0": "Harías bien en rendirte.",
+ "s112.sec11.u0": "¡Ahórrame tus inútiles forcejeos!",
+ "s113.sec5.u0": "¡Vamos a veeer!",
+ "s113.sec5.u1": "Mmmmmm. Vaya, vaya, qué mérito tieneees. Y tan tempranito. Qué muchacho tan admirable.",
+ "s113.sec5.u2": "Oye, oye, no hables como si no fuera contigo...",
+ "s113.sec5.u3": "Ya lo séee. Estás reuniendo Digimon y construyendo una ciudad por el bien de la isla.",
+ "s113.sec5.u4": "Ah, pues sí que lo sabes. Entonces échanos una mano.",
+ "s113.sec5.u5": "¿Y adónde tenía que ir yo, y a hacer qué?",
+ "s113.sec5.u6": "¡No sabes nada! ¡A trabajar en la ciudad, acuérdate!",
+ "s113.sec5.u7": "Bueno... a quien madruga, dieciséis le ayudan, como dicen...",
+ "s113.sec5.u8": "¡Eso no tiene nada que ver! ¡Y es Dios quien le ayuda, no dieciséis!",
+ "s113.sec5.u9": "Je, solo era un poco de chochez fingida. Bueno, nos vemos en la ciudaaad.",
+ "s113.sec5.u10": "¡Kokatorimon se ha unido a la ciudad!",
+ "s113.sec5.u11": "¿Cuánto de todo eso iba en serio...? Espero que no le pase nada.",
+ "s113.sec6.u0": "Todo recto y luego a la derecha. Ke, je, je, je, je...",
+ "s113.sec7.u0": "A la derecha y enseguida a la izquierda. Ke, je...",
+ "s113.sec8.u0": "Nunca saldrás de este bosque. Ke, je, je...",
+ "s113.sec9.u0": "Me he perdido...",
+ "s113.sec10.u0": "Últimamente ando un poco cansado...",
+ "s113.sec11.u0": "Tú... ¿¡No puede ser!?",
+ "s113.sec12.u0": "Cuidado dónde pisas...",
+ "s113.sec54.u0": "Vaya... una pluma de pájaro en el suelo... Todavía está fresca. ¿Habremos llegado tarde?",
+ "s114.sec5.u0": "¿Te has perdido, {color 6}{player}{color 1}? ¡Ke, je, je, je, je!",
+ "s114.sec6.u0": "¿Mm?",
+ "s114.sec7.u0": "No es que quiera estorbar ni nada de eso...",
+ "s114.sec8.u0": "Ar-bo-le-da Mis-ty... Venga, ahora dilo tú.",
+ "s114.sec9.u0": "OK! ¡Showtime!",
+ "s115.sec5.m0.o0": "Los disturbios de la isla",
+ "s115.sec5.m0.o1": "Entrena a {color 10}{partner}{color 1}",
+ "s115.sec5.m0.o2": "No, nada",
+ "s115.sec5.m1.o0": "Entrenar",
+ "s115.sec5.m1.o1": "Explícamelo",
+ "s115.sec5.m1.o2": "Salir",
+ "s115.sec5.m2.o0": "Entrenamiento normal",
+ "s115.sec5.m2.o1": "Intento extra",
+ "s115.sec5.m2.o2": "Mejor no",
+ "s115.sec5.m3.o0": "Explícamelo otra vez",
+ "s115.sec5.m3.o1": "Entrenar",
+ "s115.sec5.m3.o2": "Salir",
+ "s115.sec5.u0": "Jo, jo. ¿Quieres volver a oír hablar a este viejo?",
+ "s115.sec5.u1": "Mmm, entonces te lo contaré.",
+ "s115.sec5.u2": "Jo, jo, muy bien...",
+ "s115.sec5.u3": [
+  [
+   "",
+   "{color 5}Entrenamiento: Sabiduría{color 1}"
+  ]
+ ],
+ "s115.sec5.u4": "Cherrymon te transmite todo tipo de saberes. El Intelecto sube mucho.",
+ "s115.sec5.u5": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s115.sec5.u6": "Jo, jo, jo, jo...",
+ "s115.sec51.u0": "Jo, jo. Bienvenido, bienvenido, muchacho.",
+ "s115.sec51.u1": "Tú eres Cherrymon, ¿no?",
+ "s115.sec51.u2": "¿Quién anda ahí?",
+ "s115.sec51.u3": "¿Qué te trae ante este viejo?",
+ "s115.sec51.u4": "Primero, quita la niebla.",
+ "s115.sec51.u5": "Con esta niebla no veo nada. ¿Puedes hacer algo primero?",
+ "s115.sec51.u6": "Jo, jo. Conque esas tenemos. Lo que me imaginaba.",
+ "s115.sec51.u7": "...¿No puedes?",
+ "s115.sec51.u8": "Primero tienes que escuchar lo que tengo que decirte. Bien, pues... ¿por dónde empiezo?",
+ "s115.sec51.u9": "Si sabes algo de los disturbios de esta isla, me gustaría que me lo contaras.",
+ "s115.sec51.u10": "Mmm. Sí, sí. Los disturbios.",
+ "s115.sec51.u11": [
+  [
+   "La isla empezó a torcerse hace",
+   "unos 80 años, cuando la tierra",
+   "cambió."
+  ],
+  [
+   "Freezeland, la Mansión de Grey",
+   "Lord, el Gran Cañón... Las",
+   "tierras del noreste"
+  ],
+  [
+   "surgieron de golpe, hace unos",
+   "80 años."
+  ],
+  [
+   "Luego los Digimon se fueron",
+   "poco a poco a las tierras que",
+   "mejor les iban."
+  ],
+  [
+   "Y los Digimon, que hablaban una",
+   "sola lengua, empezaron a hablar",
+   "la suya."
+  ]
+ ],
+ "s115.sec51.u12": [
+  [
+   "Olvidaron la lengua que usaban",
+   "en la ciudad..."
+  ],
+  [
+   "Y así Ciudad File, donde antes",
+   "vivían muchas especies juntas,",
+   "perdió casi todos sus Digimon"
+  ],
+  [
+   "y cayó en la ruina."
+  ],
+  [
+   "Y luego... algo terrible: ¡los",
+   "Digimon empezaron a perder la",
+   "memoria! Su pasado, el de"
+  ],
+  [
+   "la isla, su razón de ser..."
+  ],
+  [
+   "Ni siquiera yo recuerdo algo",
+   "importante... algo que debo",
+   "contarte."
+  ]
+ ],
+ "s115.sec51.u13": [
+  [
+   "Pero al final todo encaja.",
+   "¡Alguien lo hizo así! Para que",
+   "todo le saliera bien..."
+  ],
+  [
+   "Me temo que pronto los Digimon",
+   "no verán lo raro como algo",
+   "raro."
+  ],
+  [
+   "¡Solo puede impedirlo el lazo",
+   "entre tú y Ciudad File!"
+  ],
+  [
+   "Reúne Digimon en la ciudad y",
+   "obra un milagro. ¡¡¡Todos",
+   "cuentan contigo!!!"
+  ],
+  [
+   "...Vaya, me he emocionado.",
+   "Uf... Eso es todo lo que tenía",
+   "que contarte."
+  ]
+ ],
+ "s115.sec51.u14": "Bien, pues, quitemos la niebla.",
+ "s115.sec51.u15": "Protegía el bosque con la niebla para poder contarte mi historia... Y otra cosa más.",
+ "s115.sec51.u16": [
+  [
+   "En este bosque hay otros que",
+   "saben del pasado."
+  ],
+  [
+   "Sigue hacia el fondo. Jo, jo,",
+   "jo..."
+  ]
+ ],
+ "s116.sec5.u0": "..........¡!",
+ "s116.sec5.u1": "¡Buaaa! ¡No, no! ¡No quiero pelear!",
+ "s116.sec5.u2": "...... Si no quieres pelear, pues huye.",
+ "s116.sec5.u3": "Pero entonces me quedaría con mal sabor de boca.",
+ "s116.sec5.u4": "Qué tipo más raro... Bueno, ¿por qué no te vienes a nuestra ciudad en vez de esconderte aquí?",
+ "s116.sec5.u5": "¡Ay! ¿L-l-la ciudad?",
+ "s116.sec5.u6": "Si no quieres, no pasa nada.",
+ "s116.sec5.u7": "Ahora que lo dices, me están entrando ganas. ¡Iré! ¡Claro que iré!",
+ "s116.sec5.u8": "¡Gabumon se ha unido a la ciudad!",
+ "s116.sec5.u9": "Uf... ¡Qué tipo más raro...!",
+ "s116.sec6.u0": "¡Ya, ya!",
+ "s116.sec7.u0": "Aúpa, aúpa.",
+ "s116.sec8.u0": "Mmm, ¿y si lo dejamos?",
+ "s116.sec9.u0": "Aún es pronto para relajarse...",
+ "s117.sec5.u0": "¿Quién anda ahí?",
+ "s117.sec6.u0": "¡Allá voooy! ...Es broma.",
+ "s117.sec7.u0": "¡Ja, ja, ja, ja, ja! Qué risa, qué risa.",
+ "s117.sec8.u0": "¡Yuju, estoy que me salgo!",
+ "s117.sec9.u0": "¿¡En serio!?",
+ "s117.sec10.u0": "Oye, oye, ¿lo dices en serio?",
+ "s117.sec11.u0": "¡Calla, calla!",
+ "s117.sec12.u0": "¡Cuando me pongo serio, me pongo serio!"
+}

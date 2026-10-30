@@ -1,0 +1,1417 @@
+[
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Protagonista",
+  "texture": "CARD/CARD.ALL entry 0 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 58,
+  "v": 164,
+  "w": 67,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   38,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Phoenixmon",
+  "texture": "CARD/CARD.ALL entry 1 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 62,
+  "h": 11,
+  "en_rect": [
+   54,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "HerculesKabuterimon",
+  "texture": "CARD/CARD.ALL entry 2 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 36,
+  "v": 164,
+  "w": 109,
+  "h": 11,
+  "en_rect": [
+   43,
+   163,
+   92,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "MegaSeadramon",
+  "texture": "CARD/CARD.ALL entry 3 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 48,
+  "v": 164,
+  "w": 85,
+  "h": 11,
+  "en_rect": [
+   37,
+   163,
+   104,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "ShogunGekomon",
+  "texture": "CARD/CARD.ALL entry 4 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 49,
+  "v": 164,
+  "w": 84,
+  "h": 11,
+  "en_rect": [
+   38,
+   163,
+   103,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Myotismon",
+  "texture": "CARD/CARD.ALL entry 5 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 63,
+  "v": 164,
+  "w": 56,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "MetalGreymonVirus",
+  "texture": "CARD/CARD.ALL entry 6 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 40,
+  "v": 164,
+  "w": 101,
+  "h": 11,
+  "en_rect": [
+   33,
+   163,
+   104,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Mamemon",
+  "texture": "CARD/CARD.ALL entry 7 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 65,
+  "v": 164,
+  "w": 52,
+  "h": 11,
+  "en_rect": [
+   66,
+   163,
+   52,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Monzaemon",
+  "texture": "CARD/CARD.ALL entry 8 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 61,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "SkullGreymon",
+  "texture": "CARD/CARD.ALL entry 9 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 56,
+  "v": 164,
+  "w": 71,
+  "h": 11,
+  "en_rect": [
+   33,
+   163,
+   104,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "MetalMamemon",
+  "texture": "CARD/CARD.ALL entry 10 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 50,
+  "v": 164,
+  "w": 81,
+  "h": 11,
+  "en_rect": [
+   38,
+   163,
+   90,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Vademon",
+  "texture": "CARD/CARD.ALL entry 11 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   54,
+   163,
+   65,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Andromon",
+  "texture": "CARD/CARD.ALL entry 12 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 65,
+  "v": 164,
+  "w": 52,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Giromon",
+  "texture": "CARD/CARD.ALL entry 13 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 70,
+  "v": 164,
+  "w": 43,
+  "h": 11,
+  "en_rect": [
+   65,
+   163,
+   53,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Etemon",
+  "texture": "CARD/CARD.ALL entry 14 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 72,
+  "v": 164,
+  "w": 39,
+  "h": 11,
+  "en_rect": [
+   65,
+   163,
+   53,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Megadramon",
+  "texture": "CARD/CARD.ALL entry 15 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 58,
+  "v": 164,
+  "w": 66,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Piximon",
+  "texture": "CARD/CARD.ALL entry 16 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 70,
+  "v": 164,
+  "w": 41,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Digitamamon",
+  "texture": "CARD/CARD.ALL entry 17 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 58,
+  "v": 164,
+  "w": 67,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Gekomon",
+  "texture": "CARD/CARD.ALL entry 18 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   65,
+   163,
+   53,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "WaruMonzaemon",
+  "texture": "CARD/CARD.ALL entry 19 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 48,
+  "v": 164,
+  "w": 87,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   89,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Jijimon",
+  "texture": "CARD/CARD.ALL entry 20 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 72,
+  "v": 164,
+  "w": 38,
+  "h": 11,
+  "en_rect": [
+   62,
+   163,
+   59,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "KingSukamon",
+  "texture": "CARD/CARD.ALL entry 21 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 56,
+  "v": 164,
+  "w": 69,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Cherrymon",
+  "texture": "CARD/CARD.ALL entry 22 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 62,
+  "v": 164,
+  "w": 57,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Guardromon",
+  "texture": "CARD/CARD.ALL entry 23 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 63,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Hagurumon",
+  "texture": "CARD/CARD.ALL entry 24 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 62,
+  "v": 164,
+  "w": 58,
+  "h": 11,
+  "en_rect": [
+   60,
+   163,
+   65,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Brachiomon",
+  "texture": "CARD/CARD.ALL entry 25 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 61,
+  "v": 164,
+  "w": 60,
+  "h": 11,
+  "en_rect": [
+   60,
+   163,
+   65,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Greymon",
+  "texture": "CARD/CARD.ALL entry 26 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 46,
+  "h": 11,
+  "en_rect": [
+   60,
+   163,
+   65,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Devimon",
+  "texture": "CARD/CARD.ALL entry 27 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 69,
+  "v": 164,
+  "w": 44,
+  "h": 11,
+  "en_rect": [
+   65,
+   163,
+   53,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Airdramon",
+  "texture": "CARD/CARD.ALL entry 28 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 64,
+  "v": 164,
+  "w": 54,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Tyrannomon",
+  "texture": "CARD/CARD.ALL entry 29 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 59,
+  "v": 164,
+  "w": 64,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Meramon",
+  "texture": "CARD/CARD.ALL entry 30 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 67,
+  "v": 164,
+  "w": 48,
+  "h": 11,
+  "en_rect": [
+   66,
+   163,
+   52,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Seadramon",
+  "texture": "CARD/CARD.ALL entry 31 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 62,
+  "v": 164,
+  "w": 58,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Kabuterimon",
+  "texture": "CARD/CARD.ALL entry 32 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 58,
+  "v": 164,
+  "w": 66,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Angemon",
+  "texture": "CARD/CARD.ALL entry 33 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   48,
+   163,
+   79,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Birdramon",
+  "texture": "CARD/CARD.ALL entry 34 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 64,
+  "v": 164,
+  "w": 54,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Garurumon",
+  "texture": "CARD/CARD.ALL entry 35 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 62,
+  "v": 164,
+  "w": 57,
+  "h": 11,
+  "en_rect": [
+   54,
+   163,
+   65,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Frigimon",
+  "texture": "CARD/CARD.ALL entry 36 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 45,
+  "h": 11,
+  "en_rect": [
+   49,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Whamon",
+  "texture": "CARD/CARD.ALL entry 37 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 70,
+  "v": 164,
+  "w": 43,
+  "h": 11,
+  "en_rect": [
+   60,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Unimon",
+  "texture": "CARD/CARD.ALL entry 38 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 72,
+  "v": 164,
+  "w": 38,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Ogremon",
+  "texture": "CARD/CARD.ALL entry 39 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 46,
+  "h": 11,
+  "en_rect": [
+   60,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Shellmon",
+  "texture": "CARD/CARD.ALL entry 40 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   59,
+   163,
+   57,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Centarumon",
+  "texture": "CARD/CARD.ALL entry 41 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 63,
+  "h": 11,
+  "en_rect": [
+   56,
+   163,
+   67,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Bakemon",
+  "texture": "CARD/CARD.ALL entry 42 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Drimogemon",
+  "texture": "CARD/CARD.ALL entry 43 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 59,
+  "v": 164,
+  "w": 64,
+  "h": 11,
+  "en_rect": [
+   57,
+   163,
+   66,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Monochromon",
+  "texture": "CARD/CARD.ALL entry 44 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 56,
+  "v": 164,
+  "w": 71,
+  "h": 11,
+  "en_rect": [
+   56,
+   163,
+   67,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Leomon",
+  "texture": "CARD/CARD.ALL entry 45 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 71,
+  "v": 164,
+  "w": 40,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Coelamon",
+  "texture": "CARD/CARD.ALL entry 46 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 66,
+  "v": 164,
+  "w": 50,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Kokatorimon",
+  "texture": "CARD/CARD.ALL entry 47 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 58,
+  "v": 164,
+  "w": 66,
+  "h": 11,
+  "en_rect": [
+   56,
+   163,
+   67,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Kuwagamon",
+  "texture": "CARD/CARD.ALL entry 48 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 62,
+  "h": 11,
+  "en_rect": [
+   56,
+   163,
+   67,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Mojyamon",
+  "texture": "CARD/CARD.ALL entry 49 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 64,
+  "v": 164,
+  "w": 53,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Ninjamon",
+  "texture": "CARD/CARD.ALL entry 50 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 67,
+  "v": 164,
+  "w": 48,
+  "h": 11,
+  "en_rect": [
+   66,
+   163,
+   46,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Penguinmon",
+  "texture": "CARD/CARD.ALL entry 51 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 60,
+  "v": 164,
+  "w": 62,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Otamamon",
+  "texture": "CARD/CARD.ALL entry 52 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 64,
+  "v": 164,
+  "w": 55,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Tentomon",
+  "texture": "CARD/CARD.ALL entry 53 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 65,
+  "v": 164,
+  "w": 52,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Yanmamon",
+  "texture": "CARD/CARD.ALL entry 54 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 63,
+  "v": 164,
+  "w": 56,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Gotsumon",
+  "texture": "CARD/CARD.ALL entry 55 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 66,
+  "v": 164,
+  "w": 51,
+  "h": 11,
+  "en_rect": [
+   66,
+   163,
+   46,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Flarerizamon",
+  "texture": "CARD/CARD.ALL entry 56 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 57,
+  "v": 164,
+  "w": 68,
+  "h": 11,
+  "en_rect": [
+   52,
+   163,
+   78,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "ToyAgumon",
+  "texture": "CARD/CARD.ALL entry 57 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 61,
+  "v": 164,
+  "w": 60,
+  "h": 11,
+  "en_rect": [
+   59,
+   163,
+   67,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "DemiMeramon",
+  "texture": "CARD/CARD.ALL entry 58 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 54,
+  "v": 164,
+  "w": 73,
+  "h": 11,
+  "en_rect": [
+   59,
+   163,
+   68,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Tankmon",
+  "texture": "CARD/CARD.ALL entry 59 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   57,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Goblimon",
+  "texture": "CARD/CARD.ALL entry 60 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   57,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Numemon",
+  "texture": "CARD/CARD.ALL entry 61 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 66,
+  "v": 164,
+  "w": 50,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Vegiemon",
+  "texture": "CARD/CARD.ALL entry 62 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 66,
+  "v": 164,
+  "w": 50,
+  "h": 11,
+  "en_rect": [
+   63,
+   163,
+   56,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Sukamon",
+  "texture": "CARD/CARD.ALL entry 63 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 68,
+  "v": 164,
+  "w": 47,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Nanimon",
+  "texture": "CARD/CARD.ALL entry 64 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 69,
+  "v": 164,
+  "w": 44,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   45,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "(katakana name, JP art)",
+  "es": "Machinedramon",
+  "texture": "CARD/CARD.ALL entry 65 (150x180 8bpp, VRAM 576,256, CLUT 448,511)",
+  "u": 51,
+  "v": 164,
+  "w": 80,
+  "h": 11,
+  "en_rect": [
+   52,
+   163,
+   74,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178 renderCardImage (whole card as one 150x180 quad)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "主人公 (JP)",
+  "es": "Hero (English-language variant of card 00)",
+  "texture": "CARD/CARD.ALL entry 0",
+  "u": 78,
+  "v": 164,
+  "w": 25,
+  "h": 11,
+  "en_rect": [
+   67,
+   163,
+   38,
+   13
+  ],
+  "drawn_by": "game_menu.c:2178",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "the DIGITALMONSTER COLISEUM",
+  "es": "el COLISEO DIGITALMONSTER",
+  "en_rect": [
+   25,
+   66,
+   213,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADED.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 30,
+  "v": 66,
+  "w": 203,
+  "h": 9
+ },
+ {
+  "en": "OPEN TOURNAMENT",
+  "es": "TORNEO ABIERTO",
+  "en_rect": [
+   57,
+   81,
+   132,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADED.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 62,
+  "v": 81,
+  "w": 120,
+  "h": 9
+ },
+ {
+  "en": "* GRADE D *",
+  "es": "· CATEGORÍA D ·",
+  "en_rect": [
+   78,
+   96,
+   85,
+   18
+  ],
+  "note": "GRADE -> CATEGORÍA drawn at (69, 95, 82, 11); the coloured D art moved from u=138 to u=157",
+  "texture": "STDDAT/GRADE/GRADED.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 59,
+  "v": 95,
+  "w": 122,
+  "h": 19
+ },
+ {
+  "en": "the DIGITALMONSTER COLISEUM",
+  "es": "el COLISEO DIGITALMONSTER",
+  "en_rect": [
+   25,
+   66,
+   213,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEC.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 30,
+  "v": 66,
+  "w": 203,
+  "h": 9
+ },
+ {
+  "en": "OPEN TOURNAMENT",
+  "es": "TORNEO ABIERTO",
+  "en_rect": [
+   57,
+   81,
+   132,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEC.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 62,
+  "v": 81,
+  "w": 120,
+  "h": 9
+ },
+ {
+  "en": "* GRADE C *",
+  "es": "· CATEGORÍA C ·",
+  "en_rect": [
+   78,
+   96,
+   85,
+   18
+  ],
+  "note": "GRADE -> CATEGORÍA drawn at (69, 95, 82, 11); the coloured C art moved from u=138 to u=157",
+  "texture": "STDDAT/GRADE/GRADEC.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 59,
+  "v": 95,
+  "w": 122,
+  "h": 19
+ },
+ {
+  "en": "the DIGITALMONSTER COLISEUM",
+  "es": "el COLISEO DIGITALMONSTER",
+  "en_rect": [
+   25,
+   66,
+   213,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEB.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 30,
+  "v": 66,
+  "w": 203,
+  "h": 9
+ },
+ {
+  "en": "OPEN TOURNAMENT",
+  "es": "TORNEO ABIERTO",
+  "en_rect": [
+   57,
+   81,
+   132,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEB.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 62,
+  "v": 81,
+  "w": 120,
+  "h": 9
+ },
+ {
+  "en": "* GRADE B *",
+  "es": "· CATEGORÍA B ·",
+  "en_rect": [
+   78,
+   96,
+   85,
+   18
+  ],
+  "note": "GRADE -> CATEGORÍA drawn at (70, 95, 82, 11); the coloured B art moved from u=138 to u=158",
+  "texture": "STDDAT/GRADE/GRADEB.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 60,
+  "v": 95,
+  "w": 120,
+  "h": 19
+ },
+ {
+  "en": "the DIGITALMONSTER COLISEUM",
+  "es": "el COLISEO DIGITALMONSTER",
+  "en_rect": [
+   25,
+   66,
+   213,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEA.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 30,
+  "v": 66,
+  "w": 203,
+  "h": 9
+ },
+ {
+  "en": "OPEN TOURNAMENT",
+  "es": "TORNEO ABIERTO",
+  "en_rect": [
+   57,
+   81,
+   132,
+   9
+  ],
+  "texture": "STDDAT/GRADE/GRADEA.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 62,
+  "v": 81,
+  "w": 120,
+  "h": 9
+ },
+ {
+  "en": "* GRADE A *",
+  "es": "· CATEGORÍA A ·",
+  "en_rect": [
+   78,
+   96,
+   85,
+   18
+  ],
+  "note": "GRADE -> CATEGORÍA drawn at (69, 95, 82, 11); the coloured A art moved from u=135 to u=157",
+  "texture": "STDDAT/GRADE/GRADEA.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole 255x128 quad at -128,-64)",
+  "screen_xy_change": "none",
+  "u": 59,
+  "v": 95,
+  "w": 122,
+  "h": 19
+ },
+ {
+  "en": "COME",
+  "es": "¡VENID,",
+  "texture": "STDDAT/GRADE/FR.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "u": 180,
+  "v": 56,
+  "w": 61,
+  "h": 13,
+  "en_rect": [
+   136,
+   55,
+   116,
+   56
+  ],
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole banner)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "TOGETHER",
+  "es": "TODOS,",
+  "texture": "STDDAT/GRADE/FR.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "u": 173,
+  "v": 70,
+  "w": 59,
+  "h": 13,
+  "en_rect": [
+   136,
+   55,
+   116,
+   56
+  ],
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole banner)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "BURNING",
+  "es": "DIGIMON",
+  "texture": "STDDAT/GRADE/FR.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "u": 176,
+  "v": 84,
+  "w": 70,
+  "h": 13,
+  "en_rect": [
+   136,
+   55,
+   116,
+   56
+  ],
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole banner)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "DIGIMON's",
+  "es": "DE FUEGO!",
+  "texture": "STDDAT/GRADE/FR.TIM (256x128 8bpp, VRAM 384,0, CLUT 0,486)",
+  "u": 160,
+  "v": 98,
+  "w": 87,
+  "h": 13,
+  "en_rect": [
+   136,
+   55,
+   116,
+   56
+  ],
+  "drawn_by": "std_main.c:3413 STD_renderBracketIntro (whole banner)",
+  "screen_xy_change": "none"
+ }
+]

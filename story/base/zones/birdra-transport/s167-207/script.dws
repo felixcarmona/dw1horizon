@@ -1,0 +1,79 @@
+// Readable form of script 167 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 167 {
+    npc birdramon = 5;
+    npc leomon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 5, 6, 51;
+
+    on enter replace {    // section 254
+        animate(birdramon, 30);
+    }
+
+    on use(1) replace {    // section 81
+        face(tamer, birdramon);
+        wait(5);
+        if (!birdra_transport_intro_seen) {
+            birdra_transport_intro_seen = true;
+            say(birdramon, text("s167.sec81.u0"));
+        }
+        engine.arg = 5;
+        call_routine(routine("birdramon_taxi"));
+    }
+
+    on talk(birdramon) replace {    // section 5
+        engine.cutscene = true;
+        goto sec81;
+    }
+
+    on talk(leomon) replace {    // section 6
+        say(leomon, text("s167.sec6.u0"));
+        say(leomon, text("s167.sec6.u1"));
+        say(leomon, text("s167.sec6.u2"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2200, -3000);
+        if (!is_recruited(species("Agumon"))) {
+            warp_to(204, 4, 255);
+        }
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 4, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 4, 255);
+                }
+                warp_to(168, 4, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 4, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 4, 255);
+            }
+            warp_to(171, 4, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 4, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 4, 255);
+            }
+            warp_to(174, 4, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 4, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 4, 255);
+        }
+        warp_to(177, 4, 255);
+    }
+}

@@ -1,0 +1,55 @@
+// Readable form of script 94 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 94 {
+    npc icemon0 = 5;
+    npc icemon1 = 6;
+    npc bluemeramon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 53, 5, 6, 7;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Restore"), -777, 0, 519, 0, 657);
+        spawn_chest(item("lrg.recovery"), 793, 0, -2801, 1024, 664);
+    }
+
+    on step(0) replace {    // section 51
+        if (angemon_voice_heard) {
+            walk(tamer, -43, -4563);
+            warp_to(97, 1, 5);
+        }
+        walk(tamer, -43, -4563);
+        warp_to(97, 1, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 57, 3135);
+        warp_to(99, 0, 255);
+    }
+
+    on step(2) replace {    // section 53
+        walk(tamer, 2289, -1947);
+        warp_to(103, 0, 255);
+    }
+
+    on talk(icemon0) replace {    // section 5
+        say(icemon0, text("s094.sec5.u0"));
+        battle();
+        recruit(species("Icemon"));
+    }
+
+    on talk(icemon1) replace {    // section 6
+        say(icemon1, text("s094.sec6.u0"));
+        battle();
+        recruit(species("Icemon"));
+    }
+
+    on talk(bluemeramon) replace {    // section 7
+        say(bluemeramon, text("s094.sec7.u0"));
+        battle();
+        recruit(species("BlueMeramon"));
+        return;
+    }
+}

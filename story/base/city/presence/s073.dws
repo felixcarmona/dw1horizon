@@ -1,0 +1,16 @@
+// Who stands on screen 73 (Gear Savanna), and when. Read out of MAPHEAD.SCN section 73 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(73) {                              // Gear Savanna
+            npc 163 slot 0 autotalk when not recruited(Biyomon);
+            npc Shimaunimon slot 1 autotalk when recruited(Biyomon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Shimaunimon slot 2 autotalk when recruited(Biyomon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Akatorimon slot 3 autotalk when recruited(Biyomon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Shamamon slot 4 autotalk when recruited(Biyomon) and clock.hour <= 6 or recruited(Biyomon) and clock.hour >= 19;
+            npc Shamamon slot 5 autotalk when recruited(Biyomon) and clock.hour <= 6 or recruited(Biyomon) and clock.hour >= 19;
+            npc Tsukaimon slot 6 autotalk when recruited(Biyomon) and clock.hour <= 6 or recruited(Biyomon) and clock.hour >= 19;
+        }
+    }
+}

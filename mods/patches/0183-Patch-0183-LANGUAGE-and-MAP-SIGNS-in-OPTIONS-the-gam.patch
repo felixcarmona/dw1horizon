@@ -1,0 +1,2985 @@
+From adb243fb9a1a06ccb1f9126f264e098bad92378e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 22:21:14 +0000
+Subject: [PATCH] Patch 0183: LANGUAGE and MAP SIGNS in OPTIONS: the game in
+ English or Spanish, switched at run time
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The executable is built twice from one tree (LANG_BUILD=en/es): gen_text.py pads every string to the longer of its two
+texts and shares an array only when both languages agree (TEXT_BANK_PAD), the literals become arrays, and the numbers that
+depend on the language (the rects of the Spanish words drawn in the textures, the packed rows' crops and pieces, the
+BATTLE banner's blocks, the ○PULSA and Press Start quads) are data tables chosen with MOD_LANG_BUILD around their
+values only; tools/langpatch.py checks that the two builds differ in no function and writes the other language's
+bytes (LANGEN.BIN / LANGES.BIN), which modSetLanguage copies over the strings at the title, then reads the script text
+again and uploads FI_INFO.TIM again. modLangFile (lookupFileTable) reads a file's Spanish copy, and a map background's
+copy with the signs translated unless MAP SIGNS is ORIGINAL, from LANG_FILES (the Makefile: name, Spanish copy, copy
+with English signs). OPTIONS: two rows more (LANGUAGE ENGLISH/ESPAÑOL, MAP SIGNS ORIGINAL/TRANSLATED), the values two
+rows share drawn once in the text area; saved in SAVE_TAG_OPTIONS bytes 7 and 8. Also: the battle end box draws the
+mod font's two-byte glyphs (accents were blank); the slot menus draw the slot-2 rows whole (a 2 drawn at the US
+text's x landed wrong with font b and in Spanish); the feed menu's and the evolution chart's strings keyed
+(text/main/mod_feed.yaml, CHART_STR_*); the C files' .rodata of plain sections kept by the link scripts
+(docs/mods/language.md)
+---
+ Makefile                 |  24 +++
+ config/us/main.ld        | 128 +++++++--------
+ config/us/overlay.ld     |  94 +++++------
+ include/dw/lang.h        |  14 ++
+ include/dw/mod_font.h    |  10 ++
+ include/dw/mod_options.h |  15 ++
+ mk/text.mk               |   6 +-
+ src/btl/battle_effect.c  | 161 +++++++++++++++++++
+ src/btl/battle_hud.c     |  28 +++-
+ src/main/file.c          |   2 +
+ src/main/game_menu.c     | 330 ++++++++++++++++++++++++++++++++-------
+ src/main/main.c          |  15 +-
+ src/main/main_menu.c     | 150 ++++++++++--------
+ src/main/mod_feed.c      |  16 +-
+ src/main/mod_options.c   | 108 +++++++++++++
+ src/main/mod_screen.c    |   5 +-
+ src/main/script_common.c |  13 ++
+ src/main/script_interp.c |   4 +-
+ src/shop/script_menu.c   |  11 +-
+ src/std/std_hud.c        | 180 ++++++++++++++++++++-
+ src/vs/vs_hud.c          | 180 ++++++++++++++++++++-
+ src/vs/vs_scene.c        |  15 ++
+ text/main/game_menu.yaml |  94 +++++++++++
+ text/main/main_menu.yaml |  15 ++
+ text/main/mod_feed.yaml  |  26 +++
+ tools/gen_text.py        | 100 ++++++++++--
+ 26 files changed, 1469 insertions(+), 275 deletions(-)
+ create mode 100644 include/dw/lang.h
+ create mode 100644 text/main/mod_feed.yaml
+
+diff --git a/Makefile b/Makefile
+index 97c9f6fb..c1533b96 100644
+--- a/Makefile
++++ b/Makefile
+@@ -59,6 +59,30 @@ $(shell mkdir -p $(GEN_DIR); printf '#define FONT_%s 1\n' '$(shell echo $(FONT)
+ 	cmp -s $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h && rm $(GEN_DIR)/font_sel.h.tmp \
+ 	|| mv $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h)
+ 
++# MOD (language): the language the executable's own strings are in at boot (docs/mods/language.md): en or es. A
++# two-language disc carries the other one as a patch (LANGEN.BIN / LANGES.BIN) and OPTIONS (LANGUAGE) switches.
++LANG_BASE ?= en
++ifeq ($(filter $(LANG_BASE),en es),)
++$(error LANG_BASE=$(LANG_BASE): en or es)
++endif
++# LANG_BUILD: the language of this build's strings and language tables (tools/build-full.sh builds the tree twice, once
++# per language; the two builds differ only in data, tools/langpatch.py checks it). Default: LANG_BASE.
++LANG_BUILD ?= $(LANG_BASE)
++$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BUILD MOD_LANG_%s\n' '$(shell echo $(LANG_BUILD) | tr a-z A-Z)' > $(GEN_DIR)/lang_build.h.tmp; \
++	cmp -s $(GEN_DIR)/lang_build.h.tmp $(GEN_DIR)/lang_build.h && rm $(GEN_DIR)/lang_build.h.tmp \
++	|| mv $(GEN_DIR)/lang_build.h.tmp $(GEN_DIR)/lang_build.h)
++$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BASE MOD_LANG_%s\n' '$(shell echo $(LANG_BASE) | tr a-z A-Z)' > $(GEN_DIR)/lang_base.h.tmp; \
++	cmp -s $(GEN_DIR)/lang_base.h.tmp $(GEN_DIR)/lang_base.h && rm $(GEN_DIR)/lang_base.h.tmp \
++	|| mv $(GEN_DIR)/lang_base.h.tmp $(GEN_DIR)/lang_base.h)
++
++# MOD (language): the disc files that have a copy per language (docs/mods/language.md), given by tools/build-full.sh:
++# LANG_FILES="NAME.EXT:ES.EXT:EN.EXT ..." (the Spanish copy, the copy with the map signs in English; - for none). Each
++# copy is also a NEW_FILES name. Empty by default: no copies, the files as before.
++LANG_FILES ?=
++$(shell mkdir -p $(GEN_DIR); printf '%s\n' $(foreach f,$(LANG_FILES),'{ $(foreach n,$(subst :, ,$(f)),$(if $(filter -,$(n)),NULL,"$(n)"),) },') > $(GEN_DIR)/lang_files.h.tmp; \
++	cmp -s $(GEN_DIR)/lang_files.h.tmp $(GEN_DIR)/lang_files.h && rm $(GEN_DIR)/lang_files.h.tmp \
++	|| mv $(GEN_DIR)/lang_files.h.tmp $(GEN_DIR)/lang_files.h)
++
+ # MOD (new files): the disc files with names the original never had (a new screen's .MAP/.TFS, models, textures), one
+ # FILE_OFFSET_TABLE entry each after the mod entries (src/main/file_table_us.c), sector and size written by the project's
+ # tools/build-disc.py --relayout. NEW_FILES="RIFT01.MAP RIFT01.TFS ..." (8.3 upper-case names, given by tools/build-full.sh
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 628ee296..27a31cb9 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -248,7 +248,7 @@ SECTIONS
+         LONG(eab_HEADER)
+ 
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/partner_impl.c.o(.rodata.*);
++        BUILD_DIR/src/main/partner_impl.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/data/psyq/libc.rodata.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+@@ -260,142 +260,142 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/psyq/libgte.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/model.c.o(.rodata.*);
++        BUILD_DIR/src/main/model.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/world_object.c.o(.rodata.*);
++        BUILD_DIR/src/main/world_object.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/file.c.o(.rodata.*);
++        BUILD_DIR/src/main/file.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/math.c.o(.rodata.*);
++        BUILD_DIR/src/main/math.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/file_table_us.c.o(.rodata.*);
++        BUILD_DIR/src/main/file_table_us.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/graphics.c.o(.rodata.*);
++        BUILD_DIR/src/main/graphics.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/drop_shadow.c.o(.rodata.*);
++        BUILD_DIR/src/main/drop_shadow.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/_psstart.c.o(.rodata.*);
++        BUILD_DIR/src/main/_psstart.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/partner_impl.c.o(.rodata.*);
++        BUILD_DIR/src/main/partner_impl.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/tamer.c.o(.rodata.*);
++        BUILD_DIR/src/main/tamer.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/fade.c.o(.rodata.*);
++        BUILD_DIR/src/main/fade.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/aabb.c.o(.rodata.*);
++        BUILD_DIR/src/main/aabb.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/efe.c.o(.rodata.*);
++        BUILD_DIR/src/main/efe.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/data/psyq/libcd.rodata.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/overworld.c.o(.rodata.*);
++        BUILD_DIR/src/main/overworld.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/game_menu.c.o(.rodata.*);
++        BUILD_DIR/src/main/game_menu.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/map_collision.c.o(.rodata.*);
++        BUILD_DIR/src/main/map_collision.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/particle.c.o(.rodata.*);
++        BUILD_DIR/src/main/particle.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/anim.c.o(.rodata.*);
++        BUILD_DIR/src/main/anim.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/ui.c.o(.rodata.*);
++        BUILD_DIR/src/main/ui.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/item.c.o(.rodata.*);
++        BUILD_DIR/src/main/item.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/sound.c.o(.rodata.*);
++        BUILD_DIR/src/main/sound.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/data/psyq/libspu.rodata.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/data/psyq/libsnd.rodata.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/map.c.o(.rodata.*);
++        BUILD_DIR/src/main/map.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/inventory.c.o(.rodata.*);
++        BUILD_DIR/src/main/inventory.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/clock.c.o(.rodata.*);
++        BUILD_DIR/src/main/clock.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/partner.c.o(.rodata.*);
++        BUILD_DIR/src/main/partner.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/entity_text.c.o(.rodata.*);
++        BUILD_DIR/src/main/entity_text.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/map_object.c.o(.rodata.*);
++        BUILD_DIR/src/main/map_object.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/evolution.c.o(.rodata.*);
++        BUILD_DIR/src/main/evolution.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/file_queue.c.o(.rodata.*);
++        BUILD_DIR/src/main/file_queue.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/line.c.o(.rodata.*);
++        BUILD_DIR/src/main/line.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/vecmath.c.o(.rodata.*);
++        BUILD_DIR/src/main/vecmath.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/rng.c.o(.rodata.*);
++        BUILD_DIR/src/main/rng.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/fish.c.o(.rodata.*);
++        BUILD_DIR/src/main/fish.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/utils.c.o(.rodata.*);
++        BUILD_DIR/src/main/utils.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/utils2.c.o(.rodata.*);
++        BUILD_DIR/src/main/utils2.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/mod_lab.c.o(.rodata.*);
++        BUILD_DIR/src/main/mod_lab.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/mod_species.c.o(.rodata.*);
++        BUILD_DIR/src/main/mod_species.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/mod_screen.c.o(.rodata.*);
++        BUILD_DIR/src/main/mod_screen.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/mod_options.c.o(.rodata.*);
++        BUILD_DIR/src/main/mod_options.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/mod_feed.c.o(.rodata.*);
++        BUILD_DIR/src/main/mod_feed.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/tfs_stream.c.o(.rodata.*);
++        BUILD_DIR/src/main/tfs_stream.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/npc_anim_trim.c.o(.rodata.*);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/npc_anim_keep.c.o(.rodata.*);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/tournament.c.o(.rodata.*);
++        BUILD_DIR/src/main/tournament.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/evl.c.o(.rodata.*);
++        BUILD_DIR/src/main/evl.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/btl.c.o(.rodata.*);
++        BUILD_DIR/src/main/btl.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/kar.c.o(.rodata.*);
++        BUILD_DIR/src/main/kar.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/efe_table.c.o(.rodata.*);
++        BUILD_DIR/src/main/efe_table.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/sound_async.c.o(.rodata.*);
++        BUILD_DIR/src/main/sound_async.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/psyq/libds.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/butterfly.c.o(.rodata.*);
++        BUILD_DIR/src/main/butterfly.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/asm/main/data/psyq/libmcrd.rodata.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/bubble.c.o(.rodata.*);
++        BUILD_DIR/src/main/bubble.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/main.c.o(.rodata.*);
++        BUILD_DIR/src/main/main.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/battle_tick.c.o(.rodata.*);
++        BUILD_DIR/src/main/battle_tick.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/new_game.c.o(.rodata.*);
++        BUILD_DIR/src/main/new_game.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/buff_model.c.o(.rodata.*);
++        BUILD_DIR/src/main/buff_model.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/sjis.c.o(.rodata.*);
++        BUILD_DIR/src/main/sjis.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_select.c.o(.rodata.*);
++        BUILD_DIR/src/vs/vs_select.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/script_common.c.o(.rodata.*);
++        BUILD_DIR/src/main/script_common.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/script_textbox.c.o(.rodata.*);
++        BUILD_DIR/src/main/script_textbox.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/script_value.c.o(.rodata.*);
++        BUILD_DIR/src/main/script_value.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/script_interp.c.o(.rodata.*);
++        BUILD_DIR/src/main/script_interp.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/shop/script_menu.c.o(.rodata.*);
++        BUILD_DIR/src/shop/script_menu.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/font.c.o(.rodata.*);
++        BUILD_DIR/src/main/font.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/main_menu.c.o(.rodata.* .rodata);
+         . = ALIGN(., 4);
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 19b84191..bddf590d 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -36,17 +36,17 @@ SECTIONS
+ 			BUILD_DIR/src/btl/battle_effect.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/btl/battle_main.c.o(.rodata.*);
++			BUILD_DIR/src/btl/battle_main.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/btl/battle_setup.c.o(.rodata.*);
++			BUILD_DIR/src/btl/battle_setup.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/btl/command_menu.c.o(.rodata.*);
++			BUILD_DIR/src/btl/command_menu.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/btl/command_shout.c.o(.rodata.*);
++			BUILD_DIR/src/btl/command_shout.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/btl/battle_hud.c.o(.rodata.*);
++			BUILD_DIR/src/btl/battle_hud.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/btl/battle_effect.c.o(.rodata.*);
++			BUILD_DIR/src/btl/battle_effect.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/btl/battle_setup.c.o(.data.*);
+@@ -82,7 +82,7 @@ SECTIONS
+ 			 */
+ 			BUILD_DIR/src/main/battle_ui.c.o(.text.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/main/battle_ui.c.o(.rodata.*);
++			BUILD_DIR/src/main/battle_ui.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			/* Trailer */
+@@ -104,7 +104,7 @@ SECTIONS
+ 			BUILD_DIR/src/dget/dget.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/dget/dget.c.o(.rodata.*);
++			BUILD_DIR/src/dget/dget.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/dget/dget.c.o(.data.*);
+@@ -129,7 +129,7 @@ SECTIONS
+ 			BUILD_DIR/src/doo2/doo2.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/doo2/doo2.c.o(.rodata.*);
++			BUILD_DIR/src/doo2/doo2.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/doo2/doo2.c.o(.data.*);
+@@ -155,7 +155,7 @@ SECTIONS
+ 			BUILD_DIR/src/dooa/dooa.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/dooa/dooa.c.o(.rodata.*);
++			BUILD_DIR/src/dooa/dooa.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/dooa/dooa.c.o(.data.*);
+@@ -186,7 +186,7 @@ SECTIONS
+ 			BUILD_DIR/src/eab/eab.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/eab/eab.c.o(.rodata.*);
++			BUILD_DIR/src/eab/eab.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/eab/eab.c.o(.data.*);
+@@ -215,7 +215,7 @@ SECTIONS
+ 			BUILD_DIR/src/endi/endi.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/endi/endi.c.o(.rodata.*);
++			BUILD_DIR/src/endi/endi.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/endi/endi.c.o(.data.*);
+@@ -241,7 +241,7 @@ SECTIONS
+ 			BUILD_DIR/src/evl/evl.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/evl/evl.c.o(.rodata.*);
++			BUILD_DIR/src/evl/evl.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/evl/evl.c.o(.data.*);
+@@ -271,8 +271,8 @@ SECTIONS
+ 			BUILD_DIR/src/fish/fish_model.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/fish/fish.c.o(.rodata.*);
+-			BUILD_DIR/src/fish/fish_model.c.o(.rodata.*);
++			BUILD_DIR/src/fish/fish.c.o(.rodata .rodata.*);
++			BUILD_DIR/src/fish/fish_model.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/fish/fish.c.o(.data.*);
+@@ -303,7 +303,7 @@ SECTIONS
+ 			BUILD_DIR/src/kar/kar.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/kar/kar.c.o(.rodata.*);
++			BUILD_DIR/src/kar/kar.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/kar/kar.c.o(.data.*);
+@@ -328,7 +328,7 @@ SECTIONS
+ 			BUILD_DIR/src/mov/mov.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/mov/mov.c.o(.rodata.*);
++			BUILD_DIR/src/mov/mov.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/mov/mov.c.o(.data.*);
+@@ -375,7 +375,7 @@ SECTIONS
+ 			BUILD_DIR/src/murd/murd.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/murd/murd.c.o(.rodata.*);
++			BUILD_DIR/src/murd/murd.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/murd/murd.c.o(.data.*);
+@@ -417,13 +417,13 @@ SECTIONS
+ 			BUILD_DIR/src/std/std_effect.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/std/std_setup.c.o(.rodata.*);
++			BUILD_DIR/src/std/std_setup.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/std/std_main.c.o(.rodata.*);
++			BUILD_DIR/src/std/std_main.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/std/std_hud.c.o(.rodata.*);
++			BUILD_DIR/src/std/std_hud.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/std/std_effect.c.o(.rodata.*);
++			BUILD_DIR/src/std/std_effect.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/std/std_setup.c.o(.data.*);
+@@ -481,23 +481,23 @@ SECTIONS
+ 			BUILD_DIR/src/trn2/trn2_slots.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/trn2/trn2_hp_map107.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_hp_map107.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_hp_map99.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_hp_map99.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_mp.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_mp.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_off.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_off.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_reward.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_reward.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_def_map108.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_def_map108.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_def_map99.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_def_map99.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_hud.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_hud.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn2/trn2_slots.c.o(.rodata.*);
++			BUILD_DIR/src/trn2/trn2_slots.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/trn2/trn2_hp_map99.c.o(.data.*);
+@@ -569,23 +569,23 @@ SECTIONS
+ 			BUILD_DIR/src/trn/trn_slots.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/trn/trn_hp.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_hp.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_off.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_off.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_speed.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_speed.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_def.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_def.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_mp.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_mp.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_brain.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_brain.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_reward.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_reward.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_slots.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_slots.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/trn/trn_hud.c.o(.rodata.*);
++			BUILD_DIR/src/trn/trn_hud.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/trn/trn_reward.c.o(.data.*);
+@@ -662,17 +662,17 @@ SECTIONS
+ 			BUILD_DIR/src/vs/vs_effect.c.o(.text.*);
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/vs/vs_scene.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_scene.c.o(.rodata .rodata.*);
+ 
+ 			. = ALIGN(., 4);
+ 
+-			BUILD_DIR/src/vs/vs_camera.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_camera.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/vs/vs_main.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_main.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/vs/vs_hud.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_hud.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/vs/vs_effect.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_effect.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			BUILD_DIR/src/vs/vs_scene.c.o(.data.*);
+@@ -713,9 +713,9 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			BUILD_DIR/src/vs/vs_combat.c.o(.text.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/vs/vs_intro.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_intro.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+-			BUILD_DIR/src/vs/vs_combat.c.o(.rodata.*);
++			BUILD_DIR/src/vs/vs_combat.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
+ 
+ 			/* Trailer */
+diff --git a/include/dw/lang.h b/include/dw/lang.h
+new file mode 100644
+index 00000000..f96bd27b
+--- /dev/null
++++ b/include/dw/lang.h
+@@ -0,0 +1,14 @@
++#ifndef DW_LANG_H
++#define DW_LANG_H
++
++/*
++ * MOD (language): the game's languages (docs/mods/language.md) and MOD_LANG_BUILD, the language of this build's strings
++ * and language tables (the Makefile's LANG_BUILD; a two-language disc is built twice and differs only in that data)
++ */
++#define MOD_LANG_EN	0
++#define MOD_LANG_ES	1
++#define MOD_LANGS	2
++
++#include <lang_build.h>
++
++#endif
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index 9b20854e..1077305a 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -70,8 +70,18 @@ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, in
+ 			drawString(str, x, y);                                     \
+ 		}                                                                  \
+ 	} while (0)
++/* the same with the crops' offsets in a table (PIECES_END at its end): a language's own (dw/lang.h) */
++#define DRAW_STRING_PIECES_AT(str, x, y, pieces)                                   \
++	do {                                                                       \
++		if (FONT_PROPORTIONAL) {                                           \
++			drawStringPieces(str, x, y, pieces);                       \
++		} else {                                                           \
++			drawString(str, x, y);                                     \
++		}                                                                  \
++	} while (0)
+ #else
+ #define DRAW_STRING_PIECES(str, x, y, ...) drawString(str, x, y)
++#define DRAW_STRING_PIECES_AT(str, x, y, pieces) drawString(str, x, y)
+ #endif
+ 
+ /*
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 01e2c52c..4f309c99 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -7,6 +7,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/types.h>
++#include <dw/lang.h>
+ 
+ /*
+  * MOD (options): the title menu's OPTIONS (main_menu.c) and what they change (mod_options.c, docs/mods/options.md).
+@@ -42,4 +43,18 @@ void modSetFrameRate(int32_t fps);
+ /* a TIM of ETCTIM.BIN was uploaded (loadStackedTIMFile): the SYSTEM_W page's button frames */
+ void modButtonsTimLoaded(GsIMAGE *img);
+ 
++/*
++ * MOD (language): LANGUAGE and MAP SIGNS (docs/mods/language.md). The executable's strings and language tables are
++ * switched by writing the other language's bytes over them (LANGEN.BIN / LANGES.BIN, tools/langpatch.py); the disc's
++ * files are read from their language's copy when the disc has one, and the map backgrounds from their copy with the
++ * signs translated unless MAP SIGNS is ORIGINAL (modLangFile: the table tools/build-full.sh writes, LANG_FILES). Only
++ * at the title (OPTIONS, a loaded save's options), as the font.
++ */
++extern int32_t MOD_LANG;	/* the language the game shows */
++extern int32_t MOD_OPT_SIGNS;	/* MAP SIGNS: 1 = translated (the language's), 0 = as the disc has them */
++void modSetLanguage(int32_t lang);
++void modSetSigns(int32_t translated);
++/* the file name to read for `name` (no folder): its language's or translated signs' copy when the disc has it */
++char *modLangFile(char *name);
++
+ #endif
+diff --git a/mk/text.mk b/mk/text.mk
+index 44024d9d..77524c9b 100644
+--- a/mk/text.mk
++++ b/mk/text.mk
+@@ -5,8 +5,10 @@ TEXT_SRC := $(TEXT_YAML:text/%.yaml=%)
+ 
+ # MOD (text sources): text-bank.json (written by the project's tools/build-full.sh) replaces texts by key and encodes the
+ # mod font's extra glyphs; the headers are made again when it changes
+-$(GEN_DIR)/text/%.h: text/%.yaml tools/gen_text.py $(wildcard text-bank.json)
+-	$(PYTHON) tools/gen_text.py $(VERSION) $< $@
++# MOD (language): text-bank-pad.json, the other language's bank of a two-language build (docs/mods/language.md): every
++# string takes the room of the longer of its two texts, so both builds have the same layout
++$(GEN_DIR)/text/%.h: text/%.yaml tools/gen_text.py $(wildcard text-bank.json text-bank-pad.json)
++	$(if $(wildcard text-bank-pad.json),TEXT_BANK_PAD=text-bank-pad.json) $(PYTHON) tools/gen_text.py $(VERSION) $< $@
+ 
+ $(TEXT_SRC:%=$(BUILD_DIR)/src/%.c.o): $(BUILD_DIR)/src/%.c.o: \
+ 	$(GEN_DIR)/text/%.h
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index d1604249..64c6c69f 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -23,6 +23,7 @@
+ #include <dw/rng.h>
+ #include <dw/sound.h>
+ #include <dw/vecmath.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ #include <text/btl/battle_effect.h>
+@@ -583,7 +584,166 @@ MATRIX BTL_BATTLE_START_TEXT_MATRIX = {
+ 	{ 0x00000000, 0xfffffffe, 0x000002d4 },
+ };
+ 
++/* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
++ * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t BTL_BATTLE_START_TEXT_POSITIONS[155][2] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff54, 0xffd0 },
++	{ 0xff54, 0xffe8 },
++	{ 0xff54, 0xfff4 },
++	{ 0xff54, 0x0000 },
++	{ 0xff54, 0x000c },
++	{ 0xff54, 0x0018 },
++	{ 0xff54, 0x0024 },
++	{ 0xff64, 0xffd0 },
++	{ 0xff6c, 0xffd0 },
++	{ 0xff64, 0xffdc },
++	{ 0xff6c, 0xffdc },
++	{ 0xff64, 0xffe8 },
++	{ 0xff6c, 0xffe8 },
++	{ 0xff64, 0xfff4 },
++	{ 0xff6c, 0xfff4 },
++	{ 0xff64, 0x0000 },
++	{ 0xff6c, 0x0000 },
++	{ 0xff64, 0x000c },
++	{ 0xff6c, 0x000c },
++	{ 0xff64, 0x0018 },
++	{ 0xff6c, 0x0018 },
++	{ 0xff64, 0x0024 },
++	{ 0xff6c, 0x0024 },
++	{ 0xff74, 0x0024 },
++	{ 0xff7c, 0x0024 },
++	{ 0xff84, 0x0024 },
++	{ 0xff8c, 0x0024 },
++	{ 0xffa4, 0xffd0 },
++	{ 0xffac, 0xffd0 },
++	{ 0xffc4, 0xffd0 },
++	{ 0xffcc, 0xffd0 },
++	{ 0xffa4, 0xffdc },
++	{ 0xffac, 0xffdc },
++	{ 0xffc4, 0xffdc },
++	{ 0xffcc, 0xffdc },
++	{ 0xffa4, 0xffe8 },
++	{ 0xffac, 0xffe8 },
++	{ 0xffc4, 0xffe8 },
++	{ 0xffcc, 0xffe8 },
++	{ 0xffa4, 0xfff4 },
++	{ 0xffac, 0xfff4 },
++	{ 0xffc4, 0xfff4 },
++	{ 0xffcc, 0xfff4 },
++	{ 0xffa4, 0x0000 },
++	{ 0xffac, 0x0000 },
++	{ 0xffc4, 0x0000 },
++	{ 0xffcc, 0x0000 },
++	{ 0xffa4, 0x000c },
++	{ 0xffac, 0x000c },
++	{ 0xffc4, 0x000c },
++	{ 0xffcc, 0x000c },
++	{ 0xffa4, 0x0018 },
++	{ 0xffac, 0x0018 },
++	{ 0xffc4, 0x0018 },
++	{ 0xffcc, 0x0018 },
++	{ 0xffac, 0x0024 },
++	{ 0xffb4, 0x0024 },
++	{ 0xffbc, 0x0024 },
++	{ 0xffc4, 0x0024 },
++	{ 0xffec, 0xffd0 },
++	{ 0xfff4, 0xffd0 },
++	{ 0xfffc, 0xffd0 },
++	{ 0x0004, 0xffd0 },
++	{ 0x000c, 0xffd0 },
++	{ 0xffe4, 0xffdc },
++	{ 0xffec, 0xffdc },
++	{ 0xffe4, 0xffe8 },
++	{ 0xffec, 0xffe8 },
++	{ 0xffe4, 0xfff4 },
++	{ 0xffec, 0xfff4 },
++	{ 0xffe4, 0x0000 },
++	{ 0xffec, 0x0000 },
++	{ 0xffe4, 0x000c },
++	{ 0xffec, 0x000c },
++	{ 0xffe4, 0x0018 },
++	{ 0xffec, 0x0018 },
++	{ 0xffec, 0x0024 },
++	{ 0xfff4, 0x0024 },
++	{ 0xfffc, 0x0024 },
++	{ 0x0004, 0x0024 },
++	{ 0x000c, 0x0024 },
++	{ 0x0024, 0xffd0 },
++	{ 0x002c, 0xffd0 },
++	{ 0x0044, 0xffd0 },
++	{ 0x004c, 0xffd0 },
++	{ 0x0024, 0xffdc },
++	{ 0x002c, 0xffdc },
++	{ 0x0044, 0xffdc },
++	{ 0x004c, 0xffdc },
++	{ 0x0024, 0xffe8 },
++	{ 0x002c, 0xffe8 },
++	{ 0x0044, 0xffe8 },
++	{ 0x004c, 0xffe8 },
++	{ 0x0024, 0xfff4 },
++	{ 0x002c, 0xfff4 },
++	{ 0x0034, 0xfff4 },
++	{ 0x003c, 0xfff4 },
++	{ 0x0044, 0xfff4 },
++	{ 0x004c, 0xfff4 },
++	{ 0x0024, 0x0000 },
++	{ 0x002c, 0x0000 },
++	{ 0x0044, 0x0000 },
++	{ 0x004c, 0x0000 },
++	{ 0x0024, 0x000c },
++	{ 0x002c, 0x000c },
++	{ 0x0044, 0x000c },
++	{ 0x004c, 0x000c },
++	{ 0x0024, 0x0018 },
++	{ 0x002c, 0x0018 },
++	{ 0x0044, 0x0018 },
++	{ 0x004c, 0x0018 },
++	{ 0x0024, 0x0024 },
++	{ 0x002c, 0x0024 },
++	{ 0x0044, 0x0024 },
++	{ 0x004c, 0x0024 },
++	{ 0x007c, 0xffd0 },
++	{ 0x0084, 0xffd0 },
++	{ 0x007c, 0xffdc },
++	{ 0x0084, 0xffdc },
++	{ 0x0074, 0xffe8 },
++	{ 0x007c, 0xffe8 },
++	{ 0x0084, 0xffe8 },
++	{ 0x008c, 0xffe8 },
++	{ 0x006c, 0xfff4 },
++	{ 0x0074, 0xfff4 },
++	{ 0x008c, 0xfff4 },
++	{ 0x0094, 0xfff4 },
++	{ 0x006c, 0x0000 },
++	{ 0x0074, 0x0000 },
++	{ 0x008c, 0x0000 },
++	{ 0x0094, 0x0000 },
++	{ 0x0064, 0x000c },
++	{ 0x006c, 0x000c },
++	{ 0x0074, 0x000c },
++	{ 0x007c, 0x000c },
++	{ 0x0084, 0x000c },
++	{ 0x008c, 0x000c },
++	{ 0x0094, 0x000c },
++	{ 0x009c, 0x000c },
++	{ 0x0064, 0x0018 },
++	{ 0x006c, 0x0018 },
++	{ 0x0094, 0x0018 },
++	{ 0x009c, 0x0018 },
++	{ 0x0064, 0x0024 },
++	{ 0x006c, 0x0024 },
++	{ 0x0094, 0x0024 },
++	{ 0x009c, 0x0024 },
++	{ 0x00ac, 0xffd0 },
++	{ 0x00ac, 0xffdc },
++	{ 0x00ac, 0xffe8 },
++	{ 0x00ac, 0xfff4 },
++	{ 0x00ac, 0x0000 },
++	{ 0x00ac, 0x000c },
++	{ 0x00ac, 0x0024 },
++	{ 0x00ac, 0x0024 },
++#else
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff5c, 0xffd0 },
+ 	{ 0xff64, 0xffd0 },
+@@ -739,6 +899,7 @@ int16_t BTL_BATTLE_START_TEXT_POSITIONS[155][2] = {
+ 	{ 0x009c, 0x0024 },
+ 	{ 0x00a4, 0x0024 },
+ 	{ 0x00ac, 0x0024 },
++#endif
+ };
+ 
+ int16_t BTL_STATUS_BAR_X[8] = {
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 6ec57118..2627b97c 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -20,6 +20,7 @@
+ #include <dw/script.h>
+ #include <dw/sjis.h>
+ #include <dw/swap.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ #include <text/btl/battle_hud.h>
+@@ -749,7 +750,14 @@ void BTL_drawBattleEndText(int32_t flag)
+ 		if (c == '\0') {
+ 			return;
+ 		}
+-		glyph = swapShortBytes(convertAsciiToJis(c));
++		if ((c & 0x80) != 0 && BATTLE_END_CURSOR[1] != '\0') {
++			/* MOD (font): a byte with bit 7 starts a two-byte code, as drawString reads it: the mod font's extra
++			 * glyphs (F0xx: the accents, ñ, ¡, ¿...) were drawn as two unknown one-byte glyphs (blank) */
++			glyph = swapShortBytes((c << 8) | (uint8_t)BATTLE_END_CURSOR[1]);
++			BATTLE_END_CURSOR++;
++		} else {
++			glyph = swapShortBytes(convertAsciiToJis(c));
++		}
+ 		w = drawGlyph(glyph, BATTLE_END_PEN_X, BATTLE_END_PEN_Y);
+ 		BATTLE_END_PEN_X += w;
+ 		BATTLE_END_CURSOR++;
+@@ -1216,6 +1224,16 @@ void BTL_renderFinisherGauge(int16_t idx)
+ 	}
+ }
+ 
++/* MOD (language): the finisher's "○PUSH" label: the quad's x and w, its backing box's x and w; the Spanish ○PULSA is 43
++ * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
++int16_t BTL_FINISHER_LABEL[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0x68, 43, 0x66, 0x2f,
++#else
++	0x6e, 37, 0x6c, 0x29,
++#endif
++};
++
+ void BTL_renderFinisherReadyIcon(void)
+ {
+ 	GsBOXF box;
+@@ -1229,8 +1247,8 @@ void BTL_renderFinisherReadyIcon(void)
+ 		setRGB0(prim, BTL_FINISHER_BRIGHTNESS, BTL_FINISHER_BRIGHTNESS, BTL_FINISHER_BRIGHTNESS);
+ 	}
+ 
+-	setUVWH(prim, 0x80, 0x88, 37, 9);
+-	setXYWH(prim, 0x6e, -0x4b, 37, 9);
++	setUVWH(prim, 0x80, 0x88, BTL_FINISHER_LABEL[1], 9);
++	setXYWH(prim, BTL_FINISHER_LABEL[0], -0x4b, BTL_FINISHER_LABEL[1], 9);
+ 	AddPrim(ACTIVE_ORDERING_TABLE->org + 0xa, prim++);
+ 	GsSetWorkBase((PACKET *)prim);
+ 
+@@ -1241,8 +1259,8 @@ void BTL_renderFinisherReadyIcon(void)
+ 		box.r = box.g = box.b = BTL_FINISHER_BRIGHTNESS;
+ 	}
+ 
+-	setWH(&box, 0x29, 0xb);
+-	box.x = 0x6c;
++	setWH(&box, BTL_FINISHER_LABEL[3], 0xb);
++	box.x = BTL_FINISHER_LABEL[2];
+ 	box.y = -0x4c;
+ 	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 0xa);
+ }
+diff --git a/src/main/file.c b/src/main/file.c
+index c7ce6768..832e6dbc 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -7,6 +7,7 @@
+ #include <dw/file_table.h>
+ #include <dw/main.h>
+ #include <dw/mod_font.h>
++#include <dw/mod_options.h>
+ #include <dw/tfs_stream.h>
+ 
+ #include "common.h"
+@@ -48,6 +49,7 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	} else {
+ 		++filename;
+ 	}
++	filename = modLangFile(filename); /* MOD (language) */
+ 
+ 	for (; entry->size != 0; ++entry) {
+ 		if (!strcmp(filename, entry->filename)) {
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index cfa723f9..765f300a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -29,6 +29,7 @@
+ #include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/ui.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <text/main/game_menu.h>
+ 
+@@ -415,7 +416,7 @@ RECT EVO_CHART_NAME_AREA = { 0, 48, 200, 12 }; /* MOD (long names): was 120 wide
+  * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
+ #define EVO_CHART_MEGA_ROW	0x48
+ #define EVO_CHART_MEGA_WIDTH	0x22
+-static char EVO_CHART_MEGA_LABEL[] = "Mega";
++static char EVO_CHART_MEGA_LABEL[] = CHART_STR_MEGA; /* MOD (language): keyed, text/main/game_menu.yaml */
+ 
+ RECT MEDAL_VIEW_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+@@ -456,7 +457,19 @@ GameMenuSprite MENU_OPTIONS[8] = {
+ 	{ 0x14, 0x1f, 7, 0, 0xd, 0x14, 0x13, 0x50, 0x0 },
+ };
+ 
++/* MOD (language): the Spanish build's labels are in FI_INFO.TIM's Spanish copy, where the disc has its unused status
++ * words (tools/localize/textures/fi-info/build.py prints these rows); DIGIMON keeps the disc's */
+ GameMenuLabel GAME_MENU_TEXT_SPRITES[8] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00 },
++	{ 0x0010, 0x0060, 0x1c, 0x07, 0x80, 0x21 },
++	{ 0x0035, 0x0060, 0x1c, 0x07, 0x50, 0x1b },
++	{ 0x0057, 0x0060, 0x1c, 0x07, 0xa0, 0x21 },
++	{ 0x0013, 0x0088, 0x17, 0x07, 0x80, 0x28 },
++	{ 0x0039, 0x0086, 0x13, 0x09, 0xa0, 0x2f },
++	{ 0x005a, 0x0088, 0x17, 0x07, 0xa0, 0x28 },
++	{ 0x0012, 0x0038, 0x18, 0x07, 0x80, 0x2f },
++#else
+ 	{ 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00 },
+ 	{ 0x0013, 0x0060, 0x18, 0x07, 0x50, 0x14 },
+ 	{ 0x0035, 0x0060, 0x1c, 0x07, 0x50, 0x1b },
+@@ -465,6 +478,7 @@ GameMenuLabel GAME_MENU_TEXT_SPRITES[8] = {
+ 	{ 0x0039, 0x0088, 0x14, 0x07, 0x6c, 0x1b },
+ 	{ 0x0060, 0x0088, 0x14, 0x07, 0x6c, 0x22 },
+ 	{ 0x0017, 0x0038, 0x10, 0x07, 0x50, 0x29 },
++#endif
+ };
+ 
+ Line GAME_MENU_LINES[3] = {
+@@ -562,10 +576,17 @@ Line DIGIMON_MOVE_INFO_LINES_RIGHT[18] = {
+ 	{ 0x003e, 0x005f, 0x008d, 0x005f, 0x00, 0x00 },
+ };
+ 
++/* MOD (language): POTENCIA, ALC., EFECTO in the Spanish SYSTEM_W.TIM (tools/localize/textures/systemw/NOTES.md) */
+ IconRect MOVES_VIEW_TECHSET_TEXT[13] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0x000e, 0xffb4, 0x20, 0x07, 0x00, 0x29 },
++	{ 0x0062, 0xffb4, 0x0f, 0x07, 0x20, 0x29 },
++	{ 0x0075, 0xffb4, 0x19, 0x07, 0x4d, 0x29 },
++#else
+ 	{ 0x0016, 0xffb4, 0x17, 0x07, 0x5c, 0x22 },
+ 	{ 0x0062, 0xffb4, 0x13, 0x07, 0x4c, 0x29 },
+ 	{ 0x007a, 0xffb4, 0x10, 0x07, 0x00, 0x30 },
++#endif
+ 	{ 0x0044, 0xffb4, 0x0b, 0x07, 0x74, 0x22 },
+ 	{ 0x0035, 0xffc1, 0x04, 0x04, 0x78, 0x0c },
+ 	{ 0x0035, 0xffd0, 0x04, 0x04, 0x78, 0x0c },
+@@ -672,7 +693,32 @@ StringRect STATS_VIEW_TEXT[9] = {
+ };
+ #endif
+ 
++/* MOD (language): the Spanish labels in SYSTEM_W.TIM's Spanish copy (tools/localize/textures/systemw/NOTES.md):
++ * NOMBRE, ESPECIE, PESO, EDAD, ESPECIAL, FELICIDAD, VELOCIDAD, INTELECTO */
+ IconRect STATS_VIEW_ELEMENTS[21] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff74, 0xffaf, 0x35, 0x0b, 0x00, 0x4b },
++	{ 0xff74, 0xfff4, 0x35, 0x0b, 0x00, 0x56 },
++	{ 0xffee, 0xfff4, 0x35, 0x0b, 0x00, 0x61 },
++	{ 0xff71, 0xffbe, 0x1f, 0x0a, 0x80, 0x30 },
++	{ 0xff71, 0xffce, 0x1e, 0x0a, 0x9f, 0x30 },
++	{ 0xffc1, 0xffde, 0x14, 0x0a, 0xbd, 0x30 },
++	{ 0xff79, 0xffde, 0x14, 0x0a, 0xd1, 0x30 },
++	{ 0x0034, 0xffc2, 0x19, 0x08, 0x00, 0x38 },
++	{ 0x0009, 0xffc2, 0x1d, 0x08, 0x90, 0x48 },
++	{ 0x0055, 0xffc2, 0x19, 0x08, 0x32, 0x38 },
++	{ 0xff77, 0x004f, 0x09, 0x0b, 0xf0, 0x25 },
++	{ 0xffef, 0x0004, 0x0b, 0x0b, 0x93, 0x3a },
++	{ 0xffef, 0x0013, 0x0b, 0x0b, 0x9e, 0x3a },
++	{ 0xffef, 0x0022, 0x0b, 0x0b, 0xa9, 0x3a },
++	{ 0xffef, 0x0031, 0x0b, 0x0b, 0xb4, 0x3a },
++	{ 0xffef, 0x0040, 0x0b, 0x0b, 0xbf, 0x3a },
++	{ 0xffef, 0x004f, 0x0a, 0x0b, 0xca, 0x3a },
++	{ 0xff83, 0x0031, 0x24, 0x0c, 0xd4, 0x3a },
++	{ 0xfffb, 0x0040, 0x27, 0x0c, 0xd4, 0x46 },
++	{ 0xfffb, 0x004f, 0x25, 0x0c, 0xd4, 0x52 },
++	{ 0xff76, 0x004f, 0x09, 0x0b, 0x2c, 0x74 },
++#else
+ 	{ 0xff74, 0xffaf, 0x35, 0x0b, 0x00, 0x4b },
+ 	{ 0xff74, 0xfff4, 0x35, 0x0b, 0x00, 0x56 },
+ 	{ 0xffee, 0xfff4, 0x35, 0x0b, 0x00, 0x61 },
+@@ -694,6 +740,49 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+ 	{ 0xfffc, 0x0040, 0x24, 0x0c, 0xd4, 0x46 },
+ 	{ 0xfffc, 0x004f, 0x24, 0x0c, 0xd4, 0x52 },
+ 	{ 0xff76, 0x004f, 0x09, 0x0b, 0x2c, 0x74 },
++#endif
++};
++
++/* MOD (language): the move-help screen's element names, one per row (posX: the left column's x, the right column is at
++ * 100; posY unused; texY with the 0x80 of the texture's v). The Spanish words are not all 20 wide (COMBATE, TIERRA,
++ * MUGRE): each has its own cell and the left column is right-aligned, 3 px before the grid */
++IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xffbf, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
++	{ 0xffb5, 0x0000, 0x1e, 0x0a, 0x14, 0x98 },
++	{ 0xffc5, 0x0000, 0x0e, 0x0a, 0x32, 0x98 },
++	{ 0xffbd, 0x0000, 0x16, 0x0a, 0x40, 0x98 },
++	{ 0xffc1, 0x0000, 0x12, 0x0a, 0x56, 0x98 },
++	{ 0xffc1, 0x0000, 0x12, 0x0a, 0x68, 0x98 },
++	{ 0xffbd, 0x0000, 0x16, 0x0a, 0x3c, 0xe0 },
++#else
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x14, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x28, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x3c, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x50, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x64, 0x98 },
++	{ 0xffbd, 0x0000, 0x14, 0x0a, 0x78, 0x98 },
++#endif
++};
++
++/* MOD (language): the move panel's labels (TECH. DATA, POWER, MP, RANG, SPEC; posX is added to the panel's x, texY
++ * with the 0x80 of the texture's v); Spanish DATOS TEC. (9 rows for the accent, 2 px higher), POTENCIA, MP, ALCANCE,
++ * EFECTO */
++IconRect MOVES_SELECTED_LABELS[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff74, 0xfffc, 0x25, 0x09, 0x90, 0xe0 },
++	{ 0xff74, 0x001d, 0x20, 0x07, 0x00, 0xa9 },
++	{ 0xff74, 0x002e, 0x0b, 0x07, 0x74, 0xa2 },
++	{ 0xff74, 0x003f, 0x1e, 0x07, 0x2f, 0xa9 },
++	{ 0xff74, 0x0050, 0x19, 0x07, 0x4d, 0xa9 },
++#else
++	{ 0xff74, 0xfffe, 0x25, 0x07, 0x11, 0xb0 },
++	{ 0xff74, 0x001d, 0x17, 0x07, 0x5c, 0xa2 },
++	{ 0xff74, 0x002e, 0x0b, 0x07, 0x74, 0xa2 },
++	{ 0xff74, 0x003f, 0x13, 0x07, 0x4c, 0xa9 },
++	{ 0xff74, 0x0050, 0x10, 0x07, 0x00, 0xb0 },
++#endif
+ };
+ 
+ Line TAMER_VIEW_PLAYER_LINES[11] = {
+@@ -739,9 +828,15 @@ StringRect TAMER_WINDOW_NAME_STRING[11] = {
+ 	{ 0x0050, 0x004d, 0x000c, 0x9c, 0x24 },
+ };
+ #else
++/* MOD (language): Spanish Nombre is wider than Name (taken further left) and Nivel starts further (PLAYER_LABEL_PIECES) */
+ StringRect TAMER_WINDOW_NAME_STRING[11] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff76, 0xffaf, 0x0034, 0x00, 0x0c },
++	{ 0xffdb, 0xffca, 0x0040, 0x38, 0x0c },
++#else
+ 	{ 0xff84, 0xffaf, 0x0024, 0x00, 0x0c },
+ 	{ 0xffdb, 0xffca, 0x0054, 0x24, 0x0c },
++#endif
+ 	{ 0xffdb, 0xffef, 0x0054, 0x78, 0x0c },
+ 	{ 0xffdb, 0x0002, 0x0048, 0x00, 0x18 },
+ 	{ 0xffdb, 0x0016, 0x0048, 0x60, 0x18 },
+@@ -877,14 +972,136 @@ char *CARD_CHART_LABELS[5] = {
+ 
+ #if FONT_SWITCH
+ /* MOD (font): the crops of the player screen's label rows ("NameLevel  Raised", "Bits  Time", "Items  Medals"):
+- * drawStringPieces lays each piece out in the font's spacing (dw/mod_font.h) */
+-static const uint16_t PLAYER_LABEL_PIECES[3][6] = {
++ * drawStringPieces lays each piece out in the font's spacing (dw/mod_font.h). MOD (language): Spanish "Nombre" is
++ * wider than Name's crop, so Nivel starts further (TAMER_WINDOW_NAME_STRING) */
++uint16_t PLAYER_LABEL_PIECES[3][6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0, 0x38, 0x78, 0xcc, PIECES_END },
++#else
+ 	{ 0, 0x24, 0x78, 0xcc, PIECES_END },
++#endif
+ 	{ 0, 0x48, 0x60, 0xa8, 0xb4, PIECES_END },
+ 	{ 0, 0x54, 0x9c, PIECES_END },
+ };
+ #endif
+ 
++/*
++ * MOD (language): the label rows drawn once and cut at fixed pixels (text/ours/README.md "Left as built") whose words
++ * do not fit the US crops in Spanish: each language's crops (x on the screen, the piece's u and width in the text area)
++ * and pieces (DRAW_STRING_PIECES_AT). The text of each row is laid out for them (text/es/names.json: every word starts
++ * at its piece's offset in the original font's cells). The English values are the original's literals.
++ */
++typedef struct {
++	int16_t x;
++	uint8_t u;
++	uint8_t w;
++} LabelCrop;
++
++/* the Digimon screen's tabs ("Status  Tech"): Técnicas takes the whole tab */
++LabelCrop DIGIMON_TAB_CROPS[2] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x8a, 0x00, 0x3c },
++	{ -0x46, 0x3c, 0x40 },
++#else
++	{ -0x8a, 0x00, 0x3c },
++	{ -0x3f, 0x3c, 0x30 },
++#endif
++};
++
++/* the player screen's tabs ("Player  Chart  Med. Card Fish"): Cartas takes the whole tab, Fish (never shown) is left out */
++LabelCrop PLAYER_TAB_CROPS[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x89, 0x00, 0x3c },
++	{ -0x3e, 0x3c, 0x3c },
++	{ 0x0d, 0x78, 0x24 },
++	{ 0x38, 0x9c, 0x34 },
++#else
++	{ -0x89, 0x00, 0x3c },
++	{ -0x3e, 0x3c, 0x3c },
++	{ 0x0d, 0x78, 0x24 },
++	{ 0x40, 0x9c, 0x24 },
++#endif
++};
++
++uint16_t PLAYER_TAB_PIECES[6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xd4 | PIECE_CENTRE, PIECES_END,
++#else
++	0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xc0 | PIECE_CENTRE, PIECES_END,
++#endif
++};
++
++/* the technique screen's titles ("TechsetFinal  Techs"): Equipadas, Final, Técnicas */
++LabelCrop TECH_TITLE_CROPS[3] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x8e, 0x00, 0x48 },
++	{ -0x8e, 0x48, 0x24 },
++	{ -0x8e, 0x6c, 0x40 },
++#else
++	{ -0x8e, 0x00, 0x3c },
++	{ -0x8e, 0x3c, 0x24 },
++	{ -0x8e, 0x60, 0x3c },
++#endif
++};
++
++uint16_t TECH_TITLE_PIECES[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0, 0x48, 0x6c, PIECES_END,
++#else
++	0, 0x3c, 0x60, PIECES_END,
++#endif
++};
++
++/* the technique grid's "Tech" over "help" (the Digimon tab's word): Técnicas is wider, centred over ayuda */
++LabelCrop TECH_GRID_TITLE_CROP = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-0x95, 0x3c, 0x40,
++#else
++	-0x87, 0x3c, 0x30,
++#endif
++};
++
++/* the technique grid's "help" label: ayuda is wider */
++LabelCrop TECH_HELP_CROP = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-0x81, 0x00, 0x28,
++#else
++	-0x81, 0x00, 0x24,
++#endif
++};
++
++/* the technique panel's status effects ("poisconfstunflat", the row drawn at MOVE_STATUS_ROW_X; x unused): the Spanish
++ * words need the row to start further left (its last glyph must start before 244, drawGlyph's limit) */
++LabelCrop MOVE_STATUS_CROPS[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0, 0x40, 0x1c },
++	{ 0, 0x60, 0x2c },
++	{ 0, 0x8c, 0x30 },
++	{ 0, 0xbc, 0x28 },
++#else
++	{ 0, 0x84, 0x1a },
++	{ 0, 0xa0, 0x1c },
++	{ 0, 0xbc, 0x20 },
++	{ 0, 0xdb, 0x1e },
++#endif
++};
++
++int16_t MOVE_STATUS_ROW_X = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0x40,
++#else
++	0x84,
++#endif
++};
++
++uint16_t MOVE_STATUS_PIECES[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0, 0x20, 0x4c, 0x7c, PIECES_END,
++#else
++	0, 0x1c, 0x38, 0x57, PIECES_END,
++#endif
++};
++
+ char *MEDAL_NAMES[15] = {
+ 	STR_MEDAL_NAME_GRADE_CUP,
+ 	STR_MEDAL_NAME_VERSION_CUP,
+@@ -1240,7 +1457,7 @@ void tickTriangleMenu(void)
+ 			createMenuBox(1, -0x96, -0x59, 300, 0xbe, 0,
+ 			              tickPlayerMenu, renderPlayerMenu);
+ 			clearTextArea();
+-			DRAW_STRING_PIECES(PLAYER_VIEW_LABELS[0], 0, 0, 0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xc0 | PIECE_CENTRE);
++			DRAW_STRING_PIECES_AT(PLAYER_VIEW_LABELS[0], 0, 0, PLAYER_TAB_PIECES); /* MOD (language) */
+ 			MENU_STATE = 0;
+ 			MENU_SUB_STATE = 0;
+ 			TRIANGLE_MENU_STATE = -1;
+@@ -1656,6 +1873,7 @@ void tickDigimonMenu(void)
+ void renderDigimonMenu(void)
+ {
+ 	DigimonTabs tabs;
++	int32_t i;
+ 
+ 	tabs = DIGIMON_MENU_VIEWS;
+ 	switch (DIGIMON_MENU_STATE) {
+@@ -1667,8 +1885,9 @@ void renderDigimonMenu(void)
+ 		break;
+ 	}
+ 	tabs.tab[DIGIMON_MENU_STATE] = 0;
+-	renderString(tabs.tab[0], -0x8a, -0x65, 0x3c, 0xc, 0, 0, 5, 1);
+-	renderString(tabs.tab[1], -0x3f, -0x65, 0x30, 0xc, 0x3c, 0, 5, 1);
++	for (i = 0; i < 2; i++) { /* MOD (language): DIGIMON_TAB_CROPS */
++		renderString(tabs.tab[i], DIGIMON_TAB_CROPS[i].x, -0x65, DIGIMON_TAB_CROPS[i].w, 0xc, DIGIMON_TAB_CROPS[i].u, 0, 5, 1);
++	}
+ 	renderMenuTab(-0x91, 0x4c, tabs.tab[0]);
+ 	renderMenuTab(-0x46, 0x40, tabs.tab[1]);
+ }
+@@ -1875,6 +2094,7 @@ void tickPlayerMenu(void)
+ void renderPlayerMenu(void)
+ {
+ 	PlayerTabs tabs;
++	int32_t i;
+ 
+ 	tabs = MAIN_D_801342A4;
+ 	switch (PLAYER_MENU_STATE) {
+@@ -1892,10 +2112,9 @@ void renderPlayerMenu(void)
+ 		break;
+ 	}
+ 	tabs.tab[PLAYER_MENU_STATE] = 0;
+-	renderString(tabs.tab[0], -0x89, -0x65, 0x3c, 0xc, 0, 0, 5, 1);
+-	renderString(tabs.tab[1], -0x3e, -0x65, 0x3c, 0xc, 0x3c, 0, 5, 1);
+-	renderString(tabs.tab[2], 0xd, -0x65, 0x24, 0xc, 0x78, 0, 5, 1);
+-	renderString(tabs.tab[3], 0x40, -0x65, 0x24, 0xc, 0x9c, 0, 5, 1);
++	for (i = 0; i < 4; i++) { /* MOD (language): PLAYER_TAB_CROPS */
++		renderString(tabs.tab[i], PLAYER_TAB_CROPS[i].x, -0x65, PLAYER_TAB_CROPS[i].w, 0xc, PLAYER_TAB_CROPS[i].u, 0, 5, 1);
++	}
+ 	renderMenuTab(-0x91, 0x4c, tabs.tab[0]);
+ 	renderMenuTab(-0x46, 0x4c, tabs.tab[1]);
+ 	renderMenuTab(5, 0x34, tabs.tab[2]);
+@@ -2302,7 +2521,7 @@ void renderDigimonMovesView(void)
+ 			                  icon->texX,
+ 			                  icon->texY + 0x80, 5, 0x7b06, 5, 0);
+ 		}
+-		renderString(3, -0x8e, -0x57, 0x3c, 0xc, 0, 0x48, 5, 1);
++		renderString(3, TECH_TITLE_CROPS[0].x, -0x57, TECH_TITLE_CROPS[0].w, 0xc, TECH_TITLE_CROPS[0].u, 0x48, 5, 1); /* MOD (language) */
+ 		j = 0;
+ 		while (j < 3) {
+ 			if (EQUIPPED_MOVES[j] != 0xff) {
+@@ -2335,7 +2554,7 @@ void renderDigimonMovesView(void)
+ 		}
+ 		break;
+ 	case 1:
+-		renderString(3, -0x8e, -0xf, 0x24, 0xc, 0x3c, 0x48, 5, 1);
++		renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1); /* MOD (language) */
+ 		for (i = 0; i < 3; i++) {
+ 			icon = &MOVES_VIEW_TECHSET_TEXT[i];
+ 			renderRectPolyFT4(icon->posX, -9,
+@@ -2347,7 +2566,7 @@ void renderDigimonMovesView(void)
+ 		renderRectPolyFT4(0x75, 4, 4, 4, 0x78, 0x8c, 5, 0x7b06, 5, 0);
+ 		renderSeparatorLines(&MOVES_TECHSET_LINES[3], 3, 5);
+ 		if (EQUIPPED_MOVES[3] != 0xff) {
+-			renderString(3, -0x8e, -0xf, 0x24, 0xc, 0x3c, 0x48, 5, 1);
++			renderString(3, TECH_TITLE_CROPS[1].x, -0xf, TECH_TITLE_CROPS[1].w, 0xc, TECH_TITLE_CROPS[1].u, 0x48, 5, 1);
+ 			renderString(0, -0x7c, 1, 0x84, 0xc, 0, 0x3c, 5, 1);
+ 			renderNumber(0, 0x10, 0, 3, MOVE_DATA[EQUIPPED_MOVES[3]].power, 5);
+ 			renderString(0, 0x65, 1, 0xc, 0xc,
+@@ -2386,7 +2605,7 @@ void renderDigimonMovesView(void)
+ 		}
+ 		break;
+ 	case 6:
+-		renderString(3, -0x8e, -0xf, 0x3c, 0xc, 0x60, 0x48, 5, 1);
++		renderString(3, TECH_TITLE_CROPS[2].x, -0xf, TECH_TITLE_CROPS[2].w, 0xc, TECH_TITLE_CROPS[2].u, 0x48, 5, 1); /* MOD (language) */
+ 		renderSeparatorLines(MOVES_VIEW_HELP_LINES, 0xc, 5);
+ 		for (i = 0; i < 4; i++) {
+ 			icon = &MOVES_VIEW_HELP_CORNERS[i];
+@@ -2397,8 +2616,8 @@ void renderDigimonMovesView(void)
+ 			                  icon->texX,
+ 			                  icon->texY + 0x80, 5, 0x7b06, 5, 0);
+ 		}
+-		renderString(0, -0x87, 0x20, 0x30, 0xc, 0x3c, 0, 5, 1);
+-		renderString(0, -0x81, 0x2e, 0x24, 0xc, 0, 0x6c, 5, 1);
++		renderString(0, TECH_GRID_TITLE_CROP.x, 0x20, TECH_GRID_TITLE_CROP.w, 0xc, TECH_GRID_TITLE_CROP.u, 0, 5, 1); /* MOD (language) */
++		renderString(0, TECH_HELP_CROP.x, 0x2e, TECH_HELP_CROP.w, 0xc, TECH_HELP_CROP.u, 0x6c, 5, 1); /* MOD (language) */
+ #if !VERSION_IS(US)
+ 		renderString(0x10, -0x80, 0x4c, 0xc, 0xc, 0x24, 0x6c, 5, 1);
+ 		renderString(0, -0x74, 0x4c, 0x18, 0xc, 0x30, 0x6c, 5, 1);
+@@ -2408,8 +2627,9 @@ void renderDigimonMovesView(void)
+ 		renderRectPolyFT4(-0x74, 0x3c, 10, 10, 0x80, 0x8c, 5, 0x7b06, 5, 0);
+ 		j = 0;
+ 		while (j < 7) {
+-			renderRectPolyFT4(-0x43, j * 0xf - 8, 0x14, 10, j * 0x14, 0x98, 5, 0x7b06, 5, 0);
+-			renderRectPolyFT4(100, j * 0xf - 8, 0x14, 10, j * 0x14, 0x98, 5, 0x7b06, 5, 0);
++			icon = &MOVES_VIEW_ELEMENT_NAMES[j];
++			renderRectPolyFT4(icon->posX, j * 0xf - 8, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
++			renderRectPolyFT4(100, j * 0xf - 8, icon->width, icon->height, icon->texX, icon->texY, 5, 0x7b06, 5, 0);
+ 			j++;
+ 		}
+ 		j = 0;
+@@ -2585,6 +2805,7 @@ void renderPlayerInfoView(void)
+ void renderDigimonMovesSelected(int16_t panel)
+ {
+ 	RECT rect;
++	IconRect *label;
+ 	Move *move;
+ 	int32_t i;
+ 	uint8_t row;
+@@ -2611,11 +2832,15 @@ void renderDigimonMovesSelected(int16_t panel)
+ 	}
+ 	renderBox((panel * 0x9d) - 0x8f, 3, 0x80, 0x13, 0x32, 0x32, 0x80, 0, 4);
+ 	renderBox((panel * 0xcb) - 0x8f, 0x18, 0x57, 0x45, 0x32, 0x32, 0x80, 0, 4);
+-	renderRectPolyFT4((panel * 0x9d) - 0x8c, -2, 0x25, 7, 0x11, 0xb0, 5, 0x7b06, 3, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x8c, 0x1d, 0x17, 7, 0x5c, 0xa2, 5, 0x7b06, 3, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x8c, 0x2e, 0xb, 7, 0x74, 0xa2, 5, 0x7b06, 3, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x8c, 0x3f, 0x13, 7, 0x4c, 0xa9, 5, 0x7b06, 3, 0);
+-	renderRectPolyFT4((panel * 0xcb) - 0x8c, 0x50, 0x10, 7, 0, 0xb0, 5, 0x7b06, 3, 0);
++	for (i = 0; i < 5; i++) {
++		label = &MOVES_SELECTED_LABELS[i];
++		renderRectPolyFT4(panel * (i == 0 ? 0x9d : 0xcb) + label->posX,
++		                  label->posY,
++		                  label->width,
++		                  label->height,
++		                  label->texX,
++		                  label->texY, 5, 0x7b06, 3, 0);
++	}
+ 
+ 	for (i = 0; i < 4; i++) {
+ 		renderRectPolyFT4((panel * 0xcb) - 0x71, i * 0x11 + 0x1b, 0xa, 0xa, 0x8a, 0x8c, 5, 0x7b06, 3, 0);
+@@ -2658,19 +2883,10 @@ void renderDigimonMovesSelected(int16_t panel)
+ 			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x18, 0xc, (status - 2) * 0x18 + 0x90, 0x6c, 3, 1);
+ 		}
+ #else
+-		switch (move->status) {
+-		case 1:
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x1a, 0xc, 0x84, 0x6c, 3, 1);
+-			break;
+-		case 2:
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x1c, 0xc, 0xa0, 0x6c, 3, 1);
+-			break;
+-		case 3:
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x20, 0xc, 0xbc, 0x6c, 3, 1);
+-			break;
+-		case 4:
+-			renderString(0, (panel * 0xcb) - 0x64, 0x4f, 0x1e, 0xc, 0xdb, 0x6c, 3, 1);
+-			break;
++		/* MOD (language): MOVE_STATUS_CROPS */
++		if (move->status >= 1 && move->status <= 4) {
++			renderString(0, (panel * 0xcb) - 0x64, 0x4f, MOVE_STATUS_CROPS[move->status - 1].w, 0xc,
++			             MOVE_STATUS_CROPS[move->status - 1].u, 0x6c, 3, 1);
+ 		}
+ #endif
+ 	}
+@@ -3153,7 +3369,8 @@ static int32_t chartDetailInput(void)
+ #define CHART_COUNT_ROW		0x78
+ #define CHART_KEYS_ROW		0x84
+ 
+-static char *CHART_TAB_NAMES[SPECIES_CHART_TABS] = { "Baby", "Rookie", "Champion", "Ultimate", "Mega" };
++static char *CHART_TAB_NAMES[SPECIES_CHART_TABS] = { CHART_STR_BABY, CHART_STR_ROOKIE, CHART_STR_CHAMPION, CHART_STR_ULTIMATE,
++						      CHART_STR_MEGA };
+ /* the band of each tab: light and dark edges (0xBBGGRR) and fill, the original's level colours (Mega: gold) */
+ static int32_t CHART_TAB_EDGES[SPECIES_CHART_TABS][2] = {
+ 	{ 0xaaa0c8, 0x5a3c8c }, { 0xc88250, 0x5f370a }, { 0x6eaf5a, 0x285a00 }, { 0x6996d2, 0x1e4178 }, { 0x60d8f8, 0x105878 },
+@@ -3710,7 +3927,8 @@ static int8_t CHART_TEXT_TAKEN;		/* the card wrote over the overview's rows */
+ static int16_t CHART_CARD_VERDICT_W;
+ static int8_t CHART_CARD_VERDICT_COLOR;
+ static uint8_t CHART_LIT;		/* bit j: the "to" box j's evolution is met */
+-static char *CHART_STAT_NAMES[6] = { "HP", "MP", "Off", "Def", "Spd", "Brn" };
++static char *CHART_STAT_NAMES[6] = { CHART_STR_STAT_HP,  CHART_STR_STAT_MP,  CHART_STR_STAT_OFF,
++				      CHART_STR_STAT_DEF, CHART_STR_STAT_SPD, CHART_STR_STAT_BRN };
+ 
+ static int32_t chartIsPartnerTree(void)
+ {
+@@ -3880,21 +4098,21 @@ static void chartCardBuild(int32_t target)
+ 	CHART_CARD[0].color = 4;
+ 	CHART_CARD_MINE = chartIsPartnerTree();
+ 	if (chartIsAutomatic(&r)) {
+-		chartCardLine("Automatic", CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_STR_AUTOMATIC, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 		return;
+ 	}
+ 
+ 	/* care mistakes */
+ 	if (!isMaxCM && r.care <= 0) {
+-		chartCardLine("Mistakes any", CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_STR_MISTAKES_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 	} else {
+-		chartRange(a, "Mistakes", isMaxCM ? 0 : r.care, r.care);
++		chartRange(a, CHART_STR_MISTAKES, isMaxCM ? 0 : r.care, r.care);
+ 		chartCardLine(a, PARTNER_PARA.careMistakes, met & EVO_MET_CARE, 1, 0, NULL);
+ 	}
+ 
+ 	/* weight */
+ 	tol = evoAmt(MOD_EVF_SCORE_WEIGHT_TOL);
+-	chartRange(a, "Weight", r.weight - tol, r.weight + tol);
++	chartRange(a, CHART_STR_WEIGHT, r.weight - tol, r.weight + tol);
+ 	chartCardLine(a, PARTNER_PARA.weight, met & EVO_MET_WEIGHT, 1, 0, NULL);
+ 
+ 	/* stats: a Rookie's is the highest stat; the others, every stat asked for */
+@@ -3905,7 +4123,7 @@ static void chartCardBuild(int32_t target)
+ 	req[4] = r.speed;
+ 	req[5] = r.brain;
+ 	if (DIGI_PARA(target).level == 3U) {
+-		p = chartAppend(a, "Top");
++		p = chartAppend(a, CHART_STR_TOP);
+ 		for (k = 0; k < 6; k++) {
+ 			if (req[k] == 1) {
+ 				p = chartAppend(chartAppend(p, " "), CHART_STAT_NAMES[k]);
+@@ -3917,7 +4135,7 @@ static void chartCardBuild(int32_t target)
+ 		div = evoAmt(MOD_EVF_SCORE_HPMP_DIV);
+ 		for (k = 0; k < 6 && req[k] < 0; k++) {
+ 		}
+-		chartCardLine(k == 6 ? "Stats any" : "Stats", CHART_NO_VALUE, (met & EVO_MET_STATS) || k == 6, 1, 0, NULL);
++		chartCardLine(k == 6 ? CHART_STR_STATS_ANY : CHART_STR_STATS, CHART_NO_VALUE, (met & EVO_MET_STATS) || k == 6, 1, 0, NULL);
+ 		for (k = 0; k < 6; k++) {
+ 			if (req[k] < 0) {
+ 				continue;
+@@ -3939,30 +4157,30 @@ static void chartCardBuild(int32_t target)
+ 	/* the bonus: one of them is enough; one that always holds (a Rookie's battles -2 or techniques 0) makes it "any" */
+ 	if ((r.battles != -1 && !isMaxBattles && r.battles <= 0) || (r.techs != -1 && r.techs <= 0) ||
+ 	    (r.discipline != -1 && r.discipline <= 0)) {
+-		chartCardLine("Bonus any", CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_STR_BONUS_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 	} else {
+-		chartCardLine("Bonus, one of", CHART_NO_VALUE, met & EVO_MET_BONUS, 1, 0, NULL);
++		chartCardLine(CHART_STR_BONUS_ONE_OF, CHART_NO_VALUE, met & EVO_MET_BONUS, 1, 0, NULL);
+ 		if (r.digimon != -1) {
+-			chartAppend(chartAppend(a, "From "), hasDigimonRaised((uint16_t)r.digimon) != 0 ? (char *)digimonPara(r.digimon) : "?????");
++			chartAppend(chartAppend(a, CHART_STR_FROM), hasDigimonRaised((uint16_t)r.digimon) != 0 ? (char *)digimonPara(r.digimon) : "?????");
+ 			chartCardLine(a, CHART_NO_VALUE, CHART_DETAIL_ID == r.digimon, 0, 6,
+-			              CHART_DETAIL_ID == r.digimon ? "yes" : "no");
++			              CHART_DETAIL_ID == r.digimon ? CHART_STR_YES : CHART_STR_NO);
+ 		}
+ 		if (r.discipline != -1) {
+-			chartRange(a, "Discipline", r.discipline, r.discipline);
++			chartRange(a, CHART_STR_DISCIPLINE, r.discipline, r.discipline);
+ 			chartCardLine(a, PARTNER_PARA.discipline, PARTNER_PARA.discipline >= r.discipline, 0, 6, NULL);
+ 		}
+ 		if (r.happiness != -1) {
+-			chartRange(a, "Happiness", r.happiness, r.happiness);
++			chartRange(a, CHART_STR_HAPPINESS, r.happiness, r.happiness);
+ 			chartCardLine(a, PARTNER_PARA.happiness, PARTNER_PARA.happiness >= r.happiness, 0, 6, NULL);
+ 		}
+ 		if (r.battles != -1) {
+-			chartRange(a, "Battles", isMaxBattles ? 0 : r.battles, r.battles);
++			chartRange(a, CHART_STR_BATTLES, isMaxBattles ? 0 : r.battles, r.battles);
+ 			chartCardLine(a, PARTNER_PARA.battles,
+ 			              isMaxBattles ? PARTNER_PARA.battles <= r.battles : PARTNER_PARA.battles >= r.battles, 0, 6,
+ 			              NULL);
+ 		}
+ 		if (r.techs != -1) {
+-			chartRange(a, "Techs", r.techs, r.techs);
++			chartRange(a, CHART_STR_TECHS, r.techs, r.techs);
+ 			have = getNumMasteredMoves();
+ 			chartCardLine(a, have, have >= r.techs, 0, 6, NULL);
+ 		}
+@@ -3973,9 +4191,9 @@ static void chartCardBuild(int32_t target)
+ 		k = ((met & EVO_MET_CARE) != 0) + ((met & EVO_MET_WEIGHT) != 0) + ((met & EVO_MET_STATS) != 0) +
+ 		    ((met & EVO_MET_BONUS) != 0);
+ 		p = chartDigits(a, k);
+-		p = chartAppend(p, " of 4");
++		p = chartAppend(p, CHART_STR_OF_4);
+ 		if (evoRequirementPoints(met) >= evoPassPoints() && isPartnerModelFit(target)) {
+-			chartAppend(p, "  ready");
++			chartAppend(p, CHART_STR_READY);
+ 			CHART_CARD_VERDICT_COLOR = 7;
+ 		} else {
+ 			CHART_CARD_VERDICT_COLOR = 6;
+@@ -4746,7 +4964,7 @@ int32_t drawDigimonMovesText(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[3], 0, 0x48, 0, 0x3c, 0x60);
++		DRAW_STRING_PIECES_AT(STATUS_VIEW_LABELS[3], 0, 0x48, TECH_TITLE_PIECES); /* MOD (language) */
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[1] != 0xff) {
+ 			EQUIPPED_MOVES[1] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[1]);
+@@ -4760,7 +4978,7 @@ int32_t drawDigimonMovesText(void)
+ #endif
+ 		break;
+ 	case 2:
+-		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[6], 0x84, 0x6c, 0, 0x1c, 0x38, 0x57);
++		DRAW_STRING_PIECES_AT(STATUS_VIEW_LABELS[6], MOVE_STATUS_ROW_X, 0x6c, MOVE_STATUS_PIECES); /* MOD (language) */
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[2] != 0xff) {
+ 			EQUIPPED_MOVES[2] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[2]);
+diff --git a/src/main/main.c b/src/main/main.c
+index 189739ed..e4a6b6a2 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -35,6 +35,7 @@
+ #include <dw/types.h>
+ #include <dw/ui.h>
+ #include <dw/utils.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/vs.h>
+ #include <dw/world_object.h>
+@@ -5556,6 +5557,16 @@ void pollInputMenu(void)
+ 	CHANGED_INPUT |= held;
+ }
+ 
++/* MOD (language): the title screen's "Press Start Button" (x, y, w, h, u, v in TITLE256.TIM); the Spanish "Pulsa el
++ * botón START" is 129 wide and one row higher for the accent (its letters on the same screen rows) */
++int16_t PRESS_START_QUAD[6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-58, 49, 129, 11, 0, 240,
++#else
++	-0x36, 0x32, 121, 10, 0, 0xf1,
++#endif
++};
++
+ void renderPressStartToContinue(void)
+ {
+ 	GsOT_TAG *ot;
+@@ -5573,8 +5584,8 @@ void renderPressStartToContinue(void)
+ 
+ 	if (FIRST_SCREEN_FRAME_COUNTER < 0x1e) {
+ 		SetPolyFT4(prim);
+-		setXYWH(prim, -0x36, 0x32, 121, 10);
+-		setUVWH(prim, 0, 0xf1, 121, 10);
++		setXYWH(prim, PRESS_START_QUAD[0], PRESS_START_QUAD[1], PRESS_START_QUAD[2], PRESS_START_QUAD[3]);
++		setUVWH(prim, PRESS_START_QUAD[4], PRESS_START_QUAD[5], PRESS_START_QUAD[2], PRESS_START_QUAD[3]);
+ #if VERSION_IS(JP)
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ #elif VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 876b2c56..729784f4 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -257,10 +257,13 @@ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	7 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROWS	9 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_LANG	7
+ #else
+-#define MOD_OPT_ROWS	6
++#define MOD_OPT_ROWS	8
++#define MOD_OPT_ROW_LANG	6
+ #endif
++#define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
+ static int32_t modOptionValue(int32_t row);
+@@ -373,6 +376,7 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos);
+ static int32_t modRegisterLong(void);
+ static void modTitleNameTail(void);
+ static void modDrawSlotName(char *name, int32_t y);
++static void modDrawSlot2(char *str, int32_t x, int32_t y, int32_t slot2);
+ static int32_t MOD_REG_LIST_LONG;
+ static int32_t MOD_SAVE_SLOTS_LONG;
+ /* MOD (sleep menu): its rows as wide as the longer option measures, never narrower than the original's 0x54 */
+@@ -2089,23 +2093,20 @@ void drawMainMenuStrings(int32_t menu)
+ 	case 1:
+ 		drawString(SLOT_ACTION_TITLES[0], 0, 0);
+ 		DrawSync(0);
+-		drawString(SLOT_ACTION_TITLES[0], 0, 0xC);
+-		drawString(STR_2, 0x76, 0xC);
++		modDrawSlot2(SLOT_ACTION_TITLES[0], 0, 0xC, 1); /* MOD (language) */
+ 		DrawSync(0);
+ 		drawString(SLOT_ACTION_TITLES[3], 0, 0x18);
+ 		break;
+ 	case 2:
+ 		drawString(SLOT_ACTION_TITLES[1], 0, 0);
+ 		DrawSync(0);
+-		drawString(SLOT_ACTION_TITLES[1], 0, 0xC);
+-		drawString(STR_2, 0x9A, 0xC);
++		modDrawSlot2(SLOT_ACTION_TITLES[1], 0, 0xC, 1); /* MOD (language) */
+ 		MAIN_D_80135054 = 1;
+ 		break;
+ 	case 4:
+ 		drawString(SLOT_ACTION_TITLES[2], 0, 0);
+ 		DrawSync(0);
+-		drawString(SLOT_ACTION_TITLES[2], 0, 0xC);
+-		drawString(STR_2, 0x76, 0xC);
++		modDrawSlot2(SLOT_ACTION_TITLES[2], 0, 0xC, 1); /* MOD (language) */
+ 		MAIN_D_80135054 = 2;
+ 		break;
+ 	case 5:
+@@ -2129,29 +2130,15 @@ void drawMainMenuStrings(int32_t menu)
+ 		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
+ 		break;
+ 	case 7:
+-		drawString(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0);
++		/* MOD (language): the title of slot 2 drawn whole (the original drew a "2" at the x of the US title's "1") */
++		modDrawSlot2(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0, MAIN_MENU_ACTION <= 2 && MEMORY_CARD_ID != 0);
+ 		DrawSync(0);
+-		if (MAIN_MENU_ACTION == 0 || MAIN_MENU_ACTION == 1 ||
+-		    MAIN_MENU_ACTION == 2) {
+-			if (MEMORY_CARD_ID != 0) {
+-				if (MAIN_D_80135054 == 1) {
+-					drawString(STR_2, 0x9A, 0);
+-				}
+-				if (MAIN_D_80135054 == 2) {
+-					drawString(STR_2, 0x76, 0);
+-				}
+-			}
+-		}
+ 		for (i = 0; i < 6; i++) {
+ 			drawSaveSlotText(i, i);
+ 		}
+ 		break;
+ 	case 9:
+-		drawString(MAIN_D_801312FC, 0, 0);
+-		DrawSync(0);
+-		if (MEMORY_CARD_ID != 0) {
+-			drawString(STR_2, 0x76, 0);
+-		}
++		modDrawSlot2(MAIN_D_801312FC, 0, 0, MEMORY_CARD_ID != 0); /* MOD (language) */
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80131318, 0, 0xC);
+ 		DrawSync(0);
+@@ -2160,18 +2147,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
+ 		break;
+ 	case 8:
+-		drawString(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0);
+-		if (MAIN_MENU_ACTION == 0 || MAIN_MENU_ACTION == 1 ||
+-		    MAIN_MENU_ACTION == 2) {
+-			if (MEMORY_CARD_ID != 0) {
+-				if (MAIN_D_80135054 == 1) {
+-					drawString(STR_2, 0x9A, 0);
+-				}
+-				if (MAIN_D_80135054 == 2) {
+-					drawString(STR_2, 0x76, 0);
+-				}
+-			}
+-		}
++		modDrawSlot2(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0, MAIN_MENU_ACTION <= 2 && MEMORY_CARD_ID != 0); /* MOD (language) */
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80131340, 0x90, 0);
+ 		DrawSync(0);
+@@ -2244,17 +2220,14 @@ void drawMainMenuStrings(int32_t menu)
+ 	case 13:
+ 		drawString(SLOT_ACTION_TITLES[5], 0, 0);
+ 		DrawSync(0);
+-		drawString(MAIN_D_801313E4, 0, 0xC);
++		/* MOD (language): player 2's rows drawn with their own "2"s (the original drew two at the US row's x) */
++		modDrawSlot2(MAIN_D_801313E4, 0, 0xC, VS_PLAYER_INDEX == 1);
+ 		DrawSync(0);
+-		drawString(MAIN_D_80131400, 0, 0x18);
++		modDrawSlot2(MAIN_D_80131400, 0, 0x18, VS_PLAYER_INDEX == 1);
+ 		DrawSync(0);
+-		drawString(MAIN_D_8013141C, 0, 0x24);
++		modDrawSlot2(MAIN_D_8013141C, 0, 0x24, VS_PLAYER_INDEX == 1);
+ 		DrawSync(0);
+ 		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
+-		if (VS_PLAYER_INDEX == 1) {
+-			drawString(STR_2, 0x76, 0x24);
+-			drawString(STR_2, 0xB4, 0x24);
+-		}
+ 		break;
+ 	case 14:
+ 		drawString(SLOT_ACTION_TITLES[6], 0, 0);
+@@ -2384,6 +2357,27 @@ static void modSaveSlotsLayout(int32_t isLong)
+ }
+ 
+ /* MOD (long names): a save slot's species in its column, tighter in the long layout if it must */
++/*
++ * MOD (language): a row that names slot or player 1, drawn for 2 (`slot2`): every digit 1 of it becomes STR_2's. The
++ * original drew the row and then a "2" at the x of the US text's "1", which lands elsewhere in another text or font
++ * ("SEGUIR EN RANURA 1   2").
++ */
++static void modDrawSlot2(char *str, int32_t x, int32_t y, int32_t slot2)
++{
++	char buf[0x40];
++	int32_t i;
++
++	if (!slot2) {
++		drawString(str, x, y);
++		return;
++	}
++	for (i = 0; str[i] != '\0' && i < (int32_t)sizeof(buf) - 1; i++) {
++		buf[i] = str[i] == '1' ? STR_2[0] : str[i]; /* (a two-byte code's second byte is never below 0x40) */
++	}
++	buf[i] = '\0';
++	drawString(buf, x, y);
++}
++
+ static void modDrawSlotName(char *name, int32_t y)
+ {
+ 	if (MOD_SAVE_SLOTS_LONG) {
+@@ -4598,7 +4592,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[7]; /* MOD (options) */
++	uint8_t options[9]; /* MOD (options) */
+ 	int16_t swap[2];
+ 	int32_t size;
+ 	int32_t i;
+@@ -4663,6 +4657,8 @@ static void prepareSaveFile(int32_t fromRam)
+ #endif
+ 	options[5] = MOD_OPT_EVO_GUIDE;
+ 	options[6] = MOD_OPT_NEW_DIGIMON;
++	options[7] = MOD_LANG; /* MOD (language) */
++	options[8] = MOD_OPT_SIGNS;
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	if (MOD_SWAP_TO > 0 && MOD_SWAP_TO == partnerType) { /* MOD (options): the partner NEW DIGIMON off turned */
+ 		swap[0] = MOD_SWAP_FROM;
+@@ -5017,6 +5013,12 @@ static void applyRecords(uint8_t *e)
+ 			if (len >= 7 && !MOD_OPT_TOUCHED) {
+ 				MOD_OPT_NEW_DIGIMON = d[6] != 0;
+ 			}
++			if (len >= 8 && !MOD_OPT_TOUCHED) { /* MOD (language) */
++				modSetLanguage(d[7]);
++			}
++			if (len >= 9 && !MOD_OPT_TOUCHED) {
++				modSetSigns(d[8]);
++			}
+ 			break;
+ 		}
+ 	}
+@@ -5476,7 +5478,7 @@ void renderInitialMenu(void)
+  * and 61 for "20 FPS"): a row then shows its chosen value only, as the original game's own settings do.
+  */
+ #define MOD_OPT_VALUES	3	/* the most values a row has */
+-#define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels, a band per value */
++#define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels, one row each */
+ #define MOD_OPT_GAP	8	/* pixels between the labels' column and the values', and between two values */
+ #define MOD_OPT_MARGIN	8	/* the box's frame to its text */
+ 
+@@ -5490,7 +5492,11 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+ #endif
++	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH }, /* MOD (language) */
++	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
+ };
++/* the text area row of each value: a value two rows share (OFF, ON, ORIGINAL) is drawn once (drawOptionsText) */
++static int16_t MOD_OPT_V[MOD_OPT_ROWS][MOD_OPT_VALUES];
+ 
+ /* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
+  * width, a value's, and how many values a row shows (all, or 1 with the original font: above) */
+@@ -5499,19 +5505,6 @@ static int16_t MOD_OPT_LABEL_W;
+ static int16_t MOD_OPT_VALUE_W;
+ static int16_t MOD_OPT_SHOWN;
+ 
+-/* where a row's label (k 0) or value (k 1..) is in the text area: the labels in the first rows, the values in a band
+- * each under them; the third values (FONT's) in the right half of the second band, as six rows of three bands would pass
+- * the area's 256 rows */
+-static int32_t modOptTextU(int32_t k)
+-{
+-	return k == 3 ? 0x80 : 0;
+-}
+-
+-static int32_t modOptTextV(int32_t row, int32_t k)
+-{
+-	return MOD_OPT_VALUE_Y * (k == 3 ? 2 : k) + row * 0xC;
+-}
+-
+ static int32_t modOptionCount(int32_t row)
+ {
+ 	return MOD_OPT_TEXT[row][3] != NULL ? 3 : 2;
+@@ -5535,6 +5528,10 @@ static int32_t modOptionValue(int32_t row)
+ 	case 6: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+ #endif
++	case MOD_OPT_ROW_LANG: /* MOD (language) */
++		return MOD_LANG;
++	case MOD_OPT_ROW_SIGNS:
++		return MOD_OPT_SIGNS;
+ 	}
+ #if FPS == 20
+ 	return -1;
+@@ -5570,6 +5567,12 @@ static void modSetOption(int32_t row, int32_t value)
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+ 		break;
+ #endif
++	case MOD_OPT_ROW_LANG: /* MOD (language) */
++		modSetLanguage(value);
++		break;
++	case MOD_OPT_ROW_SIGNS:
++		modSetSigns(value);
++		break;
+ 	}
+ }
+ 
+@@ -5584,11 +5587,33 @@ static void drawOptionsText(void)
+ 	int32_t k;
+ 	int32_t w;
+ 
++	int32_t y;
++	int32_t r2;
++	int32_t k2;
++
+ 	MOD_OPT_LABEL_W = 0;
+ 	MOD_OPT_VALUE_W = 0;
++	y = MOD_OPT_VALUE_Y;
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		for (k = 0; k <= modOptionCount(r); k++) {
+-			drawString(MOD_OPT_TEXT[r][k], modOptTextU(k), modOptTextV(r, k));
++			if (k > 0) { /* MOD (language): a value an earlier row has is drawn once */
++				for (r2 = 0; r2 <= r; r2++) {
++					for (k2 = 1; k2 <= modOptionCount(r2) && (r2 < r || k2 < k); k2++) {
++						if (!strcmp(MOD_OPT_TEXT[r2][k2], MOD_OPT_TEXT[r][k])) {
++							goto shared;
++						}
++					}
++				}
++				MOD_OPT_V[r][k - 1] = y;
++				drawString(MOD_OPT_TEXT[r][k], 0, y);
++				y += 0xC;
++				goto drawn;
++			shared:
++				MOD_OPT_V[r][k - 1] = MOD_OPT_V[r2][k2 - 1];
++				continue;
++			}
++			drawString(MOD_OPT_TEXT[r][k], 0, r * 0xC);
++		drawn:
+ 			DrawSync(0);
+ 			w = measureStringMode(MOD_OPT_TEXT[r][k], FIT_VANILLA) + 1; /* and the shadow */
+ 			if (k == 0) {
+@@ -5626,12 +5651,11 @@ static void renderOptionsMenu(void)
+ 		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_LABEL_W, 0xC, 0);
+ 		x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
+ 		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the first one, grey, when none is) */
+-			k = value > 0 ? value + 1 : 1;
+-			renderText(cur++, x, y, modOptTextU(k), modOptTextV(r, k), MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
++			renderText(cur++, x, y, 0, MOD_OPT_V[r][value > 0 ? value : 0], MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
+ 			continue;
+ 		}
+ 		for (k = 0; k < modOptionCount(r); k++) {
+-			renderText(cur++, x, y, modOptTextU(k + 1), modOptTextV(r, k + 1), MOD_OPT_VALUE_W, 0xC, value == k ? 2 : 1);
++			renderText(cur++, x, y, 0, MOD_OPT_V[r][k], MOD_OPT_VALUE_W, 0xC, value == k ? 2 : 1);
+ 			x += MOD_OPT_VALUE_W + MOD_OPT_GAP;
+ 		}
+ 	}
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index a8be125d..e415bf8f 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -34,6 +34,7 @@
+ #include <dw/ui.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <text/main/mod_feed.h>
+ 
+ #define FEED_OBJECT_ID	0x1f9b	/* world object id: above the species ids (world_object.h) */
+ #define FEED_LIST_BOX	0	/* box 0: the game reads it as "a menu is open" (the triangle menu, the inventory) */
+@@ -102,10 +103,11 @@ void renderRectPolyFT4(int16_t posX, int16_t posY, uint8_t width, uint8_t height
+                        int16_t texturePage, int16_t clut, int32_t zIndex, int8_t flag);
+ u_short GetClut(int32_t x, int32_t y);
+ 
+-static char FEED_SCOLD_NAME[] = "Scold";
+-static char FEED_SCOLD_DESC[] = "It misbehaved: teach it.";
+-static char FEED_SLEEP_NAME[] = "Sleep";
+-static char FEED_SLEEP_DESC[] = "Put it to bed until morning.";
++/* MOD (language): the texts are keyed, text/main/mod_feed.yaml (main.FEED_STR_*) */
++static char FEED_SCOLD_NAME[] = FEED_STR_SCOLD_NAME;
++static char FEED_SCOLD_DESC[] = FEED_STR_SCOLD_DESC;
++static char FEED_SLEEP_NAME[] = FEED_STR_SLEEP_NAME;
++static char FEED_SLEEP_DESC[] = FEED_STR_SLEEP_DESC;
+ 
+ /* by slot - FEED_SCOLD */
+ static FeedCommand FEED_COMMANDS[2] = {
+@@ -113,9 +115,9 @@ static FeedCommand FEED_COMMANDS[2] = {
+ 	{ FEED_SLEEP_NAME, FEED_SLEEP_DESC, 0x28, 0x28, PARTNER_SLEEP }, /* MENU_OPTIONS[6] */
+ };
+ 
+-static char FEED_NOTE_FAVOURITE[] = "Its favourite food!";
+-static char FEED_NOTE_MAY_NOT_CURE_SICK[] = "It may not cure its sickness.";
+-static char FEED_NOTE_MAY_NOT_CURE_WOUND[] = "It may not cure its wound.";
++static char FEED_NOTE_FAVOURITE[] = FEED_STR_NOTE_FAVOURITE;
++static char FEED_NOTE_MAY_NOT_CURE_SICK[] = FEED_STR_NOTE_MAY_NOT_CURE_SICK;
++static char FEED_NOTE_MAY_NOT_CURE_WOUND[] = FEED_STR_NOTE_MAY_NOT_CURE_WOUND;
+ 
+ static uint8_t feedSlots[32]; /* the commands and the inventory slots shown, most urgent first */
+ static int32_t feedRanks[32];
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 9aeb27ce..78618d09 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -21,10 +21,25 @@
+  * FRAME RATE. 20 (the original: one render per tick) or 60 fps (MOD_FPS_MODE, dw/mod_fps.h); the game logic runs
+  * at 20 Hz in both (30 is still a mode for an FPS=30 build). A build made with FPS=20
+  * keeps 20 and the option shows it without a choice.
++ *
++ * LANGUAGE. English or Spanish (docs/mods/language.md). The executable is built in both languages with every string
++ * padded to the longer of its two texts, so the two builds differ only in those bytes: the disc carries the other
++ * language's as runs (address, bytes; tools/langpatch.py), written over the strings when the language changes. The
++ * files that have a copy in the language (the script text, textures with words in them, overlays) are read from it
++ * (modLangFile); the script text is read again and FI_INFO.TIM uploaded again at once, ETCTIM.BIN is loaded
++ * after the title anyway.
++ *
++ * MAP SIGNS. The signs painted in the map backgrounds in the language (the disc's copies of the .TFS files) or as the
++ * disc has them (some still in Japanese).
+  */
+ #include <dw/mod_options.h>
+ #include <dw/species.h>
+ #include <dw/mod_fps.h>
++#include <dw/mod_font.h>
++#include <lang_base.h>
++#include <dw/main.h>
++#include <string.h>
++#include <dw/file_table.h>
+ 
+ #include "common.h"
+ 
+@@ -43,6 +58,8 @@ int32_t modSpeciesAllowed(int32_t type)
+ 	return MOD_OPT_NEW_DIGIMON || isVanillaSpecies(type);
+ }
+ int32_t MOD_OPT_TOUCHED = 0;
++int32_t MOD_LANG = MOD_LANG_BASE;
++int32_t MOD_OPT_SIGNS = 1;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+ static int32_t buttonColor(uint16_t code)
+@@ -239,3 +256,94 @@ void modSetFrameRate(int32_t fps)
+ 	MOD_FPS_MODE_RUN = fps == 60 ? 2 : fps == 30 ? 1 : 0;
+ #endif
+ }
++
++/* MOD (language): the disc has the file (its FILE_OFFSET_TABLE entry got a sector: build-disc.py wrote it) */
++int32_t modFileOnDisc(char *name)
++{
++	FileEntry *entry;
++
++	for (entry = FILE_OFFSET_TABLE; entry->size != 0; ++entry) {
++		if (!strcmp(name, entry->filename)) {
++			return entry->sector != 0;
++		}
++	}
++	return 0;
++}
++
++/*
++ * MOD (language): a file's copy in the language, and a map background's with its signs translated (the Spanish copy
++ * also has them in Spanish; MAP SIGNS ORIGINAL reads the disc's .TFS), from the table tools/build-full.sh writes
++ * (LANG_FILES: the name, its Spanish copy, its copy with English signs); the file itself when the disc has no such copy
++ */
++static char *LANG_FILE_TABLE[][3] = {
++#include <lang_files.h>
++	{ NULL, NULL, NULL },
++};
++
++char *modLangFile(char *name)
++{
++	int32_t i;
++	int32_t tfs;
++	char *copy;
++
++	for (i = 0; LANG_FILE_TABLE[i][0] != NULL; i++) {
++		if (strcmp(name, LANG_FILE_TABLE[i][0])) {
++			continue;
++		}
++		tfs = strlen(name) > 4 && !strcmp(name + strlen(name) - 4, ".TFS");
++		if (tfs && !MOD_OPT_SIGNS) {
++			return name;
++		}
++		copy = LANG_FILE_TABLE[i][MOD_LANG == MOD_LANG_ES ? 1 : 2];
++		if (copy == NULL || (!tfs && MOD_LANG != MOD_LANG_ES) || !modFileOnDisc(copy)) {
++			return name;
++		}
++		return copy;
++	}
++	return name;
++}
++
++/* MOD (language): the patch that turns the executable's strings into each language */
++static char *LANG_PATCH_FILE[MOD_LANGS] = { "LANGEN.BIN", "LANGES.BIN" };
++extern char MAIN_D_8012CE64[]; /* main.c: "\\ETCDAT\\FI_INFO.TIM" */
++void tickFileReadQueue(int32_t unused);
++int32_t isFileReadQueueBusy(void);
++int32_t readFile(char *path, void *buffer);
++int32_t loadTIMFile(char *path, void *buffer);
++void modFontScriptsChanged(void);
++
++void modSetLanguage(int32_t lang)
++{
++	uint32_t *run;
++	uint32_t count;
++	uint32_t len;
++
++	lang = lang == MOD_LANG_ES ? MOD_LANG_ES : MOD_LANG_EN;
++	if (lang == MOD_LANG || !modFileOnDisc(LANG_PATCH_FILE[lang])) { /* a disc in one language: no choice */
++		return;
++	}
++	while (isFileReadQueueBusy()) {
++		tickFileReadQueue(0);
++	}
++	DrawSync(0);
++	readFile(LANG_PATCH_FILE[lang], GENERAL_BUFFER); /* free at the title: the next loads put their own files there */
++	run = (uint32_t *)GENERAL_BUFFER;
++	if (run[0] != 0x504C5744) { /* "DWLP" */
++		return;
++	}
++	count = run[1];
++	run += 2;
++	while (count-- > 0) {
++		len = run[1];
++		memcpy((void *)run[0], &run[2], len);
++		run += 2 + (len + 3) / 4;
++	}
++	MOD_LANG = lang;
++	modFontScriptsChanged(); /* the script text of the language */
++	loadTIMFile(MAIN_D_8012CE64, GENERAL_BUFFER); /* the triangle menu's labels */
++}
++
++void modSetSigns(int32_t translated)
++{
++	MOD_OPT_SIGNS = translated != 0; /* the next map reads its background */
++}
+diff --git a/src/main/mod_screen.c b/src/main/mod_screen.c
+index 1ed52250..95da3d93 100644
+--- a/src/main/mod_screen.c
++++ b/src/main/mod_screen.c
+@@ -58,13 +58,12 @@ static int32_t readScreenRecord(int32_t id)
+ 	return 1;
+ }
+ 
+-#if FONT_SWITCH
+-/* MOD (font): the font changed: the next record is read from its file (script_interp.c modFontScriptsChanged) */
++/* MOD (font, language): the font or the language changed: the next record is read from its file (script_interp.c
++ * modFontScriptsChanged) */
+ void modScreenFileChanged(void)
+ {
+ 	SCREEN_SECTOR_ID = -1;
+ }
+-#endif
+ 
+ static ScreenRecordHead *getScreenHead(int32_t id)
+ {
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index fef3d60e..bdc43c3a 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -21,6 +21,7 @@
+ #include <dw/species.h>
+ #include <dw/ui.h>
+ #include <dw/utils.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/screen.h>
+ #include <text/main/script_common.h>
+@@ -315,8 +316,19 @@ ConfirmBoxLayout CONFIRM_BOX_LAYOUT = {
+ 	},
+ };
+ 
++/* MOD (language): the Spanish shop headers in SYSTEM_W.TIM's Spanish copy (tools/localize/textures/systemw/NOTES.md):
++ * OBJETO, PRECIO, PUNTOS, CANT., Nº, TÍTULO (9 rows for the accent), LUGAR */
+ BoxUVTable ITEM_MENU_HEADER_UVS = {
+ 	{
++#if MOD_LANG_BUILD == MOD_LANG_ES
++		0x0200, 0x01a2, 0x0019, 0x0007,
++		0x0219, 0x01a2, 0x0017, 0x0007,
++		0x0250, 0x01a2, 0x001a, 0x0007,
++		0x0266, 0x01a9, 0x0014, 0x0007,
++		0x0230, 0x01a2, 0x000a, 0x0007,
++		0x0278, 0x01e0, 0x0017, 0x0009,
++		0x023a, 0x01a2, 0x0016, 0x0007,
++#else
+ 		0x0200, 0x01a2, 0x0014, 0x0007,
+ 		0x0214, 0x01a2, 0x0014, 0x0007,
+ 		0x0250, 0x01b0, 0x0014, 0x0007,
+@@ -324,6 +336,7 @@ BoxUVTable ITEM_MENU_HEADER_UVS = {
+ 		0x0228, 0x01a2, 0x000c, 0x0007,
+ 		0x0234, 0x01a2, 0x0014, 0x0007,
+ 		0x0238, 0x01b0, 0x0014, 0x0007,
++#endif
+ 	},
+ };
+ 
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 73063dbb..f9112290 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2163,7 +2163,7 @@ void setMapHeadActive(void)
+ 	SCRIPT_POINTER = MAPHEAD_SCRIPT_PTR + off - 2;
+ }
+ 
+-#if FONT_SWITCH
++/* MOD (font, language): built in every executable: the font and the language both change the script text */
+ void tickFileReadQueue(int32_t unused);
+ int32_t isFileReadQueueBusy(void);
+ void modScreenFileChanged(void);
+@@ -2183,7 +2183,7 @@ void modFontScriptsChanged(void)
+ 	ACTIVE_MAP_SCRIPT = 0;
+ 	modScreenFileChanged();
+ }
+-#endif
++
+ 
+ void initializeScripts(void)
+ {
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 1f34c3c4..227763d4 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -13,6 +13,7 @@
+ #include <dw/sound.h>
+ #include <dw/trigger.h>
+ #include <dw/ui.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <text/shop/script_menu.h>
+ 
+@@ -2375,6 +2376,14 @@ void tickJukeboxMenu(void)
+ 	}
+ }
+ 
++/* MOD (language): the jukebox's TITLE header's y in the box; the Spanish TÍTULO is 9 rows tall (the accent), 2 higher */
++int16_t JUKEBOX_TITLE_Y =
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	3;
++#else
++	5;
++#endif
++
+ void renderJukeboxMenu(void)
+ {
+ 	int16_t bx;
+@@ -2385,7 +2394,7 @@ void renderJukeboxMenu(void)
+ 	bx = UI_BOX_DATA[1].finalPos.x;
+ 	by = UI_BOX_DATA[1].finalPos.y;
+ 	renderItemMenuSprite(1, 4, bx + 8, by + 5);
+-	renderItemMenuSprite(1, 5, bx + 0x26, by + 5);
++	renderItemMenuSprite(1, 5, bx + 0x26, by + JUKEBOX_TITLE_Y);
+ 	renderItemMenuScrollBar(ITEM_MENU_LEFT);
+ 	y = by + ITEM_MENU_LEFT->cursor * 0x12 + 0x11;
+ draw:
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index f1c764b3..7b7989e0 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -26,6 +26,7 @@
+ #include <dw/sound.h>
+ #include <dw/std.h>
+ #include <dw/types.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ 
+@@ -175,7 +176,166 @@ MATRIX STD_BATTLE_START_TEXT_MATRIX = {
+ 	{ 0x00000000, 0xfffffffe, 0x000002d4 },
+ };
+ 
++/* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
++ * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t STD_BATTLE_START_TEXT_POSITIONS[155][2] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff54, 0xffd0 },
++	{ 0xff54, 0xffe8 },
++	{ 0xff54, 0xfff4 },
++	{ 0xff54, 0x0000 },
++	{ 0xff54, 0x000c },
++	{ 0xff54, 0x0018 },
++	{ 0xff54, 0x0024 },
++	{ 0xff64, 0xffd0 },
++	{ 0xff6c, 0xffd0 },
++	{ 0xff64, 0xffdc },
++	{ 0xff6c, 0xffdc },
++	{ 0xff64, 0xffe8 },
++	{ 0xff6c, 0xffe8 },
++	{ 0xff64, 0xfff4 },
++	{ 0xff6c, 0xfff4 },
++	{ 0xff64, 0x0000 },
++	{ 0xff6c, 0x0000 },
++	{ 0xff64, 0x000c },
++	{ 0xff6c, 0x000c },
++	{ 0xff64, 0x0018 },
++	{ 0xff6c, 0x0018 },
++	{ 0xff64, 0x0024 },
++	{ 0xff6c, 0x0024 },
++	{ 0xff74, 0x0024 },
++	{ 0xff7c, 0x0024 },
++	{ 0xff84, 0x0024 },
++	{ 0xff8c, 0x0024 },
++	{ 0xffa4, 0xffd0 },
++	{ 0xffac, 0xffd0 },
++	{ 0xffc4, 0xffd0 },
++	{ 0xffcc, 0xffd0 },
++	{ 0xffa4, 0xffdc },
++	{ 0xffac, 0xffdc },
++	{ 0xffc4, 0xffdc },
++	{ 0xffcc, 0xffdc },
++	{ 0xffa4, 0xffe8 },
++	{ 0xffac, 0xffe8 },
++	{ 0xffc4, 0xffe8 },
++	{ 0xffcc, 0xffe8 },
++	{ 0xffa4, 0xfff4 },
++	{ 0xffac, 0xfff4 },
++	{ 0xffc4, 0xfff4 },
++	{ 0xffcc, 0xfff4 },
++	{ 0xffa4, 0x0000 },
++	{ 0xffac, 0x0000 },
++	{ 0xffc4, 0x0000 },
++	{ 0xffcc, 0x0000 },
++	{ 0xffa4, 0x000c },
++	{ 0xffac, 0x000c },
++	{ 0xffc4, 0x000c },
++	{ 0xffcc, 0x000c },
++	{ 0xffa4, 0x0018 },
++	{ 0xffac, 0x0018 },
++	{ 0xffc4, 0x0018 },
++	{ 0xffcc, 0x0018 },
++	{ 0xffac, 0x0024 },
++	{ 0xffb4, 0x0024 },
++	{ 0xffbc, 0x0024 },
++	{ 0xffc4, 0x0024 },
++	{ 0xffec, 0xffd0 },
++	{ 0xfff4, 0xffd0 },
++	{ 0xfffc, 0xffd0 },
++	{ 0x0004, 0xffd0 },
++	{ 0x000c, 0xffd0 },
++	{ 0xffe4, 0xffdc },
++	{ 0xffec, 0xffdc },
++	{ 0xffe4, 0xffe8 },
++	{ 0xffec, 0xffe8 },
++	{ 0xffe4, 0xfff4 },
++	{ 0xffec, 0xfff4 },
++	{ 0xffe4, 0x0000 },
++	{ 0xffec, 0x0000 },
++	{ 0xffe4, 0x000c },
++	{ 0xffec, 0x000c },
++	{ 0xffe4, 0x0018 },
++	{ 0xffec, 0x0018 },
++	{ 0xffec, 0x0024 },
++	{ 0xfff4, 0x0024 },
++	{ 0xfffc, 0x0024 },
++	{ 0x0004, 0x0024 },
++	{ 0x000c, 0x0024 },
++	{ 0x0024, 0xffd0 },
++	{ 0x002c, 0xffd0 },
++	{ 0x0044, 0xffd0 },
++	{ 0x004c, 0xffd0 },
++	{ 0x0024, 0xffdc },
++	{ 0x002c, 0xffdc },
++	{ 0x0044, 0xffdc },
++	{ 0x004c, 0xffdc },
++	{ 0x0024, 0xffe8 },
++	{ 0x002c, 0xffe8 },
++	{ 0x0044, 0xffe8 },
++	{ 0x004c, 0xffe8 },
++	{ 0x0024, 0xfff4 },
++	{ 0x002c, 0xfff4 },
++	{ 0x0034, 0xfff4 },
++	{ 0x003c, 0xfff4 },
++	{ 0x0044, 0xfff4 },
++	{ 0x004c, 0xfff4 },
++	{ 0x0024, 0x0000 },
++	{ 0x002c, 0x0000 },
++	{ 0x0044, 0x0000 },
++	{ 0x004c, 0x0000 },
++	{ 0x0024, 0x000c },
++	{ 0x002c, 0x000c },
++	{ 0x0044, 0x000c },
++	{ 0x004c, 0x000c },
++	{ 0x0024, 0x0018 },
++	{ 0x002c, 0x0018 },
++	{ 0x0044, 0x0018 },
++	{ 0x004c, 0x0018 },
++	{ 0x0024, 0x0024 },
++	{ 0x002c, 0x0024 },
++	{ 0x0044, 0x0024 },
++	{ 0x004c, 0x0024 },
++	{ 0x007c, 0xffd0 },
++	{ 0x0084, 0xffd0 },
++	{ 0x007c, 0xffdc },
++	{ 0x0084, 0xffdc },
++	{ 0x0074, 0xffe8 },
++	{ 0x007c, 0xffe8 },
++	{ 0x0084, 0xffe8 },
++	{ 0x008c, 0xffe8 },
++	{ 0x006c, 0xfff4 },
++	{ 0x0074, 0xfff4 },
++	{ 0x008c, 0xfff4 },
++	{ 0x0094, 0xfff4 },
++	{ 0x006c, 0x0000 },
++	{ 0x0074, 0x0000 },
++	{ 0x008c, 0x0000 },
++	{ 0x0094, 0x0000 },
++	{ 0x0064, 0x000c },
++	{ 0x006c, 0x000c },
++	{ 0x0074, 0x000c },
++	{ 0x007c, 0x000c },
++	{ 0x0084, 0x000c },
++	{ 0x008c, 0x000c },
++	{ 0x0094, 0x000c },
++	{ 0x009c, 0x000c },
++	{ 0x0064, 0x0018 },
++	{ 0x006c, 0x0018 },
++	{ 0x0094, 0x0018 },
++	{ 0x009c, 0x0018 },
++	{ 0x0064, 0x0024 },
++	{ 0x006c, 0x0024 },
++	{ 0x0094, 0x0024 },
++	{ 0x009c, 0x0024 },
++	{ 0x00ac, 0xffd0 },
++	{ 0x00ac, 0xffdc },
++	{ 0x00ac, 0xffe8 },
++	{ 0x00ac, 0xfff4 },
++	{ 0x00ac, 0x0000 },
++	{ 0x00ac, 0x000c },
++	{ 0x00ac, 0x0024 },
++	{ 0x00ac, 0x0024 },
++#else
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff5c, 0xffd0 },
+ 	{ 0xff64, 0xffd0 },
+@@ -331,6 +491,7 @@ int16_t STD_BATTLE_START_TEXT_POSITIONS[155][2] = {
+ 	{ 0x009c, 0x0024 },
+ 	{ 0x00a4, 0x0024 },
+ 	{ 0x00ac, 0x0024 },
++#endif
+ };
+ 
+ int32_t STD_FINISHER_PULSE[12] = {
+@@ -929,6 +1090,17 @@ void STD_renderFighterHPBar(int16_t id)
+ 	}
+ }
+ 
++/* MOD (language): the finisher's "○PUSH" label: the quad's x (left fighter, right fighter) and w, its backing
++ * box's x and w; the Spanish ○PULSA is 43
++ * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
++int16_t STD_FINISHER_LABEL[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-0x5c, 0x68, 43, -0x5e, 0x2f,
++#else
++	-0x56, 0x6e, 37, -0x58, 0x29,
++#endif
++};
++
+ void STD_renderFinisherReadyIcon(int16_t id)
+ {
+ 	GsBOXF box;
+@@ -942,8 +1114,8 @@ void STD_renderFinisherReadyIcon(int16_t id)
+ 		setRGB0(prim, STD_FINISHER_BRIGHTNESS[id], STD_FINISHER_BRIGHTNESS[id], STD_FINISHER_BRIGHTNESS[id]);
+ 	}
+ 
+-	setUVWH(prim, 0x80, 0x88, 37, 9);
+-	setXYWH(prim, (id == 0 ? -0x56 : 0x6e), -0x4b, 0x25, 9);
++	setUVWH(prim, 0x80, 0x88, STD_FINISHER_LABEL[2], 9);
++	setXYWH(prim, (id == 0 ? STD_FINISHER_LABEL[0] : STD_FINISHER_LABEL[1]), -0x4b, STD_FINISHER_LABEL[2], 9);
+ 	AddPrim(ACTIVE_ORDERING_TABLE->org + 8, prim++);
+ 	GsSetWorkBase((PACKET *)prim);
+ 
+@@ -954,8 +1126,8 @@ void STD_renderFinisherReadyIcon(int16_t id)
+ 		box.r = box.g = box.b = STD_FINISHER_BRIGHTNESS[id];
+ 	}
+ 
+-	setWH(&box, 0x29, 0xb);
+-	box.x = -0x58;
++	setWH(&box, STD_FINISHER_LABEL[4], 0xb);
++	box.x = STD_FINISHER_LABEL[3];
+ 	box.y = -0x4c;
+ 	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 8);
+ }
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 03abc4c3..2dc56a84 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -14,6 +14,7 @@
+ #include <dw/mod_present.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/vs.h>
+ 
+@@ -182,7 +183,166 @@ MATRIX VS_BATTLE_START_TEXT_MATRIX = {
+ 	{ 0x00000000, 0xfffffffe, 0x000002d4 },
+ };
+ 
++/* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
++ * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t VS_BATTLE_START_TEXT_POSITIONS[155][2] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ 0xff54, 0xffd0 },
++	{ 0xff54, 0xffe8 },
++	{ 0xff54, 0xfff4 },
++	{ 0xff54, 0x0000 },
++	{ 0xff54, 0x000c },
++	{ 0xff54, 0x0018 },
++	{ 0xff54, 0x0024 },
++	{ 0xff64, 0xffd0 },
++	{ 0xff6c, 0xffd0 },
++	{ 0xff64, 0xffdc },
++	{ 0xff6c, 0xffdc },
++	{ 0xff64, 0xffe8 },
++	{ 0xff6c, 0xffe8 },
++	{ 0xff64, 0xfff4 },
++	{ 0xff6c, 0xfff4 },
++	{ 0xff64, 0x0000 },
++	{ 0xff6c, 0x0000 },
++	{ 0xff64, 0x000c },
++	{ 0xff6c, 0x000c },
++	{ 0xff64, 0x0018 },
++	{ 0xff6c, 0x0018 },
++	{ 0xff64, 0x0024 },
++	{ 0xff6c, 0x0024 },
++	{ 0xff74, 0x0024 },
++	{ 0xff7c, 0x0024 },
++	{ 0xff84, 0x0024 },
++	{ 0xff8c, 0x0024 },
++	{ 0xffa4, 0xffd0 },
++	{ 0xffac, 0xffd0 },
++	{ 0xffc4, 0xffd0 },
++	{ 0xffcc, 0xffd0 },
++	{ 0xffa4, 0xffdc },
++	{ 0xffac, 0xffdc },
++	{ 0xffc4, 0xffdc },
++	{ 0xffcc, 0xffdc },
++	{ 0xffa4, 0xffe8 },
++	{ 0xffac, 0xffe8 },
++	{ 0xffc4, 0xffe8 },
++	{ 0xffcc, 0xffe8 },
++	{ 0xffa4, 0xfff4 },
++	{ 0xffac, 0xfff4 },
++	{ 0xffc4, 0xfff4 },
++	{ 0xffcc, 0xfff4 },
++	{ 0xffa4, 0x0000 },
++	{ 0xffac, 0x0000 },
++	{ 0xffc4, 0x0000 },
++	{ 0xffcc, 0x0000 },
++	{ 0xffa4, 0x000c },
++	{ 0xffac, 0x000c },
++	{ 0xffc4, 0x000c },
++	{ 0xffcc, 0x000c },
++	{ 0xffa4, 0x0018 },
++	{ 0xffac, 0x0018 },
++	{ 0xffc4, 0x0018 },
++	{ 0xffcc, 0x0018 },
++	{ 0xffac, 0x0024 },
++	{ 0xffb4, 0x0024 },
++	{ 0xffbc, 0x0024 },
++	{ 0xffc4, 0x0024 },
++	{ 0xffec, 0xffd0 },
++	{ 0xfff4, 0xffd0 },
++	{ 0xfffc, 0xffd0 },
++	{ 0x0004, 0xffd0 },
++	{ 0x000c, 0xffd0 },
++	{ 0xffe4, 0xffdc },
++	{ 0xffec, 0xffdc },
++	{ 0xffe4, 0xffe8 },
++	{ 0xffec, 0xffe8 },
++	{ 0xffe4, 0xfff4 },
++	{ 0xffec, 0xfff4 },
++	{ 0xffe4, 0x0000 },
++	{ 0xffec, 0x0000 },
++	{ 0xffe4, 0x000c },
++	{ 0xffec, 0x000c },
++	{ 0xffe4, 0x0018 },
++	{ 0xffec, 0x0018 },
++	{ 0xffec, 0x0024 },
++	{ 0xfff4, 0x0024 },
++	{ 0xfffc, 0x0024 },
++	{ 0x0004, 0x0024 },
++	{ 0x000c, 0x0024 },
++	{ 0x0024, 0xffd0 },
++	{ 0x002c, 0xffd0 },
++	{ 0x0044, 0xffd0 },
++	{ 0x004c, 0xffd0 },
++	{ 0x0024, 0xffdc },
++	{ 0x002c, 0xffdc },
++	{ 0x0044, 0xffdc },
++	{ 0x004c, 0xffdc },
++	{ 0x0024, 0xffe8 },
++	{ 0x002c, 0xffe8 },
++	{ 0x0044, 0xffe8 },
++	{ 0x004c, 0xffe8 },
++	{ 0x0024, 0xfff4 },
++	{ 0x002c, 0xfff4 },
++	{ 0x0034, 0xfff4 },
++	{ 0x003c, 0xfff4 },
++	{ 0x0044, 0xfff4 },
++	{ 0x004c, 0xfff4 },
++	{ 0x0024, 0x0000 },
++	{ 0x002c, 0x0000 },
++	{ 0x0044, 0x0000 },
++	{ 0x004c, 0x0000 },
++	{ 0x0024, 0x000c },
++	{ 0x002c, 0x000c },
++	{ 0x0044, 0x000c },
++	{ 0x004c, 0x000c },
++	{ 0x0024, 0x0018 },
++	{ 0x002c, 0x0018 },
++	{ 0x0044, 0x0018 },
++	{ 0x004c, 0x0018 },
++	{ 0x0024, 0x0024 },
++	{ 0x002c, 0x0024 },
++	{ 0x0044, 0x0024 },
++	{ 0x004c, 0x0024 },
++	{ 0x007c, 0xffd0 },
++	{ 0x0084, 0xffd0 },
++	{ 0x007c, 0xffdc },
++	{ 0x0084, 0xffdc },
++	{ 0x0074, 0xffe8 },
++	{ 0x007c, 0xffe8 },
++	{ 0x0084, 0xffe8 },
++	{ 0x008c, 0xffe8 },
++	{ 0x006c, 0xfff4 },
++	{ 0x0074, 0xfff4 },
++	{ 0x008c, 0xfff4 },
++	{ 0x0094, 0xfff4 },
++	{ 0x006c, 0x0000 },
++	{ 0x0074, 0x0000 },
++	{ 0x008c, 0x0000 },
++	{ 0x0094, 0x0000 },
++	{ 0x0064, 0x000c },
++	{ 0x006c, 0x000c },
++	{ 0x0074, 0x000c },
++	{ 0x007c, 0x000c },
++	{ 0x0084, 0x000c },
++	{ 0x008c, 0x000c },
++	{ 0x0094, 0x000c },
++	{ 0x009c, 0x000c },
++	{ 0x0064, 0x0018 },
++	{ 0x006c, 0x0018 },
++	{ 0x0094, 0x0018 },
++	{ 0x009c, 0x0018 },
++	{ 0x0064, 0x0024 },
++	{ 0x006c, 0x0024 },
++	{ 0x0094, 0x0024 },
++	{ 0x009c, 0x0024 },
++	{ 0x00ac, 0xffd0 },
++	{ 0x00ac, 0xffdc },
++	{ 0x00ac, 0xffe8 },
++	{ 0x00ac, 0xfff4 },
++	{ 0x00ac, 0x0000 },
++	{ 0x00ac, 0x000c },
++	{ 0x00ac, 0x0024 },
++	{ 0x00ac, 0x0024 },
++#else
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff5c, 0xffd0 },
+ 	{ 0xff64, 0xffd0 },
+@@ -338,6 +498,7 @@ int16_t VS_BATTLE_START_TEXT_POSITIONS[155][2] = {
+ 	{ 0x009c, 0x0024 },
+ 	{ 0x00a4, 0x0024 },
+ 	{ 0x00ac, 0x0024 },
++#endif
+ };
+ 
+ int32_t VS_FINISHER_PULSE[12] = {
+@@ -1110,6 +1271,17 @@ void VS_renderFighterHPBar(int16_t id)
+ 	}
+ }
+ 
++/* MOD (language): the finisher's "○PUSH" label: the quad's x (left fighter, right fighter) and w, its backing
++ * box's x (left, right) and w; the Spanish ○PULSA is 43
++ * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
++int16_t VS_FINISHER_LABEL[6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-0x5c, 0x68, 43, -0x5e, 0x66, 0x2f,
++#else
++	-0x56, 0x6e, 37, -0x58, 0x6c, 0x29,
++#endif
++};
++
+ void VS_renderHPBarFill(int16_t id)
+ {
+ 	GsBOXF box;
+@@ -1123,8 +1295,8 @@ void VS_renderHPBarFill(int16_t id)
+ 		setRGB0(prim, VS_FINISHER_BRIGHTNESS[id], VS_FINISHER_BRIGHTNESS[id], VS_FINISHER_BRIGHTNESS[id]);
+ 	}
+ 
+-	setUVWH(prim, 0x80, 0x88, 37, 9);
+-	setXYWH(prim, (id == 0 ? -0x56 : 0x6e), -0x4b, 0x25, 9);
++	setUVWH(prim, 0x80, 0x88, VS_FINISHER_LABEL[2], 9);
++	setXYWH(prim, (id == 0 ? VS_FINISHER_LABEL[0] : VS_FINISHER_LABEL[1]), -0x4b, VS_FINISHER_LABEL[2], 9);
+ 	AddPrim(ACTIVE_ORDERING_TABLE->org + 8, prim++);
+ 	GsSetWorkBase((PACKET *)prim);
+ 
+@@ -1135,8 +1307,8 @@ void VS_renderHPBarFill(int16_t id)
+ 		box.r = box.g = box.b = VS_FINISHER_BRIGHTNESS[id];
+ 	}
+ 
+-	setWH(&box, 0x29, 0xb);
+-	box.x = (id == 0 ? -0x58 : 0x6c);
++	setWH(&box, VS_FINISHER_LABEL[5], 0xb);
++	box.x = (id == 0 ? VS_FINISHER_LABEL[3] : VS_FINISHER_LABEL[4]);
+ 	box.y = -0x4c;
+ 	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 8);
+ }
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index 33fec8ef..1ac99d3b 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -14,6 +14,7 @@
+ #include <dw/params.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
++#include <dw/lang.h>
+ #include <dw/version.h>
+ #include <dw/vs.h>
+ #include <dw/world_object.h>
+@@ -319,7 +320,20 @@ VsTextPiece VS_VERSUS_TEXT_PIECES[21] = {
+ 		0x0a,
+ 		0x06,
+ 	},
++	/* MOD (language): VS MODE; the Spanish MODO VS (TAISEN2.TIM) is 2 px wider, 1 px further left */
+ 	{
++#if MOD_LANG_BUILD == MOD_LANG_ES
++		0x004f,
++		0x000e,
++		0x0070,
++		0x0009,
++		0x01,
++		0x30,
++		0x00,
++		0x4f,
++		0x0e,
++		0x05,
++#else
+ 		0x004d,
+ 		0x000e,
+ 		0x0071,
+@@ -330,6 +344,7 @@ VsTextPiece VS_VERSUS_TEXT_PIECES[21] = {
+ 		0x4d,
+ 		0x0e,
+ 		0x05,
++#endif
+ 	},
+ 	{
+ 		0x0004,
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index 59b761d8..5619bb75 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -231,3 +231,97 @@ LEVEL_TITLES:
+     MAIN_D_801342D8:
+       ja: 伝説
+       en_us: Legend
++
++# MOD (chart criteria; language): the evolution chart's level tabs and requirement card, ours (not the game's), keyed
++# (keys main.CHART_STR_*); `storage: define`, a literal where game_menu.c uses it. The card measures its lines and the
++# tabs are laid out by measuring their names, so a translation needs no other change.
++CHART_TEXT:
++  storage: define
++  strings:
++    CHART_STR_BABY:
++      ja: "Baby"
++      en_us: "Baby"
++    CHART_STR_ROOKIE:
++      ja: "Rookie"
++      en_us: "Rookie"
++    CHART_STR_CHAMPION:
++      ja: "Champion"
++      en_us: "Champion"
++    CHART_STR_ULTIMATE:
++      ja: "Ultimate"
++      en_us: "Ultimate"
++    CHART_STR_MEGA:
++      ja: "Mega"
++      en_us: "Mega"
++    CHART_STR_STAT_HP:
++      ja: "HP"
++      en_us: "HP"
++    CHART_STR_STAT_MP:
++      ja: "MP"
++      en_us: "MP"
++    CHART_STR_STAT_OFF:
++      ja: "Off"
++      en_us: "Off"
++    CHART_STR_STAT_DEF:
++      ja: "Def"
++      en_us: "Def"
++    CHART_STR_STAT_SPD:
++      ja: "Spd"
++      en_us: "Spd"
++    CHART_STR_STAT_BRN:
++      ja: "Brn"
++      en_us: "Brn"
++    CHART_STR_AUTOMATIC:
++      ja: "Automatic"
++      en_us: "Automatic"
++    CHART_STR_MISTAKES_ANY:
++      ja: "Mistakes any"
++      en_us: "Mistakes any"
++    CHART_STR_MISTAKES:
++      ja: "Mistakes"
++      en_us: "Mistakes"
++    CHART_STR_WEIGHT:
++      ja: "Weight"
++      en_us: "Weight"
++    CHART_STR_TOP:
++      ja: "Top"
++      en_us: "Top"
++    CHART_STR_STATS_ANY:
++      ja: "Stats any"
++      en_us: "Stats any"
++    CHART_STR_STATS:
++      ja: "Stats"
++      en_us: "Stats"
++    CHART_STR_BONUS_ANY:
++      ja: "Bonus any"
++      en_us: "Bonus any"
++    CHART_STR_BONUS_ONE_OF:
++      ja: "Bonus, one of"
++      en_us: "Bonus, one of"
++    CHART_STR_FROM:
++      ja: "From "
++      en_us: "From "
++    CHART_STR_YES:
++      ja: "yes"
++      en_us: "yes"
++    CHART_STR_NO:
++      ja: "no"
++      en_us: "no"
++    CHART_STR_DISCIPLINE:
++      ja: "Discipline"
++      en_us: "Discipline"
++    CHART_STR_HAPPINESS:
++      ja: "Happiness"
++      en_us: "Happiness"
++    CHART_STR_BATTLES:
++      ja: "Battles"
++      en_us: "Battles"
++    CHART_STR_TECHS:
++      ja: "Techs"
++      en_us: "Techs"
++    CHART_STR_OF_4:
++      ja: " of 4"
++      en_us: " of 4"
++    CHART_STR_READY:
++      ja: "  ready"
++      en_us: "  ready"
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index e6f40dc4..fd5ef50a 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -389,3 +389,18 @@ MOD_OPTIONS:
+     MOD_OPT_STR_ORIGINAL:
+       ja: "ORIGINAL"
+       en_us: "ORIGINAL"
++    MOD_OPT_STR_LANG:
++      ja: "LANGUAGE"
++      en_us: "LANGUAGE"
++    MOD_OPT_STR_ENGLISH:
++      ja: "ENGLISH"
++      en_us: "ENGLISH"
++    MOD_OPT_STR_SPANISH:
++      ja: "ESPANOL"
++      en_us: "ESPANOL"
++    MOD_OPT_STR_SIGNS:
++      ja: "MAP SIGNS"
++      en_us: "MAP SIGNS"
++    MOD_OPT_STR_TRANSLATED:
++      ja: "TRANSLATED"
++      en_us: "TRANSLATED"
+diff --git a/text/main/mod_feed.yaml b/text/main/mod_feed.yaml
+new file mode 100644
+index 00000000..a0d919ee
+--- /dev/null
++++ b/text/main/mod_feed.yaml
+@@ -0,0 +1,26 @@
++# MOD (feed menu; language): the feed list's own text, ours (not the game's), keyed so a text source can translate it
++# (keys main.FEED_STR_*). `storage: define`: each is a literal where src/main/mod_feed.c uses it.
++MOD_FEED:
++  storage: define
++  strings:
++    FEED_STR_SCOLD_NAME:
++      ja: "Scold"
++      en_us: "Scold"
++    FEED_STR_SCOLD_DESC:
++      ja: "It misbehaved: teach it."
++      en_us: "It misbehaved: teach it."
++    FEED_STR_SLEEP_NAME:
++      ja: "Sleep"
++      en_us: "Sleep"
++    FEED_STR_SLEEP_DESC:
++      ja: "Put it to bed until morning."
++      en_us: "Put it to bed until morning."
++    FEED_STR_NOTE_FAVOURITE:
++      ja: "Its favourite food!"
++      en_us: "Its favourite food!"
++    FEED_STR_NOTE_MAY_NOT_CURE_SICK:
++      ja: "It may not cure its sickness."
++      en_us: "It may not cure its sickness."
++    FEED_STR_NOTE_MAY_NOT_CURE_WOUND:
++      ja: "It may not cure its wound."
++      en_us: "It may not cure its wound."
+diff --git a/tools/gen_text.py b/tools/gen_text.py
+index e9cb69ea..6376e407 100755
+--- a/tools/gen_text.py
++++ b/tools/gen_text.py
+@@ -17,6 +17,12 @@ from pathlib import Path
+ import yaml
+ 
+ __BANK = {'font': {}, 'text': {}}
++# MOD (language): $TEXT_BANK_PAD, the bank of the other language of a two-language build (docs/mods/language.md). Each
++# string is padded to the longer of its two texts and two strings share one array only when both their texts are equal
++# in both languages, and the literals become arrays: the two builds then lay out every symbol at the same address and
++# differ only in the bytes of the strings, so the game switches language by writing the other build's bytes over them.
++__PAD = None
++__PAD_ON = False
+ 
+ __LANGUAGES = {
+     'jp': 'ja',
+@@ -58,7 +64,20 @@ def __fail(where, message):
+     sys.exit('{}: {}'.format(where, message))
+ 
+ 
+-def __c_string(text, where):
++def __c_bytes(text, where):
++    n = 0
++    for c in text:
++        if c in __BANK['font']:
++            n += 2
++            continue
++        try:
++            n += len(c.encode('cp932'))
++        except UnicodeEncodeError:
++            __fail(where, 'no Shift-JIS character for {!r} (and no glyph of the mod font)'.format(c))
++    return n
++
++
++def __c_string(text, where, pad_to=0):
+     out = ''
+     for c in text:
+         if c in __BANK['font']:
+@@ -77,6 +96,7 @@ def __c_string(text, where):
+             out += c
+         else:
+             out += ''.join('\\{:03o}'.format(x) for x in b)
++    out += '\\000' * max(0, pad_to - __c_bytes(text, where))
+     return '"' + out + '"'
+ 
+ 
+@@ -121,6 +141,36 @@ def __banked(key, value):
+     return value
+ 
+ 
++def __banked_pad(key, value):
++    if __PAD_ON and key is not None and value is not None and key in __PAD['text']:
++        return __PAD['text'][key]
++    return value
++
++
++def __other_string(entry, release, where, key=None):
++    """the other language's text of a string (a two-language build), else the string's own"""
++    value = __banked_pad(key, __text(entry, release, where)) if __PAD_ON else __banked(key, __text(entry, release, where))
++    return value if not isinstance(value, list) else None
++
++
++def __other_lines(entry, release, count, where, key=None):
++    value = __banked_pad(key, __text(entry, release, where)) if __PAD_ON else __banked(key, __text(entry, release, where))
++    if not isinstance(value, list):
++        value = [value]
++    return (value + [''] * count)[:count]
++
++
++def __padded(text, other, where):
++    """the C literal of text, padded with NULs to the length of the other language's text"""
++    if not __PAD_ON or other is None:
++        return __c_string(text, where)
++    return __c_string(text, where, __c_bytes(other, where))
++
++
++def __pair(text, other):
++    return (text, other if __PAD_ON else None)
++
++
+ def __string(entry, release, where, key=None):
+     value = __banked(key, __text(entry, release, where))
+     if isinstance(value, list):
+@@ -148,14 +198,20 @@ def __generate(release, blocks, source):
+         text = __string(entry, release, where, key)
+         if text is None:
+             return []
++        other = __other_string(entry, release, where, key)
++        literal = __padded(text, other, where)
+         if as_macro:
+-            header.append('#define {} {}'.format(symbol, __c_string(text, where)))
++            # MOD (language): still a literal (the C may initialise an array with it), with one NUL more than the longer
++            # text, so the compiler never merges it with an equal literal (both languages keep the same layout)
++            if __PAD_ON:
++                literal = __c_string(text, where, max(__c_bytes(text, where), __c_bytes(other or '', where)) + 1)
++            header.append('#define {} {}'.format(symbol, literal))
+             return []
+-        literal = __c_string(text, where)
+-        if literal in named:
+-            header.append('#define {} {}'.format(symbol, named[literal]))
++        pair = __pair(literal, other)
++        if pair in named:
++            header.append('#define {} {}'.format(symbol, named[pair]))
+             return []
+-        named[literal] = symbol
++        named[pair] = symbol
+         return ['char {}[] = {};'.format(symbol, literal)]
+ 
+     for block, body in blocks.items():
+@@ -223,30 +279,38 @@ def __generate(release, blocks, source):
+ 
+             named_here = release in entry.get('named', ())
+             refs = []
+-            for line in __lines(entry, release, count, where, key):
++            others = __other_lines(entry, release, count, where, key)
++            for n, line in enumerate(__lines(entry, release, count, where, key)):
+                 if line is None:
+                     refs.append('NULL')
+                     continue
+-                literal = __c_string(line, where)
++                literal = __padded(line, others[n], where)
++                pair = __pair(literal, others[n])
+                 if storage == 'literal' and line == '' and body.get('empty'):
+                     symbol = body['empty']
+-                elif storage == 'literal' and not named_here:
++                elif storage == 'literal' and not named_here and not __PAD_ON:
+                     refs.append(literal)
+                     continue
+-                elif literal in named:
+-                    refs.append(named[literal])
++                elif pair in named:
++                    refs.append(named[pair])
++                    continue
++                elif storage == 'literal' and not named_here:   # MOD (language): the literal as an array of its own
++                    symbol = '{}_LANG_{}_{}'.format(block, index, n)
++                    named[pair] = symbol
++                    header.append('static char {}[] = {};'.format(symbol, literal))
++                    refs.append(symbol)
+                     continue
+-                elif not name and key in __BANK['text']:
++                elif not name and (key in __BANK['text'] or (__PAD_ON and key in __PAD['text'])):
+                     symbol = '{}_BANK_{}'.format(block, index)      # a banked text no other entry has
+                 elif not name:
+                     __fail(where,
+                            'a new {} text needs a name'.format(release))
+                 else:
+                     symbol = name
+-                if literal not in named:
+-                    named[literal] = symbol
++                if pair not in named:
++                    named[pair] = symbol
+                     strings.append('char {}[] = {};'.format(symbol, literal))
+-                refs.append(named[literal])
++                refs.append(named[pair])
+             table.append(refs)
+ 
+         lines = []
+@@ -284,6 +348,12 @@ def __main():
+     if os.path.exists(bank):
+         with open(bank, encoding='utf-8') as f:
+             __BANK.update(json.load(f))
++    pad = os.environ.get('TEXT_BANK_PAD')
++    if pad:
++        global __PAD, __PAD_ON
++        with open(pad, encoding='utf-8') as f:
++            __PAD = json.load(f)
++        __PAD_ON = True
+ 
+     with open(args.yaml, encoding='utf-8') as f:
+         blocks = yaml.load(f, Loader=yaml.BaseLoader)
+-- 
+2.53.0
+

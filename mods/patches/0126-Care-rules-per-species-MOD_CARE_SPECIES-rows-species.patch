@@ -1,0 +1,183 @@
+From 30286361b570c0860a75b93961b07899a41586b9 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 19:50:10 +0000
+Subject: [PATCH] Care rules per species: MOD_CARE_SPECIES rows {species, slot,
+ value} (species -1 ends the list) override the global MOD_CARE for that
+ partner's species; a value of -1 switches the rule off for it. Written by
+ tools/balance.py from the species files' care
+
+---
+ include/dw/level.h      |  3 +++
+ src/main/partner_impl.c | 54 +++++++++++++++++++++++++++++------------
+ 2 files changed, 41 insertions(+), 16 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 6d0fdb96..857c5986 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -171,6 +171,9 @@ void modTamerLevelEvent(int32_t slot, int32_t amount);
+ #define MOD_CARE_LIFE_BELOW	53
+ #define MOD_CARE_LIFE_PER_POINTS	54
+ extern int16_t MOD_CARE[MOD_CARE_SIZE];
++/* a species' own values: {species, slot, value} rows, ended by species -1 (the rest of the table is filled with -1 at build) */
++#define MOD_CARE_OVERRIDE_MAX	192
++extern int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3];
+ 
+ /* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
+ #define MOD_EVO_ITEM_MAX	4
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 76c14d8c..b7cac359 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -975,10 +975,30 @@ void setupPartnerOnWarp(posX, posY, posZ, rotation)
+ int16_t MOD_CARE[MOD_CARE_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+ 				    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+ 				    -1, -1, -1, -1, -1, -1, -1 };
++/* MOD (care rules as data): per-species overrides of MOD_CARE, written by tools/balance.py from the species files' "care" (-1 rows = none) */
++int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3] = { { -1, -1, -1 } };
++
++/*
++ * careGet: a rule's value for the partner's species: its own override (MOD_CARE_SPECIES, {species, slot, value} rows ended by
++ * species -1; a value of -1 switches the rule off for it) or the global MOD_CARE.
++ */
++static int32_t careGet(int32_t slot)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	int32_t i;
++
++	for (i = 0; i < MOD_CARE_OVERRIDE_MAX && MOD_CARE_SPECIES[i][0] >= 0; i++) {
++		if (MOD_CARE_SPECIES[i][0] == type && MOD_CARE_SPECIES[i][1] == slot)
++			return MOD_CARE_SPECIES[i][2];
++	}
++	return MOD_CARE[slot];
++}
+ 
+ static int32_t careEveryRaw(int32_t slot)
+ {
+-	return MOD_CARE[slot] > 0 && (CURRENT_FRAME % MOD_CARE[slot]) == 0;
++	int32_t period = careGet(slot);
++
++	return period > 0 && (CURRENT_FRAME % period) == 0;
+ }
+ 
+ static int32_t careEvery(int32_t slot)
+@@ -988,12 +1008,14 @@ static int32_t careEvery(int32_t slot)
+ 
+ static int32_t careHas(int32_t slot)
+ {
+-	return MOD_CARE[slot] >= 0;
++	return careGet(slot) >= 0;
+ }
+ 
+ static int32_t careAmt(int32_t slot)
+ {
+-	return MOD_CARE[slot] > 0 ? MOD_CARE[slot] : 0;
++	int32_t v = careGet(slot);
++
++	return v > 0 ? v : 0;
+ }
+ 
+ void tickConditionBoundaries(void)
+@@ -1057,7 +1079,7 @@ void tickSleepMechanics(void)
+ 	}
+ 
+ 	if ((wasSleepy == 0) && careHas(MOD_CARE_SLEEP_SLEEPY_AT) &&
+-	    (PARTNER_PARA.tirednessSleepTimer >= MOD_CARE[MOD_CARE_SLEEP_SLEEPY_AT]) &&
++	    (PARTNER_PARA.tirednessSleepTimer >= careGet(MOD_CARE_SLEEP_SLEEPY_AT)) &&
+ 	    careEvery(MOD_CARE_SLEEP_SLEEPY_PERIOD)) {
+ 		PARTNER_PARA.timeAwakeToday--;
+ 		PARTNER_PARA.tirednessSleepTimer = 0;
+@@ -1517,7 +1539,7 @@ void tickTirednessMechanics(void)
+ 	uint8_t animId;
+ 
+ 	animId = PARTNER_ENTITY.digimonEntity.entity.anim.animId;
+-	if (MOD_CARE[MOD_CARE_AREA_PERIOD] > 0 && ((PARTNER_PARA.areaEffectTimer % MOD_CARE[MOD_CARE_AREA_PERIOD]) == 0) &&
++	if (careGet(MOD_CARE_AREA_PERIOD) > 0 && ((PARTNER_PARA.areaEffectTimer % careGet(MOD_CARE_AREA_PERIOD)) == 0) &&
+ 	    (PARTNER_PARA.areaEffectTimer > 0)) {
+ 		if (MAP_TILE_DATA.partnerAreaResponse == 1) {
+ 			PARTNER_PARA.happiness += careAmt(MOD_CARE_AREA_GOOD_HAPPY);
+@@ -1528,19 +1550,19 @@ void tickTirednessMechanics(void)
+ 			PARTNER_PARA.tiredness += careAmt(MOD_CARE_AREA_BAD_TIRED);
+ 		}
+ 	}
+-	if (careHas(MOD_CARE_TIRED_SUB) && PARTNER_PARA.subTiredness >= MOD_CARE[MOD_CARE_TIRED_SUB]) {
++	if (careHas(MOD_CARE_TIRED_SUB) && PARTNER_PARA.subTiredness >= careGet(MOD_CARE_TIRED_SUB)) {
+ 		PARTNER_PARA.tiredness += 1;
+ 		if (PARTNER_PARA.tiredness >= 0x64) {
+ 			PARTNER_PARA.tiredness = 0x64;
+ 		}
+ 		PARTNER_PARA.subTiredness = 0;
+ 	}
+-	if (careHas(MOD_CARE_TIRED_HUNGER_AT) && PARTNER_PARA.tiredness >= MOD_CARE[MOD_CARE_TIRED_HUNGER_AT]) {
++	if (careHas(MOD_CARE_TIRED_HUNGER_AT) && PARTNER_PARA.tiredness >= careGet(MOD_CARE_TIRED_HUNGER_AT)) {
+ 		PARTNER_PARA.tirednessHungerTimer += 1;
+ 	} else {
+ 		PARTNER_PARA.tirednessHungerTimer = 0;
+ 	}
+-	if (careHas(MOD_CARE_TIRED_EXHAUSTED_AT) && PARTNER_PARA.tiredness >= MOD_CARE[MOD_CARE_TIRED_EXHAUSTED_AT]) {
++	if (careHas(MOD_CARE_TIRED_EXHAUSTED_AT) && PARTNER_PARA.tiredness >= careGet(MOD_CARE_TIRED_EXHAUSTED_AT)) {
+ 		PARTNER_PARA.condition |= 2;
+ 		if (careEvery(MOD_CARE_TIRED_EXHAUSTED_PERIOD)) {
+ 			PARTNER_PARA.happiness -= careAmt(MOD_CARE_TIRED_EXHAUSTED_HAPPY);
+@@ -1664,7 +1686,7 @@ void tickHungerMechanics(void)
+ 			PARTNER_PARA.emptyStomachTimer++;
+ 	}
+ 	if (careHas(MOD_CARE_HUNGER_TIRED_AFTER) &&
+-	    (PARTNER_PARA.tirednessHungerTimer >= MOD_CARE[MOD_CARE_HUNGER_TIRED_AFTER]) &&
++	    (PARTNER_PARA.tirednessHungerTimer >= careGet(MOD_CARE_HUNGER_TIRED_AFTER)) &&
+ 	    careEvery(MOD_CARE_HUNGER_TIRED_PERIOD))
+ 		PARTNER_PARA.foodLevel -= careAmt(MOD_CARE_HUNGER_TIRED_LOSS);
+ 
+@@ -1961,7 +1983,7 @@ void tickSicknessMechanics(void)
+ 	int32_t nameLength;
+ 
+ 	wasSick = PARTNER_PARA.condition & 0x40;
+-	if (careHas(MOD_CARE_SICK_MIN_COUNTER) && (PARTNER_PARA.sicknessCounter >= MOD_CARE[MOD_CARE_SICK_MIN_COUNTER]) &&
++	if (careHas(MOD_CARE_SICK_MIN_COUNTER) && (PARTNER_PARA.sicknessCounter >= careGet(MOD_CARE_SICK_MIN_COUNTER)) &&
+ 	    careEvery(MOD_CARE_SICK_PERIOD) && !wasSick) {
+ 		PARTNER_PARA.sicknessTries++;
+ 		chance = (PARTNER_PARA.sicknessTries - careAmt(MOD_CARE_SICK_FREE_TRIES)) * careAmt(MOD_CARE_SICK_PER_TRY) +
+@@ -1978,7 +2000,7 @@ void tickSicknessMechanics(void)
+ 		}
+ 	}
+ 
+-	if (!wasSick && careHas(MOD_CARE_SICK_AREA_AFTER) && (PARTNER_PARA.areaEffectTimer > MOD_CARE[MOD_CARE_SICK_AREA_AFTER]) &&
++	if (!wasSick && careHas(MOD_CARE_SICK_AREA_AFTER) && (PARTNER_PARA.areaEffectTimer > careGet(MOD_CARE_SICK_AREA_AFTER)) &&
+ 	    careEvery(MOD_CARE_SICK_PERIOD) &&
+ 	    (MAP_TILE_DATA.partnerAreaResponse == 2)) {
+ 		PARTNER_PARA.condition |= 0x40;
+@@ -2004,7 +2026,7 @@ void tickSicknessMechanics(void)
+ 	if ((HAS_IMMORTAL_HOUR == 1) && (IMMORTAL_HOUR == HOUR))
+ 		return;
+ 
+-	if (careHas(MOD_CARE_SICK_INJURY_AFTER) && (PARTNER_PARA.injuryTimer >= MOD_CARE[MOD_CARE_SICK_INJURY_AFTER]) && !wasSick &&
++	if (careHas(MOD_CARE_SICK_INJURY_AFTER) && (PARTNER_PARA.injuryTimer >= careGet(MOD_CARE_SICK_INJURY_AFTER)) && !wasSick &&
+ 	    (tamerGetState() == 0)) {
+ 		PARTNER_PARA.condition |= 0x40;
+ 		PARTNER_PARA.timesBeingSick++;
+@@ -2024,7 +2046,7 @@ void tickSicknessMechanics(void)
+ 		drawString(MAIN_D_801225A0, nameLength * 12, 120);
+ 	}
+ 
+-	if (careHas(MOD_CARE_SICK_LIFE_AFTER) && (PARTNER_PARA.sicknessTimer >= MOD_CARE[MOD_CARE_SICK_LIFE_AFTER]) && (PARTNER_STATE != 8) &&
++	if (careHas(MOD_CARE_SICK_LIFE_AFTER) && (PARTNER_PARA.sicknessTimer >= careGet(MOD_CARE_SICK_LIFE_AFTER)) && (PARTNER_STATE != 8) &&
+ 	    (tamerGetState() == 0) && (PARTNER_PARA.remainingLifetime != 0) &&
+ 	    (IS_SCRIPT_PAUSED == 1)) {
+ 		writePStat(0xFF, 0);
+@@ -2210,10 +2232,10 @@ void tickConditions(void)
+ 		PARTNER_PARA.trainBoostFlag = 0;
+ 		PARTNER_PARA.trainBoostTimer = 0;
+ 	}
+-	if (careEveryRaw(MOD_CARE_LIFE_PERIOD) && careHas(MOD_CARE_LIFE_BELOW) && MOD_CARE[MOD_CARE_LIFE_PER_POINTS] > 0 &&
+-	    PARTNER_PARA.happiness < MOD_CARE[MOD_CARE_LIFE_BELOW]) {
++	if (careEveryRaw(MOD_CARE_LIFE_PERIOD) && careHas(MOD_CARE_LIFE_BELOW) && careGet(MOD_CARE_LIFE_PER_POINTS) > 0 &&
++	    PARTNER_PARA.happiness < careGet(MOD_CARE_LIFE_BELOW)) {
+ 		PARTNER_PARA.remainingLifetime = PARTNER_PARA.remainingLifetime -
+-			((PARTNER_PARA.happiness - MOD_CARE[MOD_CARE_LIFE_BELOW]) / -MOD_CARE[MOD_CARE_LIFE_PER_POINTS] + 1);
++			((PARTNER_PARA.happiness - careGet(MOD_CARE_LIFE_BELOW)) / -careGet(MOD_CARE_LIFE_PER_POINTS) + 1);
+ 		if (PARTNER_PARA.remainingLifetime < 0)
+ 			PARTNER_PARA.remainingLifetime = 0;
+ 	}
+-- 
+2.53.0
+

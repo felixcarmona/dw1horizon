@@ -1,0 +1,87 @@
+// Readable form of script 12 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 12 {
+    npc aruraumon0 = 5;
+    npc aruraumon1 = 6;
+    npc tsukaimon2 = 7;
+    npc tsukaimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 53, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 55, 43);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 68, 46);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        say(narrator, text("s012.sec81.u0"));
+        entity_set_rotation(tamer, 2048);
+        say(tamer, text("s012.sec81.u1"));
+        choice {
+            text("s012.sec81.m0.o0") => {
+                if (bits >= 200) {
+                    add_stat(7, 100);
+                    take_bits(200);
+                    say(narrator, text("s012.sec81.u2"));
+                } else {
+                    say(tamer, text("s012.sec81.u3"));
+                    return;
+                }
+                return;
+            }
+            text("s012.sec81.m0.o1") => {
+                if (bits >= 1800) {
+                    add_stat(7, 1000);
+                    take_bits(1800);
+                    say(narrator, text("s012.sec81.u4"));
+                } else {
+                    say(tamer, text("s012.sec81.u5"));
+                    return;
+                }
+                return;
+            }
+            text("s012.sec81.m0.o2") => {}
+        }
+        say(tamer, text("s012.sec81.u6"));
+    }
+
+    on step(2) replace {    // section 53
+        unless (!eastern_bridge_seen) return;
+        say(tamer, text("s012.sec53.u0"));
+        eastern_bridge_seen = true;
+    }
+
+    on talk(aruraumon0) replace {    // section 5
+        say(aruraumon0, text("s012.sec5.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(aruraumon1) replace {    // section 6
+        say(aruraumon1, text("s012.sec6.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(tsukaimon2) replace {    // section 7
+        say(tsukaimon2, text("s012.sec7.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon3) replace {    // section 8
+        say(tsukaimon3, text("s012.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+        return;
+    }
+}

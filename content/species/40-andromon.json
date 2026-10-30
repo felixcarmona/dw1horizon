@@ -1,0 +1,53 @@
+{
+  "id": 40,
+  "name": "Andromon",
+  "level": "ultimate",
+  "vanilla": true,
+  "attribute": "vaccine",
+  "specialties": ["mech", "battle", "air"],
+  "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Tremar", "Static Elect", "Megalo Spark", "Power Crane",
+                 "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
+                 "All Range Beam", "DG Dimension", "Full Potential", "Spiral Sword"],
+  "drop": {"item": "S.speed.disk", "percent": 30},
+  "model": {"name": "ANDR", "bones": 21, "radius": 150, "height": 400},
+  "voice": 36,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 10,
+    "hunger_hours": [2, 6, 11, 16, 21],
+    "energy_max": 80,
+    "energy_fed": 32,
+    "energy_per_hour": 6,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Deluxmushrm",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 3,
+    "training_type": "mp-brains",
+    "birth_weight": 40,
+    "status_screen_position": [260, 360, -1400],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 13}
+  },
+  "evolution": {
+    "from": [9, 36, 34, 48, 20],
+    "to": [-1, -1, -1, -1, -1, -1],
+    "requirements": {
+      "digimon": -1,
+      "hp": 200,
+      "mp": 400,
+      "offense": 200,
+      "defense": 400,
+      "speed": 200,
+      "brain": 400,
+      "care": 5,
+      "weight": 40,
+      "discipline": 95,
+      "happiness": -1,
+      "battles": 30,
+      "techs": 30,
+      "flags": 16
+    },
+    "gains": {"hp": 4000, "mp": 6000, "offense": 400, "defense": 600, "speed": 400, "brains": 600}
+  }
+}

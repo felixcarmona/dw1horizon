@@ -1,0 +1,20 @@
+{
+  "id": 65,
+  "name": "Black trout",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 27,
+    "weight": -2,
+    "addHP": 10,
+    "addMP": 10,
+    "addOffense": 1,
+    "addDefense": 1,
+    "addSpeed": 1,
+    "addBrain": 1
+  }
+}

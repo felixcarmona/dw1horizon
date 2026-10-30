@@ -1,0 +1,76 @@
+// Readable form of script 32 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 32 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 52, 5, 51;
+
+    on enter replace {    // section 254
+        if (drimogemon_tunnel_dig_started && drimogemon_job_days >= 3) {
+            drill_tunnel_opened = true;
+            set_obj_visibility(4, 1);
+            entity_move_to(drimogemon, -1134, -566, 3, 0);
+            wait(5);
+            entity_set_rotation(drimogemon, 3072);
+            wait(5);
+        }
+        if (drimogemon_job_days < 3 && !is_recruited(species("Drimogemon"))) {
+            animate(drimogemon, 29);
+        }
+    }
+
+    on step(1) replace {    // section 52
+        unless (!is_recruited(species("Drimogemon"))) return;
+        face(drimogemon, tamer);
+        face(tamer, drimogemon);
+        wait(5);
+        if (!drimogemon_tunnel_dig_started) {
+            say(drimogemon, text("s032.sec52.u0"));
+            entity_set_rotation(drimogemon, 512);
+            wait(5);
+            animate(drimogemon, 29);
+            drimogemon_tunnel_dig_started = true;
+            drimogemon_job_days = 0;
+            walk(tamer, -334, -853);
+            await tamer;
+            return;
+        }
+        if (drimogemon_tunnel_dig_started && drimogemon_job_days >= 3) {
+            say(drimogemon, text("s032.sec52.u1"));
+            say(tamer, text("s032.sec52.u2"));
+            say(drimogemon, text("s032.sec52.u3"));
+            say(drimogemon, text("s032.sec52.u4"));
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s032.sec52.u5"));
+            animate(tamer, anim.idle);
+            say(drimogemon, text("s032.sec52.u6"));
+        } else {
+            say(drimogemon, text("s032.sec52.u7"));
+            entity_set_rotation(drimogemon, 512);
+            animate(drimogemon, 29);
+            wait(5);
+            walk(tamer, -334, -853);
+            await tamer;
+            return;
+        }
+        walk_away(drimogemon, 600, 1700, looks: 3, pause: 25);
+        join_city_camera(drimogemon, species("Drimogemon"), 8, 8, text("s032.sec52.u8"), prosperity: 2);
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        goto sec52;
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1996, -2148);
+        warp_to(23, 2, 255);
+        return;
+    }
+}

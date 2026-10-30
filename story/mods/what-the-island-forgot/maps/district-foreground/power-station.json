@@ -1,0 +1,664 @@
+{
+  "screen": 360,
+  "review": "The curved overhead arch covers the character along the room perimeter; generator, control desks, stool and cot have solid bases. Floor does not extend through the generator or wall.",
+  "collision": [
+    {
+      "tile": [
+        54,
+        48
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        54,
+        49
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        46,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        47,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        48,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        49,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        50,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        51,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        52,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        53,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        54,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "generator ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        40,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        43,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        53
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "right-console ground footprint"
+    },
+    {
+      "tile": [
+        41,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        43,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        41,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-console ground footprint"
+    },
+    {
+      "tile": [
+        42,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "stool ground footprint"
+    },
+    {
+      "tile": [
+        43,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "stool ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-console ground footprint"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "power-station-left-console.png",
+      "at": [
+        31,
+        206
+      ],
+      "depth": null,
+      "source": "power-station.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "power-station.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-power-station-edit.jpg",
+            "source_sha1": "f1110ed2040491114c2e4768fb35acac0ac2ec10",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              26,
+              199,
+              120,
+              350
+            ],
+            "positive": [
+              [
+                68,
+                271
+              ]
+            ],
+            "negative": [
+              [
+                27,
+                349
+              ],
+              [
+                119,
+                349
+              ]
+            ],
+            "score": 0.9953262805938721
+          }
+        ]
+      }
+    },
+    {
+      "png": "power-station-right-console.png",
+      "at": [
+        376,
+        205
+      ],
+      "depth": null,
+      "source": "power-station.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "power-station.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-power-station-edit.jpg",
+            "source_sha1": "f1110ed2040491114c2e4768fb35acac0ac2ec10",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              372,
+              214,
+              470,
+              308
+            ],
+            "positive": [
+              [
+                411,
+                258
+              ]
+            ],
+            "negative": [
+              [
+                373,
+                307
+              ],
+              [
+                469,
+                307
+              ]
+            ],
+            "score": 0.9369505643844604
+          }
+        ]
+      }
+    },
+    {
+      "png": "power-station-stool.png",
+      "at": [
+        107,
+        282
+      ],
+      "depth": [
+        122,
+        333
+      ],
+      "source": "power-station.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "power-station.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-power-station-edit.jpg",
+            "source_sha1": "f1110ed2040491114c2e4768fb35acac0ac2ec10",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              104,
+              277,
+              141,
+              338
+            ],
+            "positive": [
+              [
+                122,
+                293
+              ]
+            ],
+            "negative": [
+              [
+                105,
+                337
+              ],
+              [
+                140,
+                337
+              ]
+            ],
+            "score": 0.939002513885498
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      84,
+      251
+    ],
+    [
+      184,
+      252
+    ],
+    [
+      331,
+      252
+    ],
+    [
+      388,
+      265
+    ],
+    [
+      405,
+      285
+    ],
+    [
+      470,
+      378
+    ],
+    [
+      456,
+      412
+    ],
+    [
+      400,
+      440
+    ],
+    [
+      300,
+      455
+    ],
+    [
+      200,
+      455
+    ],
+    [
+      110,
+      440
+    ],
+    [
+      50,
+      400
+    ],
+    [
+      40,
+      350
+    ],
+    [
+      70,
+      310
+    ]
+  ],
+  "footprints": {
+    "left-console": [
+      [
+        35,
+        313
+      ],
+      [
+        91,
+        304
+      ],
+      [
+        96,
+        344
+      ],
+      [
+        68,
+        353
+      ],
+      [
+        34,
+        352
+      ]
+    ],
+    "right-console": [
+      [
+        389,
+        277
+      ],
+      [
+        460,
+        271
+      ],
+      [
+        466,
+        295
+      ],
+      [
+        405,
+        311
+      ],
+      [
+        388,
+        306
+      ]
+    ],
+    "cot": [
+      [
+        407,
+        346
+      ],
+      [
+        473,
+        346
+      ],
+      [
+        477,
+        381
+      ],
+      [
+        406,
+        385
+      ]
+    ],
+    "stool": [
+      [
+        107,
+        313
+      ],
+      [
+        135,
+        313
+      ],
+      [
+        139,
+        336
+      ],
+      [
+        105,
+        338
+      ]
+    ],
+    "generator": [
+      [
+        184,
+        230
+      ],
+      [
+        330,
+        230
+      ],
+      [
+        334,
+        264
+      ],
+      [
+        183,
+        264
+      ]
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+ "s007.sec81.m0.o0": "Tocar la flauta",
+ "s007.sec81.m0.o1": "No tocarla",
+ "s007.sec81.u0": "Ah, es verdad.",
+ "s007.sec81.u1": "¿Tocar la {color 6}Flauta azul{color 1}?",
+ "s007.sec81.u2": "Amigo mío, ¿precisas de mi poder?",
+ "s007.sec81.u3": "Llévame a la otra orilla.",
+ "s007.sec81.u4": "Nada más fácil. Vamos, sube.",
+ "s007.sec82.m0.o0": "Seamos amigos",
+ "s007.sec82.m0.o1": "¡Enséñame una técnica!",
+ "s007.sec82.m0.o2": "Quiero un objeto",
+ "s007.sec82.m1.o0": "Seamos amigos",
+ "s007.sec82.m1.o1": "¡Enséñame una técnica!",
+ "s007.sec82.m1.o2": "Quiero un objeto",
+ "s007.sec82.m2.o0": "¡Sí, voy, voy!",
+ "s007.sec82.m2.o1": "Me preparo y vuelvo",
+ "s007.sec82.u0": "¡Seadramon!",
+ "s007.sec82.u1": "Volvemos a encontrarnos. ¿Tienes algún deseo?",
+ "s007.sec82.u2": "Tú y yo ya somos amigos. ¿Algún otro deseo?",
+ "s007.sec82.u3": "¡Ha-halaaa! ¡Es el guardián del lago!",
+ "s007.sec82.u4": [
+  [
+   "Uf... En efecto. Soy",
+   "Seadramon. ¿Eres tú quien",
+   "tanto pesca por aquí?"
+  ],
+  [
+   "Bueno, no importa. ¿Tienes",
+   "algún deseo?"
+  ]
+ ],
+ "s007.sec82.u5": "¡Hala! ...Cómo se nota que es el guardián. Increíble. Esto, pues entonces...",
+ "s007.sec82.u6": [
+  [
+   "Muy bien, así sea."
+  ],
+  [
+   "Desde ahora, tú y yo somos",
+   "amigos. En señal de ello, te",
+   "doy esta flauta."
+  ]
+ ],
+ "s007.sec82.u7": "¡Oh, no! Llevo demasiados objetos. Tengo que tirar algo.",
+ "s007.sec82.u8": "¡Has conseguido la {color 6}Flauta azul{color 1}!",
+ "s007.sec82.u9": "Tócala cerca del lago y apareceré cuando sea. Como amigo, te llevaré al otro lado.",
+ "s007.sec82.u10": "¡Hala, así podré llegar al otro lado! ¡Gracias!",
+ "s007.sec82.u11": "Al otro lado del lago hay un bosque bastante extraño. ¿Quieres ir ahora?",
+ "s007.sec82.u12": "Mmm. Entonces te enseñaré esta técnica.",
+ "s007.sec82.u13": "¡Ha aprendido Magia Acuática!",
+ "s007.sec82.u14": "¡Ha aprendido Ráfaga Invernal!",
+ "s007.sec82.u15": "¡Ha aprendido Gigahelada!",
+ "s007.sec82.u16": "Mmm, parece que ya no me quedan técnicas que enseñarte...",
+ "s007.sec82.u17": "Entonces, adiós.",
+ "s007.sec82.u18": "Mmm. Te daré la {color 6}Botella de agua{color 1}.",
+ "s007.sec82.u19": "¡Oh, no! Llevo demasiados objetos. Tengo que tirar algo.",
+ "s007.sec82.u20": "¡Has conseguido la {color 6}Botella de agua{color 1}!",
+ "s007.sec82.u21": "Entonces, adiós por ahora.",
+ "s007.sec82.u22": "Entonces, súbete a mi lomo.",
+ "s007.sec82.u23": "Entonces, adiós de momento.",
+ "s009.sec81.m0.o0": "Carne: 300 Bits",
+ "s009.sec81.m0.o1": "Digiseta: 600 Bits",
+ "s009.sec81.m0.o2": "No comprar",
+ "s009.sec81.u0": "Máquina expendedora",
+ "s009.sec81.u1": "¡Uf, qué cara es esta máquina!",
+ "s009.sec81.u2": "No me llega el dinero...",
+ "s009.sec81.u3": "No me llega el dinero...",
+ "s009.sec81.u4": "¡Ha salido {color 6}Carne{color 1}!",
+ "s009.sec81.u5": "¡Ups! Llevo la bolsa llena.",
+ "s009.sec81.u6": "¡Ha salido {color 6}Digiseta{color 1}!",
+ "s009.sec81.u7": "¡Ups! Llevo la bolsa llena.",
+ "s009.sec82.u0": [
+  [
+   "Cómo pescar",
+   "Primero, consigue una caña. En",
+   "el submenú, con {color 5}△{color 1}, saldrá un",
+   "icono de pesca: púlsalo. Pulsa",
+   "{color 6}×{color 1} para cebar el anzuelo:",
+   "elige uno de tus alimentos."
+  ],
+  [
+   "Luego gira a izquierda o",
+   "derecha con los botones de",
+   "dirección. Pulsa {color 6}×{color 1} para alzar",
+   "la caña y {color 6}×{color 1} otra vez para",
+   "lanzar. Espera a que se hunda",
+   "el flotador: un pez ha picado.",
+   "Tira con {color 6}×{color 1}."
+  ],
+  [
+   "Ahora mira el indicador de",
+   "arriba a la izquierda: suelta",
+   "{color 6}×{color 1} antes de que se llene, o se",
+   "partirá el sedal. Recoge el",
+   "flotador del todo y habrás",
+   "pescado el pez."
+  ],
+  [
+   "Si sale una X en la sombra de",
+   "un pez, ese pez no picará con",
+   "el cebo que usas ahora."
+  ]
+ ]
+}

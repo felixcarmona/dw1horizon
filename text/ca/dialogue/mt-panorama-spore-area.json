@@ -1,0 +1,425 @@
+{
+ "s022.sec5.u0": [
+  [
+   "La meva ala..."
+  ]
+ ],
+ "s022.sec5.u1": [
+  [
+   "Què et passa?"
+  ]
+ ],
+ "s022.sec5.u2": [
+  [
+   "M'he... ferit l'ala... Tens",
+   "alguna cosa per a curar una",
+   "ferida?"
+  ]
+ ],
+ "s022.sec5.u3": [
+  [
+   "Això fa mala pinta...! Espera.",
+   "A veure..."
+  ]
+ ],
+ "s022.sec5.u4": [
+  [
+   "Ah, és veritat, ara no porto",
+   "res..."
+  ]
+ ],
+ "s022.sec5.u5": [
+  [
+   "No. Amb això no n'hi ha prou."
+  ]
+ ],
+ "s022.sec5.u6": [
+  [
+   "Uf... Ja estic molt millor.",
+   "Gràcies."
+  ]
+ ],
+ "s022.sec5.u7": [
+  [
+   "Ja pots volar?"
+  ]
+ ],
+ "s022.sec5.u8": [
+  [
+   "...Em temo que no gaire",
+   "lluny..."
+  ]
+ ],
+ "s022.sec5.u9": [
+  [
+   "Ja veig... Ah, ja sé! A la",
+   "ciutat hi ha una clínica."
+  ],
+  [
+   "Que et donin un cop d'ull allí.",
+   "No està lluny d'aquí."
+  ]
+ ],
+ "s022.sec5.u10": [
+  [
+   "Sorprenent. Havia sentit",
+   "rumors sobre la ciutat, però no",
+   "imaginava que hagués crescut",
+   "tant."
+  ]
+ ],
+ "s022.sec5.u11": [
+  [
+   "Je, je. Pren-t'ho amb calma a",
+   "la ciutat i descansa."
+  ]
+ ],
+ "s022.sec5.u12": [
+  [
+   "Sento les molèsties... Et",
+   "tornaré el favor, ho prometo."
+  ]
+ ],
+ "s022.sec5.u13": "Unimon s'ha unit a la ciutat!",
+ "s022.sec5.u14": [
+  [
+   "Alguna cosa per a curar una",
+   "ferida... Val. Et portaré",
+   "alguna cosa."
+  ]
+ ],
+ "s022.sec5.u15": [
+  [
+   "Ho sento... Si us plau,",
+   "afanya't..."
+  ]
+ ],
+ "s022.sec51.u0": [
+  [
+   "Hi ha uns dibuixos estranys",
+   "traçats en el sòl..."
+  ]
+ ],
+ "s022.sec51.u1": [
+  [
+   "Serà un d'aquests cercles de",
+   "les collites? No sembla molt",
+   "antic."
+  ]
+ ],
+ "s022.sec51.u2": [
+  [
+   "N'hi ha més que l'altra vegada!",
+   "Potser té alguna cosa a veure",
+   "amb l'OVNI de què parla la",
+   "gent...?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Hala!? N'hi ha més! MOLTS",
+   "més! Llavors, és aquí..."
+  ]
+ ],
+ "s022.sec51.u4": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s022.sec51.u5": [
+  [
+   "Apareix l'OVNI de Vademon!"
+  ]
+ ],
+ "s022.sec51.u6": [
+  [
+   "Un e-extraterrestre!?"
+  ]
+ ],
+ "s022.sec51.u7": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u8": [
+  [
+   "Ets... un Digimon...?"
+  ]
+ ],
+ "s022.sec51.u9": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u10": [
+  [
+   "Això..."
+  ]
+ ],
+ "s022.sec51.u11": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u12": [
+  [
+   "Vademon aixeca una pistola!"
+  ]
+ ],
+ "s022.sec51.u13": [
+  [
+   "Uy, no, espera! No som els",
+   "teus enemics!"
+  ]
+ ],
+ "s022.sec51.u14": [
+  [
+   "Vademon baixa la pistola."
+  ]
+ ],
+ "s022.sec51.u15": [
+  [
+   "Ho haurà entès? Bé..."
+  ]
+ ],
+ "s022.sec51.u16": [
+  [
+   "{color 6}{player}{color 1} ha fet tot el",
+   "possible per convèncer-lo!!"
+  ]
+ ],
+ "s022.sec51.u17": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u18": [
+  [
+   "Res...?"
+  ]
+ ],
+ "s022.sec51.u19": [
+  [
+   "Vaaale."
+  ]
+ ],
+ "s022.sec51.u20": "Vademon s'ha unit a la ciutat!",
+ "s022.sec51.u21": [
+  [
+   "Pe... però aquest paio... Si",
+   "SAP parlar!!"
+  ]
+ ],
+ "s189.sec5.u0": [
+  [
+   "M'has portat alguna cosa per a",
+   "curar la meva ferida...?"
+  ]
+ ],
+ "s189.sec5.u1": [
+  [
+   "Espera. A veure..."
+  ]
+ ],
+ "s189.sec5.u2": [
+  [
+   "La meva ala..."
+  ]
+ ],
+ "s189.sec5.u3": [
+  [
+   "Què et passa?"
+  ]
+ ],
+ "s189.sec5.u4": [
+  [
+   "M'he... ferit l'ala... Tens",
+   "alguna cosa per a curar una",
+   "ferida?"
+  ]
+ ],
+ "s189.sec5.u5": [
+  [
+   "Això fa mala pinta...! Espera.",
+   "A veure..."
+  ]
+ ],
+ "s189.sec5.u6": [
+  [
+   "Ah, és veritat, ara no porto",
+   "res..."
+  ]
+ ],
+ "s189.sec5.u7": [
+  [
+   "No. Amb això no n'hi ha prou."
+  ]
+ ],
+ "s189.sec5.u8": [
+  [
+   "Uf... Ja estic molt millor.",
+   "Gràcies."
+  ]
+ ],
+ "s189.sec5.u9": [
+  [
+   "Ja pots volar?"
+  ]
+ ],
+ "s189.sec5.u10": [
+  [
+   "...Em temo que no gaire",
+   "lluny..."
+  ]
+ ],
+ "s189.sec5.u11": [
+  [
+   "Ja veig... Ah, ja sé! A la",
+   "ciutat hi ha una clínica."
+  ],
+  [
+   "Que et donin un cop d'ull allí.",
+   "No està lluny d'aquí."
+  ]
+ ],
+ "s189.sec5.u12": [
+  [
+   "Sorprenent. Havia sentit",
+   "rumors sobre la ciutat, però no",
+   "imaginava que hagués crescut",
+   "tant."
+  ]
+ ],
+ "s189.sec5.u13": [
+  [
+   "Je, je. Pren-t'ho amb calma a",
+   "la ciutat i descansa."
+  ]
+ ],
+ "s189.sec5.u14": [
+  [
+   "Sento les molèsties... Et",
+   "tornaré el favor, ho prometo."
+  ]
+ ],
+ "s189.sec5.u15": "Unimon s'ha unit a la ciutat!",
+ "s189.sec5.u16": [
+  [
+   "Alguna cosa per a curar una",
+   "ferida... Et portaré alguna",
+   "cosa, així que espera aquí."
+  ]
+ ],
+ "s189.sec5.u17": [
+  [
+   "Ho sento... Si us plau,",
+   "afanya't..."
+  ]
+ ],
+ "s190.sec51.u0": [
+  [
+   "Hi ha uns dibuixos estranys",
+   "traçats en el sòl..."
+  ]
+ ],
+ "s190.sec51.u1": [
+  [
+   "Serà un d'aquests cercles de",
+   "les collites? No sembla molt",
+   "antic."
+  ]
+ ],
+ "s190.sec51.u2": [
+  [
+   "N'hi ha més que l'altra vegada!",
+   "Potser té alguna cosa a veure",
+   "amb l'OVNI de què parla la",
+   "gent...?"
+  ]
+ ],
+ "s190.sec51.u3": "Uau!?",
+ "s190.sec51.u4": [
+  [
+   "N'hi ha més! MOLTS més!"
+  ]
+ ],
+ "s190.sec51.u5": [
+  [
+   "Llavors, és aquí..."
+  ]
+ ],
+ "s190.sec51.u6": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s190.sec51.u7": [
+  [
+   "Un e-extraterrestre!?"
+  ]
+ ],
+ "s190.sec51.u8": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u9": [
+  [
+   "Ets... un Digimon...?"
+  ]
+ ],
+ "s190.sec51.u10": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u11": [
+  [
+   "Això..."
+  ]
+ ],
+ "s190.sec51.u12": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u13": [
+  [
+   "Uy, no, espera! No som els",
+   "teus enemics!"
+  ]
+ ],
+ "s190.sec51.u14": [
+  [
+   "Ho haurà entès? Bé..."
+  ]
+ ],
+ "s190.sec51.u15": [
+  [
+   "{color 6}{player}{color 1} ha fet tot el",
+   "possible per convèncer-lo!!"
+  ]
+ ],
+ "s190.sec51.u16": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u17": [
+  [
+   "Res...?"
+  ]
+ ],
+ "s190.sec51.u18": [
+  [
+   "Vaaale."
+  ]
+ ],
+ "s190.sec51.u19": "Vademon s'ha unit a la ciutat!",
+ "s190.sec51.u20": [
+  [
+   "Pe... però aquest paio... Si",
+   "SAP parlar!!"
+  ]
+ ]
+}

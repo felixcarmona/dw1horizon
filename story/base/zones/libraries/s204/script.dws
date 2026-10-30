@@ -1,0 +1,52 @@
+// Readable form of script 204 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 204 {
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        if (cup_won.d_rank && cup_won.c_rank && cup_won.b_rank && cup_won.grade_a && cup_won.s_rank) {
+            if (!medal.grade_cup) {
+                medal.grade_cup = true;
+                sound(0, 7);
+                say(narrator, text("s204.sec51.u0"));
+            }
+        }
+        if (cup_won.version_1 && cup_won.version_2 && cup_won.version_3 && cup_won.version_4 && cup_won.version_0) {
+            if (!medal.version_cup) {
+                medal.version_cup = true;
+                sound(0, 7);
+                say(narrator, text("s204.sec51.u1"));
+            }
+        }
+        if (cup_won.fire && cup_won.battle && cup_won.air && cup_won.ice) {
+            if (cup_won.earth && cup_won.mech && cup_won.filth) {
+                if (!medal.type_cup) {
+                    medal.type_cup = true;
+                    sound(0, 7);
+                    say(narrator, text("s204.sec51.u2"));
+                }
+            }
+        }
+        if (cup_won.dino && cup_won.wing && cup_won.animal && cup_won.human) {
+            if (!medal.special_cup) {
+                medal.special_cup = true;
+                sound(0, 7);
+                say(narrator, text("s204.sec51.u3"));
+            }
+        }
+        if (stat(17) >= 100) {
+            if (!medal.hundred_wins) {
+                medal.hundred_wins = true;
+                sound(0, 7);
+                say(narrator, text("s204.sec51.u4"));
+            }
+        }
+        return;
+    }
+}

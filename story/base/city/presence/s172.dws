@@ -1,0 +1,28 @@
+// Who stands on screen 172 (File City), and when. Read out of MAPHEAD.SCN section 172 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(172) {                              // File City
+            let r1 = not recruited(Whamon) and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not (not trigger(84) and recruited(Kokatorimon)) and not (clock.hour >= 7 and clock.hour < 19) and not (recruited(Kokatorimon) and trigger(84) and clock.hour >= 4 and clock.hour < 8) and recruited(Sukamon);
+            let r3 = not recruited(Whamon) and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not (not trigger(84) and recruited(Kokatorimon)) and not (clock.hour >= 7 and clock.hour < 19) and recruited(Kokatorimon) and trigger(84) and clock.hour >= 4 and clock.hour < 8;
+            let r4 = not recruited(Whamon) and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not (not trigger(84) and recruited(Kokatorimon)) and clock.hour >= 7 and clock.hour < 19 and not (recruited(Andromon) and roll(1) <= 0);
+            let r5 = not recruited(Whamon) and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not (not trigger(84) and recruited(Kokatorimon)) and clock.hour >= 7 and clock.hour < 19 and recruited(Andromon) and roll(1) <= 0;
+            let r6 = not recruited(Whamon) and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not trigger(84) and recruited(Kokatorimon);
+            let r7 = recruited(Whamon);
+            let r8 = r6 or r7 and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not (not trigger(84) and recruited(Kokatorimon));
+            let r9 = r3 or r8 and not (clock.hour >= 7 and clock.hour < 19) and not (recruited(Kokatorimon) and trigger(84) and clock.hour >= 4 and clock.hour < 8);
+            let r10 = r9 and recruited(Sukamon);
+            let r12 = r8 and not (clock.hour >= 7 and clock.hour < 19) and recruited(Kokatorimon) and trigger(84) and clock.hour >= 4 and clock.hour < 8;
+            let r13 = r5 or r8 and clock.hour >= 7 and clock.hour < 19 and not (recruited(Andromon) and roll(1) <= 0);
+            let r14 = r8 and clock.hour >= 7 and clock.hour < 19 and recruited(Andromon) and roll(1) <= 0;
+            let r15 = r7 and not (trigger(87) and not recruited(Greymon)) and not (trigger(354) and not trigger(355)) and not trigger(84) and recruited(Kokatorimon);
+            npc Yuramon slot 0 when r4 or r13;
+            npc 159 slot 1 when r1 or r10;
+            npc 160 slot 2 when r5 or r14;
+            npc 168 slot 3 when r3 or r6 or r12 or r15;
+            npc 164 slot 6;
+            npc 146 slot 7 when r7;
+        }
+    }
+}

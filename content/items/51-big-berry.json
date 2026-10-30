@@ -1,0 +1,14 @@
+{
+  "id": 51,
+  "name": "Big Berry",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 100,
+    "weight": 10
+  }
+}

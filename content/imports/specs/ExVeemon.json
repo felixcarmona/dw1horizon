@@ -1,0 +1,107 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 158,
+ "type": 194,
+ "name": "ExVeemon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 6,
+  "3": 10,
+  "4": 3,
+  "5": 7,
+  "9": 11,
+  "10": 12,
+  "11": 13,
+  "13": 1,
+  "17": 14,
+  "18": 19,
+  "19": 20,
+  "21": 23,
+  "23": 24,
+  "24": 18,
+  "25": 15
+ },
+ "hips": [
+  17,
+  1,
+  0.981
+ ],
+ "root_scale": 0.981,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 54,
+   "end": 144,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 104,
+   "end": 184,
+   "hz": 0.3
+  },
+  "0x3a": {
+   "anim": "anim_02",
+   "start": 100,
+   "end": 192,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 146,
+   "end": 193,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x32": {
+   "anim": "anim_03",
+   "start": 86,
+   "end": 178,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ]
+}

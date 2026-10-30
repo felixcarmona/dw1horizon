@@ -1,0 +1,716 @@
+{
+ "s084.sec5.u0": [
+  [
+   "Ah, quelle douceur !"
+  ]
+ ],
+ "s084.sec6.u0": [
+  [
+   "Tu veux passer par ici ? Ne me",
+   "fais pas rire !"
+  ]
+ ],
+ "s084.sec7.u0": [
+  [
+   "Pauvre de toi... Fwahahaha !"
+  ]
+ ],
+ "s084.sec8.u0": [
+  [
+   "Il va pleuvoir du sang !"
+  ]
+ ],
+ "s084.sec81.u0": [
+  [
+   "Au-delà : terres gelées.",
+   "Entrée interdite à ceux qui ne",
+   "sont pas {color 3}faits pour le froid{color 1}."
+  ]
+ ],
+ "s085.sec5.u0": [
+  [
+   "Petit, je vais te dévorer tout",
+   "cruuu !"
+  ]
+ ],
+ "s085.sec6.u0": [
+  [
+   "C'est l'heure de semer la",
+   "pagaille !"
+  ]
+ ],
+ "s085.sec7.u0": [
+  [
+   "Maudis ta propre faiblesse !"
+  ]
+ ],
+ "s085.sec8.u0": [
+  [
+   "Viens donc. Je vais te mettre",
+   "en pièces !"
+  ]
+ ],
+ "s086.sec5.u0": [
+  [
+   "Bats-toi avec moiii !!"
+  ]
+ ],
+ "s086.sec6.u0": [
+  [
+   "Miiince !"
+  ]
+ ],
+ "s086.sec7.u0": [
+  [
+   "Tu veux que je te couvre de",
+   "bleus ?"
+  ]
+ ],
+ "s086.sec8.u0": [
+  [
+   "Je vais te briser comme une",
+   "brindille !"
+  ]
+ ],
+ "s087.sec5.u0": [
+  [
+   "Tes affaires sont à moi,",
+   "maintenant !"
+  ]
+ ],
+ "s087.sec6.u0": [
+  [
+   "Hé hé, désolé pour ça !"
+  ]
+ ],
+ "s087.sec7.u0": [
+  [
+   "Aucune chance que tu battes",
+   "quelqu'un comme moi !"
+  ]
+ ],
+ "s087.sec8.u0": [
+  [
+   "Va en enfer !"
+  ]
+ ],
+ "s087.sec9.u0": [
+  [
+   "Hé. Ne me fais pas rire."
+  ]
+ ],
+ "s087.sec10.u0": [
+  [
+   "Je ne peux pas te laisser aller",
+   "plus loin."
+  ]
+ ],
+ "s088.sec51.u0": [
+  [
+   "Une mystérieuse force blanche",
+   "bloque le passage !"
+  ]
+ ],
+ "s088.sec51.u1": [
+  [
+   "Q-quoi ? Mes jambes bougent",
+   "toutes seules..."
+  ]
+ ],
+ "s089.sec5.u0": [
+  [
+   "Laisse tes objets de valeur",
+   "ici, mon pote."
+  ]
+ ],
+ "s089.sec6.u0": [
+  [
+   "Je vais te geler sur place !"
+  ]
+ ],
+ "s089.sec7.u0": [
+  [
+   "Tu n'iras ni à gauche ni à",
+   "droite."
+  ]
+ ],
+ "s089.sec8.u0": [
+  [
+   "Je vais t'enfermer dans la",
+   "glace !"
+  ]
+ ],
+ "s089.sec9.u0": [
+  [
+   "Je vais te montrer un enfer",
+   "glacé..."
+  ]
+ ],
+ "s089.sec10.u0": [
+  [
+   "Tu veux mourir de froid ?"
+  ]
+ ],
+ "s089.sec81.u0": [
+  [
+   "Ouest : Bois brumeux Est :",
+   "Plage Iceberg"
+  ]
+ ],
+ "s090.sec5.u0": [
+  [
+   "Tu viens de loin, hein."
+  ]
+ ],
+ "s090.sec6.u0": [
+  [
+   "Tu veux te battre ? Ça me va",
+   "!"
+  ]
+ ],
+ "s090.sec7.u0": [
+  [
+   "Hmpf. Tu as vraiment l'air",
+   "faible."
+  ]
+ ],
+ "s090.sec8.u0": [
+  [
+   "Je suis parfait."
+  ]
+ ],
+ "s091.sec5.m0.o0": "Peut-être que tu as raison.",
+ "s091.sec5.m0.o1": "Mauvais perdant !",
+ "s091.sec5.m1.o0": "D'accord, j'accepte",
+ "s091.sec5.m1.o1": "Trop d'ennuis",
+ "s091.sec5.u0": [
+  [
+   "Pour passer, il faut d'abord me",
+   "battre !"
+  ]
+ ],
+ "s091.sec5.u1": [
+  [
+   "Tss, j'ai baissé ma garde. Mais",
+   "à deux contre un, c'est un peu",
+   "déloyal, non ?"
+  ]
+ ],
+ "s091.sec5.u2": [
+  [
+   "Écoute, en un contre un, je ne",
+   "perds jamais ! Je te défie en",
+   "duel ! Reviens ici demain à 16"
+  ],
+  [
+   "h. Cette fois, seuls les",
+   "Digimon se battent."
+  ]
+ ],
+ "s091.sec5.u3": [
+  [
+   "C'est une promesse. Jusqu'à",
+   "demain !"
+  ]
+ ],
+ "s091.sec5.u4": [
+  [
+   "Tu es venu sans te défiler.",
+   "Pas mal. Aujourd'hui, c'est un",
+   "contre un, comme promis !"
+  ]
+ ],
+ "s091.sec5.u5": [
+  [
+   "Tu n'es pas venu à l'heure",
+   "convenue, quel type ! Mais j'ai",
+   "eu le temps de bien me soigner,"
+  ],
+  [
+   "alors je passe l'éponge.",
+   "J'arrive !"
+  ]
+ ],
+ "s091.sec5.u6": [
+  [
+   "Hm. Je vais juste regarder.",
+   "Allez-y."
+  ]
+ ],
+ "s091.sec5.u7": [
+  [
+   "Je compte sur toi,",
+   "{color 10}{partner}{color 1} !"
+  ]
+ ],
+ "s091.sec5.u8": [
+  [
+   "Tu es... fort ! Mais qui es-tu",
+   "donc ?"
+  ]
+ ],
+ "s091.sec5.u9": [
+  [
+   "Nous sommes en route pour",
+   "sauver cette île du danger."
+  ]
+ ],
+ "s091.sec5.u10": [
+  [
+   "Qu'est-ce que tu as dit ?"
+  ]
+ ],
+ "s091.sec5.u11": [
+  [
+   "{color 6}{player}{color 1} a fait de son",
+   "mieux pour le convaincre !"
+  ]
+ ],
+ "s091.sec5.u12": [
+  [
+   "D'accord, je vais t'aider. Mais",
+   "je ne peux rien décider avant",
+   "d'avoir vu ta ville."
+  ]
+ ],
+ "s091.sec5.u13": "Garurumon a rejoint la ville !",
+ "s091.sec6.u0": [
+  [
+   "Je vais te battre !"
+  ]
+ ],
+ "s091.sec7.u0": [
+  [
+   "Pas question de perdre contre",
+   "TOI !"
+  ]
+ ],
+ "s091.sec8.u0": [
+  [
+   "Ké hé hé hé ! Tant pis pour",
+   "toi."
+  ]
+ ],
+ "s091.sec9.u0": [
+  [
+   "Hé, tu comptes passer sans me",
+   "voir ?"
+  ]
+ ],
+ "s092.sec5.u0": [
+  [
+   "Je vais tout donner !"
+  ]
+ ],
+ "s092.sec6.u0": [
+  [
+   "Ça m'énerve vraiment !"
+  ]
+ ],
+ "s092.sec7.u0": [
+  [
+   "Ne t'avise pas de dire « froid",
+   "» !"
+  ]
+ ],
+ "s092.sec8.u0": [
+  [
+   "Ne fais rien de fou !"
+  ]
+ ],
+ "s127.sec5.u0": [
+  [
+   "Ça te dérange si je te secoue",
+   "un peu ?"
+  ]
+ ],
+ "s127.sec6.u0": [
+  [
+   "Ne fais pas le malin !"
+  ]
+ ],
+ "s127.sec7.u0": [
+  [
+   "Ne te crois pas tout permis,",
+   "misérable !"
+  ]
+ ],
+ "s127.sec8.u0": [
+  [
+   "Ce ne sera pas si facile."
+  ]
+ ],
+ "s128.sec5.u0": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec5.u1": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec5.u2": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec5.u3": [
+  [
+   "Hé, tu es revenu me voir !"
+  ]
+ ],
+ "s128.sec5.u4": [
+  [
+   "Salut, je suis Mojyamon !"
+  ]
+ ],
+ "s128.sec5.u5": "{color 6}{player}{color 1}, tout ce que tu as fait pour nous me touche beaucoup! J'ai décidé d'aller en ville. Prends bien soin de moi!",
+ "s128.sec5.u6": "Mojyamon a rejoint la ville !",
+ "s130.sec5.u0": [
+  [
+   "Je vais te fendre le crâne !"
+  ]
+ ],
+ "s130.sec7.u0": [
+  [
+   "Allez au diable."
+  ]
+ ],
+ "s130.sec81.m0.o0": "Je viens t'aider",
+ "s130.sec81.m0.o1": "Pas encore prêt",
+ "s130.sec81.m1.o0": "Très bien. Je vais t'aider.",
+ "s130.sec81.m1.o1": "J'ai autre chose à faire...",
+ "s130.sec81.u0": [
+  [
+   "Ah, C'est toi."
+  ]
+ ],
+ "s130.sec81.u1": [
+  [
+   "Il y a quelqu'un... par là... ?"
+  ]
+ ],
+ "s130.sec81.u2": [
+  [
+   "Tu ne vois pas ?!"
+  ]
+ ],
+ "s130.sec81.u3": [
+  [
+   "Je suis Whamon. Je vis",
+   "habituellement dans la mer. Je",
+   "n'ai pas d'yeux, mais je"
+  ],
+  [
+   "perçois la plupart des choses."
+  ]
+ ],
+ "s130.sec81.u4": [
+  [
+   "Je suis {color 6}{player}{color 1}, un",
+   "humain, et voici... enfin, tu",
+   "ne peux pas le voir, mais c'est"
+  ],
+  [
+   "{digimon 103},",
+   "{color 10}{partner}{color 1}. Mon partenaire."
+  ]
+ ],
+ "s130.sec81.u5": [
+  [
+   "Oh... Je perçois une grande",
+   "puissance..."
+  ]
+ ],
+ "s130.sec81.u6": [
+  [
+   "Hmm... Veux-tu écouter mon",
+   "histoire ? Près d'ici se trouve",
+   "une grotte au bord de la mer,"
+  ],
+  [
+   "où je vais me reposer. Mais des",
+   "types malveillants s'y sont",
+   "installés récemment et m'ont"
+  ],
+  [
+   "chassé. Dans ma fuite, j'ai",
+   "laissé tomber un précieux",
+   "trésor."
+  ]
+ ],
+ "s130.sec81.u7": [
+  [
+   "Des types malveillants, hein.",
+   "C'est inquiétant."
+  ]
+ ],
+ "s130.sec81.u8": [
+  [
+   "J'ai une faveur à te demander.",
+   "Aide-moi à les chasser et à",
+   "récupérer mon trésor."
+  ]
+ ],
+ "s130.sec81.u9": [
+  [
+   "Je vois..."
+  ]
+ ],
+ "s130.sec81.u10": [
+  [
+   "Alors, monte sur mon dos, s'il",
+   "te plaît."
+  ]
+ ],
+ "s130.sec81.u11": [
+  [
+   "Allons-y !"
+  ]
+ ],
+ "s132.sec5.u0": [
+  [
+   "Bonjour, Je suis de retour."
+  ]
+ ],
+ "s132.sec5.u1": [
+  [
+   "C'est toi... Qu'est-il arrivé",
+   "au Digimon qui t'accompagnait",
+   "avant ?"
+  ]
+ ],
+ "s132.sec5.u2": [
+  [
+   "De quoi tu parles ? C'est le",
+   "même, le même."
+  ]
+ ],
+ "s132.sec5.u3": [
+  [
+   "Hein ? Oh... v-vraiment ? Ah",
+   "oui... ?"
+  ]
+ ],
+ "s132.sec5.u4": [
+  [
+   "Je suis revenu te demander une",
+   "faveur. Pour faire simple,",
+   "j'aimerais que tu viennes en"
+  ],
+  [
+   "ville."
+  ]
+ ],
+ "s132.sec5.u5": [
+  [
+   "HU? Y a-t-il quelque chose de",
+   "bien ? Est-ce amusant?"
+  ]
+ ],
+ "s132.sec5.u6": [
+  [
+   "Euh... Tu peux ouvrir la",
+   "boutique de ton choix."
+  ]
+ ],
+ "s132.sec5.u7": [
+  [
+   "Quoiii ! Une boutique ? J'en ai",
+   "toujours rêvé. Oh, oh, j'y",
+   "vais, j'y vais !"
+  ]
+ ],
+ "s132.sec5.u8": [
+  [
+   "Ah, super, super. Alors,",
+   "allons-y tout de suite."
+  ]
+ ],
+ "s132.sec5.u9": [
+  [
+   "Une boutique, une boutique !",
+   "Glace pilée ! Crème glacée !",
+   "J'ai hâte !"
+  ]
+ ],
+ "s132.sec5.u10": "Frigimon a rejoint la ville !",
+ "s132.sec5.u11": [
+  [
+   "Hé, toi ! Je t'ai dit que ce",
+   "Digimon ne supporte pas le",
+   "froid !"
+  ]
+ ],
+ "s132.sec5.u12": [
+  [
+   "Oh là, je reviendraiii !"
+  ]
+ ],
+ "s132.sec51.u0": [
+  [
+   "Quoi ?.. C'est quoi cet endroit",
+   "?..? Un rêve. . . ?"
+  ]
+ ],
+ "s132.sec51.u1": [
+  [
+   "Waouh ! Qui es-tu ?! Où est",
+   "{color 10}{partner}{color 1} ?! O-o-où est-il",
+   "?"
+  ]
+ ],
+ "s132.sec51.u2": [
+  [
+   "Du calme, du calme. Je suis",
+   "Frigimon, un Digimon de glace",
+   "et de neige. Ici, c'est chez"
+  ],
+  [
+   "moi. Vous étiez tous deux",
+   "évanouis dans la neige. Je vous",
+   "ai recueillis et soignés."
+  ],
+  [
+   "Compris ?"
+  ]
+ ],
+ "s132.sec51.u3": [
+  [
+   "Oh, {color 10}{partner}{color 1}, tu vas bien !",
+   "Ouf !"
+  ]
+ ],
+ "s132.sec51.u4": [
+  [
+   "Hé ! Tu m'écoutes ?! Sans mes",
+   "soins, vous n'iriez PAS bien !"
+  ]
+ ],
+ "s132.sec51.u5": [
+  [
+   "Hé hé, pardon, pardon. Merci",
+   "beaucoup."
+  ]
+ ],
+ "s132.sec51.u6": [
+  [
+   "Hé, {color 10}{partner}{color 1} ! Tu t'es",
+   "écroulé d'un coup et je me suis",
+   "aussi cogné la tête !"
+  ]
+ ],
+ "s132.sec51.u7": [
+  [
+   "Tu ne sais donc pas que",
+   "{digimon 103} craint le",
+   "froid ? Tu as été imprudent."
+  ],
+  [
+   "C'est toi qui devrais",
+   "t'excuser."
+  ]
+ ],
+ "s132.sec51.u8": [
+  [
+   "Je ne savais pas... Pardon,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s132.sec51.u9": [
+  [
+   "...Merci pour tout, Frigimon.",
+   "Et, euh, puisque je te dérange",
+   "déjà, j'aimerais te demander"
+  ],
+  [
+   "quelque chose..."
+  ]
+ ],
+ "s132.sec51.u10": [
+  [
+   "Oh, allez ! Que feras-tu si",
+   "{digimon 103} s'écroule",
+   "encore ? Vite, rentre chez toi"
+  ],
+  [
+   "!"
+  ]
+ ],
+ "s132.sec51.u11": [
+  [
+   "D-d'accord. Je vais faire",
+   "digivoluer {color 10}{partner}{color 1} en un",
+   "autre Digimon."
+  ]
+ ],
+ "s132.sec51.u12": [
+  [
+   "??? Digivoluer... ?"
+  ]
+ ],
+ "s128.sec6.u0": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec6.u1": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec6.u2": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s128.sec6.u3": [
+  [
+   "Hé, tu es revenu me voir !"
+  ]
+ ],
+ "s128.sec6.u4": [
+  [
+   "Salut, je suis Mojyamon !"
+  ]
+ ],
+ "s128.sec6.u5": "{color 6}{player}{color 1}, tout ce que tu as fait pour nous me touche beaucoup! J'ai décidé d'aller en ville. Prends bien soin de moi!",
+ "s128.sec6.u6": "Mojyamon a rejoint la ville !",
+ "s129.sec7.u0": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s129.sec7.u1": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s129.sec7.u2": [
+  [
+   "Tiens, mais c'est {color 6}{player}{color 1}",
+   "!"
+  ]
+ ],
+ "s129.sec7.u3": [
+  [
+   "Hé, tu es revenu me voir !"
+  ]
+ ],
+ "s129.sec7.u4": [
+  [
+   "Salut, je suis Mojyamon !"
+  ]
+ ],
+ "s129.sec7.u5": "{color 6}{player}{color 1}, tout ce que tu as fait pour nous me touche beaucoup! J'ai décidé d'aller en ville. Prends bien soin de moi!",
+ "s129.sec7.u6": "Mojyamon a rejoint la ville !"
+}

@@ -1,0 +1,17 @@
+{
+  "id": 35,
+  "name": "Insect Plague",
+  "element": "nature",
+  "power": 58,
+  "mpCost": 32,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 83,
+  "status": 1,
+  "statusChance": 90,
+  "iframes": 12,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [24, 16, 13]
+}

@@ -1,0 +1,167 @@
+// Readable form of script 47 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 47 {
+    npc agumon0 = 5;
+    npc agumon1 = 6;
+    npc agumon2 = 7;
+    npc machinedramon = 8;
+    npc analogman = 9;
+    npc slot5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 60;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(agumon0) replace {    // section 5
+        say(agumon0, text("s047.sec5.u0"));
+        run(agumon1, -230, 547);
+        run(agumon2, 483, 70);
+        await agumon1;
+        await agumon2;
+        wait(10);
+        engine.no_escape = true;
+        battle(foes: [agumon0, agumon1, agumon2], escape: true);
+        engine.no_escape = false;
+        run(agumon0, 550, -2050);
+        run(agumon1, 550, -2050);
+        run(agumon2, 550, -2050);
+        await agumon0;
+        await agumon1;
+        await agumon2;
+        remove(agumon0);
+        remove(agumon1);
+        remove(agumon2);
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(agumon1) replace {    // section 6
+        say(agumon1, text("s047.sec6.u0"));
+        run(agumon0, -815, 312);
+        run(agumon2, 686, 312);
+        await agumon0;
+        await agumon2;
+        wait(10);
+        engine.no_escape = true;
+        battle(foes: [agumon0, agumon1, agumon2], escape: true);
+        engine.no_escape = false;
+        run(agumon0, 550, -2050);
+        run(agumon1, 550, -2050);
+        run(agumon2, 550, -2050);
+        await agumon0;
+        await agumon1;
+        await agumon2;
+        remove(agumon0);
+        remove(agumon1);
+        remove(agumon2);
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(agumon2) replace {    // section 7
+        say(agumon2, text("s047.sec7.u0"));
+        run(agumon1, 702, 855);
+        run(agumon0, 29, 586);
+        await agumon0;
+        await agumon1;
+        wait(10);
+        engine.no_escape = true;
+        battle(foes: [agumon0, agumon1, agumon2], escape: true);
+        engine.no_escape = false;
+        run(agumon0, 550, -2050);
+        run(agumon1, 550, -2050);
+        run(agumon2, 550, -2050);
+        await agumon0;
+        await agumon1;
+        await agumon2;
+        remove(agumon0);
+        remove(agumon1);
+        remove(agumon2);
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on step(9) replace {    // section 60
+        wait(2s);
+        camera_to(-200, 320, speed: 20);
+        animate(tamer, 15);
+        wait(1s);
+        say(tamer, text("s047.sec60.u0"));
+        say(analogman, text("s047.sec60.u1"));
+        say(tamer, text("s047.sec60.u2"));
+        await analogman;
+        remove(analogman);
+        wait(1s);
+        say(tamer, text("s047.sec60.u3"));
+        animate(machinedramon, 28);
+        wait(2s);
+        battle(foes: [machinedramon]);
+        walk(machinedramon, -156, 1092);
+        await machinedramon;
+        animate(machinedramon, 43);
+        wait(2s);
+        say(tamer, text("s047.sec60.u4"));
+        face(tamer, machinedramon);
+        await machinedramon;
+        await tamer;
+        remove(machinedramon);
+        say(tamer, text("s047.sec60.u5"));
+        load_digimon(species("Muchomon"));
+        set_digimon(species("Muchomon"), 5, 0);
+        say(slot5, text("s047.sec60.u6"));
+        face(slot5, tamer);
+        wait(1s);
+        say(slot5, text("s047.sec60.u7"));
+        recruit(species("Koromon"));
+        back_dimension_portal = 0;
+        recruit(species("Yuramon"));
+        days_since_passed_out = 0;
+        walk_away(slot5, 320, -1546, looks: 3);
+        remove(slot5);
+        glances = 0;
+        animate(tamer, 16);
+        wait(2s);
+        say(tamer, text("s047.sec60.u8"));
+        wait(1s);
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 0, 255);
+                }
+                warp_to(168, 0, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 0, 255);
+            }
+            warp_to(171, 0, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 0, 255);
+            }
+            warp_to(174, 0, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 0, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 0, 255);
+        }
+        warp_to(177, 0, 255);
+    }
+}

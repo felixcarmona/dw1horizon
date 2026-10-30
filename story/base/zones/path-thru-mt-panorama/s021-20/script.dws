@@ -1,0 +1,64 @@
+// Readable form of script 21 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 21 {
+    npc gotsumon0 = 5;
+    npc goblimon1 = 6;
+    npc gotsumon2 = 7;
+    npc goblimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Digimushrm"), 52, 26);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 40, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 1) {
+            spawn_item(item("Deluxmushrm"), 64, 61);
+        }
+    }
+
+    on talk(gotsumon0) replace {    // section 5
+        say(gotsumon0, text("s021.sec5.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        say(goblimon1, text("s021.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(gotsumon2) replace {    // section 7
+        say(gotsumon2, text("s021.sec7.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(goblimon3) replace {    // section 8
+        say(goblimon3, text("s021.sec8.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -440, -5000);
+        if (drimogemon_tunnel_dig_started && drimogemon_job_days >= 3) {
+            drill_tunnel_opened = true;
+        }
+        if (drill_tunnel_opened) {
+            warp_to(23, 0, 255);
+        }
+        warp_to(22, 0, 255);
+        return;
+    }
+}

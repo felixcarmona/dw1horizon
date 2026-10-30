@@ -1,0 +1,323 @@
+{
+  "screen": 322,
+  "art": "iron-hills-6",
+  "review": "Raised valve, two reachable pillar bodies and three tower beams occlude rear approaches. Block all four pillar bases, and open only real grass through the eastern tower lattice with solid leg feet. The slab is the walkable top of the bridge over an unwalkable crack: there is no lower path or level connection to add. The connected vessel and thin lattice use one SAM object with separately segmented opaque drum faces; foreground/floor color refinement removes grass inside the struts. Depth follows the real support feet, including the former gaps between separately traced bars. The near right block is the front block, distinct from its taller rear neighbor. Its contact is at y=224; the earlier y=230 anchor incorrectly applied to the rear block. All five stone contacts were reviewed individually, preserving the floor shadows. With the front and rear blocks distinguished and their true contact tiles blocked, none of the four wall-bound right blocks has a rear overlap, even with 70-pixel bodies. Omit that redundant layer; the isolated broken left block and tower retain their foregrounds. Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint. The pillar alpha excludes its adjacent platform floor, left floor strip and ground shadow; the real solid cube is retained.",
+  "pieces": [
+    {
+      "name": "left-pipe-and-valve",
+      "png": "322-left-pipe-and-valve.png",
+      "at": [
+        83,
+        278
+      ],
+      "depth": [
+        166,
+        447
+      ]
+    },
+    {
+      "name": "broken-left-pillar",
+      "png": "322-broken-left-pillar.png",
+      "at": [
+        420,
+        73
+      ],
+      "depth": [
+        432,
+        107
+      ]
+    },
+    {
+      "name": "tower-lattice",
+      "png": "322-tower-lattice.png",
+      "at": [
+        162,
+        0
+      ],
+      "depth": null,
+      "depth_line": [
+        [
+          281,
+          148
+        ],
+        [
+          317,
+          116
+        ]
+      ]
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        42,
+        18
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        41,
+        19
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        19
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        41,
+        20
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        20
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        41,
+        21
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        21
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        43,
+        21
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        41,
+        22
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        22
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        43,
+        22
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        23
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        43,
+        23
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        44,
+        23
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        52,
+        23
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Real stone-block ground contact, checked against the full-resolution art; the upper body is foreground and its shadow is floor."
+    },
+    {
+      "tile": [
+        42,
+        24
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        43,
+        24
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        44,
+        24
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        52,
+        24
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Real stone-block ground contact, checked against the full-resolution art; the upper body is foreground and its shadow is floor."
+    },
+    {
+      "tile": [
+        43,
+        25
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Grass visible through the eastern tower lattice; new foreground beams cover the rear approach."
+    },
+    {
+      "tile": [
+        42,
+        30
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Near tower leg footing is solid."
+    },
+    {
+      "tile": [
+        67,
+        30
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Real stone-block ground contact, checked against the full-resolution art; the upper body is foreground and its shadow is floor."
+    },
+    {
+      "tile": [
+        68,
+        30
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Real stone-block ground contact, checked against the full-resolution art; the upper body is foreground and its shadow is floor."
+    },
+    {
+      "tile": [
+        39,
+        54
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        39,
+        55
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        38,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        39,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        40,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        39,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    },
+    {
+      "tile": [
+        40,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: solid valve-side short pipe or lower pipe lip; the standing body must stay outside the pipe footprint."
+    }
+  ],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/322.json."
+}

@@ -1,0 +1,40 @@
+From 4a8339a22512a10c73e69e46e5fdd12f42557a2c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 09:29:16 +0000
+Subject: [PATCH] Keep gym training on the 30-day calendar
+
+Both gyms allowed day 30 when a training session crossed midnight, delaying the next year while the field clock, sleep and tournament calendar all use days 0 through 29. Keep the existing daily reset and age increment, and use the same rollover limit in both gyms.
+---
+ src/trn/trn_reward.c | 2 +-
+ src/trn2/trn2_hud.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 517486fc..53ed7032 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -737,7 +737,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 		dailyPStatTrigger();
+ 		HOUR -= 0x18;
+ 		CURRENT_FRAME -= 0x7080;
+-		if (DAY >= 0x1f) {
++		if (DAY >= 30) { /* MOD: the field clock and tournament calendar have 30 days. */
+ 			DAY = 0;
+ 			YEAR++;
+ 			if (YEAR >= 0x64) {
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 7ca4d272..f32cf49a 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -229,7 +229,7 @@ void TRN2_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t hap
+ 		dailyPStatTrigger();
+ 		HOUR -= 0x18;
+ 		CURRENT_FRAME -= 0x7080;
+-		if (DAY >= 0x1f) {
++		if (DAY >= 30) { /* MOD: the field clock and tournament calendar have 30 days. */
+ 			DAY = 0;
+ 			YEAR++;
+ 			if (YEAR >= 0x64) {
+-- 
+2.55.0
+

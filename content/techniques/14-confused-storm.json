@@ -1,0 +1,17 @@
+{
+  "id": 14,
+  "name": "Confused Storm",
+  "element": "air",
+  "power": 225,
+  "mpCost": 72,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 87,
+  "status": 2,
+  "statusChance": 60,
+  "iframes": 1,
+  "unk3": 3,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 11, 7]
+}

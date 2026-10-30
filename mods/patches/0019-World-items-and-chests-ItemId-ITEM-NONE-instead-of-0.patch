@@ -1,0 +1,468 @@
+From 76ca2860f7641b8eea043eb35baa3d55a5ea5171 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 00:07:08 +0000
+Subject: [PATCH] World items and chests: ItemId, ITEM_NONE instead of 0xFF
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 3 of docs/mods/ids.md (§ 10), items outside the inventory.
+
+- DROPPED_ITEMS and TAMER_ITEM (their type was already i32) mark a free
+  slot with ITEM_NONE instead of 0xFF, so item 255 can lie on the ground.
+- spawnItem, spawnDroppedItems, pickupItem, setItemTexture and
+  renderItemSprite carry an ItemId; the four local renderItemSprite
+  prototypes now agree with the definition.
+- Chest.item is an ItemId (ITEM_NONE = no chest) in the byte and the
+  padding byte after it, so the struct keeps its 56 bytes; spawnChest
+  takes an ItemId and TAKE_CHEST_ITEM is an ItemId.
+- SPAWN_ITEM and SPAWN_CHEST map their u8 item through itemFromLegacy.
+- ITEM_NONE lives in ids.h next to ItemId.
+
+The item icon grid still has 128 cells (ITEM.DAT, step 7).
+
+---
+ include/dw/ids.h         |  3 +++
+ include/dw/item.h        |  7 ++-----
+ include/dw/map_object.h  |  7 ++++---
+ src/btl/battle_hud.c     |  2 +-
+ src/btl/battle_setup.c   |  2 +-
+ src/fish/fish.c          |  2 +-
+ src/main/game_menu.c     |  2 +-
+ src/main/inventory.c     |  6 +++---
+ src/main/item.c          | 24 ++++++++++++------------
+ src/main/main.c          |  2 +-
+ src/main/map_object.c    | 10 +++++-----
+ src/main/script_common.c |  2 +-
+ src/main/script_interp.c |  4 ++--
+ src/main/tamer.c         | 10 +++++-----
+ src/main/utils2.c        |  8 ++++----
+ 15 files changed, 46 insertions(+), 45 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 8d7c7b6..c321f7c 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -22,6 +22,9 @@ typedef uint16_t CardId;
+ /* id meaning "none" in the u8 layouts (inventory slots, item ids, ...) */
+ #define LEGACY_ID_NONE 0xFF
+ 
++/* no item in an ItemId carrier (inventory slot, chest, item on the ground) */
++#define ITEM_NONE (-1)
++
+ /* Digimon types */
+ #define NUM_DIGIMON		180	/* DIGIMON_DATA, models, skeletons, voices */
+ #define NUM_PARTNER_DIGIMON	66	/* RAISE_DATA, cards; partners are 1..65 */
+diff --git a/include/dw/item.h b/include/dw/item.h
+index 13b0889..e9ef9c3 100644
+--- a/include/dw/item.h
++++ b/include/dw/item.h
+@@ -41,9 +41,6 @@ typedef struct {
+ 	uint8_t array[30];
+ } InventoryTable;
+ 
+-/* MOD: item ids in RAM are ItemId (ids.md step 3); -1 = no item */
+-#define ITEM_NONE (-1)
+-
+ typedef struct {
+ 	ItemId array[30];
+ } ItemIdTable;
+@@ -93,8 +90,8 @@ void swapItemId(ItemId *a, ItemId *b);
+ 
+ void initializeDroppedItems(void);
+ void clearDroppedItems(void);
+-void spawnItem(uint8_t type, int16_t tileX, int16_t tileY);
+-void spawnDroppedItems(Entity *e, uint8_t type);
++void spawnItem(ItemId type, int16_t tileX, int16_t tileY);
++void spawnDroppedItems(Entity *e, ItemId type);
+ int32_t pickupItem(int16_t itemId);
+ void removeTamerItem(void);
+ void renderOverworldItem(WorldItem *item);
+diff --git a/include/dw/map_object.h b/include/dw/map_object.h
+index ba94042..2f90512 100644
+--- a/include/dw/map_object.h
++++ b/include/dw/map_object.h
+@@ -5,6 +5,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/ids.h>
+ #include <dw/types.h>
+ 
+ #define NUM_DOOR_MAPDATA	24
+@@ -24,11 +25,11 @@ typedef struct {
+ 	SVECTOR rotation;
+ 	SVECTOR trayRotation;
+ 	uint16_t trigger;
+-	uint8_t item;
++	ItemId item; /* MOD: was u8 (ids.md step 3); ITEM_NONE = no chest */
+ 	uint8_t isTaken;
+ 	uint8_t tileX;
+ 	uint8_t tileY;
+-	uint16_t padding;
++	uint8_t padding;
+ } Chest;
+ 
+ extern DoorStruct DOOR_MAPDATA[NUM_DOOR_MAPDATA];
+@@ -50,7 +51,7 @@ void spawnGearbox(void);
+ void spawnAngemonPedestal(void);
+ void initializeTrainingPoop(void);
+ void spawnChest(int16_t posX, int16_t posY, int16_t posZ, int16_t rotation,
+-		uint8_t item, uint16_t trigger);
++		ItemId item, uint16_t trigger);
+ void unloadMapParts(void);
+ int32_t tickRotateDoor(int16_t instance, int8_t target);
+ void drawObject(GsDOBJ2 *obj, GsOT *ot, int32_t flag);
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index f928ac7..54b9a65 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -427,7 +427,7 @@ void BTL_tickDeathCountdown(void)
+ 	GsSPRITE *spin;
+ 	long frame;
+ 
+-	if (TAMER_ITEM.worldItem.type == 0xff) {
++	if (TAMER_ITEM.worldItem.type == ITEM_NONE) {
+ 		base = &BTL_DEATH_COUNTDOWN_SPRITE;
+ 		spin = &BTL_DEATH_COUNTDOWN.data.sprite;
+ 		do {
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index 42a9ec1..b8cd743 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -363,7 +363,7 @@ int32_t BTL_isBattleFinished(void)
+ 	}
+ 
+ 	if ((entity->anim.animId == 0x2b) && !(entity->anim.animFlag & 1)) {
+-		if (TAMER_ITEM.worldItem.type == 0xff) {
++		if (TAMER_ITEM.worldItem.type == ITEM_NONE) {
+ 			DEATH_COUNTDOWN++;
+ 		}
+ 		if (DEATH_COUNTDOWN == 0x14) {
+diff --git a/src/fish/fish.c b/src/fish/fish.c
+index 9e6739e..fd21e33 100644
+--- a/src/fish/fish.c
++++ b/src/fish/fish.c
+@@ -119,7 +119,7 @@ void rotateVector(SVECTOR *rotation, VECTOR *input, VECTOR *output);
+ void mapToWorldPosition(VECTOR *out, int32_t x, int32_t z, int32_t *f);
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+ void renderUIBox(int32_t id);
+-void renderItemSprite(int32_t itemId, int32_t x, int32_t y, int32_t depth);
++void renderItemSprite(ItemId itemId, int16_t x, int16_t y, int32_t depth);
+ void calculatePosition(GsCOORDINATE2 *coord, MATRIX *matrix);
+ void matrixToEuler2(MATRIX *m, SVECTOR *out);
+ 
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index e1649dd..60a58cc 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2018,7 +2018,7 @@ void setSleepDisabled(int16_t arg)
+ 
+ void startFeedingItem(ItemId arg) /* MOD: was u8 */
+ {
+-	if (TAMER_ITEM.worldItem.type == 0xff) {
++	if (TAMER_ITEM.worldItem.type == ITEM_NONE) {
+ 		TAMER_ITEM.worldItem.type = arg;
+ 		tamerSetState(6);
+ 		partnerSetState(5);
+diff --git a/src/main/inventory.c b/src/main/inventory.c
+index 4e03cb0..9b37e33 100644
+--- a/src/main/inventory.c
++++ b/src/main/inventory.c
+@@ -32,7 +32,7 @@ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t l
+ void swapByte(uint8_t *a, uint8_t *b);
+ void playSound(int32_t vabId, uint32_t note);
+ void sortItems(int16_t mode);
+-void renderItemSprite(int32_t type, int32_t x, int32_t y, int32_t layer);
++void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer);
+ void renderItemAmount(int32_t color, int32_t n, int32_t x, int32_t y,
+                       int32_t value, int32_t layer);
+ 
+@@ -281,7 +281,7 @@ void initializeInventoryUI(void)
+ void addInventoryUI(void)
+ {
+ 	if ((IS_INVENTORY_INITIALIZED != 1) && (UI_BOX_DATA[0].state == 0) &&
+-	    (TAMER_ITEM.worldItem.type == 0xff)) {
++	    (TAMER_ITEM.worldItem.type == ITEM_NONE)) {
+ 		IS_INVENTORY_INITIALIZED = 1;
+ 		INVENTORY_ACTION = 1;
+ 		addObject(0x1a5, 0, tickInventoryUI, 0);
+@@ -886,7 +886,7 @@ void selectRegularInventory(void)
+ 			moveItem();
+ 			return;
+ 		}
+-		if ((INVENTORY_ACTION < 5) && (TAMER_ITEM.worldItem.type == 0xff) &&
++		if ((INVENTORY_ACTION < 5) && (TAMER_ITEM.worldItem.type == ITEM_NONE) &&
+ 		    (UI_BOX_DATA[1].state == 1)) {
+ 			INVENTORY_ACTION = 3;
+ 		}
+diff --git a/src/main/item.c b/src/main/item.c
+index 8e3befb..2c8b5f2 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -34,7 +34,7 @@ void deleteDroppedItem(int16_t itemId);
+ void setUVDataPolyFT4(POLY_FT4 *p, int32_t u, int32_t v, int32_t w, int32_t h);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int32_t posX, int32_t posY, int32_t width,
+                        int32_t height);
+-void setItemTexture(POLY_FT4 *prim, int32_t type);
++void setItemTexture(POLY_FT4 *prim, ItemId type);
+ void decreasePoopLevel(void);
+ void modifyLifetime(int16_t delta);
+ void reduceTiredness(int16_t amount);
+@@ -2383,13 +2383,13 @@ void initializeDroppedItems(void)
+ {
+ 	int32_t i;
+ 
+-	TAMER_ITEM.worldItem.type = 0xff;
++	TAMER_ITEM.worldItem.type = ITEM_NONE;
+ 	for (i = 0; i < 11; i++) {
+-		DROPPED_ITEMS[i].worldItem.type = 0xff;
++		DROPPED_ITEMS[i].worldItem.type = ITEM_NONE;
+ 	}
+ }
+ 
+-void spawnDroppedItems(Entity *e, uint8_t type)
++void spawnDroppedItems(Entity *e, ItemId type) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 	DroppedItem *it;
+@@ -2398,7 +2398,7 @@ void spawnDroppedItems(Entity *e, uint8_t type)
+ 	loc = &e->posData->location;
+ 	for (i = 0; i < 0xb; i++) {
+ 		it = &DROPPED_ITEMS[i];
+-		if (it->worldItem.type == 0xff) {
++		if (it->worldItem.type == ITEM_NONE) {
+ 			it->worldItem.type = type;
+ 			break;
+ 		}
+@@ -2423,12 +2423,12 @@ void renderDroppedItem(int32_t instanceId)
+ 
+ GARBAGE(spawnItem, 24);
+ 
+-void spawnItem(uint8_t itemId, int16_t tileX, int16_t tileY)
++void spawnItem(ItemId itemId, int16_t tileX, int16_t tileY) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 
+ 	for (i = 0; i < 0xb; i++) {
+-		if (DROPPED_ITEMS[i].worldItem.type == 0xff) {
++		if (DROPPED_ITEMS[i].worldItem.type == ITEM_NONE) {
+ 			DROPPED_ITEMS[i].worldItem.type = itemId;
+ 			DROPPED_ITEMS[i].tileX = tileX;
+ 			DROPPED_ITEMS[i].tileY = tileY;
+@@ -2447,7 +2447,7 @@ void spawnItem(uint8_t itemId, int16_t tileX, int16_t tileY)
+ void deleteDroppedItem(int16_t itemId)
+ {
+ 	removeObject(0x195, itemId);
+-	DROPPED_ITEMS[itemId].worldItem.type = 0xff;
++	DROPPED_ITEMS[itemId].worldItem.type = ITEM_NONE;
+ }
+ 
+ void clearDroppedItems(void)
+@@ -2455,7 +2455,7 @@ void clearDroppedItems(void)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < 11; i++) {
+-		if (DROPPED_ITEMS[i].worldItem.type != 0xff) {
++		if (DROPPED_ITEMS[i].worldItem.type != ITEM_NONE) {
+ 			deleteDroppedItem(i);
+ 		}
+ 	}
+@@ -2627,7 +2627,7 @@ void removeItem(ItemId type, uint8_t amount) /* MOD: was u8 */
+ 
+ int32_t pickupItem(int16_t itemId)
+ {
+-	uint8_t type;
++	ItemId type; /* MOD: was u8 */
+ 	int32_t got;
+ 
+ 	type = DROPPED_ITEMS[itemId].worldItem.type;
+@@ -2665,9 +2665,9 @@ void initializeInventory(void)
+ 
+ void removeTamerItem(void)
+ {
+-	if (TAMER_ITEM.worldItem.type != 0xff) {
++	if (TAMER_ITEM.worldItem.type != ITEM_NONE) {
+ 		removeObject(0x194, 0);
+-		TAMER_ITEM.worldItem.type = 0xff;
++		TAMER_ITEM.worldItem.type = ITEM_NONE;
+ 	}
+ }
+ 
+diff --git a/src/main/main.c b/src/main/main.c
+index c562710..8184f37 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4192,7 +4192,7 @@ void addThrownItem(type)
+ {
+ 	MATRIX *workm;
+ 
+-	if (TAMER_ITEM.worldItem.type == 0xff) {
++	if (TAMER_ITEM.worldItem.type == ITEM_NONE) {
+ 		workm = &TAMER_ENTITY.entity.posData[9].posMatrix.workm;
+ 		TAMER_ITEM.worldItem.spriteLocation.vx = workm->t[0];
+ 		TAMER_ITEM.worldItem.spriteLocation.vy = workm->t[1];
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 570d1a0..3deae58 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -228,7 +228,7 @@ void clearChests(void)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < NUM_CHESTS; ++i) {
+-		CHEST_ARRAY[i].item = 0xff;
++		CHEST_ARRAY[i].item = ITEM_NONE;
+ 		CHEST_ARRAY[i].isTaken = 0;
+ 	}
+ }
+@@ -418,7 +418,7 @@ void renderChest(int32_t instanceId)
+ 	}
+ 
+ 	for (chestIdx = 0; chestIdx < NUM_CHESTS; chestIdx++) {
+-		if (CHEST_ARRAY[chestIdx].item == 0xff) {
++		if (CHEST_ARRAY[chestIdx].item == ITEM_NONE) {
+ 			continue;
+ 		}
+ 
+@@ -780,7 +780,7 @@ void renderTrainingPoop(int32_t instanceId)
+ }
+ 
+ void spawnChest(int16_t posX, int16_t posY, int16_t posZ, int16_t rotation,
+-		uint8_t item, uint16_t trigger)
++		ItemId item, uint16_t trigger) /* MOD: item was u8 */
+ {
+ 	int32_t idx;
+ 	int16_t tileX;
+@@ -788,7 +788,7 @@ void spawnChest(int16_t posX, int16_t posY, int16_t posZ, int16_t rotation,
+ 	VECTOR pos;
+ 
+ 	for (idx = 0; idx < NUM_CHESTS; ++idx) {
+-		if (CHEST_ARRAY[idx].item != 0xff) {
++		if (CHEST_ARRAY[idx].item != ITEM_NONE) {
+ 			continue;
+ 		}
+ 
+@@ -851,7 +851,7 @@ void emptyChests(void)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < NUM_CHESTS; ++i) {
+-		CHEST_ARRAY[i].item = 0xff;
++		CHEST_ARRAY[i].item = ITEM_NONE;
+ 	}
+ }
+ 
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index e66a998..1249bba 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -63,7 +63,7 @@ extern char *MAP_NAME_PTR[];
+ extern char *ITEM_DESCS[];
+ 
+ void renderSelectionCursor(int32_t a0, int32_t a1, int32_t a2, int32_t a3, int32_t a4);
+-void renderItemSprite(int32_t itemId, int32_t x, int32_t y, int32_t depth);
++void renderItemSprite(ItemId itemId, int16_t x, int16_t y, int32_t depth);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int32_t posX, int32_t posY, int32_t width, int32_t height);
+ void setUVDataPolyFT4(POLY_FT4 *prim, int32_t xPos, int32_t yPos, int32_t width, int32_t height);
+ void renderString(int32_t a0, int32_t a1, int32_t a2, int32_t a3, int32_t a4, int32_t a5, int32_t a6, int32_t a7, int32_t a8);
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index b917c6f..b85d24e 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2061,14 +2061,14 @@ void scriptInstruction64to7E(op)
+ 	case SCRIPT_OP_SPAWN_ITEM:
+ 		pollNextScriptUByte(&byteArg1);
+ 		pollNextTwoScriptShorts(&posX, &posY);
+-		spawnItem(byteArg1, posX, posY);
++		spawnItem(itemFromLegacy(byteArg1), posX, posY); /* MOD */
+ 		break;
+ 	case SCRIPT_OP_SPAWN_CHEST:
+ 		pollNextScriptUByte(&byteArg1);
+ 		pollNextTwoScriptShorts(&posX, &posY);
+ 		pollNextTwoScriptShorts(&posZ, &posW);
+ 		pollNextScriptUShort(&triggerId);
+-		spawnChest(posX, posY, posZ, posW, byteArg1, triggerId);
++		spawnChest(posX, posY, posZ, posW, itemFromLegacy(byteArg1), triggerId); /* MOD */
+ 		break;
+ 	case SCRIPT_OP_SPAWN_BOULDER:
+ 		pollNextScriptUByte(&byteArg1);
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 4a8d4c9..a2690fa 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -51,7 +51,7 @@ int8_t TAMER_SUB_STATE;
+ uint8_t PICKED_UP_DROP_ID;
+ int8_t TAKE_CHEST_STATE;
+ int8_t TAKE_ITEM_FRAME_COUNTER;
+-uint8_t TAKE_CHEST_ITEM;
++ItemId TAKE_CHEST_ITEM; /* MOD: was u8 */
+ int8_t INTERACTED_CHEST;
+ int16_t MOVE_TO_DELTA_X;
+ int16_t MOVE_TO_DELTA_Z;
+@@ -122,11 +122,11 @@ typedef struct {
+ 	SVECTOR rotation;
+ 	SVECTOR trayRotation;
+ 	uint16_t trigger;
+-	uint8_t item;
++	ItemId item; /* MOD: was u8 (ids.md step 3); ITEM_NONE = no chest */
+ 	uint8_t isTaken;
+ 	uint8_t tileX;
+ 	uint8_t tileY;
+-	uint16_t padding;
++	uint8_t padding;
+ } Chest;
+ 
+ extern Chest CHEST_ARRAY[8];
+@@ -593,7 +593,7 @@ void checkItemPickup(void)
+ 	item = DROPPED_ITEMS;
+ 	PICKED_UP_DROP_ID = 0xff;
+ 	for (i = 0; i < 11; ++i) {
+-		if (item->worldItem.type == 0xff) {
++		if (item->worldItem.type == ITEM_NONE) {
+ 			++item;
+ 			continue;
+ 		}
+@@ -1256,7 +1256,7 @@ uint8_t checkChestCollision(void)
+ 	getModelTile(&TAMER_ENTITY.entity.posData->location, &tileX, &tileY);
+ 
+ 	for (i = 0; i < 8; ++i) {
+-		if ((CHEST_ARRAY[i].item != 0xff) &&
++		if ((CHEST_ARRAY[i].item != ITEM_NONE) &&
+ 		    (CHEST_ARRAY[i].tileX - 1) <= tileX &&
+ 		    (tileX <= CHEST_ARRAY[i].tileX + 1) &&
+ 		    (CHEST_ARRAY[i].tileY - 1) <= tileY &&
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 88324b8..54943e8 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -45,8 +45,8 @@ void loadStackedTIMFile(char *path);
+ void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h,
+ 		  uint8_t u, uint8_t v, long layer, int32_t shadow);
+ void pauseFrame(void);
+-void renderItemSprite(uint8_t type, int16_t x, int16_t y, int32_t layer);
+-void setItemTexture(POLY_FT4 *p, uint8_t id);
++void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer);
++void setItemTexture(POLY_FT4 *p, ItemId id);
+ uint8_t entityGetTechFromAnim(Entity *e, uint8_t anim);
+ void entityLookAtTile(Entity *entity, int8_t tileX, int8_t tileY);
+ void setEntityTextDigit(POLY_FT4* poly, int32_t x, int32_t y);
+@@ -260,7 +260,7 @@ void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h,
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
+-void renderItemSprite(uint8_t type, int16_t x, int16_t y, int32_t layer)
++void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer) /* MOD: was u8 */
+ {
+ 	POLY_FT4 *prim;
+ 	int16_t width;
+@@ -279,7 +279,7 @@ void renderItemSprite(uint8_t type, int16_t x, int16_t y, int32_t layer)
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
+-void setItemTexture(POLY_FT4 *prim, uint8_t type)
++void setItemTexture(POLY_FT4 *prim, ItemId type) /* MOD: was u8; the icon grid still has 128 cells */
+ {
+ 	uint8_t u;
+ 	uint8_t v;
+-- 
+2.53.0
+

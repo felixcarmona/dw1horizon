@@ -1,0 +1,15 @@
+{
+  "id": 53,
+  "name": "Super veggy",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 16,
+    "weight": 2,
+    "healMP": 9999
+  }
+}

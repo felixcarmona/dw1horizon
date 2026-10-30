@@ -1,0 +1,248 @@
+{
+  "screen": 333,
+  "review": "The rock bridge is scenery above a single lower path. Neither upper ledge is connected to this screen\u2019s floor. The underside, piers, dead trees and valves need foreground depth. The dead trees stand entirely on the inaccessible upper ledge; even a large partner on the lower path cannot pass behind them, so they need no additional texture fragments.",
+  "pieces": [
+    {
+      "image": "descent-4-bridge.png",
+      "at": [
+        149,
+        77
+      ],
+      "depth": [
+        344,
+        454
+      ],
+      "reason": "Overhead bridge and piers hide the lower path; no floor tiles may connect to the upper ledges.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          148,
+          70,
+          554,
+          462
+        ],
+        "positive": [
+          [
+            230,
+            135
+          ],
+          [
+            350,
+            163
+          ],
+          [
+            480,
+            193
+          ]
+        ],
+        "negative": [
+          [
+            330,
+            290
+          ],
+          [
+            350,
+            380
+          ],
+          [
+            350,
+            70
+          ]
+        ],
+        "parts": [
+          {
+            "box": [
+              195,
+              150,
+              277,
+              465
+            ],
+            "positive": [
+              [
+                234,
+                230
+              ],
+              [
+                238,
+                280
+              ],
+              [
+                245,
+                350
+              ],
+              [
+                235,
+                415
+              ]
+            ],
+            "negative": [
+              [
+                280,
+                280
+              ],
+              [
+                290,
+                400
+              ],
+              [
+                180,
+                300
+              ]
+            ]
+          },
+          {
+            "box": [
+              425,
+              230,
+              505,
+              458
+            ],
+            "positive": [
+              [
+                470,
+                280
+              ],
+              [
+                470,
+                340
+              ],
+              [
+                475,
+                400
+              ],
+              [
+                450,
+                435
+              ]
+            ],
+            "negative": [
+              [
+                410,
+                325
+              ],
+              [
+                530,
+                340
+              ],
+              [
+                430,
+                450
+              ]
+            ]
+          }
+        ],
+        "score": 0.9839959144592285,
+        "area": 66121,
+        "part_scores": [
+          0.946547269821167,
+          0.9137575626373291
+        ],
+        "source": "descent-4-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "fill_holes": true
+      }
+    },
+    {
+      "image": "descent-4-south-valve.png",
+      "at": [
+        446,
+        459
+      ],
+      "depth": [
+        499,
+        572
+      ],
+      "reason": "Valve and bent pipe project into the path from the east wall.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          441,
+          453,
+          559,
+          584
+        ],
+        "positive": [
+          [
+            517,
+            514
+          ],
+          [
+            524,
+            476
+          ],
+          [
+            464,
+            540
+          ],
+          [
+            455,
+            575
+          ]
+        ],
+        "negative": [
+          [
+            495,
+            453
+          ],
+          [
+            522,
+            453
+          ],
+          [
+            549,
+            453
+          ],
+          [
+            495,
+            483
+          ],
+          [
+            441,
+            543
+          ],
+          [
+            522,
+            543
+          ],
+          [
+            549,
+            543
+          ],
+          [
+            441,
+            573
+          ]
+        ],
+        "colour_windows": [
+          {
+            "box": [
+              498,
+              458,
+              543,
+              493
+            ],
+            "max_red_green": 45
+          }
+        ],
+        "score": 0.9860424995422363,
+        "area": 5245,
+        "part_scores": [],
+        "source": "descent-4-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ]
+      },
+      "vertical_face": true,
+      "strip_height": 32
+    }
+  ],
+  "collision_review": []
+}

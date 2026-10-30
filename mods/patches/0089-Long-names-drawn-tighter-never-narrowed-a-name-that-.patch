@@ -1,0 +1,873 @@
+From 93740085e76599fc2596343bb27fef3a824cb7e4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 09:00:32 +0000
+Subject: [PATCH] Long names: drawn tighter, never narrowed; a name that fits
+ is drawn as the original drew it
+
+0086/0088 narrowed a long name by scaling the textured quad, which dropped glyph columns (the K of
+HerculesKabuterimon read as "<"), and the registration screens moved the Digimon column left and drew boxes past
+the title box. drawGlyph places glyphs on its 4-pixel grid; drawStringMode composes a line in software instead
+(FIT_STRIP, one upload), each glyph by its ink: FIT_TIGHT the same glyphs with 1 blank column between letters,
+FIT_CONDENSED with a 5-column lowercase (font_condensed.h from tools/font/condensed.txt). fitStringMode picks the
+first of vanilla / tight / condensed that fits a field.
+- Status screen (120 px) and the chart's detail (the original 120 px, centred as the original; a longer name up to
+  136 px, centred in the panel): a name that fits is drawn and copied as the original did.
+- Battle registration: the box widens to the title box's width only for a name that would pass it (up to 124 px, 12 px inside its edge).
+- Registered list: with a name that would pass the cursor (decided over the 40 slots) the list moves under the
+  title box, as wide, its cursor too (up to 116 px).
+- Save slots and the slot confirmation (the original copied 96 px: "MetalGreymo"): with such a name on the card
+  every box and cursor 0x18 further left and 0x110 wide (up to 136 px). The save title holds 17 characters of the
+  name; the rest goes to the header's reserved bytes after "LN" and the slot list joins it back.
+- Tournament "dealt damage" window (STD): a name past its 120 px tighter, centred by its width.
+renderStringFit (utils2.c) and modNameColumn are gone.
+---
+ include/dw/font.h         |   9 +-
+ src/main/font.c           | 192 +++++++++++++++++++++++++++++++------
+ src/main/font_condensed.h |  31 ++++++
+ src/main/game_menu.c      |  52 +++++++---
+ src/main/main_menu.c      | 197 ++++++++++++++++++++++++++++++--------
+ src/main/utils2.c         |  28 ------
+ src/std/std_main.c        |  17 ++++
+ 7 files changed, 413 insertions(+), 113 deletions(-)
+ create mode 100644 src/main/font_condensed.h
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index 7bc56ad..67fe2b9 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -17,8 +17,13 @@ int32_t drawGlyph(/* uint16_t codepoint, uint16_t x, uint16_t y */);
+ #endif
+ void drawString(/* char *str, uint16_t x, uint16_t y */);
+ #if VERSION_IS(US)
+-/* MOD (long names): the width drawString gives a text, in pixels (font.c) */
+-int32_t measureString(char *str);
++/* MOD (long names): a name drawn tighter when it does not fit its field (font.c drawStringMode) */
++#define FIT_VANILLA	0 /* drawString: the font's own spacing */
++#define FIT_TIGHT	1 /* the same glyphs, one blank column between letters */
++#define FIT_CONDENSED	2 /* the same, with a 5-column lowercase */
++int32_t measureStringMode(char *str, int32_t mode);
++int32_t fitStringMode(char *str, int32_t maxW);
++int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode);
+ #endif
+ 
+ #endif
+diff --git a/src/main/font.c b/src/main/font.c
+index 6d0e3a6..7e43097 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1532,52 +1532,188 @@ void drawString(str, x, y)
+ }
+ 
+ /*
+- * MOD (long names): the width in pixels drawString gives a text, without drawing it (the glyph's advance follows
+- * its GLYPH_HEIGHT rows, as drawGlyph returns it). A screen can measure in any render pass; drawString draws
+- * only in the first.
++ * MOD (long names): a species name of up to 19 characters drawn whole in a field made for some 14. drawGlyph places
++ * glyphs on the 4-pixel grid of the text area (x / 4) with the font's own spacing (12 for a capital, 8 for most
++ * lowercase letters); a name too wide for its field is drawn tighter instead, never by dropping columns:
++ *   FIT_VANILLA    drawString itself (every name that fits: the original pixels);
++ *   FIT_TIGHT      the same glyphs placed by their ink, FIT_GAP blank columns between two letters;
++ *   FIT_CONDENSED  the same, with a 5-column lowercase (font_condensed.h, tools/font/condensed.txt).
++ * The tight and condensed lines are composed into FIT_STRIP and uploaded at once (docs/mods/font.md "Long names").
++ * A screen measures in any render pass; the drawing happens only in the first, like drawString's.
+  */
+-int32_t measureString(char *str)
++#include "font_condensed.h"
++
++#define FIT_GAP		1	/* blank columns between two letters (tools/fontgen.py FIT_GAP) */
++#define FIT_SPACE	3	/* what a glyph without ink (a space) adds (FIT_SPACE) */
++
++static uint8_t FIT_STRIP[(TEXT_AREA_SIZE / 2) * GLYPH_HEIGHT] __attribute__((aligned(4))); /* LoadImage reads words */
++
++/* the glyph of the next character of a drawString text (its GLYPH_HEIGHT rows, then the advance); *str moves on */
++static uint16_t *nextGlyph(char **str, int32_t mode)
+ {
+ 	uint16_t codepoint;
+ 	uint16_t code;
+ 	uint16_t lo;
+ 	uint16_t hi;
+-	uint16_t *p;
++	char *s;
+ 	int32_t n;
++
++	s = *str;
++	if (isAsciiEncoded(s) != 0) {
++		if (*s == '.') {
++			codepoint = 0x8142;
++		} else if (*s == '\'') {
++			codepoint = 0x8175;
++		} else {
++			codepoint = convertAsciiToJis(*s);
++		}
++		codepoint = swapShortBytes(codepoint);
++		s++;
++	} else {
++		lo = (uint8_t)*s++;
++		hi = (uint8_t)*s++;
++		codepoint = swapShortBytes((lo << 8) | hi);
++	}
++	*str = s;
++	code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
++	if (mode == FIT_CONDENSED && code >= 0x8281 && code <= 0x829a && CONDENSED_GLYPH_DATA[code - 0x8281].width != 0) {
++		return (uint16_t *)CONDENSED_GLYPH_DATA[code - 0x8281].pixelData;
++	}
++	n = (code & 0xff) - EXTRA_GLYPH_FIRST;
++	if ((code & 0xff) > 0x7f) {
++		n--;
++	}
++	if ((code >> 8) == EXTRA_GLYPH_LEAD && n >= 0 && n < NUM_EXTRA_GLYPHS) {
++		return (uint16_t *)EXTRA_GLYPH_DATA[n].pixelData;
++	}
++	CHAR_TO_GLYPH_TABLE[NUM_GLYPHS - 1] = code;
++	for (n = 0; code != CHAR_TO_GLYPH_TABLE[n]; ++n) {
++	}
++	return GLYPH_DATA[n].pixelData;
++}
++
++/* the glyph's inked columns: returns the one after the last (0: no ink), *left the first */
++static int32_t glyphInk(uint16_t *p, int32_t *left)
++{
++	uint32_t ink;
++	int32_t i;
++	int32_t r;
++
++	ink = 0;
++	for (i = 0; i < GLYPH_HEIGHT; i++) {
++		ink |= ~p[i]; /* 0 = ink */
++	}
++	ink &= 0xfff0;
++	if (ink == 0) {
++		return 0;
++	}
++	for (i = 0; (ink & (0x8000 >> i)) == 0; i++) {
++	}
++	for (r = GLYPH_WIDTH - 1; (ink & (0x8000 >> r)) == 0; r--) {
++	}
++	*left = i;
++	return r + 1;
++}
++
++/* the width of a text's ink drawn in a mode, from x 0 (FIT_VANILLA: where drawString's last ink ends) */
++int32_t measureStringMode(char *str, int32_t mode)
++{
++	uint16_t *p;
++	int32_t pen;
+ 	int32_t w;
++	int32_t left;
++	int32_t right;
+ 
++	pen = 0;
+ 	w = 0;
+ 	while (*str != '\0') {
+-		if (isAsciiEncoded(str) != 0) {
+-			if (*str == '.') {
+-				codepoint = 0x8142;
+-			} else if (*str == '\'') {
+-				codepoint = 0x8175;
+-			} else {
+-				codepoint = convertAsciiToJis(*str);
++		p = nextGlyph(&str, mode);
++		right = glyphInk(p, &left);
++		if (mode == FIT_VANILLA) {
++			if (right != 0) {
++				w = pen + right;
+ 			}
+-			codepoint = swapShortBytes(codepoint);
+-			str++;
++			pen += p[GLYPH_HEIGHT];
++		} else if (right == 0) {
++			pen += FIT_SPACE;
+ 		} else {
+-			lo = (uint8_t)*str++;
+-			hi = (uint8_t)*str++;
+-			codepoint = swapShortBytes((lo << 8) | hi);
++			w = pen - left + right;
++			pen = w + FIT_GAP;
+ 		}
+-		code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
+-		n = (code & 0xff) - EXTRA_GLYPH_FIRST;
+-		if ((code & 0xff) > 0x7f) {
+-			n--;
++	}
++	return w;
++}
++
++/* the first mode that draws the text within maxW pixels (FIT_CONDENSED when none does) */
++int32_t fitStringMode(char *str, int32_t maxW)
++{
++	int32_t mode;
++
++	for (mode = FIT_VANILLA; mode < FIT_CONDENSED; mode++) {
++		if (measureStringMode(str, mode) <= maxW) {
++			break;
+ 		}
+-		if ((code >> 8) == EXTRA_GLYPH_LEAD && n >= 0 && n < NUM_EXTRA_GLYPHS) {
+-			p = (uint16_t *)EXTRA_GLYPH_DATA[n].pixelData;
+-		} else {
+-			CHAR_TO_GLYPH_TABLE[NUM_GLYPHS - 1] = code;
+-			for (n = 0; code != CHAR_TO_GLYPH_TABLE[n]; ++n) {
++	}
++	return mode;
++}
++
++/* drawString in a mode; returns the ink width (measureStringMode) */
++int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
++{
++	RECT rect;
++	uint16_t *p;
++	uint8_t *row;
++	uint32_t bits;
++	int32_t w;
++	int32_t stride;
++	int32_t pen;
++	int32_t gx;
++	int32_t px;
++	int32_t left;
++	int32_t right;
++	int32_t i;
++	int32_t c;
++
++	w = measureStringMode(str, mode);
++	if (mode == FIT_VANILLA) {
++		drawString(str, x, y);
++		return w;
++	}
++	if (MOD_RENDER_PASS != 0 || x < 0 || x >= TEXT_DRAW_LIMIT || y < 0 || y >= TEXT_DRAW_LIMIT) {
++		return w;
++	}
++	/* the strip starts on the grid cell of x and covers the ink, in whole cells, within the text area */
++	stride = ((x & 3) + w + 3) & ~3;
++	if ((x & ~3) + stride > TEXT_AREA_SIZE) {
++		stride = TEXT_AREA_SIZE - (x & ~3);
++	}
++	DrawSync(0); /* the previous strip's upload has read FIT_STRIP */
++	for (i = 0; i < (stride / 2) * GLYPH_HEIGHT; i++) {
++		FIT_STRIP[i] = 0;
++	}
++	pen = x & 3;
++	while (*str != '\0') {
++		p = nextGlyph(&str, mode);
++		right = glyphInk(p, &left);
++		if (right == 0) {
++			pen += FIT_SPACE;
++			continue;
++		}
++		gx = pen - left;
++		for (i = 0; i < GLYPH_HEIGHT; i++) {
++			bits = ~p[i];
++			row = FIT_STRIP + i * (stride / 2);
++			for (c = left; c < right; c++) {
++				px = gx + c;
++				if ((bits & (0x8000 >> c)) != 0 && px < stride) {
++					row[px / 2] |= (px & 1) ? COLORCODE_HIGHBITS : COLORCODE_LOWBITS;
++				}
+ 			}
+-			p = GLYPH_DATA[n].pixelData;
+ 		}
+-		w += p[GLYPH_HEIGHT];
++		pen = gx + right + FIT_GAP;
+ 	}
++	setRECT(&rect, (x / 4) + TEXT_VRAM_X, y + TEXT_VRAM_Y, stride / 4, GLYPH_HEIGHT);
++	LoadImage(&rect, (u_long *)FIT_STRIP);
+ 	return w;
+ }
+ #endif
+diff --git a/src/main/font_condensed.h b/src/main/font_condensed.h
+new file mode 100644
+index 0000000..ca14434
+--- /dev/null
++++ b/src/main/font_condensed.h
+@@ -0,0 +1,31 @@
++/* Generated by tools/fontgen.py from tools/font/condensed.txt: do not edit. */
++/* The condensed lowercase of long names, a..z (font.c drawStringMode); width 0: the original glyph. */
++
++static const GlyphData CONDENSED_GLYPH_DATA[26] = {
++	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0xf7ff, 0x87ff, 0x77ff, 0x67ff, 0x97ff, 0xffff, 0xffff, }, 5 }, /* a */
++	{ { 0x7fff, 0x7fff, 0x7fff, 0x4fff, 0x37ff, 0x77ff, 0x77ff, 0x37ff, 0x4fff, 0xffff, 0xffff, }, 5 }, /* b */
++	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0x77ff, 0x7fff, 0x7fff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 5 }, /* c */
++	{ { 0xf7ff, 0xf7ff, 0xf7ff, 0x97ff, 0x67ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0xffff, 0xffff, }, 5 }, /* d */
++	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0x77ff, 0x07ff, 0x7fff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 5 }, /* e */
++	{ { 0 }, 0 }, /* f: original */
++	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0x77ff, 0x8fff, }, 5 }, /* g */
++	{ { 0x7fff, 0x7fff, 0x7fff, 0x4fff, 0x37ff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0xffff, 0xffff, }, 5 }, /* h */
++	{ { 0 }, 0 }, /* i: original */
++	{ { 0 }, 0 }, /* j: original */
++	{ { 0 }, 0 }, /* k: original */
++	{ { 0 }, 0 }, /* l: original */
++	{ { 0xffff, 0xffff, 0xffff, 0x2fff, 0x57ff, 0x57ff, 0x57ff, 0x57ff, 0x57ff, 0xffff, 0xffff, }, 5 }, /* m */
++	{ { 0xffff, 0xffff, 0xffff, 0x4fff, 0x37ff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0xffff, 0xffff, }, 5 }, /* n */
++	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 5 }, /* o */
++	{ { 0xffff, 0xffff, 0xffff, 0x0fff, 0x77ff, 0x77ff, 0x77ff, 0x0fff, 0x7fff, 0x7fff, 0x7fff, }, 5 }, /* p */
++	{ { 0xffff, 0xffff, 0xffff, 0x97ff, 0x67ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0xf7ff, 0xf7ff, }, 5 }, /* q */
++	{ { 0xffff, 0xffff, 0xffff, 0x4fff, 0x3fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 4 }, /* r */
++	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7fff, 0x8fff, 0xf7ff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 5 }, /* s */
++	{ { 0xbfff, 0xbfff, 0x0fff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xcfff, 0xffff, 0xffff, }, 4 }, /* t */
++	{ { 0xffff, 0xffff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0xffff, 0xffff, }, 5 }, /* u */
++	{ { 0xffff, 0xffff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0xafff, 0xafff, 0xdfff, 0xffff, 0xffff, }, 5 }, /* v */
++	{ { 0xffff, 0xffff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0x57ff, 0x57ff, 0xafff, 0xffff, 0xffff, }, 5 }, /* w */
++	{ { 0xffff, 0xffff, 0x77ff, 0x77ff, 0xafff, 0xdfff, 0xafff, 0x77ff, 0x77ff, 0xffff, 0xffff, }, 5 }, /* x */
++	{ { 0xffff, 0xffff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0xf7ff, 0xf7ff, 0x0fff, }, 5 }, /* y */
++	{ { 0xffff, 0xffff, 0xffff, 0x07ff, 0xe7ff, 0xcfff, 0x9fff, 0x3fff, 0x07ff, 0xffff, 0xffff, }, 5 }, /* z */
++};
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 19ac84a..05b21af 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -401,8 +401,9 @@ char FMT_PLAYTIME[8] = "%d : %d";
+ RECT EVO_CHART_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+ RECT EVO_CHART_NAME_AREA = { 0, 48, 200, 12 }; /* MOD (long names): was 120 wide (a name of 19 characters is ~160) */
+-void renderStringFit(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t maxW, int16_t h, uint8_t u, uint8_t v,
+-		     long layer, int32_t shadow);
++/* MOD (long names): the status screen's name field and the chart's name, in pixels (font.c drawStringMode) */
++#define STATUS_NAME_W	0x78
++#define CHART_NAME_W	0x88
+ 
+ /* MOD (mega): the level name of the Megas, drawn into the text area with the
+  * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
+@@ -2216,6 +2217,9 @@ void renderDigimonStatsView(void)
+ 	int16_t special;
+ 	int16_t clut;
+ 	uint8_t frame;
++#if VERSION_IS(US)
++	int32_t fit; /* MOD (long names) */
++#endif
+ 
+ 	cluts = STATS_VIEW_ELEMENT_CLUT;
+ 	switch (MENU_STATE) {
+@@ -2240,10 +2244,21 @@ void renderDigimonStatsView(void)
+ #if !VERSION_IS(US)
+ 		renderString(0, -0x6d, -0x33, (w / 2) * 12, 0xc, 0x9c, 0x24, 5, 0);
+ #else
+-		/* MOD (long names): the name as wide as drawn, a longer one narrowed into the field (was len * 10, cut
+-		 * at 0x78: MetalGreymonVirus showed as "MetalGreymonVi") */
+-		(void)w;
+-		renderStringFit(0, -0x6c, -0x32, measureString(DIGIMON_NAME(ENTITY_TABLE[1]->type)), 0x78, 0xc, 0, 0x48, 5, 0);
++		/* MOD (long names): a name that fits the field is copied as the original did (len * 10 pixels, cut at
++		 * 0x78); a longer one was drawn tighter (drawDigimonStatsStrings) and is copied whole */
++		fit = fitStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), STATUS_NAME_W);
++		if (fit == FIT_VANILLA) {
++			w = w * 10;
++			if (w >= 0x79) {
++				w = 0x78;
++			}
++		} else {
++			w = measureStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), fit);
++			if (w > STATUS_NAME_W) {
++				w = STATUS_NAME_W; /* never over the SPECIAL icons */
++			}
++		}
++		renderString(0, -0x6c, -0x32, w, 0xc, 0, 0x48, 5, 0);
+ #endif
+ 		renderNumber(0, -0x6d, -0x22, 2, PARTNER_PARA.age, 5);
+ #if !VERSION_IS(US)
+@@ -3439,11 +3454,16 @@ void renderEvoChartDetail(void)
+ 	}
+ #endif
+ #if VERSION_IS(US)
+-	/* MOD (long names): centred by its drawn width in the level's panel, a long name narrowed (was centred by
+-	 * an estimate of 12 px a character and cut at 0x78) */
+-	w = measureString(DIGIMON_NAME(CHART_DETAIL_ID));
+-	len = w > 0x88 ? 0x88 : w;
+-	renderStringFit(0, -0x42 - len / 2, 0x4d, w, 0x88, 0xc, 0, 0x30, 4, 0);
++	/* MOD (long names): a name that fits the original 0x78 is placed and copied as the original did; a longer
++	 * one (drawn tighter if it must, drawEvoChartStrings) is centred in the level's panel by its width */
++	if (measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID), FIT_VANILLA) <= 0x78) {
++		len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
++		renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
++	} else {
++		w = measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID),
++				      fitStringMode(DIGIMON_NAME(CHART_DETAIL_ID), CHART_NAME_W));
++		renderString(0, -0x42 - w / 2, 0x4d, w, 0xc, 0, 0x30, 4);
++	}
+ #else
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+ 	renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
+@@ -3651,7 +3671,9 @@ int32_t drawDigimonStatsStrings(void)
+ #if !VERSION_IS(US)
+ 		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0x9c, 0x24);
+ #else
+-		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0, 0x48);
++		/* MOD (long names): drawn tighter when it does not fit the field */
++		drawStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0, 0x48,
++			       fitStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), STATUS_NAME_W));
+ #endif
+ 		drawString(PARTNER_ENTITY.name, 0, 0x3c);
+ 		MENU_SUB_STATE = 2;
+@@ -3979,8 +4001,12 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 		return 1;
+ 	case 2:
+ 		clearTextSubArea(&rect2);
++#if VERSION_IS(US)
++		/* MOD (long names): drawn tighter when it does not fit the panel (renderEvoChartDetail) */
++		drawStringMode((char *)digimonPara(arg), 0, 0x30, fitStringMode((char *)digimonPara(arg), CHART_NAME_W));
++#else
+ 		drawString((char *)digimonPara(arg), 0, 0x30);
+-
++#endif
+ 	}
+ 	return 0;
+ }
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 76ac2cc..200d97a 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -78,8 +78,7 @@ typedef struct {
+ 	int32_t valid;
+ 	char playerName[14];
+ 	uint8_t pad12[6];
+-	char digimonName[18];
+-	uint8_t pad2A[2];
++	char digimonName[20]; /* MOD (long names): was 18 and 2 bytes of padding (19 characters, title and tail) */
+ 	char location[24];
+ } SaveSlotPreview;
+ 
+@@ -323,7 +322,30 @@ void drawMainMenuStrings();
+ void drawSaveSlotText(int32_t slot, int32_t row);
+ char *formatInteger(int32_t value, char *buf, int32_t digits);
+ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos);
+-static int32_t modNameColumn(char *name, int32_t x); /* MOD (long names) */
++/* MOD (long names): screens that show a species name of up to 19 characters whole (font.c drawStringMode) */
++static int32_t modRegisterLong(void);
++static void modTitleNameTail(void);
++static void modDrawSlotName(char *name, int32_t y);
++static int32_t MOD_REG_LIST_LONG;
++static int32_t MOD_SAVE_SLOTS_LONG;
++#define REG_NAME_X		0x64 /* the registration screen's value column (text area x) */
++#define REG_TEXT_W		0xD6 /* its text as the original copied it, to the box's edge */
++#define REG_LONG_TEXT_W		0xEC /* long layout: the box as wide as the title's (0xF6), its text to the edge */
++#define REG_LONG_NAME_W		(REG_LONG_TEXT_W - REG_NAME_X - 12) /* the name ends 12 px inside the box edge */
++#define LIST_NAME_X		0x6C /* the list of registered Digimon: the species column */
++#define LIST_CURSOR_END		0xCC /* where the original's cursor (and its cleared text) ends */
++#define LIST_LONG_NAME_W	(0xE6 - LIST_NAME_X - 6) /* long layout: the cursor 0xE6 wide, the name 6 px inside it */
++#define SLOT_NAME_X		0x6C /* the save slots' species column (text area x) */
++#define SLOT_NAME_W		0x60 /* its width as the original copied it */
++#define SLOT_LONG_NAME_W	0x88 /* long layout: the boxes 0x18 further left and 0x110 wide (SLOT_BOX_W) */
++#if VERSION_IS(US)
++#define SLOT_DX			(MOD_SAVE_SLOTS_LONG ? 0x18 : 0)
++#define SLOT_BOX_W		(MOD_SAVE_SLOTS_LONG ? 0x110 : 0xE0)
++#else
++#define SLOT_DX			0
++#define SLOT_BOX_W		0xE0
++#endif
++static void modSaveSlotsLayout(int32_t isLong);
+ void drawRegisteredDigimonSlots(int32_t slot);
+ void updateMemoryCardState();
+ void tickMainMenu(void);
+@@ -1255,7 +1277,13 @@ void renderSaveSlotBox(int32_t slot, int32_t x, int32_t y)
+ 	renderText(cur++, x + 0xA, y + 5, 0, v, 0x18, 0xC, hl);
+ 	if (SAVEGAME_SLOT_INFO[slot].valid != 0) {
+ 		renderText(cur++, x + 0x28, y + 5, 0x18, v, 0x48, 0xC, hl);
++#if VERSION_IS(US)
++		/* MOD (long names): the long layout's species column (drawSaveSlotText) */
++		renderText(cur++, x + 0x76, y + 5, SLOT_NAME_X, v, MOD_SAVE_SLOTS_LONG ? SLOT_LONG_NAME_W : SLOT_NAME_W, 0xC,
++			   hl);
++#else
+ 		renderText(cur++, x + 0x76, y + 5, 0x6C, v, 0x60, 0xC, hl);
++#endif
+ #if !VERSION_IS(US)
+ 		renderText(cur++, x + 0x28, y + 0x13, 0x18, v + 0xc, 0x6c, 0xc, hl);
+ 	} else {
+@@ -1265,7 +1293,7 @@ void renderSaveSlotBox(int32_t slot, int32_t x, int32_t y)
+ #endif
+ 	}
+ 	GsSetWorkBase((PACKET *)cur);
+-	renderMenuBox(x, y, 0xE0, 0x24);
++	renderMenuBox(x, y, SLOT_BOX_W, 0x24); /* MOD (long names) */
+ }
+ 
+ void renderSelectSlot(void)
+@@ -1281,9 +1309,11 @@ void renderSelectSlot(void)
+ 	GsSetWorkBase((PACKET *)ft4);
+ 	renderMenuBox(0x30, 0x13, 0xb0, 0x16);
+ #else
+-	renderText(ft4++, 0x3A, 0x18, 0, 0, 0xD6, 0xC, 0);
++	/* MOD (long names): with a species name longer than the slot's column every box is 0xFC wide, 0x10 further
++	 * left (loadSaveSlotData) */
++	renderText(ft4++, 0x3A - SLOT_DX, 0x18, 0, 0, 0xD6, 0xC, 0);
+ 	GsSetWorkBase((PACKET *)ft4);
+-	renderMenuBox(0x30, 0x13, 0xE0, 0x16);
++	renderMenuBox(0x30 - SLOT_DX, 0x13, SLOT_BOX_W, 0x16);
+ #endif
+ 
+ 	if (SAVE_SLOT_SCROLL_TENTHS < (MENU_HIGHLIGHTS[7].pad[2] * 10)) {
+@@ -1306,7 +1336,7 @@ void renderSelectSlot(void)
+ 			y = 0xB9;
+ 		}
+ 
+-		renderSaveSlotBox(page + i, 0x30, y);
++		renderSaveSlotBox(page + i, 0x30 - SLOT_DX, y); /* MOD (long names) */
+ 	}
+ 
+ 	y = (page * 10 - SAVE_SLOT_SCROLL_TENTHS) * 36 / 10 + 0x29;
+@@ -1318,7 +1348,7 @@ void renderSelectSlot(void)
+ 		y = 0xB9;
+ 	}
+ 
+-	renderSaveSlotBox(page, 0x30, y);
++	renderSaveSlotBox(page, 0x30 - SLOT_DX, y); /* MOD (long names) */
+ }
+ 
+ void renderConfirmSlotSelection(void)
+@@ -1326,31 +1356,32 @@ void renderConfirmSlotSelection(void)
+ 	POLY_FT4 *cur;
+ 
+ 	cur = (POLY_FT4 *)GsGetWorkBase();
+-	renderText(cur++, 0x3A, 0x18, 0, 0, 0x90, 0xC, 0);
+-	renderText(cur++, 0x3A, 0x2E, 0, 0xC, 0x18, 0xC, 0);
++	/* MOD (long names): the long layout of the slot list (SLOT_DX, loadSaveSlotData) */
++	renderText(cur++, 0x3A - SLOT_DX, 0x18, 0, 0, 0x90, 0xC, 0);
++	renderText(cur++, 0x3A - SLOT_DX, 0x2E, 0, 0xC, 0x18, 0xC, 0);
+ 	if (SAVEGAME_SLOT_INFO[MEMORY_CARD_SLOT].valid != 0) {
+-		renderText(cur++, 0x58, 0x2E, 0x18, 0xC, 0x48, 0xC, 0);
+-		renderText(cur++, 0xA6, 0x2E, 0x6C, 0xC, 0x60, 0xC, 0);
++		renderText(cur++, 0x58 - SLOT_DX, 0x2E, 0x18, 0xC, 0x48, 0xC, 0);
++		renderText(cur++, 0xA6 - SLOT_DX, 0x2E, 0x6C, 0xC, MOD_SAVE_SLOTS_LONG ? SLOT_LONG_NAME_W : 0x60, 0xC, 0);
+ #if !VERSION_IS(US)
+ 		renderText(cur++, 0x58, 0x3c, 0x18, 0x18, 0x6c, 0xc, 0);
+ #else
+-		renderText(cur++, 0x58, 0x3C, 0, 0x18, 0xE0, 0xC, 0);
++		renderText(cur++, 0x58 - SLOT_DX, 0x3C, 0, 0x18, 0xE0, 0xC, 0);
+ #endif
+ 	} else {
+-		renderText(cur++, 0x58, 0x2E, 0x90, 0, 0x6C, 0xC, 0);
++		renderText(cur++, 0x58 - SLOT_DX, 0x2E, 0x90, 0, 0x6C, 0xC, 0);
+ 	}
+-	renderText(cur++, 0x3A, 0x52, 0, 0xF0, YES_TEXT_W, 0xC, 0);
+-	renderText(cur++, 0x3A, 0x5E, NO_TEXT_U, 0xF0, NO_TEXT_W, 0xC, 0);
++	renderText(cur++, 0x3A - SLOT_DX, 0x52, 0, 0xF0, YES_TEXT_W, 0xC, 0);
++	renderText(cur++, 0x3A - SLOT_DX, 0x5E, NO_TEXT_U, 0xF0, NO_TEXT_W, 0xC, 0);
+ #if !VERSION_IS(US)
+ 	renderText(cur++, 0x3a, 0x74, 0, 0x30, 0xcc, 0xc, 0);
+ #else
+-	renderText(cur++, 0x3A, 0x74, 0x14, 0x30, 0xCC, 0xC, 0);
++	renderText(cur++, 0x3A - SLOT_DX, 0x74, 0x14, 0x30, 0xCC, 0xC, 0);
+ #endif
+ 	GsSetWorkBase((PACKET *)cur);
+-	renderMenuBox(0x30, 0x13, 0xB0, 0x16);
+-	renderMenuBox(0x30, 0x29, 0xE0, 0x24);
+-	renderMenuBox(0x30, 0x4D, 0x38, 0x22);
+-	renderMenuBox(0x30, 0x6F, 0xE0, 0x16);
++	renderMenuBox(0x30 - SLOT_DX, 0x13, 0xB0, 0x16);
++	renderMenuBox(0x30 - SLOT_DX, 0x29, SLOT_BOX_W, 0x24);
++	renderMenuBox(0x30 - SLOT_DX, 0x4D, 0x38, 0x22);
++	renderMenuBox(0x30 - SLOT_DX, 0x6F, SLOT_BOX_W, 0x16);
+ }
+ 
+ void renderFormatMemoryCard(void)
+@@ -1493,13 +1524,14 @@ void renderRegisterDigimon(void)
+ 	renderMenuBox(0x3c, 0xa8, 0xbc, 0x16);
+ #else
+ 	renderText(cur++, 0x32, 0x21, 0, 0, 0xE2, 0xC, 0);
+-	renderText(cur++, 0x32, 0x37, 0, 0xC, 0xF0, 0x6C, 0); /* MOD (long names): was 0xD6 wide */
++	/* MOD (long names): a name that does not fit the box (MetalGreymonVaccine) widens it to the title's width */
++	renderText(cur++, 0x32, 0x37, 0, 0xC, modRegisterLong() ? REG_LONG_TEXT_W : REG_TEXT_W, 0x6C, 0);
+ 	renderText(cur++, 0x46, 0xAD, 0, 0x78, 0xB4, 0xC, 0);
+ 	renderText(cur++, 0x46, 0xC3, 0, 0x84, 0x24, 0xC, 0);
+ 	renderText(cur++, 0x46, 0xCF, 0, 0x90, 0x24, 0xC, 0);
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x28, 0x1C, 0xF6, 0x16);
+-	renderMenuBox(0x28, 0x32, 0xFA, 0x76); /* MOD (long names): was 0xE0 */
++	renderMenuBox(0x28, 0x32, modRegisterLong() ? 0xF6 : 0xE0, 0x76); /* MOD (long names) */
+ 	renderMenuBox(0x3C, 0xA8, 0xC8, 0x16);
+ #endif
+ 	renderMenuBox(0x3C, 0xBE, 0x38, 0x22);
+@@ -1520,11 +1552,21 @@ void renderSelectRegisterSlot(void)
+ 	renderMenuBox(0x3c, 0xb4, 0xa4, 0x16);
+ #else
+ 	renderText(cur++, 0x32, 0x21, 0, 0, 0xE2, 0xC, 0);
+-	renderText(cur++, 0x46, 0x37, 0, 0xC, 0xF0, 0x78, 0); /* MOD (long names): was 0xE0 wide */
++	/* MOD (long names): with a name that would pass the cursor the list moves under the title box, as wide
++	 * (drawRegisteredDigimonSlots) */
++	if (MOD_REG_LIST_LONG) {
++		renderText(cur++, 0x32, 0x37, 0, 0xC, 0xE6, 0x78, 0);
++	} else {
++		renderText(cur++, 0x46, 0x37, 0, 0xC, 0xE0, 0x78, 0);
++	}
+ 	renderText(cur++, 0x46, 0xB9, 0, 0x84, 0xCA, 0xC, 0);
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x28, 0x1C, 0xF6, 0x16);
+-	renderMenuBox(0x3C, 0x32, 0xFA, 0x82); /* MOD (long names): was 0xE0 */
++	if (MOD_REG_LIST_LONG) {
++		renderMenuBox(0x28, 0x32, 0xF6, 0x82);
++	} else {
++		renderMenuBox(0x3C, 0x32, 0xE0, 0x82);
++	}
+ 	renderMenuBox(0x3C, 0xB4, 0xD4, 0x16);
+ #endif
+ }
+@@ -2040,7 +2082,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(SAVEGAME_SLOT_INFO[MEMORY_CARD_SLOT].playerName, 0x18, 0xC);
+ 		DrawSync(0);
+-		drawString(SAVEGAME_SLOT_INFO[MEMORY_CARD_SLOT].digimonName, 0x6C, 0xC);
++		modDrawSlotName(SAVEGAME_SLOT_INFO[MEMORY_CARD_SLOT].digimonName, 0xC); /* MOD (long names) */
+ 		DrawSync(0);
+ 		drawString(SAVEGAME_SLOT_INFO[MEMORY_CARD_SLOT].location, 0, 0x18);
+ 		DrawSync(0);
+@@ -2123,8 +2165,14 @@ void drawMainMenuStrings(int32_t menu)
+ 		drawString(PARTNER_ENTITY.name, 0x64, 0xC);
+ 		DrawSync(0);
+ 		drawString(MAIN_D_8013468C, 0, 0x18);
+-		drawString(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type),
+-			   modNameColumn(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), 0x64), 0x18); /* MOD (long names) */
++		/* MOD (long names): a name that does not fit the box is drawn tighter in the wider box (modRegisterLong) */
++		if (modRegisterLong()) {
++			drawStringMode(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), REG_NAME_X, 0x18,
++				       fitStringMode(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type),
++						     REG_LONG_NAME_W));
++		} else {
++			drawString(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), REG_NAME_X, 0x18);
++		}
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80134694, 0, 0x24);
+ 		drawString(formatInteger(PARTNER_ENTITY.digimonEntity.stats.base.hp, buf, 4), 0x64, 0x24);
+@@ -2224,6 +2272,29 @@ void drawMainMenuStrings(int32_t menu)
+ #endif
+ }
+ 
++/*
++ * MOD (long names): the save slot screens' long layout, when a slot's species passes the original column (0x60
++ * pixels: the original cut MetalGreymon to "MetalGreymo"): the boxes, their cursors and texts 0x18 further left, the
++ * boxes 0x110 wide; the species column SLOT_LONG_NAME_W wide, a name tighter if it must.
++ */
++static void modSaveSlotsLayout(int32_t isLong)
++{
++	MOD_SAVE_SLOTS_LONG = isLong;
++	MENU_HIGHLIGHTS[7].x = 0x36 - SLOT_DX;
++	MENU_HIGHLIGHTS[7].w = 0xD4 + SLOT_BOX_W - 0xE0;
++	MENU_HIGHLIGHTS[8].x = 0x37 - SLOT_DX;
++}
++
++/* MOD (long names): a save slot's species in its column, tighter in the long layout if it must */
++static void modDrawSlotName(char *name, int32_t y)
++{
++	if (MOD_SAVE_SLOTS_LONG) {
++		drawStringMode(name, SLOT_NAME_X, y, fitStringMode(name, SLOT_LONG_NAME_W));
++	} else {
++		drawString(name, SLOT_NAME_X, y);
++	}
++}
++
+ void drawSaveSlotText(int32_t slot, int32_t row)
+ {
+ 	RECT area;
+@@ -2233,13 +2304,17 @@ void drawSaveSlotText(int32_t slot, int32_t row)
+ #if !VERSION_IS(US)
+ 		setRECT(&area, 0, row + 0xc, 0xcc, 0x18);
+ #else
+-		setRECT(&area, 0, row + 0xC, 0xE0, 0x18);
++		setRECT(&area, 0, row + 0xC, MOD_SAVE_SLOTS_LONG ? 0xF0 : 0xE0, 0x18); /* MOD (long names) */
+ #endif
+ 		clearTextSubArea(&area);
+ 		drawString(SAVEGAME_ID_LABEL[slot + 1], 0, row + 0xC);
+ 		drawString(SAVEGAME_SLOT_INFO[slot].playerName, 0x18, row + 0xC);
+ 		DrawSync(0);
++#if VERSION_IS(US)
++		modDrawSlotName(SAVEGAME_SLOT_INFO[slot].digimonName, row + 0xC); /* MOD (long names) */
++#else
+ 		drawString(SAVEGAME_SLOT_INFO[slot].digimonName, 0x6C, row + 0xC);
++#endif
+ 		DrawSync(0);
+ 		drawString(SAVEGAME_SLOT_INFO[slot].location, 0x18, row + 0x18);
+ 		DrawSync(0);
+@@ -2288,21 +2363,30 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos)
+ }
+ 
+ /*
+- * MOD (long names): the x of a Digimon name column in the text area (256 pixels; drawGlyph draws no glyph that
+- * starts past 244): the column's own x, or further left when the name would run past 0xF0 (MetalGreymonVaccine
+- * lost its last letters on the registration screens).
++ * MOD (long names): the registration screen's long layout, when the partner's species name drawn by the font would
++ * pass the box (REG_TEXT_W): the box as wide as the title's, the name tighter if it must (REG_LONG_NAME_W).
+  */
+-static int32_t modNameColumn(char *name, int32_t x)
++static int32_t modRegisterLong(void)
+ {
+-#if VERSION_IS(US)
+-	int32_t w;
++	return REG_NAME_X + measureStringMode(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), FIT_VANILLA) >
++	       REG_TEXT_W;
++}
++
++/*
++ * MOD (long names): the save title holds 17 characters of the species name (title + 0x1C); the rest of a longer
++ * name goes to the header's reserved bytes after "LN", for the save slots (loadSaveSlotData). SAVE_FILE.reserved was
++ * just cleared.
++ */
++static void modTitleNameTail(void)
++{
++	char *name;
+ 
+-	w = measureString(name);
+-	if (x + w > 0xF0) {
+-		x = 0xF0 - w;
++	name = DIGIMON_NAME(SAVE_FILE.saves[0].partnerType);
++	if (strlen(name) > 0x11) {
++		SAVE_FILE.reserved[0] = 'L';
++		SAVE_FILE.reserved[1] = 'N';
++		strncpy((char *)&SAVE_FILE.reserved[2], name + 0x11, sizeof(SAVE_FILE.reserved) - 3);
+ 	}
+-#endif
+-	return x;
+ }
+ 
+ void drawRegisteredDigimonSlots(int32_t slot)
+@@ -2313,7 +2397,18 @@ void drawRegisteredDigimonSlots(int32_t slot)
+ 	int32_t y;
+ 	int32_t currentSlot;
+ 
+-	setRECT(&area, 0, 0xC, 0xF0, 0x78); /* MOD (long names): was 0xCC wide */
++	/* MOD (long names): the long layout when a registered name drawn by the font would pass the cursor; decided
++	 * over every slot, so the layout does not change while scrolling */
++	MOD_REG_LIST_LONG = 0;
++	for (i = 0; i < 40; i++) {
++		type = SAVE_FILE.saves[0].battleRegistrationData[i].digimonId;
++		if (type != 0 && LIST_NAME_X + measureStringMode(DIGIMON_NAME(type), FIT_VANILLA) > LIST_CURSOR_END) {
++			MOD_REG_LIST_LONG = 1;
++		}
++	}
++	MENU_HIGHLIGHTS[15].x = MOD_REG_LIST_LONG ? 0x32 : 0x46;
++	MENU_HIGHLIGHTS[15].w = MOD_REG_LIST_LONG ? 0xE6 : 0xCC;
++	setRECT(&area, 0, 0xC, 0xF0, 0x78); /* MOD (long names): was 0xCC wide (a longer name was left behind) */
+ 	clearTextSubArea(&area);
+ 	for (i = 0; i < 10; i++) {
+ 		currentSlot = slot + i;
+@@ -2322,7 +2417,12 @@ void drawRegisteredDigimonSlots(int32_t slot)
+ 		drawString(&SAVEGAME_ID_LABEL[(currentSlot + 1) % 10][2], 0xC, y);
+ 		if ((type = SAVE_FILE.saves[0].battleRegistrationData[currentSlot].digimonId) != 0) {
+ 			drawString(SAVE_FILE.saves[0].battleRegistrationData[currentSlot].name, 0x1e, y);
+-			drawString(DIGIMON_NAME(type), modNameColumn(DIGIMON_NAME(type), 0x6C), y); /* MOD (long names) */
++			if (MOD_REG_LIST_LONG) { /* MOD (long names) */
++				drawStringMode(DIGIMON_NAME(type), LIST_NAME_X, y,
++					       fitStringMode(DIGIMON_NAME(type), LIST_LONG_NAME_W));
++			} else {
++				drawString(DIGIMON_NAME(type), LIST_NAME_X, y);
++			}
+ 		} else {
+ 			setTextColor(9);
+ #if !VERSION_IS(US)
+@@ -2670,6 +2770,7 @@ void tickMainMenu(void)
+ 			 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 			 0x11);
+ 		memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
++		modTitleNameTail(); /* MOD (long names) */
+ #endif
+ 		prepareSaveFile(0); /* MOD (save v2): checksums, extension, mirror */
+ 		status = writeSaveFile();
+@@ -3040,6 +3141,7 @@ void tickMainMenu(void)
+ 				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
++			modTitleNameTail(); /* MOD (long names) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -3394,6 +3496,7 @@ void tickMainMenu(void)
+ 				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
++			modTitleNameTail(); /* MOD (long names) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -3854,6 +3957,7 @@ int32_t loadSaveSlotData(int32_t channel, char *filename, SaveSlotPreview *slots
+ 	for (i = 0; i < 15; i++) {
+ 		slots[i].valid = 0;
+ 	}
++	modSaveSlotsLayout(0); /* MOD (long names) */
+ 	for (i = 0; i < fileCount; i++) {
+ 		if ((MEMCARD_DIRENTRIES[i].name[15] >= '0') &&
+ 				(MEMCARD_DIRENTRIES[i].name[15] < ':')) {
+@@ -3881,6 +3985,15 @@ int32_t loadSaveSlotData(int32_t channel, char *filename, SaveSlotPreview *slots
+ 			slots[slot].playerName[13] = '\0';
+ 			strncpy(slots[slot].digimonName, (char *)&data[0x20], 17);
+ 			slots[slot].digimonName[17] = '\0';
++			/* MOD (long names): the rest of a longer name (modTitleNameTail) */
++			if (data[0x44] == 'L' && data[0x45] == 'N' && strlen(slots[slot].digimonName) == 17) {
++				strncpy(slots[slot].digimonName + 17, (char *)&data[0x46], 2);
++				slots[slot].digimonName[19] = '\0';
++			}
++			/* the long layout of the slot screens when a species passes the original column */
++			if (measureStringMode(slots[slot].digimonName, FIT_VANILLA) > SLOT_NAME_W) {
++				modSaveSlotsLayout(1);
++			}
+ 			strncpy(slots[slot].location, (char *)&data[0x32], 24);
+ 			slots[slot].location[23] = '\0';
+ #endif
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 38ae136..978e5d0 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -269,34 +269,6 @@ void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h,
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
+-/*
+- * MOD (long names): renderString of a text `w` pixels wide in a field of `maxW`: wider texts are drawn
+- * narrower (the textured quad scales them), so a name of 19 characters (MetalGreymonVaccine) stays whole
+- * where the screen has room for some 14.
+- */
+-void renderStringFit(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t maxW, int16_t h, uint8_t u, uint8_t v,
+-		     long layer, int32_t shadow)
+-{
+-	POLY_FT4 *prim;
+-	int16_t dw;
+-
+-	dw = w > maxW ? maxW : w;
+-	prim = (POLY_FT4 *)GsGetWorkBase();
+-	initStringFT4(prim);
+-	setRGB0(prim, TEXT_COLORS[color].r, TEXT_COLORS[color].g, TEXT_COLORS[color].b);
+-	setUVDataPolyFT4(prim, u, v, w, h);
+-	setPosDataPolyFT4(prim, x, y, dw, h);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
+-	if (shadow != 0) {
+-		initStringFT4(prim);
+-		setRGB0(prim, 0, 0, 0);
+-		setUVDataPolyFT4(prim, u, v, w, h);
+-		setPosDataPolyFT4(prim, x + 1, y + 1, dw, h);
+-		AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
+-	}
+-	GsSetWorkBase((PACKET *)prim);
+-}
+-
+ void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer) /* MOD: was u8 */
+ {
+ 	POLY_FT4 *prim;
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index a9c37db..ccc9325 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -4556,12 +4556,29 @@ void STD_addTimeoutWindow(void)
+ 	RECT finalPos;
+ 	RECT startPos;
+ 	Stats *stats;
++#if VERSION_IS(US)
++	char *name; /* MOD (long names) */
++	int32_t x;
++	int32_t mode;
++#endif
+ 
+ 	clearTextArea();
+ 	drawString(STD_STR_DEALT, 6, 0);
+ 	drawString(STD_STR_DAMAGE, 0, 12);
+ 	drawString(PARTNER_ENTITY.name, (120 - strlen(PARTNER_ENTITY.name) * 6) / 2, 24);
++#if VERSION_IS(US)
++	/* MOD (long names): a name that passes the window's 120 pixels is drawn tighter, centred by its width */
++	name = DIGIMON_NAME(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type);
++	x = (120 - (int32_t)strlen(name) * 6) / 2;
++	if (x + measureStringMode(name, FIT_VANILLA) <= 120) {
++		drawString(name, x, 36);
++	} else {
++		mode = fitStringMode(name, 120);
++		drawStringMode(name, (120 - measureStringMode(name, mode)) / 2, 36, mode);
++	}
++#else
+ 	drawString(DIGIMON_NAME(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type), (120 - strlen(DIGIMON_NAME(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type)) * 6) / 2, 36);
++#endif
+ 	DrawSync(0);
+ 	removeObject(0x1a2, 0);
+ 	stats = &((DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]])->stats;
+-- 
+2.53.0
+

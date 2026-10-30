@@ -1,0 +1,41 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Hello, {color 6}{player}{color 1}! I've started helping",
+   "Drimogemon."
+  ],
+  [
+   "I'm pretty good at finding things, you know!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Explain, please",
+ "s169.sec81.m0.o1": "No need to explain",
+ "s169.sec81.m0.o2": "Nothing, thanks",
+ "s169.sec81.m1.o0": "Hunt for treasure",
+ "s169.sec81.m1.o1": "Explain again",
+ "s169.sec81.m1.o2": "No, that's all",
+ "s169.sec81.m2.o0": "Normal plan: 1000 Bits",
+ "s169.sec81.m2.o1": "Special plan: 5000 Bits",
+ "s169.sec81.m2.o2": "Cancel",
+ "s169.sec81.u0": "Yo, welcome, {color 6}{player}{color 1}! This here's the treasure hunt shop. Yours truly puts his digging skills to work and brings back treasure from underground. That's the business! This island's got all kinds of treasure buried all over. Just leave it to yours truly!",
+ "s169.sec81.u1": "Yo, want a treasure hunt? Want to hear how it works first?",
+ "s169.sec81.u2": "You pay the money up front, and yours truly finds you treasure. There's two plans, with different times and prices. The Normal plan is three days for 1000 Bits. The Special plan is ten days for 5000 Bits. Course, with the Special plan you've got a better shot at good treasure! That's about it. So, what'll it be?",
+ "s169.sec81.u3": "Alright, pick a plan!",
+ "s169.sec81.u4": "Okay. See ya.",
+ "s169.sec81.u5": "Alright, results in three days. I'll do my best!",
+ "s169.sec81.u6": "Alright, results in ten days. I'll do my best!",
+ "s169.sec81.u7": [
+  [
+   "You're short on Bits."
+  ],
+  [
+   "Even yours truly can't hunt treasure with no",
+   "money to start with."
+  ]
+ ],
+ "s169.sec81.u8": "I'm out hunting treasure right now. Hang on a bit longer.",
+ "s169.sec81.u9": "Heyyy, your treasure's in!",
+ "s169.sec81.u10": "Go make some room in your bag!",
+ "s169.sec81.u11": "Got {color 6}{item 110}{color 1}!",
+ "s169.sec81.u12": "Thanks for your business!"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "enter-native-forest",
+  "doc": "Screen entry: warp to Native Forest (screen 0): MAPHEAD section 0, the screen script's load section 254 (random ground items: rand() draws) and the first frames.",
+  "run": [
+    "warp 0 0",
+    "until screen==0 and free max 2500",
+    "wait 60"
+  ],
+  "max_frames": 4000,
+  "expect": {"digest": "1c12d76888297bdb7ebda36cf1790a3aafb24731", "instructions": 26}
+}

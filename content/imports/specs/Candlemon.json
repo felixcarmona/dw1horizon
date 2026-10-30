@@ -1,0 +1,103 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 200,
+ "type": 235,
+ "name": "Candlemon",
+ "source": {
+  "type": 17,
+  "mmd": "extracted/CHDAT/MMD0/GABU.MMD"
+ },
+ "map": {
+  "1": 10,
+  "3": 5,
+  "4": 6,
+  "5": 7,
+  "6": 11,
+  "7": 12,
+  "9": 14,
+  "10": 18,
+  "11": 17
+ },
+ "hips": [
+  11,
+  1,
+  1.028
+ ],
+ "root_scale": 1.028,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 36,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 81,
+   "end": 161,
+   "hz": 0.3
+  },
+  "0x35": {
+   "anim": "anim_03",
+   "start": 56,
+   "end": 134,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 82,
+   "end": 151,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 13,
+   "end": 87,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

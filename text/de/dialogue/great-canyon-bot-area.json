@@ -1,0 +1,180 @@
+{
+ "s041.sec5.u0": [
+  [
+   "Mann, mit dir macht es keinen",
+   "Spaß!"
+  ]
+ ],
+ "s041.sec6.u0": [
+  [
+   "Haha, hast du etwas gesagt?"
+  ]
+ ],
+ "s041.sec7.u0": [
+  [
+   "Ich sagte doch, ich kann",
+   "wirklich nicht..."
+  ]
+ ],
+ "s041.sec8.u0": [
+  [
+   "Ich bin mir gar nicht so",
+   "sicher, weißt du."
+  ]
+ ],
+ "s041.sec9.u0": [
+  [
+   "Sei nicht hart mit mir..."
+  ]
+ ],
+ "s041.sec10.u0": [
+  [
+   "Hmpf, unterschätz mich nicht!"
+  ]
+ ],
+ "s041.sec81.m0.o0": "Dachknopf drücken",
+ "s041.sec81.m0.o1": "Aufwärtsknopf drücken",
+ "s041.sec81.m0.o2": "Nicht einsteigen",
+ "s041.sec81.u0": [
+  [
+   "Aufzug"
+  ]
+ ],
+ "s041.sec81.u1": [
+  [
+   "Hm, nichts passiert..."
+  ]
+ ],
+ "s041.sec81.u2": [
+  [
+   "He, da klemmt ein Steinchen in",
+   "der Maschine. Liegt es etwa",
+   "daran...?"
+  ]
+ ],
+ "s041.sec81.u3": [
+  [
+   "Steinchen entfernt!"
+  ]
+ ],
+ "s041.sec81.u4": [
+  [
+   "Das sollte es tun."
+  ]
+ ],
+ "s041.sec81.u5": [
+  [
+   "Hm, nichts passiert..."
+  ]
+ ],
+ "s041.sec81.u6": [
+  [
+   "He, da klemmt ein Steinchen in",
+   "der Maschine. Liegt es etwa",
+   "daran...?"
+  ]
+ ],
+ "s041.sec81.u7": [
+  [
+   "Steinchen entfernt!"
+  ]
+ ],
+ "s041.sec81.u8": [
+  [
+   "Das sollte es tun."
+  ]
+ ],
+ "s042.sec5.u0": [
+  [
+   "Shuba!"
+  ]
+ ],
+ "s042.sec6.u0": [
+  [
+   "Shashasha!"
+  ]
+ ],
+ "s042.sec7.u0": [
+  [
+   "Du bist wohl nicht verletzt,",
+   "was?"
+  ]
+ ],
+ "s042.sec8.u0": [
+  [
+   "Ich gebe dir einen guten",
+   "Rabatt."
+  ]
+ ],
+ "s042.sec9.u0": [
+  [
+   "Sieh nicht auf mich herab!"
+  ]
+ ],
+ "s042.sec10.u0": [
+  [
+   "Denk nicht, dass du lebend",
+   "nach Hause kommst."
+  ]
+ ],
+ "s042.sec51.u0": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u1": [
+  [
+   "...Für einen Sturz aus der",
+   "Höhe... geht es mir gut."
+  ]
+ ],
+ "s042.sec51.u2": [
+  [
+   "Oh, {color 10}{partner}{color 1}, geht es dir",
+   "gut?!"
+  ]
+ ],
+ "s042.sec51.u3": [
+  [
+   "Hä? Dir geht's ja bestens. He,",
+   "du bist geflogen, oder? Unfair!",
+   "...Na ja, eigentlich wohl doch"
+  ],
+  [
+   "nicht."
+  ]
+ ],
+ "s042.sec51.u4": [
+  [
+   "Okay, Komm schon."
+  ]
+ ],
+ "s042.sec51.u5": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u6": [
+  [
+   "...Für einen Sturz aus der",
+   "Höhe... geht es mir gut."
+  ]
+ ],
+ "s042.sec51.u7": [
+  [
+   "Oh, {color 10}{partner}{color 1}, geht es dir",
+   "gut?!"
+  ]
+ ],
+ "s042.sec51.u8": [
+  [
+   "Das hat wohl ein bisschen",
+   "wehgetan. Tut mir leid."
+  ]
+ ],
+ "s042.sec51.u9": [
+  [
+   "Okay, Komm schon."
+  ]
+ ]
+}

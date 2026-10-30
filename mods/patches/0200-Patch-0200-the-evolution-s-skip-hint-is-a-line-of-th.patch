@@ -1,0 +1,276 @@
+From a903102c56e84733c11988b04582d2256b765c08 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 07:31:28 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200200:=20the=20evolution's=20skip=20hint?=
+ =?UTF-8?q?=20is=20a=20line=20of=20the=20game's=20font,=20"Press=20START?=
+ =?UTF-8?q?=20to=20skip=20the=20animation"=20(Spanish=20"Pulsa=20START=20p?=
+ =?UTF-8?q?ara=20saltar=20la=20animaci=C3=B3n",=20main.QOL=5FSTR=5FSKIP=5F?=
+ =?UTF-8?q?EVOLUTION),=20centred=20at=20the=20bottom=20on=20a=20dark=20pla?=
+ =?UTF-8?q?te,=20drawn=20into=20the=20text=20area's=20row=200xD8=20when=20?=
+ =?UTF-8?q?the=20skip=20arms=20and=20again=20on=20each=20state=20change=20?=
+ =?UTF-8?q?and=20every=2016=20ticks=20(the=20scene's=20loads=20reach=20the?=
+ =?UTF-8?q?=20text=20area);=20the=20skip=20arms=20once=20START=20is=20up?=
+ =?UTF-8?q?=20and=20no=20pause=20is=20open=20(the=20lab=20menu=20evolves?=
+ =?UTF-8?q?=20under=20the=20pause,=20and=20the=20START=20that=20closed=20i?=
+ =?UTF-8?q?t=20skipped=20the=20scene),=20a=20pause=20disarms=20it;=20the?=
+ =?UTF-8?q?=203x5=20START=20SKIP=20plate=20is=20gone;=20the=20battle's=20R?=
+ =?UTF-8?q?2=20pill=20sits=20at=20y=200x60,=20clear=20of=20the=20item=20me?=
+ =?UTF-8?q?nu's=20bottom=20box?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ include/dw/evl.h       |  2 +-
+ include/dw/mod_qol.h   |  7 +++--
+ src/evl/evl.c          |  6 ++--
+ src/main/evl.c         | 10 +++---
+ src/main/mod_qol.c     | 70 +++++++++++++++++++++++++++++++-----------
+ text/main/mod_qol.yaml |  8 +++++
+ 6 files changed, 72 insertions(+), 31 deletions(-)
+ create mode 100644 text/main/mod_qol.yaml
+
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index 9a256b44..06e8e64f 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -89,7 +89,7 @@ typedef struct {
+ 
+ extern EvlSpark EVL_D_80068F84[];
+ extern EvoSequenceData EVO_SEQUENCE_DATA;
+-/* MOD (evolution skip, main evl.c): 1 the scene may be skipped, 2 START asked for it */
++/* MOD (evolution skip, main evl.c): 1 the scene may be skipped, 3 armed (START up, no pause; the hint shown), 2 START asked for it (mod_qol.c modEvoSkipInput) */
+ extern int8_t MOD_EVO_SKIP;
+ 
+ extern EvoStatsGains EVOLUTION_STATS_GAINS[NUM_ORIGINAL_DIGIMON];
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+index f02ca61d..c21a122c 100644
+--- a/include/dw/mod_qol.h
++++ b/include/dw/mod_qol.h
+@@ -5,7 +5,7 @@
+ 
+ /* MOD (quality of life, src/main/mod_qol.c) */
+ 
+-/* a plate at (x, y) with text (the letters R 2 x 1 5 S T A K I P O M and spaces): the letters from index hi on in (r, g, b), the
++/* a plate at (x, y) with text (the letters R 2 x 1 5 S T A > and spaces): the letters from index hi on in (r, g, b), the
+    others white */
+ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b);
+ /* the battle speed (BTL, STD, VS): before each tick of a battle's loop, held = the fight stays at x1; after the pad is
+@@ -15,7 +15,10 @@ void modSpeedBeforeTick(int32_t held);
+ void modSpeedInput(void);
+ void modSpeedPlateAdd(void);
+ void modSpeedPlateRemove(void);
+-/* the evolution's skip hint: START SKIP (START OMITIR in Spanish) */
++/* the evolution's skip: modEvoSkipInput each tick of the scene (arms it, draws the hint's line into the text area,
++   takes START), modSkipPlate each frame while armed */
++void modEvoSkipInput(void);
++void modSkipHintDraw(void);
+ void modSkipPlate(void);
+ 
+ /* why a block stops (MOD_TB_LEARNED is the block's own check) after a session that started at minute t0 of the day, with the gym's tiredness rule tiredAt */
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index c0a31985..d3ccea57 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -385,9 +385,7 @@ void EVL_tickEvoSequence(int32_t instanceId)
+ 		startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 1);
+ 	}
+ 
+-	if (MOD_EVO_SKIP == 1 && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x800)) {
+-		MOD_EVO_SKIP = 2; /* MOD (evolution skip) */
+-	}
++	modEvoSkipInput(); /* MOD (evolution skip, mod_qol.c) */
+ 	if (MOD_EVO_SKIP == 2 && data->state < 3) {
+ 		EVL_modSkipToEnd(data);
+ 		partner = data->partner;
+@@ -604,7 +602,7 @@ shards:
+ 
+ void EVL_renderEvoSequence(void)
+ {
+-	if (MOD_EVO_SKIP == 1 && EVO_SEQUENCE_DATA.state < 3) {
++	if (MOD_EVO_SKIP == 3 && EVO_SEQUENCE_DATA.state < 3) {
+ 		modSkipPlate(); /* MOD (evolution skip): the hint (mod_qol.c) */
+ 	}
+ }
+diff --git a/src/main/evl.c b/src/main/evl.c
+index eafb0e49..fbcf9425 100644
+--- a/src/main/evl.c
++++ b/src/main/evl.c
+@@ -37,10 +37,8 @@ void tickEvoSequenceLoading(int32_t instanceId)
+ 	EvoSequenceData *data;
+ 
+ 	data = &EVO_SEQUENCE_DATA;
+-	/* not in its first ticks: the START that closed a pause (the lab menu evolves under it) is not a skip */
+-	if (MOD_EVO_SKIP == 1 && (data->state != 0 || data->timer >= 10) && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x800)) {
+-		MOD_EVO_SKIP = 2;
+-	}
++	(void)data;
++	modEvoSkipInput();
+ 
+ 	switch (data->state) {
+ 	case 0:
+@@ -74,7 +72,7 @@ void renderEvoSequenceLoading(int32_t instanceId)
+ 	EvoSequenceData *data;
+ 
+ 	data = &EVO_SEQUENCE_DATA;
+-	if (MOD_EVO_SKIP == 1) {
++	if (MOD_EVO_SKIP == 3) {
+ 		modSkipPlate(); /* MOD (evolution skip): the hint (mod_qol.c) */
+ 	}
+ }
+@@ -106,7 +104,7 @@ int16_t isInitialized;
+ 	data->evoTarget = target;
+ 	data->heightFactor = (DIGI_PARA(data->digimonId).height << 12) /
+ 			     DIGI_PARA(partner->digimonEntity.entity.type).height;
+-	MOD_EVO_SKIP = 1; /* MOD (evolution skip): every evolution */
++	MOD_EVO_SKIP = 1; /* MOD (evolution skip): every evolution, armed by modEvoSkipInput */
+ 
+ 	startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0);
+ 	stopSound();
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index bc72660b..d52f566d 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -1,9 +1,9 @@
+ /*
+  * MOD (quality of life): what the speed-ups share (docs/mods/quality-of-life.md).
+  *
+- * Plates. A battle shows the pad's R2 button and fast-forward arrows in the bottom right corner (patches 0184, 0192),
+- * an evolution a START SKIP plate there (0185, 0192), in the digital clock's style: 3x5 letters on a dark plate with a
+- * light blue edge. modPlate draws one; its letters are the ones these plates need.
++ * Plates. A battle shows the pad's R2 button and fast-forward arrows in the bottom right corner (patches 0184, 0196, 0197),
++ * an evolution a line "Press START to skip the animation" at the bottom (0185, 0196), on a plate in the digital clock's
++ * style: dark, with a light blue edge. modPlate draws a plate of 3x5 letters; its letters are the ones these need.
+  *
+  * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
+  * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
+@@ -16,9 +16,9 @@
+ 
+ #include <dw/types.h>
+ #include <dw/entity.h>
+-#include <dw/lang.h>
++#include <dw/evl.h>
++#include <dw/font.h>
+ #include <dw/level.h>
+-#include <dw/mod_options.h>
+ #include <dw/mod_qol.h>
+ #include <dw/mod_present.h>
+ #include <dw/params.h>
+@@ -26,15 +26,20 @@
+ #include <dw/sound.h>
+ #include <dw/world_object.h>
+ 
++#include <text/main/mod_qol.h>
++
+ #include "common.h"
+ 
+ extern GsOT *ACTIVE_ORDERING_TABLE;
++void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h, int32_t u, int32_t v, int32_t layer,
++                  int32_t shadow);
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
++extern uint8_t PAUSE_STATE;
+ 
+ /* each row of a letter is 3 bits, bit 2 the left column */
+-static const char MOD_PLATE_CHARS[] = "R2x15STAKIPOM>";
+-static const uint8_t MOD_PLATE_GLYPHS[14][5] = {
++static const char MOD_PLATE_CHARS[] = "R2x15STA>";
++static const uint8_t MOD_PLATE_GLYPHS[9][5] = {
+ 	{ 6, 5, 6, 5, 5 }, /* R */
+ 	{ 7, 1, 7, 4, 7 }, /* 2 */
+ 	{ 0, 0, 5, 2, 5 }, /* x */
+@@ -43,16 +48,9 @@ static const uint8_t MOD_PLATE_GLYPHS[14][5] = {
+ 	{ 7, 4, 7, 1, 7 }, /* S */
+ 	{ 7, 2, 2, 2, 2 }, /* T */
+ 	{ 2, 5, 7, 5, 5 }, /* A */
+-	{ 5, 5, 6, 5, 5 }, /* K */
+-	{ 7, 2, 2, 2, 7 }, /* I */
+-	{ 6, 5, 6, 4, 4 }, /* P */
+-	{ 7, 5, 5, 5, 7 }, /* O */
+-	{ 5, 7, 7, 5, 5 }, /* M */
+ 	{ 4, 6, 7, 6, 4 }, /* > (fast forward) */
+ };
+ 
+-/* the skip hint's words after START, by MOD_LANG */
+-static const char *const MOD_SKIP_TEXT[MOD_LANGS] = { "START SKIP", "START OMITIR" };
+ 
+ static void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
+ {
+@@ -118,12 +116,48 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 	modPlateText(x + 3, y + 2, text, hi, r, g, b);
+ }
+ 
+-/* the evolution's skip hint, its right edge where the battle's plate ends: START white, the word light blue */
++/* the evolution's skip hint: a line of the game's font (in the language shown), drawn once into a row of the text area
++   when the scene begins, then shown each frame on a dark plate at the bottom of the screen, its shadow on */
++#define MOD_SKIP_ROW 0xD8
++static int16_t MOD_SKIP_W;
++static int16_t modSkipState;
++
++void modSkipHintDraw(void)
++{
++	RECT area;
++	char *text = QOL_STR_SKIP_EVOLUTION;
++
++	setRECT(&area, 0, MOD_SKIP_ROW, 256, 12);
++	clearTextSubArea(&area);
++	setTextColor(1);
++	MOD_SKIP_W = drawStringMode(text, 0, MOD_SKIP_ROW, fitStringMode(text, 240));
++}
++
++/* each tick of the scene: armed (3, the hint drawn and shown) once START is up and no pause is open, so the START
++   that closes a pause (the lab menu evolves under it, and the scene runs under the pause) is not a skip; a pause
++   disarms it (its box reuses the text area); START while armed asks for the skip (2) */
++void modEvoSkipInput(void)
++{
++	if (MOD_EVO_SKIP == 3 && PAUSE_STATE != 0) {
++		MOD_EVO_SKIP = 1;
++	} else if (MOD_EVO_SKIP == 1 && PAUSE_STATE == 0 && !(POLLED_INPUT & 0x800)) {
++		MOD_EVO_SKIP = 3;
++		modSkipHintDraw();
++	} else if (MOD_EVO_SKIP == 3 && (POLLED_INPUT & 0x800)) {
++		MOD_EVO_SKIP = 2;
++	} else if (MOD_EVO_SKIP == 3 && (EVO_SEQUENCE_DATA.state != modSkipState || (EVO_SEQUENCE_DATA.timer & 15) == 0)) {
++		modSkipHintDraw(); /* the scene's own loads reach the text area (the new form's textures): drawn again */
++	}
++	modSkipState = EVO_SEQUENCE_DATA.state;
++}
++
+ void modSkipPlate(void)
+ {
+-	const char *text = MOD_SKIP_TEXT[MOD_LANG == MOD_LANG_ES];
++	int32_t x = -MOD_SKIP_W / 2;
+ 
+-	modPlate(0x80 + 23 - modPlateWidth(text), 0x60, text, 5, 0x62, 0xB4, 0xF6);
++	modPlateRect(x - 6, 0x58, MOD_SKIP_W + 12, 18, 0x62, 0xB4, 0xF6, 6);
++	modPlateRect(x - 5, 0x59, MOD_SKIP_W + 10, 16, 0x18, 0x18, 0x18, 5);
++	renderString(0, x, 0x5B, MOD_SKIP_W, 12, 0, MOD_SKIP_ROW, 4, 1);
+ }
+ 
+ /* the battle speed of the three battle overlays (BTL field battles, STD arena and tournaments, VS): R2 switches x1 /
+@@ -151,7 +185,7 @@ void modSpeedInput(void)
+ static void modSpeedPlate(int32_t instanceId)
+ {
+ 	int32_t x = 0x7E;
+-	int32_t y = 0x66;
++	int32_t y = 0x60; /* the item menu's bottom box ends just above 0x66 */
+ 
+ 	(void)instanceId;
+ 	modPlateRect(x + 2, y, 9, 9, 0xB0, 0xB0, 0xB8, 6);
+diff --git a/text/main/mod_qol.yaml b/text/main/mod_qol.yaml
+new file mode 100644
+index 00000000..430dbf22
+--- /dev/null
++++ b/text/main/mod_qol.yaml
+@@ -0,0 +1,8 @@
++# MOD (quality of life; language): the evolution's skip hint, ours (not the game's), keyed so a text source can
++# translate it (key main.QOL_STR_*). `storage: define`: a literal where src/main/mod_qol.c uses it.
++MOD_QOL:
++  storage: define
++  strings:
++    QOL_STR_SKIP_EVOLUTION:
++      ja: "Press START to skip the animation"
++      en_us: "Press START to skip the animation"
+-- 
+2.53.0
+

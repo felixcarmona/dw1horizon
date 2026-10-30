@@ -1,0 +1,202 @@
+// Readable form of script 29 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 29 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 52, 51, 81, 5;
+
+    on enter replace {    // section 254
+        call_routine(routine("load_dirt_cart"));
+        call_routine(routine("load_dirt_pile"));
+        if (drimogemon_job_days >= 5 && drill_tunnel_progress < 3 && drill_tunnel_progress >= 1) {
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
+            engine.arg = 2;
+            call_routine(routine("dirt_cart_model"));
+            p19 = 2;
+            set_obj_visibility(19, 1);
+            set_obj_visibility(18, 1);
+            underground_pond_dig_work = 10;
+            return;
+        }
+        animate(drimogemon, 29);
+        set_obj_visibility(19, 1);
+        set_obj_visibility(18, 0);
+        if (underground_pond_dig_work >= 5) {
+            set_obj_visibility(19, 0);
+            set_obj_visibility(18, 1);
+            p19 = 1;
+        }
+        if (underground_pond_dig_work >= 10) {
+            if (drill_tunnel_progress < 3) {
+                set_obj_visibility(19, 1);
+                set_obj_visibility(18, 1);
+                p19 = 2;
+            }
+        }
+        if (drill_tunnel_progress == 3) {
+            engine.arg = 0;
+            call_routine(routine("dirt_cart_model"));
+        }
+        if (drill_tunnel_progress == 4) {
+            engine.arg = 1;
+            call_routine(routine("dirt_cart_model"));
+        }
+        if (underground_pond_dig_work < 8) {
+            set_rect_impassable(0, 69, 41, 3, 2);
+        }
+    }
+
+    on step(1) replace {    // section 52
+        unless (p19 < 2) return;
+        goto L8;
+    }
+
+    on step(0) replace {    // section 51
+        unless (p19 >= 1) goto L8;
+    }
+
+    on use(1) replace {    // section 81
+        if (drill_tunnel_progress == 2) {
+            say(narrator, text("s029.sec81.u0"));
+            drill_tunnel_progress = 3;
+            engine.arg = 0;
+            call_routine(routine("dirt_cart_model"));
+            call_routine(routine("dirt_pile_shrink"));
+        }
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        return;
+    }
+
+    shared L8 {    // code of sec51 that other code jumps to
+        face(drimogemon, tamer);
+        face(tamer, drimogemon);
+        await drimogemon;
+        if (underground_pond_dig_work >= 10) {
+            say(drimogemon, text("s029.sec51.u0"));
+            entity_set_rotation(drimogemon, 1900);
+            await drimogemon;
+            walk(tamer, 2735, 1203, camera: true);
+            await tamer;
+            animate(drimogemon, 29);
+            return;
+        }
+        if (drill_tunnel_progress == 4) {
+            say(drimogemon, text("s029.sec51.u1"));
+            engine.arg = 2;
+            call_routine(routine("dirt_cart_model"));
+            give_bits(500);
+            add_stat(0, 5);
+            add_stat(1, 5);
+            add_stat(4, 50);
+            add_stat(8, 10);
+            say(narrator, text("s029.sec51.u2"));
+            underground_pond_dig_work += 1;
+            drill_tunnel_progress = 1;
+            entity_set_rotation(drimogemon, 1900);
+            await drimogemon;
+            walk(tamer, 2735, 1203, camera: true);
+            await tamer;
+            animate(drimogemon, 29);
+            return;
+        }
+        if (drill_tunnel_progress == 3) {
+            say(drimogemon, text("s029.sec51.u3"));
+            walk(tamer, 2735, 1203, camera: true);
+            await tamer;
+            entity_set_rotation(drimogemon, 1900);
+            return;
+        }
+        if (drill_tunnel_progress == 2) {
+            say(drimogemon, text("s029.sec51.u4"));
+            entity_set_rotation(drimogemon, 1900);
+            await drimogemon;
+            walk(tamer, 2735, 1203, camera: true);
+            await tamer;
+            animate(drimogemon, 29);
+            return;
+        }
+        if (drill_tunnel_progress == 1 && stat(8) >= 70) {
+            say(drimogemon, text("s029.sec51.u5"));
+            entity_set_rotation(drimogemon, 1900);
+            await drimogemon;
+            walk(tamer, 2735, 1203, camera: true);
+            await tamer;
+            animate(drimogemon, 29);
+            return;
+        }
+        if (drill_tunnel_progress == 1) {
+            say(drimogemon, text("s029.sec51.u6"));
+            choice {
+                text("s029.sec51.m0.o0") => {
+                    set_textbox_size(entity(0), 21, 6);
+                    show_textbox(text("s029.sec51.u17"));
+                    fadeout_hud(0);
+                    walk(tamer, 2735, 1203, camera: true);
+                    await tamer;
+                    drill_tunnel_progress = 2;
+                    return;
+                }
+                text("s029.sec51.m0.o1") or cancel => {}
+            }
+        } else {
+            if (!drimogemon_calmed) {
+                say(drimogemon, text("s029.sec51.u7"));
+                walk(tamer, 2735, 1203, camera: true);
+                await tamer;
+                entity_set_rotation(drimogemon, 1900);
+                await drimogemon;
+                animate(drimogemon, 29);
+                return;
+            }
+            drill_tunnel_progress = 1;
+            drimogemon_job_days = 0;
+            say(drimogemon, text("s029.sec51.u8"));
+            say(tamer, text("s029.sec51.u9"));
+            say(drimogemon, text("s029.sec51.u10"));
+            say(tamer, text("s029.sec51.u11"));
+            say(drimogemon, text("s029.sec51.u12"));
+            say(tamer, text("s029.sec51.u13"));
+            camera_to(2027, 764, speed: 20);
+            await camera;
+            wait(30);
+            say(drimogemon, text("s029.sec51.u14"));
+            camera_on(tamer, speed: 20);
+            await camera;
+            say(drimogemon, text("s029.sec51.u15"));
+            say(tamer, text("s029.sec51.u16"));
+            choice {
+                text("s029.sec51.m1.o0") => {
+                    set_textbox_size(entity(0), 21, 6);
+                    show_textbox(text("s029.sec51.u17"));
+                    fadeout_hud(0);
+                    walk(tamer, 2735, 1203, camera: true);
+                    await tamer;
+                    drill_tunnel_progress = 2;
+                    return;
+                }
+                text("s029.sec51.m1.o1") or cancel => {}
+            }
+        }
+        say(drimogemon, text("s029.sec51.u18"));
+        entity_set_rotation(drimogemon, 1900);
+        await drimogemon;
+        walk(tamer, 2735, 1203, camera: true);
+        await tamer;
+        animate(drimogemon, 29);
+    }
+}

@@ -1,0 +1,54 @@
+{
+ "s006.sec6.u0": "¡No pienso perder!",
+ "s006.sec7.u0": "¡No te acerques! ¡Vete!",
+ "s006.sec8.u0": "¡Se acabó, ahora sí que me he enfadado!",
+ "s006.sec9.u0": "¡Si me das una, te devuelvo otra!",
+ "s006.sec10.u0": "¡Venga, a ver si te atreves!",
+ "s006.sec51.m0.o0": "¡Te estaba buscando!",
+ "s006.sec51.m0.o1": "Ha sido casualidad",
+ "s006.sec51.u0": [
+  [
+   "¿Mm? Vaya, si es {color 6}{player}{color 1}.",
+   "Ya han arreglado el puente,",
+   "por lo que veo."
+  ],
+  [
+   "He oído que los jóvenes estáis",
+   "construyendo una ciudad."
+  ],
+  [
+   "Así que tengo un favor que",
+   "pedirte. Yo te ayudé; ahora me",
+   "gustaría que me ayudaras tú."
+  ]
+ ],
+ "s006.sec51.u1": "¿?",
+ "s006.sec51.u2": "Construir una ciudad es salvar esta isla. Todos se salvan, y yo también. ¿Lo entiendes?",
+ "s006.sec51.u3": "¿Quieres decir que vendrás a la ciudad?",
+ "s006.sec51.u4": "Ajá. Pues me iré a esa ciudad tuya.",
+ "s006.sec51.u5": "¡Coelamon se ha unido a la ciudad!",
+ "s006.sec51.u6": [
+  [
+   "¿Mm? Oye, ¿tú eres un humano?"
+  ],
+  [
+   "¡Verme es una pesca de lo más",
+   "rara! Soy Coelamon, el Digimon",
+   "pez. ¿Vienes a verme?"
+  ]
+ ],
+ "s006.sec51.u7": "¡Jo, jo, ya veo, ya veo!",
+ "s006.sec51.u8": "Je, je... Se te nota. No hace falta que te dé vergüenza.",
+ "s006.sec51.u9": [
+  [
+   "Ya sé lo que buscas. El puente",
+   "de río arriba está roto y",
+   "quieres cruzar... ¿A que sí?"
+  ]
+ ],
+ "s006.sec51.u10": "Mmm, muy bien. Veré qué puedo hacer.",
+ "s006.sec51.u11": "Ja, ja, ¿otra vez por aquí?",
+ "s006.sec51.u12": "Venga, cruza por encima de nuestras cabezas. No te cortes. Venga, venga.",
+ "s006.sec51.u13": "¡Vale, allá vamos!",
+ "s006.sec51.u14": "En esta vida, lo que cuenta es echarse una mano. ¡Hasta la próxima!"
+}

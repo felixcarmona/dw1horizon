@@ -1,0 +1,395 @@
+// Readable form of script 218 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 218 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        if (is_recruited(species("Frigimon")) && restaurant_chef == 3) {
+            say(slot0, text("s218.sec51.u0"));
+        } else if (is_recruited(species("Vademon")) && restaurant_chef == 4) {
+            say(slot0, text("s218.sec51.u1"));
+            choice(narrator) {
+                text("s218.sec51.m1.o0") => {
+                    if (bits >= 1500) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u17"));
+                            add_stat(0, 1);
+                            add_stat(1, 1);
+                            add_stat(2, 1);
+                            add_stat(3, 1);
+                            add_stat(4, 10);
+                            add_stat(5, 10);
+                            reduce_stat(8, 5);
+                            add_stat(9, 1);
+                            add_stat(10, 1);
+                            add_stat(11, 20);
+                            add_stat(20, 0);
+                            take_bits(1500);
+                            say(narrator, text("s218.sec51.u18"));
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        } else {
+                            animate(partner, anim.refuse);
+                            await narrator;
+                            say(slot0, text("s218.sec51.u19"));
+                            return;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u16"));
+                        return;
+                    }
+                }
+                text("s218.sec51.m1.o1") => {
+                    if (bits >= 4000) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u21"));
+                            add_stat(0, 2);
+                            add_stat(1, 2);
+                            add_stat(2, 2);
+                            add_stat(3, 2);
+                            add_stat(4, 20);
+                            add_stat(5, 20);
+                            reduce_stat(8, 5);
+                            add_stat(9, 2);
+                            add_stat(10, 2);
+                            add_stat(11, 30);
+                            add_stat(20, 1);
+                            take_bits(4000);
+                            say(narrator, text("s218.sec51.u22"));
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        } else {
+                            animate(partner, anim.refuse);
+                            await narrator;
+                            say(slot0, text("s218.sec51.u23"));
+                            return;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u20"));
+                        return;
+                    }
+                }
+                text("s218.sec51.m1.o2") => {
+                    if (bits >= 9000) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u25"));
+                            add_stat(0, 3);
+                            add_stat(1, 3);
+                            add_stat(2, 3);
+                            add_stat(3, 3);
+                            add_stat(4, 30);
+                            add_stat(5, 30);
+                            reduce_stat(8, 5);
+                            add_stat(9, 3);
+                            add_stat(10, 3);
+                            add_stat(11, 45);
+                            add_stat(20, 5);
+                            take_bits(9000);
+                            say(narrator, text("s218.sec51.u26"));
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        } else {
+                            animate(partner, anim.refuse);
+                            await narrator;
+                            say(slot0, text("s218.sec51.u27"));
+                            return;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u24"));
+                        return;
+                    }
+                }
+            }
+            say(slot0, text("s218.sec51.u28"));
+            return;
+        } else if (is_recruited(species("Digitamamon")) && restaurant_chef == 5) {
+            say(slot0, text("s218.sec51.u2"));
+            choice(narrator) {
+                text("s218.sec51.m2.o0") => {
+                    if (bits >= 1000) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u30"));
+                            store_random(random_roll, 2);
+                        }
+                        if (random_roll <= 0) {
+                            add_stat(0, 1);
+                            add_stat(1, 0);
+                            add_stat(2, 1);
+                            add_stat(3, 0);
+                            add_stat(4, 10);
+                            add_stat(5, 0);
+                            reduce_stat(8, 5);
+                            add_stat(9, 1);
+                            add_stat(10, 0);
+                            add_stat(11, 18);
+                            add_stat(20, 1);
+                            take_bits(1000);
+                            say(narrator, text("s218.sec51.u31"));
+                            say(narrator, text("s218.sec51.u32"));
+                        } else if (random_roll <= 1) {
+                            add_stat(0, 0);
+                            add_stat(1, 1);
+                            add_stat(2, 0);
+                            add_stat(3, 1);
+                            add_stat(4, 0);
+                            add_stat(5, 10);
+                            reduce_stat(8, 5);
+                            add_stat(9, 1);
+                            add_stat(10, 0);
+                            add_stat(11, 18);
+                            add_stat(20, 1);
+                            take_bits(1000);
+                            say(narrator, text("s218.sec51.u33"));
+                            say(narrator, text("s218.sec51.u34"));
+                        } else if (random_roll <= 2) {
+                            add_stat(0, 2);
+                            add_stat(1, 2);
+                            add_stat(2, 2);
+                            add_stat(3, 2);
+                            add_stat(4, 20);
+                            add_stat(5, 20);
+                            reduce_stat(8, 5);
+                            add_stat(9, 2);
+                            add_stat(10, 1);
+                            add_stat(11, 18);
+                            add_stat(20, 1);
+                            take_bits(1000);
+                            say(narrator, text("s218.sec51.u35"));
+                            say(narrator, text("s218.sec51.u36"));
+                        } else {
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u29"));
+                        return;
+                    }
+                }
+                text("s218.sec51.m2.o1") => {
+                    if (bits >= 2500) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u39"));
+                            store_random(random_roll, 2);
+                        }
+                        if (random_roll <= 0) {
+                            add_stat(0, 2);
+                            add_stat(1, 0);
+                            add_stat(2, 2);
+                            add_stat(3, 0);
+                            add_stat(4, 20);
+                            add_stat(5, 0);
+                            reduce_stat(8, 5);
+                            add_stat(9, 2);
+                            add_stat(10, 0);
+                            add_stat(11, 24);
+                            add_stat(20, 2);
+                            take_bits(2500);
+                            say(narrator, text("s218.sec51.u40"));
+                            say(narrator, text("s218.sec51.u41"));
+                        } else if (random_roll <= 1) {
+                            add_stat(0, 0);
+                            add_stat(1, 2);
+                            add_stat(2, 0);
+                            add_stat(3, 2);
+                            add_stat(4, 0);
+                            add_stat(5, 20);
+                            reduce_stat(8, 5);
+                            add_stat(9, 2);
+                            add_stat(10, 0);
+                            add_stat(11, 24);
+                            add_stat(20, 2);
+                            take_bits(2500);
+                            say(narrator, text("s218.sec51.u42"));
+                            say(narrator, text("s218.sec51.u43"));
+                        } else if (random_roll <= 2) {
+                            add_stat(0, 3);
+                            add_stat(1, 3);
+                            add_stat(2, 3);
+                            add_stat(3, 3);
+                            add_stat(4, 30);
+                            add_stat(5, 30);
+                            reduce_stat(8, 5);
+                            add_stat(9, 3);
+                            add_stat(10, 1);
+                            add_stat(11, 24);
+                            add_stat(20, 2);
+                            take_bits(2500);
+                            say(narrator, text("s218.sec51.u44"));
+                            say(narrator, text("s218.sec51.u45"));
+                        } else {
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u38"));
+                        return;
+                    }
+                }
+                text("s218.sec51.m2.o2") => {
+                    if (bits >= 6000) {
+                        if (!partner_energy_full || condition(4)) {
+                            say(narrator, text("s218.sec51.u48"));
+                            store_random(random_roll, 2);
+                        }
+                        if (random_roll <= 0) {
+                            add_stat(0, 3);
+                            add_stat(1, 0);
+                            add_stat(2, 3);
+                            add_stat(3, 0);
+                            add_stat(4, 30);
+                            add_stat(5, 0);
+                            reduce_stat(8, 5);
+                            add_stat(9, 3);
+                            add_stat(10, 1);
+                            add_stat(11, 36);
+                            add_stat(20, 3);
+                            take_bits(6000);
+                            say(narrator, text("s218.sec51.u49"));
+                            say(narrator, text("s218.sec51.u50"));
+                        } else if (random_roll <= 1) {
+                            add_stat(0, 0);
+                            add_stat(1, 3);
+                            add_stat(2, 0);
+                            add_stat(3, 3);
+                            add_stat(4, 0);
+                            add_stat(5, 30);
+                            reduce_stat(8, 5);
+                            add_stat(9, 3);
+                            add_stat(10, 1);
+                            add_stat(11, 36);
+                            add_stat(20, 3);
+                            take_bits(6000);
+                            say(narrator, text("s218.sec51.u51"));
+                            say(narrator, text("s218.sec51.u52"));
+                        } else if (random_roll <= 2) {
+                            add_stat(0, 4);
+                            add_stat(1, 4);
+                            add_stat(2, 4);
+                            add_stat(3, 4);
+                            add_stat(4, 40);
+                            add_stat(5, 40);
+                            reduce_stat(8, 5);
+                            add_stat(9, 4);
+                            add_stat(10, 3);
+                            add_stat(11, 36);
+                            add_stat(20, 3);
+                            take_bits(6000);
+                            say(narrator, text("s218.sec51.u53"));
+                            say(narrator, text("s218.sec51.u54"));
+                        } else {
+                            animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                            await partner;
+                        }
+                    } else {
+                        say(slot0, text("s218.sec51.u47"));
+                        return;
+                    }
+                }
+            }
+            say(slot0, text("s218.sec51.u56"));
+            return;
+        }
+        choice(narrator) {
+            text("s218.sec51.m0.o0") => {
+                if (bits >= 300) {
+                    if (!partner_energy_full || condition(4)) {
+                        say(narrator, text("s218.sec51.u4"));
+                        add_stat(0, 0);
+                        add_stat(1, 0);
+                        add_stat(2, 1);
+                        add_stat(3, 0);
+                        add_stat(4, 0);
+                        add_stat(5, 10);
+                        reduce_stat(8, 2);
+                        add_stat(9, 3);
+                        add_stat(10, 0);
+                        add_stat(11, 12);
+                        add_stat(20, 2);
+                        take_bits(300);
+                        say(narrator, text("s218.sec51.u5"));
+                        animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                        await partner;
+                    } else {
+                        animate(partner, anim.refuse);
+                        await narrator;
+                        say(slot0, text("s218.sec51.u6"));
+                        return;
+                    }
+                } else {
+                    say(slot0, text("s218.sec51.u3"));
+                    return;
+                }
+            }
+            text("s218.sec51.m0.o1") => {
+                if (bits >= 700) {
+                    if (!partner_energy_full || condition(4)) {
+                        say(narrator, text("s218.sec51.u8"));
+                        add_stat(0, 0);
+                        add_stat(1, 0);
+                        add_stat(2, 2);
+                        add_stat(3, 0);
+                        add_stat(4, 0);
+                        add_stat(5, 30);
+                        reduce_stat(8, 2);
+                        add_stat(9, 5);
+                        add_stat(10, 0);
+                        add_stat(11, 16);
+                        add_stat(20, 3);
+                        take_bits(700);
+                        say(narrator, text("s218.sec51.u9"));
+                        animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                        await partner;
+                    } else {
+                        animate(partner, anim.refuse);
+                        await narrator;
+                        say(slot0, text("s218.sec51.u10"));
+                        return;
+                    }
+                } else {
+                    say(slot0, text("s218.sec51.u7"));
+                    return;
+                }
+            }
+            text("s218.sec51.m0.o2") => {
+                if (bits >= 1600) {
+                    if (!partner_energy_full || condition(4)) {
+                        say(narrator, text("s218.sec51.u12"));
+                        add_stat(0, 0);
+                        add_stat(1, 0);
+                        add_stat(2, 2);
+                        add_stat(3, 0);
+                        add_stat(4, 0);
+                        add_stat(5, 50);
+                        reduce_stat(8, 2);
+                        add_stat(9, 7);
+                        add_stat(10, 1);
+                        add_stat(11, 20);
+                        add_stat(20, 4);
+                        take_bits(1600);
+                        say(narrator, text("s218.sec51.u13"));
+                        animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+                        await partner;
+                    } else {
+                        animate(partner, anim.refuse);
+                        await narrator;
+                        say(slot0, text("s218.sec51.u14"));
+                        return;
+                    }
+                } else {
+                    say(slot0, text("s218.sec51.u11"));
+                    return;
+                }
+            }
+        }
+        say(slot0, text("s218.sec51.u15"));
+    }
+}

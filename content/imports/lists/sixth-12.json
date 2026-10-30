@@ -1,0 +1,78 @@
+{
+ "first_id": 241,
+ "out": "build/batch6",
+ "digimon": [
+  {
+   "name": "Wizardmon",
+   "game": "dcb",
+   "model": 154,
+   "from": [
+    235
+   ]
+  },
+  {
+   "name": "Sorcerimon",
+   "game": "dcb",
+   "model": 232,
+   "from": [
+    241
+   ]
+  },
+  {
+   "name": "Starmon",
+   "game": "dcb",
+   "model": 220
+  },
+  {
+   "name": "SuperStarmon",
+   "game": "dcb",
+   "model": 233,
+   "from": [
+    243
+   ]
+  },
+  {
+   "name": "Piedmon",
+   "game": "dcb",
+   "model": 171,
+   "from": [
+    66
+   ]
+  },
+  {
+   "name": "Infermon",
+   "game": "dcb",
+   "model": 165
+  },
+  {
+   "name": "Kokuwamon",
+   "game": "dcb",
+   "model": 204
+  },
+  {
+   "name": "MarineAngemon",
+   "game": "dcb",
+   "model": 230
+  },
+  {
+   "name": "Quetzalmon",
+   "game": "dcb",
+   "model": 191
+  },
+  {
+   "name": "Shadramon",
+   "game": "dcb",
+   "model": 190
+  },
+  {
+   "name": "Solarmon",
+   "game": "dcb",
+   "model": 202
+  },
+  {
+   "name": "Thundermon",
+   "game": "dcb",
+   "model": 222
+  }
+ ]
+}

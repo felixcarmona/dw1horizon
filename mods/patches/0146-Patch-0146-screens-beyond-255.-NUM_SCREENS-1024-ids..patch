@@ -1,0 +1,920 @@
+From 02c23ca328167b5e1944491fb04ed01bfd24de17 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 19 Oct 2026 17:55:22 +0000
+Subject: [PATCH] Patch 0146: screens beyond 255. NUM_SCREENS 1024 (ids.h); a
+ screen 255.. is a sector of SCRN.DAT (screen.h, mod_screen.c): its
+ MAP_ENTRIES row, own toilet/door/caption, flags (concave, mist, shop, arena)
+ and its MAPHEAD section as a script of its own, read when the screen is named
+ and cached (4 heads + 1 sector); WORLD_POOP screens are ScreenId
+ (SAVE_TAG_POOP_MAPS authoritative); the light table compares the whole screen
+ id; a save on a screen >= 255 refuses the original
+
+---
+ config/us/main.ld        |  12 ++++
+ include/dw/ids.h         |  10 ++-
+ include/dw/map_object.h  |   1 +
+ include/dw/partner.h     |   4 +-
+ include/dw/save_tags.h   |   2 +-
+ include/dw/screen.h      |  66 +++++++++++++++++++
+ mk/version/us.mk         |   1 +
+ src/main/btl.c           |   4 ++
+ src/main/file_table_us.c |   3 +
+ src/main/main_menu.c     |  39 +++++++++--
+ src/main/map.c           |  40 +++++++-----
+ src/main/map_object.c    |  23 ++++---
+ src/main/mod_screen.c    | 138 +++++++++++++++++++++++++++++++++++++++
+ src/main/overworld.c     |   6 +-
+ src/main/partner.c       |  13 ++--
+ src/main/partner_impl.c  |   2 +-
+ src/main/script_common.c |   7 ++
+ src/main/script_interp.c |   8 ++-
+ src/main/tamer.c         |   3 +-
+ src/main/utils2.c        |   2 +-
+ 20 files changed, 336 insertions(+), 48 deletions(-)
+ create mode 100644 include/dw/screen.h
+ create mode 100644 src/main/mod_screen.c
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index df1936b0..a01ed29d 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -111,6 +111,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.text.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.text.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.text.*);
+@@ -335,6 +337,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.rodata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.rodata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.rodata.*);
+@@ -492,6 +496,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.data.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.data.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.data.*);
+@@ -623,6 +629,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.sdata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.sdata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.sdata.*);
+@@ -765,6 +773,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.sbss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.sbss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.sbss.*);
+@@ -897,6 +907,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.bss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_screen.c.o(.bss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.bss.*);
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index adc6c7f5..0ce5adaf 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -142,7 +142,15 @@ typedef uint16_t CardId;
+ 	((type) == DIGIMON_MYOTISMON ? TRIGGER_RAISED_MYOTISMON : (type) + TRIGGER_RAISED_BASE)
+ 
+ /* Screens (maps) */
+-#define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
++/*
++ * MOD (screens beyond 255): screen ids are 0..NUM_SCREENS-1, a build constant. The original 255 (0..254,
++ * NUM_ORIGINAL_SCREENS: what the original executable and the v1 save's u8 bytes can name) have their resident
++ * MAP_ENTRIES row and MAPHEAD section; the others are records of SCRN.DAT read from the disc (screen.h).
++ */
++#define NUM_ORIGINAL_SCREENS	255
++#ifndef NUM_SCREENS
++#define NUM_SCREENS		1024
++#endif
+ /*
+  * Value of CURRENT_SCREEN/PREVIOUS_SCREEN before the first map is loaded
+  * (initializeMap) and the start section of a new game (initializeDefaultSavegame). It is
+diff --git a/include/dw/map_object.h b/include/dw/map_object.h
+index 2f90512f..3553e57b 100644
+--- a/include/dw/map_object.h
++++ b/include/dw/map_object.h
+@@ -33,6 +33,7 @@ typedef struct {
+ } Chest;
+ 
+ extern DoorStruct DOOR_MAPDATA[NUM_DOOR_MAPDATA];
++void loadDoorData(DoorStruct *door); /* MOD (screens beyond 255) */
+ extern Chest CHEST_ARRAY[NUM_CHESTS];
+ extern GsDOBJ2 MEDAL_OBJECT;
+ extern GsCOORDINATE2 MEDAL_COORDINATES;
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index 0e477fa4..797df5cb 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -22,11 +22,13 @@ typedef struct {
+ 	int16_t viewZ;
+ } RaiseData;
+ 
++/* MOD (screens beyond 255): the screen is a ScreenId, -1 = none (the save keeps SavedPoopPile, main_menu.c) */
+ typedef struct {
+-	uint8_t map;
++	ScreenId map;
+ 	uint8_t x;
+ 	uint8_t y;
+ 	int8_t size;
++	uint8_t pad;
+ } PoopPile;
+ 
+ /*
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 070ad00d..955bec76 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -25,7 +25,7 @@
+ #define SAVE_TAG_PARTNER_TYPE		0x0003 /* i32 species of the partner */
+ #define SAVE_TAG_WREGS			0x0004 /* u16[n] the script registers w0.. */
+ #define SAVE_TAG_REGISTERED		0x0005 /* i16[n] species of the registered Digimon of the VS mode (kept for reading tools) */
+-#define SAVE_TAG_POOP_MAPS		0x0006 /* i16[n] screens of the poop in the world, -1 = none (kept for reading tools) */
++#define SAVE_TAG_POOP_MAPS		0x0006 /* i16[n] screens of the poop in the world, -1 = none (authoritative since screens beyond 255; the v1 byte is 0xFF for a screen >= 255) */
+ #define SAVE_TAG_SPECIES_RAISED		0x0007 /* bit array: species the tamer has raised */
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
+ #define SAVE_TAG_REQUIRED		0x8000
+diff --git a/include/dw/screen.h b/include/dw/screen.h
+new file mode 100644
+index 00000000..ad73382b
+--- /dev/null
++++ b/include/dw/screen.h
+@@ -0,0 +1,66 @@
++#ifndef DW_SCREEN_H
++#define DW_SCREEN_H
++
++#include <dw/ids.h>
++#include <dw/map.h>
++
++/*
++ * MOD (screens beyond 255, docs/mods/ids.md § 8.5, docs/mods/maps.md "New screens"): a screen
++ * NUM_ORIGINAL_SCREENS..NUM_SCREENS-1 is one sector of SCRN.DAT, read from the disc when the screen is named
++ * (its caption before the fade, its MAPHEAD section when it is entered) and kept in a small cache, so a new
++ * screen costs no resident RAM. The 255 original screens (0..254) keep their MAP_ENTRIES row and MAPHEAD
++ * section, resident as in the original.
++ *
++ * SCRN.DAT: sector 0 is the file's header (SCREEN_FILE_MAGIC, u16 first id, u16 count); the record of
++ * screen id is sector 1 + id - NUM_ORIGINAL_SCREENS. A sector whose magic or id does not match is no
++ * screen (a disc without the file: the table entry points at sector 0 of the disc, zeros).
++ */
++#define SCREEN_FILE_NAME	"SCRN.DAT"
++#define SCREEN_FILE_MAGIC	"SCRN"
++#define SCREEN_RECORD_MAGIC	"SCR1"
++#define SCREEN_RECORD_SIZE	0x800
++#define SCREEN_SCRIPT_OFFSET	0x80	/* the record's MAPHEAD section: a script of its own */
++#define SCREEN_SCRIPT_MAX	(SCREEN_RECORD_SIZE - SCREEN_SCRIPT_OFFSET)
++#define SCREEN_CAPTION_MAX	36
++#define SCREEN_CACHE_SLOTS	4
++
++/* MapEntry.doorsId / toiletId / loadingName of a record: the record's own door, toilet or caption */
++#define SCREEN_OWN		(-1)
++
++/* ScreenRecordHead.flags: what the original decides by screen id in code, as data for a new screen */
++#define SCREEN_FLAG_CONCAVE	0x0001	/* battles on a concave arena (btl.c CONCAVE_SCREENS) */
++#define SCREEN_FLAG_MIST	0x0002	/* the mist layers (overworld.c isMistActive: 115-119, 121, 163, 220) */
++#define SCREEN_FLAG_SHOP	0x0004	/* the SHOP overlay is loaded on entering (SHOP_MAPS) */
++#define SCREEN_FLAG_ARENA	0x0008	/* the DGET overlay (tournament registration) is loaded on entering (ARENA_MAPS) */
++
++/*
++ * The first 0x80 bytes of a record. The script (scriptSize bytes at SCREEN_SCRIPT_OFFSET) has the layout of
++ * MAPHEAD.SCN: u16 size of its section table, (u16 section, u16 offset) pairs ending with 0xFFFF, the code;
++ * offsets are from the script's start. Its section `id` runs when the screen is entered, as MAPHEAD's would.
++ */
++typedef struct {
++	char magic[4];			/* 0x00 SCREEN_RECORD_MAGIC */
++	ScreenId id;			/* 0x04 */
++	uint16_t scriptSize;		/* 0x06 0 = no section: the screen falls back to MAPHEAD's */
++	MapEntry entry;			/* 0x08 the MAP_ENTRIES row: doorsId, toiletId, loadingName may be SCREEN_OWN */
++	uint32_t flags;			/* 0x18 SCREEN_FLAG_* */
++	ToiletData toilet;		/* 0x1C */
++	uint8_t door[54];		/* 0x24 a DoorStruct (map_object.h): 6 model ids, then x, y, z, rotation of each */
++	uint8_t pad[2];			/* 0x5A */
++	char caption[SCREEN_CAPTION_MAX]; /* 0x5C the area name (loadingName SCREEN_OWN) */
++} ScreenRecordHead;
++
++static inline int32_t isNewScreen(int32_t id)
++{
++	return id >= NUM_ORIGINAL_SCREENS && id < NUM_SCREENS;
++}
++
++MapEntry *getScreenEntry(int32_t id);
++#define SCREEN_ENTRY(id) (*getScreenEntry(id))
++uint32_t getScreenFlags(int32_t id);
++char *getScreenCaption(int32_t id);
++ToiletData *getScreenToilet(int32_t id);
++void *getScreenDoor(int32_t id); /* a DoorStruct */
++uint8_t *getMapHeadScript(int32_t section);
++
++#endif
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 8d295b84..25bdd6a9 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -74,6 +74,7 @@ MAIN_C_SRC := \
+ 	src/main/utils2.c \
+ 	src/main/mod_lab.c \
+ 	src/main/mod_species.c \
++	src/main/mod_screen.c \
+ 	src/main/tfs_stream.c \
+ 	src/main/npc_anim_trim.c \
+ 	src/main/npc_anim_keep.c \
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 2e9a630b..dc6147a4 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -23,6 +23,7 @@
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ #include <dw/mod_battle.h>
++#include <dw/screen.h>
+ 
+ #define BTL_FINISHER_TIM	((char *)BATTLE_FINISHER_TIM_ADDR)
+ #define BTL_FINISHER_MODEL	((char *)BATTLE_FINISHER_MODEL_ADDR)
+@@ -129,6 +130,9 @@ int32_t isScreenConcave(void)
+ {
+ 	int32_t i;
+ 
++	if (isNewScreen(CURRENT_SCREEN)) { /* MOD (screens beyond 255): the record's flag */
++		return (getScreenFlags(CURRENT_SCREEN) & SCREEN_FLAG_CONCAVE) != 0;
++	}
+ 	for (i = 0; i < NUM_CONCAVE_SCREENS; ++i) {
+ 		if (CURRENT_SCREEN == CONCAVE_SCREENS[i]) {
+ 			return 1;
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index d6d309c2..4292fdf1 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -825,6 +825,9 @@ FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + par
+ 	/* MOD (species): new species (tools/species.py); build-disc.py --relayout
+ 	 * writes its sector and size. Without the file the header check fails. */
+ 	{ 0x00000000, 0x00000800, "DIGI.DAT" },
++	/* MOD (screens beyond 255): the screens >= 255 (tools/screens.py, include/dw/screen.h); build-disc.py
++	 * --relayout --add writes its sector and size. Without the file sector 0 of the disc is read: no record. */
++	{ 0x00000000, 0x00000800, "SCRN.DAT" },
+ 	/*
+ 	 * MOD (partners-npc-c): partner-only models (model.c). Sector 0 until
+ 	 * build-disc.py --relayout --add writes the real one; without the file
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index fec1ee7f..947b9223 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -26,6 +26,7 @@
+ #include <dw/version.h>
+ #include <dw/vs.h>
+ #include <dw/world_object.h>
++#include <dw/screen.h>
+ #include <text/main/main_menu.h>
+ 
+ #include "common.h"
+@@ -85,11 +86,19 @@ typedef struct {
+ 	char location[24];
+ } SaveSlotPreview;
+ 
++/* a WORLD_POOP pile in the v1 save: the screen's low byte, 0xFF = none */
++typedef struct {
++	uint8_t map;
++	uint8_t x;
++	uint8_t y;
++	int8_t size;
++} SavedPoopPile;
++
+ typedef struct {
+ 	int32_t mainState;
+ 	VECTOR tamerPosition;
+ 	VECTOR partnerPosition;
+-	PoopPile worldPoop[100];
++	SavedPoopPile worldPoop[100]; /* MOD (screens beyond 255): the v1 bytes; WORLD_POOP is wider */
+ 	int32_t money;
+ 	int32_t partnerType;
+ 	uint8_t partnerData[16];
+@@ -190,7 +199,7 @@ typedef struct {
+ 	int32_t partnerType;		/* the same as the v1 field (already 32-bit) */
+ 	uint16_t wregs[SAVE_EXT_SAVED_WREGS];
+ 	DigimonId registeredTypes[40];	/* battle registration ids (u8 in RAM for now) */
+-	ScreenId poopMaps[100];		/* WORLD_POOP screens (u8 in RAM for now) */
++	ScreenId poopMaps[100];		/* WORLD_POOP screens (the v2 file: the v1 bytes) */
+ 	uint8_t speciesRaised[NUM_DIGIMON / 8];	/* MOD (scale): SPECIES_RAISED_BITS, one bit per type */
+ 	uint8_t speciesRecruited[NUM_DIGIMON / 8]; /* SPECIES_RECRUITED_BITS */
+ 	uint8_t reserved[0x1000 - 0x188 - 4 - 2 * (NUM_DIGIMON / 8)];
+@@ -4248,7 +4257,12 @@ void loadSavegame(SavegamePayload *savegame)
+ 		SAVED_STATE.npcMaps[i] = savegame->npcMaps[i];
+ 	}
+ 	memcpy(DIGIMON_NAME(0), savegame->playerName, 0x14);
+-	memcpy(WORLD_POOP, savegame->worldPoop, 0x190);
++	for (i = 0; i < 100; i++) { /* MOD (screens beyond 255): SAVE_TAG_POOP_MAPS gives the wide screens (applyRecords) */
++		WORLD_POOP[i].map = savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
++		WORLD_POOP[i].x = savegame->worldPoop[i].x;
++		WORLD_POOP[i].y = savegame->worldPoop[i].y;
++		WORLD_POOP[i].size = savegame->worldPoop[i].size;
++	}
+ 	SAVED_STATE.partnerPara = savegame->partnerPara;
+ 	SAVED_STATE.lives = savegame->partnerLives;
+ 	SAVED_STATE.currentScreen = savegame->currentScreen;
+@@ -4311,7 +4325,12 @@ void writeSavegame(SavegamePayload *savegame)
+ 		savegame->npcMaps[i] = NPC_ENTITIES[i].digimonEntity.entity.isOnMap;
+ 	}
+ 	memcpy(savegame->playerName, DIGIMON_NAME(0), 0x14);
+-	memcpy(savegame->worldPoop, WORLD_POOP, 0x190);
++	for (i = 0; i < 100; i++) { /* MOD (screens beyond 255): a screen the v1 byte cannot name is 0xFF (none) there */
++		savegame->worldPoop[i].map = (uint32_t)WORLD_POOP[i].map < NUM_ORIGINAL_SCREENS ? WORLD_POOP[i].map : 0xFF;
++		savegame->worldPoop[i].x = WORLD_POOP[i].x;
++		savegame->worldPoop[i].y = WORLD_POOP[i].y;
++		savegame->worldPoop[i].size = WORLD_POOP[i].size;
++	}
+ 	savegame->partnerPara = PARTNER_PARA;
+ 	/* MOD: the v1 save keeps the low byte (exact while ids are < 255) */
+ 	savegame->currentScreen = (uint8_t)CURRENT_SCREEN;
+@@ -4393,7 +4412,8 @@ static int32_t needsNewExecutable(int32_t partnerType, int32_t currentScreen, in
+ {
+ 	int32_t i;
+ 
+-	if ((uint32_t)partnerType >= NUM_ORIGINAL_DIGIMON || currentScreen >= NUM_SCREENS || previousScreen >= NUM_SCREENS) {
++	if ((uint32_t)partnerType >= NUM_ORIGINAL_DIGIMON || (uint32_t)currentScreen >= NUM_ORIGINAL_SCREENS ||
++	    (uint32_t)previousScreen >= NUM_ORIGINAL_SCREENS) {
+ 		return 1;
+ 	}
+ 	for (i = 0; i < 30; i++) {
+@@ -4534,8 +4554,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		words[i] = savegame->battleRegistrationData[i].digimonId;
+ 	}
+ 	p = putRecord(p, SAVE_TAG_REGISTERED, words, 2 * 40);
+-	for (i = 0; i < 100; i++) {
+-		words[i] = savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
++	for (i = 0; i < 100; i++) { /* MOD (screens beyond 255): from RAM the wide screen */
++		words[i] = fromRam ? WORLD_POOP[i].map : savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
+ 	}
+ 	p = putRecord(p, SAVE_TAG_POOP_MAPS, words, 2 * 100);
+ 	if (fromRam) {
+@@ -4748,6 +4768,11 @@ static void applyRecords(uint8_t *e)
+ 				SCRIPT_STATE_PTR->wregs[i] = readRecord16(d + 2 * i);
+ 			}
+ 			break;
++		case SAVE_TAG_POOP_MAPS: /* MOD (screens beyond 255): authoritative (was kept for the tools) */
++			for (i = 0; i < len / 2 && i < 100; i++) {
++				WORLD_POOP[i].map = readRecord16(d + 2 * i);
++			}
++			break;
+ 		case SAVE_TAG_SPECIES_RAISED:
+ 			n = len < NUM_DIGIMON / 8 ? len : NUM_DIGIMON / 8;
+ 			for (i = 0; i < n; i++) {
+diff --git a/src/main/map.c b/src/main/map.c
+index c7f9c089..81d5496a 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -21,6 +21,7 @@
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
++#include <dw/screen.h>
+ #include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/tfs_stream.h>
+@@ -54,6 +55,7 @@ void handleBattleIdle(DigimonEntity *entity, Stats *stats, int32_t flags);
+ void initializeLoadedNPCModels(void);
+ int32_t isInvisible(Entity *entity);
+ void loadDoors(int32_t doorEntryId);
++void loadDoorData(void *door); /* MOD: a DoorStruct (map_object.c) */
+ void loadMapCollisionData(uint8_t *data);
+ void loadMapImage1(uint8_t *tim);
+ void loadMapImage2(uint8_t *tim, int8_t id);
+@@ -441,7 +443,7 @@ char *MAP_NAME_PTR[70] = {
+ 	STR_MAP_NAME_AMIDA_FOREST,
+ };
+ 
+-MapEntry MAP_ENTRIES[NUM_SCREENS] = {
++MapEntry MAP_ENTRIES[NUM_ORIGINAL_SCREENS] = { /* MOD: the original screens; the others are SCRN.DAT records (screen.h) */
+ 	{
+ 		"MAYO01",
+ 		0x03,
+@@ -4096,7 +4098,7 @@ void lateTickMap(int32_t arg0)
+ 
+ 	tickCameraFollowPlayer();
+ 
+-	skipTimeOfDay = MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40;
++	skipTimeOfDay = SCREEN_ENTRY(CURRENT_SCREEN).flags & 0x40;
+ 	if ((skipTimeOfDay == 0) && (clockCrossed(1200))) {
+ 		/* MOD (rules as data): the hours come from MOD_DAYTIME (-1: no transition) */
+ 		if (HOUR == MOD_DAYTIME[MOD_DT_DUSK]) {
+@@ -4182,9 +4184,11 @@ void loadMap(int16_t mapId)
+ 	char path[32];
+ 	int32_t result;
+ 
++	MapEntry *entry = getScreenEntry(mapId); /* MOD (screens beyond 255): MAP_ENTRIES or the record */
++
+ 	offsets = (int32_t *)GENERAL_BUFFER_PTR;
+ 	if (SKIP_MAP_FILE_READ == 0) {
+-		buildMapPath(path, MAP_ENTRIES[mapId].filename, MAP_FILE_EXT_MAP, mapId);
++		buildMapPath(path, entry->filename, MAP_FILE_EXT_MAP, mapId);
+ 		readFile(path, (void *)offsets);
+ 	}
+ 
+@@ -4192,17 +4196,17 @@ void loadMap(int16_t mapId)
+ 	result = loadMapSetup((int32_t *)(GENERAL_BUFFER_PTR + setupOffset));
+ 	clearMapObjects(MAP_TILE_DATA.objects);
+ 
+-	if ((MAP_ENTRIES[mapId].num8bppImages != 0) ||
+-	    (MAP_ENTRIES[mapId].num4bppImages != 0)) {
+-		if (MAP_ENTRIES[mapId].num8bppImages != 0) {
+-			for (i = 0; i < MAP_ENTRIES[mapId].num8bppImages; i++) {
++	if ((entry->num8bppImages != 0) ||
++	    (entry->num4bppImages != 0)) {
++		if (entry->num8bppImages != 0) {
++			for (i = 0; i < entry->num8bppImages; i++) {
+ 				image8Offset = *offsets++;
+ 				loadMapImage1(GENERAL_BUFFER_PTR + image8Offset);
+ 			}
+ 		}
+ 
+-		if (MAP_ENTRIES[mapId].num4bppImages != 0) {
+-			for (i = 0; i < MAP_ENTRIES[mapId].num4bppImages; i++) {
++		if (entry->num4bppImages != 0) {
++			for (i = 0; i < entry->num4bppImages; i++) {
+ 				image4Offset = *offsets++;
+ 				loadMapImage2(GENERAL_BUFFER_PTR + image4Offset, i);
+ 			}
+@@ -4219,8 +4223,10 @@ void loadMap(int16_t mapId)
+ 	loadMapEntities(GENERAL_BUFFER_PTR + entityOffset, mapId,
+ 			CURRENT_EXIT);
+ 
+-	if (MAP_ENTRIES[mapId].doorsId != 0) {
+-		loadDoors(MAP_ENTRIES[mapId].doorsId - 1);
++	if (entry->doorsId == SCREEN_OWN && isNewScreen(mapId)) {
++		loadDoorData(getScreenDoor(mapId)); /* MOD: the record's own door */
++	} else if (entry->doorsId != 0) {
++		loadDoors(entry->doorsId - 1);
+ 	}
+ 	if ((mapId > 100) && (mapId < 104)) {
+ 		loadWarpCrystals(mapId);
+@@ -4363,14 +4369,14 @@ int32_t loadMapSetup(int32_t *data)
+ 
+ int32_t getMapSoundId(int16_t mapId)
+ {
+-	return MAP_ENTRIES[mapId].flags & 0x1f;
++	return SCREEN_ENTRY(mapId).flags & 0x1f;
+ }
+ 
+ void readMapTFS(int32_t mapId)
+ {
+ 	char path[32];
+ 
+-	buildMapPath(path, MAP_ENTRIES[mapId].filename, MAP_FILE_EXT_TFS, mapId);
++	buildMapPath(path, SCREEN_ENTRY(mapId).filename, MAP_FILE_EXT_TFS, mapId);
+ 	/* MOD (memreclaim): only the header; tiles are streamed (tfs_stream.c) */
+ 	tfsStreamOpen(path);
+ }
+@@ -4466,7 +4472,7 @@ void updateTimeOfDay(void)
+ 		removeObject(0xfbe, DAYTIME_TRANSITION_TARGET);
+ 	}
+ 
+-	if ((MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40) != 0) {
++	if ((SCREEN_ENTRY(CURRENT_SCREEN).flags & 0x40) != 0) {
+ 		LoadClut(MAP_CLUTS[0], 0, 480);
+ 	} else {
+ 		red = green = 10;
+@@ -5697,7 +5703,7 @@ static char *mapCaption(int16_t mapId, char *buf)
+ 	char *s;
+ 	int32_t n;
+ 
+-	s = MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName];
++	s = getScreenCaption(mapId); /* MOD (screens beyond 255) */
+ 	while (*s == ' ') {
+ 		s++;
+ 	}
+@@ -5725,7 +5731,7 @@ void addMapNameObject(mapId)
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+ 	drawString(mapCaption(mapId, buf), 0, 0);
+ #else
+-	drawString(MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName], 0, 0);
++	drawString(getScreenCaption(mapId), 0, 0);
+ #endif
+ 	addObject(0xfa1, mapId, NULL, renderMapName);
+ }
+@@ -5838,7 +5844,7 @@ void renderMapName(mapId)
+ 	renderString(0, -length / 2, -6, length, 12, 0, 0, 0, 0);
+ 	return;
+ #endif
+-	length = strlen(MAP_NAME_PTR[MAP_ENTRIES[mapId].loadingName]);
++	length = strlen(getScreenCaption(mapId));
+ #if !VERSION_IS(US)
+ 	renderString(0, -12 - (length / 2) * 6, -6, (length / 2) * 12, 12, 0,
+ 		     0, 0, 0);
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 69c1c0a8..950777b4 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -7,6 +7,7 @@
+ #include <dw/entity.h>
+ #include <dw/ids.h>
+ #include <dw/map_object.h>
++#include <dw/screen.h>
+ #include <dw/params.h>
+ #include <dw/trigger.h>
+ #include <dw/types.h>
+@@ -247,7 +248,13 @@ void loadStaticTMD(char *path, char *buffer, GsDOBJ2 *obj,
+ 	obj->coord2 = coord;
+ }
+ 
++/* MOD (screens beyond 255): the doors of a DOOR_MAPDATA row, or of a new screen's record (screen.h) */
+ void loadDoors(int16_t doorEntryId)
++{
++	loadDoorData(&DOOR_MAPDATA[doorEntryId]);
++}
++
++void loadDoorData(DoorStruct *door)
+ {
+ 	char path[32];
+ 	char *pathSrc = DOOR_PATH_PREFIX;
+@@ -269,10 +276,10 @@ void loadDoors(int16_t doorEntryId)
+ 	for (i = 0; i < NUM_MAP_3D_OBJECTS; i++) {
+ 		for (slot = 0; slot < 4; slot++) {
+ 			if (LOADED_DOOR_MODELS[slot] == -1) {
+-				LOADED_DOOR_MODELS[slot] = DOOR_MAPDATA[doorEntryId].modelId[i];
++				LOADED_DOOR_MODELS[slot] = door->modelId[i];
+ 				break;
+ 			}
+-			if (LOADED_DOOR_MODELS[slot] == DOOR_MAPDATA[doorEntryId].modelId[i]) {
++			if (LOADED_DOOR_MODELS[slot] == door->modelId[i]) {
+ 				break;
+ 			}
+ 		}
+@@ -298,14 +305,14 @@ void loadDoors(int16_t doorEntryId)
+ 	}
+ 
+ 	for (slot = 0; slot < NUM_MAP_3D_OBJECTS; slot++) {
+-		MAP_3D_OBJ[slot].modelId = DOOR_MAPDATA[doorEntryId].modelId[slot];
+-		MAP_3D_OBJ[slot].translation.vx = DOOR_MAPDATA[doorEntryId].posX[slot];
+-		MAP_3D_OBJ[slot].translation.vy = DOOR_MAPDATA[doorEntryId].posY[slot];
+-		MAP_3D_OBJ[slot].translation.vz = DOOR_MAPDATA[doorEntryId].posZ[slot];
++		MAP_3D_OBJ[slot].modelId = door->modelId[slot];
++		MAP_3D_OBJ[slot].translation.vx = door->posX[slot];
++		MAP_3D_OBJ[slot].translation.vy = door->posY[slot];
++		MAP_3D_OBJ[slot].translation.vz = door->posZ[slot];
+ 		MAP_3D_OBJ[slot].rotation.vx = 0;
+-		MAP_3D_OBJ[slot].rotation.vy = DOOR_MAPDATA[doorEntryId].rotation[slot];
++		MAP_3D_OBJ[slot].rotation.vy = door->rotation[slot];
+ 		MAP_3D_OBJ[slot].rotation.vz = 0;
+-		MAP_3D_OBJ[slot].direction = DOOR_MAPDATA[doorEntryId].rotation[slot];
++		MAP_3D_OBJ[slot].direction = door->rotation[slot];
+ 	}
+ 
+ 	MAP_OBJ_ROTATE_TIMER = 0;
+diff --git a/src/main/mod_screen.c b/src/main/mod_screen.c
+new file mode 100644
+index 00000000..7e758207
+--- /dev/null
++++ b/src/main/mod_screen.c
+@@ -0,0 +1,138 @@
++/*
++ * MOD (screens beyond 255): the screens NUM_ORIGINAL_SCREENS..NUM_SCREENS-1 are records of SCRN.DAT
++ * (include/dw/screen.h, docs/mods/ids.md "Screens beyond 255", docs/mods/maps.md "New screens").
++ * An original screen reads MAP_ENTRIES and MAPHEAD as before.
++ */
++#include <dw/file.h>
++#include <dw/main.h>
++#include <dw/screen.h>
++
++#include "common.h"
++
++extern char *MAP_NAME_PTR[];
++extern uint8_t *MAPHEAD_SCRIPT_PTR;
++void tickFileReadQueue(int32_t unused);
++int32_t isFileReadQueueBusy(void);
++
++/* the last record read: its whole sector (the script of a new screen runs from here) */
++static uint32_t SCREEN_SECTOR[SCREEN_RECORD_SIZE / 4];
++static int16_t SCREEN_SECTOR_ID = -1;
++/* the heads of the last screens named; the current screen's slot is never replaced */
++static ScreenRecordHead SCREEN_CACHE[SCREEN_CACHE_SLOTS];
++static int16_t SCREEN_CACHE_ID[SCREEN_CACHE_SLOTS] = { -1, -1, -1, -1 };
++static int32_t SCREEN_CACHE_NEXT;
++int32_t SCREEN_RECORD_READS; /* for the tests (tools/playtest/screens.sh) */
++/* what a screen without a record reads: no file, no sound bank, no doors, no toilet, an empty caption */
++static ScreenRecordHead NO_SCREEN = { "", -1, 0, { "", 0, 0, 0x40, 0, 0, SCREEN_OWN } };
++
++/* the record of a new screen into SCREEN_SECTOR; 0 = the disc has none */
++static int32_t readScreenRecord(int32_t id)
++{
++	FileLookup lookup;
++	ScreenRecordHead *rec = (ScreenRecordHead *)SCREEN_SECTOR;
++	int32_t sector = 1 + id - NUM_ORIGINAL_SCREENS;
++
++	if (SCREEN_SECTOR_ID == id) {
++		return 1;
++	}
++	if (lookupFileTable(&lookup, SCREEN_FILE_NAME) == 0 || lookup.size < (uint32_t)(sector + 1) * SCREEN_RECORD_SIZE) {
++		return 0;
++	}
++	/* never in the middle of an asynchronous read (evolution, sounds, overlays) */
++	while (isFileReadQueueBusy()) {
++		tickFileReadQueue(0);
++	}
++	readFileSectors(SCREEN_FILE_NAME, SCREEN_SECTOR, sector, 1);
++	SCREEN_RECORD_READS++;
++	if (rec->magic[0] != SCREEN_RECORD_MAGIC[0] || rec->magic[1] != SCREEN_RECORD_MAGIC[1] ||
++	    rec->magic[2] != SCREEN_RECORD_MAGIC[2] || rec->magic[3] != SCREEN_RECORD_MAGIC[3] || rec->id != id ||
++	    rec->scriptSize > SCREEN_SCRIPT_MAX) {
++		SCREEN_SECTOR_ID = -1;
++		return 0;
++	}
++	SCREEN_SECTOR_ID = id;
++	return 1;
++}
++
++static ScreenRecordHead *getScreenHead(int32_t id)
++{
++	int32_t i;
++
++	for (i = 0; i < SCREEN_CACHE_SLOTS; i++) {
++		if (SCREEN_CACHE_ID[i] == id) {
++			return &SCREEN_CACHE[i];
++		}
++	}
++	if (!readScreenRecord(id)) {
++		return &NO_SCREEN;
++	}
++	for (i = 0; i < SCREEN_CACHE_SLOTS; i++) {
++		SCREEN_CACHE_NEXT = (SCREEN_CACHE_NEXT + 1) % SCREEN_CACHE_SLOTS;
++		if (SCREEN_CACHE_ID[SCREEN_CACHE_NEXT] != CURRENT_SCREEN) {
++			break;
++		}
++	}
++	SCREEN_CACHE[SCREEN_CACHE_NEXT] = *(ScreenRecordHead *)SCREEN_SECTOR;
++	SCREEN_CACHE_ID[SCREEN_CACHE_NEXT] = id;
++	return &SCREEN_CACHE[SCREEN_CACHE_NEXT];
++}
++
++MapEntry *getScreenEntry(int32_t id)
++{
++	if ((uint32_t)id < NUM_ORIGINAL_SCREENS) {
++		return &MAP_ENTRIES[id];
++	}
++	if (isNewScreen(id)) {
++		return &getScreenHead(id)->entry;
++	}
++	return &NO_SCREEN.entry;
++}
++
++uint32_t getScreenFlags(int32_t id)
++{
++	return isNewScreen(id) ? getScreenHead(id)->flags : 0;
++}
++
++char *getScreenCaption(int32_t id)
++{
++	ScreenRecordHead *head;
++
++	if ((uint32_t)id < NUM_ORIGINAL_SCREENS) {
++		return MAP_NAME_PTR[MAP_ENTRIES[id].loadingName];
++	}
++	head = isNewScreen(id) ? getScreenHead(id) : &NO_SCREEN;
++	if (head->entry.loadingName != SCREEN_OWN) {
++		return MAP_NAME_PTR[head->entry.loadingName];
++	}
++	head->caption[SCREEN_CAPTION_MAX - 1] = '\0';
++	return head->caption;
++}
++
++/* the toilet of the screen's toiletId (> 0: TOILET_DATA, SCREEN_OWN: the record's) */
++ToiletData *getScreenToilet(int32_t id)
++{
++	MapEntry *e = getScreenEntry(id);
++
++	if (isNewScreen(id) && e->toiletId == SCREEN_OWN) {
++		return &getScreenHead(id)->toilet;
++	}
++	return &TOILET_DATA[e->toiletId - 1];
++}
++
++void *getScreenDoor(int32_t id)
++{
++	return getScreenHead(id)->door;
++}
++
++/*
++ * The script whose section `section` callScriptSection(0, section) runs: a new screen's record when it has
++ * one, else MAPHEAD (the original screens, the shared sections 1220.., a new screen without a record).
++ */
++uint8_t *getMapHeadScript(int32_t section)
++{
++	if (isNewScreen(section) && readScreenRecord(section) && ((ScreenRecordHead *)SCREEN_SECTOR)->scriptSize != 0) {
++		getScreenHead(section); /* its row is needed next (loadMap) */
++		return (uint8_t *)SCREEN_SECTOR + SCREEN_SCRIPT_OFFSET;
++	}
++	return MAPHEAD_SCRIPT_PTR;
++}
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index fc5af10f..249bdb9a 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -11,6 +11,7 @@
+ #include <dw/tamer.h>
+ #include <dw/ui.h>
+ #include <dw/version.h>
++#include <dw/screen.h>
+ 
+ typedef struct {
+ 	VECTOR waypoints[8];
+@@ -567,6 +568,9 @@ void renderMapOverlays(LocalMapObjectInstance *instances, int16_t screenX,
+ 
+ int32_t isMistActive(void)
+ {
++	if (isNewScreen(CURRENT_SCREEN)) { /* MOD (screens beyond 255): the record's flag (the far layer's CLUT row 0x80) */
++		return (getScreenFlags(CURRENT_SCREEN) & SCREEN_FLAG_MIST) != 0;
++	}
+ 	if (!((CURRENT_SCREEN >= 115 && CURRENT_SCREEN < 120) ||
+ 	      CURRENT_SCREEN == 121 || CURRENT_SCREEN == 163 ||
+ 	      CURRENT_SCREEN == 220)) {
+@@ -1081,7 +1085,7 @@ void loadMapDigimon(int16_t *data, int16_t mapId)
+ 	int32_t j;
+ 
+ 	digimonCount = *data++;
+-	if (MAP_ENTRIES[mapId].flags & 0x80) {
++	if (SCREEN_ENTRY(mapId).flags & 0x80) {
+ 		for (i = 0; i < digimonCount; i++) {
+ 			MAP_DIGIMON_TABLE[i].typeId = *data++;
+ 			MAP_DIGIMON_TABLE[i].followMode = *data++;
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 05743c65..dae6cef2 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -22,6 +22,7 @@
+ #include <dw/utils.h>
+ #include <dw/version.h>
+ #include <dw/mod_rules.h>
++#include <dw/screen.h>
+ 
+ extern int32_t HAS_BUTTERFLY;
+ extern int32_t BUTTERFLY_ID;
+@@ -527,21 +528,21 @@ void partnerTickFeedItem(void)
+ void tickPartnerToilet(void)
+ {
+ 	VECTOR *location;
+-	int16_t toiletId;
++	ToiletData *toilet;
+ 
+ 	location = &PARTNER_ENTITY.digimonEntity.entity.posData->location;
+-	toiletId = MAP_ENTRIES[CURRENT_SCREEN].toiletId - 1;
++	toilet = getScreenToilet(CURRENT_SCREEN); /* MOD (screens beyond 255): TOILET_DATA[toiletId - 1] or the record's */
+ 
+ 	switch (PARTNER_SUB_STATE) {
+ 	case 0:
+ 		tamerSetState(6);
+ 		unsetCameraFollowPlayer();
+-		TOILET_TARGET_POS1.vx = TOILET_DATA[toiletId].posX1;
++		TOILET_TARGET_POS1.vx = toilet->posX1;
+ 		TOILET_TARGET_POS1.vy = location->vy;
+-		TOILET_TARGET_POS1.vz = TOILET_DATA[toiletId].posY1;
+-		TOILET_TARGET_POS2.vx = TOILET_DATA[toiletId].posX2;
++		TOILET_TARGET_POS1.vz = toilet->posY1;
++		TOILET_TARGET_POS2.vx = toilet->posX2;
+ 		TOILET_TARGET_POS2.vy = location->vy;
+-		TOILET_TARGET_POS2.vz = TOILET_DATA[toiletId].posY2;
++		TOILET_TARGET_POS2.vz = toilet->posY2;
+ 		createCameraMovement(&TOILET_TARGET_POS2, 20);
+ 		startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 4);
+ 		PARTNER_SUB_STATE = 1;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 5fe59142..19bfe340 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1977,7 +1977,7 @@ void handleEatingPoop(void)
+ 		}
+ 	}
+ 
+-	WORLD_POOP[POOP_TO_EAT].map = 0xff;
++	WORLD_POOP[POOP_TO_EAT].map = -1; /* MOD (screens beyond 255): was 0xff */
+ 	WORLD_POOP[POOP_TO_EAT].x = -1;
+ 	WORLD_POOP[POOP_TO_EAT].y = -1;
+ 	WORLD_POOP[POOP_TO_EAT].size = 0;
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 723c31c7..fef3d60e 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -22,6 +22,7 @@
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
++#include <dw/screen.h>
+ #include <text/main/script_common.h>
+ 
+ typedef struct {
+@@ -3102,6 +3103,9 @@ void checkShopMap(mapId)
+ 			return;
+ 		}
+ 	}
++	if (getScreenFlags(mapId) & SCREEN_FLAG_SHOP) { /* MOD (screens beyond 255): a new screen's record */
++		loadDynamicLibrary(SHOP_REL, &local, 0, 0, 0);
++	}
+ }
+ 
+ void loadShopLibrary(void)
+@@ -3123,6 +3127,9 @@ void checkArenaMap(mapId)
+ 			return;
+ 		}
+ 	}
++	if (getScreenFlags(mapId) & SCREEN_FLAG_ARENA) { /* MOD (screens beyond 255): a new screen's record */
++		loadDynamicLibrary(DGET_REL, &local, 0, 0, 0);
++	}
+ }
+ 
+ void *allocateArray(uint32_t size)
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 9c0a893b..320933c5 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -30,6 +30,7 @@
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
++#include <dw/screen.h>
+ 
+ extern int8_t MAIN_STATE;
+ extern int16_t SCRIPT_MAP_CHANGE_STATE;
+@@ -673,7 +674,7 @@ void scriptInstruction10to27(op)
+ 		entry.scriptId = ACTIVE_MAP_SCRIPT;
+ 		entry.smth[0] = 1;
+ 		pushScriptStack(&entry);
+-		ACTIVE_SCRIPT = getScript(shortArg);
++		ACTIVE_SCRIPT = shortArg == 0 ? getMapHeadScript(offset) : getScript(shortArg); /* MOD (screens beyond 255) */
+ 		SCRIPT_POINTER = getScriptSection(
+ 			(uint8_t *)(int32_t)ACTIVE_SCRIPT, offset);
+ 		break;
+@@ -690,7 +691,7 @@ void scriptInstruction10to27(op)
+ 		break;
+ 	case SCRIPT_OP_JUMP_TO_FILE:
+ 		skipOneReadTwoShort(&shortArg, &offset);
+-		ACTIVE_SCRIPT = getScript(shortArg);
++		ACTIVE_SCRIPT = shortArg == 0 ? getMapHeadScript(offset) : getScript(shortArg); /* MOD (screens beyond 255) */
+ 		SCRIPT_POINTER = getScriptSection(
+ 			(uint8_t *)(int32_t)ACTIVE_SCRIPT, offset);
+ 		break;
+@@ -2216,7 +2217,8 @@ void callScriptSection(scriptId, section, param)
+ {
+ 	int32_t i;
+ 
+-	ACTIVE_SCRIPT = getScript(scriptId);
++	/* MOD (screens beyond 255): a new screen's MAPHEAD section is its SCRN.DAT record's script */
++	ACTIVE_SCRIPT = scriptId == 0 ? getMapHeadScript(section) : getScript(scriptId);
+ 	SCRIPT_POINTER =
+ 		getScriptSection((uint8_t *)(int32_t)ACTIVE_SCRIPT,
+ 	                         section);
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 968f90d1..be7328a3 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -36,6 +36,7 @@
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
++#include <dw/screen.h>
+ #include <text/main/tamer.h>
+ 
+ RECT ITEM_PICKUP_TEXT_AREA = {0, 12, 256, 200};
+@@ -926,7 +927,7 @@ void advanceBattleTime(result)
+ 	if (result == 1) {
+ 		int8_t flags;
+ 
+-		flags = MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40;
++		flags = SCREEN_ENTRY(CURRENT_SCREEN).flags & 0x40;
+ 		if (flags == 0) {
+ 			if (HOUR == MOD_DAYTIME[MOD_DT_DUSK]) {
+ 				initializeDaytimeTransition(0);
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 94d94adb..7a3210c1 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -567,7 +567,7 @@ void updateMapLightState(void)
+ 
+ 	p = MAP_LIGHT_UPDATE_DATA;
+ 	for (i = 0; i <= 0; i++, p++) {
+-		if ((p->mapId == (CURRENT_SCREEN_ID & 0xFF)) &&
++		if ((p->mapId == CURRENT_SCREEN_ID) && /* MOD (screens beyond 255): was & 0xFF, so 255 + 0xb7 matched */
+ 		    ((p->trigger == 0xFFFF) || (isTriggerSet(p->trigger) != 0))) {
+ 			if ((HOUR >= 7) && (HOUR < 0x13)) {
+ 				if (p->mode == 0) {
+-- 
+2.53.0
+

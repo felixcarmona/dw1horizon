@@ -1,0 +1,13 @@
+// Who stands on screen 19 (Mt. Panorama Plains), and when. Read out of MAPHEAD.SCN section 19 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(19) {                              // Mt. Panorama Plains
+            npc 137 slot 0 autotalk when not recruited(Mamemon) and roll(1) <= 2;
+            npc Mudfrigimon slot 1 autotalk when recruited(Mamemon) or roll(1) >= 3;
+            npc Mudfrigimon slot 2 autotalk when recruited(Mamemon) or roll(1) >= 3;
+            npc Mudfrigimon slot 3 autotalk when recruited(Mamemon) or roll(1) >= 3;
+        }
+    }
+}

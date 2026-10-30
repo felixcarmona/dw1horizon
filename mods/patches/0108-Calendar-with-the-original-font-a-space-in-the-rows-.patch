@@ -1,0 +1,198 @@
+From 35923653bedd2c1c1bf70a0d09e74f045fca105e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 15 Oct 2026 01:32:16 +0000
+Subject: [PATCH] Calendar with the original font: a space in the rows cut into
+ pieces advances as the original's
+
+Patch 0025 made drawString2 advance a space a fixed 8 pixels. The
+tournament calendar cuts its rows at the original's advances: in the
+original a space advanced by the glyph before it (12 after a grade, 8
+after a digit) and by an advance never set (0, in the retail and the GCC
+builds) at a row's start, where the first date under 10 is padded with a
+space. With the original font (and before 0097, the font patches) the
+dates moved a column ("9 1 01 11 21", "1 _ 2 3 4") and the red grades
+were cut. Bisected: 0024 draws it as the retail disc, 0025 breaks it.
+
+The boxes of TEXTBOX_IN_CELLS (calendar, shop bits box, card shop
+confirm box) now exist for every font: in their rows a space advances by
+the glyph before it, 12 at the row's start (a blank grade cell), as
+font b's cells already did; the calendar's first date under 10 is
+written without its padding space (the space after it puts the next date
+in its column). Dialogue keeps the fixed 8.
+
+---
+ include/dw/mod_font.h     | 11 ++++++++---
+ src/dget/dget.c           |  9 ++++++++-
+ src/main/font.c           |  8 ++++++--
+ src/main/script_textbox.c | 25 ++++++++++++++++++-------
+ 4 files changed, 40 insertions(+), 13 deletions(-)
+
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index 5caa0bb7..81bad797 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -22,11 +22,13 @@
+ /* a C string that a screen cuts into pieces at the original's offsets: drawn in the original's cells (font.c) */
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+ void drawStringCells(char *str, int32_t x, int32_t y);
+-extern uint8_t TEXTBOX_CELLS;
+ #define DRAW_STRING_CELLS(str, x, y) drawStringCells(str, x, y)
+ #else
+ #define DRAW_STRING_CELLS(str, x, y) drawString(str, x, y)
+ #endif
++#if VERSION_IS(US)
++extern uint8_t TEXTBOX_CELLS;
++#endif
+ 
+ /*
+  * a C string whose row a screen copies in pieces (the crops' offsets in pixels from x: 0, then each next crop's srcX - x;
+@@ -46,8 +48,11 @@ void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces);
+ #define DRAW_STRING_PIECES(str, x, y, ...) drawString(str, x, y)
+ #endif
+ 
+-/* the rows of a text box (script_textbox.c) that a screen cuts into pieces: after createTextbox, in the original's cells */
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++/*
++ * the rows of a text box (script_textbox.c) that a screen cuts into pieces: after createTextbox, in the original's cells
++ * (with the original font: a space advances as the original's, by the glyph before it, not the mod's 8 pixels)
++ */
++#if VERSION_IS(US)
+ #define TEXTBOX_IN_CELLS(boxId) (TEXTBOX_CELLS |= 1 << (boxId))
+ #else
+ #define TEXTBOX_IN_CELLS(boxId)
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index d61e6c71..d54c04fd 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -171,8 +171,15 @@ void buildScheduleLabels(void)
+ 		*str++ = 0xfa;
+ #else
+ 		dayOfMonth = day % 30;
++#if FONT_PROPORTIONAL /* MOD (font): the figure space that pads it already advances a digit's 8 pixels */
+ 		str = (uint8_t *)intToStringSJIS(str, dayOfMonth + 1, 2, 0);
+-#if !FONT_PROPORTIONAL /* MOD (font): the figure space that pads it already advances a digit's 8 pixels */
++#else
++		/*
++		 * MOD (font): the first date under 10 without its padding space: in the row's cells a space advances by
++		 * the glyph before it, 12 at the row's start (script_textbox.c), where the original's advance was not set
++		 * (0); the space after it puts the next date in its column
++		 */
++		str = (uint8_t *)intToStringSJIS(str, dayOfMonth + 1, 2, i == 0);
+ 		if ((i == 0) && ((dayOfMonth + 1) < 10)) {
+ 			*str++ = 0x81;
+ 			*str++ = 0x40;
+diff --git a/src/main/font.c b/src/main/font.c
+index 301cb417..27e17557 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1366,6 +1366,12 @@ void setTextColor(int32_t color)
+ 	COLORCODE_HIGHBITS = COLORCODE_LOWBITS << 4;
+ }
+ 
++#if VERSION_IS(US)
++/* MOD (font): set while text is laid out in the original's cells (below; with the original font script_textbox.c's
++ * rule for a space) */
++int8_t FONT_CELLS;
++#endif
++
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+ /* the rows of a glyph (GLYPH_HEIGHT, then its width) */
+ static uint16_t *glyphRows(uint16_t codepoint)
+@@ -1432,8 +1438,6 @@ int32_t glyphWidth(uint16_t codepoint)
+  * byte of its width) and its ink is centred in that cell, so every piece still holds exactly its characters.
+  * drawStringCells sets it for one C string; script_textbox.c sets it for the rows of the boxes in TEXTBOX_CELLS.
+  */
+-int8_t FONT_CELLS;
+-
+ void drawStringCells(char *str, int32_t x, int32_t y)
+ {
+ 	FONT_CELLS = 1;
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index c3ebba65..9d53e026 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -161,7 +161,7 @@ int32_t drawTextboxStrings(boxId, flag)
+ 		x = 2;
+ 	}
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ 	FONT_CELLS = (TEXTBOX_CELLS >> boxId) & 1;
+ #endif
+ 	while (x != 0) {
+@@ -182,7 +182,7 @@ int32_t drawTextboxStrings(boxId, flag)
+ 		buf += 0x40;
+ 		x--;
+ 	}
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ 	FONT_CELLS = 0;
+ #endif
+ 
+@@ -544,11 +544,12 @@ void closeAllTextboxes(void)
+ 	}
+ }
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ /*
+  * MOD (font): the boxes (bit = box id) whose rows a screen cuts into pieces at offsets made for the original
+  * advances (the tournament calendar, the shop's bits and confirm boxes): their rows are drawn in the original's
+- * cells (font.c FONT_CELLS). createTextbox clears the bit; the creator of such a box sets it.
++ * cells (font.c FONT_CELLS; with the original font a space advances as the original's, drawString2). createTextbox
++ * clears the bit; the creator of such a box sets it.
+  */
+ uint8_t TEXTBOX_CELLS;
+ #endif
+@@ -576,7 +577,7 @@ void createTextbox(boxId, flags, rect, origin, tick, render)
+ 	entry->origin = *origin;
+ 	entry->tick = tick;
+ 	entry->render = render;
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ 	TEXTBOX_CELLS &= ~(1 << boxId); /* MOD (font): its rows are laid out to the pixel unless its creator says */
+ #endif
+ 
+@@ -715,13 +716,13 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ #if VERSION_IS(US)
+ 	uint16_t adv;
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ 	uint16_t cellsSpace;
+ #endif
+ 	uint16_t glyph;
+ 
+ 	pos = 0;
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if VERSION_IS(US)
+ 	cellsSpace = 0xc;
+ #endif
+ 	for (;;) {
+@@ -862,6 +863,15 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 				 * starts a glyph past TEXT_DRAW_LIMIT (docs/mods/font.md).
+ 				 */
+ 				adv = DRAW_STRING2_IS_FIXED_WIDTH != 0 ? 0xc : DRAW_STRING2_SPACE_WIDTH;
++				/*
++				 * MOD (font): but in the rows a screen cuts into pieces (TEXTBOX_IN_CELLS: the tournament
++				 * calendar's columns, the shop's bits box, the card shop's answers) as the original advanced
++				 * it, by the glyph before it, 12 at the row's start (a blank grade cell); the fixed 8 moved
++				 * the calendar's columns ("9 1 01 11 21")
++				 */
++				if (FONT_CELLS != 0) {
++					adv = cellsSpace;
++				}
+ #endif
+ 			} else {
+ #if !VERSION_IS(US)
+@@ -872,6 +882,7 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 				if (DRAW_STRING2_IS_FIXED_WIDTH != 0) {
+ 					adv = 0xc;
+ 				}
++				cellsSpace = adv;
+ #endif
+ 			}
+ 
+-- 
+2.53.0
+

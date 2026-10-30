@@ -1,0 +1,17 @@
+{
+  "id": 47,
+  "name": "Digipine",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 22,
+    "weight": 2,
+    "boostFlag": 63,
+    "boostValue": 15,
+    "boostHours": 6
+  }
+}

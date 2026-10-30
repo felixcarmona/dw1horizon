@@ -1,0 +1,137 @@
+{
+ "s006.sec6.u0": [
+  [
+   "Ich werde nicht verlieren!"
+  ]
+ ],
+ "s006.sec7.u0": [
+  [
+   "Komm mir nicht zu nahe! Geh",
+   "weg!"
+  ]
+ ],
+ "s006.sec8.u0": [
+  [
+   "Jetzt reicht's, jetzt bin ich",
+   "richtig wütend!"
+  ]
+ ],
+ "s006.sec9.u0": [
+  [
+   "Schlägst du mich, schlage ich",
+   "zurück!"
+  ]
+ ],
+ "s006.sec10.u0": [
+  [
+   "Nur zu, wenn du meinst, du",
+   "kannst es!"
+  ]
+ ],
+ "s006.sec51.m0.o0": "Ich habe dich gesucht!",
+ "s006.sec51.m0.o1": "Reiner Zufall",
+ "s006.sec51.u0": [
+  [
+   "Hm? Na, {color 6}{player}{color 1}. Die",
+   "Brücke ist wohl repariert. Ich",
+   "höre, ihr jungen Leute baut"
+  ],
+  [
+   "eine Stadt. Darum habe ich",
+   "eine Bitte. So wie ich dir",
+   "geholfen habe, möchte ich, dass"
+  ],
+  [
+   "du mir hilfst."
+  ]
+ ],
+ "s006.sec51.u1": [
+  [
+   "?"
+  ]
+ ],
+ "s006.sec51.u2": [
+  [
+   "Eine Stadt aufzubauen",
+   "bedeutet, diese Insel zu",
+   "retten. Alle werden gerettet,"
+  ],
+  [
+   "und ich auch. Verstehst du?"
+  ]
+ ],
+ "s006.sec51.u3": [
+  [
+   "Meinst du, du kommst in die",
+   "Stadt?"
+  ]
+ ],
+ "s006.sec51.u4": [
+  [
+   "Aha. Ich gehe in deine Stadt."
+  ]
+ ],
+ "s006.sec51.u5": "Coelamon ist in die Stadt gezogen!",
+ "s006.sec51.u6": [
+  [
+   "Hm? Sag mal, bist du ein",
+   "Mensch? Mich zu treffen ist ein",
+   "seltener Fang! Ich bin"
+  ],
+  [
+   "Coelamon, das Fisch-Digimon.",
+   "Bist du extra gekommen, um",
+   "mich zu sehen?"
+  ]
+ ],
+ "s006.sec51.u7": [
+  [
+   "Hoho, verstehe, verstehe!"
+  ]
+ ],
+ "s006.sec51.u8": [
+  [
+   "Hehe... Ich merke es doch. Sei",
+   "nicht so schüchtern."
+  ]
+ ],
+ "s006.sec51.u9": [
+  [
+   "Ich kann mir denken, was du",
+   "willst. Die Brücke",
+   "flussaufwärts ist kaputt, aber"
+  ],
+  [
+   "du willst hinüber... Stimmt's?"
+  ]
+ ],
+ "s006.sec51.u10": [
+  [
+   "Hm, gut. Ich sehe, was ich tun",
+   "kann."
+  ]
+ ],
+ "s006.sec51.u11": [
+  [
+   "Haha, wieder da?"
+  ]
+ ],
+ "s006.sec51.u12": [
+  [
+   "Los, geh über unsere Köpfe.",
+   "Keine falsche Scheu. Nur zu."
+  ]
+ ],
+ "s006.sec51.u13": [
+  [
+   "Gut, los geht's!"
+  ]
+ ],
+ "s006.sec51.u14": [
+  [
+   "In dieser Welt zählt, dass man",
+   "einander hilft. Bis zum",
+   "nächsten Mal!"
+  ]
+ ]
+}

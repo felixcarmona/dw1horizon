@@ -1,0 +1,16 @@
+{
+  "id": 121,
+  "name": "Technique 121",
+  "element": "ice",
+  "power": 10,
+  "mpCost": 0,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 70,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0
+}

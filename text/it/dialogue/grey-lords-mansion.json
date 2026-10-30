@@ -1,0 +1,842 @@
+{
+ "s050.sec5.u0": [
+  [
+   "Devo sorvegliare questo posto."
+  ]
+ ],
+ "s050.sec6.u0": [
+  [
+   "Quali erano i miei ordini?"
+  ]
+ ],
+ "s050.sec51.u0": [
+  [
+   "?"
+  ]
+ ],
+ "s050.sec51.u1": [
+  [
+   "Aaaaah! ?"
+  ]
+ ],
+ "s050.sec51.u2": [
+  [
+   "Arrivo!"
+  ]
+ ],
+ "s051.sec57.u0": [
+  [
+   "...! Sento la sete di sangue di",
+   "qualcuno..."
+  ]
+ ],
+ "s051.sec57.u1": [
+  [
+   "Eh eh... ah ah... Alla fine sei",
+   "venuto!"
+  ]
+ ],
+ "s051.sec57.u2": [
+  [
+   "Chi c'è!?"
+  ]
+ ],
+ "s051.sec57.u3": [
+  [
+   "Sono Devimon! Un angelo",
+   "caduto, asservito al potere",
+   "delle tenebre. Eh eh eh..."
+  ]
+ ],
+ "s051.sec57.u4": [
+  [
+   "Sembra che tu sappia qualcosa!"
+  ]
+ ],
+ "s051.sec57.u5": [
+  [
+   "Myotismon è da qualche parte",
+   "nella villa. Probabilmente è",
+   "ancora vivo."
+  ]
+ ],
+ "s051.sec57.u6": [
+  [
+   "Quindi è opera tua!"
+  ]
+ ],
+ "s051.sec57.u7": [
+  [
+   "Chissà? Ma io sono il tuo",
+   "nemico. E' sicuro."
+  ]
+ ],
+ "s051.sec57.u8": [
+  [
+   "Ehi, non mi scappi!"
+  ]
+ ],
+ "s051.sec57.u9": [
+  [
+   "Eh eh eh... Ah ah ah ah!"
+  ]
+ ],
+ "s051.sec57.u10": [
+  [
+   "Oh, No!"
+  ]
+ ],
+ "s051.sec57.u11": [
+  [
+   "Eh eh... Portagli i miei",
+   "saluti, a Myotismon."
+  ]
+ ],
+ "s051.sec57.u12": [
+  [
+   "È scappato... Mannaggia! Che",
+   "viscido."
+  ]
+ ],
+ "s051.sec57.u13": [
+  [
+   "Wow, questa villa sembra",
+   "enorme."
+  ]
+ ],
+ "s051.sec57.u14": [
+  [
+   "C'è nessunooo?"
+  ]
+ ],
+ "s051.sec57.u15": [
+  [
+   "Non c'è nessuno? O è troppo",
+   "grande perché mi sentano?"
+  ]
+ ],
+ "s051.sec57.u16": [
+  [
+   "Pazienza. Bene, esploriamo!"
+  ]
+ ],
+ "s051.sec81.u0": [
+  [
+   "Non si apre... Un potere",
+   "misterioso l'ha sigillato."
+  ]
+ ],
+ "s051.sec82.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s051.sec82.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s051.sec84.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s051.sec84.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s051.sec85.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s051.sec85.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s052.sec81.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s052.sec81.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s052.sec82.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s052.sec82.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s052.sec83.u0": [
+  [
+   "Non si apre... È chiusa a",
+   "chiave. E non c'è il buco della",
+   "serratura!"
+  ]
+ ],
+ "s054.sec5.u0": [
+  [
+   "Ci hai aiutati tante volte.",
+   "Lascia che condivida i frutti",
+   "della mia ricerca. Quando"
+  ],
+  [
+   "MetalGreymon muore in battaglia",
+   "o per malattia, può diventare",
+   "SkullGreymon. Anche Bakemon,"
+  ],
+  [
+   "Devimon e Phoenixmon possono",
+   "nascere così... Da quali forme,",
+   "non so dirlo. Gli alberi di"
+  ],
+  [
+   "digievoluzione non mostrano",
+   "queste vie, quindi ricordatelo",
+   "bene."
+  ]
+ ],
+ "s054.sec5.u1": [
+  [
+   "Da quando i miei uomini",
+   "combattono nell'arena, stanno",
+   "tornando quelli di prima."
+  ],
+  [
+   "Sembra fargli molto bene. E",
+   "anche a me un incontro tra una",
+   "ricerca e l'altra offre un"
+  ],
+  [
+   "piacevole diversivo."
+  ]
+ ],
+ "s054.sec5.u2": [
+  [
+   "Ma in cosa consiste questa sua",
+   "ricerca...?"
+  ]
+ ],
+ "s054.sec5.u3": [
+  [
+   "Myotismon, hanno aperto",
+   "un'arena in città!"
+  ]
+ ],
+ "s054.sec5.u4": [
+  [
+   "Mmm. Pensi che i miei uomini",
+   "potrebbero essere utili lì?"
+  ]
+ ],
+ "s054.sec5.u5": [
+  [
+   "Eccome! Lasciali scatenare!"
+  ]
+ ],
+ "s054.sec5.u6": [
+  [
+   "I miei uomini stanno sempre",
+   "peggio... Forse è solo",
+   "questione di tempo prima che"
+  ],
+  [
+   "lascino questa villa."
+  ]
+ ],
+ "s054.sec60.u0": [
+  [
+   "Gnam, gnam..."
+  ]
+ ],
+ "s054.sec60.u1": [
+  [
+   "Bene..."
+  ]
+ ],
+ "s054.sec60.u2": [
+  [
+   "Forse ascolterai quello che",
+   "devo dire."
+  ]
+ ],
+ "s054.sec60.u3": [
+  [
+   "Croc, croc..."
+  ]
+ ],
+ "s054.sec60.u4": [
+  [
+   "Ultimamente i miei uomini non",
+   "fanno più ciò che dico. Non si",
+   "ribellano... sembrano"
+  ],
+  [
+   "semplicemente dimenticare del",
+   "tutto gli ordini. A volte non",
+   "li capiscono neppure."
+  ],
+  [
+   "Dovrebbero portarmi i pasti,",
+   "ma..."
+  ]
+ ],
+ "s054.sec60.u5": [
+  [
+   "Glu, glu. . ."
+  ]
+ ],
+ "s054.sec60.u6": [
+  [
+   "Mentre ero assorto nella",
+   "ricerca, non arrivava alcun",
+   "pasto... Ed ero così assorto da"
+  ],
+  [
+   "dimenticare la fame. Così è",
+   "successo."
+  ]
+ ],
+ "s054.sec60.u7": [
+  [
+   "...Questo è essere TROPPO",
+   "assorti."
+  ]
+ ],
+ "s054.sec60.u8": [
+  [
+   "Oh, che imbarazzo."
+  ]
+ ],
+ "s054.sec60.u9": [
+  [
+   "Quindi anche qui succedono le",
+   "stesse strane cose che",
+   "avvengono fuori."
+  ]
+ ],
+ "s054.sec60.u10": [
+  [
+   "Oh? Con i disordini sull'isola",
+   "intendi che tutti stanno",
+   "diventando come i miei uomini?"
+  ]
+ ],
+ "s054.sec60.u11": [
+  [
+   "Sì. Ogni specie sta per conto",
+   "suo e perde la memoria. Non",
+   "ancora tutti, ma se continua"
+  ],
+  [
+   "così..."
+  ]
+ ],
+ "s054.sec60.u12": [
+  [
+   "Qualcuno potrebbe esserne la",
+   "causa? Mmm... E se sì, a che",
+   "scopo...?"
+  ]
+ ],
+ "s054.sec60.u13": [
+  [
+   "Mh..."
+  ]
+ ],
+ "s054.sec60.u14": [
+  [
+   "Cosa posso fare per l'isola?"
+  ]
+ ],
+ "s054.sec60.u15": [
+  [
+   "Stiamo costruendo una città",
+   "per unire i cuori dei Digimon.",
+   "Per questo giriamo l'isola: per"
+  ],
+  [
+   "trovare amici."
+  ]
+ ],
+ "s054.sec60.u16": [
+  [
+   "Capisco. Ma c'è un problema. A",
+   "parte me, i miei uomini sanno",
+   "fare poco altro oltre a"
+  ],
+  [
+   "combattere. Eppure non posso",
+   "abbandonarli..."
+  ]
+ ],
+ "s054.sec60.u17": [
+  [
+   "Capisco..."
+  ]
+ ],
+ "s054.sec60.u18": [
+  [
+   "Ti darò una risposta a tempo",
+   "debito. Ho del lavoro da fare",
+   "qui, vedi. Mi dispiace"
+  ],
+  [
+   "davvero..."
+  ]
+ ],
+ "s054.sec60.u19": [
+  [
+   "Va bene, allora tornerò. E mi",
+   "raccomando, mangia come si",
+   "deve!"
+  ]
+ ],
+ "s054.sec60.u20": [
+  [
+   "Allora perché non combatti",
+   "nell'arena?"
+  ]
+ ],
+ "s054.sec60.u21": [
+  [
+   "Oh... l'arena? Interessante.",
+   "Proprio ciò che serve per",
+   "rimettere in forma i miei"
+  ],
+  [
+   "uomini. E anche a me piacerebbe",
+   "sgranchirmi le gambe ogni",
+   "tanto."
+  ]
+ ],
+ "s054.sec60.u22": [
+  [
+   "Quindi ti unirai a noi?!"
+  ]
+ ],
+ "s054.sec60.u23": [
+  [
+   "Sì. Ho ancora delle ricerche da",
+   "finire qui, quindi verrò in",
+   "città tra uno studio e l'altro."
+  ],
+  [
+   "Non vedo l'ora."
+  ]
+ ],
+ "s054.sec81.u0": [
+  [
+   "Oh!"
+  ]
+ ],
+ "s054.sec81.u1": [
+  [
+   "Sì, una chiave! Forse apre",
+   "quelle porte che non si",
+   "aprivano."
+  ]
+ ],
+ "s054.sec81.u2": [
+  [
+   "{color 6}Chiave villa{color 1} ottenuta!"
+  ]
+ ],
+ "s054.sec81.u3": [
+  [
+   "Ops, devo buttare via qualcosa."
+  ]
+ ],
+ "s054.sec82.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s054.sec82.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s054.sec83.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s054.sec83.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s054.sec254.u0": [
+  [
+   ". . . Myotismon non è qui."
+  ]
+ ],
+ "s055.sec5.u0": [
+  [
+   "Ti cucinerò!"
+  ]
+ ],
+ "s055.sec6.u0": [
+  [
+   "Ti cucinerò!"
+  ]
+ ],
+ "s055.sec7.u0": [
+  [
+   "Ti cucinerò!"
+  ]
+ ],
+ "s055.sec83.u0": [
+  [
+   "Vediamo, il biglietto diceva..."
+  ]
+ ],
+ "s055.sec83.u1": [
+  [
+   "«Torna dove hai sottratto",
+   "punti allo sciocco.»"
+  ]
+ ],
+ "s055.sec83.u2": [
+  [
+   "{color 6}Chiave frigo{color 1} usata!"
+  ]
+ ],
+ "s055.sec83.u3": [
+  [
+   "Huh? non è qui? è scomparso?"
+  ]
+ ],
+ "s055.sec83.u4": [
+  [
+   "Oh? C'è un biglietto",
+   "attaccato..."
+  ]
+ ],
+ "s055.sec83.u5": [
+  [
+   "«Torna dove hai sottratto",
+   "punti allo sciocco.»"
+  ]
+ ],
+ "s055.sec83.u6": [
+  [
+   "Mmm, per ora questo biglietto è",
+   "il mio unico indizio. Mmm."
+  ]
+ ],
+ "s055.sec83.u7": [
+  [
+   "Oh, un frigorifero."
+  ]
+ ],
+ "s055.sec83.u8": [
+  [
+   "Uff, è chiuso a chiave. Chi",
+   "chiude un frigo a chiave?"
+  ]
+ ],
+ "s056.sec53.u0": [
+  [
+   "Ahi, ahi... Che botta!"
+  ]
+ ],
+ "s056.sec81.u0": [
+  [
+   "{color 6}Chiave villa{color 1} usata!"
+  ]
+ ],
+ "s056.sec81.u1": [
+  [
+   "Non si apre... E' chiusa."
+  ]
+ ],
+ "s057.sec5.u0": [
+  [
+   "Padrone...? No, non sei tu!"
+  ]
+ ],
+ "s058.sec5.u0": [
+  [
+   "La cena non è ancora",
+   "prontaaa?"
+  ]
+ ],
+ "s060.sec82.u0": [
+  [
+   "Ah, è qui!"
+  ]
+ ],
+ "s061.sec52.u0": [
+  [
+   "Ahi, ahi... Stai bene,",
+   "{color 10}{partner}{color 1}?"
+  ]
+ ],
+ "s061.sec52.u1": [
+  [
+   "? Dove siamo. . . ?"
+  ]
+ ],
+ "s061.sec52.u2": [
+  [
+   "Sembra che siamo finiti in una",
+   "stanza in cui non eravamo mai",
+   "stati."
+  ]
+ ],
+ "s061.sec52.u3": [
+  [
+   "Sì, atterraggio perfetto!"
+  ]
+ ],
+ "s061.sec82.u0": [
+  [
+   "Mmm, è chiusa a chiave?"
+  ]
+ ],
+ "s061.sec82.u1": [
+  [
+   "Si apre se giro questa",
+   "maniglia?"
+  ]
+ ],
+ "s061.sec82.u2": [
+  [
+   "Ok, E' aperto."
+  ]
+ ],
+ "s062.sec81.m0.o0": "Prendilo",
+ "s062.sec81.m0.o1": "Sospetto. Lascialo",
+ "s062.sec81.u0": [
+  [
+   "Cos'è tutta questa roba? Ci",
+   "sarà un libro che riesco a",
+   "leggere...?"
+  ]
+ ],
+ "s062.sec81.u1": [
+  [
+   "No, neanche uno. Mmm, ma c'è",
+   "un libro con una copertina",
+   "davvero elegante!"
+  ]
+ ],
+ "s062.sec81.u2": [
+  [
+   "Hai toccato il libro elegante."
+  ]
+ ],
+ "s062.sec81.u3": [
+  [
+   "?"
+  ]
+ ],
+ "s062.sec81.u4": [
+  [
+   "Aaaaah! ?"
+  ]
+ ],
+ "s062.sec81.u5": [
+  [
+   "Potrebbe essere una trappola...",
+   "Meglio di no."
+  ]
+ ],
+ "s183.sec60.u0": [
+  [
+   "Gnam, gnam..."
+  ]
+ ],
+ "s183.sec60.u1": [
+  [
+   "Bene..."
+  ]
+ ],
+ "s183.sec60.u2": [
+  [
+   "Forse ascolterai quello che",
+   "devo dire."
+  ]
+ ],
+ "s183.sec60.u3": [
+  [
+   "Croc, croc..."
+  ]
+ ],
+ "s183.sec60.u4": [
+  [
+   "Ultimamente i miei uomini non",
+   "fanno più ciò che dico. Non si",
+   "ribellano... sembrano"
+  ],
+  [
+   "semplicemente dimenticare del",
+   "tutto gli ordini. A volte non",
+   "li capiscono neppure."
+  ],
+  [
+   "Dovrebbero portarmi i pasti,",
+   "ma..."
+  ]
+ ],
+ "s183.sec60.u5": [
+  [
+   "Glu, glu. . ."
+  ]
+ ],
+ "s183.sec60.u6": [
+  [
+   "Mentre ero assorto nella",
+   "ricerca, non arrivava alcun",
+   "pasto... Ed ero così assorto da"
+  ],
+  [
+   "dimenticare la fame. Così è",
+   "successo."
+  ]
+ ],
+ "s183.sec60.u7": [
+  [
+   "...Questo è essere TROPPO",
+   "assorti."
+  ]
+ ],
+ "s183.sec60.u8": [
+  [
+   "Oh, che imbarazzo."
+  ]
+ ],
+ "s183.sec60.u9": [
+  [
+   "Quindi anche qui succedono le",
+   "stesse strane cose che",
+   "avvengono fuori."
+  ]
+ ],
+ "s183.sec60.u10": [
+  [
+   "Oh? Con i disordini sull'isola",
+   "intendi che tutti stanno",
+   "diventando come i miei uomini?"
+  ]
+ ],
+ "s183.sec60.u11": [
+  [
+   "Sì. Ogni specie sta per conto",
+   "suo e perde la memoria. Non",
+   "ancora tutti, ma se continua"
+  ],
+  [
+   "così..."
+  ]
+ ],
+ "s183.sec60.u12": [
+  [
+   "Qualcuno potrebbe esserne la",
+   "causa? Mmm... E se sì, a che",
+   "scopo...?"
+  ]
+ ],
+ "s183.sec60.u13": [
+  [
+   "Mh..."
+  ]
+ ],
+ "s183.sec60.u14": [
+  [
+   "Cosa posso fare per l'isola?"
+  ]
+ ],
+ "s183.sec60.u15": [
+  [
+   "Stiamo costruendo una città",
+   "per unire i cuori dei Digimon.",
+   "Per questo giriamo l'isola: per"
+  ],
+  [
+   "trovare amici."
+  ]
+ ],
+ "s183.sec60.u16": [
+  [
+   "Capisco. Ma c'è un problema. A",
+   "parte me, i miei uomini sanno",
+   "fare poco altro oltre a"
+  ],
+  [
+   "combattere."
+  ]
+ ],
+ "s183.sec60.u17": [
+  [
+   "Eppure non posso",
+   "abbandonarli..."
+  ]
+ ],
+ "s183.sec60.u18": [
+  [
+   "Capisco..."
+  ]
+ ],
+ "s183.sec60.u19": [
+  [
+   "Ti darò una risposta a tempo",
+   "debito. Ho del lavoro da fare",
+   "qui, vedi. Mi dispiace"
+  ],
+  [
+   "davvero..."
+  ]
+ ],
+ "s183.sec60.u20": [
+  [
+   "Va bene, allora tornerò. E mi",
+   "raccomando, mangia come si",
+   "deve!"
+  ]
+ ],
+ "s183.sec60.u21": [
+  [
+   "Allora perché non combatti",
+   "nell'arena?"
+  ]
+ ],
+ "s183.sec60.u22": [
+  [
+   "Oh... l'arena? Interessante.",
+   "Proprio ciò che serve per",
+   "rimettere in forma i miei"
+  ],
+  [
+   "uomini. E anche a me piacerebbe",
+   "sgranchirmi le gambe ogni",
+   "tanto."
+  ]
+ ],
+ "s183.sec60.u23": [
+  [
+   "Quindi ti unirai a noi?!"
+  ]
+ ],
+ "s183.sec60.u24": [
+  [
+   "Sì. Ho ancora delle ricerche da",
+   "finire qui, quindi verrò in",
+   "città tra uno studio e l'altro."
+  ],
+  [
+   "Non vedo l'ora."
+  ]
+ ]
+}

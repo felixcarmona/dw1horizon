@@ -1,0 +1,206 @@
+{
+ "s045.sec5.u0": [
+  [
+   "Ça a l'air mauvais !"
+  ]
+ ],
+ "s045.sec6.u0": [
+  [
+   "F-faut fuir !"
+  ]
+ ],
+ "s045.sec7.u0": [
+  [
+   "A-attends une seconde !"
+  ]
+ ],
+ "s046.sec5.u0": [
+  [
+   "Attrapez-les !"
+  ]
+ ],
+ "s046.sec6.u0": [
+  [
+   "Attrapez-les !"
+  ]
+ ],
+ "s046.sec7.u0": [
+  [
+   "Attrapez-les !"
+  ]
+ ],
+ "s047.sec5.u0": [
+  [
+   "Formation C!"
+  ]
+ ],
+ "s047.sec6.u0": [
+  [
+   "Formation A!"
+  ]
+ ],
+ "s047.sec7.u0": [
+  [
+   "Formation B!"
+  ]
+ ],
+ "s047.sec60.u0": [
+  [
+   "Beurk !"
+  ]
+ ],
+ "s047.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s047.sec60.u2": [
+  [
+   "T-tu plaisantes, j'espère !"
+  ]
+ ],
+ "s047.sec60.u3": [
+  [
+   "Il a disparu... C'était une",
+   "illusion... ?"
+  ]
+ ],
+ "s047.sec60.u4": [
+  [
+   "On dirait qu'on l'a vaincu...",
+   "d'une façon ou d'une autre."
+  ]
+ ],
+ "s047.sec60.u5": [
+  [
+   "Hein ?!"
+  ]
+ ],
+ "s047.sec60.u6": [
+  [
+   "Hmm, mmm. Hein ?!"
+  ]
+ ],
+ "s047.sec60.u7": [
+  [
+   "J'ai eu comme un trou noir,",
+   "tout à coup... Oh ! D-désolé !"
+  ]
+ ],
+ "s047.sec60.u8": [
+  [
+   "Hmm ?? C'était quoi ? La",
+   "malédiction d'Analogman ?!",
+   "Enfin, ça devrait aller"
+  ],
+  [
+   "maintenant."
+  ]
+ ],
+ "s048.sec5.u0": [
+  [
+   "Ah...!"
+  ]
+ ],
+ "s048.sec6.u0": [
+  [
+   "Ah...!"
+  ]
+ ],
+ "s048.sec11.u0": [
+  [
+   "Hein ? Qu'est-ce que tu es ?!"
+  ]
+ ],
+ "s048.sec11.u1": [
+  [
+   "Nanimon, voilà ce que je suis !"
+  ]
+ ],
+ "s048.sec11.u2": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 20",
+   "objets !"
+  ]
+ ],
+ "s048.sec11.u3": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 30",
+   "objets !"
+  ]
+ ],
+ "s048.sec51.u0": [
+  [
+   "Hmm... Ce serait cet ascenseur",
+   "qui soulève le sol là-haut ?"
+  ]
+ ],
+ "s048.sec51.m0.o0": "Prendre l'ascenseur",
+ "s048.sec51.m0.o1": "Ne pas monter",
+ "s048.sec52.u0": [
+  [
+   "Hé !"
+  ]
+ ],
+ "s048.sec52.u1": [
+  [
+   "Hmm ? Mouahaha, tu viens te",
+   "faire battre ?"
+  ]
+ ],
+ "s048.sec52.u2": [
+  [
+   "C'est à moi de dire ça !"
+  ]
+ ],
+ "s048.sec52.u3": [
+  [
+   "Je te ménagerai pas comme la",
+   "dernière fois ! Je vais te",
+   "faire pleurer !"
+  ]
+ ],
+ "s048.sec52.u4": [
+  [
+   "IIIH!"
+  ]
+ ],
+ "s048.sec52.u5": [
+  [
+   "Ay, ay, ay!"
+  ]
+ ],
+ "s048.sec52.u6": [
+  [
+   "M-mince !"
+  ]
+ ],
+ "s048.sec52.u7": [
+  [
+   "Waouh, c'est quoi ça ?!"
+  ]
+ ],
+ "s048.sec52.u8": [
+  [
+   "Gyahahaha ! Adieu, les nuls !"
+  ]
+ ],
+ "s048.sec52.u9": [
+  [
+   "Mince, il s'est encore échappé",
+   "!"
+  ]
+ ],
+ "s048.sec52.u10": [
+  [
+   "Il avait même un ascenseur de",
+   "secours... Inutile de le",
+   "poursuivre maintenant. Quel"
+  ],
+  [
+   "type !"
+  ]
+ ]
+}

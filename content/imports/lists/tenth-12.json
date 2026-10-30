@@ -1,0 +1,115 @@
+{
+ "first_id": 289,
+ "out": "build/batch10",
+ "digimon": [
+  {
+   "name": "ChaosLord",
+   "game": "dw2",
+   "model": "M248CLOD",
+   "level": "mega",
+   "element": 1
+  },
+  {
+   "name": "Clockmon",
+   "game": "dw2",
+   "model": "M143CLOK",
+   "level": 5,
+   "element": 5
+  },
+  {
+   "name": "Dagomon",
+   "game": "dw2",
+   "model": "M225DAGO",
+   "level": 5,
+   "element": 4,
+   "from": [
+    278,
+    10
+   ]
+  },
+  {
+   "name": "Deltamon",
+   "game": "dw2",
+   "model": "M138DELT",
+   "level": 5,
+   "element": 1,
+   "from": [
+    286
+   ]
+  },
+  {
+   "name": "Gryphonmon",
+   "game": "dw2",
+   "model": "M193GRFO",
+   "level": 5,
+   "element": 2,
+   "from": [
+    188
+   ]
+  },
+  {
+   "name": "Nanomon",
+   "game": "dw2",
+   "model": "M141NANO",
+   "level": 5,
+   "element": 5,
+   "from": [
+    253
+   ]
+  },
+  {
+   "name": "Vilemon",
+   "game": "dw3",
+   "model": "M170IVRU",
+   "level": 4,
+   "element": 1,
+   "from": [
+    236
+   ]
+  },
+  {
+   "name": "Grizzlymon",
+   "game": "dw3",
+   "model": "M388GRIZ",
+   "level": 5,
+   "element": 1,
+   "from": [
+    52
+   ]
+  },
+  {
+   "name": "Marsmon",
+   "game": "dw3",
+   "model": "M394MARS",
+   "level": "mega",
+   "element": 1
+  },
+  {
+   "name": "Dokugumon",
+   "game": "dw3",
+   "model": "M166DKGM",
+   "level": 4,
+   "element": 1,
+   "from": [
+    32
+   ]
+  },
+  {
+   "name": "Hookmon",
+   "game": "dw3",
+   "model": "M387PIRT",
+   "level": 4,
+   "element": 1
+  },
+  {
+   "name": "GuardiAngemon",
+   "game": "dw3",
+   "model": "M392SLAG",
+   "level": "mega",
+   "element": 3,
+   "from": [
+    20
+   ]
+  }
+ ]
+}

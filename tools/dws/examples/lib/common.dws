@@ -1,0 +1,9 @@
+// A small library: functions are inlined where they are called.
+pub fn narrate(t: text) {
+    say(narrator, t);
+}
+
+pub fn reward(n: int) {
+    give_bits(n);
+    sound(8, 11);
+}

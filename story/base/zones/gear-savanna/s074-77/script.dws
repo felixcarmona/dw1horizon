@@ -1,0 +1,63 @@
+// Readable form of script 74 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 74 {
+    npc shimaunimon = 5;
+    npc shamamon1 = 6;
+    npc shamamon2 = 7;
+    npc nisedrimogemon = 8;
+    npc shamamon4 = 9;
+    npc shamamon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 27, 77);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 10) {
+            spawn_item(item("Digimushrm"), 62, 58);
+        }
+    }
+
+    on talk(shimaunimon) replace {    // section 5
+        say(shimaunimon, text("s074.sec5.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(shamamon1) replace {    // section 6
+        say(shamamon1, text("s074.sec6.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon2) replace {    // section 7
+        say(shamamon2, text("s074.sec7.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(nisedrimogemon) replace {    // section 8
+        say(nisedrimogemon, text("s074.sec8.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(shamamon4) replace {    // section 9
+        say(shamamon4, text("s074.sec9.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon5) replace {    // section 10
+        say(shamamon5, text("s074.sec10.u0"));
+        battle();
+        recruit(species("Shamamon"));
+        return;
+    }
+}

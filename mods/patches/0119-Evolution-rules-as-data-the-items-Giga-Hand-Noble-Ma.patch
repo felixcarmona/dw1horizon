@@ -1,0 +1,120 @@
+From 8558307f9ad88300c55520f6c3b48dd099bf01d1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 13:22:37 +0000
+Subject: [PATCH] Evolution rules as data, the items: Giga Hand, Noble Mane and
+ Metalbanana become MOD_EVO_ITEMS {item, target, partner level} written from
+ content/tables/evolution-rules.json
+
+---
+ include/dw/level.h      | 10 ++++++++++
+ src/main/evolution.c    | 13 +++++++++++++
+ src/main/item.c         | 15 +++++++--------
+ src/main/partner_impl.c | 11 ++++++-----
+ 4 files changed, 36 insertions(+), 13 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 4dc28deb..bf1f0a90 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -85,6 +85,16 @@ extern int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2];
+ extern int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2];
+ extern ModEvoRule MOD_EVO_RULES[MOD_EVO_RULES_MAX];
+ extern int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE];
++
++/* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
++#define MOD_EVO_ITEM_MAX	4
++typedef struct {
++	int16_t item;
++	int16_t target;
++	int16_t level;
++} ModEvoItem;
++extern ModEvoItem MOD_EVO_ITEMS[MOD_EVO_ITEM_MAX];
++ModEvoItem *getModEvoItem(int32_t item);
+ /* lifetime added on reaching Mega naturally (Ultimate: +96) */
+ #define MEGA_LIFETIME_BONUS	120
+ 
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index e7475d5f..de54e785 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -875,6 +875,19 @@ int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1
+ 	{                                                                                                      \
+ 		-1, { -1, -1, -1, -1 }, 0, 0, -1, 0, { { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 } } \
+ 	}
++ModEvoItem MOD_EVO_ITEMS[MOD_EVO_ITEM_MAX] = { { -1, -1, -1 }, { -1, -1, -1 }, { -1, -1, -1 }, { -1, -1, -1 } };
++
++ModEvoItem *getModEvoItem(int32_t item)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_EVO_ITEM_MAX; i++) {
++		if (MOD_EVO_ITEMS[i].item == item && MOD_EVO_ITEMS[i].target >= 0)
++			return &MOD_EVO_ITEMS[i];
++	}
++	return NULL;
++}
++
+ ModEvoRule MOD_EVO_RULES[MOD_EVO_RULES_MAX] = { MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE,
+ 						MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE,
+ 						MOD_EVO_NO_RULE, MOD_EVO_NO_RULE };
+diff --git a/src/main/item.c b/src/main/item.c
+index 39de1cc8..f0a27b6e 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -11,6 +11,7 @@
+ #include <dw/font.h>
+ #include <dw/garbage.h>
+ #include <dw/item.h>
++#include <dw/level.h>
+ #include <dw/math.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -2180,17 +2181,15 @@ GARBAGE(handleEvoItems, 15);
+ void handleEvoItems(int16_t item)
+ {
+ 	int16_t level;
++	ModEvoItem *modItem;
+ 
+ 	if (item >= 0x7d) {
+-		if (item == 0x7d) {
+-			EVOLUTION_TARGET = 0x40;
+-		}
+-		if (item == 0x7e) {
+-			EVOLUTION_TARGET = 0x3f;
+-		}
+-		if (item == 0x7f) {
+-			EVOLUTION_TARGET = 0x41;
++		/* MOD (evolution rules as data): Giga Hand, Noble Mane, Metalbanana: MOD_EVO_ITEMS (content/tables/evolution-rules.json) */
++		modItem = getModEvoItem(item);
++		if (modItem == NULL) {
++			return;
+ 		}
++		EVOLUTION_TARGET = modItem->target;
+ 	} else {
+ 		level = DIGI_PARA(EVOLUTION_ITEM_TARGET[item - 0x47]).level - 1;
+ 		if (level != DIGI_PARA(ENTITY_TABLE[1]->type).level) {
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index a74aad8d..0836a32e 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1556,11 +1556,12 @@ int32_t partnerWillRefuseItem(void)
+ 
+ 	if (((item >= 0x47) && (item < 0x73)) ||
+ 	    ((item >= 0x7D) && (item < 0x80))) {
+-		if (item == 0x7E) {
+-			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level != 3)
+-				return 1;
+-		} else if ((item == 0x7D) || (item == 0x7F)) {
+-			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level != 4)
++		if (item >= 0x7D) {
++			/* MOD (evolution rules as data): the level the partner must have is MOD_EVO_ITEMS'; an item without a row does nothing */
++			ModEvoItem *modItem = getModEvoItem(item);
++
++			if (modItem == NULL ||
++			    DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level != modItem->level)
+ 				return 1;
+ 		} else if ((DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level ==
+ 			    DIGI_PARA(ITEM_EVOLUTION_TARGET(item)).level) ||
+-- 
+2.53.0
+

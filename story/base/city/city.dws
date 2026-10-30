@@ -1,0 +1,73 @@
+// The city rules as data: what the original game keeps in C (docs/mods/city-rules.md).
+
+city {
+    prosperity {                                   // pstat 1 is recomputed on every save and game start
+        species Numemon: 1 when level >= 3;
+        species Sukamon: 1 when level >= 3;
+        species Nanimon: 1 when level >= 3;
+        species Agumon..=Ninjamon: level - 2 when level >= 3;
+    }
+    revival {                                      // where the partner is reborn: the first row that holds wins (murd.c, dooa.c)
+        screen(205) when recruited(Angemon) or recruited(Monzaemon) or prosperity >= 50;
+        default screen(218);
+    }
+    top_map {                                      // the first row that holds wins
+        screen(179) when recruited(Angemon) and recruited(Monzaemon) and recruited(Birdramon) and recruited(Vegiemon);
+        screen(178) when recruited(Angemon) and recruited(Monzaemon) and recruited(Birdramon) and recruited(Palmon);
+        screen(177) when recruited(Angemon) and recruited(Monzaemon) and recruited(Birdramon);
+        screen(176) when recruited(Angemon) and recruited(Monzaemon) and recruited(Vegiemon);
+        screen(175) when recruited(Angemon) and recruited(Monzaemon) and recruited(Palmon);
+        screen(174) when recruited(Angemon) and recruited(Monzaemon);
+        screen(173) when recruited(Birdramon) and recruited(Vegiemon);
+        screen(172) when recruited(Birdramon) and recruited(Palmon);
+        screen(171) when recruited(Birdramon);
+        screen(170) when recruited(Vegiemon);
+        screen(169) when recruited(Palmon);
+        default screen(168);
+    }
+    shop_maps: [131, 133, 134, 141, 207, 211, 215, 218];
+    arena_maps: [208, 223];
+    start {                                        // the new game's first save (initializeDefaultSavegame)
+        screen: 204;
+        exit: 9;
+        partner: 114;
+        bits: 50000;
+        lives: 3;
+        lifetime: 288;              // hours
+        age: 3;
+        time: 8:00;
+        card_shop: [58, 59, 60, 61, 62, 63];
+        inventory: [
+            item("lrg.recovery") x 40,
+            item("omnipotent") x 45,
+            item("sup.restore") x 50,
+            item("s.off.disk") x 30,
+            item("s.def.disk") x 40,
+            item("s.speed.disk") x 30,
+            item("digiseabass") x 30,
+            item("chain melon") x 30,
+            item("medicine") x 30,
+            item("rainbowhorn") x 30,
+            item("koga laws") x 30,
+            item("hard scale") x 50,
+            item("bluecrystal") x 30,
+            item("silver ball") x 40,
+            item("metal armor") x 30,
+            item("giga hand") x 50,
+            item("noble mane") x 50,
+            item("metalbanana") x 80,
+            item("hair grower") x 50,
+            item("fatal bone") x 50,
+            item("small spear") x 98,
+            item("ray gun") x 50,
+            item("mysty egg") x 50,
+            item("red ruby") x 50,
+            item("beetlepearl") x 50,
+            item("coral charm") x 50,
+            item("mansion key") x 50,
+            item("port. potty") x 50,
+            item("auto pilot") x 50,
+            item(255) x 0,
+        ];
+    }
+}

@@ -1,0 +1,17 @@
+// Who stands on screen 22 (Foot of Mt. Panorama), and when. Read out of MAPHEAD.SCN section 22 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(22) {                              // Foot of Mt. Panorama
+            npc Flarerizamon slot 0 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Flarerizamon slot 1 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Aruraumon slot 2 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Aruraumon slot 3 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Tsukaimon slot 4 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Tsukaimon slot 5 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Goblimon slot 6 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Goblimon slot 7 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

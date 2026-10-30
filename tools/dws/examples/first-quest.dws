@@ -1,0 +1,33 @@
+// First DWS quest: Jijimon rewards a curious partner. The dialogue is not in this file:
+// it is looked up by key in first-quest.en.json (the text bank next to the source).
+//   python3 tools/dws.py disc tools/dws/examples/first-quest.dws --name dws-first-quest
+flag reward_taken;
+var visits;
+
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+
+    on talk(jijimon) replace {
+        visits += 1;
+        if (reward_taken) {
+            say(jijimon, text("first.again"));
+            if (visits >= 3) {
+                say(jijimon, text("first.persistent"));
+            }
+            return;
+        }
+        say(jijimon, text("first.hello"));
+        choice {
+            text("first.opt.yes") => {
+                say(jijimon, text("first.yes"));
+                give(item("Meat"), 2);
+                give_bits(500);
+                reward_taken = true;
+                say(tamer, text("first.thanks"));
+            }
+            text("first.opt.no") => {
+                say(jijimon, text("first.no"));
+            }
+        }
+    }
+}

@@ -1,0 +1,125 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 193,
+ "type": 196,
+ "name": "Halsemon",
+ "source": {
+  "type": 22,
+  "mmd": "extracted/CHDAT/MMD0/GARU.MMD"
+ },
+ "map": {
+  "1": 5,
+  "3": 3,
+  "4": 4,
+  "8": 2,
+  "9": 1,
+  "10": 15,
+  "11": 16,
+  "12": 11,
+  "13": 12,
+  "14": 13,
+  "15": 7,
+  "16": 8,
+  "17": 9,
+  "18": 23,
+  "20": 24,
+  "21": 25,
+  "22": 19,
+  "24": 21
+ },
+ "hips": [
+  9,
+  1,
+  1.102
+ ],
+ "root_scale": 1.102,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 58,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 27,
+   "end": 107,
+   "hz": 0.3
+  },
+  "0x39": {
+   "anim": "anim_03",
+   "start": 32,
+   "end": 142,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 26,
+   "end": 136,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_01",
+   "start": 0,
+   "end": 132,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x36"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

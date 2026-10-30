@@ -1,0 +1,13 @@
+{
+  "id": 24,
+  "name": "Def. Chip",
+  "value": 9999,
+  "meritValue": 800,
+  "sortingValue": 4,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "addDefense": 50
+  }
+}

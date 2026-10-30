@@ -1,0 +1,534 @@
+// Generated from story/names.toml. Names for state the game already uses (nothing is allocated).
+pub alias flag tamerless_battle = 2;
+pub alias flag card_shop_buy_mode = 4;
+pub alias flag mojyamon_all_traded = 14;
+pub alias flag tournament_registered = 37;
+pub alias flag tournament_overleveled = 40;
+pub alias flag partner_death_started = 41;
+pub alias flag ending_homecoming_seen = 43;
+pub alias flag have_old_fishrod = 45;
+pub alias flag have_amazing_rod = 46;
+pub alias flag item_keeper_intro_seen = 51;
+pub alias flag centar_clinic_intro_seen = 53;
+pub alias flag debug_mode = 54;
+pub alias flag debug_test_npcs = 55;
+pub alias flag starter_items_given = 56;
+pub alias flag jukebox_intro_seen = 64;
+pub alias flag piximon_in_item_shop = 69;
+pub alias flag meat_farm_explained = 74;
+pub alias flag debug_city_entered = 75;
+pub alias flag rain_plant_picked = 76;
+pub alias flag shellmon_newspaper_started = 78;
+pub alias flag record_keeper_intro_seen = 81;
+pub alias flag meat_farm_expanded_explained = 82;
+pub alias flag whamon_ferry_explained = 83;
+pub alias flag strange_plant_rumor_heard = 86;
+pub alias flag greymon_challenge_ready = 87;
+pub alias flag airdramon_ambush_fought = 88;
+pub alias flag birdra_transport_intro_seen = 89;
+pub alias flag treasure_hunt_intro_seen = 90;
+pub alias flag arena_intro_seen = 91;
+pub alias flag curling_rink_intro_seen = 92;
+pub alias flag fortune_teller_intro_seen = 93;
+pub alias flag save_machine_explained = 94;
+pub alias flag coela_point_crossing_done = 96;
+pub alias flag saberdramon_fought_this_visit = 97;
+pub alias flag mansion_fridge_open = 100;
+pub alias flag monochrome_shop_halfway_reviewed = 101;
+pub alias flag invisible_bridge_crossed = 103;
+pub alias flag myotismon_met = 104;
+pub alias flag native_forest_rockslide_cleared_seen = 105;
+pub alias flag native_forest_rockslide_cleared = 106;
+pub alias flag mansion_key_found = 110;
+pub alias flag misty_trees_visited = 112;
+pub alias flag misty_trees_fog_spell_cast = 114;
+pub alias flag monzaemon_costume_tried = 116;
+pub alias flag mystery_circles_first_seen = 118;
+pub alias flag drill_tunnel_boulder_moved = 120;
+pub alias flag mansion_entrance_seen = 121;
+pub alias flag merit_shop_explained = 122;
+pub alias flag invisible_bridge_rumor_heard = 124;
+pub alias flag drill_tunnel_opened = 126;
+pub alias flag myotismon_freed = 128;
+pub alias flag myotismon_joined_city = 129;
+pub alias flag underground_lab_tekkamon_beaten = 130;
+pub alias flag mansion_book_trap_sprung = 131;
+pub alias flag mansion_trapdoor_fallen = 132;
+pub alias flag digivolve_scene_seen = 133;
+pub alias flag leomon_cave_first_seen = 134;
+pub alias flag leomon_stone_taken = 135;
+pub alias flag monochrome_shop_job_offered = 136;
+pub alias flag amida_forest_warning_heard = 137;
+pub alias flag card_shop_free_card_received = 139;
+pub alias flag drimogemon_calmed = 140;
+pub alias flag dino_region_guard_beaten = 144;
+pub alias flag cherrymon_met = 147;
+pub alias flag misty_trees_fog_lifted = 148;
+pub alias flag drill_tunnel_entrance_seen = 149;
+pub alias flag new_ogre_fortress_cleared = 150;
+pub alias flag drill_tunnel_takeover_seen = 151;
+pub alias flag ufo_report_read = 152;
+pub alias flag vademon_encounter_ready = 153;
+pub alias flag mystery_circles_grown_seen = 154;
+pub alias flag canyon_elevator_unjammed = 155;
+pub alias flag misty_trees_dawn_visitor_spawned = 174;
+pub alias flag ogre_fortress_cleared = 175;
+pub alias flag ogre_fortress_elevator_working = 176;
+pub alias flag canyon_elevator_ridden = 180;
+pub alias flag ogre_fortress_elevator_ridden = 181;
+pub alias flag shellmon_plea_heard = 182;
+pub alias flag eastern_bridge_seen = 185;
+pub alias flag glacial_tyrannomon_let_through = 187;
+pub alias flag speedy_time_zone_entered = 188;
+pub alias flag leomon_met = 189;
+pub alias flag card_shop_seen = 190;
+pub alias flag garurumon_duel_promised = 195;
+pub alias flag leomon_rescue_seen = 196;
+pub alias flag canyon_bandits_active = 197;
+pub alias flag canyon_bandits_beaten = 198;
+pub alias flag fortress_guard_met = 199;
+pub alias flag waruseadramon_beaten = 312;
+pub alias flag meteormon_checked = 313;
+pub alias flag shogun_gekomon_met = 319;
+pub alias flag old_fishrod_picked_up = 320;
+pub alias flag mt_infinity_devimon_beaten = 321;
+pub alias flag angemon_voice_heard = 322;
+pub alias flag angemon_pedestal_raised = 323;
+pub alias flag skullgreymon_debut_news_read = 325;
+pub alias flag mt_infinity_metalgreymon_beaten = 326;
+pub alias flag factorial_town_reopened = 328;
+pub alias flag island_history_read = 330;
+pub alias flag guard_shift_change_heard = 331;
+pub alias flag factory_guards_passed = 332;
+pub alias flag seadramon_met = 339;
+pub alias flag sewer_fog_seen = 340;
+pub alias flag factory_shut_down = 341;
+pub alias flag sewer_numemon_met = 342;
+pub alias flag factory_check_refused = 343;
+pub alias flag factory_giromon_beaten = 344;
+pub alias flag lab_skullgreymon_beaten = 345;
+pub alias flag insect_contest_horn_helmet_won = 346;
+pub alias flag factory_permit_required = 347;
+pub alias flag mansion_fridge_memo_found = 348;
+pub alias flag toy_mansion_seal_lifted = 349;
+pub alias flag toy_tale_heard = 350;
+pub alias flag freezeland_birdra_stop_unlocked = 351;
+pub alias flag whamon_met = 352;
+pub alias flag drimogemon_tunnel_dig_started = 353;
+pub alias flag mt_infinity_entrance_found = 354;
+pub alias flag myotismon_missing = 356;
+pub alias flag penguinmon_curling_offered = 357;
+pub alias flag mansion_devimon_met = 360;
+pub alias flag dust_kingdom_explained = 362;
+pub alias flag kingsukamon_reverted_partner = 363;
+pub alias flag partner_energy_full = 640;
+pub alias var time_speed = 0;
+pub alias var sukamon_backup_digimon = 5;
+pub alias var back_dimension_portal = 16;
+pub alias var drill_tunnel_progress = 17;
+pub alias var underground_pond_dig_work = 18;
+pub alias var key_chains = 21;
+pub alias var secret_shop_keeper = 24;
+pub alias var item_shop_keeper = 25;
+pub alias var item_shop_intros = 26;
+pub alias var restaurant_chef = 27;
+pub alias var days_since_passed_out = 28;
+pub alias var garurumon_promise_days = 29;
+pub alias var drimogemon_job_days = 30;
+pub alias var meat_farm_days = 31;
+pub alias var leomon_talks = 35;
+pub alias var square_residents_placed = 38;
+pub alias var square_placement_pass = 39;
+pub alias var hints_told = 40;
+pub alias var hint_index = 41;
+pub alias var top_map_residents_placed = 42;
+pub alias var city_layout = 43;
+pub alias var random_roll_screen = 100;
+pub alias var prize_roll = 102;
+pub alias var partner_type = 103;
+pub alias var date_year = 105;
+pub alias var date_day = 106;
+pub alias var date_hour = 107;
+pub alias var date_minute = 108;
+pub alias var partner_attribute = 109;
+pub alias var random_roll = 110;
+pub alias var curling_match_pending = 113;
+pub alias var amida_correct_path = 116;
+pub alias var misty_trees_maze_steps = 120;
+pub alias var curling_result = 121;
+pub alias var curling_opponent = 122;
+pub alias var damage_percent = 200;
+pub alias var training_slot_game = 246;
+pub group amida_path_passed {
+    pub alias flag zone1 = 158;
+    pub alias flag zone2 = 159;
+    pub alias flag zone3 = 160;
+    pub alias flag zone4 = 161;
+    pub alias flag zone5 = 162;
+    pub alias flag zone6 = 163;
+    pub alias flag zone7 = 164;
+    pub alias flag zone8 = 165;
+    pub alias flag zone9 = 166;
+    pub alias flag zone10 = 167;
+    pub alias flag zone11 = 168;
+    pub alias flag zone12 = 169;
+    pub alias flag zone13 = 170;
+    pub alias flag zone14 = 171;
+    pub alias flag zone15 = 172;
+    pub alias flag zone16 = 173;
+}
+pub group betamon_shop_met {
+    pub alias flag opened = 52;
+    pub alias flag coelamon_joined = 95;
+}
+pub group biyomon_ambush_asked {
+    pub alias flag spot0 = 191;
+    pub alias flag spot1 = 192;
+    pub alias flag spot2 = 193;
+    pub alias flag spot3 = 194;
+}
+pub group canyon_cave_in {
+    pub alias flag tremor_felt = 141;
+    pub alias flag collapsed = 142;
+    pub alias flag on_crack = 143;
+}
+pub group chest_back_dimension {
+    pub alias flag ray_gun = 707;
+    pub alias flag quick_chip = 708;
+    pub alias flag mp_chip = 709;
+    pub alias flag def_chip = 710;
+    pub alias flag brain_chip = 711;
+    pub alias flag off_chip = 712;
+    pub alias flag hp_chip = 713;
+}
+pub group chest_dragon_eye_lake {
+    pub alias flag medium_mp = 706;
+}
+pub group chest_factorial_town {
+    pub alias flag hp_chip = 677;
+    pub alias flag mp_chip = 678;
+    pub alias flag def_chip = 714;
+    pub alias flag auto_pilot = 715;
+    pub alias flag brain_chip = 716;
+}
+pub group chest_great_canyon_bridge {
+    pub alias flag def_chip = 666;
+}
+pub group chest_grey_lords_mansion {
+    pub alias flag mp_chip = 650;
+    pub alias flag restore = 651;
+    pub alias flag auto_pilot = 652;
+    pub alias flag sirloin = 653;
+    pub alias flag brain_chip = 654;
+    pub alias flag brain_chip_2 = 655;
+    pub alias flag medicine = 656;
+    pub alias flag medicine_2 = 700;
+    pub alias flag def_disk = 701;
+    pub alias flag protection = 702;
+    pub alias flag large_mp = 703;
+    pub alias flag omni_disk = 704;
+    pub alias flag auto_pilot_2 = 705;
+}
+pub group chest_ice_sanctuary {
+    pub alias flag restore = 657;
+    pub alias flag sup_recovery = 660;
+    pub alias flag large_mp = 661;
+    pub alias flag omni_disk = 662;
+    pub alias flag omnipotent = 663;
+    pub alias flag lrg_recovery = 664;
+    pub alias flag medicine = 665;
+}
+pub group chest_lava_cave {
+    pub alias flag off_chip = 658;
+    pub alias flag quick_chip = 659;
+    pub alias flag protection = 676;
+    pub alias flag s_def_disk = 679;
+    pub alias flag off_chip_2 = 694;
+    pub alias flag medicine = 695;
+}
+pub group chest_leomon_ancestors_cave {
+    pub alias flag off_chip = 667;
+}
+pub group chest_mt_infinity {
+    pub alias flag omni_disk = 680;
+    pub alias flag large_mp = 681;
+    pub alias flag omnipotent = 682;
+    pub alias flag large_mp_2 = 684;
+    pub alias flag mp_chip = 685;
+}
+pub group chest_mt_panorama_spore_area {
+    pub alias flag med_recovery = 696;
+    pub alias flag medium_mp = 697;
+    pub alias flag various = 698;
+}
+pub group chest_ogre_fortress {
+    pub alias flag double_flop = 669;
+    pub alias flag auto_pilot = 670;
+    pub alias flag port_potty = 671;
+    pub alias flag s_off_disk = 673;
+    pub alias flag sirloin = 674;
+    pub alias flag off_chip = 675;
+    pub alias flag def_chip = 683;
+}
+pub group chest_secret_beach_cave {
+    pub alias flag mysty_egg = 672;
+}
+pub group chest_toy_mansion {
+    pub alias flag hp_chip = 668;
+}
+pub group chest_tropical_jungle {
+    pub alias flag med_recovery = 693;
+}
+pub group city_resident_met {
+    pub alias flag bakemon = 77;
+    pub alias flag kunemon = 79;
+    pub alias flag elecmon = 80;
+    pub alias flag kokatorimon = 84;
+}
+pub group cup_won {
+    pub alias flag d_rank = 15;
+    pub alias flag c_rank = 16;
+    pub alias flag b_rank = 17;
+    pub alias flag grade_a = 18;
+    pub alias flag s_rank = 19;
+    pub alias flag r_rank = 20;
+    pub alias flag version_1 = 21;
+    pub alias flag version_2 = 22;
+    pub alias flag version_3 = 23;
+    pub alias flag version_4 = 24;
+    pub alias flag version_0 = 25;
+    pub alias flag fire = 26;
+    pub alias flag battle = 27;
+    pub alias flag air = 28;
+    pub alias flag ice = 29;
+    pub alias flag earth = 30;
+    pub alias flag mech = 31;
+    pub alias flag filth = 32;
+    pub alias flag dino = 33;
+    pub alias flag wing = 34;
+    pub alias flag animal = 35;
+    pub alias flag human = 36;
+}
+pub group gear_savanna {
+    pub alias var chase_stage = 111;
+    pub alias var hide_spot = 112;
+}
+pub group inventory_expanded {
+    pub alias flag to_20 = 47;
+    pub alias flag to_30 = 48;
+}
+pub group item_shop_keeper_met {
+    pub alias flag patamon = 65;
+    pub alias flag biyomon = 66;
+    pub alias flag unimon = 67;
+    pub alias flag monochromon = 68;
+}
+pub group jijimon_news_told {
+    pub alias flag agumon = 575;
+    pub alias flag betamon = 576;
+    pub alias flag greymon = 577;
+    pub alias flag devimon = 578;
+    pub alias flag airdramon = 579;
+    pub alias flag numemon = 583;
+    pub alias flag metalgreymon_virus = 584;
+    pub alias flag mamemon = 587;
+    pub alias flag monochromon = 588;
+    pub alias flag gabumon = 589;
+    pub alias flag angemon = 592;
+    pub alias flag birdramon = 593;
+    pub alias flag garurumon = 594;
+    pub alias flag frigimon = 595;
+    pub alias flag whamon = 596;
+    pub alias flag vegiemon = 597;
+    pub alias flag skullgreymon = 598;
+    pub alias flag metalmamemon = 599;
+    pub alias flag vademon = 600;
+    pub alias flag patamon = 601;
+    pub alias flag kunemon = 602;
+    pub alias flag unimon = 603;
+    pub alias flag ogremon = 604;
+    pub alias flag shellmon = 605;
+    pub alias flag centarumon = 606;
+    pub alias flag bakemon = 607;
+    pub alias flag drimogemon = 608;
+    pub alias flag andromon = 610;
+    pub alias flag giromon = 611;
+    pub alias flag etemon = 612;
+    pub alias flag biyomon = 613;
+    pub alias flag palmon = 614;
+    pub alias flag monzaemon = 615;
+    pub alias flag leomon = 616;
+    pub alias flag coelamon = 617;
+    pub alias flag kokatorimon = 618;
+    pub alias flag kuwagamon = 619;
+    pub alias flag mojyamon = 620;
+    pub alias flag nanimon = 621;
+    pub alias flag piximon = 623;
+    pub alias flag digitamamon = 624;
+    pub alias flag penguinmon = 625;
+    pub alias flag ninjamon = 626;
+}
+pub group key_chain_found {
+    pub alias flag leomon_cave = 333;
+    pub alias flag ogre_fortress = 334;
+    pub alias flag speedy_region = 335;
+    pub alias flag sewer = 336;
+    pub alias flag toy_mansion = 337;
+}
+pub group mansion_door_unlocked {
+    pub alias flag s52_s55_exit4 = 111;
+    pub alias flag s52_s55_exit5 = 113;
+    pub alias flag s57_s58 = 115;
+    pub alias flag s53_s63 = 117;
+    pub alias flag s52_s59 = 123;
+    pub alias flag s53_s64 = 125;
+    pub alias flag s53_s232 = 127;
+}
+pub group meat_stand {
+    pub alias var offer = 117;
+    pub alias var rounds = 119;
+    pub alias var customers = 123;
+}
+pub group medal {
+    pub alias flag grade_cup = 364;
+    pub alias flag version_cup = 365;
+    pub alias flag type_cup = 366;
+    pub alias flag special_cup = 367;
+    pub alias flag hundred_wins = 368;
+    pub alias flag perfect_curling = 372;
+    pub alias flag ending = 374;
+    pub alias flag town_flourishing = 375;
+}
+pub group mojyamon_left {
+    pub alias flag set1 = 107;
+    pub alias flag set2 = 108;
+    pub alias flag set3 = 109;
+}
+pub group mojyamon_traded {
+    pub alias flag set1_row1 = 5;
+    pub alias flag set1_row2 = 6;
+    pub alias flag set1_row3 = 7;
+    pub alias flag set2_row1 = 8;
+    pub alias flag set2_row2 = 9;
+    pub alias flag set2_row3 = 10;
+    pub alias flag set3_row1 = 11;
+    pub alias flag set3_row2 = 12;
+    pub alias flag set3_row3 = 13;
+}
+pub group myotismon_absence_seen {
+    pub alias flag mansion = 358;
+    pub alias flag basement = 359;
+}
+pub group raised {
+    pub alias flag drimogemon = 550;
+}
+pub group restaurant_chef_met {
+    pub alias flag meramon = 58;
+    pub alias flag frigimon = 59;
+    pub alias flag garurumon = 60;
+    pub alias flag tyrannomon = 61;
+}
+pub group secret_shop_keeper_met {
+    pub alias flag numemon = 70;
+    pub alias flag mojyamon = 71;
+    pub alias flag mamemon = 72;
+    pub alias flag devimon = 73;
+}
+pub group shop_stock {
+    pub alias flag sm_recovery = 384;
+    pub alias flag med_recovery = 385;
+    pub alias flag lrg_recovery = 386;
+    pub alias flag sup_recovery = 387;
+    pub alias flag mp_floppy = 388;
+    pub alias flag medium_mp = 389;
+    pub alias flag large_mp = 390;
+    pub alias flag double_flop = 391;
+    pub alias flag various = 392;
+    pub alias flag omnipotent = 393;
+    pub alias flag protection = 394;
+    pub alias flag restore = 395;
+    pub alias flag sup_restore = 396;
+    pub alias flag off_disk = 399;
+    pub alias flag def_disk = 400;
+    pub alias flag hispeed_dsk = 401;
+    pub alias flag omni_disk = 402;
+    pub alias flag s_off_disk = 403;
+    pub alias flag s_def_disk = 404;
+    pub alias flag s_speed_disk = 405;
+    pub alias flag auto_pilot = 406;
+    pub alias flag off_chip = 407;
+    pub alias flag dv_chip_a = 413;
+    pub alias flag dv_chip_d = 414;
+    pub alias flag dv_chip_e = 415;
+    pub alias flag port_potty = 416;
+    pub alias flag trn_manual = 417;
+    pub alias flag rest_pillow = 418;
+    pub alias flag enemy_repel = 419;
+    pub alias flag enemy_bell = 420;
+    pub alias flag health_shoe = 421;
+    pub alias flag meat = 422;
+    pub alias flag giant_meat = 423;
+    pub alias flag sirloin = 424;
+    pub alias flag supercarrot = 425;
+    pub alias flag digimushrm = 428;
+    pub alias flag gold_acorn = 434;
+    pub alias flag big_berry = 435;
+    pub alias flag digianchovy = 446;
+    pub alias flag black_trout = 449;
+    pub alias flag digiseabass = 451;
+    pub alias flag moldy_meat = 452;
+    pub alias flag happymushrm = 453;
+    pub alias flag chain_melon = 454;
+    pub alias flag grey_claws = 455;
+    pub alias flag fireball = 456;
+    pub alias flag flamingwing = 457;
+    pub alias flag iron_hoof = 458;
+    pub alias flag mono_stone = 459;
+    pub alias flag steel_drill = 460;
+    pub alias flag black_wing = 462;
+    pub alias flag spike_club = 463;
+    pub alias flag flamingmane = 464;
+    pub alias flag white_wing = 465;
+    pub alias flag torn_tatter = 466;
+    pub alias flag rainbowhorn = 468;
+    pub alias flag rooster = 469;
+    pub alias flag unihorn = 470;
+    pub alias flag horn_helmet = 471;
+    pub alias flag scissor_jaw = 472;
+    pub alias flag fertilizer = 473;
+    pub alias flag koga_laws = 474;
+    pub alias flag waterbottle = 475;
+    pub alias flag north_star = 476;
+    pub alias flag red_shell = 477;
+    pub alias flag hard_scale = 478;
+    pub alias flag bluecrystal = 479;
+    pub alias flag ice_crystal = 480;
+    pub alias flag hair_grower = 481;
+    pub alias flag sunglasses = 482;
+    pub alias flag fatal_bone = 484;
+    pub alias flag cyber_part = 485;
+    pub alias flag silver_ball = 487;
+    pub alias flag metal_armor = 488;
+    pub alias flag chainsaw = 489;
+    pub alias flag small_spear = 490;
+    pub alias flag x_bandage = 491;
+    pub alias flag ray_gun = 492;
+    pub alias flag gold_banana = 493;
+    pub alias flag mysty_egg = 494;
+    pub alias flag red_ruby = 495;
+    pub alias flag beetlepearl = 496;
+    pub alias flag coral_charm = 497;
+    pub alias flag blue_flute = 499;
+    pub alias flag steak = 506;
+}
+pub group tournament {
+    pub alias var day = 2;
+    pub alias var cup = 3;
+    pub alias var digimon = 4;
+}
+pub group treasure_hunt {
+    pub alias flag cheap_ordered = 178;
+    pub alias flag pricey_ordered = 179;
+    pub alias var cheap_roll = 22;
+    pub alias var pricey_roll = 23;
+}

@@ -1,0 +1,190 @@
+{
+ "s176.sec7.u0": [
+  [
+   "Ach ja! Ist deine Tasche zu",
+   "voll? Boing! Irgendwo soll es",
+   "einen Schlüsselanhänger geben,"
+  ],
+  [
+   "der deine Tasche mit einer",
+   "anderen Dimension verbindet.",
+   "So kannst du mehr Items"
+  ],
+  [
+   "tragen! Schau dich doch noch",
+   "mal an Orten um, die du schon",
+   "kennst!"
+  ]
+ ],
+ "s176.sec7.u1": [
+  [
+   "Ich verrate dir meine geheimen",
+   "Einkaufstipps! Drücke in der",
+   "Itemliste START, um die"
+  ],
+  [
+   "Wirkung eines Items zu sehen.",
+   "Bei der Menge wählt {color 4}□{color 1} so viel",
+   "aus, wie du bezahlen kannst."
+  ],
+  [
+   "Halte {color 10}○{color 1} mit oben oder unten,",
+   "um die Menge in",
+   "Zehnerschritten zu ändern!"
+  ],
+  [
+   "Ist die Liste lang, halte R1",
+   "und drücke oben oder unten, um",
+   "schnell zu blättern! Noch ein"
+  ],
+  [
+   "Geheimnis... Kauf gleich nach",
+   "der Wiedergeburt deines Digimon",
+   "etwas ein! Dann passiert"
+  ],
+  [
+   "bestimmt etwas Gutes! Boing!"
+  ]
+ ],
+ "s176.sec81.u0": [
+  [
+   "Willkommen! He, {color 6}{player}{color 1}!",
+   "Schau, mein eigener Laden! Ich",
+   "werde Items verkaufen wie"
+  ],
+  [
+   "verrückt! Die Ware... ach,",
+   "darum kümmere ich mich später.",
+   "Bring mir doch ein paar"
+  ],
+  [
+   "Digimon, die mir helfen."
+  ]
+ ],
+ "s176.sec81.u1": [
+  [
+   "Willkommen, piep! Ich kaufe und",
+   "verkaufe jetzt Items, piep.",
+   "Freut mich, piep! Noch habe ich"
+  ],
+  [
+   "wenig Ware... Aber wenn ein",
+   "paar Digimon helfen, klappt es",
+   "vielleicht, piep."
+  ]
+ ],
+ "s176.sec81.u2": [
+  [
+   "Willkommen. Ich habe mir",
+   "erlaubt, einen Itemladen zu",
+   "eröffnen. Ich freue mich auf"
+  ],
+  [
+   "deine Kundschaft. Die Auswahl",
+   "ist noch klein, aber ich will",
+   "den Laden vergrößern. Hab"
+  ],
+  [
+   "vorerst bitte Geduld."
+  ]
+ ],
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1},",
+   "der Itemladen ist endlich",
+   "offen. Das Geschäft wird"
+  ],
+  [
+   "bestimmt blühen! Mit mehr",
+   "Digimon in der Stadt kann ich",
+   "bessere Waren anbieten. Habt"
+  ],
+  [
+   "bis dahin bitte Geduld."
+  ]
+ ],
+ "s176.sec81.u4": [
+  [
+   "He, {color 6}{player}{color 1}! Ich helfe",
+   "jetzt hier im Laden. Kauf viel",
+   "ein, ja?"
+  ]
+ ],
+ "s176.sec81.u5": [
+  [
+   "Willkommen, piep! Ab heute",
+   "helfe ich im Laden, piep. Freut",
+   "mich, piep!"
+  ]
+ ],
+ "s176.sec81.u6": [
+  [
+   "Willkommen, {color 6}{player}{color 1}. Ich",
+   "habe mir erlaubt, in diesem",
+   "Laden mitzuhelfen. Ich freue"
+  ],
+  [
+   "mich auf deine Kundschaft."
+  ]
+ ],
+ "s176.sec81.u7": [
+  [
+   "Ah, {color 6}{player}{color 1}. Hier kommen",
+   "meine Talente eben am besten",
+   "zur Geltung. Von nun an gebe"
+  ],
+  [
+   "ich alles."
+  ]
+ ],
+ "s176.sec82.m0.o0": "Kaufen",
+ "s176.sec82.m0.o1": "Nicht kaufen",
+ "s176.sec82.u0": [
+  [
+   "Oh, Señor, wie geht's? Ich bin",
+   "jeden Tag sooo mit dem Verkauf",
+   "beschäftigt. Nur ein Scherz!"
+  ],
+  [
+   "Ich bin ein echter Faulpelz und",
+   "werde wohl selten im Laden",
+   "sein. Aber ich habe etwas"
+  ],
+  [
+   "Tolles für dich: das",
+   "Trainingsbuch! Du musst es nur",
+   "bei dir tragen, und das"
+  ],
+  [
+   "Training wirkt Wunder! Es ist",
+   "sehr kostbar, darum verkaufe",
+   "ich es für 50000 Bits. Du wirst"
+  ],
+  [
+   "es bereuen, wenn du es nicht",
+   "kaufst!"
+  ]
+ ],
+ "s176.sec82.u1": [
+  [
+   "Dir fehlen viiiel zu viele",
+   "Bits!"
+  ]
+ ],
+ "s176.sec82.u2": [
+  [
+   "Hm, deine Tasche ist ganz voll!"
+  ]
+ ],
+ "s176.sec82.u3": [
+  [
+   "{color 6}Trainingsbuch{color 1}",
+   "erhalten!"
+  ]
+ ],
+ "s176.sec82.u4": [
+  [
+   "Kein Bit Rabatt, Señor!"
+  ]
+ ]
+}

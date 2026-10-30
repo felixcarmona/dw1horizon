@@ -1,0 +1,183 @@
+{
+ "s160.sec5.u0": "Leave it to meee!",
+ "s160.sec6.u0": "You'll have to beat me first!",
+ "s160.sec7.u0": "Orders. Can't break.",
+ "s160.sec8.u0": "Ooooooooh!",
+ "s160.sec9.u0": "Go back.",
+ "s161.sec5.u0": "I must guide you!",
+ "s161.sec6.u0": "Now, repent your sins.",
+ "s161.sec7.u0": "So you finally made it this far!",
+ "s161.sec8.u0": "Do as I tell you.",
+ "s161.sec9.u0": "You won't pass, even if it costs my life!",
+ "s170.sec5.u0": "No. Stop.",
+ "s170.sec6.u0": "As the gods will it...",
+ "s170.sec7.u0": "I guard here.",
+ "s170.sec8.u0": "Do you belieeeve in the gods?",
+ "s170.sec9.u0": "No violence! Violence is wrong!",
+ "s172.sec5.u0": "Just leave it all to meee!",
+ "s172.sec6.u0": "Get lost!",
+ "s172.sec7.u0": "Like you could stop me!",
+ "s172.sec8.u0": "Bring it on, then!",
+ "s172.sec9.u0": "Come on, hit me with everything you've got!",
+ "s179.sec5.u0": "Come at me, big time!",
+ "s179.sec6.u0": "Let you pass, get scolded.",
+ "s179.sec7.u0": "Today's last job.",
+ "s182.sec53.u0": "So... you've finally come this far.",
+ "s182.sec53.u1": "Are you the big boss?!",
+ "s182.sec53.u2": "Sorry, but no. I am MetalGreymon!",
+ "s182.sec53.u3": "I'll deal with you later! Out of my way!",
+ "s182.sec53.u4": "That won't happen. My job is to keep you from going any farther.",
+ "s182.sec53.u5": "Ugh... I wanted to save our strength, but this guy won't let me...",
+ "s182.sec53.u6": "Here I come!",
+ "s182.sec53.u7": "Ugh... Mm... Where am I...?",
+ "s182.sec53.u8": "You're back to your senses!",
+ "s182.sec53.u9": [
+  [
+   "So it seems..."
+  ],
+  [
+   "Heh... If you beat him, we may",
+   "meet again someday. Until",
+   "then, I'll be off."
+  ]
+ ],
+ "s184.sec51.u0": "!!!",
+ "s184.sec51.u1": [
+  [
+   "An egg!"
+  ],
+  [
+   "Don't tell me it's Machinedramon's..."
+  ]
+ ],
+ "s184.sec51.u2": "Whoa! Is this bad?!",
+ "s184.sec51.u3": "Digitamamon joined the city!",
+ "s184.sec51.u4": "!!!",
+ "s184.sec51.u5": "Th-there! I found you!",
+ "s184.sec51.u6": "So you're the big boss?!",
+ "s184.sec51.u7": "Heh heh heh... A pleasure to meet you at last. I am Analogman.",
+ "s184.sec51.u8": [
+  [
+   "I know all about you...",
+   "Hmm, seen up close, you really",
+   "are just a brat."
+  ],
+  [
+   "To think a brat like this has",
+   "been ruining my ambitions...",
+   "I nearly had the Net world..."
+  ]
+ ],
+ "s184.sec51.u9": "Hey, you... you're a grown-up human, aren't you? What ambitions? That's so dumb. You're making trouble for everybody!",
+ "s184.sec51.u10": "Trouble? For the Digimon? Heh heh heh heh...",
+ "s184.sec51.u11": "Digimon need only do as humans tell them. As I please... like tools!",
+ "s184.sec51.u12": "You're wrong! Digimon have hearts too! They're all our friends!",
+ "s184.sec51.u13": "Hmph. Then let us see which is better: your friends, or my tools!",
+ "s184.sec51.u14": "Your turn! The ultimate, the strongest Digimon... Machinedramon!",
+ "s184.sec51.u15": "We did it, we did it, {color 10}{partner}{color 1}!",
+ "s184.sec51.u16": "Im... impossible! My strongest weapon!",
+ "s184.sec51.u17": "See? You were the one who was wrong.",
+ "s184.sec51.u18": "Oh... ohhh...",
+ "s184.sec51.u19": "...Listen. Put the island back the way it was and apologize to everyone in the city, and I'll forgive you. I bet they all will too...",
+ "s184.sec51.u20": "Heh... heh heh... That is right. Digimon cannot be relied on... The only thing I can trust is my own power...",
+ "s184.sec51.u21": "Hey, what are you doing?!",
+ "s184.sec51.u22": [
+  [
+   "{color 7}Analogman {color 1}",
+   "I will blow this place sky-high",
+   "and escape to another world...",
+   "Too bad, brat!"
+  ]
+ ],
+ "s184.sec51.u23": "Oh no, he can't!",
+ "s184.sec51.u24": [
+  [
+   "{color 7}Analogman {color 1}",
+   "Heh, ha ha ha ha ha! Farewell!"
+  ]
+ ],
+ "s184.sec51.u25": "Dang it! I'm sorry, everyone...",
+ "s184.sec51.u26": [
+  [
+   "{color 7}??? {color 1}",
+   "It's all right."
+  ]
+ ],
+ "s184.sec51.u27": "Huh...?",
+ "s184.sec51.u28": [
+  [
+   "{color 7}Analogman {color 1}",
+   "What...? The transfer won't",
+   "start... S-something's wrong...",
+   "the program's... What is this?!"
+  ]
+ ],
+ "s184.sec51.u29": "I can hear... everyone's voices...!",
+ "s184.sec51.u30": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "We're sending you our strength",
+   "right now."
+  ]
+ ],
+ "s184.sec51.u31": [
+  [
+   "{color 7}Tokomon {color 1}",
+   "Can you hear us?"
+  ]
+ ],
+ "s184.sec51.u32": [
+  [
+   "{color 7}Agumon {color 1}",
+   "Looks like we made it in time!"
+  ]
+ ],
+ "s184.sec51.u33": "Everyone...",
+ "s184.sec51.u34": [
+  [
+   "{color 7}Analogman {color 1}",
+   "Impossible... At this rate...",
+   "No... H-help me... Ugh...",
+   "Aaaaaaaaaaahhh!!!"
+  ]
+ ],
+ "s184.sec51.u35": "He vanished?! What happened to him?",
+ "s184.sec51.u36": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "I don't know. But still..."
+  ]
+ ],
+ "s184.sec51.u37": "Oh, right! Jijimon, can you hear me? This place is gonna blow up! Do something!!!",
+ "s184.sec51.u38": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Mm. He should be there about",
+   "now, shouldn't he?"
+  ]
+ ],
+ "s184.sec51.u39": "Airdramon!!!",
+ "s184.sec51.u40": "Quick, climb on!",
+ "s184.sec51.u41": [
+  [
+   "",
+   "Analogman was gone...",
+   ""
+  ]
+ ],
+ "s184.sec51.u42": [
+  [
+   "",
+   "Peace returned",
+   "to File Island...",
+   ""
+  ]
+ ],
+ "s184.sec51.u43": [
+  [
+   "",
+   "And then...",
+   ""
+  ]
+ ]
+}

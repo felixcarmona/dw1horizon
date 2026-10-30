@@ -1,0 +1,58 @@
+// Readable form of script 170 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 170 {
+    npc golemon = 5;
+    npc piddomon1 = 6;
+    npc slot2 = 7;
+    npc piddomon3 = 8;
+    npc piddomon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Omnipotent"), 474, 0, 444, 3072, 682);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2989, 2649);
+        warp_to(212, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2579, -427);
+        warp_to(167, 0, 255);
+    }
+
+    on talk(golemon) replace {    // section 5
+        say(golemon, text("s170.sec5.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(piddomon1) replace {    // section 6
+        say(piddomon1, text("s170.sec6.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(slot2) replace {    // section 7
+        say(slot2, text("s170.sec7.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(piddomon3) replace {    // section 8
+        say(piddomon3, text("s170.sec8.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(piddomon4) replace {    // section 9
+        say(piddomon4, text("s170.sec9.u0"));
+        battle();
+        recruit(species("Piddomon"));
+        return;
+    }
+}

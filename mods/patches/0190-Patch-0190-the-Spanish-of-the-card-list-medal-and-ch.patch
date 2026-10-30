@@ -1,0 +1,649 @@
+From 4dd79c219042859c15c30c17de1bfbe8156266d3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 23:40:11 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200190:=20the=20Spanish=20of=20the=20card?=
+ =?UTF-8?q?=20list,=20medal=20and=20chart=20rows=20and=20of=20the=20name?=
+ =?UTF-8?q?=20keyboard;=20the=20keyboard=20types=20=C3=B1=20=C3=91=20and?=
+ =?UTF-8?q?=20the=20accented=20vowels=20in=20both=20languages;=20DG.SCN=20?=
+ =?UTF-8?q?read=20through=20FILE=5FOFFSET=5FTABLE?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The packed rows the Spanish words do not fit at the US crops get each language's crops and pieces as data (game_menu.c
+LabelCrop tables, the 0183 model): the card list (CARD_LIST_CROPS: Cartas, × Elegir, △ Cancelar, the count's suffix at 0xd8
+left blank), the medal screen (MEDAL_VIEW_CROPS: Medallas, Cancelar before drawGlyph's limit), the original chart's keys
+(EVO_CHART_KEY_CROPS), the chart detail's Tree and level names (CHART_TREE_CROP, CHART_LEVEL_CROPS: Árbol, Bebé, Infantil,
+Novato, Campeón, Perfecto; each centred at dx - 0x44 as the US placed them). English keeps the US values.
+
+The name keyboard (script_menu.c) has Ñ Ü after Z, Á É Í Ó Ú under them, the lower case alike on the right (the digits one
+row lower): the mod font's two-byte glyphs, in the cells the US left blank, in both languages. Its labels (Nombre, Borrar,
+OK) do not fit 12-pixel cells: the Spanish label row is laid out in pieces (NAMING_CTRL_BOXES, NAMING_LABEL_PIECES per
+language; English keeps the US cells), with its colour codes (PIECE_COLORS, font.c drawGlyphPieces) and found on either
+page of the box; with the original font that row is drawn in the original's cells instead of the keyboard's. The default
+player name is cleared instead of copied from past the end of "BackOK" ([7], which the padded Spanish moved). The memory
+card's title gets the player's name in plain Shift-JIS letters (modTitlePlayerName: F040-F057 to their full-width plain
+letters), the accented ones kept in the header's reserved bytes after the long names' tail ("A" at [5], a code per
+letter) and restored for the save slots (loadSaveSlotData); a name is 2 bytes a letter either way.
+
+readFileSection finds DG.SCN through FILE_OFFSET_TABLE (lookupFileTable: the font's and the language's copy, the sector
+build-disc wrote), not CdSearchFile; the cached start is forgotten when the font or the language changes (the Spanish and
+the original-font DG.SCN copies were never read: the dialogue stayed English)
+
+---
+ include/dw/mod_font.h     |   1 +
+ src/main/font.c           |   5 ++
+ src/main/game_menu.c      | 165 ++++++++++++++++++++++++++++++++------
+ src/main/main_menu.c      |  46 +++++++++++
+ src/main/script_interp.c  |  14 ++++
+ src/main/script_textbox.c |  34 +++++++-
+ src/shop/script_menu.c    |  47 ++++++++++-
+ 7 files changed, 280 insertions(+), 32 deletions(-)
+
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index 1077305a..ba296fdf 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -61,6 +61,7 @@ extern uint8_t TEXTBOX_CELLS;
+ #if FONT_SWITCH
+ void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces);
+ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, int32_t x, int32_t y, const uint16_t *pieces);
++extern const uint8_t *PIECE_COLORS; /* MOD (language): each glyph's colour for drawGlyphPieces, or NULL */
+ #define DRAW_STRING_PIECES(str, x, y, ...)                                         \
+ 	do {                                                                       \
+ 		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
+diff --git a/src/main/font.c b/src/main/font.c
+index 4cdc4585..f6c01578 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1578,6 +1578,8 @@ static int32_t pieceOf(const uint16_t *pieces, int32_t cell)
+  * advance; `pieces`: the crops' offsets in pixels from x, ascending, the first 0, ending with PIECES_END
+  * (DRAW_STRING_PIECES, TEXTBOX_ROW_PIECES, dw/mod_font.h).
+  */
++const uint8_t *PIECE_COLORS; /* MOD (language): each glyph's colour (setTextColor) for drawGlyphPieces, or NULL */
++
+ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, int32_t x, int32_t y, const uint16_t *pieces)
+ {
+ 	uint16_t cp;
+@@ -1635,6 +1637,9 @@ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, in
+ 				lead = pen - start;
+ 			}
+ 		}
++		if (PIECE_COLORS != NULL && PIECE_COLORS[i] != 0xff) { /* 0xff: the colour the row had before */
++			setTextColor(PIECE_COLORS[i]);
++		}
+ 		pen += drawGlyph(cp, x + pen, y);
+ 		pos += cells[i];
+ 	}
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 765f300a..5f9a2bb2 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1102,6 +1102,117 @@ uint16_t MOVE_STATUS_PIECES[5] = {
+ #endif
+ };
+ 
++/* the card list's row ("Card List×Select   △Cancel": the title, ×, Select, △, Cancel; 0xd8 is the card count's
++ * suffix, renderCardCount): Cartas centred, Cancelar wider, so × and Cancelar start further left */
++LabelCrop CARD_LIST_CROPS[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x1a, 0x00, 0x34 },
++	{ -0x23, 0x48, 0x0c },
++	{ -0x17, 0x54, 0x30 },
++	{ 0x2b, 0x84, 0x0c },
++	{ 0x37, 0x90, 0x40 },
++#else
++	{ -0x24, 0x00, 0x48 },
++	{ -0x23, 0x48, 0x0c },
++	{ -0x17, 0x54, 0x3c },
++	{ 0x2b, 0x90, 0x0c },
++	{ 0x37, 0x9c, 0x3c },
++#endif
++};
++
++uint16_t CARD_LIST_PIECES[7] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0 | PIECE_CENTRE, 0x48, 0x54, 0x84, 0x90, 0xd8, PIECES_END,
++#else
++	0 | PIECE_CENTRE, 0x48, 0x54, 0x90, 0x9c, 0xd8, PIECES_END,
++#endif
++};
++
++/* the medal screen's row ("Medals Chart   ×△ Select  Cancel": the title, ×, Select in two crops, △, Cancel):
++ * Medallas centred, Cancelar wider and further left (its last glyph must start before 244, drawGlyph's limit) */
++LabelCrop MEDAL_VIEW_CROPS[6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x1e, 0x00, 0x3c },
++	{ -0x23, 0x6c, 0x0c },
++	{ -0x17, 0x84, 0x18 },
++	{ 0x01, 0x9c, 0x14 },
++	{ 0x2b, 0x78, 0x0c },
++	{ 0x37, 0xb4, 0x40 },
++#else
++	{ -0x36, 0x00, 0x6c },
++	{ -0x23, 0x6c, 0x0c },
++	{ -0x17, 0x84, 0x18 },
++	{ 0x01, 0x9c, 0x24 },
++	{ 0x2b, 0x78, 0x0c },
++	{ 0x37, 0xc0, 0x30 },
++#endif
++};
++
++uint16_t MEDAL_VIEW_PIECES[6] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xb4, PIECES_END,
++#else
++	0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xc0, PIECES_END,
++#endif
++};
++
++/* the original evolution chart's keys ("×Select   △Cancel", NEW DIGIMON off): Cancelar is wider */
++LabelCrop EVO_CHART_KEY_CROPS[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x1a, 0x00, 0x0c },
++	{ -0x0e, 0x0c, 0x3c },
++	{ 0x3a, 0x48, 0x0c },
++	{ 0x46, 0x54, 0x40 },
++#else
++	{ -0x1a, 0x00, 0x0c },
++	{ -0x0e, 0x0c, 0x3c },
++	{ 0x3a, 0x48, 0x0c },
++	{ 0x46, 0x54, 0x3c },
++#endif
++};
++
++/* the chart detail's "Tree" (x from the card's shift) and level names (x from dx: each centred at dx - 0x44), rows 0x18
++ * ("Tree FreshTraining"), 0x24 ("RookieChampion"), 0x3c ("Ultimate"): Árbol, Novato and Perfecto are wider */
++LabelCrop CHART_TREE_CROP = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	-0x16, 0x00, 0x28,
++#else
++	-0x14, 0x00, 0x24,
++#endif
++};
++
++LabelCrop CHART_LEVEL_CROPS[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	{ -0x58, 0x28, 0x28 },
++	{ -0x61, 0x50, 0x3a },
++	{ -0x5e, 0x00, 0x34 },
++	{ -0x62, 0x34, 0x3c },
++	{ -0x65, 0x00, 0x42 },
++#else
++	{ -0x5b, 0x24, 0x2e },
++	{ -0x63, 0x52, 0x3e },
++	{ -0x5b, 0x00, 0x2f },
++	{ -0x64, 0x2f, 0x41 },
++	{ -0x64, 0x00, 0x41 },
++#endif
++};
++
++uint16_t CHART_TREE_ROW_PIECES[5] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0 | PIECE_CENTRE, 0x28 | PIECE_CENTRE, 0x50 | PIECE_CENTRE, 0xcc, PIECES_END,
++#else
++	0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE, 0x52 | PIECE_CENTRE, 0xcc, PIECES_END,
++#endif
++};
++
++uint16_t CHART_LEVEL_ROW_PIECES[3] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0 | PIECE_CENTRE, 0x34 | PIECE_CENTRE, PIECES_END,
++#else
++	0 | PIECE_CENTRE, 0x2f | PIECE_CENTRE, PIECES_END,
++#endif
++};
++
+ char *MEDAL_NAMES[15] = {
+ 	STR_MEDAL_NAME_GRADE_CUP,
+ 	STR_MEDAL_NAME_VERSION_CUP,
+@@ -3781,10 +3892,11 @@ static void renderEvoChartViewVanilla(void)
+ 		renderBorderBox(0x5f, 0x27, 0x22, 0xb0, 0xc88250, 0x5f370a, 0xf, 0x50, 0x82, 5);
+ 		renderBorderBox(0x84, 0x27, 0x6a, 0x9f, 0x6eaf5a, 0x285a00, 0, 0x87, 0x41, 5);
+ 		renderBorderBox(0xf1, 0x27, 0x38, 0x9f, 0x6996d2, 0x1e4178, 0xaf, 0x64, 0x2d, 5);
+-		renderString(0xf, -0x1a, 0x54, 0xc, 0xc, 0, 0xc, 5, 1);
+-		renderString(0, -0xe, 0x54, 0x3c, 0xc, 0xc, 0xc, 5, 1);
+-		renderString(7, 0x3a, 0x54, 0xc, 0xc, 0x48, 0xc, 5, 1);
+-		renderString(0, 0x46, 0x54, 0x3c, 0xc, 0x54, 0xc, 5, 1);
++		/* MOD (language): each language's crops (EVO_CHART_KEY_CROPS) */
++		for (i = 0; i < 4; i++) {
++			renderString(i == 0 ? 0xf : i == 2 ? 7 : 0, EVO_CHART_KEY_CROPS[i].x, 0x54, EVO_CHART_KEY_CROPS[i].w, 0xc,
++			             EVO_CHART_KEY_CROPS[i].u, 0xc, 5, 1);
++		}
+ 	}
+ }
+ 
+@@ -4500,22 +4612,18 @@ void renderEvoChartDetail(void)
+ 	             ((DIGI_PARA(CHART_DETAIL_ID).level - 1) * 36) + 0x30, 0x18,
+ 	             4);
+ #else
+-	renderString(3, (cardId > 0 ? CHART_CARD_TREE_SHIFT : 0) - 0x14, -0x4f, 0x24, 0xc, 0, 0x18, 4);
++	/* MOD (language): each language's crops (CHART_TREE_CROP, CHART_LEVEL_CROPS) */
++	renderString(3, (cardId > 0 ? CHART_CARD_TREE_SHIFT : 0) + CHART_TREE_CROP.x, -0x4f, CHART_TREE_CROP.w, 0xc,
++	             CHART_TREE_CROP.u, 0x18, 4);
+ 	switch (DIGI_PARA(CHART_DETAIL_ID).level) {
+ 	case 1:
+-		renderString(0, dx - 0x5b, 0x3a, 0x2e, 0xc, 0x24, 0x18, 4);
+-		break;
+ 	case 2:
+-		renderString(0, dx - 0x63, 0x3a, 0x3e, 0xc, 0x52, 0x18, 4);
+-		break;
+ 	case 3:
+-		renderString(0, dx - 0x5b, 0x3a, 0x2f, 0xc, 0, 0x24, 4);
+-		break;
+ 	case 4:
+-		renderString(0, dx - 0x64, 0x3a, 0x41, 0xc, 0x2f, 0x24, 4);
+-		break;
+ 	case 5:
+-		renderString(0, dx - 0x64, 0x3a, 0x41, 0xc, 0, 0x3c, 4);
++		i = DIGI_PARA(CHART_DETAIL_ID).level - 1;
++		renderString(0, dx + CHART_LEVEL_CROPS[i].x, 0x3a, CHART_LEVEL_CROPS[i].w, 0xc, CHART_LEVEL_CROPS[i].u,
++		             i < 2 ? 0x18 : i < 4 ? 0x24 : 0x3c, 4);
+ 		break;
+ 	case LEVEL_MEGA: /* MOD (mega) */
+ 		renderString(0, dx - 0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
+@@ -4585,7 +4693,7 @@ void renderMedalView(void)
+ 		                  0x18, 0x7dc7, 1, 0);
+ 	case 1:
+ 		renderSeparatorLines(MAIN_D_8012472C, 0xe, 5);
+-		renderString(3, -0x36, -0x51, 0x6c, 0xc, 0, 0xc, 5, 1);
++		renderString(3, MEDAL_VIEW_CROPS[0].x, -0x51, MEDAL_VIEW_CROPS[0].w, 0xc, MEDAL_VIEW_CROPS[0].u, 0xc, 5, 1); /* MOD (language) */
+ 
+ 		for (i = 0; i < 0xf; i++) {
+ 			if (hasMedal(i) != 0) {
+@@ -4623,15 +4731,19 @@ void renderMedalView(void)
+ #else
+ 		renderInsetBox(0x3e, 0x8d, 0xb0, 0xe, 5);
+ #endif
++#if !VERSION_IS(US)
+ 		renderString(FOOTER_GLYPH1_COLOR, -0x23, 0x55, 0xc, 0xc, 0x6c, 0xc, 5, 1);
+ 		renderString(0, -0x17, 0x55, 0x18, 0xc, 0x84, 0xc, 5, 1);
+ 		renderString(0, 1, 0x55, 0x24, 0xc, 0x9c, 0xc, 5, 1);
+ 		renderString(FOOTER_GLYPH2_COLOR, 0x2b, 0x55, 0xc, 0xc, 0x78, 0xc, 5, 1);
+-#if !VERSION_IS(US)
+ 		renderString(0, 0x37, 0x55, 0x18, 0xc, 0x84, 0xc, 5, 1);
+ 		renderString(0, 0x4f, 0x55, 0x24, 0xc, 0xc0, 0xc, 5, 1);
+ #else
+-		renderString(0, 0x37, 0x55, 0x30, 0xc, 0xc0, 0xc, 5, 1);
++		/* MOD (language): each language's crops (MEDAL_VIEW_CROPS) */
++		for (j = 1; j < 6; j++) {
++			renderString(j == 1 ? FOOTER_GLYPH1_COLOR : j == 4 ? FOOTER_GLYPH2_COLOR : 0, MEDAL_VIEW_CROPS[j].x, 0x55,
++			             MEDAL_VIEW_CROPS[j].w, 0xc, MEDAL_VIEW_CROPS[j].u, 0xc, 5, 1);
++		}
+ #endif
+ 	}
+ }
+@@ -4672,11 +4784,12 @@ void renderCardsView(void)
+ 			}
+ 		}
+ 
+-		renderString(3, -0x24, -0x50, 0x48, 0xc, 0, 0xc, 5, 1);
+-		renderString(FOOTER_GLYPH1_COLOR, -0x23, 0x53, 0xc, 0xc, 0x48, 0xc, 5, 1);
+-		renderString(0, -0x17, 0x53, 0x3c, 0xc, 0x54, 0xc, 5, 1);
+-		renderString(FOOTER_GLYPH2_COLOR, 0x2b, 0x53, 0xc, 0xc, 0x90, 0xc, 5, 1);
+-		renderString(0, 0x37, 0x53, 0x3c, 0xc, 0x9c, 0xc, 5, 1);
++		/* MOD (language): each language's crops (CARD_LIST_CROPS) */
++		renderString(3, CARD_LIST_CROPS[0].x, -0x50, CARD_LIST_CROPS[0].w, 0xc, CARD_LIST_CROPS[0].u, 0xc, 5, 1);
++		renderString(FOOTER_GLYPH1_COLOR, CARD_LIST_CROPS[1].x, 0x53, CARD_LIST_CROPS[1].w, 0xc, CARD_LIST_CROPS[1].u, 0xc, 5, 1);
++		renderString(0, CARD_LIST_CROPS[2].x, 0x53, CARD_LIST_CROPS[2].w, 0xc, CARD_LIST_CROPS[2].u, 0xc, 5, 1);
++		renderString(FOOTER_GLYPH2_COLOR, CARD_LIST_CROPS[3].x, 0x53, CARD_LIST_CROPS[3].w, 0xc, CARD_LIST_CROPS[3].u, 0xc, 5, 1);
++		renderString(0, CARD_LIST_CROPS[4].x, 0x53, CARD_LIST_CROPS[4].w, 0xc, CARD_LIST_CROPS[4].u, 0xc, 5, 1);
+ 	}
+ }
+ 
+@@ -5086,9 +5199,9 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 		MENU_SUB_STATE = 1;
+ 		/* fall through */
+ 	case 1:
+-		DRAW_STRING_PIECES(CARD_CHART_LABELS[2], 0, 0x18, 0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE, 0x52 | PIECE_CENTRE, 0xcc);
++		DRAW_STRING_PIECES_AT(CARD_CHART_LABELS[2], 0, 0x18, CHART_TREE_ROW_PIECES); /* MOD (language) */
+ #if VERSION_IS(US)
+-		DRAW_STRING_PIECES(CARD_CHART_LABELS[3], 0, 0x24, 0 | PIECE_CENTRE, 0x2f | PIECE_CENTRE);
++		DRAW_STRING_PIECES_AT(CARD_CHART_LABELS[3], 0, 0x24, CHART_LEVEL_ROW_PIECES); /* MOD (language) */
+ 		DRAW_STRING_PIECES(CARD_CHART_LABELS[4], 0, 0x3c, 0 | PIECE_CENTRE);
+ 		drawString(EVO_CHART_MEGA_LABEL, 0, EVO_CHART_MEGA_ROW); /* MOD (mega) */
+ #endif
+@@ -5119,7 +5232,7 @@ int32_t drawMedalViewStrings(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_PIECES(PLAYER_VIEW_LABELS[1], 0, 0xc, 0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xc0);
++		DRAW_STRING_PIECES_AT(PLAYER_VIEW_LABELS[1], 0, 0xc, MEDAL_VIEW_PIECES); /* MOD (language) */
+ 		MENU_SUB_STATE = 2;
+ 		break;
+ 	case 2:
+@@ -5155,7 +5268,7 @@ int32_t drawCardViewStrings(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_PIECES(CARD_CHART_LABELS[0], 0, 0xC, 0 | PIECE_CENTRE, 0x48, 0x54, 0x90, 0x9c, 0xd8);
++		DRAW_STRING_PIECES_AT(CARD_CHART_LABELS[0], 0, 0xC, CARD_LIST_PIECES); /* MOD (language) */
+ 		SELECTED_CARD = 0;
+ 		return 1;
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 729784f4..640cd1c3 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2481,6 +2481,37 @@ static void modTitleNameTail(void)
+ 	}
+ }
+ 
++/*
++ * MOD (language): the player's name in the save title, written by the memory card's own screens too, must be plain
++ * Shift-JIS: an accented letter of the mod font (F040-F057, the name keyboard) becomes its full-width plain letter there.
++ * Which ones were accented goes to the header's reserved bytes after the long names' tail ("A" at [5], then each
++ * letter's F0 code or 0), for the save slots (loadSaveSlotData). Run after modTitleNameTail.
++ */
++static const uint16_t PLAIN_LETTERS[0x18] = {
++	0x8281, 0x8285, 0x828f, 0x8295, 0x8281, 0x8285, 0x828f, 0x8289, /* á é ó ú à è ò í */
++	0x8289, 0x8295, 0x828e, 0x8283, 0x8260, 0x8264, 0x826e, 0x8274, /* ï ü ñ ç Á É Ó Ú */
++	0x8260, 0x8264, 0x826e, 0x8268, 0x8268, 0x8274, 0x826d, 0x8262, /* À È Ò Í Ï Ü Ñ Ç */
++};
++
++static void modTitlePlayerName(void)
++{
++	uint8_t *p;
++	int32_t i;
++	uint16_t plain;
++
++	p = (uint8_t *)SAVE_FILE.title + 0xe;
++	for (i = 0; i < 6 && p[i * 2] != 0; i++) {
++		if (p[i * 2] != 0xf0) {
++			continue;
++		}
++		SAVE_FILE.reserved[5] = 'A';
++		SAVE_FILE.reserved[6 + i] = p[i * 2 + 1];
++		plain = p[i * 2 + 1] >= 0x40 && p[i * 2 + 1] < 0x58 ? PLAIN_LETTERS[p[i * 2 + 1] - 0x40] : 0x8140;
++		p[i * 2] = plain >> 8;
++		p[i * 2 + 1] = plain;
++	}
++}
++
+ void drawRegisteredDigimonSlots(int32_t slot)
+ {
+ 	RECT area;
+@@ -2895,6 +2926,7 @@ void tickMainMenu(void)
+ 			 0x11);
+ 		memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 		modTitleNameTail(); /* MOD (long names) */
++		modTitlePlayerName(); /* MOD (language) */
+ #endif
+ 		prepareSaveFile(0); /* MOD (save v2): checksums, extension, mirror */
+ 		status = writeSaveFile();
+@@ -3263,6 +3295,7 @@ void tickMainMenu(void)
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 			modTitleNameTail(); /* MOD (long names) */
++			modTitlePlayerName(); /* MOD (language) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -3616,6 +3649,7 @@ void tickMainMenu(void)
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ 			modTitleNameTail(); /* MOD (long names) */
++			modTitlePlayerName(); /* MOD (language) */
+ #endif
+ 			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
+ 			status = writeSaveFile();
+@@ -4057,6 +4091,9 @@ int32_t loadSaveSlotData(int32_t channel, char *filename, SaveSlotPreview *slots
+ 	uint8_t data[0x200];
+ 	int32_t i;
+ 	int32_t slot;
++#if VERSION_IS(US)
++	int32_t j; /* MOD (language) */
++#endif
+ 
+ 	/* The fourth caller argument is unused in retail. */
+ 	MemCardSync(0, &cmd, &result);
+@@ -4109,6 +4146,15 @@ int32_t loadSaveSlotData(int32_t channel, char *filename, SaveSlotPreview *slots
+ 				strncpy(slots[slot].digimonName + 17, (char *)&data[0x46], 2);
+ 				slots[slot].digimonName[19] = '\0';
+ 			}
++			/* MOD (language): the accented letters of the player's name (modTitlePlayerName) */
++			if (data[0x49] == 'A') {
++				for (j = 0; j < 6; j++) {
++					if (data[0x4a + j] != 0 && slots[slot].playerName[j * 2] != '\0') {
++						slots[slot].playerName[j * 2] = 0xf0;
++						slots[slot].playerName[j * 2 + 1] = data[0x4a + j];
++					}
++				}
++			}
+ 			/* the long layout of the slot screens when a species passes the original column */
+ 			if (measureStringMode(slots[slot].digimonName, FIT_VANILLA) > SLOT_NAME_W) {
+ 				modSaveSlotsLayout(1);
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index f9112290..e314984c 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2179,6 +2179,7 @@ void modFontScriptsChanged(void)
+ 		tickFileReadQueue(0);
+ 	}
+ 	readFile(MAPHEAD_FILE, MAPHEAD_SCRIPT_PTR);
++	LOAD_FILE_SECTION_STARTPOS = 0; /* DG.SCN's start is looked up again: its copy for the font or the language */
+ 	readFileSection(DG_FILE, SCRIPT_OFFSET_PTR, 0, SCRIPT_OFFSET_TABLE_SIZE);
+ 	ACTIVE_MAP_SCRIPT = 0;
+ 	modScreenFileChanged();
+@@ -2783,17 +2784,30 @@ void readFileSection(char *filename, void *dest, uint32_t offset,
+ 	char path[64];
+ 	uint8_t mode;
+ 	int32_t sector;
++#if VERSION_IS(US) && !defined(__MWERKS__)
++	FileLookup lookup;
++#endif
+ 
+ 	mode = 0x80;
+ 	tfsStreamCheckTarget(dest, size); /* MOD (memreclaim) */
+ 
+ 	if (LOAD_FILE_SECTION_STARTPOS == 0) {
++#if VERSION_IS(US) && !defined(__MWERKS__)
++		/* MOD (font, language): found by FILE_OFFSET_TABLE, as readFile finds a file: the copy the font or the
++		 * language reads (modLangFile) and the sector build-disc.py wrote (CdSearchFile found the ISO's DG.SCN) */
++		(void)path;
++		if (lookupFileTable(&lookup, filename) == 0) {
++			return;
++		}
++		file.pos = lookup.pos;
++#else
+ 		path[0] = '\\';
+ 		strcpy(&path[1], filename);
+ 		strcat(path, MAIN_D_801345F0);
+ 		if (CdSearchFile(&file, path) == 0) {
+ 			return;
+ 		}
++#endif
+ 
+ 		while (CdControl(0xe, &mode, 0) == 0)
+ 			;
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index dae0c692..bd634097 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -153,6 +153,10 @@ int32_t drawTextboxStrings(boxId, flag)
+ 	int16_t px;
+ 	int16_t row;
+ 	uint8_t *buf;
++#if FONT_SWITCH
++	int32_t cellsRow; /* MOD (language) */
++	int8_t fixed;
++#endif
+ 
+ 	box = &TEXTBOX_DATA.box[boxId];
+ 	if (box->writeCount == box->renderCount) {
+@@ -182,9 +186,26 @@ int32_t drawTextboxStrings(boxId, flag)
+ #else
+ #if FONT_SWITCH
+ 		/* MOD (font): the row a screen copies in pieces (TEXTBOX_ROW_PIECES) */
+-		DRAW2_PIECES = FONT_PROPORTIONAL && boxId + 1 == TEXTBOX_PIECES_BOX && box->writeRow == TEXTBOX_PIECES_ROW ? TEXTBOX_PIECES : NULL;
+-#endif
++		/* MOD (language): the row on either page (a box that flips writes its back page's rows after its front's) */
++		cellsRow = boxId + 1 == TEXTBOX_PIECES_BOX &&
++		           (box->vramRows != 0 ? box->writeRow % box->vramRows : box->writeRow) == TEXTBOX_PIECES_ROW;
++		DRAW2_PIECES = FONT_PROPORTIONAL && cellsRow ? TEXTBOX_PIECES : NULL;
++		/* MOD (language): with the original font that row is drawn in the original's cells, never in the name
++		 * keyboard's 12-pixel ones (its labels, NAMING_LABEL_PIECES) */
++		cellsRow = cellsRow && !FONT_PROPORTIONAL;
++		if (cellsRow) {
++			fixed = DRAW_STRING2_IS_FIXED_WIDTH;
++			DRAW_STRING2_IS_FIXED_WIDTH = 0;
++			FONT_CELLS = 1;
++		}
+ 		done = drawString2(buf, px, row, flag);
++		if (cellsRow) {
++			DRAW_STRING2_IS_FIXED_WIDTH = fixed;
++			FONT_CELLS = (TEXTBOX_CELLS >> boxId) & 1;
++		}
++#else
++		done = drawString2(buf, px, row, flag);
++#endif
+ #endif
+ 		box->writeRow++;
+ 		if (done != 0) {
+@@ -747,6 +768,8 @@ static int32_t drawString2Pieces(uint8_t *str, int16_t x, int16_t y)
+ {
+ 	uint16_t glyphs[DRAW2_PIECES_MAX];
+ 	uint8_t cells[DRAW2_PIECES_MAX];
++	uint8_t colors[DRAW2_PIECES_MAX]; /* MOD (language): a row's colour codes (the name keyboard's labels) */
++	int32_t color;
+ 	int32_t n;
+ 	int32_t space;
+ 	int32_t ret;
+@@ -755,6 +778,7 @@ static int32_t drawString2Pieces(uint8_t *str, int16_t x, int16_t y)
+ 
+ 	n = 0;
+ 	space = 0xc;
++	color = -1;
+ 	for (;;) {
+ 		ch = *str++;
+ 		if (ch == 0 || ch == 0xd) {
+@@ -762,7 +786,8 @@ static int32_t drawString2Pieces(uint8_t *str, int16_t x, int16_t y)
+ 			break;
+ 		}
+ 		if (ch == 1) {
+-			setTextColor(*str++);
++			color = *str++;
++			setTextColor(color);
+ 			continue;
+ 		}
+ 		if (ch < 0x20) {
+@@ -777,6 +802,7 @@ static int32_t drawString2Pieces(uint8_t *str, int16_t x, int16_t y)
+ 			continue;
+ 		}
+ 		glyphs[n] = glyph;
++		colors[n] = color;
+ 		if (glyph == 0x4081) {
+ 			cells[n] = space;
+ 		} else {
+@@ -784,7 +810,9 @@ static int32_t drawString2Pieces(uint8_t *str, int16_t x, int16_t y)
+ 		}
+ 		n++;
+ 	}
++	PIECE_COLORS = color >= 0 ? colors : NULL;
+ 	drawGlyphPieces(glyphs, cells, n, x, y, DRAW2_PIECES);
++	PIECE_COLORS = NULL;
+ 	return ret;
+ }
+ #endif
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 227763d4..97e25b86 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -342,14 +342,32 @@ char MAIN_D_801306B4[] = "ＵＶＷＸＹ";
+ 
+ char MAIN_D_801306C0[] = "Ｚ　　　　";
+ 
++#if VERSION_IS(US)
++/*
++ * MOD (language): the name keyboard has the accented letters and the eñe of the mod font (F0xx, docs/mods/font.md) in
++ * the cells the US left blank, in both languages: Ñ Ü after Z, the acute vowels under them; the lower case alike on the
++ * right page, the digits one row lower. A name is two bytes a letter either way (NAMING_BUFFER, the saves' 20 bytes);
++ * the memory card's title gets the plain letters (main_menu.c modTitlePlayerName).
++ */
++char NAMING_ROW_Z_UPPER[] = "Ｚ\xF0\x56\xF0\x55　　";            /* Z Ñ Ü */
++char NAMING_ROW_ACUTE_UPPER[] = "\xF0\x4C\xF0\x4D\xF0\x53\xF0\x4E\xF0\x4F"; /* Á É Í Ó Ú */
++char NAMING_ROW_Z_LOWER[] = "ｚ\xF0\x4A\xF0\x49　　";            /* z ñ ü */
++char NAMING_ROW_ACUTE_LOWER[] = "\xF0\x40\xF0\x41\xF0\x47\xF0\x42\xF0\x43"; /* á é í ó ú */
++#endif
++
+ char *CHAR_PAGE1_LEFT[9] = {
+ 	MAIN_D_80130684,
+ 	MAIN_D_80130690,
+ 	MAIN_D_8013069C,
+ 	MAIN_D_801306A8,
+ 	MAIN_D_801306B4,
++#if VERSION_IS(US)
++	NAMING_ROW_Z_UPPER,
++	NAMING_ROW_ACUTE_UPPER,
++#else
+ 	MAIN_D_801306C0,
+ 	MAIN_D_80130540,
++#endif
+ 	MAIN_D_80130540,
+ 	MAIN_D_80130540,
+ };
+@@ -403,10 +421,10 @@ char *CHAR_PAGE1_RIGHT[9] = {
+ 	MAIN_D_80130708,
+ 	MAIN_D_80130714,
+ 	MAIN_D_80130720,
+-	MAIN_D_8013072C,
++	NAMING_ROW_Z_LOWER, /* MOD (language): was MAIN_D_8013072C, z alone */
++	NAMING_ROW_ACUTE_LOWER,
+ 	MAIN_D_80130738,
+ 	MAIN_D_80130744,
+-	MAIN_D_80130540,
+ };
+ 
+ char **NAMING_CHAR_PAGES[6] = {
+@@ -418,9 +436,26 @@ char **NAMING_CHAR_PAGES[6] = {
+ 	CHAR_PAGE3_RIGHT,
+ };
+ 
++/* MOD (language): the labels' crops (x, y, width; each starts where the one before ended in the label row): the Spanish
++ * words do not fit 12-pixel cells, so their row is laid out in pieces (NAMING_LABEL_PIECES) */
+ int16_t NAMING_CTRL_BOXES[10] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0x000e, 0x0006, 0x0034, 0x000e, 0x005a, 0x0034, 0x000e, 0x0076,
++	0x0018, 0x0000,
++#else
+ 	0x000e, 0x0006, 0x0030, 0x000e, 0x005a, 0x0030, 0x000e, 0x0076,
+ 	0x0018, 0x0000,
++#endif
++};
++
++/* MOD (language): the label row ("Name" "Back" "OK") in pieces at these offsets in the original's cells, or (PIECES_END
++ * first) in the keyboard's 12-pixel cells as the US drew it */
++uint16_t NAMING_LABEL_PIECES[4] = {
++#if MOD_LANG_BUILD == MOD_LANG_ES
++	0, 0x34, 0x68, PIECES_END,
++#else
++	PIECES_END, PIECES_END, PIECES_END, PIECES_END,
++#endif
+ };
+ 
+ uint16_t NAMING_ROLLOVER_CHARS[10] = {
+@@ -1080,7 +1115,7 @@ int32_t newGameStateMachine(void)
+ #if !VERSION_IS(US)
+ 		strcpy(DIGIMON_NAME(0), "？？？");
+ #else
+-		strcpy(DIGIMON_NAME(0), &MAIN_D_80134600[7]);
++		DIGIMON_NAME(0)[0] = '\0'; /* MOD (language): was a copy of &MAIN_D_80134600[7], the NUL past "BackOK" */
+ #endif
+ 		setupNewGameDialogueBox();
+ 		showNewGameDialogue(0x10, 2);
+@@ -2654,6 +2689,12 @@ void setupNameSelectorBox(void)
+ 	setRECT(&rect1, screenPos.vx, screenPos.vy, 10, 10);
+ 	setRECT(&rect2, -145, -91, 290, 138);
+ 	createTextbox(1, flags, &rect2, &rect1, tickNamingBox, renderNamingBox);
++#if FONT_SWITCH
++	/* MOD (language): the label row in pieces when the language's words are wider than its cells */
++	if (NAMING_LABEL_PIECES[0] != PIECES_END) {
++		textboxRowPieces(1, 0, NAMING_LABEL_PIECES);
++	}
++#endif
+ 	registerTextbox(1, 1, 7, 1, 0);
+ 
+ 	SHOP_AMOUNT = 0;
+-- 
+2.53.0
+

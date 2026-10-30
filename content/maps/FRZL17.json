@@ -1,0 +1,38 @@
+{
+  "file": "MAP/MAP10/FRZL17.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Penguinmon",
+      "at": [400, 1400],
+      "facing": 0,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [46, 51, 53, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "MetalGreymonVirus149",
+      "at": [400, 1400],
+      "facing": 0,
+      "follow": 1,
+      "range": 1000,
+      "script": 5,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [46, 51, 53, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

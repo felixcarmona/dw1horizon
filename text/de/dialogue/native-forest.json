@@ -1,0 +1,368 @@
+{
+ "s001.sec5.u0": [
+  [
+   "Los, wir fangen gerade erst an!"
+  ]
+ ],
+ "s001.sec6.u0": [
+  [
+   "Hopp... hopp... Hau... ruck..."
+  ]
+ ],
+ "s001.sec7.u0": [
+  [
+   "Jetzt fresse ich dich auf,",
+   "jawohl!"
+  ]
+ ],
+ "s001.sec8.u0": [
+  [
+   "Warte bitte einen Moooment, ja!"
+  ]
+ ],
+ "s001.sec9.u0": [
+  [
+   "Ich komme!"
+  ]
+ ],
+ "s001.sec10.u0": [
+  [
+   "Was? Was habe ich dir denn",
+   "getan?"
+  ]
+ ],
+ "s001.sec11.u0": [
+  [
+   "Ich wusste, ich hätte mich",
+   "raushalten sollen..."
+  ]
+ ],
+ "s001.sec12.u0": [
+  [
+   "Also wirklich... Grummel,",
+   "grummel..."
+  ]
+ ],
+ "s003.sec5.u0": [
+  [
+   "Los, los!"
+  ]
+ ],
+ "s003.sec6.u0": [
+  [
+   "Graaaah!"
+  ]
+ ],
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   ".....Ich bin eine Blume."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......Ich bin doch nur eine",
+   "Blume."
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Ich sagte, ich bin eine Blume!",
+   "Du gibst wohl nie auf?!"
+  ]
+ ],
+ "s003.sec7.u4": [
+  [
+   "Na gut! Ich hasse es einfach",
+   "zu kämpfen!"
+  ]
+ ],
+ "s003.sec7.u5": [
+  [
+   "Nun, dann..."
+  ]
+ ],
+ "s003.sec7.u6": [
+  [
+   "Komm in die Stadt. Dort ist es",
+   "friedlich."
+  ]
+ ],
+ "s003.sec7.u7": [
+  [
+   "In die Stadt? Klingt lustig.",
+   "Vielleicht komme ich ja mit!",
+   "Ich bin Palmon. Ich zeige dir,"
+  ],
+  [
+   "dass ich nützlich sein kann!"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon ist in die Stadt gezogen!",
+ "s003.sec8.u0": [
+  [
+   "Meins!"
+  ]
+ ],
+ "s003.sec9.u0": [
+  [
+   "Hab dich!"
+  ]
+ ],
+ "s004.sec6.u0": [
+  [
+   "Du tust dir doch nur weh."
+  ]
+ ],
+ "s004.sec6_dup4.u0": [
+  [
+   "Also wirklich... Wie ein",
+   "kleines Kind."
+  ]
+ ],
+ "s004.sec7.u0": [
+  [
+   "Na gut. Ich werde dich",
+   "schonen."
+  ]
+ ],
+ "s004.sec8.u0": [
+  [
+   "Ich breche dir die Nase ab!"
+  ]
+ ],
+ "s004.sec9.u0": [
+  [
+   "Ich zerbreche dich wie einen",
+   "Zweig!"
+  ]
+ ],
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Selbst Affen fallen vom..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Fliegender... Kniiie...",
+   "stoooß!!!"
+  ]
+ ],
+ "s004.sec51.u1": [
+  [
+   "Uuk! Ich, der Große,",
+   "besiegt...? Nein, nein! Ihr",
+   "seid nichts Besonderes!"
+  ]
+ ],
+ "s004.sec51.u2": [
+  [
+   "...Was für ein schlechter",
+   "Verlierer. Dabei hat er uns",
+   "überfallen..."
+  ]
+ ],
+ "s004.sec51.u3": [
+  [
+   "Uuk-uuk! Grrr... Na gut... Ich",
+   "zeige euch in eurer Stadt, was",
+   "ich wirklich kann! Wartet nur"
+  ],
+  [
+   "ab! Uuk!"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon ist in die Stadt gezogen!",
+ "s004.sec81.u0": [
+  [
+   "Hm? Hier ist etwas eingeritzt."
+  ]
+ ],
+ "s004.sec81.u1": [
+  [
+   "Niemand zu Hause! Geh weg!"
+  ]
+ ],
+ "s004.sec81.u2": [
+  [
+   "Lebt hier jemand?"
+  ]
+ ],
+ "s105.sec5.u0": [
+  [
+   "I-ich weiß nichts!"
+  ]
+ ],
+ "s105.sec6.u0": "Wow!",
+ "s105.sec6.u1": [
+  [
+   "......? ...! ...Hehe!"
+  ]
+ ],
+ "s105.sec6.u2": [
+  [
+   "He, einfach aus dem Nichts?!",
+   "Na gut, komm her!"
+  ]
+ ],
+ "s105.sec6.u3": [
+  [
+   "Ich habe verloren. Mist."
+  ]
+ ],
+ "s105.sec6.u4": [
+  [
+   "Ach ja. Ich soll ihn ja in die",
+   "Stadt einladen."
+  ]
+ ],
+ "s105.sec6.u5": [
+  [
+   "...Ähm, hör mal..."
+  ]
+ ],
+ "s105.sec6.u6": [
+  [
+   "Würdest du... vielleicht... in",
+   "die Stadt kommen?"
+  ]
+ ],
+ "s105.sec6.u7": [
+  [
+   "Hä? In die Stadt? Meinst du...",
+   "diesen alten, verfallenen Ort?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Hmm... Hmmmm......",
+   "Hmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": [
+  [
+   "Na klar. Ich bin Agumon.",
+   "Freut mich."
+  ]
+ ],
+ "s105.sec6.u10": "Agumon ist in die Stadt gezogen!",
+ "s105.sec6.u11": [
+  [
+   "Fragen kostet eben nichts!",
+   "Gut, ich lade alle ein, die ich",
+   "finden kann!"
+  ]
+ ],
+ "s105.sec7.u0": [
+  [
+   "Das ist mein Revier!"
+  ]
+ ],
+ "s105.sec8.u0": [
+  [
+   "Hä?!"
+  ]
+ ],
+ "s105.sec9.u0": [
+  [
+   "Jetzt ist meine Chance!"
+  ]
+ ],
+ "s105.sec52.u0": [
+  [
+   "...Wenn ich jetzt weglaufe,",
+   "gibt es kein Zurück mehr."
+  ]
+ ],
+ "s106.sec5.u0": [
+  [
+   "Kampftest! War nur Spaß. Das",
+   "war gelogen."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Werte ändern",
+ "s106.sec6.m0.o1": "Zeit vorspulen",
+ "s106.sec6.m0.o2": "Alle Techniken lernen",
+ "s106.sec6.m1.o0": "Erhöhen",
+ "s106.sec6.m1.o1": "Senken",
+ "s106.sec6.m1.o2": "Werte zurücksetzen",
+ "s106.sec6.m2.o0": "1 Stunde vorspulen",
+ "s106.sec6.m2.o1": "6 Stunden vorspulen",
+ "s106.sec6.m2.o2": "24 Stunden vorspulen",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": [
+  [
+   "Ich bin der Helfer! Was darf",
+   "es sein?"
+  ]
+ ],
+ "s106.sec81.u0": [
+  [
+   "Ein Felssturz versperrt den",
+   "Weg..."
+  ]
+ ],
+ "s107.sec5.u0": [
+  [
+   "Monat {pstat 105}, Tag",
+   "{pstat 106}, Stunde",
+   "{pstat 107}, Minute"
+  ],
+  [
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": [
+  [
+   "{color 10}{partner}{color 1} ist also vom Typ",
+   "Datei."
+  ]
+ ],
+ "s107.sec5.u2": [
+  [
+   "{color 10}{partner}{color 1} ist also vom Typ",
+   "Serum."
+  ]
+ ],
+ "s107.sec5.u3": [
+  [
+   "{color 10}{partner}{color 1} ist also vom Typ",
+   "Virus."
+  ]
+ ],
+ "s107.sec6.m0.o0": "Werte ändern",
+ "s107.sec6.m0.o1": "Zeit vorspulen",
+ "s107.sec6.m0.o2": "In einen Laden verwandeln",
+ "s107.sec6.m1.o0": "Am stärksten machen",
+ "s107.sec6.m1.o1": "Am schwächsten machen",
+ "s107.sec6.m1.o2": "Mittelstark machen",
+ "s107.sec6.m2.o0": "1 Stunde vorspulen",
+ "s107.sec6.m2.o1": "6 Stunden vorspulen",
+ "s107.sec6.m2.o2": "24 Stunden vorspulen",
+ "s107.sec6.u0": [
+  [
+   "Ich bin der Helfer! Was darf",
+   "es sein?"
+  ]
+ ],
+ "s107.sec51.u0": [
+  [
+   "Das Erdbeben hat gerade die",
+   "herabgefallenen Felsen",
+   "weggeräumt!"
+  ]
+ ]
+}

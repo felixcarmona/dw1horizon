@@ -1,0 +1,125 @@
+From 8253161c651c645656ac5636a2f2feb74fb008ae Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:12:05 +0000
+Subject: [PATCH] 60 fps step 1: fades advance in the late tick
+
+renderFadeIn/renderFadeOut advanced FADE_IN_CURRENT/FADE_OUT_CURRENT and
+FADE_PROGRESS and ended the fade (removeObject, FADE_PROTECTION = 0). With
+3 renders per tick a fade ran 3 times faster, and tamerTickChangeMap, which
+waits for FADE_IN_CURRENT > 0x13, could miss it (FADE_IN_CURRENT wrapped to
+0 within one tick) and hang the map change. The counters now advance in
+lateTickFadeIn/lateTickFadeOut; the renders only draw FADE_PROGRESS.
+
+---
+ src/main/fade.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
+
+diff --git a/src/main/fade.c b/src/main/fade.c
+index 7564463..eedb81f 100644
+--- a/src/main/fade.c
++++ b/src/main/fade.c
+@@ -17,6 +17,12 @@ uint8_t FADE_OUT_IN_PROGRESS;
+ 
+ int32_t addObject(int16_t objectId, int16_t instanceId, void *tick, void *render);
+ int32_t removeObject(int16_t objectId, int16_t instanceId);
++/* MOD (fps): see dw/mod_fps.h (not included: it declares addObject with
++ * other parameter types) */
++int32_t addObjectLate(int32_t objectId, int32_t instanceId, void *tick,
++		      void *lateTick, void *render);
++void lateTickFadeIn(int32_t instanceId);
++void lateTickFadeOut(int32_t instanceId);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int16_t posX, int16_t posY, int16_t width, int16_t height);
+ void setUVDataPolyFT4(POLY_FT4 *prim, int16_t xPos, int16_t yPos, int16_t width, int16_t height);
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+@@ -79,7 +85,7 @@ void fadeToBlack(int16_t frames)
+ 	FADE_DATA = frames + 1;
+ 	FADE_OUT_CURRENT = 1;
+ 	FADE_MODE = 2;
+-	addObject(4005, 0, 0, renderFadeOut);
++	addObjectLate(4005, 0, 0, lateTickFadeOut, renderFadeOut);
+ 	stopGameTime();
+ 	FADE_PROTECTION = 1;
+ }
+@@ -95,10 +101,13 @@ void fadeFromBlack(int16_t frames)
+ 	FADE_IN_TARGET = frames + 1;
+ 	FADE_IN_CURRENT = 1;
+ 	FADE_MODE = 2;
+-	addObject(4005, 0, 0, renderFadeIn);
++	addObjectLate(4005, 0, 0, lateTickFadeIn, renderFadeIn);
+ }
+ 
+-void renderFadeIn(int16_t instanceId)
++/* MOD (fps): the fade counters advance in the late tick (once per tick,
++ * after all the object ticks, where the render used to advance them); the
++ * renders only draw the progress the late tick computed. */
++void lateTickFadeIn(int32_t instanceId)
+ {
+ 	int16_t temp;
+ 	uint8_t progress;
+@@ -116,17 +125,21 @@ void renderFadeIn(int16_t instanceId)
+ 			FADE_PROGRESS = progress = 0;
+ 		}
+ 
+-		renderFade(progress);
+-
+ 		FADE_IN_CURRENT++;
+ 	} else {
++		/* the original drew nothing on this tick either */
+ 		FADE_IN_CURRENT = 0;
+ 		removeObject(4005, instanceId);
+ 		FADE_PROTECTION = 0;
+ 	}
+ }
+ 
+-void renderFadeOut(void)
++void renderFadeIn(int16_t instanceId)
++{
++	renderFade(FADE_PROGRESS);
++}
++
++void lateTickFadeOut(int32_t instanceId)
+ {
+ 	uint8_t next;
+ 
+@@ -136,11 +149,14 @@ void renderFadeOut(void)
+ 		FADE_PROGRESS = next = 160;
+ 	}
+ 
+-	renderFade(next);
+-
+ 	FADE_OUT_CURRENT++;
+ }
+ 
++void renderFadeOut(void)
++{
++	renderFade(FADE_PROGRESS);
++}
++
+ void renderFade(uint8_t progress)
+ {
+ 	POLY_FT4 *prim;
+@@ -181,12 +197,12 @@ void fadeToWhite(int16_t frames)
+ 
+ #if VERSION_IS(JP)
+ 	if (!FADE_OUT_IN_PROGRESS) {
+-		addObject(4005, 0, 0, renderFadeOut);
++		addObjectLate(4005, 0, 0, lateTickFadeOut, renderFadeOut);
+ 	}
+ 
+ 	FADE_OUT_IN_PROGRESS = 1;
+ #else
+-	addObject(4005, 0, 0, renderFadeOut);
++	addObjectLate(4005, 0, 0, lateTickFadeOut, renderFadeOut);
+ #endif
+ }
+ 
+@@ -198,5 +214,5 @@ void fadeFromWhite(int16_t frames)
+ 	FADE_IN_CURRENT = 1;
+ 	FADE_MODE = 1;
+ 	FADE_OUT_IN_PROGRESS = 0;
+-	addObject(4005, 0, 0, renderFadeIn);
++	addObjectLate(4005, 0, 0, lateTickFadeIn, renderFadeIn);
+ }
+-- 
+2.53.0
+

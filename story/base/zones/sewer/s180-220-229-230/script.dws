@@ -1,0 +1,162 @@
+// Readable form of script 180 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 180 {
+    npc numemon0 = 5;
+    npc numemon1 = 6;
+    npc nanimon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 52, 6, 7;
+
+    on enter replace {    // section 254
+        unless (sewer_fog_seen) goto sec52;
+        unless (!factory_shut_down || is_recruited(species("Numemon"))) goto sec6;
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 1482, -663);
+        await tamer;
+        walk(tamer, 551, 87);
+        warp_to(163, 1, 255);
+    }
+
+    on talk(numemon0) replace {    // section 5
+        if (!sewer_numemon_met) {
+            sewer_numemon_met = true;
+            say(numemon0, text("s180.sec5.u0"));
+            say(tamer, text("s180.sec5.u1"));
+            say(numemon0, text("s180.sec5.u2"));
+            say(tamer, text("s180.sec5.u3"));
+            say(numemon0, text("s180.sec5.u4"));
+            say(tamer, text("s180.sec5.u5"));
+        }
+        say(numemon0, text("s180.sec5.u6"));
+        say(tamer, text("s180.sec5.u7"));
+        say(tamer, text("s180.sec5.u8"));
+    }
+
+    on step(1) replace {    // section 52
+        sewer_fog_seen = true;
+        wait(1s);
+        walk(tamer, 1931, -482, camera: true);
+        walk(partner, 1822, -891);
+        await tamer;
+        await partner;
+        say(tamer, text("s180.sec52.u0"));
+        animate(partner, 23);
+        wait(2s);
+        face(tamer, partner);
+        wait(5);
+        say(tamer, text("s180.sec52.u1"));
+        animate(tamer, 16);
+        wait(1s);
+        say(tamer, text("s180.sec52.u2"));
+        say(tamer, text("s180.sec52.u3"));
+    }
+
+    on talk(numemon1) replace {    // section 6
+        wait(1s);
+        say(tamer, text("s180.sec6.u0"));
+        camera_to(2381, -698, speed: 20);
+        await camera;
+        sound(8, 13);
+        animate(numemon1, 15);
+        wait(1s);
+        say(tamer, text("s180.sec6.u1"));
+        face(numemon1, tamer);
+        wait(10);
+        sound(8, 11);
+        animate(numemon1, 28);
+        sound(8, 13);
+        wait(2s);
+        say(numemon1, text("s180.sec6.u2"));
+        battle(foes: [numemon1]);
+        walk(tamer, 2387, -771);
+        walk(partner, 1865, -772);
+        walk(numemon1, 2795, -771);
+        await tamer;
+        await partner;
+        await numemon1;
+        face(tamer, numemon1);
+        face(numemon1, tamer);
+        face(partner, numemon1);
+        wait(5);
+        say(numemon1, text("s180.sec6.u3"));
+        say(tamer, text("s180.sec6.u4"));
+        say(numemon1, text("s180.sec6.u5"));
+        say(tamer, text("s180.sec6.u6"));
+        say(numemon1, text("s180.sec6.u7"));
+        say(tamer, text("s180.sec6.u8"));
+        say(numemon1, text("s180.sec6.u9"));
+        set_dialog_owner(tamer);
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s180.sec6.u10"));
+        animate(tamer, anim.idle);
+        say(numemon1, text("s180.sec6.u11"));
+        walk_away(numemon1, -137, 34, looks: 6, pause: 10);
+        join_city_camera(numemon1, species("Numemon"), 8, 10, text("s180.sec6.u12"));
+    }
+
+    on talk(nanimon) replace {    // section 7
+        wait(10);
+        animate(nanimon, 28);
+        wait(10);
+        say(tamer, text("s180.sec7.u0"));
+        say(nanimon, text("s180.sec7.u1"));
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        run(nanimon, 2392, -114);
+        await nanimon;
+        remove(nanimon);
+        if (key_chains == 0) {
+            set_obj_visibility(23, 0);
+            run(tamer, 2068, 760);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(23, 1);
+            sound(0, 7);
+            say(narrator, text("s180.sec7.u2"));
+            sound(0, 7);
+            set_inventory_size(20);
+            inventory_expanded.to_20 = true;
+        }
+        if (key_chains == 4) {
+            set_obj_visibility(22, 0);
+            run(tamer, 2068, 760);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(22, 1);
+            sound(0, 7);
+            say(narrator, text("s180.sec7.u3"));
+            inventory_expanded.to_30 = true;
+            set_inventory_size(30);
+            recruit(species("Nanimon"));
+            engine.prosperity += 1;
+        }
+        key_chains += 1;
+        key_chain_found.sewer = true;
+        return;
+    }
+}

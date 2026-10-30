@@ -1,0 +1,139 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M175KRSR",
+ "type": 431,
+ "name": "Chrysalimon",
+ "source": {
+  "type": 25,
+  "mmd": "extracted/CHDAT/MMD0/VEGI.MMD"
+ },
+ "map": {
+  "2": 6,
+  "6": 13,
+  "13": 17,
+  "15": 7,
+  "22": 9,
+  "30": 5,
+  "31": 3,
+  "32": 19
+ },
+ "hips": [
+  1,
+  1,
+  1.367
+ ],
+ "root_scale": 1.367,
+ "tol": 16,
+ "tol_clips": 16,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x36": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 80,
+   "speed": 1.28,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x34",
+  "0x35"
+ ],
+ "gait": {
+  "legs": [
+   [
+    7,
+    0.0,
+    0
+   ],
+   [
+    8,
+    0.0,
+    1
+   ],
+   [
+    9,
+    0.0,
+    2
+   ],
+   [
+    10,
+    0.0,
+    3
+   ],
+   [
+    12,
+    0.0,
+    0
+   ],
+   [
+    14,
+    3.142,
+    0
+   ],
+   [
+    16,
+    3.142,
+    0
+   ],
+   [
+    17,
+    3.142,
+    1
+   ],
+   [
+    18,
+    3.142,
+    2
+   ],
+   [
+    19,
+    3.142,
+    3
+   ]
+  ],
+  "stride": 106.9,
+  "amp": 26
+ },
+ "scale": 0.185709,
+ "hub_roots": true,
+ "rigfix": {
+  "max_bones": 33
+ },
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

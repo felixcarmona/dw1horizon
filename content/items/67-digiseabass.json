@@ -1,0 +1,18 @@
+{
+  "id": 67,
+  "name": "Digiseabass",
+  "value": 8000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 35,
+    "weight": 4,
+    "lifetime": 3,
+    "healHP": 9999,
+    "healMP": 9999,
+    "sickChance": 20
+  }
+}

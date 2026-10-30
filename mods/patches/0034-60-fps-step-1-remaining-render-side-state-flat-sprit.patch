@@ -1,0 +1,217 @@
+From 93ccaa3d349e793bc82d13f49258236599d213a0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:12:10 +0000
+Subject: [PATCH] 60 fps step 1: remaining render-side state (flat sprite,
+ Digivice, toy boxes, RNG)
+
+- renderFlatDigimon: the flat sprite blink timer advances on pass 0 only (it
+  changes before drawing, so every pass draws the same frame).
+- renderDigiviceEntity poses the live entity in the menu view and puts it
+  back, restarting its animation, on every pass; the extra passes put it back
+  where it was before pass 0, so root motion is not applied 3 times.
+- renderToyTownBoxes: the lids open on pass 0 only.
+- Render-side random numbers in gameLoop scenes use modRenderRand /
+  modRenderCustomRandom: digivolution wireframe colours (model.c), spark
+  streaks (EVL), ending particles (ENDI). Pass 0 still calls rand(), so the
+  gameplay RNG advances as with one render per tick; the extra passes draw
+  their own random values.
+
+---
+ src/endi/endi.c       | 11 +++++++----
+ src/evl/evl.c         | 14 +++++++++-----
+ src/main/game_menu.c  | 15 +++++++++++++++
+ src/main/map_object.c | 10 ++++++++--
+ src/main/model.c      |  9 ++++++---
+ 5 files changed, 45 insertions(+), 14 deletions(-)
+
+diff --git a/src/endi/endi.c b/src/endi/endi.c
+index 7a10784..0dca1f7 100644
+--- a/src/endi/endi.c
++++ b/src/endi/endi.c
+@@ -31,6 +31,9 @@ static void ENDI_getParticleBase(int32_t arg0, SVECTOR *dst);
+ static void ENDI_setParticleBase(int32_t arg0, SVECTOR *src);
+ static void ENDI_stopParticles(void);
+ static void ENDI_clearParticles(void);
++/* MOD (fps): render-side random numbers, see dw/mod_fps.h */
++int32_t modRenderRand(void);
++
+ static void ENDI_renderParticles(int32_t objectId);
+ static void ENDI_tickEndingParticles(int32_t objectId);
+ 
+@@ -383,11 +386,11 @@ static void ENDI_renderParticles(int32_t objectId)
+ 				p->worldPos.vz = p->pos.vz + ENDI_DATA.base.vz;
+ 			}
+ 
+-			color.r = rand() % 70 + 60;
+-			color.g = rand() % 70 + 60;
+-			color.b = rand() % 70 + 60;
++			color.r = modRenderRand() % 70 + 60;
++			color.g = modRenderRand() % 70 + 60;
++			color.b = modRenderRand() % 70 + 60;
+ 
+-			size = rand() % 15 + 15;
++			size = modRenderRand() % 15 + 15;
+ 			renderFXParticle(&p->worldPos, size, &color);
+ 		}
+ 	}
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 5144a29..1ead345 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -117,6 +117,10 @@ void EVL_tickShardSet(int32_t id);
+ void EVL_renderShardSet(int32_t index);
+ void EVL_renderTriShard(EvlModelVertex *drift, int32_t unused1, int16_t speed, int16_t timer, ModelComponent *model);
+ void EVL_renderQuadShard(EvlModelVertex *drift, int32_t unused1, int16_t speed, int16_t timer, ModelComponent *model);
++/* MOD (fps): render-side random numbers, see dw/mod_fps.h */
++int32_t modRenderRand(void);
++int32_t modRenderCustomRandom(long min, long max);
++
+ void EVL_renderSparkStreak(int32_t id);
+ void EVL_tickSpark(int32_t id);
+ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t digimonId);
+@@ -1194,21 +1198,21 @@ void EVL_renderSparkStreak(int32_t id)
+ 	a.vy = m.t[1];
+ 	a.vz = m.t[2];
+ 	lenSq = ((b.vx * b.vx) + (b.vy * b.vy)) + (b.vz * b.vz);
+-	scale = customRandom(0x190, 0x1f4);
++	scale = modRenderCustomRandom(0x190, 0x1f4);
+ 	scale = scale * scale;
+ 	b.vx = a.vx + ((b.vx * scale) / lenSq);
+ 	b.vy = a.vy + ((b.vy * scale) / lenSq);
+ 	b.vz = a.vz + ((b.vz * scale) / lenSq);
+-	c.vx = b.vx + customRandom(-0x50, 0x50);
+-	c.vy = b.vy + customRandom(-0x50, 0x50);
+-	c.vz = b.vz + customRandom(-0x50, 0x50);
++	c.vx = b.vx + modRenderCustomRandom(-0x50, 0x50);
++	c.vy = b.vy + modRenderCustomRandom(-0x50, 0x50);
++	c.vz = b.vz + modRenderCustomRandom(-0x50, 0x50);
+ 	prim = (POLY_FT3 *)GsGetWorkBase();
+ 	SetPolyFT3(prim);
+ 	SetSemiTrans(prim, 1);
+ 	prim->tpage = getTPage(0, 1, 768, 256);
+ 	prim->clut = getClut(192, 489);
+ 	setUV3(prim, 0x5f, 0xa0, 0x5f, 0xa7, 0x30, 0xa0);
+-	setRGB0(prim, (rand() % 128) + 10, prim->r0, prim->r0);
++	setRGB0(prim, (modRenderRand() % 128) + 10, prim->r0, prim->r0);
+ 	addScreenPolyFT3(prim, &c, &a, &b);
+ }
+ 
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 60a58cc..eb6747a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6,6 +6,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/mod_fps.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+ #include <dw/evl.h>
+@@ -3442,6 +3443,9 @@ void renderDigimonStatusConditions(int32_t condition)
+ 	}
+ }
+ 
++static VECTOR modDigiviceSavedPos;
++static SVECTOR modDigiviceSavedRot;
++
+ void renderDigiviceEntity(entity, entityId)
+ 	Entity *entity;
+ int8_t entityId;
+@@ -3478,6 +3482,17 @@ int8_t entityId;
+ 	count = DIGIMON_DATA[type].boneCount;
+ 	savedPos = pos->location;
+ 	savedRot = pos->rotation;
++	/* MOD (fps): this moves the live entity to the menu view, poses it and
++	 * puts it back (restarting its animation), on every render pass. The
++	 * extra passes put it back where it was before the first pass, so they
++	 * leave the entity exactly as the first one did. */
++	if (MOD_RENDER_PASS == 0) {
++		modDigiviceSavedPos = savedPos;
++		modDigiviceSavedRot = savedRot;
++	} else {
++		savedPos = modDigiviceSavedPos;
++		savedRot = modDigiviceSavedRot;
++	}
+ 	setEntityPosition(entityId, RAISE_DATA[type].viewX,
+ 	                  RAISE_DATA[type].viewY,
+ 	                  RAISE_DATA[type].viewZ);
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 3deae58..8669572 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -646,6 +646,8 @@ void spawnToyTownBoxes(void)
+ 	addObject(0xfbd, 0, NULL, renderToyTownBoxes);
+ }
+ 
++extern int32_t MOD_RENDER_PASS;
++
+ void renderToyTownBoxes(int32_t instanceId)
+ {
+ 	SVECTOR rot;
+@@ -653,7 +655,9 @@ void renderToyTownBoxes(int32_t instanceId)
+ 
+ 	if (MAP_LAYER_ENABLED) {
+ 		if (TOY_TOWN_SELECTED_BOX == 1) {
+-			BOX_LID_PROGRESS.big -= 100;
++			if (MOD_RENDER_PASS == 0) { /* MOD (fps): once per tick */
++				BOX_LID_PROGRESS.big -= 100;
++			}
+ 			if (BOX_LID_PROGRESS.big < -0x400) {
+ 				BOX_LID_PROGRESS.big = -0x400;
+ 			}
+@@ -666,7 +670,9 @@ void renderToyTownBoxes(int32_t instanceId)
+ 		}
+ 
+ 		if (TOY_TOWN_SELECTED_BOX == 2) {
+-			BOX_LID_PROGRESS.small -= 100;
++			if (MOD_RENDER_PASS == 0) { /* MOD (fps): once per tick */
++				BOX_LID_PROGRESS.small -= 100;
++			}
+ 			if (BOX_LID_PROGRESS.small < -0x400) {
+ 				BOX_LID_PROGRESS.small = -0x400;
+ 			}
+diff --git a/src/main/model.c b/src/main/model.c
+index fdcfd3a..5eb3552 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -11,6 +11,7 @@
+ #include <dw/evl.h>
+ #include <dw/file.h>
+ #include <dw/file_queue.h>
++#include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/version.h>
+@@ -2737,7 +2738,9 @@ void renderFlatDigimon(Entity *entity)
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+ 	prim->clut = model->clutPage + 0x3C0;
+ 	prim->tpage = model->pixelPage;
+-	if (entity->flatSprite < 2) {
++	/* MOD (fps): the blink advances on the first render pass of a tick only;
++	 * it happens before drawing, so the other passes draw the same frame */
++	if (entity->flatSprite < 2 && MOD_RENDER_PASS == 0) {
+ 		if ((entity->flatTimer % 10) == 0) {
+ 			entity->flatSprite = (entity->flatSprite + 1) & 1;
+ 		}
+@@ -3009,7 +3012,7 @@ void renderWireframed(GsDOBJ2 *obj, int32_t wireFrameShare)
+ 	LINE_F2 *lf2;
+ 	int8_t color;
+ 
+-	color = WIREFRAME_COLOR_MIN + rand() % (WIREFRAME_COLOR_MAX - WIREFRAME_COLOR_MIN);
++	color = WIREFRAME_COLOR_MIN + modRenderRand() % (WIREFRAME_COLOR_MAX - WIREFRAME_COLOR_MIN);
+ 	tmd = (struct TMD_STRUCT *)obj->tmd;
+ 	vert = (SVECTOR *)tmd->vertop;
+ 	normal = (SVECTOR *)tmd->nortop;
+@@ -3139,7 +3142,7 @@ void renderWireframed(GsDOBJ2 *obj, int32_t wireFrameShare)
+ 	LINE_F2 *lf2;
+ 
+ 	min = WIREFRAME_COLOR_MIN;
+-	color = min + rand() % (WIREFRAME_COLOR_MAX - min);
++	color = min + modRenderRand() % (WIREFRAME_COLOR_MAX - min);
+ 	tmd = (struct TMD_STRUCT *)obj->tmd;
+ 	vert = (SVECTOR *)tmd->vertop;
+ 	normal = (SVECTOR *)tmd->nortop;
+-- 
+2.53.0
+

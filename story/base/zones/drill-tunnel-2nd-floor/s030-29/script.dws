@@ -1,0 +1,128 @@
+// Readable form of script 30 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 30 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5;
+
+    on enter replace {    // section 254
+        if (!drill_tunnel_boulder_moved) {
+            spawn_boulder(0);
+            set_rect_impassable(0, 42, 39, 9, 6);
+        }
+        set_obj_visibility(0, 1);
+    }
+
+    on step(0) replace {    // section 51
+        if (!is_recruited(species("Meramon"))) {
+            warp_to(30, 0, 255);
+            return;
+        }
+        warp_to(122, 0, 255);
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        if (!drill_tunnel_boulder_moved) {
+            say(drimogemon, text("s030.sec5.u0"));
+            say(tamer, text("s030.sec5.u1"));
+            say(drimogemon, text("s030.sec5.u2"));
+            animate(tamer, 19);
+            wait(1s);
+            say(tamer, text("s030.sec5.u3"));
+            face(tamer, partner);
+            animate(tamer, anim.command);
+            wait(1s);
+            say(tamer, text("s030.sec5.u4"));
+            walk(partner, -337, 170);
+            face(tamer, partner);
+            await partner;
+            wait(1s);
+            entity_set_rotation(partner, 2000);
+            face(drimogemon, partner);
+            face(tamer, partner);
+            store_digimon_type(partner_type);
+            if (partner_type in [1, 2, 3, 4, 15]) {
+            } else if (partner_type in [16, 17, 18, 29, 30]) {
+            } else if (partner_type in [31, 32, 43, 44, 45]) {
+            } else if (partner_type != 46 && partner_type != 57) {
+                animate(partner, 27);
+                set_obj_visibility(0, 0);
+                move_boulder(0, 0, 50);
+                sound(8, 3);
+                wait(1s);
+                move_boulder(0, 0, 100);
+                walk(partner, -337, 270);
+                sound(8, 3);
+                wait(1s);
+                move_boulder(0, 0, 100);
+                walk(partner, -337, 370);
+                sound(8, 3);
+                wait(1s);
+                move_boulder(0, 0, 100);
+                walk(partner, -337, 470);
+                sound(8, 3);
+                wait(1s);
+                move_boulder(0, 10, 200);
+                walk(partner, -337, 670);
+                sound(8, 3);
+                wait(5);
+                move_boulder(0, 50, 300);
+                sound(8, 3);
+                wait(5);
+                move_boulder(0, 60, 400);
+                sound(8, 3);
+                wait(5);
+                move_boulder(0, 80, 500);
+                sound(8, 3);
+                wait(3);
+                move_boulder(0, 80, 600);
+                sound(8, 3);
+                wait(3);
+                move_boulder(0, 80, 600);
+                sound(8, 3);
+                wait(3);
+                move_boulder(0, 120, 300);
+                sound(8, 3);
+                wait(2);
+                move_boulder(0, 120, 100);
+                sound(8, 3);
+                wait(2);
+                move_boulder(0, 120, 100);
+                sound(8, 3);
+                wait(1);
+                despawn_boulder(0);
+                sound(8, 3);
+                wait(1s);
+                animate(partner, anim.idle);
+                wait(5);
+                set_obj_visibility(0, 1);
+                say(tamer, text("s030.sec5.u5"));
+                say(drimogemon, text("s030.sec5.u6"));
+                say(tamer, text("s030.sec5.u7"));
+                entity_set_rotation(tamer, 2000);
+                walk(tamer, -131, 1250);
+                await tamer;
+                entity_set_rotation(tamer, 2000);
+                say(tamer, text("s030.sec5.u8"));
+                say(drimogemon, text("s030.sec5.u9"));
+                drill_tunnel_boulder_moved = true;
+                warp_to(30, 0, 255);
+                return;
+            }
+            wait(1s);
+            animate(partner, 27);
+            wait(1s);
+            animate(partner, anim.tired_idle);
+            wait(30);
+            say(drimogemon, text("s030.sec5.u11"));
+            walk(tamer, -337, 0);
+            await tamer;
+            return;
+        }
+        say(drimogemon, text("s030.sec5.u10"));
+    }
+}

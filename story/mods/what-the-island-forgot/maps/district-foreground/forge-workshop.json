@@ -1,0 +1,2029 @@
+{
+  "screen": 362,
+  "review": "Anvil stump and trough stand beside the floor. Workbench and bellows remain solid. The furnace is on the rear wall; no character route passes behind its chimney. Polish: block the three right-wall coal-sack bases after native witnesses showed actors inside them. Keep the floor to their left and the trough approach open.",
+  "collision": [
+    {
+      "tile": [
+        43,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        50,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        50,
+        44
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        50,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "anvil-stump ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        52
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "anvil-stump ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "forge-workshop-anvil-stump.png",
+      "at": [
+        360,
+        197
+      ],
+      "depth": [
+        396,
+        283
+      ],
+      "source": "forge-workshop.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "forge-workshop.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              355,
+              192,
+              442,
+              288
+            ],
+            "positive": [
+              [
+                398,
+                250
+              ]
+            ],
+            "negative": [
+              [
+                356,
+                287
+              ],
+              [
+                441,
+                287
+              ]
+            ],
+            "score": 0.9997811317443848
+          }
+        ]
+      }
+    },
+    {
+      "png": "forge-workshop-trough.png",
+      "at": [
+        405,
+        264
+      ],
+      "depth": null,
+      "source": "forge-workshop.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "forge-workshop.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              403,
+              258,
+              490,
+              371
+            ],
+            "positive": [
+              [
+                446,
+                321
+              ]
+            ],
+            "negative": [
+              [
+                404,
+                370
+              ],
+              [
+                489,
+                370
+              ]
+            ],
+            "score": 0.9949758052825928
+          }
+        ]
+      }
+    },
+    {
+      "png": "forge-workshop-workbench.png",
+      "at": [
+        59,
+        187
+      ],
+      "depth": null,
+      "source": "forge-workshop.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "forge-workshop.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": 283,
+          "fill_small_holes": 3,
+          "largest_component": true
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              43,
+              180,
+              158,
+              345
+            ],
+            "positive": [
+              [
+                93,
+                250
+              ],
+              [
+                82,
+                222
+              ],
+              [
+                114,
+                215
+              ],
+              [
+                108,
+                280
+              ],
+              [
+                128,
+                252
+              ],
+              [
+                117,
+                232
+              ],
+              [
+                60,
+                288
+              ]
+            ],
+            "negative": [
+              [
+                164,
+                260
+              ],
+              [
+                150,
+                300
+              ],
+              [
+                140,
+                335
+              ],
+              [
+                70,
+                348
+              ]
+            ],
+            "score": 0.9347618818283081
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              58,
+              182,
+              153,
+              287
+            ],
+            "positive": [
+              [
+                97,
+                193
+              ],
+              [
+                145,
+                202
+              ],
+              [
+                106,
+                231
+              ],
+              [
+                114,
+                278
+              ]
+            ],
+            "negative": [
+              [
+                80,
+                195
+              ],
+              [
+                155,
+                220
+              ],
+              [
+                97,
+                293
+              ]
+            ],
+            "score": 0.9444851875305176
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              107,
+              185,
+              150,
+              203
+            ],
+            "positive": [
+              [
+                116,
+                195
+              ],
+              [
+                134,
+                193
+              ]
+            ],
+            "negative": [
+              [
+                105,
+                205
+              ],
+              [
+                152,
+                205
+              ]
+            ],
+            "score": 0.8664227724075317
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              94,
+              195,
+              145,
+              211
+            ],
+            "positive": [
+              [
+                103,
+                202
+              ],
+              [
+                128,
+                201
+              ]
+            ],
+            "negative": [
+              [
+                92,
+                213
+              ],
+              [
+                147,
+                213
+              ]
+            ],
+            "score": 0.8496439456939697
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              101,
+              201,
+              143,
+              213
+            ],
+            "positive": [
+              [
+                120,
+                207
+              ]
+            ],
+            "negative": [
+              [
+                99,
+                215
+              ],
+              [
+                145,
+                215
+              ]
+            ],
+            "score": 0.8418834209442139
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              80,
+              205,
+              137,
+              224
+            ],
+            "positive": [
+              [
+                102,
+                213
+              ],
+              [
+                88,
+                218
+              ]
+            ],
+            "negative": [
+              [
+                78,
+                226
+              ],
+              [
+                139,
+                226
+              ]
+            ],
+            "score": 0.8850486278533936
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              71,
+              207,
+              85,
+              238
+            ],
+            "positive": [
+              [
+                78,
+                224
+              ]
+            ],
+            "negative": [
+              [
+                69,
+                240
+              ],
+              [
+                87,
+                240
+              ]
+            ],
+            "score": 0.8779699802398682
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              72,
+              237,
+              128,
+              257
+            ],
+            "positive": [
+              [
+                80,
+                249
+              ],
+              [
+                108,
+                250
+              ]
+            ],
+            "negative": [
+              [
+                70,
+                259
+              ],
+              [
+                130,
+                259
+              ]
+            ],
+            "score": 0.9324078559875488
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              64,
+              256,
+              127,
+              270
+            ],
+            "positive": [
+              [
+                92,
+                262
+              ],
+              [
+                72,
+                261
+              ]
+            ],
+            "negative": [
+              [
+                62,
+                272
+              ],
+              [
+                129,
+                272
+              ]
+            ],
+            "score": 0.9185338616371155
+          },
+          {
+            "source": "raw-forge-workshop-edit.jpg",
+            "source_sha1": "bea4ada53163251e0d9372f0e78a64db26a64bd6",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              65,
+              263,
+              123,
+              283
+            ],
+            "positive": [
+              [
+                76,
+                273
+              ],
+              [
+                105,
+                273
+              ]
+            ],
+            "negative": [
+              [
+                63,
+                285
+              ],
+              [
+                125,
+                285
+              ]
+            ],
+            "score": 0.9047421813011169
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      147,
+      187
+    ],
+    [
+      266,
+      187
+    ],
+    [
+      267,
+      215
+    ],
+    [
+      397,
+      215
+    ],
+    [
+      402,
+      260
+    ],
+    [
+      462,
+      263
+    ],
+    [
+      506,
+      405
+    ],
+    [
+      512,
+      512
+    ],
+    [
+      0,
+      512
+    ],
+    [
+      0,
+      450
+    ],
+    [
+      33,
+      347
+    ],
+    [
+      46,
+      280
+    ],
+    [
+      61,
+      233
+    ]
+  ],
+  "footprints": {
+    "anvil-stump": [
+      [
+        365,
+        255
+      ],
+      [
+        426,
+        253
+      ],
+      [
+        432,
+        279
+      ],
+      [
+        389,
+        290
+      ],
+      [
+        357,
+        272
+      ]
+    ],
+    "trough": [
+      [
+        405,
+        283
+      ],
+      [
+        447,
+        275
+      ],
+      [
+        466,
+        291
+      ],
+      [
+        486,
+        347
+      ],
+      [
+        473,
+        365
+      ],
+      [
+        435,
+        367
+      ],
+      [
+        417,
+        335
+      ]
+    ],
+    "workbench": [
+      [
+        119,
+        217
+      ],
+      [
+        151,
+        211
+      ],
+      [
+        130,
+        328
+      ],
+      [
+        107,
+        346
+      ],
+      [
+        47,
+        345
+      ],
+      [
+        48,
+        286
+      ],
+      [
+        88,
+        276
+      ]
+    ]
+  },
+  "polish_footprints": {
+    "polygons_px": {
+      "rear-coal-sack": [
+        [
+          454,
+          383
+        ],
+        [
+          481,
+          375
+        ],
+        [
+          504,
+          390
+        ],
+        [
+          503,
+          407
+        ],
+        [
+          482,
+          417
+        ],
+        [
+          455,
+          403
+        ]
+      ],
+      "middle-coal-sack": [
+        [
+          477,
+          419
+        ],
+        [
+          509,
+          411
+        ],
+        [
+          512,
+          428
+        ],
+        [
+          512,
+          448
+        ],
+        [
+          500,
+          465
+        ],
+        [
+          480,
+          450
+        ]
+      ],
+      "front-coal-sack": [
+        [
+          503,
+          456
+        ],
+        [
+          512,
+          450
+        ],
+        [
+          512,
+          512
+        ],
+        [
+          505,
+          506
+        ],
+        [
+          496,
+          487
+        ]
+      ]
+    },
+    "blocked_tiles": [
+      {
+        "tile": [
+          60,
+          60
+        ],
+        "pixel": [
+          458,
+          388
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          61,
+          60
+        ],
+        "pixel": [
+          477,
+          388
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          62,
+          60
+        ],
+        "pixel": [
+          496,
+          388
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          60,
+          61
+        ],
+        "pixel": [
+          460,
+          402
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          61,
+          61
+        ],
+        "pixel": [
+          479,
+          402
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          62,
+          61
+        ],
+        "pixel": [
+          499,
+          402
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "rear-coal-sack"
+      },
+      {
+        "tile": [
+          62,
+          62
+        ],
+        "pixel": [
+          502,
+          417
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "middle-coal-sack"
+      },
+      {
+        "tile": [
+          61,
+          63
+        ],
+        "pixel": [
+          485,
+          432
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "middle-coal-sack"
+      },
+      {
+        "tile": [
+          62,
+          63
+        ],
+        "pixel": [
+          505,
+          432
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "middle-coal-sack"
+      },
+      {
+        "tile": [
+          61,
+          64
+        ],
+        "pixel": [
+          488,
+          448
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "middle-coal-sack"
+      },
+      {
+        "tile": [
+          62,
+          64
+        ],
+        "pixel": [
+          508,
+          448
+        ],
+        "before": 0,
+        "after": 128,
+        "prop": "middle-coal-sack"
+      }
+    ]
+  }
+}

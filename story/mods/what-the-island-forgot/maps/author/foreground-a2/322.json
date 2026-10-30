@@ -1,0 +1,479 @@
+{
+  "screen": 322,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-6-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        83,
+        242,
+        216,
+        452
+      ],
+      "pos": [
+        [
+          154,
+          388
+        ],
+        [
+          125,
+          307
+        ],
+        [
+          161,
+          272
+        ],
+        [
+          143,
+          260
+        ],
+        [
+          98,
+          350
+        ]
+      ],
+      "neg": [
+        [
+          224,
+          371
+        ],
+        [
+          149,
+          475
+        ]
+      ],
+      "scores": [
+        0.9286633133888245
+      ],
+      "selected": 0,
+      "at": [
+        83,
+        278
+      ],
+      "bounds": [
+        83,
+        278,
+        217,
+        464
+      ],
+      "area": 15059,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": false,
+      "refine": null,
+      "piece": "left-pipe-and-valve",
+      "png": "322-left-pipe-and-valve.png",
+      "source_sha1": "f981f91dcd386db958c9affe67cec91c3a4c315d"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-6-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        423,
+        72,
+        458,
+        114
+      ],
+      "pos": [
+        [
+          439,
+          91
+        ],
+        [
+          438,
+          82
+        ],
+        [
+          450,
+          89
+        ]
+      ],
+      "neg": [
+        [
+          415,
+          68
+        ],
+        [
+          420,
+          80
+        ],
+        [
+          418,
+          104
+        ],
+        [
+          433,
+          118
+        ],
+        [
+          462,
+          94
+        ]
+      ],
+      "scores": [
+        0.9204645156860352
+      ],
+      "selected": 0,
+      "at": [
+        420,
+        73
+      ],
+      "bounds": [
+        420,
+        73,
+        452,
+        107
+      ],
+      "area": 1040,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": false,
+      "refine": null,
+      "piece": "broken-left-pillar",
+      "png": "322-broken-left-pillar.png",
+      "source_sha1": "f981f91dcd386db958c9affe67cec91c3a4c315d"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-6-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        189,
+        0,
+        336,
+        153
+      ],
+      "pos": [
+        [
+          204,
+          10
+        ],
+        [
+          219,
+          35
+        ],
+        [
+          237,
+          65
+        ],
+        [
+          254,
+          93
+        ],
+        [
+          273,
+          127
+        ],
+        [
+          281,
+          143
+        ],
+        [
+          249,
+          9
+        ],
+        [
+          264,
+          30
+        ],
+        [
+          280,
+          56
+        ],
+        [
+          298,
+          80
+        ],
+        [
+          315,
+          105
+        ],
+        [
+          328,
+          119
+        ],
+        [
+          259,
+          84
+        ],
+        [
+          279,
+          86
+        ],
+        [
+          303,
+          109
+        ],
+        [
+          273,
+          105
+        ],
+        [
+          227,
+          111
+        ],
+        [
+          222,
+          91
+        ]
+      ],
+      "neg": [
+        [
+          249,
+          7
+        ],
+        [
+          253,
+          19
+        ],
+        [
+          261,
+          37
+        ],
+        [
+          250,
+          46
+        ],
+        [
+          269,
+          54
+        ],
+        [
+          280,
+          58
+        ],
+        [
+          276,
+          70
+        ],
+        [
+          289,
+          84
+        ],
+        [
+          295,
+          91
+        ],
+        [
+          307,
+          104
+        ],
+        [
+          312,
+          111
+        ],
+        [
+          236,
+          12
+        ],
+        [
+          241,
+          28
+        ],
+        [
+          248,
+          50
+        ],
+        [
+          258,
+          62
+        ],
+        [
+          267,
+          76
+        ],
+        [
+          276,
+          91
+        ],
+        [
+          286,
+          102
+        ],
+        [
+          293,
+          118
+        ],
+        [
+          219,
+          20
+        ],
+        [
+          225,
+          36
+        ],
+        [
+          228,
+          53
+        ],
+        [
+          233,
+          70
+        ],
+        [
+          240,
+          83
+        ],
+        [
+          248,
+          98
+        ],
+        [
+          258,
+          108
+        ],
+        [
+          267,
+          126
+        ],
+        [
+          278,
+          140
+        ],
+        [
+          305,
+          76
+        ],
+        [
+          308,
+          140
+        ],
+        [
+          285,
+          157
+        ],
+        [
+          223,
+          132
+        ],
+        [
+          218,
+          93
+        ]
+      ],
+      "scores": [
+        0.6817842125892639,
+        0.7703949213027954,
+        0.8928101062774658
+      ],
+      "selected": 2,
+      "at": [
+        162,
+        0
+      ],
+      "bounds": [
+        162,
+        0,
+        318,
+        147
+      ],
+      "area": 5325,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": true,
+      "refine": {
+        "foreground_ratio": 1.55,
+        "floor_ratio": 1.4
+      },
+      "piece": "tower-lattice",
+      "png": "322-tower-lattice.png",
+      "source_sha1": "f981f91dcd386db958c9affe67cec91c3a4c315d"
+    }
+  ],
+  "reviewed_unused": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-6-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        718,
+        170,
+        768,
+        224
+      ],
+      "pos": [
+        [
+          746,
+          185
+        ],
+        [
+          742,
+          203
+        ],
+        [
+          738,
+          217
+        ],
+        [
+          760,
+          214
+        ]
+      ],
+      "neg": [
+        [
+          733,
+          229
+        ],
+        [
+          759,
+          228
+        ],
+        [
+          709,
+          211
+        ],
+        [
+          703,
+          192
+        ]
+      ],
+      "scores": [
+        0.9538764357566833
+      ],
+      "selected": 0,
+      "at": [
+        721,
+        178
+      ],
+      "bounds": [
+        721,
+        178,
+        768,
+        223
+      ],
+      "area": 1917,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": false,
+      "refine": null,
+      "piece": "right-pillar-near",
+      "png": "322-right-pillar-near.png",
+      "source_sha1": "f981f91dcd386db958c9affe67cec91c3a4c315d"
+    }
+  ],
+  "review": "The near right block was segmented separately from its rear neighbor. Correct contact depths remove every reachable rear overlap; these wall-bound blocks need collision, while the isolated left block needs foreground. Polish: rerun SAM only for the broken left pillar, with adjacent platform floor and ground shadow as negatives. Source RGB is unchanged."
+}

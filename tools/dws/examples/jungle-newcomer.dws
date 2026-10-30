@@ -1,0 +1,11 @@
+// A Palmon moves into the Tropical Jungle (screen 13, TROP02). The screen places
+// 6 Digimon (slots 0-5), so slot 6 is empty: the .MAP gets a new entry and grows
+// past its last sector (needs `disc --exe mods`, which rewrites the file table),
+// MAPHEAD spawns it day and night, and section 11 (5 + slot) of the screen's
+// script gets a default wild battle because the script has none.
+//
+// python3 tools/dws.py disc tools/dws/examples/jungle-newcomer.dws --name newslot --exe mods
+//
+// It patrols like slot 0 (walk, wait, walk, wait, run back), shifted to its
+// own spot, and is weak on purpose so the battle can be won early in the game.
+place(species("Palmon"), screen: 13, slot: 6, at: (1600, -1600), like: 0, hp: 150, mp: 100, off: 30, def: 10, speed: 40, brain: 10, bits: 777);

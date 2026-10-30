@@ -1,0 +1,110 @@
+// Readable form of script 129 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 129 {
+    npc slot0 = 5;
+    npc penguinmon = 6;
+    npc mojyamon = 7;
+    npc slot5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 10, 7, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 10) {
+            spawn_item(item("Digimushrm"), 40, 54);
+        }
+        curling_match_pending = 0;
+        if (mojyamon_traded.set1_row1 || mojyamon_traded.set1_row2 || mojyamon_traded.set1_row3) {
+            animate(slot0, 29);
+        }
+        if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2) {
+            animate(slot0, 30);
+        }
+        if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row3) {
+            animate(slot0, 30);
+        }
+        if (mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) {
+            animate(slot0, 30);
+        }
+        if ((mojyamon_traded.set1_row1 ~> mojyamon_traded.set1_row2) && mojyamon_traded.set1_row3) {
+            animate(slot0, 31);
+        }
+    }
+
+    on talk(penguinmon) replace {    // section 6
+        curling_match_pending = 1;
+        jump_to_file(206, 6);
+    }
+
+    on talk(slot5) replace {    // section 10
+        jump_to_file(206, 10);
+    }
+
+    on talk(mojyamon) replace {    // section 7
+        if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2) {
+            say(mojyamon, text("s129.sec7.u0"));
+        } else if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row3) {
+            say(mojyamon, text("s129.sec7.u1"));
+        } else if (mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) {
+            say(mojyamon, text("s129.sec7.u2"));
+        } else if (mojyamon_traded.set1_row1 || mojyamon_traded.set1_row2 || mojyamon_traded.set1_row3) {
+            say(mojyamon, text("s129.sec7.u3"));
+        } else {
+            say(mojyamon, text("s129.sec7.u4"));
+        }
+        engine.arg = 7;
+        engine.menu_result = 0;
+        call_routine(routine("mojyamon_trade"));
+        if (mojyamon_traded.set1_row1 || mojyamon_traded.set1_row2 || mojyamon_traded.set1_row3) {
+            animate(slot0, 29);
+        }
+        if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2) {
+            animate(slot0, 30);
+        }
+        if (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row3) {
+            animate(slot0, 30);
+        }
+        if (mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) {
+            animate(slot0, 30);
+        }
+        if ((mojyamon_traded.set1_row1 ~> mojyamon_traded.set1_row2) && mojyamon_traded.set1_row3) {
+            animate(slot0, 31);
+        }
+        unless (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) return;
+        unless (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) return;
+        unless (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) return;
+        unless (!is_recruited(species("Mojyamon"))) return;
+        say(mojyamon, text("s129.sec7.u5"));
+        walk_away(mojyamon, -1300, -1351, looks: 3);
+        remove(mojyamon);
+        glances = 0;
+        sound(8, 11);
+        say(narrator, text("s129.sec7.u6"));
+        recruit(species("Mojyamon"));
+        mojyamon_left.set1 = true;
+        engine.prosperity += 2;
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type == 44) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

@@ -1,0 +1,83 @@
+{
+ "s002.sec5.u0": [
+  [
+   "Ich verliere nicht gegen dich,",
+   "jawohl!"
+  ]
+ ],
+ "s002.sec6.m0.o0": "Futter geben",
+ "s002.sec6.m0.o1": "Nichts geben",
+ "s002.sec6.u0": [
+  [
+   "Ich habe Hunger. Hast du",
+   "etwas zu essen?"
+  ]
+ ],
+ "s002.sec6.u1": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s002.sec6.u2": [
+  [
+   "Oh, das kann ich nicht",
+   "weggeben."
+  ]
+ ],
+ "s002.sec6.u3": [
+  [
+   "Mampf, mampf... Gar nicht",
+   "schlecht..."
+  ]
+ ],
+ "s002.sec6.u4": [
+  [
+   "Puh. Gut, jetzt kämpfen wir."
+  ]
+ ],
+ "s002.sec6.u5": [
+  [
+   "Du bist zu stark für mich. Was",
+   "mache ich jetzt?"
+  ]
+ ],
+ "s002.sec6.u6": [
+  [
+   "...Komm in die Stadt und",
+   "arbeite ab, was du gegessen",
+   "hast!"
+  ]
+ ],
+ "s002.sec6.u7": [
+  [
+   "Hm, das mache ich. Ich bin",
+   "Kunemon, das",
+   "Insekten-Digimon. Freut mich."
+  ]
+ ],
+ "s002.sec6.u8": "Kunemon ist in die Stadt gezogen!",
+ "s002.sec6.u9": [
+  [
+   "Bring nächstes Mal etwas mit,",
+   "ja?"
+  ]
+ ],
+ "s002.sec7.u0": [
+  [
+   "Gut! Los, Junge!"
+  ]
+ ],
+ "s002.sec8.u0": [
+  [
+   "Seufz... Was soll nur aus uns",
+   "werden..."
+  ]
+ ],
+ "s002.sec9.u0": [
+  [
+   "Grummel... Als könnten wir je",
+   "gewinnen..."
+  ]
+ ]
+}

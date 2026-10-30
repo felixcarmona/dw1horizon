@@ -1,0 +1,83 @@
+// Readable form of script 84 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 84 {
+    npc snowagumon = 5;
+    npc snowgoblimon = 6;
+    npc icedevimon2 = 7;
+    npc icedevimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 81, 53, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 43, 35);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 10) {
+            spawn_item(item("Digimushrm"), 38, 67);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 50, 81);
+        }
+    }
+
+    on talk(snowagumon) replace {    // section 5
+        say(snowagumon, text("s084.sec5.u0"));
+        battle();
+        recruit(species("SnowAgumon"));
+    }
+
+    on talk(snowgoblimon) replace {    // section 6
+        say(snowgoblimon, text("s084.sec6.u0"));
+        battle();
+        recruit(species("SnowGoblimon"));
+    }
+
+    on talk(icedevimon2) replace {    // section 7
+        say(icedevimon2, text("s084.sec7.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(icedevimon3) replace {    // section 8
+        say(icedevimon3, text("s084.sec8.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 943);
+        say(narrator, text("s084.sec81.u0"));
+    }
+
+    on step(2) replace {    // section 53
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1100, -5300);
+        if (!canyon_elevator_ridden) {
+            warp_to(127, 1, 255);
+        }
+        warp_to(39, 1, 255);
+        return;
+    }
+}

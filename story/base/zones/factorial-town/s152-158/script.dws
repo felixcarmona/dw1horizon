@@ -1,0 +1,75 @@
+// Readable form of script 152 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 152 {
+    npc geremon0 = 5;
+    npc geremon1 = 6;
+    npc guardromon2 = 7;
+    npc guardromon3 = 8;
+    npc guardromon4 = 9;
+    npc guardromon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 81, 82;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(geremon0) replace {    // section 5
+        say(geremon0, text("s152.sec5.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon1) replace {    // section 6
+        say(geremon1, text("s152.sec6.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(guardromon2) replace {    // section 7
+        say(guardromon2, text("s152.sec7.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(guardromon3) replace {    // section 8
+        say(guardromon3, text("s152.sec8.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon4) replace {    // section 9
+        say(guardromon4, text("s152.sec9.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon5) replace {    // section 10
+        say(guardromon5, text("s152.sec10.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(1, 0, 1);
+        sound(8, 2);
+        wait(1s);
+        walk(tamer, -1999, 800);
+        if (trigger(329)) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                warp_to(159, 0, 255);
+            }
+        }
+        warp_to(160, 0, 255);
+    }
+
+    on use(2) replace {    // section 82
+        rotate_3d_object(0, 0, 1);
+        sound(8, 2);
+        wait(1s);
+        walk(tamer, 683, 4120);
+        warp_to(162, 0, 255);
+        return;
+    }
+}

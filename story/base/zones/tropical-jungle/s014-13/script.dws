@@ -1,0 +1,67 @@
+// Readable form of script 14 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 14 {
+    npc yanmamon0 = 5;
+    npc yanmamon1 = 6;
+    npc yanmamon2 = 7;
+    npc tsukaimon = 8;
+    npc j_mojyamon4 = 9;
+    npc j_mojyamon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 25, 33);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 63, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 1) {
+            spawn_item(item("Deluxmushrm"), 53, 81);
+        }
+    }
+
+    on talk(yanmamon0) replace {    // section 5
+        say(yanmamon0, text("s014.sec5.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(yanmamon1) replace {    // section 6
+        say(yanmamon1, text("s014.sec6.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(yanmamon2) replace {    // section 7
+        say(yanmamon2, text("s014.sec7.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 8
+        say(tsukaimon, text("s014.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(j_mojyamon4) replace {    // section 9
+        say(j_mojyamon4, text("s014.sec9.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on talk(j_mojyamon5) replace {    // section 10
+        say(j_mojyamon5, text("s014.sec10.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+        return;
+    }
+}

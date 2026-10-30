@@ -1,0 +1,46 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+maphead {
+    section(1245) replace {    // section 1245
+        sound(0, 9);
+        if (!is_recruited(species("Agumon"))) {
+            warp_to(204, 0, 255);
+        }
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 0, 255);
+                }
+                warp_to(168, 0, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 0, 255);
+            }
+            warp_to(171, 0, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 0, 255);
+            }
+            warp_to(174, 0, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 0, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 0, 255);
+        }
+        warp_to(177, 0, 255);
+    }
+}

@@ -1,0 +1,156 @@
+// Readable form of script 71 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 71 {
+    npc psychemon0 = 5;
+    npc psychemon1 = 6;
+    npc akatorimon = 7;
+    npc tsukaimon3 = 8;
+    npc tsukaimon4 = 9;
+    npc shamamon = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 81, 82;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 11) {
+            spawn_item(item("Digimushrm"), 68, 50);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 46, 29);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Sweet Nut"), 46, 73);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Chain melon"), 57, 83);
+        }
+    }
+
+    on talk(psychemon0) replace {    // section 5
+        say(psychemon0, text("s071.sec5.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(psychemon1) replace {    // section 6
+        say(psychemon1, text("s071.sec6.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(akatorimon) replace {    // section 7
+        say(akatorimon, text("s071.sec7.u0"));
+        battle();
+        recruit(species("Akatorimon"));
+    }
+
+    on talk(tsukaimon3) replace {    // section 8
+        say(tsukaimon3, text("s071.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon4) replace {    // section 9
+        say(tsukaimon4, text("s071.sec9.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(shamamon) replace {    // section 10
+        say(shamamon, text("s071.sec10.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on use(1) replace {    // section 81
+        say(narrator, text("s071.sec81.u0"));
+        entity_set_rotation(tamer, 1536);
+        say(tamer, text("s071.sec81.u1"));
+        choice {
+            text("s071.sec81.m0.o0") => {
+                if (bits >= 200) {
+                    give_item(item("sm.recovery"), 1);
+                    if (engine.item_did_not_fit) {
+                        say(tamer, text("s071.sec81.u4"));
+                        return;
+                    }
+                    say(narrator, text("s071.sec81.u5"));
+                    take_bits(200);
+                    store_random(prize_roll, 99);
+                    unless (prize_roll < 9) return;
+                } else {
+                    say(tamer, text("s071.sec81.u2"));
+                    return;
+                }
+            }
+            text("s071.sec81.m0.o1") => {
+                if (bits >= 500) {
+                    give_item(item("Port. potty"), 1);
+                    if (engine.item_did_not_fit) {
+                        say(tamer, text("s071.sec81.u6"));
+                        return;
+                    }
+                    say(narrator, text("s071.sec81.u7"));
+                    take_bits(500);
+                    store_random(prize_roll, 99);
+                    unless (prize_roll < 9) return;
+                } else {
+                    say(tamer, text("s071.sec81.u3"));
+                    return;
+                }
+            }
+            text("s071.sec81.m0.o2") or cancel => {
+                return;
+            }
+        }
+        say(tamer, text("s071.sec81.u8"));
+        say(narrator, text("s071.sec81.u9"));
+        give_item(item("Double flop"), 1);
+        if (engine.item_did_not_fit) {
+            engine.picker_mode = true;
+            say(tamer, text("s071.sec81.u10"));
+            call_routine(routine("choose_item"));
+            call_routine(routine("remove_all_chosen_item"));
+            give_item(item("S.speed.disk"), 1);
+        }
+    }
+
+    on use(2) replace {    // section 82
+        say(narrator, text("s071.sec82.u0"));
+        entity_set_rotation(tamer, 2048);
+        say(tamer, text("s071.sec82.u1"));
+        choice {
+            text("s071.sec82.m0.o0") => {
+                if (bits >= 200) {
+                    add_stat(7, 100);
+                    take_bits(200);
+                    say(narrator, text("s071.sec82.u2"));
+                } else {
+                    say(tamer, text("s071.sec82.u3"));
+                    return;
+                }
+                return;
+            }
+            text("s071.sec82.m0.o1") => {
+                if (bits >= 1800) {
+                    add_stat(7, 1000);
+                    take_bits(1800);
+                    say(narrator, text("s071.sec82.u4"));
+                } else {
+                    say(tamer, text("s071.sec82.u5"));
+                    return;
+                }
+                return;
+            }
+            text("s071.sec82.m0.o2") => {}
+        }
+        return;
+    }
+}

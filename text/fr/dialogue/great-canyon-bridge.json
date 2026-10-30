@@ -1,0 +1,78 @@
+{
+ "s039.sec6.u0": [
+  [
+   "Je te gêne ?"
+  ]
+ ],
+ "s039.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Au secouuurs !"
+  ]
+ ],
+ "s039.sec51.u1": [
+  [
+   "Hmm, une voix d'en haut... Il y",
+   "a quelqu'un ?"
+  ]
+ ],
+ "s039.sec51.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "Oh! Il y a quelqu'un en bas !?"
+  ]
+ ],
+ "s039.sec51.u3": [
+  [
+   "Oui. Je suis là."
+  ]
+ ],
+ "s039.sec51.u4": [
+  [
+   "{color 7}??? {color 1}",
+   "Au secours ! Le sol s'est",
+   "soulevé d'un coup !"
+  ]
+ ],
+ "s039.sec51.u5": [
+  [
+   "C'est dingue."
+  ]
+ ],
+ "s039.sec51.u6": [
+  [
+   "{color 7}??? {color 1}",
+   "C'est vrai ! J'ai entendu un",
+   "bruit de machine en marche !"
+  ]
+ ],
+ "s039.sec51.u7": [
+  [
+   "Une machine... La cachette",
+   "d'Ogremon, peut-être ?"
+  ]
+ ],
+ "s039.sec51.u8": [
+  [
+   "{color 7}??? {color 1}",
+   "Tu n'as rien fait de différent",
+   "là-bas ?"
+  ]
+ ],
+ "s039.sec51.u9": [
+  [
+   "Eh bien, un peu de tout.",
+   "L'ascenseur, par exemple...",
+   "Bon, je vais retourner à la"
+  ],
+  [
+   "cachette pour voir."
+  ]
+ ],
+ "s039.sec51.u10": [
+  [
+   "{color 7}??? {color 1}",
+   "Je compte sur toooi !"
+  ]
+ ]
+}

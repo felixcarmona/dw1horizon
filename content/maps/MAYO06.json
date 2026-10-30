@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP1/MAYO06.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Seadramon134",
+      "at": [-300, -1000],
+      "facing": 3664,
+      "follow": 1,
+      "range": 10,
+      "charge": 1,
+      "moves": [49, 50, 51, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [-2264, 1100],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+From 38c6ad04c8d8f96da6f1552bbaea6b18843646a6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 02:56:42 +0000
+Subject: [PATCH] Load the laboratory UI with the menu overlay
+
+---
+ config/us/overlay.ld      |  9 +++++++++
+ src/main/mod_lab.c        | 16 ++++++++++++++++
+ src/main/mod_lab_menu.inc |  4 ++--
+ 3 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index ae2cd7a0..f8c0a7df 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -815,6 +815,15 @@ SECTIONS
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+ 				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue);
+ 			. = ALIGN(., 4);
++            /* Lab UI runs synchronously after the resident entry loads MENU.
++             * The roster callbacks and state stay resident. */
++            BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFieldPtr .text.modLabFit .text.modLabBound
++                .text.modLabClamp .text.modLabList .text.modLabPerform
++                .text.modLabDrawText .text.modLabRowY .text.modLabRender
++                .text.modLabMenuLoaded* .text.labInt
++                .rodata.modLabMenuLoaded*);
++            . = ALIGN(., 4);
++
+ 			LONG(0);
+ 			. = ALIGN(., 4);
+ 		}
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 1d900584..12c7729e 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -251,3 +251,19 @@ int32_t modRosterTick(void)
+ 	modRosterShowCaption(type);
+ 	return 1;
+ }
++
++/* The synchronous UI shares MENU's battle slot. The world is paused; sound
++ * staging stays below the slot. Card menus reload the same overlay at the same
++ * addresses, while all live state remains resident or on the stack. */
++void loadMenuOverlay(void);
++void closeMenuOverlay(void);
++void tickFileReadQueue(int32_t unused);
++void modLabMenu(uint32_t *input, uint32_t *previous)
++{
++    if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) return;
++    while (isFileReadQueueBusy()) tickFileReadQueue(0);
++    DrawSync(0);
++    loadMenuOverlay();
++    modLabMenuLoaded(input, previous);
++    closeMenuOverlay();
++}
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 3f7029d6..c3cf8da2 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -453,7 +453,7 @@ static void modLabCardMenu(int32_t action)
+     }
+     removeObject(5000, 0);
+     SLOT_ACTION_TITLES[action - 1] = oldTitle; SLOT_ACTION_QUESTIONS[action - 1] = oldQuestion;
+-    closeMenuOverlay();
++    /* The resident lab entry restores KAR after all MENU code returns. */
+     while (PadRead(1) & (CONFIRM_BUTTON | CANCEL_BUTTON)) VSync(0);
+     pollInputMenu();
+     MAIN_STATE = oldState;
+@@ -462,7 +462,7 @@ static void modLabCardMenu(int32_t action)
+     MOD_CHEATS_CARD_MODE = 0; MOD_LAB_ACTIVE = 0;
+ }
+ 
+-void modLabMenu(uint32_t *input, uint32_t *previous)
++void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+ {
+     uint16_t choices[NUM_DIGIMON > NUM_SCREENS ? NUM_DIGIMON : NUM_SCREENS];
+     uint32_t pressed;
+-- 
+2.55.0
+

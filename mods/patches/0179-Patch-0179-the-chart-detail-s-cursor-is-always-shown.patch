@@ -1,0 +1,36 @@
+From e5789b5f9414405e98af23b91550c30a9641333c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 20:34:07 +0000
+Subject: [PATCH] Patch 0179: the chart detail's cursor is always shown,
+ pulsing between two golds instead of blinking off (the criteria card
+ describes the box under it)
+
+---
+ src/main/game_menu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 6d0e0698..9b909820 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4145,9 +4145,14 @@ void renderEvoChartDetail(void)
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+ 	renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
+ #endif
+-	/* MOD (portraits): the cursor of the navigation, blinking, on the box it points at */
+-	if (chartDetailBox(CHART_CURSOR_SIDE, CHART_CURSOR_J, &cx, &cy) != 0 && (PLAYTIME_FRAMES % 10) < 7) {
+-		renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x20e0ff, 0x1070a0, 0xd0, 0xc0, 0x20, 4);
++	/* MOD (portraits): the cursor of the navigation on the box it points at; MOD (chart criteria): always shown (the
++	 * card is that box's), pulsing between two golds */
++	if (chartDetailBox(CHART_CURSOR_SIDE, CHART_CURSOR_J, &cx, &cy) != 0) {
++		if ((PLAYTIME_FRAMES % 10) < 7) {
++			renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x20e0ff, 0x1070a0, 0xd0, 0xc0, 0x20, 4);
++		} else {
++			renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x1890b8, 0x0c4870, 0x90, 0x84, 0x16, 4);
++		}
+ 	}
+ 	/* MOD (chart criteria): the card in place of the "from" panel (0); the "Tree" panel (1) and the level and name panels
+ 	 * (4, 5) moved right */
+-- 
+2.53.0
+

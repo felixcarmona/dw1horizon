@@ -1,0 +1,128 @@
+{
+ "s006.sec6.u0": [
+  [
+   "No penso perdre!"
+  ]
+ ],
+ "s006.sec7.u0": [
+  [
+   "No t'acostis! Vés-te!"
+  ]
+ ],
+ "s006.sec8.u0": [
+  [
+   "Es va acabar, ara sí que m'he",
+   "enfadat!"
+  ]
+ ],
+ "s006.sec9.u0": [
+  [
+   "Si em dónes una, et retorno",
+   "una altra!"
+  ]
+ ],
+ "s006.sec10.u0": [
+  [
+   "Au, a veure si t'atreveixes!"
+  ]
+ ],
+ "s006.sec51.m0.o0": "T'estava buscant!",
+ "s006.sec51.m0.o1": "Ha estat casualitat",
+ "s006.sec51.u0": [
+  [
+   "Vaja, {color 6}{player}{color 1}. Veig que el",
+   "pont està arreglat. He sentit",
+   "que els joves construïu una",
+   "ciutat. Et vull demanar un"
+  ],
+  [
+   "favor. Jo et vaig ajudar; ara",
+   "m'agradaria que m'ajudessis tu."
+  ]
+ ],
+ "s006.sec51.u1": [
+  [
+   "?"
+  ]
+ ],
+ "s006.sec51.u2": [
+  [
+   "Construir una ciutat és salvar",
+   "aquesta illa. Tots se salven, i",
+   "jo també. Ho entens?"
+  ]
+ ],
+ "s006.sec51.u3": [
+  [
+   "Vols dir que vindràs a la",
+   "ciutat?"
+  ]
+ ],
+ "s006.sec51.u4": [
+  [
+   "Bé. Doncs aniré a la teva",
+   "ciutat."
+  ]
+ ],
+ "s006.sec51.u5": "Coelamon s'ha unit a la ciutat!",
+ "s006.sec51.u6": [
+  [
+   "Vaja, tu ets humà? Trobar-me",
+   "sí que és una bona pesca! Sóc",
+   "Coelamon, el Digimon peix. Has",
+   "vingut fins aquí només per"
+  ],
+  [
+   "veure'm?"
+  ]
+ ],
+ "s006.sec51.u7": [
+  [
+   "Jo, jo, ja veig, ja veig!"
+  ]
+ ],
+ "s006.sec51.u8": [
+  [
+   "Je, je... Se't nota. No fa",
+   "falta que et faci vergonya."
+  ]
+ ],
+ "s006.sec51.u9": [
+  [
+   "Ja sé què busques. El pont de",
+   "riu amunt està trencat i vols",
+   "travessar... Oi?"
+  ]
+ ],
+ "s006.sec51.u10": [
+  [
+   "Mmm, molt bé. Veuré què puc",
+   "fer."
+  ]
+ ],
+ "s006.sec51.u11": [
+  [
+   "Ja, ja, una altra vegada per",
+   "aquí?"
+  ]
+ ],
+ "s006.sec51.u12": [
+  [
+   "Au, passa sobre els nostres",
+   "caps. No et faci res.",
+   "Endavant!"
+  ]
+ ],
+ "s006.sec51.u13": [
+  [
+   "Val, allà anem!"
+  ]
+ ],
+ "s006.sec51.u14": [
+  [
+   "En aquest món, el que compta",
+   "és ajudar-nos. Fins a la",
+   "pròxima!"
+  ]
+ ]
+}

@@ -1,0 +1,71 @@
+From 7b3fb2dc6ef2a9d46fd014ed489c3065b5f34a1b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 09:20:46 +0000
+Subject: [PATCH] Patch 0162: the field status bars (happiness, discipline)
+ fill in one colour over their whole range
+
+The original drew each bar twice: the lower half of the range in one colour, then the
+upper half again over a full bar in a second colour, so the bar emptied and refilled
+at happiness 0 and discipline 50. Now each bar goes from empty to full once
+(happiness -100..100, 8 a segment; discipline 0..100, 4 a segment), in the upper-half
+colour. The icons still change at the midpoint.
+
+---
+ src/main/partner_impl.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 19bfe340..7f7330ad 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2358,11 +2358,9 @@ void renderStatusBars(state)
+ {
+ 	int32_t i;
+ 	uint8_t happinessTexX;
+-	uint8_t happinessTexY;
+ 	int32_t happinessCount;
+ 	int32_t disciplineCount;
+ 	uint8_t disciplineTexX;
+-	uint8_t disciplineTexY;
+ 
+ 	/* MOD (fps): the slide is in tickStatusBarsSlide (late tick) */
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X, 85, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
+@@ -2383,28 +2381,15 @@ void renderStatusBars(state)
+ 	else
+ 		disciplineTexX = 33;
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X + 3, 95, 11, 11, disciplineTexX, 244, 5, GetClut(96, 498), 14, 0);
+-	if (PARTNER_PARA.happiness >= 0) {
+-		happinessTexY = 153;
+-		happinessCount = PARTNER_PARA.happiness / 4;
+-		for (i = 0; i < 25; i++)
+-			renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, 151, 5, GetClut(96, 503), 14, 0);
+-	} else {
+-		happinessTexY = 151;
+-		happinessCount = (PARTNER_PARA.happiness + 100) / 4;
+-	}
++	/* MOD (status bars): each bar is one colour over its whole range, empty to full (happiness -100..100, 8 a
++	   segment; discipline 0..100, 4 a segment); the original filled each half again in a second colour. The
++	   icons still change at the midpoint */
++	happinessCount = (PARTNER_PARA.happiness + 100) / 8;
+ 	for (i = 0; i < happinessCount; i++)
+-		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, happinessTexY, 5, GetClut(96, 503), 13, 0);
+-	if (PARTNER_PARA.discipline >= 50) {
+-		disciplineTexY = 153;
+-		disciplineCount = (PARTNER_PARA.discipline - 50) / 2;
+-		for (i = 0; i < 25; i++)
+-			renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 2, 2, 232, 151, 5, GetClut(96, 503), 14, 0);
+-	} else {
+-		disciplineTexY = 151;
+-		disciplineCount = PARTNER_PARA.discipline / 2;
+-	}
++		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, 153, 5, GetClut(96, 503), 13, 0);
++	disciplineCount = PARTNER_PARA.discipline / 4;
+ 	for (i = 0; i < disciplineCount; i++)
+-		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 4, 2, 232, disciplineTexY, 5, GetClut(96, 503), 13, 0);
++		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 2, 2, 232, 153, 5, GetClut(96, 503), 13, 0);
+ }
+ 
+ void setImmortalHour(void)
+-- 
+2.53.0
+

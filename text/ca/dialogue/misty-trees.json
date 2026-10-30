@@ -1,0 +1,545 @@
+{
+ "s111.sec5.u0": [
+  [
+   "Quin idiota..."
+  ]
+ ],
+ "s111.sec6.u0": [
+  [
+   "Et deixaré fet un desastre!"
+  ]
+ ],
+ "s111.sec7.u0": [
+  [
+   "Mmm, no hi ha res com el bosc."
+  ]
+ ],
+ "s111.sec8.u0": [
+  [
+   "Ningú ha escapat mai de mi amb",
+   "vida."
+  ]
+ ],
+ "s111.sec9.u0": [
+  [
+   "Deixa que acabi amb el teu",
+   "sofriment..."
+  ]
+ ],
+ "s111.sec10.u0": [
+  [
+   "Mira qui parla!"
+  ]
+ ],
+ "s112.sec5.u0": [
+  [
+   "Volies alguna cosa d'aquest",
+   "vell?"
+  ]
+ ],
+ "s112.sec6.u0": [
+  [
+   "Ja, ja, ja, ja... No cal tenir",
+   "tanta pressa."
+  ]
+ ],
+ "s112.sec7.u0": [
+  [
+   "Pren-t'ho amb calma mentre",
+   "siguis aquí."
+  ]
+ ],
+ "s112.sec8.u0": [
+  [
+   "Vols que et converteixi en",
+   "adob?"
+  ]
+ ],
+ "s112.sec9.u0": [
+  [
+   "I tu qui nassos ets?"
+  ]
+ ],
+ "s112.sec10.u0": [
+  [
+   "Faries bé de rendir-te."
+  ]
+ ],
+ "s112.sec11.u0": [
+  [
+   "Estalvia'm els teus inútils",
+   "forcejaments!"
+  ]
+ ],
+ "s113.sec5.u0": [
+  [
+   "Anem a veeer!"
+  ]
+ ],
+ "s113.sec5.u1": [
+  [
+   "Mmmmmm. Caram, quin mèrit que",
+   "teeens. I tan d'hora. Quin noi",
+   "tan admirable."
+  ]
+ ],
+ "s113.sec5.u2": [
+  [
+   "Sent, sent, no parlis com si no",
+   "fos amb tu..."
+  ]
+ ],
+ "s113.sec5.u3": [
+  [
+   "Ja ho sééé. Estàs reunint",
+   "Digimon i construint una ciutat",
+   "pel bé de l'illa."
+  ]
+ ],
+ "s113.sec5.u4": [
+  [
+   "Ah, doncs sí que ho saps.",
+   "Llavors dóna'ns un cop de mà."
+  ]
+ ],
+ "s113.sec5.u5": [
+  [
+   "I on havia d'anar jo, i a fer",
+   "què?"
+  ]
+ ],
+ "s113.sec5.u6": [
+  [
+   "No saps res! A treballar a la",
+   "ciutat, recorda't!"
+  ]
+ ],
+ "s113.sec5.u7": [
+  [
+   "Bé... qui matina fa setze",
+   "farines, com diuen..."
+  ]
+ ],
+ "s113.sec5.u8": [
+  [
+   "Això no té res a veure! I fa",
+   "farina, no setze farines!"
+  ]
+ ],
+ "s113.sec5.u9": [
+  [
+   "Je, només em feia una mica el",
+   "xaruc. Bé, ens veiem a la",
+   "ciutaaat."
+  ]
+ ],
+ "s113.sec5.u10": "Kokatorimon s'ha unit a la ciutat!",
+ "s113.sec5.u11": [
+  [
+   "Quant de tot això anava de",
+   "debò...? Espero que no li passi",
+   "res."
+  ]
+ ],
+ "s113.sec6.u0": [
+  [
+   "Tot recte i després a la",
+   "dreta. Ke, je, je, je, je..."
+  ]
+ ],
+ "s113.sec7.u0": [
+  [
+   "A la dreta i de seguida a",
+   "l'esquerra. Ke, je..."
+  ]
+ ],
+ "s113.sec8.u0": [
+  [
+   "Mai sortiràs d'aquest bosc. Ke,",
+   "je, je..."
+  ]
+ ],
+ "s113.sec9.u0": [
+  [
+   "M'he perdut..."
+  ]
+ ],
+ "s113.sec10.u0": [
+  [
+   "Últimament camino una mica",
+   "cansat..."
+  ]
+ ],
+ "s113.sec11.u0": [
+  [
+   "Tu... No pot ser!?"
+  ]
+ ],
+ "s113.sec12.u0": [
+  [
+   "Vigila on trepitges..."
+  ]
+ ],
+ "s113.sec54.u0": [
+  [
+   "Oh... una ploma d'ocell a",
+   "terra... Encara és fresca. Hem",
+   "arribat massa tard?"
+  ]
+ ],
+ "s114.sec5.u0": [
+  [
+   "T'has perdut, {color 6}{player}{color 1}?",
+   "Ke, je, je, je, je!"
+  ]
+ ],
+ "s114.sec6.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s114.sec7.u0": [
+  [
+   "No és que vulgui destorbar ni",
+   "res d'això..."
+  ]
+ ],
+ "s114.sec8.u0": [
+  [
+   "Bosc boi-rós... Vinga, ara",
+   "digues-ho tu."
+  ]
+ ],
+ "s114.sec9.u0": [
+  [
+   "Molt bé! Comença l'espectacle!"
+  ]
+ ],
+ "s115.sec5.m0.o0": "Els problemes de l'illa",
+ "s115.sec5.m0.o1": "Entrena {color 10}{partner}{color 1}",
+ "s115.sec5.m0.o2": "No, res",
+ "s115.sec5.m1.o0": "Començar a entrenar",
+ "s115.sec5.m1.o1": "Sobre aquest entrenament",
+ "s115.sec5.m1.o2": "Sortir",
+ "s115.sec5.m2.o0": "Entrenament normal",
+ "s115.sec5.m2.o1": "Entrenament extra",
+ "s115.sec5.m2.o2": "Deixa-ho",
+ "s115.sec5.m3.o0": "Explica-m'ho de nou",
+ "s115.sec5.m3.o1": "Començar a entrenar",
+ "s115.sec5.m3.o2": "Sortir",
+ "s115.sec5.u0": [
+  [
+   "Jo, jo. Vols tornar a sentir",
+   "parlar a aquest vell?"
+  ]
+ ],
+ "s115.sec5.u1": [
+  [
+   "Mmm, llavors t'ho explicaré."
+  ]
+ ],
+ "s115.sec5.u2": [
+  [
+   "Jo, jo, molt bé..."
+  ]
+ ],
+ "s115.sec5.u3": [
+  [
+   "{color 5}Entrenament: ensenyaments del",
+   "bosc{color 1}"
+  ]
+ ],
+ "s115.sec5.u4": [
+  [
+   "Cherrymon et transmet tot",
+   "tipus de sabers. L'Intel·lecte",
+   "puja molt."
+  ]
+ ],
+ "s115.sec5.u5": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s115.sec5.u6": [
+  [
+   "Jo, jo, jo, jo..."
+  ]
+ ],
+ "s115.sec51.u0": [
+  [
+   "Jo, jo. Benvingut, benvingut,",
+   "noi."
+  ]
+ ],
+ "s115.sec51.u1": "Ets en Cherrymon, oi?",
+ "s115.sec51.u2": [
+  [
+   "Qui hi ha?"
+  ]
+ ],
+ "s115.sec51.u3": [
+  [
+   "Què et porta davant aquest",
+   "vell?"
+  ]
+ ],
+ "s115.sec51.u4": [
+  [
+   "Primer, dissipa la boira."
+  ]
+ ],
+ "s115.sec51.u5": [
+  [
+   "Amb aquesta boira no veig res.",
+   "Pots fer alguna cosa primer?"
+  ]
+ ],
+ "s115.sec51.u6": [
+  [
+   "Ho, ho. Així doncs, era això.",
+   "El que m'imaginava."
+  ]
+ ],
+ "s115.sec51.u7": [
+  [
+   "...No pots?"
+  ]
+ ],
+ "s115.sec51.u8": [
+  [
+   "Primer has d'escoltar el que",
+   "haig de dir-te. Bé, doncs...",
+   "per on començo?"
+  ]
+ ],
+ "s115.sec51.u9": [
+  [
+   "Si saps alguna cosa dels",
+   "problemes d'aquesta illa,",
+   "m'agradaria que m'ho",
+   "expliquessis."
+  ]
+ ],
+ "s115.sec51.u10": [
+  [
+   "Mmm. Sí, sí. Els problemes."
+  ]
+ ],
+ "s115.sec51.u11": [
+  [
+   "L'illa va començar a anar",
+   "malament fa uns 80 anys, quan",
+   "la terra mateixa va canviar.",
+   "Terra gelada, la Mansió de"
+  ],
+  [
+   "Grey"
+  ],
+  [
+   "Lord, el Gran Canyó... Les",
+   "terres del nord-est van",
+   "aparèixer de cop, fa uns 80",
+   "anys. Després, els Digimon de"
+  ],
+  [
+   "l'illa es van anar traslladant",
+   "a poc a poc a les terres que",
+   "els eren més favorables. Les",
+   "espècies es van dispersar. I"
+  ],
+  [
+   "els Digimon, que abans parlaven",
+   "una sola llengua, van començar",
+   "a parlar les seves pròpies",
+   "llengües."
+  ]
+ ],
+ "s115.sec51.u12": [
+  [
+   "Van oblidar la llengua que",
+   "usaven a la ciutat... I així,",
+   "Ciutat File, on abans vivien",
+   "moltes espècies juntes, va"
+  ],
+  [
+   "perdre gairebé tots els seus",
+   "Digimon i va caure en la ruïna.",
+   "I després... una cosa terrible:",
+   "els Digimon van començar a"
+  ],
+  [
+   "perdre la memòria! El seu",
+   "passat, el de l'illa, el",
+   "seny... Fins i tot jo he",
+   "oblidat una cosa important..."
+  ],
+  [
+   "una cosa que t'he d'explicar."
+  ]
+ ],
+ "s115.sec51.u13": [
+  [
+   "Però al final tot encaixa. Algú",
+   "ho va fer així! Perquè tot li",
+   "fos favorable... Em temo que",
+   "aviat els Digimon deixaran de"
+  ],
+  [
+   "trobar estrany el que és",
+   "estrany. Només pot impedir-ho",
+   "el lligam entre tu i Ciutat",
+   "File! Reuneix Digimon a la"
+  ],
+  [
+   "ciutat i fes un miracle. Segur",
+   "que es produirà. Tots compten",
+   "amb tu!!! ...Caram, m'he",
+   "emocionat. Uf... Això és tot el"
+  ],
+  [
+   "que t'havia d'explicar..."
+  ]
+ ],
+ "s115.sec51.u14": [
+  [
+   "Bé, doncs, dissipem la boira."
+  ]
+ ],
+ "s115.sec51.u15": [
+  [
+   "Protegia el bosc amb la boira",
+   "per a poder contar-te la meva",
+   "història... I una altra cosa",
+   "més."
+  ]
+ ],
+ "s115.sec51.u16": [
+  [
+   "En aquest bosc hi ha uns",
+   "altres que saben del passat."
+  ],
+  [
+   "Segueix cap al fons. Jo, jo,",
+   "jo..."
+  ]
+ ],
+ "s116.sec5.u0": [
+  [
+   "..........!"
+  ]
+ ],
+ "s116.sec5.u1": [
+  [
+   "Buaaa! No, no! No vull lluitar!"
+  ]
+ ],
+ "s116.sec5.u2": [
+  [
+   "...... Si no vols lluitar,",
+   "fuig."
+  ]
+ ],
+ "s116.sec5.u3": [
+  [
+   "Però llavors em quedaria amb",
+   "mal sabor de boca."
+  ]
+ ],
+ "s116.sec5.u4": [
+  [
+   "Ets ben estrany... Bé, per què",
+   "no véns a la nostra ciutat en",
+   "comptes d'amagar-te aquí?"
+  ]
+ ],
+ "s116.sec5.u5": [
+  [
+   "Ai! L-l-la ciutat?"
+  ]
+ ],
+ "s116.sec5.u6": [
+  [
+   "Si no vols, no passa res."
+  ]
+ ],
+ "s116.sec5.u7": [
+  [
+   "Ara que ho dius, m'estan",
+   "entrant ganes. Aniré! Clar que",
+   "aniré!"
+  ]
+ ],
+ "s116.sec5.u8": "Gabumon s'ha unit a la ciutat!",
+ "s116.sec5.u9": [
+  [
+   "Uf... Quin tipus més",
+   "estrany...!"
+  ]
+ ],
+ "s116.sec6.u0": [
+  [
+   "Ja, ja!"
+  ]
+ ],
+ "s116.sec7.u0": [
+  [
+   "Amunt, amunt."
+  ]
+ ],
+ "s116.sec8.u0": [
+  [
+   "Mmm, i si ho deixem?"
+  ]
+ ],
+ "s116.sec9.u0": [
+  [
+   "Encara és massa aviat per",
+   "relaxar-se..."
+  ]
+ ],
+ "s117.sec5.u0": [
+  [
+   "Qui hi ha?"
+  ]
+ ],
+ "s117.sec6.u0": [
+  [
+   "Allà vaaig! ...És broma."
+  ]
+ ],
+ "s117.sec7.u0": [
+  [
+   "Ja, ja, ja, ja, ja! Quin riure,",
+   "quin riure."
+  ]
+ ],
+ "s117.sec8.u0": [
+  [
+   "Iuhu, estic ben encès!"
+  ]
+ ],
+ "s117.sec9.u0": [
+  [
+   "De debò!?"
+  ]
+ ],
+ "s117.sec10.u0": [
+  [
+   "Ep, ep, ho dius de debò?"
+  ]
+ ],
+ "s117.sec11.u0": [
+  [
+   "Calla, calla!"
+  ]
+ ],
+ "s117.sec12.u0": [
+  [
+   "Quan em poso seriós, em poso",
+   "seriós!"
+  ]
+ ]
+}

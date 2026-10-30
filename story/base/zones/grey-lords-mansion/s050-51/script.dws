@@ -1,0 +1,50 @@
+// Readable form of script 50 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 50 {
+    npc golemon0 = 5;
+    npc golemon1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 51;
+
+    on enter replace {    // section 254
+        spawn_chest(item("MP Chip"), 835, 0, 2461, 0, 650);
+        spawn_chest(item("Restore"), -2455, 0, -1042, 3072, 651);
+        spawn_chest(item("Auto Pilot"), 44, 0, -2504, 3072, 652);
+        if (mansion_trapdoor_fallen) {
+            set_obj_visibility(15, 0);
+        }
+    }
+
+    on talk(golemon0) replace {    // section 5
+        say(golemon0, text("s050.sec5.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(golemon1) replace {    // section 6
+        say(golemon1, text("s050.sec6.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (!mansion_trapdoor_fallen) {
+            say(tamer, text("s050.sec51.u0"));
+            sound(8, 4);
+            set_obj_visibility(15, 0);
+            wait(10);
+            say(tamer, text("s050.sec51.u1"));
+            sound(8, 5);
+            warp_to(63, 2, 52);
+            return;
+        }
+        say(tamer, text("s050.sec51.u2"));
+        sound(8, 4);
+        sound(8, 5);
+        warp_to(63, 2, 52);
+        return;
+    }
+}

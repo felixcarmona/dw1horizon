@@ -1,0 +1,224 @@
+From f37dd7eea68fdf106ffc2bded59dee55e11cee51 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 13:50:06 +0000
+Subject: [PATCH] Tamer level as data: the chances of its events (a good or bad
+ year, eating poop, sleeping late, chips, evolving), the stats a rebirth
+ inherits per level and the moves a lost life forgets are MOD_TAMER_LEVEL
+ slots (-1 = does not exist) written by tools/balance.py from
+ content/tables/tamer-level.json
+
+---
+ include/dw/level.h       | 22 ++++++++++++++++++++++
+ src/evl/evl.c            |  7 ++++---
+ src/main/clock.c         | 12 ++++++++----
+ src/main/item.c          |  2 +-
+ src/main/partner.c       |  3 ++-
+ src/main/partner_impl.c  |  7 ++++---
+ src/main/script_common.c |  8 +++++++-
+ src/main/tamer.c         | 12 ++++++++++++
+ 8 files changed, 60 insertions(+), 13 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index bf1f0a90..b66463c6 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -86,6 +86,28 @@ extern int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2];
+ extern ModEvoRule MOD_EVO_RULES[MOD_EVO_RULES_MAX];
+ extern int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE];
+ 
++/*
++ * MOD (tamer level as data): the chances (percent) of the events that change the tamer level, and the formulas that use it.
++ * MOD_TAMER_LEVEL[]: every slot -1 = the event does not exist; tools/balance.py build writes them from
++ * content/tables/tamer-level.json. The sign of each event (a good year +1, a chip -1...) is its meaning and stays in the code.
++ */
++#define MOD_TAMER_LEVEL_SIZE		13
++#define MOD_TL_YEAR_HAPPY_CHANCE	0  /* a year ends with the partner's happiness exactly MOD_TL_YEAR_HAPPY_AT: +1 */
++#define MOD_TL_YEAR_HAPPY_AT		1
++#define MOD_TL_YEAR_UNHAPPY_CHANCE	2  /* a year ends with happiness below MOD_TL_YEAR_UNHAPPY_BELOW: -1 */
++#define MOD_TL_YEAR_UNHAPPY_BELOW	3
++#define MOD_TL_EATS_POOP_CHANCE		4  /* the partner eats its poop: -1 */
++#define MOD_TL_SLEEPS_LATE_CHANCE	5  /* the partner falls asleep late: -1 */
++#define MOD_TL_CHIP_CHANCE		6  /* a chip item (0x1D-0x1F): -1 */
++#define MOD_TL_EVOLVE_CHAMPION_CHANCE	7  /* evolving into a Champion: +1 */
++#define MOD_TL_EVOLVE_ULTIMATE_CHANCE	8  /* into an Ultimate: +1 */
++#define MOD_TL_EVOLVE_MEGA_CHANCE	9  /* into a Mega: +1 */
++#define MOD_TL_REBIRTH_PERCENT		10 /* percent of each old base stat inherited per tamer level on a natural death */
++#define MOD_TL_FORGET_BASE		11 /* a lost life forgets (BASE - level) * STEP percent of the learned moves */
++#define MOD_TL_FORGET_STEP		12
++extern int16_t MOD_TAMER_LEVEL[MOD_TAMER_LEVEL_SIZE];
++void modTamerLevelEvent(int32_t slot, int32_t amount);
++
+ /* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
+ #define MOD_EVO_ITEM_MAX	4
+ typedef struct {
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 64c2f3e9..d4669993 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -1371,14 +1371,15 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 
+ 			EVL_clampBaseStats();
+ 			if (IS_SCRIPT_PAUSED == 1) {
++				/* MOD (tamer level as data): the chances are MOD_TAMER_LEVEL's */
+ 				if (DIGI_PARA(newId).level == 4) {
+-					addTamerLevel(20, 1);
++					modTamerLevelEvent(MOD_TL_EVOLVE_CHAMPION_CHANCE, 1);
+ 				}
+ 				if (DIGI_PARA(newId).level == 5) {
+-					addTamerLevel(100, 1);
++					modTamerLevelEvent(MOD_TL_EVOLVE_ULTIMATE_CHANCE, 1);
+ 				}
+ 				if (DIGI_PARA(newId).level == LEVEL_MEGA) { /* MOD (mega) */
+-					addTamerLevel(100, 1);
++					modTamerLevelEvent(MOD_TL_EVOLVE_MEGA_CHANCE, 1);
+ 				}
+ 			}
+ 		}
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 08274af7..7bd074d9 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -1,6 +1,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/clock.h>
++#include <dw/level.h>
+ #include <dw/params.h>
+ #include <dw/pstat.h>
+ #include <dw/script.h>
+@@ -141,10 +142,13 @@ void tickGameClock(int32_t instanceId)
+ 				if (DAY >= 30) {
+ 					DAY = 0;
+ 					YEAR++;
+-					if (PARTNER_PARA.happiness == 100) {
+-						addTamerLevel(5, 1);
+-					} else if (PARTNER_PARA.happiness < 0) {
+-						addTamerLevel(10, -1);
++					/* MOD (tamer level as data): MOD_TAMER_LEVEL's chances and happiness marks */
++					if (MOD_TAMER_LEVEL[MOD_TL_YEAR_HAPPY_AT] >= 0 &&
++					    PARTNER_PARA.happiness == MOD_TAMER_LEVEL[MOD_TL_YEAR_HAPPY_AT]) {
++						modTamerLevelEvent(MOD_TL_YEAR_HAPPY_CHANCE, 1);
++					} else if (MOD_TAMER_LEVEL[MOD_TL_YEAR_UNHAPPY_BELOW] >= 0 &&
++						   PARTNER_PARA.happiness < MOD_TAMER_LEVEL[MOD_TL_YEAR_UNHAPPY_BELOW]) {
++						modTamerLevelEvent(MOD_TL_YEAR_UNHAPPY_CHANCE, -1);
+ 					}
+ 				}
+ 			}
+diff --git a/src/main/item.c b/src/main/item.c
+index f0a27b6e..aa464815 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2297,7 +2297,7 @@ void handleChips(int16_t chipId)
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, brain, STAT_CAP);
+ 	modifyLifetime(lifetime);
+ 	if ((0x1c < chipId) && (chipId < 0x20)) {
+-		addTamerLevel(10, -1);
++		modTamerLevelEvent(MOD_TL_CHIP_CHANCE, -1); /* MOD (tamer level as data) */
+ 	}
+ }
+ 
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 3890d79c..9d0a318e 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -8,6 +8,7 @@
+ #include <dw/evl.h>
+ #include <dw/fade.h>
+ #include <dw/ids.h>
++#include <dw/level.h>
+ #include <dw/item.h>
+ #include <dw/kar.h>
+ #include <dw/main.h>
+@@ -618,7 +619,7 @@ void tickWildPoop(void)
+ 			tamerSetState(0);
+ 			PARTNER_STATE = 1;
+ 			setCameraFollowPlayer();
+-			addTamerLevel(1, -1);
++			modTamerLevelEvent(MOD_TL_EATS_POOP_CHANCE, -1); /* MOD (tamer level as data) */
+ 		}
+ 		break;
+ 	default:
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 0836a32e..be103c1a 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -920,8 +920,9 @@ void setReincarnateStats(int16_t hp, int16_t mp, int16_t offense,
+ 	int16_t inheritedSpeed;
+ 	int16_t inheritedBrains;
+ 
+-	if (IS_NATURAL_DEATH == 1) {
+-		percentage = TAMER_ENTITY.tamerLevel;
++	/* MOD (tamer level as data): the percent per tamer level is MOD_TAMER_LEVEL's (-1: nothing is inherited) */
++	if (IS_NATURAL_DEATH == 1 && MOD_TAMER_LEVEL[MOD_TL_REBIRTH_PERCENT] >= 0) {
++		percentage = TAMER_ENTITY.tamerLevel * MOD_TAMER_LEVEL[MOD_TL_REBIRTH_PERCENT];
+ 	} else {
+ 		percentage = 0;
+ 	}
+@@ -1115,7 +1116,7 @@ void tickSleepMechanics(void)
+ 		PARTNER_PARA.condition &= ~1;
+ 		PARTNER_PARA.careMistakes++;
+ 		updateConditionAnimation();
+-		addTamerLevel(1, -1);
++		modTamerLevelEvent(MOD_TL_SLEEPS_LATE_CHANCE, -1); /* MOD (tamer level as data) */
+ 	}
+ 
+ 	if (wasSleepy == 0) {
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 8f389d05..82e53ff6 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -3,6 +3,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/mod_font.h>
++#include <dw/level.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+@@ -2480,7 +2481,12 @@ void lostAllLives(void)
+ 		i++;
+ 	}
+ 
+-	n = (10 - TAMER_ENTITY.tamerLevel) * 2 * (n * 100) / 100;
++	/* MOD (tamer level as data): (base - level) * step percent, from MOD_TAMER_LEVEL (-1: no moves are forgotten) */
++	if (MOD_TAMER_LEVEL[MOD_TL_FORGET_BASE] < 0 || MOD_TAMER_LEVEL[MOD_TL_FORGET_STEP] < 0) {
++		n = 0;
++	} else {
++		n = (MOD_TAMER_LEVEL[MOD_TL_FORGET_BASE] - TAMER_ENTITY.tamerLevel) * MOD_TAMER_LEVEL[MOD_TL_FORGET_STEP] * (n * 100) / 100;
++	}
+ 	if (n % 100 >= 0x32) {
+ 		n += 100;
+ 	}
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 9f914721..6b6e1d28 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -15,6 +15,7 @@
+ #include <dw/fade.h>
+ #include <dw/font.h>
+ #include <dw/ids.h>
++#include <dw/level.h>
+ #include <dw/tournament.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+@@ -1278,6 +1279,17 @@ uint8_t checkChestCollision(void)
+ }
+ 
+ // clang-format off
++/* MOD (tamer level as data): the chances come from MOD_TAMER_LEVEL (-1 = the event does not exist), tools/balance.py build writes them
++ * from content/tables/tamer-level.json */
++int16_t MOD_TAMER_LEVEL[MOD_TAMER_LEVEL_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
++
++void modTamerLevelEvent(int32_t slot, int32_t amount)
++{
++	if (MOD_TAMER_LEVEL[slot] >= 0) {
++		addTamerLevel(MOD_TAMER_LEVEL[slot], amount);
++	}
++}
++
+ void addTamerLevel(chance, amount)
+ 	int16_t chance;
+ 	int8_t amount;
+-- 
+2.53.0
+

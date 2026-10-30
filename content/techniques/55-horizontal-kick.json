@@ -1,0 +1,17 @@
+{
+  "id": 55,
+  "name": "Horizontal Kick",
+  "element": "filth",
+  "power": 53,
+  "mpCost": 8,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 41,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [25, 16, 10]
+}

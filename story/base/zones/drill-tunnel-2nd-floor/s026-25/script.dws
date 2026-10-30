@@ -1,0 +1,202 @@
+// Readable form of script 26 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 26 {
+    npc goblimon0 = 5;
+    npc goblimon1 = 6;
+    npc goblimon2 = 7;
+    npc ogremon = 8;
+    npc agumon4 = 9;
+    npc agumon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 9, 10, 51, 52, 53;
+
+    on enter replace {    // section 254
+        call_routine(routine("load_dirt_cart"));
+        if (drill_tunnel_progress == 3) {
+            engine.arg = 0;
+            call_routine(routine("dirt_cart_model"));
+            set_autotalk(goblimon0, 0);
+            set_autotalk(goblimon1, 0);
+            set_autotalk(goblimon2, 0);
+        }
+        if (drill_tunnel_progress == 4) {
+            engine.arg = 1;
+            call_routine(routine("dirt_cart_model"));
+            set_autotalk(goblimon0, 0);
+            set_autotalk(goblimon1, 0);
+            set_autotalk(goblimon2, 0);
+        }
+    }
+
+    on talk(goblimon0) replace {    // section 5
+        if (drill_tunnel_progress >= 3) {
+            say(goblimon0, text("s026.sec5.u0"));
+            return;
+        }
+        say(goblimon0, text("s026.sec5.u1"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        if (drill_tunnel_progress >= 3) {
+            say(goblimon1, text("s026.sec6.u0"));
+            return;
+        }
+        say(goblimon1, text("s026.sec6.u1"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon2) replace {    // section 7
+        if (drill_tunnel_progress >= 3) {
+            say(goblimon2, text("s026.sec7.u0"));
+            return;
+        }
+        say(goblimon2, text("s026.sec7.u1"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(agumon4) replace {    // section 9
+        say(agumon4, text("s026.sec9.u0"));
+    }
+
+    on talk(agumon5) replace {    // section 10
+        say(agumon5, text("s026.sec10.u0"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (new_ogre_fortress_cleared && !is_recruited(species("Ogremon"))) return;
+        walk(tamer, -165, 221, camera: true);
+        walk(partner, 171, 615);
+        await tamer;
+        await partner;
+        walk(agumon4, -323, 93);
+        walk(agumon5, 498, -51);
+        walk(ogremon, 160, -193);
+        await goblimon0;
+        await goblimon1;
+        await ogremon;
+        entity_set_rotation(tamer, 100);
+        entity_set_rotation(partner, 100);
+        face(agumon4, tamer);
+        face(agumon5, tamer);
+        face(ogremon, tamer);
+        say(ogremon, text("s026.sec51.u0"));
+        say(tamer, text("s026.sec51.u1"));
+        say(ogremon, text("s026.sec51.u2"));
+        say(tamer, text("s026.sec51.u3"));
+        animate(ogremon, 32);
+        say(ogremon, text("s026.sec51.u4"));
+        animate(ogremon, anim.idle);
+        say(tamer, text("s026.sec51.u5"));
+        battle(foes: [agumon4, agumon5, ogremon]);
+        animate(agumon4, 43);
+        animate(agumon5, 43);
+        walk(ogremon, 89, -659);
+        await ogremon;
+        entity_set_rotation(ogremon, 100);
+        face(tamer, ogremon);
+        face(partner, ogremon);
+        await ogremon;
+        animate(ogremon, 28);
+        wait(30);
+        say(ogremon, text("s026.sec51.u6"));
+        animate(ogremon, 29);
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s026.sec51.u7"));
+        animate(tamer, anim.idle);
+        say(ogremon, text("s026.sec51.u8"));
+        say(tamer, text("s026.sec51.u9"));
+        say(ogremon, text("s026.sec51.u10"));
+        say(tamer, text("s026.sec51.u11"));
+        say(ogremon, text("s026.sec51.u12"));
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s026.sec51.u13"));
+        animate(tamer, anim.idle);
+        say(ogremon, text("s026.sec51.u14"));
+        animate(tamer, 7);
+        wait(15);
+        say(tamer, text("s026.sec51.u15"));
+        animate(tamer, anim.idle);
+        run(tamer, 160, -193, camera: true);
+        await tamer;
+        entity_set_rotation(tamer, 100);
+        show_textbox(text("s026.sec51.u16"));
+        say(ogremon, text("s026.sec51.u17"));
+        animate(ogremon, 30);
+        face(ogremon, tamer);
+        say(ogremon, text("s026.sec51.u18"));
+        run(ogremon, 119, -494);
+        await ogremon;
+        face(ogremon, tamer);
+        say(tamer, text("s026.sec51.u19"));
+        say(ogremon, text("s026.sec51.u20"));
+        run(ogremon, 155, 873);
+        if (glances < 6) {
+            glances += 1;
+            wait(10);
+            face(tamer, ogremon);
+            face(partner, ogremon);
+        }
+        await ogremon;
+        join_city(ogremon, species("Ogremon"), 8, 8, text("s026.sec51.u21"), prosperity: 2);
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on step(1) replace {    // section 52
+        if (drill_tunnel_progress == 3) {
+            say(tamer, text("s026.sec52.u0"));
+            run(tamer, -51, -1550);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (drill_tunnel_progress == 4) {
+            say(tamer, text("s026.sec52.u1"));
+            run(tamer, -51, -1550);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (is_recruited(species("Meramon")) && engine.prosperity >= 45) {
+            walk(tamer, -105, -2200);
+            warp_to(126, 0, 255);
+        }
+        walk(tamer, -105, -2200);
+        warp_to(26, 0, 255);
+        goto sec53;
+    }
+
+    on step(2) replace {    // section 53
+        if (drill_tunnel_progress == 3) {
+            say(tamer, text("s026.sec53.u0"));
+            run(tamer, -2253, 359);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (drill_tunnel_progress == 4) {
+            say(tamer, text("s026.sec53.u1"));
+            run(tamer, -2253, 359);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        return;
+    }
+}

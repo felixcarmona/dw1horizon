@@ -1,0 +1,241 @@
+{
+  "_comment": "Training. trainGain / train2Gain: the gains of each gym by the slot of its minigame, for the first gym set (maps 0x70, 0x4e, 0x77) and the second (maps 0x63, 0x6b, 0x6c, 0xa5, 99, 107, 108): gym hp / mp / off / def / spd / brain, slot (a number or \"any\"), the base gain in tenths of each stat (hp, mp, off, def, spd, brain; a stat left out gains nothing) and the tiredness, energy and happiness a session costs; a gym with no row for a slot gives nothing. trainRules / train2Rules: exhausted (a partner whose tiredness is `at` gains `gain` of each stat the gym trains), session (durationMs: how long a gym's minigame runs before it ends by itself, real milliseconds in steps of 50, from the moment the work starts; stepMs: one step of the work shown, the time between two moves of the gym's object and the unit its way back is counted in (the gains do not depend on it); what one session costs: tiredPenaltyAt, penaltyHappinessLoss, penaltyDisciplineLoss, lifetimeBelowHappiness / lifetimePerPoints = the lifetime lost every four hours below that happiness, starvationDrop, foodDrop, poopDrop, lifetimeCost), slots (the points of the slot machine: jackpot 777, match = the gym's stat, triple, miss) and brains (the brains marks that give new orders and the marks at which a move can be learned). The gain multipliers by training type and level are training.json.",
+  "trainGain": [
+    {
+      "gym": "hp",
+      "slot": "any",
+      "hp": 80,
+      "off": 2,
+      "tired": 10,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "mp",
+      "slot": "any",
+      "mp": 80,
+      "def": 2,
+      "tired": 7,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "off",
+      "slot": 0,
+      "off": 8,
+      "spd": 2,
+      "tired": 9,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "off",
+      "slot": 6,
+      "hp": 10,
+      "off": 8,
+      "tired": 9,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "def",
+      "slot": "any",
+      "def": 8,
+      "brain": 2,
+      "tired": 9,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "spd",
+      "slot": 0,
+      "hp": 10,
+      "spd": 8,
+      "tired": 8,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "spd",
+      "slot": 6,
+      "hp": 10,
+      "spd": 8,
+      "tired": 8,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "brain",
+      "slot": 0,
+      "mp": 10,
+      "brain": 8,
+      "tired": 6,
+      "energy": 1,
+      "happy": 1
+    },
+    {
+      "gym": "brain",
+      "slot": 9,
+      "brain": 15,
+      "tired": 6,
+      "energy": 1,
+      "happy": 1
+    }
+  ],
+  "train2Gain": [
+    {
+      "gym": "hp",
+      "slot": 1,
+      "hp": 120,
+      "tired": 10,
+      "energy": 2,
+      "happy": 1
+    },
+    {
+      "gym": "hp",
+      "slot": 3,
+      "hp": 120,
+      "def": 2,
+      "tired": 10,
+      "energy": 2,
+      "happy": 2
+    },
+    {
+      "gym": "mp",
+      "slot": 8,
+      "mp": 150,
+      "tired": 7,
+      "energy": 1,
+      "happy": 4
+    },
+    {
+      "gym": "off",
+      "slot": 1,
+      "off": 12,
+      "tired": 9,
+      "energy": 2,
+      "happy": 1
+    },
+    {
+      "gym": "spd",
+      "slot": 1,
+      "spd": 12,
+      "tired": 8,
+      "energy": 2,
+      "happy": 1
+    },
+    {
+      "gym": "def",
+      "slot": 1,
+      "def": 12,
+      "tired": 9,
+      "energy": 2,
+      "happy": 1
+    },
+    {
+      "gym": "def",
+      "slot": 3,
+      "def": 12,
+      "spd": 2,
+      "tired": 9,
+      "energy": 2,
+      "happy": 2
+    }
+  ],
+  "trainRules": {
+    "exhausted": {
+      "at": 100,
+      "gain": 1
+    },
+    "session": {
+      "tiredPenaltyAt": 70,
+      "penaltyHappinessLoss": 3,
+      "penaltyDisciplineLoss": 3,
+      "lifetimeBelowHappiness": 80,
+      "lifetimePerPoints": 50,
+      "starvationDrop": 120,
+      "foodDrop": 60,
+      "poopDrop": 6,
+      "lifetimeCost": 1,
+      "durationMs": 60000,
+      "stepMs": 6000
+    },
+    "slots": {
+      "jackpot": 100,
+      "match": 40,
+      "triple": 20,
+      "miss": 5
+    },
+    "brains": {
+      "orderMarks": [
+        100,
+        200,
+        300,
+        400,
+        500
+      ],
+      "learnMarks": [
+        150,
+        250,
+        350,
+        450,
+        550,
+        650,
+        750,
+        800,
+        850,
+        900,
+        950,
+        999
+      ]
+    }
+  },
+  "train2Rules": {
+    "exhausted": {
+      "at": 100,
+      "gain": 1
+    },
+    "session": {
+      "tiredPenaltyAt": 70,
+      "penaltyHappinessLoss": 3,
+      "penaltyDisciplineLoss": 3,
+      "lifetimeBelowHappiness": 80,
+      "lifetimePerPoints": 50,
+      "starvationDrop": 12,
+      "foodDrop": 61,
+      "poopDrop": 6,
+      "lifetimeCost": 1,
+      "durationMs": 60000,
+      "stepMs": 6000
+    },
+    "slots": {
+      "jackpot": 100,
+      "match": 40,
+      "triple": 20,
+      "miss": 5
+    },
+    "brains": {
+      "orderMarks": [
+        100,
+        200,
+        300,
+        400,
+        500
+      ],
+      "learnMarks": [
+        150,
+        250,
+        350,
+        450,
+        550,
+        650,
+        750,
+        800,
+        850,
+        900,
+        950,
+        999
+      ]
+    }
+  }
+}

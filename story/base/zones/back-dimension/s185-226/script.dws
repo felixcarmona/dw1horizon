@@ -1,0 +1,69 @@
+// Readable form of script 185 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 185 {
+    npc piddomon0 = 5;
+    npc piddomon1 = 6;
+    npc icedevimon2 = 7;
+    npc icedevimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 60, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Ray Gun"), -2240, 0, 1956, 3072, 707);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2718, 1041);
+        if (back_dimension_portal == 1) {
+            warp_to(92, 1, 255);
+        }
+        if (back_dimension_portal == 2) {
+            warp_to(35, 1, 255);
+        }
+        if (back_dimension_portal == 3) {
+            warp_to(40, 1, 255);
+        }
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2786, 1100);
+        warp_to(227, 1, 255);
+    }
+
+    on step(9) replace {    // section 60
+        entity_set_rotation(tamer, 1024);
+        wait(2s);
+        say(tamer, text("s185.sec60.u0"));
+        walk(tamer, 2150, 1950, camera: true);
+        await tamer;
+        say(tamer, text("s185.sec60.u1"));
+    }
+
+    on talk(piddomon0) replace {    // section 5
+        say(piddomon0, text("s185.sec5.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(piddomon1) replace {    // section 6
+        say(piddomon1, text("s185.sec6.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(icedevimon2) replace {    // section 7
+        say(icedevimon2, text("s185.sec7.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(icedevimon3) replace {    // section 8
+        say(icedevimon3, text("s185.sec8.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+        return;
+    }
+}

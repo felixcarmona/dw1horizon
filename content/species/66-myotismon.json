@@ -1,0 +1,50 @@
+{
+  "id": 66,
+  "name": "Myotismon",
+  "level": "ultimate",
+  "vanilla_as": 26,
+  "attribute": "virus",
+  "specialties": ["air", "battle", "ice"],
+  "techniques": ["Megaton Punch", "Thunder Justice", "Hurricane", "Giga Freeze", "Aurora Freeze", "Sonic Jab",
+                 "Death Claw"],
+  "drop": {"item": "sm.recovery", "percent": 0},
+  "model": {"name": "VAND", "bones": 25, "file": "build/models/VAND-partner.MMD", "radius": 160, "height": 430},
+  "voice": 56,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 3,
+    "hunger_hours": [4, 9, 14, 18, 23],
+    "energy_max": 80,
+    "energy_fed": 30,
+    "energy_per_hour": 6,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Deluxmushrm",
+    "sleep_cycle": "07:00-16:00",
+    "favored_region": 6,
+    "training_type": "even",
+    "birth_weight": 30,
+    "status_screen_position": [42, 376, -958],
+    "item_distance": 11,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": 400,
+      "mp": 600,
+      "offense": -1,
+      "defense": -1,
+      "speed": 400,
+      "brain": 500,
+      "care": 5,
+      "weight": 30,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": 40,
+      "techs": 35,
+      "flags": 16
+    },
+    "gains": {"hp": 6000, "mp": 6000, "offense": 550, "defense": 450, "speed": 600, "brains": 600}
+  }
+}

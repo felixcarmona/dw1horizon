@@ -1,0 +1,67 @@
+{
+  "_comment": "When a medal is awarded. The C holds none: the rows start unused and the build writes these (at most 16); a medal with no row here is never awarded by the game itself (the story can still award it). when = [kind, numbers]: allTriggers [first, count] all set; wins [n] tournament wins >= n; allCards [trigger] every card owned and that trigger set (-1: none); allMoves [n] the first n techniques learned; stats [hpMp, others] all six base stats at least; money [n] exactly; year [n] exactly; allRaised [first, end] the species first..end-1 raised once; fish [n] caught >= n. checkedBy: tick = every tamer tick, script = the card-trader routine (the textbox shown is `text`). levelUp raises the tamer level.",
+  "medals": [
+    {
+      "medal": 0,
+      "when": ["allTriggers", 15, 6],
+      "checkedBy": ["script"],
+      "text": 0,
+      "note": "all six cups D, C, B, A, S, R won (triggers 15-20)"
+    },
+    {
+      "medal": 1,
+      "when": ["allTriggers", 21, 5],
+      "checkedBy": ["script"],
+      "text": 1,
+      "note": "Version 1-4 and Version 0 cups (triggers 21-25)"
+    },
+    {
+      "medal": 2,
+      "when": ["allTriggers", 26, 7],
+      "checkedBy": ["script"],
+      "text": 2,
+      "note": "the seven attribute cups, Fire to Filth (triggers 26-32)"
+    },
+    {
+      "medal": 3,
+      "when": ["allTriggers", 33, 4],
+      "checkedBy": ["script"],
+      "text": 3,
+      "note": "Dino, Wing, Animal, Human cups (triggers 33-36)"
+    },
+    {"medal": 4, "when": ["wins", 100], "checkedBy": ["script"], "text": 4, "note": "100 tournament wins"},
+    {
+      "medal": 5,
+      "when": ["allMoves", 57],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "all 57 techniques learned"
+    },
+    {
+      "medal": 6,
+      "when": ["allRaised", 1, 62],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "levelUp": true,
+      "note": "every partner species 1..61 raised once; the tamer level goes up"
+    },
+    {
+      "medal": 7,
+      "when": ["stats", 9999, 999],
+      "checkedBy": ["tick"],
+      "text": 0,
+      "note": "all six base stats at the original maximum: HP and MP 9999, the rest 999"
+    },
+    {"medal": 9, "when": ["fish", 100], "checkedBy": ["tick"], "text": 0, "note": "100 fish caught"},
+    {"medal": 12, "when": ["allCards", -1], "checkedBy": ["tick"], "text": 0, "note": "all 66 cards"},
+    {
+      "medal": 12,
+      "when": ["allCards", 50],
+      "checkedBy": ["script"],
+      "text": 5,
+      "note": "all 66 cards and the game beaten once (trigger 50), for the card trader"
+    },
+    {"medal": 13, "when": ["money", 999999], "checkedBy": ["tick"], "text": 0, "note": "999999 bits"},
+    {"medal": 14, "when": ["year", 10], "checkedBy": ["tick"], "text": 0, "note": "year 10"}
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "screen": 357,
+  "name": "the-stone-yard",
+  "pieces": [
+    {
+      "name": "guard-door",
+      "depth_px": [
+        144,
+        275
+      ],
+      "block": [
+        [
+          132,
+          238
+        ],
+        [
+          154,
+          247
+        ],
+        [
+          154,
+          279
+        ],
+        [
+          132,
+          265
+        ]
+      ],
+      "at": [
+        134,
+        209
+      ],
+      "png": "357-guard-door.png",
+      "size": [
+        25,
+        67
+      ],
+      "sam": [
+        {
+          "box": [
+            130,
+            205,
+            156,
+            277
+          ],
+          "positive": [
+            [
+              142,
+              229
+            ]
+          ],
+          "negative": [
+            [
+              130,
+              205
+            ],
+            [
+              156,
+              205
+            ],
+            [
+              130,
+              277
+            ],
+            [
+              156,
+              277
+            ]
+          ],
+          "scores": [
+            0.4737192988395691,
+            0.8990609645843506,
+            0.8982195854187012
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "23d5c2a43cb11be54af4c1294c7a8680532c80ac54d6f700c8fe27754f1df3f4",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "guard-lintel",
+      "depth_px": [
+        151,
+        274
+      ],
+      "block": [],
+      "at": [
+        125,
+        196
+      ],
+      "png": "357-guard-lintel.png",
+      "size": [
+        58,
+        9
+      ],
+      "sam": [
+        {
+          "box": [
+            123,
+            191,
+            181,
+            207
+          ],
+          "positive": [
+            [
+              132,
+              199
+            ]
+          ],
+          "negative": [
+            [
+              123,
+              191
+            ],
+            [
+              181,
+              191
+            ],
+            [
+              123,
+              207
+            ],
+            [
+              181,
+              207
+            ]
+          ],
+          "scores": [
+            0.7056161165237427,
+            0.7825567722320557,
+            0.7289712429046631
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "8c75d185e4828c21f8717df69873de94d261b49dd0d40444032f4cfe2c3bdcdb",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "shed-lintel",
+      "depth_px": [
+        625,
+        274
+      ],
+      "block": [],
+      "at": [
+        604,
+        195
+      ],
+      "png": "357-shed-lintel.png",
+      "size": [
+        49,
+        9
+      ],
+      "sam": [
+        {
+          "box": [
+            598,
+            190,
+            658,
+            205
+          ],
+          "positive": [
+            [
+              606,
+              198
+            ]
+          ],
+          "negative": [
+            [
+              598,
+              190
+            ],
+            [
+              658,
+              190
+            ],
+            [
+              598,
+              205
+            ],
+            [
+              658,
+              205
+            ]
+          ],
+          "scores": [
+            0.5244011282920837,
+            0.6029653549194336,
+            0.5613462924957275
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "9e6c7ee95a57996620fc5e4f2c332f59f8f72ae3f198148aa69a8415bd9ecd15",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-left-canopy",
+      "depth_px": [
+        90,
+        767
+      ],
+      "block": [],
+      "at": [
+        0,
+        422
+      ],
+      "png": "357-near-left-canopy.png",
+      "size": [
+        204,
+        217
+      ],
+      "sam": [
+        {
+          "box": [
+            0,
+            419,
+            202,
+            639
+          ],
+          "positive": [
+            [
+              0,
+              639
+            ],
+            [
+              0,
+              552
+            ],
+            [
+              45,
+              584
+            ],
+            [
+              124,
+              586
+            ],
+            [
+              83,
+              624
+            ],
+            [
+              149,
+              635
+            ]
+          ],
+          "negative": [
+            [
+              0,
+              419
+            ],
+            [
+              202,
+              419
+            ],
+            [
+              202,
+              639
+            ]
+          ],
+          "scores": [
+            0.941847026348114,
+            0.9875658750534058,
+            0.9776382446289062
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "e528b469608f42a2e5832e8cdcd4e1b7746a1e9e57d11b4880dc780629e28b0f",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "the-stone-yard.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "Buildings, tank, fenced scrap and planters back onto the blocked cliff edge. Cut the open guard-house leaf and both doorway lintels. Block the leaf's occupied tiles, not the whole doorway. Cut the foreground left canopy at a depth in front of the reachable yard. Existing building footprints remain blocked. Tile review: restore 0 floor tiles behind foreground silhouettes; block 3 occupied tiles. Every changed tile is listed below with its previous value and reason. The near canopy follows the actual leaf edge; blue-grey floor between the fronds is transparent. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [
+    {
+      "tile": [
+        30,
+        42
+      ],
+      "was": 112,
+      "reason": "guard-door",
+      "value": 128
+    },
+    {
+      "tile": [
+        31,
+        42
+      ],
+      "was": 112,
+      "reason": "guard-door",
+      "value": 128
+    },
+    {
+      "tile": [
+        31,
+        43
+      ],
+      "was": 112,
+      "reason": "guard-door",
+      "value": 128
+    }
+  ],
+  "sam_source": {
+    "path": "story/mods/what-the-island-forgot/design/prompts/the-stone-yard/raw-the-stone-yard.jpg",
+    "repo_relative": true,
+    "crop": [
+      46,
+      0,
+      2258,
+      1856
+    ],
+    "sha1": "9c2baecbcf975ee9e7e5f16b07f14fc25b8e6277",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

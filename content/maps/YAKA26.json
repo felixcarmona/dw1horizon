@@ -1,0 +1,20 @@
+{
+  "file": "MAP/MAP15/YAKA26.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Myotismon177",
+      "at": [158, 2904],
+      "facing": 0,
+      "follow": 1,
+      "range": 500,
+      "charge": 1,
+      "currentHP": 500,
+      "moves": [46, 47, 56, 255],
+      "prios": [60, 30, 10, 0],
+      "flee": [1275, -2161],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

@@ -1,0 +1,238 @@
+{
+ "s108.sec5.m0.o0": "¿Qué es entrenar?",
+ "s108.sec5.m0.o1": "¿Cómo entreno?",
+ "s108.sec5.m0.o2": "Nada, gracias",
+ "s108.sec5.u0": "¡Eh, eh, noticias! Esto... mientras tu Digimon todavía es un bebé, prueba a hacer el mismo entrenamiento una y otra vez. ¡Dicen que pasa algo bueno!",
+ "s108.sec5.u1": "¡Eh, eh, noticias! Esto... en un Intento extra, si consigues el mismo dibujo que el del cartel, ¡la subida es todavía mayor!",
+ "s108.sec5.u2": "¡Ah, es verdad, te dije que te hablaría de las técnicas! Normalmente, después de un combate, tu Digimon aprende una técnica que el enemigo ha usado contra él. Aunque solo una que pueda equipar ahora mismo. No funciona siempre, pero es la forma más rápida de conseguir más técnicas. Y luego... las probabilidades son muy bajas, pero también se pueden aprender entrenando. Cuando el Intelecto está bastante alto, dicen que hacer el entrenamiento de la Clase de {color 6}{player}{color 1} puede enseñarle una. Ya sé que lo repito mucho, pero de verdad que las probabilidades son bajas, así que no cuentes mucho con ello. ¡Lo importante es el equilibrio!",
+ "s108.sec5.u3": [
+  [
+   "¡Eh, eh, soy Koromon! Jiji me ha pedido que",
+   "te enseñe a entrenar."
+  ],
+  [
+   "¿Quieres saber algo?"
+  ]
+ ],
+ "s108.sec5.u4": "Entrenar aquí sube los atributos de tu Digimon. Pero entrenar lo cansa, y además lleva un buen rato. Aun así, es una forma más segura de subir atributos que combatir. ¡Y muy de vez en cuando, tu Digimon aprende una técnica nueva! Ya te hablaré de las técnicas otro día.",
+ "s108.sec5.u5": "Aquí hay seis aparatos de entrenamiento, y cada uno tiene un cartel al lado.",
+ "s108.sec5.u6": [
+  [
+   "Primero, ponte ante un cartel y pulsa {color 6}×{color 1}."
+  ],
+  [
+   "Lee lo que pone y te harás una idea de qué",
+   "atributo sube."
+  ],
+  [
+   "Algunos Digimon suben unos atributos con",
+   "facilidad, y otros no tanto."
+  ],
+  [
+   "¡No lo sabrás hasta que lo pruebes!"
+  ],
+  [
+   "Elige Entrenar y luego Normal, y tu Digimon",
+   "entrena durante una hora."
+  ],
+  [
+   "Mientras entrena, puedes adelantar el",
+   "tiempo con {color 5}△{color 1}."
+  ],
+  [
+   "¡Ah, es verdad, tengo que hablarte del",
+   "entrenamiento de Intento extra!"
+  ],
+  [
+   "Si un Intento extra sale bien, el atributo",
+   "sube muchísimo. Pero si sale mal..."
+  ],
+  [
+   "el atributo apenas sube. Pruébalo una vez",
+   "y lo verás."
+  ]
+ ],
+ "s108.sec5.u7": "Ah, vale... Ya buscaré noticias nuevas para ti.",
+ "s108.sec6.u0": "Yo ir ciudad. Ciudad demasiado ciudad para mí. Yo no encajar. Así que yo venir aquí. Yo reconstruir máquinas aquí. Funcionar mejor que antes. Tú entrenar mucho.",
+ "s108.sec7.u0": "Yo ir ciudad. Ciudad demasiado ciudad para mí. Yo no encajar. Así que yo venir aquí. Yo reconstruir máquinas aquí. Funcionar mejor que antes. Tú entrenar mucho.",
+ "s108.sec81.m0.o0": "Entrenar",
+ "s108.sec81.m0.o1": "Explícamelo",
+ "s108.sec81.m0.o2": "Salir",
+ "s108.sec81.m1.o0": "Entrenamiento normal",
+ "s108.sec81.m1.o1": "Intento extra",
+ "s108.sec81.m1.o2": "Mejor no",
+ "s108.sec81.m2.o0": "Explícamelo otra vez",
+ "s108.sec81.m2.o1": "Entrenar",
+ "s108.sec81.m2.o2": "Salir",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Entrenamiento mejorado:",
+   "Empuje de roca{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "",
+   "{color 5}Entrenamiento: Empuje de roca{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": "Empujar una roca enorme da fuerza bruta. El HP máx. sube mucho, y el Ataque también.",
+ "s108.sec81.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Entrenar",
+ "s108.sec82.m0.o1": "Explícamelo",
+ "s108.sec82.m0.o2": "Salir",
+ "s108.sec82.m1.o0": "Entrenamiento normal",
+ "s108.sec82.m1.o1": "Intento extra",
+ "s108.sec82.m1.o2": "Mejor no",
+ "s108.sec82.m2.o0": "Explícamelo otra vez",
+ "s108.sec82.m2.o1": "Entrenar",
+ "s108.sec82.m2.o2": "Salir",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Entrenamiento mejorado:",
+   "Cascada{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "",
+   "{color 5}Entrenamiento: Cascada{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": "Ponerse bajo una cascada templa el espíritu. El MP máx. sube mucho, y la Defensa también.",
+ "s108.sec82.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Entrenar",
+ "s108.sec83.m0.o1": "Explícamelo",
+ "s108.sec83.m0.o2": "Salir",
+ "s108.sec83.m1.o0": "Entrenamiento normal",
+ "s108.sec83.m1.o1": "Intento extra",
+ "s108.sec83.m1.o2": "Mejor no",
+ "s108.sec83.m2.o0": "Explícamelo otra vez",
+ "s108.sec83.m2.o1": "Entrenar",
+ "s108.sec83.m2.o2": "Salir",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Entrenamiento mejorado:",
+   "Golpes al árbol{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "",
+   "{color 5}Entrenamiento: Golpes al árbol{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": "Practica técnicas contra un árbol. El Ataque sube mucho, y la Velocidad también.",
+ "s108.sec83.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Entrenar",
+ "s108.sec84.m0.o1": "Explícamelo",
+ "s108.sec84.m0.o2": "Salir",
+ "s108.sec84.m1.o0": "Entrenamiento normal",
+ "s108.sec84.m1.o1": "Intento extra",
+ "s108.sec84.m1.o2": "Mejor no",
+ "s108.sec84.m2.o0": "Explícamelo otra vez",
+ "s108.sec84.m2.o1": "Entrenar",
+ "s108.sec84.m2.o2": "Salir",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Entrenamiento mejorado:",
+   "Guante de boxeo{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "",
+   "{color 5}Entrenamiento: Guante de boxeo{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": "Aguanta los golpes de una máquina de puñetazos gigante. La Defensa sube mucho, y el Intelecto también.",
+ "s108.sec84.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Entrenar",
+ "s108.sec85.m0.o1": "Explícamelo",
+ "s108.sec85.m0.o2": "Salir",
+ "s108.sec85.m1.o0": "Entrenamiento normal",
+ "s108.sec85.m1.o1": "Intento extra",
+ "s108.sec85.m1.o2": "Mejor no",
+ "s108.sec85.m2.o0": "Explícamelo otra vez",
+ "s108.sec85.m2.o1": "Entrenar",
+ "s108.sec85.m2.o2": "Salir",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Entrenamiento mejorado:",
+   "Carrera{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "",
+   "{color 5}Entrenamiento: Carrera{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": "Dar vueltas al circuito, una y otra vez. La Velocidad sube mucho, y el HP máx. también.",
+ "s108.sec85.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Entrenar",
+ "s108.sec86.m0.o1": "Explícamelo",
+ "s108.sec86.m0.o2": "Salir",
+ "s108.sec86.m1.o0": "Entrenamiento normal",
+ "s108.sec86.m1.o1": "Intento extra",
+ "s108.sec86.m1.o2": "Mejor no",
+ "s108.sec86.m2.o0": "Explícamelo otra vez",
+ "s108.sec86.m2.o1": "Entrenar",
+ "s108.sec86.m2.o2": "Salir",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Entrenamiento mejorado: Clase de",
+   "{color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Entrenamiento:",
+   "Clase de {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": "{color 6}{player}{color 1} hace de profesor y enseña de todo. El Intelecto sube mucho, y el MP máx. también.",
+ "s108.sec86.u3": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ]
+}

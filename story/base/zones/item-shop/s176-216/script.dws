@@ -1,0 +1,387 @@
+// Readable form of script 176 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 176 {
+    npc keeper = 5;
+    npc piximon = 6;
+    npc punimon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 81, 82, 83, 7, 52;
+
+    on enter replace {    // section 254
+        if (is_recruited(species("Devimon")) || is_recruited(species("Numemon")) || is_recruited(species("Mamemon")) || is_recruited(species("Mojyamon"))) {
+            set_obj_visibility(21, 1);
+        } else {
+            set_rect_impassable(0, 35, 45, 2, 16);
+        }
+        if (item_shop_keeper == 3) {
+            animate(keeper, 28);
+        }
+        if (item_shop_intros < 3) {
+            set_obj_visibility(18, 0);
+            set_obj_visibility(20, 0);
+        } else {
+            set_obj_visibility(18, 1);
+            set_obj_visibility(20, 1);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 250, -5000);
+        piximon_in_item_shop = false;
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(192, 3, 255);
+                        return;
+                    }
+                    warp_to(191, 3, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(193, 3, 255);
+                    return;
+                }
+                warp_to(190, 3, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(195, 3, 255);
+                    return;
+                }
+                warp_to(194, 3, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(196, 3, 255);
+                return;
+            }
+            warp_to(189, 3, 255);
+            return;
+        }
+        if (is_recruited(species("Betamon")) || is_recruited(species("Coelamon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(184, 3, 255);
+                        return;
+                    }
+                    warp_to(183, 3, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(185, 3, 255);
+                    return;
+                }
+                warp_to(182, 3, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(187, 3, 255);
+                    return;
+                }
+                warp_to(186, 3, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(188, 3, 255);
+                return;
+            }
+            warp_to(181, 3, 255);
+            return;
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(199, 3, 255);
+                    return;
+                }
+                warp_to(198, 3, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(200, 3, 255);
+                return;
+            }
+            warp_to(197, 3, 255);
+            return;
+        }
+        if (is_recruited(species("Centarumon"))) {
+            if (is_recruited(species("Greymon"))) {
+                warp_to(202, 3, 255);
+                return;
+            }
+            warp_to(201, 3, 255);
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            warp_to(203, 3, 255);
+            return;
+        }
+        warp_to(180, 3, 255);
+        return;
+    }
+
+    on use(1) replace {    // section 81
+        face(tamer, keeper);
+        if (item_shop_keeper != 3) {
+            face(keeper, tamer);
+        }
+        if (item_shop_keeper_met.patamon || item_shop_keeper_met.biyomon || item_shop_keeper_met.unimon || item_shop_keeper_met.monochromon) {
+        } else if (is_recruited(species("Patamon")) && !item_shop_keeper_met.patamon && item_shop_keeper == 0) {
+            say(keeper, text("s176.sec81.u0"));
+            item_shop_keeper_met.patamon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        } else if (is_recruited(species("Biyomon")) && !item_shop_keeper_met.biyomon && item_shop_keeper == 1) {
+            say(keeper, text("s176.sec81.u1"));
+            item_shop_keeper_met.biyomon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        } else if (is_recruited(species("Unimon")) && !item_shop_keeper_met.unimon && item_shop_keeper == 2) {
+            say(keeper, text("s176.sec81.u2"));
+            item_shop_keeper_met.unimon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        } else if (is_recruited(species("Monochromon")) && !item_shop_keeper_met.monochromon && item_shop_keeper == 3) {
+            say(keeper, text("s176.sec81.u3"));
+            item_shop_keeper_met.monochromon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        }
+        if (is_recruited(species("Patamon")) && !item_shop_keeper_met.patamon && item_shop_keeper == 0) {
+            say(keeper, text("s176.sec81.u4"));
+            item_shop_keeper_met.patamon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        }
+        if (is_recruited(species("Biyomon")) && !item_shop_keeper_met.biyomon && item_shop_keeper == 1) {
+            say(keeper, text("s176.sec81.u5"));
+            item_shop_keeper_met.biyomon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        }
+        if (is_recruited(species("Unimon")) && !item_shop_keeper_met.unimon && item_shop_keeper == 2) {
+            say(keeper, text("s176.sec81.u6"));
+            item_shop_keeper_met.unimon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        }
+        if (is_recruited(species("Monochromon")) && !item_shop_keeper_met.monochromon && item_shop_keeper == 3) {
+            say(keeper, text("s176.sec81.u7"));
+            item_shop_keeper_met.monochromon = true;
+            item_shop_intros += 1;
+            if (item_shop_intros >= 3) {
+                set_obj_visibility(18, 1);
+                set_obj_visibility(20, 1);
+            }
+            return;
+        }
+        if (item_shop_intros == 1) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.off_disk = true;
+            shop_stock.def_disk = true;
+            shop_stock.hispeed_dsk = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.port_potty = true;
+            shop_stock.meat = true;
+        }
+        if (item_shop_keeper == 0) {
+            shop_stock.omnipotent = true;
+        }
+        if (item_shop_keeper == 1) {
+            shop_stock.sup_recovery = true;
+        }
+        if (item_shop_keeper == 2) {
+            shop_stock.sup_restore = true;
+        }
+        if (item_shop_keeper == 3) {
+            shop_stock.protection = true;
+        }
+        engine.picker_mode = false;
+        if (item_shop_intros in [2, 3]) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.off_disk = true;
+            shop_stock.def_disk = true;
+            shop_stock.hispeed_dsk = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.port_potty = true;
+            shop_stock.meat = true;
+            shop_stock.lrg_recovery = true;
+            shop_stock.medium_mp = true;
+        }
+        if (item_shop_keeper == 0) {
+            shop_stock.omnipotent = true;
+        }
+        if (item_shop_keeper == 1) {
+            shop_stock.sup_recovery = true;
+        }
+        if (item_shop_keeper == 2) {
+            shop_stock.sup_restore = true;
+        }
+        if (item_shop_keeper == 3) {
+            shop_stock.protection = true;
+        }
+        if (item_shop_intros == 4) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.off_disk = true;
+            shop_stock.def_disk = true;
+            shop_stock.hispeed_dsk = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.port_potty = true;
+            shop_stock.meat = true;
+            shop_stock.lrg_recovery = true;
+            shop_stock.medium_mp = true;
+            shop_stock.double_flop = true;
+            shop_stock.large_mp = true;
+            shop_stock.restore = true;
+        }
+        if (item_shop_keeper == 0) {
+            shop_stock.omnipotent = true;
+        }
+        if (item_shop_keeper == 1) {
+            shop_stock.sup_recovery = true;
+        }
+        if (item_shop_keeper == 2) {
+            shop_stock.sup_restore = true;
+        }
+        if (item_shop_keeper == 3) {
+            shop_stock.protection = true;
+        }
+        if (item_shop_intros == 5) {
+            shop_stock.sm_recovery = true;
+            shop_stock.med_recovery = true;
+            shop_stock.mp_floppy = true;
+            shop_stock.various = true;
+            shop_stock.off_disk = true;
+            shop_stock.def_disk = true;
+            shop_stock.hispeed_dsk = true;
+            shop_stock.auto_pilot = true;
+            shop_stock.port_potty = true;
+            shop_stock.meat = true;
+            shop_stock.lrg_recovery = true;
+            shop_stock.medium_mp = true;
+            shop_stock.double_flop = true;
+            shop_stock.large_mp = true;
+            shop_stock.restore = true;
+            shop_stock.omnipotent = true;
+            shop_stock.sup_recovery = true;
+            shop_stock.protection = true;
+            shop_stock.sup_restore = true;
+        }
+        engine.picker_mode = false;
+        engine.arg = 5;
+        call_routine(routine("shop"));
+        shop_stock.sm_recovery = false;
+        shop_stock.med_recovery = false;
+        shop_stock.mp_floppy = false;
+        shop_stock.various = false;
+        shop_stock.off_disk = false;
+        shop_stock.def_disk = false;
+        shop_stock.hispeed_dsk = false;
+        shop_stock.auto_pilot = false;
+        shop_stock.port_potty = false;
+        shop_stock.meat = false;
+        shop_stock.lrg_recovery = false;
+        shop_stock.medium_mp = false;
+        shop_stock.double_flop = false;
+        shop_stock.large_mp = false;
+        shop_stock.restore = false;
+        shop_stock.omnipotent = false;
+        shop_stock.sup_recovery = false;
+        shop_stock.protection = false;
+        shop_stock.sup_restore = false;
+    }
+
+    on use(2) replace {    // section 82
+        unless (piximon_in_item_shop) return;
+        face(tamer, piximon);
+        face(piximon, tamer);
+        say(piximon, text("s176.sec82.u0"));
+        choice(open) {
+            text("s176.sec82.m0.o0") => {
+                if (bits >= 50000) {
+                    take_bits(50000);
+                    give_item(item("Trn. manual"), 1);
+                    if (engine.item_did_not_fit) {
+                        say(piximon, text("s176.sec82.u2"));
+                        give_bits(50000);
+                        return;
+                    }
+                    sound(0, 5);
+                    say(narrator, text("s176.sec82.u3"));
+                } else {
+                    say(piximon, text("s176.sec82.u1"));
+                    return;
+                }
+            }
+            text("s176.sec82.m0.o1") => {}
+        }
+        say(piximon, text("s176.sec82.u4"));
+    }
+
+    on use(3) replace {    // section 83
+        unless (item_shop_intros >= 3) return;
+        entity_set_rotation(tamer, 2048);
+        jump_to_file(219, 51);
+    }
+
+    on talk(punimon) replace {    // section 7
+        store_random(random_roll, 2);
+        if (engine.prosperity >= 20) {
+            if (random_roll == 0) {
+                say(punimon, text("s176.sec7.u0"));
+                return;
+            }
+        }
+        say(punimon, text("s176.sec7.u1"));
+    }
+
+    on step(1) replace {    // section 52
+        warp_to(217, 0, 255);
+        return;
+    }
+}

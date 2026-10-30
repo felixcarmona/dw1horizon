@@ -1,0 +1,58 @@
+// Readable form of script 172 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 172 {
+    npc vermilimon0 = 5;
+    npc gururumon1 = 6;
+    npc vermilimon2 = 7;
+    npc slot3 = 8;
+    npc gururumon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Large MP"), 3621, 0, 1184, 1024, 684);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1118, 1965);
+        warp_to(219, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -260, 387);
+        warp_to(210, 1, 255);
+    }
+
+    on talk(vermilimon0) replace {    // section 5
+        say(vermilimon0, text("s172.sec5.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(gururumon1) replace {    // section 6
+        say(gururumon1, text("s172.sec6.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on talk(vermilimon2) replace {    // section 7
+        say(vermilimon2, text("s172.sec7.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(slot3) replace {    // section 8
+        say(slot3, text("s172.sec8.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(gururumon4) replace {    // section 9
+        say(gururumon4, text("s172.sec9.u0"));
+        battle();
+        recruit(species("Gururumon"));
+        return;
+    }
+}

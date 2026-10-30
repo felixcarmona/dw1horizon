@@ -1,0 +1,316 @@
+From 047b9f8d5883bd1a112d92456acd4454dcb6c88e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 20:01:45 +0000
+Subject: [PATCH] Patch 0248: readable laboratory controls, labeled values and
+ visible destination filters
+
+---
+ src/main/mod_lab_menu.inc | 111 +++++++++++++++++++++-----------------
+ text/main/mod_lab.yaml    |  82 +++++++++++++++++++++++++---
+ 2 files changed, 135 insertions(+), 58 deletions(-)
+
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index aab3ba9b..3fcfec26 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -52,6 +52,7 @@ int32_t MOD_LAB_VIEW, MOD_LAB_CURSOR, MOD_LAB_VALUE, MOD_LAB_TARGET;
+ int32_t MOD_LAB_ACTIVE; /* pauseFrame renders the frozen world while this static UI is open */
+ int32_t MOD_LAB_EVO_CHOICE; /* selected species id, exposed for playtests */
+ static int32_t labTop, labCount, labField, labPrevious, labPreviousCursor;
++static int32_t labStep, labFilter;
+ static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the UI closes */
+ static char *modLabMessage;
+ static char labText[LAB_ROWS][96];
+@@ -214,6 +215,15 @@ static void modLabList(int32_t view)
+             } while (id >= 0 && id != first && labCount < NUM_SCREENS);
+         }
+     }
++    if (labFilter) {
++        first = 0;
++        for (i = 0; i < labCount; i++) {
++            id = labChoices[i];
++            if (!!(view == LAB_EVOLVE ? modLabNewSpecies(id) : isNewScreen(id)) == (labFilter == 2))
++                labChoices[first++] = id;
++        }
++        labCount = first;
++    }
+     id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : CURRENT_SCREEN;
+     for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
+ }
+@@ -244,60 +254,60 @@ static void modLabDrawText(void)
+     char lines[LAB_ROWS][96];
+     char *p;
+     int32_t row, n, id, level, count = modLabRowCount();
++    int32_t picker = MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS;
++    int32_t firstRow = picker ? 3 : 2, visible = picker ? 5 : 6;
+     if (MOD_LAB_CURSOR < labTop) labTop = MOD_LAB_CURSOR;
+-    if (MOD_LAB_CURSOR >= labTop + LAB_VISIBLE) labTop = MOD_LAB_CURSOR - LAB_VISIBLE + 1;
++    if (MOD_LAB_CURSOR >= labTop + visible) labTop = MOD_LAB_CURSOR - visible + 1;
+     memset(lines, 0, sizeof(lines));
+     appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
+         MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
+         MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : LAB_STR_CONFIRM);
+-    if (MOD_LAB_VIEW != LAB_NUMBER && MOD_LAB_VIEW != LAB_CONFIRM) {
+-        p = appendStr(lines[0] + strlen(lines[0]), "  ");
+-        p = labInt(p, MOD_LAB_CURSOR + 1); p = appendStr(p, LAB_STR_OF); labInt(p, count);
+-    }
+-    p = lines[1];
+-    if (modLabMessage) appendStr(p, modLabMessage);
+-    else if (MOD_LAB_VIEW == LAB_HOME) {
+-        p = appendStr(p, LAB_STR_BITS); labInt(p, MONEY);
+-    } else if ((MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS || MOD_LAB_VIEW == LAB_CONFIRM) && labCount) {
+-        id = MOD_LAB_VIEW == LAB_CONFIRM ? MOD_LAB_TARGET : labChoices[MOD_LAB_CURSOR];
+-        p = appendStr(p, "ID "); p = labInt(p, id);
++    if (MOD_LAB_VIEW == LAB_HOME) {
++        p = appendStr(lines[1], LAB_STR_BITS); labInt(p, MONEY);
++    } else if (MOD_LAB_VIEW == LAB_VALUES) appendStr(lines[1], LAB_STR_CHOOSE_FIELD);
++    if (picker || MOD_LAB_VIEW == LAB_CONFIRM) {
++        if (picker) appendStr(lines[1], labFilter == 0 ? LAB_STR_FILTER_ALL : labFilter == 1 ? LAB_STR_FILTER_ORIGINAL : LAB_STR_FILTER_NEW);
++        id = picker ? (labCount ? labChoices[MOD_LAB_CURSOR] : 0) : MOD_LAB_TARGET;
++        row = picker ? 2 : 4;
+         if (MOD_LAB_VIEW == LAB_EVOLVE || (MOD_LAB_VIEW == LAB_CONFIRM && labPrevious == LAB_EVOLVE)) {
+             level = DIGI_PARA(id).level;
+-            p = appendStr(p, "  "); p = appendStr(p, level >= 1 && level <= 6 ? LAB_STAGES[level] : "?");
+-            appendStr(p, modLabNewSpecies(id) ? LAB_STR_NEW_MARK : "  Original");
+-        } else appendStr(p, isNewScreen(id) ? LAB_STR_NEW_MARK : "  Original");
+-    } else if (MOD_LAB_VIEW == LAB_VALUES) {
+-        p = appendStr(p, LAB_STR_VALUE); p = labInt(p, *modLabFieldPtr(MOD_LAB_CURSOR));
+-        p = appendStr(p, "  "); p = labInt(p, modLabBound(MOD_LAB_CURSOR, 0));
+-        p = appendStr(p, " ... "); labInt(p, modLabBound(MOD_LAB_CURSOR, 1));
++            p = appendStr(lines[row], LAB_STR_STAGE);
++            p = appendStr(p, level >= 1 && level <= 6 ? LAB_STAGES[level] : "?");
++            appendStr(lines[picker ? row : row + 1] + strlen(lines[picker ? row : row + 1]),
++                modLabNewSpecies(id) ? LAB_STR_NEW_MARK : LAB_STR_ORIGINAL);
++        } else {
++            p = appendStr(lines[row], isNewScreen(id) ? LAB_STR_MAP_NEW : LAB_STR_MAP_ORIGINAL);
++            p = appendStr(p, ":  "); labInt(p, id);
++        }
+     }
+     if (MOD_LAB_VIEW == LAB_NUMBER) {
+-        p = appendStr(lines[2], LAB_STR_VALUE); labInt(p, MOD_LAB_VALUE);
+-        p = labInt(lines[3], modLabBound(labField, 0)); p = appendStr(p, " ... "); labInt(p, modLabBound(labField, 1));
+-        appendStr(lines[4], LAB_STR_STEP_ONE);
+-        appendStr(lines[5], LAB_STR_STEP_TEN);
+-        appendStr(lines[6], LAB_STR_STEP_HUNDRED);
+-        appendStr(lines[7], LAB_STR_MINIMUM);
++        appendStr(lines[1], LAB_STR_EDIT_HELP);
++        p = appendStr(lines[2], LAB_STR_CURRENT); labInt(p, *modLabFieldPtr(labField));
++        p = appendStr(lines[3], LAB_STR_VALUE); labInt(p, MOD_LAB_VALUE);
++        p = appendStr(lines[4], LAB_STR_INCREMENT); labInt(p, labStep);
++        appendStr(lines[5], LAB_STR_EDIT_STEP);
++        appendStr(lines[6], LAB_STR_EDIT_AMOUNT);
++        p = appendStr(lines[7], LAB_STR_RANGE); p = labInt(p, modLabBound(labField, 0));
++        p = appendStr(p, LAB_STR_TO_RANGE); labInt(p, modLabBound(labField, 1));
+     } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
+-        id = MOD_LAB_TARGET;
+-        appendStr(lines[3], labPrevious == LAB_EVOLVE ? DIGIMON_NAME(id) : getScreenCaption(id));
+-        if (labPrevious == LAB_MAPS) appendStr(lines[4], getScreenEntry(id)->filename);
+-        appendStr(lines[5], labPrevious == LAB_EVOLVE ? LAB_STR_EVOLVE : LAB_STR_TELEPORT);
+-    } else for (row = 0; row < LAB_VISIBLE; row++) {
++        appendStr(lines[1], labPrevious == LAB_EVOLVE ? LAB_STR_ASK_EVOLVE : LAB_STR_ASK_MAP);
++        appendStr(lines[3], labPrevious == LAB_EVOLVE ? DIGIMON_NAME(MOD_LAB_TARGET) : getScreenCaption(MOD_LAB_TARGET));
++    } else for (row = 0; row < visible; row++) {
+         n = labTop + row;
+         if (n >= count) break;
+-        p = lines[row + 2];
++        p = lines[row + firstRow];
+         if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, LAB_HOME_TEXT[n]);
+         else if (MOD_LAB_VIEW == LAB_VALUES) {
+-            p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, "  "); labInt(p, *modLabFieldPtr(n));
++            p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
+         } else {
+             id = labChoices[n];
+-            p = labInt(p, id); p = appendStr(p, " ");
+-            if (MOD_LAB_VIEW == LAB_EVOLVE ? modLabNewSpecies(id) : isNewScreen(id)) p = appendStr(p, "+ ");
+             appendStr(p, MOD_LAB_VIEW == LAB_EVOLVE ? DIGIMON_NAME(id) : getScreenCaption(id));
+         }
+     }
+-    appendStr(lines[8], MOD_LAB_VIEW == LAB_NUMBER || MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_ACCEPT_CANCEL : (MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS) ? LAB_STR_PICK_HINT : LAB_STR_LIST_HINT);
++    if (modLabMessage) { lines[1][0] = 0; appendStr(lines[1], modLabMessage); }
++    p = appendStr(lines[8], "\x81\xa2 ");
++    p = appendStr(p, MOD_LAB_VIEW == LAB_NUMBER ? LAB_STR_SAVE : MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_DO_IT : LAB_STR_CHOOSE);
++    p = appendStr(p, "    \x81\x7e "); appendStr(p, MOD_LAB_VIEW == LAB_NUMBER ? LAB_STR_DISCARD : LAB_STR_BACK);
+     for (row = 0; row < LAB_ROWS; row++) {
+         modLabFit(lines[row]);
+         if (!strcmp(labText[row], lines[row])) continue;
+@@ -316,11 +326,14 @@ static void modLabRender(int32_t instanceId)
+     box.attribute = 0x40000000; box.r = box.g = box.b = 0;
+     setRECT(&box, -160, -120, 320, 240); GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 7 - instanceId);
+     /* Texture UVs are bytes: a width of 256 wraps to zero. */
+-    for (row = 0; row < LAB_ROWS; row++)
+-        renderString(row == 0 ? 4 : row == 1 ? 3 : row == 8 ? 1 : 0,
++    for (row = 0; row < LAB_ROWS; row++) {
++        int32_t picker = MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS;
++        int32_t selected = MOD_LAB_VIEW == LAB_NUMBER ? 3 : MOD_LAB_VIEW == LAB_CONFIRM ? 3 :
++            (picker ? 3 : 2) + MOD_LAB_CURSOR - labTop;
++        renderString(row == selected ? 4 : 0,
+             pos->x + 16, pos->y + 8 + row * LAB_PITCH, 248, 12, 0, TEXT_ROW_Y(row), 0, 1);
+-    if (MOD_LAB_VIEW != LAB_NUMBER && MOD_LAB_VIEW != LAB_CONFIRM)
+-        renderSelectionCursor(pos->x + 12, pos->y + 8 + (2 + MOD_LAB_CURSOR - labTop) * LAB_PITCH, 260, 12, 0);
++    }
++
+ }
+ 
+ static void modLabFrames(int32_t frames)
+@@ -357,7 +370,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+     if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) return;
+     MOD_LAB_ACTIVE = 1;
+     labChoices = choices;
+-    MOD_LAB_VIEW = LAB_HOME; MOD_LAB_CURSOR = labTop = 0;
++    MOD_LAB_VIEW = LAB_HOME; MOD_LAB_CURSOR = labTop = labFilter = 0;
+     modLabMessage = NULL;
+     removeStaticUIBox(MOD_LAB_BOX);
+     setRECT(&pos, 0, MOD_LAB_TEXT_Y, 256, LAB_ROWS * 12); clearTextSubArea(&pos);
+@@ -382,10 +395,10 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+                 modLabSetValue(labField, MOD_LAB_VALUE); MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; labTop = 0;
+                 modLabMessage = LAB_STR_APPLIED;
+             } else {
+-                step = (pressed & (1 | 2)) ? 100 : (pressed & (PAD_L1 | PAD_R1)) ? 10 : 1;
+-                if (pressed & 0x80) MOD_LAB_VALUE = modLabBound(labField, 0);
+-                else if (pressed & (PAD_UP | PAD_RIGHT | PAD_R1 | 2)) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE + step);
+-                else if (pressed & (PAD_DOWN | PAD_LEFT | PAD_L1 | 1)) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE - step);
++                if (pressed & PAD_UP) { if (labStep < 10000) labStep *= 10; }
++                else if (pressed & PAD_DOWN) { if (labStep > 1) labStep /= 10; }
++                else if (pressed & PAD_RIGHT) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE + labStep);
++                else if (pressed & PAD_LEFT) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE - labStep);
+             }
+         } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
+             if (pressed & CONFIRM_BUTTON) done = modLabPerform();
+@@ -412,18 +425,16 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+                 case 7: done = 1; break;
+                 }
+             } else if (MOD_LAB_VIEW == LAB_VALUES) {
+-                labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER;
++                labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
+             } else if (labCount) {
+                 labPrevious = MOD_LAB_VIEW; labPreviousCursor = MOD_LAB_CURSOR;
+                 MOD_LAB_TARGET = labChoices[MOD_LAB_CURSOR];
+                 if (MOD_LAB_VIEW == LAB_EVOLVE) MOD_LAB_EVO_CHOICE = MOD_LAB_TARGET;
+                 MOD_LAB_VIEW = LAB_CONFIRM;
+             }
+-        } else if ((MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS) && (pressed & 3)) {
+-            for (step = 0; step < labCount; step++) {
+-                count = MOD_LAB_VIEW == LAB_EVOLVE ? modLabNewSpecies(labChoices[step]) : isNewScreen(labChoices[step]);
+-                if (!!count == !!(pressed & 2)) { MOD_LAB_CURSOR = step; break; }
+-            }
++        } else if ((MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS) && (pressed & (PAD_LEFT | PAD_RIGHT))) {
++            labFilter = (labFilter + ((pressed & PAD_RIGHT) ? 1 : 2)) % 3;
++            modLabList(MOD_LAB_VIEW);
+         } else {
+             count = modLabRowCount();
+             step = (pressed & (PAD_L1 | PAD_R1)) ? 10 : 1;
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index 84f18dff..41ca4f07 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -8,8 +8,8 @@ MOD_LAB:
+       ja: "LABORATORY"
+       en_us: "LABORATORY"
+     LAB_STR_ADD_BITS:
+-      ja: "+10000 bits"
+-      en_us: "+10000 bits"
++      ja: "Add 10000 bits"
++      en_us: "Add 10000 bits"
+     LAB_STR_HEAL:
+       ja: "Heal partner"
+       en_us: "Heal partner"
+@@ -95,8 +95,8 @@ MOD_LAB:
+       ja: "Satisfy all needs"
+       en_us: "Satisfy all needs"
+     LAB_STR_PARAMETERS:
+-      ja: "Edit parameters"
+-      en_us: "Edit parameters"
++      ja: "Edit Digimon"
++      en_us: "Edit Digimon"
+     LAB_STR_EVOLVE:
+       ja: "Evolve Digimon"
+       en_us: "Evolve Digimon"
+@@ -107,11 +107,11 @@ MOD_LAB:
+       ja: "Confirm action"
+       en_us: "Confirm action"
+     LAB_STR_NEW_MARK:
+-      ja: " + NEW"
+-      en_us: " + NEW"
++      ja: " - Added"
++      en_us: " - Added"
+     LAB_STR_VALUE:
+-      ja: "Value: "
+-      en_us: "Value: "
++      ja: "New value: "
++      en_us: "New value: "
+     LAB_STR_STEP_ONE:
+       ja: "Up/down: +1 / -1"
+       en_us: "Up/down: +1 / -1"
+@@ -199,3 +199,69 @@ MOD_LAB:
+     LAB_STR_PICK_HINT:
+       ja: "L1/R1 10  L2/R2 +"
+       en_us: "L1/R1 10  L2/R2 +"
++    LAB_STR_CHOOSE_FIELD:
++      ja: "Choose what you want to change."
++      en_us: "Choose what you want to change."
++    LAB_STR_FILTER_ALL:
++      ja: "Show: All  (left/right)"
++      en_us: "Show: All  (left/right)"
++    LAB_STR_FILTER_ORIGINAL:
++      ja: "Show: Originals  (left/right)"
++      en_us: "Show: Originals  (left/right)"
++    LAB_STR_FILTER_NEW:
++      ja: "Show: Added  (left/right)"
++      en_us: "Show: Added  (left/right)"
++    LAB_STR_STAGE:
++      ja: "Stage: "
++      en_us: "Stage: "
++    LAB_STR_ORIGINAL:
++      ja: " - Original"
++      en_us: " - Original"
++    LAB_STR_MAP_NEW:
++      ja: "Added map"
++      en_us: "Added map"
++    LAB_STR_MAP_ORIGINAL:
++      ja: "Original map"
++      en_us: "Original map"
++    LAB_STR_EDIT_HELP:
++      ja: "Choose a value, then save."
++      en_us: "Choose a value, then save."
++    LAB_STR_CURRENT:
++      ja: "Current value: "
++      en_us: "Current value: "
++    LAB_STR_INCREMENT:
++      ja: "Change by: "
++      en_us: "Change by: "
++    LAB_STR_EDIT_STEP:
++      ja: "Up/down: change the amount"
++      en_us: "Up/down: change the amount"
++    LAB_STR_EDIT_AMOUNT:
++      ja: "Left subtracts. Right adds."
++      en_us: "Left subtracts. Right adds."
++    LAB_STR_RANGE:
++      ja: "Allowed: "
++      en_us: "Allowed: "
++    LAB_STR_TO_RANGE:
++      ja: " to "
++      en_us: " to "
++    LAB_STR_ASK_EVOLVE:
++      ja: "Evolve into this Digimon?"
++      en_us: "Evolve into this Digimon?"
++    LAB_STR_ASK_MAP:
++      ja: "Travel to this map?"
++      en_us: "Travel to this map?"
++    LAB_STR_SAVE:
++      ja: "Save"
++      en_us: "Save"
++    LAB_STR_DISCARD:
++      ja: "Discard"
++      en_us: "Discard"
++    LAB_STR_DO_IT:
++      ja: "Confirm"
++      en_us: "Confirm"
++    LAB_STR_CHOOSE:
++      ja: "Choose"
++      en_us: "Choose"
++    LAB_STR_BACK:
++      ja: "Back"
++      en_us: "Back"
+-- 
+2.55.0
+

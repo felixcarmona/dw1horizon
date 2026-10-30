@@ -1,0 +1,34 @@
+{
+  "id": 130,
+  "name": "Devimon",
+  "level": "champion",
+  "attribute": "virus",
+  "specialties": ["battle", "air", "ice"],
+  "techniques": ["Megaton Punch", "War Cry", "Muscle Charge", "Megalo Spark", "Thunder Justice", "Giga Freeze",
+                 "Ice Statue", "Death Claw"],
+  "drop": {"item": "Quick Chip", "percent": 100},
+  "effects_like": 6,
+  "model": {"name": "EDEV", "bones": 28, "radius": 160, "height": 400},
+  "voice": 6,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 10, "def": 100, "speed": 100, "brain": 100, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

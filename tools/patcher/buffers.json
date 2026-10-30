@@ -1,0 +1,2049 @@
+{
+  "version": 1,
+  "objects": {
+    "BTL_BUFF_RING_SPARKS": {
+      "file": "BTL_REL.BIN",
+      "length": 256,
+      "copy_length": 256,
+      "offsets": {
+        "us": 144280,
+        "eu": 178756,
+        "fr": 178556,
+        "de": 178584,
+        "es": 178680,
+        "it": 178560,
+        "jp1": 179352
+      }
+    },
+    "BTL_BUFF_RINGS": {
+      "file": "BTL_REL.BIN",
+      "length": 108,
+      "copy_length": 108,
+      "offsets": {
+        "us": 144172,
+        "eu": 179012,
+        "fr": 178812,
+        "de": 178840,
+        "es": 178936,
+        "it": 178816,
+        "jp1": 179244
+      }
+    },
+    "BTL_BUFF_TRAIL_B_Z": {
+      "file": "BTL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 144156,
+        "eu": 178392,
+        "fr": 178192,
+        "de": 178220,
+        "es": 178316,
+        "it": 178196,
+        "jp1": 179228
+      }
+    },
+    "BTL_BUFF_TRAIL_B_X": {
+      "file": "BTL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 144140,
+        "eu": 178408,
+        "fr": 178208,
+        "de": 178236,
+        "es": 178332,
+        "it": 178212,
+        "jp1": 179212
+      }
+    },
+    "BTL_BUFF_TRAIL_A_Z": {
+      "file": "BTL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 144124,
+        "eu": 178424,
+        "fr": 178224,
+        "de": 178252,
+        "es": 178348,
+        "it": 178228,
+        "jp1": 179196
+      }
+    },
+    "BTL_BUFF_TRAIL_A_X": {
+      "file": "BTL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 144108,
+        "eu": 178440,
+        "fr": 178240,
+        "de": 178268,
+        "es": 178364,
+        "it": 178244,
+        "jp1": 179180
+      }
+    },
+    "BTL_BUFF_TRAILS": {
+      "file": "BTL_REL.BIN",
+      "length": 300,
+      "copy_length": 300,
+      "offsets": {
+        "us": 143808,
+        "eu": 178456,
+        "fr": 178256,
+        "de": 178284,
+        "es": 178380,
+        "it": 178260,
+        "jp1": 178880
+      }
+    },
+    "BTL_BUFF_DISKS": {
+      "file": "BTL_REL.BIN",
+      "length": 36,
+      "copy_length": 36,
+      "offsets": {
+        "us": 143772,
+        "eu": 178356,
+        "fr": 178156,
+        "de": 178184,
+        "es": 178280,
+        "it": 178160,
+        "jp1": 178844
+      }
+    },
+    "BTL_ITEM_PARTICLE_EFFECTS": {
+      "file": "BTL_REL.BIN",
+      "length": 2256,
+      "copy_length": 2256,
+      "offsets": {
+        "us": 141516,
+        "eu": 176100,
+        "fr": 175900,
+        "de": 175928,
+        "es": 176024,
+        "it": 175904,
+        "jp1": 176588
+      }
+    },
+    "BTL_ITEM_PARTICLE_DRAG": {
+      "file": "BTL_REL.BIN",
+      "length": 80,
+      "copy_length": 80,
+      "offsets": {
+        "us": 141436,
+        "eu": 175900,
+        "fr": 175700,
+        "de": 175728,
+        "es": 175824,
+        "it": 175704,
+        "jp1": 176508
+      }
+    },
+    "BTL_ITEM_PARTICLE_VELOCITIES": {
+      "file": "BTL_REL.BIN",
+      "length": 120,
+      "copy_length": 120,
+      "offsets": {
+        "us": 141316,
+        "eu": 175980,
+        "fr": 175780,
+        "de": 175808,
+        "es": 175904,
+        "it": 175784,
+        "jp1": 176388
+      }
+    },
+    "BTL_FINISHER_AURA_SPARKS": {
+      "file": "BTL_REL.BIN",
+      "length": 160,
+      "copy_length": 160,
+      "offsets": {
+        "us": 141156,
+        "eu": 175724,
+        "fr": 175524,
+        "de": 175552,
+        "es": 175648,
+        "it": 175528,
+        "jp1": 176228
+      }
+    },
+    "BTL_FINISHER_AURAS": {
+      "file": "BTL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 141140,
+        "eu": 175884,
+        "fr": 175684,
+        "de": 175712,
+        "es": 175808,
+        "it": 175688,
+        "jp1": 176212
+      }
+    },
+    "BTL_STUN_SUB_EFFECTS": {
+      "file": "BTL_REL.BIN",
+      "length": 200,
+      "copy_length": 200,
+      "offsets": {
+        "us": 140940,
+        "eu": 175524,
+        "fr": 175324,
+        "de": 175352,
+        "es": 175448,
+        "it": 175328,
+        "jp1": 176012
+      }
+    },
+    "BTL_STUN_EFFECTS": {
+      "file": "BTL_REL.BIN",
+      "length": 60,
+      "copy_length": 60,
+      "offsets": {
+        "us": 140880,
+        "eu": 175464,
+        "fr": 175264,
+        "de": 175292,
+        "es": 175388,
+        "it": 175268,
+        "jp1": 175952
+      }
+    },
+    "BTL_CONFUSION_EFFECTS": {
+      "file": "BTL_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 140816,
+        "eu": 175400,
+        "fr": 175200,
+        "de": 175228,
+        "es": 175324,
+        "it": 175204,
+        "jp1": 175888
+      }
+    },
+    "BTL_POISON_EFFECTS": {
+      "file": "BTL_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 140784,
+        "eu": 175368,
+        "fr": 175168,
+        "de": 175196,
+        "es": 175292,
+        "it": 175172,
+        "jp1": 175856
+      }
+    },
+    "BTL_POISON_BUBBLES": {
+      "file": "BTL_REL.BIN",
+      "length": 144,
+      "copy_length": 144,
+      "offsets": {
+        "us": 140640,
+        "eu": 175224,
+        "fr": 175024,
+        "de": 175052,
+        "es": 175148,
+        "it": 175028,
+        "jp1": 175712
+      }
+    },
+    "BTL_EFE_SUB_OPCODE_HANDLERS": {
+      "file": "BTL_REL.BIN",
+      "length": 388,
+      "copy_length": 388,
+      "offsets": {
+        "us": 140252,
+        "eu": 174836,
+        "fr": 174636,
+        "de": 174664,
+        "es": 174760,
+        "it": 174640,
+        "jp1": 175324
+      }
+    },
+    "BTL_BATTLE_START_TEXT_PIECES": {
+      "file": "BTL_REL.BIN",
+      "length": 3100,
+      "copy_length": 3100,
+      "offsets": {
+        "us": 137152,
+        "eu": 171736,
+        "fr": 171536,
+        "de": 171564,
+        "es": 171660,
+        "it": 171540,
+        "jp1": 172224
+      }
+    },
+    "BTL_END_BOX_TEXTBUFFER": {
+      "file": "BTL_REL.BIN",
+      "length": 1024,
+      "copy_length": 1024,
+      "offsets": {
+        "us": 136128,
+        "eu": 170712,
+        "fr": 170512,
+        "de": 170540,
+        "es": 170636,
+        "it": 170516,
+        "jp1": 171200
+      }
+    },
+    "BTL_DEATH_COUNTDOWN": {
+      "file": "BTL_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 136088,
+        "eu": 170672,
+        "fr": 170472,
+        "de": 170500,
+        "es": 170596,
+        "it": 170476,
+        "jp1": 171160
+      }
+    },
+    "BTL_DEATH_COUNTDOWN_SPRITE": {
+      "file": "BTL_REL.BIN",
+      "length": 36,
+      "copy_length": 36,
+      "offsets": {
+        "us": 136052,
+        "eu": 170636,
+        "fr": 170436,
+        "de": 170464,
+        "es": 170560,
+        "it": 170440,
+        "jp1": 171124
+      }
+    },
+    "DOO2_D_80071EE4": {
+      "file": "DOO2_REL.BIN",
+      "length": 38920,
+      "copy_length": 38920,
+      "offsets": {
+        "us": 7908,
+        "eu": 11244,
+        "fr": 11244,
+        "de": 11244,
+        "es": 11244,
+        "it": 11244,
+        "jp1": 11244
+      }
+    },
+    "DOO2_D_80071BE0": {
+      "file": "DOO2_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 7136,
+        "eu": 10472,
+        "fr": 10472,
+        "de": 10472,
+        "es": 10472,
+        "it": 10472,
+        "jp1": 10472
+      }
+    },
+    "DOOA_REINCARNATION_SEQ": {
+      "file": "DOOA_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 30824,
+        "eu": 37188,
+        "fr": 37188,
+        "de": 37188,
+        "es": 37188,
+        "it": 37188,
+        "jp1": 37380
+      }
+    },
+    "DOOA_SHARD_EFFECT": {
+      "file": "DOOA_REL.BIN",
+      "length": 28,
+      "copy_length": 28,
+      "offsets": {
+        "us": 30796,
+        "eu": 37160,
+        "fr": 37160,
+        "de": 37160,
+        "es": 37160,
+        "it": 37160,
+        "jp1": 37352
+      }
+    },
+    "DOOA_SAVED_ENTITY_VISIBILITY": {
+      "file": "DOOA_REL.BIN",
+      "length": 12,
+      "copy_length": 12,
+      "offsets": {
+        "us": 30784,
+        "eu": 37148,
+        "fr": 37148,
+        "de": 37148,
+        "es": 37148,
+        "it": 37148,
+        "jp1": 37340
+      }
+    },
+    "DOOA_ORDERING_TABLE": {
+      "file": "DOOA_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 30744,
+        "eu": 37108,
+        "fr": 37108,
+        "de": 37108,
+        "es": 37108,
+        "it": 37108,
+        "jp1": 37300
+      }
+    },
+    "DOOA_FADED_CLUT": {
+      "file": "DOOA_REL.BIN",
+      "length": 3844,
+      "copy_length": 3844,
+      "offsets": {
+        "us": 26900,
+        "eu": 25776,
+        "fr": 25776,
+        "de": 25776,
+        "es": 25776,
+        "it": 25776,
+        "jp1": 33456
+      }
+    },
+    "DOOA_SCENE_CLUT": {
+      "file": "DOOA_REL.BIN",
+      "length": 3588,
+      "copy_length": 3588,
+      "offsets": {
+        "us": 23312,
+        "eu": 29668,
+        "fr": 29668,
+        "de": 29668,
+        "es": 29668,
+        "it": 29668,
+        "jp1": 29868
+      }
+    },
+    "DOOA_PARTNER_POSITION": {
+      "file": "DOOA_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 23296,
+        "eu": 29620,
+        "fr": 29620,
+        "de": 29620,
+        "es": 29620,
+        "it": 29620,
+        "jp1": 29852
+      }
+    },
+    "DOOA_SAVED_VIEW": {
+      "file": "DOOA_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 23264,
+        "eu": 29636,
+        "fr": 29636,
+        "de": 29636,
+        "es": 29636,
+        "it": 29636,
+        "jp1": 29820
+      }
+    },
+    "DOOA_SHARD_CLUT": {
+      "file": "DOOA_REL.BIN",
+      "length": 2308,
+      "copy_length": 2308,
+      "offsets": {
+        "us": 20956,
+        "eu": 33256,
+        "fr": 33256,
+        "de": 33256,
+        "es": 33256,
+        "it": 33256,
+        "jp1": 27512
+      }
+    },
+    "DOOA_MODEL_CLUT": {
+      "file": "DOOA_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 20184,
+        "eu": 35564,
+        "fr": 35564,
+        "de": 35564,
+        "es": 35564,
+        "it": 35564,
+        "jp1": 26740
+      }
+    },
+    "DOOA_SAVED_ENTITY_CLUT": {
+      "file": "DOOA_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 19412,
+        "eu": 36336,
+        "fr": 36336,
+        "de": 36336,
+        "es": 36336,
+        "it": 36336,
+        "jp1": 25968
+      }
+    },
+    "DOOA_SAVED_LOCATION": {
+      "file": "DOOA_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 19396,
+        "eu": 25244,
+        "fr": 25244,
+        "de": 25244,
+        "es": 25244,
+        "it": 25244,
+        "jp1": 25952
+      }
+    },
+    "DOOA_CAMERA_START_VIEW": {
+      "file": "DOOA_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 19364,
+        "eu": 25260,
+        "fr": 25260,
+        "de": 25260,
+        "es": 25260,
+        "it": 25260,
+        "jp1": 25920
+      }
+    },
+    "DOOA_FLASH_DATA": {
+      "file": "DOOA_REL.BIN",
+      "length": 484,
+      "copy_length": 484,
+      "offsets": {
+        "us": 18880,
+        "eu": 25292,
+        "fr": 25292,
+        "de": 25292,
+        "es": 25292,
+        "it": 25292,
+        "jp1": 25436
+      }
+    },
+    "EAB_D_80061A10": {
+      "file": "EAB_REL.BIN",
+      "length": 1600,
+      "copy_length": 1600,
+      "offsets": {
+        "us": 6672,
+        "eu": 8368,
+        "fr": 8368,
+        "de": 8368,
+        "es": 8368,
+        "it": 8368,
+        "jp1": 8368
+      }
+    },
+    "EAB_D_80061A04": {
+      "file": "EAB_REL.BIN",
+      "length": 12,
+      "copy_length": 12,
+      "offsets": {
+        "us": 6660,
+        "eu": 8356,
+        "fr": 8356,
+        "de": 8356,
+        "es": 8356,
+        "it": 8356,
+        "jp1": 8356
+      }
+    },
+    "EAB_D_800619E4": {
+      "file": "EAB_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 6628,
+        "eu": 8324,
+        "fr": 8324,
+        "de": 8324,
+        "es": 8324,
+        "it": 8324,
+        "jp1": 8324
+      }
+    },
+    "EAB_D_80061800": {
+      "file": "EAB_REL.BIN",
+      "length": 484,
+      "copy_length": 484,
+      "offsets": {
+        "us": 6144,
+        "eu": 7816,
+        "fr": 7816,
+        "de": 7816,
+        "es": 7816,
+        "it": 7816,
+        "jp1": 7840
+      }
+    },
+    "ENDI_STATE": {
+      "file": "ENDI_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 5412,
+        "eu": 6728,
+        "fr": 6728,
+        "de": 6728,
+        "es": 6728,
+        "it": 6728,
+        "jp1": 6760
+      }
+    },
+    "ENDI_DATA": {
+      "file": "ENDI_REL.BIN",
+      "length": 12,
+      "copy_length": 12,
+      "offsets": {
+        "us": 5400,
+        "eu": 6716,
+        "fr": 6716,
+        "de": 6716,
+        "es": 6716,
+        "it": 6716,
+        "jp1": 6748
+      }
+    },
+    "ENDI_PARTICLES": {
+      "file": "ENDI_REL.BIN",
+      "length": 1920,
+      "copy_length": 1920,
+      "offsets": {
+        "us": 3480,
+        "eu": 4796,
+        "fr": 4796,
+        "de": 4796,
+        "es": 4796,
+        "it": 4796,
+        "jp1": 4828
+      }
+    },
+    "EVL_D_80068F84": {
+      "file": "EVL_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 36740,
+        "eu": 42220,
+        "fr": 42220,
+        "de": 42220,
+        "es": 42220,
+        "it": 42220,
+        "jp1": 42956
+      }
+    },
+    "EVL_D_80068944": {
+      "file": "EVL_REL.BIN",
+      "length": 1600,
+      "copy_length": 1600,
+      "offsets": {
+        "us": 35140,
+        "eu": 40620,
+        "fr": 40620,
+        "de": 40620,
+        "es": 40620,
+        "it": 40620,
+        "jp1": 41356
+      }
+    },
+    "EVL_D_80068938": {
+      "file": "EVL_REL.BIN",
+      "length": 12,
+      "copy_length": 12,
+      "offsets": {
+        "us": 35128,
+        "eu": 40608,
+        "fr": 40608,
+        "de": 40608,
+        "es": 40608,
+        "it": 40608,
+        "jp1": 41344
+      }
+    },
+    "EVL_D_80068918": {
+      "file": "EVL_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 35096,
+        "eu": 40576,
+        "fr": 40576,
+        "de": 40576,
+        "es": 40576,
+        "it": 40576,
+        "jp1": 41312
+      }
+    },
+    "EVL_D_80068908": {
+      "file": "EVL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 35080,
+        "eu": 40560,
+        "fr": 40560,
+        "de": 40560,
+        "es": 40560,
+        "it": 40560,
+        "jp1": 41296
+      }
+    },
+    "EVL_D_800688E8": {
+      "file": "EVL_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 35048,
+        "eu": 40528,
+        "fr": 40528,
+        "de": 40528,
+        "es": 40528,
+        "it": 40528,
+        "jp1": 41264
+      }
+    },
+    "EVL_D_800679E4": {
+      "file": "EVL_REL.BIN",
+      "length": 3844,
+      "copy_length": 3844,
+      "offsets": {
+        "us": 31204,
+        "eu": 36684,
+        "fr": 36684,
+        "de": 36684,
+        "es": 36684,
+        "it": 36684,
+        "jp1": 37420
+      }
+    },
+    "EVL_D_80067994": {
+      "file": "EVL_REL.BIN",
+      "length": 80,
+      "copy_length": 80,
+      "offsets": {
+        "us": 31124,
+        "eu": 21668,
+        "fr": 21668,
+        "de": 21668,
+        "es": 21668,
+        "it": 21668,
+        "jp1": 37340
+      }
+    },
+    "EVL_D_800677B0": {
+      "file": "EVL_REL.BIN",
+      "length": 484,
+      "copy_length": 484,
+      "offsets": {
+        "us": 30640,
+        "eu": 21748,
+        "fr": 21748,
+        "de": 21748,
+        "es": 21748,
+        "it": 21748,
+        "jp1": 36856
+      }
+    },
+    "EVL_D_80066274": {
+      "file": "EVL_REL.BIN",
+      "length": 12288,
+      "copy_length": 5436,
+      "offsets": {
+        "us": 25204,
+        "eu": 22232,
+        "fr": 22232,
+        "de": 22232,
+        "es": 22232,
+        "it": 22232,
+        "jp1": 31420
+      }
+    },
+    "EVL_D_80065FA0": {
+      "file": "EVL_REL.BIN",
+      "length": 724,
+      "copy_length": 724,
+      "offsets": {
+        "us": 24480,
+        "eu": 27668,
+        "fr": 27668,
+        "de": 27668,
+        "es": 27668,
+        "it": 27668,
+        "jp1": 30696
+      }
+    },
+    "EVL_D_8006569C": {
+      "file": "EVL_REL.BIN",
+      "length": 2308,
+      "copy_length": 2308,
+      "offsets": {
+        "us": 22172,
+        "eu": 28392,
+        "fr": 28392,
+        "de": 28392,
+        "es": 28392,
+        "it": 28392,
+        "jp1": 28388
+      }
+    },
+    "EVL_D_80065398": {
+      "file": "EVL_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 21400,
+        "eu": 30700,
+        "fr": 30700,
+        "de": 30700,
+        "es": 30700,
+        "it": 30700,
+        "jp1": 27616
+      }
+    },
+    "EVL_D_80065094": {
+      "file": "EVL_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 20628,
+        "eu": 31472,
+        "fr": 31472,
+        "de": 31472,
+        "es": 31472,
+        "it": 31472,
+        "jp1": 26844
+      }
+    },
+    "EVL_D_80064D50": {
+      "file": "EVL_REL.BIN",
+      "length": 836,
+      "copy_length": 836,
+      "offsets": {
+        "us": 19792,
+        "eu": 32244,
+        "fr": 32244,
+        "de": 32244,
+        "es": 32244,
+        "it": 32244,
+        "jp1": 26008
+      }
+    },
+    "EVL_D_80064D40": {
+      "file": "EVL_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 19776,
+        "eu": 36668,
+        "fr": 36668,
+        "de": 36668,
+        "es": 36668,
+        "it": 36668,
+        "jp1": 22404
+      }
+    },
+    "EVL_D_80063F3C": {
+      "file": "EVL_REL.BIN",
+      "length": 3588,
+      "copy_length": 3588,
+      "offsets": {
+        "us": 16188,
+        "eu": 33080,
+        "fr": 33080,
+        "de": 33080,
+        "es": 33080,
+        "it": 33080,
+        "jp1": 22420
+      }
+    },
+    "FISHING_DATA": {
+      "file": "FISH_REL.BIN",
+      "length": 11536,
+      "copy_length": 11536,
+      "offsets": {
+        "us": 44120,
+        "eu": 60576,
+        "fr": 60508,
+        "de": 60484,
+        "es": 60524,
+        "it": 60520,
+        "jp1": 60288
+      }
+    },
+    "FISH_ROD_SEGMENT_POS": {
+      "file": "FISH_REL.BIN",
+      "length": 80,
+      "copy_length": 80,
+      "offsets": {
+        "us": 44040,
+        "eu": 60496,
+        "fr": 60428,
+        "de": 60404,
+        "es": 60444,
+        "it": 60440,
+        "jp1": 60208
+      }
+    },
+    "FISH_ROD_SEGMENT_MATRIX": {
+      "file": "FISH_REL.BIN",
+      "length": 160,
+      "copy_length": 160,
+      "offsets": {
+        "us": 43880,
+        "eu": 60336,
+        "fr": 60268,
+        "de": 60244,
+        "es": 60284,
+        "it": 60280,
+        "jp1": 60048
+      }
+    },
+    "KAR_D_800639C0": {
+      "file": "KAR_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 65984,
+        "eu": 75744,
+        "fr": 75280,
+        "de": 74760,
+        "es": 75512,
+        "it": 75444,
+        "jp1": 75648
+      }
+    },
+    "KAR_D_80063914": {
+      "file": "KAR_REL.BIN",
+      "length": 172,
+      "copy_length": 172,
+      "offsets": {
+        "us": 65812,
+        "eu": 75540,
+        "fr": 75076,
+        "de": 74556,
+        "es": 75308,
+        "it": 75240,
+        "jp1": 75476
+      }
+    },
+    "KAR_D_80063904": {
+      "file": "KAR_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 65796,
+        "eu": 75728,
+        "fr": 75264,
+        "de": 74744,
+        "es": 75496,
+        "it": 75428,
+        "jp1": 75460
+      }
+    },
+    "KAR_D_800638F4": {
+      "file": "KAR_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 65780,
+        "eu": 75712,
+        "fr": 75248,
+        "de": 74728,
+        "es": 75480,
+        "it": 75412,
+        "jp1": 75444
+      }
+    },
+    "KAR_D_800638CC": {
+      "file": "KAR_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 65740,
+        "eu": 75244,
+        "fr": 74780,
+        "de": 74260,
+        "es": 75012,
+        "it": 74944,
+        "jp1": 75148
+      }
+    },
+    "KAR_D_8006384C": {
+      "file": "KAR_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 65612,
+        "eu": 75412,
+        "fr": 74948,
+        "de": 74428,
+        "es": 75180,
+        "it": 75112,
+        "jp1": 75316
+      }
+    },
+    "KAR_D_800637CC": {
+      "file": "KAR_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 65484,
+        "eu": 75284,
+        "fr": 74820,
+        "de": 74300,
+        "es": 75052,
+        "it": 74984,
+        "jp1": 75188
+      }
+    },
+    "KAR_D_8005BFCC": {
+      "file": "KAR_REL.BIN",
+      "length": 30720,
+      "copy_length": 30720,
+      "offsets": {
+        "us": 34764,
+        "eu": 44524,
+        "fr": 44060,
+        "de": 43540,
+        "es": 44292,
+        "it": 44224,
+        "jp1": 44428
+      }
+    },
+    "KAR_D_8005B5A0": {
+      "file": "KAR_REL.BIN",
+      "length": 2604,
+      "copy_length": 2604,
+      "offsets": {
+        "us": 32160,
+        "eu": 41920,
+        "fr": 41456,
+        "de": 40936,
+        "es": 41688,
+        "it": 41620,
+        "jp1": 41824
+      }
+    },
+    "MURD_ENTITY_VISIBILITY": {
+      "file": "MURD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 10576,
+        "eu": 13112,
+        "fr": 13116,
+        "de": 13116,
+        "es": 13116,
+        "it": 13116,
+        "jp1": 13256
+      }
+    },
+    "MURD_ORDERING_TABLES": {
+      "file": "MURD_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 10536,
+        "eu": 13072,
+        "fr": 13076,
+        "de": 13076,
+        "es": 13076,
+        "it": 13076,
+        "jp1": 13216
+      }
+    },
+    "MURD_PALETTE_BACKUP": {
+      "file": "MURD_REL.BIN",
+      "length": 3588,
+      "copy_length": 3588,
+      "offsets": {
+        "us": 6948,
+        "eu": 9484,
+        "fr": 9488,
+        "de": 9488,
+        "es": 9488,
+        "it": 9488,
+        "jp1": 9628
+      }
+    },
+    "MURD_TEXTURE_BUFFER": {
+      "file": "MURD_REL.BIN",
+      "length": 772,
+      "copy_length": 772,
+      "offsets": {
+        "us": 6176,
+        "eu": 8700,
+        "fr": 8704,
+        "de": 8704,
+        "es": 8704,
+        "it": 8704,
+        "jp1": 8856
+      }
+    },
+    "STD_FINISHER_AURA_SPARKS": {
+      "file": "STD_REL.BIN",
+      "length": 160,
+      "copy_length": 160,
+      "offsets": {
+        "us": 185156,
+        "eu": 224284,
+        "fr": 224292,
+        "de": 224332,
+        "es": 224288,
+        "it": 224280,
+        "jp1": 227468
+      }
+    },
+    "STD_FINISHER_AURAS": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 185140,
+        "eu": 224444,
+        "fr": 224452,
+        "de": 224492,
+        "es": 224448,
+        "it": 224440,
+        "jp1": 227452
+      }
+    },
+    "STD_STUN_SUB_EFFECTS": {
+      "file": "STD_REL.BIN",
+      "length": 200,
+      "copy_length": 200,
+      "offsets": {
+        "us": 184940,
+        "eu": 224084,
+        "fr": 224092,
+        "de": 224132,
+        "es": 224088,
+        "it": 224080,
+        "jp1": 227252
+      }
+    },
+    "STD_STUN_EFFECTS": {
+      "file": "STD_REL.BIN",
+      "length": 60,
+      "copy_length": 60,
+      "offsets": {
+        "us": 184880,
+        "eu": 224024,
+        "fr": 224032,
+        "de": 224072,
+        "es": 224028,
+        "it": 224020,
+        "jp1": 227192
+      }
+    },
+    "STD_CONFUSION_EFFECTS": {
+      "file": "STD_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 184816,
+        "eu": 223960,
+        "fr": 223968,
+        "de": 224008,
+        "es": 223964,
+        "it": 223956,
+        "jp1": 227128
+      }
+    },
+    "STD_POISON_EFFECTS": {
+      "file": "STD_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 184784,
+        "eu": 223928,
+        "fr": 223936,
+        "de": 223976,
+        "es": 223932,
+        "it": 223924,
+        "jp1": 227096
+      }
+    },
+    "STD_POISON_BUBBLES": {
+      "file": "STD_REL.BIN",
+      "length": 144,
+      "copy_length": 144,
+      "offsets": {
+        "us": 184640,
+        "eu": 223784,
+        "fr": 223792,
+        "de": 223832,
+        "es": 223788,
+        "it": 223780,
+        "jp1": 226952
+      }
+    },
+    "STD_SAVED_WS_MATRIX": {
+      "file": "STD_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 184608,
+        "eu": 223752,
+        "fr": 223760,
+        "de": 223800,
+        "es": 223756,
+        "it": 223748,
+        "jp1": 226920
+      }
+    },
+    "STD_EFE_SUB_OPCODE_HANDLERS": {
+      "file": "STD_REL.BIN",
+      "length": 388,
+      "copy_length": 388,
+      "offsets": {
+        "us": 184220,
+        "eu": 223364,
+        "fr": 223372,
+        "de": 223412,
+        "es": 223368,
+        "it": 223360,
+        "jp1": 226532
+      }
+    },
+    "STD_LOSE_WIPE_ORDER": {
+      "file": "STD_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 184188,
+        "eu": 223268,
+        "fr": 223276,
+        "de": 223316,
+        "es": 223272,
+        "it": 223264,
+        "jp1": 226500
+      }
+    },
+    "STD_LOSE_WIPE_HEIGHTS": {
+      "file": "STD_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 184124,
+        "eu": 223300,
+        "fr": 223308,
+        "de": 223348,
+        "es": 223304,
+        "it": 223296,
+        "jp1": 226436
+      }
+    },
+    "STD_MODEL_SCENE_STEPS": {
+      "file": "STD_REL.BIN",
+      "length": 20,
+      "copy_length": 20,
+      "offsets": {
+        "us": 184104,
+        "eu": 223248,
+        "fr": 223256,
+        "de": 223296,
+        "es": 223252,
+        "it": 223244,
+        "jp1": 226416
+      }
+    },
+    "STD_CHAMPION_ORBIT_ANGLES": {
+      "file": "STD_REL.BIN",
+      "length": 160,
+      "copy_length": 160,
+      "offsets": {
+        "us": 183944,
+        "eu": 223088,
+        "fr": 223096,
+        "de": 223136,
+        "es": 223092,
+        "it": 223084,
+        "jp1": 226256
+      }
+    },
+    "STD_RESULT_MODEL_OBJECTS": {
+      "file": "STD_REL.BIN",
+      "length": 1088,
+      "copy_length": 1088,
+      "offsets": {
+        "us": 182856,
+        "eu": 211584,
+        "fr": 211592,
+        "de": 211632,
+        "es": 211588,
+        "it": 211580,
+        "jp1": 225168
+      }
+    },
+    "STD_RESULT_TMD_BUFFER": {
+      "file": "STD_REL.BIN",
+      "length": 10240,
+      "copy_length": 10240,
+      "offsets": {
+        "us": 172616,
+        "eu": 212672,
+        "fr": 212680,
+        "de": 212720,
+        "es": 212676,
+        "it": 212668,
+        "jp1": 214928
+      }
+    },
+    "STD_WIN_LAST_X": {
+      "file": "STD_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 172572,
+        "eu": 222912,
+        "fr": 222920,
+        "de": 222960,
+        "es": 222916,
+        "it": 222908,
+        "jp1": 214884
+      }
+    },
+    "STD_WIN_FIRST_X": {
+      "file": "STD_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 172528,
+        "eu": 222956,
+        "fr": 222964,
+        "de": 223004,
+        "es": 222960,
+        "it": 222952,
+        "jp1": 214840
+      }
+    },
+    "STD_WIN_ROTATION_Y": {
+      "file": "STD_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 172484,
+        "eu": 223000,
+        "fr": 223008,
+        "de": 223048,
+        "es": 223004,
+        "it": 222996,
+        "jp1": 214796
+      }
+    },
+    "STD_WIN_ROTATION_X": {
+      "file": "STD_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 172440,
+        "eu": 223044,
+        "fr": 223052,
+        "de": 223092,
+        "es": 223048,
+        "it": 223040,
+        "jp1": 214752
+      }
+    },
+    "STD_VERSUS_MODEL_OBJECTS": {
+      "file": "STD_REL.BIN",
+      "length": 1224,
+      "copy_length": 1224,
+      "offsets": {
+        "us": 171216,
+        "eu": 210360,
+        "fr": 210368,
+        "de": 210408,
+        "es": 210364,
+        "it": 210356,
+        "jp1": 213528
+      }
+    },
+    "STD_BATTLE_START_TEXT_PIECES": {
+      "file": "STD_REL.BIN",
+      "length": 3100,
+      "copy_length": 3100,
+      "offsets": {
+        "us": 168116,
+        "eu": 207260,
+        "fr": 207268,
+        "de": 207308,
+        "es": 207264,
+        "it": 207256,
+        "jp1": 210428
+      }
+    },
+    "STD_BRACKET_PROJECTILES": {
+      "file": "STD_REL.BIN",
+      "length": 48,
+      "copy_length": 48,
+      "offsets": {
+        "us": 168068,
+        "eu": 207212,
+        "fr": 207220,
+        "de": 207260,
+        "es": 207216,
+        "it": 207208,
+        "jp1": 210380
+      }
+    },
+    "STD_BRACKET_SLOTS": {
+      "file": "STD_REL.BIN",
+      "length": 112,
+      "copy_length": 112,
+      "offsets": {
+        "us": 167956,
+        "eu": 207100,
+        "fr": 207108,
+        "de": 207148,
+        "es": 207104,
+        "it": 207096,
+        "jp1": 210268
+      }
+    },
+    "STD_D_8007BA9C": {
+      "file": "STD_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 167868,
+        "eu": 206800,
+        "fr": 206808,
+        "de": 206848,
+        "es": 206804,
+        "it": 206796,
+        "jp1": 210180
+      }
+    },
+    "STD_D_8007BA44": {
+      "file": "STD_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 167780,
+        "eu": 206888,
+        "fr": 206896,
+        "de": 206936,
+        "es": 206892,
+        "it": 206884,
+        "jp1": 210004
+      }
+    },
+    "STD_D_8007B9EC": {
+      "file": "STD_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 167692,
+        "eu": 207012,
+        "fr": 207020,
+        "de": 207060,
+        "es": 207016,
+        "it": 207008,
+        "jp1": 210092
+      }
+    },
+    "STD_D_8007B9D0": {
+      "file": "STD_REL.BIN",
+      "length": 28,
+      "copy_length": 28,
+      "offsets": {
+        "us": 167664,
+        "eu": 206984,
+        "fr": 206992,
+        "de": 207032,
+        "es": 206988,
+        "it": 206980,
+        "jp1": 209976
+      }
+    },
+    "STD_D_8007B9BC": {
+      "file": "STD_REL.BIN",
+      "length": 20,
+      "copy_length": 20,
+      "offsets": {
+        "us": 167644,
+        "eu": 206788,
+        "fr": 206796,
+        "de": 206836,
+        "es": 206792,
+        "it": 206784,
+        "jp1": 209956
+      }
+    },
+    "STD_ARENA_OBJECTS": {
+      "file": "STD_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 167580,
+        "eu": 206404,
+        "fr": 206412,
+        "de": 206452,
+        "es": 206408,
+        "it": 206400,
+        "jp1": 209572
+      }
+    },
+    "STD_ARENA_COORDS": {
+      "file": "STD_REL.BIN",
+      "length": 320,
+      "copy_length": 320,
+      "offsets": {
+        "us": 167260,
+        "eu": 206468,
+        "fr": 206476,
+        "de": 206516,
+        "es": 206472,
+        "it": 206464,
+        "jp1": 209636
+      }
+    },
+    "STD_MODEL_SCENE_OT_TAGS_1": {
+      "file": "STD_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 167132,
+        "eu": 206276,
+        "fr": 206284,
+        "de": 206324,
+        "es": 206280,
+        "it": 206272,
+        "jp1": 209444
+      }
+    },
+    "STD_MODEL_SCENE_OT_TAGS_0": {
+      "file": "STD_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 167004,
+        "eu": 206148,
+        "fr": 206156,
+        "de": 206196,
+        "es": 206152,
+        "it": 206144,
+        "jp1": 209316
+      }
+    },
+    "STD_MODEL_SCENE_ORDERING_TABLE": {
+      "file": "STD_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 166964,
+        "eu": 206108,
+        "fr": 206116,
+        "de": 206156,
+        "es": 206112,
+        "it": 206104,
+        "jp1": 209276
+      }
+    },
+    "STD_CAMERA_CHASE_LAST_POS": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166948,
+        "eu": 206092,
+        "fr": 206100,
+        "de": 206140,
+        "es": 206096,
+        "it": 206088,
+        "jp1": 209260
+      }
+    },
+    "STD_INTRO_TARGET_POS": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166932,
+        "eu": 206076,
+        "fr": 206084,
+        "de": 206124,
+        "es": 206080,
+        "it": 206072,
+        "jp1": 209244
+      }
+    },
+    "STD_D_8007B6E4": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166916,
+        "eu": 205988,
+        "fr": 205996,
+        "de": 206036,
+        "es": 205992,
+        "it": 205984,
+        "jp1": 209228
+      }
+    },
+    "STD_D_8007B6D4": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166900,
+        "eu": 205972,
+        "fr": 205980,
+        "de": 206020,
+        "es": 205976,
+        "it": 205968,
+        "jp1": 209212
+      }
+    },
+    "STD_D_8007B6AC": {
+      "file": "STD_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 166860,
+        "eu": 205932,
+        "fr": 205940,
+        "de": 205980,
+        "es": 205936,
+        "it": 205928,
+        "jp1": 209172
+      }
+    },
+    "STD_D_8007B684": {
+      "file": "STD_REL.BIN",
+      "length": 40,
+      "copy_length": 40,
+      "offsets": {
+        "us": 166820,
+        "eu": 206004,
+        "fr": 206012,
+        "de": 206052,
+        "es": 206008,
+        "it": 206000,
+        "jp1": 209100
+      }
+    },
+    "STD_D_8007B674": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166804,
+        "eu": 206060,
+        "fr": 206068,
+        "de": 206108,
+        "es": 206064,
+        "it": 206056,
+        "jp1": 209156
+      }
+    },
+    "STD_D_8007B664": {
+      "file": "STD_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 166788,
+        "eu": 206044,
+        "fr": 206052,
+        "de": 206092,
+        "es": 206048,
+        "it": 206040,
+        "jp1": 209140
+      }
+    },
+    "VS_FINISHER_AURA_SPARKS": {
+      "file": "VS_REL.BIN",
+      "length": 160,
+      "copy_length": 160,
+      "offsets": {
+        "us": 132836,
+        "eu": 210776,
+        "fr": 210760,
+        "de": 210828,
+        "es": 210800,
+        "it": 210780,
+        "jp1": 213324
+      }
+    },
+    "VS_FINISHER_AURAS": {
+      "file": "VS_REL.BIN",
+      "length": 16,
+      "copy_length": 16,
+      "offsets": {
+        "us": 132820,
+        "eu": 210936,
+        "fr": 210920,
+        "de": 210988,
+        "es": 210960,
+        "it": 210940,
+        "jp1": 213308
+      }
+    },
+    "VS_STUN_SUB_EFFECTS": {
+      "file": "VS_REL.BIN",
+      "length": 200,
+      "copy_length": 200,
+      "offsets": {
+        "us": 132620,
+        "eu": 210576,
+        "fr": 210560,
+        "de": 210628,
+        "es": 210600,
+        "it": 210580,
+        "jp1": 213108
+      }
+    },
+    "VS_STUN_EFFECTS": {
+      "file": "VS_REL.BIN",
+      "length": 60,
+      "copy_length": 60,
+      "offsets": {
+        "us": 132560,
+        "eu": 210516,
+        "fr": 210500,
+        "de": 210568,
+        "es": 210540,
+        "it": 210520,
+        "jp1": 213048
+      }
+    },
+    "VS_CONFUSION_EFFECTS": {
+      "file": "VS_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 132496,
+        "eu": 210452,
+        "fr": 210436,
+        "de": 210504,
+        "es": 210476,
+        "it": 210456,
+        "jp1": 212984
+      }
+    },
+    "VS_POISON_EFFECTS": {
+      "file": "VS_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 132464,
+        "eu": 210420,
+        "fr": 210404,
+        "de": 210472,
+        "es": 210444,
+        "it": 210424,
+        "jp1": 212952
+      }
+    },
+    "VS_POISON_BUBBLES": {
+      "file": "VS_REL.BIN",
+      "length": 144,
+      "copy_length": 144,
+      "offsets": {
+        "us": 132320,
+        "eu": 210276,
+        "fr": 210260,
+        "de": 210328,
+        "es": 210300,
+        "it": 210280,
+        "jp1": 212808
+      }
+    },
+    "VS_SAVED_WS_MATRIX": {
+      "file": "VS_REL.BIN",
+      "length": 32,
+      "copy_length": 32,
+      "offsets": {
+        "us": 132288,
+        "eu": 210244,
+        "fr": 210228,
+        "de": 210296,
+        "es": 210268,
+        "it": 210248,
+        "jp1": 212776
+      }
+    },
+    "VS_EFE_SUB_OPCODE_HANDLERS": {
+      "file": "VS_REL.BIN",
+      "length": 388,
+      "copy_length": 388,
+      "offsets": {
+        "us": 131900,
+        "eu": 209856,
+        "fr": 209840,
+        "de": 209908,
+        "es": 209880,
+        "it": 209860,
+        "jp1": 212388
+      }
+    },
+    "VS_RESULT_MODEL_STEPS": {
+      "file": "VS_REL.BIN",
+      "length": 20,
+      "copy_length": 20,
+      "offsets": {
+        "us": 131880,
+        "eu": 209836,
+        "fr": 209820,
+        "de": 209888,
+        "es": 209860,
+        "it": 209840,
+        "jp1": 212368
+      }
+    },
+    "VS_RESULT_MODEL_OBJECTS": {
+      "file": "VS_REL.BIN",
+      "length": 952,
+      "copy_length": 952,
+      "offsets": {
+        "us": 130928,
+        "eu": 208664,
+        "fr": 208648,
+        "de": 208716,
+        "es": 208688,
+        "it": 208668,
+        "jp1": 211416
+      }
+    },
+    "VS_RESULT_LAST_X": {
+      "file": "VS_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 130884,
+        "eu": 209616,
+        "fr": 209600,
+        "de": 209668,
+        "es": 209640,
+        "it": 209620,
+        "jp1": 211372
+      }
+    },
+    "VS_D_800729F8": {
+      "file": "VS_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 130840,
+        "eu": 209660,
+        "fr": 209644,
+        "de": 209712,
+        "es": 209684,
+        "it": 209664,
+        "jp1": 211328
+      }
+    },
+    "VS_D_800729CC": {
+      "file": "VS_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 130796,
+        "eu": 209704,
+        "fr": 209688,
+        "de": 209756,
+        "es": 209728,
+        "it": 209708,
+        "jp1": 211284
+      }
+    },
+    "VS_RESULT_ROTATION_Y": {
+      "file": "VS_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 130752,
+        "eu": 209748,
+        "fr": 209732,
+        "de": 209800,
+        "es": 209772,
+        "it": 209752,
+        "jp1": 211240
+      }
+    },
+    "VS_RESULT_ROTATION_X": {
+      "file": "VS_REL.BIN",
+      "length": 44,
+      "copy_length": 44,
+      "offsets": {
+        "us": 130708,
+        "eu": 209792,
+        "fr": 209776,
+        "de": 209844,
+        "es": 209816,
+        "it": 209796,
+        "jp1": 211196
+      }
+    },
+    "VS_VERSUS_MODEL_OBJECTS": {
+      "file": "VS_REL.BIN",
+      "length": 544,
+      "copy_length": 544,
+      "offsets": {
+        "us": 130164,
+        "eu": 208120,
+        "fr": 208104,
+        "de": 208172,
+        "es": 208144,
+        "it": 208124,
+        "jp1": 210652
+      }
+    },
+    "VS_BATTLE_START_TEXT_PIECES": {
+      "file": "VS_REL.BIN",
+      "length": 3100,
+      "copy_length": 3100,
+      "offsets": {
+        "us": 127064,
+        "eu": 205020,
+        "fr": 205004,
+        "de": 205072,
+        "es": 205044,
+        "it": 205024,
+        "jp1": 207552
+      }
+    },
+    "VS_D_80071AE0": {
+      "file": "VS_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 126976,
+        "eu": 204720,
+        "fr": 204704,
+        "de": 204772,
+        "es": 204744,
+        "it": 204724,
+        "jp1": 207464
+      }
+    },
+    "VS_D_80071A88": {
+      "file": "VS_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 126888,
+        "eu": 204808,
+        "fr": 204792,
+        "de": 204860,
+        "es": 204832,
+        "it": 204812,
+        "jp1": 207288
+      }
+    },
+    "VS_D_80071A30": {
+      "file": "VS_REL.BIN",
+      "length": 88,
+      "copy_length": 88,
+      "offsets": {
+        "us": 126800,
+        "eu": 204932,
+        "fr": 204916,
+        "de": 204984,
+        "es": 204956,
+        "it": 204936,
+        "jp1": 207376
+      }
+    },
+    "VS_D_80071A18": {
+      "file": "VS_REL.BIN",
+      "length": 24,
+      "copy_length": 24,
+      "offsets": {
+        "us": 126776,
+        "eu": 204908,
+        "fr": 204892,
+        "de": 204960,
+        "es": 204932,
+        "it": 204912,
+        "jp1": 207264
+      }
+    },
+    "VS_D_80071A0C": {
+      "file": "VS_REL.BIN",
+      "length": 12,
+      "copy_length": 12,
+      "offsets": {
+        "us": 126764,
+        "eu": 204896,
+        "fr": 204880,
+        "de": 204948,
+        "es": 204920,
+        "it": 204900,
+        "jp1": 207252
+      }
+    },
+    "VS_ARENA_OBJECTS": {
+      "file": "VS_REL.BIN",
+      "length": 64,
+      "copy_length": 64,
+      "offsets": {
+        "us": 126700,
+        "eu": 204324,
+        "fr": 204308,
+        "de": 204376,
+        "es": 204348,
+        "it": 204328,
+        "jp1": 206856
+      }
+    },
+    "VS_ARENA_COORDS": {
+      "file": "VS_REL.BIN",
+      "length": 320,
+      "copy_length": 320,
+      "offsets": {
+        "us": 126380,
+        "eu": 204388,
+        "fr": 204372,
+        "de": 204440,
+        "es": 204412,
+        "it": 204392,
+        "jp1": 206920
+      }
+    },
+    "VS_MODEL_SCENE_OT_TAGS_1": {
+      "file": "VS_REL.BIN",
+      "length": 128,
+      "copy_length": 128,
+      "offsets": {
+        "us": 126252,
+        "eu": 204196,
+        "fr": 204180,
+        "de": 204248,
+        "es": 204220,
+        "it": 204200,
+        "jp1": 206728
+      }
+    }
+  }
+}

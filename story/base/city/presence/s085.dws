@@ -1,0 +1,10 @@
+// Who stands on screen 85 (Ancient Speedy Region), and when. Read out of MAPHEAD.SCN section 85 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(85) {                              // Ancient Speedy Region
+            npc Saberdramon slot 0 autotalk;
+        }
+    }
+}

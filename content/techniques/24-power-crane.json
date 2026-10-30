@@ -1,0 +1,17 @@
+{
+  "id": 24,
+  "name": "Power Crane",
+  "element": "mech",
+  "power": 226,
+  "mpCost": 42,
+  "distance": 490000,
+  "range": 2,
+  "accuracy": 53,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [40, 30, 22]
+}

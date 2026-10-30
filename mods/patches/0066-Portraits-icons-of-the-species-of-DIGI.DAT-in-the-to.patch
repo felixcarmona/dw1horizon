@@ -1,0 +1,1010 @@
+From b9b6955fdd397e2d02c10c032fdb077c4a85541e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 08:19:48 +0000
+Subject: [PATCH] Portraits: icons of the species of DIGI.DAT in the tournament
+ bracket, the VS lists and the evolution chart; species as tournament
+ opponents
+
+DIGI.DAT carries a 32x32 icon per species (tools/portraits.py renders it from the model): the header holds a fallback icon and the level of each
+partner species, a record its icon (SpeciesRecord.portrait). getSpeciesPortrait / loadSpeciesPortrait read it into VRAM:
+- bracket: over the tile of a type that is not a participant, with a free CLUT row (the participants are u16 now);
+  the projectile icon of a species outside the tables is its original type's;
+- VS lists and line-up: the same over a tile no registered fighter uses (VS_portraitFor);
+- evolution chart detail: the from/to species beyond the chart's 61 draw their icon from the effect slots' VRAM;
+- startTournament: partner species of the pool's levels join the recruited originals as opponents;
+- cup eligibility: a species takes the cup lists of the originals of its level (open cups) or of the original it borrows techniques from;
+- registration keeps working for a species >= 256 (the pstat byte is compared wrapped).
+
+---
+ include/dw/species.h   |  32 ++++++++++-
+ include/dw/vs.h        |   2 +
+ src/dget/dget.c        |  61 ++++++++++++++-------
+ src/main/game_menu.c   |  62 ++++++++++++++++++++-
+ src/main/mod_species.c |  72 +++++++++++++++++++++++++
+ src/main/tournament.c  |   2 +-
+ src/main/utils2.c      | 120 +++++++++++++++++++++++++++++++++--------
+ src/std/std_main.c     |  94 +++++++++++++++++++++++++++-----
+ src/std/std_setup.c    |  12 ++---
+ src/vs/vs_scene.c      |   8 ++-
+ src/vs/vs_select.c     |  89 +++++++++++++++++++++++++++++-
+ 11 files changed, 486 insertions(+), 68 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 6ecf608..39ecca3 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -60,8 +60,16 @@ typedef struct {
+ 	uint32_t recordsSector;	/* sector of the first record */
+ 	uint32_t totalSectors;
+ 	uint32_t indexSector;	/* MOD (scale): SpeciesPartnerList, then SpeciesLinks in the next sector */
++	uint32_t fallbackPortrait; /* MOD (portraits): SPECIES_PORTRAIT_REF of the icon of a species without one (0: none) */
+ } SpeciesHeader;
+ 
++/*
++ * MOD (portraits): the header sector holds, after SpeciesHeader, at SPECIES_HEADER_LEVELS one byte per
++ * entry of SpeciesPartnerList: the level of that partner species (3 Rookie .. 6 Mega), so the tournament
++ * can pick opponents of a level without reading a record per species.
++ */
++#define SPECIES_HEADER_LEVELS	0x40
++
+ /*
+  * MOD (scale): the two index sectors after the header. The first lists the
+  * species that can be partners (the lab menu walks it), the second the
+@@ -128,7 +136,8 @@ typedef struct {
+ 	uint8_t numEffectOrigins;	/* 0x13E */
+ 	uint8_t reserved13F;
+ 	SpeciesEffectOrigin effectOrigins[SPECIES_EFFECT_ORIGINS]; /* 0x140 */
+-	uint8_t reserved1C0[SPECIES_RECORD_SIZE - 0x1C0];
++	uint32_t portrait;		/* 0x1C0 MOD (portraits): SPECIES_PORTRAIT_REF of its icon (0: none, the fallback icon) */
++	uint8_t reserved1C4[SPECIES_RECORD_SIZE - 0x1C4];
+ } SpeciesRecord;
+ 
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+@@ -142,7 +151,8 @@ SPECIES_LAYOUT_CHECK(evoPaths, __builtin_offsetof(SpeciesRecord, evoPaths) == 0x
+ SPECIES_LAYOUT_CHECK(item, __builtin_offsetof(SpeciesRecord, itemTakeDistance) == 0x130);
+ SPECIES_LAYOUT_CHECK(condfx, __builtin_offsetof(SpeciesRecord, conditionFx) == 0x136);
+ SPECIES_LAYOUT_CHECK(origins, __builtin_offsetof(SpeciesRecord, effectOrigins) == 0x140);
+-SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x18);
++SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x1C);
++SPECIES_LAYOUT_CHECK(portrait, __builtin_offsetof(SpeciesRecord, portrait) == 0x1C0);
+ SPECIES_LAYOUT_CHECK(partnerList, sizeof(SpeciesPartnerList) == 0x800);
+ SPECIES_LAYOUT_CHECK(links, sizeof(SpeciesLinks) <= 0x800);
+ 
+@@ -157,6 +167,24 @@ void resetSpeciesFlags(void);
+ int32_t isDigimonRecruited(int32_t type);
+ void setDigimonRecruited(int32_t type);
+ 
++/*
++ * MOD (portraits): the icon of a species (tools/portraits.py, docs/mods/portraits.md): a 0x220-byte
++ * block, a 16-colour CLUT (0x20 bytes, index 0 transparent) and a 32x32 4 bpp image (0x200 bytes) of four
++ * 16x16 frames: idle, idle 2 (the chart's highlighted box), attack, hurt. DIGI.DAT packs three to a
++ * sector; a species reaches its icon through SpeciesRecord.portrait, SPECIES_PORTRAIT_REF(sector, slot).
++ */
++#define SPECIES_PORTRAIT_SIZE	0x220
++#define SPECIES_PORTRAITS_PER_SECTOR 3
++#define SPECIES_PORTRAIT_REF(sector, slot) ((uint32_t)(sector) | (uint32_t)(slot) << 24)
++/* 1: loads the icon of `type` (any species of DIGI.DAT; the fallback icon when it has none, 0 returned) into
++ * `dest` (SPECIES_PORTRAIT_SIZE bytes, word aligned); -1 when the disc has no DIGI.DAT */
++int32_t getSpeciesPortrait(int32_t type, void *dest);
++/* uploads the icon of `type` to VRAM: its top `rows` (16 or 32) pixel rows at (x, y) in halfwords/rows
++ * (a 32-pixel strip is 8 halfwords wide) and its CLUT at (clutX, clutY) */
++void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32_t clutX, int32_t clutY);
++/* the partner species of DIGI.DAT whose level is lo..hi: writes their ids to `out` (at most `max`), returns how many */
++int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t max);
++
+ /* partner species of DIGI.DAT: how many, the n-th id, the first Mega (0: none) */
+ int32_t getSpeciesPartnerCount(void);
+ int32_t getSpeciesPartnerId(int32_t n);
+diff --git a/include/dw/vs.h b/include/dw/vs.h
+index c71a19b..b596796 100644
+--- a/include/dw/vs.h
++++ b/include/dw/vs.h
+@@ -76,6 +76,8 @@ typedef struct {
+ 	int8_t side;
+ } CameraChase;
+ 
++/* MOD (portraits): 1 and the tile and CLUT row of the icon of a fighter type outside the VS sheet */
++int32_t VS_portraitFor(int32_t type, int32_t *tile, int32_t *row);
+ extern RegisteredDigimon *VS_DIGIMON_P1_PTR;
+ extern RegisteredDigimon *VS_DIGIMON_P2_PTR;
+ extern Entity *VS_FOCUSED_ENTITY;
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 1f38933..4cc2aa2 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -9,8 +9,10 @@
+ #include <dw/font.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
++#include <dw/params.h>
+ #include <dw/pstat.h>
+ #include <dw/script.h>
++#include <dw/species.h>
+ #include <dw/tournament.h>
+ #include <dw/trigger.h>
+ #include <dw/ui.h>
+@@ -305,25 +307,55 @@ void initTournamentInfo(int32_t arg)
+ 	SCRIPT_POINTER = saved;
+ }
+ 
+-int32_t tournamentCheckFair(uint8_t value)
++/*
++ * MOD (portraits): a cup lists original species by type; a species of DIGI.DAT is in no list. It takes the
++ * place of the originals of its level: an open cup (a list of 30 or more) admits it when the list holds an
++ * original of its level (a Mega counts as an Ultimate), a themed cup (a short list: one element, one
++ * family) only when the list holds the original it borrows its techniques from.
++ */
++static int32_t cupListHasType(uint8_t *typePtr, DigimonId partnerType)
+ {
+-	uint8_t *jumpTable;
+-	uint8_t *typePtr;
++	uint8_t *p;
++	int32_t n;
++	int32_t level;
++	int32_t other;
+ 	uint8_t type;
+-	DigimonId partnerType; /* MOD: was u8 */
+ 
+-	jumpTable = getCupDataJumpTable(10, value);
+-	typePtr = getCupDataJumpTableEntry(jumpTable, 2) + 2;
+-	partnerType = PARTNER_ENTITY.digimonEntity.entity.type;
++	if (partnerType < NUM_ORIGINAL_DIGIMON) {
++		while ((type = *typePtr++) < 0xfe) {
++			if (type == partnerType) {
++				return 1;
++			}
++		}
++		return 0;
++	}
++	n = 0;
++	for (p = typePtr; *p < 0xfe; p++) {
++		n++;
++	}
++	level = DIGI_PARA(partnerType).level;
++	if (level > 5) {
++		level = 5;
++	}
++	other = getOriginalType(partnerType);
+ 	while ((type = *typePtr++) < 0xfe) {
+-		if (type == partnerType) {
++		if (n >= 30 ? DIGI_PARA(type).level == level : type == other) {
+ 			return 1;
+ 		}
+ 	}
+-
+ 	return 0;
+ }
+ 
++int32_t tournamentCheckFair(uint8_t value)
++{
++	uint8_t *jumpTable;
++	uint8_t *typePtr;
++
++	jumpTable = getCupDataJumpTable(10, value);
++	typePtr = getCupDataJumpTableEntry(jumpTable, 2) + 2;
++	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type);
++}
++
+ int32_t isTournamentEnabled(uint8_t tournament)
+ {
+ 	uint8_t trigger;
+@@ -407,19 +439,10 @@ int32_t tournamentCheckEligible(uint8_t tournament)
+ {
+ 	uint8_t *jumpTable;
+ 	uint8_t *typePtr;
+-	uint8_t type;
+-	DigimonId partnerType; /* MOD: was u8 */
+ 
+ 	jumpTable = getCupDataJumpTable(10, tournament);
+ 	typePtr = getCupDataJumpTableEntry(jumpTable, 3) + 2;
+-	partnerType = PARTNER_ENTITY.digimonEntity.entity.type;
+-	while ((type = *typePtr++) < 0xfe) {
+-		if (type == partnerType) {
+-			return 1;
+-		}
+-	}
+-
+-	return 0;
++	return cupListHasType(typePtr, PARTNER_ENTITY.digimonEntity.entity.type);
+ }
+ 
+ void renderTournamentTextbox(void)
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 76e6cb0..7880a51 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -24,6 +24,7 @@
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/ui.h>
+ #include <dw/version.h>
+@@ -179,6 +180,7 @@ void renderDigimonStatsView(void);
+ void renderCardsView(void);
+ void renderMedalView(void);
+ void renderEvoChartView(void);
++static void loadChartPortraits(int32_t chartId); /* MOD (portraits) */
+ void renderPlayerInfoView(void);
+ void renderString();
+ void renderMenuTab(int16_t x, int8_t w, int8_t layer);
+@@ -1812,6 +1814,7 @@ void tickPlayerMenu(void)
+ 								CHART_SELECTED_ROW * 0x13 - 0x45;
+ 							setWH(&startPos, 10, 10);
+ 							MAIN_D_80134D46 = 0;
++							loadChartPortraits(CHART_SELECTED_DIGIMON); /* MOD (portraits) */
+ 							createAnimatedUIBox(
+ 								2, 1, 0, &finalPos, &startPos,
+ 								NULL,
+@@ -2908,6 +2911,57 @@ void removeUIBox1(void)
+ 	removeStaticUIBox(1);
+ }
+ 
++/*
++ * MOD (portraits): the chart's sheet (SBOY.TIM at 512,256) has portraits for the original 61 only. The
++ * detail view of a species shows up to 11 others (its "from" and "to" species of DIGI.DAT); their icons
++ * are loaded from DIGI.DAT when the detail opens, into the VRAM of the battle effect slots (576,256 on,
++ * idle outside battle): 12 pairs of 16x16 frames, each with a CLUT below.
++ */
++#define CHART_EXTRA_SLOTS	12
++#define CHART_EXTRA_X		576
++#define CHART_EXTRA_Y		256
++#define CHART_EXTRA_CLUT_Y	496
++#define CHART_EXTRA_TPAGE	((CHART_EXTRA_Y / 256) * 16 + CHART_EXTRA_X / 64)
++static int16_t CHART_EXTRA_ID[CHART_EXTRA_SLOTS];
++
++static void loadChartPortraits(int32_t chartId)
++{
++	EvolutionPath *path;
++	int32_t n;
++	int32_t i;
++	int32_t id;
++
++	for (i = 0; i < CHART_EXTRA_SLOTS; i++) {
++		CHART_EXTRA_ID[i] = 0;
++	}
++	path = &EVOLUTION_PATHS[chartId - 1];
++	n = 0;
++	for (i = 0; i < 11 && n < CHART_EXTRA_SLOTS; i++) {
++		id = i < 5 ? path->from[i] : path->to[i - 5];
++		if (id <= NUM_EVO_CHART_DIGIMON || id >= NUM_DIGIMON) {
++			continue;
++		}
++		CHART_EXTRA_ID[n] = id;
++		loadSpeciesPortrait(id, CHART_EXTRA_X + (n % 8) * 8, CHART_EXTRA_Y + (n / 8) * 16, 16,
++		                    CHART_EXTRA_X + (n % 8) * 16, CHART_EXTRA_CLUT_Y + n / 8);
++		n++;
++	}
++}
++
++/* draws the icon of a species outside the chart's 61 at (x, y); 0 when it has none loaded */
++static void renderChartPortrait(int32_t id, int16_t x, int16_t y)
++{
++	int32_t i;
++
++	for (i = 0; i < CHART_EXTRA_SLOTS; i++) {
++		if (CHART_EXTRA_ID[i] == id) {
++			renderRectPolyFT4(x, y, 0x10, 0x10, (i % 8) * 32, (i / 8) * 16, CHART_EXTRA_TPAGE,
++			                  GetClut(CHART_EXTRA_X + (i % 8) * 16, CHART_EXTRA_CLUT_Y + i / 8), 4, 0);
++			return;
++		}
++	}
++}
++
+ void renderEvoChartView(void)
+ {
+ 	int32_t i;
+@@ -3121,7 +3175,7 @@ void renderEvoChartDetail(void)
+ 	for (j = 0; j < fromCount; j++) {
+ 		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].from[j];
+ 		if (id > 0) {
+-			/* MOD: no portrait beyond the chart's 61 (MasterTyrannomon): an empty box */
++			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(fromSprites->posX, fromSprites->posY,
+ 				                  0x10, 0x10,
+@@ -3129,6 +3183,8 @@ void renderEvoChartDetail(void)
+ 				                  EVO_CHART_BOXES[id - 1].v, 0x18,
+ 				                  clut.m[EVO_CHART_BOXES[id - 1].clut],
+ 				                  4, 0);
++			} else if (id > NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
++				renderChartPortrait(id, fromSprites->posX, fromSprites->posY);
+ 			}
+ 			renderBorderBox(fromSprites->posX + 0x9f,
+ 			                fromSprites->posY + 0x77, 0x12, 0x12,
+@@ -3140,7 +3196,7 @@ void renderEvoChartDetail(void)
+ 	for (j = 0; j < toCount; j++) {
+ 		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].to[j];
+ 		if (id > 0) {
+-			/* MOD: no portrait beyond the chart's 61 (MasterTyrannomon): an empty box */
++			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(toSprites->posX, toSprites->posY,
+ 				                  0x10, 0x10,
+@@ -3148,6 +3204,8 @@ void renderEvoChartDetail(void)
+ 				                  EVO_CHART_BOXES[id - 1].v, 0x18,
+ 				                  clut.m[EVO_CHART_BOXES[id - 1].clut],
+ 				                  4, 0);
++			} else if (id > NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
++				renderChartPortrait(id, toSprites->posX, toSprites->posY);
+ 			}
+ 			if (DIGI_PARA(id).level == LEVEL_MEGA) {
+ 				/* MOD (mega): the chart has no Mega column and no Mega portraits: a
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 90d9704..163cdb3 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -36,6 +36,8 @@ static uint16_t SPECIES_CACHE_AGE[SPECIES_CACHE_SLOTS];
+ static uint16_t SPECIES_CACHE_CLOCK;
+ static int32_t SPECIES_LAST_SLOT;
+ static uint32_t SPECIES_SECTOR[0x800 / 4];
++static uint32_t SPECIES_FALLBACK_PORTRAIT;
++static uint8_t SPECIES_PORTRAIT_BUFFER[SPECIES_PORTRAIT_SIZE] __attribute__((aligned(4)));
+ static EvolutionPath NO_EVOLUTION_PATH;
+ /* what the per-partner rows read for a type that is no partner (zeroes, like the tables past the originals' rows) */
+ /* what an id that is no species reads (the original read the bytes past DIGIMON_DATA) */
+@@ -203,6 +205,7 @@ void initializeSpecies(void)
+ 	SPECIES_COUNT = NUM_ORIGINAL_DIGIMON;
+ 	SPECIES_RECORD_READS = 0;
+ 	SPECIES_INDEX_SECTOR = 0;
++	SPECIES_FALLBACK_PORTRAIT = 0;
+ 	SPECIES_PARTNER_COUNT = 0;
+ 	SPECIES_FIRST_MEGA = 0;
+ 	resetSpeciesFlags();
+@@ -238,6 +241,7 @@ void initializeSpecies(void)
+ 	if (count <= NUM_ORIGINAL_DIGIMON) {
+ 		return;
+ 	}
++	SPECIES_FALLBACK_PORTRAIT = header->fallbackPortrait;
+ 	SPECIES_RECORDS_SECTOR = header->recordsSector;
+ 	SPECIES_INDEX_SECTOR = header->indexSector;
+ 	SPECIES_COUNT = count;
+@@ -492,3 +496,71 @@ SVECTOR *getConditionFxOffset(int32_t type)
+ 	}
+ 	return &CONDITION_FX_OFFSETS[getOriginalType(type)];
+ }
++
++/*
++ * MOD (portraits): the icon of a species. The record of the type is read like the cache does (the originals'
++ * records 0..179 exist in DIGI.DAT too, so a partner-only original can have an icon), then the sector of the
++ * icon; the CLUT and the 32x32 image are copied to `dest`.
++ */
++int32_t getSpeciesPortrait(int32_t type, void *dest)
++{
++	SpeciesRecord *rec;
++	uint32_t ref;
++	int32_t own;
++
++	if (SPECIES_INDEX_SECTOR == 0) {
++		return -1;
++	}
++	ref = 0;
++	if (type >= NUM_ORIGINAL_DIGIMON && (rec = getSpeciesRecord(type)) != NULL) {
++		ref = rec->portrait;
++	} else if (type > 0 && type < NUM_ORIGINAL_DIGIMON) {
++		readSpeciesSector(SPECIES_RECORDS_SECTOR + type / SPECIES_RECORDS_PER_SECTOR);
++		ref = ((SpeciesRecord *)SPECIES_SECTOR + type % SPECIES_RECORDS_PER_SECTOR)->portrait;
++	}
++	own = ref != 0;
++	if (!own) {
++		ref = SPECIES_FALLBACK_PORTRAIT;
++	}
++	if (ref == 0) {
++		memset(dest, 0, SPECIES_PORTRAIT_SIZE);
++		return 0;
++	}
++	readSpeciesSector(ref & 0xFFFFFF);
++	memcpy(dest, (uint8_t *)SPECIES_SECTOR + (ref >> 24) * SPECIES_PORTRAIT_SIZE, SPECIES_PORTRAIT_SIZE);
++	return own;
++}
++
++void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32_t clutX, int32_t clutY)
++{
++	RECT rect;
++
++	if (getSpeciesPortrait(type, SPECIES_PORTRAIT_BUFFER) < 0) {
++		return;
++	}
++	setRECT(&rect, clutX, clutY, 16, 1);
++	LoadImage(&rect, (u_long *)SPECIES_PORTRAIT_BUFFER);
++	setRECT(&rect, x, y, 8, rows);
++	LoadImage(&rect, (u_long *)(SPECIES_PORTRAIT_BUFFER + 0x20));
++	DrawSync(0);
++}
++
++int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t max)
++{
++	int32_t i;
++	int32_t n;
++	uint8_t level;
++
++	if (SPECIES_INDEX_SECTOR == 0) {
++		return 0;
++	}
++	readSpeciesSector(0);
++	n = 0;
++	for (i = 0; i < SPECIES_PARTNER_COUNT && n < max; i++) {
++		level = ((uint8_t *)SPECIES_SECTOR)[SPECIES_HEADER_LEVELS + i];
++		if (level >= lo && level <= hi) {
++			out[n++] = SPECIES_PARTNER_IDS[i];
++		}
++	}
++	return n;
++}
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index 128688a..9ee2c6a 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -52,7 +52,7 @@ void updateTournamentRegistration(void)
+ 		minutes = minutesOfDay();
+ 		partnerType = PARTNER_ENTITY.digimonEntity.entity.type;
+ 		value = readPStat(PSTAT_TOURNAMENT_DIGIMON);
+-		if (partnerType != value) {
++		if ((partnerType & 0xff) != value) { /* MOD (portraits): the pstat is a byte, a species >= 256 wraps */
+ 			unsetTrigger(TRIGGER_TOURNAMENT_REGISTERED);
+ 			return;
+ 		}
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 398da9b..c3bf40e 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -67,7 +67,7 @@ void renderPauseBox(int32_t instanceId);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int16_t posX, int16_t posY, int16_t width, int16_t height);
+ void setUVDataPolyFT4(POLY_FT4 *prim, int16_t xPos, int16_t yPos, int16_t width, int16_t height);
+ void drawEntityTextIcon(int16_t x, int16_t y, uint8_t u, int32_t otOffset);
+-int32_t STD_tournamentMain(uint8_t *arg);
++int32_t STD_tournamentMain(uint16_t *arg);
+ 
+ extern uint8_t ITEM_CLUT_DATA[];
+ extern uint8_t MAP_LAYER_ENABLED;
+@@ -583,15 +583,81 @@ void updateMapLightState(void)
+ 	}
+ }
+ 
++/*
++ * MOD (portraits): species of DIGI.DAT as opponents. The cup's pool is the recruited originals of its list
++ * (all recruited ones when the list is empty); partner species whose level lies in the levels of that pool
++ * (Rookie..Ultimate: a Mega is not drawn) join it, up to as many as half the pool, at least seven, so
++ * an early game with few recruits still meets a different bracket. The opponents' stats depend on the cup
++ * and the level only (STD_initializeOpponent), so a species of the level is as strong as the original.
++ */
++#define TOURNAMENT_NEW_MAX	64
++
++static int32_t addTournamentSpecies(uint16_t *pool, int32_t count)
++{
++	uint16_t *cand;
++	int32_t lo;
++	int32_t hi;
++	int32_t level;
++	int32_t n;
++	int32_t add;
++	int32_t i;
++	int32_t j;
++	uint16_t t;
++
++	lo = 9;
++	hi = 0;
++	for (i = 0; i < count; i++) {
++		level = DIGI_PARA(pool[i]).level;
++		if (level < lo) {
++			lo = level;
++		}
++		if (level > hi) {
++			hi = level;
++		}
++	}
++	if (count == 0) {
++		/* no recruit: the levels of the partner itself */
++		lo = hi = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
++	}
++	if (lo < 3) {
++		lo = 3;
++	}
++	if (hi > 5) {
++		hi = 5;
++	}
++	if (hi < lo) {
++		hi = lo;
++	}
++	cand = (uint16_t *)allocateArray(SPECIES_MAX_PARTNERS * 2);
++	n = getSpeciesPartnersByLevel(lo, hi, cand, SPECIES_MAX_PARTNERS);
++	add = count > 7 ? count / 2 : 7;
++	if (add > TOURNAMENT_NEW_MAX) {
++		add = TOURNAMENT_NEW_MAX;
++	}
++	for (i = 0; i < n && add > 0; i++) {
++		j = i + randomLimit(n - i);
++		t = cand[j];
++		cand[j] = cand[i];
++		cand[i] = t;
++		if (t == PARTNER_ENTITY.digimonEntity.entity.type) {
++			continue;
++		}
++		pool[count++] = t;
++		add--;
++	}
++	freeArray((uint32_t *)cand);
++	return count;
++}
++
+ void startTournament(void)
+ {
+ 	uint8_t *p;
+-	uint8_t *pool;
++	uint16_t *pool;
+ 	uint8_t *jumpTable;
+-	uint8_t *w;
++	uint16_t *w;
+ 	struct {
+-		uint8_t cup;
+-		uint8_t opponents[7];
++		uint16_t cup; /* MOD (portraits): the opponents may be species >= 256 (was u8) */
++		uint16_t opponents[7];
+ 	} t;
+ 	int16_t result;
+ 	int16_t expected;
+@@ -599,10 +665,12 @@ void startTournament(void)
+ 	uint8_t isComplete;
+ 	uint8_t i;
+ 	int32_t count;
++	uint16_t *o;
++	int32_t k;
+ 
+ 	id = readPStat(3);
+ 	t.cup = id;
+-	pool = (uint8_t *)allocateArray(0x70);
++	pool = (uint16_t *)allocateArray((0x70 + TOURNAMENT_NEW_MAX) * 2);
+ 	w = pool;
+ 	jumpTable = getCupDataJumpTable(10, id);
+ 	p = getCupDataJumpTableEntry(jumpTable, 4) + 2;
+@@ -630,38 +698,44 @@ void startTournament(void)
+ 			}
+ 		}
+ 	}
+-	p = t.opponents;
++	if (id != 0x16) {
++		/* MOD (portraits): the special cup 0x16 lists its own contestants */
++		count = addTournamentSpecies(pool, count);
++	}
++	o = t.opponents;
+ 	if (count == 7) {
+-		for (i = 0; i < 7; i++) {
+-			*p++ = pool[i];
++		for (k = 0; k < 7; k++) {
++			*o++ = pool[k];
+ 		}
+ 	} else if (count < 7) {
+-		for (i = 0; i < count; i++) {
+-			*p++ = pool[i];
++		for (k = 0; k < count; k++) {
++			*o++ = pool[k];
+ 		}
+-		for (i = count; i < 7; i++) {
+-			*p++ = pool[randomLimit(count)];
++		for (k = count; k < 7; k++) {
++			*o++ = pool[randomLimit(count)];
+ 		}
+ 	} else {
+-		for (i = 0; i < count; i++) {
++		for (k = 0; k < count; k++) {
+ 			/* MOD: the whole type, not its low byte */
+-			if (PARTNER_ENTITY.digimonEntity.entity.type == pool[i]) {
+-				pool[i] = 0xff;
++			if (PARTNER_ENTITY.digimonEntity.entity.type == pool[k]) {
++				pool[k] = 0xffff;
+ 				count--;
+ 				break;
+ 			}
+ 		}
+-		for (i = 0; i < 7; i++) {
+-			id = (uint8_t)randomLimit(count) + 1;
++		for (k = 0; k < 7; k++) {
++			int32_t n;
++
++			n = randomLimit(count) + 1;
+ 			w = pool;
+-			while (id != 0) {
+-				if (*w++ != 0xff) {
+-					id--;
++			while (n != 0) {
++				if (*w++ != 0xffff) {
++					n--;
+ 				}
+ 			}
+ 			w--;
+-			*p++ = *w;
+-			*w = 0xff;
++			*o++ = *w;
++			*w = 0xffff;
+ 			count--;
+ 		}
+ 	}
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 1d2706e..a9c37db 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -223,7 +223,7 @@ void STD_tickCameraChase(void);
+ void STD_updateBracket(void);
+ void STD_drawBracket(void);
+ void STD_addBracketProjectile(int16_t i, int32_t owner, uint8_t flag);
+-void STD_setupParticipants(uint8_t *out, uint8_t *list);
++void STD_setupParticipants(uint16_t *out, uint16_t *list);
+ void STD_tickBracketProjectile(int32_t id);
+ void STD_renderBracketProjectile(int16_t id);
+ void STD_combatSetup(void);
+@@ -674,6 +674,14 @@ static void *std_main_sbss_order[] = {
+  */
+ #define STD_TABLE_TYPES 112
+ #define STD_ROW(t) ((uint32_t)(t) < STD_TABLE_TYPES ? (uint32_t)(t) : 0)
++/*
++ * MOD (portraits): the bracket draws a participant from tile (type - 1) of the two STDTIM.BIN sheets. A type
++ * outside the tables (a new species, an original without a tile) has its icon from DIGI.DAT loaded over the
++ * tile of a type that takes no part in this bracket, with a CLUT row the sheets leave free (rows 7..15).
++ */
++static uint8_t STD_PORTRAIT_TILE[8];
++static uint8_t STD_PORTRAIT_ROW[8];
++#define STD_PORTRAIT_FIRST_FREE_ROW 8
+ 
+ // clang-format off
+ uint8_t STD_INTRO_DIGIMON_NAMES[112][14] = {
+@@ -3089,6 +3097,61 @@ void STD_addBracketHitFlash(int16_t i)
+ 	addObject(0x1b0, i, STD_tickBracketHitFlash, 0);
+ }
+ 
++/*
++ * MOD (portraits): the tile and CLUT row each participant is drawn with (see STD_PORTRAIT_TILE).
++ * Originals with a tile keep theirs; any other participant gets the icon of its species loaded over a tile
++ * (1..63, page 1) no participant uses, and one of the free CLUT rows. Called once the types are known.
++ */
++static void STD_preparePortraits(void)
++{
++	int32_t i;
++	int32_t j;
++	int32_t tile;
++	int32_t type;
++
++	for (i = 0; i < 8; i++) {
++		type = PARTICIPANT_TYPES[i];
++		STD_PORTRAIT_TILE[i] = 0;
++		if (type > 0 && type < STD_TABLE_TYPES) {
++			STD_PORTRAIT_TILE[i] = type;
++			STD_PORTRAIT_ROW[i] = STD_DIGIMON_SPRITE_CLUT[type];
++		}
++	}
++	for (i = 0; i < 8; i++) {
++		type = PARTICIPANT_TYPES[i];
++		if (type <= 0 || STD_PORTRAIT_TILE[i] != 0) {
++			continue;
++		}
++		for (tile = 62; tile >= 1; tile--) { /* 64 is the page quirk of the renderer: never used */
++			for (j = 0; j < 8; j++) {
++				if (STD_PORTRAIT_TILE[j] == tile || (j != i && PARTICIPANT_TYPES[j] == tile)) {
++					break;
++				}
++			}
++			if (j == 8) {
++				break;
++			}
++		}
++		STD_PORTRAIT_TILE[i] = tile;
++		STD_PORTRAIT_ROW[i] = STD_PORTRAIT_FIRST_FREE_ROW + i;
++		loadSpeciesPortrait(type, 0x380 + ((tile - 1) % 8) * 8, ((tile - 1) / 8) * 32, 32, 0x120,
++		                    0x1e0 + STD_PORTRAIT_ROW[i]);
++	}
++}
++
++/* MOD (portraits): the projectile icon (1..16) of a participant, 0 for none; a species outside the tables
++ * throws the one of the original it borrows its techniques from */
++static int32_t STD_projectileIcon(int16_t id)
++{
++	int32_t type;
++
++	type = PARTICIPANT_TYPES[id];
++	if (type >= STD_TABLE_TYPES) {
++		type = getOriginalType(type);
++	}
++	return (uint32_t)type < STD_TABLE_TYPES ? STD_BRACKET_PROJECTILE_ICONS[type] : 0;
++}
++
+ void STD_renderBracketDigimon(int16_t id)
+ {
+ 	POLY_FT4 *prim;
+@@ -3105,9 +3168,9 @@ void STD_renderBracketDigimon(int16_t id)
+ 	int32_t h2;
+ #endif
+ 
+-	tile = PARTICIPANT_TYPES[id];
++	tile = STD_PORTRAIT_TILE[id]; /* MOD (portraits): was the type */
+ 	if (tile == 0 || tile >= STD_TABLE_TYPES) {
+-		return; /* MOD (scale): no portrait for a type outside the tables */
++		return;
+ 	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	SetPolyFT4(prim);
+@@ -3115,7 +3178,7 @@ void STD_renderBracketDigimon(int16_t id)
+ 		setSemiTrans(prim, 1);
+ 	}
+ 	prim->tpage = GetTPage(0, 1, (tile / 64) * 64 + 0x380, 0);
+-	prim->clut = GetClut((tile / 64) * 16 + 0x120, STD_DIGIMON_SPRITE_CLUT[tile] + 0x1e0);
++	prim->clut = GetClut((tile / 64) * 16 + 0x120, STD_PORTRAIT_ROW[id] + 0x1e0);
+ 	setRGB0(prim, 0x80 - STD_BRACKET_FADE, 0x80 - STD_BRACKET_FADE, 0x80 - STD_BRACKET_FADE);
+ 	u = ((tile - 1) % 32) * 32 + (STD_BRACKET_SLOTS[id].unk5 & 1) * 16;
+ 	v = ((tile - 1) / 8) * 32 + (STD_BRACKET_SLOTS[id].unk5 / 2) * 16;
+@@ -3225,19 +3288,19 @@ static int32_t stdWinChanceRow(int32_t type)
+ 	return (level > 5 ? 5 : level < 3 ? 3 : level) - 3; /* MOD (scale): never a negative row */
+ }
+ 
+-void STD_setupParticipants(uint8_t *out, uint8_t *list)
++void STD_setupParticipants(uint16_t *out, uint16_t *list)
+ {
+ 	int32_t i;
+ 	int32_t r;
+ 	long j;
+-	uint8_t *p;
++	uint16_t *p;
+ 
+ 	STD_PLAYER_SLOT = randomLimit(8);
+ 	PARTICIPANT_TYPES[STD_PLAYER_SLOT] = ENTITY_TABLE[1]->type;
+ 
+ 	for (i = 1; i < 8; i++) {
+ 		j = randomLimit(7) + 1;
+-		swapByte(&list[i], &list[j]);
++		swapShort((int16_t *)&list[i], (int16_t *)&list[j]);
+ 	}
+ 
+ 	p = list + 1;
+@@ -3247,6 +3310,8 @@ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ 		}
+ 	}
+ 
++	STD_preparePortraits(); /* MOD (portraits) */
++
+ 	for (i = 0; i < 4; i++) {
+ 		if (randomLimit(100) < STD_WIN_CHANCES[stdWinChanceRow(PARTICIPANT_TYPES[i * 2])][stdWinChanceRow(PARTICIPANT_TYPES[i * 2 + 1L])]) {
+ 			STD_ROUND1_WINNERS[i] = i * 2;
+@@ -3407,14 +3472,18 @@ void STD_tickBracketProjectile(id)
+ void STD_renderBracketProjectile(int16_t id)
+ {
+ 	POLY_FT4 *prim;
++	int32_t icon;
+ 
++	icon = STD_projectileIcon(id); /* MOD (portraits) */
++	if (icon == 0) {
++		return;
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	SetPolyFT4(prim);
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+ 	prim->tpage = GetTPage(0, 2, 0x3c0, 0);
+-	prim->clut = GetClut(0x130,
+-	                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] - 1] + 0x1e0);
+-	setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] * 8 - 8, 0xc0, 8, 8);
++	prim->clut = GetClut(0x130, STD_BRACKET_PROJECTILE_CLUTS[icon - 1] + 0x1e0);
++	setUVDataPolyFT4(prim, icon * 8 - 8, 0xc0, 8, 8);
+ 	setPosDataPolyFT4(prim, STD_BRACKET_PROJECTILES[id].x, STD_BRACKET_PROJECTILES[id].y, 8, 8);
+ 	if (STD_BRACKET_SLOTS[id].unk6 == 1) {
+ 		swapShort(&prim->x0, &prim->x1);
+@@ -3427,9 +3496,8 @@ void STD_renderBracketProjectile(int16_t id)
+ 		SetPolyFT4(prim);
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		prim->tpage = GetTPage(0, 2, 0x3c0, 0);
+-		prim->clut = GetClut(0x130,
+-		                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] - 1] + 0x1e0);
+-		setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] * 8 - 8, 0xc0, 8, 8);
++		prim->clut = GetClut(0x130, STD_BRACKET_PROJECTILE_CLUTS[icon - 1] + 0x1e0);
++		setUVDataPolyFT4(prim, icon * 8 - 8, 0xc0, 8, 8);
+ 		setPosDataPolyFT4(prim, STD_BRACKET_PROJECTILES[id].x, STD_BRACKET_PROJECTILES[id].y + 8, 8, 8);
+ 		if (STD_BRACKET_SLOTS[id].unk6 == 1) {
+ 			swapShort(&prim->x0, &prim->x1);
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 7f639f8..02097cc 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -50,7 +50,7 @@ int32_t entityGetTechFromAnim(Entity *entity, int32_t anim);
+ void scriptLoadModel(int32_t modelId);
+ void swapByte(uint8_t *a, uint8_t *b);
+ void STD_loadTIMToVRAM(char *path);
+-void STD_setupParticipants(uint8_t *out, uint8_t *arg);
++void STD_setupParticipants(uint16_t *out, uint16_t *arg);
+ void STD_initializeCamera(void);
+ void STD_renderArena1(void);
+ void STD_freeArenaModel(void);
+@@ -60,7 +60,7 @@ void STD_addArenaRenderer(int32_t which);
+ #else
+ void STD_addArenaRenderer(int16_t which);
+ #endif
+-int16_t STD_tournamentMain(uint8_t *arg);
++int16_t STD_tournamentMain(uint16_t *arg);
+ int16_t STD_runMatch(Entity *opponent, int16_t b);
+ void STD_runIntro(int32_t arg);
+ int32_t STD_combatMain(Entity *entity, Entity *other);
+@@ -81,7 +81,7 @@ void STD_battleTickFrame(void);
+ int32_t loadTIMFile(char *path, void *buffer);
+ void removeMapEntities(void);
+ void STD_loadWinLoseModel(void);
+-void STD_initializeTournament(int32_t arena, uint8_t *arg);
++void STD_initializeTournament(int32_t arena, uint16_t *arg);
+ void STD_removeVSPhase(void);
+ void fadeToBlack(int16_t mode);
+ void STD_deinitializeTournament(void);
+@@ -227,7 +227,7 @@ char STD_PATH_STDDAT_TIME_TIM[] = "\\STDDAT\\TIME.TIM";
+ char STD_PATH_ETCDAT_SBOY_TIM[] = "\\ETCDAT\\SBOY.TIM";
+ // clang-format on
+ 
+-void STD_initializeTournament(int32_t arena, uint8_t *arg)
++void STD_initializeTournament(int32_t arena, uint16_t *arg)
+ {
+ 	if (arena == 0) {
+ 		STD_MUSIC = 0x1e;
+@@ -505,11 +505,11 @@ void STD_loadTIMToVRAM(char *path)
+ 	}
+ }
+ 
+-int16_t STD_tournamentMain(uint8_t *arg)
++int16_t STD_tournamentMain(uint16_t *arg)
+ {
+ 	int32_t j;
+ 	int32_t m;
+-	uint8_t local[4];
++	uint16_t local[4]; /* MOD (portraits): was u8 */
+ 	int16_t arena;
+ 	long n;
+ 	long i;
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index 6afa967..4095841 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -1276,6 +1276,8 @@ void VS_renderFighterNamePlate(int16_t side)
+ 	uint8_t u;
+ 	uint8_t v;
+ 	uint8_t type;
++	int32_t portraitTile;
++	int32_t portraitRow;
+ 
+ 	if (side == 0) {
+ 		offset = VS_STATE_OFFSET;
+@@ -1295,7 +1297,11 @@ void VS_renderFighterNamePlate(int16_t side)
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		prim->tpage = getTPage(0, 0, 896, 0);
+ 		prim->clut = GetClut(0x120, VS_DIGIMON_SPRITE_CLUT[type < 68 ? type : 0] + 0x1e0);
+-		if (type == 0x73) {
++		if (VS_portraitFor(type, &portraitTile, &portraitRow)) { /* MOD (portraits) */
++			prim->clut = GetClut(0x120, portraitRow + 0x1e0);
++			u = (portraitTile % 8) * 32;
++			v = (portraitTile / 8) * 32;
++		} else if (type == 0x73) {
+ 			u = 0xe0;
+ 			v = 0xe0;
+ 		} else {
+diff --git a/src/vs/vs_select.c b/src/vs/vs_select.c
+index f465fcb..34b5223 100644
+--- a/src/vs/vs_select.c
++++ b/src/vs/vs_select.c
+@@ -14,6 +14,7 @@
+ #include <dw/main.h>
+ #include <dw/params.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/ui.h>
+ #include <dw/version.h>
+@@ -229,6 +230,85 @@ static void *vs_select_sbss_order[] = {
+ 	&VS__MODE_STATE,
+ };
+ 
++/*
++ * MOD (portraits): the VS sheet (16TAISEN.TIM at 896,0) has the portraits of types 3..66 (tile type - 3).
++ * A fighter of another type (a species of DIGI.DAT, an original without a tile) is drawn from the icon of its
++ * species, loaded over the tile of a type no fighter of either player has, with a CLUT row below the sheet's
++ * five. VS_portraitFor hands out up to VS_PORTRAIT_CACHE of them, as the lists scroll.
++ */
++#define VS_PORTRAIT_CACHE	12
++#define VS_PORTRAIT_FIRST_ROW	5
++static int16_t VS_PORTRAIT_TYPE[VS_PORTRAIT_CACHE];
++static uint8_t VS_PORTRAIT_TILE[VS_PORTRAIT_CACHE]; /* 0xff: no free tile for this entry */
++static int32_t VS_PORTRAIT_NEXT;
++
++/* 1 if the fighter's portrait comes from the sheet of the originals */
++static int32_t VS_hasSheetTile(int32_t type)
++{
++	return type == 0x73 || (type >= 3 && type <= 66);
++}
++
++int32_t VS_portraitFor(int32_t type, int32_t *tile, int32_t *row)
++{
++	int32_t k;
++
++	if (VS_hasSheetTile(type)) {
++		return 0;
++	}
++	for (k = 0; k < VS_PORTRAIT_CACHE; k++) {
++		if (VS_PORTRAIT_TYPE[k] == type) {
++			*tile = VS_PORTRAIT_TILE[k];
++			*row = VS_PORTRAIT_FIRST_ROW + k;
++			return 1;
++		}
++	}
++	k = VS_PORTRAIT_NEXT;
++	VS_PORTRAIT_NEXT = (k + 1) % VS_PORTRAIT_CACHE;
++	if (VS_PORTRAIT_TILE[k] == 0xff) {
++		return 0;
++	}
++	VS_PORTRAIT_TYPE[k] = type;
++	*tile = VS_PORTRAIT_TILE[k];
++	*row = VS_PORTRAIT_FIRST_ROW + k;
++	loadSpeciesPortrait(type, 896 + (*tile % 8) * 8, (*tile / 8) * 32, 32, 0x120, 0x1e0 + *row);
++	return 1;
++}
++
++static void VS_choosePortraitTiles(RegisteredDigimon **entries)
++{
++	uint8_t used[64];
++	int32_t i;
++	int32_t j;
++	int32_t k;
++	int32_t type;
++
++	for (i = 0; i < 64; i++) {
++		used[i] = 0;
++	}
++	used[63] = 1; /* the special tile of type 0x73 */
++	for (i = 0; i < 2; i++) {
++		for (j = 0; j < 40; j++) {
++			type = entries[i][j].digimonId;
++			if (type >= 3 && type <= 66) {
++				used[type - 3] = 1;
++			}
++		}
++	}
++	k = 0;
++	for (i = 62; i >= 0 && k < VS_PORTRAIT_CACHE; i--) {
++		if (!used[i]) {
++			VS_PORTRAIT_TILE[k++] = i;
++		}
++	}
++	for (; k < VS_PORTRAIT_CACHE; k++) {
++		VS_PORTRAIT_TILE[k] = 0xff;
++	}
++	for (k = 0; k < VS_PORTRAIT_CACHE; k++) {
++		VS_PORTRAIT_TYPE[k] = -1;
++	}
++	VS_PORTRAIT_NEXT = 0;
++}
++
+ void VS__loadTextures(void)
+ {
+ 	RegisteredDigimon *entries[2];
+@@ -286,6 +366,7 @@ void VS__loadTextures(void)
+ 
+ 		state->listPageCount = ((state->slotCount % 4) == 0) ? state->slotCount / 4 : (state->slotCount / 4) + 1;
+ 	}
++	VS_choosePortraitTiles(entries); /* MOD (portraits) */
+ }
+ 
+ void VS__tickSelectDigimon(void)
+@@ -636,6 +717,8 @@ void VS__renderSelectDigimonPlayer(id)
+ 	uint8_t spriteV;
+ 	uint8_t baseIdx;
+ 	uint8_t type;
++	int32_t portraitTile;
++	int32_t portraitRow;
+ 
+ 	baseX = id * 154 - 152;
+ 	y = -109;
+@@ -747,7 +830,11 @@ void VS__renderSelectDigimonPlayer(id)
+ 		VS__setPolyFT4White(prim);
+ 		prim->tpage = 14;
+ 		prim->clut = GetClut(0x120, DIGIMON_SPRITE_CLUT[type < 68 ? type : 0] + 0x1e0); /* MOD (scale): the table covers 68 types */
+-		if (type == 0x73) {
++		if (VS_portraitFor(type, &portraitTile, &portraitRow)) { /* MOD (portraits): the icon of a species outside the sheet */
++			prim->clut = GetClut(0x120, portraitRow + 0x1e0);
++			spriteU = (portraitTile % 8) * 32 + st->unk4 * 16;
++			spriteV = (portraitTile / 8) * 32;
++		} else if (type == 0x73) {
+ 			spriteU = (st->unk4 * 16) + 0x3e0;
+ 			spriteV = 0xe0;
+ 		} else {
+-- 
+2.53.0
+

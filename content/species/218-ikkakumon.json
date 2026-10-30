@@ -1,0 +1,73 @@
+{
+  "id": 218,
+  "name": "Ikkakumon",
+  "_source": "dcb 153 (card Ikkakumon) (tools/import_batch.py run content/imports/lists/fourth-12.json)",
+  "level": "champion",
+  "vanilla_as": 48,
+  "attribute": "vaccine",
+  "specialties": ["ice", "battle", null],
+  "techniques": ["Ice Needle", "Giga Freeze", "Winter Blast", "Aqua Magic", "Tear Drop", "Water Blit",
+                 "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Bone Boomerang"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 35,
+  "model": {
+    "file": "build/batch4/Ikkakumon.MMD",
+    "radius": 174,
+    "height": 409,
+    "skeleton": [[-1, -1], [0, 13], [1, 1], [2, 2], [3, 3], [4, 2], [5, 2], [6, 1], [7, 7], [8, 8], [9, 1],
+                 [10, 10], [11, 11], [12, 0], [13, 13], [14, 14], [15, 13], [16, 16], [17, 2]],
+    "slot_aliases": [[46, 50], [47, 49], [50, 48], [52, 54], [56, 49], [49, 55], [57, 48], [48, 53], [53, 55],
+                     [58, 55], [55, 54], [54, 58]]
+  },
+  "texture": {"file": "build/batch4/Ikkakumon.TIM", "entry": 0},
+  "voice": 31,
+  "battle_music": "normal-battle",
+  "condition_bubble": [-5, -86, -97, 3],
+  "effect_origins": [[4, 55, -50, 0, 3, -6, 97, -70], [1, 0, 0, 0, 1, 0, 47, -90], [4, 65, 130, 0, 3, -5, -86, -97]],
+  "wild": {"hp": 1680, "mp": 1400, "off": 235, "def": 225, "speed": 175, "brain": 180, "bits": 600},
+  "sizing": {
+    "game": "dcb",
+    "level": 4,
+    "base_model": "build/batch4/Ikkakumon.MMD",
+    "base_scale": 1.0,
+    "natural": {"height": 409.0, "half_width": 290.8, "half_depth": 274.0}
+  },
+  "partner": {
+    "voice": 6,
+    "hunger_hours": [0, 4, 8, 12, 16, 20],
+    "energy_max": 80,
+    "energy_fed": 56,
+    "energy_per_hour": 14,
+    "poop_timer_10min": 36,
+    "poop_size": 15,
+    "favorite_food": "Pricklypear",
+    "sleep_cycle": "22:00-07:00",
+    "favored_region": 4,
+    "training_type": "hp-defense",
+    "birth_weight": 40,
+    "status_screen_position": [0, 320, -880],
+    "item_distance": 15,
+    "training": {"animation": 57, "hit_tick": 16}
+  },
+  "evolution": {
+    "from": [217],
+    "to": [],
+    "requirements": {
+      "digimon": 217,
+      "hp": 100,
+      "mp": -1,
+      "offense": -1,
+      "defense": 100,
+      "speed": -1,
+      "brain": -1,
+      "care": 1,
+      "weight": 20,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 28,
+      "flags": 16
+    },
+    "gains": {"hp": 1700, "mp": 1450, "offense": 135, "defense": 180, "speed": 130, "brains": 145}
+  }
+}

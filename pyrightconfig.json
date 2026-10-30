@@ -1,0 +1,21 @@
+{
+  "//": "Pylance/pyright for the story language (docs/mods/story-language.md): the stubs are typings/dw (python3 tools/dws.py types)",
+  "typeCheckingMode": "strict",
+  "pythonVersion": "3.12",
+  "stubPath": "typings",
+  "include": [
+    "story/mods"
+  ],
+  "//ignore": "pythonVersion 3.12 hides typeshed's string.templatelib (3.14+), so pyright falls back to the host interpreter's own /usr/lib/python3.14/string/templatelib.py (a t-string file) and reports 27 errors in it: the stdlib of the machine, not project code. Silenced by path, not by hiding the project's output.",
+  "ignore": [
+    "/usr/lib"
+  ],
+  "exclude": [
+    "**/test",
+    "**/maps",
+    "**/__pycache__"
+  ],
+  "reportRedeclaration": false,
+  "reportMissingModuleSource": false,
+  "reportUnusedImport": "warning"
+}

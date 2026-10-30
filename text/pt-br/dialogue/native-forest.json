@@ -1,0 +1,210 @@
+{
+ "s001.sec5.u0": "Vamos, estamos apenas começando!",
+ "s001.sec6.u0": [
+  [
+   "Ô, força... Ô, força..."
+  ]
+ ],
+ "s001.sec7.u0": "Estou te comendo agora, sim!",
+ "s001.sec8.u0": "Por favor, espere um pouco, sim!",
+ "s001.sec9.u0": "Aqui vou eu!",
+ "s001.sec10.u0": "O quê? O que eu fiz para você?",
+ "s001.sec11.u0": "Eu sabia que deveria ter ficado fora disso...",
+ "s001.sec12.u0": [
+  [
+   "Francamente... Resmungo,",
+   "resmungo..."
+  ]
+ ],
+ "s003.sec5.u0": "Vamos, vamos!",
+ "s003.sec6.u0": "Raaargh!",
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "..."
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   "Eu sou uma flor."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "Eu sou apenas uma flor, veja."
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Eu disse que sou uma flor! Você não desiste,",
+   "não é?"
+  ]
+ ],
+ "s003.sec7.u4": "Oh, tudo bem! Eu odeio lutar!",
+ "s003.sec7.u5": "Bem, então...",
+ "s003.sec7.u6": "Venha para a cidade. É tranquilo lá dentro.",
+ "s003.sec7.u7": [
+  [
+   "A cidade?"
+  ],
+  [
+   "Parece divertido. Talvez eu vá, sim! Eu sou",
+   "Palmon. Vou te mostrar que posso ser útil!"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon veio para a cidade!",
+ "s003.sec8.u0": "Meu!",
+ "s003.sec9.u0": "Peguei você!",
+ "s004.sec6.u0": "Você só vai se machucar, sabe.",
+ "s004.sec6_dup4.u0": "Honestamente... que criança.",
+ "s004.sec7.u0": "Muito bem. Vou pegar leve com você.",
+ "s004.sec8.u0": "Vou arrancar esse nariz!",
+ "s004.sec9.u0": "Vou te quebrar como um galho!",
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Até macacos caem de..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Joelhada... Voadora... Lá de",
+   "cima!!!"
+  ]
+ ],
+ "s004.sec51.u1": [
+  [
+   "Ook! Eu, o grande Etemon,",
+   "derrotado...? Não, não! Vocês",
+   "não são nada demais!"
+  ]
+ ],
+ "s004.sec51.u2": [
+  [
+   "...Que mau perdedor. E foi ele",
+   "quem atacou a gente..."
+  ]
+ ],
+ "s004.sec51.u3": [
+  [
+   "Ook-ok! Tudo bem, então..."
+  ],
+  [
+   "Vou te mostrar o que posso fazer, bem na",
+   "sua cidade! Apenas assista! Ook!"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon veio para a cidade!",
+ "s004.sec81.u0": "Hm? Tem algo esculpido aqui.",
+ "s004.sec81.u1": "Não tem ninguém em casa! Vá embora!",
+ "s004.sec81.u2": "Alguém mora aqui?",
+ "s105.sec5.u0": "Não sei de nada!",
+ "s105.sec6.u0": "Uau!",
+ "s105.sec6.u1": "......? ...! ...Hehe!",
+ "s105.sec6.u2": "Ei, do nada? Certo, vamos lá!",
+ "s105.sec6.u3": [
+  [
+   "Perdi. Droga."
+  ]
+ ],
+ "s105.sec6.u4": "Certo. Eu deveria convidá-lo para a cidade.",
+ "s105.sec6.u5": "Umm, ei, então...",
+ "s105.sec6.u6": "Você poderia... talvez... vir para a cidade?",
+ "s105.sec6.u7": [
+  [
+   "Huh? A cidade?"
+  ],
+  [
+   "Você quer dizer... aquele lugar velho?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Hmm..."
+  ],
+  [
+   "Hmmmm..."
+  ],
+  [
+   "Hmmmmmmm......"
+  ]
+ ],
+ "s105.sec6.u9": "Claro. Eu sou Agumon. Prazer em conhecê-lo.",
+ "s105.sec6.u10": "Agumon veio para a cidade!",
+ "s105.sec6.u11": [
+  [
+   "É, perguntar não custa nada!",
+   "Vou convidar todo mundo que",
+   "encontrar!"
+  ]
+ ],
+ "s105.sec7.u0": "Este é o meu território!",
+ "s105.sec8.u0": "Huh?",
+ "s105.sec9.u0": "Agora é a minha chance!",
+ "s105.sec52.u0": "Se eu fugir agora, não há volta.",
+ "s106.sec5.u0": [
+  [
+   "Teste de batalha!"
+  ],
+  [
+   "Brincadeira. Isso foi uma mentira."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Mudar os atributos",
+ "s106.sec6.m0.o1": "Avançar o tempo",
+ "s106.sec6.m0.o2": "Aprender todas as técnicas",
+ "s106.sec6.m1.o0": "Aumentar",
+ "s106.sec6.m1.o1": "Diminuir",
+ "s106.sec6.m1.o2": "Reiniciar os atributos",
+ "s106.sec6.m2.o0": "Avançar 1 hora",
+ "s106.sec6.m2.o1": "Avançar 6 horas",
+ "s106.sec6.m2.o2": "Avançar 24 horas",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": "Eu sou o Sr. Handy! O que vai ser?",
+ "s106.sec81.u0": "Um deslizamento de pedras bloqueia o caminho...",
+ "s107.sec5.u0": [
+  [
+   "Agora é mês {pstat 105}, dia",
+   "{pstat 106}, hora"
+  ],
+  [
+   "{pstat 107}, minuto {pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": [
+  [
+   "{color 10}{partner}{color 1} é do tipo Dados,",
+   "hein."
+  ]
+ ],
+ "s107.sec5.u2": [
+  [
+   "{color 10}{partner}{color 1} é do tipo Vacina,",
+   "hein."
+  ]
+ ],
+ "s107.sec5.u3": [
+  [
+   "{color 10}{partner}{color 1} é do tipo Vírus,",
+   "hein."
+  ]
+ ],
+ "s107.sec6.m0.o0": "Mudar os atributos",
+ "s107.sec6.m0.o1": "Avançar o tempo",
+ "s107.sec6.m0.o2": "Transformar em loja",
+ "s107.sec6.m1.o0": "Deixar o mais forte",
+ "s107.sec6.m1.o1": "Deixar o mais fraco",
+ "s107.sec6.m1.o2": "Deixar mediano",
+ "s107.sec6.m2.o0": "Avançar 1 hora",
+ "s107.sec6.m2.o1": "Avançar 6 horas",
+ "s107.sec6.m2.o2": "Avançar 24 horas",
+ "s107.sec6.u0": "Eu sou o Sr. Handy! O que vai ser?",
+ "s107.sec51.u0": "O terremoto acabou de limpar as rochas caídas!"
+}

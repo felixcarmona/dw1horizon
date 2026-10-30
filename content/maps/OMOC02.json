@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP10/OMOC02.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Monzaemon138",
+      "at": [1057, 162],
+      "facing": 592,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [49, 50, 51, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [-651, -1739],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

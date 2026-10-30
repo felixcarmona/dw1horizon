@@ -1,0 +1,61 @@
+{
+ "s174.sec81.u0": "Welcome. Behold, {color 6}{player}{color 1}. I have become owner and chef of this restaurant. You two shall take your time and savor my cooking of flame... Heh heh heh...",
+ "s174.sec81.u1": "Ha ha ha! {color 6}{player}{color 1}, {color 10}{partner}{color 1}, come eat my cooking! Never thought my hidden talent would come in handy. This is real food, not items! Enjoy!",
+ "s174.sec81.u2": "Yo, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! I've decided to cook for a living. Don't let my looks fool you, I'm a great cook. You get sick of travel rations, right? Sitting down for a meal at a restaurant now and then is a real treat!",
+ "s174.sec81.u3": "Hiii! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. My restaurant is finally open! My special frozen desserts are delicious, so you've gotta try them!",
+ "s174.sec81.u4": "Heh... {color 6}{player}{color 1}, I am to work as this restaurant's chef. You two shall take your time and savor my hot, hot cooking.",
+ "s174.sec81.u5": "Ha ha! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. I'm a cook now! Never figured my hidden talent'd come in handy. My special dishes are a cut above the rest, so come on by!",
+ "s174.sec81.u6": "Yo, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! I've decided to live for cooking! My special dishes are packed with nutrition! Check when I'm working!",
+ "s174.sec81.u7": [
+  [
+   "Hiii! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! I've decided to",
+   "help out at this restaurant."
+  ],
+  [
+   "They said I could make",
+   "desserts!"
+  ],
+  [
+   "My special desserts are sooo",
+   "good, so you've gotta try them."
+  ]
+ ],
+ "s175.sec6.u0": "Bzzt-bzzt! Yo, {color 6}{player}{color 1}! Now, what's this machine? Bzzt! It ain't dangerous! This baby's a jukebox that sets my heart on fire! Heh-heh-hee! You gotta cut loose now and then too! Ex-plode, baby! I'm waitin' for a hot request! Bzzt!",
+ "s175.sec81.u0": "Welcome. Behold, {color 6}{player}{color 1}. I have become owner and chef of this restaurant. You two shall take your time and savor my cooking of flame... Heh heh heh...",
+ "s175.sec81.u1": "Ha ha ha! {color 6}{player}{color 1}, {color 10}{partner}{color 1}, come eat my cooking! Never thought my hidden talent would come in handy. This is real food, not items! Enjoy!",
+ "s175.sec81.u2": "Yo, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! I've decided to cook for a living. Don't let my looks fool you, I'm a great cook. You get sick of travel rations, right? Sitting down for a meal at a restaurant now and then is a real treat!",
+ "s175.sec81.u3": "Hiii! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. My restaurant is finally open! My special frozen desserts are delicious, so you've gotta try them!",
+ "s175.sec81.u4": "Heh... {color 6}{player}{color 1}, I am to work as this restaurant's chef. You two shall take your time and savor my cooking, as hot as the midday sun.",
+ "s175.sec81.u5": "Ha ha! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. I'm a cook now! Never figured my hidden talent'd come in handy. If you want my special dishes, come before noon!",
+ "s175.sec81.u6": [
+  [
+   "Yo, {color 6}{player}{color 1} and",
+   "{color 10}{partner}{color 1}! I've decided to",
+   "live for cooking!"
+  ],
+  [
+   "My special dishes are only",
+   "served late at night or early",
+   "in the morning, but they're"
+  ],
+  [
+   "packed with nutrition!"
+  ]
+ ],
+ "s175.sec81.u7": [
+  [
+   "Hiii! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! I've decided to",
+   "help out at this restaurant."
+  ],
+  [
+   "They said I could make",
+   "desserts!"
+  ],
+  [
+   "My special desserts are sooo",
+   "good, so you've gotta try them."
+  ]
+ ]
+}

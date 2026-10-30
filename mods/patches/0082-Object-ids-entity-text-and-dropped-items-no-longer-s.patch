@@ -1,0 +1,108 @@
+From 7cca69f0f37abcb47c1dfc3eb45caaeb366ba477 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 13 Oct 2026 21:31:26 +0000
+Subject: [PATCH] Object ids: entity text and dropped items no longer share ids
+ with species 402 and 405
+
+A Digimon's world object is (species id, entity slot) and removeObject takes the
+first match. The entity text object (0x192) and the dropped item object (0x195)
+sit in the species id range, so with NeoCrimson (402) the partner's own text
+slot removed the partner's object and the partner stopped ticking (the victory
+animation never ended: the game froze at the end of every battle). Both get ids
+above the species range.
+---
+ include/dw/world_object.h | 14 ++++++++++++++
+ src/main/entity_text.c    |  6 +++---
+ src/main/item.c           |  6 +++---
+ 3 files changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/world_object.h b/include/dw/world_object.h
+index 2ffed2d..4074481 100644
+--- a/include/dw/world_object.h
++++ b/include/dw/world_object.h
+@@ -5,6 +5,20 @@
+ 
+ #define NUM_WORLD_OBJECTS	128
+ 
++/* MOD (object ids): a Digimon's world object is (objectId = species id,
++ * instanceId = entity slot) and removeObject() takes the first match. Species
++ * ids 400..432 (0x190..0x1b0) are also the ids of the battle and VS objects,
++ * so an object with the same instance number removed the Digimon instead of
++ * itself: with species 402 the partner's damage text (0x192, slot 1) took the
++ * partner's own object, the partner stopped ticking and the victory animation
++ * never ended (the game froze at the end of every battle). The two objects of
++ * the overworld and the normal battle that have an instance number get ids
++ * above the species range (species files go up to 1023). The VS-only objects
++ * (0x198, 0x19c, 0x1a3, 0x1a9..0x1b0) still sit in 400..432: new species
++ * cannot enter VS. */
++#define OBJECT_ID_ENTITY_TEXT	0x1f92
++#define OBJECT_ID_DROPPED_ITEM	0x1f95
++
+ typedef void (*TickFunction)(int32_t);
+ typedef void (*RenderFunction)(int32_t);
+ 
+diff --git a/src/main/entity_text.c b/src/main/entity_text.c
+index 7184cfb..5bfe919 100644
+--- a/src/main/entity_text.c
++++ b/src/main/entity_text.c
+@@ -145,7 +145,7 @@ void addEntityText(Entity *entity, int16_t slotId, int16_t color, int32_t value,
+ 
+ 	if (slot->activeElements == 0) {
+ 		MOD_ENTITY_TEXT_DRAW_COUNT[slotId] = 0;
+-		addObjectLate(0x192, slotId, 0, lateTickEntityText, renderEntityText);
++		addObjectLate(OBJECT_ID_ENTITY_TEXT, slotId, 0, lateTickEntityText, renderEntityText);
+ 	}
+ 	slot->activeElements += 1;
+ }
+@@ -219,7 +219,7 @@ void lateTickEntityText(int32_t instanceId)
+ 	if (i == 8) {
+ 		/* removeEntityText, keeping the object for this tick's render */
+ 		if (slot->activeElements != 0) {
+-			removeObjectAfterRender(0x192, instanceId);
++			removeObjectAfterRender(OBJECT_ID_ENTITY_TEXT, instanceId);
+ 			slot->activeElements = 0;
+ 			i = 0;
+ 			while (i < 8) {
+@@ -277,7 +277,7 @@ void removeEntityText(int32_t id)
+ 
+ 	slot = &ENTITY_TEXT_DATA[id];
+ 	if (slot->activeElements != 0) {
+-		removeObject(0x192, id);
++		removeObject(OBJECT_ID_ENTITY_TEXT, id);
+ 		slot->activeElements = 0;
+ 		i = 0;
+ 		while (i < 8) {
+diff --git a/src/main/item.c b/src/main/item.c
+index 98a8518..39de1cc 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2418,7 +2418,7 @@ void spawnDroppedItems(Entity *e, ItemId type) /* MOD: was u8 */
+ 		it->worldItem.spriteLocation.vz = loc->vz;
+ 		getModelTile(loc, (int16_t *)((char *)it + 0xc),
+ 		             (int16_t *)((char *)it + 0xe));
+-		addObject(0x195, i, 0, renderDroppedItem);
++		addObject(OBJECT_ID_DROPPED_ITEM, i, 0, renderDroppedItem);
+ 	}
+ }
+ 
+@@ -2447,7 +2447,7 @@ void spawnItem(ItemId itemId, int16_t tileX, int16_t tileY) /* MOD: was u8 */
+ 				ENTITY_TABLE[0]->posData->location.vy;
+ 			DROPPED_ITEMS[i].worldItem.spriteLocation.vz =
+ 				(0x32 - tileY) * 100 - 0x32;
+-			addObject(0x195, i, 0, renderDroppedItem);
++			addObject(OBJECT_ID_DROPPED_ITEM, i, 0, renderDroppedItem);
+ 			return;
+ 		}
+ 	}
+@@ -2455,7 +2455,7 @@ void spawnItem(ItemId itemId, int16_t tileX, int16_t tileY) /* MOD: was u8 */
+ 
+ void deleteDroppedItem(int16_t itemId)
+ {
+-	removeObject(0x195, itemId);
++	removeObject(OBJECT_ID_DROPPED_ITEM, itemId);
+ 	DROPPED_ITEMS[itemId].worldItem.type = ITEM_NONE;
+ }
+ 
+-- 
+2.53.0
+

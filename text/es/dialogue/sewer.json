@@ -1,0 +1,71 @@
+{
+ "s180.sec5.u0": "Bla, bla, bla. Ay, qué mal me encuentro...",
+ "s180.sec5.u1": "Oye, ¿estás bien?",
+ "s180.sec5.u2": "Bla, bla. Que me encuentro fatal, y ya está.",
+ "s180.sec5.u3": "¿De verdad vives en un sitio como este?",
+ "s180.sec5.u4": "Ay, qué mareo. Qué flojera...",
+ "s180.sec5.u5": [
+  [
+   "Mmm. De verdad que no tiene",
+   "buena cara. Dudo que sea",
+   "siempre así."
+  ],
+  [
+   "Hasta parece... un poco",
+   "pálido... o algo."
+  ]
+ ],
+ "s180.sec5.u6": "Bla, bla. Cada vez me encuentro peor.",
+ "s180.sec5.u7": "Mmm. Tendré que averiguar qué es lo que causa esto...",
+ "s180.sec5.u8": "¿De dónde vendrá esta agua sucia? ¡Vamos a averiguarlo!",
+ "s180.sec6.u0": [
+  [
+   "Bien, las alcantarillas vuelven",
+   "a estar normales."
+  ],
+  [
+   "Ya me he encargado de la",
+   "causa. Ahora ya debería",
+   "encontrarse mejor..."
+  ]
+ ],
+ "s180.sec6.u1": "¿¡Eh!? ¡Aquí pasa algo raro!",
+ "s180.sec6.u2": "¡Uh-uh-uh-uh-uh-uaaaaah!",
+ "s180.sec6.u3": "Aaaaah... Bla, bla. ¿Anda? ¿Qué pasa, gente?",
+ "s180.sec6.u4": "¡Hala! ¡Ahora parece un poco atontado! ¿Ha vuelto en sí?",
+ "s180.sec6.u5": "¿Eh? ¿Atontado? Eso es de mala educación, ¿sabes? Yo soy Numemon. ¿O soy Numemon?",
+ "s180.sec6.u6": [
+  [
+   "...Uf, este más que atontado",
+   "es..."
+  ],
+  [
+   "Ejem. Numemon, ¿sabes quién",
+   "ha sido el que te ha salvado?"
+  ]
+ ],
+ "s180.sec6.u7": "¿Eh? ¿Quieres que te salven? Bueno, lo que sea.",
+ "s180.sec6.u8": "¡Jo, lo ha entendido todo al revés! Bueno, al final da igual.",
+ "s180.sec6.u9": [
+  [
+   "O sea, que soy tu ayudante,",
+   "¿no?",
+   "¡No, tu ayudamon!"
+  ],
+  [
+   "Bla-bla-bla-bla.",
+   "Bla-bla. ¡Bla!"
+  ]
+ ],
+ "s180.sec6.u10": "...... Bueno, total, vente a nuestra ciudad. Esto, ¿sabes dónde está?",
+ "s180.sec6.u11": "¡Pues claro que lo sé! Más o menos.",
+ "s180.sec6.u12": "¡Numemon se ha unido a la ciudad!",
+ "s180.sec7.u0": "¿Eh? ¿¡Y tú quién eres!?",
+ "s180.sec7.u1": "¡Nanimon, eso es lo que soy!",
+ "s180.sec7.u2": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 20 objetos!",
+ "s180.sec7.u3": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 30 objetos!",
+ "s180.sec52.u0": "Uf, ¿qué es esto?",
+ "s180.sec52.u1": "¡! ¿Qué te pasa, {color 10}{partner}{color 1}?",
+ "s180.sec52.u2": "¿Será... el olor de esta niebla...?",
+ "s180.sec52.u3": "Mmm... esto me huele mal. A lo mejor lleva mezclado algo malo..."
+}

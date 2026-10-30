@@ -1,0 +1,207 @@
+From 278eacca5dacb78ecc839b1cb8614fc39c7eea91 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 09:35:11 +0000
+Subject: [PATCH 209/210] Patch 0209: a LANG_FILES row is the name's FNV-1a
+ hash and its copies' places among the new files (FILE_TABLE_NEW_FIRST,
+ NUM_NEW_FILES), 8 bytes instead of three names and their strings:
+ tools/gen_lang_files.py writes the rows and refuses a hash two names of the
+ disc share; about 4 100 bytes of heap back on the bilingual story disc
+
+---
+ Makefile                 | 10 +++++---
+ include/dw/file_table.h  |  1 +
+ src/main/file_table_us.c |  4 +++
+ src/main/mod_options.c   | 44 +++++++++++++++++++++++---------
+ tools/gen_lang_files.py  | 54 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 97 insertions(+), 16 deletions(-)
+ create mode 100644 tools/gen_lang_files.py
+
+diff --git a/Makefile b/Makefile
+index c1533b96..f187b4c8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -77,11 +77,9 @@ $(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BASE MOD_LANG_%s\n' '$(she
+ 
+ # MOD (language): the disc files that have a copy per language (docs/mods/language.md), given by tools/build-full.sh:
+ # LANG_FILES="NAME.EXT:ES.EXT:EN.EXT ..." (the Spanish copy, the copy with the map signs in English; - for none). Each
+-# copy is also a NEW_FILES name. Empty by default: no copies, the files as before.
++# copy is also a NEW_FILES name. Empty by default: no copies, the files as before. A row is the name's hash and the
++# copies' places among the new files (tools/gen_lang_files.py: 8 bytes, not three names).
+ LANG_FILES ?=
+-$(shell mkdir -p $(GEN_DIR); printf '%s\n' $(foreach f,$(LANG_FILES),'{ $(foreach n,$(subst :, ,$(f)),$(if $(filter -,$(n)),NULL,"$(n)"),) },') > $(GEN_DIR)/lang_files.h.tmp; \
+-	cmp -s $(GEN_DIR)/lang_files.h.tmp $(GEN_DIR)/lang_files.h && rm $(GEN_DIR)/lang_files.h.tmp \
+-	|| mv $(GEN_DIR)/lang_files.h.tmp $(GEN_DIR)/lang_files.h)
+ 
+ # MOD (new files): the disc files with names the original never had (a new screen's .MAP/.TFS, models, textures), one
+ # FILE_OFFSET_TABLE entry each after the mod entries (src/main/file_table_us.c), sector and size written by the project's
+@@ -91,6 +89,10 @@ NEW_FILES ?=
+ $(shell mkdir -p $(GEN_DIR); printf '%s\n' $(foreach n,$(NEW_FILES),'{ 0x00000000, 0x00000800, "$(n)" },') > $(GEN_DIR)/file_table_new.h.tmp; \
+ 	cmp -s $(GEN_DIR)/file_table_new.h.tmp $(GEN_DIR)/file_table_new.h && rm $(GEN_DIR)/file_table_new.h.tmp \
+ 	|| mv $(GEN_DIR)/file_table_new.h.tmp $(GEN_DIR)/file_table_new.h)
++$(shell mkdir -p $(GEN_DIR); printf '#define NUM_NEW_FILES %s\n' '$(words $(NEW_FILES))' > $(GEN_DIR)/file_table_count.h.tmp; \
++	cmp -s $(GEN_DIR)/file_table_count.h.tmp $(GEN_DIR)/file_table_count.h && rm $(GEN_DIR)/file_table_count.h.tmp \
++	|| mv $(GEN_DIR)/file_table_count.h.tmp $(GEN_DIR)/file_table_count.h)
++$(shell python3 tools/gen_lang_files.py $(GEN_DIR)/lang_files.h --lang '$(LANG_FILES)' --new '$(NEW_FILES)' --table src/main/file_table_us.c >&2)
+ 
+ PYTHON := python3
+ 
+diff --git a/include/dw/file_table.h b/include/dw/file_table.h
+index 242d3c73..fc180953 100644
+--- a/include/dw/file_table.h
++++ b/include/dw/file_table.h
+@@ -13,5 +13,6 @@ typedef struct {
+ } FileEntry;
+ 
+ extern FileEntry FILE_OFFSET_TABLE[];
++extern const int16_t FILE_TABLE_NEW_FIRST; /* MOD (language): the first of the new files (NEW_FILES) */
+ 
+ #endif
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index 3d5293da..073f3f39 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -852,6 +852,10 @@ FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + par
+ #include <file_table_new.h>
+ 	{ 0x00000000, 0x00000000, "NULL" },
+ };
++
++/* MOD (language): the first of the new files' entries (lang_files.h names the copies by their place among them) */
++#include <file_table_count.h>
++const int16_t FILE_TABLE_NEW_FIRST = sizeof(FILE_OFFSET_TABLE) / sizeof(FileEntry) - 1 - NUM_NEW_FILES;
+ // clang-format on
+ 
+ #include <dw/sin_lookup_table.h>
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 732640ef..65f67cd8 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -279,34 +279,54 @@ int32_t modFileOnDisc(char *name)
+ 
+ /*
+  * MOD (language): a file's copy in the language, and a map background's (.TFS, and the .MAP whose sprites cover a sign)
+- * with its signs translated (the Spanish copy
+- * also has them in Spanish; MAP SIGNS ORIGINAL reads the disc's .TFS), from the table tools/build-full.sh writes
+- * (LANG_FILES: the name, its Spanish copy, its copy with English signs); the file itself when the disc has no such copy
++ * with its signs translated (the Spanish copy also has them in Spanish; MAP SIGNS ORIGINAL reads the disc's .TFS), from
++ * the table tools/build-full.sh writes (LANG_FILES: the name, its Spanish copy, its copy with English signs); the file
++ * itself when the disc has no such copy. A row is the name's FNV-1a hash and the copies' places among the new files
++ * (tools/gen_lang_files.py, which refuses a hash two names of the disc share): the names are FILE_OFFSET_TABLE's.
+  */
+-static char *LANG_FILE_TABLE[][3] = {
++typedef struct {
++	uint32_t hash;
++	uint16_t copy[2]; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
++} LangFileRow;
++
++static LangFileRow LANG_FILE_TABLE[] = {
+ #include <lang_files.h>
+-	{ NULL, NULL, NULL },
++	{ 0, { 0xFFFF, 0xFFFF } },
+ };
+ 
++static uint32_t modNameHash(char *name)
++{
++	uint32_t h = 0x811C9DC5;
++
++	while (*name != '\0') {
++		h = (h ^ (uint8_t)*name++) * 0x01000193;
++	}
++	return h;
++}
++
+ char *modLangFile(char *name)
+ {
+-	int32_t i;
++	uint32_t i;
++	uint32_t hash;
+ 	int32_t tfs;
+-	char *copy;
++	int32_t copy;
++	char *file;
+ 
+-	for (i = 0; LANG_FILE_TABLE[i][0] != NULL; i++) {
+-		if (strcmp(name, LANG_FILE_TABLE[i][0])) {
++	hash = modNameHash(name);
++	for (i = 0; i < sizeof(LANG_FILE_TABLE) / sizeof(LangFileRow) - 1; i++) {
++		if (LANG_FILE_TABLE[i].hash != hash) {
+ 			continue;
+ 		}
+ 		tfs = strlen(name) > 4 && (!strcmp(name + strlen(name) - 4, ".TFS") || !strcmp(name + strlen(name) - 4, ".MAP")); /* a background or its sprites */
+ 		if (tfs && !MOD_OPT_SIGNS) {
+ 			return name;
+ 		}
+-		copy = LANG_FILE_TABLE[i][MOD_LANG == MOD_LANG_ES ? 1 : 2];
+-		if (copy == NULL || (!tfs && MOD_LANG != MOD_LANG_ES) || !modFileOnDisc(copy)) {
++		copy = LANG_FILE_TABLE[i].copy[MOD_LANG == MOD_LANG_ES ? 0 : 1];
++		if (copy == 0xFFFF || (!tfs && MOD_LANG != MOD_LANG_ES)) {
+ 			return name;
+ 		}
+-		return copy;
++		file = FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].filename;
++		return modFileOnDisc(file) ? file : name;
+ 	}
+ 	return name;
+ }
+diff --git a/tools/gen_lang_files.py b/tools/gen_lang_files.py
+new file mode 100644
+index 00000000..dd2a7a27
+--- /dev/null
++++ b/tools/gen_lang_files.py
+@@ -0,0 +1,54 @@
++#!/usr/bin/env python3
++"""MOD (language): lang_files.h, the rows of modLangFile (src/main/mod_options.c) from the Makefile's LANG_FILES.
++
++A row is the hash of the file's name (FNV-1a, 32 bits) and the place of its Spanish copy and of its copy with English
++signs among the new files (NEW_FILES: the entries after FILE_TABLE_NEW_FIRST), 0xFFFF for none. The names themselves are
++already in FILE_OFFSET_TABLE: a row of three names cost 40 bytes of the executable's heap, this one 8 (the bilingual
++disc has some 140 rows). A name of the disc whose hash meets a row's stops the build.
++
++  gen_lang_files.py OUT.h --lang "NAME:ES:EN ..." --new "NAME ..." --table src/main/file_table_us.c
++"""
++import argparse, os, re, sys
++
++
++def fnv1a(name):
++    h = 0x811C9DC5
++    for c in name.encode('ascii'):
++        h = ((h ^ c) * 0x01000193) & 0xFFFFFFFF
++    return h
++
++
++def main():
++    ap = argparse.ArgumentParser()
++    ap.add_argument('out')
++    ap.add_argument('--lang', default='')
++    ap.add_argument('--new', default='')
++    ap.add_argument('--table', required=True)
++    a = ap.parse_args()
++    new = a.new.split()
++    where = {n: i for i, n in enumerate(new)}
++    names = set(re.findall(r'"([A-Z0-9_]+\.[A-Z0-9_]+)"', open(a.table).read())) | set(new)
++    hashes = {}
++    for n in names:
++        hashes.setdefault(fnv1a(n), set()).add(n)
++    rows = []
++    for spec in a.lang.split():
++        key, es, en = spec.split(':')
++        if len(hashes.get(fnv1a(key), ())) > 1:
++            sys.exit(f'gen_lang_files: {key} shares its hash with {sorted(hashes[fnv1a(key)] - {key})}')
++        idx = []
++        for c in (es, en):
++            if c == '-':
++                idx.append(0xFFFF)
++            elif c in where:
++                idx.append(where[c])
++            else:
++                sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
++        rows.append(f'{{ 0x{fnv1a(key):08X}, {idx[0]}, {idx[1]} }}, /* {key} */')
++    text = ''.join(r + '\n' for r in rows)
++    if not os.path.exists(a.out) or open(a.out).read() != text:
++        open(a.out, 'w').write(text)
++
++
++if __name__ == '__main__':
++    main()
+-- 
+2.53.0
+

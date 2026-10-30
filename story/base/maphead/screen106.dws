@@ -1,0 +1,13 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+maphead {
+    section(106) replace {    // section 106
+        set_script(102, 106);
+        engine.music_mode = 0;
+        set_bgm(25);
+        load_digimon(species("Tentomon"));
+        set_digimon(species("Tentomon"), 0, 0);
+    }
+}

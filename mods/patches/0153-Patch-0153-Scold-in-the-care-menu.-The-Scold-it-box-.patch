@@ -1,0 +1,339 @@
+From 403530b4a5b3d6fec6ce45da214d2ff80a5b5db0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 21 Oct 2026 21:36:12 +0000
+Subject: [PATCH] Patch 0153: Scold in the care menu. The "Scold it?" box
+ (0152) goes: a fair scolding pending (ITEM_SCOLD_FLAG 1) puts Scold first in
+ the care list, as Sleep, with the triangle menu's Scold icon
+ (MENU_OPTIONS[5]); it does what that menu's Scold does (partnerSetState(4)).
+ A refusal of the item the menu gave opens the menu again on its own, Scold
+ under the cursor; triangle leaves the flag as it is (walking away clears it,
+ as in the original)
+
+---
+ src/main/mod_feed.c | 183 ++++++++++++++++----------------------------
+ 1 file changed, 67 insertions(+), 116 deletions(-)
+
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 57da2440..710ef1af 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -4,16 +4,16 @@
+  * On the map, with the tamer facing the partner (within 45 degrees) and close enough (its item take distance plus
+  * FEED_SLACK, as checkEatDistance measures), X opens a box laid out as the inventory's (two columns of icon, name
+  * and amount, the description box under it) with what the partner's condition asks for, every need at once:
+- * Sleep first when it is sleepy (the triangle menu's Sleep), then in inventory order the items that answer a need
++ * the triangle menu's commands a need asks for first, Scold when a scolding is fair (ITEM_SCOLD_FLAG 1: it refused
++ * an item out of indiscipline, it pooped on the ground) and Sleep when it is sleepy, then in inventory order the
++ * items that answer a need
+  * it has: food when hungry (ITEM_FUNCTIONS[type] == handleFood), the food that lowers tiredness when tired, the
+  * Port. potty when it needs to go, what cures an injury or a sickness when it has one (handleStatusItems with a
+  * cure in its effect row: Bandage, Medicine). X gives the chosen item as Items > Use does (startFeedingItem: the
+- * partner comes, takes it or refuses it, one unit is used) or puts it to sleep, triangle closes the box. With
+- * nothing to offer X does nothing here. While the box is open the clock stops, as with the triangle menu.
+- * When the partner did something a scolding answers (ITEM_SCOLD_FLAG 1: it refused an item out of indiscipline, it
+- * pooped on the ground), a box asks "Scold it?": on its own when it refused the item this menu gave, and on X in front
+- * of it before the list. Yes scolds as the triangle menu's Scold (partnerSetState(4): discipline up, the next item
+- * taken), No lets it go (the flag cleared, as walking away clears it).
++ * partner comes, takes it or refuses it, one unit is used), a command does what the triangle menu's does (Scold:
++ * discipline up and the next item taken; Sleep), triangle closes the box. When the partner refuses the item this
++ * menu gave and a scolding is fair, the menu opens again on its own with Scold under the cursor. With nothing to
++ * offer X does nothing here. While the box is open the clock stops, as with the triangle menu.
+  * Hooked from tamerTickWalkingState() (tamer.c), after checkMapInteraction(): talking to an NPC, a chest or a
+  * press tile take the X first.
+  */
+@@ -45,10 +45,20 @@
+ #define PORT_POTTY	0x20
+ #define PARTNER_SCOLD	4	/* PARTNER_STATE: partnerTickPraiseScold, as the triangle menu's Scold */
+ #define PARTNER_FEEDING	5	/* PARTNER_STATE: partnerTickFeedItem */
+-#define FEED_SLEEP	0xFF	/* feedSlots entry: the Sleep command, not an inventory slot */
++#define FEED_SCOLD	0xFE	/* feedSlots entries from here up: a command, not an inventory slot */
++#define FEED_SLEEP	0xFF
++#define IS_COMMAND(slot)	((slot) >= FEED_SCOLD)
+ #define SCOLD_PENDING	1	/* ITEM_SCOLD_FLAG: a scolding now is a fair one */
+ 
+-enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING, SCOLD_OPENING, SCOLD_OPEN, SCOLD_GIVING };
++enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING };
++
++typedef struct {
++	char *name;
++	char *desc;
++	uint8_t texX; /* the triangle menu's icon (MENU_OPTIONS): u, v - 0xC0 */
++	uint8_t texY;
++	int8_t partnerState;
++} FeedCommand;
+ 
+ extern int32_t POLLED_INPUT;
+ extern int32_t POLLED_INPUT_PREVIOUS;
+@@ -82,13 +92,18 @@ void renderRectPolyFT4(int16_t posX, int16_t posY, uint8_t width, uint8_t height
+                        int16_t texturePage, int16_t clut, int32_t zIndex, int8_t flag);
+ u_short GetClut(int32_t x, int32_t y);
+ 
++static char FEED_SCOLD_NAME[] = "Scold";
++static char FEED_SCOLD_DESC[] = "It misbehaved: teach it.";
+ static char FEED_SLEEP_NAME[] = "Sleep";
+ static char FEED_SLEEP_DESC[] = "Put it to bed until morning.";
+-static char SCOLD_QUESTION[] = "Scold it?";
+-static char SCOLD_YES[] = "Yes";
+-static char SCOLD_NO[] = "No";
+ 
+-static uint8_t feedSlots[31]; /* Sleep, then the inventory slots shown, in inventory order */
++/* by slot - FEED_SCOLD */
++static FeedCommand FEED_COMMANDS[2] = {
++	{ FEED_SCOLD_NAME, FEED_SCOLD_DESC, 0x00, 0x28, PARTNER_SCOLD }, /* MENU_OPTIONS[5] */
++	{ FEED_SLEEP_NAME, FEED_SLEEP_DESC, 0x28, 0x28, PARTNER_SLEEP }, /* MENU_OPTIONS[6] */
++};
++
++static uint8_t feedSlots[32]; /* the commands, then the inventory slots shown, in inventory order */
+ static int32_t feedCount;
+ static int32_t feedCursor;
+ static int32_t feedRowOffset;
+@@ -118,6 +133,9 @@ static int32_t feedCollect(void)
+ 	int32_t i;
+ 
+ 	feedCount = 0;
++	if (ITEM_SCOLD_FLAG == SCOLD_PENDING) {
++		feedSlots[feedCount++] = FEED_SCOLD;
++	}
+ 	if (PARTNER_PARA.condition & CONDITION_SLEEPY) {
+ 		feedSlots[feedCount++] = FEED_SLEEP;
+ 	}
+@@ -131,7 +149,8 @@ static int32_t feedCollect(void)
+ 
+ static char *feedName(int32_t i)
+ {
+-	return feedSlots[i] == FEED_SLEEP ? FEED_SLEEP_NAME : ITEM_NAME(INVENTORY.types.array[feedSlots[i]]);
++	return IS_COMMAND(feedSlots[i]) ? FEED_COMMANDS[feedSlots[i] - FEED_SCOLD].name
++	                                : ITEM_NAME(INVENTORY.types.array[feedSlots[i]]);
+ }
+ 
+ /* the partner is within FEED_FACING of where the tamer looks, and close enough to take an item */
+@@ -179,8 +198,8 @@ static void feedDrawDescription(void)
+ 
+ 	setRECT(&area, 0, 0xB4, 0xFC, 0xC);
+ 	clearTextSubArea(&area);
+-	drawString(feedSlots[feedCursor] == FEED_SLEEP ? FEED_SLEEP_DESC
+-	                                                : ITEM_DESCS[INVENTORY.types.array[feedSlots[feedCursor]]],
++	drawString(IS_COMMAND(feedSlots[feedCursor]) ? FEED_COMMANDS[feedSlots[feedCursor] - FEED_SCOLD].desc
++	                                             : ITEM_DESCS[INVENTORY.types.array[feedSlots[feedCursor]]],
+ 	           0, 0xB4);
+ 	DrawSync(0);
+ }
+@@ -193,15 +212,17 @@ static void feedRenderList(int32_t boxId)
+ 	int32_t x;
+ 	int32_t y;
+ 	ItemId type;
++	FeedCommand *command;
+ 
+ 	for (i = feedRowOffset * 2; i < feedCount && i < (feedRowOffset + FEED_ROWS_SHOWN) * 2; i++) {
+ 		row = i / 2 - feedRowOffset;
+ 		x = box->finalPos.x + ((i & 1) ? 0x9A : 0xA);
+ 		y = box->finalPos.y + 8 + row * 0x12;
+-		if (feedSlots[i] == FEED_SLEEP) {
+-			/* the triangle menu's Sleep icon (MENU_OPTIONS[6]), 20 x 20 centred on the 16 x 16 item icon */
+-			renderRectPolyFT4(x - 2, y - 2, 0x14, 0x14, 0x28, 0x28 + 0xC0, 0x1E, GetClut(0x100, 0xD + 0x1F0),
+-			                  6 - boxId, 0);
++		if (IS_COMMAND(feedSlots[i])) {
++			/* the triangle menu's icon, 20 x 20 centred on the 16 x 16 item icon */
++			command = &FEED_COMMANDS[feedSlots[i] - FEED_SCOLD];
++			renderRectPolyFT4(x - 2, y - 2, 0x14, 0x14, command->texX, command->texY + 0xC0, 0x1E,
++			                  GetClut(0x100, 0xD + 0x1F0), 6 - boxId, 0);
+ 			renderString(8, x + 0x13, y + 2, 0x60, 0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
+ 			continue;
+ 		}
+@@ -249,41 +270,6 @@ static void feedOpenBoxes(void)
+ 	createAnimatedUIBox(FEED_DESC_BOX, 0, 2, &finalPos, &startPos, NULL, (RenderFunction)feedRenderDescription);
+ }
+ 
+-/* the question in the text area's first three rows: the question, Yes, No */
+-static void scoldDrawText(void)
+-{
+-	clearTextArea();
+-	drawString(SCOLD_QUESTION, 0, 0);
+-	drawString(SCOLD_YES, 0, 0xC);
+-	drawString(SCOLD_NO, 0, 0x18);
+-	DrawSync(0);
+-}
+-
+-static void scoldRender(int32_t boxId)
+-{
+-	UIBoxData *box = &UI_BOX_DATA[boxId];
+-	int32_t i;
+-
+-	for (i = 0; i < 3; i++) {
+-		renderString(i == 0 ? 9 : 8, box->finalPos.x + (i == 0 ? 0xA : 0x16), box->finalPos.y + 0xA + i * 0x12, 0x60,
+-		             0xC, 0, i * 0xC, 6 - boxId, 1);
+-	}
+-	renderSelectionCursor(box->finalPos.x + 0x10, box->finalPos.y + 7 + (1 + feedCursor) * 0x12, 0x48, 0x12,
+-	                      6 - boxId);
+-}
+-
+-static void scoldOpenBox(void)
+-{
+-	RECT finalPos;
+-	RECT startPos;
+-	DVECTOR xy;
+-
+-	setRECT(&finalPos, -0x34, -0x68, 0x68, 0x14 + 3 * 0x12);
+-	getEntityScreenPos(&PARTNER_ENTITY.digimonEntity.entity, 1, &xy);
+-	setRECT(&startPos, xy.vx - 5, xy.vy - 5, 10, 10);
+-	createAnimatedUIBox(FEED_LIST_BOX, 0, 2, &finalPos, &startPos, NULL, (RenderFunction)scoldRender);
+-}
+-
+ static void feedCloseBoxes(void)
+ {
+ 	RECT rect;
+@@ -291,9 +277,7 @@ static void feedCloseBoxes(void)
+ 
+ 	getEntityScreenPos(&PARTNER_ENTITY.digimonEntity.entity, 1, &xy);
+ 	setRECT(&rect, xy.vx - 5, xy.vy - 5, 10, 10);
+-	if (UI_BOX_DATA[FEED_DESC_BOX].state != 0) {
+-		removeAnimatedUIBox(FEED_DESC_BOX, &rect);
+-	}
++	removeAnimatedUIBox(FEED_DESC_BOX, &rect);
+ 	removeAnimatedUIBox(FEED_LIST_BOX, &rect);
+ }
+ 
+@@ -309,15 +293,6 @@ static void feedEnterMenu(void)
+ 	playSound(0, 3);
+ }
+ 
+-static void scoldAsk(void)
+-{
+-	feedCursor = 0;
+-	feedState = SCOLD_OPENING;
+-	scoldDrawText();
+-	feedEnterMenu();
+-	scoldOpenBox();
+-}
+-
+ static void feedMoveCursor(int32_t cursor)
+ {
+ 	if (cursor < 0 || cursor >= feedCount || cursor == feedCursor) {
+@@ -331,12 +306,14 @@ static void feedMoveCursor(int32_t cursor)
+ 	if (feedCursor / 2 >= feedRowOffset + FEED_ROWS_SHOWN) {
+ 		feedRowOffset = feedCursor / 2 - FEED_ROWS_SHOWN + 1;
+ 	}
+-	if (feedSlots[feedCursor] != FEED_SLEEP) {
++	if (!IS_COMMAND(feedSlots[feedCursor])) {
+ 		INVENTORY_POINTER = feedSlots[feedCursor]; /* removeOneSelectedItem takes the used unit from this slot */
+ 	}
+ 	feedDrawDescription();
+ }
+ 
++static int32_t feedOpen(void);
++
+ static void feedTick(int32_t instanceId)
+ {
+ 	int32_t pressed = POLLED_INPUT & ~POLLED_INPUT_PREVIOUS;
+@@ -368,42 +345,13 @@ static void feedTick(int32_t instanceId)
+ 			feedState = FEED_CLOSING;
+ 		}
+ 		break;
+-	case SCOLD_OPENING:
+-		if (UI_BOX_DATA[FEED_LIST_BOX].state == 1) {
+-			feedState = SCOLD_OPEN;
+-		}
+-		break;
+-	case SCOLD_OPEN:
+-		if ((pressed & 0x5000) != 0) {
+-			playSound(0, 2);
+-			feedCursor ^= 1;
+-		} else if ((pressed & CONFIRM_BUTTON) && feedCursor == 0) {
+-			playSound(0, 3);
+-			feedCloseBoxes();
+-			feedState = SCOLD_GIVING;
+-		} else if (pressed & (CONFIRM_BUTTON | CANCEL_BUTTON)) {
+-			playSound(0, 4);
+-			ITEM_SCOLD_FLAG = 0;
+-			feedCloseBoxes();
+-			feedState = FEED_CLOSING;
+-		}
+-		break;
+-	case SCOLD_GIVING:
+-		if (UI_BOX_DATA[FEED_LIST_BOX].state == 0) {
+-			removeObject(FEED_OBJECT_ID, 0);
+-			partnerSetState(PARTNER_SCOLD); /* the tamer and the camera as Scold has them */
+-			IS_IN_MENU = 0;
+-			startGameTime();
+-		}
+-		break;
+ 	case FEED_WATCHING:
+-		/* the item handed over: once the partner took it or refused it, ask about a refusal a scolding answers */
++		/* the item handed over: once the partner took it or refused it, a refusal a scolding answers opens the menu
++		 * again, Scold first */
+ 		if (PARTNER_STATE == PARTNER_FEEDING) {
+ 			break;
+ 		}
+-		if (ITEM_SCOLD_FLAG == SCOLD_PENDING && PARTNER_STATE == PARTNER_NORMAL && TAMER_STATE == 0) {
+-			scoldAsk();
+-		} else {
++		if (ITEM_SCOLD_FLAG != SCOLD_PENDING || PARTNER_STATE != PARTNER_NORMAL || TAMER_STATE != 0 || !feedOpen()) {
+ 			removeObject(FEED_OBJECT_ID, 0);
+ 		}
+ 		break;
+@@ -418,9 +366,10 @@ static void feedTick(int32_t instanceId)
+ 		break;
+ 	case FEED_GIVING:
+ 		if (UI_BOX_DATA[FEED_LIST_BOX].state == 0 && UI_BOX_DATA[FEED_DESC_BOX].state == 0) {
+-			if (feedSlots[feedCursor] == FEED_SLEEP) {
++			if (IS_COMMAND(feedSlots[feedCursor])) {
+ 				removeObject(FEED_OBJECT_ID, 0);
+-				partnerSetState(PARTNER_SLEEP); /* the tamer, the camera and the clock as Sleep has them */
++				/* the tamer, the camera and the clock as the triangle menu's command has them */
++				partnerSetState(FEED_COMMANDS[feedSlots[feedCursor] - FEED_SCOLD].partnerState);
+ 				IS_IN_MENU = 0;
+ 				startGameTime();
+ 				break;
+@@ -433,33 +382,35 @@ static void feedTick(int32_t instanceId)
+ 	}
+ }
+ 
+-/* from tamerTickWalkingState: 1 when X opened the menu or the scolding question */
+-int32_t modFeedTick(void)
++/* the box opens with what the partner's condition asks for: 0 when there is nothing to offer */
++static int32_t feedOpen(void)
+ {
+-	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
+-	    UI_BOX_DATA[FEED_LIST_BOX].state != 0 || UI_BOX_DATA[FEED_LIST_BOX].frame != 0 ||
+-	    UI_BOX_DATA[FEED_DESC_BOX].state != 0 || UI_BOX_DATA[FEED_DESC_BOX].frame != 0 ||
+-	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead()) {
+-		return 0;
+-	}
+-	if (ITEM_SCOLD_FLAG == SCOLD_PENDING) {
+-		scoldAsk();
+-		addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
+-		return 1;
+-	}
+ 	if (feedCollect() == 0) {
+ 		return 0;
+ 	}
+ 	feedCursor = 0;
+ 	feedRowOffset = 0;
+ 	feedState = FEED_OPENING;
+-	if (feedSlots[0] != FEED_SLEEP) {
++	if (!IS_COMMAND(feedSlots[0])) {
+ 		INVENTORY_POINTER = feedSlots[0];
+ 	}
+ 	feedDrawNames();
+ 	feedDrawDescription();
+ 	feedEnterMenu();
+ 	feedOpenBoxes();
++	return 1;
++}
++
++/* from tamerTickWalkingState: 1 when X opened the menu */
++int32_t modFeedTick(void)
++{
++	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
++	    UI_BOX_DATA[FEED_LIST_BOX].state != 0 || UI_BOX_DATA[FEED_LIST_BOX].frame != 0 ||
++	    UI_BOX_DATA[FEED_DESC_BOX].state != 0 || UI_BOX_DATA[FEED_DESC_BOX].frame != 0 ||
++	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead() ||
++	    !feedOpen()) {
++		return 0;
++	}
+ 	addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
+ 	return 1;
+ }
+-- 
+2.53.0
+

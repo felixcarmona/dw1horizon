@@ -1,0 +1,124 @@
+{
+ "first_id": 265,
+ "out": "build/batch8",
+ "digimon": [
+  {
+   "name": "DarkTyrannomon",
+   "game": "dw2",
+   "model": "M133DTRN",
+   "level": 5,
+   "element": 1,
+   "from": [
+    8
+   ]
+  },
+  {
+   "name": "ExTyrannomon",
+   "game": "dw2",
+   "model": "M142XTRN",
+   "level": 5,
+   "element": 0,
+   "from": [
+    8
+   ]
+  },
+  {
+   "name": "Mammothmon",
+   "game": "dw2",
+   "model": "M212MANM",
+   "level": 5,
+   "element": 4,
+   "from": [
+    23
+   ]
+  },
+  {
+   "name": "SkullMammothmon",
+   "game": "dw2",
+   "model": "M215SMAN",
+   "level": 5,
+   "element": 4,
+   "from": [
+    267
+   ]
+  },
+  {
+   "name": "Garbagemon",
+   "game": "dw2",
+   "model": "M227GARB",
+   "level": 5,
+   "element": 6,
+   "from": [
+    39,
+    11
+   ]
+  },
+  {
+   "name": "PrinceMamemon",
+   "game": "dw2",
+   "model": "M195PMAM",
+   "level": 5,
+   "element": 1,
+   "from": [
+    13
+   ]
+  },
+  {
+   "name": "Plesiomon",
+   "game": "dw2",
+   "model": "M232PLES",
+   "level": 5,
+   "element": 4,
+   "from": [
+    10
+   ]
+  },
+  {
+   "name": "Woodmon",
+   "game": "dw2",
+   "model": "M222WOOD",
+   "level": 4,
+   "element": 3,
+   "from": [
+    46
+   ]
+  },
+  {
+   "name": "Floramon",
+   "game": "dw2",
+   "model": "M191FLRA",
+   "level": 3,
+   "element": 3,
+   "from": [
+    44
+   ]
+  },
+  {
+   "name": "Blossomon",
+   "game": "dw2",
+   "model": "M200BLSA",
+   "level": 4,
+   "element": 3,
+   "from": [
+    273
+   ]
+  },
+  {
+   "name": "Anomalocarimon",
+   "game": "dw2",
+   "model": "M202ANOM",
+   "level": 5,
+   "element": 4,
+   "from": [
+    35
+   ]
+  },
+  {
+   "name": "Baihumon",
+   "game": "dw2",
+   "model": "M149CHIN",
+   "level": "mega",
+   "element": 1
+  }
+ ]
+}

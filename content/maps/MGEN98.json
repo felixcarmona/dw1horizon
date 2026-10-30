@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP15/MGEN98.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "MetalGreymonVirus136",
+      "at": [-400, 3400],
+      "facing": 0,
+      "follow": 1,
+      "range": 300,
+      "charge": 0,
+      "moves": [46, 47, 49, 53],
+      "prios": [30, 30, 30, 10],
+      "flee": [-8, 538],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+ "s176.sec7.u0": "Oh yeah! Is your bag too full? Boing! They say somewhere in the world there's a key chain that links your bag to another dimension, so you can carry more items! Maybe go back around the places you've already been!",
+ "s176.sec7.u1": "I'll teach you my top secret item-buying tips! In the item list, press the Start button to see what an item does! When you choose how many, {color 4}□{color 1} picks as many as you can afford, and holding {color 10}○{color 1} with up or down changes it ten at a time! When the list is long, hold R1 and press up or down to scroll fast! And one more secret... Try buying something right after your Digimon is reborn! Something good is sure to happen! Boing!",
+ "s176.sec81.u0": [
+  [
+   "Welcome! Hey, {color 6}{player}{color 1}! Look, my very",
+   "own shop! I'm gonna sell items like crazy!"
+  ],
+  [
+   "The stock... eh, I'll sort that out sometime."
+  ],
+  [
+   "I'd love it if you brought me some Digimon to",
+   "help out."
+  ]
+ ],
+ "s176.sec81.u1": "Welcome, peep! I've decided to buy and sell items, peep. Nice to meet you, peep! There's not much stock yet... but if some Digimon came to help, maybe I could manage, peep.",
+ "s176.sec81.u2": "Welcome. If I may be so bold, I have opened a shop that deals in items. I look forward to your business. The selection is still rather poor, but I mean to make the shop bigger. Please bear with me for now.",
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1}, I finally got",
+   "the item shop open."
+  ],
+  [
+   "I have a feeling business will boom!"
+  ],
+  [
+   "With more Digimon in the city, I should be able",
+   "to stock better goods."
+  ],
+  [
+   "Please be patient until then."
+  ]
+ ],
+ "s176.sec81.u4": "Hey, {color 6}{player}{color 1}! I've started helping out at this shop. Buy lots, okay?",
+ "s176.sec81.u5": "Welcome, peep! From today I'm helping at the shop, peep. Nice to meet you, peep!",
+ "s176.sec81.u6": "Welcome, {color 6}{player}{color 1}. If I may be so bold, I have decided to help at this shop. I look forward to your business.",
+ "s176.sec81.u7": "Ah, {color 6}{player}{color 1}. This is where my talents are best put to use, after all. I'll give it my all from now on.",
+ "s176.sec82.m0.o0": "Buy",
+ "s176.sec82.m0.o1": "Don't buy",
+ "s176.sec82.u0": "Ohh, señor, how've you been? Me, I'm sooo busy selling items every day. Just kidding! I'm a real lazybones, so I won't be in the shop much, I think. But I've got something amazing for you! It's called the Training Manual! Just carrying it makes training work wonders! It's very precious, so I'll sell it to you for 50000 Bits. Don't buy it and you'll be sorry!",
+ "s176.sec82.u1": "You're waaay short on Bits!",
+ "s176.sec82.u2": "Hmm, your bag's all full!",
+ "s176.sec82.u3": "Got the {color 6}Training Manual{color 1}!",
+ "s176.sec82.u4": "Not one Bit off, señor!"
+}

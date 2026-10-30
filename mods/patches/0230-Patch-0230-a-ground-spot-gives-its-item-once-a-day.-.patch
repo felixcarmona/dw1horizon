@@ -1,0 +1,196 @@
+From 31bb9ef231a4de7beab7786b377f5907bc74e397 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 21:55:34 +0000
+Subject: [PATCH 230/231] Patch 0230: a ground spot gives its item once a day.
+ spawnItem skips a spot (screen, tile) picked up today: pickupItem remembers
+ the spots of script-spawned items (MOD_DROPPED_SPOT; battle drops are not
+ spots) in a ring of 64 (MOD_GROUND_PICKED), dailyPStatTrigger forgets them at
+ midnight, the save keeps them (SAVE_TAG_GROUND_PICKED 0x000B, 256 bytes; a
+ save without it picked nothing). Leaving a screen and coming back no longer
+ rolls its items again (Amida Forest's road was about 1260 bits an entry). 528
+ bytes of heap
+
+---
+ include/dw/item.h        | 15 +++++++++++++++
+ include/dw/save_tags.h   |  1 +
+ src/main/item.c          | 37 +++++++++++++++++++++++++++++++++++++
+ src/main/main_menu.c     | 16 ++++++++++++++++
+ src/main/script_common.c |  1 +
+ 5 files changed, 70 insertions(+)
+
+diff --git a/include/dw/item.h b/include/dw/item.h
+index e9ef9c3a..34a2f9f4 100644
+--- a/include/dw/item.h
++++ b/include/dw/item.h
+@@ -93,6 +93,21 @@ void clearDroppedItems(void);
+ void spawnItem(ItemId type, int16_t tileX, int16_t tileY);
+ void spawnDroppedItems(Entity *e, ItemId type);
+ int32_t pickupItem(int16_t itemId);
++
++/*
++ * MOD (ground items a day): a spot a script spawns an item on (spawnItem) gives it once a day. The spots picked up
++ * today, by screen and tile (a ring of MOD_GROUND_PICKED_MAX), are skipped when the screen spawns again; midnight
++ * (dailyPStatTrigger) forgets them; the save keeps them (SAVE_TAG_GROUND_PICKED). Battle drops are not spots.
++ */
++#define MOD_GROUND_PICKED_MAX 64
++typedef struct {
++	int16_t screen; /* -1: empty */
++	uint8_t tileX;
++	uint8_t tileY;
++} GroundSpot;
++extern GroundSpot MOD_GROUND_PICKED[MOD_GROUND_PICKED_MAX];
++extern uint8_t MOD_GROUND_NEXT;
++void modForgetGroundPicked(void);
+ void removeTamerItem(void);
+ void renderOverworldItem(WorldItem *item);
+ 
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 5a2d8f99..86d78b12 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -30,6 +30,7 @@
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
+ #define SAVE_TAG_OPTIONS		0x0009 /* u8[n] the title menu's OPTIONS: [0] button layout (0 US, 1 Japanese) */
+ #define SAVE_TAG_VANILLA_SWAP		0x000A /* i16 species, i16 vanilla species: NEW DIGIMON off turned the partner from the first into the second (main_menu.c modVanillaSwap) */
++#define SAVE_TAG_GROUND_PICKED		0x000B /* {i16 screen, u8 tileX, u8 tileY}[64]: the ground spots picked up today (item.c MOD_GROUND_PICKED) */
+ #define SAVE_TAG_REQUIRED		0x8000
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+diff --git a/src/main/item.c b/src/main/item.c
+index 1362de5e..fa35dbf7 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -63,6 +63,9 @@ void addTamerLevel(int32_t chance, int32_t amount);
+ Inventory INVENTORY;
+ TamerItem TAMER_ITEM;
+ DroppedItem DROPPED_ITEMS[11];
++GroundSpot MOD_GROUND_PICKED[MOD_GROUND_PICKED_MAX];
++uint8_t MOD_GROUND_NEXT;
++static uint8_t MOD_DROPPED_SPOT[11]; /* MOD (ground items a day): the dropped item came from a script's spot */
+ int8_t TAMER_WAYPOINT_Y[30];
+ int8_t TAMER_WAYPOINT_X[30];
+ int8_t PARTNER_WAYPOINT_Y[30];
+@@ -2401,6 +2404,7 @@ void spawnDroppedItems(Entity *e, ItemId type) /* MOD: was u8 */
+ 		it = &DROPPED_ITEMS[i];
+ 		if (it->worldItem.type == ITEM_NONE) {
+ 			it->worldItem.type = type;
++			MOD_DROPPED_SPOT[i] = 0;
+ 			break;
+ 		}
+ 	}
+@@ -2424,12 +2428,39 @@ void renderDroppedItem(int32_t instanceId)
+ 
+ GARBAGE(spawnItem, 24);
+ 
++void modForgetGroundPicked(void)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_GROUND_PICKED_MAX; i++) {
++		MOD_GROUND_PICKED[i].screen = -1;
++	}
++	MOD_GROUND_NEXT = 0;
++}
++
++static int32_t modGroundPicked(int16_t tileX, int16_t tileY)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_GROUND_PICKED_MAX; i++) {
++		if (MOD_GROUND_PICKED[i].screen == CURRENT_SCREEN && MOD_GROUND_PICKED[i].tileX == (uint8_t)tileX &&
++		    MOD_GROUND_PICKED[i].tileY == (uint8_t)tileY) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
+ void spawnItem(ItemId itemId, int16_t tileX, int16_t tileY) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 
++	if (modGroundPicked(tileX, tileY)) { /* MOD (ground items a day): picked up here today */
++		return;
++	}
+ 	for (i = 0; i < 0xb; i++) {
+ 		if (DROPPED_ITEMS[i].worldItem.type == ITEM_NONE) {
++			MOD_DROPPED_SPOT[i] = 1;
+ 			DROPPED_ITEMS[i].worldItem.type = itemId;
+ 			DROPPED_ITEMS[i].tileX = tileX;
+ 			DROPPED_ITEMS[i].tileY = tileY;
+@@ -2634,6 +2665,12 @@ int32_t pickupItem(int16_t itemId)
+ 	type = DROPPED_ITEMS[itemId].worldItem.type;
+ 	got = giveItem(type, 1);
+ 	if (got != 0) {
++		if (MOD_DROPPED_SPOT[itemId]) { /* MOD (ground items a day) */
++			MOD_GROUND_PICKED[MOD_GROUND_NEXT].screen = CURRENT_SCREEN;
++			MOD_GROUND_PICKED[MOD_GROUND_NEXT].tileX = DROPPED_ITEMS[itemId].tileX;
++			MOD_GROUND_PICKED[MOD_GROUND_NEXT].tileY = DROPPED_ITEMS[itemId].tileY;
++			MOD_GROUND_NEXT = (MOD_GROUND_NEXT + 1) % MOD_GROUND_PICKED_MAX;
++		}
+ 		deleteDroppedItem(itemId);
+ 	}
+ 	return got;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 3c0c29ac..78e97d46 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4898,6 +4898,9 @@ static void prepareSaveFile(int32_t fromRam)
+ 		swap[1] = MOD_SWAP_TO;
+ 		p = putRecord(p, SAVE_TAG_VANILLA_SWAP, swap, sizeof(swap));
+ 	}
++	if (fromRam) { /* MOD (ground items a day) */
++		p = putRecord(p, SAVE_TAG_GROUND_PICKED, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
++	}
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+@@ -5169,6 +5172,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_SPECIES_RECRUITED:
+ 	case SAVE_TAG_OPTIONS:
+ 	case SAVE_TAG_VANILLA_SWAP:
++	case SAVE_TAG_GROUND_PICKED:
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -5201,6 +5205,7 @@ static void applyRecords(uint8_t *e)
+ 	int32_t tag, len, i, n;
+ 	uint8_t *d;
+ 
++	modForgetGroundPicked(); /* MOD (ground items a day): a save without the record picked nothing today */
+ 	for (;;) {
+ 		tag = e[at] | (e[at + 1] << 8);
+ 		len = e[at + 2] | (e[at + 3] << 8);
+@@ -5250,6 +5255,17 @@ static void applyRecords(uint8_t *e)
+ 				MOD_SWAP_TO = readRecord16(d + 2);
+ 			}
+ 			break;
++		case SAVE_TAG_GROUND_PICKED:
++			n = len / 4 < MOD_GROUND_PICKED_MAX ? len / 4 : MOD_GROUND_PICKED_MAX;
++			for (i = 0; i < n; i++) {
++				MOD_GROUND_PICKED[i].screen = readRecord16(d + 4 * i);
++				MOD_GROUND_PICKED[i].tileX = d[4 * i + 2];
++				MOD_GROUND_PICKED[i].tileY = d[4 * i + 3];
++			}
++			for (i = 0; i < MOD_GROUND_PICKED_MAX && MOD_GROUND_PICKED[i].screen != -1; i++) {
++			}
++			MOD_GROUND_NEXT = i % MOD_GROUND_PICKED_MAX; /* the first free spot (a full ring: the first) */
++			break;
+ 		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
+ 			MOD_SAVE_STORY = len >= 10 ? d[9] != 0 : 1;
+ 			modApplyOptions(d, len);
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 4bb69cd6..7920d82c 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1395,6 +1395,7 @@ void dailyPStatTrigger(void)
+ 	/* MOD (rules as data): MOD_DAILY says how many cards, from what pool, which one never comes up, and the counters.
+ 	 * (The original compared the new card with the slot it was filling, so a card could repeat; it is compared with the earlier ones now.) */
+ 	st = SCRIPT_STATE_PTR;
++	modForgetGroundPicked(); /* MOD (ground items a day) */
+ 	for (i = 0; i < 6; i++) {
+ 		st->smth[i] = 0xff;
+ 	}
+-- 
+2.55.0
+

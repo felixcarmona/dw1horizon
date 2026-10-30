@@ -1,0 +1,15 @@
+{
+  "id": 122,
+  "name": "Steak",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 0,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 32,
+    "healHP": 1000,
+    "sickChance": 20
+  }
+}

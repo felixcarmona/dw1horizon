@@ -1,0 +1,66 @@
+From 0cb02f33e00afc30c5af1f09a1914c864759be37 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:39:45 +0000
+Subject: [PATCH] Patch 0216: vs_select.c (the VS mode's battle mode, stage and
+ fighter selection) is linked into VS_REL, after vs_intro.c and vs_combat.c:
+ modMenuVsBattle reads VS before it calls VS__initialize, and VS_portraitFor's
+ only caller is vs_scene.c; its data stays in the executable. 10 816 bytes of
+ every heap (214 992 against 204 176 on the bilingual disc); VS_REL 161 516
+ bytes, under STD's 177 924. Tested: CARD BATTLE from the title with a record
+ on each card, the three selection screens, a 1 vs 1 battle to its end and
+ back to the title
+
+---
+ config/us/main.ld    | 5 +----
+ config/us/overlay.ld | 5 +++++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 1260e60f..54b99bd7 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -154,8 +154,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sjis.c.o(.text.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_select.c.o(.text.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/src/main/script_common.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/script_textbox.c.o(.text.*);
+@@ -385,7 +383,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sjis.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_select.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/script_common.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+@@ -1055,7 +1052,7 @@ ASSERT(OVL_END(.TRN) <= OVL_TRN_MAX_END, "TRN overlay is larger than the origina
+ ASSERT(OVL_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the original's slot")
+ /*
+  * MOD (code out of the executable, docs/mods/memory.md): BTL and VS carry code the executable used to hold (battle_ui.c;
+- * vs_combat.c, vs_intro.c), appended at their ends. A battle-mode overlay may reach as high as STD, the tournament
++ * vs_combat.c, vs_intro.c, vs_select.c), appended at their ends. A battle-mode overlay may reach as high as STD, the tournament
+  * overlay that runs the same battle engine (EFE heap, effects, sound) and the original's largest. MOV carries libpress
+  * and libcd's streaming: it must stay below TRN's slot (TEXTURE_BUFFER, the frame OTs of main.c).
+  */
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index b04fc173..b3a19a67 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -717,6 +717,11 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 			BUILD_DIR/src/vs/vs_combat.c.o(.rodata .rodata.*);
+ 			. = ALIGN(., 4);
++			/* the fighter selection (VS__initialize): modMenuVsBattle reads VS before it calls it */
++			BUILD_DIR/src/vs/vs_select.c.o(.text.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/vs/vs_select.c.o(.rodata .rodata.*);
++			. = ALIGN(., 4);
+ 
+ 			/* Trailer */
+ 			LONG(0);
+-- 
+2.55.0
+

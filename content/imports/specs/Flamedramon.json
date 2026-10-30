@@ -1,0 +1,123 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 187,
+ "type": 195,
+ "name": "Flamedramon",
+ "source": {
+  "type": 9,
+  "mmd": "extracted/CHDAT/MMD0/MERA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 3,
+  "3": 5,
+  "4": 1,
+  "5": 8,
+  "6": 9,
+  "7": 11,
+  "8": 13,
+  "9": 14,
+  "10": 7,
+  "12": 15,
+  "13": 18,
+  "14": 16,
+  "15": 17,
+  "16": 19,
+  "17": 20,
+  "19": 21
+ },
+ "hips": [
+  8,
+  1,
+  1.041
+ ],
+ "root_scale": 1.041,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 65,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 65,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 97,
+   "end": 187,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 35,
+   "end": 115,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_03",
+   "start": 132,
+   "end": 206,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 38,
+   "end": 76,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x32": {
+   "anim": "anim_02",
+   "start": 124,
+   "end": 216,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

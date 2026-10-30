@@ -1,0 +1,616 @@
+// Readable form of script 214 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 214 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        tournament_registered = false;
+        if (engine.result == 3) {
+            if (tournament.cup == 0) {
+                give_bits(2000);
+                say(narrator, text("s214.sec51.u3"));
+                give_item(item("Double flop"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u4"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Double flop"), 1);
+                }
+                jump_to_file(204, 51);
+            }
+            if (tournament.cup == 1) {
+                give_bits(4000);
+                say(narrator, text("s214.sec51.u5"));
+                give_item(item("Sirloin"), 3);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u6"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Sirloin"), 3);
+                }
+                jump_to_file(204, 51);
+            }
+            if (tournament.cup == 2) {
+                give_bits(6000);
+                say(narrator, text("s214.sec51.u7"));
+                give_item(item("Restore"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u8"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Restore"), 1);
+                }
+            }
+            store_random(random_roll, 99);
+            if (tournament.cup == 2) {
+                if (stat(21) != 10) {
+                    if (random_roll <= 9) {
+                        add_stat(21, 1);
+                        say(narrator, text("s214.sec51.u9"));
+                        jump_to_file(204, 51);
+                    }
+                }
+                jump_to_file(204, 51);
+            }
+            if (tournament.cup == 3) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u10"));
+                give_item(item("Flamingmane"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u11"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Flamingmane"), 1);
+                }
+            }
+            store_random(random_roll, 99);
+            if (tournament.cup == 3) {
+                if (stat(21) != 10) {
+                    if (random_roll <= 19) {
+                        add_stat(21, 1);
+                        say(narrator, text("s214.sec51.u12"));
+                        jump_to_file(204, 51);
+                    }
+                }
+                jump_to_file(204, 51);
+            }
+            store_random(random_roll, 2);
+            if (tournament.cup == 4 && random_roll == 0) {
+                give_bits(10000);
+                say(narrator, text("s214.sec51.u13"));
+                give_item(item("Metal part"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u14"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Metal part"), 1);
+                }
+            } else if (tournament.cup == 4 && random_roll == 1) {
+                give_bits(10000);
+                say(narrator, text("s214.sec51.u15"));
+                give_item(item("Fatal Bone"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u16"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Fatal Bone"), 1);
+                }
+            } else if (tournament.cup == 4 && random_roll == 2) {
+                give_bits(10000);
+                say(narrator, text("s214.sec51.u17"));
+                give_item(item("Mega Hand"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u18"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Mega Hand"), 1);
+                }
+            }
+            store_random(random_roll, 99);
+            if (tournament.cup == 4) {
+                if (stat(21) != 10) {
+                    if (random_roll <= 29) {
+                        add_stat(21, 1);
+                        say(narrator, text("s214.sec51.u19"));
+                        jump_to_file(204, 51);
+                    }
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 6) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u20"));
+                give_item(item("White Fang"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u21"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("White Fang"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 7) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u22"));
+                give_item(item("Bluecrystal"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u23"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Bluecrystal"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 8) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u24"));
+                give_item(item("Iron Hoof"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u25"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Iron Hoof"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 9) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u26"));
+                give_item(item("Mono Stone"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u27"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Mono Stone"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 10) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u28"));
+                give_item(item("Red Ruby"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u29"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Red Ruby"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 11) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u30"));
+                give_item(item("Fireball"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u31"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Fireball"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 12) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u32"));
+                give_item(item("Spike Club"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u33"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Spike Club"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 13) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u34"));
+                give_item(item("Unihorn"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u35"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Unihorn"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 14) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u36"));
+                give_item(item("North Star"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u37"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("North Star"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 15) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u38"));
+                give_item(item("Fertilizer"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u39"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Fertilizer"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 16) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u40"));
+                give_item(item("Cyber part"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u41"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Cyber part"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 17) {
+                give_bits(8000);
+                say(narrator, text("s214.sec51.u42"));
+                give_item(item("Sunglasses"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u43"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Sunglasses"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 18) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u44"));
+                give_item(item("Grey Claws"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u45"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Grey Claws"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 19) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u46"));
+                give_item(item("White Wing"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u47"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("White Wing"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 20) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u48"));
+                give_item(item("Steel drill"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u49"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Steel drill"), 1);
+                }
+                jump_to_file(204, 51);
+            } else if (tournament.cup == 21) {
+                give_bits(5000);
+                say(narrator, text("s214.sec51.u50"));
+                give_item(item("Black Wing"), 1);
+                if (engine.item_did_not_fit) {
+                    say(slot0, text("s214.sec51.u51"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Black Wing"), 1);
+                }
+                jump_to_file(204, 51);
+            }
+        } else if (engine.result != 2) {
+            say(slot0, text("s214.sec51.u0"));
+            say(narrator, text("s214.sec51.u1"));
+            give_item(item("Giant Meat"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u2"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Giant Meat"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 0) {
+            give_bits(500);
+            say(narrator, text("s214.sec51.u52"));
+            give_item(item("Giant Meat"), 2);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u53"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Giant Meat"), 2);
+            }
+            return;
+        }
+        if (tournament.cup == 1) {
+            give_bits(1000);
+            say(narrator, text("s214.sec51.u54"));
+            give_item(item("Sirloin"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u55"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Sirloin"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 2) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u56"));
+            give_item(item("Large MP"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u57"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Large MP"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 3) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u58"));
+            give_item(item("Restore"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u59"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Restore"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 4) {
+            give_bits(4000);
+            say(narrator, text("s214.sec51.u60"));
+            give_item(item("Sup.restore"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u61"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Sup.restore"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 6) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u62"));
+            give_item(item("sup.recovery"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u63"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("sup.recovery"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 7) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u64"));
+            give_item(item("sup.recovery"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u65"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("sup.recovery"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 8) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u66"));
+            give_item(item("sup.recovery"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u67"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("sup.recovery"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 9) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u68"));
+            give_item(item("sup.recovery"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u69"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("sup.recovery"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 10) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u70"));
+            give_item(item("sup.recovery"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u71"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("sup.recovery"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 11) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u72"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u73"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 12) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u74"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u75"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 13) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u76"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u77"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 14) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u78"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u79"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 15) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u80"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u81"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 16) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u82"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u83"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 17) {
+            give_bits(3000);
+            say(narrator, text("s214.sec51.u84"));
+            give_item(item("Omnipotent"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u85"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omnipotent"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 18) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u86"));
+            give_item(item("Omni Disk"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u87"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omni Disk"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 19) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u88"));
+            give_item(item("Omni Disk"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u89"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omni Disk"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 20) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u90"));
+            give_item(item("Omni Disk"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u91"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omni Disk"), 1);
+            }
+            return;
+        }
+        if (tournament.cup == 21) {
+            give_bits(2000);
+            say(narrator, text("s214.sec51.u92"));
+            give_item(item("Omni Disk"), 1);
+            if (engine.item_did_not_fit) {
+                say(slot0, text("s214.sec51.u93"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Omni Disk"), 1);
+            }
+            return;
+        }
+        end_script();
+    }
+}

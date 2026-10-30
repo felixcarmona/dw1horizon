@@ -1,0 +1,12 @@
+// Who stands on screen 220 (Sewer), and when. Read out of MAPHEAD.SCN section 220 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(220) {                              // Sewer
+            npc 135 slot 0 when not recruited(Numemon) and not trigger(341);
+            npc 135 slot 1 when not recruited(Numemon) and trigger(341);
+            npc 171 slot 2 when trigger(330) and not trigger(336) and not trigger(341) or recruited(Numemon) and trigger(330) and not trigger(336);
+        }
+    }
+}

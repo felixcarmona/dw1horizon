@@ -1,0 +1,14 @@
+// Who stands on screen 38 (Great Canyon Top Area), and when. Read out of MAPHEAD.SCN section 38 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(38) {                              // Great Canyon Top Area
+            npc Weedmon slot 0 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Sandyanmamon slot 1 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Sandyanmamon slot 2 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Gotsumon slot 3 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Gotsumon slot 4 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

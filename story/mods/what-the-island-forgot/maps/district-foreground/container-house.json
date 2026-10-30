@@ -1,0 +1,1347 @@
+{
+  "screen": 365,
+  "review": "Bed, bedside table, television cabinet, armchair, kitchen and bookshelf occlude rear approaches. Rug is floor and receives no foreground. Keep both the centre aisle and south exit open.",
+  "collision": [
+    {
+      "tile": [
+        54,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        55,
+        44
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "television ground footprint"
+    },
+    {
+      "tile": [
+        55,
+        45
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "television ground footprint"
+    },
+    {
+      "tile": [
+        56,
+        45
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "television ground footprint"
+    },
+    {
+      "tile": [
+        43,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        44,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        45,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        46,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        47,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        48,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        49,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bed ground footprint"
+    },
+    {
+      "tile": [
+        56,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "television ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        62,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        57
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "armchair ground footprint"
+    },
+    {
+      "tile": [
+        61,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "container-house-armchair.png",
+      "at": [
+        370,
+        226
+      ],
+      "depth": [
+        420,
+        347
+      ],
+      "source": "container-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "container-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-container-house-edit.jpg",
+            "source_sha1": "6b78b77ad8823920fe2a336ce03df8b3b34c3704",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              370,
+              219,
+              467,
+              351
+            ],
+            "positive": [
+              [
+                414,
+                284
+              ]
+            ],
+            "negative": [
+              [
+                371,
+                350
+              ],
+              [
+                466,
+                350
+              ]
+            ],
+            "score": 0.9826593399047852
+          }
+        ]
+      }
+    },
+    {
+      "png": "container-house-kitchen.png",
+      "at": [
+        10,
+        286
+      ],
+      "depth": null,
+      "source": "container-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "container-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-container-house-edit.jpg",
+            "source_sha1": "6b78b77ad8823920fe2a336ce03df8b3b34c3704",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              0,
+              291,
+              129,
+              484
+            ],
+            "positive": [
+              [
+                58,
+                405
+              ]
+            ],
+            "negative": [
+              [
+                -2,
+                483
+              ],
+              [
+                128,
+                483
+              ]
+            ],
+            "score": 0.968636155128479
+          },
+          {
+            "source": "raw-container-house-edit.jpg",
+            "source_sha1": "6b78b77ad8823920fe2a336ce03df8b3b34c3704",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              28,
+              287,
+              130,
+              389
+            ],
+            "positive": [
+              [
+                82,
+                342
+              ],
+              [
+                112,
+                356
+              ],
+              [
+                99,
+                310
+              ]
+            ],
+            "negative": [
+              [
+                130,
+                350
+              ],
+              [
+                126,
+                382
+              ],
+              [
+                24,
+                350
+              ]
+            ],
+            "score": 0.9513224363327026
+          },
+          {
+            "source": "raw-container-house-edit.jpg",
+            "source_sha1": "6b78b77ad8823920fe2a336ce03df8b3b34c3704",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              29,
+              283,
+              127,
+              381
+            ],
+            "positive": [
+              [
+                113,
+                335
+              ],
+              [
+                108,
+                350
+              ],
+              [
+                110,
+                365
+              ]
+            ],
+            "negative": [
+              [
+                130,
+                350
+              ],
+              [
+                130,
+                300
+              ],
+              [
+                129,
+                377
+              ],
+              [
+                14,
+                334
+              ]
+            ],
+            "score": 0.918124794960022
+          }
+        ]
+      }
+    },
+    {
+      "png": "container-house-bookcase.png",
+      "at": [
+        436,
+        261
+      ],
+      "depth": null,
+      "source": "container-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "container-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3,
+          "largest_component": true
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-container-house-edit.jpg",
+            "source_sha1": "6b78b77ad8823920fe2a336ce03df8b3b34c3704",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              425,
+              253,
+              512,
+              479
+            ],
+            "positive": [
+              [
+                480,
+                350
+              ],
+              [
+                490,
+                400
+              ],
+              [
+                480,
+                450
+              ],
+              [
+                497,
+                320
+              ],
+              [
+                443,
+                407
+              ],
+              [
+                460,
+                430
+              ],
+              [
+                495,
+                275
+              ]
+            ],
+            "negative": [
+              [
+                420,
+                400
+              ],
+              [
+                440,
+                350
+              ],
+              [
+                480,
+                486
+              ],
+              [
+                430,
+                370
+              ],
+              [
+                440,
+                480
+              ]
+            ],
+            "score": 0.967759370803833
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      132,
+      218
+    ],
+    [
+      266,
+      216
+    ],
+    [
+      334,
+      182
+    ],
+    [
+      414,
+      203
+    ],
+    [
+      460,
+      245
+    ],
+    [
+      489,
+      280
+    ],
+    [
+      511,
+      458
+    ],
+    [
+      511,
+      490
+    ],
+    [
+      330,
+      490
+    ],
+    [
+      330,
+      512
+    ],
+    [
+      180,
+      512
+    ],
+    [
+      180,
+      490
+    ],
+    [
+      20,
+      490
+    ],
+    [
+      23,
+      397
+    ],
+    [
+      109,
+      300
+    ],
+    [
+      135,
+      258
+    ]
+  ],
+  "footprints": {
+    "bed": [
+      [
+        113,
+        195
+      ],
+      [
+        258,
+        193
+      ],
+      [
+        264,
+        221
+      ],
+      [
+        113,
+        227
+      ]
+    ],
+    "nightstand": [
+      [
+        90,
+        238
+      ],
+      [
+        133,
+        237
+      ],
+      [
+        139,
+        258
+      ],
+      [
+        121,
+        264
+      ],
+      [
+        90,
+        256
+      ]
+    ],
+    "television": [
+      [
+        336,
+        186
+      ],
+      [
+        418,
+        185
+      ],
+      [
+        425,
+        208
+      ],
+      [
+        401,
+        230
+      ],
+      [
+        334,
+        210
+      ]
+    ],
+    "armchair": [
+      [
+        374,
+        277
+      ],
+      [
+        446,
+        269
+      ],
+      [
+        463,
+        287
+      ],
+      [
+        464,
+        341
+      ],
+      [
+        439,
+        354
+      ],
+      [
+        382,
+        344
+      ]
+    ],
+    "kitchen": [
+      [
+        84,
+        318
+      ],
+      [
+        123,
+        321
+      ],
+      [
+        114,
+        475
+      ],
+      [
+        95,
+        489
+      ],
+      [
+        0,
+        479
+      ],
+      [
+        0,
+        442
+      ],
+      [
+        83,
+        433
+      ]
+    ],
+    "bookcase": [
+      [
+        490,
+        314
+      ],
+      [
+        511,
+        322
+      ],
+      [
+        511,
+        480
+      ],
+      [
+        451,
+        467
+      ],
+      [
+        457,
+        433
+      ],
+      [
+        470,
+        368
+      ]
+    ]
+  }
+}

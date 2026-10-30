@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP11/FACT08A.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Giromon161",
+      "at": [1257, 479],
+      "facing": 0,
+      "follow": 2,
+      "range": 1000,
+      "charge": 1,
+      "moves": [47, 48, 49, 50],
+      "prios": [30, 30, 30, 10],
+      "flee": [-1369, 1818],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

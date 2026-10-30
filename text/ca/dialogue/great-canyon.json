@@ -1,0 +1,274 @@
+{
+ "s122.sec5.u0": [
+  [
+   "Ah, m'has salvat!"
+  ]
+ ],
+ "s122.sec5.u1": [
+  [
+   "Així que eres tu el que estava",
+   "atrapat."
+  ]
+ ],
+ "s122.sec5.u2": [
+  [
+   "Però això em ve de perles."
+  ]
+ ],
+ "s122.sec5.u3": [
+  [
+   "El què?"
+  ]
+ ],
+ "s122.sec5.u4": [
+  [
+   "Anava de camí a la teva ciutat,",
+   "per a posar els meus talents al",
+   "seu servei!"
+  ]
+ ],
+ "s122.sec5.u5": [
+  [
+   "Això... quins talents?"
+  ]
+ ],
+ "s122.sec5.u6": [
+  [
+   "Vaja, no em coneixes? Entre",
+   "els Digimon sóc famós per",
+   "saber-ho tot!"
+  ]
+ ],
+ "s122.sec5.u7": [
+  [
+   "Doncs no. Mai he sentit parlar",
+   "de tu."
+  ]
+ ],
+ "s122.sec5.u8": [
+  [
+   "Bé, doncs me'n vaig a la",
+   "ciutat."
+  ]
+ ],
+ "s122.sec5.u9": [
+  [
+   "......Servirà aquest per a",
+   "alguna cosa?"
+  ]
+ ],
+ "s122.sec5.u10": [
+  [
+   "Bon dia tingui vostè!"
+  ]
+ ],
+ "s122.sec5.u11": "Shellmon s'ha unit a la ciutat!",
+ "s122.sec6.u0": [
+  [
+   "Et destorbo?"
+  ]
+ ],
+ "s123.sec5.u0": [
+  [
+   "Grrraaaah!"
+  ]
+ ],
+ "s123.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s123.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s123.sec51.u0": [
+  [
+   "Per tot el que hem sentit,",
+   "aquest sembla el camí on",
+   "apareixen aquests bandits..."
+  ],
+  [
+   "Molt bé. Anem, {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s123.sec51.u1": [
+  [
+   "Yujuuuuuu!"
+  ]
+ ],
+ "s123.sec51.u2": [
+  [
+   "Gua, ja, ja, ja!"
+  ]
+ ],
+ "s123.sec51.u3": [
+  [
+   "Yupiiii!"
+  ]
+ ],
+ "s123.sec51.u4": [
+  [
+   "Muahaha, rendiu-vos i deixeu",
+   "les vostres coses! O en",
+   "sortireu malparats!"
+  ]
+ ],
+ "s123.sec51.u5": [
+  [
+   "Els que heu de rendir-vos sou",
+   "vosaltres!"
+  ]
+ ],
+ "s123.sec51.u6": [
+  [
+   "Eh!? Vosaltres sou..."
+  ]
+ ],
+ "s123.sec51.u7": [
+  [
+   "No em diguis que..."
+  ]
+ ],
+ "s123.sec51.u8": [
+  [
+   "C-cap! Què fem!?"
+  ]
+ ],
+ "s123.sec51.u9": [
+  [
+   "Deixeu de cridar! Som més i",
+   "més forts. Aplaneu-los!"
+  ]
+ ],
+ "s123.sec51.u10": [
+  [
+   "Grrr... M-me les pagareu!"
+  ]
+ ],
+ "s123.sec51.u11": [
+  [
+   "Mira com corren! Almenys no",
+   "haurien de tornar per aquí",
+   "durant un temps."
+  ]
+ ],
+ "s123.sec81.m0.o0": "Mode ogre: SÍ",
+ "s123.sec81.m0.o1": "Mode ogre: NO",
+ "s123.sec81.u0": [
+  [
+   "Est: Ascensor Oest: Perill!",
+   "Precipici"
+  ]
+ ],
+ "s123.sec82.u0": [
+  [
+   "Compte amb els despreniments!!"
+  ]
+ ],
+ "s124.sec51.u0": [
+  [
+   "Mmm."
+  ]
+ ],
+ "s124.sec51.u1": [
+  [
+   "Sembla el niu d'un ocell o una",
+   "cosa així. Tu què creus?"
+  ]
+ ],
+ "s124.sec51.u2": [
+  [
+   "Mm? Un soroll...?"
+  ]
+ ],
+ "s124.sec51.u3": [
+  [
+   "Gens malament, noi."
+  ]
+ ],
+ "s124.sec51.u4": [
+  [
+   "Així que aquest era el teu niu."
+  ]
+ ],
+ "s124.sec51.u5": [
+  [
+   "Je... ja ho veus."
+  ]
+ ],
+ "s124.sec51.u6": [
+  [
+   "Perdona per ficar-me així."
+  ]
+ ],
+ "s124.sec51.u7": [
+  [
+   "Je... no et preocupis."
+  ]
+ ],
+ "s124.sec51.u8": [
+  [
+   "?"
+  ]
+ ],
+ "s124.sec51.u9": [
+  [
+   "He sentit parlar de tu."
+  ]
+ ],
+ "s124.sec51.u10": [
+  [
+   "...La gent parla de mi?"
+  ]
+ ],
+ "s124.sec51.u11": [
+  [
+   "Segurament ara mateix ets",
+   "l'únic humà d'aquesta illa."
+  ]
+ ],
+ "s124.sec51.u12": [
+  [
+   "Ara mateix...? És que abans hi",
+   "havia algú aquí?"
+  ]
+ ],
+ "s124.sec51.u13": [
+  [
+   "Je... No em convidaràs a la",
+   "ciutat?"
+  ]
+ ],
+ "s124.sec51.u14": [
+  [
+   "Eh? Ah, això, sí. Vindràs a la",
+   "ciutat?"
+  ]
+ ],
+ "s124.sec51.u15": [
+  [
+   "D'acord. Doncs anem per la",
+   "meva primera feina. Agafa't a",
+   "mi."
+  ]
+ ],
+ "s124.sec51.u16": "Birdramon s'ha unit a la ciutat!",
+ "s124.sec81.m0.o0": "Prémer el botó baixar 1",
+ "s124.sec81.m0.o1": "Prémer el botó baixar 2",
+ "s124.sec81.m0.o2": "No pujar",
+ "s124.sec81.u0": [
+  [
+   "Ascensor"
+  ]
+ ],
+ "s124.sec81.u1": [
+  [
+   "Eh?"
+  ],
+  [
+   "Res, no passa res."
+  ]
+ ]
+}

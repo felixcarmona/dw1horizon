@@ -1,0 +1,98 @@
+From be0946d50f81f6f7990d2d131b321021b7898cb5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 05:54:21 +0000
+Subject: [PATCH] 60 fps step 4: pause frames through the helper
+
+pauseFrame (the two frames that draw the pause box, and the lab menu's
+frames) calls modTickStart/modPresent too. With MOD_PRESENT_PAUSE the
+rollback set is the one of the loop that paused, so a pause in the story
+battle or the tournament rolls back their battle state as their own
+ticks do.
+
+---
+ include/dw/mod_present.h |  3 +++
+ src/main/main.c          |  7 +++++++
+ src/main/utils.c         | 16 +++++++---------
+ 3 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/include/dw/mod_present.h b/include/dw/mod_present.h
+index 2c31d60..1d20c33 100644
+--- a/include/dw/mod_present.h
++++ b/include/dw/mod_present.h
+@@ -27,6 +27,9 @@ typedef struct {
+ /* the tick / present helper (main.c): modTickStart before the loop's logic,
+  * modPresent after tickObjects instead of render + VSync + swap */
+ #define MOD_PRESENT_BATTLE 1 /* origin from DRAWING_OFFSET at each swap */
++/* pauseFrame: the extra rollback set is the one of the loop that paused (the
++ * last modPresent call without this flag) */
++#define MOD_PRESENT_PAUSE 2
+ void modTickStart(int32_t flags);
+ void modPresent(int32_t flags, ModRollbackSet *extra);
+ 
+diff --git a/src/main/main.c b/src/main/main.c
+index 775f7b8..b5070e4 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4891,6 +4891,8 @@ static int32_t modTickL0;
+ static int32_t modLastEndV = -1000;
+ static int32_t modLastEndLines;
+ 
++static ModRollbackSet *modLoopRollback; /* the last loop's set (MOD_PRESENT_PAUSE) */
++
+ static int32_t modTickRefreshes(void)
+ {
+ 	return MOD_FPS_TEST_TICK > 0 ? MOD_FPS_TEST_TICK : 3;
+@@ -4943,6 +4945,11 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	int32_t period = modTickRefreshes(); /* refreshes per tick: 3 */
+ 	int32_t force = MOD_FPS_TEST_TICK > 0;
+ 
++	if (flags & MOD_PRESENT_PAUSE) {
++		extra = modLoopRollback;
++	} else {
++		modLoopRollback = extra;
++	}
+ 	tickV = modTickV;
+ 	l0 = modTickL0;
+ 	n = MOD_FPS_RENDERS_PER_TICK;
+diff --git a/src/main/utils.c b/src/main/utils.c
+index 92993fe..50adb7e 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -7,6 +7,7 @@
+ #include <dw/combat.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
++#include <dw/mod_present.h>
+ #include <dw/script.h>
+ #include <dw/std.h>
+ #include <dw/ui.h>
+@@ -67,20 +68,17 @@ char NUMBER_FORMATS[32] = "%01d\0%02d\0%03d\0%04d\0%05d\0%06d";
+ 
+ void pauseFrame(void)
+ {
++	/* MOD (fps): rendered by the shared tick / present helper (main.c); the
++	 * origin is set after the wait, as in the battle loops, and the render
++	 * state rolled back around the extra passes is that of the loop that
++	 * paused (the story battle and the tournament pause from theirs) */
++	modTickStart(MOD_PRESENT_BATTLE);
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+ 	GsClearOt(0, 0, ACTIVE_ORDERING_TABLE);
+ 	tickObjects();
+-	renderObjects();
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + 0x20,
+-		&DR_OFFSETS[ACTIVE_FRAMEBUFFER]);
+-	DrawSync(0);
+-	VSync(3);
+-	GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+-	GsSwapDispBuff();
+-	GsSortClear(0, 0, 0, ACTIVE_ORDERING_TABLE);
+-	GsDrawOt(ACTIVE_ORDERING_TABLE);
++	modPresent(MOD_PRESENT_BATTLE | MOD_PRESENT_PAUSE, NULL);
+ }
+ 
+ void damageTick(FighterData* fighter, Stats* stats)
+-- 
+2.53.0
+

@@ -1,0 +1,155 @@
+{
+  "_about": "Reviewed differences from fresh original-disc generation. Both hashes are checked by story-base --reproduce; an unlisted change or a changed generator fails. Game text remains keys only.",
+  "files": {
+    "maphead/global-1238.dws": {
+      "original_sha256": "1997ebf4483b1584244ffce38ab3d7888ca78a0ee963a09cac740e42193bd7dd",
+      "authored_sha256": "014d2aeacb2f03a409101fd4dfb51efc812307f4e84aaa4061613802c0015b5a",
+      "reason": "Optional partner naming text table entries (patch 0207); DWS synchronized with hooks.py"
+    },
+    "maphead/hooks.py": {
+      "original_sha256": "2e5e2a4e824514a871a429059d5036162121f320bfe94f345b4614c5eb530741",
+      "authored_sha256": "4c60c5accf149c4496ac650cda13c8cb7b80ce52720c490d658fe0094d724c16",
+      "reason": "Optional partner naming text table entries (patch 0207)"
+    },
+    "zones/beetle-land/s103-107/script.dws": {
+      "original_sha256": "587838c61e1daa1ff2ef2fc61b0ba0ca175ece9e9d8ebab715c16853d15266cb",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "4873f5ee191ae8325833f6b82811b77a443d4525b3d70465d55ab763251c2dda"
+    },
+    "zones/beetle-land/s103-107/script.py": {
+      "original_sha256": "023418a872d90eba7b3075f83715b618541182a1cdc4269022ac531020090680",
+      "authored_sha256": "ae0f089ec81c593865a52ef0015d42378bd0ab6a291432a1e6c5322be507b0a7",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/beetle-land/s104-108/script.dws": {
+      "original_sha256": "6ff35654911f16a8a6b02a841b7bdf1c8c5d7e27c32d349304c6cb22ad2d628e",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "7d52f830b83a4040753915413b05dbcf14f5c3107667cd919d6e78651f804c82"
+    },
+    "zones/beetle-land/s104-108/script.py": {
+      "original_sha256": "8940a8fad26fcbd63ebfd1e5831ee75730b21e93d005a652648fed3b92a63e35",
+      "authored_sha256": "79ef7622590ef102e05b0184e7c7a0073948f39dee7b956e8abf486bb47152f7",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/file-city/s164-204/script.dws": {
+      "original_sha256": "83cc1829ef1350a5da4359dbd676b75bd58c49877fb3464029c187fdd7c0d434",
+      "reason": "Horizon meat farm big harvest chance is one in four; DWS synchronized with the authored Python source",
+      "authored_sha256": "975db3cc9bd4379f7a4e3face01d668e5fcfe7f8aea38846235e2ed69abde83f"
+    },
+    "zones/file-city/s164-204/script.py": {
+      "original_sha256": "8dcbaf2e559109493df187fa05c4a36b22e428088bebe6304bb507498359deaf",
+      "authored_sha256": "79c463aac2868776a91bb9e6b686d22e934f5c889ee06139c8240a38be71b949",
+      "reason": "Horizon meat farm big harvest chance is one in four"
+    },
+    "zones/file-city/s193-238/script.dws": {
+      "original_sha256": "bba57cdff955f576325019327bf1f08f9c55bbf0c42dc691111314bbd1af64ea",
+      "reason": "Horizon starter kit after inventory reset; DWS synchronized with the authored Python source",
+      "authored_sha256": "98be423491660501ceb93fa37ae4c464a97efd6f1423c4dca253af1b997f8f14"
+    },
+    "zones/file-city/s193-238/script.py": {
+      "original_sha256": "aafde0346438d9fff2dd78e8d4dbee890c88e391f52d33efc44c203c117122b5",
+      "authored_sha256": "0728a34b854f7e5785f38b2392326f369f6d8136830f2b86a2a67a005e837825",
+      "reason": "Horizon starter kit after inventory reset"
+    },
+    "zones/gear-savanna/s075-78/script.dws": {
+      "original_sha256": "2ee8bf6719db7ad1eea81499d07222de3b8bcc704eebf498b498142af9eb83b0",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "9946a6f8ca235febb203f6ed4cf54884ddc29a2e2b1291e25d2dfbc6896b4f62"
+    },
+    "zones/gear-savanna/s075-78/script.py": {
+      "original_sha256": "0350f9532fdd3446ae113bf53ec0423cee2a3e40d2028d6b13161972145f032d",
+      "authored_sha256": "2c0247ce7b518c000ebf800cb9aef2c4aab99f35eb7daefe5e0fe862f47369e2",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/gear-savanna/s126-131/script.dws": {
+      "original_sha256": "ccb3defc815e55d781dc6877f932bdc4c96de77e76561c0185787772728b33f8",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "5ed08f16031bf3a2e944a8fe7460b0c41ec6d7279489adc76b5fa52bad1e101f"
+    },
+    "zones/gear-savanna/s126-131/script.py": {
+      "original_sha256": "c9e07332643bed2f8a8ddfdb1e70c5af70af8f67e875c3976a455dedde4d58a0",
+      "authored_sha256": "af7a4ed5d4ef8502109df28cdd3f4a7f7d8e4a72a22965ab527ae27596f50e15",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/green-gym/s108-112/script.dws": {
+      "original_sha256": "6d5405ac8680aa851fc7a96911a354303f091eedbbcaf234c164ce8316313e57",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "f2a5e43d45bf938ae82e4f811f7dac782bd33c30356b64c365a687548db4e636"
+    },
+    "zones/green-gym/s108-112/script.py": {
+      "original_sha256": "c73a1d69799ec3f3e46d8c04e37072ab320317eea68ca406b82d97cea803ca19",
+      "authored_sha256": "62fbce330f09d47ecc9e6b7ee8b1ea6e42d28f1f37a72c3ef3eafb12ec114c0d",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/ice-sanctuary/s095-99/script.dws": {
+      "original_sha256": "17a0b8861c4d80a222f208b7771b548fc9e270d184775c74968f208d97b99b81",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "6a826b918286ef172fc132bbcf97ffd9ef406717ee3f445baded8a346db708e1"
+    },
+    "zones/ice-sanctuary/s095-99/script.py": {
+      "original_sha256": "353da0db602dcb0ae968cec915b7cf0b993e271152e3f8987dc84e3c140fd063",
+      "authored_sha256": "e125f5c6ce5a095168aaf7f23849b227bf32194ab10c25bcc6a10dc5b9811e6f",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/libraries/s207/script.dws": {
+      "original_sha256": "6e280533fb48d8ab9e115732c983877969034f3f65c902f8024bc249f4ea64cf",
+      "reason": "Horizon meat farm big harvest chance is one in four (all library farm branches); DWS synchronized with the authored Python source",
+      "authored_sha256": "c6b0d63f4ed6629ccb4a6f8ff56b52b3d4d6a5d0d85379ad66f1973ad7317509"
+    },
+    "zones/libraries/s207/script.py": {
+      "original_sha256": "676092ec3def7257b2e91901d23b7582cb9a678f122c0887454dc58fcd6258db",
+      "authored_sha256": "eb8d4afae8b197a67957a9e82971541b108fffccff81f380279f9c4c11bb90cd",
+      "reason": "Horizon meat farm big harvest chance is one in four (all library farm branches)"
+    },
+    "zones/libraries/s209/script.dws": {
+      "original_sha256": "6a27f351779457ff546a842794e5cabf0597c379866ff22d29dcd3e6028bf371",
+      "reason": "Horizon bulk card purchase menu; DWS synchronized with the authored Python source",
+      "authored_sha256": "397f6b147af965583ae6c7645ea7d35ef54005de29545107d58ef2a7b3a17816"
+    },
+    "zones/libraries/s209/script.py": {
+      "original_sha256": "4afe64213b7bff228ea0ac4875b969fc33cd86cf2bdcd9992ade449a07ad366a",
+      "authored_sha256": "516eb35fb21111538e74e983a0ce0cd666364dea04122af75af91c330fade116",
+      "reason": "Horizon bulk card purchase menu"
+    },
+    "zones/libraries/s219/script.dws": {
+      "original_sha256": "a66ba54da72f04a01196c435723097b04fe5f5d64ff723fd31fbba2602b691c7",
+      "authored_sha256": "5d91dd504d61a50b370f10a11726fd32a20909504df833418d7a91a6e57d7f10",
+      "reason": "Horizon card machine uses the amount box and economy rules"
+    },
+    "zones/libraries/s219/script.py": {
+      "original_sha256": "d0c11e2bfa1d39b0ec3a3a18c8587d27e8707e7f236a57ff1a139cdb23eb888a",
+      "authored_sha256": "d164c6f179398ebb62330084e27a4af85c63120b63935572b245767a895c01d0",
+      "reason": "Horizon card machine uses the amount box and economy rules"
+    },
+    "zones/misty-trees/s115-119/script.dws": {
+      "original_sha256": "728acc7a8e899e71b61c03342d5deffeae6bf52e0271feb7ec082f121c33cffb",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "4c260808ee7c526558f1d4f578a4f38fb072b7c0a655b0d2967633a442a11646"
+    },
+    "zones/misty-trees/s115-119/script.py": {
+      "original_sha256": "6ce8424027d0f72bd8567a213277a355183fbb9f2918c3739c4276ffdd8c5a7e",
+      "authored_sha256": "f216a59bbae51a10ba1a36bb3e4e67f70d396a60972df5864b9e8f9f6b61ef84",
+      "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/secret-item-shop/s177-217/script.dws": {
+      "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
+      "authored_sha256": "d1c67bc1e40735ec815de32bafbaf71fa9f60b07cd6078c49bcb5c37b7cc8076",
+      "reason": "Horizon secret shop also sells stat chips; retain named chip stock aliases for the existing shop bits"
+    },
+    "zones/secret-item-shop/s177-217/script.py": {
+      "original_sha256": "8efffb9eab3557117986a81c4cd57ce04d9409a09073d6beb5e28c1c2467e78f",
+      "authored_sha256": "2e54de3d71f603271c847b64eb8bf2c2cc658d30d4984ab2274b80cc0d04eb33",
+      "reason": "Horizon secret shop also sells stat chips"
+    },
+    "zones/trash-mountain/s159-165/script.dws": {
+      "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
+      "reason": "Five-session training and narrator choice ownership; DWS synchronized with the authored Python source",
+      "authored_sha256": "688ac36ac49d9d686ec1f01b117056d5d055b552e5681b90240502af3f3243d8"
+    },
+    "zones/trash-mountain/s159-165/script.py": {
+      "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
+      "authored_sha256": "35ee7a0892d5035238e315399fad9fcb45ca8bed2407735a380220d8c7652969",
+      "reason": "Five-session training and narrator choice ownership"
+    }
+  }
+}

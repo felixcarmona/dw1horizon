@@ -1,0 +1,441 @@
+From 1b1b5f33c275e086b4cc8587e72377d7ee67d0f7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 18:17:56 +0000
+Subject: [PATCH] Care rules as data: the periods, thresholds and amounts of
+ sleep, sulking, tiredness, hunger, poop, sickness and the lifetime lost to
+ unhappiness are MOD_CARE slots (-1 = the rule does not exist) written by
+ tools/balance.py from content/tables/care-rules.json
+
+---
+ include/dw/level.h      |  64 +++++++++++++++
+ src/main/partner_impl.c | 174 ++++++++++++++++++++++------------------
+ 2 files changed, 158 insertions(+), 80 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index b66463c6..6d0fdb96 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -108,6 +108,70 @@ extern int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE];
+ extern int16_t MOD_TAMER_LEVEL[MOD_TAMER_LEVEL_SIZE];
+ void modTamerLevelEvent(int32_t slot, int32_t amount);
+ 
++/*
++ * MOD (care rules as data): the numbers of the partner's daily care (sleep, sulking, tiredness, hunger, poop, sickness, lifetime).
++ * MOD_CARE[]: every slot -1 = the rule does not exist; tools/balance.py build writes them from content/tables/care-rules.json.
++ * A period or a threshold left out (-1) switches its rule off; an amount left out counts as 0. Periods are logic frames: 20 = one game minute,
++ * 1200 = one game hour. The direction of each amount (a loss, a gain) is its name and stays in the code.
++ */
++#define MOD_CARE_SIZE		55
++#define MOD_CARE_SLEEP_TIRED_PERIOD	0
++#define MOD_CARE_SLEEP_TIRED_PERCENT	1
++#define MOD_CARE_SLEEP_SLEEPY_AT	2
++#define MOD_CARE_SLEEP_SLEEPY_PERIOD	3
++#define MOD_CARE_SLEEP_FRESH_PERIOD	4
++#define MOD_CARE_SLEEP_FRESH_HAPPY	5
++#define MOD_CARE_SLEEP_FRESH_DISC	6
++#define MOD_CARE_SLEEP_TRAIN_PERIOD	7
++#define MOD_CARE_SLEEP_TRAIN_HAPPY	8
++#define MOD_CARE_SLEEP_TRAIN_DISC	9
++#define MOD_CARE_SLEEP_LATER_PERIOD	10
++#define MOD_CARE_SLEEP_LATER_HAPPY	11
++#define MOD_CARE_SLEEP_LATER_DISC	12
++#define MOD_CARE_SLEEP_MISSED_PERIOD	13
++#define MOD_CARE_SULK_PERIOD	14
++#define MOD_CARE_SULK_RECOVER_PERIOD	15
++#define MOD_CARE_SULK_STAT_PERIOD	16
++#define MOD_CARE_SULK_STAT_PERCENT	17
++#define MOD_CARE_AREA_PERIOD	18
++#define MOD_CARE_AREA_GOOD_HAPPY	19
++#define MOD_CARE_AREA_GOOD_TIRED	20
++#define MOD_CARE_AREA_BAD_HAPPY	21
++#define MOD_CARE_AREA_BAD_TIRED	22
++#define MOD_CARE_TIRED_SUB	23
++#define MOD_CARE_TIRED_HUNGER_AT	24
++#define MOD_CARE_TIRED_EXHAUSTED_AT	25
++#define MOD_CARE_TIRED_EXHAUSTED_PERIOD	26
++#define MOD_CARE_TIRED_EXHAUSTED_HAPPY	27
++#define MOD_CARE_HUNGER_FOOD_PERIOD	28
++#define MOD_CARE_HUNGER_STARVE_PERIOD	29
++#define MOD_CARE_HUNGER_STARVE_TIMER	30
++#define MOD_CARE_HUNGER_WEIGHT_PERIOD	31
++#define MOD_CARE_HUNGER_EMPTY_PERIOD	32
++#define MOD_CARE_HUNGER_TIRED_AFTER	33
++#define MOD_CARE_HUNGER_TIRED_PERIOD	34
++#define MOD_CARE_HUNGER_TIRED_LOSS	35
++#define MOD_CARE_HUNGER_ENERGY_PERIOD	36
++#define MOD_CARE_POOP_PERIOD	37
++#define MOD_CARE_POOP_HOLD_OFFSET	38
++#define MOD_CARE_POOP_HOLD_SCALE	39
++#define MOD_CARE_SICK_PERIOD	40
++#define MOD_CARE_SICK_MIN_COUNTER	41
++#define MOD_CARE_SICK_FREE_TRIES	42
++#define MOD_CARE_SICK_PER_TRY	43
++#define MOD_CARE_SICK_REST_TIRED	44
++#define MOD_CARE_SICK_ONSET_HAPPY	45
++#define MOD_CARE_SICK_AREA_AFTER	46
++#define MOD_CARE_SICK_TICK_HAPPY	47
++#define MOD_CARE_SICK_TICK_DISC	48
++#define MOD_CARE_SICK_TICK_TIRED	49
++#define MOD_CARE_SICK_INJURY_AFTER	50
++#define MOD_CARE_SICK_LIFE_AFTER	51
++#define MOD_CARE_LIFE_PERIOD	52
++#define MOD_CARE_LIFE_BELOW	53
++#define MOD_CARE_LIFE_PER_POINTS	54
++extern int16_t MOD_CARE[MOD_CARE_SIZE];
++
+ /* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
+ #define MOD_EVO_ITEM_MAX	4
+ typedef struct {
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index be103c1a..76c14d8c 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -966,6 +966,36 @@ void setupPartnerOnWarp(posX, posY, posZ, rotation)
+ 	PARTNER_PARA.areaEffectTimer = 0;
+ }
+ 
++/*
++ * MOD (care rules as data): MOD_CARE's slots (-1 = the rule does not exist), written by tools/balance.py build from
++ * content/tables/care-rules.json. careEvery: a period that has come round on a new frame (a period left out never does);
++ * careEveryRaw: the same without the new-frame test, for the places the original had none; careHas: the threshold exists;
++ * careAmt: an amount (left out = 0).
++ */
++int16_t MOD_CARE[MOD_CARE_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
++				    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
++				    -1, -1, -1, -1, -1, -1, -1 };
++
++static int32_t careEveryRaw(int32_t slot)
++{
++	return MOD_CARE[slot] > 0 && (CURRENT_FRAME % MOD_CARE[slot]) == 0;
++}
++
++static int32_t careEvery(int32_t slot)
++{
++	return careEveryRaw(slot) && CURRENT_FRAME != LAST_HANDLED_FRAME;
++}
++
++static int32_t careHas(int32_t slot)
++{
++	return MOD_CARE[slot] >= 0;
++}
++
++static int32_t careAmt(int32_t slot)
++{
++	return MOD_CARE[slot] > 0 ? MOD_CARE[slot] : 0;
++}
++
+ void tickConditionBoundaries(void)
+ {
+ 	if (PARTNER_PARA.happiness > 100) {
+@@ -1021,16 +1051,14 @@ void tickSleepMechanics(void)
+ 
+ 	wasSleepy = PARTNER_PARA.condition & 1;
+ 
+-	if (((CURRENT_FRAME % 20) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	if (careEvery(MOD_CARE_SLEEP_TIRED_PERIOD)) {
+ 		PARTNER_PARA.tirednessSleepTimer +=
+-			(int16_t)(PARTNER_PARA.tiredness * 3 / 10);
++			(int16_t)(PARTNER_PARA.tiredness * careAmt(MOD_CARE_SLEEP_TIRED_PERCENT) / 100);
+ 	}
+ 
+-	if ((wasSleepy == 0) &&
+-	    (PARTNER_PARA.tirednessSleepTimer >= 180) &&
+-	    ((CURRENT_FRAME % 200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	if ((wasSleepy == 0) && careHas(MOD_CARE_SLEEP_SLEEPY_AT) &&
++	    (PARTNER_PARA.tirednessSleepTimer >= MOD_CARE[MOD_CARE_SLEEP_SLEEPY_AT]) &&
++	    careEvery(MOD_CARE_SLEEP_SLEEPY_PERIOD)) {
+ 		PARTNER_PARA.timeAwakeToday--;
+ 		PARTNER_PARA.tirednessSleepTimer = 0;
+ 
+@@ -1053,25 +1081,21 @@ void tickSleepMechanics(void)
+ 	level = DIGI_PARA(type).level;
+ 	if (PARTNER_PARA.condition & 1) {
+ 		if (level == 1) {
+-			if (((CURRENT_FRAME % 200) == 0) &&
+-			    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-				PARTNER_PARA.happiness--;
+-				PARTNER_PARA.discipline--;
++			if (careEvery(MOD_CARE_SLEEP_FRESH_PERIOD)) {
++				PARTNER_PARA.happiness -= careAmt(MOD_CARE_SLEEP_FRESH_HAPPY);
++				PARTNER_PARA.discipline -= careAmt(MOD_CARE_SLEEP_FRESH_DISC);
+ 			}
+ 		} else if (level == 2) {
+-			if (((CURRENT_FRAME % 300) == 0) &&
+-			    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-				PARTNER_PARA.happiness--;
+-				PARTNER_PARA.discipline--;
++			if (careEvery(MOD_CARE_SLEEP_TRAIN_PERIOD)) {
++				PARTNER_PARA.happiness -= careAmt(MOD_CARE_SLEEP_TRAIN_HAPPY);
++				PARTNER_PARA.discipline -= careAmt(MOD_CARE_SLEEP_TRAIN_DISC);
+ 			}
+-		} else if (((CURRENT_FRAME % 1200) == 0) &&
+-			   (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-			PARTNER_PARA.happiness -= 2;
+-			PARTNER_PARA.discipline -= 4;
++		} else if (careEvery(MOD_CARE_SLEEP_LATER_PERIOD)) {
++			PARTNER_PARA.happiness -= careAmt(MOD_CARE_SLEEP_LATER_HAPPY);
++			PARTNER_PARA.discipline -= careAmt(MOD_CARE_SLEEP_LATER_DISC);
+ 		}
+ 
+-		if (((CURRENT_FRAME % 1200) == 0) &&
+-		    (CURRENT_FRAME != LAST_HANDLED_FRAME) &&
++		if (careEvery(MOD_CARE_SLEEP_MISSED_PERIOD) &&
+ 		    (HOUR != PARTNER_PARA.sleepyHour)) {
+ 			PARTNER_PARA.sicknessCounter++;
+ 			PARTNER_PARA.missedSleepHours++;
+@@ -1148,8 +1172,7 @@ void tickUnhappinessMechanics(void)
+ 
+ 	if ((PARTNER_PARA.condition == 0) &&
+ 	    (PARTNER_PARA.happiness < 0) &&
+-	    ((CURRENT_FRAME % 200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	    careEvery(MOD_CARE_SULK_PERIOD)) {
+ 		happiness = PARTNER_PARA.happiness;
+ 		if (PARTNER_PARA.happiness < 0)
+ 			happiness = -PARTNER_PARA.happiness;
+@@ -1160,26 +1183,24 @@ void tickUnhappinessMechanics(void)
+ 	}
+ 
+ 	if (PARTNER_PARA.condition & 0x10) {
+-		if (((CURRENT_FRAME % 15) == 0) &&
+-		    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++		if (careEvery(MOD_CARE_SULK_RECOVER_PERIOD)) {
+ 			PARTNER_PARA.happiness++;
+ 		}
+ 
+-		if (((CURRENT_FRAME % 300) == 0) &&
+-		    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++		if (careEvery(MOD_CARE_SULK_STAT_PERIOD)) {
+ 			stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 			stats->base.hp -=
+-				(int16_t)(stats->base.hp * 2 / 100);
++				(int16_t)(stats->base.hp * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 			stats->base.mp -=
+-				(int16_t)(stats->base.mp * 2 / 100);
++				(int16_t)(stats->base.mp * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 			stats->base.off -=
+-				(int16_t)(stats->base.off * 2 / 100);
++				(int16_t)(stats->base.off * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 			stats->base.def -=
+-				(int16_t)(stats->base.def * 2 / 100);
++				(int16_t)(stats->base.def * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 			stats->base.speed -=
+-				(int16_t)(stats->base.speed * 2 / 100);
++				(int16_t)(stats->base.speed * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 			stats->base.brain -=
+-				(int16_t)(stats->base.brain * 2 / 100);
++				(int16_t)(stats->base.brain * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 
+ 			if (stats->base.hp <= 0)
+ 				stats->base.hp = 1;
+@@ -1496,32 +1517,33 @@ void tickTirednessMechanics(void)
+ 	uint8_t animId;
+ 
+ 	animId = PARTNER_ENTITY.digimonEntity.entity.anim.animId;
+-	if (((PARTNER_PARA.areaEffectTimer % 1200) == 0) && (PARTNER_PARA.areaEffectTimer > 0)) {
++	if (MOD_CARE[MOD_CARE_AREA_PERIOD] > 0 && ((PARTNER_PARA.areaEffectTimer % MOD_CARE[MOD_CARE_AREA_PERIOD]) == 0) &&
++	    (PARTNER_PARA.areaEffectTimer > 0)) {
+ 		if (MAP_TILE_DATA.partnerAreaResponse == 1) {
+-			PARTNER_PARA.happiness += 1;
+-			PARTNER_PARA.tiredness -= 2;
++			PARTNER_PARA.happiness += careAmt(MOD_CARE_AREA_GOOD_HAPPY);
++			PARTNER_PARA.tiredness -= careAmt(MOD_CARE_AREA_GOOD_TIRED);
+ 		}
+ 		if (MAP_TILE_DATA.partnerAreaResponse == 2) {
+-			PARTNER_PARA.happiness -= 1;
+-			PARTNER_PARA.tiredness += 1;
++			PARTNER_PARA.happiness -= careAmt(MOD_CARE_AREA_BAD_HAPPY);
++			PARTNER_PARA.tiredness += careAmt(MOD_CARE_AREA_BAD_TIRED);
+ 		}
+ 	}
+-	if (PARTNER_PARA.subTiredness >= 0x3C) {
++	if (careHas(MOD_CARE_TIRED_SUB) && PARTNER_PARA.subTiredness >= MOD_CARE[MOD_CARE_TIRED_SUB]) {
+ 		PARTNER_PARA.tiredness += 1;
+ 		if (PARTNER_PARA.tiredness >= 0x64) {
+ 			PARTNER_PARA.tiredness = 0x64;
+ 		}
+ 		PARTNER_PARA.subTiredness = 0;
+ 	}
+-	if (PARTNER_PARA.tiredness >= 0x32) {
++	if (careHas(MOD_CARE_TIRED_HUNGER_AT) && PARTNER_PARA.tiredness >= MOD_CARE[MOD_CARE_TIRED_HUNGER_AT]) {
+ 		PARTNER_PARA.tirednessHungerTimer += 1;
+ 	} else {
+ 		PARTNER_PARA.tirednessHungerTimer = 0;
+ 	}
+-	if (PARTNER_PARA.tiredness >= 0x50) {
++	if (careHas(MOD_CARE_TIRED_EXHAUSTED_AT) && PARTNER_PARA.tiredness >= MOD_CARE[MOD_CARE_TIRED_EXHAUSTED_AT]) {
+ 		PARTNER_PARA.condition |= 2;
+-		if (((CURRENT_FRAME % 100) == 0) && (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-			PARTNER_PARA.happiness -= 2;
++		if (careEvery(MOD_CARE_TIRED_EXHAUSTED_PERIOD)) {
++			PARTNER_PARA.happiness -= careAmt(MOD_CARE_TIRED_EXHAUSTED_HAPPY);
+ 		}
+ 	} else {
+ 		PARTNER_PARA.condition &= ~2;
+@@ -1604,16 +1626,13 @@ void tickHungerMechanics(void)
+ 	uint32_t isHungry;
+ 
+ 	if ((PARTNER_PARA.condition & 4) != 0) {
+-		if (((CURRENT_FRAME % 10) == 0) &&
+-		    (CURRENT_FRAME != LAST_HANDLED_FRAME))
++		if (careEvery(MOD_CARE_HUNGER_STARVE_PERIOD))
+ 			PARTNER_PARA.starvationTimer--;
+-	} else if (((CURRENT_FRAME % 20) == 0) &&
+-		   (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	} else if (careEvery(MOD_CARE_HUNGER_FOOD_PERIOD)) {
+ 		PARTNER_PARA.foodLevel--;
+ 	}
+ 
+-	if (((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	if (careEvery(MOD_CARE_HUNGER_ENERGY_PERIOD)) {
+ 		PARTNER_PARA.energyLevel -= RAISE_ROW(type).energyUsage;
+ 		if (PARTNER_PARA.energyLevel < 0)
+ 			PARTNER_PARA.energyLevel = 0;
+@@ -1621,7 +1640,7 @@ void tickHungerMechanics(void)
+ 
+ 	isHungry = PARTNER_PARA.condition & 4;
+ 	if (!isHungry && (PARTNER_PARA.foodLevel <= 0)) {
+-		PARTNER_PARA.starvationTimer = 180;
++		PARTNER_PARA.starvationTimer = careAmt(MOD_CARE_HUNGER_STARVE_TIMER);
+ 		PARTNER_PARA.condition |= 4;
+ 		handleConditionBubble();
+ 	}
+@@ -1636,19 +1655,18 @@ void tickHungerMechanics(void)
+ 	}
+ 
+ 	if (PARTNER_PARA.energyLevel <= 0) {
+-		if ((CURRENT_FRAME % 200) == 0) {
++		if (careEveryRaw(MOD_CARE_HUNGER_WEIGHT_PERIOD)) {
+ 			PARTNER_PARA.weight--;
+ 			if (PARTNER_PARA.weight <= 0)
+ 				PARTNER_PARA.weight = 1;
+ 		}
+-		if (((CURRENT_FRAME % 20) == 0) &&
+-		    (CURRENT_FRAME != LAST_HANDLED_FRAME))
++		if (careEvery(MOD_CARE_HUNGER_EMPTY_PERIOD))
+ 			PARTNER_PARA.emptyStomachTimer++;
+ 	}
+-	if ((PARTNER_PARA.tirednessHungerTimer >= 50) &&
+-	    ((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME))
+-		PARTNER_PARA.foodLevel -= 3;
++	if (careHas(MOD_CARE_HUNGER_TIRED_AFTER) &&
++	    (PARTNER_PARA.tirednessHungerTimer >= MOD_CARE[MOD_CARE_HUNGER_TIRED_AFTER]) &&
++	    careEvery(MOD_CARE_HUNGER_TIRED_PERIOD))
++		PARTNER_PARA.foodLevel -= careAmt(MOD_CARE_HUNGER_TIRED_LOSS);
+ 
+ 	if (RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold <=
+ 	    PARTNER_PARA.energyLevel)
+@@ -1770,15 +1788,14 @@ void tickPoopingMechanic(void)
+ 
+ 	isPoopy = PARTNER_PARA.condition & 8;
+ 
+-	if (!isPoopy && ((CURRENT_FRAME % 200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	if (!isPoopy && careEvery(MOD_CARE_POOP_PERIOD)) {
+ 		PARTNER_PARA.poopLevel -= 1;
+ 	}
+ 
+ 	if (!isPoopy && (PARTNER_PARA.poopLevel <= 0)) {
+ 		PARTNER_PARA.condition |= 8;
+ 		PARTNER_PARA.poopingTimer =
+-			((PARTNER_PARA.discipline + 20) * 1200) / 100;
++			((PARTNER_PARA.discipline + careAmt(MOD_CARE_POOP_HOLD_OFFSET)) * careAmt(MOD_CARE_POOP_HOLD_SCALE)) / 100;
+ 	}
+ 
+ 	if (isPoopy && (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+@@ -1944,45 +1961,41 @@ void tickSicknessMechanics(void)
+ 	int32_t nameLength;
+ 
+ 	wasSick = PARTNER_PARA.condition & 0x40;
+-	if ((PARTNER_PARA.sicknessCounter >= 10) &&
+-	    ((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME) && !wasSick) {
++	if (careHas(MOD_CARE_SICK_MIN_COUNTER) && (PARTNER_PARA.sicknessCounter >= MOD_CARE[MOD_CARE_SICK_MIN_COUNTER]) &&
++	    careEvery(MOD_CARE_SICK_PERIOD) && !wasSick) {
+ 		PARTNER_PARA.sicknessTries++;
+-		chance = (PARTNER_PARA.sicknessTries - 10) * 5 +
+-			 (PARTNER_PARA.tiredness - 50);
++		chance = (PARTNER_PARA.sicknessTries - careAmt(MOD_CARE_SICK_FREE_TRIES)) * careAmt(MOD_CARE_SICK_PER_TRY) +
++			 (PARTNER_PARA.tiredness - careAmt(MOD_CARE_SICK_REST_TIRED));
+ 		roll = randomLimit(100);
+ 		if (roll < chance) {
+ 			PARTNER_PARA.condition |= 0x40;
+ 			PARTNER_PARA.timesBeingSick++;
+ 			PARTNER_PARA.sicknessTimer = 1;
+-			PARTNER_PARA.happiness -= 20;
++			PARTNER_PARA.happiness -= careAmt(MOD_CARE_SICK_ONSET_HAPPY);
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 			PARTNER_PARA.sicknessCounter = 0;
+ #endif
+ 		}
+ 	}
+ 
+-	if (!wasSick && (PARTNER_PARA.areaEffectTimer > 12000) &&
+-	    ((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME) &&
++	if (!wasSick && careHas(MOD_CARE_SICK_AREA_AFTER) && (PARTNER_PARA.areaEffectTimer > MOD_CARE[MOD_CARE_SICK_AREA_AFTER]) &&
++	    careEvery(MOD_CARE_SICK_PERIOD) &&
+ 	    (MAP_TILE_DATA.partnerAreaResponse == 2)) {
+ 		PARTNER_PARA.condition |= 0x40;
+ 		PARTNER_PARA.timesBeingSick++;
+ 		PARTNER_PARA.sicknessTimer = 1;
+ 		PARTNER_PARA.areaEffectTimer = 0;
+ 	}
+-	if (((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME) &&
++	if (careEvery(MOD_CARE_SICK_PERIOD) &&
+ 	    ((PARTNER_PARA.condition & 0x40) != 0)) {
+-		PARTNER_PARA.happiness -= 10;
+-		PARTNER_PARA.discipline -= 5;
+-		PARTNER_PARA.tiredness += 5;
++		PARTNER_PARA.happiness -= careAmt(MOD_CARE_SICK_TICK_HAPPY);
++		PARTNER_PARA.discipline -= careAmt(MOD_CARE_SICK_TICK_DISC);
++		PARTNER_PARA.tiredness += careAmt(MOD_CARE_SICK_TICK_TIRED);
+ 	}
+ 	if (!wasSick && (PARTNER_PARA.sicknessTimer > 0))
+ 		PARTNER_PARA.sicknessTimer = 0;
+ 
+-	if (((CURRENT_FRAME % 1200) == 0) &&
+-	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
++	if (careEvery(MOD_CARE_SICK_PERIOD)) {
+ 		if ((PARTNER_PARA.condition & 0x40) != 0)
+ 			PARTNER_PARA.sicknessTimer++;
+ 		if ((PARTNER_PARA.condition & 0x20) != 0)
+@@ -1991,7 +2004,7 @@ void tickSicknessMechanics(void)
+ 	if ((HAS_IMMORTAL_HOUR == 1) && (IMMORTAL_HOUR == HOUR))
+ 		return;
+ 
+-	if ((PARTNER_PARA.injuryTimer >= 12) && !wasSick &&
++	if (careHas(MOD_CARE_SICK_INJURY_AFTER) && (PARTNER_PARA.injuryTimer >= MOD_CARE[MOD_CARE_SICK_INJURY_AFTER]) && !wasSick &&
+ 	    (tamerGetState() == 0)) {
+ 		PARTNER_PARA.condition |= 0x40;
+ 		PARTNER_PARA.timesBeingSick++;
+@@ -2011,7 +2024,7 @@ void tickSicknessMechanics(void)
+ 		drawString(MAIN_D_801225A0, nameLength * 12, 120);
+ 	}
+ 
+-	if ((PARTNER_PARA.sicknessTimer >= 12) && (PARTNER_STATE != 8) &&
++	if (careHas(MOD_CARE_SICK_LIFE_AFTER) && (PARTNER_PARA.sicknessTimer >= MOD_CARE[MOD_CARE_SICK_LIFE_AFTER]) && (PARTNER_STATE != 8) &&
+ 	    (tamerGetState() == 0) && (PARTNER_PARA.remainingLifetime != 0) &&
+ 	    (IS_SCRIPT_PAUSED == 1)) {
+ 		writePStat(0xFF, 0);
+@@ -2197,9 +2210,10 @@ void tickConditions(void)
+ 		PARTNER_PARA.trainBoostFlag = 0;
+ 		PARTNER_PARA.trainBoostTimer = 0;
+ 	}
+-	if (CURRENT_FRAME % 4800 == 0 && PARTNER_PARA.happiness < 80) {
++	if (careEveryRaw(MOD_CARE_LIFE_PERIOD) && careHas(MOD_CARE_LIFE_BELOW) && MOD_CARE[MOD_CARE_LIFE_PER_POINTS] > 0 &&
++	    PARTNER_PARA.happiness < MOD_CARE[MOD_CARE_LIFE_BELOW]) {
+ 		PARTNER_PARA.remainingLifetime = PARTNER_PARA.remainingLifetime -
+-			((PARTNER_PARA.happiness - 80) / -50 + 1);
++			((PARTNER_PARA.happiness - MOD_CARE[MOD_CARE_LIFE_BELOW]) / -MOD_CARE[MOD_CARE_LIFE_PER_POINTS] + 1);
+ 		if (PARTNER_PARA.remainingLifetime < 0)
+ 			PARTNER_PARA.remainingLifetime = 0;
+ 	}
+-- 
+2.53.0
+

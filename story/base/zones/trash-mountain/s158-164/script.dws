@@ -1,0 +1,61 @@
+// Readable form of script 158 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 158 {
+    npc psychemon0 = 5;
+    npc geremon1 = 6;
+    npc geremon2 = 7;
+    npc geremon3 = 8;
+    npc psychemon4 = 9;
+    npc psychemon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_date(date_year);
+        unless (date_hour < 7 || date_hour >= 19) return;
+        set_obj_visibility(19, 0);
+        set_obj_visibility(20, 0);
+        set_obj_visibility(21, 0);
+        set_obj_visibility(22, 0);
+    }
+
+    on talk(psychemon0) replace {    // section 5
+        say(psychemon0, text("s158.sec5.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(geremon1) replace {    // section 6
+        say(geremon1, text("s158.sec6.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon2) replace {    // section 7
+        say(geremon2, text("s158.sec7.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon3) replace {    // section 8
+        say(geremon3, text("s158.sec8.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(psychemon4) replace {    // section 9
+        say(psychemon4, text("s158.sec9.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(psychemon5) replace {    // section 10
+        say(psychemon5, text("s158.sec10.u0"));
+        battle();
+        recruit(species("Psychemon"));
+        return;
+    }
+}

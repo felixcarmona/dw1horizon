@@ -1,0 +1,122 @@
+{
+ "first_id": 277,
+ "out": "build/batch9",
+ "digimon": [
+  {
+   "name": "SkullMeramon",
+   "game": "dw2",
+   "model": "M189DTMR",
+   "level": 5,
+   "element": 0,
+   "from": [
+    9
+   ]
+  },
+  {
+   "name": "Octomon",
+   "game": "dw2",
+   "model": "M221OCTA",
+   "level": 4,
+   "element": 4,
+   "from": [
+    239
+   ]
+  },
+  {
+   "name": "MarineDevimon",
+   "game": "dw2",
+   "model": "M224MDEV",
+   "level": 5,
+   "element": 4,
+   "from": [
+    278
+   ]
+  },
+  {
+   "name": "Pumpkinmon",
+   "game": "dw2",
+   "model": "M201PUMP",
+   "level": 5,
+   "element": 1,
+   "from": [
+    37
+   ]
+  },
+  {
+   "name": "Cyclonemon",
+   "game": "dw2",
+   "model": "M134CYCL",
+   "level": 5,
+   "element": 3,
+   "from": [
+    51
+   ]
+  },
+  {
+   "name": "Kiwimon",
+   "game": "dw2",
+   "model": "M198KIWI",
+   "level": 4,
+   "element": 2,
+   "from": [
+    45,
+    184
+   ]
+  },
+  {
+   "name": "Shakomon",
+   "game": "dw2",
+   "model": "M218SHAK",
+   "level": 4,
+   "element": 4,
+   "from": [
+    217
+   ]
+  },
+  {
+   "name": "Ganimon",
+   "game": "dw2",
+   "model": "M197GANI",
+   "level": 4,
+   "element": 4,
+   "from": [
+    239
+   ]
+  },
+  {
+   "name": "Gazimon",
+   "game": "dw2",
+   "model": "M131GAZI",
+   "level": 3,
+   "element": 1,
+   "from": [
+    44
+   ]
+  },
+  {
+   "name": "Deramon",
+   "game": "dw2",
+   "model": "M192DERA",
+   "level": 4,
+   "element": 1,
+   "from": [
+    285
+   ]
+  },
+  {
+   "name": "Bakumon",
+   "game": "dw2",
+   "model": "M206BAKU",
+   "level": 4,
+   "element": 1,
+   "donor": 22
+  },
+  {
+   "name": "Boltmon",
+   "game": "dw2",
+   "model": "M190BOLT",
+   "level": 5,
+   "element": 2
+  }
+ ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": 285,
+  "name": "Gazimon",
+  "_source": "dw2 M131GAZI (tools/import_batch.py run content/imports/lists/ninth-12.json)",
+  "level": "rookie",
+  "vanilla_as": 46,
+  "attribute": "virus",
+  "specialties": ["battle", "nature", null],
+  "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Poison Claw", "Poison Powder", "Mass Morph",
+                 "Poison Ivy"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 22,
+  "model": {
+    "file": "build/batch9/Gazimon.MMD",
+    "radius": 210,
+    "height": 320,
+    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 2], [4, 2], [5, 1], [6, 6], [7, 7], [8, 1], [9, 9], [10, 10],
+                 [11, 1], [12, 12], [13, 13], [14, 14], [15, 12], [16, 16], [17, 17], [18, 18],
+                 [19, 12], [20, 20], [21, 21], [22, 22]],
+    "slot_aliases": [[46, 49], [47, 51], [48, 51], [50, 49], [52, 51], [53, 49], [54, 49], [49, 51]]
+  },
+  "texture": {"file": "build/batch9/Gazimon.TIM", "entry": 0},
+  "voice": 20,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, -58, -3, 4],
+  "effect_origins": [[4, 70, 0, 20, 4, -2, 39, -56], [4, 120, 0, 20, 4, -3, 75, -85]],
+  "wild": {"hp": 580, "mp": 620, "off": 120, "def": 90, "speed": 110, "brain": 80, "bits": 200},
+  "sizing": {
+    "game": "dw2",
+    "level": 3,
+    "base_model": "build/batch9/Gazimon.MMD",
+    "base_scale": 0.9639,
+    "natural": {"height": 332.0, "half_width": 219.1, "half_depth": 362.8}
+  },
+  "partner": {
+    "voice": 7,
+    "hunger_hours": [2, 6, 11, 16, 21],
+    "energy_max": 80,
+    "energy_fed": 35,
+    "energy_per_hour": 8,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Meat",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 1,
+    "training_type": "even",
+    "birth_weight": 30,
+    "status_screen_position": [190, 290, -1200],
+    "item_distance": 15,
+    "training": {"animation": 54, "hit_tick": 17}
+  },
+  "evolution": {
+    "from": [44],
+    "to": [],
+    "requirements": {
+      "digimon": 44,
+      "hp": -1,
+      "mp": -1,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": 1,
+      "care": 0,
+      "weight": 4,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 500, "mp": 500, "offense": 50, "defense": 50, "speed": 50, "brains": 50}
+  }
+}

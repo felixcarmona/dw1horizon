@@ -1,0 +1,96 @@
+{
+ "first_id": 314,
+ "out": "build/batch12",
+ "digimon": [
+  {
+   "name": "SkullSatamon",
+   "game": "dw3",
+   "model": "M244SKST",
+   "level": 5,
+   "element": 6,
+   "from": [
+    6
+   ]
+  },
+  {
+   "name": "Taomon",
+   "game": "dw3",
+   "model": "M375TAOM",
+   "level": 5,
+   "element": 0
+  },
+  {
+   "name": "Sakuyamon",
+   "game": "dw3",
+   "model": "M376SKYA",
+   "level": "mega",
+   "element": 2,
+   "from": [
+    315
+   ]
+  },
+  {
+   "name": "Fujinmon",
+   "game": "dw3",
+   "model": "M439FUJI",
+   "level": 5,
+   "element": 2
+  },
+  {
+   "name": "Gallantmon",
+   "game": "dw3",
+   "model": "M369DUKE",
+   "level": "mega",
+   "element": 1
+  },
+  {
+   "name": "Pharaohmon",
+   "game": "dw3",
+   "model": "M358PHAR",
+   "level": "mega",
+   "element": 6
+  },
+  {
+   "name": "Growlmon",
+   "game": "dw3",
+   "model": "M367GRAW",
+   "level": 4,
+   "element": 0
+  },
+  {
+   "name": "Knightmon",
+   "game": "dw3",
+   "model": "M178KNGT",
+   "level": 5,
+   "element": 5
+  },
+  {
+   "name": "Kyukimon",
+   "game": "dw3",
+   "model": "M389KYKI",
+   "level": 5,
+   "element": 0
+  },
+  {
+   "name": "Lynxmon",
+   "game": "dw3",
+   "model": "M327RUNX",
+   "level": 5,
+   "element": 1
+  },
+  {
+   "name": "Maildramon",
+   "game": "dw3",
+   "model": "M334MLDR",
+   "level": 5,
+   "element": 5
+  },
+  {
+   "name": "Musyamon",
+   "game": "dw3",
+   "model": "M173MSHA",
+   "level": 5,
+   "element": 1
+  }
+ ]
+}

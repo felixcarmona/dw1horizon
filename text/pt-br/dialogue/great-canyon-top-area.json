@@ -1,0 +1,100 @@
+{
+ "s037.sec5.u0": "Eu vou te derrubar!",
+ "s037.sec6.u0": "Não empurre!",
+ "s037.sec7.u0": "Lugares altos realmente me acalmam!",
+ "s037.sec8.u0": "Eu vou cair! É perigoso!",
+ "s037.sec9.u0": "Não aqui em cima, pare!",
+ "s037.sec10.u0": "Não há razão para lutar...",
+ "s037.sec81.m0.o0": "Botão de descer",
+ "s037.sec81.m0.o1": "Não subir",
+ "s037.sec81.u0": [
+  [
+   "Elevador"
+  ]
+ ],
+ "s037.sec81.u1": "Não está acontecendo nada. Não adianta.",
+ "s038.sec5.u0": [
+  [
+   "N-não podemos deixar pra lá?"
+  ]
+ ],
+ "s038.sec6.u0": "Shuhaa, shhuhaa!",
+ "s038.sec7.u0": "Shh, shh!",
+ "s038.sec8.u0": "Vou dar tudo o que tenho!",
+ "s038.sec9.u0": "Mas o que você está dizendo?",
+ "s038.sec81.u0": [
+  [
+   "Noroeste: Terra Gelada"
+  ]
+ ],
+ "s038.sec82.m0.o0": "Botão de subir",
+ "s038.sec82.m0.o1": "Botão de descer",
+ "s038.sec82.m0.o2": "Não subir",
+ "s038.sec82.u0": [
+  [
+   "Elevador"
+  ]
+ ],
+ "s038.sec82.u1": [
+  [
+   "Hã? Não adianta, nada",
+   "acontece."
+  ]
+ ],
+ "s043.sec5.u0": "Hrrraaaah!",
+ "s043.sec6.u0": "Haaaaaah!",
+ "s043.sec7.u0": "Kyeeeeh!",
+ "s043.sec51.u0": [
+  [
+   "Pelo que ouvimos, é nesta",
+   "estrada que aqueles bandidos",
+   "aparecem... Certo. Vamos,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": "Yahoooooo!",
+ "s043.sec51.u2": "Gwahahaha!",
+ "s043.sec51.u3": "Whoopeee!",
+ "s043.sec51.u4": "Nuhahaha, desista e deixe suas coisas! Ou você vai se machucar!",
+ "s043.sec51.u5": "Vocês é que deveriam desistir!",
+ "s043.sec51.u6": "Huh? Vocês são...",
+ "s043.sec51.u7": "Não me diga...",
+ "s043.sec51.u8": "Chefe, o que faremos?",
+ "s043.sec51.u9": [
+  [
+   "Parem de gritar! Somos mais",
+   "numerosos e mais fortes.",
+   "Acabem com eles!"
+  ]
+ ],
+ "s043.sec51.u10": "Você vai pagar por isso!",
+ "s043.sec51.u11": [
+  [
+   "Olha como eles correm! Pelo",
+   "menos não devem aparecer por",
+   "aqui por um tempo."
+  ]
+ ],
+ "s043.sec53.u0": "Hm?",
+ "s043.sec53.u1": "O chão se moveu? Deve ser minha imaginação.",
+ "s043.sec53.u2": "O quê? Não pode ser...",
+ "s043.sec53.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   "U-uuaaaaaah!"
+  ]
+ ],
+ "s043.sec81.m0.o0": "Modo Ogro: SIM",
+ "s043.sec81.m0.o1": "Modo Ogro: NÃO",
+ "s043.sec81.u0": [
+  [
+   "Leste: Elevador Oeste: Perigo!",
+   "Cuidado com o penhasco"
+  ]
+ ],
+ "s043.sec82.u0": "Cuidado com as pedras caindo!",
+ "s044.sec5.u0": "Eu vou te derrubar!",
+ "s044.sec6.u0": "Vá com calma, por favor.",
+ "s044.sec7.u0": "Uma vez que eu miro na minha presa, ela nunca escapa.",
+ "s044.sec8.u0": "Acabou."
+}

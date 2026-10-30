@@ -1,0 +1,117 @@
+{
+ "first_id": 253,
+ "out": "build/batch7",
+ "digimon": [
+  {
+   "name": "Tuskmon",
+   "game": "dcb",
+   "model": 157
+  },
+  {
+   "name": "Tylomon",
+   "game": "dcb",
+   "model": 199,
+   "from": [
+    239
+   ]
+  },
+  {
+   "name": "Valkyrimon",
+   "game": "dcb",
+   "model": 183,
+   "from": [
+    188
+   ]
+  },
+  {
+   "name": "Vi-Elecmon",
+   "game": "dcb",
+   "model": 208,
+   "from": [
+    18
+   ]
+  },
+  {
+   "name": "Triceramon",
+   "game": "dw2",
+   "model": "M203TRCR",
+   "level": 5,
+   "element": 1,
+   "from": [
+    47
+   ]
+  },
+  {
+   "name": "SaberLeomon",
+   "game": "dw2",
+   "model": "M205SLEO",
+   "level": 5,
+   "element": 1,
+   "from": [
+    48
+   ]
+  },
+  {
+   "name": "Okuwamon",
+   "game": "dw2",
+   "model": "M226OKWA",
+   "level": 5,
+   "element": 3,
+   "from": [
+    51
+   ]
+  },
+  {
+   "name": "MetalTyrannomon",
+   "game": "dw2",
+   "model": "M140MTRN",
+   "level": 5,
+   "element": 5,
+   "from": [
+    8
+   ]
+  },
+  {
+   "name": "Tortomon",
+   "game": "dw2",
+   "model": "M208TOTA",
+   "level": 4,
+   "element": 4,
+   "from": [
+    217
+   ]
+  },
+  {
+   "name": "Flymon",
+   "game": "dw2",
+   "model": "M137FLYM",
+   "level": 4,
+   "element": 2,
+   "from": [
+    32,
+    183
+   ]
+  },
+  {
+   "name": "Mushroomon",
+   "game": "dw2",
+   "model": "M219MUSH",
+   "level": 4,
+   "element": 3,
+   "from": [
+    46
+   ]
+  },
+  {
+   "name": "Raremon",
+   "game": "dw2",
+   "model": "M139RARE",
+   "level": 5,
+   "element": 6,
+   "from": [
+    11
+   ],
+   "donor": 42
+  }
+ ]
+}

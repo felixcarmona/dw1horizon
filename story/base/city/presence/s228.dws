@@ -1,0 +1,13 @@
+// Who stands on screen 228 (Back Dimension), and when. Read out of MAPHEAD.SCN section 228 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(228) {                              // Back Dimension
+            npc Tankmon slot 0 autotalk;
+            npc Tankmon slot 1 autotalk;
+            npc Golemon slot 2 autotalk;
+            npc Golemon slot 3 autotalk;
+        }
+    }
+}

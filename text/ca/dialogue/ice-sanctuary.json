@@ -1,0 +1,316 @@
+{
+ "s093.sec5.u0": [
+  [
+   "Eh? Ara que ho penso,",
+   "l'estàtua..."
+  ]
+ ],
+ "s093.sec5.u1": [
+  [
+   "Ah!"
+  ]
+ ],
+ "s093.sec5.u2": [
+  [
+   "Uf... Bé, a veure."
+  ]
+ ],
+ "s093.sec5.u3": [
+  [
+   "Has tornat a la vida. Bé!"
+  ]
+ ],
+ "s093.sec5.u4": [
+  [
+   "Sóc Angemon, l'àngel que et",
+   "protegeix. He despertat aquí",
+   "per a complir el meu deure amb",
+   "tu."
+  ]
+ ],
+ "s093.sec5.u5": [
+  [
+   "Hala, no entenc res del que",
+   "diu."
+  ]
+ ],
+ "s093.sec5.u6": [
+  [
+   "Conec les lleis del cel.",
+   "Seguint la guia de la terra,",
+   "ofereixo la meva ànima."
+  ]
+ ],
+ "s093.sec5.u7": [
+  [
+   "Així no anem a cap part...",
+   "Això, véns a la ciutat... o",
+   "què?"
+  ]
+ ],
+ "s093.sec5.u8": [
+  [
+   "La teva missió serà el meu",
+   "deure. Parteixo."
+  ]
+ ],
+ "s093.sec5.u9": [
+  [
+   "Això, perdona, però pots parlar",
+   "amb paraules que jo entengui?"
+  ]
+ ],
+ "s093.sec5.u10": [
+  [
+   "...Aniré a la ciutat, així que",
+   "esforça't tu també... Així",
+   "millor?"
+  ]
+ ],
+ "s093.sec5.u11": [
+  [
+   "Sí, això sí que ho entenc.",
+   "D'acord, encantat de tenir-te",
+   "amb nosaltres."
+  ]
+ ],
+ "s093.sec5.u12": "Angemon s'ha unit a la ciutat!",
+ "s093.sec51.u0": [
+  [
+   "Hala, sembla gairebé viu..."
+  ]
+ ],
+ "s093.sec51.u1": [
+  [
+   "La veritat és que això passa",
+   "sempre. Fas alguna cosa i es",
+   "comença a moure, oi? He, he, ja",
+   "veuràs!"
+  ]
+ ],
+ "s093.sec52.u0": [
+  [
+   "Què passa? {color 10}{partner}{color 1}, has",
+   "trobat alguna cosa?"
+  ]
+ ],
+ "s093.sec52.u1": [
+  [
+   "Hala, molt bé, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s094.sec5.u0": [
+  [
+   "Ep, si estàs tremolant!"
+  ]
+ ],
+ "s094.sec6.u0": [
+  [
+   "Fred? Tu creus?"
+  ]
+ ],
+ "s094.sec7.u0": [
+  [
+   "No és tot inútil?"
+  ]
+ ],
+ "s095.sec81.u0": [
+  [
+   "{color 5}Entrenament: Moure gel{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": [
+  [
+   "Empènyer grans blocs de gel",
+   "desenvolupa la resistència. Els",
+   "HP màxims pugen molt, i també",
+   "la Defensa."
+  ]
+ ],
+ "s095.sec81.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "{color 5}Entrenament: Pluja de",
+   "caramells{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": [
+  [
+   "Entrena atrapant els enormes",
+   "caramells que cauen. La",
+   "Defensa puja molt, i també la",
+   "Velocitat."
+  ]
+ ],
+ "s095.sec84.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s096.sec5.u0": [
+  [
+   "Et deixaré tes!"
+  ]
+ ],
+ "s096.sec6.u0": [
+  [
+   "Anomena-ho mala sort i",
+   "rendeix-te!"
+  ]
+ ],
+ "s096.sec7.u0": [
+  [
+   "Unes últimes paraules abans que",
+   "t'esborri?"
+  ]
+ ],
+ "s097.sec5.u0": "Qui ets?",
+ "s097.sec6.u0": [
+  [
+   "Tot és inútil."
+  ]
+ ],
+ "s097.sec7.u0": [
+  [
+   "Mmm, m'hauré constipat?"
+  ]
+ ],
+ "s097.sec8.u0": [
+  [
+   "Ep, que fred que ets amb mi!"
+  ]
+ ],
+ "s098.sec5.u0": [
+  [
+   "Per què no et tornes a casa?"
+  ]
+ ],
+ "s098.sec6.u0": [
+  [
+   "Vés-te a casa!"
+  ]
+ ],
+ "s098.sec7.u0": [
+  [
+   "Més et val fer mitja volta!"
+  ]
+ ],
+ "s098.sec52.u0": [
+  [
+   "Q... quina llum...!"
+  ]
+ ],
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Tu, que busques la meva ànima:",
+   "ha arribat l'hora de despertar.",
+   "Sobre tu, la benedicció de les"
+  ],
+  [
+   "{color 7}???mon {color 1}",
+   "meves ales!"
+  ]
+ ],
+ "s098.sec52.u2": [
+  [
+   "Què...? On estic...? De qui",
+   "és... aquesta veu...?",
+   "Ngh.........!"
+  ]
+ ],
+ "s098.sec52.u3": [
+  [
+   "Què ha estat això...? La llum",
+   "s'ha anat... Aquí sota ja no",
+   "queda res... és a dir que...",
+   "està a dalt!"
+  ]
+ ],
+ "s099.sec5.u0": [
+  [
+   "Aquí ens acomiadem de debò."
+  ]
+ ],
+ "s099.sec6.u0": [
+  [
+   "Jo no cometo errors!"
+  ]
+ ],
+ "s095.sec81.m0.o0": "Començar a entrenar",
+ "s095.sec81.m0.o1": "Sobre aquest entrenament",
+ "s095.sec81.m0.o2": "Sortir",
+ "s095.sec81.m1.o0": "Entrenament normal",
+ "s095.sec81.m1.o1": "Entrenament extra",
+ "s095.sec81.m1.o2": "Deixa-ho",
+ "s095.sec81.m2.o0": "Explica-m'ho de nou",
+ "s095.sec81.m2.o1": "Començar a entrenar",
+ "s095.sec81.m2.o2": "Sortir",
+ "s095.sec84.m0.o0": "Començar a entrenar",
+ "s095.sec84.m0.o1": "Sobre aquest entrenament",
+ "s095.sec84.m0.o2": "Sortir",
+ "s095.sec84.m1.o0": "Entrenament normal",
+ "s095.sec84.m1.o1": "Entrenament extra",
+ "s095.sec84.m1.o2": "Deixa-ho",
+ "s095.sec84.m2.o0": "Explica-m'ho de nou",
+ "s095.sec84.m2.o1": "Començar a entrenar",
+ "s095.sec84.m2.o2": "Sortir",
+ "s100.sec60.u0": [
+  [
+   "Puaaaj!"
+  ]
+ ],
+ "s100.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s100.sec60.u2": [
+  [
+   "N-no em fotis!"
+  ]
+ ],
+ "s100.sec60.u3": [
+  [
+   "Ha desaparegut... Era una",
+   "il·lusió...?"
+  ]
+ ],
+ "s100.sec60.u4": [
+  [
+   "Sembla que l'hem vençut...",
+   "d'alguna manera."
+  ]
+ ],
+ "s100.sec60.u5": [
+  [
+   "Eh!?"
+  ]
+ ],
+ "s100.sec60.u6": [
+  [
+   "Mm, mmm... Eh!?"
+  ]
+ ],
+ "s100.sec60.u7": [
+  [
+   "M'he quedat com en blanc de",
+   "sobte... Ah! P-perdona!"
+  ]
+ ],
+ "s100.sec60.u8": [
+  [
+   "Mmmmm?? Què ha estat això? La",
+   "maledicció d'Analogman!? Bé,",
+   "ara ja hauria d'estar tot bé."
+  ]
+ ]
+}

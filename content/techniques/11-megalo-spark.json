@@ -1,0 +1,17 @@
+{
+  "id": 11,
+  "name": "Megalo Spark",
+  "element": "air",
+  "power": 382,
+  "mpCost": 58,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 68,
+  "status": 3,
+  "statusChance": 23,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [18, 13, 8]
+}

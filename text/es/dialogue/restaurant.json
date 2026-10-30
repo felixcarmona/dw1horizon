@@ -1,0 +1,59 @@
+{
+ "s174.sec81.u0": "Bienvenidos. Contempla, {color 6}{player}{color 1}. Me he convertido en dueño y chef de este restaurante. Vosotros dos saborearéis con calma mi cocina de llamas... Je, je, je...",
+ "s174.sec81.u1": "¡Ja, ja, ja! ¡{color 6}{player}{color 1}, {color 10}{partner}{color 1}, venid a probar mi comida! Nunca pensé que mi talento oculto me sería útil. ¡Esto es comida de verdad, no objetos! ¡Que aproveche!",
+ "s174.sec81.u2": "¡Buenas, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! He decidido ganarme la vida cocinando. Que no os engañe mi pinta, soy un cocinero de primera. Acabáis hartos de la comida de viaje, ¿verdad? ¡Sentarse a comer en un restaurante de vez en cuando es un lujazo!",
+ "s174.sec81.u3": "¡Holaaa! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. ¡Por fin he abierto mi restaurante! Mis postres helados especiales están buenííísimos, ¡así que tenéis que probarlos!",
+ "s174.sec81.u4": "Je... {color 6}{player}{color 1}, voy a trabajar como chef de este restaurante. Vosotros dos saborearéis con calma mi cocina ardiente.",
+ "s174.sec81.u5": "¡Ja, ja! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. ¡Ahora soy cocinero! Nunca imaginé que mi talento oculto me sería útil. Mis platos especiales están por encima del resto, ¡así que pasaos por aquí!",
+ "s174.sec81.u6": "¡Buenas, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! ¡He decidido vivir para cocinar! ¡Mis platos especiales están llenos de nutrientes! ¡Mirad cuándo me toca trabajar!",
+ "s174.sec81.u7": [
+  [
+   "¡Holaaa! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! He decidido",
+   "ayudar en este restaurante."
+  ],
+  [
+   "¡Me han dicho que puedo hacer postres!"
+  ],
+  [
+   "Mis postres especiales están buenííísimos,",
+   "así que tenéis que probarlos."
+  ]
+ ],
+ "s175.sec6.u0": "¡Bzzt-bzzt! ¡Eh, {color 6}{player}{color 1}! A ver, ¿qué es esta máquina? ¡Bzzt! ¡No es peligrosa! ¡Esta preciosidad es una máquina de discos que me prende fuego al corazón! ¡Je-je-ji! ¡Tú también tienes que soltarte de vez en cuando! ¡A-tro-nar, colega! ¡Estoy esperando una petición bien caliente! ¡Bzzt!",
+ "s175.sec81.u0": "Bienvenidos. Contempla, {color 6}{player}{color 1}. Me he convertido en dueño y chef de este restaurante. Vosotros dos saborearéis con calma mi cocina de llamas... Je, je, je...",
+ "s175.sec81.u1": "¡Ja, ja, ja! ¡{color 6}{player}{color 1}, {color 10}{partner}{color 1}, venid a probar mi comida! Nunca pensé que mi talento oculto me sería útil. ¡Esto es comida de verdad, no objetos! ¡Que aproveche!",
+ "s175.sec81.u2": "¡Buenas, {color 6}{player}{color 1}, {color 10}{partner}{color 1}! He decidido ganarme la vida cocinando. Que no os engañe mi pinta, soy un cocinero de primera. Acabáis hartos de la comida de viaje, ¿verdad? ¡Sentarse a comer en un restaurante de vez en cuando es un lujazo!",
+ "s175.sec81.u3": "¡Holaaa! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. ¡Por fin he abierto mi restaurante! Mis postres helados especiales están buenííísimos, ¡así que tenéis que probarlos!",
+ "s175.sec81.u4": "Je... {color 6}{player}{color 1}, voy a trabajar como chef de este restaurante. Vosotros dos saborearéis con calma mi cocina, ardiente como el sol de mediodía.",
+ "s175.sec81.u5": "¡Ja, ja! {color 6}{player}{color 1}, {color 10}{partner}{color 1}. ¡Ahora soy cocinero! Nunca imaginé que mi talento oculto me sería útil. Si queréis mis platos especiales, ¡venid antes del mediodía!",
+ "s175.sec81.u6": [
+  [
+   "¡Buenas, {color 6}{player}{color 1} y",
+   "{color 10}{partner}{color 1}! ¡He decidido",
+   "vivir para cocinar!"
+  ],
+  [
+   "Mis platos especiales solo se sirven",
+   "muy de noche o de madrugada, pero",
+   "están..."
+  ],
+  [
+   "¡llenos de nutrientes!"
+  ]
+ ],
+ "s175.sec81.u7": [
+  [
+   "¡Holaaa! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! He decidido",
+   "ayudar en este restaurante."
+  ],
+  [
+   "¡Me han dicho que puedo hacer postres!"
+  ],
+  [
+   "Mis postres especiales están buenííísimos,",
+   "así que tenéis que probarlos."
+  ]
+ ]
+}

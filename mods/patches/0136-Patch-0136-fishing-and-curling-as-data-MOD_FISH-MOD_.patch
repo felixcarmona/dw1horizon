@@ -1,0 +1,456 @@
+From ca8684fabd894fe8c0239ab0a5ebdbb3b240ae7a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 09:56:19 +0000
+Subject: [PATCH] Patch 0136: fishing and curling as data (MOD_FISH, MOD_KAR,
+ the curling tables)
+
+---
+ include/dw/mod_fish.h    | 69 ++++++++++++++++++++++++++++++++++++++++
+ include/dw/mod_kar.h     | 30 +++++++++++++++++
+ src/fish/fish.c          | 61 ++++++++++++++++++-----------------
+ src/kar/kar.c            | 33 +++++++++----------
+ src/main/script_common.c |  8 +++++
+ 5 files changed, 155 insertions(+), 46 deletions(-)
+ create mode 100644 include/dw/mod_fish.h
+ create mode 100644 include/dw/mod_kar.h
+
+diff --git a/include/dw/mod_fish.h b/include/dw/mod_fish.h
+new file mode 100644
+index 00000000..0db71fc2
+--- /dev/null
++++ b/include/dw/mod_fish.h
+@@ -0,0 +1,69 @@
++#ifndef DW_MOD_FISH_H
++#define DW_MOD_FISH_H
++
++#include <dw/types.h>
++
++/* MOD (fishing as data): the tension gauge, the hooked fish, the bites, the bait theft and the fish population, MOD_FISH[] (16-bit slots,
++ * -1 = the rule does not exist), written by tools/balance.py from content/tables/fishing-rules.json. A slot left out reads as 0 */
++enum {
++	MOD_FS_LIMIT_SMALL = 0,
++	MOD_FS_LIMIT_BIG,
++	MOD_FS_SIZE_MIN,
++	MOD_FS_SIZE_MAX,
++	MOD_FS_SLACK,
++	MOD_FS_HOLD_LO,
++	MOD_FS_HOLD_HI,
++	MOD_FS_PULL_LO,
++	MOD_FS_PULL_HI,
++	MOD_FS_BOTH_LO,
++	MOD_FS_BOTH_HI,
++	MOD_FS_SNAP_BASE,
++	MOD_FS_SNAP_NEAR,
++	MOD_FS_SNAP_FAR,
++	MOD_FS_SNAP_MULT,
++	MOD_FS_BIG_SIZE,
++	MOD_FS_NIB_S_MIN,
++	MOD_FS_NIB_S_MAX,
++	MOD_FS_NIB_B_MIN,
++	MOD_FS_NIB_B_MAX,
++	MOD_FS_CATCH_S,
++	MOD_FS_CATCH_B,
++	MOD_FS_POWER_ADD,
++	MOD_FS_POWER_MAX_ADD,
++	MOD_FS_TIRED_DIV,
++	MOD_FS_STEP_TIRED,
++	MOD_FS_STEP_FRESH,
++	MOD_FS_SLACK_ROLL,
++	MOD_FS_SLACK_BELOW,
++	MOD_FS_HOLD_FRAMES,
++	MOD_FS_MOVE_MIN,
++	MOD_FS_MOVE_MAX,
++	MOD_FS_PAUSE_MIN,
++	MOD_FS_PAUSE_MAX,
++	MOD_FS_BITE_RADIUS,
++	MOD_FS_SEA_POLL,
++	MOD_FS_SEA_CHANCE,
++	MOD_FS_BITE_POLL,
++	MOD_FS_BITE_ROLL,
++	MOD_FS_THEFT_FROM,
++	MOD_FS_THEFT_EVERY,
++	MOD_FS_THEFT_ROLL,
++	MOD_FS_THEFT_BELOW,
++	MOD_FS_POOL_MAX,
++	MOD_FS_LIFE_MIN,
++	MOD_FS_LIFE_MAX,
++	MOD_FS_SIZE
++};
++
++extern int16_t MOD_FISH[MOD_FS_SIZE];
++
++static inline int32_t modFishVal(int32_t slot) { return MOD_FISH[slot] > 0 ? MOD_FISH[slot] : 0; }
++static inline int32_t modFishSpan(int32_t slot) { return MOD_FISH[slot] > 1 ? MOD_FISH[slot] : 1; }
++static inline int32_t modFishDiv(int32_t a, int32_t slot) { return MOD_FISH[slot] > 0 ? a / MOD_FISH[slot] : 0; }
++
++#define BF(X) modFishVal(MOD_FS_##X)
++#define BFS(X) modFishSpan(MOD_FS_##X)
++#define BFD(a, slot) modFishDiv((a), (slot))
++#define BFDV(a, X) modFishDiv((a), MOD_FS_##X)
++
++#endif
+diff --git a/include/dw/mod_kar.h b/include/dw/mod_kar.h
+new file mode 100644
+index 00000000..7835f88f
+--- /dev/null
++++ b/include/dw/mod_kar.h
+@@ -0,0 +1,30 @@
++#ifndef DW_MOD_KAR_H
++#define DW_MOD_KAR_H
++
++#include <dw/types.h>
++
++/* MOD (curling as data): friction, obstacles, the big-win score, the opponent's aim noise and the throw power cuts, MOD_KAR[] (16-bit slots,
++ * -1 = the rule does not exist), written by tools/balance.py from content/tables/curling.json. A slot left out reads as 0 (a modulus as 1) */
++enum {
++	MOD_KR_FRICTION = 0,
++	MOD_KR_MIN_MOVE,
++	MOD_KR_OBST_MAX,
++	MOD_KR_OBST_X_SPAN,
++	MOD_KR_OBST_Z_BASE,
++	MOD_KR_OBST_Z_SPAN,
++	MOD_KR_BIG_WIN,
++	MOD_KR_AI_NOISE,
++	MOD_KR_POWER_SUB_A,
++	MOD_KR_POWER_SUB_B,
++	MOD_KR_SIZE
++};
++
++extern int16_t MOD_KAR[MOD_KR_SIZE];
++
++static inline int32_t modKarVal(int32_t slot) { return MOD_KAR[slot] > 0 ? MOD_KAR[slot] : 0; }
++static inline int32_t modKarSpan(int32_t slot) { return MOD_KAR[slot] > 1 ? MOD_KAR[slot] : 1; }
++
++#define BK(X) modKarVal(MOD_KR_##X)
++#define BKS(X) modKarSpan(MOD_KR_##X)
++
++#endif
+diff --git a/src/fish/fish.c b/src/fish/fish.c
+index eeb87b7b..ee5df981 100644
+--- a/src/fish/fish.c
++++ b/src/fish/fish.c
+@@ -7,6 +7,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/mod_fish.h>
+ #include <dw/anim.h>
+ #include <dw/btl.h>
+ #include <dw/clock.h>
+@@ -2020,7 +2021,7 @@ void FISH_beginTension(void)
+ 
+ 	FISH_resetTension();
+ 	t->display = 1;
+-	t->limit = (FISHING_DATA_PTR->rod.swimmerType == 1) ? 0x1388 : 0x2710;
++	t->limit = (FISHING_DATA_PTR->rod.swimmerType == 1) ? BF(LIMIT_SMALL) : BF(LIMIT_BIG); /* MOD (fishing as data) */
+ }
+ 
+ int32_t FISH_updateTension(void)
+@@ -2036,19 +2037,19 @@ int32_t FISH_updateTension(void)
+ 	switch (n) {
+ 	case 0:
+ 		t->level = t->level +
+-		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, 0x32, 0x12c, -0xa6, -0xa6);
++		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, BF(SIZE_MIN), BF(SIZE_MAX), -BF(SLACK), -BF(SLACK));
+ 		break;
+ 	case 1:
+ 		t->level = t->level +
+-		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, 0x32, 0x12c, 0x29, 0x53);
++		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, BF(SIZE_MIN), BF(SIZE_MAX), BF(HOLD_LO), BF(HOLD_HI));
+ 		break;
+ 	case 2:
+ 		t->level = t->level +
+-		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, 0x32, 0x12c, 0x47, 0x7d);
++		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, BF(SIZE_MIN), BF(SIZE_MAX), BF(PULL_LO), BF(PULL_HI));
+ 		break;
+ 	case 3:
+ 		t->level = t->level +
+-		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, 0x32, 0x12c, 0xa6, 0x1f4);
++		           FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, BF(SIZE_MIN), BF(SIZE_MAX), BF(BOTH_LO), BF(BOTH_HI));
+ 		break;
+ 	}
+ 
+@@ -2077,8 +2078,8 @@ int32_t FISH_updateTension(void)
+ 	}
+ 
+ 	if (t->level == t->limit) {
+-		snapSteps = 4 - FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, 0x32, 0x12c, 1, 3);
+-		if (++t->framesAtLimit == (snapSteps * 5)) {
++		snapSteps = BF(SNAP_BASE) - FISH_remapClamped(FISHING_DATA_PTR->hooked.fish.size, BF(SIZE_MIN), BF(SIZE_MAX), BF(SNAP_NEAR), BF(SNAP_FAR));
++		if (++t->framesAtLimit == (snapSteps * BF(SNAP_MULT))) {
+ 			return 1;
+ 		}
+ 	} else {
+@@ -2611,7 +2612,7 @@ void FISH_spawnSeadramon(Fish *f)
+ 
+ 	f->kind = 6;
+ 	f->size = customRandom(FISH_KIND_INFO[f->kind].lo, FISH_KIND_INFO[f->kind].hi);
+-	f->lifetime = customRandom(0x258, 0x4b0);
++	f->lifetime = customRandom(BF(LIFE_MIN), BF(LIFE_MAX));
+ 	f->state = 0;
+ 	f->framesOnState = 0;
+ 	f->transparency = 0;
+@@ -2687,7 +2688,7 @@ void FISH_spawnFish(Fish *f, int32_t kind)
+ 
+ 	f->kind = kind;
+ 	f->size = customRandom(FISH_KIND_INFO[f->kind].lo, FISH_KIND_INFO[f->kind].hi);
+-	f->lifetime = customRandom(0x258, 0x4b0);
++	f->lifetime = customRandom(BF(LIFE_MIN), BF(LIFE_MAX));
+ 	f->state = 0;
+ 	f->framesOnState = 0;
+ 	f->transparency = 0;
+@@ -2928,7 +2929,7 @@ void FISH_tickFishPopulation(void)
+ 	if (pool->escapeTimer > 0) {
+ 		pool->escapeTimer--;
+ 	} else {
+-		if ((uint32_t)pool->count < 0x20) {
++		if ((uint32_t)pool->count < (uint32_t)BF(POOL_MAX)) {
+ 			for (i = 0; i < 6U; i++) {
+ 				counts[i] = 0;
+ 			}
+@@ -3050,17 +3051,17 @@ Fish *FISH_findFishToBite(Fish *pool, VECTOR *loc, int32_t depth)
+ 			continue;
+ 		}
+ 		dist = getDistance(f->pos.vx - loc->vx, 0, f->pos.vz - loc->vz);
+-		if (dist >= 0xc9) {
++		if (dist >= BF(BITE_RADIUS)) {
+ 			continue;
+ 		}
+ 		if (f->kind == 6) {
+-			if (((VSync(-1) / 3) % 8) != 0) {
++			if (((VSync(-1) / 3) % BFS(SEA_POLL)) != 0) {
+ 				continue;
+ 			} else {
+ 			}
+-			chance = 0x14;
++			chance = BF(SEA_CHANCE);
+ 		} else {
+-			if (((VSync(-1) / 3) % 20) != 0) {
++			if (((VSync(-1) / 3) % BFS(BITE_POLL)) != 0) {
+ 				continue;
+ 			}
+ 			if ((f->state != 0xa) && (f->state != 0x14)) {
+@@ -3076,7 +3077,7 @@ Fish *FISH_findFishToBite(Fish *pool, VECTOR *loc, int32_t depth)
+ 			}
+ 		}
+ 		FISH_spawnMarker((chance == 0) ? 0x30 : 0x2f, &f->pos);
+-		if (chance < customRandom(1, 0x64)) {
++		if (chance < customRandom(1, BFS(BITE_ROLL))) {
+ 			continue;
+ 		}
+ 		return f;
+@@ -3125,16 +3126,16 @@ void FISH_hookFish(Fish *f)
+ 	h->animMode = 0;
+ 	h->strikeTimer = 0;
+ 
+-	if (h->fish.size < 0x96) {
+-		h->nibbleTime = customRandom(0x14, 0x28);
+-		h->catchingTime = 0x1e;
++	if (h->fish.size < BF(BIG_SIZE)) {
++		h->nibbleTime = customRandom(BF(NIB_S_MIN), BF(NIB_S_MAX));
++		h->catchingTime = BF(CATCH_S);
+ 	} else {
+-		h->nibbleTime = customRandom(0x28, 0x3c);
+-		h->catchingTime = 0x3c;
++		h->nibbleTime = customRandom(BF(NIB_B_MIN), BF(NIB_B_MAX));
++		h->catchingTime = BF(CATCH_B);
+ 	}
+ 
+-	h->powerLeft = h->fish.size + 0x96;
+-	h->powerMax = h->powerLeft + 0x64;
++	h->powerLeft = h->fish.size + BF(POWER_ADD);
++	h->powerMax = h->powerLeft + BF(POWER_MAX_ADD);
+ 	h->escaped = 0;
+ }
+ 
+@@ -3170,7 +3171,7 @@ void FISH_tickHookedFish(int32_t mode)
+ 		switch (h->fish.state) {
+ 		case 0xa:
+ 			if (h->fish.framesOnState != h->nibbleTime) {
+-				if (h->fish.size < 0x96) {
++				if (h->fish.size < BF(BIG_SIZE)) {
+ 					if (customRandom(1, 0x14) == 1) {
+ 						if ((h->nibbleTime - h->fish.framesOnState) >= 0x14) {
+ 							FISH_bobberCommand(&FISHING_DATA_PTR->swimmer, 2);
+@@ -3284,7 +3285,7 @@ grabbed:
+ 
+ 			step.vx = 0;
+ 			step.vy = 0;
+-			step.vz = h->fish.timeThisMove / ((h->powerLeft <= (h->powerMax / 10)) ? 0xf : 8);
++			step.vz = BFD(h->fish.timeThisMove, (h->powerLeft <= BFDV(h->powerMax, TIRED_DIV)) ? MOD_FS_STEP_TIRED : MOD_FS_STEP_FRESH);
+ 			rotateVector(&h->fish.rotation, &step, &probe);
+ 			addVector(&probe, &FISHING_DATA_PTR->swimmer.pos);
+ 			h->fish.pos = FISHING_DATA_PTR->swimmer.pos = probe;
+@@ -3293,13 +3294,13 @@ grabbed:
+ 				goto powerCheck;
+ 			}
+ 
+-			if (FISHING_DATA_PTR->rod.pressedFrames >= 0x3d) {
++			if (FISHING_DATA_PTR->rod.pressedFrames >= BF(HOLD_FRAMES)) {
+ 				if ((FISHING_DATA_PTR->rod.pressedFrames % 3) == 0) {
+ 					goto powerCheck;
+ 				}
+ 			}
+ 
+-			if (customRandom(1, 0x14) >= 3) {
++			if (customRandom(1, BF(SLACK_ROLL)) >= BF(SLACK_BELOW)) {
+ 				goto stayStruggling;
+ 			}
+ 
+@@ -3319,8 +3320,8 @@ nextMove:
+ 			              TAMER_ENTITY.entity.posData->location.vx - h->fish.pos.vx, 0,
+ 			              TAMER_ENTITY.entity.posData->location.vz - h->fish.pos.vz);
+ 			h->fish.rotation.vy += customRandom(-0x384, 0x384) + 0x800;
+-			h->fish.timeThisMove = customRandom(0x14, 0x32);
+-			h->nibbleTime = customRandom(9, 0x13);
++			h->fish.timeThisMove = customRandom(BF(MOVE_MIN), BF(MOVE_MAX));
++			h->nibbleTime = customRandom(BF(PAUSE_MIN), BF(PAUSE_MAX));
+ 			h->fish.state = 0x32;
+ 			h->fish.framesOnState = -1;
+ 			break;
+@@ -3976,8 +3977,8 @@ state9:
+ 
+ nibbleCheck:
+ 	if (rod->itemTaken != 0) {
+-		if ((rod->framesOnState >= 0x1f) && ((rod->framesOnState % 20) == 0) &&
+-		    (customRandom(1, 0x2710) < 0x3e9)) {
++		if ((rod->framesOnState >= BF(THEFT_FROM)) && ((rod->framesOnState % BFS(THEFT_EVERY)) == 0) &&
++		    (customRandom(1, BFS(THEFT_ROLL)) < BF(THEFT_BELOW))) {
+ 			r = customRandom(0, 0x63);
+ 			for (n = 0; n < 6U; n++) {
+ 				if (r <= FISH_BAIT_CHANCES[n].threshold) {
+diff --git a/src/kar/kar.c b/src/kar/kar.c
+index 84d5eb59..7b97b155 100644
+--- a/src/kar/kar.c
++++ b/src/kar/kar.c
+@@ -6,6 +6,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/mod_kar.h>
+ #include <dw/mod_font.h>
+ #include <dw/anim.h>
+ #include <dw/btl.h>
+@@ -665,7 +666,7 @@ void KAR_setupMatch(int32_t mode)
+ 	int32_t i;
+ 	KarStone *stone;
+ 
+-	obstacles = rand() % 3;
++	obstacles = rand() % BKS(OBST_MAX);
+ 	MAIN_D_8013523A = 0;
+ 	MAIN_D_8013523C = 0;
+ 	MAIN_D_8013523E = 0;
+@@ -719,9 +720,9 @@ void KAR_setupMatch(int32_t mode)
+ #else
+ 				spawnX = KAR_D_8005AB98;
+ 				stone->pos.vy = 0;
+-				stone->pos.vx = spawnX.x[i] - rand() % 0x13f;
++				stone->pos.vx = spawnX.x[i] - rand() % BKS(OBST_X_SPAN);
+ #endif
+-				stone->pos.vz = -(rand() % 0x3e8 + 0x3e8);
++				stone->pos.vz = -(rand() % BKS(OBST_Z_SPAN) + BK(OBST_Z_BASE));
+ 				stone->rotation.vx = 0;
+ 				stone->rotation.vy = 0;
+ 				stone->rotation.vz = 0;
+@@ -785,10 +786,10 @@ void KAR_tickStones(int32_t instanceId)
+ 				}
+ 			}
+ 			if (stone->state > 0 && stone->speed >= 0) {
+-				move = stone->speed / stone->weight;
+-				speed = stone->speed * 98;
++				move = stone->weight > 0 ? stone->speed / stone->weight : 0; /* MOD (curling as data): no weights, no movement */
++				speed = stone->speed * BK(FRICTION); /* MOD (curling as data) */
+ 				stone->speed = speed / 100;
+-				if (move < 2) {
++				if (move < BK(MIN_MOVE)) {
+ 					stone->speed = 0;
+ 				}
+ 				if (stone->state < 3) {
+@@ -927,7 +928,7 @@ void KAR_finishMatch(void)
+ 	setTextColor(1);
+ 
+ 	if (KAR_D_8005B5A0[0].row.score > KAR_D_8005B5A0[1].row.score) {
+-		if (KAR_D_8005B5A0[0].row.score >= 0xa) {
++		if (KAR_D_8005B5A0[0].row.score >= BK(BIG_WIN)) {
+ 			writePStat(0x79, 2);
+ 		} else {
+ 			writePStat(0x79, 1);
+@@ -2339,9 +2340,9 @@ int32_t KAR_chooseOpponentShot(void)
+ 				} else {
+ 					angle = ratan2(-0x6a4 - pz, -px);
+ 					if ((KAR_D_8005B5A0[1].row.thrown % 2) != 0) {
+-						angle += rand() % 100;
++						angle += rand() % BKS(AI_NOISE);
+ 					} else {
+-						angle -= rand() % 100;
++						angle -= rand() % BKS(AI_NOISE);
+ 					}
+ 					KAR_setOpponentShot(0, angle, 0, -0x6a4);
+ 				}
+@@ -2376,9 +2377,9 @@ int32_t KAR_chooseOpponentShot(void)
+ 					} else if (KAR_D_80063914.stone.state < 0) {
+ 						angle = ratan2(-0x6a4 - pz, -px);
+ 						if ((KAR_D_8005B5A0[1].row.thrown % 2) != 0) {
+-							angle += rand() % 100;
++							angle += rand() % BKS(AI_NOISE);
+ 						} else {
+-							angle -= rand() % 100;
++							angle -= rand() % BKS(AI_NOISE);
+ 						}
+ 						KAR_setOpponentShot(0, angle, 0, -0x6a4);
+ 					} else if ((rand() % 2) != 0) {
+@@ -2399,9 +2400,9 @@ int32_t KAR_chooseOpponentShot(void)
+ 				case 3:
+ 					angle = ratan2(-0x6a4 - pz, -px);
+ 					if ((KAR_D_8005B5A0[1].row.thrown % 2) != 0) {
+-						angle += rand() % 100;
++						angle += rand() % BKS(AI_NOISE);
+ 					} else {
+-						angle -= rand() % 100;
++						angle -= rand() % BKS(AI_NOISE);
+ 					}
+ 					KAR_setOpponentShot(0, angle, 0, -0x6a4);
+ 					break;
+@@ -2675,13 +2676,13 @@ int32_t KAR_computeThrowPower(a, b, c)
+ 	value = cur * 100;
+ 	while (acc < dist) {
+ 		acc += cur / a;
+-		value = value * 100 / 98;
++		value = value * 100 / BKS(FRICTION);
+ 		cur = value / 100;
+ 	}
+ 	if (MAIN_D_80135248 == 2) {
+-		cur -= 0x258;
++		cur -= BK(POWER_SUB_A);
+ 	} else {
+-		cur -= 0x1f4;
++		cur -= BK(POWER_SUB_B);
+ 	}
+ 	return cur;
+ }
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index db31c147..bd143005 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -10,6 +10,8 @@
+ #include <dw/item.h>
+ #include <dw/font.h>
+ #include <dw/mod_battle.h>
++#include <dw/mod_fish.h>
++#include <dw/mod_kar.h>
+ #include <dw/main.h>
+ #include <dw/map.h>
+ #include <dw/math.h>
+@@ -3185,3 +3187,9 @@ int32_t modBtBrainDiscount(int32_t brain)
+ 	}
+ 	return pct;
+ }
++
++/* MOD (fishing as data): written by tools/balance.py from content/tables/fishing-rules.json; -1 = the rule does not exist */
++int16_t MOD_FISH[MOD_FS_SIZE] = { [0 ... MOD_FS_SIZE - 1] = -1 };
++
++/* MOD (curling as data): written by tools/balance.py from content/tables/curling.json; -1 = the rule does not exist */
++int16_t MOD_KAR[MOD_KR_SIZE] = { [0 ... MOD_KR_SIZE - 1] = -1 };
+-- 
+2.53.0
+

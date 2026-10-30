@@ -1,0 +1,22 @@
+{
+ "first_id": 430,
+ "out": "build/rigfix",
+ "digimon": [
+  {
+   "name": "Zanbamon",
+   "game": "dw3",
+   "model": "M337ZAMB",
+   "level": 5,
+   "element": 1,
+   "roles": true
+  },
+  {
+   "name": "Chrysalimon",
+   "game": "dw3",
+   "model": "M175KRSR",
+   "level": 4,
+   "element": 6,
+   "roles": true
+  }
+ ]
+}

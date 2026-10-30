@@ -1,0 +1,12 @@
+{
+  "id": 98,
+  "file": "ICSA02",
+  "tims8": 0,
+  "tims4": 1,
+  "sound_bank": 11,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 35
+}

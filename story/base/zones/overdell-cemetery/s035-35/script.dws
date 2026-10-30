@@ -1,0 +1,169 @@
+// Readable form of script 35 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 35 {
+    npc bakemon = 5;
+    npc tsukaimon1 = 6;
+    npc tsukaimon2 = 7;
+    npc tsukaimon3 = 8;
+    npc soulmon4 = 9;
+    npc soulmon5 = 10;
+    npc soulmon6 = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 7, 8, 9, 10, 11, 5, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 56, 78);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 19) {
+            spawn_item(item("Digimushrm"), 24, 44);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Super veggy"), 36, 24);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 79, 6);
+        }
+        if (mansion_fridge_memo_found && !myotismon_freed) {
+            spawn_item(item("Steak"), 48, 32);
+        }
+    }
+
+    on talk(tsukaimon1) replace {    // section 6
+        say(tsukaimon1, text("s035.sec6.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon2) replace {    // section 7
+        say(tsukaimon2, text("s035.sec7.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon3) replace {    // section 8
+        say(tsukaimon3, text("s035.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(soulmon4) replace {    // section 9
+        say(soulmon4, text("s035.sec9.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on talk(soulmon5) replace {    // section 10
+        say(soulmon5, text("s035.sec10.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on talk(soulmon6) replace {    // section 11
+        say(soulmon6, text("s035.sec11.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on talk(bakemon) replace {    // section 5
+        animate(bakemon, 11);
+        wait(50);
+        animate(bakemon, anim.idle);
+        say(bakemon, text("s035.sec5.u0"));
+        animate(tamer, 16);
+        say(tamer, text("s035.sec5.u1"));
+        engine.no_cancel = true;
+        choice(open) {
+            text("s035.sec5.m0.o0") => {
+                animate(bakemon, 11);
+                wait(45);
+                animate(bakemon, anim.idle);
+                say(bakemon, text("s035.sec5.u2"));
+                choice(open) {
+                    text("s035.sec5.m1.o0") => {
+                        animate(bakemon, 12);
+                        wait(58);
+                        animate(bakemon, anim.idle);
+                        animate(tamer, 15);
+                        say(bakemon, text("s035.sec5.u3"));
+                        animate(tamer, 16);
+                        choice(open) {
+                            text("s035.sec5.m2.o0") => {}
+                            text("s035.sec5.m2.o1") or cancel => {
+                                animate(bakemon, 13);
+                                wait(34);
+                                animate(bakemon, 13);
+                                say(bakemon, text("s035.sec5.u4"));
+                                loop {
+                                    engine.no_cancel = false;
+                                    run(bakemon, 1299, -1074);
+                                    unless (glances < 10) break;
+                                    glances += 1;
+                                    wait(5);
+                                    face(tamer, bakemon);
+                                    face(partner, bakemon);
+                                }
+                                await bakemon;
+                                remove(bakemon);
+                                glances = 0;
+                                sound(8, 11);
+                                say(narrator, text("s035.sec5.u5"));
+                                animate(tamer, 16);
+                                say(tamer, text("s035.sec5.u6"));
+                                recruit(species("Bakemon"));
+                                engine.prosperity += 2;
+                                return;
+                            }
+                        }
+                    }
+                    text("s035.sec5.m1.o1") => {}
+                }
+            }
+            text("s035.sec5.m0.o1") => {}
+        }
+        engine.no_cancel = false;
+        animate(bakemon, 29);
+        sound(8, 0);
+        wait(2s);
+        await bakemon;
+        remove(bakemon);
+        say(tamer, text("s035.sec5.u7"));
+    }
+
+    on step(0) replace {    // section 51
+        if (back_dimension_portal == 2) {
+            walk(tamer, -140, 4669);
+            warp_to(226, 0, 60);
+        }
+        store_digimon_type(partner_type);
+        store_digimon_value(partner_type, partner_attribute);
+        if (partner_attribute == 3) {
+            walk(tamer, 0, 5000);
+            walk(partner, 0, 5000);
+            sound(8, 1);
+            warp_to(52, 0, 255);
+            return;
+        }
+        say(narrator, text("s035.sec51.u0"));
+        fadeout_hud(0);
+        run(tamer, -200, 3658, camera: true);
+        run(partner, 100, 3658);
+        await tamer;
+        await partner;
+        wait(10);
+        entity_set_rotation(tamer, 3100);
+        wait(10);
+        entity_set_rotation(tamer, 2076);
+        say(tamer, text("s035.sec51.u1"));
+        return;
+    }
+}

@@ -1,0 +1,73 @@
+{
+ "s037.sec5.u0": "¡Te voy a tirar de aquí!",
+ "s037.sec6.u0": "¡N-no empujes!",
+ "s037.sec7.u0": "¡Las alturas me tranquilizan un montón!",
+ "s037.sec8.u0": "¡Que me caigo! ¡Es peligroso!",
+ "s037.sec9.u0": "¡Aquí arriba no, para!",
+ "s037.sec10.u0": "No tiene sentido pelear...",
+ "s037.sec81.m0.o0": "Pulsar el botón Bajar",
+ "s037.sec81.m0.o1": "No subir",
+ "s037.sec81.u0": "Ascensor",
+ "s037.sec81.u1": "...No pasa nada. No hay manera.",
+ "s038.sec5.u0": "¿N-no podríamos dejarlo?",
+ "s038.sec6.u0": "¡Shujaa, shujaa!",
+ "s038.sec7.u0": "¡Chis, chis!",
+ "s038.sec8.u0": "¡Voy a darlo todo!",
+ "s038.sec9.u0": "¿Pero qué dices?",
+ "s038.sec81.u0": "Noroeste: Freezeland",
+ "s038.sec82.m0.o0": "Pulsar el botón Subir",
+ "s038.sec82.m0.o1": "Pulsar el botón Bajar",
+ "s038.sec82.m0.o2": "No subir",
+ "s038.sec82.u0": "Ascensor",
+ "s038.sec82.u1": [
+  [
+   "¿Eh?"
+  ],
+  [
+   "Nada, no pasa nada."
+  ]
+ ],
+ "s043.sec5.u0": "¡Grrraaaah!",
+ "s043.sec6.u0": "¡Haaaaaah!",
+ "s043.sec7.u0": "¡Kiiiiieh!",
+ "s043.sec51.u0": [
+  [
+   "Por todo lo que hemos oído,",
+   "este parece el camino donde",
+   "aparecen esos bandidos..."
+  ],
+  [
+   "Muy bien. Vamos,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": "¡Yujuuuuuu!",
+ "s043.sec51.u2": "¡Gua, ja, ja, ja!",
+ "s043.sec51.u3": "¡Yupiiii!",
+ "s043.sec51.u4": "¡Muajajá, rendíos y dejad vuestras cosas! ¡O saldréis mal parados!",
+ "s043.sec51.u5": "¡Los que tenéis que rendiros sois vosotros!",
+ "s043.sec51.u6": "¿¡Eh!? Vosotros sois...",
+ "s043.sec51.u7": "No me digas que...",
+ "s043.sec51.u8": "¡J-jefe! ¿¡Qué hacemos!?",
+ "s043.sec51.u9": "¡Dejad de graznar! Somos más y más fuertes. ¡A por ellos!",
+ "s043.sec51.u10": "Grrr... ¡M-me las pagaréis!",
+ "s043.sec51.u11": "¡Mira cómo corren! Por lo menos, en una temporada no deberían asomar por aquí.",
+ "s043.sec53.u0": "¿Mm?",
+ "s043.sec53.u1": "¿Se ha movido el suelo? ...Serán imaginaciones mías.",
+ "s043.sec53.u2": "¿¡Qué!? No puede ser...",
+ "s043.sec53.u3": [
+  "{color 6}{player}{color 1}",
+  "¡¡U-uaaaaaah!!"
+ ],
+ "s043.sec81.m0.o0": "Modo Ogro: SÍ",
+ "s043.sec81.m0.o1": "Modo Ogro: NO",
+ "s043.sec81.u0": [
+  "Este: Ascensor",
+  "Oeste: ¡Peligro! Precipicio"
+ ],
+ "s043.sec82.u0": "¡¡Cuidado con los desprendimientos!!",
+ "s044.sec5.u0": "¡Te voy a dejar KO!",
+ "s044.sec6.u0": "No seas duro conmigo, por favor.",
+ "s044.sec7.u0": "Cuando elijo a mi presa, nunca se me escapa.",
+ "s044.sec8.u0": "Je... se acabó."
+}

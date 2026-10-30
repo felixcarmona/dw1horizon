@@ -1,0 +1,1309 @@
+From 971dab21d5ca4a30f2fd470c9e6b2d63448164dc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:21:28 +0000
+Subject: [PATCH] Merge branch 'caps' into integration
+
+---
+ include/dw/caps.h        | 49 ++++++++++++++++++++++++++++++
+ src/btl/battle_hud.c     | 17 +++++++++--
+ src/btl/battle_main.c    | 29 ++++++++----------
+ src/btl/battle_setup.c   |  9 ++++--
+ src/evl/evl.c            | 62 +++++++++++++++++++++++---------------
+ src/main/battle_ui.c     | 48 +++++++++++++++---------------
+ src/main/entity_text.c   |  7 +++--
+ src/main/game_menu.c     |  6 ++++
+ src/main/item.c          | 58 +++++++++++++++++++++++-------------
+ src/main/main.c          | 13 ++++----
+ src/main/script_interp.c | 11 ++++++-
+ src/main/script_value.c  |  4 ++-
+ src/main/tamer.c         |  8 +++--
+ src/main/utils.c         | 12 ++++++++
+ src/main/utils2.c        |  7 ++++-
+ src/std/std_hud.c        | 17 +++++++++--
+ src/std/std_main.c       | 77 +++++++++++++++++++++++++++++++-----------------
+ src/trn/trn_hud.c        | 39 +++++++++++-------------
+ src/trn/trn_reward.c     | 23 ++++++++-------
+ src/trn2/trn2_hud.c      | 39 +++++++++++-------------
+ src/trn2/trn2_reward.c   | 21 ++++++-------
+ 21 files changed, 359 insertions(+), 197 deletions(-)
+
+diff --git a/include/dw/caps.h b/include/dw/caps.h
+new file mode 100644
+index 0000000..7eb22b8
+--- /dev/null
++++ b/include/dw/caps.h
+@@ -0,0 +1,49 @@
++#ifndef DW_CAPS_H
++#define DW_CAPS_H
++
++/* MOD (caps): the number limits. The original capped Offense, Defense, Speed
++ * and Brains at 999, max HP/MP at 9999, and one hit and the pending damage
++ * (hpDamageBuffer) at 9999. Every stat field stays an int16_t (the partner,
++ * the fighters, COMBAT_DATA, DIGIMON_DATA and the v1 save all store them so),
++ * so the new limits are what an int16_t holds with room for a sum:
++ * 4 digits for the stats and 5 for HP, MP and damage. Below the old limits
++ * every formula, number and bar is as in the original. */
++#define STAT_CAP 9999    /* Offense, Defense, Speed, Brains (was 999) */
++#define HPMP_CAP 30000   /* max HP and max MP (was 9999) */
++#define DAMAGE_CAP 30000 /* one hit, and hpDamageBuffer (was 9999) */
++
++#define OLD_STAT_CAP 999
++#define OLD_HPMP_CAP 9999
++
++/* a stat index of INITIAL_COMBAT_STATS / STATS_GAINS (hp, mp, off, def,
++ * speed, brains): its cap */
++#define CAP_OF_STAT_INDEX(i) ((i) < 2 ? HPMP_CAP : STAT_CAP)
++#define OLD_CAP_OF_STAT_INDEX(i) ((i) < 2 ? OLD_HPMP_CAP : OLD_STAT_CAP)
++
++/* "full" healing: the original healed 9999 (= all of a capped bar); with a
++ * bigger bar it heals all of it, otherwise exactly as before */
++#define CAPS_FULL_HEAL(amount, max) \
++	(((amount) >= OLD_HPMP_CAP && (max) > (amount)) ? (max) : (amount))
++
++#define CAPS_MIN(a, b) ((a) < (b) ? (a) : (b))
++
++/* a stat where a formula was made for 0..999 and would break past it */
++#define CAPS_OLD_STAT(v) ((v) > OLD_STAT_CAP ? OLD_STAT_CAP : (v))
++
++/* hpDamageBuffer + a hit, summed in 32 bits and clamped (the original
++ * summed into the int16_t and clamped at 9999) */
++#define CAPS_ADD_DAMAGE(buffer, dmg) \
++	((int32_t)(buffer) + (dmg) > DAMAGE_CAP ? DAMAGE_CAP : (int32_t)(buffer) + (dmg))
++
++/* digits a number box needs: n as in the original, more only when the value
++ * no longer fits (the box then grows to the left, see CAPS_SHIFT) */
++#define CAPS_DIGITS(n, value)                                                  \
++	((value) >= 100000 ? ((n) > 6 ? (n) : 6) :                             \
++	 (value) >= 10000  ? ((n) > 5 ? (n) : 5) :                             \
++	 (value) >= 1000   ? ((n) > 4 ? (n) : 4) :                             \
++	 (value) >= 100    ? ((n) > 3 ? (n) : 3) :                             \
++	                     (n))
++/* how far a right-aligned box of n digits moves left for that */
++#define CAPS_SHIFT(n, value, width) ((CAPS_DIGITS(n, value) - (n)) * (width))
++
++#endif
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 06feef7..7a648c7 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -5,6 +5,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/battle.h>
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+@@ -1098,15 +1099,27 @@ void BTL_renderNumber(int32_t a, int16_t digits, int16_t x, int16_t y, int16_t v
+ 	POLY_FT4 *prim;
+ 	int32_t i;
+ 	int32_t count;
+-	int32_t buf[4];
++	int32_t buf[6]; /* MOD (caps): was 4 */
++	int32_t adv;
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
++	/* MOD (caps): a fifth digit (HP/MP past 9999) has no room in the
++	 * HUD's number box: the digits are packed 6 px apart instead of 7
++	 * (their 1-px outlines overlap) and the number grows 3 px to the
++	 * left, keeping its right edge and clear of the bar's end. The
++	 * original drew only the first four digits. */
++	adv = 7;
++	if (CAPS_DIGITS(digits, value) > digits) {
++		adv = 6;
++		x -= (CAPS_DIGITS(digits, value) - 1) * adv + 7 - digits * 7;
++		digits = CAPS_DIGITS(digits, value);
++	}
+ 	convertValueToDigits(digits, value, &count, buf);
+ 	for (i = count - 1; i >= 0; i--) {
+ 		setEntityTextDigit(prim, 256, 492);
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		setUVDataPolyFT4(prim, buf[i] * 7, 172, 7, 11);
+-		setPosDataPolyFT4(prim, x + ((digits - 1) - i) * 7, y, 7, 11);
++		setPosDataPolyFT4(prim, x + ((digits - 1) - i) * adv, y, 7, 11);
+ 		AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
+ 	}
+ 	GsSetWorkBase((PACKET *)prim);
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 25dc4d8..351d5d0 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -3,6 +3,7 @@
+ #include <libgpu.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/attack_object.h>
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+@@ -2032,8 +2033,8 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	if (dmg <= 0) {
+ 		dmg = 1;
+ 	}
+-	if (dmg >= 10000) {
+-		dmg = 9999;
++	if (dmg > DAMAGE_CAP) { /* MOD (caps): was 9999 */
++		dmg = DAMAGE_CAP;
+ 	}
+ 	return dmg;
+ }
+@@ -2147,10 +2148,8 @@ void BTL_tickAttackHits(void)
+ 					COMBAT_DATA_PTR->player.unk2++;
+ 				}
+ 			}
+-			fighter->hpDamageBuffer += dmg;
+-			if (fighter->hpDamageBuffer >= 0x2710) {
+-				fighter->hpDamageBuffer = 0x270f;
+-			}
++			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			BTL_handleHitReaction(entity, fighter, &attack, i);
+ 			sub->unk25 = 0;
+@@ -2196,10 +2195,8 @@ void BTL_tickAttackHits(void)
+ 			if (dmg <= 0) {
+ 				dmg = 1;
+ 			}
+-			fighter->hpDamageBuffer += dmg;
+-			if (fighter->hpDamageBuffer >= 0x2710) {
+-				fighter->hpDamageBuffer = 0x270f;
+-			}
++			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 		}
+@@ -2236,7 +2233,7 @@ void BTL_buffStats(digimon, slot, value, stat, color, flag)
+ 	uint8_t flag;
+ // clang-format on
+ {
+-	addWithLimit(stat, value, 0x3e7);
++	addWithLimit(stat, value, STAT_CAP); /* MOD (caps): was 999 */
+ 	addEntityText(&digimon->entity, slot, color, value, flag);
+ }
+ 
+@@ -2347,7 +2344,7 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 	mp = MOVE_DATA[tech].mpCost * 3;
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 700) {
+-			if (PARTNER_ENTITY.digimonEntity.stats.base.brain == 999) {
++			if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 999) { /* MOD (caps): was == */
+ 				mp -= mp / 5;
+ 			} else if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 900) {
+ 				mp -= mp * 15 / 100;
+@@ -2531,7 +2528,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 			}
+ 			brain = digimon->stats.base.brain;
+ 			if (brain >= 0x2bc) {
+-				if (brain == 0x3e7) {
++				if (brain >= 0x3e7) { /* MOD (caps): was == */
+ 					cost = cost * 4 / 5;
+ 				} else if ((brain >= 0x384) && (brain < 0x3e7)) {
+ 					cost = cost * 17 / 20;
+@@ -2860,10 +2857,8 @@ void BTL_tickStatusEffects(void)
+ 			if (fighter->poisonTimer == 0) {
+ 				fighter->poisonTimer = 100;
+ 				dmg = stats->base.hp * (randomLimit(3) + 1) / 100;
+-				fighter->hpDamageBuffer += dmg;
+-				if (fighter->hpDamageBuffer >= 0x2710) {
+-					fighter->hpDamageBuffer = 0x270f;
+-				}
++				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 				if (i != 0) {
+ 					COMBAT_DATA_PTR->player.unk1[i].unk25 = 0;
+ 				}
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index b8cd743..b8f8b59 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -1,3 +1,4 @@
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/attack_object.h>
+ #include <dw/btl.h>
+@@ -112,8 +113,12 @@ void BTL_initializeCombat(void)
+ 		} else {
+ 			f->buffsRemaining = 5;
+ 		}
+-		f->buffPrioTimer = (stats->base.brain / 10) + 5;
+-		f->finisherGoal = 0xbb8 - stats->base.speed;
++		/* MOD (caps): brains and speed past the old 999 limit do not
++		 * make buffs win every draw or the finisher goal reach 0:
++		 * the goal keeps falling, ten times slower (1101 at 9999) */
++		f->buffPrioTimer = (CAPS_OLD_STAT(stats->base.brain) / 10) + 5;
++		f->finisherGoal = 0xbb8 - CAPS_OLD_STAT(stats->base.speed) -
++		                  (stats->base.speed - CAPS_OLD_STAT(stats->base.speed)) / 10;
+ 		for (j = 0; j < 0x96; j++) {
+ 			f->table1[j] = -1;
+ 			f->table2[i] = -1;
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index e3f48ee..d779e46 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -4,6 +4,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/btl.h>
+ #include <dw/efe.h>
+@@ -1456,26 +1457,38 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	}
+ }
+ 
++/* MOD (caps) */
++static int16_t EVL_capValue(int32_t value, int32_t cap)
++{
++	if (value > cap) {
++		return cap;
++	}
++	return value;
++}
++
+ void EVL_scaleBaseStats(Stats *stats, int16_t pct, int16_t unused)
+ {
++	/* MOD (caps): every product is clamped in 32 bits before it is stored
++	 * (×2.5 of 30000 does not fit an int16_t); EVL_clampBaseStats below
++	 * clamped the stored values, so nothing changes below the old limits */
+ 	if (HAS_USED_EVOITEM != 0) {
+ 		return;
+ 	}
+ 
+ 	if (PARTNER_ENTITY.digimonEntity.entity.type != 0x27) {
+-		stats->base.hp = stats->base.hp * pct / 10;
+-		stats->base.mp = stats->base.mp * pct / 10;
+-		stats->base.off = stats->base.off * pct / 10;
+-		stats->base.def = stats->base.def * pct / 10;
+-		stats->base.speed = stats->base.speed * pct / 10;
+-		stats->base.brain = stats->base.brain * pct / 10;
++		stats->base.hp = EVL_capValue(stats->base.hp * pct / 10, HPMP_CAP);
++		stats->base.mp = EVL_capValue(stats->base.mp * pct / 10, HPMP_CAP);
++		stats->base.off = EVL_capValue(stats->base.off * pct / 10, STAT_CAP);
++		stats->base.def = EVL_capValue(stats->base.def * pct / 10, STAT_CAP);
++		stats->base.speed = EVL_capValue(stats->base.speed * pct / 10, STAT_CAP);
++		stats->base.brain = EVL_capValue(stats->base.brain * pct / 10, STAT_CAP);
+ 	} else {
+-		stats->base.hp = PARTNER_PARA.sukaBackupHP + ((stats->base.hp - (PARTNER_PARA.sukaBackupHP / 2)) / 2);
+-		stats->base.mp = PARTNER_PARA.sukaBackupMP + ((stats->base.mp - (PARTNER_PARA.sukaBackupMP / 2)) / 2);
+-		stats->base.off = PARTNER_PARA.sukaBackupOff + ((stats->base.off - (PARTNER_PARA.sukaBackupOff / 2)) / 2);
+-		stats->base.def = PARTNER_PARA.sukaBackupDef + ((stats->base.def - (PARTNER_PARA.sukaBackupDef / 2)) / 2);
+-		stats->base.speed = PARTNER_PARA.sukaBackupSpeed + ((stats->base.speed - (PARTNER_PARA.sukaBackupSpeed / 2)) / 2);
+-		stats->base.brain = PARTNER_PARA.sukaBackupBrain + ((stats->base.brain - (PARTNER_PARA.sukaBackupBrain / 2)) / 2);
++		stats->base.hp = EVL_capValue(PARTNER_PARA.sukaBackupHP + ((stats->base.hp - (PARTNER_PARA.sukaBackupHP / 2)) / 2), HPMP_CAP);
++		stats->base.mp = EVL_capValue(PARTNER_PARA.sukaBackupMP + ((stats->base.mp - (PARTNER_PARA.sukaBackupMP / 2)) / 2), HPMP_CAP);
++		stats->base.off = EVL_capValue(PARTNER_PARA.sukaBackupOff + ((stats->base.off - (PARTNER_PARA.sukaBackupOff / 2)) / 2), STAT_CAP);
++		stats->base.def = EVL_capValue(PARTNER_PARA.sukaBackupDef + ((stats->base.def - (PARTNER_PARA.sukaBackupDef / 2)) / 2), STAT_CAP);
++		stats->base.speed = EVL_capValue(PARTNER_PARA.sukaBackupSpeed + ((stats->base.speed - (PARTNER_PARA.sukaBackupSpeed / 2)) / 2), STAT_CAP);
++		stats->base.brain = EVL_capValue(PARTNER_PARA.sukaBackupBrain + ((stats->base.brain - (PARTNER_PARA.sukaBackupBrain / 2)) / 2), STAT_CAP);
+ 		PARTNER_PARA.virusBar = 0;
+ 	}
+ 
+@@ -1493,28 +1506,29 @@ void EVL_clampBaseStats(void)
+ {
+ 	BaseStats *stats;
+ 
++	/* MOD (caps): the new limits (were 9999 / 999) */
+ 	stats = &PARTNER_ENTITY.digimonEntity.stats.base;
+-	if (stats->hp >= 10000) {
+-		stats->hp = 9999;
++	if (stats->hp > HPMP_CAP) {
++		stats->hp = HPMP_CAP;
+ 	}
+ 
+-	if (stats->mp >= 10000) {
+-		stats->mp = 9999;
++	if (stats->mp > HPMP_CAP) {
++		stats->mp = HPMP_CAP;
+ 	}
+ 
+-	if (stats->off >= 1000) {
+-		stats->off = 999;
++	if (stats->off > STAT_CAP) {
++		stats->off = STAT_CAP;
+ 	}
+ 
+-	if (stats->def >= 1000) {
+-		stats->def = 999;
++	if (stats->def > STAT_CAP) {
++		stats->def = STAT_CAP;
+ 	}
+ 
+-	if (stats->speed >= 1000) {
+-		stats->speed = 999;
++	if (stats->speed > STAT_CAP) {
++		stats->speed = STAT_CAP;
+ 	}
+ 
+-	if (stats->brain >= 1000) {
+-		stats->brain = 999;
++	if (stats->brain > STAT_CAP) {
++		stats->brain = STAT_CAP;
+ 	}
+ }
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index fc3bad4..5e91ff6 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -1,5 +1,6 @@
+ #include <libgs.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+ #include <dw/font.h>
+@@ -136,7 +137,13 @@ void battleStatsGainsAndDrops(uint8_t *droppedItems)
+ 		}
+ 
+ 		if (enemyStat >= partnerStat) {
+-			STATS_GAINS[stat] = ((den + (enemyStat * STAT_GAIN_ENEMY_FACTORS[ENEMY_COUNT - 1])) - 1) / den;
++			chance = ((den + (enemyStat * STAT_GAIN_ENEMY_FACTORS[ENEMY_COUNT - 1])) - 1) / den;
++			/* MOD (caps): at most the stat's limit (16 × 30000 would not
++			 * fit STATS_GAINS; the original never passed 16 × 9999) */
++			if (chance > CAP_OF_STAT_INDEX(stat)) {
++				chance = CAP_OF_STAT_INDEX(stat);
++			}
++			STATS_GAINS[stat] = chance;
+ 		} else {
+ 			chance = ((enemyStat * STAT_GAIN_ENEMY_FACTORS[ENEMY_COUNT - 1]) * 100) / den;
+ 			if (randomLimit(100) < chance) {
+@@ -549,18 +556,15 @@ void tickPostBattleStatsBox(void)
+ 
+ 	for (i = 0; i < 6; i++) {
+ 		if (STATS_GAINS[i] != 0) {
+-			INITIAL_COMBAT_STATS[0][i] += STATS_GAINS[i];
+-
+-			if (STATS_GAINS[i] > 0) {
+-				if (i < 2) {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-						INITIAL_COMBAT_STATS[0][i] = 9999;
+-					}
+-				} else {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-						INITIAL_COMBAT_STATS[0][i] = 999;
+-					}
++			/* MOD (caps): summed in 32 bits, the new limits (were
++			 * 9999 / 999) */
++			{
++				int32_t sum = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
++
++				if ((STATS_GAINS[i] > 0) && (sum > CAP_OF_STAT_INDEX(i))) {
++					sum = CAP_OF_STAT_INDEX(i);
+ 				}
++				INITIAL_COMBAT_STATS[0][i] = sum;
+ 			}
+ 
+ 			STATS_GAINS[i] = 0;
+@@ -593,14 +597,9 @@ void renderPostBattleStatsBox(int16_t depth)
+ 			STATS_GAINS[i]--;
+ 			INITIAL_COMBAT_STATS[0][i] += 1;
+ 
+-			if (i < 2) {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-					INITIAL_COMBAT_STATS[0][i] = 9999;
+-				}
+-			} else {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-					INITIAL_COMBAT_STATS[0][i] = 999;
+-				}
++			/* MOD (caps): the new limits (were 9999 / 999) */
++			if (INITIAL_COMBAT_STATS[0][i] > CAP_OF_STAT_INDEX(i)) {
++				INITIAL_COMBAT_STATS[0][i] = CAP_OF_STAT_INDEX(i);
+ 			}
+ 
+ 			first = 0;
+@@ -618,9 +617,11 @@ void renderPostBattleStatsBox(int16_t depth)
+ 			GsSetWorkBase((PACKET *)prim);
+ 		}
+ 
++		/* MOD (caps): a wider gain grows to the right, into the free
++		 * part of the box */
+ 		renderNumber(5,
+ 			     box->x + 142, (box->y + 9) + (i * 13),
+-			     2, STATS_GAINS[i], 6 - depth);
++			     CAPS_DIGITS(2, STATS_GAINS[i]), STATS_GAINS[i], 6 - depth);
+ 	}
+ 
+ 	for (i = 0; i < 6; i++) {
+@@ -650,10 +651,11 @@ void renderPostBattleStatsBox(int16_t depth)
+ 		y = (box->y + 20) + (i * 13);
+ 		rect.y = y - 2;
+ 
++		/* MOD (caps): full at the old limit (the bar has no room past it) */
+ 		if (i < 2) {
+-			rect.w = (INITIAL_COMBAT_STATS[0][i] * 50) / 9999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 9999) * 50) / 9999;
+ 		} else {
+-			rect.w = INITIAL_COMBAT_STATS[0][i] * 50 / 999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 999) * 50) / 999;
+ 		}
+ 
+ 		switch (STAT_BOX_HAS_GAIN[i]) {
+diff --git a/src/main/entity_text.c b/src/main/entity_text.c
+index fe24511..7184cfb 100644
+--- a/src/main/entity_text.c
++++ b/src/main/entity_text.c
+@@ -1,4 +1,5 @@
+ #include <libgs.h>
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+@@ -99,7 +100,7 @@ void addEntityText(Entity *entity, int16_t slotId, int16_t color, int32_t value,
+ 		   uint8_t icon)
+ {
+ 	int32_t i;
+-	int32_t digits[4];
++	int32_t digits[6]; /* MOD (caps): was 4 */
+ 	EntityTextData *slot;
+ 	EntityTextDataEntry *entry;
+ 	int32_t j;
+@@ -118,7 +119,9 @@ void addEntityText(Entity *entity, int16_t slotId, int16_t color, int32_t value,
+ 	}
+ 
+ 	entry = &slot->entries[i];
+-	convertValueToDigits(4, value, &entry->numDigits, digits);
++	/* MOD (caps): 5 digits for a hit past 9999 (was always 4: 12345 showed
++	 * as 1234) */
++	convertValueToDigits(CAPS_DIGITS(4, value), value, &entry->numDigits, digits);
+ 	entry->value = value;
+ 	entry->color = color;
+ 	entry->icon = icon;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index e207a2b..5b52bd8 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -6,6 +6,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/mod_fps.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+@@ -3423,6 +3424,11 @@ int16_t e;
+ {
+ 	uint8_t w;
+ 
++	/* MOD (caps): full at the old limit, which the caller passes (the
++	 * bar has no room past it, and uint8_t w would wrap) */
++	if (a > b) {
++		a = b;
++	}
+ 	w = c * a / b;
+ 	renderBox(d, e, w, 2, 0x32, 0xc8, 0xc8, 0, 5);
+ }
+diff --git a/src/main/item.c b/src/main/item.c
+index 8595c35..bd6c793 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -20,6 +20,7 @@
+ #include <dw/tamer.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/world_object.h>
+ #include <text/main/item.h>
+ 
+@@ -2289,12 +2290,12 @@ void handleChips(int16_t chipId)
+ 		handlePortaPotty();
+ 		return;
+ 	}
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.hp, hp, 9999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.mp, mp, 9999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.off, off, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.def, def, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.speed, speed, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, brain, 999);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.hp, hp, HPMP_CAP); /* MOD (caps): was 9999 */
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.mp, mp, HPMP_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.off, off, STAT_CAP); /* MOD (caps): was 999 */
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.def, def, STAT_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.speed, speed, STAT_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, brain, STAT_CAP);
+ 	modifyLifetime(lifetime);
+ 	if ((0x1c < chipId) && (chipId < 0x20)) {
+ 		addTamerLevel(10, -1);
+@@ -2325,6 +2326,8 @@ void handleRestore(int16_t type)
+ 		}
+ 
+ 		amount = 0x270f;
++		/* MOD (caps): all of a bar longer than 9999 */
++		amount = CAPS_FULL_HEAL(amount, PARTNER_ENTITY.digimonEntity.stats.base.hp);
+ 		break;
+ 	}
+ 
+@@ -2354,10 +2357,13 @@ void handleDoubleFloppy(int32_t itemId)
+ 
+ void handleMPHealingItem(uint8_t idx)
+ {
++	/* MOD (caps): the 9999 one heals all of a longer bar */
++	int32_t amount = CAPS_FULL_HEAL(HEALING_VALUES[idx - 4], PARTNER_ENTITY.digimonEntity.stats.base.mp);
++
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentHP != 0) {
+-		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentMP, HEALING_VALUES[idx - 4], PARTNER_ENTITY.digimonEntity.stats.base.mp);
++		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentMP, amount, PARTNER_ENTITY.digimonEntity.stats.base.mp);
+ 		if (GAME_STATE == 1) {
+-			addEntityText(ENTITY_TABLE[1], 0, 0xb, HEALING_VALUES[idx - 4], 2);
++			addEntityText(ENTITY_TABLE[1], 0, 0xb, amount, 2);
+ 		}
+ 		addHealingParticleEffect(ENTITY_TABLE[1], HEAL_EFFECT_VARIANT[idx - 4]);
+ 	}
+@@ -2365,10 +2371,13 @@ void handleMPHealingItem(uint8_t idx)
+ 
+ void handleHPHealingItem(uint8_t idx)
+ {
++	/* MOD (caps): the 9999 one heals all of a longer bar */
++	int32_t amount = CAPS_FULL_HEAL(HEALING_VALUES[idx], PARTNER_ENTITY.digimonEntity.stats.base.hp);
++
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentHP != 0) {
+-		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP, HEALING_VALUES[idx], PARTNER_ENTITY.digimonEntity.stats.base.hp);
++		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP, amount, PARTNER_ENTITY.digimonEntity.stats.base.hp);
+ 		if (GAME_STATE == 1) {
+-			addEntityText(ENTITY_TABLE[1], 0, 0xb, HEALING_VALUES[idx], 1);
++			addEntityText(ENTITY_TABLE[1], 0, 0xb, amount, 1);
+ 		}
+ 		addHealingParticleEffect(ENTITY_TABLE[1], HEAL_EFFECT_VARIANT[idx]);
+ 	}
+@@ -2903,24 +2912,31 @@ void handleFood(int16_t itemId)
+ 	setTrainingBoost(trainFlag, trainValue, trainDuration);
+ 	handleItemSickness(sicknessChance);
+ 	PARTNER_PARA.remainingLifetime += lifetime;
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.hp, addedHP, 9999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.mp, addedMP, 9999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP, healedHP,
++	/* MOD (caps): new limits; the 9999 heals fill a longer bar */
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.hp, addedHP, HPMP_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.mp, addedMP, HPMP_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP,
++	             CAPS_FULL_HEAL(healedHP, PARTNER_ENTITY.digimonEntity.stats.base.hp),
+ 	             PARTNER_ENTITY.digimonEntity.stats.base.hp);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentMP, healedMP,
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentMP,
++	             CAPS_FULL_HEAL(healedMP, PARTNER_ENTITY.digimonEntity.stats.base.mp),
+ 	             PARTNER_ENTITY.digimonEntity.stats.base.mp);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.off, addedOffense, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.def, addedDefense, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.speed, addedSpeed, 999);
+-	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, addedBrain, 999);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.off, addedOffense, STAT_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.def, addedDefense, STAT_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.speed, addedSpeed, STAT_CAP);
++	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, addedBrain, STAT_CAP);
+ }
+ 
+ void addWithLimit(int16_t *value, int16_t amount, int16_t limit)
+ {
+-	*value += amount;
+-	if (*value > limit) {
+-		*value = limit;
++	/* MOD (caps): the sum in 32 bits, so that it cannot wrap past 32767
++	 * before the limit is checked (it never did with 9999 / 999) */
++	int32_t sum = *value + amount;
++
++	if (sum > limit) {
++		sum = limit;
+ 	}
++	*value = sum;
+ }
+ 
+ int32_t handleMedicineHealing(int16_t injuryChance, int16_t sicknessChance)
+diff --git a/src/main/main.c b/src/main/main.c
+index 7ec5f31..0b85310 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -7,6 +7,7 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/attack_object.h>
+ #include <dw/bubble.h>
+@@ -5739,20 +5740,20 @@ void handleBuffDisks(type)
+ 
+ 	offLimit = (INITIAL_COMBAT_STATS[0].offense +
+ 		    ((INITIAL_COMBAT_STATS[0].offense * 3) / 10));
+-	if (offLimit > 999) {
+-		offLimit = 999;
++	if (offLimit > STAT_CAP) { /* MOD (caps): was 999 */
++		offLimit = STAT_CAP;
+ 	}
+ 
+ 	defLimit = (INITIAL_COMBAT_STATS[0].defense +
+ 		    ((INITIAL_COMBAT_STATS[0].defense * 3) / 10));
+-	if (defLimit > 999) {
+-		defLimit = 999;
++	if (defLimit > STAT_CAP) { /* MOD (caps): was 999 */
++		defLimit = STAT_CAP;
+ 	}
+ 
+ 	speedLimit = (INITIAL_COMBAT_STATS[0].speed +
+ 		      ((INITIAL_COMBAT_STATS[0].speed * 3) / 10));
+-	if (speedLimit > 999) {
+-		speedLimit = 999;
++	if (speedLimit > STAT_CAP) { /* MOD (caps): was 999 */
++		speedLimit = STAT_CAP;
+ 	}
+ 
+ 	stats = &PARTNER_ENTITY.digimonEntity.stats.base;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 95b0bc3..2f68b74 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1136,7 +1136,16 @@ void scriptInstruction28to3F(op)
+ 	case SCRIPT_OP_ADD_STAT:
+ 		pollOneUByteOneUShort(&byteArg1, &value);
+ 		statPtr = getStatsPointer(byteArg1);
+-		*statPtr += value;
++		/* MOD (caps): the sum in 32 bits, so that a stat near the new
++		 * limits cannot wrap past 32767 before it is clamped */
++		{
++			int32_t sum = *statPtr + value;
++
++			if ((*statPtr >= 0) && (sum > 0x7fff)) {
++				sum = 0x7fff;
++			}
++			*statPtr = sum;
++		}
+ 		*statPtr = enforceStatsLimits(byteArg1, *statPtr);
+ 		scriptUpdateEnergyBoundaries(byteArg1, *statPtr);
+ 		if (byteArg1 == SCRIPT_STAT_TAMER_LEVEL) {
+diff --git a/src/main/script_value.c b/src/main/script_value.c
+index a1bb5f3..8f41948 100644
+--- a/src/main/script_value.c
++++ b/src/main/script_value.c
+@@ -1,5 +1,6 @@
+ #include <string.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/item.h>
+ #include <dw/params.h>
+ #include <dw/script.h>
+@@ -33,8 +34,9 @@ static void *script_value_functions[] = {
+ // clang-format off
+ SPEAKERS_TEXT
+ 
++/* MOD (caps): Offense..Brains and max HP/MP at the new limits (were 999, 9999) */
+ int16_t STATS_LIMIT_ARRAY[22] = {
+-	0x03e7, 0x03e7, 0x03e7, 0x03e7, 0x270f, 0x270f, 0x270f, 0x270f,
++	STAT_CAP, STAT_CAP, STAT_CAP, STAT_CAP, HPMP_CAP, HPMP_CAP, 0x270f, 0x270f,
+ 	0x0064, 0x0064, 0x03e7, 0x03e7, 0x03e7, 0x03e7, 0x270f, 0x270f,
+ 	0x270f, 0x03e7, 0x03e7, 0x03e7, 0x0063, 0x000a,
+ };
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 76481be..2cfbf73 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -4,6 +4,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/butterfly.h>
+ #include <dw/clock.h>
+@@ -704,9 +705,10 @@ void checkMedalConditions(void)
+ 
+ 	if (hasMedal(7) == 0) {
+ 		BaseStats *bs = &PARTNER_ENTITY.digimonEntity.stats.base;
+-		if ((bs->hp == 9999) && (bs->mp == 9999) &&
+-		    (bs->off == 999) && (bs->def == 999) &&
+-		    (bs->brain == 999) && (bs->speed == 999)) {
++		/* MOD (caps): every stat at the old maximum or past it (was ==) */
++		if ((bs->hp >= OLD_HPMP_CAP) && (bs->mp >= OLD_HPMP_CAP) &&
++		    (bs->off >= OLD_STAT_CAP) && (bs->def >= OLD_STAT_CAP) &&
++		    (bs->brain >= OLD_STAT_CAP) && (bs->speed >= OLD_STAT_CAP)) {
+ 			unlockMedal(7);
+ 			MEDAL_AWARD_PENDING = 1;
+ 		}
+diff --git a/src/main/utils.c b/src/main/utils.c
+index 50adb7e..3cd30cc 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -3,6 +3,7 @@
+ #include <inline_n.h>
+ #include <libetc.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+ #include <dw/item.h>
+@@ -83,6 +84,13 @@ void pauseFrame(void)
+ 
+ void damageTick(FighterData* fighter, Stats* stats)
+ {
++	/* MOD (caps): a step for damage past the old 9999 limit, so that a
++	 * 30000 hit drains at the pace of a 9999 one */
++	if (fighter->hpDamageBuffer > OLD_HPMP_CAP) {
++		stats->current.currentHP -= 9000;
++		fighter->hpDamageBuffer -= 9000;
++	}
++
+ 	if (fighter->hpDamageBuffer > 999) {
+ 		stats->current.currentHP -= 900;
+ 		fighter->hpDamageBuffer -= 900;
+@@ -224,6 +232,10 @@ void renderNumber(int32_t color, int16_t x, int16_t y, int32_t n,
+ 	int32_t count;
+ 	int32_t buf[6];
+ 
++	/* MOD (caps): a value wider than the box grows it to the left (the
++	 * right edge stays); the original drew only the first n digits */
++	x -= CAPS_SHIFT(n, value, DIGIT_WIDTH);
++	n = CAPS_DIGITS(n, value);
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
+ 	convertValueToDigits(n, value, &count, buf);
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index f5f0a6c..2405f53 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -1,5 +1,6 @@
+ #include <libetc.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/btl.h>
+ #include <dw/clock.h>
+ #include <dw/fade.h>
+@@ -183,10 +184,14 @@ void drawEntityText(int32_t color, int16_t n, int16_t x, int16_t y,
+ 	POLY_FT4 *prim;
+ 	int32_t i;
+ 	int32_t count;
+-	int32_t buf[4];
++	int32_t buf[6]; /* MOD (caps): was 4 */
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
++	/* MOD (caps): a value wider than the box grows it to the left (the
++	 * right edge stays); the original drew only the first n digits */
++	x -= CAPS_SHIFT(n, value, 7);
++	n = CAPS_DIGITS(n, value);
+ 	convertValueToDigits(n, value, &count, buf);
+ 
+ 	for (i = count - 1; i >= 0; i--) {
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 7681205..6ae7d44 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -6,6 +6,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/aabb.h>
+ #include <dw/anim.h>
+ #include <dw/battle.h>
+@@ -858,15 +859,27 @@ void STD_renderNumber(int32_t a, int16_t digits, int16_t x, int16_t y, int16_t v
+ 	POLY_FT4 *prim;
+ 	int32_t i;
+ 	int32_t count;
+-	int32_t buf[4];
++	int32_t buf[6]; /* MOD (caps): was 4 */
++	int32_t adv;
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
++	/* MOD (caps): a fifth digit (HP/MP past 9999) has no room in the
++	 * HUD's number box: the digits are packed 6 px apart instead of 7
++	 * (their 1-px outlines overlap) and the number grows 3 px to the
++	 * left, keeping its right edge and clear of the bar's end. The
++	 * original drew only the first four digits. */
++	adv = 7;
++	if (CAPS_DIGITS(digits, value) > digits) {
++		adv = 6;
++		x -= (CAPS_DIGITS(digits, value) - 1) * adv + 7 - digits * 7;
++		digits = CAPS_DIGITS(digits, value);
++	}
+ 	convertValueToDigits(digits, value, &count, buf);
+ 	for (i = count - 1; i >= 0; i--) {
+ 		setEntityTextDigit(prim, 256, 492);
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		setUVDataPolyFT4(prim, buf[i] * 7, 172, 7, 11);
+-		setPosDataPolyFT4(prim, x + ((digits - 1) - i) * 7, y, 7, 11);
++		setPosDataPolyFT4(prim, x + ((digits - 1) - i) * adv, y, 7, 11);
+ 		AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
+ 	}
+ 	GsSetWorkBase((PACKET *)prim);
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index e5320d8..e62ebb2 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -7,6 +7,7 @@
+ #include <libgs.h>
+ #include <libgte.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/aabb.h>
+ #include <dw/attack_object.h>
+ #include <dw/battle.h>
+@@ -1519,6 +1520,10 @@ void STD_renderIntroStatBar(int32_t idx, int16_t value)
+ 	prim = (POLY_F4 *)GsGetWorkBase();
+ 	SetPolyF4(prim);
+ 	setRGB0(prim, 0x50, 0xc8, 0x50);
++	/* MOD (caps): full at the old limit (the bar has no room past it) */
++	if (value > STD_STAT_BAR_LIMITS[idx]) {
++		value = STD_STAT_BAR_LIMITS[idx];
++	}
+ 	width = (value * 100) / STD_STAT_BAR_LIMITS[idx];
+ 	if (width == 0) {
+ 		width = 1;
+@@ -1749,6 +1754,15 @@ void STD_runIntro(int16_t which)
+ 	isSoundLoaded(0, STD_LOADING_VAB_ID);
+ }
+ 
++/* MOD (caps) */
++static int32_t STD_introStatStep(int32_t target, int32_t step)
++{
++	if (target > step * 50) {
++		return (target + 49) / 50;
++	}
++	return step;
++}
++
+ // clang-format off
+ void STD_tickIntroStats(id)
+ 	int16_t id;
+@@ -1756,14 +1770,16 @@ void STD_tickIntroStats(id)
+ {
+ 	Stats *stats;
+ 
+-	STD_D_8007B9BC[0] += 200;
+-	STD_D_8007B9BC[1] += 200;
+-	STD_D_8007B9BC[2] += 20;
+-	STD_D_8007B9BC[3] += 20;
+-	STD_D_8007B9BC[4] += 20;
+-	STD_D_8007B9BC[5] += 20;
+-
+ 	stats = &((DigimonEntity *)ENTITY_TABLE[id])->stats;
++	/* MOD (caps): a value past the old limit counts up in the same 50
++	 * ticks as a capped one (at +20 a 9999 took 25 s) */
++	STD_D_8007B9BC[0] += STD_introStatStep(stats->current.currentHP, 200);
++	STD_D_8007B9BC[1] += STD_introStatStep(stats->current.currentMP, 200);
++	STD_D_8007B9BC[2] += STD_introStatStep(stats->base.off, 20);
++	STD_D_8007B9BC[3] += STD_introStatStep(stats->base.def, 20);
++	STD_D_8007B9BC[4] += STD_introStatStep(stats->base.speed, 20);
++	STD_D_8007B9BC[5] += STD_introStatStep(stats->base.brain, 20);
++
+ 	if (stats->current.currentHP < STD_D_8007B9BC[0]) {
+ 		STD_D_8007B9BC[0] = stats->current.currentHP;
+ 	}
+@@ -1807,7 +1823,9 @@ void STD_renderIntroStats(id)
+ 		playSound(0, 0x16);
+ 	} else {
+ 		for (i = 0; i < 6; ++i) {
+-			STD_renderIntroStatNumber(52, (int16_t)(i * 16 - 28), 4, STD_D_8007B9BC[i], 3);
++			/* MOD (caps): a 5-digit value grows to the right here (to
++			 * the left it would run into the full bar, which ends at 50) */
++			STD_renderIntroStatNumber(52, (int16_t)(i * 16 - 28), CAPS_DIGITS(4, STD_D_8007B9BC[i]), STD_D_8007B9BC[i], 3);
+ 		}
+ 	}
+ }
+@@ -1828,6 +1846,10 @@ void STD_renderIntroStatNumber(x, y, digits, value, layer)
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 
++	/* MOD (caps): a value wider than the box grows it to the left (the
++	 * right edge stays); the original drew only the first digits digits */
++	x -= CAPS_SHIFT(digits, value, 12);
++	digits = CAPS_DIGITS(digits, value);
+ 	convertValueToDigits(digits, value, &count, buf);
+ 
+ 	for (i = count - 1; i >= 0; i--) {
+@@ -3958,8 +3980,12 @@ void STD_initializeCombat(Entity *entity, Entity *other)
+ 		} else {
+ 			f->buffsRemaining = 5;
+ 		}
+-		f->buffPrioTimer = (stats->base.brain / 10) + 5;
+-		f->finisherGoal = 0xbb8 - stats->base.speed;
++		/* MOD (caps): brains and speed past the old 999 limit do not
++		 * make buffs win every draw or the finisher goal reach 0:
++		 * the goal keeps falling, ten times slower (1101 at 9999) */
++		f->buffPrioTimer = (CAPS_OLD_STAT(stats->base.brain) / 10) + 5;
++		f->finisherGoal = 0xbb8 - CAPS_OLD_STAT(stats->base.speed) -
++		                  (stats->base.speed - CAPS_OLD_STAT(stats->base.speed)) / 10;
+ 		for (j = 0; j < 0x96; j++) {
+ 			f->table1[j] = -1;
+ 			f->table2[i] = -1;
+@@ -4491,6 +4517,9 @@ int32_t STD_getDigitCount(int32_t value)
+ 	if (value < 1000) {
+ 		return 3;
+ 	}
++	if (value >= 10000) { /* MOD (caps): damage past 9999 */
++		return 5;
++	}
+ 
+ 	return 4;
+ }
+@@ -5525,10 +5554,8 @@ skipViewpoint:
+ 					COMBAT_DATA_PTR->player.unk2++;
+ 				}
+ 			}
+-			fighter->hpDamageBuffer += dmg;
+-			if (fighter->hpDamageBuffer >= 0x2710) {
+-				fighter->hpDamageBuffer = 0x270f;
+-			}
++			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			fighter->flags |= FIGHTER_FLAG_KNOCKED_BACK;
+ 			STD_handleHitReaction(entity, fighter, &attack, i);
+ 			sub->unk25 = 0;
+@@ -5574,10 +5601,8 @@ skipViewpoint:
+ 			if (dmg <= 0) {
+ 				dmg = 1;
+ 			}
+-			fighter->hpDamageBuffer += dmg;
+-			if (fighter->hpDamageBuffer >= 0x2710) {
+-				fighter->hpDamageBuffer = 0x270f;
+-			}
++			/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++			fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 			sub->unk25 = 0;
+ 			addEntityText(entity, i, 0, dmg, 0);
+ 		}
+@@ -5760,8 +5785,8 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	if (dmg <= 0) {
+ 		dmg = 1;
+ 	}
+-	if (dmg >= 10000) {
+-		dmg = 9999;
++	if (dmg > DAMAGE_CAP) { /* MOD (caps): was 9999 */
++		dmg = DAMAGE_CAP;
+ 	}
+ 	return dmg;
+ }
+@@ -5919,7 +5944,7 @@ void STD_buffStats(digimon, slot, value, stat, color, flag)
+ 	uint8_t flag;
+ // clang-format on
+ {
+-	addWithLimit(stat, value, 0x3e7);
++	addWithLimit(stat, value, STAT_CAP); /* MOD (caps): was 999 */
+ 	addEntityText(&digimon->entity, slot, color, value, flag);
+ }
+ 
+@@ -6126,7 +6151,7 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 	mp = MOVE_DATA[tech].mpCost * 3;
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 700) {
+-			if (PARTNER_ENTITY.digimonEntity.stats.base.brain == 999) {
++			if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 999) { /* MOD (caps): was == */
+ 				mp -= mp / 5;
+ 			} else if (PARTNER_ENTITY.digimonEntity.stats.base.brain >= 900) {
+ 				mp -= mp * 15 / 100;
+@@ -6618,7 +6643,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 			}
+ 			brain = digimon->stats.base.brain;
+ 			if (brain >= 0x2bc) {
+-				if (brain == 0x3e7) {
++				if (brain >= 0x3e7) { /* MOD (caps): was == */
+ 					cost = (int16_t)(cost * 4 / 5);
+ 				} else if ((brain >= 0x384) && (brain < 0x3e7)) {
+ 					cost = (int16_t)(cost * 17 / 20);
+@@ -6749,10 +6774,8 @@ void STD_applyMoveResult(void)
+ 			if (fighter->poisonTimer == 0) {
+ 				fighter->poisonTimer = 100;
+ 				dmg = stats->base.hp * (randomLimit(3) + 1) / 100;
+-				fighter->hpDamageBuffer += dmg;
+-				if (fighter->hpDamageBuffer >= 0x2710) {
+-					fighter->hpDamageBuffer = 0x270f;
+-				}
++				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
++				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 				if (i != 0) {
+ 					COMBAT_DATA_PTR->player.unk1[i].unk25 = 0;
+ 				}
+diff --git a/src/trn/trn_hud.c b/src/trn/trn_hud.c
+index cc73f95..305d444 100644
+--- a/src/trn/trn_hud.c
++++ b/src/trn/trn_hud.c
+@@ -1,6 +1,7 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/entity.h>
+ #include <dw/font.h>
+ #include <dw/input.h>
+@@ -207,18 +208,15 @@ void TRN_tickPostTrainingStatsBox(void)
+ 
+ 	for (i = 0; i < 6; i++) {
+ 		if (STATS_GAINS[i] != 0) {
+-			INITIAL_COMBAT_STATS[0][i] += STATS_GAINS[i];
+-
+-			if (STATS_GAINS[i] > 0) {
+-				if (i < 2) {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-						INITIAL_COMBAT_STATS[0][i] = 9999;
+-					}
+-				} else {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-						INITIAL_COMBAT_STATS[0][i] = 999;
+-					}
++			/* MOD (caps): summed in 32 bits, the new limits (were
++			 * 9999 / 999) */
++			{
++				int32_t sum = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
++
++				if ((STATS_GAINS[i] > 0) && (sum > CAP_OF_STAT_INDEX(i))) {
++					sum = CAP_OF_STAT_INDEX(i);
+ 				}
++				INITIAL_COMBAT_STATS[0][i] = sum;
+ 			}
+ 			STATS_GAINS[i] = 0;
+ 		}
+@@ -245,14 +243,9 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 			STATS_GAINS[i] -= 1;
+ 			INITIAL_COMBAT_STATS[0][i] += 1;
+ 
+-			if (i < 2) {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-					INITIAL_COMBAT_STATS[0][i] = 9999;
+-				}
+-			} else {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-					INITIAL_COMBAT_STATS[0][i] = 999;
+-				}
++			/* MOD (caps): the new limits (were 9999 / 999) */
++			if (INITIAL_COMBAT_STATS[0][i] > CAP_OF_STAT_INDEX(i)) {
++				INITIAL_COMBAT_STATS[0][i] = CAP_OF_STAT_INDEX(i);
+ 			}
+ 			first = 0;
+ 		}
+@@ -265,7 +258,8 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 			AddPrim((ACTIVE_ORDERING_TABLE->org + 6) - depth, prim++);
+ 			GsSetWorkBase((PACKET *)prim);
+ 		}
+-		renderNumber(5, box->x + 142, (box->y + 9) + (i * 13), 3, STATS_GAINS[i], 6 - depth);
++		/* MOD (caps): a wider gain grows to the right, into the free part of the box */
++		renderNumber(5, box->x + 142, (box->y + 9) + (i * 13), CAPS_DIGITS(3, STATS_GAINS[i]), STATS_GAINS[i], 6 - depth);
+ 	}
+ 
+ 	for (i = 0; i < 6; i++) {
+@@ -287,10 +281,11 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 		y = (box->y + 20) + (i * 13);
+ 		rect.y = y - 2;
+ 
++		/* MOD (caps): full at the old limit (the bar has no room past it) */
+ 		if (i < 2) {
+-			rect.w = (INITIAL_COMBAT_STATS[0][i] * 50) / 9999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 9999) * 50) / 9999;
+ 		} else {
+-			rect.w = (INITIAL_COMBAT_STATS[0][i] * 50) / 999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 999) * 50) / 999;
+ 		}
+ 		switch (MAIN_D_80135398[i]) {
+ 		case 0:
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 78ae52f..816fe3c 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -1,5 +1,6 @@
+ #include <string.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+@@ -205,8 +206,8 @@ int32_t c;
+ 		y = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN_saveBaseStats();
+@@ -376,8 +377,8 @@ int32_t c;
+ 		y = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN_saveBaseStats();
+@@ -476,8 +477,8 @@ int32_t c;
+ 		y = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN_saveBaseStats();
+@@ -549,12 +550,12 @@ int32_t c;
+ 		brains = 1;
+ 	}
+ 
+-	if (mp >= 1000) {
+-		mp = 999;
++	if (mp > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		mp = STAT_CAP;
+ 	}
+ 
+-	if (brains >= 1000) {
+-		brains = 999;
++	if (brains > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		brains = STAT_CAP;
+ 	}
+ 
+ 	TRN_saveBaseStats();
+@@ -606,7 +607,7 @@ int32_t c;
+ 		drawString(TRN_D_8008F140, 0, y);
+ 		createMenuBox(2, -0x58, 0x12, 0xb0, 0x30, 2, 0, TRN_renderNewOrdersBox);
+ 		MAIN_D_80135388 = 1;
+-	} else if (((base < 0x96) && (total >= 0x96)) || ((base < 0xfa) && (total >= 0xfa)) || ((base < 0x15e) && (total >= 0x15e)) || ((base < 0x1c2) && (total >= 0x1c2)) || ((base < 0x226) && (total >= 0x226)) || ((base < 0x28a) && (total >= 0x28a)) || ((base < 0x2ee) && (total >= 0x2ee)) || ((base < 0x320) && (total >= 0x320)) || ((base < 0x352) && (total >= 0x352)) || ((base < 0x384) && (total >= 0x384)) || ((base < 0x3b6) && (total >= 0x3b6)) || (total == 999)) {
++	} else if (((base < 0x96) && (total >= 0x96)) || ((base < 0xfa) && (total >= 0xfa)) || ((base < 0x15e) && (total >= 0x15e)) || ((base < 0x1c2) && (total >= 0x1c2)) || ((base < 0x226) && (total >= 0x226)) || ((base < 0x28a) && (total >= 0x28a)) || ((base < 0x2ee) && (total >= 0x2ee)) || ((base < 0x320) && (total >= 0x320)) || ((base < 0x352) && (total >= 0x352)) || ((base < 0x384) && (total >= 0x384)) || ((base < 0x3b6) && (total >= 0x3b6)) || ((base < 999) && (total >= 999))) { /* MOD (caps): reaching 999 (was total == 999) */
+ 		TRN_tryLearnMove(a);
+ 	}
+ }
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 2d2db84..3984d6e 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -1,6 +1,7 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ 
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+ #include <dw/font.h>
+@@ -409,18 +410,15 @@ void TRN2_tickPostTrainingStatsBox(void)
+ 
+ 	for (i = 0; i < 6; i++) {
+ 		if (STATS_GAINS[i] != 0) {
+-			INITIAL_COMBAT_STATS[0][i] += STATS_GAINS[i];
+-
+-			if (STATS_GAINS[i] > 0) {
+-				if (i < 2) {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-						INITIAL_COMBAT_STATS[0][i] = 9999;
+-					}
+-				} else {
+-					if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-						INITIAL_COMBAT_STATS[0][i] = 999;
+-					}
++			/* MOD (caps): summed in 32 bits, the new limits (were
++			 * 9999 / 999) */
++			{
++				int32_t sum = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
++
++				if ((STATS_GAINS[i] > 0) && (sum > CAP_OF_STAT_INDEX(i))) {
++					sum = CAP_OF_STAT_INDEX(i);
+ 				}
++				INITIAL_COMBAT_STATS[0][i] = sum;
+ 			}
+ 			STATS_GAINS[i] = 0;
+ 		}
+@@ -447,14 +445,9 @@ void TRN2_renderPostTrainingStatsBox(int16_t depth)
+ 			STATS_GAINS[i] -= 1;
+ 			INITIAL_COMBAT_STATS[0][i] += 1;
+ 
+-			if (i < 2) {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 10000) {
+-					INITIAL_COMBAT_STATS[0][i] = 9999;
+-				}
+-			} else {
+-				if (INITIAL_COMBAT_STATS[0][i] >= 1000) {
+-					INITIAL_COMBAT_STATS[0][i] = 999;
+-				}
++			/* MOD (caps): the new limits (were 9999 / 999) */
++			if (INITIAL_COMBAT_STATS[0][i] > CAP_OF_STAT_INDEX(i)) {
++				INITIAL_COMBAT_STATS[0][i] = CAP_OF_STAT_INDEX(i);
+ 			}
+ 			first = 0;
+ 		}
+@@ -467,7 +460,8 @@ void TRN2_renderPostTrainingStatsBox(int16_t depth)
+ 			AddPrim((ACTIVE_ORDERING_TABLE->org + 6) - depth, prim++);
+ 			GsSetWorkBase((PACKET *)prim);
+ 		}
+-		renderNumber(5, box->x + 142, (box->y + 9) + (i * 13), 3, STATS_GAINS[i], 6 - depth);
++		/* MOD (caps): a wider gain grows to the right, into the free part of the box */
++		renderNumber(5, box->x + 142, (box->y + 9) + (i * 13), CAPS_DIGITS(3, STATS_GAINS[i]), STATS_GAINS[i], 6 - depth);
+ 	}
+ 
+ 	for (i = 0; i < 6; i++) {
+@@ -489,10 +483,11 @@ void TRN2_renderPostTrainingStatsBox(int16_t depth)
+ 		y = (box->y + 20) + (i * 13);
+ 		rect.y = y - 2;
+ 
++		/* MOD (caps): full at the old limit (the bar has no room past it) */
+ 		if (i < 2) {
+-			rect.w = (INITIAL_COMBAT_STATS[0][i] * 50) / 9999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 9999) * 50) / 9999;
+ 		} else {
+-			rect.w = (INITIAL_COMBAT_STATS[0][i] * 50) / 999;
++			rect.w = (CAPS_MIN(INITIAL_COMBAT_STATS[0][i], 999) * 50) / 999;
+ 		}
+ 		switch (MAIN_D_801353D8[i]) {
+ 		case 0:
+diff --git a/src/trn2/trn2_reward.c b/src/trn2/trn2_reward.c
+index b54c8cc..3634d87 100644
+--- a/src/trn2/trn2_reward.c
++++ b/src/trn2/trn2_reward.c
+@@ -1,3 +1,4 @@
++#include <dw/caps.h> /* MOD (caps) */
+ #include <dw/anim.h>
+ #include <dw/entity.h>
+ #include <dw/input.h>
+@@ -187,8 +188,8 @@ int32_t c;
+ 		x = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN2_saveBaseStats();
+@@ -264,8 +265,8 @@ void TRN2_awardMpTrainingGains(int32_t a, int16_t b, int32_t c)
+ 		x = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN2_saveBaseStats();
+@@ -310,8 +311,8 @@ void TRN2_awardOffenseTrainingGains(int32_t a, int16_t b, int32_t c)
+ 		x = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN2_saveBaseStats();
+@@ -359,8 +360,8 @@ int32_t c;
+ 		x = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN2_saveBaseStats();
+@@ -431,8 +432,8 @@ int32_t c;
+ 		x = 1;
+ 	}
+ 
+-	if (x >= 1000) {
+-		x = 999;
++	if (x > STAT_CAP) { /* MOD (caps): a gain up to the new limit (was 999) */
++		x = STAT_CAP;
+ 	}
+ 
+ 	TRN2_saveBaseStats();

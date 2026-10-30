@@ -1,0 +1,162 @@
+// Readable form of script 128 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 128 {
+    npc mojyamon0 = 5;
+    npc mojyamon1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 46, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Sage Fruit"), 60, 53);
+        }
+        if (mojyamon_traded.set2_row1 || mojyamon_traded.set2_row2 || mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 29);
+        }
+        if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2) {
+            animate(mojyamon0, 30);
+        }
+        if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 30);
+        }
+        if (mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 30);
+        }
+        if ((mojyamon_traded.set2_row1 ~> mojyamon_traded.set2_row2) && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 31);
+        }
+        if (mojyamon_traded.set3_row1 || mojyamon_traded.set3_row2 || mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 29);
+        }
+        if (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2) {
+            animate(mojyamon1, 30);
+        }
+        if (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 30);
+        }
+        if (mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 30);
+        }
+        if ((mojyamon_traded.set3_row1 ~> mojyamon_traded.set3_row2) && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 31);
+        }
+    }
+
+    on talk(mojyamon0) replace {    // section 5
+        if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2) {
+            say(mojyamon0, text("s128.sec5.u0"));
+        } else if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row3) {
+            say(mojyamon0, text("s128.sec5.u1"));
+        } else if (mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) {
+            say(mojyamon0, text("s128.sec5.u2"));
+        } else if (mojyamon_traded.set2_row1 || mojyamon_traded.set2_row2 || mojyamon_traded.set2_row3) {
+            say(mojyamon0, text("s128.sec5.u3"));
+        } else {
+            say(mojyamon0, text("s128.sec5.u4"));
+        }
+        engine.arg = 5;
+        engine.menu_result = 1;
+        call_routine(routine("mojyamon_trade"));
+        if (mojyamon_traded.set2_row1 || mojyamon_traded.set2_row2 || mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 29);
+        }
+        if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2) {
+            animate(mojyamon0, 30);
+        }
+        if (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 30);
+        }
+        if (mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 30);
+        }
+        if ((mojyamon_traded.set2_row1 ~> mojyamon_traded.set2_row2) && mojyamon_traded.set2_row3) {
+            animate(mojyamon0, 31);
+        }
+        unless (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) return;
+        unless (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) return;
+        unless (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) return;
+        unless (!is_recruited(species("Mojyamon"))) return;
+        say(mojyamon0, text("s128.sec5.u5"));
+        walk_away(mojyamon0, 1931, -1543, looks: 6, pause: 10);
+        remove(mojyamon0);
+        glances = 0;
+        sound(8, 11);
+        say(narrator, text("s128.sec5.u6"));
+        recruit(species("Mojyamon"));
+        mojyamon_left.set2 = true;
+        engine.prosperity += 2;
+    }
+
+    on talk(mojyamon1) replace {    // section 6
+        if (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2) {
+            say(mojyamon1, text("s128.sec6.u0"));
+        } else if (mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) {
+            say(mojyamon1, text("s128.sec6.u1"));
+        } else if (mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) {
+            say(mojyamon1, text("s128.sec6.u2"));
+        } else if (mojyamon_traded.set3_row1 || mojyamon_traded.set3_row2 || mojyamon_traded.set3_row3) {
+            say(mojyamon1, text("s128.sec6.u3"));
+        } else {
+            say(mojyamon1, text("s128.sec6.u4"));
+        }
+        engine.arg = 6;
+        engine.menu_result = 2;
+        call_routine(routine("mojyamon_trade"));
+        if (mojyamon_traded.set3_row1 || mojyamon_traded.set3_row2 || mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 29);
+        }
+        if (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2) {
+            animate(mojyamon1, 30);
+        }
+        if (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 30);
+        }
+        if (mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 30);
+        }
+        if ((mojyamon_traded.set3_row1 ~> mojyamon_traded.set3_row2) && mojyamon_traded.set3_row3) {
+            animate(mojyamon1, 31);
+        }
+        unless (mojyamon_traded.set1_row1 && mojyamon_traded.set1_row2 && mojyamon_traded.set1_row3) return;
+        unless (mojyamon_traded.set2_row1 && mojyamon_traded.set2_row2 && mojyamon_traded.set2_row3) return;
+        unless (mojyamon_traded.set3_row1 && mojyamon_traded.set3_row2 && mojyamon_traded.set3_row3) return;
+        unless (!is_recruited(species("Mojyamon"))) return;
+        say(mojyamon1, text("s128.sec6.u5"));
+        walk_away(mojyamon1, -1605, -856, looks: 6, pause: 10);
+        remove(mojyamon1);
+        glances = 0;
+        sound(8, 11);
+        say(narrator, text("s128.sec6.u6"));
+        recruit(species("Mojyamon"));
+        mojyamon_left.set3 = true;
+        engine.prosperity += 2;
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

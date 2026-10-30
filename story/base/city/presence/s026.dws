@@ -1,0 +1,10 @@
+// Who stands on screen 26 (Drill Tunnel 3rd floor), and when. Read out of MAPHEAD.SCN section 26 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(26) {                              // Drill Tunnel 3rd floor
+            npc 158 slot 0;
+        }
+    }
+}

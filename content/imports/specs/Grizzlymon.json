@@ -1,0 +1,114 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M388GRIZ",
+ "type": 296,
+ "name": "Grizzlymon",
+ "source": {
+  "type": 35,
+  "mmd": "extracted/CHDAT/MMD1/SHEL.MMD"
+ },
+ "map": {
+  "2": 4,
+  "3": 5,
+  "5": 7,
+  "6": 8,
+  "7": 9,
+  "9": 11,
+  "10": 12,
+  "11": 13
+ },
+ "hips": [
+  1,
+  1,
+  1.089
+ ],
+ "root_scale": 1.089,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x38": {
+   "anim": "anim_34",
+   "start": 20,
+   "end": 134,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 217
+  },
+  "0x37": {
+   "anim": "anim_28",
+   "start": 9,
+   "end": 123,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 217
+  },
+  "0x30": {
+   "anim": "anim_22",
+   "start": 17,
+   "end": 82,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 217
+  }
+ },
+ "skip": [
+  "0x2e",
+  "0x2f"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.2128,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

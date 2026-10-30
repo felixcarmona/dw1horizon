@@ -1,0 +1,105 @@
+From 58dedf3f95ae2dcdca864b145440314ac96c4c52 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 22 Oct 2026 06:49:44 +0000
+Subject: [PATCH] Patch 0159: map palettes. The time of day loads them from a
+ resident copy (MOD_TFS_CLUTS), taken at each .TFS header read, instead of
+ from the header at GENERAL_BUFFER: sound banks and music fonts are staged
+ over it in the world and the header was only read again with the next tile
+ the window needed, so an hour change before that loaded noise as the
+ background's palette
+
+---
+ include/dw/memmap.h     | 4 ++++
+ include/dw/tfs_stream.h | 6 ++++++
+ src/main/map.c          | 7 +++++++
+ src/main/tfs_stream.c   | 8 ++++++++
+ 4 files changed, 25 insertions(+)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index c21d0489..56be36c6 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -62,6 +62,10 @@
+  * is free in the world (WORLD_SCRATCH_*): every mode that writes there
+  * (battle, evolution, death, menus, sound staging) is followed by a
+  * readMapTFS, the same as when the whole TFS lived there.
++ * Nothing in the world may read the header after the screen is set up: sound
++ * banks and music fonts are staged over it at any time (the lab's roster
++ * switch, a script's music change), and the ring only notices. The palettes
++ * the time of day loads are a resident copy (MOD_TFS_CLUTS, tfs_stream.h).
+  */
+ #define TFS_HEADER_ADDR		0x80010000
+ #define TFS_HEADER_SIZE		0x1000
+diff --git a/include/dw/tfs_stream.h b/include/dw/tfs_stream.h
+index 579ca676..55a209b3 100644
+--- a/include/dw/tfs_stream.h
++++ b/include/dw/tfs_stream.h
+@@ -30,6 +30,12 @@ typedef struct {
+ 
+ extern int8_t MOD_TFS_TILE_SEQ[35];
+ extern TfsStreamStats MOD_TFS_STATS;
++/*
++ * The first three palettes of the last .TFS header read (day, evening, night; MAP_CLUTS points here, not into
++ * TFS_HEADER_ADDR): the header shares GENERAL_BUFFER with every sound bank, overlay and model staged in the world,
++ * and a palette load reads it whenever the hour changes, long after such a load.
++ */
++extern u_long MOD_TFS_CLUTS[3][128];
+ 
+ void tfsStreamOpen(char *path);
+ void tfsStreamInvalidate(void);
+diff --git a/src/main/map.c b/src/main/map.c
+index 81d5496a..bd8ccd9e 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4400,6 +4400,13 @@ void setupMap(void)
+ 		MAP_CLUTS[i] = data;
+ 		data += 128;
+ 	}
++	/*
++	 * MOD: the time of day loads them from the resident copy (tfs_stream.h): the header is
++	 * overwritten by whatever is staged at GENERAL_BUFFER in the world (sound banks, music fonts)
++	 */
++	for (i = 0; i < 3; i++) {
++		MAP_CLUTS[i] = MOD_TFS_CLUTS[i];
++	}
+ 
+ 	updateTimeOfDay();
+ 
+diff --git a/src/main/tfs_stream.c b/src/main/tfs_stream.c
+index 3633e30d..c5b3ec13 100644
+--- a/src/main/tfs_stream.c
++++ b/src/main/tfs_stream.c
+@@ -30,8 +30,14 @@
+  *   game's readMapTFS calls (map load, battle exit, evolution, death,
+  *   jukebox...) reopen it. A tile needed while the ring is invalid reopens
+  *   it first, which only happens in the world.
++ * - The palettes are not read from the header once the screen is set up: a
++ *   load over it in the world is only noticed by the ring, and the header
++ *   is read again lazily (the next tile the window needs), while the hour
++ *   can change first (updateTimeOfDay, tickDaytimeTransition). Each header
++ *   read copies them to MOD_TFS_CLUTS, which MAP_CLUTS points to.
+  */
+ #include <libcd.h>
++#include <string.h>
+ #include <libetc.h>
+ #include <libgpu.h>
+ #include <sys/types.h>
+@@ -60,6 +66,7 @@ typedef struct {
+ /* k-th non-empty tile of the file for each MAP_TILE_DATA.tiles entry (setupMap) */
+ int8_t MOD_TFS_TILE_SEQ[35];
+ TfsStreamStats MOD_TFS_STATS;
++u_long MOD_TFS_CLUTS[3][128];
+ 
+ static TfsSlot TFS_SLOTS[TFS_RING_SLOTS];
+ static char TFS_PATH[32];
+@@ -221,6 +228,7 @@ void tfsStreamOpen(char *path)
+ 	TFS_FIRST_SECTOR = CdPosToInt(&lookup.pos);
+ 	readFileSectors(TFS_PATH, (void *)TFS_HEADER_ADDR, 0, TFS_HEADER_SIZE >> 11);
+ 	TFS_DATA_OFFSET = 8 + 512 * ((uint32_t *)TFS_HEADER_ADDR)[1];
++	memcpy(MOD_TFS_CLUTS, (uint8_t *)TFS_HEADER_ADDR + 8, sizeof(MOD_TFS_CLUTS));
+ 
+ 	/*
+ 	 * Never use more of the load area than this screen's whole TFS took in
+-- 
+2.53.0
+

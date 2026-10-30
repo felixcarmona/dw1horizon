@@ -1,0 +1,11 @@
+// Who stands on screen 51 (Grey Lord's Mansion), and when. Read out of MAPHEAD.SCN section 51 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(51) {                              // Grey Lord's Mansion
+            npc Golemon slot 0 autotalk;
+            npc Golemon slot 1 autotalk;
+        }
+    }
+}

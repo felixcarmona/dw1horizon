@@ -1,0 +1,44 @@
+{
+ "s039.sec6.u0": "Am I in the way?",
+ "s039.sec51.u0": [
+  "{color 7}??? {color 1}",
+  "Heeeelp meeee!"
+ ],
+ "s039.sec51.u1": "Hm, a voice from up above... Is somebody there?",
+ "s039.sec51.u2": [
+  "{color 7}??? {color 1}",
+  "Oh! Is somebody down there!?"
+ ],
+ "s039.sec51.u3": "Yeah, I'm here.",
+ "s039.sec51.u4": [
+  "{color 7}??? {color 1}",
+  "Heeelp! The ground suddenly",
+  "rose up!"
+ ],
+ "s039.sec51.u5": "That's crazy.",
+ "s039.sec51.u6": [
+  "{color 7}??? {color 1}",
+  "It's true! I heard a sound,",
+  "like some machine running!"
+ ],
+ "s039.sec51.u7": "A machine... Maybe Ogremon's hideout?",
+ "s039.sec51.u8": [
+  "{color 7}??? {color 1}",
+  "Didn't you do something",
+  "different there?"
+ ],
+ "s039.sec51.u9": [
+  [
+   "Well, all sorts of things. The elevator, for",
+   "one..."
+  ],
+  [
+   "Okay, I'll go back to the hideout and look",
+   "around."
+  ]
+ ],
+ "s039.sec51.u10": [
+  "{color 7}??? {color 1}",
+  "I'm counting on youuu!"
+ ]
+}

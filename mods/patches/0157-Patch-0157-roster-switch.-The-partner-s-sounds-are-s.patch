@@ -1,0 +1,46 @@
+From 5ac58e1c0a63599c6104917db7cf5a7e121e10f7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 21 Oct 2026 21:53:06 +0000
+Subject: [PATCH] Patch 0157: roster switch. The partner's sounds are staged at
+ GENERAL_BUFFER, over the map background's palettes (the .TFS header kept
+ there by memreclaim): read the header again after them (readMapTFS, as the
+ evolution's exit does). Without it the next time-of-day change or wake-up
+ loaded noise as the background's palette, until 6 am
+
+---
+ src/main/mod_lab.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 920a51b2..735fb91c 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -443,6 +443,8 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+  * for the partner buffer is skipped. The partner is reloaded as Continue loads it (loadMMD, its sounds), keeps its
+  * stats and care, gets the species' first three techniques and its finisher as battle moves, and the species is
+  * marked raised (setDigimonRaised), as if it had been reached by evolution.
++ * Its sounds are staged at GENERAL_BUFFER, over the map background's palettes (memreclaim), so the .TFS header is
++ * read again after them.
+  * Hooked from tamerTickWalkingState() (tamer.c).
+  */
+ #define PAD_L2		0x1
+@@ -454,6 +456,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ void learnMove(int32_t move);
+ void setDigimonRaised(int32_t digimonId);
+ int32_t isFileReadQueueBusy(void);
++void readMapTFS(int32_t mapId);
+ 
+ extern Entity *ENTITY_TABLE[];
+ 
+@@ -588,6 +591,8 @@ static void modRosterSwitch(int32_t type)
+ 	startAnimation(ENTITY_TABLE[1], 0);
+ 	PARTNER_ENTITY.digimonEntity.stats.current.vabId = 4;
+ 	loadPartnerSounds(type);
++	readMapTFS(CURRENT_SCREEN); /* the sounds were staged over the background's palettes (GENERAL_BUFFER): read
++	                              * them again, as the evolution's exit does, or the next time-of-day change loads noise */
+ 	PARTNER_ENTITY.digimonEntity.entity.isOnMap = 1;
+ 	PARTNER_ENTITY.digimonEntity.entity.isOnScreen = 1;
+ 	modRosterSetMoves(type);
+-- 
+2.53.0
+

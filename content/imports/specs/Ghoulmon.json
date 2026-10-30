@@ -1,0 +1,119 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M312DETH",
+ "type": 329,
+ "name": "Ghoulmon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 1,
+  "4": 7,
+  "5": 8,
+  "6": 9,
+  "10": 6,
+  "12": 11,
+  "13": 12,
+  "14": 13,
+  "18": 14,
+  "19": 15,
+  "20": 16,
+  "21": 17,
+  "22": 19,
+  "23": 20,
+  "25": 21,
+  "26": 23,
+  "27": 24,
+  "29": 25
+ },
+ "hips": [
+  1,
+  1,
+  1.047
+ ],
+ "root_scale": 1.047,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 50,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 50,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x3a": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 87,
+   "speed": 1.4,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 235
+  },
+  "0x2e": {
+   "anim": "anim_38",
+   "start": 12,
+   "end": 59,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 235
+  },
+  "0x32": {
+   "anim": "anim_14",
+   "start": 1,
+   "end": 72,
+   "speed": 1.15,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 235
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.075934,
+ "hub_roots": true
+}

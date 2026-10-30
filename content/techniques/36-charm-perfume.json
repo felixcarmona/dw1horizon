@@ -1,0 +1,17 @@
+{
+  "id": 36,
+  "name": "Charm Perfume",
+  "element": "nature",
+  "power": 180,
+  "mpCost": 70,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 75,
+  "status": 2,
+  "statusChance": 57,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [18, 12, 9]
+}

@@ -1,0 +1,14 @@
+// Who stands on screen 1 (Kunemon's Bed), and when. Read out of MAPHEAD.SCN section 1 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(1) {                              // Kunemon's Bed
+            npc Redvegiemon slot 0 autotalk when recruited(Kunemon) and pstat(107) >= 7 and pstat(107) <= 18;
+            npc 152 slot 1 when not recruited(Kunemon);
+            npc Redvegiemon slot 2 autotalk when recruited(Kunemon) and pstat(107) >= 7 and pstat(107) <= 18;
+            npc Dokunemon slot 3 autotalk when recruited(Kunemon) and pstat(107) <= 6 or recruited(Kunemon) and pstat(107) >= 19;
+            npc Dokunemon slot 4 autotalk when recruited(Kunemon) and pstat(107) <= 6 or recruited(Kunemon) and pstat(107) >= 19;
+        }
+    }
+}

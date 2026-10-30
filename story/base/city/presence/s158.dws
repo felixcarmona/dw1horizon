@@ -1,0 +1,15 @@
+// Who stands on screen 158 (Factorial Town), and when. Read out of MAPHEAD.SCN section 158 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(158) {                              // Factorial Town
+            npc Geremon slot 0 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Geremon slot 1 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Guardromon slot 2 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Guardromon slot 3 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Guardromon slot 4 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Guardromon slot 5 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

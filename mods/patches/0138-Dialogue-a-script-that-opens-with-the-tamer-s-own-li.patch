@@ -1,0 +1,42 @@
+From 4bd8fc39e1749737eca7a939d3962e96a7a41047 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 19:16:47 +0000
+Subject: [PATCH] Dialogue: a script that opens with the tamer's own line
+ pauses the game (the tamer walked with the d-pad during the dialogue and its
+ Yes/No)
+
+---
+ src/main/script_common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index bd143005..723c31c7 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -2955,6 +2955,10 @@ void renderVerticalLine(uint8_t boxId, int16_t x, int16_t y, int16_t h)
+ 	drawLine2P(color, x, y, x, (y + h) - 1, boxId, 0);
+ }
+ 
++#if VERSION_IS(US)
++extern int32_t MAIN_D_80134FF0;
++#endif
++
+ // clang-format off
+ void setDialogueOwner(owner)
+ 	uint8_t owner;
+@@ -2964,6 +2968,12 @@ void setDialogueOwner(owner)
+ 		CURRENT_DIALOGUE_OWNER = owner;
+ 		scriptPauseGame(CURRENT_DIALOGUE_OWNER);
+ 		setupDialogueBox(CURRENT_DIALOGUE_OWNER);
++#if VERSION_IS(US)
++	} else if (MAIN_D_80134FF0 == 0) {
++		/* MOD: a script that starts with the tamer's own line (owner 0xfd, the initial one) never paused the game:
++		   the tamer walked with the d-pad while the dialogue and its Yes/No were up */
++		scriptPauseGame(0xff);
++#endif
+ 	}
+ }
+ 
+-- 
+2.53.0
+

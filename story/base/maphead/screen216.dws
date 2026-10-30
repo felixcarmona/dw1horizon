@@ -1,0 +1,95 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(216) replace {    // section 216
+        set_script(176, 216);
+        engine.music_mode = 0;
+        set_bgm(28);
+        load_digimon(species("Punimon"));
+        set_digimon(species("Punimon"), 5, 0);
+        if (is_recruited(species("Patamon")) && !item_shop_keeper_met.patamon) {
+            load_digimon(species(151));
+            set_digimon(species(151), 0, 0);
+            item_shop_keeper = 0;
+            return;
+        }
+        if (is_recruited(species("Biyomon")) && !item_shop_keeper_met.biyomon) {
+            load_digimon(species(163));
+            set_digimon(species(163), 1, 0);
+            item_shop_keeper = 1;
+            return;
+        }
+        if (is_recruited(species("Unimon")) && !item_shop_keeper_met.unimon) {
+            load_digimon(species(153));
+            set_digimon(species(153), 2, 0);
+            item_shop_keeper = 2;
+            return;
+        }
+        if (is_recruited(species("Monochromon")) && !item_shop_keeper_met.monochromon) {
+            load_digimon(species(165));
+            set_digimon(species(165), 3, 0);
+            item_shop_keeper = 3;
+            return;
+        }
+        piximon_in_item_shop = false;
+        store_random(random_roll, 9);
+        if (is_recruited(species("Piximon")) && random_roll <= 1) {
+            load_digimon(species(173));
+            set_digimon(species(173), 4, 0);
+            piximon_in_item_shop = true;
+        }
+        store_date(date_year);
+        if (item_shop_keeper_met.patamon && date_hour >= 12 && date_hour < 18) {
+            load_digimon(species(151));
+            set_digimon(species(151), 0, 0);
+            item_shop_keeper = 0;
+            return;
+        }
+        if (item_shop_keeper_met.biyomon && date_hour >= 6 && date_hour < 12) {
+            load_digimon(species(163));
+            set_digimon(species(163), 1, 0);
+            item_shop_keeper = 1;
+            return;
+        }
+        if (item_shop_keeper_met.unimon && date_hour >= 0 && date_hour < 6) {
+            load_digimon(species(153));
+            set_digimon(species(153), 2, 0);
+            item_shop_keeper = 2;
+            return;
+        }
+        if (item_shop_keeper_met.monochromon && date_hour >= 18) {
+            load_digimon(species(165));
+            set_digimon(species(165), 3, 0);
+            item_shop_keeper = 3;
+            return;
+        }
+        store_date(date_year);
+        if (is_recruited(species("Patamon"))) {
+            load_digimon(species(151));
+            set_digimon(species(151), 0, 0);
+            item_shop_keeper = 0;
+            return;
+        }
+        if (is_recruited(species("Biyomon"))) {
+            load_digimon(species(163));
+            set_digimon(species(163), 1, 0);
+            item_shop_keeper = 1;
+            return;
+        }
+        if (is_recruited(species("Unimon"))) {
+            load_digimon(species(153));
+            set_digimon(species(153), 2, 0);
+            item_shop_keeper = 2;
+            return;
+        }
+        if (is_recruited(species("Monochromon"))) {
+            load_digimon(species(165));
+            set_digimon(species(165), 3, 0);
+            item_shop_keeper = 3;
+            return;
+        }
+    }
+}

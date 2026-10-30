@@ -1,0 +1,180 @@
+{
+ "s176.sec7.u0": [
+  [
+   "Ah, sì! Hai la borsa troppo",
+   "piena? Boing! Pare che esista",
+   "un portachiavi che collega la"
+  ],
+  [
+   "tua borsa a un'altra",
+   "dimensione, così puoi portare",
+   "più oggetti! Prova a rivisitare"
+  ],
+  [
+   "i luoghi dove sei già stato!"
+  ]
+ ],
+ "s176.sec7.u1": [
+  [
+   "Ti insegno i miei trucchi",
+   "segretissimi per comprare",
+   "oggetti! Nell'elenco premi"
+  ],
+  [
+   "START per vedere l'effetto di",
+   "un oggetto. Per la quantità,",
+   "{color 4}□{color 1} sceglie il massimo che puoi"
+  ],
+  [
+   "permetterti. Tieni premuto {color 10}○{color 1}",
+   "insieme a su o giù per",
+   "cambiarla di dieci alla volta!"
+  ],
+  [
+   "Se l'elenco è lungo, tieni",
+   "premuto R1 e premi su o giù",
+   "per scorrerlo velocemente! E"
+  ],
+  [
+   "un altro segreto... Prova a",
+   "comprare subito dopo la",
+   "rinascita del tuo Digimon!"
+  ],
+  [
+   "Succederà di sicuro qualcosa di",
+   "bello! Boing!"
+  ]
+ ],
+ "s176.sec81.u0": [
+  [
+   "Benvenuto! Ehi, {color 6}{player}{color 1}!",
+   "Guarda, il mio negozio! Venderò",
+   "oggetti a più non posso! Le"
+  ],
+  [
+   "scorte... beh, ci penserò poi.",
+   "Mi farebbe piacere se portassi",
+   "dei Digimon ad aiutarmi."
+  ]
+ ],
+ "s176.sec81.u1": [
+  [
+   "Benvenuto, pio! Ho deciso di",
+   "comprare e vendere oggetti,",
+   "pio. Piacere, pio! Le scorte"
+  ],
+  [
+   "sono ancora poche... Ma se dei",
+   "Digimon venissero ad aiutarmi,",
+   "forse ce la farei, pio."
+  ]
+ ],
+ "s176.sec81.u2": [
+  [
+   "Benvenuto. Mi sono permesso di",
+   "aprire un negozio di oggetti.",
+   "Spero di averti come cliente."
+  ],
+  [
+   "L'assortimento è ancora",
+   "scarso, ma voglio ingrandire il",
+   "negozio. Per ora ti chiedo un"
+  ],
+  [
+   "po' di pazienza."
+  ]
+ ],
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1}, ho",
+   "finalmente aperto il negozio di",
+   "oggetti. Sento che gli affari"
+  ],
+  [
+   "andranno a gonfie vele! Con più",
+   "Digimon in città potrò offrire",
+   "merce migliore. Abbiate"
+  ],
+  [
+   "pazienza fino ad allora."
+  ]
+ ],
+ "s176.sec81.u4": [
+  [
+   "Ehi, {color 6}{player}{color 1}! Ho iniziato",
+   "a dare una mano in negozio.",
+   "Compra tante cose, va bene?"
+  ]
+ ],
+ "s176.sec81.u5": [
+  [
+   "Benvenuto, pio! Da oggi aiuto",
+   "in negozio, pio. Piacere, pio!"
+  ]
+ ],
+ "s176.sec81.u6": [
+  [
+   "Benvenuto, {color 6}{player}{color 1}. Mi",
+   "sono permesso di offrire il mio",
+   "aiuto a questo negozio. Spero"
+  ],
+  [
+   "di averti come cliente."
+  ]
+ ],
+ "s176.sec81.u7": [
+  [
+   "Ah, {color 6}{player}{color 1}. Dopotutto, è",
+   "qui che i miei talenti sono più",
+   "utili. D'ora in poi darò il"
+  ],
+  [
+   "massimo."
+  ]
+ ],
+ "s176.sec82.m0.o0": "Compra",
+ "s176.sec82.m0.o1": "Non comprare",
+ "s176.sec82.u0": [
+  [
+   "Oh, señor, come va? Sono",
+   "moooolto impegnato a vendere",
+   "oggetti ogni giorno. Scherzo!"
+  ],
+  [
+   "Sono un gran pigrone e credo",
+   "che starò poco in negozio. Ma",
+   "ho qualcosa di incredibile per"
+  ],
+  [
+   "te: la guida di allenamento!",
+   "Basta portarla con sé e",
+   "l'allenamento fa miracoli! È"
+  ],
+  [
+   "preziosissima, quindi la vendo",
+   "a 50000 Bit. Se non la compri,",
+   "te ne pentirai!"
+  ]
+ ],
+ "s176.sec82.u1": [
+  [
+   "Ti mancano moooolti Bit!"
+  ]
+ ],
+ "s176.sec82.u2": [
+  [
+   "Mh, hai la borsa piena!"
+  ]
+ ],
+ "s176.sec82.u3": [
+  [
+   "Ottenuta la {color 6}Guida allenam.{color 1}!"
+  ]
+ ],
+ "s176.sec82.u4": [
+  [
+   "Nemmeno un Bit di sconto,",
+   "señor!"
+  ]
+ ]
+}

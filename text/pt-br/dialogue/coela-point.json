@@ -1,0 +1,70 @@
+{
+ "s006.sec6.u0": "Eu não vou perder!",
+ "s006.sec7.u0": "Não chegue perto de mim! Vá embora!",
+ "s006.sec8.u0": [
+  [
+   "Agora chega! Fiquei furioso de",
+   "verdade!"
+  ]
+ ],
+ "s006.sec9.u0": "Você me bateu uma vez, eu bati em você uma vez!",
+ "s006.sec10.u0": "Vá em frente, se acha que pode!",
+ "s006.sec51.m0.o0": "Estava procurando você!",
+ "s006.sec51.m0.o1": "Foi por acaso",
+ "s006.sec51.u0": [
+  [
+   "Hmm? Bem, {color 6}{player}{color 1}. Parece que a",
+   "ponte foi consertada."
+  ],
+  [
+   "Ouvi dizer que vocês jovens estão construindo",
+   "uma cidade."
+  ],
+  [
+   "Então, tenho um favor a pedir. Assim como te",
+   "ajudei, gostaria que me ajudasse."
+  ]
+ ],
+ "s006.sec51.u1": "?",
+ "s006.sec51.u2": "Construir uma cidade significa salvar esta ilha. Todos estão salvos, e eu também. Viu?",
+ "s006.sec51.u3": "Quer dizer que você virá para a cidade?",
+ "s006.sec51.u4": "Mm-hm. Então irei para esta sua cidade.",
+ "s006.sec51.u5": "Coelamon veio para a cidade!",
+ "s006.sec51.u6": [
+  [
+   "Hmm? Você é humano? Me",
+   "encontrar é uma bela pescaria!",
+   "Sou Coelamon, o Digimon peixe.",
+   "Veio até aqui só para me ver?"
+  ]
+ ],
+ "s006.sec51.u7": [
+  [
+   "Ho ho, entendo, entendo!"
+  ]
+ ],
+ "s006.sec51.u8": [
+  [
+   "Heh heh... Dá para perceber.",
+   "Não precisa ter vergonha."
+  ]
+ ],
+ "s006.sec51.u9": [
+  [
+   "Já imagino o que procura. A",
+   "ponte rio acima quebrou, e você",
+   "quer atravessar... Acertei?"
+  ]
+ ],
+ "s006.sec51.u10": "Muito bem. Verei o que posso fazer.",
+ "s006.sec51.u11": "Ha ha, de volta, não é?",
+ "s006.sec51.u12": [
+  [
+   "Vá em frente, passe sobre",
+   "nossas cabeças. Não precisa de",
+   "cerimônia. Vamos!"
+  ]
+ ],
+ "s006.sec51.u13": "Certo, aqui vamos nós!",
+ "s006.sec51.u14": "Neste mundo, ajudar um ao outro é o que conta. Até nos encontrarmos de novo!"
+}

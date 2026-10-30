@@ -1,0 +1,179 @@
+{
+ "s041.sec5.u0": [
+  [
+   "Pfff, tu n'es pas drôle !"
+  ]
+ ],
+ "s041.sec6.u0": [
+  [
+   "Ha ha, tu as dit quelque chose",
+   "?"
+  ]
+ ],
+ "s041.sec7.u0": [
+  [
+   "Je t'ai dit que je ne peux",
+   "vraiment pas..."
+  ]
+ ],
+ "s041.sec8.u0": [
+  [
+   "Je ne suis pas si sûr de moi,",
+   "tu sais."
+  ]
+ ],
+ "s041.sec9.u0": [
+  [
+   "Ne sois pas dur avec moi..."
+  ]
+ ],
+ "s041.sec10.u0": [
+  [
+   "Hmpf, ne me sous-estime pas !"
+  ]
+ ],
+ "s041.sec81.m0.o0": "Bouton du toit",
+ "s041.sec81.m0.o1": "Bouton monter",
+ "s041.sec81.m0.o2": "Ne pas monter",
+ "s041.sec81.u0": [
+  [
+   "Ascenseur"
+  ]
+ ],
+ "s041.sec81.u1": [
+  [
+   "Hmm, rien ne se passe..."
+  ]
+ ],
+ "s041.sec81.u2": [
+  [
+   "Tiens, un caillou est coincé",
+   "dans la machine. C'est ça qui",
+   "bloque... ?"
+  ]
+ ],
+ "s041.sec81.u3": [
+  [
+   "Caillou retiré !"
+  ]
+ ],
+ "s041.sec81.u4": [
+  [
+   "Ça devrait le faire."
+  ]
+ ],
+ "s041.sec81.u5": [
+  [
+   "Hmm, rien ne se passe..."
+  ]
+ ],
+ "s041.sec81.u6": [
+  [
+   "Tiens, un caillou est coincé",
+   "dans la machine. C'est ça qui",
+   "bloque... ?"
+  ]
+ ],
+ "s041.sec81.u7": [
+  [
+   "Caillou retiré !"
+  ]
+ ],
+ "s041.sec81.u8": [
+  [
+   "Ça devrait le faire."
+  ]
+ ],
+ "s042.sec5.u0": [
+  [
+   "Shuba!"
+  ]
+ ],
+ "s042.sec6.u0": [
+  [
+   "Shashasha!"
+  ]
+ ],
+ "s042.sec7.u0": [
+  [
+   "On dirait que tu n'es pas",
+   "blessé, hein ?"
+  ]
+ ],
+ "s042.sec8.u0": [
+  [
+   "Je vais te faire un bon prix."
+  ]
+ ],
+ "s042.sec9.u0": [
+  [
+   "Ne me prends pas de haut !"
+  ]
+ ],
+ "s042.sec10.u0": [
+  [
+   "Ne crois pas que tu rentreras",
+   "vivant."
+  ]
+ ],
+ "s042.sec51.u0": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u1": [
+  [
+   "...Pour une chute de si haut...",
+   "je m'en sors bien."
+  ]
+ ],
+ "s042.sec51.u2": [
+  [
+   "Oh, {color 10}{partner}{color 1}, tu vas bien",
+   "?!"
+  ]
+ ],
+ "s042.sec51.u3": [
+  [
+   "Hein ? Tu n'as rien du tout.",
+   "Hé, tu as volé, non ? C'est de",
+   "la triche ! ...Enfin, pas"
+  ],
+  [
+   "vraiment."
+  ]
+ ],
+ "s042.sec51.u4": [
+  [
+   "Très bien. Allez."
+  ]
+ ],
+ "s042.sec51.u5": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u6": [
+  [
+   "...Pour une chute de si haut...",
+   "je m'en sors bien."
+  ]
+ ],
+ "s042.sec51.u7": [
+  [
+   "Oh, {color 10}{partner}{color 1}, tu vas bien",
+   "?!"
+  ]
+ ],
+ "s042.sec51.u8": [
+  [
+   "On dirait que tu t'es fait un",
+   "peu mal. Désolé."
+  ]
+ ],
+ "s042.sec51.u9": [
+  [
+   "Très bien. Allez."
+  ]
+ ]
+}

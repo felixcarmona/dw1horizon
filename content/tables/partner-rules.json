@@ -1,0 +1,96 @@
+{
+  "sleepPatterns": [
+    {
+      "sleepyHour": 16,
+      "sleepyMinute": 0,
+      "wakeupHour": 1,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 19,
+      "sleepyMinute": 0,
+      "wakeupHour": 4,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 22,
+      "sleepyMinute": 0,
+      "wakeupHour": 7,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 2,
+      "sleepyMinute": 0,
+      "wakeupHour": 11,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 7,
+      "sleepyMinute": 0,
+      "wakeupHour": 16,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 10,
+      "sleepyMinute": 0,
+      "wakeupHour": 19,
+      "wakeupMinute": 0,
+      "awakeHours": 15,
+      "sleepyHours": 9
+    },
+    {
+      "sleepyHour": 0,
+      "sleepyMinute": 0,
+      "wakeupHour": 0,
+      "wakeupMinute": 0,
+      "awakeHours": 4,
+      "sleepyHours": 1
+    },
+    {
+      "sleepyHour": 0,
+      "sleepyMinute": 0,
+      "wakeupHour": 0,
+      "wakeupMinute": 0,
+      "awakeHours": 8,
+      "sleepyHours": 3
+    }
+  ],
+  "statLimits": [
+    9999,
+    9999,
+    9999,
+    9999,
+    30000,
+    30000,
+    9999,
+    9999,
+    100,
+    100,
+    999,
+    999,
+    999,
+    999,
+    9999,
+    9999,
+    9999,
+    999,
+    999,
+    999,
+    99,
+    10
+  ],
+  "babies": [1, 2, 15, 16, 29, 30, 43, 44],
+  "reincarnationBabies": [1, 15, 29, 43],
+  "healingValues": [500, 1500, 5000, 9999],
+  "healEffectVariant": [0, 0, 1, 1]
+}

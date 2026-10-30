@@ -1,0 +1,366 @@
+{
+ "s001.sec5.u0": [
+  [
+   "Dai, abbiamo appena iniziato!"
+  ]
+ ],
+ "s001.sec6.u0": [
+  [
+   "Oh... issa... Oh... issa..."
+  ]
+ ],
+ "s001.sec7.u0": [
+  [
+   "Ora ti divoro, sì!"
+  ]
+ ],
+ "s001.sec8.u0": [
+  [
+   "Aspetta un attiiimo, sì!"
+  ]
+ ],
+ "s001.sec9.u0": [
+  [
+   "Arrivo!"
+  ]
+ ],
+ "s001.sec10.u0": [
+  [
+   "Cosa? Ma che ti ho fatto?"
+  ]
+ ],
+ "s001.sec11.u0": [
+  [
+   "Lo sapevo, dovevo restarne",
+   "fuori..."
+  ]
+ ],
+ "s001.sec12.u0": [
+  [
+   "Ma insomma... Borbotta,",
+   "borbotta..."
+  ]
+ ],
+ "s003.sec5.u0": [
+  [
+   "Dai, dai!"
+  ]
+ ],
+ "s003.sec6.u0": [
+  [
+   "Graaaah!"
+  ]
+ ],
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   ".....Sono un fiore."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......Sono solo un fiore,",
+   "capisci."
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Ho detto che sono un fiore!",
+   "Non ti arrendi mai, eh?!"
+  ]
+ ],
+ "s003.sec7.u4": [
+  [
+   "E va bene! È solo che odio",
+   "combattere!"
+  ]
+ ],
+ "s003.sec7.u5": [
+  [
+   "Beh, allora..."
+  ]
+ ],
+ "s003.sec7.u6": [
+  [
+   "Vieni in città. Lì si sta in",
+   "pace."
+  ]
+ ],
+ "s003.sec7.u7": [
+  [
+   "In città? Sembra divertente.",
+   "Quasi quasi vengo! Sono",
+   "Palmon. Ti farò vedere che so"
+  ],
+  [
+   "rendermi utile!"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon si è unito alla città!",
+ "s003.sec8.u0": [
+  [
+   "Mio!"
+  ]
+ ],
+ "s003.sec9.u0": [
+  [
+   "Preso!"
+  ]
+ ],
+ "s004.sec6.u0": [
+  [
+   "Finirai solo per farti male, lo",
+   "sai."
+  ]
+ ],
+ "s004.sec6_dup4.u0": [
+  [
+   "Ma insomma... Che bambino."
+  ]
+ ],
+ "s004.sec7.u0": [
+  [
+   "E va bene. Ci andrò piano."
+  ]
+ ],
+ "s004.sec8.u0": [
+  [
+   "Ti spezzo quel naso!"
+  ]
+ ],
+ "s004.sec9.u0": [
+  [
+   "Ti spezzo come un ramoscello!"
+  ]
+ ],
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Anche le scimmie cadono",
+   "dagli..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Ginocchiata... volaaante!!!"
+  ]
+ ],
+ "s004.sec51.u1": [
+  [
+   "Uuk! Io, il grande Etemon,",
+   "sconfitto...? No, no! Non siete",
+   "niente di speciale!"
+  ]
+ ],
+ "s004.sec51.u2": [
+  [
+   "...Che pessimo perdente. Ed è",
+   "stato lui ad assalirci..."
+  ]
+ ],
+ "s004.sec51.u3": [
+  [
+   "Uuk-uuk! Grrr... E va bene...",
+   "Vi farò vedere di cosa sono",
+   "capace, proprio nella vostra"
+  ],
+  [
+   "città! Vedrete! Uuk!"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon si è unito alla città!",
+ "s004.sec81.u0": [
+  [
+   "Mh? Qui c'è qualcosa di inciso."
+  ]
+ ],
+ "s004.sec81.u1": [
+  [
+   "Non c'è nessuno in casa!",
+   "Vattene!"
+  ]
+ ],
+ "s004.sec81.u2": [
+  [
+   "Qualcuno vive qui?"
+  ]
+ ],
+ "s105.sec5.u0": [
+  [
+   "I-io non so niente!"
+  ]
+ ],
+ "s105.sec6.u0": "Uah!",
+ "s105.sec6.u1": [
+  [
+   "......? ...! ...Eheh!"
+  ]
+ ],
+ "s105.sec6.u2": [
+  [
+   "Ehi, mi attacchi così,",
+   "all'improvviso?! Bene, fatti",
+   "sotto!"
+  ]
+ ],
+ "s105.sec6.u3": [
+  [
+   "Ho perso. Accidenti."
+  ]
+ ],
+ "s105.sec6.u4": [
+  [
+   "Ah, giusto. Dovrei invitarlo in",
+   "città."
+  ]
+ ],
+ "s105.sec6.u5": [
+  [
+   "...Ehm, senti..."
+  ]
+ ],
+ "s105.sec6.u6": [
+  [
+   "Ti andrebbe... magari... di",
+   "venire in città?"
+  ]
+ ],
+ "s105.sec6.u7": [
+  [
+   "Eh? In città? Intendi... quel",
+   "vecchio posto in rovina?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Hmm... Hmmmm......",
+   "Hmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": [
+  [
+   "Beh, certo. Sono Agumon.",
+   "Piacere."
+  ]
+ ],
+ "s105.sec6.u10": "Agumon si è unito alla città!",
+ "s105.sec6.u11": [
+  [
+   "Chiedere non costa nulla! Bene,",
+   "inviterò tutti quelli che",
+   "trovo!"
+  ]
+ ],
+ "s105.sec7.u0": [
+  [
+   "Questo è il mio territorio!"
+  ]
+ ],
+ "s105.sec8.u0": [
+  [
+   "Eh?!"
+  ]
+ ],
+ "s105.sec9.u0": [
+  [
+   "È la mia occasione!"
+  ]
+ ],
+ "s105.sec52.u0": [
+  [
+   "...Se scappo adesso, non si",
+   "torna più indietro."
+  ]
+ ],
+ "s106.sec5.u0": [
+  [
+   "Test di combattimento!"
+  ],
+  [
+   "Scherzo. Era una bugia."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Modifica i valori",
+ "s106.sec6.m0.o1": "Avanza il tempo",
+ "s106.sec6.m0.o2": "Imparare le tecniche",
+ "s106.sec6.m1.o0": "Aumenta",
+ "s106.sec6.m1.o1": "Riduci",
+ "s106.sec6.m1.o2": "Azzera le statistiche",
+ "s106.sec6.m2.o0": "Avanza di 1 ora",
+ "s106.sec6.m2.o1": "Avanza di 6 ore",
+ "s106.sec6.m2.o2": "Avanza di 24 ore",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": [
+  [
+   "Sono il signor Tuttofare! Cosa",
+   "desideri?"
+  ]
+ ],
+ "s106.sec81.u0": [
+  [
+   "Una frana blocca il sentiero..."
+  ]
+ ],
+ "s107.sec5.u0": [
+  [
+   "Mese {pstat 105}, giorno",
+   "{pstat 106}, ora",
+   "{pstat 107}, minuto"
+  ],
+  [
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": [
+  [
+   "{color 10}{partner}{color 1} è di tipo Dati,",
+   "eh."
+  ]
+ ],
+ "s107.sec5.u2": [
+  [
+   "{color 10}{partner}{color 1} è di tipo Vaccino,",
+   "eh."
+  ]
+ ],
+ "s107.sec5.u3": [
+  [
+   "{color 10}{partner}{color 1} è di tipo Virus,",
+   "eh."
+  ]
+ ],
+ "s107.sec6.m0.o0": "Modifica i valori",
+ "s107.sec6.m0.o1": "Avanza il tempo",
+ "s107.sec6.m0.o2": "Trasforma in negozio",
+ "s107.sec6.m1.o0": "Rendilo fortissimo",
+ "s107.sec6.m1.o1": "Rendilo debolissimo",
+ "s107.sec6.m1.o2": "Rendilo medio",
+ "s107.sec6.m2.o0": "Avanza di 1 ora",
+ "s107.sec6.m2.o1": "Avanza di 6 ore",
+ "s107.sec6.m2.o2": "Avanza di 24 ore",
+ "s107.sec6.u0": [
+  [
+   "Sono il signor Tuttofare! Cosa",
+   "desideri?"
+  ]
+ ],
+ "s107.sec51.u0": [
+  [
+   "Il terremoto ha appena liberato",
+   "il passaggio dalle rocce",
+   "cadute!"
+  ]
+ ]
+}

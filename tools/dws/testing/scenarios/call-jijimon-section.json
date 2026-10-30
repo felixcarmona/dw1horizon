@@ -1,0 +1,11 @@
+{
+  "name": "call-jijimon-section",
+  "doc": "Section runner: no walking to the NPC; callScriptSection(178, 5, 1) is called at a frame boundary (the engine entry for a talk), then the dialogue is read.",
+  "run": [
+    "wait 20",
+    "call 178 5 1",
+    "talk until free max 3000"
+  ],
+  "max_frames": 4000,
+  "expect": {"digest": "89b35211a53275fec1842492e13f0c51b2b6e061", "instructions": 22}
+}

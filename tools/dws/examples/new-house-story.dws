@@ -1,0 +1,30 @@
+// A brand-new script for Jijimon's house (screen 218): nothing of the original
+// dialogue is kept. Shows how a screen gets a story written from scratch.
+flag met_new_jijimon = 722;
+
+script new for screen 218 empty {
+    npc jijimon = 5;
+    npc tokomon = 6;
+    npc botamon = 7;
+    on enter {
+        if (!met_new_jijimon) {
+            say(narrator, text("new-house-story.t1"));
+        }
+    }
+    on talk(jijimon) {
+        if (!met_new_jijimon) {
+            say(jijimon, text("new-house-story.t2"));
+            say(jijimon, text("new-house-story.t3"));
+            give_bits(100);
+            met_new_jijimon = true;
+            return;
+        }
+        say(jijimon, text("new-house-story.t4"));
+    }
+    on talk(tokomon) {
+        say(tokomon, text("new-house-story.t5"));
+    }
+    on talk(botamon) {
+        say(botamon, text("new-house-story.t6"));
+    }
+}

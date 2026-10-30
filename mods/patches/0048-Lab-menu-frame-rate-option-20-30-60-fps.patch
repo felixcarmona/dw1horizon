@@ -1,0 +1,153 @@
+From b4567d6a4a7565dc91371ac193205314fc8e812e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 05:56:42 +0000
+Subject: [PATCH] Lab menu: frame rate option (20 / 30 / 60 fps)
+
+A fifth option, "Frame rate  60 fps", sets MOD_FPS_MODE: X or right
+cycles 20 -> 30 -> 60, left goes back. The menu's text rows start at
+0x90 of the text area to make room for the extra row (0xF0 is still the
+pause label) and the box is centred vertically. The label has no colon:
+in this font a colon swallows the space after it.
+
+---
+ src/main/mod_lab.c | 50 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 5 deletions(-)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 2054d72..eb2eaa4 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -2,12 +2,14 @@
+  * MOD: lab menu.
+  *
+  * With the game paused (START) and no script running, SELECT opens a box with
+- * the partner's state and four options (up/down to choose, X to accept,
++ * the partner's state and five options (up/down to choose, X to accept,
+  * triangle or SELECT to close):
+  *   - "+1000 bits"     adds 1000 to the money
+  *   - "Heal partner"   current HP and MP to the maximum
+  *   - "One-time gift"  mini quest: gives 1 Meat and sets MOD_LAB_TRIGGER;
+  *                      afterwards it says the gift was already taken
++ *   - "Frame rate  60 fps"  X (or right) cycles 20 -> 30 -> 60 fps, left
++ *                      goes back (MOD_FPS_MODE, main.c; experimental branch)
+  *   - "Close"
+  *
+  * Hooked from handlePause() (utils2.c). Only uses game functions:
+@@ -28,18 +30,22 @@
+ 
+ #define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+ #define MOD_LAB_BOX	5	/* same box the pause uses */
+-#define MOD_LAB_TEXT_Y	0x9C	/* text area rows we use: 0x9C..0xEF (0xF0 is the pause label) */
+-#define MOD_LAB_OPTIONS	4
++#define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
++#define MOD_LAB_OPTIONS	5
++#define MOD_LAB_OPT_FPS	3	/* the frame rate option */
+ #define ITEM_MEAT	38
+ 
+ #define PAD_SELECT	0x100
+ #define PAD_UP		0x1000
+ #define PAD_DOWN	0x4000
++#define PAD_LEFT	0x8000
++#define PAD_RIGHT	0x2000
+ #define PAD_TRIANGLE	0x10
+ #define PAD_CROSS	0x40
+ 
+ extern UIBoxData UI_BOX_DATA[];
+ extern int32_t IS_SCRIPT_PAUSED;
++extern int32_t MOD_FPS_MODE; /* 0 = 20 fps, 1 = 30, 2 = 60 (main.c) */
+ 
+ void drawString(char *str, int32_t x, int32_t y);
+ void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h,
+@@ -57,9 +63,24 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"+1000 bits",
+ 	"Heal partner",
+ 	"One-time gift",
++	NULL, /* MOD_LAB_FPS_TEXT */
+ 	"Close",
+ };
+ 
++static char *MOD_LAB_FPS_TEXT[3] = {
++	"Frame rate  20 fps",
++	"Frame rate  30 fps",
++	"Frame rate  60 fps",
++};
++
++static int32_t modLabFpsMode(void)
++{
++	if (MOD_FPS_MODE < 0) {
++		return 0;
++	}
++	return MOD_FPS_MODE > 2 ? 2 : MOD_FPS_MODE;
++}
++
+ static char *appendStr(char *dst, char *src)
+ {
+ 	while (*src != '\0') {
+@@ -80,6 +101,7 @@ static char *appendStr(char *dst, char *src)
+ #define ROW_OPTIONS	2
+ #define ROW_MESSAGE	(ROW_OPTIONS + MOD_LAB_OPTIONS)
+ #define TEXT_ROW_Y(r)	(MOD_LAB_TEXT_Y + (r) * 0xC)
++#define BOX_H		(8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2) /* centred vertically */
+ 
+ static void modLabClearRow(int32_t row)
+ {
+@@ -111,7 +133,11 @@ static void modLabDrawText(void)
+ 	drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
+ 
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+-		drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++		if (i == MOD_LAB_OPT_FPS) {
++			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++		} else {
++			drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++		}
+ 	}
+ 	DrawSync(0);
+ }
+@@ -156,6 +182,14 @@ static void modLabFrames(int32_t n)
+ 	}
+ }
+ 
++static void modLabSetFps(int32_t step)
++{
++	MOD_FPS_MODE = (modLabFpsMode() + step + 3) % 3;
++	/* the option shows the new rate; an older message would only confuse */
++	modLabMessage = NULL;
++	modLabClearRow(ROW_MESSAGE);
++}
++
+ static void modLabApply(void)
+ {
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+@@ -179,6 +213,9 @@ static void modLabApply(void)
+ 			modLabShowMessage("You got 1 Meat");
+ 		}
+ 		break;
++	case MOD_LAB_OPT_FPS:
++		modLabSetFps(1);
++		break;
+ 	}
+ }
+ 
+@@ -199,7 +236,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 	modLabCursor = 0;
+ 	modLabMessage = NULL;
+ 	modLabDrawText();
+-	setRECT(&pos, -BOX_W / 2 + BOX_SHIFT_X, -0x44, BOX_W, 8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2);
++	setRECT(&pos, -BOX_W / 2 + BOX_SHIFT_X, -BOX_H / 2, BOX_W, BOX_H);
+ 	createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
+ 	playSound(0, 3);
+ 	modLabFrames(12);
+@@ -217,6 +254,9 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		} else if (pressed & PAD_DOWN) {
+ 			modLabCursor = (modLabCursor + 1) % MOD_LAB_OPTIONS;
+ 			playSound(0, 2);
++		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_FPS) {
++			playSound(0, 2);
++			modLabSetFps((pressed & PAD_RIGHT) ? 1 : -1);
+ 		} else if (pressed & PAD_CROSS) {
+ 			if (modLabCursor == MOD_LAB_OPTIONS - 1) {
+ 				break;
+-- 
+2.53.0
+

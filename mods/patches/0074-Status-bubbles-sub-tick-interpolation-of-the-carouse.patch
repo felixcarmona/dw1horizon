@@ -1,0 +1,108 @@
+From 9215832a02e0bcfdd6f34748d3e58adafe360a00 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 15:57:32 +0000
+Subject: [PATCH] Status bubbles: sub-tick interpolation of the carousel and
+ bob (MOD_RENDER_ALPHA)
+
+---
+ src/main/bubble.c | 25 +++++++++++++++++++------
+ src/main/main.c   |  5 ++++-
+ 2 files changed, 23 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index fe8183b..5ed7b13 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -577,6 +577,8 @@ int32_t MOD_RING_CLOCK = 1;
+ int32_t MOD_RING_BIG = 1; /* the big condition, +1 */
+ int32_t MOD_RING_HOLD = 1;
+ int32_t MOD_RING_POS[18] = { 1 }; /* x, y, size per condition */
++int32_t MOD_RING_PREV[18] = { 1 }; /* the same before the last tick */
++extern int32_t MOD_RENDER_ALPHA;
+ 
+ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ 			   uint32_t scale, int32_t size, int32_t k)
+@@ -621,11 +623,16 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+ 
+ 	for (j = 0; j < 6; ++j) {
+ 		int32_t *v = &MOD_RING_POS[j * 3];
+-
+-		if (v[2] > 4) {
+-			drawRingBubble(j, x + ((v[0] * k) >> 16),
+-				       cy0 + ((v[1] * k) >> 16), depth, scale,
+-				       v[2], k);
++		int32_t *o = &MOD_RING_PREV[j * 3];
++		int32_t a = MOD_RENDER_ALPHA;
++		int32_t px = o[0] + (((v[0] - o[0]) * a) >> 12);
++		int32_t py = o[1] + (((v[1] - o[1]) * a) >> 12);
++		int32_t ps = o[2] + (((v[2] - o[2]) * a) >> 12);
++
++		if (ps > 4) {
++			drawRingBubble(j, x + ((px * k) >> 16),
++				       cy0 + ((py * k) >> 16), depth, scale,
++				       ps, k);
+ 		}
+ 	}
+ }
+@@ -658,7 +665,7 @@ void renderConditionRingObject(int32_t instanceId)
+ 
+ 	translateConditionFXToEntity(entity, &pos);
+ 	pos.vy = -DIGI_PARA(entity->type).height + 20 - 65 +
+-		 ((_sin(lerp(0, 512, 0, 20, MOD_RING_CLOCK % 40)) * 12) >> 12) +
++		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12) +
+ 		 entity->posData->location.vy;
+ 	depth = worldPosToScreenPos(&pos, &screen);
+ 	if (depth <= 0) {
+@@ -727,6 +734,10 @@ void tickConditionRingObject(int32_t instanceId)
+ 	for (j = 0; j < 6; ++j) {
+ 		int32_t *v = &MOD_RING_POS[j * 3];
+ 		int32_t tx = v[0];
++
++		MOD_RING_PREV[j * 3] = v[0];
++		MOD_RING_PREV[j * 3 + 1] = v[1];
++		MOD_RING_PREV[j * 3 + 2] = v[2];
+ 		int32_t ty = v[1];
+ 		int32_t ts = 0;
+ 
+@@ -751,6 +762,8 @@ void tickConditionRingObject(int32_t instanceId)
+ 			if (v[2] <= 4) {
+ 				v[0] = tx;
+ 				v[1] = ty;
++				MOD_RING_PREV[j * 3] = tx;
++				MOD_RING_PREV[j * 3 + 1] = ty;
+ 			}
+ 		}
+ 		v[0] = ringStep(v[0], tx);
+diff --git a/src/main/main.c b/src/main/main.c
+index 94f5a91..626c640 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4121,6 +4121,7 @@ static int32_t modTickRefreshes(void);
+ int32_t MOD_FPS_TICKS;
+ int32_t MOD_FPS_RENDERS;
+ int32_t MOD_RENDER_PASS;
++int32_t MOD_RENDER_ALPHA = 4096; /* MOD (status-bubbles): the fraction of the tick this render pass shows (4096 = the tick's own state) */
+ /* effect render scripts not rolled back on an extra pass for lack of room
+  * (BTL_renderEFEEngine): expected to stay 0 */
+ int32_t MOD_FPS_EFE_NO_ROOM;
+@@ -5326,6 +5327,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			MOD_PERF_XSTART = (l1 - l0) & 0xFFFF;
+ 			MOD_PERF_XSTARTV = VSync(-1) - tickV;
+ 		}
++		MOD_RENDER_ALPHA = 4096;
+ 		if (interp) {
+ 			/* the fraction of the tick at the refresh this pass is shown */
+ 			shownV = VSync(-1) + 1;
+@@ -5336,7 +5338,8 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 				shownV = tickV + period;
+ 			}
+ 			l2 = modLines();
+-			modInterpApply(force ? thirds[r] * 4096 / 3 : (shownV - tickV) * 4096 / period);
++			MOD_RENDER_ALPHA = force ? thirds[r] * 4096 / 3 : (shownV - tickV) * 4096 / period;
++			modInterpApply(MOD_RENDER_ALPHA);
+ 			MOD_PERF_INTERP[0] += (modLines() - l2) & 0xFFFF;
+ 			MOD_PERF_INTERP[2]++;
+ 		}
+-- 
+2.53.0
+

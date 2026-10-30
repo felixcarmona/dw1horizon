@@ -1,0 +1,74 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Olá, {color 6}{player}{color 1}! Comecei a ajudar o",
+   "Drimogemon."
+  ],
+  [
+   "Eu sou muito bom em encontrar coisas, você",
+   "sabe!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Explique, por favor",
+ "s169.sec81.m0.o1": "Não precisa explicar",
+ "s169.sec81.m0.o2": "Nada, obrigado.",
+ "s169.sec81.m1.o0": "Buscar tesouro",
+ "s169.sec81.m1.o1": "Explique de novo",
+ "s169.sec81.m1.o2": "Não, só isso",
+ "s169.sec81.m2.o0": "Plano normal: 1000 Bits",
+ "s169.sec81.m2.o1": "Plano especial: 5000 Bits",
+ "s169.sec81.m2.o2": "Cancelar",
+ "s169.sec81.u0": [
+  [
+   "Ei, bem-vindo, {color 6}{player}{color 1}!",
+   "Aqui é a loja de Caça ao",
+   "Tesouro. Eu uso meu talento",
+   "de escavador para trazer"
+  ],
+  [
+   "tesouros do subsolo. Esse é o",
+   "negócio! A ilha tem todo tipo",
+   "de tesouro enterrado por aí. É",
+   "só deixar comigo!"
+  ]
+ ],
+ "s169.sec81.u1": "Quer uma Caça ao Tesouro? Quer saber como funciona primeiro?",
+ "s169.sec81.u2": [
+  [
+   "Você paga adiantado, e eu",
+   "encontro um tesouro para você.",
+   "Há dois planos, com prazos e",
+   "preços diferentes. O normal"
+  ],
+  [
+   "leva três dias e custa 1000",
+   "Bits. O especial leva dez dias",
+   "e custa 5000 Bits. Com o",
+   "especial, a chance de achar um"
+  ],
+  [
+   "bom tesouro é maior! É isso.",
+   "Qual vai querer?"
+  ]
+ ],
+ "s169.sec81.u3": "Tudo bem, escolha um plano!",
+ "s169.sec81.u4": "Certo. Até mais.",
+ "s169.sec81.u5": "Certo, resultados em três dias. Farei o meu melhor!",
+ "s169.sec81.u6": "Certo, resultados em dez dias. Farei o meu melhor!",
+ "s169.sec81.u7": [
+  [
+   "Faltam Bits. Nem eu consigo",
+   "procurar tesouros sem dinheiro",
+   "para começar."
+  ]
+ ],
+ "s169.sec81.u8": "Estou caçando tesouros agora. Espere um pouco mais.",
+ "s169.sec81.u9": "Ei, seu tesouro chegou!",
+ "s169.sec81.u10": "Vá arrumar espaço na sua bolsa!",
+ "s169.sec81.u11": "Peguei {color 6}{item 110}{color 1}!",
+ "s169.sec81.u12": [
+  [
+   "Obrigado pela preferência!"
+  ]
+ ]
+}

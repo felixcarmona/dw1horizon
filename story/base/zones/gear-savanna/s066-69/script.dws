@@ -1,0 +1,64 @@
+// Readable form of script 66 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 66 {
+    npc shimaunimon0 = 5;
+    npc shimaunimon1 = 6;
+    npc tsukaimon = 7;
+    npc nisedrimogemon = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 65, 67);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 57, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Power Ice"), 32, 88);
+        }
+    }
+
+    on talk(shimaunimon0) replace {    // section 5
+        say(shimaunimon0, text("s066.sec5.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(shimaunimon1) replace {    // section 6
+        say(shimaunimon1, text("s066.sec6.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 7
+        say(tsukaimon, text("s066.sec7.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(nisedrimogemon) replace {    // section 8
+        say(nisedrimogemon, text("s066.sec8.u0"));
+        battle();
+        recruit(species("NiseDrimogemon"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 200, -4700);
+        if (drimogemon_tunnel_dig_started && drimogemon_job_days >= 3) {
+            drill_tunnel_opened = true;
+        }
+        if (drill_tunnel_opened) {
+            warp_to(23, 1, 255);
+        }
+        warp_to(22, 1, 255);
+        return;
+    }
+}

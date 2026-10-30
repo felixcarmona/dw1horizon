@@ -1,0 +1,228 @@
+// Readable form of script 51 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 51 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 57, 84, 85, 82, 58, 81, 83;
+
+    on enter replace {    // section 254
+    }
+
+    on step(6) replace {    // section 57
+        if (myotismon_absence_seen.mansion && myotismon_absence_seen.basement && !mansion_devimon_met) {
+            mansion_devimon_met = true;
+            load_digimon(species("Devimon"));
+            set_digimon(species("Devimon"), 0, 0);
+            set_dialog_owner(tamer);
+            animate(tamer, 25);
+            wait(15);
+            say(tamer, text("s051.sec57.u0"));
+            animate(tamer, anim.idle);
+            face(tamer, slot0);
+            wait(10);
+            camera_to(0, 1614, speed: 20);
+            await camera;
+            say(slot0, text("s051.sec57.u1"));
+            run(tamer, -150, -239);
+            run(partner, 150, -239);
+            await tamer;
+            await partner;
+            face(tamer, slot0);
+            face(partner, slot0);
+            wait(5);
+            say(tamer, text("s051.sec57.u2"));
+            say(slot0, text("s051.sec57.u3"));
+            say(tamer, text("s051.sec57.u4"));
+            say(slot0, text("s051.sec57.u5"));
+            animate(tamer, 20);
+            wait(15);
+            say(tamer, text("s051.sec57.u6"));
+            animate(tamer, anim.idle);
+            say(slot0, text("s051.sec57.u7"));
+            animate(slot0, 28);
+            sound(8, 8);
+            wait(1s);
+            say(tamer, text("s051.sec57.u8"));
+            run(tamer, -150, 921);
+            run(partner, 150, 721);
+            wait(1s);
+            face(tamer, slot0);
+            wait(5);
+            say(slot0, text("s051.sec57.u9"));
+            entity_move_to(slot0, 145, 795, 5, 0);
+            await slot0;
+            camera_to(0, 1614, speed: 20);
+            await camera;
+            entity_move_to(slot0, 0, -489, 5, 0);
+            await slot0;
+            face(tamer, slot0);
+            wait(10);
+            say(tamer, text("s051.sec57.u10"));
+            face(tamer, slot0);
+            wait(10);
+            face(slot0, tamer);
+            wait(10);
+            say(slot0, text("s051.sec57.u11"));
+            run(tamer, 50, 250);
+            entity_move_to(slot0, 50, -1640, 12, 0);
+            await slot0;
+            await tamer;
+            remove(slot0);
+            run(tamer, 50, -480);
+            await tamer;
+            say(tamer, text("s051.sec57.u12"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (!mansion_entrance_seen) {
+            mansion_entrance_seen = true;
+            wait(1s);
+            entity_set_rotation(tamer, 2048);
+            await tamer;
+            wait(10);
+            entity_set_rotation(tamer, 2560);
+            await tamer;
+            wait(10);
+            entity_set_rotation(tamer, 1536);
+            await tamer;
+            wait(10);
+            camera_to(-997, -977, speed: 30);
+            await camera;
+            camera_to(-1035, 4000, speed: 50);
+            await camera;
+            camera_to(1222, 4000, speed: 30);
+            await camera;
+            camera_to(1066, -977, speed: 50);
+            await camera;
+            entity_set_rotation(tamer, 2560);
+            camera_on(tamer, speed: 30);
+            await camera;
+            entity_set_rotation(tamer, 2048);
+            entity_set_rotation(partner, 2048);
+            await tamer;
+            await partner;
+            say(tamer, text("s051.sec57.u13"));
+            walk(tamer, -6, -1255, camera: true);
+            await tamer;
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s051.sec57.u14"));
+            animate(tamer, anim.idle);
+            wait(2s);
+            face(tamer, partner);
+            await tamer;
+            face(partner, tamer);
+            await partner;
+            say(tamer, text("s051.sec57.u15"));
+            entity_set_rotation(tamer, 3584);
+            await tamer;
+            entity_set_rotation(tamer, 3072);
+            await tamer;
+            entity_set_rotation(tamer, 2560);
+            await tamer;
+            entity_set_rotation(tamer, 2048);
+            await tamer;
+            show_textbox(text("s051.sec57.u16"));
+            return;
+        }
+    }
+
+    on use(4) replace {    // section 84
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s52_s55_exit4) {
+            entity_set_rotation(tamer, 1024);
+            sound(8, 3);
+            say(narrator, text("s051.sec84.u0"));
+            mansion_door_unlocked.s52_s55_exit4 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s52_s55_exit4) {
+            entity_set_rotation(tamer, 1024);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s051.sec84.u1"));
+            return;
+        }
+        rotate_3d_object(4, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -2000, 1433);
+        warp_to(55, 1, 255);
+    }
+
+    on use(5) replace {    // section 85
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s52_s55_exit5) {
+            entity_set_rotation(tamer, 1024);
+            sound(8, 3);
+            say(narrator, text("s051.sec85.u0"));
+            mansion_door_unlocked.s52_s55_exit5 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s52_s55_exit5) {
+            entity_set_rotation(tamer, 1024);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s051.sec85.u1"));
+            return;
+        }
+        rotate_3d_object(5, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -2000, -882);
+        warp_to(55, 2, 255);
+    }
+
+    on use(2) replace {    // section 82
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s52_s59) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 3);
+            say(narrator, text("s051.sec82.u0"));
+            mansion_door_unlocked.s52_s59 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s52_s59) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s051.sec82.u1"));
+            return;
+        }
+        rotate_3d_object(2, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 2000, 1171);
+        warp_to(59, 0, 255);
+    }
+
+    on step(7) replace {    // section 58
+        walk(tamer, 0, -2000);
+        sound(8, 1);
+        warp_to(35, 0, 255);
+    }
+
+    on use(1) replace {    // section 81
+        if (!mansion_devimon_met) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s051.sec81.u0"));
+            return;
+        }
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 2000, -722);
+        warp_to(60, 0, 255);
+    }
+
+    on use(3) replace {    // section 83
+        rotate_3d_object(3, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 1005, 3000);
+        warp_to(57, 2, 255);
+        return;
+    }
+}

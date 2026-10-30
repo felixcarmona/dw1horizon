@@ -1,0 +1,783 @@
+From e7dd6a5c5e8ea0c595610cbba05058926a59c876 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 11:42:06 +0000
+Subject: [PATCH] Patch 0167: OPTIONS in the title menu, JAPANESE CONTROLS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The title menu has a fifth row, OPTIONS, under BATTLE MODE. Its one row,
+JAPANESE CONTROLS OFF / ON (confirm, left or right switch it; cancel goes back
+with the cursor on OPTIONS), gives the game the Japanese disc's controls.
+
+- The Japanese disc's code differs from the US one in three masks (input.h):
+  ○ confirms, × cancels, △ is the third button. With the option on,
+  CONFIRM_BUTTON, CANCEL_BUTTON and ALT_BUTTON read MOD_OPT_BUTTONS and are the
+  Japanese ones; a button the code tests by its bit (△ opening the field menu)
+  is the same on both discs and stays.
+- The font draws each button glyph as the button that now does its job
+  (modButtonGlyph at the three glyph lookups of font.c): "×Select △Cancel"
+  reads "○Select ×Cancel" with no text of its own; a green △ (the fishing
+  help's "submenu, under △") is the field menu's and stays. A glyph the text
+  paints in its button's colour (× cyan 6, △ green 5, ○ orange 10) takes the
+  colour of the button it now is (modButtonColor).
+- The dialogue box's button (SYSTEM_W.TIM, three 16x12 frames, also the care
+  menu's badge) becomes a ○ made from the disc's own × frames each time
+  ETCTIM.BIN is uploaded: the cross painted over with the face, a ring drawn
+  in its place in the PlayStation ○'s red, with a CLUT of its own (the frames'
+  one with the two blues made red) in the page's filler at VRAM (352, 230),
+  modButtonClut; with the option off the filler is put back.
+- The option is saved (SAVE_TAG_OPTIONS 0x0009, u8[1]); a Continue takes it
+  unless OPTIONS changed it since the console started. The title screen before
+  a Continue always has the US controls.
+
+---
+ config/us/main.ld         |  12 +++
+ include/dw/input.h        |  12 ++-
+ include/dw/mod_options.h  |  32 ++++++
+ include/dw/save_tags.h    |   1 +
+ mk/version/us.mk          |   1 +
+ src/main/bubble.c         |   3 +-
+ src/main/font.c           |  31 +++++-
+ src/main/main_menu.c      |  76 +++++++++++++-
+ src/main/mod_options.c    | 207 ++++++++++++++++++++++++++++++++++++++
+ src/main/script_textbox.c |   3 +-
+ src/main/utils2.c         |   2 +
+ text/main/main_menu.yaml  |  15 +++
+ 12 files changed, 382 insertions(+), 13 deletions(-)
+ create mode 100644 include/dw/mod_options.h
+ create mode 100644 src/main/mod_options.c
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 5d043058..628ee296 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -113,6 +113,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.text.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.text.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.text.*);
+@@ -341,6 +343,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.rodata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.rodata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.rodata.*);
+@@ -502,6 +506,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.data.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.data.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.data.*);
+@@ -637,6 +643,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.sdata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.sdata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sdata.*);
+@@ -783,6 +791,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.sbss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.sbss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sbss.*);
+@@ -919,6 +929,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_screen.c.o(.bss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_options.c.o(.bss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.bss.*);
+diff --git a/include/dw/input.h b/include/dw/input.h
+index 5a3d9b2e..14dda226 100644
+--- a/include/dw/input.h
++++ b/include/dw/input.h
+@@ -8,9 +8,15 @@
+ #define CANCEL_BUTTON 0x40
+ #define ALT_BUTTON 0x10
+ #else
+-#define CONFIRM_BUTTON 0x40
+-#define CANCEL_BUTTON 0x10
+-#define ALT_BUTTON 0x20
++/*
++ * MOD (options): OPTIONS' "JAPANESE CONTROLS" (src/main/mod_options.c) gives the three the Japanese disc's buttons, as
++ * the masks above: ○ confirms, × cancels, △ is the third. A button the code tests by its bit (△ opening the field
++ * menu, tamer.c) is the same on both discs and stays.
++ */
++extern int MOD_OPT_BUTTONS;
++#define CONFIRM_BUTTON (MOD_OPT_BUTTONS ? 0x20 : 0x40)
++#define CANCEL_BUTTON (MOD_OPT_BUTTONS ? 0x40 : 0x10)
++#define ALT_BUTTON (MOD_OPT_BUTTONS ? 0x10 : 0x20)
+ #endif
+ 
+ #endif
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+new file mode 100644
+index 00000000..26cfcb86
+--- /dev/null
++++ b/include/dw/mod_options.h
+@@ -0,0 +1,32 @@
++#ifndef DW_MOD_OPTIONS_H
++#define DW_MOD_OPTIONS_H
++
++#include <sys/types.h>
++#include <libgte.h>
++#include <libgpu.h>
++#include <libgs.h>
++
++#include <dw/types.h>
++
++/*
++ * MOD (options): the title menu's OPTIONS (main_menu.c) and what they change (mod_options.c, docs/mods/options.md).
++ */
++
++#define MOD_BUTTONS_US	0	/* × confirms, △ cancels, ○ is the third button (the US disc) */
++#define MOD_BUTTONS_JP	1	/* JAPANESE CONTROLS: ○ confirms, × cancels, △ is the third button (input.h) */
++
++extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h reads it) */
++extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
++
++/* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
++uint16_t modButtonGlyph(uint16_t code);
++/* the colour (setTextColor's) to draw the US layout's button glyph `code` in, given the text's colour `color` */
++int32_t modButtonColor(uint16_t code, int32_t color);
++/* the CLUT of the dialogue box's button frames (the ○ is red) */
++uint16_t modButtonClut(void);
++/* the button layout changes: the dialogue box's button in VRAM follows it */
++void modSetButtons(int32_t layout);
++/* a TIM of ETCTIM.BIN was uploaded (loadStackedTIMFile): the SYSTEM_W page's button frames */
++void modButtonsTimLoaded(GsIMAGE *img);
++
++#endif
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 955bec76..e04ae6c9 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -28,6 +28,7 @@
+ #define SAVE_TAG_POOP_MAPS		0x0006 /* i16[n] screens of the poop in the world, -1 = none (authoritative since screens beyond 255; the v1 byte is 0xFF for a screen >= 255) */
+ #define SAVE_TAG_SPECIES_RAISED		0x0007 /* bit array: species the tamer has raised */
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
++#define SAVE_TAG_OPTIONS		0x0009 /* u8[n] the title menu's OPTIONS: [0] button layout (0 US, 1 Japanese) */
+ #define SAVE_TAG_REQUIRED		0x8000
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 3ef46562..77f4e960 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -75,6 +75,7 @@ MAIN_C_SRC := \
+ 	src/main/mod_lab.c \
+ 	src/main/mod_species.c \
+ 	src/main/mod_screen.c \
++	src/main/mod_options.c \
+ 	src/main/mod_feed.c \
+ 	src/main/tfs_stream.c \
+ 	src/main/npc_anim_trim.c \
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 67b8f33a..ba3d6711 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -1,5 +1,6 @@
+ #include <libgs.h>
+ 
++#include <dw/mod_options.h>
+ #include <dw/btl.h> /* MOD (care menu): ACTIVE_ORDERING_TABLE for the X badge */
+ #include <dw/bubble.h>
+ #include <dw/params.h>
+@@ -743,7 +744,7 @@ static void renderBadge(int32_t x, int32_t y, int32_t depth, int32_t k, int32_t
+ 	setPolyFT4(p);
+ 	setSemiTrans(p, 1);
+ 	p->tpage = GetTPage(0, 1, 320, 128);
+-	p->clut = GetClut(96, 500);
++	p->clut = modButtonClut(); /* MOD (options): GetClut(96, 500), the ○ in red */
+ 	setRGB0(p, 0x80, 0x80, 0x80);
+ 	setUVWH(p, (MOD_RING_CLOCK / 4) % 3 * 16 + 0x4c, 0xb7, RING_BADGE_W, RING_BADGE_H);
+ 	setXYWH(p, x - w / 2, y - h / 2, w, h);
+diff --git a/src/main/font.c b/src/main/font.c
+index ed1db609..ef1d4e6f 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -2,6 +2,7 @@
+ 
+ #include <dw/font.h>
+ #include <dw/mod_font.h>
++#include <dw/mod_options.h>
+ #include <dw/sjis.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+@@ -1370,6 +1371,13 @@ void setTextColor(int32_t color)
+ /* MOD (font): set while text is laid out in the original's cells (below; with the original font script_textbox.c's
+  * rule for a space) */
+ int8_t FONT_CELLS;
++
++/* MOD (options): the colour (setTextColor's) of a glyph: a button glyph in its button's colour takes the colour of the
++ * button that now does its job */
++static int32_t glyphColor(uint16_t codepoint)
++{
++	return modButtonColor(((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8), COLORCODE_LOWBITS);
++}
+ #endif
+ 
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+@@ -1380,6 +1388,7 @@ static uint16_t *glyphRows(uint16_t codepoint)
+ 	int32_t n;
+ 
+ 	code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
++	code = modButtonGlyph(code); /* MOD (options): the button that does this glyph's job */
+ 	if (code == FONT_FIGURE_SPACE) {
+ 		return (uint16_t *)FIGURE_SPACE_GLYPH.pixelData;
+ 	}
+@@ -1603,6 +1612,7 @@ int32_t drawGlyph(codepoint, x, y)
+ 	int32_t shared;
+ 	int32_t i;
+ 	int32_t k;
++	int32_t color;
+ 
+ 	p = glyphRows(codepoint);
+ 	adv = p[GLYPH_HEIGHT] & 0xff;
+@@ -1648,10 +1658,11 @@ int32_t drawGlyph(codepoint, x, y)
+ 		carry = GLYPH_CARRY_SLOT + (cx - GLYPH_CARRY_X) / 2;
+ 	}
+ 	/* two pixels a byte, the left one in the low nibble */
++	color = glyphColor(codepoint); /* MOD (options): was COLORCODE_LOWBITS */
+ 	lut[0] = 0;
+-	lut[1] = COLORCODE_HIGHBITS;
+-	lut[2] = COLORCODE_LOWBITS;
+-	lut[3] = COLORCODE_LOWBITS | COLORCODE_HIGHBITS;
++	lut[1] = color << 4;
++	lut[2] = color;
++	lut[3] = color | (color << 4);
+ 	for (i = 0; i < GLYPH_HEIGHT; i++) {
+ 		ink = ((uint16_t)~p[i] & 0xfff0) >> shift; /* 0 = ink; bit 15 = the cell's first column */
+ 		for (k = 0; k < 8; k++) {
+@@ -1711,6 +1722,9 @@ int32_t drawGlyph(codepoint, x, y)
+ 	}
+ 
+ 	code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
++#if VERSION_IS(US)
++	code = modButtonGlyph(code); /* MOD (options): the button that does this glyph's job */
++#endif
+ #if !VERSION_IS(US)
+ 	if (code == 0x8140) {
+ 		return;
+@@ -1740,6 +1754,12 @@ int32_t drawGlyph(codepoint, x, y)
+ 	}
+ 	GLYPH_DRAWING_AREA_INDEX = (GLYPH_DRAWING_AREA_INDEX + 1) % NUM_RENDER_SLOTS;
+ 	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * RENDER_SLOT_SIZE;
++#if VERSION_IS(US)
++	tmp = COLORCODE_LOWBITS; /* MOD (options): the glyph's colour (glyphColor), the text's again after it */
++	COLORCODE_LOWBITS = glyphColor(codepoint);
++	COLORCODE_HIGHBITS = COLORCODE_LOWBITS << 4;
++	col = tmp;
++#endif
+ 
+ 	for (i = 0; i < GLYPH_HEIGHT; i++) {
+ 		rowData = *p++;
+@@ -1811,6 +1831,10 @@ int32_t drawGlyph(codepoint, x, y)
+ 
+ 		*drawRow++ = tmp;
+ 	}
++#if VERSION_IS(US)
++	COLORCODE_LOWBITS = col; /* MOD (options) */
++	COLORCODE_HIGHBITS = col << 4;
++#endif
+ 
+ 	setRECT(&rect, (x / 4) + TEXT_VRAM_X, y + TEXT_VRAM_Y, GLYPH_WIDTH / 4, GLYPH_HEIGHT);
+ 	LoadImage(&rect, (u_long *)(GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * RENDER_SLOT_SIZE));
+@@ -1986,6 +2010,7 @@ static uint16_t *nextGlyph(char **str, int32_t mode)
+ 	}
+ 	*str = s;
+ 	code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
++	code = modButtonGlyph(code); /* MOD (options): the button that does this glyph's job */
+ 	if (mode == FIT_CONDENSED && code >= 0x8281 && code <= 0x829a && CONDENSED_GLYPH_DATA[code - 0x8281].width != 0) {
+ 		return (uint16_t *)CONDENSED_GLYPH_DATA[code - 0x8281].pixelData;
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index de994383..5dd179d6 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -8,6 +8,7 @@
+ #include <dw/entity.h>
+ #include <dw/font.h>
+ #include <dw/ids.h>
++#include <dw/mod_options.h>
+ #include <dw/mod_rules.h>
+ #include <dw/save_tags.h>
+ #include <dw/input.h>
+@@ -244,7 +245,7 @@ typedef struct {
+ #define SAVE_EXT_BYTES		0x1000
+ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* the most a build writes: the head, the records (4 bytes each and their data), the end record and the checksum */
+-#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 8 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 4 + 4)
++#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 9 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 1 + 4 + 4)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_EXT_BYTES);
+ 
+ uint32_t CONNECTED_CARDS;
+@@ -254,6 +255,8 @@ int32_t MEMORY_CARD_SLOT;
+ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
++static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
++static void renderOptionsMenu(void);
+ int32_t CURRENT_MENU;
+ int32_t NEW_CARDS;
+ int32_t MAIN_D_80135054;
+@@ -788,10 +791,10 @@ char SAVEGAME_ID_LABEL[16][6] = {
+ 	"15",
+ };
+ 
+-MenuHighlight MENU_HIGHLIGHTS[22] = {
++MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 	{
+ 		0x00,
+-		{ 0x04, 0x00, 0x00, 0x00, 0x00 },
++		{ 0x05, 0x00, 0x00, 0x00, 0x00 }, /* MOD (options): 5 rows, OPTIONS the last (was 4) */
+ 		0x000c,
+ 		0x004f,
+ 		0x0037,
+@@ -987,12 +990,21 @@ MenuHighlight MENU_HIGHLIGHTS[22] = {
+ 		0x0024,
+ 		0x000c,
+ 	},
++	{ /* MOD (options): the OPTIONS box (renderOptionsMenu) */
++		0x00,
++		{ 0x01, 0x00, 0x00, 0x00, 0x00 },
++		0x000c,
++		0x003f,
++		0x0037,
++		0x00c2,
++		0x000c,
++	},
+ };
+ 
+ #endif
+ 
+ int8_t MENU_VIEWS[] = {
+-	0x00, 0x09, 0x05, 0x0a, 0xff, 0xff, 0xff, 0xff,
++	0x00, 0x09, 0x05, 0x0a, 0x16 /* MOD (options) */, 0xff, 0xff, 0xff,
+ 	0xff, 0xff, 0x01, 0x05, 0x05, 0x05, 0x07, 0x08,
+ 	0x05, 0x05, 0xff, 0x06, 0x02, 0x05, 0x05, 0x07,
+ 	0x08, 0x05, 0xff, 0xff, 0xff, 0xff, 0x04, 0x05,
+@@ -1777,6 +1789,10 @@ void drawMainMenuStrings(int32_t menu)
+ 	}
+ 	MENU_HIGHLIGHTS[view].pos = MENU_HIGHLIGHTS[view].pad[1];
+ 	MENU_HIGHLIGHTS[view].pad[2] = 0;
++	if (view == 0 && MOD_OPTIONS_BACK) { /* MOD (options): back from OPTIONS, on its row */
++		MENU_HIGHLIGHTS[view].pos = 4;
++	}
++	MOD_OPTIONS_BACK = 0;
+ 	SAVE_SLOT_SCROLL_TENTHS = 0;
+ 	NEW_CARDS = 0;
+ 	clearTextArea();
+@@ -2055,6 +2071,11 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(TITLE_MENU_ITEMS[2], 0, 0x18);
+ 		drawString(TITLE_MENU_ITEMS[3], 0, 0x24);
++		DrawSync(0);
++		drawString(MOD_OPT_STR_OPTIONS, 0, 0x30); /* MOD (options) */
++		break;
++	case 22: /* MOD (options) */
++		drawString(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_OPT_STR_JP_ON : MOD_OPT_STR_JP_OFF, 0, 0);
+ 		break;
+ 	case 1:
+ 		drawString(SLOT_ACTION_TITLES[0], 0, 0);
+@@ -2597,6 +2618,9 @@ void tickMainMenu(void)
+ 				TARGET_MENU = 0x32;
+ 				MAIN_MENU_ACTION = 5;
+ 				break;
++			case 4: /* MOD (options) */
++				TARGET_MENU = 4;
++				break;
+ 			}
+ 			break;
+ 		case 2:
+@@ -2604,6 +2628,24 @@ void tickMainMenu(void)
+ 		}
+ 		break;
+ 
++	case 4: /* MOD (options) */
++		cursor = (MenuCursor *)&MENU_HIGHLIGHTS[22];
++		input = tickMenuInput(cursor, 1);
++		if (input == 0 && (CHANGED_INPUT == 0x8000 || CHANGED_INPUT == 0x2000)) {
++			playSound(0, 2);
++			input = 1;
++		}
++		if (input == 1) {
++			MOD_OPT_TOUCHED = 1;
++			modSetButtons(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_BUTTONS_US : MOD_BUTTONS_JP);
++			clearTextArea();
++			drawString(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_OPT_STR_JP_ON : MOD_OPT_STR_JP_OFF, 0, 0);
++		} else if (input == 2) {
++			MOD_OPTIONS_BACK = 1;
++			TARGET_MENU = 0;
++		}
++		break;
++
+ 	case 1:
+ 		cursor = (MenuCursor *)&MENU_HIGHLIGHTS[9];
+ 		input = tickMenuInput(cursor, 1);
+@@ -4536,6 +4578,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
++	uint8_t options[1]; /* MOD (options) */
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4588,6 +4631,8 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_SPECIES_RAISED, SPECIES_RAISED_BITS, NUM_DIGIMON / 8);
+ 		p = putRecord(p, SAVE_TAG_SPECIES_RECRUITED, SPECIES_RECRUITED_BITS, NUM_DIGIMON / 8);
+ 	}
++	options[0] = MOD_OPT_BUTTONS; /* MOD (options) */
++	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+@@ -4736,6 +4781,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_POOP_MAPS:
+ 	case SAVE_TAG_SPECIES_RAISED:
+ 	case SAVE_TAG_SPECIES_RECRUITED:
++	case SAVE_TAG_OPTIONS:
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -4811,6 +4857,11 @@ static void applyRecords(uint8_t *e)
+ 				SPECIES_RECRUITED_BITS[i] = d[i];
+ 			}
+ 			break;
++		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
++			if (len >= 1 && !MOD_OPT_TOUCHED) {
++				modSetButtons(d[0]);
++			}
++			break;
+ 		}
+ 	}
+ }
+@@ -5070,6 +5121,9 @@ void renderMainMenu(void)
+ 		case 19:
+ 			renderCantRegisterBaby();
+ 			break;
++		case 22: /* MOD (options) */
++			renderOptionsMenu();
++			break;
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ 		case 20:
+ 			renderBattleModeMenu();
+@@ -5251,7 +5305,19 @@ void renderInitialMenu(void)
+ 		renderText(cur++, 0x52, 0x43, 0, 0xC, 0xB0, 0x18, 1);
+ 	}
+ 	renderText(cur++, 0x52, 0x5B, 0, 0x24, 0xB0, 0xC, 0);
++	renderText(cur++, 0x52, 0x67, 0, 0x30, 0xB0, 0xC, 0); /* MOD (options): OPTIONS */
+ 	GsSetWorkBase((PACKET *)cur);
+-	renderMenuBox(0x48, 0x32, 0xB0, 0x3A);
++	renderMenuBox(0x48, 0x32, 0xB0, 0x46); /* MOD (options): was 0x3A high */
+ #endif
+ }
++
++/* MOD (options): one row, JAPANESE CONTROLS OFF / ON */
++static void renderOptionsMenu(void)
++{
++	POLY_FT4 *cur;
++
++	cur = (POLY_FT4 *)GsGetWorkBase();
++	renderText(cur++, 0x42, 0x37, 0, 0, 0xC0, 0xC, 0);
++	GsSetWorkBase((PACKET *)cur);
++	renderMenuBox(0x38, 0x32, 0xD0, 0x16);
++}
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+new file mode 100644
+index 00000000..79978498
+--- /dev/null
++++ b/src/main/mod_options.c
+@@ -0,0 +1,207 @@
++/*
++ * MOD (options): what the title menu's OPTIONS change (main_menu.c draws and runs the menu; docs/mods/options.md).
++ *
++ * JAPANESE CONTROLS. The Japanese disc's code differs from the US one in three masks only (input.h): ○ confirms, ×
++ * cancels, △ is the third button; whatever the code tests by its bit (△ opening the field menu) is the same on both.
++ * With the option on, input.h's CONFIRM_BUTTON, CANCEL_BUTTON and ALT_BUTTON read MOD_OPT_BUTTONS and are the
++ * Japanese disc's, so every screen answers as on that disc.
++ * The text follows: the font draws each button glyph as the button that now does its job (modButtonGlyph, font.c), so
++ * "×Select △Cancel" reads "○Select ×Cancel" without a text of its own; a △ painted green ({color 5}, the fishing help's
++ * "submenu, under △") is the field menu's button and stays. A button glyph the text paints in its button's colour
++ * (× cyan 6, △ green 5, ○ orange 10) takes the colour of the button it now is (modButtonColor). The dialogue box's
++ * button (SYSTEM_W.TIM, three 16x12 frames pressing it, drawn by renderUIBox and the care menu's badge) is made a ○
++ * from the disc's own frames: the cross is painted over with the button's face and a ring drawn where it was, in the
++ * red of the PlayStation's ○ (its own CLUT, modButtonClut).
++ */
++#include <dw/mod_options.h>
++
++#include "common.h"
++
++extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
++
++int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
++int32_t MOD_OPT_TOUCHED = 0;
++
++/* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
++static int32_t buttonColor(uint16_t code)
++{
++	switch (code) {
++	case 0x81A2:
++		return 6;
++	case 0x817E:
++		return 5;
++	case 0x819B:
++		return 10;
++	}
++	return -1;
++}
++
++int32_t modButtonColor(uint16_t code, int32_t color)
++{
++	if (MOD_OPT_BUTTONS == MOD_BUTTONS_JP && color == buttonColor(code)) {
++		return buttonColor(modButtonGlyph(code));
++	}
++	return color;
++}
++
++uint16_t modButtonGlyph(uint16_t code)
++{
++	if (MOD_OPT_BUTTONS != MOD_BUTTONS_JP) {
++		return code;
++	}
++	if (code == 0x817E && COLORCODE_LOWBITS == 5) {
++		return code; /* a green △: the field menu's button, △ on both discs */
++	}
++	switch (code) {
++	case 0x81A2: /* × confirms: ○ */
++		return 0x819B;
++	case 0x817E: /* △ cancels: × */
++		return 0x81A2;
++	case 0x819B: /* ○, the third button: △ */
++		return 0x817E;
++	}
++	return code;
++}
++
++/*
++ * The button frames: u 0x4C, v 0xB7 of the UI texture page (320, 0), 4 bpp, CLUT (96, 500); in SYSTEM_W.TIM (at
++ * (320, 128)) VRAM words 19..30, rows 55..66. Index 0xC is the cross's light blue, 0xD its dark blue, 3 the face.
++ */
++#define FRAMES_X	19	/* VRAM words from the TIM's left edge */
++#define FRAMES_Y	55	/* rows from its top */
++#define FRAMES_WORDS	12	/* 3 frames of 16 texels */
++#define FRAMES_ROWS	12
++#define INK_LIGHT	0xC
++#define INK_DARK	0xD
++#define FACE		0x3
++#define FRAMES_CLUT_Y	12	/* CLUT (96, 500): row 12 of the TIM's 16 */
++/*
++ * The ring's CLUT: the frames' one with the cross's two blues made the ○'s red. It lives in the page's filler (u 0x80..0xBF
++ * of v 0xE6, all index 15: nothing draws it) at VRAM (352, 230); with the US layout the filler is put back.
++ */
++#define RING_CLUT_X	352
++#define RING_CLUT_Y	230
++#define RING_LIGHT	0x359F	/* (248, 96, 104) */
++#define RING_DARK	0x1CD4	/* (160, 48, 56) */
++
++static uint16_t FRAMES_CROSS[FRAMES_ROWS * FRAMES_WORDS];
++static uint16_t FRAMES_RING[FRAMES_ROWS * FRAMES_WORDS];
++static int32_t FRAMES_READY = 0;
++static uint16_t RING_CLUT[16];
++static uint16_t RING_CLUT_FILLER[16];
++
++/* the ring that takes the cross's 6x5 place: L light, D dark, . the face */
++static const char RING[5][7] = {
++	".DLLD.",
++	"DL..LD",
++	"L....L",
++	"DL..LD",
++	".DLLD.",
++};
++
++static int32_t texel(uint16_t *f, int32_t x, int32_t y)
++{
++	return (f[y * FRAMES_WORDS + x / 4] >> (4 * (x & 3))) & 0xF;
++}
++
++static void setTexel(uint16_t *f, int32_t x, int32_t y, int32_t c)
++{
++	uint16_t *w = &f[y * FRAMES_WORDS + x / 4];
++
++	*w = (*w & ~(0xF << (4 * (x & 3)))) | (c << (4 * (x & 3)));
++}
++
++/* FRAMES_RING from FRAMES_CROSS; 0 when a frame's cross is not the 6x5 one this expects */
++static int32_t makeRing(void)
++{
++	int32_t frame, x, y, c, x0, y0, x1, y1;
++
++	for (x = 0; x < FRAMES_ROWS * FRAMES_WORDS; x++) {
++		FRAMES_RING[x] = FRAMES_CROSS[x];
++	}
++	for (frame = 0; frame < 3; frame++) {
++		x0 = y0 = 99;
++		x1 = y1 = -1;
++		for (y = 0; y < FRAMES_ROWS; y++) {
++			for (x = frame * 16; x < frame * 16 + 16; x++) {
++				c = texel(FRAMES_RING, x, y);
++				if (c == INK_LIGHT || c == INK_DARK) {
++					setTexel(FRAMES_RING, x, y, FACE);
++					x0 = x < x0 ? x : x0;
++					y0 = y < y0 ? y : y0;
++					x1 = x > x1 ? x : x1;
++					y1 = y > y1 ? y : y1;
++				}
++			}
++		}
++		if (x1 - x0 != 5 || y1 - y0 != 4) {
++			return 0;
++		}
++		for (y = 0; y < 5; y++) {
++			for (x = 0; x < 6; x++) {
++				if (RING[y][x] != '.') {
++					setTexel(FRAMES_RING, x0 + x, y0 + y, RING[y][x] == 'L' ? INK_LIGHT : INK_DARK);
++				}
++			}
++		}
++	}
++	return 1;
++}
++
++static void uploadFrames(void)
++{
++	RECT rect;
++
++	if (!FRAMES_READY) {
++		return;
++	}
++	setRECT(&rect, 320 + FRAMES_X, 128 + FRAMES_Y, FRAMES_WORDS, FRAMES_ROWS);
++	LoadImage(&rect, (u_long *)(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? FRAMES_RING : FRAMES_CROSS));
++	setRECT(&rect, RING_CLUT_X, RING_CLUT_Y, 16, 1);
++	LoadImage(&rect, (u_long *)(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? RING_CLUT : RING_CLUT_FILLER));
++}
++
++uint16_t modButtonClut(void)
++{
++	if (FRAMES_READY && MOD_OPT_BUTTONS == MOD_BUTTONS_JP) {
++		return GetClut(RING_CLUT_X, RING_CLUT_Y);
++	}
++	return GetClut(96, 500);
++}
++
++void modButtonsTimLoaded(GsIMAGE *img)
++{
++	uint16_t *src;
++	int32_t x, y;
++
++	if (img->px != 320 || img->py != 128 || (img->pmode & 7) != 0 || img->pw < FRAMES_X + FRAMES_WORDS ||
++	    img->ph < FRAMES_Y + FRAMES_ROWS) {
++		return;
++	}
++	src = (uint16_t *)img->pixel;
++	for (y = 0; y < FRAMES_ROWS; y++) {
++		for (x = 0; x < FRAMES_WORDS; x++) {
++			FRAMES_CROSS[y * FRAMES_WORDS + x] = src[(FRAMES_Y + y) * img->pw + FRAMES_X + x];
++		}
++	}
++	FRAMES_READY = 0;
++	if (img->cw < 16 || img->ch <= FRAMES_CLUT_Y || ((img->pmode >> 3) & 1) == 0) {
++		return;
++	}
++	for (x = 0; x < 16; x++) {
++		RING_CLUT[x] = ((uint16_t *)img->clut)[FRAMES_CLUT_Y * img->cw + x];
++		RING_CLUT_FILLER[x] = src[(RING_CLUT_Y - 128) * img->pw + (RING_CLUT_X - 320) + x];
++	}
++	RING_CLUT[INK_LIGHT] = RING_LIGHT;
++	RING_CLUT[INK_DARK] = RING_DARK;
++	FRAMES_READY = makeRing();
++	if (MOD_OPT_BUTTONS == MOD_BUTTONS_JP) {
++		uploadFrames();
++	}
++}
++
++void modSetButtons(int32_t layout)
++{
++	MOD_OPT_BUTTONS = layout == MOD_BUTTONS_JP ? MOD_BUTTONS_JP : MOD_BUTTONS_US;
++	uploadFrames();
++}
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 4b2d6637..49c8869e 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -2,6 +2,7 @@
+ 
+ #include <libgs.h>
+ 
++#include <dw/mod_options.h>
+ #include <dw/font.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+@@ -1183,7 +1184,7 @@ void renderUIBox(int32_t boxId)
+ 	SetPolyFT4(&poly);
+ 	SetSemiTrans(&poly, 1);
+ 	poly.tpage = GetTPage(0, 1, 320, 128);
+-	poly.clut = GetClut(96, 500);
++	poly.clut = modButtonClut(); /* MOD (options): GetClut(96, 500), the ○ in red */
+ 	setRGB0(&poly, 0x80, 0x80, 0x80);
+ 	setUVDataPolyFT4(&poly, u, 0xb7, 0x10, 0xc);
+ 	setPosDataPolyFT4(&poly, x, y, 0x10, 0xc);
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 7a3210c1..fece6a30 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -1,5 +1,6 @@
+ #include <libetc.h>
+ 
++#include <dw/mod_options.h>
+ #include <dw/mod_rules.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/btl.h>
+@@ -511,6 +512,7 @@ void loadStackedTIMFile(char *path)
+ 		GsGetTimInfo((u_long *)p, &img);
+ 		p += ((img.pw * img.ph) / 2 + 4) * 4;
+ 		LoadImage((RECT *)&img.px, img.pixel);
++		modButtonsTimLoaded(&img); /* MOD (options): the dialogue box's button follows the layout */
+ 		if ((img.pmode >> 3) & 1) {
+ 			LoadImage((RECT *)&img.cx, img.clut);
+ 			p += ((img.cw * img.ch) / 2 + 3) * 4;
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index a8e9765a..11bfa50c 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -338,3 +338,18 @@ LABELS:
+       ja: デジモン
+       en_us: NULL
+       en_eu: Digimon
++
++# MOD (options): the title menu's OPTIONS, ours (not the game's), keyed so a text source can translate them
++# (keys main.MOD_OPT_STR_*); `storage: define`, a literal where main_menu.c uses it.
++MOD_OPTIONS:
++  storage: define
++  strings:
++    MOD_OPT_STR_OPTIONS:
++      ja: "OPTIONS"
++      en_us: "OPTIONS"
++    MOD_OPT_STR_JP_OFF:
++      ja: "JAPANESE CONTROLS   OFF"
++      en_us: "JAPANESE CONTROLS   OFF"
++    MOD_OPT_STR_JP_ON:
++      ja: "JAPANESE CONTROLS   ON"
++      en_us: "JAPANESE CONTROLS   ON"
+-- 
+2.53.0
+

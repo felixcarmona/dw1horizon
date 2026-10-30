@@ -1,0 +1,367 @@
+{
+ "s168.sec10.u0": [
+  [
+   "- Grado D - Torneo",
+   "soprattutto per Digimon",
+   "Intermedi. Singoli, 3 turni, 8"
+  ],
+  [
+   "iscritti Accesso: aperto a",
+   "tutti"
+  ]
+ ],
+ "s168.sec10.u1": [
+  [
+   "- Grado C - Torneo",
+   "soprattutto per Digimon",
+   "Campioni. Singoli, 3 turni, 8"
+  ],
+  [
+   "iscritti Accesso: aperto a",
+   "tutti"
+  ]
+ ],
+ "s168.sec10.u2": [
+  [
+   "- Grado B - Per i Campioni",
+   "sicuri della propria forza.",
+   "Singoli, 3 turni, 8 iscritti"
+  ],
+  [
+   "Accesso: aperto a tutti"
+  ]
+ ],
+ "s168.sec10.u3": [
+  [
+   "- Grado A - Torneo",
+   "soprattutto per Digimon",
+   "Evoluti. Singoli, 3 turni, 8"
+  ],
+  [
+   "iscritti Accesso: aperto a",
+   "tutti"
+  ]
+ ],
+ "s168.sec10.u4": [
+  [
+   "- Grado S - Si radunano i",
+   "Digimon più forti in assoluto.",
+   "Singoli, 3 turni, 8 iscritti"
+  ],
+  [
+   "Accesso: vincitori grado A"
+  ]
+ ],
+ "s168.sec10.u5": [
+  [
+   "- Grado R - Una mischia da",
+   "vincere con astuzia e tattica.",
+   "A quattro, 2 turni, 8 iscritti"
+  ],
+  [
+   "Accesso: aperto a tutti"
+  ]
+ ],
+ "s168.sec10.u6": [
+  [
+   "- Coppa Versione 1 -",
+   "Incorona il miglior Digimon",
+   "della versione 1. Incontri a"
+  ],
+  [
+   "tempo limitato. Singoli, 3",
+   "turni, 8 iscritti Accesso:",
+   "Digimon versione 1"
+  ]
+ ],
+ "s168.sec10.u7": [
+  [
+   "- Coppa Versione 2 -",
+   "Incorona il miglior Digimon",
+   "della versione 2. Incontri a"
+  ],
+  [
+   "tempo limitato. Singoli, 3",
+   "turni, 8 iscritti Accesso:",
+   "Digimon versione 2"
+  ]
+ ],
+ "s168.sec10.u8": [
+  [
+   "- Coppa Versione 3 -",
+   "Incorona il miglior Digimon",
+   "della versione 3. Incontri a"
+  ],
+  [
+   "tempo limitato. Singoli, 3",
+   "turni, 8 iscritti Accesso:",
+   "Digimon versione 3"
+  ]
+ ],
+ "s168.sec10.u9": [
+  [
+   "- Coppa Versione 4 -",
+   "Incorona il miglior Digimon",
+   "della versione 4. Incontri a"
+  ],
+  [
+   "tempo limitato. Singoli, 3",
+   "turni, 8 iscritti Accesso:",
+   "Digimon versione 4"
+  ]
+ ],
+ "s168.sec10.u10": [
+  [
+   "- Coppa Versione O -",
+   "Incorona il miglior Digimon",
+   "fuori dalle versioni 1-4."
+  ],
+  [
+   "Incontri a tempo limitato.",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: fuori versioni 1-4"
+  ]
+ ],
+ "s168.sec10.u11": [
+  [
+   "- Coppa Fuoco - Incorona il",
+   "re dei Digimon delle fiamme.",
+   "Incontri a tempo limitato."
+  ],
+  [
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Fuoco"
+  ]
+ ],
+ "s168.sec10.u12": [
+  [
+   "- Coppa Lotta - Incorona il",
+   "re delle arti marziali Digimon.",
+   "Incontri a tempo limitato."
+  ],
+  [
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Lotta"
+  ]
+ ],
+ "s168.sec10.u13": [
+  [
+   "- Coppa Tuono e Vento -",
+   "Incorona il re dei Digimon del",
+   "cielo e delle tempeste."
+  ],
+  [
+   "Incontri a tempo limitato.",
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Aria"
+  ]
+ ],
+ "s168.sec10.u14": [
+  [
+   "- Coppa Stile - Incorona il",
+   "re dei Digimon più freschi.",
+   "Incontri a tempo limitato."
+  ],
+  [
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Ghiaccio"
+  ]
+ ],
+ "s168.sec10.u15": [
+  [
+   "- Coppa Natura - Incorona il",
+   "re dei Digimon che amano la",
+   "natura. Incontri a tempo"
+  ],
+  [
+   "limitato. Singoli, 3 turni, 8",
+   "iscritti Accesso: Natura"
+  ]
+ ],
+ "s168.sec10.u16": [
+  [
+   "- Coppa Metallo - Incorona il",
+   "re dei Digimon supermacchine.",
+   "Incontri a tempo limitato."
+  ],
+  [
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Macchina"
+  ]
+ ],
+ "s168.sec10.u17": [
+  [
+   "- Coppa Sporco - Incorona il",
+   "re dei Digimon più spooorchi.",
+   "Incontri a tempo limitato."
+  ],
+  [
+   "Singoli, 3 turni, 8 iscritti",
+   "Accesso: Sporco"
+  ]
+ ],
+ "s168.sec10.u18": [
+  [
+   "- Coppa Dino - I Digimon di",
+   "sangue antico misurano le",
+   "proprie forze. Incontri a tempo"
+  ],
+  [
+   "limitato. Singoli, 3 turni, 8",
+   "iscritti Accesso: ???"
+  ]
+ ],
+ "s168.sec10.u19": [
+  [
+   "- Coppa Ali - I Digimon fieri",
+   "delle ali misurano le proprie",
+   "forze. Incontri a tempo"
+  ],
+  [
+   "limitato. Singoli, 3 turni, 8",
+   "iscritti Accesso: ???"
+  ]
+ ],
+ "s168.sec10.u20": [
+  [
+   "- Coppa Animale - I Digimon",
+   "dal sangue bestiale misurano le",
+   "proprie forze. Incontri a tempo"
+  ],
+  [
+   "limitato. Singoli, 3 turni, 8",
+   "iscritti Accesso: ???"
+  ]
+ ],
+ "s168.sec10.u21": [
+  [
+   "- Coppa Umana - I Digimon",
+   "umanoidi misurano le proprie",
+   "forze. Incontri a tempo"
+  ],
+  [
+   "limitato. Singoli, 3 turni, 8",
+   "iscritti Accesso: ???"
+  ]
+ ],
+ "s168.sec53.u0": [
+  [
+   "Ehi, quelli sono i posti del",
+   "pubblico."
+  ]
+ ],
+ "s168.sec82.m0.o0": "Risultati",
+ "s168.sec82.m0.o1": "Tornei di grado",
+ "s168.sec82.m0.o2": "Tornei speciali",
+ "s168.sec82.u0": [
+  [
+   "Informazioni sull'arena"
+  ]
+ ],
+ "s168.sec82.u1": [
+  [
+   "Tornei vinti: {cupswon}",
+   "{wins} vittorie,",
+   "{losses} sconfitte"
+  ]
+ ],
+ "s168.sec82.u2": [
+  [
+   "I tornei di grado si tengono",
+   "spesso e sono aperti a tutti.",
+   "Evita però di iscrivere un"
+  ],
+  [
+   "Digimon di livello molto",
+   "superiore a quello del torneo.",
+   "Se il tuo Digimon cambia specie"
+  ],
+  [
+   "tra l'iscrizione e il torneo,",
+   "l'iscrizione viene annullata."
+  ]
+ ],
+ "s168.sec82.u3": [
+  [
+   "I tornei speciali hanno",
+   "requisiti precisi e si tengono",
+   "raramente. Se in città non ci"
+  ],
+  [
+   "sono abbastanza partecipanti",
+   "idonei, non si disputano.",
+   "Ognuno si tiene solo una o due"
+  ],
+  [
+   "volte all'anno: controlla il",
+   "calendario con largo anticipo."
+  ]
+ ],
+ "s168.sec84.u0": [
+  [
+   "Eh eh... {color 10}{partner}{color 1}, hai",
+   "salvato il mondo. Ti troverò un",
+   "titolo da eroe. Vediamo..."
+  ]
+ ],
+ "s168.sec84.u1": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1}, il",
+   "re invincibile»?"
+  ]
+ ],
+ "s168.sec84.u2": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "l'eroe leggendario»?"
+  ]
+ ],
+ "s168.sec84.u3": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "signore del nuovo mondo»?"
+  ]
+ ],
+ "s168.sec84.u4": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "portatore di pace»?"
+  ]
+ ],
+ "s168.sec84.u5": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "la leggenda imbattuta»?"
+  ]
+ ],
+ "s168.sec84.u6": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1}, il",
+   "valoroso»?"
+  ]
+ ],
+ "s168.sec84.u7": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1}, il",
+   "tipo imperturbabile»?"
+  ]
+ ],
+ "s168.sec84.u8": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "dio supremo della guerra»?"
+  ]
+ ],
+ "s168.sec84.u9": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1},",
+   "vento dei cieli»?"
+  ]
+ ],
+ "s168.sec84.u10": [
+  [
+   "Che ne dici di «{color 10}{partner}{color 1}, il",
+   "ladro elegante»?"
+  ]
+ ]
+}

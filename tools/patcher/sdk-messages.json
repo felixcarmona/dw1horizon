@@ -1,0 +1,80 @@
+{
+  "libgs": [
+    {
+      "text": "GPU: depth exceeded\n",
+      "size": 42
+    },
+    {
+      "text": "%d,%d,%d %d,%d,%d %d,%d,%d\n",
+      "size": 34
+    },
+    {
+      "text": "%d,%d,%d\n",
+      "size": 12
+    },
+    {
+      "text": "GPU: bad light mode %d\n",
+      "size": 29
+    },
+    {
+      "text": "GPU: unknown code %02x\n",
+      "size": 30
+    },
+    {
+      "text": "GPU: code %x/%x\n",
+      "size": 26
+    }
+  ],
+  "libmcrd": [
+    {
+      "text": "Card: duplicate event\n",
+      "size": 38
+    },
+    {
+      "text": "Card: file open\n",
+      "size": 37
+    },
+    {
+      "text": "Card: file closed\n",
+      "size": 33
+    },
+    {
+      "text": "Card: use 128-byte blocks\n",
+      "size": 56
+    },
+    {
+      "text": "Card: invalid size\n",
+      "size": 36
+    },
+    {
+      "text": "Card: busy\n",
+      "size": 30
+    },
+    {
+      "text": "Card: unaligned size\n",
+      "size": 42
+    },
+    {
+      "text": "Card: event limit\n",
+      "size": 25
+    }
+  ],
+  "libspu": [
+    {
+      "text": "SPU:wait %s\n",
+      "size": 14
+    },
+    {
+      "text": "reset wait",
+      "size": 13
+    },
+    {
+      "text": "wait ready low",
+      "size": 19
+    },
+    {
+      "text": "wait DMA clear",
+      "size": 20
+    }
+  ]
+}

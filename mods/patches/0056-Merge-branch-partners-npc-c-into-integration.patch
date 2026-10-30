@@ -1,0 +1,639 @@
+From abf3d1b11c3da8df1ea2ddf267a3618aaccaeef2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:20:08 +0000
+Subject: [PATCH] Merge branch 'partners-npc-c' into integration
+
+Conflicts resolved keeping every branch:
+- per-partner rows, VLALL, TRN/TRN2 ids: all rows;
+- ids.h: npc-c's ids (Gigadramon defined once), HAS_RAISED_FLAG with every
+  partner that has a flag, RAISED_TRIGGER kept;
+- file_table_us.c: DIGI.DAT and MUGP/JIJP/ANLP.MMD before NULL, the size
+  from the initializer;
+- model.c: species' getDigimonModelName/getDigimonModelRef and npc-c's
+  partner-only names (class 3), whose fallback is the species name; the async
+  read uses DIGI.DAT sectors, the FILE_OFFSET_TABLE lookup for a partner
+  file, or the CHDAT path;
+- tickConditions: one Ultimate branch, Machinedramon (48 h) first, then a
+  path target (MetalEtemon, 96 h); npc-a's type guards dropped since
+  getEvolutionPath gives every type a row (new species keep evolving);
+- efe.c: npc-c's bone maps folded into the one MOD_TECH_DONORS table;
+- mod_lab.c: one evolve list.
+
+---
+ include/dw/evolution.h   |  2 ++
+ include/dw/ids.h         | 30 +++++++++++++++++++++++-
+ src/btl/battle_effect.c  |  4 ++--
+ src/main/efe.c           | 16 ++++++++++++-
+ src/main/evolution.c     | 44 ++++++++++++++++++++++++++++++++++++
+ src/main/file_table_us.c | 10 +++++++-
+ src/main/main.c          | 33 ++++++++++++++++++++-------
+ src/main/map.c           |  4 ++--
+ src/main/mod_lab.c       | 18 ++++++++++++---
+ src/main/model.c         | 59 ++++++++++++++++++++++++++++++++++++++++++++++--
+ src/main/partner_impl.c  | 54 ++++++++++++++++++++++++++++++++++++--------
+ src/main/sound.c         |  7 ++++--
+ src/std/std_effect.c     |  4 ++--
+ src/trn/trn_reward.c     |  6 +++++
+ src/trn2/trn2_off.c      |  6 +++++
+ src/vs/vs_effect.c       |  4 ++--
+ 16 files changed, 266 insertions(+), 35 deletions(-)
+
+diff --git a/include/dw/evolution.h b/include/dw/evolution.h
+index 74280b2..c697c66 100644
+--- a/include/dw/evolution.h
++++ b/include/dw/evolution.h
+@@ -9,6 +9,8 @@ int16_t getFreshEvolutionTarget(int32_t currentDigimon);
+ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon);
+ int16_t getRookieEvolutionTarget(int32_t currentDigimon);
+ int16_t getChampionEvolutionTarget(int32_t currentDigimon);
++/* MOD (machinedramon): Megadramon/Gigadramon -> Machinedramon */
++int16_t getModUltimateEvolutionTarget(int32_t currentDigimon);
+ int32_t handleSpecialEvolutions(int32_t mode, Entity *entity);
+ void reincarnatePartner(int32_t unused, Stats *stats, PartnerPara *partner,
+                         int32_t digimonId);
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 48c8c13..f2efb13 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -104,11 +104,39 @@ typedef uint16_t CardId;
+  */
+ #define DIGIMON_WHAMON			24
+ #define DIGIMON_SHOGUNGEKOMON		119
++/*
++ * MOD (machinedramon): Machinedramon (the final boss) is a partner too,
++ * reached from Megadramon or Gigadramon (an Ultimate that evolves again,
++ * evolution.c) or the lab menu. Its partner model is a separate file
++ * (MUGP.MMD, model.c), so the boss keeps MUGE.MMD. Its per-partner rows are
++ * at index 115; its "raised" flag is trigger 0x200 + 115 = 627, free.
++ */
++#define DIGIMON_METALGREYMON		12
++#define DIGIMON_MEGADRAMON		54
++/* DIGIMON_GIGADRAMON (64): above */
++#define DIGIMON_MACHINEDRAMON		115
++/*
++ * MOD (jijimon): Jijimon, the File City elder, is a partner too (lab menu
++ * only), with a partner-only model (JIJP.MMD: Ogremon's motion set) and
++ * Ogremon's technique effect origins (efe.c). Rows at index 117; "raised"
++ * flag trigger 0x200 + 117 = 629, free.
++ */
++#define DIGIMON_OGREMON			34
++#define DIGIMON_JIJIMON			117
++/*
++ * MOD (analogman): Analogman, the human villain, is a partner too (lab menu
++ * only), with a partner-only model (ANLP.MMD: Andromon's motion set) and
++ * Andromon's technique effect origins (efe.c). Rows at index 116; "raised"
++ * flag trigger 0x200 + 116 = 628, free.
++ */
++#define DIGIMON_ANDROMON		40
++#define DIGIMON_ANALOGMAN		116
+ #define HAS_RAISED_FLAG(type)                                                 \
+ 	((uint32_t)(type) < NUM_EVOLVING_DIGIMON || (type) == DIGIMON_CHERRYMON || \
+ 	 (type) == DIGIMON_MASTER_TYRANNOMON || (type) == DIGIMON_KING_SUKAMON ||  \
+ 	 (type) == DIGIMON_WARUMONZAEMON || (type) == DIGIMON_MYOTISMON ||         \
+-	 (type) == DIGIMON_SHOGUNGEKOMON)
++	 (type) == DIGIMON_SHOGUNGEKOMON || (type) == DIGIMON_MACHINEDRAMON ||     \
++	 (type) == DIGIMON_JIJIMON || (type) == DIGIMON_ANALOGMAN)
+ /* the trigger of a type's raised flag (only for HAS_RAISED_FLAG types) */
+ #define RAISED_TRIGGER(type) \
+ 	((type) == DIGIMON_MYOTISMON ? TRIGGER_RAISED_MYOTISMON : (type) + TRIGGER_RAISED_BASE)
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 2098c9d..1d85339 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1191,8 +1191,8 @@ EfeAuraType BTL_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0071, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 },
+ 	{ 0x0072, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0073, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0058 },
+-	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0000 }, /* MOD (analogman): Andromon's u (was 0xffff) */
++	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 }, /* MOD (jijimon): Ogremon's u (was 0xffff) */
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 0d73955..a4124ee 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1382,7 +1382,16 @@ static ModTechOrigin MOD_TECH_ORIGINS_SHOGUNGEKOMON[] = {
+ 	{ { 2, -102, 0, 155 }, { 7, 90, -270, 30 } }, /* Blasting Spout: a trumpet */
+ };
+ 
+-/* MOD_TECH_DONORS_NPC_C (partners-npc-c) is spliced in below when merged */
++/*
++ * MOD (partners-npc-c): Jijimon and Analogman take their donor's animations,
++ * so each donor bone maps to the bone that plays its part in the retargeted
++ * animation (the club hand to the staff hand...), the offset scaled.
++ */
++/* MOD (jijimon): Ogremon's bones 1-17 -> Jijimon's (head and jaw -> face, club -> staff), 250/390 high */
++static int8_t MOD_TECH_BONES_JIJIMON[] = { 0, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
++/* MOD (analogman): Andromon's bones 1-20 -> Analogman's (the shoulder joints to the torso,
++ * each arm and leg piece to his), 350/400 high */
++static int8_t MOD_TECH_BONES_ANALOGMAN[] = { 0, 1, 2, 3, 2, 4, 5, 6, 2, 8, 9, 10, 11, 11, 12, 13, 14, 11, 15, 16, 17 };
+ 
+ static ModTechDonor MOD_TECH_DONORS[] = {
+ 	/* MOD (cherrymon) */
+@@ -1414,6 +1423,11 @@ static ModTechDonor MOD_TECH_DONORS[] = {
+ 	{ DIGIMON_MYOTISMON, DIGIMON_DEVIMON, 430, 400, MOD_DONOR_FALLBACK, 0, NULL, { 3, 0, 0, -60 }, NULL, 0 },
+ 	{ DIGIMON_WARUMONZAEMON, DIGIMON_MONZAEMON, 410, 330, MOD_DONOR_FALLBACK,
+ 	  MOD_COUNT(MOD_TECH_ORIGINS_WARUMONZAEMON), MOD_TECH_ORIGINS_WARUMONZAEMON, { 2, 0, -62, -179 }, NULL, 0 },
++	/* MOD (partners-npc-c) */
++	{ DIGIMON_JIJIMON, DIGIMON_OGREMON, 16, 25, 0, 0, NULL, { 0 }, MOD_TECH_BONES_JIJIMON,
++	  MOD_COUNT(MOD_TECH_BONES_JIJIMON) },
++	{ DIGIMON_ANALOGMAN, DIGIMON_ANDROMON, 7, 8, 0, 0, NULL, { 0 }, MOD_TECH_BONES_ANALOGMAN,
++	  MOD_COUNT(MOD_TECH_BONES_ANALOGMAN) },
+ };
+ 
+ static int32_t modOriginMatches(EfeBoneOffset *from, EfeBoneOffset *row)
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index e475bcd..9983dba 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -474,6 +474,18 @@ EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON
+ 		0x000a, 0x0028, 0xffff, 0xffff, 0x0032, 0x0028, 0x00,
+ 		0x00,
+ 	},
++	/*
++	 * MOD (machinedramon): from Megadramon or Gigadramon, the only
++	 * Ultimates that evolve again (getModUltimateEvolutionTarget). The
++	 * final boss: HP 7000, MP 6000, Off 600, Def 600, Speed 400, Brains
++	 * 400, at most 3 care mistakes (flag 0x10), weight 65..75; bonus:
++	 * discipline 95 or 100 battles.
++	 */
++	[DIGIMON_MACHINEDRAMON] = {
++		0xffff, 0x02bc, 0x0258, 0x0258, 0x0258, 0x0190, 0x0190,
++		0x0003, 0x0046, 0x005f, 0xffff, 0x0064, 0xffff, 0x10,
++		0x00,
++	},
+ };
+ 
+ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+@@ -568,6 +580,16 @@ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIG
+ 	[DIGIMON_SHOGUNGEKOMON] = { 0x1b58, 0x0dac, 0x01f4, 0x0258, 0x012c, 0x01f4, DIGIMON_SHOGUNGEKOMON },
+ 	[DIGIMON_MYOTISMON] = { 0x1770, 0x1770, 0x0226, 0x01c2, 0x0258, 0x0258, DIGIMON_MYOTISMON },
+ 	[DIGIMON_WARUMONZAEMON] = { 0x1388, 0x0fa0, 0x0258, 0x01c2, 0x01c2, 0x0190, DIGIMON_WARUMONZAEMON },
++	/* MOD (machinedramon): stronger than any Ultimate: HP 8000, MP 7000, Off 800,
++	 * Def 750, Speed 600, Brains 650 */
++	[DIGIMON_MACHINEDRAMON] = { 0x1f40, 0x1b58, 0x0320, 0x02ee, 0x0258, 0x028a,
++				    DIGIMON_MACHINEDRAMON },
++	/* MOD (jijimon): a wise old Ultimate, reached only from the lab menu: HP 4000,
++	 * MP 6000, Off 450, Def 500, Speed 300, Brains 800 */
++	[DIGIMON_JIJIMON] = { 0x0fa0, 0x1770, 0x01c2, 0x01f4, 0x012c, 0x0320, DIGIMON_JIJIMON },
++	/* MOD (analogman): a brilliant, frail Ultimate, reached only from the lab menu:
++	 * HP 3500, MP 7000, Off 400, Def 350, Speed 450, Brains 900 */
++	[DIGIMON_ANALOGMAN] = { 0x0dac, 0x1b58, 0x0190, 0x015e, 0x01c2, 0x0384, DIGIMON_ANALOGMAN },
+ };
+ 
+ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+@@ -1245,3 +1267,25 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+   PARTNER_ENTITY.lives = 3;
+   setDigimonRaised(id);
+ }
++
++/*
++ * MOD (machinedramon): the Ultimate evolution check. In the original an
++ * Ultimate never evolves (tickConditions only checks levels 1-4). Megadramon
++ * and Gigadramon, from 48 hours after their own evolution, evolve into
++ * Machinedramon when its requirements (EVOLUTION_REQS) score 3 points, like
++ * a Champion's targets. Returns -1 otherwise (and for every other type).
++ */
++int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
++{
++	EvoRequirements *reqs;
++
++	if (currentDigimon != DIGIMON_MEGADRAMON && currentDigimon != DIGIMON_GIGADRAMON) {
++		return -1;
++	}
++	reqs = &EVOLUTION_REQS[DIGIMON_MACHINEDRAMON];
++	if (calculateRequirementScore(currentDigimon, DIGIMON_MACHINEDRAMON, (reqs->flags & 0x10) >> 4,
++	                              reqs->flags & 1, -1) >= 3) {
++		return DIGIMON_MACHINEDRAMON;
++	}
++	return -1;
++}
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index d299898..d6d309c 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -3,7 +3,7 @@
+ #include <dw/atan_lookup_table.h>
+ 
+ // clang-format off
+-FileEntry FILE_OFFSET_TABLE[820] = { /* MOD: + DIGI.DAT */
++FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + partner models (partners-npc-c) */
+ 	{ 0x00000017, 0x00000044, "SYSTEM.CNF" },
+ 	{ 0x00000019, 0x001ce000, "CARD.ALL" },
+ 	{ 0x000003b6, 0x0032a000, "ALLTIM.TIM" },
+@@ -825,6 +825,14 @@ FileEntry FILE_OFFSET_TABLE[820] = { /* MOD: + DIGI.DAT */
+ 	/* MOD (species): new species (tools/species.py); build-disc.py --relayout
+ 	 * writes its sector and size. Without the file the header check fails. */
+ 	{ 0x00000000, 0x00000800, "DIGI.DAT" },
++	/*
++	 * MOD (partners-npc-c): partner-only models (model.c). Sector 0 until
++	 * build-disc.py --relayout --add writes the real one; without the file
++	 * the partner falls back to the NPC model.
++	 */
++	{ 0x00000000, 0x00000001, "MUGP.MMD" }, /* MOD (machinedramon) */
++	{ 0x00000000, 0x00000001, "JIJP.MMD" }, /* MOD (jijimon) */
++	{ 0x00000000, 0x00000001, "ANLP.MMD" }, /* MOD (analogman) */
+ 	{ 0x00000000, 0x00000000, "NULL" },
+ };
+ // clang-format on
+diff --git a/src/main/main.c b/src/main/main.c
+index 4fa6cd0..7ec5f31 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -2161,33 +2161,50 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(ANALOGMAN)
++		/*
++		 * MOD (analogman): a partner. Was level 0 with no specialty
++		 * and no techniques (an NPC). Now an Ultimate of the Mech
++		 * and Air specialties with Andromon's program and electric
++		 * techniques: Static Elect, Megalo Spark, Delete Program,
++		 * Pulse Laser, Reverse Prog, DG Dimension, Full Potential
++		 * and the finisher Spiral Sword (0x66, animation 0x35), all
++		 * on Andromon's animations (ANLP.MMD). Size unchanged.
++		 */
+ 		0x00000012,
+ 		0x0064,
+ 		0x015e,
+ 		0x00,
+-		0x00,
+-		{ 0xff, 0xff, 0xff },
++		0x05,
++		{ 0x05, 0x02, 0xff },
+ 		0x00,
+ 		0x00,
+ 		{
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			0x0c, 0x0b, 0x1c, 0x1b, 0x1f, 0x1d, 0x1e, 0x66,
++			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(JIJIMON)
++		/*
++		 * MOD (jijimon): a partner. Was level 0 with no specialty
++		 * and no techniques (the File City elder). Now an Ultimate
++		 * of the Battle specialty with Tremar, War Cry, Sonic Jab,
++		 * Dynamite Kick, Megaton Punch, Buster Dive and Ogremon's
++		 * finisher Pummel Whack (0x51, animation 0x34): his staff
++		 * does what Ogremon's club does (JIJP.MMD). Size unchanged.
++		 */
+ 		0x00000011,
+ 		0x0078,
+ 		0x00fa,
+ 		0x02,
+-		0x00,
+-		{ 0xff, 0xff, 0xff },
++		0x05,
++		{ 0x01, 0xff, 0xff },
+ 		0x00,
+ 		0x0a,
+ 		{
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			0x28, 0x2a, 0x2b, 0x2c, 0x2e, 0x2f, 0x51, 0xff,
++			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+diff --git a/src/main/map.c b/src/main/map.c
+index 5f1b7ad..865b7ea 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -2853,8 +2853,8 @@ SVECTOR CONDITION_FX_OFFSETS[177] = {
+ 	{ 0x0064, 0x0023, 0x0000, 0x0003 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x002d, 0x0064, 0x0000, 0x0006 },
+-	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+-	{ 0x0000, 0x0000, 0x0000, 0x0000 },
++	{ 0x0000, 0xffb0, 0x0000, 0x0003 }, /* MOD (analogman): above the head, bone 3 (was 0) */
++	{ 0x0000, 0xff9c, 0x0000, 0x0003 }, /* MOD (jijimon): above the face, bone 3 (was 0) */
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0xfeb6, 0x0000, 0x0004 }, /* MOD (partners-npc-b): ShogunGekomon, above the head (bone 4) */
+ 	{ 0x00d7, 0x003e, 0xffed, 0x0004 }, /* MOD (partners-npc-a): King of Sukamon, Sukamon's x1.71 (was 0) */
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index dd48cf4..ee7fb98 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -17,8 +17,10 @@
+  *                      the target: "To MasterTyrannomon", "To Cherrymon"
+  *                      (type 121; MOD cherrymon), "To King of Sukamon"
+  *                      (type 120; MOD partners-npc-a), "To Icemon" (94),
+- *                      "To Meteormon" (113), or one of the partners of
+- *                      MOD partners-npc-b
++ *                      "To Meteormon" (113), the partners of MOD
++ *                      partners-npc-b, "To Machinedramon" (type 115; MOD
++ *                      machinedramon), "To Jijimon" (117), "To Analogman"
++ *                      (116)
+  *   - "Close"
+  *
+  * The result of an option replaces the stats line until the next key, so the
+@@ -90,7 +92,11 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"Close",
+ };
+ 
+-/* MOD (cherrymon): the evolve option cycles through these targets */
++/*
++ * MOD (cherrymon): the evolve option cycles through these targets.
++ * MOD (partners-npc-c): the count follows the arrays, so new targets are
++ * only appended to both.
++ */
+ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_MASTER_TYRANNOMON,
+ 	DIGIMON_CHERRYMON,
+@@ -100,6 +106,9 @@ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_WARUMONZAEMON, /* MOD (partners-npc-b) */
+ 	DIGIMON_MYOTISMON,
+ 	DIGIMON_SHOGUNGEKOMON,
++	DIGIMON_MACHINEDRAMON, /* MOD (machinedramon) */
++	DIGIMON_JIJIMON,       /* MOD (jijimon) */
++	DIGIMON_ANALOGMAN,     /* MOD (analogman) */
+ };
+ 
+ static char *MOD_LAB_EVO_TEXT[] = {
+@@ -111,6 +120,9 @@ static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To WaruMonzaemon", /* MOD (partners-npc-b) */
+ 	"To Myotismon",
+ 	"To ShogunGekomon",
++	"To Machinedramon", /* MOD (machinedramon) */
++	"To Jijimon",       /* MOD (jijimon) */
++	"To Analogman",     /* MOD (analogman) */
+ };
+ #define MOD_LAB_EVO_COUNT ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
+diff --git a/src/main/model.c b/src/main/model.c
+index ca4208d..23c973b 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -11,6 +11,8 @@
+ #include <dw/evl.h>
+ #include <dw/file.h>
+ #include <dw/file_queue.h>
++#include <dw/file_table.h>
++#include <dw/ids.h>
+ #include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+@@ -3377,6 +3379,49 @@ static void readDigimonModel(int32_t type, char *path, void *buffer)
+ 	}
+ }
+ 
++/*
++ * MOD (partners-npc-c): NPC characters that can also be the partner get a
++ * partner-only model file: the partner needs some 45 animation slots, while
++ * the NPC model has the few its scenes play and is loaded into the shared
++ * NPC heap on the screens where the character appears (a grown file there
++ * would take heap from the other NPCs). Partner loads (loadMMD and
++ * loadMMDAsync with class 3: Continue, evolution, reincarnation, VS) read
++ * these names instead; NPC loads keep PTR_DIGIMON_FILE_NAMES. A name whose
++ * FILE_OFFSET_TABLE entry has no sector (the file was not added to the disc)
++ * falls back to the NPC model.
++ */
++typedef struct {
++	int16_t type;
++	char name[6];
++} PartnerModelFile;
++
++static PartnerModelFile PARTNER_MODEL_FILES[] = {
++	{ DIGIMON_MACHINEDRAMON, "MUGP" }, /* MOD (machinedramon) */
++	{ DIGIMON_JIJIMON, "JIJP" },       /* MOD (jijimon) */
++	{ DIGIMON_ANALOGMAN, "ANLP" },     /* MOD (analogman) */
++	{ -1, "" },
++};
++
++static char *getPartnerModelName(int32_t type)
++{
++	PartnerModelFile *p;
++	FileEntry *f;
++	char file[16];
++
++	for (p = PARTNER_MODEL_FILES; p->type >= 0; p++) {
++		if (p->type != type) {
++			continue;
++		}
++		concatStrings(file, p->name, MAIN_D_801340E4);
++		for (f = FILE_OFFSET_TABLE; f->size != 0; f++) {
++			if (f->sector != 0 && strcmp(f->filename, file) == 0) {
++				return p->name;
++			}
++		}
++	}
++	return getDigimonModelName(type); /* MOD (integration): species names */
++}
++
+ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ {
+ 	ModelComponent *m;
+@@ -3462,7 +3507,8 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	} else {
+ 		return 0;
+ 	}
+-	name = getDigimonModelName(digiType);
++	/* MOD (partners-npc-c): the partner may have its own file */
++	name = (modelType == 3) ? getPartnerModelName(digiType) : getDigimonModelName(digiType);
+ 	loadDigimonTexture(digiType, name, m);
+ 	concatStrings(path, MAIN_D_8011D484, name);
+ 	concatStrings(path, path, MAIN_D_801340E4);
+@@ -3644,7 +3690,8 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	} else {
+ 		return 0;
+ 	}
+-	name = getDigimonModelName(digimonType);
++	/* MOD (partners-npc-c): the partner may have its own file */
++	name = (entityType == 3) ? getPartnerModelName(digimonType) : getDigimonModelName(digimonType);
+ 	if ((buffer & 3L) != 0) {
+ 		buffer += 4 - (buffer & 3);
+ 	}
+@@ -3663,6 +3710,14 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	getDigimonModelRef(digimonType, &file, &sector, &size);
+ 	if (file != NULL) {
+ 		addFileReadRequestSection(file, (uint8_t *)buffer, sector, (size + 0x7FF) >> 11, readComplete, 0, 0);
++	} else if (name != getDigimonModelName(digimonType)) {
++		/*
++		 * MOD (partners-npc-c): a partner-only file is found through
++		 * FILE_OFFSET_TABLE, like readFile does: the request by path searches
++		 * the ISO directory "CHDAT\MMDn\", and the added files are in the root.
++		 */
++		addFileReadRequestLookup(path, (uint8_t *)buffer, readComplete, 0, 0);
++		size = lookupFileSize(path);
+ 	} else {
+ 		addFileReadRequestPath(path, (uint8_t *)buffer, readComplete, 0, 0);
+ 		size = lookupFileSize(path);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 90edc3c..0ad7341 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -232,6 +232,28 @@ RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	  80, 30, 6, 36, 1200, 10, 46, 4, 6, 0, 30, 42, 376, -958 },
+ 	[DIGIMON_WARUMONZAEMON] = { { 2, 6, 11, 16, 21, -1, -1, -1 },
+ 	  80, 40, 8, 36, 1200, 10, 47, 1, 2, 3, 40, 100, 375, -1005 },
++	/*
++	 * MOD (machinedramon): MetalGreymon's row (12), a bit hungrier, with a
++	 * bigger poop and the weight of a war machine. The status-screen view
++	 * (viewX/Y/Z, see Cherrymon's row) puts the whole 600-high body, cannons
++	 * and tail included, in the Condition panel (tried in the game).
++	 */
++	[DIGIMON_MACHINEDRAMON] = { { 0, 4, 8, 12, 16, 20, -1, -1 },
++	  80, 50, 13, 36, 1200, 16, 53, 2, 3, 0, 70, -560, 640, -150 },
++	/*
++	 * MOD (jijimon): Ogremon's row (34) for a small old man: smaller
++	 * meals and poop, an early sleeper, light (weight 20); the
++	 * status-screen view fits him in the Condition panel.
++	 */
++	[DIGIMON_JIJIMON] = { { 1, 5, 9, 13, 17, 21, -1, -1 },
++	  80, 40, 9, 36, 1200, 8, 50, 1, 5, 1, 20, 280, 340, -1390 },
++	/*
++	 * MOD (analogman): Andromon's row (40): a late sleeper with regular
++	 * meals, weight 30; the status-screen view fits him in the Condition
++	 * panel.
++	 */
++	[DIGIMON_ANALOGMAN] = { { 2, 6, 11, 16, 21, -1, -1, -1 },
++	  80, 32, 6, 36, 1200, 10, 46, 1, 3, 2, 30, 260, 360, -1400 },
+ };
+ 
+ typedef struct {
+@@ -271,6 +293,12 @@ int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	[DIGIMON_WARUMONZAEMON - 1] = 12,
+ 	[DIGIMON_MYOTISMON - 1] = 11, /* MOD (partners-npc-b): Devimon's 10 */
+ 	[DIGIMON_SHOGUNGEKOMON - 1] = 20, /* MOD (partners-npc-b): a wide frog */
++	/* MOD (machinedramon): long arms, MetalGreymon's 15 at its size */
++	[DIGIMON_MACHINEDRAMON - 1] = 20,
++	/* MOD (jijimon): short arms */
++	[DIGIMON_JIJIMON - 1] = 10,
++	/* MOD (analogman): a human's reach */
++	[DIGIMON_ANALOGMAN - 1] = 10,
+ };
+ 
+ extern uint8_t ITEM_CLUT_DATA[];
+@@ -2163,19 +2191,27 @@ void tickConditions(void)
+ 			EVOLUTION_TARGET = getRookieEvolutionTarget(
+ 				PARTNER_ENTITY.digimonEntity.entity.type);
+ 		/*
+-		 * MOD (partners-npc-a): only types with an EVOLUTION_PATHS row
+-		 * (Panjyamon, type 63, read past the table); and an Ultimate
+-		 * with a path (Etemon -> MetalEtemon) is evaluated after 96
+-		 * hours like a Champion. The other Ultimates have no targets.
++		 * MOD (partners-npc-a): Panjyamon (type 63) has no EVOLUTION_PATHS
++		 * row: getEvolutionPath (species) gives it, and every type past
++		 * the table, an empty one, so no type guard is needed here.
+ 		 */
+-		else if (level == 4 && evoTimer >= 144 &&
+-			 PARTNER_ENTITY.digimonEntity.entity.type < NUM_EVOLVING_DIGIMON)
++		else if (level == 4 && evoTimer >= 144)
+ 			EVOLUTION_TARGET = getChampionEvolutionTarget(
+ 				PARTNER_ENTITY.digimonEntity.entity.type);
+-		else if (level == 5 && evoTimer >= 96 &&
+-			 PARTNER_ENTITY.digimonEntity.entity.type < NUM_EVOLVING_DIGIMON)
+-			EVOLUTION_TARGET = getChampionEvolutionTarget(
++		/*
++		 * MOD (integration): an Ultimate may evolve again:
++		 *   - partners-npc-c: Megadramon/Gigadramon -> Machinedramon after
++		 *     48 h (getModUltimateEvolutionTarget, evolution.c);
++		 *   - partners-npc-a: an Ultimate with a path (Etemon ->
++		 *     MetalEtemon) after 96 h, like a Champion.
++		 */
++		else if (level == 5 && evoTimer >= 48) {
++			EVOLUTION_TARGET = getModUltimateEvolutionTarget(
+ 				PARTNER_ENTITY.digimonEntity.entity.type);
++			if (EVOLUTION_TARGET == -1 && evoTimer >= 96)
++				EVOLUTION_TARGET = getChampionEvolutionTarget(
++					PARTNER_ENTITY.digimonEntity.entity.type);
++		}
+ 		if (level == 4 && evoTimer == 360)
+ 			EVOLUTION_TARGET = handleSpecialEvolutions(
+ 				3, ENTITY_TABLE[1]);
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 0fd6213..fb787bc 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -136,6 +136,9 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON
+ 	[DIGIMON_WARUMONZAEMON] = 0x0f, /* MOD (partners-npc-b): Monzaemon's partner sounds */
+ 	[DIGIMON_MYOTISMON] = 0x03,     /* MOD (partners-npc-b): Devimon's partner sounds */
+ 	[DIGIMON_SHOGUNGEKOMON] = 0x05, /* MOD (partners-npc-b): Whamon's partner sounds */
++	[DIGIMON_MACHINEDRAMON] = 0x0a, /* MOD (machinedramon): MetalGreymon's partner sounds */
++	[DIGIMON_JIJIMON] = 0x03, /* MOD (jijimon): Ogremon's partner sounds */
++	[DIGIMON_ANALOGMAN] = 0x0a, /* MOD (analogman): Andromon's partner sounds */
+ };
+ 
+ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+@@ -255,8 +258,8 @@ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+ 	0x3a,	/* Meteormon */
+ 	0x46,	/* ? */
+ 	0x30,	/* Machinedramon */
+-	0x00,	/* Analogman */
+-	0x00,	/* Jijimon */
++	0x24,	/* Analogman; MOD (analogman): Andromon's voice (was 0x00; his NPC animations use no voice) */
++	0x1e,	/* Jijimon; MOD (jijimon): Ogremon's voice (was 0x00; his NPC animations use no voice) */
+ 	0x00,	/* Market Manager */
+ 	0x43,	/* ShogunGekomon; MOD (partners-npc-b): Gekomon's voice (was 0x00) */
+ 	0x23,	/* King of Sukamon; MOD (partners-npc-a): Sukamon's voice (was 0x00) */
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 7b0596a..5592a6f 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -1001,8 +1001,8 @@ EfeAuraType STD_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0071, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 },
+ 	{ 0x0072, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0073, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0058 },
+-	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0000 }, /* MOD (analogman): Andromon's u (was 0xffff) */
++	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 }, /* MOD (jijimon): Ogremon's u (was 0xffff) */
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index f8cb81d..222b632 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -84,6 +84,12 @@ int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	[DIGIMON_WARUMONZAEMON] = { 0x2e, 0xa },
+ 	/* MOD (partners-npc-b): its first technique, like Whamon (24) */
+ 	[DIGIMON_SHOGUNGEKOMON] = { 0x2e, 0xa },
++	/* MOD (machinedramon): its first technique, Megaton Punch */
++	[DIGIMON_MACHINEDRAMON] = { 0x2e, 0xa },
++	/* MOD (jijimon): his first technique, Tremar */
++	[DIGIMON_JIJIMON] = { 0x2e, 0xa },
++	/* MOD (analogman): his first technique, Static Elect */
++	[DIGIMON_ANALOGMAN] = { 0x2e, 0xa },
+ };
+ 
+ MESSAGES_TEXT
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index b88ade6..e092ff7 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -67,6 +67,12 @@ int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	[DIGIMON_WARUMONZAEMON] = { 0x2e, 0xa },
+ 	/* MOD (partners-npc-b): its first technique, like Whamon (24) */
+ 	[DIGIMON_SHOGUNGEKOMON] = { 0x2e, 0xa },
++	/* MOD (machinedramon): its first technique, Megaton Punch */
++	[DIGIMON_MACHINEDRAMON] = { 0x2e, 0xa },
++	/* MOD (jijimon): his first technique, Tremar */
++	[DIGIMON_JIJIMON] = { 0x2e, 0xa },
++	/* MOD (analogman): his first technique, Static Elect */
++	[DIGIMON_ANALOGMAN] = { 0x2e, 0xa },
+ };
+ // clang-format on
+ 
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 058dd98..30a99dd 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -950,8 +950,8 @@ EfeAuraType VS_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0071, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 },
+ 	{ 0x0072, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0073, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0058 },
+-	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0000 }, /* MOD (analogman): Andromon's u (was 0xffff) */
++	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0028 }, /* MOD (jijimon): Ogremon's u (was 0xffff) */
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */

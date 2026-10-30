@@ -1,0 +1,18 @@
+// Readable form of script 120 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 120 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Off. Chip"), -582, 0, 1062, 0, 694);
+        spawn_chest(item("Medicine"), -1129, 0, 1032, 0, 695);
+    }
+
+    on talk(slot0) replace {    // section 5
+        return;
+    }
+}

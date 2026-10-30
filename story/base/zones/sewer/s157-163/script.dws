@@ -1,0 +1,21 @@
+// Readable form of script 157 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 157 {
+    // the section table, in the order of the original header
+    sections 254, 51, 52;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 877, -652);
+        walk(tamer, 1962, -1388);
+        warp_to(220, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        warp_to(154, 1, 255);
+        return;
+    }
+}

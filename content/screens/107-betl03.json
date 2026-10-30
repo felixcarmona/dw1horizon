@@ -1,0 +1,12 @@
+{
+  "id": 107,
+  "file": "BETL03",
+  "tims8": 2,
+  "tims4": 2,
+  "sound_bank": 14,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 58
+}

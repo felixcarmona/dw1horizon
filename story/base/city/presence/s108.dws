@@ -1,0 +1,12 @@
+// Who stands on screen 108 (Beetle Land), and when. Read out of MAPHEAD.SCN section 108 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(108) {                              // Beetle Land
+            npc 169 slot 0 when not recruited(Kuwagamon);
+            npc 169 slot 1;
+            npc 169 slot 2;
+        }
+    }
+}

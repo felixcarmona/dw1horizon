@@ -1,0 +1,955 @@
+{
+ "s066.sec5.u0": [
+  [
+   "El mar és bonic, oi...?"
+  ]
+ ],
+ "s066.sec6.u0": [
+  [
+   "Treu-te del mig!"
+  ]
+ ],
+ "s066.sec7.u0": [
+  [
+   "Ah, ja ho sé! Et diré una cosa",
+   "bona..."
+  ]
+ ],
+ "s066.sec8.u0": [
+  [
+   "Caram, gens malament."
+  ]
+ ],
+ "s067.sec5.u0": [
+  [
+   "Tens bon instint."
+  ]
+ ],
+ "s067.sec6.u0": [
+  [
+   "Ajá, ajá, pot ser que tinguis",
+   "fusta."
+  ]
+ ],
+ "s067.sec7.u0": [
+  [
+   "Així que tu ets aquest...",
+   "Interessant!"
+  ]
+ ],
+ "s067.sec8.u0": [
+  [
+   "Vols que et doni això? Ji,",
+   "ji..."
+  ]
+ ],
+ "s067.sec9.u0": [
+  [
+   "Ara tu i jo som amics,",
+   "veritat...?"
+  ]
+ ],
+ "s067.sec10.u0": [
+  [
+   "Tu enemic? Tu voler baralla?"
+  ]
+ ],
+ "s068.sec5.u0": [
+  [
+   "Ha, ha, si em toques et clavaré",
+   "una bona DESCÀRREGA, eh?"
+  ]
+ ],
+ "s068.sec5.u1": [
+  [
+   "Sent, sent, tu... no et dol?"
+  ]
+ ],
+ "s068.sec5.u2": [
+  [
+   "Hala, quina passada, tens",
+   "coratge! Tens fusta! Vinga, et",
+   "donaré un cop de mà."
+  ]
+ ],
+ "s068.sec5.u3": [
+  [
+   "...I si uses aquesta energia",
+   "elèctrica per a construir la",
+   "ciutat?"
+  ]
+ ],
+ "s068.sec5.u4": [
+  [
+   "...La ciutat? Caram, què deu",
+   "ser...? Em sona d'alguna cosa.",
+   "Per què deu ser? Mmm.",
+   "D'acord, t'ajudaré. Sóc"
+  ],
+  [
+   "Elecmon. Encantat!"
+  ]
+ ],
+ "s068.sec5.u5": "Elecmon s'ha unit a la ciutat!",
+ "s068.sec6.u0": [
+  [
+   "Kueh, kuehhh!"
+  ]
+ ],
+ "s068.sec7.u0": [
+  [
+   "Kiiiiiiieh!!"
+  ]
+ ],
+ "s068.sec8.u0": [
+  [
+   "Tu... sacrifici!"
+  ]
+ ],
+ "s068.sec9.u0": [
+  [
+   "Vas per bon camí. Tu..."
+  ]
+ ],
+ "s068.sec10.u0": [
+  [
+   "Ai... quin mal gust tens."
+  ]
+ ],
+ "s068.sec11.u0": [
+  [
+   "Què descarat! Et guanyaré!"
+  ]
+ ],
+ "s068.sec51.u0": [
+  [
+   "Una porta de ferro ben",
+   "sòlida... Si no s'obre, no hi",
+   "ha manera d'entrar."
+  ]
+ ],
+ "s069.sec5.m0.o0": "D'acord",
+ "s069.sec5.m0.o1": "Ni parlar-ne",
+ "s069.sec5.m1.o0": "Bé, d'acord",
+ "s069.sec5.m1.o1": "Nooo",
+ "s069.sec5.u0": [
+  [
+   "Et guanyaré!"
+  ]
+ ],
+ "s069.sec5.u1": [
+  [
+   "Maleït sigui, tornem-hi."
+  ]
+ ],
+ "s069.sec5.u2": [
+  [
+   "Gairebé ho tenia! Vinga, una",
+   "altra vegada!"
+  ]
+ ],
+ "s069.sec5.u3": [
+  [
+   "No puc guanyaaar! Buaaa!"
+  ]
+ ],
+ "s069.sec5.u4": [
+  [
+   "I què faràs si ganes?"
+  ]
+ ],
+ "s069.sec5.u5": [
+  [
+   "Eh? Això, mmm... No sé."
+  ]
+ ],
+ "s069.sec5.u6": [
+  [
+   "No saps... És a dir, que no hi",
+   "ha cap motiu?"
+  ]
+ ],
+ "s069.sec5.u7": [
+  [
+   "Cap motiu, la veritat.",
+   "M'avorreixo."
+  ]
+ ],
+ "s069.sec5.u8": [
+  [
+   "Ai... Si t'avorreixes, vine a",
+   "la ciutat. Hi ha Digimon de",
+   "tota mena."
+  ]
+ ],
+ "s069.sec5.u9": [
+  [
+   "Caram, sona bé. Hi aniré. Sóc",
+   "Patamon. Fins ara!"
+  ]
+ ],
+ "s069.sec5.u10": "Patamon s'ha unit a la ciutat!",
+ "s069.sec5.u11": [
+  [
+   "Jo, que fat ets!"
+  ]
+ ],
+ "s069.sec6.u0": [
+  [
+   "Oh, véns?"
+  ]
+ ],
+ "s069.sec7.u0": [
+  [
+   "Tu... no fer olor!"
+  ]
+ ],
+ "s069.sec8.u0": [
+  [
+   "Semblar bo. Jo, a tu, menjar!"
+  ]
+ ],
+ "s069.sec9.u0": [
+  [
+   "Ga, ja, ja, ja! Tu graciós!"
+  ]
+ ],
+ "s070.sec5.u0": [
+  [
+   "Ai, has tornat, piu!"
+  ]
+ ],
+ "s070.sec5.u1": [
+  [
+   "Adéééu, piu!"
+  ]
+ ],
+ "s070.sec5.u2": [
+  [
+   "Mmm... a aquest pas no pararem",
+   "de donar voltes."
+  ]
+ ],
+ "s070.sec5.u3": [
+  [
+   "Potser hauríem de tendir-li una",
+   "emboscada..."
+  ]
+ ],
+ "s070.sec5.u4": [
+  [
+   "Mmm? Qui hi ha, piu?"
+  ]
+ ],
+ "s070.sec5.u5": [
+  [
+   "N-no pot ser..."
+  ]
+ ],
+ "s070.sec5.u6": [
+  [
+   "Aaaaaai, piu!"
+  ]
+ ],
+ "s070.sec5.u7": [
+  [
+   "Ah, sent, espera!"
+  ]
+ ],
+ "s070.sec5.u8": [
+  [
+   "Ah, una altra vegada!",
+   "Espeeera!"
+  ]
+ ],
+ "s070.sec5.u9": [
+  [
+   "Ah, una altra vegada!",
+   "Espeeera!"
+  ]
+ ],
+ "s070.sec5.u10": [
+  [
+   "Ah, una altra vegada!",
+   "Espeeera!"
+  ]
+ ],
+ "s070.sec5.u11": [
+  [
+   "Ah, una altra vegada!",
+   "Espeeera!"
+  ]
+ ],
+ "s070.sec6.u0": [
+  [
+   "Vinga, vinga, ataca'm!"
+  ]
+ ],
+ "s070.sec7.u0": [
+  [
+   "Ja, ja, ja, quin valor tens!"
+  ]
+ ],
+ "s070.sec8.u0": [
+  [
+   "Kua, kua!"
+  ]
+ ],
+ "s070.sec9.u0": [
+  [
+   "Jo... arribar aquí primer."
+  ]
+ ],
+ "s070.sec10.u0": [
+  [
+   "Jo fort, tu res!"
+  ]
+ ],
+ "s070.sec11.u0": [
+  [
+   "Si guanyo, no t'enfadis,",
+   "val...?"
+  ]
+ ],
+ "s070.sec51.m0.o0": "Esperar a l'aguait",
+ "s070.sec51.m0.o1": "Anar a un altre lloc",
+ "s070.sec51.u0": [
+  [
+   "Potser em quedo aquí a",
+   "l'aguait..."
+  ]
+ ],
+ "s070.sec51.u1": [
+  [
+   "Vinga, {color 10}{partner}{color 1}, fes venir",
+   "Biyomon cap aquí!"
+  ]
+ ],
+ "s070.sec51.u2": [
+  [
+   "Ah, ha anat cap a una altra",
+   "banda!"
+  ]
+ ],
+ "s070.sec52.m0.o0": "Esperar a l'aguait",
+ "s070.sec52.m0.o1": "Anar a un altre lloc",
+ "s070.sec52.u0": [
+  [
+   "Potser em quedo aquí a",
+   "l'aguait..."
+  ]
+ ],
+ "s070.sec52.u1": [
+  [
+   "Vinga, {color 10}{partner}{color 1}, fes venir",
+   "Biyomon cap aquí!"
+  ]
+ ],
+ "s070.sec52.u2": [
+  [
+   "Ah, ha anat cap a una altra",
+   "banda!"
+  ]
+ ],
+ "s070.sec53.m0.o0": "Esperar a l'aguait",
+ "s070.sec53.m0.o1": "Anar a un altre lloc",
+ "s070.sec53.u0": [
+  [
+   "Potser em quedo aquí a",
+   "l'aguait..."
+  ]
+ ],
+ "s070.sec53.u1": [
+  [
+   "Vinga, {color 10}{partner}{color 1}, fes venir",
+   "Biyomon cap aquí!"
+  ]
+ ],
+ "s070.sec53.u2": [
+  [
+   "Ah, ha anat cap a una altra",
+   "banda!"
+  ]
+ ],
+ "s070.sec54.m0.o0": "Esperar a l'aguait",
+ "s070.sec54.m0.o1": "Anar a un altre lloc",
+ "s070.sec54.u0": [
+  [
+   "Potser em quedo aquí a",
+   "l'aguait..."
+  ]
+ ],
+ "s070.sec54.u1": [
+  [
+   "Vinga, {color 10}{partner}{color 1}, fes venir",
+   "Biyomon cap aquí!"
+  ]
+ ],
+ "s070.sec54.u2": [
+  [
+   "Ah, ha anat cap a una altra",
+   "banda!"
+  ]
+ ],
+ "s070.sec54.u3": [
+  [
+   "L'emboscada ha funcionat!"
+  ]
+ ],
+ "s070.sec54.u4": [
+  [
+   "Ai! S-si us plau, deixa'm anar,",
+   "piu."
+  ]
+ ],
+ "s070.sec54.u5": [
+  [
+   "Espera un moment. No som els",
+   "dolents."
+  ]
+ ],
+ "s070.sec54.u6": [
+  [
+   "Eh? No ets aquest segrestador",
+   "de Digimon del qual parla",
+   "tothom?"
+  ]
+ ],
+ "s070.sec54.u7": [
+  [
+   "...Sembla que corren rumors",
+   "equivocats per aquí... Escolta,"
+  ]
+ ],
+ "s070.sec54.u8": [
+  [
+   "{color 6}{player}{color 1}",
+   "s'ha esforçat molt per",
+   "convèncer-la!"
+  ]
+ ],
+ "s070.sec54.u9": [
+  [
+   "Ja ho veig, piu... Ho havia",
+   "entès tot malament, piu."
+  ]
+ ],
+ "s070.sec54.u10": [
+  [
+   "D'acord, piu. Aniré a la",
+   "ciutat, piu!"
+  ]
+ ],
+ "s070.sec54.u11": "Biyomon s'ha unit a la ciutat!",
+ "s071.sec5.u0": [
+  [
+   "Ja veig... Dit així, pot ser",
+   "que sí."
+  ]
+ ],
+ "s071.sec6.u0": [
+  [
+   "Sabràs apreciar aquesta",
+   "bellesa?"
+  ]
+ ],
+ "s071.sec7.u0": [
+  [
+   "Kukukukukiiieh!"
+  ]
+ ],
+ "s071.sec8.u0": [
+  [
+   "Ja em dóna tot igual!"
+  ]
+ ],
+ "s071.sec9.u0": [
+  [
+   "Maleït sigui! ...És broma."
+  ]
+ ],
+ "s071.sec10.u0": [
+  [
+   "Ai... mal de panxa..."
+  ]
+ ],
+ "s071.sec81.m0.o0": "Cura petita: 200 Bits",
+ "s071.sec81.m0.o1": "Vàter portàtil: 500 Bits",
+ "s071.sec81.m0.o2": "No comprar",
+ "s071.sec81.u0": [
+  [
+   "Màquina expenedora"
+  ]
+ ],
+ "s071.sec81.u1": [
+  [
+   "Una màquina amb premis! Què",
+   "faig?"
+  ]
+ ],
+ "s071.sec81.u2": [
+  [
+   "No tinc prou diners..."
+  ]
+ ],
+ "s071.sec81.u3": [
+  [
+   "No tinc prou diners..."
+  ]
+ ],
+ "s071.sec81.u4": [
+  [
+   "Ara mateix porto massa",
+   "objectes."
+  ]
+ ],
+ "s071.sec81.u5": [
+  [
+   "Ha sortit {color 6}Cura petita{color 1}!"
+  ]
+ ],
+ "s071.sec81.u6": [
+  [
+   "Ara mateix porto massa",
+   "objectes."
+  ]
+ ],
+ "s071.sec81.u7": [
+  [
+   "Ha sortit {color 6}Vàter portàtil{color 1}!"
+  ]
+ ],
+ "s071.sec81.u8": [
+  [
+   "Sí, he guanyat!"
+  ]
+ ],
+ "s071.sec81.u9": [
+  [
+   "Ha sortit {color 6}Cura doble{color 1}!"
+  ]
+ ],
+ "s071.sec81.u10": [
+  [
+   "Ups! Porto massa objectes."
+  ]
+ ],
+ "s071.sec82.m0.o0": "100 MP: 200 Bits",
+ "s071.sec82.m0.o1": "1000 MP: 1800 Bits",
+ "s071.sec82.m0.o2": "No usar",
+ "s071.sec82.u0": [
+  [
+   "Assortidor de MP"
+  ]
+ ],
+ "s071.sec82.u1": [
+  [
+   "Una màquina que recupera MP,",
+   "eh?"
+  ]
+ ],
+ "s071.sec82.u2": [
+  [
+   "MP recuperats!"
+  ]
+ ],
+ "s071.sec82.u3": [
+  [
+   "No tinc prou diners..."
+  ]
+ ],
+ "s071.sec82.u4": [
+  [
+   "MP recuperats!"
+  ]
+ ],
+ "s071.sec82.u5": [
+  [
+   "No tinc prou diners..."
+  ]
+ ],
+ "s072.sec7.u0": [
+  [
+   "La veritat, m'has decebut!"
+  ]
+ ],
+ "s072.sec8.u0": [
+  [
+   "Tingues la bondat de no fer-me",
+   "enfadar."
+  ]
+ ],
+ "s072.sec9.u0": [
+  [
+   "Menjar?"
+  ]
+ ],
+ "s072.sec10.u0": [
+  [
+   "Jo fam!"
+  ]
+ ],
+ "s073.sec8.u0": [
+  [
+   "Tot això, casa meva. Tu, fora!"
+  ]
+ ],
+ "s073.sec9.u0": [
+  [
+   "Jo, Shamamon... Tu, què...?"
+  ]
+ ],
+ "s073.sec51.u0": [
+  [
+   "Eh? Què és això?"
+  ]
+ ],
+ "s073.sec51.u1": [
+  [
+   "A-a-ajudaaa!"
+  ]
+ ],
+ "s073.sec51.u2": [
+  [
+   "Ui, l'he d'ajudar!"
+  ]
+ ],
+ "s073.sec51.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Ja n'hi ha prou d'abusar del",
+   "feble!"
+  ]
+ ],
+ "s073.sec51.u4": [
+  [
+   "Eh? Qui és aquest?"
+  ]
+ ],
+ "s073.sec51.u5": [
+  [
+   "Estàs bé!?"
+  ]
+ ],
+ "s073.sec51.u6": [
+  [
+   "Uuuf... G-gràcies."
+  ]
+ ],
+ "s073.sec51.u7": [
+  [
+   "No hi ha de què. Quan tinguis",
+   "problemes, crida'm. Jo, Leomon,",
+   "acudiré de seguida!"
+  ],
+  [
+   "Fins a la pròxima!"
+  ]
+ ],
+ "s073.sec51.u8": [
+  [
+   "Ah, espera'm!"
+  ]
+ ],
+ "s073.sec51.u9": [
+  [
+   "......Hala... Com un heroi de",
+   "debò. Ens ha robat el",
+   "protagonisme."
+  ]
+ ],
+ "s074.sec5.u0": [
+  [
+   "Inútil, inútil, inútiiil!"
+  ]
+ ],
+ "s074.sec6.u0": [
+  [
+   "Dóna'm menjar!"
+  ]
+ ],
+ "s074.sec7.u0": [
+  [
+   "Ritual... començar."
+  ]
+ ],
+ "s074.sec8.u0": [
+  [
+   "Per què no proves de confiar",
+   "en mi?"
+  ]
+ ],
+ "s074.sec9.u0": [
+  [
+   "Geja, geja, geja?"
+  ]
+ ],
+ "s074.sec10.u0": [
+  [
+   "Jo guanyar, tu perdre."
+  ]
+ ],
+ "s075.sec5.u0": [
+  [
+   "Hi ha alguna cosa que haig de",
+   "trobar... Perdona'm..."
+  ]
+ ],
+ "s075.sec51.u0": [
+  [
+   "He sentit parlar de tu. Has",
+   "fet grans coses."
+  ]
+ ],
+ "s075.sec51.u1": [
+  [
+   "Si has sentit parlar de",
+   "nosaltres i de la ciutat,",
+   "vindràs a la ciutat?"
+  ]
+ ],
+ "s075.sec51.u2": [
+  [
+   "...Deixa que ho pensi. Tinc les",
+   "meves pròpies idees sobre el",
+   "futur de l'illa."
+  ],
+  [
+   "I... hi ha alguna cosa que",
+   "porto molt temps buscant."
+  ]
+ ],
+ "s075.sec51.u3": [
+  [
+   "Què és el que cerques?"
+  ]
+ ],
+ "s075.sec51.u4": [
+  [
+   "Un objecte que els meus",
+   "avantpassats van deixar per al",
+   "futur, segons diuen. Què és, no",
+   "ho sé..."
+  ]
+ ],
+ "s075.sec51.u5": [
+  [
+   "Ja veig... Si ho trobem,",
+   "t'avisarem."
+  ]
+ ],
+ "s075.sec51.u6": [
+  [
+   "Je... Porto molts anys",
+   "buscant-ho. Ni tan sols per a",
+   "tu serà fàcil trobar-ho."
+  ]
+ ],
+ "s075.sec51.u7": [
+  [
+   "Però et prometo una cosa. Si",
+   "apareix, aniré a la teva",
+   "ciutat."
+  ]
+ ],
+ "s075.sec51.u8": [
+  [
+   "...No serà això?"
+  ]
+ ],
+ "s075.sec51.u9": [
+  [
+   "Oh, això és...!"
+  ]
+ ],
+ "s075.sec51.u10": [
+  [
+   "Mmm... Sí, això ho van escriure",
+   "els meus avantpassats! Vegem..."
+  ]
+ ],
+ "s075.sec51.u11": [
+  [
+   "\"Quan el perill arribi a",
+   "l'illa... vés al seu centre...",
+   "i uneix forces...!\""
+  ]
+ ],
+ "s075.sec51.u12": [
+  [
+   "Això és...! Els meus",
+   "avantpassats em diuen que vagi",
+   "a la ciutat...!"
+  ]
+ ],
+ "s075.sec51.u13": [
+  [
+   "...!! ...Llavors, això vol",
+   "dir... que ens ajudaràs?"
+  ]
+ ],
+ "s075.sec51.u14": [
+  [
+   "Clar. Deixa-m'ho a mi!"
+  ]
+ ],
+ "s075.sec51.u15": "Leomon s'ha unit a la ciutat!",
+ "s075.sec83.m0.o0": "Començar a entrenar",
+ "s075.sec83.m0.o1": "Sobre aquest entrenament",
+ "s075.sec83.m0.o2": "Sortir",
+ "s075.sec83.m1.o0": "Entrenament normal",
+ "s075.sec83.m1.o1": "Entrenament extra",
+ "s075.sec83.m1.o2": "Deixa-ho",
+ "s075.sec83.m2.o0": "Explica-m'ho de nou",
+ "s075.sec83.m2.o1": "Començar a entrenar",
+ "s075.sec83.m2.o2": "Sortir",
+ "s075.sec83.u0": [
+  [
+   "{color 5}Entrenament: cops especials{color 1}"
+  ]
+ ],
+ "s075.sec83.u1": [
+  [
+   "Practica tècniques amb un sac",
+   "de formigó. Puja molt l'Atac, i",
+   "també els HP màxims."
+  ]
+ ],
+ "s075.sec83.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s075.sec85.m0.o0": "Començar a entrenar",
+ "s075.sec85.m0.o1": "Sobre aquest entrenament",
+ "s075.sec85.m0.o2": "Sortir",
+ "s075.sec85.m1.o0": "Entrenament normal",
+ "s075.sec85.m1.o1": "Entrenament extra",
+ "s075.sec85.m1.o2": "Deixa-ho",
+ "s075.sec85.m2.o0": "Explica-m'ho de nou",
+ "s075.sec85.m2.o1": "Començar a entrenar",
+ "s075.sec85.m2.o2": "Sortir",
+ "s075.sec85.u0": [
+  [
+   "{color 5}Entrenament: circuit de la",
+   "sabana{color 1}"
+  ]
+ ],
+ "s075.sec85.u1": [
+  [
+   "Corre pel circuit de la sabana.",
+   "Puja molt la Velocitat, i també",
+   "els HP màxims."
+  ]
+ ],
+ "s075.sec85.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s126.sec51.u0": [
+  [
+   "Oh!?"
+  ]
+ ],
+ "s126.sec51.u1": "Una botiga!",
+ "s126.sec81.m0.o0": "Comprar cartes",
+ "s126.sec81.m0.o1": "Vendre cartes",
+ "s126.sec81.m0.o2": "Sortir",
+ "s126.sec81.m1.o0": "Comprar un sobre de 3",
+ "s126.sec81.m1.o1": "Comprar una carta",
+ "s126.sec81.m1.o2": "Deixa-ho",
+ "s126.sec81.m2.o0": "Comprar una carta",
+ "s126.sec81.m2.o1": "Deixa-ho",
+ "s126.sec81.m3.o0": "Comprar",
+ "s126.sec81.m3.o1": "Deixa-ho",
+ "s126.sec81.u0": [
+  [
+   "Això és una botiga de «cartes",
+   "Digimon», sí, sí."
+  ]
+ ],
+ "s126.sec81.u1": [
+  [
+   "«Cartes Digimon»? Què és això?"
+  ]
+ ],
+ "s126.sec81.u2": [
+  [
+   "Col·leccionar-les està de moda",
+   "ara mateix, sí, sí.",
+   "Col·leccionant no hi perds mai!"
+  ]
+ ],
+ "s126.sec81.u3": [
+  [
+   "Oh."
+  ]
+ ],
+ "s126.sec81.u4": [
+  [
+   "Per començar, té, aquesta és",
+   "de franc. Encantat de",
+   "conèixer-te, sí, sí!"
+  ]
+ ],
+ "s126.sec81.u5": [
+  [
+   "Eh! En aquesta carta surto jo!"
+  ]
+ ],
+ "s126.sec81.u6": [
+  [
+   "Has aconseguit la carta de",
+   "{color 6}{player}{color 1}!"
+  ]
+ ],
+ "s126.sec81.u7": [
+  [
+   "Això és una botiga de «cartes",
+   "Digimon», sí, sí."
+  ]
+ ],
+ "s126.sec81.u8": [
+  [
+   "Avui hi ha cartes noves, sí,",
+   "sí!"
+  ]
+ ],
+ "s126.sec81.u9": [
+  [
+   "Un sobre costa 500 Bits. El",
+   "que hi ha dins depèn de la",
+   "sort, sí, sí."
+  ]
+ ],
+ "s126.sec81.u10": [
+  [
+   "Obre el teu sobre de seguida,",
+   "sí, sí."
+  ]
+ ],
+ "s126.sec81.u11": [
+  [
+   "Alguna cosa més, sí?"
+  ]
+ ],
+ "s126.sec81.u12": [
+  [
+   "Torna quan vulguis, sí, sí!"
+  ]
+ ],
+ "s126.sec82.m0.o0": "Els objectes normals",
+ "s126.sec82.m0.o1": "Els objectes recuperats",
+ "s126.sec82.m0.o2": "Fins ara",
+ "s126.sec82.u0": [
+  [
+   "Això és una botiga d'«objectes",
+   "recuperats», sí, sí."
+  ]
+ ]
+}

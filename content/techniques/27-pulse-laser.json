@@ -1,0 +1,17 @@
+{
+  "id": 27,
+  "name": "Pulse Laser",
+  "element": "mech",
+  "power": 389,
+  "mpCost": 56,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 72,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [28, 21, 13]
+}

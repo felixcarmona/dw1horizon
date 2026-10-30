@@ -1,0 +1,66 @@
+// Readable form of script 85 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 85 {
+    npc hyogamon0 = 5;
+    npc hyogamon1 = 6;
+    npc icedevimon2 = 7;
+    npc icedevimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 41, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 11) {
+            spawn_item(item("Digimushrm"), 42, 67);
+        }
+    }
+
+    on talk(hyogamon0) replace {    // section 5
+        say(hyogamon0, text("s085.sec5.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(hyogamon1) replace {    // section 6
+        say(hyogamon1, text("s085.sec6.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(icedevimon2) replace {    // section 7
+        say(icedevimon2, text("s085.sec7.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(icedevimon3) replace {    // section 8
+        say(icedevimon3, text("s085.sec8.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

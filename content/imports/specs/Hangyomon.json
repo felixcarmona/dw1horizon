@@ -1,0 +1,80 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M241HNGY",
+ "type": 304,
+ "name": "Hangyomon",
+ "source": {
+  "type": 52,
+  "mmd": "extracted/CHDAT/MMD1/MOJA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 12,
+  "3": 4,
+  "4": 5,
+  "5": 15,
+  "6": 7,
+  "7": 8,
+  "8": 1,
+  "9": 6,
+  "10": 11,
+  "13": 3,
+  "18": 16,
+  "20": 17,
+  "22": 13,
+  "24": 14
+ },
+ "hips": [
+  1,
+  1,
+  1.533
+ ],
+ "root_scale": 1.533,
+ "tol": 14,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x38": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 100,
+   "speed": 1.4,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x32",
+  "0x34",
+  "0x36",
+  "0x37"
+ ],
+ "scale": 0.121513,
+ "hub_roots": true,
+ "quad_angle": 25.0
+}

@@ -1,0 +1,23 @@
+// Readable form of script 131 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 131 {
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        unless (curling_match_pending != 0) return;
+        call_digimon_routine(routine("curling"));
+        await narrator;
+        if (!is_recruited(species("Penguinmon"))) {
+            warp_to(134, 2, 10);
+        } else {
+            warp_to(235, 2, 11);
+        }
+        return;
+    }
+}

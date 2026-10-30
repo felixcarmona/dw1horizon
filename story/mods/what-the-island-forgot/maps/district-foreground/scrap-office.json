@@ -1,0 +1,1164 @@
+{
+  "screen": 361,
+  "review": "Chair, side worktable, stove, right armchair and scrap crates occlude rear approaches. Back counter is solid and blocks the store shelves; keep the customer area and exit open.",
+  "collision": [
+    {
+      "tile": [
+        43,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        44,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        45,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        39,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        44,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        45,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        39,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        44,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        45,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        56,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        56,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        56,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        55
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-table ground footprint"
+    },
+    {
+      "tile": [
+        57,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "scrap-office-chair.png",
+      "at": [
+        139,
+        229
+      ],
+      "depth": [
+        168,
+        312
+      ],
+      "source": "scrap-office.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "scrap-office.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              139,
+              225,
+              197,
+              309
+            ],
+            "positive": [
+              [
+                163,
+                267
+              ]
+            ],
+            "negative": [
+              [
+                140,
+                308
+              ],
+              [
+                196,
+                308
+              ]
+            ],
+            "score": 0.9761029481887817
+          }
+        ]
+      }
+    },
+    {
+      "png": "scrap-office-left-table.png",
+      "at": [
+        67,
+        220
+      ],
+      "depth": null,
+      "source": "scrap-office.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "scrap-office.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": 290,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              60,
+              225,
+              143,
+              323
+            ],
+            "positive": [
+              [
+                110,
+                280
+              ],
+              [
+                90,
+                253
+              ],
+              [
+                88,
+                239
+              ],
+              [
+                106,
+                244
+              ],
+              [
+                100,
+                260
+              ]
+            ],
+            "negative": [
+              [
+                147,
+                300
+              ],
+              [
+                59,
+                280
+              ],
+              [
+                104,
+                325
+              ]
+            ],
+            "score": 0.9202357530593872
+          }
+        ]
+      }
+    },
+    {
+      "png": "scrap-office-stove.png",
+      "at": [
+        63,
+        310
+      ],
+      "depth": [
+        93,
+        393
+      ],
+      "source": "scrap-office.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "scrap-office.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              61,
+              306,
+              122,
+              396
+            ],
+            "positive": [
+              [
+                92,
+                335
+              ]
+            ],
+            "negative": [
+              [
+                62,
+                395
+              ],
+              [
+                121,
+                395
+              ]
+            ],
+            "score": 0.9789611101150513
+          }
+        ]
+      },
+      "strip_height": 8,
+      "vertical_face": true
+    },
+    {
+      "png": "scrap-office-right-chair.png",
+      "at": [
+        381,
+        317
+      ],
+      "depth": [
+        422,
+        398
+      ],
+      "source": "scrap-office.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "scrap-office.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              379,
+              307,
+              463,
+              404
+            ],
+            "positive": [
+              [
+                425,
+                351
+              ]
+            ],
+            "negative": [
+              [
+                380,
+                403
+              ],
+              [
+                462,
+                403
+              ]
+            ],
+            "score": 0.9779620170593262
+          }
+        ]
+      }
+    },
+    {
+      "png": "scrap-office-right-crates.png",
+      "at": [
+        359,
+        117
+      ],
+      "depth": null,
+      "source": "scrap-office.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "scrap-office.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              359,
+              120,
+              450,
+              296
+            ],
+            "positive": [
+              [
+                408,
+                243
+              ]
+            ],
+            "negative": [
+              [
+                360,
+                295
+              ],
+              [
+                449,
+                295
+              ]
+            ],
+            "score": 0.8289394378662109
+          },
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              357,
+              117,
+              415,
+              188
+            ],
+            "positive": [
+              [
+                388,
+                156
+              ],
+              [
+                388,
+                136
+              ]
+            ],
+            "negative": [
+              [
+                418,
+                156
+              ],
+              [
+                355,
+                164
+              ]
+            ],
+            "score": 0.9267481565475464
+          },
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              365,
+              169,
+              442,
+              240
+            ],
+            "positive": [
+              [
+                408,
+                209
+              ],
+              [
+                404,
+                192
+              ]
+            ],
+            "negative": [
+              [
+                445,
+                216
+              ],
+              [
+                361,
+                220
+              ]
+            ],
+            "score": 0.9371508955955505
+          },
+          {
+            "source": "raw-scrap-office-edit.jpg",
+            "source_sha1": "f3c51b2edf9ad996c7213579a25f05c1be665507",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              368,
+              220,
+              451,
+              300
+            ],
+            "positive": [
+              [
+                408,
+                266
+              ],
+              [
+                408,
+                240
+              ]
+            ],
+            "negative": [
+              [
+                452,
+                275
+              ],
+              [
+                363,
+                274
+              ],
+              [
+                418,
+                303
+              ]
+            ],
+            "score": 0.8036420345306396
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      73,
+      253
+    ],
+    [
+      141,
+      250
+    ],
+    [
+      340,
+      248
+    ],
+    [
+      373,
+      271
+    ],
+    [
+      433,
+      292
+    ],
+    [
+      459,
+      390
+    ],
+    [
+      380,
+      407
+    ],
+    [
+      130,
+      407
+    ],
+    [
+      73,
+      393
+    ]
+  ],
+  "footprints": {
+    "chair": [
+      [
+        142,
+        283
+      ],
+      [
+        179,
+        275
+      ],
+      [
+        194,
+        295
+      ],
+      [
+        149,
+        309
+      ]
+    ],
+    "left-table": [
+      [
+        73,
+        294
+      ],
+      [
+        137,
+        294
+      ],
+      [
+        139,
+        322
+      ],
+      [
+        71,
+        323
+      ]
+    ],
+    "stove": [
+      [
+        72,
+        370
+      ],
+      [
+        113,
+        370
+      ],
+      [
+        120,
+        394
+      ],
+      [
+        71,
+        398
+      ]
+    ],
+    "right-chair": [
+      [
+        390,
+        366
+      ],
+      [
+        447,
+        366
+      ],
+      [
+        457,
+        398
+      ],
+      [
+        387,
+        404
+      ]
+    ],
+    "right-crates": [
+      [
+        374,
+        252
+      ],
+      [
+        440,
+        252
+      ],
+      [
+        447,
+        286
+      ],
+      [
+        402,
+        302
+      ],
+      [
+        370,
+        275
+      ]
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "screen": 336,
+  "review": "The entire floor was checked against the back-wall cairn, slab, bones and chains. Their bases coincide with the northern floor boundary; the tamer cannot stand behind them. The exit is a side opening with no lintel over reachable floor. No new overlay or collision is needed.",
+  "collision": [],
+  "pieces": [],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "silhouette_review": {
+    "pass_number": 2,
+    "decision": "The bone piles, cairn, slab and dangling chains end on blocked ground. The side exit floor is below the rock lip, with enough vertical clearance for the tamer body. No silhouette needs extracting.",
+    "art_sha1": "93147259328ff210a156461123c3593fc1be32a1",
+    "tour_window_seconds": [
+      482.53205,
+      489.8226666666667
+    ],
+    "radius_world": 100
+  }
+}

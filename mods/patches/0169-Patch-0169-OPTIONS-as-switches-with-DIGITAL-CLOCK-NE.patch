@@ -1,0 +1,481 @@
+From 19b87328d1bd0b7b120d43d719af8fa1af492068 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 13:24:41 +0000
+Subject: [PATCH] Patch 0169: OPTIONS as switches, with DIGITAL CLOCK, NEW
+ STATUS BARS and FRAME RATE
+
+The OPTIONS box has four rows, each a label and its two values side by side, the chosen one
+yellow and the other grey: JAPANESE CONTROLS OFF/ON, DIGITAL CLOCK OFF/ON (0166's plate,
+default on), NEW STATUS BARS OFF/ON (0162-0164's fill; off draws the original's bars, default
+on) and FRAME RATE 30/60 FPS (default the build's, 60). Left picks the left value, right the
+right one, confirm the other one. With FPS=30|60 MOD_FPS_MODE is the run-time MOD_FPS_MODE_RUN
+(dw/mod_fps.h); FPS=20 keeps the compile-time 0. SAVE_TAG_OPTIONS grows to 4 bytes (buttons,
+clock, frame rate 30/60, bars); a shorter record leaves the rest at their defaults.
+
+---
+ include/dw/mod_fps.h     |  17 ++---
+ include/dw/mod_options.h |   5 ++
+ src/main/clock.c         |   4 +-
+ src/main/main.c          |   7 ++-
+ src/main/main_menu.c     | 130 +++++++++++++++++++++++++++++++++------
+ src/main/mod_options.c   |  23 +++++++
+ src/main/partner_impl.c  |  30 +++++++++
+ text/main/main_menu.yaml |  30 +++++++--
+ 8 files changed, 211 insertions(+), 35 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 02b6053f..205746f4 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -6,16 +6,17 @@
+ #include <dw/mod_present.h>
+ #include <fps.h> /* FPS: the build's frame rate (Makefile `FPS=20|30|60`, generated) */
+ 
+-/* MOD (fps): the frame rate is a build parameter, not a setting: FPS is 20,
+- * 30 or 60 (Makefile, default there) and MOD_FPS_MODE the compile-time mode
+- * modPresent works with: 0 = 20 fps (one render per tick, the original; the
+- * extra passes and the interpolation compile out), 1 = 30, 2 = 60. */
++/* MOD (fps): FPS is the build's frame rate, 20, 30 or 60 (Makefile, default
++ * there), and MOD_FPS_MODE the mode modPresent works with: 0 = 20 fps (one
++ * render per tick, the original), 1 = 30, 2 = 60. With FPS=20 it is a
++ * compile-time 0 and the extra passes and the interpolation compile out. With
++ * FPS=30|60 it is MOD_FPS_MODE_RUN (main.c), the build's rate at start; the
++ * title menu's OPTIONS switch it between 30 and 60 (FRAME RATE, mod_options.c). */
+ #if FPS == 20
+ #define MOD_FPS_MODE 0
+-#elif FPS == 30
+-#define MOD_FPS_MODE 1
+-#elif FPS == 60
+-#define MOD_FPS_MODE 2
++#elif FPS == 30 || FPS == 60
++extern int32_t MOD_FPS_MODE_RUN;
++#define MOD_FPS_MODE MOD_FPS_MODE_RUN
+ #else
+ #error "FPS must be 20, 30 or 60"
+ #endif
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 26cfcb86..aabb7124 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -16,6 +16,8 @@
+ #define MOD_BUTTONS_JP	1	/* JAPANESE CONTROLS: ○ confirms, × cancels, △ is the third button (input.h) */
+ 
+ extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h reads it) */
++extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clock (clock.c), 1 = shown */
++extern int32_t MOD_OPT_BARS;	/* NEW STATUS BARS: happiness and discipline as one red/green fill (patches 0162-0164), 0 = the original's */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+ /* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
+@@ -26,6 +28,9 @@ int32_t modButtonColor(uint16_t code, int32_t color);
+ uint16_t modButtonClut(void);
+ /* the button layout changes: the dialogue box's button in VRAM follows it */
+ void modSetButtons(int32_t layout);
++/* FRAME RATE: the rate the game is shown at, 30 or 60 (20 in an FPS=20 build, which has no choice) */
++int32_t modFrameRate(void);
++void modSetFrameRate(int32_t fps);
+ /* a TIM of ETCTIM.BIN was uploaded (loadStackedTIMFile): the SYSTEM_W page's button frames */
+ void modButtonsTimLoaded(GsIMAGE *img);
+ 
+diff --git a/src/main/clock.c b/src/main/clock.c
+index e5227f57..34793774 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -1,4 +1,5 @@
+ #include <libgpu.h>
++#include <dw/mod_options.h>
+ #include <libgs.h>
+ 
+ #include <dw/clock.h>
+@@ -375,7 +376,8 @@ void renderGameClock(int32_t instanceId)
+ 			  6, 6, 203, 216,
+ 			  GetTPage(0, 0, 896, 448), GetClut(256, 497), 9, 0);
+ 
+-	renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
++	if (MOD_OPT_CLOCK) /* MOD (options): DIGITAL CLOCK */
++		renderDigitalClock(CLOCK_OFFSET_X + 13, -46);
+ 
+ 	renderStatusBars(IS_GAMETIME_RUNNING);
+ }
+diff --git a/src/main/main.c b/src/main/main.c
+index 523ea802..20f0ab34 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4102,8 +4102,8 @@ static void modPerfReset(void)
+ /* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
+  * tickObjects: movement, clock, timers, animation, then the late tick) runs
+  * once per tick, and a tick always lasts 3 vertical refreshes (20 Hz) as in
+- * the original. MOD_FPS_MODE (dw/mod_fps.h: a compile-time constant from the
+- * build's FPS, Makefile `FPS=20|30|60`) chooses at which of the tick's 3
++ * the original. MOD_FPS_MODE (dw/mod_fps.h: from the build's FPS, Makefile
++ * `FPS=20|30|60`, and the title's FRAME RATE option) chooses at which of the tick's 3
+  * refreshes a new frame is shown:
+  *   0 = 20 fps: the third (the original, one render per tick);
+  *   1 = 30 fps: every other refresh, so the ticks alternate between one
+@@ -4117,6 +4117,9 @@ static void modPerfReset(void)
+ /* the build's frame rate (dw/mod_fps.h), for tools; kept by the linker
+  * although no code reads it */
+ const int32_t MOD_FPS_BUILD __attribute__((used, retain)) = FPS;
++#if FPS != 20
++int32_t MOD_FPS_MODE_RUN = FPS == 60 ? 2 : 1; /* MOD (options): FRAME RATE, 30 or 60 */
++#endif
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+  * in any mode, and every pass is rendered, the one of the k-th third shown at
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 5dd179d6..bc3b4d6a 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -245,7 +245,7 @@ typedef struct {
+ #define SAVE_EXT_BYTES		0x1000
+ SAVE_LAYOUT_CHECK(extHead, sizeof(SaveExtHead) == 12);
+ /* the most a build writes: the head, the records (4 bytes each and their data), the end record and the checksum */
+-#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 9 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 1 + 4 + 4)
++#define SAVE_RECORDS_MAX	(sizeof(SaveExtHead) + 9 * 4 + 4 + 2 * 30 + 4 + 2 * 16 + 2 * 40 + 2 * 100 + 8 + 2 * (NUM_DIGIMON / 8) + 4 + 4 + 4)
+ SAVE_LAYOUT_CHECK(recordsFit, SAVE_RECORDS_MAX <= SAVE_EXT_BYTES);
+ 
+ uint32_t CONNECTED_CARDS;
+@@ -257,6 +257,9 @@ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+ static void renderOptionsMenu(void);
++static void drawOptionsText(void);
++static int32_t modOptionValue(int32_t row);
++static void modSetOption(int32_t row, int32_t value);
+ int32_t CURRENT_MENU;
+ int32_t NEW_CARDS;
+ int32_t MAIN_D_80135054;
+@@ -990,13 +993,13 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0024,
+ 		0x000c,
+ 	},
+-	{ /* MOD (options): the OPTIONS box (renderOptionsMenu) */
++	{ /* MOD (options): the OPTIONS box (renderOptionsMenu), 4 rows */
+ 		0x00,
+-		{ 0x01, 0x00, 0x00, 0x00, 0x00 },
++		{ 0x04, 0x00, 0x00, 0x00, 0x00 },
+ 		0x000c,
+-		0x003f,
++		0x0035,
+ 		0x0037,
+-		0x00c2,
++		0x00d6,
+ 		0x000c,
+ 	},
+ };
+@@ -2075,7 +2078,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		drawString(MOD_OPT_STR_OPTIONS, 0, 0x30); /* MOD (options) */
+ 		break;
+ 	case 22: /* MOD (options) */
+-		drawString(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_OPT_STR_JP_ON : MOD_OPT_STR_JP_OFF, 0, 0);
++		drawOptionsText();
+ 		break;
+ 	case 1:
+ 		drawString(SLOT_ACTION_TITLES[0], 0, 0);
+@@ -2574,6 +2577,7 @@ void tickMainMenu(void)
+ #endif
+ 	MenuCursor *cursor;
+ 	int32_t input;
++	int32_t value; /* MOD (options) */
+ 	int32_t status;
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ 	int32_t i;
+@@ -2631,15 +2635,21 @@ void tickMainMenu(void)
+ 	case 4: /* MOD (options) */
+ 		cursor = (MenuCursor *)&MENU_HIGHLIGHTS[22];
+ 		input = tickMenuInput(cursor, 1);
+-		if (input == 0 && (CHANGED_INPUT == 0x8000 || CHANGED_INPUT == 0x2000)) {
+-			playSound(0, 2);
+-			input = 1;
+-		}
+-		if (input == 1) {
+-			MOD_OPT_TOUCHED = 1;
+-			modSetButtons(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_BUTTONS_US : MOD_BUTTONS_JP);
++		value = -1;
++		if (input == 0 && CHANGED_INPUT == 0x8000) { /* left: the left value */
++			value = 0;
++		} else if (input == 0 && CHANGED_INPUT == 0x2000) { /* right: the right one */
++			value = 1;
++		} else if (input == 1) { /* confirm: the other one */
++			value = modOptionValue(cursor->pos) != 1;
++		}
++		if (value >= 0 && value != modOptionValue(cursor->pos)) {
++			if (input == 0) {
++				playSound(0, 2);
++			}
++			modSetOption(cursor->pos, value);
+ 			clearTextArea();
+-			drawString(MOD_OPT_BUTTONS == MOD_BUTTONS_JP ? MOD_OPT_STR_JP_ON : MOD_OPT_STR_JP_OFF, 0, 0);
++			drawOptionsText();
+ 		} else if (input == 2) {
+ 			MOD_OPTIONS_BACK = 1;
+ 			TARGET_MENU = 0;
+@@ -4578,7 +4588,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[1]; /* MOD (options) */
++	uint8_t options[4]; /* MOD (options) */
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4632,6 +4642,9 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_SPECIES_RECRUITED, SPECIES_RECRUITED_BITS, NUM_DIGIMON / 8);
+ 	}
+ 	options[0] = MOD_OPT_BUTTONS; /* MOD (options) */
++	options[1] = MOD_OPT_CLOCK;
++	options[2] = modFrameRate();
++	options[3] = MOD_OPT_BARS;
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+@@ -4861,6 +4874,15 @@ static void applyRecords(uint8_t *e)
+ 			if (len >= 1 && !MOD_OPT_TOUCHED) {
+ 				modSetButtons(d[0]);
+ 			}
++			if (len >= 2 && !MOD_OPT_TOUCHED) {
++				MOD_OPT_CLOCK = d[1] != 0;
++			}
++			if (len >= 3 && !MOD_OPT_TOUCHED && (d[2] == 30 || d[2] == 60)) {
++				modSetFrameRate(d[2]);
++			}
++			if (len >= 4 && !MOD_OPT_TOUCHED) {
++				MOD_OPT_BARS = d[3] != 0;
++			}
+ 			break;
+ 		}
+ 	}
+@@ -5311,13 +5333,85 @@ void renderInitialMenu(void)
+ #endif
+ }
+ 
+-/* MOD (options): one row, JAPANESE CONTROLS OFF / ON */
++/*
++ * MOD (options): the box's rows, each a label and its two values side by side; the chosen value is drawn yellow and the
++ * other one grey, so the row reads as a switch. Left picks the left value, right the right one, confirm the other one.
++ */
++#define MOD_OPT_ROWS	4
++#define MOD_OPT_VALUE_X	0x80	/* the left value's column in the text area; the right one's is MOD_OPT_VALUE_W further */
++#define MOD_OPT_VALUE_W	0x28
++#define MOD_OPT_TEXT_X	0x38	/* the box's text on the screen */
++
++static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
++	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_FPS, MOD_OPT_STR_30, MOD_OPT_STR_60 },
++};
++
++/* 0 the row's left value, 1 the right one, -1 neither (an FPS=20 build's frame rate) */
++static int32_t modOptionValue(int32_t row)
++{
++	switch (row) {
++	case 0:
++		return MOD_OPT_BUTTONS == MOD_BUTTONS_JP;
++	case 1:
++		return MOD_OPT_CLOCK != 0;
++	case 2:
++		return MOD_OPT_BARS != 0;
++	}
++	return modFrameRate() == 60 ? 1 : modFrameRate() == 30 ? 0 : -1;
++}
++
++static void modSetOption(int32_t row, int32_t value)
++{
++	MOD_OPT_TOUCHED = 1;
++	switch (row) {
++	case 0:
++		modSetButtons(value ? MOD_BUTTONS_JP : MOD_BUTTONS_US);
++		break;
++	case 1:
++		MOD_OPT_CLOCK = value;
++		break;
++	case 2:
++		MOD_OPT_BARS = value;
++		break;
++	case 3:
++		modSetFrameRate(value ? 60 : 30);
++		break;
++	}
++}
++
++static void drawOptionsText(void)
++{
++	int32_t r;
++
++	for (r = 0; r < MOD_OPT_ROWS; r++) {
++		drawString(MOD_OPT_TEXT[r][0], 0, r * 0xC);
++		drawString(MOD_OPT_TEXT[r][1], MOD_OPT_VALUE_X, r * 0xC);
++		DrawSync(0);
++		drawString(MOD_OPT_TEXT[r][2], MOD_OPT_VALUE_X + MOD_OPT_VALUE_W, r * 0xC);
++		DrawSync(0);
++	}
++}
++
+ static void renderOptionsMenu(void)
+ {
+ 	POLY_FT4 *cur;
++	int32_t r;
++	int32_t y;
++	int32_t value;
+ 
+ 	cur = (POLY_FT4 *)GsGetWorkBase();
+-	renderText(cur++, 0x42, 0x37, 0, 0, 0xC0, 0xC, 0);
++	for (r = 0; r < MOD_OPT_ROWS; r++) {
++		y = 0x37 + r * 0xC;
++		value = modOptionValue(r);
++		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_VALUE_X, 0xC, 0);
++		renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_VALUE_X, y, MOD_OPT_VALUE_X, r * 0xC, MOD_OPT_VALUE_W, 0xC,
++			   value == 0 ? 2 : 1);
++		renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_VALUE_X + MOD_OPT_VALUE_W, y, MOD_OPT_VALUE_X + MOD_OPT_VALUE_W,
++			   r * 0xC, MOD_OPT_VALUE_W, 0xC, value == 1 ? 2 : 1);
++	}
+ 	GsSetWorkBase((PACKET *)cur);
+-	renderMenuBox(0x38, 0x32, 0xD0, 0x16);
++	renderMenuBox(0x30, 0x32, 0xE0, 0x16 + (MOD_OPT_ROWS - 1) * 0xC);
+ }
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 79978498..5b467cac 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -12,14 +12,25 @@
+  * button (SYSTEM_W.TIM, three 16x12 frames pressing it, drawn by renderUIBox and the care menu's badge) is made a ○
+  * from the disc's own frames: the cross is painted over with the button's face and a ring drawn where it was, in the
+  * red of the PlayStation's ○ (its own CLUT, modButtonClut).
++ *
++ * DIGITAL CLOCK. The hour as HH:MM on a plate under the clock (patch 0166, renderDigitalClock in clock.c), on or off.
++ *
++ * NEW STATUS BARS. The field's happiness and discipline bars as patches 0162-0164 draw them (one fill, red below the
++ * midpoint, green from it, on a grey track), or off, as the original drew them (renderStatusBars, partner_impl.c).
++ *
++ * FRAME RATE. 60 or 30 fps (MOD_FPS_MODE, dw/mod_fps.h); the game logic runs at 20 Hz in both. A build made with FPS=20
++ * keeps 20 and the option shows it without a choice.
+  */
+ #include <dw/mod_options.h>
++#include <dw/mod_fps.h>
+ 
+ #include "common.h"
+ 
+ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ 
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
++int32_t MOD_OPT_CLOCK = 1;
++int32_t MOD_OPT_BARS = 1;
+ int32_t MOD_OPT_TOUCHED = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+@@ -205,3 +216,15 @@ void modSetButtons(int32_t layout)
+ 	MOD_OPT_BUTTONS = layout == MOD_BUTTONS_JP ? MOD_BUTTONS_JP : MOD_BUTTONS_US;
+ 	uploadFrames();
+ }
++
++int32_t modFrameRate(void)
++{
++	return MOD_FPS_MODE == 2 ? 60 : MOD_FPS_MODE == 1 ? 30 : 20;
++}
++
++void modSetFrameRate(int32_t fps)
++{
++#if FPS != 20
++	MOD_FPS_MODE_RUN = fps == 30 ? 1 : 2;
++#endif
++}
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 9bfb9b47..0a6fdcd5 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -3,6 +3,8 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ 
++#include <dw/mod_options.h>
++
+ #include <dw/anim.h>
+ #include <dw/bubble.h>
+ #include <dw/butterfly.h>
+@@ -2397,10 +2399,13 @@ void renderStatusBars(state)
+ 	int8_t state;
+ // clang-format on
+ {
++	int32_t i;
+ 	uint8_t happinessTexX;
++	uint8_t happinessTexY;
+ 	int32_t happinessCount;
+ 	int32_t disciplineCount;
+ 	uint8_t disciplineTexX;
++	uint8_t disciplineTexY;
+ 
+ 	/* MOD (fps): the slide is in tickStatusBarsSlide (late tick) */
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X, 85, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
+@@ -2424,6 +2429,31 @@ void renderStatusBars(state)
+ 	/* MOD (status bars): each bar is one colour over its whole range, empty to full (happiness -100..100, 8 a
+ 	   segment; discipline 0..100, 4 a segment), red below the midpoint, green from it up, on a grey
+ 	   track; the original filled each half again in a second colour. The icons still change at the midpoint */
++	if (!MOD_OPT_BARS) { /* MOD (options): NEW STATUS BARS off, the original's */
++		if (PARTNER_PARA.happiness >= 0) {
++			happinessTexY = 153;
++			happinessCount = PARTNER_PARA.happiness / 4;
++			for (i = 0; i < 25; i++)
++				renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, 151, 5, GetClut(96, 503), 14, 0);
++		} else {
++			happinessTexY = 151;
++			happinessCount = (PARTNER_PARA.happiness + 100) / 4;
++		}
++		for (i = 0; i < happinessCount; i++)
++			renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, happinessTexY, 5, GetClut(96, 503), 13, 0);
++		if (PARTNER_PARA.discipline >= 50) {
++			disciplineTexY = 153;
++			disciplineCount = (PARTNER_PARA.discipline - 50) / 2;
++			for (i = 0; i < 25; i++)
++				renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 2, 2, 232, 151, 5, GetClut(96, 503), 14, 0);
++		} else {
++			disciplineTexY = 151;
++			disciplineCount = PARTNER_PARA.discipline / 2;
++		}
++		for (i = 0; i < disciplineCount; i++)
++			renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 4, 2, 232, disciplineTexY, 5, GetClut(96, 503), 13, 0);
++		return;
++	}
+ 	happinessCount = (PARTNER_PARA.happiness + 100) / 8;
+ 	renderStatusBarFill(STATUS_UI_OFFSET_X + 18, 88, happinessCount, PARTNER_PARA.happiness + 100, 200);
+ 	disciplineCount = PARTNER_PARA.discipline / 4;
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 11bfa50c..a08c7bff 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -347,9 +347,27 @@ MOD_OPTIONS:
+     MOD_OPT_STR_OPTIONS:
+       ja: "OPTIONS"
+       en_us: "OPTIONS"
+-    MOD_OPT_STR_JP_OFF:
+-      ja: "JAPANESE CONTROLS   OFF"
+-      en_us: "JAPANESE CONTROLS   OFF"
+-    MOD_OPT_STR_JP_ON:
+-      ja: "JAPANESE CONTROLS   ON"
+-      en_us: "JAPANESE CONTROLS   ON"
++    MOD_OPT_STR_JP:
++      ja: "JAPANESE CONTROLS"
++      en_us: "JAPANESE CONTROLS"
++    MOD_OPT_STR_CLOCK:
++      ja: "DIGITAL CLOCK"
++      en_us: "DIGITAL CLOCK"
++    MOD_OPT_STR_OFF:
++      ja: "OFF"
++      en_us: "OFF"
++    MOD_OPT_STR_ON:
++      ja: "ON"
++      en_us: "ON"
++    MOD_OPT_STR_BARS:
++      ja: "NEW STATUS BARS"
++      en_us: "NEW STATUS BARS"
++    MOD_OPT_STR_FPS:
++      ja: "FRAME RATE"
++      en_us: "FRAME RATE"
++    MOD_OPT_STR_30:
++      ja: "30 FPS"
++      en_us: "30 FPS"
++    MOD_OPT_STR_60:
++      ja: "60 FPS"
++      en_us: "60 FPS"
+-- 
+2.53.0
+

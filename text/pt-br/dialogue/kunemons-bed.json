@@ -1,0 +1,46 @@
+{
+ "s002.sec5.u0": [
+  [
+   "Não vou perder para você, sim!"
+  ]
+ ],
+ "s002.sec6.m0.o0": "Dar comida",
+ "s002.sec6.m0.o1": "Não dar nada",
+ "s002.sec6.u0": "Estou com fome. Tem comida?",
+ "s002.sec6.u1": "Certo, não tenho nada agora...",
+ "s002.sec6.u2": [
+  [
+   "Opa, este eu não posso dar."
+  ]
+ ],
+ "s002.sec6.u3": [
+  [
+   "Nhac, nhac... Até que é bom..."
+  ]
+ ],
+ "s002.sec6.u4": "Ufa. Agora, vamos lutar.",
+ "s002.sec6.u5": "Você é demais para mim. O que eu faço agora?",
+ "s002.sec6.u6": [
+  [
+   "...Venha trabalhar na cidade",
+   "para pagar o que comeu!"
+  ]
+ ],
+ "s002.sec6.u7": [
+  [
+   "Hum, vou fazer isso. Sou",
+   "Kunemon, o Digimon inseto.",
+   "Prazer!"
+  ]
+ ],
+ "s002.sec6.u8": "Kunemon veio para a cidade!",
+ "s002.sec6.u9": "Traga um pouco da próxima vez, ok?",
+ "s002.sec7.u0": "Certo! Vamos, garoto!",
+ "s002.sec8.u0": "O que vai ser de nós...",
+ "s002.sec9.u0": [
+  [
+   "Resmungo... Como se a gente",
+   "pudesse ganhar..."
+  ]
+ ]
+}

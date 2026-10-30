@@ -1,0 +1,60 @@
+// Readable form of script 25 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 25 {
+    npc goblimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 51, 52;
+
+    on enter replace {    // section 254
+        call_routine(routine("load_dirt_cart"));
+        if (drill_tunnel_progress == 3) {
+            engine.arg = 0;
+            call_routine(routine("dirt_cart_model"));
+            set_autotalk(goblimon, 0);
+        }
+        if (drill_tunnel_progress == 4) {
+            engine.arg = 1;
+            call_routine(routine("dirt_cart_model"));
+            set_autotalk(goblimon, 0);
+        }
+    }
+
+    on talk(goblimon) replace {    // section 5
+        if (drill_tunnel_progress >= 3) {
+            say(goblimon, text("s025.sec5.u0"));
+            return;
+        }
+        say(goblimon, text("s025.sec5.u1"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (drill_tunnel_progress == 3) {
+            entity_walk_to_entity(partner, 1, tamer);
+            await partner;
+            walk(partner, 1200, 1583);
+            await partner;
+            say(narrator, text("s025.sec51.u0"));
+            engine.arg = 1;
+            call_routine(routine("dirt_cart_model"));
+            entity_walk_to_entity(partner, 1, tamer);
+            drill_tunnel_progress = 4;
+        }
+    }
+
+    on step(1) replace {    // section 52
+        if (drill_tunnel_progress == 4) {
+            say(tamer, text("s025.sec52.u0"));
+            run(tamer, 453, 1815);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        return;
+    }
+}

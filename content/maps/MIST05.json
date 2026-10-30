@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP8/MIST05.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Cherrymon",
+      "at": [-2033, 774],
+      "facing": 3584,
+      "follow": 2,
+      "range": 200,
+      "charge": 1,
+      "moves": [47, 51, 255, 255],
+      "prios": [70, 30, 0, 0],
+      "flee": [11, -2557],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

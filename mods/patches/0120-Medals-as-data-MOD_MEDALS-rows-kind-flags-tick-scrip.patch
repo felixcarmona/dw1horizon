@@ -1,0 +1,330 @@
+From 9818c30c10af0cb4196485b75b360427092d0055 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 13:28:12 +0000
+Subject: [PATCH] Medals as data: MOD_MEDALS rows (kind, flags
+ tick/script/level-up, textbox, two numbers) replace checkMedalConditions' and
+ checkTournamentMedalConditions' chains; the rows start unused and
+ tools/balance.py writes them from content/tables/medals.json
+
+---
+ include/dw/tournament.h |  32 ++++++++++++
+ src/main/tamer.c        | 109 +++++++++++++++++++++-------------------
+ src/main/tournament.c   |  86 ++++++-------------------------
+ 3 files changed, 102 insertions(+), 125 deletions(-)
+
+diff --git a/include/dw/tournament.h b/include/dw/tournament.h
+index 5d7e7cd1..5a500c3c 100644
+--- a/include/dw/tournament.h
++++ b/include/dw/tournament.h
+@@ -20,6 +20,38 @@ void scriptStartTournament(void);
+ void scriptCheckTournamentMedal(void);
+ int32_t checkTournamentMedalConditions(void);
+ 
++/*
++ * MOD (medals as data): when a medal is awarded. The rows start empty (medal -1) and tools/balance.py build writes them from
++ * content/tables/medals.json. A row is checked every tamer tick (MOD_MEDAL_TICK), by the script routine 0x16 (MOD_MEDAL_SCRIPT, `text`
++ * is the textbox shown), or both, and may raise the tamer level (MOD_MEDAL_LEVEL_UP).
++ */
++#define MOD_MEDAL_MAX		16
++#define MOD_MEDAL_TICK		1
++#define MOD_MEDAL_SCRIPT	2
++#define MOD_MEDAL_LEVEL_UP	4
++enum {
++	MOD_MEDAL_ALL_TRIGGERS = 1, /* a = first trigger, b = how many: all set */
++	MOD_MEDAL_WINS,             /* tournament wins >= a */
++	MOD_MEDAL_ALL_CARDS,        /* every card owned, and trigger a set (a = -1: no trigger) */
++	MOD_MEDAL_ALL_MOVES,        /* the first a techniques learned */
++	MOD_MEDAL_STATS,            /* HP and MP >= a, the other four stats >= b */
++	MOD_MEDAL_MONEY,            /* money == a */
++	MOD_MEDAL_YEAR,             /* year == a */
++	MOD_MEDAL_ALL_RAISED,       /* the species a .. b - 1 raised once */
++	MOD_MEDAL_FISH,             /* fish caught >= a */
++};
++typedef struct {
++	int16_t medal; /* -1 = unused row */
++	int8_t kind;
++	int8_t flags;
++	int8_t text;
++	int8_t pad;
++	int32_t a;
++	int32_t b;
++} ModMedal;
++extern ModMedal MOD_MEDALS[MOD_MEDAL_MAX];
++int32_t modMedalHolds(ModMedal *m);
++
+ void initTournamentSchedule(void);
+ void initTournamentInfo(int32_t source);
+ void fillEnabledTournamentTable(void);
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 3b412a01..9f914721 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -15,6 +15,7 @@
+ #include <dw/fade.h>
+ #include <dw/font.h>
+ #include <dw/ids.h>
++#include <dw/tournament.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/kar.h>
+@@ -175,6 +176,8 @@ void setTrigger(uint16_t trigger);
+ int32_t tickOpenChestTray(int32_t chestId);
+ int32_t tickCloseChestTray(int32_t chestId);
+ int32_t hasMove(int32_t moveId);
++int32_t isTriggerSet(uint16_t trigger);
++extern int16_t TOURNAMENT_WINS;
+ int32_t hasMedal(uint16_t medal);
+ int32_t hasDigimonRaised(int32_t digimonId);
+ int32_t getCardAmount(uint8_t cardId);
+@@ -687,77 +690,77 @@ void checkMapInteraction(void)
+ 	}
+ }
+ 
+-void checkMedalConditions(void)
++/* MOD (medals as data): does the condition of a MOD_MEDALS row hold */
++int32_t modMedalHolds(ModMedal *m)
+ {
+ 	int32_t i;
++	BaseStats *bs;
+ 
+-	if (hasMedal(5) == 0) {
+-		for (i = 0; i < 0x39; ++i) {
+-			if (hasMove(i) == 0) {
+-				break;
++	switch (m->kind) {
++	case MOD_MEDAL_ALL_TRIGGERS:
++		for (i = 0; i < m->b; i++) {
++			if (isTriggerSet(m->a + i) == 0) {
++				return 0;
+ 			}
+ 		}
+-
+-		if (i == 0x39) {
+-			unlockMedal(5);
+-			MEDAL_AWARD_PENDING = 1;
++		return 1;
++	case MOD_MEDAL_WINS:
++		return TOURNAMENT_WINS >= m->a;
++	case MOD_MEDAL_ALL_CARDS:
++		for (i = 0; i < NUM_CARDS; i++) {
++			if (getCardAmount((uint8_t)i) == 0) {
++				return 0;
++			}
+ 		}
+-	}
+-
+-	if (hasMedal(7) == 0) {
+-		BaseStats *bs = &PARTNER_ENTITY.digimonEntity.stats.base;
+-		/* MOD (caps): every stat at the old maximum or past it (was ==) */
+-		if ((bs->hp >= OLD_HPMP_CAP) && (bs->mp >= OLD_HPMP_CAP) &&
+-		    (bs->off >= OLD_STAT_CAP) && (bs->def >= OLD_STAT_CAP) &&
+-		    (bs->brain >= OLD_STAT_CAP) && (bs->speed >= OLD_STAT_CAP)) {
+-			unlockMedal(7);
+-			MEDAL_AWARD_PENDING = 1;
++		return m->a < 0 || isTriggerSet(m->a) != 0;
++	case MOD_MEDAL_ALL_MOVES:
++		for (i = 0; i < m->a; i++) {
++			if (hasMove(i) == 0) {
++				return 0;
++			}
+ 		}
+-	}
+-
+-	if ((hasMedal(0xD) == 0) && (MONEY == 999999)) {
+-		unlockMedal(0xD);
+-		MEDAL_AWARD_PENDING = 1;
+-	}
+-
+-	if ((hasMedal(0xE) == 0) && (YEAR == 10)) {
+-		unlockMedal(0xE);
+-		MEDAL_AWARD_PENDING = 1;
+-	}
+-
+-	if (hasMedal(6) == 0) {
+-		for (i = 1; i < 62; ++i) {
++		return 1;
++	case MOD_MEDAL_STATS:
++		bs = &PARTNER_ENTITY.digimonEntity.stats.base;
++		return bs->hp >= m->a && bs->mp >= m->a && bs->off >= m->b && bs->def >= m->b && bs->brain >= m->b &&
++		       bs->speed >= m->b;
++	case MOD_MEDAL_MONEY:
++		return MONEY == m->a;
++	case MOD_MEDAL_YEAR:
++		return YEAR == m->a;
++	case MOD_MEDAL_ALL_RAISED:
++		for (i = m->a; i < m->b; i++) {
+ 			if (hasDigimonRaised((uint16_t)i) == 0) {
+-				break;
++				return 0;
+ 			}
+ 		}
++		return 1;
++	case MOD_MEDAL_FISH:
++		return PARTNER_PARA.fishCaught >= m->a;
++	}
++	return 0;
++}
+ 
+-		if (i == 62) {
+-			unlockMedal(6);
+-			MEDAL_AWARD_PENDING = 1;
++/* MOD (medals as data): the medals checked every tick, from MOD_MEDALS (content/tables/medals.json) */
++void checkMedalConditions(void)
++{
++	int32_t i;
++	ModMedal *m;
+ 
++	for (i = 0; i < MOD_MEDAL_MAX; i++) {
++		m = &MOD_MEDALS[i];
++		if (m->medal < 0 || (m->flags & MOD_MEDAL_TICK) == 0 || hasMedal(m->medal) != 0 || !modMedalHolds(m)) {
++			continue;
++		}
++		unlockMedal(m->medal);
++		MEDAL_AWARD_PENDING = 1;
++		if (m->flags & MOD_MEDAL_LEVEL_UP) {
+ 			++TAMER_ENTITY.tamerLevel;
+ 			if (TAMER_ENTITY.tamerLevel >= 11) {
+ 				TAMER_ENTITY.tamerLevel = 10;
+ 			}
+ 		}
+ 	}
+-	if ((hasMedal(9) == 0) && (PARTNER_PARA.fishCaught >= 100)) {
+-		unlockMedal(9);
+-		MEDAL_AWARD_PENDING = 1;
+-	}
+-	if (hasMedal(0xC) == 0) {
+-		for (i = 0; i < NUM_CARDS; ++i) {
+-			if (getCardAmount((uint8_t)i) == 0) {
+-				break;
+-			}
+-		}
+-
+-		if (i == 66) {
+-			unlockMedal(0xC);
+-			MEDAL_AWARD_PENDING = 1;
+-		}
+-	}
+ }
+ 
+ void checkPendingAwards(void)
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index 9ee2c6aa..1d02c3cf 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -33,11 +33,12 @@ void callScriptSection(int32_t, int32_t, int32_t);
+ void updateMapLightState(void);
+ extern int32_t IS_SCRIPT_PAUSED;
+ 
+-// clang-format off
+-uint16_t TOURNAMENT_MEDAL_IDS[6] = {
+-	0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x000c,
++/* MOD (medals as data): rows start unused (medal -1); tools/balance.py build writes them from content/tables/medals.json */
++#define MOD_NO_MEDAL { -1, 0, 0, 0, 0, 0, 0 }
++ModMedal MOD_MEDALS[MOD_MEDAL_MAX] = {
++	MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL,
++	MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL,
+ };
+-// clang-format on
+ 
+ void updateTournamentRegistration(void)
+ {
+@@ -165,78 +166,19 @@ uint8_t *getCupDataJumpTableEntry(uint8_t *scriptPtr, uint8_t id)
+ 	return scriptPtr;
+ }
+ 
++/* MOD (medals as data): the first MOD_MEDALS row of the script routine whose condition holds and whose medal is not owned
++ * (the row index, -1 for none); was a chain of loops that stopped at the first condition that held, owned or not */
+ int32_t checkTournamentMedalConditions(void)
+ {
+-	int32_t result;
+-	uint16_t i;
+-
+-	for (i = 0; i < 6; i++) {
+-		if (isTriggerSet(TRIGGER_D_RANK_CUP_WON + i) == 0) {
+-			goto loop2;
+-		}
+-	}
+-
+-	result = 0;
+-	goto check_medal;
+-
+-loop2:
+-	for (i = 0; i < 5; i++) {
+-		if (isTriggerSet(TRIGGER_VERSION_1_CUP_WON + i) == 0) {
+-			goto loop3;
+-		}
+-	}
+-
+-	result = 1;
+-	goto check_medal;
+-
+-loop3:
+-	for (i = 0; i < 7; i++) {
+-		if (isTriggerSet(TRIGGER_FIRE_CUP_WON + i) == 0) {
+-			goto loop4;
+-		}
+-	}
+-
+-	result = 2;
+-	goto check_medal;
++	int32_t i;
+ 
+-loop4:
+-	for (i = 0; i < 4; i++) {
+-		if (isTriggerSet(TRIGGER_DINO_CUP_WON + i) == 0) {
+-			goto level_check;
++	for (i = 0; i < MOD_MEDAL_MAX; i++) {
++		if (MOD_MEDALS[i].medal >= 0 && (MOD_MEDALS[i].flags & MOD_MEDAL_SCRIPT) != 0 &&
++		    hasMedal(MOD_MEDALS[i].medal) == 0 && modMedalHolds(&MOD_MEDALS[i])) {
++			return i;
+ 		}
+ 	}
+-
+-	result = 3;
+-	goto check_medal;
+-
+-level_check:
+-	if (TOURNAMENT_WINS >= 100) {
+-		result = 4;
+-		goto check_medal;
+-	}
+-
+-	for (i = 0; i < NUM_CARDS; i++) {
+-		if (getCardAmount(i) == 0) {
+-			goto ret_neg1;
+-		}
+-	}
+-
+-	if (isTriggerSet(TRIGGER_BEATEN_GAME_ONCE) == 0) {
+-		goto ret_neg1;
+-	}
+-
+-	result = 5;
+-	goto check_medal;
+-
+-ret_neg1:
+ 	return -1;
+-
+-check_medal:
+-	if (hasMedal(TOURNAMENT_MEDAL_IDS[result]) != 0) {
+-		return -1;
+-	}
+-
+-	return result;
+ }
+ 
+ void scriptCheckTournamentMedal(void)
+@@ -251,8 +193,8 @@ void scriptCheckTournamentMedal(void)
+ 			return;
+ 		}
+ 
+-		unlockMedal(TOURNAMENT_MEDAL_IDS[result]);
+-		showMapHeadTextbox(result, 0xff, 0, 0x4db);
++		unlockMedal(MOD_MEDALS[result].medal);
++		showMapHeadTextbox(MOD_MEDALS[result].text, 0xff, 0, 0x4db);
+ 		SCRIPT_STATE_2 = 1;
+ 		SCRIPT_NEXT_STATE_2 = 0;
+ 		SCRIPT_TEXTBOX_MODE = 1;
+-- 
+2.53.0
+

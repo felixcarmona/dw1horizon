@@ -1,0 +1,38 @@
+{
+ "s167.sec6.u0": "Olá, {color 6}{player}{color 1}.",
+ "s167.sec6.u1": [
+  [
+   "Eu volto para Savana das Engrenagens de vez",
+   "em quando para manter minhas patrulhas."
+  ],
+  [
+   "Esta loja é muito útil para isso."
+  ]
+ ],
+ "s167.sec6.u2": [
+  [
+   "A propósito, parece haver uma loja ao longo",
+   "da costa de Savana das Engrenagens."
+  ],
+  [
+   "Já esteve lá?"
+  ]
+ ],
+ "s167.sec81.u0": [
+  [
+   "Vocês vieram, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Sou",
+   "transportador. Levo qualquer",
+   "coisa. Vocês só carregam a si"
+  ],
+  [
+   "mesmos... Então que tal eu",
+   "levar os dois? Nada mal, hein?",
+   "Levo vocês a qualquer lugar",
+   "que já conheçam, a qualquer"
+  ],
+  [
+   "hora. Por uma taxa, é claro."
+  ]
+ ]
+}

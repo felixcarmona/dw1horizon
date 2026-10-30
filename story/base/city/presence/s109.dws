@@ -1,0 +1,14 @@
+// Who stands on screen 109 (Native Forest), and when. Read out of MAPHEAD.SCN section 109 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(109) {                              // Native Forest
+            npc Dokunemon slot 0 autotalk when recruited(Agumon) and clock.hour <= 6 or recruited(Agumon) and clock.hour >= 19;
+            npc Dokunemon slot 1 autotalk when recruited(Agumon) and clock.hour <= 6 or recruited(Agumon) and clock.hour >= 19;
+            npc Agumon slot 2 autotalk when not recruited(Agumon);
+            npc Modokibetamon slot 3 autotalk when recruited(Agumon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Modokibetamon slot 4 autotalk when recruited(Agumon) and clock.hour >= 7 and clock.hour <= 18;
+        }
+    }
+}

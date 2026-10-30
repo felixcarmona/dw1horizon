@@ -1,0 +1,101 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 197,
+ "type": 202,
+ "name": "Submarimon",
+ "source": {
+  "type": 24,
+  "mmd": "extracted/CHDAT/MMD0/HOEE.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 8,
+  "3": 5,
+  "4": 3,
+  "8": 6,
+  "9": 9,
+  "10": 10
+ },
+ "hips": [
+  1,
+  1,
+  1.133
+ ],
+ "root_scale": 1.133,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 64,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 64,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 35,
+   "end": 125,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 119,
+   "end": 199,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_01",
+   "start": 136,
+   "end": 228,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_02",
+   "start": 117,
+   "end": 240,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x30": {
+   "anim": "anim_03",
+   "start": 184,
+   "end": 231,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

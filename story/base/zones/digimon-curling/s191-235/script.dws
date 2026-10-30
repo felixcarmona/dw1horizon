@@ -1,0 +1,49 @@
+// Readable form of script 191 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 191 {
+    npc slot1 = 6;
+    npc slot6 = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 11, 51, 52;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(slot1) replace {    // section 6
+        curling_match_pending = 1;
+        if (curling_opponent == 0) {
+            jump_to_file(206, 6);
+        }
+        if (curling_opponent == 1) {
+            jump_to_file(206, 7);
+        }
+    }
+
+    on talk(slot6) replace {    // section 11
+        if (curling_opponent == 0) {
+            jump_to_file(206, 11);
+        }
+        if (curling_opponent == 1) {
+            jump_to_file(206, 12);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (!engine.game_beaten) {
+            warp_to(208, 0, 255);
+        } else {
+            warp_to(223, 0, 255);
+        }
+    }
+
+    on step(1) replace {    // section 52
+        say(tamer, text("s191.sec52.u0"));
+        walk(tamer, -2, -619, camera: true);
+        await tamer;
+        return;
+    }
+}

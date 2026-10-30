@@ -1,0 +1,139 @@
+// Readable form of script 8 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 8 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 52, 53;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 1) {
+            spawn_item(item("Happymushrm"), 22, 69);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (!drill_tunnel_entrance_seen) {
+            camera_to(-5000, 2000, speed: 30);
+            entity_set_rotation(tamer, 1117);
+            await camera;
+            wait(50);
+            say(tamer, text("s008.sec51.u0"));
+            camera_on(tamer, speed: 20);
+            await camera;
+            drill_tunnel_entrance_seen = true;
+            if (!debug_mode) {
+                choice {
+                    text("s008.sec51.m0.o0") or cancel => {
+                        return;
+                    }
+                    text("s008.sec51.m0.o1") => {
+                        drill_tunnel_takeover_seen = true;
+                        set_obj_visibility(5, 1);
+                        set_obj_visibility(6, 0);
+                        camera_to(-5000, 2000, speed: 30);
+                        entity_set_rotation(tamer, 1117);
+                        await camera;
+                        wait(50);
+                        say(tamer, text("s008.sec51.u1"));
+                        camera_to(-2900, 0, speed: 30);
+                        await camera;
+                        wait(1s);
+                        say(tamer, text("s008.sec51.u2"));
+                        set_digimon(species("Market Manager"), 0, 0);
+                        walk(slot0, -2028, -842);
+                        entity_set_rotation(tamer, 1117);
+                        await slot0;
+                        entity_set_rotation(slot0, 1117);
+                        await slot0;
+                        wait(10);
+                        say(narrator, text("s008.sec51.u3"));
+                        walk(slot0, -1323, -815);
+                        await slot0;
+                        face(slot0, tamer);
+                        await slot0;
+                        camera_on(tamer, speed: 20);
+                        await camera;
+                        face(tamer, slot0);
+                        say(narrator, text("s008.sec51.u4"));
+                        say(tamer, text("s008.sec51.u5"));
+                        say(narrator, text("s008.sec51.u6"));
+                        say(tamer, text("s008.sec51.u7"));
+                        walk(slot0, -2333, 59);
+                        await slot0;
+                        entity_set_rotation(slot0, 4000);
+                        await slot0;
+                        return;
+                    }
+                }
+            }
+        }
+        unless (new_ogre_fortress_cleared && !drill_tunnel_takeover_seen) return;
+        drill_tunnel_takeover_seen = true;
+        set_obj_visibility(5, 1);
+        set_obj_visibility(6, 0);
+        camera_to(-5000, 2000, speed: 30);
+        entity_set_rotation(tamer, 1117);
+        await camera;
+        wait(50);
+        say(tamer, text("s008.sec51.u1"));
+        camera_to(-2900, 0, speed: 30);
+        await camera;
+        wait(1s);
+        say(tamer, text("s008.sec51.u2"));
+        set_digimon(species("Market Manager"), 0, 0);
+        walk(slot0, -2028, -842);
+        entity_set_rotation(tamer, 1117);
+        await slot0;
+        entity_set_rotation(slot0, 1117);
+        await slot0;
+        wait(10);
+        say(narrator, text("s008.sec51.u3"));
+        walk(slot0, -1323, -815);
+        await slot0;
+        face(slot0, tamer);
+        await slot0;
+        camera_on(tamer, speed: 20);
+        await camera;
+        face(tamer, slot0);
+        say(narrator, text("s008.sec51.u4"));
+        say(tamer, text("s008.sec51.u5"));
+        say(narrator, text("s008.sec51.u6"));
+        say(tamer, text("s008.sec51.u7"));
+        walk(slot0, -2333, 59);
+        await slot0;
+        entity_set_rotation(slot0, 4000);
+        await slot0;
+    }
+
+    on talk(slot0) replace {    // section 5
+        say(narrator, text("s008.sec5.u0"));
+    }
+
+    on step(1) replace {    // section 52
+        if (native_forest_rockslide_cleared) {
+            walk(tamer, 2000, -152);
+            warp_to(111, 2, 255);
+        }
+        walk(tamer, 2000, -152);
+        warp_to(110, 1, 255);
+    }
+
+    on step(2) replace {    // section 53
+        unless (is_recruited(species("Drimogemon"))) return;
+        unless (!new_ogre_fortress_cleared || is_recruited(species("Ogremon"))) return;
+        say(tamer, text("s008.sec53.u0"));
+        choice {
+            text("s008.sec53.m0.o0") => {
+                run(tamer, -4017, -828);
+                warp_to(23, 2, 255);
+            }
+            text("s008.sec53.m0.o1") or cancel => {}
+        }
+        walk(tamer, -4017, -828);
+        warp_to(24, 0, 255);
+    }
+}

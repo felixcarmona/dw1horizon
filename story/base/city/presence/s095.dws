@@ -1,0 +1,15 @@
+// Who stands on screen 95 (Freezeland), and when. Read out of MAPHEAD.SCN section 95 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(95) {                              // Freezeland
+            npc 144 slot 0 when not trigger(195) or not recruited(Garurumon) and clock.hour >= 17 and pstat(29) >= 1;
+            npc Snowagumon slot 1 autotalk when trigger(195) and clock.hour >= 7 and clock.hour <= 18 and pstat(29) <= 0 or trigger(195) and clock.hour >= 7 and clock.hour <= 14 or trigger(195) and recruited(Garurumon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Snowagumon slot 2 autotalk when trigger(195) and clock.hour >= 7 and clock.hour <= 18 and pstat(29) <= 0 or trigger(195) and clock.hour >= 7 and clock.hour <= 14 or trigger(195) and recruited(Garurumon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Hyogamon slot 3 autotalk when trigger(195) and clock.hour <= 6 or trigger(195) and clock.hour >= 19 and pstat(29) <= 0 or trigger(195) and recruited(Garurumon) and clock.hour >= 19;
+            npc Hyogamon slot 4 autotalk when trigger(195) and clock.hour <= 6 or trigger(195) and clock.hour >= 19 and pstat(29) <= 0 or trigger(195) and recruited(Garurumon) and clock.hour >= 19;
+            npc 144 slot 5 when trigger(195) and not recruited(Garurumon) and clock.hour >= 15 and clock.hour <= 16 and pstat(29) >= 1;
+        }
+    }
+}

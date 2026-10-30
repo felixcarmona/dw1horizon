@@ -1,0 +1,337 @@
+{
+ "s093.sec5.u0": [
+  [
+   "Hein ? Maintenant que j'y",
+   "pense, la statue..."
+  ]
+ ],
+ "s093.sec5.u1": [
+  [
+   "Ah!"
+  ]
+ ],
+ "s093.sec5.u2": [
+  [
+   "Ouf... Bien, alors."
+  ]
+ ],
+ "s093.sec5.u3": [
+  [
+   "Tu es revenu à la vie. C'est",
+   "bien !"
+  ]
+ ],
+ "s093.sec5.u4": [
+  [
+   "Je suis Angemon, l'ange qui te",
+   "protège. Je me suis éveillé ici",
+   "pour accomplir mon devoir"
+  ],
+  [
+   "envers toi."
+  ]
+ ],
+ "s093.sec5.u5": [
+  [
+   "Oh là, je ne comprends rien à",
+   "ce qu'il dit."
+  ]
+ ],
+ "s093.sec5.u6": [
+  [
+   "Je connais les lois célestes.",
+   "Guidé par la terre, j'offre mon",
+   "âme."
+  ]
+ ],
+ "s093.sec5.u7": [
+  [
+   "On n'avance pas... Alors, euh,",
+   "tu viens en ville... ou pas ?"
+  ]
+ ],
+ "s093.sec5.u8": [
+  [
+   "Ta mission sera mon devoir. Je",
+   "pars."
+  ]
+ ],
+ "s093.sec5.u9": [
+  [
+   "Euh, pardon, tu pourrais",
+   "employer des mots que je",
+   "comprends ?"
+  ]
+ ],
+ "s093.sec5.u10": [
+  [
+   "...Je vais en ville. Toi aussi,",
+   "fais de ton mieux... C'est",
+   "mieux comme ça ?"
+  ]
+ ],
+ "s093.sec5.u11": [
+  [
+   "Oui, là, je comprends. Ravi de",
+   "te compter parmi nous."
+  ]
+ ],
+ "s093.sec5.u12": "Angemon a rejoint la ville !",
+ "s093.sec51.u0": [
+  [
+   "Oh, on dirait presque qu'elle",
+   "est vivante..."
+  ]
+ ],
+ "s093.sec51.u1": [
+  [
+   "En fait, ça arrive tout le",
+   "temps. On fait quelque chose et",
+   "ça se met à bouger, non ? Hé"
+  ],
+  [
+   "hé, tu vas voir !"
+  ]
+ ],
+ "s093.sec52.u0": [
+  [
+   "Qu'y a-t-il ? {color 10}{partner}{color 1}, tu",
+   "as trouvé quelque chose ?"
+  ]
+ ],
+ "s093.sec52.u1": [
+  [
+   "Waouh, bien joué, {color 10}{partner}{color 1}",
+   "!"
+  ]
+ ],
+ "s094.sec5.u0": [
+  [
+   "Hé, tu trembles !"
+  ]
+ ],
+ "s094.sec6.u0": [
+  [
+   "Froid ? Vraiment ?"
+  ]
+ ],
+ "s094.sec7.u0": [
+  [
+   "Tout cela n'est-il pas vain ?"
+  ]
+ ],
+ "s095.sec81.u0": [
+  [
+   "{color 5}Entraînement : Blocs de glace{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": [
+  [
+   "Pousse de gros blocs de glace",
+   "pour développer ton endurance.",
+   "Tes HP max augmentent"
+  ],
+  [
+   "beaucoup, ainsi que ta Défense."
+  ]
+ ],
+ "s095.sec81.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "{color 5}Entraînement : Chute de",
+   "glaçons{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": [
+  [
+   "Attrape d'énormes stalactites",
+   "de glace qui tombent. Ta",
+   "Défense augmente beaucoup,"
+  ],
+  [
+   "ainsi que ta Vitesse."
+  ]
+ ],
+ "s095.sec84.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s096.sec5.u0": [
+  [
+   "Je vais t'aplatir !"
+  ]
+ ],
+ "s096.sec6.u0": [
+  [
+   "Mets ça sur le compte de la",
+   "malchance et abandonne !"
+  ]
+ ],
+ "s096.sec7.u0": [
+  [
+   "Un dernier mot avant que je",
+   "t'efface ?"
+  ]
+ ],
+ "s097.sec5.u0": "Qui es-tu ?",
+ "s097.sec6.u0": [
+  [
+   "Tout ça est inutile."
+  ]
+ ],
+ "s097.sec7.u0": [
+  [
+   "Hmm, j'aurais attrapé froid ?"
+  ]
+ ],
+ "s097.sec8.u0": [
+  [
+   "Hé, c'est froid de ta part !"
+  ]
+ ],
+ "s098.sec5.u0": [
+  [
+   "Tu devrais peut-être rentrer",
+   "chez toi ?"
+  ]
+ ],
+ "s098.sec6.u0": [
+  [
+   "Rentre chez toi !"
+  ]
+ ],
+ "s098.sec7.u0": [
+  [
+   "Tu ferais mieux de faire",
+   "demi-tour !"
+  ]
+ ],
+ "s098.sec52.u0": [
+  [
+   "Ç-ça éblouit... !"
+  ]
+ ],
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Toi qui cherches mon âme,",
+   "l'heure de l'éveil est venue.",
+   "Reçois la bénédiction de mes"
+  ],
+  [
+   "{color 7}???mon {color 1}",
+   "ailes !"
+  ]
+ ],
+ "s098.sec52.u2": [
+  [
+   "Quoi... ? Où suis-je... ? À",
+   "qui... est cette voix... ?",
+   "Ngh......... !"
+  ]
+ ],
+ "s098.sec52.u3": [
+  [
+   "C'était quoi... ? La lumière a",
+   "disparu... Il n'y a plus rien",
+   "ici... Alors... c'est en haut !"
+  ]
+ ],
+ "s099.sec5.u0": [
+  [
+   "C'est ici que nos chemins se",
+   "séparent pour de bon."
+  ]
+ ],
+ "s099.sec6.u0": [
+  [
+   "Je ne fais pas d'erreurs!"
+  ]
+ ],
+ "s095.sec81.m0.o0": "S'entraîner",
+ "s095.sec81.m0.o1": "Cet entraînement",
+ "s095.sec81.m0.o2": "Quitter",
+ "s095.sec81.m1.o0": "Entraînement normal",
+ "s095.sec81.m1.o1": "Entraînement bonus",
+ "s095.sec81.m1.o2": "Laisse tomber",
+ "s095.sec81.m2.o0": "Explique encore",
+ "s095.sec81.m2.o1": "S'entraîner",
+ "s095.sec81.m2.o2": "Quitter",
+ "s095.sec84.m0.o0": "S'entraîner",
+ "s095.sec84.m0.o1": "Cet entraînement",
+ "s095.sec84.m0.o2": "Quitter",
+ "s095.sec84.m1.o0": "Entraînement normal",
+ "s095.sec84.m1.o1": "Entraînement bonus",
+ "s095.sec84.m1.o2": "Laisse tomber",
+ "s095.sec84.m2.o0": "Explique encore",
+ "s095.sec84.m2.o1": "S'entraîner",
+ "s095.sec84.m2.o2": "Quitter",
+ "s100.sec60.u0": [
+  [
+   "Beurk !"
+  ]
+ ],
+ "s100.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s100.sec60.u2": [
+  [
+   "T-tu plaisantes, j'espère !"
+  ]
+ ],
+ "s100.sec60.u3": [
+  [
+   "Il a disparu... C'était une",
+   "illusion... ?"
+  ]
+ ],
+ "s100.sec60.u4": [
+  [
+   "On dirait qu'on l'a vaincu...",
+   "d'une façon ou d'une autre."
+  ]
+ ],
+ "s100.sec60.u5": [
+  [
+   "Hein ?!"
+  ]
+ ],
+ "s100.sec60.u6": [
+  [
+   "Hmm, mmm... Hein ?!"
+  ]
+ ],
+ "s100.sec60.u7": [
+  [
+   "J'ai eu comme un trou noir,",
+   "tout à coup... Oh ! D-désolé !"
+  ]
+ ],
+ "s100.sec60.u8": [
+  [
+   "Hmm ?? C'était quoi ? La",
+   "malédiction d'Analogman ?!",
+   "Enfin, ça devrait aller"
+  ],
+  [
+   "maintenant."
+  ]
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": 22,
+  "name": "Aurora Freeze",
+  "element": "ice",
+  "power": 430,
+  "mpCost": 86,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 81,
+  "status": 4,
+  "statusChance": 24,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [14, 6, 0]
+}

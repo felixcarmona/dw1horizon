@@ -1,0 +1,105 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 157,
+ "type": 253,
+ "name": "Tuskmon",
+ "source": {
+  "type": 51,
+  "mmd": "extracted/CHDAT/MMD1/KUWA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 4,
+  "5": 7,
+  "6": 25,
+  "8": 10,
+  "9": 11,
+  "21": 3
+ },
+ "hips": [
+  11,
+  1,
+  0.838
+ ],
+ "root_scale": 0.838,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 50,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 50,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 62,
+   "end": 152,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 6,
+   "end": 86,
+   "hz": 0.3,
+   "rise": 176
+  },
+  "0x38": {
+   "anim": "anim_01",
+   "start": 135,
+   "end": 227,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 176
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 10,
+   "end": 115,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 176
+  },
+  "0x2e": {
+   "anim": "anim_03",
+   "start": 180,
+   "end": 222,
+   "speed": 1.47,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 176
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

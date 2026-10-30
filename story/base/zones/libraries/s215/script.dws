@@ -1,0 +1,297 @@
+// Readable form of script 215 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 215 {
+    npc slot1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 6;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(slot1) replace {    // section 6
+        if (!fortune_teller_intro_seen) {
+            fortune_teller_intro_seen = true;
+            say(slot1, text("s215.sec6.u0"));
+            return;
+        }
+        say(slot1, text("s215.sec6.u1"));
+        wait(1s);
+        say(slot1, text("s215.sec6.u2"));
+        store_random(random_roll, 11);
+        if (random_roll <= 0) {
+            say(slot1, text("s215.sec6.u3"));
+            store_random(random_roll, 2);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u8"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u9"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u10"));
+            } else {
+                say(slot1, text("s215.sec6.u4"));
+                store_random(random_roll, 3);
+                if (random_roll <= 0) {
+                    say(slot1, text("s215.sec6.u11"));
+                } else if (random_roll <= 1) {
+                    say(slot1, text("s215.sec6.u12"));
+                } else if (random_roll <= 2) {
+                    say(slot1, text("s215.sec6.u13"));
+                } else if (random_roll <= 3) {
+                    say(slot1, text("s215.sec6.u14"));
+                } else {
+                    say(slot1, text("s215.sec6.u5"));
+                    store_random(random_roll, 3);
+                    if (random_roll <= 0) {
+                        say(slot1, text("s215.sec6.u15"));
+                    } else if (random_roll <= 1) {
+                        say(slot1, text("s215.sec6.u16"));
+                    } else if (random_roll <= 2) {
+                        say(slot1, text("s215.sec6.u17"));
+                    } else if (random_roll <= 3) {
+                        say(slot1, text("s215.sec6.u18"));
+                    } else {
+                        say(slot1, text("s215.sec6.u6"));
+                        store_random(random_roll, 3);
+                        if (random_roll <= 0) {
+                            say(slot1, text("s215.sec6.u19"));
+                        } else if (random_roll <= 1) {
+                            say(slot1, text("s215.sec6.u20"));
+                        } else if (random_roll <= 2) {
+                            say(slot1, text("s215.sec6.u21"));
+                        } else if (random_roll <= 3) {
+                            say(slot1, text("s215.sec6.u22"));
+                        } else {
+                            say(slot1, text("s215.sec6.u7"));
+                            store_random(random_roll, 2);
+                            if (random_roll <= 0) {
+                                say(slot1, text("s215.sec6.u23"));
+                            } else if (random_roll <= 1) {
+                                say(slot1, text("s215.sec6.u24"));
+                            } else if (random_roll <= 2) {
+                                say(slot1, text("s215.sec6.u25"));
+                            } else {
+                                say(slot1, text("s215.sec6.u8"));
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (random_roll <= 3) {
+            say(slot1, text("s215.sec6.u4"));
+            store_random(random_roll, 3);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u11"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u12"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u13"));
+            } else if (random_roll <= 3) {
+                say(slot1, text("s215.sec6.u14"));
+            } else {
+                say(slot1, text("s215.sec6.u5"));
+                store_random(random_roll, 3);
+                if (random_roll <= 0) {
+                    say(slot1, text("s215.sec6.u15"));
+                } else if (random_roll <= 1) {
+                    say(slot1, text("s215.sec6.u16"));
+                } else if (random_roll <= 2) {
+                    say(slot1, text("s215.sec6.u17"));
+                } else if (random_roll <= 3) {
+                    say(slot1, text("s215.sec6.u18"));
+                } else {
+                    say(slot1, text("s215.sec6.u6"));
+                    store_random(random_roll, 3);
+                    if (random_roll <= 0) {
+                        say(slot1, text("s215.sec6.u19"));
+                    } else if (random_roll <= 1) {
+                        say(slot1, text("s215.sec6.u20"));
+                    } else if (random_roll <= 2) {
+                        say(slot1, text("s215.sec6.u21"));
+                    } else if (random_roll <= 3) {
+                        say(slot1, text("s215.sec6.u22"));
+                    } else {
+                        say(slot1, text("s215.sec6.u7"));
+                        store_random(random_roll, 2);
+                        if (random_roll <= 0) {
+                            say(slot1, text("s215.sec6.u23"));
+                        } else if (random_roll <= 1) {
+                            say(slot1, text("s215.sec6.u24"));
+                        } else if (random_roll <= 2) {
+                            say(slot1, text("s215.sec6.u25"));
+                        } else {
+                            say(slot1, text("s215.sec6.u8"));
+                        }
+                    }
+                }
+            }
+        } else if (random_roll <= 8) {
+            say(slot1, text("s215.sec6.u5"));
+            store_random(random_roll, 3);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u15"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u16"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u17"));
+            } else if (random_roll <= 3) {
+                say(slot1, text("s215.sec6.u18"));
+            } else {
+                say(slot1, text("s215.sec6.u6"));
+                store_random(random_roll, 3);
+                if (random_roll <= 0) {
+                    say(slot1, text("s215.sec6.u19"));
+                } else if (random_roll <= 1) {
+                    say(slot1, text("s215.sec6.u20"));
+                } else if (random_roll <= 2) {
+                    say(slot1, text("s215.sec6.u21"));
+                } else if (random_roll <= 3) {
+                    say(slot1, text("s215.sec6.u22"));
+                } else {
+                    say(slot1, text("s215.sec6.u7"));
+                    store_random(random_roll, 2);
+                    if (random_roll <= 0) {
+                        say(slot1, text("s215.sec6.u23"));
+                    } else if (random_roll <= 1) {
+                        say(slot1, text("s215.sec6.u24"));
+                    } else if (random_roll <= 2) {
+                        say(slot1, text("s215.sec6.u25"));
+                    } else {
+                        say(slot1, text("s215.sec6.u8"));
+                    }
+                }
+            }
+        } else if (random_roll <= 10) {
+            say(slot1, text("s215.sec6.u6"));
+            store_random(random_roll, 3);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u19"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u20"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u21"));
+            } else if (random_roll <= 3) {
+                say(slot1, text("s215.sec6.u22"));
+            } else {
+                say(slot1, text("s215.sec6.u7"));
+                store_random(random_roll, 2);
+                if (random_roll <= 0) {
+                    say(slot1, text("s215.sec6.u23"));
+                } else if (random_roll <= 1) {
+                    say(slot1, text("s215.sec6.u24"));
+                } else if (random_roll <= 2) {
+                    say(slot1, text("s215.sec6.u25"));
+                } else {
+                    say(slot1, text("s215.sec6.u8"));
+                }
+            }
+        } else if (random_roll <= 11) {
+            say(slot1, text("s215.sec6.u7"));
+            store_random(random_roll, 2);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u23"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u24"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u25"));
+            } else {
+                say(slot1, text("s215.sec6.u8"));
+            }
+        } else {
+            say(slot1, text("s215.sec6.u3"));
+            store_random(random_roll, 2);
+            if (random_roll <= 0) {
+                say(slot1, text("s215.sec6.u8"));
+            } else if (random_roll <= 1) {
+                say(slot1, text("s215.sec6.u9"));
+            } else if (random_roll <= 2) {
+                say(slot1, text("s215.sec6.u10"));
+            } else {
+                say(slot1, text("s215.sec6.u4"));
+                store_random(random_roll, 3);
+                if (random_roll <= 0) {
+                    say(slot1, text("s215.sec6.u11"));
+                } else if (random_roll <= 1) {
+                    say(slot1, text("s215.sec6.u12"));
+                } else if (random_roll <= 2) {
+                    say(slot1, text("s215.sec6.u13"));
+                } else if (random_roll <= 3) {
+                    say(slot1, text("s215.sec6.u14"));
+                } else {
+                    say(slot1, text("s215.sec6.u5"));
+                    store_random(random_roll, 3);
+                    if (random_roll <= 0) {
+                        say(slot1, text("s215.sec6.u15"));
+                    } else if (random_roll <= 1) {
+                        say(slot1, text("s215.sec6.u16"));
+                    } else if (random_roll <= 2) {
+                        say(slot1, text("s215.sec6.u17"));
+                    } else if (random_roll <= 3) {
+                        say(slot1, text("s215.sec6.u18"));
+                    } else {
+                        say(slot1, text("s215.sec6.u6"));
+                        store_random(random_roll, 3);
+                        if (random_roll <= 0) {
+                            say(slot1, text("s215.sec6.u19"));
+                        } else if (random_roll <= 1) {
+                            say(slot1, text("s215.sec6.u20"));
+                        } else if (random_roll <= 2) {
+                            say(slot1, text("s215.sec6.u21"));
+                        } else if (random_roll <= 3) {
+                            say(slot1, text("s215.sec6.u22"));
+                        } else {
+                            say(slot1, text("s215.sec6.u7"));
+                            store_random(random_roll, 2);
+                            if (random_roll <= 0) {
+                                say(slot1, text("s215.sec6.u23"));
+                            } else if (random_roll <= 1) {
+                                say(slot1, text("s215.sec6.u24"));
+                            } else if (random_roll <= 2) {
+                                say(slot1, text("s215.sec6.u25"));
+                            } else {
+                                say(slot1, text("s215.sec6.u8"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        store_random(random_roll, 9);
+        if (random_roll <= 0) {
+            say(slot1, text("s215.sec6.u26"));
+        } else if (random_roll <= 1) {
+            say(slot1, text("s215.sec6.u27"));
+        } else if (random_roll <= 2) {
+            say(slot1, text("s215.sec6.u28"));
+        } else if (random_roll <= 3) {
+            say(slot1, text("s215.sec6.u29"));
+        } else if (random_roll <= 4) {
+            say(slot1, text("s215.sec6.u30"));
+        } else if (random_roll <= 5) {
+            say(slot1, text("s215.sec6.u31"));
+        } else if (random_roll <= 6) {
+            say(slot1, text("s215.sec6.u32"));
+        } else if (random_roll <= 7) {
+            say(slot1, text("s215.sec6.u33"));
+        } else if (random_roll <= 8) {
+            say(slot1, text("s215.sec6.u34"));
+        } else if (random_roll <= 9) {
+            say(slot1, text("s215.sec6.u35"));
+        }
+        say(slot1, text("s215.sec6.u36"));
+        store_random(random_roll, 4);
+        if (random_roll <= 0) {
+            say(slot1, text("s215.sec6.u37"));
+        } else if (random_roll <= 1) {
+            say(slot1, text("s215.sec6.u38"));
+        } else if (random_roll <= 2) {
+            say(slot1, text("s215.sec6.u39"));
+        } else if (random_roll <= 3) {
+            say(slot1, text("s215.sec6.u40"));
+        } else if (random_roll <= 4) {
+            say(slot1, text("s215.sec6.u41"));
+        }
+    }
+}

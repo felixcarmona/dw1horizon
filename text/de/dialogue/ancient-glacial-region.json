@@ -1,0 +1,500 @@
+{
+ "s077.sec5.u0": [
+  [
+   "He, du! Komm nur heeer!"
+  ]
+ ],
+ "s077.sec6.u0": [
+  [
+   "Bzz, bzz, bzzz!"
+  ]
+ ],
+ "s077.sec7.u0": [
+  [
+   "Stell dich nie hinter mich!!"
+  ]
+ ],
+ "s077.sec8.u0": [
+  [
+   "Fiu-fiu-fiuuuu!"
+  ]
+ ],
+ "s077.sec9.u0": [
+  [
+   "Ich brenne! Mein Blut kocht!"
+  ]
+ ],
+ "s077.sec10.u0": [
+  [
+   "Siegen, siegen, siegen! Ich",
+   "werde SIEGEN!"
+  ]
+ ],
+ "s078.sec5.u0": [
+  [
+   "Einer meiner Art ist wohl",
+   "losgezogen, um Händler zu",
+   "werden... Er soll irgendwo"
+  ],
+  [
+   "einen Laden eröffnet haben.",
+   "Als Freund wäre er dir",
+   "nützlicher als ich..."
+  ]
+ ],
+ "s078.sec5.u1": [
+  [
+   "Warum vergeht die Zeit hier",
+   "anders als draußen? Für uns",
+   "lebt es sich hier gewiss"
+  ],
+  [
+   "bequem, aber..."
+  ]
+ ],
+ "s078.sec6.u0": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Im Norden",
+   "schmelzen Eis und Schnee nie."
+  ],
+  [
+   "Wer dort lebt, muss verrückt",
+   "sein."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Im Westen liegt",
+   "eine kleine Stadt aus Eisen,"
+  ],
+  [
+   "deren Tor immer zu ist. Ich",
+   "würde einfach hineinfliegen.",
+   "Kehe."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Im Südwesten",
+   "gibt es ein Dorf seltsamer"
+  ],
+  [
+   "Digimon mit Hörnern und",
+   "Scheren. Sie leben in Bäumen."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Im Nordwesten",
+   "ist ein nebliger Wald mit einem"
+  ],
+  [
+   "Gebäude darin. Allerdings sehr",
+   "weit weg."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Warst du schon",
+   "in der Großen Schlucht im"
+  ],
+  [
+   "Osten? Ein echtes Labyrinth.",
+   "Kehe."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "Ich bin hoch geflogen und habe",
+   "weit gesehen... Was liegt genau",
+   "in der Inselmitte? Selbst ich"
+  ],
+  [
+   "weiß es nicht. Dort hängen",
+   "immer dichte Wolken."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Ausprobieren",
+ "s078.sec81.m0.o1": "Lassen",
+ "s078.sec81.u0": [
+  [
+   "Verkaufsautomat"
+  ]
+ ],
+ "s078.sec81.u1": [
+  [
+   "\"Was herauskommt, ist eine",
+   "Überraschung...\" 200 Bits pro",
+   "Versuch...? Sieht zwielichtig"
+  ],
+  [
+   "aus. Soll ich?"
+  ]
+ ],
+ "s078.sec81.u2": [
+  [
+   "Nicht genug Geld..."
+  ]
+ ],
+ "s078.sec81.u3": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "kam heraus!"
+  ]
+ ],
+ "s078.sec81.u4": [
+  [
+   "Ups, meine Tasche ist voll. Ich",
+   "muss etwas wegwerfen."
+  ]
+ ],
+ "s078.sec81.u5": [
+  [
+   "Eine {color 6}Kleine Heilung{color 1} kam",
+   "heraus!"
+  ]
+ ],
+ "s078.sec81.u6": [
+  [
+   "Ups, meine Tasche ist voll. Ich",
+   "muss etwas wegwerfen."
+  ]
+ ],
+ "s078.sec81.u7": [
+  [
+   "{color 6}Schimmelfleisch{color 1}",
+   "kam heraus!"
+  ]
+ ],
+ "s078.sec81.u8": [
+  [
+   "Ups, meine Tasche ist voll. Ich",
+   "muss etwas wegwerfen."
+  ]
+ ],
+ "s078.sec81.u9": [
+  [
+   "Eine {color 6}MP-Heilung{color 1} kam heraus!"
+  ]
+ ],
+ "s078.sec81.u10": [
+  [
+   "Ups, meine Tasche ist voll. Ich",
+   "muss etwas wegwerfen."
+  ]
+ ],
+ "s078.sec82.u0": [
+  [
+   "...Das hast du vermutlich schon",
+   "gehört."
+  ]
+ ],
+ "s078.sec82.u1": [
+  [
+   "Hier vergeht die Zeit langsam.",
+   "Während draußen ein Tag",
+   "vergeht, vergeht hier nur ein"
+  ],
+  [
+   "halber."
+  ]
+ ],
+ "s078.sec82.u2": [
+  [
+   "Ein schöner Ort für alle, die",
+   "es gern gemütlich angehen."
+  ]
+ ],
+ "s078.sec82.u3": [
+  [
+   "Weiter drinnen, in der Uralten",
+   "Tempo-Region, vergeht die",
+   "Zeit schnell. Dort vergehen"
+  ],
+  [
+   "zwei Tage, während draußen nur",
+   "einer vergeht."
+  ]
+ ],
+ "s078.sec82.u4": [
+  [
+   "So kann man schneller groß",
+   "werden... Aber wenn nur noch",
+   "Knochen übrig sind, ist es zu"
+  ],
+  [
+   "spät."
+  ]
+ ],
+ "s079.sec6.u0": [
+  [
+   "Ab hier vergeht die Zeit",
+   "doppelt so schnell wie draußen.",
+   "Nimm reichlich Futter mit. Und"
+  ],
+  [
+   "achte natürlich auf deine",
+   "Lebensspanne."
+  ]
+ ],
+ "s079.sec6.u1": [
+  [
+   "Na? Etwas gefunden?"
+  ]
+ ],
+ "s079.sec6.u2": [
+  [
+   "Nein, noch nicht..."
+  ]
+ ],
+ "s079.sec6.u3": [
+  [
+   "Mein Meister, der vor mir hier",
+   "Wache hielt, sagte, hier gäbe",
+   "es einen Geheimgang. Frag mich"
+  ],
+  [
+   "aber nicht, wo."
+  ]
+ ],
+ "s079.sec6.u4": [
+  [
+   "Ah, Wie geht das?..?"
+  ]
+ ],
+ "s079.sec6.u5": [
+  [
+   "Der Meteorit... Er hatte wohl",
+   "doch nichts damit zu tun.",
+   "Seufz..."
+  ]
+ ],
+ "s079.sec6.u6": [
+  [
+   "Ach so. Na, Pech gehabt. Tut",
+   "mir leid, mehr weiß ich nicht."
+  ]
+ ],
+ "s079.sec6.u7": [
+  [
+   "...Nun, Bis später."
+  ]
+ ],
+ "s079.sec6.u8": [
+  [
+   "Heeey, duuu!!"
+  ]
+ ],
+ "s079.sec6.u9": [
+  [
+   "DESHALB sage ich immer,",
+   "dass du noch lange nicht",
+   "ausgelernt hast!"
+  ]
+ ],
+ "s079.sec6.u10": [
+  [
+   "M-m-Meister?!"
+  ]
+ ],
+ "s079.sec6.u11": [
+  [
+   "Du Dummkopf! Unglaublich, dass",
+   "du hier immer noch",
+   "herumlungerst!"
+  ]
+ ],
+ "s079.sec6.u12": [
+  [
+   "Sein Meister?! Was ist hier",
+   "los?!"
+  ]
+ ],
+ "s079.sec6.u13": [
+  [
+   "A-aber wer bewacht dann die",
+   "Uralte Dino-Region..."
+  ]
+ ],
+ "s079.sec6.u14": [
+  [
+   "Du Holzkopf! Die Insel ist in",
+   "großer Gefahr! Geh in die",
+   "Stadt und mach dich nützlich,"
+  ],
+  [
+   "du Narr!"
+  ]
+ ],
+ "s079.sec6.u15": [
+  [
+   "J... Jawohl..."
+  ]
+ ],
+ "s079.sec6.u16": [
+  [
+   "Hä, wirklich?!"
+  ]
+ ],
+ "s079.sec6.u17": [
+  [
+   "Junge aus der analogen Welt,",
+   "er ist noch unerfahren. Lässt",
+   "du ihn trotzdem in deiner Stadt"
+  ],
+  [
+   "arbeiten? Ich halte hier",
+   "Wache."
+  ]
+ ],
+ "s079.sec6.u18": [
+  [
+   "Meister..."
+  ]
+ ],
+ "s079.sec6.u19": [
+  [
+   "So ist das also, {color 6}{player}{color 1}.",
+   "Darf ich in die Stadt kommen?"
+  ]
+ ],
+ "s079.sec6.u20": [
+  [
+   "Natürlich. Aber leiste auch",
+   "deinen Beitrag."
+  ]
+ ],
+ "s079.sec6.u21": [
+  [
+   "Wird gemacht! Meister, ich",
+   "gehe!"
+  ]
+ ],
+ "s079.sec6.u22": "Tyrannomon ist in die Stadt gezogen!",
+ "s079.sec6.u23": [
+  [
+   "Mal sehen, wie weit er kommt...",
+   "He."
+  ]
+ ],
+ "s079.sec7.u0": [
+  [
+   "He... Wie viele Jahre ist es",
+   "her, dass ich hier Wache",
+   "stand? Ach, du kannst frei"
+  ],
+  [
+   "kommen und gehen. Nutze das",
+   "gut."
+  ]
+ ],
+ "s079.sec8.u0": [
+  [
+   "He... Wie viele Jahre ist es",
+   "her, dass ich hier Wache",
+   "stand? Ach, du kannst frei"
+  ],
+  [
+   "kommen und gehen. Nutze das",
+   "gut."
+  ]
+ ],
+ "s079.sec51.m0.o0": "Hilfst du uns?",
+ "s079.sec51.m0.o1": "Nein... vergiss es...",
+ "s079.sec51.u0": [
+  [
+   "Ach, ihr seid's. Die Uralte",
+   "Tempo-Region liegt voraus.",
+   "Kommt ihr lieber nicht zu nahe."
+  ]
+ ],
+ "s079.sec51.u1": [
+  [
+   "Wie gesagt, wir haben zwei",
+   "Ziele: die Ursache der",
+   "Probleme finden und Digimon in"
+  ],
+  [
+   "die Stadt bringen."
+  ]
+ ],
+ "s079.sec51.u2": [
+  [
+   "Ah, Das stimmt. Das hast du",
+   "mir gesagt. Und?"
+  ]
+ ],
+ "s079.sec51.u3": [
+  [
+   "Ohne mich. Ich habe die",
+   "wichtige Aufgabe, diesen Wald",
+   "zu bewachen."
+  ]
+ ],
+ "s079.sec51.u4": [
+  [
+   "Weißt du denn etwas über die",
+   "Probleme auf der Insel?"
+  ]
+ ],
+ "s079.sec51.u5": [
+  [
+   "Nein, gar nichts... Hm...?",
+   "Warte mal... Jetzt, wo du es",
+   "sagst, vor einer Weile fiel ein"
+  ],
+  [
+   "riesiger Fels vom Himmel... Das",
+   "war..."
+  ]
+ ],
+ "s079.sec51.u6": [
+  [
+   "Hä? Wo ist er gelandet?!"
+  ]
+ ],
+ "s079.sec51.u7": [
+  [
+   "...In der Uralten",
+   "Tempo-Region. Hier durch..."
+  ]
+ ],
+ "s079.sec51.u8": [
+  [
+   "Bitte lass uns durch! Dort",
+   "könnte es einen Hinweis geben!"
+  ]
+ ],
+ "s079.sec51.u9": [
+  [
+   "..................... Seufz...",
+   "Wenn du so darauf bestehst,",
+   "bleibt mir wohl nichts anderes"
+  ],
+  [
+   "übrig... Du hast mich ja",
+   "besiegt. Gut, sieh dich um."
+  ]
+ ],
+ "s079.sec51.u10": [
+  [
+   "Ab hier vergeht die Zeit",
+   "doppelt so schnell wie draußen.",
+   "Nimm reichlich Futter mit. Und"
+  ],
+  [
+   "achte natürlich auf deine",
+   "Lebensspanne."
+  ]
+ ],
+ "s079.sec51.u11": [
+  [
+   "Frag vielleicht woanders nach."
+  ]
+ ]
+}

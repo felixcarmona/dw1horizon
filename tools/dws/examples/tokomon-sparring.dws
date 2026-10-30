@@ -1,0 +1,30 @@
+// Tokomon's sparring match: a scripted battle with a reward.
+flag sparring_won = 719;
+
+script 178 {  // Jijimon's house (screen 218)
+    npc tokomon = 6;
+    on talk(tokomon) {
+        if (sparring_won) {
+            say(tokomon, text("tokomon-sparring.t1"));
+            return;
+        }
+        say(tokomon, text("tokomon-sparring.t2"));
+        choice {
+            text("tokomon-sparring.t3") => {
+                say(tokomon, text("tokomon-sparring.t4"));
+                battle(foes: [tokomon]);
+                if (won) {
+                    say(tokomon, text("tokomon-sparring.t5"));
+                    give_bits(500);
+                    sparring_won = true;
+                } else {
+                    say(tokomon, text("tokomon-sparring.t6"));
+                }
+            }
+            text("tokomon-sparring.t7") => {
+                say(tokomon, text("tokomon-sparring.t8"));
+            }
+        }
+        return;
+    }
+}

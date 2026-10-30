@@ -1,0 +1,21 @@
+{
+  "screen": 321,
+  "art": "iron-hills-5",
+  "review": "Turbine and raised valve occlude reachable rear approaches. The dead tree, wall gears and hollow pipes are outside reachable rear silhouettes. Keep the open central track and both end exits. The wall-bound valve has no rear floor and no reachable rear silhouette overlap (tested with 25/45/70-pixel bodies). Keep its footprint blocked; only the turbine needs a foreground cutout.",
+  "pieces": [
+    {
+      "name": "turbine",
+      "png": "321-turbine.png",
+      "at": [
+        500,
+        118
+      ],
+      "depth": [
+        602,
+        289
+      ]
+    }
+  ],
+  "collision": [],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/321.json."
+}

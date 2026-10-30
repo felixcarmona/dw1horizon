@@ -1,0 +1,33 @@
+{
+  "id": 173,
+  "name": "Piximon",
+  "level": "ultimate",
+  "attribute": "vaccine",
+  "specialties": ["nature", "air", null],
+  "techniques": ["Danger Sting", "Bug", "Confused Storm", "Bit Bomb"],
+  "drop": {"item": "MP Chip", "percent": 100},
+  "effects_like": 55,
+  "model": {"name": "EPIC", "bones": 26, "radius": 110, "height": 330},
+  "voice": 49,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 5200, "mp": 4600, "off": 680, "def": 460, "speed": 660, "brain": 600, "bits": 3600},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

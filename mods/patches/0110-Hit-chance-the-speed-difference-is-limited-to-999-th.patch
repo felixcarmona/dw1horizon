@@ -1,0 +1,44 @@
+From 71353e4d477cc0aab5e4d44b0e62bfbb5c6c734a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 15 Oct 2026 15:21:58 +0000
+Subject: [PATCH] Hit chance: the speed difference is limited to +-999, the
+ disc's range (identical for original stats; a stat past 999 under the caps
+ cannot saturate the hit chance)
+
+---
+ src/btl/battle_main.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 351d5d05..e08fc0d6 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1924,6 +1924,7 @@ int32_t BTL_applyBuffMove(DigimonEntity *digimon, int32_t slot, int16_t anim)
+ int16_t BTL_calculateHitChance(DigimonEntity *attacker, DigimonEntity *defender, FighterData *fighter, int16_t move)
+ {
+ 	int32_t x;
++	int32_t speedDiff;
+ 	int16_t result;
+ 
+ 	if (DIGI_PARA(defender->entity.type).level < 3) {
+@@ -1958,7 +1959,16 @@ int16_t BTL_calculateHitChance(DigimonEntity *attacker, DigimonEntity *defender,
+ 		return 0;
+ 	}
+ 
+-	x = MOVE_DATA[move].accuracy / 2 * (defender->stats.base.speed - (attacker->stats.base.speed / 10)) / 999;
++	/* MOD (caps): the speed difference is limited to +-999, the disc's stat range: identical for the originals' stats, and
++	   a stat past 999 (caps up to 9999) cannot push x past half the accuracy, so the hit chance never reaches 0 or 100 on speed alone */
++	speedDiff = defender->stats.base.speed - (attacker->stats.base.speed / 10);
++	if (speedDiff > 999) {
++		speedDiff = 999;
++	}
++	if (speedDiff < -999) {
++		speedDiff = -999;
++	}
++	x = MOVE_DATA[move].accuracy / 2 * speedDiff / 999;
+ 	if ((defender->entity.anim.animId == 0x21) || (defender->entity.anim.animId == 0x22)) {
+ 		x = x * 6 / 5;
+ 	}
+-- 
+2.53.0
+

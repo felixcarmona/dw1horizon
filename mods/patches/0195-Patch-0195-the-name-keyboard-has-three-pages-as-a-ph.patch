@@ -1,0 +1,466 @@
+From e8c3d827984770354d7382db40728e1d60bdb1dc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:36:29 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200195:=20the=20name=20keyboard=20has=20t?=
+ =?UTF-8?q?hree=20pages,=20as=20a=20phone's:=20ABC=20(the=20US=20letters?=
+ =?UTF-8?q?=20and=20digits),=20=C3=81=C3=91=C3=87=20(every=20accented=20La?=
+ =?UTF-8?q?tin=20vowel,=20=C3=87=20=C3=91,=20=C3=9F=20and=20the=20Catalan?=
+ =?UTF-8?q?=20middle=20dot)=20and=20!=3F#=20(punctuation=20and=20symbols,?=
+ =?UTF-8?q?=20=E2=99=A5=20=E2=98=85=20=E2=99=AA=20among=20them,=20the=20di?=
+ =?UTF-8?q?gits=20on=20the=20right)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The page keys are where the Japanese kana keys were (specials 0-2 of the Japanese layout, its crops and rollovers: Back and OK are specials 3 and 4 in the US too), the current page's key lit in the highlight colour (6, the dialogue's names); L1 / R1 turn the page as well. The label row is the title, the three page keys and Back / OK: in English in the keyboard's 12-pixel cells, in Spanish in pieces at the original font's cells (NAMING_LABEL_PIECES). The player's and the partner's keyboard are the same box.
+
+The mod font gets 27 glyphs (F06C-F087: â ê î ô û ä ë ö ã õ ì ù ß, their capitals but ß, ♥ ★; tools/font/extra.txt and b.txt), font_extra.h and font_b.h regenerated. The memory card's title maps every mod glyph to a plain Shift-JIS letter or symbol (PLAIN_LETTERS: F040-F087, F07F skipped; ♥ a white star).
+
+---
+ src/main/font_b.h      |  29 ++++++-
+ src/main/font_extra.h  |  56 ++++++++++++-
+ src/main/main_menu.c   |  15 +++-
+ src/shop/script_menu.c | 178 ++++++++++++++++++++++++++++++-----------
+ 4 files changed, 226 insertions(+), 52 deletions(-)
+
+diff --git a/src/main/font_b.h b/src/main/font_b.h
+index 8099d514..7e804f07 100644
+--- a/src/main/font_b.h
++++ b/src/main/font_b.h
+@@ -85,7 +85,7 @@ GlyphData GLYPH_DATA[NUM_GLYPHS] = {
+ };
+ // clang-format on
+ 
+-#define NUM_EXTRA_GLYPHS 44
++#define NUM_EXTRA_GLYPHS 71
+ 
+ static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+ 	{ { 0xefff, 0xdfff, 0xffff, 0x8fff, 0xf7ff, 0x87ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F040 á */
+@@ -132,6 +132,33 @@ static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+ 	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x03ff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F069 – */
+ 	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x003f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 11 | 16 << 8 }, /* F06A — */
+ 	{ { 0xdfff, 0xcfff, 0xd7ff, 0xdfff, 0xdfff, 0x9fff, 0x1fff, 0x1fff, 0xbfff, 0xffff, 0xffff, }, 6 | 12 << 8 }, /* F06B ♪ */
++	{ { 0xdfff, 0xafff, 0xffff, 0x8fff, 0xf7ff, 0x87ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F06C â */
++	{ { 0xdfff, 0xafff, 0xffff, 0x8fff, 0x77ff, 0x07ff, 0x7fff, 0x7fff, 0x8fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F06D ê */
++	{ { 0xbfff, 0x5fff, 0xffff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xffff, 0xffff, }, 4 | 4 << 8 }, /* F06E î */
++	{ { 0xdfff, 0xafff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F06F ô */
++	{ { 0xdfff, 0xafff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F070 û */
++	{ { 0xffff, 0xafff, 0xffff, 0x8fff, 0xf7ff, 0x87ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F071 ä */
++	{ { 0xffff, 0xafff, 0xffff, 0x8fff, 0x77ff, 0x07ff, 0x7fff, 0x7fff, 0x8fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F072 ë */
++	{ { 0xffff, 0xafff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F073 ö */
++	{ { 0x97ff, 0x6fff, 0xffff, 0x8fff, 0xf7ff, 0x87ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F074 ã */
++	{ { 0x97ff, 0x6fff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x8fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F075 õ */
++	{ { 0x7fff, 0xbfff, 0xffff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 3 | 4 << 8 }, /* F076 ì */
++	{ { 0xbfff, 0xdfff, 0xffff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x77ff, 0x87ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F077 ù */
++	{ { 0x9fff, 0x6fff, 0x6fff, 0x5fff, 0x6fff, 0x77ff, 0x77ff, 0x77ff, 0x4fff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F078 ß */
++	{ { 0xcfff, 0xb7ff, 0x87ff, 0x7bff, 0x7bff, 0x03ff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F079 Â */
++	{ { 0xdfff, 0xafff, 0x07ff, 0x7fff, 0x7fff, 0x0fff, 0x7fff, 0x7fff, 0x07ff, 0xffff, 0xffff, }, 6 | 12 << 8 }, /* F07A Ê */
++	{ { 0xbfff, 0x5fff, 0x1fff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0x1fff, 0xffff, 0xffff, }, 4 | 12 << 8 }, /* F07B Î */
++	{ { 0xcfff, 0xb7ff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F07C Ô */
++	{ { 0xcfff, 0xb7ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F07D Û */
++	{ { 0xb7ff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x03ff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F07E Ä */
++	{ { 0xafff, 0xffff, 0x07ff, 0x7fff, 0x7fff, 0x0fff, 0x7fff, 0x7fff, 0x07ff, 0xffff, 0xffff, }, 6 | 12 << 8 }, /* F080 Ë */
++	{ { 0xb7ff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F081 Ö */
++	{ { 0x9bff, 0x67ff, 0x87ff, 0x7bff, 0x7bff, 0x03ff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F082 Ã */
++	{ { 0x9bff, 0x67ff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F083 Õ */
++	{ { 0x7fff, 0xbfff, 0x1fff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0x1fff, 0xffff, 0xffff, }, 4 | 12 << 8 }, /* F084 Ì */
++	{ { 0xbfff, 0xdfff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 12 << 8 }, /* F085 Ù */
++	{ { 0xffff, 0x9cff, 0x087f, 0x007f, 0x007f, 0x80ff, 0xc1ff, 0xe3ff, 0xf7ff, 0xffff, 0xffff, }, 10 | 12 << 8 }, /* F086 ♥ */
++	{ { 0xf7ff, 0xe3ff, 0xe3ff, 0x007f, 0x80ff, 0xc1ff, 0xc9ff, 0x9cff, 0xbeff, 0xffff, 0xffff, }, 10 | 12 << 8 }, /* F087 ★ */
+ };
+ 
+ /* kerning (tools/font/b.txt `kern`, font.c kernOf): DELTA, the number of LEFT codes, of RIGHT
+diff --git a/src/main/font_extra.h b/src/main/font_extra.h
+index 2da72ad0..d2adb136 100644
+--- a/src/main/font_extra.h
++++ b/src/main/font_extra.h
+@@ -1,7 +1,7 @@
+ /* Generated by tools/fontgen.py from tools/font/extra.txt: do not edit. */
+ /* Glyph i is Shift-JIS code 0xF040 + i (trail byte 0x7F skipped). */
+ 
+-#define NUM_EXTRA_GLYPHS 44
++#define NUM_EXTRA_GLYPHS 71
+ 
+ static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+ 	/* F040 á latin small letter a with acute */
+@@ -92,4 +92,58 @@ static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+ 	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x000f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 16 },
+ 	/* F06B ♪ eighth note */
+ 	{ { 0xf7ff, 0xf3ff, 0xf5ff, 0xf6ff, 0xf6ff, 0xf5ff, 0xc7ff, 0x87ff, 0x87ff, 0xcfff, 0xffff, }, 12 },
++	/* F06C â latin small letter a with circumflex */
++	{ { 0xdfff, 0xafff, 0xffff, 0xcfff, 0xb7ff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 8 },
++	/* F06D ê latin small letter e with circumflex */
++	{ { 0xdfff, 0xafff, 0xffff, 0x87ff, 0x7bff, 0x03ff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 8 },
++	/* F06E î latin small letter i with circumflex */
++	{ { 0xbfff, 0x5fff, 0xffff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xffff, 0xffff, }, 4 },
++	/* F06F ô latin small letter o with circumflex */
++	{ { 0xdfff, 0xafff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 8 },
++	/* F070 û latin small letter u with circumflex */
++	{ { 0xdfff, 0xafff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xffff, 0xffff, }, 8 },
++	/* F071 ä latin small letter a with diaeresis */
++	{ { 0xffff, 0xb7ff, 0xffff, 0xcfff, 0xb7ff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 8 },
++	/* F072 ë latin small letter e with diaeresis */
++	{ { 0xffff, 0xb7ff, 0xffff, 0x87ff, 0x7bff, 0x03ff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 8 },
++	/* F073 ö latin small letter o with diaeresis */
++	{ { 0xffff, 0xb7ff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 8 },
++	/* F074 ã latin small letter a with tilde */
++	{ { 0x9bff, 0x67ff, 0xffff, 0xcfff, 0xb7ff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 8 },
++	/* F075 õ latin small letter o with tilde */
++	{ { 0x9bff, 0x67ff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 8 },
++	/* F076 ì latin small letter i with grave */
++	{ { 0x7fff, 0xbfff, 0xffff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xffff, 0xffff, }, 4 },
++	/* F077 ù latin small letter u with grave */
++	{ { 0xdfff, 0xefff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xffff, 0xffff, }, 8 },
++	/* F078 ß latin small letter sharp s */
++	{ { 0x8fff, 0x77ff, 0x77ff, 0x6fff, 0x5fff, 0x6fff, 0x77ff, 0x77ff, 0x4fff, 0xffff, 0xffff, }, 8 },
++	/* F079 Â latin capital letter a with circumflex */
++	{ { 0xf7ff, 0xebff, 0xffff, 0xf3ff, 0xedff, 0xdeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 12 },
++	/* F07A Ê latin capital letter e with circumflex */
++	{ { 0xf7ff, 0xebff, 0xffff, 0x007f, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 12 },
++	/* F07B Î latin capital letter i with circumflex */
++	{ { 0xf7ff, 0xebff, 0xffff, 0x00ff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0x00ff, 0xffff, }, 12 },
++	/* F07C Ô latin capital letter o with circumflex */
++	{ { 0xf7ff, 0xebff, 0xffff, 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 12 },
++	/* F07D Û latin capital letter u with circumflex */
++	{ { 0xf7ff, 0xebff, 0xffff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x9cff, 0xe3ff, 0xffff, }, 12 },
++	/* F07E Ä latin capital letter a with diaeresis */
++	{ { 0xffff, 0xddff, 0xffff, 0xf3ff, 0xedff, 0xdeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 12 },
++	/* F080 Ë latin capital letter e with diaeresis */
++	{ { 0xffff, 0xddff, 0xffff, 0x007f, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 12 },
++	/* F081 Ö latin capital letter o with diaeresis */
++	{ { 0xffff, 0xddff, 0xffff, 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 12 },
++	/* F082 Ã latin capital letter a with tilde */
++	{ { 0xceff, 0xb1ff, 0xffff, 0xf3ff, 0xedff, 0xdeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 12 },
++	/* F083 Õ latin capital letter o with tilde */
++	{ { 0xceff, 0xb1ff, 0xffff, 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 12 },
++	/* F084 Ì latin capital letter i with grave */
++	{ { 0xefff, 0xf7ff, 0xffff, 0x00ff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0x00ff, 0xffff, }, 12 },
++	/* F085 Ù latin capital letter u with grave */
++	{ { 0xefff, 0xf7ff, 0xffff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x9cff, 0xe3ff, 0xffff, }, 12 },
++	/* F086 ♥ black heart suit */
++	{ { 0xffff, 0x9cff, 0x087f, 0x007f, 0x007f, 0x80ff, 0xc1ff, 0xe3ff, 0xf7ff, 0xffff, 0xffff, }, 12 },
++	/* F087 ★ black star */
++	{ { 0xf7ff, 0xe3ff, 0xe3ff, 0x007f, 0x80ff, 0xc1ff, 0xc9ff, 0x9cff, 0xbeff, 0xffff, 0xffff, }, 12 },
+ };
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 79d0109b..8df32ad0 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2488,14 +2488,21 @@ static void modTitleNameTail(void)
+ 
+ /*
+  * MOD (language): the player's name in the save title, written by the memory card's own screens too, must be plain
+- * Shift-JIS: an accented letter of the mod font (F040-F057, the name keyboard) becomes its full-width plain letter there.
++ * Shift-JIS: a glyph of the mod font (F040-F087, the name keyboard) becomes its full-width plain letter there (a symbol:
++ * the Shift-JIS one, ♥ a white star).
+  * Which ones were accented goes to the header's reserved bytes after the long names' tail ("A" at [5], then each
+  * letter's F0 code or 0), for the save slots (loadSaveSlotData). Run after modTitleNameTail.
+  */
+-static const uint16_t PLAIN_LETTERS[0x18] = {
++static const uint16_t PLAIN_LETTERS[71] = {
+ 	0x8281, 0x8285, 0x828f, 0x8295, 0x8281, 0x8285, 0x828f, 0x8289, /* á é ó ú à è ò í */
+ 	0x8289, 0x8295, 0x828e, 0x8283, 0x8260, 0x8264, 0x826e, 0x8274, /* ï ü ñ ç Á É Ó Ú */
+ 	0x8260, 0x8264, 0x826e, 0x8268, 0x8268, 0x8274, 0x826d, 0x8262, /* À È Ò Í Ï Ü Ñ Ç */
++	0x8148, 0x8149, 0x8145, 0x81e1, 0x81e2, 0x8169, 0x816a, 0x8195, /* ¿ ¡ · « » ( ) & */
++	0x8193, 0x815e, 0x8163, 0x816d, 0x816e, 0x8194, 0x8196, 0x8160, /* % / … [ ] # * ~ */
++	0x8197, 0x815c, 0x815c, 0x81f4, 0x8281, 0x8285, 0x8289, 0x828f, /* @ – — ♪ â ê î ô */
++	0x8295, 0x8281, 0x8285, 0x828f, 0x8281, 0x828f, 0x8289, 0x8295, /* û ä ë ö ã õ ì ù */
++	0x8293, 0x8260, 0x8264, 0x8268, 0x826e, 0x8274, 0x8260, 0x8264, /* ß Â Ê Î Ô Û Ä Ë */
++	0x826e, 0x8260, 0x826e, 0x8268, 0x8274, 0x8199, 0x819a, /* Ö Ã Õ Ì Ù ♥ ★ */
+ };
+ 
+ static void modTitlePlayerName(void)
+@@ -2503,6 +2510,7 @@ static void modTitlePlayerName(void)
+ 	uint8_t *p;
+ 	int32_t i;
+ 	uint16_t plain;
++	int32_t n;
+ 
+ 	p = (uint8_t *)SAVE_FILE.title + 0xe;
+ 	for (i = 0; i < 6 && p[i * 2] != 0; i++) {
+@@ -2511,7 +2519,8 @@ static void modTitlePlayerName(void)
+ 		}
+ 		SAVE_FILE.reserved[5] = 'A';
+ 		SAVE_FILE.reserved[6 + i] = p[i * 2 + 1];
+-		plain = p[i * 2 + 1] >= 0x40 && p[i * 2 + 1] < 0x58 ? PLAIN_LETTERS[p[i * 2 + 1] - 0x40] : 0x8140;
++		n = p[i * 2 + 1] - 0x40 - (p[i * 2 + 1] > 0x7f); /* F07F is skipped */
++		plain = n >= 0 && n < (int32_t)(sizeof(PLAIN_LETTERS) / sizeof(PLAIN_LETTERS[0])) ? PLAIN_LETTERS[n] : 0x8140;
+ 		p[i * 2] = plain >> 8;
+ 		p[i * 2 + 1] = plain;
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 97e25b86..acd51e0d 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -342,18 +342,6 @@ char MAIN_D_801306B4[] = "ＵＶＷＸＹ";
+ 
+ char MAIN_D_801306C0[] = "Ｚ　　　　";
+ 
+-#if VERSION_IS(US)
+-/*
+- * MOD (language): the name keyboard has the accented letters and the eñe of the mod font (F0xx, docs/mods/font.md) in
+- * the cells the US left blank, in both languages: Ñ Ü after Z, the acute vowels under them; the lower case alike on the
+- * right page, the digits one row lower. A name is two bytes a letter either way (NAMING_BUFFER, the saves' 20 bytes);
+- * the memory card's title gets the plain letters (main_menu.c modTitlePlayerName).
+- */
+-char NAMING_ROW_Z_UPPER[] = "Ｚ\xF0\x56\xF0\x55　　";            /* Z Ñ Ü */
+-char NAMING_ROW_ACUTE_UPPER[] = "\xF0\x4C\xF0\x4D\xF0\x53\xF0\x4E\xF0\x4F"; /* Á É Í Ó Ú */
+-char NAMING_ROW_Z_LOWER[] = "ｚ\xF0\x4A\xF0\x49　　";            /* z ñ ü */
+-char NAMING_ROW_ACUTE_LOWER[] = "\xF0\x40\xF0\x41\xF0\x47\xF0\x42\xF0\x43"; /* á é í ó ú */
+-#endif
+ 
+ char *CHAR_PAGE1_LEFT[9] = {
+ 	MAIN_D_80130684,
+@@ -361,13 +349,8 @@ char *CHAR_PAGE1_LEFT[9] = {
+ 	MAIN_D_8013069C,
+ 	MAIN_D_801306A8,
+ 	MAIN_D_801306B4,
+-#if VERSION_IS(US)
+-	NAMING_ROW_Z_UPPER,
+-	NAMING_ROW_ACUTE_UPPER,
+-#else
+ 	MAIN_D_801306C0,
+ 	MAIN_D_80130540,
+-#endif
+ 	MAIN_D_80130540,
+ 	MAIN_D_80130540,
+ };
+@@ -421,46 +404,136 @@ char *CHAR_PAGE1_RIGHT[9] = {
+ 	MAIN_D_80130708,
+ 	MAIN_D_80130714,
+ 	MAIN_D_80130720,
+-	NAMING_ROW_Z_LOWER, /* MOD (language): was MAIN_D_8013072C, z alone */
+-	NAMING_ROW_ACUTE_LOWER,
++	MAIN_D_8013072C,
+ 	MAIN_D_80130738,
+ 	MAIN_D_80130744,
++	MAIN_D_80130540,
++};
++
++/*
++ * MOD (language): the name keyboard has three pages, as a phone's: ABC (the US letters and digits), ÁÑÇ (the accented
++ * letters of the mod font, F0xx, docs/mods/font.md: the capitals on the left, the small letters, ß and the Catalan
++ * middle dot on the right) and !?# (punctuation and symbols; the digits on the right). The page keys are where the
++ * Japanese kana keys were (specials 0-2), L1 / R1 turn the page too. A name is two bytes a letter either way
++ * (NAMING_BUFFER, the saves' 20 bytes); the memory card's title gets plain letters (main_menu.c modTitlePlayerName).
++ */
++static char KBD_ACCENT_UPPER_0[] = "\xF0\x50\xF0\x4C\xF0\x79\xF0\x82\xF0\x7E"; /* À Á Â Ã Ä */
++static char KBD_ACCENT_UPPER_1[] = "\xF0\x51\xF0\x4D\xF0\x7A\xF0\x80\x81\x40"; /* È É Ê Ë ␣ */
++static char KBD_ACCENT_UPPER_2[] = "\xF0\x84\xF0\x53\xF0\x7B\xF0\x54\x81\x40"; /* Ì Í Î Ï ␣ */
++static char KBD_ACCENT_UPPER_3[] = "\xF0\x52\xF0\x4E\xF0\x7C\xF0\x83\xF0\x81"; /* Ò Ó Ô Õ Ö */
++static char KBD_ACCENT_UPPER_4[] = "\xF0\x85\xF0\x4F\xF0\x7D\xF0\x55\x81\x40"; /* Ù Ú Û Ü ␣ */
++static char KBD_ACCENT_UPPER_5[] = "\xF0\x57\xF0\x56\x81\x40\x81\x40\x81\x40"; /* Ç Ñ ␣ ␣ ␣ */
++
++static char KBD_ACCENT_LOWER_0[] = "\xF0\x44\xF0\x40\xF0\x6C\xF0\x74\xF0\x71"; /* à á â ã ä */
++static char KBD_ACCENT_LOWER_1[] = "\xF0\x45\xF0\x41\xF0\x6D\xF0\x72\x81\x40"; /* è é ê ë ␣ */
++static char KBD_ACCENT_LOWER_2[] = "\xF0\x76\xF0\x47\xF0\x6E\xF0\x48\x81\x40"; /* ì í î ï ␣ */
++static char KBD_ACCENT_LOWER_3[] = "\xF0\x46\xF0\x42\xF0\x6F\xF0\x75\xF0\x73"; /* ò ó ô õ ö */
++static char KBD_ACCENT_LOWER_4[] = "\xF0\x77\xF0\x43\xF0\x70\xF0\x49\x81\x40"; /* ù ú û ü ␣ */
++static char KBD_ACCENT_LOWER_5[] = "\xF0\x4B\xF0\x4A\xF0\x78\xF0\x5A\x81\x40"; /* ç ñ ß · ␣ */
++
++static char KBD_SYMBOLS_0[] = "\x81\x42\x81\x43\x81\x75\x81\x76\x81\x7C"; /* . , ' " - */
++static char KBD_SYMBOLS_1[] = "\x81\x49\x81\x48\xF0\x59\xF0\x58\x81\x46"; /* ! ? ¡ ¿ : */
++static char KBD_SYMBOLS_2[] = "\x81\x47\x81\x7B\x81\x81\xF0\x61\xF0\x67"; /* ; + = / ~ */
++static char KBD_SYMBOLS_3[] = "\xF0\x5D\xF0\x5E\xF0\x63\xF0\x64\xF0\x66"; /* ( ) [ ] * */
++static char KBD_SYMBOLS_4[] = "\xF0\x5B\xF0\x5C\xF0\x5A\xF0\x62\xF0\x69"; /* « » · … – */
++static char KBD_SYMBOLS_5[] = "\xF0\x5F\xF0\x60\xF0\x65\xF0\x68\x81\x5F"; /* & % # @ \ */
++static char KBD_SYMBOLS_6[] = "\xF0\x6B\xF0\x86\xF0\x87\x81\x9B\x81\x7E"; /* ♪ ♥ ★ ○ △ */
++static char KBD_SYMBOLS_7[] = "\x81\xA0\x81\xA2\x81\x40\x81\x40\x81\x40"; /* □ × ␣ ␣ ␣ */
++
++static char KBD_DIGITS_0[] = "\x82\x4F\x82\x50\x82\x51\x82\x52\x82\x53"; /* 0 1 2 3 4 */
++static char KBD_DIGITS_1[] = "\x82\x54\x82\x55\x82\x56\x82\x57\x82\x58"; /* 5 6 7 8 9 */
++
++static char *KBD_ACCENT_UPPER[9] = {
++	KBD_ACCENT_UPPER_0,
++	KBD_ACCENT_UPPER_1,
++	KBD_ACCENT_UPPER_2,
++	KBD_ACCENT_UPPER_3,
++	KBD_ACCENT_UPPER_4,
++	KBD_ACCENT_UPPER_5,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++};
++
++static char *KBD_ACCENT_LOWER[9] = {
++	KBD_ACCENT_LOWER_0,
++	KBD_ACCENT_LOWER_1,
++	KBD_ACCENT_LOWER_2,
++	KBD_ACCENT_LOWER_3,
++	KBD_ACCENT_LOWER_4,
++	KBD_ACCENT_LOWER_5,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++};
++
++static char *KBD_SYMBOLS[9] = {
++	KBD_SYMBOLS_0,
++	KBD_SYMBOLS_1,
++	KBD_SYMBOLS_2,
++	KBD_SYMBOLS_3,
++	KBD_SYMBOLS_4,
++	KBD_SYMBOLS_5,
++	KBD_SYMBOLS_6,
++	KBD_SYMBOLS_7,
++	MAIN_D_80130540,
++};
++
++static char *KBD_DIGITS[9] = {
++	KBD_DIGITS_0,
++	KBD_DIGITS_1,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
++	MAIN_D_80130540,
+ };
+ 
+ char **NAMING_CHAR_PAGES[6] = {
+ 	CHAR_PAGE1_LEFT,
+ 	CHAR_PAGE1_RIGHT,
+-	CHAR_PAGE2_LEFT,
+-	CHAR_PAGE2_RIGHT,
+-	CHAR_PAGE3_LEFT,
+-	CHAR_PAGE3_RIGHT,
++	KBD_ACCENT_UPPER,
++	KBD_ACCENT_LOWER,
++	KBD_SYMBOLS,
++	KBD_DIGITS,
+ };
+ 
+-/* MOD (language): the labels' crops (x, y, width; each starts where the one before ended in the label row): the Spanish
+- * words do not fit 12-pixel cells, so their row is laid out in pieces (NAMING_LABEL_PIECES) */
+-int16_t NAMING_CTRL_BOXES[10] = {
++#define NAMING_PAGES 3
++
++/* MOD (language): the page keys' labels, the same in both languages */
++static char *NAMING_PAGE_LABELS[NAMING_PAGES] = { "ABC", "\xF0\x4C\xF0\x56\xF0\x57", "!?\xF0\x65" };
++
++/* MOD (language): the labels' crops (x, y, width; each starts where the one before ended in the label row): the title,
++ * the three page keys, Back and OK. The Spanish words do not fit 12-pixel cells, so their row is laid out in pieces
++ * (NAMING_LABEL_PIECES) */
++int16_t NAMING_CTRL_BOXES[18] = {
+ #if MOD_LANG_BUILD == MOD_LANG_ES
+-	0x000e, 0x0006, 0x0034, 0x000e, 0x005a, 0x0034, 0x000e, 0x0076,
+-	0x0018, 0x0000,
++	0x000e, 0x0006, 0x0034, 0x000e, 0x0022, 0x0024, 0x000e, 0x0030,
++	0x0024, 0x000e, 0x003e, 0x0018, 0x000e, 0x005a, 0x0034, 0x000e,
++	0x0076, 0x0018,
+ #else
+-	0x000e, 0x0006, 0x0030, 0x000e, 0x005a, 0x0030, 0x000e, 0x0076,
+-	0x0018, 0x0000,
++	0x000e, 0x0006, 0x0030, 0x000e, 0x0022, 0x0024, 0x000e, 0x0030,
++	0x0024, 0x000e, 0x003e, 0x0024, 0x000e, 0x005a, 0x0030, 0x000e,
++	0x0076, 0x0018,
+ #endif
+ };
+ 
+-/* MOD (language): the label row ("Name" "Back" "OK") in pieces at these offsets in the original's cells, or (PIECES_END
+- * first) in the keyboard's 12-pixel cells as the US drew it */
+-uint16_t NAMING_LABEL_PIECES[4] = {
++/* MOD (language): the label row ("Name" "ABC" "ÁÑÇ" "!?#" "Back" "OK") in pieces at these offsets in the original's
++ * cells, or (PIECES_END first) in the keyboard's 12-pixel cells as the US drew it */
++uint16_t NAMING_LABEL_PIECES[7] = {
+ #if MOD_LANG_BUILD == MOD_LANG_ES
+-	0, 0x34, 0x68, PIECES_END,
++	0, 0x34, 0x58, 0x7c, 0x94, 0xc8, PIECES_END,
+ #else
+-	PIECES_END, PIECES_END, PIECES_END, PIECES_END,
++	PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END,
+ #endif
+ };
+ 
++/* MOD (language): each row's key of the left column (the Japanese layout's) */
+ uint16_t NAMING_ROLLOVER_CHARS[10] = {
+-	0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000, 0x8000,
+-	0x8000, 0x0000,
++	0x8000, 0x8000, 0x8000, 0x8001, 0x8002, 0x8003, 0x8003, 0x8004,
++	0x8004, 0x0000,
+ };
+ 
+ BoxLabel MAIN_D_801307B4 = { STR_IN_HAND };   /* MOD (text sources): keyed, text/shop/script_menu.yaml */
+@@ -473,8 +546,8 @@ TRADE_LABEL_TEXT
+ NAMING_BUTTONS_TEXT
+ 
+ #if VERSION_IS(US)
+-uint16_t NAMING_ROLLOVER_CTRL[2] = {
+-	0x0019, 0x0019,
++uint16_t NAMING_ROLLOVER_CTRL[6] = {
++	0x000a, 0x000f, 0x0014, 0x001e, 0x0028, 0x0000, /* MOD (language): the Japanese layout's, the page keys back */
+ };
+ #endif
+ 
+@@ -527,18 +600,15 @@ SelectionBoxOffsetData NAMING_CHAR_WIDTH = { {
+ } };
+ // clang-format on
+ 
+-#if !VERSION_IS(US)
+-#define NAMING_DELETE 3
++#define NAMING_DELETE 3 /* MOD (language): the US too, after its page keys */
+ #define NAMING_OK 4
+ #define NAMING_LABELS 5
++#if !VERSION_IS(US)
+ #define NAMING_PROMPT_TAMER STR_YOUR_NAME
+ #define NAMING_PROMPT_DIGIMON STR_DIGIMONS_NAME
+ #define NAMING_TITLE STR_NAME
+ #define NAMING_BUTTONS STR_BACK_OK
+ #else
+-#define NAMING_DELETE 0
+-#define NAMING_OK 1
+-#define NAMING_LABELS 3
+ #define NAMING_PROMPT_TAMER MAIN_D_801345F4
+ #define NAMING_PROMPT_DIGIMON (MAIN_D_801345F4 + 1)
+ #define NAMING_TITLE MAIN_D_801345F8
+@@ -2799,15 +2869,13 @@ void tickNamingBox(void)
+ 			return;
+ 		}
+ 		switch (special) {
+-#if !VERSION_IS(US)
+-		case 0:
++		case 0: /* MOD (language): the US has the page keys too */
+ 		case 1:
+ 		case 2:
+ 			SHOP_AMOUNT = special;
+ 			fillNamingMenuStrings();
+ 			playSound(0, 3);
+ 			break;
+-#endif
+ 		case NAMING_DELETE:
+ 			namingDeleteLast();
+ 			break;
+@@ -2829,6 +2897,13 @@ void tickNamingBox(void)
+ 	} else if (isKeyDown(0x800)) {
+ 		NAMING_SELECTOR = 0x8000 | NAMING_OK;
+ 		playSound(0, 2);
++#if VERSION_IS(US)
++	} else if (isKeyDown(0x4) || isKeyDown(0x8)) {
++		/* MOD (language): L1 / R1 turn the keyboard's page */
++		SHOP_AMOUNT = (SHOP_AMOUNT + (isKeyDown(0x8) ? 1 : NAMING_PAGES - 1)) % NAMING_PAGES;
++		fillNamingMenuStrings();
++		playSound(0, 3);
++#endif
+ 	} else if (isKeyDown(0x8000)) {
+ 		namingSelectionLeft(col, row, special);
+ 	} else if (isKeyDown(0x2000)) {
+@@ -2918,6 +2993,15 @@ void fillNamingMenuStrings(void)
+ 	strcpy(buf, NAMING_TITLE);
+ 	len = strlen(NAMING_TITLE);
+ 	buf += len;
++#if VERSION_IS(US)
++	/* MOD (language): the page keys, the current one in the highlight colour */
++	for (row = 0; row < NAMING_PAGES; row++) {
++		*buf++ = 1;
++		*buf++ = row == SHOP_AMOUNT ? 6 : 1;
++		strcpy(buf, NAMING_PAGE_LABELS[row]);
++		buf += strlen(NAMING_PAGE_LABELS[row]);
++	}
++#endif
+ 	*buf++ = 1;
+ 	*buf++ = 1;
+ 	strcpy(buf, NAMING_BUTTONS);
+-- 
+2.53.0
+

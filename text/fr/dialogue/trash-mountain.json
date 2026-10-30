@@ -1,0 +1,457 @@
+{
+ "s158.sec5.u0": [
+  [
+   "Tu n'as aucun talent !"
+  ]
+ ],
+ "s158.sec6.u0": [
+  [
+   "Biepiié!"
+  ]
+ ],
+ "s158.sec7.u0": [
+  [
+   "Baupi, Bosupi!"
+  ]
+ ],
+ "s158.sec8.u0": [
+  [
+   "Bopiiiié!"
+  ]
+ ],
+ "s158.sec9.u0": [
+  [
+   "C'est vraiment tout ce que tu",
+   "sais faire ?"
+  ]
+ ],
+ "s158.sec10.u0": [
+  [
+   "Va te laver le visage et",
+   "réessaie !"
+  ]
+ ],
+ "s159.sec6.m0.o0": "Échanger",
+ "s159.sec6.m0.o1": "Ne pas échanger",
+ "s159.sec6.u0": [
+  [
+   "Hmm, je collectionne les cartes",
+   "Digimon. Je veux une carte",
+   "KingSukamon. Tu m'en échanges"
+  ],
+  [
+   "une contre une carte Etemon ?"
+  ]
+ ],
+ "s159.sec6.u1": [
+  [
+   "Je suis désolé, Je n'en ai pas."
+  ]
+ ],
+ "s159.sec6.u2": [
+  [
+   "Beurk, quelle puanteur... Une",
+   "décharge ? Alors il y en a",
+   "aussi dans le monde des"
+  ],
+  [
+   "Digimon."
+  ]
+ ],
+ "s159.sec6.u3": [
+  [
+   "Hmm ? Oh, bienvenue. Les",
+   "nouveaux amis sont toujours les",
+   "bienvenus, oui !"
+  ]
+ ],
+ "s159.sec6.u4": [
+  [
+   "C'est un village de la tribu",
+   "Sukamon ?"
+  ]
+ ],
+ "s159.sec6.u5": [
+  [
+   "Exactement. Voici le paradis",
+   "des Sukamon, le Royaume de la",
+   "Poussière. Sa Majesté"
+  ],
+  [
+   "KingSukamon y vit aussi."
+  ]
+ ],
+ "s159.sec6.u6": [
+  [
+   "KingSukamon..."
+  ]
+ ],
+ "s159.sec6.u7": [
+  [
+   "Sa Majesté est incroyable. Si",
+   "tu lui désobéis, il te",
+   "transforme en une autre espèce"
+  ],
+  [
+   "!"
+  ]
+ ],
+ "s159.sec6.u8": [
+  [
+   "Quoi ?! Tu cesserais d'être un",
+   "Sukamon ? Alors... il peut te",
+   "rendre ta forme d'avant ?!"
+  ]
+ ],
+ "s159.sec6.u9": [
+  [
+   "Oui... - Oui. C'est une",
+   "histoire effrayante. Horrible."
+  ]
+ ],
+ "s159.sec6.u10": [
+  [
+   "C'est bon à savoir !"
+  ]
+ ],
+ "s159.sec6.u11": [
+  [
+   "Hein, un Sukamon ?!"
+  ]
+ ],
+ "s159.sec6.u12": [
+  [
+   "Hmm ? Tu sais qui je suis ?"
+  ]
+ ],
+ "s159.sec6.u13": [
+  [
+   "E-euh, plus ou moins. Hmm, on",
+   "doit aussi inviter Sukamon en",
+   "ville... ?"
+  ]
+ ],
+ "s159.sec6.u14": [
+  [
+   "Hmm ? Voilà qui est rare, oui !"
+  ]
+ ],
+ "s159.sec6.u15": [
+  [
+   "Beurk, le caca bouge et parle !"
+  ]
+ ],
+ "s159.sec6.u16": [
+  [
+   "Hmm ? Tu parles de moi ? Je",
+   "suis Sukamon, un Digimon",
+   "mutant."
+  ]
+ ],
+ "s159.sec6.u17": [
+  [
+   "Alors tu n'es pas du caca ?"
+  ]
+ ],
+ "s159.sec6.u18": [
+  [
+   "En un sens, c'est vrai. Nous",
+   "sommes faits de restes de",
+   "données numériques."
+  ]
+ ],
+ "s159.sec6.u19": [
+  [
+   "Hmm... On devrait l'inviter en",
+   "ville, lui aussi ? Enfin, ce",
+   "n'est pas bien de faire de la"
+  ],
+  [
+   "discrimination."
+  ]
+ ],
+ "s159.sec6.u20": [
+  [
+   "Vous comptez vivre ici ?"
+  ]
+ ],
+ "s159.sec6.u21": [
+  [
+   "Hein ? Ça ne m'a même pas",
+   "traversé l'esprit."
+  ]
+ ],
+ "s159.sec6.u22": [
+  [
+   "Hmm, ce paradis est réservé à",
+   "la tribu Sukamon. Désolé, mais",
+   "les autres espèces ne peuvent"
+  ],
+  [
+   "pas vivre ici, oui."
+  ]
+ ],
+ "s159.sec6.u23": [
+  [
+   "Alors, vous ne pouvez pas",
+   "vivre ailleurs ?"
+  ]
+ ],
+ "s159.sec6.u24": [
+  [
+   "Bien sûr!"
+  ]
+ ],
+ "s159.sec6.u25": [
+  [
+   "Ah, oui, je m'en doutais...",
+   "Ouf."
+  ]
+ ],
+ "s159.sec6.u26": [
+  [
+   "Hmm ? Vous ne pouvez pas",
+   "vivre ici, mais vous pouvez",
+   "visiter, chers invités, oui."
+  ]
+ ],
+ "s159.sec6.u27": [
+  [
+   "Ah, euh, oui. On ne fait que",
+   "regarder."
+  ]
+ ],
+ "s159.sec6.u28": [
+  [
+   "Ah, et ne fâchez pas Sa",
+   "Majesté. Si sa magie vous",
+   "change en quelque chose de"
+  ],
+  [
+   "pitoyable, ne me reprochez",
+   "rien, oui !"
+  ]
+ ],
+ "s159.sec6.u29": [
+  [
+   "Hé, hé, tu as trop de cartes",
+   "Etemon ! Mieux vaut éviter."
+  ]
+ ],
+ "s159.sec6.u30": [
+  [
+   "Oh, Merci !"
+  ]
+ ],
+ "s159.sec7.u0": [
+  [
+   "Hmm, dites donc. Vous venez de",
+   "cette ville, c'est ça ? Entre",
+   "nous, elle m'intrigue un peu."
+  ],
+  [
+   "J'y passerai un de ces jours."
+  ]
+ ],
+ "s159.sec7.u1": [
+  [
+   "Hmm, dites-moi. Vous",
+   "connaissez le talent spécial",
+   "des Sukamon ? Nous absorbons"
+  ],
+  [
+   "le caca au bord des chemins et",
+   "le transformons en énergie !"
+  ]
+ ],
+ "s159.sec8.u0": [
+  [
+   "Hmm ? Voici le Royaume de la",
+   "Poussière. Pour vous, c'est un",
+   "tas d'ordures, je parie. Mais"
+  ],
+  [
+   "on peut y trouver des choses",
+   "utiles. J'ai vu comme une",
+   "longue perche là-bas, oui."
+  ]
+ ],
+ "s159.sec51.u0": [
+  [
+   "Hé, une {color 6}Vieille canne{color 1} !"
+  ]
+ ],
+ "s159.sec81.m0.o0": "On veut vivre ici",
+ "s159.sec81.m0.o1": "Remets-le comme avant !",
+ "s159.sec81.u0": [
+  [
+   "Hmpf ! Encore vous ! Hors de",
+   "ma vue !"
+  ]
+ ],
+ "s159.sec81.u1": [
+  [
+   "Euh..."
+  ]
+ ],
+ "s159.sec81.u2": [
+  [
+   "Bah, quels obstinés ! Voilà !",
+   "Satisfaits ?"
+  ]
+ ],
+ "s159.sec81.u3": [
+  [
+   "Hmpf ! Encore vous ! Hors de",
+   "ma vue !"
+  ]
+ ],
+ "s159.sec81.u4": [
+  [
+   "Hmm ! Bienvenue, frère",
+   "Sukamon. Si tu souhaites vivre",
+   "ici, je t'en donne la"
+  ],
+  [
+   "permission."
+  ]
+ ],
+ "s159.sec81.u5": [
+  [
+   "Hmm ! Très bien, très bien.",
+   "Hmm ? Pas toi, créature",
+   "analogique."
+  ]
+ ],
+ "s159.sec81.u6": [
+  [
+   "Nous devons être ensemble !"
+  ]
+ ],
+ "s159.sec81.u7": [
+  [
+   "Hmpf, alors partez ensemble !"
+  ]
+ ],
+ "s159.sec81.u8": [
+  [
+   "Q-quoi ? Qu'est-ce que vous",
+   "dites ?"
+  ]
+ ],
+ "s159.sec81.u9": [
+  [
+   "Il n'était pas un Sukamon au",
+   "départ. Votre Majesté,",
+   "rendez-lui sa forme !"
+  ]
+ ],
+ "s159.sec81.u10": [
+  [
+   "Mais n'est-ce pas merveilleux ?",
+   "Il est devenu un Sukamon."
+  ]
+ ],
+ "s159.sec81.u11": [
+  [
+   "Non, pour l'instant, ça nous",
+   "pose un problème. S'il vous",
+   "plaît !"
+  ]
+ ],
+ "s159.sec81.u12": [
+  [
+   "Si vous croyez qu'on devient",
+   "Sukamon sans effort, vous vous",
+   "trompez ! Seuls ceux qui s'y"
+  ],
+  [
+   "efforcent peuvent le devenir !"
+  ]
+ ],
+ "s159.sec81.u13": [
+  [
+   "Justement, il est devenu",
+   "Sukamon sans effort. C'est",
+   "bien le problème..."
+  ]
+ ],
+ "s159.sec81.u14": [
+  [
+   "Hmpf, vous êtes irrécupérables",
+   "! Assez ! Voilà qui vous",
+   "convient !"
+  ]
+ ],
+ "s159.sec81.u15": [
+  [
+   "Waouh, merci, Votre Majesté !"
+  ]
+ ],
+ "s159.sec81.u16": [
+  [
+   "Et maintenant, hors de ma vue",
+   "!"
+  ]
+ ],
+ "s159.sec81.u17": [
+  [
+   "Hmpf, que me voulez-vous ?"
+  ]
+ ],
+ "s159.sec81.u18": [
+  [
+   "Euh..."
+  ]
+ ],
+ "s159.sec81.u19": [
+  [
+   "Hmpf, je n'écoute aucune",
+   "demande. Je suis le roi des",
+   "Sukamon, et des Sukamon"
+  ],
+  [
+   "seulement !"
+  ]
+ ],
+ "s159.sec81.u20": [
+  [
+   "Alors, je ne peux pas l'inviter",
+   "en ville..."
+  ]
+ ],
+ "s159.sec82.m0.o0": "S'entraîner",
+ "s159.sec82.m0.o1": "Cet entraînement",
+ "s159.sec82.m0.o2": "Quitter",
+ "s159.sec82.m1.o0": "Entraînement normal",
+ "s159.sec82.m1.o1": "Entraînement bonus",
+ "s159.sec82.m1.o2": "Laisse tomber",
+ "s159.sec82.m2.o0": "Explique encore",
+ "s159.sec82.m2.o1": "S'entraîner",
+ "s159.sec82.m2.o2": "Quitter",
+ "s159.sec82.u0": [
+  [
+   "{color 5}Entraînement : Bain d'ordures{color 1}"
+  ]
+ ],
+ "s159.sec82.u1": [
+  [
+   "Enfouis-toi dans des ordures",
+   "immondes pour renforcer ta",
+   "volonté. Tes MP max"
+  ],
+  [
+   "augmentent beaucoup."
+  ]
+ ],
+ "s159.sec82.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ]
+}

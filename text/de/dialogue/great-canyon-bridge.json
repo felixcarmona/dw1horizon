@@ -1,0 +1,78 @@
+{
+ "s039.sec6.u0": [
+  [
+   "Stehe ich dir im Weg?"
+  ]
+ ],
+ "s039.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Zu Hiiilfe!"
+  ]
+ ],
+ "s039.sec51.u1": [
+  [
+   "Hm, eine Stimme von oben... Ist",
+   "da jemand?"
+  ]
+ ],
+ "s039.sec51.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "Oh! Da unten ist jemand!?"
+  ]
+ ],
+ "s039.sec51.u3": [
+  [
+   "Ja. Ich bin hier."
+  ]
+ ],
+ "s039.sec51.u4": [
+  [
+   "{color 7}??? {color 1}",
+   "Hilfe! Der Boden ist plötzlich",
+   "hochgefahren!"
+  ]
+ ],
+ "s039.sec51.u5": [
+  [
+   "Das ist verrückt."
+  ]
+ ],
+ "s039.sec51.u6": [
+  [
+   "{color 7}??? {color 1}",
+   "Wirklich! Ich hörte etwas, wie",
+   "eine laufende Maschine!"
+  ]
+ ],
+ "s039.sec51.u7": [
+  [
+   "Eine Maschine... Vielleicht",
+   "Ogremons Versteck?"
+  ]
+ ],
+ "s039.sec51.u8": [
+  [
+   "{color 7}??? {color 1}",
+   "Hast du dort nicht etwas",
+   "anders gemacht?"
+  ]
+ ],
+ "s039.sec51.u9": [
+  [
+   "Na ja, so einiges. Der Aufzug",
+   "zum Beispiel... Gut, ich gehe",
+   "ins Versteck zurück und sehe"
+  ],
+  [
+   "mich um."
+  ]
+ ],
+ "s039.sec51.u10": [
+  [
+   "{color 7}??? {color 1}",
+   "Ich zähle auf diiich!"
+  ]
+ ]
+}

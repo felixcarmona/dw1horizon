@@ -1,0 +1,9 @@
+// Development helper: talking to Jijimon opens the save machine directly.
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+    on talk(jijimon) replace {
+        asm("FADEOUT_HUD 0");
+        asm("CALL_ROUTINE 48");
+        return;
+    }
+}

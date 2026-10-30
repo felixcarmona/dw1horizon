@@ -1,0 +1,200 @@
+{
+ "s176.sec7.u0": [
+  [
+   "Ah oui ! Ton sac est trop",
+   "plein ? Boing ! Il paraît qu'il",
+   "existe un porte-clés qui relie"
+  ],
+  [
+   "ton sac à une autre dimension,",
+   "pour transporter plus d'objets",
+   "! Retourne donc voir les"
+  ],
+  [
+   "endroits que tu as déjà visités",
+   "!"
+  ]
+ ],
+ "s176.sec7.u1": [
+  [
+   "Je vais te donner mes astuces",
+   "secrètes pour acheter des",
+   "objets ! Dans la liste, appuie"
+  ],
+  [
+   "sur START pour voir l'effet",
+   "d'un objet. Pour la quantité,",
+   "{color 4}□{color 1} choisit le maximum que tu"
+  ],
+  [
+   "peux payer. Maintiens {color 10}○{color 1} avec",
+   "haut ou bas pour changer la",
+   "quantité par dix ! Si la liste"
+  ],
+  [
+   "est longue, maintiens R1 avec",
+   "haut ou bas pour la parcourir",
+   "vite ! Et encore un secret..."
+  ],
+  [
+   "Achète quelque chose juste",
+   "après la renaissance de ton",
+   "Digimon ! Il t'arrivera"
+  ],
+  [
+   "forcément quelque chose de bien",
+   "! Boing !"
+  ]
+ ],
+ "s176.sec81.u0": [
+  [
+   "Bienvenue ! Hé, {color 6}{player}{color 1} !",
+   "Regarde, ma propre boutique !",
+   "Je vais vendre des objets à"
+  ],
+  [
+   "tour de bras ! Le stock... bah,",
+   "je m'en occuperai plus tard.",
+   "Ramène-moi des Digimon pour"
+  ],
+  [
+   "m'aider, ça me ferait plaisir."
+  ]
+ ],
+ "s176.sec81.u1": [
+  [
+   "Bienvenue, piou ! J'ai décidé",
+   "d'acheter et de vendre des",
+   "objets, piou. Enchanté, piou !"
+  ],
+  [
+   "Je n'ai pas encore",
+   "grand-chose... Mais si des",
+   "Digimon venaient m'aider, je"
+  ],
+  [
+   "pourrais m'en sortir, piou."
+  ]
+ ],
+ "s176.sec81.u2": [
+  [
+   "Bienvenue. Je me suis permis",
+   "d'ouvrir une boutique d'objets.",
+   "J'espère t'y revoir souvent."
+  ],
+  [
+   "Le choix est encore limité,",
+   "mais je compte agrandir la",
+   "boutique. Un peu de patience"
+  ],
+  [
+   "pour l'instant."
+  ]
+ ],
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1},",
+   "j'ai enfin ouvert la boutique",
+   "d'objets. Les affaires vont"
+  ],
+  [
+   "marcher, je le sens ! Quand",
+   "d'autres Digimon seront en",
+   "ville, je pourrai proposer de"
+  ],
+  [
+   "meilleurs produits. Patience",
+   "d'ici là."
+  ]
+ ],
+ "s176.sec81.u4": [
+  [
+   "Hé, {color 6}{player}{color 1} ! J'ai",
+   "commencé à aider à la boutique.",
+   "Achète plein de choses,"
+  ],
+  [
+   "d'accord ?"
+  ]
+ ],
+ "s176.sec81.u5": [
+  [
+   "Bienvenue, piou ! Dès",
+   "aujourd'hui, j'aide à la",
+   "boutique, piou. Enchanté, piou"
+  ],
+  [
+   "!"
+  ]
+ ],
+ "s176.sec81.u6": [
+  [
+   "Bienvenue, {color 6}{player}{color 1}. Je me",
+   "suis permis de proposer mon",
+   "aide à cette boutique. J'espère"
+  ],
+  [
+   "te compter parmi mes clients."
+  ]
+ ],
+ "s176.sec81.u7": [
+  [
+   "Ah, {color 6}{player}{color 1}. Après tout,",
+   "c'est ici que mes talents",
+   "seront les plus utiles. Je vais"
+  ],
+  [
+   "me donner à fond."
+  ]
+ ],
+ "s176.sec82.m0.o0": "Acheter",
+ "s176.sec82.m0.o1": "Ne pas acheter",
+ "s176.sec82.u0": [
+  [
+   "Oh, señor, comment ça va ? Je",
+   "suis trèèès occupé à vendre",
+   "des objets chaque jour. Je"
+  ],
+  [
+   "plaisante ! Je suis tellement",
+   "paresseux que je ne serai pas",
+   "souvent à la boutique. Mais"
+  ],
+  [
+   "j'ai un objet incroyable pour",
+   "toi : le guide d'entraînement !",
+   "Il suffit de l'avoir sur soi"
+  ],
+  [
+   "pour que l'entraînement fasse",
+   "des merveilles ! Il est",
+   "précieux, alors je te le vends"
+  ],
+  [
+   "50000 Bits. Tu regretteras de",
+   "ne pas l'acheter !"
+  ]
+ ],
+ "s176.sec82.u1": [
+  [
+   "Il te manque beaucoup de Bits",
+   "!"
+  ]
+ ],
+ "s176.sec82.u2": [
+  [
+   "Hmm, ton sac est plein !"
+  ]
+ ],
+ "s176.sec82.u3": [
+  [
+   "{color 6}Guide entraîn.{color 1}",
+   "reçu !"
+  ]
+ ],
+ "s176.sec82.u4": [
+  [
+   "Pas un Bit de rabais, señor !"
+  ]
+ ]
+}

@@ -1,0 +1,69 @@
+// Readable form of script 80 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 80 {
+    npc gotsumon0 = 5;
+    npc gotsumon1 = 6;
+    npc saberdramon = 7;
+    npc darklizardmon3 = 8;
+    npc darklizardmon4 = 9;
+    npc gotsumon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 51;
+
+    on enter replace {    // section 254
+        engine.arg = 1;
+        call_routine(routine("save_clock_speed"));
+    }
+
+    on talk(gotsumon0) replace {    // section 5
+        say(gotsumon0, text("s080.sec5.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(gotsumon1) replace {    // section 6
+        say(gotsumon1, text("s080.sec6.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(saberdramon) replace {    // section 7
+        say(saberdramon, text("s080.sec7.u0"));
+        battle();
+        recruit(species("Saberdramon"));
+    }
+
+    on talk(darklizardmon3) replace {    // section 8
+        say(darklizardmon3, text("s080.sec8.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon4) replace {    // section 9
+        say(darklizardmon4, text("s080.sec9.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(gotsumon5) replace {    // section 10
+        say(gotsumon5, text("s080.sec10.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (!speedy_time_zone_entered) return;
+        animate(tamer, 24);
+        wait(1s);
+        say(tamer, text("s080.sec51.u0"));
+        animate(tamer, anim.idle);
+        say(tamer, text("s080.sec51.u1"));
+        speedy_time_zone_entered = true;
+        return;
+    }
+}

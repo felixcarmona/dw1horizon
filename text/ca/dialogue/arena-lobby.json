@@ -1,0 +1,316 @@
+{
+ "s168.sec10.u0": [
+  [
+   "- Grau D - Torneig per a",
+   "Digimon Novells. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s168.sec10.u1": [
+  [
+   "- Grau C - Torneig per a",
+   "Digimon Campions. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s168.sec10.u2": [
+  [
+   "- Grau B - Per a Campions",
+   "que confien en la seva força.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada lliure"
+  ]
+ ],
+ "s168.sec10.u3": [
+  [
+   "- Grau A - Torneig per a",
+   "Digimon Perfectes. Individual,",
+   "3 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s168.sec10.u4": [
+  [
+   "- Grau S - Reuneix els",
+   "Digimon més forts. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "guanyar el Grau A"
+  ]
+ ],
+ "s168.sec10.u5": [
+  [
+   "- Grau R - Batalla campal",
+   "d'astúcia i tàctica. A quatre,",
+   "2 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s168.sec10.u6": [
+  [
+   "- Copa Versió 1 - Tria el",
+   "millor de la Versió 1. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 1"
+  ]
+ ],
+ "s168.sec10.u7": [
+  [
+   "- Copa Versió 2 - Tria el",
+   "millor de la Versió 2. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 2"
+  ]
+ ],
+ "s168.sec10.u8": [
+  [
+   "- Copa Versió 3 - Tria el",
+   "millor de la Versió 3. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 3"
+  ]
+ ],
+ "s168.sec10.u9": [
+  [
+   "- Copa Versió 4 - Tria el",
+   "millor de la Versió 4. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 4"
+  ]
+ ],
+ "s168.sec10.u10": [
+  [
+   "- Copa Versió O - Per a",
+   "Digimon fora de les Versions",
+   "1-4. Combats amb límit de",
+   "temps. Individual, 3 rondes, 8",
+   "places Entrada: fora de les",
+   "Versions 1-4"
+  ]
+ ],
+ "s168.sec10.u11": [
+  [
+   "- Copa Foc - Tria el rei dels",
+   "Digimon de Foc. Combats amb",
+   "límit de temps. Individual, 3",
+   "rondes, 8 places Entrada:",
+   "Digimon de Foc"
+  ]
+ ],
+ "s168.sec10.u12": [
+  [
+   "- Copa Lluita - Tria el rei",
+   "dels Digimon de Combat.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Combat"
+  ]
+ ],
+ "s168.sec10.u13": [
+  [
+   "- Copa Tro i Vent - Tria el",
+   "rei dels Digimon d'Aire.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon d'Aire"
+  ]
+ ],
+ "s168.sec10.u14": [
+  [
+   "- Copa Estil - Tria el rei",
+   "dels Digimon de Gel. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Gel"
+  ]
+ ],
+ "s168.sec10.u15": [
+  [
+   "- Copa Naturalesa - Tria el",
+   "rei dels Digimon de Natura.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Natura"
+  ]
+ ],
+ "s168.sec10.u16": [
+  [
+   "- Copa Metàl·lica - Tria el rei",
+   "dels Digimon de Màquina.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Màquina"
+  ]
+ ],
+ "s168.sec10.u17": [
+  [
+   "- Copa Bruta - Tria el rei",
+   "dels Digimon de Brutícia.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Brutícia"
+  ]
+ ],
+ "s168.sec10.u18": [
+  [
+   "- Copa Dino - Competeixen",
+   "Digimon de sang antiga.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u19": [
+  [
+   "- Copa Ales - Competeixen",
+   "Digimon orgullosos de les ales.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u20": [
+  [
+   "- Copa Animal - Competeixen",
+   "Digimon de sang animal. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "???"
+  ]
+ ],
+ "s168.sec10.u21": [
+  [
+   "- Copa Humana - Competeixen",
+   "Digimon de forma humana.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec53.u0": [
+  [
+   "Eh, eh, que aquests són els",
+   "seients del públic."
+  ]
+ ],
+ "s168.sec82.m0.o0": "Historial",
+ "s168.sec82.m0.o1": "Tornejos de grau",
+ "s168.sec82.m0.o2": "Tornejos especials",
+ "s168.sec82.u0": [
+  [
+   "Informació del Coliseu"
+  ]
+ ],
+ "s168.sec82.u1": [
+  [
+   "Tornejos guanyats:",
+   "{cupswon} {wins}",
+   "victòries {losses} derrotes"
+  ]
+ ],
+ "s168.sec82.u2": [
+  [
+   "Tothom pot participar als",
+   "tornejos de grau, que es fan",
+   "sovint. Evita inscriure-hi un",
+   "Digimon molt per sobre del"
+  ],
+  [
+   "nivell del torneig. Si canvia",
+   "d'espècie entre la inscripció i",
+   "el torneig, la inscripció queda",
+   "anul·lada."
+  ]
+ ],
+ "s168.sec82.u3": [
+  [
+   "Els tornejos especials tenen",
+   "requisits fixos i se celebren",
+   "molt de tant en tant. Si a la",
+   "ciutat no hi ha bastants"
+  ],
+  [
+   "participants que els",
+   "compleixin, no se celebren.",
+   "Cadascun se celebra només una",
+   "o dues vegades a l'any, així"
+  ],
+  [
+   "que mira el calendari amb",
+   "temps."
+  ]
+ ],
+ "s168.sec84.u0": [
+  [
+   "Je, je... {color 10}{partner}{color 1}, has",
+   "salvat el món. Deixa que et",
+   "busqui un títol d'heroi."
+  ],
+  [
+   "Vegem..."
+  ]
+ ],
+ "s168.sec84.u1": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, el Rei",
+   "Invencible»?"
+  ]
+ ],
+ "s168.sec84.u2": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, l'Heroi",
+   "Llegendari»?"
+  ]
+ ],
+ "s168.sec84.u3": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, Senyor",
+   "del Nou Món»?"
+  ]
+ ],
+ "s168.sec84.u4": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, el que",
+   "Porta la Pau»?"
+  ]
+ ],
+ "s168.sec84.u5": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, la",
+   "Llegenda Invicta»?"
+  ]
+ ],
+ "s168.sec84.u6": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, el",
+   "Valent»?"
+  ]
+ ],
+ "s168.sec84.u7": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, el Més",
+   "Trempat»?"
+  ]
+ ],
+ "s168.sec84.u8": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, Déu",
+   "Suprem de la Guerra»?"
+  ]
+ ],
+ "s168.sec84.u9": [
+  [
+   "Què tal «{color 10}{partner}{color 1},",
+   "Vendaval dels Cels»?"
+  ]
+ ],
+ "s168.sec84.u10": [
+  [
+   "Què tal «{color 10}{partner}{color 1}, el",
+   "Lladre amb Estil»?"
+  ]
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": 50,
+  "name": "Poop Spd Toss",
+  "element": "filth",
+  "power": 122,
+  "mpCost": 32,
+  "distance": 490000,
+  "range": 2,
+  "accuracy": 40,
+  "status": 1,
+  "statusChance": 11,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [23, 13, 8]
+}

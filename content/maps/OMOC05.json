@@ -1,0 +1,47 @@
+{
+  "file": "MAP/MAP10/OMOC05.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "ToyAgumon",
+      "at": [992, -45],
+      "facing": 0,
+      "follow": 12,
+      "range": 500,
+      "charge": 1,
+      "moves": [47, 48, 50, 52],
+      "prios": [40, 30, 20, 10],
+      "flee": [-6, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "ToyAgumon",
+      "at": [48, -47],
+      "facing": 0,
+      "follow": 12,
+      "range": 500,
+      "charge": 1,
+      "moves": [47, 48, 50, 52],
+      "prios": [40, 30, 20, 10],
+      "flee": [-6, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "ToyAgumon",
+      "at": [-952, -32],
+      "facing": 0,
+      "follow": 12,
+      "range": 500,
+      "charge": 1,
+      "moves": [47, 48, 50, 52],
+      "prios": [40, 30, 20, 10],
+      "flee": [-6, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

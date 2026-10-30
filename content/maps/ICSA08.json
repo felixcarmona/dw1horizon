@@ -1,0 +1,54 @@
+{
+  "file": "MAP/MAP7/ICSA08.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Machinedramon",
+      "at": [67, 1462],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [48, 50, 51, 52],
+      "prios": [30, 30, 20, 20],
+      "flee": [2794, -1491],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Analogman",
+      "at": [67, 912],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 48, 50],
+      "prios": [40, 30, 20, 10],
+      "flee": [2794, -1491],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "SnowAgumon",
+      "at": [0, 950],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "hp": "-2600",
+      "mp": "-2400",
+      "off": "-410",
+      "def": "-190",
+      "speed": "-100",
+      "brain": "-100",
+      "bits": "-500",
+      "moves": [46, 47, 48, 50],
+      "prios": [40, 30, 20, 10],
+      "flee": [2794, -1491],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

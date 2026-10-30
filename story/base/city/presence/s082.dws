@@ -1,0 +1,12 @@
+// Who stands on screen 82 (Ancient Glacial Region), and when. Read out of MAPHEAD.SCN section 82 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(82) {                              // Ancient Glacial Region
+            npc 132 slot 0 when not trigger(187);
+            npc 132 slot 1 when trigger(187) and not recruited(Tyrannomon);
+            npc Mastertyrannomon slot 3 when recruited(Tyrannomon);
+        }
+    }
+}

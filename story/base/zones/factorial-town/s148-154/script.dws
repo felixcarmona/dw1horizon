@@ -1,0 +1,73 @@
+// Readable form of script 148 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 148 {
+    npc guardromon0 = 5;
+    npc platinumsukamon1 = 6;
+    npc platinumsukamon2 = 7;
+    npc geremon = 8;
+    npc guardromon4 = 9;
+    npc guardromon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 53, 54, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -3979, 875);
+        warp_to(153, 1, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 3538, -555);
+        warp_to(155, 1, 255);
+    }
+
+    on step(2) replace {    // section 53
+        walk(tamer, 1707, 1557);
+        warp_to(157, 0, 255);
+    }
+
+    on step(3) replace {    // section 54
+        warp_to(163, 0, 255);
+    }
+
+    on talk(guardromon0) replace {    // section 5
+        say(guardromon0, text("s148.sec5.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(platinumsukamon1) replace {    // section 6
+        say(platinumsukamon1, text("s148.sec6.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(platinumsukamon2) replace {    // section 7
+        say(platinumsukamon2, text("s148.sec7.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(geremon) replace {    // section 8
+        say(geremon, text("s148.sec8.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(guardromon4) replace {    // section 9
+        say(guardromon4, text("s148.sec9.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon5) replace {    // section 10
+        say(guardromon5, text("s148.sec10.u0"));
+        battle();
+        recruit(species("Guardromon"));
+        return;
+    }
+}

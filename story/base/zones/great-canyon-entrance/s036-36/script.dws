@@ -1,0 +1,111 @@
+// Readable form of script 36 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 36 {
+    npc goblimon0 = 5;
+    npc goblimon1 = 6;
+    npc gotsumon2 = 7;
+    npc gotsumon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51, 52, 53;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 36, 68);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 83, 78);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 25, 17);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 78, 60);
+        }
+    }
+
+    on talk(goblimon0) replace {    // section 5
+        say(goblimon0, text("s036.sec5.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        say(goblimon1, text("s036.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(gotsumon2) replace {    // section 7
+        say(gotsumon2, text("s036.sec7.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(gotsumon3) replace {    // section 8
+        say(gotsumon3, text("s036.sec8.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (!invisible_bridge_rumor_heard) {
+            animate(tamer, 15);
+            wait(15);
+            say(tamer, text("s036.sec51.u0"));
+            run(tamer, 73, 971, camera: true);
+            await tamer;
+        }
+        goto L7;
+    }
+
+    on step(1) replace {    // section 52
+        if (!invisible_bridge_rumor_heard) {
+            animate(tamer, 15);
+            wait(15);
+            say(tamer, text("s036.sec52.u0"));
+            run(tamer, -782, 1580, camera: true);
+            await tamer;
+        }
+        goto L7;
+    }
+
+    on step(2) replace {    // section 53
+        unless (!invisible_bridge_rumor_heard) goto L7;
+        animate(tamer, 15);
+        wait(15);
+        say(tamer, text("s036.sec53.u0"));
+        run(tamer, 856, 1137, camera: true);
+        await tamer;
+        camera_on(tamer, speed: 10);
+        await camera;
+        goto L7;
+    }
+
+    shared L7 {    // code of sec53 that other code jumps to
+        if (!invisible_bridge_crossed && invisible_bridge_rumor_heard) {
+            entity_set_rotation(tamer, 2000);
+            wait(10);
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s036.sec53.u1"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s036.sec53.u2"));
+            walk(tamer, 66, 3240, camera: true);
+            wait(1s);
+            walk(partner, 30, 2646);
+            await tamer;
+            await partner;
+            say(tamer, text("s036.sec53.u3"));
+            invisible_bridge_crossed = true;
+        }
+        return;
+    }
+}

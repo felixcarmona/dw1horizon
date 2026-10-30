@@ -1,0 +1,10 @@
+// Who stands on screen 113 (Leomon Ancestor's Cave), and when. Read out of MAPHEAD.SCN section 113 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(113) {                              // Leomon Ancestor's Cave
+            npc 171 slot 0 when recruited(Leomon) and not trigger(333);
+        }
+    }
+}

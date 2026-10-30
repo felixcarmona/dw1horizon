@@ -1,0 +1,107 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M327RUNX",
+ "type": 323,
+ "name": "Lynxmon",
+ "source": {
+  "type": 38,
+  "mmd": "extracted/CHDAT/MMD1/DORI.MMD"
+ },
+ "map": {
+  "1": 5,
+  "6": 8,
+  "7": 10,
+  "8": 11,
+  "10": 13,
+  "11": 14,
+  "12": 16,
+  "13": 18,
+  "16": 20,
+  "17": 21,
+  "19": 22,
+  "20": 24,
+  "21": 25,
+  "23": 26
+ },
+ "hips": [
+  1,
+  1,
+  1.349
+ ],
+ "root_scale": 1.349,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x38": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 137,
+   "speed": 1.39,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x34": {
+   "anim": "anim_14",
+   "start": 10,
+   "end": 102,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.078885,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

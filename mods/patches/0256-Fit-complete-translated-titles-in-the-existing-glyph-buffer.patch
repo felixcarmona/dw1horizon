@@ -1,0 +1,67 @@
+From 6ff91deb6689355b659e810802c60d0c44647653 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 23:45:49 +0000
+Subject: [PATCH] Fit complete translated titles in the existing glyph buffer
+
+---
+ src/main/font.c      |  9 +++++++--
+ src/main/main_menu.c | 10 +++++-----
+ 2 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/font.c b/src/main/font.c
+index b046846f..8be963a6 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -30,12 +30,12 @@
+ /*
+  * MOD (font): font b's ring: a 16-pixel cell (4 VRAM halfwords, 8 bytes a row) of 11 rows, 34 slots, and drawGlyph waits
+  * for the GPU when the ring wraps (a slot is rewritten only once it has been read). The original font (NEW FONT off)
+- * uses the same buffer: 30 of its slots of 72 bytes, waiting too when its ring wraps, and after them the strip its
++ * uses the same buffer: 28 of its slots of 72 bytes, waiting too when its ring wraps, and after them the strip its
+  * long names are composed in (FIT_STRIP). 1 400 bytes less than the original's 3 600 and a strip of its own.
+  */
+ #define PIXEL_RENDER_SLOTS	34
+ #define PIXEL_RENDER_SLOT_SIZE	88
+-#define CELL_RENDER_SLOTS	30
++#define CELL_RENDER_SLOTS	28
+ #define GLYPH_AREA_SIZE		(PIXEL_RENDER_SLOTS * PIXEL_RENDER_SLOT_SIZE)
+ #else
+ #define GLYPH_AREA_SIZE		(NUM_RENDER_SLOTS * RENDER_SLOT_SIZE)
+@@ -2216,7 +2216,12 @@ int32_t textFitCode(char *str, int32_t maxW)
+ /* MOD (item names): the strip covers 144 pixels, not the text area's 256: the widest line it composes is a name drawn
+  * tight within a field of at most 136 (MetalGreymonVaccine: 131, at most 136 with x & 3); 616 bytes of bss back for
+  * the item lists' code */
++#if FONT_SWITCH
++/* MOD (language): the title fits 176 pixels. Two fewer ring slots make room in the same buffer. */
++#define FIT_STRIP_W	176
++#else
+ #define FIT_STRIP_W	144
++#endif
+ #if FONT_SWITCH
+ /* MOD (font): after the original font's ring (CELL_RENDER_SLOTS), which uses it only with NEW FONT off */
+ #define FIT_STRIP (GLYPH_DRAWING_AREAS + CELL_RENDER_SLOTS * RENDER_SLOT_SIZE)
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 732cba49..d138f636 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2122,12 +2122,12 @@ void drawMainMenuStrings(int32_t menu)
+ #else
+ 	switch (view) {
+ 	case 0:
+-		/* MOD (language): keep complete translated labels inside the title's 176-pixel crop with either font. */
+-		drawStringMode(TITLE_MENU_ITEMS[0], 0, 0, fitStringMode(TITLE_MENU_ITEMS[0], 0xB0));
+-		drawStringMode(TITLE_MENU_ITEMS[1], 0, 0xC, fitStringMode(TITLE_MENU_ITEMS[1], 0xB0));
++		/* MOD (language): keep translated labels inside the title frame with either font (12 pixels of margin in its crop). */
++		drawStringMode(TITLE_MENU_ITEMS[0], 0, 0, fitStringMode(TITLE_MENU_ITEMS[0], 0xA4));
++		drawStringMode(TITLE_MENU_ITEMS[1], 0, 0xC, fitStringMode(TITLE_MENU_ITEMS[1], 0xA4));
+ 		DrawSync(0);
+-		drawStringMode(TITLE_MENU_ITEMS[2], 0, 0x18, fitStringMode(TITLE_MENU_ITEMS[2], 0xB0));
+-		drawStringMode(TITLE_MENU_ITEMS[3], 0, 0x24, fitStringMode(TITLE_MENU_ITEMS[3], 0xB0));
++		drawStringMode(TITLE_MENU_ITEMS[2], 0, 0x18, fitStringMode(TITLE_MENU_ITEMS[2], 0xA4));
++		drawStringMode(TITLE_MENU_ITEMS[3], 0, 0x24, fitStringMode(TITLE_MENU_ITEMS[3], 0xA4));
+ 		DrawSync(0);
+ 		drawString(MOD_OPT_STR_OPTIONS, 0, 0x30); /* MOD (options) */
+ 		break;
+-- 
+2.55.0
+

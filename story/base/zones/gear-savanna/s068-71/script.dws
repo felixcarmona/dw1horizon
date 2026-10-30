@@ -1,0 +1,164 @@
+// Readable form of script 68 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 68 {
+    npc elecmon = 5;
+    npc akatorimon1 = 6;
+    npc akatorimon2 = 7;
+    npc shamamon = 8;
+    npc psychemon4 = 9;
+    npc psychemon5 = 10;
+    npc slot6 = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 8) {
+            spawn_item(item("Digimushrm"), 57, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 19) {
+            spawn_item(item("Digimushrm"), 35, 43);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Sweet Nut"), 39, 18);
+        }
+        unless (!factorial_town_reopened) return;
+        set_obj_visibility(38, 1);
+        set_obj_visibility(39, 1);
+        set_obj_visibility(40, 1);
+    }
+
+    on talk(elecmon) replace {    // section 5
+        match (p33, clamp) {
+            0 => {
+                wait(1);
+                damage_percent = 20;
+                deal_damage(damage_percent);
+                set_obj_visibility(41, 0);
+                engine.object = 41;
+                engine.animation = 1;
+                call_routine(routine("reset_object_animation"));
+                spawn_sprite_at_entity(elecmon, 2, 41);
+                sound(8, 0);
+                animate(partner, 40);
+                wait(3);
+                animate(tamer, 17);
+                face(elecmon, tamer);
+                await elecmon;
+                set_obj_visibility(41, 1);
+                set_obj_visibility(42, 1);
+                say(elecmon, text("s068.sec5.u0"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                p33 += 1;
+            }
+            1 => {
+                wait(1);
+                damage_percent = 20;
+                deal_damage(damage_percent);
+                set_obj_visibility(41, 0);
+                engine.object = 41;
+                engine.animation = 1;
+                call_routine(routine("reset_object_animation"));
+                spawn_sprite_at_entity(elecmon, 2, 41);
+                sound(8, 0);
+                animate(partner, 40);
+                wait(3);
+                animate(tamer, 17);
+                face(elecmon, tamer);
+                await elecmon;
+                set_obj_visibility(41, 1);
+                set_obj_visibility(42, 1);
+                say(elecmon, text("s068.sec5.u1"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                p33 += 1;
+            }
+            2 => {
+                wait(1);
+                damage_percent = 20;
+                deal_damage(damage_percent);
+                set_obj_visibility(41, 0);
+                engine.object = 41;
+                engine.animation = 1;
+                call_routine(routine("reset_object_animation"));
+                spawn_sprite_at_entity(elecmon, 2, 41);
+                sound(8, 0);
+                animate(partner, 40);
+                wait(3);
+                animate(tamer, 17);
+                face(elecmon, tamer);
+                await elecmon;
+                set_obj_visibility(41, 1);
+                set_obj_visibility(42, 1);
+                camera_on(tamer, speed: 10);
+                await camera;
+                say(elecmon, text("s068.sec5.u2"));
+                animate(tamer, 19);
+                say(tamer, text("s068.sec5.u3"));
+                say(elecmon, text("s068.sec5.u4"));
+                walk_away(elecmon, -171, -2105, looks: 6, pause: 10);
+                join_city(elecmon, species("Elecmon"), 8, 5, text("s068.sec5.u5"));
+                camera_on(tamer, speed: 10);
+                await camera;
+            }
+        }
+    }
+
+    on talk(akatorimon1) replace {    // section 6
+        say(akatorimon1, text("s068.sec6.u0"));
+        battle();
+        recruit(species("Akatorimon"));
+    }
+
+    on talk(akatorimon2) replace {    // section 7
+        say(akatorimon2, text("s068.sec7.u0"));
+        battle();
+        recruit(species("Akatorimon"));
+    }
+
+    on talk(shamamon) replace {    // section 8
+        say(shamamon, text("s068.sec8.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(psychemon4) replace {    // section 9
+        say(psychemon4, text("s068.sec9.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(psychemon5) replace {    // section 10
+        say(psychemon5, text("s068.sec10.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(slot6) replace {    // section 11
+        say(slot6, text("s068.sec11.u0"));
+        battle();
+        recruit(species("Akatorimon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (factorial_town_reopened) {
+            walk(tamer, 1020, 4048);
+            warp_to(156, 1, 255);
+        }
+        entity_set_rotation(tamer, 2048);
+        wait(10);
+        say(tamer, text("s068.sec51.u0"));
+        run(tamer, 946, 2852, camera: true);
+        await tamer;
+        return;
+    }
+}

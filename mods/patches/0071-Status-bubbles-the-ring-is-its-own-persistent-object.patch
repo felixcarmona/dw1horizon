@@ -1,0 +1,147 @@
+From 5fd9954a836af655fb56f6f564e7c55b9209a27a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 15:44:37 +0000
+Subject: [PATCH] Status bubbles: the ring is its own persistent object (always
+ visible while a condition is active), no duplicate of the big bubble, top
+ clamp
+
+---
+ src/main/bubble.c | 82 +++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 76 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 95a46e9..e3ae0c3 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -50,6 +50,10 @@ void renderSprite(GsSPRITE* sprite, int32_t x, int32_t y, int32_t distance,
+ extern int32_t VIEWPORT_DISTANCE;
+ extern int32_t DRAWING_OFFSET_Y;
+ extern int32_t IS_IN_MENU;
++extern int8_t GAME_STATE;
++extern int8_t PARTNER_STATE;
++extern int32_t CONDITION_BUBBLE_ID;
++extern int32_t CONDITION_BUBBLE_TYPE;
+ 
+ GsSPRITE CONDITION_SPRITES[12] = {
+ 	/* 0: Hungry */
+@@ -419,10 +423,15 @@ ConditionIcon *CONDITION_BUBBLE_TYPES[8] = {
+ 
+ ConditionBubble CONDITION_BUBBLES[3];
+ 
++void tickConditionRingObject(int32_t instanceId);
++void renderConditionRingObject(int32_t instanceId);
++
+ void initializeConditionBubbles(void)
+ {
+ 	setInt16WithStride((int16_t *)CONDITION_BUBBLES, -1,
+ 			   NUM_CONDITION_BUBBLES, sizeof(ConditionBubble));
++	removeObject(0x819, 0);
++	addObject(0x819, 0, tickConditionRingObject, renderConditionRingObject);
+ }
+ 
+ int32_t addConditionBubble(int32_t type, Entity *entity)
+@@ -552,8 +561,10 @@ static const int8_t RING_DY[6] = { -11, -30, -42, -42, -30, -11 };
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+ static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
+ 
++static const int8_t RING_TYPE[6] = { 0, 1, 3, 4, 2, 6 };
++
+ static void renderConditionRing(int32_t fc, int32_t x, int32_t y,
+-				int32_t depth, uint32_t scale)
++				int32_t depth, uint32_t scale, int32_t bigType)
+ {
+ 	uint32_t cond = PARTNER_PARA.condition;
+ 	int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
+@@ -567,6 +578,9 @@ static void renderConditionRing(int32_t fc, int32_t x, int32_t y,
+ 		if (!(cond & RING_BIT[i])) {
+ 			continue;
+ 		}
++		if (bigType == RING_TYPE[i]) {
++			continue;
++		}
+ 		cx = x + ((RING_DX[i] * k) >> 12);
+ 		cy = y + ((RING_DY[i] * k) >> 12);
+ 		icon = RING_ICON[i];
+@@ -584,6 +598,67 @@ static void renderConditionRing(int32_t fc, int32_t x, int32_t y,
+ 	}
+ }
+ 
++
++int32_t MOD_RING_CLOCK = 1;
++
++void renderConditionRingObject(int32_t instanceId)
++{
++	Entity *entity = ENTITY_TABLE[1];
++	SVECTOR pos;
++	DVECTOR screen;
++	int32_t depth;
++	int32_t value;
++	int32_t top;
++	uint32_t scale = 0x6000;
++	int32_t bigType = -1;
++
++	if ((MOD_STATUS_BUBBLES == 0) || (IS_IN_MENU == 1) || (GAME_STATE != 0) ||
++	    ((PARTNER_STATE != 1) && (PARTNER_STATE != 0xa)) ||
++	    ((PARTNER_PARA.condition & 0x6f) == 0) || (entity == NULL)) {
++		return;
++	}
++
++	translateConditionFXToEntity(entity, &pos);
++	pos.vy = -DIGI_PARA(entity->type).height + 20 - 65 +
++		 ((_sin(lerp(0, 512, 0, 20, MOD_RING_CLOCK % 40)) * 12) >> 12) +
++		 entity->posData->location.vy;
++	depth = worldPosToScreenPos(&pos, &screen);
++	if (depth <= 0) {
++		return;
++	}
++
++	if (entity->isOnScreen != 0) {
++		top = (52 * ((scale * VIEWPORT_DISTANCE) / depth)) >> 12;
++		if ((screen.vy + DRAWING_OFFSET_Y) < top) {
++			screen.vy = -DRAWING_OFFSET_Y + top;
++		}
++		value = (depth >> 4) - 20;
++		if (value < 36) {
++			value = 36;
++		}
++		scale = ((int32_t)scale * value) / (depth >> 4);
++		depth = value << 4;
++	}
++
++	if ((depth <= 0x200) || (depth >= 0x10000)) {
++		return;
++	}
++
++	if ((CONDITION_BUBBLE_ID >= 0) && (CONDITION_BUBBLE_ID < NUM_CONDITION_BUBBLES) &&
++	    (CONDITION_BUBBLES[CONDITION_BUBBLE_ID].frameCount >= 0) &&
++	    (CONDITION_BUBBLES[CONDITION_BUBBLE_ID].frameCount < 51)) {
++		bigType = CONDITION_BUBBLE_TYPE;
++	}
++	renderConditionRing(MOD_RING_CLOCK, screen.vx, screen.vy, depth, scale, bigType);
++}
++
++void tickConditionRingObject(int32_t instanceId)
++{
++	if (IS_IN_MENU != 1) {
++		++MOD_RING_CLOCK;
++	}
++}
++
+ void renderConditionBubble(int32_t instanceId)
+ {
+ 	ConditionBubble *bubble;
+@@ -640,11 +715,6 @@ void renderConditionBubble(int32_t instanceId)
+ 	drawConditionIcon(bubble->iconPtr->icon, bubble->frameCount, screen.vx,
+ 			  screen.vy, depth, scale);
+ 
+-	if (MOD_STATUS_BUBBLES != 0) {
+-		renderConditionRing(bubble->frameCount, screen.vx, screen.vy,
+-				    depth, scale);
+-	}
+-
+ 	renderSprite(&CONDITION_SPRITES[11], screen.vx, screen.vy, depth,
+ 		     scale, scale);
+ }
+-- 
+2.53.0
+

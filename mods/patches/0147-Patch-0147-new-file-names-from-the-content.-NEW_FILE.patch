@@ -1,0 +1,55 @@
+From 33802758bc4fcd564bb00af185541b7c8671e89a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 19 Oct 2026 22:34:00 +0000
+Subject: [PATCH] Patch 0147: new file names from the content. NEW_FILES
+ (Makefile, a list of 8.3 names given by tools/build-full.sh) becomes one
+ FILE_OFFSET_TABLE entry each after the mod entries (generated
+ file_table_new.h, sector 0 and size 0x800 until build-disc.py --relayout
+ writes them); the original names resolve as before; empty by default (the
+ executable byte-identical)
+
+---
+ Makefile                 | 9 +++++++++
+ src/main/file_table_us.c | 6 ++++++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 65a21a1d..7bae2b62 100644
+--- a/Makefile
++++ b/Makefile
+@@ -56,6 +56,15 @@ $(shell mkdir -p $(GEN_DIR); printf '#define FONT_%s 1\n' '$(shell echo $(FONT)
+ 	cmp -s $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h && rm $(GEN_DIR)/font_sel.h.tmp \
+ 	|| mv $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h)
+ 
++# MOD (new files): the disc files with names the original never had (a new screen's .MAP/.TFS, models, textures), one
++# FILE_OFFSET_TABLE entry each after the mod entries (src/main/file_table_us.c), sector and size written by the project's
++# tools/build-disc.py --relayout. NEW_FILES="RIFT01.MAP RIFT01.TFS ..." (8.3 upper-case names, given by tools/build-full.sh
++# from the content); empty by default: the table and the executable as before. About 24 bytes of .data per name.
++NEW_FILES ?=
++$(shell mkdir -p $(GEN_DIR); printf '%s\n' $(foreach n,$(NEW_FILES),'{ 0x00000000, 0x00000800, "$(n)" },') > $(GEN_DIR)/file_table_new.h.tmp; \
++	cmp -s $(GEN_DIR)/file_table_new.h.tmp $(GEN_DIR)/file_table_new.h && rm $(GEN_DIR)/file_table_new.h.tmp \
++	|| mv $(GEN_DIR)/file_table_new.h.tmp $(GEN_DIR)/file_table_new.h)
++
+ PYTHON := python3
+ 
+ .DEFAULT_GOAL := all
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index 4292fdf1..ef8f4e5e 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -836,6 +836,12 @@ FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + par
+ 	{ 0x00000000, 0x00000001, "MUGP.MMD" }, /* MOD (machinedramon) */
+ 	{ 0x00000000, 0x00000001, "JIJP.MMD" }, /* MOD (jijimon) */
+ 	{ 0x00000000, 0x00000001, "ANLP.MMD" }, /* MOD (analogman) */
++	/*
++	 * MOD (new files): the disc's files with new names (NEW_FILES of the Makefile, written by the project's
++	 * tools/build-full.sh from the content: a new screen's .MAP and .TFS, models...). Looked up after every
++	 * entry above, so the original names resolve as before; build-disc.py --relayout writes their sectors.
++	 */
++#include <file_table_new.h>
+ 	{ 0x00000000, 0x00000000, "NULL" },
+ };
+ // clang-format on
+-- 
+2.53.0
+

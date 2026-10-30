@@ -1,0 +1,133 @@
+From e85ac0db78771b71981a6d2ef7d9daf0f23965f1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 01:52:39 +0000
+Subject: [PATCH] 60 fps step 4: extra passes replay the first pass's render
+ random numbers
+
+modRenderRand and modRenderCustomRandom log the numbers the first render
+pass of a tick draws and hand them out again, in the same order, to the
+extra passes (a private generator past the end of the log). Random
+sparkles, lightning and wireframe colours then change once per tick as at
+20 fps instead of on every frame; the game's generators still only
+advance on the first pass, so the logic is unchanged.
+
+Also: the EFE heap bound check compares unsigned addresses.
+
+---
+ src/btl/battle_effect.c |  3 ++-
+ src/main/main.c         | 44 ++++++++++++++++++++++++++++++++++++++++-
+ src/main/rng.c          | 10 ++++++++--
+ 3 files changed, 53 insertions(+), 4 deletions(-)
+
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 8757eab..58b3d17 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1301,7 +1301,8 @@ static int32_t BTL_modEfeSave(int32_t data, uint32_t **buf)
+ 	uint32_t *d = b;
+ 	int32_t k;
+ 
+-	if (size <= 0 || (int32_t)b + size > 0x80052ae0) {
++	/* the heap is free up to the battle overlay (BTL_REL at 0x80052ae0) */
++	if (size <= 0 || (uint32_t)b + size > 0x80052ae0u) {
+ 		return 0; /* no room: not expected (MOD_FPS_EFE_NO_ROOM counts it) */
+ 	}
+ 	for (k = size >> 2; k > 0; k--) {
+diff --git a/src/main/main.c b/src/main/main.c
+index ecbf022..4d52cd2 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4158,10 +4158,44 @@ void modRenderRollbackEnd(void)
+ 
+ static uint32_t modRenderLcg = 0x1234567;
+ 
++/* The random numbers the first render pass of a tick drew (modRenderRand,
++ * modRenderCustomRandom) are logged and handed out again, in the same order,
++ * to the extra passes: what render code places at random (sparkles, the
++ * wireframe colours) then changes once per tick as before, not on every
++ * frame. Past the log (or if a pass draws more) a private generator is used;
++ * the game's generators never advance on an extra pass. */
++#define MOD_RAND_LOG_MAX 256
++static int32_t modRandLog[MOD_RAND_LOG_MAX];
++static int32_t modRandLogCount;
++static int32_t modRandLogPos;
++static int8_t modRandLogging;   /* inside the first pass's renderObjects */
++
++int32_t modRenderRandRecord(int32_t value)
++{
++	if (modRandLogging && modRandLogCount < MOD_RAND_LOG_MAX) {
++		modRandLog[modRandLogCount++] = value;
++	}
++	return value;
++}
++
++int32_t modRenderRandReplay(int32_t *value)
++{
++	if (modRandLogPos < modRandLogCount) {
++		*value = modRandLog[modRandLogPos++];
++		return 1;
++	}
++	return 0;
++}
++
+ int32_t modRenderRand(void)
+ {
++	int32_t value;
++
+ 	if (MOD_RENDER_PASS == 0) {
+-		return rand();
++		return modRenderRandRecord(rand());
++	}
++	if (modRenderRandReplay(&value)) {
++		return value;
+ 	}
+ 	modRenderLcg = modRenderLcg * 1103515245 + 12345;
+ 	return (modRenderLcg >> 16) & 0x7FFF;
+@@ -4962,7 +4996,15 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			MOD_PERF_INTERP[0] += (modLines() - l2) & 0xFFFF;
+ 			MOD_PERF_INTERP[2]++;
+ 		}
++		/* the first pass logs its render random numbers, the others
++		 * replay them */
++		modRandLogging = r == 0 && n > 1;
++		if (r == 0) {
++			modRandLogCount = 0;
++		}
++		modRandLogPos = 0;
+ 		renderObjects();
++		modRandLogging = 0;
+ 		applyDrawOffset(ACTIVE_FRAMEBUFFER);
+ 		if (battle) {
+ 			/* the origin this frame is drawn with (the interpolated one if
+diff --git a/src/main/rng.c b/src/main/rng.c
+index 50aa442..0953538 100644
+--- a/src/main/rng.c
++++ b/src/main/rng.c
+@@ -33,8 +33,11 @@ int32_t customRandom(long min, long max)
+ 
+ /* MOD (fps): customRandom for render code. The extra render passes of a tick
+  * (dw/mod_fps.h) do not advance the generator, so it advances exactly as with
+- * one render per tick. */
++ * one render per tick; they get the first pass's numbers again
++ * (modRenderRand, main.c). */
+ extern int32_t MOD_RENDER_PASS;
++int32_t modRenderRandRecord(int32_t value);
++int32_t modRenderRandReplay(int32_t *value);
+ 
+ int32_t modRenderCustomRandom(long min, long max)
+ {
+@@ -43,7 +46,10 @@ int32_t modRenderCustomRandom(long min, long max)
+ 	int32_t result;
+ 
+ 	if (MOD_RENDER_PASS == 0) {
+-		return customRandom(min, max);
++		return modRenderRandRecord(customRandom(min, max));
++	}
++	if (modRenderRandReplay(&result)) {
++		return result;
+ 	}
+ 	val1 = CUSTOM_RNG_VAL1;
+ 	val2 = CUSTOM_RNG_VAL2;
+-- 
+2.53.0
+

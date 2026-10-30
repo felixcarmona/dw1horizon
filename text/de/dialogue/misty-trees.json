@@ -1,0 +1,564 @@
+{
+ "s111.sec5.u0": [
+  [
+   "Was für ein Idiot..."
+  ]
+ ],
+ "s111.sec6.u0": [
+  [
+   "Ich mache dich völlig fertig!"
+  ]
+ ],
+ "s111.sec7.u0": [
+  [
+   "Hm, nichts geht über den Wald."
+  ]
+ ],
+ "s111.sec8.u0": [
+  [
+   "Niemand ist jemals lebend von",
+   "mir entkommen."
+  ]
+ ],
+ "s111.sec9.u0": [
+  [
+   "Lass mich dein Leiden",
+   "beenden..."
+  ]
+ ],
+ "s111.sec10.u0": [
+  [
+   "Schaut, wer da redet!"
+  ]
+ ],
+ "s112.sec5.u0": [
+  [
+   "Willst du etwas von diesem",
+   "alten Kerl?"
+  ]
+ ],
+ "s112.sec6.u0": [
+  [
+   "Hahaha... Nur keine Eile."
+  ]
+ ],
+ "s112.sec7.u0": [
+  [
+   "Lass es dir hier gut gehen."
+  ]
+ ],
+ "s112.sec8.u0": [
+  [
+   "Soll ich dich zu Dünger machen?"
+  ]
+ ],
+ "s112.sec9.u0": [
+  [
+   "Und wer zum Teufel bist du?"
+  ]
+ ],
+ "s112.sec10.u0": [
+  [
+   "Du tätest gut daran,",
+   "aufzugeben."
+  ]
+ ],
+ "s112.sec11.u0": [
+  [
+   "Erspar mir deine nutzlose",
+   "Gegenwehr!"
+  ]
+ ],
+ "s113.sec5.u0": [
+  [
+   "Nun hör mal heeer!"
+  ]
+ ],
+ "s113.sec5.u1": [
+  [
+   "Hmmmm. Du bist ja ein toller",
+   "Hecht. Und so früh auf den",
+   "Beinen. Was für ein"
+  ],
+  [
+   "vorbildliches Kind."
+  ]
+ ],
+ "s113.sec5.u2": [
+  [
+   "He, tu nicht so, als ginge dich",
+   "das nichts an..."
+  ]
+ ],
+ "s113.sec5.u3": [
+  [
+   "Ich weiß es doch. Du sammelst",
+   "Digimon und baust eine Stadt",
+   "zum Wohl der Insel auf."
+  ]
+ ],
+ "s113.sec5.u4": [
+  [
+   "Ach, du weißt es also. Dann",
+   "hilf uns."
+  ]
+ ],
+ "s113.sec5.u5": [
+  [
+   "Und wohin sollte ich noch mal",
+   "gehen und was tun?"
+  ]
+ ],
+ "s113.sec5.u6": [
+  [
+   "Du weißt ja gar nichts! In der",
+   "Stadt arbeiten, weißt du noch?"
+  ]
+ ],
+ "s113.sec5.u7": [
+  [
+   "Nun... der frühe Vogel fängt",
+   "sechzehn Würmer, wie man",
+   "sagt..."
+  ]
+ ],
+ "s113.sec5.u8": [
+  [
+   "Das hat doch nichts damit zu",
+   "tun! Und es ist ein Wurm, nicht",
+   "sechzehn!"
+  ]
+ ],
+ "s113.sec5.u9": [
+  [
+   "He, ich habe nur so getan, als",
+   "wäre ich senil. Na dann, bis in",
+   "der Staaadt."
+  ]
+ ],
+ "s113.sec5.u10": "Kokatorimon ist in die Stadt gezogen!",
+ "s113.sec5.u11": [
+  [
+   "Wie viel davon war wohl ernst",
+   "gemeint...? Hoffentlich geht",
+   "das gut."
+  ]
+ ],
+ "s113.sec6.u0": [
+  [
+   "Geradeaus, dann rechts.",
+   "Kehehehehe..."
+  ]
+ ],
+ "s113.sec7.u0": [
+  [
+   "Rechts, dann gleich links.",
+   "Kehe..."
+  ]
+ ],
+ "s113.sec8.u0": [
+  [
+   "Du wirst nie aus diesem Wald",
+   "herauskommen. Ke, je, je. . ."
+  ]
+ ],
+ "s113.sec9.u0": [
+  [
+   "Ich bin verloren..."
+  ]
+ ],
+ "s113.sec10.u0": [
+  [
+   "Ich bin in letzter Zeit etwas",
+   "erschöpft..."
+  ]
+ ],
+ "s113.sec11.u0": [
+  [
+   "Du... Unmöglich?!"
+  ]
+ ],
+ "s113.sec12.u0": [
+  [
+   "Pass auf, wo du hintrittst..."
+  ]
+ ],
+ "s113.sec54.u0": [
+  [
+   "Hm... eine Vogelfeder am",
+   "Boden... Noch frisch. Sind wir",
+   "etwas zu spät?"
+  ]
+ ],
+ "s114.sec5.u0": [
+  [
+   "Hast du dich verlaufen,",
+   "{color 6}{player}{color 1}? Kehehehehe!"
+  ]
+ ],
+ "s114.sec6.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s114.sec7.u0": [
+  [
+   "Ich will dir ja nicht im Weg",
+   "stehen oder so..."
+  ]
+ ],
+ "s114.sec8.u0": [
+  [
+   "Ne-bel-wald... Jetzt sag du",
+   "es."
+  ]
+ ],
+ "s114.sec9.u0": [
+  [
+   "OK! Showtime!"
+  ]
+ ],
+ "s115.sec5.m0.o0": "Probleme der Insel",
+ "s115.sec5.m0.o1": "Trainiere {color 10}{partner}{color 1}",
+ "s115.sec5.m0.o2": "Nein, nichts",
+ "s115.sec5.m1.o0": "Trainieren",
+ "s115.sec5.m1.o1": "Über dieses Training",
+ "s115.sec5.m1.o2": "Beenden",
+ "s115.sec5.m2.o0": "Normales Training",
+ "s115.sec5.m2.o1": "Bonustraining",
+ "s115.sec5.m2.o2": "Schon gut",
+ "s115.sec5.m3.o0": "Noch mal erklären",
+ "s115.sec5.m3.o1": "Trainieren",
+ "s115.sec5.m3.o2": "Beenden",
+ "s115.sec5.u0": [
+  [
+   "Hoho. Willst du diesen alten",
+   "Mann wieder reden hören?"
+  ]
+ ],
+ "s115.sec5.u1": [
+  [
+   "Hm, dann erzähle ich es dir."
+  ]
+ ],
+ "s115.sec5.u2": [
+  [
+   "Hoho, sehr gut..."
+  ]
+ ],
+ "s115.sec5.u3": [
+  [
+   "{color 5}Training: Lehren des Waldes{color 1}"
+  ]
+ ],
+ "s115.sec5.u4": [
+  [
+   "Cherrymon gibt dir allerlei",
+   "Wissen weiter. Die Klugheit",
+   "steigt stark."
+  ]
+ ],
+ "s115.sec5.u5": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s115.sec5.u6": [
+  [
+   "Hohohoho..."
+  ]
+ ],
+ "s115.sec51.u0": [
+  [
+   "Hoho. Willkommen, willkommen,",
+   "junger Mann."
+  ]
+ ],
+ "s115.sec51.u1": "Du bist Cherrymon, oder?",
+ "s115.sec51.u2": [
+  [
+   "Wer ist da?"
+  ]
+ ],
+ "s115.sec51.u3": [
+  [
+   "Was bringt dich zu diesem alten",
+   "Mann?"
+  ]
+ ],
+ "s115.sec51.u4": [
+  [
+   "Lichte zuerst den Nebel."
+  ]
+ ],
+ "s115.sec51.u5": [
+  [
+   "Ich sehe nichts in diesem",
+   "Nebel. Kannst du zuerst etwas",
+   "dagegen tun?"
+  ]
+ ],
+ "s115.sec51.u6": [
+  [
+   "Hoho. So ist das also. Wie ich",
+   "dachte."
+  ]
+ ],
+ "s115.sec51.u7": [
+  [
+   "...Kannst du nicht?"
+  ]
+ ],
+ "s115.sec51.u8": [
+  [
+   "Zuerst musst du hören, was ich",
+   "zu sagen habe. Nun... wo fange",
+   "ich an?"
+  ]
+ ],
+ "s115.sec51.u9": [
+  [
+   "Wenn du etwas über die",
+   "Unruhen auf der Insel weißt,",
+   "erzähl es mir bitte."
+  ]
+ ],
+ "s115.sec51.u10": [
+  [
+   "Hm. Ja, ja. Die Unruhen."
+  ]
+ ],
+ "s115.sec51.u11": [
+  [
+   "Auf der Insel ging vor etwa 80",
+   "Jahren alles schief. Es begann",
+   "damit, dass sich das Land"
+  ],
+  [
+   "veränderte. Frostland, das",
+   "Herrenhaus des Grauen Lords,",
+   "die Große Schlucht... Die"
+  ],
+  [
+   "Länder im Nordosten tauchten",
+   "plötzlich auf, vor etwa 80",
+   "Jahren. Danach zogen die"
+  ],
+  [
+   "Digimon nach und nach in die",
+   "Gebiete, die zu ihnen passten.",
+   "Die Arten verstreuten sich."
+  ],
+  [
+   "Die Digimon, die einst alle",
+   "dieselbe Sprache sprachen,",
+   "begannen, eigene Sprachen zu"
+  ],
+  [
+   "sprechen."
+  ]
+ ],
+ "s115.sec51.u12": [
+  [
+   "Sie vergaßen die Sprache der",
+   "Stadt... So verlor File City,",
+   "wo einst viele Arten"
+  ],
+  [
+   "zusammenlebten, die meisten",
+   "Digimon und verfiel. Dann",
+   "geschah etwas Furchtbares:"
+  ],
+  [
+   "Die Digimon verloren ihre",
+   "Erinnerungen! Ihre",
+   "Vergangenheit, die der Insel,"
+  ],
+  [
+   "ihren Verstand... Selbst ich",
+   "kann mich an etwas Wichtiges",
+   "nicht erinnern... etwas, das"
+  ],
+  [
+   "ich dir sagen muss."
+  ]
+ ],
+ "s115.sec51.u13": [
+  [
+   "Doch am Ende hängt alles",
+   "zusammen. Jemand hat all das",
+   "verursacht! Damit alles nach"
+  ],
+  [
+   "seinem Willen läuft... Bald",
+   "werden die Digimon das Seltsame",
+   "nicht mehr seltsam finden,"
+  ],
+  [
+   "fürchte ich. Nur die Bindung",
+   "zwischen dir und File City kann",
+   "das verhindern! Sammle Digimon"
+  ],
+  [
+   "in der Stadt und bewirke ein",
+   "Wunder. Es wird gewiss",
+   "geschehen. Alle zählen auf"
+  ],
+  [
+   "dich!!! ...Oje, ich habe mich",
+   "hinreißen lassen. Puh... Das",
+   "ist alles, was ich zu sagen"
+  ],
+  [
+   "habe..."
+  ]
+ ],
+ "s115.sec51.u14": [
+  [
+   "Nun denn, lichten wir den",
+   "Nebel."
+  ]
+ ],
+ "s115.sec51.u15": [
+  [
+   "Ich habe den Wald mit Nebel",
+   "geschützt, damit ich dir meine",
+   "Geschichte erzählen kann... Und"
+  ],
+  [
+   "noch etwas."
+  ]
+ ],
+ "s115.sec51.u16": [
+  [
+   "Andere in diesem Wald kennen",
+   "ebenfalls die Vergangenheit.",
+   "Geh weiter hinein. Hohoho..."
+  ]
+ ],
+ "s116.sec5.u0": [
+  [
+   "..........!"
+  ]
+ ],
+ "s116.sec5.u1": [
+  [
+   "Waaah! Nein, nein! Ich will",
+   "nicht kämpfen!"
+  ]
+ ],
+ "s116.sec5.u2": [
+  [
+   "...... Wenn du nicht kämpfen",
+   "willst, dann lauf weg."
+  ]
+ ],
+ "s116.sec5.u3": [
+  [
+   "Aber dann würde ich mich",
+   "ärgern."
+  ]
+ ],
+ "s116.sec5.u4": [
+  [
+   "Du bist seltsam... Warum kommst",
+   "du nicht in unsere Stadt,",
+   "statt dich hier zu verstecken?"
+  ]
+ ],
+ "s116.sec5.u5": [
+  [
+   "Huch! D-d-die Stadt?"
+  ]
+ ],
+ "s116.sec5.u6": [
+  [
+   "Wenn du nicht willst, Das ist",
+   "okay."
+  ]
+ ],
+ "s116.sec5.u7": [
+  [
+   "Jetzt, wo du das sagst, möchte",
+   "ich irgendwie hin. Ich gehe!",
+   "Natürlich gehe ich!"
+  ]
+ ],
+ "s116.sec5.u8": "Gabumon ist in die Stadt gezogen!",
+ "s116.sec5.u9": [
+  [
+   "Puh... Was für ein seltsamer",
+   "Kerl...!"
+  ]
+ ],
+ "s116.sec6.u0": [
+  [
+   "Hia, hia."
+  ]
+ ],
+ "s116.sec7.u0": [
+  [
+   "Hopp, hopp."
+  ]
+ ],
+ "s116.sec8.u0": [
+  [
+   "Hm, können wir es nicht einfach",
+   "lassen?"
+  ]
+ ],
+ "s116.sec9.u0": [
+  [
+   "Zum Entspannen ist es zu",
+   "früh..."
+  ]
+ ],
+ "s117.sec5.u0": [
+  [
+   "Wer ist da?"
+  ]
+ ],
+ "s117.sec6.u0": [
+  [
+   "Jetzt komme iiich! ...War nur",
+   "Spaß."
+  ]
+ ],
+ "s117.sec7.u0": [
+  [
+   "Gahahaha! Was für ein Spaß!"
+  ]
+ ],
+ "s117.sec8.u0": [
+  [
+   "Juhu, ich bin voller",
+   "Tatendrang!"
+  ]
+ ],
+ "s117.sec9.u0": [
+  [
+   "Im Ernst?!"
+  ]
+ ],
+ "s117.sec10.u0": [
+  [
+   "Hey, Hey. Meinst du es ernst?"
+  ]
+ ],
+ "s117.sec11.u0": [
+  [
+   "Ruhe, Ruhe!"
+  ]
+ ],
+ "s117.sec12.u0": [
+  [
+   "Wenn ich es ernst meine, dann",
+   "richtig!"
+  ]
+ ]
+}

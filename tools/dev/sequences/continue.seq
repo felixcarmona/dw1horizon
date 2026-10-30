@@ -1,0 +1,8 @@
+# Load the saved game from the memory card: in-game control in Jijimon's house (screen 218)
+# in about 90 seconds, on any disc (original or compiled), because a memory card save
+# only holds game data, not code.
+# Usage: tools/dev/emulator.py start DISC.cue --card build/states/file-city.mcd
+#        tools/dev/emulator.py seq tools/dev/sequences/continue.seq
+wait 45, START 20, wait 6, START 20, wait 6
+# CONTINUE GAME -> slot 1 on the card -> game 1 -> "Continue adventure?" Yes
+DOWN 8, wait 1, CROSS 10, wait 5, CROSS 10, wait 5, CROSS 10, wait 4, CROSS 10, wait 12

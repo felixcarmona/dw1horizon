@@ -1,0 +1,11 @@
+// Who stands on screen 213 (Centar Clinic), and when. Read out of MAPHEAD.SCN section 213 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(213) {                              // Centar Clinic
+            npc 156 slot 0;
+            npc 167 slot 1 when recruited(Patamon) and recruited(Coelamon) or recruited(Unimon) and recruited(Coelamon) or recruited(Biyomon) and recruited(Coelamon) or recruited(Monochromon) and recruited(Coelamon);
+        }
+    }
+}

@@ -1,0 +1,93 @@
+{
+ "first_id": 326,
+ "out": "build/batch13",
+ "digimon": [
+  {
+   "name": "WarGrowlmon",
+   "game": "dw3",
+   "model": "M368MGRW",
+   "level": 5,
+   "element": 0,
+   "from": [
+    320
+   ]
+  },
+  {
+   "name": "Gargoylemon",
+   "game": "dw3",
+   "model": "M302GAGO",
+   "level": 4,
+   "element": 6,
+   "from": [
+    285
+   ]
+  },
+  {
+   "name": "Snimon",
+   "game": "dw3",
+   "model": "M238SNAI",
+   "level": 5,
+   "element": 1,
+   "from": [
+    51
+   ]
+  },
+  {
+   "name": "Ghoulmon",
+   "game": "dw3",
+   "model": "M312DETH",
+   "level": 5,
+   "element": 6
+  },
+  {
+   "name": "Minotarumon",
+   "game": "dw3",
+   "model": "M172MTAR",
+   "level": 4,
+   "element": 1
+  },
+  {
+   "name": "Snatchmon",
+   "game": "dw3",
+   "model": "M465SNAT",
+   "level": 4,
+   "element": 5
+  },
+  {
+   "name": "Gokimon",
+   "game": "dw3",
+   "model": "M171GOKI",
+   "level": 4,
+   "element": 6
+  },
+  {
+   "name": "Raijinmon",
+   "game": "dw3",
+   "model": "M441RAIZ",
+   "level": 5,
+   "element": 2
+  },
+  {
+   "name": "Mummymon",
+   "game": "dw3",
+   "model": "M364MUMY",
+   "level": 5,
+   "element": 6
+  },
+  {
+   "name": "MegaGargomon",
+   "game": "dw3",
+   "model": "M372SGRG",
+   "level": "mega",
+   "element": 5,
+   "drop_over": 0.4
+  },
+  {
+   "name": "Raidenmon",
+   "game": "dw3",
+   "model": "M438RIDN",
+   "level": 5,
+   "element": 2
+  }
+ ]
+}

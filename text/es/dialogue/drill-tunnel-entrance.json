@@ -1,0 +1,31 @@
+{
+ "s008.sec5.u0": [
+  "{color 7}Gerente del mercado {color 1}",
+  "¡Haz algo, por favor, rápido,",
+  "sí, sí!"
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Modo Ogro",
+ "s008.sec51.u0": "El Túnel Drill...",
+ "s008.sec51.u1": "¡Uf, otra vez ese! ¡No aprende nunca...!",
+ "s008.sec51.u2": "¿Mm?",
+ "s008.sec51.u3": [
+  "{color 7}Gerente del mercado {color 1}",
+  "¡Nadie me dijo que el túnel",
+  "fuera de pago, no, no!"
+ ],
+ "s008.sec51.u4": [
+  "{color 7}Gerente del mercado {color 1}",
+  "Oh, tú... ¿no serás...? ¡Haz",
+  "algo, por favor, sí, sí!"
+ ],
+ "s008.sec51.u5": "¿Y los Drimogemon que hay dentro?",
+ "s008.sec51.u6": [
+  "{color 7}Gerente del mercado {color 1}",
+  "No lo sé, no, no..."
+ ],
+ "s008.sec51.u7": "Espero que estén bien... ¡Vale, vamos a entrar!",
+ "s008.sec53.m0.o0": "¡Vamos!",
+ "s008.sec53.m0.o1": "Mejor no",
+ "s008.sec53.u0": "En el túnel ya no queda nada... ¿Lo cruzamos corriendo y ya está? ¿Qué me dices?"
+}

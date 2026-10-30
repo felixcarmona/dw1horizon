@@ -1,0 +1,281 @@
+{
+  "screen": 338,
+  "review": "The north entry lintel and left post retain their reviewed SAM silhouettes. The lower cart has a filled solid footprint through its hollow base; the rail corridor and floor below remain open.",
+  "collision": [
+    {
+      "tile": [
+        39,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of tipped cart"
+    },
+    {
+      "tile": [
+        40,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of tipped cart"
+    },
+    {
+      "tile": [
+        37,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        38,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        39,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        37,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        37,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        38,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        39,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        40,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    },
+    {
+      "tile": [
+        41,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Fill the hollow below the tipped cart and its solid debris; retain the rail corridor and clear floor below"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "338-entrance-lintel.png",
+      "at": [
+        192,
+        3
+      ],
+      "depth": [
+        318,
+        212
+      ],
+      "segmentation": {
+        "box": [
+          186,
+          0,
+          448,
+          49
+        ],
+        "positive": [
+          [
+            418,
+            13
+          ]
+        ],
+        "negative": [
+          [
+            183,
+            24.5
+          ],
+          [
+            451,
+            24.5
+          ],
+          [
+            317.0,
+            53
+          ]
+        ],
+        "score": 0.9922541379928589,
+        "area": 7686,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "338-lower-cart.png",
+      "at": [
+        103,
+        391
+      ],
+      "depth": [
+        174,
+        557
+      ],
+      "segmentation": {
+        "box": [
+          100,
+          385,
+          246,
+          559
+        ],
+        "positive": [
+          [
+            165,
+            454
+          ]
+        ],
+        "negative": [
+          [
+            97,
+            472.0
+          ],
+          [
+            249,
+            472.0
+          ],
+          [
+            173.0,
+            563
+          ]
+        ],
+        "score": 0.9689715504646301,
+        "area": 10960,
+        "min_component_area": 15
+      },
+      "review": "Remove only the detached 14-pixel floor speck; retain the original connected cart silhouette and source RGB."
+    },
+    {
+      "png": "338-entrance-left-post.png",
+      "depth": null,
+      "at": [
+        202,
+        36
+      ],
+      "segmentation": {
+        "box": [
+          202,
+          40,
+          243,
+          212
+        ],
+        "positive": [
+          [
+            219,
+            69
+          ],
+          [
+            226,
+            127
+          ],
+          [
+            229,
+            188
+          ]
+        ],
+        "negative": [
+          [
+            244,
+            90
+          ],
+          [
+            246,
+            150
+          ],
+          [
+            248,
+            175
+          ],
+          [
+            209,
+            180
+          ],
+          [
+            254,
+            205
+          ]
+        ],
+        "score": 0.9870564937591553,
+        "area": 6061,
+        "min_component_area": 12
+      },
+      "strip_width": 4,
+      "sorting_review": "The projecting front post and recessed side face have different near edges; narrow local strips keep a character in front of the recessed face visible."
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/gallery-north-1-1856x2304.png",
+    "source_sha1": "db86601cc48666f0ea38c20da5052c27153e2c48",
+    "top": 38,
+    "scale": 2.9,
+    "size": [
+      640,
+      768
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  }
+}

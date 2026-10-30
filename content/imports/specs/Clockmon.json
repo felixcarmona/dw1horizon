@@ -1,0 +1,119 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M143CLOK",
+ "type": 290,
+ "name": "Clockmon",
+ "source": {
+  "type": 40,
+  "mmd": "extracted/CHDAT/MMD1/ANDR.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 13,
+  "3": 15,
+  "4": 16,
+  "6": 19,
+  "7": 20,
+  "9": 6,
+  "10": 7,
+  "11": 10,
+  "12": 11,
+  "13": 3,
+  "14": 9,
+  "15": 12,
+  "17": 5,
+  "18": 1,
+  "20": 4
+ },
+ "hips": [
+  1,
+  1,
+  1.183
+ ],
+ "root_scale": 1.183,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x3c": {
+   "anim": "F0",
+   "speed": 0.98,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 245
+  },
+  "0x3b": {
+   "anim": "G0",
+   "speed": 0.77,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 245
+  },
+  "0x38": {
+   "anim": "H0",
+   "speed": 1.15,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 245
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

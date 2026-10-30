@@ -1,0 +1,96 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M221OCTA",
+ "type": 278,
+ "name": "Octomon",
+ "source": {
+  "type": 19,
+  "mmd": "extracted/CHDAT/MMD0/KABU.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 21,
+  "3": 25,
+  "9": 22,
+  "11": 23,
+  "12": 6,
+  "13": 7,
+  "20": 26,
+  "21": 9,
+  "22": 10,
+  "23": 3
+ },
+ "hips": [
+  1,
+  1,
+  0.829
+ ],
+ "root_scale": 0.829,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x39": {
+   "anim": "F0",
+   "speed": 0.91,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 214
+  },
+  "0x38": {
+   "anim": "I0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 214
+  },
+  "0x33": {
+   "anim": "H0",
+   "speed": 1.72,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 214
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x35",
+  "0x36"
+ ],
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

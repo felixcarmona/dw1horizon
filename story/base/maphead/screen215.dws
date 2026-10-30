@@ -1,0 +1,101 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(215) replace {    // section 215
+        set_script(175, 215);
+        engine.music_mode = 0;
+        set_bgm(28);
+        load_digimon(species(161));
+        set_digimon(species(161), 6, 0);
+        if (is_recruited(species("Meramon")) && !restaurant_chef_met.meramon) {
+            load_digimon(species(133));
+            set_digimon(species(133), 0, 0);
+            restaurant_chef = 0;
+            return;
+        }
+        if (is_recruited(species("Tyrannomon")) && !restaurant_chef_met.tyrannomon) {
+            load_digimon(species(132));
+            set_digimon(species(132), 1, 0);
+            restaurant_chef = 1;
+            return;
+        }
+        if (is_recruited(species("Garurumon")) && !restaurant_chef_met.garurumon) {
+            load_digimon(species(144));
+            set_digimon(species(144), 2, 0);
+            restaurant_chef = 2;
+            return;
+        }
+        if (is_recruited(species("Frigimon")) && !restaurant_chef_met.frigimon) {
+            load_digimon(species(145));
+            set_digimon(species(145), 3, 0);
+            restaurant_chef = 3;
+            return;
+        }
+        store_random(random_roll, 99);
+        if (is_recruited(species("Vademon")) && random_roll <= 19) {
+            load_digimon(species(150));
+            set_digimon(species(150), 4, 0);
+            restaurant_chef = 4;
+            return;
+        }
+        store_random(random_roll, 99);
+        if (is_recruited(species("Digitamamon")) && random_roll <= 9) {
+            load_digimon(species(174));
+            set_digimon(species(174), 5, 0);
+            restaurant_chef = 5;
+            return;
+        }
+        store_date(date_year);
+        if (restaurant_chef_met.meramon && date_hour >= 12 && date_hour < 18) {
+            load_digimon(species(133));
+            set_digimon(species(133), 0, 0);
+            restaurant_chef = 0;
+            return;
+        }
+        if (restaurant_chef_met.tyrannomon && date_hour >= 6 && date_hour < 12) {
+            load_digimon(species(132));
+            set_digimon(species(132), 1, 0);
+            restaurant_chef = 1;
+            return;
+        }
+        if (restaurant_chef_met.garurumon && date_hour >= 0 && date_hour < 6) {
+            load_digimon(species(144));
+            set_digimon(species(144), 2, 0);
+            restaurant_chef = 2;
+            return;
+        }
+        if (restaurant_chef_met.frigimon && date_hour >= 18) {
+            load_digimon(species(145));
+            set_digimon(species(145), 3, 0);
+            restaurant_chef = 3;
+            return;
+        }
+        if (is_recruited(species("Meramon"))) {
+            load_digimon(species(133));
+            set_digimon(species(133), 0, 0);
+            restaurant_chef = 0;
+            return;
+        }
+        if (is_recruited(species("Tyrannomon"))) {
+            load_digimon(species(132));
+            set_digimon(species(132), 1, 0);
+            restaurant_chef = 1;
+            return;
+        }
+        if (is_recruited(species("Garurumon"))) {
+            load_digimon(species(144));
+            set_digimon(species(144), 2, 0);
+            restaurant_chef = 2;
+            return;
+        }
+        if (is_recruited(species("Frigimon"))) {
+            load_digimon(species(145));
+            set_digimon(species(145), 3, 0);
+            restaurant_chef = 3;
+            return;
+        }
+    }
+}

@@ -1,0 +1,182 @@
+// Readable form of script 22 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 22 {
+    npc slot0 = 5;
+    npc slot1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 51, 61;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 15, 41);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 49, 28);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 63, 67);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 25, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Happymushrm"), 84, 49);
+        }
+        spawn_chest(item("med.recovery"), 3545, 0, 855, 1024, 696);
+        spawn_chest(item("Medium MP"), 3545, 0, 455, 1024, 697);
+        spawn_chest(item("Various"), 3545, 0, 155, 1024, 698);
+        if (!is_recruited(species("Unimon")) && centar_clinic_intro_seen) {
+            animate(slot0, 28);
+        }
+    }
+
+    on talk(slot0) replace {    // section 5
+        say(slot0, text("s022.sec5.u0"));
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s022.sec5.u1"));
+        say(slot0, text("s022.sec5.u2"));
+        animate(tamer, 4);    // slot 4: the tamer after the partner refused an item (partner.c:507)
+        wait(1s);
+        say(tamer, text("s022.sec5.u3"));
+        animate(tamer, anim.idle);
+        engine.picker_mode = true;
+        call_routine(routine("choose_item"));
+        if (engine.picker_mode) {
+            say(tamer, text("s022.sec5.u4"));
+        } else {
+            if (engine.arg in [item("sm.recovery"), item("med.recovery"), item("lrg.recovery"), item("sup.recovery")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else if (engine.arg in [item("Double flop"), item("Omnipotent"), item("Bandage"), item("Medicine")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else {
+                say(tamer, text("s022.sec5.u5"));
+                say(tamer, text("s022.sec5.u14"));
+                say(slot0, text("s022.sec5.u15"));
+                return;
+            }
+            say(slot0, text("s022.sec5.u6"));
+            animate(slot0, 29);
+            await slot0;
+            animate(tamer, 25);
+            wait(1s);
+            say(tamer, text("s022.sec5.u7"));
+            say(slot0, text("s022.sec5.u8"));
+            animate(tamer, 19);
+            wait(1s);
+            say(tamer, text("s022.sec5.u9"));
+            say(slot0, text("s022.sec5.u10"));
+            say(tamer, text("s022.sec5.u11"));
+            say(slot0, text("s022.sec5.u12"));
+            loop {
+                run(slot0, -192, -1849);
+                unless (glances < 10) break;
+                glances += 1;
+                sound(8, 0);
+                wait(15);
+                face(tamer, slot0);
+                face(partner, slot0);
+            }
+            await slot0;
+            join_city(slot0, species("Unimon"), 8, 9, text("s022.sec5.u13"), prosperity: 2);
+            return;
+        }
+        say(tamer, text("s022.sec5.u14"));
+        say(slot0, text("s022.sec5.u15"));
+    }
+
+    on talk(slot1) replace {    // section 6
+    }
+
+    on step(0) replace {    // section 51
+        if (!mystery_circles_first_seen) {
+            say(narrator, text("s022.sec51.u0"));
+            say(tamer, text("s022.sec51.u1"));
+            mystery_circles_first_seen = true;
+            ufo_report_read = true;
+            return;
+        }
+        if (!mystery_circles_grown_seen && ufo_report_read && !vademon_encounter_ready) {
+            say(tamer, text("s022.sec51.u2"));
+            mystery_circles_grown_seen = true;
+            vademon_encounter_ready = true;
+            return;
+        }
+        if (vademon_encounter_ready && !is_recruited(species("Vademon"))) {
+            say(tamer, text("s022.sec51.u3"));
+            sound(8, 5);
+            say(tamer, text("s022.sec51.u4"));
+            entity_set_rotation(tamer, 2560);
+            set_digimon(species(153), 1, 0);
+            camera_to(-335, 285, speed: 20);
+            await camera;
+            run(slot1, 1139, 1029);
+            sound(8, 5);
+            await slot1;
+            run(slot1, -327, 459);
+            sound(8, 5);
+            await slot1;
+            run(slot1, 269, -973);
+            sound(8, 5);
+            await slot1;
+            camera_on(tamer, speed: 10);
+            walk(slot1, -747, -1106);
+            sound(8, 5);
+            await slot1;
+            face(slot1, tamer);
+            say(narrator, text("s022.sec51.u5"));
+            say(tamer, text("s022.sec51.u6"));
+            say(slot1, text("s022.sec51.u7"));
+            say(tamer, text("s022.sec51.u8"));
+            say(slot1, text("s022.sec51.u9"));
+            say(tamer, text("s022.sec51.u10"));
+            say(slot1, text("s022.sec51.u11"));
+            sound(8, 6);
+            wait(10);
+            say(narrator, text("s022.sec51.u12"));
+            say(tamer, text("s022.sec51.u13"));
+            say(narrator, text("s022.sec51.u14"));
+            say(tamer, text("s022.sec51.u15"));
+            say(narrator, text("s022.sec51.u16"));
+            say(slot1, text("s022.sec51.u17"));
+            say(tamer, text("s022.sec51.u18"));
+            say(slot1, text("s022.sec51.u19"));
+            fadeout_hud(0);
+            loop {
+                run(slot1, 199, -3166);
+                unless (glances < 2) break;
+                glances += 1;
+                sound(8, 5);
+                wait(2s);
+                face(tamer, slot1);
+                face(partner, slot1);
+            }
+            await slot1;
+            remove(slot1);
+            glances = 0;
+            sound(8, 9);
+            say(narrator, text("s022.sec51.u20"));
+            say(tamer, text("s022.sec51.u21"));
+            recruit(species("Vademon"));
+            engine.prosperity += 3;
+            return;
+        }
+        return;
+    }
+
+    on step(10) replace {    // section 61
+        warp_to(20, 0, 255);
+        return;
+    }
+}

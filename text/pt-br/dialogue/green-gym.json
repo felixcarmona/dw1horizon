@@ -1,0 +1,329 @@
+{
+ "s108.sec5.m0.o0": "O que é treinamento?",
+ "s108.sec5.m0.o1": "Como eu treino?",
+ "s108.sec5.m0.o2": "Nada, obrigado.",
+ "s108.sec5.u0": "Ei, ei, notícias! Então... Enquanto seu Digimon ainda é um bebê, tente fazer o mesmo treinamento várias vezes. Dizem que algo bom acontece!",
+ "s108.sec5.u1": [
+  [
+   "Ei, ei, novidades! Então... no",
+   "treino bônus, se você alinhar",
+   "figuras iguais à da placa, o",
+   "aumento dos atributos será"
+  ],
+  [
+   "ainda maior!"
+  ]
+ ],
+ "s108.sec5.u2": [
+  [
+   "Ah, sim, prometi falar sobre",
+   "técnicas. Depois de uma",
+   "batalha, seu Digimon pode",
+   "aprender uma técnica que o"
+  ],
+  [
+   "inimigo usou contra ele. Mas só",
+   "se puder equipá-la no momento.",
+   "Não acontece sempre, mas é o",
+   "jeito mais rápido de aprender"
+  ],
+  [
+   "técnicas. Também dá para",
+   "aprender treinando, embora a",
+   "chance seja bem pequena. Dizem",
+   "que, com Inteligência alta, o"
+  ],
+  [
+   "treino na sala de {color 6}{player}{color 1}",
+   "pode ensinar uma técnica. Já",
+   "falei, mas a chance é muito",
+   "baixa, então não conte muito"
+  ],
+  [
+   "com isso. O importante é o",
+   "equilíbrio!"
+  ]
+ ],
+ "s108.sec5.u3": [
+  [
+   "Ei, ei, sou Koromon! Jiji me pediu para te",
+   "ensinar sobre treinamento."
+  ],
+  [
+   "Algo que queira saber?"
+  ]
+ ],
+ "s108.sec5.u4": [
+  [
+   "Treinar aqui aumenta os",
+   "atributos do seu Digimon. Mas",
+   "o treino cansa e leva um bom",
+   "tempo. Ainda assim, é um jeito"
+  ],
+  [
+   "mais garantido de aumentar os",
+   "atributos do que lutar. E,",
+   "muito de vez em quando, seu",
+   "Digimon aprende uma técnica"
+  ],
+  [
+   "nova! Falo das técnicas outra",
+   "hora."
+  ]
+ ],
+ "s108.sec5.u5": "Há seis equipamentos de treinamento aqui, e cada um tem uma placa ao lado.",
+ "s108.sec5.u6": [
+  [
+   "Primeiro, fique diante de uma",
+   "placa e aperte {color 6}×{color 1}. Leia para",
+   "ter uma ideia de qual atributo",
+   "aumenta. Alguns Digimon têm"
+  ],
+  [
+   "facilidade para aumentar certos",
+   "atributos, outros nem tanto.",
+   "Só tentando para saber!",
+   "Escolha Começar o treino e"
+  ],
+  [
+   "depois Treino normal. Seu",
+   "Digimon vai treinar por uma",
+   "hora. Durante o treino, você",
+   "pode adiantar o tempo com {color 5}△{color 1}."
+  ],
+  [
+   "Ah, preciso falar do treino",
+   "bônus! Se der certo, o",
+   "atributo aumenta muito. Mas, se",
+   "falhar... quase não aumenta."
+  ],
+  [
+   "Experimente uma vez para ver."
+  ]
+ ],
+ "s108.sec5.u7": "Certo, vou buscar novas informações para você.",
+ "s108.sec6.u0": [
+  [
+   "Eu ir para cidade. Cidade muito",
+   "cidade para mim. Eu não me",
+   "encaixar. Então vir aqui. Eu",
+   "reformar máquinas daqui."
+  ],
+  [
+   "Funcionar melhor que antes.",
+   "Você treinar bastante."
+  ]
+ ],
+ "s108.sec7.u0": [
+  [
+   "Eu ir para cidade. Cidade muito",
+   "cidade para mim. Eu não me",
+   "encaixar. Então vir aqui. Eu",
+   "reformar máquinas daqui."
+  ],
+  [
+   "Funcionar melhor que antes.",
+   "Você treinar bastante."
+  ]
+ ],
+ "s108.sec81.m0.o0": "Começar o treino",
+ "s108.sec81.m0.o1": "Sobre este treino",
+ "s108.sec81.m0.o2": "Sair",
+ "s108.sec81.m1.o0": "Treino normal",
+ "s108.sec81.m1.o1": "Treino bônus",
+ "s108.sec81.m1.o2": "Deixa pra lá",
+ "s108.sec81.m2.o0": "Explique de novo",
+ "s108.sec81.m2.o1": "Começar o treino",
+ "s108.sec81.m2.o2": "Sair",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Treino melhorado: empurrar",
+   "pedra{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "{color 5}Treino: empurrar pedra{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": [
+  [
+   "Empurrar uma pedra enorme",
+   "desenvolve a força. Aumenta",
+   "bastante o HP máximo e também",
+   "o Ataque."
+  ]
+ ],
+ "s108.sec81.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Começar o treino",
+ "s108.sec82.m0.o1": "Sobre este treino",
+ "s108.sec82.m0.o2": "Sair",
+ "s108.sec82.m1.o0": "Treino normal",
+ "s108.sec82.m1.o1": "Treino bônus",
+ "s108.sec82.m1.o2": "Deixa pra lá",
+ "s108.sec82.m2.o0": "Explique de novo",
+ "s108.sec82.m2.o1": "Começar o treino",
+ "s108.sec82.m2.o2": "Sair",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Treino melhorado: cachoeira{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "{color 5}Treino: cachoeira{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": [
+  [
+   "Ficar debaixo de uma cachoeira",
+   "fortalece o espírito. Aumenta",
+   "bastante o MP máximo e também",
+   "a Defesa."
+  ]
+ ],
+ "s108.sec82.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Começar o treino",
+ "s108.sec83.m0.o1": "Sobre este treino",
+ "s108.sec83.m0.o2": "Sair",
+ "s108.sec83.m1.o0": "Treino normal",
+ "s108.sec83.m1.o1": "Treino bônus",
+ "s108.sec83.m1.o2": "Deixa pra lá",
+ "s108.sec83.m2.o0": "Explique de novo",
+ "s108.sec83.m2.o1": "Começar o treino",
+ "s108.sec83.m2.o2": "Sair",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Treino melhorado: bater na",
+   "árvore{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "{color 5}Treino: bater na árvore{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": [
+  [
+   "Pratique técnicas contra uma",
+   "árvore. Aumenta bastante o",
+   "Ataque e também a Velocidade."
+  ]
+ ],
+ "s108.sec83.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Começar o treino",
+ "s108.sec84.m0.o1": "Sobre este treino",
+ "s108.sec84.m0.o2": "Sair",
+ "s108.sec84.m1.o0": "Treino normal",
+ "s108.sec84.m1.o1": "Treino bônus",
+ "s108.sec84.m1.o2": "Deixa pra lá",
+ "s108.sec84.m2.o0": "Explique de novo",
+ "s108.sec84.m2.o1": "Começar o treino",
+ "s108.sec84.m2.o2": "Sair",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Treino melhorado: luva de",
+   "boxe{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "{color 5}Treino: luva de boxe{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": [
+  [
+   "Aguente os golpes de uma",
+   "máquina de socos gigante.",
+   "Aumenta bastante a Defesa e",
+   "também a Inteligência."
+  ]
+ ],
+ "s108.sec84.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Começar o treino",
+ "s108.sec85.m0.o1": "Sobre este treino",
+ "s108.sec85.m0.o2": "Sair",
+ "s108.sec85.m1.o0": "Treino normal",
+ "s108.sec85.m1.o1": "Treino bônus",
+ "s108.sec85.m1.o2": "Deixa pra lá",
+ "s108.sec85.m2.o0": "Explique de novo",
+ "s108.sec85.m2.o1": "Começar o treino",
+ "s108.sec85.m2.o2": "Sair",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Treino melhorado: corrida{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "{color 5}Treino: corrida{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": [
+  [
+   "Dê várias voltas na pista.",
+   "Aumenta bastante a Velocidade",
+   "e também o HP máximo."
+  ]
+ ],
+ "s108.sec85.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Começar o treino",
+ "s108.sec86.m0.o1": "Sobre este treino",
+ "s108.sec86.m0.o2": "Sair",
+ "s108.sec86.m1.o0": "Treino normal",
+ "s108.sec86.m1.o1": "Treino bônus",
+ "s108.sec86.m1.o2": "Deixa pra lá",
+ "s108.sec86.m2.o0": "Explique de novo",
+ "s108.sec86.m2.o1": "Começar o treino",
+ "s108.sec86.m2.o2": "Sair",
+ "s108.sec86.u0": "{color 5}Treino: sala de {color 6}{player}{color 1}{color 5}, melhorada{color 1}",
+ "s108.sec86.u1": "{color 5}Treino: sala de {color 6}{player}{color 1}{color 5}{color 1}",
+ "s108.sec86.u2": [
+  [
+   "{color 6}{player}{color 1} vira professor e",
+   "ensina todo tipo de coisa.",
+   "Aumenta bastante a",
+   "Inteligência e também o MP"
+  ],
+  [
+   "máximo."
+  ]
+ ],
+ "s108.sec86.u3": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ]
+}

@@ -1,0 +1,69 @@
+// Readable form of script 182 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 182 {
+    npc metalgreymonvirus = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 53;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -370, -4600);
+        warp_to(254, 1, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -400, 4800);
+        warp_to(225, 0, 255);
+    }
+
+    on step(2) replace {    // section 53
+        unless (!mt_infinity_metalgreymon_beaten) return;
+        face(tamer, metalgreymonvirus);
+        camera_to(-400, 2400, speed: 15);
+        await camera;
+        face(metalgreymonvirus, tamer);
+        wait(5);
+        say(metalgreymonvirus, text("s182.sec53.u0"));
+        animate(tamer, 20);
+        wait(15);
+        say(tamer, text("s182.sec53.u1"));
+        animate(tamer, anim.idle);
+        say(metalgreymonvirus, text("s182.sec53.u2"));
+        set_dialog_owner(tamer);
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s182.sec53.u3"));
+        animate(tamer, anim.idle);
+        say(metalgreymonvirus, text("s182.sec53.u4"));
+        say(tamer, text("s182.sec53.u5"));
+        say(metalgreymonvirus, text("s182.sec53.u6"));
+        battle(foes: [metalgreymonvirus]);
+        face(tamer, metalgreymonvirus);
+        face(metalgreymonvirus, tamer);
+        face(partner, metalgreymonvirus);
+        say(metalgreymonvirus, text("s182.sec53.u7"));
+        say(tamer, text("s182.sec53.u8"));
+        say(metalgreymonvirus, text("s182.sec53.u9"));
+        loop {
+            walk(metalgreymonvirus, -400, -500);
+            unless (glances < 3) break;
+            glances += 1;
+            wait(1s);
+            face(tamer, metalgreymonvirus);
+            face(partner, metalgreymonvirus);
+        }
+        await metalgreymonvirus;
+        remove(metalgreymonvirus);
+        glances = 0;
+        camera_on(tamer, speed: 10);
+        await camera;
+        mt_infinity_metalgreymon_beaten = true;
+        return;
+    }
+}

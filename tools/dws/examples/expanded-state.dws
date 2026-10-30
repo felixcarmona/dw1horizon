@@ -1,0 +1,40 @@
+// Story-state engine (docs/mods/story-state-engine.md): story flags and 32-bit variables above the original limits.
+// Entering Jijimon's house counts the visits in a persistent i32, computes a second one from it, sets two
+// story flags (bit 0 = trigger 800, and bit 16000, the far end of the 16 384) and a scene variable, then
+// opens the save machine, so a save/load round trip shows that the story block of the save file works.
+//
+//   python3 tools/dws.py disc tools/dws/examples/expanded-state.dws --exe story-state --name story-state
+//
+// The variables are pinned to the top of their pools on purpose: v1000 is far above the 256 variables of
+// a two-block save, and the flag far above the 4 096 bits of one.
+persistent flag first_flag;
+persistent flag far_flag = 16000;
+persistent var visits: i32 = 1000;
+persistent var big: i32;
+persistent var negative: i16;
+session var scene_counter: i16;
+
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+    on enter {
+        visits += 1;
+        big = 100000;
+        big += visits;
+        big *= 3;
+        negative = -1234;
+        scene_counter = 7;
+        scene_counter += 1;
+        first_flag = true;
+        far_flag = true;
+        if (visits >= 2) {
+            say(jijimon, text("state.again"));
+        } else {
+            say(jijimon, text("state.first"));
+        }
+        if (big > visits && scene_counter == 8 && far_flag) {
+            say(jijimon, text("state.ok"));
+        }
+        asm("FADEOUT_HUD 0");
+        asm("CALL_ROUTINE 48");
+    }
+}

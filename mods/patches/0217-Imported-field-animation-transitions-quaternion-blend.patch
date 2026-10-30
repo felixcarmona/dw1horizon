@@ -1,0 +1,425 @@
+From 39a5d4e6a3b3c1abc79bf93de7bd37f3d93593bf Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:54:26 +0000
+Subject: [PATCH] Patch 0217: ease imported Digimon field animation transitions
+
+Blend ordinary field rest, walk, fatigue and run poses for imported partners and NPCs over four logic ticks using render-only quaternion interpolation and mesh support height. Restore draw matrices and preserve source animation, events and navigation. Handle interruptions, hidden parts, 34-bone models and map/entity lifecycle.
+
+Validation: ASan/UBSan host harness; 175-model production-math geometry audit (7350 transition cases); bilingual build and ISO identities; WarGreymon native-pad A/B and scoped NeoCrimson34 runtime supplement on the patch0215-based test image. The six animation source files are identical on difficulty0216.
+---
+ include/dw/mod_fps.h        |   3 +
+ src/main/anim.c             |   1 +
+ src/main/map.c              |   3 +
+ src/main/model.c            |   6 ++
+ src/main/smooth_math.h      | 115 +++++++++++++++++++++++
+ src/main/smooth_runtime.inc | 177 ++++++++++++++++++++++++++++++++++++
+ 6 files changed, 305 insertions(+)
+ create mode 100644 src/main/smooth_math.h
+ create mode 100644 src/main/smooth_runtime.inc
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 205746f4..2757b10f 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -70,6 +70,9 @@ extern int32_t MOD_MIST_SHIFT[3];
+ extern int32_t MOD_FPS_INTERP_BONES;
+ /* startAnimation: the entity's pose jumps, its bones are not interpolated */
+ void modInterpAnimStarted(void *entity);
++void modSmoothBeforeStart(void *entity, int32_t destination);
++void modSmoothForget(int32_t instance);
++void modSmoothMapReset(void);
+ void modInterpUnapplyEntity(int32_t entityId);
+ void modInterpInvalidate(void);
+ 
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 3baafdeb..fea79864 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -216,6 +216,7 @@ void startAnimation(entity, animId)
+ 	} else {
+ 		instrPtr = (int16_t *)((int32_t)animTable + animTable[animId]);
+ 	}
++	modSmoothBeforeStart(entity, animId);
+ 	if ((*instrPtr & 0x7fff) == 1) {
+ 		/* MOD (memreclaim): an NPC slot trimmed away (npc_anim_trim.c);
+ 		 * no original animation is 1 frame long */
+diff --git a/src/main/map.c b/src/main/map.c
+index 4314a67a..dff9b220 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -150,6 +150,7 @@ void readMapTFS(int32_t mapId);
+ void renderFXParticle(SVECTOR *pos, int32_t size, RGB8 *color);
+ void renderMap(int32_t arg0);
+ void lateTickMap(int32_t arg0);
++void modSmoothMapReset(void);
+ extern int32_t MOD_INTERP_MAP_GEN; /* MOD (fps), main.c */
+ /* MOD (fps): see dw/mod_fps.h (not included: this file declares addObject
+  * with other parameter types) */
+@@ -4432,6 +4433,7 @@ void setupMap(void)
+ 		}
+ 	}
+ 
++	modSmoothMapReset();
+ 	MOD_INTERP_MAP_GEN++; /* MOD (fps): no interpolation across a map load */
+ 	MAP_TILE_DATA.cameraX = ((MAP_TILE_DATA.width * 128) / 2) - 160;
+ 	MAP_TILE_DATA.cameraY = ((MAP_TILE_DATA.height * 128) / 2) - 120;
+@@ -4760,6 +4762,7 @@ void unloadMap(void)
+ 		MAP_TILE_DATA.tiles[i].texU = MAP_TILE_DATA.tiles[i].texV = 0;
+ 	}
+ 
++	modSmoothMapReset();
+ 	MOD_INTERP_MAP_GEN++; /* MOD (fps) */
+ 	MAP_TILE_DATA.width = MAP_TILE_DATA.height = 0;
+ 	MAP_TILE_DATA.cameraX = MAP_TILE_DATA.cameraY = 0;
+diff --git a/src/main/model.c b/src/main/model.c
+index 727430e8..a56b1262 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2897,6 +2897,8 @@ static void modFlagBones(PositionData *pos, int32_t boneCount)
+ 	}
+ }
+ 
++#include "smooth_runtime.inc"
++
+ void renderDigimon(instanceId)
+ 	int16_t instanceId;
+ {
+@@ -2906,6 +2908,7 @@ void renderDigimon(instanceId)
+ 	int32_t boneCount;
+ 	int32_t i;
+ 	int32_t fit;
++	int32_t smoothCount;
+ 	MATRIX rootSave;
+ 	int32_t y0 = 0x7fff;
+ 	int32_t y1 = -0x7fff;
+@@ -2920,6 +2923,7 @@ void renderDigimon(instanceId)
+ 	}
+ 	pos = ENTITY_TABLE[instanceId]->posData;
+ 	boneCount = DIGI_PARA(ENTITY_TABLE[instanceId]->type).boneCount;
++	smoothCount = modSmoothDrawBegin(instanceId);
+ 	/* MOD (camera): a big partner drawn smaller on a screen it does not fit (map.c) */
+ 	fit = instanceId == 1 ? modPartnerFitScale() : 0x1000;
+ 	if (fit != 0x1000) {
+@@ -2981,6 +2985,7 @@ void renderDigimon(instanceId)
+ 		pos->posMatrix.coord = rootSave;
+ 		modFlagBones(pos, boneCount);
+ 	}
++	modSmoothDrawEnd(instanceId, smoothCount);
+ 	if (ENTITY_TABLE[instanceId]->flatSprite != -1) {
+ 		renderFlatDigimon(ENTITY_TABLE[instanceId]);
+ 	}
+@@ -2998,6 +3003,7 @@ void removeEntity(int32_t objectId, int32_t entityId)
+ {
+ 	Entity *entity;
+ 
++	modSmoothForget(entityId);
+ 	removeObject((int16_t)objectId, (int16_t)entityId);
+ 	if ((entityId != 1) && (entityId != 0)) {
+ 		entity = ENTITY_TABLE[entityId];
+diff --git a/src/main/smooth_math.h b/src/main/smooth_math.h
+new file mode 100644
+index 00000000..034b9362
+--- /dev/null
++++ b/src/main/smooth_math.h
+@@ -0,0 +1,115 @@
++/* Render-only pose transitions. Q12 quaternion nlerp avoids Euler wrap flips.
++ * Portable integer code shared by the PS1 build and the offline geometry audit. */
++#ifndef MOD_SMOOTH_MATH_H
++#define MOD_SMOOTH_MATH_H
++#include <stdint.h>
++
++typedef struct {
++    int16_t q[4];                 /* x,y,z,w */
++    int16_t s[3];
++    int32_t t[3];
++} SmoothPose;
++
++static uint32_t smoothSqrt(uint32_t n)
++{
++    uint32_t r = 0, bit = 1u << 30;
++    while (bit > n) bit >>= 2;
++    while (bit) {
++        if (n >= r + bit) { n -= r + bit; r = (r >> 1) + bit; }
++        else r >>= 1;
++        bit >>= 2;
++    }
++    return r;
++}
++
++static int32_t smoothWeight(int32_t elapsed)
++{
++    int32_t x;
++    if (elapsed <= 0) return 0;
++    if (elapsed >= 4 * 4096) return 4096;
++    x = elapsed / 4;
++    return (int32_t)(((int64_t)x*x*(12288-2*x) + 8388608) >> 24);
++}
++
++static int32_t smoothLerp(int32_t a, int32_t b, int32_t w)
++{
++    /* Translations are 32 bit; never narrow them to the old FPS cache's short. */
++    return a + (int32_t)(((int64_t)(b-a)*w + 2048) >> 12);
++}
++
++static void smoothQuat(const int16_t m[3][3], int16_t q[4])
++{
++    int32_t i, j, k, s, v[4], trace = m[0][0]+m[1][1]+m[2][2];
++    if (trace > 0) {
++        s = smoothSqrt((4096+trace)*4096);
++        v[3] = s/2;
++        v[0] = (m[2][1]-m[1][2])*2048/s;
++        v[1] = (m[0][2]-m[2][0])*2048/s;
++        v[2] = (m[1][0]-m[0][1])*2048/s;
++    } else {
++        i = m[1][1] > m[0][0] ? 1 : 0;
++        if (m[2][2] > m[i][i]) i = 2;
++        j = (i+1)%3; k = (j+1)%3;
++        s = smoothSqrt((4096+m[i][i]-m[j][j]-m[k][k])*4096);
++        if (!s) { q[0]=q[1]=q[2]=0; q[3]=4096; return; }
++        v[i] = s/2;
++        v[j] = (m[j][i]+m[i][j])*2048/s;
++        v[k] = (m[k][i]+m[i][k])*2048/s;
++        v[3] = (m[k][j]-m[j][k])*2048/s;
++    }
++    s = smoothSqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]+v[3]*v[3]);
++    for (i=0;i<4;i++) q[i] = v[i]*4096/s;
++}
++
++/* Decode an existing local render matrix, including ordinary FPS interpolation.
++ * Mirrored/hidden/degenerate parts use their destination unchanged. */
++static int32_t smoothRead(const int16_t m[3][3], const int32_t t[3],
++                          const int32_t scaleSign[3], SmoothPose *p)
++{
++    int32_t i,j,s; int16_t r[3][3];
++    for (j=0;j<3;j++) {
++        if (scaleSign[j] <= 0) return 0;
++        s = smoothSqrt((int32_t)m[0][j]*m[0][j] +
++                       (int32_t)m[1][j]*m[1][j] + (int32_t)m[2][j]*m[2][j]);
++        if (s < 4 || s > 32767) return 0;
++        p->s[j] = s; p->t[j] = t[j];
++        for (i=0;i<3;i++) r[i][j] = (int32_t)m[i][j]*4096/s;
++    }
++    smoothQuat(r,p->q);
++    return 1;
++}
++
++static void smoothBlend(const SmoothPose *a, const SmoothPose *b,
++                         int32_t w, SmoothPose *p)
++{
++    int32_t i, dot=0, q[4], len=0, sign;
++    if (w<=0) { *p=*a; return; }
++    if (w>=4096) { *p=*b; return; }
++    for (i=0;i<4;i++) dot += (int32_t)a->q[i]*b->q[i];
++    sign = dot<0 ? -1:1;
++    for (i=0;i<4;i++) {
++        q[i]=smoothLerp(a->q[i],sign*b->q[i],w); len+=q[i]*q[i];
++    }
++    len=smoothSqrt(len);
++    for (i=0;i<4;i++) p->q[i]=q[i]*4096/len;
++    for (i=0;i<3;i++) {
++        p->t[i]=smoothLerp(a->t[i],b->t[i],w);
++        p->s[i]=smoothLerp(a->s[i],b->s[i],w);
++    }
++}
++
++static void smoothMatrix(const SmoothPose *p, int16_t m[3][3], int32_t t[3])
++{
++    int32_t i,j,x=p->q[0],y=p->q[1],z=p->q[2],w=p->q[3],r[3][3];
++    r[0][0]=4096-((2*(y*y+z*z))>>12);
++    r[0][1]=(2*(x*y-z*w))>>12; r[0][2]=(2*(x*z+y*w))>>12;
++    r[1][0]=(2*(x*y+z*w))>>12; r[1][1]=4096-((2*(x*x+z*z))>>12);
++    r[1][2]=(2*(y*z-x*w))>>12;
++    r[2][0]=(2*(x*z-y*w))>>12; r[2][1]=(2*(y*z+x*w))>>12;
++    r[2][2]=4096-((2*(x*x+y*y))>>12);
++    for (j=0;j<3;j++) {
++        t[j]=p->t[j];
++        for(i=0;i<3;i++) m[i][j]=(r[i][j]*p->s[j]+2048)>>12;
++    }
++}
++#endif
+diff --git a/src/main/smooth_runtime.inc b/src/main/smooth_runtime.inc
+new file mode 100644
+index 00000000..84a89db0
+--- /dev/null
++++ b/src/main/smooth_runtime.inc
+@@ -0,0 +1,177 @@
++/* Included by model.c. Only draw matrices are temporarily changed: source SRT,
++ * momentum, navigation, events, animation timing and texture moves stay native. */
++#include "smooth_math.h"
++extern int32_t MOD_FPS_TICKS, MOD_RENDER_ALPHA, IS_IN_MENU;
++extern int8_t GAME_STATE;
++
++#define SMOOTH_BONES 63
++typedef struct {
++    Entity *entity;
++    PositionData *positions;
++    void *animation;
++    int32_t type, map, start, count, floor, lastFloor, lastTick;
++    uint8_t fromValid[SMOOTH_BONES], lastValid[SMOOTH_BONES];
++    SmoothPose pose[0];           /* source then last displayed, count-1 each */
++} SmoothState;
++static SmoothState *smoothStates[ENTITY_MAX];
++static MATRIX smoothSaved[SMOOTH_BONES+1]; /* draw calls are sequential */
++int32_t MOD_SMOOTH_TRANSITIONS = 1;
++/* model.c has no vanilla small-BSS region in the decomp linker script. */
++int32_t MOD_SMOOTH_STARTS __attribute__((section(".bss.modSmoothStats")));
++int32_t MOD_SMOOTH_DRAWS __attribute__((section(".bss.modSmoothStats")));
++int32_t MOD_SMOOTH_FLOOR_ADJUSTS __attribute__((section(".bss.modSmoothStats")));
++
++static int32_t smoothSlot(int32_t s)
++{
++    return s==0 || s==2 || s==3 || s==4 || s==5 || s==18;
++}
++
++void modSmoothForget(int32_t instance)
++{
++    if (instance>=0 && instance<ENTITY_MAX && smoothStates[instance]) {
++        free3(smoothStates[instance]); smoothStates[instance]=NULL;
++    }
++}
++
++void modSmoothMapReset(void)
++{
++    int32_t i;
++    for (i=0;i<ENTITY_MAX;i++) modSmoothForget(i);
++}
++
++static int32_t smoothEligible(Entity *e)
++{
++    /* All imported species, including future imports; vanilla/tamer untouched. */
++    return MOD_SMOOTH_TRANSITIONS && e && e->type>=180 && e->posData &&
++        GAME_STATE==0 && !IS_IN_MENU && e->flatSprite==-1 &&
++        DIGI_PARA(e->type).boneCount>=2 &&
++        DIGI_PARA(e->type).boneCount<=SMOOTH_BONES+1;
++}
++
++static int32_t smoothIdentity(SmoothState *s, Entity *e)
++{
++    return s && s->entity==e && s->positions==e->posData &&
++        s->type==e->type && s->animation==e->animPtr &&
++        s->map==MOD_INTERP_MAP_GEN && s->count==DIGI_PARA(e->type).boneCount;
++}
++
++/* Actual transformed mesh, rather than bone origins or an anatomy guess.
++ * Y points down in DW1. Return its lowest visible vertex relative to root Y.
++ * Called only during the short transition, never during steady locomotion. */
++static int32_t smoothFloor(Entity *e, int32_t n)
++{
++    int32_t b,j,y,bottom=-0x3fffffff;
++    PositionData *pd=e->posData;
++    MATRIX lw,ls;
++    struct TMD_STRUCT *obj;
++    SVECTOR *v;
++    for(b=0;b<n;b++) {
++        obj=pd[b].obj.tmd;
++        if (!obj || (pd[b].obj.attribute & GsDOFF)) continue;
++        GsGetLws(pd[b].obj.coord2,&lw,&ls);
++        /* Collapsed parts have no visible area and must not become support. */
++        if ((!lw.m[0][0] && !lw.m[1][0] && !lw.m[2][0]) ||
++            (!lw.m[0][1] && !lw.m[1][1] && !lw.m[2][1]) ||
++            (!lw.m[0][2] && !lw.m[1][2] && !lw.m[2][2])) continue;
++        v=(SVECTOR *)obj->vertop;
++        for(j=0;j<(int32_t)obj->vern;j++,v++) {
++            y=(((int32_t)lw.m[1][0]*v->vx+(int32_t)lw.m[1][1]*v->vy+
++                (int32_t)lw.m[1][2]*v->vz)>>12)+lw.t[1];
++            if(y>bottom) bottom=y;
++        }
++    }
++    return bottom==-0x3fffffff ? 0 : bottom-pd[0].posMatrix.coord.t[1];
++}
++
++void modSmoothBeforeStart(void *entity, int32_t destination)
++{
++    Entity *e=entity;
++    SmoothState *s;
++    PositionData *pd;
++    int32_t i,b,n,continuing;
++    uint8_t valid[SMOOTH_BONES]={0};
++    for(i=0;i<ENTITY_MAX;i++) if(ENTITY_TABLE[i]==e) break;
++    if(i==ENTITY_MAX) return;
++    s=smoothStates[i];
++    if(!smoothEligible(e) || !smoothSlot(destination) || !smoothSlot(e->anim.animId)) {
++        modSmoothForget(i); return;
++    }
++    /* Repeating a start in its first frame is not another motion transition. */
++    if(destination==e->anim.animId && e->anim.animFrame<=1) return;
++    n=DIGI_PARA(e->type).boneCount;
++    continuing=smoothIdentity(s,e) && MOD_FPS_TICKS-s->lastTick<=1 &&
++        MOD_FPS_TICKS>=s->lastTick;
++    if(!continuing) {
++        modSmoothForget(i);
++        s=malloc3(sizeof(*s)+2*(n-1)*sizeof(SmoothPose));
++        if(!s) return; /* A tight map keeps its original renderer. */
++        smoothStates[i]=s;
++    }
++    pd=e->posData;
++    if(continuing) {
++        memcpy(s->pose,s->pose+n-1,(n-1)*sizeof(SmoothPose));
++        memcpy(valid,s->lastValid,sizeof(valid)); s->floor=s->lastFloor;
++    } else {
++        for(b=1;b<n;b++) {
++            int32_t signs[3];
++            signs[0]=pd[b].scale.vx; signs[1]=pd[b].scale.vy; signs[2]=pd[b].scale.vz;
++            if(smoothRead(pd[b].posMatrix.coord.m,pd[b].posMatrix.coord.t,signs,&s->pose[b-1]))
++                valid[b-1]=1;
++        }
++        modFlagBones(pd,n); s->floor=smoothFloor(e,n);
++    }
++    s->entity=e; s->positions=pd; s->animation=e->animPtr;
++    s->type=e->type; s->map=MOD_INTERP_MAP_GEN; s->count=n;
++    s->start=MOD_FPS_TICKS+1; memcpy(s->fromValid,valid,sizeof(valid));
++    /* A second start in this same tick must still use the captured pose. */
++    memcpy(s->pose+n-1,s->pose,(n-1)*sizeof(SmoothPose));
++    s->lastFloor=s->floor; memcpy(s->lastValid,valid,sizeof(valid)); s->lastTick=MOD_FPS_TICKS;
++    MOD_SMOOTH_STARTS++;
++}
++
++static int32_t modSmoothDrawBegin(int32_t instance)
++{
++    Entity *e=ENTITY_TABLE[instance];
++    SmoothState *s=smoothStates[instance];
++    PositionData *pd;
++    int32_t b,n,w,elapsed,targetFloor,actualFloor,expectedFloor;
++    SmoothPose target,result;
++    if(!s) return 0;
++    if(!smoothEligible(e) || !smoothIdentity(s,e) || !smoothSlot(e->anim.animId)) {
++        modSmoothForget(instance); return 0;
++    }
++    elapsed=(MOD_FPS_TICKS-s->start)*4096+MOD_RENDER_ALPHA;
++    if(elapsed<0 || elapsed>=4*4096) { modSmoothForget(instance); return 0; }
++    w=smoothWeight(elapsed); n=s->count; pd=e->posData;
++    modFlagBones(pd,n); targetFloor=smoothFloor(e,n);
++    memset(s->lastValid,0,sizeof(s->lastValid));
++    for(b=0;b<n;b++) smoothSaved[b]=pd[b].posMatrix.coord;
++    for(b=1;b<n;b++) {
++        int32_t signs[3];
++        signs[0]=pd[b].scale.vx; signs[1]=pd[b].scale.vy; signs[2]=pd[b].scale.vz;
++        if(!smoothRead(smoothSaved[b].m,smoothSaved[b].t,signs,&target)) continue;
++        if(s->fromValid[b-1]) {
++            smoothBlend(&s->pose[b-1],&target,w,&result);
++            smoothMatrix(&result,pd[b].posMatrix.coord.m,pd[b].posMatrix.coord.t);
++        } else result=target;
++        s->pose[n+b-2]=result; s->lastValid[b-1]=1;
++    }
++    modFlagBones(pd,n); actualFloor=smoothFloor(e,n);
++    expectedFloor=smoothLerp(s->floor,targetFloor,w);
++    /* Preserve the interpolated native support/flight height. Does not claim IK
++     * foot planting: contacts and terrain are still owned by the native model. */
++    pd[0].posMatrix.coord.t[1]+=expectedFloor-actualFloor;
++    if(expectedFloor!=actualFloor) MOD_SMOOTH_FLOOR_ADJUSTS++;
++    s->lastFloor=expectedFloor; s->lastTick=MOD_FPS_TICKS;
++    modFlagBones(pd,n); MOD_SMOOTH_DRAWS++;
++    return n;
++}
++
++static void modSmoothDrawEnd(int32_t instance, int32_t count)
++{
++    int32_t b;
++    PositionData *pd=ENTITY_TABLE[instance]->posData;
++    if(!count) return;
++    for(b=0;b<count;b++) pd[b].posMatrix.coord=smoothSaved[b];
++    modFlagBones(pd,count);
++}
+-- 
+2.55.0
+

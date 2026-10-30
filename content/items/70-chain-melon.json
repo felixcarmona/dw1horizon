@@ -1,0 +1,18 @@
+{
+  "id": 70,
+  "name": "Chain melon",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 50,
+    "happiness": 50,
+    "weight": 3,
+    "tiredness": 50,
+    "lifetime": 20,
+    "sickChance": 5
+  }
+}

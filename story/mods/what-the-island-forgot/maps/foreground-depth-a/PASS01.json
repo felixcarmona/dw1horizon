@@ -1,0 +1,73 @@
+{
+  "screen": 305,
+  "art": "passage",
+  "review": "Only fern fronds protruding over the generous path are foreground. Their trunks and boulders remain blocked; the north gate opening and southern trail stay clear.",
+  "pieces": [
+    {
+      "name": "right-fern-overhang",
+      "png": "305-right-fern-overhang.png",
+      "at": [
+        359,
+        344
+      ],
+      "depth": [
+        424,
+        405
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/passage-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "box": [
+          337,
+          343,
+          518,
+          424
+        ],
+        "positive": [
+          [
+            381,
+            374
+          ],
+          [
+            423,
+            383
+          ],
+          [
+            483,
+            375
+          ]
+        ],
+        "negative": [
+          [
+            366,
+            356
+          ],
+          [
+            357,
+            401
+          ],
+          [
+            427,
+            421
+          ],
+          [
+            497,
+            411
+          ]
+        ],
+        "score": 0.8470133543014526
+      }
+    }
+  ],
+  "collision": [],
+  "depth_planes": {
+    "width": 32,
+    "height": 8
+  }
+}

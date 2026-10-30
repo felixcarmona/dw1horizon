@@ -1,0 +1,14 @@
+name = "what-the-island-forgot"
+version = "0.1.0"
+description = "What the island forgot: the island's lost memory, three roots under the north-east lands, new places, new recruits for File City"
+authors = ["Digimon World: Horizon authors"]
+requires = ["base >= 1.0"]
+load_after = []
+conflicts = []
+# the story's Python files (what build.sh compiles; `dws text sync` reads the lines from these)
+sources = ["early-game.py", "arcs/*/*.py", "district/*.py", "city/*.py"]
+
+[save]
+namespace = "wtif"
+flags = "717-786"                           # the original engine's free flags (717-799); save.lock keeps the numbers
+vars = "9-11"                               # saved counters (the memory the city keeps)

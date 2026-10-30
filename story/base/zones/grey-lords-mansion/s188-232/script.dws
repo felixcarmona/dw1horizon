@@ -1,0 +1,22 @@
+// Readable form of script 188 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 188 {
+    // the section table, in the order of the original header
+    sections 254, 81;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Medicine"), -554, 0, -1089, 2048, 700);
+        spawn_chest(item("Def. Disk"), -271, 0, -1089, 2048, 701);
+        spawn_chest(item("Protection"), 12, 0, -1089, 2048, 702);
+        spawn_chest(item("Large MP"), 330, 0, -1089, 2048, 703);
+    }
+
+    on use(1) replace {    // section 81
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -1313, 385);
+        warp_to(53, 0, 255);
+        return;
+    }
+}

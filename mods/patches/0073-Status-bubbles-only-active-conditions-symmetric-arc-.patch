@@ -1,0 +1,249 @@
+From acbca5811f05b0632972a047840040f41ff3893d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 15:54:34 +0000
+Subject: [PATCH] Status bubbles: only active conditions, symmetric arc centred
+ over the big bubble, smoothed carousel
+
+---
+ src/main/bubble.c | 169 ++++++++++++++++++++++++++++------------------
+ 1 file changed, 105 insertions(+), 64 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 62cf379..fe8183b 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -557,40 +557,39 @@ static void drawConditionIcon(int32_t icon, int32_t fc, int32_t x, int32_t y,
+ int32_t MOD_STATUS_BUBBLES = 1;
+ 
+ /*
+- * MOD (status-bubbles): six conditions on a carousel: one big bubble and five
+- * small ones on an arc above it. Each condition sits in exactly one slot; the
+- * carousel turns when the big bubble moves on to the next active condition.
+- * State (stored +1 so it lives in .data): [0] big condition, [1] animation
+- * tick, [2] steps of the turn, [3] ticks the big bubble has been held.
++ * MOD (status-bubbles): the ACTIVE conditions only: one big bubble and
++ * (N - 1) small ones on a symmetric arc over it. Each condition has a smoothed
++ * position and size (x, y in 1/16 texel from the big bubble's centre, size
++ * 0..256); the targets change when the big bubble moves on to the next active
++ * condition or a condition appears or goes, and the bubbles slide there.
++ * Stored in .data (initialised) so that the linker keeps them.
+  */
+-#define RING_ANIM_TICKS	8
+ #define RING_HOLD_TICKS	50
++#define RING_RADIUS	28
+ 
+-/* slot 0 is the big bubble; texel offsets from its centre, size in 1/16 */
+-static const int8_t RING_SLOT_DX[6] = { 0, -27, -17, 0, 17, 27 };
+-static const int8_t RING_SLOT_DY[6] = { 0, -3, -21, -28, -21, -3 };
+-static const uint8_t RING_SLOT_SIZE[6] = { 16, 8, 8, 8, 8, 8 };
+ /* conditions in a fixed order: hungry, poopy, sleepy, tired, sick, injured */
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+ static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
++/* half span of the arc in degrees by the number of small bubbles */
++static const uint8_t RING_SPAN[6] = { 0, 0, 36, 60, 72, 82 };
+ 
+ int32_t MOD_RING_CLOCK = 1;
+-int32_t MOD_RING_STATE[4] = { 1, 1, 1, 1 };
++int32_t MOD_RING_BIG = 1; /* the big condition, +1 */
++int32_t MOD_RING_HOLD = 1;
++int32_t MOD_RING_POS[18] = { 1 }; /* x, y, size per condition */
+ 
+-static void drawRingBubble(int32_t j, int32_t active, int32_t cx, int32_t cy,
+-			   int32_t depth, uint32_t scale, int32_t size, int32_t k)
++static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
++			   uint32_t scale, int32_t size, int32_t k)
+ {
+-	uint32_t s = (scale * size) >> 4;
+-	int32_t iconY = cy + ((18 * k * size) >> 16);
++	uint32_t s = (scale * size) >> 8;
++	int32_t iconY = cy + ((18 * k * size) >> 20);
+ 	int32_t icon = RING_ICON[j];
+ 
+-	if (active) {
+-		if (icon == 4) {
+-			icon = 4 + ((MOD_RING_CLOCK / 8) % 5);
+-		}
+-		drawConditionIcon(icon, MOD_RING_CLOCK, cx, iconY, depth, s);
++	if (icon == 4) {
++		icon = 4 + ((MOD_RING_CLOCK / 8) % 5);
+ 	}
+-	if (size >= 12) {
++	drawConditionIcon(icon, MOD_RING_CLOCK, cx, iconY, depth, s);
++	if (size >= 192) {
+ 		renderSprite(&CONDITION_SPRITES[11], cx, iconY, depth, s, s);
+ 	} else {
+ 		CONDITION_SPRITES[11].h = 26;
+@@ -601,38 +600,44 @@ static void drawRingBubble(int32_t j, int32_t active, int32_t cx, int32_t cy,
+ 	}
+ }
+ 
++static int32_t ringAnySize(void)
++{
++	int32_t j;
++
++	for (j = 0; j < 6; ++j) {
++		if (MOD_RING_POS[j * 3 + 2] > 4) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
+ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+ 				uint32_t scale)
+ {
+-	uint32_t cond = PARTNER_PARA.condition;
+ 	int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
+-	int32_t big = MOD_RING_STATE[0] - 1;
+-	int32_t phase = 0;
+-	int32_t j;
+ 	int32_t cy0 = y - ((18 * k) >> 12);
++	int32_t j;
+ 
+-	if (MOD_RING_STATE[1] > 1) {
+-		phase = ((MOD_RING_STATE[2] - 1) * (MOD_RING_STATE[1] - 1) << 16) /
+-			RING_ANIM_TICKS;
++	for (j = 0; j < 6; ++j) {
++		int32_t *v = &MOD_RING_POS[j * 3];
++
++		if (v[2] > 4) {
++			drawRingBubble(j, x + ((v[0] * k) >> 16),
++				       cy0 + ((v[1] * k) >> 16), depth, scale,
++				       v[2], k);
++		}
+ 	}
++}
+ 
+-	for (j = 0; j < 6; ++j) {
+-		int32_t f = ((((j - big + 6) % 6) << 16) - phase + (6 << 16)) %
+-			    (6 << 16);
+-		int32_t seg = f >> 16;
+-		int32_t fr = f & 0xffff;
+-		int32_t nx = (seg + 1) % 6;
+-		int32_t dx = RING_SLOT_DX[seg] +
+-			     (((RING_SLOT_DX[nx] - RING_SLOT_DX[seg]) * fr) >> 16);
+-		int32_t dy = RING_SLOT_DY[seg] +
+-			     (((RING_SLOT_DY[nx] - RING_SLOT_DY[seg]) * fr) >> 16);
+-		int32_t size = RING_SLOT_SIZE[seg] +
+-			       (((RING_SLOT_SIZE[nx] - RING_SLOT_SIZE[seg]) * fr) >> 16);
+-
+-		drawRingBubble(j, (cond & RING_BIT[j]) != 0,
+-			       x + ((dx * k) >> 12), cy0 + ((dy * k) >> 12),
+-			       depth, scale, size, k);
++static int32_t ringStep(int32_t v, int32_t target)
++{
++	int32_t d = target - v;
++
++	if ((d / 2) == 0) {
++		return target;
+ 	}
++	return v + d / 2;
+ }
+ 
+ void renderConditionRingObject(int32_t instanceId)
+@@ -647,7 +652,7 @@ void renderConditionRingObject(int32_t instanceId)
+ 
+ 	if ((MOD_STATUS_BUBBLES == 0) || (IS_IN_MENU == 1) || (GAME_STATE != 0) ||
+ 	    ((PARTNER_STATE != 1) && (PARTNER_STATE != 0xa)) ||
+-	    ((PARTNER_PARA.condition & 0x6f) == 0) || (entity == NULL)) {
++	    (entity == NULL) || (ringAnySize() == 0)) {
+ 		return;
+ 	}
+ 
+@@ -683,38 +688,74 @@ void renderConditionRingObject(int32_t instanceId)
+ void tickConditionRingObject(int32_t instanceId)
+ {
+ 	uint32_t cond = PARTNER_PARA.condition;
+-	int32_t big = MOD_RING_STATE[0] - 1;
++	int32_t big = MOD_RING_BIG - 1;
++	int32_t act[6];
++	int32_t n = 0;
++	int32_t rankBig = 0;
++	int32_t rank = 0;
+ 	int32_t j;
++	int32_t m;
+ 
+ 	if (IS_IN_MENU == 1) {
+ 		return;
+ 	}
+ 	++MOD_RING_CLOCK;
+ 
+-	if (MOD_RING_STATE[1] > 1) {
+-		++MOD_RING_STATE[1];
+-		if (MOD_RING_STATE[1] > RING_ANIM_TICKS) {
+-			MOD_RING_STATE[0] = ((big + MOD_RING_STATE[2] - 1) % 6) + 1;
+-			MOD_RING_STATE[1] = 1;
+-			MOD_RING_STATE[2] = 1;
+-			MOD_RING_STATE[3] = 1;
++	for (j = 0; j < 6; ++j) {
++		act[j] = (cond & RING_BIT[j]) != 0;
++		n += act[j];
++	}
++
++	/* the big bubble: stays RING_HOLD_TICKS, then the next active one */
++	++MOD_RING_HOLD;
++	if ((n != 0) && ((!act[big]) || (MOD_RING_HOLD > RING_HOLD_TICKS))) {
++		for (j = 1; j <= 6; ++j) {
++			if (act[(big + j) % 6]) {
++				big = (big + j) % 6;
++				break;
++			}
+ 		}
+-		return;
++		MOD_RING_BIG = big + 1;
++		MOD_RING_HOLD = 1;
+ 	}
+ 
+-	++MOD_RING_STATE[3];
+-	if ((MOD_RING_STATE[3] < RING_HOLD_TICKS) && (cond & RING_BIT[big])) {
+-		return;
++	for (j = 0; j < big; ++j) {
++		rankBig += act[j];
+ 	}
+-	for (j = 1; j <= 6; ++j) {
+-		if (cond & RING_BIT[(big + j) % 6]) {
+-			if (j != 6) {
+-				MOD_RING_STATE[1] = 2;
+-				MOD_RING_STATE[2] = j + 1;
++	m = n - 1;
++
++	for (j = 0; j < 6; ++j) {
++		int32_t *v = &MOD_RING_POS[j * 3];
++		int32_t tx = v[0];
++		int32_t ty = v[1];
++		int32_t ts = 0;
++
++		if (act[j]) {
++			int32_t r = (rank - rankBig + n) % n;
++
++			++rank;
++			if (r == 0) {
++				tx = 0;
++				ty = 0;
++				ts = 256;
++			} else {
++				int32_t span = RING_SPAN[m];
++				int32_t a = (m > 1) ?
++					    (-span + (2 * span * (r - 1)) / (m - 1)) : 0;
++				int32_t ang = (a * 512) / 360; /* 512 = full turn */
++
++				tx = (RING_RADIUS * 16 * _sin(ang)) >> 12;
++				ty = -((RING_RADIUS * 16 * _cos(ang)) >> 12);
++				ts = 128;
++			}
++			if (v[2] <= 4) {
++				v[0] = tx;
++				v[1] = ty;
+ 			}
+-			MOD_RING_STATE[3] = 1;
+-			return;
+ 		}
++		v[0] = ringStep(v[0], tx);
++		v[1] = ringStep(v[1], ty);
++		v[2] = ringStep(v[2], ts);
+ 	}
+ }
+ 
+-- 
+2.53.0
+

@@ -1,0 +1,118 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M389KYKI",
+ "type": 322,
+ "name": "Kyukimon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 6,
+  "2": 1,
+  "3": 19,
+  "4": 20,
+  "6": 21,
+  "7": 15,
+  "8": 17,
+  "12": 23,
+  "13": 24,
+  "15": 25,
+  "17": 7,
+  "18": 8,
+  "19": 10,
+  "20": 11,
+  "21": 12,
+  "22": 4,
+  "25": 3,
+  "26": 5
+ },
+ "hips": [
+  1,
+  1,
+  0.636
+ ],
+ "root_scale": 0.636,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x3a": {
+   "anim": "anim_33",
+   "start": 3,
+   "end": 95,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  },
+  "0x2e": {
+   "anim": "anim_27",
+   "start": 28,
+   "end": 75,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  },
+  "0x32": {
+   "anim": "anim_44",
+   "start": 5,
+   "end": 97,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 143
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ],
+ "scale": 0.120122,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

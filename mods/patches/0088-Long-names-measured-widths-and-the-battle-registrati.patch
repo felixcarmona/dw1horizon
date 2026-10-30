@@ -1,0 +1,263 @@
+From 92f3b07f4bbe4a3ffcc866036b5c5ba653d807d5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 04:00:39 +0000
+Subject: [PATCH] Long names: measured widths, and the battle registration
+ screens
+
+0086 took the name's width from where drawString ended, but the status screen's strings can be drawn in a render pass
+where drawString draws nothing, and the width read was another string's (the status screen showed "M").
+measureString gives a text's width from the glyph advances without drawing; the status screen and the chart use it.
+The battle registration (confirm) screen and the list of registered Digimon cut a long name at the text area's edge
+("MetalGreymonV"): their Digimon column moves left when the name would run past 0xF0 (the text area is 256 wide and
+no glyph starts past 244), and their text and box are drawn 0xF0 / 0xFA wide (were 0xD6 / 0xE0).
+---
+ include/dw/font.h    |  4 ++--
+ src/main/font.c      | 52 ++++++++++++++++++++++++++++++++++++++++++--
+ src/main/game_menu.c | 16 +++++---------
+ src/main/main_menu.c | 34 +++++++++++++++++++++++------
+ 4 files changed, 85 insertions(+), 21 deletions(-)
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index c42d707..7bc56ad 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -17,8 +17,8 @@ int32_t drawGlyph(/* uint16_t codepoint, uint16_t x, uint16_t y */);
+ #endif
+ void drawString(/* char *str, uint16_t x, uint16_t y */);
+ #if VERSION_IS(US)
+-/* MOD (long names): the x where the last drawString ended (its width when drawn at x 0) */
+-extern int16_t MOD_STRING_END_X;
++/* MOD (long names): the width drawString gives a text, in pixels (font.c) */
++int32_t measureString(char *str);
+ #endif
+ 
+ #endif
+diff --git a/src/main/font.c b/src/main/font.c
+index cb02512..6d0e3a6 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1490,7 +1490,6 @@ void drawString(str, x, y)
+ 	}
+ }
+ #else
+-int16_t MOD_STRING_END_X; /* MOD (long names): font.h */
+ // clang-format off
+ void drawString(str, x, y)
+ 	char *str;
+@@ -1530,6 +1529,55 @@ void drawString(str, x, y)
+ 
+ 		x += drawGlyph(codepoint, x, y);
+ 	}
+-	MOD_STRING_END_X = x;
++}
++
++/*
++ * MOD (long names): the width in pixels drawString gives a text, without drawing it (the glyph's advance follows
++ * its GLYPH_HEIGHT rows, as drawGlyph returns it). A screen can measure in any render pass; drawString draws
++ * only in the first.
++ */
++int32_t measureString(char *str)
++{
++	uint16_t codepoint;
++	uint16_t code;
++	uint16_t lo;
++	uint16_t hi;
++	uint16_t *p;
++	int32_t n;
++	int32_t w;
++
++	w = 0;
++	while (*str != '\0') {
++		if (isAsciiEncoded(str) != 0) {
++			if (*str == '.') {
++				codepoint = 0x8142;
++			} else if (*str == '\'') {
++				codepoint = 0x8175;
++			} else {
++				codepoint = convertAsciiToJis(*str);
++			}
++			codepoint = swapShortBytes(codepoint);
++			str++;
++		} else {
++			lo = (uint8_t)*str++;
++			hi = (uint8_t)*str++;
++			codepoint = swapShortBytes((lo << 8) | hi);
++		}
++		code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
++		n = (code & 0xff) - EXTRA_GLYPH_FIRST;
++		if ((code & 0xff) > 0x7f) {
++			n--;
++		}
++		if ((code >> 8) == EXTRA_GLYPH_LEAD && n >= 0 && n < NUM_EXTRA_GLYPHS) {
++			p = (uint16_t *)EXTRA_GLYPH_DATA[n].pixelData;
++		} else {
++			CHAR_TO_GLYPH_TABLE[NUM_GLYPHS - 1] = code;
++			for (n = 0; code != CHAR_TO_GLYPH_TABLE[n]; ++n) {
++			}
++			p = GLYPH_DATA[n].pixelData;
++		}
++		w += p[GLYPH_HEIGHT];
++	}
++	return w;
+ }
+ #endif
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 030c5a6..19ac84a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -401,8 +401,6 @@ char FMT_PLAYTIME[8] = "%d : %d";
+ RECT EVO_CHART_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+ RECT EVO_CHART_NAME_AREA = { 0, 48, 200, 12 }; /* MOD (long names): was 120 wide (a name of 19 characters is ~160) */
+-static int16_t MOD_STATUS_NAME_WIDTH; /* MOD (long names): drawn widths of the status screen's and the chart's name */
+-static int16_t MOD_CHART_NAME_WIDTH;
+ void renderStringFit(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t maxW, int16_t h, uint8_t u, uint8_t v,
+ 		     long layer, int32_t shadow);
+ 
+@@ -2245,7 +2243,7 @@ void renderDigimonStatsView(void)
+ 		/* MOD (long names): the name as wide as drawn, a longer one narrowed into the field (was len * 10, cut
+ 		 * at 0x78: MetalGreymonVirus showed as "MetalGreymonVi") */
+ 		(void)w;
+-		renderStringFit(0, -0x6c, -0x32, MOD_STATUS_NAME_WIDTH, 0x78, 0xc, 0, 0x48, 5, 0);
++		renderStringFit(0, -0x6c, -0x32, measureString(DIGIMON_NAME(ENTITY_TABLE[1]->type)), 0x78, 0xc, 0, 0x48, 5, 0);
+ #endif
+ 		renderNumber(0, -0x6d, -0x22, 2, PARTNER_PARA.age, 5);
+ #if !VERSION_IS(US)
+@@ -3219,6 +3217,7 @@ GARBAGE_ARRAY(renderEvoChartDetail, (&MOVES_TECHSET_LINES[0].x1), 30, 9);
+ 
+ void renderEvoChartDetail(void)
+ {
++	int32_t w; /* MOD (long names) */
+ 	Line4Points *fromLines;
+ 	Line4Points *toLines;
+ 	int32_t j;
+@@ -3442,9 +3441,9 @@ void renderEvoChartDetail(void)
+ #if VERSION_IS(US)
+ 	/* MOD (long names): centred by its drawn width in the level's panel, a long name narrowed (was centred by
+ 	 * an estimate of 12 px a character and cut at 0x78) */
+-	(void)len;
+-	len = MOD_CHART_NAME_WIDTH > 0x88 ? 0x88 : MOD_CHART_NAME_WIDTH;
+-	renderStringFit(0, -0x42 - len / 2, 0x4d, MOD_CHART_NAME_WIDTH, 0x88, 0xc, 0, 0x30, 4, 0);
++	w = measureString(DIGIMON_NAME(CHART_DETAIL_ID));
++	len = w > 0x88 ? 0x88 : w;
++	renderStringFit(0, -0x42 - len / 2, 0x4d, w, 0x88, 0xc, 0, 0x30, 4, 0);
+ #else
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+ 	renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
+@@ -3653,7 +3652,6 @@ int32_t drawDigimonStatsStrings(void)
+ 		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0x9c, 0x24);
+ #else
+ 		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0, 0x48);
+-		MOD_STATUS_NAME_WIDTH = MOD_STRING_END_X; /* MOD (long names) */
+ #endif
+ 		drawString(PARTNER_ENTITY.name, 0, 0x3c);
+ 		MENU_SUB_STATE = 2;
+@@ -3982,9 +3980,7 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 	case 2:
+ 		clearTextSubArea(&rect2);
+ 		drawString((char *)digimonPara(arg), 0, 0x30);
+-#if VERSION_IS(US)
+-		MOD_CHART_NAME_WIDTH = MOD_STRING_END_X; /* MOD (long names) */
+-#endif
++
+ 	}
+ 	return 0;
+ }
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 8162a57..76ac2cc 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -323,6 +323,7 @@ void drawMainMenuStrings();
+ void drawSaveSlotText(int32_t slot, int32_t row);
+ char *formatInteger(int32_t value, char *buf, int32_t digits);
+ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos);
++static int32_t modNameColumn(char *name, int32_t x); /* MOD (long names) */
+ void drawRegisteredDigimonSlots(int32_t slot);
+ void updateMemoryCardState();
+ void tickMainMenu(void);
+@@ -1492,13 +1493,13 @@ void renderRegisterDigimon(void)
+ 	renderMenuBox(0x3c, 0xa8, 0xbc, 0x16);
+ #else
+ 	renderText(cur++, 0x32, 0x21, 0, 0, 0xE2, 0xC, 0);
+-	renderText(cur++, 0x32, 0x37, 0, 0xC, 0xD6, 0x6C, 0);
++	renderText(cur++, 0x32, 0x37, 0, 0xC, 0xF0, 0x6C, 0); /* MOD (long names): was 0xD6 wide */
+ 	renderText(cur++, 0x46, 0xAD, 0, 0x78, 0xB4, 0xC, 0);
+ 	renderText(cur++, 0x46, 0xC3, 0, 0x84, 0x24, 0xC, 0);
+ 	renderText(cur++, 0x46, 0xCF, 0, 0x90, 0x24, 0xC, 0);
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x28, 0x1C, 0xF6, 0x16);
+-	renderMenuBox(0x28, 0x32, 0xE0, 0x76);
++	renderMenuBox(0x28, 0x32, 0xFA, 0x76); /* MOD (long names): was 0xE0 */
+ 	renderMenuBox(0x3C, 0xA8, 0xC8, 0x16);
+ #endif
+ 	renderMenuBox(0x3C, 0xBE, 0x38, 0x22);
+@@ -1519,11 +1520,11 @@ void renderSelectRegisterSlot(void)
+ 	renderMenuBox(0x3c, 0xb4, 0xa4, 0x16);
+ #else
+ 	renderText(cur++, 0x32, 0x21, 0, 0, 0xE2, 0xC, 0);
+-	renderText(cur++, 0x46, 0x37, 0, 0xC, 0xE0, 0x78, 0);
++	renderText(cur++, 0x46, 0x37, 0, 0xC, 0xF0, 0x78, 0); /* MOD (long names): was 0xE0 wide */
+ 	renderText(cur++, 0x46, 0xB9, 0, 0x84, 0xCA, 0xC, 0);
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(0x28, 0x1C, 0xF6, 0x16);
+-	renderMenuBox(0x3C, 0x32, 0xE0, 0x82);
++	renderMenuBox(0x3C, 0x32, 0xFA, 0x82); /* MOD (long names): was 0xE0 */
+ 	renderMenuBox(0x3C, 0xB4, 0xD4, 0x16);
+ #endif
+ }
+@@ -2122,7 +2123,8 @@ void drawMainMenuStrings(int32_t menu)
+ 		drawString(PARTNER_ENTITY.name, 0x64, 0xC);
+ 		DrawSync(0);
+ 		drawString(MAIN_D_8013468C, 0, 0x18);
+-		drawString(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), 0x64, 0x18);
++		drawString(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type),
++			   modNameColumn(DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type), 0x64), 0x18); /* MOD (long names) */
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80134694, 0, 0x24);
+ 		drawString(formatInteger(PARTNER_ENTITY.digimonEntity.stats.base.hp, buf, 4), 0x64, 0x24);
+@@ -2285,6 +2287,24 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos)
+ 	}
+ }
+ 
++/*
++ * MOD (long names): the x of a Digimon name column in the text area (256 pixels; drawGlyph draws no glyph that
++ * starts past 244): the column's own x, or further left when the name would run past 0xF0 (MetalGreymonVaccine
++ * lost its last letters on the registration screens).
++ */
++static int32_t modNameColumn(char *name, int32_t x)
++{
++#if VERSION_IS(US)
++	int32_t w;
++
++	w = measureString(name);
++	if (x + w > 0xF0) {
++		x = 0xF0 - w;
++	}
++#endif
++	return x;
++}
++
+ void drawRegisteredDigimonSlots(int32_t slot)
+ {
+ 	RECT area;
+@@ -2293,7 +2313,7 @@ void drawRegisteredDigimonSlots(int32_t slot)
+ 	int32_t y;
+ 	int32_t currentSlot;
+ 
+-	setRECT(&area, 0, 0xC, 0xCC, 0x78);
++	setRECT(&area, 0, 0xC, 0xF0, 0x78); /* MOD (long names): was 0xCC wide */
+ 	clearTextSubArea(&area);
+ 	for (i = 0; i < 10; i++) {
+ 		currentSlot = slot + i;
+@@ -2302,7 +2322,7 @@ void drawRegisteredDigimonSlots(int32_t slot)
+ 		drawString(&SAVEGAME_ID_LABEL[(currentSlot + 1) % 10][2], 0xC, y);
+ 		if ((type = SAVE_FILE.saves[0].battleRegistrationData[currentSlot].digimonId) != 0) {
+ 			drawString(SAVE_FILE.saves[0].battleRegistrationData[currentSlot].name, 0x1e, y);
+-			drawString(DIGIMON_NAME(type), 0x6C, y);
++			drawString(DIGIMON_NAME(type), modNameColumn(DIGIMON_NAME(type), 0x6C), y); /* MOD (long names) */
+ 		} else {
+ 			setTextColor(9);
+ #if !VERSION_IS(US)
+-- 
+2.53.0
+

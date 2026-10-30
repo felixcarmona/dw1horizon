@@ -1,0 +1,110 @@
+// Readable form of script 2 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 2 {
+    npc redvegiemon0 = 5;
+    npc kunemon = 6;
+    npc redvegiemon2 = 7;
+    npc dokunemon3 = 8;
+    npc dokunemon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 7, 8, 9, 6, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 24) {
+            spawn_item(item("Digimushrm"), 46, 45);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Happymushrm"), 60, 59);
+        }
+        if (!is_recruited(species("Kunemon"))) {
+            animate(kunemon, 28);
+        }
+    }
+
+    on talk(redvegiemon0) replace {    // section 5
+        say(redvegiemon0, text("s002.sec5.u0"));
+        battle();
+        recruit(species("RedVegiemon"));
+    }
+
+    on talk(redvegiemon2) replace {    // section 7
+        say(redvegiemon2, text("s002.sec7.u0"));
+        battle();
+        recruit(species("RedVegiemon"));
+    }
+
+    on talk(dokunemon3) replace {    // section 8
+        say(dokunemon3, text("s002.sec8.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(dokunemon4) replace {    // section 9
+        say(dokunemon4, text("s002.sec9.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(kunemon) replace {    // section 6
+        engine.cutscene = true;
+        animate(kunemon, 29);
+        say(kunemon, text("s002.sec6.u0"));
+        choice {
+            text("s002.sec6.m0.o0") => {
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                if (engine.picker_mode) {
+                    say(tamer, text("s002.sec6.u1"));
+                } else if (engine.arg == 255) {
+                } else if (engine.arg in [item("Meat"), item("Giant Meat"), item("Sirloin"), item("Supercarrot"), item("Hawk radish"), item("Digimushrm"), item("Digianchovy"), item("Moldy Meat")]) {
+                    call_routine(routine("remove_chosen_item"));
+                    animate(kunemon, 30);
+                    wait(1s);
+                    animate(kunemon, 8);
+                    await kunemon;
+                    say(kunemon, text("s002.sec6.u3"));
+                    animate(kunemon, anim.idle);
+                    say(kunemon, text("s002.sec6.u4"));
+                    battle(foes: [kunemon]);
+                    face(tamer, kunemon);
+                    face(kunemon, tamer);
+                    face(partner, kunemon);
+                    say(kunemon, text("s002.sec6.u5"));
+                    animate(tamer, 20);
+                    await tamer;
+                    say(tamer, text("s002.sec6.u6"));
+                    animate(tamer, anim.idle);
+                    wait(10);
+                    say(kunemon, text("s002.sec6.u7"));
+                    walk_away(kunemon, 1219, 984, looks: 3);
+                    join_city_camera(kunemon, species("Kunemon"), 8, 11, text("s002.sec6.u8"));
+                    return;
+                } else {
+                    say(tamer, text("s002.sec6.u2"));
+                }
+            }
+            text("s002.sec6.m0.o1") => {}
+        }
+        say(kunemon, text("s002.sec6.u9"));
+        animate(kunemon, 28);
+        wait(1s);
+    }
+
+    on step(0) replace {    // section 51
+        if (!eastern_bridge_seen) {
+            walk(tamer, 413, 2200);
+            warp_to(10, 1, 255);
+        }
+        walk(tamer, 413, 2200);
+        warp_to(9, 1, 255);
+        end_script();
+    }
+}

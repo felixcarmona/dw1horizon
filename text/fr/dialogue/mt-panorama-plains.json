@@ -1,0 +1,68 @@
+{
+ "s020.sec5.m0.o0": "Je vais gagner !",
+ "s020.sec5.m0.o1": "Hé, attends",
+ "s020.sec5.u0": [
+  [
+   "Tu veux te battre contre moi ?",
+   "D'accooord !"
+  ]
+ ],
+ "s020.sec5.u1": [
+  [
+   "Bouaaah, j'ai perdu ! Ça",
+   "m'énerve !"
+  ]
+ ],
+ "s020.sec5.u2": [
+  [
+   "Il était plutôt fort..."
+  ]
+ ],
+ "s020.sec5.u3": [
+  [
+   "Toi, t'es sympa. Mamemon vient",
+   "avec toi."
+  ]
+ ],
+ "s020.sec5.u4": [
+  [
+   "Hmm, venir avec nous, c'est un",
+   "peu... Tu pourrais plutôt aller",
+   "en ville ?"
+  ]
+ ],
+ "s020.sec5.u5": [
+  [
+   "D'accooord. Mamemon va en",
+   "ville."
+  ]
+ ],
+ "s020.sec5.u6": "Mamemon a rejoint la ville !",
+ "s020.sec5.u7": [
+  [
+   "Hmm, deviens plus fort et",
+   "reviens."
+  ]
+ ],
+ "s020.sec6.u0": [
+  [
+   "Daaah!"
+  ]
+ ],
+ "s020.sec7.u0": [
+  [
+   "Bwah ha ha !"
+  ]
+ ],
+ "s020.sec8.u0": [
+  [
+   "Noooh!"
+  ]
+ ],
+ "s020.sec81.u0": [
+  [
+   "Est : Forêt natale Ouest :",
+   "Savane des engrenages"
+  ]
+ ]
+}

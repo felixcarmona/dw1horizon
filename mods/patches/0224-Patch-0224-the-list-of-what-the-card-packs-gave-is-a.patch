@@ -1,0 +1,38 @@
+From 464087806b841c7020aa0aa69d907c60da1309b5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 19:51:52 +0000
+Subject: [PATCH] Patch 0224: the list of what the card packs gave is allocated
+ before the counting array, so freeing that array (allocateArray is a stack)
+ leaves ARRAY_SECTION_OFFSET at the list's top, not 136 bytes inside its rows
+ (0223 freed it out of order: right only while nothing allocated during the
+ list). 0 bytes of heap. Tested: 9 packs, ARRAY_SECTION_OFFSET 0xac with the
+ list open (the list and its rows), 0 after it closed
+
+---
+ src/shop/script_menu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index baf1a8a7..ebeac2ee 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -3686,6 +3686,8 @@ static void openPackResults(void)
+ 	int32_t n;
+ 	int32_t fresh;
+ 
++	/* the list first: the arrays are a stack (allocateArray), got is freed above it */
++	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
+ 	got = (uint8_t *)allocateArray(NUM_CARDS * 2);   /* how many came, the copies before */
+ 	for (i = 0; i < NUM_CARDS; i++) {
+ 		got[i] = 0;
+@@ -3702,7 +3704,6 @@ static void openPackResults(void)
+ 		}
+ 	}
+ 
+-	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
+ 	out = ITEM_MENU_LEFT->buf;
+ 	fresh = 0;
+ 	for (r = 0; r < 5; r++) {
+-- 
+2.55.0
+

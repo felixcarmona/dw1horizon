@@ -1,0 +1,17 @@
+{
+  "id": 309,
+  "file": "SHOR01",
+  "tims8": 2,
+  "tims4": 1,
+  "sound_bank": 11,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": "Drowned Shore",
+  "concave": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

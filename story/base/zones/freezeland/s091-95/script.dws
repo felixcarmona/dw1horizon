@@ -1,0 +1,139 @@
+// Readable form of script 91 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 91 {
+    npc garurumon = 5;
+    npc snowagumon1 = 6;
+    npc snowagumon2 = 7;
+    npc hyogamon3 = 8;
+    npc hyogamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 7, 8, 9, 5, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 49, 36);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 59, 55);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 48, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Ice mushrm"), 38, 60);
+        }
+    }
+
+    on talk(snowagumon1) replace {    // section 6
+        say(snowagumon1, text("s091.sec6.u0"));
+        battle();
+        recruit(species("SnowAgumon"));
+    }
+
+    on talk(snowagumon2) replace {    // section 7
+        say(snowagumon2, text("s091.sec7.u0"));
+        battle();
+        recruit(species("SnowAgumon"));
+    }
+
+    on talk(hyogamon3) replace {    // section 8
+        say(hyogamon3, text("s091.sec8.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(hyogamon4) replace {    // section 9
+        say(hyogamon4, text("s091.sec9.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(garurumon) replace {    // section 5
+        if (garurumon_duel_promised) {
+            store_date(date_year);
+            if (garurumon_duel_promised && date_hour >= 15 && date_hour <= 17 && garurumon_promise_days == 1) {
+                say(garurumon, text("s091.sec5.u4"));
+            } else {
+                say(garurumon, text("s091.sec5.u5"));
+            }
+            say(tamer, text("s091.sec5.u6"));
+            face(tamer, partner);
+            await tamer;
+            animate(tamer, 20);
+            show_textbox(text("s091.sec5.u7"));
+            tamerless_battle = true;
+            battle(foes: [garurumon]);
+            tamerless_battle = false;
+            face(tamer, garurumon);
+            face(garurumon, tamer);
+            face(partner, garurumon);
+            say(garurumon, text("s091.sec5.u8"));
+            say(tamer, text("s091.sec5.u9"));
+            say(garurumon, text("s091.sec5.u10"));
+            say(narrator, text("s091.sec5.u11"));
+            animate(tamer, 19);
+            wait(2s);
+            say(garurumon, text("s091.sec5.u12"));
+            walk_away(garurumon, -2000, -100, looks: 6, pause: 10);
+            join_city(garurumon, species("Garurumon"), 8, 11, text("s091.sec5.u13"), prosperity: 2);
+            camera_on(tamer, speed: 10);
+            await camera;
+            goto sec51;
+        }
+        say(garurumon, text("s091.sec5.u0"));
+        battle(foes: [garurumon]);
+        face(tamer, garurumon);
+        face(garurumon, tamer);
+        face(partner, garurumon);
+        say(garurumon, text("s091.sec5.u1"));
+        animate(tamer, 16);
+        engine.no_cancel = true;
+        choice(open) {
+            text("s091.sec5.m0.o0") => {}
+            text("s091.sec5.m0.o1") => {}
+        }
+        say(garurumon, text("s091.sec5.u2"));
+        choice(open) {
+            text("s091.sec5.m1.o0") => {}
+            text("s091.sec5.m1.o1") => {}
+        }
+        animate(tamer, 16);
+        engine.no_cancel = false;
+        say(garurumon, text("s091.sec5.u3"));
+        garurumon_duel_promised = true;
+        store_date(garurumon_promise_days);
+        walk_away(garurumon, -2050, -150, looks: 6, pause: 10);
+        remove(garurumon);
+        glances = 0;
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

@@ -1,0 +1,54 @@
+From 073a3dfdb2d05cbd4c953052e322cbf11944c155 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 07:45:34 +0000
+Subject: [PATCH] Dialogue text: a space advances a fixed 8 px
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+drawString2 cleared 12 px for a space (81 40) but left the advance at
+the previous glyph's width: 12 after a capital and 5 after "," or ".",
+so ", " and ". " looked glued ("tal,señor"). A space now advances 8 px,
+what the original gave after most lowercase letters and a whole cell of
+the 4-pixel grid the glyphs land on (12 in fixed-width mode, as before).
+
+Measured on every line of DG.SCN and MAPHEAD.SCN: the last glyph of the
+longest starts at x=240, below the 244-px draw limit.
+
+---
+ src/main/script_textbox.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 1ab3e95..4a525a8 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -619,6 +619,8 @@ void registerTextbox(boxId, row, rows, doubleBuffer, mode)
+ 	clearTextSubArea(&rect);
+ }
+ 
++#define DRAW_STRING2_SPACE_WIDTH 8 /* MOD: advance of a space (81 40) */
++
+ #if !VERSION_IS(US)
+ int32_t drawString2(uint8_t *str, int16_t x, int16_t y)
+ #else
+@@ -743,6 +745,16 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			if (glyph == 0x4081) {
+ 				setRECT(&rect, x + pos, y, 0xc, 0xc);
+ 				clearTextSubArea(&rect);
++#if VERSION_IS(US)
++				/*
++				 * MOD: the original left adv at the previous glyph's
++				 * width (12 after a capital, 5 after ", " and ". ",
++				 * which looked glued). A fixed 8 px is what it gave
++				 * after most lowercase letters; no original line then
++				 * starts a glyph past TEXT_DRAW_LIMIT (docs/mods/font.md).
++				 */
++				adv = DRAW_STRING2_IS_FIXED_WIDTH != 0 ? 0xc : DRAW_STRING2_SPACE_WIDTH;
++#endif
+ 			} else {
+ #if !VERSION_IS(US)
+ 				drawGlyph(glyph, x + pos, y);
+-- 
+2.53.0
+

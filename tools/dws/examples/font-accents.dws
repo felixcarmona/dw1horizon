@@ -1,0 +1,19 @@
+// Spanish and Catalan characters in dialogue (mod executable's font, docs/mods/font.md).
+// python3 tools/dws.py disc tools/dws/examples/font-accents.dws --name font --exe mods
+// With the original executable (no --exe mods) the accents are stripped.
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+    on talk(jijimon) replace {
+        say(jijimon, text("font-accents.t1"));
+        say(jijimon, text("font-accents.t2"));
+        choice {
+            text("font-accents.t3") => {
+                say(jijimon, text("font-accents.t4"));
+            }
+            text("font-accents.t5") => {
+                say(jijimon, text("font-accents.t6"));
+            }
+        }
+        return;
+    }
+}

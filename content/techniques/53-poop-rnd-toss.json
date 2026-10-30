@@ -1,0 +1,17 @@
+{
+  "id": 53,
+  "name": "Poop Rnd Toss",
+  "element": "filth",
+  "power": 75,
+  "mpCost": 40,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 33,
+  "status": 1,
+  "statusChance": 9,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [21, 12, 7]
+}

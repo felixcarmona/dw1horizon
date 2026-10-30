@@ -1,0 +1,115 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M195PMAM",
+ "type": 270,
+ "name": "PrinceMamemon",
+ "source": {
+  "type": 53,
+  "mmd": "extracted/CHDAT/MMD1/NANI.MMD"
+ },
+ "map": {
+  "1": 4,
+  "2": 1,
+  "4": 5,
+  "7": 6,
+  "8": 8,
+  "9": 9,
+  "12": 10,
+  "13": 13,
+  "14": 14,
+  "15": 15,
+  "16": 17,
+  "17": 18,
+  "18": 19,
+  "23": 3
+ },
+ "hips": [
+  1,
+  1,
+  1.313
+ ],
+ "root_scale": 1.313,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x38": {
+   "anim": "G0",
+   "speed": 0.89,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  },
+  "0x2e": {
+   "anim": "H0",
+   "speed": 1.23,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  },
+  "0x30": {
+   "anim": "F0",
+   "speed": 1.26,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

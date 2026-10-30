@@ -1,0 +1,6 @@
+{
+  "_comment": "The game clock. dayRealSeconds: how many real seconds one game day (24 game hours) lasts, whatever the screen's frame rate. 1440 is the original (a game minute per real second); a longer day slows hunger, sleep, poop, evolution hours and every other thing that runs on game time, a shorter one speeds them up (from 144 s). The care rules and every period elsewhere are written in game time, so they keep their meaning when this changes. Left out: game time does not run.",
+  "clock": {
+    "dayRealSeconds": 1440
+  }
+}

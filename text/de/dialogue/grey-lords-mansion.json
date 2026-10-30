@@ -1,0 +1,863 @@
+{
+ "s050.sec5.u0": [
+  [
+   "Ich muss diesen Ort bewachen."
+  ]
+ ],
+ "s050.sec6.u0": [
+  [
+   "Wie lauteten noch mal meine",
+   "Befehle?"
+  ]
+ ],
+ "s050.sec51.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s050.sec51.u1": [
+  [
+   "Aaaaaah! ?"
+  ]
+ ],
+ "s050.sec51.u2": [
+  [
+   "Ich komme!"
+  ]
+ ],
+ "s051.sec57.u0": [
+  [
+   "...! Ich spüre die Mordlust von",
+   "jemandem..."
+  ]
+ ],
+ "s051.sec57.u1": [
+  [
+   "Hehe... haha... Du bist also",
+   "doch gekommen!"
+  ]
+ ],
+ "s051.sec57.u2": [
+  [
+   "Wer ist da!?"
+  ]
+ ],
+ "s051.sec57.u3": [
+  [
+   "Ich bin Devimon! Ein gefallener",
+   "Engel, der Macht der",
+   "Finsternis verfallen. Hehehe..."
+  ]
+ ],
+ "s051.sec57.u4": [
+  [
+   "Du scheinst etwas zu wissen!"
+  ]
+ ],
+ "s051.sec57.u5": [
+  [
+   "Myotismon ist irgendwo im",
+   "Herrenhaus. Wahrscheinlich",
+   "sogar noch am Leben."
+  ]
+ ],
+ "s051.sec57.u6": [
+  [
+   "Das ist also dein Werk!"
+  ]
+ ],
+ "s051.sec57.u7": [
+  [
+   "Wer weiß? Aber ich bin dein",
+   "Feind. Das ist sicher."
+  ]
+ ],
+ "s051.sec57.u8": [
+  [
+   "He, du entkommst mir nicht!"
+  ]
+ ],
+ "s051.sec57.u9": [
+  [
+   "Hehehe... Hahaha!"
+  ]
+ ],
+ "s051.sec57.u10": [
+  [
+   "Oh, Nein!"
+  ]
+ ],
+ "s051.sec57.u11": [
+  [
+   "Hehe... Grüß Myotismon von mir."
+  ]
+ ],
+ "s051.sec57.u12": [
+  [
+   "Er ist entkommen... Mist! Was",
+   "für ein Widerling."
+  ]
+ ],
+ "s051.sec57.u13": [
+  [
+   "Wow, dieses Herrenhaus scheint",
+   "riesig."
+  ]
+ ],
+ "s051.sec57.u14": [
+  [
+   "Ist jemand zu Haaause?"
+  ]
+ ],
+ "s051.sec57.u15": [
+  [
+   "Niemand da? Oder ist es hier",
+   "zu groß, um mich zu hören?"
+  ]
+ ],
+ "s051.sec57.u16": [
+  [
+   "Na ja. Gut, auf",
+   "Erkundungstour!"
+  ]
+ ],
+ "s051.sec81.u0": [
+  [
+   "Es öffnet sich nicht... Eine",
+   "geheimnisvolle Kraft hat sie",
+   "versiegelt."
+  ]
+ ],
+ "s051.sec82.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s051.sec82.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s051.sec84.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s051.sec84.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s051.sec85.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s051.sec85.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s052.sec81.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s052.sec81.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s052.sec82.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s052.sec82.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s052.sec83.u0": [
+  [
+   "Es geht nicht auf... Es ist",
+   "verschlossen. Und es gibt kein",
+   "Schlüsselloch!"
+  ]
+ ],
+ "s054.sec5.u0": [
+  [
+   "Du hast uns oft geholfen. Lass",
+   "mich die Früchte meiner",
+   "Forschung mit dir teilen. Wenn"
+  ],
+  [
+   "MetalGreymon im Kampf oder an",
+   "einer Krankheit stirbt, kann es",
+   "manchmal zu SkullGreymon"
+  ],
+  [
+   "werden. Auch Bakemon, Devimon",
+   "und Phoenixmon können so",
+   "entstehen... Aus welchen"
+  ],
+  [
+   "Formen, weiß ich nicht. Der",
+   "Digitationsbaum zeigt diese",
+   "Wege nicht. Merk es dir also"
+  ],
+  [
+   "gut."
+  ]
+ ],
+ "s054.sec5.u1": [
+  [
+   "Seit meine Leute in der Arena",
+   "kämpfen, werden sie wieder sie",
+   "selbst. Es scheint ihnen sehr"
+  ],
+  [
+   "gutzutun. Und mir verschafft",
+   "ein Kampf zwischen meinen",
+   "Studien auch eine angenehme"
+  ],
+  [
+   "Abwechslung."
+  ]
+ ],
+ "s054.sec5.u2": [
+  [
+   "Woran forscht er eigentlich...?"
+  ]
+ ],
+ "s054.sec5.u3": [
+  [
+   "Myotismon, in der Stadt hat",
+   "eine Arena eröffnet!"
+  ]
+ ],
+ "s054.sec5.u4": [
+  [
+   "Hm. Meinst du, meine Leute",
+   "könnten dort nützlich sein?"
+  ]
+ ],
+ "s054.sec5.u5": [
+  [
+   "Und ob! Lass sie sich",
+   "austoben!"
+  ]
+ ],
+ "s054.sec5.u6": [
+  [
+   "Meinen Leuten geht es immer",
+   "schlechter... Vielleicht ist es",
+   "nur eine Frage der Zeit, bis"
+  ],
+  [
+   "sie dieses Anwesen verlassen."
+  ]
+ ],
+ "s054.sec60.u0": [
+  [
+   "Mampf, mampf..."
+  ]
+ ],
+ "s054.sec60.u1": [
+  [
+   "Fein..."
+  ]
+ ],
+ "s054.sec60.u2": [
+  [
+   "Vielleicht hörst du dir an, was",
+   "ich zu sagen habe."
+  ]
+ ],
+ "s054.sec60.u3": [
+  [
+   "Kau, kau..."
+  ]
+ ],
+ "s054.sec60.u4": [
+  [
+   "Meine Leute tun in letzter",
+   "Zeit nicht mehr, was ich sage.",
+   "Sie rebellieren nicht... sie"
+  ],
+  [
+   "scheinen ihre Befehle einfach",
+   "völlig zu vergessen. Manchmal",
+   "verstehen sie sie nicht einmal."
+  ],
+  [
+   "Eigentlich sollen sie mir meine",
+   "Mahlzeiten bringen, aber..."
+  ]
+ ],
+ "s054.sec60.u5": [
+  [
+   "Glu, Glu. . . ."
+  ]
+ ],
+ "s054.sec60.u6": [
+  [
+   "Während ich in meine Forschung",
+   "vertieft war, kam kein Essen...",
+   "Und ich war so vertieft, dass"
+  ],
+  [
+   "ich meinen Hunger vergaß. So",
+   "ist das passiert."
+  ]
+ ],
+ "s054.sec60.u7": [
+  [
+   "...Das ist aber VIEL zu",
+   "vertieft."
+  ]
+ ],
+ "s054.sec60.u8": [
+  [
+   "Oh, wie peinlich."
+  ]
+ ],
+ "s054.sec60.u9": [
+  [
+   "Hier geschehen also dieselben",
+   "seltsamen Dinge wie draußen."
+  ]
+ ],
+ "s054.sec60.u10": [
+  [
+   "Oh? Mit den Unruhen auf der",
+   "Insel meinst du also, dass alle",
+   "so werden wie meine Leute?"
+  ]
+ ],
+ "s054.sec60.u11": [
+  [
+   "Ja. Jede Art bleibt unter sich",
+   "und verliert ihre Erinnerungen.",
+   "Noch nicht alle, aber wenn das"
+  ],
+  [
+   "so weitergeht..."
+  ]
+ ],
+ "s054.sec60.u12": [
+  [
+   "Könnte jemand dahinterstecken?",
+   "Hm... Und wenn ja, zu welchem",
+   "Zweck...?"
+  ]
+ ],
+ "s054.sec60.u13": [
+  [
+   "Mmm. . ."
+  ]
+ ],
+ "s054.sec60.u14": [
+  [
+   "Was kann ich für die Insel",
+   "tun?"
+  ]
+ ],
+ "s054.sec60.u15": [
+  [
+   "Wir bauen eine Stadt, um die",
+   "Herzen der Digimon zu",
+   "vereinen. Darum bereisen wir"
+  ],
+  [
+   "die Insel: um Freunde zu",
+   "finden."
+  ]
+ ],
+ "s054.sec60.u16": [
+  [
+   "Verstehe. Aber da gibt es ein",
+   "Problem. Außer mir können",
+   "meine Leute kaum etwas anderes"
+  ],
+  [
+   "als kämpfen. Doch ich kann sie",
+   "nicht einfach zurücklassen..."
+  ]
+ ],
+ "s054.sec60.u17": [
+  [
+   "Ich sehe..."
+  ]
+ ],
+ "s054.sec60.u18": [
+  [
+   "Ich gebe dir zu gegebener Zeit",
+   "eine Antwort. Ich habe hier",
+   "noch Arbeit. Es tut mir"
+  ],
+  [
+   "wirklich leid..."
+  ]
+ ],
+ "s054.sec60.u19": [
+  [
+   "Gut, dann komme ich wieder.",
+   "Und iss ordentlich!"
+  ]
+ ],
+ "s054.sec60.u20": [
+  [
+   "Warum kämpfst du dann nicht in",
+   "der Arena?"
+  ]
+ ],
+ "s054.sec60.u21": [
+  [
+   "Oh... die Arena? Das ist",
+   "interessant. Genau das",
+   "Richtige, um meine Leute in"
+  ],
+  [
+   "Form zu bringen. Auch ich",
+   "möchte mir ab und zu die Beine",
+   "vertreten."
+  ]
+ ],
+ "s054.sec60.u22": [
+  [
+   "Dann schließt du dich uns an?!"
+  ]
+ ],
+ "s054.sec60.u23": [
+  [
+   "Ja. Ich muss hier aber noch",
+   "etwas Forschung abschließen.",
+   "Also komme ich zwischen meinen"
+  ],
+  [
+   "Studien in die Stadt. Ich",
+   "freue mich darauf."
+  ]
+ ],
+ "s054.sec81.u0": [
+  [
+   "Oh!"
+  ]
+ ],
+ "s054.sec81.u1": [
+  [
+   "Ja, ein Schlüssel! Vielleicht",
+   "öffnet er die Türen, die nicht",
+   "aufgingen."
+  ]
+ ],
+ "s054.sec81.u2": [
+  [
+   "{color 6}Villaschlüssel{color 1} erhalten!"
+  ]
+ ],
+ "s054.sec81.u3": [
+  [
+   "Hoppla, ich muss etwas",
+   "wegwerfen."
+  ]
+ ],
+ "s054.sec82.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s054.sec82.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s054.sec83.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s054.sec83.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s054.sec254.u0": [
+  [
+   ". . . Myotismon ist nicht hier."
+  ]
+ ],
+ "s055.sec5.u0": [
+  [
+   "Ich werde dich kochen!"
+  ]
+ ],
+ "s055.sec6.u0": [
+  [
+   "Ich werde dich kochen!"
+  ]
+ ],
+ "s055.sec7.u0": [
+  [
+   "Ich werde dich kochen!"
+  ]
+ ],
+ "s055.sec83.u0": [
+  [
+   "Mal sehen, auf dem Zettel",
+   "stand..."
+  ]
+ ],
+ "s055.sec83.u1": [
+  [
+   "«Geh dorthin zurück, wo du dem",
+   "Narren Punkte abgenommen",
+   "hast.»"
+  ]
+ ],
+ "s055.sec83.u2": [
+  [
+   "{color 6}Kühlschrank-S.{color 1} benutzt!"
+  ]
+ ],
+ "s055.sec83.u3": [
+  [
+   "Huh? ist sie nicht hier? Fehlt",
+   "es?"
+  ]
+ ],
+ "s055.sec83.u4": [
+  [
+   "Oh? Da klebt ein Zettel dran..."
+  ]
+ ],
+ "s055.sec83.u5": [
+  [
+   "«Geh dorthin zurück, wo du dem",
+   "Narren Punkte abgenommen",
+   "hast.»"
+  ]
+ ],
+ "s055.sec83.u6": [
+  [
+   "Hm, dieser Zettel ist vorerst",
+   "mein einziger Anhaltspunkt. Hm."
+  ]
+ ],
+ "s055.sec83.u7": [
+  [
+   "Oh, ein Kühlschrank."
+  ]
+ ],
+ "s055.sec83.u8": [
+  [
+   "Uff, er ist abgeschlossen. Wer",
+   "schließt denn einen Kühlschrank",
+   "ab?"
+  ]
+ ],
+ "s056.sec53.u0": [
+  [
+   "Au, au... Das hat gesessen!"
+  ]
+ ],
+ "s056.sec81.u0": [
+  [
+   "{color 6}Villaschlüssel{color 1} benutzt!"
+  ]
+ ],
+ "s056.sec81.u1": [
+  [
+   "Es öffnet sich nicht... Es ist",
+   "verschlossen."
+  ]
+ ],
+ "s057.sec5.u0": [
+  [
+   "Meister...? Nein, du bist es",
+   "nicht!"
+  ]
+ ],
+ "s058.sec5.u0": [
+  [
+   "Ist das Essen noch nicht",
+   "feeertig?"
+  ]
+ ],
+ "s060.sec82.u0": [
+  [
+   "Aha, hier ist es!"
+  ]
+ ],
+ "s061.sec52.u0": [
+  [
+   "Au, au... Geht's dir gut,",
+   "{color 10}{partner}{color 1}?"
+  ]
+ ],
+ "s061.sec52.u1": [
+  [
+   "Mm? Wo sind wir? . . ? ?"
+  ]
+ ],
+ "s061.sec52.u2": [
+  [
+   "Es sieht so aus, als ob wir",
+   "einen Raum betreten hätten, in",
+   "dem wir noch nie waren."
+  ]
+ ],
+ "s061.sec52.u3": [
+  [
+   "Ja, perfekte Landung!"
+  ]
+ ],
+ "s061.sec82.u0": [
+  [
+   "Hm, ist das abgeschlossen?"
+  ]
+ ],
+ "s061.sec82.u1": [
+  [
+   "Geht sie auf, wenn ich diesen",
+   "Knauf drehe?"
+  ]
+ ],
+ "s061.sec82.u2": [
+  [
+   "Okay, Es ist offen."
+  ]
+ ],
+ "s062.sec81.m0.o0": "Nehmen",
+ "s062.sec81.m0.o1": "Verdächtig. Liegen lassen",
+ "s062.sec81.u0": [
+  [
+   "Was ist das alles? Gibt es ein",
+   "Buch, das ich lesen kann...?"
+  ]
+ ],
+ "s062.sec81.u1": [
+  [
+   "Nein, kein einziges. Hm, aber",
+   "das eine Buch hat einen sehr",
+   "edlen Einband!"
+  ]
+ ],
+ "s062.sec81.u2": [
+  [
+   "Du hast das edle Buch",
+   "berührt."
+  ]
+ ],
+ "s062.sec81.u3": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s062.sec81.u4": [
+  [
+   "Aaaaaah! ?"
+  ]
+ ],
+ "s062.sec81.u5": [
+  [
+   "Das könnte eine Falle sein...",
+   "Lieber nicht."
+  ]
+ ],
+ "s183.sec60.u0": [
+  [
+   "Mampf, mampf..."
+  ]
+ ],
+ "s183.sec60.u1": [
+  [
+   "Fein..."
+  ]
+ ],
+ "s183.sec60.u2": [
+  [
+   "Vielleicht hörst du dir an, was",
+   "ich zu sagen habe."
+  ]
+ ],
+ "s183.sec60.u3": [
+  [
+   "Kau, kau..."
+  ]
+ ],
+ "s183.sec60.u4": [
+  [
+   "Meine Leute tun in letzter",
+   "Zeit nicht mehr, was ich sage.",
+   "Sie rebellieren nicht... sie"
+  ],
+  [
+   "scheinen ihre Befehle einfach",
+   "völlig zu vergessen. Manchmal",
+   "verstehen sie sie nicht einmal."
+  ],
+  [
+   "Eigentlich sollen sie mir meine",
+   "Mahlzeiten bringen, aber..."
+  ]
+ ],
+ "s183.sec60.u5": [
+  [
+   "Glu, Glu. . . ."
+  ]
+ ],
+ "s183.sec60.u6": [
+  [
+   "Während ich in meine Forschung",
+   "vertieft war, kam kein Essen...",
+   "Und ich war so vertieft, dass"
+  ],
+  [
+   "ich meinen Hunger vergaß. So",
+   "ist das passiert."
+  ]
+ ],
+ "s183.sec60.u7": [
+  [
+   "...Das ist aber VIEL zu",
+   "vertieft."
+  ]
+ ],
+ "s183.sec60.u8": [
+  [
+   "Oh, wie peinlich."
+  ]
+ ],
+ "s183.sec60.u9": [
+  [
+   "Hier geschehen also dieselben",
+   "seltsamen Dinge wie draußen."
+  ]
+ ],
+ "s183.sec60.u10": [
+  [
+   "Oh? Mit den Unruhen auf der",
+   "Insel meinst du also, dass alle",
+   "so werden wie meine Leute?"
+  ]
+ ],
+ "s183.sec60.u11": [
+  [
+   "Ja. Jede Art bleibt unter sich",
+   "und verliert ihre Erinnerungen.",
+   "Noch nicht alle, aber wenn das"
+  ],
+  [
+   "so weitergeht..."
+  ]
+ ],
+ "s183.sec60.u12": [
+  [
+   "Könnte jemand dahinterstecken?",
+   "Hm... Und wenn ja, zu welchem",
+   "Zweck...?"
+  ]
+ ],
+ "s183.sec60.u13": [
+  [
+   "Mmm. . ."
+  ]
+ ],
+ "s183.sec60.u14": [
+  [
+   "Was kann ich für die Insel",
+   "tun?"
+  ]
+ ],
+ "s183.sec60.u15": [
+  [
+   "Wir bauen eine Stadt, um die",
+   "Herzen der Digimon zu",
+   "vereinen. Darum bereisen wir"
+  ],
+  [
+   "die Insel: um Freunde zu",
+   "finden."
+  ]
+ ],
+ "s183.sec60.u16": [
+  [
+   "Verstehe. Aber da gibt es ein",
+   "Problem. Außer mir können",
+   "meine Leute kaum etwas anderes"
+  ],
+  [
+   "als kämpfen."
+  ]
+ ],
+ "s183.sec60.u17": [
+  [
+   "Doch ich kann sie nicht einfach",
+   "zurücklassen..."
+  ]
+ ],
+ "s183.sec60.u18": [
+  [
+   "Ich sehe..."
+  ]
+ ],
+ "s183.sec60.u19": [
+  [
+   "Ich gebe dir zu gegebener Zeit",
+   "eine Antwort. Ich habe hier",
+   "noch Arbeit. Es tut mir"
+  ],
+  [
+   "wirklich leid..."
+  ]
+ ],
+ "s183.sec60.u20": [
+  [
+   "Gut, dann komme ich wieder.",
+   "Und iss ordentlich!"
+  ]
+ ],
+ "s183.sec60.u21": [
+  [
+   "Warum kämpfst du dann nicht in",
+   "der Arena?"
+  ]
+ ],
+ "s183.sec60.u22": [
+  [
+   "Oh... die Arena? Das ist",
+   "interessant. Genau das",
+   "Richtige, um meine Leute in"
+  ],
+  [
+   "Form zu bringen. Auch ich",
+   "möchte mir ab und zu die Beine",
+   "vertreten."
+  ]
+ ],
+ "s183.sec60.u23": [
+  [
+   "Dann schließt du dich uns an?!"
+  ]
+ ],
+ "s183.sec60.u24": [
+  [
+   "Ja. Ich muss hier aber noch",
+   "etwas Forschung abschließen.",
+   "Also komme ich zwischen meinen"
+  ],
+  [
+   "Studien in die Stadt. Ich",
+   "freue mich darauf."
+  ]
+ ]
+}

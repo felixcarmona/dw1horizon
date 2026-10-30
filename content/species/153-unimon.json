@@ -1,0 +1,33 @@
+{
+  "id": 153,
+  "name": "Unimon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["air", "battle", null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 0},
+  "effects_like": 33,
+  "model": {"name": "EUNI", "bones": 27, "radius": 180, "height": 400},
+  "voice": 29,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 10, "def": 100, "speed": 100, "brain": 100, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

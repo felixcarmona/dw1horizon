@@ -1,0 +1,544 @@
+From e2d03ee0d28261f3187ff21eb09cb237b6da3e75 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 09:07:13 +0000
+Subject: [PATCH] Item effects as data: what food, chips, restore items,
+ medicines and the Double Floppy do is the item's effect block
+ (content/items/*.json) written to MOD_ITEM_FX by tools/balance.py; the
+ favourite-food bonus, the training boost unit, the sickness and medicine dice
+ and the clamps of the partner's states are MOD_CARE slots
+
+---
+ include/dw/level.h |  38 ++++-
+ src/main/item.c    | 341 ++++++++++-----------------------------------
+ 2 files changed, 110 insertions(+), 269 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 8cd569ff..15be7f24 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -114,7 +114,7 @@ void modTamerLevelEvent(int32_t slot, int32_t amount);
+  * A period or a threshold left out (-1) switches its rule off; an amount left out counts as 0. Periods are logic frames: 20 = one game minute,
+  * 1200 = one game hour. The direction of each amount (a loss, a gain) is its name and stays in the code.
+  */
+-#define MOD_CARE_SIZE		137
++#define MOD_CARE_SIZE		143
+ #define MOD_CARE_SLEEP_TIRED_PERIOD	0
+ #define MOD_CARE_SLEEP_TIRED_PERCENT	1
+ #define MOD_CARE_SLEEP_SLEEPY_AT	2
+@@ -252,7 +252,43 @@ void modTamerLevelEvent(int32_t slot, int32_t amount);
+ #define MOD_CARE_FLED_TIRED	134
+ #define MOD_CARE_WON_HAPPY	135
+ #define MOD_CARE_BATTLE_TIME	136
++#define MOD_CARE_FOOD_FAV_PERCENT	137
++#define MOD_CARE_FOOD_FAV_HAPPY	138
++#define MOD_CARE_FOOD_BOOST_UNIT	139
++#define MOD_CARE_FOOD_SICK_DIE	140
++#define MOD_CARE_MEDICINE_INJURY_DIE	141
++#define MOD_CARE_MEDICINE_SICK_DIE	142
+ extern int16_t MOD_CARE[MOD_CARE_SIZE];
++/*
++ * MOD (item effects as data): what an item does when it is used, MOD_ITEM_FX[row][field]: field 0 the item id (-1 = the row is unused), then the fields below
++ * (a field left out of the item's "effect" block is 0). Written by tools/balance.py from content/items/*.json. itemFx answers the row of an item or NULL (no effect).
++ */
++#define MOD_ITEM_FX_ROWS	64
++#define MOD_FX_WIDTH		22
++#define MOD_FX_ENERGY	1
++#define MOD_FX_HAPPINESS	2
++#define MOD_FX_WEIGHT	3
++#define MOD_FX_TIREDNESS	4
++#define MOD_FX_DISCIPLINE	5
++#define MOD_FX_LIFETIME	6
++#define MOD_FX_ADD_HP	7
++#define MOD_FX_ADD_MP	8
++#define MOD_FX_HEAL_HP	9
++#define MOD_FX_HEAL_MP	10
++#define MOD_FX_ADD_OFF	11
++#define MOD_FX_ADD_DEF	12
++#define MOD_FX_ADD_SPEED	13
++#define MOD_FX_ADD_BRAIN	14
++#define MOD_FX_BOOST_FLAG	15
++#define MOD_FX_BOOST_VALUE	16
++#define MOD_FX_BOOST_HOURS	17
++#define MOD_FX_SICK_CHANCE	18
++#define MOD_FX_HEAL_HP_DIV	19
++#define MOD_FX_CURE_INJURY	20
++#define MOD_FX_CURE_SICK	21
++extern int16_t MOD_ITEM_FX[MOD_ITEM_FX_ROWS][MOD_FX_WIDTH];
++const int16_t *itemFx(int32_t itemId);
++#define MOD_FX(row, field)	((row) ? (row)[field] : 0)
+ /* the value of a care rule for the partner's species (its own override or the global one), whether it exists (>= 0), and as an amount (a missing one is 0) */
+ int32_t careGet(int32_t slot);
+ int32_t careHas(int32_t slot);
+diff --git a/src/main/item.c b/src/main/item.c
+index aa464815..43072ed9 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2063,6 +2063,20 @@ ItemFunction ITEM_FUNCTIONS[NUM_ITEMS] = {
+ // clang-format on
+ 
+ int16_t HEALING_VALUES[4] = { 500, 1500, 5000, 9999 };
++/* MOD (item effects as data): written by tools/balance.py from the items' "effect" blocks (content/items/*.json); id -1 = unused */
++int16_t MOD_ITEM_FX[MOD_ITEM_FX_ROWS][MOD_FX_WIDTH] = { [0 ... MOD_ITEM_FX_ROWS - 1] = { [0 ... MOD_FX_WIDTH - 1] = -1 } };
++
++const int16_t *itemFx(int32_t itemId)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_ITEM_FX_ROWS; i++) {
++		if (MOD_ITEM_FX[i][0] == itemId) {
++			return MOD_ITEM_FX[i];
++		}
++	}
++	return NULL;
++}
+ uint8_t HEAL_EFFECT_VARIANT[4] = { 0, 0, 1, 1 };
+ #if VERSION_IS(US)
+ char NAME_FORMAT[] = "%s";
+@@ -2221,13 +2235,13 @@ void handleStatusItems(int32_t itemId)
+ 			COMBAT_DATA_PTR->fighter[0].flags |= FIGHTER_FLAG_PROTECTED;
+ 			break;
+ 		case 0xd:
+-			if (handleMedicineHealing(3, 2) == 1) {
++			if (handleMedicineHealing(MOD_FX(itemFx(0xd), MOD_FX_CURE_INJURY), MOD_FX(itemFx(0xd), MOD_FX_CURE_SICK)) == 1) {
+ 				addHealingParticleEffect(ENTITY_TABLE[1], 0);
+ 				return;
+ 			}
+ 			break;
+ 		case 0xe:
+-			if (handleMedicineHealing(3, 10) == 1) {
++			if (handleMedicineHealing(MOD_FX(itemFx(0xe), MOD_FX_CURE_INJURY), MOD_FX(itemFx(0xe), MOD_FX_CURE_SICK)) == 1) {
+ 				addHealingParticleEffect(ENTITY_TABLE[1], 0);
+ 			}
+ 		}
+@@ -2243,6 +2257,7 @@ void handleChips(int16_t chipId)
+ 	int16_t brain;
+ 	int16_t hp;
+ 	int16_t mp;
++	const int16_t *fx;
+ 
+ 	off = def = speed = brain = hp = mp = lifetime = 0;
+ 	switch (chipId) {
+@@ -2252,42 +2267,20 @@ void handleChips(int16_t chipId)
+ 			callScriptSection(0, 0x4dd, 0);
+ 		}
+ 		break;
+-	case 0x17:
+-		off = 0x32;
+-		break;
+-	case 0x18:
+-		def = 0x32;
+-		break;
+-	case 0x19:
+-		brain = 0x32;
+-		break;
+-	case 0x1a:
+-		speed = 0x32;
+-		break;
+-	case 0x1b:
+-		hp = 500;
+-		break;
+-	case 0x1c:
+-		mp = 500;
+-		break;
+-	case 0x1d:
+-		off = 100;
+-		brain = 100;
+-		lifetime = -24;
+-		break;
+-	case 0x1e:
+-		def = 100;
+-		speed = 100;
+-		lifetime = -24;
+-		break;
+-	case 0x1f:
+-		hp = 1000;
+-		mp = 1000;
+-		lifetime = -24;
+-		break;
+ 	case 0x20:
+ 		handlePortaPotty();
+ 		return;
++	default:
++		/* MOD (item effects as data): a chip's stats and lifetime are its row of MOD_ITEM_FX */
++		fx = itemFx(chipId);
++		off = MOD_FX(fx, MOD_FX_ADD_OFF);
++		def = MOD_FX(fx, MOD_FX_ADD_DEF);
++		speed = MOD_FX(fx, MOD_FX_ADD_SPEED);
++		brain = MOD_FX(fx, MOD_FX_ADD_BRAIN);
++		hp = MOD_FX(fx, MOD_FX_ADD_HP);
++		mp = MOD_FX(fx, MOD_FX_ADD_MP);
++		lifetime = MOD_FX(fx, MOD_FX_LIFETIME);
++		break;
+ 	}
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.hp, hp, HPMP_CAP); /* MOD (caps): was 9999 */
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.mp, mp, HPMP_CAP);
+@@ -2296,7 +2289,7 @@ void handleChips(int16_t chipId)
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.speed, speed, STAT_CAP);
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.base.brain, brain, STAT_CAP);
+ 	modifyLifetime(lifetime);
+-	if ((0x1c < chipId) && (chipId < 0x20)) {
++	if (lifetime < 0) { /* a chip that costs lifetime */
+ 		modTamerLevelEvent(MOD_TL_CHIP_CHANCE, -1); /* MOD (tamer level as data) */
+ 	}
+ }
+@@ -2306,6 +2299,7 @@ void handleRestore(int16_t type)
+ 	CombatData *combat = COMBAT_DATA_PTR;
+ 	uint16_t *flags = &combat->fighter[0].flags;
+ 	int16_t amount;
++	const int16_t *fx;
+ 
+ 	if (GAME_STATE == 1) {
+ 		BTL_removeDeathCountdown();
+@@ -2315,19 +2309,15 @@ void handleRestore(int16_t type)
+ 		startAnimation(ENTITY_TABLE[1], 0x2c);
+ 	}
+ 
+-	switch (type) {
+-	case 0xb:
+-		amount = PARTNER_ENTITY.digimonEntity.stats.base.hp / 2;
+-		break;
+-	case 0xc:
+-		if (GAME_STATE == 1) {
+-			BTL_healStatusEffect(0);
+-		}
++	if (type == 0xc && GAME_STATE == 1) {
++		BTL_healStatusEffect(0);
++	}
+ 
+-		amount = 0x270f;
+-		/* MOD (caps): all of a bar longer than 9999 */
+-		amount = CAPS_FULL_HEAL(amount, PARTNER_ENTITY.digimonEntity.stats.base.hp);
+-		break;
++	/* MOD (item effects as data): a flat amount (MOD (caps): the 9999 one fills a bar longer than 9999) and/or a part of the maximum HP, from the item's row */
++	fx = itemFx(type);
++	amount = CAPS_FULL_HEAL(MOD_FX(fx, MOD_FX_HEAL_HP), PARTNER_ENTITY.digimonEntity.stats.base.hp);
++	if (MOD_FX(fx, MOD_FX_HEAL_HP_DIV) > 0) {
++		amount += PARTNER_ENTITY.digimonEntity.stats.base.hp / MOD_FX(fx, MOD_FX_HEAL_HP_DIV);
+ 	}
+ 
+ 	addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP,
+@@ -2342,13 +2332,14 @@ void handleRestore(int16_t type)
+ void handleDoubleFloppy(int32_t itemId)
+ {
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentHP != 0) {
++		/* MOD (item effects as data): the item's row of MOD_ITEM_FX */
+ 		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentHP,
+-		             0x5dc, PARTNER_ENTITY.digimonEntity.stats.base.hp);
++		             MOD_FX(itemFx(itemId), MOD_FX_HEAL_HP), PARTNER_ENTITY.digimonEntity.stats.base.hp);
+ 		addWithLimit(&PARTNER_ENTITY.digimonEntity.stats.current.currentMP,
+-		             0x5dc, PARTNER_ENTITY.digimonEntity.stats.base.mp);
++		             MOD_FX(itemFx(itemId), MOD_FX_HEAL_MP), PARTNER_ENTITY.digimonEntity.stats.base.mp);
+ 		if (GAME_STATE == 1) {
+-			addEntityText(ENTITY_TABLE[1], 0, 0xb, 0x5dc, 1);
+-			addEntityText(ENTITY_TABLE[1], 0, 0xb, 0x5dc, 2);
++			addEntityText(ENTITY_TABLE[1], 0, 0xb, MOD_FX(itemFx(itemId), MOD_FX_HEAL_HP), 1);
++			addEntityText(ENTITY_TABLE[1], 0, 0xb, MOD_FX(itemFx(itemId), MOD_FX_HEAL_MP), 2);
+ 		}
+ 		addHealingParticleEffect(ENTITY_TABLE[1], 0);
+ 	}
+@@ -2681,6 +2672,7 @@ void removeTamerItem(void)
+ 
+ void handleFood(int16_t itemId)
+ {
++	const int16_t *fx;
+ 	int16_t energy;
+ 	int16_t happiness;
+ 	int16_t weight;
+@@ -2700,207 +2692,30 @@ void handleFood(int16_t itemId)
+ 	int16_t trainDuration;
+ 	int16_t sicknessChance;
+ 
+-	energy = tiredness = happiness = discipline = weight = lifetime = 0;
+-	addedHP = addedMP = healedHP = healedMP = addedOffense = addedDefense = addedSpeed = addedBrain = 0;
+-	trainFlag = trainValue = trainDuration = sicknessChance = 0;
+-
+-	switch (itemId) {
+-	case 0x26:
+-		energy = 12;
+-		weight = 1;
+-		break;
+-	case 0x27:
+-		energy = 24;
+-		weight = 2;
+-		break;
+-	case 0x28:
+-		energy = 35;
+-		tiredness = 5;
+-		happiness = 3;
+-		weight = 3;
+-		break;
+-	case 0x29:
+-		energy = 10;
+-		trainFlag = 0x29;
+-		trainValue = 12;
+-		trainDuration = 6;
+-		weight = -2;
+-		break;
+-	case 0x2a:
+-		energy = 15;
+-		trainFlag = 0x16;
+-		trainValue = 12;
+-		trainDuration = 6;
+-		weight = 3;
+-		break;
+-	case 0x2b:
+-		energy = 9;
+-		tiredness = 50;
+-		weight = 1;
+-		break;
+-	case 0x2c:
+-		energy = 12;
+-		weight = 1;
+-		break;
+-	case 0x2d:
+-		energy = 19;
+-		discipline = 50;
+-		weight = 2;
+-		break;
+-	case 0x2e:
+-		energy = 38;
+-		addedOffense = 10;
+-		addedDefense = 10;
+-		addedSpeed = 10;
+-		addedBrain = 10;
+-		addedHP = 100;
+-		addedMP = 100;
+-		weight = 4;
+-		break;
+-	case 0x2f:
+-		energy = 22;
+-		trainFlag = 0x3f;
+-		trainValue = 15;
+-		trainDuration = 6;
+-		weight = 2;
+-		break;
+-	case 0x30:
+-		energy = 30;
+-		happiness = 50;
+-		weight = 3;
+-		break;
+-	case 0x31:
+-		energy = 25;
+-		tiredness = 20;
+-		happiness = 20;
+-		discipline = 20;
+-		weight = 2;
+-		break;
+-	case 0x32:
+-		energy = 40;
+-		weight = 4;
+-		break;
+-	case 0x33:
+-		energy = 100;
+-		weight = 10;
+-		break;
+-	case 0x34:
+-		energy = 20;
+-		healedHP = 9999;
+-		weight = 2;
+-		break;
+-	case 0x35:
+-		energy = 16;
+-		healedMP = 9999;
+-		weight = 2;
+-		break;
+-	case 0x36:
+-		energy = 33;
+-		weight = -5;
+-		break;
+-	case 0x37:
+-		energy = 24;
+-		healedHP = 1000;
+-		healedMP = 1000;
+-		weight = 2;
+-		break;
+-	case 0x38:
+-		energy = 20;
+-		addedOffense = 20;
+-		weight = 2;
+-		break;
+-	case 0x39:
+-		energy = 20;
+-		addedDefense = 20;
+-		weight = 2;
+-		break;
+-	case 0x3a:
+-		energy = 20;
+-		addedSpeed = 20;
+-		weight = 2;
+-		break;
+-	case 0x3b:
+-		energy = 20;
+-		addedBrain = 20;
+-		weight = 2;
+-		break;
+-	case 0x3c:
+-		energy = 20;
+-		addedHP = 200;
+-		weight = 2;
+-		break;
+-	case 0x3d:
+-		energy = 20;
+-		addedMP = 200;
+-		weight = 2;
+-		break;
+-	case 0x3e:
+-		energy = 8;
+-		weight = 1;
+-		break;
+-	case 0x3f:
+-		energy = 12;
+-		weight = 1;
+-		break;
+-	case 0x40:
+-		energy = 22;
+-		weight = 2;
+-		break;
+-	case 0x41:
+-		energy = 27;
+-		addedOffense = 1;
+-		addedDefense = 1;
+-		addedSpeed = 1;
+-		addedBrain = 1;
+-		addedHP = 10;
+-		addedMP = 10;
+-		weight = -2;
+-		break;
+-	case 0x42:
+-		energy = 49;
+-		weight = 5;
+-		break;
+-	case 0x43:
+-		energy = 35;
+-		healedHP = 9999;
+-		healedMP = 9999;
+-		lifetime = 3;
+-		sicknessChance = 20;
+-		weight = 4;
+-		break;
+-	case 0x44:
+-		energy = 30;
+-		sicknessChance = 100;
+-		weight = 2;
+-		break;
+-	case 0x45:
+-		energy = 15;
+-		happiness = 30;
+-		tiredness = 30;
+-		sicknessChance = 30;
+-		weight = 1;
+-		break;
+-	case 0x46:
+-		energy = 50;
+-		happiness = 50;
+-		tiredness = 50;
+-		lifetime = 20;
+-		sicknessChance = 5;
+-		weight = 3;
+-		break;
+-	case 0x79:
+-		healedMP = 1000;
+-		break;
+-	case 0x7a:
+-		energy = 32;
+-		healedHP = 1000;
+-		sicknessChance = 20;
+-		break;
+-	}
++	/* MOD (item effects as data): the item's row of MOD_ITEM_FX (an item without one does nothing) */
++	fx = itemFx(itemId);
++	energy = MOD_FX(fx, MOD_FX_ENERGY);
++	happiness = MOD_FX(fx, MOD_FX_HAPPINESS);
++	weight = MOD_FX(fx, MOD_FX_WEIGHT);
++	tiredness = MOD_FX(fx, MOD_FX_TIREDNESS);
++	discipline = MOD_FX(fx, MOD_FX_DISCIPLINE);
++	lifetime = MOD_FX(fx, MOD_FX_LIFETIME);
++	addedHP = MOD_FX(fx, MOD_FX_ADD_HP);
++	addedMP = MOD_FX(fx, MOD_FX_ADD_MP);
++	healedHP = MOD_FX(fx, MOD_FX_HEAL_HP);
++	healedMP = MOD_FX(fx, MOD_FX_HEAL_MP);
++	addedOffense = MOD_FX(fx, MOD_FX_ADD_OFF);
++	addedDefense = MOD_FX(fx, MOD_FX_ADD_DEF);
++	addedSpeed = MOD_FX(fx, MOD_FX_ADD_SPEED);
++	addedBrain = MOD_FX(fx, MOD_FX_ADD_BRAIN);
++	trainFlag = MOD_FX(fx, MOD_FX_BOOST_FLAG);
++	trainValue = MOD_FX(fx, MOD_FX_BOOST_VALUE);
++	trainDuration = MOD_FX(fx, MOD_FX_BOOST_HOURS);
++	sicknessChance = MOD_FX(fx, MOD_FX_SICK_CHANCE);
+ 
+ 	if (itemId == RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).favoriteFood) {
+-		energy = energy * 14 / 10;
+-		happiness += 2;
++		energy = energy * carePercent(MOD_CARE_FOOD_FAV_PERCENT) / 100;
++		happiness += careAmt(MOD_CARE_FOOD_FAV_HAPPY);
+ 	}
+ 	addEnergy(energy);
+ 	reduceTiredness(tiredness);
+@@ -2942,11 +2757,11 @@ int32_t handleMedicineHealing(int16_t injuryChance, int16_t sicknessChance)
+ {
+ 	int16_t roll;
+ 
+-	if (((PARTNER_PARA.condition & CONDITION_INJURED) != 0) && (roll = randomLimit(3), roll < injuryChance)) {
++	if (((PARTNER_PARA.condition & CONDITION_INJURED) != 0) && (roll = randomLimit(careDie(MOD_CARE_MEDICINE_INJURY_DIE)), roll < injuryChance)) {
+ 		PARTNER_PARA.condition &= ~CONDITION_INJURED;
+ 		PARTNER_PARA.injuryTimer = 0;
+ 	}
+-	if (((PARTNER_PARA.condition & CONDITION_SICK) != 0) && (roll = randomLimit(10), roll < sicknessChance)) {
++	if (((PARTNER_PARA.condition & CONDITION_SICK) != 0) && (roll = randomLimit(careDie(MOD_CARE_MEDICINE_SICK_DIE)), roll < sicknessChance)) {
+ 		PARTNER_PARA.condition &= ~CONDITION_SICK;
+ 		PARTNER_PARA.sicknessTimer = 0;
+ 		PARTNER_PARA.areaEffectTimer = 0;
+@@ -2996,29 +2811,19 @@ void reduceTiredness(int16_t amount)
+ void addHappiness(int16_t amount)
+ {
+ 	PARTNER_PARA.happiness += amount;
+-	if (PARTNER_PARA.happiness >= 0x64) {
+-		PARTNER_PARA.happiness = 0x64;
+-	}
++	careClamp(&PARTNER_PARA.happiness, MOD_CARE_LIM_HAPPY_MIN, MOD_CARE_LIM_HAPPY_MAX); /* MOD (care rules as data) */
+ }
+ 
+ void addDiscipline(int16_t amount)
+ {
+ 	PARTNER_PARA.discipline += amount;
+-	if (PARTNER_PARA.discipline >= 0x64) {
+-		PARTNER_PARA.discipline = 0x64;
+-	}
++	careClamp(&PARTNER_PARA.discipline, MOD_CARE_LIM_DISC_MIN, MOD_CARE_LIM_DISC_MAX);
+ }
+ 
+ void addWeight(int16_t amount)
+ {
+ 	PARTNER_PARA.weight += amount;
+-	if (PARTNER_PARA.weight >= 0x64) {
+-		PARTNER_PARA.weight = 0x63;
+-	}
+-
+-	if (PARTNER_PARA.weight <= 0) {
+-		PARTNER_PARA.weight = 1;
+-	}
++	careClamp(&PARTNER_PARA.weight, MOD_CARE_LIM_WEIGHT_MIN, MOD_CARE_LIM_WEIGHT_MAX);
+ }
+ 
+ void decreasePoopLevel(void)
+@@ -3033,7 +2838,7 @@ int16_t duration;
+ {
+ 	PARTNER_PARA.trainBoostFlag = flag;
+ 	PARTNER_PARA.trainBoostValue = value;
+-	PARTNER_PARA.trainBoostTimer = duration * 1200;
++	PARTNER_PARA.trainBoostTimer = duration * careAmt(MOD_CARE_FOOD_BOOST_UNIT);
+ }
+ 
+ void handleItemSickness(int16_t chance)
+@@ -3046,7 +2851,7 @@ void handleItemSickness(int16_t chance)
+ 	char buf[0x18];
+ #endif
+ 
+-	r = randomLimit(0x64);
++	r = randomLimit(careDie(MOD_CARE_FOOD_SICK_DIE));
+ 	isSick = PARTNER_PARA.condition & CONDITION_SICK;
+ 	if ((r < chance) && (!isSick)) {
+ 		PARTNER_PARA.condition |= CONDITION_SICK;
+-- 
+2.53.0
+

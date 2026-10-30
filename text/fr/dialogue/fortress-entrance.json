@@ -1,0 +1,134 @@
+{
+ "s040.sec5.u0": [
+  [
+   "Hein ? T'es qui, toi ? Dégage !"
+  ]
+ ],
+ "s040.sec5.u1": [
+  [
+   "Quoi, c'est chez toi ici ?"
+  ]
+ ],
+ "s040.sec5.u2": [
+  [
+   "J'ai pas le droit de te le dire",
+   "!"
+  ]
+ ],
+ "s040.sec5.u3": [
+  [
+   "...Alors, tu fais le guet ou",
+   "quoi ?"
+  ]
+ ],
+ "s040.sec5.u4": [
+  [
+   "Quoi, tu cherches la bagarre ?!",
+   "Je vais t'aplatir !"
+  ]
+ ],
+ "s040.sec5.m0.o0": "D'accord, battons-nous",
+ "s040.sec5.m0.o1": "Je ne mordrai pas",
+ "s040.sec5.u5": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u6": [
+  [
+   "Oh non... ! ...Hééé !"
+  ]
+ ],
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hi hi hi hi..."
+  ]
+ ],
+ "s040.sec5.u8": [
+  [
+   "HU? Qui est là ?"
+  ]
+ ],
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "On n'a rien fait de mal. Fais",
+   "pas irruption chez les autres !",
+   "Hé hé."
+  ]
+ ],
+ "s040.sec5.u10": [
+  [
+   ". . Je reviendrai plus tard."
+  ]
+ ],
+ "s040.sec5.u11": [
+  [
+   "Bon, bonne chance pour monter",
+   "la garde."
+  ]
+ ],
+ "s040.sec5.u12": [
+  [
+   "Hmm... ? Je t'ai déjà vu",
+   "quelque part... Ça y est, tu",
+   "faisais partie des bandits"
+  ],
+  [
+   "d'Ogremon ! Alors c'est votre",
+   "repaire."
+  ]
+ ],
+ "s040.sec5.u13": [
+  [
+   "...D-de quoi tu parles ?"
+  ]
+ ],
+ "s040.sec5.u14": [
+  [
+   "Tu m'as échappé la dernière",
+   "fois ! Cette fois, prépare-toi",
+   "!"
+  ]
+ ],
+ "s040.sec5.m1.o0": "D'accord, battons-nous",
+ "s040.sec5.m1.o1": "Je ne mordrai pas",
+ "s040.sec5.u15": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u16": [
+  [
+   "Tu m'as bien eu la dernière",
+   "fois. Je croyais que vous aviez",
+   "changé de repaire, mais... vous"
+  ],
+  [
+   "voilà bien tranquilles !"
+  ]
+ ],
+ "s040.sec5.u17": [
+  [
+   "...D-de quoi tu parles ?"
+  ]
+ ],
+ "s040.sec5.u18": [
+  [
+   "Tu ne m'échapperas pas cette",
+   "fois !"
+  ]
+ ],
+ "s040.sec5.u19": [
+  [
+   "Allez, laisse-moi entrer."
+  ]
+ ],
+ "s040.sec5.u20": [
+  [
+   "Quoi, tu cherches la bagarre ?!",
+   "Je vais t'aplatir !"
+  ]
+ ]
+}

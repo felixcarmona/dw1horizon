@@ -1,0 +1,867 @@
+{
+  "screen": 351,
+  "name": "gallery-east-2",
+  "pieces": [
+    {
+      "name": "near-scrap",
+      "depth_px": [
+        180,
+        605
+      ],
+      "block": [],
+      "at": [
+        46,
+        362
+      ],
+      "png": "351-near-scrap.png",
+      "size": [
+        272,
+        235
+      ],
+      "sam": [
+        {
+          "box": [
+            20,
+            362,
+            309,
+            603
+          ],
+          "positive": [
+            [
+              90,
+              432
+            ],
+            [
+              120,
+              447
+            ],
+            [
+              144,
+              416
+            ],
+            [
+              150,
+              445
+            ],
+            [
+              132,
+              466
+            ],
+            [
+              75,
+              418
+            ],
+            [
+              192,
+              421
+            ],
+            [
+              193,
+              463
+            ],
+            [
+              210,
+              495
+            ],
+            [
+              236,
+              468
+            ],
+            [
+              249,
+              500
+            ],
+            [
+              249,
+              545
+            ],
+            [
+              278,
+              531
+            ],
+            [
+              269,
+              549
+            ],
+            [
+              288,
+              484
+            ],
+            [
+              289,
+              455
+            ]
+          ],
+          "negative": [
+            [
+              310,
+              430
+            ],
+            [
+              326,
+              490
+            ],
+            [
+              320,
+              550
+            ],
+            [
+              297,
+              609
+            ],
+            [
+              110,
+              520
+            ],
+            [
+              210,
+              570
+            ],
+            [
+              165,
+              361
+            ]
+          ],
+          "scores": [
+            0.8004981875419617
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "3649f21e9f6a2bf5b76dbca47cec3c0d56c03c408d0e84e6f053bc6197bd6d18",
+      "min_component": 80,
+      "fill_holes_max_area": 0,
+      "subtract_sam": [
+        {
+          "box": [
+            232,
+            374,
+            304,
+            433
+          ],
+          "positive": [
+            [
+              255,
+              390
+            ],
+            [
+              266,
+              412
+            ],
+            [
+              241,
+              415
+            ]
+          ],
+          "negative": [
+            [
+              227,
+              410
+            ],
+            [
+              309,
+              421
+            ],
+            [
+              270,
+              438
+            ],
+            [
+              260,
+              365
+            ]
+          ],
+          "scores": [
+            0.9663751125335693,
+            0.9725840091705322,
+            0.966678261756897
+          ],
+          "best": 1
+        }
+      ]
+    },
+    {
+      "name": "far-door",
+      "depth_px": [
+        431,
+        158
+      ],
+      "block": [],
+      "at": [
+        320,
+        0
+      ],
+      "png": "351-far-door.png",
+      "size": [
+        220,
+        20
+      ],
+      "sam": [
+        {
+          "box": [
+            319,
+            0,
+            542,
+            23
+          ],
+          "positive": [
+            [
+              342,
+              0
+            ],
+            [
+              398,
+              0
+            ],
+            [
+              454,
+              0
+            ],
+            [
+              510,
+              0
+            ]
+          ],
+          "negative": [
+            [
+              319,
+              0
+            ],
+            [
+              542,
+              0
+            ],
+            [
+              319,
+              23
+            ],
+            [
+              542,
+              23
+            ]
+          ],
+          "scores": [
+            0.9753082394599915,
+            0.9815285205841064,
+            0.9791282415390015
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "950ed1806e60041dedcb25e190a7d6cb2d7dd62060e6ac9ef4918d5a1cb6b7b6",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "far-left-jamb",
+      "depth_px": [
+        333,
+        155
+      ],
+      "block": [],
+      "at": [
+        327,
+        13
+      ],
+      "png": "351-far-left-jamb.png",
+      "size": [
+        27,
+        125
+      ],
+      "sam": [
+        {
+          "box": [
+            319,
+            17,
+            343,
+            148
+          ],
+          "positive": [
+            [
+              329,
+              27
+            ],
+            [
+              327,
+              82
+            ],
+            [
+              328,
+              137
+            ]
+          ],
+          "negative": [
+            [
+              319,
+              17
+            ],
+            [
+              343,
+              17
+            ],
+            [
+              319,
+              148
+            ],
+            [
+              343,
+              148
+            ]
+          ],
+          "scores": [
+            0.7995402216911316,
+            0.7705740928649902,
+            0.7324625253677368
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "7e1d6460437c4d50b1cf021b824016c77a4a48b250dc05b19e8c6f01b9bf6e94",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "far-right-jamb",
+      "depth_px": [
+        531,
+        155
+      ],
+      "block": [],
+      "at": [
+        509,
+        19
+      ],
+      "png": "351-far-right-jamb.png",
+      "size": [
+        24,
+        134
+      ],
+      "sam": [
+        {
+          "box": [
+            519,
+            14,
+            542,
+            149
+          ],
+          "positive": [
+            [
+              530,
+              26
+            ],
+            [
+              526,
+              81
+            ],
+            [
+              527,
+              136
+            ]
+          ],
+          "negative": [
+            [
+              519,
+              14
+            ],
+            [
+              542,
+              14
+            ],
+            [
+              519,
+              149
+            ],
+            [
+              542,
+              149
+            ]
+          ],
+          "scores": [
+            0.796485424041748,
+            0.82694411277771,
+            0.860442042350769
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "b42e5680f3cd723577196e4dd2c52291f8a29ac444ccd65b3eb3edc063685924",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "front-right-boulder",
+      "png": "351-front-right-boulder.png",
+      "depth_px": [
+        305,
+        605
+      ],
+      "block": [],
+      "sam": [
+        {
+          "box": [
+            275,
+            551,
+            324,
+            607
+          ],
+          "positive": [
+            [
+              294,
+              575
+            ],
+            [
+              307,
+              588
+            ]
+          ],
+          "negative": [
+            [
+              327,
+              578
+            ],
+            [
+              320,
+              613
+            ],
+            [
+              269,
+              578
+            ],
+            [
+              293,
+              545
+            ]
+          ],
+          "scores": [
+            0.8797640204429626,
+            0.9383084774017334,
+            0.9411128759384155
+          ],
+          "best": 2
+        }
+      ],
+      "min_component": 20,
+      "component_at": [
+        300,
+        581
+      ],
+      "at": [
+        274,
+        559
+      ],
+      "size": [
+        41,
+        52
+      ],
+      "mask_sha256": "5b2b0767a0fbf66597f960fc38733da55cc3036a5d7ef1c8adda201bd97fecd2"
+    }
+  ],
+  "source": "gallery-east-2.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The rails lie on floor. Keep rear scrap piles and the foreground left pile blocked. Cut the foreground pile's silhouette and the high timber lintel. The loose can on the track is low debris, not an overhead level. Tile review: restore 41 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Final footprint pass restores 2 additional tiles of visible bare floor outside the object silhouettes. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts. Polish audit: subtract only the loose metal floor sheet and add the omitted front-right boulder. Other pieces and collision are unchanged.",
+  "collision_tiles": [
+    {
+      "tile": [
+        26,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        27,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        28,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        29,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        30,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        31,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        32,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        33,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        34,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        35,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        27,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        28,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        29,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        30,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        31,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        32,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        33,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        34,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        35,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        36,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        27,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        28,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        29,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        30,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        31,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        32,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        33,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        34,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        35,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        36,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        27,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        28,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        29,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        30,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        31,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        32,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        33,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        34,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        35,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        36,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        37,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall front scrap; keep the pile base solid"
+    },
+    {
+      "tile": [
+        43,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the front scrap pile"
+    },
+    {
+      "tile": [
+        43,
+        67
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the front scrap pile"
+    }
+  ],
+  "sam_source": {
+    "path": "G-gallery-east-2/gallery-east-2-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "83e857d61aa801a37df8370aa449b43305f8b775",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

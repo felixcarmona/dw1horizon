@@ -1,0 +1,242 @@
+{
+  "screen": 341,
+  "review": "Keep the individual rear-post base tile correction. Perspective body bounds also reach both rear uprights and both side foreground posts, so all four receive SAM silhouettes at their actual ground contacts. The rear lintel is far above reachable bodies; the rail trench remains connected floor.",
+  "collision": [
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of timber upright"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "341-rear-left-post.png",
+      "depth": [
+        359,
+        291
+      ],
+      "at": [
+        338,
+        108
+      ],
+      "segmentation": {
+        "box": [
+          338,
+          106,
+          380,
+          301
+        ],
+        "positive": [
+          [
+            357,
+            137
+          ],
+          [
+            360,
+            206
+          ],
+          [
+            358,
+            280
+          ]
+        ],
+        "negative": [
+          [
+            379,
+            220
+          ],
+          [
+            335,
+            245
+          ],
+          [
+            376,
+            297
+          ]
+        ],
+        "score": 0.9842530488967896,
+        "area": 4971,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "341-rear-right-post.png",
+      "depth": [
+        583,
+        297
+      ],
+      "at": [
+        569,
+        106
+      ],
+      "segmentation": {
+        "box": [
+          562,
+          103,
+          606,
+          310
+        ],
+        "positive": [
+          [
+            587,
+            135
+          ],
+          [
+            583,
+            220
+          ],
+          [
+            578,
+            288
+          ]
+        ],
+        "negative": [
+          [
+            565,
+            240
+          ],
+          [
+            607,
+            250
+          ],
+          [
+            598,
+            311
+          ]
+        ],
+        "score": 0.9852080345153809,
+        "area": 5205,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "341-west-front-post.png",
+      "depth": [
+        112,
+        533
+      ],
+      "at": [
+        23,
+        281
+      ],
+      "segmentation": {
+        "box": [
+          2,
+          275,
+          146,
+          579
+        ],
+        "positive": [
+          [
+            34,
+            330
+          ],
+          [
+            74,
+            460
+          ],
+          [
+            110,
+            540
+          ]
+        ],
+        "negative": [
+          [
+            98,
+            459
+          ],
+          [
+            48,
+            465
+          ],
+          [
+            148,
+            550
+          ]
+        ],
+        "score": 0.9705407619476318,
+        "area": 10952,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "341-east-front-post.png",
+      "depth": [
+        784,
+        535
+      ],
+      "at": [
+        765,
+        273
+      ],
+      "segmentation": {
+        "box": [
+          754,
+          283,
+          892,
+          575
+        ],
+        "positive": [
+          [
+            864,
+            323
+          ],
+          [
+            832,
+            428
+          ],
+          [
+            789,
+            545
+          ]
+        ],
+        "negative": [
+          [
+            866,
+            448
+          ],
+          [
+            790,
+            498
+          ],
+          [
+            747,
+            548
+          ]
+        ],
+        "score": 0.9458315372467041,
+        "area": 11271,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/gallery-west-1-2400x1792.png",
+    "source_sha1": "a89d746e5a19846c25d0964bf4e64266e52d88fc",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact."
+}

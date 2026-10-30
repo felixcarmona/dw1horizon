@@ -1,0 +1,36 @@
+From dbee0a96d07903e0002d9e45b7191d10fae8b855 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 06:12:14 +0000
+Subject: [PATCH] Spell native picker language names with their existing
+ accented glyphs
+
+---
+ text/main/main_menu.yaml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 1911d426..0ffdf754 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -420,14 +420,14 @@ MOD_OPTIONS:
+       ja: "ITALIANO"
+       en_us: "ITALIANO"
+     MOD_OPT_STR_CATALAN:
+-      ja: "CATALA"
+-      en_us: "CATALA"
++      ja: "CATALÀ"
++      en_us: "CATALÀ"
+     MOD_OPT_STR_JAPANESE:
+       ja: "NIHONGO"
+       en_us: "NIHONGO"
+     MOD_OPT_STR_PORTUGUESE:
+-      ja: "PORTUGUES"
+-      en_us: "PORTUGUES"
++      ja: "PORTUGUÊS"
++      en_us: "PORTUGUÊS"
+     MOD_OPT_STR_SPANISH:
+       ja: "ESPANOL"
+       en_us: "ESPANOL"
+-- 
+2.55.0
+

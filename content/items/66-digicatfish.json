@@ -1,0 +1,14 @@
+{
+  "id": 66,
+  "name": "Digicatfish",
+  "value": 2000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 49,
+    "weight": 5
+  }
+}

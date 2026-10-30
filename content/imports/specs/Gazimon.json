@@ -1,0 +1,121 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M131GAZI",
+ "type": 285,
+ "name": "Gazimon",
+ "source": {
+  "type": 22,
+  "mmd": "extracted/CHDAT/MMD0/GARU.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 3,
+  "3": 5,
+  "4": 4,
+  "6": 7,
+  "7": 8,
+  "8": 9,
+  "9": 11,
+  "10": 12,
+  "11": 13,
+  "12": 1,
+  "13": 18,
+  "14": 16,
+  "16": 19,
+  "18": 20,
+  "19": 21,
+  "20": 23,
+  "22": 24,
+  "23": 25
+ },
+ "hips": [
+  1,
+  1,
+  0.935
+ ],
+ "root_scale": 0.935,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x39": {
+   "anim": "I0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  },
+  "0x33": {
+   "anim": "F0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  },
+  "0x31": {
+   "anim": "G0",
+   "speed": 1.16,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.18891,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

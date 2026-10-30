@@ -1,0 +1,14 @@
+{
+  "id": 300,
+  "file": "HOLW01",
+  "tims8": 3,
+  "tims4": 0,
+  "sound_bank": 0,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": {"x1": -196, "z1": -1831, "x2": -392, "z2": -976},
+  "caption": "Test Hollow",
+  "concave": true,
+  "maphead": {"like": 0, "script": 1}
+}

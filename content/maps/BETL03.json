@@ -1,0 +1,48 @@
+{
+  "file": "MAP/MAP8/BETL03.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Kabuterimon141",
+      "at": [-1665, -443],
+      "facing": 3072,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "moves": [47, 48, 49, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1022, -289],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Kabuterimon141",
+      "at": [-223, -2090],
+      "facing": 2048,
+      "follow": 2,
+      "range": 1000,
+      "charge": 1,
+      "moves": [47, 48, 49, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1022, -289],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "Kabuterimon141",
+      "at": [1597, 523],
+      "facing": 512,
+      "follow": 12,
+      "range": 0,
+      "charge": 1,
+      "bits": "+100",
+      "moves": [47, 48, 49, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [-2778, -372],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

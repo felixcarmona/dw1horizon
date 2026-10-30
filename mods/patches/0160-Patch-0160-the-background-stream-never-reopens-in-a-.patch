@@ -1,0 +1,220 @@
+From e985816e30200169f7fc87ee3a9443d8641ba99b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 22 Oct 2026 07:25:56 +0000
+Subject: [PATCH] Patch 0160: the background stream never reopens in a battle,
+ and the battle camera asks for no tile. In a fight the load area is the EFE
+ engine's (its slot table at GENERAL_BUFFER, its heap and BTL_REL above); a
+ tile the window needed while the ring was invalid reopened it on demand
+ (tfsTilePixels, tfsStageRow: the .TFS header read over the slot table, a tile
+ over the heap), and the fight's next render jumped through the garbage (CPU
+ at 0x68, ReservedInstruction). It took the camera lift of a tall partner
+ (patch 0078, modCamBattleStep) crossing a tile band during the fight: random
+ per fight, mostly the second fight of a screen, on original screens too
+ (Overdell's Darkrizamon, 2026-10-21/22). Now tfsLoadTile, tfsTilePixels and
+ tfsStageRow refuse the reopen unless GAME_STATE is 0 (the cell keeps what
+ VRAM holds, the next readMapTFS restores it, MOD_TFS_STATS.refused counts
+ it), and modCamBattleStep keeps the camera inside the 4x3 tile window VRAM
+ holds (MAP_TILE_X/Y) without handleTileUpdate. Playtest:
+ tools/playtest/battle_stream.py (three fights with everyone joining and
+ Cherrymon, interpreter + debugger: no exception, no reopen outside the world,
+ refused 0).
+
+---
+ include/dw/tfs_stream.h |  1 +
+ src/main/map.c          | 55 ++++++++++++++++++++++++++++++++++-------
+ src/main/tfs_stream.c   | 44 ++++++++++++++++++++++++++++++---
+ 3 files changed, 88 insertions(+), 12 deletions(-)
+
+diff --git a/include/dw/tfs_stream.h b/include/dw/tfs_stream.h
+index 55a209b3..26204c3a 100644
+--- a/include/dw/tfs_stream.h
++++ b/include/dw/tfs_stream.h
+@@ -26,6 +26,7 @@ typedef struct {
+ 	int32_t captureWaitMax;		/* lines waiting for the GPU before one */
+ 	int32_t captureLinesMax;	/* lines of one StoreImage */
+ 	int32_t startLinesMax;		/* lines to start one tile read (CdControl + CdRead) */
++	int32_t refused;		/* tile wanted outside the world while the ring was invalid: not reopened (the load area is a battle's) */
+ } TfsStreamStats;
+ 
+ extern int8_t MOD_TFS_TILE_SEQ[35];
+diff --git a/src/main/map.c b/src/main/map.c
+index bd8ccd9e..337d5318 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4773,6 +4773,13 @@ void unloadMap(void)
+  * follow flag is off, so it runs whenever no script camera move is going on) the
+  * scroll pans toward the same pair box, 3 px per tick; background and 3D origin move together
+  * (cameraX/Y and DRAWING_OFFSET_X/Y, as tickCameraMovement), clamped to the map */
++/*
++ * The camera's lift in a battle. The background's tiles cannot change during
++ * a fight: the load area is the fight's (EFE engine over the .TFS ring,
++ * tfs_stream.c), so the camera stays inside the 4x3 tile window VRAM already
++ * holds (MAP_TILE_X/Y) and asks for no tile; a lift the window cannot show is
++ * shortened (never a jump: where the camera already is stays allowed).
++ */
+ static void modCamBattleStep(void)
+ {
+ 	DVECTOR want;
+@@ -4780,21 +4787,51 @@ static void modCamBattleStep(void)
+ 	int16_t oldY;
+ 	int16_t rx;
+ 	int16_t ry;
++	int16_t lo;
++	int16_t hi;
+ 
+ 	modCamTarget(&want);
+ 	oldX = MAP_TILE_DATA.cameraX;
+ 	oldY = MAP_TILE_DATA.cameraY;
+ 	MAP_TILE_DATA.cameraX += modCamStep(want.vx - MOD_CAM_SHIFT.vx);
+ 	MAP_TILE_DATA.cameraY += modCamStep(want.vy - MOD_CAM_SHIFT.vy);
+-	if (MAP_TILE_DATA.cameraX < 0) {
+-		MAP_TILE_DATA.cameraX = 0;
+-	} else if (MAP_TILE_DATA.cameraX > MAP_TILE_DATA.width * 128 - 320) {
+-		MAP_TILE_DATA.cameraX = MAP_TILE_DATA.width * 128 - 320;
++	lo = MAP_TILE_X * 128;
++	hi = (MAP_TILE_X + 4) * 128 - 320;
++	if (hi > MAP_TILE_DATA.width * 128 - 320) {
++		hi = MAP_TILE_DATA.width * 128 - 320;
+ 	}
+-	if (MAP_TILE_DATA.cameraY < 0) {
+-		MAP_TILE_DATA.cameraY = 0;
+-	} else if (MAP_TILE_DATA.cameraY > MAP_TILE_DATA.height * 128 - 240) {
+-		MAP_TILE_DATA.cameraY = MAP_TILE_DATA.height * 128 - 240;
++	if (lo < 0) {
++		lo = 0;
++	}
++	if (lo > oldX) {
++		lo = oldX;
++	}
++	if (hi < oldX) {
++		hi = oldX;
++	}
++	if (MAP_TILE_DATA.cameraX < lo) {
++		MAP_TILE_DATA.cameraX = lo;
++	} else if (MAP_TILE_DATA.cameraX > hi) {
++		MAP_TILE_DATA.cameraX = hi;
++	}
++	lo = MAP_TILE_Y * 128;
++	hi = (MAP_TILE_Y + 3) * 128 - 240;
++	if (hi > MAP_TILE_DATA.height * 128 - 240) {
++		hi = MAP_TILE_DATA.height * 128 - 240;
++	}
++	if (lo < 0) {
++		lo = 0;
++	}
++	if (lo > oldY) {
++		lo = oldY;
++	}
++	if (hi < oldY) {
++		hi = oldY;
++	}
++	if (MAP_TILE_DATA.cameraY < lo) {
++		MAP_TILE_DATA.cameraY = lo;
++	} else if (MAP_TILE_DATA.cameraY > hi) {
++		MAP_TILE_DATA.cameraY = hi;
+ 	}
+ 	rx = MAP_TILE_DATA.cameraX - oldX;
+ 	ry = MAP_TILE_DATA.cameraY - oldY;
+@@ -4807,7 +4844,7 @@ static void modCamBattleStep(void)
+ 	DRAWING_OFFSET_Y -= ry;
+ 	PLAYER_OFFSET_X -= rx;
+ 	PLAYER_OFFSET_Y -= ry;
+-	handleTileUpdate(((rx < 0) ? 0x8000 : 0x2000) | ((ry < 0) ? 0x1000 : 0x4000), 0);
++	/* no handleTileUpdate: the window is not touched in a battle (tfs_stream.c would refuse it anyway) */
+ }
+ 
+ void tickCameraFollowPlayer(void)
+diff --git a/src/main/tfs_stream.c b/src/main/tfs_stream.c
+index c5b3ec13..2932bdbd 100644
+--- a/src/main/tfs_stream.c
++++ b/src/main/tfs_stream.c
+@@ -29,7 +29,14 @@
+  *   overlays, the evolution model) and every battle invalidate the ring; the
+  *   game's readMapTFS calls (map load, battle exit, evolution, death,
+  *   jukebox...) reopen it. A tile needed while the ring is invalid reopens
+- *   it first, which only happens in the world.
++ *   it first, in the world only (ringMayReopen): in a battle the load area
++ *   is the fight's (the EFE engine's slot table sits at GENERAL_BUFFER, its
++ *   heap and BTL_REL above), and a reopen there wrote the .TFS header and a
++ *   tile over them: the fight's second render jumped through the garbage
++ *   (2026-10-22, the camera lift of a tall partner asking for a tile row in
++ *   the second fight of a screen). Outside the world such a tile is simply
++ *   not uploaded (the window keeps what VRAM holds; the next readMapTFS
++ *   restores it) and MOD_TFS_STATS.refused counts it.
+  * - The palettes are not read from the header once the screen is set up: a
+  *   load over it in the world is only noticed by the ring, and the header
+  *   is read again lazily (the next tile the window needs), while the hour
+@@ -328,6 +335,20 @@ static int32_t victimSlot(int8_t *protect, int32_t count, int32_t avoid)
+ 	return best;
+ }
+ 
++/*
++ * Whether an invalid ring may be reopened on demand: only while the world
++ * runs. GAME_STATE 1-3 is a battle (loading, fighting, its menus), whose
++ * EFE engine owns [GENERAL_BUFFER, ...): see the header comment.
++ */
++static int32_t ringMayReopen(void)
++{
++	if (GAME_STATE == 0) {
++		return 1;
++	}
++	MOD_TFS_STATS.refused++;
++	return 0;
++}
++
+ /*
+  * Whole-window upload (uploadMapTileImages: map load, curling, fishing):
+  * each window row is contiguous in the file, so it is read in one CdRead
+@@ -357,6 +378,9 @@ void tfsStageRow(int32_t firstTile, int32_t count)
+ 		return;
+ 	}
+ 	if (!TFS_ACTIVE) {
++		if (!ringMayReopen()) {
++			return;	/* no span: tfsTilePixels gives NULL for the row's tiles and nothing is uploaded */
++		}
+ 		MOD_TFS_STATS.reopens++;
+ 		tfsStreamOpen(TFS_PATH);
+ 	}
+@@ -396,7 +420,10 @@ void tfsUnstage(void)
+ 	TFS_SPAN_FIRST = TFS_SPAN_LAST = -1;
+ }
+ 
+-/* The pixels of tile (MAP_TILE_DATA.tiles index) for LoadImage. */
++/*
++ * The pixels of tile (MAP_TILE_DATA.tiles index) for LoadImage; NULL when
++ * the ring is invalid and may not be reopened (not in the world).
++ */
+ u_long *tfsTilePixels(int32_t tile)
+ {
+ 	int32_t slot;
+@@ -411,6 +438,9 @@ u_long *tfsTilePixels(int32_t tile)
+ 		return (u_long *)(TFS_SPAN_BASE + tileOffset(t));
+ 	}
+ 	if (!TFS_ACTIVE) {
++		if (!ringMayReopen()) {
++			return NULL;
++		}
+ 		MOD_TFS_STATS.reopens++;
+ 		tfsStreamOpen(TFS_PATH);
+ 	}
+@@ -679,8 +709,16 @@ static void captureOutgoing(RECT *rect, int32_t incoming)
+ 
+ void tfsLoadTile(RECT *rect, int32_t tile)
+ {
++	u_long *pixels;
++
++	if (!TFS_ACTIVE && !ringMayReopen()) {
++		return;	/* the cell keeps what VRAM holds; captureOutgoing would write the ring too */
++	}
+ 	captureOutgoing(rect, tile);
+-	LoadImage(rect, tfsTilePixels(tile));
++	pixels = tfsTilePixels(tile);
++	if (pixels != NULL) {
++		LoadImage(rect, pixels);
++	}
+ }
+ 
+ void tfsClearTile(RECT *rect)
+-- 
+2.53.0
+

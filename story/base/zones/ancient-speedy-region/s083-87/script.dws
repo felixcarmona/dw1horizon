@@ -1,0 +1,40 @@
+// Readable form of script 83 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 83 {
+    npc saberdramon0 = 5;
+    npc saberdramon1 = 6;
+    npc darklizardmon2 = 7;
+    npc darklizardmon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(saberdramon0) replace {    // section 5
+        say(saberdramon0, text("s083.sec5.u0"));
+        battle();
+        recruit(species("Saberdramon"));
+    }
+
+    on talk(saberdramon1) replace {    // section 6
+        say(saberdramon1, text("s083.sec6.u0"));
+        battle();
+        recruit(species("Saberdramon"));
+    }
+
+    on talk(darklizardmon2) replace {    // section 7
+        say(darklizardmon2, text("s083.sec7.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(darklizardmon3) replace {    // section 8
+        say(darklizardmon3, text("s083.sec8.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+        return;
+    }
+}

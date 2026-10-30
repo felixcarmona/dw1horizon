@@ -1,0 +1,109 @@
+From d19735be02f653b4b54a6962fb4ae202eed042a1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:09:56 +0000
+Subject: [PATCH] Patch 0214: OPTIONS fits the screen with the original font.
+ When one value a row in two columns is still too wide (the widest label
+ beside the widest value: "JAPANESE CONTROLS" and "TRANSLATED", 342 pixels),
+ each row's chosen value ends at the box's right edge, so only a row's own
+ label and values count (260 pixels in English, 'CONTROLES JAPONESES' fits in
+ Spanish); the new and classic fonts keep their columns. drawOptionsText keeps
+ each string's width (MOD_OPT_W); in MENU_REL, 0 bytes of heap
+
+---
+ src/main/main_menu.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 4244ef0c..3c0c29ac 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -5761,7 +5761,9 @@ void renderInitialMenu(void)
+  * MOD (options): the box's rows, each a label and its values side by side (two, three for FONT); the chosen value is
+  * drawn yellow and the others grey, so the row reads as a switch. Left and right step through the values, confirm takes
+  * the next one (round). With the original font the values do not fit the screen beside "JAPANESE CONTROLS" (200 pixels,
+- * and 61 for "20 FPS"): a row then shows its chosen value only, as the original game's own settings do.
++ * and 61 for "20 FPS"): a row then shows its chosen value only, as the original game's own settings do. When even that
++ * does not fit with the labels and the values in two columns (the widest label beside the widest value, "TRANSLATED":
++ * 342 pixels), each row's value ends at the box's right edge instead, so only a row's own label and values count.
+  */
+ #define MOD_OPT_VALUES	3	/* the most values a row has */
+ #define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels, two values a row */
+@@ -5787,10 +5789,14 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+  * drawn once (drawOptionsText) */
+ static int16_t MOD_OPT_V[MOD_OPT_ROWS][MOD_OPT_VALUES];
++/* the pixels of each label and value as the font draws them (drawOptionsText) */
++static uint8_t MOD_OPT_W[MOD_OPT_ROWS][1 + MOD_OPT_VALUES];
+ 
+ /* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
+- * width, a value's, and how many values a row shows (all, or 1 with the original font: above) */
++ * width, a value's, how many values a row shows (all, or 1 with the original font, 0 for 1 at the right edge: above)
++ * and the text's width */
+ static int16_t MOD_OPT_TEXT_X;
++static int16_t MOD_OPT_TEXT_W;
+ static int16_t MOD_OPT_LABEL_W;
+ static int16_t MOD_OPT_VALUE_W;
+ static int16_t MOD_OPT_SHOWN;
+@@ -5910,12 +5916,14 @@ static void drawOptionsText(void)
+ 				goto drawn;
+ 			shared:
+ 				MOD_OPT_V[r][k - 1] = MOD_OPT_V[r2][k2 - 1];
++				MOD_OPT_W[r][k] = MOD_OPT_W[r2][k2];
+ 				continue;
+ 			}
+ 			drawString(MOD_OPT_TEXT[r][k], 0, r * 0xC);
+ 		drawn:
+ 			DrawSync(0);
+ 			w = measureStringMode(MOD_OPT_TEXT[r][k], FIT_VANILLA) + 1; /* and the shadow */
++			MOD_OPT_W[r][k] = w < 0xFF ? w : 0xFF;
+ 			if (k == 0) {
+ 				MOD_OPT_LABEL_W = w > MOD_OPT_LABEL_W ? w : MOD_OPT_LABEL_W;
+ 			} else {
+@@ -5929,6 +5937,19 @@ static void drawOptionsText(void)
+ 		MOD_OPT_SHOWN = 1;
+ 		w = MOD_OPT_LABEL_W + MOD_OPT_GAP + MOD_OPT_VALUE_W;
+ 	}
++	if (w + 2 * MOD_OPT_MARGIN > 0x140 - 0x10) { /* each row as wide as its own label and longest value */
++		MOD_OPT_SHOWN = 0;
++		w = 0;
++		for (r = 0; r < MOD_OPT_ROWS; r++) {
++			k2 = 0;
++			for (k = 1; k <= modOptionCount(r); k++) {
++				k2 = MOD_OPT_W[r][k] > k2 ? MOD_OPT_W[r][k] : k2;
++			}
++			k2 += MOD_OPT_W[r][0] + MOD_OPT_GAP;
++			w = k2 > w ? k2 : w;
++		}
++	}
++	MOD_OPT_TEXT_W = w;
+ 	MOD_OPT_TEXT_X = (0x140 - w) / 2;
+ 	bar = &MENU_HIGHLIGHTS[22];
+ 	bar->x = MOD_OPT_TEXT_X - MOD_OPT_MARGIN + 5;
+@@ -5948,8 +5969,15 @@ static void renderOptionsMenu(void)
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		y = 0x37 + r * 0xC;
+ 		value = modOptionValue(r);
+-		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_LABEL_W, 0xC, 0);
++		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_SHOWN ? MOD_OPT_LABEL_W : MOD_OPT_W[r][0], 0xC, 0);
+ 		x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
++		if (MOD_OPT_SHOWN == 0) { /* the chosen value at the right edge */
++			value = value > 0 ? value : 0;
++			k = MOD_OPT_V[r][value];
++			renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_TEXT_W - MOD_OPT_W[r][1 + value], y, (k >> 8) * MOD_OPT_VALUE_U,
++				   k & 0xFF, MOD_OPT_W[r][1 + value], 0xC, modOptionValue(r) >= 0 ? 2 : 1);
++			continue;
++		}
+ 		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the first one, grey, when none is) */
+ 			k = MOD_OPT_V[r][value > 0 ? value : 0];
+ 			renderText(cur++, x, y, (k >> 8) * MOD_OPT_VALUE_U, k & 0xFF, MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
+@@ -5963,6 +5991,6 @@ static void renderOptionsMenu(void)
+ 	}
+ 	GsSetWorkBase((PACKET *)cur);
+ 	renderMenuBox(MOD_OPT_TEXT_X - MOD_OPT_MARGIN, 0x32,
+-		      MOD_OPT_LABEL_W + MOD_OPT_SHOWN * (MOD_OPT_GAP + MOD_OPT_VALUE_W) + 2 * MOD_OPT_MARGIN,
++		      MOD_OPT_TEXT_W + 2 * MOD_OPT_MARGIN,
+ 		      0x16 + (MOD_OPT_ROWS - 1) * 0xC);
+ }
+-- 
+2.55.0
+

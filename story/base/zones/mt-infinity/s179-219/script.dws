@@ -1,0 +1,44 @@
+// Readable form of script 179 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 179 {
+    npc vermilimon = 5;
+    npc golemon1 = 6;
+    npc golemon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7;
+
+    on enter replace {    // section 254
+        spawn_chest(item("MP Chip"), -1132, 0, -422, 3072, 685);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 439, -1204);
+        warp_to(247, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 444, 2699);
+        warp_to(212, 1, 255);
+    }
+
+    on talk(vermilimon) replace {    // section 5
+        say(vermilimon, text("s179.sec5.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(golemon1) replace {    // section 6
+        say(golemon1, text("s179.sec6.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(golemon2) replace {    // section 7
+        say(golemon2, text("s179.sec7.u0"));
+        battle();
+        recruit(species("Golemon"));
+        return;
+    }
+}

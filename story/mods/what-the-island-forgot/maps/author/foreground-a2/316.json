@@ -1,0 +1,6 @@
+{
+  "screen": 316,
+  "method": "Full-screen collision and projected silhouette review",
+  "records": [],
+  "review": "Reviewed every projected floor tile: terrace is one open plane. Rear fossil wall, tree trunk and branches, east ferns and cliff face have no reachable rear approach or overhead overlap. Preserve the full terrace and sole lower-right stair exit; no foreground upload required. Redo review: the east tree canopy and cliff-bound roots are separated from the reachable terrace and exit stairs; no SAM foreground is necessary."
+}

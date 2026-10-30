@@ -1,0 +1,1427 @@
+{
+  "screen": 350,
+  "name": "high-gallery",
+  "pieces": [
+    {
+      "name": "left-rocks",
+      "depth_px": [
+        150,
+        370
+      ],
+      "block": [],
+      "at": [
+        84,
+        268
+      ],
+      "png": "350-left-rocks.png",
+      "size": [
+        97,
+        102
+      ],
+      "sam": [
+        {
+          "box": [
+            78,
+            271,
+            224,
+            443
+          ],
+          "positive": [
+            [
+              116,
+              309
+            ],
+            [
+              163,
+              337
+            ],
+            [
+              126,
+              378
+            ],
+            [
+              115,
+              414
+            ]
+          ],
+          "negative": [
+            [
+              192,
+              393
+            ],
+            [
+              213,
+              429
+            ],
+            [
+              82,
+              371
+            ],
+            [
+              181,
+              425
+            ],
+            [
+              150,
+              437
+            ]
+          ],
+          "scores": [
+            0.7513765096664429
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "f0d9dc27bb82e8b5c557989a408168225833e691d65d6a8aa67c33c6f723cfc0",
+      "min_component": 200,
+      "fill_holes_max_area": 0,
+      "component_at": [
+        121,
+        304
+      ]
+    },
+    {
+      "name": "left-rocks-2",
+      "png": "350-left-rocks-2.png",
+      "depth_px": [
+        119,
+        402
+      ],
+      "block": [],
+      "sam": [
+        {
+          "box": [
+            92,
+            354,
+            140,
+            405
+          ],
+          "positive": [
+            [
+              111,
+              378
+            ],
+            [
+              121,
+              390
+            ]
+          ],
+          "negative": [
+            [
+              112,
+              420
+            ],
+            [
+              128,
+              417
+            ],
+            [
+              94,
+              412
+            ],
+            [
+              141,
+              390
+            ],
+            [
+              135,
+              352
+            ]
+          ],
+          "scores": [
+            0.9352263808250427,
+            0.947887659072876,
+            0.9342954158782959
+          ],
+          "best": 1
+        }
+      ],
+      "min_component": 20,
+      "component_at": [
+        115,
+        389
+      ],
+      "at": [
+        94,
+        354
+      ],
+      "size": [
+        36,
+        49
+      ],
+      "mask_sha256": "b1ecd7b0772fbf23c57f9f7aedb687a0f232eb086bec2a50906c1e41481565bf"
+    },
+    {
+      "name": "right-rocks",
+      "depth_px": [
+        526,
+        657
+      ],
+      "block": [],
+      "at": [
+        455,
+        506
+      ],
+      "png": "350-right-rocks.png",
+      "size": [
+        156,
+        151
+      ],
+      "sam": [
+        {
+          "box": [
+            448,
+            490,
+            637,
+            673
+          ],
+          "positive": [
+            [
+              569,
+              561
+            ],
+            [
+              525,
+              564
+            ],
+            [
+              534,
+              631
+            ],
+            [
+              606,
+              586
+            ]
+          ],
+          "negative": [
+            [
+              476,
+              497
+            ],
+            [
+              470,
+              633
+            ],
+            [
+              620,
+              653
+            ],
+            [
+              604,
+              519
+            ]
+          ],
+          "scores": [
+            0.8415465950965881
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "56eaf47116d5aaac00c2e7cbc7cbf1b2bbad29c30b4b5125b64f6a54a9f7d7b6",
+      "min_component": 200,
+      "fill_holes_max_area": 0,
+      "component_at": [
+        537,
+        555
+      ]
+    },
+    {
+      "name": "right-rocks-2",
+      "depth_px": [
+        494,
+        533
+      ],
+      "block": [],
+      "at": [
+        480,
+        496
+      ],
+      "png": "350-right-rocks-2.png",
+      "size": [
+        42,
+        37
+      ],
+      "sam": [
+        {
+          "box": [
+            448,
+            490,
+            637,
+            673
+          ],
+          "positive": [
+            [
+              569,
+              561
+            ],
+            [
+              525,
+              564
+            ],
+            [
+              534,
+              631
+            ],
+            [
+              606,
+              586
+            ]
+          ],
+          "negative": [
+            [
+              476,
+              497
+            ],
+            [
+              470,
+              633
+            ],
+            [
+              620,
+              653
+            ],
+            [
+              604,
+              519
+            ]
+          ],
+          "scores": [
+            0.8415465950965881
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "a8db2f04e72d488f36e337ca7ec7875d4ddde87d405f81fccfeb5fd0bc39df0d",
+      "min_component": 200,
+      "fill_holes_max_area": 0,
+      "component_at": [
+        497,
+        509
+      ]
+    },
+    {
+      "name": "left-rear-brace",
+      "depth_px": [
+        174,
+        306
+      ],
+      "block": [],
+      "png": "350-left-rear-brace.png",
+      "sam": [
+        {
+          "box": [
+            91,
+            195,
+            181,
+            309
+          ],
+          "positive": [
+            [
+              105,
+              213
+            ],
+            [
+              124,
+              247
+            ],
+            [
+              155,
+              283
+            ],
+            [
+              171,
+              299
+            ]
+          ],
+          "negative": [
+            [
+              89,
+              234
+            ],
+            [
+              155,
+              225
+            ],
+            [
+              184,
+              290
+            ]
+          ],
+          "scores": [
+            0.9699066281318665,
+            0.958572506904602,
+            0.9161046743392944
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 10,
+      "at": [
+        94,
+        200
+      ],
+      "size": [
+        81,
+        100
+      ],
+      "mask_sha256": "e53c5edf649ba8d7d84560aa30690d8bb3450b8fd984126828ae3ceff9830787"
+    },
+    {
+      "name": "left-front-brace",
+      "depth_px": [
+        172,
+        423
+      ],
+      "block": [],
+      "png": "350-left-front-brace.png",
+      "sam": [
+        {
+          "box": [
+            58,
+            299,
+            184,
+            428
+          ],
+          "positive": [
+            [
+              76,
+              323
+            ],
+            [
+              102,
+              349
+            ],
+            [
+              134,
+              385
+            ],
+            [
+              168,
+              415
+            ]
+          ],
+          "negative": [
+            [
+              69,
+              363
+            ],
+            [
+              111,
+              399
+            ],
+            [
+              169,
+              369
+            ]
+          ],
+          "scores": [
+            0.9530189633369446,
+            0.8767048120498657,
+            0.8370920419692993
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 10,
+      "at": [
+        82,
+        311
+      ],
+      "size": [
+        101,
+        110
+      ],
+      "mask_sha256": "ecb5650dfcd5b7ffb26016a8deabaf903b6562cc5b16fe9b94ebba74279aed6b"
+    },
+    {
+      "name": "left-cross-brace",
+      "depth_px": [
+        151,
+        383
+      ],
+      "block": [],
+      "png": "350-left-cross-brace.png",
+      "sam": [
+        {
+          "box": [
+            138,
+            348,
+            226,
+            388
+          ],
+          "positive": [
+            [
+              153,
+              377
+            ],
+            [
+              183,
+              369
+            ],
+            [
+              213,
+              361
+            ]
+          ],
+          "negative": [
+            [
+              161,
+              355
+            ],
+            [
+              200,
+              382
+            ],
+            [
+              227,
+              366
+            ]
+          ],
+          "scores": [
+            0.9606549143791199,
+            0.9598510265350342,
+            0.9381287097930908
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 10,
+      "at": [
+        144,
+        354
+      ],
+      "size": [
+        77,
+        31
+      ],
+      "mask_sha256": "aa167ba99685d76dac668ef14fa21628ee985ec22b2c876e63f233e71020b73e"
+    },
+    {
+      "name": "right-brace",
+      "depth_px": [
+        489,
+        543
+      ],
+      "block": [],
+      "png": "350-right-brace.png",
+      "sam": [
+        {
+          "box": [
+            477,
+            427,
+            619,
+            548
+          ],
+          "positive": [
+            [
+              493,
+              534
+            ],
+            [
+              528,
+              508
+            ],
+            [
+              565,
+              473
+            ],
+            [
+              604,
+              444
+            ]
+          ],
+          "negative": [
+            [
+              492,
+              494
+            ],
+            [
+              550,
+              523
+            ],
+            [
+              596,
+              475
+            ]
+          ],
+          "scores": [
+            0.9810763001441956,
+            0.9794824123382568,
+            0.897339940071106
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 10,
+      "at": [
+        489,
+        430
+      ],
+      "size": [
+        127,
+        113
+      ],
+      "mask_sha256": "105fd14cea6a00cdbb023b8a88d361ec6805e5ced82ae8c7416bda36d81c4fb8"
+    },
+    {
+      "name": "left-side-boulder",
+      "png": "350-left-side-boulder.png",
+      "depth_px": [
+        195,
+        358
+      ],
+      "block": [],
+      "sam": [
+        {
+          "box": [
+            166,
+            308,
+            222,
+            359
+          ],
+          "positive": [
+            [
+              185,
+              327
+            ],
+            [
+              190,
+              345
+            ],
+            [
+              211,
+              340
+            ]
+          ],
+          "negative": [
+            [
+              223,
+              340
+            ],
+            [
+              207,
+              365
+            ],
+            [
+              177,
+              305
+            ],
+            [
+              163,
+              332
+            ]
+          ],
+          "scores": [
+            0.968330442905426,
+            0.9761337041854858,
+            0.9699258804321289
+          ],
+          "best": 1
+        }
+      ],
+      "min_component": 20,
+      "component_at": [
+        186,
+        335
+      ],
+      "at": [
+        172,
+        311
+      ],
+      "size": [
+        45,
+        48
+      ],
+      "mask_sha256": "68ba46e8c5271bcc4b7a3d3de2eeda939d5f1da264c7bb3a9ced274c4a8d650e"
+    }
+  ],
+  "source": "high-gallery.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The central rail corridor remains floor; the two projecting rock heaps and wall braces remain blocked. Cut both rock heaps where characters can pass behind their near/side contours. The rope coil is flat on the ground. Tile review: restore 76 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Final footprint pass restores 9 additional tiles of visible bare floor outside the object silhouettes. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts. Disconnected stones have individual ground depths. Their bottom ground footprints remain solid, including 0 tiles incorrectly opened by the first pass; 0 originally free occupied base tiles are blocked. Polish audit: add the omitted side boulder and remove leaked floor from the low left stone, using full-resolution SAM. Other pieces and collision are unchanged.",
+  "collision_tiles": [
+    {
+      "tile": [
+        34,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        39
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        40
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        41,
+        41
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        41,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        42,
+        42
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        41,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        42,
+        43
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        41,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        42,
+        44
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        34,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        35,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        36,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        37,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        38,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        39,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        40,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        41,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        42,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the projecting upper rock heap; keep its lower body solid"
+    },
+    {
+      "tile": [
+        43,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        43,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        43,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        43,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        43,
+        50
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        43,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the left rock heap"
+    },
+    {
+      "tile": [
+        58,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        59,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        60,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        61,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        62,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        63,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        58,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        59,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        60,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        61,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        62,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        63,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        58,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        59,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        60,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        61,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        62,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        63,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall near-right rocks; keep their lower body solid"
+    },
+    {
+      "tile": [
+        61,
+        71
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor in front of the right rock heap"
+    },
+    {
+      "tile": [
+        62,
+        71
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor in front of the right rock heap"
+    },
+    {
+      "tile": [
+        62,
+        72
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor in front of the right rock heap"
+    }
+  ],
+  "sam_source": {
+    "path": "G-high-gallery/high-gallery-intento-2.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      38,
+      1856,
+      2265
+    ],
+    "sha1": "4a91e096b1dd894ddf34b53e8c77c4473781a7aa",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  },
+  "retained_blocked_tiles": []
+}

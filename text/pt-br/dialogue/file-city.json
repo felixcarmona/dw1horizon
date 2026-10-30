@@ -1,0 +1,685 @@
+{
+ "s162.sec5.u0": "Já conheceu o Guardião do Lago? Se não, espere com caaalma no lado sul!",
+ "s162.sec5.u1": [
+  [
+   "Tente levantar cedo e vagar na névoa."
+  ],
+  [
+   "Algo bom vai acontecer!"
+  ]
+ ],
+ "s162.sec5.u2": "Ei, você sabia? Bem ao nooorte tem um lugar chamado Praia Iceberg. Dizem que um Digimon enooorme tem aparecido muito por lá.",
+ "s162.sec5.u3": "Você já venceu os bandidos? Ouvi dizer que os bandidos ainda têm um esconderijo em algum lugar.",
+ "s162.sec5.u4": "Já esteve em Grande Cânion? O rumor é que bandidos aparecem lá.",
+ "s162.sec5.u5": "Eles são bandidos?",
+ "s162.sec5.u6": "Quando você passa pelo desfiladeiro, eles te cercam e te roubam. Gostaria que alguém se livrasse deles.",
+ "s162.sec5.u7": [
+  [
+   "Hmm. Parece que não dá para",
+   "ficar de braços cruzados."
+  ]
+ ],
+ "s162.sec5.u8": [
+  [
+   "Já esteve em Grande Cânion?"
+  ],
+  [
+   "O boato é que há uma \"ponte invisível\" lá."
+  ]
+ ],
+ "s162.sec5.u9": "Ouvi dizer que Machinedramon voltou à vida!",
+ "s162.sec5.u10": "Você venceu o Machinedramon de novo? Incrííível.",
+ "s162.sec5.u11": [
+  [
+   "Ehehe, vou explicar o que há",
+   "fora da cidade. A Floresta",
+   "Nativa fica ao redor dela. Os",
+   "Digimon de lá não são muito"
+  ],
+  [
+   "fortes. Logo a oeste fica a",
+   "Ginásio Verde. Acho que você",
+   "vai passar bastante por lá.",
+   "Cruzando o rio a leste, fica a"
+  ],
+  [
+   "Selva Tropical. Não sei o que",
+   "há depois. A oeste, uma",
+   "montanha e um lago bloqueiam o",
+   "caminho, mas pode haver mais"
+  ],
+  [
+   "terras além deles. Bem ao sul",
+   "fica o mar. Ao norte, uma",
+   "montanha bem alta. Não dá para",
+   "seguir por esses lados. É tudo"
+  ],
+  [
+   "que sei. Mas a cidade é o",
+   "centro da ilha, então acho que",
+   "há mais coisas ao norte. Vou",
+   "procurar notícias de fora,"
+  ],
+  [
+   "então venha ouvi-las de vez em",
+   "quando."
+  ]
+ ],
+ "s162.sec6.u0": "Vim ver como estão as coisas por aqui, sim! Eu não gosto do banheiro, mas o resto é muito bom, sim!",
+ "s162.sec7.u0": "Parece ser... bem animado aqui. Não devo voltar à Cidade das Fábricas? Você pergunta? Minha função de agendamento está funcionando normalmente. Não há problema.",
+ "s162.sec8.u0": [
+  [
+   "Oh, você veio na hora certa!"
+  ],
+  [
+   "Contemplem esta estátua! Eh? Hey?"
+  ],
+  [
+   "Que magnífica obra de arte... só se pode",
+   "esperar de mim, suponho."
+  ],
+  [
+   "Hm? O que foi? O que você disse? Whaaat!",
+   "Está tirando sarro de mim?"
+  ],
+  [
+   "Agora... o que foi, afinal? Hmm. Bem, não",
+   "importa."
+  ]
+ ],
+ "s162.sec8.u1": [
+  [
+   "O que diabos eu estava imaginando..."
+  ],
+  [
+   "Se você descobrir, você me contaria?"
+  ]
+ ],
+ "s162.sec55.m0.o0": "À Cidade das Fábricas",
+ "s162.sec55.m0.o1": "À Caverna da Praia Secreta",
+ "s162.sec55.m0.o2": "Deixa pra lá",
+ "s162.sec55.u0": [
+  [
+   "Olá! Ha ha, eu te assustei, não foi?"
+  ],
+  [
+   "Levar todos em jornadas pelo mar: esse é o",
+   "meu trabalho, entende. E você?"
+  ],
+  [
+   "Posso levá-lo a lugares que só pode alcançar",
+   "por mar. Bem, então..."
+  ]
+ ],
+ "s162.sec55.u1": [
+  [
+   "Hmm, para onde vamos? À",
+   "Cidade das Fábricas... ou à",
+   "caverna da praia?"
+  ]
+ ],
+ "s162.sec57.u0": "Encontrei você!",
+ "s162.sec57.u1": "O quê? Ele está vindo para nós? !",
+ "s162.sec57.u2": "Finalmente nos encontramos! Sou Greymon, um andarilho. Vamos direto ao assunto!",
+ "s162.sec57.u3": "O quê?!",
+ "s162.sec57.u4": [
+  [
+   "Os rumores sobre vocês me",
+   "trouxeram aqui. Você vai lutar",
+   "comigo! Se eu ganhar... ...a",
+   "placa desta cidade será minha!"
+  ]
+ ],
+ "s162.sec57.u5": [
+  [
+   "Não tem placa nenhuma."
+  ]
+ ],
+ "s162.sec57.u6": "Tanto faz! Lute comigo!",
+ "s162.sec57.u7": [
+  [
+   "Heh, vocês me deram trabalho...",
+   "Nada mal. Mas ainda são",
+   "inexperientes demais para",
+   "alcançar seu objetivo!"
+  ]
+ ],
+ "s162.sec57.u8": "Hmph...",
+ "s162.sec57.u9": "Eu vou ficar aqui e te colocar em forma. Você vai ficar muito, muito mais forte!",
+ "s162.sec57.u10": "Greymon veio para a cidade!",
+ "s162.sec57.u11": "Achei você, {color 6}{player}{color 1}!",
+ "s162.sec57.u12": "Um ataque furtivo?",
+ "s162.sec57.u13": "Meu objetivo é derrotá-lo... e para fazê-lo, usarei qualquer meio!",
+ "s162.sec57.u14": "...Esses olhos! Alguém está controlando ele!",
+ "s162.sec57.u15": "Assim... mesmo que custe minha vida... Derrotá-los... Essas foram... minhas ordens...",
+ "s162.sec57.u16": "O que está dizendo? Assim você vai morrer mesmo! Você precisa de tratamento, rápido...",
+ "s162.sec81.u0": "Zzz...",
+ "s162.sec81.u1": "Ei, você soube? Há uma planta estranha crescendo na Selva Tropical.",
+ "s162.sec81.u2": [
+  [
+   "Ah, plantei uma {color 6}Planta da",
+   "chuva{color 1} aqui ao lado. Ela dá",
+   "frutos por volta do dia 15 de",
+   "cada ano. Pode pegar. Para"
+  ],
+  [
+   "que serve? Para fazer chover,",
+   "claro."
+  ]
+ ],
+ "s162.sec81.u3": "Ahh, isso é ótimo! Fotossíntese, fotossíntese.",
+ "s162.sec81.u4": "Ahh, isso é ótimo! Fotossíntese, fotossíntese.",
+ "s162.sec82.u0": [
+  [
+   "Ufa... Que maravilha, que",
+   "maravilha."
+  ]
+ ],
+ "s162.sec83.u0": "O que é isso...",
+ "s162.sec83.u1": "Você está carregando muitos itens.",
+ "s162.sec83.u2": [
+  [
+   "Pegou um fruto de {color 6}Planta da",
+   "chuva{color 1}!"
+  ]
+ ],
+ "s162.sec254.u0": [
+  [
+   "Uuufa, cheguei em caaasa!"
+  ]
+ ],
+ "s162.sec254.u1": [
+  [
+   "Obrigado por me chamar de",
+   "volta! Vamos nessa de novo,",
+   "{color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s162.sec254.u2": [
+  [
+   "{color 7}Seu nível de treinador subiu!{color 1}",
+   ""
+  ]
+ ],
+ "s162.sec254.u3": "{color 7}Parabéns! Por seu grande feito, você ganhou uma medalha!{color 1}",
+ "s162.sec254.u4": [
+  [
+   "Ganhou a carta Machinedramon!"
+  ]
+ ],
+ "s163.sec5.u0": "Boo. Boo-boo.",
+ "s163.sec5.u1": "O mesmo de sempre... não consigo entender uma palavra do que ele diz.",
+ "s163.sec5.u2": "Huh? Uh-huh, uh-huh. Ah, entendo, você está patrulhando para nós.",
+ "s163.sec6.u0": "Dê uma olhada, meu próprio quadro especial.",
+ "s163.sec6.u1": "Uma cidade em crescimento precisa de notícias, certo? Então decidi escrever um jornal! Muito esperto, não é?",
+ "s163.sec6.u2": "Bem, espere e veja o que minha rede de notícias pode fazer.",
+ "s163.sec6.u3": "Ei, está lendo meu jornal?",
+ "s163.sec7.u0": [
+  [
+   "Ahh, que fresquinho. Quando",
+   "estamos num lugar agradável,",
+   "até o humor melhora, né?"
+  ]
+ ],
+ "s163.sec7.u1": [
+  [
+   "Hehe, e aí? O que acha da",
+   "minha loja? Não sou bom em",
+   "vender, mas por enquanto não",
+   "há quem faça isso! Traga logo"
+  ],
+  [
+   "muitos Digimon para cá, tá?"
+  ]
+ ],
+ "s163.sec7.u2": [
+  [
+   "Hehe, e aí? O que acha?"
+  ]
+ ],
+ "s163.sec7.u3": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Todos nos unimos para vender itens."
+  ]
+ ],
+ "s163.sec8.u0": [
+  [
+   "Mmm. Tinha uma grama deliciosa",
+   "crescendo aqui, então comi",
+   "tudo. Agora a cidade está até",
+   "mais arejada."
+  ]
+ ],
+ "s163.sec8.u1": "Agora que penso nisso, no outro dia eu peguei uma coisa chamada {color 6}Cogumelo feliz{color 1}. É raro, aparentemente.",
+ "s163.sec8.u2": [
+  [
+   "Dizem que também existe um",
+   "{color 6}Cogumelo nobre{color 1}. Quem",
+   "encontrar um desses pode se",
+   "gabar."
+  ]
+ ],
+ "s163.sec8.u3": [
+  [
+   "Falando nisso, a {color 6}Maçã azul{color 1} da",
+   "Floresta Nativa é deliciosa."
+  ]
+ ],
+ "s163.sec8.u4": [
+  [
+   "Falando nisso, a {color 6}Banana",
+   "laranja{color 1} da Selva Tropical é",
+   "deliciosa."
+  ]
+ ],
+ "s163.sec8.u5": [
+  [
+   "Falando nisso, a {color 6}Fruta",
+   "gigante{color 1} do Monte Panorama é",
+   "deliciosa."
+  ]
+ ],
+ "s163.sec8.u6": [
+  [
+   "Falando nisso, a {color 6}Noz doce{color 1} da",
+   "Savana das Engrenagens é",
+   "deliciosa."
+  ]
+ ],
+ "s163.sec8.u7": [
+  [
+   "Falando nisso, o {color 6}Supervegetal{color 1}",
+   "do Cemitério de Overdell é",
+   "delicioso."
+  ]
+ ],
+ "s163.sec8.u8": [
+  [
+   "Falando nisso, a {color 6}Fruta",
+   "vermelha{color 1} da Região Dino Antiga",
+   "é deliciosa."
+  ]
+ ],
+ "s163.sec8.u9": [
+  [
+   "Falando nisso, o",
+   "{color 6}Figo-da-índia{color 1} do Grande",
+   "Cânion é delicioso."
+  ]
+ ],
+ "s163.sec8.u10": [
+  [
+   "Falando nisso, a {color 6}Digipinha{color 1} do",
+   "Bosque Nebuloso é deliciosa."
+  ]
+ ],
+ "s163.sec8.u11": [
+  [
+   "Falando nisso, a {color 6}Folha",
+   "espinhosa{color 1} do Pântano Geko é",
+   "deliciosa."
+  ]
+ ],
+ "s163.sec8.u12": [
+  [
+   "Falando nisso, o {color 6}Cogumelo",
+   "gelado{color 1} de Terra Gelada é",
+   "delicioso."
+  ]
+ ],
+ "s163.sec8.u13": [
+  [
+   "Falando nisso, a {color 6}Bolota",
+   "dourada{color 1} da Terra dos Besouros",
+   "é deliciosa."
+  ]
+ ],
+ "s163.sec9.m0.o0": "O que foi?",
+ "s163.sec9.m0.o1": "Depois, tudo bem?",
+ "s163.sec9.u0": "Ei, me escute por um segundo.",
+ "s163.sec9.u1": "Você viu a ponte leste? Está consertado! Nós trabalhamos duro.",
+ "s163.sec9.u2": [
+  [
+   "Ainda estamos consertando a",
+   "Ponte Digimon. Espere mais um",
+   "pouco, tá? Ah, ouvi dizer que",
+   "há um Digimon raro ao sul, na"
+  ],
+  [
+   "Ponta Coela. Dizem que ele põe",
+   "a cabeça para fora por um",
+   "instante todo dia, ao",
+   "entardecer."
+  ]
+ ],
+ "s163.sec9.u3": [
+  [
+   "Ei, sabe a ponte quebrada a leste da cidade?"
+  ],
+  [
+   "Achamos que ninguém usaria, então deixamos.",
+   "Mas não podemos mais fazer isso, certo?"
+  ],
+  [
+   "Então vamos tentar o nosso melhor e",
+   "consertar nós mesmos."
+  ],
+  [
+   "Até lá, vá dar uma olhada no oeste e sul.",
+   "Quando estiver por perto, venha me ver de",
+   "novo."
+  ]
+ ],
+ "s163.sec9.u4": [
+  [
+   "Você já esteve no pântano Geko?"
+  ],
+  [
+   "Dizem que um Digimon travesso se mete com",
+   "você às vezes."
+  ]
+ ],
+ "s163.sec9.u5": [
+  [
+   "Quando um Digimon digievolui,",
+   "as técnicas equipadas são",
+   "redefinidas. Não se esqueça!"
+  ]
+ ],
+ "s163.sec9.u6": "Droga.",
+ "s163.sec10.u0": "E daí? Eu acendi as luzes. Está claro o suficiente?",
+ "s163.sec10.u1": "Vamos todos fazer uma cidade brilhante!",
+ "s163.sec10.u2": "Ligar as luzes muda alguma coisa?",
+ "s163.sec10.u3": "É tudo como você se sente!",
+ "s163.sec11.u0": [
+  [
+   "Sou o mais forte... não me considero derrotado",
+   "por você."
+  ],
+  [
+   "Venha para a Arena, e você verá..."
+  ]
+ ],
+ "s163.sec12.u0": "Ei, {color 6}{player}{color 1}. Estou patrulhando a cidade por tipos obscuros. O quê? Não vou atrapalhar nem nada!",
+ "s163.sec81.u0": "Bem, bem, bem, bem-vindos à minha loja! Para você, {color 6}{player}{color 1}, farei uma pechincha. A verdade é que eu não sou um bom vendedor. Mas ninguém mais parece ser bom nisso também... então foi assim que vim a vender itens por um tempo. Fico feliz em tê-lo. E você, {color 6}{player}{color 1}, continue e traga de volta muito Digimon!",
+ "s163.sec81.u1": [
+  [
+   "Hehe, e aí? O que acha da",
+   "minha loja? Não sou bom em",
+   "vender, mas por enquanto não",
+   "há quem faça isso! Traga logo"
+  ],
+  [
+   "muitos Digimon para cá, tá?"
+  ]
+ ],
+ "s163.sec81.u2": [
+  [
+   "Hehe, e aí? O que acha?"
+  ]
+ ],
+ "s163.sec81.u3": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Todos nos unimos para vender itens."
+  ]
+ ],
+ "s164.sec5.m0.o0": "Perto",
+ "s164.sec5.m0.o1": "Longe",
+ "s164.sec5.m0.o2": "Bem longe",
+ "s164.sec5.m1.o0": "Topo do Monte Panorama",
+ "s164.sec5.m1.o1": "Selva Tropical",
+ "s164.sec5.m1.o2": "Túnel da Broca",
+ "s164.sec5.m2.o0": "Savana das Engrenagens",
+ "s164.sec5.m2.o1": "Mansão do Lorde Cinza",
+ "s164.sec5.m2.o2": "Grande Cânion",
+ "s164.sec5.m3.o0": "Região de Dino: entrada",
+ "s164.sec5.m3.o1": "Região de Dino: profundidades",
+ "s164.sec5.m3.o2": "Mundo Desconhecido",
+ "s164.sec5.m4.o0": "Fora da Caverna de Curling",
+ "s164.sec5.m4.o1": "Pescar Seadramon",
+ "s164.sec5.m4.o2": "Caverna de Lava",
+ "s164.sec5.u0": [
+  [
+   "{color 1}Branco {color 2}Azul {color 3}Vermelho {color 4}Rosa",
+   "{color 5}Verde {color 6}Ciano {color 7}Amarelo {color 10}Laranja",
+   "{color 10}a {color 6}b {color 4}c {color 5}d"
+  ]
+ ],
+ "s164.sec5.u1": [
+  [
+   "Agora é mês {pstat 105}, dia",
+   "{pstat 106},",
+   "{pstat 107}:{pstat 108}."
+  ]
+ ],
+ "s164.sec5.u2": "Eu sou o Sr. Dobra. Onde você quer ir?",
+ "s164.sec6.m0.o0": "Numemon",
+ "s164.sec6.m0.o1": "Sukamon",
+ "s164.sec6.m0.o2": "Botamon",
+ "s164.sec6.u0": "Vida 3",
+ "s164.sec6.u1": [
+  [
+   "Sou o Sr. Digievolução. O que",
+   "você quer ser?"
+  ]
+ ],
+ "s164.sec8.m0.o0": "Quase morto.",
+ "s164.sec8.m0.o1": "Modo de abertura",
+ "s164.sec8.m0.o2": "Avançar o tempo",
+ "s164.sec8.m1.o0": "Avançar 1 hora",
+ "s164.sec8.m1.o1": "Avançar 6 horas",
+ "s164.sec8.m1.o2": "Avançar 240 horas",
+ "s164.sec9.u0": [
+  [
+   "Ehehe, vou explicar o que há",
+   "fora da cidade. A Floresta",
+   "Nativa fica ao redor dela. Os",
+   "Digimon de lá não são muito"
+  ],
+  [
+   "fortes. Logo a oeste fica a",
+   "Ginásio Verde. Acho que você",
+   "vai passar bastante por lá.",
+   "Cruzando o rio a leste, fica a"
+  ],
+  [
+   "Selva Tropical. Não sei o que",
+   "há depois. A oeste, uma",
+   "montanha e um lago bloqueiam o",
+   "caminho, mas pode haver mais"
+  ],
+  [
+   "terras além deles. Bem ao sul",
+   "fica o mar. Ao norte, uma",
+   "montanha bem alta. Não dá para",
+   "seguir por esses lados. É tudo"
+  ],
+  [
+   "que sei. Mas a cidade é o",
+   "centro da ilha, então acho que",
+   "há mais coisas ao norte. Vou",
+   "procurar notícias de fora,"
+  ],
+  [
+   "então venha ouvi-las de vez em",
+   "quando."
+  ]
+ ],
+ "s164.sec11.u0": [
+  [
+   "Olá! Quer um pouco de carne?"
+  ],
+  [
+   "Oops, eu ainda não expliquei."
+  ],
+  [
+   "Este é um campo para carne: a Fazenda de",
+   "Carne. Cultivamos a carne que todos comem",
+   "aqui."
+  ]
+ ],
+ "s164.sec11.u1": "Espere, espere. Você cultiva carne em um campo?",
+ "s164.sec11.u2": "Sim. Há algo estranho nisso?",
+ "s164.sec11.u3": "Não... eh, deixa pra lá. E daí?",
+ "s164.sec11.u4": [
+  [
+   "Jiji e os outros decidiram,",
+   "{color 6}{player}{color 1}: você ganha três",
+   "pedaços de carne por dia. Aqui",
+   "está a carne de hoje!"
+  ]
+ ],
+ "s164.sec11.u5": "Hmm, você tem muita carne. Você pode pular a parte de hoje, certo?",
+ "s164.sec11.u6": "Hmm, você tem muita carne. Vou ficar com o que você não pode carregar, ok?",
+ "s164.sec11.u7": [
+  [
+   "Recebeu 1 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u8": "Você está carregando muitos itens.",
+ "s164.sec11.u9": [
+  [
+   "Recebeu 3 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u10": "Tivemos uma grande colheita hoje! Então você ganha cinco pedaços de carne.",
+ "s164.sec11.u11": "Hmm, você tem muita carne. Você pode pular a parte de hoje, certo?",
+ "s164.sec11.u12": "Hmm, você tem muita carne. Vou ficar com o que você não pode carregar, ok?",
+ "s164.sec11.u13": [
+  [
+   "Recebeu 1 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u14": "Desculpe, mas está carregando muitos itens.",
+ "s164.sec11.u15": [
+  [
+   "Recebeu 5 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u16": "O próximo lote é amanhã!",
+ "s164.sec11.u17": [
+  [
+   "Aqui está a carne de hoje!"
+  ]
+ ],
+ "s164.sec11.u18": "Hmm, você tem muita carne. Você pode pular a parte de hoje, certo?",
+ "s164.sec11.u19": "Hmm, você tem muita carne. Vou ficar com o que você não pode carregar, ok?",
+ "s164.sec11.u20": [
+  [
+   "Recebeu 3 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u21": "Você está carregando muitos itens.",
+ "s164.sec11.u22": [
+  [
+   "Recebeu 1 x {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s164.sec11.u23": "O próximo lote é amanhã!",
+ "s164.sec11.u24": [
+  [
+   "Hmm? Já te dei carne hoje, não foi?"
+  ],
+  [
+   "Se ficar sem comida... ouvi dizer que pode",
+   "encontrar muitos cogumelos selvagens na",
+   "Floresta Nativa."
+  ]
+ ],
+ "s164.sec54.m0.o0": "Sala de Giromon",
+ "s164.sec54.m0.o1": "Fundo da Cidade de Brinquedos",
+ "s164.sec54.m0.o2": "Teste de batalha",
+ "s164.sec54.m0.o3": "Última batalha.",
+ "s164.sec66.m0.o0": "Debug: atributos altos",
+ "s164.sec66.m0.o1": "Debug: atributos iniciais",
+ "s164.sec66.m0.o2": "À abertura",
+ "s192.sec51.u0": "Então... finalmente chegou a hora.",
+ "s192.sec51.u1": "Honestamente, eu gostaria de ficar aqui para sempre. Mas minha mãe ficará preocupada...",
+ "s192.sec51.u2": "Tudo o que posso dizer, {color 6}{player}{color 1}, é obrigado. Gostaria de ter feito mais por você, para retribuir...",
+ "s192.sec51.u3": [
+  [
+   "{color 7}Tokomon {color 1}",
+   "Não se esqueça de nós, está bem?"
+  ]
+ ],
+ "s192.sec51.u4": [
+  [
+   "Algum dia nos veremos de",
+   "novo... Esse dia vai chegar...",
+   "não vai...?"
+  ]
+ ],
+ "s192.sec51.u5": "...Todo mundo, eu me diverti muito. Obrigado.",
+ "s192.sec51.u6": [
+  [
+   "Vamos... Antes que a despedida",
+   "fique ainda mais difícil...",
+   "vamos começar a cerimônia..."
+  ]
+ ],
+ "s192.sec51.u7": "{color 10}{partner}{color 1}, meu melhor amigo... nossa aventura foi a melhor de todas!",
+ "s193.sec54.u0": "Hum... Ele está acordando? Parece que deu certo!",
+ "s193.sec54.u1": "Um humano... Igualzinho ao que o Jiji disse!",
+ "s193.sec54.u2": "Nnnngh...",
+ "s193.sec54.u3": "Psiu! Ele está acordando!",
+ "s193.sec54.u4": "Hã...? Onde... eu estou?",
+ "s193.sec54.u5": "Bem-vindo ao Mundo Digimon!",
+ "s193.sec54.u6": "Hã?",
+ "s193.sec54.u7": "Aaaah!!",
+ "s193.sec54.u8": "Hã? O quê? O que foi?",
+ "s193.sec54.u9": "O-o-o que são vocês?!",
+ "s193.sec54.u10": "Somos Digimon.",
+ "s193.sec54.u11": "Digimon?! Você quer dizer...",
+ "s193.sec54.u12": "Hum? Você conhece os Digimon, não conhece...?",
+ "s193.sec54.u13": "Hum? Ah, entendi. É um sonho, né? Só pode ser.",
+ "s193.sec54.u14": "Não é um sonho! Nós somos de verdade!",
+ "s193.sec54.u15": "Ah, você é o Tokomon! Então vocês são mesmo Digimon. Que sonho realista...",
+ "s193.sec54.u16": "Aham. Escute, {color 6}{player}{color 1}. Isto não é um sonho. Mas também não é bem a realidade...",
+ "s193.sec54.u17": "Como assim? Então como você sabe meu nome? E quem é você, afinal?",
+ "s193.sec54.u18": "Sou Jijimon.",
+ "s193.sec54.u19": "Hã? Existe algum Digimon com esse nome?",
+ "s193.sec54.u20": "He, he. Há mais Digimon do que você imagina. Afinal, este é o Mundo Digimon.",
+ "s193.sec54.u21": "Mundo... Digimon...",
+ "s193.sec54.u22": "Um mundo que não é sonho nem realidade. O mundo dos Digimon!",
+ "s193.sec54.u23": "Bom... Pensando bem... É real demais pra ser um sonho...",
+ "s193.sec54.u24": "Olhe atrás de você. Isso deve esclarecer as coisas.",
+ "s193.sec54.u25": "Hã?",
+ "s193.sec54.u26": "Não pode ser... É o {color 10}{partner}{color 1}, o Digimon que eu estava criando?",
+ "s193.sec54.u27": "É isso...! Fui sugado pra dentro do meu chaveiro Digimon...",
+ "s193.sec54.u28": "Isso mesmo. Agora você entendeu.",
+ "s193.sec54.u29": "Entendi, mas... por que eu estou... aqui?",
+ "s193.sec54.u30": "Hum... Agora que você entendeu, venha até a nossa casa. Conversaremos melhor lá.",
+ "s193.sec55.u0": "Bem, onde eu estava? Fui eu que chamei você aqui. Precisamos que você nos salve.",
+ "s193.sec55.u1": "Salvar vocês?? Por quê? Aconteceu alguma coisa?",
+ "s193.sec55.u2": "Estamos na Cidade File, bem no meio de uma ilha chamada Ilha File.",
+ "s193.sec55.u3": "Uma cidade? Isto aqui? É bem pequena e está caindo aos pedaços.",
+ "s193.sec55.u4": "He... Acho melhor dizer que isto ERA uma cidade. Há muito tempo, Digimon de todos os tipos viviam aqui.",
+ "s193.sec55.u5": "Mas, em algum momento, os Digimon começaram a perder seus \"corações\"... e se espalharam para fora da cidade.",
+ "s193.sec55.u6": "Como assim?",
+ "s193.sec55.u7": "Não sabemos por quê... Os Digimon estão perdendo a capacidade de falar...",
+ "s193.sec55.u8": "Alguns ainda falam um pouco... mas se esqueceram de que viviam na cidade.",
+ "s193.sec55.u9": "Entendi. Então é isso que significa perder o \"coração\".",
+ "s193.sec55.u10": "Isso mesmo. E é perigoso. Diz a lenda que, quando a Cidade File corre perigo, todos os Digimon também correm...",
+ "s193.sec55.u11": "Mas por que eu? Não podia ser outra pessoa?",
+ "s193.sec55.u12": "Você sabe criar Digimon muito bem, não sabe?",
+ "s193.sec55.u13": "Hã? ...Ah, sei. Sou ótimo nisso! He, he.",
+ "s193.sec55.u14": "Você não percebeu? Está falando a língua dos Digimon.",
+ "s193.sec55.u15": "O quê? Pra mim, estou falando português normal.",
+ "s193.sec55.u16": "Para nós, parece exatamente a língua dos Digimon.",
+ "s193.sec55.u17": "É, é!",
+ "s193.sec55.u18": "O amor que você tem pelos Digimon no seu mundo se transforma em poder de verdade aqui.",
+ "s193.sec55.u19": "O-opa... Assim você me deixa sem graça.",
+ "s193.sec55.u20": "Foi por isso que escolhi você. Você pode trazer os Digimon de toda a Ilha File de volta para cá!",
+ "s193.sec55.u21": "Ah...",
+ "s193.sec55.u22": "Aaah...",
+ "s193.sec55.u23": "Aaaah! C-claro, entendi! Agora finalmente entendi tudo! Ha, ha! Pode deixar comigo!",
+ "s193.sec55.u24": "Ebaaa! Viva, viva!",
+ "s193.sec55.u25": "Hum, hum, obrigado. Sei que é um pedido egoísta, mas você é a nossa última esperança.",
+ "s193.sec55.u26": "He, he. E aí, por onde eu começo?",
+ "s193.sec55.u27": "A partir de agora, você e seu parceiro {color 10}{partner}{color 1} vão explorar a Ilha File juntos.",
+ "s193.sec55.u28": "Descubram o que está por trás de tudo isso e convençam os Digimon a voltar para a cidade.",
+ "s193.sec55.u29": "Tá bom, entendi. Vamos nessa, {color 10}{partner}{color 1}!",
+ "s193.sec55.u30": "E-ei, espere, eu ainda não terminei..."
+}

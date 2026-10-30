@@ -1,0 +1,33 @@
+{
+  "id": 77,
+  "name": "RedVegiemon",
+  "level": "champion",
+  "attribute": "virus",
+  "specialties": ["nature", "fire", null],
+  "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Charm Perfume", "Poison Powder", "Mass Morph"],
+  "drop": {"item": "Supercarrot", "percent": 10},
+  "effects_like": 25,
+  "model": {"name": "REDV", "bones": 20, "radius": 150, "height": 270},
+  "voice": 62,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 400, "mp": 1000, "off": 150, "def": 60, "speed": 50, "brain": 100, "bits": 500},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

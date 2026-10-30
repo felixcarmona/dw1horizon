@@ -1,0 +1,366 @@
+{
+ "s168.sec10.u0": [
+  [
+   "- Rang D - Tournoi destiné",
+   "surtout aux Digimon Disciples.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s168.sec10.u1": [
+  [
+   "- Rang C - Tournoi destiné",
+   "surtout aux Digimon Champions.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s168.sec10.u2": [
+  [
+   "- Rang B - Pour les",
+   "Champions sûrs de leur force.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s168.sec10.u3": [
+  [
+   "- Rang A - Tournoi destiné",
+   "surtout aux Digimon Ultimes.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s168.sec10.u4": [
+  [
+   "- Rang S - Les Digimon les",
+   "plus puissants se réunissent.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : vainqueurs du rang A"
+  ]
+ ],
+ "s168.sec10.u5": [
+  [
+   "- Rang R - Une mêlée gagnée",
+   "par la ruse et la tactique. À",
+   "quatre, 2 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s168.sec10.u6": [
+  [
+   "- Coupe Version 1 - Couronne",
+   "le meilleur Digimon de la",
+   "version 1. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 1"
+  ]
+ ],
+ "s168.sec10.u7": [
+  [
+   "- Coupe Version 2 - Couronne",
+   "le meilleur Digimon de la",
+   "version 2. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 2"
+  ]
+ ],
+ "s168.sec10.u8": [
+  [
+   "- Coupe Version 3 - Couronne",
+   "le meilleur Digimon de la",
+   "version 3. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 3"
+  ]
+ ],
+ "s168.sec10.u9": [
+  [
+   "- Coupe Version 4 - Couronne",
+   "le meilleur Digimon de la",
+   "version 4. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 4"
+  ]
+ ],
+ "s168.sec10.u10": [
+  [
+   "- Coupe Version O -",
+   "Couronne le meilleur Digimon",
+   "hors des versions 1 à 4."
+  ],
+  [
+   "Combats à durée limitée. Duels,",
+   "3 tours, 8 inscrits Accès :",
+   "hors versions 1-4"
+  ]
+ ],
+ "s168.sec10.u11": [
+  [
+   "- Coupe Feu - Couronne le",
+   "roi des Digimon des flammes.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Feu"
+  ]
+ ],
+ "s168.sec10.u12": [
+  [
+   "- Coupe Combat - Couronne le",
+   "maître des arts martiaux",
+   "Digimon. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Combat"
+  ]
+ ],
+ "s168.sec10.u13": [
+  [
+   "- Coupe Tonnerre et Vent -",
+   "Couronne le roi des Digimon du",
+   "ciel et des tempêtes. Combats"
+  ],
+  [
+   "à durée limitée. Duels, 3",
+   "tours, 8 inscrits Accès : Air"
+  ]
+ ],
+ "s168.sec10.u14": [
+  [
+   "- Coupe Style - Couronne le",
+   "roi des Digimon les plus cool.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Glace"
+  ]
+ ],
+ "s168.sec10.u15": [
+  [
+   "- Coupe Nature - Couronne le",
+   "roi des Digimon qui aiment la",
+   "nature. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Nature"
+  ]
+ ],
+ "s168.sec10.u16": [
+  [
+   "- Coupe Métal - Couronne le",
+   "roi des Digimon supermachines.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Mécaniques"
+  ]
+ ],
+ "s168.sec10.u17": [
+  [
+   "- Coupe Crasse - Couronne le",
+   "roi des Digimon les plus",
+   "crasseux. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Crasse"
+  ]
+ ],
+ "s168.sec10.u18": [
+  [
+   "- Coupe Dino - Les Digimon",
+   "au sang ancien mesurent leurs",
+   "forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s168.sec10.u19": [
+  [
+   "- Coupe Ailes - Les Digimon",
+   "fiers de leurs ailes mesurent",
+   "leurs forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s168.sec10.u20": [
+  [
+   "- Coupe Animaux - Les",
+   "Digimon au sang bestial",
+   "mesurent leurs forces. Combats"
+  ],
+  [
+   "à durée limitée. Duels, 3",
+   "tours, 8 inscrits Accès : ???"
+  ]
+ ],
+ "s168.sec10.u21": [
+  [
+   "- Coupe Humaine - Les",
+   "Digimon humanoïdes mesurent",
+   "leurs forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s168.sec53.u0": [
+  [
+   "Hé, par là, ce sont les places",
+   "du public."
+  ]
+ ],
+ "s168.sec82.m0.o0": "Résultats",
+ "s168.sec82.m0.o1": "Tournois de rang",
+ "s168.sec82.m0.o2": "Tournois spéciaux",
+ "s168.sec82.u0": [
+  [
+   "Informations sur l'arène"
+  ]
+ ],
+ "s168.sec82.u1": [
+  [
+   "Tournois remportés :",
+   "{cupswon} {wins}",
+   "victoires, {losses} défaites"
+  ]
+ ],
+ "s168.sec82.u2": [
+  [
+   "Les tournois de rang sont",
+   "fréquents et ouverts à tous.",
+   "Évite toutefois d'y inscrire un"
+  ],
+  [
+   "Digimon bien plus fort que le",
+   "niveau du tournoi. Si ton",
+   "Digimon change d'espèce entre"
+  ],
+  [
+   "son inscription et le tournoi,",
+   "son inscription est annulée."
+  ]
+ ],
+ "s168.sec82.u3": [
+  [
+   "Les tournois spéciaux ont des",
+   "conditions d'entrée précises et",
+   "sont rares. Sans assez de"
+  ],
+  [
+   "participants admissibles en",
+   "ville, ils n'ont pas lieu.",
+   "Chacun ne se tient qu'une ou"
+  ],
+  [
+   "deux fois par an. Consulte donc",
+   "le calendrier bien à l'avance."
+  ]
+ ],
+ "s168.sec84.u0": [
+  [
+   "Hé hé... {color 10}{partner}{color 1}, tu as",
+   "sauvé le monde. Je vais te",
+   "trouver un titre de héros."
+  ],
+  [
+   "Voyons..."
+  ]
+ ],
+ "s168.sec84.u1": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "le roi invincible » ?"
+  ]
+ ],
+ "s168.sec84.u2": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "le héros légendaire » ?"
+  ]
+ ],
+ "s168.sec84.u3": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "seigneur du nouveau monde » ?"
+  ]
+ ],
+ "s168.sec84.u4": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "artisan de la paix » ?"
+  ]
+ ],
+ "s168.sec84.u5": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "la légende invaincue » ?"
+  ]
+ ],
+ "s168.sec84.u6": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "le brave » ?"
+  ]
+ ],
+ "s168.sec84.u7": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "toujours imperturbable » ?"
+  ]
+ ],
+ "s168.sec84.u8": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "dieu suprême de la guerre » ?"
+  ]
+ ],
+ "s168.sec84.u9": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "la bourrasque céleste » ?"
+  ]
+ ],
+ "s168.sec84.u10": [
+  [
+   "Que dis-tu de « {color 10}{partner}{color 1},",
+   "le voleur élégant » ?"
+  ]
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "file": "MAP/MAP14/ROOM12.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Birdramon143",
+      "at": [0, 0],
+      "facing": 0,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "moves": [46, 51, 50, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [465, 2328],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Leomon166",
+      "at": [-363, -560],
+      "facing": 2560,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "moves": [46, 51, 50, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [465, 2328],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

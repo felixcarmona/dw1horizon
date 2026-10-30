@@ -1,0 +1,231 @@
+{
+ "s174.sec81.u0": [
+  [
+   "Bienvenue. Vois donc,",
+   "{color 6}{player}{color 1}. Je suis le",
+   "propriétaire et le chef de ce"
+  ],
+  [
+   "restaurant. Prenez votre",
+   "temps et savourez tous deux ma",
+   "cuisine de flammes... Hé hé"
+  ],
+  [
+   "hé..."
+  ]
+ ],
+ "s174.sec81.u1": [
+  [
+   "Ha ha ha ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}, venez goûter ma",
+   "cuisine ! Je ne pensais pas que"
+  ],
+  [
+   "mon talent caché servirait un",
+   "jour. Ici, c'est de la vraie",
+   "cuisine, pas des objets !"
+  ],
+  [
+   "Régalez-vous !"
+  ]
+ ],
+ "s174.sec81.u2": [
+  [
+   "Salut, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1} ! J'ai décidé de",
+   "vivre de la cuisine. Ne vous"
+  ],
+  [
+   "fiez pas à mon apparence, je",
+   "suis un excellent cuisinier.",
+   "Les provisions de voyage, on"
+  ],
+  [
+   "s'en lasse, hein ? Un bon repas",
+   "au restaurant de temps en",
+   "temps, c'est un vrai plaisir !"
+  ]
+ ],
+ "s174.sec81.u3": [
+  [
+   "Saluuut ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Mon restaurant",
+   "est enfin ouvert ! Mes"
+  ],
+  [
+   "desserts glacés sont délicieux,",
+   "vous devez les goûter !"
+  ]
+ ],
+ "s174.sec81.u4": [
+  [
+   "Hé... {color 6}{player}{color 1}, je serai le",
+   "chef de ce restaurant. Prenez",
+   "votre temps et savourez tous"
+  ],
+  [
+   "deux ma cuisine brûlante."
+  ]
+ ],
+ "s174.sec81.u5": [
+  [
+   "Ha ha ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Je suis cuisinier",
+   "! Je ne pensais pas que mon"
+  ],
+  [
+   "talent caché servirait un jour.",
+   "Mes spécialités sont au-dessus",
+   "du lot, alors venez !"
+  ]
+ ],
+ "s174.sec81.u6": [
+  [
+   "Salut, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1} ! J'ai décidé de",
+   "vivre pour la cuisine ! Mes"
+  ],
+  [
+   "spécialités sont pleines de",
+   "nutriments ! Vérifiez mes",
+   "heures de travail !"
+  ]
+ ],
+ "s174.sec81.u7": [
+  [
+   "Saluuut ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1} ! J'ai décidé",
+   "d'aider au restaurant. On m'a"
+  ],
+  [
+   "proposé de faire les desserts !",
+   "Ils sont tellement bons que",
+   "vous devez les goûter."
+  ]
+ ],
+ "s175.sec6.u0": [
+  [
+   "Bzzt-bzzt ! Hé, {color 6}{player}{color 1}",
+   "! C'est quoi, cette machine ?",
+   "Bzzt ! Rien de dangereux ! Ce"
+  ],
+  [
+   "jukebox met le feu à mon coeur",
+   "! Hé-hé-hi ! Toi aussi,",
+   "lâche-toi de temps en temps !"
+  ],
+  [
+   "Explose, mon pote ! J'attends",
+   "une demande de morceau",
+   "brûlante ! Bzzt !"
+  ]
+ ],
+ "s175.sec81.u0": [
+  [
+   "Bienvenue. Vois donc,",
+   "{color 6}{player}{color 1}. Je suis le",
+   "propriétaire et le chef de ce"
+  ],
+  [
+   "restaurant. Prenez votre",
+   "temps et savourez tous deux ma",
+   "cuisine de flammes... Hé hé"
+  ],
+  [
+   "hé..."
+  ]
+ ],
+ "s175.sec81.u1": [
+  [
+   "Ha ha ha ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}, venez goûter ma",
+   "cuisine ! Je ne pensais pas que"
+  ],
+  [
+   "mon talent caché servirait un",
+   "jour. Ici, c'est de la vraie",
+   "cuisine, pas des objets !"
+  ],
+  [
+   "Régalez-vous !"
+  ]
+ ],
+ "s175.sec81.u2": [
+  [
+   "Salut, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1} ! J'ai décidé de",
+   "vivre de la cuisine. Ne vous"
+  ],
+  [
+   "fiez pas à mon apparence, je",
+   "suis un excellent cuisinier.",
+   "Les provisions de voyage, on"
+  ],
+  [
+   "s'en lasse, hein ? Un bon repas",
+   "au restaurant de temps en",
+   "temps, c'est un vrai plaisir !"
+  ]
+ ],
+ "s175.sec81.u3": [
+  [
+   "Saluuut ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Mon restaurant",
+   "est enfin ouvert ! Mes"
+  ],
+  [
+   "desserts glacés sont délicieux,",
+   "vous devez les goûter !"
+  ]
+ ],
+ "s175.sec81.u4": [
+  [
+   "Hé... {color 6}{player}{color 1}, je serai le",
+   "chef de ce restaurant. Prenez",
+   "votre temps et savourez ma"
+  ],
+  [
+   "cuisine, brûlante comme le",
+   "soleil de midi."
+  ]
+ ],
+ "s175.sec81.u5": [
+  [
+   "Ha ha ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Je suis cuisinier",
+   "! Je ne pensais pas que mon"
+  ],
+  [
+   "talent caché servirait un jour.",
+   "Pour goûter mes spécialités,",
+   "venez avant midi !"
+  ]
+ ],
+ "s175.sec81.u6": [
+  [
+   "Salut, {color 6}{player}{color 1} et",
+   "{color 10}{partner}{color 1} ! J'ai décidé de",
+   "vivre pour la cuisine ! Mes"
+  ],
+  [
+   "spécialités ne sont servies que",
+   "tard la nuit ou tôt le matin,",
+   "mais elles sont très"
+  ],
+  [
+   "nourrissantes !"
+  ]
+ ],
+ "s175.sec81.u7": [
+  [
+   "Saluuut ! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1} ! J'ai décidé",
+   "d'aider au restaurant. On m'a"
+  ],
+  [
+   "proposé de faire les desserts !",
+   "Ils sont tellement bons que",
+   "vous devez les goûter."
+  ]
+ ]
+}

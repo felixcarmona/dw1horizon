@@ -1,0 +1,253 @@
+// Readable form of script 221 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 221 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        goto sec5;
+    }
+
+    on talk(slot0) replace {    // section 5
+        if (is_recruited(species("Agumon")) && !jijimon_news_told.agumon) {
+            say(slot0, text("s221.sec5.u0"));
+            jijimon_news_told.agumon = true;
+            return;
+        }
+        if (is_recruited(species("Palmon")) && !jijimon_news_told.palmon) {
+            say(slot0, text("s221.sec5.u1"));
+            jijimon_news_told.palmon = true;
+            return;
+        }
+        if (is_recruited(species("Kunemon")) && !jijimon_news_told.kunemon) {
+            say(slot0, text("s221.sec5.u2"));
+            jijimon_news_told.kunemon = true;
+            return;
+        }
+        if (is_recruited(species("Centarumon")) && !jijimon_news_told.centarumon) {
+            say(slot0, text("s221.sec5.u3"));
+            jijimon_news_told.centarumon = true;
+            return;
+        }
+        if (is_recruited(species("Coelamon")) && !jijimon_news_told.coelamon) {
+            say(slot0, text("s221.sec5.u4"));
+            jijimon_news_told.coelamon = true;
+            return;
+        }
+        if (is_recruited(species("Betamon")) && !jijimon_news_told.betamon) {
+            say(slot0, text("s221.sec5.u5"));
+            jijimon_news_told.betamon = true;
+            return;
+        }
+        if (is_recruited(species("Bakemon")) && !jijimon_news_told.bakemon) {
+            say(slot0, text("s221.sec5.u6"));
+            jijimon_news_told.bakemon = true;
+            return;
+        }
+        if (is_recruited(species("Vegiemon")) && !jijimon_news_told.vegiemon) {
+            say(slot0, text("s221.sec5.u7"));
+            jijimon_news_told.vegiemon = true;
+            return;
+        }
+        if (is_recruited(species("Tyrannomon")) && !trigger(580)) {
+            say(slot0, text("s221.sec5.u8"));
+            set_trigger(580);
+            return;
+        }
+        if (is_recruited(species("Meramon")) && !trigger(581)) {
+            say(slot0, text("s221.sec5.u9"));
+            set_trigger(581);
+            return;
+        }
+        if (is_recruited(species("Frigimon")) && !jijimon_news_told.frigimon) {
+            say(slot0, text("s221.sec5.u10"));
+            jijimon_news_told.frigimon = true;
+            return;
+        }
+        if (is_recruited(species("Garurumon")) && !jijimon_news_told.garurumon) {
+            say(slot0, text("s221.sec5.u11"));
+            jijimon_news_told.garurumon = true;
+            return;
+        }
+        if (is_recruited(species("Birdramon")) && !jijimon_news_told.birdramon) {
+            say(slot0, text("s221.sec5.u12"));
+            jijimon_news_told.birdramon = true;
+            return;
+        }
+        if (is_recruited(species("Shellmon")) && !jijimon_news_told.shellmon) {
+            say(slot0, text("s221.sec5.u13"));
+            jijimon_news_told.shellmon = true;
+            return;
+        }
+        if (is_recruited(species("Elecmon")) && !trigger(580)) {
+            say(slot0, text("s221.sec5.u14"));
+            set_trigger(580);
+            return;
+        }
+        if (is_recruited(species("Kokatorimon")) && !jijimon_news_told.kokatorimon) {
+            say(slot0, text("s221.sec5.u15"));
+            jijimon_news_told.kokatorimon = true;
+            return;
+        }
+        if (is_recruited(species("Monochromon")) && !jijimon_news_told.monochromon) {
+            say(slot0, text("s221.sec5.u16"));
+            jijimon_news_told.monochromon = true;
+            return;
+        }
+        if (is_recruited(species("Unimon")) && !jijimon_news_told.unimon) {
+            say(slot0, text("s221.sec5.u17"));
+            jijimon_news_told.unimon = true;
+            return;
+        }
+        if (is_recruited(species("Patamon")) && !jijimon_news_told.patamon) {
+            say(slot0, text("s221.sec5.u18"));
+            jijimon_news_told.patamon = true;
+            return;
+        }
+        if (is_recruited(species("Biyomon")) && !jijimon_news_told.biyomon) {
+            say(slot0, text("s221.sec5.u19"));
+            jijimon_news_told.biyomon = true;
+            return;
+        }
+        if (is_recruited(species("Greymon")) && !jijimon_news_told.greymon) {
+            say(slot0, text("s221.sec5.u20"));
+            jijimon_news_told.greymon = true;
+            return;
+        }
+        if (is_recruited(species("Penguinmon")) && !jijimon_news_told.penguinmon) {
+            say(slot0, text("s221.sec5.u21"));
+            jijimon_news_told.penguinmon = true;
+            return;
+        }
+        if (is_recruited(species("Angemon")) && !jijimon_news_told.angemon) {
+            say(slot0, text("s221.sec5.u22"));
+            jijimon_news_told.angemon = true;
+            return;
+        }
+        if (is_recruited(species("Drimogemon")) && !jijimon_news_told.drimogemon) {
+            say(slot0, text("s221.sec5.u23"));
+            jijimon_news_told.drimogemon = true;
+            return;
+        }
+        if (is_recruited(species("Gabumon")) && !jijimon_news_told.gabumon) {
+            say(slot0, text("s221.sec5.u24"));
+            jijimon_news_told.gabumon = true;
+            return;
+        }
+        if (is_recruited(species("Ninjamon")) && !jijimon_news_told.ninjamon) {
+            say(slot0, text("s221.sec5.u25"));
+            jijimon_news_told.ninjamon = true;
+            return;
+        }
+        if (is_recruited(species("Whamon")) && !jijimon_news_told.whamon) {
+            say(slot0, text("s221.sec5.u26"));
+            jijimon_news_told.whamon = true;
+            return;
+        }
+        if (is_recruited(species("Mojyamon")) && !jijimon_news_told.mojyamon) {
+            say(slot0, text("s221.sec5.u27"));
+            jijimon_news_told.mojyamon = true;
+            return;
+        }
+        if (is_recruited(species("Mamemon")) && !jijimon_news_told.mamemon) {
+            say(slot0, text("s221.sec5.u28"));
+            jijimon_news_told.mamemon = true;
+            return;
+        }
+        if (is_recruited(species("Numemon")) && !jijimon_news_told.numemon) {
+            say(slot0, text("s221.sec5.u29"));
+            jijimon_news_told.numemon = true;
+            return;
+        }
+        if (is_recruited(species("Kabuterimon")) && !trigger(581)) {
+            say(slot0, text("s221.sec5.u30"));
+            set_trigger(581);
+            return;
+        }
+        if (is_recruited(species("Kuwagamon")) && !jijimon_news_told.kuwagamon) {
+            say(slot0, text("s221.sec5.u31"));
+            jijimon_news_told.kuwagamon = true;
+            return;
+        }
+        if (is_recruited(species("Giromon")) && !jijimon_news_told.giromon) {
+            say(slot0, text("s221.sec5.u32"));
+            jijimon_news_told.giromon = true;
+            return;
+        }
+        if (is_recruited(species("Ogremon")) && !jijimon_news_told.ogremon) {
+            say(slot0, text("s221.sec5.u33"));
+            jijimon_news_told.ogremon = true;
+            return;
+        }
+        if (is_recruited(species("Leomon")) && !jijimon_news_told.leomon) {
+            say(slot0, text("s221.sec5.u34"));
+            jijimon_news_told.leomon = true;
+            return;
+        }
+        if (is_recruited(species("Piximon")) && !jijimon_news_told.piximon) {
+            say(slot0, text("s221.sec5.u35"));
+            jijimon_news_told.piximon = true;
+            return;
+        }
+        if (is_recruited(species("Etemon")) && !jijimon_news_told.etemon) {
+            say(slot0, text("s221.sec5.u36"));
+            jijimon_news_told.etemon = true;
+            return;
+        }
+        if (is_recruited(species("MetalMamemon")) && !jijimon_news_told.metalmamemon) {
+            say(slot0, text("s221.sec5.u37"));
+            jijimon_news_told.metalmamemon = true;
+            return;
+        }
+        if (is_recruited(species("Vademon")) && !jijimon_news_told.vademon) {
+            say(slot0, text("s221.sec5.u38"));
+            jijimon_news_told.vademon = true;
+            return;
+        }
+        if (is_recruited(species("MetalGreymonVirus")) && !jijimon_news_told.metalgreymon_virus) {
+            say(slot0, text("s221.sec5.u39"));
+            jijimon_news_told.metalgreymon_virus = true;
+            return;
+        }
+        if (is_recruited(species("Nanimon")) && !jijimon_news_told.nanimon) {
+            say(slot0, text("s221.sec5.u40"));
+            jijimon_news_told.nanimon = true;
+            return;
+        }
+        if (is_recruited(species("Monzaemon")) && !jijimon_news_told.monzaemon) {
+            say(slot0, text("s221.sec5.u41"));
+            jijimon_news_told.monzaemon = true;
+            return;
+        }
+        if (is_recruited(species("Devimon")) && !jijimon_news_told.devimon) {
+            say(slot0, text("s221.sec5.u42"));
+            jijimon_news_told.devimon = true;
+            return;
+        }
+        if (is_recruited(species("Airdramon")) && !jijimon_news_told.airdramon) {
+            say(slot0, text("s221.sec5.u43"));
+            jijimon_news_told.airdramon = true;
+            return;
+        }
+        if (is_recruited(species("Digitamamon")) && !jijimon_news_told.digitamamon) {
+            say(slot0, text("s221.sec5.u44"));
+            jijimon_news_told.digitamamon = true;
+            return;
+        }
+        if (is_recruited(species("SkullGreymon")) && !jijimon_news_told.skullgreymon) {
+            say(slot0, text("s221.sec5.u45"));
+            jijimon_news_told.skullgreymon = true;
+            return;
+        }
+        if (is_recruited(species("Andromon")) && !jijimon_news_told.andromon) {
+            say(slot0, text("s221.sec5.u46"));
+            jijimon_news_told.andromon = true;
+            return;
+        }
+        jump_to_file(210, 77);
+    }
+}

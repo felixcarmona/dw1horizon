@@ -1,0 +1,79 @@
+// Readable form of script 156 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 156 {
+    npc guardromon0 = 5;
+    npc guardromon1 = 6;
+    npc guardromon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Def. Chip"), 82, 0, -1000, 3072, 714);
+        spawn_chest(item("Auto Pilot"), 32, 0, -1535, 3072, 715);
+        spawn_chest(item("Brain Chip"), 1889, 0, -2267, 1024, 716);
+    }
+
+    on talk(guardromon0) replace {    // section 5
+        entity_walk_to_entity(partner, 1, tamer);
+        await tamer;
+        say(guardromon0, text("s156.sec5.u0"));
+        store_digimon_type(partner_type);
+        if (partner_type != 13) {
+            say(guardromon0, text("s156.sec5.u1"));
+            return;
+        }
+        choice {
+            text("s156.sec5.m0.o0") => {
+                if (bits < 2000) {
+                    say(guardromon0, text("s156.sec5.u2"));
+                    return;
+                }
+                take_bits(2000);
+                say(guardromon0, text("s156.sec5.u3"));
+                store_random(random_roll, 10);
+                if (random_roll <= 0) {
+                    say(guardromon0, text("s156.sec5.u4"));
+                    fadeout_hud(0);
+                    engine.arg = 41;
+                    call_digimon_routine(routine("forced_evolution"));
+                    wait(570);
+                    say(tamer, text("s156.sec5.u5"));
+                    return;
+                }
+                if (random_roll <= 5) {
+                    say(guardromon0, text("s156.sec5.u6"));
+                    fadeout_hud(0);
+                    engine.arg = 27;
+                    call_digimon_routine(routine("forced_evolution"));
+                    wait(570);
+                    say(tamer, text("s156.sec5.u7"));
+                    return;
+                }
+                say(guardromon0, text("s156.sec5.u8"));
+                say(tamer, text("s156.sec5.u9"));
+                say(guardromon0, text("s156.sec5.u10"));
+            }
+            text("s156.sec5.m0.o1") => {}
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on talk(guardromon1) replace {    // section 6
+        say(guardromon1, text("s156.sec6.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon2) replace {    // section 7
+        say(guardromon2, text("s156.sec7.u0"));
+        battle();
+        recruit(species("Guardromon"));
+        return;
+    }
+}

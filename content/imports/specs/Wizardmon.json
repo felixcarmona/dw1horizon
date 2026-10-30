@@ -1,0 +1,110 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 154,
+ "type": 241,
+ "name": "Wizardmon",
+ "source": {
+  "type": 9,
+  "mmd": "extracted/CHDAT/MMD0/MERA.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 3,
+  "3": 9,
+  "5": 5,
+  "6": 7,
+  "7": 8,
+  "8": 10,
+  "9": 13,
+  "11": 11,
+  "12": 12,
+  "13": 14,
+  "14": 15,
+  "15": 16,
+  "16": 17,
+  "17": 19,
+  "18": 20,
+  "19": 21
+ },
+ "hips": [
+  13,
+  1,
+  0.952
+ ],
+ "root_scale": 0.952,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 61,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 61,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 43,
+   "end": 133,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 5,
+   "end": 85,
+   "hz": 0.3,
+   "rise": 210
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 1,
+   "end": 75,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 210
+  },
+  "0x37": {
+   "anim": "anim_01",
+   "start": 108,
+   "end": 200,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 210
+  },
+  "0x35": {
+   "anim": "anim_03",
+   "start": 27,
+   "end": 74,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 210
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34"
+ ]
+}

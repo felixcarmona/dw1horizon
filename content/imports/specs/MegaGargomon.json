@@ -1,0 +1,118 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M372SGRG",
+ "type": 335,
+ "name": "MegaGargomon",
+ "source": {
+  "type": 40,
+  "mmd": "extracted/CHDAT/MMD1/ANDR.MMD"
+ },
+ "map": {
+  "1": 4,
+  "2": 2,
+  "3": 1,
+  "4": 18,
+  "5": 20,
+  "7": 13,
+  "8": 12,
+  "9": 14,
+  "10": 16,
+  "12": 6,
+  "15": 5,
+  "16": 7,
+  "17": 3,
+  "18": 8,
+  "25": 9
+ },
+ "hips": [
+  1,
+  1,
+  1.208
+ ],
+ "root_scale": 1.208,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x3c": {
+   "anim": "anim_32",
+   "start": 79,
+   "end": 180,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x3b": {
+   "anim": "anim_26",
+   "start": 28,
+   "end": 142,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x38": {
+   "anim": "anim_13",
+   "start": 10,
+   "end": 93,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.084715,
+ "hub_roots": true,
+ "quad_angle": 40.0
+}

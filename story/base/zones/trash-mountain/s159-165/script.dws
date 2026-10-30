@@ -1,0 +1,273 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 159 {
+    npc kingsukamon = 5;
+    npc sukamon1 = 6;
+    npc sukamon2 = 7;
+    npc sukamon3 = 8;
+    sections 254, 5, 81, 6, 7, 8, 51, 82;
+    on enter replace {    // enter
+        if (!old_fishrod_picked_up) {
+            set_obj_visibility(10, 0);
+        } else {
+            set_obj_visibility(10, 1);
+        }
+        unless (dust_kingdom_explained) goto sec6;
+    }
+    on talk(kingsukamon) replace {    // talk
+        goto sec81;
+    }
+    on use(1) replace {    // use1
+        camera_to(-1143, 1558, speed: 10);
+        face(tamer, kingsukamon);
+        face(partner, kingsukamon);
+        face(kingsukamon, tamer);
+        wait(5);
+        store_digimon_type(partner_type);
+        if (kingsukamon_reverted_partner && partner_type == 39) {
+            sound(8, 20);
+            say(kingsukamon, text("s159.sec81.u0"));
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s159.sec81.u1"));
+            animate(tamer, anim.idle);
+            say(kingsukamon, text("s159.sec81.u2"));
+        } else {
+            if (kingsukamon_reverted_partner) {
+                sound(8, 20);
+                say(kingsukamon, text("s159.sec81.u3"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            if (partner_type == 39) {
+                say(kingsukamon, text("s159.sec81.u4"));
+                engine.no_cancel = true;
+                choice(open) {
+                    text("s159.sec81.m0.o0") => {
+                        engine.no_cancel = false;
+                        sound(8, 20);
+                        say(kingsukamon, text("s159.sec81.u5"));
+                        say(tamer, text("s159.sec81.u6"));
+                        say(kingsukamon, text("s159.sec81.u7"));
+                        camera_on(tamer, speed: 10);
+                        await camera;
+                        return;
+                    }
+                    text("s159.sec81.m0.o1") => {
+                        engine.no_cancel = false;
+                        say(kingsukamon, text("s159.sec81.u8"));
+                        animate(tamer, 16);
+                        wait(15);
+                        say(tamer, text("s159.sec81.u9"));
+                        animate(tamer, anim.idle);
+                        say(kingsukamon, text("s159.sec81.u10"));
+                        say(tamer, text("s159.sec81.u11"));
+                        say(kingsukamon, text("s159.sec81.u12"));
+                        say(tamer, text("s159.sec81.u13"));
+                        sound(8, 20);
+                        say(kingsukamon, text("s159.sec81.u14"));
+                        if (damage_percent == 39) {
+                            store_digimon_type(damage_percent);
+                            copy_pstat(sukamon_backup_digimon, engine.arg);
+                        }
+                        fadeout_hud(0);
+                        animate(kingsukamon, 30);
+                        sound(8, 19);
+                        wait(3s);
+                        call_digimon_routine(routine("revert_sukamon"));
+                        await entity(201);
+                        animate(kingsukamon, anim.idle);
+                        wait(5);
+                        say(tamer, text("s159.sec81.u15"));
+                        sound(8, 20);
+                        say(kingsukamon, text("s159.sec81.u16"));
+                        kingsukamon_reverted_partner = true;
+                        camera_on(tamer, speed: 10);
+                        await camera;
+                        return;
+                    }
+                    cancel => {}
+                }
+            }
+            sound(8, 20);
+            say(kingsukamon, text("s159.sec81.u17"));
+            say(tamer, text("s159.sec81.u18"));
+            say(kingsukamon, text("s159.sec81.u19"));
+            say(tamer, text("s159.sec81.u20"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (damage_percent == 39) {
+            store_digimon_type(damage_percent);
+            copy_pstat(sukamon_backup_digimon, engine.arg);
+        }
+        hide_hud();
+        animate(kingsukamon, 30);
+        sound(8, 19);
+        wait(60);
+        call_digimon_routine(routine("revert_sukamon"));
+        await entity(201);
+        animate(kingsukamon, anim.idle);
+        wait(5);
+        say(tamer, text("s159.sec81.u15"));
+        sound(8, 20);
+        say(kingsukamon, text("s159.sec81.u16"));
+        kingsukamon_reverted_partner = true;
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+    on talk(sukamon1) replace {    // talk
+        if (dust_kingdom_explained) {
+            say(sukamon1, text("s159.sec6.u0"));
+            if (has_card(21) >= 1) {
+                choice {
+                    text("s159.sec6.m0.o0") => {
+                        if (has_card(14) >= 9) {
+                            say(sukamon1, text("s159.sec6.u29"));
+                            return;
+                        }
+                        say(sukamon1, text("s159.sec6.u30"));
+                        take_card(21);
+                        give_card(14);
+                    }
+                    text("s159.sec6.m0.o1") or cancel => {}
+                }
+            } else {
+                say(tamer, text("s159.sec6.u1"));
+            }
+        } else {
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s159.sec6.u2"));
+            animate(tamer, anim.idle);
+            store_digimon_type(partner_type);
+            if (!dust_kingdom_explained && partner_type == 39) {
+                walk(sukamon1, 192, -2979);
+                await sukamon1;
+                say(sukamon1, text("s159.sec6.u3"));
+                say(tamer, text("s159.sec6.u4"));
+                say(sukamon1, text("s159.sec6.u5"));
+                say(tamer, text("s159.sec6.u6"));
+                say(sukamon1, text("s159.sec6.u7"));
+                say(tamer, text("s159.sec6.u8"));
+                say(sukamon1, text("s159.sec6.u9"));
+                say(tamer, text("s159.sec6.u10"));
+                walk(sukamon1, 189, -1273);
+                await sukamon1;
+                dust_kingdom_explained = true;
+                return;
+            }
+            if (!dust_kingdom_explained && raised.drimogemon) {
+                walk(sukamon1, 192, -2979);
+                await sukamon1;
+                say(tamer, text("s159.sec6.u11"));
+                say(sukamon1, text("s159.sec6.u12"));
+                say(tamer, text("s159.sec6.u13"));
+            } else {
+                walk(sukamon1, 192, -2979);
+                await sukamon1;
+                say(sukamon1, text("s159.sec6.u14"));
+                say(tamer, text("s159.sec6.u15"));
+                say(sukamon1, text("s159.sec6.u16"));
+                say(tamer, text("s159.sec6.u17"));
+                say(sukamon1, text("s159.sec6.u18"));
+                say(tamer, text("s159.sec6.u19"));
+            }
+            say(sukamon1, text("s159.sec6.u20"));
+            say(tamer, text("s159.sec6.u21"));
+            say(sukamon1, text("s159.sec6.u22"));
+            say(tamer, text("s159.sec6.u23"));
+            say(sukamon1, text("s159.sec6.u24"));
+            say(tamer, text("s159.sec6.u25"));
+            say(sukamon1, text("s159.sec6.u26"));
+            say(tamer, text("s159.sec6.u27"));
+            say(sukamon1, text("s159.sec6.u28"));
+            walk(sukamon1, 189, -1273);
+            await sukamon1;
+            dust_kingdom_explained = true;
+        }
+    }
+    on talk(sukamon2) replace {    // talk
+        if (!is_recruited(species(39))) {
+            recruit(species(39));
+            engine.prosperity += 1;
+            say(sukamon2, text("s159.sec7.u0"));
+            return;
+        }
+        say(sukamon2, text("s159.sec7.u1"));
+    }
+    on talk(sukamon3) replace {    // talk
+        say(sukamon3, text("s159.sec8.u0"));
+    }
+    on step(0) replace {    // step0
+        if (!have_old_fishrod) {
+            say(tamer, text("s159.sec51.u0"));
+            wait(10);
+            animate(tamer, 12);
+            wait(10);
+            sound(0, 7);
+            set_obj_visibility(10, 1);
+            wait(10);
+            have_old_fishrod = true;
+            old_fishrod_picked_up = true;
+        }
+    }
+    on use(2) replace {    // use2
+        rotate(tamer, 2640);
+        set_textbox_origin(1484, 0, -241);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s159.sec82.u0"));
+        choice(camera) {
+            text("s159.sec82.m0.o0") => {}
+            text("s159.sec82.m0.o1") => {
+                loop {
+                    say(camera, text("s159.sec82.u1"));
+                    choice(camera) {
+                        text("s159.sec82.m2.o0") => {}
+                        text("s159.sec82.m2.o1") => {
+                            break;
+                        }
+                        text("s159.sec82.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s159.sec82.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s159.sec82.m1.o0") => {
+                hide_hud();
+                engine.arg = 4;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 4;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s159.sec82.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s159.sec82.u2"));
+                engine.arg = 4;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s159.sec82.m1.o2") or cancel => {}
+        }
+    }
+}

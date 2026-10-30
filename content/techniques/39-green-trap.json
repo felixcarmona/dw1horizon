@@ -1,0 +1,17 @@
+{
+  "id": 39,
+  "name": "Green Trap",
+  "element": "nature",
+  "power": 310,
+  "mpCost": 49,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 82,
+  "status": 3,
+  "statusChance": 55,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [14, 10, 0]
+}

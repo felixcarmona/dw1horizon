@@ -1,0 +1,147 @@
+{
+ "s010.sec5.u0": [
+  [
+   "No saps quin és el teu lloc!"
+  ]
+ ],
+ "s010.sec7.u0": [
+  [
+   "Però què t'he fet jo!?"
+  ]
+ ],
+ "s010.sec8.m0.o0": "Pagar",
+ "s010.sec8.m0.o1": "No pagar",
+ "s010.sec8.u0": [
+  [
+   "Uk-uk-uuuk!"
+  ],
+  [
+   "Que què faig aquí, dius!?"
+  ],
+  [
+   "Escolta, {color 6}{player}{color 1}! Vaig",
+   "intentar muntar-me el meu",
+   "harem en la ciutat i em van",
+   "tirar!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tsc... Ah, sí. Diuen que ara",
+   "nedes en diners, oi? Et vendré",
+   "una cosa bonica, uk! La més",
+   "rara del món: el {color 6}Plàtan d'or{color 1}."
+  ],
+  [
+   "Només 50000 Bits! No fio, uk."
+  ]
+ ],
+ "s010.sec8.u2": [
+  [
+   "Estàs ximple? Portes massa",
+   "coses!"
+  ]
+ ],
+ "s010.sec8.u3": [
+  [
+   "Ups! Porto la bossa plena."
+  ]
+ ],
+ "s010.sec8.u4": [
+  [
+   "Uk, un plaer fer negocis amb",
+   "tu!"
+  ]
+ ],
+ "s010.sec8.u5": [
+  [
+   "Els diners no serveixen de res",
+   "si no els gastes, company."
+  ]
+ ],
+ "s010.sec51.m0.o0": "D'acord",
+ "s010.sec51.m0.o1": "Un altre dia",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Atura't aquí mateeeix!!!"
+  ]
+ ],
+ "s010.sec51.u1": [
+  [
+   "Aquest humil servidor es diu",
+   "Ninjamon!"
+  ]
+ ],
+ "s010.sec51.u2": [
+  [
+   "Deveu ser {color 6}{player}{color 1}... i",
+   "{color 10}{partner}{color 1}! La vostra fama",
+   "ha arribat fins al llunyà",
+   "Poblet Ninja! Creuareu els"
+  ],
+  [
+   "acers amb aquest humil",
+   "servidor?"
+  ]
+ ],
+ "s010.sec51.u3": [
+  [
+   "Je, no tan de pressa, així és!"
+  ]
+ ],
+ "s010.sec51.u4": [
+  [
+   "Tens tanta destresa com diuen!",
+   "Si us plau, fes d'aquest humil",
+   "servidor el teu deixebre!"
+  ]
+ ],
+ "s010.sec51.u5": [
+  [
+   "Deixebre...? Ah, deixeble.",
+   "Doncs no, gràcies. Però si",
+   "ajudes a construir la ciutat,",
+   "d'acord."
+  ]
+ ],
+ "s010.sec51.u6": [
+  [
+   "Entès! Això també és un bon",
+   "entrenament, així és! Aquest",
+   "humil servidor s'esforçarà!"
+  ]
+ ],
+ "s010.sec51.u7": "Ninjamon s'ha unit a la ciutat!",
+ "s011.sec5.u0": [
+  [
+   "Podria amb tu amb una mà!"
+  ]
+ ],
+ "s011.sec6.u0": [
+  [
+   "Sembla que et puc guanyar!"
+  ]
+ ],
+ "s011.sec7.u0": [
+  [
+   "Ji, ji. No tens ni idea..."
+  ]
+ ],
+ "s011.sec8.u0": [
+  [
+   "Ja val, home!"
+  ]
+ ],
+ "s011.sec9.u0": [
+  [
+   "Ficar-se amb els altres no",
+   "mola, saps?"
+  ]
+ ],
+ "s011.sec10.u0": [
+  [
+   "Escolta'm, si us plau!"
+  ]
+ ]
+}

@@ -1,0 +1,41 @@
+{
+ "s169.sec6.u0": [
+  [
+   "¡Hola, {color 6}{player}{color 1}! He empezado a ayudar",
+   "a Drimogemon."
+  ],
+  [
+   "¡Se me da bastante bien encontrar cosas!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Explícamelo",
+ "s169.sec81.m0.o1": "No hace falta",
+ "s169.sec81.m0.o2": "Nada, gracias",
+ "s169.sec81.m1.o0": "Buscar tesoros",
+ "s169.sec81.m1.o1": "Explícamelo otra vez",
+ "s169.sec81.m1.o2": "No, nada más",
+ "s169.sec81.m2.o0": "Plan normal: 1000 Bits",
+ "s169.sec81.m2.o1": "Plan especial: 5000 Bits",
+ "s169.sec81.m2.o2": "Cancelar",
+ "s169.sec81.u0": "¡Buenas, bienvenido, {color 6}{player}{color 1}! Esto es la tienda de la Caza del Tesoro. Un servidor pone a currar su arte de cavar y te saca tesoros del subsuelo. ¡Ese es el negocio! Esta isla tiene tesoros de todas clases enterraos por todas partes. ¡Déjaselo a un servidor!",
+ "s169.sec81.u1": "¡Buenas! ¿Quieres buscar tesoros? ¿Te cuento primero cómo funciona?",
+ "s169.sec81.u2": "Tú pagas por adelantao, y un servidor te encuentra un tesoro. Hay dos planes, con tiempos y precios distintos. El plan normal son tres días por 1000 Bits. El plan especial son diez días por 5000 Bits. ¡Con el plan especial, claro, tienes más posibilidades de sacar un buen tesoro! Eso es todo. Bueno, ¿qué va a ser?",
+ "s169.sec81.u3": "¡Venga, elige un plan!",
+ "s169.sec81.u4": "Vale. ¡Hasta luego!",
+ "s169.sec81.u5": "Venga, resultados en tres días. ¡Daré lo mejor de mí!",
+ "s169.sec81.u6": "Venga, resultados en diez días. ¡Daré lo mejor de mí!",
+ "s169.sec81.u7": [
+  [
+   "No te llegan los Bits."
+  ],
+  [
+   "Ni un servidor puede buscar tesoros sin",
+   "dinero pa' empezar."
+  ]
+ ],
+ "s169.sec81.u8": "Ahora mismo estoy buscando tesoros. Aguanta un poco más.",
+ "s169.sec81.u9": "¡Eeeh, ya ha llegao tu tesoro!",
+ "s169.sec81.u10": "¡Ve a hacer sitio en tu bolsa!",
+ "s169.sec81.u11": "¡Recibes {color 6}{item 110}{color 1}!",
+ "s169.sec81.u12": "¡Gracias por tu confianza!"
+}

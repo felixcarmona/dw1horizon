@@ -1,0 +1,639 @@
+{
+ "0": {
+  "text": "受付 (uketsuke: reception desk), black on a white desk card",
+  "en": "RECEPTION",
+  "es": "RECEPCIÓN",
+  "copies": [
+   {
+    "map": "MAP/MAP15/ROOM02",
+    "box": [
+     238,
+     180,
+     294,
+     211
+    ]
+   }
+  ]
+ },
+ "1": {
+  "text": "受付 (reception / registration), white on a red desk front",
+  "en": "ENTRY",
+  "es": "INSCRIPCIÓN",
+  "copies": [
+   {
+    "map": "MAP/MAP8/BETL02",
+    "box": [
+     458,
+     280,
+     568,
+     354
+    ]
+   }
+  ]
+ },
+ "2": {
+  "text": "受付 (reception / registration), orange LED dot-matrix sign",
+  "en": "ENTRY",
+  "es": "INSCRIPCIÓN",
+  "copies": [
+   {
+    "map": "MAP/MAP14/ROOM13",
+    "box": [
+     422,
+     117,
+     513,
+     178
+    ]
+   },
+   {
+    "map": "MAP/MAP15/ROOM19",
+    "box": [
+     422,
+     117,
+     513,
+     178
+    ]
+   }
+  ]
+ },
+ "3": {
+  "text": "ひ・か・え (控え, hikae: the fighters' waiting area / reserve), on a blue noren curtain over the doorway",
+  "en": "WAITING ROOM",
+  "es": "SALA DE ESPERA",
+  "copies": [
+   {
+    "map": "MAP/MAP14/ROOM13",
+    "box": [
+     220,
+     0,
+     358,
+     78
+    ]
+   },
+   {
+    "map": "MAP/MAP15/ROOM19",
+    "box": [
+     220,
+     0,
+     358,
+     78
+    ]
+   }
+  ]
+ },
+ "4": {
+  "text": "ICE GAME (English, cyan/magenta neon, tilted)",
+  "en": "ICE GAME",
+  "es": "JUEGO DE HIELO",
+  "copies": [
+   {
+    "map": "MAP/MAP14/ROOM13",
+    "box": [
+     76,
+     0,
+     180,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP15/ROOM19",
+    "box": [
+     76,
+     0,
+     180,
+     139
+    ]
+   }
+  ]
+ },
+ "5": {
+  "text": "FOR THE GUEST (English, blue on a yellow floor arrow)",
+  "en": "FOR GUESTS",
+  "es": "PARA EL PÚBLICO",
+  "copies": [
+   {
+    "map": "MAP/MAP14/ROOM13",
+    "box": [
+     376,
+     240,
+     489,
+     315
+    ]
+   },
+   {
+    "map": "MAP/MAP15/ROOM19",
+    "box": [
+     376,
+     240,
+     489,
+     315
+    ]
+   }
+  ]
+ },
+ "7": {
+  "text": "ITEM BANK (English, yellow on black plate)",
+  "en": "ITEM BANK",
+  "es": "CONSIGNA",
+  "copies": [
+   {
+    "map": "MAP/MAP12/TWNA02",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA03",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA04",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA05",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA06",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA07",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA08",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA09",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA10",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA11",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA12",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP12/TWNA13",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP16/TEND01",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP16/TEND02",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   },
+   {
+    "map": "MAP/MAP16/TOPN01",
+    "box": [
+     143,
+     226,
+     289,
+     308
+    ]
+   }
+  ]
+ },
+ "8": {
+  "text": "I M BA... (the ITEM BANK plate, tilted / half fallen: only some letters drawn)",
+  "en": "ITEM BANK",
+  "es": "CONSIGNA",
+  "copies": [
+   {
+    "map": "MAP/MAP14/TWNA01",
+    "box": [
+     156,
+     238,
+     302,
+     347
+    ]
+   }
+  ]
+ },
+ "9": {
+  "text": "RESTAURANT (English, white letters on the green building)",
+  "en": "RESTAURANT",
+  "es": "RESTAURANTE",
+  "copies": [
+   {
+    "map": "MAP/MAP13/TWNB03",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB04",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB05",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB06",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB11",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB12",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB13",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB14",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB18",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB19",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB20",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB21",
+    "box": [
+     484,
+     0,
+     731,
+     139
+    ]
+   }
+  ]
+ },
+ "10": {
+  "text": "TooL (English, painted on a saw over the tool shop door)",
+  "en": "TOOL",
+  "es": "HERRAMIENTAS",
+  "copies": [
+   {
+    "map": "MAP/MAP13/TWNB10",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB11",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB12",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB13",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB14",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP13/TWNB15",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB16",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   },
+   {
+    "map": "MAP/MAP14/TWNB17",
+    "box": [
+     144,
+     16,
+     284,
+     95
+    ]
+   }
+  ]
+ },
+ "13": {
+  "text": "ドリルトンネル (Drill Tunnel), yellow katakana on a dark board over the entrance",
+  "en": "DRILL TUNNEL",
+  "es": "TÚNEL DRILL",
+  "copies": [
+   {
+    "map": "MAP/MAP1/MAYO11",
+    "box": [
+     27,
+     148,
+     223,
+     258
+    ]
+   }
+  ]
+ },
+ "14": {
+  "text": "グリーンGYM (Green Gym), grey katakana + magenta GYM on a vertical board",
+  "en": "GREEN GYM",
+  "es": "GIMNASIO GREEN",
+  "copies": [
+   {
+    "map": "MAP/MAP8/TRAI00",
+    "box": [
+     202,
+     515,
+     332,
+     645
+    ]
+   }
+  ]
+ },
+ "22": {
+  "text": "Warning notice: 4 bold glyphs + ! and two lines of small text, next to a yellow falling-rock sign; read as 落石注意! (rakuseki chūi: beware of falling rocks)",
+  "en": "FALLING ROCKS!",
+  "es": "¡DESPRENDIMIENTOS!",
+  "copies": [
+   {
+    "map": "MAP/MAP3/GCAN08_1",
+    "box": [
+     217,
+     142,
+     311,
+     212
+    ]
+   },
+   {
+    "map": "MAP/MAP9/GCAN08_2",
+    "box": [
+     217,
+     142,
+     311,
+     212
+    ]
+   }
+  ]
+ },
+ "24": {
+  "text": "公ウンコ (a pun: 公 \"public\" + ウンコ \"poo\", parodying 公衆便所 \"public toilet\"), yellow on black over a toilet",
+  "en": "PUBLIC POO",
+  "es": "CACA PÚBLICA",
+  "copies": [
+   {
+    "map": "MAP/MAP6/GIAS08",
+    "box": [
+     56,
+     162,
+     264,
+     279
+    ]
+   }
+  ]
+ },
+ "27": {
+  "text": "DELETE AREA (English, black on a yellow band with an arrow)",
+  "en": "DELETE AREA",
+  "es": "ZONA DE BORRADO",
+  "copies": [
+   {
+    "map": "MAP/MAP10/FRZL17",
+    "box": [
+     55,
+     142,
+     341,
+     303
+    ]
+   }
+  ]
+ },
+ "28": {
+  "text": "GOOD!! (English, in the target bullseye)",
+  "en": "GOOD!!",
+  "es": "¡¡BIEN!!",
+  "copies": [
+   {
+    "map": "MAP/MAP10/FRZL17",
+    "box": [
+     142,
+     380,
+     252,
+     490
+    ]
+   }
+  ]
+ },
+ "29": {
+  "text": "GOOD!! (English, yellow disc)",
+  "en": "GOOD!!",
+  "es": "¡¡BIEN!!",
+  "copies": [
+   {
+    "map": "MAP/MAP10/FRZL17",
+    "box": [
+     74,
+     483,
+     178,
+     587
+    ]
+   }
+  ]
+ },
+ "30": {
+  "text": "BAD (English, red disc)",
+  "en": "BAD",
+  "es": "MAL",
+  "copies": [
+   {
+    "map": "MAP/MAP10/FRZL17",
+    "box": [
+     214,
+     483,
+     318,
+     587
+    ]
+   }
+  ]
+ },
+ "31": {
+  "text": "DANGER (English, stencil on a dynamite box)",
+  "en": "DANGER",
+  "es": "PELIGRO",
+  "copies": [
+   {
+    "map": "MAP/MAP14/ROOM14",
+    "box": [
+     331,
+     26,
+     444,
+     110
+    ]
+   }
+  ]
+ }
+}

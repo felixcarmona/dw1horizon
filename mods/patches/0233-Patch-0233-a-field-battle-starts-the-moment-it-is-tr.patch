@@ -1,0 +1,695 @@
+From 841db7f406fad17ce6cb3f99a0abc93fedb7ba8a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 25 Oct 2026 06:13:18 +0000
+Subject: [PATCH 233/234] Patch 0233: a field battle starts the moment it is
+ triggered (MOD_OPT_QUICK_BATTLE). No BATTLE letters: the tamer's walk back is
+ run unseen at once and the Digimon that do not join leave at once; no flee
+ bubbles. BTL_REL is read ahead in the world at its own address (checksum over
+ btl_START..btl_END, blocked for the screen by any other overlay: fishing,
+ curling, menus, evolution, shops) and the fight starts on it; the music font
+ (read asynchronously), the battle's sound bank, the enemies' voices, then the
+ EFE engine and the techniques' effects load while it runs, in the original's
+ staging order at GENERAL_BUFFER, the file queue stepped at every vblank wait
+ (MOD_LOAD_PUMP). No technique starts and no item menu opens before the
+ effects are in; what is still loading lands before the fight's clean-up. 2
+ 780 bytes of heap
+
+---
+ config/us/overlay.ld     |   1 +
+ include/dw/mod_options.h |   1 +
+ src/btl/battle_main.c    |   9 ++
+ src/btl/battle_setup.c   |  66 ++++++++++-
+ src/main/battle_tick.c   |   6 +-
+ src/main/btl.c           | 236 +++++++++++++++++++++++++++++++++++++++
+ src/main/main.c          |  29 ++++-
+ src/main/map.c           |   2 +
+ src/main/mod_options.c   |   1 +
+ src/main/sound_async.c   |  69 ++++++++++++
+ src/main/tamer.c         |   3 +
+ src/main/utils2.c        |   5 +
+ 12 files changed, 424 insertions(+), 4 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index b3a19a67..ae2cd7a0 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -89,6 +89,7 @@ SECTIONS
+ 			LONG(0);
+ 
+ 			. = ALIGN(., 4);
++			btl_END = .; /* MOD (quick battle start): the preload checksum covers the whole overlay */
+ 		}
+ 	}
+ 
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 4d7128bb..19c1f632 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -81,6 +81,7 @@ void modSetStory(int32_t extended);
+ #define MOD_DIFF_NORMAL	0
+ #define MOD_DIFF_EASY	1
+ extern int32_t MOD_OPT_DIFFICULTY; /* DIFFICULTY: MOD_DIFF_EASY or MOD_DIFF_NORMAL */
++extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, without the BATTLE letters (battle_setup.c); 0 = the original intro */
+ /* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
+ #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
+ 	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index fe19c751..f14b38d1 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1827,6 +1827,8 @@ grace:
+ 	collisionGrace(NULL, entity, 0x118, 0xc8);
+ }
+ 
++void modBattleLoadFinish(void); /* MOD (quick battle start), btl.c */
++
+ int32_t BTL_battleMain(void)
+ {
+ 	COMBAT_AREA_X = 0xa0 - DRAWING_OFFSET_X;
+@@ -1859,6 +1861,7 @@ int32_t BTL_battleMain(void)
+ 		BATTLE_FRAME_COUNT++;
+ 	}
+ 
++	modBattleLoadFinish(); /* MOD (quick battle start), btl.c: what is still loading lands before the clean-up */
+ 	removePauseBox();
+ 	BTL_deinitializeCombat();
+ 	if (timedOut) { /* the time ran out: a battle survived, neither lost nor fled */
+@@ -2423,10 +2426,16 @@ void BTL_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 	}
+ }
+ 
++extern int8_t MOD_BATTLE_LOADING; /* MOD (quick battle start), btl.c */
++
+ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterData *fighter)
+ {
+ 	int16_t tech;
+ 
++	if (MOD_BATTLE_LOADING) {
++		return; /* MOD (quick battle start): the techniques' effects are still loading; asked again next tick */
++	}
++
+ 	if (NO_AI_FLAG != 0) {
+ 		if (FINISHING_ENTITY != &digimon->entity) {
+ 			return;
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index 1ee5b18c..df4421af 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -8,6 +8,7 @@
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/script.h>
++#include <dw/mod_options.h> /* MOD (quick battle start) */
+ 
+ extern int8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int16_t DEATH_COUNTDOWN;
+@@ -205,6 +206,62 @@ void BTL_initializeCombat(void)
+ 	BTL_initializeCommandMenu();
+ }
+ 
++/* MOD (quick battle start): the intro without its waits. The tamer's walk back (the loop below: along the waypoints
++ * until the next step would leave the combat area, then to the screen's start tile) runs at once, unseen, with only
++ * the tamer's animation ticked, so he ends where the intro would have left him; those who flee leave at once; no
++ * BATTLE letters. The entity step snaps the 60 fps interpolation. */
++static void BTL_quickBattleIntro(int16_t *found, int32_t count, int16_t wp)
++{
++	int32_t i;
++	int32_t timer;
++	int16_t result;
++	int16_t tileX;
++	int16_t tileY;
++
++	result = -1;
++	for (timer = 0; timer < 0xc8; timer++) {
++		if (ENTITY_TABLE[0]->anim.animId != 1) {
++			getModelTile(&ENTITY_TABLE[0]->posData->location, &tileX, &tileY);
++			if (wp >= 0) {
++				entityLookAtTile(ENTITY_TABLE[0], TAMER_WAYPOINT_X[wp], TAMER_WAYPOINT_Y[wp]);
++				if ((tileX == TAMER_WAYPOINT_X[wp]) && (tileY == TAMER_WAYPOINT_Y[wp])) {
++					wp--;
++					TAMER_WAYPOINT_COUNT--;
++				}
++				result = entityCheckCollision(ENTITY_TABLE[1], ENTITY_TABLE[0], 0x136, 0xe6);
++			} else {
++				entityLookAtTile(ENTITY_TABLE[0], TAMER_START_TILE_X, TAMER_START_TILE_Y);
++				if ((tileX == TAMER_START_TILE_X) && (tileY == TAMER_START_TILE_Y)) {
++					result = 0xb;
++				} else {
++					result = entityCheckCollision(ENTITY_TABLE[1], ENTITY_TABLE[0], 0x12c, 0xdc);
++				}
++			}
++		}
++		if (result == 0xb) {
++			break;
++		}
++		tickAnimation(ENTITY_TABLE[0]);
++	}
++
++	if (wp != -1) {
++		TAMER_WAYPOINT_COUNT = wp + 1;
++		TAMER_WAYPOINT_ACTIVE = TAMER_WAYPOINT_COUNT - 1;
++	} else {
++		clearTamerWaypoints();
++	}
++
++	startAnimation(ENTITY_TABLE[0], 1);
++	entityLookAtLocation(ENTITY_TABLE[0], &ENTITY_TABLE[1]->posData->location);
++
++	for (i = 0; i < count; i++) {
++		ENTITY_TABLE[found[i]]->isOnMap = 0;
++		ENTITY_TABLE[found[i]]->anim.animFlag &= 0xfb;
++	}
++
++	GAME_STATE = 1;
++}
++
+ void BTL_handleBattleIntro(void)
+ {
+ 	int32_t i;
+@@ -224,7 +281,9 @@ void BTL_handleBattleIntro(void)
+ 
+ 	startBattleIdleAnimation(&PARTNER_ENTITY.digimonEntity, &PARTNER_ENTITY.digimonEntity.stats, COMBAT_DATA_PTR->fighter[0].flags);
+ 	entityLookAtLocation(&PARTNER_ENTITY.digimonEntity.entity, &ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->posData->location);
+-	BTL_initializeBattleStartText();
++	if (!MOD_OPT_QUICK_BATTLE) { /* MOD (quick battle start): no BATTLE letters */
++		BTL_initializeBattleStartText();
++	}
+ 	count = 0;
+ 	for (i = 2; i < 0xa; i++) {
+ 		npc = (NPCEntity *)ENTITY_TABLE[i];
+@@ -258,6 +317,11 @@ void BTL_handleBattleIntro(void)
+ 	startAnimation(&TAMER_ENTITY.entity, 3);
+ 	playSound(0, 0x10);
+ 
++	if (MOD_OPT_QUICK_BATTLE) {
++		BTL_quickBattleIntro(found, count, wp);
++		return;
++	}
++
+ 	while ((timer < 0xc8) || (allOffScreen == 0) || (done == 0)) {
+ 		if (ENTITY_TABLE[0]->anim.animId != 1) {
+ 			getModelTile(&ENTITY_TABLE[0]->posData->location, &tileX, &tileY);
+diff --git a/src/main/battle_tick.c b/src/main/battle_tick.c
+index 03d5fb67..28a02eff 100644
+--- a/src/main/battle_tick.c
++++ b/src/main/battle_tick.c
+@@ -230,6 +230,9 @@ void handleFleeing(void)
+ 	}
+ }
+ 
++extern int8_t MOD_BATTLE_LOADING; /* MOD (quick battle start), btl.c */
++void modBattleLoadStep(void);
++
+ // clang-format off
+ void tamerTickBattle(instanceId)
+ 	int16_t instanceId;
+@@ -241,11 +244,12 @@ void tamerTickBattle(instanceId)
+ 
+ 	tamer = ENTITY_TABLE[instanceId];
+ 
++	modBattleLoadStep(); /* MOD (quick battle start), btl.c */
+ 	if (GAME_STATE == 1) {
+ 		if (COMBAT_DATA_PTR->player.currentCommand[0] != 1) {
+ 			partner = ENTITY_TABLE[1];
+ 
+-			if (IS_TAMERLESS_BATTLE == 0) {
++			if ((IS_TAMERLESS_BATTLE == 0) && (MOD_BATTLE_LOADING == 0)) { /* MOD (quick battle start): no items while loading */
+ 				if (((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x10) != 0) {
+ 					addInventoryUI();
+ 				}
+diff --git a/src/main/btl.c b/src/main/btl.c
+index dc6147a4..c7a40591 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -9,6 +9,7 @@
+ #include <dw/garbage.h>
+ #include <dw/graphics.h>
+ #include <dw/ids.h>
++#include <dw/mod_options.h> /* MOD (quick battle start) */
+ #include <dw/species.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -173,6 +174,9 @@ GARBAGE(setFleeBubble, 9);
+ 
+ void setFleeBubble(int16_t id, int16_t v)
+ {
++	if (MOD_OPT_QUICK_BATTLE) {
++		return; /* MOD (quick battle start): no bubbles over who joins and who flees */
++	}
+ 	FLEE_BUBBLE_DATA[id - 2].frame = 0;
+ 	FLEE_BUBBLE_DATA[id - 2].type = v;
+ 	addObject(0x196, id, NULL, renderFleeBubble);
+@@ -341,6 +345,234 @@ int32_t handleBattleStart(id)
+ 	return count;
+ }
+ 
++extern int8_t MOD_LOAD_PUMP; /* MOD (quick battle start), main.c */
++void modPlayMusicAsync(int32_t font, int32_t track); /* MOD (quick battle start), sound_async.c */
++extern char btl_START[];
++extern char btl_END[];
++extern int32_t IS_SCRIPT_PAUSED;
++void _tickFileReadQueue(int32_t instanceId);
++int32_t isFileReadQueueIdle(void);
++
++/* MOD (quick battle start): BTL_REL read ahead in the world, at its own address (OVL_BTL_BASE..btl_END is world
++ * scratch on every screen but those that keep an overlay there: FISH, KAR, a shop, the menus; any overlay read
++ * since the screen was set up blocks the read ahead until the next screen). A battle takes it when it is complete
++ * and its checksum is still the one it had (something not listed wrote there: the battle reads it as before);
++ * the battle dirties it, and the world reads it again after. */
++int8_t MOD_BTL_PRELOAD;		/* 0 none, 1 being read, 2 ready */
++int8_t MOD_BTL_PRELOAD_BLOCKED;	/* another overlay was read since the screen was set up */
++static uint8_t modBtlPreloadReading;
++static uint32_t modBtlPreloadSum;
++
++static uint32_t modBtlChecksum(void)
++{
++	uint32_t *p;
++	uint32_t sum;
++
++	sum = 0;
++	for (p = (uint32_t *)btl_START; p < (uint32_t *)btl_END; p++) {
++		sum = ((sum << 1) | (sum >> 31)) + *p;
++	}
++	return sum;
++}
++
++static void modBtlPreloaded(void *unused)
++{
++	(void)unused;
++	modBtlPreloadSum = modBtlChecksum();
++	MOD_BTL_PRELOAD = 2;
++}
++
++/* the world, every tick the tamer walks: start the read when nothing else is reading and no script runs */
++void modBtlPreloadTick(void)
++{
++	if (!MOD_OPT_QUICK_BATTLE || MOD_BTL_PRELOAD != 0 || MOD_BTL_PRELOAD_BLOCKED) {
++		return;
++	}
++	if (GAME_STATE != 0 || IS_SCRIPT_PAUSED != 1 || !isFileReadQueueIdle()) {
++		return;
++	}
++	MOD_BTL_PRELOAD = 1;
++	loadDynamicLibrary(BTL_REL, &modBtlPreloadReading, 1, (FileCallback)modBtlPreloaded, NULL);
++}
++
++/* another overlay is about to be read into the slot: the read ahead must land first, then it is gone */
++void modBtlPreloadDrop(void)
++{
++	while (MOD_BTL_PRELOAD == 1 && !isFileReadQueueIdle()) {
++		_tickFileReadQueue(0);
++	}
++	MOD_BTL_PRELOAD = 0;
++	MOD_BTL_PRELOAD_BLOCKED = 1;
++}
++
++/* the battle: 1 when the overlay is in place, intact */
++static int32_t modBtlPreloadTake(void)
++{
++	int32_t ok;
++
++	while (MOD_BTL_PRELOAD == 1 && !isFileReadQueueIdle()) {
++		_tickFileReadQueue(0);
++	}
++	ok = MOD_BTL_PRELOAD == 2 && modBtlChecksum() == modBtlPreloadSum;
++	MOD_BTL_PRELOAD = 0;
++	return ok;
++}
++
++/* MOD (quick battle start): the battle's track, as loadBattleData chooses it */
++static int32_t modBattleTrack(int32_t entityId)
++{
++	/* MOD (battle as data): the species that makes the battle play the last-battle track, and the track, were 0x73 and 3 */
++	if (BMV(MUSIC_LAST_SPECIES) >= 0 && ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type == BMV(MUSIC_LAST_SPECIES)) {
++		return BM(MUSIC_LAST_TRACK);
++	} else if ((entityId >= 2) && (entityId < 10)) {
++		if (IS_PREDEFINED_BATTLE == 1) {
++			return 0;
++		} else {
++			/* MOD (species JSON): was ENEMY_MUSIC_MAPPING for types 0x43..0x6F, else 1 */
++			return getSpeciesBattleMusic(ENTITY_TABLE[entityId]->type);
++		}
++	} else if (IS_PREDEFINED_BATTLE == 1) {
++		return 0;
++	} else {
++		return 1;
++	}
++}
++
++/* MOD (quick battle start): the fight starts as soon as BTL_REL is in place (read ahead in the world, or read now), and
++ * the rest loads while it runs, in the original's order, because it is staged at GENERAL_BUFFER one file after another
++ * and the EFE engine then lives there: the music font, the battle's sound bank, the enemies' voices (queued here),
++ * then the EFE engine and the techniques' effects (modBattleLoadStep, every tick). No technique starts before its
++ * effect is in (BTL_startQueuedMove waits) and the tamer opens no item menu; the fighters move as usual meanwhile. */
++int8_t MOD_BATTLE_LOADING;	/* 1 the sounds, 2 the effects, 0 done */
++static int16_t modMoveList[18];
++static int16_t modEfeList[18];
++
++static void modLoadBattleDataQuick(int32_t entityId, int32_t count)
++{
++	int8_t loadState;
++	int32_t i;
++	int32_t j;
++	DigimonEntity *e;
++
++	ENEMY_COUNT = count;
++	LOAD_EFE_STATE = -1;
++	MOD_LOAD_PUMP = 1;
++	if (modBtlPreloadTake()) {
++		loadState = 0;
++	} else {
++		loadDynamicLibrary(BTL_REL, (uint8_t *)&loadState, 1, NULL, NULL);
++	}
++	tickPartnerWaypoints();
++	PARTNER_ENTITY.digimonEntity.entity.isOnScreen = 1;
++	COMBAT_DATA_PTR->player.currentCommand[0] = 3;
++	startAnimation(&TAMER_ENTITY.entity, 1);
++	for (i = 2; i < 10; i++) {
++		e = (DigimonEntity *)ENTITY_TABLE[i];
++		if (isInvisible(&e->entity) == 0) {
++			startAnimation(&e->entity, 0x21);
++		}
++	}
++	GAME_STATE = 3;
++	if (IS_PREDEFINED_BATTLE != 1) {
++		startAnimation(ENTITY_TABLE[1], 0x24);
++	}
++	while (loadState > 0) {
++		if (IS_PREDEFINED_BATTLE != 1) {
++			for (i = 1; i <= ENEMY_COUNT; i++) {
++				entityLookAtLocation(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]],
++						     &ENTITY_TABLE[1]->posData->location);
++			}
++			partnerTickCollision();
++		}
++		loadBattleDataTick();
++	}
++	modPlayMusicAsync(0x21, modBattleTrack(entityId));
++	loadSB();
++	for (i = 1; i <= ENEMY_COUNT; i++) {
++		e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++		e->stats.current.vabId = i + 4;
++		readVBALLSection(i + 4, e->entity.type);
++	}
++	BTL_initializeBattleItemParticles();
++	BTL_initializeUnk3();
++	BTL_initializeUnk2();
++	BTL_initializeFinisherAuraModel(BTL_FINISHER_TIM, BTL_FINISHER_MODEL);
++	BTL_initializePoisonBubble();
++	BTL_initializeConfusionEffect(BTL_CONFUSION_MODEL);
++	BTL_initializeStunEffect(BTL_STUN_MODEL);
++	initializeBuffModel(BTL_BUFF_MODEL);
++	initializeBuffModelObject();
++	if (IS_PREDEFINED_BATTLE != 1) {
++		partnerTickCollision();
++	}
++	for (i = 0; i <= ENEMY_COUNT; i++) {
++		e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++		e->stats.current.unk1 = -1;
++		e->stats.current.efeSubEffect = -1;
++		for (j = 0; j < 4; j++) {
++			if ((e->stats.base.moves[j] != 0xff) && (entityGetTechFromAnim(&e->entity, e->stats.base.moves[j]) == 0xff)) {
++				e->stats.base.moves[j] = 0xff;
++			}
++			COMBAT_DATA_PTR->fighter[i].effectSlot[j] = -1;
++		}
++	}
++	MOD_BATTLE_LOADING = 1;
++	handleBattleIdle(&PARTNER_ENTITY.digimonEntity, &PARTNER_ENTITY.digimonEntity.stats, 0);
++	GAME_STATE = 2;
++}
++
++/* every tick of the fight (tamerTickBattle) while MOD_BATTLE_LOADING */
++void modBattleLoadStep(void)
++{
++	int32_t i;
++	int32_t j;
++	int32_t n;
++	DigimonEntity *e;
++
++	if (MOD_BATTLE_LOADING == 1) {
++		if (!isFileReadQueueIdle()) {
++			return; /* music, sound bank, voices: still staged at GENERAL_BUFFER */
++		}
++		BTL_initializeEFEEngine((char *)GENERAL_BUFFER_PTR);
++		n = 0;
++		for (i = 0; i <= ENEMY_COUNT; i++) {
++			e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++			for (j = 0; j < 4; j++) {
++				if (e->stats.base.moves[j] != 0xff) {
++					modMoveList[n++] = DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e] + 0x100;
++				}
++			}
++		}
++		modMoveList[n] = -1;
++		BTL_loadMoveEFE(modMoveList, modEfeList, &LOAD_EFE_STATE);
++		MOD_BATTLE_LOADING = 2;
++	} else if (MOD_BATTLE_LOADING == 2) {
++		if (LOAD_EFE_STATE > 0) {
++			return;
++		}
++		n = 0;
++		for (i = 0; i <= ENEMY_COUNT; i++) {
++			e = (DigimonEntity *)ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
++			for (j = 0; j < 4; j++) {
++				if (e->stats.base.moves[j] != 0xff) {
++					COMBAT_DATA_PTR->fighter[i].effectSlot[j] = modEfeList[n++];
++				}
++			}
++		}
++		MOD_BATTLE_LOADING = 0;
++		MOD_LOAD_PUMP = 0;
++	}
++}
++
++/* the fight ends (BTL_battleMain, before its clean-up): whatever is still loading lands first, as before the fight */
++void modBattleLoadFinish(void)
++{
++	while (MOD_BATTLE_LOADING) {
++		_tickFileReadQueue(0);
++		modBattleLoadStep();
++	}
++}
++
+ void loadBattleData(int32_t entityId, int32_t count)
+ {
+ 	int32_t unused;
+@@ -354,6 +586,10 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 	int32_t j;
+ 	DigimonEntity *e;
+ 
++	if (MOD_OPT_QUICK_BATTLE) {
++		modLoadBattleDataQuick(entityId, count); /* MOD (quick battle start) */
++		return;
++	}
+ 	ENEMY_COUNT = count;
+ 	/* MOD (battle as data): the species that makes the battle play the last-battle track, and the track, were 0x73 and 3 */
+ 	if (BMV(MUSIC_LAST_SPECIES) >= 0 && ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type == BMV(MUSIC_LAST_SPECIES)) {
+diff --git a/src/main/main.c b/src/main/main.c
+index 7c4e5e5d..35ff3137 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5273,6 +5273,31 @@ void modTickStart(int32_t flags)
+ 	MOD_TICK_PRIM_MERAMON = 0;
+ }
+ 
++/* MOD (quick battle start): set while a battle's data loads (loadBattleData). The loads are file queue requests and
++ * the queue takes one step per tick (start a read, see it end, one stage of its callback), so at 20 ticks a second
++ * the steps were most of the wait, not the disc: the waits for a vblank step the queue again and again instead, and
++ * a request starts the moment the one before it ends. */
++int8_t MOD_LOAD_PUMP;
++int32_t isFileReadQueueBusy(void); /* file_queue.c */
++void tickFileReadQueue(int32_t unused);
++
++/* VSync(0), or with MOD_LOAD_PUMP the file queue stepped until the vblank comes (then VSync(0) once nothing is queued) */
++static void modWaitVblank(void)
++{
++	int32_t v;
++
++	if (MOD_LOAD_PUMP) {
++		v = VSync(-1);
++		while (isFileReadQueueBusy()) {
++			tickFileReadQueue(0);
++			if (VSync(-1) != v) {
++				return;
++			}
++		}
++	}
++	VSync(0);
++}
++
+ void modPresent(int32_t flags, ModRollbackSet *extra)
+ {
+ 	int32_t n;
+@@ -5442,7 +5467,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			MOD_PERF_LATE++;
+ 		}
+ 		do {
+-			VSync(0); /* like VSync(3): always swap on a vertical blank */
++			modWaitVblank(); /* like VSync(3): always swap on a vertical blank */
+ 		} while (VSync(-1) < endV);
+ 		vLast = VSync(-1);
+ 		GsSwapDispBuff();
+@@ -5457,7 +5482,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 		GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+ 	}
+ 	while (!discard && VSync(-1) < tickV + period) {
+-		VSync(0); /* the tick lasts 3 refreshes, as VSync(3) did */
++		modWaitVblank(); /* the tick lasts 3 refreshes, as VSync(3) did */
+ 	}
+ 	MOD_RENDER_PASS = 0;
+ 	MOD_RENDER_MULTIPASS = 0;
+diff --git a/src/main/map.c b/src/main/map.c
+index dff9b220..b23b17c5 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -152,6 +152,7 @@ void renderMap(int32_t arg0);
+ void lateTickMap(int32_t arg0);
+ void modSmoothMapReset(void);
+ extern int32_t MOD_INTERP_MAP_GEN; /* MOD (fps), main.c */
++extern int8_t MOD_BTL_PRELOAD_BLOCKED; /* MOD (quick battle start), btl.c */
+ /* MOD (fps): see dw/mod_fps.h (not included: this file declares addObject
+  * with other parameter types) */
+ int32_t addObjectLate(int32_t objectId, int32_t instanceId,
+@@ -4248,6 +4249,7 @@ void loadMap(int16_t mapId)
+ 
+ 	initializePartnerWaypoint();
+ 	initializeTamerWaypoints();
++	MOD_BTL_PRELOAD_BLOCKED = 0; /* MOD (quick battle start): the overlays these read block it again */
+ 	checkFishingMap(CURRENT_SCREEN, 0);
+ 	checkCurlingMap(CURRENT_SCREEN);
+ 	checkShopMap(CURRENT_SCREEN);
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 1aa230c8..688ff7eb 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -70,6 +70,7 @@ int32_t MOD_LANG = MOD_LANG_BASE;
+ int32_t MOD_OPT_SIGNS = 1;
+ int32_t MOD_OPT_STORY = 1;
+ int32_t MOD_OPT_DIFFICULTY = MOD_DIFF_NORMAL;
++int32_t MOD_OPT_QUICK_BATTLE = 1;
+ int32_t MOD_STORY_ARRIVE = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+diff --git a/src/main/sound_async.c b/src/main/sound_async.c
+index ea605585..4f275e28 100644
+--- a/src/main/sound_async.c
++++ b/src/main/sound_async.c
+@@ -316,3 +316,72 @@ void waitForSoundBufferLoading(int32_t vabId)
+ 
+ 	uploadSoundBuffer(vabId);
+ }
++
++/* MOD (quick battle start): playMusic without the wait. The music font is read through the queue like the other
++ * banks (staged at GENERAL_BUFFER, opened into bank 2 by loadSoundCompleteCallback) and the sequence starts when it
++ * is in, from the copy of the font still at GENERAL_BUFFER; until then nothing plays (the font being replaced is the
++ * one the old sequence was playing). */
++extern int16_t CURRENT_SEQ_FONT;
++extern int16_t CURRENT_SEQ_TRACK;
++extern uint8_t SEQ_BUFFER[];
++void seqOpen(void);
++void seqPlay(void);
++void seqStop(void);
++void seqClose(void);
++
++static int16_t modMusicFont;
++static int16_t modMusicTrack;
++static uint8_t modMusicLoading;
++
++static int32_t modMusicComplete(void *param)
++{
++	uint32_t *buf;
++
++	if (loadSoundCompleteCallback(param) != 0) {
++		return 1;
++	}
++	buf = (uint32_t *)GENERAL_BUFFER;
++	if ((SOUND_BUFFERS[2].vabId < 0) || (buf[3] - buf[2] > SEQ_BUFFER_SIZE)) {
++		return 0; /* as loadMusicFont: a font that does not load plays nothing */
++	}
++	memcpy(SEQ_BUFFER, (uint8_t *)buf + ((buf[2] >> 2) << 2), buf[3] - buf[2]);
++	CURRENT_SEQ_FONT = modMusicFont;
++	CURRENT_SEQ_TRACK = modMusicTrack;
++	seqOpen();
++	seqPlay();
++	return 0;
++}
++
++static int32_t modMusicFinish(void *param)
++{
++	LOAD_SOUND_COMPLETE_STATE = 0;
++	setFileReadCallback2(modMusicComplete, param);
++	return 0;
++}
++
++void modPlayMusicAsync(int32_t font, int32_t track)
++{
++	int32_t sector;
++	int32_t sectors;
++
++	if ((font == CURRENT_SEQ_FONT) && (track == CURRENT_SEQ_TRACK)) {
++		return;
++	}
++	seqStop();
++	seqClose();
++	if (font == CURRENT_SEQ_FONT) {
++		CURRENT_SEQ_TRACK = track;
++		seqOpen();
++		seqPlay();
++		return;
++	}
++	CURRENT_SEQ_FONT = -1;
++	if (!getSoundChunk(SOUND_FILE_FAALL, font - 1, &sector, &sectors)) {
++		return;
++	}
++	modMusicFont = font;
++	modMusicTrack = track;
++	SOUND_BUFFERS[2].buffer = GENERAL_BUFFER;
++	addFileReadRequestSection("FAALL.VHB", GENERAL_BUFFER, sector, sectors, &modMusicLoading,
++				  modMusicFinish, (void *)2);
++}
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 857d3ca6..ca653e1f 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -425,6 +425,8 @@ void tamerTick(int16_t instanceId)
+ 	}
+ }
+ 
++void modBtlPreloadTick(void); /* MOD (quick battle start), btl.c */
++
+ void tamerTickOverworld(int16_t instanceId)
+ {
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+@@ -435,6 +437,7 @@ void tamerTickOverworld(int16_t instanceId)
+ 	switch (TAMER_STATE) {
+ 	case 0:
+ 		tamerTickWalkingState(instanceId);
++		modBtlPreloadTick(); /* MOD (quick battle start), btl.c */
+ 		break;
+ 	case 1:
+ 		tamerSetState(6);
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index e75edacc..a3a612db 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -383,11 +383,16 @@ int32_t isInvisible(Entity* entity)
+ 	return 0;
+ }
+ 
++void modBtlPreloadDrop(void); /* MOD (quick battle start), btl.c */
++
+ void loadDynamicLibrary(Overlay lib, uint8_t *isComplete, uint8_t isAsync,
+ 			FileCallback callback, void *param)
+ {
+ 	uint8_t *nv;
+ 
++	if (lib != BTL_REL) {
++		modBtlPreloadDrop(); /* MOD (quick battle start), btl.c */
++	}
+ 	if (!isAsync) {
+ 		readFile(REL_BIN_FILES[lib - 1], (nv = REL_BIN_OFFSETS[lib - 1]));
+ 	} else {
+-- 
+2.55.0
+

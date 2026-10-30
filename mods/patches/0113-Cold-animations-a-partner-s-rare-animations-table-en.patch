@@ -1,0 +1,118 @@
+From 394f09a1ca4691c61aace7b4d36fad318b05fe76 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 15 Oct 2026 21:25:14 +0000
+Subject: [PATCH] Cold animations: a partner's rare animations (table entries
+ 0x80000000 | length << 16 | offset, in words) are read from the disc when
+ they start into COLD_ANIM_BUFFER; the cold part follows the model's resident
+ part in DIGI.DAT (tools/coldsplit.py)
+
+The partner model buffer then holds only what is played all the time; the others cost a disc read (the world: eating, reactions, pooping).
+---
+ include/dw/species.h   | 11 +++++++++++
+ src/main/anim.c        | 10 +++++++++-
+ src/main/mod_species.c | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 01b94e6a..5a49b5da 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -235,6 +235,17 @@ int32_t getSpeciesBattleMusic(int32_t type);
+ /* where the model and the texture of a type are: file name (or NULL for the
+  * CHDAT\MMDn\NAME.MMD path), first sector and size */
+ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *size);
++
++/*
++ * MOD (cold animations, tools/coldsplit.py): a partner's rare animations (eating, reactions, pooping) are not in its
++ * model buffer. Their animation table entries are 0x80000000 | length in words << 16 | offset in words, into a cold part
++ * that follows the model's (resident) part on the disc, from the next sector. startAnimation reads the one it starts into
++ * COLD_ANIM_BUFFER (whole sectors: the longest cold animation plus 2047 bytes) and plays it from there; only the partner
++ * has cold animations, and one plays at a time.
++ */
++#define COLD_ANIM_FLAG		0x80000000
++#define COLD_ANIM_MAX		0x2000
++uint8_t *loadColdAnimation(void *entity, uint32_t entry); /* an Entity * */
+ int32_t getDigimonTextureRef(int32_t type, char **file, int32_t *sector, int32_t *sectors);
+ /* the evolution paths of a type (EVOLUTION_PATHS covers types 1..62, new
+  * species have their own rows; any other type has none) */
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 46a27c90..e3bfd679 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -7,6 +7,7 @@
+ #include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
++#include <dw/species.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
+ 
+@@ -222,7 +223,14 @@ void startAnimation(entity, animId)
+ 		return;
+ 
+ 	modInterpAnimStarted(entity); /* MOD (fps): a pose jump */
+-	instrPtr = (int16_t *)((int32_t)animTable + animTable[animId]);
++	if (animTable[animId] & COLD_ANIM_FLAG) {
++		/* MOD (cold animations): read from the disc into COLD_ANIM_BUFFER (species.h) */
++		instrPtr = (int16_t *)loadColdAnimation(entity, animTable[animId]);
++		if (instrPtr == NULL)
++			return;
++	} else {
++		instrPtr = (int16_t *)((int32_t)animTable + animTable[animId]);
++	}
+ 	if ((*instrPtr & 0x7fff) == 1) {
+ 		/* MOD (memreclaim): an NPC slot trimmed away (npc_anim_trim.c);
+ 		 * no original animation is 1 frame long */
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 443fbd80..dcf6842e 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -3,6 +3,7 @@
+  * docs/mods/ids.md "Species beyond 180").
+  */
+ #include <string.h>
++#include <dw/entity.h>
+ #include <dw/file.h>
+ #include <dw/main.h>
+ #include <dw/memmap.h>
+@@ -685,3 +686,37 @@ int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t
+ 	}
+ 	return n;
+ }
++
++/*
++ * MOD (cold animations): see COLD_ANIM_FLAG in species.h. Returns where the animation's first word is, or NULL when it cannot
++ * be played (not the partner, a model not in DIGI.DAT, a bad entry): the caller then starts nothing, as for a missing slot.
++ */
++uint8_t COLD_ANIM_BUFFER[COLD_ANIM_MAX];
++
++uint8_t *loadColdAnimation(void *ent, uint32_t entry)
++{
++	Entity *entity = ent;
++	char *file;
++	int32_t sector;
++	int32_t size;
++	int32_t first;
++	int32_t count;
++	int32_t offset;
++	int32_t length;
++
++	if (entity != (Entity *)&PARTNER_ENTITY.digimonEntity.entity) {
++		return NULL;
++	}
++	if (!getDigimonModelRef(entity->type, &file, &sector, &size) || file == NULL) {
++		return NULL;
++	}
++	offset = (entry & 0xFFFF) * 4;
++	length = ((entry >> 16) & 0x7FFF) * 4;
++	count = ((offset & 0x7FF) + length + 0x7FF) >> 11;
++	if (length == 0 || (count << 11) > COLD_ANIM_MAX) {
++		return NULL;
++	}
++	first = sector + ((size + 0x7FF) >> 11) + (offset >> 11);
++	readFileSectors(file, COLD_ANIM_BUFFER, first, count);
++	return COLD_ANIM_BUFFER + (offset & 0x7FF);
++}
+-- 
+2.53.0
+

@@ -1,0 +1,446 @@
+// Readable form of script 70 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 70 {
+    npc biyomon = 5;
+    npc shimaunimon1 = 6;
+    npc shimaunimon2 = 7;
+    npc akatorimon = 8;
+    npc shamamon4 = 9;
+    npc shamamon5 = 10;
+    npc tsukaimon = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 51, 52, 53, 54, 61, 62, 63, 64, 6, 7, 8, 9, 10, 11;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 38, 72);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 46, 81);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 18) {
+            spawn_item(item("Digimushrm"), 60, 83);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 69, 71);
+        }
+    }
+
+    on talk(biyomon) replace {    // section 5 (partial)
+        if (gear_savanna.chase_stage >= 1) {
+            say(biyomon, text("s070.sec5.u0"));
+            gosub l1;
+            sound(8, 6);
+            say(biyomon, text("s070.sec5.u1"));
+            face(tamer, biyomon);
+            face(partner, biyomon);
+            await tamer;
+            await partner;
+            animate(tamer, 16);
+            say(tamer, text("s070.sec5.u2"));
+            say(tamer, text("s070.sec5.u3"));
+            gear_savanna.chase_stage = 2;
+            biyomon_ambush_asked.spot0 = true;
+            biyomon_ambush_asked.spot1 = true;
+            biyomon_ambush_asked.spot2 = true;
+            biyomon_ambush_asked.spot3 = true;
+            return;
+        }
+        if (gear_savanna.chase_stage == 0) {
+            say(biyomon, text("s070.sec5.u4"));
+            say(biyomon, text("s070.sec5.u5"));
+            run(biyomon, -240, -1076);
+            wait(1s);
+            sound(8, 6);
+            say(biyomon, text("s070.sec5.u6"));
+            face(tamer, biyomon);
+            face(partner, biyomon);
+            await tamer;
+            await partner;
+            animate(tamer, anim.command);
+            say(tamer, text("s070.sec5.u7"));
+            run(biyomon, -240, -1076);
+            await biyomon;
+            gear_savanna.chase_stage += 1;
+            gear_savanna.hide_spot = 1;
+            return;
+        }
+        return;
+        l1:
+        loop {
+            store_random(random_roll, 3);
+            if (random_roll == 0 && gear_savanna.hide_spot != 0) {
+                run(biyomon, -1055, 2740);
+                wait(1s);
+                gear_savanna.hide_spot = 0;
+                say(tamer, text("s070.sec5.u8"));
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, -1025, 2740);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 1 && gear_savanna.hide_spot != 1) {
+                run(biyomon, -566, -350);
+                wait(1s);
+                gear_savanna.hide_spot = 1;
+                say(tamer, text("s070.sec5.u9"));
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, -566, -320);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 2 && gear_savanna.hide_spot != 2) {
+                run(biyomon, 1869, -939);
+                wait(1s);
+                gear_savanna.hide_spot = 2;
+                say(tamer, text("s070.sec5.u10"));
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, 1869, -939);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 3 && gear_savanna.hide_spot != 3) {
+                run(biyomon, 1664, 3155);
+                wait(1s);
+                gear_savanna.hide_spot = 3;
+                say(tamer, text("s070.sec5.u11"));
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, 1664, 3125);
+                await biyomon;
+                jump_return();
+            }
+        }
+    }
+
+    on step(0) replace {    // section 51
+        unless (gear_savanna.chase_stage >= 2 && gear_savanna.hide_spot != 0 && !biyomon_ambush_asked.spot0 && !is_recruited(species("Biyomon"))) return;
+        biyomon_ambush_asked.spot0 = true;
+        animate(tamer, 16);
+        say(tamer, text("s070.sec51.u0"));
+        choice {
+            text("s070.sec51.m0.o0") => {
+                entity_walk_to_entity(partner, 1, tamer);
+                await partner;
+                face(partner, tamer);
+                face(tamer, partner);
+                await partner;
+                await tamer;
+                animate(tamer, 8);    // slot 8: the tamer settling the partner to sleep (partner.c:287)
+                say(tamer, text("s070.sec51.u1"));
+                animate(partner, 22);
+                wait(1s);
+                run(tamer, -1282, 3173);
+                entity_walk_to_entity(partner, 1, biyomon);
+                await partner;
+                face(tamer, biyomon);
+                gosub L12;
+                if (gear_savanna.hide_spot == 0) {
+                    entity_walk_to_entity(partner, 1, biyomon);
+                    await partner;
+                    goto L34;
+                }
+                animate(tamer, 16);
+                say(tamer, text("s070.sec51.u2"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s070.sec51.m0.o1") => {
+                goto L21;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(1) replace {    // section 52
+        unless (gear_savanna.chase_stage >= 2 && gear_savanna.hide_spot != 1 && !biyomon_ambush_asked.spot1 && !is_recruited(species("Biyomon"))) return;
+        biyomon_ambush_asked.spot1 = true;
+        animate(tamer, 16);
+        say(tamer, text("s070.sec52.u0"));
+        choice {
+            text("s070.sec52.m0.o0") => {
+                entity_walk_to_entity(partner, 1, tamer);
+                await partner;
+                face(partner, tamer);
+                face(tamer, partner);
+                await partner;
+                await tamer;
+                animate(tamer, 8);    // slot 8: the tamer settling the partner to sleep (partner.c:287)
+                say(tamer, text("s070.sec52.u1"));
+                animate(partner, 22);
+                wait(1s);
+                run(tamer, -268, -1362);
+                entity_walk_to_entity(partner, 1, biyomon);
+                await partner;
+                face(tamer, biyomon);
+                gosub L12;
+                if (gear_savanna.hide_spot == 1) {
+                    entity_walk_to_entity(partner, 1, biyomon);
+                    await partner;
+                    goto L34;
+                }
+                animate(tamer, 16);
+                say(tamer, text("s070.sec52.u2"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s070.sec52.m0.o1") => {
+                goto L21;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(2) replace {    // section 53
+        unless (gear_savanna.chase_stage >= 2 && gear_savanna.hide_spot != 2 && !biyomon_ambush_asked.spot2 && !is_recruited(species("Biyomon"))) return;
+        biyomon_ambush_asked.spot2 = true;
+        animate(tamer, 16);
+        say(tamer, text("s070.sec53.u0"));
+        choice {
+            text("s070.sec53.m0.o0") => {
+                entity_walk_to_entity(partner, 1, tamer);
+                await partner;
+                face(partner, tamer);
+                face(tamer, partner);
+                await partner;
+                await tamer;
+                animate(tamer, 8);    // slot 8: the tamer settling the partner to sleep (partner.c:287)
+                say(tamer, text("s070.sec53.u1"));
+                animate(partner, 22);
+                wait(1s);
+                run(tamer, 2143, -1254);
+                entity_walk_to_entity(partner, 1, biyomon);
+                await partner;
+                face(tamer, biyomon);
+                gosub L12;
+                if (gear_savanna.hide_spot == 2) {
+                    entity_walk_to_entity(partner, 1, biyomon);
+                    await partner;
+                    goto L34;
+                }
+                animate(tamer, 16);
+                say(tamer, text("s070.sec53.u2"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s070.sec53.m0.o1") => {
+                goto L21;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(3) replace {    // section 54
+        unless (gear_savanna.chase_stage >= 2 && gear_savanna.hide_spot != 3 && !biyomon_ambush_asked.spot3 && !is_recruited(species("Biyomon"))) return;
+        biyomon_ambush_asked.spot3 = true;
+        animate(tamer, 16);
+        say(tamer, text("s070.sec54.u0"));
+        choice {
+            text("s070.sec54.m0.o0") => {
+                entity_walk_to_entity(partner, 1, tamer);
+                await partner;
+                face(partner, tamer);
+                face(tamer, partner);
+                await partner;
+                await tamer;
+                set_dialog_owner(tamer);
+                animate(tamer, 8);    // slot 8: the tamer settling the partner to sleep (partner.c:287)
+                say(tamer, text("s070.sec54.u1"));
+                animate(partner, 22);
+                wait(1s);
+                run(tamer, 1753, 3341);
+                entity_walk_to_entity(partner, 1, biyomon);
+                await partner;
+                face(tamer, biyomon);
+                gosub L12;
+                if (gear_savanna.hide_spot == 3) {
+                    entity_walk_to_entity(partner, 1, biyomon);
+                    await partner;
+                    goto L34;
+                }
+                animate(tamer, 16);
+                say(tamer, text("s070.sec54.u2"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s070.sec54.m0.o1") => {
+                goto L21;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(10) replace {    // section 61
+        biyomon_ambush_asked.spot0 = false;
+    }
+
+    on step(11) replace {    // section 62
+        biyomon_ambush_asked.spot1 = false;
+    }
+
+    on step(12) replace {    // section 63
+        biyomon_ambush_asked.spot2 = false;
+    }
+
+    on step(13) replace {    // section 64
+        biyomon_ambush_asked.spot3 = false;
+    }
+
+    on talk(shimaunimon1) replace {    // section 6
+        say(shimaunimon1, text("s070.sec6.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(shimaunimon2) replace {    // section 7
+        say(shimaunimon2, text("s070.sec7.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(akatorimon) replace {    // section 8
+        say(akatorimon, text("s070.sec8.u0"));
+        battle();
+        recruit(species("Akatorimon"));
+    }
+
+    on talk(shamamon4) replace {    // section 9
+        say(shamamon4, text("s070.sec9.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon5) replace {    // section 10
+        say(shamamon5, text("s070.sec10.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 11
+        say(tsukaimon, text("s070.sec11.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+        return;
+    }
+
+    shared L12 {    // code of sec5 that other code jumps to
+        loop {
+            store_random(random_roll, 3);
+            if (random_roll == 0 && gear_savanna.hide_spot != 0) {
+                run(biyomon, -1025, 2740);
+                wait(1s);
+                gear_savanna.hide_spot = 0;
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, -1025, 2740);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 1 && gear_savanna.hide_spot != 1) {
+                run(biyomon, -566, -320);
+                wait(1s);
+                gear_savanna.hide_spot = 1;
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, -566, -320);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 2 && gear_savanna.hide_spot != 2) {
+                run(biyomon, 1869, -939);
+                wait(1s);
+                gear_savanna.hide_spot = 2;
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, 1869, -939);
+                await biyomon;
+                jump_return();
+            }
+            if (random_roll == 3 && gear_savanna.hide_spot != 3) {
+                run(biyomon, 1664, 3125);
+                wait(1s);
+                gear_savanna.hide_spot = 3;
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                run(biyomon, 1664, 3125);
+                await biyomon;
+                jump_return();
+            }
+        }
+    }
+
+    shared L21 {    // code of sec51 that other code jumps to
+    }
+
+    shared L34 {    // code of sec54 that other code jumps to
+        animate(tamer, anim.tamer_victory);
+        wait(10);
+        face(tamer, biyomon);
+        face(partner, biyomon);
+        face(biyomon, tamer);
+        await tamer;
+        await partner;
+        await biyomon;
+        say(tamer, text("s070.sec54.u3"));
+        sound(8, 6);
+        say(biyomon, text("s070.sec54.u4"));
+        animate(tamer, 19);
+        say(tamer, text("s070.sec54.u5"));
+        animate(biyomon, 28);
+        wait(1s);
+        say(biyomon, text("s070.sec54.u6"));
+        animate(tamer, 16);
+        say(tamer, text("s070.sec54.u7"));
+        animate(biyomon, 19);
+        wait(2s);
+        animate(tamer, 19);
+        say(narrator, text("s070.sec54.u8"));
+        animate(biyomon, anim.idle);
+        say(biyomon, text("s070.sec54.u9"));
+        say(biyomon, text("s070.sec54.u10"));
+        loop {
+            run(biyomon, -1232, 4250);
+            if (glances < 6 && gear_savanna.hide_spot != 0) {
+                glances += 1;
+                wait(10);
+                face(tamer, biyomon);
+                face(partner, biyomon);
+                continue;
+            }
+            unless (glances < 4 && gear_savanna.hide_spot == 0) break;
+            glances += 1;
+            wait(5);
+            face(tamer, biyomon);
+            face(partner, biyomon);
+        }
+        await biyomon;
+        join_city(biyomon, species("Biyomon"), 8, 5, text("s070.sec54.u11"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+}

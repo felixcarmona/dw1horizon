@@ -1,0 +1,45 @@
+{
+  "_comment": "Money, merit, stacks, shops and card packs. The C holds none of these numbers: a key left out means that does not exist. money.cap / merit.cap: the most the tamer can hold (a cap left out: the limit of what holds it); item.stackCap: the most of one item in a slot (and in the recycle bin); defeat.itemLossPercent: the part of the items lost when the partner is defeated (the stacks lost are that percent of the slots with an item); shop.babyBuyPercent: what a baby partner pays of the price (a rule left out: 100); shop.sellPercent: the part of the price the shops pay for an item or a card (a rule left out: 100); cardPack.price: what a card pack (three cards) costs, asked how many at the counter; cardPack.rarityBelow: a card pack's roll of 100 gives the first rarity (0..3) whose mark it is below, else rarity 4; cards.maxCopies: the most copies of one card; battle.bitsPercent: the per cent of the enemies' bits a won battle pays (left out: 100); cardMachine.price / rarityBelow: the item shop's card machine, a card a unit, asked how many (its rarity marks as cardPack's).",
+  "economy": {
+    "money": {
+      "cap": 999999
+    },
+    "merit": {
+      "cap": 9999
+    },
+    "item": {
+      "stackCap": 99
+    },
+    "defeat": {
+      "itemLossPercent": 30
+    },
+    "shop": {
+      "babyBuyPercent": 90,
+      "sellPercent": 50
+    },
+    "cardPack": {
+      "price": 500,
+      "rarityBelow": [
+        1,
+        5,
+        20,
+        50
+      ]
+    },
+    "cards": {
+      "maxCopies": 9
+    },
+    "battle": {
+      "bitsPercent": 150
+    },
+    "cardMachine": {
+      "price": 100,
+      "rarityBelow": [
+        1,
+        3,
+        8,
+        28
+      ]
+    }
+  }
+}

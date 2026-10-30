@@ -1,0 +1,49 @@
+// Readable form of script 72 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 72 {
+    npc psychemon2 = 7;
+    npc psychemon3 = 8;
+    npc shamamon4 = 9;
+    npc shamamon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 16) {
+            spawn_item(item("Digimushrm"), 49, 70);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 25, 68);
+        }
+    }
+
+    on talk(psychemon2) replace {    // section 7
+        say(psychemon2, text("s072.sec7.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(psychemon3) replace {    // section 8
+        say(psychemon3, text("s072.sec8.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(shamamon4) replace {    // section 9
+        say(shamamon4, text("s072.sec9.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon5) replace {    // section 10
+        say(shamamon5, text("s072.sec10.u0"));
+        battle();
+        recruit(species("Shamamon"));
+        return;
+    }
+}

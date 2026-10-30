@@ -1,0 +1,11 @@
+{
+  "id": 97,
+  "name": "Hair grower",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 4,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "evolution_target": 52
+}

@@ -1,0 +1,16 @@
+{
+ "first_id": 402,
+ "out": "build/neocrimson-out",
+ "digimon": [
+  {
+   "name": "NeoCrimson",
+   "game": "dw2",
+   "model": "M247NCRM",
+   "level": "mega",
+   "element": 1,
+   "meshfix": {
+    "prims": 600
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": 54,
+  "name": "Rnd Spd Toss",
+  "element": "filth",
+  "power": 122,
+  "mpCost": 72,
+  "distance": 250000,
+  "range": 3,
+  "accuracy": 50,
+  "status": 1,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [20, 11, 6]
+}

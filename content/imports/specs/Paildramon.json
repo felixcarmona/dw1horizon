@@ -1,0 +1,82 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 166,
+ "type": 199,
+ "name": "Paildramon",
+ "source": {
+  "type": 51,
+  "mmd": "extracted/CHDAT/MMD1/KUWA.MMD"
+ },
+ "map": {
+  "2": 4,
+  "3": 3,
+  "4": 2,
+  "5": 1,
+  "6": 10,
+  "7": 12,
+  "9": 7,
+  "10": 9,
+  "12": 23,
+  "13": 27,
+  "14": 29,
+  "16": 24,
+  "17": 26,
+  "22": 16,
+  "23": 17,
+  "24": 13,
+  "25": 14,
+  "26": 20,
+  "29": 22,
+  "30": 21
+ },
+ "hips": [
+  5,
+  1,
+  0.965
+ ],
+ "root_scale": 0.965,
+ "tol": 16,
+ "tol_clips": 16,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 57,
+   "hips": "entity"
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 59,
+   "end": 149,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 24,
+   "end": 116,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36"
+ ]
+}

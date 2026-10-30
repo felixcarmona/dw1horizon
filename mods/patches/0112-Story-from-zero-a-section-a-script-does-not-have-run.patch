@@ -1,0 +1,39 @@
+From 61e6148cd80ad45b4a9ba9bc0325b824cd549ca4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 15 Oct 2026 19:57:31 +0000
+Subject: [PATCH] Story from zero: a section a script does not have runs
+ nothing (getScriptSection returns an END_SECTION instead of a null pointer)
+
+---
+ src/main/script_interp.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 72db0234..8d281b9a 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -608,6 +608,12 @@ uint8_t *getScript(uint16_t mapId)
+ 	return MAP_SCRIPT_PTR;
+ }
+ 
++/*
++ * MOD (story from zero): a section the script does not have runs nothing. The original returned a null pointer, which every
++ * caller ran or read as code; the story's source may now leave a section or a whole script out (docs/mods/data-sources.md).
++ */
++static uint8_t NO_SECTION[4] = { 0xFE, 0xFE, 0xFE, 0xFE }; /* END_SECTION */
++
+ // clang-format off
+ uint8_t *getScriptSection(script, section)
+ 	uint8_t *script;
+@@ -622,7 +628,7 @@ uint8_t *getScriptSection(script, section)
+ 		}
+ 
+ 		if (entry[0] == 0xffff) {
+-			return 0;
++			return NO_SECTION; /* MOD (story from zero): was 0 */
+ 		}
+ 
+ 		entry += 2;
+-- 
+2.53.0
+

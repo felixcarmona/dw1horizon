@@ -1,0 +1,93 @@
+{
+  "screen": 304,
+  "art": "second-chamber",
+  "review": "The stela stands in front of the back wall; its upper body must cover the tamer approaching along the rear strip. Its plinth remains solid.",
+  "pieces": [
+    {
+      "name": "memorial-stela",
+      "png": "304-memorial-stela.png",
+      "at": [
+        288,
+        90
+      ],
+      "depth": [
+        318,
+        196
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/second-chamber-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          282,
+          90,
+          355,
+          205
+        ],
+        "positive": [
+          [
+            317,
+            125
+          ],
+          [
+            320,
+            179
+          ]
+        ],
+        "negative": [
+          [
+            279,
+            154
+          ],
+          [
+            358,
+            163
+          ],
+          [
+            320,
+            211
+          ]
+        ],
+        "score": 0.9946378469467163
+      }
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        48,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the memorial, visible at both sides; its upper body is now foreground."
+    },
+    {
+      "tile": [
+        49,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the memorial, visible at both sides; its upper body is now foreground."
+    },
+    {
+      "tile": [
+        50,
+        43
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the memorial, visible at both sides; its upper body is now foreground."
+    }
+  ],
+  "depth_planes": {
+    "width": 32,
+    "height": 8
+  }
+}

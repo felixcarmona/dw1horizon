@@ -1,0 +1,126 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 137,
+ "type": 205,
+ "name": "MegaKabuterimon",
+ "source": {
+  "type": 60,
+  "mmd": "extracted/CHDAT/MMD2/HKAB.MMD"
+ },
+ "map": {
+  "1": 16,
+  "2": 3,
+  "3": 4,
+  "4": 5,
+  "5": 6,
+  "7": 7,
+  "8": 8,
+  "10": 9,
+  "13": 12,
+  "16": 1,
+  "17": 20,
+  "18": 21,
+  "19": 22,
+  "20": 23,
+  "21": 24,
+  "22": 25
+ },
+ "hips": [
+  1,
+  1,
+  0.887
+ ],
+ "root_scale": 0.887,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 68,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 68,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 35,
+   "end": 125,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 35,
+   "end": 115,
+   "hz": 0.3
+  },
+  "0x3c": {
+   "anim": "anim_03",
+   "start": 11,
+   "end": 107,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x3b": {
+   "anim": "anim_01",
+   "start": 85,
+   "end": 190,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_02",
+   "start": 50,
+   "end": 119,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x35",
+  "0x36",
+  "0x38",
+  "0x39"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

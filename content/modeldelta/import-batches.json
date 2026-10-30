@@ -1,0 +1,2664 @@
+{
+  "format": 1,
+  "recipes": [
+    {
+      "list": "content/imports/lists/armagemon.json",
+      "entry": {
+        "name": "Armagemon",
+        "game": "dw3",
+        "model": "M382ARMG",
+        "level": "mega",
+        "element": 1,
+        "meshfix": true,
+        "max_half_width": 800,
+        "max_half_depth": 900,
+        "victory": "anim_14"
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Armagemon.json",
+      "spec_sha256": "dbb43dcef4bc1ceb8ec3d2bf225bc46d18f85f1cb6148aff2b97bc73704cb0a3",
+      "out": "build/rescue-armagemon"
+    },
+    {
+      "list": "content/imports/lists/bastemon.json",
+      "entry": {
+        "name": "Bastemon",
+        "game": "dw3",
+        "model": "M437BAST",
+        "level": 5,
+        "element": 2,
+        "donor": 40
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Bastemon.json",
+      "spec_sha256": "a82dbd0c6ff45c56279ef3aed8f664453dbce8789374fbfff3cfd0ec67ffbc0c",
+      "out": "build/bastemon"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "DarkTyrannomon",
+        "game": "dw2",
+        "model": "M133DTRN",
+        "level": 5,
+        "element": 1,
+        "from": [
+          8
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/DarkTyrannomon.json",
+      "spec_sha256": "32f4f8260e56ec17dc9e6afa7912d92f881239f1b4968dc63154cc52ac6e922a",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "ExTyrannomon",
+        "game": "dw2",
+        "model": "M142XTRN",
+        "level": 5,
+        "element": 0,
+        "from": [
+          8
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/ExTyrannomon.json",
+      "spec_sha256": "04cf5e0481bcb3c57735b06ebe3977bd29ddfa8332daaed66a3fa2bbc4854b60",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Mammothmon",
+        "game": "dw2",
+        "model": "M212MANM",
+        "level": 5,
+        "element": 4,
+        "from": [
+          23
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Mammothmon.json",
+      "spec_sha256": "fd89f1dfd1f86177bbfc3a90601b3af4a3f842348f50fa33c7dded39931de12e",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "SkullMammothmon",
+        "game": "dw2",
+        "model": "M215SMAN",
+        "level": 5,
+        "element": 4,
+        "from": [
+          267
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/SkullMammothmon.json",
+      "spec_sha256": "5695ab29d8a2b6ef71522522be4b2a43fcebeae370ad4a00ce2da3c8e3a3af25",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Garbagemon",
+        "game": "dw2",
+        "model": "M227GARB",
+        "level": 5,
+        "element": 6,
+        "from": [
+          39,
+          11
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Garbagemon.json",
+      "spec_sha256": "6964e61eab4711edde7be284546d45f7f753432335456c8a9d99ebace96196dc",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "PrinceMamemon",
+        "game": "dw2",
+        "model": "M195PMAM",
+        "level": 5,
+        "element": 1,
+        "from": [
+          13
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/PrinceMamemon.json",
+      "spec_sha256": "a6621d81260a913e11351398dbcbf938bb639b34ff0a17ea393791731f3893eb",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Plesiomon",
+        "game": "dw2",
+        "model": "M232PLES",
+        "level": 5,
+        "element": 4,
+        "from": [
+          10
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Plesiomon.json",
+      "spec_sha256": "290bcfdfd504ec175903b9f9436e2d2813a0e250c7a0ba98502a9ff9ee6e63ec",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Woodmon",
+        "game": "dw2",
+        "model": "M222WOOD",
+        "level": 4,
+        "element": 3,
+        "from": [
+          46
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Woodmon.json",
+      "spec_sha256": "6b460bd74b2baac24ad44ce0c08607aca679c79cd7cba30f13236c5167932c7c",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Floramon",
+        "game": "dw2",
+        "model": "M191FLRA",
+        "level": 3,
+        "element": 3,
+        "from": [
+          44
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Floramon.json",
+      "spec_sha256": "84027e8f6e33abc4762d7863bfae58910703c9b61adfcfc79ad20bb028764570",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Blossomon",
+        "game": "dw2",
+        "model": "M200BLSA",
+        "level": 4,
+        "element": 3,
+        "from": [
+          273
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Blossomon.json",
+      "spec_sha256": "384187b50a9c35e2c5a953b607fb55018c354ce636943f0b69cf75dd8eaebd89",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Anomalocarimon",
+        "game": "dw2",
+        "model": "M202ANOM",
+        "level": 5,
+        "element": 4,
+        "from": [
+          35
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Anomalocarimon.json",
+      "spec_sha256": "116f982f8b86d7dd6fd30bfa550db49db1e357685179c30032ee1530c66611b3",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eighth-12.json",
+      "entry": {
+        "name": "Baihumon",
+        "game": "dw2",
+        "model": "M149CHIN",
+        "level": "mega",
+        "element": 1,
+        "scale": 0.19607843137254904
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Baihumon.json",
+      "spec_sha256": "6142ea66c3e33363d95fee4809a4e64242b76e26f146c6a42c89188d77df91ef",
+      "out": "build/batch8"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "HiAndromon",
+        "game": "dw3",
+        "model": "M356HAND",
+        "level": "mega",
+        "element": 5,
+        "from": [
+          40
+        ]
+      },
+      "level": 6,
+      "spec": "content/imports/specs/HiAndromon.json",
+      "spec_sha256": "461aeaacfa031de871077d481262d7721ff5f498d1678ff60eda61569479e839",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "KingEtemon",
+        "game": "dw3",
+        "model": "M250KGET",
+        "level": "mega",
+        "element": 1,
+        "from": [
+          42
+        ]
+      },
+      "level": 6,
+      "spec": "content/imports/specs/KingEtemon.json",
+      "spec_sha256": "2beaf37b9c6f8085db19e8456a22ac76e5c0810ec4d9a39dcb8f08ad760bd902",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Hangyomon",
+        "game": "dw3",
+        "model": "M241HNGY",
+        "level": 4,
+        "element": 4,
+        "from": [
+          239,
+          217
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Hangyomon.json",
+      "spec_sha256": "bdf22f44e55b26302c934c0aca2bec45fef73a41017535e2512a22a7383257af",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Ebidramon",
+        "game": "dw3",
+        "model": "M165EBDR",
+        "level": 4,
+        "element": 4,
+        "from": [
+          239,
+          217
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Ebidramon.json",
+      "spec_sha256": "076b95a647ac8f1d550ba7cabdc0807d571a89324320ed21ba27b07fb5ec2b22",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "GrapLeomon",
+        "game": "dw3",
+        "model": "M391GRPL",
+        "level": 5,
+        "element": 1,
+        "from": [
+          48
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/GrapLeomon.json",
+      "spec_sha256": "fc443ccf4ac74d17f35961fbd9b593d609dbfaa99bdbe6d4a756f06fa51117f1",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "BK-KingNumemon",
+        "game": "dw3",
+        "model": "M446BKNM",
+        "level": 5,
+        "element": 6,
+        "from": [
+          11
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/BK-KingNumemon.json",
+      "spec_sha256": "dafe54838b7df12c9ab685b7ea088743b5c2d3c1b30789644a41bb1edf5f7442",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Dinohumon",
+        "game": "dw3",
+        "model": "M386DINO",
+        "level": 4,
+        "element": 1,
+        "from": [
+          8
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Dinohumon.json",
+      "spec_sha256": "8a6fe799e18cb1c0de2ccaf819a0c230906c68376a4f2c2e501dbdab588bf844",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Antylamon",
+        "game": "dw3",
+        "model": "M360ANTR",
+        "level": 5,
+        "element": 1
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Antylamon.json",
+      "spec_sha256": "6436b10cbd033aa8f95205c64f6f692dba189392df44b01c881cf2d5fb7475ee",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Armormon",
+        "game": "dw3",
+        "model": "M390ASLT",
+        "level": 5,
+        "element": 5
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Armormon.json",
+      "spec_sha256": "e570e35688c9b705e71ea36e7a4b4c6a6b02c152118a2f7c5e46f36ed235d930",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Arukenimon",
+        "game": "dw3",
+        "model": "M365ARCH",
+        "level": 5,
+        "element": 6
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Arukenimon.json",
+      "spec_sha256": "0e806e8503369a8786aa02d8496f14e10f7b2506a4294cdbe8501d753fa4a800",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Daemon",
+        "game": "dw3",
+        "model": "M247DEMN",
+        "level": "mega",
+        "element": 6
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Daemon.json",
+      "spec_sha256": "17f3e292dec983f0913bc2efc732d1fb9769c9fbce75cba56bdcfbd32ebb021e",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/eleventh-12.json",
+      "entry": {
+        "name": "Bulbmon",
+        "game": "dw3",
+        "model": "M436VALV",
+        "level": 4,
+        "element": 3
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Bulbmon.json",
+      "spec_sha256": "ada002f57d406a7b2c936f3cfdb1fdb6331ac4bd3ee95c87108d909da616e1b1",
+      "out": "build/batch11"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Phantomon",
+        "clip_policy": null,
+        "game": "dcb",
+        "model": 163,
+        "from": [
+          37
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Phantomon.json",
+      "spec_sha256": "9015acb8e45f1d7e692c045d44b3e68dc907f36a9cb4f899354f4fa08365c9f4",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Rosemon",
+        "game": "dcb",
+        "model": 172,
+        "from": [
+          209
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Rosemon.json",
+      "spec_sha256": "758f8a605caee657655b1c901c8f39cd133b7b04690f9ca6833f6d65febe641d",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "ShellNumemon",
+        "game": "dcb",
+        "model": 223,
+        "from": [
+          11
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/ShellNumemon.json",
+      "spec_sha256": "dcf401ffcb345b4600acf08ffaf78335bc3f522697380494c908567a3c6b7134",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "BomberNanimon",
+        "game": "dcb",
+        "model": 213,
+        "from": [
+          53
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/BomberNanimon.json",
+      "spec_sha256": "390ded451fd5c1752c96d5e34c9064ed37308f9b8bd524784d79934e8ceb7102",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "D-Otamamon",
+        "game": "dcb",
+        "model": 201,
+        "from": [
+          109
+        ]
+      },
+      "level": 3,
+      "spec": "content/imports/specs/D-Otamamon.json",
+      "spec_sha256": "d4dc0f75d5334af92ae4edabcaabb1be2d2388211c750accf1f947c2d64a7ff3",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "R-Gatomon",
+        "game": "dcb",
+        "model": 162,
+        "from": [
+          221
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/R-Gatomon.json",
+      "spec_sha256": "c1e5a52016a1cb47d6cb4f4021cb7522706ab8cd5087f798bcabcc5496f01ade",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Candlemon",
+        "game": "dcb",
+        "model": 200
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Candlemon.json",
+      "spec_sha256": "013f36e27daa9db203d44700765ee5c92af3c96f085041655d39359718f72f18",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "DemiDevimon",
+        "game": "dcb",
+        "model": 147
+      },
+      "level": 3,
+      "spec": "content/imports/specs/DemiDevimon.json",
+      "spec_sha256": "574bfbcd2303799b2aee5418ca4901b1a4696cbda1a812dd2ddc1ae903ed5c4e",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Diaboromon",
+        "game": "dcb",
+        "model": 179
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Diaboromon.json",
+      "spec_sha256": "962e81ac108855fc8a1f84e5269046c1a317fb2cccf6adf567be042d9f87688f",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Dolphmon",
+        "game": "dcb",
+        "model": 214
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Dolphmon.json",
+      "spec_sha256": "44db385d72f187f494d9dfbbb5ade47182a55cfb4c328f2a19e8d2d41af23ead",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Gizamon",
+        "game": "dcb",
+        "model": 207
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Gizamon.json",
+      "spec_sha256": "71b08511ca79701accea9086e96e4a9538005bd19ad1d4b17796dfdba887afdb",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/fifth-12.json",
+      "entry": {
+        "name": "Gesomon",
+        "game": "dcb",
+        "model": 215,
+        "from": [
+          239
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Gesomon.json",
+      "spec_sha256": "6925d845233f926392903b6dc31b2d2ee79dfca27c000de2d8c2ede16181b6ba",
+      "out": "build/batch5"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Wormmon",
+        "game": "dcb",
+        "model": 149
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Wormmon.json",
+      "spec_sha256": "7ac429cba5b412af003db93a9af57544a1cd34ceb58ca82768952f0a305bd120",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Hawkmon",
+        "game": "dcb",
+        "model": 150
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Hawkmon.json",
+      "spec_sha256": "fe23fe83a7bd88d5eaf34852b058dbe52f3062cae3c4985d5881f9c954a3c1fa",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Armadillomon",
+        "game": "dcb",
+        "model": 151
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Armadillomon.json",
+      "spec_sha256": "3eb37245851e63675f54cacbad65a34897c01063e4a72b92ae695427d7f42546",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Stingmon",
+        "game": "dcb",
+        "model": 159
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Stingmon.json",
+      "spec_sha256": "351a9daee3219b2ca27ef9ed8c9679ad39b0c8a536fb384abb4a0c1f9a67a396",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Aquilamon",
+        "game": "dcb",
+        "model": 160
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Aquilamon.json",
+      "spec_sha256": "4b996cf1d29609f894f488bd9f10eda2086abebdb30fa13801eae73066ddabbe",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Ankylomon",
+        "game": "dcb",
+        "model": 161
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Ankylomon.json",
+      "spec_sha256": "de77951e5935644b86fec4e12159a868ac70aaf1e0aeae5482336057c9373991",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Angewomon",
+        "game": "dcb",
+        "model": 170
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Angewomon.json",
+      "spec_sha256": "ac23104b155571cd7eed52ba0db61aa9146cfa8e41bb18721e76032869d987e7",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "MetalGarurumon",
+        "game": "dcb",
+        "model": 174,
+        "level": "mega"
+      },
+      "level": 6,
+      "spec": "content/imports/specs/MetalGarurumon.json",
+      "spec_sha256": "3dd85feffa984c7144d305cbd96ecb92078a3160133cca060f7be55c84fe230a",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/first-10.json",
+      "entry": {
+        "name": "Imperialdramon",
+        "game": "dcb",
+        "model": 181,
+        "level": "mega"
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Imperialdramon.json",
+      "spec_sha256": "a03c41d9bd6280c97ad95da4fd7da6cc66c81c7ade0ef84b428389d21853328f",
+      "out": "build/batch"
+    },
+    {
+      "list": "content/imports/lists/fit-2.json",
+      "entry": {
+        "name": "Garudamon",
+        "game": "dcb",
+        "model": 138,
+        "from": [
+          21
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Garudamon.json",
+      "spec_sha256": "66a3c8edd3f742ee60cda6ee6c7ff2e118506b163150dcbefb966b0066b3323f",
+      "out": "build/fitfix"
+    },
+    {
+      "list": "content/imports/lists/fit-2.json",
+      "entry": {
+        "name": "Omnimon",
+        "game": "dcb",
+        "model": 180,
+        "from": [
+          12,
+          62
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Omnimon.json",
+      "spec_sha256": "10d6778ef2738a01566af0c82ef5fa9bf381794c1abc573728934883cff624ab",
+      "out": "build/fitfix"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Gomamon",
+        "game": "dcb",
+        "model": 146,
+        "from": [
+          16
+        ]
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Gomamon.json",
+      "spec_sha256": "578e2fbd72ca712370061877358d14eb3fb052ee577ebca990704321b2d4adfa",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Ikkakumon",
+        "game": "dcb",
+        "model": 153,
+        "from": [
+          217
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Ikkakumon.json",
+      "spec_sha256": "7059e99d393d4da4d2b6f015835d2b301f47df461c559728df01c8ea93e9a87b",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Zudomon",
+        "game": "dcb",
+        "model": 140,
+        "from": [
+          218
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Zudomon.json",
+      "spec_sha256": "1dbde19114a6485697b8314bd37266e289d215b24be67df35effcf0b75a6b905",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Vikemon",
+        "game": "dcb",
+        "model": 185,
+        "from": [
+          219
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Vikemon.json",
+      "spec_sha256": "af865874981730d0570ed859616dadfede3fb7a95cdb107af317346623fb25cd",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Salamon",
+        "game": "dcb",
+        "model": 145,
+        "from": [
+          30
+        ]
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Salamon.json",
+      "spec_sha256": "c4d8e91e5e06018a3af457f762b44fd344c418aafdf318defaaece269407ee18",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "BlackGatomon",
+        "game": "dcb",
+        "model": 206,
+        "from": [
+          221
+        ]
+      },
+      "level": 3,
+      "spec": "content/imports/specs/BlackGatomon.json",
+      "spec_sha256": "61d3592fd7992417253486aed29b4890dea9445c04c366a31cc9fea8b5e1ca9f",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "LadyDevimon",
+        "game": "dcb",
+        "model": 164,
+        "from": [
+          6
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/LadyDevimon.json",
+      "spec_sha256": "d60f05cd16893cf111fda919ff131f200dedf0b81738f101a9aaf8bdaf3a59f4",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "RealMetalGreymon",
+        "game": "dcb",
+        "model": 129,
+        "from": [
+          5
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/RealMetalGreymon.json",
+      "spec_sha256": "8e7c6fe092dc379dac9fb7bb6e1a61a402313c22972e03305292276de07901c8",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Shurimon",
+        "clip_policy": "dcb-grounded",
+        "game": "dcb",
+        "model": 192,
+        "from": [
+          208
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Shurimon.json",
+      "spec_sha256": "37cc06b9f46ed8a1236e1ffd5ad04b33434085b437a1d75e6b6df3ad9cc6d60e",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Sylphymon",
+        "game": "dcb",
+        "model": 168,
+        "from": [
+          209
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Sylphymon.json",
+      "spec_sha256": "5e1131f53a5ac621f0cc53c2ebe7cdbe814a1b5c636275cbe5fa813b2850b5ad",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Apemon",
+        "game": "dcb",
+        "model": 212
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Apemon.json",
+      "spec_sha256": "7d894d432c23afdde053987acfd2200ac1913e5c880f18af9fd5f820e6e870e0",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/fourth-12.json",
+      "entry": {
+        "name": "Baronmon",
+        "game": "dcb",
+        "model": 195
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Baronmon.json",
+      "spec_sha256": "bb62c448396c3410ec1e0833d454b029783ad20bb82d54be8e8f4abcc8bb53b8",
+      "out": "build/batch4"
+    },
+    {
+      "list": "content/imports/lists/guilmon.json",
+      "entry": {
+        "name": "Guilmon",
+        "game": "dw3",
+        "model": "M366GIRU",
+        "level": 3,
+        "element": 0
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Guilmon.json",
+      "spec_sha256": "76f0cba810ac8c463c766dfddf752ea4d9e6e7dfc73b52e24a824804bb074025",
+      "out": "build/guilmon"
+    },
+    {
+      "list": "content/imports/lists/kyubimon.json",
+      "entry": {
+        "name": "Kyubimon",
+        "game": "dw3",
+        "model": "M374KYBI",
+        "level": 4,
+        "element": 0,
+        "meshfix": true,
+        "roles": true,
+        "donor": 22,
+        "root_slots": {
+          "0x02": 0.67,
+          "0x03": 0.67,
+          "0x04": 0.55,
+          "0x1b": 0.67,
+          "0x23": 0.67,
+          "0x24": 0.55
+        },
+        "from": [
+          354,
+          17,
+          31
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Kyubimon.json",
+      "spec_sha256": "2f503701ccf538eef88df4724997292c8f75703594cc26165c4326bba1fba5c2",
+      "out": "build/rescue-kyubimon"
+    },
+    {
+      "list": "content/imports/lists/neocrimson.json",
+      "entry": {
+        "name": "NeoCrimson",
+        "game": "dw2",
+        "model": "M247NCRM",
+        "level": "mega",
+        "element": 1,
+        "meshfix": {
+          "prims": 600
+        },
+        "scale": 0.19607843137254904
+      },
+      "level": 6,
+      "spec": "content/imports/specs/NeoCrimson.json",
+      "spec_sha256": "f7b6c1dba8f23642da6bb893ba2fe232857f216adc2107fe908eba26d5aef5aa",
+      "out": "build/neocrimson-out"
+    },
+    {
+      "list": "content/imports/lists/nineteenth-7.json",
+      "entry": {
+        "name": "Zanbamon",
+        "game": "dw3",
+        "model": "M337ZAMB",
+        "level": 5,
+        "element": 1,
+        "roles": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Zanbamon.json",
+      "spec_sha256": "deefb9364089a4da5bca02ad892f28c87062195211511be47f9f44672b0b0730",
+      "out": "build/rigfix"
+    },
+    {
+      "list": "content/imports/lists/nineteenth-7.json",
+      "entry": {
+        "name": "Chrysalimon",
+        "game": "dw3",
+        "model": "M175KRSR",
+        "level": 4,
+        "element": 6,
+        "roles": true
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Chrysalimon.json",
+      "spec_sha256": "2fb38b2d70b44eb99ab21483a1dcdd1cc32a000cf0260c142922559991765044",
+      "out": "build/rigfix"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "SkullMeramon",
+        "game": "dw2",
+        "model": "M189DTMR",
+        "level": 5,
+        "element": 0,
+        "from": [
+          9
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/SkullMeramon.json",
+      "spec_sha256": "6ab4cf8e34b3cd6aacb12fb9663d5d52783cbbedc03b8cc045c190f1ff570cb3",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Octomon",
+        "game": "dw2",
+        "model": "M221OCTA",
+        "level": 4,
+        "element": 4,
+        "from": [
+          239
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Octomon.json",
+      "spec_sha256": "aa2db73580d2dbc996809df2f67545cead5e3e5727e2401adbbf96b14dd68fc3",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "MarineDevimon",
+        "game": "dw2",
+        "model": "M224MDEV",
+        "level": 5,
+        "element": 4,
+        "from": [
+          278
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MarineDevimon.json",
+      "spec_sha256": "14732b52d4e49305feaead89ea5a2f8c26390d452b5a66d8440bac66f7cb49a5",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Pumpkinmon",
+        "game": "dw2",
+        "model": "M201PUMP",
+        "level": 5,
+        "element": 1,
+        "from": [
+          37
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Pumpkinmon.json",
+      "spec_sha256": "ae35786d2cbfe8c32bbbaf2894d5c8bfb505151e35b7272d9089e7120666a6f7",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Cyclonemon",
+        "game": "dw2",
+        "model": "M134CYCL",
+        "level": 5,
+        "element": 3,
+        "from": [
+          51
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Cyclonemon.json",
+      "spec_sha256": "5db046f514d9499d3d3c4a8e50513e73ed5bbda63c9e0681bba8ffe24c891bf1",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Kiwimon",
+        "game": "dw2",
+        "model": "M198KIWI",
+        "level": 4,
+        "element": 2,
+        "from": [
+          45,
+          184
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Kiwimon.json",
+      "spec_sha256": "eb59fae0cfcdd474cb2de64e0a6b0fd68c35153b0afacebed63e6178b0e6fda0",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Shakomon",
+        "game": "dw2",
+        "model": "M218SHAK",
+        "level": 4,
+        "element": 4,
+        "from": [
+          217
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Shakomon.json",
+      "spec_sha256": "dfeff919a171f4fd08bff4708665717b1627ab43a52c1b43bf972681a82960be",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Ganimon",
+        "game": "dw2",
+        "model": "M197GANI",
+        "level": 4,
+        "element": 4,
+        "from": [
+          239
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Ganimon.json",
+      "spec_sha256": "d342610769830c562dd2d061110aa658ce8d599ab8148b1519018a048b4c5708",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Gazimon",
+        "game": "dw2",
+        "model": "M131GAZI",
+        "level": 3,
+        "element": 1,
+        "from": [
+          44
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Gazimon.json",
+      "spec_sha256": "4f422ae2006f74ba8a1728d8538fceb1427c27961ff2d21398c47051f2308e92",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Deramon",
+        "game": "dw2",
+        "model": "M192DERA",
+        "level": 4,
+        "element": 1,
+        "from": [
+          285
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Deramon.json",
+      "spec_sha256": "c74d0e6d3109ee70ae2941eeb6278b4fbfb5692fd805bc0eb17a00c09a4cc9c5",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Bakumon",
+        "game": "dw2",
+        "model": "M206BAKU",
+        "level": 4,
+        "element": 1,
+        "donor": 22,
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Bakumon.json",
+      "spec_sha256": "0abca5fae834d5fdcfcfed7f5be0c2f1aeb8655324176c5aadecc25af88f0bb4",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/ninth-12.json",
+      "entry": {
+        "name": "Boltmon",
+        "game": "dw2",
+        "model": "M190BOLT",
+        "level": 5,
+        "element": 2,
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Boltmon.json",
+      "spec_sha256": "631346a43405d44f405be983087345e9e25caa5a663f985ea575d9ca7c90c091",
+      "out": "build/batch9"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Digmon",
+        "game": "dcb",
+        "model": 196,
+        "from": [
+          185
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Digmon.json",
+      "spec_sha256": "e6a3e91b27a1b20870dbc223725ebb1d39865b7fd5e8bfaf3b22ce9e7b12bf19",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "ExVeemon",
+        "layer": false,
+        "game": "dcb",
+        "model": 158,
+        "from": [
+          180
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/ExVeemon.json",
+      "spec_sha256": "83524d4fff814af36d3f4273c0222f3a5a2195e3cc57cf1e8e9e42a5b87c4f23",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Flamedramon",
+        "game": "dcb",
+        "model": 187,
+        "from": [
+          180
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Flamedramon.json",
+      "spec_sha256": "fec083dd555e28aae77ec53867d5b3e48f25f2e829b289498eaf16a7e6076789",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Halsemon",
+        "game": "dcb",
+        "model": 193,
+        "from": [
+          184
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Halsemon.json",
+      "spec_sha256": "45fc336f91a73737abe0f3d57192f9d5494e2d30c98c9797d82cc21dd5a6b24c",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Magnamon",
+        "game": "dcb",
+        "model": 189,
+        "from": [
+          180
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Magnamon.json",
+      "spec_sha256": "59168e191c68fd138b97d3b9cbad20024672e26ea88d2f0305ae5a10fdb6e1d8",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Nefertimon",
+        "game": "dcb",
+        "model": 198,
+        "from": [
+          186
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Nefertimon.json",
+      "spec_sha256": "940d81f8ede7775fc78c03b60dcf7e2b2d0a2ffa94885fd04192566911789f18",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Paildramon",
+        "game": "dcb",
+        "model": 166,
+        "from": [
+          194
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Paildramon.json",
+      "spec_sha256": "e1ae4f6a041c0fdaafd9875ad0eb22551e0cc5f18b57730ad9b2a73ddad4fa6b",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Pegasusmon",
+        "game": "dcb",
+        "model": 194,
+        "from": [
+          31
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Pegasusmon.json",
+      "spec_sha256": "8ff7f184e65f597157b3412d5e49d375a977f7314a4a8e6f529471c6160721d2",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Raidramon",
+        "game": "dcb",
+        "model": 188,
+        "from": [
+          180
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Raidramon.json",
+      "spec_sha256": "7df8200130c48475ea38990bd45b67b5f204879911cbb7236c653cb937c787ac",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Submarimon",
+        "game": "dcb",
+        "model": 197,
+        "from": [
+          185
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Submarimon.json",
+      "spec_sha256": "c1dc396ff03046cd4f2cfdaae60c89127dc85afb21b6ddcc7f970f949e05714b",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "Veedramon",
+        "game": "dcb",
+        "model": 128,
+        "from": [
+          180
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Veedramon.json",
+      "spec_sha256": "d02d101fbba7a02194eb5b61d84929aa36380163f52f9d81e76f2e7d7dafd084",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Tuskmon",
+        "game": "dcb",
+        "model": 157
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Tuskmon.json",
+      "spec_sha256": "dd995870d60033eaf84bdfbb22a97d365e5cce6994862d9846a6ff665d711bc4",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Tylomon",
+        "game": "dcb",
+        "model": 199,
+        "from": [
+          239
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Tylomon.json",
+      "spec_sha256": "595c7858ed6e770c24c20c80cb51cc5569657208efd3dd7da76127dfee2fb4f4",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Valkyrimon",
+        "game": "dcb",
+        "model": 183,
+        "from": [
+          188
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Valkyrimon.json",
+      "spec_sha256": "70c4cce81202ebb4903457b0dba28a1ebf81276d2643eac4a76077856a160478",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Vi-Elecmon",
+        "game": "dcb",
+        "model": 208,
+        "from": [
+          18
+        ]
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Vi-Elecmon.json",
+      "spec_sha256": "f386fccd505e691c3b0f1edff0d1472cb20b01b5833e73292e20b3791c64b94f",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Triceramon",
+        "game": "dw2",
+        "model": "M203TRCR",
+        "level": 5,
+        "element": 1,
+        "from": [
+          47
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Triceramon.json",
+      "spec_sha256": "15e18d58b6ab40a63b4ce5706108d10f48ff4a4cedf3e1d9471044ef5ed5c078",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "SaberLeomon",
+        "game": "dw2",
+        "model": "M205SLEO",
+        "level": 5,
+        "element": 1,
+        "from": [
+          48
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/SaberLeomon.json",
+      "spec_sha256": "dd66743b468301ce5b7b08f615480a3597ccd04e7f90ae9b1dd61f65985bde56",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Okuwamon",
+        "game": "dw2",
+        "model": "M226OKWA",
+        "level": 5,
+        "element": 3,
+        "from": [
+          51
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Okuwamon.json",
+      "spec_sha256": "1ea562d56f139243f6f036c2907a7e56c63860fe30d0dceed8146c3c29971a88",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "MetalTyrannomon",
+        "game": "dw2",
+        "model": "M140MTRN",
+        "level": 5,
+        "element": 5,
+        "from": [
+          8
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MetalTyrannomon.json",
+      "spec_sha256": "662799c588923846efbb38b11e465882149d1c551e078070418eeca74176151d",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Tortomon",
+        "game": "dw2",
+        "model": "M208TOTA",
+        "level": 4,
+        "element": 4,
+        "from": [
+          217
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Tortomon.json",
+      "spec_sha256": "6cb11ff88c83a2fcc8900115a6b65779c63580b12b79c936f0eb0e3f0713a48a",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Flymon",
+        "game": "dw2",
+        "model": "M137FLYM",
+        "level": 4,
+        "element": 2,
+        "from": [
+          32,
+          183
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Flymon.json",
+      "spec_sha256": "ae91ba5a2b5064e55bfccf29d0e052227c09d746e54c24138d5a40a23e4fc5f4",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Mushroomon",
+        "game": "dw2",
+        "model": "M219MUSH",
+        "level": 4,
+        "element": 3,
+        "from": [
+          46
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Mushroomon.json",
+      "spec_sha256": "2f4a7c016139de8fc532e93238e16851c99250cfe8ad5a8a265175f0c329e3c7",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/seventh-12.json",
+      "entry": {
+        "name": "Raremon",
+        "game": "dw2",
+        "model": "M139RARE",
+        "level": 5,
+        "element": 6,
+        "from": [
+          11
+        ],
+        "donor": 42,
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Raremon.json",
+      "spec_sha256": "aaea7e5b725b203adad7408691882e3be834be4d5bc8186b70b99469e14b1745",
+      "out": "build/batch7"
+    },
+    {
+      "list": "content/imports/lists/sixteenth-4.json",
+      "entry": {
+        "name": "Kotemon",
+        "game": "dw3",
+        "model": "M383PKEN",
+        "level": 3,
+        "element": 1
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Kotemon.json",
+      "spec_sha256": "632fe6d992b8bc33fae465285dfeb68d44566111e45c8084578468baaf971ab5",
+      "out": "build/batch16"
+    },
+    {
+      "list": "content/imports/lists/sixteenth-4.json",
+      "entry": {
+        "name": "Monmon",
+        "game": "dw3",
+        "model": "M384KOET",
+        "level": 3,
+        "element": 1
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Monmon.json",
+      "spec_sha256": "f8b8fb23b0ccd993e833af9bc83d53088f8681ec33c1cb1c45756df531cbdfff",
+      "out": "build/batch16"
+    },
+    {
+      "list": "content/imports/lists/sixteenth-4.json",
+      "entry": {
+        "name": "Bearmon",
+        "game": "dw3",
+        "model": "M385KOGU",
+        "level": 3,
+        "element": 1
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Bearmon.json",
+      "spec_sha256": "939320840849623a42e90e4c7b89c5cd18b680c6de1d1788202261428751a93b",
+      "out": "build/batch16"
+    },
+    {
+      "list": "content/imports/lists/sixteenth-4.json",
+      "entry": {
+        "name": "Renamon",
+        "game": "dw3",
+        "model": "M373RENA",
+        "level": 3,
+        "element": 2
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Renamon.json",
+      "spec_sha256": "2d9d78809492b91f387123e1be0301a3ceb20a0ee7e2eac8690aa48759de79b9",
+      "out": "build/batch16"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Wizardmon",
+        "game": "dcb",
+        "model": 154,
+        "from": [
+          235
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Wizardmon.json",
+      "spec_sha256": "52da2ad5db18f1c9a01f25033a7253208fa8d767eda94b928e80b2c8c72aaf65",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Sorcerimon",
+        "game": "dcb",
+        "model": 232,
+        "from": [
+          241
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Sorcerimon.json",
+      "spec_sha256": "58495c92075b26919e25ac483412577c8b2e5d55fc083400d562e22153390628",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Starmon",
+        "game": "dcb",
+        "model": 220
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Starmon.json",
+      "spec_sha256": "8845726a0111a03b4cc97306db2a613417decb033edbb24963afb60c89d48a60",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "SuperStarmon",
+        "game": "dcb",
+        "model": 233,
+        "from": [
+          243
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/SuperStarmon.json",
+      "spec_sha256": "0efbda4b58549c815d0d195a5bd6a013bb1e52ea505cdd9f42afcf7dc98d186c",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Piedmon",
+        "game": "dcb",
+        "model": 171,
+        "from": [
+          66
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Piedmon.json",
+      "spec_sha256": "90243566fbfe956d951a301450af7e1f2ec5c4fb6cf0202541f56791e80c6bcb",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Infermon",
+        "game": "dcb",
+        "model": 165
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Infermon.json",
+      "spec_sha256": "f000b159eec90b2742c432b204cc2a9090a6585fbaf0df482f9122e3850dd6a0",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Kokuwamon",
+        "game": "dcb",
+        "model": 204
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Kokuwamon.json",
+      "spec_sha256": "f2324d19f41bdcbfd3c52b3bbdd38ed738f77c466e754cd893d8738bcab65915",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "MarineAngemon",
+        "game": "dcb",
+        "model": 230
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MarineAngemon.json",
+      "spec_sha256": "b1995aa204172a0e6489cab5d952c278f0882483c36c52828eca83519df06770",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Quetzalmon",
+        "game": "dcb",
+        "model": 191
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Quetzalmon.json",
+      "spec_sha256": "ec880260c842ac52cacb5d21c6c0a11afdf15a4d5fe89cde4cb9586010750c34",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Shadramon",
+        "game": "dcb",
+        "model": 190
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Shadramon.json",
+      "spec_sha256": "d56e1dfe7d835f784e071ed97b5570dabba7c0965b5fa5134b3686ca29c45c85",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Solarmon",
+        "game": "dcb",
+        "model": 202
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Solarmon.json",
+      "spec_sha256": "efe7828b35c61a331ee8907097e197258c9dfd96a3d63fdf45e3bd7ea2df2d44",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/sixth-12.json",
+      "entry": {
+        "name": "Thundermon",
+        "game": "dcb",
+        "model": 222
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Thundermon.json",
+      "spec_sha256": "b621102241cc547aa7f2fa9fc17a0efe1291278976dff7e5757ed1d1cef5648a",
+      "out": "build/batch6"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "ChaosLord",
+        "game": "dw2",
+        "model": "M248CLOD",
+        "level": "mega",
+        "element": 1,
+        "scale": 0.19607843137254904
+      },
+      "level": 6,
+      "spec": "content/imports/specs/ChaosLord.json",
+      "spec_sha256": "9eb3e59a4cbaf122e650f9d750f16c2f6ad5f468a319daf0658fdf545180dcff",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Clockmon",
+        "game": "dw2",
+        "model": "M143CLOK",
+        "level": 5,
+        "element": 5,
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Clockmon.json",
+      "spec_sha256": "b3969679f893a14c87a71f5c73d2d5cbcc01c1ef0691c67f93bb688111e61879",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Dagomon",
+        "game": "dw2",
+        "model": "M225DAGO",
+        "level": 5,
+        "element": 4,
+        "from": [
+          278,
+          10
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Dagomon.json",
+      "spec_sha256": "bbf7ed12900af543f354f5213e103f376547525563efcd35e10d09f1c5981651",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Deltamon",
+        "game": "dw2",
+        "model": "M138DELT",
+        "level": 5,
+        "element": 1,
+        "from": [
+          286
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Deltamon.json",
+      "spec_sha256": "306bde539a29900e68a84f850515f8798e97235d0e2f6ed35e1bef05501b4caf",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Gryphonmon",
+        "game": "dw2",
+        "model": "M193GRFO",
+        "level": 5,
+        "element": 2,
+        "from": [
+          188
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Gryphonmon.json",
+      "spec_sha256": "cbf98c1f38d9a679a868ece4e34b96b47fa4680c92b49448517aa827d95958b5",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Nanomon",
+        "game": "dw2",
+        "model": "M141NANO",
+        "level": 5,
+        "element": 5,
+        "from": [
+          253
+        ],
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Nanomon.json",
+      "spec_sha256": "35f4e7eabed184e2fd823c58be58bc7dbdf765d86dd763d6bb3ffee1b9698293",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Vilemon",
+        "game": "dw3",
+        "model": "M170IVRU",
+        "level": 4,
+        "element": 1,
+        "from": [
+          236
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Vilemon.json",
+      "spec_sha256": "6c893a71ffc54e5c8c8773de2367d84f43de6f4936ecf2cf8bd7b71fc07e7acc",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Grizzlymon",
+        "game": "dw3",
+        "model": "M388GRIZ",
+        "level": 5,
+        "element": 1,
+        "from": [
+          52
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Grizzlymon.json",
+      "spec_sha256": "9662b7de59e6a362041bcf0802edc46f43339bda15d9d463a74ded80c0252a0a",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Marsmon",
+        "game": "dw3",
+        "model": "M394MARS",
+        "level": "mega",
+        "element": 1
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Marsmon.json",
+      "spec_sha256": "118c23672d367840f9ac2ff1bf555b086e77577dacb6be360860e31645d4923d",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Dokugumon",
+        "game": "dw3",
+        "model": "M166DKGM",
+        "level": 4,
+        "element": 1,
+        "from": [
+          32
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Dokugumon.json",
+      "spec_sha256": "8e263771edb5f91172271f0bcf9a6d8c8e4b6b392a617aac383230eb2e1c352a",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "Hookmon",
+        "game": "dw3",
+        "model": "M387PIRT",
+        "level": 4,
+        "element": 1
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Hookmon.json",
+      "spec_sha256": "506572642f349c8e2832c53c557a4e4a386080ba733570834105e8faf7090078",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/tenth-12.json",
+      "entry": {
+        "name": "GuardiAngemon",
+        "game": "dw3",
+        "model": "M392SLAG",
+        "level": "mega",
+        "element": 3,
+        "from": [
+          20
+        ]
+      },
+      "level": 6,
+      "spec": "content/imports/specs/GuardiAngemon.json",
+      "spec_sha256": "b1f694509a68687605fd2e1318fb735daa4e0489a00eaab6b5acebfb39bf8ecd",
+      "out": "build/batch10"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "MegaKabuterimon",
+        "game": "dcb",
+        "model": 137,
+        "from": [
+          19
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MegaKabuterimon.json",
+      "spec_sha256": "36a97cc6680e4ea628ee5bcc2c7d97ab90fffde42ef818fc13459a8bb8527095",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "MagnaAngemon",
+        "game": "dcb",
+        "model": 142,
+        "from": [
+          20
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MagnaAngemon.json",
+      "spec_sha256": "ec8b0ccd1a8d0ea78f4b28a1bdb0c93c21366e1afc88c9ef6887c094e064ae43",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Seraphimon",
+        "game": "dcb",
+        "model": 184,
+        "from": [
+          206
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Seraphimon.json",
+      "spec_sha256": "59bb312dd4949ff213cb790a54211f71a41156fc72752d790555f2b9329375ae",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Togemon",
+        "game": "dcb",
+        "model": 155,
+        "from": [
+          46
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Togemon.json",
+      "spec_sha256": "3c756e65baf0043a6c99b89e786c9f537f94da0647866e480979c46afcdc7704",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Lillymon",
+        "game": "dcb",
+        "model": 141,
+        "from": [
+          208
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Lillymon.json",
+      "spec_sha256": "2cef42012612b70ee3bcf85b803cbface615219dc7e8a9ab31ed44f33c9f7a66",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "GranKuwagamon",
+        "game": "dcb",
+        "model": 182,
+        "from": [
+          51
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/GranKuwagamon.json",
+      "spec_sha256": "6006763569e9d6c6093b269d6729116c97c25f10ce493085aad24e668f18959c",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "MetalSeadramon",
+        "game": "dcb",
+        "model": 229,
+        "from": [
+          61
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/MetalSeadramon.json",
+      "spec_sha256": "415550abb95e3e8934df063bbed8937b3047bb7b8bac1fc5e0b98702a4a9e387",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "VenomMyotismon",
+        "game": "dcb",
+        "model": 177,
+        "from": [
+          66
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/VenomMyotismon.json",
+      "spec_sha256": "2e0bec45622a9344ebbfe3a4c28c67800c0f0de9d804cbfdaf17399e386009a4",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "AeroVeedramon",
+        "game": "dcb",
+        "model": 136,
+        "from": [
+          203
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/AeroVeedramon.json",
+      "spec_sha256": "d514a3f4fc4ae82a1ec2a7b16c976eb6e97546e1a5a7580418b6ab3db6f8c556",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Shakkoumon",
+        "game": "dcb",
+        "model": 169,
+        "from": [
+          189
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Shakkoumon.json",
+      "spec_sha256": "f2a9bab82a52d694dde499eb86220df8b67c306c9509965d5a844370c174e03f",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Magnadramon",
+        "game": "dcb",
+        "model": 186,
+        "from": [
+          190
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Magnadramon.json",
+      "spec_sha256": "f6eb1f3391723a3c135bbe1b872021c84f948c6eae8c40e76963791e66d29f53",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/third-12.json",
+      "entry": {
+        "name": "Devidramon",
+        "game": "dcb",
+        "model": 156,
+        "from": [
+          6
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Devidramon.json",
+      "spec_sha256": "50041ca330d578cdc6be622b2877c9a6881f576862e016ec9683394ca885e6ec",
+      "out": "build/batch3"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "WarGrowlmon",
+        "game": "dw3",
+        "model": "M368MGRW",
+        "level": 5,
+        "element": 0,
+        "from": [
+          320
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/WarGrowlmon.json",
+      "spec_sha256": "f86b5795ab27d21f184334dafd1739551620b76f45703818a32c3c2fd81bc1a0",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Gargoylemon",
+        "game": "dw3",
+        "model": "M302GAGO",
+        "level": 4,
+        "element": 6,
+        "from": [
+          285
+        ]
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Gargoylemon.json",
+      "spec_sha256": "c7271f4cd2988ccc7a65ab531607f67cb5e365d236900806200716ae3b146c36",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Snimon",
+        "game": "dw3",
+        "model": "M238SNAI",
+        "level": 5,
+        "element": 1,
+        "from": [
+          51
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Snimon.json",
+      "spec_sha256": "7ae1db4661c25fcec3a1c7ed96b75b7b52cc41b129a8cd064f12312e5b10ee68",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Ghoulmon",
+        "game": "dw3",
+        "model": "M312DETH",
+        "level": 5,
+        "element": 6
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Ghoulmon.json",
+      "spec_sha256": "2d83ab96124231e3093543da3925e678b035354106a153ff2afc2a6d91d309fb",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Minotarumon",
+        "game": "dw3",
+        "model": "M172MTAR",
+        "level": 4,
+        "element": 1
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Minotarumon.json",
+      "spec_sha256": "cafda8e77748ca5d58ad5c4f2b6d131a612a2aa3e383bf0228e50ae4f4fba54e",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Snatchmon",
+        "game": "dw3",
+        "model": "M465SNAT",
+        "level": 4,
+        "element": 5
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Snatchmon.json",
+      "spec_sha256": "1cfe4f02fa9a9e64c0f355fd642e31e302b751bc010a886f35350580d99ca32a",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Gokimon",
+        "game": "dw3",
+        "model": "M171GOKI",
+        "level": 4,
+        "element": 6
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Gokimon.json",
+      "spec_sha256": "3772865a1e2104fbb0e902fa8f4839a138089bd21b90468edc902df52a59dc91",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Raijinmon",
+        "game": "dw3",
+        "model": "M441RAIZ",
+        "level": 5,
+        "element": 2
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Raijinmon.json",
+      "spec_sha256": "920ca935bb4f038d64cb8ac5eb3d3f9d4dffd2b7389ab8ecf763081d18c142dc",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Mummymon",
+        "game": "dw3",
+        "model": "M364MUMY",
+        "level": 5,
+        "element": 6
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Mummymon.json",
+      "spec_sha256": "726c1c891946a78576c96372934073abbf29a46cbf8a5d0bac4ba6a43bb9c5c9",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "MegaGargomon",
+        "game": "dw3",
+        "model": "M372SGRG",
+        "level": "mega",
+        "element": 5,
+        "drop_over": 0.4
+      },
+      "level": 6,
+      "spec": "content/imports/specs/MegaGargomon.json",
+      "spec_sha256": "f9bd05af6afa9ea0ae38caf241e8af1c193d5b7edfb95d95670ab6dbdbea20b7",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/thirteenth-12.json",
+      "entry": {
+        "name": "Raidenmon",
+        "game": "dw3",
+        "model": "M438RIDN",
+        "level": 5,
+        "element": 2
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Raidenmon.json",
+      "spec_sha256": "b20e0ac5a1a2428816ad8fce5787a0031a12668f99a5501578768dfd055d4b23",
+      "out": "build/batch13"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "SkullSatamon",
+        "game": "dw3",
+        "model": "M244SKST",
+        "level": 5,
+        "element": 6,
+        "from": [
+          6
+        ]
+      },
+      "level": 5,
+      "spec": "content/imports/specs/SkullSatamon.json",
+      "spec_sha256": "e317cddb38d919494844d7b0ed3ed2f1b9cdc0ad422b85947031214094890627",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Taomon",
+        "game": "dw3",
+        "model": "M375TAOM",
+        "level": 5,
+        "element": 0
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Taomon.json",
+      "spec_sha256": "a6ee4f53e088ca9972596dd355b6de73f183eb0b7ff5684d813ad5cfa5056838",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Sakuyamon",
+        "game": "dw3",
+        "model": "M376SKYA",
+        "level": "mega",
+        "element": 2,
+        "from": [
+          315
+        ]
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Sakuyamon.json",
+      "spec_sha256": "3265b84bcaaddfddae22deb74b3c0072d9f6d4cf0ee785e1b86e35cddca06505",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Fujinmon",
+        "game": "dw3",
+        "model": "M439FUJI",
+        "level": 5,
+        "element": 2
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Fujinmon.json",
+      "spec_sha256": "d3bbddda93127ddeda31776de8bb9185d7f01a925e6615a3d0a3e3f20743dc1c",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Gallantmon",
+        "game": "dw3",
+        "model": "M369DUKE",
+        "level": "mega",
+        "element": 1
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Gallantmon.json",
+      "spec_sha256": "1d30a59cfd3e87085c51af594049187d0bd6e4a3e4ea28053dfb0c1fb7c82d74",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Pharaohmon",
+        "game": "dw3",
+        "model": "M358PHAR",
+        "level": "mega",
+        "element": 6
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Pharaohmon.json",
+      "spec_sha256": "fc4a1404ae8dac09ac11053673b25d62994de19145b3bab677510543a8f78b78",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Growlmon",
+        "game": "dw3",
+        "model": "M367GRAW",
+        "level": 4,
+        "element": 0
+      },
+      "level": 4,
+      "spec": "content/imports/specs/Growlmon.json",
+      "spec_sha256": "b0e0e6a57518bdb835983f3be7d41487273bf25e73bc2d91a5d2a8bf160720db",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Knightmon",
+        "game": "dw3",
+        "model": "M178KNGT",
+        "level": 5,
+        "element": 5
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Knightmon.json",
+      "spec_sha256": "88d25b37ba60d560aaab03a2f1f9ed0aa20e02829f6ee2a3535a7341d51e8ad6",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Kyukimon",
+        "game": "dw3",
+        "model": "M389KYKI",
+        "level": 5,
+        "element": 0
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Kyukimon.json",
+      "spec_sha256": "4e8437d673dc26c1256595b82cb70b72a020ad3dfaec6d2157f1cdf90d63b671",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Lynxmon",
+        "game": "dw3",
+        "model": "M327RUNX",
+        "level": 5,
+        "element": 1
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Lynxmon.json",
+      "spec_sha256": "d985b419caa631b76b0b6d921e2cf7600b6674c866fe8098151d8b1741e87612",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Maildramon",
+        "game": "dw3",
+        "model": "M334MLDR",
+        "level": 5,
+        "element": 5
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Maildramon.json",
+      "spec_sha256": "64a93b2be1e6a1e846e02f90f09c3140d316f6023e97340a54f0b487fb402bee",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twelfth-12.json",
+      "entry": {
+        "name": "Musyamon",
+        "game": "dw3",
+        "model": "M173MSHA",
+        "level": 5,
+        "element": 1
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Musyamon.json",
+      "spec_sha256": "95bea0e6d694c81780c40fda9ec2effe8ef0f84add48bc66baab4750318c546d",
+      "out": "build/batch12"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Apocalymon",
+        "game": "dcb",
+        "model": 178,
+        "meshfix": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Apocalymon.json",
+      "spec_sha256": "b6803e5a1ae5fafd2f05bd9dbc2c83bc33a19f90d5e42590d4f3af7e6b09132d",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Pukumon",
+        "game": "dw2",
+        "model": "M229PUKU",
+        "level": 5,
+        "element": 1,
+        "meshfix": true,
+        "scale": 0.19607843137254904
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Pukumon.json",
+      "spec_sha256": "a2fd25ccdeecb0f1ad7eb452180b7714356800fe10ddfbda91b571263bd5006f",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "NeoCrimson",
+        "game": "dw2",
+        "model": "M247NCRM",
+        "level": "mega",
+        "element": 1,
+        "meshfix": {
+          "prims": 600
+        },
+        "scale": 0.19607843137254904
+      },
+      "level": 6,
+      "spec": "content/imports/specs/NeoCrimson.json",
+      "spec_sha256": "f7b6c1dba8f23642da6bb893ba2fe232857f216adc2107fe908eba26d5aef5aa",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Beelzemon",
+        "game": "dw3",
+        "model": "M377BLZB",
+        "level": "mega",
+        "element": 1,
+        "meshfix": true
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Beelzemon.json",
+      "spec_sha256": "208563986566799c2350e449e4934c4c093e4039811482e20f72b639b5981652",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "BlackWarGreymon",
+        "game": "dw3",
+        "model": "M267BKWG",
+        "level": "mega",
+        "element": 1,
+        "meshfix": true
+      },
+      "level": 6,
+      "spec": "content/imports/specs/BlackWarGreymon.json",
+      "spec_sha256": "f44e7cdb1e297dd4c0466164d830f15d8444212e7fabe2afa0a44aecf5324ff6",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Cannondramon",
+        "game": "dw3",
+        "model": "M393CNND",
+        "level": 5,
+        "element": 5,
+        "meshfix": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Cannondramon.json",
+      "spec_sha256": "ffa2e145e72721216743f77d34fda836a7519a1023c9402eea540d65d62285af",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "MaloMyotismon",
+        "game": "dw3",
+        "model": "M378BVND",
+        "level": "mega",
+        "element": 1,
+        "meshfix": true
+      },
+      "level": 6,
+      "spec": "content/imports/specs/MaloMyotismon.json",
+      "spec_sha256": "0926795e126057ef856e770d66a72bb2368f3f9e5626f0a8238e5be0e9f5c9fd",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Armagemon",
+        "game": "dw3",
+        "model": "M382ARMG",
+        "level": "mega",
+        "element": 1,
+        "meshfix": true
+      },
+      "level": 6,
+      "spec": "content/imports/specs/Armagemon.json",
+      "spec_sha256": "dbb43dcef4bc1ceb8ec3d2bf225bc46d18f85f1cb6148aff2b97bc73704cb0a3",
+      "out": "build/meshfix2-out"
+    },
+    {
+      "list": "content/imports/lists/twentieth-9.json",
+      "entry": {
+        "name": "Suijinmon",
+        "game": "dw3",
+        "model": "M440SIJN",
+        "level": 5,
+        "element": 4,
+        "meshfix": true
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Suijinmon.json",
+      "spec_sha256": "5ee9c2b786d995ba84730ac23c8578f243b86f6b3fb4b098be9edcf9f48d164a",
+      "out": "build/meshfix2-out"
+    }
+  ]
+}

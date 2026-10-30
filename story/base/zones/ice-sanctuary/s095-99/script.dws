@@ -1,0 +1,119 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 95 {
+    sections 254, 51, 81, 84;
+    on enter replace {    // enter
+    }
+    on step(0) replace {    // step0
+        walk(tamer, 969, -3260);
+        warp_to(98, 1, 255);
+    }
+    on use(1) replace {    // use1
+        rotate(tamer, 2048);
+        set_textbox_origin(-11, 0, 1049);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s095.sec81.u0"));
+        choice(camera) {
+            text("s095.sec81.m0.o0") => {}
+            text("s095.sec81.m0.o1") => {
+                loop {
+                    show_textbox(text("s095.sec81.u1"));
+                    choice(keep) {
+                        text("s095.sec81.m2.o0") => {}
+                        text("s095.sec81.m2.o1") => {
+                            break;
+                        }
+                        text("s095.sec81.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s095.sec81.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s095.sec81.m1.o0") => {
+                fadeout_hud(0);
+                engine.arg = 0;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                fadeout_hud(0);
+                engine.arg = 0;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s095.sec81.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s095.sec81.u2"));
+                engine.arg = 0;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s095.sec81.m1.o2") or cancel => {}
+        }
+    }
+    on use(4) replace {    // use4
+        rotate(tamer, 2048);
+        set_textbox_origin(1574, 0, 116);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s095.sec84.u0"));
+        choice(camera) {
+            text("s095.sec84.m0.o0") => {}
+            text("s095.sec84.m0.o1") => {
+                loop {
+                    say(camera, text("s095.sec84.u1"));
+                    choice(camera) {
+                        text("s095.sec84.m2.o0") => {}
+                        text("s095.sec84.m2.o1") => {
+                            break;
+                        }
+                        text("s095.sec84.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s095.sec84.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s095.sec84.m1.o0") => {
+                hide_hud();
+                engine.arg = 3;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 3;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s095.sec84.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s095.sec84.u2"));
+                engine.arg = 3;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s095.sec84.m1.o2") or cancel => {}
+        }
+    }
+}

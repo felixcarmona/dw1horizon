@@ -1,0 +1,69 @@
+// Readable form of script 62 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 62 {
+    // the section table, in the order of the original header
+    sections 254, 81, 82;
+
+    on enter replace {    // section 254
+        if (mansion_book_trap_sprung) {
+            set_obj_visibility(4, 1);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        if (!mansion_book_trap_sprung) {
+            entity_set_rotation(tamer, 91);
+            wait(10);
+            say(tamer, text("s062.sec81.u0"));
+            entity_set_rotation(tamer, 3675);
+            wait(10);
+            entity_set_rotation(tamer, 91);
+            wait(10);
+            entity_set_rotation(tamer, 603);
+            wait(10);
+            entity_set_rotation(tamer, 1115);
+            wait(10);
+            entity_set_rotation(tamer, 1627);
+            wait(10);
+            entity_set_rotation(tamer, 1115);
+            wait(10);
+            say(tamer, text("s062.sec81.u1"));
+            choice {
+                text("s062.sec81.m0.o0") => {
+                    walk(tamer, -314, -603);
+                    walk(partner, -298, -335);
+                    await tamer;
+                    await partner;
+                    entity_set_rotation(tamer, 1115);
+                    entity_set_rotation(partner, 91);
+                    say(narrator, text("s062.sec81.u2"));
+                    say(tamer, text("s062.sec81.u3"));
+                    sound(8, 4);
+                    set_obj_visibility(3, 1);
+                    set_obj_visibility(4, 0);
+                    mansion_book_trap_sprung = true;
+                    animate(tamer, 26);
+                    entity_move_to(tamer, 655, -663, 4, 0);
+                    entity_move_to(partner, 694, -377, 4, 0);
+                    sound(8, 5);
+                    say(tamer, text("s062.sec81.u4"));
+                    warp_to(57, 4, 53);
+                    return;
+                }
+                text("s062.sec81.m0.o1") => {}
+            }
+            say(tamer, text("s062.sec81.u5"));
+        }
+    }
+
+    on use(2) replace {    // section 82
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -1500, 615);
+        warp_to(53, 1, 255);
+        return;
+    }
+}

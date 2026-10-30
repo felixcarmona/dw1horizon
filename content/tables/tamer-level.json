@@ -1,0 +1,15 @@
+{
+  "_comment": "The tamer level (0..10): how it changes and what it does. The C holds none of these numbers: a key left out means that does not exist. chance = percent per event; the sign of each event is fixed (a happy year +1; a bad year, eating poop, sleeping late, a chip item -1; evolving +1). yearHappy.happiness: a year ends with exactly that happiness; yearUnhappy.happinessBelow: ends below that. rebirth.percentPerLevel: on a natural death the new baby inherits this percent per tamer level of each old base stat. lostLife: losing a life forgets (forgetBase - level) * forgetPerLevel percent of the learned moves.",
+  "tamerLevel": {
+    "yearHappy": {"chance": 5, "happiness": 100},
+    "yearUnhappy": {"chance": 10, "happinessBelow": 0},
+    "eatsPoop": {"chance": 1},
+    "sleepsLate": {"chance": 1},
+    "chip": {"chance": 10},
+    "evolvesToChampion": {"chance": 20},
+    "evolvesToUltimate": {"chance": 100},
+    "evolvesToMega": {"chance": 100},
+    "rebirth": {"percentPerLevel": 1},
+    "lostLife": {"forgetBase": 10, "forgetPerLevel": 2}
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": 366,
+  "file": "NEST02",
+  "tims8": 1,
+  "tims4": 2,
+  "sound_bank": 6,
+  "day_night": true,
+  "reads_digimon": false,
+  "doors": 21,
+  "toilet": 0,
+  "caption": "Great Canyon",
+  "concave": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

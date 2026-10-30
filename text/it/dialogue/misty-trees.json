@@ -1,0 +1,550 @@
+{
+ "s111.sec5.u0": [
+  [
+   "Che idiota..."
+  ]
+ ],
+ "s111.sec6.u0": [
+  [
+   "Ti ridurrò a un disastro!"
+  ]
+ ],
+ "s111.sec7.u0": [
+  [
+   "Mmm, niente batte la foresta."
+  ]
+ ],
+ "s111.sec8.u0": [
+  [
+   "Nessuno e' mai scappato da me",
+   "vivo."
+  ]
+ ],
+ "s111.sec9.u0": [
+  [
+   "Lascia che metta fine alla tua",
+   "sofferenza..."
+  ]
+ ],
+ "s111.sec10.u0": [
+  [
+   "Guarda chi parla!"
+  ]
+ ],
+ "s112.sec5.u0": [
+  [
+   "Vuoi qualcosa da questo",
+   "vecchietto?"
+  ]
+ ],
+ "s112.sec6.u0": [
+  [
+   "Ah ah ah... Non c'è fretta."
+  ]
+ ],
+ "s112.sec7.u0": [
+  [
+   "Prenditela comoda mentre sei",
+   "qui."
+  ]
+ ],
+ "s112.sec8.u0": [
+  [
+   "Vuoi che ti trasformi in",
+   "fertilizzante?"
+  ]
+ ],
+ "s112.sec9.u0": [
+  [
+   "E tu chi diavolo sei?"
+  ]
+ ],
+ "s112.sec10.u0": [
+  [
+   "Faresti bene ad arrenderti."
+  ]
+ ],
+ "s112.sec11.u0": [
+  [
+   "Risparmiami i tuoi sforzi",
+   "inutili!"
+  ]
+ ],
+ "s113.sec5.u0": [
+  [
+   "Ora stammi a sentiiire!"
+  ]
+ ],
+ "s113.sec5.u1": [
+  [
+   "Mmmmm. Sei proprio in gamba,",
+   "tuuu. E in piedi così presto.",
+   "Che ragazzo ammirevole."
+  ]
+ ],
+ "s113.sec5.u2": [
+  [
+   "Ehi, non parlare come se la",
+   "cosa non ti riguardasse..."
+  ]
+ ],
+ "s113.sec5.u3": [
+  [
+   "Lo sooo. Raduni Digimon e",
+   "costruisci una città per il",
+   "bene dell'isola."
+  ]
+ ],
+ "s113.sec5.u4": [
+  [
+   "Ah, allora lo sai. Quindi dacci",
+   "una mano."
+  ]
+ ],
+ "s113.sec5.u5": [
+  [
+   "E dove dovrei andare, e a fare",
+   "cosa, di preciso?"
+  ]
+ ],
+ "s113.sec5.u6": [
+  [
+   "Non sai proprio niente! A",
+   "lavorare in città, ricordi?"
+  ]
+ ],
+ "s113.sec5.u7": [
+  [
+   "Be'... l'uccello mattiniero",
+   "prende sedici vermi, come si",
+   "dice..."
+  ]
+ ],
+ "s113.sec5.u8": [
+  [
+   "Non c'entra niente! E si dice",
+   "un verme, non sedici!"
+  ]
+ ],
+ "s113.sec5.u9": [
+  [
+   "Eh, facevo solo finta di",
+   "rimbambire. Be', ci vediamo in",
+   "cittààà."
+  ]
+ ],
+ "s113.sec5.u10": "Kokatorimon si è unito alla città!",
+ "s113.sec5.u11": [
+  [
+   "Quanto era serio...? Spero che",
+   "se la cavi."
+  ]
+ ],
+ "s113.sec6.u0": [
+  [
+   "Dritto, poi a destra. Che eh",
+   "eh eh eh..."
+  ]
+ ],
+ "s113.sec7.u0": [
+  [
+   "A destra, poi subito a",
+   "sinistra. Che eh..."
+  ]
+ ],
+ "s113.sec8.u0": [
+  [
+   "Non uscirai mai da questa",
+   "foresta. Ke, je, je. . . ."
+  ]
+ ],
+ "s113.sec9.u0": [
+  [
+   "Mi sono perso..."
+  ]
+ ],
+ "s113.sec10.u0": [
+  [
+   "Ultimamente mi sento un po'",
+   "sfinito..."
+  ]
+ ],
+ "s113.sec11.u0": [
+  [
+   "Tu... Non è possibile?!"
+  ]
+ ],
+ "s113.sec12.u0": [
+  [
+   "Attento al passo..."
+  ]
+ ],
+ "s113.sec54.u0": [
+  [
+   "Mmm... una piuma d'uccello a",
+   "terra... Ancora fresca. Siamo",
+   "arrivati appena troppo tardi?"
+  ]
+ ],
+ "s114.sec5.u0": [
+  [
+   "Ti sei perso, {color 6}{player}{color 1}?",
+   "Che eh eh eh eh!"
+  ]
+ ],
+ "s114.sec6.u0": [
+  [
+   "?"
+  ]
+ ],
+ "s114.sec7.u0": [
+  [
+   "Non sto cercando di",
+   "ostacolarti, sai..."
+  ]
+ ],
+ "s114.sec8.u0": [
+  [
+   "Bo-sco neb-bio-so... Ora dillo",
+   "tu."
+  ]
+ ],
+ "s114.sec9.u0": [
+  [
+   "Ok! Showtime!"
+  ]
+ ],
+ "s115.sec5.m0.o0": "I problemi dell'isola",
+ "s115.sec5.m0.o1": "Allena {color 10}{partner}{color 1}",
+ "s115.sec5.m0.o2": "No, niente",
+ "s115.sec5.m1.o0": "Allenati",
+ "s115.sec5.m1.o1": "Questo allenamento",
+ "s115.sec5.m1.o2": "Esci",
+ "s115.sec5.m2.o0": "Allenamento normale",
+ "s115.sec5.m2.o1": "Allenamento bonus",
+ "s115.sec5.m2.o2": "Lascia stare",
+ "s115.sec5.m3.o0": "Spiega di nuovo",
+ "s115.sec5.m3.o1": "Allenati",
+ "s115.sec5.m3.o2": "Esci",
+ "s115.sec5.u0": [
+  [
+   "Oh oh. Vuoi ascoltare di nuovo",
+   "questo vecchio?"
+  ]
+ ],
+ "s115.sec5.u1": [
+  [
+   "Mmm. Allora te lo dico."
+  ]
+ ],
+ "s115.sec5.u2": [
+  [
+   "Oh oh, molto bene..."
+  ]
+ ],
+ "s115.sec5.u3": [
+  [
+   "{color 5}Allenamento: Lezioni del",
+   "bosco{color 1}"
+  ]
+ ],
+ "s115.sec5.u4": [
+  [
+   "Cherrymon ti trasmette ogni",
+   "genere di conoscenza.",
+   "L'Ingegno aumenta molto."
+  ]
+ ],
+ "s115.sec5.u5": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s115.sec5.u6": [
+  [
+   "Oh oh oh oh..."
+  ]
+ ],
+ "s115.sec51.u0": [
+  [
+   "Oh oh. Benvenuto, benvenuto,",
+   "giovanotto."
+  ]
+ ],
+ "s115.sec51.u1": "Sei Cherrymon, vero?",
+ "s115.sec51.u2": [
+  [
+   "Chi c'è?"
+  ]
+ ],
+ "s115.sec51.u3": [
+  [
+   "Cosa ti porta a questo vecchio",
+   "uomo?"
+  ]
+ ],
+ "s115.sec51.u4": [
+  [
+   "Prima, dirada la nebbia."
+  ]
+ ],
+ "s115.sec51.u5": [
+  [
+   "Non vedo niente con questa",
+   "nebbia. Puoi fare qualcosa",
+   "prima?"
+  ]
+ ],
+ "s115.sec51.u6": [
+  [
+   "Oh oh. Quindi è così. Come",
+   "pensavo."
+  ]
+ ],
+ "s115.sec51.u7": [
+  [
+   "...Non puoi?"
+  ]
+ ],
+ "s115.sec51.u8": [
+  [
+   "Prima devi ascoltare ciò che ho",
+   "da dire. Allora... da dove",
+   "comincio?"
+  ]
+ ],
+ "s115.sec51.u9": [
+  [
+   "Se sai qualcosa delle rivolte",
+   "su quest'isola, Vorrei che me",
+   "lo dicessi."
+  ]
+ ],
+ "s115.sec51.u10": [
+  [
+   "Mmm. Sì, sì. I disordini."
+  ]
+ ],
+ "s115.sec51.u11": [
+  [
+   "Tutto iniziò ad andare storto",
+   "sull'isola circa 80 anni fa.",
+   "Cominciò con il cambiamento"
+  ],
+  [
+   "delle terre. Terra gelata, la",
+   "Villa del Signore Grigio, il",
+   "Gran Canyon... Le regioni a"
+  ],
+  [
+   "nord-est apparvero",
+   "all'improvviso, circa 80 anni",
+   "fa. Poi i Digimon si spostarono"
+  ],
+  [
+   "poco alla volta nelle terre più",
+   "adatte a loro. Le specie si",
+   "dispersero. E i Digimon, che"
+  ],
+  [
+   "prima parlavano tutti la stessa",
+   "lingua, iniziarono a parlare",
+   "ciascuno la propria."
+  ]
+ ],
+ "s115.sec51.u12": [
+  [
+   "Dimenticarono la lingua della",
+   "città... Così File City, dove",
+   "un tempo vivevano insieme tante"
+  ],
+  [
+   "specie, perse gran parte dei",
+   "suoi Digimon e cadde in rovina.",
+   "Poi accadde una cosa terribile:"
+  ],
+  [
+   "i Digimon iniziarono a perdere",
+   "la memoria! Il loro passato,",
+   "quello dell'isola, la"
+  ],
+  [
+   "ragione... Persino io non",
+   "ricordo qualcosa di",
+   "importante... qualcosa che devo"
+  ],
+  [
+   "dirti."
+  ]
+ ],
+ "s115.sec51.u13": [
+  [
+   "Ma in fondo è tutto collegato.",
+   "Qualcuno ha fatto sì che",
+   "accadesse tutto questo! Per"
+  ],
+  [
+   "piegare tutto ai propri",
+   "desideri... Presto i Digimon",
+   "smetteranno di trovare strane"
+  ],
+  [
+   "le cose strane, temo. Solo il",
+   "legame tra te e File City può",
+   "impedirlo! Raduna i Digimon in"
+  ],
+  [
+   "città e compi un miracolo. Un",
+   "miracolo avverrà di sicuro.",
+   "Tutti contano su di te!!!"
+  ],
+  [
+   "...Oh, mi sono lasciato",
+   "trasportare. Uff... È tutto ciò",
+   "che ho da dirti..."
+  ]
+ ],
+ "s115.sec51.u14": [
+  [
+   "Bene, diradiamo la nebbia."
+  ]
+ ],
+ "s115.sec51.u15": [
+  [
+   "Ho protetto la foresta con la",
+   "nebbia per poterti raccontare",
+   "questa storia... E un'altra"
+  ],
+  [
+   "cosa."
+  ]
+ ],
+ "s115.sec51.u16": [
+  [
+   "Altri in questa foresta",
+   "conoscono il passato. Spingiti",
+   "più avanti. Oh oh oh..."
+  ]
+ ],
+ "s116.sec5.u0": [
+  [
+   "..........!"
+  ]
+ ],
+ "s116.sec5.u1": [
+  [
+   "Aaah! No, no! Non voglio",
+   "combattere!"
+  ]
+ ],
+ "s116.sec5.u2": [
+  [
+   "...... Se non vuoi combattere,",
+   "allora scappa."
+  ]
+ ],
+ "s116.sec5.u3": [
+  [
+   "Ma poi me la prenderei."
+  ]
+ ],
+ "s116.sec5.u4": [
+  [
+   "Sei strano... Comunque, perché",
+   "non vieni nella nostra città",
+   "invece di nasconderti qui?"
+  ]
+ ],
+ "s116.sec5.u5": [
+  [
+   "Iih! L-l-la città?"
+  ]
+ ],
+ "s116.sec5.u6": [
+  [
+   "Se non vuoi, Va bene."
+  ]
+ ],
+ "s116.sec5.u7": [
+  [
+   "Ora che lo dici, mi viene",
+   "voglia di andarci. Ci andrò!",
+   "Certo che ci andrò!"
+  ]
+ ],
+ "s116.sec5.u8": "Gabumon si è unito alla città!",
+ "s116.sec5.u9": [
+  [
+   "Uff... Che tipo strano...!"
+  ]
+ ],
+ "s116.sec6.u0": [
+  [
+   "Ià, ià."
+  ]
+ ],
+ "s116.sec7.u0": [
+  [
+   "Hop, hop."
+  ]
+ ],
+ "s116.sec8.u0": [
+  [
+   "Mmm, non possiamo lasciar",
+   "perdere?"
+  ]
+ ],
+ "s116.sec9.u0": [
+  [
+   "E' ancora presto per",
+   "rilassarsi..."
+  ]
+ ],
+ "s117.sec5.u0": [
+  [
+   "Chi c'è?"
+  ]
+ ],
+ "s117.sec6.u0": [
+  [
+   "Arrivooo! ...Scherzavo."
+  ]
+ ],
+ "s117.sec7.u0": [
+  [
+   "Gah ah ah ah! Che",
+   "divertimento!"
+  ]
+ ],
+ "s117.sec8.u0": [
+  [
+   "Evviva, sono carico!"
+  ]
+ ],
+ "s117.sec9.u0": [
+  [
+   "Sul serio?!"
+  ]
+ ],
+ "s117.sec10.u0": [
+  [
+   "Ehi, Ehi. - Dici sul serio?"
+  ]
+ ],
+ "s117.sec11.u0": [
+  [
+   "Zitto, zitto!"
+  ]
+ ],
+ "s117.sec12.u0": [
+  [
+   "Quando faccio sul serio, Dico",
+   "sul serio!"
+  ]
+ ]
+}

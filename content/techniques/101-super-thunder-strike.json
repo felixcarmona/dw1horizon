@@ -1,0 +1,16 @@
+{
+  "id": 101,
+  "name": "Super Thunder Strike",
+  "element": "air",
+  "power": 100,
+  "mpCost": 40,
+  "distance": 10000,
+  "range": 2,
+  "accuracy": 100,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 20,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0
+}

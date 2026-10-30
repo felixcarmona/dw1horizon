@@ -1,0 +1,98 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 223,
+ "type": 231,
+ "name": "ShellNumemon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 17,
+  "4": 21,
+  "6": 25,
+  "8": 14,
+  "10": 7,
+  "13": 11,
+  "14": 3
+ },
+ "hips": [
+  1,
+  1,
+  0.77
+ ],
+ "root_scale": 0.77,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 45,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 45,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 140,
+   "end": 230,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 204,
+   "end": 284,
+   "hz": 0.3
+  },
+  "0x3a": {
+   "anim": "anim_01",
+   "start": 37,
+   "end": 129,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_02",
+   "start": 161,
+   "end": 253,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x35": {
+   "anim": "anim_03",
+   "start": 47,
+   "end": 94,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x38",
+  "0x39"
+ ]
+}

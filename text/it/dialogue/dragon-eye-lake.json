@@ -1,0 +1,261 @@
+{
+ "s007.sec81.m0.o0": "Suona il flauto",
+ "s007.sec81.m0.o1": "Non suonare",
+ "s007.sec81.u0": [
+  [
+   "Ah, E' vero."
+  ]
+ ],
+ "s007.sec81.u1": [
+  [
+   "Suonare il {color 6}Flauto blu{color 1}?"
+  ]
+ ],
+ "s007.sec81.u2": [
+  [
+   "Amico mio, hai bisogno del mio",
+   "potere?"
+  ]
+ ],
+ "s007.sec81.u3": [
+  [
+   "Portami all'altra riva."
+  ]
+ ],
+ "s007.sec81.u4": [
+  [
+   "Niente di più facile. Ora sali."
+  ]
+ ],
+ "s007.sec82.m0.o0": "Diventiamo amici",
+ "s007.sec82.m0.o1": "Insegnami una tecnica!",
+ "s007.sec82.m0.o2": "Voglio un oggetto",
+ "s007.sec82.m1.o0": "Diventiamo amici",
+ "s007.sec82.m1.o1": "Insegnami una tecnica!",
+ "s007.sec82.m1.o2": "Voglio un oggetto",
+ "s007.sec82.m2.o0": "Sì, ci vado!",
+ "s007.sec82.m2.o1": "Mi preparo e torno",
+ "s007.sec82.u0": [
+  [
+   "Seadramon!"
+  ]
+ ],
+ "s007.sec82.u1": [
+  [
+   "Ci incontriamo di nuovo. Hai",
+   "qualche desiderio?"
+  ]
+ ],
+ "s007.sec82.u2": [
+  [
+   "Io e te siamo amici. Qualche",
+   "altro desiderio?"
+  ]
+ ],
+ "s007.sec82.u3": [
+  [
+   "W-wow! È il custode del lago!"
+  ]
+ ],
+ "s007.sec82.u4": [
+  [
+   "Uff... Proprio così. Sono",
+   "Seadramon. Sei tu che peschi",
+   "tanto qui ultimamente, vero?"
+  ],
+  [
+   "Be', non importa. Hai un",
+   "desiderio?"
+  ]
+ ],
+ "s007.sec82.u5": [
+  [
+   "Wow! ...Degno del custode del",
+   "lago. Incredibile. Ehm,",
+   "allora..."
+  ]
+ ],
+ "s007.sec82.u6": [
+  [
+   "Molto bene, così sia. D'ora in",
+   "poi siamo amici. In segno di",
+   "amicizia, ti dono questo"
+  ],
+  [
+   "flauto."
+  ]
+ ],
+ "s007.sec82.u7": [
+  [
+   "Oh, no, ho troppi oggetti. Devo",
+   "buttare via qualcosa."
+  ]
+ ],
+ "s007.sec82.u8": [
+  [
+   "{color 6}Flauto blu{color 1} ottenuto!"
+  ]
+ ],
+ "s007.sec82.u9": [
+  [
+   "Suonalo vicino al lago e",
+   "apparirò in qualsiasi momento.",
+   "Come amico, ti porterò"
+  ],
+  [
+   "dall'altra parte."
+  ]
+ ],
+ "s007.sec82.u10": [
+  [
+   "Wow, allora posso andare",
+   "dall'altra parte! Grazie!"
+  ]
+ ],
+ "s007.sec82.u11": [
+  [
+   "Sull'altra sponda del lago c'è",
+   "una foresta piuttosto strana.",
+   "Vuoi andarci ora?"
+  ]
+ ],
+ "s007.sec82.u12": [
+  [
+   "Mmm. Allora ti insegnerò questa",
+   "tecnica."
+  ]
+ ],
+ "s007.sec82.u13": [
+  [
+   "Magia Liquida appresa!"
+  ]
+ ],
+ "s007.sec82.u14": [
+  [
+   "Blizzard appreso!"
+  ]
+ ],
+ "s007.sec82.u15": [
+  [
+   "Giga Freddo appreso!"
+  ]
+ ],
+ "s007.sec82.u16": [
+  [
+   "Mmm, non ho più tecniche da",
+   "insegnarti..."
+  ]
+ ],
+ "s007.sec82.u17": [
+  [
+   "Allora, addio."
+  ]
+ ],
+ "s007.sec82.u18": [
+  [
+   "Mmm. Ti darò la {color 6}Bottiglia",
+   "acqua{color 1}."
+  ]
+ ],
+ "s007.sec82.u19": [
+  [
+   "Oh, no, ho troppi oggetti. Devo",
+   "buttare via qualcosa."
+  ]
+ ],
+ "s007.sec82.u20": [
+  [
+   "{color 6}Bottiglia acqua{color 1} ottenuta!"
+  ]
+ ],
+ "s007.sec82.u21": [
+  [
+   "Allora, arrivederci per ora."
+  ]
+ ],
+ "s007.sec82.u22": [
+  [
+   "Allora sali sulla mia schiena."
+  ]
+ ],
+ "s007.sec82.u23": [
+  [
+   "Allora, arrivederci per ora."
+  ]
+ ],
+ "s009.sec81.m0.o0": "Carne: 300 Bits",
+ "s009.sec81.m0.o1": "Digifungo: 600 Bits",
+ "s009.sec81.m0.o2": "Non comprare",
+ "s009.sec81.u0": [
+  [
+   "Distributore automatico"
+  ]
+ ],
+ "s009.sec81.u1": [
+  [
+   "Accidenti, che prezzi questo",
+   "distributore!"
+  ]
+ ],
+ "s009.sec81.u2": [
+  [
+   "Non ho abbastanza soldi..."
+  ]
+ ],
+ "s009.sec81.u3": [
+  [
+   "Non ho abbastanza soldi..."
+  ]
+ ],
+ "s009.sec81.u4": [
+  [
+   "È uscita della {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s009.sec81.u5": [
+  [
+   "Ops, ho la borsa piena."
+  ]
+ ],
+ "s009.sec81.u6": [
+  [
+   "È uscito un {color 6}Digifungo{color 1}!"
+  ]
+ ],
+ "s009.sec81.u7": [
+  [
+   "Ops, ho la borsa piena."
+  ]
+ ],
+ "s009.sec82.u0": [
+  [
+   "Come pescare",
+   "Procurati una canna. Nel",
+   "sottomenu, sotto {color 5}△{color 1}, apparirà",
+   "l'icona della pesca.",
+   "Selezionala. Premi {color 6}×{color 1} per",
+   "scegliere un alimento come",
+   "esca. Girati a sinistra o a"
+  ],
+  [
+   "destra con i tasti direzionali.",
+   "Premi {color 6}×{color 1} per alzare la canna e",
+   "di nuovo {color 6}×{color 1} per lanciare.",
+   "Aspetta che il galleggiante",
+   "affondi: un pesce ha abboccato.",
+   "Tira con {color 6}×{color 1}. Controlla la"
+  ],
+  [
+   "barra in alto a sinistra:",
+   "rilascia {color 6}×{color 1} prima che si",
+   "riempia, o la lenza si",
+   "spezzerà. Recupera del tutto",
+   "il galleggiante per catturare",
+   "il pesce. Una X sull'ombra di"
+  ],
+  [
+   "un pesce indica che non",
+   "abboccherà all'esca attuale."
+  ]
+ ]
+}

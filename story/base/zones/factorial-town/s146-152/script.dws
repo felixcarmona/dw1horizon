@@ -1,0 +1,91 @@
+// Readable form of script 146 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+script 146 {
+    npc guardromon0 = 5;
+    npc guardromon1 = 6;
+    npc platinumsukamon2 = 7;
+    npc platinumsukamon3 = 8;
+    npc whamon = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6, 7, 8, 81;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+    }
+
+    on talk(guardromon0) replace {    // section 5
+        say(guardromon0, text("s146.sec5.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon1) replace {    // section 6
+        say(guardromon1, text("s146.sec6.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(platinumsukamon2) replace {    // section 7
+        say(platinumsukamon2, text("s146.sec7.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(platinumsukamon3) replace {    // section 8
+        say(platinumsukamon3, text("s146.sec8.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on use(1) replace {    // section 81
+        face(tamer, whamon);
+        say(whamon, text("s146.sec81.u0"));
+        choice {
+            text("s146.sec81.m0.o0") => {
+                if (!is_recruited(species("Agumon"))) {
+                    warp_to(204, 0, 255);
+                }
+                if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+                    if (!is_recruited(species("Birdramon"))) {
+                        if (is_recruited(species("Vegiemon"))) {
+                            warp_to(170, 0, 255);
+                        }
+                        if (is_recruited(species("Palmon"))) {
+                            warp_to(169, 0, 255);
+                        }
+                        warp_to(168, 0, 255);
+                    }
+                    if (is_recruited(species("Vegiemon"))) {
+                        warp_to(173, 0, 255);
+                    }
+                    if (is_recruited(species("Palmon"))) {
+                        warp_to(172, 0, 255);
+                    }
+                    warp_to(171, 0, 255);
+                }
+                if (!is_recruited(species("Birdramon"))) {
+                    if (is_recruited(species("Vegiemon"))) {
+                        warp_to(176, 0, 255);
+                    }
+                    if (is_recruited(species("Palmon"))) {
+                        warp_to(175, 0, 255);
+                    }
+                    warp_to(174, 0, 255);
+                }
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(179, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(178, 0, 255);
+                }
+                warp_to(177, 0, 255);
+            }
+            text("s146.sec81.m0.o1") or cancel => {}
+        }
+    }
+}

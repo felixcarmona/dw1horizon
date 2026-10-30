@@ -1,0 +1,17 @@
+{
+  "id": 6,
+  "name": "Inifinity Burn",
+  "element": "fire",
+  "power": 488,
+  "mpCost": 88,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 79,
+  "status": 3,
+  "statusChance": 11,
+  "iframes": 26,
+  "unk3": 3,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 8, 0]
+}

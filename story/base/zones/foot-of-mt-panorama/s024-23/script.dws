@@ -1,0 +1,105 @@
+// Readable form of script 24 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 24 {
+    npc flarerizamon0 = 5;
+    npc flarerizamon1 = 6;
+    npc aruraumon2 = 7;
+    npc aruraumon3 = 8;
+    npc tsukaimon4 = 9;
+    npc tsukaimon5 = 10;
+    npc goblimon6 = 11;
+    npc goblimon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 12, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 44, 33);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 23, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Big Berry"), 25, 74);
+        }
+    }
+
+    on talk(flarerizamon0) replace {    // section 5
+        say(flarerizamon0, text("s024.sec5.u0"));
+        battle();
+        recruit(species("Flarerizamon"));
+    }
+
+    on talk(flarerizamon1) replace {    // section 6
+        say(flarerizamon1, text("s024.sec6.u0"));
+        battle();
+        recruit(species("Flarerizamon"));
+    }
+
+    on talk(aruraumon2) replace {    // section 7
+        say(aruraumon2, text("s024.sec7.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(aruraumon3) replace {    // section 8
+        say(aruraumon3, text("s024.sec8.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(tsukaimon4) replace {    // section 9
+        say(tsukaimon4, text("s024.sec9.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(tsukaimon5) replace {    // section 10
+        say(tsukaimon5, text("s024.sec10.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(goblimon6) replace {    // section 11
+        say(goblimon6, text("s024.sec11.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon7) replace {    // section 12
+        say(goblimon7, text("s024.sec12.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (new_ogre_fortress_cleared && !is_recruited(species("Ogremon"))) {
+            say(tamer, text("s024.sec51.u0"));
+            face(tamer, partner);
+            face(partner, tamer);
+            wait(5);
+            say(tamer, text("s024.sec51.u1"));
+            walk(tamer, 1745, -1614);
+            await tamer;
+            return;
+        }
+        unless (is_recruited(species("Drimogemon"))) return;
+        unless (!new_ogre_fortress_cleared || is_recruited(species("Ogremon"))) return;
+        say(tamer, text("s024.sec51.u2"));
+        choice {
+            text("s024.sec51.m0.o0") => {
+                run(tamer, 2876, -1583);
+                warp_to(7, 1, 255);
+            }
+            text("s024.sec51.m0.o1") or cancel => {}
+        }
+        walk(tamer, 2876, -1583);
+        warp_to(32, 1, 255);
+    }
+}

@@ -1,0 +1,236 @@
+From 530c1c548e89dfe65e21376401c66d4e44571cb5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:59:12 +0000
+Subject: [PATCH] Digimon ids: DigimonId parameters and partner-type locals
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 3 of docs/mods/ids.md (§ 10), the u8 Digimon parameters.
+
+- loadNPCModel, unloadDigimonModel and scriptSetDigimon take a DigimonId.
+  They had one definition with u8 parameters (overworld.c) and a second,
+  int32_t prototype in script_interp.c; there is now one prototype in
+  model.h, so LOAD/SET/UNLOAD_DIGIMON16 hand the whole type over.
+- Locals that held the partner's type in a u8 before comparing it with a
+  u8 list (cup fair/eligible lists, tournament registration, baby types,
+  the tournament pool) and the speaker's type in getSpeakerName keep the
+  whole type, so a type above 255 no longer matches its low byte.
+
+The u8 lists themselves (cups, BABY_IDS, RegisteredDigimon) are content
+and save data; they move with the content build and save v2.
+
+---
+ include/dw/model.h       |  4 ++++
+ src/dget/dget.c          |  5 +++--
+ src/main/overworld.c     |  9 +++------
+ src/main/script_common.c |  2 +-
+ src/main/script_interp.c |  4 +---
+ src/main/script_value.c  | 10 ++++++----
+ src/main/tournament.c    |  2 +-
+ src/main/utils2.c        |  4 ++--
+ 8 files changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/include/dw/model.h b/include/dw/model.h
+index c7b0b0b..9e62ac7 100644
+--- a/include/dw/model.h
++++ b/include/dw/model.h
+@@ -47,6 +47,10 @@ void setEntityRotation(/* int32_t entityId, int16_t x, int16_t y, int16_t z */);
+ void setupEntityMatrix(int32_t entityId);
+ ModelComponent *thunkLoadMMD(int32_t digiType, int32_t modelType);
+ void thunkUnloadModel(int32_t digiType, int32_t modelType);
++/* MOD: overworld.c; one prototype each, the type as DigimonId (ids.md step 3) */
++void loadNPCModel(DigimonId digimonId);
++void unloadDigimonModel(DigimonId digimonType);
++int32_t scriptSetDigimon(DigimonId type, uint8_t slot, uint8_t autotalk);
+ void unloadModel(int32_t digiType, int32_t modelType);
+ 
+ extern ModelComponent UNKNOWN_MODEL[16];
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 4243869..1f38933 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -3,6 +3,7 @@
+ #include <libetc.h>
+ #include <libgpu.h>
+ 
++#include <dw/ids.h>
+ #include <dw/clock.h>
+ #include <dw/entity.h>
+ #include <dw/font.h>
+@@ -309,7 +310,7 @@ int32_t tournamentCheckFair(uint8_t value)
+ 	uint8_t *jumpTable;
+ 	uint8_t *typePtr;
+ 	uint8_t type;
+-	uint8_t partnerType;
++	DigimonId partnerType; /* MOD: was u8 */
+ 
+ 	jumpTable = getCupDataJumpTable(10, value);
+ 	typePtr = getCupDataJumpTableEntry(jumpTable, 2) + 2;
+@@ -407,7 +408,7 @@ int32_t tournamentCheckEligible(uint8_t tournament)
+ 	uint8_t *jumpTable;
+ 	uint8_t *typePtr;
+ 	uint8_t type;
+-	uint8_t partnerType;
++	DigimonId partnerType; /* MOD: was u8 */
+ 
+ 	jumpTable = getCupDataJumpTable(10, tournament);
+ 	typePtr = getCupDataJumpTableEntry(jumpTable, 3) + 2;
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index aa922c7..641351f 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -140,8 +140,6 @@ void NPCEntityTick(int32_t instanceId);
+ void NPCEntityTickOverworld(int32_t instanceId, MapDigimonEntity *mapDigimon);
+ void scriptUnloadEntity(uint8_t scriptId);
+ void setLoopCountToOne(uint32_t scriptId);
+-void loadNPCModel(uint8_t digimonId);
+-void unloadDigimonModel(uint8_t digimonType);
+ void setPartnerIdling(void);
+ int32_t tickRemoveMist(void);
+ void setActiveAnim(uint8_t scriptId, int8_t animId);
+@@ -170,7 +168,6 @@ void clearMapDigimon(void);
+ void resetEntityOrigin(uint8_t scriptId);
+ void loadMapDigimon(int16_t *data, int16_t mapId);
+ void initializeLoadedNPCModels(void);
+-int32_t scriptSetDigimon(uint8_t type, uint8_t slot, uint8_t autotalk);
+ int32_t tickMoveObjectTo(uint8_t objectIndex, uint8_t moveIndex,
+                          int8_t steps, int16_t targetX, int16_t targetY);
+ void setMovementEnabled(int32_t id, int32_t enabled);
+@@ -1053,12 +1050,12 @@ void loadMapDigimon(int16_t *data, int16_t mapId)
+ 	}
+ }
+ 
+-void loadNPCModel(uint8_t digimonId)
++void loadNPCModel(DigimonId digimonId) /* MOD: was u8 */
+ {
+ 	thunkLoadMMD(digimonId, 0);
+ }
+ 
+-int32_t scriptSetDigimon(uint8_t type, uint8_t slot, uint8_t autotalk)
++int32_t scriptSetDigimon(DigimonId type, uint8_t slot, uint8_t autotalk) /* MOD: type was u8 */
+ {
+ 	if (type != MAP_DIGIMON_TABLE[slot].typeId) {
+ 		return 0;
+@@ -1116,7 +1113,7 @@ void scriptUnloadEntity(uint8_t scriptId)
+ 	removeEntity(entity->type, scriptId);
+ }
+ 
+-void unloadDigimonModel(uint8_t digimonType)
++void unloadDigimonModel(DigimonId digimonType) /* MOD: was u8 */
+ {
+ 	thunkUnloadModel(digimonType, 0);
+ }
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index dd573a4..51bcc1b 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1396,7 +1396,7 @@ int32_t isPartnerBaby(void)
+ {
+ 	BabyTypeTable babyTypes;
+ 	int32_t i;
+-	uint8_t partnerType;
++	DigimonId partnerType; /* MOD: was u8 */
+ 
+ 	babyTypes = BABY_IDS;
+ 	partnerType = PARTNER_ENTITY.digimonEntity.entity.type;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index df37e2d..c068fbe 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -13,6 +13,7 @@
+ #include <dw/main.h>
+ #include <dw/map_object.h>
+ #include <dw/math.h>
++#include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/pstat.h>
+@@ -46,14 +47,11 @@ void setFoodTimer(int32_t type);
+ void setActiveAnim(int32_t state);
+ int32_t hasMove(int32_t moveId);
+ void learnMove(int32_t moveId);
+-void unloadDigimonModel(int32_t digimonType);
+-void loadNPCModel(int32_t modelId);
+ int32_t scriptCompareSignedValue(int32_t op, int32_t lhs, int32_t rhs);
+ void updateBGM(void);
+ void forceUpdateBGM(void);
+ void pollNextScriptTwoUShort(uint16_t *out1, uint16_t *out2);
+ void skipHours(int32_t hours);
+-void scriptSetDigimon(int32_t a0, int32_t a1, int32_t a2);
+ void scriptUnloadEntity(int32_t a0);
+ void resetEntityOrigin(int32_t a0);
+ void setMapObjectsFlag(int32_t start, int32_t count, int32_t flag);
+diff --git a/src/main/script_value.c b/src/main/script_value.c
+index 7b6a620..b1777e8 100644
+--- a/src/main/script_value.c
++++ b/src/main/script_value.c
+@@ -62,12 +62,14 @@ int32_t getSpeakerName(speakerId, buf)
+ 	uint8_t *buf;
+ // clang-format on
+ {
++	DigimonId type; /* MOD: the speaker's type is not cut to a byte */
++
+ 	if (speakerId == 0xff) {
+ 		return 0;
+ 	}
+ 
+ 	if (speakerId == 0xfd) {
+-		speakerId = 0;
++		type = 0;
+ 		goto digimon;
+ 	}
+ 
+@@ -79,7 +81,7 @@ int32_t getSpeakerName(speakerId, buf)
+ 
+ 	if (speakerId < 0xc8) {
+ 		speakerId = scriptIdToEntityId(speakerId);
+-		speakerId = ENTITY_TABLE[speakerId]->type;
++		type = ENTITY_TABLE[speakerId]->type;
+ 		goto digimon;
+ 	}
+ 
+@@ -89,9 +91,9 @@ int32_t getSpeakerName(speakerId, buf)
+ 	return strlen(SPECIAL_SPEAKERS[speakerId]);
+ 
+ digimon:
+-	strcpy((char *)buf, DIGIMON_NAME(speakerId));
++	strcpy((char *)buf, DIGIMON_NAME(type));
+ 
+-	return strlen(DIGIMON_NAME(speakerId));
++	return strlen(DIGIMON_NAME(type));
+ }
+ 
+ uint8_t *intToStringSJIS(uint8_t *buf, int32_t value, uint8_t digits, int32_t flag)
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index aa05ce2..128688a 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -45,7 +45,7 @@ void updateTournamentRegistration(void)
+ 	uint8_t value;
+ 	int32_t flag;
+ 	uint32_t minutes;
+-	uint8_t partnerType;
++	DigimonId partnerType; /* MOD: was u8 */
+ 
+ 	flag = 0;
+ 	if (isTriggerSet(TRIGGER_TOURNAMENT_REGISTERED)) {
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 016548a..88324b8 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -634,9 +634,9 @@ void startTournament(void)
+ 			*p++ = pool[randomLimit(count)];
+ 		}
+ 	} else {
+-		id = PARTNER_ENTITY.digimonEntity.entity.type;
+ 		for (i = 0; i < count; i++) {
+-			if (id == pool[i]) {
++			/* MOD: the whole type, not its low byte */
++			if (PARTNER_ENTITY.digimonEntity.entity.type == pool[i]) {
+ 				pool[i] = 0xff;
+ 				count--;
+ 				break;
+-- 
+2.53.0
+

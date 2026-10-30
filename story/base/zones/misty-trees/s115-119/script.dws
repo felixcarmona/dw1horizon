@@ -1,0 +1,164 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 115 {
+    npc cherrymon = 5;
+    sections 254, 51, 5;
+    on enter replace {    // enter
+        store_random(random_roll, 99);
+        if (random_roll <= 18) {
+            spawn_item(item(44), 56, 34);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 12) {
+            spawn_item(item(44), 56, 80);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item(47), 35, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item(61), 67, 32);
+        }
+        if (cherrymon_met) {
+            entity_move_to(cherrymon, -2017, 1378, 3, 0);
+            await entity(20);
+            rotate(cherrymon, 0);
+            wait(5);
+        }
+    }
+    on step(0) replace {    // step0
+        if (!cherrymon_met) {
+            cherrymon_met = true;
+        } else {
+            return;
+        }
+        run(tamer, -1606, 166, camera: true);
+        run(partner, -1407, 465);
+        await partner;
+        await tamer;
+        face(tamer, cherrymon);
+        face(cherrymon, tamer);
+        face(partner, cherrymon);
+        sound(8, 18);
+        say(cherrymon, text("s115.sec51.u0"));
+        animate(tamer, 20);
+        wait(15);
+        if (is_recruited(species(109))) {
+            say(tamer, text("s115.sec51.u1"));
+        } else {
+            say(tamer, text("s115.sec51.u2"));
+        }
+        animate(tamer, anim.idle);
+        say(cherrymon, text("s115.sec51.u3"));
+        if (is_recruited(species(109))) {
+            say(tamer, text("s115.sec51.u4"));
+        } else {
+            say(tamer, text("s115.sec51.u5"));
+        }
+        sound(8, 18);
+        say(cherrymon, text("s115.sec51.u6"));
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s115.sec51.u7"));
+        animate(tamer, anim.idle);
+        say(cherrymon, text("s115.sec51.u8"));
+        say(tamer, text("s115.sec51.u9"));
+        say(cherrymon, text("s115.sec51.u10"));
+        goto L12;
+    }
+    on talk(cherrymon) replace {    // talk
+        engine.cutscene = true;
+        say(cherrymon, text("s115.sec5.u0"));
+        choice {
+            text("s115.sec5.m0.o0") => {
+                say(cherrymon, text("s115.sec5.u1"));
+                goto L12;
+            }
+            text("s115.sec5.m0.o1") => {
+                say(cherrymon, text("s115.sec5.u2"));
+                call_routine(routine("load_training_library"));
+                set_textbox_origin(-2017, 0, 1378);
+                say(narrator, text("s115.sec5.u3"));
+                choice(narrator) {
+                    text("s115.sec5.m1.o0") => {}
+                    text("s115.sec5.m1.o1") => {
+                        loop {
+                            say(narrator, text("s115.sec5.u4"));
+                            choice(narrator) {
+                                text("s115.sec5.m3.o0") => {}
+                                text("s115.sec5.m3.o1") => {
+                                    break;
+                                }
+                                text("s115.sec5.m3.o2") or cancel => {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    text("s115.sec5.m1.o2") or cancel => {
+                        return;
+                    }
+                }
+                choice(narrator) {
+                    text("s115.sec5.m2.o0") => {
+                        hide_hud();
+                        engine.arg = 5;
+                        training_slot_game = 0;
+                        call_digimon_routine(214);
+                        call_routine(routine("training"));
+                        return;
+                    }
+                    text("qol.training_x5") => {
+                        hide_hud();
+                        engine.arg = 5;
+                        training_slot_game = 2;
+                        call_digimon_routine(214);
+                        call_routine(routine("training"));
+                        return;
+                    }
+                    text("s115.sec5.m2.o1") => {
+                        set_textbox_mode(1, 0);
+                        say(narrator, text("s115.sec5.u5"));
+                        engine.arg = 5;
+                        training_slot_game = 1;
+                        call_digimon_routine(214);
+                        call_routine(routine("training"));
+                        set_textbox_mode(0, 0);
+                        return;
+                    }
+                    text("s115.sec5.m2.o2") or cancel => {
+                        return;
+                    }
+                }
+            }
+            text("s115.sec5.m0.o2") or cancel => {}
+        }
+        say(cherrymon, text("s115.sec5.u6"));
+    }
+    shared L12 {
+        sound(8, 18);
+        say(cherrymon, text("s115.sec51.u11"));
+        sound(8, 18);
+        show_textbox(text("s115.sec51.u12"));
+        sound(8, 18);
+        show_textbox(text("s115.sec51.u13"));
+        if (!misty_trees_fog_lifted) {
+            misty_trees_fog_lifted = true;
+            sound(8, 18);
+            say(cherrymon, text("s115.sec51.u14"));
+            call_routine(routine("remove_fog"));
+        } else {
+            return;
+        }
+        say(cherrymon, text("s115.sec51.u15"));
+        sound(8, 18);
+        show_textbox(text("s115.sec51.u16"));
+        animate(cherrymon, 29);
+        wait(60);
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "id": 109,
+  "name": "Crimson Flare",
+  "element": "fire",
+  "power": 213,
+  "mpCost": 40,
+  "distance": 360000,
+  "range": 2,
+  "accuracy": 100,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0
+}

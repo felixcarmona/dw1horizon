@@ -1,0 +1,26 @@
+From 66255270243b7f6fe73c51694599428865cb11cc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 18 Oct 2026 22:09:04 +0000
+Subject: [PATCH] Patch 0144: the last-battle music slot comment says what the
+ rule reads: the first enemy of the fight (entityIds[1]), not the partner
+
+---
+ include/dw/mod_battle.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index 569ac957..77c657a3 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -167,7 +167,7 @@ enum {
+ 	MOD_BT_T_DEFEAT_END,
+ 	MOD_BT_T_SETTLE,
+ 	MOD_BT_T_DIGIT,		/* ticks a digit of the defeat countdown shows (it pulses 20 ticks of them; the countdown ends after 5) */
+-	MOD_BT_MUSIC_LAST_SPECIES,	/* the species whose presence on the player's side (entity 1) makes the battle play the last-battle track (-1: none) */
++	MOD_BT_MUSIC_LAST_SPECIES,	/* the species that, as the first enemy of the fight (COMBAT_DATA_PTR->player.entityIds[1], Machinedramon in the original), makes the battle play the last-battle track (-1: none) */
+ 	MOD_BT_MUSIC_LAST_TRACK,	/* the track (font 0x21) it plays */
+ 	MOD_BT_SIZE
+ };
+-- 
+2.53.0
+

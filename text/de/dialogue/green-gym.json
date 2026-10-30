@@ -1,0 +1,387 @@
+{
+ "s108.sec5.m0.o0": "Was ist Training?",
+ "s108.sec5.m0.o1": "Wie trainiere ich?",
+ "s108.sec5.m0.o2": "Nichts. Vielen Dank.",
+ "s108.sec5.u0": [
+  [
+   "Hey, hey, Neuigkeiten! Ähm...",
+   "Solange dein Digimon noch ein",
+   "Baby ist, solltest du dasselbe"
+  ],
+  [
+   "Training immer wieder machen.",
+   "Das soll etwas Gutes bewirken!"
+  ]
+ ],
+ "s108.sec5.u1": [
+  [
+   "Hey, hey, Neuigkeiten! Ähm...",
+   "Wenn du beim Bonustraining",
+   "dieselben Bilder wie auf dem"
+  ],
+  [
+   "Schild aufreihst, steigen die",
+   "Werte noch stärker!"
+  ]
+ ],
+ "s108.sec5.u2": [
+  [
+   "Ach ja, ich wollte dir von",
+   "Techniken erzählen! Nach einem",
+   "Kampf kann dein Digimon eine"
+  ],
+  [
+   "Technik lernen, die der Gegner",
+   "gegen es eingesetzt hat.",
+   "Allerdings nur eine, die es in"
+  ],
+  [
+   "seiner jetzigen Form ausrüsten",
+   "kann. Das klappt nicht immer,",
+   "ist aber der schnellste Weg,"
+  ],
+  [
+   "mehr Techniken zu lernen.",
+   "Außerdem... die Chance ist",
+   "winzig, aber auch beim Training"
+  ],
+  [
+   "kann es eine lernen. Bei hoher",
+   "Klugheit soll der Unterricht",
+   "bei {color 6}{player}{color 1} eine Technik"
+  ],
+  [
+   "vermitteln können. Ich",
+   "wiederhole mich, aber die",
+   "Chance ist wirklich gering."
+  ],
+  [
+   "Verlass dich also nicht darauf.",
+   "Auf die Mischung kommt es an!"
+  ]
+ ],
+ "s108.sec5.u3": [
+  [
+   "Hey, hey, ich bin Koromon! Jiji",
+   "hat mich gebeten, dir das",
+   "Training zu erklären. Was"
+  ],
+  [
+   "möchtest du wissen?"
+  ]
+ ],
+ "s108.sec5.u4": [
+  [
+   "Das Training hier steigert die",
+   "Werte deines Digimon. Es ist",
+   "aber anstrengend und dauert"
+  ],
+  [
+   "eine ganze Weile. Trotzdem ist",
+   "es zuverlässiger als Kämpfe.",
+   "Ganz selten lernt dein Digimon"
+  ],
+  [
+   "dabei sogar eine neue Technik!",
+   "Davon erzähle ich dir ein",
+   "anderes Mal."
+  ]
+ ],
+ "s108.sec5.u5": [
+  [
+   "Hier gibt es sechs",
+   "Trainingsgeräte, jedes mit",
+   "einem Schild daneben."
+  ]
+ ],
+ "s108.sec5.u6": [
+  [
+   "Stell dich vor ein Schild und",
+   "drücke {color 6}×{color 1}. Lies es, um zu",
+   "erfahren, welche Werte steigen."
+  ],
+  [
+   "Manche Digimon steigern",
+   "bestimmte Werte leicht, andere",
+   "weniger. Das musst du"
+  ],
+  [
+   "ausprobieren! Wähle Trainieren",
+   "und dann Normales Training.",
+   "Dein Digimon trainiert eine"
+  ],
+  [
+   "Stunde lang. Dabei kannst du",
+   "mit {color 5}△{color 1} die Zeit vorspulen. Ach",
+   "ja, das Bonustraining! Wenn es"
+  ],
+  [
+   "gelingt, steigt der Wert enorm.",
+   "Wenn es misslingt... steigt er",
+   "kaum. Probier es einmal aus."
+  ]
+ ],
+ "s108.sec5.u7": [
+  [
+   "Ach so, gut... Ich suche neue",
+   "Infos für dich."
+  ]
+ ],
+ "s108.sec6.u0": [
+  [
+   "Ich in Stadt gehen. Stadt zu",
+   "viel Stadt für mich. Ich nicht",
+   "reinpassen. Also ich"
+  ],
+  [
+   "hierherkommen. Ich Maschinen",
+   "hier umbauen. Besser arbeiten",
+   "als vorher. Du viel trainieren."
+  ]
+ ],
+ "s108.sec7.u0": [
+  [
+   "Ich in Stadt gehen. Stadt zu",
+   "viel Stadt für mich. Ich nicht",
+   "reinpassen. Also ich"
+  ],
+  [
+   "hierherkommen. Ich Maschinen",
+   "hier umbauen. Besser arbeiten",
+   "als vorher. Du viel trainieren."
+  ]
+ ],
+ "s108.sec81.m0.o0": "Trainieren",
+ "s108.sec81.m0.o1": "Über dieses Training",
+ "s108.sec81.m0.o2": "Beenden",
+ "s108.sec81.m1.o0": "Normales Training",
+ "s108.sec81.m1.o1": "Bonustraining",
+ "s108.sec81.m1.o2": "Schon gut",
+ "s108.sec81.m2.o0": "Noch mal erklären",
+ "s108.sec81.m2.o1": "Trainieren",
+ "s108.sec81.m2.o2": "Beenden",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Training verbessert:",
+   "Felsenschieben{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "{color 5}Training: Felsenschieben{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": [
+  [
+   "Einen riesigen Fels zu schieben",
+   "stärkt die rohe Kraft. Die max.",
+   "HP steigen stark, der Angriff"
+  ],
+  [
+   "ebenfalls."
+  ]
+ ],
+ "s108.sec81.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Trainieren",
+ "s108.sec82.m0.o1": "Über dieses Training",
+ "s108.sec82.m0.o2": "Beenden",
+ "s108.sec82.m1.o0": "Normales Training",
+ "s108.sec82.m1.o1": "Bonustraining",
+ "s108.sec82.m1.o2": "Schon gut",
+ "s108.sec82.m2.o0": "Noch mal erklären",
+ "s108.sec82.m2.o1": "Trainieren",
+ "s108.sec82.m2.o2": "Beenden",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Training verbessert:",
+   "Wasserfall{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "{color 5}Training: Wasserfall{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": [
+  [
+   "Unter einem Wasserfall zu",
+   "stehen stärkt den Geist. Die",
+   "max. MP steigen stark, die"
+  ],
+  [
+   "Verteidigung ebenfalls."
+  ]
+ ],
+ "s108.sec82.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Trainieren",
+ "s108.sec83.m0.o1": "Über dieses Training",
+ "s108.sec83.m0.o2": "Beenden",
+ "s108.sec83.m1.o0": "Normales Training",
+ "s108.sec83.m1.o1": "Bonustraining",
+ "s108.sec83.m1.o2": "Schon gut",
+ "s108.sec83.m2.o0": "Noch mal erklären",
+ "s108.sec83.m2.o1": "Trainieren",
+ "s108.sec83.m2.o2": "Beenden",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Training verbessert:",
+   "Baumschlagen{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "{color 5}Training: Baumschlagen{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": [
+  [
+   "Übe Techniken an einem Baum.",
+   "Der Angriff steigt stark, das",
+   "Tempo ebenfalls."
+  ]
+ ],
+ "s108.sec83.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Trainieren",
+ "s108.sec84.m0.o1": "Über dieses Training",
+ "s108.sec84.m0.o2": "Beenden",
+ "s108.sec84.m1.o0": "Normales Training",
+ "s108.sec84.m1.o1": "Bonustraining",
+ "s108.sec84.m1.o2": "Schon gut",
+ "s108.sec84.m2.o0": "Noch mal erklären",
+ "s108.sec84.m2.o1": "Trainieren",
+ "s108.sec84.m2.o2": "Beenden",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Training verbessert:",
+   "Boxhandschuh{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "{color 5}Training: Boxhandschuh{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": [
+  [
+   "Stecke die Schläge einer",
+   "riesigen Boxmaschine ein. Die",
+   "Verteidigung steigt stark, die"
+  ],
+  [
+   "Klugheit ebenfalls."
+  ]
+ ],
+ "s108.sec84.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Trainieren",
+ "s108.sec85.m0.o1": "Über dieses Training",
+ "s108.sec85.m0.o2": "Beenden",
+ "s108.sec85.m1.o0": "Normales Training",
+ "s108.sec85.m1.o1": "Bonustraining",
+ "s108.sec85.m1.o2": "Schon gut",
+ "s108.sec85.m2.o0": "Noch mal erklären",
+ "s108.sec85.m2.o1": "Trainieren",
+ "s108.sec85.m2.o2": "Beenden",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Training verbessert: Laufen{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "{color 5}Training: Laufen{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": [
+  [
+   "Laufe immer wieder Runden auf",
+   "der Strecke. Das Tempo steigt",
+   "stark, die max. HP ebenfalls."
+  ]
+ ],
+ "s108.sec85.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Trainieren",
+ "s108.sec86.m0.o1": "Über dieses Training",
+ "s108.sec86.m0.o2": "Beenden",
+ "s108.sec86.m1.o0": "Normales Training",
+ "s108.sec86.m1.o1": "Bonustraining",
+ "s108.sec86.m1.o2": "Schon gut",
+ "s108.sec86.m2.o0": "Noch mal erklären",
+ "s108.sec86.m2.o1": "Trainieren",
+ "s108.sec86.m2.o2": "Beenden",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Unterricht verbessert bei",
+   "{color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Unterricht bei {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": [
+  [
+   "{color 6}{player}{color 1} übernimmt den",
+   "Unterricht und erklärt allerlei",
+   "Dinge. Die Klugheit steigt"
+  ],
+  [
+   "stark, die max. MP ebenfalls."
+  ]
+ ],
+ "s108.sec86.u3": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ]
+}

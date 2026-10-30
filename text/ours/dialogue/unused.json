@@ -1,0 +1,435 @@
+{
+ "s000.sec1230.u0": [
+  [
+   "Welcome! How can I help you?"
+  ],
+  [
+   "We're still getting ready."
+  ],
+  [
+   "Buy",
+   "Sell",
+   "Maybe later"
+  ],
+  [
+   "Buy",
+   "Maybe later"
+  ],
+  [
+   "Come again!"
+  ],
+  [
+   "Did you just come to bug me?!"
+  ],
+  [
+   "Bits {money}"
+  ],
+  [
+   "Merit {merit}"
+  ],
+  [
+   "See anything you like?"
+  ],
+  [
+   "Which one will you sell?"
+  ],
+  [
+   "Thank you very much."
+  ],
+  [
+   "Is there anything else?"
+  ],
+  [
+   "We're all out of stock."
+  ],
+  [
+   "I took {shopvar} Bits off."
+  ]
+ ],
+ "s000.sec1230.u1": "Yay, you came, you came! What'll it be?",
+ "s000.sec1230.u2": [
+  "I've got nothing to sell",
+  "right now."
+ ],
+ "s000.sec1230.u3": [
+  "Buy",
+  "Sell",
+  "Maybe later"
+ ],
+ "s000.sec1230.u4": [
+  "Buy",
+  "Maybe later"
+ ],
+ "s000.sec1230.u5": "Yaaay! Come back soon!",
+ "s000.sec1230.u6": "Aww, that's it? Phooey.",
+ "s000.sec1230.u7": [
+  "Bits {money}"
+ ],
+ "s000.sec1230.u8": [
+  "Merit {merit}"
+ ],
+ "s000.sec1230.u9": "Buy lots, okay?",
+ "s000.sec1230.u10": "Got something you don't need?",
+ "s000.sec1230.u11": "Yaaay, thank you!",
+ "s000.sec1230.u12": "Got anything else?",
+ "s000.sec1230.u13": "I've got nothing left to sell.",
+ "s000.sec1230.u14": "{color 10}{partner}{color 1} is still teeny, huh? I'll take {shopvar} Bits off for you!",
+ "s000.sec1230.u15": "Ah, welcome.",
+ "s000.sec1230.u16": "Do come again.",
+ "s000.sec1230.u17": "Just looking isn't very nice, you know.",
+ "s000.sec1230.u18": "What will you buy?",
+ "s000.sec1230.u19": "You'll sell me something?",
+ "s000.sec1230.u20": "Thank you.",
+ "s000.sec1230.u21": "Is there anything more?",
+ "s000.sec1230.u22": "{color 10}{partner}{color 1} has to grow up big, and soon. All right, I'll take {shopvar} Bits off.",
+ "s000.sec1230.u23": [
+  "Welcome, peep!",
+  "What'll it be, peep?"
+ ],
+ "s000.sec1230.u24": "Thanks as always, peep!",
+ "s000.sec1230.u25": "Huh? Just looking, peep?!",
+ "s000.sec1230.u26": "Pick one, peep.",
+ "s000.sec1230.u27": "I'll buy anything, peep.",
+ "s000.sec1230.u28": "Thank you, peep.",
+ "s000.sec1230.u29": "Keep going, peep?",
+ "s000.sec1230.u30": "{color 10}{partner}{color 1} is just a kid, peep. I'll take {shopvar} Bits off, peep.",
+ "s000.sec1230.u31": "Ah, welcome! What'll it be?",
+ "s000.sec1230.u32": "Thank you. Do come again.",
+ "s000.sec1230.u33": "...Next time, then, I hope.",
+ "s000.sec1230.u34": "Now then, which will it be?",
+ "s000.sec1230.u35": "What would you like to sell?",
+ "s000.sec1230.u36": "Thank you kindly.",
+ "s000.sec1230.u37": "Anything more?",
+ "s000.sec1230.u38": "Oh my, {color 10}{partner}{color 1} is so little. I really must take {shopvar} Bits off.",
+ "s000.sec1230.u39": "Hmph, you came. You won't find my wares anywhere else. Buy all you like... Heh heh...",
+ "s000.sec1230.u40": [
+  "Heh heh...",
+  "Save up and come back."
+ ],
+ "s000.sec1230.u41": "Wh...! Just browsing, are you?!",
+ "s000.sec1230.u42": "Buy whatever you please.",
+ "s000.sec1230.u43": "I don't take junk. Heh heh...",
+ "s000.sec1230.u44": [
+  "Heh heh...",
+  "Watch yourself out there."
+ ],
+ "s000.sec1230.u45": "You... What else do you want?",
+ "s000.sec1230.u46": "Heh heh... {color 10}{partner}{color 1}. For your sake, I'll knock {shopvar} Bits off.",
+ "s000.sec1230.u47": "Ooh, you, customer!",
+ "s000.sec1230.u48": "Next time, buy more!",
+ "s000.sec1230.u49": "You, stingy!",
+ "s000.sec1230.u50": "Buy everything!",
+ "s000.sec1230.u51": "Sell anything!",
+ "s000.sec1230.u52": "Okay, good!",
+ "s000.sec1230.u53": "More? You got more?",
+ "s000.sec1230.u54": "{color 10}{partner}{color 1}, you, shrimp! I take {shopvar} Bits off!",
+ "s000.sec1230.u55": "My items are sooo awesome! Bleh, bleh.",
+ "s000.sec1230.u56": [
+  "Come again, or whatever.",
+  "Bleh, bleh."
+ ],
+ "s000.sec1230.u57": "Aaah, go home already, bleh?",
+ "s000.sec1230.u58": "Which one's the good one, hmmm?",
+ "s000.sec1230.u59": "C'mon, sell, sell.",
+ "s000.sec1230.u60": "For real? Bleh?",
+ "s000.sec1230.u61": [
+  "Anything else? Is there?",
+  "Huh? Bleh?"
+ ],
+ "s000.sec1230.u62": [
+  "Ooh? A kid? A discount? Minus {shopvar}",
+  "Bits it is."
+ ],
+ "s000.sec1230.u63": "I got stuff that comes in handy fer everyday livin'. Whaddaya think?",
+ "s000.sec1230.u64": "Come on back now.",
+ "s000.sec1230.u65": "You pullin' my leg?",
+ "s000.sec1230.u66": "What're ya after?",
+ "s000.sec1230.u67": "Which one you sellin'?",
+ "s000.sec1230.u68": "Thank ya kindly.",
+ "s000.sec1230.u69": "Somethin' else?",
+ "s000.sec1230.u70": "Well now, {color 10}{partner}{color 1} is a little 'un. I'll knock {shopvar} Bits off fer ya.",
+ "s000.sec1230.u71": "Now's your chance, yes yes. Buy all you like!",
+ "s000.sec1230.u72": "Come again soon, yes yes.",
+ "s000.sec1230.u73": "You here to get in the way of business, yes?",
+ "s000.sec1230.u74": "Which one, yes?",
+ "s000.sec1230.u75": "What you sell, yes?",
+ "s000.sec1230.u76": "Thank you, yes yes!",
+ "s000.sec1230.u77": "Anything else, yes?",
+ "s000.sec1230.u78": "Oho, {color 10}{partner}{color 1} is a child, yes. {shopvar} Bits off, special service!",
+ "s000.sec1230.u79": "Welcooome!",
+ "s000.sec1230.u80": "Come again, okay?",
+ "s000.sec1230.u81": [
+  "Aww, that's mean.",
+  "You're not buying?"
+ ],
+ "s000.sec1230.u82": "What'll you have?",
+ "s000.sec1230.u83": "Which one will you sell?",
+ "s000.sec1230.u84": "Thank you!",
+ "s000.sec1230.u85": "Something else?",
+ "s000.sec1230.u86": "Hm, {color 10}{partner}{color 1} is smaller than me. I'll take {shopvar} Bits off.",
+ "s000.sec1230.u87": [
+  "{color 7}Coelamon {color 1}",
+  "This here's an item shop."
+ ],
+ "s000.sec1230.u88": [
+  "{color 7}Coelamon {color 1}",
+  "Come again, now."
+ ],
+ "s000.sec1230.u89": [
+  "{color 7}Coelamon {color 1}",
+  "Just looking, is it?"
+ ],
+ "s000.sec1230.u90": [
+  "{color 7}Coelamon {color 1}",
+  "Now, what'll you have?"
+ ],
+ "s000.sec1230.u91": [
+  "{color 7}Coelamon {color 1}",
+  "Which will you sell?"
+ ],
+ "s000.sec1230.u92": [
+  "{color 7}Coelamon {color 1}",
+  "Ho ho, how kind."
+ ],
+ "s000.sec1230.u93": [
+  "{color 7}Coelamon {color 1}",
+  "Anything more?"
+ ],
+ "s000.sec1230.u94": [
+  "{color 7}Coelamon {color 1}",
+  "Ho ho, so {color 10}{partner}{color 1} is",
+  "still young. I'd best take",
+  "{shopvar} Bits off, then."
+ ],
+ "s000.sec1235.u0": [
+  "Here's what I have today,",
+  "yes yes."
+ ],
+ "s000.sec1235.u1": "No more for today, yes.",
+ "s000.sec1235.u2": [
+  [
+   "Whoa! The legendary card:",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u3": [
+  [
+   "Oh, a card of",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u4": [
+  [
+   "A card of",
+   "{digimon 249}.",
+   "I don't have it yet."
+  ]
+ ],
+ "s000.sec1235.u5": [
+  [
+   "A card of",
+   "{digimon 249}."
+  ]
+ ],
+ "s000.sec1235.u6": [
+  [
+   "Ugh, another card of",
+   "{digimon 249}?"
+  ]
+ ],
+ "s000.sec1235.u7": "I didn't have any cards.",
+ "s000.sec1235.u8": "Which card are you selling?",
+ "s000.sec1236.u0": "Oho, so you too desire Merit? Well then, what shall it be?",
+ "s000.sec1236.u1": [
+  "Show a Digimon card",
+  "Use Merit points",
+  "Maybe later"
+ ],
+ "s000.sec1236.u2": [
+  "Hand it over",
+  "Never mind"
+ ],
+ "s000.sec1236.u3": [
+  "Okay!",
+  "Never mind"
+ ],
+ "s000.sec1236.u4": "Is this what you wish?",
+ "s000.sec1236.u5": "What have you brought me?",
+ "s000.sec1236.u6": "What is it you desire?",
+ "s000.sec1236.u7": "Hm, this is... ultra rare! I must have it! For this, I offer {shopvar} points. Agreed?",
+ "s000.sec1236.u8": "Hm, this is quite rare! Well found. For this, I offer {shopvar} points. Agreed?",
+ "s000.sec1236.u9": "Hm, this is rather good. Let me see... {shopvar} points, I would say. Will you give it?",
+ "s000.sec1236.u10": "Hm, this is utterly ordinary. It is worth {shopvar} points. Will you give it?",
+ "s000.sec1236.u11": "Hm, this is... no good at all. I might take it for {shopvar} points... Agreed?",
+ "s000.sec1237.u0": [
+  "Hey! Here to use the",
+  "Item Keeper?"
+ ],
+ "s000.sec1237.u1": [
+  "Use it",
+  "Not today"
+ ],
+ "s000.sec1237.u2": "You sure? Come use it all you want, okay?",
+ "s000.sec1237.u3": [
+  "D-pad moves the cursor,",
+  "{color 6}×{color 1} moves one across,",
+  "{color 10}○{color 1} moves ten, {color 4}□{color 1} moves all."
+ ],
+ "s000.sec1237.u4": [
+  "In storage"
+ ],
+ "s000.sec1237.u5": [
+  "On hand"
+ ],
+ "s000.sec1238.u0": "Which one'll it be? Bzzt-zzt!",
+ "s000.sec1238.u1": "Count on me for the next request, bzzt!",
+ "s000.sec1238.u2": "{bgm 249}, huh?",
+ "s000.sec1238.u3": "C'mon! Request me a number that'll get me all fired up!",
+ "s000.sec1238.u4": "......Where to?",
+ "s000.sec1238.u5": "On your own two feet, then... Maybe that's the best way.",
+ "s000.sec1238.u6": [
+  "You sure? Once you go,",
+  "that's it."
+ ],
+ "s000.sec1238.u7": [
+  "I know",
+  "Never mind"
+ ],
+ "s000.sec1238.u8": "I'm collectin' somethin'. If ya got any, I'd sure like to trade fer 'em.",
+ "s000.sec1238.u9": "What're ya gonna give me?",
+ "s000.sec1238.u10": "I'll trade any time, so keep 'em comin'!",
+ "s000.sec1238.u11": "You'd really give me {item 249}?",
+ "s000.sec1238.u12": [
+  "Sure",
+  "No, I'll keep it"
+ ],
+ "s000.sec1238.u13": "Much obliged!",
+ "s000.sec1238.u14": "You've got too many items.",
+ "s000.sec1238.u15": [
+  "Wanted Offered"
+ ],
+ "s000.sec1238.u16": [
+  "{color 7}Jijimon {color 1}",
+  "I'm Jijimon. Sorry to spring",
+  "this on you, but won't you tell",
+  "me a little about yourself?"
+ ],
+ "s000.sec1238.u17": [
+  "{color 7}Jijimon {color 1}",
+  "First of all... do you have",
+  "a Digital Monster?"
+ ],
+ "s000.sec1238.u18": [
+  "{color 6}{player}{color 1}",
+  "I do",
+  "I don't"
+ ],
+ "s000.sec1238.u19": [
+  "{color 7}Jijimon {color 1}",
+  "Ohhh."
+ ],
+ "s000.sec1238.u20": [
+  "{color 7}Jijimon {color 1}",
+  "Next question. Do you like",
+  "day or night better?"
+ ],
+ "s000.sec1238.u21": [
+  "{color 6}{player}{color 1}",
+  "Day",
+  "Night"
+ ],
+ "s000.sec1238.u22": [
+  "{color 7}Jijimon {color 1}",
+  "Hmmm."
+ ],
+ "s000.sec1238.u23": [
+  "{color 7}Jijimon {color 1}",
+  "Next question. Do you have",
+  "lots of friends?"
+ ],
+ "s000.sec1238.u24": [
+  "{color 6}{player}{color 1}",
+  "I do",
+  "Not really"
+ ],
+ "s000.sec1238.u25": [
+  "{color 7}Jijimon {color 1}",
+  "I see, I see."
+ ],
+ "s000.sec1238.u26": [
+  "{color 7}Jijimon {color 1}",
+  "Oh, that's right! I almost",
+  "forgot to ask your name!"
+ ],
+ "s000.sec1238.u27": [
+  "{color 7}Jijimon {color 1}",
+  "{color 6}{player}{color 1}, is it?"
+ ],
+ "s000.sec1238.u28": [
+  "{color 6}{player}{color 1}",
+  "Yes",
+  "No"
+ ],
+ "s000.sec1238.u29": [
+  "{color 7}Jijimon {color 1}",
+  "Now, tell me the name of",
+  "the Digimon you'll raise."
+ ],
+ "s000.sec1238.u30": [
+  "{color 7}Jijimon {color 1}",
+  "{color 10}{partner}{color 1}, is it?"
+ ],
+ "s000.sec1238.u31": [
+  "{color 7}Jijimon {color 1}",
+  "Mm, that's a fine name."
+ ],
+ "s000.sec1238.u32": [
+  "{color 7}Jijimon {color 1}",
+  "Mm. That's all my questions.",
+  "We'll meet again soon!"
+ ],
+ "s000.sec1240.u0": [
+  "All right?",
+  "Yes No"
+ ],
+ "s000.sec1240.u1": [
+  "Tournament Calendar"
+ ],
+ "s000.sec1240.u2": "Do you want to enter the -{cup 3}-?",
+ "s000.sec1240.u3": [
+  "So {color 10}{partner}{color 1} is entering",
+  "the -{cup 3}-...",
+  "Are you really sure?"
+ ],
+ "s000.sec1240.u4": [
+  "Enter",
+  "Not this time"
+ ],
+ "s000.sec1240.u5": "Penalty!",
+ "s000.sec1240.u6": "You can't go in yet. Come on tournament day, between 10 AM and 11 PM.",
+ "s000.sec1240.u7": [
+  "{move 243}",
+  "wasn't passed on."
+ ],
+ "s000.sec1241.u0": [
+  "Oh yeah, I'm entered in",
+  "today's -{cup 3}-,",
+  "aren't I?"
+ ],
+ "s000.sec1242.u0": [
+  "Oh no! I forgot I'd entered today's",
+  "-{cup 3}-!"
+ ],
+ "s000.sec1243.u0": "Grade",
+ "s000.sec1243.u1": "Version",
+ "s000.sec1243.u2": "Type",
+ "s000.sec1243.u3": "Special",
+ "s000.sec1243.u4": "Total",
+ "s000.sec1243.u5": "Cards",
+ "s000.sec1244.u0": "Hey, it's {color 6}{item 200}{color 1}!",
+ "s000.sec1244.u1": [
+  "But I can't carry",
+  "any more items..."
+ ],
+ "s000.sec1251.u0": "Heh. Hold on tight!"
+}

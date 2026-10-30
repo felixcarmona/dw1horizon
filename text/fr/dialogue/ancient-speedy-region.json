@@ -1,0 +1,243 @@
+{
+ "s080.sec5.u0": [
+  [
+   "Je vais te prendre la vie, si",
+   "ça ne te dérange pas."
+  ]
+ ],
+ "s080.sec6.u0": [
+  [
+   "Tu as fait tout ce chemin pour",
+   "mourir, alors ?"
+  ]
+ ],
+ "s080.sec7.u0": [
+  [
+   "Ouah, tu ne manques pas de",
+   "cran !"
+  ]
+ ],
+ "s080.sec8.u0": [
+  [
+   "Hé. Tu as si hâte de mourir ?"
+  ]
+ ],
+ "s080.sec9.u0": "Tu dois disparaître...",
+ "s080.sec10.u0": [
+  [
+   "Pardon, tu veux bien te",
+   "pousser ?"
+  ]
+ ],
+ "s080.sec51.u0": [
+  [
+   "Ouah, on se croirait vraiment à",
+   "une autre époque."
+  ]
+ ],
+ "s080.sec51.u1": [
+  [
+   "...Oups, attends ! Pas le temps",
+   "de traîner. La météorite, la",
+   "météorite..."
+  ]
+ ],
+ "s081.sec5.u0": [
+  [
+   "Tu es de CEUX-LÀ, hein...",
+   "Hé hé..."
+  ]
+ ],
+ "s081.sec5.u1": [
+  [
+   "Hé hé... À côté du tunnel",
+   "d'os... il faut tourner..."
+  ]
+ ],
+ "s082.sec5.m0.o0": "Toucher et examiner !",
+ "s082.sec5.m0.o1": "Le briser !",
+ "s082.sec5.u0": [
+  [
+   "C'est ça... ! On dirait bien",
+   "une météorite. D'abord..."
+  ]
+ ],
+ "s082.sec5.u1": [
+  [
+   "Hmm..."
+  ]
+ ],
+ "s082.sec5.u2": [
+  [
+   "Elle est un peu... plus",
+   "ordinaire que je ne",
+   "l'imaginais..."
+  ]
+ ],
+ "s082.sec5.u3": [
+  [
+   "{color 7}???mon {color 1}",
+   "Ben, désolé d'être ordinaire..."
+  ]
+ ],
+ "s082.sec5.u4": [
+  [
+   "!"
+  ]
+ ],
+ "s082.sec5.u5": [
+  [
+   "Tu es un Digimon ?! Qui es-tu",
+   "?"
+  ]
+ ],
+ "s082.sec5.u6": [
+  [
+   "{color 7}???mon {color 1}",
+   "...On m'appelle Meteormon."
+  ]
+ ],
+ "s082.sec5.u7": [
+  [
+   "Tu sais quelque chose sur les",
+   "problèmes de l'île ?"
+  ]
+ ],
+ "s082.sec5.u8": [
+  [
+   "...Je sais rien du tout !"
+  ]
+ ],
+ "s082.sec5.u9": [
+  [
+   "Rien du tout ? Vraiment... ?",
+   "Tu ne caches rien ?"
+  ]
+ ],
+ "s082.sec5.u10": [
+  [
+   "Hmpf, quel malpoli ! Bon,",
+   "battons-nous ! On verra qui a",
+   "raison !"
+  ]
+ ],
+ "s082.sec5.u11": [
+  [
+   "D-d'accord ! Très bien..."
+  ]
+ ],
+ "s082.sec5.u12": [
+  [
+   "Hmpf... J'abandonne. Tu es",
+   "drôlement fort."
+  ]
+ ],
+ "s082.sec5.u13": [
+  [
+   "Le moindre détail sur les",
+   "problèmes de l'île... Tu ne",
+   "sais rien ? S'il te plaît."
+  ]
+ ],
+ "s082.sec5.u14": [
+  [
+   "Non. C'est que je viens de",
+   "naître."
+  ]
+ ],
+ "s082.sec5.u15": "Quoi ?!",
+ "s082.sec5.u16": [
+  [
+   "Nous, les Meteormon, on naît",
+   "dans le ciel, on tombe aussitôt",
+   "au sol et on dort bien"
+  ],
+  [
+   "immobiles pendant longtemps."
+  ]
+ ],
+ "s082.sec5.u17": [
+  [
+   "Mais j'aurais dû rester",
+   "immobile bien plus longtemps..."
+  ]
+ ],
+ "s082.sec5.u18": [
+  [
+   "J'ai compris. Ici, le temps",
+   "passe rapidement."
+  ]
+ ],
+ "s082.sec5.u19": [
+  [
+   "On dirait bien. Bon, je vais",
+   "faire un tour de l'île. Bonne",
+   "chance."
+  ]
+ ],
+ "s082.sec5.u20": [
+  [
+   "...Pfff. Toujours aucun",
+   "indice... Allez, sortons vite",
+   "d'ici."
+  ]
+ ],
+ "s082.sec5.u21": [
+  [
+   "La regarder ne m'apprendra",
+   "rien. Brisons-la !"
+  ]
+ ],
+ "s082.sec5.u22": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hé, qu'est-ce que tu fais ?!",
+   "Quelle brutalité !"
+  ]
+ ],
+ "s082.sec6.u0": [
+  [
+   "Hein ? Qu'est-ce que tu es ?!"
+  ]
+ ],
+ "s082.sec6.u1": [
+  [
+   "Nanimon, voilà ce que je suis !"
+  ]
+ ],
+ "s082.sec6.u2": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 20",
+   "objets !"
+  ]
+ ],
+ "s082.sec6.u3": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 30",
+   "objets !"
+  ]
+ ],
+ "s083.sec5.u0": [
+  [
+   "Oh. Mon. Dieu !!"
+  ]
+ ],
+ "s083.sec6.u0": [
+  [
+   "Hé, mon gars ! Amuse-moi un",
+   "peu."
+  ]
+ ],
+ "s083.sec7.u0": [
+  [
+   "Au revoir..."
+  ]
+ ],
+ "s083.sec8.u0": [
+  [
+   "Quelle vie courte."
+  ]
+ ]
+}

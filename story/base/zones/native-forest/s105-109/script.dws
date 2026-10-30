@@ -1,0 +1,228 @@
+// Readable form of script 105 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 105 {
+    npc dokunemon0 = 5;
+    npc agumon = 6;
+    npc modokibetamon3 = 7;
+    npc dokunemon1 = 8;
+    npc modokibetamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 51, 52;
+
+    on enter replace {    // section 254
+        if (engine.prosperity < 10) {
+            set_obj_visibility(18, 0);
+            set_obj_visibility(23, 1);
+        } else {
+            set_obj_visibility(18, 1);
+            set_obj_visibility(23, 0);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 61, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("Digimushrm"), 55, 71);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 39) {
+            spawn_item(item("Digimushrm"), 36, 44);
+        }
+        if (engine.prosperity >= 25) {
+            set_obj_visibility(28, 0);
+            set_obj_visibility(29, 0);
+            set_obj_visibility(30, 0);
+            set_obj_visibility(31, 0);
+            set_obj_visibility(32, 0);
+            set_obj_visibility(33, 0);
+        }
+    }
+
+    on talk(dokunemon0) replace {    // section 5
+        say(dokunemon0, text("s105.sec5.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(agumon) replace {    // section 6
+        say(tamer, text("s105.sec6.u0"));
+        animate(tamer, 15);
+        wait(1s);
+        animate(tamer, anim.idle);
+        say(agumon, text("s105.sec6.u1"));
+        say(tamer, text("s105.sec6.u2"));
+        battle(foes: [agumon]);
+        face(agumon, tamer);
+        face(tamer, agumon);
+        face(partner, agumon);
+        await tamer;
+        await partner;
+        say(agumon, text("s105.sec6.u3"));
+        animate(agumon, 18);
+        say(tamer, text("s105.sec6.u4"));
+        animate(tamer, 25);
+        say(tamer, text("s105.sec6.u5"));
+        animate(tamer, 19);
+        say(tamer, text("s105.sec6.u6"));
+        animate(tamer, anim.idle);
+        animate(agumon, anim.idle);
+        say(agumon, text("s105.sec6.u7"));
+        animate(agumon, 19);
+        say(agumon, text("s105.sec6.u8"));
+        fadeout_hud(0);
+        animate(agumon, 22);
+        await agumon;
+        animate(agumon, 22);
+        say(agumon, text("s105.sec6.u9"));
+        fadeout_hud(0);
+        walk_away(agumon, 2400, 1663, looks: 3);
+        join_city(agumon, species("Agumon"), 8, 11, text("s105.sec6.u10"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        say(tamer, text("s105.sec6.u11"));
+        animate(tamer, anim.tamer_victory);
+        wait(1s);
+        animate(tamer, anim.idle);
+    }
+
+    on talk(modokibetamon3) replace {    // section 7
+        say(modokibetamon3, text("s105.sec7.u0"));
+        battle();
+        recruit(species("ModokiBetamon"));
+    }
+
+    on talk(dokunemon1) replace {    // section 8
+        say(dokunemon1, text("s105.sec8.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(modokibetamon4) replace {    // section 9
+        say(modokibetamon4, text("s105.sec9.u0"));
+        battle();
+        recruit(species("ModokiBetamon"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2300, 1600);
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(192, 0, 255);
+                        return;
+                    }
+                    warp_to(191, 0, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(193, 0, 255);
+                    return;
+                }
+                warp_to(190, 0, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(195, 0, 255);
+                    return;
+                }
+                warp_to(194, 0, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(196, 0, 255);
+                return;
+            }
+            warp_to(189, 0, 255);
+            return;
+        }
+        if (is_recruited(species("Betamon")) || is_recruited(species("Coelamon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(184, 0, 255);
+                        return;
+                    }
+                    warp_to(183, 0, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(185, 0, 255);
+                    return;
+                }
+                warp_to(182, 0, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(187, 0, 255);
+                    return;
+                }
+                warp_to(186, 0, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(188, 0, 255);
+                return;
+            }
+            warp_to(181, 0, 255);
+            return;
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(199, 0, 255);
+                    return;
+                }
+                warp_to(198, 0, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(200, 0, 255);
+                return;
+            }
+            warp_to(197, 0, 255);
+            return;
+        }
+        if (is_recruited(species("Centarumon"))) {
+            if (is_recruited(species("Greymon"))) {
+                warp_to(202, 0, 255);
+                return;
+            }
+            warp_to(201, 0, 255);
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            warp_to(203, 0, 255);
+            return;
+        }
+        warp_to(180, 0, 255);
+        return;
+    }
+
+    on step(1) replace {    // section 52
+        if (!is_recruited(species("Agumon"))) {
+            say(tamer, text("s105.sec52.u0"));
+            run(tamer, -1115, -1503);
+            await tamer;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (native_forest_rockslide_cleared) {
+            walk(tamer, -2000, -1725);
+            warp_to(111, 0, 255);
+        }
+        walk(tamer, -2000, -1725);
+        warp_to(110, 0, 255);
+        return;
+    }
+}

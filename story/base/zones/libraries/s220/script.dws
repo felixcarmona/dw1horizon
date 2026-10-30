@@ -1,0 +1,30 @@
+// Readable form of script 220 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+script 220 {
+    // the section table, in the order of the original header
+    sections 254, 83;
+
+    on enter replace {    // section 254
+    }
+
+    on use(3) replace {    // section 83
+        unless (!is_recruited(species("Agumon"))) return;
+        sound(0, 0);
+        say(narrator, text("s220.sec83.u0"));
+        if (engine.prosperity >= 30) {
+            say(narrator, text("s220.sec83.u1"));
+            sound(0, 1);
+            return;
+        }
+        if (engine.prosperity >= 15) {
+            say(narrator, text("s220.sec83.u2"));
+            sound(0, 1);
+            return;
+        }
+        say(narrator, text("s220.sec83.u3"));
+        sound(0, 1);
+        return;
+    }
+}

@@ -1,0 +1,52 @@
+// Readable form of script 192 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 192 {
+    npc jijimon = 5;
+    npc greymon = 6;
+    npc airdramon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        call_routine(routine("load_ending"));
+        face(jijimon, tamer);
+        face(greymon, tamer);
+        face(airdramon, tamer);
+        walk(partner, -340, -2263);
+        camera_to(172, -1848, speed: 2);
+        await camera;
+        wait(1s);
+        say(jijimon, text("s192.sec51.u0"));
+        say(tamer, text("s192.sec51.u1"));
+        say(jijimon, text("s192.sec51.u2"));
+        say(narrator, text("s192.sec51.u3"));
+        say(airdramon, text("s192.sec51.u4"));
+        entity_set_rotation(tamer, 0);
+        wait(30);
+        entity_set_rotation(tamer, 1024);
+        wait(30);
+        entity_set_rotation(tamer, 2048);
+        wait(30);
+        entity_set_rotation(tamer, 3072);
+        wait(30);
+        say(tamer, text("s192.sec51.u5"));
+        say(jijimon, text("s192.sec51.u6"));
+        fadeout_hud(0);
+        call_routine(routine("game_clear_save"));
+        face(tamer, partner);
+        face(partner, tamer);
+        wait(2s);
+        say(tamer, text("s192.sec51.u7"));
+        fadeout_hud(0);
+        wait(30);
+        animate(jijimon, 32);
+        wait(2s);
+        call_routine(routine("start_ending"));
+        return;
+    }
+}

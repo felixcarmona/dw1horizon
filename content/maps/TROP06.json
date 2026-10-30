@@ -1,0 +1,47 @@
+{
+  "file": "MAP/MAP2/TROP06.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Centarumon156",
+      "at": [-1600, 5200],
+      "facing": 0,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-234, -2840],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Centarumon156",
+      "at": [0, 5200],
+      "facing": 0,
+      "follow": 1,
+      "range": 500,
+      "charge": 1,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-314, -3100],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "Centarumon156",
+      "at": [1600, 5200],
+      "facing": 0,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-6, 1660],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

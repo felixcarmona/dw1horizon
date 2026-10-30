@@ -1,0 +1,24 @@
+// Readable form of script 150 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 150 {
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+        if (!factorial_town_reopened) {
+            set_rect_impassable(0, 75, 67, 20, 8);
+            return;
+        }
+        set_obj_visibility(0, 1);
+        set_obj_visibility(1, 1);
+        set_obj_visibility(2, 0);
+        set_obj_visibility(3, 0);
+        set_obj_visibility(4, 0);
+    }
+
+    on step(0) replace {    // section 51
+        return;
+    }
+}

@@ -1,0 +1,134 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M367GRAW",
+ "type": 320,
+ "name": "Growlmon",
+ "source": {
+  "type": 8,
+  "mmd": "extracted/CHDAT/MMD0/TYRA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 5,
+  "3": 6,
+  "4": 10,
+  "5": 7,
+  "6": 3,
+  "8": 4,
+  "9": 11,
+  "10": 12,
+  "11": 16,
+  "12": 13,
+  "13": 1,
+  "14": 18,
+  "15": 19,
+  "16": 20,
+  "17": 24,
+  "21": 21,
+  "22": 22,
+  "24": 23
+ },
+ "hips": [
+  1,
+  1,
+  0.875
+ ],
+ "root_scale": 0.875,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 40,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 40,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x38": {
+   "anim": "anim_52",
+   "start": 12,
+   "end": 126,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 182
+  },
+  "0x2e": {
+   "anim": "anim_34",
+   "start": 86,
+   "end": 169,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 182
+  },
+  "0x30": {
+   "anim": "anim_28",
+   "start": 1,
+   "end": 108,
+   "speed": 1.4,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 182
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.145871,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

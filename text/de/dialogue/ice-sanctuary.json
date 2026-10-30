@@ -1,0 +1,335 @@
+{
+ "s093.sec5.u0": [
+  [
+   "Huh? Jetzt, wo ich darüber",
+   "nachdenke, die Statue. . ."
+  ]
+ ],
+ "s093.sec5.u1": [
+  [
+   "Ah!"
+  ]
+ ],
+ "s093.sec5.u2": [
+  [
+   "Puh... Nun denn."
+  ]
+ ],
+ "s093.sec5.u3": [
+  [
+   "Du bist wieder zum Leben",
+   "zurückgekehrt. Das ist gut!"
+  ]
+ ],
+ "s093.sec5.u4": [
+  [
+   "Ich bin Angemon, der Engel,",
+   "der dich behütet. Ich bin hier",
+   "erwacht, um meine Pflicht dir"
+  ],
+  [
+   "gegenüber zu erfüllen."
+  ]
+ ],
+ "s093.sec5.u5": [
+  [
+   "Oje, ich verstehe kein Wort",
+   "von dem, was er sagt."
+  ]
+ ],
+ "s093.sec5.u6": [
+  [
+   "Ich kenne die Gesetze des",
+   "Himmels. Geleitet von der Erde",
+   "bringe ich meine Seele dar."
+  ]
+ ],
+ "s093.sec5.u7": [
+  [
+   "So kommen wir nicht weiter...",
+   "Also, äh, kommst du nun in die",
+   "Stadt... oder was?"
+  ]
+ ],
+ "s093.sec5.u8": [
+  [
+   "Deine Mission sei meine",
+   "Pflicht. Ich gehe."
+  ]
+ ],
+ "s093.sec5.u9": [
+  [
+   "Äh, entschuldige, kannst du in",
+   "Worten sprechen, die ich",
+   "verstehe?"
+  ]
+ ],
+ "s093.sec5.u10": [
+  [
+   "...Ich gehe in die Stadt. Gib",
+   "du bitte auch dein Bestes...",
+   "Ist das besser?"
+  ]
+ ],
+ "s093.sec5.u11": [
+  [
+   "Ja, das verstehe ich. Gut,",
+   "schön, dass du dabei bist."
+  ]
+ ],
+ "s093.sec5.u12": "Angemon ist in die Stadt gezogen!",
+ "s093.sec51.u0": [
+  [
+   "Wow, sie wirkt fast lebendig..."
+  ]
+ ],
+ "s093.sec51.u1": [
+  [
+   "So was sieht man doch ständig.",
+   "Man macht etwas, und schon",
+   "bewegt es sich, oder? Hehe,"
+  ],
+  [
+   "warte nur!"
+  ]
+ ],
+ "s093.sec52.u0": [
+  [
+   "Was ist los? {color 10}{partner}{color 1},",
+   "Hast du etwas gefunden?"
+  ]
+ ],
+ "s093.sec52.u1": [
+  [
+   "Wow, gut gemacht,",
+   "{color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s094.sec5.u0": [
+  [
+   "He, du zitterst ja!"
+  ]
+ ],
+ "s094.sec6.u0": [
+  [
+   "Kalt? Ist es das?"
+  ]
+ ],
+ "s094.sec7.u0": [
+  [
+   "Ist nicht alles sinnlos?"
+  ]
+ ],
+ "s095.sec81.u0": [
+  [
+   "{color 5}Training: Eis schieben{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": [
+  [
+   "Schiebe große Eisblöcke, um",
+   "deine Ausdauer zu trainieren.",
+   "Die maximalen HP steigen"
+  ],
+  [
+   "stark, die Abwehr ebenfalls."
+  ]
+ ],
+ "s095.sec81.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "{color 5}Training: Eiszapfen fangen{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": [
+  [
+   "Fange riesige fallende",
+   "Eiszapfen. Die Abwehr steigt",
+   "stark, die Geschwindigkeit"
+  ],
+  [
+   "ebenfalls."
+  ]
+ ],
+ "s095.sec84.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s096.sec5.u0": [
+  [
+   "Ich mache dich platt!"
+  ]
+ ],
+ "s096.sec6.u0": [
+  [
+   "Nenn es Pech und gib auf!"
+  ]
+ ],
+ "s096.sec7.u0": [
+  [
+   "Letzte Worte, bevor ich dich",
+   "auslösche?"
+  ]
+ ],
+ "s097.sec5.u0": "Wer bist du?",
+ "s097.sec6.u0": [
+  [
+   "Es ist alles nutzlos."
+  ]
+ ],
+ "s097.sec7.u0": [
+  [
+   "Hm, habe ich mich erkältet?"
+  ]
+ ],
+ "s097.sec8.u0": [
+  [
+   "He, das ist aber kalt von dir!"
+  ]
+ ],
+ "s098.sec5.u0": [
+  [
+   "Vielleicht solltest du nach",
+   "Hause gehen?"
+  ]
+ ],
+ "s098.sec6.u0": [
+  [
+   "Geh nach Hause!"
+  ]
+ ],
+ "s098.sec7.u0": [
+  [
+   "Du solltest lieber umkehren!"
+  ]
+ ],
+ "s098.sec52.u0": [
+  [
+   "S-so hell...!"
+  ]
+ ],
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Du, der meine Seele sucht, die",
+   "Zeit des Erwachens ist",
+   "gekommen. Der Segen meiner"
+  ],
+  [
+   "{color 7}???mon {color 1}",
+   "Flügel sei mit dir!"
+  ]
+ ],
+ "s098.sec52.u2": [
+  [
+   "Was...? Wo bin ich...?",
+   "Wessen... Stimme...?",
+   "Ngh.........!"
+  ]
+ ],
+ "s098.sec52.u3": [
+  [
+   "Was war das...? Das Licht ist",
+   "weg... Hier unten ist nichts",
+   "mehr... Das heißt... es ist"
+  ],
+  [
+   "oben!"
+  ]
+ ],
+ "s099.sec5.u0": [
+  [
+   "Hier nehmen wir endgültig",
+   "Abschied."
+  ]
+ ],
+ "s099.sec6.u0": [
+  [
+   "Ich mache keine Fehler!"
+  ]
+ ],
+ "s095.sec81.m0.o0": "Trainieren",
+ "s095.sec81.m0.o1": "Über dieses Training",
+ "s095.sec81.m0.o2": "Beenden",
+ "s095.sec81.m1.o0": "Normales Training",
+ "s095.sec81.m1.o1": "Bonustraining",
+ "s095.sec81.m1.o2": "Schon gut",
+ "s095.sec81.m2.o0": "Noch mal erklären",
+ "s095.sec81.m2.o1": "Trainieren",
+ "s095.sec81.m2.o2": "Beenden",
+ "s095.sec84.m0.o0": "Trainieren",
+ "s095.sec84.m0.o1": "Über dieses Training",
+ "s095.sec84.m0.o2": "Beenden",
+ "s095.sec84.m1.o0": "Normales Training",
+ "s095.sec84.m1.o1": "Bonustraining",
+ "s095.sec84.m1.o2": "Schon gut",
+ "s095.sec84.m2.o0": "Noch mal erklären",
+ "s095.sec84.m2.o1": "Trainieren",
+ "s095.sec84.m2.o2": "Beenden",
+ "s100.sec60.u0": [
+  [
+   "Igitt!"
+  ]
+ ],
+ "s100.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s100.sec60.u2": [
+  [
+   "D-das ist doch ein Witz!"
+  ]
+ ],
+ "s100.sec60.u3": [
+  [
+   "Es ist verschwunden... War es",
+   "eine Illusion...?"
+  ]
+ ],
+ "s100.sec60.u4": [
+  [
+   "Wir haben es wohl besiegt...",
+   "irgendwie."
+  ]
+ ],
+ "s100.sec60.u5": [
+  [
+   "Hä?!"
+  ]
+ ],
+ "s100.sec60.u6": [
+  [
+   "Hm, mmm... Hä?!"
+  ]
+ ],
+ "s100.sec60.u7": [
+  [
+   "Ich war plötzlich irgendwie",
+   "weggetreten... Oh! T-tut mir",
+   "leid!"
+  ]
+ ],
+ "s100.sec60.u8": [
+  [
+   "Hmm?? Was war das? Analogmans",
+   "Fluch?! Na ja, jetzt sollte",
+   "alles wieder gut sein."
+  ]
+ ]
+}

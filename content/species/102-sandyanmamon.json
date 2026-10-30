@@ -1,0 +1,32 @@
+{
+  "id": 102,
+  "name": "SandYanmamon",
+  "level": "rookie",
+  "attribute": "virus",
+  "specialties": ["air", "fire", null],
+  "techniques": ["Spit Fire", "Spinning Shot", "Hurricane"],
+  "drop": {"item": "Protection", "percent": 5},
+  "model": {"name": "SNDY", "bones": 30, "radius": 160, "height": 360},
+  "voice": 57,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 700, "mp": 3000, "off": 390, "def": 180, "speed": 240, "brain": 250, "bits": 400},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

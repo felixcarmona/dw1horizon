@@ -1,0 +1,742 @@
+{
+ "s101.sec5.u0": [
+  [
+   "Informe, informe."
+  ]
+ ],
+ "s101.sec6.u0": [
+  [
+   "Enemic a la vista!"
+  ]
+ ],
+ "s101.sec7.u0": [
+  [
+   "Amunt, força! Amunt, força!"
+  ]
+ ],
+ "s101.sec8.u0": [
+  [
+   "Avui no és bon dia per a això."
+  ]
+ ],
+ "s101.sec9.u0": [
+  [
+   "Ku-ku-ku-ku..."
+  ]
+ ],
+ "s101.sec10.u0": [
+  [
+   "Això no és injust?"
+  ]
+ ],
+ "s101.sec11.u0": [
+  [
+   "Detingueu-los!"
+  ]
+ ],
+ "s101.sec12.u0": [
+  [
+   "Quin embolic, quin embolic."
+  ]
+ ],
+ "s101.sec81.m0.o0": "Tocar la flauta",
+ "s101.sec81.m0.o1": "No tocar-la",
+ "s101.sec81.u0": [
+  [
+   "Tocar la {color 6}Flauta blava{color 1}?"
+  ]
+ ],
+ "s102.sec10.u0": [
+  [
+   "- Grau D - Torneig per a",
+   "Digimon Novells. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s102.sec10.u1": [
+  [
+   "- Grau C - Torneig per a",
+   "Digimon Campions. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s102.sec10.u2": [
+  [
+   "- Grau B - Per a Campions",
+   "que confien en la seva força.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada lliure"
+  ]
+ ],
+ "s102.sec10.u3": [
+  [
+   "- Grau A - Torneig per a",
+   "Digimon Perfectes. Individual,",
+   "3 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s102.sec10.u4": [
+  [
+   "- Grau S - Reuneix els",
+   "Digimon més forts. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "guanyar el Grau A"
+  ]
+ ],
+ "s102.sec10.u5": [
+  [
+   "- Grau R - Batalla campal",
+   "d'astúcia i tàctica. A quatre,",
+   "2 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s102.sec10.u6": [
+  [
+   "- Copa Versió 1 - Tria el",
+   "millor de la Versió 1. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 1"
+  ]
+ ],
+ "s102.sec10.u7": [
+  [
+   "- Copa Versió 2 - Tria el",
+   "millor de la Versió 2. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 2"
+  ]
+ ],
+ "s102.sec10.u8": [
+  [
+   "- Copa Versió 3 - Tria el",
+   "millor de la Versió 3. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 3"
+  ]
+ ],
+ "s102.sec10.u9": [
+  [
+   "- Copa Versió 4 - Tria el",
+   "millor de la Versió 4. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 4"
+  ]
+ ],
+ "s102.sec10.u10": [
+  [
+   "- Copa Versió O - Per a",
+   "Digimon fora de les Versions",
+   "1-4. Combats amb límit de",
+   "temps. Individual, 3 rondes, 8",
+   "places Entrada: fora de les",
+   "Versions 1-4"
+  ]
+ ],
+ "s102.sec10.u11": [
+  [
+   "- Copa Foc - Tria el rei dels",
+   "Digimon de Foc. Combats amb",
+   "límit de temps. Individual, 3",
+   "rondes, 8 places Entrada:",
+   "Digimon de Foc"
+  ]
+ ],
+ "s102.sec10.u12": [
+  [
+   "- Copa Lluita - Tria el rei",
+   "dels Digimon de Combat.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Combat"
+  ]
+ ],
+ "s102.sec10.u13": [
+  [
+   "- Copa Tro i Vent - Tria el",
+   "rei dels Digimon d'Aire.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon d'Aire"
+  ]
+ ],
+ "s102.sec10.u14": [
+  [
+   "- Copa Estil - Tria el rei",
+   "dels Digimon de Gel. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Gel"
+  ]
+ ],
+ "s102.sec10.u15": [
+  [
+   "- Copa Naturalesa - Tria el",
+   "rei dels Digimon de Natura.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Natura"
+  ]
+ ],
+ "s102.sec10.u16": [
+  [
+   "- Copa Metàl·lica - Tria el rei",
+   "dels Digimon de Màquina.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Màquina"
+  ]
+ ],
+ "s102.sec10.u17": [
+  [
+   "- Copa Bruta - Tria el rei",
+   "dels Digimon de Brutícia.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Brutícia"
+  ]
+ ],
+ "s102.sec10.u18": [
+  [
+   "- Copa Dino - Competeixen",
+   "Digimon de sang antiga.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec10.u19": [
+  [
+   "- Copa Ales - Competeixen",
+   "Digimon orgullosos de les ales.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec10.u20": [
+  [
+   "- Copa Animal - Competeixen",
+   "Digimon de sang animal. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "???"
+  ]
+ ],
+ "s102.sec10.u21": [
+  [
+   "- Copa Humana - Competeixen",
+   "Digimon de forma humana.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec51.u0": [
+  [
+   "Avui no torneig."
+  ]
+ ],
+ "s102.sec51.u1": [
+  [
+   "Qui no inscrit, no entrar."
+  ]
+ ],
+ "s102.sec51.u2": [
+  [
+   "Encara preparar. Venir dia 22,",
+   "de 10:00 del matí a 23:00 de la",
+   "nit."
+  ]
+ ],
+ "s102.sec51.u3": [
+  [
+   "Llàstima. Torneig ja acabar.",
+   "Tornar any que ve."
+  ]
+ ],
+ "s102.sec81.m0.o0": "Explica-m'ho",
+ "s102.sec81.m0.o1": "No cal explicar-ho",
+ "s102.sec81.m1.o0": "Inscriure'm",
+ "s102.sec81.m1.o1": "No inscriure'm",
+ "s102.sec81.m2.o0": "No cancel·lar",
+ "s102.sec81.m2.o1": "Cancel·lar",
+ "s102.sec81.u0": [
+  [
+   "Llàstima. Inscripció ja tancar.",
+   "Esperar un altre any."
+  ]
+ ],
+ "s102.sec81.u1": [
+  [
+   "Ara no època de torneig. Jo",
+   "avorrit."
+  ]
+ ],
+ "s102.sec81.u2": [
+  [
+   "Torneig acabar ara mateix.",
+   "Esperar un altre any."
+  ]
+ ],
+ "s102.sec81.u3": [
+  [
+   "Tu no insecte. No entrar",
+   "torneig."
+  ]
+ ],
+ "s102.sec81.u4": [
+  [
+   "Tu inscriure't en torneig?"
+  ]
+ ],
+ "s102.sec81.u5": [
+  [
+   "Dia 22, torneig de lluita només",
+   "per a Digimon insecte. Ara tu",
+   "poder inscriure't. Si no",
+   "Digimon insecte, no entrar. Si"
+  ],
+  [
+   "guanyar, tu rebre premi molt",
+   "bo. Provar no fer mal."
+  ]
+ ],
+ "s102.sec81.u6": [
+  [
+   "Ara no època de torneig. Jo",
+   "avorrit."
+  ]
+ ],
+ "s102.sec81.u7": [
+  [
+   "Torneig acabar ara mateix.",
+   "Esperar un altre any."
+  ]
+ ],
+ "s102.sec81.u8": [
+  [
+   "Tu inscrit en «{cup 3}».",
+   "Tu cancel·lar?"
+  ]
+ ],
+ "s102.sec81.u9": [
+  [
+   "Cancel·lat."
+  ]
+ ],
+ "s102.sec81.u10": [
+  [
+   "Què? Tu segur?"
+  ]
+ ],
+ "s102.sec81.u11": [
+  [
+   "Inscrit."
+  ]
+ ],
+ "s102.sec82.u0": [
+  [
+   "Llàstima. Una altra vegada any",
+   "que ve."
+  ]
+ ],
+ "s102.sec82.u1": [
+  [
+   "Premi per participar: {color 6}Carn",
+   "gegant{color 1}!"
+  ]
+ ],
+ "s102.sec82.u2": [
+  [
+   "Bossa plena. Llençar alguna",
+   "cosa."
+  ]
+ ],
+ "s102.sec82.u3": [
+  [
+   "Premi: 5000 Bits! Has guanyat",
+   "{color 6}Perla escarabat{color 1}!"
+  ]
+ ],
+ "s102.sec82.u4": [
+  [
+   "Bossa plena!"
+  ]
+ ],
+ "s102.sec82.u5": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "guanyat {color 6}Casc amb banyes{color 1}!"
+  ]
+ ],
+ "s102.sec82.u6": [
+  [
+   "Bossa plena!"
+  ]
+ ],
+ "s102.sec82.u7": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "guanyat {color 6}Mandíbula tisora{color 1}!"
+  ]
+ ],
+ "s102.sec82.u8": [
+  [
+   "Bossa plena!"
+  ]
+ ],
+ "s103.sec5.m0.o0": "En un gimnàs, suposo",
+ "s103.sec5.m0.o1": "A l'arena, potser",
+ "s103.sec5.u0": [
+  [
+   "Jo avorrit entrenar aquí. Què",
+   "fer?"
+  ]
+ ],
+ "s103.sec5.u1": [
+  [
+   "Que què fer, dius...?"
+  ]
+ ],
+ "s103.sec5.u2": "On tu entrenar?",
+ "s103.sec5.u3": [
+  [
+   "En un gimnàs, suposo."
+  ]
+ ],
+ "s103.sec5.u4": [
+  [
+   "Entrenar avorrit. Jo voler",
+   "fer-me fort en combats de",
+   "debò."
+  ]
+ ],
+ "s103.sec5.u5": [
+  [
+   "Entrenar avorrit. Jo voler",
+   "fer-me fort en combats de",
+   "debò."
+  ]
+ ],
+ "s103.sec5.u6": [
+  [
+   "Jo anar allí. Jo entrenar."
+  ]
+ ],
+ "s103.sec5.u7": "Kabuterimon s'ha unit a la ciutat!",
+ "s103.sec6.u0": [
+  [
+   "Cada any, en dia amb dos 2,",
+   "torneig de lluita d'insectes",
+   "aquí. Guanyador portar cosa"
+  ],
+  [
+   "genial."
+  ],
+  [
+   "Però només Digimon insecte",
+   "poder entrar."
+  ]
+ ],
+ "s103.sec6.u1": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon i una altra classe",
+   "d'insecte. Però Numemon no.",
+   "Cada any, dia amb dos 2,"
+  ],
+  [
+   "torneig de lluita d'insectes",
+   "aquí... Mm? Tu ja guanyar",
+   "torneig abans."
+  ]
+ ],
+ "s103.sec6.u2": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon i una altra classe",
+   "d'insecte: HerculesKabuterimon.",
+   "Hercules molt fort. Guanyador"
+  ],
+  [
+   "de torneig rebre objecte per",
+   "evolucionar a Hercules. Tu",
+   "poder entrar en torneig",
+   "d'insectes moltes vegades."
+  ]
+ ],
+ "s103.sec7.m0.o0": "I tant!",
+ "s103.sec7.m0.o1": "No, gràcies",
+ "s103.sec7.u0": [
+  [
+   "Tu fort. Jo res a",
+   "ensenyar-te."
+  ]
+ ],
+ "s103.sec7.u1": [
+  [
+   "Nosaltres estudiar tècniques.",
+   "Tècniques fortes difícil",
+   "aprendre."
+  ],
+  [
+   "Si tu tenir capacitat, potser",
+   "tu aprendre tècnica. Tu voler",
+   "tècnica forta?"
+  ]
+ ],
+ "s103.sec7.u2": [
+  [
+   "Llavors provar."
+  ]
+ ],
+ "s103.sec7.u3": [
+  [
+   "A tu faltar Defensa. Entrenar",
+   "més."
+  ]
+ ],
+ "s103.sec7.u4": [
+  [
+   "A tu faltar Velocitat.",
+   "Entrenar més."
+  ]
+ ],
+ "s103.sec7.u5": [
+  [
+   "A tu faltar HP. Entrenar més."
+  ]
+ ],
+ "s103.sec7.u6": "Tu aprendre tècnica.",
+ "s103.sec7.u7": [
+  [
+   "Ha après Bestiola!"
+  ]
+ ],
+ "s103.sec81.u0": [
+  [
+   "{color 5}Entrenament: Empènyer roca{color 1}"
+  ]
+ ],
+ "s103.sec81.u1": [
+  [
+   "Empènyer la roca desenvolupa",
+   "una força oculta. Els HP màx.",
+   "pugen molt."
+  ]
+ ],
+ "s103.sec81.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s103.sec83.u0": [
+  [
+   "{color 5}Entrenament: Cops al ninot{color 1}"
+  ]
+ ],
+ "s103.sec83.u1": [
+  [
+   "Practica tècniques de cop amb",
+   "un ninot. L'Atac puja molt."
+  ]
+ ],
+ "s103.sec83.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s104.sec5.m0.o0": "Fes-te més fort",
+ "s104.sec5.m0.o1": "Sé un truc...",
+ "s104.sec5.m0.o2": "Ànims",
+ "s104.sec5.u0": [
+  [
+   "Jo voler guanyar a aquests",
+   "Kabuterimon. Com jo guanyar?"
+  ]
+ ],
+ "s104.sec5.u1": [
+  [
+   "Sí, jo pensar això. Jo",
+   "entrenar."
+  ]
+ ],
+ "s104.sec5.u2": [
+  [
+   "Què? Explica-m'ho."
+  ]
+ ],
+ "s104.sec5.u3": [
+  [
+   "Vine a la ciutat i prou."
+  ]
+ ],
+ "s104.sec5.u4": [
+  [
+   "..."
+  ],
+  [
+   "Tu amable. Jo anar ciutat."
+  ]
+ ],
+ "s104.sec5.u5": "Kuwagamon s'ha unit a la ciutat!",
+ "s104.sec5.u6": [
+  [
+   "Tu no amable. Jo decebut."
+  ]
+ ],
+ "s104.sec6.u0": [
+  [
+   "Mm, tu ja estar en torneig",
+   "d'insectes abans. Llavors jo",
+   "explicar-te cosa bona. Tu",
+   "conèixer «Niu d'en Kunemon»?"
+  ],
+  [
+   "Ser al Bosc nadiu. Digimon",
+   "Novell dormir allí. Despertar",
+   "com Kunemon. A vegades no.",
+   "Dependre de sort."
+  ]
+ ],
+ "s104.sec6.u1": [
+  [
+   "Tu, torneig d'insectes... Mm?",
+   "Tu ara no poder entrar.",
+   "Llavors jo explicar-te cosa",
+   "bona. Tu conèixer «Llit de"
+  ],
+  [
+   "Kunemon»? Ser al Bosc nadiu.",
+   "Digimon Novell dormir allí.",
+   "Despertar com Kunemon. A",
+   "vegades no. Dependre de sort."
+  ]
+ ],
+ "s104.sec6.u2": [
+  [
+   "Tu entrar en torneig de lluita",
+   "d'insectes?"
+  ]
+ ],
+ "s104.sec6.u3": [
+  [
+   "I això què és?"
+  ]
+ ],
+ "s104.sec6.u4": [
+  [
+   "Apuntar-se abans de 10 en",
+   "punt de dia 22, o no entrar."
+  ]
+ ],
+ "s104.sec6.u5": [
+  [
+   "???"
+  ]
+ ],
+ "s104.sec6.u6": [
+  [
+   "Detalls el mateix dia."
+  ]
+ ],
+ "s104.sec6.u7": [
+  [
+   "No tinc ni idea de què parla."
+  ]
+ ],
+ "s104.sec7.m0.o0": "Descansar una estona",
+ "s104.sec7.m0.o1": "No descansar",
+ "s104.sec7.u0": [
+  [
+   "Nosaltres entrenar molt, però",
+   "descansar important."
+  ],
+  [
+   "Tu descansar una hora?"
+  ]
+ ],
+ "s104.sec84.u0": [
+  [
+   "{color 5}Entrenament: Martells{color 1}"
+  ]
+ ],
+ "s104.sec84.u1": [
+  [
+   "Aguanta els cops de la màquina",
+   "de martells per a endurir-te.",
+   "La Defensa puja molt."
+  ]
+ ],
+ "s104.sec84.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s104.sec85.u0": [
+  [
+   "{color 5}Entrenament: Cinta de córrer{color 1}"
+  ]
+ ],
+ "s104.sec85.u1": [
+  [
+   "Corre contra la cinta mòbil. La",
+   "Velocitat puja molt."
+  ]
+ ],
+ "s104.sec85.u2": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s103.sec81.m0.o0": "Començar a entrenar",
+ "s103.sec81.m0.o1": "Sobre aquest entrenament",
+ "s103.sec81.m0.o2": "Sortir",
+ "s103.sec81.m1.o0": "Entrenament normal",
+ "s103.sec81.m1.o1": "Entrenament extra",
+ "s103.sec81.m1.o2": "Deixa-ho",
+ "s103.sec81.m2.o0": "Explica-m'ho de nou",
+ "s103.sec81.m2.o1": "Començar a entrenar",
+ "s103.sec81.m2.o2": "Sortir",
+ "s103.sec83.m0.o0": "Començar a entrenar",
+ "s103.sec83.m0.o1": "Sobre aquest entrenament",
+ "s103.sec83.m0.o2": "Sortir",
+ "s103.sec83.m1.o0": "Entrenament normal",
+ "s103.sec83.m1.o1": "Entrenament extra",
+ "s103.sec83.m1.o2": "Deixa-ho",
+ "s103.sec83.m2.o0": "Explica-m'ho de nou",
+ "s103.sec83.m2.o1": "Començar a entrenar",
+ "s103.sec83.m2.o2": "Sortir",
+ "s104.sec84.m0.o0": "Començar a entrenar",
+ "s104.sec84.m0.o1": "Sobre aquest entrenament",
+ "s104.sec84.m0.o2": "Sortir",
+ "s104.sec84.m1.o0": "Entrenament normal",
+ "s104.sec84.m1.o1": "Entrenament extra",
+ "s104.sec84.m1.o2": "Deixa-ho",
+ "s104.sec84.m2.o0": "Explica-m'ho de nou",
+ "s104.sec84.m2.o1": "Començar a entrenar",
+ "s104.sec84.m2.o2": "Sortir",
+ "s104.sec85.m0.o0": "Començar a entrenar",
+ "s104.sec85.m0.o1": "Sobre aquest entrenament",
+ "s104.sec85.m0.o2": "Sortir",
+ "s104.sec85.m1.o0": "Entrenament normal",
+ "s104.sec85.m1.o1": "Entrenament extra",
+ "s104.sec85.m1.o2": "Deixa-ho",
+ "s104.sec85.m2.o0": "Explica-m'ho de nou",
+ "s104.sec85.m2.o1": "Començar a entrenar",
+ "s104.sec85.m2.o2": "Sortir"
+}

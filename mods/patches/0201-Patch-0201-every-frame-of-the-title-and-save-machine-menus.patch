@@ -1,0 +1,175 @@
+From 5b36af77c347f8ec9eca4247a179fa6131194ea6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 07:32:53 +0000
+Subject: [PATCH] Patch 0201: every frame of the title and save machine menus
+ with rows 12 apart is 12 high (MENU_HIGHLIGHTS h 0x0a, as 0194 did for
+ OPTIONS): the title menu, NEW GAME / CONTINUE card choices, the Yes / No
+ screens, BATTLE MODE, the battle registration and Do you want to save?
+ prompts; at 0x0c their bottom line was drawn on the next row's first line of
+ letters. The slot list (rows 36 apart) and the dialogue choices (a band that
+ touches nothing) keep theirs
+
+---
+ src/main/main_menu.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 79d0109b..42cb1392 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -809,7 +809,7 @@ char SAVEGAME_ID_LABEL[16][6] = {
+ 	"15",
+ };
+ 
+-MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
++MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD: every frame of rows 12 apart 12 high (h 0x0a, was 0x0c), in the gaps: renderMenuSelector draws h + 2 from 2 above the row, so 0x0c put its bottom line on the next row's letters */ /* MOD (options): view 22 */
+ 	{
+ 		0x00,
+ 		{ 0x05, 0x00, 0x00, 0x00, 0x00 }, /* MOD (options): 5 rows, OPTIONS the last (was 4) */
+@@ -817,7 +817,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x004f,
+ 		0x0037,
+ 		0x0097,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -826,7 +826,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0048,
+ 		0x0037,
+ 		0x009c,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -835,7 +835,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x0037,
+ 		0x00a5,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -844,7 +844,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0058,
+ 		0x0037,
+ 		0x0090,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -853,7 +853,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x0037,
+ 		0x0080,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0xff,
+@@ -871,7 +871,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x006b,
+ 		0x0037,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -889,7 +889,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0037,
+ 		0x0052,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -898,7 +898,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0049,
+ 		0x0065,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0xff,
+@@ -925,7 +925,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x003d,
+ 		0x005a,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -934,7 +934,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x0065,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -943,7 +943,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x00c3,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -952,7 +952,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0046,
+ 		0x0037,
+ 		0x00cc,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -961,7 +961,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x0059,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0xff,
+@@ -979,7 +979,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0043,
+ 		0x0057,
+ 		0x0021,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0xff,
+@@ -997,7 +997,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x005e,
+ 		0x0037,
+ 		0x0084,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{
+ 		0x00,
+@@ -1006,7 +1006,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0046,
+ 		0x0065,
+ 		0x0024,
+-		0x000c,
++		0x000a,
+ 	},
+ 	{ /* MOD (options): the OPTIONS box (renderOptionsMenu), its rows; x and w follow the font (drawOptionsText) */
+ 		0x00,
+-- 
+2.53.0
+

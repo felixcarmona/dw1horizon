@@ -1,0 +1,90 @@
+// Readable form of script 60 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+script 60 {
+    // the section table, in the order of the original header
+    sections 254, 81, 82;
+
+    on enter replace {    // section 254
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 1110, -2300);
+        warp_to(63, 1, 255);
+    }
+
+    on use(2) replace {    // section 82
+        say(tamer, text("s060.sec82.u0"));
+        set_obj_visibility(0, 0);
+        set_obj_visibility(1, 0);
+        set_obj_visibility(2, 0);
+        set_obj_visibility(3, 0);
+        set_obj_visibility(4, 0);
+        set_obj_visibility(5, 0);
+        set_obj_visibility(6, 0);
+        set_obj_visibility(7, 0);
+        set_obj_visibility(8, 0);
+        set_obj_visibility(9, 0);
+        set_obj_visibility(10, 0);
+        set_obj_visibility(11, 0);
+        set_obj_visibility(12, 0);
+        set_obj_visibility(13, 0);
+        set_obj_visibility(14, 0);
+        set_obj_visibility(15, 0);
+        set_obj_visibility(16, 0);
+        set_obj_visibility(17, 0);
+        set_obj_visibility(18, 0);
+        set_obj_visibility(19, 0);
+        set_obj_visibility(20, 0);
+        set_obj_visibility(21, 0);
+        set_obj_visibility(22, 0);
+        set_obj_visibility(23, 0);
+        set_obj_visibility(24, 0);
+        set_obj_visibility(25, 0);
+        set_obj_visibility(26, 0);
+        set_obj_visibility(27, 0);
+        set_obj_visibility(28, 0);
+        set_obj_visibility(29, 0);
+        set_obj_visibility(30, 0);
+        set_obj_visibility(31, 0);
+        set_obj_visibility(32, 0);
+        set_obj_visibility(33, 0);
+        set_obj_visibility(34, 0);
+        set_obj_visibility(35, 0);
+        set_obj_visibility(36, 0);
+        set_obj_visibility(37, 0);
+        set_obj_visibility(38, 0);
+        set_obj_visibility(39, 0);
+        set_obj_visibility(40, 0);
+        set_obj_visibility(41, 0);
+        set_obj_visibility(42, 0);
+        set_obj_visibility(43, 0);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        set_obj_visibility(49, 0);
+        set_obj_visibility(50, 0);
+        set_obj_visibility(51, 0);
+        set_obj_visibility(52, 0);
+        set_obj_visibility(53, 0);
+        set_obj_visibility(54, 0);
+        set_obj_visibility(55, 0);
+        set_obj_visibility(56, 0);
+        set_obj_visibility(57, 0);
+        engine.object = 0;
+        engine.animation = 57;
+        call_routine(routine("reset_object_animation"));
+        sound(8, 7);
+        wait(35);
+        walk(tamer, 750, 0);
+        wait(10);
+        warp_to(66, 0, 255);
+        return;
+    }
+}

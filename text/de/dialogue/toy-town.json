@@ -1,0 +1,73 @@
+{
+ "s138.sec5.m0.o0": "Geben",
+ "s138.sec5.m0.o1": "Nicht geben",
+ "s138.sec5.u0": [
+  [
+   "Ich sammle Digimon-Karten.",
+   "Gib mir die drei Karten",
+   "Hagurumon, ToyAgumon und"
+  ],
+  [
+   "WaruMonzaemon, dann bekommst",
+   "du etwas Schönes."
+  ]
+ ],
+ "s138.sec5.u1": [
+  [
+   "Es tut mir leid, Ich habe",
+   "keine."
+  ]
+ ],
+ "s138.sec5.u2": [
+  [
+   "Dann hier: ein",
+   "{color 6}Liebespflaster{color 1}."
+  ]
+ ],
+ "s138.sec5.u3": [
+  [
+   "Du hast wohl zu viele Items",
+   "dabei."
+  ]
+ ],
+ "s138.sec6.u0": [
+  [
+   "Hast du schon Curling gespielt?",
+   "Wenn du dabei perfekte 10",
+   "Punkte schaffst, hast du echt"
+  ],
+  [
+   "was drauf."
+  ]
+ ],
+ "s138.sec7.u0": [
+  [
+   "Ich weiß nicht, ob das hierher",
+   "passt, aber ich verrate dir ein",
+   "paar Angeltricks. Zuerst die"
+  ],
+  [
+   "Rute: Eine gute Rute wirft",
+   "weiter und gibt dir mehr",
+   "Spielraum an der Anzeige. Dann"
+  ],
+  [
+   "der Köder: Jeder Fisch mag",
+   "etwas anderes. Merk dir, was",
+   "womit anbeißt. Lass beim"
+  ],
+  [
+   "Auswerfen bei {color 6}×{color 1} los, um mit",
+   "voller Kraft zu werfen! Das",
+   "wusstest du wohl nicht. Zuletzt"
+  ],
+  [
+   "der Wächter des Sees: Er soll",
+   "sich nur zu bestimmten Zeiten",
+   "zeigen. Ich tippe auf morgens"
+  ],
+  [
+   "und abends."
+  ]
+ ]
+}

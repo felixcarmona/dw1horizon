@@ -1,0 +1,240 @@
+id,file,num_8bpp,num_4bpp,flags,doors_id,toilet_id,loading_name,map_name
+0,MAYO01,3,0,-128,0,1,0,Native Forest
+1,MAYO02,2,0,-128,0,0,68,Kunemon's Bed
+2,MAYO03,2,0,-128,0,0,0,Native Forest
+3,MAYO04A,3,0,-128,16,0,0,Native Forest
+4,MAYO04B,3,0,-128,0,0,0,Native Forest
+5,MAYO05,2,1,-128,0,0,1,Coela Point
+6,MAYO06,2,1,-115,0,0,2,Dragon Eye Lake
+7,MAYO11,2,1,-128,0,0,3,Drill Tunnel Entrance
+8,MAYO10,3,2,13,0,0,2,Dragon Eye Lake
+9,MAYO08A,2,2,-128,0,0,4,Digimon Bridge
+10,MAYO08B,2,2,-128,0,0,4,Digimon Bridge
+11,TROP00,1,0,-127,0,0,5,Tropical Jungle
+12,TROP01,1,0,-127,0,0,5,Tropical Jungle
+13,TROP02,3,0,-127,0,10,5,Tropical Jungle
+14,TROP03,2,1,-127,0,0,5,Tropical Jungle
+15,TROP04,3,0,-127,0,0,6,Mangrove Region
+16,TROP05,2,0,-127,0,0,6,Mangrove Region
+17,TROP06,3,0,-123,0,0,69,Amida Forest
+18,MIHA00,2,0,-126,17,0,7,Path Thru Mt. Panorama
+19,MIHA01,3,0,-126,0,0,9,Mt. Panorama Plains
+20,MIHA02,2,0,-126,0,0,7,Path Thru Mt. Panorama
+21,MIHA03,1,0,-126,0,0,11,Mt. Panorama Spore Area
+22,MIHA04A,3,0,-126,0,2,10,Foot of Mt. Panorama
+23,MIHA04B,2,0,-126,0,2,10,Foot of Mt. Panorama
+24,TUNN01,0,1,-62,0,0,12,Drill Tunnel
+25,TUNN02,1,0,-62,0,0,13,Drill Tunnel 2nd floor
+26,TUNN03,3,0,-62,0,0,14,Drill Tunnel 3rd floor
+27,TUNN04,1,0,-62,0,0,15,Residential Area
+28,TUNN05,1,0,-62,0,0,16,Underground Pond
+29,TUNN06,1,0,-62,0,0,13,Drill Tunnel 2nd floor
+30,TUNN07,3,0,-62,0,0,17,Lava Cave
+31,TUNN08,1,0,-62,0,0,17,Lava Cave
+32,TUNN09,2,0,-126,0,0,12,Drill Tunnel
+33,TUNN10,1,0,-62,0,0,17,Lava Cave
+34,DGHA01,2,0,-124,0,0,18,Overdell
+35,DGHA02,3,0,-60,24,0,19,Overdell Cemetery
+36,GCAN01,3,0,-122,0,0,20,Great Canyon Entrance
+37,GCAN02,1,1,-122,19,0,21,Great Canyon Top Area
+38,GCAN03,1,1,-122,18,0,21,Great Canyon Top Area
+39,GCAN04,1,0,-122,0,0,22,Great Canyon Bridge
+40,GCAN05,3,1,-122,22,0,23,Fortress Entrance
+41,GCAN06,1,1,-122,20,0,24,Great Canyon Bot. Area
+42,GCAN07,0,0,-122,0,0,24,Great Canyon Bot. Area
+43,GCAN08_1,1,0,-122,0,0,21,Great Canyon Top Area
+44,GCAN09,3,0,-122,0,3,21,Great Canyon Top Area
+45,OGRE00,1,0,-58,0,0,25,Ogre Fortress
+46,OGRE01,1,0,-58,0,0,25,Ogre Fortress
+47,OGRE02,3,0,-58,0,0,25,Ogre Fortress
+48,OGRE03,3,1,-58,0,0,25,Ogre Fortress
+49,GCAN11,1,1,-58,0,0,26,Monochrome Shop
+50,YAKA01,0,0,68,0,0,27,Grey Lord's Mansion
+51,YAKA02,3,0,-60,0,0,27,Grey Lord's Mansion
+52,YAKA11A,3,0,-60,1,0,27,Grey Lord's Mansion
+53,YAKA11B,3,0,68,2,0,27,Grey Lord's Mansion
+54,YAKA12,2,0,68,3,0,27,Grey Lord's Mansion
+55,YAKA13,3,0,-60,4,0,27,Grey Lord's Mansion
+56,YAKA14,3,0,-60,5,0,27,Grey Lord's Mansion
+57,YAKA15,3,0,68,6,4,27,Grey Lord's Mansion
+58,YAKA16,3,0,-60,7,0,27,Grey Lord's Mansion
+59,YAKA17,2,0,-60,8,0,27,Grey Lord's Mansion
+60,YAKA18,3,0,68,9,0,27,Grey Lord's Mansion
+61,YAKA21,0,0,68,0,0,27,Grey Lord's Mansion
+62,YAKA22,3,0,68,10,0,27,Grey Lord's Mansion
+63,YAKA23,3,0,68,11,0,27,Grey Lord's Mansion
+64,YAKA24,3,0,68,12,0,27,Grey Lord's Mansion
+65,YAKA25,0,0,68,13,0,27,Grey Lord's Mansion
+66,CHKA01,0,0,-60,0,0,28,Mansion Basement
+67,SAIB01,1,0,-60,0,0,29,Underground Lab
+68,SAIB02,2,0,-60,0,0,29,Underground Lab
+69,GIAS00,2,0,-125,0,0,30,Gear Savanna
+70,GIAS01,3,0,-125,0,0,30,Gear Savanna
+71,GIAS02,3,1,-125,0,0,30,Gear Savanna
+72,GIAS03,1,0,-125,0,0,30,Gear Savanna
+73,GIAS04,3,0,-125,0,0,30,Gear Savanna
+74,GIAS05,3,0,-125,0,0,30,Gear Savanna
+75,GIAS06A,3,0,-125,0,0,30,Gear Savanna
+76,GIAS07,2,0,-125,0,0,30,Gear Savanna
+77,GIAS08,2,0,-125,0,7,30,Gear Savanna
+78,GIAS09,3,1,-114,0,0,30,Gear Savanna
+79,KODA00,2,0,-123,0,5,31,Ancient Dino Region
+80,KODA01,2,0,-123,0,0,32,Ancient Glacial Region
+81,KODA02,3,0,-123,0,0,32,Ancient Glacial Region
+82,KODA03,0,0,-123,0,0,32,Ancient Glacial Region
+83,KODA04,3,0,-123,0,0,33,Ancient Speedy Region
+84,KODA05,2,0,5,0,0,33,Ancient Speedy Region
+85,KODA06,3,0,-123,0,0,33,Ancient Speedy Region
+86,KODA07,2,0,-123,0,0,33,Ancient Speedy Region
+87,KODA08,2,0,-123,0,0,33,Ancient Speedy Region
+88,FRZL01,1,1,-117,0,0,34,Freezeland
+89,FRZL02,1,1,-117,0,0,34,Freezeland
+90,FRZL03,2,1,-117,0,6,34,Freezeland
+91,FRZL04,1,1,-117,0,0,34,Freezeland
+92,FRZL05,0,1,11,0,0,34,Freezeland
+93,FRZL06,2,1,-117,0,0,34,Freezeland
+94,FRZL07,1,1,-117,0,0,34,Freezeland
+95,FRZL08,1,1,-117,0,0,34,Freezeland
+96,FRZL12,1,1,-117,0,0,34,Freezeland
+97,ICSA01,1,0,-53,0,0,35,Ice Sanctuary
+98,ICSA02,0,1,-53,0,0,35,Ice Sanctuary
+99,ICSA03,0,3,-50,0,0,35,Ice Sanctuary
+100,ICSA04,0,0,-53,0,0,35,Ice Sanctuary
+101,ICSA05,0,1,-53,0,0,35,Ice Sanctuary
+102,ICSA06,0,3,-53,0,0,35,Ice Sanctuary
+103,ICSA07,0,2,-53,0,0,35,Ice Sanctuary
+104,ICSA08,0,1,-53,0,0,35,Ice Sanctuary
+105,BETL01,3,0,-128,0,0,58,Beetle Land
+106,BETL02,3,0,-128,0,0,58,Beetle Land
+107,BETL03,2,2,-50,0,0,58,Beetle Land
+108,BETL04,3,1,-50,0,0,58,Beetle Land
+109,MAYO00,3,0,-128,0,0,0,Native Forest
+110,MAYO01_2,3,0,-128,0,0,0,Native Forest
+111,MAYO02_2,3,0,-128,0,0,0,Native Forest
+112,TRAI00,2,2,-114,0,0,36,Green Gym
+113,LEOM01,2,0,-62,0,0,37,Leomon Ancestor's Cave
+114,LEOM02,1,0,-62,0,0,37,Leomon Ancestor's Cave
+115,MIST01,2,2,-119,0,0,38,Misty Trees
+116,MIST02,2,2,-119,0,0,38,Misty Trees
+117,MIST03,2,2,-119,0,0,38,Misty Trees
+118,MIST04,2,2,-119,0,0,38,Misty Trees
+119,MIST05,2,3,-114,0,0,38,Misty Trees
+120,MIST06,3,2,-119,0,0,38,Misty Trees
+121,MIST07,2,2,-119,0,0,38,Misty Trees
+122,TUNN07_2,1,0,66,0,0,17,Lava Cave
+123,TUNN07_3,1,0,-62,0,0,17,Lava Cave
+124,TUNN08_2,0,0,66,0,0,17,Lava Cave
+125,TUNN08_3,0,0,-62,0,0,17,Lava Cave
+126,TUNN03_2,3,0,66,0,0,12,Drill Tunnel
+127,GCAN04_2,0,0,-122,0,0,39,Great Canyon
+128,GCAN08_2,1,0,-122,0,0,39,Great Canyon
+129,GCAN10,1,2,-122,21,0,39,Great Canyon
+130,OGRE04,1,0,70,0,0,25,Ogre Fortress
+131,GIAS06B,3,0,-125,0,0,30,Gear Savanna
+132,FRZL13,1,1,-117,0,0,40,Freezeland
+133,FRZL14,1,1,-117,0,0,40,Freezeland
+134,FRZL15,1,1,-117,0,0,40,Freezeland
+135,FRZL16,0,2,-117,0,0,40,Freezeland
+136,FRZL17,1,1,-49,0,0,40,Freezeland
+137,FRZL18,1,0,-53,0,0,40,Freezeland
+138,STIC01,2,0,-118,0,0,41,Geko Swamp
+139,STIC02,2,0,-118,0,8,41,Geko Swamp
+140,GKYO01,3,0,-118,0,0,42,Volume Villa
+141,GKYO02,1,0,-54,0,0,42,Volume Villa
+142,OGRE10,1,0,-53,0,0,51,Secret Beach Cave
+143,OGRE11,2,0,-53,0,0,51,Secret Beach Cave
+144,OMOC01,3,0,-119,0,0,50,Toy Town
+145,OMOC02,2,0,-55,0,0,62,Costume House
+146,OMOC03,3,1,-55,0,0,63,Robot House
+147,OMOC04,1,1,-55,15,0,61,Toy Mansion
+148,OMOC05,1,1,-55,14,0,61,Toy Mansion
+149,OMOC06,2,1,-55,14,0,61,Toy Mansion
+150,OMOC07,1,1,-55,14,0,61,Toy Mansion
+151,OMOC08,1,2,-55,0,0,61,Toy Mansion
+152,FACT01,1,1,-120,0,0,52,Factorial Town
+153,FACT02,1,1,-120,0,0,52,Factorial Town
+154,FACT03,3,0,-120,0,0,52,Factorial Town
+155,FACT04,1,0,-120,0,0,52,Factorial Town
+156,FACT05,1,0,8,0,0,52,Factorial Town
+157,FACT06,0,1,-56,0,0,52,Factorial Town
+158,FACT07,1,1,-56,23,0,52,Factorial Town
+159,FACT08A,1,0,-56,0,0,52,Factorial Town
+160,FACT08B,1,2,-56,0,0,52,Factorial Town
+161,FACT09,0,0,-56,0,0,52,Factorial Town
+162,FACT10,1,0,-56,0,0,52,Factorial Town
+163,FACT11A,2,1,-56,0,0,57,Sewer
+164,GOMI01,2,0,-121,0,0,56,Trash Mountain
+165,GOMI02,3,1,-50,0,0,56,Trash Mountain
+166,MGEN01,0,0,-47,0,0,59,Mt. Infinity
+167,MGEN02,0,0,-47,0,0,59,Mt. Infinity
+168,TWNA02,2,2,-116,0,9,43,File City
+169,TWNA03,2,2,-116,0,9,43,File City
+170,TWNA04,2,2,-116,0,9,43,File City
+171,TWNA05,2,2,-116,0,9,43,File City
+172,TWNA06,2,2,-116,0,9,43,File City
+173,TWNA07,2,2,-116,0,9,43,File City
+174,TWNA08,2,2,-116,0,9,43,File City
+175,TWNA09,2,2,-116,0,9,43,File City
+176,TWNA10,2,2,-116,0,9,43,File City
+177,TWNA11,2,2,-116,0,9,43,File City
+178,TWNA12,2,2,-116,0,9,43,File City
+179,TWNA13,2,2,-116,0,9,43,File City
+180,TWNB01,2,2,-116,0,0,43,File City
+181,TWNB02,2,2,-116,0,0,43,File City
+182,TWNB03,2,2,-116,0,0,43,File City
+183,TWNB04,2,2,-116,0,0,43,File City
+184,TWNB05,2,2,-116,0,0,43,File City
+185,TWNB06,2,2,-116,0,0,43,File City
+186,TWNB07,2,2,-116,0,0,43,File City
+187,TWNB08,2,2,-116,0,0,43,File City
+188,TWNB09,2,2,-116,0,0,43,File City
+189,TWNB10,2,2,-116,0,0,43,File City
+190,TWNB11,2,2,-116,0,0,43,File City
+191,TWNB12,2,2,-116,0,0,43,File City
+192,TWNB13,2,2,-116,0,0,43,File City
+193,TWNB14,2,2,-116,0,0,43,File City
+194,TWNB15,2,2,-116,0,0,43,File City
+195,TWNB16,2,2,-116,0,0,43,File City
+196,TWNB17,2,2,-116,0,0,43,File City
+197,TWNB18,2,2,-116,0,0,43,File City
+198,TWNB19,2,2,-116,0,0,43,File City
+199,TWNB20,2,2,-116,0,0,43,File City
+200,TWNB21,2,2,-116,0,0,43,File City
+201,TWNB22,2,2,-116,0,0,43,File City
+202,TWNB23,2,2,-116,0,0,43,File City
+203,TWNB24,2,2,-116,0,0,43,File City
+204,TWNA01,2,2,-116,0,9,43,File City
+205,ROOM10,2,1,-52,0,0,48,Jijimon's house
+206,ROOM11,1,0,-52,0,0,48,Jijimon's house
+207,ROOM12,1,1,-116,0,0,53,Birdra Transport
+208,ROOM13,3,0,-52,0,0,54,Arena Lobby
+209,ROOM14,2,0,-52,0,0,55,Treasure Hunt
+210,MGEN03,0,0,-47,0,0,59,Mt. Infinity
+211,ROOM02,2,0,-52,0,0,44,Item Keeper
+212,MGEN04,0,0,-47,0,0,59,Mt. Infinity
+213,ROOM04,2,0,-52,0,0,45,Centar Clinic
+214,ROOM05A,2,0,-52,0,0,46,Restaurant
+215,ROOM05B,3,0,-52,0,0,46,Restaurant
+216,ROOM06,3,0,-52,0,0,47,Item Shop
+217,ROOM07,1,0,-52,0,0,49,Secret Item Shop
+218,ROOM08,3,0,-52,0,0,48,Jijimon's house
+219,MGEN05,0,0,-47,0,0,59,Mt. Infinity
+220,FACT11B,3,1,-56,0,0,57,Sewer
+221,SAIB03,0,0,-60,0,0,29,Underground Lab
+222,MGEN98,0,0,-47,0,0,59,Mt. Infinity
+223,ROOM19,3,0,-52,0,0,54,Arena Lobby
+224,YAKA26,3,0,-60,6,0,27,Grey Lord's Mansion
+225,MGEN99,2,2,-47,0,0,59,Mt. Infinity
+226,MGEN11,0,0,-47,0,0,67,Back Dimension
+227,MGEN12,0,0,-47,0,0,67,Back Dimension
+228,MGEN13,0,0,-47,0,0,67,Back Dimension
+229,MGEN14,0,0,81,0,0,59,Mt. Infinity
+230,MGEN15,0,0,81,0,0,59,Mt. Infinity
+231,MGEN16,0,0,81,0,0,59,Mt. Infinity
+232,YAKA25,2,0,-60,0,0,27,Grey Lord's Mansion
+233,MIHA05,3,0,-126,0,0,11,Mt. Panorama Spore Area
+234,MIHA06,2,0,-126,0,0,11,Mt. Panorama Spore Area
+235,ROOM20,0,0,-52,0,0,60,Digimon Curling
+236,TEND01,2,2,-52,0,0,43,File City
+237,TEND02,2,2,-52,0,0,43,File City
+238,TOPN01,2,2,-52,0,0,43,File City

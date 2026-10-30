@@ -1,0 +1,173 @@
+// Readable form of script 63 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 63 {
+    npc myotismon = 5;
+    npc machinedramon = 6;
+    npc analogman = 7;
+    npc slot3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 60;
+
+    on enter replace {    // section 254
+        if (!myotismon_met || !myotismon_freed) {
+            animate(myotismon, 28);
+        }
+        if (!myotismon_joined_city && myotismon_missing) {
+            wait(1s);
+            entity_set_rotation(tamer, 2048);
+            wait(5);
+            say(tamer, text("s063.sec254.u0"));
+            myotismon_absence_seen.basement = true;
+        }
+    }
+
+    on talk(myotismon) replace {    // section 5
+        engine.cutscene = true;
+        run(tamer, -253, -1358, camera: true);
+        await tamer;
+        face(tamer, myotismon);
+        animate(myotismon, 29);
+        wait(5);
+        if (has(item("Steak")) >= 1) {
+            remove_item(item("Steak"), 1);
+            say(myotismon, text("s063.sec5.u17"));
+            animate(myotismon, 30);
+            wait(2s);
+            animate(myotismon, anim.idle);
+            face(myotismon, tamer);
+            say(myotismon, text("s063.sec5.u18"));
+            say(tamer, text("s063.sec5.u19"));
+            say(myotismon, text("s063.sec5.u20"));
+            say(tamer, text("s063.sec5.u21"));
+            say(myotismon, text("s063.sec5.u22"));
+            myotismon_freed = true;
+            entity_move_to(myotismon, -29, -2765, 30, 0);
+            wait(30);
+            walk(tamer, -29, -2765);
+            await myotismon;
+            remove(myotismon);
+            wait(10);
+            walk(partner, -29, -2765);
+            wait(10);
+            warp_to(224, 0, 60);
+            return;
+        }
+        if (myotismon_met) {
+            say(myotismon, text("s063.sec5.u0"));
+        } else {
+            myotismon_met = true;
+            say(tamer, text("s063.sec5.u1"));
+            say(myotismon, text("s063.sec5.u2"));
+            say(tamer, text("s063.sec5.u3"));
+            say(myotismon, text("s063.sec5.u4"));
+            say(tamer, text("s063.sec5.u5"));
+            say(myotismon, text("s063.sec5.u6"));
+            if (has(item("Meat")) >= 1 || has(item("Giant Meat")) >= 1 || has(item("Sirloin")) >= 1) {
+                say(tamer, text("s063.sec5.u7"));
+                say(myotismon, text("s063.sec5.u8"));
+                say(tamer, text("s063.sec5.u9"));
+            } else {
+                say(tamer, text("s063.sec5.u10"));
+            }
+            say(myotismon, text("s063.sec5.u11"));
+            give_item(item("Frig Key"), 1);
+            say(tamer, text("s063.sec5.u12"));
+            if (engine.item_did_not_fit) {
+                say(tamer, text("s063.sec5.u13"));
+                engine.picker_mode = false;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Frig Key"), 1);
+            }
+            say(narrator, text("s063.sec5.u14"));
+            say(myotismon, text("s063.sec5.u15"));
+        }
+        say(tamer, text("s063.sec5.u16"));
+        animate(myotismon, 28);
+        return;
+    }
+
+    on step(9) replace {    // section 60
+        wait(2s);
+        camera_to(-1455, 1463, speed: 20);
+        animate(tamer, 15);
+        wait(1s);
+        say(tamer, text("s063.sec60.u0"));
+        say(analogman, text("s063.sec60.u1"));
+        say(tamer, text("s063.sec60.u2"));
+        await analogman;
+        remove(analogman);
+        wait(1s);
+        say(tamer, text("s063.sec60.u3"));
+        animate(machinedramon, 28);
+        wait(2s);
+        wait(2s);
+        battle(foes: [machinedramon]);
+        walk(machinedramon, -100, 800);
+        await machinedramon;
+        animate(machinedramon, 43);
+        wait(2s);
+        say(tamer, text("s063.sec60.u4"));
+        face(tamer, machinedramon);
+        await machinedramon;
+        await tamer;
+        remove(machinedramon);
+        say(tamer, text("s063.sec60.u5"));
+        load_digimon(species("Soulmon"));
+        set_digimon(species("Soulmon"), 3, 0);
+        say(slot3, text("s063.sec60.u6"));
+        face(slot3, tamer);
+        wait(1s);
+        say(slot3, text("s063.sec60.u7"));
+        recruit(species("Koromon"));
+        back_dimension_portal = 0;
+        days_since_passed_out = 0;
+        recruit(species("Yuramon"));
+        walk_away(slot3, -40, -2800, looks: 3);
+        remove(slot3);
+        glances = 0;
+        animate(tamer, 16);
+        wait(2s);
+        say(tamer, text("s063.sec60.u8"));
+        wait(1s);
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 0, 255);
+                }
+                warp_to(168, 0, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 0, 255);
+            }
+            warp_to(171, 0, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 0, 255);
+            }
+            warp_to(174, 0, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 0, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 0, 255);
+        }
+        warp_to(177, 0, 255);
+    }
+}

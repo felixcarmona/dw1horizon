@@ -1,0 +1,110 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 128,
+ "type": 203,
+ "name": "Veedramon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 2,
+  "3": 6,
+  "4": 3,
+  "5": 7,
+  "6": 8,
+  "7": 9,
+  "8": 11,
+  "9": 12,
+  "10": 13,
+  "11": 18,
+  "12": 15,
+  "13": 16,
+  "15": 19,
+  "16": 20,
+  "17": 21,
+  "18": 22,
+  "19": 23,
+  "20": 25
+ },
+ "hips": [
+  11,
+  1,
+  1.026
+ ],
+ "root_scale": 1.026,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 59,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 59,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 16,
+   "end": 106,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 112,
+   "end": 192,
+   "hz": 0.3
+  },
+  "0x3a": {
+   "anim": "anim_01",
+   "start": 139,
+   "end": 231,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_02",
+   "start": 122,
+   "end": 169,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x32": {
+   "anim": "anim_03",
+   "start": 12,
+   "end": 104,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ]
+}

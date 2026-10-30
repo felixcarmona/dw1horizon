@@ -1,0 +1,204 @@
+// Readable form of script 124 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 124 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 81;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        unless (!is_recruited(species("Birdramon"))) return;
+        wait(1s);
+        walk(tamer, -142, -455, camera: true);
+        walk(partner, 421, -421);
+        await tamer;
+        await partner;
+        wait(1s);
+        walk(tamer, 58, -920, camera: true);
+        walk(partner, -142, -455);
+        await tamer;
+        await partner;
+        wait(1s);
+        walk(tamer, 578, -695);
+        walk(partner, 58, -920);
+        await tamer;
+        await partner;
+        wait(1s);
+        walk(tamer, 615, -211);
+        walk(partner, 578, -695);
+        await tamer;
+        await partner;
+        wait(1s);
+        animate(tamer, 16);
+        say(tamer, text("s124.sec51.u0"));
+        wait(1s);
+        face(tamer, partner);
+        face(partner, tamer);
+        await tamer;
+        await partner;
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s124.sec51.u1"));
+        animate(tamer, anim.idle);
+        animate(tamer, 24);
+        wait(5);
+        sound(8, 13);
+        wait(1s);
+        say(tamer, text("s124.sec51.u2"));
+        set_digimon(species(143), 0, 0);
+        wait(10);
+        camera_on(slot0, speed: 10);
+        await camera;
+        run(slot0, 278, -490, camera: true);
+        await slot0;
+        camera_to(-83, -1182, speed: 20);
+        await camera;
+        face(tamer, slot0);
+        face(slot0, tamer);
+        face(partner, slot0);
+        wait(1s);
+        battle(foes: [slot0]);
+        face(tamer, slot0);
+        face(slot0, tamer);
+        face(partner, slot0);
+        wait(1s);
+        animate(slot0, 28);
+        wait(2s);
+        say(slot0, text("s124.sec51.u3"));
+        say(tamer, text("s124.sec51.u4"));
+        say(slot0, text("s124.sec51.u5"));
+        animate(tamer, 20);
+        say(tamer, text("s124.sec51.u6"));
+        animate(tamer, anim.idle);
+        say(slot0, text("s124.sec51.u7"));
+        say(tamer, text("s124.sec51.u8"));
+        say(slot0, text("s124.sec51.u9"));
+        say(tamer, text("s124.sec51.u10"));
+        say(slot0, text("s124.sec51.u11"));
+        animate(tamer, 16);
+        say(tamer, text("s124.sec51.u12"));
+        say(slot0, text("s124.sec51.u13"));
+        animate(tamer, 19);
+        say(tamer, text("s124.sec51.u14"));
+        say(slot0, text("s124.sec51.u15"));
+        walk(slot0, 167, -665);
+        await slot0;
+        camera_on(slot0, speed: 20);
+        await camera;
+        walk(tamer, 367, -815);
+        walk(partner, 437, -445);
+        await tamer;
+        await partner;
+        face(slot0, tamer);
+        wait(5);
+        sound(8, 10);
+        say(narrator, text("s124.sec51.u16"));
+        recruit(species("Birdramon"));
+        engine.prosperity += 2;
+        animate(slot0, 29);
+        wait(2s);
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 0, 255);
+                }
+                warp_to(168, 0, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 0, 255);
+            }
+            warp_to(171, 0, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 0, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 0, 255);
+            }
+            warp_to(174, 0, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 0, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 0, 255);
+        }
+        warp_to(177, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        sound(8, 5);
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 1271);
+        say(narrator, text("s124.sec81.u0"));
+        choice {
+            text("s124.sec81.m0.o0") => {
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(38, 2, 55);
+                return;
+            }
+            text("s124.sec81.m0.o1") => {
+                fadeout_hud(0);
+                if (!canyon_elevator_unjammed) {
+                    say(tamer, text("s124.sec81.u1"));
+                    return;
+                }
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(41, 2, 53);
+                return;
+            }
+            text("s124.sec81.m0.o2") => {}
+        }
+        return;
+    }
+}

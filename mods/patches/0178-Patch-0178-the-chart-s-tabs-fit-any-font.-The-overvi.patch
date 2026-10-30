@@ -1,0 +1,142 @@
+From 577b769f91d2397ecf129fc1272ceee7223f5b08 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 20:25:36 +0000
+Subject: [PATCH] Patch 0178: the chart's tabs fit any font. The overview
+ measures the keys and the level names in the font OPTIONS chose and narrows
+ the chips' margins (10 down to 4) and then the names until they share the
+ band's width; a name that does not fit the text area's row goes to the keys'
+ row. The criteria card spaces its lines 12 pixels in the original fonts when
+ they fit
+
+---
+ src/main/game_menu.c | 69 ++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 54 insertions(+), 15 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 6c5b3ca4..6d0e0698 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3105,6 +3105,7 @@ static int32_t chartDetailInput(void)
+ #define CHART_PAGE_SIZE		(CHART_COLS * CHART_ROWS)
+ #define CHART_GRID_X		27	/* the first box's border, screen pixels */
+ #define CHART_GRID_Y		57
++#define CHART_BAND_W		279	/* the tab's band, from x 20 */
+ #define CHART_PITCH		0x13
+ #define CHART_ICON_X		576	/* the page's icons: 16 a row, 4 halfwords each */
+ #define CHART_ICON_Y		288
+@@ -3132,6 +3133,9 @@ static int16_t CHART_PAGE_IDS[CHART_PAGE_SIZE];
+ static int16_t CHART_PAGE_COUNT;
+ static int16_t CHART_TAB_LABEL_X[SPECIES_CHART_TABS]; /* where each tab name is in the text area, and its width */
+ static int16_t CHART_TAB_LABEL_W[SPECIES_CHART_TABS];
++static int16_t CHART_TAB_LABEL_ROW[SPECIES_CHART_TABS];
++static int16_t CHART_KEY_W[2];		/* "L1" and "R1" */
++static int8_t CHART_CHIP_PAD;		/* a chip's width past its name */
+ static int16_t CHART_TEXT_ID;		/* the species whose name is in the text area (-2: none drawn yet) */
+ static int16_t CHART_SHOWN_NAME_W;
+ static int16_t CHART_COUNT_W;
+@@ -3244,16 +3248,50 @@ static void chartDrawLabels(void)
+ {
+ 	int32_t k;
+ 	int32_t x;
++	int32_t row;
++	int32_t sum;
++	int32_t room;
++	int32_t pad;
++	int32_t mode;
++	int32_t w;
+ 
++	CHART_KEY_W[0] = measureStringMode("L1", FIT_VANILLA);
++	CHART_KEY_W[1] = measureStringMode("R1", FIT_VANILLA);
++	drawString("L1", 0, CHART_KEYS_ROW);
++	drawString("R1", 0x20, CHART_KEYS_ROW);
++	/* the chips share the band's width with the keys: a wider font (OPTIONS' FONT) narrows their margins first, then
++	 * draws the names tighter */
++	room = CHART_BAND_W - CHART_KEY_W[0] - CHART_KEY_W[1] - 8 - (SPECIES_CHART_TABS - 1) * 3;
++	sum = 0;
++	for (k = 0; k < SPECIES_CHART_TABS; k++) {
++		sum += measureStringMode(CHART_TAB_NAMES[k], FIT_VANILLA);
++	}
++	pad = (room - sum) / SPECIES_CHART_TABS;
++	pad = pad > 10 ? 10 : (pad < 4 ? 4 : pad);
++	CHART_CHIP_PAD = pad;
++	room -= pad * SPECIES_CHART_TABS;
++	/* the names in the text area: past its width, on the keys' row after them */
+ 	x = 0;
++	row = CHART_LABEL_ROW;
+ 	for (k = 0; k < SPECIES_CHART_TABS; k++) {
+-		CHART_TAB_LABEL_X[k] = x;
++		mode = FIT_VANILLA;
+ 		CHART_TAB_LABEL_W[k] = measureStringMode(CHART_TAB_NAMES[k], FIT_VANILLA);
+-		drawString(CHART_TAB_NAMES[k], x, CHART_LABEL_ROW);
+-		x += CHART_TAB_LABEL_W[k] + 4;
++		if (sum > room) {
++			CHART_TAB_LABEL_W[k] = CHART_TAB_LABEL_W[k] * room / sum;
++			mode = fitStringMode(CHART_TAB_NAMES[k], CHART_TAB_LABEL_W[k]);
++		}
++		if (x + CHART_TAB_LABEL_W[k] + 12 > 256) {
++			row = CHART_KEYS_ROW;
++			x = 0x40;
++		}
++		CHART_TAB_LABEL_X[k] = x;
++		CHART_TAB_LABEL_ROW[k] = row;
++		w = drawStringMode(CHART_TAB_NAMES[k], x, row, mode);
++		if (mode == FIT_VANILLA || w < CHART_TAB_LABEL_W[k]) {
++			CHART_TAB_LABEL_W[k] = w;
++		}
++		x += CHART_TAB_LABEL_W[k] + 12;
+ 	}
+-	drawString("L1", 0, CHART_KEYS_ROW);
+-	drawString("R1", 0x20, CHART_KEYS_ROW);
+ }
+ 
+ /* the name under the cursor (raised species only) and the counters, when they change */
+@@ -3409,15 +3447,15 @@ void renderEvoChartView(void)
+ 			}
+ 		}
+ 		/* the texts: the tab names on their chips, the keys, the name and the counters on the bottom row */
+-		renderString(9, 20 - 0xa0, 40 - 0x78, 0x10, 0xc, 0, CHART_KEYS_ROW, 5, 1);
+-		x = 38;
++		renderString(9, 20 - 0xa0, 40 - 0x78, CHART_KEY_W[0], 0xc, 0, CHART_KEYS_ROW, 5, 1);
++		x = 20 + CHART_KEY_W[0] + 4;
+ 		for (k = 0; k < SPECIES_CHART_TABS; k++) {
+ 			w = CHART_TAB_LABEL_W[k];
+-			renderString(k == CHART_TAB ? 0 : 9, x + 5 - 0xa0, 40 - 0x78, w, 0xc, CHART_TAB_LABEL_X[k],
+-			             CHART_LABEL_ROW, 5, 1);
+-			x += w + 13;
++			renderString(k == CHART_TAB ? 0 : 9, x + CHART_CHIP_PAD / 2 - 0xa0, 40 - 0x78, w, 0xc,
++			             CHART_TAB_LABEL_X[k], CHART_TAB_LABEL_ROW[k], 5, 1);
++			x += w + CHART_CHIP_PAD + 3;
+ 		}
+-		renderString(9, x + 2 - 0xa0, 40 - 0x78, 0x10, 0xc, 0x20, CHART_KEYS_ROW, 5, 1);
++		renderString(9, x + 1 - 0xa0, 40 - 0x78, CHART_KEY_W[1], 0xc, 0x20, CHART_KEYS_ROW, 5, 1);
+ 		if (CHART_SHOWN_NAME_W > 0) {
+ 			renderString(0, 22 - 0xa0, 0x52, CHART_SHOWN_NAME_W, 0xc, 0, CHART_NAME_ROW, 5, 1);
+ 		}
+@@ -3434,11 +3472,11 @@ void renderEvoChartView(void)
+ 			renderBorderBox(bx - 1, by - 1, 0x12, 0x12, 0xbebebe, 0x3c3c3c, 0x87, 0x87, 0x87, 5);
+ 		}
+ 		k = CHART_TAB;
+-		renderBorderBox(20, 53, 279, 143, CHART_TAB_EDGES[k][0], CHART_TAB_EDGES[k][1], CHART_TAB_FILL[k][0],
++		renderBorderBox(20, 53, CHART_BAND_W, 143, CHART_TAB_EDGES[k][0], CHART_TAB_EDGES[k][1], CHART_TAB_FILL[k][0],
+ 		                CHART_TAB_FILL[k][1], CHART_TAB_FILL[k][2], 5);
+-		x = 38;
++		x = 20 + CHART_KEY_W[0] + 4;
+ 		for (k = 0; k < SPECIES_CHART_TABS; k++) {
+-			w = CHART_TAB_LABEL_W[k] + 10;
++			w = CHART_TAB_LABEL_W[k] + CHART_CHIP_PAD;
+ 			if (k == CHART_TAB) {
+ 				renderBorderBox(x, 37, w - 1, 16, CHART_TAB_EDGES[k][0], CHART_TAB_EDGES[k][1],
+ 				                CHART_TAB_FILL[k][0], CHART_TAB_FILL[k][1], CHART_TAB_FILL[k][2], 5);
+@@ -3804,7 +3842,8 @@ static void chartCardRender(int32_t target)
+ 		chartCardBuild(target);
+ 		CHART_CARD_ID = target;
+ 	}
+-	lh = CHART_CARD_COUNT > 13 ? 10 : 11;
++	/* the line height: 11 (14 lines, WarGreymon's, still fit); the original font's taller letters get 12 when they fit */
++	lh = CHART_CARD_COUNT > 14 ? 10 : (MOD_FONT != MOD_FONT_NEW && CHART_CARD_COUNT <= 12 ? 12 : 11);
+ 	for (k = 0; k < CHART_CARD_COUNT; k++) {
+ 		l = &CHART_CARD[k];
+ 		y = CHART_CARD_Y + 3 + k * lh;
+-- 
+2.53.0
+

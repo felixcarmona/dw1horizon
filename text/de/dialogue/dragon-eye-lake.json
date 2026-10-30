@@ -1,0 +1,261 @@
+{
+ "s007.sec81.m0.o0": "Flöte spielen",
+ "s007.sec81.m0.o1": "Nicht spielen",
+ "s007.sec81.u0": [
+  [
+   "Ah, Das stimmt."
+  ]
+ ],
+ "s007.sec81.u1": [
+  [
+   "Die {color 6}Blaue Flöte{color 1} spielen?"
+  ]
+ ],
+ "s007.sec81.u2": [
+  [
+   "Mein Freund, brauchst du meine",
+   "Kraft?"
+  ]
+ ],
+ "s007.sec81.u3": [
+  [
+   "Bring mich zum anderen Ufer."
+  ]
+ ],
+ "s007.sec81.u4": [
+  [
+   "Nichts leichter als das. Nun",
+   "steig auf."
+  ]
+ ],
+ "s007.sec82.m0.o0": "Lass uns Freunde sein",
+ "s007.sec82.m0.o1": "Lehre mich eine Technik!",
+ "s007.sec82.m0.o2": "Ich will ein Item",
+ "s007.sec82.m1.o0": "Lass uns Freunde sein",
+ "s007.sec82.m1.o1": "Lehre mich eine Technik!",
+ "s007.sec82.m1.o2": "Ich will ein Item",
+ "s007.sec82.m2.o0": "Ja, ich komme mit!",
+ "s007.sec82.m2.o1": "Ich mache mich bereit",
+ "s007.sec82.u0": [
+  [
+   "Seadramon!"
+  ]
+ ],
+ "s007.sec82.u1": [
+  [
+   "Wir sehen uns wieder. Hast du",
+   "einen Wunsch?"
+  ]
+ ],
+ "s007.sec82.u2": [
+  [
+   "Du und ich sind bereits",
+   "Freunde. Hast du einen",
+   "anderen Wunsch?"
+  ]
+ ],
+ "s007.sec82.u3": [
+  [
+   "W-wow! Der Wächter des Sees!"
+  ]
+ ],
+ "s007.sec82.u4": [
+  [
+   "Puh... In der Tat. Ich bin",
+   "Seadramon. Du bist derjenige,",
+   "der hier in letzter Zeit so"
+  ],
+  [
+   "viel angelt? Nun, egal. Hast du",
+   "einen Wunsch?"
+  ]
+ ],
+ "s007.sec82.u5": [
+  [
+   "Wow! ...Wie man es vom Wächter",
+   "erwartet. Unglaublich. Äh,",
+   "also..."
+  ]
+ ],
+ "s007.sec82.u6": [
+  [
+   "Gut, so sei es. Von nun an",
+   "sind wir Freunde. Als Zeichen",
+   "dafür gebe ich dir diese Flöte."
+  ]
+ ],
+ "s007.sec82.u7": [
+  [
+   "Oh nein, ich habe zu viele",
+   "Items dabei. Ich muss etwas",
+   "wegwerfen."
+  ]
+ ],
+ "s007.sec82.u8": [
+  [
+   "{color 6}Blaue Flöte{color 1} erhalten!"
+  ]
+ ],
+ "s007.sec82.u9": [
+  [
+   "Spiele sie am See, und ich",
+   "erscheine jederzeit. Als Freund",
+   "bringe ich dich hinüber."
+  ]
+ ],
+ "s007.sec82.u10": [
+  [
+   "Wow, dann komme ich also ans",
+   "andere Ufer! Danke!"
+  ]
+ ],
+ "s007.sec82.u11": [
+  [
+   "Am anderen Seeufer liegt ein",
+   "recht seltsamer Wald. Willst du",
+   "jetzt dorthin?"
+  ]
+ ],
+ "s007.sec82.u12": [
+  [
+   "Hm. Dann bringe ich dir diese",
+   "Technik bei."
+  ]
+ ],
+ "s007.sec82.u13": [
+  [
+   "Wasserzauber erlernt!"
+  ]
+ ],
+ "s007.sec82.u14": [
+  [
+   "Frosthauch erlernt!"
+  ]
+ ],
+ "s007.sec82.u15": [
+  [
+   "Polarnacht erlernt!"
+  ]
+ ],
+ "s007.sec82.u16": [
+  [
+   "Hm, ich kann dir wohl keine",
+   "weiteren Techniken",
+   "beibringen..."
+  ]
+ ],
+ "s007.sec82.u17": [
+  [
+   "Dann leb wohl."
+  ]
+ ],
+ "s007.sec82.u18": [
+  [
+   "Hm. Ich gebe dir die",
+   "{color 6}Wasserflasche{color 1}."
+  ]
+ ],
+ "s007.sec82.u19": [
+  [
+   "Oh nein, ich habe zu viele",
+   "Items dabei. Ich muss etwas",
+   "wegwerfen."
+  ]
+ ],
+ "s007.sec82.u20": [
+  [
+   "{color 6}Wasserflasche{color 1} erhalten!"
+  ]
+ ],
+ "s007.sec82.u21": [
+  [
+   "Dann bis zum nächsten Mal."
+  ]
+ ],
+ "s007.sec82.u22": [
+  [
+   "Dann steig auf meinen Rücken."
+  ]
+ ],
+ "s007.sec82.u23": [
+  [
+   "Dann bis zum nächsten Mal."
+  ]
+ ],
+ "s009.sec81.m0.o0": "Fleisch: 300 Bits",
+ "s009.sec81.m0.o1": "Digipilz: 600 Bits",
+ "s009.sec81.m0.o2": "Nicht kaufen",
+ "s009.sec81.u0": [
+  [
+   "Verkaufsautomat"
+  ]
+ ],
+ "s009.sec81.u1": [
+  [
+   "Oje, dieser Automat ist teuer."
+  ]
+ ],
+ "s009.sec81.u2": [
+  [
+   "Nicht genug Geld..."
+  ]
+ ],
+ "s009.sec81.u3": [
+  [
+   "Nicht genug Geld..."
+  ]
+ ],
+ "s009.sec81.u4": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "kam heraus!"
+  ]
+ ],
+ "s009.sec81.u5": [
+  [
+   "Ups, meine Tasche ist voll."
+  ]
+ ],
+ "s009.sec81.u6": [
+  [
+   "Ein {color 6}Digipilz{color 1} kam heraus!"
+  ]
+ ],
+ "s009.sec81.u7": [
+  [
+   "Ups, meine Tasche ist voll."
+  ]
+ ],
+ "s009.sec82.u0": [
+  [
+   "So angelst du",
+   "Besorge zuerst eine Angel. Im",
+   "Untermenü unter {color 5}△{color 1} erscheint",
+   "ein Angelsymbol. Wähle es aus.",
+   "Drücke {color 6}×{color 1}, um eines deiner",
+   "Lebensmittel als Köder zu",
+   "wählen. Drehe dich mit den"
+  ],
+  [
+   "Richtungstasten nach links",
+   "oder rechts. Drücke {color 6}×{color 1}, um die",
+   "Rute zu heben, und erneut {color 6}×{color 1}",
+   "zum Auswerfen. Warte, bis der",
+   "Schwimmer sinkt: Dann hat ein",
+   "Fisch angebissen. Ziehe mit"
+  ],
+  [
+   "{color 6}×{color 1}. Achte auf die Anzeige oben",
+   "links: Lass {color 6}×{color 1} los, bevor sie",
+   "voll ist, sonst reißt die",
+   "Schnur. Hole den Schwimmer",
+   "ganz ein, um den Fisch zu",
+   "fangen. Ein X auf dem"
+  ],
+  [
+   "Schatten eines Fisches heißt,",
+   "dass er mit dem aktuellen",
+   "Köder nicht anbeißt."
+  ]
+ ]
+}

@@ -1,0 +1,324 @@
+{
+ "s012.sec5.u0": [
+  [
+   "Du willst gegen mich kämpfen?"
+  ]
+ ],
+ "s012.sec6.u0": [
+  [
+   "Na, du bist ja frech."
+  ]
+ ],
+ "s012.sec7.u0": [
+  [
+   "W-was hast du vor?"
+  ]
+ ],
+ "s012.sec8.u0": [
+  [
+   "Ich verpetze dich!"
+  ]
+ ],
+ "s012.sec53.u0": [
+  [
+   "Oh, eine Brücke!"
+  ]
+ ],
+ "s012.sec81.m0.o0": "100 MP: 200 Bits",
+ "s012.sec81.m0.o1": "1000 MP: 1800 Bits",
+ "s012.sec81.m0.o2": "Nicht verwenden",
+ "s012.sec81.u0": [
+  [
+   "MP-Station"
+  ]
+ ],
+ "s012.sec81.u1": [
+  [
+   "Eine Maschine, die MP auffüllt,",
+   "hm."
+  ]
+ ],
+ "s012.sec81.u2": [
+  [
+   "MP wiederhergestellt!"
+  ]
+ ],
+ "s012.sec81.u3": [
+  [
+   "Nicht genug Geld..."
+  ]
+ ],
+ "s012.sec81.u4": [
+  [
+   "MP wiederhergestellt!"
+  ]
+ ],
+ "s012.sec81.u5": [
+  [
+   "Nicht genug Geld..."
+  ]
+ ],
+ "s012.sec81.u6": [
+  [
+   "Lieber nicht."
+  ]
+ ],
+ "s013.sec5.m0.o0": "Okay, akzeptiere ich!",
+ "s013.sec5.m0.o1": "Mir fällt etwas ein...",
+ "s013.sec5.u0": [
+  [
+   "He, du! Bist du derjenige, der",
+   "eine Stadt aufbaut?"
+  ]
+ ],
+ "s013.sec5.u1": [
+  [
+   "Ja. Warum?"
+  ]
+ ],
+ "s013.sec5.u2": [
+  [
+   "Hm, du hast Glück, mich zu",
+   "treffen! Man sieht es mir nicht",
+   "an, aber ich bin auf dem"
+  ],
+  [
+   "Ultra-Level! Besiege mich,",
+   "dann helfe ich deiner Stadt.",
+   "Wie klingt das?"
+  ]
+ ],
+ "s013.sec5.u3": [
+  [
+   "Na so was! Eine klare",
+   "Niederlage! Dann sehen wir uns",
+   "in der Stadt!"
+  ]
+ ],
+ "s013.sec5.u4": "Piximon ist in die Stadt gezogen!",
+ "s013.sec5.u5": [
+  [
+   "Hm, was für ein Angsthase! Na",
+   "gut, wir sehen uns irgendwann",
+   "wieder!"
+  ]
+ ],
+ "s013.sec6.u0": [
+  [
+   "Oh, Señorita!"
+  ]
+ ],
+ "s013.sec7.u0": [
+  [
+   "Was geht, Amigo?!"
+  ]
+ ],
+ "s013.sec8.u0": [
+  [
+   "Uki, Uki!"
+  ]
+ ],
+ "s013.sec9.u0": [
+  [
+   "Oho!"
+  ]
+ ],
+ "s014.sec5.u0": [
+  [
+   "Fsssss!"
+  ]
+ ],
+ "s014.sec6.u0": [
+  [
+   "Zeiiiiii!"
+  ]
+ ],
+ "s014.sec7.u0": [
+  [
+   "Fiuuu, fiuuuu!"
+  ]
+ ],
+ "s014.sec8.u0": [
+  [
+   "Ich spiele nicht mehr mit dir!"
+  ]
+ ],
+ "s014.sec9.u0": [
+  [
+   "Ukiaaa! Uh-uh!"
+  ]
+ ],
+ "s014.sec10.u0": [
+  [
+   "Hohoho! Juhu!"
+  ]
+ ],
+ "s015.sec5.u0": [
+  [
+   "Du Digimon sein, ja?"
+  ]
+ ],
+ "s015.sec7.u0": [
+  [
+   "Wie geht es dir? Woher du",
+   "kommen?"
+  ]
+ ],
+ "s015.sec8.u0": [
+  [
+   "Mach dich nicht über mich",
+   "lustig!"
+  ]
+ ],
+ "s015.sec9.u0": [
+  [
+   "Ich beiße dich gleich!"
+  ]
+ ],
+ "s015.sec51.m0.o0": "Eines ausprobieren",
+ "s015.sec51.m0.o1": "Nichts verwenden",
+ "s015.sec51.m1.o0": "Klar mag ich sie",
+ "s015.sec51.m1.o1": "Nein, ich hasse sie",
+ "s015.sec51.u0": [
+  [
+   "Hm, wenn ich sie so lasse,",
+   "verwelkt sie womöglich",
+   "wirklich. Wenn es doch nur"
+  ],
+  [
+   "regnen würde..."
+  ]
+ ],
+ "s015.sec51.u1": [
+  [
+   "Oh, das ist ungewöhnlich. Sie",
+   "treibt aus."
+  ]
+ ],
+ "s015.sec51.u2": [
+  [
+   "Hm? Hat sie sich gerade",
+   "bewegt...? Ist das die",
+   "geheimnisvolle Pflanze, von der"
+  ],
+  [
+   "alle reden?"
+  ]
+ ],
+ "s015.sec51.u3": [
+  [
+   "Aber sie lässt schon den Kopf",
+   "hängen. So wird sie verwelken."
+  ]
+ ],
+ "s015.sec51.u4": [
+  [
+   "Ein Item benutzen?"
+  ]
+ ],
+ "s015.sec51.u5": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s015.sec51.u6": [
+  [
+   "Nichts, was ich habe, wird",
+   "helfen."
+  ]
+ ],
+ "s015.sec51.u7": [
+  [
+   "Das wird nichts bringen..."
+  ]
+ ],
+ "s015.sec51.u8": [
+  [
+   "Kehehehe! He! Ich bin",
+   "Vegiemon!"
+  ]
+ ],
+ "s015.sec51.u9": [
+  [
+   "Huch, hast du mich erschreckt!",
+   "Ein Pflanzen-Digimon also..."
+  ]
+ ],
+ "s015.sec51.u10": [
+  [
+   "Kehe. He, du. Magst du",
+   "Gemüse?"
+  ]
+ ],
+ "s015.sec51.u11": [
+  [
+   "Wie kommst du denn darauf...?",
+   "Gemüse? Hm..."
+  ]
+ ],
+ "s015.sec51.u12": [
+  [
+   "...Vergiss es."
+  ]
+ ],
+ "s015.sec51.u13": [
+  [
+   "Oh, wer Gemüse mag, kann kein",
+   "schlechter Kerl sein."
+  ]
+ ],
+ "s015.sec51.u14": [
+  [
+   "Nein, nein! Gemüse ist toll!"
+  ]
+ ],
+ "s015.sec51.u15": [
+  [
+   "???"
+  ]
+ ],
+ "s015.sec51.u16": [
+  [
+   "Okay, Das ist entschieden. Ich",
+   "gehe mit dir!"
+  ]
+ ],
+ "s015.sec51.u17": [
+  [
+   "Uff, was für ein aufdringlicher",
+   "Kerl... Warte mal!"
+  ]
+ ],
+ "s015.sec51.u18": [
+  [
+   "Dann komme ich nicht mit! Bis",
+   "dann!"
+  ]
+ ],
+ "s015.sec51.u19": [
+  [
+   "Du änderst deine Meinung aber",
+   "schnell!"
+  ]
+ ],
+ "s015.sec51.u20": [
+  [
+   "Hä? Was soll ich denn tun?"
+  ]
+ ],
+ "s015.sec51.u21": [
+  [
+   "Äh, na ja... komm in die Stadt",
+   "und hilf mit!"
+  ]
+ ],
+ "s015.sec51.u22": [
+  [
+   "Kehehe, klar! Ich habe sowieso",
+   "genug davon, hier",
+   "herumzuhängen. Kehe!"
+  ]
+ ],
+ "s015.sec51.u23": "Vegiemon ist in die Stadt gezogen!"
+}

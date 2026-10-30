@@ -1,0 +1,482 @@
+{
+ "s077.sec5.u0": [
+  [
+   "Ehi, tu! Fatti sottooo!"
+  ]
+ ],
+ "s077.sec6.u0": [
+  [
+   "Bzz, bzz, bzzz!"
+  ]
+ ],
+ "s077.sec7.u0": [
+  [
+   "Non starmi mai alle spalle!!"
+  ]
+ ],
+ "s077.sec8.u0": [
+  [
+   "Fiu-fiu-fiuuuu!"
+  ]
+ ],
+ "s077.sec9.u0": [
+  [
+   "Sono infuocato! Mi ribolle il",
+   "sangue!"
+  ]
+ ],
+ "s077.sec10.u0": [
+  [
+   "Vincere, vincere, vincere!",
+   "VINCERÒ!"
+  ]
+ ],
+ "s078.sec5.u0": [
+  [
+   "Credo che uno della mia specie",
+   "sia partito per diventare",
+   "mercante... Pare abbia aperto"
+  ],
+  [
+   "un negozio da qualche parte.",
+   "Come amico ti sarebbe più utile",
+   "di me..."
+  ]
+ ],
+ "s078.sec5.u1": [
+  [
+   "Perché il tempo scorre",
+   "diversamente qui rispetto a",
+   "fuori? Certo, è un posto"
+  ],
+  [
+   "comodo per noi, ma..."
+  ]
+ ],
+ "s078.sec6.u0": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... A nord, neve e",
+   "ghiaccio non si sciolgono mai."
+  ],
+  [
+   "Bisogna essere matti per vivere",
+   "lì."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... A ovest c'è una",
+   "piccola città di ferro, ma il"
+  ],
+  [
+   "cancello resta chiuso. Io ci",
+   "entrerei in volo. Keh eh."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... A sud-ovest c'è un",
+   "villaggio di strani Digimon con"
+  ],
+  [
+   "corna e chele. Vivono sugli",
+   "alberi."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... A nord-ovest c'è una",
+   "foresta nebbiosa con un"
+  ],
+  [
+   "edificio. Però è molto lontana."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... Sei stato al Gran",
+   "Canyon, a est? Un vero"
+  ],
+  [
+   "labirinto. Keh eh."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "Ho volato in alto e visto",
+   "lontano... Cosa c'è proprio al",
+   "centro dell'isola? Nemmeno io"
+  ],
+  [
+   "lo so. È sempre coperto da",
+   "nuvole fitte."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Prova",
+ "s078.sec81.m0.o1": "Lascia",
+ "s078.sec81.u0": [
+  [
+   "Distributore automatico"
+  ]
+ ],
+ "s078.sec81.u1": [
+  [
+   "\"Quello che esce è una",
+   "sorpresa...\" 200 Bit a",
+   "tentativo...? Sembra losco."
+  ],
+  [
+   "Provo?"
+  ]
+ ],
+ "s078.sec81.u2": [
+  [
+   "Non ho abbastanza soldi..."
+  ]
+ ],
+ "s078.sec81.u3": [
+  [
+   "È uscita della {color 6}Carne{color 1}!"
+  ]
+ ],
+ "s078.sec81.u4": [
+  [
+   "Ops, ho la borsa piena. Devo",
+   "buttare qualcosa."
+  ]
+ ],
+ "s078.sec81.u5": [
+  [
+   "È uscita una {color 6}Cura piccola{color 1}!"
+  ]
+ ],
+ "s078.sec81.u6": [
+  [
+   "Ops, ho la borsa piena. Devo",
+   "buttare qualcosa."
+  ]
+ ],
+ "s078.sec81.u7": [
+  [
+   "È uscita della {color 6}Carne",
+   "ammuffita{color 1}!"
+  ]
+ ],
+ "s078.sec81.u8": [
+  [
+   "Ops, ho la borsa piena. Devo",
+   "buttare qualcosa."
+  ]
+ ],
+ "s078.sec81.u9": [
+  [
+   "È uscita una {color 6}Cura MP{color 1}!"
+  ]
+ ],
+ "s078.sec81.u10": [
+  [
+   "Ops, ho la borsa piena. Devo",
+   "buttare qualcosa."
+  ]
+ ],
+ "s078.sec82.u0": [
+  [
+   "...Immagino che tu l'abbia già",
+   "sentito."
+  ]
+ ],
+ "s078.sec82.u1": [
+  [
+   "Qui il tempo scorre lentamente.",
+   "Mentre fuori passa un giorno,",
+   "qui ne passa solo metà."
+  ]
+ ],
+ "s078.sec82.u2": [
+  [
+   "È un bel posto per chi ama",
+   "prendersela comoda."
+  ]
+ ],
+ "s078.sec82.u3": [
+  [
+   "Più avanti, nell'Antica zona",
+   "veloce, il tempo scorre in",
+   "fretta. Lì passano due giorni"
+  ],
+  [
+   "mentre fuori ne passa uno."
+  ]
+ ],
+ "s078.sec82.u4": [
+  [
+   "Si potrebbe dire che fa",
+   "crescere più in fretta... ma",
+   "quando sei ridotto a ossa, è"
+  ],
+  [
+   "troppo tardi."
+  ]
+ ],
+ "s079.sec6.u0": [
+  [
+   "Da qui in poi il tempo scorre",
+   "al doppio della velocità",
+   "rispetto a fuori. Porta tanto"
+  ],
+  [
+   "cibo. E attento alla durata",
+   "della vita, ovviamente."
+  ]
+ ],
+ "s079.sec6.u1": [
+  [
+   "Allora? Hai trovato qualcosa?"
+  ]
+ ],
+ "s079.sec6.u2": [
+  [
+   "No, non ancora..."
+  ]
+ ],
+ "s079.sec6.u3": [
+  [
+   "Il mio maestro, che sorvegliava",
+   "questo posto prima di me,",
+   "diceva che qui c'è un passaggio"
+  ],
+  [
+   "segreto. Ma non chiedermi dove."
+  ]
+ ],
+ "s079.sec6.u4": [
+  [
+   "Ah, Come va?..?"
+  ]
+ ],
+ "s079.sec6.u5": [
+  [
+   "Il meteorite... Alla fine non",
+   "c'entrava nulla. Uff..."
+  ]
+ ],
+ "s079.sec6.u6": [
+  [
+   "Ah, capisco. Beh, che sfortuna.",
+   "Mi dispiace, ma non so altro."
+  ]
+ ],
+ "s079.sec6.u7": [
+  [
+   "...Beh, Ci vediamo dopo."
+  ]
+ ],
+ "s079.sec6.u8": [
+  [
+   "Eeehi, tuuu!!"
+  ]
+ ],
+ "s079.sec6.u9": [
+  [
+   "ECCO perché ti dico sempre",
+   "che sei ancora a metà",
+   "dell'addestramento!"
+  ]
+ ],
+ "s079.sec6.u10": [
+  [
+   "M-m-maestro?!"
+  ]
+ ],
+ "s079.sec6.u11": [
+  [
+   "Testone! Non posso credere",
+   "che tu stia ancora a",
+   "bighellonare qui!"
+  ]
+ ],
+ "s079.sec6.u12": [
+  [
+   "Il suo maestro?! Che succede?!"
+  ]
+ ],
+ "s079.sec6.u13": [
+  [
+   "M-ma chi sorveglierà l'Antica",
+   "regione Dino..."
+  ]
+ ],
+ "s079.sec6.u14": [
+  [
+   "Testone! L'isola è in grave",
+   "pericolo! Va' in città e",
+   "renditi utile a tutti, sciocco!"
+  ]
+ ],
+ "s079.sec6.u15": [
+  [
+   "S... Sì, signore..."
+  ]
+ ],
+ "s079.sec6.u16": [
+  [
+   "Eh, davvero?!"
+  ]
+ ],
+ "s079.sec6.u17": [
+  [
+   "Ragazzo del mondo analogico, è",
+   "ancora inesperto, ma lo farai",
+   "lavorare nella tua città? Farò"
+  ],
+  [
+   "io la guardia qui."
+  ]
+ ],
+ "s079.sec6.u18": [
+  [
+   "Maestro..."
+  ]
+ ],
+ "s079.sec6.u19": [
+  [
+   "Ecco come stanno le cose,",
+   "{color 6}{player}{color 1}. Posso venire in",
+   "città?"
+  ]
+ ],
+ "s079.sec6.u20": [
+  [
+   "Certo. Ma fa' la tua parte."
+  ]
+ ],
+ "s079.sec6.u21": [
+  [
+   "Contaci! Maestro, io vado!"
+  ]
+ ],
+ "s079.sec6.u22": "Tyrannomon si è unito alla città!",
+ "s079.sec6.u23": [
+  [
+   "Vediamo quanta strada farà...",
+   "Eh."
+  ]
+ ],
+ "s079.sec7.u0": [
+  [
+   "Eh... Da quanti anni non facevo",
+   "la guardia qui? Ah, puoi andare",
+   "e venire liberamente."
+  ],
+  [
+   "Approfittane."
+  ]
+ ],
+ "s079.sec8.u0": [
+  [
+   "Eh... Da quanti anni non facevo",
+   "la guardia qui? Ah, puoi andare",
+   "e venire liberamente."
+  ],
+  [
+   "Approfittane."
+  ]
+ ],
+ "s079.sec51.m0.o0": "Ci aiuterai?",
+ "s079.sec51.m0.o1": "No... lascia perdere...",
+ "s079.sec51.u0": [
+  [
+   "Ah, siete voi. L'Antica zona",
+   "veloce è qui davanti. Meglio",
+   "non avvicinarsi troppo."
+  ]
+ ],
+ "s079.sec51.u1": [
+  [
+   "Come ti ho detto, abbiamo due",
+   "obiettivi: trovare la causa dei",
+   "problemi e portare Digimon in"
+  ],
+  [
+   "città."
+  ]
+ ],
+ "s079.sec51.u2": [
+  [
+   "Ah, E' vero. E' quello che mi",
+   "hai detto. E?"
+  ]
+ ],
+ "s079.sec51.u3": [
+  [
+   "Non contare su di me. Ho",
+   "l'importante compito di",
+   "sorvegliare questa foresta."
+  ]
+ ],
+ "s079.sec51.u4": [
+  [
+   "Allora, sai qualcosa dei",
+   "problemi dell'isola?"
+  ]
+ ],
+ "s079.sec51.u5": [
+  [
+   "No, proprio niente... Mh...?",
+   "Aspetta... Ora che lo dici,",
+   "tempo fa è caduta un'enorme"
+  ],
+  [
+   "roccia dal cielo... Era..."
+  ]
+ ],
+ "s079.sec51.u6": [
+  [
+   "Eh? Dove è caduta?!"
+  ]
+ ],
+ "s079.sec51.u7": [
+  [
+   "...Nell'Antica zona veloce.",
+   "Proprio da questa parte..."
+  ]
+ ],
+ "s079.sec51.u8": [
+  [
+   "Ti prego, lasciaci passare!",
+   "Potrebbe esserci un indizio!"
+  ]
+ ],
+ "s079.sec51.u9": [
+  [
+   "..................... Uff... Se",
+   "ci tieni tanto, non ho",
+   "scelta... Dopotutto mi hai"
+  ],
+  [
+   "battuto. Bene, va' a dare",
+   "un'occhiata."
+  ]
+ ],
+ "s079.sec51.u10": [
+  [
+   "Da qui in poi il tempo scorre",
+   "al doppio della velocità",
+   "rispetto a fuori. Porta tanto"
+  ],
+  [
+   "cibo. E attento alla durata",
+   "della vita, ovviamente."
+  ]
+ ],
+ "s079.sec51.u11": [
+  [
+   "Prova a chiedere altrove."
+  ]
+ ]
+}

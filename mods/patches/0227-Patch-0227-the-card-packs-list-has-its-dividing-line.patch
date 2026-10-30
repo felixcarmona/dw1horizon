@@ -1,0 +1,28 @@
+From 9d2198648d4c96a94ae7f17586b789fef5f99c9f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 20:39:25 +0000
+Subject: [PATCH] Patch 0227: the card packs' list has its dividing line again,
+ under the centred head (by + 5) at 0x15, clear of the letters and of the
+ cursor (0x19). 0 bytes of heap
+
+---
+ src/shop/script_menu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 60db682c..fc5b0e37 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -3648,7 +3648,8 @@ static void renderPackResults(void)
+ 	by = UI_BOX_DATA[1].finalPos.y;
+ 	getVRAMModeCoords(text->vramMode, &u, &w);
+ 	v = (9 + text->backPage * text->vramRows) * 12;
+-	renderString(0, bx + (0xde - PACK_HEAD_W) / 2, by + 7, PACK_HEAD_W, 0xc, u, v, 5, 1); /* the head centred, no line */
++	renderString(0, bx + (0xde - PACK_HEAD_W) / 2, by + 5, PACK_HEAD_W, 0xc, u, v, 5, 1); /* the head centred */
++	renderHorizontalLine(1, 4, 0x15, 0xd7); /* under it, clear of the letters and of the cursor (0x19) */
+ 	renderItemMenuScrollBar(box);
+ 	count = box->itemCount;
+ 	if (PACK_SHOWN < count) {
+-- 
+2.55.0
+

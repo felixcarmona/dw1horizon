@@ -1,0 +1,79 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "native": "extracted/CHDAT/MMD3/TENT.MMD",
+ "type": 111,
+ "name": "Tentomon",
+ "source": {
+  "type": 51,
+  "mmd": "extracted/CHDAT/MMD1/KUWA.MMD"
+ },
+ "map": {
+  "2": 2,
+  "3": 1,
+  "6": 3,
+  "8": 4,
+  "11": 5,
+  "13": 6,
+  "15": 8,
+  "17": 11,
+  "19": 24,
+  "20": 25,
+  "21": 27,
+  "22": 28,
+  "24": 26,
+  "26": 29
+ },
+ "hips": [
+  1,
+  1,
+  0.687
+ ],
+ "root_scale": 0.687,
+ "tol": 2,
+ "retarget": [
+  "0x05",
+  "0x07",
+  "0x08",
+  "0x09",
+  "0x0a",
+  "0x0b",
+  "0x0c",
+  "0x0d",
+  "0x0e",
+  "0x0f",
+  "0x10",
+  "0x11",
+  "0x12",
+  "0x15",
+  "0x16",
+  "0x17",
+  "0x18",
+  "0x19"
+ ],
+ "own": {
+  "0x03": {
+   "from": 2,
+   "stretch": 1.5
+  },
+  "0x1b": {
+   "from": 4
+  }
+ },
+ "layer": {
+  "anim": "idle",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

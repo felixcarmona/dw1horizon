@@ -1,0 +1,600 @@
+From 71d4953b8a644f380e7236928d4d5cdbada5b233 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:05:03 +0000
+Subject: [PATCH 197/199] Patch 0196: less waiting, widened. Battle x2 in every
+ battle: the R2 switch, its plate and the arming are resident (modSpeedInput,
+ modSpeedPlateAdd, modSpeedBeforeTick, mod_qol.c), shared by BTL, STD (from a
+ match's intro to its end; its finisher charge counts a press twice at x2) and
+ VS (its fight loop, R2 of the first pad). Every evolution can be skipped with
+ START, the plate says START SKIP / START OMITIR (by MOD_LANG). Training x5 is
+ the gym menu's row: the script sets the Bonus Try flag (pstat 246) to 2, the
+ session's setup turns it into a normal session in a block (modBlockArm); the
+ R2 switch and its plate are gone
+
+---
+ include/dw/btl.h      |  2 -
+ include/dw/evl.h      |  2 +-
+ include/dw/mod_qol.h  | 13 ++++--
+ src/btl/battle_hud.c  | 29 ++-----------
+ src/btl/battle_main.c |  3 +-
+ src/evl/evl.c         |  2 +-
+ src/main/evl.c        |  9 ++--
+ src/main/main.c       |  1 -
+ src/main/mod_qol.c    | 95 ++++++++++++++++++++++++++++++++++++++-----
+ src/std/std_hud.c     |  7 +++-
+ src/std/std_main.c    |  8 ++++
+ src/std/std_setup.c   |  3 ++
+ src/trn/trn_block.h   | 38 +++++------------
+ src/vs/vs_combat.c    |  3 ++
+ src/vs/vs_main.c      |  7 ++++
+ 15 files changed, 145 insertions(+), 77 deletions(-)
+
+diff --git a/include/dw/btl.h b/include/dw/btl.h
+index 8cc00382..420bf0b1 100644
+--- a/include/dw/btl.h
++++ b/include/dw/btl.h
+@@ -178,9 +178,7 @@ int32_t BTL_isBattleFinished(void);
+ void BTL_removeDeathCountdown(void);
+ int32_t BTL_isCommandMenuClosed(void);
+ void BTL_removePartnerStatusBars(void);
+-void BTL_renderSpeedPlate(void); /* MOD (battle speed) */
+ void BTL_modSpeedBeforeTick(void);
+-void BTL_modSpeedInput(void);
+ void BTL_removeFinisherChargeup(void);
+ void BTL_removeAllFinisherAuras(void);
+ void BTL_removeAllPoisonEffects(void);
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index 9493764b..9a256b44 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -89,7 +89,7 @@ typedef struct {
+ 
+ extern EvlSpark EVL_D_80068F84[];
+ extern EvoSequenceData EVO_SEQUENCE_DATA;
+-/* MOD (evolution skip, main evl.c): 1 the scene may be skipped (its species was raised before), 2 START asked for it */
++/* MOD (evolution skip, main evl.c): 1 the scene may be skipped, 2 START asked for it */
+ extern int8_t MOD_EVO_SKIP;
+ 
+ extern EvoStatsGains EVOLUTION_STATS_GAINS[NUM_ORIGINAL_DIGIMON];
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+index 84f668a5..f02ca61d 100644
+--- a/include/dw/mod_qol.h
++++ b/include/dw/mod_qol.h
+@@ -5,12 +5,19 @@
+ 
+ /* MOD (quality of life, src/main/mod_qol.c) */
+ 
+-/* a plate at (x, y) with text (the letters R 2 x 1 5 S T A and spaces): the letters from index hi on in (r, g, b), the
++/* a plate at (x, y) with text (the letters R 2 x 1 5 S T A K I P O M and spaces): the letters from index hi on in (r, g, b), the
+    others white */
+ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b);
++/* the battle speed (BTL, STD, VS): before each tick of a battle's loop, held = the fight stays at x1; after the pad is
++   read, R2 switches x1 / x2; the plate (object 0x19b) in the bottom right corner. MOD_SPEED_FIGHT: the plate is up */
++extern int8_t MOD_SPEED_FIGHT;
++void modSpeedBeforeTick(int32_t held);
++void modSpeedInput(void);
++void modSpeedPlateAdd(void);
++void modSpeedPlateRemove(void);
++/* the evolution's skip hint: START SKIP (START OMITIR in Spanish) */
++void modSkipPlate(void);
+ 
+-/* the training block (src/trn/trn_block.h): x1 (0) or x5 (1), switched with R2 in a gym session (main.c) */
+-extern int8_t MOD_TRAIN_BLOCK;
+ /* why a block stops (MOD_TB_LEARNED is the block's own check) after a session that started at minute t0 of the day, with the gym's tiredness rule tiredAt */
+ enum { MOD_TB_GO, MOD_TB_HUNGRY, MOD_TB_TOILET, MOD_TB_SLEEPY, MOD_TB_TIRED, MOD_TB_UNWELL, MOD_TB_EVOLVE, MOD_TB_LIFE,
+        MOD_TB_LEARNED };
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index f9f9161f..f7822628 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -1301,7 +1301,7 @@ void BTL_initializePartnerStatusBars(void)
+ 	BTL_FINISHER_READY = 0;
+ 	BTL_HP_BAR_STEP = BTL_MP_BAR_STEP = 0;
+ 	addObject(0x19c, 0, (TickFunction)BTL_tickPartnerStatusBars, (RenderFunction)BTL_renderPartnerStatusBars);
+-	addObject(0x19b, 0, NULL, (RenderFunction)BTL_renderSpeedPlate); /* MOD (battle speed) */
++	modSpeedPlateAdd(); /* MOD (battle speed, mod_qol.c) */
+ }
+ 
+ void BTL_tickPartnerStatusBars(void)
+@@ -1404,13 +1404,12 @@ void BTL_renderPartnerStatusBars(int16_t idx)
+ void BTL_removePartnerStatusBars(void)
+ {
+ 	removeObject(0x19c, 0);
+-	removeObject(0x19b, 0); /* MOD (battle speed) */
++	modSpeedPlateRemove(); /* MOD (battle speed) */
+ }
+ 
+ /* MOD (battle speed): R2 switches the fight between x1 and x2 (MOD_BATTLE_FAST, main.c). The fight is held at x1
+  * while the item menu is open or an item is in hand, and while the defeat countdown runs (its seconds stay real).
+- * A plate in the bottom right corner (modPlate, mod_qol.c) shows "R2 x1" (white) or "R2 x2" (yellow; grey while
+- * held). */
++ * The switch and its plate are mod_qol.c's (modSpeedInput, modSpeedPlateAdd), shared with STD and VS. */
+ extern int32_t IS_INVENTORY_INITIALIZED;
+ extern int16_t DEATH_COUNTDOWN;
+ 
+@@ -1419,28 +1418,8 @@ static int32_t BTL_modSpeedHeld(void)
+ 	return IS_INVENTORY_INITIALIZED == 1 || TAMER_ITEM.worldItem.type != ITEM_NONE || DEATH_COUNTDOWN != 0;
+ }
+ 
+-void BTL_renderSpeedPlate(void)
+-{
+-	if (!MOD_BATTLE_FAST) {
+-		modPlate(0x80, 0x60, "R2 x1", 3, 0xF0, 0xF0, 0xF0);
+-	} else if (BTL_modSpeedHeld()) {
+-		modPlate(0x80, 0x60, "R2 x2", 3, 0x80, 0x80, 0x80);
+-	} else {
+-		modPlate(0x80, 0x60, "R2 x2", 3, 0xF8, 0xD8, 0x30);
+-	}
+-}
+-
+ /* before each tick of the battle's loops: whether it may run fast */
+ void BTL_modSpeedBeforeTick(void)
+ {
+-	MOD_BATTLE_FAST_TICK = MOD_BATTLE_FAST && !BTL_modSpeedHeld();
+-}
+-
+-/* after the pad is read: R2 switches the speed */
+-void BTL_modSpeedInput(void)
+-{
+-	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 2) {
+-		MOD_BATTLE_FAST ^= 1;
+-		playSound(0, 2);
+-	}
++	modSpeedBeforeTick(BTL_modSpeedHeld());
+ }
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index af87af37..46345ab7 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -14,6 +14,7 @@
+ #include <dw/item.h>
+ #include <dw/math.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_qol.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+ #include <dw/script.h>
+@@ -2658,7 +2659,7 @@ void BTL_battleTickFrame(void)
+ 	BTL_modSpeedBeforeTick(); /* MOD (battle speed) */
+ 	modTickStart(MOD_PRESENT_BATTLE);
+ 	POLLED_INPUT = PadRead(1);
+-	BTL_modSpeedInput();
++	modSpeedInput(); /* MOD (battle speed, mod_qol.c) */
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 9e045768..c0a31985 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -605,7 +605,7 @@ shards:
+ void EVL_renderEvoSequence(void)
+ {
+ 	if (MOD_EVO_SKIP == 1 && EVO_SEQUENCE_DATA.state < 3) {
+-		modPlate(0x80, 0x60, "START", 5, 0, 0, 0); /* MOD (evolution skip): the hint, white (mod_qol.c) */
++		modSkipPlate(); /* MOD (evolution skip): the hint (mod_qol.c) */
+ 	}
+ }
+ 
+diff --git a/src/main/evl.c b/src/main/evl.c
+index 6fee2187..eafb0e49 100644
+--- a/src/main/evl.c
++++ b/src/main/evl.c
+@@ -18,12 +18,11 @@ void isSoundLoaded();
+ void loadVLALL();
+ 
+ int8_t IS_LOAD_EVL_COMPLETE;
+-/* MOD (evolution skip): an evolution into a species raised before can be skipped with START, from the start of the
+- * scene; the loading waits end at once, and the EVL overlay jumps to the evolution itself (EVL_modSkipToEnd) */
++/* MOD (evolution skip): every evolution can be skipped with START (a plate says so), from the start of the scene; the
++ * loading waits end at once, and the EVL overlay jumps to the evolution itself (EVL_modSkipToEnd) */
+ int8_t MOD_EVO_SKIP;
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+-int32_t hasDigimonRaised(int32_t digimonId);
+ 
+ EvoSequenceData EVO_SEQUENCE_DATA;
+ 
+@@ -76,7 +75,7 @@ void renderEvoSequenceLoading(int32_t instanceId)
+ 
+ 	data = &EVO_SEQUENCE_DATA;
+ 	if (MOD_EVO_SKIP == 1) {
+-		modPlate(0x80, 0x60, "START", 5, 0, 0, 0); /* MOD (evolution skip): the hint (mod_qol.c) */
++		modSkipPlate(); /* MOD (evolution skip): the hint (mod_qol.c) */
+ 	}
+ }
+ 
+@@ -107,7 +106,7 @@ int16_t isInitialized;
+ 	data->evoTarget = target;
+ 	data->heightFactor = (DIGI_PARA(data->digimonId).height << 12) /
+ 			     DIGI_PARA(partner->digimonEntity.entity.type).height;
+-	MOD_EVO_SKIP = hasDigimonRaised(data->digimonId) ? 1 : 0;
++	MOD_EVO_SKIP = 1; /* MOD (evolution skip): every evolution */
+ 
+ 	startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0);
+ 	stopSound();
+diff --git a/src/main/main.c b/src/main/main.c
+index 9ef5d7eb..83c122fa 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5216,7 +5216,6 @@ int8_t MOD_TICK_FAST;
+ int8_t MOD_REAL_TICK = 1;
+ static int32_t modTickPeriod = 3;
+ static int32_t modFastDue; /* the refresh the next fast tick is due at */
+-int8_t MOD_TRAIN_BLOCK; /* MOD (training block, src/trn/trn_block.h): R2 in a gym session, x1 (0) or x5 (1) */
+ 
+ static int32_t modTickRefreshes(void)
+ {
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index baceb620..4db2d247 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -1,9 +1,9 @@
+ /*
+  * MOD (quality of life): what the speed-ups share (docs/mods/quality-of-life.md).
+  *
+- * Plates. A battle (R2 x1 / x2, patch 0184), an evolution that can be skipped (START, 0185) and a gym session (R2 x1 /
+- * x5, 0186) show a small plate in the bottom right corner in the digital clock's style: 3x5 letters on a dark plate
+- * with a light blue edge. modPlate draws one; its letters are the ones these plates need.
++ * Plates. A battle (R2 x1 / x2, patches 0184, 0192) and an evolution (START SKIP, 0185, 0193) show a small plate in
++ * the bottom right corner in the digital clock's style: 3x5 letters on a dark plate with a light blue edge. modPlate
++ * draws one; its letters are the ones these plates need.
+  *
+  * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
+  * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
+@@ -16,18 +16,25 @@
+ 
+ #include <dw/types.h>
+ #include <dw/entity.h>
++#include <dw/lang.h>
+ #include <dw/level.h>
++#include <dw/mod_options.h>
+ #include <dw/mod_qol.h>
++#include <dw/mod_present.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
++#include <dw/sound.h>
++#include <dw/world_object.h>
+ 
+ #include "common.h"
+ 
+ extern GsOT *ACTIVE_ORDERING_TABLE;
++extern uint32_t POLLED_INPUT;
++extern uint32_t POLLED_INPUT_PREVIOUS;
+ 
+ /* each row of a letter is 3 bits, bit 2 the left column */
+-static const char MOD_PLATE_CHARS[] = "R2x15STA";
+-static const uint8_t MOD_PLATE_GLYPHS[8][5] = {
++static const char MOD_PLATE_CHARS[] = "R2x15STAKIPOM";
++static const uint8_t MOD_PLATE_GLYPHS[13][5] = {
+ 	{ 6, 5, 6, 5, 5 }, /* R */
+ 	{ 7, 1, 7, 4, 7 }, /* 2 */
+ 	{ 0, 0, 5, 2, 5 }, /* x */
+@@ -36,8 +43,16 @@ static const uint8_t MOD_PLATE_GLYPHS[8][5] = {
+ 	{ 7, 4, 7, 1, 7 }, /* S */
+ 	{ 7, 2, 2, 2, 2 }, /* T */
+ 	{ 2, 5, 7, 5, 5 }, /* A */
++	{ 5, 5, 6, 5, 5 }, /* K */
++	{ 7, 2, 2, 2, 7 }, /* I */
++	{ 6, 5, 6, 4, 4 }, /* P */
++	{ 7, 5, 5, 5, 7 }, /* O */
++	{ 5, 7, 7, 5, 5 }, /* M */
+ };
+ 
++/* the skip hint's words after START, by MOD_LANG */
++static const char *const MOD_SKIP_TEXT[MOD_LANGS] = { "START SKIP", "START OMITIR" };
++
+ static void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
+ {
+ 	POLY_F4 *p;
+@@ -50,21 +65,27 @@ static void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r,
+ 	GsSetWorkBase((PACKET *)p);
+ }
+ 
++static int32_t modPlateWidth(const char *text)
++{
++	int32_t w = 5;
++
++	for (; *text != 0; text++) {
++		w += *text == ' ' ? 2 : 4;
++	}
++	return w;
++}
++
+ /* a letter advances 4 pixels, a space 2; the plate is 9 high and as wide as its text plus 5. A later prim at the same
+    depth is drawn under an earlier one, so edge, inside and letters go 6, 5, 4 */
+ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b)
+ {
+-	const char *t;
+-	int32_t w = 5;
++	int32_t w = modPlateWidth(text);
+ 	int32_t px;
+ 	int32_t i;
+ 	int32_t row;
+ 	int32_t col;
+ 	int32_t k;
+ 
+-	for (t = text; *t != 0; t++) {
+-		w += *t == ' ' ? 2 : 4;
+-	}
+ 	modPlateRect(x, y, w, 9, 0x62, 0xB4, 0xF6, 6);
+ 	modPlateRect(x + 1, y + 1, w - 2, 7, 0x18, 0x18, 0x18, 5);
+ 	px = x + 3;
+@@ -90,6 +111,60 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 	}
+ }
+ 
++/* the evolution's skip hint, its right edge where the battle's plate ends: START white, the word light blue */
++void modSkipPlate(void)
++{
++	const char *text = MOD_SKIP_TEXT[MOD_LANG == MOD_LANG_ES];
++
++	modPlate(0x80 + 23 - modPlateWidth(text), 0x60, text, 5, 0x62, 0xB4, 0xF6);
++}
++
++/* the battle speed of the three battle overlays (BTL field battles, STD arena and tournaments, VS): R2 switches x1 /
++   x2, the overlay says before each tick whether the fight is held at x1 (BTL: the item menu, the defeat countdown) */
++int8_t MOD_SPEED_FIGHT; /* the plate is up: a fight of STD or VS reads R2 and may run fast */
++static int8_t MOD_SPEED_HELD;
++
++void modSpeedBeforeTick(int32_t held)
++{
++	MOD_SPEED_HELD = held;
++	MOD_BATTLE_FAST_TICK = MOD_BATTLE_FAST && !held;
++}
++
++/* after the pad is read: R2 of the first pad */
++void modSpeedInput(void)
++{
++	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 2) {
++		MOD_BATTLE_FAST ^= 1;
++		playSound(0, 2);
++	}
++}
++
++/* "R2 x1" white, "R2 x2" yellow, grey while held */
++static void modSpeedPlate(int32_t instanceId)
++{
++	(void)instanceId;
++	if (!MOD_BATTLE_FAST) {
++		modPlate(0x80, 0x60, "R2 x1", 3, 0xF0, 0xF0, 0xF0);
++	} else if (MOD_SPEED_HELD) {
++		modPlate(0x80, 0x60, "R2 x2", 3, 0x80, 0x80, 0x80);
++	} else {
++		modPlate(0x80, 0x60, "R2 x2", 3, 0xF8, 0xD8, 0x30);
++	}
++}
++
++void modSpeedPlateAdd(void)
++{
++	MOD_SPEED_HELD = 0;
++	MOD_SPEED_FIGHT = 1;
++	addObject(0x19b, 0, NULL, (RenderFunction)modSpeedPlate);
++}
++
++void modSpeedPlateRemove(void)
++{
++	MOD_SPEED_FIGHT = 0;
++	removeObject(0x19b, 0);
++}
++
+ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
+ {
+ 	int32_t level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 7b7989e0..3d95c28a 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -20,6 +20,7 @@
+ #include <dw/math.h>
+ #include <dw/memmap.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_qol.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -586,7 +587,11 @@ void STD_tickFinisherChargeup(void)
+ 	}
+ 
+ 	if ((COMBAT_DATA_PTR->player.finisherChargeup[0] < BM(CHG_MAX)) && (up != 0)) {
+-		COMBAT_DATA_PTR->player.finisherChargeup[0] += BM(CHG_PRESS);
++		/* MOD (battle speed): at x2 the window lasts half the real time, so a press counts twice */
++		COMBAT_DATA_PTR->player.finisherChargeup[0] += MOD_TICK_FAST ? 2 * BM(CHG_PRESS) : BM(CHG_PRESS);
++		if (COMBAT_DATA_PTR->player.finisherChargeup[0] > BM(CHG_MAX)) {
++			COMBAT_DATA_PTR->player.finisherChargeup[0] = BM(CHG_MAX);
++		}
+ 	}
+ }
+ 
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index d82c1900..15fb6aa8 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -25,6 +25,8 @@
+ #include <dw/main.h>
+ #include <dw/math.h>
+ #include <dw/mod_fps.h>
++#include <dw/mod_present.h>
++#include <dw/mod_qol.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -6187,8 +6189,14 @@ void STD_battleTickFrame(void)
+ {
+ 	/* MOD (fps): rendered by the shared tick / present helper (main.c),
+ 	 * like BTL_battleTickFrame; the AI before this call is part of the tick */
++	if (MOD_SPEED_FIGHT) {
++		modSpeedBeforeTick(0); /* MOD (battle speed, mod_qol.c): a match (STD_runMatch) */
++	}
+ 	modTickStart(MOD_PRESENT_BATTLE);
+ 	POLLED_INPUT = PadRead(1);
++	if (MOD_SPEED_FIGHT) {
++		modSpeedInput();
++	}
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 990b6bb6..8f4ec093 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -14,6 +14,7 @@
+ #include <dw/ids.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
++#include <dw/mod_qol.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -391,9 +392,11 @@ int16_t STD_runMatch(Entity *opponent, int16_t b)
+ 
+ 	ENTITY_TABLE[1]->isOnScreen = 1;
+ 	GAME_STATE = 5;
++	modSpeedPlateAdd(); /* MOD (battle speed): R2 x1 / x2 from the intro to the end of the match */
+ 	STD_runIntro(b);
+ 	STD_CAMERA_STATE = 1;
+ 	result = STD_combatMain(ENTITY_TABLE[0], opponent);
++	modSpeedPlateRemove();
+ 	STD_removeCameraIntro();
+ 	STD_CAMERA_STATE = 10;
+ 	return result;
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index e7907461..a5e8fd9d 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -1,7 +1,6 @@
+ /*
+- * MOD (training block): R2 during a gym session switches the sessions between x1 and x5 (MOD_TRAIN_BLOCK, main.c,
+- * kept until the console resets; never with Bonus Try, whose reels are played). A plate in the bottom right corner
+- * shows "R2 x1" (white) or "R2 x5" (yellow) until the session's gains are worked out. In a block the animation is
++ * MOD (training block): a gym's training menu has a "Normal training x5" row (story/base: the script sets the Bonus
++ * Try flag, pstat 246, to 2 for it; never with Bonus Try, whose reels are played). In a block the animation is
+  * the first session's; then the gym's own award function runs once per session, each with its hour of game time
+  * and its care costs, the gains of one added to the stats before the next (so a brains mark is crossed as it would
+  * be), and the block stops after the session that left the partner hungry, needing the toilet, sleepy, tired, hurt
+@@ -20,13 +19,10 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ #include <dw/mod_qol.h>
+-#include <dw/sound.h>
+ #include <dw/ui.h>
+ 
+ extern int16_t INITIAL_COMBAT_STATS[][6];
+ extern int16_t STATS_GAINS[6];
+-extern uint32_t POLLED_INPUT;
+-extern uint32_t POLLED_INPUT_PREVIOUS;
+ void clearTextSubArea(RECT *rect);
+ void createMenuBox(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, void (*tick)(void), void (*render)(void));
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+@@ -47,6 +43,7 @@ static char *const TB_REASONS[] = {
+ };
+ 
+ int8_t TB(MOD_QUIET); /* the stats box waits for the block's last session */
++static int8_t TB_x5; /* the menu's x5 row */
+ static int8_t TB_count;
+ static int8_t TB_done;
+ static int8_t TB_reason;
+@@ -56,27 +53,15 @@ static int16_t TB_pre[6];
+ static int16_t TB_sum[6];
+ static char TB_doneText[64];
+ 
+-static void TB_renderPlate(int32_t instanceId)
+-{
+-	(void)instanceId;
+-	modPlate(0x80, 0x60, MOD_TRAIN_BLOCK ? "R2 x5" : "R2 x1", 3, 0xF8, MOD_TRAIN_BLOCK ? 0xD8 : 0xF0,
+-		 MOD_TRAIN_BLOCK ? 0x30 : 0xF0);
+-}
+-
+-static void TB_tickPlate(int32_t instanceId)
+-{
+-	(void)instanceId;
+-	if (((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 2) && !(POLLED_INPUT & 0x100)) {
+-		MOD_TRAIN_BLOCK ^= 1;
+-		playSound(0, 2);
+-	}
+-}
+-
+-/* from the session's setup (TB(saveTrainingStartTime)): the plate, but not for the Bonus Try or a block's next hour */
++/* from the session's setup (TB(saveTrainingStartTime)), after it read the flag: the menu's x5 row is a normal session
++   in a block (not a block's next hour, which arms again) */
+ void TB(modBlockArm)(void)
+ {
+-	if (TB_SLOT == 0 && !TB(MOD_QUIET)) {
+-		addObject(0xfb2, 0, (TickFunction)TB_tickPlate, (RenderFunction)TB_renderPlate);
++	if (!TB(MOD_QUIET)) {
++		TB_x5 = TB_SLOT == 2;
++		if (TB_x5) {
++			TB_SLOT = 0;
++		}
+ 	}
+ }
+ 
+@@ -102,8 +87,7 @@ void TB(modBlockBegin)(void)
+ {
+ 	int32_t i;
+ 
+-	removeObject(0xfb2, 0);
+-	TB_count = (MOD_TRAIN_BLOCK && TB_SLOT == 0) ? 5 : 1;
++	TB_count = TB_x5 ? 5 : 1;
+ 	TB_done = 0;
+ 	TB_reason = MOD_TB_GO;
+ 	TB_box2Before = UI_BOX_DATA[2].state != 0;
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index e5fd33ea..7cb33858 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -18,6 +18,7 @@
+ #include <dw/input.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
++#include <dw/mod_qol.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -2465,6 +2466,7 @@ int32_t VS__combatMain(void)
+ 	playMusic(VS_MUSIC, 2);
+ 	VS__combatInit();
+ 	VS__combatSetup();
++	modSpeedPlateAdd(); /* MOD (battle speed): R2 x1 / x2 in the fight, not its result screen */
+ 
+ 	while (1) {
+ 		result = VS__checkEndCondition();
+@@ -2479,6 +2481,7 @@ int32_t VS__combatMain(void)
+ 		VS__handlePause();
+ 	}
+ 
++	modSpeedPlateRemove();
+ 	removePauseBox();
+ 
+ 	if (result == -1) {
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index fdea0c6a..5d275f73 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -11,6 +11,7 @@
+ #include <dw/item.h>
+ #include <dw/math.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_qol.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+ #include <dw/types.h>
+@@ -1062,9 +1063,15 @@ void VS_tickFrame(void)
+ {
+ 	/* MOD (fps): rendered by the shared tick / present helper (main.c),
+ 	 * like BTL_battleTickFrame */
++	if (MOD_SPEED_FIGHT) {
++		modSpeedBeforeTick(0); /* MOD (battle speed, mod_qol.c): the fight (VS__combatMain) */
++	}
+ 	modTickStart(MOD_PRESENT_BATTLE);
+ 	POLLED_INPUT_PREVIOUS = POLLED_INPUT;
+ 	POLLED_INPUT = PadRead(1);
++	if (MOD_SPEED_FIGHT) {
++		modSpeedInput();
++	}
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+-- 
+2.53.0
+

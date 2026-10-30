@@ -1,0 +1,102 @@
+{
+ "s007.sec81.m0.o0": "Play the flute",
+ "s007.sec81.m0.o1": "Don't play it",
+ "s007.sec81.u0": "Oh, that's right.",
+ "s007.sec81.u1": "Play the {color 6}Blue Flute{color 1}?",
+ "s007.sec81.u2": "My friend, have you need of my power?",
+ "s007.sec81.u3": "Give me a ride to the other shore.",
+ "s007.sec81.u4": "Easily done. Now, climb on.",
+ "s007.sec82.m0.o0": "Let's be friends",
+ "s007.sec82.m0.o1": "Teach me a technique!",
+ "s007.sec82.m0.o2": "I want an item",
+ "s007.sec82.m1.o0": "Let's be friends",
+ "s007.sec82.m1.o1": "Teach me a technique!",
+ "s007.sec82.m1.o2": "I want an item",
+ "s007.sec82.m2.o0": "Oh, I'll go, I'll go!",
+ "s007.sec82.m2.o1": "I'll get ready and come back",
+ "s007.sec82.u0": "Seadramon!",
+ "s007.sec82.u1": "We meet again. Have you a wish?",
+ "s007.sec82.u2": "You and I are already friends. Any other wish?",
+ "s007.sec82.u3": "Wh-whoaaa! It's the guardian of the lake!",
+ "s007.sec82.u4": [
+  [
+   "Phew... Indeed. I am Seadramon. You're the",
+   "one who's been fishing so much lately, aren't",
+   "you?"
+  ],
+  [
+   "Well, no matter. Have you a wish?"
+  ]
+ ],
+ "s007.sec82.u5": "Whoa! ...Just what you'd expect from the guardian. Amazing. Um, well then...",
+ "s007.sec82.u6": [
+  [
+   "Very well, so be it."
+  ],
+  [
+   "From now on, you and I are friends. As a",
+   "token of it, I give you this flute."
+  ]
+ ],
+ "s007.sec82.u7": "Oh no, I'm carrying too many items. I need to throw something out.",
+ "s007.sec82.u8": "Got the {color 6}Blue Flute{color 1}!",
+ "s007.sec82.u9": "Play it near the lake, and I'll appear any time. As a friend, I'll carry you across.",
+ "s007.sec82.u10": "Whoa, so I can get to the other side! Thanks!",
+ "s007.sec82.u11": "Across the lake lies a rather strange forest. Will you go there now?",
+ "s007.sec82.u12": "Mm. Then I shall teach you this technique.",
+ "s007.sec82.u13": "Learned Aqua Magic!",
+ "s007.sec82.u14": "Learned Winter Blast!",
+ "s007.sec82.u15": "Learned Giga Freeze!",
+ "s007.sec82.u16": "Hmm, it seems there are no more techniques I can teach you...",
+ "s007.sec82.u17": "Then farewell.",
+ "s007.sec82.u18": "Mm. I shall give you the {color 6}Water Bottle{color 1}.",
+ "s007.sec82.u19": "Oh no, I'm carrying too many items. I need to throw something out.",
+ "s007.sec82.u20": "Got the {color 6}Water Bottle{color 1}!",
+ "s007.sec82.u21": "Then farewell for now.",
+ "s007.sec82.u22": "Then climb on my back.",
+ "s007.sec82.u23": "Then, farewell for the time being.",
+ "s009.sec81.m0.o0": "Meat: 300 Bits",
+ "s009.sec81.m0.o1": "Digimushroom: 600 Bits",
+ "s009.sec81.m0.o2": "Don't buy",
+ "s009.sec81.u0": "Vending Machine",
+ "s009.sec81.u1": "Yikes, this vending machine is pricey.",
+ "s009.sec81.u2": "Not enough money, huh.",
+ "s009.sec81.u3": "Not enough money, huh.",
+ "s009.sec81.u4": "{color 6}Meat{color 1} came out!",
+ "s009.sec81.u5": "Oops, my bag's full.",
+ "s009.sec81.u6": "A {color 6}Digimushroom{color 1} came out!",
+ "s009.sec81.u7": "Oops, my bag's full.",
+ "s009.sec82.u0": [
+  [
+   "How to Fish",
+   "First, get a rod. A fishing",
+   "icon then shows up in the",
+   "submenu, under {color 5}△{color 1}. Press it.",
+   "Press {color 6}×{color 1} to bait the hook:",
+   "choose one of the foods you",
+   "are carrying."
+  ],
+  [
+   "Next, turn left or right",
+   "with the direction buttons.",
+   "Then press {color 6}×{color 1} to raise the",
+   "rod and {color 6}×{color 1} again to cast.",
+   "Wait for the float to sink:",
+   "that means a fish has",
+   "bitten. Pull with {color 6}×{color 1}."
+  ],
+  [
+   "Now watch the gauge at the",
+   "top left: let go of {color 6}×{color 1} before",
+   "it fills up, or the line",
+   "will snap. Reel the float",
+   "all the way in, and you've",
+   "caught the fish."
+  ],
+  [
+   "If an X shows on a fish's",
+   "shadow, that fish won't bite",
+   "the bait you are using now."
+  ]
+ ]
+}

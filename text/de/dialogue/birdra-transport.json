@@ -1,0 +1,49 @@
+{
+ "s167.sec6.u0": [
+  [
+   "Hey, {color 6}{player}{color 1}."
+  ]
+ ],
+ "s167.sec6.u1": [
+  [
+   "Ich kehre ab und zu für meine",
+   "Patrouillen in die",
+   "Zahnradsavanne zurück. Dieser"
+  ],
+  [
+   "Laden ist dafür sehr nützlich."
+  ]
+ ],
+ "s167.sec6.u2": [
+  [
+   "Übrigens soll es an der Küste",
+   "der Zahnradsavanne einen",
+   "Laden geben. Warst du schon"
+  ],
+  [
+   "dort?"
+  ]
+ ],
+ "s167.sec81.u0": [
+  [
+   "Da seid ihr ja, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Ich bin",
+   "Transporteur. Ich befördere"
+  ],
+  [
+   "alles. Aber ihr beide habt ja",
+   "nur euch selbst zu tragen...",
+   "Also... Wie wäre es, wenn ich"
+  ],
+  [
+   "euch mit Haut und Haaren",
+   "befördere? Keine schlechte",
+   "Idee, oder? He... Ich bringe"
+  ],
+  [
+   "euch jederzeit an jeden Ort,",
+   "den ihr kennt. Gegen Bezahlung",
+   "natürlich."
+  ]
+ ]
+}

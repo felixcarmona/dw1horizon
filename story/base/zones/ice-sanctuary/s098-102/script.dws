@@ -1,0 +1,69 @@
+// Readable form of script 98 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 98 {
+    npc icemon = 5;
+    npc hyogamon1 = 6;
+    npc hyogamon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6, 7, 52;
+
+    on enter replace {    // section 254
+        spawn_chest(item("sup.recovery"), 9, 0, 1196, 0, 660);
+        spawn_chest(item("Large MP"), 1223, 0, 266, 1024, 661);
+        if (angemon_voice_heard) {
+            set_obj_visibility(0, 1);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        warp_to(101, 0, 255);
+    }
+
+    on talk(icemon) replace {    // section 5
+        say(icemon, text("s098.sec5.u0"));
+        battle();
+        recruit(species("Icemon"));
+    }
+
+    on talk(hyogamon1) replace {    // section 6
+        say(hyogamon1, text("s098.sec6.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(hyogamon2) replace {    // section 7
+        say(hyogamon2, text("s098.sec7.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on step(1) replace {    // section 52
+        unless (!angemon_voice_heard) return;
+        animate(tamer, 22);
+        sound(8, 9);
+        wait(15);
+        say(tamer, text("s098.sec52.u0"));
+        animate(tamer, anim.idle);
+        engine.arg = 40;
+        call_routine(routine("fade_to_white"));
+        wait(2s);
+        say(narrator, text("s098.sec52.u1"));
+        say(tamer, text("s098.sec52.u2"));
+        set_obj_visibility(0, 1);
+        call_routine(routine("fade_from_white"));
+        wait(2s);
+        animate(tamer, 24);
+        wait(15);
+        say(tamer, text("s098.sec52.u3"));
+        animate(tamer, 23);
+        wait(15);
+        animate(tamer, anim.idle);
+        angemon_voice_heard = true;
+        return;
+    }
+}

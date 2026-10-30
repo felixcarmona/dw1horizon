@@ -1,0 +1,824 @@
+From 4ce9d7a568b24b581f32d7b4cedf9c28265f8eb0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:17:49 +0000
+Subject: [PATCH] Merge branch 'partners-npc-b' into integration
+
+Conflicts resolved keeping both branches:
+- per-partner rows (EVOLUTION_REQS, EVOLUTION_STATS_GAINS, RAISE_DATA,
+  ITEM_TAKE_DISTANCE, VLALL, TRN/TRN2 ids): both sets of rows;
+- adjacent rows 119/120 of CONDITION_FX_OFFSETS, VBALL and the three aura
+  projectile tables: ShogunGekomon's and King of Sukamon's;
+- ids.h: one HAS_RAISED_FLAG with King of Sukamon and the npc-b partners,
+  RAISED_TRIGGER kept;
+- mod_lab.c: one evolve list, count from the array;
+- efe.c: npc-a's MOD_TECH_DONORS and npc-b's modBorrowTechOffset (and
+  Cherrymon's Piximon code) unified into one MOD_TECH_DONORS table read by
+  getModDonorTechBoneOffset.
+
+---
+ include/dw/efe.h         |   2 +-
+ include/dw/ids.h         |  29 ++++-
+ src/btl/battle_effect.c  |   2 +-
+ src/main/efe.c           | 280 ++++++++++++++++++++++++++++-------------------
+ src/main/evolution.c     |  53 ++++++++-
+ src/main/main.c          |  49 +++++++--
+ src/main/map.c           |   2 +-
+ src/main/mod_lab.c       |  17 ++-
+ src/main/partner_impl.c  |  25 +++++
+ src/main/script_common.c |   4 +-
+ src/main/sound.c         |   5 +-
+ src/std/std_effect.c     |   2 +-
+ src/trn/trn_reward.c     |   4 +
+ src/trn2/trn2_off.c      |   4 +
+ src/vs/vs_effect.c       |   2 +-
+ 15 files changed, 343 insertions(+), 137 deletions(-)
+
+diff --git a/include/dw/efe.h b/include/dw/efe.h
+index 5e3fbd0..44343c4 100644
+--- a/include/dw/efe.h
++++ b/include/dw/efe.h
+@@ -347,7 +347,7 @@ extern EfeBoneOffset *EFE_BONE_OFFSET;
+ 
+ /* MOD (cherrymon): origin of a technique effect for a type the EFE table lacks (efe.c) */
+ EfeBoneOffset *getModTechBoneOffset(int32_t type, EfeTechBoneOffset *table);
+-/* MOD (partners-npc-a): the same for the types in MOD_TECH_DONORS (efe.c) */
++/* MOD (integration): the one donor table behind getModTechBoneOffset (efe.c) */
+ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table);
+ extern int32_t *EFE_CALL_STACK;
+ extern int16_t *EFE_SCRIPT_PTR;
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 82c5e53..48c8c13 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -82,9 +82,36 @@ typedef uint16_t CardId;
+ #define DIGIMON_PANJYAMON		63
+ #define DIGIMON_GIGADRAMON		64
+ #define DIGIMON_METALETEMON		65
++/*
++ * MOD (partners-npc-b): WaruMonzaemon (70) is a partner too, reached from
++ * Numemon. Its rows are at index 70 of the same tables; its "raised" flag is
++ * trigger 0x200 + 70 = 582, free (scripts.md, "Free triggers").
++ */
++#define DIGIMON_NUMEMON			11
++#define DIGIMON_MONZAEMON		14
++#define DIGIMON_WARUMONZAEMON		70
++/*
++ * MOD (partners-npc-b): Myotismon (66), reached from Devimon. Its trigger
++ * 0x200 + 66 = 578 is used by script 221 ("X came to the city", 575-626),
++ * so its raised flag is trigger 649 instead (641-649 are free).
++ */
++#define DIGIMON_DEVIMON			6
++#define DIGIMON_MYOTISMON		66
++#define TRIGGER_RAISED_MYOTISMON	649
++/*
++ * MOD (partners-npc-b): ShogunGekomon (119), reached from Whamon; raised
++ * flag trigger 0x200 + 119 = 631, free.
++ */
++#define DIGIMON_WHAMON			24
++#define DIGIMON_SHOGUNGEKOMON		119
+ #define HAS_RAISED_FLAG(type)                                                 \
+ 	((uint32_t)(type) < NUM_EVOLVING_DIGIMON || (type) == DIGIMON_CHERRYMON || \
+-	 (type) == DIGIMON_MASTER_TYRANNOMON || (type) == DIGIMON_KING_SUKAMON)
++	 (type) == DIGIMON_MASTER_TYRANNOMON || (type) == DIGIMON_KING_SUKAMON ||  \
++	 (type) == DIGIMON_WARUMONZAEMON || (type) == DIGIMON_MYOTISMON ||         \
++	 (type) == DIGIMON_SHOGUNGEKOMON)
++/* the trigger of a type's raised flag (only for HAS_RAISED_FLAG types) */
++#define RAISED_TRIGGER(type) \
++	((type) == DIGIMON_MYOTISMON ? TRIGGER_RAISED_MYOTISMON : (type) + TRIGGER_RAISED_BASE)
+ 
+ /* Screens (maps) */
+ #define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index ad1d75a..2098c9d 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1194,7 +1194,7 @@ EfeAuraType BTL_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */
+ 	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+diff --git a/src/main/efe.c b/src/main/efe.c
+index fff0662..0d73955 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1286,120 +1286,159 @@ void renderParticleFlash(ParticleFlashData *params)
+ }
+ 
+ /*
+- * MOD (cherrymon): every technique effect starts by looking up the attacker's
+- * type in a table of the technique's EFE chunk (checkTechCompatibility: bone
+- * and offset the effect leaves from) and is dropped when the type is not
+- * there. Cherrymon is in none of them, so it borrows Piximon's row (the other
+- * Earth Ultimate: it has a row for the eight Earth techniques and Bit Bomb)
+- * moved onto its own body:
+- *   - bone 0 (a point in front of the Digimon, in the entity's frame):
+- *     1.6 times farther, Cherrymon being 550 high and Piximon 330;
+- *   - bone 11 (Piximon's spear hand: Green Trap, the thrown Bit Bomb):
+- *     the palm of Cherrymon's front hand, also bone 11, which its throwing
+- *     animations swing;
+- *   - anything else (Piximon's head: the powders, Bug, Insect Plague):
+- *     Cherrymon's mouth, in front of trunk bone 2.
+- * Returns NULL for other types (the effect is dropped as before). The result
+- * lives in a small ring because the effect keeps the pointer while it runs.
++ * MOD (integration of cherrymon, partners-npc-a/b/c): every technique effect
++ * starts by looking up the attacker's type in a table of the technique's EFE
++ * chunk (checkTechCompatibility: bone and offset the effect leaves from) and
++ * is dropped when the type is not there. The partners made from NPCs are in
++ * none (or only some) of those tables, so each borrows a donor's row, moved
++ * onto its own body. One table, MOD_TECH_DONORS, holds every borrower; for a
++ * type, its entries are tried in order and the first that gives an origin
++ * wins:
++ *   1. the donor's row is looked up in the technique's table; without one the
++ *      entry is skipped (unless MOD_DONOR_ALWAYS: then the fallback is used);
++ *   2. the donor's offset is scaled by num/den, its bone kept;
++ *   3. bone 0 (a point in front of the Digimon, in the entity's frame): the
++ *      scaled point;
++ *   4. an explicit origin whose `from` matches (bone MOD_ORIGIN_ANY_BONE for
++ *      any bone, x MOD_ORIGIN_ANY_OFFSET for any offset of that bone) gives
++ *      its `to` (a bone of the partner and a point in it);
++ *   5. a bone map (donor bone -> partner bone, partners-npc-c) keeps the
++ *      scaled offset on the mapped bone;
++ *   6. MOD_DONOR_SAME_RIG (the donor has the same bones): the scaled offset
++ *      on the same bone;
++ *   7. MOD_DONOR_FALLBACK: the entry's fallback point;
++ *   8. otherwise the next entry is tried.
++ * Returns NULL when no entry gives an origin (the effect is dropped, as
++ * before). The result lives in a small ring because the effect keeps the
++ * pointer while it runs.
+  */
+-EfeBoneOffset *getModTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+-{
+-	static EfeBoneOffset ring[8];
+-	static int32_t next;
+-	EfeTechBoneOffset *entry;
+-	EfeBoneOffset *out;
++#define MOD_ORIGIN_ANY_BONE   -2
++#define MOD_ORIGIN_ANY_OFFSET 0x7fff
++#define MOD_DONOR_SAME_RIG    1
++#define MOD_DONOR_FALLBACK    2
++#define MOD_DONOR_ALWAYS      4
+ 
+-	/* MOD (partners-npc-a): King of Sukamon, Icemon, Meteormon (below) */
+-	out = getModDonorTechBoneOffset(type, table);
+-	if (out != NULL) {
+-		return out;
+-	}
+-	if (type != DIGIMON_CHERRYMON) {
+-		return NULL;
+-	}
+-	for (entry = table; entry->type >= 0 && entry->type != DIGIMON_PIXIMON;
+-	     entry = (EfeTechBoneOffset *)((int32_t)entry + 0xa)) {
+-	}
+-	out = &ring[next];
+-	next = (next + 1) & 7;
+-	if (entry->type == DIGIMON_PIXIMON && entry->offset.boneId == 0) {
+-		out->boneId = 0;
+-		out->positionX = entry->offset.positionX * 8 / 5;
+-		out->positionY = entry->offset.positionY * 8 / 5;
+-		out->positionZ = entry->offset.positionZ * 8 / 5;
+-	} else if (entry->type == DIGIMON_PIXIMON && entry->offset.boneId == 11) {
+-		out->boneId = 11;
+-		out->positionX = 25;
+-		out->positionY = 55;
+-		out->positionZ = 0;
+-	} else {
+-		out->boneId = 2;
+-		out->positionX = 0;
+-		out->positionY = 0;
+-		out->positionZ = -110;
+-	}
+-	return out;
+-}
+-
+-/*
+- * MOD (partners-npc-a): technique origins for King of Sukamon, Icemon and
+- * Meteormon, the same idea as Cherrymon's above but table driven. For a type
+- * without its own row in a technique's table, the first donor (in the order
+- * of MOD_TECH_DONORS) that has a row lends it:
+- *   - bone 0 rows (a point in front of the Digimon, in the entity's frame)
+- *     are scaled by `scale` / 100;
+- *   - other bones go through `map` (donor bone -> own bone and offset; a
+- *     `from` of -2 matches any bone); when nothing matches and `sameRig` is
+- *     set (the donor's skeleton has the same bones), the bone is kept and its
+- *     offset scaled.
+- * Returns NULL when no donor has a row (the effect is dropped, as before).
+- */
+ typedef struct {
+-	int8_t from;
+-	int8_t to;
+-	int16_t x, y, z;
+-} ModTechBoneMap;
++	EfeBoneOffset from; /* donor bone and offset, as in the EFE table */
++	EfeBoneOffset to;   /* the partner's bone and offset */
++} ModTechOrigin;
+ 
+ typedef struct {
+ 	int16_t type;
+ 	int16_t donor;
+-	int16_t scale;
+-	int16_t sameRig;
+-	ModTechBoneMap map[2];
++	int16_t num;
++	int16_t den;
++	int16_t flags;
++	int16_t originCount;
++	ModTechOrigin *origins;
++	EfeBoneOffset fallback;
++	int8_t *bones; /* partner bone for each donor bone (boneCount entries) */
++	int32_t boneCount;
+ } ModTechDonor;
+ 
++#define MOD_COUNT(a) ((int16_t)(sizeof(a) / sizeof((a)[0])))
++
++/*
++ * MOD (cherrymon): Cherrymon borrows Piximon's row (the other Earth Ultimate:
++ * it has a row for the eight Earth techniques and Bit Bomb):
++ *   - bone 0: 1.6 times farther, Cherrymon being 550 high and Piximon 330;
++ *   - bone 11 (Piximon's spear hand: Green Trap, the thrown Bit Bomb): the
++ *     palm of Cherrymon's front hand, also bone 11, which its throwing
++ *     animations swing;
++ *   - anything else (Piximon's head: the powders, Bug, Insect Plague), and a
++ *     table without Piximon: Cherrymon's mouth, in front of trunk bone 2.
++ */
++static ModTechOrigin MOD_TECH_ORIGINS_CHERRYMON[] = {
++	{ { 11, MOD_ORIGIN_ANY_OFFSET, 0, 0 }, { 11, 25, 55, 0 } },
++};
++
++/*
++ * MOD (partners-npc-a): Icemon's Subzero Ice Punch: Frigimon's point in front
++ * of it (bone 0, scaled), any other Frigimon bone to Icemon's head.
++ */
++static ModTechOrigin MOD_TECH_ORIGINS_ICEMON_FRIGIMON[] = {
++	{ { MOD_ORIGIN_ANY_BONE, MOD_ORIGIN_ANY_OFFSET, 0, 0 }, { 4, 60, 35, 0 } },
++};
++
++/* MOD (partners-npc-b): WaruMonzaemon <- Monzaemon (tech-origins.py warumonzaemon; 410/330 high) */
++static ModTechOrigin MOD_TECH_ORIGINS_WARUMONZAEMON[] = {
++	{ { 4, 200, 0, 0 }, { 3, 0, -248, -21 } },    /* Electric Cloud: above the head */
++	{ { 2, 100, 200, 0 }, { 2, -67, -124, -239 } }, /* Megalo Spark: before the chest */
++	{ { 6, 94, 0, 0 }, { 6, 7, 113, 28 } },       /* Confused Storm: the claw arm */
++	{ { 2, 50, 150, 0 }, { 2, -50, -62, -179 } },   /* Lovely Attack: before the chest */
++};
++
++/*
++ * MOD (partners-npc-b): ShogunGekomon <- Whamon (440/400 high): Whamon's head
++ * points become ShogunGekomon's mouth (head bone 4, in front of the jaw), its
++ * body point (Aurora Freeze) its hips, and Blasting Spout leaves from the bell
++ * of a trumpet (bone 7). The model's head and trumpets carry no rest rotation,
++ * so these offsets are in model axes (0.55 times the NPC's mesh).
++ */
++static ModTechOrigin MOD_TECH_ORIGINS_SHOGUNGEKOMON[] = {
++	{ { 2, 60, 0, 10 }, { 4, 0, -20, -190 } },    /* Giga Freeze, Water Blit */
++	{ { 2, -70, 0, 210 }, { 4, 0, -20, -190 } },  /* Ice Needle */
++	{ { 1, 0, 0, 0 }, { 1, 0, 0, 0 } },           /* Aurora Freeze */
++	{ { 2, -102, 0, 155 }, { 7, 90, -270, 30 } }, /* Blasting Spout: a trumpet */
++};
++
++/* MOD_TECH_DONORS_NPC_C (partners-npc-c) is spliced in below when merged */
++
+ static ModTechDonor MOD_TECH_DONORS[] = {
+-	/* King of Sukamon is Sukamon (same skeleton) built 2.76 times larger,
+-	 * shrunk to 0.62 by its partner model: 1.71 times Sukamon */
+-	{ DIGIMON_KING_SUKAMON, DIGIMON_SUKAMON, 171, 1, { { -1 }, { -1 } } },
+-	/* Icemon has its own rows for Megaton Punch, Giga Freeze and Ice Needle.
+-	 * Tremar and Buster Dive: Gotsumon's (the same model, 280 high);
+-	 * Ice Statue, Winter Blast, Muscle Charge: Agumon's (the same bones,
+-	 * 250 high; SnowAgumon uses Agumon's rows); Subzero Ice Punch:
+-	 * Frigimon's point in front of it (380 high), other Frigimon bones
+-	 * to Icemon's head. */
+-	{ DIGIMON_ICEMON, DIGIMON_GOTSUMON, 110, 1, { { -1 }, { -1 } } },
+-	{ DIGIMON_ICEMON, 3, 124, 1, { { -1 }, { -1 } } },
+-	{ DIGIMON_ICEMON, DIGIMON_FRIGIMON, 82, 0, { { -2, 4, 60, 35, 0 }, { -1 } } },
+-	/* Meteormon has its own rows for Magma Bomb, Meltdown, Megaton Punch and
+-	 * Tremar (in its unscaled model units, like these). Buster Dive:
+-	 * Gotsumon's; Spit Fire, Heat Laser, Red Inferno, Prominence Beam,
+-	 * Fireball: Meramon's (the same bones, its animations are Meramon's) */
+-	{ DIGIMON_METEORMON, DIGIMON_GOTSUMON, 100, 1, { { -1 }, { -1 } } },
+-	{ DIGIMON_METEORMON, DIGIMON_MERAMON, 100, 1, { { -1 }, { -1 } } },
++	/* MOD (cherrymon) */
++	{ DIGIMON_CHERRYMON, DIGIMON_PIXIMON, 8, 5, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS,
++	  MOD_COUNT(MOD_TECH_ORIGINS_CHERRYMON), MOD_TECH_ORIGINS_CHERRYMON, { 2, 0, 0, -110 }, NULL, 0 },
++	/* MOD (partners-npc-a): King of Sukamon is Sukamon (same skeleton) built
++	 * 2.76 times larger, shrunk to 0.62 by its partner model: 1.71 times Sukamon */
++	{ DIGIMON_KING_SUKAMON, DIGIMON_SUKAMON, 171, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
++	/* MOD (partners-npc-a): Icemon has its own rows for Megaton Punch, Giga
++	 * Freeze and Ice Needle. Tremar and Buster Dive: Gotsumon's (the same
++	 * model, 280 high); Ice Statue, Winter Blast, Muscle Charge: Agumon's
++	 * (the same bones, 250 high; SnowAgumon uses Agumon's rows); Subzero Ice
++	 * Punch: Frigimon's (380 high). */
++	{ DIGIMON_ICEMON, DIGIMON_GOTSUMON, 110, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
++	{ DIGIMON_ICEMON, 3, 124, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
++	{ DIGIMON_ICEMON, DIGIMON_FRIGIMON, 82, 100, 0, MOD_COUNT(MOD_TECH_ORIGINS_ICEMON_FRIGIMON),
++	  MOD_TECH_ORIGINS_ICEMON_FRIGIMON, { 0 }, NULL, 0 },
++	/* MOD (partners-npc-a): Meteormon has its own rows for Magma Bomb,
++	 * Meltdown, Megaton Punch and Tremar (in its unscaled model units, like
++	 * these). Buster Dive: Gotsumon's; Spit Fire, Heat Laser, Red Inferno,
++	 * Prominence Beam, Fireball: Meramon's (the same bones, its animations
++	 * are Meramon's) */
++	{ DIGIMON_METEORMON, DIGIMON_GOTSUMON, 100, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
++	{ DIGIMON_METEORMON, DIGIMON_MERAMON, 100, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
++	/* MOD (partners-npc-b): a donor row with no explicit origin starts from the fallback */
++	{ DIGIMON_SHOGUNGEKOMON, DIGIMON_WHAMON, 440, 400, MOD_DONOR_FALLBACK,
++	  MOD_COUNT(MOD_TECH_ORIGINS_SHOGUNGEKOMON), MOD_TECH_ORIGINS_SHOGUNGEKOMON, { 4, 0, -20, -190 }, NULL, 0 },
++	/* MOD (partners-npc-b): Myotismon <- Devimon: Sonic Jab and Death Claw leave from bone 0 (430/400 high) */
++	{ DIGIMON_MYOTISMON, DIGIMON_DEVIMON, 430, 400, MOD_DONOR_FALLBACK, 0, NULL, { 3, 0, 0, -60 }, NULL, 0 },
++	{ DIGIMON_WARUMONZAEMON, DIGIMON_MONZAEMON, 410, 330, MOD_DONOR_FALLBACK,
++	  MOD_COUNT(MOD_TECH_ORIGINS_WARUMONZAEMON), MOD_TECH_ORIGINS_WARUMONZAEMON, { 2, 0, -62, -179 }, NULL, 0 },
+ };
+ 
++static int32_t modOriginMatches(EfeBoneOffset *from, EfeBoneOffset *row)
++{
++	if (from->boneId != MOD_ORIGIN_ANY_BONE && from->boneId != row->boneId) {
++		return 0;
++	}
++	if (from->positionX == MOD_ORIGIN_ANY_OFFSET) {
++		return 1;
++	}
++	return from->positionX == row->positionX && from->positionY == row->positionY &&
++	       from->positionZ == row->positionZ;
++}
++
+ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ {
+ 	static EfeBoneOffset ring[8];
+ 	static int32_t next;
+ 	EfeTechBoneOffset *entry;
++	EfeBoneOffset *row;
+ 	EfeBoneOffset *out;
+ 	ModTechDonor *d;
+-	ModTechBoneMap *m;
+-	int32_t i, k;
++	int32_t i, k, bone;
+ 
+-	for (i = 0; i < (int32_t)(sizeof(MOD_TECH_DONORS) / sizeof(MOD_TECH_DONORS[0])); i++) {
++	for (i = 0; i < MOD_COUNT(MOD_TECH_DONORS); i++) {
+ 		d = &MOD_TECH_DONORS[i];
+ 		if (d->type != type) {
+ 			continue;
+@@ -1407,32 +1446,53 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 		for (entry = table; entry->type >= 0 && entry->type != d->donor;
+ 		     entry = (EfeTechBoneOffset *)((int32_t)entry + 0xa)) {
+ 		}
++		out = &ring[next];
+ 		if (entry->type != d->donor) {
++			if (d->flags & MOD_DONOR_ALWAYS) {
++				*out = d->fallback;
++				next = (next + 1) & 7;
++				return out;
++			}
+ 			continue;
+ 		}
+-		out = &ring[next];
+-		next = (next + 1) & 7;
+-		out->boneId = entry->offset.boneId;
+-		out->positionX = entry->offset.positionX * d->scale / 100;
+-		out->positionY = entry->offset.positionY * d->scale / 100;
+-		out->positionZ = entry->offset.positionZ * d->scale / 100;
+-		if (entry->offset.boneId == 0) {
++		row = &entry->offset;
++		out->boneId = row->boneId;
++		out->positionX = row->positionX * d->num / d->den;
++		out->positionY = row->positionY * d->num / d->den;
++		out->positionZ = row->positionZ * d->num / d->den;
++		if (row->boneId == 0) {
++			next = (next + 1) & 7;
+ 			return out;
+ 		}
+-		for (k = 0; k < 2; k++) {
+-			m = &d->map[k];
+-			if (m->from == entry->offset.boneId || m->from == -2) {
+-				out->boneId = m->to;
+-				out->positionX = m->x;
+-				out->positionY = m->y;
+-				out->positionZ = m->z;
++		for (k = 0; k < d->originCount; k++) {
++			if (modOriginMatches(&d->origins[k].from, row)) {
++				*out = d->origins[k].to;
++				next = (next + 1) & 7;
+ 				return out;
+ 			}
+ 		}
+-		if (d->sameRig) {
++		if (d->bones != NULL) {
++			bone = row->boneId;
++			out->boneId = (bone >= 0 && bone < d->boneCount) ? d->bones[bone] : 0;
++			next = (next + 1) & 7;
++			return out;
++		}
++		if (d->flags & MOD_DONOR_SAME_RIG) {
++			next = (next + 1) & 7;
+ 			return out;
+ 		}
+-		/* a donor bone with no counterpart: try the next donor */
++		if (d->flags & MOD_DONOR_FALLBACK) {
++			*out = d->fallback;
++			next = (next + 1) & 7;
++			return out;
++		}
++		/* a donor bone with no counterpart: try the next entry */
+ 	}
+ 	return NULL;
+ }
++
++/* MOD (cherrymon): the hook checkTechCompatibility (BTL, STD, VS) calls */
++EfeBoneOffset *getModTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
++{
++	return getModDonorTechBoneOffset(type, table);
++}
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 0bc1a31..e475bcd 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -439,6 +439,41 @@ EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON
+ 		0x0000, 0x000f, 0xffff, 0xffff, 0x0064, 0x002d, 0x10,
+ 		0x00,
+ 	},
++	/*
++	 * MOD (partners-npc-b): from Numemon, the neglected road: Monzaemon
++	 * needs no care mistake at all, WaruMonzaemon at least 10 (no flag
++	 * 0x10: a minimum). HP 3000, Off 400, Def 300, weight 35..45; bonus:
++	 * 50 battles or 40 techniques learned.
++	 */
++	/*
++	 * MOD (partners-npc-b): from Devimon (with SkullGreymon, 10 care
++	 * mistakes or more, and Megadramon, weight 50..60): a slender, well
++	 * kept night lord. HP 4000, MP 6000, Speed 400, Brains 500, at most 5
++	 * care mistakes (flag 0x10), weight 25..35; bonus: 40 battles or 35
++	 * techniques.
++	 */
++	/*
++	 * MOD (partners-npc-b): from Whamon (with MegaSeadramon, weight
++	 * 25..35, and Mamemon, 15 care mistakes or more): a heavy, well kept
++	 * lord of the swamp. HP 5000, Def 400, Brains 300, at most 5 care
++	 * mistakes (flag 0x10), weight 55..65; bonus: discipline 90 or 30
++	 * techniques.
++	 */
++	[DIGIMON_SHOGUNGEKOMON] = {
++		0xffff, 0x01f4, 0xffff, 0xffff, 0x0190, 0xffff, 0x012c,
++		0x0005, 0x003c, 0x005a, 0xffff, 0xffff, 0x001e, 0x10,
++		0x00,
++	},
++	[DIGIMON_MYOTISMON] = {
++		0xffff, 0x0190, 0x0258, 0xffff, 0xffff, 0x0190, 0x01f4,
++		0x0005, 0x001e, 0xffff, 0xffff, 0x0028, 0x0023, 0x10,
++		0x00,
++	},
++	[DIGIMON_WARUMONZAEMON] = {
++		0xffff, 0x012c, 0xffff, 0x0190, 0x012c, 0xffff, 0xffff,
++		0x000a, 0x0028, 0xffff, 0xffff, 0x0032, 0x0028, 0x00,
++		0x00,
++	},
+ };
+ 
+ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+@@ -524,6 +559,15 @@ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIG
+ 	/* MOD (partners-npc-a): a hard hitter: HP 5500, MP 4500, Off 650, Def 550, Speed 350,
+ 	 * Brains 400 */
+ 	[DIGIMON_METEORMON] = { 0x157c, 0x1194, 0x028a, 0x0226, 0x015e, 0x0190, DIGIMON_METEORMON },
++	/* MOD (partners-npc-b): a brawler, harder hitting than Monzaemon: HP 5000, MP 4000,
++	 * Off 600, Def 450, Speed 450, Brains 400 */
++	/* MOD (partners-npc-b): a fast caster: HP 6000, MP 6000, Off 550, Def 450, Speed 600,
++	 * Brains 600 */
++	/* MOD (partners-npc-b): a slow, heavy Ultimate: HP 7000, MP 3500, Off 500, Def 600,
++	 * Speed 300, Brains 500 */
++	[DIGIMON_SHOGUNGEKOMON] = { 0x1b58, 0x0dac, 0x01f4, 0x0258, 0x012c, 0x01f4, DIGIMON_SHOGUNGEKOMON },
++	[DIGIMON_MYOTISMON] = { 0x1770, 0x1770, 0x0226, 0x01c2, 0x0258, 0x0258, DIGIMON_MYOTISMON },
++	[DIGIMON_WARUMONZAEMON] = { 0x1388, 0x0fa0, 0x0258, 0x01c2, 0x01c2, 0x0190, DIGIMON_WARUMONZAEMON },
+ };
+ 
+ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+@@ -549,7 +593,8 @@ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	},
+ 	{
+ 		{   -1,   -1,   -1,   -1,   -1 },
+-		{   -1,   -1, 0x1a, 0x36,   -1,   -1 },
++		/* MOD (partners-npc-b): + Myotismon, centred like Ninjamon's three */
++		{   -1, 0x1a, 0x36, DIGIMON_MYOTISMON,   -1,   -1 },
+ 	},
+ 	{
+ 		{   -1,   -1, 0x2d,   -1,   -1 },
+@@ -571,7 +616,8 @@ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	},
+ 	{
+ 		{   -1,   -1,   -1,   -1,   -1 },
+-		{   -1,   -1, 0x0e,   -1,   -1,   -1 },
++		/* MOD (partners-npc-b): + WaruMonzaemon, centred like the other pairs */
++		{   -1,   -1, 0x0e, DIGIMON_WARUMONZAEMON,   -1,   -1 },
+ 	},
+ 	{
+ 		{ 0x05, 0x09, 0x2f, 0x26, 0x08 },
+@@ -625,7 +671,8 @@ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	},
+ 	{
+ 		{   -1, 0x2e, 0x04, 0x39,   -1 },
+-		{   -1,   -1, 0x3d, 0x0d,   -1,   -1 },
++		/* MOD (partners-npc-b): + ShogunGekomon, centred like Ninjamon's three */
++		{   -1, 0x3d, 0x0d, DIGIMON_SHOGUNGEKOMON,   -1,   -1 },
+ 	},
+ 	{
+ 		{   -1, 0x20, 0x2e,   -1,   -1 },
+diff --git a/src/main/main.c b/src/main/main.c
+index 508c6b2..4fa6cd0 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -1303,16 +1303,26 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(MYOTISMON)
++		/*
++		 * MOD (partners-npc-b): a partner too, reached from Devimon.
++		 * Its own five techniques stay first (the boss fights equip
++		 * them by animation slot, 0x2E-0x32); after them Devimon's
++		 * Sonic Jab and Devimon's finisher Death Claw (0x3E,
++		 * animation 0x34), with Devimon's animations of them
++		 * (mods/experimental/partners-npc-b). Third specialty Ice,
++		 * like Devimon's, so it can learn its own Giga Freeze and
++		 * Aurora Freeze (was Air and Battle only).
++		 */
+ 		0x00000019,
+ 		0x00a0,
+ 		0x01ae,
+ 		0x03,
+ 		0x05,
+-		{ 0x02, 0x01, 0xff },
++		{ 0x02, 0x01, 0x04 },
+ 		0x00,
+ 		0x00,
+ 		{
+-			0x2e, 0x08, 0x0f, 0x10, 0x16, 0xff, 0xff, 0xff,
++			0x2e, 0x08, 0x0f, 0x10, 0x16, 0x2b, 0x3e, 0xff,
+ 			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+@@ -1367,6 +1377,15 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(WARUMONZAEMON)
++		/*
++		 * MOD (partners-npc-b): a partner too, reached from Numemon.
++		 * Its own four techniques stay first (the boss fights equip
++		 * them by animation slot, 0x2E-0x31); after them the rest of
++		 * Monzaemon's list and Monzaemon's finisher Lovely Attack
++		 * (0x3C, animation 0x3B): its partner model
++		 * (mods/experimental/partners-npc-b) has Monzaemon's
++		 * animations of them, retargeted.
++		 */
+ 		0x0000000c,
+ 		0x0096,
+ 		0x019a,
+@@ -1376,8 +1395,8 @@ DigimonPara DIGIMON_DATA[180] = {
+ 		0x1b,
+ 		0x32,
+ 		{
+-			0x2e, 0x2f, 0x29, 0x08, 0xff, 0xff, 0xff, 0xff,
+-			0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
++			0x2e, 0x2f, 0x29, 0x08, 0x2b, 0x2c, 0x2d, 0x28,
++			0x2a, 0x0c, 0x0b, 0x0a, 0x0e, 0x3c, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+@@ -2190,17 +2209,27 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(SHOGUNGEKOMON)
++		/*
++		 * MOD (partners-npc-b): a partner. Was level 0 with no
++		 * specialty and no techniques (the Gekomon Swamp NPC). Now an
++		 * Ultimate of the Ice specialty with Whamon's Ice techniques
++		 * and Whamon's finisher Blasting Spout (0x5A, animation
++		 * 0x36), blown from its trumpets. Its model is 0.55 times the
++		 * original (TONO.MMD rebuilt by
++		 * mods/experimental/partners-npc-b/shogungekomon), so the
++		 * radius and height go from 400/800 to 220/440.
++		 */
+ 		0x0000001c,
+-		0x0190,
+-		0x0320,
++		0x00dc,
++		0x01b8,
+ 		0x01,
+-		0x00,
+-		{ 0xff, 0xff, 0xff },
++		0x05,
++		{ 0x04, 0xff, 0xff },
+ 		0x00,
+ 		0x0a,
+ 		{
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			0x17, 0x10, 0x14, 0x12, 0x13, 0x11, 0x16, 0x15,
++			0x5a, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+diff --git a/src/main/map.c b/src/main/map.c
+index 1e40401..5f1b7ad 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -2856,7 +2856,7 @@ SVECTOR CONDITION_FX_OFFSETS[177] = {
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+-	{ 0x0000, 0x0000, 0x0000, 0x0000 },
++	{ 0x0000, 0xfeb6, 0x0000, 0x0004 }, /* MOD (partners-npc-b): ShogunGekomon, above the head (bone 4) */
+ 	{ 0x00d7, 0x003e, 0xffed, 0x0004 }, /* MOD (partners-npc-a): King of Sukamon, Sukamon's x1.71 (was 0) */
+ 	{ 0x0000, 0xfe70, 0xffa6, 0x0002 }, /* MOD (cherrymon): above the face, trunk bone 2 (was 0) */
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 8582c00..dd48cf4 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -14,10 +14,11 @@
+  *                      MasterTyrannomon (type 124) when the game is unpaused,
+  *                      the way an evolution item does, but with the natural
+  *                      stat gains (HAS_USED_EVOITEM = 0). Left/right choose
+- *                      the target: "To MasterTyrannomon" or "To Cherrymon"
++ *                      the target: "To MasterTyrannomon", "To Cherrymon"
+  *                      (type 121; MOD cherrymon), "To King of Sukamon"
+  *                      (type 120; MOD partners-npc-a), "To Icemon" (94),
+- *                      "To Meteormon" (113)
++ *                      "To Meteormon" (113), or one of the partners of
++ *                      MOD partners-npc-b
+  *   - "Close"
+  *
+  * The result of an option replaces the stats line until the next key, so the
+@@ -90,22 +91,28 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ };
+ 
+ /* MOD (cherrymon): the evolve option cycles through these targets */
+-#define MOD_LAB_EVO_COUNT 5
+-static int16_t MOD_LAB_EVO_TARGETS[MOD_LAB_EVO_COUNT] = {
++static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_MASTER_TYRANNOMON,
+ 	DIGIMON_CHERRYMON,
+ 	DIGIMON_KING_SUKAMON, /* MOD (partners-npc-a) */
+ 	DIGIMON_ICEMON,       /* MOD (partners-npc-a) */
+ 	DIGIMON_METEORMON,    /* MOD (partners-npc-a) */
++	DIGIMON_WARUMONZAEMON, /* MOD (partners-npc-b) */
++	DIGIMON_MYOTISMON,
++	DIGIMON_SHOGUNGEKOMON,
+ };
+ 
+-static char *MOD_LAB_EVO_TEXT[MOD_LAB_EVO_COUNT] = {
++static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To MasterTyrannomon",
+ 	"To Cherrymon",
+ 	"To King of Sukamon", /* MOD (partners-npc-a) */
+ 	"To Icemon",          /* MOD (partners-npc-a) */
+ 	"To Meteormon",       /* MOD (partners-npc-a) */
++	"To WaruMonzaemon", /* MOD (partners-npc-b) */
++	"To Myotismon",
++	"To ShogunGekomon",
+ };
++#define MOD_LAB_EVO_COUNT ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
+ static char *MOD_LAB_FPS_TEXT[3] = {
+ 	"Frame rate  20 fps",
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 37975a9..90edc3c 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -211,6 +211,27 @@ RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	 */
+ 	[DIGIMON_METEORMON] = { { 2, 6, 10, 14, 18, 22, -1, -1 },
+ 	  80, 53, 12, 36, 1200, 13, 66, 1, 0, 3, 50, -273, 424, -364 },
++	/*
++	 * MOD (partners-npc-b): Monzaemon's row (14). The status screen view
++	 * keeps Monzaemon's framing for a model 1.25 times as tall: the same
++	 * point seen from DIGIVICE_ENTITY_VIEW (1300, 0, -3280), 1.25 times as
++	 * far away.
++	 */
++	/*
++	 * MOD (partners-npc-b): Devimon's row (6), weight 30; the status view
++	 * keeps Devimon's framing for a model 430/400 times as tall.
++	 */
++	/*
++	 * MOD (partners-npc-b): Whamon's row (24), weight 60; the status view
++	 * frames the 540-high frog like Cherrymon's tree (Cherrymon's point
++	 * moved 540/650 of the way from DIGIVICE_ENTITY_VIEW).
++	 */
++	[DIGIMON_SHOGUNGEKOMON] = { { 2, 6, 10, 14, 18, 21, -1, -1 },
++	  80, 50, 13, 36, 1200, 15, 48, 1, 4, 3, 60, -203, 523, -748 },
++	[DIGIMON_MYOTISMON] = { { 4, 9, 14, 18, 23, -1, -1, -1 },
++	  80, 30, 6, 36, 1200, 10, 46, 4, 6, 0, 30, 42, 376, -958 },
++	[DIGIMON_WARUMONZAEMON] = { { 2, 6, 11, 16, 21, -1, -1, -1 },
++	  80, 40, 8, 36, 1200, 10, 47, 1, 2, 3, 40, 100, 375, -1005 },
+ };
+ 
+ typedef struct {
+@@ -246,6 +267,10 @@ int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	[DIGIMON_KING_SUKAMON - 1] = 16,
+ 	[DIGIMON_ICEMON - 1] = 10, /* MOD (partners-npc-a) */
+ 	[DIGIMON_METEORMON - 1] = 15, /* MOD (partners-npc-a) */
++	/* MOD (partners-npc-b): Monzaemon's 10, longer claw arm */
++	[DIGIMON_WARUMONZAEMON - 1] = 12,
++	[DIGIMON_MYOTISMON - 1] = 11, /* MOD (partners-npc-b): Devimon's 10 */
++	[DIGIMON_SHOGUNGEKOMON - 1] = 20, /* MOD (partners-npc-b): a wide frog */
+ };
+ 
+ extern uint8_t ITEM_CLUT_DATA[];
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index b02694d..68e02ac 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -2925,7 +2925,7 @@ void showMapheadSelection(int32_t idx, uint8_t owner, uint16_t x, int32_t *outSe
+ void setDigimonRaised(int32_t digimonId)
+ {
+ 	if (HAS_RAISED_FLAG(digimonId)) { /* MOD: + MasterTyrannomon (ids.h) */
+-		setTrigger(digimonId + TRIGGER_RAISED_BASE);
++		setTrigger(RAISED_TRIGGER(digimonId)); /* MOD (partners-npc-b): was + 0x200 */
+ 	}
+ }
+ 
+@@ -2942,7 +2942,7 @@ int32_t hasDigimonRaised(digimonId)
+ 	if (!HAS_RAISED_FLAG(digimonId)) {
+ 		return 0;
+ 	}
+-	return isTriggerSet(digimonId + TRIGGER_RAISED_BASE);
++	return isTriggerSet(RAISED_TRIGGER(digimonId)); /* MOD (partners-npc-b): was + 0x200 */
+ }
+ 
+ void unlockMedal(uint16_t medal)
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 66380e5..0fd6213 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -133,6 +133,9 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON
+ 	[DIGIMON_KING_SUKAMON] = 0x06, /* MOD (partners-npc-a): Sukamon's partner sounds */
+ 	[DIGIMON_ICEMON] = 0x03, /* MOD (partners-npc-a): Frigimon's partner sounds */
+ 	[DIGIMON_METEORMON] = 0x07, /* MOD (partners-npc-a): Monochromon's partner sounds */
++	[DIGIMON_WARUMONZAEMON] = 0x0f, /* MOD (partners-npc-b): Monzaemon's partner sounds */
++	[DIGIMON_MYOTISMON] = 0x03,     /* MOD (partners-npc-b): Devimon's partner sounds */
++	[DIGIMON_SHOGUNGEKOMON] = 0x05, /* MOD (partners-npc-b): Whamon's partner sounds */
+ };
+ 
+ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+@@ -255,7 +258,7 @@ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+ 	0x00,	/* Analogman */
+ 	0x00,	/* Jijimon */
+ 	0x00,	/* Market Manager */
+-	0x00,	/* ShogunGekomon */
++	0x43,	/* ShogunGekomon; MOD (partners-npc-b): Gekomon's voice (was 0x00) */
+ 	0x23,	/* King of Sukamon; MOD (partners-npc-a): Sukamon's voice (was 0x00) */
+ 	0x17,	/* Cherrymon; MOD (cherrymon): Vegiemon's voice (was 0x00) */
+ 	0x00,	/* Hagurumon */
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index afb0535..7b0596a 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -1004,7 +1004,7 @@ EfeAuraType STD_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */
+ 	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 5524db5..f8cb81d 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -80,6 +80,10 @@ int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	[DIGIMON_ICEMON] = { 0x2e, 0xa },
+ 	/* MOD (partners-npc-a): Megaton Punch (animation 0x30) */
+ 	[DIGIMON_METEORMON] = { 0x30, 0xa },
++	/* MOD (partners-npc-b): Monzaemon's (14) */
++	[DIGIMON_WARUMONZAEMON] = { 0x2e, 0xa },
++	/* MOD (partners-npc-b): its first technique, like Whamon (24) */
++	[DIGIMON_SHOGUNGEKOMON] = { 0x2e, 0xa },
+ };
+ 
+ MESSAGES_TEXT
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 0bc6996..b88ade6 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -63,6 +63,10 @@ int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	[DIGIMON_ICEMON] = { 0x2e, 0xa },
+ 	/* MOD (partners-npc-a): Megaton Punch (animation 0x30) */
+ 	[DIGIMON_METEORMON] = { 0x30, 0xa },
++	/* MOD (partners-npc-b): Monzaemon's (14) */
++	[DIGIMON_WARUMONZAEMON] = { 0x2e, 0xa },
++	/* MOD (partners-npc-b): its first technique, like Whamon (24) */
++	[DIGIMON_SHOGUNGEKOMON] = { 0x2e, 0xa },
+ };
+ // clang-format on
+ 
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 509109f..058dd98 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -953,7 +953,7 @@ EfeAuraType VS_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0074, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0075, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0020 }, /* MOD (partners-npc-b): Whamon's u (was 0xffff) */
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (partners-npc-a): Sukamon's u (was 0xffff) */
+ 	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },

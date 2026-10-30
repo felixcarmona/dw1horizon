@@ -1,0 +1,71 @@
+{
+ "s041.sec5.u0": "Rapaz, você não é divertido!",
+ "s041.sec6.u0": "Você disse alguma coisa?",
+ "s041.sec7.u0": "Eu te disse, eu realmente não posso...",
+ "s041.sec8.u0": "Não tenho tanta certeza de mim mesmo, sabe.",
+ "s041.sec9.u0": "Vá com calma...",
+ "s041.sec10.u0": "Não me subestime!",
+ "s041.sec81.m0.o0": "Botão da cobertura",
+ "s041.sec81.m0.o1": "Botão de subir",
+ "s041.sec81.m0.o2": "Não subir",
+ "s041.sec81.u0": [
+  [
+   "Elevador"
+  ]
+ ],
+ "s041.sec81.u1": "Hmm, nada está acontecendo...",
+ "s041.sec81.u2": "Tem uma pedra presa na máquina. Então esse é o problema...?",
+ "s041.sec81.u3": [
+  [
+   "Retirei a pedrinha!"
+  ]
+ ],
+ "s041.sec81.u4": "Isso deve bastar.",
+ "s041.sec81.u5": "Hmm, nada está acontecendo...",
+ "s041.sec81.u6": "Tem uma pedra presa na máquina. Então esse é o problema...?",
+ "s041.sec81.u7": [
+  [
+   "Retirei a pedrinha!"
+  ]
+ ],
+ "s041.sec81.u8": "Isso deve bastar.",
+ "s042.sec5.u0": "Shwaaah!",
+ "s042.sec6.u0": "Shashasha!",
+ "s042.sec7.u0": "Parece que você não está ferido, hein?",
+ "s042.sec8.u0": "Vou te dar um bom desconto.",
+ "s042.sec9.u0": [
+  [
+   "Não me subestime!"
+  ]
+ ],
+ "s042.sec10.u0": "Não pense que vai chegar em casa vivo.",
+ "s042.sec51.u0": "Owwwww!",
+ "s042.sec51.u1": [
+  [
+   "...Até que estou bem,",
+   "considerando a altura da",
+   "queda..."
+  ]
+ ],
+ "s042.sec51.u2": "{color 10}{partner}{color 1}, você está bem?",
+ "s042.sec51.u3": [
+  [
+   "Hã? Você parece ótimo. Ei,",
+   "você voou, não foi? Não é",
+   "justo! ...Bem, acho que não é",
+   "injusto de verdade."
+  ]
+ ],
+ "s042.sec51.u4": "Certo, vamos.",
+ "s042.sec51.u5": "Owwwww!",
+ "s042.sec51.u6": [
+  [
+   "...Até que estou bem,",
+   "considerando a altura da",
+   "queda..."
+  ]
+ ],
+ "s042.sec51.u7": "{color 10}{partner}{color 1}, você está bem?",
+ "s042.sec51.u8": "Parece que isso doeu um pouco. Desculpe.",
+ "s042.sec51.u9": "Certo, vamos."
+}

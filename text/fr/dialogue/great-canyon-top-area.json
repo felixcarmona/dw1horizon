@@ -1,0 +1,233 @@
+{
+ "s037.sec5.u0": [
+  [
+   "Je vais te faire tomber !"
+  ]
+ ],
+ "s037.sec6.u0": [
+  [
+   "N-ne pousse pas !"
+  ]
+ ],
+ "s037.sec7.u0": [
+  [
+   "Les hauteurs me calment",
+   "vraiment !"
+  ]
+ ],
+ "s037.sec8.u0": [
+  [
+   "Je vais tomber ! C'est",
+   "dangereux !"
+  ]
+ ],
+ "s037.sec9.u0": [
+  [
+   "Pas ici, arrête !"
+  ]
+ ],
+ "s037.sec10.u0": [
+  [
+   "Ça ne sert à rien de se",
+   "battre..."
+  ]
+ ],
+ "s037.sec81.m0.o0": "Bouton descendre",
+ "s037.sec81.m0.o1": "Ne pas monter",
+ "s037.sec81.u0": [
+  [
+   "Ascenseur"
+  ]
+ ],
+ "s037.sec81.u1": [
+  [
+   "...Rien ne se passe. Ça ne",
+   "marche pas."
+  ]
+ ],
+ "s038.sec5.u0": [
+  [
+   "O-on ne pourrait pas éviter ça",
+   "?"
+  ]
+ ],
+ "s038.sec6.u0": [
+  [
+   "Shuba, shujaa!"
+  ]
+ ],
+ "s038.sec7.u0": [
+  [
+   "Chis, chis!"
+  ]
+ ],
+ "s038.sec8.u0": [
+  [
+   "Je vais tout donner !"
+  ]
+ ],
+ "s038.sec9.u0": "Mais qu'est-ce que tu racontes ?",
+ "s038.sec81.u0": [
+  [
+   "Nord-ouest : Terres gelées"
+  ]
+ ],
+ "s038.sec82.m0.o0": "Bouton monter",
+ "s038.sec82.m0.o1": "Bouton descendre",
+ "s038.sec82.m0.o2": "Ne pas monter",
+ "s038.sec82.u0": [
+  [
+   "Ascenseur"
+  ]
+ ],
+ "s038.sec82.u1": [
+  [
+   "Hein ? Ça ne marche pas, rien",
+   "ne se passe."
+  ]
+ ],
+ "s043.sec5.u0": [
+  [
+   "Grraaaah!"
+  ]
+ ],
+ "s043.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s043.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s043.sec51.u0": [
+  [
+   "D'après ce qu'on a entendu, les",
+   "bandits rôdent sur ce chemin...",
+   "Bon. Allons-y, {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": [
+  [
+   "Youhouuuu !"
+  ]
+ ],
+ "s043.sec51.u2": [
+  [
+   "Gwahahaha !"
+  ]
+ ],
+ "s043.sec51.u3": [
+  [
+   "Youpiiii !"
+  ]
+ ],
+ "s043.sec51.u4": [
+  [
+   "Nuhahaha, rendez-vous et",
+   "laissez vos affaires ! Sinon,",
+   "ça va faire mal !"
+  ]
+ ],
+ "s043.sec51.u5": [
+  [
+   "C'est vous qui devriez vous",
+   "rendre !"
+  ]
+ ],
+ "s043.sec51.u6": [
+  [
+   "Hein ?! Vous, les morveux..."
+  ]
+ ],
+ "s043.sec51.u7": [
+  [
+   "Ne me dis pas..."
+  ]
+ ],
+ "s043.sec51.u8": [
+  [
+   "C-chef, on fait quoi ?!"
+  ]
+ ],
+ "s043.sec51.u9": [
+  [
+   "Arrêtez de piailler ! On est",
+   "plus nombreux et plus costauds.",
+   "Écrasez-les !"
+  ]
+ ],
+ "s043.sec51.u10": [
+  [
+   "Grrr... V-vous allez me le",
+   "payer !"
+  ]
+ ],
+ "s043.sec51.u11": [
+  [
+   "Regarde-les courir ! On ne",
+   "devrait plus les voir ici avant",
+   "un moment."
+  ]
+ ],
+ "s043.sec53.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s043.sec53.u1": [
+  [
+   "Le sol vient de bouger ?",
+   "...J'ai dû rêver."
+  ]
+ ],
+ "s043.sec53.u2": [
+  [
+   " Quoi !? Ne peut pas l'être. .",
+   "."
+  ]
+ ],
+ "s043.sec53.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   "U-uaaaah! !"
+  ]
+ ],
+ "s043.sec81.m0.o0": "Mode ogre : OUI",
+ "s043.sec81.m0.o1": "Mode ogre : NON",
+ "s043.sec81.u0": [
+  [
+   "Est : Ascenseur Ouest :",
+   "Danger ! Attention à la falaise"
+  ]
+ ],
+ "s043.sec82.u0": [
+  [
+   "Attention aux chutes de",
+   "pierres !!"
+  ]
+ ],
+ "s044.sec5.u0": [
+  [
+   "Je vais te mettre K.-O. !"
+  ]
+ ],
+ "s044.sec6.u0": [
+  [
+   "Vas-y doucement avec moi, s'il",
+   "te plaît."
+  ]
+ ],
+ "s044.sec7.u0": [
+  [
+   "Une fois ma proie choisie, elle",
+   "ne m'échappe jamais."
+  ]
+ ],
+ "s044.sec8.u0": [
+  [
+   "Hé... C'est fini."
+  ]
+ ]
+}

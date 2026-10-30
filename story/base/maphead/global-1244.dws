@@ -1,0 +1,16 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+maphead {
+    section(1244) replace {    // section 1244
+        sound(0, 7);
+        wait(10);
+        set_dialog_owner(tamer);
+        if (engine.arg == 0) {
+            say(tamer, text("m1244.u0"));
+        } else {
+            say(tamer, text("m1244.u1"));
+        }
+    }
+}

@@ -1,0 +1,21 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(28) replace {    // section 28
+        set_script(29, 28);
+        engine.music_mode = 1;
+        set_bgm(4);
+        unless (drimogemon_job_days < 5 || drill_tunnel_progress >= 3 || drill_tunnel_progress < 1) return;
+        unless (underground_pond_dig_work < 10) return;
+        if (underground_pond_dig_work >= 5) {
+            load_digimon(species(158));
+            set_digimon(species(158), 1, 0);
+            return;
+        }
+        load_digimon(species(158));
+        set_digimon(species(158), 0, 0);
+    }
+}

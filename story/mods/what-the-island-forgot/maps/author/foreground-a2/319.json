@@ -1,0 +1,7 @@
+{
+  "screen": 319,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [],
+  "review": "The native silhouette has zero overlap with reachable 100-unit-body positions, even testing bodies up to 70 pixels high. Characters on the upper shelf stand above its face; characters on the lower track sort in front of its ground edge. Keep the rock solid and the end turns connected; no foreground texture is required."
+}

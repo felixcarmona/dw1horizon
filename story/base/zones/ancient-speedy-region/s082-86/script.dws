@@ -1,0 +1,160 @@
+// Readable form of script 82 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 82 {
+    npc meteormon = 5;
+    npc nanimon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Sage Fruit"), 60, 53);
+        }
+        if (!meteormon_checked) {
+            wait(5);
+            animate(meteormon, 28);
+        }
+    }
+
+    on talk(meteormon) replace {    // section 5
+        engine.cutscene = true;
+        say(tamer, text("s082.sec5.u0"));
+        choice(open) {
+            text("s082.sec5.m0.o0") => {
+                animate(tamer, anim.offer_item);
+                wait(1s);
+                say(tamer, text("s082.sec5.u1"));
+                animate(tamer, 16);
+                wait(5);
+                say(tamer, text("s082.sec5.u2"));
+                say(narrator, text("s082.sec5.u3"));
+            }
+            text("s082.sec5.m0.o1") => {
+                say(tamer, text("s082.sec5.u21"));
+                entity_walk_to_entity(partner, 0, meteormon);
+                await partner;
+                animate(partner, 46);
+                wait(1s);
+                say(narrator, text("s082.sec5.u22"));
+                animate(meteormon, 29);
+                wait(1s);
+                face(meteormon, tamer);
+                face(tamer, meteormon);
+                wait(5);
+            }
+        }
+        animate(meteormon, 29);
+        wait(10);
+        say(tamer, text("s082.sec5.u4"));
+        say(tamer, text("s082.sec5.u5"));
+        face(meteormon, tamer);
+        face(tamer, meteormon);
+        wait(5);
+        say(narrator, text("s082.sec5.u6"));
+        say(tamer, text("s082.sec5.u7"));
+        say(meteormon, text("s082.sec5.u8"));
+        say(tamer, text("s082.sec5.u9"));
+        say(meteormon, text("s082.sec5.u10"));
+        say(tamer, text("s082.sec5.u11"));
+        battle(foes: [meteormon]);
+        face(tamer, meteormon);
+        face(meteormon, tamer);
+        face(partner, meteormon);
+        say(meteormon, text("s082.sec5.u12"));
+        say(tamer, text("s082.sec5.u13"));
+        animate(tamer, 19);
+        wait(5);
+        say(meteormon, text("s082.sec5.u14"));
+        say(tamer, text("s082.sec5.u15"));
+        animate(tamer, anim.idle);
+        wait(5);
+        say(meteormon, text("s082.sec5.u16"));
+        say(meteormon, text("s082.sec5.u17"));
+        say(tamer, text("s082.sec5.u18"));
+        say(meteormon, text("s082.sec5.u19"));
+        animate(meteormon, 30);
+        wait(10);
+        loop {
+            entity_move_to(meteormon, 1, -1050, 40, 0);
+            unless (glances < 3) break;
+            glances += 1;
+            wait(1s);
+            sound(8, 5);
+            face(tamer, meteormon);
+            face(partner, meteormon);
+        }
+        await meteormon;
+        remove(meteormon);
+        glances = 0;
+        say(tamer, text("s082.sec5.u20"));
+        engine.no_escape = false;
+        meteormon_checked = true;
+        camera_on(tamer, speed: 15);
+        await camera;
+    }
+
+    on talk(nanimon) replace {    // section 6
+        wait(10);
+        animate(nanimon, 28);
+        wait(10);
+        say(tamer, text("s082.sec6.u0"));
+        say(nanimon, text("s082.sec6.u1"));
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        run(nanimon, 182, -571);
+        await nanimon;
+        remove(nanimon);
+        if (key_chains == 0) {
+            set_obj_visibility(3, 0);
+            run(tamer, 150, -138);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(3, 1);
+            sound(0, 7);
+            say(narrator, text("s082.sec6.u2"));
+            sound(0, 7);
+            set_inventory_size(20);
+            inventory_expanded.to_20 = true;
+        }
+        if (key_chains == 4) {
+            set_obj_visibility(2, 0);
+            run(tamer, 150, -138);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(2, 1);
+            sound(0, 7);
+            say(narrator, text("s082.sec6.u3"));
+            set_inventory_size(30);
+            inventory_expanded.to_30 = true;
+            recruit(species("Nanimon"));
+            engine.prosperity += 1;
+        }
+        camera_on(tamer, speed: 15);
+        await camera;
+        key_chains += 1;
+        key_chain_found.speedy_region = true;
+        return;
+    }
+}

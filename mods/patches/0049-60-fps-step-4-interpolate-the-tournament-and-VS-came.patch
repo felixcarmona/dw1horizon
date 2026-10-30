@@ -1,0 +1,265 @@
+From 182dfeede16c71fc91c9a4f0fae638dc2c2d1d22 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 07:19:40 +0000
+Subject: [PATCH] 60 fps step 4: interpolate the tournament and VS cameras
+
+The tournament/VS cameras move every tick (mostly GsSetView2 with a
+matrix of their own), and any change of the first pass's view snapped
+the whole interpolation. In battle loops the first pass's world-screen
+matrix and projection are now interpolated between two ticks, and
+GS_VIEWPOINT/VIEWPORT_DISTANCE too when that view comes from them (so
+renders that set the view again from GS_VIEWPOINT get the interpolated
+one). Steps over 512/4096 in a rotation element, 1024 units of
+translation or 64 of projection are cuts and snap. After the last pass
+libgs is left with the view a single render would have left.
+
+---
+ src/main/main.c | 180 ++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 173 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index f37429a..009a155 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4248,9 +4248,10 @@ int32_t modRenderRand(void)
+  *   later fraction that does not. */
+ int32_t MOD_FPS_INTERP = 1;
+ int32_t MOD_INTERP_MAP_GEN;   /* bumped on every map setup/unload */
+-int32_t MOD_INTERP_STATS[6];  /* passes with alpha < 1, entity roots written,
++int32_t MOD_INTERP_STATS[7];  /* passes with alpha < 1, entity roots written,
+ 				 VRAM window clamps, snapped ticks, entity
+-				 skeletons written, bone matrices built */
++				 skeletons written, bone matrices built,
++				 passes with an interpolated 3D view */
+ int32_t MOD_MIST_SHIFT[3];    /* renderMist: x, y and x of the far layer */
+ int32_t isMistActive(void);
+ 
+@@ -4326,6 +4327,38 @@ static int8_t modCamApplied;
+ static int8_t modInterpBattle;     /* modPresent with MOD_PRESENT_BATTLE */
+ static int8_t modInterpLastBattle;
+ static MATRIX modInterpWsMatrix;   /* GsWSMATRIX of the previous tick's first pass */
++/* 3D view of the battle loops (the tournament and VS cameras move it every
++ * tick, mostly with GsSetView2 and a matrix of their own): the world-screen
++ * matrix and projection the first pass renders with, after the previous
++ * tick and this one, interpolated between the two; GS_VIEWPOINT and
++ * VIEWPORT_DISTANCE too when the view is made from them (renders that set
++ * the view again from GS_VIEWPOINT then get the interpolated one) */
++static MATRIX modWsPrev;
++static MATRIX modWsCur;
++static MATRIX modWsOrgPrev;
++static MATRIX modWsOrgCur;
++static int32_t modProjPrev;
++static int32_t modProjCur;
++static int8_t modWsPrevOk;        /* modWsPrev holds a battle loop's first pass */
++static int8_t modViewGsLerp;      /* GS_VIEWPOINT is interpolated too */
++static GsRVIEW2 modViewPrev;
++static GsRVIEW2 modViewCur;
++static int32_t modDistPrev;
++static int32_t modDistCur;
++static int8_t modViewPrevOk;
++static int8_t modViewCurOk;
++static int8_t modViewLerp;
++static int8_t modViewApplied;
++static int8_t modViewLastPass;     /* the last pass of the tick had its view interpolated */
++static GsRVIEW2 modViewSave;
++static int32_t modDistSave;
++static MATRIX modViewSetWs;        /* the interpolated GsWSMATRIX the pass started with */
++static int32_t modViewSetDist;
++static int8_t modViewWsReset;      /* the last pass's renders set the view from GS_VIEWPOINT */
++static int8_t modViewProjReset;    /* ... and the projection from VIEWPORT_DISTANCE */
++#define MOD_VIEW_MAX_STEP 1024     /* larger steps per tick are camera cuts */
++#define MOD_WS_MAX_ROT 512         /* rotation (4096 = 1) and translation steps */
++#define MOD_WS_MAX_MOVE 1024
+ 
+ static int32_t modLerp(int32_t a, int32_t b, int32_t alpha)
+ {
+@@ -4574,11 +4607,57 @@ void modInterpInvalidate(void)
+ 	modInterpValid = 0;
+ }
+ 
++/* does the first pass render with GS_VIEWPOINT / VIEWPORT_DISTANCE? (the
++ * camera ticks set the view with GsSetRefView2 themselves; anything else,
++ * such as the effects' fixed camera, is not interpolated) */
++static int32_t modViewConsistent(void)
++{
++	int32_t ok;
++
++	if (modPass0Projection != VIEWPORT_DISTANCE) {
++		return 0;
++	}
++	GsSetRefView2(&GS_VIEWPOINT);
++	ok = modSame(&GsWSMATRIX, &modPass0WsMatrix, sizeof(MATRIX));
++	modRestorePass0View();
++	return ok;
++}
++
++static int32_t modViewSmallStep(void)
++{
++	return modViewPrev.super == modViewCur.super &&
++	       modAbs(modViewCur.vpx - modViewPrev.vpx) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modViewCur.vpy - modViewPrev.vpy) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modViewCur.vpz - modViewPrev.vpz) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modViewCur.vrx - modViewPrev.vrx) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modViewCur.vry - modViewPrev.vry) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modViewCur.vrz - modViewPrev.vrz) <= MOD_VIEW_MAX_STEP &&
++	       modAbs(modDistCur - modDistPrev) <= 64;
++}
++
++static int32_t modWsSmallStep(void)
++{
++	int32_t i;
++
++	for (i = 0; i < 9; i++) {
++		if (modAbs(modWsCur.m[i / 3][i % 3] - modWsPrev.m[i / 3][i % 3]) > MOD_WS_MAX_ROT) {
++			return 0;
++		}
++	}
++	for (i = 0; i < 3; i++) {
++		if (modAbs(modWsCur.t[i] - modWsPrev.t[i]) > MOD_WS_MAX_MOVE) {
++			return 0;
++		}
++	}
++	return modAbs(modProjCur - modProjPrev) <= 64;
++}
++
+ /* after the tick (and late tick), before the first pass */
+ static void modInterpSnapshot(void)
+ {
+ 	int32_t i;
+ 	int32_t snap;
++	int32_t changed;
+ 	Entity *e;
+ 	PositionData *pd;
+ 	ModInterpRoot *cur;
+@@ -4588,11 +4667,44 @@ static void modInterpSnapshot(void)
+ 	/* a tick much longer than 3 refreshes: a battle or a load ran inside it */
+ 	snap = !modInterpValid || modInterpMapGen != MOD_INTERP_MAP_GEN ||
+ 	       modInterpGameState != GAME_STATE || modInterpTickGap > 2 * modTickRefreshes() ||
+-	       modInterpLastBattle != modInterpBattle ||
+-	       /* a camera cut that does not go through GS_VIEWPOINT (the battle
+-		* effects' fixed camera, EFE opcodes 63/64) */
+-	       !modSame(&modInterpWsMatrix, &modPass0WsMatrix, sizeof(MATRIX)) ||
+-	       !modSame(&modInterpView, &GS_VIEWPOINT, sizeof(GsRVIEW2));
++	       modInterpLastBattle != modInterpBattle;
++	/* the 3D view: a change snaps everything, unless (battle loops) the
++	 * first pass renders with GS_VIEWPOINT in both ticks and it moved by a
++	 * camera step, not a cut; then the view is interpolated too. A change
++	 * of the first pass's view that does not go through GS_VIEWPOINT (the
++	 * battle effects' fixed camera, EFE opcodes 63/64) is a cut. */
++	modCopy(&modViewPrev, &modViewCur, sizeof(GsRVIEW2));
++	modDistPrev = modDistCur;
++	modViewPrevOk = modViewCurOk;
++	modCopy(&modViewCur, &GS_VIEWPOINT, sizeof(GsRVIEW2));
++	modDistCur = VIEWPORT_DISTANCE;
++	modCopy(&modWsPrev, &modWsCur, sizeof(MATRIX));
++	modCopy(&modWsOrgPrev, &modWsOrgCur, sizeof(MATRIX));
++	modProjPrev = modProjCur;
++	modCopy(&modWsCur, &modPass0WsMatrix, sizeof(MATRIX));
++	modCopy(&modWsOrgCur, &modPass0WsMatrixOrg, sizeof(MATRIX));
++	modProjCur = modPass0Projection;
++	modViewLerp = 0;
++	modViewGsLerp = 0;
++	changed = !modSame(&modInterpWsMatrix, &modPass0WsMatrix, sizeof(MATRIX)) ||
++		  !modSame(&modInterpView, &GS_VIEWPOINT, sizeof(GsRVIEW2)) ||
++		  modDistCur != modDistPrev || modProjCur != modProjPrev;
++	if (!modInterpBattle) {
++		modViewCurOk = 0;
++	} else if (changed || !modViewPrevOk) {
++		modViewCurOk = modViewConsistent();
++	} else {
++		modViewCurOk = 1; /* the same view as the previous tick's */
++	}
++	if (changed) {
++		if (!snap && modInterpBattle && modWsPrevOk && modWsSmallStep()) {
++			modViewLerp = 1;
++			modViewGsLerp = modViewCurOk && modViewPrevOk && modViewSmallStep();
++		} else {
++			snap = 1;
++		}
++	}
++	modWsPrevOk = modInterpBattle;
+ 	modInterpMapGen = MOD_INTERP_MAP_GEN;
+ 	modInterpGameState = GAME_STATE;
+ 	modInterpLastBattle = modInterpBattle;
+@@ -4712,10 +4824,43 @@ static void modInterpApply(int32_t alpha)
+ 	SVECTOR rot;
+ 
+ 	modInterpLastPassLerped = 0;
++	modViewLastPass = 0;
+ 	MOD_MIST_SHIFT[0] = MOD_MIST_SHIFT[1] = MOD_MIST_SHIFT[2] = 0;
+ 	if (alpha >= 4096) {
+ 		return;
+ 	}
++	if (modViewLerp) {
++		/* the matrix (and projection) the pass renders with, between the
++		 * two ticks' first passes; GS_VIEWPOINT is written for the pass
++		 * too when the view comes from it, as renders that set a view of
++		 * their own put it back from there */
++		modCopy(&modViewSave, &GS_VIEWPOINT, sizeof(GsRVIEW2));
++		modDistSave = VIEWPORT_DISTANCE;
++		if (modViewGsLerp) {
++			GS_VIEWPOINT.vpx = modLerp(modViewPrev.vpx, modViewCur.vpx, alpha);
++			GS_VIEWPOINT.vpy = modLerp(modViewPrev.vpy, modViewCur.vpy, alpha);
++			GS_VIEWPOINT.vpz = modLerp(modViewPrev.vpz, modViewCur.vpz, alpha);
++			GS_VIEWPOINT.vrx = modLerp(modViewPrev.vrx, modViewCur.vrx, alpha);
++			GS_VIEWPOINT.vry = modLerp(modViewPrev.vry, modViewCur.vry, alpha);
++			GS_VIEWPOINT.vrz = modLerp(modViewPrev.vrz, modViewCur.vrz, alpha);
++			GS_VIEWPOINT.rz = modLerpAngle(modViewPrev.rz, modViewCur.rz, alpha);
++			VIEWPORT_DISTANCE = modLerp(modDistPrev, modDistCur, alpha);
++		}
++		for (i = 0; i < 9; i++) {
++			GsWSMATRIX.m[i / 3][i % 3] = modLerp(modWsPrev.m[i / 3][i % 3], modWsCur.m[i / 3][i % 3], alpha);
++			GsWSMATRIX_ORG.m[i / 3][i % 3] = modLerp(modWsOrgPrev.m[i / 3][i % 3], modWsOrgCur.m[i / 3][i % 3], alpha);
++		}
++		for (i = 0; i < 3; i++) {
++			GsWSMATRIX.t[i] = modLerp(modWsPrev.t[i], modWsCur.t[i], alpha);
++			GsWSMATRIX_ORG.t[i] = modLerp(modWsOrgPrev.t[i], modWsOrgCur.t[i], alpha);
++		}
++		modViewSetDist = modLerp(modProjPrev, modProjCur, alpha);
++		GsSetProjection(modViewSetDist);
++		modCopy(&modViewSetWs, &GsWSMATRIX, sizeof(MATRIX));
++		modViewApplied = 1;
++		modInterpLastPassLerped = 1;
++		MOD_INTERP_STATS[6]++;
++	}
+ 	if (modCamLerp) {
+ 		/* the background drawn at x is at tile x - (cameraX + DRAWING_OFFSET_X
+ 		 * - POSITION.offx); keep that inside the tiles in VRAM */
+@@ -4829,6 +4974,14 @@ static void modInterpRestore(void)
+ 	if (!modInterpLastPassLerped) {
+ 		return;
+ 	}
++	if (modViewApplied) {
++		modViewWsReset = !modSame(&GsWSMATRIX, &modViewSetWs, sizeof(MATRIX));
++		modViewProjReset = ReadGeomScreen() != modViewSetDist;
++		modCopy(&GS_VIEWPOINT, &modViewSave, sizeof(GsRVIEW2));
++		VIEWPORT_DISTANCE = modDistSave;
++		modViewApplied = 0;
++		modViewLastPass = 1;
++	}
+ 	if (modCamApplied) {
+ 		MAP_TILE_DATA.cameraX = modCamSaveCX;
+ 		MAP_TILE_DATA.cameraY = modCamSaveCY;
+@@ -4861,6 +5014,19 @@ static void modInterpEndTick(void)
+ 	MATRIX ls;
+ 
+ 	POSITION = modPass0Position;
++	if (modViewLastPass) {
++		/* the last pass drew with an interpolated view: leave libgs as a
++		 * single render would have, the first pass's view, or GS_VIEWPOINT
++		 * if the renders set it again */
++		modRestorePass0View();
++		if (modViewWsReset) {
++			GsSetRefView2(&GS_VIEWPOINT);
++		}
++		if (modViewProjReset) {
++			GsSetProjection(VIEWPORT_DISTANCE);
++		}
++		modViewLastPass = 0;
++	}
+ 	modInterpKeepBones();
+ 	if (!modInterpLastPassLerped) {
+ 		return;
+-- 
+2.53.0
+

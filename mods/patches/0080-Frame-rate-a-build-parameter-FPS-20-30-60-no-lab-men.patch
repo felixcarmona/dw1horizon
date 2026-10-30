@@ -1,0 +1,227 @@
+From 1a417e6ed667434b1ea5cf52864ab43d94bf3939 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 13 Oct 2026 18:34:39 +0000
+Subject: [PATCH] Frame rate: a build parameter (FPS=20|30|60), no lab menu
+ option
+
+The frame rate is chosen when the game is built, not at run time:
+`make FPS=20|30|60` (default 60, the one line in the Makefile), written to
+the generated header fps.h like PARTNER_MMD_MAX. MOD_FPS_MODE becomes a
+compile-time constant (dw/mod_fps.h), so with FPS=20 modPresent's extra
+passes, render-random replay and interpolation are dead code and compile
+out; the interpolation tables stay (memory layout unchanged).
+MOD_FPS_BUILD (read-only, 20/30/60) tells tools which build runs.
+
+Lab menu: the "Frame rate" option is gone (6 options, 8 text rows,
+0x90..0xEF). It was never saved, so the save layout is unchanged.
+
+---
+ Makefile             | 11 ++++++++++
+ include/dw/mod_fps.h | 17 ++++++++++++++++
+ src/main/main.c      |  9 ++++++---
+ src/main/mod_lab.c   | 48 +++++++++-----------------------------------
+ 4 files changed, 44 insertions(+), 41 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index c468fe7..e6ca711 100644
+--- a/Makefile
++++ b/Makefile
+@@ -33,6 +33,17 @@ $(shell mkdir -p $(GEN_DIR); printf '#define PARTNER_MMD_MAX %s\n' '$(PARTNER_MM
+ 	cmp -s $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h && rm $(GEN_DIR)/partner_mmd_max.h.tmp \
+ 	|| mv $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h)
+ 
++# MOD (fps): the frame rate the build presents, 20, 30 or 60 fps (docs/mods/60fps.md); the
++# game logic runs at 20 Hz in all three. Chosen here, at build time only (no menu option).
++# The default below is the one line to change (docs/open-items.md: 60 or 30, pending).
++FPS ?= 60
++ifeq ($(filter $(FPS),20 30 60),)
++$(error FPS=$(FPS): the frame rate must be 20, 30 or 60)
++endif
++$(shell mkdir -p $(GEN_DIR); printf '#define FPS %s\n' '$(FPS)' > $(GEN_DIR)/fps.h.tmp; \
++	cmp -s $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h && rm $(GEN_DIR)/fps.h.tmp \
++	|| mv $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h)
++
+ PYTHON := python3
+ 
+ .DEFAULT_GOAL := all
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index 4437c26..02b6053 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -4,6 +4,23 @@
+ #include <dw/types.h>
+ #include <dw/world_object.h>
+ #include <dw/mod_present.h>
++#include <fps.h> /* FPS: the build's frame rate (Makefile `FPS=20|30|60`, generated) */
++
++/* MOD (fps): the frame rate is a build parameter, not a setting: FPS is 20,
++ * 30 or 60 (Makefile, default there) and MOD_FPS_MODE the compile-time mode
++ * modPresent works with: 0 = 20 fps (one render per tick, the original; the
++ * extra passes and the interpolation compile out), 1 = 30, 2 = 60. */
++#if FPS == 20
++#define MOD_FPS_MODE 0
++#elif FPS == 30
++#define MOD_FPS_MODE 1
++#elif FPS == 60
++#define MOD_FPS_MODE 2
++#else
++#error "FPS must be 20, 30 or 60"
++#endif
++/* the same value in RAM (read-only), so tools can tell which build runs */
++extern const int32_t MOD_FPS_BUILD;
+ 
+ /* MOD (fps): the scene can be rendered several times per 20 Hz logic tick
+  * (see docs/mods/60fps.md). renderObjects() must then be idempotent:
+diff --git a/src/main/main.c b/src/main/main.c
+index 626c640..da7fed8 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4098,8 +4098,9 @@ static void modPerfReset(void)
+ /* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
+  * tickObjects: movement, clock, timers, animation, then the late tick) runs
+  * once per tick, and a tick always lasts 3 vertical refreshes (20 Hz) as in
+- * the original. MOD_FPS_MODE chooses at which of the tick's 3 refreshes a
+- * new frame is shown (the lab menu switches it):
++ * the original. MOD_FPS_MODE (dw/mod_fps.h: a compile-time constant from the
++ * build's FPS, Makefile `FPS=20|30|60`) chooses at which of the tick's 3
++ * refreshes a new frame is shown:
+  *   0 = 20 fps: the third (the original, one render per tick);
+  *   1 = 30 fps: every other refresh, so the ticks alternate between one
+  *       frame shown at the second refresh and two at the first and third;
+@@ -4109,7 +4110,9 @@ static void modPerfReset(void)
+  * not end before the next tick is due (judging by the previous pass's cost),
+  * is skipped; the logic never is. See dw/mod_fps.h for how renders stay
+  * idempotent. */
+-int32_t MOD_FPS_MODE = 2;
++/* the build's frame rate (dw/mod_fps.h), for tools; kept by the linker
++ * although no code reads it */
++const int32_t MOD_FPS_BUILD __attribute__((used, retain)) = FPS;
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+  * in any mode, and every pass is rendered, the one of the k-th third shown at
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 5bd5ad7..a5009f8 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -8,8 +8,6 @@
+  *   - "Heal partner"   current HP and MP to the maximum
+  *   - "One-time gift"  mini quest: gives 1 Meat and sets MOD_LAB_TRIGGER;
+  *                      afterwards it says the gift was already taken
+- *   - "Frame rate  60 fps"  X (or right) cycles 20 -> 30 -> 60 fps, left
+- *                      goes back (MOD_FPS_MODE, main.c; experimental branch)
+  *   - "To MasterTyrannomon"  starts the real evolution sequence into the shown
+  *                      species when the game is unpaused, the way an
+  *                      evolution item does, but with the natural stat gains
+@@ -27,7 +25,11 @@
+  *                      to, otherwise the first Mega species in DIGI.DAT,
+  *                      docs/mods/mega.md); a species the disc's DIGI.DAT
+  *                      does not define is skipped
++ *   - "Status bubbles  All"  X (or left/right) switches Classic / All
++ *                      (MOD status-bubbles)
+  *   - "Close"
++ * (The frame rate is not an option: it is chosen when the game is built,
++ * Makefile FPS=20|30|60.)
+  *
+  * The result of an option replaces the stats line until the next key, so the
+  * box keeps 8 text rows (0x90..0xEF; the pause label is at 0xF0).
+@@ -56,10 +58,11 @@
+ #define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+ #define MOD_LAB_BOX	5	/* same box the pause uses */
+ #define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
+-#define MOD_LAB_OPTIONS	7
+-#define MOD_LAB_OPT_BUBBLES	5	/* MOD (status-bubbles): Classic / All */
+-#define MOD_LAB_OPT_FPS	3	/* the frame rate option */
+-#define MOD_LAB_OPT_EVOLVE	4	/* MOD (master-tyrannomon, mega) */
++/* MOD (fps): no frame rate option; the frame rate is a build parameter
++ * (Makefile FPS=20|30|60, docs/mods/60fps.md) */
++#define MOD_LAB_OPTIONS	6
++#define MOD_LAB_OPT_BUBBLES	4	/* MOD (status-bubbles): Classic / All */
++#define MOD_LAB_OPT_EVOLVE	3	/* MOD (master-tyrannomon, mega) */
+ #define ITEM_MEAT	38
+ 
+ #define PAD_SELECT	0x100
+@@ -74,7 +77,6 @@
+ 
+ extern UIBoxData UI_BOX_DATA[];
+ extern int32_t IS_SCRIPT_PAUSED;
+-extern int32_t MOD_FPS_MODE; /* 0 = 20 fps, 1 = 30, 2 = 60 (main.c) */
+ extern int16_t EVOLUTION_TARGET;
+ extern uint8_t HAS_USED_EVOITEM;
+ 
+@@ -100,7 +102,6 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"+1000 bits",
+ 	"Heal partner",
+ 	"One-time gift",
+-	NULL, /* MOD_LAB_FPS_TEXT */
+ 	NULL, /* MOD_LAB_EVO_TEXT */
+ 	"Status bubbles  All",
+ 	"Close",
+@@ -149,20 +150,6 @@ static int32_t modLabEvoCount(void)
+ 	return MOD_LAB_EVO_FIXED + getSpeciesPartnerCount() + 1;
+ }
+ 
+-static char *MOD_LAB_FPS_TEXT[3] = {
+-	"Frame rate  20 fps",
+-	"Frame rate  30 fps",
+-	"Frame rate  60 fps",
+-};
+-
+-static int32_t modLabFpsMode(void)
+-{
+-	if (MOD_FPS_MODE < 0) {
+-		return 0;
+-	}
+-	return MOD_FPS_MODE > 2 ? 2 : MOD_FPS_MODE;
+-}
+-
+ static char *appendStr(char *dst, char *src)
+ {
+ 	while (*src != '\0') {
+@@ -276,9 +263,7 @@ static void modLabDrawText(void)
+ 	}
+ 
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+-		if (i == MOD_LAB_OPT_FPS) {
+-			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+-		} else if (i == MOD_LAB_OPT_BUBBLES) {
++		if (i == MOD_LAB_OPT_BUBBLES) {
+ 			drawString(MOD_STATUS_BUBBLES ? "Status bubbles  All" : "Status bubbles  Classic",
+ 				   0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else if (i == MOD_LAB_OPT_EVOLVE) {
+@@ -339,13 +324,6 @@ static void modLabFrames(int32_t n)
+ 	}
+ }
+ 
+-static void modLabSetFps(int32_t step)
+-{
+-	MOD_FPS_MODE = (modLabFpsMode() + step + 3) % 3;
+-	/* the option shows the new rate; an older message would only confuse */
+-	modLabMessage = NULL;
+-}
+-
+ static void modLabApply(void)
+ {
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+@@ -370,9 +348,6 @@ static void modLabApply(void)
+ 			modLabShowMessage("You got 1 Meat");
+ 		}
+ 		break;
+-	case MOD_LAB_OPT_FPS:
+-		modLabSetFps(1);
+-		break;
+ 	case MOD_LAB_OPT_BUBBLES:
+ 		MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
+ 		break;
+@@ -437,9 +412,6 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		} else if (pressed & PAD_DOWN) {
+ 			MOD_LAB_CURSOR = (MOD_LAB_CURSOR + 1) % MOD_LAB_OPTIONS;
+ 			playSound(0, 2);
+-		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_FPS) {
+-			playSound(0, 2);
+-			modLabSetFps((pressed & PAD_RIGHT) ? 1 : -1);
+ 		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_BUBBLES) {
+ 			playSound(0, 2);
+ 			MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
+-- 
+2.53.0
+

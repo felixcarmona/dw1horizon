@@ -1,0 +1,33 @@
+{
+  "id": 170,
+  "name": "Mojyamon",
+  "level": "champion",
+  "attribute": "data",
+  "specialties": ["ice", "battle", "nature"],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 0},
+  "effects_like": 52,
+  "model": {"name": "EMOJ", "bones": 18, "radius": 170, "height": 300},
+  "voice": 46,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 400, "mp": 400, "off": 40, "def": 40, "speed": 40, "brain": 40, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

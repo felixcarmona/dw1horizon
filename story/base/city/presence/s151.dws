@@ -1,0 +1,10 @@
+// Who stands on screen 151 (Toy Mansion), and when. Read out of MAPHEAD.SCN section 151 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(151) {                              // Toy Mansion
+            npc 171 slot 1 when not trigger(337) and trigger(350);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+// A Digimon the map never had: a strong Garurumon guards the Native Forest
+// entrance (placed-Digimon slot 0, which normally holds a ModokiBetamon by day).
+// Garurumon's model is 94 KB: the other two ModokiBetamon become RedVegiemon so
+// ModokiBetamon's model is not loaded and the screen's models fit in the heap.
+place(species("Garurumon"), screen: 0, slot: 0, at: (-2309, 2500), hp: 1500, mp: 900, off: 200, def: 150, speed: 120, brain: 150, bits: 2000);
+place(species("RedVegiemon"), screen: 0, slot: 1);
+place(species("RedVegiemon"), screen: 0, slot: 4);
+script 1 {
+    npc garurumon = 5;
+    on talk(garurumon) replace {
+        say(garurumon, text("forest-garurumon.t1"));
+        battle();
+        if (won) {
+            say(garurumon, text("forest-garurumon.t2"));
+            give_bits(2000);
+        }
+        return;
+    }
+}

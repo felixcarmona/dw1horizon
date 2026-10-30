@@ -1,0 +1,137 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M337ZAMB",
+ "type": 430,
+ "name": "Zanbamon",
+ "source": {
+  "type": 33,
+  "mmd": "extracted/CHDAT/MMD1/UNIM.MMD"
+ },
+ "map": {
+  "1": 16,
+  "2": 2,
+  "3": 3,
+  "4": 5,
+  "5": 12,
+  "6": 14,
+  "7": 22,
+  "8": 8,
+  "9": 10,
+  "10": 11,
+  "11": 25,
+  "24": 26,
+  "27": 17,
+  "28": 18,
+  "29": 19,
+  "30": 20,
+  "31": 21,
+  "32": 23,
+  "33": 24
+ },
+ "hips": [
+  1,
+  1,
+  1.01
+ ],
+ "root_scale": 1.01,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x38": {
+   "anim": "anim_14",
+   "start": 1,
+   "end": 88,
+   "speed": 1.14,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x30": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 122,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x2e": {
+   "anim": "anim_20",
+   "start": 1,
+   "end": 106,
+   "speed": 1.19,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "gait": {
+  "legs": [
+   [
+    25,
+    3.142,
+    0
+   ],
+   [
+    26,
+    3.142,
+    1
+   ]
+  ],
+  "stride": 118.0,
+  "amp": 26
+ },
+ "scale": 0.050816,
+ "hub_roots": true,
+ "rigfix": {
+  "max_bones": 33
+ },
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

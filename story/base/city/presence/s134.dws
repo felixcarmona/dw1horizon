@@ -1,0 +1,11 @@
+// Who stands on screen 134 (Freezeland), and when. Read out of MAPHEAD.SCN section 134 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(134) {                              // Freezeland
+            npc Penguinmon slot 0 when not recruited(Penguinmon);
+            npc 170 slot 1 when not trigger(107);
+        }
+    }
+}

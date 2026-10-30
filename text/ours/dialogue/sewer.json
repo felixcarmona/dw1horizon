@@ -1,0 +1,66 @@
+{
+ "s180.sec5.u0": "Bleh, bleh, bleh. Ohh, I feel awful...",
+ "s180.sec5.u1": "Hey, are you okay?",
+ "s180.sec5.u2": "Bleh, bleh. I just feel awful, is all.",
+ "s180.sec5.u3": "Do you actually live in a place like this?",
+ "s180.sec5.u4": "Ohh, I feel sick. So sluggish...",
+ "s180.sec5.u5": [
+  [
+   "Hmm. He really doesn't look well. I doubt he's",
+   "always like this."
+  ],
+  [
+   "He even looks... kind of pale... maybe."
+  ]
+ ],
+ "s180.sec5.u6": "Bleh, bleh. I'm feeling worse and worse.",
+ "s180.sec5.u7": "Hmm. I'll have to find out what's causing this...",
+ "s180.sec5.u8": "I wonder where this waste water is coming from. Let's go find out!",
+ "s180.sec6.u0": [
+  [
+   "All right, the sewer's back to normal."
+  ],
+  [
+   "I took care of the cause. He must be feeling",
+   "better by now..."
+  ]
+ ],
+ "s180.sec6.u1": "Wha?! Something's weird!",
+ "s180.sec6.u2": "Wh-wh-wh-wh-wh-whoooa!",
+ "s180.sec6.u3": "Yaaawn... Bleh, bleh. Oh-ho? What's up, folks?",
+ "s180.sec6.u4": "Whoa! He sounds kind of goofy now! Is he back to his senses?",
+ "s180.sec6.u5": "Huh? Goofy? That's rude, y'know. Me, I'm Numemon. Or am I Numemon?",
+ "s180.sec6.u6": [
+  [
+   "...Ugh, he's not so much goofy",
+   "as..."
+  ],
+  [
+   "Ahem. Numemon, do you know",
+   "who it was that saved you?"
+  ]
+ ],
+ "s180.sec6.u7": "Hyuh? You want saving? Sure, whatever.",
+ "s180.sec6.u8": "Geez, he's got it all backwards! Well, it works out in the end anyway.",
+ "s180.sec6.u9": [
+  [
+   "So I'm your helper, huh? No,",
+   "your helper-mon!"
+  ],
+  [
+   "Bleh-bleh-bleh-bleh.",
+   "Bleh-bleh. Bleh!"
+  ]
+ ],
+ "s180.sec6.u10": "...... Well, anyway, come to our city. Uh, do you know where it is?",
+ "s180.sec6.u11": "Course I know! More or less.",
+ "s180.sec6.u12": "Numemon joined the city!",
+ "s180.sec7.u0": "Huh? What are you?!",
+ "s180.sec7.u1": "Nanimon, that's what!",
+ "s180.sec7.u2": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 20 items!",
+ "s180.sec7.u3": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 30 items!",
+ "s180.sec52.u0": "Ugh, what is this?",
+ "s180.sec52.u1": "! What's wrong, {color 10}{partner}{color 1}?!",
+ "s180.sec52.u2": "Is it... the smell of this fog...?",
+ "s180.sec52.u3": "Hmm... something's fishy. Maybe something bad is mixed in with it..."
+}

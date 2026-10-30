@@ -1,0 +1,102 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 164,
+ "type": 223,
+ "name": "LadyDevimon",
+ "source": {
+  "type": 28,
+  "mmd": "extracted/CHDAT/MMD0/VEDA.MMD"
+ },
+ "map": {
+  "1": 5,
+  "2": 6,
+  "10": 12,
+  "11": 11,
+  "12": 8,
+  "13": 1,
+  "14": 7,
+  "15": 4,
+  "16": 15,
+  "23": 9,
+  "24": 3,
+  "25": 10
+ },
+ "hips": [
+  1,
+  1,
+  1.255
+ ],
+ "root_scale": 1.255,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 89,
+   "end": 179,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 4,
+   "end": 84,
+   "hz": 0.3
+  },
+  "0x39": {
+   "anim": "anim_03",
+   "start": 7,
+   "end": 99,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 35,
+   "end": 145,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x35": {
+   "anim": "anim_01",
+   "start": 204,
+   "end": 273,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x32",
+  "0x33",
+  "0x36",
+  "0x37"
+ ]
+}

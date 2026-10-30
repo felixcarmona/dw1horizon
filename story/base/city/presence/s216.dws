@@ -1,0 +1,29 @@
+// Who stands on screen 216 (Item Shop), and when. Read out of MAPHEAD.SCN section 216 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(216) {                              // Item Shop
+            let r1 = not (recruited(Patamon) and not trigger(65)) and not (recruited(Biyomon) and not trigger(66)) and not (recruited(Unimon) and not trigger(67)) and not (recruited(Monochromon) and not trigger(68)) and recruited(Piximon) and roll(1) <= 1;
+            let r2 = not (recruited(Patamon) and not trigger(65)) and not (recruited(Biyomon) and not trigger(66)) and not (recruited(Unimon) and not trigger(67)) and not (recruited(Monochromon) and not trigger(68)) and not (recruited(Piximon) and roll(1) <= 1) or r1;
+            let r3 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and not (trigger(67) and clock.hour >= 0 and clock.hour < 6) and not (trigger(68) and clock.hour >= 18) and not recruited(Patamon) and not recruited(Biyomon) and not recruited(Unimon) and recruited(Monochromon);
+            let r4 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and not (trigger(67) and clock.hour >= 0 and clock.hour < 6) and not (trigger(68) and clock.hour >= 18) and not recruited(Patamon) and not recruited(Biyomon) and recruited(Unimon);
+            let r5 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and not (trigger(67) and clock.hour >= 0 and clock.hour < 6) and not (trigger(68) and clock.hour >= 18) and not recruited(Patamon) and recruited(Biyomon);
+            let r6 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and not (trigger(67) and clock.hour >= 0 and clock.hour < 6) and not (trigger(68) and clock.hour >= 18) and recruited(Patamon);
+            let r7 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and not (trigger(67) and clock.hour >= 0 and clock.hour < 6) and trigger(68) and clock.hour >= 18;
+            let r8 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and not (trigger(66) and clock.hour >= 6 and clock.hour < 12) and trigger(67) and clock.hour >= 0 and clock.hour < 6;
+            let r9 = r2 and not (trigger(65) and clock.hour >= 12 and clock.hour < 18) and trigger(66) and clock.hour >= 6 and clock.hour < 12;
+            let r10 = r2 and trigger(65) and clock.hour >= 12 and clock.hour < 18;
+            let r11 = not (recruited(Patamon) and not trigger(65)) and not (recruited(Biyomon) and not trigger(66)) and not (recruited(Unimon) and not trigger(67)) and recruited(Monochromon) and not trigger(68);
+            let r12 = not (recruited(Patamon) and not trigger(65)) and not (recruited(Biyomon) and not trigger(66)) and recruited(Unimon) and not trigger(67);
+            let r13 = not (recruited(Patamon) and not trigger(65)) and recruited(Biyomon) and not trigger(66);
+            let r14 = recruited(Patamon) and not trigger(65);
+            npc 151 slot 0 when r6 or r10 or r14;
+            npc 163 slot 1 when r5 or r9 or r13;
+            npc 153 slot 2 when r4 or r8 or r12;
+            npc 165 slot 3 when r3 or r7 or r11;
+            npc 173 slot 4 when r1;
+            npc Punimon slot 5;
+        }
+    }
+}

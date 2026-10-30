@@ -1,0 +1,52 @@
+{
+  "id": 65,
+  "name": "MetalEtemon",
+  "level": "ultimate",
+  "vanilla": true,
+  "attribute": "vaccine",
+  "specialties": ["battle", "air", "filth"],
+  "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
+                 "Muscle Charge", "Megalo Spark", "Spinning Shot", "Thunder Justice",
+                 "Horizontal Kick (55)", "Ult Poop Hell", "Dark Network & Concert Crush"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 42,
+  "model": {"name": "MTET", "bones": 27, "radius": 130, "height": 265},
+  "voice": 38,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 12,
+    "hunger_hours": [2, 6, 10, 14, 18, 22],
+    "energy_max": 80,
+    "energy_fed": 40,
+    "energy_per_hour": 10,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Orange bana",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 3,
+    "training_type": "offense-speed",
+    "birth_weight": 20,
+    "status_screen_position": [500, 230, -1870],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": 500,
+      "mp": 600,
+      "offense": 600,
+      "defense": 500,
+      "speed": 600,
+      "brain": 500,
+      "care": 0,
+      "weight": 15,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": 100,
+      "techs": 45,
+      "flags": 16
+    },
+    "gains": {"hp": 6000, "mp": 7500, "offense": 900, "defense": 700, "speed": 900, "brains": 750}
+  }
+}

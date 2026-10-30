@@ -1,0 +1,12 @@
+{
+  "id": 120,
+  "file": "MIST06",
+  "tims8": 3,
+  "tims4": 2,
+  "sound_bank": 9,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 38
+}

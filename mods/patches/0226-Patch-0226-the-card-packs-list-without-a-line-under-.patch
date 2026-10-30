@@ -1,0 +1,87 @@
+From efbc87421b4edeb68b63e0c56bf362a92106620f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 20:34:31 +0000
+Subject: [PATCH] Patch 0226: the card packs' list without a line under its
+ head: the box in the plain style (0xe1, as Mojyamon's list; 0xf1 drew the
+ shop lists' header band and its line, which crossed the head), the head
+ centred above the rows (its width measured, PACK_HEAD_W), the rows, cursor,
+ picture and box back where 0223 had them. Replaces 0225's moves. 0 bytes of
+ heap
+
+---
+ src/shop/script_menu.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index aa8e95c6..60db682c 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -3585,6 +3585,7 @@ static uint8_t PACK_SHOWN;
+ static uint8_t PACK_TICK;
+ static uint8_t PACK_ART;  /* the card whose picture is shown (0xff none) */
+ static uint8_t PACK_FLIP; /* 0..4: the picture turns over as it comes */
++static uint8_t PACK_HEAD_W; /* the head's width in pixels */
+ extern char MAIN_D_80123E78[]; /* "\\CARD\\CARD.ALL" */
+ extern uint32_t ARRAY_SECTION_OFFSET;
+ int32_t loadStackedTIMEntry(char *path, void *buffer, int32_t offset, int32_t sectors);
+@@ -3647,16 +3648,15 @@ static void renderPackResults(void)
+ 	by = UI_BOX_DATA[1].finalPos.y;
+ 	getVRAMModeCoords(text->vramMode, &u, &w);
+ 	v = (9 + text->backPage * text->vramRows) * 12;
+-	renderString(0, bx + 0xc, by + 3, 0xc0, 0xc, u, v, 5, 1);
+-	renderHorizontalLine(1, 4, 0x17, 0xd7);
++	renderString(0, bx + (0xde - PACK_HEAD_W) / 2, by + 7, PACK_HEAD_W, 0xc, u, v, 5, 1); /* the head centred, no line */
+ 	renderItemMenuScrollBar(box);
+ 	count = box->itemCount;
+ 	if (PACK_SHOWN < count) {
+ 		box->itemCount = PACK_SHOWN;
+ 	} else {
+-		renderSelectionCursor(bx + 5, by + box->cursor * 0x12 + 0x1b, 0xca, 0x12, 5);
++		renderSelectionCursor(bx + 5, by + box->cursor * 0x12 + 0x19, 0xca, 0x12, 5);
+ 	}
+-	renderItemMenuItemList(box, bx + 0x1a, by + 0x1d, bx + 8, by + 0x1c, 1);
++	renderItemMenuItemList(box, bx + 0x1a, by + 0x1b, bx + 8, by + 0x1a, 1);
+ 	box->itemCount = count;
+ 
+ 	if (PACK_ART != 0xff && UI_BOX_DATA[1].state == 1) {
+@@ -3669,7 +3669,7 @@ static void renderPackResults(void)
+ 		prim->tpage = GetTPage(1, 0, 576, 256);
+ 		prim->clut = GetClut(448, 511);
+ 		setUVDataPolyFT4(prim, 0, 0, 150, 180);
+-		setPosDataPolyFT4(prim, bx - 0x50 + (75 - w) / 2, by + 0x16, w, 90);
++		setPosDataPolyFT4(prim, bx - 0x50 + (75 - w) / 2, by + 0x14, w, 90);
+ 		AddPrim(ACTIVE_ORDERING_TABLE->org + 5, prim++);
+ 		GsSetWorkBase((PACKET *)prim);
+ 	}
+@@ -3687,7 +3687,7 @@ static void openPackResults(void)
+ 	int32_t fresh;
+ 
+ 	/* the list first: the arrays are a stack (allocateArray), got is freed above it */
+-	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1e, 6, 0x56);
++	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
+ 	got = (uint8_t *)allocateArray(NUM_CARDS * 2);   /* how many came, the copies before */
+ 	for (i = 0; i < NUM_CARDS; i++) {
+ 		got[i] = 0;
+@@ -3728,6 +3728,8 @@ static void openPackResults(void)
+ 		out = intToStringSJIS(out, fresh, 2, 1);
+ 		strcpy(out, STR_PACK_NEW);
+ 		out += strlen(STR_PACK_NEW);
++		*out = 0;
++		PACK_HEAD_W = measureStringMode((char *)TEXTBOX_LINES_PTR + (r << 6), FIT_VANILLA);
+ 		*out = 0xd;
+ 	}
+ 
+@@ -3739,8 +3741,8 @@ static void openPackResults(void)
+ 	triggerBoxCloseFlag(0);
+ 	setInputRepeatMask(0x5000);
+ 	setupBoxOrigin(readPStat(PSTAT_254), &origin);
+-	setRECT(&rect, -0x44, -0x40, 0xde, 0x7c);
+-	createTextbox(1, 0xf1, &rect, &origin, tickPackResults, renderPackResults);
++	setRECT(&rect, -0x44, -0x40, 0xde, 0x7a);
++	createTextbox(1, 0xe1, &rect, &origin, tickPackResults, renderPackResults);
+ 	registerTextbox(1, 9, 6, 1, 0);
+ 	initItemMenuBox(ITEM_MENU_LEFT, 1, 0xa);
+ 	updateItemMenuStrings(ITEM_MENU_LEFT, 0xa, 1);
+-- 
+2.55.0
+

@@ -1,0 +1,130 @@
+From c6d1188d1ab7ada5f51421292f15a756916dd107 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 21:17:44 +0000
+Subject: [PATCH] 60 fps step 1: fixed 20 Hz logic tick, render every refresh
+ (no interpolation yet)
+
+Measured: 19.8 ticks/s, 59.5 renders/s, game clock 59.9 game min per real
+min (unchanged), partner animation advances ~19 frames/s on both builds
+(renders do not advance game state). MOD_FPS_RENDERS_PER_TICK=1 restores
+the original 20 fps behaviour at runtime.
+---
+ src/main/main.c | 84 ++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 65 insertions(+), 19 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 8184f37..5f4cc20 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3896,15 +3896,44 @@ int32_t MOD_PERF_FRAMES;
+ static int32_t modPerfV0;
+ static int32_t modPerfH0;
+ 
+-void gameLoop(void)
++/* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
++ * tickObjects: movement, clock, timers, animation) still runs once per tick,
++ * 20 ticks per second as in the original, so game speed is unchanged. The scene
++ * is rendered MOD_FPS_RENDERS_PER_TICK times per tick, each on its own vertical
++ * refresh (3 = 60 fps, 1 = original 20 fps). If a render runs late the remaining
++ * renders of that tick are skipped instead of delaying the next tick. */
++int32_t MOD_FPS_RENDERS_PER_TICK = 3;
++int32_t MOD_FPS_TICKS;
++int32_t MOD_FPS_RENDERS;
++
++static void modFpsBeginFrame(void)
+ {
+-	modPerfV0 = VSync(-1);
+-	modPerfH0 = VSync(1);
+-	pollInputGame();
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+ 	GsClearOt(0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
++}
++
++static void modFpsSetView(void)
++{
++	GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
++	GsSetRefView2(&GS_VIEWPOINT);
++	GsSetProjection(VIEWPORT_DISTANCE);
++}
++
++void gameLoop(void)
++{
++	int32_t n;
++	int32_t r;
++	int32_t tickV;
++
++	n = MOD_FPS_RENDERS_PER_TICK;
++	if (n < 1) {
++		n = 1;
++	}
++	tickV = VSync(-1);
++	pollInputGame();
++	modFpsBeginFrame();
+ 	processInput();
+ 	updateTournamentRegistration();
+ 
+@@ -3912,27 +3941,44 @@ void gameLoop(void)
+ 		tickScript();
+ 	}
+ 
+-	GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+-	GsSetRefView2(&GS_VIEWPOINT);
+-	GsSetProjection(VIEWPORT_DISTANCE);
++	modFpsSetView();
+ 	GS_VIEWPOINT_COPY = GS_VIEWPOINT;
+ 	VIEWPORT_DISTANCE_COPY = VIEWPORT_DISTANCE;
+ 	DRAWING_OFFSET_X_COPY = DRAWING_OFFSET_X;
+ 	DRAWING_OFFSET_Y_COPY = DRAWING_OFFSET_Y;
+ 	tickObjects();
+-	renderObjects();
+-	applyDrawOffset(ACTIVE_FRAMEBUFFER);
+-	DrawSync(0);
+-	MOD_PERF_LAST = (VSync(-1) - modPerfV0) * 263 + VSync(1) - modPerfH0;
+-	if (MOD_PERF_LAST > MOD_PERF_MAX) {
+-		MOD_PERF_MAX = MOD_PERF_LAST;
++	MOD_FPS_TICKS++;
++
++	for (r = 0; r < n; r++) {
++		if (r > 0) {
++			if (VSync(-1) >= tickV + n) {
++				break; /* out of time this tick: skip the remaining renders */
++			}
++			modFpsBeginFrame();
++			modFpsSetView();
++		}
++		modPerfV0 = VSync(-1);
++		modPerfH0 = VSync(1);
++		renderObjects();
++		applyDrawOffset(ACTIVE_FRAMEBUFFER);
++		DrawSync(0);
++		MOD_PERF_LAST = (VSync(-1) - modPerfV0) * 263 + VSync(1) - modPerfH0;
++		if (MOD_PERF_LAST > MOD_PERF_MAX) {
++			MOD_PERF_MAX = MOD_PERF_LAST;
++		}
++		MOD_PERF_SUM += MOD_PERF_LAST;
++		MOD_PERF_FRAMES++;
++		while (VSync(-1) < tickV + r + 1) {
++			VSync(0); /* show each render on its own refresh slot */
++		}
++		GsSwapDispBuff();
++		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
++		GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
++		MOD_FPS_RENDERS++;
++	}
++	while (VSync(-1) < tickV + n) {
++		VSync(0); /* the tick lasts n refreshes, as VSync(3) did */
+ 	}
+-	MOD_PERF_SUM += MOD_PERF_LAST;
+-	MOD_PERF_FRAMES++;
+-	VSync(3);
+-	GsSwapDispBuff();
+-	GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+-	GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 	handlePause();
+ }
+ 
+-- 
+2.53.0
+

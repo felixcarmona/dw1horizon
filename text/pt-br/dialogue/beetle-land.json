@@ -1,0 +1,598 @@
+{
+ "s101.sec5.u0": [
+  [
+   "Informe, informe."
+  ]
+ ],
+ "s101.sec6.u0": "Inimigo avistado!",
+ "s101.sec7.u0": [
+  [
+   "Ô, força! Ô, força!"
+  ]
+ ],
+ "s101.sec8.u0": "Hoje é um dia ruim para isso.",
+ "s101.sec9.u0": "Ku-ku-ku-ku...",
+ "s101.sec10.u0": "Não é injusto?",
+ "s101.sec11.u0": "Segurem-nos!",
+ "s101.sec12.u0": [
+  [
+   "Tanta coisa pra fazer, tanta",
+   "coisa!"
+  ]
+ ],
+ "s101.sec81.m0.o0": "Tocar a flauta",
+ "s101.sec81.m0.o1": "Não tocar",
+ "s101.sec81.u0": "Tocar {color 6}Flauta azul{color 1}?",
+ "s102.sec10.u0": [
+  [
+   "- Classe D - Torneio para",
+   "Digimon Novatos. Individual, 3",
+   "rodadas, 8 vagas Entrada livre"
+  ]
+ ],
+ "s102.sec10.u1": [
+  [
+   "- Classe C - Torneio para",
+   "Digimon Campeões. Individual, 3",
+   "rodadas, 8 vagas Entrada livre"
+  ]
+ ],
+ "s102.sec10.u2": [
+  [
+   "- Classe B - Para Campeões",
+   "confiantes na própria força.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada livre"
+  ]
+ ],
+ "s102.sec10.u3": [
+  [
+   "- Classe A - Torneio para",
+   "Digimon Perfeitos. Individual,",
+   "3 rodadas, 8 vagas Entrada",
+   "livre"
+  ]
+ ],
+ "s102.sec10.u4": [
+  [
+   "- Classe S - Reúne os",
+   "Digimon mais fortes.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: vencedores da Classe",
+   "A"
+  ]
+ ],
+ "s102.sec10.u5": [
+  [
+   "- Classe R - Batalha campal",
+   "de astúcia e tática. 4 por",
+   "luta, 2 rodadas, 8 vagas",
+   "Entrada livre"
+  ]
+ ],
+ "s102.sec10.u6": [
+  [
+   "- Copa Versão 1 - Decide o",
+   "melhor da Versão 1. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 1"
+  ]
+ ],
+ "s102.sec10.u7": [
+  [
+   "- Copa Versão 2 - Decide o",
+   "melhor da Versão 2. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 2"
+  ]
+ ],
+ "s102.sec10.u8": [
+  [
+   "- Copa Versão 3 - Decide o",
+   "melhor da Versão 3. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 3"
+  ]
+ ],
+ "s102.sec10.u9": [
+  [
+   "- Copa Versão 4 - Decide o",
+   "melhor da Versão 4. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 4"
+  ]
+ ],
+ "s102.sec10.u10": [
+  [
+   "- Copa Versão O - Para",
+   "Digimon fora das Versões 1 a",
+   "4. Combates com limite de",
+   "tempo. Individual, 3 rodadas, 8",
+   "vagas Entrada: fora das",
+   "Versões 1 a 4"
+  ]
+ ],
+ "s102.sec10.u11": [
+  [
+   "- Copa Fogo - Decide o rei",
+   "dos Digimon de Fogo. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Fogo"
+  ]
+ ],
+ "s102.sec10.u12": [
+  [
+   "- Copa Luta - Decide o rei",
+   "dos Digimon de Luta. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Luta"
+  ]
+ ],
+ "s102.sec10.u13": [
+  [
+   "- Copa Trovão e Vento -",
+   "Decide o rei dos Digimon de",
+   "Ar. Combates com limite de",
+   "tempo. Individual, 3 rodadas, 8",
+   "vagas Entrada: Digimon de Ar"
+  ]
+ ],
+ "s102.sec10.u14": [
+  [
+   "- Copa Estilo - Decide o rei",
+   "dos Digimon de Gelo. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Gelo"
+  ]
+ ],
+ "s102.sec10.u15": [
+  [
+   "- Copa Natureza - Decide o",
+   "rei dos Digimon de Natureza.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Natureza"
+  ]
+ ],
+ "s102.sec10.u16": [
+  [
+   "- Copa Metálica - Decide o",
+   "rei dos Digimon de Máquina.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Máquina"
+  ]
+ ],
+ "s102.sec10.u17": [
+  [
+   "- Copa Sujeira - Decide o rei",
+   "dos Digimon de Sujeira.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Sujeira"
+  ]
+ ],
+ "s102.sec10.u18": [
+  [
+   "- Copa Dino - Digimon de",
+   "sangue antigo competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec10.u19": [
+  [
+   "- Copa Asas - Digimon de",
+   "belas asas competem. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec10.u20": [
+  [
+   "- Copa Animal - Digimon de",
+   "sangue animal competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec10.u21": [
+  [
+   "- Copa Humana - Digimon de",
+   "forma humana competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s102.sec51.u0": "Hoje não há torneio.",
+ "s102.sec51.u1": [
+  [
+   "Quem não se inscreveu, não",
+   "entra."
+  ]
+ ],
+ "s102.sec51.u2": [
+  [
+   "Ainda preparando. Venha no dia",
+   "22, das 10h da manhã às 23h."
+  ]
+ ],
+ "s102.sec51.u3": "Que pena. O torneio já terminou. Volte no ano que vem.",
+ "s102.sec81.m0.o0": "Explique, por favor",
+ "s102.sec81.m0.o1": "Não precisa explicar",
+ "s102.sec81.m1.o0": "Inscrever-se",
+ "s102.sec81.m1.o1": "Não se inscrever",
+ "s102.sec81.m2.o0": "Não cancelar",
+ "s102.sec81.m2.o1": "Cancelar",
+ "s102.sec81.u0": [
+  [
+   "Que pena. Inscrições",
+   "encerradas. Espere mais um",
+   "ano."
+  ]
+ ],
+ "s102.sec81.u1": [
+  [
+   "Agora não é época de torneio.",
+   "Eu entediado."
+  ]
+ ],
+ "s102.sec81.u2": "O torneio acabou. Espere mais um ano.",
+ "s102.sec81.u3": [
+  [
+   "Você não é inseto. Não pode",
+   "entrar no torneio."
+  ]
+ ],
+ "s102.sec81.u4": "Você entra no torneio?",
+ "s102.sec81.u5": [
+  [
+   "Dia 22, torneio de luta só para",
+   "Digimon insetos. Já pode se",
+   "inscrever. Quem não é inseto,",
+   "não entra. Vencedor ganha"
+  ],
+  [
+   "prêmio muito bom. Não custa",
+   "tentar."
+  ]
+ ],
+ "s102.sec81.u6": [
+  [
+   "Agora não é época de torneio.",
+   "Eu entediado."
+  ]
+ ],
+ "s102.sec81.u7": "O torneio acabou. Espere mais um ano.",
+ "s102.sec81.u8": [
+  [
+   "Você se inscreveu na",
+   "\"{cup 3}\". Quer cancelar?"
+  ]
+ ],
+ "s102.sec81.u9": "Cancelado.",
+ "s102.sec81.u10": "O quê, tem certeza?",
+ "s102.sec81.u11": [
+  [
+   "Inscrição feita."
+  ]
+ ],
+ "s102.sec82.u0": "Que pena. No próximo ano de novo.",
+ "s102.sec82.u1": [
+  [
+   "Ganhei {color 6}Carne gigante{color 1}, o",
+   "prêmio de participação!"
+  ]
+ ],
+ "s102.sec82.u2": [
+  [
+   "Bolsa cheia. Jogue algo fora."
+  ]
+ ],
+ "s102.sec82.u3": [
+  [
+   "Prêmio do vencedor: 5000 Bits!",
+   "Ganhei {color 6}Pérola besouro{color 1}!"
+  ]
+ ],
+ "s102.sec82.u4": "Itens cheios!",
+ "s102.sec82.u5": [
+  [
+   "Prêmio do segundo lugar: 2000",
+   "Bits! Ganhei {color 6}Elmo de chifre{color 1}!"
+  ]
+ ],
+ "s102.sec82.u6": "Itens cheios!",
+ "s102.sec82.u7": [
+  [
+   "Prêmio do segundo lugar: 2000",
+   "Bits! Ganhei {color 6}Mandíbula dupla{color 1}!"
+  ]
+ ],
+ "s102.sec82.u8": "Itens cheios!",
+ "s103.sec5.m0.o0": "Num ginásio, talvez",
+ "s103.sec5.m0.o1": "Na Arena, talvez",
+ "s103.sec5.u0": "Eu cansei de treinar aqui. O que fazer?",
+ "s103.sec5.u1": "O que fazer, você diz...",
+ "s103.sec5.u2": "Onde você treina?",
+ "s103.sec5.u3": "Um campo de treinamento, eu acho.",
+ "s103.sec5.u4": "Treinar é chato. Eu quero ficar forte em lutas de verdade.",
+ "s103.sec5.u5": "Treinar é chato. Eu quero ficar forte em lutas de verdade.",
+ "s103.sec5.u6": "Eu vou lá. Eu treino.",
+ "s103.sec5.u7": "Kabuterimon veio para a cidade!",
+ "s103.sec6.u0": [
+  [
+   "Todo ano, no dia com dois 2,",
+   "tem torneio de luta de insetos",
+   "aqui. Vencedor ganha coisa",
+   "incrível. Mas só Digimon"
+  ],
+  [
+   "insetos podem entrar."
+  ]
+ ],
+ "s103.sec6.u1": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon e mais um tipo de",
+   "inseto. Mas Numemon não. Todo",
+   "ano, no dia com dois 2, tem"
+  ],
+  [
+   "torneio de luta de insetos",
+   "aqui... Hum? Você já ganhou o",
+   "torneio antes."
+  ]
+ ],
+ "s103.sec6.u2": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon e mais um tipo de",
+   "inseto: HerculesKabuterimon.",
+   "Hércules muito forte. Vencedor"
+  ],
+  [
+   "ganha item que faz digievoluir",
+   "para Hércules. Pode entrar no",
+   "torneio de insetos muitas",
+   "vezes."
+  ]
+ ],
+ "s103.sec7.m0.o0": "Pode apostar!",
+ "s103.sec7.m0.o1": "Não, obrigado",
+ "s103.sec7.u0": "Você é forte. Nada para eu te ensinar.",
+ "s103.sec7.u1": [
+  [
+   "Estudamos técnicas. Técnicas fortes, difíceis",
+   "de aprender."
+  ],
+  [
+   "Se você tem habilidade, talvez aprenda",
+   "técnica. Quer técnica forte?"
+  ]
+ ],
+ "s103.sec7.u2": "Então nós tentamos.",
+ "s103.sec7.u3": [
+  [
+   "Sua Defesa não é suficiente.",
+   "Treine mais."
+  ]
+ ],
+ "s103.sec7.u4": [
+  [
+   "Sua Velocidade não é",
+   "suficiente. Treine mais."
+  ]
+ ],
+ "s103.sec7.u5": [
+  [
+   "Seu HP não é suficiente.",
+   "Treine mais."
+  ]
+ ],
+ "s103.sec7.u6": "Você aprendeu a técnica.",
+ "s103.sec7.u7": [
+  [
+   "Aprendeu Inseto!"
+  ]
+ ],
+ "s103.sec81.u0": [
+  [
+   "{color 5}Treino: Empurrar pedra{color 1}"
+  ]
+ ],
+ "s103.sec81.u1": [
+  [
+   "Empurrar a pedra desenvolve",
+   "sua força oculta. O HP máximo",
+   "aumenta muito."
+  ]
+ ],
+ "s103.sec81.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s103.sec83.u0": [
+  [
+   "{color 5}Treino: Golpear boneco{color 1}"
+  ]
+ ],
+ "s103.sec83.u1": "Pratique técnicas de ataque em um boneco. O ataque aumenta muito.",
+ "s103.sec83.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s104.sec5.m0.o0": "É só ficar mais forte",
+ "s104.sec5.m0.o1": "Eu sei um truque...",
+ "s104.sec5.m0.o2": "Força aí",
+ "s104.sec5.u0": "Eu quero vencer aqueles Kabuterimon. Como eu ganho?",
+ "s104.sec5.u1": "Sim, eu pensei que sim. Eu treino.",
+ "s104.sec5.u2": "O quê? Diga-me.",
+ "s104.sec5.u3": "Apenas venha para a cidade.",
+ "s104.sec5.u4": [
+  [
+   "..."
+  ],
+  [
+   "Você é gentil. Eu vou para a cidade."
+  ]
+ ],
+ "s104.sec5.u5": "Kuwagamon veio para a cidade!",
+ "s104.sec5.u6": [
+  [
+   "Você não é gentil. Eu",
+   "decepcionado."
+  ]
+ ],
+ "s104.sec6.u0": [
+  [
+   "Você já entrou no torneio de",
+   "insetos. Então vou contar",
+   "coisa boa. Conhece a \"Ninho de",
+   "Kunemon\"? Fica na Floresta"
+  ],
+  [
+   "Nativa. Digimon Novato dorme",
+   "lá, acorda como Kunemon. Às",
+   "vezes não. Depende da sorte."
+  ]
+ ],
+ "s104.sec6.u1": [
+  [
+   "Você, torneio de insetos...",
+   "Hum? Agora não pode entrar.",
+   "Então vou contar coisa boa.",
+   "Conhece a \"Ninho de Kunemon\"?"
+  ],
+  [
+   "Fica na Floresta Nativa.",
+   "Digimon Novato dorme lá,",
+   "acorda como Kunemon. Às vezes",
+   "não. Depende da sorte."
+  ]
+ ],
+ "s104.sec6.u2": [
+  [
+   "Quer entrar no torneio de luta",
+   "de insetos?"
+  ]
+ ],
+ "s104.sec6.u3": "O que é isso?",
+ "s104.sec6.u4": [
+  [
+   "Inscreva-se até as 10 horas",
+   "do dia 22, ou não poderá",
+   "entrar."
+  ]
+ ],
+ "s104.sec6.u5": [
+  [
+   "???"
+  ]
+ ],
+ "s104.sec6.u6": [
+  [
+   "Mais detalhes no dia."
+  ]
+ ],
+ "s104.sec6.u7": "Não faço ideia do que ele quer dizer.",
+ "s104.sec7.m0.o0": "Descansar um pouco",
+ "s104.sec7.m0.o1": "Não descansar",
+ "s104.sec7.u0": [
+  [
+   "Treinamos muito, mas descansar",
+   "é importante. Quer descansar",
+   "uma hora?"
+  ]
+ ],
+ "s104.sec84.u0": [
+  [
+   "{color 5}Treino: Máquina de martelos{color 1}"
+  ]
+ ],
+ "s104.sec84.u1": [
+  [
+   "Aguente os golpes da máquina",
+   "de martelos para se fortalecer.",
+   "A Defesa aumenta muito."
+  ]
+ ],
+ "s104.sec84.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s104.sec85.u0": [
+  [
+   "{color 5}Treino: Esteira{color 1}"
+  ]
+ ],
+ "s104.sec85.u1": [
+  [
+   "Corra na esteira em movimento.",
+   "A Velocidade aumenta muito."
+  ]
+ ],
+ "s104.sec85.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s103.sec81.m0.o0": "Começar o treino",
+ "s103.sec81.m0.o1": "Sobre este treino",
+ "s103.sec81.m0.o2": "Sair",
+ "s103.sec81.m1.o0": "Treino normal",
+ "s103.sec81.m1.o1": "Treino bônus",
+ "s103.sec81.m1.o2": "Deixa pra lá",
+ "s103.sec81.m2.o0": "Explique de novo",
+ "s103.sec81.m2.o1": "Começar o treino",
+ "s103.sec81.m2.o2": "Sair",
+ "s103.sec83.m0.o0": "Começar o treino",
+ "s103.sec83.m0.o1": "Sobre este treino",
+ "s103.sec83.m0.o2": "Sair",
+ "s103.sec83.m1.o0": "Treino normal",
+ "s103.sec83.m1.o1": "Treino bônus",
+ "s103.sec83.m1.o2": "Deixa pra lá",
+ "s103.sec83.m2.o0": "Explique de novo",
+ "s103.sec83.m2.o1": "Começar o treino",
+ "s103.sec83.m2.o2": "Sair",
+ "s104.sec84.m0.o0": "Começar o treino",
+ "s104.sec84.m0.o1": "Sobre este treino",
+ "s104.sec84.m0.o2": "Sair",
+ "s104.sec84.m1.o0": "Treino normal",
+ "s104.sec84.m1.o1": "Treino bônus",
+ "s104.sec84.m1.o2": "Deixa pra lá",
+ "s104.sec84.m2.o0": "Explique de novo",
+ "s104.sec84.m2.o1": "Começar o treino",
+ "s104.sec84.m2.o2": "Sair",
+ "s104.sec85.m0.o0": "Começar o treino",
+ "s104.sec85.m0.o1": "Sobre este treino",
+ "s104.sec85.m0.o2": "Sair",
+ "s104.sec85.m1.o0": "Treino normal",
+ "s104.sec85.m1.o1": "Treino bônus",
+ "s104.sec85.m1.o2": "Deixa pra lá",
+ "s104.sec85.m2.o0": "Explique de novo",
+ "s104.sec85.m2.o1": "Começar o treino",
+ "s104.sec85.m2.o2": "Sair"
+}

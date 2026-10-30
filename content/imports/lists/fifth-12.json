@@ -1,0 +1,90 @@
+{
+ "clip_policy": "dcb-original",
+ "first_id": 229,
+ "out": "build/batch5",
+ "_skipped": "Garudamon (DCB 138): does not fit PARTNER_MODEL_BUFFER after every size rule",
+ "digimon": [
+  {
+   "name": "Phantomon",
+   "clip_policy": null,
+   "game": "dcb",
+   "model": 163,
+   "from": [
+    37
+   ]
+  },
+  {
+   "name": "Rosemon",
+   "game": "dcb",
+   "model": 172,
+   "from": [
+    209
+   ]
+  },
+  {
+   "name": "ShellNumemon",
+   "game": "dcb",
+   "model": 223,
+   "from": [
+    11
+   ]
+  },
+  {
+   "name": "BomberNanimon",
+   "game": "dcb",
+   "model": 213,
+   "from": [
+    53
+   ]
+  },
+  {
+   "name": "D-Otamamon",
+   "game": "dcb",
+   "model": 201,
+   "from": [
+    109
+   ]
+  },
+  {
+   "name": "R-Gatomon",
+   "game": "dcb",
+   "model": 162,
+   "from": [
+    221
+   ]
+  },
+  {
+   "name": "Candlemon",
+   "game": "dcb",
+   "model": 200
+  },
+  {
+   "name": "DemiDevimon",
+   "game": "dcb",
+   "model": 147
+  },
+  {
+   "name": "Diaboromon",
+   "game": "dcb",
+   "model": 179
+  },
+  {
+   "name": "Dolphmon",
+   "game": "dcb",
+   "model": 214
+  },
+  {
+   "name": "Gizamon",
+   "game": "dcb",
+   "model": 207
+  },
+  {
+   "name": "Gesomon",
+   "game": "dcb",
+   "model": 215,
+   "from": [
+    239
+   ]
+  }
+ ]
+}

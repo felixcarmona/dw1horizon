@@ -1,0 +1,87 @@
+{
+ "s180.sec5.u0": "Bleh, bleh, bleh. Ohh, eu me sinto horrível...",
+ "s180.sec5.u1": "Ei, você está bem?",
+ "s180.sec5.u2": "Bleh, bleh. Eu me sinto horrível, só isso.",
+ "s180.sec5.u3": "Você mora mesmo em um lugar como este?",
+ "s180.sec5.u4": [
+  [
+   "Ai, que mal-estar. Que",
+   "moleza..."
+  ]
+ ],
+ "s180.sec5.u5": [
+  [
+   "Hmm. Ele realmente não parece bem. Duvido",
+   "que ele seja sempre assim."
+  ],
+  [
+   "Ele até parece... meio pálido... talvez."
+  ]
+ ],
+ "s180.sec5.u6": "Bleh, bleh. Estou me sentindo pior e pior.",
+ "s180.sec5.u7": "Hmm. Tenho que descobrir o que está causando isso...",
+ "s180.sec5.u8": "Eu me pergunto de onde vem essa água de esgoto. Vamos descobrir!",
+ "s180.sec6.u0": [
+  [
+   "Certo, o esgoto voltou ao normal."
+  ],
+  [
+   "Eu cuidei da causa. Ele deve estar se sentindo",
+   "melhor agora..."
+  ]
+ ],
+ "s180.sec6.u1": "O quê? Algo está estranho!",
+ "s180.sec6.u2": "Wh-wh-wh-wh-wh-whooa!",
+ "s180.sec6.u3": "Yaaawn... Bleh, bleh. Oh-ho? E aí, pessoal?",
+ "s180.sec6.u4": "Whoa! Ele parece meio bobo agora! Ele voltou ao normal?",
+ "s180.sec6.u5": "Huh? Pateta? Isso é rude, sabe. Eu sou Numemon. Ou eu sou Numemon?",
+ "s180.sec6.u6": [
+  [
+   "...Ele não é bem bobo, é",
+   "mais... Ahem. Numemon, sabe",
+   "quem salvou você?"
+  ]
+ ],
+ "s180.sec6.u7": [
+  [
+   "Hã? Quer ajuda? Claro, o que",
+   "precisar."
+  ]
+ ],
+ "s180.sec6.u8": "Nossa, ele entendeu tudo ao contrário! Bem, funciona no final, de qualquer maneira.",
+ "s180.sec6.u9": [
+  [
+   "Então eu sou seu ajudante?",
+   "Não, seu ajudamon!",
+   "Bleh-bleh-bleh-bleh.",
+   "Bleh-bleh. Bleh!"
+  ]
+ ],
+ "s180.sec6.u10": "Bem, de qualquer forma, venha para nossa cidade. Sabe onde é?",
+ "s180.sec6.u11": "Claro que sei! Mais ou menos.",
+ "s180.sec6.u12": "Numemon veio para a cidade!",
+ "s180.sec7.u0": "Huh? O que você é?",
+ "s180.sec7.u1": "Nanimon, é isso!",
+ "s180.sec7.u2": [
+  [
+   "Peguei o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora posso",
+   "carregar até 20 itens!"
+  ]
+ ],
+ "s180.sec7.u3": [
+  [
+   "Peguei o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora posso",
+   "carregar até 30 itens!"
+  ]
+ ],
+ "s180.sec52.u0": "O que é isso?",
+ "s180.sec52.u1": [
+  [
+   "! O que foi, {color 10}{partner}{color 1}?!"
+  ]
+ ],
+ "s180.sec52.u2": "É o cheiro desta névoa?",
+ "s180.sec52.u3": "Hmm... algo está estranho. Talvez algo ruim esteja misturado com isso..."
+}

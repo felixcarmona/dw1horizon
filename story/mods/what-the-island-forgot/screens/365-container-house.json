@@ -1,0 +1,18 @@
+{
+  "id": 365,
+  "file": "BARR09",
+  "tims8": 2,
+  "tims4": 0,
+  "sound_bank": 12,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": "File City",
+  "concave": false,
+  "shop": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

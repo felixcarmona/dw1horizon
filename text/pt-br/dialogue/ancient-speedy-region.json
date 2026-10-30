@@ -1,0 +1,114 @@
+{
+ "s080.sec5.u0": "Vou tirar sua vida agora, se não se importa.",
+ "s080.sec6.u0": "Veio até aqui para morrer, então?",
+ "s080.sec7.u0": "Uau, você tem coragem!",
+ "s080.sec8.u0": "Heh. Você está tão ansioso para morrer?",
+ "s080.sec9.u0": "Você deve desaparecer...",
+ "s080.sec10.u0": "Com licença, poderia sair do caminho?",
+ "s080.sec51.u0": "Nossa, realmente parece uma era totalmente diferente aqui.",
+ "s080.sec51.u1": "Oops, espere! Não há tempo para ficar por aqui. Meteorito, meteorito...",
+ "s081.sec5.u0": "Você é um desses, não é?",
+ "s081.sec5.u1": "Ao lado do túnel de ossos... você vira...",
+ "s082.sec5.m0.o0": "Tocar e examinar!",
+ "s082.sec5.m0.o1": "Arrebentar!",
+ "s082.sec5.u0": "É isso...! Parece um meteorito. Primeiro...",
+ "s082.sec5.u1": "Hmm...",
+ "s082.sec5.u2": "É um meteorito mais comum do que eu esperava.",
+ "s082.sec5.u3": [
+  [
+   "{color 7}???mon {color 1}",
+   "Bem, desculpe-me por ser comum..."
+  ]
+ ],
+ "s082.sec5.u4": [
+  [
+   "!"
+  ]
+ ],
+ "s082.sec5.u5": "Você era um Digimon?! Quem é você?",
+ "s082.sec5.u6": [
+  [
+   "{color 7}???mon {color 1}",
+   "...Me chamam de Meteormon."
+  ]
+ ],
+ "s082.sec5.u7": "Você sabe alguma coisa sobre o problema na ilha?",
+ "s082.sec5.u8": "Eu não sei de nada!",
+ "s082.sec5.u9": "Nada mesmo? Sério? Não está escondendo nada?",
+ "s082.sec5.u10": [
+  [
+   "Hmph, que sujeito mal-educado!",
+   "Então vamos lutar! Veremos",
+   "quem tem razão!"
+  ]
+ ],
+ "s082.sec5.u11": "Está bem! Tudo bem...",
+ "s082.sec5.u12": "Eu desisto. Você é muito forte.",
+ "s082.sec5.u13": "Qualquer coisa sobre o problema na ilha... Por favor.",
+ "s082.sec5.u14": [
+  [
+   "Não sei. É que acabei de",
+   "nascer."
+  ]
+ ],
+ "s082.sec5.u15": "O quê?!",
+ "s082.sec5.u16": [
+  [
+   "Nós, Meteormon, nascemos no",
+   "céu, caímos logo no chão e",
+   "dormimos imóveis por muito",
+   "tempo."
+  ]
+ ],
+ "s082.sec5.u17": [
+  [
+   "Eu devia ter ficado quieto por",
+   "muito mais tempo, sabe..."
+  ]
+ ],
+ "s082.sec5.u18": "Eu entendo. O tempo flui rápido aqui.",
+ "s082.sec5.u19": [
+  [
+   "Parece que é isso. Vou dar",
+   "uma volta pela ilha. Boa sorte",
+   "para vocês."
+  ]
+ ],
+ "s082.sec5.u20": "...Suspira. Então, não há nenhuma pista afinal... vamos sair daqui rápido.",
+ "s082.sec5.u21": "Olhar para ele não me diz nada. Vamos esmagá-lo!",
+ "s082.sec5.u22": [
+  [
+   "{color 7}???mon {color 1}",
+   "Ei, o que você pensa que está",
+   "fazendo?! Que brutalidade!"
+  ]
+ ],
+ "s082.sec6.u0": "Huh? O que você é?",
+ "s082.sec6.u1": "Nanimon, é isso!",
+ "s082.sec6.u2": [
+  [
+   "Recebeu o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora pode",
+   "carregar até 20 itens!"
+  ]
+ ],
+ "s082.sec6.u3": [
+  [
+   "Recebeu o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora pode",
+   "carregar até 30 itens!"
+  ]
+ ],
+ "s083.sec5.u0": [
+  [
+   "Meu. Deus. Do céu!!"
+  ]
+ ],
+ "s083.sec6.u0": [
+  [
+   "Ei, garoto! Vamos nos divertir."
+  ]
+ ],
+ "s083.sec7.u0": "Adeus...",
+ "s083.sec8.u0": "Foi uma vida curta."
+}

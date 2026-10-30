@@ -1,0 +1,465 @@
+{
+ "s077.sec5.u0": [
+  [
+   "Ei, tu! Vine si t'atreveixes!"
+  ]
+ ],
+ "s077.sec6.u0": [
+  [
+   "Bzzz, bzzz, bzzz!"
+  ]
+ ],
+ "s077.sec7.u0": [
+  [
+   "No et posis mai darrere meeeu!!"
+  ]
+ ],
+ "s077.sec8.u0": [
+  [
+   "Fiu-fiu-fiuuuuu!"
+  ]
+ ],
+ "s077.sec9.u0": [
+  [
+   "Estic que cremo! Em bull la",
+   "sang!"
+  ]
+ ],
+ "s077.sec10.u0": [
+  [
+   "Guanyar, guanyar, guanyar!",
+   "GUANYARÉÉÉ!"
+  ]
+ ],
+ "s078.sec5.u0": [
+  [
+   "Crec que algú de la meva",
+   "espècie va marxar per a fer-se",
+   "comerciant... Diuen que ha",
+   "obert una botiga en alguna"
+  ],
+  [
+   "part. Com a amic et seria més",
+   "útil ell que jo..."
+  ]
+ ],
+ "s078.sec5.u1": [
+  [
+   "Per què aquí el temps passa",
+   "diferent que fora? Per",
+   "descomptat, és un lloc còmode",
+   "per a viure, però..."
+  ]
+ ],
+ "s078.sec6.u0": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "Al nord hi ha gel i neu que no",
+   "es fonen mai. Qui visqui allí",
+   "està com una cabra."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "A l'oest hi ha un poblet de",
+   "ferro, però la seva porta",
+   "continua tancada. Jo entraria",
+   "volant. Ke, je."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "Al sud-oest hi ha un llogaret",
+   "de Digimon estranys amb banyes",
+   "i pinces. Viuen en els arbres."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "Al nord-oest hi ha un bosc amb",
+   "boira i un edifici dins. Això",
+   "sí, queda llunyíssim."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "Has estat ja en el Gran",
+   "Canyó, a l'est? Allò és un",
+   "laberint dels bons. Ke, je."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "He volat alt i he vist lluny..."
+  ],
+  [
+   "Què hi ha just en el centre de",
+   "l'illa? Ni jo ho sé. Sempre",
+   "està cobert de núvols",
+   "espessos."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Provar",
+ "s078.sec81.m0.o1": "Deixar-ho",
+ "s078.sec81.u0": [
+  [
+   "Màquina expenedora"
+  ]
+ ],
+ "s078.sec81.u1": [
+  [
+   "«El que surt és una",
+   "sorpresa...» 200 Bits per",
+   "intent? Fa mala espina. Ho",
+   "provo?"
+  ]
+ ],
+ "s078.sec81.u2": [
+  [
+   "No tinc prou diners..."
+  ]
+ ],
+ "s078.sec81.u3": [
+  [
+   "Ha sortit {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s078.sec81.u4": [
+  [
+   "Ups! Porto la bossa plena.",
+   "Haig de tirar alguna cosa."
+  ]
+ ],
+ "s078.sec81.u5": [
+  [
+   "Ha sortit {color 6}Cura petita{color 1}!"
+  ]
+ ],
+ "s078.sec81.u6": [
+  [
+   "Ups! Porto la bossa plena.",
+   "Haig de tirar alguna cosa."
+  ]
+ ],
+ "s078.sec81.u7": [
+  [
+   "Ha sortit {color 6}Carn florida{color 1}!"
+  ]
+ ],
+ "s078.sec81.u8": [
+  [
+   "Ups! Porto la bossa plena.",
+   "Haig de tirar alguna cosa."
+  ]
+ ],
+ "s078.sec81.u9": [
+  [
+   "Ha sortit una {color 6}Cura MP{color 1}!"
+  ]
+ ],
+ "s078.sec81.u10": [
+  [
+   "Ups! Porto la bossa plena.",
+   "Haig de tirar alguna cosa."
+  ]
+ ],
+ "s078.sec82.u0": [
+  [
+   "...Suposo que ja t'ho han",
+   "explicat."
+  ]
+ ],
+ "s078.sec82.u1": [
+  [
+   "Aquí el temps corre a poc a",
+   "poc. Mentre fora passa un dia,",
+   "aquí només en passa mig."
+  ]
+ ],
+ "s078.sec82.u2": [
+  [
+   "En fi, és un bon lloc per a qui",
+   "vulgui prendre's les coses amb",
+   "calma."
+  ]
+ ],
+ "s078.sec82.u3": [
+  [
+   "Més endins, a la Regió Speedy,",
+   "el temps passa de pressa. Allí",
+   "transcorren dos dies mentre",
+   "fora passa un."
+  ]
+ ],
+ "s078.sec82.u4": [
+  [
+   "Es podria dir que creixes més",
+   "de pressa... Però quan només",
+   "et queden els ossos, ja és",
+   "massa tard."
+  ]
+ ],
+ "s079.sec6.u0": [
+  [
+   "Passat aquest punt, el temps",
+   "corre el doble de ràpid que",
+   "fora. Porta't menjar de sobres.",
+   "I vigila quanta vida et queda,"
+  ],
+  [
+   "clar."
+  ]
+ ],
+ "s079.sec6.u1": [
+  [
+   "Què? Has trobat alguna cosa?"
+  ]
+ ],
+ "s079.sec6.u2": [
+  [
+   "No, encara no..."
+  ]
+ ],
+ "s079.sec6.u3": [
+  [
+   "El meu mestre, que vigilava",
+   "aquest lloc abans que jo, deia",
+   "que per aquí hi ha un «passadís",
+   "secret». Però a mi no em"
+  ],
+  [
+   "preguntis on."
+  ]
+ ],
+ "s079.sec6.u4": [
+  [
+   "Ah, què tal...?"
+  ]
+ ],
+ "s079.sec6.u5": [
+  [
+   "El meteorit... resulta que no",
+   "tenia res a veure. Ai..."
+  ]
+ ],
+ "s079.sec6.u6": [
+  [
+   "Vaja. És així, doncs? Mala",
+   "sort. Ho sento, però no sé res",
+   "més."
+  ]
+ ],
+ "s079.sec6.u7": [
+  [
+   "...Bé, fins ara."
+  ]
+ ],
+ "s079.sec6.u8": [
+  [
+   "Eeei, tuuu!!"
+  ]
+ ],
+ "s079.sec6.u9": [
+  [
+   "Per AIXÒ et dic sempre que",
+   "encara estàs a mig entrenar!"
+  ]
+ ],
+ "s079.sec6.u10": [
+  [
+   "M-m-mestre!?"
+  ]
+ ],
+ "s079.sec6.u11": [
+  [
+   "Cap de fredeluga! No em puc",
+   "creure que continuïs aquí fent",
+   "el vague!"
+  ]
+ ],
+ "s079.sec6.u12": [
+  [
+   "El seu mestre!? Què està",
+   "passant!?"
+  ]
+ ],
+ "s079.sec6.u13": [
+  [
+   "P-però qui vigilarà l'Antiga",
+   "Regió Dino...?"
+  ]
+ ],
+ "s079.sec6.u14": [
+  [
+   "Talòs! L'illa corre un greu",
+   "perill! Vés a la ciutat i",
+   "fes-te útil per a tothom!"
+  ]
+ ],
+ "s079.sec6.u15": [
+  [
+   "S... sí, senyor..."
+  ]
+ ],
+ "s079.sec6.u16": [
+  [
+   "Eh, de debò?"
+  ]
+ ],
+ "s079.sec6.u17": [
+  [
+   "Noi del món analògic, encara",
+   "està verd, però el posaràs a",
+   "treballar a la ciutat? Jo",
+   "vigilaré aquest lloc."
+  ]
+ ],
+ "s079.sec6.u18": [
+  [
+   "Mestre..."
+  ]
+ ],
+ "s079.sec6.u19": [
+  [
+   "Ja ho veus, {color 6}{player}{color 1}. Puc",
+   "venir a la ciutat?"
+  ]
+ ],
+ "s079.sec6.u20": [
+  [
+   "És clar. Però fes la teva part,",
+   "eh?"
+  ]
+ ],
+ "s079.sec6.u21": [
+  [
+   "Fet! Mestre, me'n vaig!"
+  ]
+ ],
+ "s079.sec6.u22": "Tyrannomon s'ha unit a la ciutat!",
+ "s079.sec6.u23": [
+  [
+   "A veure fins a on arriba... Je."
+  ]
+ ],
+ "s079.sec7.u0": [
+  [
+   "Je... Quants anys feia que no",
+   "muntava guàrdia aquí? Ah, pots",
+   "anar i venir al teu antull.",
+   "Aprofita-ho bé."
+  ]
+ ],
+ "s079.sec8.u0": [
+  [
+   "Je... Quants anys feia que no",
+   "muntava guàrdia aquí? Ah, pots",
+   "anar i venir al teu antull.",
+   "Aprofita-ho bé."
+  ]
+ ],
+ "s079.sec51.m0.o0": "Ens ajudaràs?",
+ "s079.sec51.m0.o1": "No... deixa-ho...",
+ "s079.sec51.u0": [
+  [
+   "Ah, sou vosaltres. Aquí davant",
+   "està la Regió Speedy. Millor no",
+   "us acosteu molt."
+  ]
+ ],
+ "s079.sec51.u1": [
+  [
+   "Com ja et vaig dir, tenim dos",
+   "objectius. Descobrir què hi ha",
+   "darrere de tots els disturbis i",
+   "portar Digimon a la ciutat."
+  ]
+ ],
+ "s079.sec51.u2": [
+  [
+   "Ah, és veritat, ja m'ho vas",
+   "dir. I?"
+  ]
+ ],
+ "s079.sec51.u3": [
+  [
+   "Amb mi no compteu. Tinc",
+   "l'important treball de vigilar",
+   "aquest bosc."
+  ]
+ ],
+ "s079.sec51.u4": [
+  [
+   "Llavors, sobre els disturbis de",
+   "l'illa... saps alguna cosa?"
+  ]
+ ],
+ "s079.sec51.u5": [
+  [
+   "No, res de res... Mm...? Espera",
+   "un moment... Ara que ho dius,",
+   "fa un temps va caure del cel",
+   "una roca enorme... Això va"
+  ],
+  [
+   "ser..."
+  ]
+ ],
+ "s079.sec51.u6": [
+  [
+   "Eh? On va caure!?"
+  ]
+ ],
+ "s079.sec51.u7": [
+  [
+   "...A la Regió Speedy. Per aquí",
+   "mateix..."
+  ]
+ ],
+ "s079.sec51.u8": [
+  [
+   "Deixa'ns passar, si us plau!",
+   "Pot ser que allí hi hagi una",
+   "pista!"
+  ]
+ ],
+ "s079.sec51.u9": [
+  [
+   "...Ai. Si tant hi insisteixes,",
+   "no tinc més remei... Al cap i a",
+   "la fi, m'has guanyat. Au, aneu",
+   "a fer-hi un cop d'ull."
+  ]
+ ],
+ "s079.sec51.u10": [
+  [
+   "Passat aquest punt, el temps",
+   "corre el doble de ràpid que",
+   "fora. Porta't menjar de sobres.",
+   "I vigila quanta vida et queda,"
+  ],
+  [
+   "clar."
+  ]
+ ],
+ "s079.sec51.u11": [
+  [
+   "Prova de preguntar en una",
+   "altra part."
+  ]
+ ]
+}

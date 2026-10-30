@@ -1,0 +1,526 @@
+{
+ "s162.sec5.u0": "Have you met the Lake Guardian yet? If not, wait for it slooowly on the south side!",
+ "s162.sec5.u1": [
+  [
+   "Try getting up suuuper early and wandering",
+   "around in the mist."
+  ],
+  [
+   "Something good will happen!"
+  ]
+ ],
+ "s162.sec5.u2": "Hey, did you know? Way up nooorth there's a place called Iceberg Beach. The rumor is a reeeally big Digimon shows up on that beach a lot lately.",
+ "s162.sec5.u3": "Have you beaten the bandits yet? I hear the bandits still have a \"hideout\" somewhere.",
+ "s162.sec5.u4": "Have you been to Great Canyon yet? The rumor is bandits show up there.",
+ "s162.sec5.u5": "Are they bad guys?",
+ "s162.sec5.u6": "When you go through the gorge, they surround you and \"rob\" you. I wish somebody would get rid of them.",
+ "s162.sec5.u7": "Hmm. Sounds like we can't just leave it alone.",
+ "s162.sec5.u8": [
+  [
+   "Have you been to Great Canyon yet?"
+  ],
+  [
+   "The rumor is there's an \"invisible bridge\"",
+   "there."
+  ]
+ ],
+ "s162.sec5.u9": "I hear Machinedramon has come back to life!",
+ "s162.sec5.u10": "You beat Machinedramon again? Amaaazing.",
+ "s162.sec5.u11": [
+  [
+   "Ehehe, I'll explain what's",
+   "outside the city."
+  ],
+  [
+   "All around the city is Native",
+   "Forest. The Digimon there",
+   "aren't very strong."
+  ],
+  [
+   "Just to the west is the Green",
+   "Gym. I think you'll be going",
+   "there a lot."
+  ],
+  [
+   "Across the river to the east",
+   "is Tropical Jungle. I don't",
+   "know what's past that."
+  ],
+  [
+   "Out west, a mountain and a",
+   "lake block the way, but there",
+   "may be more land past them."
+  ],
+  [
+   "Far to the south is the sea.",
+   "To the north is a veeery tall",
+   "mountain. Both are dead ends."
+  ],
+  [
+   "That's all I know. But the",
+   "city is the island's center, so",
+   "I think there's more up north."
+  ],
+  [
+   "I'll look into rumors from",
+   "outside, so please come and",
+   "hear them now and then."
+  ]
+ ],
+ "s162.sec6.u0": "Mmm, I came to see how things are over here, yeah! I don't like the toilet, but the rest is pretty good, yeah!",
+ "s162.sec7.u0": "Hm... It appears to be... quite lively here. Should I not return to Factorial Town... you ask? My scheduling function is operating normally. There is no problem.",
+ "s162.sec8.u0": [
+  [
+   "Oh, you've come at just the",
+   "right time!"
+  ],
+  [
+   "Behold this statue! Eh? Hey?"
+  ],
+  [
+   "What a magnificent work of",
+   "art... Only to be expected of",
+   "me, I suppose."
+  ],
+  [
+   "Hm? What is it? What did you",
+   "say?! Whaaat! Making fun of",
+   "me, are you?!"
+  ],
+  [
+   "Now... what was it, anyway?",
+   "Hmm. Oh well, never mind."
+  ]
+ ],
+ "s162.sec8.u1": [
+  [
+   "Hmmmm... What on earth... was",
+   "I picturing... Haaah."
+  ],
+  [
+   "If you figure it out, would you",
+   "tell me?"
+  ]
+ ],
+ "s162.sec55.m0.o0": "To Factorial Town",
+ "s162.sec55.m0.o1": "To Secret Beach Cave",
+ "s162.sec55.m0.o2": "Never mind",
+ "s162.sec55.u0": [
+  [
+   "Hello there! Ha ha, I gave you a fright, didn't",
+   "I?"
+  ],
+  [
+   "Taking everyone on journeys by sea: that's",
+   "my job, you see. How about you?"
+  ],
+  [
+   "I can take you to places you can only reach by",
+   "sea. Well then..."
+  ]
+ ],
+ "s162.sec55.u1": "Hm, where shall we go? Factorial Town... or the beach cave, perhaps?",
+ "s162.sec57.u0": "Found you!",
+ "s162.sec57.u1": "Wh-what? He's coming at us?!",
+ "s162.sec57.u2": "At last we meet! I'm Greymon, a wanderer. Let's get right down to business!",
+ "s162.sec57.u3": "What?!",
+ "s162.sec57.u4": [
+  [
+   "The rumors about you led me",
+   "here. You're going to fight",
+   "me! And if I win..."
+  ],
+  [
+   "...this city's sign is mine!"
+  ]
+ ],
+ "s162.sec57.u5": "There isn't any sign.",
+ "s162.sec57.u6": "Whatever! Fight me!",
+ "s162.sec57.u7": [
+  [
+   "Heh, giving me a hard time... not bad at all."
+  ],
+  [
+   "But you're still too green to reach your goal!"
+  ]
+ ],
+ "s162.sec57.u8": "Hmph...",
+ "s162.sec57.u9": "I'll stay here and whip you into shape. You're gonna get much, much stronger!",
+ "s162.sec57.u10": "Greymon joined the city!",
+ "s162.sec57.u11": "Heh heh, found you, {color 6}{player}{color 1}!",
+ "s162.sec57.u12": "A sneak attack?!",
+ "s162.sec57.u13": "My goal is to defeat you... and to do it, I will use any means!",
+ "s162.sec57.u14": "...Those eyes! Someone's controlling him!",
+ "s162.sec57.u15": "Ngh... like this... even if it costs my life... defeat them... those were... my orders...",
+ "s162.sec57.u16": "What are you saying? Like this you'll really die! You need treatment, quick...",
+ "s162.sec81.u0": "Zzz...",
+ "s162.sec81.u1": "Hey, have you heard? There's a weird plant growing in Tropical Jungle.",
+ "s162.sec81.u2": [
+  [
+   "Oh, right."
+  ],
+  [
+   "I planted a {color 6}Rain Plant{color 1} next",
+   "door. It bears fruit around",
+   "the 15th of every year, so"
+  ],
+  [
+   "help yourself.",
+   "What's it for? It makes it",
+   "rain, of course."
+  ]
+ ],
+ "s162.sec81.u3": "Ahh, this feels great! Photosynthesis, photosynthesis.",
+ "s162.sec81.u4": "Ahh, this feels great! Photosynthesis, photosynthesis.",
+ "s162.sec82.u0": "Phew... pure bliss, pure bliss.",
+ "s162.sec83.u0": "Oh, what's this...",
+ "s162.sec83.u1": "You're carrying too many items.",
+ "s162.sec83.u2": "Got {color 6}Rain Plant{color 1} fruit!",
+ "s162.sec254.u0": "Phewww, I'm hooome!",
+ "s162.sec254.u1": "Thanks for calling me back! Let's do this again, {color 10}{partner}{color 1}!",
+ "s162.sec254.u2": [
+  [
+   "",
+   "{color 7}Your Tamer Level went up!{color 1}"
+  ]
+ ],
+ "s162.sec254.u3": "{color 7}Congratulations! For your splendid achievement, you have been awarded a medal!{color 1}",
+ "s162.sec254.u4": "Got the Machinedramon card!",
+ "s163.sec5.u0": "Boo. Boo-boo.",
+ "s163.sec5.u1": "Same as always... I can't understand a word he says.",
+ "s163.sec5.u2": "Huh? Uh-huh, uh-huh. Oh, I see, you're patrolling for us.",
+ "s163.sec6.u0": "Heh heh heh... Take a look: my very own special bulletin board.",
+ "s163.sec6.u1": "A growing city needs news, right? So I decided to write a newspaper! Pretty clever, huh?",
+ "s163.sec6.u2": "Well, just wait and see what my news network can do.",
+ "s163.sec6.u3": "Hey there, are you reading my paper?",
+ "s163.sec7.u0": "Ahh. Nice and cool. When you're somewhere comfy, your mood goes up too, right?",
+ "s163.sec7.u1": "Tee-hee, so? How's my shop? I'm not really good at selling stuff, but right now there's no one else to do it! Hurry and bring lots of Digimon here, okay?",
+ "s163.sec7.u2": "Tee-hee, so? How is it?",
+ "s163.sec7.u3": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "We've all teamed up to sell",
+   "items, you see."
+  ]
+ ],
+ "s163.sec8.u0": [
+  [
+   "Mmm. Some really tasty grass was growing",
+   "here, so I helped myself."
+  ],
+  [
+   "Mind you, the city's a bit breezier now."
+  ]
+ ],
+ "s163.sec8.u1": "Now that I think of it, the other day I happened to pick up a thing called a {color 6}Happymushroom{color 1}. It's rare, apparently.",
+ "s163.sec8.u2": [
+  [
+   "I hear there's also a thing",
+   "called a {color 6}Deluxe Mushroom{color 1}."
+  ],
+  [
+   "Find one of those and you",
+   "could really brag."
+  ]
+ ],
+ "s163.sec8.u3": "Now that I think of it, that {color 6}Blue Apple{color 1} from Native Forest sure is tasty.",
+ "s163.sec8.u4": "Now that I think of it, that {color 6}Orange Banana{color 1} from Tropical Jungle sure is tasty.",
+ "s163.sec8.u5": "Now that I think of it, that {color 6}Big Berry{color 1} from Mt. Panorama sure is tasty.",
+ "s163.sec8.u6": "Now that I think of it, that {color 6}Sweet Nut{color 1} from Gear Savanna sure is tasty.",
+ "s163.sec8.u7": "Now that I think of it, that {color 6}Super Veggy{color 1} from Overdell Cemetery sure is tasty.",
+ "s163.sec8.u8": "Now that I think of it, that {color 6}Red Berry{color 1} from Ancient Dino Region sure is tasty.",
+ "s163.sec8.u9": "Now that I think of it, that {color 6}Prickly Pear{color 1} from Great Canyon sure is tasty.",
+ "s163.sec8.u10": "Now that I think of it, that {color 6}Digipine{color 1} from Misty Trees sure is tasty.",
+ "s163.sec8.u11": "Now that I think of it, that {color 6}Spiny Green{color 1} from Geko Swamp sure is tasty.",
+ "s163.sec8.u12": "Now that I think of it, that {color 6}Ice Mushroom{color 1} from Freezeland sure is tasty.",
+ "s163.sec8.u13": "Now that I think of it, that {color 6}Gold Acorn{color 1} from Beetle Land sure is tasty.",
+ "s163.sec9.m0.o0": "What is it?",
+ "s163.sec9.m0.o1": "Later, okay?",
+ "s163.sec9.u0": "Hey, listen to me for a sec.",
+ "s163.sec9.u1": "Did you see the east bridge? It's fixed! We worked really hard.",
+ "s163.sec9.u2": "We're still fixing Digital Bridge. Wait a little longer, okay? Oh, and y'know, I hear there's a rare Digimon down south at Coela Point. Rumor is it pokes its head out for a moment every day around evening.",
+ "s163.sec9.u3": [
+  [
+   "Hey, y'know the broken bridge east of the",
+   "city?"
+  ],
+  [
+   "We figured nobody'd use it, so we just left it.",
+   "But we can't do that anymore, right?"
+  ],
+  [
+   "So we're gonna try our best and fix it",
+   "ourselves."
+  ],
+  [
+   "Until then, go take a look out west and south.",
+   "Once you've been around, come see me again."
+  ]
+ ],
+ "s163.sec9.u4": [
+  [
+   "Have you been to Geko Swamp?"
+  ],
+  [
+   "They say a mischievous Digimon there messes",
+   "with you sometimes."
+  ]
+ ],
+ "s163.sec9.u5": "Y'know, when a Digimon Digivolves, its technique set resets. So don't forget!",
+ "s163.sec9.u6": "Aww, shucks.",
+ "s163.sec10.u0": "So? I turned on the lights. Is it bright enough?",
+ "s163.sec10.u1": "Let's all make it a bright city!",
+ "s163.sec10.u2": "Does turning on the lights change anything, you ask?",
+ "s163.sec10.u3": "It's all in how you feel!",
+ "s163.sec11.u0": [
+  [
+   "I am the strongest... I do not",
+   "consider myself beaten by you."
+  ],
+  [
+   "Come to the Arena, and you",
+   "will see..."
+  ]
+ ],
+ "s163.sec12.u0": "Yo, {color 6}{player}{color 1}. I'm patrollin' the city for shady types. Wh-what? I ain't gettin' in your way or nothin'!",
+ "s163.sec81.u0": "Well, well, welcome to my shop! For you, {color 6}{player}{color 1}, I'll make it a bargain. Truth is, I'm not much of a salesman. But nobody else seems any good at it, either... So that's how I came to be selling items for a while. Glad to have you. And you, {color 6}{player}{color 1}, keep at it and bring back lots of Digimon!",
+ "s163.sec81.u1": "Tee-hee, so? How's my shop? I'm not really good at selling stuff, but right now there's no one else to do it! Hurry and bring lots of Digimon here, okay?",
+ "s163.sec81.u2": "Tee-hee, so? How is it?",
+ "s163.sec81.u3": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "We've all teamed up to sell",
+   "items, you see."
+  ]
+ ],
+ "s164.sec5.m0.o0": "Near",
+ "s164.sec5.m0.o1": "Far",
+ "s164.sec5.m0.o2": "Reeeally far",
+ "s164.sec5.m1.o0": "Top of Mt. Panorama",
+ "s164.sec5.m1.o1": "Tropical Jungle",
+ "s164.sec5.m1.o2": "Drill Tunnel",
+ "s164.sec5.m2.o0": "Gear Savanna",
+ "s164.sec5.m2.o1": "Grey Lord's Mansion",
+ "s164.sec5.m2.o2": "Great Canyon",
+ "s164.sec5.m3.o0": "Dino Region: entrance",
+ "s164.sec5.m3.o1": "Dino Region: depths",
+ "s164.sec5.m3.o2": "Unknown World",
+ "s164.sec5.m4.o0": "Outside Curling Cave",
+ "s164.sec5.m4.o1": "Seadramon fishing",
+ "s164.sec5.m4.o2": "Lava Cave",
+ "s164.sec5.u0": [
+  [
+   "{color 1}White {color 2}Blue {color 3}Red {color 4}Pink",
+   "{color 5}Green {color 6}Cyan {color 7}Yellow {color 10}Orange",
+   "{color 10}a {color 6}b {color 4}c {color 5}d"
+  ]
+ ],
+ "s164.sec5.u1": "It's now month {pstat 105}, day {pstat 106}, {pstat 107}:{pstat 108}.",
+ "s164.sec5.u2": "I'm Mr. Warp. Where do you wanna go?",
+ "s164.sec6.m0.o0": "Numemon",
+ "s164.sec6.m0.o1": "Sukamon",
+ "s164.sec6.m0.o2": "Botamon",
+ "s164.sec6.u0": "Life 3",
+ "s164.sec6.u1": "I'm Mr. Digivolve. What do you wanna be?",
+ "s164.sec8.m0.o0": "Nearly dead",
+ "s164.sec8.m0.o1": "Opening mode",
+ "s164.sec8.m0.o2": "Advance time",
+ "s164.sec8.m1.o0": "Forward 1 hour",
+ "s164.sec8.m1.o1": "Forward 6 hours",
+ "s164.sec8.m1.o2": "Forward 240 hours",
+ "s164.sec9.u0": [
+  [
+   "Ehehe, I'll explain what's",
+   "outside the city."
+  ],
+  [
+   "All around the city is Native",
+   "Forest. The Digimon there",
+   "aren't very strong."
+  ],
+  [
+   "Just to the west is the Green",
+   "Gym. I think you'll be going",
+   "there a lot."
+  ],
+  [
+   "Across the river to the east",
+   "is Tropical Jungle. I don't",
+   "know what's past that."
+  ],
+  [
+   "Out west, a mountain and a",
+   "lake block the way, but there",
+   "may be more land past them."
+  ],
+  [
+   "Far to the south is the sea.",
+   "To the north is a veeery tall",
+   "mountain. Both are dead ends."
+  ],
+  [
+   "That's all I know. But the",
+   "city is the island's center, so",
+   "I think there's more up north."
+  ],
+  [
+   "I'll look into rumors from",
+   "outside, so please come and",
+   "hear them now and then."
+  ]
+ ],
+ "s164.sec11.u0": [
+  [
+   "Oh, hello! Would you like some",
+   "Meat?"
+  ],
+  [
+   "Oops, I haven't explained yet."
+  ],
+  [
+   "Um, this is a field for meat:",
+   "the Meat Farm. We grow the",
+   "meat everyone eats right here."
+  ]
+ ],
+ "s164.sec11.u1": "Wait, hold on. You grow meat in a field?!",
+ "s164.sec11.u2": "Yes. Is something strange about that?",
+ "s164.sec11.u3": "No... eh, never mind. So?",
+ "s164.sec11.u4": [
+  [
+   "Jiji and the rest of us decided,",
+   "{color 6}{player}{color 1}: you get three pieces of Meat",
+   "a day."
+  ],
+  [
+   "So here you go. Today's Meat!"
+  ]
+ ],
+ "s164.sec11.u5": "Hmm, you have too much Meat. You can skip today's share, right?",
+ "s164.sec11.u6": "Hmm, you have too much Meat. I'll keep what you can't carry, okay?",
+ "s164.sec11.u7": "Got {color 6}Meat{color 1}!",
+ "s164.sec11.u8": "You're carrying too many items.",
+ "s164.sec11.u9": "Got three pieces of {color 6}Meat{color 1}!",
+ "s164.sec11.u10": "We had a big harvest today! So you get five pieces of Meat.",
+ "s164.sec11.u11": "Hmm, you have too much Meat. You can skip today's share, right?",
+ "s164.sec11.u12": "Hmm, you have too much Meat. I'll keep what you can't carry, okay?",
+ "s164.sec11.u13": "Got {color 6}Meat{color 1}!",
+ "s164.sec11.u14": "Hmm, sorry, but you're carrying too many items.",
+ "s164.sec11.u15": "Got five pieces of {color 6}Meat{color 1}!",
+ "s164.sec11.u16": "The next batch is tomorrow!",
+ "s164.sec11.u17": "Here you go, today's Meat!",
+ "s164.sec11.u18": "Hmm, you have too much Meat. You can skip today's share, right?",
+ "s164.sec11.u19": "Hmm, you have too much Meat. I'll keep what you can't carry, okay?",
+ "s164.sec11.u20": "Got three pieces of {color 6}Meat{color 1}!",
+ "s164.sec11.u21": "You're carrying too many items.",
+ "s164.sec11.u22": "Got {color 6}Meat{color 1}!",
+ "s164.sec11.u23": "The next batch is tomorrow!",
+ "s164.sec11.u24": [
+  [
+   "Hmm? I already gave you Meat today, didn't I?"
+  ],
+  [
+   "If you run out of food... I hear you can find",
+   "lots of wild mushrooms in Native Forest."
+  ]
+ ],
+ "s164.sec54.m0.o0": "Giromon's computer room",
+ "s164.sec54.m0.o1": "Toy Town, deepest",
+ "s164.sec54.m0.o2": "Battle check",
+ "s164.sec54.m0.o3": "Last battle",
+ "s164.sec66.m0.o0": "Debug: high stats",
+ "s164.sec66.m0.o1": "Debug: starting stats",
+ "s164.sec66.m0.o2": "To the opening",
+ "s192.sec51.u0": "So... the time has finally come.",
+ "s192.sec51.u1": "Yeah... Honestly, I'd like to stay here forever. But my mom'll be worried...",
+ "s192.sec51.u2": "All I can say to you, {color 6}{player}{color 1}, is thank you. I wish I could've done more for you, to repay you...",
+ "s192.sec51.u3": [
+  [
+   "{color 7}Tokomon {color 1}",
+   "Sniff... Don't forget about",
+   "us, okay...?"
+  ]
+ ],
+ "s192.sec51.u4": "Someday we'll meet again... That day will come... won't it...?",
+ "s192.sec51.u5": "...Everyone, I had a really great time. Thank you.",
+ "s192.sec51.u6": "Now, now... before saying goodbye gets any harder... let's begin the ceremony...",
+ "s192.sec51.u7": "{color 10}{partner}{color 1}, my best friend... our adventure was the best ever!!",
+ "s193.sec54.u0": "Hm... is he coming to? Looks like it worked!",
+ "s193.sec54.u1": "A human... just like Jiji said!",
+ "s193.sec54.u2": "Nnnngh...",
+ "s193.sec54.u3": "Shh! He's waking up!",
+ "s193.sec54.u4": "Huh...? Where... am I?",
+ "s193.sec54.u5": "Welcome to Digimon World!",
+ "s193.sec54.u6": "Huh?",
+ "s193.sec54.u7": "Waaaah!!",
+ "s193.sec54.u8": "Huh? What? What is it?",
+ "s193.sec54.u9": "Wh-wh-what are you guys?!",
+ "s193.sec54.u10": "We're Digimon.",
+ "s193.sec54.u11": "Digimon?! You mean...",
+ "s193.sec54.u12": "Hm? Surely you know about Digimon...?",
+ "s193.sec54.u13": "Hm? Aha, I get it. This is a dream, right? Yeah, that's it.",
+ "s193.sec54.u14": "It's not a dream! We're real!",
+ "s193.sec54.u15": "Oh, you're Tokomon! So you really are Digimon. What a realistic dream...",
+ "s193.sec54.u16": "Ahem. Now listen, {color 6}{player}{color 1}. This is no dream. Though it's not quite reality, either...",
+ "s193.sec54.u17": "What are you on about? Then how do you know my name? And who are you, anyway?",
+ "s193.sec54.u18": "I'm Jijimon.",
+ "s193.sec54.u19": "Huh? Was there ever a Digimon called that?",
+ "s193.sec54.u20": "Heh heh. The Digimon you know aren't all there is. This is Digimon World, after all.",
+ "s193.sec54.u21": "Digimon... World...",
+ "s193.sec54.u22": "A world that's neither dream nor reality. The world of the Digimon!",
+ "s193.sec54.u23": "Well... now that you say it... it IS way too real for a dream...",
+ "s193.sec54.u24": "Look behind you. That should clear things up.",
+ "s193.sec54.u25": "Huh?",
+ "s193.sec54.u26": "No way... Is that {color 10}{partner}{color 1}, the one I've been raising?",
+ "s193.sec54.u27": "That's it...! I got sucked into my Digimon key chain...",
+ "s193.sec54.u28": "That's right. Now you see.",
+ "s193.sec54.u29": "I get it, but... why am I... here?",
+ "s193.sec54.u30": "Hm... Well, now that you understand, come over to our house. We'll talk more there.",
+ "s193.sec55.u0": "Now, where was I? I'm the one who called you here, you see. We need you to save us.",
+ "s193.sec55.u1": "Save you?? Why? Is something wrong?",
+ "s193.sec55.u2": "We're in File City, right in the middle of an island called File Island.",
+ "s193.sec55.u3": "A city? This? It's pretty small and run-down.",
+ "s193.sec55.u4": [
+  [
+   "Heh... Well, I suppose I should say it WAS a",
+   "city."
+  ],
+  [
+   "Long ago, every kind of Digimon lived here."
+  ]
+ ],
+ "s193.sec55.u5": "But at some point, the Digimon began to lose their \"hearts\"... and scattered beyond the city.",
+ "s193.sec55.u6": "What do you mean?",
+ "s193.sec55.u7": "We don't know why... The Digimon are losing the power of speech...",
+ "s193.sec55.u8": "Some can still talk a little... but they've lost all memory of living in the city.",
+ "s193.sec55.u9": "I see. So that's what losing their \"hearts\" means.",
+ "s193.sec55.u10": [
+  [
+   "That's right. And it's dangerous."
+  ],
+  [
+   "Legend says when File City is in peril, so are",
+   "all Digimon..."
+  ]
+ ],
+ "s193.sec55.u11": "But why me? Couldn't it be anybody?",
+ "s193.sec55.u12": "You're good at raising Digimon, aren't you?",
+ "s193.sec55.u13": "Huh? ...Oh, yeah. I'm great at it! Heh heh.",
+ "s193.sec55.u14": "Haven't you noticed? You're speaking the language of Digimon.",
+ "s193.sec55.u15": "What? I'm pretty sure I'm just speaking normal English.",
+ "s193.sec55.u16": "To us, it sounds just like Digimon speech.",
+ "s193.sec55.u17": "Uh-huh, uh-huh!",
+ "s193.sec55.u18": "You see, the love you have for Digimon in your world shows itself here as real power.",
+ "s193.sec55.u19": "Wh-whoa... You're making me blush.",
+ "s193.sec55.u20": "That's why I chose you. You can bring the Digimon of all File Island back here!",
+ "s193.sec55.u21": "Oh...",
+ "s193.sec55.u22": "Ohh...",
+ "s193.sec55.u23": "Ohhh! R-right, I see! Now I finally get it all! Ha ha! Just leave it to me!",
+ "s193.sec55.u24": "Yaaay! Hooray, hooray!",
+ "s193.sec55.u25": "Mm, mm, thank you. I know it's a selfish thing to ask, but you're all we have left.",
+ "s193.sec55.u26": "Heh heh. So, what do I do first?",
+ "s193.sec55.u27": "From now on, you and your partner {color 10}{partner}{color 1} will travel File Island together.",
+ "s193.sec55.u28": "Find out what's behind all this, and talk the Digimon into coming back to the city.",
+ "s193.sec55.u29": "Okay, got it. All riiight, let's go, {color 10}{partner}{color 1}!",
+ "s193.sec55.u30": "H-hey, wait, I haven't finished..."
+}

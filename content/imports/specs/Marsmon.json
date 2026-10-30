@@ -1,0 +1,114 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M394MARS",
+ "type": 297,
+ "name": "Marsmon",
+ "source": {
+  "type": 48,
+  "mmd": "extracted/CHDAT/MMD1/LEOM.MMD"
+ },
+ "map": {
+  "3": 5,
+  "4": 7,
+  "6": 8,
+  "7": 10,
+  "8": 4,
+  "9": 3,
+  "11": 13,
+  "12": 2,
+  "13": 11,
+  "14": 20,
+  "15": 21,
+  "16": 22,
+  "17": 1,
+  "18": 16,
+  "19": 18,
+  "20": 17
+ },
+ "hips": [
+  1,
+  1,
+  1.12
+ ],
+ "root_scale": 1.12,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x38": {
+   "anim": "anim_34",
+   "start": 27,
+   "end": 92,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x34": {
+   "anim": "anim_28",
+   "start": 5,
+   "end": 97,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x35": {
+   "anim": "anim_22",
+   "start": 1,
+   "end": 57,
+   "speed": 0.91,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x32",
+  "0x36",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.148256,
+ "hub_roots": true
+}

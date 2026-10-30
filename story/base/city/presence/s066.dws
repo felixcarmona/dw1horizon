@@ -1,0 +1,12 @@
+// Who stands on screen 66 (Mansion Basement), and when. Read out of MAPHEAD.SCN section 66 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(66) {                              // Mansion Basement
+            npc 177 slot 0 when not trigger(128) and pstat(16) <= 1 or not trigger(128) and pstat(16) >= 3;
+            npc Machinedramon slot 1 when pstat(16) == 2;
+            npc Analogman slot 2 when pstat(16) == 2;
+        }
+    }
+}

@@ -1,0 +1,127 @@
+{
+ "s006.sec6.u0": [
+  [
+   "Non perderò!"
+  ]
+ ],
+ "s006.sec7.u0": [
+  [
+   "Non avvicinarti! Vattene!"
+  ]
+ ],
+ "s006.sec8.u0": [
+  [
+   "Basta, ora sono davvero",
+   "arrabbiato!"
+  ]
+ ],
+ "s006.sec9.u0": [
+  [
+   "Un colpo tu, un colpo io!"
+  ]
+ ],
+ "s006.sec10.u0": [
+  [
+   "Fatti avanti, se pensi di",
+   "farcela!"
+  ]
+ ],
+ "s006.sec51.m0.o0": "Ti stavo cercando!",
+ "s006.sec51.m0.o1": "Per caso",
+ "s006.sec51.u0": [
+  [
+   "Mh? Ma guarda, {color 6}{player}{color 1}.",
+   "Sembra che il ponte sia",
+   "riparato. Ho sentito che voi"
+  ],
+  [
+   "giovani state costruendo una",
+   "città. Ho un favore da",
+   "chiederti. Come io ho aiutato"
+  ],
+  [
+   "te, vorrei che tu aiutassi me."
+  ]
+ ],
+ "s006.sec51.u1": [
+  [
+   "?"
+  ]
+ ],
+ "s006.sec51.u2": [
+  [
+   "Costruire una città significa",
+   "salvare quest'isola. Si salvano",
+   "tutti, me compreso. Capisci?"
+  ]
+ ],
+ "s006.sec51.u3": [
+  [
+   "Vuoi dire che vieni in citta'?"
+  ]
+ ],
+ "s006.sec51.u4": [
+  [
+   "Ah. Vado in quella tua città."
+  ]
+ ],
+ "s006.sec51.u5": "Coelamon si è unito alla città!",
+ "s006.sec51.u6": [
+  [
+   "Mh? Dimmi, sei un umano?",
+   "Incontrarmi è proprio una",
+   "pesca rara! Sono Coelamon, il"
+  ],
+  [
+   "Digimon pesce. Hai fatto tanta",
+   "strada solo per vedermi?"
+  ]
+ ],
+ "s006.sec51.u7": [
+  [
+   "Oh oh, capisco, capisco!"
+  ]
+ ],
+ "s006.sec51.u8": [
+  [
+   "Eheh... Me ne accorgo. Non",
+   "essere timido."
+  ]
+ ],
+ "s006.sec51.u9": [
+  [
+   "Credo di sapere cosa cerchi.",
+   "Il ponte a monte è rotto, ma",
+   "vuoi attraversare... Giusto?"
+  ]
+ ],
+ "s006.sec51.u10": [
+  [
+   "Mh, molto bene. Vedrò cosa",
+   "posso fare."
+  ]
+ ],
+ "s006.sec51.u11": [
+  [
+   "Ah ah, sei tornato?"
+  ]
+ ],
+ "s006.sec51.u12": [
+  [
+   "Forza, cammina sulle nostre",
+   "teste. Non fare complimenti.",
+   "Vai, vai."
+  ]
+ ],
+ "s006.sec51.u13": [
+  [
+   "Bene, andiamo!"
+  ]
+ ],
+ "s006.sec51.u14": [
+  [
+   "In questo mondo conta aiutarsi",
+   "a vicenda. Alla prossima!"
+  ]
+ ]
+}

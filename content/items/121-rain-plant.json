@@ -1,0 +1,13 @@
+{
+  "id": 121,
+  "name": "Rain Plant",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 5,
+  "itemColor": 2,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "healMP": 1000
+  }
+}

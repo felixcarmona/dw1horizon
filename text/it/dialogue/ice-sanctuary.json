@@ -1,0 +1,335 @@
+{
+ "s093.sec5.u0": [
+  [
+   "Huh? Ora che ci penso, La",
+   "statua..."
+  ]
+ ],
+ "s093.sec5.u1": [
+  [
+   "Ah!"
+  ]
+ ],
+ "s093.sec5.u2": [
+  [
+   "Uff... Bene, allora."
+  ]
+ ],
+ "s093.sec5.u3": [
+  [
+   "Sei tornato in vita. Questo è",
+   "buono!"
+  ]
+ ],
+ "s093.sec5.u4": [
+  [
+   "Sono Angemon, l'angelo che ti",
+   "protegge. Mi sono destato qui",
+   "per adempiere al mio dovere"
+  ],
+  [
+   "verso di te."
+  ]
+ ],
+ "s093.sec5.u5": [
+  [
+   "Accidenti, non capisco nulla di",
+   "ciò che dice."
+  ]
+ ],
+ "s093.sec5.u6": [
+  [
+   "Conosco le leggi del cielo.",
+   "Seguendo la guida della terra,",
+   "offro la mia anima."
+  ]
+ ],
+ "s093.sec5.u7": [
+  [
+   "Così non andiamo da nessuna",
+   "parte... Allora, ehm, vieni in",
+   "città... o no?"
+  ]
+ ],
+ "s093.sec5.u8": [
+  [
+   "La tua missione sarà mio",
+   "dovere. Vado."
+  ]
+ ],
+ "s093.sec5.u9": [
+  [
+   "Ehm, scusa, potresti usare",
+   "parole che capisco?"
+  ]
+ ],
+ "s093.sec5.u10": [
+  [
+   "...Andrò in città, quindi",
+   "impegnati anche tu... Così va",
+   "meglio?"
+  ]
+ ],
+ "s093.sec5.u11": [
+  [
+   "Sì, questo lo capisco. Bene,",
+   "sono felice di averti con noi."
+  ]
+ ],
+ "s093.sec5.u12": "Angemon si è unito alla città!",
+ "s093.sec51.u0": [
+  [
+   "Oh, sembra quasi viva..."
+  ]
+ ],
+ "s093.sec51.u1": [
+  [
+   "In effetti, queste cose",
+   "succedono sempre. Fai qualcosa",
+   "e si mette a muoversi, no? Eh"
+  ],
+  [
+   "eh, aspetta e vedrai!"
+  ]
+ ],
+ "s093.sec52.u0": [
+  [
+   "Che succede? {color 10} {partner} {color 1} ,",
+   "Hai trovato qualcosa?"
+  ]
+ ],
+ "s093.sec52.u1": [
+  [
+   "Wow, bravo, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s094.sec5.u0": [
+  [
+   "Ehi, stai tremando!"
+  ]
+ ],
+ "s094.sec6.u0": [
+  [
+   "Freddo? Davvero?"
+  ]
+ ],
+ "s094.sec7.u0": [
+  [
+   "Non è tutto inutile?"
+  ]
+ ],
+ "s095.sec81.u0": [
+  [
+   "{color 5}Allenamento: Blocchi di",
+   "ghiaccio{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": [
+  [
+   "Spingi grandi blocchi di",
+   "ghiaccio per allenare la",
+   "resistenza. Aumentano molto gli"
+  ],
+  [
+   "HP massimi e anche la Difesa."
+  ]
+ ],
+ "s095.sec81.u2": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "{color 5}Allenamento: Caduta di",
+   "ghiaccioli{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": [
+  [
+   "Allenati afferrando enormi",
+   "ghiaccioli che cadono. Aumenta",
+   "molto la Difesa e anche la"
+  ],
+  [
+   "Velocità."
+  ]
+ ],
+ "s095.sec84.u2": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s096.sec5.u0": [
+  [
+   "Ti stenderò!"
+  ]
+ ],
+ "s096.sec6.u0": [
+  [
+   "Dai la colpa alla sfortuna e",
+   "arrenditi!"
+  ]
+ ],
+ "s096.sec7.u0": [
+  [
+   "Qualche ultima parola prima di",
+   "cancellarti?"
+  ]
+ ],
+ "s097.sec5.u0": "Chi sei?",
+ "s097.sec6.u0": [
+  [
+   "E' tutto inutile."
+  ]
+ ],
+ "s097.sec7.u0": [
+  [
+   "Mmm, avrò preso il raffreddore?"
+  ]
+ ],
+ "s097.sec8.u0": [
+  [
+   "Ehi, che freddezza!"
+  ]
+ ],
+ "s098.sec5.u0": [
+  [
+   "Perché non torni a casa?"
+  ]
+ ],
+ "s098.sec6.u0": [
+  [
+   "Torna a casa!"
+  ]
+ ],
+ "s098.sec7.u0": [
+  [
+   "Faresti meglio a tornare",
+   "indietro!"
+  ]
+ ],
+ "s098.sec52.u0": [
+  [
+   "C-che luce abbagliante...!"
+  ]
+ ],
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Tu che cerchi la mia anima, è",
+   "giunta l'ora del risveglio. Su",
+   "di te, la benedizione delle mie"
+  ],
+  [
+   "{color 7}???mon {color 1}",
+   "ali!"
+  ]
+ ],
+ "s098.sec52.u2": [
+  [
+   "Cosa...? Dove sono...? Di",
+   "chi... è questa voce...?",
+   "Ngh.........!"
+  ]
+ ],
+ "s098.sec52.u3": [
+  [
+   "Cos'era...? La luce è",
+   "sparita... Quaggiù non c'è più",
+   "nulla... Quindi... è di sopra!"
+  ]
+ ],
+ "s099.sec5.u0": [
+  [
+   "Qui ci diremo addio per sempre."
+  ]
+ ],
+ "s099.sec6.u0": [
+  [
+   "Non faccio errori!"
+  ]
+ ],
+ "s095.sec81.m0.o0": "Allenati",
+ "s095.sec81.m0.o1": "Questo allenamento",
+ "s095.sec81.m0.o2": "Esci",
+ "s095.sec81.m1.o0": "Allenamento normale",
+ "s095.sec81.m1.o1": "Allenamento bonus",
+ "s095.sec81.m1.o2": "Lascia stare",
+ "s095.sec81.m2.o0": "Spiega di nuovo",
+ "s095.sec81.m2.o1": "Allenati",
+ "s095.sec81.m2.o2": "Esci",
+ "s095.sec84.m0.o0": "Allenati",
+ "s095.sec84.m0.o1": "Questo allenamento",
+ "s095.sec84.m0.o2": "Esci",
+ "s095.sec84.m1.o0": "Allenamento normale",
+ "s095.sec84.m1.o1": "Allenamento bonus",
+ "s095.sec84.m1.o2": "Lascia stare",
+ "s095.sec84.m2.o0": "Spiega di nuovo",
+ "s095.sec84.m2.o1": "Allenati",
+ "s095.sec84.m2.o2": "Esci",
+ "s100.sec60.u0": [
+  [
+   "Bleah!"
+  ]
+ ],
+ "s100.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s100.sec60.u2": [
+  [
+   "N-non è possibile!"
+  ]
+ ],
+ "s100.sec60.u3": [
+  [
+   "È svanito... Era",
+   "un'illusione...?"
+  ]
+ ],
+ "s100.sec60.u4": [
+  [
+   "Sembra che l'abbiamo",
+   "sconfitto... in qualche modo."
+  ]
+ ],
+ "s100.sec60.u5": [
+  [
+   "Eh?!"
+  ]
+ ],
+ "s100.sec60.u6": [
+  [
+   "Mmm, mmm... Eh?!"
+  ]
+ ],
+ "s100.sec60.u7": [
+  [
+   "Ho avuto una specie di vuoto",
+   "all'improvviso... Oh!",
+   "S-scusate!"
+  ]
+ ],
+ "s100.sec60.u8": [
+  [
+   "Mmm?? Cos'è stato? La",
+   "maledizione di Analogman?! Be',",
+   "ora dovrebbe essere tutto a"
+  ],
+  [
+   "posto."
+  ]
+ ]
+}

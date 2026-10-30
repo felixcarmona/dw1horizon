@@ -1,0 +1,201 @@
+From 0debe9c06ed89fb99aec2258d4973baef4d7c7a5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 21:27:54 +0000
+Subject: [PATCH] 60 fps step 0: split loop timing (tick / render / GPU wait),
+ 3-refresh tick
+
+gameLoop now records, in horizontal lines read from root counter 1 (free
+running hblank counter, so differences are elapsed lines even across VSync
+waits): the logic tick (input, script, tickObjects), the render CPU of the
+first pass, the DrawSync wait after it, and the same for the extra passes
+(MOD_PERF_X*), each as sum and max, plus the tick period. MOD_PERF_RESET=1
+clears them. The old MOD_PERF_LAST formula added VSync(-1) deltas * 263 to a
+VSync(1) delta that already counts across refreshes.
+
+The tick now always lasts 3 refreshes whatever MOD_FPS_RENDERS_PER_TICK is
+(it lasted n refreshes, so 1 render per tick ran the logic up to 60 Hz), pass
+r is shown at refresh tickStart + (r + 1) * 3 / n, and every swap waits for a
+vertical blank like VSync(3) did.
+
+---
+ src/main/main.c | 122 ++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 98 insertions(+), 24 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 5f4cc20..8805df7 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3886,22 +3886,69 @@ void recalculatePPandArena(void)
+ }
+ #endif
+ 
+-/* MOD (perf): how long each game frame keeps the CPU+GPU busy, in horizontal
+- * lines (NTSC: ~263 per vertical refresh). The game waits VSync(3), i.e. a
+- * budget of ~789 lines per frame at 20 fps; 60 fps would need <= 263. */
++/* MOD (perf): timing of the overworld loop, in horizontal lines (NTSC: ~263
++ * per vertical refresh, ~2146 CPU cycles per line). Root counter 1 counts
++ * hblanks and runs free (16 bits), so differences of it are elapsed lines
++ * even across VSync waits. Set MOD_PERF_RESET to clear everything.
++ *   TICK    loop start .. after tickObjects (input, script, tickObjects):
++ *           CPU of the game logic
++ *   RENDER  renderObjects + applyDrawOffset of the first pass: render CPU
++ *   GPU     DrawSync(0) after that: wait for the GPU to finish the previous
++ *           displayed frame
++ *   XRENDER, XGPU  the same for the extra passes (2nd, 3rd render of a tick)
++ *   LAST/MAX/SUM   TICK + RENDER + GPU of each tick (the old busy counter)
++ *   PERIOD  lines between the starts of two ticks (789 = 3 refreshes) */
+ int32_t MOD_PERF_LAST;
+ int32_t MOD_PERF_MAX;
+ int32_t MOD_PERF_SUM;
+ int32_t MOD_PERF_FRAMES;
+-static int32_t modPerfV0;
+-static int32_t modPerfH0;
++int32_t MOD_PERF_TICK_SUM;
++int32_t MOD_PERF_TICK_MAX;
++int32_t MOD_PERF_RENDER_SUM;
++int32_t MOD_PERF_RENDER_MAX;
++int32_t MOD_PERF_GPU_SUM;
++int32_t MOD_PERF_GPU_MAX;
++int32_t MOD_PERF_XRENDER_SUM;
++int32_t MOD_PERF_XRENDER_MAX;
++int32_t MOD_PERF_XGPU_SUM;
++int32_t MOD_PERF_XGPU_MAX;
++int32_t MOD_PERF_XPASSES;
++int32_t MOD_PERF_PERIOD;
++int32_t MOD_PERF_RESET;
++static int32_t modPerfPrevStart = -1;
++
++static int32_t modLines(void)
++{
++	return *(volatile uint16_t *)0x1F801110;
++}
++
++static void modPerfAdd(int32_t *sum, int32_t *max, int32_t value)
++{
++	*sum += value;
++	if (value > *max) {
++		*max = value;
++	}
++}
++
++static void modPerfReset(void)
++{
++	MOD_PERF_RESET = 0;
++	MOD_PERF_LAST = MOD_PERF_MAX = MOD_PERF_SUM = MOD_PERF_FRAMES = 0;
++	MOD_PERF_TICK_SUM = MOD_PERF_TICK_MAX = 0;
++	MOD_PERF_RENDER_SUM = MOD_PERF_RENDER_MAX = 0;
++	MOD_PERF_GPU_SUM = MOD_PERF_GPU_MAX = 0;
++	MOD_PERF_XRENDER_SUM = MOD_PERF_XRENDER_MAX = 0;
++	MOD_PERF_XGPU_SUM = MOD_PERF_XGPU_MAX = 0;
++	MOD_PERF_XPASSES = 0;
++}
+ 
+ /* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
+- * tickObjects: movement, clock, timers, animation) still runs once per tick,
+- * 20 ticks per second as in the original, so game speed is unchanged. The scene
+- * is rendered MOD_FPS_RENDERS_PER_TICK times per tick, each on its own vertical
+- * refresh (3 = 60 fps, 1 = original 20 fps). If a render runs late the remaining
+- * renders of that tick are skipped instead of delaying the next tick. */
++ * tickObjects: movement, clock, timers, animation) runs
++ * once per tick, and a tick always lasts 3 vertical refreshes (20 Hz) as in
++ * the original. The scene is rendered MOD_FPS_RENDERS_PER_TICK times per tick
++ * (3 = 60 fps, 1 = original 20 fps), pass r being shown at refresh
++ * tickStart + (r + 1) * 3 / n. A pass that would be shown too late is skipped;
++ * the logic never is. */
+ int32_t MOD_FPS_RENDERS_PER_TICK = 3;
+ int32_t MOD_FPS_TICKS;
+ int32_t MOD_FPS_RENDERS;
+@@ -3926,12 +3973,29 @@ void gameLoop(void)
+ 	int32_t n;
+ 	int32_t r;
+ 	int32_t tickV;
++	int32_t endV;
++	int32_t l0;
++	int32_t l1;
++	int32_t l2;
++	int32_t l3;
++	int32_t tickLines;
+ 
+ 	n = MOD_FPS_RENDERS_PER_TICK;
+ 	if (n < 1) {
+ 		n = 1;
+ 	}
++	if (n > 3) {
++		n = 3;
++	}
++	if (MOD_PERF_RESET != 0) {
++		modPerfReset();
++	}
+ 	tickV = VSync(-1);
++	l0 = modLines();
++	if (modPerfPrevStart >= 0) {
++		MOD_PERF_PERIOD = (l0 - modPerfPrevStart) & 0xFFFF;
++	}
++	modPerfPrevStart = l0;
+ 	pollInputGame();
+ 	modFpsBeginFrame();
+ 	processInput();
+@@ -3948,36 +4012,46 @@ void gameLoop(void)
+ 	DRAWING_OFFSET_Y_COPY = DRAWING_OFFSET_Y;
+ 	tickObjects();
+ 	MOD_FPS_TICKS++;
++	l1 = modLines();
++	tickLines = (l1 - l0) & 0xFFFF;
++	modPerfAdd(&MOD_PERF_TICK_SUM, &MOD_PERF_TICK_MAX, tickLines);
+ 
+ 	for (r = 0; r < n; r++) {
++		endV = tickV + (r + 1) * 3 / n;
+ 		if (r > 0) {
+-			if (VSync(-1) >= tickV + n) {
+-				break; /* out of time this tick: skip the remaining renders */
++			if (VSync(-1) >= endV) {
++				continue; /* this pass would be shown late: skip it */
+ 			}
+ 			modFpsBeginFrame();
+ 			modFpsSetView();
+ 		}
+-		modPerfV0 = VSync(-1);
+-		modPerfH0 = VSync(1);
++		l1 = modLines();
+ 		renderObjects();
+ 		applyDrawOffset(ACTIVE_FRAMEBUFFER);
++		l2 = modLines();
+ 		DrawSync(0);
+-		MOD_PERF_LAST = (VSync(-1) - modPerfV0) * 263 + VSync(1) - modPerfH0;
+-		if (MOD_PERF_LAST > MOD_PERF_MAX) {
+-			MOD_PERF_MAX = MOD_PERF_LAST;
+-		}
+-		MOD_PERF_SUM += MOD_PERF_LAST;
+-		MOD_PERF_FRAMES++;
+-		while (VSync(-1) < tickV + r + 1) {
+-			VSync(0); /* show each render on its own refresh slot */
++		l3 = modLines();
++		if (r == 0) {
++			modPerfAdd(&MOD_PERF_RENDER_SUM, &MOD_PERF_RENDER_MAX, (l2 - l1) & 0xFFFF);
++			modPerfAdd(&MOD_PERF_GPU_SUM, &MOD_PERF_GPU_MAX, (l3 - l2) & 0xFFFF);
++			MOD_PERF_LAST = tickLines + ((l3 - l1) & 0xFFFF);
++			modPerfAdd(&MOD_PERF_SUM, &MOD_PERF_MAX, MOD_PERF_LAST);
++			MOD_PERF_FRAMES++;
++		} else {
++			modPerfAdd(&MOD_PERF_XRENDER_SUM, &MOD_PERF_XRENDER_MAX, (l2 - l1) & 0xFFFF);
++			modPerfAdd(&MOD_PERF_XGPU_SUM, &MOD_PERF_XGPU_MAX, (l3 - l2) & 0xFFFF);
++			MOD_PERF_XPASSES++;
+ 		}
++		do {
++			VSync(0); /* like VSync(3): always swap on a vertical blank */
++		} while (VSync(-1) < endV);
+ 		GsSwapDispBuff();
+ 		GsSortClear(0, 0, 0, &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		GsDrawOt(&GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER]);
+ 		MOD_FPS_RENDERS++;
+ 	}
+-	while (VSync(-1) < tickV + n) {
+-		VSync(0); /* the tick lasts n refreshes, as VSync(3) did */
++	while (VSync(-1) < tickV + 3) {
++		VSync(0); /* the tick lasts 3 refreshes, as VSync(3) did */
+ 	}
+ 	handlePause();
+ }
+-- 
+2.53.0
+

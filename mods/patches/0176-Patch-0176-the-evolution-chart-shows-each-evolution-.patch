@@ -1,0 +1,814 @@
+From 74396289de8f5c806737377af80259a7381641ba Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 18:35:02 +0000
+Subject: [PATCH] Patch 0176: the evolution chart shows each evolution's
+ requirements. With the cursor on a "to" box of the detail view a card takes
+ the "from" column's place: care mistakes, weight, the stats (a Rookie's: the
+ highest stat) and the bonus (one is enough), "Automatic" for a Fresh's Baby
+ II, "?????" for a species not yet raised. In the partner's own tree it adds
+ the partner's values, a tick or cross per requirement and N of 4, and the
+ lines to the evolutions it meets turn green, the rest dim. The marks are
+ evoRequirementsMet's, the function calculateRequirementScore now adds up
+ (evolution.c), so the card and the game agree. The card's text borrows the
+ overview's rows of the text area and gives them back on close
+ (chartCardRelease). The Makefile's default PARTNER_MMD_MAX is 0x18800: the
+ card's 4.9 KB left 0x20000 under MIN_HEAP
+
+---
+ Makefile             |   8 +-
+ include/dw/level.h   |   8 +
+ src/main/evolution.c | 119 ++++++-----
+ src/main/game_menu.c | 457 +++++++++++++++++++++++++++++++++++++++++--
+ 4 files changed, 532 insertions(+), 60 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 2b52c0bc..97c9f6fb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -26,9 +26,11 @@ GEN_DIR := build/$(VERSION)/$(PLATFORM)/generated
+ VERSION_MACRO := VERSION_$(shell echo $(VERSION) | tr a-z A-Z)
+ 
+ # MOD (scale): bytes of the partner model buffer (include/dw/memmap.h, docs/mods/memory.md
+-# "Partner model buffer"). The original's is 0x18800; the default fits the largest imported
+-# model. The value goes through a generated header so a change rebuilds what depends on it.
+-PARTNER_MMD_MAX ?= 0x20000
++# "Partner model buffer"). The original's is 0x18800, the default: tools/build-full.sh passes the
++# disc's largest model (0x18800 for every disc since the imports were fitted), and since the
++# chart's criteria card (patch 0176) 0x20000 leaves less than MIN_HEAP. The value goes through
++# a generated header so a change rebuilds what depends on it.
++PARTNER_MMD_MAX ?= 0x18800
+ $(shell mkdir -p $(GEN_DIR); printf '#define PARTNER_MMD_MAX %s\n' '$(PARTNER_MMD_MAX)' > $(GEN_DIR)/partner_mmd_max.h.tmp; \
+ 	cmp -s $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h && rm $(GEN_DIR)/partner_mmd_max.h.tmp \
+ 	|| mv $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h)
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 9531ad88..fe519399 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -348,6 +348,14 @@ extern int16_t MOD_EVO_FORMULA[MOD_EVO_FORMULA_SIZE];
+ int32_t evoAmt(int32_t slot);
+ int32_t evoFlag(int32_t slot);
+ int32_t evoPassPoints(void);
++/* MOD (chart): the four scored requirements of an evolution, as evoRequirementsMet's bits (evolution.c) */
++#define EVO_MET_CARE	1
++#define EVO_MET_WEIGHT	2
++#define EVO_MET_STATS	4
++#define EVO_MET_BONUS	8
++int32_t evoRequirementsMet(int32_t current, int16_t target, int8_t isMaxCM, int8_t isMaxBattles);
++int32_t evoRequirementPoints(int32_t met);
++int32_t evoPartnerTopStat(void);
+ 
+ /* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
+ #define MOD_EVO_ITEM_MAX	4
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index d79128cb..7b2daceb 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1176,68 +1176,73 @@ int32_t handleSpecialEvolutions(mode, entity)
+   return evoTarget;
+ }
+ 
+-int8_t calculateRequirementScore(int32_t current, DigimonId target,
+-                                 int8_t isMaxCM, int8_t isMaxBattles,
+-                                 DigimonId currentBest) {
+-  EvoRequirements *reqs;
++/* MOD (chart): the partner's highest stat for a Rookie target's requirement (HP and MP divided; a tie goes to the later
++ * stat: Brn > Spd > Def > Off > MP > HP), 0..5 */
++int32_t evoPartnerTopStat(void)
++{
+   BaseStats *partnerEntity;
+-  PartnerPara *partner;
+-  int32_t isTargetRaised;
+-  int32_t isCurrentBestRaised;
+   int16_t statsArray[6];
+-  int16_t statsArray2[6];
+-  int16_t reqArray[6];
+   int32_t i;
+   int32_t j;
+   int32_t isHighestStat;
+   int32_t highestStat;
+-  int8_t reqPoints;
++
++  partnerEntity = &PARTNER_ENTITY.digimonEntity.stats.base;
++  statsArray[0] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->hp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
++  statsArray[1] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->mp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
++  statsArray[2] = partnerEntity->off;
++  statsArray[3] = partnerEntity->def;
++  statsArray[4] = partnerEntity->speed;
++  statsArray[5] = partnerEntity->brain;
++  highestStat = 0;
++  for (i = 0; i < 6; i++) {
++    isHighestStat = 1;
++    for (j = 0; j < 6; j++) {
++      if (statsArray[i] < statsArray[j])
++        isHighestStat = 0;
++    }
++    if (isHighestStat == 1)
++      highestStat = i;
++  }
++  return highestStat;
++}
++
++/* MOD (chart): which of the four scored requirements of `target` the partner meets (EVO_MET_CARE, _WEIGHT, _STATS,
++ * _BONUS); calculateRequirementScore turns them into points, the chart's tree shows them */
++int32_t evoRequirementsMet(int32_t current, DigimonId target, int8_t isMaxCM, int8_t isMaxBattles)
++{
++  EvoRequirements *reqs;
++  BaseStats *partnerEntity;
++  PartnerPara *partner;
++  int16_t reqArray[6];
++  int32_t met;
+   int8_t numMoves;
+-  int8_t isBonusFulfilled;
+ 
+   reqs = &EVO_REQ_ROW(target);
+   partnerEntity = &PARTNER_ENTITY.digimonEntity.stats.base;
+   partner = &PARTNER_PARA;
+-  reqPoints = 0;
++  met = 0;
+ 
+-  /* MOD (evolution formulas as data): the points and tolerances are MOD_EVO_FORMULA's */
+   if (isMaxCM == 0) {
+     if (partner->careMistakes >= reqs->care)
+-      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_CARE);
++      met |= EVO_MET_CARE;
+   } else if (partner->careMistakes <= reqs->care) {
+-    reqPoints += evoAmt(MOD_EVF_SCORE_POINT_CARE);
++    met |= EVO_MET_CARE;
+   }
+ 
+   if (reqs->weight - evoAmt(MOD_EVF_SCORE_WEIGHT_TOL) <= partner->weight &&
+       partner->weight <= reqs->weight + evoAmt(MOD_EVF_SCORE_WEIGHT_TOL))
+-    reqPoints += evoAmt(MOD_EVF_SCORE_POINT_WEIGHT);
++    met |= EVO_MET_WEIGHT;
+ 
+   if (DIGI_PARA(target).level == 3U) {
+-    statsArray[0] = statsArray2[0] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->hp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
+-    statsArray[1] = statsArray2[1] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->mp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
+-    statsArray[2] = statsArray2[2] = partnerEntity->off;
+-    statsArray[3] = statsArray2[3] = partnerEntity->def;
+-    statsArray[4] = statsArray2[4] = partnerEntity->speed;
+-    statsArray[5] = statsArray2[5] = partnerEntity->brain;
+     reqArray[0] = reqs->hp;
+     reqArray[1] = reqs->mp;
+     reqArray[2] = reqs->offense;
+     reqArray[3] = reqs->defense;
+     reqArray[4] = reqs->speed;
+     reqArray[5] = reqs->brain;
+-
+-    for (i = 0; i < 6; i++) {
+-      isHighestStat = 1;
+-      for (j = 0; j < 6; j++) {
+-        if (statsArray[i] < statsArray[j])
+-          isHighestStat = 0;
+-      }
+-      if (isHighestStat == 1)
+-        highestStat = i;
+-    }
+-    if (reqArray[highestStat] == 1) {
+-      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_STATS);
+-    }
++    if (reqArray[evoPartnerTopStat()] == 1)
++      met |= EVO_MET_STATS;
+   } else {
+     if ((evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->hp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0) >= reqs->hp &&
+         (evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->mp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0) >= reqs->mp &&
+@@ -1245,32 +1250,58 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+         partnerEntity->def >= reqs->defense &&
+         partnerEntity->speed >= reqs->speed &&
+         partnerEntity->brain >= reqs->brain) {
+-      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_STATS);
++      met |= EVO_MET_STATS;
+     }
+   }
+ 
+-  isBonusFulfilled = 0;
+   if (reqs->digimon != -1 && current == reqs->digimon)
+-    isBonusFulfilled = 1;
++    met |= EVO_MET_BONUS;
+   if (reqs->discipline != -1 && partner->discipline >= reqs->discipline)
+-    isBonusFulfilled = 1;
++    met |= EVO_MET_BONUS;
+   if (reqs->happiness != -1 && partner->happiness >= reqs->happiness)
+-    isBonusFulfilled = 1;
++    met |= EVO_MET_BONUS;
+   if (reqs->battles != -1) {
+     if (isMaxBattles == 0) {
+       if (partner->battles >= reqs->battles)
+-        isBonusFulfilled = 1;
++        met |= EVO_MET_BONUS;
+     } else if (partner->battles <= reqs->battles) {
+-      isBonusFulfilled = 1;
++      met |= EVO_MET_BONUS;
+     }
+   }
+   if (reqs->techs != -1) {
+     numMoves = getNumMasteredMoves();
+     if (numMoves >= reqs->techs)
+-      isBonusFulfilled = 1;
++      met |= EVO_MET_BONUS;
+   }
++  return met;
++}
++
++/* MOD (chart): the points of the requirements in `met` (evoRequirementsMet) */
++int32_t evoRequirementPoints(int32_t met)
++{
++  int32_t points;
++
++  points = 0;
++  if (met & EVO_MET_CARE)
++    points += evoAmt(MOD_EVF_SCORE_POINT_CARE);
++  if (met & EVO_MET_WEIGHT)
++    points += evoAmt(MOD_EVF_SCORE_POINT_WEIGHT);
++  if (met & EVO_MET_STATS)
++    points += evoAmt(MOD_EVF_SCORE_POINT_STATS);
++  if (met & EVO_MET_BONUS)
++    points += evoAmt(MOD_EVF_SCORE_POINT_BONUS);
++  return points;
++}
++
++int8_t calculateRequirementScore(int32_t current, DigimonId target,
++                                 int8_t isMaxCM, int8_t isMaxBattles,
++                                 DigimonId currentBest) {
++  int32_t isTargetRaised;
++  int32_t isCurrentBestRaised;
++  int8_t reqPoints;
+ 
+-  reqPoints += isBonusFulfilled * evoAmt(MOD_EVF_SCORE_POINT_BONUS);
++  /* MOD (chart): the requirements are evoRequirementsMet's (shared with the chart), their points evoRequirementPoints' */
++  reqPoints = evoRequirementPoints(evoRequirementsMet(current, target, isMaxCM, isMaxBattles));
+ 
+   if (reqPoints >= evoPassPoints() && currentBest != -1) {
+     isTargetRaised = hasDigimonRaised(EVO_GAINS_ROW(target).targetDigimon);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d3c0e91c..6c5b3ca4 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -185,6 +185,7 @@ static void chartDetailOpen(int32_t id); /* MOD (portraits) */
+ static int32_t chartDetailInput(void);
+ static void chartOverviewInput(void); /* MOD (chart) */
+ static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y);
++static void chartCardRelease(void); /* MOD (chart criteria) */
+ void renderPlayerInfoView(void);
+ void renderString();
+ void renderMenuTab(int16_t x, int8_t w, int8_t layer);
+@@ -1768,6 +1769,7 @@ void tickPlayerMenu(void)
+ 					removeAnimatedUIBox(2, &finalPos);
+ 					playSound(0, 3);
+ 					MENU_STATE = 2;
++					chartCardRelease(); /* MOD (chart criteria) */
+ 				}
+ 			}
+ 		}
+@@ -2993,8 +2995,12 @@ static void chartDetailPlaceCursor(void)
+ 	}
+ }
+ 
++static int16_t CHART_CARD_ID;	/* MOD (chart criteria): the evolution whose card is drawn, -1 none */
++static int16_t CHART_LIT_FOR;	/* the centre whose lit lines are in CHART_LIT, -1 none */
++
+ static void chartDetailOpen(int32_t id)
+ {
++	CHART_CARD_ID = CHART_LIT_FOR = -1; /* MOD (chart criteria): the partner may have changed since the last time */
+ 	CHART_DETAIL_ID = id;
+ 	CHART_DETAIL_DEPTH = 0;
+ 	chartDetailPlaceCursor();
+@@ -3445,6 +3451,396 @@ void renderEvoChartView(void)
+ 	}
+ }
+ 
++/*
++ * MOD (chart criteria): with the cursor on one of the "to" boxes the detail view shows, in place of the "from" column,
++ * the card of that evolution's requirements: care mistakes, weight, stats (a Rookie: the highest stat) and one bonus,
++ * the four evoRequirementsMet scores. In the tree of the partner's own species the card adds the partner's values and a
++ * mark per requirement, and the lines go green to the evolutions whose requirements reach evoPassPoints (special
++ * evolutions, the time each level waits and the preference for species not yet raised are left out), dim to the rest;
++ * other trees keep the original colours. A Baby II reached from a Fresh has no requirements ("Automatic").
++ * The card's text takes the overview's rows of the text area (CHART_CARD_ROW, two lines a row); chartCardRelease
++ * gives them back when the detail closes.
++ */
++#define CHART_CARD_ROW		0x60
++#define CHART_CARD_LINES	16
++#define CHART_CARD_VALUE_U	96	/* where a line's value is in its half row */
++#define CHART_CARD_VERDICT_ROW	(CHART_CARD_ROW + (CHART_CARD_LINES / 2) * 12)
++#define CHART_CARD_X		20	/* the card, screen pixels */
++#define CHART_CARD_Y		38
++#define CHART_CARD_W		114
++#define CHART_CARD_H		158
++#define CHART_CARD_SHIFT	139	/* the level and name move right, under the "to" column */
++#define CHART_CARD_TREE_SHIFT	7	/* and the "Tree" label clears the card */
++#define CHART_LIT_EDGE		0x50be28 /* the lines of a met evolution, BGR */
++#define CHART_LIT_CORE		0xb4ffaa
++#define CHART_DIM_LINE		0x6a5c48
++#define CHART_FROM_LINE		0xb4a596
++#define CHART_MARK_YES		0x6ee65a
++#define CHART_MARK_NO		0x505af0
++
++extern int32_t MOD_RENDER_PASS;
++int8_t getNumMasteredMoves(void);
++
++typedef struct {
++	int8_t color;		/* TEXT_COLORS of the label and of the value */
++	int8_t valueColor;
++	int8_t mark;		/* 0 none, 1 met, 2 not met */
++	int8_t indent;
++	int16_t labelW;
++	int16_t valueW;
++} ChartCardLine;
++
++static ChartCardLine CHART_CARD[CHART_CARD_LINES];
++static int8_t CHART_CARD_COUNT;
++static int8_t CHART_CARD_MINE;		/* the card is of the partner's tree */
++static int8_t CHART_TEXT_TAKEN;		/* the card wrote over the overview's rows */
++static int16_t CHART_CARD_VERDICT_W;
++static int8_t CHART_CARD_VERDICT_COLOR;
++static uint8_t CHART_LIT;		/* bit j: the "to" box j's evolution is met */
++static char *CHART_STAT_NAMES[6] = { "HP", "MP", "Off", "Def", "Spd", "Brn" };
++
++static int32_t chartIsPartnerTree(void)
++{
++	return CHART_DETAIL_ID == PARTNER_ENTITY.digimonEntity.entity.type;
++}
++
++/* a Baby II's row: no requirement at all (the Fresh's evolution is fixed, MOD_EVO_FRESH) */
++static int32_t chartIsAutomatic(EvoRequirements *r)
++{
++	return r->care == -1 && r->weight == -1;
++}
++
++/* 1 when the partner (the centre of the tree) meets the requirements of evolving into `target` */
++static int32_t chartEvoMet(int32_t target)
++{
++	EvoRequirements r;
++	int32_t i;
++
++	r = EVO_REQ_ROW(target);
++	if (chartIsAutomatic(&r)) {
++		for (i = 0; i < MOD_EVO_PAIR_MAX; i++) {
++			if (MOD_EVO_FRESH[i][0] == CHART_DETAIL_ID && MOD_EVO_FRESH[i][1] == target) {
++				return 1;
++			}
++		}
++		return 0;
++	}
++	if (!isPartnerModelFit(target)) {
++		return 0;
++	}
++	return evoRequirementPoints(evoRequirementsMet(CHART_DETAIL_ID, target, (r.flags & 0x10) >> 4, r.flags & 1)) >=
++	       evoPassPoints();
++}
++
++/* the met evolutions of the partner's tree, once per centre */
++static void chartUpdateLit(EvolutionPath *ep)
++{
++	int32_t j;
++
++	if (CHART_LIT_FOR == CHART_DETAIL_ID) {
++		return;
++	}
++	CHART_LIT = 0;
++	for (j = 0; j < 6; j++) {
++		if (ep->to[j] > 0 && chartEvoMet(ep->to[j])) {
++			CHART_LIT |= 1 << j;
++		}
++	}
++	CHART_LIT_FOR = CHART_DETAIL_ID;
++}
++
++/* a number, with its sign */
++static char *chartNumber(char *p, int32_t n)
++{
++	if (n < 0) {
++		*p++ = '-';
++		n = -n;
++	}
++	return chartDigits(p, n);
++}
++
++/* appends a "<label> <n>+" or "<label> <lo>-<hi>" requirement to `p` */
++static char *chartRange(char *p, char *label, int32_t lo, int32_t hi)
++{
++	while (*label != 0) {
++		*p++ = *label++;
++	}
++	*p++ = ' ';
++	p = chartNumber(p, lo);
++	if (hi == lo) {
++		*p++ = '+';
++	} else {
++		*p++ = '-';
++		p = chartNumber(p, hi);
++	}
++	*p = 0;
++	return p;
++}
++
++#define CHART_NO_VALUE	-32768	/* a line without a number */
++
++/* copies `str` to `p`, returns the end */
++static char *chartAppend(char *p, char *str)
++{
++	while (*str != 0) {
++		*p++ = *str++;
++	}
++	*p = 0;
++	return p;
++}
++
++/* draws one line of the card into the text area: its label, and its value right of it when the tree is the partner's */
++static void chartCardLine(char *label, int32_t have, int32_t ok, int32_t mark, int32_t indent, char *word)
++{
++	ChartCardLine *l;
++	char buf[8];
++	int32_t k;
++	int32_t u;
++	int32_t v;
++	int32_t room;
++
++	if (CHART_CARD_COUNT >= CHART_CARD_LINES) {
++		return;
++	}
++	k = CHART_CARD_COUNT++;
++	l = &CHART_CARD[k];
++	u = (k & 1) * 128;
++	v = CHART_CARD_ROW + (k >> 1) * 12;
++	l->indent = indent;
++	l->mark = CHART_CARD_MINE && mark ? (ok ? 1 : 2) : 0;
++	l->color = CHART_CARD_MINE && !ok ? 9 : 0;
++	l->valueColor = ok ? 7 : 6;
++	l->valueW = 0;
++	if (CHART_CARD_MINE && (word != NULL || have != CHART_NO_VALUE)) {
++		if (word == NULL) {
++			chartNumber(buf, have);
++			word = buf;
++		}
++		l->valueW = measureStringMode(word, FIT_VANILLA);
++	}
++	/* the label first: a label too long even when fitted spills its cells to the right, over the value's */
++	room = CHART_CARD_W - 18 - indent - (l->valueW > 0 ? l->valueW + 4 : 0);
++	l->labelW = drawStringMode(label, u, v, fitStringMode(label, room));
++	if (l->labelW > room) {
++		l->labelW = room;
++	}
++	if (l->valueW > 0) {
++		drawString(word, u + CHART_CARD_VALUE_U, v);
++	}
++}
++
++/* the card of evolving into `target`: drawn into the text area when the target or the centre changes */
++static void chartCardBuild(int32_t target)
++{
++	EvoRequirements r;
++	BaseStats *st;
++	RECT rect;
++	char a[32];
++	char *p;
++	int32_t met;
++	int32_t isMaxCM;
++	int32_t isMaxBattles;
++	int32_t div;
++	int32_t tol;
++	int32_t k;
++	int32_t need;
++	int32_t have;
++	int32_t top;
++	int16_t req[6];
++
++	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_VERDICT_ROW + 12 - CHART_CARD_ROW);
++	clearTextSubArea(&rect);
++	CHART_TEXT_TAKEN = 1;
++	CHART_CARD_COUNT = 0;
++	CHART_CARD_VERDICT_W = 0;
++	CHART_CARD_MINE = chartIsPartnerTree();
++	r = EVO_REQ_ROW(target);
++	st = &PARTNER_ENTITY.digimonEntity.stats.base;
++	isMaxCM = (r.flags & 0x10) >> 4;
++	isMaxBattles = r.flags & 1;
++	met = CHART_CARD_MINE ? evoRequirementsMet(CHART_DETAIL_ID, target, isMaxCM, isMaxBattles) : 0;
++
++	/* the title: the species, unnamed until raised */
++	CHART_CARD_MINE = 0;
++	chartCardLine(hasDigimonRaised((uint16_t)target) != 0 ? (char *)digimonPara(target) : "?????", CHART_NO_VALUE, 1, 0,
++	              -9, NULL);
++	CHART_CARD[0].color = 4;
++	CHART_CARD_MINE = chartIsPartnerTree();
++	if (chartIsAutomatic(&r)) {
++		chartCardLine("Automatic", CHART_NO_VALUE, 1, 1, 0, NULL);
++		return;
++	}
++
++	/* care mistakes */
++	if (!isMaxCM && r.care <= 0) {
++		chartCardLine("Mistakes any", CHART_NO_VALUE, 1, 1, 0, NULL);
++	} else {
++		chartRange(a, "Mistakes", isMaxCM ? 0 : r.care, r.care);
++		chartCardLine(a, PARTNER_PARA.careMistakes, met & EVO_MET_CARE, 1, 0, NULL);
++	}
++
++	/* weight */
++	tol = evoAmt(MOD_EVF_SCORE_WEIGHT_TOL);
++	chartRange(a, "Weight", r.weight - tol, r.weight + tol);
++	chartCardLine(a, PARTNER_PARA.weight, met & EVO_MET_WEIGHT, 1, 0, NULL);
++
++	/* stats: a Rookie's is the highest stat; the others, every stat asked for */
++	req[0] = r.hp;
++	req[1] = r.mp;
++	req[2] = r.offense;
++	req[3] = r.defense;
++	req[4] = r.speed;
++	req[5] = r.brain;
++	if (DIGI_PARA(target).level == 3U) {
++		p = chartAppend(a, "Top");
++		for (k = 0; k < 6; k++) {
++			if (req[k] == 1) {
++				p = chartAppend(chartAppend(p, " "), CHART_STAT_NAMES[k]);
++			}
++		}
++		top = CHART_CARD_MINE ? evoPartnerTopStat() : 0;
++		chartCardLine(a, CHART_NO_VALUE, met & EVO_MET_STATS, 1, 0, CHART_STAT_NAMES[top]);
++	} else {
++		div = evoAmt(MOD_EVF_SCORE_HPMP_DIV);
++		for (k = 0; k < 6 && req[k] < 0; k++) {
++		}
++		chartCardLine(k == 6 ? "Stats any" : "Stats", CHART_NO_VALUE, (met & EVO_MET_STATS) || k == 6, 1, 0, NULL);
++		for (k = 0; k < 6; k++) {
++			if (req[k] < 0) {
++				continue;
++			}
++			need = req[k];
++			switch (k) {
++			case 0: have = st->hp; need *= div; break;
++			case 1: have = st->mp; need *= div; break;
++			case 2: have = st->off; break;
++			case 3: have = st->def; break;
++			case 4: have = st->speed; break;
++			default: have = st->brain; break;
++			}
++			chartRange(a, CHART_STAT_NAMES[k], need, need);
++			chartCardLine(a, have, have >= need, 0, 6, NULL);
++		}
++	}
++
++	/* the bonus: one of them is enough; one that always holds (a Rookie's battles -2 or techniques 0) makes it "any" */
++	if ((r.battles != -1 && !isMaxBattles && r.battles <= 0) || (r.techs != -1 && r.techs <= 0) ||
++	    (r.discipline != -1 && r.discipline <= 0)) {
++		chartCardLine("Bonus any", CHART_NO_VALUE, 1, 1, 0, NULL);
++	} else {
++		chartCardLine("Bonus, one of", CHART_NO_VALUE, met & EVO_MET_BONUS, 1, 0, NULL);
++		if (r.digimon != -1) {
++			chartAppend(chartAppend(a, "From "), hasDigimonRaised((uint16_t)r.digimon) != 0 ? (char *)digimonPara(r.digimon) : "?????");
++			chartCardLine(a, CHART_NO_VALUE, CHART_DETAIL_ID == r.digimon, 0, 6,
++			              CHART_DETAIL_ID == r.digimon ? "yes" : "no");
++		}
++		if (r.discipline != -1) {
++			chartRange(a, "Discipline", r.discipline, r.discipline);
++			chartCardLine(a, PARTNER_PARA.discipline, PARTNER_PARA.discipline >= r.discipline, 0, 6, NULL);
++		}
++		if (r.happiness != -1) {
++			chartRange(a, "Happiness", r.happiness, r.happiness);
++			chartCardLine(a, PARTNER_PARA.happiness, PARTNER_PARA.happiness >= r.happiness, 0, 6, NULL);
++		}
++		if (r.battles != -1) {
++			chartRange(a, "Battles", isMaxBattles ? 0 : r.battles, r.battles);
++			chartCardLine(a, PARTNER_PARA.battles,
++			              isMaxBattles ? PARTNER_PARA.battles <= r.battles : PARTNER_PARA.battles >= r.battles, 0, 6,
++			              NULL);
++		}
++		if (r.techs != -1) {
++			chartRange(a, "Techs", r.techs, r.techs);
++			have = getNumMasteredMoves();
++			chartCardLine(a, have, have >= r.techs, 0, 6, NULL);
++		}
++	}
++
++	/* the verdict under the card: how many of the four, green when they reach the pass points */
++	if (CHART_CARD_MINE) {
++		k = ((met & EVO_MET_CARE) != 0) + ((met & EVO_MET_WEIGHT) != 0) + ((met & EVO_MET_STATS) != 0) +
++		    ((met & EVO_MET_BONUS) != 0);
++		p = chartDigits(a, k);
++		p = chartAppend(p, " of 4");
++		if (evoRequirementPoints(met) >= evoPassPoints() && isPartnerModelFit(target)) {
++			chartAppend(p, "  ready");
++			CHART_CARD_VERDICT_COLOR = 7;
++		} else {
++			CHART_CARD_VERDICT_COLOR = 6;
++		}
++		CHART_CARD_VERDICT_W = measureStringMode(a, FIT_VANILLA);
++		drawString(a, 0, CHART_CARD_VERDICT_ROW);
++	}
++}
++
++/* a mark at screen (x, y): a tick or a cross */
++static void chartMark(int32_t x, int32_t y, int32_t yes)
++{
++	int32_t i;
++
++	x -= 0xa0;
++	y -= 0x78;
++	for (i = 0; i < 2; i++) {
++		if (yes) {
++			drawLine3P(CHART_MARK_YES, x, y + 3 + i, x + 2, y + 5 + i, x + 6, y - 1 + i, 4, 0);
++		} else {
++			drawLine2P(CHART_MARK_NO, x + i, y, x + 5 + i, y + 5, 4, 0);
++			drawLine2P(CHART_MARK_NO, x + 5 + i, y, x + i, y + 5, 4, 0);
++		}
++	}
++}
++
++/* the card of the box under the cursor: its text (drawn when it changes) and its marks */
++static void chartCardRender(int32_t target)
++{
++	ChartCardLine *l;
++	int32_t k;
++	int32_t y;
++	int32_t lh;
++
++	if (CHART_CARD_ID != target) {
++		if (MOD_RENDER_PASS != 0) {
++			return; /* the text is drawn on the first pass */
++		}
++		chartCardBuild(target);
++		CHART_CARD_ID = target;
++	}
++	lh = CHART_CARD_COUNT > 13 ? 10 : 11;
++	for (k = 0; k < CHART_CARD_COUNT; k++) {
++		l = &CHART_CARD[k];
++		y = CHART_CARD_Y + 3 + k * lh;
++		renderString(l->color, CHART_CARD_X + 14 + l->indent - 0xa0, y - 0x78, l->labelW, 0xc, (k & 1) * 128,
++		             CHART_CARD_ROW + (k >> 1) * 12, 4, 1);
++		if (l->valueW > 0) {
++			renderString(l->valueColor, CHART_CARD_X + CHART_CARD_W - 5 - l->valueW - 0xa0, y - 0x78, l->valueW, 0xc,
++			             (k & 1) * 128 + CHART_CARD_VALUE_U, CHART_CARD_ROW + (k >> 1) * 12, 4, 1);
++		}
++		if (l->mark != 0) {
++			chartMark(CHART_CARD_X + 5, y + 3, l->mark == 1);
++		}
++	}
++	if (CHART_CARD_VERDICT_W > 0) {
++		renderString(CHART_CARD_VERDICT_COLOR, CHART_CARD_X + (CHART_CARD_W - CHART_CARD_VERDICT_W) / 2 - 0xa0,
++		             CHART_CARD_Y + CHART_CARD_H + 3 - 0x78, CHART_CARD_VERDICT_W, 0xc, 0, CHART_CARD_VERDICT_ROW, 4,
++		             1);
++	}
++}
++
++/* the detail closed: the overview's rows of the text area are drawn again */
++static void chartCardRelease(void)
++{
++	RECT rect;
++
++	CHART_CARD_ID = -1;
++	if (!CHART_TEXT_TAKEN) {
++		return;
++	}
++	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_VERDICT_ROW + 12 - CHART_CARD_ROW);
++	clearTextSubArea(&rect);
++	chartDrawLabels();
++	CHART_TEXT_ID = -2;
++	CHART_TEXT_TAKEN = 0;
++}
++
+ GARBAGE_ARRAY(renderEvoChartDetail, (&MOVES_TECHSET_LINES[0].x1), 30, 9);
+ 
+ void renderEvoChartDetail(void)
+@@ -3468,6 +3864,9 @@ void renderEvoChartDetail(void)
+ 	EvolutionPath *ep;
+ 	int16_t cx;
+ 	int16_t cy;
++	int32_t mine; /* MOD (chart criteria) */
++	int32_t cardId;
++	int32_t dx;
+ 
+ 	clut = EVO_CHART_DETAIL_COLORS;
+ 	MENU_SUB_STATE = 2;
+@@ -3485,6 +3884,14 @@ void renderEvoChartDetail(void)
+ 		}
+ 	}
+ 
++	/* MOD (chart criteria): the partner's tree lights the met evolutions; a "to" box under the cursor shows its card */
++	mine = chartIsPartnerTree();
++	if (mine) {
++		chartUpdateLit(ep);
++	}
++	cardId = CHART_CURSOR_SIDE == 1 ? chartDetailBox(1, CHART_CURSOR_J, &cx, &cy) : 0;
++	dx = cardId > 0 ? CHART_CARD_SHIFT : 0;
++
+ 	if ((count1 % 2) == 0) {
+ 		fromLines = CHART_FROM_LINES_EVEN;
+ 		fromSprites = CHART_FROM_SPRITES_EVEN;
+@@ -3505,7 +3912,13 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < fromCount; j++) {
+-		if ((*ep).from[j] > 0) {
++		if ((*ep).from[j] > 0 && cardId > 0) {
++			/* MOD (chart criteria): the card is where the "from" column was */
++		} else if ((*ep).from[j] > 0 && mine) {
++			drawLine3P(CHART_FROM_LINE, fromLines->x1, fromLines->y1, fromLines->x2, fromLines->y2, fromLines->x3,
++			           fromLines->y3, 4, 0);
++			drawLine2P(CHART_FROM_LINE, fromLines->x3, fromLines->y3, fromLines->x4, fromLines->y4, 4, 0);
++		} else if ((*ep).from[j] > 0) {
+ 			drawLine3P(0x65db,
+ 			           fromLines->x1, fromLines->y1 - 1,
+ 			           fromLines->x2, fromLines->y2 - 1,
+@@ -3538,13 +3951,21 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < toCount; j++) {
+-		if ((*ep).to[j] > 0) {
++		if ((*ep).to[j] > 0 && mine && !(CHART_LIT & (1 << j))) {
++			/* MOD (chart criteria): an evolution the partner does not meet, dim */
++			drawLine3P(CHART_DIM_LINE, toLines->x1, toLines->y1, toLines->x2, toLines->y2, toLines->x3, toLines->y3, 4, 0);
++			drawLine2P(CHART_DIM_LINE, toLines->x3, toLines->y3, toLines->x4, toLines->y4, 4, 0);
++		} else if ((*ep).to[j] > 0) {
+ 			color1 = (MAIN_D_80124A84[j * 2].r & 0xff) |
+ 			         ((MAIN_D_80124A84[j * 2].g & 0xff) << 8) |
+ 			         ((MAIN_D_80124A84[j * 2].b & 0xff) << 16);
+ 			color2 = (MAIN_D_80124A84[(j * 2) + 1].r & 0xff) |
+ 			         ((MAIN_D_80124A84[(j * 2) + 1].g & 0xff) << 8) |
+ 			         ((MAIN_D_80124A84[(j * 2) + 1].b & 0xff) << 16);
++			if (mine) { /* MOD (chart criteria): one it meets, green */
++				color1 = CHART_LIT_CORE;
++				color2 = CHART_LIT_EDGE;
++			}
+ 			drawLine3P(color2,
+ 			           toLines->x1, toLines->y1 - 1,
+ 			           toLines->x2, toLines->y2 - 1,
+@@ -3590,7 +4011,7 @@ void renderEvoChartDetail(void)
+ 
+ 	for (j = 0; j < fromCount; j++) {
+ 		id = (*ep).from[j];
+-		if (id > 0) {
++		if (id > 0 && cardId <= 0) { /* MOD (chart criteria): not under the card */
+ 			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(fromSprites->posX, fromSprites->posY,
+@@ -3647,25 +4068,25 @@ void renderEvoChartDetail(void)
+ 	             ((DIGI_PARA(CHART_DETAIL_ID).level - 1) * 36) + 0x30, 0x18,
+ 	             4);
+ #else
+-	renderString(3, -0x14, -0x4f, 0x24, 0xc, 0, 0x18, 4);
++	renderString(3, (cardId > 0 ? CHART_CARD_TREE_SHIFT : 0) - 0x14, -0x4f, 0x24, 0xc, 0, 0x18, 4);
+ 	switch (DIGI_PARA(CHART_DETAIL_ID).level) {
+ 	case 1:
+-		renderString(0, -0x5b, 0x3a, 0x2e, 0xc, 0x24, 0x18, 4);
++		renderString(0, dx - 0x5b, 0x3a, 0x2e, 0xc, 0x24, 0x18, 4);
+ 		break;
+ 	case 2:
+-		renderString(0, -0x63, 0x3a, 0x3e, 0xc, 0x52, 0x18, 4);
++		renderString(0, dx - 0x63, 0x3a, 0x3e, 0xc, 0x52, 0x18, 4);
+ 		break;
+ 	case 3:
+-		renderString(0, -0x5b, 0x3a, 0x2f, 0xc, 0, 0x24, 4);
++		renderString(0, dx - 0x5b, 0x3a, 0x2f, 0xc, 0, 0x24, 4);
+ 		break;
+ 	case 4:
+-		renderString(0, -0x64, 0x3a, 0x41, 0xc, 0x2f, 0x24, 4);
++		renderString(0, dx - 0x64, 0x3a, 0x41, 0xc, 0x2f, 0x24, 4);
+ 		break;
+ 	case 5:
+-		renderString(0, -0x64, 0x3a, 0x41, 0xc, 0, 0x3c, 4);
++		renderString(0, dx - 0x64, 0x3a, 0x41, 0xc, 0, 0x3c, 4);
+ 		break;
+ 	case LEVEL_MEGA: /* MOD (mega) */
+-		renderString(0, -0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
++		renderString(0, dx - 0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
+ 		             EVO_CHART_MEGA_ROW, 4);
+ 		break;
+ 	}
+@@ -3675,11 +4096,11 @@ void renderEvoChartDetail(void)
+ 	 * one (drawn tighter if it must, drawEvoChartStrings) is centred in the level's panel by its width */
+ 	if (measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID), FIT_VANILLA) <= 0x78) {
+ 		len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+-		renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
++		renderString(0, dx - 0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
+ 	} else {
+ 		w = measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID),
+ 				      fitStringMode(DIGIMON_NAME(CHART_DETAIL_ID), CHART_NAME_W));
+-		renderString(0, -0x42 - w / 2, 0x4d, w, 0xc, 0, 0x30, 4);
++		renderString(0, dx - 0x42 - w / 2, 0x4d, w, 0xc, 0, 0x30, 4);
+ 	}
+ #else
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+@@ -3689,8 +4110,18 @@ void renderEvoChartDetail(void)
+ 	if (chartDetailBox(CHART_CURSOR_SIDE, CHART_CURSOR_J, &cx, &cy) != 0 && (PLAYTIME_FRAMES % 10) < 7) {
+ 		renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x20e0ff, 0x1070a0, 0xd0, 0xc0, 0x20, 4);
+ 	}
++	/* MOD (chart criteria): the card in place of the "from" panel (0); the "Tree" panel (1) and the level and name panels
++	 * (4, 5) moved right */
++	if (cardId > 0) {
++		chartCardRender(cardId);
++	}
+ 	for (i = 0; i < 6; i++) {
+-		renderInsetBox(MAIN_D_80124B48[i].posX, MAIN_D_80124B48[i].posY,
++		if (i == 0 && cardId > 0) {
++			renderInsetBox(CHART_CARD_X, CHART_CARD_Y, CHART_CARD_W, CHART_CARD_H, 4);
++			continue;
++		}
++		renderInsetBox(MAIN_D_80124B48[i].posX + (i >= 4 ? dx : (i == 1 && cardId > 0 ? CHART_CARD_TREE_SHIFT : 0)),
++		               MAIN_D_80124B48[i].posY,
+ 		               MAIN_D_80124B48[i].width,
+ 		               MAIN_D_80124B48[i].height, 4);
+ 	}
+-- 
+2.53.0
+

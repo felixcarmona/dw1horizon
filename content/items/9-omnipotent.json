@@ -1,0 +1,14 @@
+{
+  "id": 9,
+  "name": "Omnipotent",
+  "value": 2000,
+  "meritValue": 0,
+  "sortingValue": 1,
+  "itemColor": 2,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "healHP": 1500,
+    "healMP": 1500
+  }
+}

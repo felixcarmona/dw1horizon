@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP4/YAKA11A.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Devimon",
+      "at": [0, 2605],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [48, 46, 53, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [2805, -3342],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[50, 0, 0]]
+    }
+  ]
+}

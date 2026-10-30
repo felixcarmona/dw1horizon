@@ -1,0 +1,96 @@
+{
+ "s026.sec5.u0": "Heh heh heh, thanks for all your trouble!",
+ "s026.sec5.u1": "What? You lookin' for a fight?",
+ "s026.sec6.u0": "Well, well, thanks for comin'!",
+ "s026.sec6.u1": "Leave me alone!",
+ "s026.sec7.u0": "Don't push yourself too hard!",
+ "s026.sec7.u1": "Bring it on!",
+ "s026.sec9.u0": "Okay, okay, I give up!",
+ "s026.sec10.u0": "The boss up and left...",
+ "s026.sec51.u0": "Gweh heh heh! If you punks wanna get through here, leave all your stuff behind!",
+ "s026.sec51.u1": "We sure go back a long way, you and me.",
+ "s026.sec51.u2": "Ngh! You punks again...!",
+ "s026.sec51.u3": [
+  [
+   "That's my line! Holing up somewhere this easy",
+   "to find..."
+  ],
+  [
+   "Looks like you're ready for the end!"
+  ]
+ ],
+ "s026.sec51.u4": "Fwahaha! Ready, you say? You're about to see what happens when I get serious!",
+ "s026.sec51.u5": "Let's finish this!",
+ "s026.sec51.u6": "...Why... can't I win...",
+ "s026.sec51.u7": "What's wrong? Aren't you gonna run off?",
+ "s026.sec51.u8": "I'm all tired out...",
+ "s026.sec51.u9": ".........",
+ "s026.sec51.u10": [
+  [
+   "I turned bandit 'cause I figured this island was",
+   "finished..."
+  ],
+  [
+   "So I might as well do whatever I pleased..."
+  ]
+ ],
+ "s026.sec51.u11": "You knew the island was in trouble?",
+ "s026.sec51.u12": [
+  [
+   "'Course I did. But then guys like you showed",
+   "up..."
+  ],
+  [
+   "Joinin' hands with everybody now would just",
+   "be pathetic..."
+  ]
+ ],
+ "s026.sec51.u13": "No, it wouldn't. Come to the city.",
+ "s026.sec51.u14": [
+  [
+   "No good... A guy like me ain't any use to",
+   "anybody..."
+  ],
+  [
+   "Besides, there's no way they'd forgive me..."
+  ]
+ ],
+ "s026.sec51.u15": "Oh, shut up!!! Quit your whining and just come!!!",
+ "s026.sec51.u16": "You ARE useful! Nobody on this island is useless right now! We're all the same!",
+ "s026.sec51.u17": "!!!",
+ "s026.sec51.u18": "Saved...? This island can be saved?! You guys are gonna save it, ain't you? Huh?!",
+ "s026.sec51.u19": "You bet we are!!! ...You know where the city is, right?",
+ "s026.sec51.u20": "Ohhhhh! Just you wait, new job of mine!",
+ "s026.sec51.u21": "Ogremon joined the city!",
+ "s026.sec52.u0": "Whoa! The exit isn't this way!",
+ "s026.sec52.u1": "Whoa! I have to give Drimogemon his dirt box back!",
+ "s026.sec53.u0": "Whoa! The exit isn't this way!",
+ "s026.sec53.u1": "Whoa! I have to give Drimogemon his dirt box back!",
+ "s030.sec5.u0": [
+  [
+   "Shoot, we hit a big hard rock!"
+  ],
+  [
+   "Not even yours truly can dig through this."
+  ]
+ ],
+ "s030.sec5.u1": "What, you can't? Oh, come on!",
+ "s030.sec5.u2": "Only thing for it is to push it outta the way somehow... You guys up to it?",
+ "s030.sec5.u3": "Hmmm?!",
+ "s030.sec5.u4": "{color 10}{partner}{color 1}, I'm counting on you!",
+ "s030.sec5.u5": "We did it!",
+ "s030.sec5.u6": "Whoa, what strength! The rock moved!",
+ "s030.sec5.u7": "Looks like it's hollow back there...",
+ "s030.sec5.u8": [
+  [
+   "Whoa, a river of lava! Careful, careful."
+  ],
+  [
+   "There's a path along the bank going further",
+   "in... Let's go!"
+  ]
+ ],
+ "s030.sec5.u9": "Hey, you're going in there? Watch yourselves!",
+ "s030.sec5.u10": "Hey, you're going in there? Watch yourselves!",
+ "s030.sec5.u11": "No good... Come back when {color 10}{partner}{color 1} has grown a bit more."
+}

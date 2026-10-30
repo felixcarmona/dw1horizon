@@ -1,0 +1,37 @@
+{
+  "file": "MAP/MAP9/FRZL14.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Mojyamon170",
+      "at": [2012, -3381],
+      "facing": 2100,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Mojyamon170",
+      "at": [392, -2355],
+      "facing": 1100,
+      "follow": 1,
+      "range": 1000,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

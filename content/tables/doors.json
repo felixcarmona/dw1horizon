@@ -1,0 +1,196 @@
+{
+  "doors": [
+    [
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 9, "x": 1925, "y": 0, "z": -915, "rotation": 1024},
+      {"model": 9, "x": 1925, "y": 0, "z": 1050, "rotation": 1024},
+      {"model": 9, "x": 1250, "y": 0, "z": 3010, "rotation": 0},
+      {"model": 10, "x": -1900, "y": 0, "z": 1870, "rotation": -1024},
+      {"model": 10, "x": -1950, "y": 0, "z": -520, "rotation": -1024}
+    ],
+    [
+      {"model": 9, "x": 1880, "y": -1200, "z": 370, "rotation": 1024},
+      {"model": 9, "x": 1890, "y": -1200, "z": 2420, "rotation": 1024},
+      {"model": 9, "x": -1930, "y": -1200, "z": 1000, "rotation": -1024},
+      {"model": 9, "x": 1880, "y": 0, "z": 1000, "rotation": 1024},
+      {"model": 9, "x": 1250, "y": 0, "z": 3010, "rotation": 0},
+      {"model": 9, "x": -1850, "y": 0, "z": 1850, "rotation": -1024}
+    ],
+    [
+      {"model": 17, "x": -50, "y": 0, "z": -1560, "rotation": -2048},
+      {"model": 16, "x": -750, "y": 0, "z": 800, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 9, "x": -640, "y": 0, "z": 2950, "rotation": 0},
+      {"model": 10, "x": 1410, "y": 0, "z": 1350, "rotation": 1024},
+      {"model": 10, "x": 1450, "y": 0, "z": -1880, "rotation": 1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 12, "x": -10, "y": 0, "z": 1100, "rotation": 0},
+      {"model": 13, "x": 0, "y": 0, "z": -1600, "rotation": 2048},
+      {"model": 14, "x": -1050, "y": 100, "z": 850, "rotation": -1024},
+      {"model": 15, "x": -1050, "y": 100, "z": 350, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 18, "x": -1350, "y": 0, "z": -450, "rotation": -1024},
+      {"model": 16, "x": -500, "y": 0, "z": -1900, "rotation": 2048},
+      {"model": 17, "x": 800, "y": 30, "z": 10, "rotation": 1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 17, "x": -1415, "y": 0, "z": 540, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 11, "x": -1200, "y": 0, "z": -120, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 16, "x": -1400, "y": 0, "z": 900, "rotation": -1024},
+      {"model": 20, "x": 600, "y": 0, "z": -400, "rotation": 1536},
+      {"model": 21, "x": 640, "y": 0, "z": -420, "rotation": 1536},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 16, "x": 950, "y": 0, "z": -2210, "rotation": 2048},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 16, "x": 1750, "y": 0, "z": 50, "rotation": 1024},
+      {"model": 11, "x": 380, "y": 0, "z": 1300, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 11, "x": -1350, "y": 0, "z": 800, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 0, "x": -1139, "y": 0, "z": 672, "rotation": 1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 5, "x": -1000, "y": 0, "z": 1150, "rotation": 0},
+      {"model": 5, "x": 0, "y": 0, "z": 1150, "rotation": 0},
+      {"model": 5, "x": 1000, "y": 0, "z": 1150, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 5, "x": 0, "y": 0, "z": 1800, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 6, "x": 178, "y": 0, "z": 2310, "rotation": 100},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 7, "x": -710, "y": 0, "z": -1470, "rotation": -740},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 22, "x": 800, "y": 200, "z": 2000, "rotation": 0},
+      {"model": 23, "x": 800, "y": 200, "z": 2000, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 24, "x": -2150, "y": 0, "z": 2450, "rotation": 0},
+      {"model": 25, "x": -2150, "y": 0, "z": 2450, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 24, "x": 1500, "y": 300, "z": 2800, "rotation": 0},
+      {"model": 25, "x": 1500, "y": 300, "z": 2800, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 24, "x": 300, "y": 100, "z": 1600, "rotation": -1024},
+      {"model": 25, "x": 300, "y": 100, "z": 1600, "rotation": -1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 26, "x": -250, "y": 0, "z": 23, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 31, "x": 600, "y": 0, "z": 3280, "rotation": 0},
+      {"model": 31, "x": -1680, "y": 0, "z": 600, "rotation": 1024},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ],
+    [
+      {"model": 32, "x": 120, "y": -340, "z": 4920, "rotation": 0},
+      {"model": 32, "x": -290, "y": -340, "z": 4920, "rotation": 2048},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0},
+      {"model": 255, "x": 0, "y": 0, "z": 0, "rotation": 0}
+    ]
+  ]
+}

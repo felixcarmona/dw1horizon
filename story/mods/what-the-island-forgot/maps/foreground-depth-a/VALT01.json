@@ -1,0 +1,7 @@
+{
+  "screen": 310,
+  "art": "wall-of-hearts",
+  "review": "The ice backdrop and two side faces bound one floor with no walkable ground behind or below them. The ice is a wall, not an overhead bridge. Preserve the original floor boundary and foreground data; the rejected pass added no mask here.",
+  "pieces": [],
+  "collision": []
+}

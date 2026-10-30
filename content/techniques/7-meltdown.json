@@ -1,0 +1,17 @@
+{
+  "id": 7,
+  "name": "Meltdown",
+  "element": "fire",
+  "power": 400,
+  "mpCost": 106,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 86,
+  "status": 3,
+  "statusChance": 24,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [14, 6, 0]
+}

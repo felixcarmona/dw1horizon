@@ -1,0 +1,105 @@
+// Readable form of script 20 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 20 {
+    npc mamemon = 5;
+    npc mudfrigimon1 = 6;
+    npc mudfrigimon2 = 7;
+    npc mudfrigimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 81;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 31, 57);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 91, 55);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Happymushrm"), 62, 94);
+        }
+    }
+
+    on talk(mamemon) replace {    // section 5
+        sound(8, 11);
+        say(mamemon, text("s020.sec5.u0"));
+        animate(tamer, 16);
+        wait(1s);
+        choice {
+            text("s020.sec5.m0.o0") => {
+                engine.no_escape = true;
+                battle();
+                face(tamer, mamemon);
+                face(partner, mamemon);
+                face(mamemon, tamer);
+                await tamer;
+                say(mamemon, text("s020.sec5.u1"));
+                animate(mamemon, 29);
+                wait(2s);
+                animate(tamer, 20);
+                wait(1s);
+                say(tamer, text("s020.sec5.u2"));
+                animate(tamer, anim.idle);
+                animate(mamemon, 28);
+                wait(1s);
+                animate(mamemon, anim.idle);
+                face(mamemon, tamer);
+                sound(8, 11);
+                say(mamemon, text("s020.sec5.u3"));
+                animate(tamer, 19);
+                wait(1s);
+                say(tamer, text("s020.sec5.u4"));
+                sound(8, 11);
+                say(mamemon, text("s020.sec5.u5"));
+                walk_away(mamemon, 3800, -3100, looks: 10, pause: 10);
+                remove(mamemon);
+                glances = 0;
+                sound(8, 8);
+                say(narrator, text("s020.sec5.u6"));
+                engine.no_escape = false;
+                camera_on(tamer, speed: 10);
+                await camera;
+                engine.prosperity += 3;
+                recruit(species("Mamemon"));
+                return;
+            }
+            text("s020.sec5.m0.o1") => {}
+        }
+        say(mamemon, text("s020.sec5.u7"));
+        walk_away(mamemon, 3800, -3100, looks: 10, pause: 10);
+        remove(mamemon);
+        glances = 0;
+    }
+
+    on talk(mudfrigimon1) replace {    // section 6
+        say(mudfrigimon1, text("s020.sec6.u0"));
+        battle();
+        recruit(species("MudFrigimon"));
+    }
+
+    on talk(mudfrigimon2) replace {    // section 7
+        say(mudfrigimon2, text("s020.sec7.u0"));
+        battle();
+        recruit(species("MudFrigimon"));
+    }
+
+    on talk(mudfrigimon3) replace {    // section 8
+        say(mudfrigimon3, text("s020.sec8.u0"));
+        battle();
+        recruit(species("MudFrigimon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 2048);
+        say(narrator, text("s020.sec81.u0"));
+        return;
+    }
+}

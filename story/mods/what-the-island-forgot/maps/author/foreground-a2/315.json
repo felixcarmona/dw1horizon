@@ -1,0 +1,213 @@
+{
+  "screen": 315,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/old-gallery-v2-2304x1856.png",
+      "crop": [
+        0,
+        0,
+        2304,
+        1856
+      ],
+      "box": [
+        197,
+        197,
+        323,
+        321
+      ],
+      "pos": [
+        [
+          258,
+          257
+        ],
+        [
+          299,
+          310
+        ]
+      ],
+      "neg": [
+        [
+          192,
+          268
+        ],
+        [
+          326,
+          268
+        ],
+        [
+          259,
+          344
+        ]
+      ],
+      "scores": [
+        0.9623051285743713,
+        0.9770494699478149,
+        0.9803621768951416
+      ],
+      "selected": 2,
+      "at": [
+        201,
+        202
+      ],
+      "bounds": [
+        201,
+        202,
+        317,
+        311
+      ],
+      "area": 8894,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "piece": "ore-cart",
+      "png": "315-ore-cart.png",
+      "source_sha1": "57ca6a12033141cf1833a43ac42d5364613537b1"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/old-gallery-v2-2304x1856.png",
+      "crop": [
+        0,
+        0,
+        2304,
+        1856
+      ],
+      "box": [
+        242,
+        268,
+        485,
+        448
+      ],
+      "pos": [
+        [
+          275,
+          411
+        ],
+        [
+          314,
+          384
+        ],
+        [
+          341,
+          366
+        ],
+        [
+          366,
+          350
+        ],
+        [
+          427,
+          308
+        ]
+      ],
+      "neg": [
+        [
+          237,
+          357
+        ],
+        [
+          490,
+          357
+        ],
+        [
+          363,
+          449
+        ]
+      ],
+      "scores": [
+        0.9873531460762024,
+        0.98517906665802,
+        0.95989990234375
+      ],
+      "selected": 0,
+      "at": [
+        246,
+        274
+      ],
+      "bounds": [
+        246,
+        274,
+        481,
+        440
+      ],
+      "area": 11362,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "crossing-timber",
+      "png": "315-crossing-timber.png",
+      "source_sha1": "57ca6a12033141cf1833a43ac42d5364613537b1"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/old-gallery-v2-2304x1856.png",
+      "crop": [
+        0,
+        0,
+        2304,
+        1856
+      ],
+      "box": [
+        0,
+        40,
+        74,
+        233
+      ],
+      "pos": [
+        [
+          15,
+          57
+        ],
+        [
+          22,
+          86
+        ],
+        [
+          33,
+          129
+        ],
+        [
+          38,
+          148
+        ],
+        [
+          45,
+          174
+        ]
+      ],
+      "neg": [
+        [
+          72,
+          141
+        ],
+        [
+          31,
+          254
+        ]
+      ],
+      "scores": [
+        0.9703357219696045,
+        0.9831619262695312,
+        0.9761778116226196
+      ],
+      "selected": 1,
+      "at": [
+        0,
+        45
+      ],
+      "bounds": [
+        0,
+        45,
+        63,
+        244
+      ],
+      "area": 5683,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "piece": "entrance-near-jamb",
+      "png": "315-entrance-near-jamb.png",
+      "source_sha1": "57ca6a12033141cf1833a43ac42d5364613537b1"
+    }
+  ]
+}

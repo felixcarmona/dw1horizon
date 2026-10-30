@@ -1,0 +1,62 @@
+{
+ "s080.sec5.u0": "I'll be takin' your life now, if ya don't mind.",
+ "s080.sec6.u0": "Did ya come all this way to die, then?",
+ "s080.sec7.u0": "Whoa, you've got some nerve!",
+ "s080.sec8.u0": "Heh. Are you that eager to die?",
+ "s080.sec9.u0": "You must disappear...",
+ "s080.sec10.u0": "Excuse me, would ya kindly get outta the way?",
+ "s080.sec51.u0": "Whoa, it really does feel like a whole different era here.",
+ "s080.sec51.u1": "...Oops, wait! No time to stand around. Meteorite, meteorite...",
+ "s081.sec5.u0": "You're one of THOSE, aren't ya... Heh heh...",
+ "s081.sec5.u1": "Heh heh... At the side of the bone tunnel... you turn...",
+ "s082.sec5.m0.o0": "Touch and check it!",
+ "s082.sec5.m0.o1": "Smash it open!",
+ "s082.sec5.u0": "This is it...! It sure looks like a meteorite. First...",
+ "s082.sec5.u1": "Hmm...",
+ "s082.sec5.u2": "It's kind of... a more ordinary meteorite than I expected...",
+ "s082.sec5.u3": [
+  [
+   "{color 7}???mon {color 1}",
+   "Well, sorry fer bein'",
+   "ordinary..."
+  ]
+ ],
+ "s082.sec5.u4": "!",
+ "s082.sec5.u5": "You were a Digimon?! Who are you?",
+ "s082.sec5.u6": [
+  [
+   "{color 7}???mon {color 1}",
+   "...Folks call me Meteormon."
+  ]
+ ],
+ "s082.sec5.u7": "Do you know anything about the trouble on the island?",
+ "s082.sec5.u8": "...I don't know nothin'!",
+ "s082.sec5.u9": "Nothing at all? Really...? You're not hiding something?",
+ "s082.sec5.u10": "Hmph, what a rude feller! Fine, then, let's fight! We'll see who's in the right!",
+ "s082.sec5.u11": "O-okay! All right...",
+ "s082.sec5.u12": "Hmph... I give up. You're mighty strong.",
+ "s082.sec5.u13": "Anything at all about the trouble on the island... Do you know anything? Please.",
+ "s082.sec5.u14": "I don't. On account of I was only just born.",
+ "s082.sec5.u15": "What?!",
+ "s082.sec5.u16": "Us Meteormon are born up in the sky, fall to the ground right away, and sleep real still for a good long while.",
+ "s082.sec5.u17": "I was s'posed to stay still a whole lot longer, mind you...",
+ "s082.sec5.u18": "I get it. Time flows fast here.",
+ "s082.sec5.u19": "Seems that's how it is. Well, I'm off to have a look around the island. Wishin' ya luck.",
+ "s082.sec5.u20": "...Sigh. So there's no clue after all... Come on, let's get out of here fast.",
+ "s082.sec5.u21": "Looking at it won't tell me anything anyway. Let's smash it!",
+ "s082.sec5.u22": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hey, whaddya think yer doin'?!",
+   "That's plain rough!"
+  ]
+ ],
+ "s082.sec6.u0": "Huh? What are you?!",
+ "s082.sec6.u1": "Nanimon, that's what!",
+ "s082.sec6.u2": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 20 items!",
+ "s082.sec6.u3": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 30 items!",
+ "s083.sec5.u0": "Oh. My. Gosh!!",
+ "s083.sec6.u0": "Hey, boy! Show me a good time.",
+ "s083.sec7.u0": "Farewell...",
+ "s083.sec8.u0": "That was a short life."
+}

@@ -1,0 +1,17 @@
+{
+  "id": 19,
+  "name": "Ice Needle",
+  "element": "ice",
+  "power": 126,
+  "mpCost": 26,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 50,
+  "status": 3,
+  "statusChance": 5,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [30, 15, 8]
+}

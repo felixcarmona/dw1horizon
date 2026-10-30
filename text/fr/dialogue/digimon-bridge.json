@@ -1,0 +1,157 @@
+{
+ "s010.sec5.u0": [
+  [
+   "Tu ne sais pas rester à ta",
+   "place !"
+  ]
+ ],
+ "s010.sec7.u0": [
+  [
+   "Qu'est-ce que je t'ai fait ??"
+  ]
+ ],
+ "s010.sec8.m0.o0": "Payer",
+ "s010.sec8.m0.o1": "Ne pas payer",
+ "s010.sec8.u0": [
+  [
+   "Ouk-ouk-ouuuk ! Tu demandes",
+   "pourquoi je suis ici ?! Écoute,",
+   "{color 6}{player}{color 1} ! J'ai essayé de"
+  ],
+  [
+   "me faire un harem en ville, et",
+   "ils m'ont chassé !"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tss... Ah, oui. Il paraît que",
+   "tu roules sur l'or, hein ? Je",
+   "vais te vendre un truc bien,"
+  ],
+  [
+   "ouk ! L'objet le plus rare au",
+   "monde : la {color 6}Banane d'or{color 1}.",
+   "Seulement 50000 Bits ! Pas de"
+  ],
+  [
+   "crédit, ouk-ouk."
+  ]
+ ],
+ "s010.sec8.u2": [
+  [
+   "Tu es fou ? Tu portes",
+   "beaucoup trop de choses !"
+  ]
+ ],
+ "s010.sec8.u3": [
+  [
+   "Oups, mon sac est plein."
+  ]
+ ],
+ "s010.sec8.u4": [
+  [
+   "Ouk, un plaisir de faire",
+   "affaire !"
+  ]
+ ],
+ "s010.sec8.u5": [
+  [
+   "L'argent ne sert à rien si on",
+   "ne le dépense pas, mon pote."
+  ]
+ ],
+ "s010.sec51.m0.o0": "D'accord",
+ "s010.sec51.m0.o1": "Une autre fois",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Halte-lààà !!!"
+  ]
+ ],
+ "s010.sec51.u1": [
+  [
+   "Ton humble serviteur se nomme",
+   "Ninjamon !"
+  ]
+ ],
+ "s010.sec51.u2": [
+  [
+   "Tu dois être {color 6}{player}{color 1}... et",
+   "toi, {color 10}{partner}{color 1} ! Votre",
+   "renommée est parvenue jusqu'au"
+  ],
+  [
+   "lointain village ninja.",
+   "Croiseras-tu le fer avec ton",
+   "humble serviteur ?"
+  ]
+ ],
+ "s010.sec51.u3": [
+  [
+   "Hé hé, pas si vite, assurément",
+   "!"
+  ]
+ ],
+ "s010.sec51.u4": [
+  [
+   "Ton talent est à la hauteur de",
+   "ta réputation ! Je t'en prie,",
+   "fais de ton humble serviteur"
+  ],
+  [
+   "ton dischiple !"
+  ]
+ ],
+ "s010.sec51.u5": [
+  [
+   "Dischiple... ? Ah, disciple.",
+   "Non merci. Mais si tu aides à",
+   "bâtir la ville, d'accord."
+  ]
+ ],
+ "s010.sec51.u6": [
+  [
+   "Compris ! C'est aussi un bon",
+   "entraînement, assurément. Ton",
+   "humble serviteur fera de son"
+  ],
+  [
+   "mieux !"
+  ]
+ ],
+ "s010.sec51.u7": "Ninjamon a rejoint la ville !",
+ "s011.sec5.u0": [
+  [
+   "Je pourrais te battre d'une",
+   "seule main !"
+  ]
+ ],
+ "s011.sec6.u0": [
+  [
+   "On dirait que je peux te",
+   "battre !"
+  ]
+ ],
+ "s011.sec7.u0": [
+  [
+   "Hi hi. Tu n'y connais rien..."
+  ]
+ ],
+ "s011.sec8.u0": [
+  [
+   "Arrête un peu !"
+  ]
+ ],
+ "s011.sec9.u0": [
+  [
+   "Ce n'est pas bien de brutaliser",
+   "les autres, tu sais."
+  ]
+ ],
+ "s011.sec10.u0": [
+  [
+   "Écoute-moi, s'il te plaît !"
+  ]
+ ]
+}

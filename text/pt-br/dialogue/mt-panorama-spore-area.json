@@ -1,0 +1,156 @@
+{
+ "s022.sec5.u0": "Minha asa...",
+ "s022.sec5.u1": "O que há de errado?",
+ "s022.sec5.u2": "Eu... machuquei minha asa... tem algo para tratar uma ferida?",
+ "s022.sec5.u3": "Isso parece ruim...! Espere. Vamos ver...",
+ "s022.sec5.u4": "Certo, não tenho nada agora...",
+ "s022.sec5.u5": "Não é bom. Não com isso.",
+ "s022.sec5.u6": "Assim está muito melhor. Obrigado.",
+ "s022.sec5.u7": "Você pode voar agora?",
+ "s022.sec5.u8": [
+  [
+   "...Acho que não consigo ir",
+   "muito longe..."
+  ]
+ ],
+ "s022.sec5.u9": [
+  [
+   "Entendi... Já sei! Tem uma",
+   "clínica na cidade. Vá se",
+   "consultar lá. Não fica longe",
+   "daqui."
+  ]
+ ],
+ "s022.sec5.u10": "Notável. Ouvi rumores da cidade, mas não sabia que tinha crescido tanto.",
+ "s022.sec5.u11": "Heh heh. Vá com calma na cidade e descanse um pouco.",
+ "s022.sec5.u12": "Desculpe pelo incômodo... vou retribuir essa gentileza, prometo.",
+ "s022.sec5.u13": "Unimon veio para a cidade!",
+ "s022.sec5.u14": "Algo para tratar uma ferida... Vou te trazer algo.",
+ "s022.sec5.u15": "Por favor, seja rápido.",
+ "s022.sec51.u0": "Padrões estranhos são desenhados no chão...",
+ "s022.sec51.u1": "Este é um daqueles círculos nas plantações? Não parece muito velho.",
+ "s022.sec51.u2": [
+  [
+   "Há mais do que da última vez!"
+  ],
+  [
+   "Isso tem algo a ver com o OVNI que as",
+   "pessoas falam...?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Whoa! Há mais! Muito mais!"
+  ],
+  [
+   "É isso, então..."
+  ]
+ ],
+ "s022.sec51.u4": "Hm?",
+ "s022.sec51.u5": "O OVNI de Vademon aparece!",
+ "s022.sec51.u6": "Um alienígena!",
+ "s022.sec51.u7": ".........",
+ "s022.sec51.u8": "Você é... um Digimon...?",
+ "s022.sec51.u9": ".........",
+ "s022.sec51.u10": "Hum...",
+ "s022.sec51.u11": ".........",
+ "s022.sec51.u12": "Vademon levanta uma arma!",
+ "s022.sec51.u13": "Não, espere! Não somos seus inimigos!",
+ "s022.sec51.u14": "Vademon baixa a arma.",
+ "s022.sec51.u15": [
+  [
+   "Será que ele entendeu?",
+   "Certo..."
+  ]
+ ],
+ "s022.sec51.u16": [
+  [
+   "{color 6}{player}{color 1} fez de tudo para",
+   "convencê-lo!!"
+  ]
+ ],
+ "s022.sec51.u17": ".........",
+ "s022.sec51.u18": "Não é bom...?",
+ "s022.sec51.u19": "Ohh-kay.",
+ "s022.sec51.u20": "Vademon veio para a cidade!",
+ "s022.sec51.u21": [
+  [
+   "M-mas esse cara... Ele sabe",
+   "falar!!"
+  ]
+ ],
+ "s189.sec5.u0": "Trouxe algo para tratar minha ferida?",
+ "s189.sec5.u1": "Espere. Vamos ver...",
+ "s189.sec5.u2": "Minha asa...",
+ "s189.sec5.u3": "O que há de errado?",
+ "s189.sec5.u4": "Eu... machuquei minha asa... tem algo para tratar uma ferida?",
+ "s189.sec5.u5": "Isso parece ruim...! Espere. Vamos ver...",
+ "s189.sec5.u6": "Certo, não tenho nada agora...",
+ "s189.sec5.u7": "Não é bom. Não com isso.",
+ "s189.sec5.u8": "Assim está muito melhor. Obrigado.",
+ "s189.sec5.u9": "Você pode voar agora?",
+ "s189.sec5.u10": [
+  [
+   "...Acho que não consigo ir",
+   "muito longe..."
+  ]
+ ],
+ "s189.sec5.u11": [
+  [
+   "Entendi... Já sei! Tem uma",
+   "clínica na cidade. Vá se",
+   "consultar lá. Não fica longe",
+   "daqui."
+  ]
+ ],
+ "s189.sec5.u12": "Notável. Ouvi rumores da cidade, mas não sabia que tinha crescido tanto.",
+ "s189.sec5.u13": "Heh heh. Vá com calma na cidade e descanse um pouco.",
+ "s189.sec5.u14": "Desculpe pelo incômodo... vou retribuir essa gentileza, prometo.",
+ "s189.sec5.u15": "Unimon veio para a cidade!",
+ "s189.sec5.u16": "Algo para tratar uma ferida... vou trazer algo, então espere aqui.",
+ "s189.sec5.u17": "Por favor, seja rápido.",
+ "s190.sec51.u0": "Padrões estranhos são desenhados no chão...",
+ "s190.sec51.u1": "Este é um daqueles círculos nas plantações? Não parece muito velho.",
+ "s190.sec51.u2": [
+  [
+   "Há mais do que da última vez!"
+  ],
+  [
+   "Isso tem algo a ver com o OVNI que as",
+   "pessoas falam...?"
+  ]
+ ],
+ "s190.sec51.u3": "Uau!?",
+ "s190.sec51.u4": "Há mais! Muito mais!",
+ "s190.sec51.u5": "É isso, então...",
+ "s190.sec51.u6": "Hm?",
+ "s190.sec51.u7": "Um alienígena!",
+ "s190.sec51.u8": ".........",
+ "s190.sec51.u9": "Você é... um Digimon...?",
+ "s190.sec51.u10": ".........",
+ "s190.sec51.u11": "Hum...",
+ "s190.sec51.u12": ".........",
+ "s190.sec51.u13": "Não, espere! Não somos seus inimigos!",
+ "s190.sec51.u14": [
+  [
+   "Será que ele entendeu?",
+   "Certo..."
+  ]
+ ],
+ "s190.sec51.u15": [
+  [
+   "{color 6}{player}{color 1} fez de tudo para",
+   "convencê-lo!!"
+  ]
+ ],
+ "s190.sec51.u16": ".........",
+ "s190.sec51.u17": "Não é bom...?",
+ "s190.sec51.u18": "Ohh-kay.",
+ "s190.sec51.u19": "Vademon veio para a cidade!",
+ "s190.sec51.u20": [
+  [
+   "M-mas esse cara... Ele sabe",
+   "falar!!"
+  ]
+ ]
+}

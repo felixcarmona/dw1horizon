@@ -1,0 +1,171 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Estàs bé, {color 10}{partner}{color 1}?"
+  ],
+  [
+   "Tornem enrere ara com ara..."
+  ]
+ ],
+ "s018.sec10.u1": [
+  [
+   "Ups! He de curar",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intrús confirmat..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intrús confirmat... Intrús",
+   "confirmat..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intrús confirmat... Intrús",
+   "confirmat... Preparant per a",
+   "obrir foc..."
+  ]
+ ],
+ "s018.sec68.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec68.u1": [
+  [
+   "Travessar aquest bosc de",
+   "punta a punta... Dec reconèixer",
+   "que ets admirable."
+  ],
+  [
+   "Sóc Centarumon. Permet-me",
+   "disculpar-me per la meva",
+   "descortesia fins ara. Ho sento."
+  ],
+  [
+   "No et vaig posar a prova per",
+   "capritx. A partir d'ara, penso",
+   "prestar-te la meva ajuda."
+  ]
+ ],
+ "s018.sec68.u2": [
+  [
+   "Ara, endavant. T'esperaré a la",
+   "ciutat."
+  ]
+ ],
+ "s018.sec68.u3": "Centarumon s'ha unit a la ciutat!",
+ "s018.sec68.u4": [
+  [
+   "{color 10}{partner}{color 1}, sembla que ens",
+   "estem fent bastant famosos, je,",
+   "je!"
+  ]
+ ],
+ "s018.sec68.u5": [
+  [
+   "Seguim així!"
+  ]
+ ],
+ "s018.sec68.u6": [
+  [
+   "Vas fallar!"
+  ]
+ ],
+ "s018.sec69.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec69.u1": [
+  [
+   "Travessar aquest bosc de",
+   "punta a punta... Dec reconèixer",
+   "que ets admirable."
+  ],
+  [
+   "Sóc Centarumon. Permet-me",
+   "disculpar-me per la meva",
+   "descortesia fins ara. Ho sento."
+  ],
+  [
+   "No et vaig posar a prova per",
+   "capritx. A partir d'ara, penso",
+   "prestar-te la meva ajuda."
+  ]
+ ],
+ "s018.sec69.u2": [
+  [
+   "Ara, endavant. T'esperaré a la",
+   "ciutat."
+  ]
+ ],
+ "s018.sec69.u3": "Centarumon s'ha unit a la ciutat!",
+ "s018.sec69.u4": [
+  [
+   "{color 10}{partner}{color 1}, sembla que ens",
+   "estem fent bastant famosos, je,",
+   "je!"
+  ]
+ ],
+ "s018.sec69.u5": [
+  [
+   "Seguim així!"
+  ]
+ ],
+ "s018.sec69.u6": [
+  [
+   "Vas fallar!"
+  ]
+ ],
+ "s018.sec70.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec70.u1": [
+  [
+   "Travessar aquest bosc de",
+   "punta a punta... Dec reconèixer",
+   "que ets admirable."
+  ],
+  [
+   "Sóc Centarumon. Permet-me",
+   "disculpar-me per la meva",
+   "descortesia fins ara. Ho sento."
+  ],
+  [
+   "No et vaig posar a prova per",
+   "capritx. A partir d'ara, penso",
+   "prestar-te la meva ajuda."
+  ]
+ ],
+ "s018.sec70.u2": [
+  [
+   "Ara, endavant. T'esperaré a la",
+   "ciutat."
+  ]
+ ],
+ "s018.sec70.u3": "Centarumon s'ha unit a la ciutat!",
+ "s018.sec70.u4": [
+  [
+   "{color 10}{partner}{color 1}, sembla que ens",
+   "estem fent bastant famosos, je,",
+   "je!"
+  ]
+ ],
+ "s018.sec70.u5": [
+  [
+   "Seguim així!"
+  ]
+ ],
+ "s018.sec70.u6": [
+  [
+   "Vas fallar!"
+  ]
+ ]
+}

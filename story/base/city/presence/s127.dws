@@ -1,0 +1,11 @@
+// Who stands on screen 127 (Great Canyon), and when. Read out of MAPHEAD.SCN section 127 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(127) {                              // Great Canyon
+            npc 155 slot 0 when trigger(181) and trigger(182) and not recruited(Shellmon);
+            npc Goblimon slot 1 autotalk;
+        }
+    }
+}

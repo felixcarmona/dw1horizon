@@ -1,0 +1,22 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(68) replace {    // section 68
+        set_script(65, 68);
+        engine.music_mode = 1;
+        set_bgm(10);
+        load_digimon(species("DarkLizardmon"));
+        set_digimon(species("DarkLizardmon"), 1, 1);
+        set_digimon(species("DarkLizardmon"), 2, 1);
+        set_digimon(species("DarkLizardmon"), 3, 1);
+        set_digimon(species("DarkLizardmon"), 4, 1);
+        set_digimon(species("DarkLizardmon"), 5, 1);
+        if (!underground_lab_tekkamon_beaten) {
+            load_digimon(species("Tekkamon"));
+            set_digimon(species("Tekkamon"), 0, 1);
+        }
+    }
+}

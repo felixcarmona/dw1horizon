@@ -1,0 +1,248 @@
+From 28f9a986e3e3289eb9c1ed4fc3bf5afc858920a4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 02:34:59 +0000
+Subject: [PATCH] Arena/VS win camera: one 22-entry spline table, explicit
+ target entity
+
+STD_startCameraIntro fills STD_D_8007B9EC[0..21] and STD_D_8007BA9C[0..21]
+and the tick reads 22 entries of each; the original relies on
+STD_D_8007B9FC/STD_D_8007BAAC following the 4-entry arrays. GCC orders the
+data the other way round, so the writes landed on STD_D_8007B9D0 (the
+camera target pointer) and STD_D_8007B9BC: winning an arena match hung
+(load from a garbage pointer in calculateBoneMatrix) or trapped. Make each
+pair one array with the tail aliased, as for TAMER_MODEL_BUFFER.
+
+STD_tickCameraIntro also read *(Entity **)&p[6], 12 bytes past the end of
+STD_D_8007B9BC, which is STD_D_8007B9D0.target in the original layout; read
+the field. VS_tickCameraIntro has the same code (VS_D_80071A18[0]).
+
+---
+ include/dw/std.h     |  4 ++--
+ include/dw/vs.h      |  4 ++--
+ src/std/std_bss_us.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ src/std/std_main.c   |  6 ++++++
+ src/vs/vs_bss_us.c   | 42 ++++++++++++++++++++++++++++++++++++++++++
+ src/vs/vs_camera.c   |  6 ++++++
+ 6 files changed, 100 insertions(+), 4 deletions(-)
+
+diff --git a/include/dw/std.h b/include/dw/std.h
+index bc92e1e..8a91177 100644
+--- a/include/dw/std.h
++++ b/include/dw/std.h
+@@ -72,10 +72,10 @@ extern GsCOORDINATE2Raw STD_ARENA_COORDS[];
+ extern GsDOBJ2 STD_ARENA_OBJECTS[];
+ extern int16_t STD_D_8007B9BC[];
+ extern StdUnkB9D0 STD_D_8007B9D0;
+-extern int32_t STD_D_8007B9EC[4];
++extern int32_t STD_D_8007B9EC[]; /* MOD: 22 entries with STD_D_8007B9FC (GCC build) */
+ extern int32_t STD_D_8007B9FC[];
+ extern int32_t STD_D_8007BA44[22];
+-extern int32_t STD_D_8007BA9C[4];
++extern int32_t STD_D_8007BA9C[]; /* MOD: 22 entries with STD_D_8007BAAC (GCC build) */
+ extern int32_t STD_D_8007BAAC[];
+ extern StdUnkBAF4 STD_BRACKET_SLOTS[8];
+ extern StdUnkBB64 STD_BRACKET_PROJECTILES[8];
+diff --git a/include/dw/vs.h b/include/dw/vs.h
+index aa5e9e2..c0cb41d 100644
+--- a/include/dw/vs.h
++++ b/include/dw/vs.h
+@@ -144,10 +144,10 @@ extern GsCOORDINATE2Raw VS_ARENA_COORDS[];
+ extern GsDOBJ2 VS_ARENA_OBJECTS[];
+ extern int16_t VS_D_80071A0C[];
+ extern Entity *VS_D_80071A18[];
+-extern int32_t VS_D_80071A30[4];
++extern int32_t VS_D_80071A30[]; /* MOD: 22 entries with VS_D_80071A40 (GCC build) */
+ extern int32_t VS_D_80071A40[];
+ extern int32_t VS_D_80071A88[22];
+-extern int32_t VS_D_80071AE0[4];
++extern int32_t VS_D_80071AE0[]; /* MOD: 22 entries with VS_D_80071AF0 (GCC build) */
+ extern int32_t VS_D_80071AF0[];
+ extern uint8_t VS_BATTLE_START_TEXT_PIECES[155][20];
+ extern PositionDataRaw VS_VERSUS_MODEL_OBJECTS[4];
+diff --git a/src/std/std_bss_us.c b/src/std/std_bss_us.c
+index c873d63..5480f11 100644
+--- a/src/std/std_bss_us.c
++++ b/src/std/std_bss_us.c
+@@ -261,6 +261,7 @@ StdUnkB9D0 STD_D_8007B9D0 = {
+ 	},
+ };
+ 
++#ifdef __MWERKS__
+ int32_t STD_D_8007B9EC[4] = {
+ 	0x00008782, 0x00190000, 0x00001c40, 0x00000000,
+ };
+@@ -272,6 +273,26 @@ int32_t STD_D_8007B9FC[18] = {
+ 	0x000024a5, 0x20210c00, 0x00000000, 0x00000c00,
+ 	0x00000000, 0x0000a780,
+ };
++#else
++/*
++ * MOD: the camera code uses STD_D_8007B9EC as one 22-entry spline table
++ * (processSomeArenaArrays/initializeSomeArenaArrays with count 0x16 and
++ * STD_D_8007B9EC[i] for i up to 21); the original relies on STD_D_8007B9FC coming
++ * right after it. GCC orders the data differently, so make it one array
++ * and alias the tail.
++ */
++int32_t STD_D_8007B9EC[4 + 18] = {
++	0x00008782, 0x00190000, 0x00001c40, 0x00000000,
++	0x00000c00, 0x00000000, 0x00010c00, 0x00002404,
++	0x00010c00, 0x00002404, 0x00003c04, 0x00003c05,
++	0x00008786, 0x00008787, 0x00002484, 0x00000c00,
++	0x000024a5, 0x20210c00, 0x00000000, 0x00000c00,
++	0x00000000, 0x0000a780,
++};
++extern int32_t STD_D_8007B9FC[];
++__asm__(".globl STD_D_8007B9FC\n"
++	"\t.set STD_D_8007B9FC, STD_D_8007B9EC + 16");
++#endif
+ 
+ int32_t STD_D_8007BA44[22] = {
+ 	0x0faba380, 0x00002404, 0x28210c00, 0x00010200,
+@@ -282,6 +303,7 @@ int32_t STD_D_8007BA44[22] = {
+ 	0x00000043, 0x00008c42,
+ };
+ 
++#ifdef __MWERKS__
+ int32_t STD_D_8007BA9C[4] = {
+ 	0x00080000, 0x00000040, 0x00000000, 0x00080c00,
+ };
+@@ -293,6 +315,26 @@ int32_t STD_D_8007BAAC[18] = {
+ 	0x00090c00, 0x00012405, 0x00002404, 0x0000a780,
+ 	0x0000a384, 0x00000c00,
+ };
++#else
++/*
++ * MOD: the camera code uses STD_D_8007BA9C as one 22-entry spline table
++ * (processSomeArenaArrays/initializeSomeArenaArrays with count 0x16 and
++ * STD_D_8007BA9C[i] for i up to 21); the original relies on STD_D_8007BAAC coming
++ * right after it. GCC orders the data differently, so make it one array
++ * and alias the tail.
++ */
++int32_t STD_D_8007BA9C[4 + 18] = {
++	0x00080000, 0x00000040, 0x00000000, 0x00080c00,
++	0x00002404, 0x000a0c00, 0x00002404, 0x00003c04,
++	0x00002484, 0x00020c00, 0x00002405, 0x00003c04,
++	0x00002484, 0x000a0c00, 0x00082405, 0x00002404,
++	0x00090c00, 0x00012405, 0x00002404, 0x0000a780,
++	0x0000a384, 0x00000c00,
++};
++extern int32_t STD_D_8007BAAC[];
++__asm__(".globl STD_D_8007BAAC\n"
++	"\t.set STD_D_8007BAAC, STD_D_8007BA9C + 16");
++#endif
+ 
+ StdUnkBAF4 STD_BRACKET_SLOTS[8] = {
+ 	{
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index ba27a92..853a439 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -2515,7 +2515,13 @@ void STD_tickCameraIntro(void)
+ 	rot = MAIN_D_80134840;
+ 	rot.vy = STD_D_8007B9BC[7];
+ 	STD_D_8007B9BC[8] = processSomeArenaArrays(0x16, p[0], STD_D_8007A41C, STD_D_8007B9EC, STD_D_8007BA44);
++#ifdef __MWERKS__
+ 	STD_setViewpointFromBone(*(Entity **)&p[6], &off, &rot, STD_D_8007B9BC[8]);
++#else
++	/* MOD: p[6] is 12 bytes past the end of STD_D_8007B9BC: the original reads
++	 * STD_D_8007B9D0.target, which follows it there; GCC places other data next. */
++	STD_setViewpointFromBone(STD_D_8007B9D0.target, &off, &rot, STD_D_8007B9BC[8]);
++#endif
+ 	GS_VIEWPOINT.vry = (-DIGIMON_DATA[STD_D_8007B9D0.target->type].height * 2) / 3;
+ 	GS_VIEWPOINT.vpy = -processSomeArenaArrays(0x16, p[0], STD_D_8007A41C, STD_D_8007BA9C, STD_D_8007BA44);
+ 	p[0]++;
+diff --git a/src/vs/vs_bss_us.c b/src/vs/vs_bss_us.c
+index 16b21c6..0d652ca 100644
+--- a/src/vs/vs_bss_us.c
++++ b/src/vs/vs_bss_us.c
+@@ -245,6 +245,7 @@ Entity *VS_D_80071A18[6] = {
+ 	(Entity *)0x000016d7,
+ };
+ 
++#ifdef __MWERKS__
+ int32_t VS_D_80071A30[4] = {
+ 	0x4f6e0038, 0x6e656666, 0x55006573, 0x23000600,
+ };
+@@ -256,6 +257,26 @@ int32_t VS_D_80071A40[18] = {
+ 	0x000d0000, 0x171f0012, 0x00380000, 0x6f72576e,
+ 	0x5500676e, 0x23000600,
+ };
++#else
++/*
++ * MOD: the camera code uses VS_D_80071A30 as one 22-entry spline table
++ * (processSomeArenaArrays/initializeSomeArenaArrays with count 0x16 and
++ * VS_D_80071A30[i] for i up to 21); the original relies on VS_D_80071A40 coming
++ * right after it. GCC orders the data differently, so make it one array
++ * and alias the tail.
++ */
++int32_t VS_D_80071A30[4 + 18] = {
++	0x4f6e0038, 0x6e656666, 0x55006573, 0x23000600,
++	0x04000600, 0x00000640, 0x00002507, 0x12000d00,
++	0x0016fc00, 0x6e003800, 0x65666544, 0x0065736e,
++	0x00060055, 0x00060023, 0x00064204, 0x00230700,
++	0x000d0000, 0x171f0012, 0x00380000, 0x6f72576e,
++	0x5500676e, 0x23000600,
++};
++extern int32_t VS_D_80071A40[];
++__asm__(".globl VS_D_80071A40\n"
++	"\t.set VS_D_80071A40, VS_D_80071A30 + 16");
++#endif
+ 
+ int32_t VS_D_80071A88[22] = {
+ 	0x04000600, 0x00000644, 0x00002407, 0x12000d00,
+@@ -266,6 +287,7 @@ int32_t VS_D_80071A88[22] = {
+ 	0x0d000000, 0x88001200,
+ };
+ 
++#ifdef __MWERKS__
+ int32_t VS_D_80071AE0[4] = {
+ 	0x38000017, 0x6d697400, 0x00720065, 0x000014d2,
+ };
+@@ -277,6 +299,26 @@ int32_t VS_D_80071AF0[18] = {
+ 	0x00260700, 0x000d0000, 0x17d60012, 0x00380000,
+ 	0x7478656e, 0x00646d43,
+ };
++#else
++/*
++ * MOD: the camera code uses VS_D_80071AE0 as one 22-entry spline table
++ * (processSomeArenaArrays/initializeSomeArenaArrays with count 0x16 and
++ * VS_D_80071AE0[i] for i up to 21); the original relies on VS_D_80071AF0 coming
++ * right after it. GCC orders the data differently, so make it one array
++ * and alias the tail.
++ */
++int32_t VS_D_80071AE0[4 + 18] = {
++	0x38000017, 0x6d697400, 0x00720065, 0x000014d2,
++	0x00060023, 0x00064a04, 0x00280700, 0x000d0000,
++	0x17b00012, 0x00380000, 0x79616c70, 0x6d437265,
++	0x00720064, 0x000014f2, 0x00060023, 0x00064e04,
++	0x00260700, 0x000d0000, 0x17d60012, 0x00380000,
++	0x7478656e, 0x00646d43,
++};
++extern int32_t VS_D_80071AF0[];
++__asm__(".globl VS_D_80071AF0\n"
++	"\t.set VS_D_80071AF0, VS_D_80071AE0 + 16");
++#endif
+ 
+ uint8_t VS_BATTLE_START_TEXT_PIECES[155][20] = {
+ 	{
+diff --git a/src/vs/vs_camera.c b/src/vs/vs_camera.c
+index 94a89df..7fc14f6 100644
+--- a/src/vs/vs_camera.c
++++ b/src/vs/vs_camera.c
+@@ -651,7 +651,13 @@ void VS_tickCameraIntro(void)
+ 	rot = MAIN_D_80134A8C;
+ 	rot.vy = VS_D_80071A0C[1];
+ 	VS_D_80071A0C[2] = processSomeArenaArrays(0x16, p[0], VS_D_800706C8, VS_D_80071A30, VS_D_80071A88);
++#ifdef __MWERKS__
+ 	VS_setViewpointFromBone(*(Entity **)&p[6], &off, &rot, VS_D_80071A0C[2]);
++#else
++	/* MOD: p[6] is the word right after VS_D_80071A0C[6]: the original reads
++	 * VS_D_80071A18[0], which follows it there; GCC places other data next. */
++	VS_setViewpointFromBone(VS_D_80071A18[0], &off, &rot, VS_D_80071A0C[2]);
++#endif
+ 	GS_VIEWPOINT.vry = (-DIGIMON_DATA[VS_D_80071A18[0]->type].height * 2) / 3;
+ 	GS_VIEWPOINT.vpy = -processSomeArenaArrays(0x16, p[0], VS_D_800706C8, VS_D_80071AE0, VS_D_80071A88);
+ 	p[0]++;
+-- 
+2.53.0
+

@@ -1,0 +1,118 @@
+{
+  "screen": 314,
+  "art": "root-clearing",
+  "review": "Only the raised path root overlaps reachable bodies. Fallen trunk, uprooted stump, boulders, bushes and loose slab rubble already have solid footprints with no rear approach. Pale carved slabs form the walkable road and stay background.",
+  "pieces": [
+    {
+      "name": "path-root",
+      "png": "314-path-root.png",
+      "at": [
+        322,
+        299
+      ],
+      "depth": null
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        47,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        47,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        48,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        47,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        48,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        47,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        48,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        47,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        48,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    },
+    {
+      "tile": [
+        46,
+        54
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Root tip meets the ground here; the raised branch above it is foreground, but the wood contact is not standing floor."
+    },
+    {
+      "tile": [
+        48,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Moss and flat circuit fragments between the raised roots and the walkable slab; the root foreground provides the missing depth. The rooted wood contact and stump stay blocked."
+    }
+  ],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/314.json."
+}

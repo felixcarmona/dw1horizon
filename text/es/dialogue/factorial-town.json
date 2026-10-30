@@ -1,0 +1,318 @@
+{
+ "s146.sec5.u0": "Identifíquese.",
+ "s146.sec6.u0": "Declare el motivo de su visita.",
+ "s146.sec7.u0": "Nos tomaremos ahora un breve descanso.",
+ "s146.sec8.u0": "¿Cómorrr?",
+ "s146.sec81.m0.o0": "Volver",
+ "s146.sec81.m0.o1": "No volver",
+ "s146.sec81.u0": "¿Vuelve usted a la ciudad?",
+ "s147.sec5.u0": "Usted. ¿Adónde se dirige?",
+ "s147.sec6.u0": "¡Alto!",
+ "s147.sec7.u0": "¡Gupiiii!",
+ "s147.sec8.u0": "Doijiefi.",
+ "s147.sec9.m0.o0": "¡Acepto!",
+ "s147.sec9.m0.o1": "Lo siento. Luego",
+ "s147.sec9.u0": [
+  [
+   "¡Mmm, tú, el de ahí!"
+  ],
+  [
+   "¡Soy MetalMamemon, invicto en 99 combates!",
+   "¡Vencerte será mi victoria número 100!"
+  ],
+  [
+   "¿No irá a huir el gran {color 6}{player}{color 1},",
+   "verdad?"
+  ]
+ ],
+ "s147.sec9.u1": [
+  [
+   "Mmm... ¡Eres mejor de lo que pensaba!"
+  ],
+  [
+   "Lo he decidido. ¡Te reconozco como mi rival!"
+  ],
+  [
+   "¡Algún día te ganaré, ya verás!"
+  ]
+ ],
+ "s147.sec9.u2": "¡MetalMamemon se ha unido a la ciudad!",
+ "s147.sec9.u3": "¡Fua, ja, ja, ya me lo imaginaba! Nos veremos cuando me apetezca.",
+ "s148.sec5.u0": "¡Intruso detectado!",
+ "s148.sec6.u0": "Nos sentimos fatigados, ¿sabes?",
+ "s148.sec7.u0": "¡Jo, jo, jo, haz lo que mejor te parezca!",
+ "s148.sec8.u0": "Hagajogo.",
+ "s148.sec9.u0": "¡Prohibido el paso a partir de este punto!",
+ "s148.sec10.u0": "Usted. ¿Quién es?",
+ "s149.sec5.u0": "Bopi bopi puuuuh.",
+ "s149.sec6.u0": "¡Geba, geba!",
+ "s149.sec7.u0": "¿Buhio?",
+ "s149.sec8.u0": "¡Nos sentimos muy complacidos!",
+ "s149.sec9.u0": "También esto es nuestro deber, ¿sabes?",
+ "s149.sec10.u0": "Qué alboroto. ¿Qué es todo esto?",
+ "s149.sec11.m0.o0": "Eh, cambio de turno",
+ "s149.sec11.m0.o1": "¡Déjame pasar o verás!",
+ "s149.sec11.m0.o2": "Ah, nada",
+ "s149.sec11.m1.o0": "Olvídalo",
+ "s149.sec11.m1.o1": "¿Cuándo es el cambio de turno?",
+ "s149.sec11.m2.o0": "Tengo permiso, en realidad",
+ "s149.sec11.m2.o1": "¡Me doy permiso a mí mismo!",
+ "s149.sec11.u0": "No puede pasar por aquí.",
+ "s149.sec11.u1": "......",
+ "s149.sec11.u2": [
+  [
+   "¡Hala, nos está mirando fijamente! ¿Sospecha",
+   "algo?"
+  ],
+  [
+   "Volvamos más tarde... Será mejor esperar",
+   "en algún sitio donde no nos vean."
+  ],
+  [
+   "Era a las 0:00 y a las 12:00, ¿no?"
+  ]
+ ],
+ "s149.sec11.u3": "Esta fábrica tiene que estar echando residuos o algo así a las alcantarillas. Hay que comprobarlo.",
+ "s149.sec11.u4": "Esto... ¿podrías apartarte?",
+ "s149.sec11.u5": "No puede pasar sin el permiso del responsable.",
+ "s149.sec11.u6": "Pero es que tengo prisa.",
+ "s149.sec11.u7": "Denegado. Obtenga un permiso, por favor.",
+ "s149.sec11.u8": "Uf... no queda otra.",
+ "s149.sec11.u9": "¿Y ahora qué hacemos...?",
+ "s149.sec11.u10": "No es la hora del cambio de turno.",
+ "s149.sec11.u11": "Denegado. Los horarios deben cumplirse estrictamente.",
+ "s149.sec11.u12": "Los cambios de turno son a las 0:00 y a las 12:00.",
+ "s149.sec11.u13": "Ah, ¿sí? ¡Entendido!",
+ "s149.sec11.u14": "Las amenazas no funcionarán. Obtenga un permiso, por favor.",
+ "s149.sec11.u15": "Autorización fallida. Obtenga un permiso como es debido, por favor.",
+ "s149.sec11.u16": "¡Uf, qué estrictos!",
+ "s149.sec11.u17": "Oye, ¿no es la hora del cambio de turno?",
+ "s149.sec11.u18": "......",
+ "s149.sec11.u19": [
+  [
+   "¡Hala, nos está mirando fijamente! Con",
+   "nosotros aquí no van a cambiar el turno."
+  ],
+  [
+   "Volvamos más tarde... Será mejor esperar",
+   "en algún sitio donde no nos vean."
+  ]
+ ],
+ "s149.sec12.u0": "No puede pasar por aquí.",
+ "s149.sec254.u0": "¡Eh, los guardias se han ido!",
+ "s151.sec5.u0": "Aquí todo está en orden. Siga esforzándose, por favor.",
+ "s151.sec5.u1": "Yo también debo ayudar. Cuando el tiempo lo permita, viajaré entre este lugar y la ciudad.",
+ "s151.sec5.u2": "¡Andromon se ha unido a la ciudad!",
+ "s151.sec5.u3": "La reparación de los datos ha concluido. Procedamos a leerlos.",
+ "s151.sec5.u4": "Adelante.",
+ "s151.sec5.u5": [
+  [
+   "Hace 100 años: aparecen humanos analógicos",
+   "en la isla de los Digimon."
+  ],
+  [
+   "Se enfrentan con ferocidad a los Digimon",
+   "nativos."
+  ],
+  [
+   "Tras 10 años de lucha, los humanos",
+   "analógicos caen y desaparecen sin rastro."
+  ],
+  [
+   "En los 10 años siguientes, la isla crece hasta",
+   "casi el doble de su tamaño. Causa desconocida."
+  ]
+ ],
+ "s151.sec5.u6": "Los humanos... lucharon contra los Digimon...",
+ "s151.sec5.u7": "Esos son todos los datos que he podido reparar. Lo lamento.",
+ "s151.sec5.u8": "No, es una información muy valiosa. Explica muchas cosas.",
+ "s151.sec5.u9": "¿Ah, sí?",
+ "s151.sec5.u10": "Seguramente quien ha sumido la isla en el caos es ese humano desaparecido.",
+ "s151.sec5.u11": "¿Pueden los humanos vivir 100 años?",
+ "s151.sec5.u12": [
+  [
+   "Bueno, parece que en este mundo el tiempo",
+   "pasa muy despacio solo para los humanos."
+  ],
+  [
+   "Por eso estoy bien sin comer ni dormir."
+  ],
+  [
+   "Aun así, 100 años es mucho. Tiene que ser",
+   "un tipo duro de pelar."
+  ]
+ ],
+ "s151.sec5.u13": "¿Estará escondido en algún sitio?",
+ "s151.sec5.u14": [
+  [
+   "Lo encontraré... y haré algo",
+   "con él."
+  ],
+  [
+   "Ahora lo entiendo. Me trajeron",
+   "aquí para derrotarlo, porque",
+   "yo también soy humano."
+  ]
+ ],
+ "s151.sec5.u15": "...Le pedimos sinceras disculpas por lo ocurrido. La fábrica permanecerá cerrada una temporada.",
+ "s151.sec5.u16": "Con la isla tan rara, nadie puede saber lo que va a pasar. No es culpa vuestra.",
+ "s151.sec5.u17": [
+  [
+   "Creo que alguien, en algún",
+   "sitio, controlaba a Giromon."
+  ],
+  [
+   "El ordenador se estropea... y",
+   "salen residuos que vuelven",
+   "locos a los Digimon."
+  ],
+  [
+   "No creo que sea una",
+   "casualidad."
+  ]
+ ],
+ "s151.sec5.u18": [
+  [
+   "El ordenador de aquí es de gran importancia.",
+   "Cabe suponer que alguien lo tenía en el punto",
+   "de mira."
+  ],
+  [
+   "Aunque ya es tarde para decirlo..."
+  ]
+ ],
+ "s151.sec5.u19": "¿Qué has dicho?",
+ "s151.sec5.u20": [
+  [
+   "Al parecer, aquí se guardaban datos sobre",
+   "el pasado de la isla."
+  ],
+  [
+   "Pero el arrebato de Giromon los ha dañado."
+  ]
+ ],
+ "s151.sec5.u21": "¿No has visto esos datos?",
+ "s151.sec5.u22": [
+  [
+   "Por desgracia, no. Sin embargo, parte de",
+   "los datos parece reparable."
+  ],
+  [
+   "Intentaré reconstruirlos."
+  ]
+ ],
+ "s151.sec5.u23": "Vale, hazlo, por favor. ¿Cuánto tardarás?",
+ "s151.sec5.u24": "Todavía un tiempo... Levantaré el cierre de la entrada principal del pueblo, así que vuelva más tarde, por favor.",
+ "s151.sec5.u25": "Gracias. Entonces volveré.",
+ "s151.sec5.u26": "¿Ya has reparado los datos?",
+ "s151.sec5.u27": "Tardaré un poco más. Vuelva más tarde, por favor.",
+ "s151.sec5.u28": "Entonces volveré.",
+ "s151.sec5.u29": "¡Holaaa!",
+ "s151.sec5.u30": "...Es usted. Debo pedirle disculpas.",
+ "s151.sec5.u31": "¡Uf, eso para luego! ¡Para las máquinas de la fábrica, rápido!",
+ "s151.sec5.u32": "Sí. Entendido.",
+ "s151.sec5.u33": "Las funciones de la fábrica han sido detenidas.",
+ "s151.sec5.u34": "Vale, voy a revisar las alcantarillas. ¡Hasta luego!",
+ "s151.sec5.u35": "Debo pedirle disculpas...",
+ "s151.sec5.u36": "¡Uy, no, ahora no hay tiempo para eso!",
+ "s151.sec5.u37": "Nuestro ordenador es infalible.",
+ "s151.sec5.u38": "¿De verdad la fábrica está bien? Esto pinta mal...",
+ "s151.sec5.u39": "Vale, entonces tendremos que encargarnos de los guardias. ¡No hay otra pista!",
+ "s151.sec5.u40": "Oh... usted es... ¿Cómo ha entrado en este pueblo?",
+ "s151.sec5.u41": "Si no tiene nada que hacer aquí, márchese de inmediato, por favor.",
+ "s151.sec5.u42": [
+  [
+   "Esto... eso ahora da igual. Quiero",
+   "inspeccionar la fábrica."
+  ],
+  [
+   "Es cuestión de vida o muerte. ¡Dame",
+   "permiso!"
+  ]
+ ],
+ "s151.sec5.u43": "¿Mmm...? No comprendo sus intenciones. Permiso denegado.",
+ "s151.sec5.u44": "Hay Digimon que se están muriendo por los residuos que salen de la fábrica.",
+ "s151.sec5.u45": [
+  [
+   "...¿? ¿De la fábrica? Debe de ser un error."
+  ],
+  [
+   "El sistema de tratamiento de residuos opera",
+   "con normalidad."
+  ]
+ ],
+ "s151.sec5.u46": "¡No puedes saber si es normal sin mirarlo!",
+ "s151.sec5.u47": [
+  [
+   "Nuestro ordenador es infalible."
+  ],
+  [
+   "Si algo fallara, el «Guardián de la Red»",
+   "intervendría y lo apagaría."
+  ]
+ ],
+ "s151.sec5.u48": "¿Qué es eso? ¿Y no se puede estropear?",
+ "s151.sec5.u49": [
+  [
+   "«Guardián de la Red» es el otro nombre de",
+   "Giromon, un Digimon perfecto."
+  ],
+  [
+   "Su criterio y su capacidad son infalibles."
+  ]
+ ],
+ "s151.sec5.u50": "¿¡Un Digimon!? ¡Pues ahora mismo eso es todavía más peligroso! ¡Por favor, dame permiso!",
+ "s151.sec5.u51": "...... Márchese, por favor.",
+ "s151.sec5.u52": "Uf...",
+ "s152.sec5.u0": "Ñam, ñam.",
+ "s152.sec6.u0": "Fuojajiii.",
+ "s152.sec7.u0": "¿Necesita algo de mí?",
+ "s152.sec8.u0": "¡No se mueva!",
+ "s152.sec9.u0": "¡Alto! ¡He dicho alto!",
+ "s152.sec10.u0": "Le atenderé más tarde.",
+ "s153.sec5.u0": "¡Bzzt! ¡Te estaba esperando, colega!",
+ "s153.sec5.u1": "Mmm, ¿ya has vuelto en ti?",
+ "s153.sec5.u2": "¡Guajaja! Parece que se me fue un poco la olla, ¿eh?",
+ "s153.sec5.u3": "Oye, que no es para tomárselo a broma...",
+ "s153.sec5.u4": "La fábrica está cerrada, así que no tengo nada que hacer. ¡Te voy a echar una mano, je-je-ji!",
+ "s153.sec5.u5": "Ni con la cabeza en su sitio cambia mucho...",
+ "s153.sec5.u6": "¡Me piro, bzzzzt!",
+ "s153.sec5.u7": "¡Giromon se ha unido a la ciudad!",
+ "s154.sec51.u0": "¡Aquí hay alguien! ¿¡Quién anda ahí!?",
+ "s154.sec51.u1": "¡Je-je-ji! ¡Rompo el ordenador malo! ¡Ji, ji, ji, ji!",
+ "s154.sec51.u2": "Así que es este... ¡Eh! ¿¡Qué estás haciendo!?",
+ "s154.sec51.u3": "¡Je-ji! ¡Rompe! ¡Rómpelo todo! ¡Rompe lo malo!",
+ "s154.sec51.u4": "Uf... se le ha ido la cabeza del todo. Es un Perfecto, pero... ¡tenemos que pararlo!",
+ "s154.sec51.u5": "¡Ji, ji, ji! ¡Rompe! ¡Os rompo a todos!",
+ "s154.sec51.u6": "Bzzzt, bzzz... me estoy... que...dando... sin fuerzas...",
+ "s154.sec51.u7": [
+  [
+   "Oh... parece que se está quedando sin fuerzas."
+  ],
+  [
+   "¡Ah, claro! ¡Tengo que avisar a Andromon",
+   "para que pare los residuos!"
+  ]
+ ],
+ "s155.sec5.u0": "¡Es-pe-re-un-mo-men-to!",
+ "s155.sec6.u0": "¡No os dejaremos pasar!",
+ "s155.sec7.u0": "Usted. ¿Qué hace ahí?",
+ "s155.sec8.u0": "¡Gapiooo!",
+ "s155.sec9.u0": "¡¡Geba, gebaaa!!",
+ "s155.sec10.u0": "¿Zuposhi?",
+ "s156.sec5.m0.o0": "Adelante",
+ "s156.sec5.m0.o1": "¡Mejor no!",
+ "s156.sec5.u0": "Iniciando remodelación. El precio es de 2000 Bits.",
+ "s156.sec5.u1": "Modelo incompatible. No se puede remodelar.",
+ "s156.sec5.u2": "Fondos insuficientes.",
+ "s156.sec5.u3": "Espere un momento, por favor.",
+ "s156.sec5.u4": "Operación fallida. Sin embargo...",
+ "s156.sec5.u5": "¡Hala, se ha convertido en Giromon!",
+ "s156.sec5.u6": "¡Operación completada con éxito!",
+ "s156.sec5.u7": "¡Hala, se ha convertido en MetalMamemon!",
+ "s156.sec5.u8": "Operación fallida...",
+ "s156.sec5.u9": "¡Q-qué desastre!",
+ "s156.sec5.u10": "Disculpe...",
+ "s156.sec6.u0": "Objetivo capturado. ¡Eliminar!",
+ "s156.sec7.u0": "Objetivo principal: destruir la máquina enemiga."
+}

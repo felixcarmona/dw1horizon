@@ -1,0 +1,17 @@
+{
+  "id": 38,
+  "name": "Danger Sting",
+  "element": "nature",
+  "power": 157,
+  "mpCost": 34,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 70,
+  "status": 4,
+  "statusChance": 26,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [27, 20, 15]
+}

@@ -1,0 +1,94 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M382ARMG",
+ "type": 407,
+ "name": "Armagemon",
+ "source": {
+  "type": 47,
+  "mmd": "extracted/CHDAT/MMD1/MONO.MMD"
+ },
+ "map": {
+  "1": 6,
+  "2": 4,
+  "5": 15
+ },
+ "hips": [
+  1,
+  1,
+  0.875
+ ],
+ "root_scale": 0.875,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x39": {
+   "anim": "anim_12",
+   "start": 46,
+   "end": 140,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 227
+  },
+  "0x35": {
+   "anim": "anim_14",
+   "start": 78,
+   "end": 170,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 227
+  },
+  "0x2a": {
+   "anim": "anim_14",
+   "start": 90,
+   "end": 170,
+   "hz": 0.3,
+   "rise": 227
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "meshfix": {
+  "kappa": 3.0,
+  "kmove": 3.0,
+  "quad_angle": 40.0
+ },
+ "scale": 0.060418,
+ "hub_roots": true,
+ "quad_angle": 40.0
+}

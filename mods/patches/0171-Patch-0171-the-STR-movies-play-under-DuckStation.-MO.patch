@@ -1,0 +1,52 @@
+From 11cfdcacc4ebaed0ba0a4a74ac3fdc381f3f727b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 16:49:29 +0000
+Subject: [PATCH] Patch 0171: the STR movies play under DuckStation.
+ MOV_waitForFlip polls flipPending (set by the MDEC callback) through
+ volatile: GCC read it once and dropped the timeout loop, so the player
+ flipped before a frame was decoded and the stream never delivered
+
+---
+ src/mov/mov.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/src/mov/mov.c b/src/mov/mov.c
+index 690af2b1..8b79476f 100644
+--- a/src/mov/mov.c
++++ b/src/mov/mov.c
+@@ -135,22 +135,23 @@ int32_t MOV_decodeFrame(MovieEnv *env, MovieEntry *movie)
+ 
+ void MOV_waitForFlip(MovieEnv *env, int32_t unused)
+ {
+-	uint32_t timeout;
++	/* flipPending is set by MOV_onSliceDecoded, the MDEC callback: without volatile GCC read it once and
++	   dropped the timeout loop, so the movie flipped before the frame was decoded (the hang under DuckStation) */
++	volatile MovieEnv *venv = env;
++	volatile uint32_t timeout;
+ 
+ 	timeout = 0x800000;
+-	/* Force variable onto the stack */
+-	(void)&timeout;
+ 
+-	while (env->flipPending == 0) {
++	while (venv->flipPending == 0) {
+ 		if (--timeout == 0) {
+-			env->flipPending = 1;
+-			env->frameIndex = (env->frameIndex != 0) ? 0 : 1;
+-			env->slice.x = env->frame[env->frameIndex].x;
+-			env->slice.y = env->frame[env->frameIndex].y;
++			venv->flipPending = 1;
++			venv->frameIndex = (venv->frameIndex != 0) ? 0 : 1;
++			venv->slice.x = venv->frame[venv->frameIndex].x;
++			venv->slice.y = venv->frame[venv->frameIndex].y;
+ 		}
+ 	}
+ 
+-	env->flipPending = 0;
++	venv->flipPending = 0;
+ }
+ 
+ u_long *MOV_readFrame(MovieEnv *env, MovieEntry *movie)
+-- 
+2.53.0
+

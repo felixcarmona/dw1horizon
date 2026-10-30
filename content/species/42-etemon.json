@@ -1,0 +1,53 @@
+{
+  "id": 42,
+  "name": "Etemon",
+  "level": "ultimate",
+  "vanilla": true,
+  "attribute": "virus",
+  "specialties": ["battle", "air", "filth"],
+  "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
+                 "Muscle Charge", "Megalo Spark", "Spinning Shot", "Thunder Justice",
+                 "Horizontal Kick (55)", "Ult Poop Hell", "Dark Network & Concert Crush"],
+  "drop": {"item": "Omni Disk", "percent": 30},
+  "model": {"name": "ETEM", "bones": 27, "radius": 130, "height": 265},
+  "voice": 38,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 12,
+    "hunger_hours": [2, 6, 10, 14, 18, 22],
+    "energy_max": 80,
+    "energy_fed": 40,
+    "energy_per_hour": 10,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Orange bana",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 5,
+    "training_type": "offense-speed",
+    "birth_weight": 20,
+    "status_screen_position": [500, 230, -1870],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 15}
+  },
+  "evolution": {
+    "from": [-1, -1, 39, -1, -1],
+    "to": [-1, -1, 65, -1, -1, -1],
+    "requirements": {
+      "digimon": -1,
+      "hp": 200,
+      "mp": 300,
+      "offense": 400,
+      "defense": 200,
+      "speed": 400,
+      "brain": 300,
+      "care": 0,
+      "weight": 15,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": 50,
+      "techs": 49,
+      "flags": 16
+    },
+    "gains": {"hp": 4000, "mp": 5000, "offense": 600, "defense": 400, "speed": 600, "brains": 500}
+  }
+}

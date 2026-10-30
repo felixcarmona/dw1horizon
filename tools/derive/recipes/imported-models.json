@@ -1,0 +1,5 @@
+{
+ "name": "imported-models",
+ "about": "Import and SHA-256 verification only; use --steps imports. No disc image is assembled.",
+ "environment": {"SPECIES_PROVIDER": "imports"}
+}

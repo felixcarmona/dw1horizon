@@ -1,0 +1,433 @@
+{
+ "s022.sec5.u0": [
+  [
+   "Mon aile..."
+  ]
+ ],
+ "s022.sec5.u1": [
+  [
+   "Qu'est-ce qui ne va pas ?"
+  ]
+ ],
+ "s022.sec5.u2": [
+  [
+   "Je me suis... blessé à",
+   "l'aile... Tu aurais de quoi",
+   "soigner une blessure ?"
+  ]
+ ],
+ "s022.sec5.u3": [
+  [
+   "Ça a l'air grave... ! Attends.",
+   "Voyons..."
+  ]
+ ],
+ "s022.sec5.u4": [
+  [
+   "Ah, C'est vrai. Je n'ai plus",
+   "rien..."
+  ]
+ ],
+ "s022.sec5.u5": [
+  [
+   "Non, ça ne va pas. Pas avec",
+   "ça."
+  ]
+ ],
+ "s022.sec5.u6": [
+  [
+   "Ouf... Ça va bien mieux. Merci."
+  ]
+ ],
+ "s022.sec5.u7": [
+  [
+   "Tu peux voler, maintenant ?"
+  ]
+ ],
+ "s022.sec5.u8": [
+  [
+   "...Pas loin, je crois..."
+  ]
+ ],
+ "s022.sec5.u9": [
+  [
+   "Je vois... Oh, je sais ! Il y a",
+   "une clinique en ville. Fais-toi",
+   "examiner là-bas. Ce n'est pas"
+  ],
+  [
+   "loin."
+  ]
+ ],
+ "s022.sec5.u10": [
+  [
+   "Remarquable. J'avais entendu",
+   "parler de la ville, mais",
+   "j'ignorais qu'elle avait autant"
+  ],
+  [
+   "grandi."
+  ]
+ ],
+ "s022.sec5.u11": [
+  [
+   "Hé hé. Repose-toi",
+   "tranquillement en ville."
+  ]
+ ],
+ "s022.sec5.u12": [
+  [
+   "Désolé pour le dérangement...",
+   "Je te revaudrai cette bonté,",
+   "promis."
+  ]
+ ],
+ "s022.sec5.u13": "Unimon a rejoint la ville !",
+ "s022.sec5.u14": [
+  [
+   "Quelque chose pour guérir une",
+   "blessure... Très bien. Je vais",
+   "te chercher quelque chose."
+  ]
+ ],
+ "s022.sec5.u15": [
+  [
+   "Désolé... Dépêche-toi, s'il te",
+   "plaît..."
+  ]
+ ],
+ "s022.sec51.u0": [
+  [
+   "Des motifs étranges sont",
+   "tracés au sol..."
+  ]
+ ],
+ "s022.sec51.u1": [
+  [
+   "Un de ces cercles de culture ?",
+   "Ça n'a pas l'air très ancien."
+  ]
+ ],
+ "s022.sec51.u2": [
+  [
+   "Il y en a plus que la dernière",
+   "fois ! Ça aurait un rapport",
+   "avec cet ovni dont tout le"
+  ],
+  [
+   "monde parle... ?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Ouah ?! Il y en a encore plus",
+   "! BEAUCOUP plus ! Cette",
+   "fois, ça y est..."
+  ]
+ ],
+ "s022.sec51.u4": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s022.sec51.u5": [
+  [
+   "L'ovni de Vademon apparaît !"
+  ]
+ ],
+ "s022.sec51.u6": [
+  [
+   "U-un extraterrestre ?!"
+  ]
+ ],
+ "s022.sec51.u7": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u8": [
+  [
+   "Tu es... un Digimon... ?"
+  ]
+ ],
+ "s022.sec51.u9": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u10": [
+  [
+   "Euh..."
+  ]
+ ],
+ "s022.sec51.u11": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u12": [
+  [
+   "Vademon lève son pistolet !"
+  ]
+ ],
+ "s022.sec51.u13": [
+  [
+   "Oh, non, attends ! Nous ne",
+   "sommes pas tes ennemis !"
+  ]
+ ],
+ "s022.sec51.u14": [
+  [
+   "Vademon baisse son pistolet."
+  ]
+ ],
+ "s022.sec51.u15": [
+  [
+   "Il a compris ? Très bien..."
+  ]
+ ],
+ "s022.sec51.u16": [
+  [
+   "{color 6}{player}{color 1} a fait de son",
+   "mieux pour le convaincre !!"
+  ]
+ ],
+ "s022.sec51.u17": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u18": [
+  [
+   "Ça ne marche pas... ?"
+  ]
+ ],
+ "s022.sec51.u19": [
+  [
+   "D'accooord."
+  ]
+ ],
+ "s022.sec51.u20": "Vademon a rejoint la ville !",
+ "s022.sec51.u21": [
+  [
+   "M-mais... ce type... Il SAIT",
+   "parler !!"
+  ]
+ ],
+ "s189.sec5.u0": [
+  [
+   "Tu m'as apporté quelque chose",
+   "pour guérir ma blessure...?"
+  ]
+ ],
+ "s189.sec5.u1": [
+  [
+   "Attends. Voyons..."
+  ]
+ ],
+ "s189.sec5.u2": [
+  [
+   "Mon aile..."
+  ]
+ ],
+ "s189.sec5.u3": [
+  [
+   "Qu'est-ce qui ne va pas ?"
+  ]
+ ],
+ "s189.sec5.u4": [
+  [
+   "Je me suis... blessé à",
+   "l'aile... Tu aurais de quoi",
+   "soigner une blessure ?"
+  ]
+ ],
+ "s189.sec5.u5": [
+  [
+   "Ça a l'air grave... ! Attends.",
+   "Voyons..."
+  ]
+ ],
+ "s189.sec5.u6": [
+  [
+   "Ah, C'est vrai. Je n'ai plus",
+   "rien..."
+  ]
+ ],
+ "s189.sec5.u7": [
+  [
+   "Non, ça ne va pas. Pas avec",
+   "ça."
+  ]
+ ],
+ "s189.sec5.u8": [
+  [
+   "Ouf... Ça va bien mieux. Merci."
+  ]
+ ],
+ "s189.sec5.u9": [
+  [
+   "Tu peux voler, maintenant ?"
+  ]
+ ],
+ "s189.sec5.u10": [
+  [
+   "...Pas loin, je crois..."
+  ]
+ ],
+ "s189.sec5.u11": [
+  [
+   "Je vois... Oh, je sais ! Il y a",
+   "une clinique en ville. Fais-toi",
+   "examiner là-bas. Ce n'est pas"
+  ],
+  [
+   "loin."
+  ]
+ ],
+ "s189.sec5.u12": [
+  [
+   "Remarquable. J'avais entendu",
+   "parler de la ville, mais",
+   "j'ignorais qu'elle avait autant"
+  ],
+  [
+   "grandi."
+  ]
+ ],
+ "s189.sec5.u13": [
+  [
+   "Hé hé. Repose-toi",
+   "tranquillement en ville."
+  ]
+ ],
+ "s189.sec5.u14": [
+  [
+   "Désolé pour le dérangement...",
+   "Je te revaudrai cette bonté,",
+   "promis."
+  ]
+ ],
+ "s189.sec5.u15": "Unimon a rejoint la ville !",
+ "s189.sec5.u16": [
+  [
+   "De quoi soigner une blessure...",
+   "Je vais chercher ça. Attends",
+   "ici."
+  ]
+ ],
+ "s189.sec5.u17": [
+  [
+   "Désolé... Dépêche-toi, s'il te",
+   "plaît..."
+  ]
+ ],
+ "s190.sec51.u0": [
+  [
+   "Des motifs étranges sont",
+   "tracés au sol..."
+  ]
+ ],
+ "s190.sec51.u1": [
+  [
+   "Un de ces cercles de culture ?",
+   "Ça n'a pas l'air très ancien."
+  ]
+ ],
+ "s190.sec51.u2": [
+  [
+   "Il y en a plus que la dernière",
+   "fois ! Ça aurait un rapport",
+   "avec cet ovni dont tout le"
+  ],
+  [
+   "monde parle... ?"
+  ]
+ ],
+ "s190.sec51.u3": "Ouah ?!",
+ "s190.sec51.u4": [
+  [
+   "Il y en a plus ! BEAUCOUP",
+   "plus !"
+  ]
+ ],
+ "s190.sec51.u5": [
+  [
+   "Cette fois, ça y est..."
+  ]
+ ],
+ "s190.sec51.u6": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s190.sec51.u7": [
+  [
+   "U-un extraterrestre ?!"
+  ]
+ ],
+ "s190.sec51.u8": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u9": [
+  [
+   "Tu es... un Digimon... ?"
+  ]
+ ],
+ "s190.sec51.u10": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u11": [
+  [
+   "Euh..."
+  ]
+ ],
+ "s190.sec51.u12": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u13": [
+  [
+   "Oh, non, attends ! Nous ne",
+   "sommes pas tes ennemis !"
+  ]
+ ],
+ "s190.sec51.u14": [
+  [
+   "Il a compris ? Très bien..."
+  ]
+ ],
+ "s190.sec51.u15": [
+  [
+   "{color 6}{player}{color 1} a fait de son",
+   "mieux pour le convaincre !!"
+  ]
+ ],
+ "s190.sec51.u16": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u17": [
+  [
+   "Ça ne marche pas... ?"
+  ]
+ ],
+ "s190.sec51.u18": [
+  [
+   "D'accooord."
+  ]
+ ],
+ "s190.sec51.u19": "Vademon a rejoint la ville !",
+ "s190.sec51.u20": [
+  [
+   "M-mais... ce type... Il SAIT",
+   "parler !!"
+  ]
+ ]
+}

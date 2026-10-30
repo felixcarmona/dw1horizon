@@ -1,0 +1,17 @@
+{
+  "id": 12,
+  "name": "Static Elect",
+  "element": "air",
+  "power": 85,
+  "mpCost": 15,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 55,
+  "status": 3,
+  "statusChance": 15,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [36, 21, 17]
+}

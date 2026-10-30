@@ -1,0 +1,129 @@
+From 3ef71b75c6e797f8c292e168530d8996fbdd8463 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 05:54:29 +0000
+Subject: [PATCH] 60 fps step 8: MOD_FPS_MODE 20 / 30 / 60 fps
+
+MOD_FPS_MODE replaces MOD_FPS_RENDERS_PER_TICK: 0 shows one frame per
+tick (the original 20 fps), 1 a frame every other refresh (ticks
+alternate, by tick parity, between one frame at 2/3 of the tick and two
+at 1/3 and 3/3), 2 a frame every refresh. Each frame is interpolated by
+the third of the tick it is shown at. Default 2 on this branch.
+MOD_FPS_TEST_TICK keeps the same thirds on its longer ticks.
+
+---
+ src/main/main.c | 58 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 39 insertions(+), 19 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index b5070e4..f37429a 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3974,18 +3974,24 @@ static void modPerfReset(void)
+ /* MOD (fps): fixed-timestep loop. The game logic (input, scripts,
+  * tickObjects: movement, clock, timers, animation, then the late tick) runs
+  * once per tick, and a tick always lasts 3 vertical refreshes (20 Hz) as in
+- * the original. The scene is rendered MOD_FPS_RENDERS_PER_TICK times per tick
+- * (3 = 60 fps, 1 = original 20 fps), pass r being shown at refresh
+- * tickStart + (r + 1) * 3 / n. A pass that would be shown too late, or would
++ * the original. MOD_FPS_MODE chooses at which of the tick's 3 refreshes a
++ * new frame is shown (the lab menu switches it):
++ *   0 = 20 fps: the third (the original, one render per tick);
++ *   1 = 30 fps: every other refresh, so the ticks alternate between one
++ *       frame shown at the second refresh and two at the first and third;
++ *   2 = 60 fps: all three.
++ * A frame shown at refresh k of the tick is interpolated k/3 of the way from
++ * the previous tick's state. A pass that would be shown too late, or would
+  * not end before the next tick is due (judging by the previous pass's cost),
+- * is skipped; the logic never is. See dw/mod_fps.h for how renders stay idempotent. */
+-int32_t MOD_FPS_RENDERS_PER_TICK = 3;
++ * is skipped; the logic never is. See dw/mod_fps.h for how renders stay
++ * idempotent. */
++int32_t MOD_FPS_MODE = 2;
+ /* test switch (state checks with the slow interpreter CPU, where the extra
+  * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
+- * with any number of renders, and every pass is rendered, shown at refresh
+- * tickStart + (r + 1) * N / n with that fraction of the tick. Comparing 1 and
+- * 3 renders with the same N (large enough for 3 passes, e.g. 8) keeps the
+- * emulated time per tick equal, so CD reads end on the same tick in both. */
++ * in any mode, and every pass is rendered, the one of the k-th third shown at
++ * refresh tickStart + k * N / 3 with that fraction of the tick. Comparing the
++ * modes with the same N (large enough for 3 passes, e.g. 8) keeps the
++ * emulated time per tick equal, so CD reads end on the same tick in all. */
+ int32_t MOD_FPS_TEST_TICK;
+ static int32_t modTickRefreshes(void);
+ int32_t MOD_FPS_TICKS;
+@@ -4878,8 +4884,8 @@ static void modInterpEndTick(void)
+ /* MOD (fps): the tick / present helper shared by the loops (gameLoop, the
+  * battle loops, the new-game scene). A loop calls modTickStart() before its
+  * logic, runs the logic (tickObjects included) and then modPresent(), which
+- * runs the late tick and renders the tick MOD_FPS_RENDERS_PER_TICK times
+- * (pass r shown at refresh tickStart + (r + 1) * 3 / n, interpolated), and
++ * runs the late tick and renders the tick once per frame MOD_FPS_MODE shows
++ * in it (at refresh tickStart + k for k in 1..3, interpolated by k/3), and
+  * waits until the tick has lasted 3 refreshes, as VSync(3) did.
+  * MOD_PRESENT_BATTLE: loops that set the 2D origin after VSync from the
+  * post-tick DRAWING_OFFSET (battle, battle data load, new-game scene); each
+@@ -4944,6 +4950,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	int32_t battle = flags & MOD_PRESENT_BATTLE;
+ 	int32_t period = modTickRefreshes(); /* refreshes per tick: 3 */
+ 	int32_t force = MOD_FPS_TEST_TICK > 0;
++	int32_t thirds[3];
+ 
+ 	if (flags & MOD_PRESENT_PAUSE) {
+ 		extra = modLoopRollback;
+@@ -4952,15 +4959,28 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	}
+ 	tickV = modTickV;
+ 	l0 = modTickL0;
+-	n = MOD_FPS_RENDERS_PER_TICK;
+-	if (n < 1) {
++	/* the thirds of the tick at which a frame is shown */
++	if (MOD_FPS_MODE <= 0) {
+ 		n = 1;
+-	}
+-	if (n > 3) {
++		thirds[0] = 3;
++	} else if (MOD_FPS_MODE == 1) {
++		/* 30 fps: by tick parity, a frame at 2/3, or at 1/3 and 3/3 */
++		if (MOD_FPS_TICKS & 1) {
++			n = 2;
++			thirds[0] = 1;
++			thirds[1] = 3;
++		} else {
++			n = 1;
++			thirds[0] = 2;
++		}
++	} else {
+ 		n = 3;
++		thirds[0] = 1;
++		thirds[1] = 2;
++		thirds[2] = 3;
+ 	}
+-	/* with one render per tick nothing below touches the interpolation */
+-	interp = (n > 1) && (MOD_FPS_INTERP != 0);
++	/* at 20 fps nothing below touches the interpolation */
++	interp = (MOD_FPS_MODE > 0) && (MOD_FPS_INTERP != 0);
+ 	if (!interp) {
+ 		modInterpInvalidate();
+ 	}
+@@ -4974,7 +4994,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 
+ 	MOD_RENDER_MULTIPASS = 1;
+ 	for (r = 0; r < n; r++) {
+-		endV = tickV + (r + 1) * period / n;
++		endV = tickV + thirds[r] * period / 3;
+ 		if (r > 0) {
+ 			lc = modLines();
+ 			if (force) {
+@@ -5025,7 +5045,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 				shownV = tickV + period;
+ 			}
+ 			l2 = modLines();
+-			modInterpApply((shownV - tickV) * 4096 / period);
++			modInterpApply(force ? thirds[r] * 4096 / 3 : (shownV - tickV) * 4096 / period);
+ 			MOD_PERF_INTERP[0] += (modLines() - l2) & 0xFFFF;
+ 			MOD_PERF_INTERP[2]++;
+ 		}
+-- 
+2.53.0
+

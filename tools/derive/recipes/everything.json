@@ -1,0 +1,883 @@
+{
+ "recipe": "everything",
+ "about": "Every engine patch, What the island forgot, all eight languages and every imported species.",
+ "environment": {
+  "TEXT": "ours",
+  "LANGS": "en,es,pt-br,fr,de,it,ja,ca",
+  "LANG_BASE": "en",
+  "PACK_ASCII": 1,
+  "STORY_ALT": 1,
+  "SEEK_ORDER": 1,
+  "NO_MOVIES": 0,
+  "FONT": null,
+  "FPS": null,
+  "PARTNER_MMD_MAX": null,
+  "IMPORTS": 1,
+  "SPECIES": "all",
+  "SPECIES_PROVIDER": "imports",
+  "REUSE_MODELS": 1,
+  "STORY_MODS": "all",
+  "MAIN_STORY": "tools/dws/examples/dev-save.dws",
+  "DEV": 0,
+  "NAME": "everything",
+  "DW_HEAP_MAP": "/nonexistent",
+  "LANG": "en_US.UTF-8"
+ },
+ "environment_notes": {
+  "DW_HEAP_MAP": "check only (the story's heap check): pinned off so the first and the second build of a fresh $W behave the same (the first has no map yet)",
+  "LANG": "Locale for shell globs and sort -u; the ordered source list is explicit below.",
+  "REUSE_MODELS": "build.sh's default; with a fresh build/NAME/models every model is made"
+ },
+ "species": {
+  "select": "all",
+  "provider": "imports",
+  "provider_source": "content/models/imports",
+  "pins": "tools/derive/recipes/species-pins.json",
+  "note": "The imports provider runs inside derive after model import and field overlays; every output is pinned by SHA-1."
+ },
+ "story": {
+  "mod": "story/mods/what-the-island-forgot",
+  "sources": [
+   "story/mods/what-the-island-forgot/early-game.py",
+   "story/mods/what-the-island-forgot/arcs/airdramon/ambush.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/birdramon-nest.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/birdramon.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/canyon-bottom.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/descent.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/engine-room.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/fortress-elevator.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/gcan06-way.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/jungle-way.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/nest-fallen.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/overdell-way.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/rift.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/shaft.py",
+   "story/mods/what-the-island-forgot/arcs/canyon/top-way.py",
+   "story/mods/what-the-island-forgot/arcs/factory/andromon-power.py",
+   "story/mods/what-the-island-forgot/arcs/factory/giromon-sane.py",
+   "story/mods/what-the-island-forgot/arcs/factory/remodelling.py",
+   "story/mods/what-the-island-forgot/arcs/factory/sewer-numemon.py",
+   "story/mods/what-the-island-forgot/arcs/factory/town-153.py",
+   "story/mods/what-the-island-forgot/arcs/factory/town-154.py",
+   "story/mods/what-the-island-forgot/arcs/factory/town-155.py",
+   "story/mods/what-the-island-forgot/arcs/gear/andromon.py",
+   "story/mods/what-the-island-forgot/arcs/gear/robot-house.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/bone-field.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/glacial-81.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/glacial-82.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/glacial-slow-81.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/glacial-slow.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/passage.py",
+   "story/mods/what-the-island-forgot/arcs/hunters/ambush-canyon.py",
+   "story/mods/what-the-island-forgot/arcs/hunters/ambush-mansion.py",
+   "story/mods/what-the-island-forgot/arcs/hunters/ambush-mist.py",
+   "story/mods/what-the-island-forgot/arcs/infinity/devimon-247.py",
+   "story/mods/what-the-island-forgot/arcs/infinity/infinity-engine-dark.py",
+   "story/mods/what-the-island-forgot/arcs/infinity/infinity-engine.py",
+   "story/mods/what-the-island-forgot/arcs/infinity/megadramon-254.py",
+   "story/mods/what-the-island-forgot/arcs/infinity/metalgreymon-222.py",
+   "story/mods/what-the-island-forgot/arcs/mansion/basement.py",
+   "story/mods/what-the-island-forgot/arcs/mansion/crypt-corridor.py",
+   "story/mods/what-the-island-forgot/arcs/mansion/lab-corridor.py",
+   "story/mods/what-the-island-forgot/arcs/mansion/lab.py",
+   "story/mods/what-the-island-forgot/arcs/mansion/lectern-room.py",
+   "story/mods/what-the-island-forgot/arcs/mist/cherrymon.py",
+   "story/mods/what-the-island-forgot/arcs/mist/fog.py",
+   "story/mods/what-the-island-forgot/arcs/mist/hunters-115.py",
+   "story/mods/what-the-island-forgot/arcs/mist/hunters-116.py",
+   "story/mods/what-the-island-forgot/arcs/mist/hunters-120.py",
+   "story/mods/what-the-island-forgot/arcs/news/shellmon.py",
+   "story/mods/what-the-island-forgot/arcs/postgame/no-curse.py",
+   "story/mods/what-the-island-forgot/arcs/postgame/station-basement.py",
+   "story/mods/what-the-island-forgot/arcs/postgame/station-cold.py",
+   "story/mods/what-the-island-forgot/arcs/postgame/station-fortress.py",
+   "story/mods/what-the-island-forgot/arcs/rumours/hunters-forest.py",
+   "story/mods/what-the-island-forgot/arcs/rumours/hunters-savanna.py",
+   "story/mods/what-the-island-forgot/arcs/rumours/yuramon.py",
+   "story/mods/what-the-island-forgot/arcs/seam/camp2.py",
+   "story/mods/what-the-island-forgot/arcs/seam/kennel.py",
+   "story/mods/what-the-island-forgot/arcs/seam/watchtower.py",
+   "story/mods/what-the-island-forgot/arcs/shore/beach-cave.py",
+   "story/mods/what-the-island-forgot/arcs/shore/city-dock.py",
+   "story/mods/what-the-island-forgot/arcs/shore/drowned-shore.py",
+   "story/mods/what-the-island-forgot/arcs/shore/sea-ambush.py",
+   "story/mods/what-the-island-forgot/arcs/shrine/second-chamber.py",
+   "story/mods/what-the-island-forgot/arcs/summit/farewell.py",
+   "story/mods/what-the-island-forgot/arcs/summit/summit.py",
+   "story/mods/what-the-island-forgot/arcs/vault/kokatorimon.py",
+   "story/mods/what-the-island-forgot/arcs/vault/melted-wall.py",
+   "story/mods/what-the-island-forgot/arcs/vault/statue-room.py",
+   "story/mods/what-the-island-forgot/arcs/vault/wall-of-hearts.py",
+   "story/mods/what-the-island-forgot/arcs/vault/white-barrier.py",
+   "story/mods/what-the-island-forgot/arcs/works/gate.py",
+   "story/mods/what-the-island-forgot/arcs/glacial/dino-79.dws",
+   "story/mods/what-the-island-forgot/district/cold-store.py",
+   "story/mods/what-the-island-forgot/district/container-house.py",
+   "story/mods/what-the-island-forgot/district/forge-workshop.py",
+   "story/mods/what-the-island-forgot/district/guard-house.py",
+   "story/mods/what-the-island-forgot/district/market-shed.py",
+   "story/mods/what-the-island-forgot/district/power-station.py",
+   "story/mods/what-the-island-forgot/district/scrap-office.py",
+   "story/mods/what-the-island-forgot/district/stone-yard.py",
+   "story/mods/what-the-island-forgot/district/the-courtyard.py",
+   "story/mods/what-the-island-forgot/city/arena-lobby.py",
+   "story/mods/what-the-island-forgot/city/birdra-transport.py",
+   "story/mods/what-the-island-forgot/city/centar-clinic.py",
+   "story/mods/what-the-island-forgot/city/item-keeper.py",
+   "story/mods/what-the-island-forgot/city/item-shop.py",
+   "story/mods/what-the-island-forgot/city/jijimons-house-205.py",
+   "story/mods/what-the-island-forgot/city/jijimons-house.py",
+   "story/mods/what-the-island-forgot/city/restaurant-214.py",
+   "story/mods/what-the-island-forgot/city/restaurant-215.py",
+   "story/mods/what-the-island-forgot/city/secret-item-shop.py",
+   "story/mods/what-the-island-forgot/city/treasure-hunt.py"
+  ],
+  "sources_note": "EXTRA_STORY in the order it is compiled (compile order changes bytes): the single source (build.sh reads it through `python3 -m tools.derive recipe-env everything`); a new story file of the mod goes here",
+  "dev_sources": [
+   "story/mods/what-the-island-forgot/dev/tokomon-hook.py"
+  ],
+  "dev_note": "DEV=1 (build.sh): the playtest hook after the sources"
+ },
+ "maps": {
+  "mod": "story/mods/what-the-island-forgot",
+  "screens_from": "story/mods/what-the-island-forgot/screens/*.json",
+  "steps": [
+   {
+    "script": "maps/engine-room.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/ENGN01.MAP",
+     "screens/ENGN01.TFS"
+    ]
+   },
+   {
+    "script": "maps/rift.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/RIFT01.MAP",
+     "screens/RIFT01.TFS"
+    ]
+   },
+   {
+    "script": "maps/shaft.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SHFT01.MAP",
+     "screens/SHFT01.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/DESC01.MAP",
+     "screens/DESC01.TFS"
+    ]
+   },
+   {
+    "script": "maps/second-chamber.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SHRN01.MAP",
+     "screens/SHRN01.TFS"
+    ]
+   },
+   {
+    "script": "maps/passage.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/PASS01.MAP",
+     "screens/PASS01.TFS"
+    ]
+   },
+   {
+    "script": "maps/bone-field.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/BONE01.MAP",
+     "screens/BONE01.TFS"
+    ]
+   },
+   {
+    "script": "maps/crypt-corridor.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/CRYP01.MAP",
+     "screens/CRYP01.TFS"
+    ]
+   },
+   {
+    "script": "maps/lectern-room.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/CRYP02.MAP",
+     "screens/CRYP02.TFS"
+    ]
+   },
+   {
+    "script": "maps/drowned-shore.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SHOR01.MAP",
+     "screens/SHOR01.TFS"
+    ]
+   },
+   {
+    "script": "maps/wall-of-hearts.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/VALT01.MAP",
+     "screens/VALT01.TFS",
+     "screens/VALT02.MAP",
+     "screens/VALT02.TFS"
+    ]
+   },
+   {
+    "script": "maps/infinity-engine.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/INFE01.MAP",
+     "screens/INFE01.TFS",
+     "screens/INFE02.MAP",
+     "screens/INFE02.TFS"
+    ]
+   },
+   {
+    "script": "maps/nest-fallen.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/NEST02.MAP",
+     "screens/NEST02.TFS"
+    ]
+   },
+   {
+    "script": "maps/stone-bridge.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/GCAN21.MAP",
+     "screens/GCAN21.TFS"
+    ]
+   },
+   {
+    "check": "story-spawns",
+        "enforce_sources": ["early-game.py"],
+    "step": "retouch"
+   },
+   {
+    "script": "maps/root-clearing.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/ROOT01.MAP",
+     "screens/ROOT01.TFS"
+    ]
+   },
+   {
+    "script": "maps/old-gallery.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/GALL01.MAP",
+     "screens/GALL01.TFS"
+    ]
+   },
+   {
+    "script": "maps/lake-terrace.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/LAKE01.MAP",
+     "screens/LAKE01.TFS"
+    ]
+   },
+   {
+    "script": "maps/iron-hills-1.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON01.MAP",
+     "screens/IRON01.TFS"
+    ]
+   },
+   {
+    "script": "maps/iron-hills-2.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON02.MAP",
+     "screens/IRON02.TFS"
+    ]
+   },
+   {
+    "script": "maps/iron-hills-3.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON03.MAP",
+     "screens/IRON03.TFS"
+    ]
+   },
+   {
+    "script": "maps/iron-hills-4.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON04.MAP",
+     "screens/IRON04.TFS"
+    ]
+   },
+   {
+    "script": "maps/iron-hills-5.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON05.MAP",
+     "screens/IRON05.TFS"
+    ]
+   },
+   {
+    "script": "maps/the-brink.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/IRON06.MAP",
+     "screens/IRON06.TFS"
+    ]
+   },
+   {
+    "script": "maps/seam-1.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM01.MAP",
+     "screens/SEAM01.TFS"
+    ]
+   },
+   {
+    "script": "maps/seam-2.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM02.MAP",
+     "screens/SEAM02.TFS"
+    ]
+   },
+   {
+    "script": "maps/kennel.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM03.MAP",
+     "screens/SEAM03.TFS"
+    ]
+   },
+   {
+    "script": "maps/seam-3.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM04.MAP",
+     "screens/SEAM04.TFS"
+    ]
+   },
+   {
+    "script": "maps/seam-4.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM05.MAP",
+     "screens/SEAM05.TFS"
+    ]
+   },
+   {
+    "script": "maps/watchtower.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM06.MAP",
+     "screens/SEAM06.TFS"
+    ]
+   },
+   {
+    "script": "maps/seam-5.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/SEAM07.MAP",
+     "screens/SEAM07.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-1.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS01.MAP",
+     "screens/OVPS01.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-2.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS02.MAP",
+     "screens/OVPS02.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-3.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS03.MAP",
+     "screens/OVPS03.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-4.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS04.MAP",
+     "screens/OVPS04.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-5.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS05.MAP",
+     "screens/OVPS05.TFS"
+    ]
+   },
+   {
+    "script": "maps/descent-6.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS06.MAP",
+     "screens/OVPS06.TFS"
+    ]
+   },
+   {
+    "script": "maps/ossuary.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/OVPS07.MAP",
+     "screens/OVPS07.TFS"
+    ]
+   },
+   {
+    "script": "maps/mine-head.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/MINE01.MAP",
+     "screens/MINE01.TFS"
+    ]
+   },
+   {
+    "script": "maps/galleries.py",
+    "args": [
+     "{screens}"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/MINE02.MAP",
+     "screens/MINE02.TFS",
+     "screens/MINE03.MAP",
+     "screens/MINE03.TFS",
+     "screens/MINE04.MAP",
+     "screens/MINE04.TFS",
+     "screens/MINE05.MAP",
+     "screens/MINE05.TFS",
+     "screens/MINE06.MAP",
+     "screens/MINE06.TFS",
+     "screens/MINE07.MAP",
+     "screens/MINE07.TFS",
+     "screens/MINE08.MAP",
+     "screens/MINE08.TFS",
+     "screens/MINE09.MAP",
+     "screens/MINE09.TFS",
+     "screens/MINE10.MAP",
+     "screens/MINE10.TFS",
+     "screens/MINE11.MAP",
+     "screens/MINE11.TFS",
+     "screens/MINE12.MAP",
+     "screens/MINE12.TFS",
+     "screens/MINE13.MAP",
+     "screens/MINE13.TFS",
+     "screens/MINE14.MAP",
+     "screens/MINE14.TFS",
+     "screens/MINE15.MAP",
+     "screens/MINE15.TFS",
+     "screens/MINE16.MAP",
+     "screens/MINE16.TFS",
+     "screens/MINE17.MAP",
+     "screens/MINE17.TFS",
+     "screens/MINE18.MAP",
+     "screens/MINE18.TFS",
+     "screens/MINE19.MAP",
+     "screens/MINE19.TFS",
+     "screens/MINE20.MAP",
+     "screens/MINE20.TFS"
+    ]
+   },
+   {
+    "script": "maps/galleries.py",
+    "args": [
+     "{screens}",
+     "district"
+    ],
+    "step": "maps",
+    "writes": [
+     "screens/BARR01.MAP",
+     "screens/BARR01.TFS",
+     "screens/BARR02.MAP",
+     "screens/BARR02.TFS",
+     "screens/BARR03.MAP",
+     "screens/BARR03.TFS",
+     "screens/BARR04.MAP",
+     "screens/BARR04.TFS",
+     "screens/BARR05.MAP",
+     "screens/BARR05.TFS",
+     "screens/BARR06.MAP",
+     "screens/BARR06.TFS",
+     "screens/BARR07.MAP",
+     "screens/BARR07.TFS",
+     "screens/BARR08.MAP",
+     "screens/BARR08.TFS",
+     "screens/BARR09.MAP",
+     "screens/BARR09.TFS"
+    ]
+   },
+   {
+    "script": "maps/gcan07-crack.py",
+    "args": [
+     "{retouch}",
+     "{screens}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/GCAN07.MAP",
+     "screens/GCAN27.MAP",
+     "screens/GCAN27.TFS"
+    ]
+   },
+   {
+    "script": "maps/mayo03-south.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/MAYO03.MAP",
+     "retouch/MAYO03.TFS"
+    ]
+   },
+   {
+    "script": "maps/mayo05-path.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/MAYO05.MAP",
+     "retouch/MAYO05.TFS"
+    ]
+   },
+   {
+    "script": "maps/tunn04-stairs.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/TUNN04.MAP",
+     "retouch/TUNN04.TFS"
+    ]
+   },
+   {
+    "script": "maps/mayo10-cleft.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/MAYO10.MAP",
+     "retouch/MAYO10.TFS"
+    ]
+   },
+   {
+    "script": "maps/gias09-pass.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/GIAS09.MAP",
+     "retouch/GIAS09.TFS"
+    ]
+   },
+   {
+    "script": "maps/dgha01-pass.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/DGHA01.MAP",
+     "retouch/DGHA01.TFS"
+    ]
+   },
+   {
+    "script": "maps/gomi02-pit.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/GOMI02.MAP",
+     "retouch/GOMI02.TFS"
+    ]
+   },
+   {
+    "script": "maps/fact11b-grate.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/FACT11B.MAP",
+     "retouch/FACT11B.TFS"
+    ]
+   },
+   {
+    "script": "maps/leom01-passage.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/LEOM01.MAP",
+     "retouch/LEOM01.TFS"
+    ]
+   },
+   {
+    "script": "maps/koda03-passage.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/KODA03.MAP",
+     "retouch/KODA03.TFS"
+    ]
+   },
+   {
+    "script": "maps/koda07-mouth.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/KODA07.MAP",
+     "retouch/KODA07.TFS"
+    ]
+   },
+   {
+    "script": "maps/chka01-trapdoor.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/CHKA01.MAP",
+     "retouch/CHKA01.TFS"
+    ]
+   },
+   {
+    "script": "maps/icsa08-north.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/ICSA08.MAP",
+     "retouch/ICSA08.TFS"
+    ]
+   },
+   {
+    "script": "maps/trop03-way.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/TROP03.MAP"
+    ]
+   },
+   {
+    "script": "maps/gcan06-way.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/GCAN06.MAP"
+    ]
+   },
+   {
+    "script": "maps/twnb-gate.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/TWNB01.MAP",
+     "retouch/TWNB01.TFS",
+     "retouch/TWNB02.MAP",
+     "retouch/TWNB02.TFS",
+     "retouch/TWNB03.MAP",
+     "retouch/TWNB03.TFS",
+     "retouch/TWNB04.MAP",
+     "retouch/TWNB04.TFS",
+     "retouch/TWNB05.MAP",
+     "retouch/TWNB05.TFS",
+     "retouch/TWNB06.MAP",
+     "retouch/TWNB06.TFS",
+     "retouch/TWNB07.MAP",
+     "retouch/TWNB07.TFS",
+     "retouch/TWNB08.MAP",
+     "retouch/TWNB08.TFS",
+     "retouch/TWNB09.MAP",
+     "retouch/TWNB09.TFS",
+     "retouch/TWNB10.MAP",
+     "retouch/TWNB10.TFS",
+     "retouch/TWNB11.MAP",
+     "retouch/TWNB11.TFS",
+     "retouch/TWNB12.MAP",
+     "retouch/TWNB12.TFS",
+     "retouch/TWNB13.MAP",
+     "retouch/TWNB13.TFS",
+     "retouch/TWNB14.MAP",
+     "retouch/TWNB14.TFS",
+     "retouch/TWNB15.MAP",
+     "retouch/TWNB15.TFS",
+     "retouch/TWNB16.MAP",
+     "retouch/TWNB16.TFS",
+     "retouch/TWNB17.MAP",
+     "retouch/TWNB17.TFS",
+     "retouch/TWNB18.MAP",
+     "retouch/TWNB18.TFS",
+     "retouch/TWNB19.MAP",
+     "retouch/TWNB19.TFS",
+     "retouch/TWNB20.MAP",
+     "retouch/TWNB20.TFS",
+     "retouch/TWNB21.MAP",
+     "retouch/TWNB21.TFS",
+     "retouch/TWNB22.MAP",
+     "retouch/TWNB22.TFS",
+     "retouch/TWNB23.MAP",
+     "retouch/TWNB23.TFS",
+     "retouch/TWNB24.MAP",
+     "retouch/TWNB24.TFS"
+    ]
+   }
+  ],
+  "steps_note": "Ordered map recipes; step: the derive step that runs each recipe; {screens} = OUT/screens, {retouch} = OUT/retouch (OUT = build/NAME-maps); writes: the files it makes under OUT (derive checks them); the check runs where it stands"
+ }
+}

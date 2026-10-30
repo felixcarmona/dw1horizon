@@ -1,0 +1,105 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 213,
+ "type": 232,
+ "name": "BomberNanimon",
+ "source": {
+  "type": 58,
+  "mmd": "extracted/CHDAT/MMD1/IGAM.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 7,
+  "3": 9,
+  "5": 3,
+  "6": 4,
+  "8": 12,
+  "9": 13,
+  "10": 14,
+  "11": 16,
+  "12": 17,
+  "13": 18
+ },
+ "hips": [
+  1,
+  1,
+  1.427
+ ],
+ "root_scale": 1.427,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 92,
+   "end": 182,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 133,
+   "end": 213,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_01",
+   "start": 57,
+   "end": 149,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_03",
+   "start": 69,
+   "end": 183,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 88,
+   "end": 180,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

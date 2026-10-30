@@ -1,0 +1,11 @@
+// Who stands on screen 225 (Mt. Infinity), and when. Read out of MAPHEAD.SCN section 225 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(225) {                              // Mt. Infinity
+            npc Analogman slot 1 when not trigger(50);
+            npc 174 slot 3 when trigger(50) and not recruited(Digitamamon);
+        }
+    }
+}

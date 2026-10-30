@@ -1,0 +1,47 @@
+{
+ "s045.sec5.u0": "This is bad!",
+ "s045.sec6.u0": "G-gotta run!",
+ "s045.sec7.u0": "W-wait a second!",
+ "s046.sec5.u0": "Get 'em!",
+ "s046.sec6.u0": "Get 'em!",
+ "s046.sec7.u0": "Get 'em!",
+ "s047.sec5.u0": "Formation C!",
+ "s047.sec6.u0": "Formation A!",
+ "s047.sec7.u0": "Formation B!",
+ "s047.sec60.u0": "Yeeugh!",
+ "s047.sec60.u1": ".........",
+ "s047.sec60.u2": "Y-you've gotta be kidding me!",
+ "s047.sec60.u3": "It vanished... Was it an illusion...?",
+ "s047.sec60.u4": "Looks like we beat it... somehow.",
+ "s047.sec60.u5": "Huh?!",
+ "s047.sec60.u6": "Mm, mmm. Huh?!",
+ "s047.sec60.u7": "I sorta blacked out all of a sudden... Oh! S-sorry about that!",
+ "s047.sec60.u8": "Hmmmm?? What was that? The curse of Analogman?! Oh well, it should be fine now.",
+ "s048.sec5.u0": "Ah...!",
+ "s048.sec6.u0": "Ah...!",
+ "s048.sec11.u0": "Huh? What are you?!",
+ "s048.sec11.u1": "Nanimon, that's what!",
+ "s048.sec11.u2": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 20 items!",
+ "s048.sec11.u3": "Got the {color 4}Dimensional Key Chain{color 1}! Now you can carry up to 30 items!",
+ "s048.sec51.u0": "Hm... Could this elevator be what pushes the ground up above?",
+ "s048.sec51.m0.o0": "Ride the elevator",
+ "s048.sec51.m0.o1": "Don't ride it",
+ "s048.sec52.u0": "Hey!",
+ "s048.sec52.u1": [
+  [
+   "Hm?"
+  ],
+  [
+   "Mwahaha, come to get beat?"
+  ]
+ ],
+ "s048.sec52.u2": "That's my line!",
+ "s048.sec52.u3": "I ain't goin' easy on you like last time! I'll make you cry!",
+ "s048.sec52.u4": "Eeek!",
+ "s048.sec52.u5": "Wawawa!",
+ "s048.sec52.u6": "D-dang it!",
+ "s048.sec52.u7": "Whoa, what's that?!",
+ "s048.sec52.u8": "Gyahahaha! So long, you chumps.",
+ "s048.sec52.u9": "Dang it, he got away again!",
+ "s048.sec52.u10": "An escape elevator, even... No use chasing him now. That guy!"
+}

@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP9/TUNN07_3.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "DemiMeramon",
+      "at": [1450, -265],
+      "facing": 0,
+      "follow": 12,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 51, 54, 255],
+      "prios": [50, 40, 10, 0],
+      "flee": [-1992, 166],
+      "ai": [1, 1, -1, -1, -1, -1, -1, -1],
+      "path": [[1450, 0, -265], [1450, 0, 1135]]
+    }
+  ]
+}

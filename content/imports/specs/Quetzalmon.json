@@ -1,0 +1,109 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 191,
+ "type": 249,
+ "name": "Quetzalmon",
+ "source": {
+  "type": 54,
+  "mmd": "extracted/CHDAT/MMD1/MGDR.MMD"
+ },
+ "map": {
+  "1": 25,
+  "2": 24,
+  "3": 23,
+  "4": 2,
+  "5": 3,
+  "7": 5,
+  "8": 6,
+  "9": 12,
+  "11": 26,
+  "12": 28,
+  "13": 27
+ },
+ "hips": [
+  1,
+  1,
+  0.763
+ ],
+ "root_scale": 0.763,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 26,
+   "end": 116,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 164,
+   "end": 244,
+   "hz": 0.3,
+   "rise": 230
+  },
+  "0x3b": {
+   "anim": "anim_01",
+   "start": 27,
+   "end": 164,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 230
+  },
+  "0x31": {
+   "anim": "anim_02",
+   "start": 58,
+   "end": 172,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 230
+  },
+  "0x30": {
+   "anim": "anim_03",
+   "start": 21,
+   "end": 122,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 230
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

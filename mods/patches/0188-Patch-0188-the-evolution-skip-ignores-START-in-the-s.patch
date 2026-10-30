@@ -1,0 +1,28 @@
+From e8f039828f3cf1fe8fd496e29efb474178a97315 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 21:57:37 +0000
+Subject: [PATCH 188/189] Patch 0188: the evolution skip ignores START in the
+ scene's first 10 ticks (the START that closes the pause the lab menu evolves
+ under skipped it at once)
+
+---
+ src/main/evl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/evl.c b/src/main/evl.c
+index 92a79f6d..6fee2187 100644
+--- a/src/main/evl.c
++++ b/src/main/evl.c
+@@ -38,7 +38,8 @@ void tickEvoSequenceLoading(int32_t instanceId)
+ 	EvoSequenceData *data;
+ 
+ 	data = &EVO_SEQUENCE_DATA;
+-	if (MOD_EVO_SKIP == 1 && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x800)) {
++	/* not in its first ticks: the START that closed a pause (the lab menu evolves under it) is not a skip */
++	if (MOD_EVO_SKIP == 1 && (data->state != 0 || data->timer >= 10) && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x800)) {
+ 		MOD_EVO_SKIP = 2;
+ 	}
+ 
+-- 
+2.53.0
+

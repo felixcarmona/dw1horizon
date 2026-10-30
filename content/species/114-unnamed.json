@@ -1,0 +1,31 @@
+{
+  "id": 114,
+  "name": "",
+  "level": "none",
+  "attribute": "virus",
+  "specialties": [null, null, null],
+  "techniques": null,
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "model": {"name": "tAKA", "bones": 0, "radius": 0, "height": 0},
+  "voice": 70,
+  "battle_music": "normal-battle",
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

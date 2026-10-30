@@ -1,0 +1,50 @@
+{
+ "s008.sec5.u0": [
+  [
+   "{color 7}Gerente do mercado {color 1}",
+   "Depressa, faça alguma coisa,",
+   "sim, sim!"
+  ]
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Modo Ogro",
+ "s008.sec51.u0": "O Túnel da Broca...",
+ "s008.sec51.u1": "Ele! Ele nunca aprende...!",
+ "s008.sec51.u2": "Hm?",
+ "s008.sec51.u3": [
+  [
+   "{color 7}Gerente do mercado {color 1}",
+   "Ninguém avisou que havia",
+   "pedágio no túnel, não, não!"
+  ]
+ ],
+ "s008.sec51.u4": [
+  [
+   "{color 7}Gerente do mercado {color 1}",
+   "Ah, você... Será que...? Faça",
+   "alguma coisa, sim, sim!"
+  ]
+ ],
+ "s008.sec51.u5": "E o Drimogemon lá dentro?",
+ "s008.sec51.u6": [
+  [
+   "{color 7}Gerente do mercado {color 1}",
+   "Não sei, não, não..."
+  ]
+ ],
+ "s008.sec51.u7": [
+  [
+   "Espero que estejam bem...",
+   "Certo, vamos entrar!"
+  ]
+ ],
+ "s008.sec53.m0.o0": "Vamos!",
+ "s008.sec53.m0.o1": "Melhor não",
+ "s008.sec53.u0": [
+  [
+   "Não há mais nada no túnel...",
+   "Vamos atravessar correndo? O",
+   "que acha?"
+  ]
+ ]
+}

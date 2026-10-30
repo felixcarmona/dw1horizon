@@ -1,0 +1,16 @@
+{
+  "id": 98,
+  "name": "Poison Ivy",
+  "element": "nature",
+  "power": 101,
+  "mpCost": 40,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 100,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 4,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0
+}

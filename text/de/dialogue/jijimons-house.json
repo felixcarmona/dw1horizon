@@ -1,0 +1,596 @@
+{
+ "s165.sec5.u0": [
+  [
+   "Ah, du kommst genau richtig!",
+   "Ich habe eine wichtige Bitte,",
+   "die nur du erfüllen kannst."
+  ]
+ ],
+ "s165.sec5.u1": [
+  [
+   "Worum geht es?"
+  ]
+ ],
+ "s165.sec5.u2": [
+  [
+   "Ich habe es gerade wieder",
+   "gespürt: dieselbe böse Aura wie",
+   "bei Analogman und"
+  ],
+  [
+   "Machinedramon. Aber ich weiß",
+   "noch nicht, woher sie kommt..."
+  ]
+ ],
+ "s165.sec5.u3": [
+  [
+   "Schon wieder?! Gut, überlass",
+   "das mir!"
+  ]
+ ],
+ "s165.sec5.u4": [
+  [
+   "Oh, danke. Übrigens..."
+  ]
+ ],
+ "s165.sec5.u5": [
+  [
+   "Ich habe gehört, du hast",
+   "Machinedramon besiegt!"
+  ]
+ ],
+ "s165.sec5.u6": [
+  [
+   "Ja. Aber ich verstehe es nicht",
+   "ganz. Es wirkte wie eine Art",
+   "Fluch von Analogman."
+  ]
+ ],
+ "s165.sec5.u7": [
+  [
+   "Sein Groll muss noch immer",
+   "furchtbar stark sein... Nun,",
+   "vielleicht haben wir jetzt"
+  ],
+  [
+   "wieder Frieden."
+  ]
+ ],
+ "s165.sec5.u8": [
+  [
+   "Wenn Machinedramon",
+   "wiederkommt, besiegen wir ihn",
+   "eben wieder. Wie ein jährliches"
+  ],
+  [
+   "Fest. Klingt lustig, oder?"
+  ]
+ ],
+ "s165.sec5.u9": [
+  [
+   "Haha, das beruhigt mich. Ach",
+   "ja, nimm das als Dankeschön. Es",
+   "ist zufällig auf der"
+  ],
+  [
+   "Fleischfarm gewachsen."
+  ]
+ ],
+ "s165.sec5.u10": [
+  [
+   "Wow, eine {color 6}Reife Melone{color 1}?"
+  ]
+ ],
+ "s165.sec5.u11": [
+  [
+   "Ups, meine Tasche ist voll."
+  ]
+ ],
+ "s165.sec5.u12": [
+  [
+   "Ich nehme es, danke!"
+  ]
+ ],
+ "s165.sec5.u13": [
+  [
+   "Ah, da bist du! Es geht um",
+   "etwas Wichtiges, das ich nur",
+   "dir anvertrauen kann."
+  ]
+ ],
+ "s165.sec5.u14": [
+  [
+   "Hehe, keine Ursache. Was hat",
+   "es damit auf sich, dass",
+   "Analogman zurück ist?"
+  ]
+ ],
+ "s165.sec5.u15": [
+  [
+   "Hm, ich spüre es. Etwas mit",
+   "genau derselben bösen Aura wie",
+   "er. Aber ich kann nicht sagen,"
+  ],
+  [
+   "woher sie kommt..."
+  ]
+ ],
+ "s165.sec5.u16": [
+  [
+   "Gut, überlass das mir! Ich",
+   "finde ihn und besiege ihn."
+  ]
+ ],
+ "s165.sec5.u17": [
+  [
+   "Oh, danke. Übrigens..."
+  ]
+ ],
+ "s165.sec7.u0": [
+  [
+   "Yuramon hat wohl neue",
+   "Gerüchte aufgeschnappt."
+  ]
+ ],
+ "s165.sec7.u1": [
+  [
+   "Ach ja, Yuramon kennt",
+   "angeblich neue Gerüchte."
+  ]
+ ],
+ "s165.sec7.u2": [
+  [
+   "Die Stadt wird immer lebhafter,",
+   "und auch die Gespräche",
+   "verändern sich ein wenig."
+  ]
+ ],
+ "s165.sec7.u3": [
+  [
+   "{color 6}{player}{color 1}, du gehst deine",
+   "Abenteuer ziemlich ungewöhnlich",
+   "an, weißt du."
+  ]
+ ],
+ "s165.sec20.u0": [
+  [
+   "Du bist also wieder bei",
+   "Bewusstsein... Es tut mir so",
+   "leid, mein Junge."
+  ]
+ ],
+ "s165.sec85.m0.o0": "Benutzen",
+ "s165.sec85.m0.o1": "Nicht benutzen",
+ "s165.sec85.u0": [
+  [
+   "Oh? Was ist das für eine",
+   "Maschine?"
+  ]
+ ],
+ "s165.sec85.u1": [
+  [
+   "Hm, die? Das ist die",
+   "{color 4}Kampfdaten-Speicher{color 1}. Er",
+   "speichert die Kampfdaten deines"
+  ],
+  [
+   "jetzigen Partners auf der",
+   "Speicherkarte. Drücke dort {color 6}×{color 1},",
+   "dann erklärt sie dir alles"
+  ],
+  [
+   "Weitere."
+  ]
+ ],
+ "s165.sec85.u2": [
+  [
+   "Die {color 4}Kampfdaten-Speicher{color 1}",
+   "benutzen?"
+  ]
+ ],
+ "s166.sec5.u0": [
+  [
+   "Sie arbeiten alle so hart!"
+  ]
+ ],
+ "s166.sec6.u0": [
+  [
+   "Es sieht so aus, als ob nichts",
+   "drin ist."
+  ]
+ ],
+ "s166.sec7.u0": [
+  [
+   "Airdramon schläft. . ."
+  ]
+ ],
+ "s166.sec60.u0": [
+  [
+   "Hm, im Moment scheint es ihm",
+   "gut zu gehen."
+  ]
+ ],
+ "s166.sec60.u1": [
+  [
+   "Puh, zum Glück..."
+  ]
+ ],
+ "s166.sec60.u2": [
+  [
+   "Auch ihm zuliebe müssen wir",
+   "ihren Anführer so schnell wie",
+   "möglich besiegen."
+  ]
+ ],
+ "s166.sec60.u3": [
+  [
+   "...Ich weiß, ich weiß."
+  ]
+ ],
+ "s178.sec5.u0": [
+  [
+   "Ah, du kommst genau richtig!",
+   "Ich habe eine wichtige Bitte,",
+   "die nur du erfüllen kannst."
+  ]
+ ],
+ "s178.sec5.u1": [
+  [
+   "Worum geht es?"
+  ]
+ ],
+ "s178.sec5.u2": [
+  [
+   "Ich habe es gerade wieder",
+   "gespürt: dieselbe böse Aura wie",
+   "bei Analogman und"
+  ],
+  [
+   "Machinedramon. Aber ich weiß",
+   "noch nicht, woher sie kommt..."
+  ]
+ ],
+ "s178.sec5.u3": [
+  [
+   "Schon wieder?! Gut, überlass",
+   "das mir!"
+  ]
+ ],
+ "s178.sec5.u4": [
+  [
+   "Oh, danke. Übrigens..."
+  ]
+ ],
+ "s178.sec5.u5": [
+  [
+   "Ich habe gehört, du hast",
+   "Machinedramon besiegt!"
+  ]
+ ],
+ "s178.sec5.u6": [
+  [
+   "Ja. Aber ich verstehe es nicht",
+   "ganz. Es wirkte wie eine Art",
+   "Fluch von Analogman."
+  ]
+ ],
+ "s178.sec5.u7": [
+  [
+   "Sein Groll muss noch immer",
+   "furchtbar stark sein... Nun,",
+   "vielleicht haben wir jetzt"
+  ],
+  [
+   "wieder Frieden."
+  ]
+ ],
+ "s178.sec5.u8": [
+  [
+   "Wenn Machinedramon",
+   "wiederkommt, besiegen wir ihn",
+   "eben wieder. Wie ein jährliches"
+  ],
+  [
+   "Fest. Klingt lustig, oder?"
+  ]
+ ],
+ "s178.sec5.u9": [
+  [
+   "Haha, das beruhigt mich. Ach",
+   "ja, nimm das als Dankeschön. Es",
+   "ist zufällig auf der"
+  ],
+  [
+   "Fleischfarm gewachsen."
+  ]
+ ],
+ "s178.sec5.u10": [
+  [
+   "Wow, eine {color 6}Reife Melone{color 1}?"
+  ]
+ ],
+ "s178.sec5.u11": [
+  [
+   "Ups, meine Tasche ist voll."
+  ]
+ ],
+ "s178.sec5.u12": [
+  [
+   "Ich nehme es, danke!"
+  ]
+ ],
+ "s178.sec5.u13": [
+  [
+   "Ah, da bist du! Es geht um",
+   "etwas Wichtiges, das ich nur",
+   "dir anvertrauen kann."
+  ]
+ ],
+ "s178.sec5.u14": [
+  [
+   "Hehe, keine Ursache. Was hat",
+   "es damit auf sich, dass",
+   "Analogman zurück ist?"
+  ]
+ ],
+ "s178.sec5.u15": [
+  [
+   "Hm, ich spüre es. Etwas mit",
+   "genau derselben bösen Aura wie",
+   "er. Aber ich kann nicht sagen,"
+  ],
+  [
+   "woher sie kommt..."
+  ]
+ ],
+ "s178.sec5.u16": [
+  [
+   "Gut, überlass das mir! Ich",
+   "finde ihn und besiege ihn."
+  ]
+ ],
+ "s178.sec5.u17": [
+  [
+   "Oh, danke. Übrigens..."
+  ]
+ ],
+ "s178.sec5.u18": [
+  [
+   "Äh, räusper. Gemeinsam mit den",
+   "zurückkehrenden Digimon werde",
+   "ich File City wiederaufbauen."
+  ]
+ ],
+ "s178.sec5.u19": [
+  [
+   "Ich will Läden bauen, die dir",
+   "und {color 10}{partner}{color 1} nützlich sein",
+   "werden."
+  ]
+ ],
+ "s178.sec5.u20": [
+  [
+   "Für den Anfang... Mal sehen.",
+   "Erkunde doch den Urwald gleich",
+   "außerhalb der Stadt."
+  ]
+ ],
+ "s178.sec6.u0": [
+  [
+   "Das ist für dich. Viel Glück!"
+  ]
+ ],
+ "s178.sec6.u1": [
+  [
+   "Allerlei Gegenstände erhalten!"
+  ]
+ ],
+ "s178.sec6.u2": [
+  [
+   "Drücke {color 5}△{color 1}, wähle Items und",
+   "sieh dir deine Gegenstände mit",
+   "{color 6}×{color 1} an."
+  ]
+ ],
+ "s178.sec6.u3": [
+  [
+   "Yuramon hat wohl neue",
+   "Gerüchte aufgeschnappt."
+  ]
+ ],
+ "s178.sec6.u4": [
+  [
+   "Ach ja, Yuramon kennt",
+   "angeblich neue Gerüchte."
+  ]
+ ],
+ "s178.sec6.u5": [
+  [
+   "Die Stadt wird immer lebhafter,",
+   "und auch die Gespräche",
+   "verändern sich ein wenig."
+  ]
+ ],
+ "s178.sec6.u6": [
+  [
+   "Ich erkläre dir die Grundlagen",
+   "unserer Welt! Ein Tag hat 24",
+   "Stunden: Morgen, Tag und"
+  ],
+  [
+   "Nacht. Das kommt dir vielleicht",
+   "etwas schnell vor. Ein Jahr",
+   "hat 30 Tage. Monate? Was ist"
+  ],
+  [
+   "das? Jahreszeiten...? Kann man",
+   "die essen? Natürlich haben wir",
+   "Geld. Es heißt Bits. Davon"
+  ],
+  [
+   "kann man nie genug haben! Auf",
+   "dieser Insel meint man mit \"der",
+   "Stadt\" diesen Ort hier, obwohl"
+  ],
+  [
+   "es noch ein paar kleine Städte",
+   "und Dörfer gibt. Ach ja, die",
+   "Uhr: Der gelbe Punkt zeigt die"
+  ],
+  [
+   "Stunde, der Zeiger die",
+   "Minuten. Mitternacht ist oben,",
+   "Mittag unten. Rot auf der"
+  ],
+  [
+   "linken Seite ist der Abend, von",
+   "16 bis 20 Uhr. Lila rechts ist",
+   "der Morgen, von 4 bis 8 Uhr."
+  ],
+  [
+   "Digimon haben unterschiedliche",
+   "Wachzeiten. Die meisten stehen",
+   "morgens auf und schlafen"
+  ],
+  [
+   "nachts, aber nicht alle.",
+   "Findest du ein Digimon nicht,",
+   "das du treffen möchtest,"
+  ],
+  [
+   "versuche es zu einer anderen",
+   "Uhrzeit."
+  ]
+ ],
+ "s178.sec7.u0": [
+  [
+   "Schau oft bei Tsunomon und",
+   "Yuramon vorbei, ja?"
+  ]
+ ],
+ "s178.sec7.u1": [
+  [
+   "Ich erkläre dir den",
+   "Tamer-Level! Je höher er ist,",
+   "desto mehr Werte vererbt ein"
+  ],
+  [
+   "Digimon, wenn es an",
+   "Altersschwäche stirbt. Anfangs",
+   "steigt er kaum, aber wenn du"
+  ],
+  [
+   "weiter Digimon aufziehst,",
+   "steigt er nach und nach, ja?"
+  ]
+ ],
+ "s178.sec7.u2": [
+  [
+   "Drückst du bei einer",
+   "Finisher-Technik immer wieder",
+   "schnell L1 und R1? Mit voller"
+  ],
+  [
+   "Leiste verursachst du doppelt",
+   "so viel Schaden wie mit leerer.",
+   "Doppelt so viel!"
+  ]
+ ],
+ "s178.sec7.u3": [
+  [
+   "Ich erkläre dir, wie Digimon",
+   "leben! Natürlich müssen Digimon",
+   "zuerst einmal essen. Wenn sie"
+  ],
+  [
+   "Hunger haben, sagen sie dir",
+   "Bescheid. Dann müssen sie ihr",
+   "Geschäft erledigen, am besten"
+  ],
+  [
+   "auf einer Toilette. Wenn sie",
+   "müde sind, schlafen sie. Sie",
+   "warten auf dein Zeichen,"
+  ],
+  [
+   "{color 6}{player}{color 1}, aber je früher,",
+   "desto besser. Sie werden auch",
+   "erschöpft, krank oder schlecht"
+  ],
+  [
+   "gelaunt. Sie sind ziemlich",
+   "empfindlich, ja? Im Herzen sind",
+   "Digimon wild. Darum solltest du"
+  ],
+  [
+   "sie manchmal loben und manchmal",
+   "tadeln. Was du auch tust,",
+   "beobachte dein Digimon genau"
+  ],
+  [
+   "und kümmere dich gut darum."
+  ]
+ ],
+ "s178.sec20.u0": [
+  [
+   "Du bist also wieder bei",
+   "Bewusstsein... Es tut mir so",
+   "leid, mein Junge."
+  ]
+ ],
+ "s178.sec82.m0.o0": "Etwas ausruhen",
+ "s178.sec82.m0.o1": "Nicht ausruhen",
+ "s178.sec82.u0": [
+  [
+   "Punimon ist nicht hier, aber",
+   "ich kann mich wohl trotzdem",
+   "ausruhen."
+  ]
+ ],
+ "s178.sec82.u1": [
+  [
+   "{color 7}Punimon {color 1}",
+   "Ich bin Punimon! Ruh dich doch",
+   "etwas hier aus!"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "Eine Stunde Ruhe stellt etwas",
+   "HP und MP wieder her und",
+   "lindert die Erschöpfung ein"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "wenig."
+  ]
+ ],
+ "s178.sec85.m0.o0": "Benutzen",
+ "s178.sec85.m0.o1": "Nicht benutzen",
+ "s178.sec85.u0": [
+  [
+   "Hä, was ist das für eine",
+   "Maschine?"
+  ]
+ ],
+ "s178.sec85.u1": [
+  [
+   "Hm, die? Das ist die",
+   "{color 4}Kampfdaten-Speicher{color 1}. Er",
+   "speichert die Kampfdaten deines"
+  ],
+  [
+   "jetzigen Partners auf der",
+   "Speicherkarte. Drücke dort {color 6}×{color 1},",
+   "dann erklärt sie dir alles"
+  ],
+  [
+   "Weitere."
+  ]
+ ],
+ "s178.sec85.u2": [
+  [
+   "Die {color 4}Kampfdaten-Speicher{color 1}",
+   "benutzen?"
+  ]
+ ]
+}

@@ -1,0 +1,38 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(95) replace {    // section 95
+        set_script(91, 95);
+        engine.music_mode = 0;
+        set_bgm(15);
+        if (!garurumon_duel_promised) {
+            load_digimon(species(144));
+            set_digimon(species(144), 0, 0);
+            return;
+        }
+        store_date(date_year);
+        if (garurumon_duel_promised && date_hour >= 15 && date_hour < 17 && !is_recruited(species("Garurumon")) && garurumon_promise_days >= 1) {
+            load_digimon(species(144));
+            set_digimon(species(144), 5, 0);
+            return;
+        }
+        if (garurumon_duel_promised && date_hour >= 17 && !is_recruited(species("Garurumon")) && garurumon_promise_days >= 1) {
+            load_digimon(species(144));
+            set_digimon(species(144), 0, 0);
+            return;
+        }
+        store_date(date_year);
+        if (date_hour >= 7 && date_hour < 19) {
+            load_digimon(species("SnowAgumon"));
+            set_digimon(species("SnowAgumon"), 1, 1);
+            set_digimon(species("SnowAgumon"), 2, 1);
+        } else {
+            load_digimon(species("Hyogamon"));
+            set_digimon(species("Hyogamon"), 3, 1);
+            set_digimon(species("Hyogamon"), 4, 1);
+        }
+    }
+}

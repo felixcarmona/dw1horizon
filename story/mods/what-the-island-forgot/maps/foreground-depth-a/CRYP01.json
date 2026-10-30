@@ -1,0 +1,7 @@
+{
+  "screen": 307,
+  "art": "crypt-corridor",
+  "review": "Every niche arch and column belongs to a side wall outside the walkable corridor. No lintel crosses the aisle; the upper staircase is part of the same route. A foreground patch would wrongly cover characters in front of the walls. Preserve the full aisle and all arrivals.",
+  "pieces": [],
+  "collision": []
+}

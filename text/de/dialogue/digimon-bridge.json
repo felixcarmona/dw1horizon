@@ -1,0 +1,157 @@
+{
+ "s010.sec5.u0": [
+  [
+   "Du weißt wohl nicht, wo dein",
+   "Platz ist!"
+  ]
+ ],
+ "s010.sec7.u0": [
+  [
+   "Was habe ich dir denn getan?!"
+  ]
+ ],
+ "s010.sec8.m0.o0": "Bezahlen",
+ "s010.sec8.m0.o1": "Nicht bezahlen",
+ "s010.sec8.u0": [
+  [
+   "Uuk-uuk-uuuk! Du fragst,",
+   "warum ich hier bin?! Hör zu,",
+   "{color 6}{player}{color 1}! Ich wollte mir in"
+  ],
+  [
+   "der Stadt einen Harem",
+   "aufbauen, und sie haben mich",
+   "rausgeworfen!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tz... Ach ja. Du sollst",
+   "neuerdings im Geld schwimmen,",
+   "was? Ich verkaufe dir was"
+  ],
+  [
+   "Schönes, uuk! Das Seltenste",
+   "auf der Welt: die {color 6}Goldbanane{color 1}.",
+   "Nur 50000 Bits! Kein Kredit,"
+  ],
+  [
+   "uuk-uuk."
+  ]
+ ],
+ "s010.sec8.u2": [
+  [
+   "Spinnst du? Du trägst viel zu",
+   "viel mit dir herum!"
+  ]
+ ],
+ "s010.sec8.u3": [
+  [
+   "Ups, meine Tasche ist voll."
+  ]
+ ],
+ "s010.sec8.u4": [
+  [
+   "Uuk, ein Vergnügen, mit dir",
+   "Geschäfte zu machen!"
+  ]
+ ],
+ "s010.sec8.u5": [
+  [
+   "Geld nützt nichts, wenn du es",
+   "nicht ausgibst, Kumpel."
+  ]
+ ],
+ "s010.sec51.m0.o0": "Klar",
+ "s010.sec51.m0.o1": "Ein andermal",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Sofort stehenbleiiiben!!!"
+  ]
+ ],
+ "s010.sec51.u1": [
+  [
+   "Dein bescheidener Diener heißt",
+   "Ninjamon!"
+  ]
+ ],
+ "s010.sec51.u2": [
+  [
+   "Du bist wohl {color 6}{player}{color 1}...",
+   "und du {color 10}{partner}{color 1}! Euer",
+   "Ruhm hat sogar das ferne"
+  ],
+  [
+   "Ninja-Dorf erreicht. Willst du",
+   "mit deinem bescheidenen Diener",
+   "die Klingen kreuzen?"
+  ]
+ ],
+ "s010.sec51.u3": [
+  [
+   "Hehe, nicht so schnell, jawohl!"
+  ]
+ ],
+ "s010.sec51.u4": [
+  [
+   "Dein Können wird seinem Ruf",
+   "gerecht! Bitte mach deinen",
+   "bescheidenen Diener zu deinem"
+  ],
+  [
+   "Schühler!"
+  ]
+ ],
+ "s010.sec51.u5": [
+  [
+   "Schühler...? Ach, Schüler. Nein",
+   "danke. Aber wenn du beim",
+   "Aufbau der Stadt hilfst, gut."
+  ]
+ ],
+ "s010.sec51.u6": [
+  [
+   "Verstanden! Auch das ist",
+   "gutes Training, jawohl. Dein",
+   "bescheidener Diener wird sein"
+  ],
+  [
+   "Bestes geben!"
+  ]
+ ],
+ "s010.sec51.u7": "Ninjamon ist in die Stadt gezogen!",
+ "s011.sec5.u0": [
+  [
+   "Ich könnte dich mit einer Hand",
+   "besiegen!"
+  ]
+ ],
+ "s011.sec6.u0": [
+  [
+   "Dich kann ich wohl besiegen!"
+  ]
+ ],
+ "s011.sec7.u0": [
+  [
+   "Hihi. Du hast ja keine",
+   "Ahnung..."
+  ]
+ ],
+ "s011.sec8.u0": [
+  [
+   "Hör endlich auf!"
+  ]
+ ],
+ "s011.sec9.u0": [
+  [
+   "Andere zu schikanieren ist",
+   "nicht cool, weißt du."
+  ]
+ ],
+ "s011.sec10.u0": [
+  [
+   "Hör mir zu, Bitte!"
+  ]
+ ]
+}

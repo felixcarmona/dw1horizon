@@ -1,0 +1,259 @@
+// Readable form of script 48 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 48 {
+    npc agumon0 = 5;
+    npc agumon1 = 6;
+    npc ogremon = 7;
+    npc agumon3 = 8;
+    npc agumon4 = 9;
+    npc slot5 = 10;
+    npc nanimon = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 51, 52, 53, 54, 11;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Port. potty"), -1455, 0, 184, 3072, 671);
+        if (ogre_fortress_cleared) {
+            move_object_to(0, 45, 1, 10, 385, -50);
+            wait(10);
+        }
+    }
+
+    on talk(agumon0) replace {    // section 5
+        say(agumon0, text("s048.sec5.u0"));
+        battle();
+        recruit(species("Agumon"));
+    }
+
+    on talk(agumon1) replace {    // section 6
+        say(agumon1, text("s048.sec6.u0"));
+        battle();
+        recruit(species("Agumon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (shellmon_plea_heard && !is_recruited(species("Shellmon"))) {
+            say(tamer, text("s048.sec51.u0"));
+        }
+        unless (ogre_fortress_cleared) return;
+        choice {
+            text("s048.sec51.m0.o0") => {
+                walk(tamer, 1220, 3988);
+                walk(partner, 1201, 3486);
+                await tamer;
+                await partner;
+                sound(8, 5);
+                warp_to(37, 3, 53);
+                return;
+            }
+            text("s048.sec51.m0.o1") => {}
+        }
+        walk(tamer, 1152, 2851);
+        await tamer;
+    }
+
+    on step(1) replace {    // section 52
+        unless (ogre_fortress_cleared) goto L7;
+    }
+
+    on step(2) replace {    // section 53
+        if (!ogre_fortress_cleared) {
+            run(tamer, 245, 1250, camera: true);
+            run(partner, -50, 1250);
+            await tamer;
+            await partner;
+            goto L7;
+        }
+    }
+
+    on step(3) replace {    // section 54
+        sound(8, 5);
+        entity_set_rotation(tamer, 0);
+        canyon_elevator_ridden = false;
+        ogre_fortress_elevator_ridden = true;
+    }
+
+    on talk(nanimon) replace {    // section 11
+        wait(10);
+        animate(nanimon, 28);
+        wait(10);
+        say(tamer, text("s048.sec11.u0"));
+        say(nanimon, text("s048.sec11.u1"));
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        run(nanimon, 179, -74);
+        await nanimon;
+        remove(nanimon);
+        if (key_chains == 0) {
+            set_obj_visibility(43, 0);
+            run(tamer, 32, 829);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(43, 1);
+            sound(0, 7);
+            say(narrator, text("s048.sec11.u2"));
+            sound(0, 7);
+            set_inventory_size(20);
+            inventory_expanded.to_20 = true;
+        }
+        if (key_chains == 4) {
+            set_obj_visibility(42, 0);
+            run(tamer, 32, 829);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(42, 1);
+            sound(0, 7);
+            say(narrator, text("s048.sec11.u3"));
+            set_inventory_size(30);
+            inventory_expanded.to_30 = true;
+            recruit(species("Nanimon"));
+            engine.prosperity += 1;
+        }
+        key_chains += 1;
+        key_chain_found.ogre_fortress = true;
+        return;
+    }
+
+    shared L7 {    // code of sec52 that other code jumps to
+        camera_to(40, 2922, speed: 30);
+        await camera;
+        face(tamer, ogremon);
+        face(partner, ogremon);
+        animate(tamer, 7);
+        wait(15);
+        say(tamer, text("s048.sec52.u0"));
+        animate(tamer, anim.idle);
+        face(ogremon, tamer);
+        face(agumon3, tamer);
+        face(agumon4, tamer);
+        say(ogremon, text("s048.sec52.u1"));
+        sound(8, 11);
+        animate(tamer, 20);
+        wait(15);
+        say(tamer, text("s048.sec52.u2"));
+        animate(tamer, anim.idle);
+        say(ogremon, text("s048.sec52.u3"));
+        battle(foes: [ogremon, agumon3, agumon4]);
+        face(tamer, ogremon);
+        face(ogremon, tamer);
+        face(partner, ogremon);
+        say(agumon3, text("s048.sec52.u4"));
+        say(agumon4, text("s048.sec52.u5"));
+        run(agumon3, 224, -784);
+        run(agumon4, 116, -784);
+        await agumon3;
+        await agumon4;
+        remove(agumon3);
+        remove(agumon4);
+        say(ogremon, text("s048.sec52.u6"));
+        animate(ogremon, 46);
+        wait(30);
+        sound(8, 9);
+        set_obj_visibility(0, 0);
+        set_obj_visibility(1, 0);
+        set_obj_visibility(2, 0);
+        set_obj_visibility(3, 0);
+        set_obj_visibility(4, 0);
+        set_obj_visibility(5, 0);
+        set_obj_visibility(6, 0);
+        set_obj_visibility(7, 0);
+        set_obj_visibility(8, 0);
+        set_obj_visibility(9, 0);
+        set_obj_visibility(10, 0);
+        set_obj_visibility(11, 0);
+        set_obj_visibility(12, 0);
+        set_obj_visibility(13, 0);
+        set_obj_visibility(14, 0);
+        set_obj_visibility(15, 0);
+        set_obj_visibility(16, 0);
+        set_obj_visibility(17, 0);
+        set_obj_visibility(18, 0);
+        set_obj_visibility(19, 0);
+        set_obj_visibility(20, 0);
+        set_obj_visibility(21, 0);
+        set_obj_visibility(22, 0);
+        set_obj_visibility(23, 0);
+        set_obj_visibility(24, 0);
+        set_obj_visibility(25, 0);
+        wait(2s);
+        engine.arg = 40;
+        call_routine(routine("fade_to_white"));
+        wait(2s);
+        remove(ogremon);
+        animate(tamer, 24);
+        wait(15);
+        say(tamer, text("s048.sec52.u7"));
+        animate(tamer, anim.idle);
+        set_obj_visibility(0, 1);
+        set_obj_visibility(1, 1);
+        set_obj_visibility(2, 1);
+        set_obj_visibility(3, 1);
+        set_obj_visibility(4, 1);
+        set_obj_visibility(5, 1);
+        set_obj_visibility(6, 1);
+        set_obj_visibility(7, 1);
+        set_obj_visibility(8, 1);
+        set_obj_visibility(9, 1);
+        set_obj_visibility(10, 1);
+        set_obj_visibility(11, 1);
+        set_obj_visibility(12, 1);
+        set_obj_visibility(13, 1);
+        set_obj_visibility(14, 1);
+        set_obj_visibility(15, 1);
+        set_obj_visibility(16, 1);
+        set_obj_visibility(17, 1);
+        set_obj_visibility(18, 1);
+        set_obj_visibility(19, 1);
+        set_obj_visibility(20, 1);
+        set_obj_visibility(21, 1);
+        set_obj_visibility(22, 1);
+        set_obj_visibility(23, 1);
+        set_obj_visibility(24, 1);
+        set_obj_visibility(25, 1);
+        set_digimon(species(154), 5, 0);
+        entity_set_rotation(slot5, 0);
+        move_object_to(0, 45, 1, 10, 385, -50);
+        wait(10);
+        call_routine(routine("fade_from_white"));
+        wait(2s);
+        sound(8, 11);
+        say(slot5, text("s048.sec52.u8"));
+        face(tamer, slot5);
+        sound(8, 5);
+        await slot5;
+        remove(slot5);
+        ogre_fortress_elevator_working = true;
+        say(tamer, text("s048.sec52.u9"));
+        run(tamer, 1234, 2267, camera: true);
+        run(partner, 774, 2251);
+        await tamer;
+        await partner;
+        entity_set_rotation(tamer, 2037);
+        entity_set_rotation(partner, 2300);
+        say(tamer, text("s048.sec52.u10"));
+        ogre_fortress_cleared = true;
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+}

@@ -1,0 +1,113 @@
+// Readable form of script 107 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 107 {
+    npc sukamon0 = 5;
+    npc sukamon1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 19) {
+            spawn_item(item("Digimushrm"), 61, 54);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Happymushrm"), 39, 46);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 55, 63);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (!native_forest_rockslide_cleared_seen && is_recruited(species("Tokomon"))) {
+            say(narrator, text("s107.sec51.u0"));
+            native_forest_rockslide_cleared_seen = true;
+        }
+    }
+
+    on talk(sukamon0) replace {    // section 5
+        store_date(date_year);
+        say(sukamon0, text("s107.sec5.u0"));
+        store_digimon_type(partner_type);
+        store_digimon_value(partner_type, partner_attribute);
+        if (partner_attribute == 1) {
+            say(sukamon0, text("s107.sec5.u1"));
+        }
+        if (partner_attribute == 2) {
+            say(sukamon0, text("s107.sec5.u2"));
+        }
+        if (partner_attribute == 3) {
+            say(sukamon0, text("s107.sec5.u3"));
+        }
+        add_stat(8, 10);
+        reduce_stat(9, 10);
+    }
+
+    on talk(sukamon1) replace {    // section 6
+        say(sukamon1, text("s107.sec6.u0"));
+        choice {
+            text("s107.sec6.m0.o0") => {
+                choice {
+                    text("s107.sec6.m1.o0") => {
+                        set_stat(0, 999);
+                        set_stat(1, 999);
+                        set_stat(2, 999);
+                        set_stat(3, 999);
+                        set_stat(4, 9999);
+                        set_stat(5, 9999);
+                        set_stat(6, 9999);
+                        set_stat(7, 9999);
+                    }
+                    text("s107.sec6.m1.o1") => {
+                        set_stat(0, 1);
+                        set_stat(1, 1);
+                        set_stat(2, 1);
+                        set_stat(3, 1);
+                        set_stat(4, 1);
+                        set_stat(5, 1);
+                        set_stat(6, 1);
+                        set_stat(7, 1);
+                    }
+                    text("s107.sec6.m1.o2") => {
+                        set_stat(0, 500);
+                        set_stat(1, 500);
+                        set_stat(2, 500);
+                        set_stat(3, 500);
+                        set_stat(4, 5000);
+                        set_stat(5, 5000);
+                        set_stat(6, 5000);
+                        set_stat(7, 5000);
+                    }
+                }
+            }
+            text("s107.sec6.m0.o1") => {
+                choice {
+                    text("s107.sec6.m2.o0") => {
+                        store_date(date_year);
+                        add_minutes_to_date_at(date_year, 60);
+                        advance_to_date_at(date_year);
+                    }
+                    text("s107.sec6.m2.o1") => {
+                        store_date(date_year);
+                        add_minutes_to_date_at(date_year, 360);
+                        advance_to_date_at(date_year);
+                    }
+                    text("s107.sec6.m2.o2") => {
+                        store_date(date_year);
+                        add_minutes_to_date_at(date_year, 1440);
+                        advance_to_date_at(date_year);
+                    }
+                }
+            }
+            text("s107.sec6.m0.o2") => {
+                jump_to_file(205, 6);
+            }
+        }
+    }
+}

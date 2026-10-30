@@ -1,0 +1,290 @@
+From 29aecdd07ac725b8e532a676b7695ee80f70cc68 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 18 Oct 2026 21:00:21 +0000
+Subject: [PATCH 142/143] Patch 0142: Meteormon's size, the animated flame
+ textures and the last-battle music rule as data (MOD_MODEL_SCALE,
+ MOD_ANIM_TEXTURE, two MOD_BATTLE slots), the defeat countdown's digit time as
+ a MOD_BATTLE slot
+
+---
+ include/dw/mod_battle.h |  3 +++
+ include/dw/mod_rules.h  | 10 ++++++++++
+ src/btl/battle_hud.c    |  6 +++---
+ src/btl/battle_main.c   | 17 ++++-------------
+ src/main/anim.c         | 23 ++++-------------------
+ src/main/btl.c          |  6 ++++--
+ src/main/mod_species.c  | 29 +++++++++++++++++++++++++++++
+ src/main/model.c        |  7 ++-----
+ src/std/std_main.c      | 11 ++---------
+ 9 files changed, 61 insertions(+), 51 deletions(-)
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index 53e67b02..569ac957 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -166,6 +166,9 @@ enum {
+ 	MOD_BT_T_DEFEAT_SHOW,
+ 	MOD_BT_T_DEFEAT_END,
+ 	MOD_BT_T_SETTLE,
++	MOD_BT_T_DIGIT,		/* ticks a digit of the defeat countdown shows (it pulses 20 ticks of them; the countdown ends after 5) */
++	MOD_BT_MUSIC_LAST_SPECIES,	/* the species whose presence on the player's side (entity 1) makes the battle play the last-battle track (-1: none) */
++	MOD_BT_MUSIC_LAST_TRACK,	/* the track (font 0x21) it plays */
+ 	MOD_BT_SIZE
+ };
+ 
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 734fa300..33587a54 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -158,6 +158,16 @@ static inline const int16_t *trainGainRow(int16_t rows[][MOD_TG_WIDTH], int32_t
+ 	return any;
+ }
+ 
++/* MOD (species rules as data): the few things the game does for a species by number, MOD_MODEL_SCALE[] rows {species, percent} (the model is drawn at that
++ * percent of its size; a species without a row is drawn at 100) and MOD_ANIM_TEXTURE[] rows {species, width} (the species whose texture is animated, the
++ * flames, and the width of the strip that moves). A row with species -1 is empty; written by tools/balance.py from content/tables/species-rules.json. */
++#define MOD_MODEL_SCALE_ROWS	8
++#define MOD_ANIM_TEXTURE_ROWS	16
++extern int16_t MOD_MODEL_SCALE[MOD_MODEL_SCALE_ROWS][2];
++extern int16_t MOD_ANIM_TEXTURE[MOD_ANIM_TEXTURE_ROWS][2];
++int32_t modModelScale(int32_t type);			/* the scale as GsCOORDINATE scale (0x1000 = 100 percent) */
++int32_t modAnimatedTextureWidth(int32_t type);	/* 0 = the species has no animated texture */
++
+ /* the game clock: how many real seconds one game day lasts (MOD_CLOCK[0], -1: game time does not run). A frame of CURRENT_FRAME is
+  * 1/20 of a game minute (3 game seconds) whatever the screen's frame rate; the logic runs at 20 ticks a second. */
+ #define MOD_CLOCK_SIZE		1
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 1575c854..6ec57118 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -444,11 +444,11 @@ void BTL_tickDeathCountdown(void)
+ 		spin = &BTL_DEATH_COUNTDOWN.data.sprite;
+ 		do {
+ 			BTL_DEATH_COUNTDOWN.data.timer++;
+-			if ((BTL_DEATH_COUNTDOWN.data.timer % 31) == 0) {
++			if ((BTL_DEATH_COUNTDOWN.data.timer % (BMS(T_DIGIT) + 1)) == 0) {
+ 				BTL_DEATH_COUNTDOWN.data.step = 0;
+ 			}
+ 			BTL_DEATH_COUNTDOWN.data.step++;
+-			frame = (BTL_DEATH_COUNTDOWN.data.timer + 0x1d) / 30;
++			frame = (BTL_DEATH_COUNTDOWN.data.timer + BMS(T_DIGIT) - 1) / BMS(T_DIGIT);
+ 			if (frame < 5) {
+ 				spin->u = BTL_DEATH_COUNTDOWN_DIGIT_U[frame - 1];
+ 				spin->v = BTL_DEATH_COUNTDOWN_DIGIT_V[frame - 1];
+@@ -492,7 +492,7 @@ void BTL_renderDeathCountdown(void)
+ {
+ 	GsSortSprite(&BTL_DEATH_COUNTDOWN.data.sprite, ACTIVE_ORDERING_TABLE, 7);
+ 	GsSortSprite(&BTL_DEATH_COUNTDOWN_SPRITE, ACTIVE_ORDERING_TABLE, 7);
+-	if (BTL_DEATH_COUNTDOWN.data.timer >= 0x96) {
++	if (BTL_DEATH_COUNTDOWN.data.timer >= 5 * BMS(T_DIGIT)) {
+ 		BTL_removeDeathCountdown();
+ 	}
+ }
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index f2f54ae5..f9dd2d5b 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -19,6 +19,7 @@
+ #include <dw/sound_async.h>
+ #include <dw/swap.h>
+ #include <dw/version.h>
++#include <dw/mod_rules.h>
+ 
+ #include "common.h"
+ 
+@@ -855,15 +856,7 @@ void BTL_resetFlatten(int16_t index)
+ 	entity->flatSprite = -1;
+ 	fighter->flags &= ~FIGHTER_FLAG_FLATTENED;
+ 	fighter->flatTimer = 0;
+-	if (entity->type != 0x71) {
+-		entity->posData->scale.vx = 0x1000;
+-		entity->posData->scale.vy = 0x1000;
+-		entity->posData->scale.vz = 0x1000;
+-	} else {
+-		entity->posData->scale.vx = 0x1800;
+-		entity->posData->scale.vy = 0x1800;
+-		entity->posData->scale.vz = 0x1800;
+-	}
++	entity->posData->scale.vx = entity->posData->scale.vy = entity->posData->scale.vz = modModelScale(entity->type); /* MOD (species rules as data) */
+ }
+ 
+ void BTL_handleVictorySequence(void)
+@@ -2900,10 +2893,8 @@ void BTL_tickStatusEffects(void)
+ 				}
+ 				fighter->moveRange = 0;
+ 				BTL_resetFighterAction(fighter);
+-				if (entity->type == 0x71) {
+-					entity->posData->scale.vx = 0x1800;
+-					entity->posData->scale.vy = 0x1800;
+-					entity->posData->scale.vz = 0x1800;
++				if (modModelScale(entity->type) != 0x1000) { /* MOD (species rules as data): a species with its own scale (Meteormon) */
++					entity->posData->scale.vx = entity->posData->scale.vy = entity->posData->scale.vz = modModelScale(entity->type);
+ 				}
+ 				break;
+ 			}
+diff --git a/src/main/anim.c b/src/main/anim.c
+index e3bfd679..3baafdeb 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -10,6 +10,7 @@
+ #include <dw/species.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
++#include <dw/mod_rules.h>
+ 
+ #include "common.h"
+ 
+@@ -81,25 +82,9 @@ void animateEntityTexture(Entity *entity, EntityAnim *anim)
+ 	int16_t frame;
+ 	RECT rect;
+ 
+-	switch (entity->type) {
+-	case 0x09:
+-	case 0x85:
+-	case 0x68:
+-		texX = 0x1e;
+-		break;
+-	case 0x15:
+-	case 0x6a:
+-	case 0x8f:
+-		texX = 0x28;
+-		break;
+-	case 0x65:
+-	case 0x45:
+-		texX = 0x10;
+-		break;
+-	case 0x7f:
+-		texX = 0x2c;
+-		break;
+-	default:
++	/* MOD (species rules as data): the species with an animated texture (the flames) and the width of the animated strip */
++	texX = modAnimatedTextureWidth(entity->type);
++	if (texX == 0) {
+ 		return;
+ 	}
+ 
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 4bcc71bb..2e9a630b 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -22,6 +22,7 @@
+ #include <dw/utils.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/mod_battle.h>
+ 
+ #define BTL_FINISHER_TIM	((char *)BATTLE_FINISHER_TIM_ADDR)
+ #define BTL_FINISHER_MODEL	((char *)BATTLE_FINISHER_MODEL_ADDR)
+@@ -350,8 +351,9 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 	DigimonEntity *e;
+ 
+ 	ENEMY_COUNT = count;
+-	if (ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type == 0x73) {
+-		playMusic(0x21, 3);
++	/* MOD (battle as data): the species that makes the battle play the last-battle track, and the track, were 0x73 and 3 */
++	if (BMV(MUSIC_LAST_SPECIES) >= 0 && ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[1]]->type == BMV(MUSIC_LAST_SPECIES)) {
++		playMusic(0x21, BM(MUSIC_LAST_TRACK));
+ 	} else if ((entityId >= 2) && (entityId < 10)) {
+ 		if (IS_PREDEFINED_BATTLE == 1) {
+ 			playMusic(0x21, 0);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index dcf6842e..48a6f8be 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -7,6 +7,7 @@
+ #include <dw/file.h>
+ #include <dw/main.h>
+ #include <dw/memmap.h>
++#include <dw/mod_rules.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/species.h>
+@@ -720,3 +721,31 @@ uint8_t *loadColdAnimation(void *ent, uint32_t entry)
+ 	readFileSectors(file, COLD_ANIM_BUFFER, first, count);
+ 	return COLD_ANIM_BUFFER + (offset & 0x7FF);
+ }
++
++/* MOD (species rules as data): see mod_rules.h. Every row starts empty (species -1) and tools/balance.py writes them from content/tables/species-rules.json */
++int16_t MOD_MODEL_SCALE[MOD_MODEL_SCALE_ROWS][2] = { [0 ... MOD_MODEL_SCALE_ROWS - 1] = { -1, -1 } };
++int16_t MOD_ANIM_TEXTURE[MOD_ANIM_TEXTURE_ROWS][2] = { [0 ... MOD_ANIM_TEXTURE_ROWS - 1] = { -1, -1 } };
++
++int32_t modModelScale(int32_t type)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_MODEL_SCALE_ROWS; i++) {
++		if (MOD_MODEL_SCALE[i][0] == type && MOD_MODEL_SCALE[i][1] > 0) {
++			return MOD_MODEL_SCALE[i][1] * 0x1000 / 100;
++		}
++	}
++	return 0x1000;
++}
++
++int32_t modAnimatedTextureWidth(int32_t type)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_ANIM_TEXTURE_ROWS; i++) {
++		if (MOD_ANIM_TEXTURE[i][0] == type && MOD_ANIM_TEXTURE[i][1] > 0) {
++			return MOD_ANIM_TEXTURE[i][1];
++		}
++	}
++	return 0;
++}
+diff --git a/src/main/model.c b/src/main/model.c
+index c749dfe6..68050948 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -20,6 +20,7 @@
+ #include <dw/species.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size); /* MOD (memreclaim) */
+ 
+@@ -2846,11 +2847,7 @@ void initializeDigimonObject(int32_t type, int32_t instanceId,
+ 	anim = (int16_t *)((char *)entity->animPtr + *entity->animPtr);
+ 	++anim;
+ 	pos = entity->posData;
+-	if (type == 0x71) {
+-		pos->scale.vx = 0x1800, pos->scale.vy = 0x1800, pos->scale.vz = 0x1800;
+-	} else {
+-		pos->scale.vx = 0x1000, pos->scale.vy = 0x1000, pos->scale.vz = 0x1000;
+-	}
++	pos->scale.vx = pos->scale.vy = pos->scale.vz = modModelScale(type); /* MOD (species rules as data): 0x1800 for Meteormon, else 0x1000 */
+ 	pos->rotation.vx = 0;
+ 	pos->rotation.vy = 0;
+ 	pos->rotation.vz = 0;
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 60254002..d82c1900 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -36,6 +36,7 @@
+ #include <dw/vecmath.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ #include <text/std/std_main.h>
+ 
+ #include "common.h"
+@@ -4463,15 +4464,7 @@ void STD_resetFlatten(int16_t index)
+ 	entity->flatSprite = -1;
+ 	fighter->flags &= ~FIGHTER_FLAG_FLATTENED;
+ 	fighter->flatTimer = 0;
+-	if (entity->type != 0x71) {
+-		entity->posData->scale.vx = 0x1000;
+-		entity->posData->scale.vy = 0x1000;
+-		entity->posData->scale.vz = 0x1000;
+-	} else {
+-		entity->posData->scale.vx = 0x1800;
+-		entity->posData->scale.vy = 0x1800;
+-		entity->posData->scale.vz = 0x1800;
+-	}
++	entity->posData->scale.vx = entity->posData->scale.vy = entity->posData->scale.vz = modModelScale(entity->type); /* MOD (species rules as data) */
+ }
+ 
+ int32_t STD_areAllEnemyDigimonDead(void)
+-- 
+2.53.0
+

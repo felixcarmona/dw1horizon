@@ -1,0 +1,430 @@
+From 05cdeae11ed863ece31ee3d841b9cb5f3aaadc16 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 18:37:36 +0000
+Subject: [PATCH] Camera: big partners framed by the scroll and capped on
+ screen
+
+The world view is the fixed 3D view of the pre-rendered map; the camera is the 2D
+scroll of the background, so it cannot pull back. For partners taller than 450
+the scroll keeps the middle of the tamer+partner box where it keeps the tamer
+(MOD_CAM_SHIFT: at map entry, on createCameraMovement to the tamer, 3 px per tick
+while walking, and in wild battles), with background tiles streamed for the way
+the scroll moves. The partner is drawn (render only) at most 130 px tall by the
+spread of its bones on screen (houses, near-camera screens). Knobs in MOD_CAM_CFG.
+---
+ src/main/map.c     | 220 ++++++++++++++++++++++++++++++++++++++++++++-
+ src/main/model.c   |  60 +++++++++++++
+ src/main/partner.c |  14 ++-
+ 3 files changed, 291 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index a8ccd69..a513325 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4507,6 +4507,149 @@ void fillTileData(MapTileData *tile, uint8_t *imagePtr,
+ 	tile->texV = texV;
+ }
+ 
++/*
++ * MOD (camera): big partners in the world. The world view is the fixed 3D view of the
++ * pre-rendered map (GsWSMATRIX); the "camera" is only the 2D scroll of the background
++ * (MAP_TILE_DATA.cameraX/Y, bounded by DRAW_OFFSET_LIMIT_*), so it cannot pull back.
++ * Levers, tunable in RAM (MOD_CAM_CFG; docs/handoff/size-ladder.md has the tests):
++ *  - frame: the scroll keeps a point between the tamer and the partner's body on the
++ *    screen spot where it keeps the tamer (MOD_CAM_SHIFT, px). Set where the scroll is
++ *    placed on the tamer (map entry: initializeDrawingOffsets; createCameraMovement) and
++ *    moved toward its target, 3 px per tick at most, while the tamer walks
++ *    (tickCameraFollowPlayer is delta based and runs only with the pad held); in a
++ *    wild battle (GAME_STATE 1) it pans toward the same target (modCamBattleStep).
++ *    Off for partners up to liftFrom tall.
++ *  - fit: the partner is drawn (render only: collision, follow distance, bubbles' data
++ *    untouched) at fitPx / on-screen height when its bones spread over more than fitPx
++ *    pixels of height (off when fitPx is 0; any partner; world and wild battles only).
++ */
++typedef struct {
++	int16_t liftFrom; /* height above which the scroll frames the pair */
++	int16_t liftPct;  /* 0: off; percent of the way to the pair middle at full height */
++	int16_t liftMax;  /* height above liftFrom where liftPct is reached */
++	int16_t fitPx;    /* 0: off; else the largest on-screen bone height in px */
++	int16_t fitMin;   /* smallest render scale, 1/4096 */
++	int16_t trailCap; /* 0: off (untested); else the largest follow distance (partner.c) */
++	int16_t battle;   /* 1: the scroll frames the pair in wild battles too */
++	int16_t pad;
++	int32_t fitScale; /* out: the last render scale (1/4096) */
++	int32_t fitPxSeen;/* the partner's on-screen bone height at scale 1, smoothed */
++} ModCamCfg;
++
++ModCamCfg MOD_CAM_CFG = { 450, 100, 300, 130, 0x800, 0, 1, 0, 0x1000, 0 };
++
++DVECTOR MOD_CAM_SHIFT;          /* px: the scroll point minus the tamer's feet, on screen */
++static int32_t modCamFromTamer; /* createCameraMovement aims at the tamer */
++
++/* where the scroll point should be, relative to the tamer's feet (px): for a partner taller
++ * than liftFrom, part of the way (liftPct % at liftFrom + liftMax and above) to the middle
++ * of the box around the tamer's feet and head and the partner's feet and head */
++static void modCamTarget(DVECTOR *out)
++{
++	SVECTOR pt[4];
++	SVECTOR sc;
++	VECTOR *t;
++	VECTOR *p;
++	int32_t h;
++	int32_t w;
++	int32_t n;
++	int32_t i;
++	int16_t x0, x1, y0, y1, fx, fy;
++
++	out->vx = out->vy = 0;
++	h = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).height;
++	if (MOD_CAM_CFG.liftPct <= 0 || h <= MOD_CAM_CFG.liftFrom || MOD_CAM_CFG.liftMax <= 0) {
++		return;
++	}
++	w = (h - MOD_CAM_CFG.liftFrom) * MOD_CAM_CFG.liftPct / MOD_CAM_CFG.liftMax; /* percent */
++	if (w > MOD_CAM_CFG.liftPct) {
++		w = MOD_CAM_CFG.liftPct;
++	}
++	t = &TAMER_ENTITY.entity.posData->location;
++	p = &PARTNER_ENTITY.digimonEntity.entity.posData->location;
++	copyVector(&pt[0], t);
++	pt[1] = pt[0];
++	pt[1].vy -= DIGI_PARA(TAMER_ENTITY.entity.type).height; /* -y is up */
++	n = 2;
++	if (PARTNER_ENTITY.digimonEntity.entity.isOnMap != 0) {
++		copyVector(&pt[2], p);
++		pt[3] = pt[2];
++		pt[3].vy -= h;
++		n = 4;
++	} else {
++		pt[2] = pt[0];
++		pt[2].vy -= h;
++		n = 3;
++	}
++	SetRotMatrix(&GsWSMATRIX);
++	SetTransMatrix(&GsWSMATRIX);
++	fx = fy = x0 = x1 = y0 = y1 = 0;
++	for (i = 0; i < n; i++) {
++		gte_ldv0(&pt[i]);
++		gte_rtps();
++		gte_stsxy(&sc);
++		if (i == 0) {
++			fx = x0 = x1 = sc.vx;
++			fy = y0 = y1 = sc.vy;
++			continue;
++		}
++		if (sc.vx < x0) x0 = sc.vx;
++		if (sc.vx > x1) x1 = sc.vx;
++		if (sc.vy < y0) y0 = sc.vy;
++		if (sc.vy > y1) y1 = sc.vy;
++	}
++	out->vx = ((x0 + x1) / 2 - fx) * w / 100;
++	out->vy = ((y0 + y1) / 2 - fy) * w / 100;
++}
++
++/* one follow step of the shift: at most 3 px per axis */
++static int16_t modCamStep(int16_t want)
++{
++	return want > 3 ? 3 : want < -3 ? -3 : want;
++}
++
++extern int32_t IS_IN_MENU;
++
++/* fit only in the world and wild battles: menus (the Digivice view), the evolution
++ * scene, VS and arenas draw the partner with their own cameras */
++static int32_t modFitOff(void)
++{
++	return GAME_STATE > 1 || IS_IN_MENU != 0;
++}
++
++/* the render scale of the partner (1/4096): its on-screen height (fitPxSeen: the spread of
++ * its bones' origins, unscaled, smoothed over frames; renderDigimon measures it) is kept at
++ * fitPx pixels at most, so it grows less as it nears the camera or rears up */
++int32_t modPartnerFitScale(void)
++{
++	int32_t px;
++	int32_t s;
++
++	if (MOD_CAM_CFG.fitPx <= 0 || modFitOff()) {
++		return 0x1000;
++	}
++	px = MOD_CAM_CFG.fitPxSeen;
++	s = 0x1000;
++	if (px > MOD_CAM_CFG.fitPx) {
++		s = MOD_CAM_CFG.fitPx * 0x1000 / px;
++		if (s < MOD_CAM_CFG.fitMin) {
++			s = MOD_CAM_CFG.fitMin;
++		}
++	}
++	MOD_CAM_CFG.fitScale = s;
++	return s;
++}
++
++/* renderDigimon: the partner's bones spread over px pixels of height as drawn at scale s */
++void modPartnerFitMeasure(int32_t px, int32_t s)
++{
++	if (s <= 0 || modFitOff()) {
++		return;
++	}
++	px = px * 0x1000 / s;
++	MOD_CAM_CFG.fitPxSeen = (MOD_CAM_CFG.fitPxSeen * 7 + px) / 8;
++}
++
+ void initializeDrawingOffsets(MapTileData *tiles)
+ {
+ 	SVECTOR viewRef;
+@@ -4526,6 +4669,9 @@ void initializeDrawingOffsets(MapTileData *tiles)
+ 	gte_ldv0(&tamerPos);
+ 	gte_rtps();
+ 	gte_stsxy(&tamerScreen);
++	modCamTarget(&MOD_CAM_SHIFT); /* MOD (camera): the scroll point, not the feet */
++	tamerScreen.vx += MOD_CAM_SHIFT.vx;
++	tamerScreen.vy += MOD_CAM_SHIFT.vy;
+ 	MAP_TILE_DATA.cameraX += tamerScreen.vx - viewScreen.vx;
+ 	MAP_TILE_DATA.cameraY += tamerScreen.vy - viewScreen.vy;
+ 	DRAWING_OFFSET_X += viewScreen.vx - tamerScreen.vx;
+@@ -4607,6 +4753,47 @@ void unloadMap(void)
+ 	unloadMapParts();
+ }
+ 
++/* MOD (camera): in a wild battle (the tamer stands, nothing scrolls in the original; the
++ * follow flag is off, so it runs whenever no script camera move is going on) the
++ * scroll pans toward the same pair box, 3 px per tick; background and 3D origin move together
++ * (cameraX/Y and DRAWING_OFFSET_X/Y, as tickCameraMovement), clamped to the map */
++static void modCamBattleStep(void)
++{
++	DVECTOR want;
++	int16_t oldX;
++	int16_t oldY;
++	int16_t rx;
++	int16_t ry;
++
++	modCamTarget(&want);
++	oldX = MAP_TILE_DATA.cameraX;
++	oldY = MAP_TILE_DATA.cameraY;
++	MAP_TILE_DATA.cameraX += modCamStep(want.vx - MOD_CAM_SHIFT.vx);
++	MAP_TILE_DATA.cameraY += modCamStep(want.vy - MOD_CAM_SHIFT.vy);
++	if (MAP_TILE_DATA.cameraX < 0) {
++		MAP_TILE_DATA.cameraX = 0;
++	} else if (MAP_TILE_DATA.cameraX > MAP_TILE_DATA.width * 128 - 320) {
++		MAP_TILE_DATA.cameraX = MAP_TILE_DATA.width * 128 - 320;
++	}
++	if (MAP_TILE_DATA.cameraY < 0) {
++		MAP_TILE_DATA.cameraY = 0;
++	} else if (MAP_TILE_DATA.cameraY > MAP_TILE_DATA.height * 128 - 240) {
++		MAP_TILE_DATA.cameraY = MAP_TILE_DATA.height * 128 - 240;
++	}
++	rx = MAP_TILE_DATA.cameraX - oldX;
++	ry = MAP_TILE_DATA.cameraY - oldY;
++	if (rx == 0 && ry == 0) {
++		return;
++	}
++	MOD_CAM_SHIFT.vx += rx;
++	MOD_CAM_SHIFT.vy += ry;
++	DRAWING_OFFSET_X -= rx;
++	DRAWING_OFFSET_Y -= ry;
++	PLAYER_OFFSET_X -= rx;
++	PLAYER_OFFSET_Y -= ry;
++	handleTileUpdate(((rx < 0) ? 0x8000 : 0x2000) | ((ry < 0) ? 0x1000 : 0x4000), 0);
++}
++
+ void tickCameraFollowPlayer(void)
+ {
+ 	SVECTOR worldPos;
+@@ -4632,13 +4819,31 @@ void tickCameraFollowPlayer(void)
+ 		gte_ldv0(&worldPos);
+ 		gte_rtps();
+ 		gte_stsxy(&screenEnd);
++		{ /* MOD (camera): the shift follows its target, a few px per step */
++			DVECTOR want;
++			int16_t dx;
++			int16_t dy;
++
++			modCamTarget(&want);
++			dx = modCamStep(want.vx - MOD_CAM_SHIFT.vx);
++			dy = modCamStep(want.vy - MOD_CAM_SHIFT.vy);
++			MOD_CAM_SHIFT.vx += dx;
++			MOD_CAM_SHIFT.vy += dy;
++			screenEnd.vx += dx;
++			screenEnd.vy += dy;
++		}
+ 		oldCameraX = MAP_TILE_DATA.cameraX;
+ 		oldCameraY = MAP_TILE_DATA.cameraY;
+ 		MAP_TILE_DATA.cameraX += screenEnd.vx - screenStart.vx;
+ 		MAP_TILE_DATA.cameraY += screenEnd.vy - screenStart.vy;
+ 		updateDrawingOffsets((DVECTOR *)&screenStart,
+ 				   (DVECTOR *)&screenEnd);
+-		handleTileUpdate(POLLED_INPUT, 0);
++		/* MOD (camera): the background rows/columns are streamed for the way the scroll
++		 * moved, which the shift can turn against the pad (as tickCameraMovement does) */
++		handleTileUpdate(((MAP_TILE_DATA.cameraX < oldCameraX) ? 0x8000 : 0x2000) |
++				 ((MAP_TILE_DATA.cameraY < oldCameraY) ? 0x1000 : 0x4000), 0);
++	} else if (GAME_STATE == 1 && CAMERA_HAS_TARGET == 0 && MOD_CAM_CFG.battle != 0) {
++		modCamBattleStep(); /* MOD (camera) */
+ 	}
+ }
+ 
+@@ -4993,6 +5198,7 @@ void createCameraMovement(target, instanceId)
+ // clang-format on
+ {
+ 	CAMERA_TARGET = *target;
++	modCamFromTamer = target == &TAMER_ENTITY.entity.posData->location; /* MOD (camera) */
+ 	addObject(0xfb1, instanceId, tickCameraMovement, 0);
+ 	CAMERA_REACHED_TARGET = -1;
+ }
+@@ -5026,6 +5232,17 @@ void tickCameraMovement(instanceId)
+ 		gte_ldv0(&target);
+ 		gte_rtps();
+ 		gte_stsxy((long *)&screenTarget);
++		if (modCamFromTamer) { /* MOD (camera) */
++			modCamTarget(&MOD_CAM_SHIFT);
++			screenTarget.vx += MOD_CAM_SHIFT.vx;
++			screenTarget.vy += MOD_CAM_SHIFT.vy;
++		} else {
++			/* a script pan (tickCameraMoveTo/ToEntity): the target itself becomes the
++			 * point the scroll keeps; the follow eases the shift back while walking */
++			MOD_CAM_SHIFT.vx = MOD_CAM_SHIFT.vy = 0;
++		}
++		SetRotMatrix(&GsWSMATRIX);
++		SetTransMatrix(&GsWSMATRIX);
+ 		gte_ldv0(&view);
+ 		gte_rtps();
+ 		gte_stsxy((long *)&screenView);
+@@ -5180,6 +5397,7 @@ void tickCameraMovement(instanceId)
+ 
+ 	if ((atEdgeX == 0) && (atEdgeY == 0)) {
+ 		CAMERA_HAS_TARGET = 0;
++		modCamFromTamer = 0; /* MOD (camera) */
+ 		setCameraFollowPlayer();
+ 
+ 		if (CAMERA_REACHED_TARGET == 0) {
+diff --git a/src/main/model.c b/src/main/model.c
+index 626a54b..c749dfe 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2873,6 +2873,33 @@ void initializeDigimonObject(int32_t type, int32_t instanceId,
+ 	addObject((int16_t)type, (int16_t)instanceId, tick, renderDigimon);
+ }
+ 
++int32_t modPartnerFitScale(void); /* MOD (camera), map.c */
++void modPartnerFitMeasure(int32_t px, int32_t s);
++int32_t worldPosToScreenPos(SVECTOR *pos, DVECTOR *out);
++
++/* MOD (camera): the screen y of a bone's origin (its world matrix from GsGetLws) */
++static int32_t modBoneScreenY(MATRIX *lw)
++{
++	SVECTOR v;
++	DVECTOR out;
++
++	v.vx = lw->t[0];
++	v.vy = lw->t[1];
++	v.vz = lw->t[2];
++	worldPosToScreenPos(&v, &out);
++	return out.vy;
++}
++
++/* MOD (camera): the bones' world matrices are rebuilt by the next GsGetLws */
++static void modFlagBones(PositionData *pos, int32_t boneCount)
++{
++	int32_t i;
++
++	for (i = 0; i < boneCount; i++) {
++		pos[i].posMatrix.flg = 0;
++	}
++}
++
+ void renderDigimon(instanceId)
+ 	int16_t instanceId;
+ {
+@@ -2881,6 +2908,10 @@ void renderDigimon(instanceId)
+ 	MATRIX ls;
+ 	int32_t boneCount;
+ 	int32_t i;
++	int32_t fit;
++	MATRIX rootSave;
++	int32_t y0 = 0x7fff;
++	int32_t y1 = -0x7fff;
+ 
+ 	if (ENTITY_TABLE[instanceId]->isOnMap != 2) {
+ 		if (ENTITY_TABLE[instanceId]->isOnMap == 0) {
+@@ -2892,11 +2923,32 @@ void renderDigimon(instanceId)
+ 	}
+ 	pos = ENTITY_TABLE[instanceId]->posData;
+ 	boneCount = DIGI_PARA(ENTITY_TABLE[instanceId]->type).boneCount;
++	/* MOD (camera): a big partner drawn smaller on a screen it does not fit (map.c) */
++	fit = instanceId == 1 ? modPartnerFitScale() : 0x1000;
++	if (fit != 0x1000) {
++		VECTOR sv;
++
++		rootSave = pos->posMatrix.coord;
++		sv.vx = sv.vy = sv.vz = fit;
++		ScaleMatrix(&pos->posMatrix.coord, &sv);
++		modFlagBones(pos, boneCount);
++	}
+ 	for (i = 0; i < boneCount; pos++, i++) {
+ 		if (pos->obj.tmd == NULL) {
+ 			continue;
+ 		}
+ 		GsGetLws(pos->obj.coord2, &lw, &ls);
++		if (instanceId == 1) { /* MOD (camera): the bones' spread on screen */
++			int32_t y;
++
++			y = modBoneScreenY(&lw);
++			if (y < y0) {
++				y0 = y;
++			}
++			if (y > y1) {
++				y1 = y;
++			}
++		}
+ 		GsSetLightMatrix(&lw);
+ 		GsSetLsMatrix(&ls);
+ 		if (ENTITY_TABLE[instanceId]->flatSprite != -1) {
+@@ -2924,6 +2976,14 @@ void renderDigimon(instanceId)
+ 		}
+ 		GsSortObject4(&pos->obj, ACTIVE_ORDERING_TABLE, 2, getScratchAddr(0));
+ 	}
++	if (instanceId == 1 && y1 > y0) {
++		modPartnerFitMeasure(y1 - y0, fit);
++	}
++	if (fit != 0x1000) { /* MOD (camera): the tick's root matrix back */
++		pos = ENTITY_TABLE[instanceId]->posData;
++		pos->posMatrix.coord = rootSave;
++		modFlagBones(pos, boneCount);
++	}
+ 	if (ENTITY_TABLE[instanceId]->flatSprite != -1) {
+ 		renderFlatDigimon(ENTITY_TABLE[instanceId]);
+ 	}
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 90af3af..3890d79 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -957,6 +957,9 @@ void partnerTickWalking(void)
+ 	}
+ }
+ 
++extern int16_t MOD_CAM_CFG[]; /* MOD (camera), map.c: [5] = trailCap */
++#define MOD_CAM_TRAIL_CAP (MOD_CAM_CFG[5])
++
+ int8_t getPartnerTamerCloseness(void)
+ {
+ 	VECTOR *tamerLocation;
+@@ -972,8 +975,15 @@ int8_t getPartnerTamerCloseness(void)
+ 		   (tamerLocation->vz - partnerLocation->vz) * (tamerLocation->vz - partnerLocation->vz);
+ 
+ 	radius = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).radius;
+-	walkDistance = (radius * 5 / 2) * (radius * 5 / 2);
+-	sprintDistanceSquared = (radius * 7 / 2) * (radius * 7 / 2);
++	walkDistance = radius * 5 / 2;
++	sprintDistanceSquared = radius * 7 / 2;
++	/* MOD (camera): a big partner trails closer (0: off; MOD_CAM_CFG in map.c) */
++	if (MOD_CAM_TRAIL_CAP > 0 && walkDistance > MOD_CAM_TRAIL_CAP) {
++		sprintDistanceSquared = sprintDistanceSquared * MOD_CAM_TRAIL_CAP / walkDistance;
++		walkDistance = MOD_CAM_TRAIL_CAP;
++	}
++	walkDistance = walkDistance * walkDistance;
++	sprintDistanceSquared = sprintDistanceSquared * sprintDistanceSquared;
+ 
+ 	if (distance > sprintDistanceSquared) {
+ 		return 0;
+-- 
+2.53.0
+

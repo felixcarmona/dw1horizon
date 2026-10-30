@@ -1,0 +1,338 @@
+{
+  "screen": 340,
+  "review": "Both north doorway posts and the lintel, the tipped upper cart and the lower right cart overlap character bodies. All five use SAM silhouettes, with post/cart anchors at their actual visible bases. The workbench, plaques and side frames retain their blocked footprints.",
+  "collision": [],
+  "pieces": [
+    {
+      "png": "340-entrance-lintel.png",
+      "at": [
+        362,
+        21
+      ],
+      "depth": [
+        447,
+        189
+      ],
+      "segmentation": {
+        "box": [
+          356,
+          18,
+          544,
+          56
+        ],
+        "positive": [
+          [
+            523,
+            35
+          ]
+        ],
+        "negative": [
+          [
+            353,
+            37.0
+          ],
+          [
+            547,
+            37.0
+          ],
+          [
+            450.0,
+            60
+          ]
+        ],
+        "score": 0.9891549348831177,
+        "area": 4425,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "340-entrance-right-post.png",
+      "at": [
+        497,
+        47
+      ],
+      "depth": [
+        509,
+        183
+      ],
+      "segmentation": {
+        "box": [
+          495,
+          45,
+          535,
+          188
+        ],
+        "positive": [
+          [
+            517,
+            64
+          ],
+          [
+            513,
+            111
+          ],
+          [
+            508,
+            157
+          ],
+          [
+            514,
+            174
+          ],
+          [
+            523,
+            120
+          ],
+          [
+            504,
+            126
+          ]
+        ],
+        "negative": [
+          [
+            493,
+            127
+          ],
+          [
+            532,
+            124
+          ],
+          [
+            492,
+            174
+          ],
+          [
+            533,
+            181
+          ]
+        ],
+        "score": 0.9362359046936035,
+        "area": 2749,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "340-lower-cart.png",
+      "at": [
+        672,
+        394
+      ],
+      "depth": [
+        735,
+        546
+      ],
+      "segmentation": {
+        "box": [
+          664,
+          388,
+          812,
+          550
+        ],
+        "positive": [
+          [
+            730,
+            481
+          ]
+        ],
+        "negative": [
+          [
+            661,
+            469.0
+          ],
+          [
+            815,
+            469.0
+          ],
+          [
+            738.0,
+            554
+          ]
+        ],
+        "score": 0.9695780277252197,
+        "area": 12999,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "340-entrance-left-post.png",
+      "depth": [
+        383,
+        188
+      ],
+      "at": [
+        366,
+        48
+      ],
+      "segmentation": {
+        "box": [
+          363,
+          47,
+          401,
+          192
+        ],
+        "positive": [
+          [
+            383,
+            70
+          ],
+          [
+            383,
+            120
+          ],
+          [
+            383,
+            170
+          ]
+        ],
+        "negative": [
+          [
+            404,
+            140
+          ],
+          [
+            360,
+            140
+          ],
+          [
+            385,
+            197
+          ]
+        ],
+        "score": 0.9410284757614136,
+        "area": 2657,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "340-upper-cart.png",
+      "depth": [
+        299,
+        243
+      ],
+      "at": [
+        243,
+        156
+      ],
+      "segmentation": {
+        "box": [
+          240,
+          148,
+          357,
+          251
+        ],
+        "positive": [
+          [
+            283,
+            179
+          ],
+          [
+            291,
+            215
+          ],
+          [
+            324,
+            207
+          ]
+        ],
+        "negative": [
+          [
+            341,
+            247
+          ],
+          [
+            252,
+            250
+          ],
+          [
+            350,
+            172
+          ]
+        ],
+        "score": 0.970394492149353,
+        "area": 5807,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "340-entry-upper-rock.png",
+      "at": [
+        332,
+        0
+      ],
+      "depth": [
+        447,
+        189
+      ],
+      "segmentation": {
+        "box": [
+          345,
+          0,
+          549,
+          30
+        ],
+        "positive": [
+          [
+            391,
+            12
+          ],
+          [
+            446,
+            12
+          ],
+          [
+            508,
+            12
+          ]
+        ],
+        "negative": [
+          [
+            450,
+            36
+          ],
+          [
+            330,
+            22
+          ],
+          [
+            561,
+            22
+          ],
+          [
+            450,
+            65
+          ]
+        ],
+        "score": 0.8648874759674072,
+        "area": 5362,
+        "min_component_area": 12,
+        "max_hole_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/cart-hall-2400x1792.png",
+    "source_sha1": "cea04b519a4d45f7fc37908f3eb66405a24e50d1",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact.",
+  "upper_wall_review": "The solid rock above the doorway also occludes tall partners behind the entrance plane. SAM follows that rock object; small enclosed speck holes are filled, without repainting its pixels."
+}

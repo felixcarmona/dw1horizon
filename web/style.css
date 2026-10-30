@@ -1,0 +1,315 @@
+/* Horizon: a sunset sky fading to white, centred and quiet. The four discs are four slots, the cover of each in grey
+   until its disc is added (the colour comes in as the check advances), above one place to add them; files that
+   cannot be used are explained in one dialog. */
+
+:root {
+  --ink: #1b1a24;
+  --ink-2: #4a4757;
+  --muted: #6b6878;
+  --line: #ece8f0;
+  --soft: #f4f1f7;
+  --sun: #f07a3a;
+  --green: #239161;
+  --green-bg: #e3f4ec;
+  --amber: #d9821d;
+  --amber-bg: #fdf0dc;
+  --red: #d64545;
+  --red-bg: #fcebea;
+  /* Japanese: Plus Jakarta Sans has no kana or kanji, so they come from the system's Japanese font (no web font). */
+  --font: 'Plus Jakarta Sans', ui-sans-serif, system-ui, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI',
+    'Yu Gothic', Meiryo, 'Noto Sans JP', 'Noto Sans CJK JP', 'IPAGothic', sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font: 400 16px/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #cfd8f6 0px, #f3d3e0 380px, #ffe1c4 640px, #fff 980px) no-repeat, #fff;
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+h1, h2, h3 { margin: 0; color: var(--ink); }
+h2 { font-size: clamp(32px, 4.5vw, 48px); letter-spacing: -.04em; line-height: 1.08; font-weight: 800; text-align: center; }
+.sub { color: var(--muted); text-align: center; margin: 10px auto 40px; max-width: 32em; font-size: 18px; }
+section { padding-top: 120px; }
+
+/* ------------------------------------------------------------ bar */
+
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 68px; }
+.brand { font-weight: 800; font-size: 18px; letter-spacing: -.02em; white-space: nowrap; }
+.pill {
+  display: flex; align-items: center; gap: 4px; padding: 4px; font-size: 14px;
+  background: rgba(255, 255, 255, .55); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .8); border-radius: 999px;
+}
+.nav-link { padding: 6px 14px; border-radius: 999px; color: var(--muted); }
+.nav-link:hover { color: var(--ink); }
+/* The language menu: a native select (the phone's own picker), the globe and a chevron drawn around it. */
+.lang { position: relative; display: flex; align-items: center; color: var(--ink); }
+.lang-icon { position: absolute; left: 11px; pointer-events: none; color: var(--muted); }
+.lang select {
+  appearance: none; -webkit-appearance: none; font: 500 14px var(--font); color: var(--ink);
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236b6878' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 11px center;
+  border: 0; border-radius: 999px; box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  padding: 6px 30px 6px 33px; min-height: 32px; max-width: 13em; cursor: pointer; text-overflow: ellipsis;
+  field-sizing: content;   /* as wide as the chosen name, not the longest (Chromium; others: the longest) */
+}
+.lang select:hover { color: var(--sun); }
+.lang select:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+@media (max-width: 560px) { .nav-link { display: none; } }
+
+/* ------------------------------------------------------------ hero */
+
+.hero { text-align: center; padding-top: 72px; }
+.hero h1 { font-size: clamp(42px, 7.5vw, 84px); line-height: 1; letter-spacing: -.05em; font-weight: 800; margin: 0 auto; max-width: 12ch; }
+.hero-lead { color: var(--ink-2); font-size: clamp(17px, 2vw, 20px); max-width: 32em; margin: 22px auto 30px; }
+/* The languages line: what the released disc plays in. */
+.hero-langs { color: var(--muted); font-size: 15px; max-width: 34em; margin: -14px auto 28px; }
+/* Japanese: no tight Latin tracking, and lines broken between words of the phrase, not inside them. */
+:lang(ja) h1, :lang(ja) h2, :lang(ja) .hero h1 { letter-spacing: 0; }
+:lang(ja) .hero h1 { max-width: 11em; line-height: 1.15; word-break: auto-phrase; }
+:lang(ja) body { line-break: strict; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* ------------------------------------------------------------ buttons */
+
+.button {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 26px; border-radius: 999px; border: 0;
+  font: 600 16px var(--font); cursor: pointer; white-space: nowrap;
+}
+.button.primary { background: var(--ink); color: #fff; }
+.button.primary:hover:not(:disabled) { background: #33313f; }
+.button.soft { background: rgba(255, 255, 255, .7); color: var(--ink); }
+.button.soft:hover { background: #fff; }
+.button:disabled { background: var(--soft); color: #aaa5b5; cursor: not-allowed; }
+
+/* ------------------------------------------------------------ discs */
+
+[hidden] { display: none !important; }
+.file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* The four slots: one card per game, in a row, the same height in every state. Empty: the cover in grey behind a
+   quiet solid border. Checking: the colour cover is revealed from the left as the check
+   advances (--p), the percentage in a small pill on the cover. Ready: the cover in colour with a green check, × in
+   the corner. */
+.slots {
+  list-style: none; padding: 0; margin: 40px 0 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;
+}
+.slot {
+  position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0;
+  padding: 22px 16px 20px; border-radius: 22px; background: #fff; border: 1px solid var(--line);
+  box-shadow: 0 20px 50px -34px rgba(60, 40, 90, .35);
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.slot[data-state="empty"] { background: rgba(255, 255, 255, .6); box-shadow: none; }
+.slot[data-state="ready"] { border-color: #cbe7d8; }
+.slot-art {
+  position: relative; width: min(100%, 164px); aspect-ratio: 1; border-radius: 14px; overflow: hidden;
+  background: var(--soft); box-shadow: 0 12px 26px -14px rgba(40, 30, 60, .5);
+  transition: box-shadow .3s, transform .3s;
+}
+.slot[data-state="empty"] .slot-art { box-shadow: none; }
+.slot[data-state="ready"] .slot-art { transform: translateY(-2px); box-shadow: 0 16px 30px -14px rgba(40, 30, 60, .55); }
+.cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-grey { filter: grayscale(1) contrast(.78) brightness(1.14); opacity: .8; }
+.slot[data-state="empty"] .cover-grey { opacity: .62; }
+/* the colour, from the left to --p (0 % empty, the check's progress, 100 % ready) */
+.cover-colour { clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0); transition: clip-path .3s linear; }
+.slot[data-state="ready"] .cover-colour { clip-path: inset(0); }
+/* on the cover's corner: the percentage while checking, the check when ready */
+.slot-check, .slot-pct {
+  position: absolute; right: 8px; bottom: 8px; color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .28), 0 0 0 2px #fff;
+}
+.slot-check { width: 28px; height: 28px; border-radius: 50%; background: var(--green); display: grid; place-items: center; font: 700 15px/1 var(--font); }
+.slot-pct { padding: 6px 9px; border-radius: 999px; background: var(--amber); font: 700 12px/1 var(--font); font-variant-numeric: tabular-nums; }
+.slot-text { min-width: 0; }
+.slot-name { display: block; margin-top: 14px; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.slot-purpose { display: block; margin-top: 2px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+.disc-remove {
+  position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: none;
+  cursor: pointer; font: 400 22px/1 var(--font); color: var(--muted);
+}
+.disc-remove:hover { background: var(--soft); color: var(--ink); }
+@media (max-width: 860px) { .slots { grid-template-columns: 1fr 1fr; } }
+/* a phone: four rows, the cover on the left */
+@media (max-width: 560px) {
+  .slots { grid-template-columns: 1fr; gap: 10px; margin-top: 32px; }
+  .slot { flex-direction: row; align-items: center; gap: 14px; text-align: left; padding: 10px 44px 10px 10px; }
+  .slot-art { width: 72px; flex: none; border-radius: 10px; }
+  .slot-check { width: 22px; height: 22px; right: 5px; bottom: 5px; font-size: 12px; }
+  .slot-pct { right: 5px; bottom: 5px; padding: 4px 7px; font-size: 11px; }
+  .slot-name { margin-top: 0; font-size: 15.5px; }
+  .slot-purpose { font-size: 12.5px; }
+}
+@media (prefers-reduced-motion: reduce) { .slot, .slot-art, .cover-colour { transition: none; } }
+
+/* The drop zone: one button under the slots (a click, Enter, or files dropped on it or anywhere on the page). */
+.drop-zone {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; max-width: 560px;
+  margin: 18px auto 0; padding: 30px 20px; appearance: none; font: inherit; color: var(--ink); cursor: pointer;
+  text-align: center; border: 3px solid transparent; border-radius: 22px; background: rgba(255, 255, 255, .55);
+  transition: background .15s;
+}
+.drop-zone:hover, .drop-zone.on { background: #fff; }
+/* No viewBox: the rect follows the box, while stroke and dash lengths stay in CSS pixels. */
+.drop-border { position: absolute; inset: -3px; width: calc(100% + 6px); height: calc(100% + 6px); pointer-events: none; color: #cfc4dc; transition: color .15s; }
+.drop-border rect { width: calc(100% - 3px); height: calc(100% - 3px); fill: none; stroke: currentColor; stroke-width: 3px; stroke-dasharray: 14 10; }
+.drop-zone:hover .drop-border, .drop-zone.on .drop-border { color: var(--sun); }
+/* the icon: an arrow down into an open tray; it turns orange with the border, and the arrow dips into the tray on drag-over */
+.drop-icon { display: block; margin-bottom: 6px; color: var(--ink-2); transition: color .15s; }
+.drop-zone:hover .drop-icon, .drop-zone.on .drop-icon { color: var(--sun); }
+.drop-arrow { transition: transform .25s cubic-bezier(.2, .8, .2, 1); }
+.drop-zone.on .drop-arrow { transform: translateY(3px); }
+.drop-text { font-weight: 600; font-size: 16px; line-height: 1.4; }
+.drop-hint { color: var(--muted); font-size: 13.5px; }
+@media (max-width: 560px) { .drop-zone { padding: 22px 16px; } }
+@media (prefers-reduced-motion: reduce) { .drop-icon, .drop-arrow { transition: none; } .drop-zone.on .drop-arrow { transform: none; } }
+
+.jobs { list-style: none; padding: 0; margin: 18px auto 0; max-width: 760px; text-align: center; font-size: 14px; color: var(--amber); }
+.jobs:empty { display: none; }
+.jobs li { padding: 4px 0; overflow-wrap: anywhere; }
+
+.sums { max-width: 760px; margin: 22px auto 0; font-size: 14px; text-align: center; }
+.sums summary { cursor: pointer; color: var(--muted); display: inline-block; }
+.sums summary:hover { color: var(--ink); }
+.sums-scroll { overflow-x: auto; margin-top: 12px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+.sums table { border-collapse: collapse; width: 100%; }
+.sums th, .sums td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+.sums tr:last-child th, .sums tr:last-child td { border-bottom: 0; }
+.sums thead th { color: var(--muted); font-weight: 500; font-size: 13px; }
+.sums tbody th { font-weight: 600; font-size: 13.5px; }
+.sums tbody th a:hover { color: var(--sun); }
+.sums td { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.sums tbody th { min-width: 9rem; }
+.sums td .got[data-match="true"] { color: var(--green); }
+.sums td .got[data-match="false"] { color: var(--red); }
+
+/* The console photo, between the discs and the button. */
+.psx {
+  display: block; width: min(680px, 100%); height: auto; margin: 40px auto 0;
+  filter: drop-shadow(0 30px 30px rgba(60, 40, 90, .22));
+}
+
+.patch-row { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 30px; text-align: center; }
+.patch-status { margin: 0; max-width: 34em; color: var(--muted); font-size: 15px; }
+
+/* ------------------------------------------------------------ the build */
+
+.build {
+  max-width: 760px; margin: 26px auto 0; padding: 22px 24px; background: #fff; border: 1px solid var(--line);
+  border-radius: 22px; box-shadow: 0 20px 50px -34px rgba(60, 40, 90, .35);
+}
+.build-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
+.build-head b { font-size: 17px; letter-spacing: -.01em; }
+.build-time { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.progress { position: relative; height: 10px; margin: 14px 0 16px; border-radius: 999px; background: var(--soft); overflow: hidden; }
+.progress span {
+  position: absolute; inset: 0; transform-origin: left; transform: scaleX(var(--f, 0));
+  background: linear-gradient(90deg, #f3a066, var(--sun)); border-radius: 999px; transition: transform .4s ease;
+}
+.build[data-phase="done"] .progress span { background: var(--green); }
+.build[data-phase="error"] .progress span { background: var(--red); }
+.build-detail { margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line); }
+.build-detail[hidden] { display: none; }
+.build-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; }
+.build-steps li { padding: 2px 10px; border-radius: 999px; font-size: 12.5px; background: var(--soft); color: var(--muted); font-variant-numeric: tabular-nums; }
+.build-steps li[data-state="busy"] { background: var(--amber-bg); color: var(--amber); }
+.build-steps li[data-state="done"] { background: var(--green-bg); color: var(--green); }
+.build-workers { list-style: none; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px 16px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.build-workers li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.build-workers li[data-state="busy"] { color: var(--ink-2); }
+.build-error { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--red-bg); color: var(--red); font-size: 14.5px; }
+.build-error pre { margin: 8px 0 0; max-height: 220px; overflow: auto; white-space: pre-wrap; font-size: 11.5px; color: var(--ink-2); }
+.build-done { margin-top: 16px; text-align: center; }
+.build-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.build-note { margin: 12px auto 0; max-width: 34em; color: var(--ink-2); font-size: 14.5px; }
+.build-sha { margin: 6px auto 0; color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
+.build-foot { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-top: 14px; font-size: 13px; }
+.link-button { font: 500 13px var(--font); color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.link-button[hidden] { display: none; }
+.build-log { margin-left: auto; text-align: right; color: var(--muted); }
+.build-log summary { cursor: pointer; }
+.build-log pre { text-align: left; max-height: 260px; overflow: auto; font-size: 11px; white-space: pre-wrap; background: var(--soft); padding: 10px; border-radius: 10px; }
+@media (max-width: 560px) { .build { padding: 18px 16px; } .build-foot { flex-direction: column; } .build-log { margin-left: 0; text-align: left; } }
+
+/* ------------------------------------------------------------ features */
+
+.feature-list { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+.feature { background: #fff; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
+.feature.third { grid-column: span 2; }
+.feature.half { grid-column: span 3; }
+.feature.wide { grid-column: 1 / -1; }
+/* A card's picture or loop: 4:3 as the game draws it; a side by side is two of them (8:3) and spans the row. */
+.feature-media { margin: 0; background: #16151c; }
+.feature-media img, .feature-media video { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border: 0; }
+.feature-media .pixelated { image-rendering: pixelated; }
+.feature-text { padding: 18px 20px 22px; }
+.feature-text h3 { font-size: 18px; letter-spacing: -.02em; margin-bottom: 4px; }
+.feature-text p { margin: 0; color: var(--muted); font-size: 15px; }
+.feature:not(.has-media) { justify-content: center; background: var(--soft); border-color: transparent; }
+.feature:not(.has-media) .feature-text { padding: 28px 24px; }
+.feature.wide .feature-text { padding: 20px 24px 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 4px 32px; align-items: start; }
+.feature.wide .feature-text h3, .feature.half .feature-text h3 { font-size: 20px; }
+.feature-note { grid-column: 1 / -1; margin: 6px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
+@media (max-width: 860px) {
+  .feature-list { grid-template-columns: 1fr 1fr; }
+  .feature.third, .feature.half { grid-column: span 1; }
+}
+@media (max-width: 600px) {
+  .feature-list { grid-template-columns: 1fr; }
+  .feature.wide .feature-text { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------ community, footer */
+
+.links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.link-pill { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 14px 28px; font-weight: 600; }
+.link-pill:hover { border-color: var(--sun); }
+.foot { padding: 100px 0 48px; color: var(--muted); font-size: 13px; text-align: center; }
+.foot p { max-width: 46em; margin: 0 auto; }
+.foot .release { margin-top: 12px; font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------ dropping files, messages */
+
+.drop-veil {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center;
+  background: rgba(255, 245, 236, .86); backdrop-filter: blur(4px);
+  pointer-events: none; opacity: 0; transition: opacity .15s;
+}
+.drop-veil.on { opacity: 1; }
+.drop-veil p {
+  font-size: 22px; font-weight: 700; letter-spacing: -.02em;
+  padding: 44px 52px; margin: 16px; border: 2px dashed var(--sun); border-radius: 28px; background: #fff;
+}
+
+/* The files that cannot be used: one dialog per drop. */
+.problems {
+  width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 24px; border: 0;
+  border-radius: 22px; box-shadow: 0 30px 80px -20px rgba(40, 30, 60, .45); color: var(--ink);
+}
+.problems::backdrop { background: rgba(27, 26, 36, .35); }
+.problems h3 { font-size: 20px; letter-spacing: -.02em; margin-bottom: 12px; flex: none; }
+.problems[open] { display: flex; flex-direction: column; }
+.problems-list { list-style: none; padding: 0 2px; margin: 0; display: grid; gap: 12px; overflow-y: auto; min-height: 0; flex: 1; }
+.problems-list li { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: var(--soft); }
+.problem-file { overflow-wrap: anywhere; font-size: 14.5px; }
+.problem-why { color: var(--red); font-size: 14.5px; }
+.problem-works { color: var(--ink-2); font-size: 14px; }
+.problems-foot { display: flex; justify-content: flex-end; margin-top: 18px; flex: none; }
+.sums .serial { font-family: var(--mono); font-weight: 400; font-size: 11.5px; color: var(--muted); }
+.sums td.files { font-family: var(--font); white-space: normal; }
+@media (max-width: 560px) { .problems { padding: 18px 16px; } }

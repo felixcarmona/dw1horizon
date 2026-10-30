@@ -1,0 +1,14 @@
+// Who stands on screen 166 (Mt. Infinity), and when. Read out of MAPHEAD.SCN section 166 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(166) {                              // Mt. Infinity
+            npc Vermilimon slot 0 autotalk;
+            npc Vermilimon slot 1 autotalk;
+            npc Golemon slot 2 autotalk;
+            npc Vermilimon slot 3 autotalk;
+            npc Golemon slot 4 autotalk;
+        }
+    }
+}

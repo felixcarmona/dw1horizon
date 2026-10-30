@@ -1,0 +1,476 @@
+From 80aabcbf60fe9b4603841cdcb19aeb234a5647b0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 09:13:53 +0000
+Subject: [PATCH] Economy as data: the money, merit and stack limits, the part
+ of the items a defeat loses, the shops' ratios (a baby's discount, what they
+ pay), the card packs' rarity marks and the copies of a card, and the
+ tournament bracket's pool and winning result are MOD_ECON and MOD_TOURNAMENT
+ slots (-1 = the rule does not exist) written by tools/balance.py from
+ content/tables/economy.json and tournament-rules.json
+
+---
+ include/dw/mod_rules.h   | 31 +++++++++++++++++++++++-
+ src/main/item.c          |  7 +++---
+ src/main/script_common.c | 52 +++++++++++++++++++++++++++-------------
+ src/main/script_interp.c | 14 +++++------
+ src/main/tournament.c    |  2 +-
+ src/main/utils2.c        | 20 ++++++++++------
+ src/shop/script_menu.c   | 30 ++++++++++++-----------
+ 7 files changed, 106 insertions(+), 50 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 584f205c..3e6de330 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -9,7 +9,7 @@
+  */
+ 
+ /* tournament registration: reminder times (minutes of the day), the script sections they run, the Beetle cup's registration */
+-#define MOD_TOURNAMENT_SIZE	8
++#define MOD_TOURNAMENT_SIZE	15
+ #define MOD_TR_REMIND_FROM	0 /* before this minute no reminder; -1: no reminders at all */
+ #define MOD_TR_EVENING_FROM	1 /* from here the second reminder (trigger 39) instead of the first (38) */
+ #define MOD_TR_MISSED_FROM	2 /* from here a registration is missed */
+@@ -18,8 +18,37 @@
+ #define MOD_TR_BEETLE_CUP	5 /* routine 0x21 registers this cup (-1: the routine does nothing) */
+ #define MOD_TR_BEETLE_DAY	6 /* the day that cup is held */
+ #define MOD_TR_BEETLE_OTHER	7 /* the day stored when it is registered on any other day */
++#define MOD_TR_POOL_LOW	8
++#define MOD_TR_POOL_HIGH	9
++#define MOD_TR_POOL_EXTRA_MIN	10
++#define MOD_TR_POOL_EXTRA_DIV	11
++#define MOD_TR_WIN_RESULT	12
++#define MOD_TR_WIN_SPECIAL_CUP	13
++#define MOD_TR_WIN_SPECIAL_RESULT	14
+ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ 
++/*
++ * MOD (economy as data): money, merit and stack limits, what a defeat costs, the shops' ratios and the card packs, MOD_ECON[] (32-bit slots, -1 = the rule does not exist),
++ * written by tools/balance.py from content/tables/economy.json. A cap left out is the limit of what holds the value (money 2^31 - 1, merit 32767, a stack 255); a
++ * percent left out is 100 (a price ratio) or 0 (the part of the items lost on a defeat); an amount left out is 0.
++ */
++#define MOD_ECON_SIZE		11
++#define MOD_ECON_MONEY_CAP	0
++#define MOD_ECON_MERIT_CAP	1
++#define MOD_ECON_STACK_CAP	2
++#define MOD_ECON_LOSS_PERCENT	3
++#define MOD_ECON_BABY_PERCENT	4
++#define MOD_ECON_SELL_PERCENT	5
++#define MOD_ECON_CARD_CUT0	6
++#define MOD_ECON_CARD_CUT1	7
++#define MOD_ECON_CARD_CUT2	8
++#define MOD_ECON_CARD_CUT3	9
++#define MOD_ECON_CARD_MAX	10
++extern int32_t MOD_ECON[MOD_ECON_SIZE];
++int32_t econCap(int32_t slot, int32_t whenLeftOut);
++int32_t econAmt(int32_t slot);
++int32_t econPercent(int32_t slot);
++
+ /* the daily reroll (dailyPStatTrigger): the card shop's stock and the counters */
+ #define MOD_DAILY_SIZE		7
+ #define MOD_DAILY_CARDS		0 /* cards in the daily stock (0..6; -1: none) */
+diff --git a/src/main/item.c b/src/main/item.c
+index 43072ed9..78aeadd1 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -12,6 +12,7 @@
+ #include <dw/garbage.h>
+ #include <dw/item.h>
+ #include <dw/level.h>
++#include <dw/mod_rules.h>
+ #include <dw/math.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -2559,10 +2560,10 @@ int32_t giveItem(ItemId item, uint8_t amount) /* MOD: was u8 */
+ 	for (i = 0; i < INVENTORY.size; i++) {
+ 		if (INVENTORY.types.array[i] == item) {
+ 			count = &INVENTORY.amounts.array[i];
+-			if (*count != 99) {
++			if (*count != econCap(MOD_ECON_STACK_CAP, 255)) { /* MOD (economy as data) */
+ 				*count += amount;
+-				if (*count >= 100) {
+-					*count = 99;
++				if (*count > econCap(MOD_ECON_STACK_CAP, 255)) {
++					*count = econCap(MOD_ECON_STACK_CAP, 255);
+ 				}
+ 				return 1;
+ 			}
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index c8ed129e..252cd6ae 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -702,7 +702,7 @@ int32_t shopFillBuyItemList()
+ 		if (hasSpace) {
+ 			for (slotId = 0; slotId < inventorySize; slotId++) {
+ 				if (INVENTORY.types.array[slotId] == itemId &&
+-				    INVENTORY.amounts.array[slotId] == 99) {
++				    INVENTORY.amounts.array[slotId] == econCap(MOD_ECON_STACK_CAP, 255)) {
+ 					*itemList++ = 0;
+ 
+ 					goto end;
+@@ -715,7 +715,7 @@ int32_t shopFillBuyItemList()
+ 		} else {
+ 			for (slotId = 0; slotId < inventorySize; slotId++) {
+ 				if (INVENTORY.types.array[slotId] == itemId &&
+-				    INVENTORY.amounts.array[slotId] != 99) {
++				    INVENTORY.amounts.array[slotId] != econCap(MOD_ECON_STACK_CAP, 255)) {
+ 					*itemList++ = 1;
+ 
+ 					canBuyAnything = 1;
+@@ -1025,8 +1025,8 @@ void updateItemMenuAmountBoxString(void)
+ #endif
+ 
+ 	total = SHOP_ITEM_PRICE * SHOP_AMOUNT;
+-	if (total >= 0xf4240) {
+-		total = 0xf423f;
++	if (total > econCap(MOD_ECON_MONEY_CAP, 0x7fffffff)) {
++		total = econCap(MOD_ECON_MONEY_CAP, 0x7fffffff);
+ 	}
+ 
+ 	out = intToStringSJIS(out, total, 6, 0);
+@@ -1316,7 +1316,7 @@ void handleItemLoss(void)
+ 		k++;
+ 	}
+ 
+-	lose = count * 30 / 100;
++	lose = count * econAmt(MOD_ECON_LOSS_PERCENT) / 100; /* MOD (economy as data) */
+ 	writePStat(0xc8, lose);
+ 	if (lose == 0) {
+ 		freeArray((uint32_t *)pool);
+@@ -1340,12 +1340,12 @@ void handleItemLoss(void)
+ 		if (recycleId != 0xff) {
+ 			SCRIPT_STATE_PTR->smth[recycleId + 6] +=
+ 				INVENTORY.amounts.array[slot];
+-			if (SCRIPT_STATE_PTR->smth[recycleId + 6] >= 0x64) {
+-				SCRIPT_STATE_PTR->smth[recycleId + 6] = 0x63;
++			if (SCRIPT_STATE_PTR->smth[recycleId + 6] > ' + STACK + ') {
++				SCRIPT_STATE_PTR->smth[recycleId + 6] = ' + STACK + ';
+ 			}
+ 		}
+ 
+-		removeItem(INVENTORY.types.array[slot], 0x63); /* MOD: the whole id */
++		removeItem(INVENTORY.types.array[slot], econCap(MOD_ECON_STACK_CAP, 255)); /* MOD: the whole id */
+ 	}
+ 
+ 	freeArray((uint32_t *)pool);
+@@ -1488,8 +1488,8 @@ void tickItemMenuAmountBox(void)
+ 		if (ITEM_MENU_TYPE < 3) {
+ 			if (ITEM_MENU_TYPE == 1) {
+ 				MONEY += SHOP_AMOUNT * SHOP_ITEM_PRICE;
+-				if (MONEY >= 0xf4240) {
+-					MONEY = 0xf423f;
++				if (MONEY > econCap(MOD_ECON_MONEY_CAP, 0x7fffffff)) {
++					MONEY = econCap(MOD_ECON_MONEY_CAP, 0x7fffffff);
+ 				}
+ 
+ 				removeItem(SHOP_ITEM_TYPE, SHOP_AMOUNT);
+@@ -1497,7 +1497,7 @@ void tickItemMenuAmountBox(void)
+ 			} else {
+ 				unitPrice = SHOP_ITEM_PRICE;
+ 				if (isPartnerBaby() != 0) {
+-					unitPrice = unitPrice * 90 / 100;
++					unitPrice = unitPrice * econPercent(MOD_ECON_BABY_PERCENT) / 100;
+ 					SHOP_VARIABLE = (int16_t)SHOP_AMOUNT * (SHOP_ITEM_PRICE - unitPrice);
+ 				}
+ 
+@@ -1514,8 +1514,8 @@ void tickItemMenuAmountBox(void)
+ 			SCRIPT_STATE_2 = 7;
+ 		} else {
+ 			MONEY += SHOP_AMOUNT * SHOP_ITEM_PRICE;
+-			if (MONEY >= 0xf4240) {
+-				MONEY = 0xf423f;
++			if (MONEY > econCap(MOD_ECON_MONEY_CAP, 0x7fffffff)) {
++				MONEY = econCap(MOD_ECON_MONEY_CAP, 0x7fffffff);
+ 			}
+ 
+ 			owner = getCardAmount(SHOP_ITEM_TYPE);
+@@ -1998,14 +1998,14 @@ int32_t createItemMenuAmountBox(RECT *origin)
+ 				goto fail;
+ 			}
+ 
+-			SHOP_ITEM_PRICE >>= 1;
++			SHOP_ITEM_PRICE = SHOP_ITEM_PRICE * econPercent(MOD_ECON_SELL_PERCENT) / 100; /* MOD (economy as data): was half */
+ 			MAX_SHOP_AMOUNT = amount & 0x7f;
+ 		} else {
+ 			if (ITEM_MENU_TYPE == 0) {
+ 				if (amount == 0) {
+ 					goto fail;
+ 				}
+-				MAX_SHOP_AMOUNT = 0x63;
++				MAX_SHOP_AMOUNT = econCap(MOD_ECON_STACK_CAP, 255);
+ 			} else {
+ 				if ((amount & 0x80) == 0) {
+ 					goto fail;
+@@ -2013,7 +2013,7 @@ int32_t createItemMenuAmountBox(RECT *origin)
+ 				MAX_SHOP_AMOUNT = amount & 0x7f;
+ 			}
+ 
+-			n = 0x63 - getItemCount(SHOP_ITEM_TYPE);
++			n = econCap(MOD_ECON_STACK_CAP, 255) - getItemCount(SHOP_ITEM_TYPE);
+ 			if (n < MAX_SHOP_AMOUNT) {
+ 				MAX_SHOP_AMOUNT = n;
+ 			}
+@@ -2025,7 +2025,7 @@ int32_t createItemMenuAmountBox(RECT *origin)
+ 		}
+ 	} else {
+ 		n = CARD_DATA[SHOP_ITEM_TYPE].spriteId;
+-		SHOP_ITEM_PRICE = CARD_PRICES[n] >> 1;
++		SHOP_ITEM_PRICE = CARD_PRICES[n] * econPercent(MOD_ECON_SELL_PERCENT) / 100;
+ 		MAX_SHOP_AMOUNT = amount;
+ 	}
+ 
+@@ -3150,3 +3150,21 @@ void renderShopBitsBox(void)
+ 	renderString(0, x + 0x10, y + 0xd, 0x3c, 0xc, 0x30, rowPx, 4, 1);
+ #endif
+ }
++
++/* MOD (economy as data): written by tools/balance.py from content/tables/economy.json; -1 = the rule does not exist */
++int32_t MOD_ECON[MOD_ECON_SIZE] = { [0 ... MOD_ECON_SIZE - 1] = -1 };
++
++int32_t econCap(int32_t slot, int32_t whenLeftOut)
++{
++	return MOD_ECON[slot] >= 0 ? MOD_ECON[slot] : whenLeftOut;
++}
++
++int32_t econAmt(int32_t slot)
++{
++	return MOD_ECON[slot] > 0 ? MOD_ECON[slot] : 0;
++}
++
++int32_t econPercent(int32_t slot)
++{
++	return MOD_ECON[slot] >= 0 ? MOD_ECON[slot] : 100;
++}
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 01da6528..9c0a893b 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1077,8 +1077,8 @@ void scriptInstruction28to3F(op)
+ 	case SCRIPT_OP_ADD_MONEY:
+ 		skipOneReadInteger(&intArg);
+ 		MONEY += intArg;
+-		if (MONEY >= 0xf4240) {
+-			MONEY = 0xf423f;
++		if (MONEY > econCap(MOD_ECON_MONEY_CAP, 0x7fffffff)) { /* MOD (economy as data) */
++			MONEY = econCap(MOD_ECON_MONEY_CAP, 0x7fffffff);
+ 		}
+ 		break;
+ 	case SCRIPT_OP_REDUCE_MONEY:
+@@ -1117,15 +1117,15 @@ void scriptInstruction28to3F(op)
+ 	case SCRIPT_OP_SET_MERIT:
+ 		skipOneReadOneUShort(&value);
+ 		MERIT = value;
+-		if (MERIT >= 0x2710) {
+-			MERIT = 0x270f;
++		if (MERIT > econCap(MOD_ECON_MERIT_CAP, 32767)) {
++			MERIT = econCap(MOD_ECON_MERIT_CAP, 32767);
+ 		}
+ 		break;
+ 	case SCRIPT_OP_ADD_MERIT:
+ 		skipOneReadOneUShort(&value);
+ 		MERIT += value;
+-		if (MERIT >= 0x2710) {
+-			MERIT = 0x270f;
++		if (MERIT > econCap(MOD_ECON_MERIT_CAP, 32767)) {
++			MERIT = econCap(MOD_ECON_MERIT_CAP, 32767);
+ 		}
+ 		break;
+ 	case SCRIPT_OP_REDUCE_MERIT:
+@@ -1708,7 +1708,7 @@ void scriptInstruction64to7E(op)
+ 		case 0x0d:
+ 			byteArg1 = readPStat(0xfe);
+ 			if (byteArg1 != 0xff) {
+-				removeItem(byteArg1, 0x63);
++				removeItem(byteArg1, econCap(MOD_ECON_STACK_CAP, 255));
+ 			}
+ 			break;
+ 		case 0x0f:
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index 5b0389e8..e1ec76cd 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -41,7 +41,7 @@ ModMedal MOD_MEDALS[MOD_MEDAL_MAX] = {
+ 	MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL, MOD_NO_MEDAL,
+ };
+ 
+-int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1 };
++int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE] = { [0 ... MOD_TOURNAMENT_SIZE - 1] = -1 };
+ 
+ void updateTournamentRegistration(void)
+ {
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 978e5d05..94d94adb 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -1,5 +1,6 @@
+ #include <libetc.h>
+ 
++#include <dw/mod_rules.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/btl.h>
+ #include <dw/clock.h>
+@@ -604,7 +605,11 @@ static int32_t addTournamentSpecies(uint16_t *pool, int32_t count, int32_t lo, i
+ 
+ 	cand = (uint16_t *)allocateArray(SPECIES_MAX_PARTNERS * 2);
+ 	n = getSpeciesPartnersByLevel(lo, hi, cand, SPECIES_MAX_PARTNERS);
+-	add = count > 7 ? count / 2 : 7;
++	/* MOD (economy as data): MOD_TOURNAMENT's pool rules */
++	add = count > MOD_TOURNAMENT[MOD_TR_POOL_EXTRA_MIN] && MOD_TOURNAMENT[MOD_TR_POOL_EXTRA_DIV] > 0 ? count / MOD_TOURNAMENT[MOD_TR_POOL_EXTRA_DIV] : MOD_TOURNAMENT[MOD_TR_POOL_EXTRA_MIN];
++	if (add < 0) {
++		add = 0;
++	}
+ 	if (add > TOURNAMENT_NEW_MAX) {
+ 		add = TOURNAMENT_NEW_MAX;
+ 	}
+@@ -651,8 +656,8 @@ void startTournament(void)
+ 	jumpTable = getCupDataJumpTable(10, id);
+ 	p = getCupDataJumpTableEntry(jumpTable, 4) + 2;
+ 	count = 0;
+-	lo = 3; /* MOD (portraits): the levels of the cup's list: Rookie..Ultimate for a list that is every recruit */
+-	hi = 5;
++	lo = MOD_TOURNAMENT[MOD_TR_POOL_LOW]; /* MOD (portraits): the levels of the cup's list: Rookie..Ultimate for a list that is every recruit */
++	hi = MOD_TOURNAMENT[MOD_TR_POOL_HIGH];
+ 	i = *p;
+ 	if (i < 0xfe) {
+ 		lo = 9;
+@@ -686,7 +691,8 @@ void startTournament(void)
+ 	}
+ 	if (id != 0x16) {
+ 		/* MOD (portraits): the special cup 0x16 lists its own contestants */
+-		count = addTournamentSpecies(pool, count, lo > 5 ? 5 : lo, hi > 5 ? 5 : hi);
++		count = addTournamentSpecies(pool, count, lo > MOD_TOURNAMENT[MOD_TR_POOL_HIGH] ? MOD_TOURNAMENT[MOD_TR_POOL_HIGH] : lo,
++					     hi > MOD_TOURNAMENT[MOD_TR_POOL_HIGH] ? MOD_TOURNAMENT[MOD_TR_POOL_HIGH] : hi);
+ 	}
+ 	o = t.opponents;
+ 	if (count == 7) {
+@@ -741,10 +747,10 @@ void startTournament(void)
+ 	ACTIVE_ORDERING_TABLE = GS_ORDERING_TABLE + ACTIVE_FRAMEBUFFER;
+ 	unsetTrigger(0x25);
+ 	id = readPStat(3);
+-	if (id != 5) {
+-		expected = 3;
++	if (id != MOD_TOURNAMENT[MOD_TR_WIN_SPECIAL_CUP]) {
++		expected = MOD_TOURNAMENT[MOD_TR_WIN_RESULT];
+ 	} else {
+-		expected = 2;
++		expected = MOD_TOURNAMENT[MOD_TR_WIN_SPECIAL_RESULT];
+ 	}
+ 	if (result == expected) {
+ 		TOURNAMENTS_WON++;
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index b56e8bd2..1f34c3c4 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1,5 +1,6 @@
+ #include <string.h>
+ 
++#include <dw/mod_rules.h>
+ #include <dw/mod_font.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+@@ -777,8 +778,8 @@ void openMeritShop(void)
+ 	case 8:
+ 		triggerBoxCloseFlag(1);
+ 		MERIT += SHOP_VARIABLE;
+-		if (MERIT > 9999) {
+-			MERIT = 9999;
++		if (MERIT > econCap(MOD_ECON_MERIT_CAP, 32767)) { /* MOD (economy as data) */
++			MERIT = econCap(MOD_ECON_MERIT_CAP, 32767);
+ 		}
+ 		UPDATE_SHOP_BIT_BOX = 1;
+ 		owner = getCardAmount(SHOP_ITEM_TYPE);
+@@ -1237,7 +1238,7 @@ int32_t hasAnyCardToBuy(void)
+ 		*buf++ = id;
+ 		if (id != 0xff) {
+ 			spriteId = CARD_DATA[id].spriteId;
+-			if ((CARD_PRICES[spriteId] <= MONEY) && ((uint32_t)getCardAmount(id) < 9)) {
++			if ((CARD_PRICES[spriteId] <= MONEY) && ((uint32_t)getCardAmount(id) < (uint32_t)econAmt(MOD_ECON_CARD_MAX))) {
+ 				*buf++ = 1;
+ 			} else {
+ 				*buf++ = 0;
+@@ -1273,7 +1274,7 @@ void showCardTextbox(void)
+ 		line = 6;
+ 	}
+ 
+-	if (n < 9) {
++	if (n < econAmt(MOD_ECON_CARD_MAX)) {
+ 		n++;
+ 		setCardAmount(cardId, n);
+ 	}
+@@ -1346,14 +1347,15 @@ uint8_t rollCard(void)
+ 	uint8_t i;
+ 	uint8_t rarity;
+ 
++	/* MOD (economy as data): the rarity is the first whose "below" mark the roll (of 100) is under */
+ 	rarity = randomLimit(100);
+-	if (rarity == 0) {
++	if (rarity < MOD_ECON[MOD_ECON_CARD_CUT0]) {
+ 		rarity = 0;
+-	} else if (rarity < 5) {
++	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT1]) {
+ 		rarity = 1;
+-	} else if (rarity < 0x14) {
++	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT2]) {
+ 		rarity = 2;
+-	} else if (rarity < 0x32) {
++	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT3]) {
+ 		rarity = 3;
+ 	} else {
+ 		rarity = 4;
+@@ -1446,7 +1448,7 @@ int32_t shopFillMeritItemList(void)
+ 
+ 		for (i = 0; i < size; i++) {
+ 			if ((INVENTORY.types.array[i] == item) &&
+-			    (INVENTORY.amounts.array[i] != 0x63)) {
++			    (INVENTORY.amounts.array[i] != econCap(MOD_ECON_STACK_CAP, 255))) {
+ 				*out++ = 1;
+ 				any = 1;
+ 				goto next;
+@@ -1498,7 +1500,7 @@ void itemKeeperFillItemList(void)
+ 		}
+ 
+ 		for (i = 0; i < size; i++) {
+-			if ((INVENTORY.types.array[i] == j) && (INVENTORY.amounts.array[i] != 0x63)) {
++			if ((INVENTORY.types.array[i] == j) && (INVENTORY.amounts.array[i] != econCap(MOD_ECON_STACK_CAP, 255))) {
+ 				*out++ = c | 0x80;
+ 				goto next;
+ 			}
+@@ -1517,7 +1519,7 @@ next:;
+ 			i = INVENTORY.types.array[j];
+ 			c = INVENTORY.amounts.array[j];
+ 			*out++ = i;
+-			if ((SCRIPT_STATE_PTR->smth + i)[0x54] != 0x63) {
++			if ((SCRIPT_STATE_PTR->smth + i)[0x54] != econCap(MOD_ECON_STACK_CAP, 255)) {
+ 				*out++ = c | 0x80;
+ 			} else {
+ 				*out++ = c;
+@@ -2003,7 +2005,7 @@ int32_t keeperMoveOne(void)
+ 			return 0;
+ 		}
+ 
+-		if (getItemCount(item) >= 0x63) {
++		if (getItemCount(item) >= econCap(MOD_ECON_STACK_CAP, 255)) {
+ 			return 0;
+ 		}
+ 
+@@ -2124,7 +2126,7 @@ int32_t keeperMoveStack(void)
+ 		}
+ 
+ 		amount &= 0x7f;
+-		cap = 0x63 - getItemCount(item);
++		cap = econCap(MOD_ECON_STACK_CAP, 255) - getItemCount(item);
+ 		if (cap < amount) {
+ 			amount = cap;
+ 		}
+@@ -2147,7 +2149,7 @@ int32_t keeperMoveStack(void)
+ 		}
+ 
+ 		amount &= 0x7f;
+-		cap = 0x63 - (SCRIPT_STATE_PTR->smth + item)[0x54];
++		cap = econCap(MOD_ECON_STACK_CAP, 255) - (SCRIPT_STATE_PTR->smth + item)[0x54];
+ 		if (cap < amount) {
+ 			amount = cap;
+ 		}
+-- 
+2.53.0
+

@@ -1,0 +1,1029 @@
+{
+ "s000.sec1230.u0": [
+  [
+   "Willkommen! Wie kann ich helfen?"
+  ],
+  [
+   "Wir bereiten noch alles vor."
+  ],
+  [
+   "Kaufen",
+   "Verkaufen",
+   "Später"
+  ],
+  [
+   "Kaufen",
+   "Später"
+  ],
+  [
+   "Komm wieder!"
+  ],
+  [
+   "Willst du mich nur ärgern?!"
+  ],
+  [
+   "Bits {money}"
+  ],
+  [
+   "Verdienst {merit}"
+  ],
+  [
+   "Gefällt dir etwas?"
+  ],
+  [
+   "Was verkaufst du?"
+  ],
+  [
+   "Vielen Dank."
+  ],
+  [
+   "Sonst noch etwas?"
+  ],
+  [
+   "Alles ausverkauft."
+  ],
+  [
+   "{shopvar} Bits Rabatt."
+  ]
+ ],
+ "s000.sec1230.u1": [
+  [
+   "Juhu, du bist da, du bist da!",
+   "Was darf es sein?"
+  ]
+ ],
+ "s000.sec1230.u2": [
+  [
+   "Ich habe im Moment nichts zu",
+   "verkaufen."
+  ]
+ ],
+ "s000.sec1230.u3": [
+  [
+   "Kaufen",
+   "Verkaufen",
+   "Später"
+  ]
+ ],
+ "s000.sec1230.u4": [
+  [
+   "Kaufen",
+   "Später"
+  ]
+ ],
+ "s000.sec1230.u5": [
+  [
+   "Juhu! Komm bald wieder!"
+  ]
+ ],
+ "s000.sec1230.u6": [
+  [
+   "Ach, das war's? Mist."
+  ]
+ ],
+ "s000.sec1230.u7": [
+  [
+   "Bits {money}"
+  ]
+ ],
+ "s000.sec1230.u8": [
+  [
+   "Verdienst {merit}"
+  ]
+ ],
+ "s000.sec1230.u9": [
+  [
+   "Kauf viel ein, ja?"
+  ]
+ ],
+ "s000.sec1230.u10": [
+  [
+   "Hast du etwas, das du nicht",
+   "brauchst?"
+  ]
+ ],
+ "s000.sec1230.u11": [
+  [
+   "Juhu, danke!"
+  ]
+ ],
+ "s000.sec1230.u12": [
+  [
+   "Hast du noch etwas?"
+  ]
+ ],
+ "s000.sec1230.u13": [
+  [
+   "Ich habe nichts mehr zu",
+   "verkaufen."
+  ]
+ ],
+ "s000.sec1230.u14": [
+  [
+   "{color 10}{partner}{color 1} ist noch winzig,",
+   "was? Ich gebe dir {shopvar}",
+   "Bits Rabatt!"
+  ]
+ ],
+ "s000.sec1230.u15": [
+  [
+   "Ah, Willkommen."
+  ]
+ ],
+ "s000.sec1230.u16": [
+  [
+   "Komm gerne wieder."
+  ]
+ ],
+ "s000.sec1230.u17": [
+  [
+   "Nur schauen ist aber nicht",
+   "nett, weißt du."
+  ]
+ ],
+ "s000.sec1230.u18": [
+  [
+   "Was willst du kaufen?"
+  ]
+ ],
+ "s000.sec1230.u19": [
+  [
+   "Willst du mir etwas verkaufen?"
+  ]
+ ],
+ "s000.sec1230.u20": [
+  [
+   "Vielen Dank."
+  ]
+ ],
+ "s000.sec1230.u21": [
+  [
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s000.sec1230.u22": [
+  [
+   "{color 10}{partner}{color 1} muss bald groß",
+   "werden. Gut, ich gebe dir",
+   "{shopvar} Bits Rabatt."
+  ]
+ ],
+ "s000.sec1230.u23": [
+  [
+   "Willkommen, piep! Was darf es",
+   "sein, piep?"
+  ]
+ ],
+ "s000.sec1230.u24": [
+  [
+   "Danke wie immer, piep!"
+  ]
+ ],
+ "s000.sec1230.u25": [
+  [
+   "Hä? Nur schauen, piep?!"
+  ]
+ ],
+ "s000.sec1230.u26": [
+  [
+   "Such dir etwas aus, piep."
+  ]
+ ],
+ "s000.sec1230.u27": [
+  [
+   "Ich kaufe alles, piep."
+  ]
+ ],
+ "s000.sec1230.u28": [
+  [
+   "Danke, piep."
+  ]
+ ],
+ "s000.sec1230.u29": [
+  [
+   "Weiter, piep?"
+  ]
+ ],
+ "s000.sec1230.u30": [
+  [
+   "{color 10}{partner}{color 1} ist klein, piep!",
+   "{shopvar} Bits Rabatt,",
+   "piep."
+  ]
+ ],
+ "s000.sec1230.u31": [
+  [
+   "Ah, Willkommen! Was willst du?"
+  ]
+ ],
+ "s000.sec1230.u32": [
+  [
+   "Danke. Komm gerne wieder."
+  ]
+ ],
+ "s000.sec1230.u33": [
+  [
+   "...Dann hoffentlich nächstes",
+   "Mal."
+  ]
+ ],
+ "s000.sec1230.u34": [
+  [
+   "Nun, was darf es sein?"
+  ]
+ ],
+ "s000.sec1230.u35": [
+  [
+   "Was möchtest du verkaufen?"
+  ]
+ ],
+ "s000.sec1230.u36": [
+  [
+   "Vielen lieben Dank."
+  ]
+ ],
+ "s000.sec1230.u37": [
+  [
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s000.sec1230.u38": [
+  [
+   "Oh, {color 10}{partner}{color 1} ist so klein.",
+   "Da muss ich dir {shopvar}",
+   "Bits Rabatt geben."
+  ]
+ ],
+ "s000.sec1230.u39": [
+  [
+   "Hmpf, da bist du. Meine Ware",
+   "gibt es nur hier. Kauf, was du",
+   "willst... Hehe..."
+  ]
+ ],
+ "s000.sec1230.u40": [
+  [
+   "Hehe... Spar dein Geld und",
+   "komm wieder."
+  ]
+ ],
+ "s000.sec1230.u41": [
+  [
+   "W...! Du schaust nur?!"
+  ]
+ ],
+ "s000.sec1230.u42": [
+  [
+   "Kauf, was dir gefällt."
+  ]
+ ],
+ "s000.sec1230.u43": [
+  [
+   "Ich nehme keinen Schrott.",
+   "Hehe..."
+  ]
+ ],
+ "s000.sec1230.u44": [
+  [
+   "Hehe... Pass da draußen auf."
+  ]
+ ],
+ "s000.sec1230.u45": [
+  [
+   "Du... Was willst du noch?"
+  ]
+ ],
+ "s000.sec1230.u46": [
+  [
+   "Hehe... {color 10}{partner}{color 1}. Dir",
+   "zuliebe gebe ich {shopvar}",
+   "Bits Rabatt."
+  ]
+ ],
+ "s000.sec1230.u47": [
+  [
+   "Oh, du, Kunde!"
+  ]
+ ],
+ "s000.sec1230.u48": [
+  [
+   "Nächstes Mal mehr kaufen!"
+  ]
+ ],
+ "s000.sec1230.u49": [
+  [
+   "Du, Geizhals!"
+  ]
+ ],
+ "s000.sec1230.u50": [
+  [
+   "Alles kaufen!"
+  ]
+ ],
+ "s000.sec1230.u51": [
+  [
+   "Verkauf alles!"
+  ]
+ ],
+ "s000.sec1230.u52": [
+  [
+   "Okay, okay!"
+  ]
+ ],
+ "s000.sec1230.u53": [
+  [
+   "Mehr? Du noch mehr haben?"
+  ]
+ ],
+ "s000.sec1230.u54": [
+  [
+   "{color 10}{partner}{color 1}, du, Winzling! Ich",
+   "geben {shopvar} Bits",
+   "Rabatt!"
+  ]
+ ],
+ "s000.sec1230.u55": [
+  [
+   "Meine Items sind sooo toll!",
+   "Bäh, bäh."
+  ]
+ ],
+ "s000.sec1230.u56": [
+  [
+   "Komm wieder, oder so. Bäh, bäh."
+  ]
+ ],
+ "s000.sec1230.u57": [
+  [
+   "Aaah, geh endlich heim, bäh!"
+  ]
+ ],
+ "s000.sec1230.u58": [
+  [
+   "Welches ist das Gute, hmmm?"
+  ]
+ ],
+ "s000.sec1230.u59": [
+  [
+   "Los, verkauf, verkauf."
+  ]
+ ],
+ "s000.sec1230.u60": [
+  [
+   "Echt? Bäh?"
+  ]
+ ],
+ "s000.sec1230.u61": [
+  [
+   "Noch etwas? Gibt's noch was?",
+   "Hä? Bäh?"
+  ]
+ ],
+ "s000.sec1230.u62": [
+  [
+   "Oh? Ein Kind? Rabatt? Dann",
+   "{shopvar} Bits weniger."
+  ]
+ ],
+ "s000.sec1230.u63": [
+  [
+   "Ich habe Sachen, die im Alltag",
+   "nützlich sind. Was meinst du?"
+  ]
+ ],
+ "s000.sec1230.u64": [
+  [
+   "Komm bald wieder."
+  ]
+ ],
+ "s000.sec1230.u65": "Willst du mich veräppeln?",
+ "s000.sec1230.u66": [
+  [
+   "Was suchst du?"
+  ]
+ ],
+ "s000.sec1230.u67": [
+  [
+   "Was verkaufst du mir?"
+  ]
+ ],
+ "s000.sec1230.u68": [
+  [
+   "Vielen Dank."
+  ]
+ ],
+ "s000.sec1230.u69": [
+  [
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s000.sec1230.u70": [
+  [
+   "{color 10}{partner}{color 1} ist klein!",
+   "{shopvar} Bits Rabatt!"
+  ]
+ ],
+ "s000.sec1230.u71": [
+  [
+   "Das ist deine Chance, ja, ja.",
+   "Kauf, so viel du willst!"
+  ]
+ ],
+ "s000.sec1230.u72": [
+  [
+   "Komm bald wieder, ja, ja."
+  ]
+ ],
+ "s000.sec1230.u73": [
+  [
+   "Du willst das Geschäft stören,",
+   "ja?"
+  ]
+ ],
+ "s000.sec1230.u74": [
+  [
+   "Welches, ja?"
+  ]
+ ],
+ "s000.sec1230.u75": "Was verkaufst du, ja?",
+ "s000.sec1230.u76": [
+  [
+   "danke, ja, ja!"
+  ]
+ ],
+ "s000.sec1230.u77": [
+  [
+   "Sonst noch etwas, ja?"
+  ]
+ ],
+ "s000.sec1230.u78": [
+  [
+   "Oh, {color 10}{partner}{color 1} ist ein Kind,",
+   "ja. {shopvar} Bits Rabatt,",
+   "Sonderservice!"
+  ]
+ ],
+ "s000.sec1230.u79": [
+  [
+   "Willkommen!"
+  ]
+ ],
+ "s000.sec1230.u80": [
+  [
+   "Komm wieder zurück, Okay?"
+  ]
+ ],
+ "s000.sec1230.u81": [
+  [
+   "Ach, wie gemein. Du kaufst",
+   "nichts?"
+  ]
+ ],
+ "s000.sec1230.u82": [
+  [
+   "Was willst du?"
+  ]
+ ],
+ "s000.sec1230.u83": "Was willst du verkaufen?",
+ "s000.sec1230.u84": [
+  [
+   "Vielen Dank!"
+  ]
+ ],
+ "s000.sec1230.u85": [
+  [
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s000.sec1230.u86": [
+  [
+   "Hm, {color 10}{partner}{color 1} ist kleiner",
+   "als ich. Ich gebe dir",
+   "{shopvar} Bits Rabatt."
+  ]
+ ],
+ "s000.sec1230.u87": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Das hier ist ein Itemladen."
+  ]
+ ],
+ "s000.sec1230.u88": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Komm wieder, ja?"
+  ]
+ ],
+ "s000.sec1230.u89": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Du schaust nur?"
+  ]
+ ],
+ "s000.sec1230.u90": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Nun, was darf es sein?"
+  ]
+ ],
+ "s000.sec1230.u91": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Was verkaufst du?"
+  ]
+ ],
+ "s000.sec1230.u92": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Hoho, wie nett."
+  ]
+ ],
+ "s000.sec1230.u93": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Sonst noch?"
+  ]
+ ],
+ "s000.sec1230.u94": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "{color 10}{partner}{color 1} ist noch jung.",
+   "{shopvar} Bits Rabatt!"
+  ]
+ ],
+ "s000.sec1235.u0": [
+  [
+   "Das ist, was ich heute habe,",
+   "ja, ja."
+  ]
+ ],
+ "s000.sec1235.u1": [
+  [
+   "Das ist alles, was wir heute",
+   "haben. Ja."
+  ]
+ ],
+ "s000.sec1235.u2": [
+  [
+   "Wow! Die legendäre Karte:",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u3": [
+  [
+   "Oh, eine Karte von",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u4": [
+  [
+   "Eine Karte von",
+   "{digimon 249}.",
+   "Die habe ich noch nicht."
+  ]
+ ],
+ "s000.sec1235.u5": [
+  [
+   "Eine Karte von",
+   "{digimon 249}."
+  ]
+ ],
+ "s000.sec1235.u6": [
+  [
+   "Ach, noch eine Karte von",
+   "{digimon 249}?"
+  ]
+ ],
+ "s000.sec1235.u7": [
+  [
+   "Ich hatte keine Karten."
+  ]
+ ],
+ "s000.sec1235.u8": [
+  [
+   "Welche Karte verkaufst du?"
+  ]
+ ],
+ "s000.sec1236.u0": [
+  [
+   "Oho, auch du willst",
+   "Verdienstpunkte? Nun, was darf",
+   "es sein?"
+  ]
+ ],
+ "s000.sec1236.u1": [
+  [
+   "Digimon-Karte zeigen",
+   "Verdienstpunkte nutzen",
+   "Später"
+  ]
+ ],
+ "s000.sec1236.u2": [
+  [
+   "Abgeben",
+   "Vergiss es"
+  ]
+ ],
+ "s000.sec1236.u3": [
+  [
+   "Okay!",
+   "Vergiss es"
+  ]
+ ],
+ "s000.sec1236.u4": [
+  [
+   "Ist das dein Wunsch?"
+  ]
+ ],
+ "s000.sec1236.u5": [
+  [
+   "Was hast du mir gebracht?"
+  ]
+ ],
+ "s000.sec1236.u6": [
+  [
+   "Was willst du?"
+  ]
+ ],
+ "s000.sec1236.u7": [
+  [
+   "Ultraselten! Die muss ich",
+   "haben! {shopvar} Punkte.",
+   "Einverstanden?"
+  ]
+ ],
+ "s000.sec1236.u8": [
+  [
+   "Selten! {shopvar} Punkte.",
+   "Einverstanden?"
+  ]
+ ],
+ "s000.sec1236.u9": [
+  [
+   "Hm, recht gut. Mal sehen...",
+   "{shopvar} Punkte. Gibst du",
+   "sie mir?"
+  ]
+ ],
+ "s000.sec1236.u10": [
+  [
+   "Gewöhnlich. {shopvar}",
+   "Punkte. Gibst du sie mir?"
+  ]
+ ],
+ "s000.sec1236.u11": [
+  [
+   "Hm, die ist kaum etwas wert.",
+   "Ich nehme sie für {shopvar}",
+   "Punkte... Einverstanden?"
+  ]
+ ],
+ "s000.sec1237.u0": [
+  [
+   "He! Willst du das Itemlager",
+   "nutzen?"
+  ]
+ ],
+ "s000.sec1237.u1": [
+  [
+   "Benutzen",
+   "Heute nicht"
+  ]
+ ],
+ "s000.sec1237.u2": [
+  [
+   "Sicher? Benutz es, wann immer",
+   "du willst, ja?"
+  ]
+ ],
+ "s000.sec1237.u3": [
+  [
+   "Steuerkreuz: wählen. {color 6}×{color 1}: 1",
+   "Item, {color 10}○{color 1}: 10, {color 4}□{color 1}: alle."
+  ]
+ ],
+ "s000.sec1237.u4": [
+  [
+   "Gelagert"
+  ]
+ ],
+ "s000.sec1237.u5": [
+  [
+   "Im Besitz"
+  ]
+ ],
+ "s000.sec1238.u0": [
+  [
+   "Welches soll es sein?",
+   "Bzzt-zzt!"
+  ]
+ ],
+ "s000.sec1238.u1": [
+  [
+   "Auf mich kannst du beim",
+   "nächsten Musikwunsch zählen,",
+   "bzzt!"
+  ]
+ ],
+ "s000.sec1238.u2": [
+  [
+   "{bgm 249}, was?"
+  ]
+ ],
+ "s000.sec1238.u3": [
+  [
+   "Los! Wünsch dir ein Lied, das",
+   "mich in Fahrt bringt!"
+  ]
+ ],
+ "s000.sec1238.u4": [
+  [
+   "......Wo?"
+  ]
+ ],
+ "s000.sec1238.u5": [
+  [
+   "Zu Fuß dann . . . . Das ist",
+   "vielleicht das Beste."
+  ]
+ ],
+ "s000.sec1238.u6": [
+  [
+   "Bist du sicher? Einmal weg, ist",
+   "weg."
+  ]
+ ],
+ "s000.sec1238.u7": [
+  [
+   "Weiß ich",
+   "Lass es"
+  ]
+ ],
+ "s000.sec1238.u8": [
+  [
+   "Ich sammle etwas. Wenn du",
+   "davon hast, würde ich gern mit",
+   "dir tauschen."
+  ]
+ ],
+ "s000.sec1238.u9": [
+  [
+   "Was wirst du mir geben?"
+  ]
+ ],
+ "s000.sec1238.u10": [
+  [
+   "Ich tausche jederzeit. Bring",
+   "also mehr mit!"
+  ]
+ ],
+ "s000.sec1238.u11": [
+  [
+   "Du gibst mir wirklich",
+   "{item 249}?"
+  ]
+ ],
+ "s000.sec1238.u12": [
+  [
+   "Klar",
+   "Nein, ich behalte es"
+  ]
+ ],
+ "s000.sec1238.u13": [
+  [
+   "Vielen Dank!"
+  ]
+ ],
+ "s000.sec1238.u14": [
+  [
+   "Du hast zu viele Items."
+  ]
+ ],
+ "s000.sec1238.u15": [
+  [
+   "Gesucht",
+   "Angeboten"
+  ]
+ ],
+ "s000.sec1238.u16": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ich bin Jijimon. Entschuldige",
+   "den Überfall. Erzähl mir etwas",
+   "über dich."
+  ]
+ ],
+ "s000.sec1238.u17": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Zuerst... hast du ein Digital",
+   "Monster?"
+  ]
+ ],
+ "s000.sec1238.u18": [
+  [
+   "{color 6}{player}{color 1}",
+   "Ja",
+   "Nein"
+  ]
+ ],
+ "s000.sec1238.u19": [
+  [
+   "{color 7} Jijimon {color 1}",
+   "Ooooh."
+  ]
+ ],
+ "s000.sec1238.u20": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Nächste Frage. Magst du Tag",
+   "oder Nacht lieber?"
+  ]
+ ],
+ "s000.sec1238.u21": [
+  [
+   "{color 6}{player}{color 1}",
+   "Der Tag",
+   "Die Nacht"
+  ]
+ ],
+ "s000.sec1238.u22": [
+  [
+   "{color 7} Jijimon {color 1}",
+   "Mmmm."
+  ]
+ ],
+ "s000.sec1238.u23": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Nächste Frage. Hast du viele",
+   "Freunde?"
+  ]
+ ],
+ "s000.sec1238.u24": [
+  [
+   "{color 6}{player}{color 1}",
+   "Ja",
+   "Nicht viele"
+  ]
+ ],
+ "s000.sec1238.u25": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Verstehe, verstehe."
+  ]
+ ],
+ "s000.sec1238.u26": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ach ja! Beinahe hätte ich",
+   "vergessen, nach deinem Namen",
+   "zu fragen!"
+  ]
+ ],
+ "s000.sec1238.u27": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 6}{player}{color 1}, Ist das richtig?"
+  ]
+ ],
+ "s000.sec1238.u28": [
+  [
+   "{color 6}{player}{color 1}",
+   "Ja",
+   "Nein"
+  ]
+ ],
+ "s000.sec1238.u29": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Sag mir nun den Namen des",
+   "Digimon, das du aufziehen",
+   "wirst."
+  ]
+ ],
+ "s000.sec1238.u30": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 10}{partner}{color 1}, Ist das richtig?"
+  ]
+ ],
+ "s000.sec1238.u31": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Hm, ein schöner Name."
+  ]
+ ],
+ "s000.sec1238.u32": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "So, das waren alle Fragen. Wir",
+   "sehen uns bald!"
+  ]
+ ],
+ "s000.sec1240.u0": [
+  [
+   "Einverstanden?",
+   "Ja",
+   "Nein"
+  ]
+ ],
+ "s000.sec1240.u1": [
+  [
+   "Turnierkalender"
+  ]
+ ],
+ "s000.sec1240.u2": [
+  [
+   "Willst du am -{cup 3}-",
+   "teilnehmen?"
+  ]
+ ],
+ "s000.sec1240.u3": [
+  [
+   "Also tritt {color 10}{partner}{color 1} im",
+   "-{cup 3}- an... Bist du",
+   "sicher?"
+  ]
+ ],
+ "s000.sec1240.u4": [
+  [
+   "Teilnehmen",
+   "Diesmal nicht"
+  ]
+ ],
+ "s000.sec1240.u5": [
+  [
+   "Strafe!"
+  ]
+ ],
+ "s000.sec1240.u6": [
+  [
+   "Du kannst noch nicht hinein.",
+   "Komm am Turniertag zwischen 10",
+   "und 23 Uhr."
+  ]
+ ],
+ "s000.sec1240.u7": [
+  [
+   "{move 243}",
+   "wurde nicht vererbt."
+  ]
+ ],
+ "s000.sec1241.u0": [
+  [
+   "Ach ja, ich bin heute im",
+   "-{cup 3}- angemeldet,",
+   "oder?"
+  ]
+ ],
+ "s000.sec1242.u0": [
+  [
+   "Oh nein! Ich habe vergessen,",
+   "dass ich heute im",
+   "-{cup 3}- angemeldet bin!"
+  ]
+ ],
+ "s000.sec1243.u0": [
+  [
+   "Kategorie"
+  ]
+ ],
+ "s000.sec1243.u1": [
+  [
+   "Version"
+  ]
+ ],
+ "s000.sec1243.u2": [
+  [
+   "Typ"
+  ]
+ ],
+ "s000.sec1243.u3": [
+  [
+   "Spezial"
+  ]
+ ],
+ "s000.sec1243.u4": [
+  [
+   "Gesamt"
+  ]
+ ],
+ "s000.sec1243.u5": "Karten",
+ "s000.sec1244.u0": [
+  [
+   "He, das ist {color 6}{item 200}{color 1}!"
+  ]
+ ],
+ "s000.sec1244.u1": [
+  [
+   "Aber ich kann nicht mehr",
+   "Objekte tragen..."
+  ]
+ ],
+ "s000.sec1251.u0": [
+  [
+   "He. Gut festhalten!"
+  ]
+ ]
+}

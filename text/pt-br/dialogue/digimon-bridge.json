@@ -1,0 +1,94 @@
+{
+ "s010.sec5.u0": "Você não sabe o seu lugar!",
+ "s010.sec7.u0": "O que eu fiz para você?",
+ "s010.sec8.m0.o0": "Pagar",
+ "s010.sec8.m0.o1": "Não pagar",
+ "s010.sec8.u0": [
+  [
+   "Ook-ook-ooook!"
+  ],
+  [
+   "\"Por que estou aqui\", você pergunta!"
+  ],
+  [
+   "Ouça, {color 6}{player}{color 1}! Tentei montar meu",
+   "próprio harém na cidade, e eles me",
+   "expulsaram!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tsc... Soube que você está",
+   "cheio da grana, hein? Vou",
+   "vender algo bom, ook! A coisa",
+   "mais rara do mundo: a {color 6}Banana"
+  ],
+  [
+   "dourada{color 1}. Só 50000 Bits! Não",
+   "vendo fiado, ook-ook."
+  ]
+ ],
+ "s010.sec8.u2": "Você está louco? Você está carregando muito!",
+ "s010.sec8.u3": "Opa, minha bolsa está cheia.",
+ "s010.sec8.u4": "Ok, prazer em fazer negócios!",
+ "s010.sec8.u5": "Dinheiro não é bom a menos que você gaste, amigo.",
+ "s010.sec51.m0.o0": "Claro",
+ "s010.sec51.m0.o1": "Outra hora",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Parado aííí!!!"
+  ]
+ ],
+ "s010.sec51.u1": "Este humilde se chama Ninjamon!",
+ "s010.sec51.u2": [
+  [
+   "Você deve ser {color 6}{player}{color 1}...",
+   "e {color 10}{partner}{color 1}! Sua fama",
+   "chegou até a distante Vila",
+   "Ninja. Cruzariam lâminas com"
+  ],
+  [
+   "este humilde servo?"
+  ]
+ ],
+ "s010.sec51.u3": [
+  [
+   "Heh, não tão rápido!"
+  ]
+ ],
+ "s010.sec51.u4": [
+  [
+   "Sua habilidade é tudo o que",
+   "dizem! Por favor, aceite este",
+   "humilde servo como seu",
+   "discíplo!"
+  ]
+ ],
+ "s010.sec51.u5": [
+  [
+   "Discíplo...? Ah, discípulo.",
+   "Não, obrigado. Mas, se ajudar",
+   "a construir a cidade, tudo bem."
+  ]
+ ],
+ "s010.sec51.u6": [
+  [
+   "Entendido! Isso também será",
+   "um bom treino. Este humilde",
+   "servo dará o melhor de si!"
+  ]
+ ],
+ "s010.sec51.u7": "Ninjamon veio para a cidade!",
+ "s011.sec5.u0": [
+  [
+   "Eu venceria você com uma mão",
+   "só!"
+  ]
+ ],
+ "s011.sec6.u0": "Parece que posso vencê-lo!",
+ "s011.sec7.u0": "Tee-hee. Você não sabe de nada...",
+ "s011.sec8.u0": "Pare com isso!",
+ "s011.sec9.u0": "Bullying não é legal, sabe.",
+ "s011.sec10.u0": "Apenas me escute, por favor!"
+}

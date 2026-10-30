@@ -1,0 +1,33 @@
+{
+  "id": 131,
+  "name": "Airdramon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["air", "fire", null],
+  "techniques": ["Megalo Spark", "Confused Storm", "Hurricane", "Spnning Needle"],
+  "drop": {"item": "Brain Chip", "percent": 0},
+  "effects_like": 7,
+  "model": {"name": "EAIR", "bones": 20, "radius": 180, "height": 400},
+  "voice": 7,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 4400, "mp": 3900, "off": 610, "def": 320, "speed": 340, "brain": 200, "bits": 2600},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

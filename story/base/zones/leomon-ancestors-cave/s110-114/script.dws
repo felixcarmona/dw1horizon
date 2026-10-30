@@ -1,0 +1,18 @@
+// Readable form of script 110 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 110 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Off. Chip"), -978, 0, -2342, 3072, 667);
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        say(drimogemon, text("s110.sec5.u0"));
+        return;
+    }
+}

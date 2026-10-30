@@ -1,0 +1,406 @@
+From 804129d402446727a3e6a9122d94d991ea269749 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 08:29:43 +0000
+Subject: [PATCH] Evolution formulas as data: the stat blend (a part of the
+ gain above the target's value, halfway below it), the lifetime of an Ultimate
+ and a Mega, what is reset, which species scale their stats by a percent, the
+ first technique slot of each element and the requirement score's points,
+ tolerances and pass mark are MOD_EVO_FORMULA slots (-1 = the rule does not
+ exist) written by tools/balance.py from content/tables/evolution-rules.json
+
+---
+ include/dw/level.h   |  42 ++++++++++++++
+ src/evl/evl.c        | 135 ++++++++++++++++++++-----------------------
+ src/main/evolution.c |  55 ++++++++++++------
+ 3 files changed, 142 insertions(+), 90 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index a83e9222..8cd569ff 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -264,6 +264,48 @@ void careClamp(int16_t *value, int32_t minSlot, int32_t maxSlot);
+ #define MOD_CARE_OVERRIDE_MAX	192
+ extern int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3];
+ 
++/*
++ * MOD (evolution formulas as data): the numbers of what happens when a partner evolves and of the score that picks the species it evolves into,
++ * MOD_EVO_FORMULA[]: every slot -1 = the rule does not exist; tools/balance.py build writes them from content/tables/evolution-rules.json
++ * (evolutionFormula). evoAmt: a number (a rule left out is 0); evoFlag: a switch (a rule left out is off).
++ */
++#define MOD_EVO_FORMULA_SIZE	31
++#define MOD_EVF_STAT_GAIN_DIV	0
++#define MOD_EVF_STAT_AVG_DIV	1
++#define MOD_EVF_LIFE_ULTIMATE	2
++#define MOD_EVF_LIFE_MEGA	3
++#define MOD_EVF_RESET_WEIGHT	4
++#define MOD_EVF_RESET_MISTAKES	5
++#define MOD_EVF_RESET_BATTLES	6
++#define MOD_EVF_SCALE_BELOW_LEVEL	7
++#define MOD_EVF_SCALE_SPECIES0	8
++#define MOD_EVF_SCALE_SPECIES1	9
++#define MOD_EVF_SCALE_SPECIES2	10
++#define MOD_EVF_SCALE_SPECIES3	11
++#define MOD_EVF_SCALE_RESTORE	12
++#define MOD_EVF_SCALE_PCT_DIV	13
++#define MOD_EVF_SCALE_RESTORE_DIV	14
++#define MOD_EVF_LEARN_BASE0	15
++#define MOD_EVF_LEARN_BASE1	16
++#define MOD_EVF_LEARN_BASE2	17
++#define MOD_EVF_LEARN_BASE3	18
++#define MOD_EVF_LEARN_BASE4	19
++#define MOD_EVF_LEARN_BASE5	20
++#define MOD_EVF_LEARN_BASE6	21
++#define MOD_EVF_LEARN_WINDOW	22
++#define MOD_EVF_SCORE_WEIGHT_TOL	23
++#define MOD_EVF_SCORE_POINT_CARE	24
++#define MOD_EVF_SCORE_POINT_WEIGHT	25
++#define MOD_EVF_SCORE_POINT_STATS	26
++#define MOD_EVF_SCORE_POINT_BONUS	27
++#define MOD_EVF_SCORE_HPMP_DIV	28
++#define MOD_EVF_SCORE_RAISED_BONUS	29
++#define MOD_EVF_SCORE_PASS	30
++extern int16_t MOD_EVO_FORMULA[MOD_EVO_FORMULA_SIZE];
++int32_t evoAmt(int32_t slot);
++int32_t evoFlag(int32_t slot);
++int32_t evoPassPoints(void);
++
+ /* items past the original evolution items (0x47-0x72) that force an evolution: {item, target, level the partner must have}, -1 = unused */
+ #define MOD_EVO_ITEM_MAX	4
+ typedef struct {
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index d4669993..a77800c7 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -1302,6 +1302,22 @@ void EVL_initEvoSequence(void)
+ 	addObject(0x80a, instance, EVL_tickEvoSequence, (RenderFunction)EVL_renderEvoSequence);
+ }
+ 
++/* MOD (evolution formulas as data): the stat a partner has after evolving: past the target's value it grows by a part of it, below it meets it halfway */
++static int16_t EVL_blendStat(int32_t stat, int32_t gain)
++{
++	if (stat >= gain) {
++		return stat + (evoAmt(MOD_EVF_STAT_GAIN_DIV) > 0 ? gain / evoAmt(MOD_EVF_STAT_GAIN_DIV) : 0);
++	}
++	return evoAmt(MOD_EVF_STAT_AVG_DIV) > 0 ? (gain + stat) / evoAmt(MOD_EVF_STAT_AVG_DIV) : stat;
++}
++
++/* the species whose evolution scales the base stats by a percent instead of blending them */
++static int32_t EVL_scalesStats(int32_t id)
++{
++	return id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES0] || id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES1] ||
++	       id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES2] || id == MOD_EVO_FORMULA[MOD_EVF_SCALE_SPECIES3];
++}
++
+ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t digimonId)
+ {
+ 	int32_t oldType;
+@@ -1318,7 +1334,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	int16_t rz;
+ 	int16_t level;
+ 	int16_t oldLevel;
+-	uint8_t moveBase;
++	int32_t moveBase;
+ 	uint8_t best;
+ 	uint8_t special;
+ 	EvoStatsGains *gains;
+@@ -1327,47 +1343,18 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	newId = gains->targetDigimon;
+ 	oldLevel = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+ 	level = DIGI_PARA(digimonId).level;
+-	if (digimonId == 0x0b || digimonId == 0x27 || digimonId == 0x35 || digimonId == 6 ||
+-	    PARTNER_ENTITY.digimonEntity.entity.type == 0x27L || level < 3) {
++	if (EVL_scalesStats(digimonId) || PARTNER_ENTITY.digimonEntity.entity.type == MOD_EVO_FORMULA[MOD_EVF_SCALE_RESTORE] ||
++	    level < MOD_EVO_FORMULA[MOD_EVF_SCALE_BELOW_LEVEL]) {
+ 		EVL_scaleBaseStats(stats, (int8_t)gains->brains, digimonId);
+ 		newId = gains->targetDigimon;
+ 	} else {
+ 		if (HAS_USED_EVOITEM == 0) {
+-			if (stats->base.hp >= gains->hp) {
+-				stats->base.hp += (int16_t)(gains->hp / 10);
+-			} else {
+-				stats->base.hp = (gains->hp + stats->base.hp) / 2;
+-			}
+-
+-			if (stats->base.mp >= gains->mp) {
+-				stats->base.mp += (int16_t)(gains->mp / 10);
+-			} else {
+-				stats->base.mp = (gains->mp + stats->base.mp) / 2;
+-			}
+-
+-			if (stats->base.off >= gains->offense) {
+-				stats->base.off += (int16_t)(gains->offense / 10);
+-			} else {
+-				stats->base.off = (gains->offense + stats->base.off) / 2;
+-			}
+-
+-			if (stats->base.def >= gains->defense) {
+-				stats->base.def += (int16_t)(gains->defense / 10);
+-			} else {
+-				stats->base.def = (gains->defense + stats->base.def) / 2;
+-			}
+-
+-			if (stats->base.speed >= gains->speed) {
+-				stats->base.speed += (int16_t)(gains->speed / 10);
+-			} else {
+-				stats->base.speed = (gains->speed + stats->base.speed) / 2;
+-			}
+-
+-			if (stats->base.brain >= gains->brains) {
+-				stats->base.brain += (int16_t)(gains->brains / 10);
+-			} else {
+-				stats->base.brain = (gains->brains + stats->base.brain) / 2;
+-			}
++			stats->base.hp = EVL_blendStat(stats->base.hp, gains->hp);
++			stats->base.mp = EVL_blendStat(stats->base.mp, gains->mp);
++			stats->base.off = EVL_blendStat(stats->base.off, gains->offense);
++			stats->base.def = EVL_blendStat(stats->base.def, gains->defense);
++			stats->base.speed = EVL_blendStat(stats->base.speed, gains->speed);
++			stats->base.brain = EVL_blendStat(stats->base.brain, gains->brains);
+ 
+ 			EVL_clampBaseStats();
+ 			if (IS_SCRIPT_PAUSED == 1) {
+@@ -1385,37 +1372,30 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 		}
+ 		newId = gains->targetDigimon;
+ 	}
+-	para->weight = RAISE_ROW(newId).defaultWeight;
+-	para->careMistakes = 0;
+-	para->battles = 0;
++	if (evoFlag(MOD_EVF_RESET_WEIGHT)) {
++		para->weight = RAISE_ROW(newId).defaultWeight;
++	}
++	if (evoFlag(MOD_EVF_RESET_MISTAKES)) {
++		para->careMistakes = 0;
++	}
++	if (evoFlag(MOD_EVF_RESET_BATTLES)) {
++		para->battles = 0;
++	}
+ 	level = DIGI_PARA(newId).level;
+ 	/* MOD (partners-npc-a): only on reaching Ultimate, not Etemon -> MetalEtemon */
+ 	if (level == 5 && oldLevel != 5 && HAS_USED_EVOITEM == 0) {
+-		para->remainingLifetime += 96;
++		para->remainingLifetime += evoAmt(MOD_EVF_LIFE_ULTIMATE);
+ 	}
+ 	if (level == LEVEL_MEGA && HAS_USED_EVOITEM == 0) { /* MOD (mega) */
+-		para->remainingLifetime += MEGA_LIFETIME_BONUS;
++		para->remainingLifetime += evoAmt(MOD_EVF_LIFE_MEGA);
+ 	}
++	/* MOD (evolution formulas as data): the first technique slot an element teaches, and the window of slots it picks from */
+ 	special = DIGI_PARA(newId).special[0];
+-	if (special == 0) {
+-		moveBase = 0;
+-	} else if (special == 1) {
+-		moveBase = 40;
+-	} else if (special == 2) {
+-		moveBase = 8;
+-	} else if (special == 3) {
+-		moveBase = 32;
+-	} else if (special == 4) {
+-		moveBase = 16;
+-	} else if (special == 5) {
+-		moveBase = 24;
+-	} else if (special == 6) {
+-		moveBase = 49;
+-	}
++	moveBase = special <= 6 ? MOD_EVO_FORMULA[MOD_EVF_LEARN_BASE0 + special] : -1;
+ 	movePtr = DIGI_PARA(newId).moves;
+ 	count = 0;
+ 	for (i = 0; i < 16; movePtr++, i++) {
+-		if (moveBase <= *movePtr && *movePtr <= moveBase + 8) {
++		if (moveBase >= 0 && moveBase <= *movePtr && *movePtr <= moveBase + evoAmt(MOD_EVF_LEARN_WINDOW)) {
+ 			candidates[count] = *movePtr;
+ 			count++;
+ 		}
+@@ -1482,8 +1462,18 @@ static int16_t EVL_capValue(int32_t value, int32_t cap)
+ 	return value;
+ }
+ 
++/* what a partner that was turned into a Sukamon gets back: its backed-up stat plus half of what it gained meanwhile */
++static int32_t EVL_restoreStat(int32_t backup, int32_t stat)
++{
++	int32_t div = evoAmt(MOD_EVF_SCALE_RESTORE_DIV);
++
++	return div > 0 ? backup + ((stat - (backup / div)) / div) : stat;
++}
++
+ void EVL_scaleBaseStats(Stats *stats, int16_t pct, int16_t unused)
+ {
++	int32_t div;
++
+ 	/* MOD (caps): every product is clamped in 32 bits before it is stored
+ 	 * (×2.5 of 30000 does not fit an int16_t); EVL_clampBaseStats below
+ 	 * clamped the stored values, so nothing changes below the old limits */
+@@ -1491,20 +1481,21 @@ void EVL_scaleBaseStats(Stats *stats, int16_t pct, int16_t unused)
+ 		return;
+ 	}
+ 
+-	if (PARTNER_ENTITY.digimonEntity.entity.type != 0x27) {
+-		stats->base.hp = EVL_capValue(stats->base.hp * pct / 10, HPMP_CAP);
+-		stats->base.mp = EVL_capValue(stats->base.mp * pct / 10, HPMP_CAP);
+-		stats->base.off = EVL_capValue(stats->base.off * pct / 10, STAT_CAP);
+-		stats->base.def = EVL_capValue(stats->base.def * pct / 10, STAT_CAP);
+-		stats->base.speed = EVL_capValue(stats->base.speed * pct / 10, STAT_CAP);
+-		stats->base.brain = EVL_capValue(stats->base.brain * pct / 10, STAT_CAP);
++	if (PARTNER_ENTITY.digimonEntity.entity.type != MOD_EVO_FORMULA[MOD_EVF_SCALE_RESTORE]) {
++		div = evoAmt(MOD_EVF_SCALE_PCT_DIV) > 0 ? evoAmt(MOD_EVF_SCALE_PCT_DIV) : 0;
++		stats->base.hp = div ? EVL_capValue(stats->base.hp * pct / div, HPMP_CAP) : stats->base.hp;
++		stats->base.mp = div ? EVL_capValue(stats->base.mp * pct / div, HPMP_CAP) : stats->base.mp;
++		stats->base.off = div ? EVL_capValue(stats->base.off * pct / div, STAT_CAP) : stats->base.off;
++		stats->base.def = div ? EVL_capValue(stats->base.def * pct / div, STAT_CAP) : stats->base.def;
++		stats->base.speed = div ? EVL_capValue(stats->base.speed * pct / div, STAT_CAP) : stats->base.speed;
++		stats->base.brain = div ? EVL_capValue(stats->base.brain * pct / div, STAT_CAP) : stats->base.brain;
+ 	} else {
+-		stats->base.hp = EVL_capValue(PARTNER_PARA.sukaBackupHP + ((stats->base.hp - (PARTNER_PARA.sukaBackupHP / 2)) / 2), HPMP_CAP);
+-		stats->base.mp = EVL_capValue(PARTNER_PARA.sukaBackupMP + ((stats->base.mp - (PARTNER_PARA.sukaBackupMP / 2)) / 2), HPMP_CAP);
+-		stats->base.off = EVL_capValue(PARTNER_PARA.sukaBackupOff + ((stats->base.off - (PARTNER_PARA.sukaBackupOff / 2)) / 2), STAT_CAP);
+-		stats->base.def = EVL_capValue(PARTNER_PARA.sukaBackupDef + ((stats->base.def - (PARTNER_PARA.sukaBackupDef / 2)) / 2), STAT_CAP);
+-		stats->base.speed = EVL_capValue(PARTNER_PARA.sukaBackupSpeed + ((stats->base.speed - (PARTNER_PARA.sukaBackupSpeed / 2)) / 2), STAT_CAP);
+-		stats->base.brain = EVL_capValue(PARTNER_PARA.sukaBackupBrain + ((stats->base.brain - (PARTNER_PARA.sukaBackupBrain / 2)) / 2), STAT_CAP);
++		stats->base.hp = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupHP, stats->base.hp), HPMP_CAP);
++		stats->base.mp = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupMP, stats->base.mp), HPMP_CAP);
++		stats->base.off = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupOff, stats->base.off), STAT_CAP);
++		stats->base.def = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupDef, stats->base.def), STAT_CAP);
++		stats->base.speed = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupSpeed, stats->base.speed), STAT_CAP);
++		stats->base.brain = EVL_capValue(EVL_restoreStat(PARTNER_PARA.sukaBackupBrain, stats->base.brain), STAT_CAP);
+ 		PARTNER_PARA.virusBar = 0;
+ 	}
+ 
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 0510dc21..d79128cb 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -872,6 +872,24 @@ int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1
+ int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 },
+ 						  { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
+ int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
++/* MOD (evolution formulas as data): written by tools/balance.py from content/tables/evolution-rules.json; -1 = the rule does not exist */
++int16_t MOD_EVO_FORMULA[MOD_EVO_FORMULA_SIZE] = { [0 ... MOD_EVO_FORMULA_SIZE - 1] = -1 };
++
++int32_t evoAmt(int32_t slot)
++{
++	return MOD_EVO_FORMULA[slot] > 0 ? MOD_EVO_FORMULA[slot] : 0;
++}
++
++int32_t evoFlag(int32_t slot)
++{
++	return MOD_EVO_FORMULA[slot] > 0;
++}
++
++/* the points a species needs to be a candidate; a rule left out: none can be */
++int32_t evoPassPoints(void)
++{
++	return MOD_EVO_FORMULA[MOD_EVF_SCORE_PASS] >= 0 ? MOD_EVO_FORMULA[MOD_EVF_SCORE_PASS] : 127;
++}
+ #define MOD_EVO_NO_RULE                                                                                        \
+ 	{                                                                                                      \
+ 		-1, { -1, -1, -1, -1 }, 0, 0, -1, 0, { { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 } } \
+@@ -919,7 +937,7 @@ static void scoreInTrainingTarget(int32_t currentDigimon, DigimonId target, int3
+   isMaxCM = (EVO_REQ_ROW(target).flags & 0x10) >> 4;
+   isMaxBattles = EVO_REQ_ROW(target).flags & 1;
+   requirementScore = calculateRequirementScore(currentDigimon, target, isMaxCM, isMaxBattles, *best);
+-  if (*bestScore < requirementScore && requirementScore >= 3) {
++  if (*bestScore < requirementScore && requirementScore >= evoPassPoints()) {
+     *best = target;
+     *bestScore = requirementScore;
+   }
+@@ -971,7 +989,7 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+     isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
+     isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+     if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+-                                  isMaxBattles, currentBestDigimon) >= 3) {
++                                  isMaxBattles, currentBestDigimon) >= evoPassPoints()) {
+       if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+         statCount++;
+@@ -1040,7 +1058,7 @@ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+     isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
+     isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+     if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+-                                  isMaxBattles, currentBestDigimon) >= 3) {
++                                  isMaxBattles, currentBestDigimon) >= evoPassPoints()) {
+       if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+         statCount++;
+@@ -1182,20 +1200,21 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+   partner = &PARTNER_PARA;
+   reqPoints = 0;
+ 
++  /* MOD (evolution formulas as data): the points and tolerances are MOD_EVO_FORMULA's */
+   if (isMaxCM == 0) {
+     if (partner->careMistakes >= reqs->care)
+-      reqPoints += 1;
++      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_CARE);
+   } else if (partner->careMistakes <= reqs->care) {
+-    reqPoints += 1;
++    reqPoints += evoAmt(MOD_EVF_SCORE_POINT_CARE);
+   }
+ 
+-  if (reqs->weight - 5 <= partner->weight &&
+-      partner->weight <= reqs->weight + 5)
+-    reqPoints += 1;
++  if (reqs->weight - evoAmt(MOD_EVF_SCORE_WEIGHT_TOL) <= partner->weight &&
++      partner->weight <= reqs->weight + evoAmt(MOD_EVF_SCORE_WEIGHT_TOL))
++    reqPoints += evoAmt(MOD_EVF_SCORE_POINT_WEIGHT);
+ 
+   if (DIGI_PARA(target).level == 3U) {
+-    statsArray[0] = statsArray2[0] = partnerEntity->hp / 10;
+-    statsArray[1] = statsArray2[1] = partnerEntity->mp / 10;
++    statsArray[0] = statsArray2[0] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->hp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
++    statsArray[1] = statsArray2[1] = evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->mp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0;
+     statsArray[2] = statsArray2[2] = partnerEntity->off;
+     statsArray[3] = statsArray2[3] = partnerEntity->def;
+     statsArray[4] = statsArray2[4] = partnerEntity->speed;
+@@ -1217,16 +1236,16 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+         highestStat = i;
+     }
+     if (reqArray[highestStat] == 1) {
+-      reqPoints += 1;
++      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_STATS);
+     }
+   } else {
+-    if (partnerEntity->hp / 10 >= reqs->hp &&
+-        partnerEntity->mp / 10 >= reqs->mp &&
++    if ((evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->hp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0) >= reqs->hp &&
++        (evoAmt(MOD_EVF_SCORE_HPMP_DIV) > 0 ? partnerEntity->mp / evoAmt(MOD_EVF_SCORE_HPMP_DIV) : 0) >= reqs->mp &&
+         partnerEntity->off >= reqs->offense &&
+         partnerEntity->def >= reqs->defense &&
+         partnerEntity->speed >= reqs->speed &&
+         partnerEntity->brain >= reqs->brain) {
+-      reqPoints += 1;
++      reqPoints += evoAmt(MOD_EVF_SCORE_POINT_STATS);
+     }
+   }
+ 
+@@ -1251,9 +1270,9 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+       isBonusFulfilled = 1;
+   }
+ 
+-  reqPoints += isBonusFulfilled;
++  reqPoints += isBonusFulfilled * evoAmt(MOD_EVF_SCORE_POINT_BONUS);
+ 
+-  if (reqPoints >= 3 && currentBest != -1) {
++  if (reqPoints >= evoPassPoints() && currentBest != -1) {
+     isTargetRaised = hasDigimonRaised(EVO_GAINS_ROW(target).targetDigimon);
+     isCurrentBestRaised =
+         hasDigimonRaised(EVO_GAINS_ROW(currentBest).targetDigimon);
+@@ -1262,7 +1281,7 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+       reqPoints = 0;
+ 
+     if (isTargetRaised == 0 && isCurrentBestRaised == 1)
+-      reqPoints++;
++      reqPoints += evoAmt(MOD_EVF_SCORE_RAISED_BONUS);
+   }
+ 
+   return reqPoints;
+@@ -1332,7 +1351,7 @@ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ 			continue;
+ 		}
+ 		reqs = &EVO_REQ_ROW(target);
+-		if (calculateRequirementScore(currentDigimon, target, (reqs->flags & 0x10) >> 4, reqs->flags & 1, -1) >= 3) {
++		if (calculateRequirementScore(currentDigimon, target, (reqs->flags & 0x10) >> 4, reqs->flags & 1, -1) >= evoPassPoints()) {
+ 			return target;
+ 		}
+ 	}
+-- 
+2.53.0
+

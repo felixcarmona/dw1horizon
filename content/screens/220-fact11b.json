@@ -1,0 +1,12 @@
+{
+  "id": 220,
+  "file": "FACT11B",
+  "tims8": 3,
+  "tims4": 1,
+  "sound_bank": 8,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 57
+}

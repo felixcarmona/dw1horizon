@@ -1,0 +1,34 @@
+From 2bcd1baa1d0adb6206471b9ea70b68dae6f7d008 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:04:35 +0000
+Subject: [PATCH] Lab menu: move the box 22 px right so it does not cover the
+ HUD clock
+
+---
+ src/main/mod_lab.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 1d5b03b..c9380d7 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -74,6 +74,7 @@ static char *appendStr(char *dst, char *src)
+  * selected option. Each row has its own 0xC-high line in the VRAM text area. */
+ #define ROW_PITCH	0x12
+ #define BOX_W		0xD0
++#define BOX_SHIFT_X	0x16	/* 22 px right of centre: the HUD clock (top left) reaches x = 77 */
+ #define ROW_TITLE	0
+ #define ROW_STATS	1
+ #define ROW_OPTIONS	2
+@@ -198,7 +199,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 	modLabCursor = 0;
+ 	modLabMessage = NULL;
+ 	modLabDrawText();
+-	setRECT(&pos, -BOX_W / 2, -0x44, BOX_W, 8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2);
++	setRECT(&pos, -BOX_W / 2 + BOX_SHIFT_X, -0x44, BOX_W, 8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2);
+ 	createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
+ 	playSound(0, 3);
+ 	modLabFrames(12);
+-- 
+2.53.0
+

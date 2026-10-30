@@ -1,0 +1,69 @@
+{
+ "s008.sec5.u0": [
+  [
+   "{color 7}Marktleiter {color 1}",
+   "Bitte tu schnell etwas, ja, ja!"
+  ]
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Oger-Modus",
+ "s008.sec51.u0": [
+  [
+   "Der Bohrtunnel. . ."
+  ]
+ ],
+ "s008.sec51.u1": [
+  [
+   "Uff, der schon wieder! Er lernt",
+   "es einfach nie...!"
+  ]
+ ],
+ "s008.sec51.u2": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s008.sec51.u3": [
+  [
+   "{color 7}Marktleiter {color 1}",
+   "Niemand hat mir gesagt, dass",
+   "der Tunnel Maut kostet, nein,",
+   "nein!"
+  ]
+ ],
+ "s008.sec51.u4": [
+  [
+   "{color 7}Marktleiter {color 1}",
+   "Oh, du... kann das sein? Bitte",
+   "tu etwas, ja, ja!"
+  ]
+ ],
+ "s008.sec51.u5": [
+  [
+   "Was ist mit den Drimogemon da",
+   "drin?"
+  ]
+ ],
+ "s008.sec51.u6": [
+  [
+   "{color 7}Marktleiter {color 1}",
+   "Ich weiß es nicht, nein,",
+   "nein..."
+  ]
+ ],
+ "s008.sec51.u7": [
+  [
+   "Ich hoffe, dass es ihnen gut",
+   "geht... Okay, Lasst uns rein!"
+  ]
+ ],
+ "s008.sec53.m0.o0": "Lass uns gehen!",
+ "s008.sec53.m0.o1": "Lieber nicht",
+ "s008.sec53.u0": [
+  [
+   "Im Tunnel ist nichts mehr...",
+   "Sollen wir einfach",
+   "hindurchrennen? Was meinst du?"
+  ]
+ ]
+}

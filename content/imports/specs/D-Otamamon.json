@@ -1,0 +1,98 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 201,
+ "type": 233,
+ "name": "D-Otamamon",
+ "source": {
+  "type": 39,
+  "mmd": "extracted/CHDAT/MMD1/SCUM.MMD"
+ },
+ "map": {
+  "7": 4,
+  "10": 3,
+  "11": 9,
+  "12": 5
+ },
+ "hips": [
+  6,
+  1,
+  0.946
+ ],
+ "root_scale": 0.946,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 43,
+   "end": 133,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 3,
+   "end": 83,
+   "hz": 0.3
+  },
+  "0x36": {
+   "anim": "anim_02",
+   "start": 66,
+   "end": 135,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 24,
+   "end": 93,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x32": {
+   "anim": "anim_03",
+   "start": 79,
+   "end": 171,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

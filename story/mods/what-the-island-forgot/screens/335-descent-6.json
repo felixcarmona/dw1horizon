@@ -1,0 +1,17 @@
+{
+  "id": 335,
+  "file": "OVPS06",
+  "tims8": 2,
+  "tims4": 0,
+  "sound_bank": 4,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": "Overdell Pass",
+  "concave": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

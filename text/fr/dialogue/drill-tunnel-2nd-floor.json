@@ -1,0 +1,291 @@
+{
+ "s026.sec5.u0": [
+  [
+   "Hé hé hé, merci pour tous tes",
+   "efforts !"
+  ]
+ ],
+ "s026.sec5.u1": [
+  [
+   "Quoi ? Tu cherches la bagarre",
+   "?"
+  ]
+ ],
+ "s026.sec6.u0": [
+  [
+   "Tiens, tiens, merci d'être venu",
+   "!"
+  ]
+ ],
+ "s026.sec6.u1": [
+  [
+   "laissez-moi tranquille !"
+  ]
+ ],
+ "s026.sec7.u0": [
+  [
+   "Ne te surmène pas !"
+  ]
+ ],
+ "s026.sec7.u1": [
+  [
+   "Viens te battre !"
+  ]
+ ],
+ "s026.sec9.u0": [
+  [
+   "Ok, OK, J'abandonne !"
+  ]
+ ],
+ "s026.sec10.u0": [
+  [
+   "Le chef est parti comme ça..."
+  ]
+ ],
+ "s026.sec51.u0": [
+  [
+   "Gwah ha ha ! Si vous voulez",
+   "passer, les morveux, laissez",
+   "toutes vos affaires ici !"
+  ]
+ ],
+ "s026.sec51.u1": [
+  [
+   "On se connaît depuis un bail,",
+   "toi et moi."
+  ]
+ ],
+ "s026.sec51.u2": [
+  [
+   "Ngh ! Encore vous, les",
+   "morveux... !"
+  ]
+ ],
+ "s026.sec51.u3": [
+  [
+   "C'est à moi de dire ça ! Te",
+   "cacher dans un endroit si",
+   "facile à trouver... Tu es prêt"
+  ],
+  [
+   "à en finir, on dirait !"
+  ]
+ ],
+ "s026.sec51.u4": [
+  [
+   "Fwahaha ! Prêt, tu dis ? Tu",
+   "vas voir ce qui arrive quand je",
+   "me bats sérieusement !"
+  ]
+ ],
+ "s026.sec51.u5": [
+  [
+   "Finissons-en !"
+  ]
+ ],
+ "s026.sec51.u6": [
+  [
+   "...Pourquoi... je n'arrive pas",
+   "à gagner..."
+  ]
+ ],
+ "s026.sec51.u7": [
+  [
+   "Qu'est-ce qui t'arrive ? Tu ne",
+   "t'enfuis pas ?"
+  ]
+ ],
+ "s026.sec51.u8": [
+  [
+   "Je suis à bout de forces..."
+  ]
+ ],
+ "s026.sec51.u9": [
+  [
+   "........."
+  ]
+ ],
+ "s026.sec51.u10": [
+  [
+   "Je suis devenu bandit parce",
+   "que je pensais que cette île",
+   "était fichue... Autant faire"
+  ],
+  [
+   "tout ce qui me plaisait..."
+  ]
+ ],
+ "s026.sec51.u11": [
+  [
+   "Tu savais que l'île était en",
+   "danger ?"
+  ]
+ ],
+ "s026.sec51.u12": [
+  [
+   "Bien sûr. Mais des types comme",
+   "vous ont débarqué...",
+   "Maintenant, m'allier à tout le"
+  ],
+  [
+   "monde, ce serait pitoyable..."
+  ]
+ ],
+ "s026.sec51.u13": [
+  [
+   "Mais non. Viens en ville."
+  ]
+ ],
+ "s026.sec51.u14": [
+  [
+   "Ça ne va pas... Un type comme",
+   "moi ne sert à personne... Et",
+   "puis, ils ne me pardonneront"
+  ],
+  [
+   "jamais..."
+  ]
+ ],
+ "s026.sec51.u15": [
+  [
+   "Oh, tais-toi !!! Arrête de",
+   "pleurnicher et viens !!!"
+  ]
+ ],
+ "s026.sec51.u16": [
+  [
+   "Tu peux nous être utile !",
+   "Personne n'est inutile sur",
+   "cette île en ce moment ! On"
+  ],
+  [
+   "est tous pareils !"
+  ]
+ ],
+ "s026.sec51.u17": [
+  [
+   "!!!"
+  ]
+ ],
+ "s026.sec51.u18": [
+  [
+   "Sauvée... ? Cette île peut être",
+   "sauvée ?! Vous allez la sauver,",
+   "c'est ça ? Hein ?!"
+  ]
+ ],
+ "s026.sec51.u19": [
+  [
+   "Bien sûr que oui !!! ...Tu sais",
+   "où se trouve la ville, hein ?"
+  ]
+ ],
+ "s026.sec51.u20": [
+  [
+   "Ohhhhh ! À nous deux, mon",
+   "nouveau boulot !"
+  ]
+ ],
+ "s026.sec51.u21": "Ogremon a rejoint la ville !",
+ "s026.sec52.u0": [
+  [
+   "Hé ! La sortie n'est pas par",
+   "là !"
+  ]
+ ],
+ "s026.sec52.u1": [
+  [
+   "Hé ! Je dois rendre sa caisse",
+   "de terre à Drimogemon !"
+  ]
+ ],
+ "s026.sec53.u0": [
+  [
+   "Hé ! La sortie n'est pas par",
+   "là !"
+  ]
+ ],
+ "s026.sec53.u1": [
+  [
+   "Hé ! Je dois rendre sa caisse",
+   "de terre à Drimogemon !"
+  ]
+ ],
+ "s030.sec5.u0": [
+  [
+   "Zut, on est tombés sur un",
+   "énorme rocher tout dur ! Même",
+   "moi, je ne peux pas le percer."
+  ]
+ ],
+ "s030.sec5.u1": [
+  [
+   "Quoi, tu ne peux pas ? Oh,",
+   "allez !"
+  ]
+ ],
+ "s030.sec5.u2": [
+  [
+   "Il ne reste qu'à le pousser",
+   "pour dégager le passage... Vous",
+   "voulez essayer ?"
+  ]
+ ],
+ "s030.sec5.u3": [
+  [
+   "Mmm! ?"
+  ]
+ ],
+ "s030.sec5.u4": [
+  [
+   "{color 10}{partner}{color 1}, je compte sur toi",
+   "!"
+  ]
+ ],
+ "s030.sec5.u5": [
+  [
+   "On a réussi !"
+  ]
+ ],
+ "s030.sec5.u6": [
+  [
+   "Ouah, quelle force ! Le rocher",
+   "a bougé !"
+  ]
+ ],
+ "s030.sec5.u7": [
+  [
+   "On dirait qu'il y a un trou..."
+  ]
+ ],
+ "s030.sec5.u8": [
+  [
+   "Ouah, une rivière de lave !",
+   "Attention, attention. Un",
+   "sentier longe la rive et"
+  ],
+  [
+   "s'enfonce plus loin... Allons-y",
+   "!"
+  ]
+ ],
+ "s030.sec5.u9": [
+  [
+   "Hé, vous allez là-dedans ?",
+   "Faites attention !"
+  ]
+ ],
+ "s030.sec5.u10": [
+  [
+   "Hé, vous allez là-dedans ?",
+   "Faites attention !"
+  ]
+ ],
+ "s030.sec5.u11": [
+  [
+   "Ça ne va pas... Reviens quand",
+   "{color 10}{partner}{color 1} aura un peu",
+   "grandi."
+  ]
+ ]
+}

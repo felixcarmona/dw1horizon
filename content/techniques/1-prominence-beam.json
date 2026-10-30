@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "name": "Prominence Beam",
+  "element": "fire",
+  "power": 444,
+  "mpCost": 61,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 75,
+  "status": 4,
+  "statusChance": 3,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [17, 10, 5]
+}

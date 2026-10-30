@@ -1,0 +1,1465 @@
+From 18b702f94b13da9e6bfc5676c10364147acd0332 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 18:28:06 +0000
+Subject: [PATCH] Patch 0175: NEW FONT in OPTIONS. A FONT=b executable carries
+ both fonts and draws with the original one (its code, glyphs and long-name
+ modes) when the row is OFF; the script text is read from copies paged for the
+ original font (DGORIG.SCN, MHORIG.SCN, SCRNORIG.DAT, tools/build-full.sh)
+ when the disc has them; the OPTIONS box is laid out in its font (one value a
+ row when two do not fit); the original drawGlyph keeps the text's colour
+ after a glyph (0167 left it 0: only the first letter showed); FONT=a left out
+
+---
+ Makefile                  |  11 +-
+ include/dw/mod_font.h     |  44 ++++++--
+ src/dget/dget.c           |  10 +-
+ src/main/file.c           |  23 +++++
+ src/main/file_table_us.c  |   8 ++
+ src/main/font.c           | 204 +++++++++++++++++++++++++++-----------
+ src/main/font_a.h         | 138 --------------------------
+ src/main/game_menu.c      |  14 ++-
+ src/main/main_menu.c      | 100 +++++++++++++++----
+ src/main/map.c            |  18 ++--
+ src/main/mod_lab.c        |  13 ++-
+ src/main/mod_screen.c     |  18 +++-
+ src/main/script_interp.c  |  34 ++++++-
+ src/main/script_textbox.c |  47 +++++----
+ src/main/script_value.c   |   4 +-
+ text/main/main_menu.yaml  |   3 +
+ 16 files changed, 408 insertions(+), 281 deletions(-)
+ delete mode 100644 src/main/font_a.h
+
+diff --git a/Makefile b/Makefile
+index 7bae2b62..2b52c0bc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -44,13 +44,14 @@ $(shell mkdir -p $(GEN_DIR); printf '#define FPS %s\n' '$(FPS)' > $(GEN_DIR)/fps
+ 	cmp -s $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h && rm $(GEN_DIR)/fps.h.tmp \
+ 	|| mv $(GEN_DIR)/fps.h.tmp $(GEN_DIR)/fps.h)
+ 
+-# MOD (font): the font the US executable draws its text with (docs/mods/font.md "Fonts"), chosen at build time:
++# MOD (font): the fonts the US executable draws its text with (docs/mods/font.md "Fonts"):
+ #   original  the US font on its 4-pixel grid: the original code and glyphs, byte for byte;
+-#   a         the US letters placed to the pixel (src/main/font_a.h, tools/fontgen.py);
+-#   b         our font redrawn in the game's style, placed to the pixel (src/main/font_b.h, tools/font/b.txt).
++#   b         our font redrawn in the game's style, placed to the pixel (src/main/font_b.h, tools/font/b.txt), and the
++#             original one too: the title menu's OPTIONS (NEW FONT) chooses between them at run time (patch 0173).
++# (FONT=a, the US letters placed to the pixel, was a test font: left out by patch 0173.)
+ FONT ?= b
+-ifeq ($(filter $(FONT),original a b),)
+-$(error FONT=$(FONT): the font must be original, a or b)
++ifeq ($(filter $(FONT),original b),)
++$(error FONT=$(FONT): the font must be original or b)
+ endif
+ $(shell mkdir -p $(GEN_DIR); printf '#define FONT_%s 1\n' '$(shell echo $(FONT) | tr a-z A-Z)' > $(GEN_DIR)/font_sel.h.tmp; \
+ 	cmp -s $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h && rm $(GEN_DIR)/font_sel.h.tmp \
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index 587b7345..afeb8a38 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -2,27 +2,41 @@
+ #define DW_MOD_FONT_H
+ 
+ /*
+- * MOD (font): the build's font (Makefile `FONT=original|a|b`, generated font_sel.h; docs/mods/font.md "Fonts").
+- * FONT_PROPORTIONAL: glyphs are placed to the pixel (font.c drawGlyph) and their width is their advance in pixels;
+- * otherwise the original code: a 12-pixel cell on the 4-pixel grid of the text area.
++ * MOD (font): the build's font (Makefile `FONT=original|b`, generated font_sel.h; docs/mods/font.md "Fonts").
++ * FONT_SWITCH: a FONT=b build carries both fonts, and the title menu's OPTIONS (NEW FONT) chooses one at run time.
++ * FONT_PROPORTIONAL is then true while font b draws: glyphs placed to the pixel (font.c drawGlyph), their width their
++ * advance in pixels; otherwise (NEW FONT off, or a FONT=original build) the original code: a 12-pixel cell on the
++ * 4-pixel grid of the text area.
+  */
+ #include <font_sel.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ 
+-#if defined(FONT_A) || defined(FONT_B)
+-#define FONT_PROPORTIONAL 1
++#if defined(FONT_B) && VERSION_IS(US)
++#define FONT_SWITCH 1
++extern int8_t MOD_FONT_ORIGINAL; /* NEW FONT off: the original font (font.c) */
++#define FONT_PROPORTIONAL (!MOD_FONT_ORIGINAL)
++/* the font changes (OPTIONS, a loaded save): the text from now on is drawn in it, and the script text is read from the
++ * files paged for it (script_interp.c modFontScriptsChanged) */
++void modSetFont(int32_t original);
++void modFontScriptsChanged(void);
++/* `path`, or with NEW FONT off the file `originalFont` (no directory) paged for the original font when the disc has it
++ * (file.c) */
++char *modFontFile(char *path, char *originalFont);
++#define FONT_FILE(path, originalFont) modFontFile(path, originalFont)
+ #else
++#define FONT_SWITCH 0
+ #define FONT_PROPORTIONAL 0
++#define FONT_FILE(path, originalFont) (path)
+ #endif
+ 
+ /* a blank as wide as a digit: intToStringSJIS pads numbers with it, so they stay right-aligned (Shift-JIS 824E is unassigned) */
+ #define FONT_FIGURE_SPACE 0x824e
+ 
+ /* a C string that a screen cuts into pieces at the original's offsets: drawn in the original's cells (font.c) */
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ void drawStringCells(char *str, int32_t x, int32_t y);
+-#define DRAW_STRING_CELLS(str, x, y) drawStringCells(str, x, y)
++#define DRAW_STRING_CELLS(str, x, y) (FONT_PROPORTIONAL ? drawStringCells(str, x, y) : drawString(str, x, y))
+ #else
+ #define DRAW_STRING_CELLS(str, x, y) drawString(str, x, y)
+ #endif
+@@ -40,13 +54,17 @@ extern uint8_t TEXTBOX_CELLS;
+ #define PIECE_LEFT   0x4000
+ #define PIECE_FLAGS  (PIECE_CENTRE | PIECE_LEFT)
+ #define PIECES_END   0xffff
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces);
+ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, int32_t x, int32_t y, const uint16_t *pieces);
+ #define DRAW_STRING_PIECES(str, x, y, ...)                                         \
+ 	do {                                                                       \
+ 		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
+-		drawStringPieces(str, x, y, PIECES_);                              \
++		if (FONT_PROPORTIONAL) {                                           \
++			drawStringPieces(str, x, y, PIECES_);                      \
++		} else {                                                           \
++			drawString(str, x, y);                                     \
++		}                                                                  \
+ 	} while (0)
+ #else
+ #define DRAW_STRING_PIECES(str, x, y, ...) drawString(str, x, y)
+@@ -68,12 +86,16 @@ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, in
+  * drawString2 advanced it (a space by the glyph before it); the box's other rows to the pixel. The original font: the
+  * box in the original's cells (TEXTBOX_IN_CELLS). One such row at a time (script_textbox.c TEXTBOX_PIECES)
+  */
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ void textboxRowPieces(int32_t boxId, int32_t row, const uint16_t *pieces);
+ #define TEXTBOX_ROW_PIECES(boxId, row, ...)                                        \
+ 	do {                                                                       \
+ 		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
+-		textboxRowPieces(boxId, row, PIECES_);                             \
++		if (FONT_PROPORTIONAL) {                                           \
++			textboxRowPieces(boxId, row, PIECES_);                     \
++		} else {                                                           \
++			TEXTBOX_IN_CELLS(boxId);                                   \
++		}                                                                  \
+ 	} while (0)
+ #else
+ #define TEXTBOX_ROW_PIECES(boxId, row, ...) TEXTBOX_IN_CELLS(boxId)
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index d54c04fd..0607b409 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -171,9 +171,12 @@ void buildScheduleLabels(void)
+ 		*str++ = 0xfa;
+ #else
+ 		dayOfMonth = day % 30;
+-#if FONT_PROPORTIONAL /* MOD (font): the figure space that pads it already advances a digit's 8 pixels */
+-		str = (uint8_t *)intToStringSJIS(str, dayOfMonth + 1, 2, 0);
+-#else
++#if FONT_SWITCH
++		if (FONT_PROPORTIONAL) { /* MOD (font): the figure space that pads it already advances a digit's 8 pixels */
++			str = (uint8_t *)intToStringSJIS(str, dayOfMonth + 1, 2, 0);
++			continue;
++		}
++#endif
+ 		/*
+ 		 * MOD (font): the first date under 10 without its padding space: in the row's cells a space advances by
+ 		 * the glyph before it, 12 at the row's start (script_textbox.c), where the original's advance was not set
+@@ -184,7 +187,6 @@ void buildScheduleLabels(void)
+ 			*str++ = 0x81;
+ 			*str++ = 0x40;
+ 		}
+-#endif
+ #endif
+ 	}
+ 
+diff --git a/src/main/file.c b/src/main/file.c
+index 9e90982d..fa1503c9 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -6,6 +6,7 @@
+ #include <dw/file.h>
+ #include <dw/file_table.h>
+ #include <dw/main.h>
++#include <dw/mod_font.h>
+ #include <dw/tfs_stream.h>
+ 
+ #include "common.h"
+@@ -14,6 +15,28 @@ static void empty_800a31f0(char *path)
+ {
+ }
+ 
++#if FONT_SWITCH
++/*
++ * MOD (font): the script text is paged for the font that draws it. A build with both fonts puts on the disc a copy of
++ * DG.SCN, MAPHEAD.SCN and SCRN.DAT paged for the original one (tools/build-full.sh): with NEW FONT off the game reads
++ * that copy, when build-disc.py wrote its sector (an entry it did not fill keeps sector 0)
++ */
++char *modFontFile(char *path, char *originalFont)
++{
++	FileEntry *entry;
++
++	if (!MOD_FONT_ORIGINAL) {
++		return path;
++	}
++	for (entry = FILE_OFFSET_TABLE; entry->size != 0; ++entry) {
++		if (!strcmp(originalFont, entry->filename)) {
++			return entry->sector != 0 ? originalFont : path;
++		}
++	}
++	return path;
++}
++#endif
++
+ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ {
+ 	char *filename;
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index ef8f4e5e..3d5293da 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -1,4 +1,5 @@
+ #include <dw/file_table.h>
++#include <dw/mod_font.h>
+ 
+ #include <dw/atan_lookup_table.h>
+ 
+@@ -828,6 +829,13 @@ FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + par
+ 	/* MOD (screens beyond 255): the screens >= 255 (tools/screens.py, include/dw/screen.h); build-disc.py
+ 	 * --relayout --add writes its sector and size. Without the file sector 0 of the disc is read: no record. */
+ 	{ 0x00000000, 0x00000800, "SCRN.DAT" },
++#if FONT_SWITCH
++	/* MOD (font): DG.SCN, MAPHEAD.SCN and SCRN.DAT paged for the original font, read with NEW FONT off
++	 * (tools/build-full.sh, script_interp.c); sector 0 (no such file on the disc): the ones above */
++	{ 0x00000000, 0x00000800, "DGORIG.SCN" },
++	{ 0x00000000, 0x00000800, "MHORIG.SCN" },
++	{ 0x00000000, 0x00000800, "SCRNORIG.DAT" },
++#endif
+ 	/*
+ 	 * MOD (partners-npc-c): partner-only models (model.c). Sector 0 until
+ 	 * build-disc.py --relayout --add writes the real one; without the file
+diff --git a/src/main/font.c b/src/main/font.c
+index ef1d4e6f..53ba3c53 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -22,17 +22,23 @@
+ 
+ #if !VERSION_IS(US)
+ #define NUM_RENDER_SLOTS	21
+-#elif FONT_PROPORTIONAL
+-/* MOD (font): a 16-pixel cell (4 VRAM halfwords, 8 bytes a row) of 11 rows; 40 slots stay within the original's
+- * 3600 bytes, and drawGlyph waits for the GPU when the ring wraps (a slot is rewritten only once it has been read) */
+-#define NUM_RENDER_SLOTS	40
+ #else
+ #define NUM_RENDER_SLOTS	50
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
+-#define RENDER_SLOT_SIZE	88
+-#else
+ #define RENDER_SLOT_SIZE	72
++#if FONT_SWITCH
++/*
++ * MOD (font): font b's ring: a 16-pixel cell (4 VRAM halfwords, 8 bytes a row) of 11 rows, 34 slots, and drawGlyph waits
++ * for the GPU when the ring wraps (a slot is rewritten only once it has been read). The original font (NEW FONT off)
++ * uses the same buffer: 30 of its slots of 72 bytes, waiting too when its ring wraps, and after them the strip its
++ * long names are composed in (FIT_STRIP). 1 400 bytes less than the original's 3 600 and a strip of its own.
++ */
++#define PIXEL_RENDER_SLOTS	34
++#define PIXEL_RENDER_SLOT_SIZE	88
++#define CELL_RENDER_SLOTS	30
++#define GLYPH_AREA_SIZE		(PIXEL_RENDER_SLOTS * PIXEL_RENDER_SLOT_SIZE)
++#else
++#define GLYPH_AREA_SIZE		(NUM_RENDER_SLOTS * RENDER_SLOT_SIZE)
+ #endif
+ 
+ #define NUM_FONT_CLUT_ENTRIES	16
+@@ -1188,9 +1194,17 @@ uint16_t CHAR_TO_GLYPH_TABLE[NUM_GLYPHS] = {
+ };
+ // clang-format on
+ 
+-#if !FONT_PROPORTIONAL
++#if FONT_SWITCH
++#include "font_b.h" /* MOD (font): GLYPH_DATA and EXTRA_GLYPH_DATA of FONT=b (tools/fontgen.py, tools/font/b.txt) */
++/* MOD (font): the original font's glyphs, for NEW FONT off */
++#define CELL_GLYPH_DATA ORIGINAL_GLYPH_DATA
++#define CELL_EXTRA_GLYPH_DATA ORIGINAL_EXTRA_GLYPH_DATA
++#else
++#define CELL_GLYPH_DATA GLYPH_DATA
++#define CELL_EXTRA_GLYPH_DATA EXTRA_GLYPH_DATA
++#endif
+ // clang-format off
+-GlyphData GLYPH_DATA[NUM_GLYPHS] = {
++GlyphData CELL_GLYPH_DATA[NUM_GLYPHS] = {
+ 	{ { 0xf3ff, 0xedff, 0xddff, 0xdeff, 0xbeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 12 },
+ 	{ { 0x01ff, 0x7eff, 0x7eff, 0x01ff, 0x7eff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x00ff, 0xffff, }, 12 },
+ 	{ { 0xe0ff, 0x9f7f, 0x7f7f, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7f7f, 0x9f7f, 0xe0ff, 0xffff, }, 12 },
+@@ -1272,11 +1286,6 @@ GlyphData GLYPH_DATA[NUM_GLYPHS] = {
+ 	{ { 0xffff, 0xf7ff, 0xebff, 0xebff, 0xddff, 0xddff, 0xbeff, 0xbeff, 0x7f7f, 0x007f, 0xffff, }, 12 },
+ };
+ // clang-format on
+-#elif defined(FONT_A)
+-#include "font_a.h" /* MOD (font): GLYPH_DATA and EXTRA_GLYPH_DATA of FONT=a (tools/fontgen.py) */
+-#else
+-#include "font_b.h" /* MOD (font): GLYPH_DATA and EXTRA_GLYPH_DATA of FONT=b (tools/fontgen.py, tools/font/b.txt) */
+-#endif
+ 
+ /*
+  * MOD: extra glyphs (accents, ñ, ç, ¿¡, ·, «», and the punctuation ( ) & % / …
+@@ -1287,7 +1296,11 @@ GlyphData GLYPH_DATA[NUM_GLYPHS] = {
+  */
+ #define EXTRA_GLYPH_LEAD	0xf0
+ #define EXTRA_GLYPH_FIRST	0x40
+-#if !FONT_PROPORTIONAL
++#if FONT_SWITCH
++#define EXTRA_GLYPH_DATA ORIGINAL_EXTRA_GLYPH_DATA /* font_extra.h's table, beside font b's */
++#include "font_extra.h"
++#undef EXTRA_GLYPH_DATA
++#else
+ #include "font_extra.h"
+ #endif
+ #endif
+@@ -1303,7 +1316,11 @@ uint8_t COLORCODE_LOWBITS = 0x01;
+ uint8_t COLORCODE_HIGHBITS = 0x10;
+ 
+ int32_t GLYPH_DRAWING_AREA_INDEX;
+-uint8_t GLYPH_DRAWING_AREAS[NUM_RENDER_SLOTS * RENDER_SLOT_SIZE];
++#if FONT_SWITCH
++uint8_t GLYPH_DRAWING_AREAS[GLYPH_AREA_SIZE] __attribute__((aligned(4))); /* FIT_STRIP: LoadImage reads words */
++#else
++uint8_t GLYPH_DRAWING_AREAS[GLYPH_AREA_SIZE];
++#endif
+ 
+ void initializeFontCLUT(void)
+ {
+@@ -1330,7 +1347,7 @@ void clearTextArea(void)
+  * (dw/mod_fps.h) */
+ extern int32_t MOD_RENDER_PASS;
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ /* MOD (font): the cell of the last glyph uploaded (drawGlyph): its text-area x (a multiple of 4), y, ring slot */
+ static int16_t GLYPH_CARRY_X;
+ static int16_t GLYPH_CARRY_Y = -1;
+@@ -1353,7 +1370,7 @@ void clearTextSubArea(RECT *rect)
+ 	rect->y = rect->y + TEXT_VRAM_Y;
+ 	rect->w >>= 2;
+ 	ClearImage(rect, 0, 0, 0);
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	GLYPH_CARRY_Y = -1; /* the previous glyph's cell may be cleared: never copy its pixels back */
+ #ifdef FONT_KERN
+ 	KERN_PREV_Y = -1;
+@@ -1380,8 +1397,8 @@ static int32_t glyphColor(uint16_t codepoint)
+ }
+ #endif
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
+-/* the rows of a glyph (GLYPH_HEIGHT, then its width) */
++#if FONT_SWITCH
++/* the rows of a glyph of font b (GLYPH_HEIGHT, then its width) */
+ static uint16_t *glyphRows(uint16_t codepoint)
+ {
+ 	uint16_t code;
+@@ -1595,10 +1612,7 @@ void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces)
+  * the previous cell is the only one that can share them; a clear (clearTextSubArea) forgets it. The glyph's width is
+  * its advance in pixels (its ink and a blank column, tools/fontgen.py).
+  */
+-int32_t drawGlyph(codepoint, x, y)
+-	uint16_t codepoint;
+-	uint16_t x;
+-	uint16_t y;
++static int32_t drawGlyphPixel(uint16_t codepoint, uint16_t x, uint16_t y)
+ {
+ 	RECT rect;
+ 	uint16_t *p;
+@@ -1643,11 +1657,11 @@ int32_t drawGlyph(codepoint, x, y)
+ 	}
+ 
+ 	GLYPH_DRAWING_AREA_INDEX++;
+-	if (GLYPH_DRAWING_AREA_INDEX >= NUM_RENDER_SLOTS) {
++	if (GLYPH_DRAWING_AREA_INDEX >= PIXEL_RENDER_SLOTS) {
+ 		GLYPH_DRAWING_AREA_INDEX = 0;
+ 		DrawSync(0); /* every slot's upload has read it */
+ 	}
+-	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * RENDER_SLOT_SIZE;
++	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * PIXEL_RENDER_SLOT_SIZE;
+ 
+ 	cx = x & ~3;
+ 	shift = x & 3;
+@@ -1675,7 +1689,7 @@ int32_t drawGlyph(codepoint, x, y)
+ 		carry += 8;
+ 	}
+ 
+-	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * RENDER_SLOT_SIZE;
++	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * PIXEL_RENDER_SLOT_SIZE;
+ 	setRECT(&rect, (cx / 4) + TEXT_VRAM_X, y + TEXT_VRAM_Y, 4, GLYPH_HEIGHT);
+ 	LoadImage(&rect, (u_long *)drawRow);
+ 	GLYPH_CARRY_X = cx;
+@@ -1683,9 +1697,51 @@ int32_t drawGlyph(codepoint, x, y)
+ 	GLYPH_CARRY_SLOT = drawRow;
+ 	return adv;
+ }
+-#else /* the original drawGlyph */
++
++/*
++ * MOD (font): the font changes (OPTIONS' NEW FONT, a loaded save's options): the next glyph starts a ring and a row of
++ * its own (the two fonts lay out the same buffer in slots of their own sizes)
++ */
++int8_t MOD_FONT_ORIGINAL;
++
++void modSetFont(int32_t original)
++{
++	original = original != 0;
++	if (original == MOD_FONT_ORIGINAL) {
++		return;
++	}
++	DrawSync(0);
++	MOD_FONT_ORIGINAL = original;
++	GLYPH_DRAWING_AREA_INDEX = 0;
++	GLYPH_CARRY_Y = -1;
++#ifdef FONT_KERN
++	KERN_PREV_Y = -1;
++#endif
++	modFontScriptsChanged();
++}
++
++static int32_t drawGlyphCells(uint16_t codepoint, uint16_t x, uint16_t y);
++
++/* MOD (font): a glyph in the font OPTIONS chose (font b's placed to the pixel, or the original's cells); its advance */
++// clang-format off
++int32_t drawGlyph(codepoint, x, y)
++	uint16_t codepoint;
++	uint16_t x;
++	uint16_t y;
++// clang-format on
++{
++	if (FONT_PROPORTIONAL) {
++		return drawGlyphPixel(codepoint, x, y);
++	}
++	return drawGlyphCells(codepoint, x, y);
++}
++#endif /* FONT_SWITCH */
++
++/* the original drawGlyph (MOD (font): drawGlyphCells when the build has both fonts) */
+ #if !VERSION_IS(US)
+ void drawGlyph(uint16_t codepoint, uint16_t x, uint16_t y)
++#elif FONT_SWITCH
++static int32_t drawGlyphCells(uint16_t codepoint, uint16_t x, uint16_t y)
+ #else
+ // clang-format off
+ int32_t drawGlyph(codepoint, x, y)
+@@ -1704,6 +1760,9 @@ int32_t drawGlyph(codepoint, x, y)
+ 	uint16_t rowData;
+ 	uint8_t tmp;
+ 	uint8_t *drawRow;
++#if VERSION_IS(US)
++	uint8_t textColor; /* MOD (options): the text's colour, set again after the glyph (`col` is the loop's) */
++#endif
+ 
+ 	if ((x < 0) || (x >= TEXT_DRAW_LIMIT)) {
+ #if !VERSION_IS(US)
+@@ -1738,7 +1797,7 @@ int32_t drawGlyph(codepoint, x, y)
+ 		n--;
+ 	}
+ 	if ((code >> 8) == EXTRA_GLYPH_LEAD && n >= 0 && n < NUM_EXTRA_GLYPHS) {
+-		p = (uint16_t *)EXTRA_GLYPH_DATA[n].pixelData;
++		p = (uint16_t *)CELL_EXTRA_GLYPH_DATA[n].pixelData;
+ 	} else
+ #endif
+ 	{
+@@ -1750,15 +1809,23 @@ int32_t drawGlyph(codepoint, x, y)
+ 			}
+ 		}
+ 
+-		p = GLYPH_DATA[n].pixelData;
++		p = CELL_GLYPH_DATA[n].pixelData;
+ 	}
++#if FONT_SWITCH
++	GLYPH_DRAWING_AREA_INDEX++;
++	if (GLYPH_DRAWING_AREA_INDEX >= CELL_RENDER_SLOTS) {
++		GLYPH_DRAWING_AREA_INDEX = 0;
++		DrawSync(0); /* MOD (font): every slot's upload has read it */
++	}
++#else
+ 	GLYPH_DRAWING_AREA_INDEX = (GLYPH_DRAWING_AREA_INDEX + 1) % NUM_RENDER_SLOTS;
++#endif
+ 	drawRow = GLYPH_DRAWING_AREAS + GLYPH_DRAWING_AREA_INDEX * RENDER_SLOT_SIZE;
+ #if VERSION_IS(US)
+ 	tmp = COLORCODE_LOWBITS; /* MOD (options): the glyph's colour (glyphColor), the text's again after it */
+ 	COLORCODE_LOWBITS = glyphColor(codepoint);
+ 	COLORCODE_HIGHBITS = COLORCODE_LOWBITS << 4;
+-	col = tmp;
++	textColor = tmp;
+ #endif
+ 
+ 	for (i = 0; i < GLYPH_HEIGHT; i++) {
+@@ -1832,8 +1899,8 @@ int32_t drawGlyph(codepoint, x, y)
+ 		*drawRow++ = tmp;
+ 	}
+ #if VERSION_IS(US)
+-	COLORCODE_LOWBITS = col; /* MOD (options) */
+-	COLORCODE_HIGHBITS = col << 4;
++	COLORCODE_LOWBITS = textColor; /* MOD (options) */
++	COLORCODE_HIGHBITS = textColor << 4;
+ #endif
+ 
+ 	setRECT(&rect, (x / 4) + TEXT_VRAM_X, y + TEXT_VRAM_Y, GLYPH_WIDTH / 4, GLYPH_HEIGHT);
+@@ -1844,7 +1911,6 @@ int32_t drawGlyph(codepoint, x, y)
+ #endif
+ }
+ 
+-#endif /* FONT_PROPORTIONAL */
+ 
+ #if !VERSION_IS(US)
+ void drawString(str, x, y)
+@@ -1912,13 +1978,14 @@ void drawString(str, x, y)
+  * The tight and condensed lines are composed into FIT_STRIP and uploaded at once (docs/mods/font.md "Long names").
+  * A screen measures in any render pass; the drawing happens only in the first, like drawString's.
+  */
+-#if defined(FONT_B)
++#if FONT_SWITCH
+ /*
+  * MOD (font): with font b every species and item name fits its field as the font draws it (MetalGreymonVaccine is
+  * 109 pixels, the longest item name 93), so a name is always drawn by drawString: no tight or condensed lines, no
+- * composition strip, no condensed table (tools/localize/executable/bank.py and the species checks refuse a longer name).
++ * composition strip, no condensed table (tools/localize/executable/bank.py and the species checks refuse a longer name). The
++ * original font (NEW FONT off) keeps them (below).
+  */
+-int32_t measureStringMode(char *str, int32_t mode)
++static int32_t measureStringModePixel(char *str, int32_t mode)
+ {
+ 	uint16_t codepoint;
+ 	uint16_t prev;
+@@ -1951,26 +2018,43 @@ int32_t measureStringMode(char *str, int32_t mode)
+ 	return w > 0 ? w - 1 : 0; /* the last glyph's blank column is not ink */
+ }
+ 
++static int32_t measureStringModeCells(char *str, int32_t mode);
++static int32_t fitStringModeCells(char *str, int32_t maxW);
++static int32_t drawStringModeCells(char *str, int32_t x, int32_t y, int32_t mode);
++static int32_t textFitCodeCells(char *str, int32_t maxW);
++
++int32_t measureStringMode(char *str, int32_t mode)
++{
++	return FONT_PROPORTIONAL ? measureStringModePixel(str, mode) : measureStringModeCells(str, mode);
++}
++
+ int32_t fitStringMode(char *str, int32_t maxW)
+ {
+-	(void)str;
+-	(void)maxW;
+-	return FIT_VANILLA;
++	return FONT_PROPORTIONAL ? FIT_VANILLA : fitStringModeCells(str, maxW);
+ }
+ 
+ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ {
+-	drawString(str, x, y);
+-	return measureStringMode(str, mode);
++	if (FONT_PROPORTIONAL) {
++		drawString(str, x, y);
++		return measureStringModePixel(str, mode);
++	}
++	return drawStringModeCells(str, x, y, mode);
+ }
+ 
+ int32_t textFitCode(char *str, int32_t maxW)
+ {
+-	(void)str;
+-	(void)maxW;
+-	return 1;
++	return FONT_PROPORTIONAL ? 1 : textFitCodeCells(str, maxW);
+ }
++
++/* the original font's long names (NEW FONT off): the functions above in its cells */
++#define CELLS(name) name##Cells
++#define CELLS_FN static
+ #else
++#define CELLS(name) name
++#define CELLS_FN
++#endif
++
+ #include "font_condensed.h"
+ 
+ #define FIT_GAP		1	/* blank columns between two letters (tools/fontgen.py FIT_GAP) */
+@@ -1980,7 +2064,14 @@ int32_t textFitCode(char *str, int32_t maxW)
+  * tight within a field of at most 136 (MetalGreymonVaccine: 131, at most 136 with x & 3); 616 bytes of bss back for
+  * the item lists' code */
+ #define FIT_STRIP_W	144
++#if FONT_SWITCH
++/* MOD (font): after the original font's ring (CELL_RENDER_SLOTS), which uses it only with NEW FONT off */
++#define FIT_STRIP (GLYPH_DRAWING_AREAS + CELL_RENDER_SLOTS * RENDER_SLOT_SIZE)
++_Static_assert(CELL_RENDER_SLOTS * RENDER_SLOT_SIZE + (FIT_STRIP_W / 2) * GLYPH_HEIGHT <= GLYPH_AREA_SIZE,
++	       "the strip ends within the glyph buffer");
++#else
+ static uint8_t FIT_STRIP[(FIT_STRIP_W / 2) * GLYPH_HEIGHT] __attribute__((aligned(4))); /* LoadImage reads words */
++#endif
+ 
+ /* the glyph of the next character of a drawString text (its GLYPH_HEIGHT rows, then the advance); *str moves on */
+ static uint16_t *nextGlyph(char **str, int32_t mode)
+@@ -2019,12 +2110,12 @@ static uint16_t *nextGlyph(char **str, int32_t mode)
+ 		n--;
+ 	}
+ 	if ((code >> 8) == EXTRA_GLYPH_LEAD && n >= 0 && n < NUM_EXTRA_GLYPHS) {
+-		return (uint16_t *)EXTRA_GLYPH_DATA[n].pixelData;
++		return (uint16_t *)CELL_EXTRA_GLYPH_DATA[n].pixelData;
+ 	}
+ 	CHAR_TO_GLYPH_TABLE[NUM_GLYPHS - 1] = code;
+ 	for (n = 0; code != CHAR_TO_GLYPH_TABLE[n]; ++n) {
+ 	}
+-	return GLYPH_DATA[n].pixelData;
++	return CELL_GLYPH_DATA[n].pixelData;
+ }
+ 
+ /* the glyph's inked columns: returns the one after the last (0: no ink), *left the first */
+@@ -2051,7 +2142,7 @@ static int32_t glyphInk(uint16_t *p, int32_t *left)
+ }
+ 
+ /* the width of a text's ink drawn in a mode, from x 0 (FIT_VANILLA: where drawString's last ink ends) */
+-int32_t measureStringMode(char *str, int32_t mode)
++CELLS_FN int32_t CELLS(measureStringMode)(char *str, int32_t mode)
+ {
+ 	uint16_t *p;
+ 	int32_t pen;
+@@ -2068,11 +2159,7 @@ int32_t measureStringMode(char *str, int32_t mode)
+ 			if (right != 0) {
+ 				w = pen + right;
+ 			}
+-#if FONT_PROPORTIONAL
+-			pen += p[GLYPH_HEIGHT] & 0xff;
+-#else
+ 			pen += p[GLYPH_HEIGHT];
+-#endif
+ 		} else if (right == 0) {
+ 			pen += FIT_SPACE;
+ 		} else {
+@@ -2084,12 +2171,12 @@ int32_t measureStringMode(char *str, int32_t mode)
+ }
+ 
+ /* the first mode that draws the text within maxW pixels (FIT_CONDENSED when none does) */
+-int32_t fitStringMode(char *str, int32_t maxW)
++CELLS_FN int32_t CELLS(fitStringMode)(char *str, int32_t maxW)
+ {
+ 	int32_t mode;
+ 
+ 	for (mode = FIT_VANILLA; mode < FIT_CONDENSED; mode++) {
+-		if (measureStringMode(str, mode) <= maxW) {
++		if (CELLS(measureStringMode)(str, mode) <= maxW) {
+ 			break;
+ 		}
+ 	}
+@@ -2097,7 +2184,7 @@ int32_t fitStringMode(char *str, int32_t maxW)
+ }
+ 
+ /* drawString in a mode; returns the ink width (measureStringMode) */
+-int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
++CELLS_FN int32_t CELLS(drawStringMode)(char *str, int32_t x, int32_t y, int32_t mode)
+ {
+ 	RECT rect;
+ 	uint16_t *p;
+@@ -2113,7 +2200,7 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ 	int32_t i;
+ 	int32_t c;
+ 
+-	w = measureStringMode(str, mode);
++	w = CELLS(measureStringMode)(str, mode);
+ 	if (mode == FIT_VANILLA) {
+ 		drawString(str, x, y);
+ 		return w;
+@@ -2161,15 +2248,14 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ 
+ /* MOD (item names): the drawString2 code that draws a name within maxW pixels: 1 (a colour code, the name as the font
+  * draws it) when it fits so, else TEXT_FIT_TIGHT or TEXT_FIT_CONDENSED (font.h) */
+-int32_t textFitCode(char *str, int32_t maxW)
++CELLS_FN int32_t CELLS(textFitCode)(char *str, int32_t maxW)
+ {
+ 	int32_t mode;
+ 
+-	mode = fitStringMode(str, maxW);
++	mode = CELLS(fitStringMode)(str, maxW);
+ 	if (mode == FIT_VANILLA) {
+ 		return 1;
+ 	}
+ 	return TEXT_FIT_TIGHT - FIT_TIGHT + mode;
+ }
+-#endif /* FONT_B */
+ #endif
+diff --git a/src/main/font_a.h b/src/main/font_a.h
+deleted file mode 100644
+index 7b1e2428..00000000
+--- a/src/main/font_a.h
++++ /dev/null
+@@ -1,138 +0,0 @@
+-/* Generated by tools/fontgen.py font-header a from the US glyphs (the executable) and tools/font/extra.txt: do not edit. */
+-/* A glyph is placed to the pixel (font.c drawGlyph): width = advance | original width << 8. */
+-
+-// clang-format off
+-GlyphData GLYPH_DATA[NUM_GLYPHS] = {
+-	{ { 0xf3ff, 0xedff, 0xddff, 0xdeff, 0xbeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* 8260 A */
+-	{ { 0x01ff, 0x7eff, 0x7eff, 0x01ff, 0x7eff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x00ff, 0xffff, }, 10 | 12 << 8 }, /* 8261 B */
+-	{ { 0xe0ff, 0x9f7f, 0x7f7f, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7f7f, 0x9f7f, 0xe0ff, 0xffff, }, 10 | 12 << 8 }, /* 8262 C */
+-	{ { 0x03ff, 0x7cff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7cff, 0x03ff, 0xffff, }, 10 | 12 << 8 }, /* 8263 D */
+-	{ { 0x007f, 0x7fff, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* 8264 E */
+-	{ { 0x007f, 0x7fff, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, }, 10 | 12 << 8 }, /* 8265 F */
+-	{ { 0xe1ff, 0x9eff, 0x7eff, 0x7fff, 0x7fff, 0x7c7f, 0x7f7f, 0x7f7f, 0x9eff, 0xe1ff, 0xffff, }, 10 | 12 << 8 }, /* 8266 G */
+-	{ { 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x007f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* 8267 H */
+-	{ { 0x00ff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0x00ff, 0xffff, }, 9 | 12 << 8 }, /* 8268 I */
+-	{ { 0xff7f, 0xff7f, 0xff7f, 0xff7f, 0xff7f, 0xff7f, 0xff7f, 0x7e7f, 0xbcff, 0xc1ff, 0xffff, }, 10 | 12 << 8 }, /* 8269 J */
+-	{ { 0x7cff, 0x79ff, 0x73ff, 0x67ff, 0x0fff, 0x67ff, 0x73ff, 0x79ff, 0x7cff, 0x7e7f, 0xffff, }, 10 | 12 << 8 }, /* 826A K */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* 826B L */
+-	{ { 0x3f7f, 0x1e7f, 0x4c7f, 0x617f, 0x737f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* 826C M */
+-	{ { 0x3f7f, 0x1f7f, 0x4f7f, 0x677f, 0x777f, 0x737f, 0x7b7f, 0x797f, 0x7c7f, 0x7e7f, 0xffff, }, 10 | 12 << 8 }, /* 826D N */
+-	{ { 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 10 | 12 << 8 }, /* 826E O */
+-	{ { 0x01ff, 0x7eff, 0x7f7f, 0x7f7f, 0x7eff, 0x01ff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, }, 10 | 12 << 8 }, /* 826F P */
+-	{ { 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7d7f, 0xbeff, 0xc17f, 0xffff, }, 10 | 12 << 8 }, /* 8270 Q */
+-	{ { 0x01ff, 0x7eff, 0x7f7f, 0x7f7f, 0x7eff, 0x01ff, 0x07ff, 0x73ff, 0x79ff, 0x7e7f, 0xffff, }, 10 | 12 << 8 }, /* 8271 R */
+-	{ { 0xc1ff, 0xbeff, 0x7eff, 0x7fff, 0x3fff, 0xc0ff, 0xff7f, 0x7f7f, 0x3e7f, 0x80ff, 0xffff, }, 10 | 12 << 8 }, /* 8272 S */
+-	{ { 0x007f, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xffff, }, 10 | 12 << 8 }, /* 8273 T */
+-	{ { 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x9cff, 0xe3ff, 0xffff, }, 10 | 12 << 8 }, /* 8274 U */
+-	{ { 0x7f7f, 0x7f7f, 0x7f7f, 0x7eff, 0xbeff, 0xbeff, 0xbdff, 0xddff, 0xdbff, 0xe7ff, 0xffff, }, 10 | 12 << 8 }, /* 8275 V */
+-	{ { 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x777f, 0x777f, 0x62ff, 0xaaff, 0x8dff, 0xddff, 0xffff, }, 10 | 12 << 8 }, /* 8276 W */
+-	{ { 0x7f7f, 0xbeff, 0xddff, 0xebff, 0xf7ff, 0xf7ff, 0xebff, 0xddff, 0xbeff, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* 8277 X */
+-	{ { 0x7f7f, 0xbeff, 0xddff, 0xebff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xf7ff, 0xffff, }, 10 | 12 << 8 }, /* 8278 Y */
+-	{ { 0x007f, 0xfeff, 0xfdff, 0xfbff, 0xf7ff, 0xefff, 0xdfff, 0xbfff, 0x7fff, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* 8279 Z */
+-	{ { 0xffff, 0xffff, 0xcfff, 0xb7ff, 0xefff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8281 a */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x47ff, 0x3bff, 0x7bff, 0x7bff, 0x3bff, 0x47ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8282 b */
+-	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7bff, 0x7fff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8283 c */
+-	{ { 0xfbff, 0xfbff, 0xfbff, 0xcbff, 0xb3ff, 0x7bff, 0x7bff, 0xb7ff, 0xcbff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8284 d */
+-	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7bff, 0x03ff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8285 e */
+-	{ { 0xcfff, 0xbfff, 0xbfff, 0x0fff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xffff, 0xffff, }, 5 | 6 << 8 }, /* 8286 f */
+-	{ { 0xffff, 0xffff, 0xffff, 0x8fff, 0x77ff, 0x77ff, 0x77ff, 0x67ff, 0x97ff, 0x77ff, 0x8fff, }, 6 | 8 << 8 }, /* 8287 g */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x47ff, 0x3bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8288 h */
+-	{ { 0x7fff, 0xffff, 0xffff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 2 | 4 << 8 }, /* 8289 i */
+-	{ { 0xbfff, 0xffff, 0xffff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0x3fff, }, 3 | 6 << 8 }, /* 828A j */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x77ff, 0x2fff, 0x1fff, 0x5fff, 0x6fff, 0x77ff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* 828B k */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 2 | 4 << 8 }, /* 828C l */
+-	{ { 0xffff, 0xffff, 0xffff, 0x57ff, 0x2bff, 0x6bff, 0x6bff, 0x6bff, 0x6bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 828D m */
+-	{ { 0xffff, 0xffff, 0xffff, 0x47ff, 0x3bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 828E n */
+-	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 828F o */
+-	{ { 0xffff, 0xffff, 0xffff, 0x07ff, 0x7bff, 0x7bff, 0x7bff, 0x07ff, 0x7fff, 0x7fff, 0x7fff, }, 7 | 8 << 8 }, /* 8290 p */
+-	{ { 0xffff, 0xffff, 0xffff, 0x8bff, 0x73ff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xfaff, 0xf9ff, }, 9 | 8 << 8 }, /* 8291 q */
+-	{ { 0xffff, 0xffff, 0xffff, 0x47ff, 0x3bff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8292 r */
+-	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7bff, 0x87ff, 0xfbff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8293 s */
+-	{ { 0xdfff, 0xdfff, 0x07ff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdbff, 0xe7ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8294 t */
+-	{ { 0xffff, 0xffff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8295 u */
+-	{ { 0xffff, 0xffff, 0xffff, 0x7bff, 0x7bff, 0xb7ff, 0xb7ff, 0xcfff, 0xefff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8296 v */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x4bff, 0xb7ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8297 w */
+-	{ { 0xffff, 0xffff, 0x7bff, 0x7bff, 0xb7ff, 0xcfff, 0xb7ff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 8298 x */
+-	{ { 0xffff, 0xffff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xfbff, 0xfbff, 0x07ff, }, 7 | 8 << 8 }, /* 8299 y */
+-	{ { 0xffff, 0xffff, 0xffff, 0x03ff, 0xf3ff, 0xe7ff, 0x9fff, 0x3fff, 0x03ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* 829A z */
+-	{ { 0x87ff, 0x7bff, 0x73ff, 0x73ff, 0x6bff, 0x6bff, 0x5bff, 0x5bff, 0x3bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 824F 0 */
+-	{ { 0xefff, 0xcfff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0xffff, }, 7 | 8 << 8 }, /* 8250 1 */
+-	{ { 0x87ff, 0x7bff, 0x7bff, 0xfbff, 0xfbff, 0x87ff, 0x7fff, 0x7fff, 0x7fff, 0x03ff, 0xffff, }, 7 | 8 << 8 }, /* 8251 2 */
+-	{ { 0x87ff, 0x7bff, 0xfbff, 0xfbff, 0x87ff, 0xfbff, 0xfbff, 0x7bff, 0x7bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 8252 3 */
+-	{ { 0xf7ff, 0xe7ff, 0xd7ff, 0xb7ff, 0xb7ff, 0x77ff, 0x77ff, 0x03ff, 0xf7ff, 0xf7ff, 0xffff, }, 7 | 8 << 8 }, /* 8253 4 */
+-	{ { 0x03ff, 0x7fff, 0x7fff, 0x07ff, 0xfbff, 0xfbff, 0xfbff, 0x7bff, 0x7bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 8254 5 */
+-	{ { 0x87ff, 0x7bff, 0x7fff, 0x07ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 8255 6 */
+-	{ { 0x03ff, 0xfbff, 0xfbff, 0xf7ff, 0xf7ff, 0xefff, 0xefff, 0xdfff, 0xdfff, 0xdfff, 0xffff, }, 7 | 8 << 8 }, /* 8256 7 */
+-	{ { 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 8257 8 */
+-	{ { 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x83ff, 0xfbff, 0x7bff, 0x87ff, 0xffff, }, 7 | 8 << 8 }, /* 8258 9 */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 4 | 4 << 8 }, /* 8140   */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x3fff, 0x3fff, 0xffff, 0xffff, }, 3 | 5 << 8 }, /* 8142 . */
+-	{ { 0x87ff, 0x7bff, 0x7bff, 0xfbff, 0xfbff, 0xf7ff, 0xefff, 0xefff, 0xffff, 0xefff, 0xffff, }, 7 | 8 << 8 }, /* 8148 ? */
+-	{ { 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, 0x7fff, 0xffff, }, 2 | 5 << 8 }, /* 8149 ! */
+-	{ { 0x5fff, 0x5fff, 0x5fff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 4 | 8 << 8 }, /* 8176 " */
+-	{ { 0xffff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 2 | 5 << 8 }, /* 8175 ' */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x3fff, 0x3fff, 0xbfff, 0x7fff, 0xffff, }, 3 | 5 << 8 }, /* 8143 , */
+-	{ { 0x3fff, 0x3fff, 0x9fff, 0x9fff, 0xcfff, 0xcfff, 0xe7ff, 0xe7ff, 0xf3ff, 0xf3ff, 0xffff, }, 7 | 8 << 8 }, /* 815F \ */
+-	{ { 0xffff, 0xffff, 0x3fff, 0x3fff, 0xffff, 0xffff, 0x3fff, 0x3fff, 0xffff, 0xffff, 0xffff, }, 3 | 5 << 8 }, /* 8146 : */
+-	{ { 0xffff, 0xffff, 0x3fff, 0x3fff, 0xffff, 0xffff, 0x3fff, 0x3fff, 0xbfff, 0xffff, 0xffff, }, 3 | 5 << 8 }, /* 8147 ; */
+-	{ { 0xffff, 0xffff, 0xefff, 0xefff, 0xefff, 0x01ff, 0xefff, 0xefff, 0xefff, 0xffff, 0xffff, }, 8 | 12 << 8 }, /* 817B + */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x01ff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 8 | 12 << 8 }, /* 817C - */
+-	{ { 0xffff, 0xffff, 0xffff, 0x01ff, 0xffff, 0xffff, 0x01ff, 0xffff, 0xffff, 0xffff, 0xffff, }, 8 | 12 << 8 }, /* 8181 = */
+-	{ { 0xffff, 0xe3ff, 0x9cff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0x9cff, 0xe3ff, 0xffff, }, 10 | 12 << 8 }, /* 819B ○ */
+-	{ { 0xffff, 0x007f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* 81A0 □ */
+-	{ { 0xffff, 0x7f7f, 0xbeff, 0xddff, 0xebff, 0xf7ff, 0xebff, 0xddff, 0xbeff, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* 81A2 × */
+-	{ { 0xffff, 0xf7ff, 0xebff, 0xebff, 0xddff, 0xddff, 0xbeff, 0xbeff, 0x7f7f, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* 817E △ */
+-};
+-// clang-format on
+-
+-#define NUM_EXTRA_GLYPHS 44
+-
+-static const GlyphData EXTRA_GLYPH_DATA[NUM_EXTRA_GLYPHS] = {
+-	{ { 0xefff, 0xdfff, 0xffff, 0xcfff, 0xb7ff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F040 á */
+-	{ { 0xefff, 0xdfff, 0xffff, 0x87ff, 0x7bff, 0x03ff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F041 é */
+-	{ { 0xefff, 0xdfff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F042 ó */
+-	{ { 0xefff, 0xdfff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F043 ú */
+-	{ { 0xdfff, 0xefff, 0xffff, 0xcfff, 0xb7ff, 0x97ff, 0x77ff, 0x77ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F044 à */
+-	{ { 0xdfff, 0xefff, 0xffff, 0x87ff, 0x7bff, 0x03ff, 0x7fff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F045 è */
+-	{ { 0xdfff, 0xefff, 0xffff, 0x87ff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x87ff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F046 ò */
+-	{ { 0xbfff, 0x7fff, 0xffff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xffff, 0xffff, }, 3 | 4 << 8 }, /* F047 í */
+-	{ { 0xffff, 0x5fff, 0xffff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xbfff, 0xffff, 0xffff, }, 4 | 4 << 8 }, /* F048 ï */
+-	{ { 0xffff, 0xb7ff, 0xffff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0x73ff, 0x8bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F049 ü */
+-	{ { 0x9bff, 0x67ff, 0xffff, 0x47ff, 0x3bff, 0x7bff, 0x7bff, 0x7bff, 0x7bff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F04A ñ */
+-	{ { 0xffff, 0xffff, 0xffff, 0x87ff, 0x7bff, 0x7fff, 0x7fff, 0x7bff, 0x87ff, 0xefff, 0xcfff, }, 7 | 8 << 8 }, /* F04B ç */
+-	{ { 0xfbff, 0xf7ff, 0xffff, 0xf3ff, 0xedff, 0xdeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* F04C Á */
+-	{ { 0xfbff, 0xf7ff, 0xffff, 0x007f, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* F04D É */
+-	{ { 0xfbff, 0xf7ff, 0xffff, 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 10 | 12 << 8 }, /* F04E Ó */
+-	{ { 0xfbff, 0xf7ff, 0xffff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x9cff, 0xe3ff, 0xffff, }, 10 | 12 << 8 }, /* F04F Ú */
+-	{ { 0xf7ff, 0xfbff, 0xffff, 0xf3ff, 0xedff, 0xdeff, 0x80ff, 0x7f7f, 0x7f7f, 0x7f7f, 0xffff, }, 10 | 12 << 8 }, /* F050 À */
+-	{ { 0xefff, 0xf7ff, 0xffff, 0x007f, 0x7fff, 0x7fff, 0x01ff, 0x7fff, 0x7fff, 0x007f, 0xffff, }, 10 | 12 << 8 }, /* F051 È */
+-	{ { 0xefff, 0xf7ff, 0xffff, 0xc1ff, 0xbeff, 0x7f7f, 0x7f7f, 0x7f7f, 0xbeff, 0xc1ff, 0xffff, }, 10 | 12 << 8 }, /* F052 Ò */
+-	{ { 0xf7ff, 0xefff, 0xffff, 0x00ff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0x00ff, 0xffff, }, 9 | 12 << 8 }, /* F053 Í */
+-	{ { 0xffff, 0xbdff, 0xffff, 0x00ff, 0xefff, 0xefff, 0xefff, 0xefff, 0xefff, 0x00ff, 0xffff, }, 9 | 12 << 8 }, /* F054 Ï */
+-	{ { 0xffff, 0xddff, 0xffff, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x7f7f, 0x9cff, 0xe3ff, 0xffff, }, 10 | 12 << 8 }, /* F055 Ü */
+-	{ { 0xceff, 0xb1ff, 0xffff, 0x3f7f, 0x5f7f, 0x677f, 0x737f, 0x797f, 0x7d7f, 0x7e7f, 0xffff, }, 10 | 12 << 8 }, /* F056 Ñ */
+-	{ { 0xe0ff, 0x9f7f, 0x7f7f, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7f7f, 0x9f7f, 0xe0ff, 0xf9ff, }, 10 | 12 << 8 }, /* F057 Ç */
+-	{ { 0xffff, 0xdfff, 0xffff, 0xdfff, 0xdfff, 0xbfff, 0x7fff, 0x7fff, 0x7bff, 0x7bff, 0x87ff, }, 7 | 8 << 8 }, /* F058 ¿ */
+-	{ { 0xffff, 0x7fff, 0xffff, 0xffff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, }, 2 | 5 << 8 }, /* F059 ¡ */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x3fff, 0x3fff, 0xffff, 0xffff, 0xffff, 0xffff, }, 3 | 4 << 8 }, /* F05A · */
+-	{ { 0xffff, 0xffff, 0xffff, 0xdbff, 0xb7ff, 0x6fff, 0xb7ff, 0xdbff, 0xffff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F05B « */
+-	{ { 0xffff, 0xffff, 0xffff, 0x6fff, 0xb7ff, 0xdbff, 0xb7ff, 0x6fff, 0xffff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F05C » */
+-	{ { 0xdfff, 0xbfff, 0xbfff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0xbfff, 0xbfff, 0xdfff, }, 4 | 4 << 8 }, /* F05D ( */
+-	{ { 0x7fff, 0xbfff, 0xbfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xbfff, 0xbfff, 0x7fff, }, 4 | 4 << 8 }, /* F05E ) */
+-	{ { 0xc7ff, 0xbbff, 0xbbff, 0xd7ff, 0xefff, 0xd77f, 0xbaff, 0x7dff, 0x7aff, 0x877f, 0xffff, }, 10 | 12 << 8 }, /* F05F & */
+-	{ { 0x9f7f, 0x6eff, 0x6dff, 0x9bff, 0xf7ff, 0xefff, 0xd9ff, 0xb6ff, 0x76ff, 0xf9ff, 0xffff, }, 10 | 12 << 8 }, /* F060 % */
+-	{ { 0xf7ff, 0xf7ff, 0xefff, 0xefff, 0xdfff, 0xdfff, 0xbfff, 0xbfff, 0x7fff, 0x7fff, 0xffff, }, 6 | 8 << 8 }, /* F061 / */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x333f, 0x333f, 0xffff, 0xffff, }, 11 | 12 << 8 }, /* F062 … */
+-	{ { 0x1fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x7fff, 0x1fff, }, 4 | 4 << 8 }, /* F063 [ */
+-	{ { 0x1fff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0xdfff, 0x1fff, }, 4 | 4 << 8 }, /* F064 ] */
+-	{ { 0xffff, 0xdbff, 0xdbff, 0x00ff, 0xdbff, 0xdbff, 0xdbff, 0x00ff, 0xdbff, 0xdbff, 0xffff, }, 9 | 12 << 8 }, /* F065 # */
+-	{ { 0xffff, 0xdfff, 0x57ff, 0x8fff, 0x57ff, 0xdfff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 6 | 8 << 8 }, /* F066 * */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0x9bff, 0x67ff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 7 | 8 << 8 }, /* F067 ~ */
+-	{ { 0xffff, 0xc1ff, 0xbeff, 0x637f, 0x5b7f, 0x5b7f, 0x5b7f, 0x64ff, 0xbfff, 0xc0ff, 0xffff, }, 10 | 12 << 8 }, /* F068 @ */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x007f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 10 | 12 << 8 }, /* F069 – */
+-	{ { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x000f, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 13 | 16 << 8 }, /* F06A — */
+-	{ { 0xefff, 0xe7ff, 0xebff, 0xedff, 0xedff, 0xebff, 0x8fff, 0x0fff, 0x0fff, 0x9fff, 0xffff, }, 8 | 12 << 8 }, /* F06B ♪ */
+-};
+-
+-/* FONT_FIGURE_SPACE (dw/mod_font.h): a blank as wide as a digit, in the cell of a dialogue space */
+-static const GlyphData FIGURE_SPACE_GLYPH = { { 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, }, 7 | 8 << 8 };
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index a7433ba3..d3c0e91c 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -872,7 +872,7 @@ char *CARD_CHART_LABELS[5] = {
+ 	MAIN_D_80123B20,
+ };
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ /* MOD (font): the crops of the player screen's label rows ("NameLevel  Raised", "Bits  Time", "Items  Medals"):
+  * drawStringPieces lays each piece out in the font's spacing (dw/mod_font.h) */
+ static const uint16_t PLAYER_LABEL_PIECES[3][6] = {
+@@ -2816,7 +2816,7 @@ int32_t drawMoveViewHelpStrings(void)
+ 	 * help lines are TECH_VIEW_LABELS[1..8], which follow it in the original's data. GCC
+ 	 * places TECH_VIEW_LABELS elsewhere, so the help read garbage pointers and hung. */
+ 	/* MOD (font): only the first help line is cut (around the button icon); the others are copied whole */
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	if (MENU_SUB_STATE == 0) {
+ 		DRAW_STRING_PIECES(TECH_VIEW_LABELS[MENU_SUB_STATE + 1], 0, MENU_SUB_STATE * 0xc + 0x18, 0, 0x71);
+ 	} else {
+@@ -4173,9 +4173,13 @@ int32_t drawPlayerInfoStrings(void)
+ #endif
+ 	case 2:
+ 	case 3:
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
+-		drawStringPieces(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0, (MENU_SUB_STATE - 1) * 0xc + 0xc,
+-		                 PLAYER_LABEL_PIECES[MENU_SUB_STATE - 1]);
++#if FONT_SWITCH
++		if (FONT_PROPORTIONAL) {
++			drawStringPieces(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0, (MENU_SUB_STATE - 1) * 0xc + 0xc,
++			                 PLAYER_LABEL_PIECES[MENU_SUB_STATE - 1]);
++		} else {
++			drawString(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0, (MENU_SUB_STATE - 1) * 0xc + 0xc);
++		}
+ #else
+ 		drawString(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0,
+ 		           (MENU_SUB_STATE - 1) * 0xc + 0xc);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index c4db2ab3..b1fa756e 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -256,6 +256,11 @@ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
++#if FONT_SWITCH
++#define MOD_OPT_ROWS	5 /* MOD (options): and NEW FONT, in a build with both fonts */
++#else
++#define MOD_OPT_ROWS	4
++#endif
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
+ static int32_t modOptionValue(int32_t row);
+@@ -993,9 +998,9 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0024,
+ 		0x000c,
+ 	},
+-	{ /* MOD (options): the OPTIONS box (renderOptionsMenu), 4 rows */
++	{ /* MOD (options): the OPTIONS box (renderOptionsMenu), its rows; x and w follow the font (drawOptionsText) */
+ 		0x00,
+-		{ 0x04, 0x00, 0x00, 0x00, 0x00 },
++		{ MOD_OPT_ROWS, 0x00, 0x00, 0x00, 0x00 },
+ 		0x000c,
+ 		0x0035,
+ 		0x0037,
+@@ -4588,7 +4593,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[4]; /* MOD (options) */
++	uint8_t options[5]; /* MOD (options) */
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4645,6 +4650,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	options[1] = MOD_OPT_CLOCK;
+ 	options[2] = modFrameRate();
+ 	options[3] = MOD_OPT_BARS;
++	options[4] = FONT_PROPORTIONAL; /* NEW FONT */
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+@@ -4883,6 +4889,11 @@ static void applyRecords(uint8_t *e)
+ 			if (len >= 4 && !MOD_OPT_TOUCHED) {
+ 				MOD_OPT_BARS = d[3] != 0;
+ 			}
++#if FONT_SWITCH
++			if (len >= 5 && !MOD_OPT_TOUCHED) {
++				modSetFont(d[4] == 0);
++			}
++#endif
+ 			break;
+ 		}
+ 	}
+@@ -5336,19 +5347,31 @@ void renderInitialMenu(void)
+ /*
+  * MOD (options): the box's rows, each a label and its two values side by side; the chosen value is drawn yellow and the
+  * other one grey, so the row reads as a switch. Left picks the left value, right the right one, confirm the other one.
++ * With the original font (NEW FONT off) the two do not fit the screen beside "JAPANESE CONTROLS" (200 + 2 x 61 pixels
++ * for "20 FPS" / "60 FPS"): a row then shows its chosen value only, as the original game's own settings do.
+  */
+-#define MOD_OPT_ROWS	4
+-#define MOD_OPT_VALUE_X	0x80	/* the left value's column in the text area; the right one's is MOD_OPT_VALUE_W further */
+-#define MOD_OPT_VALUE_W	0x28
+-#define MOD_OPT_TEXT_X	0x38	/* the box's text on the screen */
++#define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels */
++#define MOD_OPT_VALUE_X	0x60	/* the right value's column in the text area (the left one's is 0) */
++#define MOD_OPT_GAP	8	/* pixels between the labels' column and the values', and between the two values */
++#define MOD_OPT_MARGIN	8	/* the box's frame to its text */
+ 
+ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][3] = {
+ 	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
++#if FONT_SWITCH
++	{ MOD_OPT_STR_FONT, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++#endif
+ };
+ 
++/* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
++ * width, a value's, and how many values a row shows (2, or 1 with the original font: below) */
++static int16_t MOD_OPT_TEXT_X;
++static int16_t MOD_OPT_LABEL_W;
++static int16_t MOD_OPT_VALUE_W;
++static int16_t MOD_OPT_SHOWN;
++
+ /* 0 the row's left value, 1 the right one, -1 neither (an FPS=20 build's frame rate, or 30 from an FPS=30 build) */
+ static int32_t modOptionValue(int32_t row)
+ {
+@@ -5359,6 +5382,10 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_CLOCK != 0;
+ 	case 2:
+ 		return MOD_OPT_BARS != 0;
++#if FONT_SWITCH
++	case 4:
++		return FONT_PROPORTIONAL;
++#endif
+ 	}
+ #if FPS == 20
+ 	return -1;
+@@ -5383,39 +5410,76 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case 3:
+ 		modSetFrameRate(value ? 60 : 20);
+ 		break;
++#if FONT_SWITCH
++	case 4:
++		modSetFont(value == 0);
++		break;
++#endif
+ 	}
+ }
+ 
++/*
++ * The labels in the text area's first rows, the values in the rows under them (the original font's "JAPANESE CONTROLS"
++ * takes 200 of its 256 pixels), and the box laid out on the widest of each, centred on the screen.
++ */
+ static void drawOptionsText(void)
+ {
++	MenuHighlight *bar;
+ 	int32_t r;
++	int32_t w;
+ 
++	MOD_OPT_LABEL_W = 0;
++	MOD_OPT_VALUE_W = 0;
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		drawString(MOD_OPT_TEXT[r][0], 0, r * 0xC);
+-		drawString(MOD_OPT_TEXT[r][1], MOD_OPT_VALUE_X, r * 0xC);
+-		DrawSync(0);
+-		drawString(MOD_OPT_TEXT[r][2], MOD_OPT_VALUE_X + MOD_OPT_VALUE_W, r * 0xC);
+-		DrawSync(0);
+-	}
++		drawString(MOD_OPT_TEXT[r][1], 0, MOD_OPT_VALUE_Y + r * 0xC);
++		DrawSync(0);
++		drawString(MOD_OPT_TEXT[r][2], MOD_OPT_VALUE_X, MOD_OPT_VALUE_Y + r * 0xC);
++		DrawSync(0);
++		w = measureStringMode(MOD_OPT_TEXT[r][0], FIT_VANILLA) + 1; /* and the shadow */
++		MOD_OPT_LABEL_W = w > MOD_OPT_LABEL_W ? w : MOD_OPT_LABEL_W;
++		w = measureStringMode(MOD_OPT_TEXT[r][1], FIT_VANILLA) + 1;
++		MOD_OPT_VALUE_W = w > MOD_OPT_VALUE_W ? w : MOD_OPT_VALUE_W;
++		w = measureStringMode(MOD_OPT_TEXT[r][2], FIT_VANILLA) + 1;
++		MOD_OPT_VALUE_W = w > MOD_OPT_VALUE_W ? w : MOD_OPT_VALUE_W;
++	}
++	MOD_OPT_SHOWN = 2;
++	w = MOD_OPT_LABEL_W + 2 * (MOD_OPT_GAP + MOD_OPT_VALUE_W);
++	if (w + 2 * MOD_OPT_MARGIN > 0x140 - 0x10) {
++		MOD_OPT_SHOWN = 1;
++		w = MOD_OPT_LABEL_W + MOD_OPT_GAP + MOD_OPT_VALUE_W;
++	}
++	MOD_OPT_TEXT_X = (0x140 - w) / 2;
++	bar = &MENU_HIGHLIGHTS[22];
++	bar->x = MOD_OPT_TEXT_X - MOD_OPT_MARGIN + 5;
++	bar->w = w + 2 * MOD_OPT_MARGIN - 10;
+ }
+ 
+ static void renderOptionsMenu(void)
+ {
+ 	POLY_FT4 *cur;
+ 	int32_t r;
++	int32_t x;
+ 	int32_t y;
+ 	int32_t value;
+ 
+ 	cur = (POLY_FT4 *)GsGetWorkBase();
++	x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		y = 0x37 + r * 0xC;
+ 		value = modOptionValue(r);
+-		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_VALUE_X, 0xC, 0);
+-		renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_VALUE_X, y, MOD_OPT_VALUE_X, r * 0xC, MOD_OPT_VALUE_W, 0xC,
+-			   value == 0 ? 2 : 1);
+-		renderText(cur++, MOD_OPT_TEXT_X + MOD_OPT_VALUE_X + MOD_OPT_VALUE_W, y, MOD_OPT_VALUE_X + MOD_OPT_VALUE_W,
+-			   r * 0xC, MOD_OPT_VALUE_W, 0xC, value == 1 ? 2 : 1);
++		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_LABEL_W, 0xC, 0);
++		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the left one, grey, when neither is) */
++			renderText(cur++, x, y, value == 1 ? MOD_OPT_VALUE_X : 0, MOD_OPT_VALUE_Y + r * 0xC, MOD_OPT_VALUE_W,
++				   0xC, value >= 0 ? 2 : 1);
++			continue;
++		}
++		renderText(cur++, x, y, 0, MOD_OPT_VALUE_Y + r * 0xC, MOD_OPT_VALUE_W, 0xC, value == 0 ? 2 : 1);
++		renderText(cur++, x + MOD_OPT_VALUE_W + MOD_OPT_GAP, y, MOD_OPT_VALUE_X, MOD_OPT_VALUE_Y + r * 0xC,
++			   MOD_OPT_VALUE_W, 0xC, value == 1 ? 2 : 1);
+ 	}
+ 	GsSetWorkBase((PACKET *)cur);
+-	renderMenuBox(0x30, 0x32, 0xE0, 0x16 + (MOD_OPT_ROWS - 1) * 0xC);
++	renderMenuBox(MOD_OPT_TEXT_X - MOD_OPT_MARGIN, 0x32,
++		      MOD_OPT_LABEL_W + MOD_OPT_SHOWN * (MOD_OPT_GAP + MOD_OPT_VALUE_W) + 2 * MOD_OPT_MARGIN,
++		      0x16 + (MOD_OPT_ROWS - 1) * 0xC);
+ }
+diff --git a/src/main/map.c b/src/main/map.c
+index 337d5318..4314a67a 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -5735,7 +5735,7 @@ int32_t scriptTickChangeMap(int16_t mapId, int16_t exitId, int32_t showName)
+ 	return 0;
+ }
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ /*
+  * MOD (font): the US map names are centred with spaces made for the original's letters ("      Native Forest     ")
+  * and the caption's rectangle is computed from strlen. With a font placed to the pixel the spaces and letters are
+@@ -5767,13 +5767,13 @@ void addMapNameObject(mapId)
+ 	int16_t mapId;
+ // clang-format on
+ {
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	char buf[MAP_CAPTION_MAX];
+ #endif
+ 
+ 	clearTextArea();
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
+-	drawString(mapCaption(mapId, buf), 0, 0);
++#if FONT_SWITCH
++	drawString(FONT_PROPORTIONAL ? mapCaption(mapId, buf) : getScreenCaption(mapId), 0, 0);
+ #else
+ 	drawString(getScreenCaption(mapId), 0, 0);
+ #endif
+@@ -5880,13 +5880,15 @@ void renderMapName(mapId)
+ // clang-format on
+ {
+ 	int32_t length;
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	char buf[MAP_CAPTION_MAX];
+ 
+ 	/* the name's ink and a column of shadow, centred on the screen (x 0) */
+-	length = measureStringMode(mapCaption(mapId, buf), FIT_VANILLA) + 2;
+-	renderString(0, -length / 2, -6, length, 12, 0, 0, 0, 0);
+-	return;
++	if (FONT_PROPORTIONAL) {
++		length = measureStringMode(mapCaption(mapId, buf), FIT_VANILLA) + 2;
++		renderString(0, -length / 2, -6, length, 12, 0, 0, 0, 0);
++		return;
++	}
+ #endif
+ 	length = strlen(getScreenCaption(mapId));
+ #if !VERSION_IS(US)
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 586660e4..7c809ca8 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -528,12 +528,15 @@ static void modRosterRenderCaption(int32_t instanceId)
+ {
+ 	int32_t width;
+ 
+-#if FONT_PROPORTIONAL
+-	width = measureStringMode(modRosterText, FIT_VANILLA) + 2;
+-#else
+-	for (width = 4; modRosterText[(width - 4) / 8] != '\0'; width += 8) {
+-	}
++#if FONT_SWITCH
++	if (FONT_PROPORTIONAL) {
++		width = measureStringMode(modRosterText, FIT_VANILLA) + 2;
++	} else
+ #endif
++	{
++		for (width = 4; modRosterText[(width - 4) / 8] != '\0'; width += 8) {
++		}
++	}
+ 	renderString(0, -width / 2, -100, width, 12, 0, ROSTER_TEXT_Y, 0, 0);
+ }
+ 
+diff --git a/src/main/mod_screen.c b/src/main/mod_screen.c
+index 0a47daed..1ed52250 100644
+--- a/src/main/mod_screen.c
++++ b/src/main/mod_screen.c
+@@ -5,6 +5,7 @@
+  */
+ #include <dw/file.h>
+ #include <dw/main.h>
++#include <dw/mod_font.h>
+ #include <dw/screen.h>
+ 
+ #include "common.h"
+@@ -14,6 +15,9 @@ extern uint8_t *MAPHEAD_SCRIPT_PTR;
+ void tickFileReadQueue(int32_t unused);
+ int32_t isFileReadQueueBusy(void);
+ 
++/* MOD (font): with NEW FONT off, SCRN.DAT's copy paged for the original font (dw/mod_font.h FONT_FILE) */
++#define SCREEN_FILE FONT_FILE(SCREEN_FILE_NAME, "SCRNORIG.DAT")
++
+ /* the last record read: its whole sector (the script of a new screen runs from here) */
+ static uint32_t SCREEN_SECTOR[SCREEN_RECORD_SIZE / 4];
+ static int16_t SCREEN_SECTOR_ID = -1;
+@@ -35,14 +39,14 @@ static int32_t readScreenRecord(int32_t id)
+ 	if (SCREEN_SECTOR_ID == id) {
+ 		return 1;
+ 	}
+-	if (lookupFileTable(&lookup, SCREEN_FILE_NAME) == 0 || lookup.size < (uint32_t)(sector + 1) * SCREEN_RECORD_SIZE) {
++	if (lookupFileTable(&lookup, SCREEN_FILE) == 0 || lookup.size < (uint32_t)(sector + 1) * SCREEN_RECORD_SIZE) {
+ 		return 0;
+ 	}
+ 	/* never in the middle of an asynchronous read (evolution, sounds, overlays) */
+ 	while (isFileReadQueueBusy()) {
+ 		tickFileReadQueue(0);
+ 	}
+-	readFileSectors(SCREEN_FILE_NAME, SCREEN_SECTOR, sector, 1);
++	readFileSectors(SCREEN_FILE, SCREEN_SECTOR, sector, 1);
+ 	SCREEN_RECORD_READS++;
+ 	if (rec->magic[0] != SCREEN_RECORD_MAGIC[0] || rec->magic[1] != SCREEN_RECORD_MAGIC[1] ||
+ 	    rec->magic[2] != SCREEN_RECORD_MAGIC[2] || rec->magic[3] != SCREEN_RECORD_MAGIC[3] || rec->id != id ||
+@@ -54,6 +58,14 @@ static int32_t readScreenRecord(int32_t id)
+ 	return 1;
+ }
+ 
++#if FONT_SWITCH
++/* MOD (font): the font changed: the next record is read from its file (script_interp.c modFontScriptsChanged) */
++void modScreenFileChanged(void)
++{
++	SCREEN_SECTOR_ID = -1;
++}
++#endif
++
+ static ScreenRecordHead *getScreenHead(int32_t id)
+ {
+ 	int32_t i;
+@@ -151,7 +163,7 @@ int32_t findNewScreen(int32_t from, int32_t step)
+ 	int32_t i;
+ 	int32_t k;
+ 
+-	if (lookupFileTable(&lookup, SCREEN_FILE_NAME) == 0) {
++	if (lookupFileTable(&lookup, SCREEN_FILE) == 0) {
+ 		return -1;
+ 	}
+ 	count = lookup.size / SCREEN_RECORD_SIZE - 1;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 320933c5..73063dbb 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -158,6 +158,10 @@ char MAIN_D_801303A8[] = "\\ETCHI\\OP.TIM";
+ char MAIN_D_801345F0[] = ";1";
+ // clang-format on
+ 
++/* MOD (font): with NEW FONT off, the copies paged for the original font (dw/mod_font.h FONT_FILE) */
++#define DG_FILE FONT_FILE(MAIN_D_80130388, "DGORIG.SCN")
++#define MAPHEAD_FILE FONT_FILE(MAIN_D_80130374, "MHORIG.SCN")
++
+ int16_t MAIN_D_80134F9C;
+ int32_t SCRIPT_MAP_CHANGE_SHOW_NAME;
+ uint8_t WAIT_FOR_ENTITY_ID;
+@@ -605,7 +609,7 @@ uint8_t *getScript(uint16_t mapId)
+ 	table = (uint32_t *)SCRIPT_OFFSET_PTR;
+ 	offset = table[mapId];
+ 	size = table[mapId + 1] - table[mapId];
+-	readFileSection(MAIN_D_80130388, MAP_SCRIPT_PTR, offset, size);
++	readFileSection(DG_FILE, MAP_SCRIPT_PTR, offset, size);
+ 
+ 	return MAP_SCRIPT_PTR;
+ }
+@@ -2159,6 +2163,28 @@ void setMapHeadActive(void)
+ 	SCRIPT_POINTER = MAPHEAD_SCRIPT_PTR + off - 2;
+ }
+ 
++#if FONT_SWITCH
++void tickFileReadQueue(int32_t unused);
++int32_t isFileReadQueueBusy(void);
++void modScreenFileChanged(void);
++
++/*
++ * MOD (font): the font changed (OPTIONS at the title, a loaded save's options): MAPHEAD.SCN, DG.SCN's offset table and
++ * the new screens' records are read again from the files paged for it. Only at the title or while a save loads, before
++ * any script runs; the next screen reads its script from the right DG.SCN.
++ */
++void modFontScriptsChanged(void)
++{
++	while (isFileReadQueueBusy()) {
++		tickFileReadQueue(0);
++	}
++	readFile(MAPHEAD_FILE, MAPHEAD_SCRIPT_PTR);
++	readFileSection(DG_FILE, SCRIPT_OFFSET_PTR, 0, SCRIPT_OFFSET_TABLE_SIZE);
++	ACTIVE_MAP_SCRIPT = 0;
++	modScreenFileChanged();
++}
++#endif
++
+ void initializeScripts(void)
+ {
+ 	MAPHEAD_SCRIPT_PTR = MAPHEAD_SCRIPT_BUFFER;
+@@ -2167,11 +2193,11 @@ void initializeScripts(void)
+ 	SCRIPT_STATE_PTR = &SCRIPT_STATE;
+ 	TEXTBOX_LINES_PTR = TEXTBOX_LINES_BUFFER;
+ 
+-	readFile(MAIN_D_80130374, MAPHEAD_SCRIPT_PTR);
++	readFile(MAPHEAD_FILE, MAPHEAD_SCRIPT_PTR);
+ #if VERSION_IS(US) && !defined(__MWERKS__)
+-	readFileSection(MAIN_D_80130388, SCRIPT_OFFSET_PTR, 0, SCRIPT_OFFSET_TABLE_SIZE); /* MOD: the table's sector only */
++	readFileSection(DG_FILE, SCRIPT_OFFSET_PTR, 0, SCRIPT_OFFSET_TABLE_SIZE); /* MOD: the table's sector only */
+ #else
+-	readFileSection(MAIN_D_80130388, SCRIPT_OFFSET_PTR, 0, 0x2000);
++	readFileSection(DG_FILE, SCRIPT_OFFSET_PTR, 0, 0x2000);
+ #endif
+ 	memset((void *)SCRIPT_STATE_PTR, 0, sizeof(*SCRIPT_STATE_PTR));
+ 
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 49c8869e..dae0c692 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -123,7 +123,7 @@ void renderScriptDialogueBox(void)
+ 	}
+ }
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ /*
+  * MOD (font): the one text box row that a screen copies in pieces (TEXTBOX_ROW_PIECES, dw/mod_font.h: the card shop's
+  * Yes / No), laid out by drawString2Pieces; createTextbox of that box forgets it
+@@ -180,9 +180,9 @@ int32_t drawTextboxStrings(boxId, flag)
+ #if !VERSION_IS(US)
+ 		done = drawString2(buf, px, row);
+ #else
+-#if FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 		/* MOD (font): the row a screen copies in pieces (TEXTBOX_ROW_PIECES) */
+-		DRAW2_PIECES = boxId + 1 == TEXTBOX_PIECES_BOX && box->writeRow == TEXTBOX_PIECES_ROW ? TEXTBOX_PIECES : NULL;
++		DRAW2_PIECES = FONT_PROPORTIONAL && boxId + 1 == TEXTBOX_PIECES_BOX && box->writeRow == TEXTBOX_PIECES_ROW ? TEXTBOX_PIECES : NULL;
+ #endif
+ 		done = drawString2(buf, px, row, flag);
+ #endif
+@@ -201,7 +201,7 @@ int32_t drawTextboxStrings(boxId, flag)
+ #if VERSION_IS(US)
+ 	FONT_CELLS = 0;
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	DRAW2_PIECES = NULL;
+ #endif
+ 
+@@ -572,7 +572,7 @@ void closeAllTextboxes(void)
+  */
+ uint8_t TEXTBOX_CELLS;
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ void textboxRowPieces(int32_t boxId, int32_t row, const uint16_t *pieces)
+ {
+ 	TEXTBOX_PIECES = pieces;
+@@ -607,7 +607,7 @@ void createTextbox(boxId, flags, rect, origin, tick, render)
+ #if VERSION_IS(US)
+ 	TEXTBOX_CELLS &= ~(1 << boxId); /* MOD (font): its rows are laid out to the pixel unless its creator says */
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	if (TEXTBOX_PIECES_BOX == boxId + 1) {
+ 		TEXTBOX_PIECES_BOX = 0;
+ 	}
+@@ -705,7 +705,7 @@ static int16_t drawString2Fit(uint8_t **str, int16_t x, int16_t y, int16_t pos,
+  * position) begins at the next grid cell of the text area: the 4 pixels the pen is in hold the previous glyph's last
+  * columns, which clearTextSubArea (x / 4) would erase. It ends on the cell after the stop: the next glyph is drawn after.
+  */
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ static void clearFromPen(int32_t px, int32_t py, int32_t w)
+ {
+ 	RECT rect;
+@@ -718,7 +718,15 @@ static void clearFromPen(int32_t px, int32_t py, int32_t w)
+ 		clearTextSubArea(&rect);
+ 	}
+ }
+-#define CLEAR_FROM_PEN(px, py, w) clearFromPen(px, py, w)
++#define CLEAR_FROM_PEN(px, py, w)                    \
++	do {                                         \
++		if (FONT_PROPORTIONAL) {             \
++			clearFromPen(px, py, w);     \
++		} else {                             \
++			setRECT(&rect, px, py, w, 0xc); \
++			clearTextSubArea(&rect);     \
++		}                                    \
++	} while (0)
+ #else
+ #define CLEAR_FROM_PEN(px, py, w)                    \
+ 	do {                                         \
+@@ -728,7 +736,7 @@ static void clearFromPen(int32_t px, int32_t py, int32_t w)
+ #endif
+ 
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ #define DRAW2_PIECES_MAX 32 /* a box row: 31 units */
+ /*
+  * MOD (font): a script row that a screen copies in pieces (TEXTBOX_ROW_PIECES): its glyphs laid out by font.c
+@@ -806,7 +814,7 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ #endif
+ 	uint16_t glyph;
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 	if (DRAW2_PIECES != NULL) {
+ 		return drawString2Pieces(str, x, y);
+ 	}
+@@ -910,7 +918,7 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			glyph = ch + (*str++ << 8);
+ #else
+ 			if (isAsciiEncoded((char *)&ch) != 0) {
+-#if FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 				/* MOD (font): ' and " as the font draws them (packed rows, showTextbox; drawString does the same) */
+ 				glyph = swapShortBytes(ch == '\'' ? 0x8175 : ch == '"' ? 0x8176 : convertAsciiToJis(ch));
+ #else
+@@ -921,13 +929,15 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			}
+ #endif
+ 
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 			/*
+ 			 * MOD (font): a space is the font's blank glyph, drawn like any other: its cell keeps the previous
+ 			 * letter's last columns and clears the rest, and it advances its own width. The name keyboard
+ 			 * (DRAW_STRING2_IS_FIXED_WIDTH) keeps 12-pixel cells, each letter centred in its own.
+ 			 */
+-			if (DRAW_STRING2_IS_FIXED_WIDTH != 0) {
++			if (!FONT_PROPORTIONAL) {
++				/* the original font: below */
++			} else if (DRAW_STRING2_IS_FIXED_WIDTH != 0) {
+ 				drawGlyph(glyph, x + pos + (0xc - glyphWidth(glyph)) / 2, y);
+ 				adv = 0xc;
+ 			} else {
+@@ -940,7 +950,8 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 					cellsSpace = adv;
+ 				}
+ 			}
+-#else
++			if (!FONT_PROPORTIONAL)
++#endif
+ 			if (glyph == 0x4081) {
+ 				setRECT(&rect, x + pos, y, 0xc, 0xc);
+ 				clearTextSubArea(&rect);
+@@ -976,8 +987,6 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ #endif
+ 			}
+ 
+-#endif
+-
+ #if !VERSION_IS(US)
+ 			pos += 0xc;
+ #else
+@@ -1236,7 +1245,7 @@ static const uint16_t PACKED_CODES[] = { 0x8140, 0x8142, 0x8143, 0x8146, 0x8147,
+ 					  0x817b, 0x817c, 0x8181 };
+ static const char PACKED_ASCII[] = " .,:;?!'\"+-=";
+ 
+-#if FONT_PROPORTIONAL
++#if FONT_SWITCH
+ static int32_t packedAscii(uint32_t code)
+ {
+ 	int32_t i;
+@@ -1472,7 +1481,7 @@ top: {
+ 			/* MOD (script text): a one-byte unit is expanded to the form the box draws: its own byte in a packed row,
+ 			 * else the two-byte glyph code */
+ 			if (ctrl >= 0x20 && ctrl < 0x7f && (lines = scriptAsciiCode(ctrl)) != 0) {
+-#if FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 				if (boxId == 0) {
+ 					*out++ = ctrl;
+ 				} else
+@@ -1485,7 +1494,7 @@ top: {
+ 				goto top;
+ 			}
+ #endif
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
++#if FONT_SWITCH
+ 			/* MOD (font): a letter, digit, space or common punctuation of a dialogue or selection row (box 0) takes one
+ 			 * byte, its ASCII form, which drawString2 draws as the same glyph: a 64-byte row holds 63 of them */
+ 			if (boxId == 0 && (lines = packedAscii((ctrl << 8) | *SCRIPT_POINTER)) != 0) {
+diff --git a/src/main/script_value.c b/src/main/script_value.c
+index ce3c6734..f7a766fe 100644
+--- a/src/main/script_value.c
++++ b/src/main/script_value.c
+@@ -118,8 +118,8 @@ uint8_t *intToStringSJIS(uint8_t *buf, int32_t value, uint8_t digits, int32_t fl
+ 					if (flag != 0) {
+ 						goto skip;
+ 					}
+-#if VERSION_IS(US) && FONT_PROPORTIONAL
+-					c = FONT_FIGURE_SPACE; /* MOD (font): as wide as a digit */
++#if FONT_SWITCH
++					c = FONT_PROPORTIONAL ? FONT_FIGURE_SPACE : 0x8140; /* MOD (font): as wide as a digit */
+ #else
+ 					c = 0x8140;
+ #endif
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 1ce0c394..bf710100 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -371,3 +371,6 @@ MOD_OPTIONS:
+     MOD_OPT_STR_60:
+       ja: "60 FPS"
+       en_us: "60 FPS"
++    MOD_OPT_STR_FONT:
++      ja: "NEW FONT"
++      en_us: "NEW FONT"
+-- 
+2.53.0
+

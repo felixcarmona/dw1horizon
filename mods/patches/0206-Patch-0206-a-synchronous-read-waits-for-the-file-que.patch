@@ -1,0 +1,56 @@
+From 9b0c2cbb7df474e50a66dfb198a05ce5af347508 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 08:31:49 +0000
+Subject: [PATCH] Patch 0206: a synchronous read waits for the file queue's
+ read in flight, and the background ring does not reopen while the queue holds
+ a request
+
+A second CdRead aborts the queue's read in flight: the queue's next CdReadSync sees the newer read complete and the
+request ends with only its first sectors. In the farewell at File City 237, load_ending queues ENDI_REL.BIN (3 sectors
+into 0x80060000) and the camera pan needs a tile the invalidated ring reopens with a synchronous read: ENDI kept
+BTL_REL's code above 0x80060800 and the ending jumped through it (ReservedInstruction at 0x00010004, never the
+credits). tfsStreamCheckTarget (every synchronous reader and every enqueue goes through it) first waits for the
+queue's read in flight; ringMayReopen also refuses while the queue holds a request (a queued read aimed at the load
+area, the sound bank at GENERAL_BUFFER, would land over the reopened header and tiles; the cell keeps what VRAM holds,
+as in a battle). Draining the whole queue instead deadlocks (the sound request's wait callback).
+---
+ src/main/tfs_stream.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/tfs_stream.c b/src/main/tfs_stream.c
+index 2932bdbd..fd37ad64 100644
+--- a/src/main/tfs_stream.c
++++ b/src/main/tfs_stream.c
+@@ -184,6 +184,14 @@ void tfsStreamCheckTarget(void *buffer, int32_t bytes)
+ {
+ 	uint32_t a = (uint32_t)buffer;
+ 
++	/*
++	 * A synchronous read must not cut short the queue's read in flight: a
++	 * second CdRead aborts it, the queue's next CdReadSync sees the newer read
++	 * complete and the request ends with only its first sectors (load_ending's
++	 * ENDI_REL at 0x80060000 kept BTL_REL's code above 0x80060800, and the
++	 * ending jumped through it: farewell at 237, 2026-10-24).
++	 */
++	waitQueueRead();
+ 	tfsStreamWaitIdle();
+ 	if ((a < TFS_RING_END) && (a + bytes > TFS_HEADER_ADDR)) {
+ 		tfsStreamInvalidate();
+@@ -342,7 +350,13 @@ static int32_t victimSlot(int8_t *protect, int32_t count, int32_t avoid)
+  */
+ static int32_t ringMayReopen(void)
+ {
+-	if (GAME_STATE == 0) {
++	/*
++	 * Not while the game's queue holds a request either: it may target the
++	 * load area (a sound bank at GENERAL_BUFFER, an overlay), and its read
++	 * would land over the header and tiles read now (the cell keeps what VRAM
++	 * holds, as in a battle).
++	 */
++	if ((GAME_STATE == 0) && isFileReadQueueIdle()) {
+ 		return 1;
+ 	}
+ 	MOD_TFS_STATS.refused++;
+-- 
+2.53.0
+

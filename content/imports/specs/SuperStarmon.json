@@ -1,0 +1,125 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 233,
+ "type": 244,
+ "name": "SuperStarmon",
+ "source": {
+  "type": 54,
+  "mmd": "extracted/CHDAT/MMD1/MGDR.MMD"
+ },
+ "map": {
+  "1": 6,
+  "2": 19,
+  "5": 12,
+  "8": 7,
+  "9": 8,
+  "11": 28,
+  "12": 13,
+  "13": 14,
+  "14": 17,
+  "16": 18,
+  "18": 21,
+  "24": 15,
+  "25": 16,
+  "26": 3
+ },
+ "hips": [
+  1,
+  1,
+  0.829
+ ],
+ "root_scale": 0.829,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 51,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 51,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 70,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.17
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 3,
+   "end": 83,
+   "hz": 0.3,
+   "rise": 250
+  },
+  "0x3b": {
+   "anim": "anim_01",
+   "start": 4,
+   "end": 141,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x2e": {
+   "anim": "anim_03",
+   "start": 4,
+   "end": 64,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 117,
+   "end": 191,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x32",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x38",
+  "0x39"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

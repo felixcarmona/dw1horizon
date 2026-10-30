@@ -1,0 +1,430 @@
+From a2582ca2f2abb7d634e1f9f0f0c0390d6072abb6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:15:02 +0000
+Subject: [PATCH] Merge branch 'master-tyrannomon' into integration
+
+---
+ include/dw/ids.h         | 14 +++++++++
+ src/main/evolution.c     | 18 +++++++++++-
+ src/main/main.c          | 15 +++++++---
+ src/main/map.c           |  4 ++-
+ src/main/mod_lab.c       | 76 ++++++++++++++++++++++++++++++++++--------------
+ src/main/partner_impl.c  | 10 +++++++
+ src/main/script_common.c | 10 ++++++-
+ src/main/sound.c         |  7 +++++
+ src/trn/trn_reward.c     |  2 ++
+ src/trn2/trn2_off.c      |  2 ++
+ 10 files changed, 129 insertions(+), 29 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 337cba1..28287aa 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -33,6 +33,20 @@ typedef uint16_t CardId;
+ #define NUM_EVO_CHART_DIGIMON	61	/* EVO_CHART_BOXES, by type - 1 */
+ #define NUM_RECRUITABLE_DIGIMON	0x70	/* recruited flags = trigger 200 + type, types 0..111 */
+ 
++/*
++ * MOD (master-tyrannomon): MasterTyrannomon is a partner too. Its per-partner
++ * data lives at index 124 of tables sized NUM_DIGIMON (RAISE_DATA,
++ * EVOLUTION_REQS, EVOLUTION_STATS_GAINS, ITEM_TAKE_DISTANCE, the VLALL voice
++ * ids, the training animation ids); it reuses Tyrannomon's animations,
++ * techniques and partner voice. Its "raised" flag is trigger 0x200 + 124 = 636,
++ * a free trigger (scripts.md, "Free triggers"); the flags of the types between
++ * NUM_EVOLVING_DIGIMON and 124 are used by scripts and stay out of range.
++ */
++#define DIGIMON_TYRANNOMON		8
++#define DIGIMON_MASTER_TYRANNOMON	124
++#define HAS_RAISED_FLAG(type) \
++	((uint32_t)(type) < NUM_EVOLVING_DIGIMON || (type) == DIGIMON_MASTER_TYRANNOMON)
++
+ /* Screens (maps) */
+ #define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
+ /*
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 7e62a17..103ccbd 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -344,6 +344,18 @@ EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON
+ 		0x0003, 0x001e, 0xffff, 0xffff, 0x0000, 0x0031, 0x11,
+ 		0x00,
+ 	},
++	/*
++	 * MOD (master-tyrannomon): from Tyrannomon (its only path). Heavier
++	 * than MetalGreymon (65) and Megadramon (55), the other two targets of
++	 * Tyrannomon, and with no Speed/MP requirement: HP 5000, Off 450,
++	 * Def 450, Brains 300, at most 5 care mistakes (flag 0x10), weight
++	 * 75..85; bonus: discipline 90 or 50 battles.
++	 */
++	[DIGIMON_MASTER_TYRANNOMON] = {
++		0xffff, 0x01f4, 0xffff, 0x01c2, 0x01c2, 0xffff, 0x012c,
++		0x0005, 0x0050, 0x005a, 0xffff, 0x0032, 0xffff, 0x10,
++		0x00,
++	},
+ };
+ 
+ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+@@ -413,6 +425,9 @@ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIG
+ 	{ 0x08ca, 0x08ca, 0x0177, 0x00e1, 0x012c, 0x012c, 0x003f },
+ 	{ 0x2328, 0x2328, 0x0384, 0x02ee, 0x0384, 0x02ee, 0x0040 },
+ 	{ 0x1770, 0x1d4c, 0x0384, 0x02bc, 0x0384, 0x02ee, 0x0041 },
++	/* MOD (master-tyrannomon): an Ultimate between MetalGreymon and Gigadramon */
++	[DIGIMON_MASTER_TYRANNOMON] = { 0x1770, 0x0fa0, 0x028a, 0x028a, 0x0190, 0x01f4,
++					DIGIMON_MASTER_TYRANNOMON },
+ };
+ 
+ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+@@ -446,7 +461,8 @@ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	},
+ 	{
+ 		{   -1, 0x03, 0x11, 0x1f,   -1 },
+-		{   -1,   -1, 0x0c, 0x36,   -1,   -1 },
++		/* MOD (master-tyrannomon): + MasterTyrannomon, centred like Ninjamon's three */
++		{   -1, 0x0c, 0x36, DIGIMON_MASTER_TYRANNOMON,   -1,   -1 },
+ 	},
+ 	{
+ 		{   -1,   -1, 0x03,   -1,   -1 },
+diff --git a/src/main/main.c b/src/main/main.c
+index 11ce03b..87977df 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -2248,17 +2248,24 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(MASTER_TYRANNOMON)
++		/*
++		 * MOD (master-tyrannomon): a partner. Was level 0 with no
++		 * specialty and no techniques (an NPC); now an Ultimate with
++		 * Tyrannomon's specialties and technique list (its model
++		 * plays Tyrannomon's animations, technique i = animation
++		 * 0x2E + i, finisher 0x3A Blaze Blast). Size unchanged.
++		 */
+ 		0x0000001b,
+ 		0x017c,
+ 		0x024e,
+ 		0x01,
+-		0x00,
+-		{ 0xff, 0xff, 0xff },
++		0x05,
++		{ 0x01, 0xff, 0x00 },
+ 		0x00,
+ 		0x0a,
+ 		{
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			0x02, 0x01, 0x03, 0x2b, 0x2c, 0x2e, 0x2f, 0x28,
++			0x2a, 0x29, 0x3a, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+diff --git a/src/main/map.c b/src/main/map.c
+index a90fe1c..f690933 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -2932,7 +2932,9 @@ int16_t ORIGINAL_DIGIMON_TYPES[NUM_ORIGINAL_DIGIMON] = {
+ 	0x001f, 0x0050, 0x0003, 0x0019, 0x0006, 0x0045, 0xffff, 0x0050,
+ 	0x0009, 0x0016, 0x0015, 0xffff, 0x0017, 0xffff, 0xffff, 0xffff,
+ 	0x003d, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+-	0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
++	/* MOD (master-tyrannomon): 124 -> Tyrannomon, like the NPC Tyrannomon (132): technique
++	 * effects (EFE bone offsets), aura and condition icon offsets */
++	0xffff, 0xffff, 0xffff, 0xffff, DIGIMON_TYRANNOMON, 0xffff, 0xffff, 0xffff,
+ 	0x0004, 0x0005, 0x0006, 0x0007, 0x0008, 0x0009, 0x000a, 0x000b,
+ 	0x000c, 0x000d, 0x000e, 0x0011, 0x0012, 0x0013, 0x0014, 0x0015,
+ 	0x0016, 0x0017, 0x0018, 0x0019, 0x001a, 0x001b, 0x001c, 0x001f,
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index eb2eaa4..2174d09 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -2,7 +2,7 @@
+  * MOD: lab menu.
+  *
+  * With the game paused (START) and no script running, SELECT opens a box with
+- * the partner's state and five options (up/down to choose, X to accept,
++ * the partner's state and six options (up/down to choose, X to accept,
+  * triangle or SELECT to close):
+  *   - "+1000 bits"     adds 1000 to the money
+  *   - "Heal partner"   current HP and MP to the maximum
+@@ -10,8 +10,15 @@
+  *                      afterwards it says the gift was already taken
+  *   - "Frame rate  60 fps"  X (or right) cycles 20 -> 30 -> 60 fps, left
+  *                      goes back (MOD_FPS_MODE, main.c; experimental branch)
++ *   - "To MasterTyrannomon"  starts the real evolution sequence into
++ *                      MasterTyrannomon (type 124) when the game is unpaused,
++ *                      the way an evolution item does, but with the natural
++ *                      stat gains (HAS_USED_EVOITEM = 0)
+  *   - "Close"
+  *
++ * The result of an option replaces the stats line until the next key, so the
++ * box keeps 8 text rows (0x90..0xEF; the pause label is at 0xF0).
++ *
+  * Hooked from handlePause() (utils2.c). Only uses game functions:
+  * drawString/renderString (text in the VRAM text area), UI boxes
+  * (createStaticUIBox), giveItem, setTrigger/isTriggerSet, playSound.
+@@ -22,6 +29,8 @@
+ 
+ #include <dw/btl.h>
+ #include <dw/entity.h>
++#include <dw/ids.h>
++#include <dw/params.h>
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -31,8 +40,9 @@
+ #define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+ #define MOD_LAB_BOX	5	/* same box the pause uses */
+ #define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
+-#define MOD_LAB_OPTIONS	5
++#define MOD_LAB_OPTIONS	6
+ #define MOD_LAB_OPT_FPS	3	/* the frame rate option */
++#define MOD_LAB_OPT_EVOLVE	4	/* MOD (master-tyrannomon) */
+ #define ITEM_MEAT	38
+ 
+ #define PAD_SELECT	0x100
+@@ -46,6 +56,8 @@
+ extern UIBoxData UI_BOX_DATA[];
+ extern int32_t IS_SCRIPT_PAUSED;
+ extern int32_t MOD_FPS_MODE; /* 0 = 20 fps, 1 = 30, 2 = 60 (main.c) */
++extern int16_t EVOLUTION_TARGET;
++extern uint8_t HAS_USED_EVOITEM;
+ 
+ void drawString(char *str, int32_t x, int32_t y);
+ void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h,
+@@ -55,6 +67,10 @@ char *formatInteger(int32_t value, char *buf, int32_t digits);
+ int32_t giveItem(ItemId item, uint8_t amount);
+ void pauseFrame(void);
+ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
++int32_t partnerGetState(void);
++void partnerSetState(int32_t state);
++int32_t tamerGetState(void);
++void tamerSetState(int32_t state);
+ 
+ static int32_t modLabCursor;
+ static char *modLabMessage;
+@@ -64,6 +80,7 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"Heal partner",
+ 	"One-time gift",
+ 	NULL, /* MOD_LAB_FPS_TEXT */
++	"To MasterTyrannomon",
+ 	"Close",
+ };
+ 
+@@ -99,9 +116,9 @@ static char *appendStr(char *dst, char *src)
+ #define ROW_TITLE	0
+ #define ROW_STATS	1
+ #define ROW_OPTIONS	2
+-#define ROW_MESSAGE	(ROW_OPTIONS + MOD_LAB_OPTIONS)
++#define ROW_COUNT	(ROW_OPTIONS + MOD_LAB_OPTIONS)
+ #define TEXT_ROW_Y(r)	(MOD_LAB_TEXT_Y + (r) * 0xC)
+-#define BOX_H		(8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2) /* centred vertically */
++#define BOX_H		(8 + ROW_COUNT * ROW_PITCH + 2) /* centred vertically */
+ 
+ static void modLabClearRow(int32_t row)
+ {
+@@ -119,18 +136,22 @@ static void modLabDrawText(void)
+ 	int32_t i;
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 
+-	for (i = 0; i < ROW_MESSAGE; i++) {
++	for (i = 0; i < ROW_COUNT; i++) {
+ 		modLabClearRow(i);
+ 	}
+ 	drawString("LAB MENU", 0, TEXT_ROW_Y(ROW_TITLE));
+ 
+-	p = appendStr(line, "Bits ");
+-	p = appendStr(p, formatInteger(MONEY, num, 6));
+-	p = appendStr(p, "   HP ");
+-	p = appendStr(p, formatInteger(stats->current.currentHP, num, 4));
+-	p = appendStr(p, " of ");
+-	appendStr(p, formatInteger(stats->base.hp, num, 4));
+-	drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
++	if (modLabMessage != NULL) {
++		drawString(modLabMessage, 0, TEXT_ROW_Y(ROW_STATS));
++	} else {
++		p = appendStr(line, "Bits ");
++		p = appendStr(p, formatInteger(MONEY, num, 6));
++		p = appendStr(p, "   HP ");
++		p = appendStr(p, formatInteger(stats->current.currentHP, num, 4));
++		p = appendStr(p, " of ");
++		appendStr(p, formatInteger(stats->base.hp, num, 4));
++		drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
++	}
+ 
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+ 		if (i == MOD_LAB_OPT_FPS) {
+@@ -155,11 +176,8 @@ static void modLabRender(int32_t instanceId)
+ 	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 7 - instanceId);
+ 	pos = &UI_BOX_DATA[MOD_LAB_BOX].finalPos;
+ 
+-	for (row = 0; row <= ROW_MESSAGE; row++) {
+-		if (row == ROW_MESSAGE && modLabMessage == NULL) {
+-			break;
+-		}
+-		color = row == ROW_TITLE ? 4 : row == ROW_MESSAGE ? 3 : 0;
++	for (row = 0; row < ROW_COUNT; row++) {
++		color = row == ROW_TITLE ? 4 : (row == ROW_STATS && modLabMessage != NULL) ? 3 : 0;
+ 		renderString(color, pos->x + 12, pos->y + 8 + row * ROW_PITCH, BOX_W - 24, 0xC,
+ 			     0, TEXT_ROW_Y(row), 0, 1);
+ 	}
+@@ -167,12 +185,10 @@ static void modLabRender(int32_t instanceId)
+ 			      BOX_W - 18, 0x10, 0);
+ }
+ 
++/* shown in the stats row by the next modLabDrawText, until the next key */
+ static void modLabShowMessage(char *msg)
+ {
+ 	modLabMessage = msg;
+-	modLabClearRow(ROW_MESSAGE);
+-	drawString(msg, 0, TEXT_ROW_Y(ROW_MESSAGE));
+-	DrawSync(0);
+ }
+ 
+ static void modLabFrames(int32_t n)
+@@ -187,7 +203,6 @@ static void modLabSetFps(int32_t step)
+ 	MOD_FPS_MODE = (modLabFpsMode() + step + 3) % 3;
+ 	/* the option shows the new rate; an older message would only confuse */
+ 	modLabMessage = NULL;
+-	modLabClearRow(ROW_MESSAGE);
+ }
+ 
+ static void modLabApply(void)
+@@ -216,6 +231,20 @@ static void modLabApply(void)
+ 	case MOD_LAB_OPT_FPS:
+ 		modLabSetFps(1);
+ 		break;
++	case MOD_LAB_OPT_EVOLVE:
++		/* MOD (master-tyrannomon): as handleEvoItems does, with natural gains */
++		if (PARTNER_ENTITY.digimonEntity.entity.type == DIGIMON_MASTER_TYRANNOMON) {
++			modLabShowMessage("Already evolved");
++		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
++			modLabShowMessage("Not now, try later");
++		} else {
++			EVOLUTION_TARGET = DIGIMON_MASTER_TYRANNOMON;
++			HAS_USED_EVOITEM = 0;
++			tamerSetState(6);
++			partnerSetState(13);
++			modLabShowMessage("Unpause to evolve");
++		}
++		break;
+ 	}
+ }
+ 
+@@ -248,6 +277,9 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		if (pressed & (PAD_TRIANGLE | PAD_SELECT)) {
+ 			break;
+ 		}
++		if (pressed & (PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_CROSS)) {
++			modLabMessage = NULL;
++		}
+ 		if (pressed & PAD_UP) {
+ 			modLabCursor = (modLabCursor + MOD_LAB_OPTIONS - 1) % MOD_LAB_OPTIONS;
+ 			playSound(0, 2);
+@@ -273,7 +305,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 
+ 	playSound(0, 4);
+ 	removeStaticUIBox(MOD_LAB_BOX);
+-	setRECT(&pos, 0, MOD_LAB_TEXT_Y, 0x100, (ROW_MESSAGE + 1) * 0xC);
++	setRECT(&pos, 0, MOD_LAB_TEXT_Y, 0x100, ROW_COUNT * 0xC);
+ 	clearTextSubArea(&pos);
+ 	modLabFrames(8);
+ }
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 63bd6b7..dc43360 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -171,6 +171,14 @@ RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	  80, 45, 11, 36, 1200, 14, 48, 4, 3, 0, 50, 0, 460, -940 },
+ 	{ { 2, 6, 10, 14, 18, 22, -1, -1 },
+ 	  80, 40, 10, 36, 1200, 10, 55, 1, 3, 1, 20, 500, 230, -1870 },
++	/*
++	 * MOD (master-tyrannomon): Tyrannomon's row (8) for MasterTyrannomon,
++	 * with the default weight and the view offsets 1.5 times larger (its
++	 * model is Tyrannomon's at 1.5 times). Types without a row are zero:
++	 * they never become partners.
++	 */
++	[DIGIMON_MASTER_TYRANNOMON] = { { 1, 5, 9, 13, 17, 21, -1, -1 },
++	  80, 55, 14, 36, 1200, 13, 51, 3, 0, 0, 45, 75, 510, -1410 },
+ };
+ 
+ typedef struct {
+@@ -198,6 +206,8 @@ int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	10, 15, 10, 10, 15, 10, 15, 10, 25, 10, 10, 10, 10, 10, 10, 10, 10,
+ 	15, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15,
+ 	10, 10, 10, 10, 10, 10, 10, 10, 15, 15, 10, 10, 10, 10, 10,
++	/* MOD (master-tyrannomon): by type - 1; Tyrannomon's 15 at 1.5 times */
++	[DIGIMON_MASTER_TYRANNOMON - 1] = 22,
+ };
+ 
+ extern uint8_t ITEM_CLUT_DATA[];
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 1249bba..b02694d 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -2924,7 +2924,7 @@ void showMapheadSelection(int32_t idx, uint8_t owner, uint16_t x, int32_t *outSe
+ 
+ void setDigimonRaised(int32_t digimonId)
+ {
+-	if ((uint32_t)digimonId < NUM_EVOLVING_DIGIMON) {
++	if (HAS_RAISED_FLAG(digimonId)) { /* MOD: + MasterTyrannomon (ids.h) */
+ 		setTrigger(digimonId + TRIGGER_RAISED_BASE);
+ 	}
+ }
+@@ -2934,6 +2934,14 @@ int32_t hasDigimonRaised(digimonId)
+ 	uint16_t digimonId;
+ // clang-format on
+ {
++	/*
++	 * MOD: only types that have a raised flag. The original read trigger
++	 * 0x200 + any id; with MasterTyrannomon in Tyrannomon's evolution list
++	 * the evolution tie-break and the chart ask for 124 (trigger 636).
++	 */
++	if (!HAS_RAISED_FLAG(digimonId)) {
++		return 0;
++	}
+ 	return isTriggerSet(digimonId + TRIGGER_RAISED_BASE);
+ }
+ 
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 9a4e6ec..7fb63f4 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -122,6 +122,13 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON
+ 	0x03,	/* Panjyamon */
+ 	0x02,	/* Gigadramon */
+ 	0x0c,	/* MetalEtemon */
++	/*
++	 * MOD (master-tyrannomon): the table covers every type. Types that
++	 * were outside it keep the voice the guards gave them (15);
++	 * MasterTyrannomon uses Tyrannomon's partner sounds.
++	 */
++	[NUM_PARTNER_DIGIMON ... NUM_DIGIMON - 1] = 15,
++	[DIGIMON_MASTER_TYRANNOMON] = 0x02,
+ };
+ 
+ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index c4af63c..775e9af 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -70,6 +70,8 @@ int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	{ 0x30, 0x1e }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0x19 },
+ 	{ 0x30, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
++	/* MOD (master-tyrannomon): Tyrannomon's (8) */
++	[DIGIMON_MASTER_TYRANNOMON] = { 0x2e, 0xa },
+ };
+ 
+ MESSAGES_TEXT
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 7984c97..8fdd219 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -53,6 +53,8 @@ int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	{ 0x30, 0x1e }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0x19 },
+ 	{ 0x30, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
++	/* MOD (master-tyrannomon): Tyrannomon's (8) */
++	[DIGIMON_MASTER_TYRANNOMON] = { 0x2e, 0xa },
+ };
+ // clang-format on
+ 

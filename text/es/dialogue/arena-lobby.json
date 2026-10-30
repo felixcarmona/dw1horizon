@@ -1,0 +1,293 @@
+{
+ "s168.sec10.u0": [
+  [
+   "- Categoría D -",
+   "Torneo pensado sobre todo",
+   "para Digimon Novato.",
+   "",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: libre"
+  ]
+ ],
+ "s168.sec10.u1": [
+  [
+   "- Categoría C -",
+   "Torneo pensado sobre todo",
+   "para Digimon Campeón.",
+   "",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: libre"
+  ]
+ ],
+ "s168.sec10.u2": [
+  [
+   "- Categoría B -",
+   "Para Digimon Campeón que",
+   "confían en su fuerza.",
+   "",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: libre"
+  ]
+ ],
+ "s168.sec10.u3": [
+  [
+   "- Categoría A -",
+   "Torneo pensado sobre todo",
+   "para Digimon Perfecto.",
+   "",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: libre"
+  ]
+ ],
+ "s168.sec10.u4": [
+  [
+   "- Categoría S -",
+   "Aquí se reúnen los Digimon",
+   "más fuertes de todos.",
+   "",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: ganar la Categoría A"
+  ]
+ ],
+ "s168.sec10.u5": [
+  [
+   "- Categoría R -",
+   "Batalla campal que se gana",
+   "con astucia y táctica.",
+   "",
+   "",
+   "A cuatro, 2 rondas, 8 plazas",
+   "Entrada: libre"
+  ]
+ ],
+ "s168.sec10.u6": [
+  [
+   "- Copa Versión 1 -",
+   "Corona al mejor de los",
+   "Digimon de la Versión 1.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Versión 1"
+  ]
+ ],
+ "s168.sec10.u7": [
+  [
+   "- Copa Versión 2 -",
+   "Corona al mejor de los",
+   "Digimon de la Versión 2.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Versión 2"
+  ]
+ ],
+ "s168.sec10.u8": [
+  [
+   "- Copa Versión 3 -",
+   "Corona al mejor de los",
+   "Digimon de la Versión 3.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Versión 3"
+  ]
+ ],
+ "s168.sec10.u9": [
+  [
+   "- Copa Versión 4 -",
+   "Corona al mejor de los",
+   "Digimon de la Versión 4.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Versión 4"
+  ]
+ ],
+ "s168.sec10.u10": [
+  [
+   "- Copa Versión O -",
+   "Corona al mejor Digimon",
+   "fuera de las Versiones 1-4.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: fuera de Versión 1-4"
+  ]
+ ],
+ "s168.sec10.u11": [
+  [
+   "- Copa Fuego -",
+   "Corona al rey de los",
+   "Digimon más ardientes.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Fuego"
+  ]
+ ],
+ "s168.sec10.u12": [
+  [
+   "- Copa Lucha -",
+   "Corona al rey de las artes",
+   "marciales Digimon.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Combate"
+  ]
+ ],
+ "s168.sec10.u13": [
+  [
+   "- Copa Trueno y Viento -",
+   "Corona al rey de los Digimon",
+   "del cielo y la tormenta.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Aire"
+  ]
+ ],
+ "s168.sec10.u14": [
+  [
+   "- Copa Guay -",
+   "Corona al rey de los",
+   "Digimon más guays.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Hielo"
+  ]
+ ],
+ "s168.sec10.u15": [
+  [
+   "- Copa Naturaleza -",
+   "Corona al rey de los",
+   "Digimon amantes de la tierra.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Tierra"
+  ]
+ ],
+ "s168.sec10.u16": [
+  [
+   "- Copa Metálica -",
+   "Corona al rey de los",
+   "Digimon supermáquina.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon Meca"
+  ]
+ ],
+ "s168.sec10.u17": [
+  [
+   "- Copa Sucia -",
+   "Corona al rey de los",
+   "Digimon más guaaarros.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: Digimon de Mugre"
+  ]
+ ],
+ "s168.sec10.u18": [
+  [
+   "- Copa Dino -",
+   "Digimon de sangre antigua",
+   "miden sus fuerzas.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u19": [
+  [
+   "- Copa Alas -",
+   "Digimon orgullosos de sus",
+   "alas miden sus fuerzas.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u20": [
+  [
+   "- Copa Animal -",
+   "Digimon de sangre salvaje",
+   "miden sus fuerzas.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u21": [
+  [
+   "- Copa Humana -",
+   "Digimon de forma humana",
+   "miden sus fuerzas.",
+   "Combates con tiempo límite.",
+   "",
+   "Individual, 3 rondas, 8 plazas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec53.u0": "Eh, eh, que esos son los asientos del público.",
+ "s168.sec82.m0.o0": "Historial",
+ "s168.sec82.m0.o1": "Torneos de categoría",
+ "s168.sec82.m0.o2": "Torneos especiales",
+ "s168.sec82.u0": "Información del Coliseo",
+ "s168.sec82.u1": [
+  [
+   "Torneos ganados: {cupswon}",
+   "",
+   "{wins} victorias",
+   "{losses} derrotas"
+  ]
+ ],
+ "s168.sec82.u2": [
+  [
+   "Cualquiera puede participar en los torneos",
+   "de categoría, que se celebran a menudo."
+  ],
+  [
+   "Aun así, evita inscribir a un Digimon muy",
+   "por encima del nivel del torneo."
+  ],
+  [
+   "Además, si tu Digimon cambia de especie entre",
+   "la inscripción y el torneo, su inscripción",
+   "queda anulada."
+  ]
+ ],
+ "s168.sec82.u3": "Los torneos especiales tienen requisitos fijos y se celebran muy de vez en cuando. Si en la ciudad no hay bastantes participantes que los cumplan, no se celebran. Cada uno se celebra solo una o dos veces al año, así que mira el calendario con tiempo.",
+ "s168.sec84.u0": [
+  [
+   "Je, je... {color 10}{partner}{color 1},",
+   "has salvado el mundo. Deja que",
+   "te busque un título de héroe."
+  ],
+  [
+   "Veamos..."
+  ]
+ ],
+ "s168.sec84.u1": "¿Qué tal «{color 10}{partner}{color 1}, el Rey Invencible»?",
+ "s168.sec84.u2": "¿Qué tal «{color 10}{partner}{color 1}, el Héroe Legendario»?",
+ "s168.sec84.u3": "¿Qué tal «{color 10}{partner}{color 1}, Señor del Nuevo Mundo»?",
+ "s168.sec84.u4": "¿Qué tal «{color 10}{partner}{color 1}, el que Trae la Paz»?",
+ "s168.sec84.u5": "¿Qué tal «{color 10}{partner}{color 1}, la Leyenda Invicta»?",
+ "s168.sec84.u6": "¿Qué tal «{color 10}{partner}{color 1}, el Valiente»?",
+ "s168.sec84.u7": "¿Qué tal «{color 10}{partner}{color 1}, el Tipo Más Guay»?",
+ "s168.sec84.u8": "¿Qué tal «{color 10}{partner}{color 1}, Dios Supremo de la Guerra»?",
+ "s168.sec84.u9": "¿Qué tal «{color 10}{partner}{color 1}, Vendaval de los Cielos»?",
+ "s168.sec84.u10": "¿Qué tal «{color 10}{partner}{color 1}, el Ladrón con Estilo»?"
+}

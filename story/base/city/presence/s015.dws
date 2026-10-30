@@ -1,0 +1,12 @@
+// Who stands on screen 15 (Mangrove Region), and when. Read out of MAPHEAD.SCN section 15 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(15) {                              // Mangrove Region
+            npc 128 slot 0 autotalk when not recruited(Betamon);
+            npc Modokibetamon slot 1 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc 78 slot 2 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

@@ -1,0 +1,4 @@
+
+# Patch context and verbatim upstream font licenses retain their source whitespace.
+*.patch -whitespace
+tools/font/japanese-license/** -whitespace

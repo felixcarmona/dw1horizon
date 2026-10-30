@@ -1,0 +1,72 @@
+{
+ "s138.sec5.m0.o0": "Les donner",
+ "s138.sec5.m0.o1": "Ne pas les donner",
+ "s138.sec5.u0": [
+  [
+   "Je collectionne les cartes",
+   "Digimon. Donne-moi les trois",
+   "cartes Hagurumon, ToyAgumon"
+  ],
+  [
+   "et WaruMonzaemon, et je",
+   "t'offrirai quelque chose de",
+   "bien."
+  ]
+ ],
+ "s138.sec5.u1": [
+  [
+   "Je suis désolé, Je n'en ai pas."
+  ]
+ ],
+ "s138.sec5.u2": [
+  [
+   "Alors, voici un {color 6}Bandage",
+   "d'amour{color 1}."
+  ]
+ ],
+ "s138.sec5.u3": [
+  [
+   "Tu portes trop d'objets, hein ?"
+  ]
+ ],
+ "s138.sec6.u0": [
+  [
+   "Tu as déjà essayé le curling ?",
+   "Si tu arrives à faire un",
+   "sans-faute de 10 points, tu es"
+  ],
+  [
+   "vraiment doué."
+  ]
+ ],
+ "s138.sec7.u0": [
+  [
+   "Je ne sais pas si ça a un",
+   "rapport, mais je vais",
+   "t'apprendre des astuces de"
+  ],
+  [
+   "pêche. D'abord, la canne. Une",
+   "bonne canne lance plus loin et",
+   "laisse plus de marge sur la"
+  ],
+  [
+   "jauge. Ensuite, l'appât. Chaque",
+   "poisson a ses goûts : retiens",
+   "quel appât attire quel poisson."
+  ],
+  [
+   "Au lancer, relâche à {color 6}×{color 1} pour",
+   "lancer à pleine puissance ! Tu",
+   "ne le savais pas, hein ? Enfin,"
+  ],
+  [
+   "le gardien du lac : il ne se",
+   "montrerait qu'à certaines",
+   "heures. Je miserais sur le"
+  ],
+  [
+   "matin et le soir."
+  ]
+ ]
+}

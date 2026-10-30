@@ -1,0 +1,103 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M385KOGU",
+ "type": 353,
+ "name": "Bearmon",
+ "source": {
+  "type": 3,
+  "mmd": "extracted/CHDAT/MMD0/AGUM.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 6,
+  "3": 7,
+  "4": 8,
+  "5": 10,
+  "7": 11,
+  "8": 3,
+  "9": 4,
+  "10": 1,
+  "11": 15,
+  "12": 16,
+  "13": 17,
+  "14": 19,
+  "15": 20,
+  "16": 21
+ },
+ "hips": [
+  1,
+  1,
+  1.082
+ ],
+ "root_scale": 1.082,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 43,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 43,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x35": {
+   "anim": "anim_34",
+   "start": 79,
+   "end": 157,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 137
+  },
+  "0x34": {
+   "anim": "anim_28",
+   "start": 41,
+   "end": 133,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 137
+  },
+  "0x33": {
+   "anim": "anim_22",
+   "start": 1,
+   "end": 93,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 137
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.2128,
+ "hub_roots": true
+}

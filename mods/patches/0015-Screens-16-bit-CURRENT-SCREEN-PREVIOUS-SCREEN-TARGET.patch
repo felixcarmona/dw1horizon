@@ -1,0 +1,260 @@
+From 2fa6344f33c49f5064e2fd71003c390f159123d7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:57:20 +0000
+Subject: [PATCH] Screens: 16-bit CURRENT_SCREEN, PREVIOUS_SCREEN, TARGET_MAP
+ and sections
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 3 of docs/mods/ids.md (§ 10), screens.
+
+- CURRENT_SCREEN, PREVIOUS_SCREEN, TARGET_MAP and SAVED_STATE's screen
+  fields are ScreenId (int16_t). The .MAP warps are already s16.
+- runMapHeadScript takes the whole section id and changeMap no longer
+  masks it to a byte, so a screen id above 255 reaches its own MAPHEAD
+  section. SCRIPT_SECTION is u16; scriptPauseGame keeps using its low
+  byte as the NPC script id, as before.
+- Local prototypes that cut the id to a byte or sign-extended it are
+  fixed: changeMap/addMapNameObject in tamer.c, checkShopMap/
+  checkArenaMap in map.c, getFileCityTopMap in main_menu.c (int8_t would
+  turn 0xAE-0xB3 into negative screens once CURRENT_SCREEN is 16-bit).
+- The v1 save keeps the low byte (exact while ids are < 255); its layout
+  is checked at compile time (size 0xF00, inventory 0x40C, screens 0x49A).
+- SCREEN_LEGACY_NONE (0xCC) stays: it is a real screen and renderMap reads
+  MAP_ENTRIES[CURRENT_SCREEN] before the first map is loaded.
+
+---
+ include/dw/ids.h         | 22 ++++++++++++++--------
+ include/dw/main.h        |  4 ++--
+ src/main/main_menu.c     | 19 ++++++++++++++++---
+ src/main/map.c           | 12 ++++++------
+ src/main/script_interp.c | 14 ++++++--------
+ src/main/tamer.c         |  6 +++---
+ 6 files changed, 47 insertions(+), 30 deletions(-)
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 12f7fae..8d7c7b6 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -7,9 +7,8 @@
+  * The counts are those of the original disc. Every table and loop that
+  * means "one per Digimon / screen / item / ..." uses these names, so new
+  * content changes one number here (and the tables) instead of literals
+- * spread over the code. The typedefs are the target widths; the carriers
+- * that are still u8 (CURRENT_SCREEN, the inventory, the save) are widened
+- * in later steps of the plan (ids.md § 10).
++ * spread over the code. The typedefs are the widths of the carriers in RAM;
++ * the save keeps the v1 u8 layout until step 4 of the plan (ids.md § 10).
+  */
+ 
+ #include <dw/types.h>
+@@ -32,7 +31,14 @@ typedef uint16_t CardId;
+ 
+ /* Screens (maps) */
+ #define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
+-#define SCREEN_LEGACY_NONE	0xCC	/* TWNA01 doubles as "no screen" at boot */
++/*
++ * Value of CURRENT_SCREEN/PREVIOUS_SCREEN before the first map is loaded
++ * (initializeMap) and the start section of a new game (initializeDefaultSavegame). It is
++ * a real screen (TWNA01, File City) and not compared anywhere: renderMap
++ * reads MAP_ENTRIES[CURRENT_SCREEN] before the first loadMap, so it must
++ * stay a valid row and is not changed to -1 (ids.md, step 3).
++ */
++#define SCREEN_LEGACY_NONE	0xCC
+ 
+ /* Items */
+ #define NUM_ITEMS		128	/* ITEM_PARA, ITEM_FUNCTIONS, icons (16x8 grid) */
+@@ -51,10 +57,10 @@ typedef uint16_t CardId;
+ #define TRIGGER_RAISED_BASE	0x200	/* + Digimon type */
+ 
+ /*
+- * The current and previous screen. Still u8 (ids.md § 10 step 3 widens
+- * them to ScreenId); declared once here instead of in every file.
++ * The current and previous screen, 16-bit since step 3 of ids.md § 10.
++ * The v1 save keeps them as u8 (exact while screen ids are < 255).
+  */
+-extern uint8_t CURRENT_SCREEN;
+-extern uint8_t PREVIOUS_SCREEN;
++extern ScreenId CURRENT_SCREEN;
++extern ScreenId PREVIOUS_SCREEN;
+ 
+ #endif
+diff --git a/include/dw/main.h b/include/dw/main.h
+index d88130e..5db3afd 100644
+--- a/include/dw/main.h
++++ b/include/dw/main.h
+@@ -20,8 +20,8 @@ typedef struct {
+ 	Stats partnerStats;
+ 	int8_t lives;
+ 	int8_t npcMaps[8];
+-	uint8_t currentScreen;
+-	uint8_t previousScreen;
++	ScreenId currentScreen; /* MOD: u8 in the save */
++	ScreenId previousScreen;
+ 	uint8_t currentExit;
+ 	uint8_t previousExit;
+ 	int8_t tamerWaypointX[30];
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index a22c934..b361e1b 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -134,6 +134,18 @@ typedef struct {
+ 	RegisteredDigimon battleRegistrationData[40];
+ } SavegamePayload;
+ 
++/*
++ * MOD: the v1 save layout must not change while the ids widen in RAM
++ * (docs/mods/ids.md, step 3). The ids are written as their low byte.
++ */
++#define SAVE_LAYOUT_CHECK(name, cond) typedef char save_layout_##name[(cond) ? 1 : -1]
++SAVE_LAYOUT_CHECK(size, sizeof(SavegamePayload) == 0xF00);
++SAVE_LAYOUT_CHECK(inventory, __builtin_offsetof(SavegamePayload, inventory) == 0x40C);
++SAVE_LAYOUT_CHECK(inventorySize, sizeof(((SavegamePayload *)0)->inventory) == 0x5B);
++SAVE_LAYOUT_CHECK(playerName, __builtin_offsetof(SavegamePayload, playerName) == 0x467);
++SAVE_LAYOUT_CHECK(currentScreen, __builtin_offsetof(SavegamePayload, currentScreen) == 0x49A);
++SAVE_LAYOUT_CHECK(checksum, __builtin_offsetof(SavegamePayload, checksum) == 0x4FC);
++
+ typedef struct {
+ 	char id[2];
+ 	uint8_t iconDisplayFlag;
+@@ -220,7 +232,7 @@ extern char *MOVE_NAMES[];
+ extern char *MAP_NAME_PTR[];
+ #endif
+ 
+-int8_t getFileCityTopMap(void);
++int32_t getFileCityTopMap(void);
+ void renderUIBoxBorder(RECT *rect, int32_t flag);
+ void SetPolyG4(POLY_G4 *prim);
+ void recalculatePPandArena(void);
+@@ -4025,8 +4037,9 @@ void writeSavegame(SavegamePayload *savegame)
+ 	memcpy(savegame->playerName, DIGIMON_NAME(0), 0x14);
+ 	memcpy(savegame->worldPoop, WORLD_POOP, 0x190);
+ 	savegame->partnerPara = PARTNER_PARA;
+-	savegame->currentScreen = CURRENT_SCREEN;
+-	savegame->previousScreen = PREVIOUS_SCREEN;
++	/* MOD: the v1 save keeps the low byte (exact while ids are < 255) */
++	savegame->currentScreen = (uint8_t)CURRENT_SCREEN;
++	savegame->previousScreen = (uint8_t)PREVIOUS_SCREEN;
+ 	savegame->currentExit = CURRENT_EXIT;
+ 	savegame->previousExit = PREVIOUS_EXIT;
+ 	savegame->merit = MERIT;
+diff --git a/src/main/map.c b/src/main/map.c
+index 79979e6..30d052d 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -37,12 +37,12 @@ typedef struct {
+ long RotTransPers3(SVECTOR *v0, SVECTOR *v1, SVECTOR *v2, long *sxy0, long *sxy1, long *sxy2, long *p, long *flag);
+ int abs(int x);
+ int32_t addObject(int32_t objectId, int16_t instanceId, void (*tick)(int32_t), void (*render)(int32_t));
+-void checkArenaMap(uint8_t mapId);
++void checkArenaMap(int32_t mapId);
+ void checkCurlingMap(int32_t mapId);
+ void checkFishingMap(int32_t mapId, int32_t arg1);
+ int32_t checkMapCollisionX(Entity *entity, int32_t direction);
+ int32_t checkMapCollisionZ(Entity *entity, int32_t direction);
+-void checkShopMap(uint8_t mapId);
++void checkShopMap(int32_t mapId);
+ void clearMapDigimon(void);
+ void entityLookAtTile(Entity *entity, int32_t tileX, int32_t tileY);
+ void getModelTile(VECTOR *pos, int16_t *outTileX, int16_t *outTileY);
+@@ -2940,8 +2940,8 @@ int8_t CURRENT_TIME_OF_DAY;
+ int32_t SKIP_MAP_FILE_READ;
+ int8_t DAYTIME_TRANSITION_ACTIVE;
+ int16_t DAYTIME_TRANSITION_TARGET;
+-uint8_t CURRENT_SCREEN;
+-uint8_t PREVIOUS_SCREEN;
++ScreenId CURRENT_SCREEN;
++ScreenId PREVIOUS_SCREEN;
+ uint8_t CURRENT_EXIT;
+ uint8_t PREVIOUS_EXIT;
+ int8_t CAMERA_REACHED_TARGET;
+@@ -2970,7 +2970,7 @@ int16_t CAMERA_MOVE_FINAL_Y;
+ int8_t CAMERA_MOVE_DELTA_X;
+ int8_t CAMERA_MOVE_DELTA_Y;
+ int16_t SCRIPT_MAP_CHANGE_STATE;
+-uint8_t TARGET_MAP;
++ScreenId TARGET_MAP;
+ int8_t TRN_LOADING_COMPLETE;
+ int32_t MERAMON_SHAKE_DATA;
+ uint8_t MERAMON_SHAKE_FRAME_COUNT;
+@@ -5521,7 +5521,7 @@ void changeMap(int16_t mapId, int16_t exitId)
+ 	}
+ 
+ 	CURRENT_EXIT = exitId;
+-	runMapHeadScript(mapId & 0xff);
++	runMapHeadScript(mapId); /* MOD: the whole 16-bit section id */
+ }
+ 
+ void setDeathMap(int16_t a, int16_t b)
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index c15f45e..df37e2d 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -181,7 +181,7 @@ int16_t TEXTBOX_ORIGIN_Z;
+ uint8_t *ACTIVE_SCRIPT;
+ uint8_t *SCRIPT_POINTER;
+ int32_t SCRIPT_SECTION_IS_EVENT;
+-uint8_t SCRIPT_SECTION;
++uint16_t SCRIPT_SECTION; /* MOD: u16 like the section ids */
+ uint8_t TEXTBOX_CLOSE_MODE;
+ uint8_t CURRENT_DIALOGUE_OWNER;
+ uint8_t MAIN_D_80134FE7;
+@@ -2172,10 +2172,7 @@ void initializeLoadedNPCModels(void)
+ 	}
+ }
+ 
+-// clang-format off
+-void runMapHeadScript(section)
+-	uint8_t section;
+-// clang-format on
++void runMapHeadScript(int32_t section) /* MOD: was u8 */
+ {
+ 	callScriptSection(0, section, 1);
+ 	tickScript();
+@@ -2679,14 +2676,15 @@ void scriptPauseGame(int32_t owner)
+ 		stopGameTime();
+ 
+ 		if (SCRIPT_SECTION_IS_EVENT != 0 && isTriggerSet(TRIGGER_44) == 0) {
+-			entityId = scriptIdToEntityId(SCRIPT_SECTION) & 0xff;
++			/* MOD: the low byte, as when SCRIPT_SECTION was u8 */
++			entityId = scriptIdToEntityId((uint8_t)SCRIPT_SECTION) & 0xff;
+ 			if (entityId != 0xff) {
+ 				SCRIPT_MOVEMENT[entityId].type = 0;
+-				SCRIPT_MOVEMENT[entityId].entityId = SCRIPT_SECTION;
++				SCRIPT_MOVEMENT[entityId].entityId = (uint8_t)SCRIPT_SECTION;
+ 				SCRIPT_MOVEMENT[entityId].target = 0xfd;
+ 				SCRIPT_MOVEMENT[0].type = 0;
+ 				SCRIPT_MOVEMENT[0].entityId = 0xfd;
+-				SCRIPT_MOVEMENT[0].target = SCRIPT_SECTION;
++				SCRIPT_MOVEMENT[0].target = (uint8_t)SCRIPT_SECTION;
+ 			}
+ 		}
+ 	}
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 4b3b837..4a8d4c9 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -87,7 +87,7 @@ extern int32_t HAS_BUTTERFLY;
+ extern int32_t BUTTERFLY_ID;
+ extern int32_t SOME_SCRIPT_SYNC_BIT;
+ extern uint8_t TEXTBOX_OPEN_TIMER;
+-extern uint8_t TARGET_MAP;
++extern ScreenId TARGET_MAP;
+ extern uint8_t CURRENT_EXIT;
+ extern uint8_t PREVIOUS_EXIT;
+ extern GsRVIEW2 GS_VIEWPOINT;
+@@ -156,8 +156,8 @@ static void *tamer_bss_order[] = {
+ 
+ void entityLookAtLocation(Entity *entity, VECTOR *pos);
+ void setupEntityMatrix(int32_t entityId);
+-void changeMap(uint8_t mapId, uint8_t exitId);
+-void addMapNameObject(uint8_t mapId);
++void changeMap(int16_t mapId, int16_t exitId);
++void addMapNameObject(int32_t mapId);
+ void renderString(int32_t, int32_t, int32_t, int32_t, int32_t, int32_t,
+                   int32_t, int32_t, int32_t);
+ void renderUIBox(int32_t id);
+-- 
+2.53.0
+

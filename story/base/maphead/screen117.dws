@@ -1,0 +1,37 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(117) replace {    // section 117
+        set_script(113, 117);
+        engine.music_mode = 0;
+        set_bgm(20);
+        store_date(date_year);
+        misty_trees_dawn_visitor_spawned = false;
+        if (date_hour >= 4 && date_hour <= 6 && !is_recruited(species("Kokatorimon"))) {
+            load_digimon(species(168));
+            set_digimon(species(168), 0, 1);
+            misty_trees_dawn_visitor_spawned = true;
+            return;
+        }
+        if (!misty_trees_fog_spell_cast && !cherrymon_met) {
+            load_digimon(species("Goblimon"));
+            set_digimon(species("Goblimon"), 1, 1);
+            set_digimon(species("Goblimon"), 2, 1);
+            set_digimon(species("Goblimon"), 3, 1);
+            return;
+        }
+        store_date(date_year);
+        if (date_hour >= 7 && date_hour < 19) {
+            load_digimon(species("MoriShellmon"));
+            set_digimon(species("MoriShellmon"), 4, 1);
+            set_digimon(species("MoriShellmon"), 5, 1);
+        } else {
+            load_digimon(species("Goblimon"));
+            set_digimon(species("Goblimon"), 6, 1);
+            set_digimon(species("Goblimon"), 7, 1);
+        }
+    }
+}

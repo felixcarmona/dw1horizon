@@ -1,0 +1,69 @@
+{
+ "s008.sec5.u0": [
+  [
+   "{color 7}Responsable du marché {color 1}",
+   "Dépêche-toi de faire quelque",
+   "chose, oui, oui !"
+  ]
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Mode ogre",
+ "s008.sec51.u0": [
+  [
+   "Le tunnel de forage. . ."
+  ]
+ ],
+ "s008.sec51.u1": [
+  [
+   "Pfff, encore lui ! Il ne",
+   "retient jamais la leçon... !"
+  ]
+ ],
+ "s008.sec51.u2": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s008.sec51.u3": [
+  [
+   "{color 7}Responsable du marché {color 1}",
+   "Personne ne m'a dit que le",
+   "tunnel était payant, non, non !"
+  ]
+ ],
+ "s008.sec51.u4": [
+  [
+   "{color 7}Responsable du marché {color 1}",
+   "Oh, toi... serait-ce possible ?",
+   "Fais quelque chose, s'il te",
+   "plaît, oui, oui !"
+  ]
+ ],
+ "s008.sec51.u5": [
+  [
+   "Et les Drimogemon à l'intérieur",
+   "?"
+  ]
+ ],
+ "s008.sec51.u6": [
+  [
+   "{color 7}Responsable du marché {color 1}",
+   "Je ne sais pas, non, non..."
+  ]
+ ],
+ "s008.sec51.u7": [
+  [
+   "J'espère qu'ils vont bien...",
+   "Très bien. Allons-y !"
+  ]
+ ],
+ "s008.sec53.m0.o0": "Allons-y !",
+ "s008.sec53.m0.o1": "Mieux vaut pas",
+ "s008.sec53.u0": [
+  [
+   "Il n'y a plus rien dans le",
+   "tunnel... On le traverse en",
+   "courant ? Qu'en dis-tu ?"
+  ]
+ ]
+}

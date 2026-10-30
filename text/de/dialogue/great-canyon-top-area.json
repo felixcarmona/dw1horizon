@@ -1,0 +1,231 @@
+{
+ "s037.sec5.u0": [
+  [
+   "Ich stoße dich hinunter!"
+  ]
+ ],
+ "s037.sec6.u0": [
+  [
+   "N-nicht schubsen!"
+  ]
+ ],
+ "s037.sec7.u0": [
+  [
+   "Hoch oben werde ich richtig",
+   "ruhig!"
+  ]
+ ],
+ "s037.sec8.u0": [
+  [
+   "Ich falle noch! Das ist",
+   "gefährlich!"
+  ]
+ ],
+ "s037.sec9.u0": [
+  [
+   "Nicht hier oben, hör auf!"
+  ]
+ ],
+ "s037.sec10.u0": [
+  [
+   "Kämpfen bringt doch nichts..."
+  ]
+ ],
+ "s037.sec81.m0.o0": "Abwärtsknopf drücken",
+ "s037.sec81.m0.o1": "Nicht einsteigen",
+ "s037.sec81.u0": [
+  [
+   "Aufzug"
+  ]
+ ],
+ "s037.sec81.u1": [
+  [
+   "...Nichts passiert. Es geht",
+   "nicht."
+  ]
+ ],
+ "s038.sec5.u0": [
+  [
+   "K-könnten wir das nicht",
+   "lassen?"
+  ]
+ ],
+ "s038.sec6.u0": [
+  [
+   "Shuba, shujaa!"
+  ]
+ ],
+ "s038.sec7.u0": [
+  [
+   "Chis, Chis!"
+  ]
+ ],
+ "s038.sec8.u0": [
+  [
+   "Ich gebe alles!"
+  ]
+ ],
+ "s038.sec9.u0": "Was redest du denn da?",
+ "s038.sec81.u0": [
+  [
+   "Nordwesten: Frostland"
+  ]
+ ],
+ "s038.sec82.m0.o0": "Aufwärtsknopf drücken",
+ "s038.sec82.m0.o1": "Abwärtsknopf drücken",
+ "s038.sec82.m0.o2": "Nicht einsteigen",
+ "s038.sec82.u0": [
+  [
+   "Aufzug"
+  ]
+ ],
+ "s038.sec82.u1": [
+  [
+   "Hä? Es geht nicht, nichts",
+   "passiert."
+  ]
+ ],
+ "s043.sec5.u0": [
+  [
+   "Grraaaah!"
+  ]
+ ],
+ "s043.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s043.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s043.sec51.u0": [
+  [
+   "Nach allem, was wir gehört",
+   "haben, tauchen auf diesem Weg",
+   "die Banditen auf... Gut. Los,"
+  ],
+  [
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": [
+  [
+   "Juhuuuuu!"
+  ]
+ ],
+ "s043.sec51.u2": [
+  [
+   "Gwahahaha!"
+  ]
+ ],
+ "s043.sec51.u3": [
+  [
+   "Jippiiii!"
+  ]
+ ],
+ "s043.sec51.u4": [
+  [
+   "Nuhahaha, gebt auf und lasst",
+   "eure Sachen da! Sonst tut's",
+   "weh!"
+  ]
+ ],
+ "s043.sec51.u5": [
+  [
+   "Ihr solltet lieber aufgeben!"
+  ]
+ ],
+ "s043.sec51.u6": [
+  [
+   "Hä?! Ihr Rotzlöffel seid..."
+  ]
+ ],
+ "s043.sec51.u7": [
+  [
+   "Sag bloß nicht..."
+  ]
+ ],
+ "s043.sec51.u8": [
+  [
+   "B-Boss, was tun wir?!"
+  ]
+ ],
+ "s043.sec51.u9": [
+  [
+   "Hört auf zu kreischen! Wir sind",
+   "mehr und stärker. Macht sie",
+   "platt!"
+  ]
+ ],
+ "s043.sec51.u10": [
+  [
+   "Grrr... D-das werdet ihr",
+   "bereuen!"
+  ]
+ ],
+ "s043.sec51.u11": [
+  [
+   "Sieh nur, wie sie rennen! Hier",
+   "tauchen sie wohl eine Weile",
+   "nicht mehr auf."
+  ]
+ ],
+ "s043.sec53.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s043.sec53.u1": [
+  [
+   "Hat sich der Boden gerade",
+   "bewegt? ...Wohl nur Einbildung."
+  ]
+ ],
+ "s043.sec53.u2": [
+  [
+   "Was!? Das kann nicht sein. . ."
+  ]
+ ],
+ "s043.sec53.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   "U-uaaaaah! !"
+  ]
+ ],
+ "s043.sec81.m0.o0": "Oger-Modus: AN",
+ "s043.sec81.m0.o1": "Oger-Modus: AUS",
+ "s043.sec81.u0": [
+  [
+   "Osten: Aufzug Westen: Gefahr!",
+   "Vorsicht an der Klippe"
+  ]
+ ],
+ "s043.sec82.u0": [
+  [
+   "Vorsicht vor Steinschlag!!"
+  ]
+ ],
+ "s044.sec5.u0": [
+  [
+   "Ich mache dich platt!"
+  ]
+ ],
+ "s044.sec6.u0": [
+  [
+   "Sei nicht hart mit mir, bitte."
+  ]
+ ],
+ "s044.sec7.u0": [
+  [
+   "Habe ich meine Beute im Visier,",
+   "entkommt sie mir nie."
+  ]
+ ],
+ "s044.sec8.u0": [
+  [
+   "He... Es ist vorbei."
+  ]
+ ]
+}

@@ -1,0 +1,222 @@
+From b4b1d36584422bbccc5c8a456a6118c5e50e0193 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 18:29:54 +0000
+Subject: [PATCH] Patch 0244: CHEATS option defaults off and gates the
+ laboratory and Select shortcuts
+
+---
+ include/dw/mod_options.h |  1 +
+ src/main/main_menu.c     | 37 +++++++++++++++++++++++++++----------
+ src/main/mod_lab.c       |  4 ++--
+ src/main/mod_options.c   |  1 +
+ src/main/utils2.c        |  2 +-
+ text/main/main_menu.yaml |  3 +++
+ 6 files changed, 35 insertions(+), 13 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 98d724d2..41480355 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -21,6 +21,7 @@ extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clo
+ extern int32_t MOD_OPT_BARS;	/* NEW STATUS BARS: happiness and discipline as one red/green fill (patches 0162-0164), 0 = the original's */
+ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
+ extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
++extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu and Select shortcuts, off by default */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+ /* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index a55212b5..75e79f99 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -274,24 +274,26 @@ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+-#define MOD_OPT_BYTES	12 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes); the header's copy (modTitleOptions)
+-			     * holds 12 after its 4: it is full */
++#define MOD_OPT_BYTES	13 /* SAVE_TAG_OPTIONS; header stores the first 12 and packs CHEATS into its count byte */
++#define MOD_OPT_HEADER_BYTES 12
++#define MOD_OPT_HEADER_CHEATS 0x80
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #define MOD_OPT_ROW_STORY	5 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+ #define MOD_OPT_ROW_DIFF	6 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+ #define MOD_OPT_ROW_QUICK	7 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+ #define MOD_OPT_ROW_FPS	8
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	12 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROWS	13 /* MOD (options): and FONT, in a build with both fonts */
+ #define MOD_OPT_ROW_FONT	9
+ #define MOD_OPT_ROW_LANG	10
+ #else
+-#define MOD_OPT_ROWS	11
++#define MOD_OPT_ROWS	12
+ #define MOD_OPT_ROW_LANG	9
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
++#define MOD_OPT_ROW_CHEATS (MOD_OPT_ROWS - 1)
+ static int32_t modOptionValue(int32_t row);
+ static int32_t modOptionCount(int32_t row);
+ static void modSetOption(int32_t row, int32_t value);
+@@ -4677,7 +4679,8 @@ static void modOptionBytes(uint8_t *d)
+ 	d[8] = MOD_OPT_SIGNS;
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
+ 	d[10] = MOD_OPT_DIFFICULTY; /* MOD (difficulty) */
+-	d[11] = MOD_OPT_QUICK_BATTLE; /* MOD (quick battle start) */
++	d[11] = MOD_OPT_QUICK_BATTLE;
++	d[12] = MOD_OPT_CHEATS;
+ }
+ 
+ /* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
+@@ -4724,6 +4727,7 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 12) { /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = d[11] != 0;
+ 	}
++	MOD_OPT_CHEATS = len >= 13 && d[12] != 0; /* old saves: OFF */
+ }
+ 
+ /*
+@@ -4734,21 +4738,24 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ static void modTitleOptions(void)
+ {
+ 	uint8_t *p;
++	uint8_t options[MOD_OPT_BYTES];
+ 
+ 	p = SAVE_FILE.pocketStation;
+ 	memset(p, 0, sizeof(SAVE_FILE.pocketStation));
+ 	MOD_SAVE_NUMBER = (MOD_SAVE_NUMBER + 1) & 0xffff;
+ 	p[0] = 'O';
+-	p[1] = MOD_OPT_BYTES;
++	p[1] = MOD_OPT_HEADER_BYTES | (MOD_OPT_CHEATS ? MOD_OPT_HEADER_CHEATS : 0);
+ 	p[2] = MOD_SAVE_NUMBER;
+ 	p[3] = MOD_SAVE_NUMBER >> 8;
+-	modOptionBytes(&p[4]);
++	modOptionBytes(options);
++	memcpy(&p[4], options, MOD_OPT_HEADER_BYTES);
+ }
+ 
+ /* MOD (options): the save number in a save's header (modTitleOptions), -1 without one */
+ static int32_t modHeaderSaveNumber(const uint8_t *header)
+ {
+-	if (header[0x50] != 'O' || header[0x51] == 0 || header[0x51] > 12) {
++	if (header[0x50] != 'O' || (header[0x51] & ~MOD_OPT_HEADER_CHEATS) == 0 ||
++	    (header[0x51] & ~MOD_OPT_HEADER_CHEATS) > MOD_OPT_HEADER_BYTES) {
+ 		return -1;
+ 	}
+ 	return header[0x52] | header[0x53] << 8;
+@@ -4765,7 +4772,7 @@ static void modCardOptions(void)
+ 	MemCardSyncWord result;
+ 	long count;
+ 	uint8_t data[0x80];
+-	uint8_t best[12];
++	uint8_t best[MOD_OPT_BYTES];
+ 	int32_t bestNumber;
+ 	int32_t bestLen;
+ 	int32_t number;
+@@ -4805,8 +4812,12 @@ static void modCardOptions(void)
+ 			number = modHeaderSaveNumber(data);
+ 			if (number > bestNumber) {
+ 				bestNumber = number;
+-				bestLen = data[0x51];
++				bestLen = data[0x51] & ~MOD_OPT_HEADER_CHEATS;
+ 				memcpy(best, &data[0x54], bestLen);
++				if (bestLen == MOD_OPT_HEADER_BYTES) {
++					best[12] = (data[0x51] & MOD_OPT_HEADER_CHEATS) != 0;
++					bestLen = MOD_OPT_BYTES;
++				}
+ 			}
+ 		}
+ 	}
+@@ -5823,6 +5834,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ #endif
+ 	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE }, /* MOD (language) */
+ 	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
++	{ MOD_OPT_STR_CHEATS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ };
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+  * drawn once (drawOptionsText) */
+@@ -5877,6 +5889,8 @@ static int32_t modOptionValue(int32_t row)
+             }
+             return 0;
+         }
++	case MOD_OPT_ROW_CHEATS:
++		return MOD_OPT_CHEATS != 0;
+ 	case MOD_OPT_ROW_SIGNS:
+ 		return MOD_OPT_SIGNS;
+ 	}
+@@ -5926,6 +5940,9 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_LANG: /* MOD (language) */
+ 		modSetLanguage(modLanguageAt(value));
+ 		break;
++	case MOD_OPT_ROW_CHEATS:
++		MOD_OPT_CHEATS = value != 0;
++		break;
+ 	case MOD_OPT_ROW_SIGNS:
+ 		modSetSigns(value);
+ 		break;
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index e21709b1..7bf8acd3 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -379,7 +379,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 	RECT pos;
+ 	uint32_t pressed;
+ 
+-	if (IS_SCRIPT_PAUSED != 1) {
++	if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) {
+ 		return; /* with a dialogue running the text area is in use */
+ 	}
+ 
+@@ -642,7 +642,7 @@ int32_t modRosterTick(void)
+ 	int32_t type;
+ 
+ 	pressed = POLLED_INPUT & ~POLLED_INPUT_PREVIOUS;
+-	if (!(POLLED_INPUT & PAD_SELECT) || !(pressed & (PAD_L1 | PAD_L2 | PAD_R1 | PAD_R2))) {
++	if (!MOD_OPT_CHEATS || !(POLLED_INPUT & PAD_SELECT) || !(pressed & (PAD_L1 | PAD_L2 | PAD_R1 | PAD_R2))) {
+ 		return 0;
+ 	}
+ 	if (IS_SCRIPT_PAUSED != 1 || partnerGetState() != 1 || EVOLUTION_TARGET != -1 || isFileReadQueueBusy()) {
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 5dfb5206..2864619d 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -58,6 +58,7 @@
+ 
+ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ 
++int32_t MOD_OPT_CHEATS = 0;
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_BARS = 1;
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index a3a612db..0e9e645c 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -447,7 +447,7 @@ void handlePause(void)
+ 			PAUSE_STATE = (PAUSE_STATE + 1) & 1;
+ 		}
+ 		/* MOD: SELECT while paused opens the lab menu (mod_lab.c) */
+-		if ((PAUSE_INPUT & 0x100) && !(PAUSE_INPUT_PREVIOUS & 0x100)) {
++		if (MOD_OPT_CHEATS && (PAUSE_INPUT & 0x100) && !(PAUSE_INPUT_PREVIOUS & 0x100)) {
+ 			PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+ 			modLabMenu(&PAUSE_INPUT, &PAUSE_INPUT_PREVIOUS);
+ 			MAIN_D_80134E7C = 0;
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index e4aed10a..947bcd00 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -428,6 +428,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_SPANISH:
+       ja: "ESPANOL"
+       en_us: "ESPANOL"
++    MOD_OPT_STR_CHEATS:
++      ja: "CHEATS"
++      en_us: "CHEATS"
+     MOD_OPT_STR_SIGNS:
+       ja: "MAP SIGNS"
+       en_us: "MAP SIGNS"
+-- 
+2.55.0
+

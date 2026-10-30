@@ -1,0 +1,867 @@
+{
+ "s050.sec5.u0": [
+  [
+   "Je dois garder cet endroit."
+  ]
+ ],
+ "s050.sec6.u0": [
+  [
+   "Quels étaient mes ordres, déjà",
+   "?"
+  ]
+ ],
+ "s050.sec51.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s050.sec51.u1": [
+  [
+   "Aaaaaah! ?"
+  ]
+ ],
+ "s050.sec51.u2": [
+  [
+   "J'arrive !"
+  ]
+ ],
+ "s051.sec57.u0": [
+  [
+   "...! Je sens l'envie de tuer de",
+   "quelqu'un..."
+  ]
+ ],
+ "s051.sec57.u1": [
+  [
+   "Hé hé... ha ha... Tu es donc",
+   "venu !"
+  ]
+ ],
+ "s051.sec57.u2": [
+  [
+   "Qui est là !?"
+  ]
+ ],
+ "s051.sec57.u3": [
+  [
+   "Je suis Devimon ! Un ange",
+   "déchu, esclave de la puissance",
+   "des ténèbres. Hé hé hé..."
+  ]
+ ],
+ "s051.sec57.u4": [
+  [
+   "Tu as l'air de savoir quelque",
+   "chose !"
+  ]
+ ],
+ "s051.sec57.u5": [
+  [
+   "Myotismon est quelque part",
+   "dans le manoir. Probablement",
+   "encore en vie, aussi."
+  ]
+ ],
+ "s051.sec57.u6": [
+  [
+   "Alors, c'est toi qui as fait ça",
+   "!"
+  ]
+ ],
+ "s051.sec57.u7": [
+  [
+   "Qui sait ? Mais je suis ton",
+   "ennemi. C'est sûr."
+  ]
+ ],
+ "s051.sec57.u8": [
+  [
+   "Hé, tu ne m'échapperas pas !"
+  ]
+ ],
+ "s051.sec57.u9": [
+  [
+   "Hé hé hé... Ha ha ha ha !"
+  ]
+ ],
+ "s051.sec57.u10": [
+  [
+   "Oh non !"
+  ]
+ ],
+ "s051.sec57.u11": [
+  [
+   "Hé hé... Passe le bonjour à",
+   "Myotismon."
+  ]
+ ],
+ "s051.sec57.u12": [
+  [
+   "Il s'est échappé... Mince !",
+   "Quel sale type."
+  ]
+ ],
+ "s051.sec57.u13": [
+  [
+   "Waouh, ce manoir a l'air",
+   "immense."
+  ]
+ ],
+ "s051.sec57.u14": [
+  [
+   "Il y a quelqu'uuun ?"
+  ]
+ ],
+ "s051.sec57.u15": [
+  [
+   "Personne ? Ou c'est trop",
+   "grand pour qu'on m'entende ?"
+  ]
+ ],
+ "s051.sec57.u16": [
+  [
+   "Tant pis. Allez, explorons !"
+  ]
+ ],
+ "s051.sec81.u0": [
+  [
+   "Ça ne s'ouvre pas... Une",
+   "mystérieuse force l'a scellée."
+  ]
+ ],
+ "s051.sec82.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s051.sec82.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s051.sec84.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s051.sec84.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s051.sec85.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s051.sec85.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s052.sec81.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s052.sec81.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s052.sec82.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s052.sec82.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s052.sec83.u0": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé. Et il n'y a pas de",
+   "serrure !"
+  ]
+ ],
+ "s054.sec5.u0": [
+  [
+   "Tu nous as aidés bien des fois.",
+   "Permets-moi de partager les",
+   "fruits de mes recherches."
+  ],
+  [
+   "Quand MetalGreymon meurt au",
+   "combat ou de maladie, il peut",
+   "parfois devenir SkullGreymon."
+  ],
+  [
+   "D'autres peuvent digivoluer",
+   "ainsi : Bakemon, Devimon,",
+   "Phoenixmon... À partir de"
+  ],
+  [
+   "quelles formes, je l'ignore.",
+   "Les arbres de digivolution",
+   "n'indiquent pas ces voies,"
+  ],
+  [
+   "alors retiens bien cela."
+  ]
+ ],
+ "s054.sec5.u1": [
+  [
+   "Depuis que mes hommes",
+   "combattent à l'arène, ils",
+   "redeviennent eux-mêmes. Cela"
+  ],
+  [
+   "semble leur faire le plus grand",
+   "bien. Et un combat entre deux",
+   "séances d'étude me change"
+  ],
+  [
+   "agréablement les idées, à moi",
+   "aussi."
+  ]
+ ],
+ "s054.sec5.u2": [
+  [
+   "Mais en quoi consistent ses",
+   "recherches, au juste... ?"
+  ]
+ ],
+ "s054.sec5.u3": [
+  [
+   "Myotismon, une arène a ouvert",
+   "en ville !"
+  ]
+ ],
+ "s054.sec5.u4": [
+  [
+   "Hmm. Tu crois que mes hommes",
+   "pourraient y être utiles ?"
+  ]
+ ],
+ "s054.sec5.u5": [
+  [
+   "Et comment ! Qu'ils se",
+   "défoulent !"
+  ]
+ ],
+ "s054.sec5.u6": [
+  [
+   "Mes hommes vont de plus en",
+   "plus mal... Ce n'est peut-être",
+   "qu'une question de temps avant"
+  ],
+  [
+   "qu'ils quittent ce manoir."
+  ]
+ ],
+ "s054.sec60.u0": [
+  [
+   "Miam, miam..."
+  ]
+ ],
+ "s054.sec60.u1": [
+  [
+   "Très bien..."
+  ]
+ ],
+ "s054.sec60.u2": [
+  [
+   "Tu voudras peut-être écouter",
+   "ce que j'ai à dire."
+  ]
+ ],
+ "s054.sec60.u3": [
+  [
+   "Croc, croc..."
+  ]
+ ],
+ "s054.sec60.u4": [
+  [
+   "Ces derniers temps, mes hommes",
+   "n'obéissent plus. Ils ne se",
+   "rebellent pas... ils semblent"
+  ],
+  [
+   "simplement oublier tous leurs",
+   "ordres. Parfois, ils ne les",
+   "comprennent même pas."
+  ],
+  [
+   "Normalement, ils doivent",
+   "m'apporter mes repas, mais..."
+  ]
+ ],
+ "s054.sec60.u5": [
+  [
+   "Glu, glu. . ."
+  ]
+ ],
+ "s054.sec60.u6": [
+  [
+   "Absorbé par mes recherches, je",
+   "ne recevais aucun repas... Et",
+   "j'étais si absorbé que"
+  ],
+  [
+   "j'oubliais ma faim. Voilà",
+   "comment c'est arrivé."
+  ]
+ ],
+ "s054.sec60.u7": [
+  [
+   "...Là, c'est être BEAUCOUP",
+   "trop absorbé."
+  ]
+ ],
+ "s054.sec60.u8": [
+  [
+   "Oh, quelle honte."
+  ]
+ ],
+ "s054.sec60.u9": [
+  [
+   "Alors, les mêmes choses",
+   "bizarres se produisent ici",
+   "comme dehors."
+  ]
+ ],
+ "s054.sec60.u10": [
+  [
+   "Oh ? Tu veux dire que tout le",
+   "monde devient comme mes",
+   "hommes, à cause des troubles"
+  ],
+  [
+   "de l'île ?"
+  ]
+ ],
+ "s054.sec60.u11": [
+  [
+   "Oui. Chaque espèce reste",
+   "entre elle et perd la mémoire.",
+   "Pas encore tout le monde, mais"
+  ],
+  [
+   "si ça continue..."
+  ]
+ ],
+ "s054.sec60.u12": [
+  [
+   "Quelqu'un provoquerait-il tout",
+   "cela ? Hmm... Et dans quel",
+   "but... ?"
+  ]
+ ],
+ "s054.sec60.u13": [
+  [
+   "Hmm..."
+  ]
+ ],
+ "s054.sec60.u14": [
+  [
+   "Que puis-je faire pour l'île ?"
+  ]
+ ],
+ "s054.sec60.u15": [
+  [
+   "Nous construisons une ville",
+   "pour unir les coeurs des",
+   "Digimon. C'est pourquoi nous"
+  ],
+  [
+   "parcourons l'île à la recherche",
+   "d'amis."
+  ]
+ ],
+ "s054.sec60.u16": [
+  [
+   "Je vois. Mais c'est un",
+   "problème. À part moi, mes",
+   "hommes ne savent guère faire"
+  ],
+  [
+   "autre chose que se battre. Et",
+   "pourtant, je ne peux pas les",
+   "abandonner..."
+  ]
+ ],
+ "s054.sec60.u17": [
+  [
+   "Je vois..."
+  ]
+ ],
+ "s054.sec60.u18": [
+  [
+   "Je te donnerai une réponse en",
+   "temps voulu. J'ai du travail",
+   "ici, vois-tu. Je suis vraiment"
+  ],
+  [
+   "désolé..."
+  ]
+ ],
+ "s054.sec60.u19": [
+  [
+   "D'accord, je reviendrai. Et",
+   "pense à bien manger !"
+  ]
+ ],
+ "s054.sec60.u20": [
+  [
+   "Alors, pourquoi ne pas",
+   "combattre à l'arène ?"
+  ]
+ ],
+ "s054.sec60.u21": [
+  [
+   "Oh... L'arène ? Intéressant.",
+   "Voilà de quoi remettre mes",
+   "hommes en forme. Moi aussi,"
+  ],
+  [
+   "j'aimerais me dégourdir les",
+   "jambes de temps en temps."
+  ]
+ ],
+ "s054.sec60.u22": [
+  [
+   "Alors, tu nous rejoins ?!"
+  ]
+ ],
+ "s054.sec60.u23": [
+  [
+   "Oui. Il me reste des",
+   "recherches à terminer ici,",
+   "alors je viendrai en ville"
+  ],
+  [
+   "entre deux séances d'étude.",
+   "J'ai hâte."
+  ]
+ ],
+ "s054.sec81.u0": [
+  [
+   "Oh!"
+  ]
+ ],
+ "s054.sec81.u1": [
+  [
+   "Oui, une clé! Elle ouvre",
+   "peut-être ces portes qui ne",
+   "s'ouvrent pas."
+  ]
+ ],
+ "s054.sec81.u2": [
+  [
+   "{color 6}Clé du manoir{color 1} obtenue !"
+  ]
+ ],
+ "s054.sec81.u3": [
+  [
+   "Oups, je dois jeter quelque",
+   "chose."
+  ]
+ ],
+ "s054.sec82.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s054.sec82.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s054.sec83.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s054.sec83.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s054.sec254.u0": [
+  [
+   ". . . Myotismon n'est pas ici."
+  ]
+ ],
+ "s055.sec5.u0": [
+  [
+   "Je vais te cuisiner !"
+  ]
+ ],
+ "s055.sec6.u0": [
+  [
+   "Je vais te cuisiner !"
+  ]
+ ],
+ "s055.sec7.u0": [
+  [
+   "Je vais te cuisiner !"
+  ]
+ ],
+ "s055.sec83.u0": [
+  [
+   "Voyons, la note disait..."
+  ]
+ ],
+ "s055.sec83.u1": [
+  [
+   "« Retourne là où tu as pris",
+   "des points à l'idiot. »"
+  ]
+ ],
+ "s055.sec83.u2": [
+  [
+   "{color 6}Clé du frigo{color 1} utilisée !"
+  ]
+ ],
+ "s055.sec83.u3": [
+  [
+   "HU? Il n'est pas là ? Il",
+   "manque ?"
+  ]
+ ],
+ "s055.sec83.u4": [
+  [
+   "Oh ? Il y a une note collée",
+   "dessus..."
+  ]
+ ],
+ "s055.sec83.u5": [
+  [
+   "« Retourne là où tu as pris",
+   "des points à l'idiot. »"
+  ]
+ ],
+ "s055.sec83.u6": [
+  [
+   "Hmm, cette note est ma seule",
+   "piste pour l'instant. Hmm."
+  ]
+ ],
+ "s055.sec83.u7": [
+  [
+   "Oh, un frigo."
+  ]
+ ],
+ "s055.sec83.u8": [
+  [
+   "Ugh, c'est fermé à clé. Qui",
+   "ferme un frigo à clé ?"
+  ]
+ ],
+ "s056.sec53.u0": [
+  [
+   "Aïe, aïe... Ça fait mal !"
+  ]
+ ],
+ "s056.sec81.u0": [
+  [
+   "{color 6}Clé du manoir{color 1} utilisée !"
+  ]
+ ],
+ "s056.sec81.u1": [
+  [
+   "Ça ne s'ouvre pas... C'est",
+   "fermé à clé."
+  ]
+ ],
+ "s057.sec5.u0": [
+  [
+   "Maître... ? Non, ce n'est pas",
+   "toi !"
+  ]
+ ],
+ "s058.sec5.u0": [
+  [
+   "Le dîner n'est pas encore",
+   "prêêêt ?"
+  ]
+ ],
+ "s060.sec82.u0": [
+  [
+   "Ah, c'est ici !"
+  ]
+ ],
+ "s061.sec52.u0": [
+  [
+   "Aïe, aïe... Ça va, {color 10}{partner}{color 1}",
+   "?"
+  ]
+ ],
+ "s061.sec52.u1": [
+  [
+   "Mm? Où sommes-nous . . ?"
+  ]
+ ],
+ "s061.sec52.u2": [
+  [
+   "On dirait qu'on est entrés",
+   "dans une pièce où on n'est",
+   "jamais allés."
+  ]
+ ],
+ "s061.sec52.u3": [
+  [
+   "Oui, atterrissage parfait!"
+  ]
+ ],
+ "s061.sec82.u0": [
+  [
+   "Hmm, c'est fermé à clé ?"
+  ]
+ ],
+ "s061.sec82.u1": [
+  [
+   "Ça s'ouvre si je tourne cette",
+   "poignée ?"
+  ]
+ ],
+ "s061.sec82.u2": [
+  [
+   "Très bien. C'est ouvert."
+  ]
+ ],
+ "s062.sec81.m0.o0": "Le prendre",
+ "s062.sec81.m0.o1": "Suspect. Laisser",
+ "s062.sec81.u0": [
+  [
+   "C'est quoi tout ça ? Un livre",
+   "que je saurais lire... ?"
+  ]
+ ],
+ "s062.sec81.u1": [
+  [
+   "Non, pas un seul. Hmm, mais ce",
+   "livre a une couverture très",
+   "élégante !"
+  ]
+ ],
+ "s062.sec81.u2": [
+  [
+   "Tu as touché le livre élégant."
+  ]
+ ],
+ "s062.sec81.u3": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s062.sec81.u4": [
+  [
+   "Aaaaaah! ?"
+  ]
+ ],
+ "s062.sec81.u5": [
+  [
+   "C'est peut-être un piège...",
+   "Mieux vaut éviter."
+  ]
+ ],
+ "s183.sec60.u0": [
+  [
+   "Miam, miam..."
+  ]
+ ],
+ "s183.sec60.u1": [
+  [
+   "Très bien..."
+  ]
+ ],
+ "s183.sec60.u2": [
+  [
+   "Tu voudras peut-être écouter",
+   "ce que j'ai à dire."
+  ]
+ ],
+ "s183.sec60.u3": [
+  [
+   "Croc, croc..."
+  ]
+ ],
+ "s183.sec60.u4": [
+  [
+   "Ces derniers temps, mes hommes",
+   "n'obéissent plus. Ils ne se",
+   "rebellent pas... ils semblent"
+  ],
+  [
+   "simplement oublier tous leurs",
+   "ordres. Parfois, ils ne les",
+   "comprennent même pas."
+  ],
+  [
+   "Normalement, ils doivent",
+   "m'apporter mes repas, mais..."
+  ]
+ ],
+ "s183.sec60.u5": [
+  [
+   "Glu, glu. . ."
+  ]
+ ],
+ "s183.sec60.u6": [
+  [
+   "Absorbé par mes recherches, je",
+   "ne recevais aucun repas... Et",
+   "j'étais si absorbé que"
+  ],
+  [
+   "j'oubliais ma faim. Voilà",
+   "comment c'est arrivé."
+  ]
+ ],
+ "s183.sec60.u7": [
+  [
+   "...Là, c'est être BEAUCOUP",
+   "trop absorbé."
+  ]
+ ],
+ "s183.sec60.u8": [
+  [
+   "Oh, quelle honte."
+  ]
+ ],
+ "s183.sec60.u9": [
+  [
+   "Alors, les mêmes choses",
+   "bizarres se produisent ici",
+   "comme dehors."
+  ]
+ ],
+ "s183.sec60.u10": [
+  [
+   "Oh ? Tu veux dire que tout le",
+   "monde devient comme mes",
+   "hommes, à cause des troubles"
+  ],
+  [
+   "de l'île ?"
+  ]
+ ],
+ "s183.sec60.u11": [
+  [
+   "Oui. Chaque espèce reste",
+   "entre elle et perd la mémoire.",
+   "Pas encore tout le monde, mais"
+  ],
+  [
+   "si ça continue..."
+  ]
+ ],
+ "s183.sec60.u12": [
+  [
+   "Quelqu'un provoquerait-il tout",
+   "cela ? Hmm... Et dans quel",
+   "but... ?"
+  ]
+ ],
+ "s183.sec60.u13": [
+  [
+   "Hmm..."
+  ]
+ ],
+ "s183.sec60.u14": [
+  [
+   "Que puis-je faire pour l'île ?"
+  ]
+ ],
+ "s183.sec60.u15": [
+  [
+   "Nous construisons une ville",
+   "pour unir les coeurs des",
+   "Digimon. C'est pourquoi nous"
+  ],
+  [
+   "parcourons l'île à la recherche",
+   "d'amis."
+  ]
+ ],
+ "s183.sec60.u16": [
+  [
+   "Je vois. Mais c'est un",
+   "problème. À part moi, mes",
+   "hommes ne savent guère faire"
+  ],
+  [
+   "autre chose que se battre."
+  ]
+ ],
+ "s183.sec60.u17": [
+  [
+   "Et pourtant, je ne peux pas",
+   "les abandonner..."
+  ]
+ ],
+ "s183.sec60.u18": [
+  [
+   "Je vois..."
+  ]
+ ],
+ "s183.sec60.u19": [
+  [
+   "Je te donnerai une réponse en",
+   "temps voulu. J'ai du travail",
+   "ici, vois-tu. Je suis vraiment"
+  ],
+  [
+   "désolé..."
+  ]
+ ],
+ "s183.sec60.u20": [
+  [
+   "D'accord, je reviendrai. Et",
+   "pense à bien manger !"
+  ]
+ ],
+ "s183.sec60.u21": [
+  [
+   "Alors, pourquoi ne pas",
+   "combattre à l'arène ?"
+  ]
+ ],
+ "s183.sec60.u22": [
+  [
+   "Oh... L'arène ? Intéressant.",
+   "Voilà de quoi remettre mes",
+   "hommes en forme. Moi aussi,"
+  ],
+  [
+   "j'aimerais me dégourdir les",
+   "jambes de temps en temps."
+  ]
+ ],
+ "s183.sec60.u23": [
+  [
+   "Alors, tu nous rejoins ?!"
+  ]
+ ],
+ "s183.sec60.u24": [
+  [
+   "Oui. Il me reste des",
+   "recherches à terminer ici,",
+   "alors je viendrai en ville"
+  ],
+  [
+   "entre deux séances d'étude.",
+   "J'ai hâte."
+  ]
+ ]
+}

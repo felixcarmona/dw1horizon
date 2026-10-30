@@ -1,0 +1,78 @@
+{
+ "first_id": 400,
+ "out": "build/meshfix2-out",
+ "digimon": [
+  {
+   "name": "Apocalymon",
+   "game": "dcb",
+   "model": 178,
+   "meshfix": true
+  },
+  {
+   "name": "Pukumon",
+   "game": "dw2",
+   "model": "M229PUKU",
+   "level": 5,
+   "element": 1,
+   "meshfix": true
+  },
+  {
+   "name": "NeoCrimson",
+   "game": "dw2",
+   "model": "M247NCRM",
+   "level": "mega",
+   "element": 1,
+   "meshfix": {
+    "prims": 600
+   }
+  },
+  {
+   "name": "Beelzemon",
+   "game": "dw3",
+   "model": "M377BLZB",
+   "level": "mega",
+   "element": 1,
+   "meshfix": true
+  },
+  {
+   "name": "BlackWarGreymon",
+   "game": "dw3",
+   "model": "M267BKWG",
+   "level": "mega",
+   "element": 1,
+   "meshfix": true
+  },
+  {
+   "name": "Cannondramon",
+   "game": "dw3",
+   "model": "M393CNND",
+   "level": 5,
+   "element": 5,
+   "meshfix": true
+  },
+  {
+   "name": "MaloMyotismon",
+   "game": "dw3",
+   "model": "M378BVND",
+   "level": "mega",
+   "element": 1,
+   "meshfix": true
+  },
+  {
+   "name": "Armagemon",
+   "game": "dw3",
+   "model": "M382ARMG",
+   "level": "mega",
+   "element": 1,
+   "meshfix": true
+  },
+  {
+   "name": "Suijinmon",
+   "game": "dw3",
+   "model": "M440SIJN",
+   "level": 5,
+   "element": 4,
+   "meshfix": true
+  }
+ ]
+}

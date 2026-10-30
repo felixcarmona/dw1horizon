@@ -1,0 +1,61 @@
+From 12a813e0a31358b550dca06f1ee584bc8a3f98dc Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 21:27:52 +0000
+Subject: [PATCH] Patch 0254: apply Cheats evolution and teleport selections
+ directly
+
+---
+ src/main/mod_lab_menu.inc | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
+
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 60f08a63..3f7029d6 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -302,7 +302,7 @@ static void modLabDrawText(void)
+     appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
+         MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
+         MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT :
+-        labPrevious == LAB_HOME ? LAB_HOME_TEXT[labPreviousCursor] : LAB_STR_CONFIRM);
++        LAB_HOME_TEXT[labPreviousCursor]);
+     if (MOD_LAB_VIEW == LAB_NUMBER) {
+         labInt(lines[3], MOD_LAB_VALUE);
+         p = appendStr(lines[5], LAB_STR_RANGE); p = labInt(p, modLabBound(labField, 0));
+@@ -310,13 +310,8 @@ static void modLabDrawText(void)
+         p = appendStr(lines[6], LAB_STR_SIMPLE_STEP); p = labInt(p, labStep); appendStr(p, LAB_STR_STEP_ARROWS);
+         appendStr(lines[7], LAB_STR_SIMPLE_ADJUST);
+     } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
+-        if (labPrevious == LAB_HOME) {
+-            appendStr(lines[1], MOD_LAB_TARGET == 1 ? LAB_STR_ASK_SAVE : LAB_STR_ASK_TITLE);
+-            if (MOD_LAB_TARGET == 3) appendStr(lines[3], LAB_STR_UNSAVED);
+-        } else {
+-            appendStr(lines[1], labPrevious == LAB_EVOLVE ? LAB_STR_ASK_EVOLVE : LAB_STR_ASK_MAP);
+-            modLabEntry(lines[3], MOD_LAB_TARGET, labPrevious == LAB_EVOLVE);
+-        }
++        appendStr(lines[1], MOD_LAB_TARGET == 1 ? LAB_STR_ASK_SAVE : LAB_STR_ASK_TITLE);
++        if (MOD_LAB_TARGET == 3) appendStr(lines[3], LAB_STR_UNSAVED);
+     } else for (row = 0; row < visible; row++) {
+         n = labTop + row;
+         if (n >= count) break;
+@@ -330,8 +325,7 @@ static void modLabDrawText(void)
+         }
+     }
+     p = appendStr(lines[9], "\x81\xa2 ");
+-    p = appendStr(p, MOD_LAB_VIEW == LAB_NUMBER ? LAB_STR_SAVE : MOD_LAB_VIEW == LAB_CONFIRM ?
+-        (labPrevious == LAB_HOME ? LAB_STR_DO_IT : labPrevious == LAB_EVOLVE ? LAB_STR_SIMPLE_EVOLVE : LAB_STR_SIMPLE_TRAVEL) : LAB_STR_CHOOSE);
++    p = appendStr(p, MOD_LAB_VIEW == LAB_NUMBER ? LAB_STR_SAVE : MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_DO_IT : LAB_STR_CHOOSE);
+     p = appendStr(p, "    \x81\x7e "); appendStr(p, MOD_LAB_VIEW == LAB_NUMBER || MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_SIMPLE_CANCEL : LAB_STR_BACK);
+     if (modLabMessage) { lines[9][0] = 0; appendStr(lines[9], modLabMessage); }
+     for (row = 0; row < LAB_ROWS; row++) {
+@@ -539,7 +533,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+                 labPrevious = MOD_LAB_VIEW; labPreviousCursor = MOD_LAB_CURSOR;
+                 MOD_LAB_TARGET = labChoices[MOD_LAB_CURSOR];
+                 if (MOD_LAB_VIEW == LAB_EVOLVE) MOD_LAB_EVO_CHOICE = MOD_LAB_TARGET;
+-                MOD_LAB_VIEW = LAB_CONFIRM;
++                done = modLabPerform();
+             }
+         } else {
+             count = modLabRowCount();
+-- 
+2.55.0
+

@@ -1,0 +1,570 @@
+{
+ "s165.sec5.u0": [
+  [
+   "Ah, arribes en el moment just!"
+  ],
+  [
+   "Haig de demanar-te un favor",
+   "important, un que només tu",
+   "pots fer."
+  ]
+ ],
+ "s165.sec5.u1": [
+  [
+   "Què passa?"
+  ]
+ ],
+ "s165.sec5.u2": [
+  [
+   "Acabo de sentir-ho una altra",
+   "vegada: la mateixa maldat que",
+   "amb Analogman i Machinedramon.",
+   "Però segueixo sense saber d'on"
+  ],
+  [
+   "ve..."
+  ]
+ ],
+ "s165.sec5.u3": [
+  [
+   "Una altra vegada!? Val,",
+   "deixa-m'ho a mi!"
+  ]
+ ],
+ "s165.sec5.u4": [
+  [
+   "Ah, gràcies, noi. Per cert..."
+  ]
+ ],
+ "s165.sec5.u5": [
+  [
+   "M'han dit que has derrotat",
+   "Machinedramon!"
+  ]
+ ],
+ "s165.sec5.u6": [
+  [
+   "Sí. Però no ho entenc gaire.",
+   "Semblava una mena de maledicció",
+   "d'Analogman."
+  ]
+ ],
+ "s165.sec5.u7": [
+  [
+   "El seu rancor ha de seguir",
+   "aquí, i amb una força",
+   "tremenda..."
+  ],
+  [
+   "En fi, amb això potser tornem a",
+   "tenir pau."
+  ]
+ ],
+ "s165.sec5.u8": [
+  [
+   "Si Machinedramon torna, el",
+   "tornarem a derrotar. Serà com",
+   "una festa anual. Divertit, oi?"
+  ]
+ ],
+ "s165.sec5.u9": [
+  [
+   "Ho, ho, quina tranquil·litat em",
+   "dónes. Ah, és veritat! Té, en",
+   "agraïment. Ha crescut per",
+   "casualitat a la granja de Carn."
+  ]
+ ],
+ "s165.sec5.u10": [
+  [
+   "Hala! Un {color 6}Meló passat{color 1}?"
+  ]
+ ],
+ "s165.sec5.u11": [
+  [
+   "Ups! Porto la bossa plena."
+  ]
+ ],
+ "s165.sec5.u12": [
+  [
+   "M'ho quedo, gràcies!"
+  ]
+ ],
+ "s165.sec5.u13": [
+  [
+   "Ah, has vingut! És un assumpte",
+   "important, saps?, i només t'ho",
+   "puc demanar a tu."
+  ]
+ ],
+ "s165.sec5.u14": [
+  [
+   "Je, je, no hi ha de què. I què",
+   "és això que ha tornat",
+   "Analogman?"
+  ]
+ ],
+ "s165.sec5.u15": [
+  [
+   "Ajá, ho noto. Una cosa idèntica",
+   "a la seva maldat."
+  ],
+  [
+   "Encara que no aconsegueixo",
+   "saber d'on ve..."
+  ]
+ ],
+ "s165.sec5.u16": [
+  [
+   "Val, deixa-m'ho a mi! El",
+   "trobaré i acabaré amb ell."
+  ]
+ ],
+ "s165.sec5.u17": [
+  [
+   "Ah, gràcies, noi. Per cert..."
+  ]
+ ],
+ "s165.sec7.u0": [
+  [
+   "Sembla que Yuramon s'ha",
+   "assabentat de rumors nous."
+  ]
+ ],
+ "s165.sec7.u1": [
+  [
+   "Ah, sí! Yuramon diu que sap",
+   "rumors nous."
+  ]
+ ],
+ "s165.sec7.u2": [
+  [
+   "La ciutat té cada vegada més",
+   "vida, i el que se sent per aquí",
+   "també està canviant una mica."
+  ]
+ ],
+ "s165.sec7.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   ", la teva manera d'anar",
+   "d'aventures és bastant",
+   "estranya, saps?"
+  ]
+ ],
+ "s165.sec20.u0": [
+  [
+   "Així que has tornat en tu... Ho",
+   "sento moltíssim, noi."
+  ]
+ ],
+ "s165.sec85.m0.o0": "Fer-lo servir",
+ "s165.sec85.m0.o1": "No fer-lo servir",
+ "s165.sec85.u0": [
+  [
+   "Oh? Què és aquesta màquina?"
+  ]
+ ],
+ "s165.sec85.u1": [
+  [
+   "Mmm, això? És la {color 4}Màquina de",
+   "Registre de Combat a la",
+   "Memory Card{color 1}. Desa les dades",
+   "del teu company actual per"
+  ],
+  [
+   "combatre. Prem {color 6}×{color 1} aquí i la",
+   "màquina et dirà què has de fer."
+  ]
+ ],
+ "s165.sec85.u2": [
+  [
+   "Vols usar la {color 4}Màquina de",
+   "Registre de Combat a la",
+   "Memory Card{color 1}?"
+  ]
+ ],
+ "s166.sec5.u0": [
+  [
+   "Tots estan treballant",
+   "moltíssim!"
+  ]
+ ],
+ "s166.sec6.u0": [
+  [
+   "Sembla que no hi ha res dins."
+  ]
+ ],
+ "s166.sec7.u0": [
+  [
+   "Airdramon està dormint..."
+  ]
+ ],
+ "s166.sec60.u0": [
+  [
+   "Ajá, sembla que de moment està",
+   "bé."
+  ]
+ ],
+ "s166.sec60.u1": [
+  [
+   "Uf, encara sort..."
+  ]
+ ],
+ "s166.sec60.u2": [
+  [
+   "Pel seu bé també, hem de",
+   "derrotar el seu cap com més",
+   "aviat millor."
+  ]
+ ],
+ "s166.sec60.u3": [
+  [
+   "...Ja ho sé, ja ho sé."
+  ]
+ ],
+ "s178.sec5.u0": [
+  [
+   "Ah, arribes en el moment just!"
+  ],
+  [
+   "Haig de demanar-te un favor",
+   "important, un que només tu",
+   "pots fer."
+  ]
+ ],
+ "s178.sec5.u1": [
+  [
+   "Què passa?"
+  ]
+ ],
+ "s178.sec5.u2": [
+  [
+   "Acabo de sentir-ho una altra",
+   "vegada: la mateixa maldat que",
+   "amb Analogman i Machinedramon.",
+   "Però segueixo sense saber d'on"
+  ],
+  [
+   "ve..."
+  ]
+ ],
+ "s178.sec5.u3": [
+  [
+   "Una altra vegada!? Val,",
+   "deixa-m'ho a mi!"
+  ]
+ ],
+ "s178.sec5.u4": [
+  [
+   "Ah, gràcies, noi. Per cert..."
+  ]
+ ],
+ "s178.sec5.u5": [
+  [
+   "M'han dit que has derrotat",
+   "Machinedramon!"
+  ]
+ ],
+ "s178.sec5.u6": [
+  [
+   "Sí. Però no ho entenc gaire.",
+   "Semblava una mena de maledicció",
+   "d'Analogman."
+  ]
+ ],
+ "s178.sec5.u7": [
+  [
+   "El seu rancor ha de seguir",
+   "aquí, i amb una força",
+   "tremenda..."
+  ],
+  [
+   "En fi, amb això potser tornem a",
+   "tenir pau."
+  ]
+ ],
+ "s178.sec5.u8": [
+  [
+   "Si Machinedramon torna, el",
+   "tornarem a derrotar. Serà com",
+   "una festa anual. Divertit, oi?"
+  ]
+ ],
+ "s178.sec5.u9": [
+  [
+   "Ho, ho, quina tranquil·litat em",
+   "dónes. Ah, és veritat! Té, en",
+   "agraïment. Ha crescut per",
+   "casualitat a la granja de Carn."
+  ]
+ ],
+ "s178.sec5.u10": [
+  [
+   "Hala! Un {color 6}Meló passat{color 1}?"
+  ]
+ ],
+ "s178.sec5.u11": [
+  [
+   "Ups! Porto la bossa plena."
+  ]
+ ],
+ "s178.sec5.u12": [
+  [
+   "M'ho quedo, gràcies!"
+  ]
+ ],
+ "s178.sec5.u13": [
+  [
+   "Ah, has vingut! És un assumpte",
+   "important, saps?, i només t'ho",
+   "puc demanar a tu."
+  ]
+ ],
+ "s178.sec5.u14": [
+  [
+   "Je, je, no hi ha de què. I què",
+   "és això que ha tornat",
+   "Analogman?"
+  ]
+ ],
+ "s178.sec5.u15": [
+  [
+   "Ajá, ho noto. Una cosa idèntica",
+   "a la seva maldat."
+  ],
+  [
+   "Encara que no aconsegueixo",
+   "saber d'on ve..."
+  ]
+ ],
+ "s178.sec5.u16": [
+  [
+   "Val, deixa-m'ho a mi! El",
+   "trobaré i acabaré amb ell."
+  ]
+ ],
+ "s178.sec5.u17": [
+  [
+   "Ah, gràcies, noi. Per cert..."
+  ]
+ ],
+ "s178.sec5.u18": [
+  [
+   "Ejem, ejem. Juntament amb els",
+   "Digimon que vagin tornant,",
+   "reconstruiré Ciutat File."
+  ]
+ ],
+ "s178.sec5.u19": [
+  [
+   "Penso construir botigues que",
+   "us vagin bé a tu i a",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s178.sec5.u20": [
+  [
+   "Per a començar... vegem. Per",
+   "què no explores el Bosc nadiu,",
+   "aquí mateix, als afores de la",
+   "ciutat?"
+  ]
+ ],
+ "s178.sec6.u0": [
+  [
+   "Això és per a tu. Molta sort!"
+  ]
+ ],
+ "s178.sec6.u1": [
+  [
+   "Has aconseguit un munt",
+   "d'objectes!"
+  ]
+ ],
+ "s178.sec6.u2": [
+  [
+   "Per a veure els teus objectes,",
+   "prem {color 5}△{color 1}, tria Objectes i",
+   "mira'ls amb {color 6}×{color 1}."
+  ]
+ ],
+ "s178.sec6.u3": [
+  [
+   "Sembla que Yuramon s'ha",
+   "assabentat de rumors nous."
+  ]
+ ],
+ "s178.sec6.u4": [
+  [
+   "Ah, sí! Yuramon diu que sap",
+   "rumors nous."
+  ]
+ ],
+ "s178.sec6.u5": [
+  [
+   "La ciutat té cada vegada més",
+   "vida, i el que se sent per aquí",
+   "també està canviant una mica."
+  ]
+ ],
+ "s178.sec6.u6": [
+  [
+   "T'ensenyaré les coses bàsiques",
+   "del nostre món! Un dia té 24",
+   "hores: matí, dia i nit. Potser",
+   "et sembla que passa una mica"
+  ],
+  [
+   "ràpid. Un any té 30 dies.",
+   "Mesos? Què són? Estacions...?",
+   "Això es menja? És clar que",
+   "tenim diners. Es diuen Bits."
+  ],
+  [
+   "Com més en tinguis, millor! En",
+   "aquesta illa, «la ciutat» és",
+   "això d'aquí, encara que hi ha",
+   "alguns pobles i llogarets. Ah,"
+  ],
+  [
+   "i el rellotge! El punt groc",
+   "marca les hores i l'agulla, els",
+   "minuts. La mitjanit és a dalt i",
+   "el migdia, a baix. El vermell,"
+  ],
+  [
+   "a l'esquerra, és el vespre: de",
+   "les 16 a les 20 h. El morat, a",
+   "la dreta, és el matí: de les 4",
+   "a les 8 h. Els Digimon tenen"
+  ],
+  [
+   "els seus horaris. La majoria es",
+   "lleven al matí i dormen de nit,",
+   "però no tots. Si no trobes un",
+   "Digimon que vols veure, prova"
+  ],
+  [
+   "de venir a una altra hora."
+  ]
+ ],
+ "s178.sec7.u0": [
+  [
+   "Passa sovint a veure Tsunomon",
+   "i Yuramon, val?"
+  ]
+ ],
+ "s178.sec7.u1": [
+  [
+   "T'explicaré el Nivell de Domador!"
+  ],
+  [
+   "Amb un Nivell de Domador alt,",
+   "quan un Digimon mor de vell",
+   "s'hereten més atributs."
+  ],
+  [
+   "Al principi puja poquet, però",
+   "si cries Digimon a poc a poc,",
+   "anirà pujant, val?"
+  ]
+ ],
+ "s178.sec7.u2": [
+  [
+   "Quan uses una tècnica final,",
+   "piques L1 i R1 com has de fer?"
+  ],
+  [
+   "Amb la barra plena es fa el",
+   "doble de mal que amb la barra",
+   "buida. El doble!"
+  ]
+ ],
+ "s178.sec7.u3": [
+  [
+   "T'explicaré com viuen els",
+   "Digimon! Primer, és clar,",
+   "mengen. Quan tenen gana,",
+   "t'avisen. Després fan caca. El"
+  ],
+  [
+   "millor és que la facin en un",
+   "vàter sempre que puguin. Quan",
+   "tenen son, dormen. Esperen que",
+   "{color 6}{player}{color 1} els ho digui, però"
+  ],
+  [
+   "és millor no fer-los esperar.",
+   "També es cansen, es posen",
+   "malalts i s'enfaden. Són força",
+   "delicats, saps? Els Digimon són"
+  ],
+  [
+   "salvatges de cor, així que unes",
+   "vegades els has de lloar i",
+   "d'altres, renyar. Sobretot,",
+   "observa bé el teu Digimon i"
+  ],
+  [
+   "cuida'l molt."
+  ]
+ ],
+ "s178.sec20.u0": [
+  [
+   "Així que has tornat en tu... Ho",
+   "sento moltíssim, noi."
+  ]
+ ],
+ "s178.sec82.m0.o0": "Descansar una estona",
+ "s178.sec82.m0.o1": "No descansar",
+ "s178.sec82.u0": [
+  [
+   "Punimon no està, però suposo",
+   "que puc descansar igualment."
+  ]
+ ],
+ "s178.sec82.u1": [
+  [
+   "{color 7}Punimon {color 1}",
+   "Sóc Punimon! Per què no",
+   "descanses aquí una estoneta?"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "Una hora de descans"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "recupera una mica de HP i MP",
+   "i redueix una mica el",
+   "Cansament."
+  ]
+ ],
+ "s178.sec85.m0.o0": "Fer-lo servir",
+ "s178.sec85.m0.o1": "No fer-lo servir",
+ "s178.sec85.u0": [
+  [
+   "Eh? Què és aquesta màquina?"
+  ]
+ ],
+ "s178.sec85.u1": [
+  [
+   "Mmm, això? És la {color 4}Màquina de",
+   "Registre de Combat a la",
+   "Memory Card{color 1}. Desa les dades",
+   "del teu company actual per"
+  ],
+  [
+   "combatre. Prem {color 6}×{color 1} aquí i la",
+   "màquina et dirà què has de fer."
+  ]
+ ],
+ "s178.sec85.u2": [
+  [
+   "Vols usar la {color 4}Màquina de",
+   "Registre de Combat a la",
+   "Memory Card{color 1}?"
+  ]
+ ]
+}

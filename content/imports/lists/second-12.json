@@ -1,0 +1,104 @@
+{
+ "clip_policy": "dcb-original",
+ "first_id": 193,
+ "out": "build/batch2",
+ "digimon": [
+  {
+   "name": "Digmon",
+   "game": "dcb",
+   "model": 196,
+   "from": [
+    185
+   ]
+  },
+  {
+   "name": "ExVeemon",
+   "game": "dcb",
+   "model": 158,
+   "from": [
+    180
+   ]
+  },
+  {
+   "name": "Flamedramon",
+   "game": "dcb",
+   "model": 187,
+   "from": [
+    180
+   ]
+  },
+  {
+   "name": "Halsemon",
+   "game": "dcb",
+   "model": 193,
+   "from": [
+    184
+   ]
+  },
+  {
+   "name": "Magnamon",
+   "game": "dcb",
+   "model": 189,
+   "from": [
+    180
+   ]
+  },
+  {
+   "name": "Nefertimon",
+   "game": "dcb",
+   "model": 198,
+   "from": [
+    186
+   ]
+  },
+  {
+   "name": "Paildramon",
+   "game": "dcb",
+   "model": 166,
+   "from": [
+    194
+   ]
+  },
+  {
+   "name": "Pegasusmon",
+   "game": "dcb",
+   "model": 194,
+   "from": [
+    31
+   ]
+  },
+  {
+   "name": "Raidramon",
+   "game": "dcb",
+   "model": 188,
+   "from": [
+    180
+   ]
+  },
+  {
+   "name": "Submarimon",
+   "game": "dcb",
+   "model": 197,
+   "from": [
+    185
+   ]
+  },
+  {
+   "name": "Veedramon",
+   "game": "dcb",
+   "model": 128,
+   "from": [
+    180
+   ]
+  },
+  {
+   "name": "WereGarurumon",
+   "game": "dcb",
+   "model": 139,
+   "from": [
+    22
+   ],
+   "donor": 22
+  }
+ ]
+}

@@ -1,0 +1,161 @@
+{
+  "_comment": "The numbers of the fight, for the three arenas (the wild and story fights, the tournament and the versus). The C holds none of them: a key left out means that rule does not exist (a percent or an amount reads as 0, a divisor left out divides to 0, a die span as 1). damage: guardDefensePercent = the part of the defence the guard move keeps; divisor and statDifferenceDivisor/Clamp shape (power + (offense-defence)*power/500)*types/30; randomMinPercent+randomSpan = the 90..110% variance; enemyFinisher* the same for enemy finishers; chargeupFrom/Divisor the finisher charge bonus; neutralMultiplier the type factor of a species without a type. hit: alwaysHitBelowLevel, the speed formula, bigHitPercent (a hit that big counts for the tamer). block: the counter and the block. buffs: move[] are the technique ids that buff, offense/defense/speedPercent what each adds (0 = nothing); the uses a fighter gets by brains. status: poison, confusion and stun. mp: the cost multiplier, the condition penalty and the brains discount tiers. speed: the speed buffer. cooldown, senile, finisher, condition: as named. Patch 0137: every wait is real time in milliseconds (the fight runs one logic tick every 50 ms at any frame rate, so a time must be a multiple of 50): block.invulnerableMs, status.*Ms (poison interval, confusion, stun and flat durations; *ExtraMs is the longest extra wait rolled on top), cooldown.*Ms (after an attack, with no target), senile.durationMs and intervalMsPerStep (the senility check every (brains / intervalBrainDivisor + 1) steps), flee.*Ms, speed.stepMs (how often the speed buffer grows), buffs.priorityStepMs (how often the priority of a buff move falls), flatten.* (a flattened fighter picks a new target every retargetMs, repeats its move every attackRepeatMs and waits attackDelayMs before attacking), approach.* (how long a fighter walks toward its target before it starts the move anyway: timeoutMs in the story fights, tournamentTimeoutMs and the rest after it, tournamentRestMs, in the tournament and VS), finisher.holdMs (the pause of the finisher aura) and chargeWindowMs (the button-mashing window of the finisher; chargeGaugeMax and chargeGaugePerPress its gauge), defeat.* (the countdown shows after countdownShowMs of the partner lying down and the fight ends after endMs), afterFight.settleMs (the tournament waits this long after the fight before it heals) and healHpDivisor / healMpDivisor (the part of the maximum HP and MP the tournament gives back). ai: emptySlotWeight (the weight of a free move slot, which makes the fighter idle), chargeMode1MoveWeight (every usable move when the partner is told to keep its distance), groupBrain and groupBonusPerEnemy (the brains from which a group move gains weight per living enemy, by the order's mode), lowHpBelowPercent (HP percent under which a mode 2 partner looks for the longest-ranged move), enemyGroupMoveWeight (a group move of an enemy while another still lives), elementBonus (the weight an element adds, by type factor 2.0, 1.5, 1.0, 0.5 and 0.2), targetScore (the partner's target choice: the factor each of 2.0, 1.5, 0.5 and 0.2 turns into, defenseMax and divisor), smartTargetBrain (brains from which the partner aims at afflicted and weak enemies) and switchTargetGap (how much better another target must score). yourCall: the weights of the moves in the order of their power, MP cost and range when the player sets the \"Your call\" order. commands: the command menu a partner gets from its brains (story fights and tournament/VS), by brainStep up to maxBrain, then the top menu. Patch 0142: defeat.digitMs is how long each digit of the countdown that shows when the partner is down stays on screen (the countdown ends after five of them; the pulse of a digit is animation); music.lastBattleSpecies / lastBattleTrack: the battle plays that track of the battle music font when that species is the first enemy of the fight (Machinedramon in the original), instead of the wild or story track.",
+  "battleFormulas": {
+    "damage": {
+      "guardDefensePercent": 30,
+      "divisor": 30,
+      "statDifferenceClamp": 500,
+      "statDifferenceDivisor": 500,
+      "neutralMultiplier": 10,
+      "randomMinPercent": 90,
+      "randomSpan": 21,
+      "enemyFinisherMinPercent": 100,
+      "enemyFinisherSpan": 101,
+      "chargeupFrom": 41,
+      "chargeupDivisor": 40,
+      "minimum": 1
+    },
+    "hit": {
+      "alwaysHitBelowLevel": 3,
+      "attackerSpeedDivisor": 10,
+      "speedDifferenceClamp": 999,
+      "accuracyDivisor": 2,
+      "speedNormalizer": 999,
+      "movingDefenderPercent": 120,
+      "bigHitPercent": 20
+    },
+    "block": {
+      "minMp": 165,
+      "damageMinPercent": 10,
+      "damageSpan": 21,
+      "defenderGaugePercent": 6,
+      "attackerGaugePercent": 8,
+      "invulnerableMs": 150
+    },
+    "buffs": {
+      "move": [41, 42, 34, 21, 30],
+      "offensePercent": [30, 10, 0, 7, 25],
+      "defensePercent": [0, 5, 20, 8, 15],
+      "speedPercent": [0, 10, 10, 7, 15],
+      "usesBrainDivisor": 100,
+      "tier1Brain": 400,
+      "tier2Brain": 600,
+      "tier1Uses": 4,
+      "tier2Uses": 5,
+      "priorityBrainDivisor": 10,
+      "priorityBase": 5,
+      "priorityStepMs": 1000
+    },
+    "status": {
+      "poisonMinPercent": 1,
+      "poisonSpan": 3,
+      "poisonIntervalMs": 5000,
+      "confusionMs": 10000,
+      "confusionExtraMs": 5000,
+      "stunMs": 10000,
+      "stunExtraMs": 2000,
+      "flatMs": 11200,
+      "flatExtraMs": 4000
+    },
+    "mp": {
+      "costMultiplier": 3,
+      "conditionPenaltyPercent": 50,
+      "discountBrain": [700, 800, 900, 999],
+      "discountPercent": [5, 10, 15, 20]
+    },
+    "speed": {
+      "bufferMax": 100,
+      "gainDivisor": 100,
+      "gainPlus": 1,
+      "bufferFloor": 155,
+      "bufferStart": 100,
+      "stepMs": 100
+    },
+    "cooldown": {
+      "afterAttackMs": 2000,
+      "noTargetMs": 4000
+    },
+    "senile": {
+      "brainBelow": 301,
+      "partnerBase": 70,
+      "enemyBase": 300,
+      "enemyDivisor": 4,
+      "intervalBrainDivisor": 2,
+      "durationMs": 5000,
+      "intervalMsPerStep": 1000
+    },
+    "finisher": {
+      "attackGaugePercent": 4,
+      "goalBase": 3000,
+      "chargeGaugeMax": 80,
+      "chargeGaugePerPress": 2,
+      "chargeWindowMs": 4000,
+      "holdMs": 4000
+    },
+    "condition": {
+      "statPenaltyPercent": 20
+    },
+    "ai": {
+      "idleAttackPercent": 5,
+      "confusedNoTargetOutOf10": 7,
+      "focusWeakestBrain": 150,
+      "enemyAimsAtPlayerBelow": 71,
+      "lowHpDivisor": 5,
+      "emptySlotWeight": 5,
+      "chargeMode1MoveWeight": 20,
+      "groupBrain": 200,
+      "groupBonusPerEnemy": [10, 15, 15],
+      "lowHpBelowPercent": 31,
+      "enemyGroupMoveWeight": 20,
+      "elementBonus": [10, 7, 5, 3, 1],
+      "targetScore": {
+        "invertedFactor": [2, 5, 15, 20],
+        "defenseMax": 999,
+        "divisor": 10
+      },
+      "smartTargetBrain": 300,
+      "switchTargetGap": 40
+    },
+    "flee": {
+      "ignoreHitsFromMs": 950,
+      "lockMs": 5500
+    },
+    "yourCall": {
+      "power": [50, 20, 5, 0],
+      "mp": [50, 20, 10, 0],
+      "wide": [10, 5, 0, 0]
+    },
+    "commands": {
+      "brainStep": 100,
+      "maxBrain": 500,
+      "story": [3, 4, 5, 7, 8],
+      "storyTop": 9,
+      "tournament": [2, 3, 4, 5, 6],
+      "tournamentTop": 7
+    },
+    "afterFight": {
+      "healHpDivisor": 5,
+      "healMpDivisor": 5,
+      "settleMs": 1000
+    },
+    "flatten": {
+      "retargetMs": 5000,
+      "attackRepeatMs": 2000,
+      "attackDelayMs": 1500
+    },
+    "approach": {
+      "timeoutMs": 4000,
+      "tournamentTimeoutMs": 5000,
+      "tournamentRestMs": 8000
+    },
+    "defeat": {
+      "countdownShowMs": 1000,
+      "endMs": 8550,
+      "digitMs": 1500
+    },
+    "music": {
+      "lastBattleSpecies": 115,
+      "lastBattleTrack": 3
+    }
+  }
+}

@@ -1,0 +1,115 @@
+// Readable form of script 134 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 134 {
+    npc yanmamon0 = 5;
+    npc yanmamon1 = 6;
+    npc gekomon2 = 7;
+    npc gekomon3 = 8;
+    npc otamamon = 9;
+    npc slot5 = 10;
+    npc slot6 = 11;
+    npc slot7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 11) {
+            spawn_item(item("Digimushrm"), 59, 50);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 33, 42);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 37, 61);
+        }
+        if (shogun_gekomon_met) {
+            set_obj_visibility(24, 1);
+            set_obj_visibility(25, 1);
+            set_obj_visibility(26, 1);
+            set_obj_visibility(27, 1);
+        } else {
+            set_rect_impassable(0, 32, 39, 9, 8);
+            set_rect_impassable(0, 35, 34, 8, 8);
+        }
+    }
+
+    on talk(yanmamon0) replace {    // section 5
+        say(yanmamon0, text("s134.sec5.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(yanmamon1) replace {    // section 6
+        say(yanmamon1, text("s134.sec6.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(gekomon2) replace {    // section 7
+        say(gekomon2, text("s134.sec7.u0"));
+        battle();
+    }
+
+    on talk(gekomon3) replace {    // section 8
+        say(gekomon3, text("s134.sec8.u0"));
+        battle();
+    }
+
+    on talk(otamamon) replace {    // section 9
+        say(otamamon, text("s134.sec9.u0"));
+        say(otamamon, text("s134.sec9.u1"));
+        say(otamamon, text("s134.sec9.u2"));
+        say(otamamon, text("s134.sec9.u3"));
+        say(otamamon, text("s134.sec9.u4"));
+        say(otamamon, text("s134.sec9.u5"));
+        say(tamer, text("s134.sec9.u6"));
+        choice(open) {
+            text("s134.sec9.m0.o0") => {
+                battle(foes: [otamamon]);
+                face(tamer, otamamon);
+                face(otamamon, tamer);
+                face(partner, otamamon);
+                say(otamamon, text("s134.sec9.u7"));
+                animate(tamer, 15);
+                wait(1s);
+                recruit(species("Otamamon"));
+                walk_away(otamamon, -174, -388, looks: 3);
+                remove(otamamon);
+                glances = 0;
+                camera_on(tamer, speed: 10);
+                await camera;
+                say(tamer, text("s134.sec9.u8"));
+                load_digimon(species("Gekomon"));
+                set_digimon(species("Gekomon"), 3, 0);
+                set_digimon(species("Gekomon"), 5, 0);
+                set_digimon(species("Gekomon"), 6, 0);
+                set_digimon(species("Gekomon"), 7, 0);
+                wait(2s);
+                animate(tamer, 24);
+                wait(1s);
+                say(tamer, text("s134.sec9.u9"));
+                entity_walk_to_entity(gekomon3, 1, tamer);
+                entity_walk_to_entity(slot5, 1, tamer);
+                entity_walk_to_entity(slot6, 1, tamer);
+                entity_walk_to_entity(slot7, 1, tamer);
+                wait(2s);
+                say(gekomon3, text("s134.sec9.u10"));
+                animate(tamer, 25);
+                wait(1s);
+                say(tamer, text("s134.sec9.u11"));
+                warp_to(141, 0, 5);
+            }
+            text("s134.sec9.m0.o1") => {}
+        }
+        animate(tamer, 25);
+        wait(1s);
+        say(tamer, text("s134.sec9.u12"));
+    }
+}

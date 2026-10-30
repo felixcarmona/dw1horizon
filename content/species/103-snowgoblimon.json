@@ -1,0 +1,34 @@
+{
+  "id": 103,
+  "name": "SnowGoblimon",
+  "level": "rookie",
+  "attribute": "virus",
+  "specialties": ["ice", "battle", null],
+  "techniques": ["Sonic Jab", "Megaton Punch", "War Cry", "Giga Freeze", "Winter Blast"],
+  "drop": {"item": "Meat", "percent": 10},
+  "effects_like": 80,
+  "model": {"name": "SNGB", "bones": 23, "radius": 125, "height": 280},
+  "voice": 64,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 2300, "mp": 2900, "off": 510, "def": 260, "speed": 160, "brain": 50, "bits": 400},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  },
+  "_former_name": "SnowGoburimon"
+}

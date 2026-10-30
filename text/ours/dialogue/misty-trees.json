@@ -1,0 +1,189 @@
+{
+ "s111.sec5.u0": "What a fool...",
+ "s111.sec6.u0": "I'm gonna make a total mess of ya!",
+ "s111.sec7.u0": "Mmm, nothing beats the forest.",
+ "s111.sec8.u0": "No one has ever escaped me alive.",
+ "s111.sec9.u0": "Let me put you out of your misery...",
+ "s111.sec10.u0": "Takes one to know one!",
+ "s112.sec5.u0": "Something you want with this old fella?",
+ "s112.sec6.u0": "Ha ha ha ha... No need to rush things.",
+ "s112.sec7.u0": "Take it easy while you're here.",
+ "s112.sec8.u0": "Want me to turn ya into fertilizer?",
+ "s112.sec9.u0": "Who the heck are you?",
+ "s112.sec10.u0": "You would do well to give up.",
+ "s112.sec11.u0": "Spare me your useless struggling!",
+ "s113.sec5.u0": "Now see heeere!",
+ "s113.sec5.u1": "Hmmmmm. You're quite something, aren't youuu. Up so early, too. What an admirable child.",
+ "s113.sec5.u2": "Hey, hey, don't talk like it's got nothing to do with you...",
+ "s113.sec5.u3": "I knooow. You're gathering Digimon and building a city, for the sake of the island.",
+ "s113.sec5.u4": "Oh, so you do know. Then give us a hand.",
+ "s113.sec5.u5": "And where was I supposed to go and do what, again?",
+ "s113.sec5.u6": "You don't know at all! Work in the city, remember?",
+ "s113.sec5.u7": "Well... the early bird catches sixteen worms, as they say...",
+ "s113.sec5.u8": "That's got nothing to do with anything! And it's one worm, not sixteen!",
+ "s113.sec5.u9": "Heh, just a little pretend doddering. Well, see you in the cityyy.",
+ "s113.sec5.u10": "Kokatorimon joined the city!",
+ "s113.sec5.u11": "How much of that did he mean...? I hope he'll be okay.",
+ "s113.sec6.u0": "Go straight, then right. Keh heh heh heh heh...",
+ "s113.sec7.u0": "Turn right, then left right away. Keh heh...",
+ "s113.sec8.u0": "You'll never get out of this forest. Keh heh heh...",
+ "s113.sec9.u0": "I've lost my way...",
+ "s113.sec10.u0": "I've been kind of worn out lately...",
+ "s113.sec11.u0": "You... No way?!",
+ "s113.sec12.u0": "Watch your step...",
+ "s113.sec54.u0": "Huh... a bird's feather on the ground... Still fresh. Were we a step too late?",
+ "s114.sec5.u0": "Lost your way, {color 6}{player}{color 1}? Keh heh heh heh heh!",
+ "s114.sec6.u0": "Hm?",
+ "s114.sec7.u0": "I'm not trying to get in the way or anything...",
+ "s114.sec8.u0": "Mis-ty Trees... Now, you say it.",
+ "s114.sec9.u0": "OK! Showtime!!",
+ "s115.sec5.m0.o0": "About the island's troubles",
+ "s115.sec5.m0.o1": "Train {color 10}{partner}{color 1}, please",
+ "s115.sec5.m0.o2": "No, it's nothing",
+ "s115.sec5.m1.o0": "Start training",
+ "s115.sec5.m1.o1": "About this training",
+ "s115.sec5.m1.o2": "Quit",
+ "s115.sec5.m2.o0": "Normal training",
+ "s115.sec5.m2.o1": "Bonus Try training",
+ "s115.sec5.m2.o2": "Never mind",
+ "s115.sec5.m3.o0": "Explain again",
+ "s115.sec5.m3.o1": "Start training",
+ "s115.sec5.m3.o2": "Quit",
+ "s115.sec5.u0": "Ho ho. You wish to hear this old-timer talk again?",
+ "s115.sec5.u1": "Hm, then I shall tell you.",
+ "s115.sec5.u2": "Ho ho, very well...",
+ "s115.sec5.u3": [
+  [
+   "",
+   "{color 5}Training: Forest Teachings{color 1}"
+  ]
+ ],
+ "s115.sec5.u4": "Cherrymon passes on all kinds of knowledge. Brains goes up a lot.",
+ "s115.sec5.u5": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s115.sec5.u6": "Ho ho ho ho...",
+ "s115.sec51.u0": "Ho ho. Welcome, welcome, young man.",
+ "s115.sec51.u1": "You're Cherrymon, right?",
+ "s115.sec51.u2": "Who's there?",
+ "s115.sec51.u3": "What business might you have with this old-timer?",
+ "s115.sec51.u4": "First, clear away the fog.",
+ "s115.sec51.u5": "I can't see a thing in this fog. Can you do something about it first?",
+ "s115.sec51.u6": "Ho ho. So that's how it is. Just as I thought.",
+ "s115.sec51.u7": "...Can't you?",
+ "s115.sec51.u8": "First, you must hear what I have to say. Now... where shall I begin?",
+ "s115.sec51.u9": "If you know anything about the troubles on this island, I'd like you to tell me.",
+ "s115.sec51.u10": "Hm. Yes, yes. The troubles.",
+ "s115.sec51.u11": [
+  [
+   "This island began to go wrong some 80 years",
+   "ago. It started when the land itself changed."
+  ],
+  [
+   "Freezeland, Grey Lord's Mansion, Great",
+   "Canyon... The lands in the northeast of the",
+   "island appeared all of a sudden, about 80"
+  ],
+  [
+   "years ago."
+  ],
+  [
+   "After that, the Digimon of the island moved",
+   "off, little by little, to whatever lands suited",
+   "them. The species scattered."
+  ],
+  [
+   "And the Digimon, who once all spoke one",
+   "language, began to speak their own tongues."
+  ]
+ ],
+ "s115.sec51.u12": [
+  [
+   "They forgot the language they",
+   "used in the city..."
+  ],
+  [
+   "And so File City, where many",
+   "species once lived together,",
+   "lost most of its Digimon and"
+  ],
+  [
+   "fell into ruin."
+  ],
+  [
+   "And then... a fearful thing:",
+   "the Digimon began to lose their",
+   "memories! Their pasts, the"
+  ],
+  [
+   "island's past, their reason..."
+  ],
+  [
+   "Even I cannot recall something",
+   "important... something I must",
+   "tell you."
+  ]
+ ],
+ "s115.sec51.u13": [
+  [
+   "But in the end, it all ties together. Someone",
+   "made it happen this way! So that everything",
+   "would suit them..."
+  ],
+  [
+   "Soon the Digimon will stop seeing the strange",
+   "as strange, I fear."
+  ],
+  [
+   "The only thing that can stop it is the bond",
+   "between you and File City!"
+  ],
+  [
+   "Gather Digimon in the city and work a miracle.",
+   "A miracle will surely come. Everyone is",
+   "counting on you!!!"
+  ],
+  [
+   "...Oh dear, I got carried away. Phew... That is",
+   "all I have to tell..."
+  ]
+ ],
+ "s115.sec51.u14": "Now then, let us clear the fog.",
+ "s115.sec51.u15": "I guarded the forest with fog so I could tell you my tale... And one more thing.",
+ "s115.sec51.u16": [
+  [
+   "There are others in this forest who know of",
+   "the past."
+  ],
+  [
+   "Go on deeper. Ho ho ho..."
+  ]
+ ],
+ "s116.sec5.u0": "..........!",
+ "s116.sec5.u1": "Waaah! No, no! I don't wanna fight!",
+ "s116.sec5.u2": "...... If you don't want to fight, then run away.",
+ "s116.sec5.u3": "But then I'd feel all sore about it.",
+ "s116.sec5.u4": "You're a strange one... Anyway, why not come to our city instead of hiding here?",
+ "s116.sec5.u5": "Eep! Th-th-the city?",
+ "s116.sec5.u6": "If you don't want to, that's fine.",
+ "s116.sec5.u7": "Now that you say that, I kinda want to go. I'll go! Of course I will!",
+ "s116.sec5.u8": "Gabumon joined the city!",
+ "s116.sec5.u9": "Phew... What a weird guy...!",
+ "s116.sec6.u0": "Hyah, hyah.",
+ "s116.sec7.u0": "Hup, hup.",
+ "s116.sec8.u0": "Mmm, can't we just not?",
+ "s116.sec9.u0": "It is too soon to relax...",
+ "s117.sec5.u0": "Who's there?",
+ "s117.sec6.u0": "Here I gooo! ...Just kiddin'.",
+ "s117.sec7.u0": "Gah ha ha ha ha! What fun, what fun.",
+ "s117.sec8.u0": "Whoo-hoo, I'm all fired up!",
+ "s117.sec9.u0": "Seriously?!",
+ "s117.sec10.u0": "Hey, hey, are you serious?",
+ "s117.sec11.u0": "Shut up, shut up!",
+ "s117.sec12.u0": "When I mean business, I mean business!"
+}

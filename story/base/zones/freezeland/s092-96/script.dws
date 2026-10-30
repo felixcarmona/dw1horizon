@@ -1,0 +1,66 @@
+// Readable form of script 92 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 92 {
+    npc snowagumon0 = 5;
+    npc snowagumon1 = 6;
+    npc snowgoblimon2 = 7;
+    npc snowgoblimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 57, 76);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 51, 36);
+        }
+    }
+
+    on talk(snowagumon0) replace {    // section 5
+        say(snowagumon0, text("s092.sec5.u0"));
+        battle();
+        recruit(species("SnowAgumon"));
+    }
+
+    on talk(snowagumon1) replace {    // section 6
+        say(snowagumon1, text("s092.sec6.u0"));
+        battle();
+        recruit(species("SnowAgumon"));
+    }
+
+    on talk(snowgoblimon2) replace {    // section 7
+        say(snowgoblimon2, text("s092.sec7.u0"));
+        battle();
+        recruit(species("SnowGoblimon"));
+    }
+
+    on talk(snowgoblimon3) replace {    // section 8
+        say(snowgoblimon3, text("s092.sec8.u0"));
+        battle();
+        recruit(species("SnowGoblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

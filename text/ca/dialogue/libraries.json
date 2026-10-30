@@ -1,0 +1,6882 @@
+{
+ "s194.sec5.u0": [
+  [
+   "Hiaaaaaah!"
+  ]
+ ],
+ "s194.sec6.u0": [
+  [
+   "Penedeix-te dels teus pecats."
+  ]
+ ],
+ "s194.sec7.u0": [
+  [
+   "Els déus mai menteixen."
+  ]
+ ],
+ "s194.sec8.u0": [
+  [
+   "Argh! Què ets tu, una espècie",
+   "de monstre!?"
+  ]
+ ],
+ "s194.sec9.u0": [
+  [
+   "Obeeix-me, i llavors..."
+  ]
+ ],
+ "s194.sec53.u0": [
+  [
+   "Fua, ja, ja, ja, ja, ja, ja!"
+  ]
+ ],
+ "s194.sec53.u1": [
+  [
+   "Tu!"
+  ]
+ ],
+ "s194.sec53.u2": [
+  [
+   "Tanca el pic i baixa a la teva",
+   "tomba!"
+  ]
+ ],
+ "s194.sec53.u3": [
+  [
+   "Uf... Pensar que vaig deixar",
+   "que aquell em manipulés com un",
+   "titella... Estic perdent",
+   "facultats!"
+  ]
+ ],
+ "s194.sec53.u4": [
+  [
+   "Però... és fort. Creus que el",
+   "pots vèncer? Per què arribar",
+   "tan lluny?"
+  ]
+ ],
+ "s194.sec53.u5": [
+  [
+   "Per acabar amb això... Així",
+   "l'illa tornarà a estar bé. Per",
+   "tots els Digimon, per l'Illa",
+   "File, lluitaré."
+  ]
+ ],
+ "s194.sec53.u6": [
+  [
+   "Hmpf. La veritat, no",
+   "m'agradaria ser el titella de",
+   "ningú. Esperaré a veure què",
+   "passa... sense esperar gran"
+  ],
+  [
+   "cosa."
+  ],
+  [
+   "Je, je, je..."
+  ]
+ ],
+ "s195.sec5.u0": [
+  [
+   "Torna per on has vingut."
+  ]
+ ],
+ "s195.sec6.u0": [
+  [
+   "No hi ha remei. Cal lluitar."
+  ]
+ ],
+ "s195.sec7.u0": [
+  [
+   "Ordres. Important."
+  ]
+ ],
+ "s196.sec5.u0": [
+  [
+   "Je... Et trobaré a faltar..."
+  ]
+ ],
+ "s196.sec6.u0": [
+  [
+   "Graaah, no t'escaparàs!"
+  ]
+ ],
+ "s196.sec7.u0": [
+  [
+   "Creus que sortiràs d'aquí amb",
+   "vida?"
+  ]
+ ],
+ "s196.sec8.u0": [
+  [
+   "A l'atac!"
+  ]
+ ],
+ "s197.sec5.u0": [
+  [
+   "Fes el que et dic."
+  ]
+ ],
+ "s197.sec6.u0": [
+  [
+   "«Cor»...? No entenc."
+  ]
+ ],
+ "s197.sec7.u0": [
+  [
+   "Ai, la meva pobra ovella",
+   "esgarriada..."
+  ]
+ ],
+ "s198.sec5.u0": [
+  [
+   "Bé, aquest és l'últim."
+  ]
+ ],
+ "s198.sec6.u0": [
+  [
+   "Així que per fi has arribat..."
+  ]
+ ],
+ "s198.sec7.u0": [
+  [
+   "El camí s'obrirà."
+  ]
+ ],
+ "s198.sec8.u0": [
+  [
+   "Aquí acabaré amb el teu",
+   "sofriment!"
+  ]
+ ],
+ "s198.sec9.u0": [
+  [
+   "És la teva última oportunitat."
+  ]
+ ],
+ "s198.sec10.u0": [
+  [
+   "De debò seguiràs...?"
+  ]
+ ],
+ "s198.sec53.m0.o0": "Millor afanyar-se",
+ "s198.sec53.m0.o1": "Mesurar les nostres forces",
+ "s198.sec53.u0": [
+  [
+   "Hala, quina aura assassina!",
+   "Se'm posa la pell de gallina!"
+  ]
+ ],
+ "s198.sec53.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u2": [
+  [
+   "Eh?... No ens ataca!?"
+  ]
+ ],
+ "s198.sec53.u3": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u4": [
+  [
+   "Així que no hem de lluitar...?"
+  ]
+ ],
+ "s198.sec53.u5": [
+  [
+   "Allà anem, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s198.sec53.u6": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u7": "...Hem... guanyat?",
+ "s199.sec51.m0.o0": "Pujar el preu",
+ "s199.sec51.m0.o1": "Deixar a 50 Bits",
+ "s199.sec51.m0.o2": "Baixar el preu",
+ "s199.sec51.m1.o0": "50 a 75: OK",
+ "s199.sec51.m1.o1": "Repensar-ho",
+ "s199.sec51.m2.o0": "50 a 70: OK",
+ "s199.sec51.m2.o1": "Repensar-ho",
+ "s199.sec51.m3.o0": "50 a 65: OK",
+ "s199.sec51.m3.o1": "Repensar-ho",
+ "s199.sec51.m4.o0": "50 a 60: OK",
+ "s199.sec51.m4.o1": "Repensar-ho",
+ "s199.sec51.m5.o0": "50 a 55: OK",
+ "s199.sec51.m5.o1": "Repensar-ho",
+ "s199.sec51.m6.o0": "Preu normal: OK",
+ "s199.sec51.m6.o1": "Repensar-ho",
+ "s199.sec51.m7.o0": "50 a 45: OK",
+ "s199.sec51.m7.o1": "Repensar-ho",
+ "s199.sec51.m8.o0": "50 a 40: OK",
+ "s199.sec51.m8.o1": "Repensar-ho",
+ "s199.sec51.m9.o0": "50 a 35: OK",
+ "s199.sec51.m9.o1": "Repensar-ho",
+ "s199.sec51.m10.o0": "Pujar el preu",
+ "s199.sec51.m10.o1": "Deixar a 300 Bits",
+ "s199.sec51.m10.o2": "Baixar el preu",
+ "s199.sec51.m11.o0": "300 a 450: OK",
+ "s199.sec51.m11.o1": "Repensar-ho",
+ "s199.sec51.m12.o0": "300 a 420: OK",
+ "s199.sec51.m12.o1": "Repensar-ho",
+ "s199.sec51.m13.o0": "300 a 390: OK",
+ "s199.sec51.m13.o1": "Repensar-ho",
+ "s199.sec51.m14.o0": "300 a 360: OK",
+ "s199.sec51.m14.o1": "Repensar-ho",
+ "s199.sec51.m15.o0": "300 a 330: OK",
+ "s199.sec51.m15.o1": "Repensar-ho",
+ "s199.sec51.m16.o0": "Preu normal: OK",
+ "s199.sec51.m16.o1": "Repensar-ho",
+ "s199.sec51.m17.o0": "300 a 270: OK",
+ "s199.sec51.m17.o1": "Repensar-ho",
+ "s199.sec51.m18.o0": "300 a 240: OK",
+ "s199.sec51.m18.o1": "Repensar-ho",
+ "s199.sec51.m19.o0": "300 a 210: OK",
+ "s199.sec51.m19.o1": "Repensar-ho",
+ "s199.sec51.m20.o0": "Pujar el preu",
+ "s199.sec51.m20.o1": "Deixar a 1000 Bits",
+ "s199.sec51.m20.o2": "Baixar el preu",
+ "s199.sec51.m21.o0": "1000 a 1500: OK",
+ "s199.sec51.m21.o1": "Repensar-ho",
+ "s199.sec51.m22.o0": "1000 a 1400: OK",
+ "s199.sec51.m22.o1": "Repensar-ho",
+ "s199.sec51.m23.o0": "1000 a 1300: OK",
+ "s199.sec51.m23.o1": "Repensar-ho",
+ "s199.sec51.m24.o0": "1000 a 1200: OK",
+ "s199.sec51.m24.o1": "Repensar-ho",
+ "s199.sec51.m25.o0": "1000 a 1100: OK",
+ "s199.sec51.m25.o1": "Repensar-ho",
+ "s199.sec51.m26.o0": "Preu normal: OK",
+ "s199.sec51.m26.o1": "Repensar-ho",
+ "s199.sec51.m27.o0": "1000 a 900: OK",
+ "s199.sec51.m27.o1": "Repensar-ho",
+ "s199.sec51.m28.o0": "1000 a 800: OK",
+ "s199.sec51.m28.o1": "Repensar-ho",
+ "s199.sec51.m29.o0": "1000 a 700: OK",
+ "s199.sec51.m29.o1": "Repensar-ho",
+ "s199.sec51.u0": [
+  [
+   "Dóna'm {color 6}Carn{color 1}."
+  ]
+ ],
+ "s199.sec51.u1": [
+  [
+   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s199.sec51.u2": [
+  [
+   "{color 6}Carn{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s199.sec51.u3": [
+  [
+   "Vendre {color 6}Carn{color 1} per 75 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u4": [
+  [
+   "Vendre {color 6}Carn{color 1} per 70 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u5": [
+  [
+   "Vendre {color 6}Carn{color 1} per 65 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u6": [
+  [
+   "Vendre {color 6}Carn{color 1} per 60 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u7": [
+  [
+   "Vendre {color 6}Carn{color 1} per 55 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u8": [
+  [
+   "Vendre {color 6}Carn{color 1} pel preu normal",
+   "de 50 Bits."
+  ]
+ ],
+ "s199.sec51.u9": [
+  [
+   "Vendre {color 6}Carn{color 1} per 45 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u10": [
+  [
+   "Vendre {color 6}Carn{color 1} per 40 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u11": [
+  [
+   "Vendre {color 6}Carn{color 1} per 35 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u12": [
+  [
+   "Val, ho compro!"
+  ]
+ ],
+ "s199.sec51.u13": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +40"
+  ]
+ ],
+ "s199.sec51.u14": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +35"
+  ]
+ ],
+ "s199.sec51.u15": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s199.sec51.u16": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +25"
+  ]
+ ],
+ "s199.sec51.u17": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +20"
+  ]
+ ],
+ "s199.sec51.u18": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +15"
+  ]
+ ],
+ "s199.sec51.u19": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +10"
+  ]
+ ],
+ "s199.sec51.u20": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +5"
+  ]
+ ],
+ "s199.sec51.u21": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s199.sec51.u22": [
+  [
+   "T'estàs rient dels teus",
+   "clients!?"
+  ]
+ ],
+ "s199.sec51.u23": [
+  [
+   "No ve cap client..."
+  ]
+ ],
+ "s199.sec51.u24": [
+  [
+   "Quèèè!? Això és caríssim!"
+  ]
+ ],
+ "s199.sec51.u25": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s199.sec51.u26": [
+  [
+   "Dóna'm un {color 6}Vàter portàtil{color 1}."
+  ]
+ ],
+ "s199.sec51.u27": [
+  [
+   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "veritat? Això..."
+  ]
+ ],
+ "s199.sec51.u28": [
+  [
+   "Un {color 6}Vàter portàtil{color 1}, a veure...",
+   "Això..."
+  ]
+ ],
+ "s199.sec51.u29": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 450",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u30": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 420",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u31": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 390",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u32": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 360",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u33": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 330",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u34": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} pel",
+   "preu normal de 300 Bits."
+  ]
+ ],
+ "s199.sec51.u35": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 270",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u36": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 240",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u37": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 210",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u38": [
+  [
+   "Val, ho compro!"
+  ]
+ ],
+ "s199.sec51.u39": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +240"
+  ]
+ ],
+ "s199.sec51.u40": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +210"
+  ]
+ ],
+ "s199.sec51.u41": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +180"
+  ]
+ ],
+ "s199.sec51.u42": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +150"
+  ]
+ ],
+ "s199.sec51.u43": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +120"
+  ]
+ ],
+ "s199.sec51.u44": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +90"
+  ]
+ ],
+ "s199.sec51.u45": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +60"
+  ]
+ ],
+ "s199.sec51.u46": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s199.sec51.u47": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s199.sec51.u48": [
+  [
+   "Quèèè!? Això és caríssim!"
+  ]
+ ],
+ "s199.sec51.u49": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s199.sec51.u50": [
+  [
+   "Dóna'm {color 6}Medicina{color 1}."
+  ]
+ ],
+ "s199.sec51.u51": [
+  [
+   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s199.sec51.u52": [
+  [
+   "{color 6}Medicina{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s199.sec51.u53": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1500 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u54": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1400 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u55": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1300 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u56": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1200 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u57": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1100 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u58": [
+  [
+   "Vendre {color 6}Medicina{color 1} pel preu",
+   "normal de 1000 Bits."
+  ]
+ ],
+ "s199.sec51.u59": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 900 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u60": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 800 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u61": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 700 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u62": [
+  [
+   "Val, ho compro!"
+  ]
+ ],
+ "s199.sec51.u63": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +800"
+  ]
+ ],
+ "s199.sec51.u64": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +700"
+  ]
+ ],
+ "s199.sec51.u65": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +600"
+  ]
+ ],
+ "s199.sec51.u66": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +500"
+  ]
+ ],
+ "s199.sec51.u67": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +400"
+  ]
+ ],
+ "s199.sec51.u68": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +300"
+  ]
+ ],
+ "s199.sec51.u69": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +200"
+  ]
+ ],
+ "s199.sec51.u70": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +100"
+  ]
+ ],
+ "s199.sec51.u71": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s199.sec51.u72": [
+  [
+   "Quèèè!? Això és caríssim!"
+  ]
+ ],
+ "s199.sec51.u73": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s200.sec51.m0.o0": "Pujar el preu",
+ "s200.sec51.m0.o1": "Deixar a 50 Bits",
+ "s200.sec51.m0.o2": "Baixar el preu",
+ "s200.sec51.m1.o0": "50 a 75: OK",
+ "s200.sec51.m1.o1": "Repensar-ho",
+ "s200.sec51.m2.o0": "50 a 70: OK",
+ "s200.sec51.m2.o1": "Repensar-ho",
+ "s200.sec51.m3.o0": "50 a 65: OK",
+ "s200.sec51.m3.o1": "Repensar-ho",
+ "s200.sec51.m4.o0": "50 a 60: OK",
+ "s200.sec51.m4.o1": "Repensar-ho",
+ "s200.sec51.m5.o0": "50 a 55: OK",
+ "s200.sec51.m5.o1": "Repensar-ho",
+ "s200.sec51.m6.o0": "Preu normal: OK",
+ "s200.sec51.m6.o1": "Repensar-ho",
+ "s200.sec51.m7.o0": "50 a 45: OK",
+ "s200.sec51.m7.o1": "Repensar-ho",
+ "s200.sec51.m8.o0": "50 a 40: OK",
+ "s200.sec51.m8.o1": "Repensar-ho",
+ "s200.sec51.m9.o0": "50 a 35: OK",
+ "s200.sec51.m9.o1": "Repensar-ho",
+ "s200.sec51.m10.o0": "Pujar el preu",
+ "s200.sec51.m10.o1": "Deixar a 300 Bits",
+ "s200.sec51.m10.o2": "Baixar el preu",
+ "s200.sec51.m11.o0": "300 a 450: OK",
+ "s200.sec51.m11.o1": "Repensar-ho",
+ "s200.sec51.m12.o0": "300 a 420: OK",
+ "s200.sec51.m12.o1": "Repensar-ho",
+ "s200.sec51.m13.o0": "300 a 390: OK",
+ "s200.sec51.m13.o1": "Repensar-ho",
+ "s200.sec51.m14.o0": "300 a 360: OK",
+ "s200.sec51.m14.o1": "Repensar-ho",
+ "s200.sec51.m15.o0": "300 a 330: OK",
+ "s200.sec51.m15.o1": "Repensar-ho",
+ "s200.sec51.m16.o0": "Preu normal: OK",
+ "s200.sec51.m16.o1": "Repensar-ho",
+ "s200.sec51.m17.o0": "300 a 270: OK",
+ "s200.sec51.m17.o1": "Repensar-ho",
+ "s200.sec51.m18.o0": "300 a 240: OK",
+ "s200.sec51.m18.o1": "Repensar-ho",
+ "s200.sec51.m19.o0": "300 a 210: OK",
+ "s200.sec51.m19.o1": "Repensar-ho",
+ "s200.sec51.m20.o0": "Pujar el preu",
+ "s200.sec51.m20.o1": "Deixar a 1000 Bits",
+ "s200.sec51.m20.o2": "Baixar el preu",
+ "s200.sec51.m21.o0": "1000 a 1500: OK",
+ "s200.sec51.m21.o1": "Repensar-ho",
+ "s200.sec51.m22.o0": "1000 a 1400: OK",
+ "s200.sec51.m22.o1": "Repensar-ho",
+ "s200.sec51.m23.o0": "1000 a 1300: OK",
+ "s200.sec51.m23.o1": "Repensar-ho",
+ "s200.sec51.m24.o0": "1000 a 1200: OK",
+ "s200.sec51.m24.o1": "Repensar-ho",
+ "s200.sec51.m25.o0": "1000 a 1100: OK",
+ "s200.sec51.m25.o1": "Repensar-ho",
+ "s200.sec51.m26.o0": "Preu normal: OK",
+ "s200.sec51.m26.o1": "Repensar-ho",
+ "s200.sec51.m27.o0": "1000 a 900: OK",
+ "s200.sec51.m27.o1": "Repensar-ho",
+ "s200.sec51.m28.o0": "1000 a 800: OK",
+ "s200.sec51.m28.o1": "Repensar-ho",
+ "s200.sec51.m29.o0": "1000 a 700: OK",
+ "s200.sec51.m29.o1": "Repensar-ho",
+ "s200.sec51.u0": [
+  [
+   "Vinc per {color 6}Carn{color 1}, saps?"
+  ]
+ ],
+ "s200.sec51.u1": [
+  [
+   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s200.sec51.u2": [
+  [
+   "{color 6}Carn{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s200.sec51.u3": [
+  [
+   "Vendre {color 6}Carn{color 1} per 75 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u4": [
+  [
+   "Vendre {color 6}Carn{color 1} per 70 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u5": [
+  [
+   "Vendre {color 6}Carn{color 1} per 65 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u6": [
+  [
+   "Vendre {color 6}Carn{color 1} per 60 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u7": [
+  [
+   "Vendre {color 6}Carn{color 1} per 55 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u8": [
+  [
+   "Vendre {color 6}Carn{color 1} pel preu normal",
+   "de 50 Bits."
+  ]
+ ],
+ "s200.sec51.u9": [
+  [
+   "Vendre {color 6}Carn{color 1} per 45 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u10": [
+  [
+   "Vendre {color 6}Carn{color 1} per 40 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u11": [
+  [
+   "Vendre {color 6}Carn{color 1} per 35 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u12": [
+  [
+   "Tracte fet, m'ho emporto!"
+  ]
+ ],
+ "s200.sec51.u13": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +40"
+  ]
+ ],
+ "s200.sec51.u14": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +35"
+  ]
+ ],
+ "s200.sec51.u15": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s200.sec51.u16": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +25"
+  ]
+ ],
+ "s200.sec51.u17": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +20"
+  ]
+ ],
+ "s200.sec51.u18": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +15"
+  ]
+ ],
+ "s200.sec51.u19": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +10"
+  ]
+ ],
+ "s200.sec51.u20": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +5"
+  ]
+ ],
+ "s200.sec51.u21": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s200.sec51.u22": [
+  [
+   "M'estàs prenent el pèl!?"
+  ]
+ ],
+ "s200.sec51.u23": [
+  [
+   "No ve cap client..."
+  ]
+ ],
+ "s200.sec51.u24": [
+  [
+   "Això és un robatori, col·lega!"
+  ]
+ ],
+ "s200.sec51.u25": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s200.sec51.u26": [
+  [
+   "Vinc per un {color 6}Vàter portàtil{color 1},",
+   "saps?"
+  ]
+ ],
+ "s200.sec51.u27": [
+  [
+   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "veritat? Això..."
+  ]
+ ],
+ "s200.sec51.u28": [
+  [
+   "Un {color 6}Vàter portàtil{color 1}, a veure...",
+   "Això..."
+  ]
+ ],
+ "s200.sec51.u29": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 450",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u30": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 420",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u31": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 390",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u32": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 360",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u33": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 330",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u34": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} pel",
+   "preu normal de 300 Bits."
+  ]
+ ],
+ "s200.sec51.u35": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 270",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u36": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 240",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u37": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 210",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u38": [
+  [
+   "Tracte fet, m'ho emporto!"
+  ]
+ ],
+ "s200.sec51.u39": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +240"
+  ]
+ ],
+ "s200.sec51.u40": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +210"
+  ]
+ ],
+ "s200.sec51.u41": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +180"
+  ]
+ ],
+ "s200.sec51.u42": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +150"
+  ]
+ ],
+ "s200.sec51.u43": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +120"
+  ]
+ ],
+ "s200.sec51.u44": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +90"
+  ]
+ ],
+ "s200.sec51.u45": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +60"
+  ]
+ ],
+ "s200.sec51.u46": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s200.sec51.u47": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s200.sec51.u48": [
+  [
+   "Això és un robatori, col·lega!"
+  ]
+ ],
+ "s200.sec51.u49": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s200.sec51.u50": [
+  [
+   "Vinc per {color 6}Medicina{color 1}, saps?"
+  ]
+ ],
+ "s200.sec51.u51": [
+  [
+   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s200.sec51.u52": [
+  [
+   "{color 6}Medicina{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s200.sec51.u53": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1500 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u54": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1400 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u55": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1300 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u56": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1200 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u57": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1100 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u58": [
+  [
+   "Vendre {color 6}Medicina{color 1} pel preu",
+   "normal de 1000 Bits."
+  ]
+ ],
+ "s200.sec51.u59": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 900 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u60": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 800 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u61": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 700 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u62": [
+  [
+   "Tracte fet, m'ho emporto!"
+  ]
+ ],
+ "s200.sec51.u63": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +800"
+  ]
+ ],
+ "s200.sec51.u64": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +700"
+  ]
+ ],
+ "s200.sec51.u65": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +600"
+  ]
+ ],
+ "s200.sec51.u66": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +500"
+  ]
+ ],
+ "s200.sec51.u67": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +400"
+  ]
+ ],
+ "s200.sec51.u68": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +300"
+  ]
+ ],
+ "s200.sec51.u69": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +200"
+  ]
+ ],
+ "s200.sec51.u70": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +100"
+  ]
+ ],
+ "s200.sec51.u71": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s200.sec51.u72": [
+  [
+   "Això és un robatori, col·lega!"
+  ]
+ ],
+ "s200.sec51.u73": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s201.sec51.m0.o0": "Pujar el preu",
+ "s201.sec51.m0.o1": "Deixar a 50 Bits",
+ "s201.sec51.m0.o2": "Baixar el preu",
+ "s201.sec51.m1.o0": "50 a 75: OK",
+ "s201.sec51.m1.o1": "Repensar-ho",
+ "s201.sec51.m2.o0": "50 a 70: OK",
+ "s201.sec51.m2.o1": "Repensar-ho",
+ "s201.sec51.m3.o0": "50 a 65: OK",
+ "s201.sec51.m3.o1": "Repensar-ho",
+ "s201.sec51.m4.o0": "50 a 60: OK",
+ "s201.sec51.m4.o1": "Repensar-ho",
+ "s201.sec51.m5.o0": "50 a 55: OK",
+ "s201.sec51.m5.o1": "Repensar-ho",
+ "s201.sec51.m6.o0": "Preu normal: OK",
+ "s201.sec51.m6.o1": "Repensar-ho",
+ "s201.sec51.m7.o0": "50 a 45: OK",
+ "s201.sec51.m7.o1": "Repensar-ho",
+ "s201.sec51.m8.o0": "50 a 40: OK",
+ "s201.sec51.m8.o1": "Repensar-ho",
+ "s201.sec51.m9.o0": "50 a 35: OK",
+ "s201.sec51.m9.o1": "Repensar-ho",
+ "s201.sec51.m10.o0": "Pujar el preu",
+ "s201.sec51.m10.o1": "Deixar a 300 Bits",
+ "s201.sec51.m10.o2": "Baixar el preu",
+ "s201.sec51.m11.o0": "300 a 450: OK",
+ "s201.sec51.m11.o1": "Repensar-ho",
+ "s201.sec51.m12.o0": "300 a 420: OK",
+ "s201.sec51.m12.o1": "Repensar-ho",
+ "s201.sec51.m13.o0": "300 a 390: OK",
+ "s201.sec51.m13.o1": "Repensar-ho",
+ "s201.sec51.m14.o0": "300 a 360: OK",
+ "s201.sec51.m14.o1": "Repensar-ho",
+ "s201.sec51.m15.o0": "300 a 330: OK",
+ "s201.sec51.m15.o1": "Repensar-ho",
+ "s201.sec51.m16.o0": "Preu normal: OK",
+ "s201.sec51.m16.o1": "Repensar-ho",
+ "s201.sec51.m17.o0": "300 a 270: OK",
+ "s201.sec51.m17.o1": "Repensar-ho",
+ "s201.sec51.m18.o0": "300 a 240: OK",
+ "s201.sec51.m18.o1": "Repensar-ho",
+ "s201.sec51.m19.o0": "300 a 210: OK",
+ "s201.sec51.m19.o1": "Repensar-ho",
+ "s201.sec51.m20.o0": "Pujar el preu",
+ "s201.sec51.m20.o1": "Deixar a 1000 Bits",
+ "s201.sec51.m20.o2": "Baixar el preu",
+ "s201.sec51.m21.o0": "1000 a 1500: OK",
+ "s201.sec51.m21.o1": "Repensar-ho",
+ "s201.sec51.m22.o0": "1000 a 1400: OK",
+ "s201.sec51.m22.o1": "Repensar-ho",
+ "s201.sec51.m23.o0": "1000 a 1300: OK",
+ "s201.sec51.m23.o1": "Repensar-ho",
+ "s201.sec51.m24.o0": "1000 a 1200: OK",
+ "s201.sec51.m24.o1": "Repensar-ho",
+ "s201.sec51.m25.o0": "1000 a 1100: OK",
+ "s201.sec51.m25.o1": "Repensar-ho",
+ "s201.sec51.m26.o0": "Preu normal: OK",
+ "s201.sec51.m26.o1": "Repensar-ho",
+ "s201.sec51.m27.o0": "1000 a 900: OK",
+ "s201.sec51.m27.o1": "Repensar-ho",
+ "s201.sec51.m28.o0": "1000 a 800: OK",
+ "s201.sec51.m28.o1": "Repensar-ho",
+ "s201.sec51.m29.o0": "1000 a 700: OK",
+ "s201.sec51.m29.o1": "Repensar-ho",
+ "s201.sec51.u0": [
+  [
+   "Voldria... una mica de",
+   "{color 6}Carn{color 1}..."
+  ]
+ ],
+ "s201.sec51.u1": [
+  [
+   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s201.sec51.u2": [
+  [
+   "{color 6}Carn{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s201.sec51.u3": [
+  [
+   "Vendre {color 6}Carn{color 1} per 75 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u4": [
+  [
+   "Vendre {color 6}Carn{color 1} per 70 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u5": [
+  [
+   "Vendre {color 6}Carn{color 1} per 65 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u6": [
+  [
+   "Vendre {color 6}Carn{color 1} per 60 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u7": [
+  [
+   "Vendre {color 6}Carn{color 1} per 55 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u8": [
+  [
+   "Vendre {color 6}Carn{color 1} pel preu normal",
+   "de 50 Bits."
+  ]
+ ],
+ "s201.sec51.u9": [
+  [
+   "Vendre {color 6}Carn{color 1} per 45 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u10": [
+  [
+   "Vendre {color 6}Carn{color 1} per 40 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u11": [
+  [
+   "Vendre {color 6}Carn{color 1} per 35 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u12": [
+  [
+   "Llavors... m'ho emporto..."
+  ]
+ ],
+ "s201.sec51.u13": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +40"
+  ]
+ ],
+ "s201.sec51.u14": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +35"
+  ]
+ ],
+ "s201.sec51.u15": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s201.sec51.u16": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +25"
+  ]
+ ],
+ "s201.sec51.u17": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +20"
+  ]
+ ],
+ "s201.sec51.u18": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +15"
+  ]
+ ],
+ "s201.sec51.u19": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +10"
+  ]
+ ],
+ "s201.sec51.u20": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +5"
+  ]
+ ],
+ "s201.sec51.u21": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s201.sec51.u22": [
+  [
+   "En una botiga així no puc",
+   "comprar..."
+  ]
+ ],
+ "s201.sec51.u23": [
+  [
+   "No ve cap client..."
+  ]
+ ],
+ "s201.sec51.u24": [
+  [
+   "No és... una mica car...?"
+  ]
+ ],
+ "s201.sec51.u25": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s201.sec51.u26": [
+  [
+   "Voldria... un {color 6}Vàter",
+   "portàtil{color 1}..."
+  ]
+ ],
+ "s201.sec51.u27": [
+  [
+   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "veritat? Això..."
+  ]
+ ],
+ "s201.sec51.u28": [
+  [
+   "Un {color 6}Vàter portàtil{color 1}, a veure...",
+   "Això..."
+  ]
+ ],
+ "s201.sec51.u29": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 450",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u30": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 420",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u31": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 390",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u32": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 360",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u33": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 330",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u34": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} pel",
+   "preu normal de 300 Bits."
+  ]
+ ],
+ "s201.sec51.u35": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 270",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u36": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 240",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u37": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 210",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u38": [
+  [
+   "Llavors... m'ho emporto..."
+  ]
+ ],
+ "s201.sec51.u39": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +240"
+  ]
+ ],
+ "s201.sec51.u40": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +210"
+  ]
+ ],
+ "s201.sec51.u41": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +180"
+  ]
+ ],
+ "s201.sec51.u42": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +150"
+  ]
+ ],
+ "s201.sec51.u43": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +120"
+  ]
+ ],
+ "s201.sec51.u44": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +90"
+  ]
+ ],
+ "s201.sec51.u45": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +60"
+  ]
+ ],
+ "s201.sec51.u46": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s201.sec51.u47": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s201.sec51.u48": [
+  [
+   "No és... una mica car...?"
+  ]
+ ],
+ "s201.sec51.u49": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s201.sec51.u50": [
+  [
+   "Voldria... una mica de",
+   "{color 6}Medicina{color 1}..."
+  ]
+ ],
+ "s201.sec51.u51": [
+  [
+   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s201.sec51.u52": [
+  [
+   "{color 6}Medicina{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s201.sec51.u53": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1500 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u54": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1400 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u55": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1300 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u56": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1200 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u57": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1100 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u58": [
+  [
+   "Vendre {color 6}Medicina{color 1} pel preu",
+   "normal de 1000 Bits."
+  ]
+ ],
+ "s201.sec51.u59": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 900 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u60": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 800 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u61": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 700 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u62": [
+  [
+   "Llavors... m'ho emporto..."
+  ]
+ ],
+ "s201.sec51.u63": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +800"
+  ]
+ ],
+ "s201.sec51.u64": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +700"
+  ]
+ ],
+ "s201.sec51.u65": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +600"
+  ]
+ ],
+ "s201.sec51.u66": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +500"
+  ]
+ ],
+ "s201.sec51.u67": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +400"
+  ]
+ ],
+ "s201.sec51.u68": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +300"
+  ]
+ ],
+ "s201.sec51.u69": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +200"
+  ]
+ ],
+ "s201.sec51.u70": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +100"
+  ]
+ ],
+ "s201.sec51.u71": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s201.sec51.u72": [
+  [
+   "No és... una mica car...?"
+  ]
+ ],
+ "s201.sec51.u73": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s202.sec51.m0.o0": "Pujar el preu",
+ "s202.sec51.m0.o1": "Deixar a 50 Bits",
+ "s202.sec51.m0.o2": "Baixar el preu",
+ "s202.sec51.m1.o0": "50 a 75: OK",
+ "s202.sec51.m1.o1": "Repensar-ho",
+ "s202.sec51.m2.o0": "50 a 70: OK",
+ "s202.sec51.m2.o1": "Repensar-ho",
+ "s202.sec51.m3.o0": "50 a 65: OK",
+ "s202.sec51.m3.o1": "Repensar-ho",
+ "s202.sec51.m4.o0": "50 a 60: OK",
+ "s202.sec51.m4.o1": "Repensar-ho",
+ "s202.sec51.m5.o0": "50 a 55: OK",
+ "s202.sec51.m5.o1": "Repensar-ho",
+ "s202.sec51.m6.o0": "Preu normal: OK",
+ "s202.sec51.m6.o1": "Repensar-ho",
+ "s202.sec51.m7.o0": "50 a 45: OK",
+ "s202.sec51.m7.o1": "Repensar-ho",
+ "s202.sec51.m8.o0": "50 a 40: OK",
+ "s202.sec51.m8.o1": "Repensar-ho",
+ "s202.sec51.m9.o0": "50 a 35: OK",
+ "s202.sec51.m9.o1": "Repensar-ho",
+ "s202.sec51.m10.o0": "Pujar el preu",
+ "s202.sec51.m10.o1": "Deixar a 300 Bits",
+ "s202.sec51.m10.o2": "Baixar el preu",
+ "s202.sec51.m11.o0": "300 a 450: OK",
+ "s202.sec51.m11.o1": "Repensar-ho",
+ "s202.sec51.m12.o0": "300 a 420: OK",
+ "s202.sec51.m12.o1": "Repensar-ho",
+ "s202.sec51.m13.o0": "300 a 390: OK",
+ "s202.sec51.m13.o1": "Repensar-ho",
+ "s202.sec51.m14.o0": "300 a 360: OK",
+ "s202.sec51.m14.o1": "Repensar-ho",
+ "s202.sec51.m15.o0": "300 a 330: OK",
+ "s202.sec51.m15.o1": "Repensar-ho",
+ "s202.sec51.m16.o0": "Preu normal: OK",
+ "s202.sec51.m16.o1": "Repensar-ho",
+ "s202.sec51.m17.o0": "300 a 270: OK",
+ "s202.sec51.m17.o1": "Repensar-ho",
+ "s202.sec51.m18.o0": "300 a 240: OK",
+ "s202.sec51.m18.o1": "Repensar-ho",
+ "s202.sec51.m19.o0": "300 a 210: OK",
+ "s202.sec51.m19.o1": "Repensar-ho",
+ "s202.sec51.m20.o0": "Pujar el preu",
+ "s202.sec51.m20.o1": "Deixar a 1000 Bits",
+ "s202.sec51.m20.o2": "Baixar el preu",
+ "s202.sec51.m21.o0": "1000 a 1500: OK",
+ "s202.sec51.m21.o1": "Repensar-ho",
+ "s202.sec51.m22.o0": "1000 a 1400: OK",
+ "s202.sec51.m22.o1": "Repensar-ho",
+ "s202.sec51.m23.o0": "1000 a 1300: OK",
+ "s202.sec51.m23.o1": "Repensar-ho",
+ "s202.sec51.m24.o0": "1000 a 1200: OK",
+ "s202.sec51.m24.o1": "Repensar-ho",
+ "s202.sec51.m25.o0": "1000 a 1100: OK",
+ "s202.sec51.m25.o1": "Repensar-ho",
+ "s202.sec51.m26.o0": "Preu normal: OK",
+ "s202.sec51.m26.o1": "Repensar-ho",
+ "s202.sec51.m27.o0": "1000 a 900: OK",
+ "s202.sec51.m27.o1": "Repensar-ho",
+ "s202.sec51.m28.o0": "1000 a 800: OK",
+ "s202.sec51.m28.o1": "Repensar-ho",
+ "s202.sec51.m29.o0": "1000 a 700: OK",
+ "s202.sec51.m29.o1": "Repensar-ho",
+ "s202.sec51.u0": [
+  [
+   "Quines ganes tinc de {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s202.sec51.u1": [
+  [
+   "Benvingut! {color 6}Carn{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s202.sec51.u2": [
+  [
+   "{color 6}Carn{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s202.sec51.u3": [
+  [
+   "Vendre {color 6}Carn{color 1} per 75 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u4": [
+  [
+   "Vendre {color 6}Carn{color 1} per 70 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u5": [
+  [
+   "Vendre {color 6}Carn{color 1} per 65 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u6": [
+  [
+   "Vendre {color 6}Carn{color 1} per 60 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u7": [
+  [
+   "Vendre {color 6}Carn{color 1} per 55 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u8": [
+  [
+   "Vendre {color 6}Carn{color 1} pel preu normal",
+   "de 50 Bits."
+  ]
+ ],
+ "s202.sec51.u9": [
+  [
+   "Vendre {color 6}Carn{color 1} per 45 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u10": [
+  [
+   "Vendre {color 6}Carn{color 1} per 40 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u11": [
+  [
+   "Vendre {color 6}Carn{color 1} per 35 Bits (preu",
+   "normal: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u12": [
+  [
+   "Bah, tant és, m'ho emporto!"
+  ]
+ ],
+ "s202.sec51.u13": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +40"
+  ]
+ ],
+ "s202.sec51.u14": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +35"
+  ]
+ ],
+ "s202.sec51.u15": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s202.sec51.u16": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +25"
+  ]
+ ],
+ "s202.sec51.u17": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +20"
+  ]
+ ],
+ "s202.sec51.u18": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +15"
+  ]
+ ],
+ "s202.sec51.u19": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +10"
+  ]
+ ],
+ "s202.sec51.u20": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +5"
+  ]
+ ],
+ "s202.sec51.u21": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s202.sec51.u22": [
+  [
+   "Em torno a casa!"
+  ]
+ ],
+ "s202.sec51.u23": [
+  [
+   "No ve cap client..."
+  ]
+ ],
+ "s202.sec51.u24": [
+  [
+   "No és caríssim?"
+  ]
+ ],
+ "s202.sec51.u25": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s202.sec51.u26": [
+  [
+   "Quines ganes tinc d'un {color 6}Vàter",
+   "portàtil{color 1}!"
+  ]
+ ],
+ "s202.sec51.u27": [
+  [
+   "Benvingut! Un {color 6}Vàter portàtil{color 1},",
+   "veritat? Això..."
+  ]
+ ],
+ "s202.sec51.u28": [
+  [
+   "Un {color 6}Vàter portàtil{color 1}, a veure...",
+   "Això..."
+  ]
+ ],
+ "s202.sec51.u29": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 450",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u30": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 420",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u31": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 390",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u32": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 360",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u33": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 330",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u34": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} pel",
+   "preu normal de 300 Bits."
+  ]
+ ],
+ "s202.sec51.u35": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 270",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u36": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 240",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u37": [
+  [
+   "Vendre {color 6}Vàter portàtil{color 1} per 210",
+   "Bits (preu normal: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u38": [
+  [
+   "Bah, tant és, m'ho emporto!"
+  ]
+ ],
+ "s202.sec51.u39": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +240"
+  ]
+ ],
+ "s202.sec51.u40": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +210"
+  ]
+ ],
+ "s202.sec51.u41": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +180"
+  ]
+ ],
+ "s202.sec51.u42": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +150"
+  ]
+ ],
+ "s202.sec51.u43": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +120"
+  ]
+ ],
+ "s202.sec51.u44": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +90"
+  ]
+ ],
+ "s202.sec51.u45": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +60"
+  ]
+ ],
+ "s202.sec51.u46": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +30"
+  ]
+ ],
+ "s202.sec51.u47": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s202.sec51.u48": [
+  [
+   "No és caríssim?"
+  ]
+ ],
+ "s202.sec51.u49": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s202.sec51.u50": [
+  [
+   "Quines ganes tinc de",
+   "{color 6}Medicina{color 1}!"
+  ]
+ ],
+ "s202.sec51.u51": [
+  [
+   "Benvingut! {color 6}Medicina{color 1}, veritat?",
+   "Això..."
+  ]
+ ],
+ "s202.sec51.u52": [
+  [
+   "{color 6}Medicina{color 1}",
+   ", a veure... Això..."
+  ]
+ ],
+ "s202.sec51.u53": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1500 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u54": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1400 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u55": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1300 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u56": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1200 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u57": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 1100 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u58": [
+  [
+   "Vendre {color 6}Medicina{color 1} pel preu",
+   "normal de 1000 Bits."
+  ]
+ ],
+ "s202.sec51.u59": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 900 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u60": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 800 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u61": [
+  [
+   "Vendre {color 6}Medicina{color 1} per 700 Bits",
+   "(preu normal: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u62": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +800"
+  ]
+ ],
+ "s202.sec51.u63": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +700"
+  ]
+ ],
+ "s202.sec51.u64": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +600"
+  ]
+ ],
+ "s202.sec51.u65": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +500"
+  ]
+ ],
+ "s202.sec51.u66": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +400"
+  ]
+ ],
+ "s202.sec51.u67": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +300"
+  ]
+ ],
+ "s202.sec51.u68": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +200"
+  ]
+ ],
+ "s202.sec51.u69": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +100"
+  ]
+ ],
+ "s202.sec51.u70": [
+  [
+   "Vendes totals: {shopvar}",
+   "Aquesta venda: +0"
+  ]
+ ],
+ "s202.sec51.u71": [
+  [
+   "No és caríssim?"
+  ]
+ ],
+ "s202.sec51.u72": [
+  [
+   "De debò? Doncs llavors..."
+  ]
+ ],
+ "s203.sec51.u0": [
+  [
+   "Mmm...?"
+  ]
+ ],
+ "s203.sec51.u1": "Uau!?",
+ "s204.sec51.u0": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u1": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u2": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u3": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u4": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s205.sec6.m0.o0": "Clínica",
+ "s205.sec6.m0.o1": "Caçador de tresors",
+ "s205.sec6.m0.o2": "Endeví",
+ "s205.sec6.m1.o0": "Revisa el meu Digimon",
+ "s205.sec6.m1.o1": "Ven-me medicines",
+ "s205.sec6.m1.o2": "Res, gràcies",
+ "s205.sec6.m2.o0": "Revisar-ho de nou",
+ "s205.sec6.m2.o1": "Ven-me medicines",
+ "s205.sec6.m2.o2": "Res més",
+ "s205.sec6.m3.o0": "Tireta: 400 Bits",
+ "s205.sec6.m3.o1": "Medicina: 1200 Bits",
+ "s205.sec6.m3.o2": "Deixa-ho",
+ "s205.sec6.m4.o0": "Revisa el meu Digimon",
+ "s205.sec6.m4.o1": "Ven-me més medicines",
+ "s205.sec6.m4.o2": "Res més",
+ "s205.sec6.m5.o0": "Explica-m'ho",
+ "s205.sec6.m5.o1": "No cal explicar-ho",
+ "s205.sec6.m5.o2": "Res, gràcies",
+ "s205.sec6.m6.o0": "Explica-m'ho de nou",
+ "s205.sec6.m6.o1": "Buscar tresors",
+ "s205.sec6.m6.o2": "No, res més",
+ "s205.sec6.m7.o0": "Pla normal: 1000 Bits",
+ "s205.sec6.m7.o1": "Pla especial: 5000 Bits",
+ "s205.sec6.m7.o2": "Cancel·lar",
+ "s205.sec6.u0": "Quina botiga serà?",
+ "s205.sec6.u1": [
+  [
+   "Canviat a la clínica!"
+  ]
+ ],
+ "s205.sec6.u2": [
+  [
+   "Vaja, sembla que el teu company",
+   "no està bé. Has de cuidar la",
+   "seva salut, saps? El curaré de",
+   "seguida. Per a tu, només 300"
+  ],
+  [
+   "Bits."
+  ]
+ ],
+ "s205.sec6.u3": [
+  [
+   "No tens prou Bits? Bé, paga",
+   "el que puguis de moment. I",
+   "estalvia per quan els",
+   "necessitis de debò!"
+  ]
+ ],
+ "s205.sec6.u4": [
+  [
+   "Llest. Ja està curat. Vés amb",
+   "compte a partir d'ara."
+  ]
+ ],
+ "s205.sec6.u5": [
+  [
+   "Bé, no sembla tenir cap",
+   "malaltia ni ferida. Què puc fer",
+   "per tu?"
+  ]
+ ],
+ "s205.sec6.u6": [
+  [
+   "Llavors deixa'm donar un cop",
+   "d'ull a {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s205.sec6.u7": [
+  [
+   "Ai, ai, això no pot ser.",
+   "{color 10}{partner}{color 1} està gairebé al",
+   "límit de l'esgotament. Si no",
+   "fas alguna cosa, corre perill!"
+  ]
+ ],
+ "s205.sec6.u8": [
+  [
+   "Vaja... {color 10}{partner}{color 1} ha",
+   "acumulat molt de cansament.",
+   "Que descansi abans que sigui",
+   "massa tard."
+  ]
+ ],
+ "s205.sec6.u9": [
+  [
+   "Mmm, {color 10}{partner}{color 1} sembla una",
+   "mica cansat. No et passis."
+  ]
+ ],
+ "s205.sec6.u10": [
+  [
+   "Ajá, {color 10}{partner}{color 1} està en bona",
+   "forma."
+  ],
+  [
+   "El cansament fa tot tipus de",
+   "danys, així que vés amb compte."
+  ]
+ ],
+ "s205.sec6.u11": [
+  [
+   "I ara, quant al seu ànim..."
+  ]
+ ],
+ "s205.sec6.u12": [
+  [
+   "{color 10}{partner}{color 1} està d'allò més",
+   "tranquil. Tindrà una vida",
+   "llarga."
+  ]
+ ],
+ "s205.sec6.u13": [
+  [
+   "{color 10}{partner}{color 1} té un ànim",
+   "excel·lent. Això ve de portar",
+   "una vida sana."
+  ]
+ ],
+ "s205.sec6.u14": [
+  [
+   "{color 10}{partner}{color 1} sembla bastant",
+   "relaxat. Ha passat una cosa",
+   "bona?"
+  ]
+ ],
+ "s205.sec6.u15": [
+  [
+   "{color 10}{partner}{color 1} no sembla tenir",
+   "cap estrès especial. Tot",
+   "normal."
+  ]
+ ],
+ "s205.sec6.u16": [
+  [
+   "{color 10}{partner}{color 1} sembla una mica",
+   "estressat. No et passis amb",
+   "l'entrenament."
+  ]
+ ],
+ "s205.sec6.u17": [
+  [
+   "{color 10}{partner}{color 1} està acumulant",
+   "estrès. Busca-li alguna",
+   "distracció."
+  ]
+ ],
+ "s205.sec6.u18": [
+  [
+   "{color 10}{partner}{color 1} està molt",
+   "estressat i de mal humor. No",
+   "ho forcis."
+  ]
+ ],
+ "s205.sec6.u19": [
+  [
+   "{color 10}{partner}{color 1} està al límit de",
+   "l'estrès...! A aquest pas, la",
+   "seva vida s'escurçarà!"
+  ]
+ ],
+ "s205.sec6.u20": [
+  [
+   "Això és tot el que puc dir de",
+   "{color 10}{partner}{color 1}. Alguna cosa més?"
+  ]
+ ],
+ "s205.sec6.u21": [
+  [
+   "Mmm, molt bé."
+  ]
+ ],
+ "s205.sec6.u22": [
+  [
+   "Si el veus malament, vine a",
+   "veure'm de seguida."
+  ]
+ ],
+ "s205.sec6.u23": "No pots portar res més.",
+ "s205.sec6.u24": [
+  [
+   "No t'arriben els Bits? Llavors",
+   "no t'ho puc vendre."
+  ]
+ ],
+ "s205.sec6.u25": "No pots portar res més.",
+ "s205.sec6.u26": [
+  [
+   "No t'arriben els Bits? Llavors",
+   "no t'ho puc vendre."
+  ]
+ ],
+ "s205.sec6.u27": [
+  [
+   "Alguna cosa més?"
+  ]
+ ],
+ "s205.sec6.u28": [
+  [
+   "Ara atén el caçador de",
+   "tresors!"
+  ]
+ ],
+ "s205.sec6.u29": [
+  [
+   "Ei! Vols buscar tresors?",
+   "Primer t'explico com funciona?"
+  ]
+ ],
+ "s205.sec6.u30": [
+  [
+   "Tu pagues per endavant, i jo",
+   "et trobo un tresor. Hi ha dos",
+   "plans, amb terminis i preus",
+   "diferents. El normal són tres"
+  ],
+  [
+   "dies per 1000 Bits. L'especial",
+   "són deu dies per 5000 Bits.",
+   "Amb l'especial tens més",
+   "possibilitats de trobar un bon"
+  ],
+  [
+   "tresor! Això és tot. Què",
+   "tries?"
+  ]
+ ],
+ "s205.sec6.u31": [
+  [
+   "Doncs tria un pla!"
+  ]
+ ],
+ "s205.sec6.u32": [
+  [
+   "Val. Fins ara!"
+  ]
+ ],
+ "s205.sec6.u33": [
+  [
+   "Fet! Tindràs resultats en tres",
+   "dies. M'esforçaré!"
+  ]
+ ],
+ "s205.sec6.u34": [
+  [
+   "Fet! Tindràs resultats en deu",
+   "dies. M'esforçaré!"
+  ]
+ ],
+ "s205.sec6.u35": [
+  [
+   "No tens prou Bits, company. Ni",
+   "jo puc desenterrar tresors",
+   "sense diners per començar."
+  ]
+ ],
+ "s205.sec6.u36": [
+  [
+   "{color 7}Rètol {color 1}",
+   "Buscant tresors. Torno aviat.",
+   "Espera una mica. Drimogemon"
+  ]
+ ],
+ "s205.sec6.u37": [
+  [
+   "Eeei, ja ha arribat el teu",
+   "tresor!"
+  ]
+ ],
+ "s205.sec6.u38": [
+  [
+   "Vés a fer lloc en la teva",
+   "bossa!"
+  ]
+ ],
+ "s205.sec6.u39": "Reps {color 6}{item 110}{color 1}!",
+ "s205.sec6.u40": [
+  [
+   "Gràcies per la teva confiança!"
+  ]
+ ],
+ "s206.sec6.m0.o0": "Accepto!",
+ "s206.sec6.m0.o1": "Passo",
+ "s206.sec6.m1.o0": "Accepto!",
+ "s206.sec6.m1.o1": "Passo",
+ "s206.sec6.u0": [
+  [
+   "Ei, company, vols fer una",
+   "partida? Si em guanyes, faré el",
+   "que em diguis."
+  ]
+ ],
+ "s206.sec6.u1": [
+  [
+   "Mm? Quina classe de partida?"
+  ]
+ ],
+ "s206.sec6.u2": [
+  [
+   "La dic Cúrling Digimon! Dins",
+   "t'ho explico tot."
+  ]
+ ],
+ "s206.sec6.u3": [
+  [
+   "Ja. I si perdo?"
+  ]
+ ],
+ "s206.sec6.u4": [
+  [
+   "La primera vegada, res. Però",
+   "la pròxima vegada que em",
+   "reptis, em dónes un peix per",
+   "endavant."
+  ]
+ ],
+ "s206.sec6.u5": [
+  [
+   "Entès. Llavors, si guanyem, et",
+   "véns a la ciutat. Si et sembla",
+   "bé, juguem."
+  ]
+ ],
+ "s206.sec6.u6": [
+  [
+   "Sí, em sembla bé. Passa, passa."
+  ]
+ ],
+ "s206.sec6.u7": [
+  [
+   "Ei, company, et veus amb cor",
+   "de reptar-me? Costa un peix."
+  ]
+ ],
+ "s206.sec6.u8": [
+  [
+   "Ei, company! Aquí també he",
+   "muntat una pista. Com abans,",
+   "un peix per partida. Si em",
+   "guanyes, et dono un premi"
+  ],
+  [
+   "fantàstic."
+  ]
+ ],
+ "s206.sec6.u9": [
+  [
+   "Bé, company, et veus amb cor",
+   "de reptar-me? Costa un peix."
+  ]
+ ],
+ "s206.sec6.u10": [
+  [
+   "Jo, que fat ets!"
+  ]
+ ],
+ "s206.sec6.u11": [
+  [
+   "Dóna'm un peix!"
+  ]
+ ],
+ "s206.sec6.u12": [
+  [
+   "Ah, és veritat, ara no porto",
+   "res..."
+  ]
+ ],
+ "s206.sec6.u13": [
+  [
+   "Ups! Donar-li això no servirà",
+   "de res."
+  ]
+ ],
+ "s206.sec6.u14": [
+  [
+   "Uau, quina bona pinta! Ui,",
+   "primer la partida. Passa,",
+   "passa."
+  ]
+ ],
+ "s206.sec6.u15": [
+  [
+   "Vingui ja, oncle. Vés a pescar",
+   "un peix al Llac Dragon Eye!"
+  ]
+ ],
+ "s206.sec7.m0.o0": "Anem allà!",
+ "s206.sec7.m0.o1": "No, gràcies",
+ "s206.sec7.u0": [
+  [
+   "Hola, {color 6}{player}{color 1}. Penguinmon",
+   "m'ha demanat que li cuidi la",
+   "pista. Sent, per què no em",
+   "reptes aquesta vegada? Si em"
+  ],
+  [
+   "guanyes, t'emportes un premi",
+   "molt especial. Què em dius?"
+  ]
+ ],
+ "s206.sec7.u1": [
+  [
+   "El peix, abans de la partida."
+  ]
+ ],
+ "s206.sec7.u2": [
+  [
+   "Ah, és veritat, ara no porto",
+   "res..."
+  ]
+ ],
+ "s206.sec7.u3": [
+  [
+   "Ups! Donar-li això no servirà",
+   "de res."
+  ]
+ ],
+ "s206.sec7.u4": [
+  [
+   "Je. Avui la victòria és meva.",
+   "Vingui, entrem."
+  ]
+ ],
+ "s206.sec7.u5": [
+  [
+   "Estic cuidant la pista de",
+   "Penguinmon, així que sense peix",
+   "no puc jugar."
+  ],
+  [
+   "Quina pena. Torna després."
+  ]
+ ],
+ "s206.sec7.u6": [
+  [
+   "Q-quina... Em rebutges...?"
+  ]
+ ],
+ "s206.sec10.u0": [
+  [
+   "Ho sento, oncle. Porta un",
+   "altre peix i torna a reptar-me!"
+  ]
+ ],
+ "s206.sec10.u1": [
+  [
+   "Hala, una puntuació perfecta!",
+   "Oncle... tu ets professional o",
+   "què?"
+  ]
+ ],
+ "s206.sec10.u2": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec10.u3": [
+  [
+   "Quina passada, oncle. És la",
+   "primera vegada que perdo."
+  ]
+ ],
+ "s206.sec10.u4": [
+  [
+   "Val, et véns a la ciutat, com",
+   "vas prometre."
+  ]
+ ],
+ "s206.sec10.u5": [
+  [
+   "El just és just. Però ja sé el",
+   "que faré a la ciutat. Ja",
+   "veuràs!"
+  ]
+ ],
+ "s206.sec10.u6": "Penguinmon s'ha unit a la ciutat!",
+ "s206.sec11.u0": [
+  [
+   "Ho sento, oncle. Porta un",
+   "altre peix i torna a reptar-me!"
+  ]
+ ],
+ "s206.sec11.u1": [
+  [
+   "Hala, una puntuació perfecta!",
+   "Oncle... tu ets professional o",
+   "què?"
+  ]
+ ],
+ "s206.sec11.u2": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec11.u3": [
+  [
+   "Hala, ets un crack, oncle! He",
+   "tornat a perdre."
+  ]
+ ],
+ "s206.sec11.u4": [
+  [
+   "El just és just. Presa, el teu",
+   "premi."
+  ]
+ ],
+ "s206.sec11.u5": "No pots portar res més!",
+ "s206.sec11.u6": "Reps {color 6}{item 110}{color 1}!",
+ "s206.sec12.u0": [
+  [
+   "Ja, ja, ja! Si vols guanyar-me,",
+   "usa una mica més el cap. Fins a",
+   "la pròxima!"
+  ]
+ ],
+ "s206.sec12.u1": [
+  [
+   "Una puntuació perfecta contra",
+   "mi!? Ets un geni del cúrling o",
+   "què!?"
+  ]
+ ],
+ "s206.sec12.u2": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec12.u3": [
+  [
+   "Hmpf, ets bo, {color 6}{player}{color 1}.",
+   "Aquí tens el premi que et vaig",
+   "prometre."
+  ]
+ ],
+ "s206.sec12.u4": "No pots portar res més!",
+ "s206.sec12.u5": "Reps {color 6}{item 110}{color 1}!",
+ "s207.sec11.m0.o0": "Comprar",
+ "s207.sec11.m0.o1": "No comprar",
+ "s207.sec11.m1.o0": "Comprar",
+ "s207.sec11.m1.o1": "No comprar",
+ "s207.sec11.m2.o0": "Comprar",
+ "s207.sec11.m2.o1": "No comprar",
+ "s207.sec11.m3.o0": "Superpastanaga: 500 Bits",
+ "s207.sec11.m3.o1": "Rave falcó: 500 Bits",
+ "s207.sec11.m3.o2": "Deixa-ho",
+ "s207.sec11.m4.o0": "Comprar",
+ "s207.sec11.m4.o1": "No comprar",
+ "s207.sec11.u0": [
+  [
+   "Ah, hola! Vols Carn?"
+  ],
+  [
+   "Ups! Encara no t'ho he",
+   "explicat."
+  ],
+  [
+   "Això... és un camp de carn: la",
+   "granja de Carn. Aquí conreem",
+   "la carn de tots."
+  ]
+ ],
+ "s207.sec11.u1": [
+  [
+   "Espera, espera. Que conreeu",
+   "carn en un camp!?"
+  ]
+ ],
+ "s207.sec11.u2": [
+  [
+   "Sí. Hi trobes res d'estrany?"
+  ]
+ ],
+ "s207.sec11.u3": [
+  [
+   "No... eh, és igual. I?"
+  ]
+ ],
+ "s207.sec11.u4": [
+  [
+   "Jiji i els altres ho hem",
+   "decidit, {color 6}{player}{color 1}: tres",
+   "trossos de Carn al dia per a",
+   "tu. Té, la Carn d'avui!"
+  ]
+ ],
+ "s207.sec11.u5": [
+  [
+   "Mmm, portes massa Carn. Avui",
+   "et pots saltar la teva part,",
+   "val?"
+  ]
+ ],
+ "s207.sec11.u6": [
+  [
+   "Mmm, portes massa Carn. El",
+   "que no puguis portar m'ho",
+   "quedo jo, val?"
+  ]
+ ],
+ "s207.sec11.u7": [
+  [
+   "Has rebut 1 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u8": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "s207.sec11.u9": [
+  [
+   "Has rebut 3 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u10": [
+  [
+   "Avui hem tingut una collita",
+   "enorme! Així que et dono cinc",
+   "trossos de Carn."
+  ]
+ ],
+ "s207.sec11.u11": [
+  [
+   "Mmm, portes massa Carn. Avui",
+   "et pots saltar la teva part,",
+   "val?"
+  ]
+ ],
+ "s207.sec11.u12": [
+  [
+   "Mmm, portes massa Carn. El",
+   "que no puguis portar m'ho",
+   "quedo jo, val?"
+  ]
+ ],
+ "s207.sec11.u13": [
+  [
+   "Has rebut 1 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u14": [
+  [
+   "Mmm, ho sento, però portes",
+   "massa objectes."
+  ]
+ ],
+ "s207.sec11.u15": [
+  [
+   "Has rebut 5 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u16": [
+  [
+   "La pròxima tanda, demà!"
+  ]
+ ],
+ "s207.sec11.u17": [
+  [
+   "Aquí tens, la Carn d'avui!"
+  ]
+ ],
+ "s207.sec11.u18": [
+  [
+   "Mmm, portes massa Carn. Avui",
+   "et pots saltar la teva part,",
+   "val?"
+  ]
+ ],
+ "s207.sec11.u19": [
+  [
+   "Mmm, portes massa Carn. El",
+   "que no puguis portar m'ho",
+   "quedo jo, val?"
+  ]
+ ],
+ "s207.sec11.u20": [
+  [
+   "Has rebut 1 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u21": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "s207.sec11.u22": [
+  [
+   "Has rebut 1 x {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s207.sec11.u23": [
+  [
+   "La pròxima tanda, demà!"
+  ]
+ ],
+ "s207.sec11.u24": [
+  [
+   "Mm? Avui ja t'he donat Carn,",
+   "no?"
+  ],
+  [
+   "Si et quedes sense menjar...",
+   "diuen que en el Bosc nadiu hi",
+   "ha molts bolets silvestres."
+  ]
+ ],
+ "s207.sec11.u25": [
+  [
+   "Ah, {color 6}{player}{color 1}! He doblat la",
+   "granja de Carn. Ara et puc",
+   "donar tres trossos de Carn",
+   "gegant al dia. Si en vols més,"
+  ],
+  [
+   "els venc a 500 Bits cadascun.",
+   "Ara cuido la granja en lloc de",
+   "Tanemon, que descansa per",
+   "aquí."
+  ]
+ ],
+ "s207.sec11.u26": [
+  [
+   "Avui hem tingut una gran",
+   "collita!"
+  ]
+ ],
+ "s207.sec11.u27": [
+  [
+   "Mmm, ja tens massa Carn",
+   "gegant. Avui pots passar de la",
+   "teva part, val?"
+  ]
+ ],
+ "s207.sec11.u28": [
+  [
+   "Mmm, ja tens massa Carn",
+   "gegant. Et guardo la que no",
+   "puguis portar, val?"
+  ]
+ ],
+ "s207.sec11.u29": [
+  [
+   "Has rebut 1 x {color 6}Carn gegant{color 1}!"
+  ]
+ ],
+ "s207.sec11.u30": [
+  [
+   "Mmm, ho sento, però portes",
+   "massa objectes."
+  ]
+ ],
+ "s207.sec11.u31": [
+  [
+   "Has rebut 5 x {color 6}Carn gegant{color 1}!"
+  ]
+ ],
+ "s207.sec11.u32": [
+  [
+   "La pròxima tanda, demà!"
+  ]
+ ],
+ "s207.sec11.u33": [
+  [
+   "Presa, els teus tres trossos",
+   "de Carn gegant d'avui!"
+  ]
+ ],
+ "s207.sec11.u34": [
+  [
+   "Mmm, ja tens massa Carn",
+   "gegant. Avui pots passar de la",
+   "teva part, val?"
+  ]
+ ],
+ "s207.sec11.u35": [
+  [
+   "Mmm, ja tens massa Carn",
+   "gegant. Et guardo la que no",
+   "puguis portar, val?"
+  ]
+ ],
+ "s207.sec11.u36": [
+  [
+   "Has rebut 1 x {color 6}Carn gegant{color 1}!"
+  ]
+ ],
+ "s207.sec11.u37": [
+  [
+   "Mmm, ho sento, però portes",
+   "massa objectes."
+  ]
+ ],
+ "s207.sec11.u38": [
+  [
+   "Has rebut 3 x {color 6}Carn gegant{color 1}!"
+  ]
+ ],
+ "s207.sec11.u39": [
+  [
+   "La pròxima tanda, demà."
+  ],
+  [
+   "O vols comprar ara, a 500 Bits",
+   "cadascuna?"
+  ]
+ ],
+ "s207.sec11.u40": [
+  [
+   "No tens diners suficients."
+  ]
+ ],
+ "s207.sec11.u41": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "s207.sec11.u42": [
+  [
+   "Compres més?"
+  ]
+ ],
+ "s207.sec11.u43": [
+  [
+   "Val, fins demà!"
+  ]
+ ],
+ "s207.sec11.u44": [
+  [
+   "Ke, je, je! {color 6}{player}{color 1}, mira,",
+   "mira!"
+  ]
+ ],
+ "s207.sec11.u45": [
+  [
+   "Ke, je, je! La carn de primera",
+   "creix a la babalà! {color 6}{player}{color 1}",
+   "s'emporta tres"
+  ],
+  [
+   "Relloms al dia, gratis. Ke, je,",
+   "i també conreo verdures",
+   "estranyes! Compra el que",
+   "vulguis!"
+  ]
+ ],
+ "s207.sec11.u46": [
+  [
+   "Eh, tu! Avui estic de bones,",
+   "així que t'emportes cinc",
+   "Relloms. Ke, je."
+  ]
+ ],
+ "s207.sec11.u47": [
+  [
+   "Tens massa Rellom! Suposo que",
+   "el d'avui no et fa falta."
+  ]
+ ],
+ "s207.sec11.u48": [
+  [
+   "Tens massa Rellom! No et",
+   "donaré el que no puguis portar!"
+  ]
+ ],
+ "s207.sec11.u49": [
+  [
+   "Has rebut 1 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s207.sec11.u50": [
+  [
+   "Però bo! Portes massa",
+   "objectes."
+  ]
+ ],
+ "s207.sec11.u51": [
+  [
+   "Has rebut 5 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s207.sec11.u52": [
+  [
+   "Doncs fins demà. Ke, je, je!"
+  ]
+ ],
+ "s207.sec11.u53": [
+  [
+   "Ke, je, je, aquí tens els tres",
+   "Relloms d'avui!"
+  ]
+ ],
+ "s207.sec11.u54": [
+  [
+   "Tens massa Rellom! Suposo que",
+   "el d'avui no et fa falta."
+  ]
+ ],
+ "s207.sec11.u55": [
+  [
+   "Tens massa Rellom! No et",
+   "donaré el que no puguis portar!"
+  ]
+ ],
+ "s207.sec11.u56": [
+  [
+   "Has rebut 1 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s207.sec11.u57": [
+  [
+   "Però bo! Portes massa",
+   "objectes."
+  ]
+ ],
+ "s207.sec11.u58": [
+  [
+   "Has rebut 3 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s207.sec11.u59": [
+  [
+   "Mm? Que encara no és demà! O",
+   "véns per verdures?"
+  ]
+ ],
+ "s207.sec11.u60": [
+  [
+   "No t'arriba la pasta, ke, je!"
+  ]
+ ],
+ "s207.sec11.u61": [
+  [
+   "Que t'he dit que portes massa",
+   "objectes!"
+  ]
+ ],
+ "s207.sec11.u62": [
+  [
+   "No t'arriba la pasta, ke, je!"
+  ]
+ ],
+ "s207.sec11.u63": [
+  [
+   "Que t'he dit que portes massa",
+   "objectes!"
+  ]
+ ],
+ "s207.sec11.u64": [
+  [
+   "Ke, je, compres més?"
+  ]
+ ],
+ "s207.sec11.u65": [
+  [
+   "Ke, he, he! Fins aviat!"
+  ]
+ ],
+ "s208.sec82.m0.o0": "Tornar",
+ "s208.sec82.m0.o1": "Deixar de llegir",
+ "s208.sec82.m1.o0": "Tornar",
+ "s208.sec82.m1.o1": "Següent",
+ "s208.sec82.m1.o2": "Deixar de llegir",
+ "s208.sec82.m2.o0": "Tornar",
+ "s208.sec82.m2.o1": "Següent",
+ "s208.sec82.m2.o2": "Deixar de llegir",
+ "s208.sec82.m3.o0": "Tornar",
+ "s208.sec82.m3.o1": "Següent",
+ "s208.sec82.m3.o2": "Deixar de llegir",
+ "s208.sec82.m4.o0": "Tornar",
+ "s208.sec82.m4.o1": "Següent",
+ "s208.sec82.m4.o2": "Deixar de llegir",
+ "s208.sec82.m5.o0": "Tornar",
+ "s208.sec82.m5.o1": "Següent",
+ "s208.sec82.m5.o2": "Deixar de llegir",
+ "s208.sec82.m6.o0": "Tornar",
+ "s208.sec82.m6.o1": "Següent",
+ "s208.sec82.m6.o2": "Deixar de llegir",
+ "s208.sec82.m7.o0": "Següent",
+ "s208.sec82.m7.o1": "Deixar de llegir",
+ "s208.sec82.u0": [
+  [
+   "Notícies Shell, número 8",
+   "Apareix un Digimon alienígena!",
+   "Han tornat a veure l'objecte",
+   "volador misteriós. Un ésser en",
+   "va treure el cap i va parlar en",
+   "una llengua desconeguda. Molts",
+   "creuen que és un Digimon",
+   "alienígena. Tothom es pregunta"
+  ],
+  [
+   "quan tornarà."
+  ]
+ ],
+ "s208.sec82.u1": [
+  [
+   "Notícies Shell, número 7",
+   "Myotismon: «No em retiro»",
+   "Myotismon va parlar amb la",
+   "premsa i va negar els rumors de"
+  ],
+  [
+   "retirada. No es retirarà, pels",
+   "seus fans, va dir. També va",
+   "anunciar el debut del seu",
+   "deixeble SkullGreymon."
+  ]
+ ],
+ "s208.sec82.u2": [
+  [
+   "Notícies Shell, número 6 Es",
+   "retira Myotismon? Myotismon, el",
+   "millor en fama i talent, podria",
+   "deixar el Coliseu. Ja gairebé"
+  ],
+  [
+   "no se li veu per allí, i es diu",
+   "que ha tocat sostre."
+  ]
+ ],
+ "s208.sec82.u3": [
+  [
+   "Notícies Shell, número 5 Una",
+   "botiga amagada! A la Sabana",
+   "dels engranatges hi ha una",
+   "botiga per a entesos. Només",
+   "obre del dia 1 al 15. L'amo",
+   "diu: «Estem orgullosos del",
+   "nostre assortiment, sí, sí».",
+   "Val la pena visitar-la per",
+   "trobar objectes rars."
+  ]
+ ],
+ "s208.sec82.u4": [
+  [
+   "Notícies Shell, número 4 Un",
+   "fantasma a la neu? El senyor M",
+   "explica una cosa estranya de",
+   "Terra gelada: «No suporto el",
+   "fred. Em vaig quedar atrapat a",
+   "la neu i vaig caure, però em va",
+   "salvar... una mena de munt de",
+   "neu». Digimon sensibles al",
+   "fred, aneu amb compte."
+  ]
+ ],
+ "s208.sec82.u5": [
+  [
+   "Notícies Shell, número 3 Un",
+   "guardià al llac? Diuen que han",
+   "pescat el guardià del Llac",
+   "Dragon Eye. O més ben dit, un",
+   "gran Digimon va respondre a la",
+   "crida. Diuen que veure'l",
+   "concedeix un desig. S'acosta",
+   "una febre de la pesca?"
+  ]
+ ],
+ "s208.sec82.u6": [
+  [
+   "Notícies Shell, número 2",
+   "Objecte volador misteriós! Es",
+   "va veure un objecte volador",
+   "misteriós sobre la Muntanya"
+  ],
+  [
+   "Panorama: un plat platejat, que",
+   "brillava per sota, a 30 m",
+   "d'altura. Un Digimon",
+   "alienígena? Esperem notícies."
+  ]
+ ],
+ "s208.sec82.u7": [
+  [
+   "Notícies Shell, número 1 Cau la",
+   "banda de bandits! {color 6}{player}{color 1}",
+   "va trobar el cau d'Ogremon i,",
+   "després d'un combat, la banda",
+   "que assolava l'illa està",
+   "gairebé acabada. Però Ogremon",
+   "va escapar, així que encara cal",
+   "vigilar."
+  ]
+ ],
+ "s209.sec5.m0.o0": "Botiga 1",
+ "s209.sec5.m0.o1": "Botiga 2",
+ "s209.sec5.m0.o2": "Altres",
+ "s209.sec5.m0.o3": "Posar noms",
+ "s209.sec5.m1.o0": "{color 6}{player}{color 1}",
+ "s209.sec5.m1.o1": "{color 10}{partner}{color 1}",
+ "s209.sec5.m2.o0": "Botiga",
+ "s209.sec5.m2.o1": "Mercat",
+ "s209.sec5.m2.o2": "Punts",
+ "s209.sec5.m3.o0": "Cartes",
+ "s209.sec5.m3.o1": "Dipòsit d'objectes",
+ "s209.sec5.m3.o2": "Altres botigues",
+ "s209.sec5.m4.o0": "Comprar cartes",
+ "s209.sec5.m4.o1": "Vendre cartes",
+ "s209.sec5.m4.o2": "Sortir",
+ "s209.sec5.m5.o0": "Comprar un sobre de 3",
+ "s209.sec5.m5.o1": "Comprar una carta",
+ "s209.sec5.m5.o2": "Deixa-ho",
+ "s209.sec5.m6.o0": "Comprar una carta",
+ "s209.sec5.m6.o1": "Deixa-ho",
+ "s209.sec5.m7.o0": "Comprar",
+ "s209.sec5.m7.o1": "Deixa-ho",
+ "s209.sec5.m8.o0": "Prova de so",
+ "s209.sec5.m8.o1": "Botiga de teletransport",
+ "s209.sec5.m8.o2": "Intercanviar",
+ "s209.sec5.m9.o0": "Inscripció",
+ "s209.sec5.m9.o1": "Arena",
+ "s209.sec5.m9.o2": "Diversos",
+ "s209.sec5.m9.o3": "Preus",
+ "s209.sec5.m10.o0": "Introducció",
+ "s209.sec5.m10.o1": "Final",
+ "s209.sec5.m10.o2": "Transformar",
+ "s209.sec5.m10.o3": "Morir: mort",
+ "s209.sec5.m11.o0": "Esborrar",
+ "s209.sec5.m11.o1": "Afegir",
+ "s209.sec5.m11.o2": "Fet",
+ "s209.sec5.u0": [
+  [
+   "Avui hi ha cartes noves, sí,",
+   "si!"
+  ]
+ ],
+ "s209.sec5.u1": [
+  [
+   "Un sobre costa 500 Bits. El",
+   "que porta és pura sort, sí, si."
+  ]
+ ],
+ "s209.sec5.u2": [
+  [
+   "Obre el teu sobre de seguida,",
+   "sí, si."
+  ]
+ ],
+ "s209.sec5.u3": [
+  [
+   "Alguna cosa més, sí?"
+  ]
+ ],
+ "s209.sec5.u4": [
+  [
+   "Torna quan vulguis, sí, sí!"
+  ]
+ ],
+ "s209.sec5.u5": [
+  [
+   "No tenia res."
+  ]
+ ],
+ "s209.sec5.u6": [
+  [
+   "No em dónes res?"
+  ]
+ ],
+ "s209.sec5.u7": [
+  [
+   "Gràcies."
+  ]
+ ],
+ "s209.sec5.u8": [
+  [
+   "Has aconseguit la carta 21."
+  ]
+ ],
+ "s209.sec5.u9": [
+  [
+   "Tornar a canviar."
+  ]
+ ],
+ "s209.sec5.u10": [
+  [
+   "Convertir-se en Sukamon."
+  ]
+ ],
+ "s209.sec5.u11": [
+  [
+   "Fet."
+  ]
+ ],
+ "s209.sec5.u12": [
+  [
+   "Inscrit en «- {cup 3} -»"
+  ]
+ ],
+ "s209.sec5.u13": [
+  [
+   "Sense inscriure."
+  ]
+ ],
+ "s209.sec5.u14": [
+  [
+   "Ara: {shopvar} Bits"
+  ]
+ ],
+ "s209.sec10.u0": [
+  [
+   "- Grau D - Torneig per a",
+   "Digimon Novells. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s209.sec10.u1": [
+  [
+   "- Grau C - Torneig per a",
+   "Digimon Campions. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s209.sec10.u2": [
+  [
+   "- Grau B - Per a Campions",
+   "que confien en la seva força.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada lliure"
+  ]
+ ],
+ "s209.sec10.u3": [
+  [
+   "- Grau A - Torneig per a",
+   "Digimon Perfectes. Individual,",
+   "3 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s209.sec10.u4": [
+  [
+   "- Grau S - Reuneix els",
+   "Digimon més forts. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "guanyar el Grau A"
+  ]
+ ],
+ "s209.sec10.u5": [
+  [
+   "- Grau R - Batalla campal",
+   "d'astúcia i tàctica. A quatre,",
+   "2 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s209.sec10.u6": [
+  [
+   "- Copa Versió 1 - Tria el",
+   "millor de la Versió 1. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 1"
+  ]
+ ],
+ "s209.sec10.u7": [
+  [
+   "- Copa Versió 2 - Tria el",
+   "millor de la Versió 2. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 2"
+  ]
+ ],
+ "s209.sec10.u8": [
+  [
+   "- Copa Versió 3 - Tria el",
+   "millor de la Versió 3. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 3"
+  ]
+ ],
+ "s209.sec10.u9": [
+  [
+   "- Copa Versió 4 - Tria el",
+   "millor de la Versió 4. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 4"
+  ]
+ ],
+ "s209.sec10.u10": [
+  [
+   "- Copa Versió O - Per a",
+   "Digimon fora de les Versions",
+   "1-4. Combats amb límit de",
+   "temps. Individual, 3 rondes, 8",
+   "places Entrada: fora de les",
+   "Versions 1-4"
+  ]
+ ],
+ "s209.sec10.u11": [
+  [
+   "- Copa Foc - Tria el rei dels",
+   "Digimon de Foc. Combats amb",
+   "límit de temps. Individual, 3",
+   "rondes, 8 places Entrada:",
+   "Digimon de Foc"
+  ]
+ ],
+ "s209.sec10.u12": [
+  [
+   "- Copa Lluita - Tria el rei",
+   "dels Digimon de Combat.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Combat"
+  ]
+ ],
+ "s209.sec10.u13": [
+  [
+   "- Copa Tro i Vent - Tria el",
+   "rei dels Digimon d'Aire.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon d'Aire"
+  ]
+ ],
+ "s209.sec10.u14": [
+  [
+   "- Copa Estil - Tria el rei",
+   "dels Digimon de Gel. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Gel"
+  ]
+ ],
+ "s209.sec10.u15": [
+  [
+   "- Copa Naturalesa - Tria el",
+   "rei dels Digimon de Natura.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Natura"
+  ]
+ ],
+ "s209.sec10.u16": [
+  [
+   "- Copa Metàl·lica - Tria el rei",
+   "dels Digimon de Màquina.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Màquina"
+  ]
+ ],
+ "s209.sec10.u17": [
+  [
+   "- Copa Bruta - Tria el rei",
+   "dels Digimon de Brutícia.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Brutícia"
+  ]
+ ],
+ "s209.sec10.u18": [
+  [
+   "- Copa Dino - Competeixen",
+   "Digimon de sang antiga.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s209.sec10.u19": [
+  [
+   "- Copa Ales - Competeixen",
+   "Digimon orgullosos de les ales.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s209.sec10.u20": [
+  [
+   "- Copa Animal - Competeixen",
+   "Digimon de sang animal. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "???"
+  ]
+ ],
+ "s209.sec10.u21": [
+  [
+   "- Copa Humana - Competeixen",
+   "Digimon de forma humana.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s210.sec51.u0": [
+  [
+   "T'estava esperant,",
+   "{color 6}{player}{color 1}. Per fi ha arribat",
+   "el dia."
+  ]
+ ],
+ "s210.sec51.u1": [
+  [
+   "Què passa?"
+  ]
+ ],
+ "s210.sec51.u2": [
+  [
+   "Ha aparegut el camí a la",
+   "Muntanya Infinity!"
+  ]
+ ],
+ "s210.sec51.u3": [
+  [
+   "Eh? De debò? On?"
+  ]
+ ],
+ "s210.sec51.u4": [
+  [
+   "Aquí mateix, a la ciutat... a",
+   "l'altre costat de la cascada."
+  ]
+ ],
+ "s210.sec51.u5": [
+  [
+   "Uau, doncs és ben a prop!"
+  ]
+ ],
+ "s210.sec51.u6": [
+  [
+   "Pel que sé, l'enemic final",
+   "espera en la Muntanya Infinity."
+  ]
+ ],
+ "s210.sec51.u7": [
+  [
+   "Així que és l'última masmorra,",
+   "eh? Que vingui!"
+  ]
+ ],
+ "s210.sec51.u8": [
+  [
+   "Bé, compto amb tu! Però no et",
+   "precipitis. No facis cap",
+   "bogeria fins que estiguis",
+   "preparat."
+  ]
+ ],
+ "s210.sec51.u9": [
+  [
+   "El camí a la Muntanya Infinity",
+   "ha aparegut a l'altre costat de",
+   "la cascada de la ciutat."
+  ]
+ ],
+ "s210.sec51.u10": [
+  [
+   "Pel que sé, l'enemic final",
+   "espera en la Muntanya Infinity."
+  ],
+  [
+   "Prepara't bé abans d'anar!"
+  ],
+  [
+   "Deixant això a un costat..."
+  ]
+ ],
+ "s210.sec77.u0": [
+  [
+   "La Prosperitat de la ciutat és",
+   "ara {pstat 1}."
+  ]
+ ],
+ "s210.sec77.u1": [
+  [
+   "Mmm, encara està molt lluny del",
+   "que era."
+  ]
+ ],
+ "s210.sec77.u2": [
+  [
+   "Jo diria que per fi comença a",
+   "prendre forma."
+  ]
+ ],
+ "s210.sec77.u3": [
+  [
+   "Jo, jo, ara sí que va agafant",
+   "color."
+  ]
+ ],
+ "s210.sec77.u4": [
+  [
+   "S'ha convertit en una ciutat",
+   "estupenda, no tinguis dubte."
+  ]
+ ],
+ "s210.sec77.u5": [
+  [
+   "Pensar que l'has deixat tan",
+   "esplèndida... Meravellós!"
+  ]
+ ],
+ "s210.sec77.u6": [
+  [
+   "No puc dir res més. És una",
+   "meravella, noi!"
+  ]
+ ],
+ "s210.sec77.u7": [
+  [
+   "{color 7}El teu Nivell de Domador ha pujat!{color 1}",
+   ""
+  ]
+ ],
+ "s210.sec77.u8": [
+  [
+   "{color 7}Enhorabona! Per les teves grans gestes, has rebut una medalla!{color 1}",
+   ""
+  ]
+ ],
+ "s211.sec8.u0": [
+  [
+   "Benvingut, {color 6}{player}{color 1}."
+  ]
+ ],
+ "s211.sec8.u1": [
+  [
+   "Porto els registres de Jijimon."
+  ]
+ ],
+ "s211.sec8.u2": [
+  [
+   "La meva tasca és anotar el que",
+   "Jijimon recorda dia a dia, els",
+   "rumors i el que jo mateix sé, i",
+   "explicar-t'ho tot a tu."
+  ]
+ ],
+ "s211.sec8.u3": [
+  [
+   "Si mai no saps què fer, vine a",
+   "veure'm. Segur que trobes el",
+   "camí."
+  ]
+ ],
+ "s211.sec8.u4": [
+  [
+   "Tots els Digimon s'han reunit",
+   "en aquesta ciutat."
+  ],
+  [
+   "Moltíssimes gràcies per tot el",
+   "teu esforç."
+  ]
+ ],
+ "s211.sec8.u5": [
+  [
+   "Et contaré el que he reunit. A",
+   "veure..."
+  ]
+ ],
+ "s211.sec8.u6": [
+  [
+   "I després..."
+  ]
+ ],
+ "s211.sec8.u7": [
+  [
+   "I a més..."
+  ]
+ ],
+ "s211.sec8.u8": [
+  [
+   "Els Digimon planta haurien",
+   "d'estar en el bosc. El que està",
+   "a prop és el més fàcil de",
+   "passar per alt."
+  ]
+ ],
+ "s211.sec8.u9": [
+  [
+   "Als Digimon insecte els encanta",
+   "el verd. Sí, com les terres del",
+   "voltant d'aquesta ciutat..."
+  ]
+ ],
+ "s211.sec8.u10": [
+  [
+   "Diuen que en el més profund de",
+   "la Selva tropical hi ha un bosc",
+   "estrany, com un laberint. El",
+   "seu guardià és un Digimon de"
+  ],
+  [
+   "gran destresa."
+  ]
+ ],
+ "s211.sec8.u11": [
+  [
+   "Al riu, un ancià espera algú."
+  ]
+ ],
+ "s211.sec8.u12": [
+  [
+   "Diuen que hi ha un Digimon al",
+   "qual li encanten les aigües",
+   "calentes."
+  ]
+ ],
+ "s211.sec8.u13": [
+  [
+   "On hi ha tombes, hi ha",
+   "fantasmes."
+  ],
+  [
+   "I als fantasmes els encanta",
+   "parlar amb la gent."
+  ]
+ ],
+ "s211.sec8.u14": [
+  [
+   "Diuen que el parterre de la",
+   "ciutat amaga un secret. És",
+   "clar, sobre plantes, val més",
+   "preguntar a una planta."
+  ]
+ ],
+ "s211.sec8.u15": [
+  [
+   "Les profunditats de l'Antiga",
+   "Regió Dino són perilloses, però",
+   "val la pena explorar-les."
+  ]
+ ],
+ "s211.sec8.u16": [
+  [
+   "Diuen que dins de la Muntanya",
+   "Panorama corre lava. Sembla",
+   "que a alguns Digimon els",
+   "agraden aquests llocs."
+  ]
+ ],
+ "s211.sec8.u17": [
+  [
+   "Portar a un Digimon que adora",
+   "la calor a un lloc fred..."
+  ],
+  [
+   "No és alguna cosa que hagis de",
+   "fer, però..."
+  ]
+ ],
+ "s211.sec8.u18": [
+  [
+   "En Terra gelada hi ha, encara",
+   "que no ho sembli, molts Digimon",
+   "disposats a venir a la ciutat.",
+   "Cerca sobretot en l'oest."
+  ]
+ ],
+ "s211.sec8.u19": [
+  [
+   "Uns diuen que en el més alt del",
+   "Gran Canyó viu un Digimon",
+   "ocell..."
+  ],
+  [
+   "i uns altres diuen que no..."
+  ]
+ ],
+ "s211.sec8.u20": [
+  [
+   "El Gran Canyó és un embull de",
+   "camins. Els forasters que es",
+   "fiquen no troben la sortida...",
+   "Els Digimon no són una"
+  ],
+  [
+   "excepció."
+  ]
+ ],
+ "s211.sec8.u21": [
+  [
+   "En la Sabana dels engranatges",
+   "res frena l'electricitat, així",
+   "que sembla que allí viu un",
+   "Digimon que lluita amb"
+  ],
+  [
+   "electricitat."
+  ]
+ ],
+ "s211.sec8.u22": [
+  [
+   "Diuen que en l'Bosc boirós",
+   "apareix un Digimon molt",
+   "matiner."
+  ]
+ ],
+ "s211.sec8.u23": [
+  [
+   "Diuen que en el Gran Canyó hi",
+   "ha una botiga que porta un",
+   "Digimon d'allò més inesperat."
+  ]
+ ],
+ "s211.sec8.u24": [
+  [
+   "Diuen que hi ha un Digimon amb",
+   "unes ales capaces de creuar la",
+   "Muntanya Panorama d'un salt.",
+   "Potser el trobes a la"
+  ],
+  [
+   "muntanya."
+  ]
+ ],
+ "s211.sec8.u25": [
+  [
+   "La Sabana dels engranatges va",
+   "bé als Digimon que no volen",
+   "alt. És extensa, però per què",
+   "no la recorres?"
+  ]
+ ],
+ "s211.sec8.u26": [
+  [
+   "Potser alguns Digimon senten",
+   "els rumors sobre tu i venen a",
+   "reptar-te."
+  ]
+ ],
+ "s211.sec8.u27": [
+  [
+   "Diuen que un Digimon d'una",
+   "cova de Terra gelada atreu els",
+   "altres a un joc estrany."
+  ]
+ ],
+ "s211.sec8.u28": [
+  [
+   "Els Digimon que treballen en",
+   "silenci en el seu..."
+  ],
+  [
+   "quan acabin el seu treball,",
+   "hauries de convidar-los a la",
+   "ciutat."
+  ]
+ ],
+ "s211.sec8.u29": [
+  [
+   "L'Bosc boirós és un bon lloc",
+   "per amagar-se. Guiar els",
+   "Digimon que s'hi amaguen també",
+   "és tasca teva."
+  ]
+ ],
+ "s211.sec8.u30": [
+  [
+   "A mesura que la ciutat creixi,",
+   "els rumors sobre tu",
+   "s'estendran. Quan passi,",
+   "recorre l'illa un altre cop."
+  ]
+ ],
+ "s211.sec8.u31": [
+  [
+   "A vegades apareix una gran",
+   "ombra a la Platja Iceberg de",
+   "Terra gelada."
+  ],
+  [
+   "Serà un Digimon?"
+  ]
+ ],
+ "s211.sec8.u32": [
+  [
+   "Si trobes un Digimon que",
+   "col·lecciona coses, ajudeu-vos",
+   "mútuament. Prova d'anar a",
+   "Terra gelada."
+  ]
+ ],
+ "s211.sec8.u33": [
+  [
+   "Diuen que al cim de la Muntanya",
+   "Panorama apareix un Digimon",
+   "raríssim que et repta. Si hi",
+   "vas cent vegades, potser el"
+  ],
+  [
+   "veus tres cops."
+  ]
+ ],
+ "s211.sec8.u34": [
+  [
+   "Els Digimon també viuen en",
+   "llocs humits, com els",
+   "claveguerams. Si resols els",
+   "seus problemes, potser vindran"
+  ],
+  [
+   "a la ciutat..."
+  ]
+ ],
+ "s211.sec8.u35": [
+  [
+   "Diuen que a l'altre costat del",
+   "Llac Dragon Eye hi ha una",
+   "terra de Digimon insecte. Com",
+   "travessar el llac... Per què no"
+  ],
+  [
+   "ho penses mentre pesques?"
+  ]
+ ],
+ "s211.sec8.u36": [
+  [
+   "Diuen que els Digimon màquina",
+   "es poden reparar sols i quedar",
+   "com nous en un tres i no res."
+  ]
+ ],
+ "s211.sec8.u37": [
+  [
+   "No temes tant al perill com per",
+   "a perdre de vista la teva meta.",
+   "Tingues el valor de trepitjar",
+   "encara que sigui una vegada un"
+  ],
+  [
+   "penya-segat perillós, només per",
+   "a veure."
+  ]
+ ],
+ "s211.sec8.u38": [
+  [
+   "Escolta el que es diu en la",
+   "ciutat."
+  ],
+  [
+   "No passis per alt les paraules",
+   "de qui té problemes."
+  ]
+ ],
+ "s211.sec8.u39": [
+  [
+   "Un vilà s'ha instal·lat en un",
+   "lloc concorregut, per on va i",
+   "ve molta gent. Sembla que es",
+   "va mudar fa poc... Serà que...?"
+  ]
+ ],
+ "s211.sec8.u40": [
+  [
+   "Diuen que hi ha un santuari",
+   "enterrat en algun lloc... Però",
+   "algú l'hauria de desenterrar."
+  ]
+ ],
+ "s211.sec8.u41": [
+  [
+   "Diuen que a la jungla apareix",
+   "un Digimon raríssim que et",
+   "repta. Si hi vas cent vegades,",
+   "potser el veus tres cops."
+  ]
+ ],
+ "s211.sec8.u42": [
+  [
+   "Fins i tot els micos cauen dels",
+   "arbres... Hi ha Digimon que hi",
+   "viuen, però segur que no",
+   "rellisquen mai?"
+  ]
+ ],
+ "s211.sec8.u43": [
+  [
+   "Diuen que al poble de ferro de",
+   "l'oest apareix un Digimon",
+   "raríssim que et repta. Si hi",
+   "vas cent vegades, potser el"
+  ],
+  [
+   "veus tres cops."
+  ]
+ ],
+ "s211.sec8.u44": [
+  [
+   "Hi ha rumors d'un Digimon",
+   "alienígena. Sembla que apareix",
+   "de tant en tant, així que pot",
+   "ser que un dia el vegis de"
+  ],
+  [
+   "debò."
+  ]
+ ],
+ "s211.sec8.u45": [
+  [
+   "Diuen que apareix un Digimon",
+   "estrany on no hi hauria d'haver",
+   "ningú... En una casa que ha",
+   "perdut l'amo, potser..."
+  ]
+ ],
+ "s211.sec8.u46": [
+  [
+   "Continua buscant Nanimon fins",
+   "que aconsegueixis el tresor de",
+   "debò."
+  ]
+ ],
+ "s211.sec8.u47": [
+  [
+   "Sembla que Myotismon ha",
+   "desaparegut de debò."
+  ],
+  [
+   "Si resols els misteris que va",
+   "deixar en la seva mansió..."
+  ]
+ ],
+ "s211.sec8.u48": [
+  [
+   "Encara hauria d'haver-hi",
+   "Digimon que ningú coneix...",
+   "però abans tens alguna cosa a",
+   "fer!"
+  ]
+ ],
+ "s211.sec8.u49": [
+  [
+   "L'últim Digimon neix en l'últim",
+   "lloc... Entens el que",
+   "significa?"
+  ]
+ ],
+ "s212.sec71.m0.o0": "Canviar el nom",
+ "s212.sec71.m0.o1": "Deixar-ho com està",
+ "s212.sec71.m1.o0": "Canviar el nom de nou",
+ "s212.sec71.m1.o1": "D'acord",
+ "s212.sec71.u0": [
+  [
+   "Sembla que {color 10}{partner}{color 1} ha",
+   "arribat al final de la vida...",
+   "Però abans de morir ha deixat",
+   "el Digiou que volies. Així"
+  ],
+  [
+   "reneix i transmet les seves",
+   "habilitats. Bé, quin ou volies?"
+  ]
+ ],
+ "s212.sec71.u1": [
+  [
+   "Pots posar-li un nom nou a",
+   "{color 10}{partner}{color 1}. Quin serà?"
+  ]
+ ],
+ "s212.sec71.u2": [
+  [
+   "Així que {color 10}{partner}{color 1}, eh?"
+  ]
+ ],
+ "s212.sec72.u0": [
+  [
+   "Au, refés-te! Desmaiar-se per",
+   "una malaltia... Encara li",
+   "quedava vida, i {color 10}{partner}{color 1} se",
+   "n'ha sortit. A partir d'ara has"
+  ],
+  [
+   "de tenir més cura."
+  ]
+ ],
+ "s212.sec72.u1": [
+  [
+   "Vaja, què ha passat? Has",
+   "perdut un combat i has tornat",
+   "aquí? Encara li quedava vida, i",
+   "{color 10}{partner}{color 1} se n'ha sortit,"
+  ],
+  [
+   "però... Potser t'han pres els",
+   "objectes. És la llei d'aquest",
+   "món: qui perd un combat pot",
+   "perdre també les seves coses."
+  ],
+  [
+   "Diuen que els objectes robats",
+   "es venen en algun lloc. No els",
+   "donis per perduts."
+  ]
+ ],
+ "s212.sec73.m0.o0": "Canviar el nom",
+ "s212.sec73.m0.o1": "Deixar-ho com està",
+ "s212.sec73.u0": [
+  [
+   "Ai, quina desgràcia...",
+   "{color 10}{partner}{color 1} ha perdut fins a",
+   "l'últim alè de vida? Ha fet",
+   "servir les últimes forces per"
+  ],
+  [
+   "deixar un Digiou, però...",
+   "Estava tan malament que no ha",
+   "pogut transmetre cap habilitat",
+   "a l'ou..."
+  ]
+ ],
+ "s212.sec73.u1": [
+  [
+   "{color 4}El teu Nivell de Domador ha",
+   "baixat!{color 1}"
+  ]
+ ],
+ "s212.sec73.u2": [
+  [
+   "Pots posar-li un nom nou a",
+   "{color 10}{partner}{color 1}. Quin serà?"
+  ]
+ ],
+ "s212.sec73.u3": [
+  [
+   "Oh!? Sembla que {color 10}{partner}{color 1}",
+   "ha digievolucionat d'una manera",
+   "especial!"
+  ]
+ ],
+ "s212.sec73.u4": [
+  [
+   "Oh!? Sembla que {color 10}{partner}{color 1}",
+   "ha digievolucionat d'una manera",
+   "especial!"
+  ]
+ ],
+ "s212.sec73.u5": [
+  [
+   "Oh!? Sembla que {color 10}{partner}{color 1}",
+   "ha digievolucionat d'una manera",
+   "especial!"
+  ]
+ ],
+ "s212.sec73.u6": [
+  [
+   "Oh!? Sembla que {color 10}{partner}{color 1}",
+   "ha digievolucionat d'una manera",
+   "especial!"
+  ]
+ ],
+ "s213.sec10.u0": [
+  [
+   "- Grau D - Torneig per a",
+   "Digimon Novells. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s213.sec10.u1": [
+  [
+   "- Grau C - Torneig per a",
+   "Digimon Campions. Individual, 3",
+   "rondes, 8 places Entrada lliure"
+  ]
+ ],
+ "s213.sec10.u2": [
+  [
+   "- Grau B - Per a Campions",
+   "que confien en la seva força.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada lliure"
+  ]
+ ],
+ "s213.sec10.u3": [
+  [
+   "- Grau A - Torneig per a",
+   "Digimon Perfectes. Individual,",
+   "3 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s213.sec10.u4": [
+  [
+   "- Grau S - Reuneix els",
+   "Digimon més forts. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "guanyar el Grau A"
+  ]
+ ],
+ "s213.sec10.u5": [
+  [
+   "- Grau R - Batalla campal",
+   "d'astúcia i tàctica. A quatre,",
+   "2 rondes, 8 places Entrada",
+   "lliure"
+  ]
+ ],
+ "s213.sec10.u6": [
+  [
+   "- Copa Versió 1 - Tria el",
+   "millor de la Versió 1. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 1"
+  ]
+ ],
+ "s213.sec10.u7": [
+  [
+   "- Copa Versió 2 - Tria el",
+   "millor de la Versió 2. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 2"
+  ]
+ ],
+ "s213.sec10.u8": [
+  [
+   "- Copa Versió 3 - Tria el",
+   "millor de la Versió 3. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 3"
+  ]
+ ],
+ "s213.sec10.u9": [
+  [
+   "- Copa Versió 4 - Tria el",
+   "millor de la Versió 4. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Versió 4"
+  ]
+ ],
+ "s213.sec10.u10": [
+  [
+   "- Copa Versió O - Per a",
+   "Digimon fora de les Versions",
+   "1-4. Combats amb límit de",
+   "temps. Individual, 3 rondes, 8",
+   "places Entrada: fora de les",
+   "Versions 1-4"
+  ]
+ ],
+ "s213.sec10.u11": [
+  [
+   "- Copa Foc - Tria el rei dels",
+   "Digimon de Foc. Combats amb",
+   "límit de temps. Individual, 3",
+   "rondes, 8 places Entrada:",
+   "Digimon de Foc"
+  ]
+ ],
+ "s213.sec10.u12": [
+  [
+   "- Copa Lluita - Tria el rei",
+   "dels Digimon de Combat.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Combat"
+  ]
+ ],
+ "s213.sec10.u13": [
+  [
+   "- Copa Tro i Vent - Tria el",
+   "rei dels Digimon d'Aire.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon d'Aire"
+  ]
+ ],
+ "s213.sec10.u14": [
+  [
+   "- Copa Estil - Tria el rei",
+   "dels Digimon de Gel. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "Digimon de Gel"
+  ]
+ ],
+ "s213.sec10.u15": [
+  [
+   "- Copa Naturalesa - Tria el",
+   "rei dels Digimon de Natura.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Natura"
+  ]
+ ],
+ "s213.sec10.u16": [
+  [
+   "- Copa Metàl·lica - Tria el rei",
+   "dels Digimon de Màquina.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Màquina"
+  ]
+ ],
+ "s213.sec10.u17": [
+  [
+   "- Copa Bruta - Tria el rei",
+   "dels Digimon de Brutícia.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: Digimon de Brutícia"
+  ]
+ ],
+ "s213.sec10.u18": [
+  [
+   "- Copa Dino - Competeixen",
+   "Digimon de sang antiga.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s213.sec10.u19": [
+  [
+   "- Copa Ales - Competeixen",
+   "Digimon orgullosos de les ales.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s213.sec10.u20": [
+  [
+   "- Copa Animal - Competeixen",
+   "Digimon de sang animal. Combats",
+   "amb límit de temps. Individual,",
+   "3 rondes, 8 places Entrada:",
+   "???"
+  ]
+ ],
+ "s213.sec10.u21": [
+  [
+   "- Copa Humana - Competeixen",
+   "Digimon de forma humana.",
+   "Combats amb límit de temps.",
+   "Individual, 3 rondes, 8 places",
+   "Entrada: ???"
+  ]
+ ],
+ "s213.sec54.u0": [
+  [
+   "Eh, no t'has inscrit en el",
+   "torneig."
+  ]
+ ],
+ "s213.sec54.u1": [
+  [
+   "Eh, el torneig és demà."
+  ]
+ ],
+ "s213.sec54.u2": [
+  [
+   "Encara no han obert les",
+   "portes. Espera fins a les 10."
+  ]
+ ],
+ "s213.sec54.u3": [
+  [
+   "{color 4}El teu Nivell de Domador ha",
+   "baixat!{color 1}"
+  ]
+ ],
+ "s213.sec81.m0.o0": "Sí",
+ "s213.sec81.m0.o1": "No",
+ "s213.sec81.m0.o2": "Què és inscriure's?",
+ "s213.sec81.m1.o0": "No cancel·lar",
+ "s213.sec81.m1.o1": "Cancel·lar-ho",
+ "s213.sec81.m2.o0": "No cancel·lar",
+ "s213.sec81.m2.o1": "Cancel·lar-ho",
+ "s213.sec81.m3.o0": "No cancel·lar",
+ "s213.sec81.m3.o1": "Cancel·lar-ho",
+ "s213.sec81.m4.o0": "Sí",
+ "s213.sec81.m4.o1": "No",
+ "s213.sec81.m4.o2": "Explica-m'ho de nou",
+ "s213.sec81.u0": [
+  [
+   "Aquí esteu, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Mireu, aquest és",
+   "el Coliseu de Ciutat File."
+  ],
+  [
+   "Aviat estarà ple de lluitadors",
+   "i de públic. Doneu-los un bon",
+   "espectacle!"
+  ],
+  [
+   "Els guanyadors s'emporten",
+   "premis i diners. No perdeu res",
+   "per participar."
+  ],
+  [
+   "Mireu aquesta màquina d'aquí",
+   "per a veure els detalls de els",
+   "tornejos."
+  ]
+ ],
+ "s213.sec81.u1": [
+  [
+   "Mmm, els Digimon Infantil no",
+   "poden participar. Vols veure",
+   "només el calendari?"
+  ]
+ ],
+ "s213.sec81.u2": [
+  [
+   "Mmm, els Digimon Infantil no",
+   "poden participar. Vols veure",
+   "només el calendari?"
+  ]
+ ],
+ "s213.sec81.u3": [
+  [
+   "M'alegro que vinguis. Vols",
+   "inscriure't en un torneig?"
+  ]
+ ],
+ "s213.sec81.u4": [
+  [
+   "Estàs inscrit en el torneig de",
+   "demà: «- {cup 3} -»."
+  ],
+  [
+   "Vols cancel·lar la inscripció?"
+  ]
+ ],
+ "s213.sec81.u5": [
+  [
+   "Estàs inscrit en el torneig de",
+   "avui: «- {cup 3} -».",
+   "Pots entrar des de les 10."
+  ],
+  [
+   "No em diguis que vols",
+   "cancel·lar-la."
+  ]
+ ],
+ "s213.sec81.u6": [
+  [
+   "Estàs inscrit en el torneig de",
+   "avui: «- {cup 3} -».",
+   "Entra abans de les 23:00."
+  ],
+  [
+   "No em diguis que vols",
+   "cancel·lar-la."
+  ]
+ ],
+ "s213.sec81.u7": [
+  [
+   "Molt bé, la cancel·lo."
+  ]
+ ],
+ "s213.sec81.u8": [
+  [
+   "Una vegada inscrit, baixa per",
+   "les escales de l'esquerra a",
+   "l'hora d'inici. Així s'entra en",
+   "un torneig. La inscripció és"
+  ],
+  [
+   "gratis. Només pots inscriure't",
+   "en el torneig d'avui o en el de",
+   "demà. Però per al d'avui, has",
+   "d'inscriure't abans de les 10."
+  ],
+  [
+   "Pots veure el calendari amb",
+   "cinc dies d'antelació, així que",
+   "planeja'l una mica abans. Els",
+   "tornejos en vermell són en els"
+  ],
+  [
+   "quals no pots participar, però",
+   "pots consultar-los amb el botó",
+   "START. I encara que posi",
+   "«Entrada: lliure», els Digimon"
+  ],
+  [
+   "Infantil no poden participar.",
+   "Bueno, això és el que cal",
+   "saber. I bé? T'inscrius?"
+  ]
+ ],
+ "s214.sec51.u0": [
+  [
+   "Quina pena. Torna a",
+   "intentar-ho!"
+  ]
+ ],
+ "s214.sec51.u1": [
+  [
+   "Premi per participar: {color 6}Carn",
+   "gegant{color 1}!"
+  ]
+ ],
+ "s214.sec51.u2": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u3": [
+  [
+   "Premi al campió: 2000 Bits! Has",
+   "rebut 1 x {color 6}Cura doble{color 1}!"
+  ]
+ ],
+ "s214.sec51.u4": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u5": [
+  [
+   "Premi al campió: 4000 Bits! Has",
+   "rebut 3 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s214.sec51.u6": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u7": [
+  [
+   "Premi al campió: 6000 Bits! Has",
+   "rebut 1 x {color 6}Regenerador{color 1}!"
+  ]
+ ],
+ "s214.sec51.u8": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u9": [
+  [
+   "{color 7}El teu Nivell de Domador ha pujat!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u10": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Crinera de foc{color 1}!"
+  ]
+ ],
+ "s214.sec51.u11": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u12": [
+  [
+   "{color 7}El teu Nivell de Domador ha pujat!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u13": [
+  [
+   "Premi al campió: 10000 Bits!",
+   "Has rebut 1 x {color 6}Peça",
+   "metàl·lica{color 1}!"
+  ]
+ ],
+ "s214.sec51.u14": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u15": [
+  [
+   "Premi al campió: 10000 Bits!",
+   "Has rebut 1 x {color 6}Os fatal{color 1}!"
+  ]
+ ],
+ "s214.sec51.u16": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u17": [
+  [
+   "Premi al campió: 10000 Bits!",
+   "Has rebut 1 x {color 6}Mà mega{color 1}!"
+  ]
+ ],
+ "s214.sec51.u18": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u19": [
+  [
+   "{color 7}El teu Nivell de Domador ha pujat!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u20": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Ullal blanc{color 1}!"
+  ]
+ ],
+ "s214.sec51.u21": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u22": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Cristall blau{color 1}!"
+  ]
+ ],
+ "s214.sec51.u23": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u24": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Peülla de ferro{color 1}!"
+  ]
+ ],
+ "s214.sec51.u25": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u26": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Pedra mono{color 1}!"
+  ]
+ ],
+ "s214.sec51.u27": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u28": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Rubí vermell{color 1}!"
+  ]
+ ],
+ "s214.sec51.u29": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u30": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Bola de foc{color 1}!"
+  ]
+ ],
+ "s214.sec51.u31": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u32": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Maça de punxes{color 1}!"
+  ]
+ ],
+ "s214.sec51.u33": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u34": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Banya única{color 1}!"
+  ]
+ ],
+ "s214.sec51.u35": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u36": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Estrella Polar{color 1}!"
+  ]
+ ],
+ "s214.sec51.u37": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u38": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Adob{color 1}!"
+  ]
+ ],
+ "s214.sec51.u39": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u40": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Peça cíber{color 1}!"
+  ]
+ ],
+ "s214.sec51.u41": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u42": [
+  [
+   "Premi al campió: 8000 Bits! Has",
+   "rebut 1 x {color 6}Ulleres de sol{color 1}!"
+  ]
+ ],
+ "s214.sec51.u43": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u44": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Arpes grises{color 1}!"
+  ]
+ ],
+ "s214.sec51.u45": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u46": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Ala blanca{color 1}!"
+  ]
+ ],
+ "s214.sec51.u47": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u48": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Trepant d'acer{color 1}!"
+  ]
+ ],
+ "s214.sec51.u49": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u50": [
+  [
+   "Premi al campió: 5000 Bits! Has",
+   "rebut 1 x {color 6}Ala negra{color 1}!"
+  ]
+ ],
+ "s214.sec51.u51": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u52": [
+  [
+   "Premi al segon: 500 Bits! Has",
+   "rebut 2 x {color 6}Carn gegant{color 1}!"
+  ]
+ ],
+ "s214.sec51.u53": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u54": [
+  [
+   "Premi al segon: 1000 Bits! Has",
+   "rebut 1 x {color 6}Rellom{color 1}!"
+  ]
+ ],
+ "s214.sec51.u55": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u56": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Cura MP gran{color 1}!"
+  ]
+ ],
+ "s214.sec51.u57": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u58": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Regenerador{color 1}!"
+  ]
+ ],
+ "s214.sec51.u59": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u60": [
+  [
+   "Premi al segon: 4000 Bits! Has",
+   "rebut 1 x {color 6}Superregenerador{color 1}!"
+  ]
+ ],
+ "s214.sec51.u61": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u62": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s214.sec51.u63": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u64": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s214.sec51.u65": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u66": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s214.sec51.u67": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u68": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s214.sec51.u69": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u70": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Supercura{color 1}!"
+  ]
+ ],
+ "s214.sec51.u71": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u72": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u73": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u74": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u75": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u76": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u77": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u78": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u79": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u80": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u81": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u82": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u83": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u84": [
+  [
+   "Premi al segon: 3000 Bits! Has",
+   "rebut 1 x {color 6}Cura omnipotent{color 1}!"
+  ]
+ ],
+ "s214.sec51.u85": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u86": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Disc Total{color 1}!"
+  ]
+ ],
+ "s214.sec51.u87": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u88": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Disc Total{color 1}!"
+  ]
+ ],
+ "s214.sec51.u89": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u90": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Disc Total{color 1}!"
+  ]
+ ],
+ "s214.sec51.u91": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s214.sec51.u92": [
+  [
+   "Premi al segon: 2000 Bits! Has",
+   "rebut 1 x {color 6}Disc Total{color 1}!"
+  ]
+ ],
+ "s214.sec51.u93": [
+  [
+   "No pots portar res més!"
+  ]
+ ],
+ "s215.sec6.u0": [
+  [
+   "{color 6}{player}{color 1}, les ferides ja",
+   "s'han curat, i jo també em",
+   "posaré a treballar. Gràcies a",
+   "tots dos per tot. Puc veure la"
+  ],
+  [
+   "força de la sort de qualsevol,",
+   "i en vull fer un negoci. Si mai",
+   "tens curiositat, passa per la",
+   "botiga. No et cobraré res."
+  ]
+ ],
+ "s215.sec6.u1": [
+  [
+   "Oh? Tens curiositat per la",
+   "teva sort? Deixa'm llegir-te el",
+   "futur. Mmm, mmm... Ha! Hià!"
+  ]
+ ],
+ "s215.sec6.u2": [
+  [
+   "...Bé, primer..."
+  ]
+ ],
+ "s215.sec6.u3": [
+  [
+   "La teva sort en general és",
+   "magnífica."
+  ]
+ ],
+ "s215.sec6.u4": [
+  [
+   "La teva sort en general és",
+   "bona."
+  ]
+ ],
+ "s215.sec6.u5": [
+  [
+   "La teva sort en general és",
+   "acceptable."
+  ]
+ ],
+ "s215.sec6.u6": [
+  [
+   "La teva sort en general és",
+   "regular."
+  ]
+ ],
+ "s215.sec6.u7": [
+  [
+   "La teva sort en general és",
+   "dolenta."
+  ]
+ ],
+ "s215.sec6.u8": [
+  [
+   "Tot el que intentis et sortirà",
+   "bé."
+  ]
+ ],
+ "s215.sec6.u9": [
+  [
+   "S'acosta una oportunitat",
+   "meravellosa."
+  ]
+ ],
+ "s215.sec6.u10": [
+  [
+   "Pot passar una cosa digna de",
+   "recordar."
+  ]
+ ],
+ "s215.sec6.u11": [
+  [
+   "Potser trobaràs una cosa",
+   "inesperada."
+  ]
+ ],
+ "s215.sec6.u12": [
+  [
+   "Un dels teus dubtes tindrà",
+   "resposta."
+  ]
+ ],
+ "s215.sec6.u13": [
+  [
+   "La teva cartera s'engreixarà."
+  ]
+ ],
+ "s215.sec6.u14": [
+  [
+   "Potser un amic et portarà",
+   "bones notícies."
+  ]
+ ],
+ "s215.sec6.u15": [
+  [
+   "Un canvi d'aires et farà bé."
+  ]
+ ],
+ "s215.sec6.u16": [
+  [
+   "Prova d'anar a algun lloc nou."
+  ]
+ ],
+ "s215.sec6.u17": [
+  [
+   "Potser tindràs un somni",
+   "interessant."
+  ]
+ ],
+ "s215.sec6.u18": [
+  [
+   "No malgastis els diners."
+  ]
+ ],
+ "s215.sec6.u19": [
+  [
+   "Potser es descobrirà un secret",
+   "teu."
+  ]
+ ],
+ "s215.sec6.u20": [
+  [
+   "Val més que vagis a dormir",
+   "aviat."
+  ]
+ ],
+ "s215.sec6.u21": [
+  [
+   "Vigila de no oblidar-te de res."
+  ]
+ ],
+ "s215.sec6.u22": [
+  [
+   "Potser un amic la prendrà amb",
+   "tu."
+  ]
+ ],
+ "s215.sec6.u23": [
+  [
+   "Potser se t'acumularan els",
+   "problemes..."
+  ]
+ ],
+ "s215.sec6.u24": [
+  [
+   "Potser trobaràs algú que no et",
+   "cau bé."
+  ]
+ ],
+ "s215.sec6.u25": [
+  [
+   "Potser patiràs una gran",
+   "pèrdua..."
+  ]
+ ],
+ "s215.sec6.u26": [
+  [
+   "El teu color de la sort és el",
+   "vermell."
+  ]
+ ],
+ "s215.sec6.u27": [
+  [
+   "El teu color de la sort és el",
+   "blanc."
+  ]
+ ],
+ "s215.sec6.u28": [
+  [
+   "El teu color de la sort és el",
+   "blau."
+  ]
+ ],
+ "s215.sec6.u29": [
+  [
+   "El teu color de la sort és el",
+   "negre."
+  ]
+ ],
+ "s215.sec6.u30": [
+  [
+   "El teu color de la sort és el",
+   "verd."
+  ]
+ ],
+ "s215.sec6.u31": [
+  [
+   "El teu color de la sort és el",
+   "gris."
+  ]
+ ],
+ "s215.sec6.u32": [
+  [
+   "El teu color de la sort és el",
+   "marró."
+  ]
+ ],
+ "s215.sec6.u33": [
+  [
+   "El teu color de la sort és el",
+   "groc."
+  ]
+ ],
+ "s215.sec6.u34": [
+  [
+   "El teu color de la sort és el",
+   "morat."
+  ]
+ ],
+ "s215.sec6.u35": [
+  [
+   "El teu color de la sort és el",
+   "daurat."
+  ]
+ ],
+ "s215.sec6.u36": [
+  [
+   "I finalment, com us porteu tu i",
+   "{color 10}{partner}{color 1}..."
+  ]
+ ],
+ "s215.sec6.u37": [
+  [
+   "Esteu fets l'un per a l'altre."
+  ]
+ ],
+ "s215.sec6.u38": [
+  [
+   "Us porteu força bé."
+  ]
+ ],
+ "s215.sec6.u39": [
+  [
+   "Més aviat us porteu bé."
+  ]
+ ],
+ "s215.sec6.u40": [
+  [
+   "Regular."
+  ]
+ ],
+ "s215.sec6.u41": [
+  [
+   "No està malament."
+  ]
+ ],
+ "s216.sec51.m0.o0": "Alleujar el cansament",
+ "s216.sec51.m0.o1": "Ven-me medicines",
+ "s216.sec51.m0.o2": "Res, gràcies",
+ "s216.sec51.u0": [
+  [
+   "Hola, {color 6}{player}{color 1}. Sorprès?"
+  ],
+  [
+   "Segur que mai vas pensar que",
+   "obriria una clínica."
+  ],
+  [
+   "Deixa'm a mi les malalties i",
+   "les ferides. No és gratis, però",
+   "t'ho deixaré barat!"
+  ]
+ ],
+ "s216.sec51.u1": [
+  [
+   "Vaja, sembla que el teu company",
+   "no està bé. Has de cuidar la",
+   "seva salut, saps? El curaré de",
+   "seguida. Per a tu, només 300"
+  ],
+  [
+   "Bits."
+  ]
+ ],
+ "s216.sec51.u2": [
+  [
+   "Com, et falten Bits? Bueno,",
+   "està bé, paga el que puguis ara",
+   "com ara. I deixa de malgastar",
+   "els diners, perquè tinguis quan"
+  ],
+  [
+   "faci falta."
+  ]
+ ],
+ "s216.sec51.u3": [
+  [
+   "Llest, ja està curat. Vés amb",
+   "compte a partir d'ara."
+  ]
+ ],
+ "s216.sec51.u4": [
+  [
+   "Hola. Veig que no té cap",
+   "malaltia ni ferida. Què puc fer",
+   "per tu?"
+  ]
+ ],
+ "s216.sec51.u5": [
+  [
+   "Ai, això no pot ser. El",
+   "Cansament de {color 10}{partner}{color 1}",
+   "està gairebé al límit."
+  ],
+  [
+   "Necessita descansar, i aviat!"
+  ]
+ ],
+ "s216.sec51.u6": [
+  [
+   "Mmm, a veure... {color 10}{partner}{color 1} ha",
+   "acumulat molt de cansament.",
+   "Que descansi abans que sigui",
+   "massa tard."
+  ]
+ ],
+ "s216.sec51.u7": [
+  [
+   "Mmm, {color 10}{partner}{color 1} sembla una",
+   "mica cansat. No et passis."
+  ]
+ ],
+ "s216.sec51.u8": [
+  [
+   "Mmm, mmm. {color 10}{partner}{color 1} està en",
+   "bona forma."
+  ],
+  [
+   "El cansament fa tot tipus de",
+   "danys, així que no ho perdis de",
+   "vista."
+  ]
+ ],
+ "s216.sec52.m0.o0": "Descansar més",
+ "s216.sec52.m0.o1": "Ven-me medicines",
+ "s216.sec52.m0.o2": "Res més",
+ "s216.sec52.m1.o0": "Tireta: 400 Bits",
+ "s216.sec52.m1.o1": "Medicina: 1200 Bits",
+ "s216.sec52.m1.o2": "Deixa-ho",
+ "s216.sec52.m2.o0": "Alleujar el cansament",
+ "s216.sec52.m2.o1": "Ven-me més medicines",
+ "s216.sec52.m2.o2": "Res més",
+ "s216.sec52.u0": [
+  [
+   "Mmm... Jo diria que ja no té",
+   "Cansament."
+  ],
+  [
+   "Puc fer alguna cosa més per",
+   "tu?"
+  ]
+ ],
+ "s216.sec52.u1": [
+  [
+   "Mmm, molt bé."
+  ]
+ ],
+ "s216.sec52.u2": [
+  [
+   "Sí. Si mai el veus malament,",
+   "vine de seguida."
+  ]
+ ],
+ "s216.sec52.u3": [
+  [
+   "Per cert... si el cansament no",
+   "marxa, afluixa amb",
+   "l'entrenament. Deixa que mengi",
+   "i descansi."
+  ]
+ ],
+ "s216.sec52.u4": [
+  [
+   "Per cert... no et quedis molt",
+   "temps en llocs molt freds o",
+   "molt calorosos. Per a alguns",
+   "Digimon, així comencen les"
+  ],
+  [
+   "malalties."
+  ]
+ ],
+ "s216.sec52.u5": [
+  [
+   "Per cert... no et fiïs massa de",
+   "les Tiretes. Van bé per a les",
+   "ferides, però a penes serveixen",
+   "contra les malalties."
+  ]
+ ],
+ "s216.sec52.u6": [
+  [
+   "Per cert... la Medicina cura",
+   "les malalties, però no fa res",
+   "contra el Cansament que les",
+   "provoca. Al cap i a la fi,"
+  ],
+  [
+   "només és una medicina."
+  ]
+ ],
+ "s216.sec52.u7": [
+  [
+   "Per cert... si té pocs HP en",
+   "acabar un combat, es fereix amb",
+   "més facilitat."
+  ],
+  [
+   "Vés amb compte amb això."
+  ]
+ ],
+ "s216.sec52.u8": [
+  [
+   "Per cert... mantenir bé la",
+   "Felicitat i el Cansament ajuda",
+   "a un Digimon a viure més."
+  ]
+ ],
+ "s216.sec52.u9": [
+  [
+   "Et falten Bits? Llavors no",
+   "t'ho puc vendre."
+  ]
+ ],
+ "s216.sec52.u10": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "s216.sec52.u11": [
+  [
+   "Et falten Bits? Llavors no",
+   "t'ho puc vendre."
+  ]
+ ],
+ "s216.sec52.u12": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "s216.sec52.u13": [
+  [
+   "Puc fer alguna cosa més per",
+   "tu?"
+  ]
+ ],
+ "s217.sec51.m0.o0": "Ramen picant: 400 Bits",
+ "s217.sec51.m0.o1": "Curri ardent: 1200 Bits",
+ "s217.sec51.m0.o2": "Olla de lava: 3500 Bits",
+ "s217.sec51.m1.o0": "Fideus del drac: 400 Bits",
+ "s217.sec51.m1.o1": "Pizza Zaurus: 1000 Bits",
+ "s217.sec51.m1.o2": "Hamburguesa dino: 2500 Bits",
+ "s217.sec51.m2.o0": "Bistec T-bone: 1000 Bits",
+ "s217.sec51.m2.o1": "Bistec DX-bone: 2500 Bits",
+ "s217.sec51.m2.o2": "Bistec fantasma: 5000 Bits",
+ "s217.sec51.u0": [
+  [
+   "He... Ja saps què vols",
+   "demanar?"
+  ]
+ ],
+ "s217.sec51.u1": [
+  [
+   "Què et ve de gust menjar?"
+  ]
+ ],
+ "s217.sec51.u2": [
+  [
+   "I bé? Què prendràs?"
+  ]
+ ],
+ "s217.sec51.u3": [
+  [
+   "Sembla que et falten Bits."
+  ]
+ ],
+ "s217.sec51.u4": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Ramen picant!"
+  ]
+ ],
+ "s217.sec51.u5": [
+  [
+   "Atac puja 1! Intel·lecte puja",
+   "1!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s217.sec51.u6": [
+  [
+   "{color 10}{partner}{color 1} no sembla tenir",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u7": [
+  [
+   "Sembla que et falten Bits."
+  ]
+ ],
+ "s217.sec51.u8": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Curri ardent!"
+  ]
+ ],
+ "s217.sec51.u9": [
+  [
+   "Atac puja 3! Intel·lecte puja",
+   "2!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s217.sec51.u10": [
+  [
+   "{color 10}{partner}{color 1} no sembla tenir",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u11": [
+  [
+   "Sembla que et falten Bits."
+  ]
+ ],
+ "s217.sec51.u12": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Olla de lava!"
+  ]
+ ],
+ "s217.sec51.u13": [
+  [
+   "Atac puja 5! Intel·lecte puja",
+   "3!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s217.sec51.u14": [
+  [
+   "{color 10}{partner}{color 1} no sembla tenir",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u15": [
+  [
+   "Torna quan vulguis."
+  ]
+ ],
+ "s217.sec51.u16": "No tens prou Bits.",
+ "s217.sec51.u17": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Fideus del drac!"
+  ]
+ ],
+ "s217.sec51.u18": [
+  [
+   "Defensa puja 1! Velocitat puja",
+   "1!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s217.sec51.u19": [
+  [
+   "{color 10}{partner}{color 1} no té pinta de",
+   "tenir gana."
+  ]
+ ],
+ "s217.sec51.u20": "No tens prou Bits.",
+ "s217.sec51.u21": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Pizza Zaurus!"
+  ]
+ ],
+ "s217.sec51.u22": [
+  [
+   "Defensa puja 3! Velocitat puja",
+   "2!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s217.sec51.u23": [
+  [
+   "{color 10}{partner}{color 1} no té pinta de",
+   "tenir gana."
+  ]
+ ],
+ "s217.sec51.u24": "No tens prou Bits.",
+ "s217.sec51.u25": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Hamburguesa dino!"
+  ]
+ ],
+ "s217.sec51.u26": [
+  [
+   "Defensa puja 5! Velocitat puja",
+   "3!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s217.sec51.u27": [
+  [
+   "{color 10}{partner}{color 1} no té pinta de",
+   "tenir gana."
+  ]
+ ],
+ "s217.sec51.u28": [
+  [
+   "Què, ja has acabat?"
+  ]
+ ],
+ "s217.sec51.u29": [
+  [
+   "No t'arriben els Bits, eh?"
+  ]
+ ],
+ "s217.sec51.u30": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Bistec T-bone!"
+  ]
+ ],
+ "s217.sec51.u31": [
+  [
+   "HP puja 10! Intel·lecte puja 1!"
+  ],
+  [
+   "Disciplina puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s217.sec51.u32": [
+  [
+   "Sembla que {color 10}{partner}{color 1} no té",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u33": [
+  [
+   "No t'arriben els Bits, eh?"
+  ]
+ ],
+ "s217.sec51.u34": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Bistec DX-bone!"
+  ]
+ ],
+ "s217.sec51.u35": [
+  [
+   "HP puja 30! Intel·lecte puja 2!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s217.sec51.u36": [
+  [
+   "Sembla que {color 10}{partner}{color 1} no té",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u37": [
+  [
+   "No t'arriben els Bits, eh?"
+  ]
+ ],
+ "s217.sec51.u38": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Bistec fantasma!"
+  ]
+ ],
+ "s217.sec51.u39": [
+  [
+   "HP puja 50! Intel·lecte puja 3!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s217.sec51.u40": [
+  [
+   "Sembla que {color 10}{partner}{color 1} no té",
+   "gana."
+  ]
+ ],
+ "s217.sec51.u41": [
+  [
+   "Torna a menjar quan vulguis,",
+   "eh!"
+  ]
+ ],
+ "s218.sec51.m0.o0": "Batut de neu: 300 Bits",
+ "s218.sec51.m0.o1": "Gelat: 700 Bits",
+ "s218.sec51.m0.o2": "Granissat: 1600 Bits",
+ "s218.sec51.m1.o0": "Amanida espacial: 1500 Bits",
+ "s218.sec51.m1.o1": "Sopa OVNI: 4000 Bits",
+ "s218.sec51.m1.o2": "Menú galàctic: 9000 Bits",
+ "s218.sec51.m2.o0": "Ou dur meravella: 1000 Bits",
+ "s218.sec51.m2.o1": "Truita meravella: 2500 Bits",
+ "s218.sec51.m2.o2": "Bol d'ou meravella: 6000 Bits",
+ "s218.sec51.u0": [
+  [
+   "Mm? Què prendràs?"
+  ]
+ ],
+ "s218.sec51.u1": [
+  [
+   "......QUÈ... TU MENJAR?"
+  ]
+ ],
+ "s218.sec51.u2": [
+  [
+   "......?"
+  ]
+ ],
+ "s218.sec51.u3": "No tens prou Bits!",
+ "s218.sec51.u4": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Batut de neu!"
+  ]
+ ],
+ "s218.sec51.u5": [
+  [
+   "MP puja 10! Velocitat puja 1!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s218.sec51.u6": [
+  [
+   "{color 10}{partner}{color 1} no té gana, eh?"
+  ]
+ ],
+ "s218.sec51.u7": "No tens prou Bits!",
+ "s218.sec51.u8": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Gelat!"
+  ]
+ ],
+ "s218.sec51.u9": [
+  [
+   "MP puja 30! Velocitat puja 2!"
+  ],
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s218.sec51.u10": [
+  [
+   "{color 10}{partner}{color 1} no té gana, eh?"
+  ]
+ ],
+ "s218.sec51.u11": "No tens prou Bits!",
+ "s218.sec51.u12": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Granissat!"
+  ]
+ ],
+ "s218.sec51.u13": [
+  [
+   "MP puja 50! Velocitat puja 2!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u14": [
+  [
+   "{color 10}{partner}{color 1} no té gana, eh?"
+  ]
+ ],
+ "s218.sec51.u15": [
+  [
+   "Bé, fins aviaaat!"
+  ]
+ ],
+ "s218.sec51.u16": [
+  [
+   "BITS... NO SUFICIENTS."
+  ]
+ ],
+ "s218.sec51.u17": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Amanida espacial!"
+  ]
+ ],
+ "s218.sec51.u18": [
+  [
+   "HP puja 10! MP puja 10! Atac",
+   "puja 1!"
+  ],
+  [
+   "Defensa puja 1! Velocitat puja",
+   "1! Intel·lecte puja 1!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u19": [
+  [
+   "{color 10}{partner}{color 1}... PLE."
+  ]
+ ],
+ "s218.sec51.u20": [
+  [
+   "BITS... NO SUFICIENTS."
+  ]
+ ],
+ "s218.sec51.u21": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Sopa OVNI!"
+  ]
+ ],
+ "s218.sec51.u22": [
+  [
+   "HP puja 20! MP puja 20! Atac",
+   "puja 2!"
+  ],
+  [
+   "Defensa puja 2! Velocitat puja",
+   "2! Intel·lecte puja 2!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u23": [
+  [
+   "{color 10}{partner}{color 1}... PLE."
+  ]
+ ],
+ "s218.sec51.u24": [
+  [
+   "BITS... NO SUFICIENTS."
+  ]
+ ],
+ "s218.sec51.u25": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Menú galàctic!"
+  ]
+ ],
+ "s218.sec51.u26": [
+  [
+   "HP puja 30! MP puja 30! Atac",
+   "puja 3!"
+  ],
+  [
+   "Defensa puja 3! Velocitat puja",
+   "3! Intel·lecte puja 3!"
+  ],
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u27": [
+  [
+   "{color 10}{partner}{color 1}... PLE."
+  ]
+ ],
+ "s218.sec51.u28": [
+  [
+   "......FINS A LA PRÒXIMA,",
+   "A TOTS."
+  ]
+ ],
+ "s218.sec51.u29": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u30": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Ou dur meravella!"
+  ]
+ ],
+ "s218.sec51.u31": [
+  [
+   "HP puja 10! Atac puja 1!",
+   "Velocitat puja 1!"
+  ]
+ ],
+ "s218.sec51.u32": [
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s218.sec51.u33": [
+  [
+   "MP puja 10! Defensa puja 1!",
+   "Intel·lecte puja 1!"
+  ]
+ ],
+ "s218.sec51.u34": [
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s218.sec51.u35": [
+  [
+   "HP puja 20! MP puja 20! Atac",
+   "puja 2!"
+  ],
+  [
+   "Defensa puja 2! Velocitat puja",
+   "2! Intel·lecte puja 2!"
+  ]
+ ],
+ "s218.sec51.u36": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u37": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u38": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u39": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Truita meravella!"
+  ]
+ ],
+ "s218.sec51.u40": [
+  [
+   "HP puja 20! Atac puja 2!",
+   "Velocitat puja 2!"
+  ]
+ ],
+ "s218.sec51.u41": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u42": [
+  [
+   "MP puja 20! Defensa puja 2!",
+   "Intel·lecte puja 2!"
+  ]
+ ],
+ "s218.sec51.u43": [
+  [
+   "Felicitat puja! Cansament",
+   "baixa!"
+  ]
+ ],
+ "s218.sec51.u44": [
+  [
+   "HP puja 30! MP puja 30! Atac",
+   "puja 3!"
+  ],
+  [
+   "Defensa puja 3! Velocitat puja",
+   "3! Intel·lecte puja 3!"
+  ]
+ ],
+ "s218.sec51.u45": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u46": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u47": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u48": [
+  [
+   "A {color 10}{partner}{color 1} li ha agradat:",
+   "Bol d'ou meravella!"
+  ]
+ ],
+ "s218.sec51.u49": [
+  [
+   "HP puja 30! Atac puja 3!",
+   "Velocitat puja 3!"
+  ]
+ ],
+ "s218.sec51.u50": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u51": [
+  [
+   "MP puja 30! Defensa puja 3!",
+   "Intel·lecte puja 3!"
+  ]
+ ],
+ "s218.sec51.u52": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u53": [
+  [
+   "HP puja 40! MP puja 40! Atac",
+   "puja 4!"
+  ],
+  [
+   "Defensa puja 4! Velocitat puja",
+   "4! Intel·lecte puja 4!"
+  ]
+ ],
+ "s218.sec51.u54": [
+  [
+   "Felicitat puja! Disciplina",
+   "puja! Cansament baixa!"
+  ]
+ ],
+ "s218.sec51.u55": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u56": [
+  [
+   "......"
+  ]
+ ],
+ "s219.sec51.m0.o0": "Provar-ho",
+ "s219.sec51.m0.o1": "Ara no",
+ "s219.sec51.m1.o0": "Un altre cop",
+ "s219.sec51.m1.o1": "Ja n'hi ha prou",
+ "s219.sec51.u0": [
+  [
+   "És una màquina de cartes",
+   "Digimon. Sembla que en surt",
+   "una per 100 Bits."
+  ]
+ ],
+ "s219.sec51.u1": [
+  [
+   "No m'arriben els Bits..."
+  ]
+ ],
+ "s219.sec51.u2": "Uau! Una carta de Phoenixmon!",
+ "s219.sec51.u3": "Uau! Una carta de HerculesKabuterimon!",
+ "s219.sec51.u4": "Uau! Una carta de MegaSeadramon!",
+ "s219.sec51.u5": "Uau! Una carta de ShogunGekomon!",
+ "s219.sec51.u6": "Uau! Una carta de Myotismon!",
+ "s219.sec51.u7": "Una carta de MetalGreymon!",
+ "s219.sec51.u8": "Una carta de Mamemon!",
+ "s219.sec51.u9": "Una carta de Monzaemon!",
+ "s219.sec51.u10": "Una carta de SkullGreymon!",
+ "s219.sec51.u11": "Una carta de MetalMamemon!",
+ "s219.sec51.u12": "Una carta de Vademon!",
+ "s219.sec51.u13": "Una carta de Andromon!",
+ "s219.sec51.u14": "Una carta de Giromon!",
+ "s219.sec51.u15": "Una carta de Etemon!",
+ "s219.sec51.u16": "Una carta de Megadramon!",
+ "s219.sec51.u17": "Una carta de Piximon!",
+ "s219.sec51.u18": "Una carta de Digitamamon!",
+ "s219.sec51.u19": "Una carta de Gekomon!",
+ "s219.sec51.u20": "Una carta de WaruMonzaemon!",
+ "s219.sec51.u21": "Una carta de Jijimon!",
+ "s219.sec51.u22": "Una carta de KingSukamon!",
+ "s219.sec51.u23": "Una carta de Cherrymon!",
+ "s219.sec51.u24": "Una carta de Guardromon!",
+ "s219.sec51.u25": "Una carta de Hagurumon!",
+ "s219.sec51.u26": "Una carta de Brachiomon!",
+ "s219.sec51.u27": "Una carta de Greymon.",
+ "s219.sec51.u28": "Una carta de Devimon.",
+ "s219.sec51.u29": "Una carta de Airdramon.",
+ "s219.sec51.u30": "Una carta de Tyrannomon.",
+ "s219.sec51.u31": "Una carta de Meramon.",
+ "s219.sec51.u32": "Una carta de Seadramon.",
+ "s219.sec51.u33": "Una carta de Kabuterimon.",
+ "s219.sec51.u34": "Una carta de Angemon.",
+ "s219.sec51.u35": "Una carta de Birdramon.",
+ "s219.sec51.u36": "Una carta de Garurumon.",
+ "s219.sec51.u37": "Una carta de Frigimon.",
+ "s219.sec51.u38": "Una carta de Whamon.",
+ "s219.sec51.u39": "Una carta de Unimon.",
+ "s219.sec51.u40": "Una carta de Ogremon.",
+ "s219.sec51.u41": "Una carta de Shellmon.",
+ "s219.sec51.u42": "Una carta de Centarumon.",
+ "s219.sec51.u43": "Una carta de Bakemon.",
+ "s219.sec51.u44": "Una carta de Drimogemon.",
+ "s219.sec51.u45": "Una carta de Monochromon.",
+ "s219.sec51.u46": "Una carta de Leomon.",
+ "s219.sec51.u47": "Una carta de Coelamon.",
+ "s219.sec51.u48": "Una carta de Kokatorimon.",
+ "s219.sec51.u49": "Una carta de Kuwagamon.",
+ "s219.sec51.u50": "Una carta de Mojyamon.",
+ "s219.sec51.u51": "Una carta de Ninjamon.",
+ "s219.sec51.u52": "Una carta de Penguinmon...",
+ "s219.sec51.u53": "Una carta de Otamamon...",
+ "s219.sec51.u54": "Una carta de Tentomon...",
+ "s219.sec51.u55": "Una carta de Yanmamon...",
+ "s219.sec51.u56": "Una carta de Gotsumon...",
+ "s219.sec51.u57": "Una carta de Flarerizamon...",
+ "s219.sec51.u58": "Una carta de ToyAgumon...",
+ "s219.sec51.u59": "Una carta de DemiMeramon...",
+ "s219.sec51.u60": "Una carta de Tankmon...",
+ "s219.sec51.u61": "Una carta de Goblimon...",
+ "s219.sec51.u62": [
+  [
+   "Puaj, una carta de Numemon..."
+  ]
+ ],
+ "s219.sec51.u63": [
+  [
+   "Puaj, una carta de Vegiemon..."
+  ]
+ ],
+ "s219.sec51.u64": [
+  [
+   "Puaj, una carta de Sukamon..."
+  ]
+ ],
+ "s219.sec51.u65": [
+  [
+   "Puaj, una carta de Nanimon..."
+  ]
+ ],
+ "s220.sec83.u0": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Boing, boing! Sóc Poyomooon."
+  ]
+ ],
+ "s220.sec83.u1": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Més xerrada de digievolució!",
+   "Ara, sobre la fase que ve",
+   "després de Campió."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Es diu Perfecte, diuen. Sembla",
+   "que no tots els Campions hi",
+   "arriben."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Les condicions són súuuper",
+   "dures! Però, si es torna",
+   "Perfecte, viu més temps."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "En canvi, si digievoluciona amb",
+   "un objecte, la seva vida no",
+   "s'allarga, crec."
+  ]
+ ],
+ "s220.sec83.u2": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Més xerrada de digievolució!",
+   "Ara, sobre les condicions per",
+   "digievolucionar."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Primer, el pes ha de ser",
+   "semblant al del Digimon en què",
+   "es convertirà."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Després, els atributs: com més",
+   "alts, millor! Però els que",
+   "importen depenen del cas."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "I els errors de cura... De",
+   "vegades és millor cometre'n",
+   "moooolts expressament."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Ah, sí! Alguns Digimon tenen",
+   "condicions especials, només",
+   "seves."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Com una disciplina altíssima, o",
+   "molts combats..."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Si en compleix una, pot",
+   "digievolucionar encara que no",
+   "compleixi les tres bàsiques."
+  ]
+ ],
+ "s220.sec83.u3": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Jiji m'ha dit que {color 10}{partner}{color 1}",
+   "pot digievolucionar, saaaaps?"
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "De Bebè a Infantil només triga",
+   "sis hores, ha dit."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "La següent, a Novell, triga més",
+   "o menys un diaaa."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "I després, a Campió, triga uns",
+   "tres dieees."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "I desprééés... Què era? Ho he",
+   "oblidat, però encara n'hi ha",
+   "més."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Digievolucionar té a veure amb",
+   "el pes, els atributs i els",
+   "errors de cura, diuen."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Aquesta part encara no",
+   "l'entenc. Ja ho preguntaré a",
+   "Jiji un altre cooop."
+  ]
+ ],
+ "s221.sec5.u0": [
+  [
+   "Ah, {color 6}{player}{color 1}! Ho has",
+   "aconseguit!"
+  ],
+  [
+   "Agumon acaba d'arribar i ja ha",
+   "obert una botiga aquí mateix."
+  ],
+  [
+   "Continua portant Digimon a la",
+   "ciutat!"
+  ]
+ ],
+ "s221.sec5.u1": [
+  [
+   "Palmon ha vingut a dir que vol",
+   "engrandir la granja de Carn."
+  ],
+  [
+   "Bé, bé, tindrem carn de sobres!"
+  ]
+ ],
+ "s221.sec5.u2": [
+  [
+   "Kunemon ha vingut a dir que vol",
+   "menjar herba."
+  ],
+  [
+   "Bé, bé, tant de bo es mengi les",
+   "males herbes!"
+  ]
+ ],
+ "s221.sec5.u3": [
+  [
+   "Centarumon ha vingut a dir que",
+   "vol obrir una clínica."
+  ],
+  [
+   "Bé, bé, ja no caldrà patir per",
+   "les malalties i les ferides!"
+  ]
+ ],
+ "s221.sec5.u4": [
+  [
+   "Coelamon ha vingut a dir que",
+   "potser portarà una botiga."
+  ],
+  [
+   "Bé, bé, la ciutat creix!"
+  ]
+ ],
+ "s221.sec5.u5": [
+  [
+   "Betamon ha vingut a dir que",
+   "potser portarà una botiga."
+  ],
+  [
+   "Bé, bé, la ciutat creix!"
+  ]
+ ],
+ "s221.sec5.u6": [
+  [
+   "Bakemon ha vingut i ha dit una",
+   "cosa que no he entès gens."
+  ],
+  [
+   "Bé, bé, això també està bé."
+  ]
+ ],
+ "s221.sec5.u7": [
+  [
+   "Vegiemon ha vingut a dir que",
+   "vol engrandir encara més la",
+   "granja de Carn."
+  ],
+  [
+   "Bé, bé, ja no patirem pel",
+   "menjar!"
+  ]
+ ],
+ "s221.sec5.u8": [
+  [
+   "Tyrannomon ha vingut a dir que",
+   "la seva cuina és la millor."
+  ],
+  [
+   "Bé, bé, sí que sap vendre's."
+  ]
+ ],
+ "s221.sec5.u9": [
+  [
+   "Meramon ha vingut a dir que és",
+   "el xef de les flames."
+  ],
+  [
+   "Bé, bé, ve ple d'energia!"
+  ]
+ ],
+ "s221.sec5.u10": [
+  [
+   "Frigimon ha vingut a parlar de",
+   "berenars."
+  ],
+  [
+   "Bé, bé, a mi també m'agraden."
+  ]
+ ],
+ "s221.sec5.u11": [
+  [
+   "Garurumon ha vingut a dir que",
+   "sap cuinar una mica."
+  ],
+  [
+   "Bé, bé, és més manyós del que",
+   "sembla."
+  ]
+ ],
+ "s221.sec5.u12": [
+  [
+   "Birdramon ha vingut a parlar",
+   "d'unir la ciutat amb el món",
+   "exterior."
+  ],
+  [
+   "Bé, bé, sona d'allò més bé."
+  ]
+ ],
+ "s221.sec5.u13": [
+  [
+   "Shellmon ha vingut a dir que",
+   "vol posar un tauler d'anuncis."
+  ],
+  [
+   "Bé, bé, el primer pas cap a",
+   "l'era de la informació!"
+  ]
+ ],
+ "s221.sec5.u14": [
+  [
+   "Elecmon ha vingut a dir que vol",
+   "encendre els llums."
+  ],
+  [
+   "Bé, bé, tant de bo tinguem una",
+   "ciutat radiant."
+  ]
+ ],
+ "s221.sec5.u15": [
+  [
+   "Kokatorimon ha vingut a dir que",
+   "vol fer una estàtua."
+  ],
+  [
+   "Bé, bé, una ciutat amb lloc per",
+   "a l'art."
+  ]
+ ],
+ "s221.sec5.u16": [
+  [
+   "Monochromon ha vingut a dir",
+   "que vol obrir una botiga",
+   "d'objectes."
+  ],
+  [
+   "Bé, bé, tot un professional!"
+  ]
+ ],
+ "s221.sec5.u17": [
+  [
+   "Unimon ha vingut a dir que",
+   "ajudarà amb les compres i les",
+   "vendes."
+  ],
+  [
+   "Bé, bé, així es parla!"
+  ]
+ ],
+ "s221.sec5.u18": [
+  [
+   "Patamon ha vingut a preguntar",
+   "si hi havia cap feina",
+   "divertida."
+  ],
+  [
+   "Bé, bé, li he proposat una",
+   "botiga d'objectes!"
+  ]
+ ],
+ "s221.sec5.u19": [
+  [
+   "Biyomon ha vingut a preguntar",
+   "quina feina li recomano."
+  ],
+  [
+   "Bé, bé, li he recomanat una",
+   "botiga d'objectes!"
+  ]
+ ],
+ "s221.sec5.u20": [
+  [
+   "Greymon ha vingut a dir que vol",
+   "construir un coliseu."
+  ],
+  [
+   "Bé, bé, m'agradaria veure'l."
+  ]
+ ],
+ "s221.sec5.u21": [
+  [
+   "Penguinmon ha vingut a parlar",
+   "de construir una pista de",
+   "cúrling."
+  ],
+  [
+   "Bé, bé, cada cop tenim més",
+   "varietat."
+  ]
+ ],
+ "s221.sec5.u22": [
+  [
+   "Angemon ha vingut a dir que vol",
+   "portar un registre de les",
+   "nostres xerrades."
+  ],
+  [
+   "Bé, bé, ara que hi penso, és",
+   "just al costat!"
+  ]
+ ],
+ "s221.sec5.u23": [
+  [
+   "Drimogemon ha vingut a dir que",
+   "es dedicarà a buscar tresors."
+  ],
+  [
+   "Bé, bé, això sí que és una gran",
+   "feina!"
+  ]
+ ],
+ "s221.sec5.u24": [
+  [
+   "Gabumon ha vingut a dir que no",
+   "sap què fer."
+  ],
+  [
+   "Bé, bé, li he dit que, si vol",
+   "fer alguna cosa, pensi en gran."
+  ]
+ ],
+ "s221.sec5.u25": [
+  [
+   "Ninjamon ha vingut a parlar del",
+   "seu entrenament."
+  ],
+  [
+   "Bé, bé, no hi ha res com algú",
+   "treballador."
+  ]
+ ],
+ "s221.sec5.u26": [
+  [
+   "Whamon ha vingut a dir que",
+   "farà de transbordador."
+  ],
+  [
+   "Bé, bé, ara també podrem anar",
+   "allà!"
+  ]
+ ],
+ "s221.sec5.u27": [
+  [
+   "Mojyamon ha vingut a dir que",
+   "vol obrir una botiga de tota",
+   "mena d'objectes."
+  ],
+  [
+   "Bé, bé, sembla fora del comú!"
+  ]
+ ],
+ "s221.sec5.u28": [
+  [
+   "Mamemon ha vingut a dir que",
+   "vendrà objectes molt especials."
+  ],
+  [
+   "Bé, bé, molt especials... Què",
+   "deu voler dir?"
+  ]
+ ],
+ "s221.sec5.u29": [
+  [
+   "Numemon ha vingut a dir que vol",
+   "portar una botiga, però és un",
+   "secreeet."
+  ],
+  [
+   "Bé, bé, ara ja no és gaire",
+   "secret."
+  ]
+ ],
+ "s221.sec5.u30": [
+  [
+   "Kabuterimon ha vingut a parlar",
+   "d'entrenar i millorar."
+  ],
+  [
+   "Bé, bé, deu haver anat al",
+   "Gimnàs verd?"
+  ]
+ ],
+ "s221.sec5.u31": [
+  [
+   "Kuwagamon ha vingut a",
+   "preguntar on era Kabuterimon."
+  ],
+  [
+   "Bé, bé, on deu haver anat?"
+  ]
+ ],
+ "s221.sec5.u32": [
+  [
+   "Giromon ha vingut dient:",
+   "«Demana'm una cançó! Bzzt!»."
+  ],
+  [
+   "Bé, bé, demana-li una cançó."
+  ]
+ ],
+ "s221.sec5.u33": [
+  [
+   "Ogremon ha vingut a dir que",
+   "ofereix la seva força."
+  ],
+  [
+   "Bé, bé, li brillaven els ulls!"
+  ]
+ ],
+ "s221.sec5.u34": [
+  [
+   "Leomon ha vingut a preguntar",
+   "de tot sobre la ciutat."
+  ],
+  [
+   "Bé, bé, sembla que encara",
+   "patrulla la sabana!"
+  ]
+ ],
+ "s221.sec5.u35": [
+  [
+   "Piximon ha vingut dient:",
+   "«Senyor, vol un objecte",
+   "secret?»."
+  ],
+  [
+   "Bé, bé, no en vull cap, però",
+   "ara tinc curiositat!"
+  ]
+ ],
+ "s221.sec5.u36": [
+  [
+   "Etemon ha vingut a dir que",
+   "obrirà una botiga fabulosa."
+  ],
+  [
+   "Bé, bé, això em fa olor de",
+   "socarrim."
+  ]
+ ],
+ "s221.sec5.u37": [
+  [
+   "MetalMamemon ha vingut a",
+   "preguntar per una feina on",
+   "pugui lluitar contra",
+   "{color 6}{player}{color 1}."
+  ],
+  [
+   "Bé, bé, aquest odia perdre."
+  ]
+ ],
+ "s221.sec5.u38": [
+  [
+   "Vademon ha vingut... Mm? Ha",
+   "vingut?"
+  ],
+  [
+   "Bé, bé, no ho recordo."
+  ]
+ ],
+ "s221.sec5.u39": [
+  [
+   "MetalGreymon ha vingut a",
+   "parlar de reformar el coliseu."
+  ],
+  [
+   "Bé, bé, té aires de peix gros!"
+  ]
+ ],
+ "s221.sec5.u40": [
+  [
+   "Nanimon ha vingut i de seguida",
+   "ha marxat cap a algun lloc."
+  ],
+  [
+   "Bé, bé, què deu passar?"
+  ]
+ ],
+ "s221.sec5.u41": [
+  [
+   "Monzaemon ha vingut... O més",
+   "ben dit, ha aparegut la seva",
+   "disfressa buida."
+  ],
+  [
+   "Bé, bé, he decidit guardar-la",
+   "aquí, a casa."
+  ]
+ ],
+ "s221.sec5.u42": [
+  [
+   "Devimon ha vingut a dir que ens",
+   "parlarà d'un objecte",
+   "sorprenent."
+  ],
+  [
+   "Bé, bé, a veure si és tan",
+   "sorprenent."
+  ]
+ ],
+ "s221.sec5.u43": [
+  [
+   "Airdramon s'ha curat les",
+   "ferides i ha dit que vol",
+   "treballar."
+  ],
+  [
+   "Bé, bé, m'alegro que torni a",
+   "ser el de sempre."
+  ]
+ ],
+ "s221.sec5.u44": [
+  [
+   "Digitamamon ha vingut i ha",
+   "marxat en un tres i no res."
+  ],
+  [
+   "Bé, bé, sembla que és en algun",
+   "lloc de la ciutat."
+  ]
+ ],
+ "s221.sec5.u45": [
+  [
+   "SkullGreymon ha vingut a dir",
+   "que vol participar al coliseu."
+  ],
+  [
+   "Bé, bé, de fet, Myotismon m'ho",
+   "ha traduït."
+  ]
+ ],
+ "s221.sec5.u46": [
+  [
+   "Andromon ha vingut dient:",
+   "«Encantat de treballar amb",
+   "vosaltres»."
+  ],
+  [
+   "Bé, bé, però sembla que no es",
+   "podrà quedar aquí per sempre."
+  ]
+ ]
+}

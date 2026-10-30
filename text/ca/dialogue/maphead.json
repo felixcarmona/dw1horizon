@@ -1,0 +1,1020 @@
+{
+ "m1230.u0": [
+  [
+   "Benvingut! Què desitges?"
+  ],
+  [
+   "Encara ho estem preparant."
+  ],
+  [
+   "Comprar",
+   "Vendre",
+   "Ara no"
+  ],
+  [
+   "Comprar",
+   "Ara no"
+  ],
+  [
+   "Torna quan vulguis!"
+  ],
+  [
+   "Només véns a molestar-me?!"
+  ],
+  [
+   "Bits {money}"
+  ],
+  [
+   "Mèrits {merit}"
+  ],
+  [
+   "Veus res que t'agradi?"
+  ],
+  [
+   "Quin vendràs?"
+  ],
+  [
+   "Moltes gràcies."
+  ],
+  [
+   "Alguna cosa més?"
+  ],
+  [
+   "Se'ns ha acabat tot."
+  ],
+  [
+   "He descomptat {shopvar} Bits."
+  ]
+ ],
+ "m1230.u1": [
+  [
+   "Molt bé, has vingut! Què et",
+   "poso?"
+  ]
+ ],
+ "m1230.u2": [
+  [
+   "Ara mateix no tinc res per",
+   "vendre."
+  ]
+ ],
+ "m1230.u3": [
+  [
+   "Comprar Vendre Ara no"
+  ]
+ ],
+ "m1230.u4": [
+  [
+   "Comprar Ara no"
+  ]
+ ],
+ "m1230.u5": [
+  [
+   "Visca! Torna aviat!"
+  ]
+ ],
+ "m1230.u6": [
+  [
+   "Jo, ja està? Quin rotllo."
+  ]
+ ],
+ "m1230.u7": [
+  [
+   "Bits {money}"
+  ]
+ ],
+ "m1230.u8": [
+  [
+   "Mèrits {merit}"
+  ]
+ ],
+ "m1230.u9": [
+  [
+   "Compra molt, val?"
+  ]
+ ],
+ "m1230.u10": [
+  [
+   "Tens alguna cosa que no",
+   "necessitis?"
+  ]
+ ],
+ "m1230.u11": [
+  [
+   "Visca, gràcies!"
+  ]
+ ],
+ "m1230.u12": [
+  [
+   "Tens alguna cosa més?"
+  ]
+ ],
+ "m1230.u13": [
+  [
+   "Ja no em queda res a vendre."
+  ]
+ ],
+ "m1230.u14": [
+  [
+   "{color 10}{partner}{color 1} encara és petitó,",
+   "eh? Et descompto {shopvar}",
+   "Bits!"
+  ]
+ ],
+ "m1230.u15": [
+  [
+   "Ah, benvingut."
+  ]
+ ],
+ "m1230.u16": [
+  [
+   "Torna un altre dia, si us plau."
+  ]
+ ],
+ "m1230.u17": [
+  [
+   "Mirar sense comprar no està",
+   "molt bé, saps?"
+  ]
+ ],
+ "m1230.u18": [
+  [
+   "Què compraràs?"
+  ]
+ ],
+ "m1230.u19": [
+  [
+   "Em vendràs alguna cosa?"
+  ]
+ ],
+ "m1230.u20": [
+  [
+   "Gràcies."
+  ]
+ ],
+ "m1230.u21": [
+  [
+   "Alguna cosa més?"
+  ]
+ ],
+ "m1230.u22": [
+  [
+   "{color 10}{partner}{color 1} ha de créixer, i",
+   "aviat. Està bé, et descompto",
+   "{shopvar} Bits."
+  ]
+ ],
+ "m1230.u23": [
+  [
+   "Benvingut, piu! Què serà, piu?"
+  ]
+ ],
+ "m1230.u24": [
+  [
+   "Gràcies com sempre, piu!"
+  ]
+ ],
+ "m1230.u25": [
+  [
+   "Eh? Només miraves, piu!?"
+  ]
+ ],
+ "m1230.u26": [
+  [
+   "Tria'n un, piu."
+  ]
+ ],
+ "m1230.u27": [
+  [
+   "Et compro el que sigui, piu."
+  ]
+ ],
+ "m1230.u28": [
+  [
+   "Gràcies, piu."
+  ]
+ ],
+ "m1230.u29": [
+  [
+   "Vols continuar, piu?"
+  ]
+ ],
+ "m1230.u30": [
+  [
+   "{color 10}{partner}{color 1} és una criatura,",
+   "piu. Et descompto {shopvar}",
+   "Bits, piu."
+  ]
+ ],
+ "m1230.u31": [
+  [
+   "Ah, benvingut! Què vols?"
+  ]
+ ],
+ "m1230.u32": [
+  [
+   "Gràcies. Torna quan vulguis."
+  ]
+ ],
+ "m1230.u33": [
+  [
+   "...Una altra vegada serà,",
+   "espero."
+  ]
+ ],
+ "m1230.u34": [
+  [
+   "Bé, quin serà?"
+  ]
+ ],
+ "m1230.u35": [
+  [
+   "Què vols vendre?"
+  ]
+ ],
+ "m1230.u36": [
+  [
+   "T'ho agraeixo molt."
+  ]
+ ],
+ "m1230.u37": [
+  [
+   "Alguna cosa més?"
+  ]
+ ],
+ "m1230.u38": [
+  [
+   "Caram, {color 10}{partner}{color 1} és tan",
+   "petitó... Et descompto",
+   "{shopvar} Bits."
+  ]
+ ],
+ "m1230.u39": [
+  [
+   "Hmpf, has vingut. No trobaràs",
+   "aquests productes enlloc més.",
+   "Compra tant com vulguis... He,",
+   "he..."
+  ]
+ ],
+ "m1230.u40": [
+  [
+   "Je, je... Estalvia i torna."
+  ]
+ ],
+ "m1230.u41": [
+  [
+   "Qu...!? Només véns a mirar!?"
+  ]
+ ],
+ "m1230.u42": [
+  [
+   "Compra el que et plagui."
+  ]
+ ],
+ "m1230.u43": [
+  [
+   "No accepto escombraries. Je,",
+   "je..."
+  ]
+ ],
+ "m1230.u44": [
+  [
+   "He, he... Ves amb compte per",
+   "aquí fora."
+  ]
+ ],
+ "m1230.u45": [
+  [
+   "Tu... Què més vols?"
+  ]
+ ],
+ "m1230.u46": [
+  [
+   "Je, je... Per {color 10}{partner}{color 1}, et",
+   "rebaixaré {shopvar} Bits."
+  ]
+ ],
+ "m1230.u47": [
+  [
+   "Oooh, tu, client!"
+  ]
+ ],
+ "m1230.u48": [
+  [
+   "Pròxima vegada, comprar més!"
+  ]
+ ],
+ "m1230.u49": [
+  [
+   "Tu, gasiu!"
+  ]
+ ],
+ "m1230.u50": [
+  [
+   "Comprar tot!"
+  ]
+ ],
+ "m1230.u51": [
+  [
+   "Vendre el que sigui!"
+  ]
+ ],
+ "m1230.u52": [
+  [
+   "Val, bé!"
+  ]
+ ],
+ "m1230.u53": [
+  [
+   "Més? Tu tenir més?"
+  ]
+ ],
+ "m1230.u54": [
+  [
+   "{color 10}{partner}{color 1}, tu, petitó! Jo",
+   "rebaixar {shopvar} Bits!"
+  ]
+ ],
+ "m1230.u55": [
+  [
+   "Els meus objectes són taaan",
+   "al·lucinants... Bla, bla."
+  ]
+ ],
+ "m1230.u56": [
+  [
+   "Torna, o el que sigui. Bla,",
+   "bla."
+  ]
+ ],
+ "m1230.u57": [
+  [
+   "Aaah, vés-te ja a casa, bla?"
+  ]
+ ],
+ "m1230.u58": [
+  [
+   "Quin serà el bo, mmm?"
+  ]
+ ],
+ "m1230.u59": [
+  [
+   "Vinga, ven, ven."
+  ]
+ ],
+ "m1230.u60": [
+  [
+   "De debò? Bla?"
+  ]
+ ],
+ "m1230.u61": [
+  [
+   "Alguna cosa més? N'hi ha? Eh?",
+   "Bla?"
+  ]
+ ],
+ "m1230.u62": [
+  [
+   "Oh? Una criatura? Descompte?",
+   "Doncs menys {shopvar}",
+   "Bits."
+  ]
+ ],
+ "m1230.u63": [
+  [
+   "Tinc coses que van de perles",
+   "per al dia a dia. Què et",
+   "sembla?"
+  ]
+ ],
+ "m1230.u64": [
+  [
+   "Torna aviat, eh?"
+  ]
+ ],
+ "m1230.u65": "Em prens el pèl?",
+ "m1230.u66": [
+  [
+   "Què busques?"
+  ]
+ ],
+ "m1230.u67": [
+  [
+   "Quin em vens?"
+  ]
+ ],
+ "m1230.u68": [
+  [
+   "Moltes gràcies, de debò."
+  ]
+ ],
+ "m1230.u69": [
+  [
+   "Alguna cosa més?"
+  ]
+ ],
+ "m1230.u70": [
+  [
+   "Caram, {color 10}{partner}{color 1} és petitó.",
+   "Et rebaixo {shopvar} Bits."
+  ]
+ ],
+ "m1230.u71": [
+  [
+   "És la teva oportunitat, sí, sí.",
+   "Compra tant com vulguis!"
+  ]
+ ],
+ "m1230.u72": [
+  [
+   "Torna aviat, sí, sí."
+  ]
+ ],
+ "m1230.u73": [
+  [
+   "Véns a destorbar el negoci, sí?"
+  ]
+ ],
+ "m1230.u74": [
+  [
+   "Quin, sí?"
+  ]
+ ],
+ "m1230.u75": [
+  [
+   "Què vens, sí?"
+  ]
+ ],
+ "m1230.u76": [
+  [
+   "Gràcies, sí, sí!"
+  ]
+ ],
+ "m1230.u77": [
+  [
+   "Alguna cosa més, sí?"
+  ]
+ ],
+ "m1230.u78": [
+  [
+   "Oh, {color 10}{partner}{color 1} és un nen, sí.",
+   "{shopvar} Bits de descompte",
+   "especial!"
+  ]
+ ],
+ "m1230.u79": [
+  [
+   "Benvinguuut!"
+  ]
+ ],
+ "m1230.u80": [
+  [
+   "Torna una altra vegada, val?"
+  ]
+ ],
+ "m1230.u81": [
+  [
+   "Jo, que dolent ets. No",
+   "compraràs?"
+  ]
+ ],
+ "m1230.u82": [
+  [
+   "Què vols?"
+  ]
+ ],
+ "m1230.u83": "Quin vendràs?",
+ "m1230.u84": [
+  [
+   "Gràcies!"
+  ]
+ ],
+ "m1230.u85": [
+  [
+   "Alguna cosa més?"
+  ]
+ ],
+ "m1230.u86": [
+  [
+   "Mmm, {color 10}{partner}{color 1} és més petit",
+   "que jo. Et descompto",
+   "{shopvar} Bits."
+  ]
+ ],
+ "m1230.u87": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Això és una botiga d'objectes."
+  ]
+ ],
+ "m1230.u88": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Torna un altre dia, eh?"
+  ]
+ ],
+ "m1230.u89": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Només miraves, eh?"
+  ]
+ ],
+ "m1230.u90": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Bé, què serà?"
+  ]
+ ],
+ "m1230.u91": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Quin vendràs?"
+  ]
+ ],
+ "m1230.u92": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Jo, jo, que amable."
+  ]
+ ],
+ "m1230.u93": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Alguna cosa més?"
+  ]
+ ],
+ "m1230.u94": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Jo, jo, {color 10}{partner}{color 1} encara és",
+   "jovenet. Et rebaixo",
+   "{shopvar} Bits, doncs."
+  ]
+ ],
+ "m1235.u0": [
+  [
+   "Això és el que tinc avui, sí,",
+   "sí."
+  ]
+ ],
+ "m1235.u1": [
+  [
+   "Per avui no n'hi ha més, sí."
+  ]
+ ],
+ "m1235.u2": [
+  [
+   "Hala! La carta llegendària:",
+   "{digimon 249}!"
+  ]
+ ],
+ "m1235.u3": [
+  [
+   "Oh, una carta de",
+   "{digimon 249}!"
+  ]
+ ],
+ "m1235.u4": [
+  [
+   "Una carta de",
+   "{digimon 249}.",
+   "Encara no la tinc."
+  ]
+ ],
+ "m1235.u5": [
+  [
+   "Una carta de",
+   "{digimon 249}."
+  ]
+ ],
+ "m1235.u6": [
+  [
+   "Uf, una altra carta de",
+   "{digimon 249}?"
+  ]
+ ],
+ "m1235.u7": [
+  [
+   "No tenia cap carta."
+  ]
+ ],
+ "m1235.u8": [
+  [
+   "Quina carta vendràs?"
+  ]
+ ],
+ "m1236.u0": [
+  [
+   "Oh, així que tu també desitges",
+   "Mèrits? Doncs bé, què serà?"
+  ]
+ ],
+ "m1236.u1": [
+  [
+   "Ensenyar una carta Digimon",
+   "Usar punts de Mèrit Ara no"
+  ]
+ ],
+ "m1236.u2": [
+  [
+   "Lliurar-la Deixa-ho"
+  ]
+ ],
+ "m1236.u3": [
+  [
+   "Val! Deixa-ho"
+  ]
+ ],
+ "m1236.u4": [
+  [
+   "És això el que desitges?"
+  ]
+ ],
+ "m1236.u5": [
+  [
+   "Què m'has portat?"
+  ]
+ ],
+ "m1236.u6": [
+  [
+   "Què és el que desitges?"
+  ]
+ ],
+ "m1236.u7": [
+  [
+   "Mmm... estranyíssima! Ha de ser",
+   "meva! T'ofereixo {shopvar}",
+   "punts. Tracte fet?"
+  ]
+ ],
+ "m1236.u8": [
+  [
+   "Mmm, bastant estranya! Ben",
+   "fet. Et dono {shopvar}",
+   "punts. Tracte fet?"
+  ]
+ ],
+ "m1236.u9": [
+  [
+   "Mmm, això està bastant bé.",
+   "Vegem... {shopvar} punts,",
+   "diria jo. Me la dónes?"
+  ]
+ ],
+ "m1236.u10": [
+  [
+   "Mmm, això és d'allò més",
+   "corrent. Val {shopvar}",
+   "punts. Me la dónes?"
+  ]
+ ],
+ "m1236.u11": [
+  [
+   "Mmm... no val res. Te l'accepto",
+   "per {shopvar} punts...",
+   "Tracte fet?"
+  ]
+ ],
+ "m1237.u0": [
+  [
+   "Eh! Véns a usar la Consigna?"
+  ]
+ ],
+ "m1237.u1": [
+  [
+   "Usar-la Avui no"
+  ]
+ ],
+ "m1237.u2": [
+  [
+   "Segur? Vine a usar-la quan",
+   "vulguis, val?"
+  ]
+ ],
+ "m1237.u3": [
+  [
+   "La creu de direcció mou el",
+   "cursor. {color 6}×{color 1} passa un objecte a",
+   "l'altre costat, {color 10}○{color 1} en passa",
+   "deu i {color 4}□{color 1} els passa tots."
+  ]
+ ],
+ "m1237.u4": [
+  [
+   "Guardat"
+  ]
+ ],
+ "m1237.u5": [
+  [
+   "Portes"
+  ]
+ ],
+ "m1238.u0": [
+  [
+   "Quin serà? Bzzt-zzt!"
+  ]
+ ],
+ "m1238.u1": [
+  [
+   "Compta amb mi per a la pròxima",
+   "petició, bzzt!"
+  ]
+ ],
+ "m1238.u2": [
+  [
+   "{bgm 249}, eh?"
+  ]
+ ],
+ "m1238.u3": [
+  [
+   "Vinga! Demana'm un tema que",
+   "m'encengui els ànims!"
+  ]
+ ],
+ "m1238.u4": [
+  [
+   "......On?"
+  ]
+ ],
+ "m1238.u5": [
+  [
+   "A peu, llavors... Pot ser que",
+   "sigui el millor."
+  ]
+ ],
+ "m1238.u6": [
+  [
+   "Segur? Un cop te'n vagis, no",
+   "hi ha volta enrere."
+  ]
+ ],
+ "m1238.u7": [
+  [
+   "Ho sé",
+   "Deixa-ho"
+  ]
+ ],
+ "m1238.u8": [
+  [
+   "Estic col·leccionant una cosa.",
+   "Si en tens, te la canvio de bon",
+   "grat."
+  ]
+ ],
+ "m1238.u9": [
+  [
+   "Què em donaràs?"
+  ]
+ ],
+ "m1238.u10": [
+  [
+   "Faig canvis quan vulguis, així",
+   "que porta'n més!"
+  ]
+ ],
+ "m1238.u11": [
+  [
+   "De debò em dónes",
+   "{item 249}?"
+  ]
+ ],
+ "m1238.u12": [
+  [
+   "Clar",
+   "No, m'ho quedo"
+  ]
+ ],
+ "m1238.u13": [
+  [
+   "Moltíssimes gràcies!"
+  ]
+ ],
+ "m1238.u14": [
+  [
+   "Portes massa objectes."
+  ]
+ ],
+ "m1238.u15": [
+  [
+   "Demana Ofereix"
+  ]
+ ],
+ "m1238.u16": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Sóc Jijimon. Perdona que t'ho",
+   "pregunti de cop, però em parles",
+   "una mica de tu?"
+  ]
+ ],
+ "m1238.u17": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Abans de res... tens un Digital",
+   "Monster?"
+  ]
+ ],
+ "m1238.u18": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sí",
+   "No"
+  ]
+ ],
+ "m1238.u19": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ooooh."
+  ]
+ ],
+ "m1238.u20": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Següent pregunta. Què et",
+   "agrada més, el dia o la nit?"
+  ]
+ ],
+ "m1238.u21": [
+  [
+   "{color 6}{player}{color 1}",
+   "El dia",
+   "La nit"
+  ]
+ ],
+ "m1238.u22": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Mmmm."
+  ]
+ ],
+ "m1238.u23": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Següent pregunta. Tens molts",
+   "amics?"
+  ]
+ ],
+ "m1238.u24": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sí",
+   "No molts"
+  ]
+ ],
+ "m1238.u25": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ja ho veig, ja ho veig."
+  ]
+ ],
+ "m1238.u26": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ah, és veritat! Gairebé",
+   "m'oblido de preguntar-te el",
+   "nom!"
+  ]
+ ],
+ "m1238.u27": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 6}{player}{color 1}, veritat?"
+  ]
+ ],
+ "m1238.u28": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sí",
+   "No"
+  ]
+ ],
+ "m1238.u29": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ara digues-me el nom del",
+   "Digimon que criaràs."
+  ]
+ ],
+ "m1238.u30": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 10}{partner}{color 1}, veritat?"
+  ]
+ ],
+ "m1238.u31": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Mmm, és un nom ben bonic."
+  ]
+ ],
+ "m1238.u32": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Mmm. Ja he fet totes les",
+   "preguntes. Ens veurem aviat!"
+  ]
+ ],
+ "m1240.u0": [
+  [
+   "D'acord? Sí No"
+  ]
+ ],
+ "m1240.u1": [
+  [
+   "Calendari de tornejos"
+  ]
+ ],
+ "m1240.u2": [
+  [
+   "Vols participar en la",
+   "-{cup 3}-?"
+  ]
+ ],
+ "m1240.u3": [
+  [
+   "Així que {color 10}{partner}{color 1} s'apunta",
+   "a la -{cup 3}-... Segur",
+   "del tot?"
+  ]
+ ],
+ "m1240.u4": [
+  [
+   "Participar Aquesta vegada no"
+  ]
+ ],
+ "m1240.u5": [
+  [
+   "Penalització!"
+  ]
+ ],
+ "m1240.u6": [
+  [
+   "Encara no pots entrar. Vine el",
+   "dia del torneig, entre les 10",
+   "del matí i les 11 de la nit."
+  ]
+ ],
+ "m1240.u7": [
+  [
+   "{move 243}",
+   "no s'ha heretat."
+  ]
+ ],
+ "m1241.u0": [
+  [
+   "Ah, és veritat, avui m'he",
+   "apuntat a la -{cup 3}-,",
+   "no?"
+  ]
+ ],
+ "m1242.u0": [
+  [
+   "Oh, no! Se m'ha oblidat que",
+   "avui estic apuntat a la",
+   "-{cup 3}-!"
+  ]
+ ],
+ "m1243.u0": [
+  [
+   "Categoria"
+  ]
+ ],
+ "m1243.u1": [
+  [
+   "Versió"
+  ]
+ ],
+ "m1243.u2": [
+  [
+   "Tipus"
+  ]
+ ],
+ "m1243.u3": [
+  [
+   "Especial"
+  ]
+ ],
+ "m1243.u4": [
+  [
+   "Total"
+  ]
+ ],
+ "m1243.u5": "Cartes",
+ "m1244.u0": [
+  [
+   "Ep, és {color 6}{item 200}{color 1}!"
+  ]
+ ],
+ "m1244.u1": [
+  [
+   "Però no puc portar més",
+   "objectes..."
+  ]
+ ],
+ "m1251.u0": [
+  [
+   "Je. Agarra't fort!"
+  ]
+ ]
+}

@@ -1,0 +1,813 @@
+{
+  "screen": 367,
+  "review": "Seven raised stones on the near parapet hide characters walking behind them on the deck. The arch spans blocked canyon with no lower path. Keep the original foreground and original single-deck collision except the individual stone bases.",
+  "transparent": 161,
+  "reserve_transparency": true,
+  "replace_index": 14,
+  "collision": [
+    {
+      "tile": [
+        52,
+        1
+      ],
+      "before": 111,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        2
+      ],
+      "before": 111,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        8
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        9
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        18
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        19
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        23
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        24
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        30
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        31
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        52,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        53,
+        34
+      ],
+      "before": 53,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        54,
+        34
+      ],
+      "before": 53,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    },
+    {
+      "tile": [
+        52,
+        35
+      ],
+      "before": 51,
+      "after": 128,
+      "reason": "raised parapet stone base"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "stone-bridge-parapet-1.png",
+      "at": [
+        365,
+        136
+      ],
+      "depth": [
+        370.0,
+        159
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              83,
+              120,
+              119,
+              151
+            ],
+            "positive": [
+              [
+                99,
+                136
+              ]
+            ],
+            "negative": [
+              [
+                84,
+                150
+              ],
+              [
+                118,
+                150
+              ]
+            ],
+            "score": 0.9863962531089783
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-2.png",
+      "at": [
+        379,
+        122
+      ],
+      "depth": [
+        392.1428571428571,
+        148
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              110,
+              109,
+              135,
+              137
+            ],
+            "positive": [
+              [
+                124,
+                119
+              ],
+              [
+                123,
+                128
+              ],
+              [
+                119,
+                115
+              ]
+            ],
+            "negative": [
+              [
+                108,
+                120
+              ],
+              [
+                124,
+                139
+              ],
+              [
+                137,
+                117
+              ]
+            ],
+            "score": 0.9674993753433228
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-3.png",
+      "at": [
+        408,
+        107
+      ],
+      "depth": [
+        412.2857142857143,
+        125
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              129,
+              95,
+              157,
+              119
+            ],
+            "positive": [
+              [
+                142,
+                106
+              ]
+            ],
+            "negative": [
+              [
+                130,
+                118
+              ],
+              [
+                156,
+                118
+              ]
+            ],
+            "score": 0.961401104927063
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-4.png",
+      "at": [
+        420,
+        95
+      ],
+      "depth": [
+        431.16666666666663,
+        115
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              149,
+              84,
+              173,
+              105
+            ],
+            "positive": [
+              [
+                163,
+                94
+              ],
+              [
+                155,
+                98
+              ],
+              [
+                162,
+                98
+              ]
+            ],
+            "negative": [
+              [
+                146,
+                93
+              ],
+              [
+                167,
+                109
+              ],
+              [
+                175,
+                91
+              ]
+            ],
+            "score": 0.9407058954238892
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-5.png",
+      "at": [
+        446,
+        77
+      ],
+      "depth": [
+        446.42857142857144,
+        102
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              165,
+              67,
+              189,
+              91
+            ],
+            "positive": [
+              [
+                178,
+                77
+              ],
+              [
+                181,
+                78
+              ],
+              [
+                178,
+                73
+              ]
+            ],
+            "negative": [
+              [
+                162,
+                79
+              ],
+              [
+                176,
+                92
+              ],
+              [
+                191,
+                79
+              ]
+            ],
+            "score": 0.9522194862365723
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-6.png",
+      "at": [
+        456,
+        68
+      ],
+      "depth": [
+        459.8571428571429,
+        88
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              184,
+              55,
+              203,
+              77
+            ],
+            "positive": [
+              [
+                193,
+                65
+              ],
+              [
+                193,
+                70
+              ]
+            ],
+            "negative": [
+              [
+                180,
+                64
+              ],
+              [
+                199,
+                80
+              ],
+              [
+                205,
+                66
+              ]
+            ],
+            "score": 0.8889927864074707
+          }
+        ]
+      }
+    },
+    {
+      "png": "stone-bridge-parapet-7.png",
+      "at": [
+        465,
+        56
+      ],
+      "depth": [
+        469.7142857142857,
+        70
+      ],
+      "source": "gcan01-stone-bridge.png",
+      "segmentation": {
+        "native_size": [
+          240,
+          192
+        ],
+        "source_art": "gcan01-stone-bridge.png",
+        "source_offset": [
+          270,
+          10
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "opt-c-ancient-ruin.png",
+            "source_sha1": "3cce7ca302d9aedd349ada3f1ab4e39584ccf129",
+            "native_to_source": [
+              [
+                9.6,
+                0,
+                0
+              ],
+              [
+                0,
+                9.666666666666666,
+                0
+              ]
+            ],
+            "box": [
+              189,
+              38,
+              210,
+              64
+            ],
+            "positive": [
+              [
+                200,
+                50
+              ]
+            ],
+            "negative": [
+              [
+                190,
+                63
+              ],
+              [
+                209,
+                63
+              ]
+            ],
+            "score": 0.9753842353820801
+          }
+        ]
+      }
+    }
+  ],
+  "footprints": [
+    [
+      [
+        359,
+        153
+      ],
+      [
+        383,
+        153
+      ],
+      [
+        383,
+        159
+      ],
+      [
+        359,
+        159
+      ]
+    ],
+    [
+      [
+        383,
+        141
+      ],
+      [
+        401,
+        141
+      ],
+      [
+        401,
+        147
+      ],
+      [
+        383,
+        147
+      ]
+    ],
+    [
+      [
+        405,
+        121
+      ],
+      [
+        421,
+        121
+      ],
+      [
+        421,
+        127
+      ],
+      [
+        405,
+        127
+      ]
+    ],
+    [
+      [
+        423,
+        108
+      ],
+      [
+        438,
+        108
+      ],
+      [
+        438,
+        114
+      ],
+      [
+        423,
+        114
+      ]
+    ],
+    [
+      [
+        440,
+        98
+      ],
+      [
+        454,
+        98
+      ],
+      [
+        454,
+        104
+      ],
+      [
+        440,
+        104
+      ]
+    ],
+    [
+      [
+        453,
+        84
+      ],
+      [
+        467,
+        84
+      ],
+      [
+        467,
+        90
+      ],
+      [
+        453,
+        90
+      ]
+    ],
+    [
+      [
+        465,
+        66
+      ],
+      [
+        474,
+        66
+      ],
+      [
+        474,
+        72
+      ],
+      [
+        465,
+        72
+      ]
+    ]
+  ]
+}

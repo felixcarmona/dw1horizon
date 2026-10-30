@@ -1,0 +1,238 @@
+{
+ "s108.sec5.m0.o0": "What's training?",
+ "s108.sec5.m0.o1": "How do I train?",
+ "s108.sec5.m0.o2": "Nothing, thanks",
+ "s108.sec5.u0": "Hey hey, news! Um, so... while your Digimon is still a baby, try doing the same training over and over. They say something good happens!",
+ "s108.sec5.u1": "Hey hey, news! Um, so... in a Bonus Try, if you line up the same picture as the one on the sign, the boost gets even bigger!",
+ "s108.sec5.u2": "Oh right, I said I'd tell you about techniques. Usually, after a battle, your Digimon learns a technique the enemy used on it. Only one it can equip right now, though. It doesn't work every time, but it's the quickest way to get more techniques. And then... the chances are really low, but you can also learn one through training. Once Brains are pretty high, doing the training at {color 6}{player}{color 1}'s Classroom can teach one, they say. I know I keep saying it, but the chances really are low, so don't count on it too much. Balance is what matters!",
+ "s108.sec5.u3": [
+  [
+   "Hey hey, I'm Koromon! Jiji asked me to teach",
+   "you about training."
+  ],
+  [
+   "Anything you want to know?"
+  ]
+ ],
+ "s108.sec5.u4": "Training here raises your Digimon's stats. But training makes it tired, and it takes a good while, too. Still, it's a surer way to raise stats than battling. And once in a blue moon, your Digimon learns a new technique! I'll tell you about techniques another time.",
+ "s108.sec5.u5": "There are six pieces of training equipment here, and each one has a sign next to it.",
+ "s108.sec5.u6": [
+  [
+   "First, stand in front of a sign and press {color 6}×{color 1}."
+  ],
+  [
+   "Read what it says and you'll get a rough idea",
+   "of which stat goes up."
+  ],
+  [
+   "Some kinds of Digimon raise some stats easily,",
+   "and others not so much."
+  ],
+  [
+   "You won't know till you try!"
+  ],
+  [
+   "Choose Begin training, then Normal training,",
+   "and your Digimon trains for one hour."
+  ],
+  [
+   "While training, you can skip ahead in time with",
+   "{color 5}△{color 1}."
+  ],
+  [
+   "Oh, right, I have to tell you about Bonus Try",
+   "training!"
+  ],
+  [
+   "If a Bonus Try goes well, the stat shoots",
+   "way up. But if it fails..."
+  ],
+  [
+   "the stat barely goes up at all. Try it once and",
+   "you'll see."
+  ]
+ ],
+ "s108.sec5.u7": "Oh, okay... I'll go dig up some new info for you.",
+ "s108.sec6.u0": "Me go to city. City too city for me. Me no fit. So me come here. Me rebuild machines here. Work better than before. You train lots.",
+ "s108.sec7.u0": "Me go to city. City too city for me. Me no fit. So me come here. Me rebuild machines here. Work better than before. You train lots.",
+ "s108.sec81.m0.o0": "Start training",
+ "s108.sec81.m0.o1": "About this training",
+ "s108.sec81.m0.o2": "Quit",
+ "s108.sec81.m1.o0": "Normal training",
+ "s108.sec81.m1.o1": "Bonus Try training",
+ "s108.sec81.m1.o2": "Never mind",
+ "s108.sec81.m2.o0": "Explain again",
+ "s108.sec81.m2.o1": "Start training",
+ "s108.sec81.m2.o2": "Quit",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Training:",
+   "Boulder Pushing, Improved{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "",
+   "{color 5}Training: Boulder Pushing{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": "Pushing a huge boulder builds raw strength. Max HP goes up a lot, and Offense too.",
+ "s108.sec81.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Start training",
+ "s108.sec82.m0.o1": "About this training",
+ "s108.sec82.m0.o2": "Quit",
+ "s108.sec82.m1.o0": "Normal training",
+ "s108.sec82.m1.o1": "Bonus Try training",
+ "s108.sec82.m1.o2": "Never mind",
+ "s108.sec82.m2.o0": "Explain again",
+ "s108.sec82.m2.o1": "Start training",
+ "s108.sec82.m2.o2": "Quit",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Training:",
+   "Waterfall, Improved{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "",
+   "{color 5}Training: Waterfall{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": "Standing under a waterfall steels the spirit. Max MP goes up a lot, and Defense too.",
+ "s108.sec82.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Start training",
+ "s108.sec83.m0.o1": "About this training",
+ "s108.sec83.m0.o2": "Quit",
+ "s108.sec83.m1.o0": "Normal training",
+ "s108.sec83.m1.o1": "Bonus Try training",
+ "s108.sec83.m1.o2": "Never mind",
+ "s108.sec83.m2.o0": "Explain again",
+ "s108.sec83.m2.o1": "Start training",
+ "s108.sec83.m2.o2": "Quit",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Training:",
+   "Tree Striking, Improved{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "",
+   "{color 5}Training: Tree Striking{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": "Practice techniques on a tree. Offense goes up a lot, and Speed too.",
+ "s108.sec83.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Start training",
+ "s108.sec84.m0.o1": "About this training",
+ "s108.sec84.m0.o2": "Quit",
+ "s108.sec84.m1.o0": "Normal training",
+ "s108.sec84.m1.o1": "Bonus Try training",
+ "s108.sec84.m1.o2": "Never mind",
+ "s108.sec84.m2.o0": "Explain again",
+ "s108.sec84.m2.o1": "Start training",
+ "s108.sec84.m2.o2": "Quit",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Training:",
+   "Punching Glove, Improved{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "",
+   "{color 5}Training: Punching Glove{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": "Take hits from a giant punching machine. Defense goes up a lot, and Brains too.",
+ "s108.sec84.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Start training",
+ "s108.sec85.m0.o1": "About this training",
+ "s108.sec85.m0.o2": "Quit",
+ "s108.sec85.m1.o0": "Normal training",
+ "s108.sec85.m1.o1": "Bonus Try training",
+ "s108.sec85.m1.o2": "Never mind",
+ "s108.sec85.m2.o0": "Explain again",
+ "s108.sec85.m2.o1": "Start training",
+ "s108.sec85.m2.o2": "Quit",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Training:",
+   "Running, Improved{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "",
+   "{color 5}Training: Running{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": "Run laps of the course, again and again. Speed goes up a lot, and Max HP too.",
+ "s108.sec85.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Start training",
+ "s108.sec86.m0.o1": "About this training",
+ "s108.sec86.m0.o2": "Quit",
+ "s108.sec86.m1.o0": "Normal training",
+ "s108.sec86.m1.o1": "Bonus Try training",
+ "s108.sec86.m1.o2": "Never mind",
+ "s108.sec86.m2.o0": "Explain again",
+ "s108.sec86.m2.o1": "Start training",
+ "s108.sec86.m2.o2": "Quit",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Training: {color 6}{player}{color 1}{color 5}'s Classroom,",
+   "Improved{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Training:",
+   "{color 6}{player}{color 1}{color 5}'s Classroom{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": "{color 6}{player}{color 1} becomes the teacher and teaches all sorts of things. Brains goes up a lot, and Max MP too.",
+ "s108.sec86.u3": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ]
+}

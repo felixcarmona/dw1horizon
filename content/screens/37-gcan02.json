@@ -1,0 +1,12 @@
+{
+  "id": 37,
+  "file": "GCAN02",
+  "tims8": 1,
+  "tims4": 1,
+  "sound_bank": 6,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 19,
+  "toilet": 0,
+  "caption": 21
+}

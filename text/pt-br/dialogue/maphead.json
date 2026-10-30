@@ -1,0 +1,601 @@
+{
+ "m1230.u0": [
+  [
+   "Bem-vindo! Como posso ajudar?"
+  ],
+  [
+   "Ainda estamos nos preparando."
+  ],
+  [
+   "Comprar",
+   "Vender",
+   "Depois"
+  ],
+  [
+   "Comprar",
+   "Depois"
+  ],
+  [
+   "Volte sempre!"
+  ],
+  [
+   "Só veio me incomodar?!"
+  ],
+  [
+   "Bits {money}"
+  ],
+  [
+   "Méritos {merit}"
+  ],
+  [
+   "Gostou de alguma coisa?"
+  ],
+  [
+   "Qual você vai vender?"
+  ],
+  [
+   "Muito obrigado."
+  ],
+  [
+   "Mais alguma coisa?"
+  ],
+  [
+   "Nosso estoque acabou."
+  ],
+  [
+   "Descontei {shopvar} Bits."
+  ]
+ ],
+ "m1230.u1": [
+  [
+   "Eba, você veio! O que vai",
+   "querer?"
+  ]
+ ],
+ "m1230.u2": [
+  [
+   "Não tenho nada para vender agora."
+  ]
+ ],
+ "m1230.u3": [
+  "Comprar",
+  "Vender",
+  "Depois"
+ ],
+ "m1230.u4": [
+  "Comprar",
+  "Depois"
+ ],
+ "m1230.u5": "Yaaay! Volte logo!",
+ "m1230.u6": [
+  [
+   "Ah, só isso? Poxa."
+  ]
+ ],
+ "m1230.u7": [
+  [
+   "Bits {money}"
+  ]
+ ],
+ "m1230.u8": [
+  [
+   "Méritos {merit}"
+  ]
+ ],
+ "m1230.u9": "Compre muito, está bem?",
+ "m1230.u10": "Tem algo que você não precisa?",
+ "m1230.u11": [
+  [
+   "Eba, obrigado!"
+  ]
+ ],
+ "m1230.u12": "Tem mais alguma coisa?",
+ "m1230.u13": "Não tenho mais nada para vender.",
+ "m1230.u14": "{color 10}{partner}{color 1} ainda é pequeno, não é? Vou tirar {shopvar} Bits para você!",
+ "m1230.u15": [
+  [
+   "Ah, bem-vindo."
+  ]
+ ],
+ "m1230.u16": "Volte de novo.",
+ "m1230.u17": "Só olhar não é muito legal, sabe.",
+ "m1230.u18": "O que você vai comprar?",
+ "m1230.u19": "Você vai me vender alguma coisa?",
+ "m1230.u20": "Obrigado.",
+ "m1230.u21": "Tem mais alguma coisa?",
+ "m1230.u22": "{color 10}{partner}{color 1} tem que crescer grande, e logo. Tudo bem, vou tirar {shopvar} Bits.",
+ "m1230.u23": [
+  [
+   "Bem-vindo, piu! O que vai",
+   "querer, piu?"
+  ]
+ ],
+ "m1230.u24": [
+  [
+   "Obrigado por voltar, piu!"
+  ]
+ ],
+ "m1230.u25": [
+  [
+   "Hã? Só olhando, piu?!"
+  ]
+ ],
+ "m1230.u26": [
+  [
+   "Escolha um, piu."
+  ]
+ ],
+ "m1230.u27": [
+  [
+   "Compro qualquer coisa, piu."
+  ]
+ ],
+ "m1230.u28": [
+  [
+   "Obrigado, piu."
+  ]
+ ],
+ "m1230.u29": [
+  [
+   "Mais alguma coisa, piu?"
+  ]
+ ],
+ "m1230.u30": [
+  [
+   "{color 10}{partner}{color 1} ainda é criança,",
+   "piu. Desconto de {shopvar}",
+   "Bits, piu."
+  ]
+ ],
+ "m1230.u31": "Ah, bem-vindo! O que vai ser?",
+ "m1230.u32": "Obrigado. Volte de novo.",
+ "m1230.u33": "Da próxima vez, espero.",
+ "m1230.u34": "Então, qual será?",
+ "m1230.u35": "O que gostaria de vender?",
+ "m1230.u36": "Muito obrigado.",
+ "m1230.u37": "Mais alguma coisa?",
+ "m1230.u38": "Meu Deus, {color 10}{partner}{color 1} é tão pequeno. Eu realmente tenho que tirar {shopvar} Bits.",
+ "m1230.u39": "Hum, você veio. Só aqui há estes produtos. Compre à vontade... He, he...",
+ "m1230.u40": [
+  [
+   "Economize e volte."
+  ]
+ ],
+ "m1230.u41": "Wh...! Só está olhando, não é?",
+ "m1230.u42": "Compre o que quiser.",
+ "m1230.u43": "Eu não aceito lixo. Heh heh ...",
+ "m1230.u44": [
+  [
+   "Cuidado aí fora."
+  ]
+ ],
+ "m1230.u45": "O que mais você quer?",
+ "m1230.u46": [
+  [
+   "Hehe... {color 10}{partner}{color 1}, por você,",
+   "desconto {shopvar} Bits."
+  ]
+ ],
+ "m1230.u47": "Ooh, você, cliente!",
+ "m1230.u48": "Da próxima vez, compre mais!",
+ "m1230.u49": "Você, mesquinho!",
+ "m1230.u50": "Compre tudo!",
+ "m1230.u51": "Venda qualquer coisa!",
+ "m1230.u52": "Ok, bom!",
+ "m1230.u53": "Mais? Você tem mais?",
+ "m1230.u54": [
+  [
+   "{color 10}{partner}{color 1}, você, pequeno!",
+   "Eu dar desconto de",
+   "{shopvar} Bits!"
+  ]
+ ],
+ "m1230.u55": "Meus itens são tão incríveis! Bleh, bleh.",
+ "m1230.u56": [
+  [
+   "Volte outra vez, ou o que seja. Bleh, bleh."
+  ]
+ ],
+ "m1230.u57": "Aaah, vá para casa já, bleh?",
+ "m1230.u58": "Qual deles é o bom?",
+ "m1230.u59": "Vamos, venda, venda.",
+ "m1230.u60": "Sério? Bleh?",
+ "m1230.u61": [
+  [
+   "Mais alguma coisa? Tem? Huh? Bleh?"
+  ]
+ ],
+ "m1230.u62": [
+  [
+   "Ooh? Uma criança? Um desconto? Menos",
+   "{shopvar} Bits, então."
+  ]
+ ],
+ "m1230.u63": [
+  [
+   "Tenho coisas que ajudam no dia",
+   "a dia. O que acha?"
+  ]
+ ],
+ "m1230.u64": "Volte agora.",
+ "m1230.u65": "Está me zoando?",
+ "m1230.u66": "O que você quer?",
+ "m1230.u67": "Qual você está vendendo?",
+ "m1230.u68": "Muito obrigado.",
+ "m1230.u69": "Mais alguma coisa?",
+ "m1230.u70": [
+  [
+   "Ora, {color 10}{partner}{color 1} ainda é",
+   "pequeno. Dou desconto de",
+   "{shopvar} Bits."
+  ]
+ ],
+ "m1230.u71": "Agora é a sua chance, sim. Compre o que quiser!",
+ "m1230.u72": "Volte logo, sim sim.",
+ "m1230.u73": "Você está aqui para atrapalhar os negócios, não é?",
+ "m1230.u74": "Qual deles, sim?",
+ "m1230.u75": "Você vende o quê, hein?",
+ "m1230.u76": "Obrigado, sim!",
+ "m1230.u77": "Mais alguma coisa, sim?",
+ "m1230.u78": [
+  [
+   "Oh, {color 10}{partner}{color 1} é criança,",
+   "sim. Desconto especial de",
+   "{shopvar} Bits!"
+  ]
+ ],
+ "m1230.u79": "Bem-viiindo!",
+ "m1230.u80": "Volte de novo, está bem?",
+ "m1230.u81": [
+  [
+   "Isso é maldade. Você não está comprando?"
+  ]
+ ],
+ "m1230.u82": "O que vai querer?",
+ "m1230.u83": "Qual você vai vender?",
+ "m1230.u84": "Obrigado!",
+ "m1230.u85": "Mais alguma coisa?",
+ "m1230.u86": "{color 10}{partner}{color 1} é menor que eu. Vou tirar {shopvar} Bits.",
+ "m1230.u87": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Aqui é uma loja de itens."
+  ]
+ ],
+ "m1230.u88": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Volte de novo."
+  ]
+ ],
+ "m1230.u89": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Só olhando, não é?"
+  ]
+ ],
+ "m1230.u90": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Agora, o que vai querer?"
+  ]
+ ],
+ "m1230.u91": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Qual você vai vender?"
+  ]
+ ],
+ "m1230.u92": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Ho ho, que gentil."
+  ]
+ ],
+ "m1230.u93": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Mais alguma coisa?"
+  ]
+ ],
+ "m1230.u94": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Ho, ho! {color 10}{partner}{color 1}",
+   "é jovem. Desconto de",
+   "{shopvar} Bits, então."
+  ]
+ ],
+ "m1235.u0": [
+  [
+   "Aqui está o que tenho hoje, sim."
+  ]
+ ],
+ "m1235.u1": "Não mais por hoje, sim.",
+ "m1235.u2": [
+  [
+   "Uau! A carta lendária:",
+   "{digimon 249}!"
+  ]
+ ],
+ "m1235.u3": [
+  [
+   "Oh, uma carta de",
+   "{digimon 249}!"
+  ]
+ ],
+ "m1235.u4": [
+  [
+   "Uma carta de",
+   "{digimon 249}.",
+   "Ainda não tenho esta."
+  ]
+ ],
+ "m1235.u5": [
+  [
+   "Uma carta de",
+   "{digimon 249}."
+  ]
+ ],
+ "m1235.u6": [
+  [
+   "Ah, outra carta de",
+   "{digimon 249}?"
+  ]
+ ],
+ "m1235.u7": [
+  [
+   "Eu não tinha nenhuma carta."
+  ]
+ ],
+ "m1235.u8": [
+  [
+   "Que carta você vai vender?"
+  ]
+ ],
+ "m1236.u0": "Oho, então você também deseja Mérito? Então, o que vai ser?",
+ "m1236.u1": [
+  "Mostrar carta Digimon",
+  "Usar pontos de mérito",
+  "Depois"
+ ],
+ "m1236.u2": [
+  "Entregar",
+  "Deixa pra lá"
+ ],
+ "m1236.u3": [
+  "Certo!",
+  "Deixa pra lá"
+ ],
+ "m1236.u4": "É isso que você deseja?",
+ "m1236.u5": "O que você me trouxe?",
+ "m1236.u6": "O que você deseja?",
+ "m1236.u7": [
+  [
+   "Hmm, é... ultrarrara! Preciso",
+   "dela! Ofereço {shopvar}",
+   "pontos. Combinado?"
+  ]
+ ],
+ "m1236.u8": "Que raridade! Bom achado. Ofereço {shopvar} pontos. Combinado?",
+ "m1236.u9": [
+  [
+   "Hmm, é bem boa. Vejamos...",
+   "{shopvar} pontos. Você me",
+   "dá?"
+  ]
+ ],
+ "m1236.u10": [
+  [
+   "Hmm, é bem comum. Vale",
+   "{shopvar} pontos. Você me",
+   "dá?"
+  ]
+ ],
+ "m1236.u11": [
+  [
+   "Hmm, essa... não é boa. Posso",
+   "aceitar por {shopvar}",
+   "pontos... Combinado?"
+  ]
+ ],
+ "m1237.u0": [
+  [
+   "Ei! Vai usar o Depósito de",
+   "Itens?"
+  ]
+ ],
+ "m1237.u1": [
+  "Usar",
+  "Hoje não"
+ ],
+ "m1237.u2": "Tem certeza? Venha usar o quanto quiser, certo?",
+ "m1237.u3": [
+  [
+   "D-pad move o cursor, {color 6}×{color 1} move um, {color 10}○{color 1} move dez,",
+   "{color 4}□{color 1} move tudo."
+  ]
+ ],
+ "m1237.u4": [
+  [
+   "No depósito."
+  ]
+ ],
+ "m1237.u5": [
+  [
+   "Na mão."
+  ]
+ ],
+ "m1238.u0": "Qual deles será? Bzzt-zzt!",
+ "m1238.u1": "Conte comigo para o próximo pedido, bzzt!",
+ "m1238.u2": "{bgm 249}, hein?",
+ "m1238.u3": [
+  [
+   "Vamos! Peça uma música que me",
+   "deixe animado!"
+  ]
+ ],
+ "m1238.u4": "Para onde?",
+ "m1238.u5": "Com seus próprios pés, então... talvez seja o melhor jeito.",
+ "m1238.u6": [
+  [
+   "Tem certeza? Assim que você for, é isso."
+  ]
+ ],
+ "m1238.u7": [
+  "Eu sei",
+  "Deixa pra lá"
+ ],
+ "m1238.u8": [
+  [
+   "Estou juntando umas coisas. Se",
+   "você tiver, quero trocar!"
+  ]
+ ],
+ "m1238.u9": "O que vai me dar?",
+ "m1238.u10": "Trocarei a qualquer momento, então continue com eles!",
+ "m1238.u11": "Você realmente me daria {item 249}?",
+ "m1238.u12": [
+  "Claro",
+  "Não, vou ficar com ele"
+ ],
+ "m1238.u13": "Muito obrigado!",
+ "m1238.u14": "Você tem muitos itens.",
+ "m1238.u15": [
+  "Procurado Oferecido"
+ ],
+ "m1238.u16": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Sou Jijimon. Desculpe, mas",
+   "pode me falar de você?"
+  ]
+ ],
+ "m1238.u17": [
+  "{color 7}Jijimon {color 1}",
+  "Primeiro... você tem um Digital Monster?"
+ ],
+ "m1238.u18": [
+  "{color 6}{player}{color 1}",
+  "Tenho",
+  "Não tenho"
+ ],
+ "m1238.u19": [
+  "{color 7}Jijimon {color 1}",
+  "Oooh."
+ ],
+ "m1238.u20": [
+  "{color 7}Jijimon {color 1}",
+  "Próxima pergunta. Você prefere o dia ou a noite?"
+ ],
+ "m1238.u21": [
+  "{color 6}{player}{color 1}",
+  "Dia",
+  "Noite"
+ ],
+ "m1238.u22": [
+  "{color 7}Jijimon {color 1}",
+  "Hummm."
+ ],
+ "m1238.u23": [
+  "{color 7}Jijimon {color 1}",
+  "Próxima pergunta. Você tem muitos amigos?"
+ ],
+ "m1238.u24": [
+  "{color 6}{player}{color 1}",
+  "Tenho",
+  "Não muitos"
+ ],
+ "m1238.u25": [
+  "{color 7}Jijimon {color 1}",
+  "Entendo, entendo."
+ ],
+ "m1238.u26": [
+  "{color 7}Jijimon {color 1}",
+  "Ah, é mesmo! Quase me esqueci de perguntar seu nome!"
+ ],
+ "m1238.u27": [
+  "{color 7}Jijimon {color 1}",
+  "{color 6}{player}{color 1}, certo?"
+ ],
+ "m1238.u28": [
+  "{color 6}{player}{color 1}",
+  "Sim",
+  "Não"
+ ],
+ "m1238.u29": [
+  "{color 7}Jijimon {color 1}",
+  "Agora me diga o nome do Digimon que você vai criar."
+ ],
+ "m1238.u30": [
+  "{color 7}Jijimon {color 1}",
+  "{color 10}{partner}{color 1}, certo?"
+ ],
+ "m1238.u31": [
+  "{color 7}Jijimon {color 1}",
+  "Hum, belo nome."
+ ],
+ "m1238.u32": [
+  "{color 7}Jijimon {color 1}",
+  "Hum. Era só isso. Nos veremos de novo em breve!"
+ ],
+ "m1240.u0": [
+  "Tudo certo?",
+  "Sim Não"
+ ],
+ "m1240.u1": [
+  [
+   "Calendário do torneio"
+  ]
+ ],
+ "m1240.u2": "Quer entrar no {cup 3}?",
+ "m1240.u3": [
+  [
+   "Então {color 10}{partner}{color 1} está entrando no",
+   "{cup 3}... tem certeza?"
+  ]
+ ],
+ "m1240.u4": [
+  "Participar",
+  "Desta vez não"
+ ],
+ "m1240.u5": "Penalidade!",
+ "m1240.u6": [
+  [
+   "Ainda não pode entrar. Venha",
+   "no dia do torneio, entre 10h e",
+   "23h."
+  ]
+ ],
+ "m1240.u7": [
+  [
+   "{move 243}",
+   "não foi herdada."
+  ]
+ ],
+ "m1241.u0": [
+  [
+   "Ah, sim, eu entrei no \"{cup 3}\" de",
+   "hoje, não?"
+  ]
+ ],
+ "m1242.u0": [
+  [
+   "Oh, não! Esqueci que entrei no {cup 3}",
+   "de hoje!"
+  ]
+ ],
+ "m1243.u0": "Categoria",
+ "m1243.u1": "Versão",
+ "m1243.u2": "Tipo",
+ "m1243.u3": "Especial.",
+ "m1243.u4": "Total",
+ "m1243.u5": "Cartas",
+ "m1244.u0": "Ei, é {color 6}{item 200}{color 1}!",
+ "m1244.u1": [
+  [
+   "Mas não posso carregar mais itens..."
+  ]
+ ],
+ "m1251.u0": "Heh. Segure-se firme!"
+}

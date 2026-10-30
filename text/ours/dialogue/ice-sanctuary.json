@@ -1,0 +1,102 @@
+{
+ "s093.sec5.u0": "Huh? Come to think of it, the statue...",
+ "s093.sec5.u1": "Ah!",
+ "s093.sec5.u2": "Phew... Now then.",
+ "s093.sec5.u3": "You came back to life. All right!",
+ "s093.sec5.u4": "I am Angemon, the angel who guardeth thee. I have awakened here to fulfill my duty to thee.",
+ "s093.sec5.u5": "Whoa, I have no idea what he's saying.",
+ "s093.sec5.u6": "I know the laws of heaven. Following the guidance of the earth, I offer up my soul.",
+ "s093.sec5.u7": "This is going nowhere... So, um, are you coming to the city... or what?",
+ "s093.sec5.u8": "Thy mission shall be my duty. I go.",
+ "s093.sec5.u9": "Uh, sorry, but could you talk in words I understand?",
+ "s093.sec5.u10": "...I will go to the city, so please do your best too... Is that better?",
+ "s093.sec5.u11": "Yeah, that I get. Okay, glad to have you.",
+ "s093.sec5.u12": "Angemon joined the city!",
+ "s093.sec51.u0": "Whoa, it looks almost alive...",
+ "s093.sec51.u1": "Actually, you see this kind of thing all the time. You do something and it starts moving, right? Heh heh, just you wait!",
+ "s093.sec52.u0": "What is it? {color 10}{partner}{color 1}, did you find something?",
+ "s093.sec52.u1": "Whoa, way to go, {color 10}{partner}{color 1}!",
+ "s094.sec5.u0": "Hey, you're shivering!",
+ "s094.sec6.u0": "Cold? Is it?",
+ "s094.sec7.u0": "Is it not all pointless?",
+ "s095.sec81.u0": [
+  [
+   "",
+   "{color 5}Training: Moving Ice{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": "Pushing big blocks of ice builds stamina. Max HP goes up a lot, and Defense too.",
+ "s095.sec81.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "",
+   "{color 5}Training: Icicle Fall{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": "Train by catching huge falling icicles. Defense goes up a lot, and Speed too.",
+ "s095.sec84.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s096.sec5.u0": "I'll knock you flat!",
+ "s096.sec6.u0": "Just call it bad luck and give up!",
+ "s096.sec7.u0": "Any last words before you're erased?",
+ "s097.sec5.u0": "Who are you?",
+ "s097.sec6.u0": "It is all pointless.",
+ "s097.sec7.u0": "Hmm, did I catch a cold?",
+ "s097.sec8.u0": "Hey, that's cold of you!",
+ "s098.sec5.u0": "Maybe you should go home?",
+ "s098.sec6.u0": "Go home!",
+ "s098.sec7.u0": "You'd better turn back!",
+ "s098.sec52.u0": "S... so bright...!",
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "You who seek my soul, now the",
+   "time to awaken has come. Upon",
+   "you, the blessing of my wings!"
+  ]
+ ],
+ "s098.sec52.u2": "What...? Where is this...? Whose... voice...? Ngh.........!",
+ "s098.sec52.u3": "What was that...? The light's gone... There's nothing left down here... which means... it's upstairs!",
+ "s099.sec5.u0": "This is where we truly say goodbye.",
+ "s099.sec6.u0": "I make no mistakes!",
+ "s095.sec81.m0.o0": "Start training",
+ "s095.sec81.m0.o1": "About this training",
+ "s095.sec81.m0.o2": "Quit",
+ "s095.sec81.m1.o0": "Normal training",
+ "s095.sec81.m1.o1": "Bonus Try training",
+ "s095.sec81.m1.o2": "Never mind",
+ "s095.sec81.m2.o0": "Explain again",
+ "s095.sec81.m2.o1": "Start training",
+ "s095.sec81.m2.o2": "Quit",
+ "s095.sec84.m0.o0": "Start training",
+ "s095.sec84.m0.o1": "About this training",
+ "s095.sec84.m0.o2": "Quit",
+ "s095.sec84.m1.o0": "Normal training",
+ "s095.sec84.m1.o1": "Bonus Try training",
+ "s095.sec84.m1.o2": "Never mind",
+ "s095.sec84.m2.o0": "Explain again",
+ "s095.sec84.m2.o1": "Start training",
+ "s095.sec84.m2.o2": "Quit",
+ "s100.sec60.u0": "Yeeugh!",
+ "s100.sec60.u1": ".........",
+ "s100.sec60.u2": "Y-you've gotta be kidding me!",
+ "s100.sec60.u3": "It vanished... Was it an illusion...?",
+ "s100.sec60.u4": "Looks like we beat it... somehow.",
+ "s100.sec60.u5": "Huh?!",
+ "s100.sec60.u6": "Mm, mmm... Huh?!",
+ "s100.sec60.u7": "I sort of blacked out all of a sudden... Oh! S-sorry about that!",
+ "s100.sec60.u8": "Hmmmm?? What was that? The curse of Analogman?! Oh well, it should be fine now."
+}

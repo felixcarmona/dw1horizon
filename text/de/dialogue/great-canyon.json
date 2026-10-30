@@ -1,0 +1,273 @@
+{
+ "s122.sec5.u0": [
+  [
+   "Ah, Du hast mich gerettet!"
+  ]
+ ],
+ "s122.sec5.u1": [
+  [
+   "Du warst also derjenige, der",
+   "festsaß."
+  ]
+ ],
+ "s122.sec5.u2": [
+  [
+   "Aber das trifft sich gut."
+  ]
+ ],
+ "s122.sec5.u3": [
+  [
+   "Was?"
+  ]
+ ],
+ "s122.sec5.u4": [
+  [
+   "Ich war auf dem Weg in deine",
+   "Stadt, um dort meine Talente",
+   "einzusetzen!"
+  ]
+ ],
+ "s122.sec5.u5": [
+  [
+   "Äh... welche Talente?"
+  ]
+ ],
+ "s122.sec5.u6": [
+  [
+   "Oh, du kennst mich nicht?",
+   "Unter Digimon bin ich dafür",
+   "bekannt, alles zu wissen!"
+  ]
+ ],
+ "s122.sec5.u7": [
+  [
+   "Hm. Noch nie von dir gehört."
+  ]
+ ],
+ "s122.sec5.u8": [
+  [
+   "Nun, Ich gehe in die Stadt."
+  ]
+ ],
+ "s122.sec5.u9": [
+  [
+   "......Ob der uns wohl etwas",
+   "nützt?"
+  ]
+ ],
+ "s122.sec5.u10": [
+  [
+   "Einen schönen Tag noch!"
+  ]
+ ],
+ "s122.sec5.u11": "Shellmon ist in die Stadt gezogen!",
+ "s122.sec6.u0": [
+  [
+   "Stehe ich dir im Weg?"
+  ]
+ ],
+ "s123.sec5.u0": [
+  [
+   "Grraaaah!"
+  ]
+ ],
+ "s123.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s123.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s123.sec51.u0": [
+  [
+   "Nach allem, was wir gehört",
+   "haben, tauchen auf diesem Weg",
+   "die Banditen auf... Gut. Los,"
+  ],
+  [
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s123.sec51.u1": [
+  [
+   "Juhuuuuu!"
+  ]
+ ],
+ "s123.sec51.u2": [
+  [
+   "Gwahahaha!"
+  ]
+ ],
+ "s123.sec51.u3": [
+  [
+   "Jippiiii!"
+  ]
+ ],
+ "s123.sec51.u4": [
+  [
+   "Nuhahaha, gebt auf und lasst",
+   "eure Sachen da! Sonst tut's",
+   "weh!"
+  ]
+ ],
+ "s123.sec51.u5": [
+  [
+   "Ihr solltet lieber aufgeben!"
+  ]
+ ],
+ "s123.sec51.u6": [
+  [
+   "Hä?! Ihr Rotzlöffel seid..."
+  ]
+ ],
+ "s123.sec51.u7": [
+  [
+   "Sag bloß nicht..."
+  ]
+ ],
+ "s123.sec51.u8": [
+  [
+   "B-Boss, was tun wir?!"
+  ]
+ ],
+ "s123.sec51.u9": [
+  [
+   "Hört auf zu kreischen! Wir sind",
+   "mehr und stärker. Macht sie",
+   "platt!"
+  ]
+ ],
+ "s123.sec51.u10": [
+  [
+   "Grrr... D-das werdet ihr",
+   "bereuen!"
+  ]
+ ],
+ "s123.sec51.u11": [
+  [
+   "Sieh nur, wie sie rennen! Hier",
+   "tauchen sie wohl eine Weile",
+   "nicht mehr auf."
+  ]
+ ],
+ "s123.sec81.m0.o0": "Oger-Modus: AN",
+ "s123.sec81.m0.o1": "Oger-Modus: AUS",
+ "s123.sec81.u0": [
+  [
+   "Osten: Aufzug Westen: Gefahr!",
+   "Vorsicht an der Klippe"
+  ]
+ ],
+ "s123.sec82.u0": [
+  [
+   "Vorsicht vor Steinschlag!!"
+  ]
+ ],
+ "s124.sec51.u0": [
+  [
+   "Hmm."
+  ]
+ ],
+ "s124.sec51.u1": [
+  [
+   "Das sieht aus wie ein Vogelnest",
+   "oder so. Was denkst du?"
+  ]
+ ],
+ "s124.sec51.u2": [
+  [
+   "Hm? Ein Geräusch...?"
+  ]
+ ],
+ "s124.sec51.u3": [
+  [
+   "Nicht schlecht, Kleiner."
+  ]
+ ],
+ "s124.sec51.u4": [
+  [
+   "Das war dein Nest."
+  ]
+ ],
+ "s124.sec51.u5": [
+  [
+   "He... wie du siehst."
+  ]
+ ],
+ "s124.sec51.u6": [
+  [
+   "Tut mir leid, dass ich hier so",
+   "reinplatze."
+  ]
+ ],
+ "s124.sec51.u7": [
+  [
+   "He... mach dir nichts draus."
+  ]
+ ],
+ "s124.sec51.u8": [
+  [
+   "?"
+  ]
+ ],
+ "s124.sec51.u9": [
+  [
+   "Ich habe von dir gehört."
+  ]
+ ],
+ "s124.sec51.u10": [
+  [
+   ". . . Reden die Leute über",
+   "mich?"
+  ]
+ ],
+ "s124.sec51.u11": [
+  [
+   "Du bist im Moment wohl der",
+   "einzige Mensch auf dieser",
+   "Insel."
+  ]
+ ],
+ "s124.sec51.u12": [
+  [
+   "Im Moment...? War früher",
+   "schon jemand hier?"
+  ]
+ ],
+ "s124.sec51.u13": [
+  [
+   "He... willst du mich nicht in",
+   "die Stadt einladen?"
+  ]
+ ],
+ "s124.sec51.u14": [
+  [
+   "Hä? Ach, äh, ja. Kommst du in",
+   "die Stadt?"
+  ]
+ ],
+ "s124.sec51.u15": [
+  [
+   "Gut. Dann an meine erste",
+   "Aufgabe. Halt dich an mir fest."
+  ]
+ ],
+ "s124.sec51.u16": "Birdramon ist in die Stadt gezogen!",
+ "s124.sec81.m0.o0": "Abwärtsknopf 1 drücken",
+ "s124.sec81.m0.o1": "Abwärtsknopf 2 drücken",
+ "s124.sec81.m0.o2": "Nicht einsteigen",
+ "s124.sec81.u0": [
+  [
+   "Aufzug"
+  ]
+ ],
+ "s124.sec81.u1": [
+  [
+   "Hä? Es geht nicht, nichts",
+   "passiert."
+  ]
+ ]
+}

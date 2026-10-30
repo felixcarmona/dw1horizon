@@ -1,0 +1,72 @@
+From 20e13310d68e86b678e5438df461375e5aa500a6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 11:34:15 +0000
+Subject: [PATCH] Saves: the registered Digimon of the VS mode and the item
+ keeper's stock also leave out what the build does not have
+ (dropAbsentRegistered)
+
+---
+ src/main/main_menu.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index e02a76a4..a96204c8 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -377,6 +377,7 @@ static int32_t writeSaveFile(void);
+ static long saveFileStart(int32_t write);
+ static void saveFileSync(MemCardSyncWord *command, MemCardSyncWord *result);
+ static int32_t pickSaveCopy(void);
++static void dropAbsentRegistered(RegisteredDigimon *p, int32_t n);
+ #define SAVE_IO_ERROR		1	/* MEMORY_CARD_ERROR_MESSAGES[1], "Not Inserted": a card part that did not start */
+ #define SAVE_IO_MESSAGES	9	/* the libmcrd codes the messages cover (0-8) */
+ int32_t countRegisteredDigimon(RegisteredDigimon *p);
+@@ -3320,6 +3321,7 @@ void tickMainMenu(void)
+ 				}
+ 				memcpy(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28],
+ 				       SAVE_FILE.saves[slot].battleRegistrationData, 0xA00);
++				dropAbsentRegistered(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28], 40);
+ 				if (countRegisteredDigimon(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28])) {
+ 					TARGET_MENU = 0x37;
+ 				} else {
+@@ -4465,6 +4467,24 @@ static int32_t isMoveAbsent(int32_t move)
+ 	return 1;
+ }
+ 
++/* the registered Digimon (VS mode) of a species or with a technique the build does not have: the entry is emptied / unequipped */
++static void dropAbsentRegistered(RegisteredDigimon *p, int32_t n)
++{
++	int32_t i, k;
++
++	for (i = 0; i < n; i++, p++) {
++		if (p->digimonId != 0 && DIGIMON_NAME(p->digimonId)[0] == '\0') {
++			p->digimonId = 0;
++			continue;
++		}
++		for (k = 0; k < 3; k++) {
++			if (isMoveAbsent(p->moves[k])) {
++				p->moves[k] = 0xff;
++			}
++		}
++	}
++}
++
+ static void dropAbsentSaveContent(void)
+ {
+ 	uint32_t *learned = &PARTNER_ENTITY.learnedMoves[0]; /* 128 bits: the struct names 64 (unk1, unk2 follow) */
+@@ -4499,6 +4519,12 @@ static void dropAbsentSaveContent(void)
+ 		}
+ 	}
+ 	memcpy(SAVE_FILE.saves[0].partnerData, learned, 0x10);
++	dropAbsentRegistered(SAVE_FILE.saves[0].battleRegistrationData, 40);
++	for (i = 0; i < 0x80; i++) { /* the item keeper's stock: a count per item id */
++		if (SCRIPT_STATE_PTR->smth[0x54 + i] != 0 && ITEM_PARA[i].name[0] == '\0') {
++			SCRIPT_STATE_PTR->smth[0x54 + i] = 0;
++		}
++	}
+ 	equipped = PARTNER_ENTITY.digimonEntity.stats.base.moves;
+ 	for (i = 0; i < 4; i++) { /* equipped: an animation id, the technique is the species' list at that slot */
+ 		anim = equipped[i];
+-- 
+2.53.0
+

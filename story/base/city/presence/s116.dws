@@ -1,0 +1,16 @@
+// Who stands on screen 116 (Misty Trees), and when. Read out of MAPHEAD.SCN section 116 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(116) {                              // Misty Trees
+            npc Morishellmon slot 0 autotalk when not trigger(114) and not trigger(147);
+            npc Morishellmon slot 1 autotalk when not trigger(114) and not trigger(147);
+            npc Morishellmon slot 2 autotalk when not trigger(114) and not trigger(147);
+            npc Fugamon slot 3 autotalk when trigger(114) and clock.hour >= 7 and clock.hour <= 18 or trigger(147) and clock.hour >= 7 and clock.hour <= 18;
+            npc Fugamon slot 4 autotalk when trigger(114) and clock.hour >= 7 and clock.hour <= 18 or trigger(147) and clock.hour >= 7 and clock.hour <= 18;
+            npc Darklizardmon slot 5 autotalk when trigger(114) and clock.hour <= 6 or trigger(147) and clock.hour <= 6 or trigger(114) and clock.hour >= 19 or trigger(147) and clock.hour >= 19;
+            npc Darklizardmon slot 6 autotalk when trigger(114) and clock.hour <= 6 or trigger(147) and clock.hour <= 6 or trigger(114) and clock.hour >= 19 or trigger(147) and clock.hour >= 19;
+        }
+    }
+}

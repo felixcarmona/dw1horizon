@@ -1,0 +1,97 @@
+{
+  "dcb/__init__.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dcb/model.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "1e59cbd4719b1d060248f715d8bdc3a1478d3f2b0e7760317889cf49f401b74c"
+  },
+  "dcb/mesh.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "fde6d60b7f8cf885072e95d1aee85b5682ca28e0af23d24a380c1f0b60d1e2a1"
+  },
+  "dcb/tim.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "36aef1892fcc69aa5340150aac0247090876e581e86806230a71ff1dc6943056"
+  },
+  "dcb/vram.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "9fd5c6b806e520b6b9bc7b6cdb7d83feb4941b1c8e3ec671e2b50edb483aceb8"
+  },
+  "dcb/anim.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "53eb664568acd72b84bd7395c70a0704565c7dbec747679d46211fa418663843"
+  },
+  "dcb/pose.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "62abf0a5aa31d82f9f09e96d665da9109bbe4017e9a1c7d50ddccd70a00475dd"
+  },
+  "dcb/unpack.py": {
+    "project": "digimoncardbattle",
+    "commit": "d33200ebdd94ad081dfbfd8d40f0827335b74e84",
+    "sha256": "00a4cf103b811b924bc075fa6f82ff6043a57e9b1ecaeec52b4876134e94050a"
+  },
+  "dw2/__init__.py": {
+    "project": "digimonworld2",
+    "commit": "63ff322d30f10459f771b5482953ce1aab07882e",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dw2/model.py": {
+    "project": "digimonworld2",
+    "commit": "63ff322d30f10459f771b5482953ce1aab07882e",
+    "sha256": "3a494297c9bb38ebf08b096632f6d26f87747e763e8280f4d66591da3dca1d3c"
+  },
+  "dw2/texture.py": {
+    "project": "digimonworld2",
+    "commit": "63ff322d30f10459f771b5482953ce1aab07882e",
+    "sha256": "13957f49fb488c85bdd32a1738472935c0a227ba35fd2bf8e99360119b6b2f5c"
+  },
+  "dw2/gltf.py": {
+    "project": "digimonworld2",
+    "commit": "63ff322d30f10459f771b5482953ce1aab07882e",
+    "sha256": "cb6bb9b018275bb6f4b4800ac17bd87a9c66a0a2093370245975b8071c45a5c8"
+  },
+  "dw3/__init__.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "dw3/model.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "c8ee6728c143c3caae690c62b8e14d1ab013c875da78b0bd1b69b5b5f11808a1"
+  },
+  "dw3/pose.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "1629eeb603c12424460ee909427e53b1e985293ea48708c2e77f6b8d2963314f"
+  },
+  "dw3/texture.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "6013065dca8e822cfae8291accaba02cb3efcb4ae932f9bb7d000024d50ffa03"
+  },
+  "dw3/mesh.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "c31331f4864245d65b4955028fb550e5bb802c4f6da14d1c9921ac52730e139a"
+  },
+  "dw3/rlen.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "262a299cf97197d58daa56e16b74505ccf8dcd317690dc38cf6ead5ea355086c"
+  },
+  "dw3/tim.py": {
+    "project": "digimonworld2003",
+    "commit": "594a1592ab15f128f0c0adc2fdc950016a80340a",
+    "sha256": "f7f9086c10415476bb5f422cf176644277b196910b629de0b49b41800da5c7d5"
+  }
+}

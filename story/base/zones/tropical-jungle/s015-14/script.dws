@@ -1,0 +1,361 @@
+// Readable form of script 15 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 15 {
+    npc redvegiemon0 = 5;
+    npc slot1 = 6;
+    npc redvegiemon2 = 7;
+    npc tsukaimon = 8;
+    npc j_mojyamon = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 7, 8, 9, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 48, 80);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Happymushrm"), 40, 60);
+        }
+        if (strange_plant_rumor_heard && !is_recruited(species("Vegiemon"))) {
+            set_obj_visibility(0, 0);
+            set_obj_visibility(1, 0);
+            set_obj_visibility(2, 0);
+            set_obj_visibility(3, 0);
+        }
+    }
+
+    on talk(redvegiemon0) replace {    // section 5
+        say(redvegiemon0, text("s015.sec5.u0"));
+        battle();
+        recruit(species("RedVegiemon"));
+    }
+
+    on talk(redvegiemon2) replace {    // section 7
+        say(redvegiemon2, text("s015.sec7.u0"));
+        battle();
+        recruit(species("RedVegiemon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 8
+        say(tsukaimon, text("s015.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(j_mojyamon) replace {    // section 9
+        say(j_mojyamon, text("s015.sec9.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (!is_recruited(species("Vegiemon"))) return;
+        unless (strange_plant_rumor_heard) return;
+        walk(tamer, -715, -2329, camera: true);
+        wait(1s);
+        entity_set_rotation(tamer, 1024);
+        wait(5);
+        if (trigger(186)) {
+            say(tamer, text("s015.sec51.u0"));
+        } else {
+            set_trigger(186);
+            say(tamer, text("s015.sec51.u1"));
+            wait(1s);
+            animate(tamer, 16);
+            wait(1s);
+            say(tamer, text("s015.sec51.u2"));
+            animate(tamer, 22);
+            wait(1s);
+            say(tamer, text("s015.sec51.u3"));
+            animate(tamer, anim.idle);
+        }
+        say(narrator, text("s015.sec51.u4"));
+        choice {
+            text("s015.sec51.m0.o0") => {
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                if (engine.picker_mode) {
+                    say(tamer, text("s015.sec51.u5"));
+                } else if (engine.arg == 255) {
+                    say(tamer, text("s015.sec51.u6"));
+                } else {
+                    if (engine.arg == 121) {
+                        fadeout_hud(0);
+                        call_routine(routine("remove_chosen_item"));
+                        load_digimon(species(147));
+                        set_obj_visibility(3, 0);
+                        set_obj_visibility(4, 0);
+                        set_obj_visibility(5, 0);
+                        set_obj_visibility(6, 0);
+                        set_obj_visibility(7, 0);
+                        set_obj_visibility(8, 0);
+                        set_obj_visibility(9, 0);
+                        set_obj_visibility(10, 0);
+                        set_obj_visibility(11, 0);
+                        set_obj_visibility(12, 0);
+                        set_obj_visibility(13, 0);
+                        set_obj_visibility(14, 0);
+                        set_obj_visibility(15, 0);
+                        engine.object = 3;
+                        engine.animation = 13;
+                        call_routine(routine("reset_object_animation"));
+                        set_obj_visibility(16, 0);
+                        set_obj_visibility(17, 0);
+                        set_obj_visibility(18, 0);
+                        set_obj_visibility(19, 0);
+                        engine.object = 16;
+                        engine.animation = 4;
+                        call_routine(routine("reset_object_animation"));
+                        set_obj_visibility(20, 0);
+                        set_obj_visibility(21, 0);
+                        set_obj_visibility(22, 0);
+                        set_obj_visibility(23, 0);
+                        set_obj_visibility(24, 0);
+                        set_obj_visibility(25, 0);
+                        set_obj_visibility(26, 0);
+                        set_obj_visibility(27, 0);
+                        set_obj_visibility(28, 0);
+                        set_obj_visibility(29, 0);
+                        set_obj_visibility(30, 0);
+                        set_obj_visibility(31, 0);
+                        set_obj_visibility(32, 0);
+                        engine.object = 20;
+                        engine.animation = 13;
+                        call_routine(routine("reset_object_animation"));
+                        wait(50);
+                        sound(8, 1);
+                        wait(5s);
+                        set_obj_visibility(3, 1);
+                        set_obj_visibility(4, 1);
+                        set_obj_visibility(5, 1);
+                        set_obj_visibility(6, 1);
+                        set_obj_visibility(7, 1);
+                        set_obj_visibility(8, 1);
+                        set_obj_visibility(9, 1);
+                        set_obj_visibility(10, 1);
+                        set_obj_visibility(11, 1);
+                        set_obj_visibility(12, 1);
+                        set_obj_visibility(13, 1);
+                        set_obj_visibility(14, 1);
+                        set_obj_visibility(15, 1);
+                        set_obj_visibility(16, 1);
+                        set_obj_visibility(17, 1);
+                        set_obj_visibility(18, 1);
+                        set_obj_visibility(19, 1);
+                        set_obj_visibility(20, 1);
+                        set_obj_visibility(21, 1);
+                        set_obj_visibility(22, 1);
+                        set_obj_visibility(23, 1);
+                        set_obj_visibility(24, 1);
+                        set_obj_visibility(25, 1);
+                        set_obj_visibility(26, 1);
+                        set_obj_visibility(27, 1);
+                        set_obj_visibility(28, 1);
+                        set_obj_visibility(29, 1);
+                        set_obj_visibility(30, 1);
+                        set_obj_visibility(31, 1);
+                        set_obj_visibility(32, 1);
+                        set_obj_visibility(33, 0);
+                        set_obj_visibility(34, 0);
+                        set_obj_visibility(35, 0);
+                        set_obj_visibility(36, 0);
+                        set_obj_visibility(37, 0);
+                        set_obj_visibility(38, 0);
+                        set_obj_visibility(39, 0);
+                        set_obj_visibility(40, 0);
+                        set_obj_visibility(41, 0);
+                        set_obj_visibility(42, 0);
+                        set_obj_visibility(43, 0);
+                        set_obj_visibility(44, 0);
+                        set_obj_visibility(45, 0);
+                        set_obj_visibility(46, 0);
+                        set_obj_visibility(47, 0);
+                        set_obj_visibility(48, 0);
+                        set_obj_visibility(49, 0);
+                        set_obj_visibility(50, 0);
+                        set_obj_visibility(51, 0);
+                        set_obj_visibility(52, 0);
+                        set_obj_visibility(53, 0);
+                        set_obj_visibility(54, 0);
+                        set_obj_visibility(55, 0);
+                        set_obj_visibility(56, 0);
+                        set_obj_visibility(57, 0);
+                        set_obj_visibility(58, 0);
+                        set_obj_visibility(59, 0);
+                        set_obj_visibility(60, 0);
+                        set_obj_visibility(61, 0);
+                        set_obj_visibility(62, 0);
+                        set_obj_visibility(63, 0);
+                        set_obj_visibility(64, 0);
+                        set_obj_visibility(65, 0);
+                        set_obj_visibility(66, 0);
+                        set_obj_visibility(67, 0);
+                        set_obj_visibility(68, 0);
+                        set_obj_visibility(69, 0);
+                        set_obj_visibility(70, 0);
+                        set_obj_visibility(71, 0);
+                        set_obj_visibility(72, 0);
+                        set_obj_visibility(73, 0);
+                        set_obj_visibility(74, 0);
+                        set_obj_visibility(75, 0);
+                        set_obj_visibility(76, 0);
+                        engine.object = 33;
+                        engine.animation = 44;
+                        call_routine(routine("reset_object_animation"));
+                        wait(30);
+                        set_obj_visibility(0, 1);
+                        set_obj_visibility(1, 1);
+                        set_obj_visibility(2, 1);
+                        set_obj_visibility(3, 1);
+                        wait(2s);
+                        sound(8, 2);
+                        set_digimon(species(147), 1, 0);
+                        wait(5);
+                        animate(slot1, 28);
+                        await slot1;
+                        animate(slot1, anim.idle);
+                        wait(1s);
+                        set_obj_visibility(33, 1);
+                        set_obj_visibility(34, 1);
+                        set_obj_visibility(35, 1);
+                        set_obj_visibility(36, 1);
+                        set_obj_visibility(37, 1);
+                        set_obj_visibility(38, 1);
+                        set_obj_visibility(39, 1);
+                        set_obj_visibility(40, 1);
+                        set_obj_visibility(41, 1);
+                        set_obj_visibility(42, 1);
+                        set_obj_visibility(43, 1);
+                        set_obj_visibility(44, 1);
+                        set_obj_visibility(45, 1);
+                        set_obj_visibility(46, 1);
+                        set_obj_visibility(47, 1);
+                        set_obj_visibility(48, 1);
+                        set_obj_visibility(49, 1);
+                        set_obj_visibility(50, 1);
+                        set_obj_visibility(51, 1);
+                        set_obj_visibility(52, 1);
+                        set_obj_visibility(53, 1);
+                        set_obj_visibility(54, 1);
+                        set_obj_visibility(55, 1);
+                        set_obj_visibility(56, 1);
+                        set_obj_visibility(57, 1);
+                        set_obj_visibility(58, 1);
+                        set_obj_visibility(59, 1);
+                        set_obj_visibility(60, 1);
+                        set_obj_visibility(61, 1);
+                        set_obj_visibility(62, 1);
+                        set_obj_visibility(63, 1);
+                        set_obj_visibility(64, 1);
+                        set_obj_visibility(65, 1);
+                        set_obj_visibility(66, 1);
+                        set_obj_visibility(67, 1);
+                        set_obj_visibility(68, 1);
+                        set_obj_visibility(69, 1);
+                        set_obj_visibility(70, 1);
+                        set_obj_visibility(71, 1);
+                        set_obj_visibility(72, 1);
+                        set_obj_visibility(73, 1);
+                        set_obj_visibility(74, 1);
+                        set_obj_visibility(75, 1);
+                        animate(tamer, 15);
+                        wait(10);
+                        sound(8, 2);
+                        animate(slot1, 28);
+                        wait(1s);
+                        sound(8, 2);
+                        animate(slot1, 28);
+                        entity_move_to(slot1, -977, -1946, 3, 0);
+                        wait(1s);
+                        sound(8, 2);
+                        animate(slot1, 28);
+                        entity_move_to(slot1, -1254, -2263, 3, 0);
+                        wait(1s);
+                        sound(8, 2);
+                        animate(slot1, 28);
+                        entity_move_to(slot1, -1025, -2799, 3, 0);
+                        wait(1s);
+                        sound(8, 2);
+                        animate(slot1, 28);
+                        entity_move_to(slot1, -1025, -2349, 3, 0);
+                        wait(1s);
+                        face(slot1, tamer);
+                        wait(5);
+                        say(slot1, text("s015.sec51.u8"));
+                        animate(tamer, 15);
+                        wait(1s);
+                        say(tamer, text("s015.sec51.u9"));
+                        say(slot1, text("s015.sec51.u10"));
+                        sound(8, 5);
+                        animate(tamer, 16);
+                        wait(1s);
+                        say(tamer, text("s015.sec51.u11"));
+                        engine.no_cancel = true;
+                        choice(open) {
+                            text("s015.sec51.m1.o0") => {
+                                engine.no_cancel = false;
+                                sound(8, 5);
+                                say(slot1, text("s015.sec51.u13"));
+                            }
+                            text("s015.sec51.m1.o1") => {
+                                engine.no_cancel = false;
+                                sound(8, 5);
+                                say(slot1, text("s015.sec51.u14"));
+                            }
+                            cancel => {
+                                say(tamer, text("s015.sec51.u12"));
+                                return;
+                            }
+                        }
+                        say(tamer, text("s015.sec51.u15"));
+                        say(slot1, text("s015.sec51.u16"));
+                        animate(tamer, 19);
+                        wait(1s);
+                        say(tamer, text("s015.sec51.u17"));
+                        sound(8, 5);
+                        say(slot1, text("s015.sec51.u18"));
+                        say(tamer, text("s015.sec51.u19"));
+                        say(slot1, text("s015.sec51.u20"));
+                        animate(tamer, 20);
+                        wait(10);
+                        say(tamer, text("s015.sec51.u21"));
+                        animate(tamer, anim.idle);
+                        sound(8, 5);
+                        say(slot1, text("s015.sec51.u22"));
+                        run(tamer, -1024, -1820, camera: true);
+                        run(partner, -741, -1923);
+                        loop {
+                            run(slot1, 911, -2266);
+                            unless (glances < 10) break;
+                            glances += 1;
+                            wait(10);
+                            face(tamer, slot1);
+                            face(partner, slot1);
+                        }
+                        await slot1;
+                        remove(slot1);
+                        glances = 0;
+                        sound(8, 3);
+                        say(narrator, text("s015.sec51.u23"));
+                        camera_on(tamer, speed: 10);
+                        await camera;
+                        set_trigger(225);
+                        engine.prosperity += 2;
+                        return;
+                    }
+                    say(tamer, text("s015.sec51.u7"));
+                }
+            }
+            text("s015.sec51.m0.o1") or cancel => {}
+        }
+        walk(tamer, -61, -2273, camera: true);
+        await tamer;
+    }
+}

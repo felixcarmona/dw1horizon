@@ -1,0 +1,13 @@
+{
+  "id": 27,
+  "name": "HP Chip",
+  "value": 9999,
+  "meritValue": 800,
+  "sortingValue": 4,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "addHP": 500
+  }
+}

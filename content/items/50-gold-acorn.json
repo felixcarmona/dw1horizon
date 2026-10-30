@@ -1,0 +1,14 @@
+{
+  "id": 50,
+  "name": "Gold Acorn",
+  "value": 8000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 40,
+    "weight": 4
+  }
+}

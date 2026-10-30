@@ -1,0 +1,32 @@
+{
+  "id": 127,
+  "name": "DemiMeramon",
+  "level": "fresh",
+  "attribute": "data",
+  "specialties": [null, null, null],
+  "techniques": null,
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "model": {"name": "PUTI", "bones": 3, "radius": 100, "height": 230},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 100, "def": 100, "speed": 100, "brain": 100, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

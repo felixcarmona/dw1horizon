@@ -1,0 +1,33 @@
+{
+  "id": 83,
+  "name": "ModokiBetamon",
+  "level": "rookie",
+  "attribute": "vaccine",
+  "specialties": ["ice", null, "air"],
+  "techniques": ["Static Elect", "Electric Cloud", "Water Blit", "Aqua Magic", "Electric Shock"],
+  "drop": {"item": "sm.recovery", "percent": 40},
+  "effects_like": 4,
+  "model": {"name": "MODO", "bones": 24, "radius": 160, "height": 160},
+  "voice": 4,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 300, "mp": 700, "off": 140, "def": 50, "speed": 60, "brain": 150, "bits": 150},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

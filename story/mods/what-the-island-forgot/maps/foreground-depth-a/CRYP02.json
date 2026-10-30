@@ -1,0 +1,1195 @@
+{
+  "screen": 308,
+  "art": "lectern-room",
+  "review": "SAM silhouettes for the book/lectern, near doorway jamb, isolated low book and leaning pile. The far right book stack and its candles have no reachable rear approach and remain background. Retain the solid lectern pedestal and the open rear floor.",
+  "pieces": [
+    {
+      "name": "book-and-lectern",
+      "png": "308-book-and-lectern.png",
+      "at": [
+        283,
+        238
+      ],
+      "depth": [
+        318,
+        339
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/lectern-room-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          279,
+          230,
+          357,
+          342
+        ],
+        "positive": [
+          [
+            316,
+            251
+          ],
+          [
+            320,
+            304
+          ],
+          [
+            326,
+            330
+          ]
+        ],
+        "negative": [
+          [
+            278,
+            285
+          ],
+          [
+            356,
+            295
+          ],
+          [
+            316,
+            348
+          ]
+        ],
+        "score": 0.9885016679763794
+      }
+    },
+    {
+      "name": "door-front-jamb",
+      "png": "308-door-front-jamb.png",
+      "at": [
+        84,
+        126
+      ],
+      "depth": [
+        122,
+        287
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/lectern-room-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          83,
+          115,
+          126,
+          299
+        ],
+        "positive": [
+          [
+            106,
+            169
+          ],
+          [
+            112,
+            249
+          ]
+        ],
+        "negative": [
+          [
+            87,
+            219
+          ],
+          [
+            133,
+            242
+          ]
+        ],
+        "score": 0.9679927825927734
+      }
+    },
+    {
+      "name": "left-book",
+      "png": "308-left-book.png",
+      "at": [
+        399,
+        257
+      ],
+      "depth": [
+        420,
+        277
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/lectern-room-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          397,
+          256,
+          439,
+          278
+        ],
+        "positive": [
+          [
+            409,
+            265
+          ],
+          [
+            420,
+            267
+          ],
+          [
+            421,
+            271
+          ],
+          [
+            408,
+            271
+          ]
+        ],
+        "negative": [
+          [
+            419,
+            280
+          ],
+          [
+            394,
+            267
+          ],
+          [
+            436,
+            257
+          ]
+        ],
+        "score": 0.9761936664581299,
+        "fill_holes": true
+      }
+    },
+    {
+      "name": "leaning-books",
+      "png": "308-leaning-books.png",
+      "at": [
+        438,
+        237
+      ],
+      "depth": [
+        470,
+        286
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/lectern-room-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          435,
+          234,
+          506,
+          289
+        ],
+        "positive": [
+          [
+            453,
+            250
+          ],
+          [
+            472,
+            251
+          ],
+          [
+            480,
+            265
+          ],
+          [
+            448,
+            265
+          ],
+          [
+            467,
+            275
+          ],
+          [
+            480,
+            283
+          ]
+        ],
+        "negative": [
+          [
+            444,
+            279
+          ],
+          [
+            462,
+            289
+          ],
+          [
+            497,
+            240
+          ],
+          [
+            439,
+            235
+          ],
+          [
+            506,
+            286
+          ]
+        ],
+        "score": 0.9554098844528198,
+        "fill_holes": true
+      }
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        44,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        44,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        45,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        46,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        54,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        67
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        68
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        69
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        47,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        48,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        49,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        50,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        51,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        52,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    },
+    {
+      "tile": [
+        53,
+        70
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Empty floor behind the lectern shaft, previously blocked only to avoid overdrawing it."
+    }
+  ],
+  "depth_planes": {
+    "width": 32,
+    "height": 8
+  }
+}

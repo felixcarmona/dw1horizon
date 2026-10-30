@@ -1,0 +1,100 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M141NANO",
+ "type": 294,
+ "name": "Nanomon",
+ "source": {
+  "type": 26,
+  "mmd": "extracted/CHDAT/MMD0/SKUL.MMD"
+ },
+ "map": {
+  "1": 7,
+  "2": 1,
+  "11": 17,
+  "12": 18,
+  "13": 19,
+  "14": 15,
+  "15": 21,
+  "16": 22,
+  "17": 23,
+  "18": 8,
+  "20": 9,
+  "23": 12,
+  "25": 13
+ },
+ "hips": [
+  1,
+  1,
+  0.452
+ ],
+ "root_scale": 0.452,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x3b": {
+   "anim": "I0",
+   "speed": 0.91,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 128
+  },
+  "0x39": {
+   "anim": "H0",
+   "speed": 1.07,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 128
+  },
+  "0x3a": {
+   "anim": "G0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 128
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x36",
+  "0x37",
+  "0x38"
+ ],
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

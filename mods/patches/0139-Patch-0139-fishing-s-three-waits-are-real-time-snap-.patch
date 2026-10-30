@@ -1,0 +1,29 @@
+From 94e80d75ae9db9c4210c4299b115fd38be856793 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 18 Oct 2026 20:52:19 +0000
+Subject: [PATCH] Patch 0139: fishing's three waits are real time (snap step,
+ button hold for the pull, bait theft period): ticks of 50 ms written from
+ milliseconds by balance.py; the C reads the same slots
+
+---
+ include/dw/mod_fish.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/mod_fish.h b/include/dw/mod_fish.h
+index 0db71fc2..508b8a8b 100644
+--- a/include/dw/mod_fish.h
++++ b/include/dw/mod_fish.h
+@@ -4,7 +4,9 @@
+ #include <dw/types.h>
+ 
+ /* MOD (fishing as data): the tension gauge, the hooked fish, the bites, the bait theft and the fish population, MOD_FISH[] (16-bit slots,
+- * -1 = the rule does not exist), written by tools/balance.py from content/tables/fishing-rules.json. A slot left out reads as 0 */
++ * -1 = the rule does not exist), written by tools/balance.py from content/tables/fishing-rules.json. A slot left out reads as 0.
++ * Fishing runs one logic tick per 50 ms at any frame rate, so a count of "frames" is ticks: the JSON gives MOD_FS_SNAP_MULT, MOD_FS_HOLD_FRAMES
++ * and MOD_FS_THEFT_EVERY in real milliseconds and balance.py writes them as ticks */
+ enum {
+ 	MOD_FS_LIMIT_SMALL = 0,
+ 	MOD_FS_LIMIT_BIG,
+-- 
+2.53.0
+

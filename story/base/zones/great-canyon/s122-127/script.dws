@@ -1,0 +1,46 @@
+// Readable form of script 122 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+script 122 {
+    npc shellmon = 5;
+    npc goblimon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 5;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Def. Chip"), 1460, 0, -443, 3072, 666);
+    }
+
+    on talk(goblimon) replace {    // section 6
+        say(goblimon, text("s122.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(shellmon) replace {    // section 5
+        say(shellmon, text("s122.sec5.u0"));
+        say(tamer, text("s122.sec5.u1"));
+        say(shellmon, text("s122.sec5.u2"));
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s122.sec5.u3"));
+        animate(tamer, anim.idle);
+        say(shellmon, text("s122.sec5.u4"));
+        say(tamer, text("s122.sec5.u5"));
+        say(shellmon, text("s122.sec5.u6"));
+        say(tamer, text("s122.sec5.u7"));
+        say(shellmon, text("s122.sec5.u8"));
+        animate(tamer, 16);
+        wait(15);
+        say(tamer, text("s122.sec5.u9"));
+        animate(tamer, anim.idle);
+        say(shellmon, text("s122.sec5.u10"));
+        walk_away(shellmon, -111, -2962, looks: 3);
+        join_city(shellmon, species("Shellmon"), 8, 10, text("s122.sec5.u11"), prosperity: 2);
+        return;
+    }
+}

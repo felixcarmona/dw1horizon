@@ -1,0 +1,150 @@
+{
+ "s029.sec51.m0.o0": "Ich mache es!",
+ "s029.sec51.m0.o1": "Ein andermal, tut mir leid",
+ "s029.sec51.m1.o0": "Ich mache es!",
+ "s029.sec51.m1.o1": "Ein andermal, tut mir leid",
+ "s029.sec51.u0": [
+  [
+   "He, fast die ganze Erde ist",
+   "weggebracht. Dank dir kommen",
+   "wir gut voran. Warte noch ein"
+  ],
+  [
+   "wenig."
+  ]
+ ],
+ "s029.sec51.u1": [
+  [
+   "Oh, Das ist gute Arbeit. Hier",
+   "ist dein Gehalt."
+  ]
+ ],
+ "s029.sec51.u2": [
+  [
+   "500 Bits für die Arbeit",
+   "erhalten! HP +50! Angriff +5!",
+   "Verteidigung +5!"
+  ]
+ ],
+ "s029.sec51.u3": [
+  [
+   "Kippe die Erde draußen vor dem",
+   "Tunnel ab."
+  ]
+ ],
+ "s029.sec51.u4": [
+  [
+   "Los, nimm etwas von dem",
+   "Erdhaufen dort."
+  ]
+ ],
+ "s029.sec51.u5": [
+  [
+   "Hm, du willst Erde tragen? Du",
+   "bist ziemlich erschöpft. Ruh",
+   "dich erst aus und komm dann"
+  ],
+  [
+   "wieder."
+  ]
+ ],
+ "s029.sec51.u6": [
+  [
+   "Hm, willst du Erde tragen?"
+  ]
+ ],
+ "s029.sec51.u7": [
+  [
+   "Wer bist du? Hier ist es",
+   "gefährlich für Amateure, also",
+   "bleib zurück."
+  ]
+ ],
+ "s029.sec51.u8": [
+  [
+   "Wer bist du? Dieser Tunnel ist",
+   "noch nicht offen. Steh nicht im",
+   "Weg."
+  ]
+ ],
+ "s029.sec51.u9": [
+  [
+   "Oh, Entschuldigung. Wann wird",
+   "er wohl offen sein?"
+  ]
+ ],
+ "s029.sec51.u10": [
+  [
+   "Wer weiß? Das dauert noch eine",
+   "ganze Weile."
+  ]
+ ],
+ "s029.sec51.u11": [
+  [
+   "Hm, das ist ein Problem...",
+   "Können wir nicht irgendwie",
+   "helfen?"
+  ]
+ ],
+ "s029.sec51.u12": [
+  [
+   "He, willst du mir den Spaß",
+   "wegnehmen? Warte... Erde",
+   "tragen, das könntet sogar ihr."
+  ]
+ ],
+ "s029.sec51.u13": [
+  [
+   "Ah, Worum geht es?"
+  ]
+ ],
+ "s029.sec51.u14": [
+  [
+   "Da ist die Erde, die ich",
+   "ausgegraben habe. Trag sie aus",
+   "dem Tunnel und kippe sie ab."
+  ]
+ ],
+ "s029.sec51.u15": [
+  [
+   "Das ist harte Arbeit, also",
+   "bezahle ich dich. 500 Bits für",
+   "jeden Hin- und Rückweg."
+  ]
+ ],
+ "s029.sec51.u16": [
+  [
+   "Das Graben geht schneller, ich",
+   "werde bezahlt... und es ist",
+   "auch Training... Das könnte gut"
+  ],
+  [
+   "sein...!"
+  ]
+ ],
+ "s029.sec51.u17": [
+  [
+   "So trägst du Erde: Stell dich",
+   "davor und drücke {color 6}×{color 1}, um eine",
+   "Erdkiste zu nehmen. Geh aus"
+  ],
+  [
+   "dem Tunnel, dann wird sie",
+   "automatisch geleert. Sprich",
+   "nach jedem Hin- und Rückweg"
+  ],
+  [
+   "mit Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": [
+  [
+   "Was, kneifst du?"
+  ]
+ ],
+ "s029.sec81.u0": [
+  [
+   "Erdkiste aufgenommen."
+  ]
+ ]
+}

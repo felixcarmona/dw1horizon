@@ -1,0 +1,25 @@
+From b022eab775232cfa737e9534ac028fc4a1410c04 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 20:07:39 +0000
+Subject: [PATCH] Lab menu: wider box so the stats line is not clipped
+
+---
+ src/main/mod_lab.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 38064ec..7e37ace 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -73,7 +73,7 @@ static char *appendStr(char *dst, char *src)
+  * inside the box, one row every 0x12 px, the native selection bar behind the
+  * selected option. Each row has its own 0xC-high line in the VRAM text area. */
+ #define ROW_PITCH	0x12
+-#define BOX_W		0xB0
++#define BOX_W		0xC8
+ #define ROW_TITLE	0
+ #define ROW_STATS	1
+ #define ROW_OPTIONS	2
+-- 
+2.53.0
+

@@ -1,0 +1,241 @@
+{
+  "screen": 320,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-4-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        422,
+        139,
+        684,
+        304
+      ],
+      "pos": [
+        [
+          575,
+          277
+        ],
+        [
+          604,
+          269
+        ],
+        [
+          529,
+          277
+        ],
+        [
+          631,
+          255
+        ],
+        [
+          471,
+          257
+        ]
+      ],
+      "neg": [
+        [
+          552.0555555555555,
+          210.0
+        ],
+        [
+          440,
+          260
+        ],
+        [
+          678,
+          246
+        ],
+        [
+          552,
+          240
+        ],
+        [
+          420,
+          218
+        ]
+      ],
+      "scores": [
+        0.9429208040237427
+      ],
+      "selected": 0,
+      "at": [
+        426,
+        138
+      ],
+      "bounds": [
+        426,
+        138,
+        695,
+        298
+      ],
+      "area": 18163,
+      "parts": [],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": false,
+      "refine": null,
+      "piece": "broken-gear-ring",
+      "png": "320-broken-gear-ring.png",
+      "source_sha1": "c613877bbfc988dd8ba4a467c06fc7f7e921273a"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-4-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        0,
+        150,
+        324,
+        486
+      ],
+      "pos": [
+        [
+          110,
+          330
+        ],
+        [
+          160,
+          346
+        ],
+        [
+          192,
+          362
+        ],
+        [
+          214,
+          374
+        ],
+        [
+          316,
+          394
+        ],
+        [
+          258,
+          475
+        ]
+      ],
+      "neg": [
+        [
+          250,
+          410
+        ],
+        [
+          277,
+          430
+        ],
+        [
+          283,
+          466
+        ],
+        [
+          275,
+          340
+        ],
+        [
+          304,
+          363
+        ]
+      ],
+      "scores": [
+        0.7296447157859802,
+        0.9117189645767212,
+        0.9424189329147339
+      ],
+      "selected": 2,
+      "at": [
+        0,
+        148
+      ],
+      "bounds": [
+        0,
+        148,
+        318,
+        479
+      ],
+      "area": 36031,
+      "parts": [
+        {
+          "box": [
+            19,
+            285,
+            235,
+            407
+          ],
+          "pos": [
+            [
+              122,
+              332
+            ],
+            [
+              173,
+              345
+            ],
+            [
+              197,
+              370
+            ]
+          ],
+          "neg": [
+            [
+              245,
+              377
+            ],
+            [
+              198,
+              418
+            ]
+          ],
+          "multimask": true,
+          "fill_holes": true
+        },
+        {
+          "box": [
+            190,
+            338,
+            224,
+            393
+          ],
+          "pos": [
+            [
+              207,
+              365
+            ]
+          ],
+          "neg": [
+            [
+              186,
+              360
+            ],
+            [
+              228,
+              370
+            ]
+          ],
+          "multimask": true,
+          "fill_holes": true
+        }
+      ],
+      "components": 1,
+      "fill_holes": false,
+      "multimask": true,
+      "refine": {
+        "foreground_ratio": 1.3,
+        "floor_ratio": 1.23
+      },
+      "piece": "tower-complete",
+      "png": "320-tower-complete.png",
+      "source_sha1": "c613877bbfc988dd8ba4a467c06fc7f7e921273a"
+    }
+  ]
+}

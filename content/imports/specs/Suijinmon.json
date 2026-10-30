@@ -1,0 +1,121 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M440SIJN",
+ "type": 408,
+ "name": "Suijinmon",
+ "source": {
+  "type": 26,
+  "mmd": "extracted/CHDAT/MMD0/SKUL.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 17,
+  "3": 18,
+  "4": 19,
+  "5": 16,
+  "6": 24,
+  "14": 21,
+  "15": 22,
+  "16": 23,
+  "17": 4,
+  "21": 7,
+  "22": 8,
+  "28": 3,
+  "29": 12
+ },
+ "hips": [
+  1,
+  1,
+  0.854
+ ],
+ "root_scale": 0.854,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x3b": {
+   "anim": "anim_12",
+   "start": 15,
+   "end": 107,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 241
+  },
+  "0x38": {
+   "anim": "anim_44",
+   "start": 1,
+   "end": 90,
+   "speed": 1.16,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 241
+  },
+  "0x36": {
+   "anim": "anim_38",
+   "start": 1,
+   "end": 90,
+   "speed": 1.45,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 241
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "meshfix": {
+  "kappa": 1.0,
+  "kmove": 1.0,
+  "quad_angle": 40.0
+ },
+ "scale": 0.044378,
+ "hub_roots": true,
+ "quad_angle": 40.0
+}

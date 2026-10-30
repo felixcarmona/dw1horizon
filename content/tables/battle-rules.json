@@ -1,0 +1,6 @@
+{
+  "targetAttackerChance": [70, 40, 30, 0],
+  "statGainEnemyFactors": [10, 12, 16, 0],
+  "vsBattleCounts": [1, 3, 5, 0],
+  "concaveScreens": [166, 167, 210, 212, 219, 226, 227, 228, 247, 248, 249, 253, 254, 161, 132, 2, 13, 101]
+}

@@ -1,0 +1,266 @@
+{
+ "s007.sec81.m0.o0": "Jouer de la flûte",
+ "s007.sec81.m0.o1": "Ne pas en jouer",
+ "s007.sec81.u0": [
+  [
+   "Ah, C'est vrai."
+  ]
+ ],
+ "s007.sec81.u1": [
+  [
+   "Jouer de la {color 6}Flûte bleue{color 1} ?"
+  ]
+ ],
+ "s007.sec81.u2": [
+  [
+   "Mon ami, as-tu besoin de mon",
+   "pouvoir ?"
+  ]
+ ],
+ "s007.sec81.u3": [
+  [
+   "Emmène-moi à l'autre rive."
+  ]
+ ],
+ "s007.sec81.u4": [
+  [
+   "Rien de plus simple. Allez,",
+   "monte."
+  ]
+ ],
+ "s007.sec82.m0.o0": "Soyons amis",
+ "s007.sec82.m0.o1": "Apprends-moi une technique !",
+ "s007.sec82.m0.o2": "Je veux un objet",
+ "s007.sec82.m1.o0": "Soyons amis",
+ "s007.sec82.m1.o1": "Apprends-moi une technique !",
+ "s007.sec82.m1.o2": "Je veux un objet",
+ "s007.sec82.m2.o0": "Oui, j'y vais !",
+ "s007.sec82.m2.o1": "Je vais me préparer",
+ "s007.sec82.u0": [
+  [
+   "Seadramon!"
+  ]
+ ],
+ "s007.sec82.u1": [
+  [
+   "Nous nous retrouvons. As-tu",
+   "un souhait ?"
+  ]
+ ],
+ "s007.sec82.u2": [
+  [
+   "Toi et moi sommes déjà amis. Un",
+   "autre souhait ?"
+  ]
+ ],
+ "s007.sec82.u3": [
+  [
+   "W-waouh ! C'est le gardien du",
+   "lac !"
+  ]
+ ],
+ "s007.sec82.u4": [
+  [
+   "Ouf... En effet, je suis",
+   "Seadramon. C'est toi qui",
+   "pêches tant ici ces derniers"
+  ],
+  [
+   "temps, n'est-ce pas ? Enfin,",
+   "peu importe. As-tu un souhait",
+   "?"
+  ]
+ ],
+ "s007.sec82.u5": [
+  [
+   "Waouh ! ...Digne du gardien du",
+   "lac. Incroyable. Euh, alors..."
+  ]
+ ],
+ "s007.sec82.u6": [
+  [
+   "Très bien, qu'il en soit ainsi.",
+   "Désormais, nous sommes amis.",
+   "En gage d'amitié, je te donne"
+  ],
+  [
+   "cette flûte."
+  ]
+ ],
+ "s007.sec82.u7": [
+  [
+   "Oh non, j'ai trop d'objets. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s007.sec82.u8": [
+  [
+   "{color 6}Flûte bleue{color 1} obtenue !"
+  ]
+ ],
+ "s007.sec82.u9": [
+  [
+   "Joues-en près du lac et",
+   "j'apparaîtrai à tout moment. En",
+   "ami, je te ferai traverser."
+  ]
+ ],
+ "s007.sec82.u10": [
+  [
+   "Waouh, je peux donc aller de",
+   "l'autre côté ! Merci !"
+  ]
+ ],
+ "s007.sec82.u11": [
+  [
+   "De l'autre côté du lac se",
+   "trouve une forêt assez",
+   "étrange. Veux-tu y aller"
+  ],
+  [
+   "maintenant ?"
+  ]
+ ],
+ "s007.sec82.u12": [
+  [
+   "Hmm. Alors je vais t'apprendre",
+   "cette technique."
+  ]
+ ],
+ "s007.sec82.u13": [
+  [
+   "Magie aquatique apprise !"
+  ]
+ ],
+ "s007.sec82.u14": [
+  [
+   "Blizzard appris !"
+  ]
+ ],
+ "s007.sec82.u15": [
+  [
+   "Super gel appris !"
+  ]
+ ],
+ "s007.sec82.u16": [
+  [
+   "Hmm, je n'ai plus de techniques",
+   "à t'enseigner..."
+  ]
+ ],
+ "s007.sec82.u17": [
+  [
+   "Alors, adieu."
+  ]
+ ],
+ "s007.sec82.u18": [
+  [
+   "Hmm. Je vais te donner la",
+   "{color 6}Bouteille d'eau{color 1}."
+  ]
+ ],
+ "s007.sec82.u19": [
+  [
+   "Oh non, j'ai trop d'objets. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s007.sec82.u20": [
+  [
+   "{color 6}Bouteille d'eau{color 1} obtenue !"
+  ]
+ ],
+ "s007.sec82.u21": [
+  [
+   "Alors, au revoir pour",
+   "l'instant."
+  ]
+ ],
+ "s007.sec82.u22": [
+  [
+   "Alors, monte sur mon dos."
+  ]
+ ],
+ "s007.sec82.u23": [
+  [
+   "Alors, au revoir pour",
+   "l'instant."
+  ]
+ ],
+ "s009.sec81.m0.o0": "Viande: 300 Bits",
+ "s009.sec81.m0.o1": "Digichampi: 600 Bits",
+ "s009.sec81.m0.o2": "Ne pas acheter",
+ "s009.sec81.u0": [
+  [
+   "Distributeur automatique"
+  ]
+ ],
+ "s009.sec81.u1": [
+  [
+   "Ouh là, ce distributeur est",
+   "cher !"
+  ]
+ ],
+ "s009.sec81.u2": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s009.sec81.u3": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s009.sec81.u4": [
+  [
+   "De la {color 6}Viande{color 1} est sortie !"
+  ]
+ ],
+ "s009.sec81.u5": [
+  [
+   "Oups, mon sac est plein."
+  ]
+ ],
+ "s009.sec81.u6": [
+  [
+   "Un {color 6}Digichampi{color 1} est sorti !"
+  ]
+ ],
+ "s009.sec81.u7": [
+  [
+   "Oups, mon sac est plein."
+  ]
+ ],
+ "s009.sec82.u0": [
+  [
+   "Comment pêcher",
+   "D'abord, procure-toi une",
+   "canne. Une icône de pêche",
+   "apparaît alors dans le",
+   "sous-menu, sous {color 5}△{color 1}.",
+   "Sélectionne-la. Appuie sur {color 6}×{color 1}",
+   "pour choisir un aliment comme"
+  ],
+  [
+   "appât. Oriente-toi à gauche",
+   "ou à droite avec les touches",
+   "directionnelles. Appuie sur {color 6}×{color 1}",
+   "pour lever la canne, puis sur",
+   "{color 6}×{color 1} pour lancer. Attends que le",
+   "flotteur coule : un poisson a"
+  ],
+  [
+   "mordu. Tire avec {color 6}×{color 1}. Surveille",
+   "la jauge en haut à gauche :",
+   "relâche {color 6}×{color 1} avant qu'elle soit",
+   "pleine, sinon la ligne casse.",
+   "Ramène le flotteur jusqu'à toi",
+   "pour attraper le poisson. Un"
+  ],
+  [
+   "X sur l'ombre d'un poisson",
+   "signifie qu'il ne mordra pas à",
+   "l'appât utilisé."
+  ]
+ ]
+}

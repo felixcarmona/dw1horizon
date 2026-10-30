@@ -1,0 +1,38 @@
+From 70f0df41f1db0d6dfc0c5eb7d0a02dfe14968c3c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:37:07 +0000
+Subject: [PATCH 199/199] Patch 0198: an overlay loaded in the background
+ (loadDynamicLibrary, async) is found through FILE_OFFSET_TABLE like readFile,
+ the path only as a fallback: CdSearchFile sees only the first sector of the
+ root directory, which the bilingual disc outgrows (TRN_REL, TRN2_REL, VS_REL
+ in the second: a gym waited for TRN forever), and it read a translated
+ overlay's English copy
+
+---
+ src/main/utils2.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index fece6a30..da5feff2 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -386,9 +386,13 @@ void loadDynamicLibrary(Overlay lib, uint8_t *isComplete, uint8_t isAsync,
+ 	if (!isAsync) {
+ 		readFile(REL_BIN_FILES[lib - 1], (nv = REL_BIN_OFFSETS[lib - 1]));
+ 	} else {
+-		addFileReadRequestPath(REL_BIN_FILES[lib - 1],
+-				       (nv = REL_BIN_OFFSETS[lib - 1]), isComplete,
+-				       (FileRequestCallback)callback, param);
++		/* MOD (file table): found through FILE_OFFSET_TABLE like readFile. CdSearchFile sees only the first sector of
++		   the root directory, which the mod's disc outgrows (TRN_REL, TRN2_REL and VS_REL were in the second: a gym
++		   waited for TRN forever), and it would read a translated overlay's English copy */
++		if (addFileReadRequestLookup(REL_BIN_FILES[lib - 1], (nv = REL_BIN_OFFSETS[lib - 1]), isComplete,
++					     (FileRequestCallback)callback, param) < 0) {
++			addFileReadRequestPath(REL_BIN_FILES[lib - 1], nv, isComplete, (FileRequestCallback)callback, param);
++		}
+ 	}
+ }
+ 
+-- 
+2.53.0
+

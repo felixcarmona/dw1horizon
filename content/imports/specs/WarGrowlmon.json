@@ -1,0 +1,117 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M368MGRW",
+ "type": 326,
+ "name": "WarGrowlmon",
+ "source": {
+  "type": 8,
+  "mmd": "extracted/CHDAT/MMD0/TYRA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 17,
+  "4": 18,
+  "5": 19,
+  "6": 21,
+  "7": 22,
+  "8": 23,
+  "10": 24,
+  "11": 25,
+  "13": 26,
+  "18": 3,
+  "20": 4,
+  "22": 5,
+  "23": 6,
+  "24": 1,
+  "25": 11,
+  "26": 13
+ },
+ "hips": [
+  1,
+  1,
+  0.786
+ ],
+ "root_scale": 0.786,
+ "tol": 14,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x38": {
+   "anim": "anim_32",
+   "start": 27,
+   "end": 141,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 163
+  },
+  "0x2e": {
+   "anim": "anim_26",
+   "start": 10,
+   "end": 93,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 163
+  },
+  "0x30": {
+   "anim": "anim_38",
+   "start": 13,
+   "end": 127,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 163
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "scale": 0.081859,
+ "hub_roots": true,
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

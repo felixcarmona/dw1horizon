@@ -1,0 +1,83 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "native": "extracted/CHDAT/MMD2/FLAR.MMD",
+ "type": 69,
+ "name": "Flarerizamon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "2": 2,
+  "3": 6,
+  "4": 3,
+  "5": 4,
+  "6": 10,
+  "7": 7,
+  "9": 8,
+  "10": 11,
+  "12": 12,
+  "13": 1,
+  "14": 15,
+  "15": 16,
+  "16": 19,
+  "17": 20,
+  "18": 21,
+  "19": 23,
+  "20": 24,
+  "21": 25
+ },
+ "hips": [
+  1,
+  1,
+  0.726
+ ],
+ "root_scale": 0.726,
+ "tol": 2,
+ "retarget": [
+  "0x05",
+  "0x07",
+  "0x08",
+  "0x09",
+  "0x0a",
+  "0x0b",
+  "0x0c",
+  "0x0d",
+  "0x0e",
+  "0x0f",
+  "0x10",
+  "0x11",
+  "0x12",
+  "0x15",
+  "0x16",
+  "0x17",
+  "0x18",
+  "0x19"
+ ],
+ "own": {
+  "0x03": {
+   "from": 2,
+   "stretch": 1.5
+  },
+  "0x1b": {
+   "from": 4
+  }
+ },
+ "layer": {
+  "anim": "idle",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

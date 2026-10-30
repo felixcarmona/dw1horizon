@@ -1,0 +1,127 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M238SNAI",
+ "type": 328,
+ "name": "Snimon",
+ "source": {
+  "type": 26,
+  "mmd": "extracted/CHDAT/MMD0/SKUL.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 9,
+  "3": 17,
+  "5": 19,
+  "7": 18,
+  "9": 24,
+  "10": 13,
+  "11": 21,
+  "13": 23,
+  "15": 22,
+  "17": 20,
+  "18": 16,
+  "19": 3,
+  "20": 7,
+  "21": 5,
+  "22": 4,
+  "24": 12,
+  "27": 8
+ },
+ "hips": [
+  1,
+  1,
+  0.886
+ ],
+ "root_scale": 0.886,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x3b": {
+   "anim": "anim_12",
+   "start": 1,
+   "end": 86,
+   "speed": 1.38,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x34": {
+   "anim": "anim_18",
+   "start": 0,
+   "end": 55,
+   "speed": 0.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.127547,
+ "hub_roots": true,
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

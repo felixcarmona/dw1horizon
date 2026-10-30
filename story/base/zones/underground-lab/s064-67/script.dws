@@ -1,0 +1,93 @@
+// Readable form of script 64 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 64 {
+    npc myotismon = 5;
+    npc bakemon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 6, 5;
+
+    on enter replace {    // section 254
+        if (lab_skullgreymon_beaten) {
+            set_obj_visibility(0, 1);
+            set_obj_visibility(1, 1);
+            set_obj_visibility(2, 1);
+        } else {
+            set_rect_impassable(0, 62, 39, 2, 13);
+        }
+        if (!myotismon_joined_city) {
+            animate(myotismon, 28);
+            animate(bakemon, 28);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        face(tamer, myotismon);
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s064.sec81.u0"));
+        animate(tamer, anim.idle);
+    }
+
+    on talk(bakemon) replace {    // section 6
+        engine.cutscene = true;
+        if (myotismon_joined_city) {
+            face(bakemon, tamer);
+            say(bakemon, text("s064.sec6.u0"));
+            return;
+        }
+        say(bakemon, text("s064.sec6.u1"));
+    }
+
+    on talk(myotismon) replace {    // section 5
+        engine.cutscene = true;
+        if (myotismon_joined_city) {
+            face(myotismon, tamer);
+            say(myotismon, text("s064.sec5.u0"));
+            return;
+        }
+        if (skullgreymon_debut_news_read) {
+            face(myotismon, tamer);
+            say(myotismon, text("s064.sec5.u1"));
+            say(myotismon, text("s064.sec5.u2"));
+            return;
+        }
+        say(tamer, text("s064.sec5.u3"));
+        animate(myotismon, 21);
+        animate(bakemon, 21);
+        wait(1s);
+        animate(myotismon, anim.idle);
+        animate(bakemon, anim.idle);
+        wait(10);
+        face(myotismon, tamer);
+        face(bakemon, tamer);
+        wait(5);
+        say(myotismon, text("s064.sec5.u4"));
+        say(tamer, text("s064.sec5.u5"));
+        say(myotismon, text("s064.sec5.u6"));
+        say(tamer, text("s064.sec5.u7"));
+        say(myotismon, text("s064.sec5.u8"));
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s064.sec5.u9"));
+        animate(tamer, anim.idle);
+        say(myotismon, text("s064.sec5.u10"));
+        say(tamer, text("s064.sec5.u11"));
+        say(myotismon, text("s064.sec5.u12"));
+        say(tamer, text("s064.sec5.u13"));
+        say(myotismon, text("s064.sec5.u14"));
+        say(tamer, text("s064.sec5.u15"));
+        say(myotismon, text("s064.sec5.u16"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        myotismon_joined_city = true;
+        recruit(species("Myotismon"));
+        recruit(species("SkullGreymon"));
+        engine.prosperity += 3;
+        return;
+    }
+}

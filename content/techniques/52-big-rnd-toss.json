@@ -1,0 +1,17 @@
+{
+  "id": 52,
+  "name": "Big Rnd Toss",
+  "element": "filth",
+  "power": 211,
+  "mpCost": 94,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 47,
+  "status": 2,
+  "statusChance": 20,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [11, 8, 0]
+}

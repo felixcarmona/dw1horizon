@@ -1,0 +1,63 @@
+// Readable form of script 56 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 56 {
+    // the section table, in the order of the original header
+    sections 254, 81, 82, 83, 53;
+
+    on enter replace {    // section 254
+    }
+
+    on use(1) replace {    // section 81
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s57_s58) {
+            entity_set_rotation(tamer, 3138);
+            sound(8, 3);
+            say(narrator, text("s056.sec81.u0"));
+            mansion_door_unlocked.s57_s58 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s57_s58) {
+            entity_set_rotation(tamer, 3138);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s056.sec81.u1"));
+            return;
+        }
+        rotate_3d_object(3, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 700, 50);
+        warp_to(58, 0, 255);
+    }
+
+    on use(2) replace {    // section 82
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -1400, -600);
+        warp_to(56, 0, 255);
+    }
+
+    on use(3) replace {    // section 83
+        rotate_3d_object(2, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -276, -2000);
+        warp_to(52, 3, 255);
+    }
+
+    on step(2) replace {    // section 53
+        animate(tamer, 18);
+        animate(partner, 43);
+        damage_percent = 30;
+        deal_damage(damage_percent);
+        wait(1s);
+        animate(partner, 44);
+        wait(1s);
+        say(tamer, text("s056.sec53.u0"));
+        engine.arg = 253;
+        call_routine(routine("loop_once"));
+        return;
+    }
+}

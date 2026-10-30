@@ -1,0 +1,1018 @@
+{
+ "s000.sec1230.u0": [
+  [
+   "Benvenuto! Come posso aiutarti?"
+  ],
+  [
+   "Stiamo ancora preparando."
+  ],
+  [
+   "Compra",
+   "Vendi",
+   "Più tardi"
+  ],
+  [
+   "Compra",
+   "Più tardi"
+  ],
+  [
+   "Torna a trovarci!"
+  ],
+  [
+   "Sei qui solo per infastidirmi?!"
+  ],
+  [
+   "Bit {money}"
+  ],
+  [
+   "Merito {merit}"
+  ],
+  [
+   "Ti piace qualcosa?"
+  ],
+  [
+   "Cosa vuoi vendere?"
+  ],
+  [
+   "Grazie mille."
+  ],
+  [
+   "Altro?"
+  ],
+  [
+   "Tutto esaurito."
+  ],
+  [
+   "Sconto: {shopvar} Bit."
+  ]
+ ],
+ "s000.sec1230.u1": [
+  [
+   "Evviva, sei qui, sei qui! Cosa",
+   "desideri?"
+  ]
+ ],
+ "s000.sec1230.u2": [
+  [
+   "Non ho niente da vendere",
+   "adesso."
+  ]
+ ],
+ "s000.sec1230.u3": [
+  [
+   "Compra",
+   "Vendi",
+   "Più tardi"
+  ]
+ ],
+ "s000.sec1230.u4": [
+  [
+   "Compra",
+   "Più tardi"
+  ]
+ ],
+ "s000.sec1230.u5": [
+  [
+   "Evviva! Torna presto!"
+  ]
+ ],
+ "s000.sec1230.u6": [
+  [
+   "Uff, tutto qui? Accidenti."
+  ]
+ ],
+ "s000.sec1230.u7": [
+  [
+   "Bits {money}"
+  ]
+ ],
+ "s000.sec1230.u8": [
+  [
+   "Merito {merit}"
+  ]
+ ],
+ "s000.sec1230.u9": [
+  [
+   "Compra tante cose, va bene?"
+  ]
+ ],
+ "s000.sec1230.u10": [
+  [
+   "Hai qualcosa che non ti serve?"
+  ]
+ ],
+ "s000.sec1230.u11": [
+  [
+   "Evviva, grazie!"
+  ]
+ ],
+ "s000.sec1230.u12": [
+  [
+   "Hai qualcos'altro?"
+  ]
+ ],
+ "s000.sec1230.u13": [
+  [
+   "Non ho altro da vendere."
+  ]
+ ],
+ "s000.sec1230.u14": [
+  [
+   "{color 10}{partner}{color 1} è ancora",
+   "piccolino, eh? Ti faccio",
+   "{shopvar} Bit di sconto!"
+  ]
+ ],
+ "s000.sec1230.u15": [
+  [
+   "Ah, Benvenuto."
+  ]
+ ],
+ "s000.sec1230.u16": [
+  [
+   "Torna a trovarmi."
+  ]
+ ],
+ "s000.sec1230.u17": [
+  [
+   "Guardare e basta non è molto",
+   "carino, sai."
+  ]
+ ],
+ "s000.sec1230.u18": [
+  [
+   "Cosa vuoi comprare?"
+  ]
+ ],
+ "s000.sec1230.u19": [
+  [
+   "Mi venderai qualcosa?"
+  ]
+ ],
+ "s000.sec1230.u20": [
+  [
+   "Grazie."
+  ]
+ ],
+ "s000.sec1230.u21": [
+  [
+   "Altro?"
+  ]
+ ],
+ "s000.sec1230.u22": [
+  [
+   "{color 10}{partner}{color 1} deve crescere",
+   "presto. Bene, ti faccio",
+   "{shopvar} Bit di sconto."
+  ]
+ ],
+ "s000.sec1230.u23": [
+  [
+   "Benvenuto, pio! Cosa desideri,",
+   "pio?"
+  ]
+ ],
+ "s000.sec1230.u24": [
+  [
+   "Grazie come al solito, pio!"
+  ]
+ ],
+ "s000.sec1230.u25": [
+  [
+   "Eh? Guardi e basta, pio?!"
+  ]
+ ],
+ "s000.sec1230.u26": [
+  [
+   "Scegli, pio."
+  ]
+ ],
+ "s000.sec1230.u27": [
+  [
+   "Compro di tutto, pio."
+  ]
+ ],
+ "s000.sec1230.u28": [
+  [
+   "Grazie, pio."
+  ]
+ ],
+ "s000.sec1230.u29": [
+  [
+   "Continuiamo, pio?"
+  ]
+ ],
+ "s000.sec1230.u30": [
+  [
+   "{color 10}{partner}{color 1} è un bambino, pio.",
+   "Ti faccio {shopvar} Bit di",
+   "sconto, pio."
+  ]
+ ],
+ "s000.sec1230.u31": [
+  [
+   "Ah, Benvenuto! Cosa vuoi?"
+  ]
+ ],
+ "s000.sec1230.u32": [
+  [
+   "Grazie. Torna a trovarmi."
+  ]
+ ],
+ "s000.sec1230.u33": [
+  [
+   "...Alla prossima, spero."
+  ]
+ ],
+ "s000.sec1230.u34": [
+  [
+   "Allora, cosa scegli?"
+  ]
+ ],
+ "s000.sec1230.u35": [
+  [
+   "Cosa vuoi vendere?"
+  ]
+ ],
+ "s000.sec1230.u36": [
+  [
+   "Ti ringrazio tantissimo."
+  ]
+ ],
+ "s000.sec1230.u37": [
+  [
+   "Altro?"
+  ]
+ ],
+ "s000.sec1230.u38": [
+  [
+   "Oh, {color 10}{partner}{color 1} è così",
+   "piccolo. Devo proprio farti",
+   "{shopvar} Bit di sconto."
+  ]
+ ],
+ "s000.sec1230.u39": [
+  [
+   "Umpf, sei venuto. Non troverai",
+   "altrove la mia merce. Compra",
+   "quanto vuoi... Eheh..."
+  ]
+ ],
+ "s000.sec1230.u40": [
+  [
+   "Eheh... Risparmia e torna."
+  ]
+ ],
+ "s000.sec1230.u41": [
+  [
+   "C...! Guardi e basta?!"
+  ]
+ ],
+ "s000.sec1230.u42": [
+  [
+   "Compra ciò che ti piace."
+  ]
+ ],
+ "s000.sec1230.u43": [
+  [
+   "Non prendo robaccia. Eheh..."
+  ]
+ ],
+ "s000.sec1230.u44": [
+  [
+   "Eheh... Fa' attenzione là",
+   "fuori."
+  ]
+ ],
+ "s000.sec1230.u45": [
+  [
+   "Tu... Cos'altro vuoi?"
+  ]
+ ],
+ "s000.sec1230.u46": [
+  [
+   "Eheh... {color 10}{partner}{color 1}. Per te,",
+   "tolgo {shopvar} Bit dal",
+   "prezzo."
+  ]
+ ],
+ "s000.sec1230.u47": [
+  [
+   "Oh, tu, cliente!"
+  ]
+ ],
+ "s000.sec1230.u48": [
+  [
+   "La prossima volta compra di",
+   "più!"
+  ]
+ ],
+ "s000.sec1230.u49": [
+  [
+   "Tu, tirchio!"
+  ]
+ ],
+ "s000.sec1230.u50": [
+  [
+   "Compra tutto!"
+  ]
+ ],
+ "s000.sec1230.u51": [
+  [
+   "Vendi di tutto!"
+  ]
+ ],
+ "s000.sec1230.u52": [
+  [
+   "Ok, ok!"
+  ]
+ ],
+ "s000.sec1230.u53": [
+  [
+   "Altro? Tu avere altro?"
+  ]
+ ],
+ "s000.sec1230.u54": [
+  [
+   "{color 10}{partner}{color 1}, tu, piccoletto!",
+   "Io fare {shopvar} Bit di",
+   "sconto!"
+  ]
+ ],
+ "s000.sec1230.u55": [
+  [
+   "I miei oggetti sono",
+   "faaantastici! Bleah, bleah."
+  ]
+ ],
+ "s000.sec1230.u56": [
+  [
+   "Torna, o qualcosa del genere.",
+   "Bleah, bleah."
+  ]
+ ],
+ "s000.sec1230.u57": [
+  [
+   "Aaah, va' a casa, bleah!"
+  ]
+ ],
+ "s000.sec1230.u58": [
+  [
+   "Qual è quello buono, mh?"
+  ]
+ ],
+ "s000.sec1230.u59": [
+  [
+   "Forza, vendi, vendi."
+  ]
+ ],
+ "s000.sec1230.u60": [
+  [
+   "Davvero? Bleah?"
+  ]
+ ],
+ "s000.sec1230.u61": [
+  [
+   "Altro? C'è altro? Eh? Bleah?"
+  ]
+ ],
+ "s000.sec1230.u62": [
+  [
+   "Oh? Un bambino? Uno sconto?",
+   "Allora {shopvar} Bit in",
+   "meno."
+  ]
+ ],
+ "s000.sec1230.u63": [
+  [
+   "Ho roba utile per la vita di",
+   "tutti i giorni. Che ne dici?"
+  ]
+ ],
+ "s000.sec1230.u64": [
+  [
+   "Torna presto, eh."
+  ]
+ ],
+ "s000.sec1230.u65": "Mi prendi in giro?",
+ "s000.sec1230.u66": [
+  [
+   "Cosa stai cercando?"
+  ]
+ ],
+ "s000.sec1230.u67": [
+  [
+   "Cosa mi stai vendendo?"
+  ]
+ ],
+ "s000.sec1230.u68": [
+  [
+   "Grazie tante."
+  ]
+ ],
+ "s000.sec1230.u69": [
+  [
+   "Altro?"
+  ]
+ ],
+ "s000.sec1230.u70": [
+  [
+   "{color 10}{partner}{color 1} è piccolo! Sconto:",
+   "{shopvar} Bits!"
+  ]
+ ],
+ "s000.sec1230.u71": [
+  [
+   "È la tua occasione, sì, sì.",
+   "Compra quanto vuoi!"
+  ]
+ ],
+ "s000.sec1230.u72": [
+  [
+   "Torna presto, sì, sì."
+  ]
+ ],
+ "s000.sec1230.u73": [
+  [
+   "Sei qui per intralciare gli",
+   "affari, sì?"
+  ]
+ ],
+ "s000.sec1230.u74": [
+  [
+   "Quale, sì?"
+  ]
+ ],
+ "s000.sec1230.u75": "Cosa vendi, sì?",
+ "s000.sec1230.u76": [
+  [
+   "grazie, sì, sì!"
+  ]
+ ],
+ "s000.sec1230.u77": [
+  [
+   "Altro, sì?"
+  ]
+ ],
+ "s000.sec1230.u78": [
+  [
+   "Oh, {color 10}{partner}{color 1} è un bambino,",
+   "sì. {shopvar} Bit di sconto,",
+   "servizio speciale!"
+  ]
+ ],
+ "s000.sec1230.u79": [
+  [
+   "Benvenuto!"
+  ]
+ ],
+ "s000.sec1230.u80": [
+  [
+   "Torna indietro, Ok?"
+  ]
+ ],
+ "s000.sec1230.u81": [
+  [
+   "Uff, che cattiveria. Non compri",
+   "nulla?"
+  ]
+ ],
+ "s000.sec1230.u82": [
+  [
+   "Cosa vuoi?"
+  ]
+ ],
+ "s000.sec1230.u83": "Quale vuoi vendere?",
+ "s000.sec1230.u84": [
+  [
+   "Grazie!"
+  ]
+ ],
+ "s000.sec1230.u85": [
+  [
+   "Altro?"
+  ]
+ ],
+ "s000.sec1230.u86": [
+  [
+   "Mh, {color 10}{partner}{color 1} è più piccolo",
+   "di me. Ti faccio {shopvar}",
+   "Bit di sconto."
+  ]
+ ],
+ "s000.sec1230.u87": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "E' un negozio di oggetti."
+  ]
+ ],
+ "s000.sec1230.u88": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Torna a trovarci, eh."
+  ]
+ ],
+ "s000.sec1230.u89": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Guardi e basta?"
+  ]
+ ],
+ "s000.sec1230.u90": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Allora, cosa desideri?"
+  ]
+ ],
+ "s000.sec1230.u91": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Cosa stai vendendo?"
+  ]
+ ],
+ "s000.sec1230.u92": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "Oh oh, che gentile."
+  ]
+ ],
+ "s000.sec1230.u93": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "C'e' altro?"
+  ]
+ ],
+ "s000.sec1230.u94": [
+  [
+   "{color 7}Coelamon {color 1}",
+   "{color 10}{partner}{color 1} è giovane.",
+   "Sconto: {shopvar} Bits!"
+  ]
+ ],
+ "s000.sec1235.u0": [
+  [
+   "Ecco cosa ho oggi, sì, sì."
+  ]
+ ],
+ "s000.sec1235.u1": [
+  [
+   "E' tutto quello che abbiamo",
+   "oggi. Si'."
+  ]
+ ],
+ "s000.sec1235.u2": [
+  [
+   "Oh! La carta leggendaria:",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u3": [
+  [
+   "Oh, una carta di",
+   "{digimon 249}!"
+  ]
+ ],
+ "s000.sec1235.u4": [
+  [
+   "Una carta di",
+   "{digimon 249}.",
+   "Non ce l'ho ancora."
+  ]
+ ],
+ "s000.sec1235.u5": [
+  [
+   "Una carta di",
+   "{digimon 249}."
+  ]
+ ],
+ "s000.sec1235.u6": [
+  [
+   "Uff, un'altra carta di",
+   "{digimon 249}?"
+  ]
+ ],
+ "s000.sec1235.u7": [
+  [
+   "Non avevo una carta."
+  ]
+ ],
+ "s000.sec1235.u8": [
+  [
+   "Che carta stai vendendo?"
+  ]
+ ],
+ "s000.sec1236.u0": [
+  [
+   "Oh, anche tu vuoi punti merito?",
+   "Allora, cosa desideri?"
+  ]
+ ],
+ "s000.sec1236.u1": [
+  [
+   "Mostra una carta Digimon",
+   "Usa i punti merito",
+   "Più tardi"
+  ]
+ ],
+ "s000.sec1236.u2": [
+  [
+   "Consegnala",
+   "Lascia stare"
+  ]
+ ],
+ "s000.sec1236.u3": [
+  [
+   "Va bene!",
+   "Lascia stare"
+  ]
+ ],
+ "s000.sec1236.u4": [
+  [
+   "È questo che desideri?"
+  ]
+ ],
+ "s000.sec1236.u5": [
+  [
+   "Cosa mi hai portato?"
+  ]
+ ],
+ "s000.sec1236.u6": [
+  [
+   "Cosa vuoi?"
+  ]
+ ],
+ "s000.sec1236.u7": [
+  [
+   "Mh, questa è... ultrarara! Devo",
+   "averla! Offro {shopvar}",
+   "punti. D'accordo?"
+  ]
+ ],
+ "s000.sec1236.u8": [
+  [
+   "Rara! {shopvar} punti. Va",
+   "bene?"
+  ]
+ ],
+ "s000.sec1236.u9": [
+  [
+   "Mh, niente male. Vediamo...",
+   "{shopvar} punti. Me la dai?"
+  ]
+ ],
+ "s000.sec1236.u10": [
+  [
+   "Comune. {shopvar} punti. Me",
+   "la dai?"
+  ]
+ ],
+ "s000.sec1236.u11": [
+  [
+   "Mh, non vale granché. La",
+   "prenderei per {shopvar}",
+   "punti... D'accordo?"
+  ]
+ ],
+ "s000.sec1237.u0": [
+  [
+   "Ehi! Vuoi usare il deposito",
+   "oggetti?"
+  ]
+ ],
+ "s000.sec1237.u1": [
+  [
+   "Usalo",
+   "Non oggi"
+  ]
+ ],
+ "s000.sec1237.u2": [
+  [
+   "Sei sicuro? Vieni a usarlo",
+   "quando vuoi, Ok?"
+  ]
+ ],
+ "s000.sec1237.u3": [
+  [
+   "Frecce: cursore. {color 6}×{color 1}: 1",
+   "oggetto, {color 10}○{color 1}: 10, {color 4}□{color 1}: tutto."
+  ]
+ ],
+ "s000.sec1237.u4": [
+  [
+   "In deposito"
+  ]
+ ],
+ "s000.sec1237.u5": [
+  [
+   "In possesso"
+  ]
+ ],
+ "s000.sec1238.u0": [
+  [
+   "Quale scegli? Bzzt-zzt!"
+  ]
+ ],
+ "s000.sec1238.u1": [
+  [
+   "Conta su di me per il prossimo",
+   "brano, bzzt!"
+  ]
+ ],
+ "s000.sec1238.u2": [
+  [
+   "{bgm 249}, eh?"
+  ]
+ ],
+ "s000.sec1238.u3": [
+  [
+   "Forza! Chiedimi un brano che mi",
+   "infiammi!"
+  ]
+ ],
+ "s000.sec1238.u4": [
+  [
+   "......Dove?"
+  ]
+ ],
+ "s000.sec1238.u5": [
+  [
+   "A piedi, poi. . . Forse e'",
+   "meglio."
+  ]
+ ],
+ "s000.sec1238.u6": [
+  [
+   "Sei sicuro? Una volta che te",
+   "ne vai, Non si torna indietro."
+  ]
+ ],
+ "s000.sec1238.u7": [
+  [
+   "Lo so",
+   "Lascia stare"
+  ]
+ ],
+ "s000.sec1238.u8": [
+  [
+   "Sto collezionando qualcosa. Se",
+   "ne hai, farei volentieri uno",
+   "scambio."
+  ]
+ ],
+ "s000.sec1238.u9": [
+  [
+   "Cosa mi darai?"
+  ]
+ ],
+ "s000.sec1238.u10": [
+  [
+   "Scambio quando vuoi, quindi",
+   "portamene ancora!"
+  ]
+ ],
+ "s000.sec1238.u11": [
+  [
+   "Mi dai {item 249}?"
+  ]
+ ],
+ "s000.sec1238.u12": [
+  [
+   "Certo",
+   "No, lo tengo"
+  ]
+ ],
+ "s000.sec1238.u13": [
+  [
+   "Grazie mille!"
+  ]
+ ],
+ "s000.sec1238.u14": [
+  [
+   "Hai troppi oggetti."
+  ]
+ ],
+ "s000.sec1238.u15": [
+  [
+   "Richiesto",
+   "Offerto"
+  ]
+ ],
+ "s000.sec1238.u16": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Sono Jijimon. Scusa se ti colgo",
+   "così. Mi parli un po' di te?"
+  ]
+ ],
+ "s000.sec1238.u17": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Prima di tutto... hai un",
+   "Digital Monster?"
+  ]
+ ],
+ "s000.sec1238.u18": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sì.",
+   "No."
+  ]
+ ],
+ "s000.sec1238.u19": [
+  [
+   "{color 7} Jijimon {color 1}",
+   "Oooh."
+  ]
+ ],
+ "s000.sec1238.u20": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Prossima domanda. Preferisci il",
+   "giorno o la notte?"
+  ]
+ ],
+ "s000.sec1238.u21": [
+  [
+   "{color 6}{player}{color 1}",
+   "Il giorno",
+   "La notte"
+  ]
+ ],
+ "s000.sec1238.u22": [
+  [
+   "{color 7} Jijimon {color 1}",
+   "Mmmm."
+  ]
+ ],
+ "s000.sec1238.u23": [
+  [
+   "{color 7} Jijimon {color 1}",
+   "Domanda successiva. Hai molti",
+   "amici?"
+  ]
+ ],
+ "s000.sec1238.u24": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sì.",
+   "Non molti"
+  ]
+ ],
+ "s000.sec1238.u25": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Capisco, capisco."
+  ]
+ ],
+ "s000.sec1238.u26": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ah, E' vero! Ho quasi",
+   "dimenticato di chiederti il",
+   "nome!"
+  ]
+ ],
+ "s000.sec1238.u27": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 6}{player}{color 1}, Giusto?"
+  ]
+ ],
+ "s000.sec1238.u28": [
+  [
+   "{color 6}{player}{color 1}",
+   "Sì.",
+   "No."
+  ]
+ ],
+ "s000.sec1238.u29": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Ora dimmi il nome del Digimon",
+   "che alleverai."
+  ]
+ ],
+ "s000.sec1238.u30": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "{color 10}{partner}{color 1}, Giusto?"
+  ]
+ ],
+ "s000.sec1238.u31": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Mh, che bel nome."
+  ]
+ ],
+ "s000.sec1238.u32": [
+  [
+   "{color 7}Jijimon {color 1}",
+   "Bene, ho finito le domande. Ci",
+   "vediamo presto!"
+  ]
+ ],
+ "s000.sec1240.u0": [
+  [
+   "Va bene?",
+   "Sì",
+   "No"
+  ]
+ ],
+ "s000.sec1240.u1": [
+  [
+   "Calendario del torneo"
+  ]
+ ],
+ "s000.sec1240.u2": [
+  [
+   "Vuoi partecipare al -",
+   "{cup 3} - ?"
+  ]
+ ],
+ "s000.sec1240.u3": [
+  [
+   "Quindi {color 10}{partner}{color 1} partecipa",
+   "al -{cup 3}-... Sei",
+   "sicuro?"
+  ]
+ ],
+ "s000.sec1240.u4": [
+  [
+   "Partecipa",
+   "Non stavolta"
+  ]
+ ],
+ "s000.sec1240.u5": [
+  [
+   "Penalizzazione!"
+  ]
+ ],
+ "s000.sec1240.u6": [
+  [
+   "Non puoi ancora entrare.",
+   "Torna il giorno del torneo, tra",
+   "le 10 e le 23."
+  ]
+ ],
+ "s000.sec1240.u7": [
+  [
+   "{move 243}",
+   "non è stata ereditata."
+  ]
+ ],
+ "s000.sec1241.u0": [
+  [
+   "Ah, giusto, oggi sono iscritto",
+   "al -{cup 3}-, vero?"
+  ]
+ ],
+ "s000.sec1242.u0": [
+  [
+   "Oh no! Ho dimenticato di",
+   "essere iscritto al",
+   "-{cup 3}- di oggi!"
+  ]
+ ],
+ "s000.sec1243.u0": [
+  [
+   "Categoria"
+  ]
+ ],
+ "s000.sec1243.u1": [
+  [
+   "Versione"
+  ]
+ ],
+ "s000.sec1243.u2": [
+  [
+   "Tipo"
+  ]
+ ],
+ "s000.sec1243.u3": [
+  [
+   "Speciale"
+  ]
+ ],
+ "s000.sec1243.u4": [
+  [
+   "Totale"
+  ]
+ ],
+ "s000.sec1243.u5": "Carte",
+ "s000.sec1244.u0": [
+  [
+   "Oh, è {color 6}{item 200}{color 1}!"
+  ]
+ ],
+ "s000.sec1244.u1": [
+  [
+   "Ma non posso portare altri",
+   "oggetti..."
+  ]
+ ],
+ "s000.sec1251.u0": [
+  [
+   "Eh. Tenetevi forte!"
+  ]
+ ]
+}

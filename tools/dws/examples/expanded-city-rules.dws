@@ -1,0 +1,26 @@
+// A mod that changes the city's rules (docs/mods/city-rules.md): the story-state engine reads them from a table that the
+// compiler writes into MAPHEAD, so no code changes. What this file does not declare is the original game's rule.
+//
+//   python3 tools/dws.py compile --exe story-state tools/dws/examples/expanded-city-rules.dws -o build/dws/DG.SCN
+//   build/story-state/mk-disc.sh city-mod tools/dws/examples/expanded-city-rules.dws
+city {
+    // every recruited Digimon counts its whole level (the original: level - 2)
+    prosperity {
+        species Numemon, Sukamon, Nanimon: 1 when level >= 3;
+        species Agumon..=Ninjamon: level when level >= 3;
+    }
+    // the partner is reborn in Jijimon's house as soon as the city is a little bigger
+    revival {
+        screen(205) when recruited(Angemon) or recruited(Monzaemon) or prosperity >= 20;
+        default screen(218);
+    }
+    // the File City top map only follows Palmon and Birdramon (two of the original's five flags)
+    top_map {
+        screen(172) when recruited(Birdramon) and recruited(Palmon);
+        screen(171) when recruited(Birdramon);
+        screen(169) when recruited(Palmon);
+        default screen(168);
+    }
+    // a richer, longer first game
+    start { bits: 77777; lives: 5; }
+}

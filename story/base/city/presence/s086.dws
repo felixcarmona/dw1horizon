@@ -1,0 +1,11 @@
+// Who stands on screen 86 (Ancient Speedy Region), and when. Read out of MAPHEAD.SCN section 86 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(86) {                              // Ancient Speedy Region
+            npc Meteormon slot 0 when not trigger(313);
+            npc 171 slot 1 when recruited(Tyrannomon) and trigger(313) and not trigger(335);
+        }
+    }
+}

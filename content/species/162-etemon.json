@@ -1,0 +1,33 @@
+{
+  "id": 162,
+  "name": "Etemon",
+  "level": "ultimate",
+  "attribute": "virus",
+  "specialties": ["battle", "nature", "filth"],
+  "techniques": ["Dynamite Kick (44)", "Buster Dive", "War Cry", "Spinning Shot", "Dark Network & Concert Crush"],
+  "drop": {"item": "Brain Chip", "percent": 100},
+  "effects_like": 42,
+  "model": {"name": "EETE", "bones": 27, "radius": 130, "height": 265},
+  "voice": 38,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 5600, "mp": 5600, "off": 700, "def": 580, "speed": 530, "brain": 600, "bits": 7777},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

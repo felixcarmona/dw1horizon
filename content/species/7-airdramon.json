@@ -1,0 +1,52 @@
+{
+  "id": 7,
+  "name": "Airdramon",
+  "level": "champion",
+  "vanilla": true,
+  "attribute": "vaccine",
+  "specialties": ["air", "fire", null],
+  "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Static Elect", "Megalo Spark", "Electric Cloud",
+                 "Wind Cutter", "Spinning Shot", "Confused Storm", "Hurricane", "Spnning Needle"],
+  "drop": {"item": "sm.recovery", "percent": 0},
+  "model": {"name": "AIRD", "bones": 20, "radius": 180, "height": 400},
+  "voice": 7,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 4,
+    "hunger_hours": [5, 11, 17, 23],
+    "energy_max": 80,
+    "energy_fed": 35,
+    "energy_per_hour": 6,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Sirloin",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 2,
+    "training_type": "mp-brains",
+    "birth_weight": 30,
+    "status_screen_position": [260, 380, -1450],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "from": [-1, -1, 45, -1, -1],
+    "to": [-1, -1, 54, 59, -1, -1],
+    "requirements": {
+      "digimon": -1,
+      "hp": -1,
+      "mp": 100,
+      "offense": -1,
+      "defense": -1,
+      "speed": 100,
+      "brain": 100,
+      "care": 1,
+      "weight": 30,
+      "discipline": 90,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 35,
+      "flags": 16
+    },
+    "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 200, "brains": 200}
+  }
+}

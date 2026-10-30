@@ -1,0 +1,98 @@
+// Readable form of script 194 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 194 {
+    npc vermilimon0 = 5;
+    npc piddomon1 = 6;
+    npc piddomon2 = 7;
+    npc vermilimon3 = 8;
+    npc piddomon4 = 9;
+    npc devimon = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7, 8, 9, 53;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Sirloin"), 3758, 0, 1159, 1024, 686);
+        if (!mt_infinity_devimon_beaten) {
+            animate(devimon, 28);
+            return;
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 3588, 1931);
+        warp_to(248, 1, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -4289, 1108);
+        warp_to(219, 1, 255);
+    }
+
+    on talk(vermilimon0) replace {    // section 5
+        say(vermilimon0, text("s194.sec5.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(piddomon1) replace {    // section 6
+        say(piddomon1, text("s194.sec6.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(piddomon2) replace {    // section 7
+        say(piddomon2, text("s194.sec7.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on talk(vermilimon3) replace {    // section 8
+        say(vermilimon3, text("s194.sec8.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(piddomon4) replace {    // section 9
+        say(piddomon4, text("s194.sec9.u0"));
+        battle();
+        recruit(species("Piddomon"));
+    }
+
+    on step(2) replace {    // section 53
+        unless (!mt_infinity_devimon_beaten) return;
+        say(devimon, text("s194.sec53.u0"));
+        animate(devimon, 28);
+        entity_move_to_axis(devimon, 0, 1, 20);
+        wait(3s);
+        say(tamer, text("s194.sec53.u1"));
+        say(devimon, text("s194.sec53.u2"));
+        battle(foes: [devimon]);
+        face(tamer, devimon);
+        face(devimon, tamer);
+        face(partner, devimon);
+        say(devimon, text("s194.sec53.u3"));
+        say(devimon, text("s194.sec53.u4"));
+        say(tamer, text("s194.sec53.u5"));
+        say(devimon, text("s194.sec53.u6"));
+        loop {
+            animate(devimon, 28);
+            entity_move_to(devimon, -4562, 41, 20, 0);
+            unless (glances < 3) break;
+            glances += 1;
+            wait(1s);
+            face(tamer, devimon);
+            face(partner, devimon);
+        }
+        await devimon;
+        remove(devimon);
+        glances = 0;
+        camera_on(tamer, speed: 10);
+        await camera;
+        mt_infinity_devimon_beaten = true;
+        return;
+    }
+}

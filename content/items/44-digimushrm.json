@@ -1,0 +1,14 @@
+{
+  "id": 44,
+  "name": "Digimushrm",
+  "value": 100,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 12,
+    "weight": 1
+  }
+}

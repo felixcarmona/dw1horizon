@@ -1,0 +1,129 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 194,
+ "type": 200,
+ "name": "Pegasusmon",
+ "source": {
+  "type": 33,
+  "mmd": "extracted/CHDAT/MMD1/UNIM.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 4,
+  "3": 5,
+  "4": 6,
+  "6": 7,
+  "8": 25,
+  "9": 26,
+  "12": 8,
+  "13": 9,
+  "14": 10,
+  "15": 11,
+  "16": 12,
+  "17": 13,
+  "18": 14,
+  "19": 15,
+  "20": 17,
+  "21": 18,
+  "22": 19,
+  "23": 20,
+  "24": 21,
+  "25": 22,
+  "26": 23,
+  "27": 24
+ },
+ "hips": [
+  8,
+  1,
+  0.864
+ ],
+ "root_scale": 0.864,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 59,
+   "end": 149,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 142,
+   "end": 222,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_03",
+   "start": 120,
+   "end": 234,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x31": {
+   "anim": "anim_02",
+   "start": 12,
+   "end": 97,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x33": {
+   "anim": "anim_01",
+   "start": 5,
+   "end": 95,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x32",
+  "0x35",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

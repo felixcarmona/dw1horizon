@@ -1,0 +1,44 @@
+// Readable form of script 195 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 195 {
+    npc golemon0 = 5;
+    npc golemon1 = 6;
+    npc golemon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Auto Pilot"), -2681, 0, -404, 2048, 687);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2133, -489);
+        warp_to(249, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 2909, 268);
+        warp_to(247, 1, 255);
+    }
+
+    on talk(golemon0) replace {    // section 5
+        say(golemon0, text("s195.sec5.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(golemon1) replace {    // section 6
+        say(golemon1, text("s195.sec6.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(golemon2) replace {    // section 7
+        say(golemon2, text("s195.sec7.u0"));
+        battle();
+        recruit(species("Golemon"));
+        return;
+    }
+}

@@ -1,0 +1,110 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Hola, {color 6}{player}{color 1}! He",
+   "començat a ajudar Drimogemon.",
+   "Se'm dóna força bé trobar",
+   "coses!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Explica-m'ho",
+ "s169.sec81.m0.o1": "No cal explicar-ho",
+ "s169.sec81.m0.o2": "Res, gràcies",
+ "s169.sec81.m1.o0": "Buscar tresors",
+ "s169.sec81.m1.o1": "Explica-m'ho de nou",
+ "s169.sec81.m1.o2": "No, res més",
+ "s169.sec81.m2.o0": "Pla normal: 1000 Bits",
+ "s169.sec81.m2.o1": "Pla especial: 5000 Bits",
+ "s169.sec81.m2.o2": "Cancel·lar",
+ "s169.sec81.u0": [
+  [
+   "Bones, benvingut, {color 6}{player}{color 1}!",
+   "Això és la botiga de Cerca del",
+   "tresor. Poso a treballar el meu",
+   "art de cavar i et porto"
+  ],
+  [
+   "tresors del subsòl. Aquest és",
+   "el negoci! L'illa té tresors de",
+   "tota mena enterrats pertot",
+   "arreu. Deixa-m'ho a mi!"
+  ]
+ ],
+ "s169.sec81.u1": [
+  [
+   "Ei! Vols buscar tresors?",
+   "Primer t'explico com funciona?"
+  ]
+ ],
+ "s169.sec81.u2": [
+  [
+   "Tu pagues per endavant, i jo",
+   "et trobo un tresor. Hi ha dos",
+   "plans, amb terminis i preus",
+   "diferents. El normal són tres"
+  ],
+  [
+   "dies per 1000 Bits. L'especial",
+   "són deu dies per 5000 Bits.",
+   "Amb l'especial tens més",
+   "possibilitats de trobar un bon"
+  ],
+  [
+   "tresor! Això és tot. Què",
+   "tries?"
+  ]
+ ],
+ "s169.sec81.u3": [
+  [
+   "Vinga, tria un pla!"
+  ]
+ ],
+ "s169.sec81.u4": [
+  [
+   "Val. Fins ara!"
+  ]
+ ],
+ "s169.sec81.u5": [
+  [
+   "D'acord, resultats en tres",
+   "dies. Faré tot el que pugui!"
+  ]
+ ],
+ "s169.sec81.u6": [
+  [
+   "D'acord, resultats en deu dies.",
+   "Faré tot el que pugui!"
+  ]
+ ],
+ "s169.sec81.u7": [
+  [
+   "No et basten els Bits. Ni jo",
+   "puc buscar tresors sense",
+   "diners per començar."
+  ]
+ ],
+ "s169.sec81.u8": [
+  [
+   "Ara mateix estic buscant",
+   "tresors. Aguanta una mica més."
+  ]
+ ],
+ "s169.sec81.u9": [
+  [
+   "Eeei, ja ha arribat el teu",
+   "tresor!"
+  ]
+ ],
+ "s169.sec81.u10": [
+  [
+   "Vés a fer lloc en la teva",
+   "bossa!"
+  ]
+ ],
+ "s169.sec81.u11": "Reps {color 6}{item 110}{color 1}!",
+ "s169.sec81.u12": [
+  [
+   "Gràcies per la teva confiança!"
+  ]
+ ]
+}

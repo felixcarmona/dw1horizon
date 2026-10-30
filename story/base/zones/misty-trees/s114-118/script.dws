@@ -1,0 +1,92 @@
+// Readable form of script 114 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 114 {
+    npc goblimon = 5;
+    npc fugamon = 6;
+    npc morishellmon = 7;
+    npc saberdramon3 = 8;
+    npc saberdramon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 51, 52;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 7) {
+            spawn_item(item("Digimushrm"), 55, 71);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 45, 58);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 14, 6);
+        }
+    }
+
+    on talk(goblimon) replace {    // section 5
+        say(goblimon, text("s114.sec5.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(fugamon) replace {    // section 6
+        say(fugamon, text("s114.sec6.u0"));
+        battle();
+        recruit(species("Fugamon"));
+    }
+
+    on talk(morishellmon) replace {    // section 7
+        say(morishellmon, text("s114.sec7.u0"));
+        battle();
+        recruit(species("MoriShellmon"));
+    }
+
+    on talk(saberdramon3) replace {    // section 8
+        say(saberdramon3, text("s114.sec8.u0"));
+        battle();
+        recruit(species("Saberdramon"));
+    }
+
+    on talk(saberdramon4) replace {    // section 9
+        say(saberdramon4, text("s114.sec9.u0"));
+        battle();
+        recruit(species("Saberdramon"));
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 60, -3200);
+        if (misty_trees_fog_spell_cast || cherrymon_met) {
+            warp_to(116, 2, 255);
+        }
+        store_random(random_roll, 99);
+        if (random_roll < 69) {
+            warp_to(116, 2, 255);
+            goto sec52;
+        }
+        warp_to(121, 1, 255);
+        goto sec52;
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 70, 5200);
+        if (misty_trees_fog_spell_cast || cherrymon_met) {
+            warp_to(119, 0, 255);
+        }
+        misty_trees_maze_steps += 1;
+        if (misty_trees_maze_steps == 10) {
+            misty_trees_maze_steps = 0;
+            warp_to(119, 0, 255);
+        }
+        store_random(random_roll, 99);
+        if (random_roll < 69) {
+            warp_to(118, 0, 255);
+        } else {
+            warp_to(116, 0, 255);
+        }
+        end_script();
+    }
+}

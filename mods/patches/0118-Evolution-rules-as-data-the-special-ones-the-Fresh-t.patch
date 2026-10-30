@@ -1,0 +1,292 @@
+From ba7a538c0c693c6d2ef8cec7e6e31d0b6cc1ca85 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 13:15:52 +0000
+Subject: [PATCH] Evolution rules as data, the special ones: the Fresh to Baby
+ II pairs, the Ultimate that evolves again, the wake/praise rules
+ (MOD_EVO_RULES), the virus-bar evolution, the Champion hour and the scolding
+ that arms the flag; all start empty (-1) and are written by tools/balance.py
+ from content/tables/evolution-rules.json
+
+---
+ include/dw/level.h      |  55 +++++++++++++++++++
+ src/main/evolution.c    | 119 +++++++++++++++++++++++-----------------
+ src/main/partner_impl.c |  22 +++++---
+ 3 files changed, 139 insertions(+), 57 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 1949c612..4dc28deb 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -30,6 +30,61 @@
+ #define MOD_EVO_FALLBACK_HOURS	9
+ #define MOD_EVO_FALLBACK_TARGET	10
+ extern int16_t MOD_EVO_TIMING[MOD_EVO_TIMING_SIZE];
++
++/*
++ * MOD (evolution rules as data): the special evolutions that were if-chains. All of them start empty (-1) in the C;
++ * tools/balance.py build writes them from content/tables/evolution-rules.json.
++ *   MOD_EVO_FRESH[]     a Fresh (Baby I) becomes the Baby II of the pair {from, to}
++ *   MOD_EVO_ULTIMATE[]  an Ultimate {from, to} looks for `to` when its requirements score 3
++ *   MOD_EVO_RULES[]     rules checked after waking (mode 2) and after praise or scolding (mode 3)
++ *   MOD_EVO_SPECIAL[]   the virus-bar evolution (threshold, target, two species it does not apply to), the Champion hour
++ *                       that triggers the mode 3 check (level, hours), the scolding that arms the flag (level,
++ *                       discipline, happiness before it)
++ */
++#define MOD_EVO_PAIR_MAX	8
++#define MOD_EVO_RULES_MAX	10
++#define MOD_EVO_COND_MAX	4
++#define MOD_EVO_SPECIAL_SIZE	9
++#define MOD_SPECIAL_VIRUS_THRESHOLD	0
++#define MOD_SPECIAL_VIRUS_TARGET	1
++#define MOD_SPECIAL_VIRUS_IMMUNE_A	2
++#define MOD_SPECIAL_VIRUS_IMMUNE_B	3
++#define MOD_SPECIAL_CHECK_LEVEL		4
++#define MOD_SPECIAL_CHECK_HOURS		5
++#define MOD_SPECIAL_SCOLD_LEVEL		6
++#define MOD_SPECIAL_SCOLD_DISCIPLINE	7
++#define MOD_SPECIAL_SCOLD_HAPPINESS	8
++
++/* condition stats of a rule */
++#define MOD_STAT_DISCIPLINE	0
++#define MOD_STAT_HAPPINESS	1
++#define MOD_STAT_TIREDNESS	2
++#define MOD_STAT_BATTLES	3
++#define MOD_STAT_DEFENSE	4
++#define MOD_STAT_EVOTIMER	5
++#define MOD_STAT_SCREEN		6
++#define MOD_STAT_SCOLD_FLAG	7
++
++typedef struct {
++	int8_t stat;  /* MOD_STAT_*, -1 = no more conditions */
++	int8_t op;    /* 0: ==, 1: >= */
++	int16_t value;
++} ModEvoCond;
++
++typedef struct {
++	int16_t target;  /* -1 = unused row */
++	int16_t from[4]; /* the species it applies to (-1 = end; the first -1 = any species) */
++	int8_t mode;     /* 2 after waking, 3 after praise or scolding */
++	int8_t chance;   /* percent of the roll that passes (100 = always) */
++	int8_t level;    /* -1 = any level */
++	int8_t flags;    /* 1: clears the scold flag when it matches */
++	ModEvoCond cond[MOD_EVO_COND_MAX];
++} ModEvoRule;
++
++extern int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2];
++extern int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2];
++extern ModEvoRule MOD_EVO_RULES[MOD_EVO_RULES_MAX];
++extern int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE];
+ /* lifetime added on reaching Mega naturally (Ultimate: +96) */
+ #define MEGA_LIFETIME_BONUS	120
+ 
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index c150b113..e7475d5f 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -861,17 +861,33 @@ uint8_t HAS_USED_EVOITEM;
+ 
+ GARBAGE(getFreshEvolutionTarget, 10);
+ 
++/*
++ * MOD (evolution rules as data): the rules are tables that start empty (-1 = does not exist) and tools/balance.py build
++ * writes from content/tables/evolution-rules.json (include/dw/level.h)
++ */
++int16_t MOD_EVO_TIMING[MOD_EVO_TIMING_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
++int16_t MOD_EVO_FRESH[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 },
++					       { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
++int16_t MOD_EVO_ULTIMATE[MOD_EVO_PAIR_MAX][2] = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 },
++						  { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
++int16_t MOD_EVO_SPECIAL[MOD_EVO_SPECIAL_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
++#define MOD_EVO_NO_RULE                                                                                        \
++	{                                                                                                      \
++		-1, { -1, -1, -1, -1 }, 0, 0, -1, 0, { { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 }, { -1, 0, 0 } } \
++	}
++ModEvoRule MOD_EVO_RULES[MOD_EVO_RULES_MAX] = { MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE,
++						MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE, MOD_EVO_NO_RULE,
++						MOD_EVO_NO_RULE, MOD_EVO_NO_RULE };
++
+ int16_t getFreshEvolutionTarget(int32_t currentDigimon) {
+   int32_t result;
++  int32_t i;
+ 
+-  if (currentDigimon == 0x01)
+-    result = 0x02;
+-  if (currentDigimon == 0x0f)
+-    result = 0x10;
+-  if (currentDigimon == 0x1d)
+-    result = 0x1e;
+-  if (currentDigimon == 0x2b)
+-    result = 0x2c;
++  result = -1;
++  for (i = 0; i < MOD_EVO_PAIR_MAX; i++) {
++    if (MOD_EVO_FRESH[i][0] == currentDigimon)
++      result = MOD_EVO_FRESH[i][1];
++  }
+ 
+   PARTNER_PARA.evoTimer = 0;
+   return result; // possible undefined behavior: 'result' may be uninitialized
+@@ -986,8 +1002,6 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+   return currentBestDigimon;
+ }
+ 
+-/* MOD (evolution rules as data): -1 = does not exist; tools/balance.py build writes the values */
+-int16_t MOD_EVO_TIMING[MOD_EVO_TIMING_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+ 
+ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+   DigimonId *targetPtr; /* MOD: was int8_t */
+@@ -1067,6 +1081,10 @@ int32_t handleSpecialEvolutions(mode, entity)
+   int16_t tiredness;
+   int16_t rand;
+   int16_t evoTarget;
++  ModEvoRule *rule;
++  int32_t i;
++  int32_t k;
++  int32_t stat;
+ 
+   if (tamerGetState() != 0)
+     return -1;
+@@ -1082,41 +1100,39 @@ int32_t handleSpecialEvolutions(mode, entity)
+   rand = randomLimit(100);
+   evoTarget = -1;
+ 
+-  switch (mode) {
+-  case 2: {
+-    if (rand < 30) {
+-      if ((type == 0x15 || type == 0x0a) && discipline == 100 &&
+-          happiness == 100 && tiredness == 0) {
+-        evoTarget = 7;
+-      }
+-      if (type == 0x19 && battles >= 50 && discipline == 100) {
+-        evoTarget = 58;
+-      }
+-      if (type == 0x26 && def >= 500 && discipline == 100) {
+-        evoTarget = 47;
+-      }
+-    }
+-    if (rand < 50 &&
+-        (type == 0x02 || type == 0x1E || type == 0x10 || type == 0x2c) &&
+-        CURRENT_SCREEN == 1) {
+-      evoTarget = 32;
++  /* MOD (evolution rules as data): the rows of MOD_EVO_RULES, in order; the last that matches wins. One roll for all of them */
++  for (i = 0; i < MOD_EVO_RULES_MAX; i++) {
++    rule = &MOD_EVO_RULES[i];
++    if (rule->target < 0 || rule->mode != mode || rand >= rule->chance)
++      continue;
++    if (rule->level >= 0 && level != rule->level)
++      continue;
++    if (rule->from[0] >= 0) {
++      for (k = 0; k < 4 && rule->from[k] >= 0 && rule->from[k] != type; k++)
++        ;
++      if (k == 4 || rule->from[k] != type)
++        continue;
+     }
+-    break;
+-  }
+-  case 3: {
+-    if ((type == 0x18 || type == 0x23) && level == 4 && evotimer == 200 &&
+-        rand < 30) {
+-      evoTarget = 49;
++    for (k = 0; k < MOD_EVO_COND_MAX && rule->cond[k].stat >= 0; k++) {
++      switch (rule->cond[k].stat) {
++      case MOD_STAT_DISCIPLINE: stat = discipline; break;
++      case MOD_STAT_HAPPINESS: stat = happiness; break;
++      case MOD_STAT_TIREDNESS: stat = tiredness; break;
++      case MOD_STAT_BATTLES: stat = battles; break;
++      case MOD_STAT_DEFENSE: stat = def; break;
++      case MOD_STAT_EVOTIMER: stat = evotimer; break;
++      case MOD_STAT_SCREEN: stat = CURRENT_SCREEN; break;
++      case MOD_STAT_SCOLD_FLAG: stat = NANIMON_TRIGGER; break;
++      default: stat = 0; break;
++      }
++      if (rule->cond[k].op == 1 ? stat < rule->cond[k].value : stat != rule->cond[k].value)
++        break;
+     }
+-    if (NANIMON_TRIGGER == 1) {
+-      evoTarget = 53;
++    if (k < MOD_EVO_COND_MAX && rule->cond[k].stat >= 0)
++      continue;
++    if (rule->flags & 1)
+       NANIMON_TRIGGER = 0;
+-    }
+-    if (level == 4 && evotimer >= 240 && rand < 50) {
+-      evoTarget = 28;
+-    }
+-    break;
+-  }
++    evoTarget = rule->target;
+   }
+ 
+   if (evoTarget != -1) {
+@@ -1292,14 +1308,19 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ {
+ 	EvoRequirements *reqs;
++	int32_t i;
++	int32_t target;
+ 
+-	if (currentDigimon != DIGIMON_MEGADRAMON && currentDigimon != DIGIMON_GIGADRAMON) {
+-		return -1;
+-	}
+-	reqs = &EVO_REQ_ROW(DIGIMON_MACHINEDRAMON);
+-	if (calculateRequirementScore(currentDigimon, DIGIMON_MACHINEDRAMON, (reqs->flags & 0x10) >> 4,
+-	                              reqs->flags & 1, -1) >= 3) {
+-		return DIGIMON_MACHINEDRAMON;
++	/* MOD (evolution rules as data): the {from, to} pairs of MOD_EVO_ULTIMATE (Megadramon/Gigadramon -> Machinedramon) */
++	for (i = 0; i < MOD_EVO_PAIR_MAX; i++) {
++		target = MOD_EVO_ULTIMATE[i][1];
++		if (MOD_EVO_ULTIMATE[i][0] != currentDigimon || target < 0) {
++			continue;
++		}
++		reqs = &EVO_REQ_ROW(target);
++		if (calculateRequirementScore(currentDigimon, target, (reqs->flags & 0x10) >> 4, reqs->flags & 1, -1) >= 3) {
++			return target;
++		}
+ 	}
+ 	return -1;
+ }
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 73e7ffa8..a74aad8d 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1248,8 +1248,11 @@ void handlePraiseScold(state)
+ 
+ 	if (state == 4) {
+ 		NANIMON_TRIGGER = 0;
+-		if ((DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level == 3) && (oldDiscipline == 0) &&
+-		    (oldHappiness == -100)) {
++		/* MOD (evolution rules as data): the level and the discipline and happiness before the scolding that arm the flag */
++		if (MOD_EVO_SPECIAL[MOD_SPECIAL_SCOLD_LEVEL] >= 0 &&
++		    (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level == MOD_EVO_SPECIAL[MOD_SPECIAL_SCOLD_LEVEL]) &&
++		    (oldDiscipline == MOD_EVO_SPECIAL[MOD_SPECIAL_SCOLD_DISCIPLINE]) &&
++		    (oldHappiness == MOD_EVO_SPECIAL[MOD_SPECIAL_SCOLD_HAPPINESS])) {
+ 			NANIMON_TRIGGER = 1;
+ 		}
+ 	}
+@@ -2253,15 +2256,18 @@ void tickConditions(void)
+ 					EVOLUTION_TARGET = -1;
+ 			}
+ 		}
+-		if (level == 4 && evoTimer == 360)
++		/* MOD (evolution rules as data): the Champion hour that runs the praise-time rules */
++		if (MOD_EVO_SPECIAL[MOD_SPECIAL_CHECK_LEVEL] >= 0 && level == MOD_EVO_SPECIAL[MOD_SPECIAL_CHECK_LEVEL] &&
++		    evoTimer == MOD_EVO_SPECIAL[MOD_SPECIAL_CHECK_HOURS])
+ 			EVOLUTION_TARGET = handleSpecialEvolutions(
+ 				3, ENTITY_TABLE[1]);
+ 	}
+-	if (PARTNER_PARA.virusBar >= 16) {
+-		/* MOD (partners-npc-a): nor does it turn back into a Sukamon */
+-		if (PARTNER_ENTITY.digimonEntity.entity.type != 0x27L &&
+-		    PARTNER_ENTITY.digimonEntity.entity.type != DIGIMON_KING_SUKAMON) {
+-			EVOLUTION_TARGET = 0x27;
++	/* MOD (evolution rules as data): the virus bar's threshold, the species it becomes and the two it does not apply to */
++	if (MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_THRESHOLD] >= 0 && MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_TARGET] >= 0 &&
++	    PARTNER_PARA.virusBar >= MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_THRESHOLD]) {
++		if (PARTNER_ENTITY.digimonEntity.entity.type != MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_IMMUNE_A] &&
++		    PARTNER_ENTITY.digimonEntity.entity.type != MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_IMMUNE_B]) {
++			EVOLUTION_TARGET = MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_TARGET];
+ 			writePStat(5, PARTNER_ENTITY.digimonEntity.entity.type);
+ 			PARTNER_PARA.sukaBackupHP =
+ 				PARTNER_ENTITY.digimonEntity.stats.base.hp;
+-- 
+2.53.0
+

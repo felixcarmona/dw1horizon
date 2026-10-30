@@ -1,0 +1,76 @@
+{
+ "s122.sec5.u0": "¡Ah, me has salvado!",
+ "s122.sec5.u1": "Así que eras tú el que estaba atrapado.",
+ "s122.sec5.u2": "Pero esto me viene de perlas.",
+ "s122.sec5.u3": "¿El qué?",
+ "s122.sec5.u4": "¡Iba de camino a tu ciudad, para poner mis talentos a su servicio!",
+ "s122.sec5.u5": "Esto... ¿qué talentos?",
+ "s122.sec5.u6": "Vaya, ¿no me conoces? ¡Entre los Digimon soy famoso por saberlo todo!",
+ "s122.sec5.u7": "Pues no. Nunca he oído hablar de ti.",
+ "s122.sec5.u8": "Bueno, pues me voy a la ciudad.",
+ "s122.sec5.u9": "......¿Servirá este para algo?",
+ "s122.sec5.u10": "¡Buenos días tenga usted!",
+ "s122.sec5.u11": "¡Shellmon se ha unido a la ciudad!",
+ "s122.sec6.u0": "¿Te estorbo?",
+ "s123.sec5.u0": "¡Grrraaaah!",
+ "s123.sec6.u0": "¡Haaaaaah!",
+ "s123.sec7.u0": "¡Kiiiiieh!",
+ "s123.sec51.u0": [
+  [
+   "Por todo lo que hemos oído,",
+   "este parece el camino donde",
+   "aparecen esos bandidos..."
+  ],
+  [
+   "Muy bien. Vamos,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s123.sec51.u1": "¡Yujuuuuuu!",
+ "s123.sec51.u2": "¡Gua, ja, ja, ja!",
+ "s123.sec51.u3": "¡Yupiiii!",
+ "s123.sec51.u4": "¡Muajajá, rendíos y dejad vuestras cosas! ¡O saldréis mal parados!",
+ "s123.sec51.u5": "¡Los que tenéis que rendiros sois vosotros!",
+ "s123.sec51.u6": "¿¡Eh!? Vosotros sois...",
+ "s123.sec51.u7": "No me digas que...",
+ "s123.sec51.u8": "¡J-jefe! ¿¡Qué hacemos!?",
+ "s123.sec51.u9": "¡Dejad de graznar! Somos más y más fuertes. ¡A por ellos!",
+ "s123.sec51.u10": "Grrr... ¡M-me las pagaréis!",
+ "s123.sec51.u11": "¡Mira cómo corren! Por lo menos, en una temporada no deberían asomar por aquí.",
+ "s123.sec81.m0.o0": "Modo Ogro: SÍ",
+ "s123.sec81.m0.o1": "Modo Ogro: NO",
+ "s123.sec81.u0": [
+  "Este: Ascensor",
+  "Oeste: ¡Peligro! Precipicio"
+ ],
+ "s123.sec82.u0": "¡¡Cuidado con los desprendimientos!!",
+ "s124.sec51.u0": "Mmm.",
+ "s124.sec51.u1": "Parece el nido de un pájaro o algo así. ¿Tú qué crees?",
+ "s124.sec51.u2": "¿Mm? ¿Un ruido...?",
+ "s124.sec51.u3": "Nada mal, chaval.",
+ "s124.sec51.u4": "Así que este era tu nido.",
+ "s124.sec51.u5": "Je... ya lo ves.",
+ "s124.sec51.u6": "Perdona por meterme así.",
+ "s124.sec51.u7": "Je... no te preocupes.",
+ "s124.sec51.u8": "¿?",
+ "s124.sec51.u9": "He oído hablar de ti.",
+ "s124.sec51.u10": "...¿La gente habla de mí?",
+ "s124.sec51.u11": "Seguramente ahora mismo eres el único humano de esta isla.",
+ "s124.sec51.u12": "¿Ahora mismo...? ¿Es que antes hubo alguien aquí?",
+ "s124.sec51.u13": "Je... ¿No vas a invitarme a la ciudad?",
+ "s124.sec51.u14": "¿Eh? Ah, esto, sí. ¿Vendrás a la ciudad?",
+ "s124.sec51.u15": "Vale. Pues vamos con mi primer trabajo. Agárrate a mí.",
+ "s124.sec51.u16": "¡Birdramon se ha unido a la ciudad!",
+ "s124.sec81.m0.o0": "Pulsar el botón Bajar 1",
+ "s124.sec81.m0.o1": "Pulsar el botón Bajar 2",
+ "s124.sec81.m0.o2": "No subir",
+ "s124.sec81.u0": "Ascensor",
+ "s124.sec81.u1": [
+  [
+   "¿Eh?"
+  ],
+  [
+   "Nada, no pasa nada."
+  ]
+ ]
+}

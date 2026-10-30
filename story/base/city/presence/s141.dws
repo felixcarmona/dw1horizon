@@ -1,0 +1,13 @@
+// Who stands on screen 141 (Volume Villa), and when. Read out of MAPHEAD.SCN section 141 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(141) {                              // Volume Villa
+            npc Shogungekomon slot 0;
+            npc Gekomon slot 1;
+            npc Gekomon slot 2;
+            npc Gekomon slot 3;
+        }
+    }
+}

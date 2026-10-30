@@ -1,0 +1,29 @@
+// A wild Digimon in the Native Forest challenges you; reward if you win.
+flag forest_challenge_won = 721;
+
+script 1 {  // Native Forest (screen 0)
+    npc challenger = 5;  // slot 0: ModokiBetamon, has battle stats on this map
+    on talk(challenger) replace {
+        if (forest_challenge_won) {
+            say(challenger, text("forest-challenge.t1"));
+            return;
+        }
+        say(challenger, text("forest-challenge.t2"));
+        choice {
+            text("forest-challenge.t3") => {
+                battle();
+                if (won) {
+                    say(challenger, text("forest-challenge.t4"));
+                    give_bits(300);
+                    forest_challenge_won = true;
+                } else {
+                    say(challenger, text("forest-challenge.t5"));
+                }
+            }
+            text("forest-challenge.t6") => {
+                say(challenger, text("forest-challenge.t7"));
+            }
+        }
+        return;
+    }
+}

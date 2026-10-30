@@ -1,0 +1,210 @@
+// Readable form of script 49 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 49 {
+    npc monochromon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 82;
+
+    on enter replace {    // section 254
+        if (!is_recruited(species("Monochromon"))) {
+            animate(monochromon, 28);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        unless (!is_recruited(species("Monochromon"))) return;
+        face(tamer, monochromon);
+        if (monochrome_shop_job_offered) {
+            say(monochromon, text("s049.sec81.u16"));
+        } else {
+            monochrome_shop_job_offered = true;
+            say(monochromon, text("s049.sec81.u0"));
+            say(tamer, text("s049.sec81.u1"));
+            say(monochromon, text("s049.sec81.u2"));
+            say(tamer, text("s049.sec81.u3"));
+            say(monochromon, text("s049.sec81.u4"));
+            say(tamer, text("s049.sec81.u5"));
+            say(monochromon, text("s049.sec81.u6"));
+            say(tamer, text("s049.sec81.u7"));
+            say(monochromon, text("s049.sec81.u8"));
+            say(tamer, text("s049.sec81.u9"));
+            say(monochromon, text("s049.sec81.u10"));
+            say(tamer, text("s049.sec81.u11"));
+            say(monochromon, text("s049.sec81.u12"));
+            say(tamer, text("s049.sec81.u13"));
+            say(monochromon, text("s049.sec81.u14"));
+        }
+        choice {
+            text("s049.sec81.m0.o0") => {
+                fadeout_hud(0);
+                walk(monochromon, 133, 292);
+                walk(tamer, -980, -432);
+                await tamer;
+                await monochromon;
+                engine.object = 9;
+                engine.animation = 12;
+                call_routine(routine("reset_object_animation"));
+                set_obj_visibility(33, 1);
+                set_obj_visibility(34, 1);
+                set_obj_visibility(35, 1);
+                set_obj_visibility(9, 0);
+                set_obj_visibility(10, 0);
+                set_obj_visibility(11, 0);
+                set_obj_visibility(12, 0);
+                set_obj_visibility(13, 0);
+                set_obj_visibility(14, 0);
+                set_obj_visibility(15, 0);
+                set_obj_visibility(16, 0);
+                set_obj_visibility(17, 0);
+                set_obj_visibility(18, 0);
+                set_obj_visibility(19, 0);
+                set_obj_visibility(20, 0);
+                face(monochromon, tamer);
+                walk(tamer, -980, 292);
+                walk(partner, -980, -432);
+                await tamer;
+                await partner;
+                face(monochromon, tamer);
+                walk(tamer, -341, 292);
+                walk(partner, -980, 292);
+                await tamer;
+                await partner;
+                engine.object = 21;
+                engine.animation = 12;
+                call_routine(routine("reset_object_animation"));
+                set_obj_visibility(9, 1);
+                set_obj_visibility(10, 1);
+                set_obj_visibility(11, 1);
+                set_obj_visibility(12, 1);
+                set_obj_visibility(13, 1);
+                set_obj_visibility(14, 1);
+                set_obj_visibility(15, 1);
+                set_obj_visibility(16, 1);
+                set_obj_visibility(17, 1);
+                set_obj_visibility(18, 1);
+                set_obj_visibility(19, 1);
+                set_obj_visibility(20, 1);
+                set_obj_visibility(21, 0);
+                set_obj_visibility(22, 0);
+                set_obj_visibility(23, 0);
+                set_obj_visibility(24, 0);
+                set_obj_visibility(25, 0);
+                set_obj_visibility(26, 0);
+                set_obj_visibility(27, 0);
+                set_obj_visibility(28, 0);
+                set_obj_visibility(29, 0);
+                set_obj_visibility(30, 0);
+                set_obj_visibility(31, 0);
+                set_obj_visibility(32, 0);
+                wait(3s);
+                entity_set_rotation(tamer, 0);
+                face(partner, tamer);
+                await tamer;
+                set_obj_visibility(21, 1);
+                set_obj_visibility(22, 1);
+                set_obj_visibility(23, 1);
+                set_obj_visibility(24, 1);
+                set_obj_visibility(25, 1);
+                set_obj_visibility(26, 1);
+                set_obj_visibility(27, 1);
+                set_obj_visibility(28, 1);
+                set_obj_visibility(29, 1);
+                set_obj_visibility(30, 1);
+                set_obj_visibility(31, 1);
+                set_obj_visibility(32, 1);
+                set_obj_visibility(33, 0);
+                set_obj_visibility(34, 0);
+                set_obj_visibility(35, 0);
+                call_routine(routine("shopvar_clear"));
+                meat_stand.customers = 0;
+                monochrome_shop_halfway_reviewed = false;
+                goto sec82;
+            }
+            text("s049.sec81.m0.o1") or cancel => {}
+        }
+        say(monochromon, text("s049.sec81.u15"));
+    }
+
+    on use(2) replace {    // section 82
+        if (meat_stand.customers >= 20) {
+            wait(2s);
+            say(monochromon, text("s049.sec82.u4"));
+            call_routine(routine("shopvar_store"));
+            if (engine.shop_hi <= 6) {
+                say(monochromon, text("s049.sec82.u5"));
+                give_bits(500);
+                say(narrator, text("s049.sec82.u6"));
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 480);
+                advance_to_date_at(date_year);
+                warp_to(44, 2, 255);
+                return;
+            }
+            if (engine.shop_hi <= 11) {
+                say(monochromon, text("s049.sec82.u7"));
+                give_bits(1500);
+                say(narrator, text("s049.sec82.u8"));
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 480);
+                advance_to_date_at(date_year);
+                warp_to(44, 2, 255);
+                return;
+            }
+            say(monochromon, text("s049.sec82.u9"));
+            say(tamer, text("s049.sec82.u10"));
+            say(monochromon, text("s049.sec82.u11"));
+            say(monochromon, text("s049.sec82.u12"));
+            say(monochromon, text("s049.sec82.u13"));
+            say(tamer, text("s049.sec82.u14"));
+            say(monochromon, text("s049.sec82.u15"));
+            say(tamer, text("s049.sec82.u16"));
+            say(monochromon, text("s049.sec82.u17"));
+            sound(8, 10);
+            say(narrator, text("s049.sec82.u18"));
+            give_bits(2000);
+            engine.prosperity += 2;
+            recruit(species("Monochromon"));
+            store_date(date_year);
+            add_minutes_to_date_at(date_year, 480);
+            advance_to_date_at(date_year);
+            warp_to(44, 2, 255);
+            return;
+        }
+        if (meat_stand.customers >= 10 && !monochrome_shop_halfway_reviewed) {
+            monochrome_shop_halfway_reviewed = true;
+            say(monochromon, text("s049.sec82.u0"));
+            face(monochromon, tamer);
+            face(tamer, monochromon);
+            wait(10);
+            call_routine(routine("shopvar_store"));
+            if (engine.shop_hi <= 2) {
+                say(monochromon, text("s049.sec82.u1"));
+                entity_set_rotation(tamer, 80);
+                fadeout_hud(0);
+            } else if (engine.shop_hi <= 5) {
+                say(monochromon, text("s049.sec82.u2"));
+                entity_set_rotation(tamer, 80);
+                fadeout_hud(0);
+            } else {
+                say(monochromon, text("s049.sec82.u3"));
+                entity_set_rotation(tamer, 80);
+                fadeout_hud(0);
+            }
+        }
+        store_random(random_roll, 8);
+        if (random_roll <= 2) {
+            jump_to_file(199, 51);
+        }
+        if (random_roll <= 5) {
+            jump_to_file(200, 51);
+        }
+        if (random_roll <= 7) {
+            jump_to_file(201, 51);
+        }
+        jump_to_file(202, 51);
+    }
+}

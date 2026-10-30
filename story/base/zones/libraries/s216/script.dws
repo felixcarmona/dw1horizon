@@ -1,0 +1,186 @@
+// Readable form of script 216 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 216 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        if (!centar_clinic_intro_seen) {
+            centar_clinic_intro_seen = true;
+            say(slot0, text("s216.sec51.u0"));
+        }
+        if (!condition(32) && !condition(64)) {
+            say(slot0, text("s216.sec51.u4"));
+            choice {
+                text("s216.sec51.m0.o0") => {
+                    goto L7;
+                }
+                text("s216.sec51.m0.o1") => {
+                    goto L12;
+                }
+                text("s216.sec51.m0.o2") or cancel => {
+                    goto L13;
+                }
+            }
+            return;
+        }
+        say(slot0, text("s216.sec51.u1"));
+        if (bits >= 300) {
+            take_bits(300);
+        } else {
+            say(slot0, text("s216.sec51.u2"));
+            take_bits(300);
+        }
+        walk(partner, -200, -1039);
+        await partner;
+        face(slot0, partner);
+        face(tamer, partner);
+        wait(10);
+        camera_on(partner, speed: 20);
+        await camera;
+        sound(8, 2);
+        wait(2s);
+        sound(8, 3);
+        wait(1s);
+        remove_condition(32);
+        remove_condition(64);
+        animate(partner, 11);    // slot 11: the partner reaction in the sleep scene (partner.c:295)
+        wait(1s);
+        say(slot0, text("s216.sec51.u3"));
+        if (stat(8) >= 50) {
+            set_stat(8, 50);
+        }
+        camera_on(tamer, speed: 10);
+        await camera;
+        return;
+    }
+
+    on step(1) replace {    // section 52
+        say(slot0, text("s216.sec52.u0"));
+        choice {
+            text("s216.sec52.m0.o0") => {
+                goto L7;
+            }
+            text("s216.sec52.m0.o1") => {
+                goto L12;
+            }
+            text("s216.sec52.m0.o2") or cancel => {
+                goto L13;
+            }
+        }
+    }
+
+    shared L7 {    // code of sec51 that other code jumps to
+        if (stat(8) >= 80) {
+            say(slot0, text("s216.sec51.u5"));
+        } else if (stat(8) >= 50) {
+            say(slot0, text("s216.sec51.u6"));
+        } else if (stat(8) >= 20) {
+            say(slot0, text("s216.sec51.u7"));
+        } else {
+            say(slot0, text("s216.sec51.u8"));
+        }
+        store_date(date_year);
+        add_minutes_to_date_at(date_year, 60);
+        advance_to_date_at(date_year);
+        add_stat(6, 500);
+        add_stat(7, 500);
+        reduce_stat(8, 20);
+        warp_to(213, 1, 255);
+    }
+
+    shared L12 {    // code of sec52 that other code jumps to
+        say(slot0, text("s216.sec52.u1"));
+        choice {
+            text("s216.sec52.m1.o0") => {
+                goto L20;
+            }
+            text("s216.sec52.m1.o1") => {
+                goto L23;
+            }
+            text("s216.sec52.m1.o2") or cancel => {
+                goto L13;
+            }
+        }
+    }
+
+    shared L13 {    // code of sec52 that other code jumps to
+        say(slot0, text("s216.sec52.u2"));
+        store_random(random_roll, 9);
+        if (random_roll <= 0) {
+            say(slot0, text("s216.sec52.u3"));
+            return;
+        }
+        if (random_roll <= 1) {
+            say(slot0, text("s216.sec52.u4"));
+            return;
+        }
+        if (random_roll <= 2) {
+            say(slot0, text("s216.sec52.u5"));
+            return;
+        }
+        if (random_roll <= 3) {
+            say(slot0, text("s216.sec52.u6"));
+            return;
+        }
+        if (random_roll <= 4) {
+            say(slot0, text("s216.sec52.u7"));
+            return;
+        }
+        if (random_roll <= 5) {
+            say(slot0, text("s216.sec52.u8"));
+            return;
+        }
+    }
+
+    shared L20 {    // code of sec52 that other code jumps to
+        if (bits < 400) {
+            say(slot0, text("s216.sec52.u9"));
+            goto L26;
+        }
+        give_item(item("Bandage"), 1);
+        if (engine.item_did_not_fit) {
+            say(slot0, text("s216.sec52.u10"));
+            return;
+        }
+        take_bits(400);
+        goto L26;
+    }
+
+    shared L23 {    // code of sec52 that other code jumps to
+        if (bits < 1200) {
+            say(slot0, text("s216.sec52.u11"));
+            goto L26;
+        }
+        give_item(item("Medicine"), 1);
+        if (engine.item_did_not_fit) {
+            say(slot0, text("s216.sec52.u12"));
+            return;
+        }
+        take_bits(1200);
+        goto L26;
+    }
+
+    shared L26 {    // code of sec52 that other code jumps to
+        say(slot0, text("s216.sec52.u13"));
+        choice {
+            text("s216.sec52.m2.o0") => {
+                goto L7;
+            }
+            text("s216.sec52.m2.o1") => {
+                goto L12;
+            }
+            text("s216.sec52.m2.o2") or cancel => {
+                goto L13;
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+  "_comment": "Tournament rules the C does not hold (a key left out = the rule does not exist). tournamentRules.registration: a registered partner is reminded from remindFromMinute (minutes of the day) with MAPHEAD section remindSection, again from eveningFromMinute, and misses the cup from missedFromMinute (section missedSection). beetleCup: the script routine that registers the Beetle cup uses this cup number, the day it is held and the day stored when registering on any other day. tournamentRemap (at most 4): an opponent species the arena has no model for is swapped for another. stdArena.screen: the screen whose arena looks different. pool (patch 0133): the levels of the species that join a cup's bracket when its list is every recruit (levelLow..levelHigh, which is also the highest level drawn), and how many extra species join (extraMin, or the pool divided by extraDivisor when the pool is larger than extraMin); win: the result that wins a cup (result) and the cup whose win needs another result (specialCup, specialCupResult).",
+  "tournamentRules": {
+    "registration": {
+      "remindFromMinute": 720,
+      "eveningFromMinute": 1200,
+      "missedFromMinute": 1381,
+      "remindSection": 1241,
+      "missedSection": 1242
+    },
+    "beetleCup": {
+      "cup": 22,
+      "day": 22,
+      "otherDay": 149
+    },
+    "pool": {
+      "levelLow": 3,
+      "levelHigh": 5,
+      "extraMin": 7,
+      "extraDivisor": 2
+    },
+    "win": {
+      "result": 3,
+      "specialCup": 5,
+      "specialCupResult": 2
+    }
+  },
+  "tournamentRemap": [
+    {
+      "from": 64,
+      "to": 54
+    },
+    {
+      "from": 63,
+      "to": 48
+    },
+    {
+      "from": 65,
+      "to": 42
+    }
+  ],
+  "stdArena": {
+    "screen": 106
+  }
+}

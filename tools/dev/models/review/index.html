@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digimon animation review</title>
+<style>
+:root{--bg:#f4f5f7;--panel:#fff;--line:#d5d9e0;--text:#1d2128;--dim:#667085;--ok:#1f9d63;--fix:#c77a0a;--acc:#2563eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 system-ui,sans-serif}
+a{color:var(--acc);text-decoration:none}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+header h1{font-size:16px;margin:0 8px 0 0}
+input,select,textarea,button{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font:inherit}
+button{cursor:pointer}button:hover{border-color:var(--acc)}
+main{padding:14px 64px;max-width:1500px;margin:auto}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.item{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:block;color:var(--text)}
+.item.approved{border-color:var(--ok)}.item small{color:var(--dim)}
+.tags span{font-size:11px;border-radius:4px;padding:1px 6px;margin-right:4px;background:#e8ebf0;color:var(--dim)}
+.tags .ok{background:#dcf5e9;color:var(--ok)}.tags .fix{background:#fdecc8;color:var(--fix)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px;margin-top:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px}
+.card.hasfb{border-color:var(--fix)}
+.card h3{margin:0 0 5px;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+video{width:100%;background:#000;border-radius:6px;display:block}
+.ph{height:120px;display:flex;align-items:center;justify-content:center;background:#e8ebf0;border-radius:6px;color:var(--dim);font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}.row textarea{flex:1 1 220px;min-height:34px;resize:vertical}
+.big{font-size:15px;padding:8px 14px}.okb{background:#1f9d63;color:#fff;border-color:#1f9d63}.okb:hover{border-color:#14744a;background:#198551}
+.small{font-size:12px;color:var(--dim)}h2{margin:6px 0}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px}
+.bar.approved{border-color:var(--ok);background:#f1fbf6}
+.arrow{position:fixed;top:50%;transform:translateY(-50%);z-index:9;width:48px;height:120px;border-radius:10px;font-size:34px;line-height:1;background:#ffffffdd;border:1px solid var(--line);box-shadow:0 2px 10px #0002;padding:0}
+.arrow:hover{background:#fff;border-color:var(--acc);color:var(--acc)}.arrow.l{left:6px}.arrow.r{right:6px}
+.fb{display:none;margin-top:6px}.fb.open{display:block}.fb textarea{width:100%;min-height:50px}
+.dnm{font-size:20px;font-weight:600}
+</style></head><body>
+<header><h1><a href="#/">Digimon animation review</a></h1><span id="top"></span></header>
+<main id="main">Loading…</main>
+<button class="arrow l" id="pl" title="previous donor (←)" style="display:none">‹</button><button class="arrow r" id="pr" title="next donor (→)" style="display:none">›</button>
+<script>
+const $=(s,e=document)=>e.querySelector(s), api=(u,o)=>fetch(u,o).then(r=>r.json());
+let SPECIES=[],cur=null;
+const post=(b,el)=>{if(el){el.textContent='saving…';el.style.color='var(--dim)'}return fetch('/api/decision',{method:'POST',body:JSON.stringify(b)}).then(r=>{if(el){el.textContent=r.ok?'✓ saved':'⚠ not saved';el.style.color=r.ok?'var(--ok)':'var(--fix)'}return r})};
+const debounce=(f,ms=700)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),ms)}};
+async function init(){SPECIES=await api('/api/species');route();}
+window.addEventListener('hashchange',route);
+function route(){const h=location.hash.replace('#/','').split('/');$('#pl').style.display=$('#pr').style.display='none';h[0]?species(+h[0],h[1]===undefined?null:+h[1]):index();window.scrollTo(0,0)}
+function index(){
+  cur=null;const q=localStorage.q||'',f=localStorage.f||'all';
+  $('#top').innerHTML=`<input id=q placeholder="search" value="${q}"> <select id=f><option value=all>all</option><option value=fb>with feedback</option></select> <label class=small><input type=checkbox id=sa ${localStorage.sa==='1'?'checked':''}> show approved</label> <span class=small id=cnt></span>`;
+  $('#f').value=['all','fb'].includes(f)?f:'all';
+  const draw=()=>{localStorage.q=$('#q').value;localStorage.f=$('#f').value;const qq=$('#q').value.toLowerCase(),ff=$('#f').value;
+    localStorage.sa=$('#sa').checked?'1':'0';const L=SPECIES.filter(s=>(!qq||(s.name+s.donor_name+s.game+s.id).toLowerCase().includes(qq))&&($('#sa').checked||!s.approved)&&(ff=='all'||(ff=='fb'&&s.feedback)));
+    $('#cnt').textContent=L.length+' shown of '+SPECIES.length+' · '+SPECIES.filter(s=>s.approved).length+' approved'+($('#sa').checked?'':' (hidden)');
+    $('#main').innerHTML='<div class=list>'+L.map(s=>`<a class="item ${s.approved?'approved':''}" href="#/${s.id}"><b>${s.name}</b> <small>#${s.id} · ${s.game}</small><br><small>default donor ${s.donor_name||'?'}</small>
+      <div class=small>${s.made?'videos '+s.made+' (Spain)':'no videos yet'}</div><div class=tags>${s.approved?`<span class=ok>approved${s.chosen?' · other donor':''}</span>`:''}${s.feedback?`<span class=fix>${s.feedback} feedback</span>`:''}</div></a>`).join('')+'</div>'};
+  $('#q').oninput=draw;$('#f').onchange=draw;$('#sa').onchange=draw;draw();
+}
+async function species(id,donorIdx){
+  $('#top').innerHTML='<a href="#/">← all</a>';
+  const s=await api('/api/species/'+id),D=s.decisions||{};cur=s;
+  const donors=s.donors;let idx=donorIdx;
+  if(idx===null){const ch=D.chosen;
+    // the donor the species was approved with; else the first donor that has feedback written on it (so it is not forgotten); else the default
+    const fbd=Object.entries(D.donors||{}).find(([k,v])=>(v.note||'').trim()||Object.values(v.slots||{}).some(t=>(t||'').trim()));
+    const want=ch!==undefined?ch:(fbd?fbd[0]:undefined);
+    idx=want===undefined?0:Math.max(0,donors.findIndex(d=>d.donor==want))}
+  idx=Math.max(0,Math.min(donors.length-1,idx));
+  const dn=donors[idx],dkey=String(dn.donor),fb=((D.donors||{})[dkey])||{note:'',slots:{}};
+  const vis=x=>x.id==id||localStorage.sa==='1'||!x.approved,i=SPECIES.findIndex(x=>x.id==id),prev=[...SPECIES.slice(0,i)].reverse().find(vis),next=SPECIES.slice(i+1).find(vis);
+  const appr=D.approved&&String(D.chosen||0)==dkey;
+  $('#main').innerHTML=`<div class=row style="margin-top:0"><b class=dnm>${s.name}</b><span class=small>#${s.id} · ${s.game} · default donor ${donors[0].name.replace(' (default)','')}${s.legs_fixed?' · legs fixed':''}${s.arms.startsWith('swing')?' · arms added':''}</span>
+     <span style="flex:1"></span>${prev?`<a href="#/${prev.id}">← ${prev.name}</a>`:''}${next?`<a href="#/${next.id}">${next.name} →</a>`:''}</div>
+   <div class="bar ${appr?'approved':''}"><div><div class=small>donor ${idx+1} of ${donors.length}${dn.star?' · ★ recommended #'+(idx+1):''}${dn.default?' · the importer’s pick (its moves are the Digimon’s)':''}</div><div class=dnm>${dn.name}</div><div class=small>${(s.made||{})[dkey]?'changes made (videos) '+s.made[dkey]+' · Spain time':'videos not generated yet'}</div>${dn.why&&dn.why.gaze?`<div class=small>head looks ${dn.why.gaze[0]}° down on average (worst ${dn.why.gaze[1]}°) · proportions ${dn.why.proportion} · score ${dn.score}</div>`:''}</div>
+     <select id=ds>${donors.map((d,k)=>`<option value=${k}>${k+1}. ${d.star?'★ ':''}${d.name.replace(' (default)','')}${d.default?' (default)':''}</option>`).join('')}</select>
+     <button class="big okb" id=ap>${appr?'✓ approved with this donor (click to undo)':'✓ Approve all with this donor'}</button>
+     ${D.approved&&!appr?`<span class=small>approved with ${(donors.find(d=>String(d.donor)==String(D.chosen||0))||{}).name}</span>`:''}
+     ${D.approved&&!(D.chosen)&&D.approved_ver&&D.approved_ver!==s.ver?'<span class=small style="color:var(--fix)">⟳ model changed since you approved</span>':''}</div>
+   <div class=row><textarea id=gn placeholder="general feedback on this Digimon with ${dn.name} (saved as you type)" style="width:100%">${fb.note||''}</textarea><span class=small id=gns>saved automatically</span> <button id=clr class=small>clear all feedback of this Digimon</button></div>
+   <div class=cards id=cards></div>`;
+  $('#ds').value=idx;$('#ds').onchange=()=>go(id,+$('#ds').value);
+  $('#gn').oninput=debounce(()=>post({id,donor:dn.donor,note:$('#gn').value},$('#gns')));
+  $('#clr').onclick=async()=>{const n=Object.values((D.donors||{})).reduce((a,x)=>a+(x.note?1:0)+Object.keys(x.slots||{}).length,0);
+    if(!confirm(`Clear all the feedback of ${s.name}? (${n} notes, for every donor; the approval stays. A copy is kept in build/review/backups.)`))return;
+    await post({id,clear:true});go(id,idx);location.reload()};
+  $('#ap').onclick=async()=>{await post({id,donor:dn.donor,approve:!appr});const x=SPECIES.find(q=>q.id==id);x.approved=!appr;go(id,idx)};
+  const go2=(k)=>{if(k>=0&&k<donors.length)go(id,k)};
+  $('#pl').style.display=$('#pr').style.display='block';$('#pl').onclick=()=>go2(idx-1);$('#pr').onclick=()=>go2(idx+1);
+  $('#pl').style.opacity=idx>0?1:.3;$('#pr').style.opacity=idx<donors.length-1?1:.3;
+  const cards=$('#cards');
+  for(const sl of s.slots){
+    const note=(fb.slots||{})[sl.slot]||'';const c=document.createElement('div');c.className='card'+(note?' hasfb':'');
+    c.innerHTML=`<h3><span>${sl.name} <small class=small>0x${sl.slot.toString(16)}</small></span><button class=fbb>${note?'✎ feedback':'+ feedback'}</button></h3>
+      <div class=vid><div class=ph>waiting…</div></div>
+      <div class="fb ${note?'open':''}"><textarea placeholder="what is wrong with this animation? (saved as you type)">${note}</textarea><span class="small nsv">saved automatically</span></div>`;
+    cards.appendChild(c);
+    $('.fbb',c).onclick=()=>{$('.fb',c).classList.toggle('open');$('textarea',c).focus()};
+    $('textarea',c).oninput=debounce(()=>{const v=$('textarea',c).value;post({id,donor:dn.donor,slot:sl.slot,note:v},$('.nsv',c));c.classList.toggle('hasfb',!!v);$('.fbb',c).textContent=v?'✎ feedback':'+ feedback'});
+    c.start=()=>load(c,id,sl.slot,dn.donor,s.ver,dn.type);
+  }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!e.target.started){e.target.started=1;e.target.start()}}),{rootMargin:'400px'});
+  document.querySelectorAll('.card').forEach(c=>io.observe(c));
+}
+function go(id,k){location.hash=`#/${id}/${k}`}
+function load(c,id,slot,donor,ver,dtype){
+  const box=$('.vid',c);box.innerHTML='<div class=ph>rendering…</div>';let first=true;
+  const poll=async()=>{const r=await api(`/api/${first?'render':'status'}?id=${id}&slot=${slot}&donor=${donor}`);first=false;
+    if(r.state=='done'){box.innerHTML=`<video src="/video?id=${id}&slot=${slot}&donor=${donor}&v=${ver||0}" autoplay loop muted playsinline onclick="this.paused?this.play():this.pause()" style="cursor:pointer"></video><video src="/dvideo?donor=${dtype}&slot=${slot}" autoplay loop muted playsinline onclick="this.paused?this.play():this.pause()" style="cursor:pointer;margin-top:4px" onerror="this.remove()"></video>`}
+    else if(r.state=='error'){box.innerHTML='<div class=ph>render failed: '+(r.msg||'').slice(-140)+'</div>'}
+    else{box.firstChild.textContent=r.state=='queued'?'queued…':'rendering…';setTimeout(poll,2000)}};
+  poll();
+}
+document.addEventListener('keydown',e=>{if(!cur||/TEXTAREA|INPUT|SELECT/.test((e.target||{}).tagName))return;if(e.key=='ArrowLeft')$('#pl').click();if(e.key=='ArrowRight')$('#pr').click()});
+init();
+</script></body></html>

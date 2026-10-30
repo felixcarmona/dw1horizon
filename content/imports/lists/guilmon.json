@@ -1,0 +1,13 @@
+{
+ "first_id": 433,
+ "out": "build/guilmon",
+ "digimon": [
+  {
+   "name": "Guilmon",
+   "game": "dw3",
+   "model": "M366GIRU",
+   "level": 3,
+   "element": 0
+  }
+ ]
+}

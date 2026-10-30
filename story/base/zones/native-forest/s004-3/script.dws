@@ -1,0 +1,120 @@
+// Readable form of script 4 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 4 {
+    npc etemon = 5;
+    npc aruraumon1 = 6;
+    npc aruraumon2 = 7;
+    npc goblimon3 = 8;
+    npc goblimon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 51, 6, 6 as sec6_dup4, 7, 8, 9;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Blue apple"), 44, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 24) {
+            spawn_item(item("Digimushrm"), 42, 57);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Deluxmushrm"), 52, 51);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 59) {
+            spawn_item(item("Digimushrm"), 65, 41);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 2048);
+        wait(5);
+        animate(tamer, 16);
+        wait(15);
+        say(tamer, text("s004.sec81.u0"));
+        animate(tamer, anim.idle);
+        say(narrator, text("s004.sec81.u1"));
+        if (!is_recruited(species("Etemon"))) {
+            say(tamer, text("s004.sec81.u2"));
+        }
+    }
+
+    on step(0) replace {    // section 51
+        unless (!is_recruited(species("Etemon")) && engine.prosperity >= 50) return;
+        entity_walk_to_entity(partner, 1, tamer);
+        await partner;
+        entity_set_rotation(partner, 2048);
+        wait(5);
+        say(narrator, text("s004.sec51.u0"));
+        sound(8, 5);
+        animate(etemon, 29);
+        entity_move_to_axis(etemon, 0, 1, 12);
+        await etemon;
+        animate(etemon, anim.idle);
+        sound(8, 6);
+        damage_percent = 30;
+        deal_damage(damage_percent);
+        animate(tamer, 15);
+        animate(partner, 40);
+        wait(30);
+        battle(foes: [etemon]);
+        face(tamer, etemon);
+        face(etemon, tamer);
+        face(partner, etemon);
+        say(etemon, text("s004.sec51.u1"));
+        sound(8, 13);
+        animate(tamer, 20);
+        wait(15);
+        say(tamer, text("s004.sec51.u2"));
+        animate(tamer, anim.idle);
+        sound(8, 13);
+        animate(etemon, 7);
+        say(etemon, text("s004.sec51.u3"));
+        walk_away(etemon, 0, 0, looks: 4);
+        remove(etemon);
+        glances = 0;
+        camera_on(tamer, speed: 10);
+        sound(8, 11);
+        say(narrator, text("s004.sec51.u4"));
+        recruit(species("Etemon"));
+        engine.prosperity += 3;
+    }
+
+    on talk(aruraumon1) replace {    // section 6
+        say(aruraumon1, text("s004.sec6.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(aruraumon2) replace {    // section 7
+        say(aruraumon2, text("s004.sec7.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(goblimon3) replace {    // section 8
+        say(goblimon3, text("s004.sec8.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon4) replace {    // section 9
+        say(goblimon4, text("s004.sec9.u0"));
+        battle();
+        recruit(species("Goblimon"));
+        return;
+    }
+
+    shared sec6_dup4 {    // a dead copy of section 6
+        say(aruraumon1, text("s004.sec6_dup4.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+}

@@ -1,0 +1,17 @@
+// Who stands on screen 34 (Overdell), and when. Read out of MAPHEAD.SCN section 34 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(34) {                              // Overdell
+            npc Darklizardmon slot 0 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Darklizardmon slot 1 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Darklizardmon slot 2 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Darklizardmon slot 3 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Darklizardmon slot 4 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Darklizardmon slot 5 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Tsukaimon slot 6 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc Tsukaimon slot 7 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

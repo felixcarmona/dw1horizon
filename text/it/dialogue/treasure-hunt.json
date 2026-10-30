@@ -1,0 +1,118 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Ciao, {color 6} {player} {color 1} ! Ho",
+   "iniziato ad aiutare Drimogemon."
+  ],
+  [
+   "Sono abbastanza bravo a",
+   "trovare le cose!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Spiega, per favore",
+ "s169.sec81.m0.o1": "Non serve spiegare",
+ "s169.sec81.m0.o2": "Niente. Grazie.",
+ "s169.sec81.m1.o0": "Trova il tesoro",
+ "s169.sec81.m1.o1": "Spiega di nuovo",
+ "s169.sec81.m1.o2": "No, è tutto",
+ "s169.sec81.m2.o0": "Piano normale: 1000 Bits",
+ "s169.sec81.m2.o1": "Piano speciale: 5000 Bits",
+ "s169.sec81.m2.o2": "Annulla",
+ "s169.sec81.u0": [
+  [
+   "Ehi, benvenuto, {color 6}{player}{color 1}!",
+   "Questa è la caccia al tesoro.",
+   "Metto a frutto la mia abilità"
+  ],
+  [
+   "nello scavare e riporto tesori",
+   "dal sottosuolo. È il mio",
+   "mestiere! Su quest'isola ci"
+  ],
+  [
+   "sono tesori di ogni tipo",
+   "sepolti ovunque. Lascia fare a",
+   "me!"
+  ]
+ ],
+ "s169.sec81.u1": [
+  [
+   "Ehi, vuoi una caccia al tesoro?",
+   "Ti spiego prima come funziona?"
+  ]
+ ],
+ "s169.sec81.u2": [
+  [
+   "Paghi in anticipo e io ti trovo",
+   "un tesoro. Ci sono due piani.",
+   "Normale: tre giorni per 1000"
+  ],
+  [
+   "Bits. Speciale: dieci giorni",
+   "per 5000 Bits. Con lo speciale",
+   "hai più probabilità di trovare"
+  ],
+  [
+   "un bel tesoro! Tutto qui. Quale",
+   "scegli?"
+  ]
+ ],
+ "s169.sec81.u3": [
+  [
+   "Bene, scegli un piano!"
+  ]
+ ],
+ "s169.sec81.u4": [
+  [
+   "Ok. Ci vediamo più tardi!"
+  ]
+ ],
+ "s169.sec81.u5": [
+  [
+   "Bene, i risultati tra tre",
+   "giorni. Farò del mio meglio!"
+  ]
+ ],
+ "s169.sec81.u6": [
+  [
+   "Bene, i risultati tra dieci",
+   "giorni. Farò del mio meglio!"
+  ]
+ ],
+ "s169.sec81.u7": [
+  [
+   "Non hai abbastanza Bit.",
+   "Nemmeno io posso cercare",
+   "tesori senza soldi per"
+  ],
+  [
+   "cominciare."
+  ]
+ ],
+ "s169.sec81.u8": [
+  [
+   "Sto ancora cercando il tesoro.",
+   "Aspetta un altro po'."
+  ]
+ ],
+ "s169.sec81.u9": [
+  [
+   "Ehi! Il tuo tesoro è arrivato!"
+  ]
+ ],
+ "s169.sec81.u10": [
+  [
+   "Va' a fare spazio nella borsa!"
+  ]
+ ],
+ "s169.sec81.u11": [
+  [
+   "Ottenuto: {color 6}{item 110}{color 1}!"
+  ]
+ ],
+ "s169.sec81.u12": [
+  [
+   "Grazie e alla prossima!"
+  ]
+ ]
+}

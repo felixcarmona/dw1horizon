@@ -1,0 +1,135 @@
+From 5df99b7173cfef695485357c346da177a3f48916 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 09:48:24 +0000
+Subject: [PATCH 210/210] Patch 0210: a FileEntry holds its name (char
+ filename[12], no NUL at 12 letters; fileEntryIs compares) instead of a
+ pointer to a string: 20 bytes an entry, not 24; the table's source is
+ unchanged; about 4 800 bytes of heap back with the bilingual story disc's 1
+ 267 entries
+
+---
+ include/dw/file_table.h | 11 ++++++++++-
+ src/main/file.c         |  9 +++++++--
+ src/main/mod_options.c  |  9 +++++----
+ src/main/model.c        |  2 +-
+ 4 files changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/include/dw/file_table.h b/include/dw/file_table.h
+index fc180953..3b31b2f9 100644
+--- a/include/dw/file_table.h
++++ b/include/dw/file_table.h
+@@ -6,13 +6,22 @@
+ extern int16_t ATAN_LOOKUP_TABLE[];
+ extern int16_t SIN_LOOKUP_TABLE[];
+ 
++/*
++ * MOD (file table): the name is in the entry (8.3 names of the disc, 12 letters at most; one of 12 has no NUL), not a
++ * pointer to a string: 20 bytes an entry, not 12 and a string aligned to 4 (16 at most). The mod's discs add hundreds
++ * of names (new screens, language and story copies) to the executable's resident data. Compare with fileEntryIs.
++ */
++#define FILE_NAME_MAX 12
++
+ typedef struct {
+     int32_t sector;
+     int32_t size;
+-    char *filename;
++    char filename[FILE_NAME_MAX];
+ } FileEntry;
+ 
+ extern FileEntry FILE_OFFSET_TABLE[];
++/* MOD (file table): 1 when the entry is the file `name` */
++int32_t fileEntryIs(FileEntry *entry, char *name);
+ extern const int16_t FILE_TABLE_NEW_FIRST; /* MOD (language): the first of the new files (NEW_FILES) */
+ 
+ #endif
+diff --git a/src/main/file.c b/src/main/file.c
+index bbe73415..21f9918a 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -30,7 +30,7 @@ char *modFontFile(char *path, char *originalFont)
+ 		return path;
+ 	}
+ 	for (entry = FILE_OFFSET_TABLE; entry->size != 0; ++entry) {
+-		if (!strcmp(originalFont, entry->filename)) {
++		if (fileEntryIs(entry, originalFont)) {
+ 			return entry->sector != 0 ? originalFont : path;
+ 		}
+ 	}
+@@ -38,6 +38,11 @@ char *modFontFile(char *path, char *originalFont)
+ }
+ #endif
+ 
++int32_t fileEntryIs(FileEntry *entry, char *name)
++{
++	return !strncmp(entry->filename, name, FILE_NAME_MAX) && strlen(name) <= FILE_NAME_MAX;
++}
++
+ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ {
+ 	char *filename;
+@@ -52,7 +57,7 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	filename = modStoryFile(modLangFile(filename)); /* MOD (language, story): the language's copy, then its story's */
+ 
+ 	for (; entry->size != 0; ++entry) {
+-		if (!strcmp(filename, entry->filename)) {
++		if (fileEntryIs(entry, filename)) {
+ 			lookup->size = entry->size;
+ 			CdIntToPos(entry->sector, &lookup->pos);
+ 			break;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 65f67cd8..9ba5df08 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -270,7 +270,7 @@ int32_t modFileOnDisc(char *name)
+ 	FileEntry *entry;
+ 
+ 	for (entry = FILE_OFFSET_TABLE; entry->size != 0; ++entry) {
+-		if (!strcmp(name, entry->filename)) {
++		if (fileEntryIs(entry, name)) {
+ 			return entry->sector != 0;
+ 		}
+ 	}
+@@ -294,6 +294,8 @@ static LangFileRow LANG_FILE_TABLE[] = {
+ 	{ 0, { 0xFFFF, 0xFFFF } },
+ };
+ 
++static char MOD_LANG_NAME[FILE_NAME_MAX + 1]; /* the copy's name, ended (an entry's has no NUL at 12 letters) */
++
+ static uint32_t modNameHash(char *name)
+ {
+ 	uint32_t h = 0x811C9DC5;
+@@ -310,7 +312,6 @@ char *modLangFile(char *name)
+ 	uint32_t hash;
+ 	int32_t tfs;
+ 	int32_t copy;
+-	char *file;
+ 
+ 	hash = modNameHash(name);
+ 	for (i = 0; i < sizeof(LANG_FILE_TABLE) / sizeof(LangFileRow) - 1; i++) {
+@@ -325,8 +326,8 @@ char *modLangFile(char *name)
+ 		if (copy == 0xFFFF || (!tfs && MOD_LANG != MOD_LANG_ES)) {
+ 			return name;
+ 		}
+-		file = FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].filename;
+-		return modFileOnDisc(file) ? file : name;
++		memcpy(MOD_LANG_NAME, FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].filename, FILE_NAME_MAX);
++		return FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].sector != 0 ? MOD_LANG_NAME : name;
+ 	}
+ 	return name;
+ }
+diff --git a/src/main/model.c b/src/main/model.c
+index 68050948..727430e8 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -3474,7 +3474,7 @@ static char *getPartnerModelName(int32_t type)
+ 		}
+ 		concatStrings(file, p->name, MAIN_D_801340E4);
+ 		for (f = FILE_OFFSET_TABLE; f->size != 0; f++) {
+-			if (f->sector != 0 && strcmp(f->filename, file) == 0) {
++			if (f->sector != 0 && fileEntryIs(f, file)) {
+ 				return p->name;
+ 			}
+ 		}
+-- 
+2.53.0
+

@@ -1,0 +1,265 @@
+{
+ "s007.sec81.m0.o0": "Tocar la flauta",
+ "s007.sec81.m0.o1": "No tocar-la",
+ "s007.sec81.u0": [
+  [
+   "Ah, és veritat."
+  ]
+ ],
+ "s007.sec81.u1": [
+  [
+   "Tocar la {color 6}Flauta blava{color 1}?"
+  ]
+ ],
+ "s007.sec81.u2": [
+  [
+   "Amic meu, necessites el meu",
+   "poder?"
+  ]
+ ],
+ "s007.sec81.u3": [
+  [
+   "Porta'm a l'altra riba."
+  ]
+ ],
+ "s007.sec81.u4": [
+  [
+   "Res més fàcil. Anem, puja."
+  ]
+ ],
+ "s007.sec82.m0.o0": "Siguem amics",
+ "s007.sec82.m0.o1": "Ensenya'm una tècnica!",
+ "s007.sec82.m0.o2": "Vull un objecte",
+ "s007.sec82.m1.o0": "Siguem amics",
+ "s007.sec82.m1.o1": "Ensenya'm una tècnica!",
+ "s007.sec82.m1.o2": "Vull un objecte",
+ "s007.sec82.m2.o0": "Sí, hi vaig, hi vaig!",
+ "s007.sec82.m2.o1": "Em preparo i torno",
+ "s007.sec82.u0": [
+  [
+   "Seadramon!"
+  ]
+ ],
+ "s007.sec82.u1": [
+  [
+   "Tornem a trobar-nos. Tens",
+   "algun desig?"
+  ]
+ ],
+ "s007.sec82.u2": [
+  [
+   "Tu i jo ja som amics. Algun",
+   "altre desig?"
+  ]
+ ],
+ "s007.sec82.u3": [
+  [
+   "Ha-halaaa! És el guardià del",
+   "llac!"
+  ]
+ ],
+ "s007.sec82.u4": [
+  [
+   "Uf... En efecte. Sóc",
+   "Seadramon. Ets tu qui tant",
+   "pesca per aquí?"
+  ],
+  [
+   "Bé, no importa. Tens algun",
+   "desig?"
+  ]
+ ],
+ "s007.sec82.u5": [
+  [
+   "Hala! ...Es nota que és el",
+   "guardià. Increïble. Bé,",
+   "doncs..."
+  ]
+ ],
+ "s007.sec82.u6": [
+  [
+   "Molt bé, així sigui."
+  ],
+  [
+   "Des d'ara, tu i jo som amics.",
+   "En senyal d'això, et dono",
+   "aquesta flauta."
+  ]
+ ],
+ "s007.sec82.u7": [
+  [
+   "Oh, no! Porto massa objectes.",
+   "N'haig de llençar algun."
+  ]
+ ],
+ "s007.sec82.u8": [
+  [
+   "Has aconseguit la {color 6}Flauta",
+   "blava{color 1}!"
+  ]
+ ],
+ "s007.sec82.u9": [
+  [
+   "Toca-la prop del llac i",
+   "apareixeré quan sigui. Com a",
+   "amic, et portaré a l'altre",
+   "costat."
+  ]
+ ],
+ "s007.sec82.u10": [
+  [
+   "Hala, així podré arribar a",
+   "l'altre costat! Gràcies!"
+  ]
+ ],
+ "s007.sec82.u11": [
+  [
+   "A l'altre costat del llac hi ha",
+   "un bosc bastant estrany. Hi",
+   "vols anar ara?"
+  ]
+ ],
+ "s007.sec82.u12": [
+  [
+   "Mmm. Llavors t'ensenyaré",
+   "aquesta tècnica."
+  ]
+ ],
+ "s007.sec82.u13": [
+  [
+   "Ha après Màgia aquàtica!"
+  ]
+ ],
+ "s007.sec82.u14": [
+  [
+   "Ha après Ràfega hivernal!"
+  ]
+ ],
+ "s007.sec82.u15": [
+  [
+   "Ha après Gigagelada!"
+  ]
+ ],
+ "s007.sec82.u16": [
+  [
+   "Mmm, sembla que ja no em",
+   "queden tècniques per",
+   "ensenyar-te..."
+  ]
+ ],
+ "s007.sec82.u17": [
+  [
+   "Llavors, adéu."
+  ]
+ ],
+ "s007.sec82.u18": [
+  [
+   "Mmm. Et donaré la {color 6}Botella",
+   "d'aigua{color 1}."
+  ]
+ ],
+ "s007.sec82.u19": [
+  [
+   "Oh, no! Porto massa objectes.",
+   "N'haig de llençar algun."
+  ]
+ ],
+ "s007.sec82.u20": [
+  [
+   "Has aconseguit la {color 6}Botella",
+   "d'aigua{color 1}!"
+  ]
+ ],
+ "s007.sec82.u21": [
+  [
+   "Llavors, adéu ara com ara."
+  ]
+ ],
+ "s007.sec82.u22": [
+  [
+   "Llavors, puja al meu llom."
+  ]
+ ],
+ "s007.sec82.u23": [
+  [
+   "Llavors, adéu de moment."
+  ]
+ ],
+ "s009.sec81.m0.o0": "Carn: 300 Bits",
+ "s009.sec81.m0.o1": "Digibolet: 600 Bits",
+ "s009.sec81.m0.o2": "No comprar",
+ "s009.sec81.u0": [
+  [
+   "Màquina expenedora"
+  ]
+ ],
+ "s009.sec81.u1": [
+  [
+   "Uf, quina cara és aquesta",
+   "màquina!"
+  ]
+ ],
+ "s009.sec81.u2": [
+  [
+   "No em basten els diners..."
+  ]
+ ],
+ "s009.sec81.u3": [
+  [
+   "No em basten els diners..."
+  ]
+ ],
+ "s009.sec81.u4": [
+  [
+   "Ha sortit {color 6}Carn{color 1}!"
+  ]
+ ],
+ "s009.sec81.u5": [
+  [
+   "Ups! Porto la bossa plena."
+  ]
+ ],
+ "s009.sec81.u6": [
+  [
+   "Ha sortit {color 6}Digibolet{color 1}!"
+  ]
+ ],
+ "s009.sec81.u7": [
+  [
+   "Ups! Porto la bossa plena."
+  ]
+ ],
+ "s009.sec82.u0": [
+  [
+   "Com pescar Primer,",
+   "aconsegueix una canya. Al",
+   "submenú, amb {color 5}△{color 1}, sortirà una",
+   "icona de pesca: selecciona-la.",
+   "Prem {color 6}×{color 1} per posar esquer a",
+   "l'ham: tria un dels teus",
+   "aliments. Després gira a"
+  ],
+  [
+   "esquerra o dreta amb els",
+   "botons de direcció. Prem {color 6}×{color 1}",
+   "per alçar la canya i {color 6}×{color 1} una",
+   "altra vegada per llançar.",
+   "Espera que s'enfonsi el",
+   "flotador: vol dir que un peix",
+   "ha picat. Estira amb {color 6}×{color 1}. Mira"
+  ],
+  [
+   "l'indicador de dalt a",
+   "l'esquerra: deixa anar {color 6}×{color 1}",
+   "abans que s'ompli, o es",
+   "trencarà el fil. Recull el",
+   "flotador del tot i hauràs",
+   "pescat el peix. Si surt una X",
+   "a l'ombra d'un peix, aquest"
+  ],
+  [
+   "peix no picarà amb l'esquer que",
+   "fas servir ara."
+  ]
+ ]
+}

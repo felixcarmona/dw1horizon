@@ -1,0 +1,17 @@
+{
+  "id": 40,
+  "name": "Tremar",
+  "element": "battle",
+  "power": 178,
+  "mpCost": 56,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 60,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [18, 8, 0]
+}

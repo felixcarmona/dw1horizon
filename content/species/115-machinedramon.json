@@ -1,0 +1,51 @@
+{
+  "id": 115,
+  "name": "Machinedramon",
+  "level": "ultimate",
+  "vanilla_as": 12,
+  "attribute": "virus",
+  "specialties": ["mech", "air", "battle"],
+  "techniques": ["Megaton Punch", "Megalo Spark", "Thunder Justice", "Aurora Freeze", "All Range Beam",
+                 "Full Potential", "Infinity Cannon"],
+  "drop": {"item": "Chain melon", "percent": 0},
+  "model": {"name": "MUGE", "bones": 32, "partner_file": "build/models/MUGP.MMD", "radius": 400, "height": 600},
+  "voice": 48,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 9999, "mp": 9999, "off": 999, "def": 800, "speed": 800, "brain": 800, "bits": 9999},
+  "partner": {
+    "voice": 10,
+    "hunger_hours": [0, 4, 8, 12, 16, 20],
+    "energy_max": 80,
+    "energy_fed": 50,
+    "energy_per_hour": 13,
+    "poop_timer_10min": 36,
+    "poop_size": 16,
+    "favorite_food": "Super veggy",
+    "sleep_cycle": "22:00-07:00",
+    "favored_region": 3,
+    "training_type": "even",
+    "birth_weight": 70,
+    "status_screen_position": [-560, 640, -150],
+    "item_distance": 20,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": 700,
+      "mp": 600,
+      "offense": 600,
+      "defense": 600,
+      "speed": 400,
+      "brain": 400,
+      "care": 3,
+      "weight": 70,
+      "discipline": 95,
+      "happiness": -1,
+      "battles": 100,
+      "techs": -1,
+      "flags": 16
+    },
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 750, "speed": 600, "brains": 650}
+  }
+}

@@ -1,0 +1,202 @@
+{
+ "s045.sec5.u0": [
+  [
+   "Das sieht schlecht aus!"
+  ]
+ ],
+ "s045.sec6.u0": [
+  [
+   "I-ich muss weg!"
+  ]
+ ],
+ "s045.sec7.u0": [
+  [
+   "W-warte einen Moment!"
+  ]
+ ],
+ "s046.sec5.u0": [
+  [
+   "Schnappt sie euch!"
+  ]
+ ],
+ "s046.sec6.u0": [
+  [
+   "Schnappt sie euch!"
+  ]
+ ],
+ "s046.sec7.u0": [
+  [
+   "Schnappt sie euch!"
+  ]
+ ],
+ "s047.sec5.u0": [
+  [
+   "Formation C!"
+  ]
+ ],
+ "s047.sec6.u0": [
+  [
+   "Formation A!"
+  ]
+ ],
+ "s047.sec7.u0": [
+  [
+   "Formation B!"
+  ]
+ ],
+ "s047.sec60.u0": [
+  [
+   "Igitt!"
+  ]
+ ],
+ "s047.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s047.sec60.u2": [
+  [
+   "D-das ist doch ein Witz!"
+  ]
+ ],
+ "s047.sec60.u3": [
+  [
+   "Es ist verschwunden... War es",
+   "eine Illusion...?"
+  ]
+ ],
+ "s047.sec60.u4": [
+  [
+   "Wir haben es wohl besiegt...",
+   "irgendwie."
+  ]
+ ],
+ "s047.sec60.u5": [
+  [
+   "Hä?!"
+  ]
+ ],
+ "s047.sec60.u6": [
+  [
+   "Hm, mmm. Hä?!"
+  ]
+ ],
+ "s047.sec60.u7": [
+  [
+   "Ich war plötzlich irgendwie",
+   "weggetreten... Oh! T-tut mir",
+   "leid!"
+  ]
+ ],
+ "s047.sec60.u8": [
+  [
+   "Hmm?? Was war das? Analogmans",
+   "Fluch?! Na ja, jetzt sollte",
+   "alles wieder gut sein."
+  ]
+ ],
+ "s048.sec5.u0": [
+  [
+   "Ah. . . !"
+  ]
+ ],
+ "s048.sec6.u0": [
+  [
+   "Ah. . . !"
+  ]
+ ],
+ "s048.sec11.u0": [
+  [
+   "Hä? Was bist du denn?!"
+  ]
+ ],
+ "s048.sec11.u1": [
+  [
+   "Nanimon, das bin ich!"
+  ]
+ ],
+ "s048.sec11.u2": [
+  [
+   "{color 4}Dimensionsanhänger{color 1} erhalten!",
+   "Jetzt kannst du bis zu 20",
+   "Items tragen!"
+  ]
+ ],
+ "s048.sec11.u3": [
+  [
+   "{color 4}Dimensionsanhänger{color 1} erhalten!",
+   "Jetzt kannst du bis zu 30",
+   "Items tragen!"
+  ]
+ ],
+ "s048.sec51.u0": [
+  [
+   "Hm... Ob dieser Aufzug den",
+   "Boden oben hochdrückt?"
+  ]
+ ],
+ "s048.sec51.m0.o0": "Aufzug nehmen",
+ "s048.sec51.m0.o1": "Nicht mitfahren",
+ "s048.sec52.u0": [
+  [
+   "Hey!"
+  ]
+ ],
+ "s048.sec52.u1": [
+  [
+   "Hm? Muhahaha, willst du eine",
+   "Abreibung?"
+  ]
+ ],
+ "s048.sec52.u2": [
+  [
+   "Das ist mein Spruch!"
+  ]
+ ],
+ "s048.sec52.u3": [
+  [
+   "Diesmal schone ich dich nicht",
+   "wie letztes Mal! Ich bringe",
+   "dich zum Heulen!"
+  ]
+ ],
+ "s048.sec52.u4": [
+  [
+   "Iiih!"
+  ]
+ ],
+ "s048.sec52.u5": [
+  [
+   "Ay, ay, ay!"
+  ]
+ ],
+ "s048.sec52.u6": [
+  [
+   "V-verdammt!"
+  ]
+ ],
+ "s048.sec52.u7": [
+  [
+   "Wow, was ist das denn?!"
+  ]
+ ],
+ "s048.sec52.u8": [
+  [
+   "Gyahahaha! Macht's gut, ihr",
+   "Trottel!"
+  ]
+ ],
+ "s048.sec52.u9": [
+  [
+   "Mist, er ist schon wieder",
+   "entkommen!"
+  ]
+ ],
+ "s048.sec52.u10": [
+  [
+   "Sogar einen Fluchtaufzug hat",
+   "er... Hinterherlaufen bringt",
+   "jetzt nichts mehr. Dieser Kerl!"
+  ]
+ ]
+}

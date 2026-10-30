@@ -1,0 +1,898 @@
+{
+ "s146.sec5.u0": [
+  [
+   "Identifiqui's."
+  ]
+ ],
+ "s146.sec6.u0": [
+  [
+   "Declari el motiu de la seva",
+   "visita."
+  ]
+ ],
+ "s146.sec7.u0": [
+  [
+   "Ens prendrem ara un breu",
+   "descans."
+  ]
+ ],
+ "s146.sec8.u0": [
+  [
+   "C-com?"
+  ]
+ ],
+ "s146.sec81.m0.o0": "Tornar",
+ "s146.sec81.m0.o1": "No tornar",
+ "s146.sec81.u0": [
+  [
+   "Torna vostè a la ciutat?"
+  ]
+ ],
+ "s147.sec5.u0": [
+  [
+   "Vostè. On es dirigeix?"
+  ]
+ ],
+ "s147.sec6.u0": [
+  [
+   "Alt!"
+  ]
+ ],
+ "s147.sec7.u0": [
+  [
+   "Gupiiii!"
+  ]
+ ],
+ "s147.sec8.u0": [
+  [
+   "Doijiefi."
+  ]
+ ],
+ "s147.sec9.m0.o0": "Accepto!",
+ "s147.sec9.m0.o1": "Ho sento, més tard",
+ "s147.sec9.u0": [
+  [
+   "Mmm, tu, el d'aquí! Sóc",
+   "MetalMamemon, invicte en 99",
+   "combats! Vèncer-te serà la",
+   "meva victòria número 100! El"
+  ],
+  [
+   "gran {color 6}{player}{color 1} no fugirà,",
+   "oi?"
+  ]
+ ],
+ "s147.sec9.u1": [
+  [
+   "Mmm... Ets millor del que",
+   "pensava!"
+  ],
+  [
+   "Ho he decidit. Et reconec com",
+   "el meu rival!"
+  ],
+  [
+   "Algun dia et guanyaré, ja",
+   "veuràs!"
+  ]
+ ],
+ "s147.sec9.u2": "MetalMamemon s'ha unit a la ciutat!",
+ "s147.sec9.u3": [
+  [
+   "Fua, ja, ja, ja m'ho imaginava!",
+   "Ens veurem quan em vingui de",
+   "gust."
+  ]
+ ],
+ "s148.sec5.u0": [
+  [
+   "Intrús detectat!"
+  ]
+ ],
+ "s148.sec6.u0": [
+  [
+   "Ens sentim fatigats, saps?"
+  ]
+ ],
+ "s148.sec7.u0": [
+  [
+   "Jo, jo, jo, fes el que millor",
+   "et sembli!"
+  ]
+ ],
+ "s148.sec8.u0": [
+  [
+   "Hagajogo."
+  ]
+ ],
+ "s148.sec9.u0": [
+  [
+   "Prohibit el pas a partir",
+   "d'aquest punt!"
+  ]
+ ],
+ "s148.sec10.u0": [
+  [
+   "Vostè. Qui és?"
+  ]
+ ],
+ "s149.sec5.u0": [
+  [
+   "Bopi bopi puuuuh."
+  ]
+ ],
+ "s149.sec6.u0": [
+  [
+   "Geba, geba!"
+  ]
+ ],
+ "s149.sec7.u0": [
+  [
+   "Buhio?"
+  ]
+ ],
+ "s149.sec8.u0": [
+  [
+   "Ens sentim molt complaguts!"
+  ]
+ ],
+ "s149.sec9.u0": [
+  [
+   "També això és el nostre deure,",
+   "saps?"
+  ]
+ ],
+ "s149.sec10.u0": [
+  [
+   "Quin rebombori. Què és tot",
+   "això?"
+  ]
+ ],
+ "s149.sec11.m0.o0": "Ei, canvi de torn",
+ "s149.sec11.m0.o1": "Deixa'm passar o veuràs!",
+ "s149.sec11.m0.o2": "Ah, res",
+ "s149.sec11.m1.o0": "Oblida-ho",
+ "s149.sec11.m1.o1": "Quan és el canvi de torn?",
+ "s149.sec11.m2.o0": "Tinc permís, en realitat",
+ "s149.sec11.m2.o1": "Em dono permís jo mateix!",
+ "s149.sec11.u0": [
+  [
+   "No pot passar per aquí."
+  ]
+ ],
+ "s149.sec11.u1": [
+  [
+   "......"
+  ]
+ ],
+ "s149.sec11.u2": [
+  [
+   "Hala, ens està mirant fixament!",
+   "Sospita alguna cosa?"
+  ],
+  [
+   "Tornem més tard... Serà millor",
+   "esperar en algun lloc on no ens",
+   "vegin."
+  ],
+  [
+   "Era a les 0:00 i a les 12:00,",
+   "no?"
+  ]
+ ],
+ "s149.sec11.u3": [
+  [
+   "Aquesta fàbrica deu estar",
+   "abocant residus o alguna cosa",
+   "semblant a les clavegueres. Ho",
+   "hem de comprovar."
+  ]
+ ],
+ "s149.sec11.u4": [
+  [
+   "Això... podries apartar-te?"
+  ]
+ ],
+ "s149.sec11.u5": [
+  [
+   "No pot passar sense el permís",
+   "del responsable."
+  ]
+ ],
+ "s149.sec11.u6": [
+  [
+   "Però és que tinc pressa."
+  ]
+ ],
+ "s149.sec11.u7": [
+  [
+   "Denegat. Obtingui un permís, si",
+   "us plau."
+  ]
+ ],
+ "s149.sec11.u8": [
+  [
+   "Uf... no queda una altra."
+  ]
+ ],
+ "s149.sec11.u9": [
+  [
+   "I ara què fem...?"
+  ]
+ ],
+ "s149.sec11.u10": [
+  [
+   "No és l'hora del canvi de torn."
+  ]
+ ],
+ "s149.sec11.u11": [
+  [
+   "Denegat. Els horaris han de",
+   "complir-se estrictament."
+  ]
+ ],
+ "s149.sec11.u12": [
+  [
+   "Els canvis de torn són a les",
+   "0:00 i a les 12:00."
+  ]
+ ],
+ "s149.sec11.u13": [
+  [
+   "Ah, sí? Entès!"
+  ]
+ ],
+ "s149.sec11.u14": [
+  [
+   "Les amenaces no funcionaran.",
+   "Obtingui un permís, si us plau."
+  ]
+ ],
+ "s149.sec11.u15": [
+  [
+   "Autorització fallida. Obtingui",
+   "un permís com cal, si us plau."
+  ]
+ ],
+ "s149.sec11.u16": [
+  [
+   "Uf, que estrictes!"
+  ]
+ ],
+ "s149.sec11.u17": [
+  [
+   "Sent, no és l'hora del canvi de",
+   "torn?"
+  ]
+ ],
+ "s149.sec11.u18": [
+  [
+   "......"
+  ]
+ ],
+ "s149.sec11.u19": [
+  [
+   "Hala, ens està mirant fixament!",
+   "Amb nosaltres aquí no canviaran",
+   "el torn."
+  ],
+  [
+   "Tornem més tard... Serà millor",
+   "esperar en algun lloc on no ens",
+   "vegin."
+  ]
+ ],
+ "s149.sec12.u0": [
+  [
+   "No pot passar per aquí."
+  ]
+ ],
+ "s149.sec254.u0": [
+  [
+   "Ep, els guàrdies han marxat!"
+  ]
+ ],
+ "s151.sec5.u0": [
+  [
+   "Aquí tot està en ordre.",
+   "Continuï esforçant-se, si us",
+   "plau."
+  ]
+ ],
+ "s151.sec5.u1": [
+  [
+   "Jo també haig d'ajudar. Quan el",
+   "temps ho permeti, viatjaré",
+   "entre aquest lloc i la ciutat."
+  ]
+ ],
+ "s151.sec5.u2": "Andromon s'ha unit a la ciutat!",
+ "s151.sec5.u3": [
+  [
+   "La reparació de les dades ha",
+   "acabat. Ara les llegirem."
+  ]
+ ],
+ "s151.sec5.u4": [
+  [
+   "Endavant."
+  ]
+ ],
+ "s151.sec5.u5": [
+  [
+   "Fa 100 anys: apareixen humans",
+   "analògics a l'illa dels",
+   "Digimon."
+  ],
+  [
+   "S'enfronten amb ferocitat als",
+   "Digimon nadius."
+  ],
+  [
+   "Després de 10 anys de lluita,",
+   "els humans analògics cauen i",
+   "desapareixen sense rastre."
+  ],
+  [
+   "En els 10 anys següents, l'illa",
+   "creix fins a gairebé el doble",
+   "de la seva grandària. Causa",
+   "desconeguda."
+  ]
+ ],
+ "s151.sec5.u6": [
+  [
+   "Els humans... van lluitar",
+   "contra els Digimon..."
+  ]
+ ],
+ "s151.sec5.u7": [
+  [
+   "Aquestes són totes les dades",
+   "que he pogut reparar. Ho",
+   "lamento."
+  ]
+ ],
+ "s151.sec5.u8": [
+  [
+   "No, és una informació molt",
+   "valuosa. Explica moltes coses."
+  ]
+ ],
+ "s151.sec5.u9": [
+  [
+   "Ah, sí?"
+  ]
+ ],
+ "s151.sec5.u10": [
+  [
+   "Segurament qui ha sumit l'illa",
+   "en el caos és aquest humà",
+   "desaparegut."
+  ]
+ ],
+ "s151.sec5.u11": [
+  [
+   "Poden els humans viure 100",
+   "anys?"
+  ]
+ ],
+ "s151.sec5.u12": [
+  [
+   "Bé, sembla que en aquest món",
+   "el temps passa molt a poc a poc",
+   "només per als humans."
+  ],
+  [
+   "Per això estic bé sense menjar",
+   "ni dormir."
+  ],
+  [
+   "Així i tot, 100 anys és molt.",
+   "Ha de ser un tipus dur de",
+   "pelar."
+  ]
+ ],
+ "s151.sec5.u13": [
+  [
+   "Estarà amagat en algun lloc?"
+  ]
+ ],
+ "s151.sec5.u14": [
+  [
+   "El trobaré... i faré alguna",
+   "cosa per aturar-lo. Ara ho",
+   "entenc. Em van cridar aquí per",
+   "derrotar-lo, perquè jo també"
+  ],
+  [
+   "sóc humà."
+  ]
+ ],
+ "s151.sec5.u15": [
+  [
+   "...Li demanem sinceres",
+   "disculpes per l'ocorregut. La",
+   "fàbrica romandrà tancada una",
+   "temporada."
+  ]
+ ],
+ "s151.sec5.u16": [
+  [
+   "Amb l'illa tan estranya, ningú",
+   "pot saber el que passarà. No",
+   "és culpa vostra."
+  ]
+ ],
+ "s151.sec5.u17": [
+  [
+   "Crec que algú, en algun lloc,",
+   "controlava Giromon. L'ordinador",
+   "es destrossa... i en surten",
+   "residus que tornen bojos els"
+  ],
+  [
+   "Digimon. No crec que sigui una",
+   "casualitat."
+  ]
+ ],
+ "s151.sec5.u18": [
+  [
+   "L'ordinador d'aquí és molt",
+   "important. Hem de suposar que",
+   "algú el tenia al punt de mira.",
+   "Encara que ja és tard per"
+  ],
+  [
+   "dir-ho..."
+  ]
+ ],
+ "s151.sec5.u19": [
+  [
+   "Què has dit?"
+  ]
+ ],
+ "s151.sec5.u20": [
+  [
+   "Sembla que aquí es guardaven",
+   "dades sobre el passat de",
+   "l'illa. Però la fúria de",
+   "Giromon les ha malmès."
+  ]
+ ],
+ "s151.sec5.u21": [
+  [
+   "No has vist aquestes dades?"
+  ]
+ ],
+ "s151.sec5.u22": [
+  [
+   "Per desgràcia, no. Però sembla",
+   "que es pot reparar una part de",
+   "les dades. Les intentaré",
+   "reconstruir."
+  ]
+ ],
+ "s151.sec5.u23": [
+  [
+   "Val, fes-ho, si us plau. Quant",
+   "trigaràs?"
+  ]
+ ],
+ "s151.sec5.u24": [
+  [
+   "Encara un temps... Aixecaré el",
+   "tancament de l'entrada",
+   "principal del poble, així que",
+   "torni més tard, si us plau."
+  ]
+ ],
+ "s151.sec5.u25": [
+  [
+   "Gràcies. Llavors tornaré."
+  ]
+ ],
+ "s151.sec5.u26": [
+  [
+   "Ja has reparat les dades?"
+  ]
+ ],
+ "s151.sec5.u27": [
+  [
+   "Trigaré una mica més. Torni",
+   "més tard, si us plau."
+  ]
+ ],
+ "s151.sec5.u28": [
+  [
+   "Llavors tornaré."
+  ]
+ ],
+ "s151.sec5.u29": [
+  [
+   "Holaaa!"
+  ]
+ ],
+ "s151.sec5.u30": [
+  [
+   "...es vostè. Haig de demanar-li",
+   "disculpes."
+  ]
+ ],
+ "s151.sec5.u31": [
+  [
+   "Uf, això per a després! Per a",
+   "les màquines de la fàbrica,",
+   "ràpid!"
+  ]
+ ],
+ "s151.sec5.u32": [
+  [
+   "Sí. Entès."
+  ]
+ ],
+ "s151.sec5.u33": [
+  [
+   "Les funcions de la fàbrica han",
+   "estat detingudes."
+  ]
+ ],
+ "s151.sec5.u34": [
+  [
+   "D'acord, revisaré les",
+   "clavegueres. Fins ara!"
+  ]
+ ],
+ "s151.sec5.u35": [
+  [
+   "Haig de demanar-li disculpes..."
+  ]
+ ],
+ "s151.sec5.u36": [
+  [
+   "Uy, no, ara no hi ha temps per",
+   "a això!"
+  ]
+ ],
+ "s151.sec5.u37": [
+  [
+   "El nostre ordinador és",
+   "infal·lible."
+  ]
+ ],
+ "s151.sec5.u38": [
+  [
+   "De debò la fàbrica està bé?",
+   "Això pinta malament..."
+  ]
+ ],
+ "s151.sec5.u39": [
+  [
+   "Val, llavors haurem",
+   "d'encarregar-nos dels guàrdies.",
+   "No hi ha una altra pista!"
+  ]
+ ],
+ "s151.sec5.u40": [
+  [
+   "Oh... vostè és... Com ha entrat",
+   "en aquest poble?"
+  ]
+ ],
+ "s151.sec5.u41": [
+  [
+   "Si no té res a fer aquí,",
+   "marxi's immediatament, si us",
+   "plau."
+  ]
+ ],
+ "s151.sec5.u42": [
+  [
+   "Això... això ara és igual. Vull",
+   "inspeccionar la fàbrica."
+  ],
+  [
+   "És qüestió de vida o mort.",
+   "Dóna'm permís!"
+  ]
+ ],
+ "s151.sec5.u43": [
+  [
+   "Mmm...? No comprenc les seves",
+   "intencions. Permís denegat."
+  ]
+ ],
+ "s151.sec5.u44": [
+  [
+   "Hi ha Digimon que s'estan",
+   "morint pels residus que surten",
+   "de la fàbrica."
+  ]
+ ],
+ "s151.sec5.u45": [
+  [
+   "...? De la fàbrica? Ha de ser",
+   "un error."
+  ],
+  [
+   "El sistema de tractament de",
+   "residus opera amb normalitat."
+  ]
+ ],
+ "s151.sec5.u46": [
+  [
+   "No pots saber si és normal",
+   "sense mirar-ho!"
+  ]
+ ],
+ "s151.sec5.u47": [
+  [
+   "El nostre ordinador és",
+   "infal·lible."
+  ],
+  [
+   "Si alguna cosa fallés, el",
+   "«Guardià de la Xarxa»",
+   "intervindria i ho apagaria."
+  ]
+ ],
+ "s151.sec5.u48": [
+  [
+   "Què és això? I no es pot",
+   "espatllar?"
+  ]
+ ],
+ "s151.sec5.u49": [
+  [
+   "«Guardià de la Xarxa» és",
+   "l'altre nom de Giromon, un",
+   "Digimon perfecte."
+  ],
+  [
+   "El seu criteri i la seva",
+   "capacitat són infal·libles."
+  ]
+ ],
+ "s151.sec5.u50": [
+  [
+   "Un Digimon!? Doncs ara mateix",
+   "això és encara més perillós! Si",
+   "us plau, dóna'm permís!"
+  ]
+ ],
+ "s151.sec5.u51": [
+  [
+   "...... Marxi's, si us plau."
+  ]
+ ],
+ "s151.sec5.u52": [
+  [
+   "Uf..."
+  ]
+ ],
+ "s152.sec5.u0": [
+  [
+   "Nyam, nyam."
+  ]
+ ],
+ "s152.sec6.u0": [
+  [
+   "Fuojajiii."
+  ]
+ ],
+ "s152.sec7.u0": [
+  [
+   "Necessita alguna cosa de mi?"
+  ]
+ ],
+ "s152.sec8.u0": [
+  [
+   "No es mogui!"
+  ]
+ ],
+ "s152.sec9.u0": [
+  [
+   "Alt! He dit alt!"
+  ]
+ ],
+ "s152.sec10.u0": [
+  [
+   "Li atendré més tard."
+  ]
+ ],
+ "s153.sec5.u0": [
+  [
+   "Bzzt! T'estava esperant,",
+   "col·lega!"
+  ]
+ ],
+ "s153.sec5.u1": [
+  [
+   "Mmm, ja has tornat en tu?"
+  ]
+ ],
+ "s153.sec5.u2": [
+  [
+   "Guajaja! Sembla que se'm va",
+   "anar una mica l'olla, eh?"
+  ]
+ ],
+ "s153.sec5.u3": [
+  [
+   "Sent, que no és per a",
+   "prendre-s'ho de broma..."
+  ]
+ ],
+ "s153.sec5.u4": [
+  [
+   "La fàbrica està tancada, així",
+   "que no tinc res a fer. Et",
+   "donaré un cop de mà, he-he-hi!"
+  ]
+ ],
+ "s153.sec5.u5": [
+  [
+   "Ni amb el cap en el seu lloc",
+   "canvia molt..."
+  ]
+ ],
+ "s153.sec5.u6": [
+  [
+   "Em piro, bzzzzt!"
+  ]
+ ],
+ "s153.sec5.u7": "Giromon s'ha unit a la ciutat!",
+ "s154.sec51.u0": [
+  [
+   "Aquí hi ha algú! Qui hi ha!?"
+  ]
+ ],
+ "s154.sec51.u1": [
+  [
+   "Je-je-ji! Trenco l'ordinador",
+   "dolent! Ji, ji, ji, ji!"
+  ]
+ ],
+ "s154.sec51.u2": [
+  [
+   "Així que és aquest... Eh! Què",
+   "estàs fent!?"
+  ]
+ ],
+ "s154.sec51.u3": [
+  [
+   "Je-ji! Trenca! Trenca-ho tot!",
+   "Trenca el dolent!"
+  ]
+ ],
+ "s154.sec51.u4": [
+  [
+   "Uf... ha perdut el seny del",
+   "tot. És un Perfecte, però...",
+   "l'hem d'aturar!"
+  ]
+ ],
+ "s154.sec51.u5": [
+  [
+   "Ji, ji, ji! Trenca! Us trenco a",
+   "tots!"
+  ]
+ ],
+ "s154.sec51.u6": [
+  [
+   "Bzzzt, bzzz... m'estic...",
+   "que...dant... sense forces..."
+  ]
+ ],
+ "s154.sec51.u7": [
+  [
+   "Oh... sembla que s'està quedant",
+   "sense forces. Ah, és clar! Haig",
+   "d'avisar Andromon perquè aturi",
+   "l'abocament de residus!"
+  ]
+ ],
+ "s155.sec5.u0": [
+  [
+   "Un-mo-ment!"
+  ]
+ ],
+ "s155.sec6.u0": [
+  [
+   "No us deixarem passar!"
+  ]
+ ],
+ "s155.sec7.u0": [
+  [
+   "Vostè. Què fa aquí?"
+  ]
+ ],
+ "s155.sec8.u0": [
+  [
+   "Gapiooo!"
+  ]
+ ],
+ "s155.sec9.u0": [
+  [
+   "Geba, gebaaa!!"
+  ]
+ ],
+ "s155.sec10.u0": [
+  [
+   "Zuposhi?"
+  ]
+ ],
+ "s156.sec5.m0.o0": "Endavant",
+ "s156.sec5.m0.o1": "Si us plau, no!",
+ "s156.sec5.u0": [
+  [
+   "Iniciant remodelació. El preu",
+   "és de 2000 Bits."
+  ]
+ ],
+ "s156.sec5.u1": [
+  [
+   "Model incompatible. No es pot",
+   "remodelar."
+  ]
+ ],
+ "s156.sec5.u2": [
+  [
+   "Fons insuficients."
+  ]
+ ],
+ "s156.sec5.u3": [
+  [
+   "Esperi un moment, si us plau."
+  ]
+ ],
+ "s156.sec5.u4": [
+  [
+   "Operació fallida. No obstant",
+   "això..."
+  ]
+ ],
+ "s156.sec5.u5": [
+  [
+   "Hala, s'ha convertit en",
+   "Giromon!"
+  ]
+ ],
+ "s156.sec5.u6": [
+  [
+   "Operació completada amb èxit!"
+  ]
+ ],
+ "s156.sec5.u7": [
+  [
+   "Hala, s'ha convertit en",
+   "MetalMamemon!"
+  ]
+ ],
+ "s156.sec5.u8": [
+  [
+   "Operació fallida..."
+  ]
+ ],
+ "s156.sec5.u9": [
+  [
+   "Q-quin desastre!"
+  ]
+ ],
+ "s156.sec5.u10": [
+  [
+   "Disculpi..."
+  ]
+ ],
+ "s156.sec6.u0": [
+  [
+   "Objectiu capturat. Eliminar!"
+  ]
+ ],
+ "s156.sec7.u0": [
+  [
+   "Objectiu principal: destruir la",
+   "màquina enemiga."
+  ]
+ ]
+}

@@ -1,0 +1,47 @@
+// Readable form of script 138 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+script 138 {
+    npc clearagumon = 5;
+    npc toyagumon = 6;
+    npc tankmon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(clearagumon) replace {    // section 5
+        say(clearagumon, text("s138.sec5.u0"));
+        if (has_card(19) >= 1 && has_card(24) >= 1 && has_card(57) >= 1) {
+            choice {
+                text("s138.sec5.m0.o0") => {
+                    give_item(item("X Bandage"), 1);
+                    say(clearagumon, text("s138.sec5.u2"));
+                    if (engine.item_did_not_fit) {
+                        say(tamer, text("s138.sec5.u3"));
+                        return;
+                    }
+                    sound(0, 7);
+                    take_card(19);
+                    take_card(24);
+                    take_card(57);
+                }
+                text("s138.sec5.m0.o1") or cancel => {}
+            }
+        } else {
+            say(tamer, text("s138.sec5.u1"));
+        }
+    }
+
+    on talk(toyagumon) replace {    // section 6
+        say(toyagumon, text("s138.sec6.u0"));
+    }
+
+    on talk(tankmon) replace {    // section 7
+        say(tankmon, text("s138.sec7.u0"));
+        return;
+    }
+}

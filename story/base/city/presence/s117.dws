@@ -1,0 +1,17 @@
+// Who stands on screen 117 (Misty Trees), and when. Read out of MAPHEAD.SCN section 117 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(117) {                              // Misty Trees
+            npc 168 slot 0 autotalk when not recruited(Kokatorimon) and clock.hour >= 4 and clock.hour <= 6;
+            npc Goblimon slot 1 autotalk when not trigger(114) and not trigger(147) and clock.hour <= 3 or not trigger(114) and not trigger(147) and recruited(Kokatorimon) or not trigger(114) and not trigger(147) and clock.hour >= 7;
+            npc Goblimon slot 2 autotalk when not trigger(114) and not trigger(147) and clock.hour <= 3 or not trigger(114) and not trigger(147) and recruited(Kokatorimon) or not trigger(114) and not trigger(147) and clock.hour >= 7;
+            npc Goblimon slot 3 autotalk when not trigger(114) and not trigger(147) and clock.hour <= 3 or not trigger(114) and not trigger(147) and recruited(Kokatorimon) or not trigger(114) and not trigger(147) and clock.hour >= 7;
+            npc Morishellmon slot 4 autotalk when trigger(114) and clock.hour >= 7 and clock.hour <= 18 or trigger(147) and clock.hour >= 7 and clock.hour <= 18;
+            npc Morishellmon slot 5 autotalk when trigger(114) and clock.hour >= 7 and clock.hour <= 18 or trigger(147) and clock.hour >= 7 and clock.hour <= 18;
+            npc Goblimon slot 6 autotalk when trigger(114) and clock.hour <= 3 or trigger(147) and clock.hour <= 3 or trigger(114) and recruited(Kokatorimon) and clock.hour <= 6 or trigger(147) and recruited(Kokatorimon) and clock.hour <= 6 or trigger(114) and clock.hour >= 19 or trigger(147) and clock.hour >= 19;
+            npc Goblimon slot 7 autotalk when trigger(114) and clock.hour <= 3 or trigger(147) and clock.hour <= 3 or trigger(114) and recruited(Kokatorimon) and clock.hour <= 6 or trigger(147) and recruited(Kokatorimon) and clock.hour <= 6 or trigger(114) and clock.hour >= 19 or trigger(147) and clock.hour >= 19;
+        }
+    }
+}

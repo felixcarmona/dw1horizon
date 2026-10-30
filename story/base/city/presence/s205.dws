@@ -1,0 +1,12 @@
+// Who stands on screen 205 (Jijimon's house), and when. Read out of MAPHEAD.SCN section 205 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(205) {                              // Jijimon's house
+            npc Jijimon slot 0;
+            npc 142 slot 1 when recruited(Angemon);
+            npc Tokomon slot 2;
+        }
+    }
+}

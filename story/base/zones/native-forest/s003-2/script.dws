@@ -1,0 +1,102 @@
+// Readable form of script 3 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 3 {
+    npc goblimon0 = 5;
+    npc goblimon1 = 6;
+    npc palmon = 7;
+    npc goblimon3 = 8;
+    npc goblimon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 8, 9, 7;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Blue apple"), 37, 33);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("Digimushrm"), 46, 59);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 62, 54);
+        }
+    }
+
+    on talk(goblimon0) replace {    // section 5
+        say(goblimon0, text("s003.sec5.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        say(goblimon1, text("s003.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon3) replace {    // section 8
+        say(goblimon3, text("s003.sec8.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon4) replace {    // section 9
+        say(goblimon4, text("s003.sec9.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(palmon) replace {    // section 7
+        engine.cutscene = true;
+        match (p32, clamp) {
+            0 => {
+                say(narrator, text("s003.sec7.u0"));
+                p32 += 1;
+            }
+            1 => {
+                say(narrator, text("s003.sec7.u1"));
+                p32 += 1;
+            }
+            2 => {
+                say(narrator, text("s003.sec7.u2"));
+                p32 += 1;
+            }
+            3 => {
+                say(narrator, text("s003.sec7.u3"));
+                sound(8, 12);
+                face(palmon, tamer);
+                wait(1s);
+                battle(foes: [palmon]);
+                face(palmon, tamer);
+                face(tamer, palmon);
+                face(partner, palmon);
+                await tamer;
+                await partner;
+                sound(8, 12);
+                say(palmon, text("s003.sec7.u4"));
+                animate(tamer, 19);
+                say(tamer, text("s003.sec7.u5"));
+                animate(tamer, 19);
+                say(tamer, text("s003.sec7.u6"));
+                animate(tamer, anim.idle);
+                say(palmon, text("s003.sec7.u7"));
+                walk_away(palmon, 170, 1863, looks: 3, pause: 18);
+                remove(palmon);
+                glances = 0;
+                camera_on(tamer, speed: 10);
+                sound(8, 11);
+                say(narrator, text("s003.sec7.u8"));
+                p32 = 0;
+                recruit(species("Palmon"));
+                engine.prosperity += 1;
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+// Readable form of script 17 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 17 {
+    npc yanmamon0 = 5;
+    npc yanmamon1 = 6;
+    npc muchomon = 7;
+    npc j_mojyamon3 = 8;
+    npc j_mojyamon4 = 9;
+    npc j_mojyamon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 81;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(yanmamon0) replace {    // section 5
+        say(yanmamon0, text("s017.sec5.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(yanmamon1) replace {    // section 6
+        say(yanmamon1, text("s017.sec6.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(muchomon) replace {    // section 7
+        say(muchomon, text("s017.sec7.u0"));
+        battle();
+        recruit(species("Muchomon"));
+    }
+
+    on talk(j_mojyamon3) replace {    // section 8
+        say(j_mojyamon3, text("s017.sec8.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on talk(j_mojyamon4) replace {    // section 9
+        say(j_mojyamon4, text("s017.sec9.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on talk(j_mojyamon5) replace {    // section 10
+        say(j_mojyamon5, text("s017.sec10.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 2048);
+        if (!is_recruited(species("Centarumon"))) {
+            say(narrator, text("s017.sec81.u0"));
+        } else {
+            say(narrator, text("s017.sec81.u1"));
+        }
+        return;
+    }
+}

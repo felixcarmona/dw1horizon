@@ -1,0 +1,57 @@
+{
+  "origins": {
+    "files": 360,
+    "legacy_equal": 343,
+    "deterministic_replacements": 17,
+    "protected_files_unchanged": 360
+  },
+  "deltas": {
+    "codec": "MD3 mode 0",
+    "files": 350,
+    "bytes": 725285,
+    "rebased_models": 17,
+    "rebased_textures": 0
+  },
+  "native": {
+    "python": "3.14.8",
+    "numpy": "2.5.4",
+    "source_images": [
+      "dcb-us",
+      "dw2-us",
+      "dw2003-pal"
+    ],
+    "models": 175,
+    "textures": 175,
+    "jobs": 4,
+    "seconds": 290.05
+  },
+  "pyodide": {
+    "version": "314.0.7",
+    "python": "3.14.2",
+    "numpy": "2.4.6",
+    "models": 175,
+    "textures": 175,
+    "workers": 4,
+    "seconds": 869.61,
+    "oracle_reads_forbidden": true,
+    "pillow_unicorn_imports_forbidden": true
+  },
+  "overlays": {
+    "verified": 65,
+    "final_provider_pins_verified": 175,
+    "oracle_reads_forbidden": true
+  },
+  "browser": {
+    "engine": "Chromium 156.0.8078.47",
+    "real_worker_and_opfs": true,
+    "source_files_extracted": 703,
+    "species": [
+      183,
+      278,
+      403
+    ],
+    "sha256_verified": true,
+    "oracle_packaged": false
+  },
+  "deployment": "not deployed"
+}

@@ -1,0 +1,310 @@
+{
+ "s012.sec5.u0": [
+  [
+   "Proponi di combattere con me?"
+  ]
+ ],
+ "s012.sec6.u0": [
+  [
+   "Ma guarda che sfacciato."
+  ]
+ ],
+ "s012.sec7.u0": [
+  [
+   "C-che vuoi fare?"
+  ]
+ ],
+ "s012.sec8.u0": [
+  [
+   "Vado a fare la spia!"
+  ]
+ ],
+ "s012.sec53.u0": [
+  [
+   "Oh, un ponte!"
+  ]
+ ],
+ "s012.sec81.m0.o0": "100 MP: 200 Bits",
+ "s012.sec81.m0.o1": "1000 MP: 1800 Bits",
+ "s012.sec81.m0.o2": "Non usare",
+ "s012.sec81.u0": [
+  [
+   "Stazione MP"
+  ]
+ ],
+ "s012.sec81.u1": [
+  [
+   "Una macchina che recupera gli",
+   "MP, eh."
+  ]
+ ],
+ "s012.sec81.u2": [
+  [
+   "MP recuperati!"
+  ]
+ ],
+ "s012.sec81.u3": [
+  [
+   "Non ho abbastanza soldi..."
+  ]
+ ],
+ "s012.sec81.u4": [
+  [
+   "MP recuperati!"
+  ]
+ ],
+ "s012.sec81.u5": [
+  [
+   "Non ho abbastanza soldi..."
+  ]
+ ],
+ "s012.sec81.u6": [
+  [
+   "Lasciamo perdere."
+  ]
+ ],
+ "s013.sec5.m0.o0": "Ok, Accetto!",
+ "s013.sec5.m0.o1": "Mi sono ricordato...",
+ "s013.sec5.u0": [
+  [
+   "Ehi, tu! Sei tu che stai",
+   "costruendo una città?"
+  ]
+ ],
+ "s013.sec5.u1": [
+  [
+   "Si'. Perche'?"
+  ]
+ ],
+ "s013.sec5.u2": [
+  [
+   "Mh, che fortuna incontrarmi!",
+   "Non sembra, ma sono di livello",
+   "Evoluto! Battimi e aiuterò la"
+  ],
+  [
+   "tua città. Che ne dici?"
+  ]
+ ],
+ "s013.sec5.u3": [
+  [
+   "Ma guarda! Ho perso su tutta",
+   "la linea! Ci vediamo in città,",
+   "allora!"
+  ]
+ ],
+ "s013.sec5.u4": "Piximon si è unito alla città!",
+ "s013.sec5.u5": [
+  [
+   "Mh, che fifone! Beh, ci",
+   "rivedremo prima o poi!"
+  ]
+ ],
+ "s013.sec6.u0": [
+  [
+   "Oh, señorita!"
+  ]
+ ],
+ "s013.sec7.u0": [
+  [
+   "Come va, amigo?!"
+  ]
+ ],
+ "s013.sec8.u0": [
+  [
+   "Uki, Uki!"
+  ]
+ ],
+ "s013.sec9.u0": [
+  [
+   "Oh oh!"
+  ]
+ ],
+ "s014.sec5.u0": [
+  [
+   "Fssss!"
+  ]
+ ],
+ "s014.sec6.u0": [
+  [
+   "Zeiiiiii!"
+  ]
+ ],
+ "s014.sec7.u0": [
+  [
+   "Fiuuu, fiuuu!"
+  ]
+ ],
+ "s014.sec8.u0": [
+  [
+   "Non sto più giocando con te!"
+  ]
+ ],
+ "s014.sec9.u0": [
+  [
+   "Ukiaaa! Uh-uh!"
+  ]
+ ],
+ "s014.sec10.u0": [
+  [
+   "Oh oh oh! Evviva!"
+  ]
+ ],
+ "s015.sec5.u0": [
+  [
+   "Tu essere Digimon, sì?"
+  ]
+ ],
+ "s015.sec7.u0": [
+  [
+   "Come stai? Da dove vieni?"
+  ]
+ ],
+ "s015.sec8.u0": [
+  [
+   "Non prendermi in giro!"
+  ]
+ ],
+ "s015.sec9.u0": [
+  [
+   "Ti sbrano!"
+  ]
+ ],
+ "s015.sec51.m0.o0": "Proviamone uno",
+ "s015.sec51.m0.o1": "Non usare nulla",
+ "s015.sec51.m1.o0": "Certo che mi piacciono",
+ "s015.sec51.m1.o1": "No, li odio",
+ "s015.sec51.u0": [
+  [
+   "Mh, se la lascio così, rischia",
+   "davvero di appassire. Se solo",
+   "piovesse..."
+  ]
+ ],
+ "s015.sec51.u1": [
+  [
+   "Oh, che strano. Sta",
+   "germogliando."
+  ]
+ ],
+ "s015.sec51.u2": [
+  [
+   "Mh? Si è appena mossa un",
+   "po'...? È la pianta misteriosa",
+   "di cui parlano tutti?"
+  ]
+ ],
+ "s015.sec51.u3": [
+  [
+   "Ma è un po' afflosciata. Di",
+   "questo passo appassirà."
+  ]
+ ],
+ "s015.sec51.u4": [
+  [
+   "Usare un oggetto?"
+  ]
+ ],
+ "s015.sec51.u5": [
+  [
+   "Ah, E' vero. Non ho niente",
+   "ora..."
+  ]
+ ],
+ "s015.sec51.u6": [
+  [
+   "Niente di quello che ho può",
+   "servire."
+  ]
+ ],
+ "s015.sec51.u7": [
+  [
+   "Non servirà a niente..."
+  ]
+ ],
+ "s015.sec51.u8": [
+  [
+   "Keh eh eh eh! Ehi! Sono",
+   "Vegiemon!"
+  ]
+ ],
+ "s015.sec51.u9": [
+  [
+   "Ah, mi hai spaventato! Un",
+   "Digimon pianta, eh..."
+  ]
+ ],
+ "s015.sec51.u10": [
+  [
+   "Keh eh. Ehi, tu. Ti piacciono",
+   "le verdure?"
+  ]
+ ],
+ "s015.sec51.u11": [
+  [
+   "Da dove salta fuori questa",
+   "domanda...? La verdura? Mh..."
+  ]
+ ],
+ "s015.sec51.u12": [
+  [
+   "...Lascia perdere."
+  ]
+ ],
+ "s015.sec51.u13": [
+  [
+   "Oh, chi ama la verdura non può",
+   "essere cattivo."
+  ]
+ ],
+ "s015.sec51.u14": [
+  [
+   "No, no! La verdura è",
+   "fantastica!"
+  ]
+ ],
+ "s015.sec51.u15": [
+  [
+   "???"
+  ]
+ ],
+ "s015.sec51.u16": [
+  [
+   "Ok, E' deciso. Vengo con te!"
+  ]
+ ],
+ "s015.sec51.u17": [
+  [
+   "Uff, che tipo invadente...",
+   "Aspetta un attimo!"
+  ]
+ ],
+ "s015.sec51.u18": [
+  [
+   "Allora non vengo! Ciao!"
+  ]
+ ],
+ "s015.sec51.u19": [
+  [
+   "Cambi idea troppo in fretta!"
+  ]
+ ],
+ "s015.sec51.u20": [
+  [
+   "Eh? Allora cosa dovrei fare?"
+  ]
+ ],
+ "s015.sec51.u21": [
+  [
+   "Ehm, beh... vieni in città a",
+   "dare una mano!"
+  ]
+ ],
+ "s015.sec51.u22": [
+  [
+   "Keh eh eh, certo! Tanto sono",
+   "stufo di starmene qui. Keh eh!"
+  ]
+ ],
+ "s015.sec51.u23": "Vegiemon si è unito alla città!"
+}

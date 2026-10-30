@@ -1,0 +1,32 @@
+From 9a6707f19e306ee7d08a1cfb204d9466dac06947 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 16:06:59 +0000
+Subject: [PATCH] Status bubbles: slower, steadier carousel motion (a quarter
+ of the way per tick)
+
+---
+ src/main/bubble.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 5ed7b13..b3777dd 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -641,10 +641,11 @@ static int32_t ringStep(int32_t v, int32_t target)
+ {
+ 	int32_t d = target - v;
+ 
+-	if ((d / 2) == 0) {
+-		return target;
++	/* a quarter of the way per tick: about half a second to settle */
++	if ((d / 4) == 0) {
++		return (d > 3 || d < -3) ? v + ((d > 0) ? 1 : -1) : target;
+ 	}
+-	return v + d / 2;
++	return v + d / 4;
+ }
+ 
+ void renderConditionRingObject(int32_t instanceId)
+-- 
+2.53.0
+

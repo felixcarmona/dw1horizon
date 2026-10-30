@@ -1,0 +1,93 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M142XTRN",
+ "type": 266,
+ "name": "ExTyrannomon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 14,
+  "3": 24,
+  "4": 20,
+  "5": 18,
+  "7": 12,
+  "8": 8
+ },
+ "hips": [
+  1,
+  1,
+  0.791
+ ],
+ "root_scale": 0.791,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x3a": {
+   "anim": "I0",
+   "speed": 0.81,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  },
+  "0x2e": {
+   "anim": "F0",
+   "speed": 1.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  },
+  "0x32": {
+   "anim": "H0",
+   "speed": 1.06,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 178
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ],
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

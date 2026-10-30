@@ -1,0 +1,26 @@
+From fef8361d82c1f8b5ad5a68f5ac13ebaac50d833d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 18:00:24 +0000
+Subject: [PATCH] Fix: REDUCE_MERIT subtracts the value (it set merit to
+ -value, so it always ended at 0); no original script uses it
+
+---
+ src/main/script_interp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index e9ae8708..01da6528 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1130,7 +1130,7 @@ void scriptInstruction28to3F(op)
+ 		break;
+ 	case SCRIPT_OP_REDUCE_MERIT:
+ 		skipOneReadOneUShort(&value);
+-		MERIT = -value;
++		MERIT -= value; /* MOD (fix): was MERIT = -value, which always ended at 0 */
+ 		if (MERIT < 0) {
+ 			MERIT = 0;
+ 		}
+-- 
+2.53.0
+

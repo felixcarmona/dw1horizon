@@ -1,0 +1,25 @@
+From 02580cf8dd5aa37b04d6593b488423d7defbe725 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 12:38:22 +0000
+Subject: [PATCH] Keep the tree legend clear of the wider requirement card
+
+---
+ src/main/game_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3557c371..4573aced 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4431,7 +4431,7 @@ void renderEvoChartView(void)
+ #define CHART_CARD_W		128
+ #define CHART_CARD_H		184
+ #define CHART_CARD_SHIFT	139	/* the level and name move right, under the "to" column */
+-#define CHART_CARD_TREE_SHIFT	7	/* and the "Tree" label clears the card */
++#define CHART_CARD_TREE_SHIFT	21	/* and the "Tree" label clears the card */
+ #define CHART_LIT_EDGE		0x50be28 /* the lines of a met evolution, BGR */
+ #define CHART_LIT_CORE		0xb4ffaa
+ #define CHART_DIM_LINE		0x6a5c48
+-- 
+2.55.0
+

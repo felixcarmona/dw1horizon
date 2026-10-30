@@ -1,0 +1,31 @@
+From e95c9fbb870bc01b83cc1b5633eab56399f3ee62 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 17:04:34 +0000
+Subject: [PATCH] Patch 0220 (original bug): the Status page's HAPPINESS label
+ drawn whole: the English art in SYSTEM_W.TIM is 41 px (u 214..254) and the
+ original drew u 212..247, a stray mark at u 212 showing as a comma before the
+ H and the last S cut off; now u 214 width 41 at x -127. English build only
+ (the Spanish FELICIDAD has its own rect). 0 bytes of heap
+
+---
+ src/main/game_menu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 552a2ce5..bbda6247 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -756,7 +756,9 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+ 	{ 0xffef, 0x0031, 0x0b, 0x0b, 0xb4, 0x3a },
+ 	{ 0xffef, 0x0040, 0x0b, 0x0b, 0xbf, 0x3a },
+ 	{ 0xffef, 0x004f, 0x0a, 0x0b, 0xca, 0x3a },
+-	{ 0xff82, 0x0031, 0x24, 0x0c, 0xd4, 0x3a },
++	/* MOD (original bug): HAPPINESS is 41 px in SYSTEM_W.TIM (u 214..254); the original drew u 212..247 at -126: a
++	   stray mark at u 212 before the H and the last S cut off */
++	{ 0xff81, 0x0031, 0x29, 0x0c, 0xd6, 0x3a },
+ 	{ 0xfffc, 0x0040, 0x24, 0x0c, 0xd4, 0x46 },
+ 	{ 0xfffc, 0x004f, 0x24, 0x0c, 0xd4, 0x52 },
+ 	{ 0xff76, 0x004f, 0x09, 0x0b, 0x2c, 0x74 },
+-- 
+2.55.0
+

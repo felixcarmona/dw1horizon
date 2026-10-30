@@ -1,0 +1,218 @@
+{
+  "screen": 309,
+  "art": "drowned-shore",
+  "review": "SAM silhouettes of hull and crossed mast, plus the thin raised bowsprit with its own ground-depth contact. Exclude beach and shadows; retain the existing solid wreck footprint and open beach circuit.",
+  "pieces": [
+    {
+      "name": "wreck-hull",
+      "png": "309-wreck-hull.png",
+      "at": [
+        95,
+        166
+      ],
+      "depth": null,
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/drowned-shore-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "box": [
+          116,
+          158,
+          568,
+          404
+        ],
+        "positive": [
+          [
+            162,
+            373
+          ],
+          [
+            314,
+            320
+          ],
+          [
+            453,
+            238
+          ],
+          [
+            521,
+            207
+          ],
+          [
+            366,
+            284
+          ]
+        ],
+        "negative": [
+          [
+            276,
+            213
+          ],
+          [
+            419,
+            161
+          ],
+          [
+            438,
+            368
+          ],
+          [
+            178,
+            405
+          ]
+        ],
+        "score": 0.9850314855575562,
+        "fill_holes": true
+      }
+    },
+    {
+      "name": "wreck-mast",
+      "png": "309-wreck-mast.png",
+      "at": [
+        79,
+        175
+      ],
+      "depth": [
+        175,
+        299
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/drowned-shore-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "box": [
+          70,
+          164,
+          284,
+          328
+        ],
+        "positive": [
+          [
+            121,
+            204
+          ],
+          [
+            194,
+            259
+          ],
+          [
+            157,
+            246
+          ],
+          [
+            247,
+            293
+          ]
+        ],
+        "negative": [
+          [
+            170,
+            203
+          ],
+          [
+            120,
+            244
+          ],
+          [
+            213,
+            220
+          ],
+          [
+            279,
+            311
+          ]
+        ],
+        "score": 0.9046624898910522,
+        "largest_component": true
+      }
+    },
+    {
+      "name": "wreck-bowsprit",
+      "png": "309-wreck-bowsprit.png",
+      "at": [
+        3,
+        349
+      ],
+      "depth": [
+        95,
+        410
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/drowned-shore-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "box": [
+          2,
+          339,
+          205,
+          403
+        ],
+        "positive": [
+          [
+            31,
+            392
+          ],
+          [
+            84,
+            380
+          ],
+          [
+            126,
+            369
+          ],
+          [
+            169,
+            357
+          ]
+        ],
+        "negative": [
+          [
+            46,
+            381
+          ],
+          [
+            65,
+            398
+          ],
+          [
+            102,
+            405
+          ],
+          [
+            165,
+            342
+          ],
+          [
+            139,
+            359
+          ],
+          [
+            189,
+            369
+          ]
+        ],
+        "score": 0.8969455361366272
+      }
+    }
+  ],
+  "collision": [],
+  "depth_planes": {
+    "width": 64,
+    "height": 12
+  }
+}

@@ -1,0 +1,74 @@
+// Readable form of script 61 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 61 {
+    // the section table, in the order of the original header
+    sections 254, 81, 82, 52;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Medicine"), -503, 0, -2215, 3072, 656);
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 336, 1300);
+        warp_to(62, 0, 255);
+    }
+
+    on use(2) replace {    // section 82
+        if (!mansion_door_unlocked.s53_s63) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s061.sec82.u0"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s061.sec82.u1"));
+            sound(8, 3);
+            say(tamer, text("s061.sec82.u2"));
+            mansion_door_unlocked.s53_s63 = true;
+        }
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 1700, 226);
+        warp_to(53, 2, 255);
+    }
+
+    on step(1) replace {    // section 52
+        if (!mansion_trapdoor_fallen) {
+            animate(tamer, 18);
+            animate(partner, 43);
+            wait(1s);
+            animate(partner, 44);
+            damage_percent = 30;
+            deal_damage(damage_percent);
+            engine.arg = 253;
+            call_routine(routine("loop_once"));
+            say(tamer, text("s061.sec52.u0"));
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s061.sec52.u1"));
+            animate(tamer, anim.idle);
+            walk(tamer, 150, -340, camera: true);
+            await tamer;
+            entity_set_rotation(tamer, 1260);
+            wait(10);
+            entity_set_rotation(tamer, 2796);
+            wait(10);
+            face(tamer, partner);
+            say(tamer, text("s061.sec52.u2"));
+            mansion_trapdoor_fallen = true;
+            return;
+        }
+        say(tamer, text("s061.sec52.u3"));
+        return;
+    }
+}

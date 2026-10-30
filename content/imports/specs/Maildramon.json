@@ -1,0 +1,122 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M334MLDR",
+ "type": 324,
+ "name": "Maildramon",
+ "source": {
+  "type": 36,
+  "mmd": "extracted/CHDAT/MMD1/CENT.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 16,
+  "3": 20,
+  "4": 21,
+  "5": 22,
+  "7": 17,
+  "8": 18,
+  "11": 24,
+  "12": 25,
+  "13": 26,
+  "15": 10,
+  "16": 3,
+  "17": 5,
+  "19": 4,
+  "20": 7,
+  "21": 11,
+  "22": 12,
+  "24": 6,
+  "25": 9,
+  "26": 13,
+  "27": 14,
+  "28": 15
+ },
+ "hips": [
+  1,
+  1,
+  1.158
+ ],
+ "root_scale": 1.158,
+ "tol": 14,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.07
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.07
+  },
+  "0x38": {
+   "anim": "anim_38",
+   "start": 1,
+   "end": 97,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x2e": {
+   "anim": "anim_12",
+   "start": 17,
+   "end": 64,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x32": {
+   "anim": "anim_18",
+   "start": 0,
+   "end": 50,
+   "speed": 0.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "scale": 0.051889,
+ "hub_roots": true,
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

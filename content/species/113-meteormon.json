@@ -1,0 +1,51 @@
+{
+  "id": 113,
+  "name": "Meteormon",
+  "level": "ultimate",
+  "vanilla_as": 12,
+  "attribute": "data",
+  "specialties": ["fire", "battle", null],
+  "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire", "Heat Laser",
+                 "Red Inferno", "Prominence Beam", "Fireball"],
+  "drop": {"item": "HP Chip", "percent": 100},
+  "model": {"name": "INSE", "bones": 22, "file": "build/models/INSE-partner.MMD", "radius": 160, "height": 400},
+  "voice": 58,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 3400, "mp": 2800, "off": 400, "def": 210, "speed": 220, "brain": 150, "bits": 2800},
+  "partner": {
+    "voice": 7,
+    "hunger_hours": [2, 6, 10, 14, 18, 22],
+    "energy_max": 80,
+    "energy_fed": 53,
+    "energy_per_hour": 12,
+    "poop_timer_10min": 36,
+    "poop_size": 13,
+    "favorite_food": "Digicatfish",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 0,
+    "training_type": "hp-defense",
+    "birth_weight": 50,
+    "status_screen_position": [-273, 424, -364],
+    "item_distance": 15,
+    "training": {"animation": 48, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": 400,
+      "mp": 300,
+      "offense": 450,
+      "defense": 450,
+      "speed": -1,
+      "brain": -1,
+      "care": 5,
+      "weight": 50,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": 50,
+      "techs": -1,
+      "flags": 16
+    },
+    "gains": {"hp": 5500, "mp": 4500, "offense": 650, "defense": 550, "speed": 350, "brains": 400}
+  }
+}

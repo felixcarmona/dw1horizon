@@ -1,0 +1,137 @@
+// Readable form of script 173 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 173 {
+    npc centarumon = 5;
+    npc coelamon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 51;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(centarumon) replace {    // section 5
+        jump_to_file(216, 51);
+    }
+
+    on talk(coelamon) replace {    // section 6
+        store_random(random_roll, 3);
+        if (random_roll == 0) {
+            say(coelamon, text("s173.sec6.u0"));
+            return;
+        }
+        if (random_roll == 1) {
+            say(coelamon, text("s173.sec6.u1"));
+            return;
+        }
+        if (random_roll == 2) {
+            say(coelamon, text("s173.sec6.u2"));
+            return;
+        }
+        if (random_roll == 3) {
+            say(coelamon, text("s173.sec6.u3"));
+            return;
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 1909, 860);
+        piximon_in_item_shop = false;
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(192, 5, 255);
+                        return;
+                    }
+                    warp_to(191, 5, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(193, 5, 255);
+                    return;
+                }
+                warp_to(190, 5, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(195, 5, 255);
+                    return;
+                }
+                warp_to(194, 5, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(196, 5, 255);
+                return;
+            }
+            warp_to(189, 5, 255);
+            return;
+        }
+        if (is_recruited(species("Betamon")) || is_recruited(species("Coelamon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(184, 5, 255);
+                        return;
+                    }
+                    warp_to(183, 5, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(185, 5, 255);
+                    return;
+                }
+                warp_to(182, 5, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(187, 5, 255);
+                    return;
+                }
+                warp_to(186, 5, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(188, 5, 255);
+                return;
+            }
+            warp_to(181, 5, 255);
+            return;
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(199, 5, 255);
+                    return;
+                }
+                warp_to(198, 5, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(200, 5, 255);
+                return;
+            }
+            warp_to(197, 5, 255);
+            return;
+        }
+        if (is_recruited(species("Centarumon"))) {
+            if (is_recruited(species("Greymon"))) {
+                warp_to(202, 5, 255);
+                return;
+            }
+            warp_to(201, 5, 255);
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            warp_to(203, 5, 255);
+            return;
+        }
+        warp_to(180, 5, 255);
+        return;
+    }
+}

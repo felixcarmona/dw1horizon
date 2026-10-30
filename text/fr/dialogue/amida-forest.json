@@ -1,0 +1,199 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Ça va, {color 10}{partner}{color 1} ?!",
+   "Rentrons pour le moment..."
+  ]
+ ],
+ "s018.sec10.u1": [
+  [
+   "Oups ! Je dois soigner",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intrus confirmé..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intrus confirmé... Intrus",
+   "confirmé..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intrus confirmé... Intrus",
+   "confirmé... Préparation du",
+   "tir..."
+  ]
+ ],
+ "s018.sec68.u0": [
+  [
+   "Traverser toute cette forêt...",
+   "Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne mon",
+   "impolitesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par simple caprice.",
+   "Désormais, je compte t'apporter",
+   "mon aide."
+  ]
+ ],
+ "s018.sec68.u1": [
+  [
+   "Tu as traversé toute cette",
+   "forêt... Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne ma",
+   "rudesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par caprice.",
+   "Désormais, je compte t'aider."
+  ]
+ ],
+ "s018.sec68.u2": [
+  [
+   "À présent, continue. Je",
+   "t'attendrai en ville."
+  ]
+ ],
+ "s018.sec68.u3": "Centarumon a rejoint la ville !",
+ "s018.sec68.u4": [
+  [
+   "{color 10}{partner}{color 1}, on commence à",
+   "être célèbres, hé hé !"
+  ]
+ ],
+ "s018.sec68.u5": [
+  [
+   "Continuons comme ça !"
+  ]
+ ],
+ "s018.sec68.u6": [
+  [
+   "Raté !"
+  ]
+ ],
+ "s018.sec69.u0": [
+  [
+   "Traverser toute cette forêt...",
+   "Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne mon",
+   "impolitesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par simple caprice.",
+   "Désormais, je compte t'apporter",
+   "mon aide."
+  ]
+ ],
+ "s018.sec69.u1": [
+  [
+   "Tu as traversé toute cette",
+   "forêt... Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne ma",
+   "rudesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par caprice.",
+   "Désormais, je compte t'aider."
+  ]
+ ],
+ "s018.sec69.u2": [
+  [
+   "À présent, continue. Je",
+   "t'attendrai en ville."
+  ]
+ ],
+ "s018.sec69.u3": "Centarumon a rejoint la ville !",
+ "s018.sec69.u4": [
+  [
+   "{color 10}{partner}{color 1}, on commence à",
+   "être célèbres, hé hé !"
+  ]
+ ],
+ "s018.sec69.u5": [
+  [
+   "Continuons comme ça !"
+  ]
+ ],
+ "s018.sec69.u6": [
+  [
+   "Raté !"
+  ]
+ ],
+ "s018.sec70.u0": [
+  [
+   "Traverser toute cette forêt...",
+   "Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne mon",
+   "impolitesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par simple caprice.",
+   "Désormais, je compte t'apporter",
+   "mon aide."
+  ]
+ ],
+ "s018.sec70.u1": [
+  [
+   "Tu as traversé toute cette",
+   "forêt... Je dois dire que tu es",
+   "impressionnant. Je suis"
+  ],
+  [
+   "Centarumon. Pardonne ma",
+   "rudesse jusqu'ici. Je suis",
+   "désolé. Je ne t'ai pas mis à"
+  ],
+  [
+   "l'épreuve par caprice.",
+   "Désormais, je compte t'aider."
+  ]
+ ],
+ "s018.sec70.u2": [
+  [
+   "À présent, continue. Je",
+   "t'attendrai en ville."
+  ]
+ ],
+ "s018.sec70.u3": "Centarumon a rejoint la ville !",
+ "s018.sec70.u4": [
+  [
+   "{color 10}{partner}{color 1}, on commence à",
+   "être célèbres, hé hé !"
+  ]
+ ],
+ "s018.sec70.u5": [
+  [
+   "Continuons comme ça !"
+  ]
+ ],
+ "s018.sec70.u6": [
+  [
+   "Raté !"
+  ]
+ ]
+}

@@ -1,0 +1,39 @@
+From ff29350ac23b0760f0a8bbca5592c31ec7898cd0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 23:58:19 +0000
+Subject: [PATCH] Patch 0191: a map's .MAP follows MAP SIGNS like its .TFS: the
+ sprites drawn over a sign (the pieces of the background that cover the
+ characters: the reception cards, the Beetle Land desk, the arena's LED
+ sign...) carry its translated pixels too, from the .MAP copies of LANG_FILES
+ (tools/localize/signs.py)
+
+---
+ src/main/mod_options.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 78618d09..337ae61c 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -271,7 +271,8 @@ int32_t modFileOnDisc(char *name)
+ }
+ 
+ /*
+- * MOD (language): a file's copy in the language, and a map background's with its signs translated (the Spanish copy
++ * MOD (language): a file's copy in the language, and a map background's (.TFS, and the .MAP whose sprites cover a sign)
++ * with its signs translated (the Spanish copy
+  * also has them in Spanish; MAP SIGNS ORIGINAL reads the disc's .TFS), from the table tools/build-full.sh writes
+  * (LANG_FILES: the name, its Spanish copy, its copy with English signs); the file itself when the disc has no such copy
+  */
+@@ -290,7 +291,7 @@ char *modLangFile(char *name)
+ 		if (strcmp(name, LANG_FILE_TABLE[i][0])) {
+ 			continue;
+ 		}
+-		tfs = strlen(name) > 4 && !strcmp(name + strlen(name) - 4, ".TFS");
++		tfs = strlen(name) > 4 && (!strcmp(name + strlen(name) - 4, ".TFS") || !strcmp(name + strlen(name) - 4, ".MAP")); /* a background or its sprites */
+ 		if (tfs && !MOD_OPT_SIGNS) {
+ 			return name;
+ 		}
+-- 
+2.53.0
+

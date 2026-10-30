@@ -1,0 +1,61 @@
+{
+  "file": "MAP/MAP10/GKYO02.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "ShogunGekomon",
+      "at": [-200, 2100],
+      "facing": 0,
+      "follow": 1,
+      "range": 800,
+      "charge": 1,
+      "moves": [56, 55, 57, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [-1989, 4037],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Gekomon",
+      "at": [-700, 527],
+      "facing": 3326,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [56, 55, 57, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1455, 2321],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "Gekomon",
+      "at": [889, 437],
+      "facing": 766,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [56, 55, 57, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1455, 2321],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    },
+    {
+      "slot": 3,
+      "species": "Gekomon",
+      "at": [532, -1195],
+      "facing": 766,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [56, 55, 57, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1455, 2321],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

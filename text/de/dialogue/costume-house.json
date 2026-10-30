@@ -1,0 +1,48 @@
+{
+ "s139.sec81.u0": [
+  [
+   "Hm? Dieses Plüschkostüm fühlt",
+   "sich anders an als die anderen.",
+   "Es hat so eine..."
+  ],
+  [
+   "überwältigende Ausstrahlung",
+   "oder so."
+  ]
+ ],
+ "s139.sec81.u1": [
+  [
+   "Oh, hinten ist ein",
+   "Reißverschluss."
+  ]
+ ],
+ "s139.sec81.u2": [
+  [
+   "Was ist los, {color 10}{partner}{color 1}?!"
+  ]
+ ],
+ "s139.sec81.u3": [
+  [
+   "Was? Hä?! Du bist ein anderer",
+   "Digimon geworden? Ist das...",
+   "ein Glück?"
+  ]
+ ],
+ "s139.sec81.u4": [
+  [
+   "{color 10}{partner}{color 1}, willst du",
+   "versuchen, hineinzuschlüpfen?"
+  ]
+ ],
+ "s139.sec81.u5": [
+  [
+   "Oh... das geht nicht. Du bist",
+   "steifer als gedacht,",
+   "{color 10}{partner}{color 1}. Ein weicher,"
+  ],
+  [
+   "schleimiger Körper könnte aber",
+   "hineinpassen..."
+  ]
+ ]
+}

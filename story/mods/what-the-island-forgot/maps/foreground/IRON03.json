@@ -1,0 +1,8 @@
+{
+  "screen": 319,
+  "art": "iron-hills-3",
+  "review": "Lower shelf face covers a reachable rear-edge approach. Other switchback rims have no reachable body overlap at their rear edge. Existing blocked rock faces separate all three path tiers; keep the real ramps as the sole connections. The native silhouette has zero overlap with reachable 100-unit-body positions, even testing bodies up to 70 pixels high. Characters on the upper shelf stand above its face; characters on the lower track sort in front of its ground edge. Keep the rock solid and the end turns connected; no foreground texture is required.",
+  "pieces": [],
+  "collision": [],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/319.json."
+}

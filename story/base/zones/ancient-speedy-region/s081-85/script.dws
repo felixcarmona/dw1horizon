@@ -1,0 +1,32 @@
+// Readable form of script 81 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 81 {
+    npc saberdramon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        saberdramon_fought_this_visit = false;
+    }
+
+    on talk(saberdramon) replace {    // section 5
+        if (!saberdramon_fought_this_visit) {
+            say(saberdramon, text("s081.sec5.u0"));
+            engine.no_escape = true;
+            battle();
+            recruit(species("Saberdramon"));
+            engine.no_escape = false;
+            saberdramon_fought_this_visit = true;
+            walk(saberdramon, -554, -1006);
+            await saberdramon;
+        }
+        say(saberdramon, text("s081.sec5.u1"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        return;
+    }
+}

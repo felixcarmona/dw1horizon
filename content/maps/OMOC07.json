@@ -1,0 +1,47 @@
+{
+  "file": "MAP/MAP11/OMOC07.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "ClearAgumon",
+      "at": [1217, 55],
+      "facing": 1024,
+      "follow": 12,
+      "range": 500,
+      "charge": 1,
+      "moves": [47, 48, 50, 51],
+      "prios": [30, 20, 20, 30],
+      "flee": [-80, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "ClearAgumon",
+      "at": [-44, 21],
+      "facing": 0,
+      "follow": 12,
+      "range": 500,
+      "charge": 1,
+      "moves": [47, 48, 50, 51],
+      "prios": [30, 20, 20, 30],
+      "flee": [-80, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "ClearAgumon",
+      "at": [-1283, 60],
+      "facing": 3072,
+      "follow": 12,
+      "range": 700,
+      "charge": 1,
+      "moves": [47, 48, 50, 51],
+      "prios": [30, 20, 20, 30],
+      "flee": [-80, -1400],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

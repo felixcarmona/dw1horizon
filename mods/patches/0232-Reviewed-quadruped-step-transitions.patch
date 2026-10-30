@@ -1,0 +1,84 @@
+From 28f7fee207b7db4e275591ff7ec230b0f586a83b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 25 Oct 2026 00:51:16 +0000
+Subject: [PATCH] Allow reviewed quadruped navigation changes at completed
+ steps
+
+Scope native 73-frame idle/walk handling to Ankylomon and Lighdramon. Preserve the full acting span for stationary idle and steady following; permit pending walk changes after each completed 24-tick step, excluding entry frame 2. Needs gesture handling remains unchanged.
+
+Validated actual consumer code under ASan/UBSan, MIPS partner compilation, EN/ES 60FPS builds, exact 124 balance tables, unchanged model archive and matching-disc exterior routes for both species.
+---
+ src/main/partner.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 2525c5d1..b276ab9c 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -820,6 +820,26 @@ void partnerTickDying2(void)
+ 	}
+ }
+ 
++/* These reviewed native idles keep their complete72-tick performance while
++ * stationary, but may yield to a slow-follow request at any field tick. */
++static int32_t partnerReviewedIdleMayWalk(EntityAnim *anim)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	return (type == 189 || type == 201) && anim->animId == 0 &&
++	       anim->frameCount == 73;
++}
++
++/* Reviewed normal walks: three24-tick steps inside one72-tick acting span.
++ * Switch only for a pending navigation/needs change, not every step, so the
++ * complete native head/tail acting continues during ordinary slow following. */
++static int32_t partnerReviewedWalkCycleEnd(EntityAnim *anim)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	return (type == 189 || type == 201) && anim->animId == 2 &&
++	       anim->frameCount == 73 && anim->loopCount != 0 &&
++	       anim->animFrame >= 26 && (anim->animFrame - 2) % 24 == 0;
++}
++
+ void partnerTickWalking(void)
+ {
+ 	EntityAnim *anim;
+@@ -837,7 +857,7 @@ void partnerTickWalking(void)
+ 			if (anim->loopCount == 0xff) {
+ 				anim->loopCount = 1;
+ 			}
+-			if (anim->loopCount == 0) {
++			if (anim->loopCount == 0 || partnerReviewedWalkCycleEnd(anim)) {
+ 				PARTNER_ANIMATION = 4;
+ 			}
+ 		}
+@@ -861,7 +881,7 @@ void partnerTickWalking(void)
+ #endif
+ 	}
+ 	else if (closeness == 1) {
+-		if (anim->animId == 4) {
++		if (anim->animId == 4 || partnerReviewedIdleMayWalk(anim)) {
+ 			setPartnerSlowWalking();
+ 		}
+ 		else if ((anim->animId != 2) && (anim->animId != 3)) {
+@@ -872,7 +892,8 @@ void partnerTickWalking(void)
+ 				setPartnerSlowWalking();
+ 			}
+ 		}
+-		else if (anim->loopCount == 0) {
++		else if (anim->loopCount == 0 ||
++		         (partnerReviewedWalkCycleEnd(anim) && (PARTNER_PARA.condition & 0x63))) {
+ 			setPartnerSlowWalking();
+ 		}
+ 
+@@ -899,7 +920,7 @@ void partnerTickWalking(void)
+ 			if (anim->loopCount == 0xff) {
+ 				anim->loopCount = 1;
+ 			}
+-			if ((anim->loopCount == 0) || (collision == 0)) {
++			if ((anim->loopCount == 0) || (collision == 0) || partnerReviewedWalkCycleEnd(anim)) {
+ 				EMOTION_ANIM_TIMEOUT = randomLimit(5) + 1;
+ 				setPartnerIdle();
+ #if VERSION_IS(JP)
+-- 
+2.55.0
+

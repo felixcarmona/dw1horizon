@@ -1,0 +1,113 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+maphead {
+    section(1238) replace {    // section 1238 (literal)
+        goto l1;
+        goto l2;
+        goto l3;
+        goto l4;
+        goto l5;
+        goto l6;
+        goto l7;
+        goto l8;
+        goto l9;
+        goto l10;
+        goto l11;
+        goto l12;
+        goto l13;
+        goto l14;
+        goto l15;
+        goto l16;
+        goto l17;
+        goto l18;
+        goto l19;
+        goto l20;
+        goto l21;
+        goto l22;
+        goto l23;
+        goto l24;
+        goto l25;
+        goto l26;
+        goto l27;
+        goto l28;
+        goto l29;
+        goto l30;
+        goto l31;
+        goto l32;
+        goto l33;
+        goto l34;
+        goto l35;
+        l1:
+        show_textbox(text("m1238.u0"));
+        l2:
+        show_textbox(text("m1238.u1"));
+        l3:
+        show_textbox(text("m1238.u2"));
+        l4:
+        show_textbox(text("m1238.u3"));
+        l5:
+        show_textbox(text("m1238.u4"));
+        l6:
+        show_textbox(text("m1238.u5"));
+        l7:
+        show_textbox(text("m1238.u6"));
+        l8:
+        show_textbox(text("m1238.u7"));
+        l9:
+        show_textbox(text("m1238.u8"));
+        l10:
+        show_textbox(text("m1238.u9"));
+        l11:
+        show_textbox(text("m1238.u10"));
+        l12:
+        show_textbox(text("m1238.u11"));
+        l13:
+        show_textbox(text("m1238.u12"));
+        l14:
+        show_textbox(text("m1238.u13"));
+        l15:
+        show_textbox(text("m1238.u14"));
+        l16:
+        show_textbox(text("m1238.u15"));
+        l17:
+        show_textbox(text("m1238.u16"));
+        l18:
+        show_textbox(text("m1238.u17"));
+        l19:
+        show_textbox(text("m1238.u18"));
+        l20:
+        show_textbox(text("m1238.u19"));
+        l21:
+        show_textbox(text("m1238.u20"));
+        l22:
+        show_textbox(text("m1238.u21"));
+        l23:
+        show_textbox(text("m1238.u22"));
+        l24:
+        show_textbox(text("m1238.u23"));
+        l25:
+        show_textbox(text("m1238.u24"));
+        l26:
+        show_textbox(text("m1238.u25"));
+        l27:
+        show_textbox(text("m1238.u26"));
+        l28:
+        show_textbox(text("m1238.u27"));
+        l29:
+        show_textbox(text("m1238.u28"));
+        l30:
+        show_textbox(text("m1238.u29"));
+        l31:
+        show_textbox(text("m1238.u30"));
+        l32:
+        show_textbox(text("m1238.u31"));
+        l33:
+        show_textbox(text("m1238.u32"));
+        l34:
+        show_textbox(text("name.ask_partner"));
+        l35:
+        show_textbox(text("name.ask_partner_choice"));
+        end_section();
+    }
+}

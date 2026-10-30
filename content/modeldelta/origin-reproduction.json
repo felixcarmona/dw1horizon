@@ -1,0 +1,2887 @@
+{
+  "format": 1,
+  "legacy_equal": 343,
+  "rebased": 17,
+  "files": [
+    {
+      "path": "build/dcb/Veemon.MMD",
+      "sha": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
+      "size": 98742,
+      "actual": "60b54f3da2e99f2805060cbd040f954e63e87d701570dbe06d298579033236c2",
+      "actual_size": 98742,
+      "status": "equal"
+    },
+    {
+      "path": "build/dcb/Veemon.TIM",
+      "sha": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+      "size": 18432,
+      "actual": "80fef9316ae20ba45cf13a3cb1e5652cd60dd7706bc54c89993332a5932b5469",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/dcb/Puppetmon.MMD",
+      "sha": "52aea97b9f4878b1eeffea3870928114bf11ac45892f83feace166e7143b7e4e",
+      "size": 100268,
+      "actual": "52aea97b9f4878b1eeffea3870928114bf11ac45892f83feace166e7143b7e4e",
+      "actual_size": 100268,
+      "status": "equal"
+    },
+    {
+      "path": "build/dcb/Puppetmon.TIM",
+      "sha": "7a5d589cdddc40a7408c2972efd748207c0406b5d653b1a1359122269edb06ff",
+      "size": 18432,
+      "actual": "7a5d589cdddc40a7408c2972efd748207c0406b5d653b1a1359122269edb06ff",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/dw2/Kimeramon.MMD",
+      "sha": "e9319f85e5f6a4e949c322f0b81b4825730b637e752ceb9b7724a2c343968451",
+      "size": 99656,
+      "actual": "e9319f85e5f6a4e949c322f0b81b4825730b637e752ceb9b7724a2c343968451",
+      "actual_size": 99656,
+      "status": "equal"
+    },
+    {
+      "path": "build/dw2/Kimeramon.TIM",
+      "sha": "dd55db1425fbeaf8b1bab35cc7cebc01ba3c6fced883b7cc6197c3b308087b4e",
+      "size": 18432,
+      "actual": "dd55db1425fbeaf8b1bab35cc7cebc01ba3c6fced883b7cc6197c3b308087b4e",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Wormmon.MMD",
+      "sha": "dae563ff65608ef61219b34cf3a615e8c5eed03a0935b7e0f28f23f96be2c5d0",
+      "size": 98922,
+      "actual": "dae563ff65608ef61219b34cf3a615e8c5eed03a0935b7e0f28f23f96be2c5d0",
+      "actual_size": 98922,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Wormmon.TIM",
+      "sha": "d10584888b6c175d3d67788505c091a6ebaac051bb54562f13960e156d6f440c",
+      "size": 18432,
+      "actual": "d10584888b6c175d3d67788505c091a6ebaac051bb54562f13960e156d6f440c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Hawkmon.MMD",
+      "sha": "9bc284b129ffda8db7eabca64f9e95716a53ec71866d2a75c07f4f1e3cad810a",
+      "size": 100048,
+      "actual": "9bc284b129ffda8db7eabca64f9e95716a53ec71866d2a75c07f4f1e3cad810a",
+      "actual_size": 100048,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Hawkmon.TIM",
+      "sha": "598876f29827f5fc75afd718cc769ff9e2152f61f89a1d34516078974d6cd91c",
+      "size": 18432,
+      "actual": "598876f29827f5fc75afd718cc769ff9e2152f61f89a1d34516078974d6cd91c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Armadillomon.MMD",
+      "sha": "7cd5d5d7a2774c281ddd0b8adf3bd99bb5c224e74e30faa23cc59645ce10bfe4",
+      "size": 88190,
+      "actual": "7cd5d5d7a2774c281ddd0b8adf3bd99bb5c224e74e30faa23cc59645ce10bfe4",
+      "actual_size": 88190,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Armadillomon.TIM",
+      "sha": "e93d0bb69d9ea5b81b7ad8adec234eb9e6625d3330b6540ef5aa252eff078b71",
+      "size": 18432,
+      "actual": "e93d0bb69d9ea5b81b7ad8adec234eb9e6625d3330b6540ef5aa252eff078b71",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Stingmon.MMD",
+      "sha": "8181df21ee3fca6c86630be5ad17f8c32839584f882519455109db1f8ec60515",
+      "size": 99774,
+      "actual": "8181df21ee3fca6c86630be5ad17f8c32839584f882519455109db1f8ec60515",
+      "actual_size": 99774,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Stingmon.TIM",
+      "sha": "94e7eb8d4a8cc16ac64a874532ae045811d21efbfbb53445f5e6d94d5e03ea42",
+      "size": 18432,
+      "actual": "94e7eb8d4a8cc16ac64a874532ae045811d21efbfbb53445f5e6d94d5e03ea42",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Aquilamon.MMD",
+      "sha": "51760ea61bed57b59c24237b38a2b2a171ad637c83ab86beb0272d7a932468ec",
+      "size": 96076,
+      "actual": "51760ea61bed57b59c24237b38a2b2a171ad637c83ab86beb0272d7a932468ec",
+      "actual_size": 96076,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Aquilamon.TIM",
+      "sha": "6de2111e3f66f90937695a3ab1ae89ac2e573090b90101c1088c9522a640043d",
+      "size": 18432,
+      "actual": "6de2111e3f66f90937695a3ab1ae89ac2e573090b90101c1088c9522a640043d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Ankylomon.MMD",
+      "sha": "bf153fa2ac45e428b2e13996a51d5bf4761d94857e83cb597f7fd9ff203368e0",
+      "size": 93942,
+      "actual": "bf153fa2ac45e428b2e13996a51d5bf4761d94857e83cb597f7fd9ff203368e0",
+      "actual_size": 93942,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Ankylomon.TIM",
+      "sha": "3273485f7793917c621a5dbd12d53c734b3bc32533705344910d050fad01cbdb",
+      "size": 18432,
+      "actual": "3273485f7793917c621a5dbd12d53c734b3bc32533705344910d050fad01cbdb",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Angewomon.MMD",
+      "sha": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
+      "size": 97854,
+      "actual": "75ad113a2b013e1474ab1e3f48dd5d74f347bfcaf9bb423fab8f4b56a32330da",
+      "actual_size": 97854,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Angewomon.TIM",
+      "sha": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+      "size": 18432,
+      "actual": "d0ef52f6ade9b99f020ec2f7221dd382bc8487b8622163eb1ec7771c86690b6c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MetalGarurumon.MMD",
+      "sha": "54fd9aa6ca3963e17703758cc376e15804b50b2f8d9cd32e599adea2740b20ec",
+      "size": 93636,
+      "actual": "54fd9aa6ca3963e17703758cc376e15804b50b2f8d9cd32e599adea2740b20ec",
+      "actual_size": 93636,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/MetalGarurumon.TIM",
+      "sha": "98f762679fe37abac99b42d918155624ca3f938c93e7b6c921d383116773faa3",
+      "size": 18432,
+      "actual": "98f762679fe37abac99b42d918155624ca3f938c93e7b6c921d383116773faa3",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Imperialdramon.MMD",
+      "sha": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd",
+      "size": 98176,
+      "actual": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd",
+      "actual_size": 98176,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch/Imperialdramon.TIM",
+      "sha": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
+      "size": 18432,
+      "actual": "c2ae3d9762790a301180ba4b0212f6068e1e6acaef9e78f6046c1fafe1b9cd2f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Digmon.MMD",
+      "sha": "dd40e30d0d8a43592bb99e756e61ca558e405df09c7c339b5dc7d5ddb13e095c",
+      "size": 99240,
+      "actual": "dd40e30d0d8a43592bb99e756e61ca558e405df09c7c339b5dc7d5ddb13e095c",
+      "actual_size": 99240,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Digmon.TIM",
+      "sha": "394b9f8d36250415fad64d7e9ecfdc50743f1cb9d70ee745270e7a6a76e77dda",
+      "size": 18432,
+      "actual": "394b9f8d36250415fad64d7e9ecfdc50743f1cb9d70ee745270e7a6a76e77dda",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/ExVeemon.MMD",
+      "sha": "a3a12ec8b929f8cb292569ba5ae98952d0dd4480abc6b27407f382a8432b5d0c",
+      "size": 94350,
+      "actual": "a3a12ec8b929f8cb292569ba5ae98952d0dd4480abc6b27407f382a8432b5d0c",
+      "actual_size": 94350,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/ExVeemon.TIM",
+      "sha": "b2e7ccbeb56974a577719bca0a1e52dc33c9e6abc2746050c8455271373d659f",
+      "size": 18432,
+      "actual": "b2e7ccbeb56974a577719bca0a1e52dc33c9e6abc2746050c8455271373d659f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Flamedramon.MMD",
+      "sha": "6b31a5dccbe2c94cdd67f5c183dfed4fdbbba896b72acbc46cb0fa7f2abddbf7",
+      "size": 100220,
+      "actual": "6b31a5dccbe2c94cdd67f5c183dfed4fdbbba896b72acbc46cb0fa7f2abddbf7",
+      "actual_size": 100220,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Flamedramon.TIM",
+      "sha": "d0fe9042f9ac18be4830240da2306f93e125860a98957850d4987701bfce94dc",
+      "size": 18432,
+      "actual": "d0fe9042f9ac18be4830240da2306f93e125860a98957850d4987701bfce94dc",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Halsemon.MMD",
+      "sha": "8d25e550cf8f721842d6ae554baf5fbd25842ad2022f94c5510e7ae4db183042",
+      "size": 99930,
+      "actual": "8d25e550cf8f721842d6ae554baf5fbd25842ad2022f94c5510e7ae4db183042",
+      "actual_size": 99930,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Halsemon.TIM",
+      "sha": "de336df395ce476b4079ac40f277fc8809f4d198b482a7ab2dd15fa9a7316590",
+      "size": 18432,
+      "actual": "de336df395ce476b4079ac40f277fc8809f4d198b482a7ab2dd15fa9a7316590",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Magnamon.MMD",
+      "sha": "4825affc69ff8068149ffcabde4748ed4751fcd8b67a9d7c546f0f5dc0bf717d",
+      "size": 98012,
+      "actual": "4825affc69ff8068149ffcabde4748ed4751fcd8b67a9d7c546f0f5dc0bf717d",
+      "actual_size": 98012,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Magnamon.TIM",
+      "sha": "c262032f155686f73ca040529e80fed140f94055dc92b6c4138efc04c7d25809",
+      "size": 18432,
+      "actual": "c262032f155686f73ca040529e80fed140f94055dc92b6c4138efc04c7d25809",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Nefertimon.MMD",
+      "sha": "fff440024a498ce201c188d67b03f011ad94fd354fb00f760f0e3fa6852cd6de",
+      "size": 96734,
+      "actual": "fff440024a498ce201c188d67b03f011ad94fd354fb00f760f0e3fa6852cd6de",
+      "actual_size": 96734,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Nefertimon.TIM",
+      "sha": "a8238b81ca035033a003eda2ea7bc3c39f49fc0a9d836492edfa1c5203907cb2",
+      "size": 18432,
+      "actual": "a8238b81ca035033a003eda2ea7bc3c39f49fc0a9d836492edfa1c5203907cb2",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Paildramon.MMD",
+      "sha": "0e42c6f1ae43d4bddadb66b659098e646921cb8c83b339b72cfa6322988311ce",
+      "size": 95482,
+      "actual": "0e42c6f1ae43d4bddadb66b659098e646921cb8c83b339b72cfa6322988311ce",
+      "actual_size": 95482,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Paildramon.TIM",
+      "sha": "ac64b2264749bce56923096be504e531682c9d833421eaaa01d041233dec4a6f",
+      "size": 18432,
+      "actual": "ac64b2264749bce56923096be504e531682c9d833421eaaa01d041233dec4a6f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Pegasusmon.MMD",
+      "sha": "a5a1298f31a94f409ebc01d6eae869009ab7ebfe0d2bb2cdf17c574c6cb28fcc",
+      "size": 99718,
+      "actual": "a5a1298f31a94f409ebc01d6eae869009ab7ebfe0d2bb2cdf17c574c6cb28fcc",
+      "actual_size": 99718,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Pegasusmon.TIM",
+      "sha": "38be743dea136f75a918fca5375077a7cd26465d6b1848eecfc796b323419e1c",
+      "size": 18432,
+      "actual": "38be743dea136f75a918fca5375077a7cd26465d6b1848eecfc796b323419e1c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Raidramon.MMD",
+      "sha": "7e867d958b19648be19241e6a2ed27d0dda008da20df4a7ba4aebfb6cbad22c7",
+      "size": 95914,
+      "actual": "7e867d958b19648be19241e6a2ed27d0dda008da20df4a7ba4aebfb6cbad22c7",
+      "actual_size": 95914,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Raidramon.TIM",
+      "sha": "0c068ea1ef6552e5f5685af039b16c1249d0fa2d65338bef9149bb819f076b99",
+      "size": 18432,
+      "actual": "0c068ea1ef6552e5f5685af039b16c1249d0fa2d65338bef9149bb819f076b99",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Submarimon.MMD",
+      "sha": "efa559801d36f01f36b36ae3fc03b54cad4a9d5bc23eadd5fcf0d640c91428ac",
+      "size": 60168,
+      "actual": "efa559801d36f01f36b36ae3fc03b54cad4a9d5bc23eadd5fcf0d640c91428ac",
+      "actual_size": 60168,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Submarimon.TIM",
+      "sha": "dc16757f13a73228f15b61b30220fdc75bee9475ab9d461df39f5d4597aab2f7",
+      "size": 18432,
+      "actual": "dc16757f13a73228f15b61b30220fdc75bee9475ab9d461df39f5d4597aab2f7",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Veedramon.MMD",
+      "sha": "b0826ed3cfc406a2a3df4ef6ffa2a9b4160191895f03e53fe592e09818686e6d",
+      "size": 89444,
+      "actual": "b0826ed3cfc406a2a3df4ef6ffa2a9b4160191895f03e53fe592e09818686e6d",
+      "actual_size": 89444,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch2/Veedramon.TIM",
+      "sha": "7999a822aa717db74db2e1b358c895302912478088e67c67ed0a2ba03de45de5",
+      "size": 18432,
+      "actual": "7999a822aa717db74db2e1b358c895302912478088e67c67ed0a2ba03de45de5",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MegaKabuterimon.MMD",
+      "sha": "69aea2c217f378d9d62738999b66b40494e0fcac620090aa44fe2196f8658e75",
+      "size": 99824,
+      "actual": "69aea2c217f378d9d62738999b66b40494e0fcac620090aa44fe2196f8658e75",
+      "actual_size": 99824,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/MegaKabuterimon.TIM",
+      "sha": "352cd9c412b58d6dde090d86218566c765f99ebc3bee162772d212713c2c3a14",
+      "size": 18432,
+      "actual": "352cd9c412b58d6dde090d86218566c765f99ebc3bee162772d212713c2c3a14",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MagnaAngemon.MMD",
+      "sha": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02",
+      "size": 96252,
+      "actual": "b5fb25768fc0188fb69021ce90f4857913645517e0442ba8f119d8c879756f02",
+      "actual_size": 96252,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/MagnaAngemon.TIM",
+      "sha": "90e8892d2da9c0d8823e22190d3d898dd85536d4c6aa954c132c9e5170373379",
+      "size": 18432,
+      "actual": "90e8892d2da9c0d8823e22190d3d898dd85536d4c6aa954c132c9e5170373379",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Seraphimon.MMD",
+      "sha": "dacb6f4e022667988955c18d817f8c4afa97f9f4cd2662f17eba5d683e70df2f",
+      "size": 96786,
+      "actual": "dacb6f4e022667988955c18d817f8c4afa97f9f4cd2662f17eba5d683e70df2f",
+      "actual_size": 96786,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Seraphimon.TIM",
+      "sha": "8e5d6aeccfb5f7eab0119fd7e46ec44a9f5af67a5449bc986aa806bb3017b571",
+      "size": 18432,
+      "actual": "8e5d6aeccfb5f7eab0119fd7e46ec44a9f5af67a5449bc986aa806bb3017b571",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Togemon.MMD",
+      "sha": "88b8804ef0ec4db68d96901a31f5be02d0fdb40fd8801ebe65f320eddd85fbed",
+      "size": 90278,
+      "actual": "88b8804ef0ec4db68d96901a31f5be02d0fdb40fd8801ebe65f320eddd85fbed",
+      "actual_size": 90278,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Togemon.TIM",
+      "sha": "85455a6f3b1753a2f22ca8469060f6733371203a7e75722b5fba4ff854e42a46",
+      "size": 18432,
+      "actual": "85455a6f3b1753a2f22ca8469060f6733371203a7e75722b5fba4ff854e42a46",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Lillymon.MMD",
+      "sha": "c6fa0db507116d489b573cb7216050abb32560f06f6ab277107faed3f4f79789",
+      "size": 93932,
+      "actual": "c6fa0db507116d489b573cb7216050abb32560f06f6ab277107faed3f4f79789",
+      "actual_size": 93932,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Lillymon.MMD",
+      "sha": "b7d77ee64a948c7072dde6473252ce44ca8017633b637851a215dfaa7b647d7a",
+      "size": 93932,
+      "actual": "b7d77ee64a948c7072dde6473252ce44ca8017633b637851a215dfaa7b647d7a",
+      "actual_size": 93932,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Lillymon.TIM",
+      "sha": "9bb933954061c09853e6033db50ccc94fb53b8b532156e7a7f86a458aea07482",
+      "size": 18432,
+      "actual": "9bb933954061c09853e6033db50ccc94fb53b8b532156e7a7f86a458aea07482",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/GranKuwagamon.MMD",
+      "sha": "416ce610eee01832e783503eb7e1c32819d89a6e0eccf5084211729eb5733dc9",
+      "size": 96098,
+      "actual": "416ce610eee01832e783503eb7e1c32819d89a6e0eccf5084211729eb5733dc9",
+      "actual_size": 96098,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/GranKuwagamon.TIM",
+      "sha": "076484f38cc4e53af1dcaf0cf6ad068f72742407a16290db4d2b500c8285419c",
+      "size": 18432,
+      "actual": "076484f38cc4e53af1dcaf0cf6ad068f72742407a16290db4d2b500c8285419c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MetalSeadramon.MMD",
+      "sha": "3bb98cb693c8eaf7a65999dbd08f1422587a93da6e426754b02a1b67a73684bb",
+      "size": 88864,
+      "actual": "3bb98cb693c8eaf7a65999dbd08f1422587a93da6e426754b02a1b67a73684bb",
+      "actual_size": 88864,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/MetalSeadramon.TIM",
+      "sha": "b80d562fd4c481659e57557e0575b8f2fed84b5e2d72faf874aa1cdcf7ddd7c9",
+      "size": 18432,
+      "actual": "b80d562fd4c481659e57557e0575b8f2fed84b5e2d72faf874aa1cdcf7ddd7c9",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/VenomMyotismon.MMD",
+      "sha": "3308a2dd54cf017dff32e2190a948def19d1afd53047d4703ea44c663bdda814",
+      "size": 96220,
+      "actual": "3308a2dd54cf017dff32e2190a948def19d1afd53047d4703ea44c663bdda814",
+      "actual_size": 96220,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/VenomMyotismon.TIM",
+      "sha": "dfb5a8c86cd8d6272d75604249de3ad9d01a9a615e683c7d3c02f0a4d6848384",
+      "size": 18432,
+      "actual": "dfb5a8c86cd8d6272d75604249de3ad9d01a9a615e683c7d3c02f0a4d6848384",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/AeroVeedramon.MMD",
+      "sha": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
+      "size": 96664,
+      "actual": "bbbf886fecf0d6b46fe46d56f4665b7ad4f11761457e4fd6bf808c4bcb6e9d68",
+      "actual_size": 96664,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/AeroVeedramon.TIM",
+      "sha": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "size": 18432,
+      "actual": "3db55918adae70bc301a981ea6af05463a848f637add1b3e1a5474bebc943fa1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Shakkoumon.MMD",
+      "sha": "ed1df8dbc28b54e25ac6923a5ce272b533fb8fdf8acdb4f87af7ffde7f9046d3",
+      "size": 99014,
+      "actual": "ed1df8dbc28b54e25ac6923a5ce272b533fb8fdf8acdb4f87af7ffde7f9046d3",
+      "actual_size": 99014,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Shakkoumon.TIM",
+      "sha": "f9692b4561572c5914f564fcbbe3b437f163f1de0293ce0b0dd433498093bd6f",
+      "size": 18432,
+      "actual": "f9692b4561572c5914f564fcbbe3b437f163f1de0293ce0b0dd433498093bd6f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Magnadramon.MMD",
+      "sha": "c3c1fffa9a15755bd9152bda0b5da44e968ef3a7c6ac0775a9eda107431abf84",
+      "size": 83362,
+      "actual": "c3c1fffa9a15755bd9152bda0b5da44e968ef3a7c6ac0775a9eda107431abf84",
+      "actual_size": 83362,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Magnadramon.TIM",
+      "sha": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "size": 18432,
+      "actual": "61f32f13ad704e3a62c2776d8df6e94d629dca39b483e8f35b0663e31e9d1e00",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Devidramon.MMD",
+      "sha": "e99f879ca28fc7478f28028d947b6bcd9bb8085993f822d7bbea6c7c896bb5a9",
+      "size": 96714,
+      "actual": "e99f879ca28fc7478f28028d947b6bcd9bb8085993f822d7bbea6c7c896bb5a9",
+      "actual_size": 96714,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch3/Devidramon.TIM",
+      "sha": "d10a0269bdc4d5361ca580f32f055153dfefd593234c4c2f1168e2c883a864d2",
+      "size": 18432,
+      "actual": "d10a0269bdc4d5361ca580f32f055153dfefd593234c4c2f1168e2c883a864d2",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Gomamon.MMD",
+      "sha": "ea995bca34b74a395f0af7b8200a8f8325085d42afb837da165898dfbffb4572",
+      "size": 87674,
+      "actual": "ea995bca34b74a395f0af7b8200a8f8325085d42afb837da165898dfbffb4572",
+      "actual_size": 87674,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Gomamon.TIM",
+      "sha": "79eab61b971b9b38832d9a0fa983c7784fee35b40c3857296122b6df8b9361f7",
+      "size": 18432,
+      "actual": "79eab61b971b9b38832d9a0fa983c7784fee35b40c3857296122b6df8b9361f7",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Ikkakumon.MMD",
+      "sha": "64fc48e61447eafbd5b2790dc4c1a83a6ad9e9cd47af6493e8d98a8d95016a8c",
+      "size": 87038,
+      "actual": "64fc48e61447eafbd5b2790dc4c1a83a6ad9e9cd47af6493e8d98a8d95016a8c",
+      "actual_size": 87038,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Ikkakumon.TIM",
+      "sha": "cb18b4042a9ad35c28c787210360b0b2ef74a036f02440c2999a770190facd67",
+      "size": 18432,
+      "actual": "cb18b4042a9ad35c28c787210360b0b2ef74a036f02440c2999a770190facd67",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Zudomon.MMD",
+      "sha": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89",
+      "size": 98872,
+      "actual": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89",
+      "actual_size": 98872,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Zudomon.TIM",
+      "sha": "93b465599e11aeca94a5ebd07d530704605dae30f80ddb7f797dea098d3db804",
+      "size": 18432,
+      "actual": "93b465599e11aeca94a5ebd07d530704605dae30f80ddb7f797dea098d3db804",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Vikemon.MMD",
+      "sha": "dfa097cce958773538c5e1d99a71ad1f5d8ef9b316dffe662b762ece1ea2b8cf",
+      "size": 99616,
+      "actual": "dfa097cce958773538c5e1d99a71ad1f5d8ef9b316dffe662b762ece1ea2b8cf",
+      "actual_size": 99616,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Vikemon.TIM",
+      "sha": "08a311ce97dba77d1542585c3f804c0ffd63ced9ed1f5035f29b91cdb0d2e1f8",
+      "size": 18432,
+      "actual": "08a311ce97dba77d1542585c3f804c0ffd63ced9ed1f5035f29b91cdb0d2e1f8",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Salamon.MMD",
+      "sha": "7e801ba212d8a7fcd49219c73e57be00898ae26b98286aee1064b7bca2b152e0",
+      "size": 96376,
+      "actual": "7e801ba212d8a7fcd49219c73e57be00898ae26b98286aee1064b7bca2b152e0",
+      "actual_size": 96376,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Salamon.TIM",
+      "sha": "8a3437cf7a667c38631c8ff9fa65560ee35a30be0317db7847f9a6d58b1d99ed",
+      "size": 18432,
+      "actual": "8a3437cf7a667c38631c8ff9fa65560ee35a30be0317db7847f9a6d58b1d99ed",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/BlackGatomon.MMD",
+      "sha": "de8234fd48227ce6911b4efb583ae7997d83eb49efd10587689b0394e33e3a9e",
+      "size": 98616,
+      "actual": "de8234fd48227ce6911b4efb583ae7997d83eb49efd10587689b0394e33e3a9e",
+      "actual_size": 98616,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/BlackGatomon.TIM",
+      "sha": "d64e0afe7698201d5e9ac140343cfefec4e86e4c71aee4124dd45422f3c3aa90",
+      "size": 18432,
+      "actual": "d64e0afe7698201d5e9ac140343cfefec4e86e4c71aee4124dd45422f3c3aa90",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/LadyDevimon.MMD",
+      "sha": "845783739b48b4a129b63204df046acf35b046cf4f7d049b58411752d52cba26",
+      "size": 96790,
+      "actual": "845783739b48b4a129b63204df046acf35b046cf4f7d049b58411752d52cba26",
+      "actual_size": 96790,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/LadyDevimon.MMD",
+      "sha": "ad514973087e35e6dc4ba9d73741857e7922fe3e783cc946042142090e02cc56",
+      "size": 96790,
+      "actual": "ad514973087e35e6dc4ba9d73741857e7922fe3e783cc946042142090e02cc56",
+      "actual_size": 96790,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/LadyDevimon.TIM",
+      "sha": "71805e4d8234692526822c536bb1176a367f8c4feae4b3abe59eef7b6756bc01",
+      "size": 18432,
+      "actual": "71805e4d8234692526822c536bb1176a367f8c4feae4b3abe59eef7b6756bc01",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/RealMetalGreymon.MMD",
+      "sha": "41aa710ca8bfbe3df9988b5507d7387c93e0ea9b355f148373fce0578ce53ae0",
+      "size": 98930,
+      "actual": "41aa710ca8bfbe3df9988b5507d7387c93e0ea9b355f148373fce0578ce53ae0",
+      "actual_size": 98930,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/RealMetalGreymon.TIM",
+      "sha": "bd5f535392a2185594ef947126f0b96b0c9095137a3862a10f08f7ce87e48742",
+      "size": 18432,
+      "actual": "bd5f535392a2185594ef947126f0b96b0c9095137a3862a10f08f7ce87e48742",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Shurimon.MMD",
+      "sha": "c645989316d8c56253a0734638bfe75549108d47765ddb9731ce0192b2df5056",
+      "size": 97362,
+      "actual": "c645989316d8c56253a0734638bfe75549108d47765ddb9731ce0192b2df5056",
+      "actual_size": 97362,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Shurimon.TIM",
+      "sha": "a5d79f5dabc14e5d8d7c229ab8a6241364b66d25cce00c32426fd8e3c7aeb5c0",
+      "size": 18432,
+      "actual": "a5d79f5dabc14e5d8d7c229ab8a6241364b66d25cce00c32426fd8e3c7aeb5c0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Sylphymon.MMD",
+      "sha": "26e3359d16f1e61d72cf2a44577cdec2d759f4d54e9f1a9d1285ee29b259da07",
+      "size": 88980,
+      "actual": "26e3359d16f1e61d72cf2a44577cdec2d759f4d54e9f1a9d1285ee29b259da07",
+      "actual_size": 88980,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Sylphymon.TIM",
+      "sha": "7445c625b62d8e78561ca55c25edb0591ac7323d4742f30963554921d3ef82e0",
+      "size": 18432,
+      "actual": "7445c625b62d8e78561ca55c25edb0591ac7323d4742f30963554921d3ef82e0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Apemon.MMD",
+      "sha": "14253e6f62fb4b04c32fed2697da9b65a30f207e5bb99f163811d207cfb0e625",
+      "size": 87450,
+      "actual": "14253e6f62fb4b04c32fed2697da9b65a30f207e5bb99f163811d207cfb0e625",
+      "actual_size": 87450,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Apemon.TIM",
+      "sha": "022eeb29c9ae9bb23883fedb732dd9aded6d6b700495ede3020d11cca4606071",
+      "size": 18432,
+      "actual": "022eeb29c9ae9bb23883fedb732dd9aded6d6b700495ede3020d11cca4606071",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Baronmon.MMD",
+      "sha": "bfd35077ddabb908861625e7e3ab42eefd2ade0d9e5355f8a416a6a13998f386",
+      "size": 99108,
+      "actual": "bfd35077ddabb908861625e7e3ab42eefd2ade0d9e5355f8a416a6a13998f386",
+      "actual_size": 99108,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch4/Baronmon.TIM",
+      "sha": "e8282e74b673b4dd15d9772c3702e6feb859c6fea06ddea168cd051bf1fc90b0",
+      "size": 18432,
+      "actual": "e8282e74b673b4dd15d9772c3702e6feb859c6fea06ddea168cd051bf1fc90b0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Phantomon.MMD",
+      "sha": "8e50919dd7155f80c8d862ac6add472256d6bb41e09f607c6c31c378160f3e35",
+      "size": 78026,
+      "actual": "8e50919dd7155f80c8d862ac6add472256d6bb41e09f607c6c31c378160f3e35",
+      "actual_size": 78026,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Phantomon.TIM",
+      "sha": "32a7a7396ca9e729451fe1912a4cccb87dca5b9b8557391e8490e7463737063f",
+      "size": 18432,
+      "actual": "32a7a7396ca9e729451fe1912a4cccb87dca5b9b8557391e8490e7463737063f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Rosemon.MMD",
+      "sha": "b8ac5d02615f8645751974015114db69333adde0b2af28db13c489fc3cccd613",
+      "size": 97814,
+      "actual": "b8ac5d02615f8645751974015114db69333adde0b2af28db13c489fc3cccd613",
+      "actual_size": 97814,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Rosemon.TIM",
+      "sha": "91246994afb0b8e0e09afc345194c4ff19ac6845acb83d48609f018740240c63",
+      "size": 18432,
+      "actual": "91246994afb0b8e0e09afc345194c4ff19ac6845acb83d48609f018740240c63",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/ShellNumemon.MMD",
+      "sha": "8d0930a60d049224166f381efd181bc600628dea111c7b5e33135051fa95956a",
+      "size": 61848,
+      "actual": "8d0930a60d049224166f381efd181bc600628dea111c7b5e33135051fa95956a",
+      "actual_size": 61848,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/ShellNumemon.TIM",
+      "sha": "4a319c39ebd2278cf6c02b2e7934414003426ca0d2d32251f5f79f7654f84333",
+      "size": 18432,
+      "actual": "4a319c39ebd2278cf6c02b2e7934414003426ca0d2d32251f5f79f7654f84333",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/BomberNanimon.MMD",
+      "sha": "30ed91ed39436fb3c3b7545d6ad46dca40642387f3d735509ef5f59f5b2f352e",
+      "size": 85972,
+      "actual": "30ed91ed39436fb3c3b7545d6ad46dca40642387f3d735509ef5f59f5b2f352e",
+      "actual_size": 85972,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/BomberNanimon.TIM",
+      "sha": "753cfe9622c7cb9def5e065e724ead2e991b582c8561ddf7f8a4b23f1043dfa4",
+      "size": 18432,
+      "actual": "753cfe9622c7cb9def5e065e724ead2e991b582c8561ddf7f8a4b23f1043dfa4",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/D-Otamamon.MMD",
+      "sha": "40a75caa2075c1c3072f78f55e36f8db2fd6ed7bbd9aeb101a9c362d3c8b3d7d",
+      "size": 55578,
+      "actual": "40a75caa2075c1c3072f78f55e36f8db2fd6ed7bbd9aeb101a9c362d3c8b3d7d",
+      "actual_size": 55578,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/D-Otamamon.TIM",
+      "sha": "27fccfb458a433bf69d2c723cfeb66381d926e882837bb17fdd41e1802a4bfb5",
+      "size": 18432,
+      "actual": "27fccfb458a433bf69d2c723cfeb66381d926e882837bb17fdd41e1802a4bfb5",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/R-Gatomon.MMD",
+      "sha": "73cff8c0dd35e227821fc43c51c901ac3fa0de198559bd88c4279a7ea713afcb",
+      "size": 99474,
+      "actual": "73cff8c0dd35e227821fc43c51c901ac3fa0de198559bd88c4279a7ea713afcb",
+      "actual_size": 99474,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/R-Gatomon.MMD",
+      "sha": "1b3ad9f21bb9799437eb2c28e352dc591e618d846af353ff0b0b31eb27ab4fb3",
+      "size": 99474,
+      "actual": "1b3ad9f21bb9799437eb2c28e352dc591e618d846af353ff0b0b31eb27ab4fb3",
+      "actual_size": 99474,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/R-Gatomon.TIM",
+      "sha": "eaa3c797ef42facd9f4fa4b3d47f353e44ede70734a069e44661a12e444cbbb6",
+      "size": 18432,
+      "actual": "eaa3c797ef42facd9f4fa4b3d47f353e44ede70734a069e44661a12e444cbbb6",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Candlemon.MMD",
+      "sha": "82c13de138cfe03624a87ad47f567c9c94176b2146bcdf820d9897aa1e7edc4e",
+      "size": 71502,
+      "actual": "82c13de138cfe03624a87ad47f567c9c94176b2146bcdf820d9897aa1e7edc4e",
+      "actual_size": 71502,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Candlemon.TIM",
+      "sha": "621a2bc93c98ae4f32a464fd7978ebdba6d3344835109bbd72427ca13945bc8c",
+      "size": 18432,
+      "actual": "621a2bc93c98ae4f32a464fd7978ebdba6d3344835109bbd72427ca13945bc8c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/DemiDevimon.MMD",
+      "sha": "2d686326006ba96158dbac42c72ec7620fd7ae4df454c75fab96e3f47a64323e",
+      "size": 74230,
+      "actual": "2d686326006ba96158dbac42c72ec7620fd7ae4df454c75fab96e3f47a64323e",
+      "actual_size": 74230,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/DemiDevimon.TIM",
+      "sha": "d78e86c62832c5ef10b994f4a64db3a060114e38eaa2f4db83ea665852e3e2e6",
+      "size": 18432,
+      "actual": "d78e86c62832c5ef10b994f4a64db3a060114e38eaa2f4db83ea665852e3e2e6",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Diaboromon.MMD",
+      "sha": "87a7b62c7cdb5ccf8e53e88fcc2bb3e8e0aa3edd7b4cf5a9d2885e4ec06e7cfd",
+      "size": 98474,
+      "actual": "87a7b62c7cdb5ccf8e53e88fcc2bb3e8e0aa3edd7b4cf5a9d2885e4ec06e7cfd",
+      "actual_size": 98474,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Diaboromon.TIM",
+      "sha": "4781ac45e709718952781dd4c2a9e507e29d8dc08b6f56ec723f97fa005efbd5",
+      "size": 18432,
+      "actual": "4781ac45e709718952781dd4c2a9e507e29d8dc08b6f56ec723f97fa005efbd5",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Dolphmon.MMD",
+      "sha": "7904fb40fe049493f0d0fa46ae1d9d8ba2e27fbada15de8c2a9318164c3dcdab",
+      "size": 51796,
+      "actual": "7904fb40fe049493f0d0fa46ae1d9d8ba2e27fbada15de8c2a9318164c3dcdab",
+      "actual_size": 51796,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Dolphmon.TIM",
+      "sha": "3ab09bff9ae8653dcf9d2337bc338ee356aa0e3715ef29320d5464877d8c333b",
+      "size": 18432,
+      "actual": "3ab09bff9ae8653dcf9d2337bc338ee356aa0e3715ef29320d5464877d8c333b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Gizamon.MMD",
+      "sha": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+      "size": 80722,
+      "actual": "16f24ed3558fefe60c6b5442ab5f912a4af56f7a729aed3997afbde191c04ed0",
+      "actual_size": 80722,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Gizamon.TIM",
+      "sha": "340b6046b5506c5ae60e04a8c871b670e96d5766f804479530609fc279daa9f1",
+      "size": 18432,
+      "actual": "340b6046b5506c5ae60e04a8c871b670e96d5766f804479530609fc279daa9f1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Gesomon.MMD",
+      "sha": "e384b6152b611ff186e48855aaaeaf5d6e8d6790e0a9ec6c58ac60ae3ee00f16",
+      "size": 99598,
+      "actual": "e384b6152b611ff186e48855aaaeaf5d6e8d6790e0a9ec6c58ac60ae3ee00f16",
+      "actual_size": 99598,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch5/Gesomon.TIM",
+      "sha": "a3d73ebb06b294e841d0e71c6ae3de5ab951785181edde56a742333995395c43",
+      "size": 18432,
+      "actual": "a3d73ebb06b294e841d0e71c6ae3de5ab951785181edde56a742333995395c43",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Wizardmon.MMD",
+      "sha": "ea75dd448118244bd05367eb5b3ae73c2b9404b7791ee5da54a493481dfddbdf",
+      "size": 98840,
+      "actual": "ea75dd448118244bd05367eb5b3ae73c2b9404b7791ee5da54a493481dfddbdf",
+      "actual_size": 98840,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Wizardmon.TIM",
+      "sha": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+      "size": 18432,
+      "actual": "1e69bdccb8b1c0ce38a1b06803b61743c6139e54d6f40a403cb4cc94680c4598",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Sorcerimon.MMD",
+      "sha": "4ed1f4c3aa58b848c26dea1daea0dca05a92a48c345c460bf2f4825e1bdcdfc2",
+      "size": 99916,
+      "actual": "4ed1f4c3aa58b848c26dea1daea0dca05a92a48c345c460bf2f4825e1bdcdfc2",
+      "actual_size": 99916,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Sorcerimon.TIM",
+      "sha": "4507bf564078f7b7525c31b14e66a414ca842b7f4bb5ab417a7a222c0ac87df1",
+      "size": 18432,
+      "actual": "4507bf564078f7b7525c31b14e66a414ca842b7f4bb5ab417a7a222c0ac87df1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Starmon.MMD",
+      "sha": "bcb7a3ae485975b6b95afdbab5c3fa483a9cb2c82ee63927607b4f57f78db406",
+      "size": 99214,
+      "actual": "bcb7a3ae485975b6b95afdbab5c3fa483a9cb2c82ee63927607b4f57f78db406",
+      "actual_size": 99214,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Starmon.TIM",
+      "sha": "ed4398a42d99c399a6e015b05923cbb086303bf8e95a446d4f6c369224015958",
+      "size": 18432,
+      "actual": "ed4398a42d99c399a6e015b05923cbb086303bf8e95a446d4f6c369224015958",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/SuperStarmon.MMD",
+      "sha": "48e0b9b4cca62b95de5fa7e586d0ca218a4e786ab71ddea66b44c6ed1de97fec",
+      "size": 93498,
+      "actual": "48e0b9b4cca62b95de5fa7e586d0ca218a4e786ab71ddea66b44c6ed1de97fec",
+      "actual_size": 93498,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/SuperStarmon.TIM",
+      "sha": "e7c3fd30e249af7d91af4b3adb969f17261dbe73166544f44d336b5f0945aab6",
+      "size": 18432,
+      "actual": "e7c3fd30e249af7d91af4b3adb969f17261dbe73166544f44d336b5f0945aab6",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Piedmon.MMD",
+      "sha": "c047308a699fef9ffb5f2ca0393c3724bb14dd869c3961bb1f599f92cf7af080",
+      "size": 94280,
+      "actual": "c047308a699fef9ffb5f2ca0393c3724bb14dd869c3961bb1f599f92cf7af080",
+      "actual_size": 94280,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Piedmon.TIM",
+      "sha": "85e53dc910fa131b03d1a9751c3270ae121b99cd24c35342d4eaf1b21dc68397",
+      "size": 18432,
+      "actual": "85e53dc910fa131b03d1a9751c3270ae121b99cd24c35342d4eaf1b21dc68397",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Infermon.MMD",
+      "sha": "2cb0f769b360b53b63c5a98e2d61d78cf27fe996069010d36c731110a8ebffe8",
+      "size": 98024,
+      "actual": "2cb0f769b360b53b63c5a98e2d61d78cf27fe996069010d36c731110a8ebffe8",
+      "actual_size": 98024,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Infermon.MMD",
+      "sha": "6c8a207e4a14b5791bc67b17c7702a0e9a3b46d49e7c8de3b005b362368d0429",
+      "size": 98024,
+      "actual": "6c8a207e4a14b5791bc67b17c7702a0e9a3b46d49e7c8de3b005b362368d0429",
+      "actual_size": 98024,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Infermon.TIM",
+      "sha": "5c6d9b72f90be4f202597f1c26e20def75161083d6d9bd5208629af50e9b9f94",
+      "size": 18432,
+      "actual": "5c6d9b72f90be4f202597f1c26e20def75161083d6d9bd5208629af50e9b9f94",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Kokuwamon.MMD",
+      "sha": "fdcd7e1bf32736d1338a2f3e6ac113e28de221bd9d8d2e14ac720c325c482f13",
+      "size": 92784,
+      "actual": "fdcd7e1bf32736d1338a2f3e6ac113e28de221bd9d8d2e14ac720c325c482f13",
+      "actual_size": 92784,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Kokuwamon.TIM",
+      "sha": "b0b0511bc2f8a47753888f76e05f3fb6808aecca8fa2b085441b7fbdf2bc9016",
+      "size": 18432,
+      "actual": "b0b0511bc2f8a47753888f76e05f3fb6808aecca8fa2b085441b7fbdf2bc9016",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/MarineAngemon.MMD",
+      "sha": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
+      "size": 93832,
+      "actual": "1349d2fa780b52e650574d990018348e71ad3f513f86dc9a9b98c1258f1770c3",
+      "actual_size": 93832,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MarineAngemon.MMD",
+      "sha": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
+      "size": 93832,
+      "actual": "a7d95ba71c4e2383b805a882e01ab25cae59d5f3e35a37eaa2099de3af272993",
+      "actual_size": 93832,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/MarineAngemon.TIM",
+      "sha": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+      "size": 18432,
+      "actual": "fbbd8843e728d0acc7ee20fd7124b4793a42972b9e09c55eada03295665a7741",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Quetzalmon.MMD",
+      "sha": "8902a7d32ebe0a51a1238c55d290491dd2fec46025caabe2458603143be0cc90",
+      "size": 94558,
+      "actual": "8902a7d32ebe0a51a1238c55d290491dd2fec46025caabe2458603143be0cc90",
+      "actual_size": 94558,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Quetzalmon.TIM",
+      "sha": "05c5a3cd6cb173a7da2e7dcb2015b74ae9fb7a7262531c5f1081da9aadd77aee",
+      "size": 18432,
+      "actual": "05c5a3cd6cb173a7da2e7dcb2015b74ae9fb7a7262531c5f1081da9aadd77aee",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Shadramon.MMD",
+      "sha": "a84f6fe8db3048bd0095c95c78bb5845943433a22fd0db00456eebd8fb16d9a5",
+      "size": 99210,
+      "actual": "a84f6fe8db3048bd0095c95c78bb5845943433a22fd0db00456eebd8fb16d9a5",
+      "actual_size": 99210,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Shadramon.TIM",
+      "sha": "570a2e188d2865b9f8735112ace10b1e501b727622eac663930c4e0eb2cad002",
+      "size": 18432,
+      "actual": "570a2e188d2865b9f8735112ace10b1e501b727622eac663930c4e0eb2cad002",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Solarmon.MMD",
+      "sha": "822d1b96bbbd8f0a0a7fb7cd5cd4590281d8c4aeb2a704db3512f9b67cbf421f",
+      "size": 41892,
+      "actual": "822d1b96bbbd8f0a0a7fb7cd5cd4590281d8c4aeb2a704db3512f9b67cbf421f",
+      "actual_size": 41892,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Solarmon.TIM",
+      "sha": "27f99a1e2c7af68a2e6af11c0c6a562f0d072c03a9797f09c53461baf00724f3",
+      "size": 18432,
+      "actual": "27f99a1e2c7af68a2e6af11c0c6a562f0d072c03a9797f09c53461baf00724f3",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Thundermon.MMD",
+      "sha": "179b3806189a91d9f31151f6d2c78a01ee212ad6e0c4ed036689d679b7d852dc",
+      "size": 85804,
+      "actual": "179b3806189a91d9f31151f6d2c78a01ee212ad6e0c4ed036689d679b7d852dc",
+      "actual_size": 85804,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch6/Thundermon.TIM",
+      "sha": "ad17393df5334c8c07b359828c6f855f9e7cd09dfc047dd369635dc9f2baf268",
+      "size": 18432,
+      "actual": "ad17393df5334c8c07b359828c6f855f9e7cd09dfc047dd369635dc9f2baf268",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tuskmon.MMD",
+      "sha": "f211b9cde90ca2920587c8c66fd4318afa0c8c621e587bcc5bd6b1a9ac81bd1f",
+      "size": 98778,
+      "actual": "f211b9cde90ca2920587c8c66fd4318afa0c8c621e587bcc5bd6b1a9ac81bd1f",
+      "actual_size": 98778,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tuskmon.TIM",
+      "sha": "08f0b52f2b2a266c30eb098d4a1f03403c88bdcc57ada9e8171b5b416d0a4afa",
+      "size": 18432,
+      "actual": "08f0b52f2b2a266c30eb098d4a1f03403c88bdcc57ada9e8171b5b416d0a4afa",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tylomon.MMD",
+      "sha": "275e902a8e248ce8c40b75f8e4292f152bbb7582199c193609d9ae0dea7172fd",
+      "size": 71184,
+      "actual": "275e902a8e248ce8c40b75f8e4292f152bbb7582199c193609d9ae0dea7172fd",
+      "actual_size": 71184,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tylomon.TIM",
+      "sha": "8659078142a5a64d3ba5cb37a1b7abae4a757d98494bc497af23b1e82cbab789",
+      "size": 18432,
+      "actual": "8659078142a5a64d3ba5cb37a1b7abae4a757d98494bc497af23b1e82cbab789",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Valkyrimon.MMD",
+      "sha": "315abccc851c40b91116f6e9aea68b6bf7e051488e8008c77b1a1f6314c40469",
+      "size": 97734,
+      "actual": "315abccc851c40b91116f6e9aea68b6bf7e051488e8008c77b1a1f6314c40469",
+      "actual_size": 97734,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Valkyrimon.TIM",
+      "sha": "d9814941f677aadd69a75c96267c285fcf8b37288150eb91f202cb8368a0c432",
+      "size": 18432,
+      "actual": "d9814941f677aadd69a75c96267c285fcf8b37288150eb91f202cb8368a0c432",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Vi-Elecmon.MMD",
+      "sha": "0a00aa6e3961634323fda3228965ddc775c11e20569b6f4e3c25e66d0be0cbc4",
+      "size": 85504,
+      "actual": "0a00aa6e3961634323fda3228965ddc775c11e20569b6f4e3c25e66d0be0cbc4",
+      "actual_size": 85504,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Vi-Elecmon.TIM",
+      "sha": "7e3f7ead6ed2d5b6e7e6ee09f29076d684d559aa6bcf0468535700f1fedfa859",
+      "size": 18432,
+      "actual": "7e3f7ead6ed2d5b6e7e6ee09f29076d684d559aa6bcf0468535700f1fedfa859",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Triceramon.MMD",
+      "sha": "cc6f6f037b7604d4f69bf2e2de6b101cfbcebd03e54ee927feea09538a86630e",
+      "size": 99428,
+      "actual": "cc6f6f037b7604d4f69bf2e2de6b101cfbcebd03e54ee927feea09538a86630e",
+      "actual_size": 99428,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Triceramon.TIM",
+      "sha": "542420b75879c66669c27df791f8ac7a4312f9eece5ccb23ecb5f9bdb0c06cbd",
+      "size": 18432,
+      "actual": "542420b75879c66669c27df791f8ac7a4312f9eece5ccb23ecb5f9bdb0c06cbd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/SaberLeomon.MMD",
+      "sha": "56d43e444498c937a888d1b645e6561017d4d6976144fdd9729d2af913e2c1ea",
+      "size": 96036,
+      "actual": "56d43e444498c937a888d1b645e6561017d4d6976144fdd9729d2af913e2c1ea",
+      "actual_size": 96036,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/SaberLeomon.MMD",
+      "sha": "4ca99e8c82c8384f982251665a815d2950a8e2af512f4b997e33d804b9067cad",
+      "size": 96036,
+      "actual": "4ca99e8c82c8384f982251665a815d2950a8e2af512f4b997e33d804b9067cad",
+      "actual_size": 96036,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/SaberLeomon.TIM",
+      "sha": "c8de720951b4f06b52e045f1d67f23786ec03fd153daffc81e70f9c7f777a756",
+      "size": 18432,
+      "actual": "c8de720951b4f06b52e045f1d67f23786ec03fd153daffc81e70f9c7f777a756",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Okuwamon.MMD",
+      "sha": "4f2c5584c8a99a694c308dd4fdb1ab2a545b02d24e8804e78ca922ad350e871d",
+      "size": 91426,
+      "actual": "4f2c5584c8a99a694c308dd4fdb1ab2a545b02d24e8804e78ca922ad350e871d",
+      "actual_size": 91426,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Okuwamon.TIM",
+      "sha": "d438084ad8654862b6db2b5ce73d2d9e08492e891bdd66f13ac939362a13c86d",
+      "size": 18432,
+      "actual": "d438084ad8654862b6db2b5ce73d2d9e08492e891bdd66f13ac939362a13c86d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MetalTyrannomon.MMD",
+      "sha": "0f21bb858adc621bee9e716f5a5f98f28700871e4576ce722159eb2bad47bc64",
+      "size": 95966,
+      "actual": "0f21bb858adc621bee9e716f5a5f98f28700871e4576ce722159eb2bad47bc64",
+      "actual_size": 95966,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/MetalTyrannomon.TIM",
+      "sha": "f0bb5ca3df752c0c498ee1d0cd3264ff4f02c3dc94b4ac1ec4c91c8bd8b3a300",
+      "size": 18432,
+      "actual": "f0bb5ca3df752c0c498ee1d0cd3264ff4f02c3dc94b4ac1ec4c91c8bd8b3a300",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tortomon.MMD",
+      "sha": "65db0845b541d0eeddbcbbec91881ebb4a7c04403915f5971fe9f212ca1d2840",
+      "size": 75586,
+      "actual": "65db0845b541d0eeddbcbbec91881ebb4a7c04403915f5971fe9f212ca1d2840",
+      "actual_size": 75586,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Tortomon.TIM",
+      "sha": "9f0eec4d6525ce4e6d529ef67cc55e6446227e1588832775c4f82549d8a0853b",
+      "size": 18432,
+      "actual": "9f0eec4d6525ce4e6d529ef67cc55e6446227e1588832775c4f82549d8a0853b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Flymon.MMD",
+      "sha": "f827f385cccff8549e678f0d2dff6ede63b096c3c0b1770f8cd21f631d340923",
+      "size": 99194,
+      "actual": "f827f385cccff8549e678f0d2dff6ede63b096c3c0b1770f8cd21f631d340923",
+      "actual_size": 99194,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Flymon.TIM",
+      "sha": "1a0a9a67db1f5ab5864cbe2b5f585b374d07ce895d31a5563999fedebee115cd",
+      "size": 18432,
+      "actual": "1a0a9a67db1f5ab5864cbe2b5f585b374d07ce895d31a5563999fedebee115cd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Mushroomon.MMD",
+      "sha": "df1c0e3cf412f41bba5efadcd6d6c455ec6e7c74bb86f6debd381fed3eb185e2",
+      "size": 92244,
+      "actual": "df1c0e3cf412f41bba5efadcd6d6c455ec6e7c74bb86f6debd381fed3eb185e2",
+      "actual_size": 92244,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Mushroomon.TIM",
+      "sha": "170b6fcc654fdfeeee730afcad976005df763066a54297feefd0929d10faca4c",
+      "size": 18432,
+      "actual": "170b6fcc654fdfeeee730afcad976005df763066a54297feefd0929d10faca4c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Raremon.MMD",
+      "sha": "a0b4dde500fe68bbd9fe3999c026f5684f25b34e9857da19e66a71def6d24b75",
+      "size": 97614,
+      "actual": "a0b4dde500fe68bbd9fe3999c026f5684f25b34e9857da19e66a71def6d24b75",
+      "actual_size": 97614,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch7/Raremon.TIM",
+      "sha": "16377d9f28ef83b11e635045b35cdf9f444653645591275ac82ed29e00f818e4",
+      "size": 18432,
+      "actual": "16377d9f28ef83b11e635045b35cdf9f444653645591275ac82ed29e00f818e4",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/DarkTyrannomon.MMD",
+      "sha": "87b4c7d7e4469484312d7967160336d0ff110894a76bd16869a69131be977f43",
+      "size": 96030,
+      "actual": "87b4c7d7e4469484312d7967160336d0ff110894a76bd16869a69131be977f43",
+      "actual_size": 96030,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/DarkTyrannomon.TIM",
+      "sha": "4b5f99653083bd3e385030b021150d2dceac41304f6382915cfa410f0ff3ea18",
+      "size": 18432,
+      "actual": "4b5f99653083bd3e385030b021150d2dceac41304f6382915cfa410f0ff3ea18",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/ExTyrannomon.MMD",
+      "sha": "b5beb977eb5b9bba3af05546b72181b54942367d2e9d96b6339eec04a7d4f834",
+      "size": 60356,
+      "actual": "b5beb977eb5b9bba3af05546b72181b54942367d2e9d96b6339eec04a7d4f834",
+      "actual_size": 60356,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/ExTyrannomon.TIM",
+      "sha": "f8d3680fc62534c3e0418b31ef94cff980b50bbeec282b8fb60e9bc1729296c0",
+      "size": 18432,
+      "actual": "f8d3680fc62534c3e0418b31ef94cff980b50bbeec282b8fb60e9bc1729296c0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Mammothmon.MMD",
+      "sha": "9bc148d9687090167d839e24ccffd0d25091d23e34baaf6af06f43b6e856db60",
+      "size": 97602,
+      "actual": "9bc148d9687090167d839e24ccffd0d25091d23e34baaf6af06f43b6e856db60",
+      "actual_size": 97602,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Mammothmon.TIM",
+      "sha": "8640965c620bdaf65f833276f3d1c91ae42e0c4e0a235c80074017247b0e5a47",
+      "size": 18432,
+      "actual": "8640965c620bdaf65f833276f3d1c91ae42e0c4e0a235c80074017247b0e5a47",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/SkullMammothmon.MMD",
+      "sha": "620d3e4e752f7686f365ee0a2953fc5a472ba11f9d23207a3e16347580b79ad5",
+      "size": 98642,
+      "actual": "620d3e4e752f7686f365ee0a2953fc5a472ba11f9d23207a3e16347580b79ad5",
+      "actual_size": 98642,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/SkullMammothmon.TIM",
+      "sha": "f9531c5ffea5ca62a4be5b3979ec8ff1503cc9c0b4487548e12d70aa45590563",
+      "size": 18432,
+      "actual": "f9531c5ffea5ca62a4be5b3979ec8ff1503cc9c0b4487548e12d70aa45590563",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Garbagemon.MMD",
+      "sha": "0b319bd13356f4fb00e03e8385a1189cc5b56c0b85e29676a9ee1ef558425d14",
+      "size": 87936,
+      "actual": "0b319bd13356f4fb00e03e8385a1189cc5b56c0b85e29676a9ee1ef558425d14",
+      "actual_size": 87936,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Garbagemon.TIM",
+      "sha": "d98fcb3252423bd57543206e0edbeb175fe9d7c6f4e0982859f4293338e01370",
+      "size": 18432,
+      "actual": "d98fcb3252423bd57543206e0edbeb175fe9d7c6f4e0982859f4293338e01370",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/PrinceMamemon.MMD",
+      "sha": "e5d6d0742ecb39552a969ff737926bd7b8997c8e82bdc600066c01e6403bc8c6",
+      "size": 94794,
+      "actual": "e5d6d0742ecb39552a969ff737926bd7b8997c8e82bdc600066c01e6403bc8c6",
+      "actual_size": 94794,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/PrinceMamemon.TIM",
+      "sha": "066967b6c55aa52e66cb09748f74b424be768a594c73a67b007ac4f901ef7259",
+      "size": 18432,
+      "actual": "066967b6c55aa52e66cb09748f74b424be768a594c73a67b007ac4f901ef7259",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Plesiomon.MMD",
+      "sha": "53567a06481ef22b1284da2134efe7334aa03c83fd122af7ac41ccbc09a98625",
+      "size": 94912,
+      "actual": "53567a06481ef22b1284da2134efe7334aa03c83fd122af7ac41ccbc09a98625",
+      "actual_size": 94912,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Plesiomon.TIM",
+      "sha": "c02ed36aefde4a8f3356148645a181c20f5d815eddc655c7db547f7e14a240bd",
+      "size": 18432,
+      "actual": "c02ed36aefde4a8f3356148645a181c20f5d815eddc655c7db547f7e14a240bd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Woodmon.MMD",
+      "sha": "aa7d9a7ad3937d0089bea04bc657b0375bc4f4a1c9f00ddc1a2c9f673c372ddf",
+      "size": 97460,
+      "actual": "aa7d9a7ad3937d0089bea04bc657b0375bc4f4a1c9f00ddc1a2c9f673c372ddf",
+      "actual_size": 97460,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Woodmon.TIM",
+      "sha": "3e7790aa87a92c9fcd77cee69eba1b80ce71910aea9de4dc2cd3e9d19b05b1e7",
+      "size": 18432,
+      "actual": "3e7790aa87a92c9fcd77cee69eba1b80ce71910aea9de4dc2cd3e9d19b05b1e7",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Floramon.MMD",
+      "sha": "ab27e2615a0e555448c48f81146b5c20baf3ce74b73827e941afc6252d470ac5",
+      "size": 85672,
+      "actual": "ab27e2615a0e555448c48f81146b5c20baf3ce74b73827e941afc6252d470ac5",
+      "actual_size": 85672,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Floramon.TIM",
+      "sha": "5b0e2f0f1664f88849eef9e518b9d6420cc6919f7c18b53756a27f7a8f3a1a9e",
+      "size": 18432,
+      "actual": "5b0e2f0f1664f88849eef9e518b9d6420cc6919f7c18b53756a27f7a8f3a1a9e",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Blossomon.MMD",
+      "sha": "9a118a63be9a8a25064862297aab5dbf84b12c84b93d80fb6ea4d0039bab09fc",
+      "size": 90932,
+      "actual": "9a118a63be9a8a25064862297aab5dbf84b12c84b93d80fb6ea4d0039bab09fc",
+      "actual_size": 90932,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Blossomon.TIM",
+      "sha": "e3b06b2e5b7fd5d425b0ea3f0009b194af9fb0d85021fa5b56a4b388940bcf4d",
+      "size": 18432,
+      "actual": "e3b06b2e5b7fd5d425b0ea3f0009b194af9fb0d85021fa5b56a4b388940bcf4d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Anomalocarimon.MMD",
+      "sha": "2476a0ba4a147910db4fc8323ca83afb3925cb6f50c0f86d8144410073ea9c5b",
+      "size": 87034,
+      "actual": "2476a0ba4a147910db4fc8323ca83afb3925cb6f50c0f86d8144410073ea9c5b",
+      "actual_size": 87034,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Anomalocarimon.TIM",
+      "sha": "bd5deccf0a95a5f40ed2453f2772b6923d3cc369cdb6da3d0811d3da7d995f8b",
+      "size": 18432,
+      "actual": "bd5deccf0a95a5f40ed2453f2772b6923d3cc369cdb6da3d0811d3da7d995f8b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Baihumon.MMD",
+      "sha": "99b2d785e8a201cf28997a67e3ac7162df884489c84e4dd192186196c5831ca7",
+      "size": 100342,
+      "actual": "99b2d785e8a201cf28997a67e3ac7162df884489c84e4dd192186196c5831ca7",
+      "actual_size": 100342,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch8/Baihumon.TIM",
+      "sha": "50d4bbbc4e4dbe8402379c36c4de2f28bbc38c333f993b3241a828ca2dea3cc0",
+      "size": 18432,
+      "actual": "50d4bbbc4e4dbe8402379c36c4de2f28bbc38c333f993b3241a828ca2dea3cc0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/SkullMeramon.MMD",
+      "sha": "78e2809d258f506315a8c5864cc59ced977fdc86bf7ca9aa4894920df67baff1",
+      "size": 87284,
+      "actual": "78e2809d258f506315a8c5864cc59ced977fdc86bf7ca9aa4894920df67baff1",
+      "actual_size": 87284,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/SkullMeramon.TIM",
+      "sha": "00171d7692fc9ca69955bf2f822605b82ffe2c84393d7c8dd0801c135063f90a",
+      "size": 18432,
+      "actual": "00171d7692fc9ca69955bf2f822605b82ffe2c84393d7c8dd0801c135063f90a",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Octomon.MMD",
+      "sha": "2d1ca0032512e3f550298a600f1626f317d16ea081f81861c8b2e5c52f18d7c2",
+      "size": 94630,
+      "actual": "2d1ca0032512e3f550298a600f1626f317d16ea081f81861c8b2e5c52f18d7c2",
+      "actual_size": 94630,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Octomon.TIM",
+      "sha": "d1ee7232b2e7bc3d11a706b5b66390e9a0ac996699872287c721912be0d0f7fd",
+      "size": 18432,
+      "actual": "d1ee7232b2e7bc3d11a706b5b66390e9a0ac996699872287c721912be0d0f7fd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MarineDevimon.MMD",
+      "sha": "54e7d40e8ce7ed1b5c44d2551e5b95508fd23aca84b1042efb544c0b19d3ef1c",
+      "size": 98488,
+      "actual": "54e7d40e8ce7ed1b5c44d2551e5b95508fd23aca84b1042efb544c0b19d3ef1c",
+      "actual_size": 98488,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/MarineDevimon.TIM",
+      "sha": "f9f59c9976ac582cfddd8a49c2f1de76447ef4a867d72d62d7c867a179994de5",
+      "size": 18432,
+      "actual": "f9f59c9976ac582cfddd8a49c2f1de76447ef4a867d72d62d7c867a179994de5",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Pumpkinmon.MMD",
+      "sha": "8ccbab70a8f14ab2c214c83b4e0b1929c829a06a11b698818582c6854ced6e38",
+      "size": 75716,
+      "actual": "8ccbab70a8f14ab2c214c83b4e0b1929c829a06a11b698818582c6854ced6e38",
+      "actual_size": 75716,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Pumpkinmon.TIM",
+      "sha": "153b255c3e707f4d89a51880d712552e22966903b0e5c73cf3cfcf62623a8a07",
+      "size": 18432,
+      "actual": "153b255c3e707f4d89a51880d712552e22966903b0e5c73cf3cfcf62623a8a07",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Cyclonemon.MMD",
+      "sha": "fe890cf792f4dd43a9278a2c3e4ae0ba86e6a680715b7b8da3ce4716bb28083c",
+      "size": 98394,
+      "actual": "fe890cf792f4dd43a9278a2c3e4ae0ba86e6a680715b7b8da3ce4716bb28083c",
+      "actual_size": 98394,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Cyclonemon.TIM",
+      "sha": "608db7b45c975d7e9785497fbfeec5a7750046c19add9107fa0847ae36663d01",
+      "size": 18432,
+      "actual": "608db7b45c975d7e9785497fbfeec5a7750046c19add9107fa0847ae36663d01",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Kiwimon.MMD",
+      "sha": "f5af86c7236d87e3b58cbd49ffeb79eed283643dd83f54bd3205570396a3f2f4",
+      "size": 87932,
+      "actual": "f5af86c7236d87e3b58cbd49ffeb79eed283643dd83f54bd3205570396a3f2f4",
+      "actual_size": 87932,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Kiwimon.TIM",
+      "sha": "6a09b5e3464031194d2aae6ad0ddebfac9be4c58c9d19d0ed1f856bcc437a0b7",
+      "size": 18432,
+      "actual": "6a09b5e3464031194d2aae6ad0ddebfac9be4c58c9d19d0ed1f856bcc437a0b7",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Shakomon.MMD",
+      "sha": "75a1634f926463b800a884850292c304ed315c59369a601b0a1997c08ada2ee6",
+      "size": 28708,
+      "actual": "75a1634f926463b800a884850292c304ed315c59369a601b0a1997c08ada2ee6",
+      "actual_size": 28708,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Shakomon.TIM",
+      "sha": "61de12b2ac472f030bb615da5df6b3a6a617f0223234168d7ad97caeeea5b641",
+      "size": 18432,
+      "actual": "61de12b2ac472f030bb615da5df6b3a6a617f0223234168d7ad97caeeea5b641",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Ganimon.MMD",
+      "sha": "39b9cbc23dd6cc2d7230a0a1e79e541ff54855498a8d1c7e5ec2fca2d10cf248",
+      "size": 89820,
+      "actual": "39b9cbc23dd6cc2d7230a0a1e79e541ff54855498a8d1c7e5ec2fca2d10cf248",
+      "actual_size": 89820,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Ganimon.TIM",
+      "sha": "261edadaedb606f03fce5c380617a8f009c53459a43a1fe62e75d46552bd9805",
+      "size": 18432,
+      "actual": "261edadaedb606f03fce5c380617a8f009c53459a43a1fe62e75d46552bd9805",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Gazimon.MMD",
+      "sha": "0c3c298b505af1c35cebc4dbbaf6f784312e0db031cfeb8916a4f2406cc3a32a",
+      "size": 99572,
+      "actual": "0c3c298b505af1c35cebc4dbbaf6f784312e0db031cfeb8916a4f2406cc3a32a",
+      "actual_size": 99572,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Gazimon.TIM",
+      "sha": "3e875c445ef5c1d37a46be29901ae08593de57185da7023f6aaf0ece1465ea5d",
+      "size": 18432,
+      "actual": "3e875c445ef5c1d37a46be29901ae08593de57185da7023f6aaf0ece1465ea5d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Deramon.MMD",
+      "sha": "33f9ae0fe9953beadc615878be80272b1fb317df537711dda3ba2b9b227cb8ee",
+      "size": 57880,
+      "actual": "33f9ae0fe9953beadc615878be80272b1fb317df537711dda3ba2b9b227cb8ee",
+      "actual_size": 57880,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Deramon.TIM",
+      "sha": "e9a4e064665d54236930e47613255544c58e1792ad92cec34773a19883895be0",
+      "size": 18432,
+      "actual": "e9a4e064665d54236930e47613255544c58e1792ad92cec34773a19883895be0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Bakumon.MMD",
+      "sha": "93fd18f542bab5fddc5248c914bb098f15b7c2cca25136a30488ef628f5129e7",
+      "size": 85308,
+      "actual": "93fd18f542bab5fddc5248c914bb098f15b7c2cca25136a30488ef628f5129e7",
+      "actual_size": 85308,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Bakumon.TIM",
+      "sha": "3b28d8b3ae0ee7b713ba3bce34a2de1014a40a909cfd415228cfd4bb1ae6f4aa",
+      "size": 18432,
+      "actual": "3b28d8b3ae0ee7b713ba3bce34a2de1014a40a909cfd415228cfd4bb1ae6f4aa",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Boltmon.MMD",
+      "sha": "77a2cbf4357c230e492d337d06a38a4bc761ed0f766b4fdee73d6642e4f7b3ea",
+      "size": 91990,
+      "actual": "77a2cbf4357c230e492d337d06a38a4bc761ed0f766b4fdee73d6642e4f7b3ea",
+      "actual_size": 91990,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch9/Boltmon.TIM",
+      "sha": "019d201149ad95706a6459235b3b75a7f2f1b39b2f00646a08dc760de156c418",
+      "size": 18432,
+      "actual": "019d201149ad95706a6459235b3b75a7f2f1b39b2f00646a08dc760de156c418",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/ChaosLord.MMD",
+      "sha": "3f5516ceae854a21fc19434fee9b7c8aeabee43b37f03f01334c0cff0ae03073",
+      "size": 97212,
+      "actual": "3f5516ceae854a21fc19434fee9b7c8aeabee43b37f03f01334c0cff0ae03073",
+      "actual_size": 97212,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/ChaosLord.MMD",
+      "sha": "4222cac809bffd8600d786aabd34e93ac30d40cf22d702941ecea861be93eb25",
+      "size": 97212,
+      "actual": "4222cac809bffd8600d786aabd34e93ac30d40cf22d702941ecea861be93eb25",
+      "actual_size": 97212,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/ChaosLord.TIM",
+      "sha": "d4cfdcca49ecdbc3344486e2b01881ff38e8a55f800d02da987df0420fbc44ec",
+      "size": 18432,
+      "actual": "d4cfdcca49ecdbc3344486e2b01881ff38e8a55f800d02da987df0420fbc44ec",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Clockmon.MMD",
+      "sha": "eb90094a1eea7f476e4a87dcce683cbd49d3a6c9fb5c38e543b5b79d0487403c",
+      "size": 87610,
+      "actual": "eb90094a1eea7f476e4a87dcce683cbd49d3a6c9fb5c38e543b5b79d0487403c",
+      "actual_size": 87610,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Clockmon.TIM",
+      "sha": "12ecd43a54c6d87a885a305951e44fbab947edb0b9e1b5cbc4cd7e709b35f8d8",
+      "size": 18432,
+      "actual": "12ecd43a54c6d87a885a305951e44fbab947edb0b9e1b5cbc4cd7e709b35f8d8",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Dagomon.MMD",
+      "sha": "195126ab7f59cf95559f3fc42e6b5a0664c17d89a6a3e93387347628d1996468",
+      "size": 98264,
+      "actual": "195126ab7f59cf95559f3fc42e6b5a0664c17d89a6a3e93387347628d1996468",
+      "actual_size": 98264,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Dagomon.TIM",
+      "sha": "d24d6759a14ac817360c010e0a63d584cdf3142ddf698dfa4540f5e4f21dfe7a",
+      "size": 18432,
+      "actual": "d24d6759a14ac817360c010e0a63d584cdf3142ddf698dfa4540f5e4f21dfe7a",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Deltamon.MMD",
+      "sha": "feac94f7d741e1e89db30a6c6b9b9bc45e1cb7c6c9d6e65a6f48a316e9938bee",
+      "size": 97214,
+      "actual": "feac94f7d741e1e89db30a6c6b9b9bc45e1cb7c6c9d6e65a6f48a316e9938bee",
+      "actual_size": 97214,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Deltamon.TIM",
+      "sha": "60c142cf77dc6bb0b047f077eb2282e2e64891b9e88f7bbef0e7b6818e4eae1b",
+      "size": 18432,
+      "actual": "60c142cf77dc6bb0b047f077eb2282e2e64891b9e88f7bbef0e7b6818e4eae1b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Gryphonmon.MMD",
+      "sha": "6872d49bc55949002d4cc9cf72a904ed4590feb6f4ad4ef9c735977c79c55850",
+      "size": 95584,
+      "actual": "6872d49bc55949002d4cc9cf72a904ed4590feb6f4ad4ef9c735977c79c55850",
+      "actual_size": 95584,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Gryphonmon.MMD",
+      "sha": "a56287120f8c2062b635f852a3927e86f03707866a749223b55c7e2cae1af6c9",
+      "size": 95584,
+      "actual": "a56287120f8c2062b635f852a3927e86f03707866a749223b55c7e2cae1af6c9",
+      "actual_size": 95584,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Gryphonmon.TIM",
+      "sha": "cc8bc05f9a1b55c1153693c7fe457b17c4c2957ad89517cddb4448d17af56955",
+      "size": 18432,
+      "actual": "cc8bc05f9a1b55c1153693c7fe457b17c4c2957ad89517cddb4448d17af56955",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Nanomon.MMD",
+      "sha": "05b511d837396d973a0bc316010fa71223b757e8a182e3b87ac683d0896d15a1",
+      "size": 88666,
+      "actual": "05b511d837396d973a0bc316010fa71223b757e8a182e3b87ac683d0896d15a1",
+      "actual_size": 88666,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Nanomon.TIM",
+      "sha": "fdad60cf66239295450e0567a7d7aa78dc36a8832bf7a87e6315e2783a8f58cd",
+      "size": 18432,
+      "actual": "fdad60cf66239295450e0567a7d7aa78dc36a8832bf7a87e6315e2783a8f58cd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Vilemon.MMD",
+      "sha": "0c26db2860ffe8460c18e5d1203a9858c6d2198f72b3e85e165e2171ca49a869",
+      "size": 96916,
+      "actual": "0c26db2860ffe8460c18e5d1203a9858c6d2198f72b3e85e165e2171ca49a869",
+      "actual_size": 96916,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Vilemon.TIM",
+      "sha": "c08a58893367d9d5f6e6a26089304b3e9a9e935110ae605d88bc170d55de07df",
+      "size": 18432,
+      "actual": "c08a58893367d9d5f6e6a26089304b3e9a9e935110ae605d88bc170d55de07df",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Grizzlymon.MMD",
+      "sha": "c591fb700586c929abaa3ea8cf52c142fc16712a7eaf162c628bf502ac481077",
+      "size": 82682,
+      "actual": "c591fb700586c929abaa3ea8cf52c142fc16712a7eaf162c628bf502ac481077",
+      "actual_size": 82682,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Grizzlymon.MMD",
+      "sha": "0ef7306fa69dfca4a040ed1df96989e71d6761067e14230d51fe669cad89cb27",
+      "size": 82682,
+      "actual": "0ef7306fa69dfca4a040ed1df96989e71d6761067e14230d51fe669cad89cb27",
+      "actual_size": 82682,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Grizzlymon.TIM",
+      "sha": "cfb594d3e14f0fd07ae3d311631695e65abc1c24c967024655dafc6af25c625b",
+      "size": 18432,
+      "actual": "cfb594d3e14f0fd07ae3d311631695e65abc1c24c967024655dafc6af25c625b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Marsmon.MMD",
+      "sha": "853564fdabe73a38f1efcf40473a46c2501110de88c559846600175f58b16960",
+      "size": 93006,
+      "actual": "853564fdabe73a38f1efcf40473a46c2501110de88c559846600175f58b16960",
+      "actual_size": 93006,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Marsmon.TIM",
+      "sha": "1dd9ae353c3449f3af973fd9f19b5f1aea9aa0f422c5ddbd28892bd3af098aa1",
+      "size": 18432,
+      "actual": "1dd9ae353c3449f3af973fd9f19b5f1aea9aa0f422c5ddbd28892bd3af098aa1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Dokugumon.MMD",
+      "sha": "1cf6bf5459c64d82dc06dc2bb42f80f564bd528cd88dacbfe54a6d8a513243c6",
+      "size": 100328,
+      "actual": "1cf6bf5459c64d82dc06dc2bb42f80f564bd528cd88dacbfe54a6d8a513243c6",
+      "actual_size": 100328,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Dokugumon.TIM",
+      "sha": "6dde7c9684cd2752f9abeb9a71bcce30193f30afed1a919547501fdea84f2234",
+      "size": 18432,
+      "actual": "6dde7c9684cd2752f9abeb9a71bcce30193f30afed1a919547501fdea84f2234",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Hookmon.MMD",
+      "sha": "276b253c676ebf98052d9e1a2bfc5520d6f938c2faea9de5d14b94ce44bf8bde",
+      "size": 98742,
+      "actual": "276b253c676ebf98052d9e1a2bfc5520d6f938c2faea9de5d14b94ce44bf8bde",
+      "actual_size": 98742,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/Hookmon.TIM",
+      "sha": "31d161bfed2a5291cce1c4557b31e5c52603442d5ca6383be01f9a2ac4913052",
+      "size": 18432,
+      "actual": "31d161bfed2a5291cce1c4557b31e5c52603442d5ca6383be01f9a2ac4913052",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/GuardiAngemon.MMD",
+      "sha": "0e50ae1ced12cb28fb4f21e25dd163c77547493e9b869ba10b83cda2f25cbfa1",
+      "size": 94818,
+      "actual": "0e50ae1ced12cb28fb4f21e25dd163c77547493e9b869ba10b83cda2f25cbfa1",
+      "actual_size": 94818,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch10/GuardiAngemon.TIM",
+      "sha": "236327c6d838bec9188b79d0bf29a13760a633d5da90f9cd5318613dcb40f802",
+      "size": 18432,
+      "actual": "236327c6d838bec9188b79d0bf29a13760a633d5da90f9cd5318613dcb40f802",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/HiAndromon.MMD",
+      "sha": "c3af668f2802e879132524d9c698c23d0688af5c7b8b0f0b14fbb05a88826700",
+      "size": 96056,
+      "actual": "c3af668f2802e879132524d9c698c23d0688af5c7b8b0f0b14fbb05a88826700",
+      "actual_size": 96056,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/HiAndromon.TIM",
+      "sha": "b171680204edd33d9c6336f896c178092a187e08bd634258ee46eb33142e5377",
+      "size": 18432,
+      "actual": "b171680204edd33d9c6336f896c178092a187e08bd634258ee46eb33142e5377",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/KingEtemon.MMD",
+      "sha": "5cd1ffc6b118f828e68b00ed6ab3f598479dd2f5f799af6902fd1dff99f04014",
+      "size": 95020,
+      "actual": "5cd1ffc6b118f828e68b00ed6ab3f598479dd2f5f799af6902fd1dff99f04014",
+      "actual_size": 95020,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/KingEtemon.TIM",
+      "sha": "a74814e44199c16f3a035c156af0e73234cdb6f3b613b2d0848dd2bfa5e84c17",
+      "size": 18432,
+      "actual": "a74814e44199c16f3a035c156af0e73234cdb6f3b613b2d0848dd2bfa5e84c17",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Hangyomon.MMD",
+      "sha": "43b732a23a95f75449c635045ebe13abf6a3da708d97603e549a6774a892bd11",
+      "size": 98130,
+      "actual": "43b732a23a95f75449c635045ebe13abf6a3da708d97603e549a6774a892bd11",
+      "actual_size": 98130,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Hangyomon.TIM",
+      "sha": "cbd98827537d5b90e8c96dc4eeba3e79e207442af8cdfcb5f6cbf5f478b1f5ac",
+      "size": 18432,
+      "actual": "cbd98827537d5b90e8c96dc4eeba3e79e207442af8cdfcb5f6cbf5f478b1f5ac",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Ebidramon.MMD",
+      "sha": "cb3dc2e247af843eb2ab37517d06412a520d13627a1fc3eefba6b219cc1dba1a",
+      "size": 99982,
+      "actual": "cb3dc2e247af843eb2ab37517d06412a520d13627a1fc3eefba6b219cc1dba1a",
+      "actual_size": 99982,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Ebidramon.TIM",
+      "sha": "ed56a5c5aace4dd85091b4781f4b4cde9bd4f3189a9dacd1f9a4ee80077e4c17",
+      "size": 18432,
+      "actual": "ed56a5c5aace4dd85091b4781f4b4cde9bd4f3189a9dacd1f9a4ee80077e4c17",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/GrapLeomon.MMD",
+      "sha": "31abeda53694265798d1d155155c9ba9631afaa6839fc660b7b70b51961a8472",
+      "size": 99856,
+      "actual": "503158cbe9c5a7e63b0c30aaffac5908e28cd97104a37da3b692e0ca36ffeb38",
+      "actual_size": 99904,
+      "status": "different"
+    },
+    {
+      "path": "build/batch11/GrapLeomon.TIM",
+      "sha": "2f54052d676fbd5272158259be3a197d7e303ce73f11e9d7990800357b50f7fb",
+      "size": 18432,
+      "actual": "2f54052d676fbd5272158259be3a197d7e303ce73f11e9d7990800357b50f7fb",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/BK-KingNumemon.MMD",
+      "sha": "606f1489afd5b9110a201c26fbaa2c4edbc65c134e4de86000f939300dc27e61",
+      "size": 99204,
+      "actual": "606f1489afd5b9110a201c26fbaa2c4edbc65c134e4de86000f939300dc27e61",
+      "actual_size": 99204,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/BK-KingNumemon.TIM",
+      "sha": "170c48a011286617ae726ed232d1446e1955dfe96d4705f035d89eb717359d7b",
+      "size": 18432,
+      "actual": "170c48a011286617ae726ed232d1446e1955dfe96d4705f035d89eb717359d7b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Dinohumon.MMD",
+      "sha": "c0353d07df1953f901802b798d6529193ccfaac87637cff2194f9aa9243e7fc0",
+      "size": 96578,
+      "actual": "c0353d07df1953f901802b798d6529193ccfaac87637cff2194f9aa9243e7fc0",
+      "actual_size": 96578,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Dinohumon.TIM",
+      "sha": "3188b130a24548743a02d7b4b43906c47742e82b5619a6f544963ae02a24c17d",
+      "size": 18432,
+      "actual": "3188b130a24548743a02d7b4b43906c47742e82b5619a6f544963ae02a24c17d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Antylamon.MMD",
+      "sha": "75197950a83c9138304b3034d43201724bfa9d0e8a35f038ea10483d5f60e8d1",
+      "size": 96482,
+      "actual": "75197950a83c9138304b3034d43201724bfa9d0e8a35f038ea10483d5f60e8d1",
+      "actual_size": 96482,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Antylamon.TIM",
+      "sha": "7e45183459aed0c6ddeef8f10b9734068c34721f50222d824589dcf6b6a63c30",
+      "size": 18432,
+      "actual": "7e45183459aed0c6ddeef8f10b9734068c34721f50222d824589dcf6b6a63c30",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Armormon.MMD",
+      "sha": "c419e8fd5ddbf535d1879ee9e071484f634192ba4e16bf941468cde4877fa0d4",
+      "size": 96664,
+      "actual": "de841556f22114e517d220efa4e5a2abcdaa5aba6a014663ab2eae43ccc21431",
+      "actual_size": 96680,
+      "status": "different"
+    },
+    {
+      "path": "build/batch11/Armormon.TIM",
+      "sha": "d729918d5fe5b93384688355c151f9cad2dd140447145e5a6672761a8e9d6f3d",
+      "size": 18432,
+      "actual": "d729918d5fe5b93384688355c151f9cad2dd140447145e5a6672761a8e9d6f3d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Arukenimon.MMD",
+      "sha": "f575a51d7e72fd3e0d6c17679245ee0ada7a6a806372b604136e367b1349d13c",
+      "size": 98556,
+      "actual": "88de70088ae50d31f06cb35d49d3e509b768dd62cfc51040253c29bc1168a62c",
+      "actual_size": 98588,
+      "status": "different"
+    },
+    {
+      "path": "build/batch11/Arukenimon.TIM",
+      "sha": "3c40d7b258137a79535fe79765d95f96b3d5538a2cec760bc9f5af60d960bdd9",
+      "size": 18432,
+      "actual": "3c40d7b258137a79535fe79765d95f96b3d5538a2cec760bc9f5af60d960bdd9",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Daemon.MMD",
+      "sha": "435c31a426fa6d2ce148e032b106ac17e0da5ceb0010e2aab2224ee847d0d245",
+      "size": 84748,
+      "actual": "367180a4684b364816d6d69995a5c280103b7bbb7a7db8ce36149b8296832136",
+      "actual_size": 84748,
+      "status": "different"
+    },
+    {
+      "path": "build/batch11/Daemon.TIM",
+      "sha": "8f8db596b60a03d3f9ee57188bfc06422cb54bf54eb21c0e1fa56591b60329ba",
+      "size": 18432,
+      "actual": "8f8db596b60a03d3f9ee57188bfc06422cb54bf54eb21c0e1fa56591b60329ba",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Bulbmon.MMD",
+      "sha": "50beef5d809ef8394b5b206235cabb256cb6e346acfdf74657a75e97d337fa7f",
+      "size": 76218,
+      "actual": "50beef5d809ef8394b5b206235cabb256cb6e346acfdf74657a75e97d337fa7f",
+      "actual_size": 76218,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch11/Bulbmon.TIM",
+      "sha": "684a86075dcc31d2e67ec7b98d3174ca5fb739b90696adcafe224c14b8e3b573",
+      "size": 18432,
+      "actual": "684a86075dcc31d2e67ec7b98d3174ca5fb739b90696adcafe224c14b8e3b573",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/SkullSatamon.MMD",
+      "sha": "5f579b52fdbc14a18b12d62ccf814d83629a6b92dba59caf6a3b6a6e39beeb45",
+      "size": 97628,
+      "actual": "2bd8db23e42499f89d64e325fc30c82d429d77ec0170fe65ccd25e5497c5e65e",
+      "actual_size": 97628,
+      "status": "different"
+    },
+    {
+      "path": "build/batch12/SkullSatamon.TIM",
+      "sha": "712ae5084caec49ac1b6159e46a6adbc540a9e9d3522518f8629764a58a77aa2",
+      "size": 18432,
+      "actual": "712ae5084caec49ac1b6159e46a6adbc540a9e9d3522518f8629764a58a77aa2",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Taomon.MMD",
+      "sha": "abea58b80629ba70e64a2d091f2d26d31bfb5276c9393073f9dcafa55c82cb1a",
+      "size": 97300,
+      "actual": "abea58b80629ba70e64a2d091f2d26d31bfb5276c9393073f9dcafa55c82cb1a",
+      "actual_size": 97300,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Taomon.TIM",
+      "sha": "0222c13eaabca6632bb5c770b757b88482fe6411fc0d4e170e30d90f3ab6b199",
+      "size": 18432,
+      "actual": "0222c13eaabca6632bb5c770b757b88482fe6411fc0d4e170e30d90f3ab6b199",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Sakuyamon.MMD",
+      "sha": "c5131685795a4b0bca074956b72e180f095d3596333c98b42fdf5e14fc7807d1",
+      "size": 100170,
+      "actual": "bfad51f26a53247ffcdb1feb650528abd6869737f46240d1cc732417b8ace08c",
+      "actual_size": 100186,
+      "status": "different"
+    },
+    {
+      "path": "build/batch12/Sakuyamon.TIM",
+      "sha": "96ada9686ccae5f548c7a01806c6ed8890a69ccf793e2a81d29f2349c68d3385",
+      "size": 18432,
+      "actual": "96ada9686ccae5f548c7a01806c6ed8890a69ccf793e2a81d29f2349c68d3385",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Fujinmon.MMD",
+      "sha": "9b40888f64b2450573e60e0691e10adc27bb3756915a56030dbf78ae02796d08",
+      "size": 86938,
+      "actual": "9b40888f64b2450573e60e0691e10adc27bb3756915a56030dbf78ae02796d08",
+      "actual_size": 86938,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Fujinmon.TIM",
+      "sha": "b676759ba5cc99bae86e7bfa7ff83f884543581f42dfb2fc7974ebcdd0ddb2d0",
+      "size": 18432,
+      "actual": "b676759ba5cc99bae86e7bfa7ff83f884543581f42dfb2fc7974ebcdd0ddb2d0",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Gallantmon.MMD",
+      "sha": "a66a33cbe2c2552cee795fc8b00b6bfad03cef4da6ed8d99dca2306d526dd687",
+      "size": 98504,
+      "actual": "c3da9ad781580688de4fbaeeeb7720bdaa3944d1855c363cc0c881c5d3dcdab2",
+      "actual_size": 98560,
+      "status": "different"
+    },
+    {
+      "path": "build/batch12/Gallantmon.TIM",
+      "sha": "52bad5a659d22fc66f53fa3695abef82df4924f0c135ae04f5812ff15d15fed1",
+      "size": 18432,
+      "actual": "52bad5a659d22fc66f53fa3695abef82df4924f0c135ae04f5812ff15d15fed1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Pharaohmon.MMD",
+      "sha": "5bf1eb7da946e94ef7ff53e9c22d25e647c18d441d0c410d4b630fb26e934dd5",
+      "size": 88752,
+      "actual": "5bf1eb7da946e94ef7ff53e9c22d25e647c18d441d0c410d4b630fb26e934dd5",
+      "actual_size": 88752,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Pharaohmon.TIM",
+      "sha": "19eb0b134653a49df8ff5d1c6ce91c204e70dff83cef92d0d3b38d10d6246d68",
+      "size": 18432,
+      "actual": "19eb0b134653a49df8ff5d1c6ce91c204e70dff83cef92d0d3b38d10d6246d68",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Growlmon.MMD",
+      "sha": "735429e8efde023301a5ba66be762be2e337a7329ab85ef3f7ed24d889fb5eec",
+      "size": 99580,
+      "actual": "735429e8efde023301a5ba66be762be2e337a7329ab85ef3f7ed24d889fb5eec",
+      "actual_size": 99580,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Growlmon.TIM",
+      "sha": "609ffd64a3a4144c6ecf66caa0efb92f93dcf2daad4fe2eb3b4ea80104f6617c",
+      "size": 18432,
+      "actual": "609ffd64a3a4144c6ecf66caa0efb92f93dcf2daad4fe2eb3b4ea80104f6617c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Knightmon.MMD",
+      "sha": "5f4f01fe45d19834aef49f9835ec65fe1186136c78fe2d3529eaf257ec762861",
+      "size": 100348,
+      "actual": "5f4f01fe45d19834aef49f9835ec65fe1186136c78fe2d3529eaf257ec762861",
+      "actual_size": 100348,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Knightmon.TIM",
+      "sha": "b09a3bdf7fbf148a76268aa83e5a62fa7604a7bfc10351cb47862695e4d28bed",
+      "size": 18432,
+      "actual": "b09a3bdf7fbf148a76268aa83e5a62fa7604a7bfc10351cb47862695e4d28bed",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Kyukimon.MMD",
+      "sha": "88bb9a8413ad78ab116322e3cc7be980c8f0f7b49473104730fe52ec8fc3db60",
+      "size": 85434,
+      "actual": "88bb9a8413ad78ab116322e3cc7be980c8f0f7b49473104730fe52ec8fc3db60",
+      "actual_size": 85434,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Kyukimon.MMD",
+      "sha": "1b0bfee793af4d93ee1f5e933d4a2b9e557768d9d84e6b72b101b23e5a58cecb",
+      "size": 85434,
+      "actual": "1b0bfee793af4d93ee1f5e933d4a2b9e557768d9d84e6b72b101b23e5a58cecb",
+      "actual_size": 85434,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Kyukimon.TIM",
+      "sha": "89a15e292735d6f4c6ef8e44de9c71936b2d510f1e4e617d22d945e7641e74f1",
+      "size": 18432,
+      "actual": "89a15e292735d6f4c6ef8e44de9c71936b2d510f1e4e617d22d945e7641e74f1",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Lynxmon.MMD",
+      "sha": "f2b2fa4284686d5f20f9c1f3efd9d3046ccadf997f03245d5e54e811160abd41",
+      "size": 83504,
+      "actual": "f2b2fa4284686d5f20f9c1f3efd9d3046ccadf997f03245d5e54e811160abd41",
+      "actual_size": 83504,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch12/Lynxmon.TIM",
+      "sha": "378c9867fe6e317bae83046d624139d1e1323fc9420a28ec65188590d0df63bb",
+      "size": 18432,
+      "actual": "378c9867fe6e317bae83046d624139d1e1323fc9420a28ec65188590d0df63bb",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Maildramon.MMD",
+      "sha": "8f96f1e99062dcaaa5fa9d7c8b137c4c7826b50637153c20637441848c9049fb",
+      "size": 95462,
+      "actual": "2c03904d93a3adb811d719f7e4e2e5ad11d3a5a31d98ae73757c993222ab9121",
+      "actual_size": 95510,
+      "status": "different"
+    },
+    {
+      "path": "build/batch12/Maildramon.TIM",
+      "sha": "cad5d5d4c34f7cb4ef286ce7cf64e5eafb68498db47445916c98fbd6ca0ea30b",
+      "size": 18432,
+      "actual": "cad5d5d4c34f7cb4ef286ce7cf64e5eafb68498db47445916c98fbd6ca0ea30b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Musyamon.MMD",
+      "sha": "c27bc901a83c761fbd9484733cba137161e62af5138d73a30d86f5031f9c61c0",
+      "size": 97886,
+      "actual": "01e743d5d5b0cc2ba1154d3eae609d35860b8991f024336632234fd4bd8cf1f8",
+      "actual_size": 97918,
+      "status": "different"
+    },
+    {
+      "path": "build/batch12/Musyamon.TIM",
+      "sha": "18f709acc7bcee90bd318cfc4897f502b6b7bd78d090a3e145c1f01e63e47121",
+      "size": 18432,
+      "actual": "18f709acc7bcee90bd318cfc4897f502b6b7bd78d090a3e145c1f01e63e47121",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/WarGrowlmon.MMD",
+      "sha": "44a7c29f9cde2a29224ee7c750488091eb2ba493200ae582ff37bf25390d6840",
+      "size": 98700,
+      "actual": "44a7c29f9cde2a29224ee7c750488091eb2ba493200ae582ff37bf25390d6840",
+      "actual_size": 98700,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/WarGrowlmon.TIM",
+      "sha": "999bd7b7c1ced5bcf3f6734bbd635e2d9c45850e3c3d550bc10c60e9aec719ef",
+      "size": 18432,
+      "actual": "999bd7b7c1ced5bcf3f6734bbd635e2d9c45850e3c3d550bc10c60e9aec719ef",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Gargoylemon.MMD",
+      "sha": "9502ce70833fe2b71fddf93809b4571dd8b321feb3890e45450106a1d10ee6ae",
+      "size": 92668,
+      "actual": "9502ce70833fe2b71fddf93809b4571dd8b321feb3890e45450106a1d10ee6ae",
+      "actual_size": 92668,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Gargoylemon.TIM",
+      "sha": "d45e61f98344ddfe82716d006ab04d86a8555afdffb55077932b16685572d14c",
+      "size": 18432,
+      "actual": "d45e61f98344ddfe82716d006ab04d86a8555afdffb55077932b16685572d14c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Snimon.MMD",
+      "sha": "e9937afdb1a565682467a7cfec660bd741ca4d016e73ee0664fdd136fb1d3097",
+      "size": 98760,
+      "actual": "e9937afdb1a565682467a7cfec660bd741ca4d016e73ee0664fdd136fb1d3097",
+      "actual_size": 98760,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Snimon.TIM",
+      "sha": "c8be12c973612b3487bb4eda3586c879f57930acf16f440ed15ff8f064cc813d",
+      "size": 18432,
+      "actual": "c8be12c973612b3487bb4eda3586c879f57930acf16f440ed15ff8f064cc813d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Ghoulmon.MMD",
+      "sha": "0ab66b6933c8f622ab1eccba45ce03db075259dad0b80e817a0b7642ff9b4247",
+      "size": 98544,
+      "actual": "0ab66b6933c8f622ab1eccba45ce03db075259dad0b80e817a0b7642ff9b4247",
+      "actual_size": 98544,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Ghoulmon.TIM",
+      "sha": "2762075d6fac9ff34f6f4759dc7581a8fdc95ee71f87f38f72e034a9446821e3",
+      "size": 18432,
+      "actual": "2762075d6fac9ff34f6f4759dc7581a8fdc95ee71f87f38f72e034a9446821e3",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Minotarumon.MMD",
+      "sha": "7dd93b8dc2eb57b792fc4707f1699bc11d804931ecfd2d733a45427fa0b3d34f",
+      "size": 96864,
+      "actual": "7dd93b8dc2eb57b792fc4707f1699bc11d804931ecfd2d733a45427fa0b3d34f",
+      "actual_size": 96864,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Minotarumon.TIM",
+      "sha": "38ed8cec54150927425e5a422745c25b8afacae3e6d94778ca78e50214070b75",
+      "size": 18432,
+      "actual": "38ed8cec54150927425e5a422745c25b8afacae3e6d94778ca78e50214070b75",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Snatchmon.MMD",
+      "sha": "dc9afcf6acfdb7b2768ea1df18c50e44c847a92cac680e41bb12947b567d02fd",
+      "size": 95208,
+      "actual": "dc9afcf6acfdb7b2768ea1df18c50e44c847a92cac680e41bb12947b567d02fd",
+      "actual_size": 95208,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Snatchmon.TIM",
+      "sha": "c497c1708d21ecd0f479d5371b9a7d2ee65efb082fda0a2b396d5c45c057d256",
+      "size": 18432,
+      "actual": "c497c1708d21ecd0f479d5371b9a7d2ee65efb082fda0a2b396d5c45c057d256",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Gokimon.MMD",
+      "sha": "8da822af7d491cfbe78acdf91e1851cd17b1f27d678f140fb9f88054b2cc7891",
+      "size": 98548,
+      "actual": "8da822af7d491cfbe78acdf91e1851cd17b1f27d678f140fb9f88054b2cc7891",
+      "actual_size": 98548,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Gokimon.TIM",
+      "sha": "f3bb9b618a1f3d4b676504a723262ef54b4739be809460c25aae222d40336101",
+      "size": 18432,
+      "actual": "f3bb9b618a1f3d4b676504a723262ef54b4739be809460c25aae222d40336101",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Raijinmon.MMD",
+      "sha": "3ef42bed545cc48f12de1a24db2cea3325da3441724e76dfe3ee22ac5d54998e",
+      "size": 92084,
+      "actual": "3ef42bed545cc48f12de1a24db2cea3325da3441724e76dfe3ee22ac5d54998e",
+      "actual_size": 92084,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Raijinmon.TIM",
+      "sha": "959d2cbdffd4133a9b6a73e5c376a8cef0153d661e5e62dfa72b767ed326b5f2",
+      "size": 18432,
+      "actual": "959d2cbdffd4133a9b6a73e5c376a8cef0153d661e5e62dfa72b767ed326b5f2",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Mummymon.MMD",
+      "sha": "258fd8a8a7ef0bbfd399b4350df9f09c780f17b873048abded13fd0e36d74456",
+      "size": 99578,
+      "actual": "258fd8a8a7ef0bbfd399b4350df9f09c780f17b873048abded13fd0e36d74456",
+      "actual_size": 99578,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Mummymon.TIM",
+      "sha": "0b7270ee374ef3004b4b5c742f87d0d0349eef134975cdb7003344efb43a01da",
+      "size": 18432,
+      "actual": "0b7270ee374ef3004b4b5c742f87d0d0349eef134975cdb7003344efb43a01da",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/MegaGargomon.MMD",
+      "sha": "aa18e4528e95bdf7db0c553002d8f7f0f70d736399b81314539ff75303dc1fc4",
+      "size": 99104,
+      "actual": "aa18e4528e95bdf7db0c553002d8f7f0f70d736399b81314539ff75303dc1fc4",
+      "actual_size": 99104,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/MegaGargomon.TIM",
+      "sha": "1b669a314b90593f21889ac537cced33ae927a56fe4ecec4e7e4654bafaa11b6",
+      "size": 18432,
+      "actual": "1b669a314b90593f21889ac537cced33ae927a56fe4ecec4e7e4654bafaa11b6",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/sizes-out/models/Raidenmon.MMD",
+      "sha": "aa88bc4fc671ead839a68d87bde1d6d1ee8d62ad4ec00607bb376090e25fae96",
+      "size": 90400,
+      "actual": "aa88bc4fc671ead839a68d87bde1d6d1ee8d62ad4ec00607bb376090e25fae96",
+      "actual_size": 90400,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch13/Raidenmon.TIM",
+      "sha": "56d5d54d91627475f69b8a1620e28a042cd75d94178601937263509388b098dc",
+      "size": 18432,
+      "actual": "56d5d54d91627475f69b8a1620e28a042cd75d94178601937263509388b098dc",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Kotemon.MMD",
+      "sha": "5d73aba5517bc2180bbbe091ae834b044412d025322131773da6d75d418d5716",
+      "size": 98320,
+      "actual": "5d73aba5517bc2180bbbe091ae834b044412d025322131773da6d75d418d5716",
+      "actual_size": 98320,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Kotemon.TIM",
+      "sha": "9dec8fb565458872f34d7ffc617edc7ed66fb2048de6f4880f8274deb513f2f7",
+      "size": 18432,
+      "actual": "9dec8fb565458872f34d7ffc617edc7ed66fb2048de6f4880f8274deb513f2f7",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Monmon.MMD",
+      "sha": "1a4ad4f079174ae64197235b00e6a4988c779111dda255804d01a2e63127eb3d",
+      "size": 94664,
+      "actual": "1a4ad4f079174ae64197235b00e6a4988c779111dda255804d01a2e63127eb3d",
+      "actual_size": 94664,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Monmon.TIM",
+      "sha": "d68cfc46969b2f8cc12d9cc2cd06d225e0672a890a838cc2023396bbfd8e681c",
+      "size": 18432,
+      "actual": "d68cfc46969b2f8cc12d9cc2cd06d225e0672a890a838cc2023396bbfd8e681c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Bearmon.MMD",
+      "sha": "eb0c0481eaea1f8a7c29f23a4f418a4e711b883fc40a81cffc19c45e9c8272a1",
+      "size": 84700,
+      "actual": "eb0c0481eaea1f8a7c29f23a4f418a4e711b883fc40a81cffc19c45e9c8272a1",
+      "actual_size": 84700,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Bearmon.TIM",
+      "sha": "7d9041572b98339e0a28564a6c40cc604bb1c7adc0bdeb68945bc269ff4d9c85",
+      "size": 18432,
+      "actual": "7d9041572b98339e0a28564a6c40cc604bb1c7adc0bdeb68945bc269ff4d9c85",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Renamon.MMD",
+      "sha": "272c43d03e5dd7b6d31b47f6c5ef2bba9db7b67488b0a603640d815dc6cb3c49",
+      "size": 92812,
+      "actual": "272c43d03e5dd7b6d31b47f6c5ef2bba9db7b67488b0a603640d815dc6cb3c49",
+      "actual_size": 92812,
+      "status": "equal"
+    },
+    {
+      "path": "build/batch16/Renamon.TIM",
+      "sha": "be8e59ab9fda1983a7dba8a0eb3e22462fc6266b187fe0f4b0f6960865055b36",
+      "size": 18432,
+      "actual": "be8e59ab9fda1983a7dba8a0eb3e22462fc6266b187fe0f4b0f6960865055b36",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/models/WarGreymon.MMD",
+      "sha": "01171cc9b7bca4e995750740aefd9356374afadd6e74b081bd35e62277f703b3",
+      "size": 100014,
+      "actual": "ffb7e07b628d2e6de8aafef65d3c30f88c26867094714d5d7124d8c0bddc6225",
+      "actual_size": 99870,
+      "status": "different"
+    },
+    {
+      "path": "build/models/WarGreymon.TIM",
+      "sha": "ec692f390a554999988dc43855312be84dc0333c6385c90c3fd3fce1de48bb70",
+      "size": 18432,
+      "actual": "ec692f390a554999988dc43855312be84dc0333c6385c90c3fd3fce1de48bb70",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Apocalymon.MMD",
+      "sha": "5720c04c618ac14d1b9f80070107dfb2f7d4229e1f946f4105f527b9871c0e63",
+      "size": 100010,
+      "actual": "5720c04c618ac14d1b9f80070107dfb2f7d4229e1f946f4105f527b9871c0e63",
+      "actual_size": 100010,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Apocalymon.TIM",
+      "sha": "0f21759f2a9ea45364027a481224f7cce867661bbcf9c7d5e38cb78f69d36e58",
+      "size": 18432,
+      "actual": "0f21759f2a9ea45364027a481224f7cce867661bbcf9c7d5e38cb78f69d36e58",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Pukumon.MMD",
+      "sha": "ea51fdf0235727391c959b49285272f9318dc52fcaf53ed5da6771e3d59f2ac3",
+      "size": 79352,
+      "actual": "ea51fdf0235727391c959b49285272f9318dc52fcaf53ed5da6771e3d59f2ac3",
+      "actual_size": 79352,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Pukumon.TIM",
+      "sha": "6a56ca3adec890b00cdb092026fd69aea42a7021f2f552a0f2da6b1b9f85a478",
+      "size": 18432,
+      "actual": "6a56ca3adec890b00cdb092026fd69aea42a7021f2f552a0f2da6b1b9f85a478",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/neocrimson-out/NeoCrimson.MMD",
+      "sha": "f9540450169042ce1eefabba708ba6b1cad42d6f565c19c8aa9d3559e1edb78d",
+      "size": 98008,
+      "actual": "27f24ce38b3c9476734e1c35656d256434e134df18725a65bfd49cf41e2215e5",
+      "actual_size": 99310,
+      "status": "different"
+    },
+    {
+      "path": "build/meshfix2-out/NeoCrimson.TIM",
+      "sha": "4c1d0d072d414470878c7b26e6afa819c5303efb4603735b6a261c243d377279",
+      "size": 18432,
+      "actual": "4c1d0d072d414470878c7b26e6afa819c5303efb4603735b6a261c243d377279",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Beelzemon.MMD",
+      "sha": "587914715b370176deda238b07c22dfb9f35ffb1654cd64c25f07b846929e931",
+      "size": 97258,
+      "actual": "067296c6b8ca5c0c47ee203a43ffed085dbda01d66a20a8c0ba029ee58253d38",
+      "actual_size": 97258,
+      "status": "different"
+    },
+    {
+      "path": "build/meshfix2-out/Beelzemon.TIM",
+      "sha": "8ef653b666b075f705e3566dbfb6bc9a300633b37abcd021354ef2b3bfe1fab5",
+      "size": 18432,
+      "actual": "8ef653b666b075f705e3566dbfb6bc9a300633b37abcd021354ef2b3bfe1fab5",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/BlackWarGreymon.MMD",
+      "sha": "033ea2807ea43177e54f086f28fe83a38f9799ecc2ca66ce4bb2d74b8c5ccf98",
+      "size": 98528,
+      "actual": "033ea2807ea43177e54f086f28fe83a38f9799ecc2ca66ce4bb2d74b8c5ccf98",
+      "actual_size": 98528,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/BlackWarGreymon.TIM",
+      "sha": "cad5e13d7d8c2bbc46424c9e60dbc82c1d623e9a6dc837e9d7d592ed9c615990",
+      "size": 18432,
+      "actual": "cad5e13d7d8c2bbc46424c9e60dbc82c1d623e9a6dc837e9d7d592ed9c615990",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Cannondramon.MMD",
+      "sha": "e2788afb723f6fb6405b15cd12bd46aa75ede5e67de40b5f849a50addb51d480",
+      "size": 99384,
+      "actual": "8abee5b76a633a04cfe65277e2556067f48a98b6a09087a46c49fabf5ff682a4",
+      "actual_size": 99408,
+      "status": "different"
+    },
+    {
+      "path": "build/meshfix2-out/Cannondramon.TIM",
+      "sha": "14b4b6305ef040cb43ae4483b9a6fee6831f9ec4132e9f697bb842fcc4412dc3",
+      "size": 18432,
+      "actual": "14b4b6305ef040cb43ae4483b9a6fee6831f9ec4132e9f697bb842fcc4412dc3",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/MaloMyotismon.MMD",
+      "sha": "cf1b597ce72e12dacc90c16488a100d2371d1c1485959a5855925e56660ba11d",
+      "size": 98044,
+      "actual": "6327dedc155b5ceca0066c89a93fc9386dccc2997776f64cfac6e1cf55705e64",
+      "actual_size": 98044,
+      "status": "different"
+    },
+    {
+      "path": "build/meshfix2-out/MaloMyotismon.TIM",
+      "sha": "c1e13e5a25194bd361472f92c290f6b041fc2847b60fbdfd8848584dd01d34ff",
+      "size": 18432,
+      "actual": "c1e13e5a25194bd361472f92c290f6b041fc2847b60fbdfd8848584dd01d34ff",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/rescue-armagemon/Armagemon.MMD",
+      "sha": "2fe3491fc12715f326c8ef4120ada79d2491a4179b29a59f44460c084e5755cd",
+      "size": 74074,
+      "actual": "48af106790a8dee838df639b48ad20bba9347f52246a4120236a9ab11ee4ce60",
+      "actual_size": 74074,
+      "status": "different"
+    },
+    {
+      "path": "build/meshfix2-out/Armagemon.TIM",
+      "sha": "1188a5e592638fb92b0d271875ed6787a85dd8d64d690334410333df3cefdfdd",
+      "size": 18432,
+      "actual": "1188a5e592638fb92b0d271875ed6787a85dd8d64d690334410333df3cefdfdd",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/meshfix2-out/Suijinmon.MMD",
+      "sha": "5b2a3103095389d44b526cd5b421533f2fd34305e10896e5069ed81d97b808ea",
+      "size": 89396,
+      "actual": "ffbe5158548f632ede08d5d077ec754ee76381530d8b690222af752125a71412",
+      "actual_size": 89396,
+      "status": "different"
+    },
+    {
+      "path": "build/batch13/Suijinmon.TIM",
+      "sha": "bbfd15d43bf3066c062883c86cb846823c83f1f8f0a3ffaf2adcd4fb2e24978b",
+      "size": 18432,
+      "actual": "bbfd15d43bf3066c062883c86cb846823c83f1f8f0a3ffaf2adcd4fb2e24978b",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/rescue-kyubimon/Kyubimon.MMD",
+      "sha": "8ea6b2b3dc730caeaec6b326d04b733d83fd53a00e61d1f3801190d7b072853d",
+      "size": 97902,
+      "actual": "8ea6b2b3dc730caeaec6b326d04b733d83fd53a00e61d1f3801190d7b072853d",
+      "actual_size": 97902,
+      "status": "equal"
+    },
+    {
+      "path": "build/rescue-kyubimon/Kyubimon.TIM",
+      "sha": "e82188f682497a6a360b8742e5480823e0d40b28d384c0031eb3b13c2195946c",
+      "size": 18432,
+      "actual": "e82188f682497a6a360b8742e5480823e0d40b28d384c0031eb3b13c2195946c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/rigfix/Zanbamon.MMD",
+      "sha": "343f8ac705d03e5c4e1e7cfed52bf172a8b1920948aa49748ef361be2aaa59dd",
+      "size": 99362,
+      "actual": "343f8ac705d03e5c4e1e7cfed52bf172a8b1920948aa49748ef361be2aaa59dd",
+      "actual_size": 99362,
+      "status": "equal"
+    },
+    {
+      "path": "build/rigfix/Zanbamon.TIM",
+      "sha": "ecc23bc04f15b15a851ae75f7c8264c843f4a1fea8530b16eb9214d0e3ac8b51",
+      "size": 18432,
+      "actual": "ecc23bc04f15b15a851ae75f7c8264c843f4a1fea8530b16eb9214d0e3ac8b51",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/rigfix/Chrysalimon.MMD",
+      "sha": "3d16761c79f8753e5e989ef4a6997269894028a8c04fac44c04952799314c083",
+      "size": 97596,
+      "actual": "be7c37758eaf5a4242f26310ce32c16d8a972dd8286e07d5591cf404a1fbefc7",
+      "actual_size": 92780,
+      "status": "different"
+    },
+    {
+      "path": "build/rigfix/Chrysalimon.TIM",
+      "sha": "a2cea5236f5acc9d1f2ab16600088e4f0658c28e783e72dbdbb84c171f10e82d",
+      "size": 18432,
+      "actual": "a2cea5236f5acc9d1f2ab16600088e4f0658c28e783e72dbdbb84c171f10e82d",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/bastemon/Bastemon.MMD",
+      "sha": "cdf1a8eca4f9c906136d7a270fb1499e3bee485590296460708a8a678f1ba223",
+      "size": 100130,
+      "actual": "cdf1a8eca4f9c906136d7a270fb1499e3bee485590296460708a8a678f1ba223",
+      "actual_size": 100130,
+      "status": "equal"
+    },
+    {
+      "path": "build/bastemon/Bastemon.TIM",
+      "sha": "655743e74d94118a5969c3f0e6d11950f2dfddfb025db06458bbd973e0be5f8c",
+      "size": 18432,
+      "actual": "655743e74d94118a5969c3f0e6d11950f2dfddfb025db06458bbd973e0be5f8c",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/guilmon/Guilmon.MMD",
+      "sha": "01efd98ee6ed6d132c20eb17dcd27222487029f0c386900785cbb963514e6c78",
+      "size": 97800,
+      "actual": "01efd98ee6ed6d132c20eb17dcd27222487029f0c386900785cbb963514e6c78",
+      "actual_size": 97800,
+      "status": "equal"
+    },
+    {
+      "path": "build/guilmon/Guilmon.TIM",
+      "sha": "96b1f034dc3b193c6bac14f4e562ad931b0674bc1292b0a6a599c697b6f1f26f",
+      "size": 18432,
+      "actual": "96b1f034dc3b193c6bac14f4e562ad931b0674bc1292b0a6a599c697b6f1f26f",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/fitfix/Garudamon.MMD",
+      "sha": "c9f39a3bad46af485eb8eba6e67ddf28fe425b14fbc48c84c8a37e95cb77081b",
+      "size": 99582,
+      "actual": "c9f39a3bad46af485eb8eba6e67ddf28fe425b14fbc48c84c8a37e95cb77081b",
+      "actual_size": 99582,
+      "status": "equal"
+    },
+    {
+      "path": "build/fitfix/Garudamon.TIM",
+      "sha": "0676ffe9b28b476d1c0cf5e6dbdb60389693a61257b41f76fe5cce54dfed8416",
+      "size": 18432,
+      "actual": "0676ffe9b28b476d1c0cf5e6dbdb60389693a61257b41f76fe5cce54dfed8416",
+      "actual_size": 18432,
+      "status": "equal"
+    },
+    {
+      "path": "build/fitfix/Omnimon.MMD",
+      "sha": "7a1a53dbe93b9b4bce71fbc14af37b3772582d5aace63e364c81bb680546cd8b",
+      "size": 97144,
+      "actual": "7a1a53dbe93b9b4bce71fbc14af37b3772582d5aace63e364c81bb680546cd8b",
+      "actual_size": 97144,
+      "status": "equal"
+    },
+    {
+      "path": "build/fitfix/Omnimon.TIM",
+      "sha": "6387449e3537ed73163727bd113b388c886204a4994f441411b2dcb5620e560f",
+      "size": 18432,
+      "actual": "6387449e3537ed73163727bd113b388c886204a4994f441411b2dcb5620e560f",
+      "actual_size": 18432,
+      "status": "equal"
+    }
+  ]
+}

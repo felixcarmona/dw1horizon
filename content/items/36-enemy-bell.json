@@ -1,0 +1,10 @@
+{
+  "id": 36,
+  "name": "Enemy bell",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 5,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0
+}

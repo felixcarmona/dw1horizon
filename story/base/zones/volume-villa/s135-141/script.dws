@@ -1,0 +1,179 @@
+// Readable form of script 135 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 135 {
+    npc shogungekomon = 5;
+    npc gekomon1 = 6;
+    npc gekomon2 = 7;
+    npc gekomon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 81, 6, 7, 8;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(shogungekomon) replace {    // section 5
+        walk(tamer, -77, 119, camera: true);
+        walk(partner, 397, 151);
+        await tamer;
+        await partner;
+        face(tamer, shogungekomon);
+        face(partner, shogungekomon);
+        wait(10);
+        camera_to(-400, 2100, speed: 20);
+        await camera;
+        sound(8, 1);
+        say(shogungekomon, text("s135.sec5.u0"));
+        animate(tamer, 22);
+        wait(1s);
+        say(tamer, text("s135.sec5.u1"));
+        animate(tamer, anim.idle);
+        say(shogungekomon, text("s135.sec5.u2"));
+        animate(tamer, 23);
+        wait(1s);
+        say(tamer, text("s135.sec5.u3"));
+        animate(tamer, anim.idle);
+        animate(shogungekomon, 5);
+        wait(38);
+        animate(shogungekomon, anim.idle);
+        say(shogungekomon, text("s135.sec5.u4"));
+        say(tamer, text("s135.sec5.u5"));
+        say(shogungekomon, text("s135.sec5.u6"));
+        if (!misty_trees_visited) {
+            say(tamer, text("s135.sec5.u7"));
+        }
+        if (misty_trees_visited) {
+            say(tamer, text("s135.sec5.u8"));
+        }
+        say(shogungekomon, text("s135.sec5.u9"));
+        if (cherrymon_met) {
+            say(tamer, text("s135.sec5.u22"));
+            say(shogungekomon, text("s135.sec5.u23"));
+            animate(shogungekomon, anim.idle);
+            say(narrator, text("s135.sec5.u24"));
+            if (engine.item_did_not_fit && has(item("Digiseabass")) < 1) {
+                say(narrator, text("s135.sec5.u25"));
+                engine.picker_mode = false;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+            }
+            give_item(item("Digiseabass"), 1);
+            say(shogungekomon, text("s135.sec5.u26"));
+            animate(tamer, 19);
+            wait(1s);
+            say(tamer, text("s135.sec5.u27"));
+            say(shogungekomon, text("s135.sec5.u28"));
+            animate(shogungekomon, 30);
+            wait(55);
+            animate(shogungekomon, anim.idle);
+            shogun_gekomon_met = true;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        animate(tamer, 16);
+        wait(1s);
+        say(tamer, text("s135.sec5.u10"));
+        say(shogungekomon, text("s135.sec5.u11"));
+        animate(tamer, 25);
+        wait(1s);
+        say(tamer, text("s135.sec5.u12"));
+        animate(shogungekomon, 5);
+        wait(38);
+        animate(shogungekomon, anim.idle);
+        say(shogungekomon, text("s135.sec5.u13"));
+        say(tamer, text("s135.sec5.u14"));
+        say(shogungekomon, text("s135.sec5.u15"));
+        say(tamer, text("s135.sec5.u16"));
+        say(shogungekomon, text("s135.sec5.u17"));
+        animate(shogungekomon, anim.idle);
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s135.sec5.u18"));
+        say(shogungekomon, text("s135.sec5.u19"));
+        say(shogungekomon, text("s135.sec5.u20"));
+        animate(shogungekomon, 31);
+        sound(8, 0);
+        wait(70);
+        animate(shogungekomon, anim.idle);
+        animate(tamer, 15);
+        wait(30);
+        say(shogungekomon, text("s135.sec5.u21"));
+        animate(shogungekomon, 30);
+        wait(55);
+        animate(shogungekomon, anim.idle);
+        shogun_gekomon_met = true;
+        misty_trees_fog_spell_cast = true;
+        camera_on(tamer, speed: 10);
+        await camera;
+        return;
+    }
+
+    on use(1) replace {    // section 81
+        face(tamer, shogungekomon);
+        face(partner, shogungekomon);
+        wait(10);
+        camera_to(-400, 2100, speed: 20);
+        await camera;
+        sound(8, 1);
+        store_digimon_type(partner_type);
+        if (monzaemon_costume_tried && partner_type != 14) {
+            say(shogungekomon, text("s135.sec81.u0"));
+            say(tamer, text("s135.sec81.u1"));
+            say(shogungekomon, text("s135.sec81.u2"));
+            monzaemon_costume_tried = false;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        if (merit_shop_explained) {
+            engine.arg = 5;
+            call_routine(routine("merit_shop"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            if (has(item("Amazing rod")) >= 1) {
+                remove_item(item("Amazing rod"), 1);
+                have_amazing_rod = true;
+                say(shogungekomon, text("s135.sec81.u3"));
+            }
+            return;
+        }
+        unless (shogun_gekomon_met) goto sec6;
+        sound(8, 1);
+        say(shogungekomon, text("s135.sec81.u4"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(gekomon1) replace {    // section 6
+        if (merit_shop_explained) {
+            say(gekomon1, text("s135.sec6.u0"));
+            return;
+        }
+        say(gekomon1, text("s135.sec6.u1"));
+    }
+
+    on talk(gekomon2) replace {    // section 7
+        say(gekomon2, text("s135.sec7.u0"));
+        say(gekomon2, text("s135.sec7.u1"));
+        say(gekomon2, text("s135.sec7.u2"));
+        merit_shop_explained = true;
+    }
+
+    on talk(gekomon3) replace {    // section 8
+        if (!is_recruited(species("Greymon"))) {
+            say(gekomon3, text("s135.sec8.u0"));
+            return;
+        }
+        say(gekomon3, text("s135.sec8.u1"));
+        say(tamer, text("s135.sec8.u2"));
+        say(gekomon3, text("s135.sec8.u3"));
+        say(tamer, text("s135.sec8.u4"));
+        say(narrator, text("s135.sec8.u5"));
+        return;
+    }
+}

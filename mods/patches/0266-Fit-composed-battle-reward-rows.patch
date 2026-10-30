@@ -1,0 +1,204 @@
+From cf0e124eed61cf1f095c267e6fcaa88a541282a5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 12:29:57 +0000
+Subject: [PATCH] Fit the complete reward row while preserving typing and
+ colors
+
+---
+ include/dw/font.h    |  2 ++
+ src/btl/battle_hud.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
+ src/main/font.c      | 29 +++++++++++++++++------
+ 3 files changed, 79 insertions(+), 7 deletions(-)
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index 5125fc47..e60248ed 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -21,6 +21,7 @@ void drawString(/* char *str, uint16_t x, uint16_t y */);
+ /* MOD (long names): a name drawn tighter when it does not fit its field (font.c drawStringMode) */
+ #define FIT_VANILLA	0 /* drawString: the font's own spacing */
+ #define FIT_TIGHT	1 /* the same glyphs, one blank column between letters */
++#define FIT_COMPACT	3 /* condensed glyphs with no extra gap, for composed reward rows */
+ #define FIT_CONDENSED	2 /* the same, with a 5-column lowercase */
+ int32_t measureStringMode(char *str, int32_t mode);
+ int32_t fitStringMode(char *str, int32_t maxW);
+@@ -36,6 +37,7 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode);
+ #define TEXT_FIT_CONDENSED	0x11
+ #define TEXT_COLUMN		0x12
+ int32_t textFitCode(char *str, int32_t maxW);
++int32_t drawFittedRow(char *str, int32_t y, int32_t mode, const uint8_t *colors);
+ /* MOD (item names): the item name field of the inventory, the fishing bait list, the shop's amount box, the keeper and
+  * Mojyamon's trades: 96 pixels (the shop's lists: 93) */
+ #define ITEM_FIELD_W		0x60
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 4f2d712a..20cda437 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -696,6 +696,60 @@ void BTL_appendMoveLearnedText(move)
+ 	BATTLE_END_BOX_LINE_COUNT += 2;
+ }
+ 
++#if VERSION_IS(US)
++/* Fit a whole composed row, then redraw only the typed prefix. Keep the existing
++ * cursor, waits, colors, row count and scrolling. No persistent row buffer. */
++static int32_t BTL_drawFittedEndGlyph(void)
++{
++	char text[256];
++	uint8_t colors[256];
++	char *p = BTL_END_BOX_TEXTBUFFER;
++	char *start = p;
++	char *end = (char *)BATTLE_END_CURSOR;
++	int32_t n = 0;
++	int32_t typed = 0;
++	int32_t mode;
++	int32_t color = 1;
++	int32_t typedColor = 1;
++	int32_t startColor = 1;
++	int32_t bytes;
++
++	/* Walk encoded glyphs, never interpreting their trailing byte as a control. */
++	while (p < (char *)BATTLE_END_CURSOR) {
++		if (*p == '#') {
++			if (p[1] == 'C') { color = p[2]; p += 3; }
++			else { p += 2; start = p; startColor = color; }
++		} else { p += ((uint8_t)*p & 0x80) ? 2 : 1; }
++	}
++	p = start;
++	color = startColor;
++	while (*p && !(p[0] == '#' && (p[1] == 'R' || p[1] == 'W'))) {
++		if (*p == '#' && p[1] == 'C') {
++			color = p[2]; p += 3; continue;
++		}
++		bytes = ((uint8_t)*p & 0x80) ? 2 : 1;
++		if (n + bytes >= (int32_t)sizeof(text)) { return 0; }
++		colors[n] = color;
++		text[n++] = *p++;
++		if (bytes == 2) { text[n++] = *p++; }
++		if (p > (char *)BATTLE_END_CURSOR && typed == 0) { typed = n; end = p; typedColor = color; }
++	}
++	text[n] = 0;
++	if (measureStringMode(text, FIT_VANILLA) <= 156) { return 0; }
++	for (mode = FIT_TIGHT; mode < FIT_COMPACT; mode++) {
++		if (measureStringMode(text, mode) <= 156) { break; }
++	}
++	/* Compact colors are glyph-indexed, unlike the encoded byte string. */
++	p = text; n = 0;
++	while (*p) { colors[n++] = colors[p - text]; p += ((uint8_t)*p & 0x80) ? 2 : 1; }
++	text[typed] = 0;
++	BATTLE_END_PEN_X = drawFittedRow(text, BATTLE_END_PEN_Y, mode, colors);
++	BATTLE_END_CURSOR = (uint8_t *)end;
++	setTextColor(typedColor);
++	return 1;
++}
++#endif
++
+ void BTL_drawBattleEndText(int32_t flag)
+ {
+ #if !VERSION_IS(US)
+@@ -758,6 +812,7 @@ void BTL_drawBattleEndText(int32_t flag)
+ 			}
+ 			continue;
+ 		}
++		if (*BATTLE_END_CURSOR != 0 && BTL_drawFittedEndGlyph()) { return; }
+ 		c = *BATTLE_END_CURSOR;
+ 		/* MOD (end box rows): the original tested c == '0' (0x30), so the "0" of the US MP bonus's
+ 		 * "10"/"20" stopped the text for good, and the end of the text (0) was drawn as a glyph */
+diff --git a/src/main/font.c b/src/main/font.c
+index 8be963a6..ec66d796 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -2161,7 +2161,7 @@ static int32_t measureStringModePixel(char *str, int32_t mode)
+ 
+ static int32_t measureStringModeCells(char *str, int32_t mode);
+ static int32_t fitStringModeCells(char *str, int32_t maxW);
+-static int32_t drawStringModeCells(char *str, int32_t x, int32_t y, int32_t mode);
++static int32_t drawStringModeCells(char *str, int32_t x, int32_t y, int32_t mode, const uint8_t *colors);
+ 
+ /*
+  * NEW: every name fits as font b draws it. ORIGINAL: the original's modes. CLASSIC: the name as the font draws it when it
+@@ -2189,7 +2189,7 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ 		drawString(str, x, y);
+ 		return measureStringModePixel(str, mode);
+ 	}
+-	return drawStringModeCells(str, x, y, mode);
++	return drawStringModeCells(str, x, y, mode, NULL);
+ }
+ 
+ int32_t textFitCode(char *str, int32_t maxW)
+@@ -2220,7 +2220,7 @@ int32_t textFitCode(char *str, int32_t maxW)
+ /* MOD (language): the title fits 176 pixels. Two fewer ring slots make room in the same buffer. */
+ #define FIT_STRIP_W	176
+ #else
+-#define FIT_STRIP_W	144
++#define FIT_STRIP_W	156 /* composed reward rows, including a non-switching original-font build */
+ #endif
+ #if FONT_SWITCH
+ /* MOD (font): after the original font's ring (CELL_RENDER_SLOTS), which uses it only with NEW FONT off */
+@@ -2260,7 +2260,7 @@ static uint16_t *nextGlyph(char **str, int32_t mode)
+ 	*str = s;
+ 	code = ((codepoint & 0xff) << 8) + ((codepoint & 0xff00) >> 8);
+ 	code = modButtonGlyph(code); /* MOD (options): the button that does this glyph's job */
+-	if (mode == FIT_CONDENSED && code >= 0x8281 && code <= 0x829a && CONDENSED_GLYPH_DATA[code - 0x8281].width != 0) {
++	if (mode >= FIT_CONDENSED && code >= 0x8281 && code <= 0x829a && CONDENSED_GLYPH_DATA[code - 0x8281].width != 0) {
+ 		return (uint16_t *)CONDENSED_GLYPH_DATA[code - 0x8281].pixelData;
+ 	}
+ 	n = ((code >> 8) - EXTRA_GLYPH_LEAD) * 188 + (code & 0xff) - EXTRA_GLYPH_FIRST;
+@@ -2330,7 +2330,7 @@ CELLS_FN int32_t CELLS(measureStringMode)(char *str, int32_t mode)
+ 			pen += FIT_SPACE;
+ 		} else {
+ 			w = pen - left + right;
+-			pen = w + FIT_GAP;
++			pen = w + (mode == FIT_COMPACT ? 0 : FIT_GAP);
+ 		}
+ 	}
+ 	return w;
+@@ -2350,7 +2350,7 @@ CELLS_FN int32_t CELLS(fitStringMode)(char *str, int32_t maxW)
+ }
+ 
+ /* drawString in a mode; returns the ink width (measureStringMode) */
+-CELLS_FN int32_t CELLS(drawStringMode)(char *str, int32_t x, int32_t y, int32_t mode)
++static int32_t drawStringModeCells(char *str, int32_t x, int32_t y, int32_t mode, const uint8_t *colors)
+ {
+ 	RECT rect;
+ 	uint16_t *p;
+@@ -2389,6 +2389,9 @@ CELLS_FN int32_t CELLS(drawStringMode)(char *str, int32_t x, int32_t y, int32_t
+ 	pen = x & 3;
+ 	while (*str != '\0') {
+ 		p = nextGlyph(&str, mode);
++		if (colors != NULL) {
++			setTextColor(*colors++);
++		}
+ 		right = glyphInk(p, &left);
+ 		if (right == 0) {
+ 			pen += FIT_SPACE;
+@@ -2405,7 +2408,7 @@ CELLS_FN int32_t CELLS(drawStringMode)(char *str, int32_t x, int32_t y, int32_t
+ 				}
+ 			}
+ 		}
+-		pen = gx + right + FIT_GAP;
++		pen = gx + right + (mode == FIT_COMPACT ? 0 : FIT_GAP);
+ 	}
+ 	setRECT(&rect, (x / 4) + TEXT_VRAM_X, y + TEXT_VRAM_Y, stride / 4, GLYPH_HEIGHT);
+ 	LoadImage(&rect, (u_long *)FIT_STRIP);
+@@ -2416,6 +2419,18 @@ CELLS_FN int32_t CELLS(drawStringMode)(char *str, int32_t x, int32_t y, int32_t
+ 	return w;
+ }
+ 
++#if !FONT_SWITCH
++int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
++{
++	return drawStringModeCells(str, x, y, mode, NULL);
++}
++#endif
++/* A typed, colored prefix of a row whose mode was chosen from the whole row. */
++int32_t drawFittedRow(char *str, int32_t y, int32_t mode, const uint8_t *colors)
++{
++	return drawStringModeCells(str, 0, y, mode, colors);
++}
++
+ #if !FONT_SWITCH
+ /* MOD (item names): the drawString2 code that draws a name within maxW pixels: 1 (a colour code, the name as the font
+  * draws it) when it fits so, else TEXT_FIT_TIGHT or TEXT_FIT_CONDENSED (font.h) */
+-- 
+2.55.0
+

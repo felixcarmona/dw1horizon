@@ -1,0 +1,44 @@
+{
+ "s041.sec5.u0": "¡Jo, qué soso eres!",
+ "s041.sec6.u0": "Ja, ja, ¿has dicho algo?",
+ "s041.sec7.u0": "Ya te lo he dicho, de verdad que no puedo...",
+ "s041.sec8.u0": "Tampoco es que yo esté muy seguro de mí mismo, ¿sabes?",
+ "s041.sec9.u0": "No seas duro conmigo...",
+ "s041.sec10.u0": "¡Hmpf, no me subestimes!",
+ "s041.sec81.m0.o0": "Pulsar el botón Azotea",
+ "s041.sec81.m0.o1": "Pulsar el botón Subir",
+ "s041.sec81.m0.o2": "No subir",
+ "s041.sec81.u0": "Ascensor",
+ "s041.sec81.u1": "Mmm, no pasa nada...",
+ "s041.sec81.u2": "Eh, hay una piedrecita atascada en la máquina. ¿Será ese el problema...?",
+ "s041.sec81.u3": "¡Has quitado la piedrecita!",
+ "s041.sec81.u4": "Con esto debería bastar.",
+ "s041.sec81.u5": "Mmm, no pasa nada...",
+ "s041.sec81.u6": "Eh, hay una piedrecita atascada en la máquina. ¿Será ese el problema...?",
+ "s041.sec81.u7": "¡Has quitado la piedrecita!",
+ "s041.sec81.u8": "Con esto debería bastar.",
+ "s042.sec5.u0": "¡Shuaaah!",
+ "s042.sec6.u0": "¡Shashasha!",
+ "s042.sec7.u0": "Parece que no estás herido, ¿eh?",
+ "s042.sec8.u0": "Te haré un buen descuento.",
+ "s042.sec9.u0": "¡No me mires por encima del hombro!",
+ "s042.sec10.u0": "No creas que vas a volver a casa con vida.",
+ "s042.sec51.u0": "¡Aaaaaay!",
+ "s042.sec51.u1": "...Para haber caído desde tan alto... estoy bien.",
+ "s042.sec51.u2": "¡Oh, {color 10}{partner}{color 1}! ¿Estás bien?",
+ "s042.sec51.u3": [
+  [
+   "¿Eh? Estás como si nada."
+  ],
+  [
+   "Oye, has volado, ¿verdad? ¡Qué morro! ...Bueno,",
+   "tampoco es tan injusto."
+  ]
+ ],
+ "s042.sec51.u4": "Vale, vamos.",
+ "s042.sec51.u5": "¡Aaaaaay!",
+ "s042.sec51.u6": "...Para haber caído desde tan alto... estoy bien.",
+ "s042.sec51.u7": "¡Oh, {color 10}{partner}{color 1}! ¿Estás bien?",
+ "s042.sec51.u8": "Parece que te has hecho un poco de daño. Lo siento.",
+ "s042.sec51.u9": "Vale, vamos."
+}

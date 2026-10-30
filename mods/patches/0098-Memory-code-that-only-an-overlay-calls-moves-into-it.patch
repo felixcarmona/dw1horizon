@@ -1,0 +1,229 @@
+From 60d36a68a376bd4e236cf9850e7747adfff620db Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 20:18:20 +0000
+Subject: [PATCH] Memory: code that only an overlay calls moves into it (the VS
+ mode's combat and intro to VS, the battle UI to BTL, the movie decoder and CD
+ streaming to MOV); library functions nothing calls are dropped by the link:
+ 46.6 KB more heap in every build
+
+docs/mods/memory.md "Code out of the executable". No C file changes:
+- mk/version/us.mk: the Psy-Q code is one section per function (glabel already opens .text.NAME), except libapi,
+  libgte and libmcrd (code copied by address range, functions that fall through); --gc-sections drops the 27
+  functions nothing references (libgpu 7272 bytes, libsnd 740, libspu 572, libcd 240, libpress 144).
+- config/us/overlay.ld, main.ld: src/vs/vs_combat.c and vs_intro.c (code, rodata) at the end of VS (+21196);
+  src/main/battle_ui.c at the end of BTL (+5732); libpress, its tables and libcd's streaming functions (St*,
+  CdRead2, the ring callbacks, which MOV_playMovie unhooks before it returns) and SetDefDispEnv at the end of MOV
+  (+10728). tools/xref.py found them: nothing in the executable references them, only that overlay calls them.
+  Every overlay address stays where it was. Link asserts: BTL and VS end at or below STD's end, MOV below TRN's slot.
+- mk/platform/psx.mk: --emit-relocs, for tools/xref.py; the executable and overlays are the same bytes.
+main_BSS_END (US text, 0x18800): integration 0x801CB574 -> 0x801BFF40 (heap over MIN_HEAP 37 260 -> 83 904; with the
+Makefile's 0x20000: 6 540 -> 53 184); tier 2 0x801D4810 -> 0x801C91EC (752 -> 47 380 on 2 MB).
+
+---
+ config/us/main.ld    | 27 +++++++++-----------------
+ config/us/overlay.ld | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ mk/platform/psx.mk   |  5 ++++-
+ mk/version/us.mk     | 14 +++++++++++---
+ 4 files changed, 69 insertions(+), 22 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index d716a59..df1936b 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -129,8 +129,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sound_async.c.o(.text.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/asm/main/psyq/libpress.s.o(.text .text.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/asm/main/psyq/libds.s.o(.text .text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/butterfly.c.o(.text.*);
+@@ -139,8 +137,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/bubble.c.o(.text.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/battle_ui.c.o(.text.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/src/main/main.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/battle_tick.c.o(.text.*);
+@@ -151,10 +147,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sjis.c.o(.text.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_intro.c.o(.text.*);
+-        . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_combat.c.o(.text.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/src/vs/vs_select.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/script_common.c.o(.text.*);
+@@ -361,8 +353,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sound_async.c.o(.rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/asm/main/data/psyq/libpress.rodata.s.o(.rodata .rodata.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/asm/main/psyq/libds.s.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/butterfly.c.o(.rodata.*);
+@@ -371,8 +361,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/bubble.c.o(.rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/main/battle_ui.c.o(.rodata.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/src/main/main.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/battle_tick.c.o(.rodata.*);
+@@ -383,10 +371,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sjis.c.o(.rodata.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_intro.c.o(.rodata.*);
+-        . = ALIGN(., 4);
+-        BUILD_DIR/src/vs/vs_combat.c.o(.rodata.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/src/vs/vs_select.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/script_common.c.o(.rodata.*);
+@@ -526,8 +510,6 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sound_async.c.o(.data.*);
+         . = ALIGN(., 4);
+-        BUILD_DIR/asm/main/data/psyq/libpress.data.s.o(.data .data.*);
+-        . = ALIGN(., 4);
+         BUILD_DIR/asm/main/psyq/libds.s.o(.data .data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/butterfly.c.o(.data.*);
+@@ -1028,6 +1010,15 @@ ASSERT(OVL_END(.DOOA) <= OVL_OT_0_ADDR, "DOOA overlay overlaps its ordering tabl
+ ASSERT(OVL_END(.DGET) <= LOAD_AREA_END, "DGET overlay overflows the load area")
+ ASSERT(OVL_END(.TRN) <= OVL_TRN_MAX_END, "TRN overlay is larger than the original's slot")
+ ASSERT(OVL_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the original's slot")
++/*
++ * MOD (code out of the executable, docs/mods/memory.md): BTL and VS carry code the executable used to hold (battle_ui.c;
++ * vs_combat.c, vs_intro.c), appended at their ends. A battle-mode overlay may reach as high as STD, the tournament
++ * overlay that runs the same battle engine (EFE heap, effects, sound) and the original's largest. MOV carries libpress
++ * and libcd's streaming: it must stay below TRN's slot (TEXTURE_BUFFER, the frame OTs of main.c).
++ */
++ASSERT(OVL_END(.BTL) <= OVL_END(.STD), "BTL overlay ends above STD's end, the highest a battle overlay is known to reach")
++ASSERT(OVL_END(.VS) <= OVL_END(.STD), "VS overlay ends above STD's end, the highest a battle overlay is known to reach")
++ASSERT(OVL_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEXTURE_BUFFER)")
+ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+        "TFS ring size does not match TFS_RING_END")
+ ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 657ba0f..19b8419 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -75,6 +75,16 @@ SECTIONS
+ 			BUILD_DIR/src/btl/battle_hud.c.o(.bss.*);
+ 			. = ALIGN(., 4);
+ 
++			/*
++			 * MOD (resident code moved, docs/mods/memory.md "Code out of the executable"): code that only
++			 * this overlay calls (tools/xref.py: no reference from the executable's own code), appended here
++			 * so every address of the original overlay stays where it was. Its data stays in the executable.
++			 */
++			BUILD_DIR/src/main/battle_ui.c.o(.text.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/main/battle_ui.c.o(.rodata.*);
++			. = ALIGN(., 4);
++
+ 			/* Trailer */
+ 			LONG(0);
+ 
+@@ -329,6 +339,27 @@ SECTIONS
+ 
+ 			BUILD_DIR/src/mov/mov.c.o(.bss.*);
+ 			. = ALIGN(., 4);
++
++			/*
++			 * MOD (resident code moved, docs/mods/memory.md "Code out of the executable"): code that only
++			 * this overlay calls (tools/xref.py: no reference from the executable's own code), appended here
++			 * so every address of the original overlay stays where it was. libpress (the MDEC decoder) with its
++			 * tables, and libcd's streaming functions (St*, CdRead2): mov.c unhooks their callbacks
++			 * (DecDCToutCallback(NULL), StUnSetRing) before it returns.
++			 */
++			BUILD_DIR/asm/main/psyq/libpress.s.o(.text .text.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/asm/main/psyq/libcd.s.o(.text.StSetRing .text.StClearRing .text.StUnSetRing .text.StSetStream
++				.text.StFreeRing .text.StGetNext .text.StSetMask .text.StGetBackloc .text.StCdInterrupt
++				.text.StCdInterrupt2 .text.data_ready_callback .text.init_ring_status .text.dma_execute
++				.text.mem2mem .text.CdRead2 .text.DsDataCallback .text.DsReadyCallback);
++			. = ALIGN(., 4);
++			BUILD_DIR/asm/main/psyq/libgpu.s.o(.text.SetDefDispEnv);
++			. = ALIGN(., 4);
++			BUILD_DIR/asm/main/data/psyq/libpress.rodata.s.o(.rodata .rodata.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/asm/main/data/psyq/libpress.data.s.o(.data .data.*);
++			. = ALIGN(., 4);
+ 		}
+ 	}
+ 
+@@ -673,6 +704,20 @@ SECTIONS
+ 			BUILD_DIR/src/vs/vs_effect.c.o(.bss.*);
+ 			. = ALIGN(., 4);
+ 
++			/*
++			 * MOD (resident code moved, docs/mods/memory.md "Code out of the executable"): code that only
++			 * this overlay calls (tools/xref.py: no reference from the executable's own code), appended here
++			 * so every address of the original overlay stays where it was. Its data stays in the executable.
++			 */
++			BUILD_DIR/src/vs/vs_intro.c.o(.text.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/vs/vs_combat.c.o(.text.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/vs/vs_intro.c.o(.rodata.*);
++			. = ALIGN(., 4);
++			BUILD_DIR/src/vs/vs_combat.c.o(.rodata.*);
++			. = ALIGN(., 4);
++
+ 			/* Trailer */
+ 			LONG(0);
+ 
+diff --git a/mk/platform/psx.mk b/mk/platform/psx.mk
+index 3abd743..6864a53 100644
+--- a/mk/platform/psx.mk
++++ b/mk/platform/psx.mk
+@@ -27,7 +27,10 @@ CPPFLAGS := -DLANGUAGE_C -D$(VERSION_MACRO) $(INC)
+ DEPFLAGS = -MM -MF $(@:.o=.d) -MT $@
+ LDFLAGS := -g $(addprefix -T ,$(CPPLDSCRIPT) $(UNDEFINED_SYMS)) -static \
+ 	   -Wl,--no-check-sections -Wl,-Map=% -Wl,--build-id=none \
+-	   -Wl,--gc-sections -Wl,--print-gc-sections
++	   -Wl,--gc-sections -Wl,--print-gc-sections \
++	   -Wl,--emit-relocs
++# MOD (--emit-relocs): the ELF keeps the link's relocations, so tools/xref.py can list who references what
++# (docs/mods/memory.md "Code out of the executable"); the executable and the overlays are the same bytes.
+ 
+ LINKER_SCRIPTS := $(addprefix $(GEN_DIR)/,\
+ 		  $(addsuffix .ld, main \
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index d80fc78..8d295b8 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -80,9 +80,17 @@ MAIN_C_SRC := \
+ 	src/main/vecmath.c \
+ 	src/main/world_object.c
+ 
+-# PsyQ library code and data is one section per file, so a library file is
+-# kept whenever anything in it is referenced
+-$(BUILD_DIR)/asm/main/psyq/%.s.o $(BUILD_DIR)/asm/main/data/psyq/%.s.o: \
++# PsyQ library data is one section per file, so a data file is kept whenever
++# anything in it is referenced.
++# MOD (docs/mods/memory.md "Code out of the executable"): the library code is one
++# section per function (glabel), so --gc-sections drops the functions nothing
++# calls and a linker script can place a function by name (the MOV overlay takes
++# the movie-only ones). libapi, libgte and libmcrd stay one section per file:
++# they hold code that is copied by address range (_begin_getb_patch ..
++# _end_getb_patch, _dsr_start, _clr_vector .. _c_vend) or falls through into the
++# next function (oldbug, newnonbug), which must stay whole and in order.
++PSYQ_PLAIN_CODE := libapi libgte libmcrd
++$(BUILD_DIR)/asm/main/data/psyq/%.s.o $(PSYQ_PLAIN_CODE:%=$(BUILD_DIR)/asm/main/psyq/%.s.o): \
+ 	ASFLAGS += -Wa,--defsym,PLAIN_SECTIONS=1
+ 
+ MAIN_ASM_EXCLUDE := shop vs
+-- 
+2.53.0
+

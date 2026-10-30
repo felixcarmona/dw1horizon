@@ -1,0 +1,199 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Stai bene, {color 10}{partner}{color 1}?! Per",
+   "ora torniamo indietro..."
+  ]
+ ],
+ "s018.sec10.u1": [
+  [
+   "Ops! Devo curare",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confermato..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confermato... Intruso",
+   "confermato..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confermato... Intruso",
+   "confermato... Preparazione al",
+   "fuoco..."
+  ]
+ ],
+ "s018.sec68.u0": [
+  [
+   "Attraversare tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero notevole. Sono"
+  ],
+  [
+   "Centarumon. Ti chiedo scusa",
+   "per la scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per un capriccio. D'ora",
+   "in poi intendo offrirti il mio",
+   "aiuto."
+  ]
+ ],
+ "s018.sec68.u1": [
+  [
+   "Hai attraversato tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero in gamba. Sono"
+  ],
+  [
+   "Centarumon. Perdonami per la",
+   "scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per capriccio. D'ora in",
+   "poi intendo aiutarti."
+  ]
+ ],
+ "s018.sec68.u2": [
+  [
+   "Ora prosegui. Ti aspetterò in",
+   "città."
+  ]
+ ],
+ "s018.sec68.u3": "Centarumon si è unito alla città!",
+ "s018.sec68.u4": [
+  [
+   "{color 10}{partner}{color 1}, stiamo diventando",
+   "famosi, eheh!"
+  ]
+ ],
+ "s018.sec68.u5": [
+  [
+   "Andiamo avanti!"
+  ]
+ ],
+ "s018.sec68.u6": [
+  [
+   "Mancato!"
+  ]
+ ],
+ "s018.sec69.u0": [
+  [
+   "Attraversare tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero notevole. Sono"
+  ],
+  [
+   "Centarumon. Ti chiedo scusa",
+   "per la scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per un capriccio. D'ora",
+   "in poi intendo offrirti il mio",
+   "aiuto."
+  ]
+ ],
+ "s018.sec69.u1": [
+  [
+   "Hai attraversato tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero in gamba. Sono"
+  ],
+  [
+   "Centarumon. Perdonami per la",
+   "scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per capriccio. D'ora in",
+   "poi intendo aiutarti."
+  ]
+ ],
+ "s018.sec69.u2": [
+  [
+   "Ora prosegui. Ti aspetterò in",
+   "città."
+  ]
+ ],
+ "s018.sec69.u3": "Centarumon si è unito alla città!",
+ "s018.sec69.u4": [
+  [
+   "{color 10}{partner}{color 1}, stiamo diventando",
+   "famosi, eheh!"
+  ]
+ ],
+ "s018.sec69.u5": [
+  [
+   "Andiamo avanti!"
+  ]
+ ],
+ "s018.sec69.u6": [
+  [
+   "Mancato!"
+  ]
+ ],
+ "s018.sec70.u0": [
+  [
+   "Attraversare tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero notevole. Sono"
+  ],
+  [
+   "Centarumon. Ti chiedo scusa",
+   "per la scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per un capriccio. D'ora",
+   "in poi intendo offrirti il mio",
+   "aiuto."
+  ]
+ ],
+ "s018.sec70.u1": [
+  [
+   "Hai attraversato tutta questa",
+   "foresta... Devo dire che sei",
+   "davvero in gamba. Sono"
+  ],
+  [
+   "Centarumon. Perdonami per la",
+   "scortesia di prima. Mi",
+   "dispiace. Non ti ho messo alla"
+  ],
+  [
+   "prova per capriccio. D'ora in",
+   "poi intendo aiutarti."
+  ]
+ ],
+ "s018.sec70.u2": [
+  [
+   "Ora prosegui. Ti aspetterò in",
+   "città."
+  ]
+ ],
+ "s018.sec70.u3": "Centarumon si è unito alla città!",
+ "s018.sec70.u4": [
+  [
+   "{color 10}{partner}{color 1}, stiamo diventando",
+   "famosi, eheh!"
+  ]
+ ],
+ "s018.sec70.u5": [
+  [
+   "Andiamo avanti!"
+  ]
+ ],
+ "s018.sec70.u6": [
+  [
+   "Mancato!"
+  ]
+ ]
+}

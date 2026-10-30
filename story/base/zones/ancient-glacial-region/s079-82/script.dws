@@ -1,0 +1,201 @@
+// Readable form of script 79 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 79 {
+    npc tyrannomon0 = 5;
+    npc tyrannomon1 = 6;
+    npc slot2 = 7;
+    npc mastertyrannomon = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 15) {
+            spawn_item(item("Digimushrm"), 54, 55);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 6) {
+            spawn_item(item("Digimushrm"), 40, 47);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 39, 46);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Happymushrm"), 58, 34);
+        }
+        engine.arg = 0;
+        call_routine(routine("save_clock_speed"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (!glacial_tyrannomon_let_through) return;
+        entity_walk_to_entity(partner, 1, tamer);
+        await tamer;
+        await partner;
+        face(tamer, tyrannomon0);
+        face(partner, tyrannomon0);
+        say(tyrannomon0, text("s079.sec51.u0"));
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s079.sec51.u1"));
+        animate(tamer, anim.idle);
+        say(tyrannomon0, text("s079.sec51.u2"));
+        choice(open) {
+            text("s079.sec51.m0.o0") => {
+                say(tyrannomon0, text("s079.sec51.u3"));
+                say(tamer, text("s079.sec51.u4"));
+                say(tyrannomon0, text("s079.sec51.u5"));
+                say(tamer, text("s079.sec51.u6"));
+                say(tyrannomon0, text("s079.sec51.u7"));
+                animate(tamer, 19);
+                wait(15);
+                say(tamer, text("s079.sec51.u8"));
+                animate(tamer, anim.idle);
+                say(tyrannomon0, text("s079.sec51.u9"));
+                run(tyrannomon0, -740, 2145);
+                await tyrannomon0;
+                face(tyrannomon0, tamer);
+                glacial_tyrannomon_let_through = true;
+                goto L7;
+            }
+            text("s079.sec51.m0.o1") => {
+                goto L8;
+            }
+        }
+    }
+
+    on talk(tyrannomon0) replace {    // section 5
+        goto L7;
+    }
+
+    on talk(tyrannomon1) replace {    // section 6
+        if (!speedy_time_zone_entered) {
+            say(tyrannomon1, text("s079.sec6.u0"));
+            return;
+        }
+        if (!meteormon_checked) {
+            say(tyrannomon1, text("s079.sec6.u1"));
+            say(tamer, text("s079.sec6.u2"));
+            say(tyrannomon1, text("s079.sec6.u3"));
+            return;
+        }
+        unless (!meteormon_checked || !is_recruited(species("Tyrannomon"))) return;
+        say(tyrannomon1, text("s079.sec6.u4"));
+        say(tamer, text("s079.sec6.u5"));
+        animate(tamer, 22);
+        say(tyrannomon1, text("s079.sec6.u6"));
+        say(tamer, text("s079.sec6.u7"));
+        set_digimon(species("MasterTyrannomon"), 2, 0);
+        sound(8, 7);
+        say(slot2, text("s079.sec6.u8"));
+        face(tamer, slot2);
+        face(partner, slot2);
+        face(tyrannomon1, slot2);
+        await tamer;
+        await partner;
+        await tyrannomon1;
+        walk(slot2, 64, 1093);
+        wait(15);
+        sound(8, 6);
+        face(tamer, slot2);
+        face(partner, slot2);
+        face(tyrannomon1, slot2);
+        walk(slot2, 64, 1093);
+        wait(15);
+        sound(8, 6);
+        face(tamer, slot2);
+        face(partner, slot2);
+        face(tyrannomon1, slot2);
+        walk(slot2, 64, 1093);
+        wait(15);
+        sound(8, 6);
+        face(tamer, slot2);
+        face(partner, slot2);
+        face(tyrannomon1, slot2);
+        walk(slot2, 64, 1093);
+        await slot2;
+        sound(8, 6);
+        face(tamer, slot2);
+        face(partner, slot2);
+        face(tyrannomon1, slot2);
+        face(slot2, tamer);
+        await tamer;
+        await partner;
+        await tyrannomon1;
+        await slot2;
+        animate(tamer, 23);
+        show_textbox(text("s079.sec6.u9"));
+        say(tyrannomon1, text("s079.sec6.u10"));
+        say(slot2, text("s079.sec6.u11"));
+        sound(8, 8);
+        animate(tamer, 16);
+        wait(15);
+        say(tamer, text("s079.sec6.u12"));
+        animate(tamer, anim.idle);
+        say(tyrannomon1, text("s079.sec6.u13"));
+        say(slot2, text("s079.sec6.u14"));
+        sound(8, 8);
+        say(tyrannomon1, text("s079.sec6.u15"));
+        face(tamer, tyrannomon1);
+        wait(10);
+        say(tamer, text("s079.sec6.u16"));
+        face(tamer, slot2);
+        await tamer;
+        say(slot2, text("s079.sec6.u17"));
+        sound(8, 7);
+        say(tyrannomon1, text("s079.sec6.u18"));
+        face(tyrannomon1, tamer);
+        await tyrannomon1;
+        say(tyrannomon1, text("s079.sec6.u19"));
+        face(tamer, tyrannomon1);
+        await tamer;
+        animate(tamer, 19);
+        say(tamer, text("s079.sec6.u20"));
+        say(tyrannomon1, text("s079.sec6.u21"));
+        loop {
+            run(tyrannomon1, -243, -614);
+            unless (glances < 6) break;
+            glances += 1;
+            wait(10);
+            face(tamer, tyrannomon1);
+            face(partner, tyrannomon1);
+            face(slot2, tyrannomon1);
+        }
+        await tyrannomon1;
+        join_city(tyrannomon1, species("Tyrannomon"), 8, 9, text("s079.sec6.u22"), prosperity: 2);
+        say(slot2, text("s079.sec6.u23"));
+    }
+
+    on talk(slot2) replace {    // section 7
+        face(tamer, slot2);
+        await tamer;
+        animate(tamer, 23);
+        say(slot2, text("s079.sec7.u0"));
+    }
+
+    on talk(mastertyrannomon) replace {    // section 8
+        face(tamer, mastertyrannomon);
+        await tamer;
+        animate(tamer, 23);
+        say(mastertyrannomon, text("s079.sec8.u0"));
+        return;
+    }
+
+    shared L7 {    // code of sec51 that other code jumps to
+        say(tyrannomon0, text("s079.sec51.u10"));
+    }
+
+    shared L8 {    // code of sec51 that other code jumps to
+        say(tyrannomon0, text("s079.sec51.u11"));
+        walk(tamer, -326, 1203, camera: true);
+        await tamer;
+    }
+}

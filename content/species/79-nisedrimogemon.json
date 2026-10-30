@@ -1,0 +1,33 @@
+{
+  "id": 79,
+  "name": "NiseDrimogemon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["battle", null, null],
+  "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Counter", "Buster Dive", "Tremar", "Muscle Charge"],
+  "drop": {"item": "Auto Pilot", "percent": 10},
+  "effects_like": 38,
+  "model": {"name": "NISE", "bones": 28, "radius": 200, "height": 360},
+  "voice": 34,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 1200, "mp": 2000, "off": 420, "def": 180, "speed": 50, "brain": 100, "bits": 400},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

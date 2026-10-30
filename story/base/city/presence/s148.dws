@@ -1,0 +1,12 @@
+// Who stands on screen 148 (Toy Mansion), and when. Read out of MAPHEAD.SCN section 148 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(148) {                              // Toy Mansion
+            npc Toyagumon slot 0 autotalk;
+            npc Toyagumon slot 1 autotalk;
+            npc Toyagumon slot 2 autotalk;
+        }
+    }
+}

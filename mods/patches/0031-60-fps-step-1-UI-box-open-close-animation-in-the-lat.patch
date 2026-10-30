@@ -1,0 +1,113 @@
+From 62921bd25d9558d4ff523a5ad3f553a9661c985e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:12:05 +0000
+Subject: [PATCH] 60 fps step 1: UI box open/close animation in the late tick
+
+renderUIBoxAnimated advanced the box frame, set state 1 when open and
+removed the box when closed (logic waits on these, e.g. the text box), and
+renderUIBoxAnim played the closing sound. lateTickUIBoxAnimated now does
+that once per tick and records the frame to draw; the render draws it. A box
+that finishes closing still draws its last frame and leaves the object list
+after the render passes (removeObjectAfterRender).
+
+---
+ src/main/ui.c | 41 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 33 insertions(+), 8 deletions(-)
+
+diff --git a/src/main/ui.c b/src/main/ui.c
+index 86f6673..1ee2aca 100644
+--- a/src/main/ui.c
++++ b/src/main/ui.c
+@@ -1,6 +1,7 @@
+ #include <libgpu.h>
+ #include <libgs.h>
+ #include <dw/entity.h>
++#include <dw/mod_fps.h>
+ #include <dw/ui.h>
+ #include <dw/version.h>
+ #include <text/main/ui.h>
+@@ -10,6 +11,7 @@
+ void tickUIBox(int32_t instanceId);
+ void renderUIBoxStatic(int32_t instanceId);
+ void renderUIBoxAnimated(int32_t instanceId);
++void lateTickUIBoxAnimated(int32_t instanceId);
+ void renderUIBoxAnim(int32_t instanceId, int16_t frame);
+ void renderUIBoxBorder(RECT *rect, int32_t layer);
+ 
+@@ -78,6 +80,9 @@ char MAIN_D_80124C54[] = {
+ // clang-format on
+ 
+ UIBoxData UI_BOX_DATA[6];
++/* MOD (fps): frame of the open/close animation to draw this tick, -1 when the
++ * box is drawn whole (set by lateTickUIBoxAnimated) */
++static int16_t MOD_UI_BOX_DRAW_FRAME[6];
+ StatsGains STATS_GAINS;
+ 
+ void initializeUIBoxData(void)
+@@ -210,11 +215,17 @@ void createAnimatedUIBox(int16_t instanceId, uint8_t color, uint8_t features,
+ 	data->finalPos = *finalPos;
+ 	data->render = renderFunc;
+ 	data->tick = tickFunc;
+-	addObject(0x1a4, instanceId, tickUIBox, renderUIBoxAnimated);
++	MOD_UI_BOX_DRAW_FRAME[instanceId] = 0;
++	addObjectLate(0x1a4, instanceId, tickUIBox, lateTickUIBoxAnimated,
++		      renderUIBoxAnimated);
+ }
+ 
+-void renderUIBoxAnimated(instanceId)
+-	int16_t instanceId;
++/* MOD (fps): the open/close animation advances in the late tick (once per
++ * tick, after all the object ticks, where the render used to advance it); the
++ * render draws the frame the late tick chose. A box that finishes closing
++ * still draws its last frame (0) and leaves the object list after the
++ * render passes. */
++void lateTickUIBoxAnimated(int32_t instanceId)
+ {
+ 	UIBoxData *data;
+ 	int16_t currentFrame;
+@@ -226,13 +237,29 @@ void renderUIBoxAnimated(instanceId)
+ 		} else {
+ 			currentFrame = --data->frame;
+ 		}
+-		renderUIBoxAnim(instanceId, currentFrame);
++		MOD_UI_BOX_DRAW_FRAME[instanceId] = currentFrame;
++		if (data->state == 3 && data->frame == 4) {
++			playSound(0, 1);
++		}
+ 		if (data->frame > 4) {
+ 			data->state = 1;
+ 		}
+ 		if (!data->frame) {
+-			removeStaticUIBox(instanceId);
++			/* removeStaticUIBox, with the object kept for the render */
++			UI_BOX_DATA[instanceId].state = 0;
++			UI_BOX_DATA[instanceId].frame = 0;
++			removeObjectAfterRender(0x1a4, instanceId);
+ 		}
++	} else {
++		MOD_UI_BOX_DRAW_FRAME[instanceId] = -1;
++	}
++}
++
++void renderUIBoxAnimated(instanceId)
++	int16_t instanceId;
++{
++	if (MOD_UI_BOX_DRAW_FRAME[instanceId] >= 0) {
++		renderUIBoxAnim(instanceId, MOD_UI_BOX_DRAW_FRAME[instanceId]);
+ 	} else {
+ 		renderUIBoxStatic(instanceId);
+ 	}
+@@ -314,9 +341,7 @@ void renderUIBoxAnim(int32_t instanceId, int16_t frame)
+ 	int16_t x2;
+ 	int16_t y2;
+ 
+-	if (UI_BOX_DATA[instanceId].state == 3 && UI_BOX_DATA[instanceId].frame == 4) {
+-		playSound(0, 1);
+-	}
++	/* MOD (fps): the closing sound is played by lateTickUIBoxAnimated */
+ 	start = &UI_BOX_DATA[instanceId].startPos;
+ 	final = &UI_BOX_DATA[instanceId].finalPos;
+ 	x0 = start->x + frame * (final->x - start->x) / 4;
+-- 
+2.53.0
+

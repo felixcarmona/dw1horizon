@@ -1,0 +1,295 @@
+// Readable form of script 130 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 130 {
+    npc snowgoblimon = 5;
+    npc whamon = 6;
+    npc icedevimon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 7, 6, 81, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 16) {
+            spawn_item(item("Digimushrm"), 31, 3);
+        }
+    }
+
+    on talk(snowgoblimon) replace {    // section 5
+        say(snowgoblimon, text("s130.sec5.u0"));
+        battle();
+        recruit(species("SnowGoblimon"));
+    }
+
+    on talk(icedevimon) replace {    // section 7
+        say(icedevimon, text("s130.sec7.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(whamon) replace {    // section 6
+    }
+
+    on use(1) replace {    // section 81
+        unless (!is_recruited(species("Whamon")) && ogre_fortress_cleared) return;
+        face(tamer, whamon);
+        face(partner, whamon);
+        wait(5);
+        camera_to(-2852, 2621, speed: 30);
+        await camera;
+        if (whamon_met) {
+            say(whamon, text("s130.sec81.u0"));
+            choice(open) {
+                text("s130.sec81.m0.o0") => {
+                    say(whamon, text("s130.sec81.u10"));
+                    camera_to(-3150, 3000, speed: 30);
+                    animate(whamon, 28);
+                    sound(8, 3);
+                    wait(2s);
+                    entity_set_rotation(whamon, 3459);
+                    sound(8, 3);
+                    entity_set_rotation(whamon, 3331);
+                    wait(3);
+                    entity_set_rotation(whamon, 3203);
+                    wait(3);
+                    entity_set_rotation(whamon, 3075);
+                    wait(3);
+                    entity_set_rotation(whamon, 2947);
+                    wait(3);
+                    entity_set_rotation(whamon, 2819);
+                    wait(3);
+                    entity_set_rotation(whamon, 2691);
+                    wait(3);
+                    entity_set_rotation(whamon, 2563);
+                    sound(8, 3);
+                    wait(10);
+                    entity_set_rotation(whamon, 2435);
+                    wait(3);
+                    entity_set_rotation(whamon, 2307);
+                    wait(3);
+                    entity_set_rotation(whamon, 2179);
+                    wait(3);
+                    entity_set_rotation(whamon, 2051);
+                    wait(3);
+                    entity_set_rotation(whamon, 1923);
+                    sound(8, 3);
+                    wait(10);
+                    entity_set_rotation(whamon, 1795);
+                    wait(3);
+                    entity_set_rotation(whamon, 1667);
+                    wait(3);
+                    entity_set_rotation(whamon, 1539);
+                    wait(3);
+                    entity_set_rotation(whamon, 1411);
+                    wait(3);
+                    entity_set_rotation(whamon, 1283);
+                    wait(3);
+                    walk(tamer, -2454, 2707);
+                    await tamer;
+                    walk(tamer, -3041, 3042);
+                    walk(partner, -2454, 2707);
+                    await partner;
+                    walk(partner, -2771, 2915);
+                    await tamer;
+                    await partner;
+                    wait(1s);
+                    entity_set_rotation(tamer, 1283);
+                    entity_set_rotation(partner, 1283);
+                    wait(5);
+                    say(tamer, text("s130.sec81.u11"));
+                    sound(8, 3);
+                    entity_move_to(tamer, -4053, 3680, 99, 0);
+                    entity_move_to(partner, -4053, 3680, 99, 0);
+                    entity_move_to(whamon, -4053, 3680, 99, 0);
+                    move_object_to(0, 35, 1, 0, 350, 410);
+                    move_object_to(1, 36, 1, 0, 438, 410);
+                    move_object_to(2, 37, 1, 0, 412, 410);
+                    move_object_to(3, 38, 1, 0, 366, 410);
+                    move_object_to(4, 39, 1, 0, 350, 434);
+                    move_object_to(5, 40, 1, 0, 350, 458);
+                    move_object_to(6, 41, 1, 0, 366, 482);
+                    move_object_to(7, 42, 1, 0, 390, 506);
+                    wait(10);
+                    sound(8, 3);
+                    set_obj_visibility(35, 0);
+                    set_obj_visibility(36, 0);
+                    set_obj_visibility(37, 0);
+                    set_obj_visibility(38, 0);
+                    set_obj_visibility(39, 0);
+                    set_obj_visibility(40, 0);
+                    set_obj_visibility(41, 0);
+                    set_obj_visibility(42, 0);
+                    engine.object = 35;
+                    engine.animation = 8;
+                    call_routine(routine("reset_object_animation"));
+                    wait(10);
+                    move_object_to(0, 35, 1, 120, 0, 730);
+                    move_object_to(1, 36, 1, 120, 88, 730);
+                    move_object_to(2, 37, 1, 120, 64, 730);
+                    move_object_to(3, 38, 1, 120, 16, 730);
+                    move_object_to(4, 39, 1, 120, 0, 754);
+                    move_object_to(5, 40, 1, 120, 0, 778);
+                    move_object_to(6, 41, 1, 120, 16, 802);
+                    move_object_to(7, 42, 1, 120, 40, 826);
+                    wait(10);
+                    entity_move_to(tamer, -4053, 3680, 99, 0);
+                    entity_move_to(partner, -4053, 3680, 99, 0);
+                    entity_move_to(whamon, -4053, 3680, 99, 0);
+                    wait(30);
+                    warp_to(142, 1, 60);
+                    return;
+                }
+                text("s130.sec81.m0.o1") => {
+                    say(whamon, text("s130.sec81.u9"));
+                    camera_on(tamer, speed: 10);
+                    await camera;
+                    return;
+                }
+                cancel => {}
+            }
+        }
+        whamon_met = true;
+        say(whamon, text("s130.sec81.u1"));
+        animate(tamer, 25);
+        wait(15);
+        say(tamer, text("s130.sec81.u2"));
+        animate(tamer, anim.idle);
+        say(whamon, text("s130.sec81.u3"));
+        store_digimon_type(partner_type);
+        say(tamer, text("s130.sec81.u4"));
+        say(whamon, text("s130.sec81.u5"));
+        say(whamon, text("s130.sec81.u6"));
+        animate(tamer, 16);
+        wait(15);
+        say(tamer, text("s130.sec81.u7"));
+        animate(tamer, anim.idle);
+        say(whamon, text("s130.sec81.u8"));
+        choice(open) {
+            text("s130.sec81.m1.o0") => {
+                say(whamon, text("s130.sec81.u10"));
+                camera_to(-3150, 3000, speed: 30);
+                animate(whamon, 28);
+                sound(8, 3);
+                wait(2s);
+                entity_set_rotation(whamon, 3459);
+                sound(8, 3);
+                entity_set_rotation(whamon, 3331);
+                wait(3);
+                entity_set_rotation(whamon, 3203);
+                wait(3);
+                entity_set_rotation(whamon, 3075);
+                wait(3);
+                entity_set_rotation(whamon, 2947);
+                wait(3);
+                entity_set_rotation(whamon, 2819);
+                wait(3);
+                entity_set_rotation(whamon, 2691);
+                wait(3);
+                entity_set_rotation(whamon, 2563);
+                sound(8, 3);
+                wait(10);
+                entity_set_rotation(whamon, 2435);
+                wait(3);
+                entity_set_rotation(whamon, 2307);
+                wait(3);
+                entity_set_rotation(whamon, 2179);
+                wait(3);
+                entity_set_rotation(whamon, 2051);
+                wait(3);
+                entity_set_rotation(whamon, 1923);
+                sound(8, 3);
+                wait(10);
+                entity_set_rotation(whamon, 1795);
+                wait(3);
+                entity_set_rotation(whamon, 1667);
+                wait(3);
+                entity_set_rotation(whamon, 1539);
+                wait(3);
+                entity_set_rotation(whamon, 1411);
+                wait(3);
+                entity_set_rotation(whamon, 1283);
+                wait(3);
+                walk(tamer, -2454, 2707);
+                await tamer;
+                walk(tamer, -3041, 3042);
+                walk(partner, -2454, 2707);
+                await partner;
+                walk(partner, -2771, 2915);
+                await tamer;
+                await partner;
+                wait(1s);
+                entity_set_rotation(tamer, 1283);
+                entity_set_rotation(partner, 1283);
+                wait(5);
+                say(tamer, text("s130.sec81.u11"));
+                sound(8, 3);
+                entity_move_to(tamer, -4053, 3680, 99, 0);
+                entity_move_to(partner, -4053, 3680, 99, 0);
+                entity_move_to(whamon, -4053, 3680, 99, 0);
+                move_object_to(0, 35, 1, 0, 350, 410);
+                move_object_to(1, 36, 1, 0, 438, 410);
+                move_object_to(2, 37, 1, 0, 412, 410);
+                move_object_to(3, 38, 1, 0, 366, 410);
+                move_object_to(4, 39, 1, 0, 350, 434);
+                move_object_to(5, 40, 1, 0, 350, 458);
+                move_object_to(6, 41, 1, 0, 366, 482);
+                move_object_to(7, 42, 1, 0, 390, 506);
+                wait(10);
+                sound(8, 3);
+                set_obj_visibility(35, 0);
+                set_obj_visibility(36, 0);
+                set_obj_visibility(37, 0);
+                set_obj_visibility(38, 0);
+                set_obj_visibility(39, 0);
+                set_obj_visibility(40, 0);
+                set_obj_visibility(41, 0);
+                set_obj_visibility(42, 0);
+                engine.object = 35;
+                engine.animation = 8;
+                call_routine(routine("reset_object_animation"));
+                wait(10);
+                move_object_to(0, 35, 1, 120, 0, 730);
+                move_object_to(1, 36, 1, 120, 88, 730);
+                move_object_to(2, 37, 1, 120, 64, 730);
+                move_object_to(3, 38, 1, 120, 16, 730);
+                move_object_to(4, 39, 1, 120, 0, 754);
+                move_object_to(5, 40, 1, 120, 0, 778);
+                move_object_to(6, 41, 1, 120, 16, 802);
+                move_object_to(7, 42, 1, 120, 40, 826);
+                wait(10);
+                entity_move_to(tamer, -4053, 3680, 99, 0);
+                entity_move_to(partner, -4053, 3680, 99, 0);
+                entity_move_to(whamon, -4053, 3680, 99, 0);
+                wait(30);
+                warp_to(142, 1, 60);
+            }
+            text("s130.sec81.m1.o1") or cancel => {
+                say(whamon, text("s130.sec81.u9"));
+                camera_on(tamer, speed: 10);
+                await camera;
+            }
+        }
+    }
+
+    on step(0) replace {    // section 51
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

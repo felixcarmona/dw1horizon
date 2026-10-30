@@ -1,0 +1,11 @@
+// Who stands on screen 209 (Treasure Hunt), and when. Read out of MAPHEAD.SCN section 209 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(209) {                              // Treasure Hunt
+            npc 158 slot 0;
+            npc 139 slot 1 when recruited(Gabumon);
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+ "s040.sec5.u0": "¿Eh? ¿Y tú quién narices eres? ¡Largo!",
+ "s040.sec5.u1": "¿Qué pasa, esta es tu casa?",
+ "s040.sec5.u2": "¡No me dejan decírtelo!",
+ "s040.sec5.u3": "...¿Entonces eres un vigilante o algo así?",
+ "s040.sec5.u4": "¿Qué pasa, buscas pelea? ¡Te voy a dejar planchao!",
+ "s040.sec5.m0.o0": "Vale, a pelear",
+ "s040.sec5.m0.o1": "No voy a picar",
+ "s040.sec5.u5": "¡U-uaaah!",
+ "s040.sec5.u6": "¡Oh, no...! ...¡Eeeeh!",
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Ji, ji, ji, ji..."
+  ]
+ ],
+ "s040.sec5.u8": "¿Eh? ¿Quién anda ahí?",
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "No hemos hecho na' de malo.",
+   "¡No te cueles así en casa",
+   "de los demás! Je, je."
+  ]
+ ],
+ "s040.sec5.u10": "Uf... Tendré que volver más tarde.",
+ "s040.sec5.u11": "Bueno, suerte con lo de vigilar.",
+ "s040.sec5.u12": "¿Mm...? ¿No te he visto yo antes...? ¡Eso es, estabas en la banda de Ogremon! Así que esta es vuestra guarida.",
+ "s040.sec5.u13": "...¿D-de qué me hablas?",
+ "s040.sec5.u14": "¡La otra vez te me escapaste! ¡Prepárate!",
+ "s040.sec5.m1.o0": "Vale, a pelear",
+ "s040.sec5.m1.o1": "No voy a picar",
+ "s040.sec5.u15": "¡U-uaaah!",
+ "s040.sec5.u16": "La otra vez me la colaste bien. Creía que os habíais llevado la guarida a otra parte, pero... ¡aquí estás, tan tranquilo!",
+ "s040.sec5.u17": "...¿D-de qué me hablas?",
+ "s040.sec5.u18": "¡Esta vez no te escapas!",
+ "s040.sec5.u19": "Venga, déjame entrar.",
+ "s040.sec5.u20": "¿Qué pasa, buscas pelea? ¡Te voy a dejar planchao!"
+}

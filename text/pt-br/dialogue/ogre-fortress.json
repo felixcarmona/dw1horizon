@@ -1,0 +1,71 @@
+{
+ "s045.sec5.u0": "Isso é ruim!",
+ "s045.sec6.u0": "Tenho que correr!",
+ "s045.sec7.u0": "Espere um segundo!",
+ "s046.sec5.u0": "Peguem-nos!",
+ "s046.sec6.u0": "Peguem-nos!",
+ "s046.sec7.u0": "Peguem-nos!",
+ "s047.sec5.u0": "Formação C!",
+ "s047.sec6.u0": "Formação A!",
+ "s047.sec7.u0": "Formação B!",
+ "s047.sec60.u0": "Yeeugh!",
+ "s047.sec60.u1": ".........",
+ "s047.sec60.u2": "Você só pode estar brincando!",
+ "s047.sec60.u3": "Desapareceu... foi uma ilusão?",
+ "s047.sec60.u4": "Parece que vencemos... de alguma forma.",
+ "s047.sec60.u5": "Huh?",
+ "s047.sec60.u6": "Mm, mmm. Huh?",
+ "s047.sec60.u7": "Eu meio que apaguei de repente... Desculpe-me por isso!",
+ "s047.sec60.u8": [
+  [
+   "Hummm?? O que foi isso? A",
+   "maldição de Analogman?! Bem,",
+   "agora deve estar tudo certo."
+  ]
+ ],
+ "s048.sec5.u0": "Ah...!",
+ "s048.sec6.u0": "Ah...!",
+ "s048.sec11.u0": "Huh? O que você é?",
+ "s048.sec11.u1": "Nanimon, é isso!",
+ "s048.sec11.u2": [
+  [
+   "Peguei o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora posso",
+   "carregar até 20 itens!"
+  ]
+ ],
+ "s048.sec11.u3": [
+  [
+   "Peguei o {color 4}Chaveiro",
+   "dimensional{color 1}! Agora posso",
+   "carregar até 30 itens!"
+  ]
+ ],
+ "s048.sec51.u0": "Será que esse elevador é o que empurra o chão lá em cima?",
+ "s048.sec51.m0.o0": "Usar o elevador",
+ "s048.sec51.m0.o1": "Não usar o elevador",
+ "s048.sec52.u0": "Hey!",
+ "s048.sec52.u1": [
+  [
+   "Hm?"
+  ],
+  [
+   "Mwahaha, veio para ser derrotado?"
+  ]
+ ],
+ "s048.sec52.u2": "Essa é a minha fala!",
+ "s048.sec52.u3": "Não vou pegar leve com você como da última vez! Vou fazer você chorar!",
+ "s048.sec52.u4": "Eeek!",
+ "s048.sec52.u5": "Wawawa!",
+ "s048.sec52.u6": "Droga!",
+ "s048.sec52.u7": "O que é isso?",
+ "s048.sec52.u8": "Gyahahahaha! Até logo, seus idiotas.",
+ "s048.sec52.u9": "Droga, ele fugiu de novo!",
+ "s048.sec52.u10": [
+  [
+   "Até um elevador de fuga ele",
+   "tinha... Não adianta ir atrás",
+   "agora. Aquele sujeito!"
+  ]
+ ]
+}

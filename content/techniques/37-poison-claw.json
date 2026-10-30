@@ -1,0 +1,17 @@
+{
+  "id": 37,
+  "name": "Poison Claw",
+  "element": "nature",
+  "power": 62,
+  "mpCost": 17,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 60,
+  "status": 1,
+  "statusChance": 40,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [28, 22, 16]
+}

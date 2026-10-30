@@ -1,0 +1,21 @@
+{
+  "file": "MAP/MAP11/FACT06.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Andromon160",
+      "at": [200, 336],
+      "facing": 2048,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "hp": "-300",
+      "off": "-10",
+      "moves": [46, 48, 255, 255],
+      "prios": [50, 50, 0, 0],
+      "flee": [-2085, 632],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[20, 0, 0]]
+    }
+  ]
+}

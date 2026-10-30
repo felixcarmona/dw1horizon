@@ -1,0 +1,12 @@
+// Who stands on screen 143 (Secret Beach Cave), and when. Read out of MAPHEAD.SCN section 143 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(143) {                              // Secret Beach Cave
+            npc 154 slot 0 when not trigger(150);
+            npc 139 slot 1 when not trigger(150);
+            npc 139 slot 2 when not trigger(150);
+        }
+    }
+}

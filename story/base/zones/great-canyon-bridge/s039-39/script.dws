@@ -1,0 +1,63 @@
+// Readable form of script 39 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 39 {
+    npc goblimon = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 51;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Def. Chip"), 1460, 0, -443, 3072, 666);
+    }
+
+    on talk(goblimon) replace {    // section 6
+        say(goblimon, text("s039.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (ogre_fortress_cleared && canyon_elevator_ridden && !shellmon_plea_heard) {
+            sound(8, 12);
+            say(narrator, text("s039.sec51.u0"));
+            entity_set_rotation(tamer, 1321);
+            entity_set_rotation(partner, 1321);
+            wait(10);
+            animate(tamer, 23);
+            wait(15);
+            say(tamer, text("s039.sec51.u1"));
+            animate(tamer, anim.idle);
+            wait(10);
+            say(narrator, text("s039.sec51.u2"));
+            wait(10);
+            say(tamer, text("s039.sec51.u3"));
+            wait(10);
+            say(narrator, text("s039.sec51.u4"));
+            wait(10);
+            say(tamer, text("s039.sec51.u5"));
+            wait(10);
+            sound(8, 11);
+            say(narrator, text("s039.sec51.u6"));
+            wait(10);
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s039.sec51.u7"));
+            animate(tamer, anim.idle);
+            wait(10);
+            say(narrator, text("s039.sec51.u8"));
+            wait(10);
+            say(tamer, text("s039.sec51.u9"));
+            wait(10);
+            sound(8, 11);
+            say(narrator, text("s039.sec51.u10"));
+            wait(10);
+            shellmon_plea_heard = true;
+            return;
+        }
+        unless (!ogre_fortress_elevator_ridden || !shellmon_plea_heard || is_recruited(species("Shellmon"))) return;
+        return;
+    }
+}

@@ -1,0 +1,33 @@
+{
+  "id": 75,
+  "name": "ShimaUnimon",
+  "level": "champion",
+  "attribute": "data",
+  "specialties": ["air", "battle", null],
+  "techniques": ["Dynamite Kick (48)", "Counter", "War Cry", "Static Elect", "Megalo Spark", "Electric Cloud"],
+  "drop": {"item": "med.recovery", "percent": 10},
+  "effects_like": 33,
+  "model": {"name": "SIMA", "bones": 27, "radius": 180, "height": 400},
+  "voice": 29,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 1100, "mp": 2100, "off": 380, "def": 190, "speed": 130, "brain": 250, "bits": 300},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

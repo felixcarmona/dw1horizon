@@ -1,0 +1,91 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M166DKGM",
+ "type": 298,
+ "name": "Dokugumon",
+ "source": {
+  "type": 38,
+  "mmd": "extracted/CHDAT/MMD1/DORI.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 18,
+  "4": 25,
+  "10": 13,
+  "11": 14,
+  "12": 17,
+  "13": 21,
+  "19": 7,
+  "20": 8,
+  "21": 11,
+  "22": 5,
+  "25": 15,
+  "27": 10
+ },
+ "hips": [
+  1,
+  1,
+  0.904
+ ],
+ "root_scale": 0.904,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x38": {
+   "anim": "anim_14",
+   "start": 1,
+   "end": 110,
+   "speed": 1.12,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 167
+  },
+  "0x34": {
+   "anim": "anim_12",
+   "start": 8,
+   "end": 100,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 167
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.106491,
+ "hub_roots": true
+}

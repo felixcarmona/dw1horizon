@@ -1,0 +1,12 @@
+// Who stands on screen 98 (Ice Sanctuary), and when. Read out of MAPHEAD.SCN section 98 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(98) {                              // Ice Sanctuary
+            npc Icemon slot 0 autotalk;
+            npc Icemon slot 1 autotalk;
+            npc Bluemeramon slot 2 autotalk;
+        }
+    }
+}

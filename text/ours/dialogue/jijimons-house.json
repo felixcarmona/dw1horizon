@@ -1,0 +1,293 @@
+{
+ "s165.sec5.u0": [
+  [
+   "Ah, you've come at just the right time!"
+  ],
+  [
+   "I have an important favor to ask, one only",
+   "you can do."
+  ]
+ ],
+ "s165.sec5.u1": "What is it?",
+ "s165.sec5.u2": "Just now I sensed it again: the same evil feeling as Analogman and Machinedramon. But I still can't tell where it's coming from...",
+ "s165.sec5.u3": "Again?! All right, leave it to me!",
+ "s165.sec5.u4": "Oh, thank you. By the way...",
+ "s165.sec5.u5": "I hear you defeated Machinedramon!",
+ "s165.sec5.u6": "Yeah. But I don't really get it. It felt like some kind of curse of Analogman's.",
+ "s165.sec5.u7": [
+  [
+   "His grudge must still linger on, terribly",
+   "strong..."
+  ],
+  [
+   "Well, with this, maybe we'll have peace again."
+  ]
+ ],
+ "s165.sec5.u8": [
+  [
+   "If Machinedramon comes back again, we'll just",
+   "beat him again."
+  ],
+  [
+   "It'll be like a yearly festival. Fun, right?"
+  ]
+ ],
+ "s165.sec5.u9": "Ha ha, how reassuring. Oh, that's right, take this as my thanks. It just happened to grow on the Meat Farm.",
+ "s165.sec5.u10": "Whoa, an {color 6}Overripe Melon{color 1}?",
+ "s165.sec5.u11": "Oops, my bag's full.",
+ "s165.sec5.u12": "I'll take it, thanks!",
+ "s165.sec5.u13": "Ah, you came! It's an important matter, you see, one I can only ask of you.",
+ "s165.sec5.u14": "Heh heh, don't mention it. So what's this about Analogman coming back?",
+ "s165.sec5.u15": [
+  [
+   "Mm, I can feel it. Something just like his evil",
+   "feeling."
+  ],
+  [
+   "I can't pin down where it's coming from,",
+   "though..."
+  ]
+ ],
+ "s165.sec5.u16": "All right, leave it to me! I'll find him and take him down.",
+ "s165.sec5.u17": "Oh, thank you. By the way...",
+ "s165.sec7.u0": "Looks like Yuramon has picked up some new rumors.",
+ "s165.sec7.u1": "Oh yeah, Yuramon says it knows some new rumors.",
+ "s165.sec7.u2": "The city's getting livelier, and the talk around town is changing a bit, too.",
+ "s165.sec7.u3": "{color 6}{player}{color 1}, the way you go adventuring is pretty unusual, y'know.",
+ "s165.sec20.u0": "So you've come to... I'm so sorry, my boy.",
+ "s165.sec85.m0.o0": "Use it",
+ "s165.sec85.m0.o1": "Don't use it",
+ "s165.sec85.u0": "Oh? What's this machine?",
+ "s165.sec85.u1": [
+  [
+   "Hmm, that? That's the {color 4}Memory Card Battle",
+   "Data Saving Machine{color 1}."
+  ],
+  [
+   "It saves your current partner's data for",
+   "battles."
+  ],
+  [
+   "Just press {color 6}×{color 1} there, and the machine will tell",
+   "you what to do."
+  ]
+ ],
+ "s165.sec85.u2": "Use the {color 4}Memory Card Battle Data Saving Machine{color 1}?",
+ "s166.sec5.u0": "Everybody's working real hard!",
+ "s166.sec6.u0": "Looks like there's nothing inside.",
+ "s166.sec7.u0": "Airdramon is sleeping...",
+ "s166.sec60.u0": "Mm, it seems he's all right for now.",
+ "s166.sec60.u1": "Phew, thank goodness...",
+ "s166.sec60.u2": "For his sake too, we must beat their boss as soon as we can.",
+ "s166.sec60.u3": "...I know, I know.",
+ "s178.sec5.u0": [
+  [
+   "Ah, you've come at just the right time!"
+  ],
+  [
+   "I have an important favor to ask, one only",
+   "you can do."
+  ]
+ ],
+ "s178.sec5.u1": "What is it?",
+ "s178.sec5.u2": "Just now I sensed it again: the same evil feeling as Analogman and Machinedramon. But I still can't tell where it's coming from...",
+ "s178.sec5.u3": "Again?! All right, leave it to me!",
+ "s178.sec5.u4": "Oh, thank you. By the way...",
+ "s178.sec5.u5": "I hear you defeated Machinedramon!",
+ "s178.sec5.u6": "Yeah. But I don't really get it. It felt like some kind of curse of Analogman's.",
+ "s178.sec5.u7": [
+  [
+   "His grudge must still linger on, terribly",
+   "strong..."
+  ],
+  [
+   "Well, with this, maybe we'll have peace again."
+  ]
+ ],
+ "s178.sec5.u8": [
+  [
+   "If Machinedramon comes back again, we'll just",
+   "beat him again."
+  ],
+  [
+   "It'll be like a yearly festival. Fun, right?"
+  ]
+ ],
+ "s178.sec5.u9": "Ha ha, how reassuring. Oh, that's right, take this as my thanks. It just happened to grow on the Meat Farm.",
+ "s178.sec5.u10": "Whoa, an {color 6}Overripe Melon{color 1}?",
+ "s178.sec5.u11": "Oops, my bag's full.",
+ "s178.sec5.u12": "I'll take it, thanks!",
+ "s178.sec5.u13": "Ah, you came! It's an important matter, you see, one I can only ask of you.",
+ "s178.sec5.u14": "Heh heh, don't mention it. So what's this about Analogman coming back?",
+ "s178.sec5.u15": [
+  [
+   "Mm, I can feel it. Something just like his evil",
+   "feeling."
+  ],
+  [
+   "I can't pin down where it's coming from,",
+   "though..."
+  ]
+ ],
+ "s178.sec5.u16": "All right, leave it to me! I'll find him and take him down.",
+ "s178.sec5.u17": "Oh, thank you. By the way...",
+ "s178.sec5.u18": "Ah, ahem. Together with the Digimon who come back, I'm going to rebuild File City.",
+ "s178.sec5.u19": "I plan to build shops that you and {color 10}{partner}{color 1} will find handy.",
+ "s178.sec5.u20": "To start with... let's see. Why not explore Native Forest, just outside the city?",
+ "s178.sec6.u0": "This is for you. Good luck!",
+ "s178.sec6.u1": "Got all sorts of items!",
+ "s178.sec6.u2": [
+  "To look at your items, press {color 5}△{color 1}, choose Item,",
+  "then view them with {color 6}×{color 1}."
+ ],
+ "s178.sec6.u3": "Looks like Yuramon has picked up some new rumors.",
+ "s178.sec6.u4": "Oh yeah, Yuramon says it knows some new rumors.",
+ "s178.sec6.u5": "The city's getting livelier, and the talk around town is changing a bit, too.",
+ "s178.sec6.u6": [
+  [
+   "I'll teach you the basics of",
+   "our world!"
+  ],
+  [
+   "A day has 24 hours: morning,",
+   "day and night. It might feel a",
+   "bit fast to you."
+  ],
+  [
+   "A year is 30 days. Months?",
+   "What are those? Seasons...?",
+   "Can you eat those?"
+  ],
+  [
+   "Of course we have money. It's",
+   "called Bits. You can never",
+   "have too many!"
+  ],
+  [
+   "On this island, \"the city\"",
+   "means here, though there are a",
+   "few small towns and villages."
+  ],
+  [
+   "Oh, and the clock: the yellow",
+   "dot is the hour, and the hand",
+   "is the minutes."
+  ],
+  [
+   "Midnight is at the top, and",
+   "noon is at the bottom."
+  ],
+  [
+   "Red, on the left, is evening:",
+   "from 4 PM to 8 PM."
+  ],
+  [
+   "Purple, on the right, is",
+   "morning: from 4 AM to 8 AM."
+  ],
+  [
+   "Digimon have waking hours.",
+   "Most rise in the morning and",
+   "sleep at night, but not all."
+  ],
+  [
+   "If you can't find a Digimon you",
+   "want to meet, try coming at a",
+   "different time."
+  ]
+ ],
+ "s178.sec7.u0": "Be sure to check in with Tsunomon and Yuramon a lot, 'kay?",
+ "s178.sec7.u1": [
+  [
+   "I'll tell you about the Tamer Level!"
+  ],
+  [
+   "With a high Tamer Level, more of a Digimon's",
+   "stats pass on when it dies of old age."
+  ],
+  [
+   "It won't go up much at first, but keep raising",
+   "Digimon bit by bit and it'll go up, 'kay?"
+  ]
+ ],
+ "s178.sec7.u2": [
+  [
+   "When you use a Finishing Technique, are you",
+   "mashing L1 and R1 like you should?"
+  ],
+  [
+   "A full gauge does twice the damage of an",
+   "empty one. Twice!"
+  ]
+ ],
+ "s178.sec7.u3": [
+  [
+   "I'll tell you how Digimon live!"
+  ],
+  [
+   "First, of course, Digimon eat.",
+   "When they get hungry, they'll",
+   "let you know."
+  ],
+  [
+   "Then they poop. It's best if",
+   "they do it in a toilet whenever",
+   "they can."
+  ],
+  [
+   "When sleepy, they sleep. They",
+   "wait for {color 6}{player}{color 1} to say",
+   "so, but early is best."
+  ],
+  [
+   "They get tired, get sick and",
+   "get grumpy, too. They're",
+   "pretty delicate, 'kay?"
+  ],
+  [
+   "Digimon are wild at heart, so",
+   "sometimes praise them, and",
+   "sometimes scold them."
+  ],
+  [
+   "Whatever you do, watch your",
+   "Digimon closely and take good",
+   "care of it."
+  ]
+ ],
+ "s178.sec20.u0": "So you've come to... I'm so sorry, my boy.",
+ "s178.sec82.m0.o0": "Rest a while",
+ "s178.sec82.m0.o1": "Don't rest",
+ "s178.sec82.u0": "Punimon isn't here, but I guess I could just rest anyway.",
+ "s178.sec82.u1": [
+  [
+   "{color 7}Punimon {color 1}",
+   "I'm Punimon! Why not rest",
+   "here for a little while?"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "An hour's rest restores some",
+   "HP and MP, and takes away a",
+   "bit of Tiredness."
+  ]
+ ],
+ "s178.sec85.m0.o0": "Use it",
+ "s178.sec85.m0.o1": "Don't use it",
+ "s178.sec85.u0": "Huh, what's this machine?",
+ "s178.sec85.u1": [
+  [
+   "Hmm, that? That's the {color 4}Memory Card Battle",
+   "Data Saving Machine{color 1}."
+  ],
+  [
+   "It saves your current partner's data for",
+   "battles."
+  ],
+  [
+   "Just press {color 6}×{color 1} there, and the machine will tell",
+   "you what to do."
+  ]
+ ],
+ "s178.sec85.u2": "Use the {color 4}Memory Card Battle Data Saving Machine{color 1}?"
+}

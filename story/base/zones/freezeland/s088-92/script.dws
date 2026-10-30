@@ -1,0 +1,50 @@
+// Readable form of script 88 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 88 {
+    // the section table, in the order of the original header
+    sections 254, 51, 52;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        if (back_dimension_portal == 1) {
+            walk(tamer, 170, -956);
+            warp_to(226, 0, 60);
+        }
+        store_digimon_type(partner_type);
+        store_digimon_value(partner_type, partner_attribute);
+        unless (partner_attribute != 2) return;
+        say(narrator, text("s088.sec51.u0"));
+        fadeout_hud(0);
+        run(tamer, 45, -850, camera: true);
+        run(partner, 349, -753);
+        await tamer;
+        await partner;
+        wait(10);
+        entity_set_rotation(tamer, 2949);
+        wait(10);
+        entity_set_rotation(tamer, 1925);
+        say(tamer, text("s088.sec51.u1"));
+    }
+
+    on step(1) replace {    // section 52
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "objects": {
+    "MOVES_VIEW_STRING_SPRITES": {
+      "length": 96,
+      "sources": {
+        "us": {
+          "file": "SLUS_010.32",
+          "offset": 606772,
+          "copy_length": 96,
+          "refs": [
+            184152,
+            184156
+          ]
+        },
+        "eu": {
+          "file": "SLES_029.14",
+          "offset": 638608,
+          "copy_length": 96,
+          "refs": [
+            208804,
+            208808
+          ]
+        },
+        "fr": {
+          "file": "SLES_034.35",
+          "offset": 638204,
+          "copy_length": 96,
+          "refs": [
+            208804,
+            208808
+          ]
+        },
+        "de": {
+          "file": "SLES_034.34",
+          "offset": 638044,
+          "copy_length": 96,
+          "refs": [
+            208796,
+            208800
+          ]
+        },
+        "es": {
+          "file": "SLES_034.36",
+          "offset": 638236,
+          "copy_length": 96,
+          "refs": [
+            208796,
+            208800
+          ]
+        },
+        "it": {
+          "file": "SLES_034.37",
+          "offset": 637976,
+          "copy_length": 96,
+          "refs": [
+            208804,
+            208808
+          ]
+        },
+        "jp1": {
+          "file": "SLPS_017.97",
+          "offset": 658100,
+          "copy_length": 96,
+          "refs": [
+            214448,
+            214452
+          ]
+        }
+      }
+    },
+    "MOVES_VIEW_SPRITES": {
+      "length": 56,
+      "sources": {
+        "us": {
+          "file": "SLUS_010.32",
+          "offset": 606868,
+          "copy_length": 56,
+          "refs": [
+            184564,
+            184568
+          ]
+        },
+        "eu": {
+          "file": "SLES_029.14",
+          "offset": 638704,
+          "copy_length": 56,
+          "refs": [
+            209368,
+            209372
+          ]
+        },
+        "fr": {
+          "file": "SLES_034.35",
+          "offset": 638300,
+          "copy_length": 56,
+          "refs": [
+            209240,
+            209244
+          ]
+        },
+        "de": {
+          "file": "SLES_034.34",
+          "offset": 638140,
+          "copy_length": 56,
+          "refs": [
+            209232,
+            209236
+          ]
+        },
+        "es": {
+          "file": "SLES_034.36",
+          "offset": 638332,
+          "copy_length": 56,
+          "refs": [
+            209232,
+            209236
+          ]
+        },
+        "it": {
+          "file": "SLES_034.37",
+          "offset": 638072,
+          "copy_length": 56,
+          "refs": [
+            209240,
+            209244
+          ]
+        },
+        "jp1": {
+          "file": "SLPS_017.97",
+          "offset": 658196,
+          "copy_length": 56,
+          "refs": [
+            214948,
+            214952
+          ]
+        }
+      }
+    },
+    "STATS_VIEW_TEXT": {
+      "length": 72,
+      "sources": {
+        "us": {
+          "file": "SLUS_010.32",
+          "offset": 607028,
+          "copy_length": 72,
+          "refs": [
+            177828,
+            177832
+          ]
+        },
+        "eu": {
+          "file": "SLES_029.14",
+          "offset": 639860,
+          "copy_length": 56,
+          "refs": [
+            201508,
+            201512
+          ]
+        },
+        "fr": {
+          "file": "SLES_034.35",
+          "offset": 639456,
+          "copy_length": 56,
+          "refs": [
+            201508,
+            201512
+          ]
+        },
+        "de": {
+          "file": "SLES_034.34",
+          "offset": 639296,
+          "copy_length": 56,
+          "refs": [
+            201500,
+            201504
+          ]
+        },
+        "es": {
+          "file": "SLES_034.36",
+          "offset": 639488,
+          "copy_length": 56,
+          "refs": [
+            201500,
+            201504
+          ]
+        },
+        "it": {
+          "file": "SLES_034.37",
+          "offset": 639228,
+          "copy_length": 56,
+          "refs": [
+            201508,
+            201512
+          ]
+        },
+        "jp1": {
+          "file": "SLPS_017.97",
+          "offset": 658356,
+          "copy_length": 72,
+          "refs": [
+            206744,
+            206748
+          ]
+        }
+      }
+    },
+    "AMOUNT_BOX_LAYOUT": {
+      "length": 30,
+      "sources": {
+        "us": {
+          "file": "SLUS_010.32",
+          "offset": 654820,
+          "copy_length": 30,
+          "refs": [
+            439624,
+            439632
+          ]
+        },
+        "eu": {
+          "file": "SLES_029.14",
+          "offset": 673032,
+          "copy_length": 30,
+          "refs": [
+            420332,
+            420336
+          ]
+        },
+        "fr": {
+          "file": "SLES_034.35",
+          "offset": 673308,
+          "copy_length": 30,
+          "refs": [
+            420204,
+            420208
+          ]
+        },
+        "de": {
+          "file": "SLES_034.34",
+          "offset": 673016,
+          "copy_length": 30,
+          "refs": [
+            420200,
+            420204
+          ]
+        },
+        "es": {
+          "file": "SLES_034.36",
+          "offset": 675584,
+          "copy_length": 30,
+          "refs": [
+            420196,
+            420200
+          ]
+        },
+        "it": {
+          "file": "SLES_034.37",
+          "offset": 674488,
+          "copy_length": 30,
+          "refs": [
+            420204,
+            420208
+          ]
+        },
+        "jp1": {
+          "file": "SLPS_017.97",
+          "offset": 687796,
+          "copy_length": 30,
+          "refs": [
+            433804,
+            433808
+          ]
+        }
+      }
+    }
+  }
+}

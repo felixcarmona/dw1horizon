@@ -1,0 +1,231 @@
+{
+ "s037.sec5.u0": [
+  [
+   "Et tiraré d'aquí!"
+  ]
+ ],
+ "s037.sec6.u0": [
+  [
+   "N-no empenyis!"
+  ]
+ ],
+ "s037.sec7.u0": [
+  [
+   "Les altures em tranquil·litzen",
+   "un munt!"
+  ]
+ ],
+ "s037.sec8.u0": [
+  [
+   "Que caic! És perillós!"
+  ]
+ ],
+ "s037.sec9.u0": [
+  [
+   "Aquí dalt no, para!"
+  ]
+ ],
+ "s037.sec10.u0": [
+  [
+   "No té sentit lluitar..."
+  ]
+ ],
+ "s037.sec81.m0.o0": "Prémer el botó de baixar",
+ "s037.sec81.m0.o1": "No pujar",
+ "s037.sec81.u0": [
+  [
+   "Ascensor"
+  ]
+ ],
+ "s037.sec81.u1": [
+  [
+   "...no passa res. No hi ha",
+   "manera."
+  ]
+ ],
+ "s038.sec5.u0": [
+  [
+   "N-no podríem deixar-ho?"
+  ]
+ ],
+ "s038.sec6.u0": [
+  [
+   "Shujaa, shujaa!"
+  ]
+ ],
+ "s038.sec7.u0": [
+  [
+   "Chis, chis!"
+  ]
+ ],
+ "s038.sec8.u0": [
+  [
+   "Ho donaré tot!"
+  ]
+ ],
+ "s038.sec9.u0": "Però què dius?",
+ "s038.sec81.u0": [
+  [
+   "Nord-oest: Terra gelada"
+  ]
+ ],
+ "s038.sec82.m0.o0": "Prémer el botó de pujar",
+ "s038.sec82.m0.o1": "Prémer el botó de baixar",
+ "s038.sec82.m0.o2": "No pujar",
+ "s038.sec82.u0": [
+  [
+   "Ascensor"
+  ]
+ ],
+ "s038.sec82.u1": [
+  [
+   "Eh?"
+  ],
+  [
+   "Res, no passa res."
+  ]
+ ],
+ "s043.sec5.u0": [
+  [
+   "Grrraaaah!"
+  ]
+ ],
+ "s043.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s043.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s043.sec51.u0": [
+  [
+   "Per tot el que hem sentit,",
+   "aquest sembla el camí on",
+   "apareixen aquests bandits..."
+  ],
+  [
+   "Molt bé. Anem, {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": [
+  [
+   "Yujuuuuuu!"
+  ]
+ ],
+ "s043.sec51.u2": [
+  [
+   "Gua, ja, ja, ja!"
+  ]
+ ],
+ "s043.sec51.u3": [
+  [
+   "Yupiiii!"
+  ]
+ ],
+ "s043.sec51.u4": [
+  [
+   "Muahaha, rendiu-vos i deixeu",
+   "les vostres coses! O en",
+   "sortireu malparats!"
+  ]
+ ],
+ "s043.sec51.u5": [
+  [
+   "Els que heu de rendir-vos sou",
+   "vosaltres!"
+  ]
+ ],
+ "s043.sec51.u6": [
+  [
+   "Eh!? Vosaltres sou..."
+  ]
+ ],
+ "s043.sec51.u7": [
+  [
+   "No em diguis que..."
+  ]
+ ],
+ "s043.sec51.u8": [
+  [
+   "C-cap! Què fem!?"
+  ]
+ ],
+ "s043.sec51.u9": [
+  [
+   "Deixeu de cridar! Som més i",
+   "més forts. Aplaneu-los!"
+  ]
+ ],
+ "s043.sec51.u10": [
+  [
+   "Grrr... M-me les pagareu!"
+  ]
+ ],
+ "s043.sec51.u11": [
+  [
+   "Mira com corren! Almenys no",
+   "haurien de tornar per aquí",
+   "durant un temps."
+  ]
+ ],
+ "s043.sec53.u0": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s043.sec53.u1": [
+  [
+   "S'ha mogut el sòl? ...Seran",
+   "imaginacions meves."
+  ]
+ ],
+ "s043.sec53.u2": [
+  [
+   "Què!? No pot ser..."
+  ]
+ ],
+ "s043.sec53.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   "O-uaaaaaah!!"
+  ]
+ ],
+ "s043.sec81.m0.o0": "Mode ogre: SÍ",
+ "s043.sec81.m0.o1": "Mode ogre: NO",
+ "s043.sec81.u0": [
+  [
+   "Est: Ascensor Oest: Perill!",
+   "Precipici"
+  ]
+ ],
+ "s043.sec82.u0": [
+  [
+   "Compte amb els despreniments!!"
+  ]
+ ],
+ "s044.sec5.u0": [
+  [
+   "Et deixaré KO!"
+  ]
+ ],
+ "s044.sec6.u0": [
+  [
+   "No siguis dur amb mi, si us",
+   "plau."
+  ]
+ ],
+ "s044.sec7.u0": [
+  [
+   "Quan trio la meva presa, mai se",
+   "m'escapa."
+  ]
+ ],
+ "s044.sec8.u0": [
+  [
+   "He... S'ha acabat."
+  ]
+ ]
+}

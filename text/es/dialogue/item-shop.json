@@ -1,0 +1,46 @@
+{
+ "s176.sec7.u0": "¡Ah, sí! ¿Llevas la bolsa demasiado llena? ¡Boing! Dicen que en algún lugar del mundo hay un llavero que conecta tu bolsa con otra dimensión, ¡para que puedas llevar más objetos! ¡A lo mejor tienes que volver a los sitios donde ya has estado!",
+ "s176.sec7.u1": "¡Te voy a contar mis trucos supersecretos para comprar objetos! En la lista de objetos, ¡pulsa el botón START para ver para qué sirve cada uno! Al elegir cuántos, ¡{color 4}□{color 1} elige todos los que puedes pagar, y si mantienes {color 10}○{color 1} con arriba o abajo, cambian de diez en diez! Cuando la lista es larga, ¡mantén R1 y pulsa arriba o abajo para ir rápido! Y otro secreto más... ¡Prueba a comprar algo justo después de que tu Digimon renazca! ¡Seguro que pasa algo bueno! ¡Boing!",
+ "s176.sec81.u0": [
+  [
+   "¡Bienvenido! ¡Eh, {color 6}{player}{color 1}! ¡Mira, mi",
+   "propia tienda! ¡Venderé objetos a lo loco!"
+  ],
+  [
+   "El género... bah, ya lo apañaré algún día."
+  ],
+  [
+   "Me encantaría que me trajeras Digimon para",
+   "echarme una mano."
+  ]
+ ],
+ "s176.sec81.u1": "¡Bienvenido, pío! He decidido comprar y vender objetos, pío. ¡Encantado, pío! Todavía no hay mucho género... pero si viniera algún Digimon a ayudar, a lo mejor me apañaría, pío.",
+ "s176.sec81.u2": "Bienvenido. Si me permites el atrevimiento, he abierto una tienda de objetos. Espero contar con tu visita. El surtido todavía es bastante pobre, pero pienso agrandar la tienda. Ten paciencia conmigo de momento.",
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1}, por fin he",
+   "abierto la tienda de objetos."
+  ],
+  [
+   "¡Presiento que el negocio va a ir de cine!"
+  ],
+  [
+   "Con más Digimon en la ciudad, podré tener",
+   "mejor género."
+  ],
+  [
+   "Les ruego paciencia hasta entonces."
+  ]
+ ],
+ "s176.sec81.u4": "¡Eh, {color 6}{player}{color 1}! He empezado a ayudar en esta tienda. Compra mucho, ¿vale?",
+ "s176.sec81.u5": "¡Bienvenido, pío! Desde hoy ayudo en la tienda, pío. ¡Encantado, pío!",
+ "s176.sec81.u6": "Bienvenido, {color 6}{player}{color 1}. Si me permites el atrevimiento, he decidido ayudar en esta tienda. Espero contar con tu visita.",
+ "s176.sec81.u7": "Ah, {color 6}{player}{color 1}. Al fin y al cabo, aquí es donde mejor luce mi talento. A partir de ahora daré lo mejor de mí.",
+ "s176.sec82.m0.o0": "Comprar",
+ "s176.sec82.m0.o1": "No comprar",
+ "s176.sec82.u0": "¡Ooh, señor! ¿Qué tal te va? Yo estoy taaan ocupado vendiendo objetos todos los días... ¡Es broma! Soy un vago de cuidado, así que no creo que esté mucho por la tienda. ¡Pero tengo algo increíble para ti! ¡Se llama Manual de entreno! ¡Con solo llevarlo encima, el entrenamiento hace maravillas! Es muuuy valioso, así que te lo vendo por 50000 Bits. ¡Si no lo compras, te arrepentirás!",
+ "s176.sec82.u1": "¡Te falta muuucho para esos Bits!",
+ "s176.sec82.u2": "¡Anda, mira tú! ¡Llevas la bolsa llena!",
+ "s176.sec82.u3": "¡Has conseguido el {color 6}Manual de entreno{color 1}!",
+ "s176.sec82.u4": "¡Ni un Bit de descuento, señor!"
+}

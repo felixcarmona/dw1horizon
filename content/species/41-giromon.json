@@ -1,0 +1,53 @@
+{
+  "id": 41,
+  "name": "Giromon",
+  "level": "ultimate",
+  "vanilla": true,
+  "attribute": "vaccine",
+  "specialties": ["mech", "air", "battle"],
+  "techniques": ["Megaton Punch", "Buster Dive", "Megalo Spark", "Electric Cloud", "Thunder Justice", "Power Crane",
+                 "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
+                 "All Range Beam", "DG Dimension", "Full Potential", "Deadly Bomb"],
+  "drop": {"item": "S.Off.disk", "percent": 30},
+  "model": {"name": "GIRO", "bones": 11, "radius": 130, "height": 300},
+  "voice": 37,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 10,
+    "hunger_hours": [4, 9, 13, 18, 23],
+    "energy_max": 80,
+    "energy_fed": 30,
+    "energy_per_hour": 6,
+    "poop_timer_10min": 36,
+    "poop_size": 8,
+    "favorite_food": "Gold Acorn",
+    "sleep_cycle": "02:00-11:00",
+    "favored_region": 3,
+    "training_type": "offense-speed",
+    "birth_weight": 5,
+    "status_screen_position": [370, 270, -1610],
+    "item_distance": 10,
+    "training": {"animation": 47, "hit_tick": 30}
+  },
+  "evolution": {
+    "from": [36, 34, 37, 33, -1],
+    "to": [-1, -1, -1, -1, -1, -1],
+    "requirements": {
+      "digimon": -1,
+      "hp": -1,
+      "mp": -1,
+      "offense": 400,
+      "defense": -1,
+      "speed": 300,
+      "brain": 400,
+      "care": 15,
+      "weight": 5,
+      "discipline": -1,
+      "happiness": 95,
+      "battles": 100,
+      "techs": 35,
+      "flags": 0
+    },
+    "gains": {"hp": 3000, "mp": 3000, "offense": 600, "defense": 600, "speed": 500, "brains": 600}
+  }
+}

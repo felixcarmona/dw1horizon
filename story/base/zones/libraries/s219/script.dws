@@ -1,0 +1,35 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 219 {
+    sections 254, 51;
+    on enter replace {    // enter
+    }
+    on step(0) replace {    // step0
+        say(tamer, text("s219.sec51.u0"));
+        choice {
+            text("s219.sec51.m0.o0") => {
+                if (bits < 100) {
+                    say(tamer, text("s219.sec51.u1"));
+                    return;
+                }
+                // ours (patch 0237): how many cards, asked in the amount box; the routine charges them
+                // (economy.json cardMachine) and rolls them, one in its box, more in the list of what came
+                engine.card_machine = true;
+                engine.picker_mode = false;
+                card_shop_buy_mode = false;
+                engine.arg = 0;
+                call_routine(routine("show_bits_box"));
+                call_routine(routine("card_shop"));
+                call_routine(routine("close_box2"));
+                engine.card_machine = false;
+                call_routine(routine("check_tournament_medal"));
+            }
+            text("s219.sec51.m0.o1") => {}
+            cancel => {}
+        }
+    }
+}

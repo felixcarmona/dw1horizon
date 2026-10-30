@@ -1,0 +1,115 @@
+{
+ "s018.sec10.u0": [
+  [
+   "Você está bem, {color 10}{partner}{color 1}?"
+  ],
+  [
+   "Vamos voltar por enquanto..."
+  ]
+ ],
+ "s018.sec10.u1": [
+  [
+   "Opa! Preciso curar",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado... intruso confirmado..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado, intruso confirmado,",
+   "preparado para abrir fogo."
+  ]
+ ],
+ "s018.sec68.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec68.u1": [
+  [
+   "Para atravessar esta floresta... devo dizer,",
+   "você é impressionante."
+  ],
+  [
+   "Eu sou Centarumon. Permita-me me desculpar",
+   "pela minha grosseria até agora. Sinto muito."
+  ],
+  [
+   "Eu não testei você por capricho. De agora em",
+   "diante, pretendo te emprestar minha ajuda."
+  ]
+ ],
+ "s018.sec68.u2": "Agora, vá em frente. Estarei esperando por você na cidade.",
+ "s018.sec68.u3": "Centarumon veio para a cidade!",
+ "s018.sec68.u4": "{color 10}{partner}{color 1}, parece que estamos ficando famosos.",
+ "s018.sec68.u5": "Vamos continuar!",
+ "s018.sec68.u6": [
+  [
+   "Errou!"
+  ]
+ ],
+ "s018.sec69.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec69.u1": [
+  [
+   "Para atravessar esta floresta... devo dizer,",
+   "você é impressionante."
+  ],
+  [
+   "Eu sou Centarumon. Permita-me me desculpar",
+   "pela minha grosseria até agora. Sinto muito."
+  ],
+  [
+   "Eu não testei você por capricho. De agora em",
+   "diante, pretendo te emprestar minha ajuda."
+  ]
+ ],
+ "s018.sec69.u2": "Agora, vá em frente. Estarei esperando por você na cidade.",
+ "s018.sec69.u3": "Centarumon veio para a cidade!",
+ "s018.sec69.u4": "{color 10}{partner}{color 1}, parece que estamos ficando famosos.",
+ "s018.sec69.u5": "Vamos continuar!",
+ "s018.sec69.u6": [
+  [
+   "Errou!"
+  ]
+ ],
+ "s018.sec70.u0": [
+  [
+   "!!"
+  ]
+ ],
+ "s018.sec70.u1": [
+  [
+   "Para atravessar esta floresta... devo dizer,",
+   "você é impressionante."
+  ],
+  [
+   "Eu sou Centarumon. Permita-me me desculpar",
+   "pela minha grosseria até agora. Sinto muito."
+  ],
+  [
+   "Eu não testei você por capricho. De agora em",
+   "diante, pretendo te emprestar minha ajuda."
+  ]
+ ],
+ "s018.sec70.u2": "Agora, vá em frente. Estarei esperando por você na cidade.",
+ "s018.sec70.u3": "Centarumon veio para a cidade!",
+ "s018.sec70.u4": "{color 10}{partner}{color 1}, parece que estamos ficando famosos.",
+ "s018.sec70.u5": "Vamos continuar!",
+ "s018.sec70.u6": [
+  [
+   "Errou!"
+  ]
+ ]
+}

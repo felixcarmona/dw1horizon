@@ -1,0 +1,198 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 75 {
+    npc leomon = 5;
+    sections 254, 51, 5, 83, 85;
+    on enter replace {    // enter
+        store_random(random_roll, 99);
+        if (random_roll <= 8) {
+            spawn_item(item(44), 33, 39);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 16) {
+            spawn_item(item(44), 33, 22);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item(52), 52, 35);
+        }
+    }
+    on step(0) replace {    // step0
+        unless (!leomon_met) return;
+        unless (!is_recruited(species(48)) && leomon_rescue_seen) return;
+        face(tamer, leomon);
+        face(partner, leomon);
+        await tamer;
+        await partner;
+        leomon_met = true;
+        camera_to(-285, 3964, speed: 30);
+        await camera;
+        say(leomon, text("s075.sec51.u0"));
+        face(leomon, tamer);
+        await leomon;
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s075.sec51.u1"));
+        animate(tamer, anim.idle);
+        say(leomon, text("s075.sec51.u2"));
+        rotate(leomon, 2560);
+        await leomon;
+        animate(leomon, 24);
+        await leomon;
+        say(tamer, text("s075.sec51.u3"));
+        say(leomon, text("s075.sec51.u4"));
+        goto L6;
+    }
+    on talk(leomon) replace {    // talk
+        say(leomon, text("s075.sec5.u0"));
+        goto L6;
+    }
+    on use(3) replace {    // use3
+        rotate(tamer, 2048);
+        set_textbox_origin(-829, 0, 4099);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s075.sec83.u0"));
+        choice(camera) {
+            text("s075.sec83.m0.o0") => {}
+            text("s075.sec83.m0.o1") => {
+                loop {
+                    say(camera, text("s075.sec83.u1"));
+                    choice(camera) {
+                        text("s075.sec83.m2.o0") => {}
+                        text("s075.sec83.m2.o1") => {
+                            break;
+                        }
+                        text("s075.sec83.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s075.sec83.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s075.sec83.m1.o0") => {
+                hide_hud();
+                engine.arg = 1;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 1;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s075.sec83.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s075.sec83.u2"));
+                engine.arg = 1;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s075.sec83.m1.o2") or cancel => {}
+        }
+    }
+    on use(5) replace {    // use5
+        rotate(tamer, 2560);
+        set_textbox_origin(766, 0, 106);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s075.sec85.u0"));
+        choice(camera) {
+            text("s075.sec85.m0.o0") => {}
+            text("s075.sec85.m0.o1") => {
+                loop {
+                    say(camera, text("s075.sec85.u1"));
+                    choice(camera) {
+                        text("s075.sec85.m2.o0") => {}
+                        text("s075.sec85.m2.o1") => {
+                            break;
+                        }
+                        text("s075.sec85.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s075.sec85.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s075.sec85.m1.o0") => {
+                hide_hud();
+                engine.arg = 2;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 2;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s075.sec85.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s075.sec85.u2"));
+                engine.arg = 2;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s075.sec85.m1.o2") or cancel => {}
+        }
+    }
+    shared L6 {
+        if (has(item(118))) {
+            take(item(118));
+        } else {
+            say(tamer, text("s075.sec51.u5"));
+            say(leomon, text("s075.sec51.u6"));
+            say(leomon, text("s075.sec51.u7"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s075.sec51.u8"));
+        animate(tamer, anim.idle);
+        face(leomon, tamer);
+        await leomon;
+        say(leomon, text("s075.sec51.u9"));
+        camera_on(leomon, speed: 20);
+        await camera;
+        entity_walk_to_entity_with_camera(leomon, 1, tamer);
+        await leomon;
+        face(leomon, tamer);
+        face(tamer, leomon);
+        await leomon;
+        await tamer;
+        animate(leomon, 25);
+        wait(30);
+        say(leomon, text("s075.sec51.u10"));
+        say(leomon, text("s075.sec51.u11"));
+        animate(leomon, 24);
+        await leomon;
+        say(leomon, text("s075.sec51.u12"));
+        say(tamer, text("s075.sec51.u13"));
+        animate(leomon, 22);
+        await leomon;
+        say(leomon, text("s075.sec51.u14"));
+        walk_away(leomon, -374, -1119, looks: 3);
+        join_city_camera(leomon, species(48), 8, 17, text("s075.sec51.u15"), prosperity: 2);
+    }
+}

@@ -1,0 +1,51 @@
+import "engine.dws";
+
+// Fade the screen to white and back (CALL_ROUTINE 0x2D / 0x2E): the frames go in engine.arg.
+pub fn fade_to_white(frames: int) { engine.arg = frames; call_routine(routine("fade_to_white")); }
+pub fn fade_from_white(frames: int) { engine.arg = frames; call_routine(routine("fade_from_white")); }
+
+// Animation slots that the engine itself gives a meaning to (tools/dws/anims.py has the evidence of each: the function and line of
+// decomp/ that plays it). A slot is an index into the animation table of a model, and what it is depends on the model, so a name is
+// right for the entities in its comment: `tamer` is the tamer's model, `partner` a partner Digimon's, `npc` any model (only the slots
+// every model has). Everything else a scene plays (the NPCs' gestures 28-32, the tamer's poses 15-26) stays a number: nothing in the disc
+// or the decompilation says what it is. A test keeps this list equal to tools/dws/anims.py.
+pub group anim {
+    const idle = 0;    // tamer, partner, npc
+    const walk = 2;    // tamer, partner, npc
+    const tamer_run = 3;    // tamer
+    const run = 4;    // partner, npc
+    const battle_ready = 1;    // tamer
+    const tired_idle = 1;    // partner
+    const offer_item = 5;    // tamer
+    const happy_idle = 5;    // partner
+    const sad_idle = 7;    // partner
+    const eat = 8;    // partner
+    const poop = 10;    // partner
+    const tamer_victory = 11;    // tamer
+    const refuse = 13;    // partner
+    const command = 14;    // tamer
+    const sick = 14;    // partner
+    const hungry = 15;    // partner
+    const needs_toilet = 16;    // partner
+    const sleepy = 17;    // partner
+    const tired = 18;    // partner
+    const unhappy = 19;    // partner
+}
+
+// The scratch counter of the original's "walks away looking back" scenes (p101): how often the Digimon has glanced back.
+// Scenes reset it (`glances = 0;`) when the Digimon is gone.
+pub alias var glances = 101;
+
+// He runs to (x, z), and `looks` times the tamer and the partner turn to watch him go (`pause` ticks apart); then it waits for him
+// to arrive. The beautifier (tools/dws/lift.py) writes this for the 55 such loops of the original.
+pub fn walk_away(who: entity, x: int, z: int, looks: int, pause: int = 20) {
+    run(who, x, z);
+    while (glances < looks) {
+        glances += 1;
+        wait(pause);
+        face(tamer, who);
+        face(partner, who);
+        run(who, x, z);
+    }
+    await who;
+}

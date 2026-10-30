@@ -1,0 +1,16 @@
+// Who stands on screen 35 (Overdell Cemetery), and when. Read out of MAPHEAD.SCN section 35 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(35) {                              // Overdell Cemetery
+            npc 157 slot 0 autotalk when not recruited(Bakemon);
+            npc Tsukaimon slot 1 autotalk when roll(1) == 0 or not recruited(Bakemon);
+            npc Tsukaimon slot 2 autotalk when roll(1) == 0 or not recruited(Bakemon);
+            npc Tsukaimon slot 3 autotalk when recruited(Bakemon) and roll(1) == 0;
+            npc Soulmon slot 4 autotalk when recruited(Bakemon) and roll(1) == 1;
+            npc Soulmon slot 5 autotalk when recruited(Bakemon) and roll(1) == 1;
+            npc Soulmon slot 6 autotalk when recruited(Bakemon) and roll(1) == 1;
+        }
+    }
+}

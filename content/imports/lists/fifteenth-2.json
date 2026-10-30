@@ -1,0 +1,5 @@
+{"first_id": 349, "out": "build/batch15x",
+ "digimon": [
+  {"name": "Brachiomon", "game": "dcb", "model": 126},
+  {"name": "Tekkamon", "game": "dw1", "type": 90}
+ ]}

@@ -1,0 +1,1430 @@
+From e4bd93119880d9d5434f5970d04167ea00f1b427 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:12:14 +0000
+Subject: [PATCH] ids.h and memmap.h: named id counts, memory map and link-time
+ checks
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 1 of docs/mods/ids.md (§ 10). No behaviour change: the GCC
+executable and every overlay are byte-identical to the previous build.
+
+- include/dw/ids.h: id typedefs (DigimonId, ScreenId, ItemId, MoveId,
+  CardId), the content counts (NUM_DIGIMON, NUM_PARTNER_DIGIMON,
+  NUM_SCREENS, NUM_ITEMS, NUM_MOVES, NUM_CARDS, ...), the per-id trigger
+  bases and one declaration of CURRENT_SCREEN/PREVIOUS_SCREEN instead of
+  18 local externs. The per-id tables, bound checks and loops use them.
+- include/dw/memmap.h: plain #defines for the load area, overlay bases,
+  fixed buffers, the battle prefix (defined once instead of three times),
+  stack and minimum heap. Included by C and by the linker scripts.
+- main.ld/overlay.ld use the names, and ASSERTs fail the link when an
+  overlay leaves the load area or its slot, or main leaves less than
+  MIN_HEAP of heap below the stack.
+
+---
+ config/us/main.ld        | 31 ++++++++++++++++--
+ config/us/overlay.ld     | 32 ++++++++++---------
+ include/dw/evl.h         |  5 +--
+ include/dw/ids.h         | 60 +++++++++++++++++++++++++++++++++++
+ include/dw/item.h        |  3 +-
+ include/dw/main.h        |  7 +++--
+ include/dw/memmap.h      | 68 ++++++++++++++++++++++++++++++++++++++++
+ include/dw/params.h      |  4 +--
+ include/dw/partner.h     |  3 +-
+ include/dw/vs.h          | 11 ++++---
+ src/btl/battle_main.c    |  2 +-
+ src/dooa/dooa.c          | 10 +++---
+ src/evl/evl.c            |  5 +--
+ src/main/battle_ui.c     |  4 +--
+ src/main/btl.c           | 12 +++----
+ src/main/evolution.c     |  8 ++---
+ src/main/game_menu.c     |  2 +-
+ src/main/item.c          | 10 +++---
+ src/main/main.c          |  4 +--
+ src/main/main_menu.c     |  7 ++---
+ src/main/map.c           |  6 ++--
+ src/main/map_object.c    |  2 +-
+ src/main/model.c         | 12 +++----
+ src/main/overworld.c     |  2 +-
+ src/main/partner.c       |  8 ++---
+ src/main/partner_impl.c  |  6 ++--
+ src/main/script_common.c | 16 +++++-----
+ src/main/script_interp.c |  2 +-
+ src/main/sound.c         |  2 +-
+ src/main/tamer.c         |  6 ++--
+ src/main/tournament.c    |  2 +-
+ src/main/utils2.c        |  8 ++---
+ src/murd/murd.c          |  4 +--
+ src/shop/script_menu.c   |  4 +--
+ src/std/std_hud.c        |  5 +--
+ src/std/std_main.c       |  2 +-
+ src/std/std_setup.c      | 12 +++----
+ src/trn/trn_slots.c      |  2 +-
+ src/trn2/trn2_slots.c    |  2 +-
+ src/vs/vs_hud.c          |  3 +-
+ 40 files changed, 277 insertions(+), 117 deletions(-)
+ create mode 100644 include/dw/ids.h
+ create mode 100644 include/dw/memmap.h
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index e9348e3..cad51ad 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1,3 +1,5 @@
++#include <dw/memmap.h>
++
+ ENTRY(__start)
+ 
+ SECTIONS
+@@ -5,7 +7,7 @@ SECTIONS
+     __romPos = 0;
+     _gp = main_SDATA_START + 0x8000;
+     header_ROM_START = __romPos;
+-    .header 0x80090000 : AT(header_ROM_START)
++    .header EXE_HEADER_ADDR : AT(header_ROM_START)
+     {
+         KEEP(BUILD_DIR/asm/main/data/header.data.s.o(.data.*));
+         . = ALIGN(., 4);
+@@ -196,11 +198,11 @@ SECTIONS
+         _ftext = .;
+         LONG(main_TEXT_START)
+         _stack_addr = .;
+-        LONG(0x801FFF00)
++        LONG(STACK_ADDR)
+         _nbtvectors = .;
+         LONG(0x0)
+         _stack_size = .;
+-        LONG(0x40)
++        LONG(STACK_SIZE_KB)
+         _heap_size = .;
+         LONG(0x400)
+         _etext = .;
+@@ -943,3 +945,26 @@ SECTIONS
+         *(*);
+     }
+ }
++
++/*
++ * Memory map checks (include/dw/memmap.h, docs/mods/ids.md § 9.5): a link
++ * that would overlap the fixed areas fails here instead of in the game.
++ */
++#define OVL_END(s) (ADDR(s) + SIZEOF(s))
++ASSERT(OVL_END(.MOV) <= LOAD_AREA_END, "MOV overlay overflows the load area")
++ASSERT(OVL_END(.BTL) <= LOAD_AREA_END, "BTL overlay overflows the load area")
++ASSERT(OVL_END(.STD) <= LOAD_AREA_END, "STD overlay overflows the load area")
++ASSERT(OVL_END(.VS) <= LOAD_AREA_END, "VS overlay overflows the load area")
++ASSERT(OVL_END(.KAR) <= LOAD_AREA_END, "KAR overlay overflows the load area")
++ASSERT(OVL_END(.EVL) <= LOAD_AREA_END, "EVL overlay overflows the load area")
++ASSERT(OVL_END(.ENDI) <= LOAD_AREA_END, "ENDI overlay overflows the load area")
++ASSERT(OVL_END(.EAB) <= LOAD_AREA_END, "EAB overlay overflows the load area")
++ASSERT(OVL_END(.FISH) <= LOAD_AREA_END, "FISH overlay overflows the load area")
++ASSERT(OVL_END(.DOO2) <= LOAD_AREA_END, "DOO2 overlay overflows the load area")
++ASSERT(OVL_END(.MURD) <= OVL_OT_0_ADDR, "MURD overlay overlaps its ordering table")
++ASSERT(OVL_END(.DOOA) <= OVL_OT_0_ADDR, "DOOA overlay overlaps its ordering tables")
++ASSERT(OVL_END(.DGET) <= LOAD_AREA_END, "DGET overlay overflows the load area")
++ASSERT(OVL_END(.TRN) <= OVL_TRN_MAX_END, "TRN overlay is larger than the original's slot")
++ASSERT(OVL_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the original's slot")
++ASSERT(main_BSS_END + MIN_HEAP <= STACK_ADDR - STACK_SIZE_KB * 1024,
++       "main leaves less than MIN_HEAP bytes of heap below the stack")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 9502d29..657ba0f 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -1,6 +1,8 @@
++#include <dw/memmap.h>
++
+ SECTIONS
+ {
+-	OVERLAY 0x80052AE0 : NOCROSSREFS
++	OVERLAY OVL_BTL_BASE : NOCROSSREFS
+ 	{
+ 		.BTL {
+ 			btl_START = .;
+@@ -80,7 +82,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80080800 : NOCROSSREFS
++	OVERLAY OVL_SHOP_BASE : NOCROSSREFS
+ 	{
+ 		.DGET {
+ 			dget_START = .;
+@@ -105,7 +107,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80070000 : NOCROSSREFS
++	OVERLAY OVL_FISH_BASE : NOCROSSREFS
+ 	{
+ 		.DOO2 {
+ 			doo2_START = .;
+@@ -131,7 +133,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80080000 : NOCROSSREFS
++	OVERLAY OVL_DOOA_BASE : NOCROSSREFS
+ 	{
+ 		.DOOA {
+ 			dooa_START = .;
+@@ -162,7 +164,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80060000 : NOCROSSREFS
++	OVERLAY OVL_EVL_BASE : NOCROSSREFS
+ 	{
+ 		.EAB {
+ 			eab_START = .;
+@@ -191,7 +193,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80060000 : NOCROSSREFS
++	OVERLAY OVL_EVL_BASE : NOCROSSREFS
+ 	{
+ 		.ENDI {
+ 			endi_START = .;
+@@ -217,7 +219,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80060000 : NOCROSSREFS
++	OVERLAY OVL_EVL_BASE : NOCROSSREFS
+ 	{
+ 		.EVL {
+ 			evl_START = .;
+@@ -246,7 +248,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80070000 : NOCROSSREFS
++	OVERLAY OVL_FISH_BASE : NOCROSSREFS
+ 	{
+ 		.FISH {
+ 			fish_START = .;
+@@ -279,7 +281,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80053800 : NOCROSSREFS
++	OVERLAY OVL_KAR_BASE : NOCROSSREFS
+ 	{
+ 		.KAR {
+ 			kar_START = .;
+@@ -304,7 +306,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80010000 : NOCROSSREFS
++	OVERLAY OVL_MOV_BASE : NOCROSSREFS
+ 	{
+ 		.MOV {
+ 			mov_START = .;
+@@ -330,7 +332,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x8007C000 : NOCROSSREFS
++	OVERLAY OVL_MURD_BASE : NOCROSSREFS
+ 	{
+ 		.MURD {
+ 			murd_START = .;
+@@ -355,7 +357,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80052AE0 : NOCROSSREFS
++	OVERLAY OVL_BTL_BASE : NOCROSSREFS
+ 	{
+ 		.STD {
+ 			std_START = .;
+@@ -420,7 +422,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80088800 : NOCROSSREFS
++	OVERLAY OVL_TRN_BASE : NOCROSSREFS
+ 	{
+ 		.TRN2 {
+ 			trn2_START = .;
+@@ -508,7 +510,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80088800 : NOCROSSREFS
++	OVERLAY OVL_TRN_BASE : NOCROSSREFS
+ 	{
+ 		.TRN {
+ 			trn_START = .;
+@@ -596,7 +598,7 @@ SECTIONS
+ 		}
+ 	}
+ 
+-	OVERLAY 0x80052AE0 : NOCROSSREFS
++	OVERLAY OVL_BTL_BASE : NOCROSSREFS
+ 	{
+ 		.VS {
+ 			vs_START = .;
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index d714fae..e557da8 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -2,6 +2,7 @@
+ #define DW_EVL_H
+ 
+ #include <dw/entity.h>
++#include <dw/ids.h>
+ #include <dw/params.h>
+ #include <dw/types.h>
+ 
+@@ -79,8 +80,8 @@ extern EvlSpark EVL_D_80068F84[];
+ extern EvoSequenceData EVO_SEQUENCE_DATA;
+ 
+ extern EvoStatsGains EVOLUTION_STATS_GAINS[];
+-extern EvolutionPath EVOLUTION_PATHS[62];
+-extern EvoRequirements EVOLUTION_REQS[63];
++extern EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1];
++extern EvoRequirements EVOLUTION_REQS[NUM_EVOLVING_DIGIMON];
+ 
+ extern int8_t MAIN_D_801349F4;
+ 
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+new file mode 100644
+index 0000000..12f7fae
+--- /dev/null
++++ b/include/dw/ids.h
+@@ -0,0 +1,60 @@
++#ifndef DW_IDS_H
++#define DW_IDS_H
++
++/*
++ * Id types and counts of the game content (docs/mods/ids.md, § 8.1).
++ *
++ * The counts are those of the original disc. Every table and loop that
++ * means "one per Digimon / screen / item / ..." uses these names, so new
++ * content changes one number here (and the tables) instead of literals
++ * spread over the code. The typedefs are the target widths; the carriers
++ * that are still u8 (CURRENT_SCREEN, the inventory, the save) are widened
++ * in later steps of the plan (ids.md § 10).
++ */
++
++#include <dw/types.h>
++
++typedef int16_t DigimonId; /* -1 = none; 0 = the player (HIRO) */
++typedef int16_t ScreenId;  /* -1 = none */
++typedef int16_t ItemId;    /* -1 = none (0xFF in the old u8 layouts) */
++typedef uint16_t MoveId;
++typedef uint16_t CardId;
++
++/* id meaning "none" in the u8 layouts (inventory slots, item ids, ...) */
++#define LEGACY_ID_NONE 0xFF
++
++/* Digimon types */
++#define NUM_DIGIMON		180	/* DIGIMON_DATA, models, skeletons, voices */
++#define NUM_PARTNER_DIGIMON	66	/* RAISE_DATA, cards; partners are 1..65 */
++#define NUM_EVOLVING_DIGIMON	63	/* EVOLUTION_REQS (by type), raised flags; EVOLUTION_PATHS is by type - 1 */
++#define NUM_EVO_CHART_DIGIMON	61	/* EVO_CHART_BOXES, by type - 1 */
++#define NUM_RECRUITABLE_DIGIMON	0x70	/* recruited flags = trigger 200 + type, types 0..111 */
++
++/* Screens (maps) */
++#define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
++#define SCREEN_LEGACY_NONE	0xCC	/* TWNA01 doubles as "no screen" at boot */
++
++/* Items */
++#define NUM_ITEMS		128	/* ITEM_PARA, ITEM_FUNCTIONS, icons (16x8 grid) */
++
++/* Techniques */
++#define NUM_MOVES		122	/* MOVE_DATA rows; row 121 is the flattened Digimon's projectile */
++#define NUM_MOVE_NAMES		121	/* MOVE_NAMES; drawMoveName checks this bound */
++#define NUM_LEARNABLE_MOVES	58	/* MOVE_LEARN_CHANCES, the technique grid */
++
++/* Cards */
++#define NUM_CARDS		66	/* CARD_DATA, CARD_SPRITE_CLUT, CARD.ALL */
++
++/* Trigger ranges used as per-id bitsets (scripts.md, "Free triggers") */
++#define TRIGGER_RECRUITED_BASE	200	/* + Digimon type */
++#define TRIGGER_SHOP_STOCK_BASE	0x180	/* + item id */
++#define TRIGGER_RAISED_BASE	0x200	/* + Digimon type */
++
++/*
++ * The current and previous screen. Still u8 (ids.md § 10 step 3 widens
++ * them to ScreenId); declared once here instead of in every file.
++ */
++extern uint8_t CURRENT_SCREEN;
++extern uint8_t PREVIOUS_SCREEN;
++
++#endif
+diff --git a/include/dw/item.h b/include/dw/item.h
+index 3ce9036..6e9b88b 100644
+--- a/include/dw/item.h
++++ b/include/dw/item.h
+@@ -4,6 +4,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/entity.h>
++#include <dw/ids.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ 
+@@ -59,7 +60,7 @@ extern char *ITEM_NAMES[];
+ extern TamerItem TAMER_ITEM;
+ extern Inventory INVENTORY;
+ extern DroppedItem DROPPED_ITEMS[11];
+-extern ItemFunction ITEM_FUNCTIONS[128];
++extern ItemFunction ITEM_FUNCTIONS[NUM_ITEMS];
+ 
+ void initializeInventory(void);
+ void setInventorySize(uint8_t size);
+diff --git a/include/dw/main.h b/include/dw/main.h
+index ecba0fc..d88130e 100644
+--- a/include/dw/main.h
++++ b/include/dw/main.h
+@@ -2,12 +2,13 @@
+ #define DW_MAIN_H
+ 
+ #include <dw/entity.h>
++#include <dw/memmap.h>
+ #include <dw/params.h>
+ #include <dw/types.h>
+ 
+-#define GENERAL_BUFFER		((uint8_t *)0x80010000)
+-#define TEXTURE_BUFFER		((uint8_t *)0x80088800)
+-#define BOSS_EFE_TMD_BUFFER	((uint8_t *)0x80058000)
++#define GENERAL_BUFFER		((uint8_t *)GENERAL_BUFFER_ADDR)
++#define TEXTURE_BUFFER		((uint8_t *)TEXTURE_BUFFER_ADDR)
++#define BOSS_EFE_TMD_BUFFER	((uint8_t *)BOSS_EFE_TMD_BUFFER_ADDR)
+ 
+ typedef struct {
+ 	VECTOR playerPos;
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+new file mode 100644
+index 0000000..e9b9e40
+--- /dev/null
++++ b/include/dw/memmap.h
+@@ -0,0 +1,68 @@
++#ifndef DW_MEMMAP_H
++#define DW_MEMMAP_H
++
++/*
++ * The fixed memory map of the game (docs/mods/ids.md § 9, memory.md).
++ *
++ * Plain #defines and nothing else: the linker scripts include this file too
++ * (psx.mk runs every .ld through the C preprocessor), so it must not
++ * contain C declarations, casts or suffixes.
++ */
++
++/* Load area: overlays, map backgrounds, EFE heap (512 KB) */
++#define LOAD_AREA_START		0x80010000
++#define LOAD_AREA_END		0x80090000
++
++/* PS-X EXE header and the main executable */
++#define EXE_HEADER_ADDR		0x80090000
++
++/* Stack (_stack_addr / _stack_size, in KB) and the malloc3 heap between */
++#define STACK_ADDR		0x801FFF00
++#define STACK_SIZE_KB		0x40
++/*
++ * The heap the game needs in its worst measured case (Native Forest with
++ * five wild Digimon: 197520 - 91080 = 106440 bytes used, memory.md),
++ * rounded up. The link fails if main's bss leaves less than this.
++ */
++#define MIN_HEAP		0x1A000
++
++/* Overlay bases (config/us/overlay.ld) */
++#define OVL_MOV_BASE		0x80010000	/* videos */
++#define OVL_BTL_BASE		0x80052AE0	/* BTL, STD, VS: TIM + TMD prefix, then code */
++#define OVL_KAR_BASE		0x80053800
++#define OVL_EVL_BASE		0x80060000	/* EVL, ENDI, EAB */
++#define OVL_FISH_BASE		0x80070000	/* FISH, DOO2 */
++#define OVL_MURD_BASE		0x8007C000
++#define OVL_DOOA_BASE		0x80080000
++#define OVL_SHOP_BASE		0x80080800	/* DGET (shop_START) */
++#define OVL_TRN_BASE		0x80088800	/* TRN, TRN2 */
++/* TRN/TRN2 must end here: the original's largest, in sectors (memory.md) */
++#define OVL_TRN_MAX_END		0x8008F800
++
++/* Fixed buffers in the load area */
++#define GENERAL_BUFFER_ADDR	0x80010000	/* .MAP then .TFS, VHB staging, EFE base */
++#define DOOA_WORK_OFFSET	0x4B000		/* GENERAL_BUFFER + this: DOOA work area */
++#define TEXTURE_BUFFER_ADDR	0x80088800	/* temporary TIM, card image, script arrays */
++#define TEXTURE_BUFFER_SIZE	0x7800
++#define BOSS_EFE_TMD_BUFFER_ADDR 0x80058000
++#define ARENA_TMD_ADDR		0x80038000	/* STD/VS arena model */
++#define EVO_MMD_ADDR		0x80020000	/* EVL and DOOA evolution / egg model */
++#define DOOA_SHARD_ADDR		0x80044800
++#define DOOA_SHARD_SIZE		0x5DC0
++#define OVL_OT_0_ADDR		0x8008C000	/* DOOA and MURD ordering tables */
++#define OVL_OT_1_ADDR		0x8008E000
++
++/* Battle prefix: the TIM and TMDs at the start of BTL_REL, STD_REL, VS_REL */
++#define BATTLE_FINISHER_TIM_ADDR	0x80052AE0
++#define BATTLE_FINISHER_MODEL_ADDR	0x80053800
++#define BATTLE_CONFUSION_MODEL_ADDR	0x80054838
++#define BATTLE_STUN_MODEL_ADDR		0x80054D00
++#define BATTLE_BUFF_MODEL_ADDR		0x80055328
++
++/* Sizes of buffers that receive files (largest original in a comment) */
++#define PARTNER_MMD_MAX		0x18800	/* ETEM.MMD 0x17E14 */
++#define TAMER_MMD_MAX		0xE000	/* BOYS.MMD 0xDECC (GCC: one array, mod 0002) */
++#define MAP_SCRIPT_MAX		0x4000	/* a DG.SCN entry; the largest is 0x3800 */
++#define SCRIPT_OFFSET_TABLE_SIZE 0x2000	/* start of DG.SCN (offset table), read at boot */
++
++#endif
+diff --git a/include/dw/params.h b/include/dw/params.h
+index 2744ff4..06ef089 100644
+--- a/include/dw/params.h
++++ b/include/dw/params.h
+@@ -1,12 +1,10 @@
+ #ifndef DW_PARAMS_H
+ #define DW_PARAMS_H
+ 
++#include <dw/ids.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ 
+-#define NUM_DIGIMON		180
+-#define NUM_PARTNER_DIGIMON	66
+-
+ #define CONDITION_SLEEPY	(1 << 0)
+ #define CONDITION_TIRED		(1 << 1)
+ #define CONDITION_HUNGRY	(1 << 2)
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index 409cb25..1ccf0cc 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -1,6 +1,7 @@
+ #ifndef DW_PARTNER_H
+ #define DW_PARTNER_H
+ 
++#include <dw/ids.h>
+ #include <dw/types.h>
+ 
+ typedef struct {
+@@ -28,7 +29,7 @@ typedef struct {
+ 	int8_t size;
+ } PoopPile;
+ 
+-extern RaiseData RAISE_DATA[66];
++extern RaiseData RAISE_DATA[NUM_PARTNER_DIGIMON];
+ extern PoopPile WORLD_POOP[];
+ 
+ void partnerTick(int32_t instanceId);
+diff --git a/include/dw/vs.h b/include/dw/vs.h
+index 26f0ba0..aa5e9e2 100644
+--- a/include/dw/vs.h
++++ b/include/dw/vs.h
+@@ -8,14 +8,15 @@
+ #include <dw/efe.h>
+ #include <dw/entity.h>
+ #include <dw/graphics.h>
++#include <dw/memmap.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ 
+-#define VS_FINISHER_TIM	((char *)0x80052ae0)
+-#define VS_FINISHER_MODEL	((char *)0x80053800)
+-#define VS_CONFUSION_MODEL	((char *)0x80054838)
+-#define VS_STUN_MODEL		((char *)0x80054d00)
+-#define VS_BUFF_MODEL		((TMDModel *)0x80055328)
++#define VS_FINISHER_TIM	((char *)BATTLE_FINISHER_TIM_ADDR)
++#define VS_FINISHER_MODEL	((char *)BATTLE_FINISHER_MODEL_ADDR)
++#define VS_CONFUSION_MODEL	((char *)BATTLE_CONFUSION_MODEL_ADDR)
++#define VS_STUN_MODEL		((char *)BATTLE_STUN_MODEL_ADDR)
++#define VS_BUFF_MODEL		((TMDModel *)BATTLE_BUFF_MODEL_ADDR)
+ 
+ typedef struct {
+ 	int16_t hp;
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index ad35b91..9385158 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -6,6 +6,7 @@
+ #include <dw/attack_object.h>
+ #include <dw/btl.h>
+ #include <dw/combat.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/math.h>
+ #include <dw/move.h>
+@@ -35,7 +36,6 @@ extern PACKET GS_WORK_BASES[2][0x14000];
+ extern DR_OFFSET DR_OFFSETS[2];
+ extern DigimonEntity *BATTLE_TARGETED_DIGIMON;
+ extern DigimonEntity *BATTLE_ATTACKING_DIGIMON;
+-extern uint8_t CURRENT_SCREEN;
+ extern uint8_t BATTLE_TOGGLE_LIFEBAR;
+ extern int8_t PARTNER_WAYPOINT_COUNT;
+ extern int8_t PARTNER_WAYPOINT_CURRENT;
+diff --git a/src/dooa/dooa.c b/src/dooa/dooa.c
+index 4c4def4..947597c 100644
+--- a/src/dooa/dooa.c
++++ b/src/dooa/dooa.c
+@@ -29,11 +29,11 @@
+ #include <dw/vecmath.h>
+ #include <dw/world_object.h>
+ 
+-#define DOOA_MMD_BUFFER		0x80020000
+-#define DOOA_SHARD_BUFFER	0x80044800
+-#define DOOA_SHARD_BUFFER_SIZE	0x5dc0
+-#define DOOA_ORDERING_TABLE_0	((GsOT_TAG *)0x8008c000)
+-#define DOOA_ORDERING_TABLE_1	((GsOT_TAG *)0x8008e000)
++#define DOOA_MMD_BUFFER		EVO_MMD_ADDR
++#define DOOA_SHARD_BUFFER	DOOA_SHARD_ADDR
++#define DOOA_SHARD_BUFFER_SIZE	DOOA_SHARD_SIZE
++#define DOOA_ORDERING_TABLE_0	((GsOT_TAG *)OVL_OT_0_ADDR)
++#define DOOA_ORDERING_TABLE_1	((GsOT_TAG *)OVL_OT_1_ADDR)
+ 
+ typedef struct {
+ 	VECTOR offset;
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index e6270fe..5144a29 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -11,6 +11,8 @@
+ #include <dw/evl.h>
+ #include <dw/file_queue.h>
+ #include <dw/graphics.h>
++#include <dw/ids.h>
++#include <dw/memmap.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -25,7 +27,7 @@
+ 
+ #include "common.h"
+ 
+-#define EVL_MMD_BUFFER	0x80020000
++#define EVL_MMD_BUFFER	EVO_MMD_ADDR
+ 
+ typedef struct {
+ 	int16_t timer;
+@@ -68,7 +70,6 @@ extern GsRVIEW2 EVL_D_80068918;
+ extern int16_t EVL_D_800679E4[];
+ extern RGB8 MAIN_D_801349E8;
+ extern SVECTOR MAIN_D_801349EC;
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t MAIN_D_801349E4;
+ extern VECTOR EVL_D_80068908;
+ int32_t getMapSoundId(int32_t mapId);
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index 6f10b78..7df43e4 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -4,6 +4,7 @@
+ #include <dw/entity.h>
+ #include <dw/font.h>
+ #include <dw/graphics.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/line.h>
+@@ -57,7 +58,7 @@ void tickPostBattleStatsBox();
+ void renderPostBattleStatsBox(int16_t depth);
+ void removeBattleEndBox(int32_t id);
+ 
+-extern uint8_t MOVE_LEARN_CHANCES[58][3];
++extern uint8_t MOVE_LEARN_CHANCES[NUM_LEARNABLE_MOVES][3];
+ extern int16_t ENEMY_COUNT;
+ extern int32_t HAS_TAKEN_DAMAGE;
+ extern uint32_t POLLED_INPUT;
+@@ -69,7 +70,6 @@ extern int8_t BTL_END_BOX_TEXTBUFFER[];
+ extern char MAIN_D_80124C0C[];
+ extern char MAIN_D_80124C54[];
+ extern uint8_t GAME_STATE;
+-extern uint8_t CURRENT_SCREEN;
+ 
+ int8_t STAT_GAIN_ENEMY_FACTORS[4] = { 10, 12, 16, 0 };
+ 
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 5e0b0a9..883c800 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -8,6 +8,7 @@
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+ #include <dw/graphics.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
+@@ -20,11 +21,11 @@
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ 
+-#define BTL_FINISHER_TIM	((char *)0x80052ae0)
+-#define BTL_FINISHER_MODEL	((char *)0x80053800)
+-#define BTL_CONFUSION_MODEL	((char *)0x80054838)
+-#define BTL_STUN_MODEL		((char *)0x80054d00)
+-#define BTL_BUFF_MODEL		((TMDModel *)0x80055328)
++#define BTL_FINISHER_TIM	((char *)BATTLE_FINISHER_TIM_ADDR)
++#define BTL_FINISHER_MODEL	((char *)BATTLE_FINISHER_MODEL_ADDR)
++#define BTL_CONFUSION_MODEL	((char *)BATTLE_CONFUSION_MODEL_ADDR)
++#define BTL_STUN_MODEL		((char *)BATTLE_STUN_MODEL_ADDR)
++#define BTL_BUFF_MODEL		((TMDModel *)BATTLE_BUFF_MODEL_ADDR)
+ 
+ #define NUM_CONCAVE_SCREENS	18
+ 
+@@ -34,7 +35,6 @@ typedef struct {
+ 	int16_t type;
+ } FleeBubbleState;
+ 
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t VIEWPORT_DISTANCE;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern GsOT GS_ORDERING_TABLE[];
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index afdc8f6..48630c6 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -4,6 +4,7 @@
+ #include <dw/entity.h>
+ #include <dw/evl.h>
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/math.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+@@ -16,7 +17,6 @@ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+ int32_t hasDigimonRaised(int32_t digimonId);
+ void setDigimonRaised(int32_t type);
+ 
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t NANIMON_TRIGGER;
+ 
+ extern Stats DEATH_STATS;
+@@ -27,7 +27,7 @@ int8_t calculateRequirementScore(int32_t current, int8_t target,
+ int8_t getNumMasteredMoves(void);
+ 
+ // clang-format off
+-EvoRequirements EVOLUTION_REQS[63] = {
++EvoRequirements EVOLUTION_REQS[NUM_EVOLVING_DIGIMON] = {
+ 	{
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x00,
+@@ -345,7 +345,7 @@ EvoRequirements EVOLUTION_REQS[63] = {
+ 	},
+ };
+ 
+-EvoStatsGains EVOLUTION_STATS_GAINS[66] = {
++EvoStatsGains EVOLUTION_STATS_GAINS[NUM_PARTNER_DIGIMON] = {
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0001 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0002 },
+@@ -414,7 +414,7 @@ EvoStatsGains EVOLUTION_STATS_GAINS[66] = {
+ 	{ 0x1770, 0x1d4c, 0x0384, 0x02bc, 0x0384, 0x02ee, 0x0041 },
+ };
+ 
+-EvolutionPath EVOLUTION_PATHS[62] = {
++EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	{
+ 		{ 0xff, 0xff, 0xff, 0xff, 0xff },
+ 		{ 0xff, 0xff, 0x02, 0xff, 0xff, 0xff },
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index d2dc8ec..2f63e94 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -733,7 +733,7 @@ StringRect TAMER_WINDOW_NAME_STRING[11] = {
+ };
+ #endif
+ 
+-EvoChartEntry EVO_CHART_BOXES[61] = {
++EvoChartEntry EVO_CHART_BOXES[NUM_EVO_CHART_DIGIMON] = {
+ 	{ 0x001e, 0x002b, 0x40, 0x90, 0x00, 0x00 },
+ 	{ 0x0043, 0x002b, 0x60, 0x90, 0x00, 0x00 },
+ 	{ 0x0068, 0x002b, 0x40, 0x80, 0x00, 0x00 },
+diff --git a/src/main/item.c b/src/main/item.c
+index d213edc..509200b 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -100,7 +100,7 @@ uint8_t TYPE_FACTORS[7][7] = {
+ 	{ 0x05, 0x0f, 0x05, 0x02, 0x0a, 0x14, 0x02 },
+ };
+ 
+-uint8_t MOVE_LEARN_CHANCES[58][3] = {
++uint8_t MOVE_LEARN_CHANCES[NUM_LEARNABLE_MOVES][3] = {
+ 	{ 0x19, 0x10, 0x0b }, { 0x11, 0x0a, 0x05 }, { 0x1e, 0x16, 0x0f }, { 0x14, 0x0c, 0x07 },
+ 	{ 0x16, 0x0e, 0x09 }, { 0x1c, 0x13, 0x0d }, { 0x0f, 0x08, 0x00 }, { 0x0e, 0x06, 0x00 },
+ 	{ 0x0d, 0x09, 0x00 }, { 0x16, 0x0e, 0x0a }, { 0x20, 0x13, 0x0f }, { 0x12, 0x0d, 0x08 },
+@@ -120,7 +120,7 @@ uint8_t MOVE_LEARN_CHANCES[58][3] = {
+ 
+ MOVE_NAMES_TEXT
+ 
+-Move MOVE_DATA[122] = {
++Move MOVE_DATA[NUM_MOVES] = {
+ 	{
+ 		0x00015f90, 0x009b, 0x1b, 0x1a, 0x02,
+ 		0x00, 0x03, 0x37, 0x08, 0x01,
+@@ -741,7 +741,7 @@ Move MOVE_DATA[122] = {
+ 	},
+ };
+ 
+-Item ITEM_PARA[128] = {
++Item ITEM_PARA[NUM_ITEMS] = {
+ 	{
+ 		ITEM_PARA_NAME(SMALL_RECOVERY)
+ 		0x00000064,
+@@ -1900,7 +1900,7 @@ ITEM_NAMES_TEXT
+ 
+ ITEM_DESCS_TEXT
+ 
+-uint8_t ITEM_CLUT_DATA[128] = {
++uint8_t ITEM_CLUT_DATA[NUM_ITEMS] = {
+ 	0x00, 0x01, 0x12, 0x03, 0x04, 0x08, 0x06, 0x00,
+ 	0x08, 0x06, 0x07, 0x04, 0x08, 0x09, 0x09, 0x0a,
+ 	0x04, 0x0b, 0x08, 0x0c, 0x08, 0x0b, 0x0d, 0x0a,
+@@ -1928,7 +1928,7 @@ uint8_t EVOLUTION_ITEM_TARGET[44] = {
+ 	0x3b, 0x3c, 0x3d, 0x3e,
+ };
+ 
+-ItemFunction ITEM_FUNCTIONS[128] = {
++ItemFunction ITEM_FUNCTIONS[NUM_ITEMS] = {
+ 	(ItemFunction)handleHPHealingItem,
+ 	(ItemFunction)handleHPHealingItem,
+ 	(ItemFunction)handleHPHealingItem,
+diff --git a/src/main/main.c b/src/main/main.c
+index abf216d..c562710 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -17,6 +17,7 @@
+ #include <dw/fade.h>
+ #include <dw/font.h>
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/map.h>
+@@ -3730,7 +3731,6 @@ void newGameScene(void)
+ 
+ extern VECTOR STORED_TAMER_POS;
+ int32_t entityCheckCollision(Entity *source, Entity *entity, int32_t arg2, int32_t arg3);
+-extern uint8_t PREVIOUS_SCREEN;
+ extern uint8_t PREVIOUS_EXIT;
+ extern int8_t TAMER_PREVIOUS_TILE_X;
+ extern int8_t TAMER_PREVIOUS_TILE_Y;
+@@ -3862,7 +3862,7 @@ void recalculatePPandArena(void)
+ 
+ 	pp = 0;
+ 	for (i = 3; i < 0x3b; i++) {
+-		if ((DIGIMON_DATA[i].level >= 3) && (isTriggerSet((uint16_t)(0xc8 + i)) != 0)) {
++		if ((DIGIMON_DATA[i].level >= 3) && (isTriggerSet((uint16_t)(TRIGGER_RECRUITED_BASE + i)) != 0)) {
+ 			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
+ 				pp++;
+ 			} else {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 7b9d405..a22c934 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -7,6 +7,7 @@
+ 
+ #include <dw/entity.h>
+ #include <dw/font.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -188,8 +189,6 @@ static void *main_menu_sbss_order[] = {
+ SaveSlotPreview SAVEGAME_SLOT_INFO[15];
+ 
+ extern int8_t MAIN_STATE;
+-extern uint8_t CURRENT_SCREEN;
+-extern uint8_t PREVIOUS_SCREEN;
+ extern uint8_t CURRENT_EXIT;
+ extern uint8_t PREVIOUS_EXIT;
+ extern int8_t TAMER_WAYPOINT_X[];
+@@ -2206,7 +2205,7 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos)
+ 
+ 	if (anim >= 0x2E && anim < 0x3E) {
+ 		move = DIGIMON_DATA[type].moves[anim - 0x2E];
+-		if (move >= 0 && move < 0x79) {
++		if (move >= 0 && move < NUM_MOVE_NAMES) {
+ 			drawString(MOVE_NAMES[move], color, pos);
+ 		}
+ 	}
+@@ -3841,7 +3840,7 @@ void initializeDefaultSavegame(void)
+ 		*cursor++ = 0;
+ 	}
+ 	savegame->mainState = 0;
+-	savegame->currentScreen = 0xCC;
++	savegame->currentScreen = SCREEN_LEGACY_NONE;
+ 	savegame->currentExit = 9;
+ 	savegame->partnerType = 0x72;
+ 	strcpy(savegame->playerName, MAIN_D_801346C4);
+diff --git a/src/main/map.c b/src/main/map.c
+index 737af0f..79979e6 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -430,7 +430,7 @@ char *MAP_NAME_PTR[70] = {
+ 	STR_MAP_NAME_AMIDA_FOREST,
+ };
+ 
+-MapEntry MAP_ENTRIES[255] = {
++MapEntry MAP_ENTRIES[NUM_SCREENS] = {
+ 	{
+ 		"MAYO01",
+ 		0x03,
+@@ -2908,7 +2908,7 @@ SVECTOR CONDITION_FX_OFFSETS[177] = {
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ };
+ 
+-int16_t ORIGINAL_DIGIMON_TYPES[180] = {
++int16_t ORIGINAL_DIGIMON_TYPES[NUM_DIGIMON] = {
+ 	0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 	0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 	0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+@@ -4060,7 +4060,7 @@ void initializeMap(void)
+ 		MAP_TILE_DATA.tiles[i].texU = MAP_TILE_DATA.tiles[i].texV = 0;
+ 	}
+ 
+-	PREVIOUS_SCREEN = CURRENT_SCREEN = 0xcc;
++	PREVIOUS_SCREEN = CURRENT_SCREEN = SCREEN_LEGACY_NONE;
+ 	PREVIOUS_EXIT = CURRENT_EXIT = 9;
+ 	CAMERA_REACHED_TARGET = -1;
+ 	CAMERA_HAS_TARGET = 0;
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 9b461fd..570d1a0 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -5,6 +5,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/entity.h>
++#include <dw/ids.h>
+ #include <dw/map_object.h>
+ #include <dw/params.h>
+ #include <dw/trigger.h>
+@@ -40,7 +41,6 @@ typedef struct {
+ 	int32_t pad34;
+ } WarpCrystalData;
+ 
+-extern uint8_t CURRENT_SCREEN;
+ extern uint8_t MAP_LAYER_ENABLED;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern GsOT GS_ORDERING_TABLE[2];
+diff --git a/src/main/model.c b/src/main/model.c
+index 8efb9b9..fdcfd3a 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2302,7 +2302,7 @@ SkeletonBone SKELETON_ANALOGMAN[18] = {
+ 	{ 0x0e, 0x10 },
+ };
+ 
+-SkeletonBone *DIGIMON_SKELETONS[180] = {
++SkeletonBone *DIGIMON_SKELETONS[NUM_DIGIMON] = {
+ 	SKELETON_HIRO,
+ 	SKELETON_BOTAMON,
+ 	SKELETON_KOROMON,
+@@ -2500,7 +2500,7 @@ int8_t WIREFRAME_RNG_TABLE[16] = {
+ 
+ char MAIN_D_8011D190[] = "ALLTIM.TIM";
+ 
+-char *PTR_DIGIMON_FILE_NAMES[180] = {
++char *PTR_DIGIMON_FILE_NAMES[NUM_DIGIMON] = {
+ 	STR_DIGIMON_FILE_NAME_BOYS,
+ 	STR_DIGIMON_FILE_NAME_BOTA,
+ 	STR_DIGIMON_FILE_NAME_KORO,
+@@ -3352,7 +3352,7 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	if (modelType == 1) {
+ 		return m;
+ 	}
+-	if (digiType < 0 || digiType >= 0xB4) {
++	if (digiType < 0 || digiType >= NUM_DIGIMON) {
+ 		return 0;
+ 	}
+ 	if (modelType == 0) {
+@@ -3492,7 +3492,7 @@ ModelComponent *getEntityModelComponent(int32_t instance, int32_t type)
+ 	} else if (type == 3) {
+ 		p = &PARTNER_MODEL;
+ 	} else if (type == 0) {
+-		if ((instance < 0) || (instance >= 0xb4)) {
++		if ((instance < 0) || (instance >= NUM_DIGIMON)) {
+ 			return NULL;
+ 		}
+ 		for (p = NPC_MODELS, i = 0; i < 5; p++, i++) {
+@@ -3573,7 +3573,7 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	int32_t slot;
+ 	char tim[32];
+ 
+-	if (digimonType < 0 || digimonType >= 0xB4) {
++	if (digimonType < 0 || digimonType >= NUM_DIGIMON) {
+ 		return 0;
+ 	}
+ 	if (entityType == 0) {
+@@ -3636,7 +3636,7 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 	RECT rect;
+ 	int32_t k;
+ 
+-	if (digimonType < 0 || digimonType >= 0xB4) {
++	if (digimonType < 0 || digimonType >= NUM_DIGIMON) {
+ 		return 0;
+ 	}
+ 	if (entityType == 0) {
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 30b4a94..aa922c7 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -2,6 +2,7 @@
+ 
+ #include <dw/anim.h>
+ #include <dw/clock.h>
++#include <dw/ids.h>
+ #include <dw/map.h>
+ #include <dw/model.h>
+ #include <dw/partner.h>
+@@ -62,7 +63,6 @@ extern int8_t TALKED_TO_ENTITY;
+ extern int32_t DRAWING_OFFSET_X;
+ extern int32_t DRAWING_OFFSET_Y;
+ extern uint8_t MAP_LAYER_ENABLED;
+-extern uint8_t CURRENT_SCREEN;
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+ extern int16_t CAMERA_X_PREVIOUS;
+ extern int16_t CAMERA_Y_PREVIOUS;
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 2de64e2..28eae76 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -7,6 +7,7 @@
+ #include <dw/entity.h>
+ #include <dw/evl.h>
+ #include <dw/fade.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/kar.h>
+ #include <dw/main.h>
+@@ -30,7 +31,6 @@ extern uint8_t POOP_TO_EAT;
+ 
+ extern int8_t MAIN_STATE;
+ extern int8_t GAME_STATE;
+-extern uint8_t CURRENT_SCREEN;
+ 
+ extern int32_t IS_IN_MENU;
+ extern int32_t CURRENT_MENU;
+@@ -43,7 +43,7 @@ extern int32_t CHECKED_MEMORY_CARD;
+ extern VECTOR STORED_TAMER_POS;
+ 
+ 
+-extern int8_t ITEM_TAKE_DISTANCE[66];
++extern int8_t ITEM_TAKE_DISTANCE[NUM_PARTNER_DIGIMON];
+ 
+ void tickMainMenu(int32_t instanceId);
+ void renderMainMenu(int32_t instanceId);
+@@ -649,7 +649,7 @@ void partnerTickDying(void)
+ 		entityLookAtLocation(&PARTNER_ENTITY.digimonEntity.entity, &(TAMER_ENTITY.entity.posData)->location);
+ 		if (getPartnerTamerCloseness() > 0) {
+ 			isSoundLoaded(0, 8);
+-			DOOA_tick((PartnerEntity*)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + 0x4b000, 0);
++			DOOA_tick((PartnerEntity*)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + DOOA_WORK_OFFSET, 0);
+ 			setFishingDisabled();
+ 			tamerSetState(6);
+ 			unsetCameraFollowPlayer();
+@@ -657,7 +657,7 @@ void partnerTickDying(void)
+ 		}
+ 		break;
+ 	case 2:
+-		value = DOOA_tick((PartnerEntity*)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + 0x4b000, 1);
++		value = DOOA_tick((PartnerEntity*)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + DOOA_WORK_OFFSET, 1);
+ 		if (value == -1) {
+ 			setFishingEnabled();
+ 			PARTNER_PARA.remainingLifetime = 360;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 9e3abf4..ca56851 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -13,6 +13,7 @@
+ #include <dw/file.h>
+ #include <dw/font.h>
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/map.h>
+ #include <dw/map_object.h>
+@@ -37,7 +38,7 @@ extern uint8_t HAS_USED_EVOITEM;
+ IS_SICK_TEXT
+ 
+ char MAIN_D_801225AC[16] = "\\ETCNA\\UNTI.TMD";
+-RaiseData RAISE_DATA[66] = {
++RaiseData RAISE_DATA[NUM_PARTNER_DIGIMON] = {
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+ 	  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 670, 200, -2270 },
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+@@ -192,7 +193,7 @@ SleepPattern SLEEP_PATTERN[8] = {
+ 	{0, 0, 0, 0, 8, 3},
+ };
+ 
+-int8_t ITEM_TAKE_DISTANCE[66] = {
++int8_t ITEM_TAKE_DISTANCE[NUM_PARTNER_DIGIMON] = {
+ 	10, 10, 10, 10, 15, 10, 10, 15, 10, 15, 10, 15, 10, 10, 10, 10, 10,
+ 	10, 15, 10, 10, 15, 10, 15, 10, 25, 10, 10, 10, 10, 10, 10, 10, 10,
+ 	15, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15,
+@@ -206,7 +207,6 @@ extern GsOT *ACTIVE_ORDERING_TABLE;
+ extern int8_t GAME_STATE;
+ extern int32_t FADE_PROTECTION;
+ 
+-extern uint8_t CURRENT_SCREEN;
+ extern uint8_t MAP_LAYER_ENABLED;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern GsOT GS_ORDERING_TABLE[2];
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 9bc018d..e66104f 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -414,7 +414,7 @@ int32_t CARD_PRICES[5] = {
+ 	0x00000032,
+ };
+ 
+-CardData CARD_DATA[66] = {
++CardData CARD_DATA[NUM_CARDS] = {
+ 	{ 0x00, 0x05, 0x0000 },
+ 	{ 0x3b, 0x00, 0x0064 },
+ 	{ 0x3c, 0x00, 0x0064 },
+@@ -680,8 +680,8 @@ int32_t shopFillBuyItemList()
+ 		}
+ 	}
+ 
+-	for (itemId = 0; itemId < 128; itemId++) {
+-		if (!isTriggerSet(0x180 + itemId)) {
++	for (itemId = 0; itemId < NUM_ITEMS; itemId++) {
++		if (!isTriggerSet(TRIGGER_SHOP_STOCK_BASE + itemId)) {
+ 			continue;
+ 		}
+ 
+@@ -1585,8 +1585,8 @@ void openShop(void)
+ 		SHOP_ACTION_SELECTED = 0;
+ 
+ 		found = 0;
+-		for (i = 0; i < 0x80; i++) {
+-			if (isTriggerSet(i + 0x180)) {
++		for (i = 0; i < NUM_ITEMS; i++) {
++			if (isTriggerSet(i + TRIGGER_SHOP_STOCK_BASE)) {
+ 				found = 1;
+ 				break;
+ 			}
+@@ -2925,8 +2925,8 @@ void showMapheadSelection(int32_t idx, uint8_t owner, uint16_t x, int32_t *outSe
+ 
+ void setDigimonRaised(int32_t digimonId)
+ {
+-	if ((uint32_t)digimonId < 0x3f) {
+-		setTrigger(digimonId + 0x200);
++	if ((uint32_t)digimonId < NUM_EVOLVING_DIGIMON) {
++		setTrigger(digimonId + TRIGGER_RAISED_BASE);
+ 	}
+ }
+ 
+@@ -2935,7 +2935,7 @@ int32_t hasDigimonRaised(digimonId)
+ 	uint16_t digimonId;
+ // clang-format on
+ {
+-	return isTriggerSet(digimonId + 0x200);
++	return isTriggerSet(digimonId + TRIGGER_RAISED_BASE);
+ }
+ 
+ void unlockMedal(uint16_t medal)
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index e1a53f9..f308691 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -8,6 +8,7 @@
+ #include <dw/fade.h>
+ #include <dw/file.h>
+ #include <dw/font.h>
++#include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/map_object.h>
+@@ -29,7 +30,6 @@
+ 
+ extern int8_t MAIN_STATE;
+ extern int16_t SCRIPT_MAP_CHANGE_STATE;
+-extern uint8_t PREVIOUS_SCREEN;
+ extern uint8_t PREVIOUS_EXIT;
+ extern uint8_t CURRENT_EXIT;
+ extern int8_t TALKED_TO_ENTITY;
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 9e49d27..03cbd70 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -671,7 +671,7 @@ int32_t loadPartnerSounds(int32_t type)
+ {
+ 	int32_t soundId;
+ 
+-	if ((type > 0) && (type < 66)) {
++	if ((type > 0) && (type < NUM_PARTNER_DIGIMON)) {
+ 		soundId = DIGIMON_VLALL_SOUND_ID[type];
+ 	} else {
+ 		soundId = 15;
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 9f7255e..4b3b837 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -13,6 +13,7 @@
+ #include <dw/entity.h>
+ #include <dw/fade.h>
+ #include <dw/font.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/kar.h>
+@@ -103,7 +104,6 @@ extern int32_t IS_SCRIPT_PAUSED;
+ extern int8_t ITEM_SCOLD_FLAG;
+ extern int8_t FADE_PROTECTION_FULL;
+ extern uint16_t CURRENT_SCRIPT_ID;
+-extern uint8_t CURRENT_SCREEN;
+ extern uint8_t ACTIVE_BGM_FONT;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+@@ -744,7 +744,7 @@ void checkMedalConditions(void)
+ 		MEDAL_AWARD_PENDING = 1;
+ 	}
+ 	if (hasMedal(0xC) == 0) {
+-		for (i = 0; i < 66; ++i) {
++		for (i = 0; i < NUM_CARDS; ++i) {
+ 			if (getCardAmount((uint8_t)i) == 0) {
+ 				break;
+ 			}
+@@ -1652,7 +1652,7 @@ void tamerTickSicknessLostLife(void)
+ 	case 1:
+ 		if ((0 > MURD_tick((PartnerEntity *)ENTITY_TABLE[1], 1)) &&
+ 		    (0 > DOOA_tick((PartnerEntity *)ENTITY_TABLE[1],
+-				   GENERAL_BUFFER_PTR + 0x4b000, 1))) {
++				   GENERAL_BUFFER_PTR + DOOA_WORK_OFFSET, 1))) {
+ 			SOME_SCRIPT_SYNC_BIT = 1;
+ 		}
+ 	default:
+diff --git a/src/main/tournament.c b/src/main/tournament.c
+index 475bc22..aa05ce2 100644
+--- a/src/main/tournament.c
++++ b/src/main/tournament.c
+@@ -215,7 +215,7 @@ level_check:
+ 		goto check_medal;
+ 	}
+ 
+-	for (i = 0; i < 0x42; i++) {
++	for (i = 0; i < NUM_CARDS; i++) {
+ 		if (getCardAmount(i) == 0) {
+ 			goto ret_neg1;
+ 		}
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 4051856..016548a 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -21,7 +21,7 @@
+ #include <dw/version.h>
+ #include <text/main/utils2.h>
+ 
+-#define shop_START		((char *)0x80080800)
++#define shop_START		((char *)OVL_SHOP_BASE)
+ 
+ void reinitializeAfterTournament(void);
+ void thunkReinitializeAfterTournament(void);
+@@ -602,7 +602,7 @@ void startTournament(void)
+ 	if (i < 0xfe) {
+ 		if (id != 0x16) {
+ 			while ((i = *p++) < 0xfe) {
+-				if (isTriggerSet(i + 200) != 0) {
++				if (isTriggerSet(i + TRIGGER_RECRUITED_BASE) != 0) {
+ 					*w++ = i;
+ 					count++;
+ 				}
+@@ -614,8 +614,8 @@ void startTournament(void)
+ 			}
+ 		}
+ 	} else {
+-		for (i = 0; i < 0x70; i++) {
+-			if (isTriggerSet(i + 200) != 0) {
++		for (i = 0; i < NUM_RECRUITABLE_DIGIMON; i++) {
++			if (isTriggerSet(i + TRIGGER_RECRUITED_BASE) != 0) {
+ 				*w++ = i;
+ 				count++;
+ 			}
+diff --git a/src/murd/murd.c b/src/murd/murd.c
+index 03bf080..af84cbc 100644
+--- a/src/murd/murd.c
++++ b/src/murd/murd.c
+@@ -24,7 +24,7 @@
+ #include <dw/utils.h>
+ #include <dw/vecmath.h>
+ 
+-#define MURD_ORDERING_TABLE_0	((GsOT_TAG *)0x8008c000)
++#define MURD_ORDERING_TABLE_0	((GsOT_TAG *)OVL_OT_0_ADDR)
+ 
+ typedef struct {
+ 	int16_t timer;
+@@ -303,7 +303,7 @@ void MURD_tickScene(int32_t instanceId)
+ 		}
+ 		removeObject(0x60a, instanceId);
+ 		scene->timer = -0xa;
+-		DOOA_tick((PartnerEntity *)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + 0x4b000, 0);
++		DOOA_tick((PartnerEntity *)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + DOOA_WORK_OFFSET, 0);
+ 		ENTITY_TABLE[1]->isOnMap = 0;
+ 		break;
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 5c64ca7..e5f6e40 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1358,10 +1358,10 @@ uint8_t rollCard(void)
+ 		rarity = 4;
+ 	}
+ 
+-	cards = (uint8_t *)allocateArray(0x42);
++	cards = (uint8_t *)allocateArray(NUM_CARDS);
+ 	p = cards;
+ 	count = 0;
+-	for (i = 0; i < 0x42; i++) {
++	for (i = 0; i < NUM_CARDS; i++) {
+ 		if (rarity == CARD_DATA[i].spriteId) {
+ 			*p++ = i;
+ 			count++;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 0c59ced..9e88eac 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -13,8 +13,10 @@
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+ #include <dw/graphics.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/math.h>
++#include <dw/memmap.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -26,7 +28,7 @@
+ 
+ #include "common.h"
+ 
+-#define STD_TMD_BUFFER	((uint8_t *)0x80038000)
++#define STD_TMD_BUFFER	((uint8_t *)ARENA_TMD_ADDR)
+ 
+ typedef struct {
+ 	uint32_t *vertTop;
+@@ -46,7 +48,6 @@ extern int8_t GAME_STATE;
+ extern GsRVIEW2 GS_VIEWPOINT;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern int32_t VIEWPORT_DISTANCE;
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t MAIN_D_801350F0;
+ 
+ void STD_offsetTMDObjectUVs(uint32_t *tmd, int32_t vofs, int32_t nofs, int32_t objIdx);
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index a754f7d..ba27a92 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -16,6 +16,7 @@
+ #include <dw/evl.h>
+ #include <dw/font.h>
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -72,7 +73,6 @@ extern int32_t STD_CAMERA_STATE;
+ extern GsRVIEW2 GS_VIEWPOINT;
+ extern int32_t VIEWPORT_DISTANCE;
+ extern Entity *STD_OPPONENT_ENTITY;
+-extern uint8_t CURRENT_SCREEN;
+ extern char MAIN_D_80124C0C[][12];
+ extern char MAIN_D_80124C54[];
+ extern int32_t COMBAT_AREA_X;
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 50b24c9..0970f4f 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -11,6 +11,7 @@
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+ #include <dw/graphics.h>
++#include <dw/ids.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
+ #include <dw/model.h>
+@@ -24,11 +25,11 @@
+ 
+ #include "common.h"
+ 
+-#define STD_FINISHER_TIM	((char *)0x80052ae0)
+-#define STD_FINISHER_MODEL	((char *)0x80053800)
+-#define STD_CONFUSION_MODEL	((char *)0x80054838)
+-#define STD_STUN_MODEL		((char *)0x80054d00)
+-#define STD_BUFF_MODEL		((TMDModel *)0x80055328)
++#define STD_FINISHER_TIM	((char *)BATTLE_FINISHER_TIM_ADDR)
++#define STD_FINISHER_MODEL	((char *)BATTLE_FINISHER_MODEL_ADDR)
++#define STD_CONFUSION_MODEL	((char *)BATTLE_CONFUSION_MODEL_ADDR)
++#define STD_STUN_MODEL		((char *)BATTLE_STUN_MODEL_ADDR)
++#define STD_BUFF_MODEL		((TMDModel *)BATTLE_BUFF_MODEL_ADDR)
+ 
+ extern TMDModel *STD_ARENA_MODEL;
+ extern int8_t GAME_STATE;
+@@ -37,7 +38,6 @@ extern GsOT *ACTIVE_ORDERING_TABLE;
+ extern int32_t ACTIVE_FRAMEBUFFER;
+ extern int32_t DRAWING_OFFSET_X;
+ extern int32_t DRAWING_OFFSET_Y;
+-extern uint8_t CURRENT_SCREEN;
+ extern char *STD_ARENA_TIMS[];
+ extern char *STD_ARENA_MODELS[];
+ extern char *STD_ARENA_COLLISIONS[];
+diff --git a/src/trn/trn_slots.c b/src/trn/trn_slots.c
+index 8c34502..6fbaf1f 100644
+--- a/src/trn/trn_slots.c
++++ b/src/trn/trn_slots.c
+@@ -4,6 +4,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -16,7 +17,6 @@
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t DRAWING_OFFSET_X;
+ extern int32_t DRAWING_OFFSET_Y;
+ extern int8_t TRN_D_8008F1AC[3][13];
+diff --git a/src/trn2/trn2_slots.c b/src/trn2/trn2_slots.c
+index faa79b0..1d2f3b0 100644
+--- a/src/trn2/trn2_slots.c
++++ b/src/trn2/trn2_slots.c
+@@ -4,6 +4,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/input.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -17,7 +18,6 @@ extern int8_t TRN2_D_8008DAA8[3][13];
+ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+-extern uint8_t CURRENT_SCREEN;
+ extern int32_t DRAWING_OFFSET_X;
+ extern int32_t DRAWING_OFFSET_Y;
+ 
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 4bfc430..5a383b1 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -10,6 +10,7 @@
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+ #include <dw/math.h>
++#include <dw/memmap.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+@@ -17,7 +18,7 @@
+ 
+ #include "common.h"
+ 
+-#define VS_TMD_BUFFER	((uint8_t *)0x80038000)
++#define VS_TMD_BUFFER	((uint8_t *)ARENA_TMD_ADDR)
+ 
+ extern int16_t BTL_FINISHER_CHARGEUP_POS[2];
+ extern int8_t GAME_STATE;
+-- 
+2.53.0
+

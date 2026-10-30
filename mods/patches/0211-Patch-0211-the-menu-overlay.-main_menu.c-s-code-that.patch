@@ -1,0 +1,417 @@
+From e352354b5d710625ba4196d041b0437e6d2ae3c9 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 10:30:36 +0000
+Subject: [PATCH] Patch 0211: the menu overlay. main_menu.c's code that only
+ runs while a card menu is open is linked into MENU_REL.BIN at OVL_BTL_BASE,
+ read where each opens (the title, the sleep save, the save machine, the
+ game-clear save): 33 KB of every heap
+
+loadMenuOverlay (runMainMenu, partner.c's sleep save, openSaveMachine, gameClearSave) reads it; closeMenuOverlay reads
+KAR again on the curling screen (0x80053800, the same slot) when a menu closes in the world. The boot options
+(modBootOptions, modCardOptions, modApplyOptions, isMemcardUnformatted), modNewGame, formatInteger, swapPartnerSpecies,
+modReplayMainMenu and the entries stay in the executable, with all of the file's data, rodata and bss but the moved
+functions' switch tables. config/us/overlay.ld names the moved functions one by one: a new function stays resident.
+A VS battle from the title's registration screens reads VS_REL over the menu overlay: modMenuVsBattle (resident) runs
+it and reads the menu overlay again before returning into tickMainMenu. MENU_REL.BIN is a new FILE_OFFSET_TABLE name;
+a link ASSERT keeps its end below OVL_EVL_BASE (ENDI loads there during the game-clear save). xref.py check: the
+executable's references into overlays are the series' plus these entries only. Heap at the tip 170 784 -> 203 824.
+---
+ config/us/main.ld        |  3 ++
+ config/us/overlay.ld     | 89 ++++++++++++++++++++++++++++++++++++++++
+ include/dw/utils.h       |  1 +
+ mk/version/us.mk         |  4 ++
+ src/main/file_table_us.c |  2 +
+ src/main/main.c          |  2 +
+ src/main/main_menu.c     | 72 +++++++++++++++++++++++---------
+ src/main/partner.c       |  4 ++
+ src/main/utils2.c        |  9 +++-
+ 9 files changed, 164 insertions(+), 22 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index e11fb770..1260e60f 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1062,6 +1062,9 @@ ASSERT(OVL_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the origi
+ ASSERT(OVL_END(.BTL) <= OVL_END(.STD), "BTL overlay ends above STD's end, the highest a battle overlay is known to reach")
+ ASSERT(OVL_END(.VS) <= OVL_END(.STD), "VS overlay ends above STD's end, the highest a battle overlay is known to reach")
+ ASSERT(OVL_END(.MOV) <= OVL_TRN_BASE, "MOV overlay overlaps TRN's slot (TEXTURE_BUFFER)")
++/* MOD (menu overlay): the save machine and the game-clear save run in the world, the latter with ENDI loading at
++ * OVL_EVL_BASE (load_ending); the world's scratch with SAVE_EXT is below OVL_BTL_BASE */
++ASSERT(OVL_END(.MENU) <= OVL_EVL_BASE, "MENU overlay overlaps EVL/ENDI's slot")
+ ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
+        "TFS ring size does not match TFS_RING_END")
+ ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index bddf590d..b04fc173 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -724,4 +724,93 @@ SECTIONS
+ 			. = ALIGN(., 4);
+ 		}
+ 	}
++
++	/*
++	 * MOD (menu overlay, docs/mods/memory.md "The menu overlay"): main_menu.c's code that only runs while a card menu
++	 * is open (the title's menus, new game and continue, the save and load screens of the title, the save machine,
++	 * the sleep save and the game-clear save), read by loadMenuOverlay where each opens. The functions are named
++	 * one by one: one this list does not name (a new one) stays in the executable (main.ld takes the rest of the
++	 * file), which is always safe. Its rodata, data and bss stay in the executable too (they outlive the overlay).
++	 */
++	OVERLAY OVL_BTL_BASE : NOCROSSREFS
++	{
++		.MENU {
++			menu_START = .;
++			BUILD_DIR/src/main/main_menu.c.o(
++				.text._strncpy
++				.text.awardMachinedramonData
++				.text.countRegisteredDigimon
++				.text.createByteSum
++				.text.createSavegameChecksum
++				.text.drawMainMenuStrings
++				.text.drawMoveName
++				.text.drawOptionsText
++				.text.drawRegisteredDigimonSlots
++				.text.drawSaveSlotText
++				.text.dropAbsentRegistered.constprop.0
++				.text.getCardUsedBlockCount
++				.text.getMenuOnCardChange
++				.text.getSaveFileBytes
++				.text.getSaveVersion
++				.text.initializeDefaultSavegame
++				.text.isExtensionValid
++				.text.isMoveAbsent
++				.text.loadSaveCopy
++				.text.loadSaveSlotData
++				.text.loadSavegame
++				.text.modDrawSlot2.constprop.0
++				.text.modDrawSlot2.part.0.constprop.0
++				.text.modDrawSlotName
++				.text.modOptionValue
++				.text.modRegisterLong
++				.text.modTitleNameTail
++				.text.modTitleOptions
++				.text.modTitlePlayerName
++				.text.pickSaveCopy
++				.text.prepareSaveFile
++				.text.putRecord
++				.text.registerBattleData
++				.text.renderCantRegister
++				.text.renderCantRegisterBaby
++				.text.renderCheckingCard
++				.text.renderConfirmNoCard
++				.text.renderConfirmOverwrite
++				.text.renderConfirmRegister
++				.text.renderConfirmSlotSelection
++				.text.renderConfirmVSSlot
++				.text.renderDoYouWantToSave
++				.text.renderFormatMemoryCard
++				.text.renderInitialMenu
++				.text.renderMainMenu
++				.text.renderMemoryCardReadError
++				.text.renderMenuBox
++				.text.renderMenuSelector
++				.text.renderRegisterDigimon
++				.text.renderSaveSlotBox
++				.text.renderSelectCardSlot
++				.text.renderSelectNewGameCard
++				.text.renderSelectRegisterSlot
++				.text.renderSelectSlot
++				.text.renderSleepMenu
++				.text.renderText
++				.text.saveExtOf
++				.text.saveExtSize
++				.text.saveFileStart
++				.text.setMemoryCardReadError
++				.text.tickMainMenu
++				.text.tickMenuInput
++				.text.tickSelectSlotInput
++				.text.updateMemoryCardState
++				.text.writeSaveFile
++				.text.writeSavegame
++			);
++			. = ALIGN(., 4);
++			/* their switch tables and literals, which only they read */
++			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
++				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue);
++			. = ALIGN(., 4);
++			LONG(0);
++			. = ALIGN(., 4);
++		}
++	}
+ }
+diff --git a/include/dw/utils.h b/include/dw/utils.h
+index 8c820310..f9dbff3d 100644
+--- a/include/dw/utils.h
++++ b/include/dw/utils.h
+@@ -22,6 +22,7 @@ typedef enum Overlay
+     MURD_REL = 14,
+     ENDI_REL = 15,
+     EAB_REL  = 16,
++    MENU_REL = 17, /* MOD (menu overlay): the title and card menus (main_menu.c), loaded where they open */
+     OFFSET   = -1,
+ } Overlay;
+ 
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index fbfb64cf..d3eae6a7 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -101,6 +101,10 @@ MAIN_ASM_EXCLUDE := shop vs
+ 
+ $(eval $(call unit,MAIN,main))
+ 
++# MOD (menu overlay, docs/mods/memory.md "The menu overlay"): most of main_menu.c's code is linked into .MENU
++# (config/us/overlay.ld), read where a card menu opens; the file stays a MAIN source
++OVERLAY += MENU
++
+ SHOP_C_SRC := \
+ 	src/shop/script_menu.c
+ 
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index 073f3f39..a8461976 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -844,6 +844,8 @@ FileEntry FILE_OFFSET_TABLE[] = { /* MOD: was [819]; + DIGI.DAT (species), + par
+ 	{ 0x00000000, 0x00000001, "MUGP.MMD" }, /* MOD (machinedramon) */
+ 	{ 0x00000000, 0x00000001, "JIJP.MMD" }, /* MOD (jijimon) */
+ 	{ 0x00000000, 0x00000001, "ANLP.MMD" }, /* MOD (analogman) */
++	/* MOD (menu overlay): the title and card menus (main_menu.c), a new file; build-disc.py --relayout --add writes it */
++	{ 0x00000000, 0x00000000, "MENU_REL.BIN" },
+ 	/*
+ 	 * MOD (new files): the disc's files with new names (NEW_FILES of the Makefile, written by the project's
+ 	 * tools/build-full.sh from the content: a new screen's .MAP and .TFS, models...). Looked up after every
+diff --git a/src/main/main.c b/src/main/main.c
+index 0e649c0e..7c4e5e5d 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -149,6 +149,7 @@ void playMovie(int32_t movieId, int32_t shouldPlay);
+ void loadStackedTIMFile(char *path);
+ void runLandingScreen(void);
+ void runMainMenu(void);
++void loadMenuOverlay(void);
+ void modBootOptions(void); /* MOD (options) */
+ void newGameScene(void);
+ void initializeLoadedMap(void);
+@@ -3784,6 +3785,7 @@ void runMainMenu(void)
+ 	TARGET_MENU = 0x47;
+ #endif
+ 	loadTIMFile(MAIN_D_8012CEA0, GENERAL_BUFFER_PTR);
++	loadMenuOverlay(); /* MOD (menu overlay): tickMainMenu and renderMainMenu are in MENU_REL.BIN */
+ 	addObject(0x1388, 0, (TickFunction)tickMainMenu, (RenderFunction)renderMainMenu);
+ 	addObject(0xfa3, 0, NULL, (RenderFunction)renderMainMenuBackground);
+ 	fadeFromBlack(0x28);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 8d7ea862..c3ecc0d4 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -13,6 +13,7 @@
+ #include <dw/save_tags.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
++#include <dw/kar.h>
+ #include <dw/main.h>
+ #include <dw/map.h>
+ #include <dw/move.h>
+@@ -32,6 +33,8 @@
+ 
+ #include "common.h"
+ 
++void modMenuVsBattle(int32_t trial); /* MOD (menu overlay) */
++
+ #if !VERSION_IS(US)
+ #define YES_TEXT_W 0x18
+ #define NO_TEXT_U 0xc
+@@ -2623,10 +2626,6 @@ void tickMainMenu(void)
+ 	int32_t lo;
+ 	int32_t hi;
+ 	int32_t oldScroll;
+-	uint8_t loadComplete;
+-#if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+-	uint8_t demoLoadComplete;
+-#endif
+ 	MenuCursor *cursor;
+ 	int32_t input;
+ 	int32_t value; /* MOD (options) */
+@@ -3512,14 +3511,7 @@ void tickMainMenu(void)
+ 
+ 	case 0x38:
+ 		if (MAIN_MENU_TICKS >= 3) {
+-			removeObject(0x1388, 0);
+-			removeObject(0xFA3, 0);
+-			loadDynamicLibrary(VS_REL, &loadComplete, 0, 0, 0);
+-			VS__initialize(VS__REGISTERED_DIGIMON_BUFFER,
+-					     &VS__REGISTERED_DIGIMON_BUFFER[0x28]);
+-			addObject(0xFA3, 0, NULL, (RenderFunction)renderMainMenuBackground);
+-			addObject(0x1388, 0, (TickFunction)tickMainMenu,
+-				  (RenderFunction)renderMainMenu);
++			modMenuVsBattle(0); /* MOD (menu overlay): VS_REL is read over this code */
+ 			TARGET_MENU = VS_RETURN_MENU;
+ 		}
+ 		break;
+@@ -3813,14 +3805,7 @@ void tickMainMenu(void)
+ 
+ 	case 0x48:
+ 		if (MAIN_MENU_TICKS >= 3) {
+-			removeObject(0x1388, 0);
+-			removeObject(0xFA3, 0);
+-			loadDynamicLibrary(VS_REL, &demoLoadComplete, 0, 0, 0);
+-			VS_initializeTrialBattle(VS__REGISTERED_DIGIMON_BUFFER,
+-					  &VS__REGISTERED_DIGIMON_BUFFER[0x28]);
+-			addObject(0xFA3, 0, NULL, (RenderFunction)renderMainMenuBackground);
+-			addObject(0x1388, 0, (TickFunction)tickMainMenu,
+-				  (RenderFunction)renderMainMenu);
++			modMenuVsBattle(1); /* MOD (menu overlay): VS_REL is read over this code */
+ 			TARGET_MENU = 0x47;
+ 		}
+ 		break;
+@@ -5588,8 +5573,50 @@ void renderMenuSelector(MenuHighlight *b)
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
++/*
++ * MOD (menu overlay, docs/mods/memory.md "The menu overlay"): most of this file's code is linked into MENU_REL.BIN at
++ * OVL_BTL_BASE (config/us/main.ld keeps the rest in the executable) and read where a card menu opens: the title
++ * (runMainMenu), the sleep save (partner.c), the save machine and the game-clear save (below). Nothing of a battle,
++ * the tournament or VS is loaded then; KAR (0x80053800) is, on the curling screen, so a menu closing in the world
++ * reads it again.
++ */
++void loadMenuOverlay(void)
++{
++	loadDynamicLibrary(MENU_REL, NULL, 0, NULL, NULL);
++}
++
++void closeMenuOverlay(void)
++{
++	checkCurlingMap(CURRENT_SCREEN);
++}
++
++/* a VS battle from the title's menus: VS_REL is read where this overlay is, so the battle runs from here, in the
++ * executable, and the overlay is read again before the return into tickMainMenu (the same code at the same place) */
++void modMenuVsBattle(int32_t trial)
++{
++	uint8_t complete;
++
++	removeObject(0x1388, 0);
++	removeObject(0xFA3, 0);
++	loadDynamicLibrary(VS_REL, &complete, 0, 0, 0);
++#if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
++	if (trial) {
++		VS_initializeTrialBattle(VS__REGISTERED_DIGIMON_BUFFER, &VS__REGISTERED_DIGIMON_BUFFER[0x28]);
++	} else
++#else
++	(void)trial;
++#endif
++	{
++		VS__initialize(VS__REGISTERED_DIGIMON_BUFFER, &VS__REGISTERED_DIGIMON_BUFFER[0x28]);
++	}
++	loadMenuOverlay();
++	addObject(0xFA3, 0, NULL, (RenderFunction)renderMainMenuBackground);
++	addObject(0x1388, 0, (TickFunction)tickMainMenu, (RenderFunction)renderMainMenu);
++}
++
+ void openSaveMachine(void)
+ {
++	loadMenuOverlay();
+ 	CHECKED_MEMORY_CARD = 0x10;
+ 	CURRENT_MENU = -2;
+ 	MAIN_STATE = 1;
+@@ -5626,6 +5653,8 @@ int32_t tickSaveMachine(void)
+ 	renderMainMenu();
+ 	MOD_TICK_PRIM_MAIN_MENU = 1; /* MOD (fps): drawn again on extra passes */
+ 	if (CURRENT_MENU == -1) {
++		MOD_TICK_PRIM_MAIN_MENU = 0; /* MOD (menu overlay): no extra pass draws it once it may be gone */
++		closeMenuOverlay();
+ 		return 1;
+ 	}
+ 
+@@ -5666,6 +5695,7 @@ void gameClearSave(void)
+ 	 * the card write and its extensions at SAVE_EXT_ADDR.
+ 	 */
+ 	isSoundLoaded(0, 8);
++	loadMenuOverlay();
+ 	CHECKED_MEMORY_CARD = 0x10;
+ 	CURRENT_MENU = -2;
+ 	MAIN_STATE = 2;
+@@ -5684,6 +5714,8 @@ int32_t scriptTickMainMenu(void)
+ 	renderMainMenu();
+ 	MOD_TICK_PRIM_MAIN_MENU = 1; /* MOD (fps): drawn again on extra passes */
+ 	if (CURRENT_MENU == -1) {
++		MOD_TICK_PRIM_MAIN_MENU = 0; /* MOD (menu overlay): no extra pass draws it once it may be gone */
++		closeMenuOverlay();
+ 		return 1;
+ 	}
+ 
+diff --git a/src/main/partner.c b/src/main/partner.c
+index dae6cef2..2525c5d1 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -50,6 +50,8 @@ extern int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON];
+ 
+ void tickMainMenu(int32_t instanceId);
+ void renderMainMenu(int32_t instanceId);
++void loadMenuOverlay(void);
++void closeMenuOverlay(void);
+ void renderFeedingItem(int32_t instanceId);
+ 
+ void partnerTickOverworld(int32_t instanceId);
+@@ -329,6 +331,7 @@ void partnerTickSleep(void)
+ 					TARGET_MENU = 40;
+ 					MAIN_STATE = 1;
+ 				}
++				loadMenuOverlay(); /* MOD (menu overlay): tickMainMenu and renderMainMenu are in MENU_REL.BIN */
+ 				addObject(5000, 0, tickMainMenu, renderMainMenu);
+ 				PARTNER_SUB_STATE = 6;
+ 			}
+@@ -337,6 +340,7 @@ void partnerTickSleep(void)
+ 	case 6:
+ 		if (CURRENT_MENU == -1) {
+ 			removeObject(5000, 0);
++			closeMenuOverlay(); /* MOD (menu overlay): the curling screen's KAR shares its slot */
+ 			fadeFromBlack(40);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0);
+ 			updateTimeOfDay();
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index da5feff2..e75edacc 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -92,9 +92,10 @@ extern char std_START[];
+ extern char trn_START[];
+ extern char trn2_START[];
+ extern char vs_START[];
++extern char menu_START[];
+ 
+ // clang-format off
+-void *REL_BIN_OFFSETS[16] = {
++void *REL_BIN_OFFSETS[17] = {
+ 	btl_START,
+ 	std_START,
+ 	fish_START,
+@@ -111,6 +112,7 @@ void *REL_BIN_OFFSETS[16] = {
+ 	murd_START,
+ 	endi_START,
+ 	eab_START,
++	menu_START,
+ };
+ 
+ char MAIN_D_8012B9AC[12] = "BTL_REL.BIN";
+@@ -145,7 +147,9 @@ char MAIN_D_8012BA70[] = "ENDI_REL.BIN";
+ 
+ char MAIN_D_8012BA80[12] = "EAB_REL.BIN";
+ 
+-char *REL_BIN_FILES[16] = {
++char MOD_MENU_REL_NAME[] = "MENU_REL.BIN";
++
++char *REL_BIN_FILES[17] = {
+ 	MAIN_D_8012B9AC,
+ 	MAIN_D_8012B9B8,
+ 	MAIN_D_8012B9C4,
+@@ -162,6 +166,7 @@ char *REL_BIN_FILES[16] = {
+ 	MAIN_D_8012BA60,
+ 	MAIN_D_8012BA70,
+ 	MAIN_D_8012BA80,
++	MOD_MENU_REL_NAME,
+ };
+ 
+ PAUSE_TEXT
+-- 
+2.53.0
+

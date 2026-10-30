@@ -1,0 +1,51 @@
+{
+ "s006.sec6.u0": "I won't lose!",
+ "s006.sec7.u0": "Don't come near me! Go away!",
+ "s006.sec8.u0": "That's it, now I'm really mad!",
+ "s006.sec9.u0": "You hit me once, I hit you once!",
+ "s006.sec10.u0": "Go ahead, if you think you can!",
+ "s006.sec51.m0.o0": "I was looking for you!",
+ "s006.sec51.m0.o1": "Just by chance",
+ "s006.sec51.u0": [
+  [
+   "Hmm? Well now, {color 6}{player}{color 1}. Looks like the",
+   "bridge has been fixed."
+  ],
+  [
+   "I hear you young folk are building a city."
+  ],
+  [
+   "So I've a favor to ask. Just as I helped you,",
+   "I'd like you to help me in turn."
+  ]
+ ],
+ "s006.sec51.u1": "?",
+ "s006.sec51.u2": "Building a city means saving this island. Everyone is saved, and so am I. You see?",
+ "s006.sec51.u3": "You mean you'll come to the city?",
+ "s006.sec51.u4": "Mm-hm. Then I shall head to this city of yours.",
+ "s006.sec51.u5": "Coelamon joined the city!",
+ "s006.sec51.u6": [
+  [
+   "Hmm? Say, are you a human?"
+  ],
+  [
+   "Meeting me is a rare catch indeed! I'm",
+   "Coelamon, the fish Digimon. Did you come all",
+   "this way just to see me?"
+  ]
+ ],
+ "s006.sec51.u7": "Ho ho, I see, I see!",
+ "s006.sec51.u8": "Heh heh... I can tell. No need to be shy about it.",
+ "s006.sec51.u9": [
+  [
+   "I've a fair idea what you're after. The bridge",
+   "upstream is broken, but you want to cross...",
+   "Am I right?"
+  ]
+ ],
+ "s006.sec51.u10": "Hm, very well. I'll see what I can do.",
+ "s006.sec51.u11": "Ha ha, back again, are you?",
+ "s006.sec51.u12": "Go on, walk across our heads. No need to be polite. Go on, go on.",
+ "s006.sec51.u13": "All right, here we go!",
+ "s006.sec51.u14": "In this world, helping one another is what counts. Till we meet again!"
+}

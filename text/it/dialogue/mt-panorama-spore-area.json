@@ -1,0 +1,426 @@
+{
+ "s022.sec5.u0": [
+  [
+   "La mia ala..."
+  ]
+ ],
+ "s022.sec5.u1": [
+  [
+   "Che problema hai?"
+  ]
+ ],
+ "s022.sec5.u2": [
+  [
+   "Mi sono... ferito a un'ala...",
+   "Hai qualcosa per curare una",
+   "ferita?"
+  ]
+ ],
+ "s022.sec5.u3": [
+  [
+   "Sembra grave...! Aspetta.",
+   "Vediamo..."
+  ]
+ ],
+ "s022.sec5.u4": [
+  [
+   "Ah, E' vero. Non ho niente",
+   "ora..."
+  ]
+ ],
+ "s022.sec5.u5": [
+  [
+   "Non va bene. Non con questo."
+  ]
+ ],
+ "s022.sec5.u6": [
+  [
+   "Fiuu... Va molto meglio.",
+   "Grazie."
+  ]
+ ],
+ "s022.sec5.u7": [
+  [
+   "Puoi volare?"
+  ]
+ ],
+ "s022.sec5.u8": [
+  [
+   "...Non lontano, credo..."
+  ]
+ ],
+ "s022.sec5.u9": [
+  [
+   "Capisco... Oh, ho un'idea! In",
+   "città c'è una clinica. Fatti",
+   "visitare lì. Non è lontano."
+  ]
+ ],
+ "s022.sec5.u10": [
+  [
+   "Notevole. Avevo sentito",
+   "parlare della città, ma non",
+   "sapevo che fosse cresciuta"
+  ],
+  [
+   "tanto."
+  ]
+ ],
+ "s022.sec5.u11": [
+  [
+   "Eheh. Prenditela comoda e",
+   "riposati in città."
+  ]
+ ],
+ "s022.sec5.u12": [
+  [
+   "Mi dispiace per il disturbo...",
+   "Ricambierò questa gentilezza,",
+   "promesso."
+  ]
+ ],
+ "s022.sec5.u13": "Unimon si è unito alla città!",
+ "s022.sec5.u14": [
+  [
+   "Qualcosa per guarire una",
+   "ferita... Ok. Ti prendo una",
+   "cosa."
+  ]
+ ],
+ "s022.sec5.u15": [
+  [
+   "Mi dispiace... Per favore.",
+   "Sbrigati..."
+  ]
+ ],
+ "s022.sec51.u0": [
+  [
+   "Sul terreno ci sono strani",
+   "disegni..."
+  ]
+ ],
+ "s022.sec51.u1": [
+  [
+   "È uno di quei cerchi nel grano?",
+   "Non sembra molto vecchio."
+  ]
+ ],
+ "s022.sec51.u2": [
+  [
+   "Ce ne sono più dell'ultima",
+   "volta! Avrà a che fare con",
+   "quell'UFO di cui parlano"
+  ],
+  [
+   "tutti...?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Uau!? Ce ne sono altri!",
+   "MOLTI altri! Allora ci siamo..."
+  ]
+ ],
+ "s022.sec51.u4": [
+  [
+   "?"
+  ]
+ ],
+ "s022.sec51.u5": [
+  [
+   "Appare l'UFO di Vademon!"
+  ]
+ ],
+ "s022.sec51.u6": [
+  [
+   "U-un alieno!?"
+  ]
+ ],
+ "s022.sec51.u7": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u8": [
+  [
+   "Sei... un Digimon...?"
+  ]
+ ],
+ "s022.sec51.u9": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u10": [
+  [
+   "Ehm..."
+  ]
+ ],
+ "s022.sec51.u11": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u12": [
+  [
+   "Vademon alza una pistola!"
+  ]
+ ],
+ "s022.sec51.u13": [
+  [
+   "Oh no, aspetta! Non siamo tuoi",
+   "nemici!"
+  ]
+ ],
+ "s022.sec51.u14": [
+  [
+   "Vademon abbassa la pistola."
+  ]
+ ],
+ "s022.sec51.u15": [
+  [
+   "Ha capito? Bene..."
+  ]
+ ],
+ "s022.sec51.u16": [
+  [
+   "{color 6}{player}{color 1} ha fatto di tutto",
+   "per convincerlo!!"
+  ]
+ ],
+ "s022.sec51.u17": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u18": [
+  [
+   "Non funziona...?"
+  ]
+ ],
+ "s022.sec51.u19": [
+  [
+   "Va beeene."
+  ]
+ ],
+ "s022.sec51.u20": "Vademon si è unito alla città!",
+ "s022.sec51.u21": [
+  [
+   "M-ma... quel tipo... SA",
+   "parlare!!"
+  ]
+ ],
+ "s189.sec5.u0": [
+  [
+   "Mi hai portato qualcosa per",
+   "guarire la mia ferita...?"
+  ]
+ ],
+ "s189.sec5.u1": [
+  [
+   "Aspetta. Vediamo..."
+  ]
+ ],
+ "s189.sec5.u2": [
+  [
+   "La mia ala..."
+  ]
+ ],
+ "s189.sec5.u3": [
+  [
+   "Che problema hai?"
+  ]
+ ],
+ "s189.sec5.u4": [
+  [
+   "Mi sono... ferito a un'ala...",
+   "Hai qualcosa per curare una",
+   "ferita?"
+  ]
+ ],
+ "s189.sec5.u5": [
+  [
+   "Sembra grave...! Aspetta.",
+   "Vediamo..."
+  ]
+ ],
+ "s189.sec5.u6": [
+  [
+   "Ah, E' vero. Non ho niente",
+   "ora..."
+  ]
+ ],
+ "s189.sec5.u7": [
+  [
+   "Non va bene. Non con questo."
+  ]
+ ],
+ "s189.sec5.u8": [
+  [
+   "Fiuu... Va molto meglio.",
+   "Grazie."
+  ]
+ ],
+ "s189.sec5.u9": [
+  [
+   "Puoi volare?"
+  ]
+ ],
+ "s189.sec5.u10": [
+  [
+   "...Non lontano, credo..."
+  ]
+ ],
+ "s189.sec5.u11": [
+  [
+   "Capisco... Oh, ho un'idea! In",
+   "città c'è una clinica. Fatti",
+   "visitare lì. Non è lontano."
+  ]
+ ],
+ "s189.sec5.u12": [
+  [
+   "Notevole. Avevo sentito",
+   "parlare della città, ma non",
+   "sapevo che fosse cresciuta"
+  ],
+  [
+   "tanto."
+  ]
+ ],
+ "s189.sec5.u13": [
+  [
+   "Eheh. Prenditela comoda e",
+   "riposati in città."
+  ]
+ ],
+ "s189.sec5.u14": [
+  [
+   "Mi dispiace per il disturbo...",
+   "Ricambierò questa gentilezza,",
+   "promesso."
+  ]
+ ],
+ "s189.sec5.u15": "Unimon si è unito alla città!",
+ "s189.sec5.u16": [
+  [
+   "Qualcosa per curare una",
+   "ferita... Ti porterò qualcosa,",
+   "aspetta qui."
+  ]
+ ],
+ "s189.sec5.u17": [
+  [
+   "Mi dispiace... Per favore.",
+   "Sbrigati..."
+  ]
+ ],
+ "s190.sec51.u0": [
+  [
+   "Sul terreno ci sono strani",
+   "disegni..."
+  ]
+ ],
+ "s190.sec51.u1": [
+  [
+   "È uno di quei cerchi nel grano?",
+   "Non sembra molto vecchio."
+  ]
+ ],
+ "s190.sec51.u2": [
+  [
+   "Ce ne sono più dell'ultima",
+   "volta! Avrà a che fare con",
+   "quell'UFO di cui parlano"
+  ],
+  [
+   "tutti...?"
+  ]
+ ],
+ "s190.sec51.u3": "Uau!?",
+ "s190.sec51.u4": [
+  [
+   "Ce ne sono altri! MOLTI",
+   "altri!"
+  ]
+ ],
+ "s190.sec51.u5": [
+  [
+   "Allora ci siamo..."
+  ]
+ ],
+ "s190.sec51.u6": [
+  [
+   "?"
+  ]
+ ],
+ "s190.sec51.u7": [
+  [
+   "U-un alieno!?"
+  ]
+ ],
+ "s190.sec51.u8": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u9": [
+  [
+   "Sei... un Digimon...?"
+  ]
+ ],
+ "s190.sec51.u10": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u11": [
+  [
+   "Ehm..."
+  ]
+ ],
+ "s190.sec51.u12": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u13": [
+  [
+   "Oh no, aspetta! Non siamo tuoi",
+   "nemici!"
+  ]
+ ],
+ "s190.sec51.u14": [
+  [
+   "Ha capito? Bene..."
+  ]
+ ],
+ "s190.sec51.u15": [
+  [
+   "{color 6}{player}{color 1} ha fatto di tutto",
+   "per convincerlo!!"
+  ]
+ ],
+ "s190.sec51.u16": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u17": [
+  [
+   "Non funziona...?"
+  ]
+ ],
+ "s190.sec51.u18": [
+  [
+   "Va beeene."
+  ]
+ ],
+ "s190.sec51.u19": "Vademon si è unito alla città!",
+ "s190.sec51.u20": [
+  [
+   "M-ma... quel tipo... SA",
+   "parlare!!"
+  ]
+ ]
+}

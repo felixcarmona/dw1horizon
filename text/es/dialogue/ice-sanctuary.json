@@ -1,0 +1,102 @@
+{
+ "s093.sec5.u0": "¿Eh? Ahora que lo pienso, la estatua...",
+ "s093.sec5.u1": "¡Ah!",
+ "s093.sec5.u2": "Uf... Bueno, a ver.",
+ "s093.sec5.u3": "Has vuelto a la vida. ¡Bien!",
+ "s093.sec5.u4": "Soy Angemon, el ángel que te protege. He despertado aquí para cumplir mi deber para contigo.",
+ "s093.sec5.u5": "Hala, no entiendo nada de lo que dice.",
+ "s093.sec5.u6": "Conozco las leyes del cielo. Siguiendo la guía de la tierra, ofrezco mi alma.",
+ "s093.sec5.u7": "Así no vamos a ninguna parte... Esto, ¿vienes a la ciudad... o qué?",
+ "s093.sec5.u8": "Tu misión será mi deber. Parto.",
+ "s093.sec5.u9": "Esto, perdona, pero ¿puedes hablar con palabras que yo entienda?",
+ "s093.sec5.u10": "...Iré a la ciudad, así que esfuérzate tú también... ¿Así mejor?",
+ "s093.sec5.u11": "Sí, eso sí lo pillo. Vale, encantado de tenerte.",
+ "s093.sec5.u12": "¡Angemon se ha unido a la ciudad!",
+ "s093.sec51.u0": "Hala, parece casi vivo...",
+ "s093.sec51.u1": "La verdad es que esto pasa siempre. Haces algo y empieza a moverse, ¿no? Je, je, ¡tú espera y verás!",
+ "s093.sec52.u0": "¿Qué pasa? {color 10}{partner}{color 1}, ¿has encontrado algo?",
+ "s093.sec52.u1": "¡Hala, muy bien, {color 10}{partner}{color 1}!",
+ "s094.sec5.u0": "¡Eh, si estás tiritando!",
+ "s094.sec6.u0": "¿Frío? ¿Tú crees?",
+ "s094.sec7.u0": "¿No es todo inútil?",
+ "s095.sec81.u0": [
+  [
+   "",
+   "{color 5}Entrenamiento: Hielo móvil{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": "Empujar grandes bloques de hielo da aguante. Sube mucho el HP máx., y también la Defensa.",
+ "s095.sec81.u2": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "",
+   "{color 5}Entrenamiento: Lluvia de carámbanos{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": "Se entrena atrapando enormes carámbanos que caen. Sube mucho la Defensa, y también la Velocidad.",
+ "s095.sec84.u2": [
+  [
+   "{color 7}Tragaperras{color 1}",
+   "",
+   "Para los tres rodillos con {color 6}×{color 1}",
+   "y alinea los dibujos."
+  ]
+ ],
+ "s096.sec5.u0": "¡Te voy a dejar tieso!",
+ "s096.sec6.u0": "¡Llámalo mala suerte y ríndete!",
+ "s096.sec7.u0": "¿Unas últimas palabras antes de que te borre?",
+ "s097.sec5.u0": "¿Quién eres?",
+ "s097.sec6.u0": "Todo es inútil.",
+ "s097.sec7.u0": "Mmm, ¿me habré resfriado?",
+ "s097.sec8.u0": "¡Eh, qué frío eres conmigo!",
+ "s098.sec5.u0": "¿Por qué no te vuelves a casa?",
+ "s098.sec6.u0": "¡Vete a casa!",
+ "s098.sec7.u0": "¡Más te vale dar media vuelta!",
+ "s098.sec52.u0": "¡Q... qué luz...!",
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Tú, que buscas mi alma: ha",
+   "llegado la hora de despertar.",
+   "¡Sobre ti, la bendición de mis alas!"
+  ]
+ ],
+ "s098.sec52.u2": "¿Qué...? ¿Dónde estoy...? ¿De quién es... esa voz...? ¡Ngh.........!",
+ "s098.sec52.u3": "¿Qué ha sido eso...? La luz se ha ido... Aquí abajo ya no queda nada... o sea que... ¡está arriba!",
+ "s099.sec5.u0": "Aquí nos despedimos de verdad.",
+ "s099.sec6.u0": "¡Yo no cometo errores!",
+ "s095.sec81.m0.o0": "Entrenar",
+ "s095.sec81.m0.o1": "Explícamelo",
+ "s095.sec81.m0.o2": "Salir",
+ "s095.sec81.m1.o0": "Entrenamiento normal",
+ "s095.sec81.m1.o1": "Intento extra",
+ "s095.sec81.m1.o2": "Mejor no",
+ "s095.sec81.m2.o0": "Explícamelo otra vez",
+ "s095.sec81.m2.o1": "Entrenar",
+ "s095.sec81.m2.o2": "Salir",
+ "s095.sec84.m0.o0": "Entrenar",
+ "s095.sec84.m0.o1": "Explícamelo",
+ "s095.sec84.m0.o2": "Salir",
+ "s095.sec84.m1.o0": "Entrenamiento normal",
+ "s095.sec84.m1.o1": "Intento extra",
+ "s095.sec84.m1.o2": "Mejor no",
+ "s095.sec84.m2.o0": "Explícamelo otra vez",
+ "s095.sec84.m2.o1": "Entrenar",
+ "s095.sec84.m2.o2": "Salir",
+ "s100.sec60.u0": "¡Puaaaj!",
+ "s100.sec60.u1": ".........",
+ "s100.sec60.u2": "¡N-no me fastidies!",
+ "s100.sec60.u3": "Ha desaparecido... ¿Era una ilusión...?",
+ "s100.sec60.u4": "Parece que lo hemos vencido... a duras penas.",
+ "s100.sec60.u5": "¿¡Eh!?",
+ "s100.sec60.u6": "Mm, mmm... ¿¡Eh!?",
+ "s100.sec60.u7": "Me he quedado como en blanco de repente... ¡Ah! ¡P-perdona!",
+ "s100.sec60.u8": "¿¿Mmmmm?? ¿Qué ha sido eso? ¿¡La maldición de Analogman!? Bueno, ya debería estar todo bien."
+}

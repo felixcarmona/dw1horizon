@@ -1,0 +1,97 @@
+{
+ "s018.sec10.u0": [
+  [
+   "¿Estás bien, {color 10}{partner}{color 1}?"
+  ],
+  [
+   "Volvamos atrás por ahora..."
+  ]
+ ],
+ "s018.sec10.u1": "¡Ups! Tengo que curar a {color 10}{partner}{color 1}.",
+ "s018.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado... Intruso",
+   "confirmado..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Intruso confirmado...",
+   "Intruso confirmado...",
+   "Preparando para abrir fuego..."
+  ]
+ ],
+ "s018.sec68.u0": "¡¡!!",
+ "s018.sec68.u1": [
+  [
+   "Atravesar este bosque de",
+   "punta a punta... Debo",
+   "reconocer que eres admirable."
+  ],
+  [
+   "Soy Centarumon. Permíteme",
+   "disculparme por mi descortesía",
+   "hasta ahora. Lo siento."
+  ],
+  [
+   "No te puse a prueba por",
+   "capricho. A partir de ahora,",
+   "pienso prestarte mi ayuda."
+  ]
+ ],
+ "s018.sec68.u2": "Y ahora, adelante. Te estaré esperando en la ciudad.",
+ "s018.sec68.u3": "¡Centarumon se ha unido a la ciudad!",
+ "s018.sec68.u4": "{color 10}{partner}{color 1}, parece que nos estamos haciendo bastante famosos, ¡je, je!",
+ "s018.sec68.u5": "¡Sigamos así!",
+ "s018.sec68.u6": "¡Fallaste!",
+ "s018.sec69.u0": "¡¡!!",
+ "s018.sec69.u1": [
+  [
+   "Atravesar este bosque de",
+   "punta a punta... Debo",
+   "reconocer que eres admirable."
+  ],
+  [
+   "Soy Centarumon. Permíteme",
+   "disculparme por mi descortesía",
+   "hasta ahora. Lo siento."
+  ],
+  [
+   "No te puse a prueba por",
+   "capricho. A partir de ahora,",
+   "pienso prestarte mi ayuda."
+  ]
+ ],
+ "s018.sec69.u2": "Y ahora, adelante. Te estaré esperando en la ciudad.",
+ "s018.sec69.u3": "¡Centarumon se ha unido a la ciudad!",
+ "s018.sec69.u4": "{color 10}{partner}{color 1}, parece que nos estamos haciendo bastante famosos, ¡je, je!",
+ "s018.sec69.u5": "¡Sigamos así!",
+ "s018.sec69.u6": "¡Fallaste!",
+ "s018.sec70.u0": "¡¡!!",
+ "s018.sec70.u1": [
+  [
+   "Atravesar este bosque de",
+   "punta a punta... Debo",
+   "reconocer que eres admirable."
+  ],
+  [
+   "Soy Centarumon. Permíteme",
+   "disculparme por mi descortesía",
+   "hasta ahora. Lo siento."
+  ],
+  [
+   "No te puse a prueba por",
+   "capricho. A partir de ahora,",
+   "pienso prestarte mi ayuda."
+  ]
+ ],
+ "s018.sec70.u2": "Y ahora, adelante. Te estaré esperando en la ciudad.",
+ "s018.sec70.u3": "¡Centarumon se ha unido a la ciudad!",
+ "s018.sec70.u4": "{color 10}{partner}{color 1}, parece que nos estamos haciendo bastante famosos, ¡je, je!",
+ "s018.sec70.u5": "¡Sigamos así!",
+ "s018.sec70.u6": "¡Fallaste!"
+}

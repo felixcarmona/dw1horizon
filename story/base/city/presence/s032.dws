@@ -1,0 +1,10 @@
+// Who stands on screen 32 (Drill Tunnel), and when. Read out of MAPHEAD.SCN section 32 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(32) {                              // Drill Tunnel
+            npc 158 slot 0 when not recruited(Drimogemon);
+        }
+    }
+}

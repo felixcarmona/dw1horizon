@@ -1,0 +1,115 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 165,
+ "type": 246,
+ "name": "Infermon",
+ "source": {
+  "type": 47,
+  "mmd": "extracted/CHDAT/MMD1/MONO.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 5,
+  "5": 7,
+  "9": 10,
+  "25": 15,
+  "29": 13
+ },
+ "hips": [
+  1,
+  1,
+  0.635
+ ],
+ "root_scale": 0.635,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 53,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 53,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 36,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 16,
+   "end": 96,
+   "hz": 0.3,
+   "rise": 165
+  },
+  "0x39": {
+   "anim": "anim_02",
+   "start": 72,
+   "end": 166,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 165
+  },
+  "0x35": {
+   "anim": "anim_03",
+   "start": 133,
+   "end": 225,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 165
+  },
+  "0x34": {
+   "anim": "anim_01",
+   "start": 17,
+   "end": 75,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 165
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x36"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

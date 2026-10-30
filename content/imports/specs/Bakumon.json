@@ -1,0 +1,100 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M206BAKU",
+ "type": 287,
+ "name": "Bakumon",
+ "source": {
+  "type": 22,
+  "mmd": "extracted/CHDAT/MMD0/GARU.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 18,
+  "3": 23,
+  "4": 24,
+  "8": 19,
+  "10": 21,
+  "13": 5,
+  "17": 7,
+  "18": 9,
+  "19": 11,
+  "20": 13
+ },
+ "hips": [
+  1,
+  1,
+  0.588
+ ],
+ "root_scale": 0.588,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x39": {
+   "anim": "H0",
+   "speed": 0.88,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 101
+  },
+  "0x33": {
+   "anim": "G0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 101
+  },
+  "0x31": {
+   "anim": "I0",
+   "speed": 0.97,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 101
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

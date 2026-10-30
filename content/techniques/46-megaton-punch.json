@@ -1,0 +1,17 @@
+{
+  "id": 46,
+  "name": "Megaton Punch",
+  "element": "battle",
+  "power": 320,
+  "mpCost": 62,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 70,
+  "status": 3,
+  "statusChance": 9,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [21, 13, 9]
+}

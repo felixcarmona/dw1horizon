@@ -1,0 +1,239 @@
+{
+ "s080.sec5.u0": [
+  [
+   "Ora mi prenderò la tua vita, se",
+   "non ti dispiace."
+  ]
+ ],
+ "s080.sec6.u0": [
+  [
+   "hai fatto tutta questa strada",
+   "per morire, o cosa?"
+  ]
+ ],
+ "s080.sec7.u0": [
+  [
+   "Uau, hai un bel coraggio!"
+  ]
+ ],
+ "s080.sec8.u0": [
+  [
+   "Eh. Hai tanta fretta di morire?"
+  ]
+ ],
+ "s080.sec9.u0": "Devi sparire...",
+ "s080.sec10.u0": [
+  [
+   "Scusa, potresti toglierti di",
+   "mezzo?"
+  ]
+ ],
+ "s080.sec51.u0": [
+  [
+   "Uau, qui sembra proprio di",
+   "essere in un'altra epoca."
+  ]
+ ],
+ "s080.sec51.u1": [
+  [
+   "...Ops, aspetta! Non c'è tempo",
+   "da perdere. Il meteorite, il",
+   "meteorite..."
+  ]
+ ],
+ "s081.sec5.u0": [
+  [
+   "Tu sei uno di QUELLI, vero...",
+   "Eheh..."
+  ]
+ ],
+ "s081.sec5.u1": [
+  [
+   "Eheh... A lato del tunnel",
+   "d'ossa... devi girare..."
+  ]
+ ],
+ "s082.sec5.m0.o0": "Tocca ed esamina!",
+ "s082.sec5.m0.o1": "Spaccalo!",
+ "s082.sec5.u0": [
+  [
+   "Eccolo...! Sembra proprio un",
+   "meteorite. Prima..."
+  ]
+ ],
+ "s082.sec5.u1": [
+  [
+   "Mh..."
+  ]
+ ],
+ "s082.sec5.u2": [
+  [
+   "È un po'... più ordinario di",
+   "quanto mi aspettassi..."
+  ]
+ ],
+ "s082.sec5.u3": [
+  [
+   "{color 7}???mon {color 1}",
+   "Beh, scusa tanto se sono",
+   "ordinario..."
+  ]
+ ],
+ "s082.sec5.u4": [
+  [
+   "!"
+  ]
+ ],
+ "s082.sec5.u5": [
+  [
+   "Eri un Digimon?! Chi sei?"
+  ]
+ ],
+ "s082.sec5.u6": [
+  [
+   "{color 7}???mon {color 1}",
+   "...Mi chiamano Meteormon."
+  ]
+ ],
+ "s082.sec5.u7": [
+  [
+   "Sai qualcosa dei problemi",
+   "dell'isola?"
+  ]
+ ],
+ "s082.sec5.u8": [
+  [
+   "...Non so proprio niente!"
+  ]
+ ],
+ "s082.sec5.u9": [
+  [
+   "Proprio niente? Davvero...?",
+   "Non stai nascondendo qualcosa?"
+  ]
+ ],
+ "s082.sec5.u10": [
+  [
+   "Umpf, che maleducato! Bene,",
+   "combattiamo! Vedremo chi ha",
+   "ragione!"
+  ]
+ ],
+ "s082.sec5.u11": [
+  [
+   "V-va bene! D'accordo..."
+  ]
+ ],
+ "s082.sec5.u12": [
+  [
+   ". . Mi arrendo. Sei davvero",
+   "forte."
+  ]
+ ],
+ "s082.sec5.u13": [
+  [
+   "Qualunque cosa sui problemi",
+   "dell'isola... Sai qualcosa? Ti",
+   "prego."
+  ]
+ ],
+ "s082.sec5.u14": [
+  [
+   "No. È che sono appena nato."
+  ]
+ ],
+ "s082.sec5.u15": "Cosa?!",
+ "s082.sec5.u16": [
+  [
+   "Noi Meteormon nasciamo in",
+   "cielo, cadiamo subito a terra e",
+   "dormiamo immobili per tanto"
+  ],
+  [
+   "tempo."
+  ]
+ ],
+ "s082.sec5.u17": [
+  [
+   "Però avrei dovuto restare",
+   "fermo molto più a lungo..."
+  ]
+ ],
+ "s082.sec5.u18": [
+  [
+   "Ho capito. Qui il tempo passa",
+   "rapidamente."
+  ]
+ ],
+ "s082.sec5.u19": [
+  [
+   "Pare proprio di sì. Beh, vado a",
+   "esplorare l'isola. Buona",
+   "fortuna."
+  ]
+ ],
+ "s082.sec5.u20": [
+  [
+   "...Uff. Quindi nessun",
+   "indizio... Forza, andiamocene",
+   "in fretta."
+  ]
+ ],
+ "s082.sec5.u21": [
+  [
+   "Guardarlo non mi dirà niente.",
+   "Spacchiamolo!"
+  ]
+ ],
+ "s082.sec5.u22": [
+  [
+   "{color 7}???mon {color 1}",
+   "Ehi, cosa credi di fare?! Che",
+   "modi brutali!"
+  ]
+ ],
+ "s082.sec6.u0": [
+  [
+   "Eh? Cosa sei tu?!"
+  ]
+ ],
+ "s082.sec6.u1": [
+  [
+   "Nanimon, ecco chi!"
+  ]
+ ],
+ "s082.sec6.u2": [
+  [
+   "Ottenuto il {color 4}Portachiavi",
+   "dimensionale{color 1}! Ora puoi portare",
+   "fino a 20 oggetti!"
+  ]
+ ],
+ "s082.sec6.u3": [
+  [
+   "Ottenuto il {color 4}Portachiavi",
+   "dimensionale{color 1}! Ora puoi portare",
+   "fino a 30 oggetti!"
+  ]
+ ],
+ "s083.sec5.u0": [
+  [
+   "Oh. Mio. Dio!!"
+  ]
+ ],
+ "s083.sec6.u0": [
+  [
+   "Ehi, ragazzo! Fammi divertire."
+  ]
+ ],
+ "s083.sec7.u0": [
+  [
+   "Ciao..."
+  ]
+ ],
+ "s083.sec8.u0": [
+  [
+   "Che vita breve."
+  ]
+ ]
+}

@@ -1,0 +1,68 @@
+// Readable form of script 44 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 44 {
+    npc gotsumon = 5;
+    npc weedmon = 6;
+    npc gururumon2 = 7;
+    npc gururumon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 51, 52;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 29, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 27, 93);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Pricklypear"), 35, 67);
+        }
+    }
+
+    on talk(gotsumon) replace {    // section 5
+        say(gotsumon, text("s044.sec5.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(weedmon) replace {    // section 6
+        say(weedmon, text("s044.sec6.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(gururumon2) replace {    // section 7
+        say(gururumon2, text("s044.sec7.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on talk(gururumon3) replace {    // section 8
+        say(gururumon3, text("s044.sec8.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (invisible_bridge_crossed) return;
+        walk(tamer, 10000, -2800);
+        warp_to(36, 1, 255);
+        goto sec52;
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -1400, 5000);
+        if (canyon_cave_in.collapsed) {
+            warp_to(128, 0, 255);
+        }
+        warp_to(43, 0, 255);
+        end_script();
+    }
+}

@@ -1,0 +1,297 @@
+{
+ "s050.sec5.u0": "Eu tenho que guardar este lugar.",
+ "s050.sec6.u0": "Quais foram as minhas ordens mesmo?",
+ "s050.sec51.u0": "Hm?",
+ "s050.sec51.u1": "Whoaaaaaaa!",
+ "s050.sec51.u2": "Aqui vai!",
+ "s051.sec57.u0": "...! Posso sentir a sede de sangue de alguém...",
+ "s051.sec57.u1": "Então você veio, afinal de contas!",
+ "s051.sec57.u2": "Quem está aí?",
+ "s051.sec57.u3": "Eu sou Devimon! Um anjo caído, encantado pelo poder das trevas. Heh heh heh...",
+ "s051.sec57.u4": "Parece que você sabe de alguma coisa!",
+ "s051.sec57.u5": "Myotismon está em algum lugar na mansão. Provavelmente ainda está vivo, também.",
+ "s051.sec57.u6": "Então isso é obra sua!",
+ "s051.sec57.u7": "Quem sabe? Mas eu sou seu inimigo. Isso é certo.",
+ "s051.sec57.u8": "Ei, você não vai fugir!",
+ "s051.sec57.u9": "Heh heh heh...",
+ "s051.sec57.u10": "Oh, não!",
+ "s051.sec57.u11": "Dê meus cumprimentos ao Myotismon.",
+ "s051.sec57.u12": "Ele fugiu... droga! Que esquisito.",
+ "s051.sec57.u13": "Nossa, essa mansão parece enorme.",
+ "s051.sec57.u14": [
+  [
+   "Tem alguém em caaasaaa?"
+  ]
+ ],
+ "s051.sec57.u15": "Ninguém aqui? Ou o lugar é grande demais para eles me ouvirem?",
+ "s051.sec57.u16": "Oh, bem. Certo, vamos começar a explorar!",
+ "s051.sec81.u0": [
+  [
+   "Não abre... Um poder misterioso",
+   "selou a porta."
+  ]
+ ],
+ "s051.sec82.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s051.sec82.u1": "Não abre, está trancada.",
+ "s051.sec84.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s051.sec84.u1": "Não abre, está trancada.",
+ "s051.sec85.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s051.sec85.u1": "Não abre, está trancada.",
+ "s052.sec81.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s052.sec81.u1": "Não abre, está trancada.",
+ "s052.sec82.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s052.sec82.u1": "Não abre, está trancada.",
+ "s052.sec83.u0": "Não abre, está trancada. E não há nenhum buraco de fechadura!",
+ "s054.sec5.u0": [
+  [
+   "Você nos ajudou muitas vezes.",
+   "Vou compartilhar os frutos da",
+   "minha pesquisa. Parece que,",
+   "quando MetalGreymon morre em"
+  ],
+  [
+   "batalha ou de doença, às vezes",
+   "vira SkullGreymon. Outros",
+   "também podem digievoluir assim:",
+   "Bakemon, Devimon, Phoenixmon..."
+  ],
+  [
+   "A partir de quais Digimon, não",
+   "sei dizer. As tabelas de",
+   "digievolução não mostram essas",
+   "digievoluções, então lembre-se"
+  ],
+  [
+   "disso."
+  ]
+ ],
+ "s054.sec5.u1": [
+  [
+   "Desde que meus subordinados",
+   "começaram a lutar na Arena,",
+   "estão voltando a ser como",
+   "antes. Parece fazer muito bem"
+  ],
+  [
+   "a eles. Para mim, uma luta na",
+   "Arena entre meus estudos",
+   "também é uma boa mudança de",
+   "ares."
+  ]
+ ],
+ "s054.sec5.u2": "O que é essa pesquisa dele, afinal?",
+ "s054.sec5.u3": "Myotismon, eles abriram uma Arena na cidade!",
+ "s054.sec5.u4": "Hm. Acha que meus homens poderiam ser úteis lá?",
+ "s054.sec5.u5": "Pode apostar! Deixe-os ir à loucura!",
+ "s054.sec5.u6": "Meus homens estão piorando e piorando... pode ser só uma questão de tempo até que saiam desta mansão.",
+ "s054.sec60.u0": "Munch, munch...",
+ "s054.sec60.u1": "Agora, então...",
+ "s054.sec60.u2": "Talvez você possa ouvir o que eu tenho a dizer.",
+ "s054.sec60.u3": "Chomp, chomp...",
+ "s054.sec60.u4": "Ultimamente, meus homens pararam de fazer o que eu digo. Eles não são rebeldes... eles simplesmente parecem esquecer suas ordens completamente. Às vezes, nem sequer os entendem. Agora, minhas refeições deveriam ser trazidas para mim pelos meus homens, mas...",
+ "s054.sec60.u5": "Gulp, Gulp...",
+ "s054.sec60.u6": [
+  [
+   "Enquanto eu me dedicava à",
+   "pesquisa, nenhuma refeição",
+   "chegou... E estava tão",
+   "concentrado que esqueci da"
+  ],
+  [
+   "fome. Foi assim que aquilo",
+   "aconteceu."
+  ]
+ ],
+ "s054.sec60.u7": [
+  [
+   "...Isso é se concentrar",
+   "DEMAIS."
+  ]
+ ],
+ "s054.sec60.u8": "Oh, que vergonha.",
+ "s054.sec60.u9": "A mesma coisa estranha que lá fora está acontecendo aqui também.",
+ "s054.sec60.u10": "Oh? Por problemas na ilha, quer dizer que todos estão se tornando como meus homens?",
+ "s054.sec60.u11": "Sim. Cada tipo fica para si mesmo, e eles perdem suas memórias. Nem todos ainda, mas se isso continuar...",
+ "s054.sec60.u12": "Alguém poderia estar fazendo isso acontecer? E se sim, com que fim...",
+ "s054.sec60.u13": "Hmm...",
+ "s054.sec60.u14": "O que posso fazer pela ilha?",
+ "s054.sec60.u15": [
+  [
+   "Estamos construindo uma cidade",
+   "para unir os corações dos",
+   "Digimon. Por isso percorremos",
+   "a ilha: para encontrar amigos."
+  ]
+ ],
+ "s054.sec60.u16": "Entendo. Mas isso é um problema. Além de mim, meus homens são bons para pouco mais do que lutar. E ainda assim não posso simplesmente deixá-los para trás...",
+ "s054.sec60.u17": "Entendo...",
+ "s054.sec60.u18": "Eu lhe darei uma resposta a tempo. Tenho trabalho a fazer aqui, sabe. Eu realmente sinto muito...",
+ "s054.sec60.u19": "Certo. Eu voltarei, então. E certifique-se de comer corretamente!",
+ "s054.sec60.u20": "Então por que não lutar na Arena?",
+ "s054.sec60.u21": [
+  [
+   "Ah... a Arena? Interessante.",
+   "É o lugar ideal para colocar",
+   "meus subordinados em forma. E",
+   "eu também gostaria de esticar"
+  ],
+  [
+   "as pernas de vez em quando."
+  ]
+ ],
+ "s054.sec60.u22": "Então você vai se juntar a nós?",
+ "s054.sec60.u23": "Sim. Ainda tenho uma pesquisa para terminar aqui, então irei para a cidade entre meus estudos. Estou ansioso por isso.",
+ "s054.sec81.u0": "Oh!",
+ "s054.sec81.u1": "Sim, uma chave! Talvez isso abra as portas que não abririam.",
+ "s054.sec81.u2": [
+  [
+   "Pegou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s054.sec81.u3": [
+  [
+   "Opa, preciso jogar algo fora."
+  ]
+ ],
+ "s054.sec82.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s054.sec82.u1": "Não abre, está trancada.",
+ "s054.sec83.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s054.sec83.u1": "Não abre, está trancada.",
+ "s054.sec254.u0": "Myotismon não está aqui.",
+ "s055.sec5.u0": "Eu vou te cozinhar!",
+ "s055.sec6.u0": "Eu vou te cozinhar!",
+ "s055.sec7.u0": "Eu vou te cozinhar!",
+ "s055.sec83.u0": "Vejamos, o bilhete dizia...",
+ "s055.sec83.u1": "\"Volte para onde pegou pontos do tolo.\"",
+ "s055.sec83.u2": [
+  [
+   "Usou a {color 6}Chave da geladeira{color 1}!"
+  ]
+ ],
+ "s055.sec83.u3": [
+  [
+   "Hã? Não está aqui? Sumiu?"
+  ]
+ ],
+ "s055.sec83.u4": "Oh? Tem um bilhete preso nele...",
+ "s055.sec83.u5": "\"Volte para onde pegou pontos do tolo.\"",
+ "s055.sec83.u6": [
+  [
+   "Hmm, parece que este bilhete é",
+   "minha única pista por enquanto."
+  ]
+ ],
+ "s055.sec83.u7": "Oh, uma geladeira.",
+ "s055.sec83.u8": "Está trancada. Quem tranca uma geladeira?",
+ "s056.sec53.u0": "Isso me pegou!",
+ "s056.sec81.u0": [
+  [
+   "Usou a {color 6}Chave da mansão{color 1}!"
+  ]
+ ],
+ "s056.sec81.u1": "Não abre, está trancada.",
+ "s057.sec5.u0": "Mestre...? Não, você não é!",
+ "s058.sec5.u0": "O jantar não está pronto?",
+ "s060.sec82.u0": "Aha, está aqui!",
+ "s061.sec52.u0": "Você está bem, {color 10}{partner}{color 1}?",
+ "s061.sec52.u1": "Hm? Onde é isso?",
+ "s061.sec52.u2": "Parece que entramos em um quarto onde nunca estivemos.",
+ "s061.sec52.u3": "Sim, acertou o pouso!",
+ "s061.sec82.u0": "Está trancada?",
+ "s061.sec82.u1": "Será que abre se eu girar esta maçaneta?",
+ "s061.sec82.u2": "Certo, está aberta.",
+ "s062.sec81.m0.o0": "Pegar",
+ "s062.sec81.m0.o1": "Muito suspeito. Deixe-o.",
+ "s062.sec81.u0": "O que é tudo isso? Algum livro que eu possa ler?",
+ "s062.sec81.u1": "Não. Nem um único. Mas tem um livro com uma capa muito chique!",
+ "s062.sec81.u2": "Toquei no livro chique.",
+ "s062.sec81.u3": "Hm?",
+ "s062.sec81.u4": "Whoaaaaaaa!",
+ "s062.sec81.u5": "Pode ser algum tipo de armadilha... melhor não.",
+ "s183.sec60.u0": "Munch, munch...",
+ "s183.sec60.u1": "Agora, então...",
+ "s183.sec60.u2": "Talvez você possa ouvir o que eu tenho a dizer.",
+ "s183.sec60.u3": "Chomp, chomp...",
+ "s183.sec60.u4": "Ultimamente, meus homens pararam de fazer o que eu digo. Eles não são rebeldes... eles simplesmente parecem esquecer suas ordens completamente. Às vezes, nem sequer os entendem. Agora, minhas refeições deveriam ser trazidas para mim pelos meus homens, mas...",
+ "s183.sec60.u5": "Gulp, Gulp...",
+ "s183.sec60.u6": [
+  [
+   "Enquanto eu me dedicava à",
+   "pesquisa, nenhuma refeição",
+   "chegou... E estava tão",
+   "concentrado que esqueci da"
+  ],
+  [
+   "fome. Foi assim que aquilo",
+   "aconteceu."
+  ]
+ ],
+ "s183.sec60.u7": [
+  [
+   "...Isso é se concentrar",
+   "DEMAIS."
+  ]
+ ],
+ "s183.sec60.u8": "Oh, que vergonha.",
+ "s183.sec60.u9": "A mesma coisa estranha que lá fora está acontecendo aqui também.",
+ "s183.sec60.u10": "Oh? Por problemas na ilha, quer dizer que todos estão se tornando como meus homens?",
+ "s183.sec60.u11": "Sim. Cada tipo fica para si mesmo, e eles perdem suas memórias. Nem todos ainda, mas se isso continuar...",
+ "s183.sec60.u12": "Alguém poderia estar fazendo isso acontecer? E se sim, com que fim...",
+ "s183.sec60.u13": "Hmm...",
+ "s183.sec60.u14": "O que posso fazer pela ilha?",
+ "s183.sec60.u15": [
+  [
+   "Estamos construindo uma cidade",
+   "para unir os corações dos",
+   "Digimon. Por isso percorremos",
+   "a ilha: para encontrar amigos."
+  ]
+ ],
+ "s183.sec60.u16": "Entendo. Mas isso é um problema. Além de mim, meus homens são bons para pouco mais do que lutar.",
+ "s183.sec60.u17": "E ainda assim não posso simplesmente deixá-los para trás...",
+ "s183.sec60.u18": "Entendo...",
+ "s183.sec60.u19": "Eu lhe darei uma resposta a tempo. Tenho trabalho a fazer aqui, sabe. Eu realmente sinto muito...",
+ "s183.sec60.u20": "Certo. Eu voltarei, então. E certifique-se de comer corretamente!",
+ "s183.sec60.u21": "Então por que não lutar na Arena?",
+ "s183.sec60.u22": [
+  [
+   "Ah... a Arena? Interessante.",
+   "É o lugar ideal para colocar",
+   "meus subordinados em forma. E",
+   "eu também gostaria de esticar"
+  ],
+  [
+   "as pernas de vez em quando."
+  ]
+ ],
+ "s183.sec60.u23": "Então você vai se juntar a nós?",
+ "s183.sec60.u24": "Sim. Ainda tenho uma pesquisa para terminar aqui, então irei para a cidade entre meus estudos. Estou ansioso por isso."
+}

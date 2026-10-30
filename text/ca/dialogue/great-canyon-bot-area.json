@@ -1,0 +1,174 @@
+{
+ "s041.sec5.u0": [
+  [
+   "Renoi, que avorrit que ets!"
+  ]
+ ],
+ "s041.sec6.u0": [
+  [
+   "Ja, ja, has dit alguna cosa?"
+  ]
+ ],
+ "s041.sec7.u0": [
+  [
+   "Ja t'ho he dit, de debò que no",
+   "puc..."
+  ]
+ ],
+ "s041.sec8.u0": [
+  [
+   "Tampoc és que jo estigui molt",
+   "segur de mi mateix, saps?"
+  ]
+ ],
+ "s041.sec9.u0": [
+  [
+   "No siguis dur amb mi..."
+  ]
+ ],
+ "s041.sec10.u0": [
+  [
+   "Hmpf, no em subestimis!"
+  ]
+ ],
+ "s041.sec81.m0.o0": "Prémer el botó del terrat",
+ "s041.sec81.m0.o1": "Prémer el botó de pujar",
+ "s041.sec81.m0.o2": "No pujar",
+ "s041.sec81.u0": [
+  [
+   "Ascensor"
+  ]
+ ],
+ "s041.sec81.u1": [
+  [
+   "Mmm, no passa res..."
+  ]
+ ],
+ "s041.sec81.u2": [
+  [
+   "Eh, hi ha una pedreta encallada",
+   "a la màquina. Potser és aquest",
+   "el problema...?"
+  ]
+ ],
+ "s041.sec81.u3": [
+  [
+   "Has tret la pedreta!"
+  ]
+ ],
+ "s041.sec81.u4": [
+  [
+   "Amb això hauria de bastar."
+  ]
+ ],
+ "s041.sec81.u5": [
+  [
+   "Mmm, no passa res..."
+  ]
+ ],
+ "s041.sec81.u6": [
+  [
+   "Eh, hi ha una pedreta encallada",
+   "a la màquina. Potser és aquest",
+   "el problema...?"
+  ]
+ ],
+ "s041.sec81.u7": [
+  [
+   "Has tret la pedreta!"
+  ]
+ ],
+ "s041.sec81.u8": [
+  [
+   "Amb això hauria de bastar."
+  ]
+ ],
+ "s042.sec5.u0": [
+  [
+   "Shuaaah!"
+  ]
+ ],
+ "s042.sec6.u0": [
+  [
+   "Shashasha!"
+  ]
+ ],
+ "s042.sec7.u0": [
+  [
+   "Sembla que no estàs ferit, eh?"
+  ]
+ ],
+ "s042.sec8.u0": [
+  [
+   "Et faré un bon descompte."
+  ]
+ ],
+ "s042.sec9.u0": [
+  [
+   "No em miris per sobre de",
+   "l'espatlla!"
+  ]
+ ],
+ "s042.sec10.u0": [
+  [
+   "No creguis que tornaràs a casa",
+   "amb vida."
+  ]
+ ],
+ "s042.sec51.u0": [
+  [
+   "Aiii!"
+  ]
+ ],
+ "s042.sec51.u1": [
+  [
+   "...Per haver caigut de tan",
+   "amunt... estic bé."
+  ]
+ ],
+ "s042.sec51.u2": [
+  [
+   "Oh, {color 10}{partner}{color 1}! Estàs bé?"
+  ]
+ ],
+ "s042.sec51.u3": [
+  [
+   "Eh? Estàs com si res. Escolta,",
+   "has volat, oi? Quina barra!",
+   "...Bé, suposo que no és injust",
+   "de debò."
+  ]
+ ],
+ "s042.sec51.u4": [
+  [
+   "Val, anem."
+  ]
+ ],
+ "s042.sec51.u5": [
+  [
+   "Aiii!"
+  ]
+ ],
+ "s042.sec51.u6": [
+  [
+   "...Per haver caigut de tan",
+   "amunt... estic bé."
+  ]
+ ],
+ "s042.sec51.u7": [
+  [
+   "Oh, {color 10}{partner}{color 1}! Estàs bé?"
+  ]
+ ],
+ "s042.sec51.u8": [
+  [
+   "Sembla que t'has fet una mica",
+   "de mal. Ho sento."
+  ]
+ ],
+ "s042.sec51.u9": [
+  [
+   "Val, anem."
+  ]
+ ]
+}

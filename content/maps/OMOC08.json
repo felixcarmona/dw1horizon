@@ -1,0 +1,50 @@
+{
+  "file": "MAP/MAP11/OMOC08.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "WaruMonzaemon",
+      "at": [-409, 459],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 48, 49],
+      "prios": [40, 20, 10, 30],
+      "flee": [-651, -1739],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Nanimon171",
+      "at": [0, 39],
+      "facing": 2048,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [454, 2123],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "Hagurumon",
+      "at": [0, -215],
+      "facing": 2048,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "hp": "-500",
+      "mp": "-1500",
+      "off": "-100",
+      "moves": [46, 47, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [454, 2123],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

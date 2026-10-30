@@ -1,0 +1,82 @@
+{
+  "screen": 321,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/iron-hills-5-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        493,
+        115,
+        683,
+        296
+      ],
+      "pos": [
+        [
+          605,
+          205
+        ],
+        [
+          523,
+          233
+        ],
+        [
+          536,
+          257
+        ],
+        [
+          638,
+          125
+        ],
+        [
+          653,
+          133
+        ]
+      ],
+      "neg": [
+        [
+          498,
+          273
+        ],
+        [
+          650,
+          285
+        ],
+        [
+          680,
+          248
+        ]
+      ],
+      "scores": [
+        0.9447891116142273,
+        0.9905147552490234,
+        0.9830210208892822
+      ],
+      "selected": 1,
+      "at": [
+        500,
+        118
+      ],
+      "bounds": [
+        500,
+        118,
+        701,
+        289
+      ],
+      "area": 22052,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "turbine",
+      "png": "321-turbine.png",
+      "source_sha1": "2e967cedfb8a41b8f0f88a8bd848fce6bde072e0"
+    }
+  ],
+  "review": "The wall-bound valve has no rear floor and no reachable rear silhouette overlap (tested with 25/45/70-pixel bodies). Keep its footprint blocked; only the turbine needs a foreground cutout."
+}

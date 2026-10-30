@@ -1,0 +1,342 @@
+From 5c82f655428cbc40f5a0cf799884d2ab3849e6ce Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:48:34 +0000
+Subject: [PATCH] Patch 0199: OPTIONS' EXTENDED STORY (ON by default). A disc
+ built with a story mod carries the original story beside it, each changed
+ file's copy named as the file with an underscore for its first letter
+ (_G.SCN, _AYO03.MAP); OFF reads the copy (modStoryFile in lookupFileTable,
+ after the language's copy: LE000.SCN's _E000.SCN). Save byte 9 of
+ SAVE_TAG_OPTIONS; a Continue of a save played with the other story starts in
+ Jijimon's house at its exit 0 (modStoryRelocate, initializeLoadedMap); the
+ screen jump (0165) only with it on
+
+---
+ include/dw/mod_options.h | 15 ++++++++++
+ src/main/file.c          |  2 +-
+ src/main/main.c          |  8 ++++--
+ src/main/main_menu.c     | 60 ++++++++++++++++++++++++++++++++++------
+ src/main/mod_lab.c       |  3 +-
+ src/main/mod_options.c   | 42 ++++++++++++++++++++++++++++
+ text/main/main_menu.yaml |  3 ++
+ 7 files changed, 121 insertions(+), 12 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 4f309c99..e1bb48e7 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -57,4 +57,19 @@ void modSetSigns(int32_t translated);
+ /* the file name to read for `name` (no folder): its language's or translated signs' copy when the disc has it */
+ char *modLangFile(char *name);
+ 
++/*
++ * MOD (story): EXTENDED STORY (docs/mods/options.md). On, the game reads the disc's files: the script text and the maps
++ * with the story mods. Off, the files they change are read from their copies as the original story has them
++ * (modStoryFile: the same name with an underscore for its first letter, tools/dws/variants.py), the language's copy's
++ * own copy for a file read in the language. A save keeps the story it was played with; a Continue with the other one moves the tamer to
++ * Jijimon's house (main_menu.c modStoryRelocate, main.c initializeLoadedMap).
++ */
++extern int32_t MOD_OPT_STORY;	/* EXTENDED STORY: 1 = with the story mods, 0 = the original story */
++extern int32_t MOD_STORY_ARRIVE; /* a Continue changed the story: the tamer arrives at the loaded screen's exit */
++/* the file name to read for `name` (no folder): its original story's copy when the option is off and the disc has it */
++char *modStoryFile(char *name);
++/* 1 when the disc has the original story's copies (the option is a choice) */
++int32_t modStoryChoice(void);
++void modSetStory(int32_t extended);
++
+ #endif
+diff --git a/src/main/file.c b/src/main/file.c
+index 832e6dbc..bbe73415 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -49,7 +49,7 @@ int32_t lookupFileTable(FileLookup *lookup, char *path)
+ 	} else {
+ 		++filename;
+ 	}
+-	filename = modLangFile(filename); /* MOD (language) */
++	filename = modStoryFile(modLangFile(filename)); /* MOD (language, story): the language's copy, then its story's */
+ 
+ 	for (; entry->size != 0; ++entry) {
+ 		if (!strcmp(filename, entry->filename)) {
+diff --git a/src/main/main.c b/src/main/main.c
+index 83c122fa..6147e982 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -25,6 +25,7 @@
+ #include <dw/map.h>
+ #include <dw/map_object.h>
+ #include <dw/mod_fps.h>
++#include <dw/mod_options.h>
+ #include <dw/mod_rules.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+@@ -3877,6 +3878,7 @@ void initializeLoadedMap(void)
+ 	int16_t rot;
+ 	int16_t idx;
+ 	int16_t exit;
++	int32_t arrive;
+ 
+ 	STORED_TAMER_POS = TAMER_ENTITY.entity.posData->location = SAVED_STATE.playerPos;
+ 	PARTNER_ENTITY.digimonEntity.entity.posData->location = SAVED_STATE.partnerPos;
+@@ -3898,8 +3900,10 @@ void initializeLoadedMap(void)
+ 	startAnimation(ENTITY_TABLE[1], 0);
+ 
+ 	idx = entityCheckCollision(&PARTNER_ENTITY.digimonEntity.entity, &TAMER_ENTITY.entity, 0, 0);
+-	if ((idx >= 2) && (idx < 10)) {
+-		type = ENTITY_TABLE[idx]->type;
++	arrive = MOD_STORY_ARRIVE; /* MOD (story): a save of the other story arrives at the exit (main_menu.c modStoryRelocate) */
++	MOD_STORY_ARRIVE = 0;
++	if (arrive || ((idx >= 2) && (idx < 10))) {
++		type = arrive ? 0x6d : ENTITY_TABLE[idx]->type; /* 0x6d: one of the types that move the tamer to the exit */
+ 		if ((type == 0x6d) || (type >= 0x75) ||
+ 		    ((type == 0x5c) && (SAVED_STATE.currentScreen == 0x9b)) ||
+ 		    ((type == 0x6a) && (SAVED_STATE.currentScreen == 0x55)) ||
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 8df32ad0..38c212f3 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -256,14 +256,17 @@ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+-#define MOD_OPT_BYTES	9 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes) */
++#define MOD_OPT_BYTES	10 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes) */
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
++#define MOD_OPT_ROW_STORY	5 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
++#define MOD_OPT_ROW_FPS	6
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	9 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_LANG	7
++#define MOD_OPT_ROWS	10 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	7
++#define MOD_OPT_ROW_LANG	8
+ #else
+-#define MOD_OPT_ROWS	8
+-#define MOD_OPT_ROW_LANG	6
++#define MOD_OPT_ROWS	9
++#define MOD_OPT_ROW_LANG	7
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4665,6 +4668,7 @@ static void modOptionBytes(uint8_t *d)
+ 	d[6] = MOD_OPT_NEW_DIGIMON;
+ 	d[7] = MOD_LANG; /* MOD (language) */
+ 	d[8] = MOD_OPT_SIGNS;
++	d[9] = MOD_OPT_STORY; /* MOD (story) */
+ }
+ 
+ /* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
+@@ -4702,6 +4706,9 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 9) {
+ 		modSetSigns(d[8]);
+ 	}
++	if (len >= 10) { /* MOD (story) */
++		modSetStory(d[9]);
++	}
+ }
+ 
+ /*
+@@ -5041,6 +5048,33 @@ static void modVanillaSwap(void)
+ 	swapPartnerSpecies(to);
+ }
+ 
++/*
++ * MOD (story): the save was played with the other story (EXTENDED STORY changed in OPTIONS since): its screen may not
++ * exist in this one, nor the way out of it, so the game goes on in Jijimon's house, as the original's door from File
++ * City picks it (205 once Angemon or Monzaemon live in the city or prosperity is 50, else 218), at its exit 0
++ * (initializeLoadedMap places the tamer and the partner there). The flags stay: each story reads its own.
++ */
++#define MOD_STORY_HOUSE		218	/* Jijimon's house */
++#define MOD_STORY_HOUSE_BIG	205	/* the same, grown */
++#define MOD_STORY_CITY		168	/* File City, outside its door */
++static int32_t MOD_SAVE_STORY; /* the story the loaded save was played with (SAVE_TAG_OPTIONS byte 9; none: extended) */
++
++static void modStoryRelocate(void)
++{
++	if (MOD_SAVE_STORY == MOD_OPT_STORY || !modStoryChoice()) {
++		return;
++	}
++	SAVED_STATE.currentScreen =
++	    isDigimonRecruited(20) || isDigimonRecruited(DIGIMON_MONZAEMON) || readPStat(1) >= 50 ? MOD_STORY_HOUSE_BIG
++												  : MOD_STORY_HOUSE;
++	SAVED_STATE.previousScreen = MOD_STORY_CITY;
++	SAVED_STATE.currentExit = 0;
++	SAVED_STATE.previousExit = 0;
++	SAVED_STATE.tamerWaypointActive = 0;
++	SAVED_STATE.tamerWaypointCount = 0;
++	MOD_STORY_ARRIVE = 1;
++}
++
+ static void dropAbsentSaveContent(void)
+ {
+ 	uint32_t *learned = &PARTNER_ENTITY.learnedMoves[0]; /* 128 bits: the struct names 64 (unk1, unk2 follow) */
+@@ -5192,6 +5226,7 @@ static void applyRecords(uint8_t *e)
+ 			}
+ 			break;
+ 		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
++			MOD_SAVE_STORY = len >= 10 ? d[9] != 0 : 1;
+ 			modApplyOptions(d, len);
+ 			break;
+ 		}
+@@ -5226,6 +5261,8 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	}
+ 	resetSpeciesFlags();
+ 	MOD_SWAP_FROM = MOD_SWAP_TO = 0;
++	MOD_SAVE_STORY = 1; /* MOD (story): a save from before the option was played with the story the disc had */
++	MOD_STORY_ARRIVE = 0;
+ 	if (isExtensionValid(0)) {
+ 		if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0]))) {
+ 			applyRecords(saveExtOf(0));
+@@ -5247,6 +5284,7 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	}
+ 	dropAbsentSaveContent();
+ 	modVanillaSwap();
++	modStoryRelocate();
+ 	return 1;
+ }
+ 
+@@ -5662,6 +5700,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_NEWDIGI, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+@@ -5698,8 +5737,10 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_EVO_GUIDE != 0;
+ 	case 4:
+ 		return MOD_OPT_NEW_DIGIMON != 0;
++	case MOD_OPT_ROW_STORY: /* MOD (story) */
++		return MOD_OPT_STORY != 0;
+ #if FONT_SWITCH
+-	case 6: /* NEW, CLASSIC, ORIGINAL */
++	case MOD_OPT_ROW_FONT: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+ #endif
+ 	case MOD_OPT_ROW_LANG: /* MOD (language) */
+@@ -5733,11 +5774,14 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case 4:
+ 		MOD_OPT_NEW_DIGIMON = value;
+ 		break;
+-	case 5:
++	case MOD_OPT_ROW_STORY: /* MOD (story) */
++		modSetStory(value);
++		break;
++	case MOD_OPT_ROW_FPS:
+ 		modSetFrameRate(value ? 60 : 20);
+ 		break;
+ #if FONT_SWITCH
+-	case 6:
++	case MOD_OPT_ROW_FONT:
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+ 		break;
+ #endif
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 7c809ca8..354dd824 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -51,6 +51,7 @@
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/screen.h>
++#include <dw/mod_options.h>
+ #include <dw/tamer.h>
+ #include <dw/clock.h>
+ #include <dw/sound.h>
+@@ -619,7 +620,7 @@ static int32_t modScreenJump(int32_t step)
+ {
+ 	int32_t id = findNewScreen(CURRENT_SCREEN, step);
+ 
+-	if (id < 0 || id == CURRENT_SCREEN) {
++	if (id < 0 || id == CURRENT_SCREEN || !MOD_OPT_STORY) { /* MOD (story): the new screens are the extended story's */
+ 		playSound(0, 4);
+ 		return 0;
+ 	}
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 337ae61c..732640ef 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -31,6 +31,11 @@
+  *
+  * MAP SIGNS. The signs painted in the map backgrounds in the language (the disc's copies of the .TFS files) or as the
+  * disc has them (some still in Japanese).
++ *
++ * EXTENDED STORY. The story with the mods built onto the disc (new places, the city's new residents) or the original
++ * one: the files the mods change are read from their copies as the original story has them (modStoryFile); the script
++ * text is read again at once, the maps when they are next entered. A disc built without a story mod has no copies and
++ * no choice.
+  */
+ #include <dw/mod_options.h>
+ #include <dw/species.h>
+@@ -60,6 +65,8 @@ int32_t modSpeciesAllowed(int32_t type)
+ int32_t MOD_OPT_TOUCHED = 0;
+ int32_t MOD_LANG = MOD_LANG_BASE;
+ int32_t MOD_OPT_SIGNS = 1;
++int32_t MOD_OPT_STORY = 1;
++int32_t MOD_STORY_ARRIVE = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+ static int32_t buttonColor(uint16_t code)
+@@ -304,6 +311,30 @@ char *modLangFile(char *name)
+ 	return name;
+ }
+ 
++/*
++ * MOD (story): a file's copy as the original story has it, with EXTENDED STORY off: the same name with its first letter
++ * an underscore (_G.SCN for DG.SCN, _AYO03.MAP for MAYO03.MAP; tools/dws/variants.py names them), when the disc has it.
++ * A rule, not a table: a hundred copies would cost the executable's heap their rows and names. lookupFileTable looks
++ * the language's copy up first, and the copy of a language's copy follows the same rule (LE012.TFS, _E012.TFS): the
++ * original story in Spanish needs no language rows of its own.
++ */
++static char MOD_STORY_NAME[16];
++
++char *modStoryFile(char *name)
++{
++	if (MOD_OPT_STORY || name[0] == '\0' || strlen(name) >= sizeof(MOD_STORY_NAME)) {
++		return name;
++	}
++	strcpy(MOD_STORY_NAME, name);
++	MOD_STORY_NAME[0] = '_';
++	return modFileOnDisc(MOD_STORY_NAME) ? MOD_STORY_NAME : name;
++}
++
++int32_t modStoryChoice(void)
++{
++	return modFileOnDisc("_G.SCN");
++}
++
+ /* MOD (language): the patch that turns the executable's strings into each language */
+ static char *LANG_PATCH_FILE[MOD_LANGS] = { "LANGEN.BIN", "LANGES.BIN" };
+ extern char MAIN_D_8012CE64[]; /* main.c: "\\ETCDAT\\FI_INFO.TIM" */
+@@ -348,3 +379,14 @@ void modSetSigns(int32_t translated)
+ {
+ 	MOD_OPT_SIGNS = translated != 0; /* the next map reads its background */
+ }
++
++/* MOD (story): EXTENDED STORY on or off; the script text of that story is read again (the maps when entered) */
++void modSetStory(int32_t extended)
++{
++	extended = extended != 0;
++	if (extended == MOD_OPT_STORY || !modStoryChoice()) { /* a disc without the copies: no choice */
++		return;
++	}
++	MOD_OPT_STORY = extended;
++	modFontScriptsChanged();
++}
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index fd5ef50a..df7a3927 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -368,6 +368,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_NEWDIGI:
+       ja: "NEW DIGIMON"
+       en_us: "NEW DIGIMON"
++    MOD_OPT_STR_STORY:
++      ja: "EXTENDED STORY"
++      en_us: "EXTENDED STORY"
+     MOD_OPT_STR_FPS:
+       ja: "FRAME RATE"
+       en_us: "FRAME RATE"
+-- 
+2.53.0
+

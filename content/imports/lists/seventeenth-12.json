@@ -1,0 +1,72 @@
+{
+ "first_id": 355,
+ "out": "build/batch17",
+ "digimon": [
+  {
+   "name": "SnowAgumon",
+   "game": "dw1",
+   "type": 71
+  },
+  {
+   "name": "Yanmamon",
+   "game": "dw1",
+   "type": 67
+  },
+  {
+   "name": "Gotsumon",
+   "game": "dw1",
+   "type": 68
+  },
+  {
+   "name": "Flarerizamon",
+   "game": "dw1",
+   "type": 69
+  },
+  {
+   "name": "Dokunemon",
+   "game": "dw1",
+   "type": 74
+  },
+  {
+   "name": "Goburimon",
+   "game": "dw1",
+   "type": 80
+  },
+  {
+   "name": "Psychemon",
+   "game": "dw1",
+   "type": 82
+  },
+  {
+   "name": "ToyAgumon",
+   "game": "dw1",
+   "type": 84
+  },
+  {
+   "name": "Geremon",
+   "game": "dw1",
+   "type": 87
+  },
+  {
+   "name": "Vermilimon",
+   "game": "dw1",
+   "type": 88,
+   "from": [
+    185
+   ]
+  },
+  {
+   "name": "MoriShellmon",
+   "game": "dw1",
+   "type": 91,
+   "from": [
+    273
+   ]
+  },
+  {
+   "name": "Muchomon",
+   "game": "dw1",
+   "type": 93
+  }
+ ]
+}

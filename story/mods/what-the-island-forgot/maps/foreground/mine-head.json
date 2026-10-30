@@ -1,0 +1,364 @@
+{
+  "screen": 337,
+  "review": "The open shaft and raised hatch lid are solid, never floor. SAM pieces cover the hatch front rail and lid, the foreground post and its hanging lantern/brace, the western crate stack, and the north entry lintel. The lamp and brace sort at the post ground contact. Rails and turntable remain ground.",
+  "collision": [],
+  "pieces": [
+    {
+      "png": "337-hatch-front-rail.png",
+      "at": [
+        497,
+        239
+      ],
+      "depth": [
+        578,
+        308
+      ],
+      "segmentation": {
+        "box": [
+          490,
+          246,
+          661,
+          311
+        ],
+        "positive": [
+          [
+            581,
+            292
+          ]
+        ],
+        "negative": [
+          [
+            487,
+            278.5
+          ],
+          [
+            664,
+            278.5
+          ],
+          [
+            575.5,
+            315
+          ]
+        ],
+        "score": 0.9508932828903198,
+        "area": 2692,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "337-foreground-lamp-post.png",
+      "at": [
+        294,
+        438
+      ],
+      "depth": [
+        319,
+        633
+      ],
+      "segmentation": {
+        "box": [
+          289,
+          430,
+          350,
+          631
+        ],
+        "positive": [
+          [
+            312,
+            443
+          ],
+          [
+            316,
+            490
+          ],
+          [
+            322,
+            540
+          ],
+          [
+            329,
+            580
+          ],
+          [
+            330,
+            614
+          ],
+          [
+            340,
+            613
+          ]
+        ],
+        "negative": [
+          [
+            290,
+            505
+          ],
+          [
+            349,
+            522
+          ],
+          [
+            300,
+            610
+          ],
+          [
+            352,
+            619
+          ]
+        ],
+        "score": 0.977867603302002,
+        "area": 6902,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "337-hanging-lantern-and-brace.png",
+      "at": [
+        333,
+        473
+      ],
+      "depth": [
+        319,
+        633
+      ],
+      "segmentation": {
+        "box": [
+          332,
+          468,
+          392,
+          565
+        ],
+        "positive": [
+          [
+            349,
+            479
+          ],
+          [
+            368,
+            476
+          ],
+          [
+            365,
+            491
+          ],
+          [
+            359,
+            511
+          ],
+          [
+            376,
+            520
+          ],
+          [
+            364,
+            549
+          ],
+          [
+            378,
+            541
+          ]
+        ],
+        "negative": [
+          [
+            348,
+            489
+          ],
+          [
+            350,
+            499
+          ],
+          [
+            383,
+            485
+          ],
+          [
+            387,
+            554
+          ],
+          [
+            338,
+            531
+          ]
+        ],
+        "score": 0.9374680519104004,
+        "area": 2532,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "337-north-entry-lintel.png",
+      "depth": [
+        400,
+        162
+      ],
+      "at": [
+        314,
+        7
+      ],
+      "segmentation": {
+        "box": [
+          306,
+          0,
+          485,
+          34
+        ],
+        "positive": [
+          [
+            326,
+            15
+          ],
+          [
+            382,
+            12
+          ],
+          [
+            459,
+            10
+          ]
+        ],
+        "negative": [
+          [
+            342,
+            40
+          ],
+          [
+            410,
+            43
+          ],
+          [
+            484,
+            46
+          ]
+        ],
+        "score": 0.9818464517593384,
+        "area": 3282,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "337-western-crates.png",
+      "depth": [
+        113,
+        448
+      ],
+      "at": [
+        68,
+        326
+      ],
+      "segmentation": {
+        "box": [
+          49,
+          321,
+          164,
+          446
+        ],
+        "positive": [
+          [
+            104,
+            386
+          ],
+          [
+            96,
+            360
+          ],
+          [
+            134,
+            402
+          ]
+        ],
+        "negative": [
+          [
+            165,
+            415
+          ],
+          [
+            55,
+            399
+          ],
+          [
+            133,
+            448
+          ]
+        ],
+        "score": 0.9853408336639404,
+        "area": 6655,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "337-hatch-door.png",
+      "depth": [
+        644,
+        289
+      ],
+      "at": [
+        588,
+        172
+      ],
+      "segmentation": {
+        "box": [
+          580,
+          165,
+          705,
+          310
+        ],
+        "positive": [
+          [
+            646,
+            206
+          ],
+          [
+            664,
+            237
+          ],
+          [
+            633,
+            275
+          ]
+        ],
+        "negative": [
+          [
+            703,
+            225
+          ],
+          [
+            688,
+            292
+          ],
+          [
+            610,
+            209
+          ]
+        ],
+        "score": 0.9677757024765015,
+        "area": 8591,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/mine-head-2400x1792.png",
+    "source_sha1": "053702e45a6d3b3803d8845faee5ee854a400c26",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact."
+}

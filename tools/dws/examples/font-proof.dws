@@ -1,0 +1,31 @@
+// Font proof (docs/mods/font.md "Fonts"): Jijimon says the words whose letter gaps were worst on the 4-pixel grid, then
+// offers the shop, the item list and the save machine (tools/dev/playtest/fonttour.py --proof shoots them all).
+import "../../../story/core/engine.dws";
+import "../../../story/base/names.dws";
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+    on talk(jijimon) replace {
+        say(jijimon, text("font-proof.t1"));
+        say(jijimon, text("font-proof.t2"));
+        choice {
+            text("font-proof.o1") => {
+                engine.picker_mode = false;
+                shop_stock.meat = true;
+                shop_stock.sm_recovery = true;
+                shop_stock.various = true;
+                shop_stock.off_disk = true;
+                engine.arg = 5;
+                call_routine(routine("shop"));
+            }
+            text("font-proof.o2") => {
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+            }
+            text("font-proof.o3") => {
+                asm("FADEOUT_HUD 0");
+                asm("CALL_ROUTINE 48");
+            }
+        }
+        return;
+    }
+}

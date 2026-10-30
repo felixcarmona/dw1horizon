@@ -1,0 +1,25 @@
+// 79, the Ancient Dino Region's entrance (script 76), story-bible.md §3.1f: the slow time of the Glacial side starts
+// here (the game sets the clock to half speed on entering). With MasterTyrannomon gone from its post ("Guide me",
+// flag post_guided of the mod, 724 in save.lock) the fast side has eaten the slow one: the clock stays at normal speed.
+// The enter is the game's own otherwise (a Python handler runs before the game's, which would set the speed after it).
+import "../../../../core/engine.dws";
+import "../../../../base/names.dws";
+alias flag wtif_post_guided = 724;
+script 76 {
+    on enter replace {
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 34, 56);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 37, 43);
+        }
+        if (wtif_post_guided) {
+            engine.arg = 0;
+        } else {
+            engine.arg = 2;
+        }
+        call_routine(routine("save_clock_speed"));
+    }
+}

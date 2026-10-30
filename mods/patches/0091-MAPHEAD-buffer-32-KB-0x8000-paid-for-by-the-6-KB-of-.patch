@@ -1,0 +1,73 @@
+From dc3562cb8bbce4be5f022e378cb3c9e8d2b7a34f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 13:52:00 +0000
+Subject: [PATCH] MAPHEAD buffer: 32 KB (0x8000), paid for by the 6 KB of
+ SCRIPT_OFFSET_TABLE that only held DG.SCN's dead entry 0; the bss does not
+ grow
+
+---
+ include/dw/memmap.h      | 13 ++++++++++++-
+ src/main/script_interp.c | 12 +++++++++++-
+ 2 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 9702c91..a5ef528 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -102,7 +102,18 @@
+ #include <partner_mmd_max.h>
+ #define TAMER_MMD_MAX		0xE000	/* BOYS.MMD 0xDECC (GCC: one array, mod 0002) */
+ #define MAP_SCRIPT_MAX		0x4000	/* a DG.SCN entry; the largest is 0x3800 */
+-#define SCRIPT_OFFSET_TABLE_SIZE 0x2000	/* start of DG.SCN (offset table), read at boot */
++/*
++ * MOD (MAPHEAD buffer, docs/mods/memory.md "MAPHEAD buffer"): the offset table
++ * of DG.SCN is its first sector (u32 offsets, at most 511 entries + the end;
++ * entry 0 starts at 0x800, the DWS assembler keeps the table in that sector). The
++ * original read 0x2000 bytes at boot: the other 0x1800 were the start of entry
++ * 0, a copy of MAPHEAD.SCN nothing reads. They go to MAPHEAD.SCN, which stays
++ * resident from boot (shared dialogue, shops, the new-game questions) and is
++ * read in whole sectors: 0x8000 bytes, 32 KB (the original 25 000, GCC
++ * 0x6800 until now), for translations. The bss does not grow.
++ */
++#define SCRIPT_OFFSET_TABLE_SIZE 0x800
++#define MAPHEAD_SCRIPT_MAX	0x8000
+ /*
+  * The SEQ block of the current music font (every track of it), copied from
+  * the FAALL chunk (sound.c). Original 0x5800 (font 0xB uses 0x55F8); the
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 7bab232..72db023 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -290,10 +290,16 @@ uint8_t MAPHEAD_SCRIPT_BUFFER[0x61a8];
+  * 0x6800 bytes. The original spills 0x658 bytes into SCRIPT_OFFSET_TABLE,
+  * which comes next and is read right after. GCC puts GLYPH_DRAWING_AREAS
+  * (font.c) after this buffer instead, so make it hold the whole read.
++ * MOD (MAPHEAD buffer): MAPHEAD_SCRIPT_MAX (32 KB), paid for by the 6 KB of
++ * SCRIPT_OFFSET_TABLE that only ever held the dead entry 0 (memmap.h).
+  */
+-uint8_t MAPHEAD_SCRIPT_BUFFER[0x6800];
++uint8_t MAPHEAD_SCRIPT_BUFFER[MAPHEAD_SCRIPT_MAX];
+ #endif
++#if VERSION_IS(US) && !defined(__MWERKS__)
++uint8_t SCRIPT_OFFSET_TABLE[SCRIPT_OFFSET_TABLE_SIZE];
++#else
+ uint8_t SCRIPT_OFFSET_TABLE[0x2000];
++#endif
+ #if !VERSION_IS(US)
+ uint8_t MAP_SCRIPT_BUFFER[0x2000];
+ #else
+@@ -2150,7 +2156,11 @@ void initializeScripts(void)
+ 	TEXTBOX_LINES_PTR = TEXTBOX_LINES_BUFFER;
+ 
+ 	readFile(MAIN_D_80130374, MAPHEAD_SCRIPT_PTR);
++#if VERSION_IS(US) && !defined(__MWERKS__)
++	readFileSection(MAIN_D_80130388, SCRIPT_OFFSET_PTR, 0, SCRIPT_OFFSET_TABLE_SIZE); /* MOD: the table's sector only */
++#else
+ 	readFileSection(MAIN_D_80130388, SCRIPT_OFFSET_PTR, 0, 0x2000);
++#endif
+ 	memset((void *)SCRIPT_STATE_PTR, 0, sizeof(*SCRIPT_STATE_PTR));
+ 
+ 	MERIT = 0;
+-- 
+2.53.0
+

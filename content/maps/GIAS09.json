@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP6/GIAS09.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Leomon166",
+      "at": [-50, 3103],
+      "facing": 2560,
+      "follow": 1,
+      "range": 500,
+      "charge": 1,
+      "moves": [46, 47, 255, 255],
+      "prios": [60, 40, 0, 0],
+      "flee": [-1873, -1600],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

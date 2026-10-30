@@ -1,0 +1,14 @@
+// Who stands on screen 139 (Geko Swamp), and when. Read out of MAPHEAD.SCN section 139 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(139) {                              // Geko Swamp
+            npc Yanmamon slot 0 autotalk when recruited(Otamamon) and clock.hour >= 7 and clock.hour <= 18 or clock.hour >= 7 and clock.hour <= 18 and roll(1) >= 1;
+            npc Yanmamon slot 1 autotalk when recruited(Otamamon) and clock.hour >= 7 and clock.hour <= 18 or clock.hour >= 7 and clock.hour <= 18 and roll(1) >= 1;
+            npc Gekomon slot 2 autotalk when recruited(Otamamon) and clock.hour <= 6 or recruited(Otamamon) and clock.hour >= 19 or clock.hour <= 6 and roll(1) >= 1 or clock.hour >= 19 and roll(1) >= 1;
+            npc Gekomon slot 3 autotalk when recruited(Otamamon) and clock.hour <= 6 or recruited(Otamamon) and clock.hour >= 19 or clock.hour <= 6 and roll(1) >= 1 or clock.hour >= 19 and roll(1) >= 1;
+            npc Otamamon slot 4 when not recruited(Otamamon) and roll(1) == 0;
+        }
+    }
+}

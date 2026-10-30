@@ -1,0 +1,86 @@
+From 715937d94bb9b77d79e529ef54c3d0f6ab05d16d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 13:10:54 +0000
+Subject: [PATCH] Fix (original game bug): clear the save title name fields
+ before copying ("Bayer" for a tamer named B)
+
+---
+ src/main/main_menu.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 6499ea2..2ad7074 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2561,7 +2561,10 @@ void tickMainMenu(void)
+ #if !VERSION_IS(US)
+ 		strncpy(SAVE_FILE.title, MAIN_D_8013392C, 0x40);
+ 		_strncpy(SAVE_FILE.title + 8, SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++		/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++		memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 		_strncpy(SAVE_FILE.title + 0xe, SAVE_FILE.saves[0].playerName, 0xc);
++		memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 		_strncpy(SAVE_FILE.title + 0x1c, DIGIMON_NAME(SAVE_FILE.saves[0].partnerType), 0x10);
+ 		_strncpy(SAVE_FILE.title + 0x2e,
+ 			 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+@@ -2570,8 +2573,11 @@ void tickMainMenu(void)
+ 				(uint16_t *)SAVE_FILE.title);
+ 		_strncpy(SAVE_FILE.title + 8,
+ 			 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++		/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++		memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 		_strncpy(SAVE_FILE.title + 0xe,
+ 			 SAVE_FILE.saves[0].playerName, 0xD);
++		memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 		_strncpy(SAVE_FILE.title + 0x1c,
+ 			 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 			 0x11);
+@@ -2927,7 +2933,10 @@ void tickMainMenu(void)
+ #if !VERSION_IS(US)
+ 			strncpy(SAVE_FILE.title, MAIN_D_8013392C, 0x40);
+ 			_strncpy(SAVE_FILE.title + 8, SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 			_strncpy(SAVE_FILE.title + 0xe, SAVE_FILE.saves[0].playerName, 0xc);
++			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 			_strncpy(SAVE_FILE.title + 0x1c, DIGIMON_NAME(SAVE_FILE.saves[0].partnerType), 0x10);
+ 			_strncpy(SAVE_FILE.title + 0x2e,
+ 				 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+@@ -2936,8 +2945,11 @@ void tickMainMenu(void)
+ 				(uint16_t *)SAVE_FILE.title);
+ 			_strncpy(SAVE_FILE.title + 8,
+ 				 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 			_strncpy(SAVE_FILE.title + 0xe,
+ 				 SAVE_FILE.saves[0].playerName, 0xD);
++			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 			_strncpy(SAVE_FILE.title + 0x1c,
+ 				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 				 0x11);
+@@ -3276,7 +3288,10 @@ void tickMainMenu(void)
+ #if !VERSION_IS(US)
+ 			strncpy(SAVE_FILE.title, MAIN_D_8013392C, 0x40);
+ 			_strncpy(SAVE_FILE.title + 8, SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 			_strncpy(SAVE_FILE.title + 0xe, SAVE_FILE.saves[0].playerName, 0xc);
++			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 			_strncpy(SAVE_FILE.title + 0x1c, DIGIMON_NAME(SAVE_FILE.saves[0].partnerType), 0x10);
+ 			_strncpy(SAVE_FILE.title + 0x2e,
+ 				 MAP_NAME_PTR[MAP_ENTRIES[SAVE_FILE.saves[0].currentScreen].loadingName], 0x12);
+@@ -3285,8 +3300,11 @@ void tickMainMenu(void)
+ 				(uint16_t *)SAVE_FILE.title);
+ 			_strncpy(SAVE_FILE.title + 8,
+ 				 SAVEGAME_ID_LABEL[MEMORY_CARD_SLOT + 1], 4);
++			/* MOD: _strncpy does not terminate: clear old name bytes (original showed "Bayer" for "B" after "Player") */
++			memset(SAVE_FILE.title + 0xe, 0, 0xe);
+ 			_strncpy(SAVE_FILE.title + 0xe,
+ 				 SAVE_FILE.saves[0].playerName, 0xD);
++			memset(SAVE_FILE.title + 0x1c, 0, 0x12);
+ 			_strncpy(SAVE_FILE.title + 0x1c,
+ 				 DIGIMON_NAME(SAVE_FILE.saves[0].partnerType),
+ 				 0x11);
+-- 
+2.53.0
+

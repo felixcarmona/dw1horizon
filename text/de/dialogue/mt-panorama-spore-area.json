@@ -1,0 +1,431 @@
+{
+ "s022.sec5.u0": [
+  [
+   "Mein Flügel..."
+  ]
+ ],
+ "s022.sec5.u1": [
+  [
+   "Was ist los?"
+  ]
+ ],
+ "s022.sec5.u2": [
+  [
+   "Ich habe mir... den Flügel",
+   "verletzt... Hast du etwas, um",
+   "eine Wunde zu behandeln?"
+  ]
+ ],
+ "s022.sec5.u3": [
+  [
+   "Das sieht schlimm aus...!",
+   "Warte. Mal sehen..."
+  ]
+ ],
+ "s022.sec5.u4": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s022.sec5.u5": [
+  [
+   "Nein, das geht nicht. Nicht",
+   "damit."
+  ]
+ ],
+ "s022.sec5.u6": [
+  [
+   "Puh... Schon viel besser.",
+   "Danke."
+  ]
+ ],
+ "s022.sec5.u7": [
+  [
+   "Kannst du jetzt fliegen?"
+  ]
+ ],
+ "s022.sec5.u8": [
+  [
+   "...Nicht weit, glaube ich..."
+  ]
+ ],
+ "s022.sec5.u9": [
+  [
+   "Verstehe... Oh, ich weiß! In",
+   "der Stadt gibt es eine Klinik.",
+   "Lass dich dort untersuchen."
+  ],
+  [
+   "Es ist nicht weit."
+  ]
+ ],
+ "s022.sec5.u10": [
+  [
+   "Bemerkenswert. Ich hatte von",
+   "der Stadt gehört, aber nicht",
+   "gedacht, dass sie so gewachsen"
+  ],
+  [
+   "ist."
+  ]
+ ],
+ "s022.sec5.u11": [
+  [
+   "Hehe. Ruh dich in der Stadt",
+   "gut aus."
+  ]
+ ],
+ "s022.sec5.u12": [
+  [
+   "Tut mir leid wegen der",
+   "Umstände... Ich werde dir diese",
+   "Güte vergelten, versprochen."
+  ]
+ ],
+ "s022.sec5.u13": "Unimon ist in die Stadt gezogen!",
+ "s022.sec5.u14": [
+  [
+   "Etwas, um eine Wunde zu",
+   "heilen... Okay. Ich werde dir",
+   "etwas bringen."
+  ]
+ ],
+ "s022.sec5.u15": [
+  [
+   "Tut mir leid... Bitte beeil",
+   "dich..."
+  ]
+ ],
+ "s022.sec51.u0": [
+  [
+   "Seltsame Muster sind auf dem",
+   "Boden gezeichnet..."
+  ]
+ ],
+ "s022.sec51.u1": [
+  [
+   "Ist das einer dieser",
+   "Kornkreise? Er sieht noch",
+   "recht neu aus."
+  ]
+ ],
+ "s022.sec51.u2": [
+  [
+   "Es sind mehr als letztes Mal!",
+   "Hat das mit dem UFO zu tun,",
+   "von dem alle reden...?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Wow!? Noch mehr! VIEL mehr!",
+   "Dann ist es also so weit..."
+  ]
+ ],
+ "s022.sec51.u4": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s022.sec51.u5": [
+  [
+   "Vademons UFO erscheint!"
+  ]
+ ],
+ "s022.sec51.u6": [
+  [
+   "E-ein Außerirdischer!?"
+  ]
+ ],
+ "s022.sec51.u7": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u8": [
+  [
+   "Bist du... ein Digimon...?"
+  ]
+ ],
+ "s022.sec51.u9": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u10": [
+  [
+   "Ähm..."
+  ]
+ ],
+ "s022.sec51.u11": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u12": [
+  [
+   "Vademon hebt eine Waffe!"
+  ]
+ ],
+ "s022.sec51.u13": [
+  [
+   "Oh nein, warte! Wir sind nicht",
+   "deine Feinde!"
+  ]
+ ],
+ "s022.sec51.u14": [
+  [
+   "Vademon senkt die Waffe."
+  ]
+ ],
+ "s022.sec51.u15": [
+  [
+   "Hat er es verstanden? Gut..."
+  ]
+ ],
+ "s022.sec51.u16": [
+  [
+   "{color 6}{player}{color 1} hat mit aller",
+   "Kraft versucht, ihn zu",
+   "überzeugen!!"
+  ]
+ ],
+ "s022.sec51.u17": [
+  [
+   "........."
+  ]
+ ],
+ "s022.sec51.u18": [
+  [
+   "Klappt es nicht...?"
+  ]
+ ],
+ "s022.sec51.u19": [
+  [
+   "Na guuut."
+  ]
+ ],
+ "s022.sec51.u20": "Vademon ist in die Stadt gezogen!",
+ "s022.sec51.u21": [
+  [
+   "W-was... dieser Kerl... Er",
+   "KANN sprechen!!"
+  ]
+ ],
+ "s189.sec5.u0": [
+  [
+   "Hast du mir etwas gebracht, um",
+   "meine Wunde zu heilen?..?"
+  ]
+ ],
+ "s189.sec5.u1": [
+  [
+   "Warte. Mal sehen..."
+  ]
+ ],
+ "s189.sec5.u2": [
+  [
+   "Mein Flügel..."
+  ]
+ ],
+ "s189.sec5.u3": [
+  [
+   "Was ist los?"
+  ]
+ ],
+ "s189.sec5.u4": [
+  [
+   "Ich habe mir... den Flügel",
+   "verletzt... Hast du etwas, um",
+   "eine Wunde zu behandeln?"
+  ]
+ ],
+ "s189.sec5.u5": [
+  [
+   "Das sieht schlimm aus...!",
+   "Warte. Mal sehen..."
+  ]
+ ],
+ "s189.sec5.u6": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s189.sec5.u7": [
+  [
+   "Nein, das geht nicht. Nicht",
+   "damit."
+  ]
+ ],
+ "s189.sec5.u8": [
+  [
+   "Puh... Schon viel besser.",
+   "Danke."
+  ]
+ ],
+ "s189.sec5.u9": [
+  [
+   "Kannst du jetzt fliegen?"
+  ]
+ ],
+ "s189.sec5.u10": [
+  [
+   "...Nicht weit, glaube ich..."
+  ]
+ ],
+ "s189.sec5.u11": [
+  [
+   "Verstehe... Oh, ich weiß! In",
+   "der Stadt gibt es eine Klinik.",
+   "Lass dich dort untersuchen."
+  ],
+  [
+   "Es ist nicht weit."
+  ]
+ ],
+ "s189.sec5.u12": [
+  [
+   "Bemerkenswert. Ich hatte von",
+   "der Stadt gehört, aber nicht",
+   "gedacht, dass sie so gewachsen"
+  ],
+  [
+   "ist."
+  ]
+ ],
+ "s189.sec5.u13": [
+  [
+   "Hehe. Ruh dich in der Stadt",
+   "gut aus."
+  ]
+ ],
+ "s189.sec5.u14": [
+  [
+   "Tut mir leid wegen der",
+   "Umstände... Ich werde dir diese",
+   "Güte vergelten, versprochen."
+  ]
+ ],
+ "s189.sec5.u15": "Unimon ist in die Stadt gezogen!",
+ "s189.sec5.u16": [
+  [
+   "Etwas, um eine Wunde zu",
+   "behandeln... Ich hole dir",
+   "etwas. Warte hier."
+  ]
+ ],
+ "s189.sec5.u17": [
+  [
+   "Tut mir leid... Bitte beeil",
+   "dich..."
+  ]
+ ],
+ "s190.sec51.u0": [
+  [
+   "Seltsame Muster sind auf dem",
+   "Boden gezeichnet..."
+  ]
+ ],
+ "s190.sec51.u1": [
+  [
+   "Ist das einer dieser",
+   "Kornkreise? Er sieht noch",
+   "recht neu aus."
+  ]
+ ],
+ "s190.sec51.u2": [
+  [
+   "Es sind mehr als letztes Mal!",
+   "Hat das mit dem UFO zu tun,",
+   "von dem alle reden...?"
+  ]
+ ],
+ "s190.sec51.u3": "Wow?!",
+ "s190.sec51.u4": [
+  [
+   "Es sind mehr! VIEL mehr!"
+  ]
+ ],
+ "s190.sec51.u5": [
+  [
+   "Dann ist es also so weit..."
+  ]
+ ],
+ "s190.sec51.u6": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s190.sec51.u7": [
+  [
+   "E-ein Außerirdischer!?"
+  ]
+ ],
+ "s190.sec51.u8": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u9": [
+  [
+   "Bist du... ein Digimon...?"
+  ]
+ ],
+ "s190.sec51.u10": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u11": [
+  [
+   "Ähm..."
+  ]
+ ],
+ "s190.sec51.u12": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u13": [
+  [
+   "Oh nein, warte! Wir sind nicht",
+   "deine Feinde!"
+  ]
+ ],
+ "s190.sec51.u14": [
+  [
+   "Hat er es verstanden? Gut..."
+  ]
+ ],
+ "s190.sec51.u15": [
+  [
+   "{color 6}{player}{color 1} hat mit aller",
+   "Kraft versucht, ihn zu",
+   "überzeugen!!"
+  ]
+ ],
+ "s190.sec51.u16": [
+  [
+   "........."
+  ]
+ ],
+ "s190.sec51.u17": [
+  [
+   "Klappt es nicht...?"
+  ]
+ ],
+ "s190.sec51.u18": [
+  [
+   "Na guuut."
+  ]
+ ],
+ "s190.sec51.u19": "Vademon ist in die Stadt gezogen!",
+ "s190.sec51.u20": [
+  [
+   "W-was... dieser Kerl... Er",
+   "KANN sprechen!!"
+  ]
+ ]
+}

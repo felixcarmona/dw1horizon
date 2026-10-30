@@ -1,0 +1,161 @@
+// Readable form of script 190 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 190 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 52, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Digimushrm"), 39, 47);
+            spawn_item(item("Digimushrm"), 39, 45);
+            spawn_item(item("Digimushrm"), 39, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 44, 66);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Happymushrm"), 59, 42);
+        }
+        spawn_chest(item("med.recovery"), 938, 0, 1239, 1024, 696);
+        spawn_chest(item("Medium MP"), 985, 0, 856, 1024, 697);
+        spawn_chest(item("Various"), 1024, 0, -1604, 1024, 698);
+        if (ufo_report_read) {
+            set_obj_visibility(6, 0);
+            set_obj_visibility(7, 0);
+            set_obj_visibility(8, 0);
+            set_obj_visibility(9, 0);
+        }
+        if (vademon_encounter_ready) {
+            set_obj_visibility(10, 0);
+            set_obj_visibility(11, 0);
+            set_obj_visibility(12, 0);
+            set_obj_visibility(13, 0);
+            set_obj_visibility(14, 0);
+            set_obj_visibility(15, 0);
+            set_obj_visibility(16, 0);
+            set_obj_visibility(17, 0);
+            set_obj_visibility(18, 0);
+        }
+    }
+
+    on step(1) replace {    // section 52
+        unless (mystery_circles_grown_seen || !ufo_report_read || vademon_encounter_ready) goto L13;
+        unless (!vademon_encounter_ready || is_recruited(species("Vademon"))) goto L14;
+        goto L17;
+    }
+
+    on step(0) replace {    // section 51
+        if (!mystery_circles_first_seen) {
+            say(narrator, text("s190.sec51.u0"));
+            say(tamer, text("s190.sec51.u1"));
+            mystery_circles_first_seen = true;
+            return;
+        }
+        unless (mystery_circles_grown_seen || !ufo_report_read || vademon_encounter_ready) goto L13;
+        unless (!vademon_encounter_ready || is_recruited(species("Vademon"))) goto L14;
+        goto L17;
+    }
+
+    shared L13 {    // code of sec51 that other code jumps to
+        walk(tamer, 350, -50, camera: true);
+        await tamer;
+        animate(tamer, 24);
+        wait(1s);
+        say(tamer, text("s190.sec51.u2"));
+        mystery_circles_grown_seen = true;
+    }
+
+    shared L14 {    // code of sec51 that other code jumps to
+        run(tamer, 350, 50, camera: true);
+        await tamer;
+        animate(tamer, 24);
+        wait(1s);
+        say(tamer, text("s190.sec51.u3"));
+        run(tamer, -550, 50, camera: true);
+        await tamer;
+        say(tamer, text("s190.sec51.u4"));
+        animate(tamer, 16);
+        wait(1s);
+        say(tamer, text("s190.sec51.u5"));
+        sound(8, 5);
+        say(tamer, text("s190.sec51.u6"));
+        set_digimon(species(150), 0, 0);
+        face(tamer, slot0);
+        run(partner, -750, -50);
+        camera_to(-183, 723, speed: 20);
+        await camera;
+        await partner;
+        run(slot0, 225, 1066);
+        sound(8, 5);
+        await slot0;
+        walk(slot0, -275, 1066);
+        sound(8, 5);
+        await slot0;
+        walk(slot0, -63, 453);
+        sound(8, 5);
+        await slot0;
+        walk(slot0, -126, 409);
+        face(tamer, slot0);
+        wait(1s);
+        say(tamer, text("s190.sec51.u7"));
+        say(slot0, text("s190.sec51.u8"));
+        say(tamer, text("s190.sec51.u9"));
+        say(slot0, text("s190.sec51.u10"));
+        say(tamer, text("s190.sec51.u11"));
+        say(slot0, text("s190.sec51.u12"));
+        sound(8, 6);
+        wait(10);
+        animate(slot0, 28);
+        wait(10);
+        animate(tamer, 15);
+        wait(10);
+        say(tamer, text("s190.sec51.u13"));
+        wait(2s);
+        animate(slot0, anim.idle);
+        say(tamer, text("s190.sec51.u14"));
+        animate(tamer, 19);
+        wait(1s);
+        say(narrator, text("s190.sec51.u15"));
+        say(slot0, text("s190.sec51.u16"));
+        say(tamer, text("s190.sec51.u17"));
+        animate(slot0, 22);
+        wait(15);
+        animate(slot0, 22);
+        wait(15);
+        animate(slot0, anim.idle);
+        say(slot0, text("s190.sec51.u18"));
+        fadeout_hud(0);
+        loop {
+            run(slot0, 155, -1177);
+            unless (glances < 3) break;
+            glances += 1;
+            sound(8, 5);
+            wait(1s);
+            face(tamer, slot0);
+            face(partner, slot0);
+        }
+        await slot0;
+        remove(slot0);
+        glances = 0;
+        sound(8, 8);
+        say(narrator, text("s190.sec51.u19"));
+        say(tamer, text("s190.sec51.u20"));
+        recruit(species("Vademon"));
+        engine.prosperity += 3;
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    shared L17 {    // code of sec51 that other code jumps to
+        return;
+    }
+}

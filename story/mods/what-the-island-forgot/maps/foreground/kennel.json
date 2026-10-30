@@ -1,0 +1,2188 @@
+{
+  "screen": 325,
+  "review": "Cage pits, bars, chains and foreground gates are solid. The middle aisle and floor between cage footprints remain open. Cyan bars use their actual silhouettes, with transparent gaps. Cage masks contain the glowing bars only: their dark interiors are transparent so the captive actors remain visible through the gaps.",
+  "pieces": [
+    {
+      "image": "kennel-cage-west.png",
+      "at": [
+        131,
+        104
+      ],
+      "depth": [
+        201,
+        265
+      ],
+      "reason": "Raised cage and pit occupy a solid footprint; bars cover bodies behind them.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          125,
+          99,
+          273,
+          259
+        ],
+        "positive": [
+          [
+            257,
+            130
+          ],
+          [
+            259,
+            153
+          ],
+          [
+            249,
+            163
+          ],
+          [
+            262,
+            165
+          ],
+          [
+            134,
+            158
+          ],
+          [
+            258,
+            112
+          ],
+          [
+            148,
+            118
+          ],
+          [
+            193,
+            152
+          ],
+          [
+            229,
+            168
+          ],
+          [
+            141,
+            137
+          ],
+          [
+            156,
+            146
+          ],
+          [
+            210,
+            159
+          ],
+          [
+            152,
+            160
+          ],
+          [
+            171,
+            160
+          ],
+          [
+            231,
+            184
+          ],
+          [
+            152,
+            106
+          ],
+          [
+            187,
+            109
+          ],
+          [
+            169,
+            110
+          ],
+          [
+            205,
+            110
+          ],
+          [
+            222,
+            111
+          ],
+          [
+            240,
+            111
+          ],
+          [
+            212,
+            144
+          ],
+          [
+            175,
+            148
+          ],
+          [
+            229,
+            151
+          ]
+        ],
+        "negative": [
+          [
+            131,
+            107
+          ],
+          [
+            141,
+            107
+          ],
+          [
+            131,
+            117
+          ],
+          [
+            141,
+            117
+          ],
+          [
+            161,
+            117
+          ],
+          [
+            211,
+            117
+          ],
+          [
+            231,
+            117
+          ],
+          [
+            251,
+            117
+          ],
+          [
+            131,
+            127
+          ],
+          [
+            231,
+            127
+          ],
+          [
+            131,
+            137
+          ],
+          [
+            201,
+            137
+          ],
+          [
+            221,
+            137
+          ],
+          [
+            131,
+            147
+          ],
+          [
+            181,
+            147
+          ],
+          [
+            201,
+            147
+          ],
+          [
+            221,
+            147
+          ],
+          [
+            241,
+            147
+          ],
+          [
+            201,
+            167
+          ],
+          [
+            221,
+            167
+          ],
+          [
+            241,
+            167
+          ],
+          [
+            221,
+            177
+          ],
+          [
+            241,
+            177
+          ],
+          [
+            131,
+            187
+          ],
+          [
+            221,
+            187
+          ],
+          [
+            241,
+            187
+          ],
+          [
+            131,
+            197
+          ],
+          [
+            171,
+            197
+          ],
+          [
+            181,
+            197
+          ],
+          [
+            201,
+            197
+          ],
+          [
+            221,
+            197
+          ],
+          [
+            241,
+            197
+          ],
+          [
+            131,
+            207
+          ],
+          [
+            171,
+            207
+          ],
+          [
+            191,
+            207
+          ],
+          [
+            201,
+            207
+          ],
+          [
+            221,
+            207
+          ],
+          [
+            241,
+            207
+          ],
+          [
+            171,
+            217
+          ],
+          [
+            191,
+            217
+          ],
+          [
+            211,
+            217
+          ],
+          [
+            221,
+            217
+          ],
+          [
+            241,
+            217
+          ],
+          [
+            131,
+            227
+          ],
+          [
+            171,
+            227
+          ],
+          [
+            191,
+            227
+          ],
+          [
+            211,
+            227
+          ],
+          [
+            231,
+            227
+          ],
+          [
+            241,
+            227
+          ],
+          [
+            131,
+            237
+          ],
+          [
+            141,
+            237
+          ],
+          [
+            161,
+            237
+          ],
+          [
+            171,
+            237
+          ],
+          [
+            191,
+            237
+          ],
+          [
+            211,
+            237
+          ],
+          [
+            231,
+            237
+          ],
+          [
+            241,
+            237
+          ],
+          [
+            131,
+            247
+          ],
+          [
+            141,
+            247
+          ],
+          [
+            161,
+            247
+          ],
+          [
+            171,
+            247
+          ],
+          [
+            191,
+            247
+          ],
+          [
+            211,
+            247
+          ],
+          [
+            231,
+            247
+          ],
+          [
+            251,
+            247
+          ],
+          [
+            261,
+            247
+          ]
+        ],
+        "refinement": "cyan-bars",
+        "score": 0.9065492153167725,
+        "area": 7613,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "post_refinement": "cyan-core",
+        "component_policy": "prompted"
+      }
+    },
+    {
+      "image": "kennel-cage-middle.png",
+      "at": [
+        325,
+        104
+      ],
+      "depth": [
+        386,
+        263
+      ],
+      "reason": "Raised cage and pit occupy a solid footprint; bars cover bodies behind them.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          320,
+          98,
+          450,
+          259
+        ],
+        "positive": [
+          [
+            330,
+            160
+          ],
+          [
+            439,
+            160
+          ],
+          [
+            438,
+            172
+          ],
+          [
+            330,
+            173
+          ],
+          [
+            331,
+            185
+          ],
+          [
+            438,
+            185
+          ],
+          [
+            330,
+            137
+          ],
+          [
+            438,
+            137
+          ],
+          [
+            437,
+            197
+          ],
+          [
+            331,
+            198
+          ],
+          [
+            366,
+            160
+          ],
+          [
+            402,
+            160
+          ],
+          [
+            420,
+            159
+          ],
+          [
+            438,
+            121
+          ],
+          [
+            348,
+            137
+          ],
+          [
+            420,
+            139
+          ],
+          [
+            348,
+            150
+          ],
+          [
+            366,
+            173
+          ],
+          [
+            402,
+            173
+          ],
+          [
+            402,
+            186
+          ],
+          [
+            438,
+            209
+          ],
+          [
+            331,
+            211
+          ],
+          [
+            384,
+            160
+          ],
+          [
+            330,
+            124
+          ]
+        ],
+        "negative": [
+          [
+            326,
+            106
+          ],
+          [
+            446,
+            106
+          ],
+          [
+            336,
+            116
+          ],
+          [
+            356,
+            116
+          ],
+          [
+            376,
+            116
+          ],
+          [
+            396,
+            116
+          ],
+          [
+            426,
+            116
+          ],
+          [
+            446,
+            116
+          ],
+          [
+            356,
+            126
+          ],
+          [
+            376,
+            126
+          ],
+          [
+            396,
+            126
+          ],
+          [
+            426,
+            126
+          ],
+          [
+            446,
+            126
+          ],
+          [
+            356,
+            136
+          ],
+          [
+            376,
+            136
+          ],
+          [
+            396,
+            136
+          ],
+          [
+            426,
+            136
+          ],
+          [
+            446,
+            136
+          ],
+          [
+            356,
+            146
+          ],
+          [
+            376,
+            146
+          ],
+          [
+            396,
+            146
+          ],
+          [
+            426,
+            146
+          ],
+          [
+            446,
+            146
+          ],
+          [
+            356,
+            166
+          ],
+          [
+            376,
+            166
+          ],
+          [
+            396,
+            166
+          ],
+          [
+            356,
+            176
+          ],
+          [
+            376,
+            176
+          ],
+          [
+            396,
+            176
+          ],
+          [
+            426,
+            176
+          ],
+          [
+            446,
+            176
+          ],
+          [
+            356,
+            186
+          ],
+          [
+            376,
+            186
+          ],
+          [
+            396,
+            186
+          ],
+          [
+            426,
+            186
+          ],
+          [
+            446,
+            186
+          ],
+          [
+            356,
+            196
+          ],
+          [
+            376,
+            196
+          ],
+          [
+            396,
+            196
+          ],
+          [
+            416,
+            196
+          ],
+          [
+            426,
+            196
+          ],
+          [
+            446,
+            196
+          ],
+          [
+            356,
+            206
+          ],
+          [
+            376,
+            206
+          ],
+          [
+            396,
+            206
+          ],
+          [
+            416,
+            206
+          ],
+          [
+            426,
+            206
+          ],
+          [
+            446,
+            206
+          ],
+          [
+            356,
+            216
+          ],
+          [
+            376,
+            216
+          ],
+          [
+            396,
+            216
+          ],
+          [
+            416,
+            216
+          ],
+          [
+            426,
+            216
+          ],
+          [
+            446,
+            216
+          ],
+          [
+            356,
+            226
+          ],
+          [
+            376,
+            226
+          ],
+          [
+            396,
+            226
+          ],
+          [
+            416,
+            226
+          ],
+          [
+            426,
+            226
+          ],
+          [
+            446,
+            226
+          ],
+          [
+            326,
+            236
+          ],
+          [
+            336,
+            236
+          ],
+          [
+            356,
+            236
+          ],
+          [
+            376,
+            236
+          ],
+          [
+            396,
+            236
+          ],
+          [
+            406,
+            236
+          ],
+          [
+            426,
+            236
+          ],
+          [
+            446,
+            236
+          ],
+          [
+            326,
+            246
+          ],
+          [
+            336,
+            246
+          ],
+          [
+            356,
+            246
+          ],
+          [
+            376,
+            246
+          ],
+          [
+            396,
+            246
+          ],
+          [
+            406,
+            246
+          ],
+          [
+            426,
+            246
+          ],
+          [
+            446,
+            246
+          ]
+        ],
+        "refinement": "cyan-bars",
+        "score": 0.8863661289215088,
+        "area": 5371,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "post_refinement": "cyan-core",
+        "component_policy": "prompted"
+      }
+    },
+    {
+      "image": "kennel-cage-east.png",
+      "at": [
+        501,
+        104
+      ],
+      "depth": [
+        570,
+        264
+      ],
+      "reason": "Raised cage and pit occupy a solid footprint; bars cover bodies behind them.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          496,
+          99,
+          644,
+          259
+        ],
+        "positive": [
+          [
+            511,
+            139
+          ],
+          [
+            509,
+            157
+          ],
+          [
+            511,
+            126
+          ],
+          [
+            540,
+            160
+          ],
+          [
+            612,
+            145
+          ],
+          [
+            635,
+            158
+          ],
+          [
+            521,
+            159
+          ],
+          [
+            506,
+            169
+          ],
+          [
+            617,
+            109
+          ],
+          [
+            510,
+            114
+          ],
+          [
+            627,
+            136
+          ],
+          [
+            558,
+            159
+          ],
+          [
+            538,
+            179
+          ],
+          [
+            581,
+            110
+          ],
+          [
+            546,
+            111
+          ],
+          [
+            574,
+            140
+          ],
+          [
+            593,
+            148
+          ],
+          [
+            597,
+            160
+          ],
+          [
+            616,
+            160
+          ],
+          [
+            563,
+            106
+          ],
+          [
+            528,
+            112
+          ],
+          [
+            578,
+            159
+          ],
+          [
+            598,
+            105
+          ],
+          [
+            622,
+            120
+          ]
+        ],
+        "negative": [
+          [
+            502,
+            107
+          ],
+          [
+            632,
+            107
+          ],
+          [
+            502,
+            117
+          ],
+          [
+            522,
+            117
+          ],
+          [
+            572,
+            117
+          ],
+          [
+            592,
+            117
+          ],
+          [
+            632,
+            117
+          ],
+          [
+            502,
+            127
+          ],
+          [
+            582,
+            127
+          ],
+          [
+            632,
+            127
+          ],
+          [
+            502,
+            137
+          ],
+          [
+            582,
+            137
+          ],
+          [
+            602,
+            137
+          ],
+          [
+            532,
+            147
+          ],
+          [
+            552,
+            147
+          ],
+          [
+            562,
+            147
+          ],
+          [
+            582,
+            147
+          ],
+          [
+            602,
+            147
+          ],
+          [
+            532,
+            167
+          ],
+          [
+            532,
+            177
+          ],
+          [
+            582,
+            177
+          ],
+          [
+            562,
+            187
+          ],
+          [
+            532,
+            197
+          ],
+          [
+            542,
+            197
+          ],
+          [
+            562,
+            197
+          ],
+          [
+            582,
+            197
+          ],
+          [
+            522,
+            207
+          ],
+          [
+            542,
+            207
+          ],
+          [
+            562,
+            207
+          ],
+          [
+            582,
+            207
+          ],
+          [
+            602,
+            207
+          ],
+          [
+            632,
+            207
+          ],
+          [
+            502,
+            217
+          ],
+          [
+            522,
+            217
+          ],
+          [
+            542,
+            217
+          ],
+          [
+            562,
+            217
+          ],
+          [
+            582,
+            217
+          ],
+          [
+            602,
+            217
+          ],
+          [
+            632,
+            217
+          ],
+          [
+            502,
+            227
+          ],
+          [
+            522,
+            227
+          ],
+          [
+            542,
+            227
+          ],
+          [
+            562,
+            227
+          ],
+          [
+            582,
+            227
+          ],
+          [
+            592,
+            227
+          ],
+          [
+            632,
+            227
+          ],
+          [
+            502,
+            237
+          ],
+          [
+            522,
+            237
+          ],
+          [
+            542,
+            237
+          ],
+          [
+            562,
+            237
+          ],
+          [
+            572,
+            237
+          ],
+          [
+            592,
+            237
+          ],
+          [
+            612,
+            237
+          ],
+          [
+            632,
+            237
+          ],
+          [
+            502,
+            247
+          ],
+          [
+            522,
+            247
+          ],
+          [
+            542,
+            247
+          ],
+          [
+            562,
+            247
+          ],
+          [
+            572,
+            247
+          ],
+          [
+            592,
+            247
+          ],
+          [
+            612,
+            247
+          ]
+        ],
+        "refinement": "cyan-bars",
+        "score": 0.9098460674285889,
+        "area": 7580,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "post_refinement": "cyan-core",
+        "component_policy": "prompted"
+      }
+    },
+    {
+      "image": "kennel-chains.png",
+      "at": [
+        576,
+        457
+      ],
+      "depth": [
+        672,
+        585
+      ],
+      "reason": "Loose chains and manacles are physical props.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          575,
+          443,
+          765,
+          590
+        ],
+        "positive": [
+          [
+            678,
+            514
+          ],
+          [
+            638,
+            503
+          ],
+          [
+            694,
+            552
+          ],
+          [
+            652,
+            546
+          ],
+          [
+            590,
+            550
+          ],
+          [
+            610,
+            574
+          ],
+          [
+            622,
+            553
+          ],
+          [
+            741,
+            552
+          ]
+        ],
+        "negative": [
+          [
+            578,
+            580
+          ],
+          [
+            630,
+            590
+          ],
+          [
+            580,
+            510
+          ],
+          [
+            606,
+            550
+          ],
+          [
+            738,
+            568
+          ]
+        ],
+        "score": 0.9397498369216919,
+        "area": 15581,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ]
+      }
+    },
+    {
+      "image": "kennel-gate-west.png",
+      "at": [
+        198,
+        520
+      ],
+      "depth": [
+        254,
+        638
+      ],
+      "reason": "Foreground gate leaf must cover the character approaching from inside.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          193,
+          515,
+          321,
+          640
+        ],
+        "positive": [
+          [
+            298,
+            529
+          ],
+          [
+            243,
+            578
+          ],
+          [
+            256,
+            619
+          ],
+          [
+            304,
+            579
+          ]
+        ],
+        "negative": [
+          [
+            280,
+            515
+          ],
+          [
+            309,
+            515
+          ],
+          [
+            251,
+            545
+          ],
+          [
+            222,
+            575
+          ],
+          [
+            193,
+            605
+          ],
+          [
+            193,
+            635
+          ],
+          [
+            222,
+            635
+          ]
+        ],
+        "score": 0.9567379951477051,
+        "area": 4988,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "component_policy": "prompted"
+      }
+    },
+    {
+      "image": "kennel-gate-east.png",
+      "at": [
+        452,
+        526
+      ],
+      "depth": [
+        514,
+        638
+      ],
+      "reason": "Foreground gate leaf must cover the character approaching from inside.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          447,
+          520,
+          577,
+          640
+        ],
+        "positive": [
+          [
+            505,
+            566
+          ],
+          [
+            467,
+            534
+          ],
+          [
+            462,
+            585
+          ],
+          [
+            546,
+            600
+          ]
+        ],
+        "negative": [
+          [
+            447,
+            520
+          ],
+          [
+            477,
+            520
+          ],
+          [
+            447,
+            548
+          ],
+          [
+            507,
+            548
+          ],
+          [
+            447,
+            576
+          ],
+          [
+            537,
+            576
+          ],
+          [
+            447,
+            604
+          ],
+          [
+            507,
+            604
+          ]
+        ],
+        "score": 0.9577221870422363,
+        "area": 4781,
+        "part_scores": [],
+        "source": "kennel-2304x1856.png",
+        "crop": [
+          38,
+          0,
+          2227,
+          1856
+        ],
+        "component_policy": "prompted"
+      }
+    }
+  ],
+  "collision_review": [
+    {
+      "tile": [
+        61,
+        68
+      ],
+      "pixel": [
+        586,
+        549
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Loose chains and manacles occupy this ground."
+    },
+    {
+      "tile": [
+        61,
+        69
+      ],
+      "pixel": [
+        588,
+        565
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Loose chains and manacles occupy this ground."
+    },
+    {
+      "tile": [
+        64,
+        63
+      ],
+      "pixel": [
+        623,
+        477
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        65,
+        63
+      ],
+      "pixel": [
+        640,
+        477
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        66,
+        63
+      ],
+      "pixel": [
+        657,
+        477
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        67,
+        63
+      ],
+      "pixel": [
+        673,
+        477
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        63,
+        64
+      ],
+      "pixel": [
+        610,
+        491
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        64,
+        64
+      ],
+      "pixel": [
+        626,
+        491
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        65,
+        64
+      ],
+      "pixel": [
+        643,
+        491
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        66,
+        64
+      ],
+      "pixel": [
+        660,
+        491
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        67,
+        64
+      ],
+      "pixel": [
+        677,
+        491
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        63,
+        65
+      ],
+      "pixel": [
+        612,
+        505
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        64,
+        65
+      ],
+      "pixel": [
+        629,
+        505
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        65,
+        65
+      ],
+      "pixel": [
+        646,
+        505
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        66,
+        65
+      ],
+      "pixel": [
+        663,
+        505
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        67,
+        65
+      ],
+      "pixel": [
+        680,
+        505
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        63,
+        66
+      ],
+      "pixel": [
+        615,
+        520
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        64,
+        66
+      ],
+      "pixel": [
+        632,
+        520
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        65,
+        66
+      ],
+      "pixel": [
+        649,
+        520
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        66,
+        66
+      ],
+      "pixel": [
+        666,
+        520
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        67,
+        66
+      ],
+      "pixel": [
+        684,
+        520
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        43,
+        68
+      ],
+      "pixel": [
+        269,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        44,
+        68
+      ],
+      "pixel": [
+        287,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        45,
+        68
+      ],
+      "pixel": [
+        304,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        54,
+        68
+      ],
+      "pixel": [
+        463,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        68
+      ],
+      "pixel": [
+        480,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        68
+      ],
+      "pixel": [
+        498,
+        549
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        42,
+        69
+      ],
+      "pixel": [
+        250,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        43,
+        69
+      ],
+      "pixel": [
+        268,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        44,
+        69
+      ],
+      "pixel": [
+        286,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        45,
+        69
+      ],
+      "pixel": [
+        303,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        54,
+        69
+      ],
+      "pixel": [
+        464,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        69
+      ],
+      "pixel": [
+        481,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        69
+      ],
+      "pixel": [
+        499,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        69
+      ],
+      "pixel": [
+        517,
+        565
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        41,
+        70
+      ],
+      "pixel": [
+        230,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        42,
+        70
+      ],
+      "pixel": [
+        248,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        43,
+        70
+      ],
+      "pixel": [
+        266,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        44,
+        70
+      ],
+      "pixel": [
+        284,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        45,
+        70
+      ],
+      "pixel": [
+        302,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        54,
+        70
+      ],
+      "pixel": [
+        465,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        70
+      ],
+      "pixel": [
+        483,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        70
+      ],
+      "pixel": [
+        501,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        70
+      ],
+      "pixel": [
+        519,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        70
+      ],
+      "pixel": [
+        537,
+        581
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        41,
+        71
+      ],
+      "pixel": [
+        228,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        42,
+        71
+      ],
+      "pixel": [
+        247,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        43,
+        71
+      ],
+      "pixel": [
+        265,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        44,
+        71
+      ],
+      "pixel": [
+        283,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        45,
+        71
+      ],
+      "pixel": [
+        301,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        54,
+        71
+      ],
+      "pixel": [
+        466,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        71
+      ],
+      "pixel": [
+        484,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        71
+      ],
+      "pixel": [
+        502,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        71
+      ],
+      "pixel": [
+        520,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        71
+      ],
+      "pixel": [
+        539,
+        597
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    }
+  ]
+}

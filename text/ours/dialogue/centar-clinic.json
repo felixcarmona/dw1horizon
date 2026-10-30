@@ -1,0 +1,49 @@
+{
+ "s173.sec6.u0": "Well now... resting often to shake off Tiredness is the secret to good health.",
+ "s173.sec6.u1": "Well now, shall I tell you how the city's prosperity grows? A Rookie who comes to the city adds 1, a Champion adds 2. An Ultimate adds 3, or so I hear. But three of the Champions, the not-so-useful ones, add only 1.",
+ "s173.sec6.u2": [
+  [
+   "Well now, shall I tell you a little about types?"
+  ],
+  [
+   "First, enemies of the same type as your",
+   "partner seldom join a battle."
+  ],
+  [
+   "And there are two places that turn you away",
+   "at the door if your type doesn't match."
+  ],
+  [
+   "Apart from that, well, you needn't worry much",
+   "about it."
+  ]
+ ],
+ "s173.sec6.u3": [
+  [
+   "Well now, shall I tell you about the Tamer",
+   "Level? First, there's Digivolving."
+  ],
+  [
+   "Raise a Digimon all the way to Ultimate and it",
+   "goes up one level for certain."
+  ],
+  [
+   "Winning a high-grade tournament is good too."
+  ],
+  [
+   "Well, it goes up on its own without you",
+   "thinking about it much."
+  ],
+  [
+   "Going down is what you must watch out for."
+  ],
+  [
+   "For instance, running out of lives is sure to",
+   "lower it."
+  ],
+  [
+   "It's rare, but mistakes in daily care can lower",
+   "it too. Always pay attention, eh?"
+  ]
+ ]
+}

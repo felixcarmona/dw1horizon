@@ -1,0 +1,166 @@
+{
+ "s001.sec5.u0": "Come on, we're just getting started!",
+ "s001.sec6.u0": "Hup... hup... Heave... ho...",
+ "s001.sec7.u0": "I am eating you up now, yes!",
+ "s001.sec8.u0": "Please, wait one momeeent, yes!",
+ "s001.sec9.u0": "Here I come!",
+ "s001.sec10.u0": "What? What did I ever do to you?",
+ "s001.sec11.u0": "I knew I should've stayed out of it...",
+ "s001.sec12.u0": "Honestly... Grumble, grumble, grumble...",
+ "s003.sec5.u0": "Come on, come on!",
+ "s003.sec6.u0": "Raaargh!",
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   "......I'm a flower."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......I'm just a flower, see."
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "I said I'm a flower! You just",
+   "don't give up, do you?!"
+  ]
+ ],
+ "s003.sec7.u4": "Oh, all right! I just really hate fighting!",
+ "s003.sec7.u5": "Well then...",
+ "s003.sec7.u6": "Come to the city. It's peaceful in there.",
+ "s003.sec7.u7": [
+  [
+   "The city?"
+  ],
+  [
+   "That sounds like fun. Maybe I will, yeah! I'm",
+   "Palmon. I'll show you I can be useful!"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon joined the city!",
+ "s003.sec8.u0": "Mine!",
+ "s003.sec9.u0": "Gotcha!",
+ "s004.sec6.u0": "You'll only get hurt, you know.",
+ "s004.sec6_dup4.u0": "Honestly... What a child.",
+ "s004.sec7.u0": "Very well. I'll go easy on you.",
+ "s004.sec8.u0": "I'll snap that nose right off!",
+ "s004.sec9.u0": "I'll snap you like a twig!",
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Even monkeys fall from..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Flying... Knee... Drooop!!!"
+  ]
+ ],
+ "s004.sec51.u1": "Ook! The great me, beaten...? No, no! You lot are nothing special!",
+ "s004.sec51.u2": "...What a sore loser. And he's the one who jumped us...",
+ "s004.sec51.u3": [
+  [
+   "Ook-ook! Grrr... Fine, then..."
+  ],
+  [
+   "I'll show you what I can really do, right in that",
+   "city of yours! Just you watch! Ook!"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon joined the city!",
+ "s004.sec81.u0": "Hm? There's something carved here.",
+ "s004.sec81.u1": "Nobody's home! Go away!",
+ "s004.sec81.u2": "Does somebody live here?",
+ "s105.sec5.u0": "I-I don't know anything!",
+ "s105.sec6.u0": "Whoa!",
+ "s105.sec6.u1": "......? ...! ...Hehe!",
+ "s105.sec6.u2": "Hey, out of nowhere?! Okay, bring it on!",
+ "s105.sec6.u3": "I lost. Rats.",
+ "s105.sec6.u4": "Oh, right. I'm supposed to invite him to the city.",
+ "s105.sec6.u5": "...Um, hey, so...",
+ "s105.sec6.u6": "Would you... maybe... come to the city?",
+ "s105.sec6.u7": [
+  [
+   "Huh? The city?"
+  ],
+  [
+   "You mean... that run-down old place?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Hmm..."
+  ],
+  [
+   "Hmmmm......"
+  ],
+  [
+   "Hmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": "Eh, sure. I'm Agumon. Nice to meet ya.",
+ "s105.sec6.u10": "Agumon joined the city!",
+ "s105.sec6.u11": "Huh, it never hurts to ask! Okay, I'll invite everyone I can find!",
+ "s105.sec7.u0": "This is my turf!",
+ "s105.sec8.u0": "Huh?!",
+ "s105.sec9.u0": "Now's my chance!",
+ "s105.sec52.u0": "...If I run away now, there's no going back.",
+ "s106.sec5.u0": [
+  [
+   "Battle test!"
+  ],
+  [
+   "Just kidding. That was a lie."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Change the parameters",
+ "s106.sec6.m0.o1": "Move the time forward",
+ "s106.sec6.m0.o2": "Learn every technique",
+ "s106.sec6.m1.o0": "Raise",
+ "s106.sec6.m1.o1": "Lower",
+ "s106.sec6.m1.o2": "Reset the stats",
+ "s106.sec6.m2.o0": "Forward 1 hour",
+ "s106.sec6.m2.o1": "Forward 6 hours",
+ "s106.sec6.m2.o2": "Forward 24 hours",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": "I'm Mr. Handy! What'll it be?",
+ "s106.sec81.u0": "A rockslide blocks the path...",
+ "s107.sec5.u0": [
+  [
+   "Right now it's month",
+   "{pstat 105}, day",
+   "{pstat 106}, hour"
+  ],
+  [
+   "{pstat 107}, minute",
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": "{color 10}{partner}{color 1} is a Data type, huh.",
+ "s107.sec5.u2": "{color 10}{partner}{color 1} is a Vaccine type, huh.",
+ "s107.sec5.u3": "{color 10}{partner}{color 1} is a Virus type, huh.",
+ "s107.sec6.m0.o0": "Change the parameters",
+ "s107.sec6.m0.o1": "Move the time forward",
+ "s107.sec6.m0.o2": "Turn into a shop",
+ "s107.sec6.m1.o0": "Make it the strongest",
+ "s107.sec6.m1.o1": "Make it the weakest",
+ "s107.sec6.m1.o2": "Make it middling",
+ "s107.sec6.m2.o0": "Forward 1 hour",
+ "s107.sec6.m2.o1": "Forward 6 hours",
+ "s107.sec6.m2.o2": "Forward 24 hours",
+ "s107.sec6.u0": "I'm Mr. Handy! What'll it be?",
+ "s107.sec51.u0": "The earthquake just now has cleared away the fallen rocks!"
+}

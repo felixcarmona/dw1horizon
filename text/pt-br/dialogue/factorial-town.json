@@ -1,0 +1,354 @@
+{
+ "s146.sec5.u0": "Identifique-se.",
+ "s146.sec6.u0": "Diga o seu propósito aqui.",
+ "s146.sec7.u0": "Vamos descansar um pouco agora.",
+ "s146.sec8.u0": "O quê?",
+ "s146.sec81.m0.o0": "Voltar",
+ "s146.sec81.m0.o1": "Não voltar",
+ "s146.sec81.u0": "Voltando para a cidade?",
+ "s147.sec5.u0": "Você. Aonde você vai?",
+ "s147.sec6.u0": "Alto!",
+ "s147.sec7.u0": "Gupyiii!",
+ "s147.sec8.u0": "Doihyefi.",
+ "s147.sec9.m0.o0": "Eu aceito!",
+ "s147.sec9.m0.o1": "Desculpe, depois",
+ "s147.sec9.u0": [
+  [
+   "Hm, você aí!"
+  ],
+  [
+   "Eu sou MetalMamemon, invencível em 99",
+   "batalhas! Derrotá-lo será minha 100a vitória!"
+  ],
+  [
+   "Certamente o grande {color 6}{player}{color 1} não vai",
+   "fugir?"
+  ]
+ ],
+ "s147.sec9.u1": [
+  [
+   "Você é melhor do que eu",
+   "pensava! Já decidi. Reconheço",
+   "você como meu rival! Um dia vou",
+   "te vencer, pode esperar!"
+  ]
+ ],
+ "s147.sec9.u2": "MetalMamemon veio para a cidade!",
+ "s147.sec9.u3": [
+  [
+   "Fwa ha ha, eu sabia. A gente",
+   "se vê quando eu estiver a fim."
+  ]
+ ],
+ "s148.sec5.u0": "Intruso detectado!",
+ "s148.sec6.u0": "Estamos cansados, sabe.",
+ "s148.sec7.u0": [
+  [
+   "Ho ho ho, faça como achar",
+   "melhor!"
+  ]
+ ],
+ "s148.sec8.u0": "Hagahogo.",
+ "s148.sec9.u0": "Nenhuma entrada além deste ponto!",
+ "s148.sec10.u0": "Você. Quem é você?",
+ "s149.sec5.u0": "Bopi bopi puuuuh.",
+ "s149.sec6.u0": "Geba geba!",
+ "s149.sec7.u0": "Buhyo?",
+ "s149.sec8.u0": "Estamos muito satisfeitos!",
+ "s149.sec9.u0": "Este também é nosso dever, você sabe.",
+ "s149.sec10.u0": "Que barulheira. O que é tudo isso?",
+ "s149.sec11.m0.o0": "Ei, troca de turno",
+ "s149.sec11.m0.o1": "Deixe-me passar ou então!",
+ "s149.sec11.m0.o2": "Oh, nada",
+ "s149.sec11.m1.o0": "Esqueça isso.",
+ "s149.sec11.m1.o1": "Quando é a troca de turno?",
+ "s149.sec11.m2.o0": "Eu tenho licença.",
+ "s149.sec11.m2.o1": "Eu me dou permissão!",
+ "s149.sec11.u0": "Você não pode passar aqui.",
+ "s149.sec11.u1": "...",
+ "s149.sec11.u2": [
+  [
+   "Ele está nos encarando! Ele está desconfiado?"
+  ],
+  [
+   "Vamos voltar mais tarde... é melhor",
+   "esperarmos onde não possam nos ver."
+  ],
+  [
+   "Eram 0:00 e 12:00, certo?"
+  ]
+ ],
+ "s149.sec11.u3": "Esta fábrica deve estar despejando lixo ou algo assim nos esgotos. Temos que verificar.",
+ "s149.sec11.u4": "Pode se afastar?",
+ "s149.sec11.u5": "Você não pode passar sem permissão do responsável.",
+ "s149.sec11.u6": "Mas estou com pressa.",
+ "s149.sec11.u7": "Negado. Por favor, obtenha permissão.",
+ "s149.sec11.u8": "Acho que não há escolha.",
+ "s149.sec11.u9": "Agora o que vamos fazer...",
+ "s149.sec11.u10": "Não é hora da mudança de turno.",
+ "s149.sec11.u11": "Negado. Os horários devem ser mantidos estritamente.",
+ "s149.sec11.u12": "Mudança de turno às 0:00 e 12:00.",
+ "s149.sec11.u13": [
+  [
+   "Ah, é mesmo? Entendi!"
+  ]
+ ],
+ "s149.sec11.u14": "Ameaças não funcionarão. Por favor, obtenha permissão.",
+ "s149.sec11.u15": "A autorização falhou. Por favor, obtenha permissão apropriada.",
+ "s149.sec11.u16": "Ugh, tão rigoroso!",
+ "s149.sec11.u17": "Não é hora de mudar de turno?",
+ "s149.sec11.u18": "...",
+ "s149.sec11.u19": [
+  [
+   "Ele está nos encarando! Acho que não vão",
+   "mudar de turno conosco aqui."
+  ],
+  [
+   "Vamos voltar mais tarde... é melhor",
+   "esperarmos onde não possam nos ver."
+  ]
+ ],
+ "s149.sec12.u0": "Você não pode passar aqui.",
+ "s149.sec254.u0": "Ei, os guardas se foram!",
+ "s151.sec5.u0": "Tudo está normal aqui. Por favor, faça o seu melhor.",
+ "s151.sec5.u1": "Eu devo ajudar também. Quando o tempo permitir, viajarei entre aqui e a cidade.",
+ "s151.sec5.u2": "Andromon veio para a cidade!",
+ "s151.sec5.u3": "Reparação de dados completa. Vamos ler os dados agora.",
+ "s151.sec5.u4": "Vá em frente.",
+ "s151.sec5.u5": [
+  [
+   "100 anos atrás, humanos analógicos aparecem",
+   "na ilha Digimon."
+  ],
+  [
+   "Eles colidem ferozmente com o Digimon nativo."
+  ],
+  [
+   "Após 10 anos de luta, os humanos analógicos",
+   "são derrotados e desaparecem sem deixar",
+   "rastros."
+  ],
+  [
+   "Nos 10 anos depois disso, a ilha cresce para",
+   "quase o dobro do seu tamanho. Causa",
+   "desconhecida."
+  ]
+ ],
+ "s151.sec5.u6": "Humanos... lutaram contra Digimon...",
+ "s151.sec5.u7": "São todos os dados que pude reparar. Sinto muito.",
+ "s151.sec5.u8": "Não, isso é informação preciosa. Isso explica muita coisa.",
+ "s151.sec5.u9": "É mesmo.",
+ "s151.sec5.u10": "Aquele que jogou a ilha no caos é provavelmente aquele humano desaparecido.",
+ "s151.sec5.u11": "Os humanos podem viver por 100 anos?",
+ "s151.sec5.u12": [
+  [
+   "Bem, neste mundo, o tempo",
+   "parece passar bem devagar só",
+   "para os humanos. Por isso fico",
+   "bem sem comer nem dormir."
+  ],
+  [
+   "Ainda assim, 100 anos é muito",
+   "tempo. Ele deve ser duro na",
+   "queda."
+  ]
+ ],
+ "s151.sec5.u13": "Ele pode estar escondido em algum lugar?",
+ "s151.sec5.u14": [
+  [
+   "Vou encontrá-lo... e fazer algo sobre ele."
+  ],
+  [
+   "Agora eu entendo. Fui chamado aqui para",
+   "vencê-lo, porque sou humano também."
+  ]
+ ],
+ "s151.sec5.u15": "Nós sinceramente pedimos desculpas pelo que aconteceu. A fábrica ficará fechada por um tempo.",
+ "s151.sec5.u16": "Com a ilha estranha, ninguém pode prever o que vai acontecer. Não é sua culpa.",
+ "s151.sec5.u17": [
+  [
+   "Acho que alguém, em algum",
+   "lugar, estava controlando",
+   "Giromon. O computador é",
+   "destruído... e saem resíduos"
+  ],
+  [
+   "que enlouquecem os Digimon.",
+   "Não pode ser coincidência."
+  ]
+ ],
+ "s151.sec5.u18": [
+  [
+   "O computador aqui é de grande importância.",
+   "Podemos supor que alguém o atacou."
+  ],
+  [
+   "Embora seja tarde para dizer isso..."
+  ]
+ ],
+ "s151.sec5.u19": "O que você disse?",
+ "s151.sec5.u20": [
+  [
+   "Parece que os dados do passado da ilha foram",
+   "armazenados aqui."
+  ],
+  [
+   "Mas a fúria de Giromon a corrompeu."
+  ]
+ ],
+ "s151.sec5.u21": "Você não viu os dados?",
+ "s151.sec5.u22": [
+  [
+   "Infelizmente, não. No entanto, parte dos",
+   "dados parece reparável."
+  ],
+  [
+   "Vou tentar juntar as peças."
+  ]
+ ],
+ "s151.sec5.u23": "Entendo, por favor. Quanto tempo vai demorar?",
+ "s151.sec5.u24": "Ainda por um tempo... vou levantar o bloqueio na entrada principal desta cidade, então, por favor, volte novamente.",
+ "s151.sec5.u25": "Obrigado. Eu voltarei, então.",
+ "s151.sec5.u26": "O reparo de dados está pronto?",
+ "s151.sec5.u27": "Vai demorar um pouco mais. Por favor, volte novamente.",
+ "s151.sec5.u28": "Eu voltarei, então.",
+ "s151.sec5.u29": "Yoo-hoo!",
+ "s151.sec5.u30": "É você. Devo me desculpar com você.",
+ "s151.sec5.u31": [
+  [
+   "Deixe isso para depois! Pare",
+   "logo as máquinas da fábrica!"
+  ]
+ ],
+ "s151.sec5.u32": "Sim. Entendido.",
+ "s151.sec5.u33": "As funções da fábrica foram paradas.",
+ "s151.sec5.u34": "Certo, vou checar os esgotos. Até logo.",
+ "s151.sec5.u35": "Devo me desculpar com você...",
+ "s151.sec5.u36": "Não há tempo para isso agora!",
+ "s151.sec5.u37": "Nosso computador é impecável.",
+ "s151.sec5.u38": "A fábrica está mesmo bem? Isso é ruim...",
+ "s151.sec5.u39": "Certo, então teremos que fazer algo sobre os guardas. Não há mais nada para continuar!",
+ "s151.sec5.u40": "Como entrou nessa cidade?",
+ "s151.sec5.u41": [
+  [
+   "Se não tem nada a fazer aqui,",
+   "por favor, saia imediatamente."
+  ]
+ ],
+ "s151.sec5.u42": [
+  [
+   "Esqueça isso por enquanto. Quero inspecionar",
+   "a fábrica."
+  ],
+  [
+   "É uma questão de vida ou morte. Dê-me",
+   "permissão!"
+  ]
+ ],
+ "s151.sec5.u43": "Hmm...? Não entendo suas intenções. Permissão negada.",
+ "s151.sec5.u44": [
+  [
+   "Há Digimon morrendo por causa",
+   "dos resíduos que saem da",
+   "fábrica."
+  ]
+ ],
+ "s151.sec5.u45": [
+  [
+   "...? Da fábrica? Você deve estar enganado."
+  ],
+  [
+   "O sistema de degradação de resíduos está",
+   "funcionando normalmente."
+  ]
+ ],
+ "s151.sec5.u46": "Você não pode saber se é normal sem olhar!",
+ "s151.sec5.u47": [
+  [
+   "Nosso computador é infalível.",
+   "Se algo der errado, o",
+   "\"Guardião da Rede\" vai intervir",
+   "e desligá-lo."
+  ]
+ ],
+ "s151.sec5.u48": "O que é isso? E não pode quebrar?",
+ "s151.sec5.u49": [
+  [
+   "\"Guardião da Rede\" é outro",
+   "nome de Giromon, um Digimon",
+   "perfeito. Seu julgamento e suas",
+   "habilidades são infalíveis."
+  ]
+ ],
+ "s151.sec5.u50": "Um Digimon? Isso é ainda mais perigoso agora! Por favor, me dê permissão!",
+ "s151.sec5.u51": "Por favor, vá embora.",
+ "s151.sec5.u52": "Ugh...",
+ "s152.sec5.u0": "Munch, munch.",
+ "s152.sec6.u0": "Fwohaheee.",
+ "s152.sec7.u0": "Você precisa de algo de mim?",
+ "s152.sec8.u0": "Não se mexa!",
+ "s152.sec9.u0": "Alto! Eu disse para parar!",
+ "s152.sec10.u0": "Eu cuidarei de você mais tarde.",
+ "s153.sec5.u0": "Bzzt! Eu estava esperando por você!",
+ "s153.sec5.u1": "Você voltou ao normal?",
+ "s153.sec5.u2": "Gyahaha. Acho que fiquei um pouco estranho lá, não?",
+ "s153.sec5.u3": "Ei, não é uma piada...",
+ "s153.sec5.u4": "A fábrica fechou, então não tenho nada para fazer. Vou te ajudar, heh-heh-hee!",
+ "s153.sec5.u5": "Mesmo em sã consciência, ele não é muito diferente...",
+ "s153.sec5.u6": "Vou embora, bzzzzt!",
+ "s153.sec5.u7": "Giromon veio para a cidade!",
+ "s154.sec51.u0": "Tem alguém aqui! Quem está aí?",
+ "s154.sec51.u1": "Heh-heh-hee! Eu quebro o computador ruim! Heeheeheehee!",
+ "s154.sec51.u2": "Então é esse... O que está fazendo?",
+ "s154.sec51.u3": [
+  [
+   "Heh-hee! Quebrar! Quebrar",
+   "tudo! Quebrar coisas ruins!"
+  ]
+ ],
+ "s154.sec51.u4": "Ele está totalmente louco. Ele é um Ultimate, mas... temos que pará-lo!",
+ "s154.sec51.u5": [
+  [
+   "Heeheehee! Quebrar! Quebrar",
+   "todos vocês!"
+  ]
+ ],
+ "s154.sec51.u6": [
+  [
+   "Bzzzt, bzzz... minhas forças",
+   "estão... se... esgotando..."
+  ]
+ ],
+ "s154.sec51.u7": [
+  [
+   "Parece que as forças dele",
+   "estão se esgotando. Ah,",
+   "preciso avisar Andromon para",
+   "ele parar o despejo de"
+  ],
+  [
+   "resíduos!"
+  ]
+ ],
+ "s155.sec5.u0": "Espere um momento!",
+ "s155.sec6.u0": "Não vamos deixá-lo passar!",
+ "s155.sec7.u0": "Você. O que está fazendo aí?",
+ "s155.sec8.u0": "Gapyooo!",
+ "s155.sec9.u0": "Geba gebaaa!",
+ "s155.sec10.u0": "Zupposhi?",
+ "s156.sec5.m0.o0": "Vá em frente",
+ "s156.sec5.m0.o1": "Por favor, não!",
+ "s156.sec5.u0": "Iniciando remodelação. A taxa é de 2000 Bits.",
+ "s156.sec5.u1": "Modelo incompatível. Não pode remodelar.",
+ "s156.sec5.u2": "Fundos insuficientes.",
+ "s156.sec5.u3": "Por favor, espere um momento.",
+ "s156.sec5.u4": "Operação falhou. No entanto...",
+ "s156.sec5.u5": "Uau, se transformou em Giromon!",
+ "s156.sec5.u6": "Operação bem sucedida!",
+ "s156.sec5.u7": "Uau, se transformou em MetalMamemon!",
+ "s156.sec5.u8": "A operação falhou...",
+ "s156.sec5.u9": "Isso é terrível!",
+ "s156.sec5.u10": "Desculpe-me...",
+ "s156.sec6.u0": "Alvo capturado. Eliminar!",
+ "s156.sec7.u0": "Objetivo primário: destruir a máquina inimiga."
+}

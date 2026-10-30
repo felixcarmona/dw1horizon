@@ -1,0 +1,123 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 215,
+ "type": 240,
+ "name": "Gesomon",
+ "source": {
+  "type": 26,
+  "mmd": "extracted/CHDAT/MMD0/SKUL.MMD"
+ },
+ "map": {
+  "1": 1,
+  "3": 9,
+  "4": 8,
+  "7": 13,
+  "8": 14,
+  "17": 18,
+  "19": 22,
+  "21": 17,
+  "22": 19,
+  "23": 21,
+  "24": 23,
+  "25": 24,
+  "27": 16,
+  "28": 25
+ },
+ "hips": [
+  1,
+  1,
+  0.793
+ ],
+ "root_scale": 0.793,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 73,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 73,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 36,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 93,
+   "end": 173,
+   "hz": 0.3
+  },
+  "0x3b": {
+   "anim": "anim_01",
+   "start": 15,
+   "end": 107,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 64,
+   "end": 178,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x36": {
+   "anim": "anim_03",
+   "start": 26,
+   "end": 118,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x35",
+  "0x39",
+  "0x3a"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP2/TUNN06.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Drimogemon158",
+      "at": [-897, 305],
+      "facing": 3500,
+      "follow": 2,
+      "range": 0,
+      "charge": 1,
+      "moves": [48, 46, 47, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [-470, 1415],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

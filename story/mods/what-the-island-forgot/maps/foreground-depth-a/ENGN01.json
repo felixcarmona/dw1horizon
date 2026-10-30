@@ -1,0 +1,7 @@
+{
+  "screen": 300,
+  "art": "engine-room",
+  "review": "The accepted Engine Room machinery, crate/barrel and fire layers already cover the reachable rear edges. The back-wall gear and tent have no floor behind their bases. The rejected pass added no mask here; preserve the accepted art, arrays and collision.",
+  "pieces": [],
+  "collision": []
+}

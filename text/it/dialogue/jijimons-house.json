@@ -1,0 +1,588 @@
+{
+ "s165.sec5.u0": [
+  [
+   "Ah, arrivi al momento giusto!",
+   "Ho un favore importante da",
+   "chiederti, una cosa che solo tu"
+  ],
+  [
+   "puoi fare."
+  ]
+ ],
+ "s165.sec5.u1": [
+  [
+   "Di cosa si tratta?"
+  ]
+ ],
+ "s165.sec5.u2": [
+  [
+   "L'ho appena avvertita di nuovo:",
+   "la stessa presenza maligna di",
+   "Analogman e Machinedramon. Ma"
+  ],
+  [
+   "non capisco ancora da dove",
+   "provenga..."
+  ]
+ ],
+ "s165.sec5.u3": [
+  [
+   "Di nuovo?! Va bene, ci penso",
+   "io!"
+  ]
+ ],
+ "s165.sec5.u4": [
+  [
+   "Oh, grazie. A proposito..."
+  ]
+ ],
+ "s165.sec5.u5": [
+  [
+   "Ho sentito che hai sconfitto",
+   "Machinedramon!"
+  ]
+ ],
+ "s165.sec5.u6": [
+  [
+   "Sì. Ma non ci capisco molto.",
+   "Sembrava una specie di",
+   "maledizione di Analogman."
+  ]
+ ],
+ "s165.sec5.u7": [
+  [
+   "Il suo rancore deve persistere",
+   "ancora, fortissimo... Beh,",
+   "forse adesso ritroveremo la"
+  ],
+  [
+   "pace."
+  ]
+ ],
+ "s165.sec5.u8": [
+  [
+   "Se Machinedramon torna, lo",
+   "batteremo di nuovo. Sarà come",
+   "una festa annuale. Divertente,"
+  ],
+  [
+   "no?"
+  ]
+ ],
+ "s165.sec5.u9": [
+  [
+   "Ah ah, mi rassicuri. Ah,",
+   "giusto, prendi questo come",
+   "ringraziamento. È cresciuto per"
+  ],
+  [
+   "caso alla fattoria della carne."
+  ]
+ ],
+ "s165.sec5.u10": [
+  [
+   "Uau, un {color 6}Melone stramaturo{color 1}?"
+  ]
+ ],
+ "s165.sec5.u11": [
+  [
+   "Ops, ho la borsa piena."
+  ]
+ ],
+ "s165.sec5.u12": [
+  [
+   "Lo prendo, grazie!"
+  ]
+ ],
+ "s165.sec5.u13": [
+  [
+   "Ah, sei arrivato! È una",
+   "questione importante, una cosa",
+   "che posso chiedere solo a te."
+  ]
+ ],
+ "s165.sec5.u14": [
+  [
+   "Eheh, figurati. Allora, cos'è",
+   "questa storia del ritorno di",
+   "Analogman?"
+  ]
+ ],
+ "s165.sec5.u15": [
+  [
+   "Mh, lo sento. Qualcosa con la",
+   "sua stessa presenza maligna.",
+   "Ma non riesco a capire da dove"
+  ],
+  [
+   "provenga..."
+  ]
+ ],
+ "s165.sec5.u16": [
+  [
+   "Va bene, ci penso io! Lo",
+   "troverò e lo sconfiggerò."
+  ]
+ ],
+ "s165.sec5.u17": [
+  [
+   "Oh, grazie. A proposito..."
+  ]
+ ],
+ "s165.sec7.u0": [
+  [
+   "Sembra che Yuramon abbia",
+   "sentito nuove voci."
+  ]
+ ],
+ "s165.sec7.u1": [
+  [
+   "Ah sì, Yuramon dice di",
+   "conoscere nuove voci."
+  ]
+ ],
+ "s165.sec7.u2": [
+  [
+   "La città è sempre più vivace, e",
+   "anche i discorsi in giro stanno",
+   "un po' cambiando."
+  ]
+ ],
+ "s165.sec7.u3": [
+  [
+   "{color 6}{player}{color 1}, il tuo modo di",
+   "affrontare le avventure è",
+   "piuttosto insolito, sai."
+  ]
+ ],
+ "s165.sec20.u0": [
+  [
+   "Dunque hai ripreso",
+   "conoscenza... Mi dispiace",
+   "tanto, ragazzo mio."
+  ]
+ ],
+ "s165.sec85.m0.o0": "Usalo",
+ "s165.sec85.m0.o1": "Non usarlo",
+ "s165.sec85.u0": [
+  [
+   "Oh? Cos'è questa macchina?"
+  ]
+ ],
+ "s165.sec85.u1": [
+  [
+   "Mh, quella? È la {color 4}macchina di",
+   "salvataggio dei dati di",
+   "battaglia su Memory Card{color 1}."
+  ],
+  [
+   "Registra i dati del tuo attuale",
+   "compagno per le battaglie.",
+   "Premi {color 6}×{color 1} lì davanti e segui le"
+  ],
+  [
+   "istruzioni."
+  ]
+ ],
+ "s165.sec85.u2": [
+  [
+   "Usare la {color 4}macchina di",
+   "salvataggio dei dati di",
+   "battaglia{color 1}?"
+  ]
+ ],
+ "s166.sec5.u0": [
+  [
+   "Stanno lavorando tutti così",
+   "duramente!"
+  ]
+ ],
+ "s166.sec6.u0": [
+  [
+   "Sembra che non ci sia niente."
+  ]
+ ],
+ "s166.sec7.u0": [
+  [
+   "Airdramon è addormentato. . ."
+  ]
+ ],
+ "s166.sec60.u0": [
+  [
+   "Mh, sembra che per ora stia",
+   "bene."
+  ]
+ ],
+ "s166.sec60.u1": [
+  [
+   "Fiuu, meno male..."
+  ]
+ ],
+ "s166.sec60.u2": [
+  [
+   "Anche per il suo bene, dobbiamo",
+   "sconfiggere il loro capo al più",
+   "presto."
+  ]
+ ],
+ "s166.sec60.u3": [
+  [
+   "...Lo so, lo so."
+  ]
+ ],
+ "s178.sec5.u0": [
+  [
+   "Ah, arrivi al momento giusto!",
+   "Ho un favore importante da",
+   "chiederti, una cosa che solo tu"
+  ],
+  [
+   "puoi fare."
+  ]
+ ],
+ "s178.sec5.u1": [
+  [
+   "Di cosa si tratta?"
+  ]
+ ],
+ "s178.sec5.u2": [
+  [
+   "L'ho appena avvertita di nuovo:",
+   "la stessa presenza maligna di",
+   "Analogman e Machinedramon. Ma"
+  ],
+  [
+   "non capisco ancora da dove",
+   "provenga..."
+  ]
+ ],
+ "s178.sec5.u3": [
+  [
+   "Di nuovo?! Va bene, ci penso",
+   "io!"
+  ]
+ ],
+ "s178.sec5.u4": [
+  [
+   "Oh, grazie. A proposito..."
+  ]
+ ],
+ "s178.sec5.u5": [
+  [
+   "Ho sentito che hai sconfitto",
+   "Machinedramon!"
+  ]
+ ],
+ "s178.sec5.u6": [
+  [
+   "Sì. Ma non ci capisco molto.",
+   "Sembrava una specie di",
+   "maledizione di Analogman."
+  ]
+ ],
+ "s178.sec5.u7": [
+  [
+   "Il suo rancore deve persistere",
+   "ancora, fortissimo... Beh,",
+   "forse adesso ritroveremo la"
+  ],
+  [
+   "pace."
+  ]
+ ],
+ "s178.sec5.u8": [
+  [
+   "Se Machinedramon torna, lo",
+   "batteremo di nuovo. Sarà come",
+   "una festa annuale. Divertente,"
+  ],
+  [
+   "no?"
+  ]
+ ],
+ "s178.sec5.u9": [
+  [
+   "Ah ah, mi rassicuri. Ah,",
+   "giusto, prendi questo come",
+   "ringraziamento. È cresciuto per"
+  ],
+  [
+   "caso alla fattoria della carne."
+  ]
+ ],
+ "s178.sec5.u10": [
+  [
+   "Uau, un {color 6}Melone stramaturo{color 1}?"
+  ]
+ ],
+ "s178.sec5.u11": [
+  [
+   "Ops, ho la borsa piena."
+  ]
+ ],
+ "s178.sec5.u12": [
+  [
+   "Lo prendo, grazie!"
+  ]
+ ],
+ "s178.sec5.u13": [
+  [
+   "Ah, sei arrivato! È una",
+   "questione importante, una cosa",
+   "che posso chiedere solo a te."
+  ]
+ ],
+ "s178.sec5.u14": [
+  [
+   "Eheh, figurati. Allora, cos'è",
+   "questa storia del ritorno di",
+   "Analogman?"
+  ]
+ ],
+ "s178.sec5.u15": [
+  [
+   "Mh, lo sento. Qualcosa con la",
+   "sua stessa presenza maligna.",
+   "Ma non riesco a capire da dove"
+  ],
+  [
+   "provenga..."
+  ]
+ ],
+ "s178.sec5.u16": [
+  [
+   "Va bene, ci penso io! Lo",
+   "troverò e lo sconfiggerò."
+  ]
+ ],
+ "s178.sec5.u17": [
+  [
+   "Oh, grazie. A proposito..."
+  ]
+ ],
+ "s178.sec5.u18": [
+  [
+   "Ah, ehm. Insieme ai Digimon che",
+   "torneranno, ricostruirò File",
+   "City."
+  ]
+ ],
+ "s178.sec5.u19": [
+  [
+   "Voglio costruire negozi utili a",
+   "te e a {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s178.sec5.u20": [
+  [
+   "Per cominciare... Vediamo.",
+   "Perché non esplori la Foresta",
+   "natia, appena fuori città?"
+  ]
+ ],
+ "s178.sec6.u0": [
+  [
+   "E' per te. Buona fortuna."
+  ]
+ ],
+ "s178.sec6.u1": [
+  [
+   "Hai ricevuto oggetti di ogni",
+   "tipo!"
+  ]
+ ],
+ "s178.sec6.u2": [
+  [
+   "Per vedere gli oggetti, premi",
+   "{color 5}△{color 1}, scegli Oggetti, poi",
+   "esaminali con {color 6}×{color 1}."
+  ]
+ ],
+ "s178.sec6.u3": [
+  [
+   "Sembra che Yuramon abbia",
+   "sentito nuove voci."
+  ]
+ ],
+ "s178.sec6.u4": [
+  [
+   "Ah sì, Yuramon dice di",
+   "conoscere nuove voci."
+  ]
+ ],
+ "s178.sec6.u5": [
+  [
+   "La città è sempre più vivace, e",
+   "anche i discorsi in giro stanno",
+   "un po' cambiando."
+  ]
+ ],
+ "s178.sec6.u6": [
+  [
+   "Ti spiego le basi del nostro",
+   "mondo! Un giorno ha 24 ore:",
+   "mattina, giorno e notte. Forse"
+  ],
+  [
+   "ti sembrerà un po' veloce. Un",
+   "anno dura 30 giorni. I mesi?",
+   "Cosa sono? Le stagioni...? Si"
+  ],
+  [
+   "mangiano? Certo che abbiamo dei",
+   "soldi. Si chiamano Bit. Non",
+   "sono mai abbastanza! Su"
+  ],
+  [
+   "quest'isola, \"la città\" è",
+   "questa qui, anche se ci sono",
+   "alcuni piccoli centri e"
+  ],
+  [
+   "villaggi. Ah, l'orologio: il",
+   "punto giallo indica l'ora e la",
+   "lancetta i minuti. Mezzanotte è"
+  ],
+  [
+   "in alto, mezzogiorno in basso.",
+   "Il rosso a sinistra è la sera:",
+   "dalle 16 alle 20. Il viola a"
+  ],
+  [
+   "destra è il mattino: dalle 4",
+   "alle 8. I Digimon hanno i loro",
+   "orari. Quasi tutti si alzano al"
+  ],
+  [
+   "mattino e dormono di notte, ma",
+   "non tutti. Se non trovi un",
+   "Digimon che vuoi incontrare,"
+  ],
+  [
+   "prova a tornare a un'altra ora."
+  ]
+ ],
+ "s178.sec7.u0": [
+  [
+   "Vai spesso a parlare con",
+   "Tsunomon e Yuramon, va bene?"
+  ]
+ ],
+ "s178.sec7.u1": [
+  [
+   "Ti spiego il livello del",
+   "Domatore! Più è alto, più",
+   "statistiche un Digimon"
+  ],
+  [
+   "trasmette quando muore di",
+   "vecchiaia. All'inizio sale",
+   "poco, ma continua ad allevare"
+  ],
+  [
+   "Digimon e aumenterà un po' alla",
+   "volta, va bene?"
+  ]
+ ],
+ "s178.sec7.u2": [
+  [
+   "Quando usi una tecnica finale,",
+   "premi ripetutamente L1 e R1",
+   "come si deve? Con la barra"
+  ],
+  [
+   "piena infliggi il doppio dei",
+   "danni rispetto a una barra",
+   "vuota. Il doppio!"
+  ]
+ ],
+ "s178.sec7.u3": [
+  [
+   "Ti spiego come vivono i",
+   "Digimon! Prima di tutto,",
+   "ovviamente, mangiano. Quando"
+  ],
+  [
+   "hanno fame, te lo fanno sapere.",
+   "Poi fanno i bisogni: meglio",
+   "portarli in bagno appena"
+  ],
+  [
+   "possibile. Quando hanno sonno,",
+   "dormono. Aspettano che sia tu,",
+   "{color 6}{player}{color 1}, a dirglielo, ma"
+  ],
+  [
+   "prima lo fai, meglio è. Si",
+   "stancano, si ammalano e",
+   "diventano scontrosi. Sono"
+  ],
+  [
+   "piuttosto delicati, sai? I",
+   "Digimon hanno un cuore",
+   "selvaggio: a volte vanno lodati"
+  ],
+  [
+   "e a volte sgridati. Qualunque",
+   "cosa tu faccia, osserva bene il",
+   "tuo Digimon e prenditene cura."
+  ]
+ ],
+ "s178.sec20.u0": [
+  [
+   "Dunque hai ripreso",
+   "conoscenza... Mi dispiace",
+   "tanto, ragazzo mio."
+  ]
+ ],
+ "s178.sec82.m0.o0": "Riposa un po'",
+ "s178.sec82.m0.o1": "Non riposare",
+ "s178.sec82.u0": [
+  [
+   "Punimon non c'è, ma posso",
+   "riposare lo stesso."
+  ]
+ ],
+ "s178.sec82.u1": [
+  [
+   "{color 7}Punimon {color 1}",
+   "Sono Punimon! Perché non ti",
+   "riposi un po' qui?"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "Un'ora di riposo recupera un",
+   "po' di HP e MP e riduce un",
+   "po' la stanchezza."
+  ]
+ ],
+ "s178.sec85.m0.o0": "Usalo",
+ "s178.sec85.m0.o1": "Non usarlo",
+ "s178.sec85.u0": [
+  [
+   "Eh, cos'è questa macchina?"
+  ]
+ ],
+ "s178.sec85.u1": [
+  [
+   "Mh, quella? È la {color 4}macchina di",
+   "salvataggio dei dati di",
+   "battaglia su Memory Card{color 1}."
+  ],
+  [
+   "Registra i dati del tuo attuale",
+   "compagno per le battaglie.",
+   "Premi {color 6}×{color 1} lì davanti e segui le"
+  ],
+  [
+   "istruzioni."
+  ]
+ ],
+ "s178.sec85.u2": [
+  [
+   "Usare la {color 4}macchina di",
+   "salvataggio dei dati di",
+   "battaglia{color 1}?"
+  ]
+ ]
+}

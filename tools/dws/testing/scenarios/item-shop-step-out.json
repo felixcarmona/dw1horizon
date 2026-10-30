@@ -1,0 +1,16 @@
+{
+  "name": "item-shop-step-out",
+  "doc": "Item Shop (screen 216) with Patamon: step on the exit tile 51 (walk cutscene, then WARP_TO 189 (File City)).",
+  "setup": { "triggers": { "231": 1, "65": 1 } },
+  "pre": [
+    "warp 216 0",
+    "until screen==216 and free max 2500",
+    "wait 30"
+  ],
+  "run": [
+    "move 250 -1850",
+    "until screen==189 and free max 2500"
+  ],
+  "max_frames": 5000,
+  "expect": {"digest": "9eb36885e685fe521e7626bdaab0d836b50d67b1", "instructions": 86}
+}

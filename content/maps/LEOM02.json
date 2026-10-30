@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP8/LEOM02.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Drimogemon158",
+      "at": [479, -1851],
+      "facing": 1000,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [48, 46, 255, 255],
+      "prios": [70, 30, 0, 0],
+      "flee": [-1992, 166],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

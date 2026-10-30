@@ -1,0 +1,39 @@
+From dab1548a8e9095dfa7d6b15d4d83d624055f81ab Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 21:56:45 +0000
+Subject: [PATCH 102/105] Font: the save prompt's Yes/No rows in the original's
+ cells
+
+The in-world save question ("Do you want to save?", case 18 of the US drawMainMenuStrings) and the card prompt of
+case 21 drew STR_YES_NO_SPACED / STR_YES_NO with drawString, but their screens cut the row at the original's offsets:
+with a font placed to the pixel the N of No landed in the Yes piece ("Yes N" over "lo"). Patch 0099 converted the
+other Yes/No rows of the save screens; these two were left.
+---
+ src/main/main_menu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 96f5147..d722dc0 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2249,7 +2249,7 @@ void drawMainMenuStrings(int32_t menu)
+ 	case 18:
+ 		drawString(MAIN_D_80131568, 0, 0);
+ 		DrawSync(0);
+-		drawString(STR_YES_NO_SPACED, 0, 0xC);
++		DRAW_STRING_CELLS(STR_YES_NO_SPACED, 0, 0xC); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	case 19:
+ 		strcpy(buf, PARTNER_ENTITY.name);
+@@ -2277,7 +2277,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801315EC, 0, 0x18);
+ 		DrawSync(0);
+-		drawString(STR_YES_NO, 0, 0x24);
++		DRAW_STRING_CELLS(STR_YES_NO, 0, 0x24); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	}
+ #endif
+-- 
+2.53.0
+

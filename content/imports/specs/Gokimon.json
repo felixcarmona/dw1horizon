@@ -1,0 +1,102 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M171GOKI",
+ "type": 332,
+ "name": "Gokimon",
+ "source": {
+  "type": 5,
+  "mmd": "extracted/CHDAT/MMD0/GREY.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 15,
+  "3": 18,
+  "4": 22,
+  "5": 23,
+  "6": 25,
+  "8": 19,
+  "9": 21,
+  "10": 7,
+  "14": 11,
+  "17": 14,
+  "18": 12,
+  "19": 13,
+  "20": 1,
+  "21": 8,
+  "22": 9,
+  "25": 3,
+  "26": 6,
+  "27": 4,
+  "28": 5
+ },
+ "hips": [
+  1,
+  1,
+  1.025
+ ],
+ "root_scale": 1.025,
+ "tol": 14,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 50,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 50,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x3a": {
+   "anim": "anim_12",
+   "start": 0,
+   "end": 66,
+   "speed": 1.07,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 230
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x31",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ],
+ "scale": 0.116044,
+ "hub_roots": true,
+ "quad_angle": 15.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

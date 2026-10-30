@@ -1,0 +1,88 @@
+// Readable form of script 210 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 210 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 77;
+
+    on enter replace {    // section 254
+        goto sec51;
+    }
+
+    on step(0) replace {    // section 51
+        store_digimon_type(partner_type);
+        if (partner_type in [1, 2, 3, 4]) {
+            jump_to_file(221, 5);
+        }
+        if (partner_type in [15, 16, 17, 18]) {
+            jump_to_file(221, 5);
+        }
+        if (partner_type in [29, 30, 31, 32]) {
+            jump_to_file(221, 5);
+        }
+        if (partner_type in [43, 44, 45, 46]) {
+            jump_to_file(221, 5);
+        }
+        if (!greymon_challenge_ready && !is_recruited(species("Greymon")) && engine.prosperity >= 15) {
+            greymon_challenge_ready = true;
+        }
+        if (!mt_infinity_entrance_found && engine.prosperity >= 50 && is_recruited(species("Greymon"))) {
+            mt_infinity_entrance_found = true;
+            say(slot0, text("s210.sec51.u0"));
+            say(tamer, text("s210.sec51.u1"));
+            say(slot0, text("s210.sec51.u2"));
+            say(tamer, text("s210.sec51.u3"));
+            say(slot0, text("s210.sec51.u4"));
+            say(tamer, text("s210.sec51.u5"));
+            say(slot0, text("s210.sec51.u6"));
+            say(tamer, text("s210.sec51.u7"));
+            say(slot0, text("s210.sec51.u8"));
+            return;
+        }
+        if (mt_infinity_entrance_found && !engine.game_beaten && is_recruited(species("Greymon"))) {
+            say(slot0, text("s210.sec51.u9"));
+            say(slot0, text("s210.sec51.u10"));
+        }
+        jump_to_file(221, 5);
+    }
+
+    on step(26) replace {    // section 77
+        say(slot0, text("s210.sec77.u0"));
+        if (engine.prosperity <= 10) {
+            say(slot0, text("s210.sec77.u1"));
+            return;
+        }
+        if (engine.prosperity <= 30) {
+            say(slot0, text("s210.sec77.u2"));
+            return;
+        }
+        if (engine.prosperity <= 50) {
+            say(slot0, text("s210.sec77.u3"));
+            return;
+        }
+        if (engine.prosperity <= 70) {
+            say(slot0, text("s210.sec77.u4"));
+            return;
+        }
+        if (engine.prosperity <= 99) {
+            say(slot0, text("s210.sec77.u5"));
+            return;
+        }
+        if (engine.prosperity <= 100) {
+            say(slot0, text("s210.sec77.u6"));
+            if (stat(21) != 10 && !is_recruited(species("Tsunomon"))) {
+                add_stat(21, 1);
+                say(narrator, text("s210.sec77.u7"));
+                recruit(species("Tsunomon"));
+                medal.town_flourishing = true;
+                sound(0, 7);
+                say(narrator, text("s210.sec77.u8"));
+            }
+        }
+        return;
+    }
+}

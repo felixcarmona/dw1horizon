@@ -1,0 +1,372 @@
+// Readable form of script 136 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+script 136 {
+    npc whamon = 5;
+    npc slot1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 61, 60, 6, 81;
+
+    on enter replace {    // section 254
+        if (is_recruited(species("Whamon"))) {
+            set_obj_visibility(105, 1);
+            set_obj_visibility(106, 1);
+            set_obj_visibility(107, 1);
+            set_obj_visibility(108, 1);
+            set_obj_visibility(109, 1);
+            set_obj_visibility(39, 1);
+            set_obj_visibility(40, 1);
+            set_obj_visibility(41, 1);
+            set_obj_visibility(42, 1);
+            set_obj_visibility(43, 1);
+            set_obj_visibility(44, 1);
+            set_obj_visibility(45, 1);
+            set_obj_visibility(46, 1);
+            set_obj_visibility(47, 1);
+            set_obj_visibility(48, 1);
+            set_obj_visibility(49, 1);
+            set_obj_visibility(50, 1);
+            set_obj_visibility(51, 1);
+            set_obj_visibility(52, 1);
+            set_obj_visibility(53, 1);
+            set_obj_visibility(54, 1);
+            set_obj_visibility(55, 1);
+            set_obj_visibility(56, 1);
+            set_obj_visibility(24, 0);
+            set_obj_visibility(25, 0);
+            set_obj_visibility(26, 0);
+            set_obj_visibility(27, 0);
+            set_obj_visibility(28, 0);
+        }
+        if (is_recruited(species("Whamon"))) {
+            entity_move_to(whamon, 1457, 2916, 2, 0);
+            wait(10);
+        }
+    }
+
+    on step(10) replace {    // section 61
+        entity_move_to(whamon, 1457, 2916, 2, 0);
+        wait(10);
+    }
+
+    on step(9) replace {    // section 60
+        entity_move_to_axis(tamer, -150, 1, 1);
+        entity_move_to_axis(partner, -150, 1, 1);
+        wait(1s);
+        sound(8, 3);
+        entity_move_to(whamon, 1457, 2916, 30, 0);
+        wait(10);
+        camera_to(651, 406, speed: 99);
+        wait(2s);
+        set_obj_visibility(105, 0);
+        set_obj_visibility(106, 0);
+        set_obj_visibility(107, 0);
+        set_obj_visibility(108, 0);
+        set_obj_visibility(109, 0);
+        engine.object = 105;
+        engine.animation = 5;
+        call_routine(routine("reset_object_animation"));
+        wait(30);
+        entity_move_to_axis(tamer, 0, 1, 1);
+        entity_move_to_axis(partner, 0, 1, 1);
+        await tamer;
+        await partner;
+        entity_move_to(tamer, 734, 2222, 1, 0);
+        entity_move_to(partner, 839, 2689, 1, 0);
+        wait(1s);
+        run(tamer, 832, 804);
+        run(partner, 300, 805);
+        await tamer;
+        await partner;
+        wait(10);
+        camera_on(tamer, speed: 20);
+        await camera;
+        say(tamer, text("s136.sec60.u0"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(slot1) replace {    // section 6
+        set_obj_visibility(105, 0);
+        set_obj_visibility(106, 0);
+        set_obj_visibility(107, 0);
+        set_obj_visibility(108, 0);
+        set_obj_visibility(109, 0);
+        engine.object = 105;
+        engine.animation = 5;
+        call_routine(routine("reset_object_animation"));
+        load_digimon(species(154));
+        set_digimon(species(154), 1, 0);
+        entity_move_to(whamon, 1457, 2916, 1, 0);
+        face(tamer, whamon);
+        wait(5);
+        say(tamer, text("s136.sec6.u0"));
+        say(slot1, text("s136.sec6.u1"));
+        face(slot1, tamer);
+        wait(5);
+        say(slot1, text("s136.sec6.u2"));
+        camera_to(1116, 2183, speed: 15);
+        await camera;
+        set_obj_visibility(105, 1);
+        set_obj_visibility(106, 1);
+        set_obj_visibility(107, 1);
+        set_obj_visibility(108, 1);
+        set_obj_visibility(109, 1);
+        sound(8, 5);
+        animate(whamon, 31);
+        wait(1s);
+        animate(slot1, anim.idle);
+        camera_on(tamer, speed: 10);
+        await camera;
+        set_obj_visibility(105, 0);
+        set_obj_visibility(106, 0);
+        set_obj_visibility(107, 0);
+        set_obj_visibility(108, 0);
+        set_obj_visibility(109, 0);
+        engine.object = 105;
+        engine.animation = 5;
+        call_routine(routine("reset_object_animation"));
+        entity_move_to(whamon, 1457, 2916, 1, 0);
+        animate(slot1, 40);
+        wait(1s);
+        animate(slot1, anim.idle);
+        say(slot1, text("s136.sec6.u3"));
+        say(tamer, text("s136.sec6.u4"));
+        run(tamer, 830, 813);
+        run(partner, 473, 481);
+        await tamer;
+        await partner;
+        face(tamer, slot1);
+        face(partner, slot1);
+        camera_to(212, 958, speed: 10);
+        await camera;
+        say(tamer, text("s136.sec6.u5"));
+        walk(slot1, 212, 958);
+        await slot1;
+        face(slot1, tamer);
+        say(slot1, text("s136.sec6.u6"));
+        say(tamer, text("s136.sec6.u7"));
+        say(slot1, text("s136.sec6.u8"));
+        sound(8, 6);
+        run(slot1, -381, 1112);
+        await slot1;
+        face(slot1, tamer);
+        await slot1;
+        say(slot1, text("s136.sec6.u9"));
+        camera_to(-28, 1976, speed: 30);
+        await camera;
+        await slot1;
+        run(slot1, -28, 1976);
+        await slot1;
+        sound(8, 2);
+        remove(slot1);
+        wait(25);
+        set_obj_visibility(39, 1);
+        set_obj_visibility(40, 1);
+        set_obj_visibility(41, 1);
+        set_obj_visibility(42, 1);
+        set_obj_visibility(43, 1);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        set_obj_visibility(46, 1);
+        set_obj_visibility(47, 1);
+        set_obj_visibility(48, 1);
+        set_obj_visibility(49, 1);
+        set_obj_visibility(50, 1);
+        set_obj_visibility(51, 1);
+        set_obj_visibility(52, 1);
+        set_obj_visibility(53, 1);
+        set_obj_visibility(54, 1);
+        set_obj_visibility(55, 1);
+        set_obj_visibility(56, 1);
+        set_obj_visibility(24, 0);
+        set_obj_visibility(25, 0);
+        set_obj_visibility(26, 0);
+        set_obj_visibility(27, 0);
+        set_obj_visibility(28, 0);
+        set_obj_visibility(29, 0);
+        set_obj_visibility(30, 0);
+        set_obj_visibility(31, 0);
+        set_obj_visibility(32, 0);
+        set_obj_visibility(33, 0);
+        set_obj_visibility(34, 0);
+        set_obj_visibility(35, 0);
+        set_obj_visibility(36, 0);
+        set_obj_visibility(37, 0);
+        set_obj_visibility(38, 0);
+        wait(2s);
+        sound(8, 3);
+        move_object_to(0, 29, 1, 5, 80, 197);
+        move_object_to(1, 30, 1, 5, 96, 133);
+        move_object_to(2, 31, 1, 5, 160, 277);
+        move_object_to(3, 32, 1, 5, 112, 101);
+        move_object_to(4, 33, 1, 5, 160, 149);
+        move_object_to(5, 34, 1, 5, 64, 213);
+        move_object_to(6, 35, 1, 5, 96, 277);
+        move_object_to(7, 36, 1, 5, 160, 369);
+        move_object_to(8, 37, 1, 5, 176, 181);
+        move_object_to(9, 38, 1, 5, 224, 261);
+        wait(6);
+        move_object_to(0, 29, 1, 5, 80, 192);
+        move_object_to(1, 30, 1, 5, 96, 128);
+        move_object_to(2, 31, 1, 5, 160, 272);
+        move_object_to(3, 32, 1, 5, 112, 96);
+        move_object_to(4, 33, 1, 5, 160, 144);
+        move_object_to(5, 34, 1, 5, 64, 208);
+        move_object_to(6, 35, 1, 5, 96, 272);
+        move_object_to(7, 36, 1, 5, 160, 364);
+        move_object_to(8, 37, 1, 5, 176, 176);
+        move_object_to(9, 38, 1, 5, 224, 256);
+        wait(6);
+        sound(8, 3);
+        move_object_to(0, 29, 1, 5, 80, 197);
+        move_object_to(1, 30, 1, 5, 96, 133);
+        move_object_to(2, 31, 1, 5, 160, 277);
+        move_object_to(3, 32, 1, 5, 112, 101);
+        move_object_to(4, 33, 1, 5, 160, 149);
+        move_object_to(5, 34, 1, 5, 64, 213);
+        move_object_to(6, 35, 1, 5, 96, 277);
+        move_object_to(7, 36, 1, 5, 160, 369);
+        move_object_to(8, 37, 1, 5, 176, 181);
+        move_object_to(9, 38, 1, 5, 224, 261);
+        wait(6);
+        move_object_to(0, 29, 1, 5, 80, 192);
+        move_object_to(1, 30, 1, 5, 96, 128);
+        move_object_to(2, 31, 1, 5, 160, 272);
+        move_object_to(3, 32, 1, 5, 112, 96);
+        move_object_to(4, 33, 1, 5, 160, 144);
+        move_object_to(5, 34, 1, 5, 64, 208);
+        move_object_to(6, 35, 1, 5, 96, 272);
+        move_object_to(7, 36, 1, 5, 160, 364);
+        move_object_to(8, 37, 1, 5, 176, 176);
+        move_object_to(9, 38, 1, 5, 224, 256);
+        wait(6);
+        sound(8, 3);
+        move_object_to(0, 29, 1, 5, 80, 197);
+        move_object_to(1, 30, 1, 5, 96, 133);
+        move_object_to(2, 31, 1, 5, 160, 277);
+        move_object_to(3, 32, 1, 5, 112, 101);
+        move_object_to(4, 33, 1, 5, 160, 149);
+        move_object_to(5, 34, 1, 5, 64, 213);
+        move_object_to(6, 35, 1, 5, 96, 277);
+        move_object_to(7, 36, 1, 5, 160, 369);
+        move_object_to(8, 37, 1, 5, 176, 181);
+        move_object_to(9, 38, 1, 5, 224, 261);
+        wait(6);
+        move_object_to(0, 29, 1, 5, 80, 192);
+        move_object_to(1, 30, 1, 5, 96, 128);
+        move_object_to(2, 31, 1, 5, 160, 272);
+        move_object_to(3, 32, 1, 5, 112, 96);
+        move_object_to(4, 33, 1, 5, 160, 144);
+        move_object_to(5, 34, 1, 5, 64, 208);
+        move_object_to(6, 35, 1, 5, 96, 272);
+        move_object_to(7, 36, 1, 5, 160, 364);
+        move_object_to(8, 37, 1, 5, 176, 176);
+        move_object_to(9, 38, 1, 5, 224, 256);
+        wait(6);
+        sound(8, 4);
+        move_object_to(0, 29, 1, 5, 80, 197);
+        move_object_to(1, 30, 1, 5, 96, 133);
+        move_object_to(2, 31, 1, 5, 160, 277);
+        move_object_to(3, 32, 1, 5, 112, 101);
+        move_object_to(4, 33, 1, 5, 160, 149);
+        move_object_to(5, 34, 1, 5, 64, 213);
+        move_object_to(6, 35, 1, 5, 96, 277);
+        move_object_to(7, 36, 1, 5, 160, 369);
+        move_object_to(8, 37, 1, 5, 176, 181);
+        move_object_to(9, 38, 1, 5, 224, 261);
+        wait(6);
+        move_object_to(0, 29, 1, 5, 80, 192);
+        move_object_to(1, 30, 1, 5, 96, 128);
+        move_object_to(2, 31, 1, 5, 160, 272);
+        move_object_to(3, 32, 1, 5, 112, 96);
+        move_object_to(4, 33, 1, 5, 160, 144);
+        move_object_to(5, 34, 1, 5, 64, 208);
+        move_object_to(6, 35, 1, 5, 96, 272);
+        move_object_to(7, 36, 1, 5, 160, 364);
+        move_object_to(8, 37, 1, 5, 176, 176);
+        move_object_to(9, 38, 1, 5, 224, 256);
+        wait(10);
+        sound(8, 4);
+        move_object_to(0, 29, 1, 100, -420, 392);
+        move_object_to(1, 30, 1, 100, -404, 328);
+        move_object_to(2, 31, 1, 100, -340, 472);
+        move_object_to(3, 32, 1, 100, -388, 296);
+        move_object_to(4, 33, 1, 100, -340, 344);
+        move_object_to(5, 34, 1, 100, -436, 408);
+        move_object_to(6, 35, 1, 100, -404, 472);
+        move_object_to(7, 36, 1, 100, -340, 564);
+        move_object_to(8, 37, 1, 100, -424, 376);
+        move_object_to(9, 38, 1, 100, -276, 556);
+        wait(4s);
+        camera_on(tamer, speed: 10);
+        await camera;
+        say(tamer, text("s136.sec6.u10"));
+        say(tamer, text("s136.sec6.u11"));
+        walk(tamer, 705, 1585, camera: true);
+        walk(partner, 740, 1100);
+        say(tamer, text("s136.sec6.u12"));
+        say(whamon, text("s136.sec6.u13"));
+        say(whamon, text("s136.sec6.u14"));
+        say(tamer, text("s136.sec6.u15"));
+        say(whamon, text("s136.sec6.u16"));
+        say(tamer, text("s136.sec6.u17"));
+        say(whamon, text("s136.sec6.u18"));
+        say(tamer, text("s136.sec6.u19"));
+        say(whamon, text("s136.sec6.u20"));
+        sound(8, 11);
+        say(narrator, text("s136.sec6.u21"));
+        recruit(species("Whamon"));
+        engine.prosperity += 2;
+        warp_to(135, 0, 255);
+    }
+
+    on use(1) replace {    // section 81
+        say(whamon, text("s136.sec81.u0"));
+        choice {
+            text("s136.sec81.m0.o0") => {
+                if (!is_recruited(species("Agumon"))) {
+                    warp_to(204, 0, 255);
+                }
+                if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+                    if (!is_recruited(species("Birdramon"))) {
+                        if (is_recruited(species("Vegiemon"))) {
+                            warp_to(170, 0, 255);
+                        }
+                        if (is_recruited(species("Palmon"))) {
+                            warp_to(169, 0, 255);
+                        }
+                        warp_to(168, 0, 255);
+                    }
+                    if (is_recruited(species("Vegiemon"))) {
+                        warp_to(173, 0, 255);
+                    }
+                    if (is_recruited(species("Palmon"))) {
+                        warp_to(172, 0, 255);
+                    }
+                    warp_to(171, 0, 255);
+                }
+                if (!is_recruited(species("Birdramon"))) {
+                    if (is_recruited(species("Vegiemon"))) {
+                        warp_to(176, 0, 255);
+                    }
+                    if (is_recruited(species("Palmon"))) {
+                        warp_to(175, 0, 255);
+                    }
+                    warp_to(174, 0, 255);
+                }
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(179, 0, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(178, 0, 255);
+                }
+                warp_to(177, 0, 255);
+            }
+            text("s136.sec81.m0.o1") or cancel => {}
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+ "s025.sec5.u0": [
+  [
+   "Los, streng dich an!"
+  ]
+ ],
+ "s025.sec5.u1": [
+  [
+   "Du bist nicht von hier!"
+  ]
+ ],
+ "s025.sec51.u0": [
+  [
+   "Du hast die Erde entleert."
+  ]
+ ],
+ "s025.sec52.u0": [
+  [
+   "Ups, ich muss Drimogemon die",
+   "Erdkiste zurückgeben!"
+  ]
+ ],
+ "s032.sec52.u0": [
+  [
+   "He, wir sind fast durch!"
+  ]
+ ],
+ "s032.sec52.u1": [
+  [
+   "He, da bist du ja! Der Tunnel",
+   "ist endlich durch!"
+  ]
+ ],
+ "s032.sec52.u2": [
+  [
+   "Wir werden nicht mehr den Berg",
+   "überqueren müssen. Vielen",
+   "Dank."
+  ]
+ ],
+ "s032.sec52.u3": [
+  [
+   "Nein, ich muss dir danken.",
+   "Gegen diesen großen Fels",
+   "konnte ich nichts ausrichten."
+  ]
+ ],
+ "s032.sec52.u4": [
+  [
+   "Aber... was soll ich jetzt",
+   "machen?"
+  ]
+ ],
+ "s032.sec52.u5": [
+  [
+   "Dann komm in die Stadt. Dort",
+   "findest du bestimmt etwas zu",
+   "tun!"
+  ]
+ ],
+ "s032.sec52.u6": [
+  [
+   "Oh, ich habe noch jede Menge",
+   "Tatendrang. Ich nehme dein",
+   "Angebot an!"
+  ]
+ ],
+ "s032.sec52.u7": [
+  [
+   "Wir sind fast durch, warte nur",
+   "ab!"
+  ]
+ ],
+ "s032.sec52.u8": "Drimogemon ist in die Stadt gezogen!"
+}

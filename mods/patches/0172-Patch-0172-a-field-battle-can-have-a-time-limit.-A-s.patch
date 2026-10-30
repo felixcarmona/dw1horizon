@@ -1,0 +1,81 @@
+From 62175de1837147acf4e55caadac4f63f064a26cb Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 17:25:12 +0000
+Subject: [PATCH] Patch 0172: a field battle can have a time limit. A script
+ sets pstat 242 to the seconds before START_BATTLE (0 = none, cleared by the
+ battle); when it runs out with the partner standing the battle ends as
+ survived (result 1) and pstat 241 reads 1; the battle ticks 20 times a second
+ at both frame rates
+
+---
+ include/dw/pstat.h    |  4 ++++
+ src/btl/battle_main.c | 19 +++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/include/dw/pstat.h b/include/dw/pstat.h
+index 89d27125..3c4fabaa 100644
+--- a/include/dw/pstat.h
++++ b/include/dw/pstat.h
+@@ -264,5 +264,9 @@
+ #define PSTAT_TOURNAMENT_ID		PSTAT_3
+ #define PSTAT_TOURNAMENT_DIGIMON	PSTAT_4
+ #define PSTAT_SUKAMON_BACKUP_DIGIMON	PSTAT_5
++/* MOD (timed battle): a script sets a field battle's time limit in seconds before START_BATTLE (0 = none); when it runs
++   out with both sides standing the battle ends and PSTAT_BATTLE_TIMED_OUT reads 1 (both are not saved) */
++#define PSTAT_BATTLE_TIMED_OUT		PSTAT_241
++#define PSTAT_BATTLE_TIME_LIMIT		PSTAT_242
+ 
+ #endif
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index f9dd2d5b..b1d02b6c 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -9,6 +9,8 @@
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+ #include <dw/ids.h>
++#include <dw/pstat.h> /* MOD (timed battle) */
++#include <dw/script.h>
+ #include <dw/item.h>
+ #include <dw/math.h>
+ #include <dw/mod_present.h>
+@@ -1827,12 +1829,25 @@ int32_t BTL_battleMain(void)
+ {
+ 	COMBAT_AREA_X = 0xa0 - DRAWING_OFFSET_X;
+ 	COMBAT_AREA_Y = 0x78 - DRAWING_OFFSET_Y;
++	int32_t timeLimit; /* MOD (timed battle) */
++	int32_t timedOut;
++
++	timeLimit = readPStat(PSTAT_BATTLE_TIME_LIMIT) * 20;
++	timedOut = 0;
++	writePStat(PSTAT_BATTLE_TIME_LIMIT, 0);
++	writePStat(PSTAT_BATTLE_TIMED_OUT, 0);
+ 	BTL_initializeCombat();
+ 	BTL_handleBattleIntro();
+ 	for (;;) {
+ 		if (BTL_isBattleFinished() != 0) {
+ 			break;
+ 		}
++		if ((timeLimit > 0) && (BATTLE_FRAME_COUNT >= timeLimit) &&
++		    (PARTNER_ENTITY.digimonEntity.stats.current.currentHP - COMBAT_DATA_PTR->fighter[0].hpDamageBuffer > 0)) {
++			timedOut = 1;
++			writePStat(PSTAT_BATTLE_TIMED_OUT, 1);
++			break;
++		}
+ 		BTL_tickPartnerAI();
+ 		BTL_tickEnemyAI();
+ 		BTL_tickFighterStates();
+@@ -1844,6 +1859,10 @@ int32_t BTL_battleMain(void)
+ 
+ 	removePauseBox();
+ 	BTL_deinitializeCombat();
++	if (timedOut) { /* the time ran out: a battle survived, neither lost nor fled */
++		COMBAT_DATA_PTR->player.currentCommand[0] = 0;
++		return 1;
++	}
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentHP == 0) {
+ 		COMBAT_DATA_PTR->player.currentCommand[0] = 0;
+ 		return -1;
+-- 
+2.53.0
+

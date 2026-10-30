@@ -1,0 +1,91 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M218SHAK",
+ "type": 283,
+ "name": "Shakomon",
+ "source": {
+  "type": 24,
+  "mmd": "extracted/CHDAT/MMD0/HOEE.MMD"
+ },
+ "map": {
+  "2": 5,
+  "3": 2
+ },
+ "hips": [
+  1,
+  1,
+  0.662
+ ],
+ "root_scale": 0.662,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x38": {
+   "anim": "I0",
+   "speed": 1.11,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 134
+  },
+  "0x37": {
+   "anim": "H0",
+   "speed": 0.86,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 134
+  },
+  "0x30": {
+   "anim": "G0",
+   "speed": 1.65,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 134
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

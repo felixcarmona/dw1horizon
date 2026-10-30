@@ -1,0 +1,97 @@
+{
+ "s026.sec5.u0": "¡Je, je, je, gracias por las molestias!",
+ "s026.sec5.u1": "¿Qué pasa? ¿Buscas pelea?",
+ "s026.sec6.u0": "¡Vaya, vaya, gracias por venir!",
+ "s026.sec6.u1": "¡Déjame en paz!",
+ "s026.sec7.u0": "¡No te pases de la raya!",
+ "s026.sec7.u1": "¡Venga, a por mí!",
+ "s026.sec9.u0": "¡Vale, vale, me rindo!",
+ "s026.sec10.u0": "El jefe se ha largao sin más...",
+ "s026.sec51.u0": "¡Gue, je, je! ¡Si queréis pasar por aquí, panda de mocosos, dejad todas vuestras cosas!",
+ "s026.sec51.u1": "Tú y yo ya nos conocemos desde hace mucho, ¿eh?",
+ "s026.sec51.u2": "¡Ngh! ¡Otra vez vosotros, panda de mocosos...!",
+ "s026.sec51.u3": [
+  [
+   "¡Eso digo yo! Esconderte en un sitio tan fácil",
+   "de encontrar..."
+  ],
+  [
+   "¡Parece que ya estás listo para el final!"
+  ]
+ ],
+ "s026.sec51.u4": "¡Fua, ja, ja! ¿Listo, dices? ¡Ahora vais a ver lo que pasa cuando me pongo serio!",
+ "s026.sec51.u5": "¡Acabemos con esto!",
+ "s026.sec51.u6": "...¿Por qué... no puedo ganar...?",
+ "s026.sec51.u7": "¿Qué te pasa? ¿No vas a salir corriendo?",
+ "s026.sec51.u8": "Estoy hecho polvo...",
+ "s026.sec51.u9": ".........",
+ "s026.sec51.u10": [
+  [
+   "Me hice bandido porque pensé que esta isla",
+   "estaba acabada..."
+  ],
+  [
+   "Así que, total, podía hacer lo que me diera",
+   "la gana..."
+  ]
+ ],
+ "s026.sec51.u11": "¿Sabías que la isla estaba en apuros?",
+ "s026.sec51.u12": [
+  [
+   "Pues claro. Pero luego aparecisteis",
+   "tipos como vosotros..."
+  ],
+  [
+   "Unirme ahora a todos sería de lo más",
+   "patético..."
+  ]
+ ],
+ "s026.sec51.u13": "No, no lo sería. Vente a la ciudad.",
+ "s026.sec51.u14": [
+  [
+   "No sirve de nada... Un tipo como yo no le",
+   "sirve a nadie..."
+  ],
+  [
+   "Además, no hay manera de que me perdonen..."
+  ]
+ ],
+ "s026.sec51.u15": "¡¡¡Calla ya!!! ¡¡¡Deja de lloriquear y vente!!!",
+ "s026.sec51.u16": "¡Tú SÍ sirves! ¡Ahora mismo en esta isla no sobra nadie! ¡Todos somos iguales!",
+ "s026.sec51.u17": "¡¡¡!!!",
+ "s026.sec51.u18": "¿Salvarse...? ¿¡Esta isla se puede salvar!? Vosotros la vais a salvar, ¿verdad? ¿¡Eh!?",
+ "s026.sec51.u19": "¡¡¡Pues claro que sí!!! ...Sabes dónde está la ciudad, ¿no?",
+ "s026.sec51.u20": "¡Ohhhhh! ¡Espérame, trabajo nuevo!",
+ "s026.sec51.u21": "¡Ogremon se ha unido a la ciudad!",
+ "s026.sec52.u0": "¡Uy! ¡La salida no es por aquí!",
+ "s026.sec52.u1": "¡Uy! ¡Tengo que devolverle a Drimogemon su caja de tierra!",
+ "s026.sec53.u0": "¡Uy! ¡La salida no es por aquí!",
+ "s026.sec53.u1": "¡Uy! ¡Tengo que devolverle a Drimogemon su caja de tierra!",
+ "s030.sec5.u0": [
+  [
+   "¡Mecachis, hemos dao con una roca muy dura!"
+  ],
+  [
+   "Ni un servidor puede cavar a través de esto."
+  ]
+ ],
+ "s030.sec5.u1": "¿Qué, no puedes? ¡Venga ya!",
+ "s030.sec5.u2": "Lo único que queda es apartarla como sea... ¿Os atrevéis?",
+ "s030.sec5.u3": "¿¡Mmm!?",
+ "s030.sec5.u4": "¡{color 10}{partner}{color 1}, cuento contigo!",
+ "s030.sec5.u5": "¡Lo hemos conseguido!",
+ "s030.sec5.u6": "¡Hala, qué fuerza! ¡La roca se ha movido!",
+ "s030.sec5.u7": "Parece que ahí detrás está hueco...",
+ "s030.sec5.u8": [
+  [
+   "¡Hala, un río de lava! Cuidado, cuidado."
+  ],
+  [
+   "Hay un camino por la orilla que sigue hacia",
+   "dentro... ¡Vamos!"
+  ]
+ ],
+ "s030.sec5.u9": "Eh, ¿vais a entrar ahí? ¡Tened cuidado!",
+ "s030.sec5.u10": "Eh, ¿vais a entrar ahí? ¡Tened cuidado!",
+ "s030.sec5.u11": "No hay manera... Vuelve cuando {color 10}{partner}{color 1} haya crecido un poco más."
+}

@@ -1,0 +1,119 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Hey, {color 6}{player}{color 1}! Ich habe",
+   "begonnen, Drimogemon zu helfen."
+  ],
+  [
+   "Ich bin ziemlich gut darin,",
+   "Dinge zu finden!"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Bitte erklären",
+ "s169.sec81.m0.o1": "Keine Erklärung nötig",
+ "s169.sec81.m0.o2": "Nichts. Vielen Dank.",
+ "s169.sec81.m1.o0": "Schatzsuche starten",
+ "s169.sec81.m1.o1": "Noch mal erklären",
+ "s169.sec81.m1.o2": "Nein, das ist alles",
+ "s169.sec81.m2.o0": "Normalplan: 1000 Bits",
+ "s169.sec81.m2.o1": "Sonderplan: 5000 Bits",
+ "s169.sec81.m2.o2": "Abbrechen",
+ "s169.sec81.u0": [
+  [
+   "He, willkommen, {color 6}{player}{color 1}!",
+   "Hier ist die Schatzsuche. Ich",
+   "setze meine Grabkünste ein und"
+  ],
+  [
+   "hole Schätze aus dem Boden.",
+   "Das ist mein Geschäft! Auf",
+   "dieser Insel liegen überall"
+  ],
+  [
+   "Schätze aller Art vergraben.",
+   "Überlass das mir!"
+  ]
+ ],
+ "s169.sec81.u1": [
+  [
+   "Na, Lust auf eine",
+   "Schatzsuche? Soll ich dir erst",
+   "erklären, wie es geht?"
+  ]
+ ],
+ "s169.sec81.u2": [
+  [
+   "Du zahlst im Voraus und ich",
+   "finde dir einen Schatz. Es gibt",
+   "zwei Angebote. Normal: drei"
+  ],
+  [
+   "Tage für 1000 Bits. Spezial:",
+   "zehn Tage für 5000 Bits. Mit",
+   "Spezial hast du bessere"
+  ],
+  [
+   "Chancen auf tolle Schätze! Das",
+   "war's. Was darf es sein?"
+  ]
+ ],
+ "s169.sec81.u3": [
+  [
+   "Gut, wähle ein Angebot!"
+  ]
+ ],
+ "s169.sec81.u4": [
+  [
+   "Okay. Wir sehen uns später!"
+  ]
+ ],
+ "s169.sec81.u5": [
+  [
+   "Gut, in drei Tagen gibt es",
+   "Ergebnisse. Ich gebe mein",
+   "Bestes!"
+  ]
+ ],
+ "s169.sec81.u6": [
+  [
+   "Gut, in zehn Tagen gibt es",
+   "Ergebnisse. Ich gebe mein",
+   "Bestes!"
+  ]
+ ],
+ "s169.sec81.u7": [
+  [
+   "Du hast zu wenig Bits. Selbst",
+   "ich kann ohne Startkapital",
+   "keine Schätze suchen."
+  ]
+ ],
+ "s169.sec81.u8": [
+  [
+   "Ich bin gerade auf",
+   "Schatzsuche. Hab noch etwas",
+   "Geduld."
+  ]
+ ],
+ "s169.sec81.u9": [
+  [
+   "Hey! Dein Schatz ist gekommen!"
+  ]
+ ],
+ "s169.sec81.u10": [
+  [
+   "Mach erst Platz in deiner",
+   "Tasche!"
+  ]
+ ],
+ "s169.sec81.u11": [
+  [
+   "{color 6}{item 110}{color 1} erhalten!"
+  ]
+ ],
+ "s169.sec81.u12": [
+  [
+   "Danke für deinen Auftrag!"
+  ]
+ ]
+}

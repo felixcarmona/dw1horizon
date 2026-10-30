@@ -1,0 +1,217 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+maphead {
+    section(1230) replace {    // section 1230 (literal)
+        goto l7;
+        goto l1;
+        goto l2;
+        goto l3;
+        goto l8;
+        goto l9;
+        goto l4;
+        goto l5;
+        goto l10;
+        goto l11;
+        goto l12;
+        goto l13;
+        goto l6;
+        goto l14;
+        show_textbox(text("m1230.u0"));
+        shared L359:
+        show_textbox(text("m1230.u1"));
+        shared L360:
+        l1:
+        show_textbox(text("m1230.u2"));
+        shared L361:
+        l2:
+        show_textbox(text("m1230.u3"));
+        shared L362:
+        l3:
+        show_textbox(text("m1230.u4"));
+        shared L363:
+        show_textbox(text("m1230.u5"));
+        shared L364:
+        show_textbox(text("m1230.u6"));
+        shared L365:
+        l4:
+        show_textbox(text("m1230.u7"));
+        shared L366:
+        l5:
+        show_textbox(text("m1230.u8"));
+        shared L367:
+        show_textbox(text("m1230.u9"));
+        shared L368:
+        show_textbox(text("m1230.u10"));
+        shared L369:
+        show_textbox(text("m1230.u11"));
+        shared L370:
+        show_textbox(text("m1230.u12"));
+        shared L371:
+        l6:
+        show_textbox(text("m1230.u13"));
+        shared L372:
+        show_textbox(text("m1230.u14"));
+        shared L373:
+        show_textbox(text("m1230.u15"));
+        shared L374:
+        show_textbox(text("m1230.u16"));
+        shared L375:
+        show_textbox(text("m1230.u17"));
+        shared L376:
+        show_textbox(text("m1230.u18"));
+        shared L377:
+        show_textbox(text("m1230.u19"));
+        shared L378:
+        show_textbox(text("m1230.u20"));
+        shared L379:
+        show_textbox(text("m1230.u21"));
+        shared L380:
+        show_textbox(text("m1230.u22"));
+        shared L381:
+        show_textbox(text("m1230.u23"));
+        shared L382:
+        show_textbox(text("m1230.u24"));
+        shared L383:
+        show_textbox(text("m1230.u25"));
+        shared L384:
+        show_textbox(text("m1230.u26"));
+        shared L385:
+        show_textbox(text("m1230.u27"));
+        shared L386:
+        show_textbox(text("m1230.u28"));
+        shared L387:
+        show_textbox(text("m1230.u29"));
+        shared L388:
+        show_textbox(text("m1230.u30"));
+        shared L389:
+        show_textbox(text("m1230.u31"));
+        shared L390:
+        show_textbox(text("m1230.u32"));
+        shared L391:
+        show_textbox(text("m1230.u33"));
+        shared L392:
+        show_textbox(text("m1230.u34"));
+        shared L393:
+        show_textbox(text("m1230.u35"));
+        shared L394:
+        show_textbox(text("m1230.u36"));
+        shared L395:
+        show_textbox(text("m1230.u37"));
+        shared L396:
+        show_textbox(text("m1230.u38"));
+        shared L397:
+        show_textbox(text("m1230.u39"));
+        shared L398:
+        show_textbox(text("m1230.u40"));
+        shared L399:
+        show_textbox(text("m1230.u41"));
+        shared L400:
+        show_textbox(text("m1230.u42"));
+        shared L401:
+        show_textbox(text("m1230.u43"));
+        shared L402:
+        show_textbox(text("m1230.u44"));
+        shared L403:
+        show_textbox(text("m1230.u45"));
+        shared L404:
+        show_textbox(text("m1230.u46"));
+        shared L405:
+        show_textbox(text("m1230.u47"));
+        shared L406:
+        show_textbox(text("m1230.u48"));
+        shared L407:
+        show_textbox(text("m1230.u49"));
+        shared L408:
+        show_textbox(text("m1230.u50"));
+        shared L409:
+        show_textbox(text("m1230.u51"));
+        shared L410:
+        show_textbox(text("m1230.u52"));
+        shared L411:
+        show_textbox(text("m1230.u53"));
+        shared L412:
+        show_textbox(text("m1230.u54"));
+        shared L413:
+        show_textbox(text("m1230.u55"));
+        shared L414:
+        show_textbox(text("m1230.u56"));
+        shared L415:
+        show_textbox(text("m1230.u57"));
+        shared L416:
+        show_textbox(text("m1230.u58"));
+        shared L417:
+        show_textbox(text("m1230.u59"));
+        shared L418:
+        show_textbox(text("m1230.u60"));
+        shared L419:
+        show_textbox(text("m1230.u61"));
+        shared L420:
+        show_textbox(text("m1230.u62"));
+        shared L421:
+        show_textbox(text("m1230.u63"));
+        shared L422:
+        show_textbox(text("m1230.u64"));
+        shared L423:
+        show_textbox(text("m1230.u65"));
+        shared L424:
+        show_textbox(text("m1230.u66"));
+        shared L425:
+        show_textbox(text("m1230.u67"));
+        shared L426:
+        show_textbox(text("m1230.u68"));
+        shared L427:
+        show_textbox(text("m1230.u69"));
+        shared L428:
+        show_textbox(text("m1230.u70"));
+        shared L429:
+        show_textbox(text("m1230.u71"));
+        shared L430:
+        show_textbox(text("m1230.u72"));
+        shared L431:
+        show_textbox(text("m1230.u73"));
+        shared L432:
+        show_textbox(text("m1230.u74"));
+        shared L433:
+        show_textbox(text("m1230.u75"));
+        shared L434:
+        show_textbox(text("m1230.u76"));
+        shared L435:
+        show_textbox(text("m1230.u77"));
+        shared L436:
+        show_textbox(text("m1230.u78"));
+        shared L437:
+        show_textbox(text("m1230.u79"));
+        shared L438:
+        show_textbox(text("m1230.u80"));
+        shared L439:
+        show_textbox(text("m1230.u81"));
+        shared L440:
+        show_textbox(text("m1230.u82"));
+        shared L441:
+        show_textbox(text("m1230.u83"));
+        shared L442:
+        show_textbox(text("m1230.u84"));
+        shared L443:
+        show_textbox(text("m1230.u85"));
+        shared L444:
+        show_textbox(text("m1230.u86"));
+        l7:
+        show_textbox(text("m1230.u87"));
+        l8:
+        show_textbox(text("m1230.u88"));
+        l9:
+        show_textbox(text("m1230.u89"));
+        l10:
+        show_textbox(text("m1230.u90"));
+        l11:
+        show_textbox(text("m1230.u91"));
+        l12:
+        show_textbox(text("m1230.u92"));
+        l13:
+        show_textbox(text("m1230.u93"));
+        l14:
+        show_textbox(text("m1230.u94"));
+        end_section();
+    }
+}

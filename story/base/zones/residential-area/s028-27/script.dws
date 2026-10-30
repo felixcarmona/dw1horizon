@@ -1,0 +1,71 @@
+// Readable form of script 28 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 28 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        if (!drimogemon_calmed) {
+            animate(drimogemon, 28);
+        }
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        if (is_recruited(species("Ogremon"))) {
+            say(drimogemon, text("s028.sec5.u0"));
+            return;
+        }
+        if (!drimogemon_calmed) {
+            animate(drimogemon, 28);
+            sound(8, 10);
+            say(drimogemon, text("s028.sec5.u1"));
+            animate(drimogemon, 28);
+            animate(tamer, 16);
+            wait(1s);
+            say(tamer, text("s028.sec5.u2"));
+            sound(8, 10);
+            say(drimogemon, text("s028.sec5.u3"));
+            battle(foes: [drimogemon]);
+            face(tamer, drimogemon);
+            face(drimogemon, tamer);
+            face(partner, drimogemon);
+            say(drimogemon, text("s028.sec5.u4"));
+            animate(tamer, 25);
+            wait(1s);
+            say(tamer, text("s028.sec5.u5"));
+            say(drimogemon, text("s028.sec5.u6"));
+            say(drimogemon, text("s028.sec5.u7"));
+            animate(tamer, 16);
+            wait(1s);
+            say(tamer, text("s028.sec5.u8"));
+            say(drimogemon, text("s028.sec5.u9"));
+            animate(tamer, 19);
+            wait(1s);
+            say(tamer, text("s028.sec5.u10"));
+            say(drimogemon, text("s028.sec5.u11"));
+            wait(10);
+            animate(tamer, anim.idle);
+            loop {
+                walk(drimogemon, 1061, -767);
+                unless (glances < 3) break;
+                glances += 1;
+                wait(1s);
+                face(tamer, drimogemon);
+                face(partner, drimogemon);
+            }
+            glances = 0;
+            await drimogemon;
+            camera_on(tamer, speed: 10);
+            await camera;
+            drimogemon_calmed = true;
+            return;
+        }
+        say(drimogemon, text("s028.sec5.u12"));
+        return;
+    }
+}

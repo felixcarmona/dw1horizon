@@ -1,0 +1,71 @@
+{
+ "s029.sec51.m0.o0": "¡Lo haré!",
+ "s029.sec51.m0.o1": "Lo siento, otro día",
+ "s029.sec51.m1.o0": "¡Lo haré!",
+ "s029.sec51.m1.o1": "Lo siento, otro día",
+ "s029.sec51.u0": [
+  [
+   "¡Buenas! Parece que ya habéis sacao casi toda",
+   "la tierra."
+  ],
+  [
+   "Gracias a ti, la obra va de maravilla. Espera",
+   "un poquito más."
+  ]
+ ],
+ "s029.sec51.u1": "Oh, buen trabajo. Aquí tienes tu paga.",
+ "s029.sec51.u2": [
+  [
+   "¡Has ganado 500 Bits!"
+  ],
+  [
+   "¡Los HP suben 50!",
+   "¡El Ataque sube 5!",
+   "¡La Defensa sube 5!"
+  ]
+ ],
+ "s029.sec51.u3": "Tira la tierra fuera del túnel.",
+ "s029.sec51.u4": "Venga, coge un poco de ese montón de tierra de ahí.",
+ "s029.sec51.u5": [
+  [
+   "Mmm, ¿vas a acarrear tierra?"
+  ],
+  [
+   "Estás hecho polvo. Descansa primero y luego",
+   "vuelve."
+  ]
+ ],
+ "s029.sec51.u6": "Mmm, ¿vas a acarrear tierra?",
+ "s029.sec51.u7": "¿Quién eres? Esto es peligroso para los aficionados, así que no te acerques.",
+ "s029.sec51.u8": "¿Quién eres? Este túnel todavía no está abierto. No estorbes.",
+ "s029.sec51.u9": "Ah, perdona. ¿Cuándo crees que estará abierto?",
+ "s029.sec51.u10": "¿Quién sabe? Todavía falta un buen rato.",
+ "s029.sec51.u11": "Mmm, qué problema... ¿No podemos hacer nada para ayudar?",
+ "s029.sec51.u12": [
+  [
+   "Eh, oye, ¿me quieres quitar la diversión?"
+  ],
+  [
+   "Espera... acarrear tierra, eso hasta vosotros",
+   "podríais hacerlo."
+  ]
+ ],
+ "s029.sec51.u13": "Ah, ¿de qué se trata?",
+ "s029.sec51.u14": "Ahí está la tierra que ha cavao un servidor. Llévala fuera del túnel y tírala.",
+ "s029.sec51.u15": "Es un trabajo bastante duro, así que te lo pagaré. 500 Bits por cada viaje de ida y vuelta.",
+ "s029.sec51.u16": "La excavación va más rápido, me pagan... y encima es entrenamiento... ¡Esto puede estar bien...!",
+ "s029.sec51.u17": [
+  [
+   "Cómo acarrear tierra",
+   "Ponte ante la tierra y pulsa",
+   "{color 6}×{color 1} para coger una caja."
+  ],
+  [
+   "Sal del túnel y se vacía sola.",
+   "Tras cada viaje de ida y",
+   "vuelta, habla con Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": "¿Qué pasa, te rajas?",
+ "s029.sec81.u0": "Has cogido una caja de tierra."
+}

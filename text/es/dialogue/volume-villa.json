@@ -1,0 +1,137 @@
+{
+ "s135.sec5.u0": "¿Así que vosotros sois {color 6}{player}{color 1} y {color 10}{partner}{color 1}? ¡Bienvenidos a Villa Volume!",
+ "s135.sec5.u1": "...... Siento que nos metiéramos con Otamamon.",
+ "s135.sec5.u2": "Eso no tiene importancia.",
+ "s135.sec5.u3": "¿Eh?",
+ "s135.sec5.u4": "Os estoy agradecido a ambos. He oído hablar de todo lo que habéis hecho por salvar la isla.",
+ "s135.sec5.u5": "¿Ah, sí?",
+ "s135.sec5.u6": [
+  [
+   "Yo también quería echaros una",
+   "mano. ¿Habéis ido ya al bosque",
+   "del norte, la Arboleda Misty?"
+  ]
+ ],
+ "s135.sec5.u7": "Todavía no.",
+ "s135.sec5.u8": "Ya he estado.",
+ "s135.sec5.u9": [
+  [
+   "Una niebla cubre ese lugar, así",
+   "que avanzar será difícil."
+  ],
+  [
+   "Pero deberíais conocer a",
+   "Cherrymon, el anciano de ese",
+   "bosque."
+  ]
+ ],
+ "s135.sec5.u10": "¿Cherrymon? Nunca he oído hablar de ese Digimon...",
+ "s135.sec5.u11": [
+  [
+   "La niebla de la Arboleda Misty",
+   "es obra de Cherrymon."
+  ],
+  [
+   "Él conoce los disturbios de la",
+   "isla y crea la niebla para",
+   "proteger el bosque."
+  ]
+ ],
+ "s135.sec5.u12": "Pues a nosotros nos fastidia, la verdad.",
+ "s135.sec5.u13": [
+  [
+   "Cherrymon parece saber algo de",
+   "lo que hay tras los disturbios."
+  ],
+  [
+   "Merece la pena verlo, aunque",
+   "haya que cruzar la niebla."
+  ]
+ ],
+ "s135.sec5.u14": "Si al menos pudiéramos hacer algo con la niebla...",
+ "s135.sec5.u15": [
+  [
+   "La niebla no se irá a menos que",
+   "Cherrymon la detenga. Pero",
+   "hay una manera."
+  ],
+  [
+   "Os pondré un hechizo."
+  ]
+ ],
+ "s135.sec5.u16": "¿Y qué hará?",
+ "s135.sec5.u17": "Podréis ver el camino, incluso en la niebla.",
+ "s135.sec5.u18": "¡Qué guay!",
+ "s135.sec5.u19": "Empecemos, pues, sin demora.",
+ "s135.sec5.u20": "¡¡Croac-croac-croooac!!",
+ "s135.sec5.u21": "Listo, ya está. Id ahora mismo a la Arboleda Misty.",
+ "s135.sec5.u22": "Ya lo he visto. Y la niebla ya ha desaparecido.",
+ "s135.sec5.u23": [
+  [
+   "¿¡Q-qué!? Impresionante. Mmm,",
+   "¿y cómo puedo ayudaros",
+   "entonces...?"
+  ],
+  [
+   "Ah, ya sé. Os daré esto."
+  ]
+ ],
+ "s135.sec5.u24": "¡Has conseguido una {color 6}Digilubina{color 1}!",
+ "s135.sec5.u25": "Tira algo para hacer sitio.",
+ "s135.sec5.u26": "Es algo valioso. Os será de utilidad.",
+ "s135.sec5.u27": "Gracias. Por cierto, ¿tú no vienes a la ciudad, Señoría?",
+ "s135.sec5.u28": [
+  [
+   "Soy el jefe de los cien Gekomon",
+   "del Pantano Geko. Por",
+   "desgracia, no puedo."
+  ],
+  [
+   "Pero os ayudaré cuanto pueda",
+   "desde aquí. Volved cuando",
+   "queráis."
+  ]
+ ],
+ "s135.sec6.u0": "Solo se puede pescar a la orilla del Lago Dragon Eye.",
+ "s135.sec6.u1": "¡Inclinaos, inclinaos!",
+ "s135.sec7.u0": [
+  [
+   "Su Señoría colecciona rarezas.",
+   "Antes, objetos; ahora le",
+   "chiflan las cartas Digimon."
+  ]
+ ],
+ "s135.sec7.u1": "A quien le traiga una carta rara le da puntos de Mérito.",
+ "s135.sec7.u2": "Luego puedes cambiar los Méritos que hayas ahorrado por objetos.",
+ "s135.sec8.u0": "Esto... No, nada, croac.",
+ "s135.sec8.u1": "¡Esto...! ¡Quiero ir a la ciudad, croac!",
+ "s135.sec8.u2": "Claro, vale, pero ¿qué te pasa?",
+ "s135.sec8.u3": [
+  [
+   "Quiero pelear en el Coliseo,",
+   "croac. Parece que nos toman",
+   "por unos paletos, croac..."
+  ],
+  [
+   "¡Pero los paletos tenemos",
+   "orgullo, croac! Por favor, te",
+   "lo suplico, croac."
+  ]
+ ],
+ "s135.sec8.u4": "Ya veo. Te entiendo... Pues venga, dalo todo.",
+ "s135.sec8.u5": "¡Gekomon se ha unido al Coliseo!",
+ "s135.sec81.u0": "Pareces preocupado. Sí, sí, ya lo sé. Es por el disfraz, ¿no es así?",
+ "s135.sec81.u1": "¡Anda! ¿Lo sabes?",
+ "s135.sec81.u2": "No me subestimes. Bien, el disfraz. Numemon puede ponérselo, ¿sabes? ¿Sorprendido? Y aún hay más: cuando se lo pone... increíblemente......! Bueno, no se pierde nada por probar.",
+ "s135.sec81.u3": [
+  [
+   "Mmm, eso me recuerda que la",
+   "{color 6}Caña increíble{color 1} es un objeto",
+   "especial, así que la quitaré"
+  ],
+  [
+   "de tus objetos."
+  ]
+ ],
+ "s135.sec81.u4": "¡Esfuérzate!"
+}

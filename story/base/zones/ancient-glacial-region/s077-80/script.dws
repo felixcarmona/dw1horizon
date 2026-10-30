@@ -1,0 +1,71 @@
+// Readable form of script 77 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 77 {
+    npc vermilimon0 = 5;
+    npc yanmamon1 = 6;
+    npc vermilimon2 = 7;
+    npc yanmamon3 = 8;
+    npc vermilimon4 = 9;
+    npc vermilimon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 30, 89);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 8) {
+            spawn_item(item("Digimushrm"), 55, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 13) {
+            spawn_item(item("Digimushrm"), 26, 52);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Red Berry"), 44, 17);
+        }
+    }
+
+    on talk(vermilimon0) replace {    // section 5
+        say(vermilimon0, text("s077.sec5.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(yanmamon1) replace {    // section 6
+        say(yanmamon1, text("s077.sec6.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(vermilimon2) replace {    // section 7
+        say(vermilimon2, text("s077.sec7.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(yanmamon3) replace {    // section 8
+        say(yanmamon3, text("s077.sec8.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(vermilimon4) replace {    // section 9
+        say(vermilimon4, text("s077.sec9.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(vermilimon5) replace {    // section 10
+        say(vermilimon5, text("s077.sec10.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+        return;
+    }
+}

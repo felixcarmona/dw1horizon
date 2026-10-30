@@ -1,0 +1,84 @@
+From 78432557bb8d5b91c8009f9d3f230d3ba3fa42b7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 07:15:15 +0000
+Subject: [PATCH] Patch 0203: the finisher gauge reads REMATE! in Spanish: its
+ segments are the letters of BI_IN.TIM's FINISH!!, so their u / w / x are per
+ language (BTL_, STD_, VS_FINISHER_SEGMENT_U/W/X: R E M A T E ! in 7, 6, 9, 7,
+ 6, 6, 5 pixels, the eighth empty), the Spanish texture drawn by
+ tools/localize/textures/misc build.py finish
+
+---
+ src/btl/battle_hud.c | 8 ++++++++
+ src/std/std_hud.c    | 8 ++++++++
+ src/vs/vs_hud.c      | 8 ++++++++
+ 3 files changed, 24 insertions(+)
+
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index f7822628..0690a0d1 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -132,9 +132,17 @@ uint8_t BTL_DEATH_COUNTDOWN_DIGIT_V[4] = { 0xa8, 0x90, 0x90, 0x80 };
+ 
+ MESSAGES_TEXT
+ 
++/* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
++ * (tools/localize/textures/misc build.py finish), its eighth segment empty */
++#if MOD_LANG_BUILD == MOD_LANG_ES
++uint8_t BTL_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++uint8_t BTL_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
++uint8_t BTL_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++#else
+ uint8_t BTL_FINISHER_SEGMENT_U[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
+ uint8_t BTL_FINISHER_SEGMENT_W[8] = { 6, 4, 8, 4, 8, 8, 5, 5 };
+ uint8_t BTL_FINISHER_SEGMENT_X[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
++#endif
+ 
+ int16_t BTL_FINISHER_CHARGEUP_POS[2];
+ int8_t BTL_COMMAND_MENU_ACTIVE;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 3d95c28a..6f3446a0 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -542,9 +542,17 @@ int16_t STD_WIN_X_CURVE[18] = {
+ 
+ char STD_PATH_STDDAT_DRAW_TMD[] = "\\STDDAT\\DRAW.TMD";
+ 
++/* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
++ * (tools/localize/textures/misc build.py finish), its eighth segment empty */
++#if MOD_LANG_BUILD == MOD_LANG_ES
++uint8_t STD_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++uint8_t STD_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
++uint8_t STD_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++#else
+ uint8_t STD_FINISHER_SEGMENT_U[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
+ uint8_t STD_FINISHER_SEGMENT_W[8] = { 6, 4, 8, 4, 8, 8, 5, 5 };
+ uint8_t STD_FINISHER_SEGMENT_X[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
++#endif
+ char *STD_VERSUS_MODEL_PATH = STD_PATH_STDDAT_DRAW_TMD;
+ int16_t STD_VERSUS_MODEL_TARGET_X[4] = { -273, -86, 94, 272 };
+ 
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 2dc56a84..f144af98 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -540,9 +540,17 @@ char VS_PATH_STDDAT_DRAW_TMD[] = "\\STDDAT\\DRAW.TMD";
+ 
+ uint8_t VS_COMMAND_LABEL_U[5] = { 0, 11, 25, 39, 50 };
+ uint8_t VS_COMMAND_LABEL_W[5] = { 11, 14, 14, 11, 11 };
++/* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
++ * (tools/localize/textures/misc build.py finish), its eighth segment empty */
++#if MOD_LANG_BUILD == MOD_LANG_ES
++uint8_t VS_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++uint8_t VS_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
++uint8_t VS_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
++#else
+ uint8_t VS_FINISHER_SEGMENT_U[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
+ uint8_t VS_FINISHER_SEGMENT_W[8] = { 6, 4, 8, 4, 8, 8, 5, 5 };
+ uint8_t VS_FINISHER_SEGMENT_X[8] = { 0, 6, 10, 18, 22, 30, 38, 43 };
++#endif
+ char *VS_VERSUS_MODEL_PATH = VS_PATH_STDDAT_DRAW_TMD;
+ int16_t VS_VERSUS_MODEL_TARGET_X[4] = { -273, -86, 94, 272 };
+ 
+-- 
+2.53.0
+

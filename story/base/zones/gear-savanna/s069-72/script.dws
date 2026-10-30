@@ -1,0 +1,108 @@
+// Readable form of script 69 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 69 {
+    npc patamon = 5;
+    npc shimaunimon = 6;
+    npc shamamon2 = 7;
+    npc shamamon3 = 8;
+    npc shamamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 12) {
+            spawn_item(item("Digimushrm"), 44, 56);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 8) {
+            spawn_item(item("Digimushrm"), 74, 50);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 1) {
+            spawn_item(item("Happymushrm"), 45, 46);
+        }
+    }
+
+    on talk(patamon) replace {    // section 5
+        sound(8, 7);
+        say(patamon, text("s069.sec5.u0"));
+        battle(foes: [patamon]);
+        face(tamer, patamon);
+        face(patamon, tamer);
+        face(partner, patamon);
+        say(patamon, text("s069.sec5.u1"));
+        choice {
+            text("s069.sec5.m0.o0") => {
+                battle(foes: [patamon]);
+                face(tamer, patamon);
+                face(patamon, tamer);
+                face(partner, patamon);
+                say(patamon, text("s069.sec5.u2"));
+                animate(tamer, 16);
+                choice {
+                    text("s069.sec5.m1.o0") => {
+                        battle(foes: [patamon]);
+                        face(tamer, patamon);
+                        face(patamon, tamer);
+                        face(partner, patamon);
+                        wait(5);
+                        animate(patamon, 28);
+                        sound(8, 7);
+                        wait(2s);
+                        say(patamon, text("s069.sec5.u3"));
+                        animate(tamer, 8);    // slot 8: the tamer settling the partner to sleep (partner.c:287)
+                        say(tamer, text("s069.sec5.u4"));
+                        animate(patamon, anim.idle);
+                        animate(tamer, anim.idle);
+                        say(patamon, text("s069.sec5.u5"));
+                        say(tamer, text("s069.sec5.u6"));
+                        say(patamon, text("s069.sec5.u7"));
+                        animate(tamer, 19);
+                        say(tamer, text("s069.sec5.u8"));
+                        say(patamon, text("s069.sec5.u9"));
+                        walk_away(patamon, -1673, 122, looks: 10, pause: 10);
+                        join_city_camera(patamon, species("Patamon"), 8, 5, text("s069.sec5.u10"));
+                        return;
+                    }
+                    text("s069.sec5.m1.o1") or cancel => {}
+                }
+            }
+            text("s069.sec5.m0.o1") or cancel => {}
+        }
+        say(patamon, text("s069.sec5.u11"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(shimaunimon) replace {    // section 6
+        say(shimaunimon, text("s069.sec6.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(shamamon2) replace {    // section 7
+        say(shamamon2, text("s069.sec7.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon3) replace {    // section 8
+        say(shamamon3, text("s069.sec8.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on talk(shamamon4) replace {    // section 9
+        say(shamamon4, text("s069.sec9.u0"));
+        battle();
+        recruit(species("Shamamon"));
+        return;
+    }
+}

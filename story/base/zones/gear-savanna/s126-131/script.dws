@@ -1,0 +1,134 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 126 {
+    npc market_manager0 = 5;
+    npc market_manager1 = 6;
+    sections 254, 81, 82, 51;
+    on enter replace {    // enter
+        store_random(random_roll, 99);
+        if (random_roll <= 16) {
+            spawn_item(item(44), 49, 70);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item(69), 25, 68);
+        }
+    }
+    on use(1) replace {    // use1
+        face(market_manager0, tamer);
+        face(tamer, market_manager0);
+        if (!card_shop_free_card_received) {
+            card_shop_free_card_received = true;
+            sound(8, 4);
+            say(market_manager0, text("s126.sec81.u0"));
+            say(tamer, text("s126.sec81.u1"));
+            say(market_manager0, text("s126.sec81.u2"));
+            say(tamer, text("s126.sec81.u3"));
+            sound(8, 4);
+            say(market_manager0, text("s126.sec81.u4"));
+            say(tamer, text("s126.sec81.u5"));
+            say(narrator, text("s126.sec81.u6"));
+            give_card(0);
+            return;
+        }
+        say(market_manager0, text("s126.sec81.u7"));
+        engine.arg = 5;
+        sound(8, 4);
+        say(market_manager0, text("s126.sec81.u8"));
+        call_routine(routine("show_bits_box"));
+        loop {
+            choice {
+                text("s126.sec81.m0.o0") => {
+                    if (bits >= 500) {
+                        choice(keep) {
+                            text("s126.sec81.m1.o0") => {
+                                say(market_manager0, text("s126.sec81.u9"));
+                                engine.picker_mode = false;
+                                card_shop_buy_mode = false;
+                                call_routine(routine("card_shop"));   // asks how many packs and takes their bits (patch 0223)
+                                call_routine(routine("check_tournament_medal"));
+                            }
+                            text("s126.sec81.m1.o1") => {
+                                engine.picker_mode = false;
+                                card_shop_buy_mode = true;
+                                call_routine(routine("card_shop"));
+                                call_routine(routine("check_tournament_medal"));
+                            }
+                            text("s126.sec81.m1.o2") or cancel => {}
+                        }
+                    } else {
+                        choice(keep) {
+                            text("s126.sec81.m2.o0") => {
+                                engine.picker_mode = false;
+                                card_shop_buy_mode = true;
+                                call_routine(routine("card_shop"));
+                                call_routine(routine("check_tournament_medal"));
+                            }
+                            text("s126.sec81.m2.o1") or cancel => {}
+                        }
+                    }
+                }
+                text("s126.sec81.m0.o1") => {
+                    engine.picker_mode = true;
+                    call_routine(routine("card_shop"));
+                }
+                text("s126.sec81.m0.o2") or cancel => {
+                    break;
+                }
+            }
+            say(market_manager0, text("s126.sec81.u11"));
+        }
+        call_routine(routine("close_box2"));
+        say(market_manager0, text("s126.sec81.u12"));
+    }
+    on use(2) replace {    // use2
+        face(market_manager1, tamer);
+        face(tamer, market_manager1);
+        sound(8, 4);
+        say(market_manager1, text("s126.sec82.u0"));
+        choice {
+            text("s126.sec82.m0.o0") => {
+                shop_stock.med_recovery = true;
+                shop_stock.medium_mp = true;
+                shop_stock.auto_pilot = true;
+                shop_stock.giant_meat = true;
+                shop_stock.off_disk = true;
+                shop_stock.def_disk = true;
+                shop_stock.hispeed_dsk = true;
+                engine.picker_mode = false;
+                engine.arg = 6;
+                call_routine(routine("shop"));
+                shop_stock.med_recovery = false;
+                shop_stock.medium_mp = false;
+                shop_stock.auto_pilot = false;
+                shop_stock.giant_meat = false;
+                shop_stock.off_disk = false;
+                shop_stock.def_disk = false;
+                shop_stock.hispeed_dsk = false;
+                return;
+            }
+            text("s126.sec82.m0.o1") => {
+                engine.picker_mode = true;
+                engine.arg = 6;
+                call_routine(routine("shop"));
+                return;
+            }
+            text("s126.sec82.m0.o2") => {}
+        }
+    }
+    on step(0) replace {    // step0
+        unless (!card_shop_seen) return;
+        say(tamer, text("s126.sec51.u0"));
+        camera_to(800, 4000, speed: 30);
+        await camera;
+        say(tamer, text("s126.sec51.u1"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        card_shop_seen = true;
+        return;
+    }
+}

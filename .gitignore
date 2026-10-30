@@ -1,0 +1,62 @@
+# Disc images: never in the repository
+*.bin
+*.cue
+*.iso
+*.img
+*.chd
+*.ecm
+
+# Local environment
+.venv
+.tools
+
+# Made from the player's disc, and everything a build writes
+extracted
+build/
+
+# The text of each disc, extracted from the player's own discs (tools/dws.py extract-text): text/us/, text/jp/, ...
+# Authored translations are committed; disc extractions stay ignored.
+/text/*/
+!/text/ours/
+!/text/es/
+!/text/pt-br/
+!/text/fr/
+!/text/de/
+!/text/it/
+!/text/ja/
+!/text/ca/
+
+# Remaining private inputs: see docs/building.md
+/mods/experimental/motion/v61-models/files/
+/content/localized/signs/en/
+/content/localized/signs/es/
+/content/localized/signs/fromjp/
+/content/localized/signs/sized/
+/content/localized/tournament/en/
+/content/localized/tournament/es/
+/content/localized/tournament/sized/
+
+# story/base generator scratch
+story/base/.stamp.json
+story/.base-gen-*/
+story/.base-repro-*/
+
+# Python
+__pycache__/
+*.pyc
+
+/content/localized/signs/pt-br/
+/content/localized/signs/fr/
+/content/localized/signs/de/
+/content/localized/signs/it/
+/content/localized/signs/ja/
+/content/localized/signs/ca/
+/content/localized/tournament/pt-br/
+/content/localized/tournament/fr/
+/content/localized/tournament/de/
+/content/localized/tournament/it/
+/content/localized/tournament/ja/
+/content/localized/tournament/ca/
+
+# Showcase media is supplied only at deployment.
+/web/media/clips/

@@ -1,0 +1,295 @@
+From fefcf51020b7dfb8b8024c316c3025ccd09479fe Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 07:40:07 +0000
+Subject: [PATCH] Patch 0202: the partner's name is optional. OK works on its
+ empty keyboard (the new game's, Jijimon's rename, a rebirth's) and is never
+ grey there; the tamer's is still required. An unnamed partner carries its
+ species' name (a typed name is full-width, never equal to one), which follows
+ it through evolutions, rebirths, the vanilla swap and the roster switch
+ (modPartnerNameFollow); a rename starts empty for it. The status screen's
+ NAME field copies that name as wide as the species row (modStatusNameWidth),
+ the registration shows it without "(Species)", the VS record ends it at 13
+ letters
+
+---
+ include/dw/partner.h    |  4 ++++
+ src/evl/evl.c           |  1 +
+ src/main/evolution.c    |  1 +
+ src/main/game_menu.c    | 46 ++++++++++++++++++++++++-----------------
+ src/main/main_menu.c    | 13 +++++++++---
+ src/main/mod_lab.c      |  1 +
+ src/main/partner_impl.c | 23 +++++++++++++++++++++
+ src/shop/script_menu.c  | 18 +++++++++++++---
+ 8 files changed, 82 insertions(+), 25 deletions(-)
+
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index 797df5cb..d034ada4 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -59,5 +59,9 @@ int32_t partnerGetState(void);
+ void partnerStartAnimation(int32_t animId);
+ void callDigimonRoutine(int32_t routine);
+ int32_t getScriptSyncBit(void);
++/* MOD (optional name): an unnamed partner is called by its species, partner_impl.c */
++int32_t modPartnerNameIsSpecies(int32_t type);
++void modPartnerNameSetSpecies(int32_t type);
++void modPartnerNameFollow(int32_t from, int32_t to);
+ 
+ #endif
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index d3ccea57..682b1b91 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -1503,6 +1503,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	removeEntity(PARTNER_ENTITY.digimonEntity.entity.type, 1);
+ 	ENTITY_TABLE[1] = NULL;
+ 	thunkUnloadModel(oldType, 3);
++	modPartnerNameFollow(oldType, newId); /* MOD (optional name) */
+ 	initializeEvolvedPartner(newId, x, y, z, rx, ry, rz);
+ 	setDigimonRaised((uint16_t)newId);
+ 	if (oldLevel != DIGI_PARA(newId).level) {
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 41d51db0..b544ea21 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1358,6 +1358,7 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+   removeEntity(PARTNER_ENTITY.digimonEntity.entity.type, 1);
+   ENTITY_TABLE[1] = NULL;
+   thunkUnloadModel(previousId, 3);
++  modPartnerNameFollow(previousId, id); /* MOD (optional name) */
+   initializeReincarnatedPartner(id, 0, 0, 0, 0, 0, 0);
+   PARTNER_ENTITY.lives = modNewGame(MOD_NG_LIVES);
+   setDigimonRaised(id);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 5f9a2bb2..adbc7e7f 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -412,6 +412,24 @@ RECT EVO_CHART_NAME_AREA = { 0, 48, 200, 12 }; /* MOD (long names): was 120 wide
+ #define STATUS_NAME_W	0x78
+ #define CHART_NAME_W	0x88
+ 
++#if VERSION_IS(US)
++/* MOD (long names): the width copied from the text area for a name drawn into the status screen's field: a name that
++ * fits is copied as the original did (len * 10 pixels, cut at 0x78); a longer one was drawn tighter and is copied whole */
++static int32_t modStatusNameWidth(char *name)
++{
++	int32_t fit;
++	int32_t w;
++
++	fit = fitStringMode(name, STATUS_NAME_W);
++	if (fit == FIT_VANILLA) {
++		w = strlen(name) * 10;
++		return w >= 0x79 ? 0x78 : w;
++	}
++	w = measureStringMode(name, fit);
++	return w > STATUS_NAME_W ? STATUS_NAME_W : w; /* never over the SPECIAL icons */
++}
++#endif
++
+ /* MOD (mega): the level name of the Megas, drawn into the text area with the
+  * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
+ #define EVO_CHART_MEGA_ROW	0x48
+@@ -2475,9 +2493,6 @@ void renderDigimonStatsView(void)
+ 	int16_t special;
+ 	int16_t clut;
+ 	uint8_t frame;
+-#if VERSION_IS(US)
+-	int32_t fit; /* MOD (long names) */
+-#endif
+ 
+ 	cluts = STATS_VIEW_ELEMENT_CLUT;
+ 	switch (MENU_STATE) {
+@@ -2497,26 +2512,16 @@ void renderDigimonStatsView(void)
+ 			renderRectPolyFT4(icon->posX, icon->posY, icon->width, icon->height, icon->texX,
+ 			                  icon->texY + 0x80, 5, GetClut(0x60, cluts.v[j] + 0x1e8), 5, 0);
+ 		}
++#if !VERSION_IS(US)
+ 		renderString(0, -0x6d, -0x42, 0x48, 0xc, 0, 0x3c, 5, 0);
+ 		w = strlen(DIGIMON_NAME(ENTITY_TABLE[1]->type));
+-#if !VERSION_IS(US)
+ 		renderString(0, -0x6d, -0x33, (w / 2) * 12, 0xc, 0x9c, 0x24, 5, 0);
+ #else
+-		/* MOD (long names): a name that fits the field is copied as the original did (len * 10 pixels, cut at
+-		 * 0x78); a longer one was drawn tighter (drawDigimonStatsStrings) and is copied whole */
+-		fit = fitStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), STATUS_NAME_W);
+-		if (fit == FIT_VANILLA) {
+-			w = w * 10;
+-			if (w >= 0x79) {
+-				w = 0x78;
+-			}
+-		} else {
+-			w = measureStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), fit);
+-			if (w > STATUS_NAME_W) {
+-				w = STATUS_NAME_W; /* never over the SPECIAL icons */
+-			}
+-		}
+-		renderString(0, -0x6c, -0x32, w, 0xc, 0, 0x48, 5, 0);
++		/* MOD (optional name): an unnamed partner's name is its species', as long as the species row's */
++		renderString(0, -0x6d, -0x42, modPartnerNameIsSpecies(ENTITY_TABLE[1]->type) ? modStatusNameWidth(PARTNER_ENTITY.name) : 0x48,
++			     0xc, 0, 0x3c, 5, 0);
++		/* MOD (long names): drawn tighter by drawDigimonStatsStrings when it does not fit */
++		renderString(0, -0x6c, -0x32, modStatusNameWidth(DIGIMON_NAME(ENTITY_TABLE[1]->type)), 0xc, 0, 0x48, 5, 0);
+ #endif
+ 		renderNumber(0, -0x6d, -0x22, 2, PARTNER_PARA.age, 5);
+ #if !VERSION_IS(US)
+@@ -4872,6 +4877,9 @@ int32_t drawDigimonStatsStrings(void)
+ 		/* MOD (long names): drawn tighter when it does not fit the field */
+ 		drawStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0, 0x48,
+ 			       fitStringMode(DIGIMON_NAME(ENTITY_TABLE[1]->type), STATUS_NAME_W));
++		if (modPartnerNameIsSpecies(ENTITY_TABLE[1]->type)) { /* MOD (optional name): the species' name, as above */
++			drawStringMode(PARTNER_ENTITY.name, 0, 0x3c, fitStringMode(PARTNER_ENTITY.name, STATUS_NAME_W));
++		} else
+ #endif
+ 		drawString(PARTNER_ENTITY.name, 0, 0x3c);
+ 		MENU_SUB_STATE = 2;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 76f7c854..b3c2c8b7 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2321,9 +2321,13 @@ void drawMainMenuStrings(int32_t menu)
+ 		break;
+ 	case 19:
+ 		strcpy(buf, PARTNER_ENTITY.name);
+-		strcat(buf, MAIN_D_801346B4);
+-		strcat(buf, DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type));
+-		strcat(buf, MAIN_D_801346B8);
++		if (!modPartnerNameIsSpecies(PARTNER_ENTITY.digimonEntity.entity.type)) { /* MOD (optional name): not "Agumon(Agumon)" */
++			strcat(buf, MAIN_D_801346B4);
++			strcat(buf, DIGIMON_NAME(PARTNER_ENTITY.digimonEntity.entity.type));
++			strcat(buf, MAIN_D_801346B8);
++		} else {
++			strcat(buf, MAIN_D_801346B8);
++		}
+ 		drawString(buf, 0, 0);
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80131580, 0, 0xC);
+@@ -5013,6 +5017,7 @@ static void swapPartnerSpecies(int32_t to)
+ 	for (i = 0; i < 4; i++) {
+ 		SAVED_STATE.partnerStats.base.moves[i] = equipped[i];
+ 	}
++	modPartnerNameFollow(from, to); /* MOD (optional name) */
+ 	SAVED_STATE.partnerType = to;
+ 	PARTNER_ENTITY.digimonEntity.entity.type = to;
+ 	setDigimonRaised(to);
+@@ -5524,6 +5529,7 @@ void registerBattleData(void)
+ 	rec->digimonId = PARTNER_ENTITY.digimonEntity.entity.type < 256 ? PARTNER_ENTITY.digimonEntity.entity.type
+ 			 : getOriginalType(PARTNER_ENTITY.digimonEntity.entity.type);
+ 	memcpy(rec->name, PARTNER_ENTITY.name, 0xe);
++	rec->name[0xd] = '\0'; /* MOD (optional name): a species name can pass the record's 13 characters */
+ 	memcpy(rec->moves, PARTNER_ENTITY.digimonEntity.stats.base.moves, 3);
+ }
+ 
+@@ -5617,6 +5623,7 @@ void awardMachinedramonData(void)
+ 	rec->discipline = PARTNER_PARA.discipline;
+ 	rec->digimonId = MOD_VS_UNLOCK[0];
+ 	memcpy(rec->name, PARTNER_ENTITY.name, 0xe);
++	rec->name[0xd] = '\0'; /* MOD (optional name): a species name can pass the record's 13 characters */
+ 	rec->moves[0] = MOD_VS_UNLOCK[1];
+ 	rec->moves[1] = MOD_VS_UNLOCK[2];
+ 	rec->moves[2] = MOD_VS_UNLOCK[3];
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 354dd824..e21709b1 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -587,6 +587,7 @@ static void modRosterSwitch(int32_t type)
+ 	rx = entity->posData->rotation.vx;
+ 	ry = entity->posData->rotation.vy;
+ 	rz = entity->posData->rotation.vz;
++	modPartnerNameFollow(entity->type, type); /* MOD (optional name) */
+ 	removeEntity(entity->type, 1);
+ 	ENTITY_TABLE[1] = NULL;
+ 	thunkLoadMMD(type, 3);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 0a6fdcd5..04a828f8 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2465,3 +2465,26 @@ void setImmortalHour(void)
+ 	HAS_IMMORTAL_HOUR = 1;
+ 	IMMORTAL_HOUR = HOUR;
+ }
++
++/*
++ * MOD (optional name): a partner the player did not name (OK on the empty keyboard) carries its species' name, and
++ * that name follows it into every species it becomes. A typed name is two bytes a letter, a species name ASCII, so
++ * the two are never equal: a name equal to the species' is always one the player left out.
++ */
++int32_t modPartnerNameIsSpecies(int32_t type)
++{
++	return strcmp(PARTNER_ENTITY.name, DIGIMON_NAME(type)) == 0;
++}
++
++void modPartnerNameSetSpecies(int32_t type)
++{
++	strncpy(PARTNER_ENTITY.name, DIGIMON_NAME(type), sizeof(PARTNER_ENTITY.name) - 1);
++	PARTNER_ENTITY.name[sizeof(PARTNER_ENTITY.name) - 1] = '\0';
++}
++
++void modPartnerNameFollow(int32_t from, int32_t to)
++{
++	if (from != to && modPartnerNameIsSpecies(from)) {
++		modPartnerNameSetSpecies(to);
++	}
++}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index acd51e0d..d8fb2fd0 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -8,6 +8,7 @@
+ #include <dw/line.h>
+ #include <dw/math.h>
+ #include <dw/params.h>
++#include <dw/partner.h>
+ #include <dw/pstat.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -1166,6 +1167,8 @@ void initializeNamingBuffer(uint8_t flags)
+ 
+ 		if ((NAMING_BOX_FLAG & 1) == 0) {
+ 			strcpy(NAMING_BUFFER, DIGIMON_NAME(0));
++		} else if (modPartnerNameIsSpecies(PARTNER_ENTITY.digimonEntity.entity.type)) {
++			NAMING_BUFFER[0] = 0; /* MOD (optional name): an unnamed partner starts the keyboard empty */
+ 		} else {
+ 			strcpy(NAMING_BUFFER, PARTNER_ENTITY.name);
+ 		}
+@@ -1253,6 +1256,13 @@ int32_t newGameStateMachine(void)
+ 
+ 		if ((NAMING_BOX_FLAG & 1) == 0) {
+ 			strcpy(DIGIMON_NAME(0), NAMING_BUFFER);
++		} else if (NAMING_BUFFER[0] == 0) {
++			/* MOD (optional name): no name, the species' (a new game's: the starter the answers chose, as main.c) */
++			if ((NAMING_BOX_FLAG & 2) != 0) {
++				modPartnerNameSetSpecies(PARTNER_ENTITY.digimonEntity.entity.type);
++			} else {
++				modPartnerNameSetSpecies(modNewGame(readPStat(PSTAT_254) == 0 ? MOD_NG_STARTER0 : MOD_NG_STARTER1));
++			}
+ 		} else {
+ 			strcpy(PARTNER_ENTITY.name, NAMING_BUFFER);
+ 		}
+@@ -2880,11 +2890,13 @@ void tickNamingBox(void)
+ 			namingDeleteLast();
+ 			break;
+ 		case NAMING_OK:
+-			if (NAMING_BUFFER[0] == 0) {
++			if (NAMING_BUFFER[0] == 0 && (NAMING_BOX_FLAG & 1) == 0) {
+ 				playSound(0, 0xb);
+ 				return;
+ 			}
+-			terminateNamingBuffer();
++			if (NAMING_BUFFER[0] != 0) { /* MOD (optional name): the partner's may be left empty */
++				terminateNamingBuffer();
++			}
+ 			playSound(0, 3);
+ 			SCRIPT_STATE_2 = 0x15;
+ 			break;
+@@ -2944,7 +2956,7 @@ void renderNamingBox(void)
+ 		renderString(0, bx + lbl[0], by + lbl[1], lbl[2], 12, texX, texY, 5, 1);
+ 		texX += lbl[2];
+ 	}
+-	if (NAMING_BUFFER[0] == 0) {
++	if (NAMING_BUFFER[0] == 0 && (NAMING_BOX_FLAG & 1) == 0) { /* MOD (optional name): the partner's OK is never grey */
+ 		ty = 0xd;
+ 	} else {
+ 		ty = 0;
+-- 
+2.53.0
+

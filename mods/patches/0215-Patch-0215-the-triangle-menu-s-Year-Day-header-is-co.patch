@@ -1,0 +1,51 @@
+From fca7a5d4249cac8a3bd0aef158cd8409395f0bb3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:08:23 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200215:=20the=20triangle=20menu's=20Year/?=
+ =?UTF-8?q?Day=20header=20is=20copied=20from=20the=20row=20its=20text=20is?=
+ =?UTF-8?q?=20drawn=20on=20(0xe8),=20one=20row=20shorter,=20not=20from=200?=
+ =?UTF-8?q?xe7,=20which=20nothing=20clears:=20the=20player=20screen's=20pl?=
+ =?UTF-8?q?ay=20time=20(0xe4)=20left=20the=20bottom=20of=20its=20digits=20?=
+ =?UTF-8?q?there,=20stray=20pixels=20over=20"Year"/"A=C3=B1o";=20the=20hea?=
+ =?UTF-8?q?der's=20clear=20covers=20its=2064=20pixels=20(was=2024:=20the?=
+ =?UTF-8?q?=20mod's=20glyphs=20leave=20a=20piece's=20leading=20spaces=20un?=
+ =?UTF-8?q?drawn)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/main/game_menu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 6ad81000..ebcf5d3a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -383,7 +383,9 @@ TriangleCursorOffsetData SELECTION_CURSOR_WIDTH = { { 0x04, 0x04, 0x04, 0x04, 0x
+ 
+ TriangleCursorOffsetData SELECTION_CURSOR_HEIGHT = { { 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x16, 0x16 } };
+ 
+-RECT MENU_TEXT_AREA = { 0, 232, 24, 12 };
++/* MOD (font): the whole row the header copies (the original cleared 24 pixels; its cells overwrote the rest, the mod's
++ * glyphs leave a piece's leading spaces undrawn) */
++RECT MENU_TEXT_AREA = { 0, 232, 64, 12 };
+ 
+ YEAR_DAY_TEXT
+ 
+@@ -1671,8 +1673,10 @@ void renderGameMenu(void)
+ 	renderString(3, 7, -0x49, 0xc, 0xc, 0, 0xe8, 6, 1);
+ 	renderString(3, 0x2c, -0x49, 0xc, 0xc, 0xc, 0xe8, 6, 1);
+ #else
+-	renderString(3, -0x3c, -0x49, 0x24, 0xc, 0, 0xe7, 6, 1);
+-	renderString(3, 6, -0x49, 0x1c, 0xc, 0x24, 0xe7, 6, 1);
++	/* MOD (font): from the row the text is drawn on (0xe8), not the one above, which no one clears: the player screen's
++	 * play time (0xe4) left its pixels there over "Year" (the same place on screen, one row shorter) */
++	renderString(3, -0x3c, -0x48, 0x24, 0xb, 0, 0xe8, 6, 1);
++	renderString(3, 6, -0x48, 0x1c, 0xb, 0x24, 0xe8, 6, 1);
+ #endif
+ 	convertValueToDigits(3, DAY, &digitCount, digits);
+ }
+-- 
+2.55.0
+

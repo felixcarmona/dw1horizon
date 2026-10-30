@@ -1,0 +1,16 @@
+// Who stands on screen 204 (File City), and when. Read out of MAPHEAD.SCN section 204 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(204) {                              // File City
+            npc Jijimon slot 0 when not trigger(54) and not trigger(55);
+            npc Tokomon slot 1 when not trigger(54) and not trigger(55);
+            npc Jijimon slot 2 when not trigger(54) and not trigger(55);
+            npc Jijimon slot 3 when not trigger(54) or trigger(55);
+            npc Yuramon slot 4 when trigger(54) and not trigger(55);
+            npc Tokomon slot 5 when trigger(55);
+            npc Tanemon slot 6 when trigger(54) and not trigger(55);
+        }
+    }
+}

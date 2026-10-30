@@ -1,0 +1,52 @@
+{
+  "id": 64,
+  "name": "Gigadramon",
+  "level": "ultimate",
+  "vanilla": true,
+  "attribute": "data",
+  "specialties": ["mech", "ice", "battle"],
+  "techniques": ["Dynamite Kick (44)", "Megaton Punch", "Giga Freeze", "Winter Blast", "Ice Statue", "Power Crane",
+                 "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
+                 "All Range Beam", "DG Dimension", "Full Potential", "Genoside Attack"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 54,
+  "model": {"name": "GGDR", "bones": 29, "radius": 220, "height": 500},
+  "voice": 48,
+  "battle_music": "normal-battle",
+  "partner": {
+    "voice": 2,
+    "hunger_hours": [2, 6, 10, 14, 18, 22],
+    "energy_max": 80,
+    "energy_fed": 45,
+    "energy_per_hour": 11,
+    "poop_timer_10min": 36,
+    "poop_size": 14,
+    "favorite_food": "Blue apple",
+    "sleep_cycle": "07:00-16:00",
+    "favored_region": 3,
+    "training_type": "even",
+    "birth_weight": 50,
+    "status_screen_position": [0, 460, -940],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": -1,
+      "mp": 500,
+      "offense": 500,
+      "defense": 400,
+      "speed": -1,
+      "brain": 500,
+      "care": 5,
+      "weight": 70,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 35,
+      "flags": 16
+    },
+    "gains": {"hp": 9000, "mp": 9000, "offense": 900, "defense": 750, "speed": 900, "brains": 750}
+  }
+}

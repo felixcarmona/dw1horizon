@@ -1,0 +1,95 @@
+From 258400c6e5603c6ef4c2d67c9399a30a7ed32509 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 22:34:35 +0000
+Subject: [PATCH 189/189] Patch 0189: the training block's learned stop is a
+ box 2 this block opened (a box 2 open when it began, the Bonus Try's reels or
+ a block's own box closing, stopped a block after one session with no message)
+
+---
+ include/dw/mod_qol.h |  2 +-
+ src/main/mod_qol.c   |  6 +-----
+ src/trn/trn_block.h  | 10 +++++++++-
+ 3 files changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+index 28343122..84f668a5 100644
+--- a/include/dw/mod_qol.h
++++ b/include/dw/mod_qol.h
+@@ -11,7 +11,7 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 
+ /* the training block (src/trn/trn_block.h): x1 (0) or x5 (1), switched with R2 in a gym session (main.c) */
+ extern int8_t MOD_TRAIN_BLOCK;
+-/* why a block stops after a session that started at minute t0 of the day, with the gym's tiredness rule tiredAt */
++/* why a block stops (MOD_TB_LEARNED is the block's own check) after a session that started at minute t0 of the day, with the gym's tiredness rule tiredAt */
+ enum { MOD_TB_GO, MOD_TB_HUNGRY, MOD_TB_TOILET, MOD_TB_SLEEPY, MOD_TB_TIRED, MOD_TB_UNWELL, MOD_TB_EVOLVE, MOD_TB_LIFE,
+        MOD_TB_LEARNED };
+ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt);
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 6aadee8c..baceb620 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -7,7 +7,7 @@
+  *
+  * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
+  * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
+- * its life, or the gym's own box (a technique or new orders) is open.
++ * its life (the gym's own box, a technique or new orders, is the block's own check).
+  */
+ #include <sys/types.h>
+ #include <libgte.h>
+@@ -20,7 +20,6 @@
+ #include <dw/mod_qol.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+-#include <dw/ui.h>
+ 
+ #include "common.h"
+ 
+@@ -96,9 +95,6 @@ int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
+ 	int32_t level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+ 	int32_t d;
+ 
+-	if (UI_BOX_DATA[2].state != 0) {
+-		return MOD_TB_LEARNED;
+-	}
+ 	if (PARTNER_PARA.remainingLifetime <= 0) {
+ 		return MOD_TB_LIFE;
+ 	}
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index 37c011be..e7907461 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -51,6 +51,7 @@ static int8_t TB_count;
+ static int8_t TB_done;
+ static int8_t TB_reason;
+ static int8_t TB_box1Seen;
++static int8_t TB_box2Before; /* box 2 was open when the block began */
+ static int16_t TB_pre[6];
+ static int16_t TB_sum[6];
+ static char TB_doneText[64];
+@@ -105,6 +106,7 @@ void TB(modBlockBegin)(void)
+ 	TB_count = (MOD_TRAIN_BLOCK && TB_SLOT == 0) ? 5 : 1;
+ 	TB_done = 0;
+ 	TB_reason = MOD_TB_GO;
++	TB_box2Before = UI_BOX_DATA[2].state != 0;
+ 	TB(MOD_QUIET) = TB_count > 1;
+ 	if (TB_count > 1) {
+ 		TB(saveBaseStats)();
+@@ -139,7 +141,13 @@ int32_t TB(modBlockNext)(void)
+ 	}
+ 	TB(applyBaseStats)();
+ 	TB_done++;
+-	TB_reason = modTrainStopReason(TB_START_MIN, TB_RULES[MOD_TR_TIRED_AT]);
++	/* the gym's box (a technique, new orders) opened by this session: a box 2 open before the block (the Bonus
++	   Try's reels, a block's own box closing) is not one */
++	if (!TB_box2Before && UI_BOX_DATA[2].state != 0) {
++		TB_reason = MOD_TB_LEARNED;
++	} else {
++		TB_reason = modTrainStopReason(TB_START_MIN, TB_RULES[MOD_TR_TIRED_AT]);
++	}
+ 	if (TB_reason == MOD_TB_GO && TB_done < TB_count) {
+ 		TB(saveTrainingStartTime)(); /* the next session's hour */
+ 		return 1;
+-- 
+2.53.0
+

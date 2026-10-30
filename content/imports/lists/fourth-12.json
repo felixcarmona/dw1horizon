@@ -1,0 +1,99 @@
+{
+ "clip_policy": "dcb-original",
+ "first_id": 217,
+ "out": "build/batch4",
+ "_skipped": "WarGreymon (DCB 173): the mega branch already has WarGreymon (DW2003 model); Omnimon (DCB 180): does not fit PARTNER_MODEL_BUFFER (batch 2)",
+ "digimon": [
+  {
+   "name": "Gomamon",
+   "game": "dcb",
+   "model": 146,
+   "from": [
+    16
+   ]
+  },
+  {
+   "name": "Ikkakumon",
+   "game": "dcb",
+   "model": 153,
+   "from": [
+    217
+   ]
+  },
+  {
+   "name": "Zudomon",
+   "game": "dcb",
+   "model": 140,
+   "from": [
+    218
+   ]
+  },
+  {
+   "name": "Vikemon",
+   "game": "dcb",
+   "model": 185,
+   "from": [
+    219
+   ]
+  },
+  {
+   "name": "Salamon",
+   "game": "dcb",
+   "model": 145,
+   "from": [
+    30
+   ]
+  },
+  {
+   "name": "BlackGatomon",
+   "game": "dcb",
+   "model": 206,
+   "from": [
+    221
+   ]
+  },
+  {
+   "name": "LadyDevimon",
+   "game": "dcb",
+   "model": 164,
+   "from": [
+    6
+   ]
+  },
+  {
+   "name": "RealMetalGreymon",
+   "game": "dcb",
+   "model": 129,
+   "from": [
+    5
+   ]
+  },
+  {
+   "name": "Shurimon",
+   "clip_policy": "dcb-grounded",
+   "game": "dcb",
+   "model": 192,
+   "from": [
+    208
+   ]
+  },
+  {
+   "name": "Sylphymon",
+   "game": "dcb",
+   "model": 168,
+   "from": [
+    209
+   ]
+  },
+  {
+   "name": "Apemon",
+   "game": "dcb",
+   "model": 212
+  },
+  {
+   "name": "Baronmon",
+   "game": "dcb",
+   "model": 195
+  }
+ ]
+}

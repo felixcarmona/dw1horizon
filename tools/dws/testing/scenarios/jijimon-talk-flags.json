@@ -1,0 +1,13 @@
+{
+  "name": "jijimon-talk-flags",
+  "doc": "Same talk as jijimon-talk with triggers 202 and 203 set: another branch of section 5.",
+  "setup": { "triggers": { "202": 1, "203": 1 } },
+  "run": [
+    "approach 0",
+    "wait 20",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until free max 3000"
+  ],
+  "max_frames": 4000,
+  "expect": {"digest": "2ba2893b4b4165d69204fe2284fb1da9fa6871bb", "instructions": 21}
+}

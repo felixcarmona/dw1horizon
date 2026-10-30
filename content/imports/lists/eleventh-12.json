@@ -1,0 +1,113 @@
+{
+ "first_id": 302,
+ "out": "build/batch11",
+ "digimon": [
+  {
+   "name": "HiAndromon",
+   "game": "dw3",
+   "model": "M356HAND",
+   "level": "mega",
+   "element": 5,
+   "from": [
+    40
+   ]
+  },
+  {
+   "name": "KingEtemon",
+   "game": "dw3",
+   "model": "M250KGET",
+   "level": "mega",
+   "element": 1,
+   "from": [
+    42
+   ]
+  },
+  {
+   "name": "Hangyomon",
+   "game": "dw3",
+   "model": "M241HNGY",
+   "level": 4,
+   "element": 4,
+   "from": [
+    239,
+    217
+   ]
+  },
+  {
+   "name": "Ebidramon",
+   "game": "dw3",
+   "model": "M165EBDR",
+   "level": 4,
+   "element": 4,
+   "from": [
+    239,
+    217
+   ]
+  },
+  {
+   "name": "GrapLeomon",
+   "game": "dw3",
+   "model": "M391GRPL",
+   "level": 5,
+   "element": 1,
+   "from": [
+    48
+   ]
+  },
+  {
+   "name": "BK-KingNumemon",
+   "game": "dw3",
+   "model": "M446BKNM",
+   "level": 5,
+   "element": 6,
+   "from": [
+    11
+   ]
+  },
+  {
+   "name": "Dinohumon",
+   "game": "dw3",
+   "model": "M386DINO",
+   "level": 4,
+   "element": 1,
+   "from": [
+    8
+   ]
+  },
+  {
+   "name": "Antylamon",
+   "game": "dw3",
+   "model": "M360ANTR",
+   "level": 5,
+   "element": 1
+  },
+  {
+   "name": "Armormon",
+   "game": "dw3",
+   "model": "M390ASLT",
+   "level": 5,
+   "element": 5
+  },
+  {
+   "name": "Arukenimon",
+   "game": "dw3",
+   "model": "M365ARCH",
+   "level": 5,
+   "element": 6
+  },
+  {
+   "name": "Daemon",
+   "game": "dw3",
+   "model": "M247DEMN",
+   "level": "mega",
+   "element": 6
+  },
+  {
+   "name": "Bulbmon",
+   "game": "dw3",
+   "model": "M436VALV",
+   "level": 4,
+   "element": 3
+  }
+ ]
+}

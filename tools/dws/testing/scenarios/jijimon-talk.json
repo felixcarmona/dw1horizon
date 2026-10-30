@@ -1,0 +1,12 @@
+{
+  "name": "jijimon-talk",
+  "doc": "Jijimon's house (screen 218): talk to Jijimon in slot 0 (section 5 of script 178) and read everything he says.",
+  "run": [
+    "approach 0",
+    "wait 20",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until free max 3000"
+  ],
+  "max_frames": 4000,
+  "expect": {"digest": "89b35211a53275fec1842492e13f0c51b2b6e061", "instructions": 22}
+}

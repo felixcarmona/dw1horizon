@@ -1,0 +1,94 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 18:55:00 +0000
+Subject: [PATCH] EVL: shard scratch sized for the imported species (12 KB)
+
+The evolution shard scratch (EVL_D_80066274) held 5436 bytes, enough for
+the vanilla partners (HerculesKabuterimon needs 5292) but not for the
+boss and imported models (MegaGargomon 10056; 148 of 205 imported
+species and Machinedramon/ShogunGekomon/King of Sukamon/Jijimon/
+Cherrymon): with 0062 they shed no shards for up to half their pieces.
+The array is now EVL_SHARD_SCRATCH_SIZE (0x3000, dw/evl.h); the overlay
+grows to 41556 bytes (21 sectors, ends 0x8006A800, main.ld checks it
+ends below FISH at 0x80070000). The 0062 check stays as a safety net and
+tools/species.py fails the build when a species needs more.
+
+---
+ config/us/main.ld    |  2 ++
+ include/dw/evl.h     | 11 +++++++++++
+ src/evl/evl.c        |  3 ++-
+ src/evl/evl_bss_us.c |  2 +-
+ 4 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index f3a4404..a4f4380 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1017,6 +1017,8 @@ ASSERT(OVL_END(.STD) <= LOAD_AREA_END, "STD overlay overflows the load area")
+ ASSERT(OVL_END(.VS) <= LOAD_AREA_END, "VS overlay overflows the load area")
+ ASSERT(OVL_END(.KAR) <= LOAD_AREA_END, "KAR overlay overflows the load area")
+ ASSERT(OVL_END(.EVL) <= LOAD_AREA_END, "EVL overlay overflows the load area")
++/* MOD: readFile loads whole sectors; FISH/DOO2 start at OVL_FISH_BASE (the shard scratch grew the overlay) */
++ASSERT(ADDR(.EVL) + ((SIZEOF(.EVL) + 0x7FF) & ~0x7FF) <= OVL_FISH_BASE, "EVL overlay (in whole sectors) overlaps FISH")
+ ASSERT(OVL_END(.ENDI) <= LOAD_AREA_END, "ENDI overlay overflows the load area")
+ ASSERT(OVL_END(.EAB) <= LOAD_AREA_END, "EAB overlay overflows the load area")
+ ASSERT(OVL_END(.FISH) <= LOAD_AREA_END, "FISH overlay overflows the load area")
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index a1ee3b2..61b9595 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -1,6 +1,17 @@
+ #ifndef DW_EVL_H
+ #define DW_EVL_H
+ 
++/*
++ * MOD: the evolution's shard scratch (EVL_D_80066274, EVL_buildShardSet).
++ * The original's 0x153C bytes held the vanilla partners (HerculesKabuterimon
++ * needs 5292) but not the boss and imported models (MegaGargomon 10056):
++ * a piece reserves 6 * (vern + primn) and nothing is released until the
++ * sequence ends (docs/mods/models.md "Digivolution shard buffer"). The
++ * overlay grows with it (main.ld checks it ends below FISH, 0x80070000);
++ * tools/species.py fails the build when a species needs more.
++ */
++#define EVL_SHARD_SCRATCH_SIZE 0x3000
++
+ #include <dw/entity.h>
+ #include <dw/ids.h>
+ #include <dw/params.h>
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 14cad67..64c2f3e 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -60,7 +60,6 @@ extern u_long EVL_D_80065398[];
+ extern u_long EVL_D_8006569C[];
+ extern char EVL_D_80065FA0[];
+ extern char EVL_D_80066274[];
+-#define EVL_SHARD_SCRATCH_SIZE 5436 /* MOD (integration): sizeof EVL_D_80066274 (evl_bss_us.c) */
+ extern EfeFlashBuffer EVL_D_800677B0;
+ extern int16_t EVL_D_80067994[40];
+ extern GsRVIEW2 GS_VIEWPOINT;
+@@ -1010,6 +1009,8 @@ int32_t EVL_buildShardSet(Entity *entity, int32_t objIndex, int32_t bone)
+ 	 * the bone order, particles and sparks, and a shard world object was
+ 	 * left with its tick in the unloaded overlay (crash at the next battle).
+ 	 * A bone whose shards do not fit gets none (its wireframe still fades).
++	 * MOD: the array is now EVL_SHARD_SCRATCH_SIZE (dw/evl.h); the check
++	 * stays as a safety net (tools/species.py checks every species).
+ 	 */
+ 	if (out + (int32_t)(obj->vern + obj->primn) * (int32_t)sizeof(EvlModelVertex) >
+ 	    (int32_t)EVL_D_80066274 + EVL_SHARD_SCRATCH_SIZE) {
+diff --git a/src/evl/evl_bss_us.c b/src/evl/evl_bss_us.c
+index 4226dcb..ce44646 100644
+--- a/src/evl/evl_bss_us.c
++++ b/src/evl/evl_bss_us.c
+@@ -690,7 +690,7 @@ char EVL_D_80065FA0[724] = {
+ 	0x75, 0x74, 0x5f, 0x42,
+ };
+ 
+-char EVL_D_80066274[5436] = {
++char EVL_D_80066274[EVL_SHARD_SCRATCH_SIZE] = { /* MOD: was 5436, the rest is zero */
+ 	0x47, 0x00, 0x23, 0x00, 0x05, 0x00, 0x03, 0x00,
+ 	0x00, 0x00, 0x00, 0x72, 0x00, 0x88, 0x12, 0x00,
+ 	0x00, 0xa8, 0x00, 0x00, 0x00, 0x14, 0x00, 0x12,
+-- 
+2.53.0
+

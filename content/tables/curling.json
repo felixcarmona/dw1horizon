@@ -1,0 +1,76 @@
+{
+  "_comment": "Curling (the Kara-kuri game). The C holds none of these numbers. curlingRules (a key left out = that rule does not exist; a modulus reads as 1): stones.frictionPercent = the part of its speed a stone keeps each frame (the throw power is computed with the same), stopBelowMove = a stone moving less than this stops; obstacles: how many (at most mostPerMatch-1) and where (xSpan, zBase, zSpan); match.bigWinScore = the score from which a win counts as a big one; opponent.aimNoise = the spread of the opponent's aim; throw.powerCut* = what is taken off the throw power in the two modes. curlingWeights: the weight of each stone type (a heavier stone moves less per frame); curlingStartTypes: the type of each of the ten rolls a row of stones is dealt from; curlingRingPoints: the points of each ring zone; curlingRings: the four zones' centre offset and radius; curlingObstacleX: where the obstacles can start.",
+  "curlingRules": {
+    "stones": {
+      "frictionPercent": 98,
+      "stopBelowMove": 2
+    },
+    "obstacles": {
+      "mostPerMatch": 3,
+      "xSpan": 319,
+      "zBase": 1000,
+      "zSpan": 1000
+    },
+    "match": {
+      "bigWinScore": 10
+    },
+    "opponent": {
+      "aimNoise": 100
+    },
+    "throw": {
+      "powerCutAtMode2": 600,
+      "powerCutOtherModes": 500
+    }
+  },
+  "curlingWeights": [
+    30,
+    25,
+    35,
+    30
+  ],
+  "curlingStartTypes": [
+    3,
+    2,
+    2,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0
+  ],
+  "curlingRingPoints": [
+    2,
+    1,
+    -2,
+    2
+  ],
+  "curlingRings": [
+    {
+      "dx": 0,
+      "dz": 1718,
+      "radius": 145
+    },
+    {
+      "dx": 0,
+      "dz": 1718,
+      "radius": 375
+    },
+    {
+      "dx": -400,
+      "dz": 2318,
+      "radius": 205
+    },
+    {
+      "dx": 400,
+      "dz": 2318,
+      "radius": 205
+    }
+  ],
+  "curlingObstacleX": [
+    705,
+    235,
+    -235
+  ]
+}

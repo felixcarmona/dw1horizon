@@ -1,0 +1,83 @@
+{
+ "s002.sec5.u0": [
+  [
+   "Je ne perdrai pas contre toi,",
+   "oui !"
+  ]
+ ],
+ "s002.sec6.m0.o0": "Donner à manger",
+ "s002.sec6.m0.o1": "Ne rien donner",
+ "s002.sec6.u0": [
+  [
+   "J'ai faim. Tu as à manger ?"
+  ]
+ ],
+ "s002.sec6.u1": [
+  [
+   "Ah, C'est vrai. Je n'ai plus",
+   "rien..."
+  ]
+ ],
+ "s002.sec6.u2": [
+  [
+   "Oh, je ne peux pas donner ça."
+  ]
+ ],
+ "s002.sec6.u3": [
+  [
+   "Miam, miam... Pas mal du",
+   "tout..."
+  ]
+ ],
+ "s002.sec6.u4": [
+  [
+   "Ouf. Bon, maintenant,",
+   "battons-nous."
+  ]
+ ],
+ "s002.sec6.u5": [
+  [
+   "Tu es trop fort pour moi.",
+   "Qu'est-ce que je fais,",
+   "maintenant ?"
+  ]
+ ],
+ "s002.sec6.u6": [
+  [
+   "...Viens travailler en ville",
+   "pour payer ce que tu as mangé",
+   "!"
+  ]
+ ],
+ "s002.sec6.u7": [
+  [
+   "Hmm, d'accord. Je suis",
+   "Kunemon, un Digimon insecte.",
+   "Enchanté."
+  ]
+ ],
+ "s002.sec6.u8": "Kunemon a rejoint la ville !",
+ "s002.sec6.u9": [
+  [
+   "Apporte à manger la prochaine",
+   "fois, d'accord ?"
+  ]
+ ],
+ "s002.sec7.u0": [
+  [
+   "D'accord ! Allez, mon gars !"
+  ]
+ ],
+ "s002.sec8.u0": [
+  [
+   "Pfff... Qu'allons-nous",
+   "devenir..."
+  ]
+ ],
+ "s002.sec9.u0": [
+  [
+   "Grr... Comme si on pouvait",
+   "gagner..."
+  ]
+ ]
+}

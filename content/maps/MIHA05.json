@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP16/MIHA05.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Unimon153",
+      "at": [-42, -167],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [255, 255, 255, 255],
+      "prios": [0, 0, 0, 0],
+      "flee": [-218, 1839],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

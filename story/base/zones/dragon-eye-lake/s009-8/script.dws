@@ -1,0 +1,77 @@
+// Readable form of script 9 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 9 {
+    // the section table, in the order of the original header
+    sections 254, 81, 82;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Medium MP"), -1511, 0, 1093, 0, 706);
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 74, 62);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 24) {
+            spawn_item(item("Digimushrm"), 31, 45);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        say(narrator, text("s009.sec81.u0"));
+        entity_set_rotation(tamer, 2048);
+        wait(5);
+        say(tamer, text("s009.sec81.u1"));
+        choice {
+            text("s009.sec81.m0.o0") => {
+                if (bits >= 300) {
+                    take_bits(300);
+                    say(narrator, text("s009.sec81.u4"));
+                    give_item(item("Meat"), 1);
+                    if (engine.item_did_not_fit) {
+                        unless (has(item("Meat")) < 99) return;
+                        say(tamer, text("s009.sec81.u5"));
+                        engine.picker_mode = true;
+                        call_routine(routine("choose_item"));
+                        call_routine(routine("remove_all_chosen_item"));
+                        give_item(item("Meat"), 1);
+                    }
+                    return;
+                }
+                say(tamer, text("s009.sec81.u2"));
+                return;
+            }
+            text("s009.sec81.m0.o1") => {
+                if (bits >= 600) {
+                    take_bits(600);
+                    say(narrator, text("s009.sec81.u6"));
+                    give_item(item("Digimushrm"), 1);
+                    if (engine.item_did_not_fit) {
+                        unless (has(item("Digimushrm")) < 99) return;
+                        say(tamer, text("s009.sec81.u7"));
+                        engine.picker_mode = true;
+                        call_routine(routine("choose_item"));
+                        call_routine(routine("remove_all_chosen_item"));
+                        give_item(item("Digimushrm"), 1);
+                    }
+                    return;
+                }
+                say(tamer, text("s009.sec81.u3"));
+                return;
+            }
+            text("s009.sec81.m0.o2") => {}
+        }
+        return;
+    }
+
+    on use(2) replace {    // section 82
+        entity_set_rotation(tamer, 2048);
+        wait(5);
+        set_textbox_size(entity(0), 19, 7);
+        show_textbox(text("s009.sec82.u0"));
+        fadeout_hud(0);
+        return;
+    }
+}

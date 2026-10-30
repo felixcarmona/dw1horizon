@@ -1,0 +1,29 @@
+// Readable form of script 58 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 58 {
+    npc tsukaimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 5;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Brain Chip"), 665, 0, 535, 0, 654);
+        spawn_chest(item("Brain Chip"), 1057, 0, -920, 1024, 655);
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -1300, -400);
+        warp_to(52, 2, 255);
+    }
+
+    on talk(tsukaimon) replace {    // section 5
+        say(tsukaimon, text("s058.sec5.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+        return;
+    }
+}

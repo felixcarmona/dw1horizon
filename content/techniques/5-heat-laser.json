@@ -1,0 +1,17 @@
+{
+  "id": 5,
+  "name": "Heat Laser",
+  "element": "fire",
+  "power": 84,
+  "mpCost": 35,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 80,
+  "status": 4,
+  "statusChance": 32,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [28, 19, 13]
+}

@@ -1,0 +1,43 @@
+// Readable form of script 27 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+script 27 {
+    npc drimogemon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        animate(drimogemon, 29);
+    }
+
+    on talk(drimogemon) replace {    // section 5
+        engine.cutscene = true;
+        face(tamer, drimogemon);
+        wait(10);
+        sound(8, 1);
+        wait(10);
+        sound(8, 1);
+        wait(10);
+        say(drimogemon, text("s027.sec5.u0"));
+        sound(8, 1);
+        wait(10);
+        sound(8, 1);
+        wait(10);
+        say(drimogemon, text("s027.sec5.u1"));
+        sound(8, 1);
+        wait(10);
+        sound(8, 1);
+        wait(10);
+        say(drimogemon, text("s027.sec5.u2"));
+        sound(8, 1);
+        wait(10);
+        face(drimogemon, tamer);
+        show_textbox(text("s027.sec5.u3"));
+        entity_set_rotation(drimogemon, 296);
+        wait(1s);
+        animate(drimogemon, 29);
+        return;
+    }
+}

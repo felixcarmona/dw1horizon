@@ -1,0 +1,7074 @@
+{
+ "s194.sec5.u0": [
+  [
+   "Hiaaaaaah!"
+  ]
+ ],
+ "s194.sec6.u0": [
+  [
+   "Bereue deine Sünden."
+  ]
+ ],
+ "s194.sec7.u0": [
+  [
+   "Die Götter lügen nie."
+  ]
+ ],
+ "s194.sec8.u0": [
+  [
+   "Argh! Was bist du denn für ein",
+   "Monster?!"
+  ]
+ ],
+ "s194.sec9.u0": [
+  [
+   "Gehorche mir, und dann..."
+  ]
+ ],
+ "s194.sec53.u0": [
+  [
+   "Fwa ha ha ha ha ha ha!"
+  ]
+ ],
+ "s194.sec53.u1": [
+  [
+   "Du!"
+  ]
+ ],
+ "s194.sec53.u2": [
+  [
+   "Halt den Mund und fahr zur",
+   "Hölle!"
+  ]
+ ],
+ "s194.sec53.u3": [
+  [
+   "Uff... Ich habe mich von dem",
+   "Kerl manipulieren lassen... Ich",
+   "werde wohl nachlässig!"
+  ]
+ ],
+ "s194.sec53.u4": [
+  [
+   "Aber... er ist stark. Glaubst",
+   "du, du kannst ihn besiegen?",
+   "Warum gehst du so weit?"
+  ]
+ ],
+ "s194.sec53.u5": [
+  [
+   "Um das zu beenden... Dann",
+   "kommt die Insel wieder in",
+   "Ordnung. Für alle Digimon und"
+  ],
+  [
+   "für File Island werde ich",
+   "kämpfen."
+  ]
+ ],
+ "s194.sec53.u6": [
+  [
+   "Hmpf. Stimmt, ich will",
+   "niemandes Marionette sein. Ich",
+   "warte ab... ohne mir viel zu"
+  ],
+  [
+   "erhoffen. He he he..."
+  ]
+ ],
+ "s195.sec5.u0": [
+  [
+   "Geh zurück, wo du hergekommen",
+   "bist."
+  ]
+ ],
+ "s195.sec6.u0": [
+  [
+   "Keine Wahl. Müssen kämpfen."
+  ]
+ ],
+ "s195.sec7.u0": [
+  [
+   "Befehle. Wichtig."
+  ]
+ ],
+ "s196.sec5.u0": [
+  [
+   "He... Du wirst mir fehlen..."
+  ]
+ ],
+ "s196.sec6.u0": [
+  [
+   "Graaah, Nein, du kommst nicht",
+   "davon!"
+  ]
+ ],
+ "s196.sec7.u0": [
+  [
+   "Glaubst du, du wirst hier",
+   "lebend rauskommen?"
+  ]
+ ],
+ "s196.sec8.u0": [
+  [
+   "Angriiiiff!"
+  ]
+ ],
+ "s197.sec5.u0": [
+  [
+   "Tu, was ich sage."
+  ]
+ ],
+ "s197.sec6.u0": [
+  [
+   "\"Herz\" . . . ? Ich verstehe es",
+   "nicht."
+  ]
+ ],
+ "s197.sec7.u0": [
+  [
+   "Oh, mein armes verirrtes",
+   "Lamm..."
+  ]
+ ],
+ "s198.sec5.u0": [
+  [
+   "So, das ist der Letzte."
+  ]
+ ],
+ "s198.sec6.u0": [
+  [
+   "Du bist also endlich da..."
+  ]
+ ],
+ "s198.sec7.u0": [
+  [
+   "Der Pfad öffnet sich."
+  ]
+ ],
+ "s198.sec8.u0": [
+  [
+   "Ich werde dein Leiden hier",
+   "beenden!"
+  ]
+ ],
+ "s198.sec9.u0": [
+  [
+   "Das ist deine letzte Chance."
+  ]
+ ],
+ "s198.sec10.u0": [
+  [
+   "Willst du wirklich",
+   "weitergehen...?"
+  ]
+ ],
+ "s198.sec53.m0.o0": "Besser weitergehen",
+ "s198.sec53.m0.o1": "Unsere Kräfte messen",
+ "s198.sec53.u0": [
+  [
+   "Boah, was für eine Mordlust!",
+   "Ich bekomme am ganzen Körper",
+   "Gänsehaut!"
+  ]
+ ],
+ "s198.sec53.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u2": [
+  [
+   "Huh? . . . Er greift uns nicht",
+   "an!?"
+  ]
+ ],
+ "s198.sec53.u3": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u4": [
+  [
+   "Also müssen wir nicht",
+   "kämpfen...?"
+  ]
+ ],
+ "s198.sec53.u5": [
+  [
+   "Los geht's, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s198.sec53.u6": [
+  [
+   "........."
+  ]
+ ],
+ "s198.sec53.u7": "...Haben wir... gewonnen?",
+ "s199.sec51.m0.o0": "Preis erhöhen",
+ "s199.sec51.m0.o1": "Bei 50 Bits bleiben",
+ "s199.sec51.m0.o2": "Preis senken",
+ "s199.sec51.m1.o0": "50 auf 75: OK",
+ "s199.sec51.m1.o1": "Überdenken",
+ "s199.sec51.m2.o0": "50 auf 70: OK",
+ "s199.sec51.m2.o1": "Überdenken",
+ "s199.sec51.m3.o0": "50 auf 65: OK",
+ "s199.sec51.m3.o1": "Überdenken",
+ "s199.sec51.m4.o0": "50 auf 60: OK",
+ "s199.sec51.m4.o1": "Überdenken",
+ "s199.sec51.m5.o0": "50 auf 55: OK",
+ "s199.sec51.m5.o1": "Überdenken",
+ "s199.sec51.m6.o0": "Normalpreis: OK",
+ "s199.sec51.m6.o1": "Überdenken",
+ "s199.sec51.m7.o0": "50 auf 45: OK",
+ "s199.sec51.m7.o1": "Überdenken",
+ "s199.sec51.m8.o0": "50 auf 40: OK",
+ "s199.sec51.m8.o1": "Überdenken",
+ "s199.sec51.m9.o0": "50 auf 35: OK",
+ "s199.sec51.m9.o1": "Überdenken",
+ "s199.sec51.m10.o0": "Preis erhöhen",
+ "s199.sec51.m10.o1": "Bei 300 Bits bleiben",
+ "s199.sec51.m10.o2": "Preis senken",
+ "s199.sec51.m11.o0": "300 auf 450: OK",
+ "s199.sec51.m11.o1": "Überdenken",
+ "s199.sec51.m12.o0": "300 auf 420: OK",
+ "s199.sec51.m12.o1": "Überdenken",
+ "s199.sec51.m13.o0": "300 auf 390: OK",
+ "s199.sec51.m13.o1": "Überdenken",
+ "s199.sec51.m14.o0": "300 auf 360: OK",
+ "s199.sec51.m14.o1": "Überdenken",
+ "s199.sec51.m15.o0": "300 auf 330: OK",
+ "s199.sec51.m15.o1": "Überdenken",
+ "s199.sec51.m16.o0": "Normalpreis: OK",
+ "s199.sec51.m16.o1": "Überdenken",
+ "s199.sec51.m17.o0": "300 auf 270: OK",
+ "s199.sec51.m17.o1": "Überdenken",
+ "s199.sec51.m18.o0": "300 auf 240: OK",
+ "s199.sec51.m18.o1": "Überdenken",
+ "s199.sec51.m19.o0": "300 auf 210: OK",
+ "s199.sec51.m19.o1": "Überdenken",
+ "s199.sec51.m20.o0": "Preis erhöhen",
+ "s199.sec51.m20.o1": "Bei 1000 Bits bleiben",
+ "s199.sec51.m20.o2": "Preis senken",
+ "s199.sec51.m21.o0": "1000 auf 1500: OK",
+ "s199.sec51.m21.o1": "Überdenken",
+ "s199.sec51.m22.o0": "1000 auf 1400: OK",
+ "s199.sec51.m22.o1": "Überdenken",
+ "s199.sec51.m23.o0": "1000 auf 1300: OK",
+ "s199.sec51.m23.o1": "Überdenken",
+ "s199.sec51.m24.o0": "1000 auf 1200: OK",
+ "s199.sec51.m24.o1": "Überdenken",
+ "s199.sec51.m25.o0": "1000 auf 1100: OK",
+ "s199.sec51.m25.o1": "Überdenken",
+ "s199.sec51.m26.o0": "Normalpreis: OK",
+ "s199.sec51.m26.o1": "Überdenken",
+ "s199.sec51.m27.o0": "1000 auf 900: OK",
+ "s199.sec51.m27.o1": "Überdenken",
+ "s199.sec51.m28.o0": "1000 auf 800: OK",
+ "s199.sec51.m28.o1": "Überdenken",
+ "s199.sec51.m29.o0": "1000 auf 700: OK",
+ "s199.sec51.m29.o1": "Überdenken",
+ "s199.sec51.u0": [
+  [
+   "Gib mir etwas {color 6}Fleisch{color 1}."
+  ]
+ ],
+ "s199.sec51.u1": [
+  [
+   "Willkommen! {color 6}Fleisch{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s199.sec51.u2": [
+  [
+   "{color 6}Fleisch{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s199.sec51.u3": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 75 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u4": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 70 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u5": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 65 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u6": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 60 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u7": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 55 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u8": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "zum Normalpreis von 50 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s199.sec51.u9": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 45 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u10": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 40 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u11": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 35 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s199.sec51.u12": [
+  [
+   "Okay, ich kaufe es!"
+  ]
+ ],
+ "s199.sec51.u13": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +40"
+  ]
+ ],
+ "s199.sec51.u14": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +35"
+  ]
+ ],
+ "s199.sec51.u15": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s199.sec51.u16": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +25"
+  ]
+ ],
+ "s199.sec51.u17": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +20"
+  ]
+ ],
+ "s199.sec51.u18": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +15"
+  ]
+ ],
+ "s199.sec51.u19": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +10"
+  ]
+ ],
+ "s199.sec51.u20": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +5"
+  ]
+ ],
+ "s199.sec51.u21": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s199.sec51.u22": [
+  [
+   "Willst du deine Kunden",
+   "veräppeln?!"
+  ]
+ ],
+ "s199.sec51.u23": [
+  [
+   "Kein Kunde kommt..."
+  ]
+ ],
+ "s199.sec51.u24": [
+  [
+   "Waaas? Das ist zu teuer!"
+  ]
+ ],
+ "s199.sec51.u25": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s199.sec51.u26": [
+  [
+   "Gib mir ein {color 6}Tragbares Klo{color 1}."
+  ]
+ ],
+ "s199.sec51.u27": [
+  [
+   "Willkommen! {color 6}Tragbares Klo{color 1},",
+   "ja? Ähm..."
+  ]
+ ],
+ "s199.sec51.u28": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s199.sec51.u29": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 450 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u30": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 420 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u31": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 390 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u32": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 360 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u33": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 330 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u34": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "zum Normalpreis von 300 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s199.sec51.u35": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 270 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u36": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 240 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u37": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 210 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s199.sec51.u38": [
+  [
+   "Okay, ich kaufe es!"
+  ]
+ ],
+ "s199.sec51.u39": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +240"
+  ]
+ ],
+ "s199.sec51.u40": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +210"
+  ]
+ ],
+ "s199.sec51.u41": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +180"
+  ]
+ ],
+ "s199.sec51.u42": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +150"
+  ]
+ ],
+ "s199.sec51.u43": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +120"
+  ]
+ ],
+ "s199.sec51.u44": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +90"
+  ]
+ ],
+ "s199.sec51.u45": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +60"
+  ]
+ ],
+ "s199.sec51.u46": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s199.sec51.u47": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s199.sec51.u48": [
+  [
+   "Waaas? Das ist zu teuer!"
+  ]
+ ],
+ "s199.sec51.u49": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s199.sec51.u50": [
+  [
+   "Gib mir {color 6}Medizin{color 1}."
+  ]
+ ],
+ "s199.sec51.u51": [
+  [
+   "Willkommen! {color 6}Medizin{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s199.sec51.u52": [
+  [
+   "{color 6}Medizin{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s199.sec51.u53": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1500 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u54": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1400 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u55": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1300 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u56": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1200 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u57": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1100 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u58": [
+  [
+   "{color 6}Medizin{color 1}",
+   "zum Normalpreis von 1000 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s199.sec51.u59": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 900 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u60": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 800 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u61": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 700 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s199.sec51.u62": [
+  [
+   "Okay, ich kaufe es!"
+  ]
+ ],
+ "s199.sec51.u63": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +800"
+  ]
+ ],
+ "s199.sec51.u64": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +700"
+  ]
+ ],
+ "s199.sec51.u65": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +600"
+  ]
+ ],
+ "s199.sec51.u66": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +500"
+  ]
+ ],
+ "s199.sec51.u67": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +400"
+  ]
+ ],
+ "s199.sec51.u68": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +300"
+  ]
+ ],
+ "s199.sec51.u69": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +200"
+  ]
+ ],
+ "s199.sec51.u70": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +100"
+  ]
+ ],
+ "s199.sec51.u71": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s199.sec51.u72": [
+  [
+   "Waaas? Das ist zu teuer!"
+  ]
+ ],
+ "s199.sec51.u73": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s200.sec51.m0.o0": "Preis erhöhen",
+ "s200.sec51.m0.o1": "Bei 50 Bits bleiben",
+ "s200.sec51.m0.o2": "Preis senken",
+ "s200.sec51.m1.o0": "50 auf 75: OK",
+ "s200.sec51.m1.o1": "Überdenken",
+ "s200.sec51.m2.o0": "50 auf 70: OK",
+ "s200.sec51.m2.o1": "Überdenken",
+ "s200.sec51.m3.o0": "50 auf 65: OK",
+ "s200.sec51.m3.o1": "Überdenken",
+ "s200.sec51.m4.o0": "50 auf 60: OK",
+ "s200.sec51.m4.o1": "Überdenken",
+ "s200.sec51.m5.o0": "50 auf 55: OK",
+ "s200.sec51.m5.o1": "Überdenken",
+ "s200.sec51.m6.o0": "Normalpreis: OK",
+ "s200.sec51.m6.o1": "Überdenken",
+ "s200.sec51.m7.o0": "50 auf 45: OK",
+ "s200.sec51.m7.o1": "Überdenken",
+ "s200.sec51.m8.o0": "50 auf 40: OK",
+ "s200.sec51.m8.o1": "Überdenken",
+ "s200.sec51.m9.o0": "50 auf 35: OK",
+ "s200.sec51.m9.o1": "Überdenken",
+ "s200.sec51.m10.o0": "Preis erhöhen",
+ "s200.sec51.m10.o1": "Bei 300 Bits bleiben",
+ "s200.sec51.m10.o2": "Preis senken",
+ "s200.sec51.m11.o0": "300 auf 450: OK",
+ "s200.sec51.m11.o1": "Überdenken",
+ "s200.sec51.m12.o0": "300 auf 420: OK",
+ "s200.sec51.m12.o1": "Überdenken",
+ "s200.sec51.m13.o0": "300 auf 390: OK",
+ "s200.sec51.m13.o1": "Überdenken",
+ "s200.sec51.m14.o0": "300 auf 360: OK",
+ "s200.sec51.m14.o1": "Überdenken",
+ "s200.sec51.m15.o0": "300 auf 330: OK",
+ "s200.sec51.m15.o1": "Überdenken",
+ "s200.sec51.m16.o0": "Normalpreis: OK",
+ "s200.sec51.m16.o1": "Überdenken",
+ "s200.sec51.m17.o0": "300 auf 270: OK",
+ "s200.sec51.m17.o1": "Überdenken",
+ "s200.sec51.m18.o0": "300 auf 240: OK",
+ "s200.sec51.m18.o1": "Überdenken",
+ "s200.sec51.m19.o0": "300 auf 210: OK",
+ "s200.sec51.m19.o1": "Überdenken",
+ "s200.sec51.m20.o0": "Preis erhöhen",
+ "s200.sec51.m20.o1": "Bei 1000 Bits bleiben",
+ "s200.sec51.m20.o2": "Preis senken",
+ "s200.sec51.m21.o0": "1000 auf 1500: OK",
+ "s200.sec51.m21.o1": "Überdenken",
+ "s200.sec51.m22.o0": "1000 auf 1400: OK",
+ "s200.sec51.m22.o1": "Überdenken",
+ "s200.sec51.m23.o0": "1000 auf 1300: OK",
+ "s200.sec51.m23.o1": "Überdenken",
+ "s200.sec51.m24.o0": "1000 auf 1200: OK",
+ "s200.sec51.m24.o1": "Überdenken",
+ "s200.sec51.m25.o0": "1000 auf 1100: OK",
+ "s200.sec51.m25.o1": "Überdenken",
+ "s200.sec51.m26.o0": "Normalpreis: OK",
+ "s200.sec51.m26.o1": "Überdenken",
+ "s200.sec51.m27.o0": "1000 auf 900: OK",
+ "s200.sec51.m27.o1": "Überdenken",
+ "s200.sec51.m28.o0": "1000 auf 800: OK",
+ "s200.sec51.m28.o1": "Überdenken",
+ "s200.sec51.m29.o0": "1000 auf 700: OK",
+ "s200.sec51.m29.o1": "Überdenken",
+ "s200.sec51.u0": [
+  [
+   "Ich suche etwas {color 6}Fleisch{color 1},",
+   "weißt du."
+  ]
+ ],
+ "s200.sec51.u1": [
+  [
+   "Willkommen! {color 6}Fleisch{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s200.sec51.u2": [
+  [
+   "{color 6}Fleisch{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s200.sec51.u3": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 75 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u4": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 70 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u5": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 65 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u6": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 60 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u7": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 55 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u8": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "zum Normalpreis von 50 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s200.sec51.u9": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 45 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u10": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 40 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u11": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 35 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s200.sec51.u12": [
+  [
+   "Alles klar, das nehme ich!"
+  ]
+ ],
+ "s200.sec51.u13": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +40"
+  ]
+ ],
+ "s200.sec51.u14": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +35"
+  ]
+ ],
+ "s200.sec51.u15": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s200.sec51.u16": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +25"
+  ]
+ ],
+ "s200.sec51.u17": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +20"
+  ]
+ ],
+ "s200.sec51.u18": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +15"
+  ]
+ ],
+ "s200.sec51.u19": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +10"
+  ]
+ ],
+ "s200.sec51.u20": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +5"
+  ]
+ ],
+ "s200.sec51.u21": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s200.sec51.u22": [
+  [
+   "Du willst mich wohl veräppeln!!"
+  ]
+ ],
+ "s200.sec51.u23": [
+  [
+   "Kein Kunde kommt..."
+  ]
+ ],
+ "s200.sec51.u24": [
+  [
+   "Das ist Wucher, Kumpel!"
+  ]
+ ],
+ "s200.sec51.u25": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s200.sec51.u26": [
+  [
+   "Ich suche ein {color 6}Tragbares Klo{color 1},",
+   "weißt du."
+  ]
+ ],
+ "s200.sec51.u27": [
+  [
+   "Willkommen! {color 6}Tragbares Klo{color 1},",
+   "ja? Ähm..."
+  ]
+ ],
+ "s200.sec51.u28": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s200.sec51.u29": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 450 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u30": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 420 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u31": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 390 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u32": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 360 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u33": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 330 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u34": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "zum Normalpreis von 300 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s200.sec51.u35": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 270 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u36": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 240 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u37": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 210 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s200.sec51.u38": [
+  [
+   "Alles klar, das nehme ich!"
+  ]
+ ],
+ "s200.sec51.u39": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +240"
+  ]
+ ],
+ "s200.sec51.u40": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +210"
+  ]
+ ],
+ "s200.sec51.u41": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +180"
+  ]
+ ],
+ "s200.sec51.u42": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +150"
+  ]
+ ],
+ "s200.sec51.u43": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +120"
+  ]
+ ],
+ "s200.sec51.u44": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +90"
+  ]
+ ],
+ "s200.sec51.u45": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +60"
+  ]
+ ],
+ "s200.sec51.u46": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s200.sec51.u47": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s200.sec51.u48": [
+  [
+   "Das ist Wucher, Kumpel!"
+  ]
+ ],
+ "s200.sec51.u49": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s200.sec51.u50": [
+  [
+   "Ich suche {color 6}Medizin{color 1}, weißt du."
+  ]
+ ],
+ "s200.sec51.u51": [
+  [
+   "Willkommen! {color 6}Medizin{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s200.sec51.u52": [
+  [
+   "{color 6}Medizin{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s200.sec51.u53": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1500 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u54": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1400 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u55": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1300 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u56": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1200 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u57": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1100 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u58": [
+  [
+   "{color 6}Medizin{color 1}",
+   "zum Normalpreis von 1000 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s200.sec51.u59": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 900 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u60": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 800 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u61": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 700 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s200.sec51.u62": [
+  [
+   "Alles klar, das nehme ich!"
+  ]
+ ],
+ "s200.sec51.u63": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +800"
+  ]
+ ],
+ "s200.sec51.u64": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +700"
+  ]
+ ],
+ "s200.sec51.u65": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +600"
+  ]
+ ],
+ "s200.sec51.u66": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +500"
+  ]
+ ],
+ "s200.sec51.u67": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +400"
+  ]
+ ],
+ "s200.sec51.u68": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +300"
+  ]
+ ],
+ "s200.sec51.u69": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +200"
+  ]
+ ],
+ "s200.sec51.u70": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +100"
+  ]
+ ],
+ "s200.sec51.u71": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s200.sec51.u72": [
+  [
+   "Das ist Wucher, Kumpel!"
+  ]
+ ],
+ "s200.sec51.u73": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s201.sec51.m0.o0": "Preis erhöhen",
+ "s201.sec51.m0.o1": "Bei 50 Bits bleiben",
+ "s201.sec51.m0.o2": "Preis senken",
+ "s201.sec51.m1.o0": "50 auf 75: OK",
+ "s201.sec51.m1.o1": "Überdenken",
+ "s201.sec51.m2.o0": "50 auf 70: OK",
+ "s201.sec51.m2.o1": "Überdenken",
+ "s201.sec51.m3.o0": "50 auf 65: OK",
+ "s201.sec51.m3.o1": "Überdenken",
+ "s201.sec51.m4.o0": "50 auf 60: OK",
+ "s201.sec51.m4.o1": "Überdenken",
+ "s201.sec51.m5.o0": "50 auf 55: OK",
+ "s201.sec51.m5.o1": "Überdenken",
+ "s201.sec51.m6.o0": "Normalpreis: OK",
+ "s201.sec51.m6.o1": "Überdenken",
+ "s201.sec51.m7.o0": "50 auf 45: OK",
+ "s201.sec51.m7.o1": "Überdenken",
+ "s201.sec51.m8.o0": "50 auf 40: OK",
+ "s201.sec51.m8.o1": "Überdenken",
+ "s201.sec51.m9.o0": "50 auf 35: OK",
+ "s201.sec51.m9.o1": "Überdenken",
+ "s201.sec51.m10.o0": "Preis erhöhen",
+ "s201.sec51.m10.o1": "Bei 300 Bits bleiben",
+ "s201.sec51.m10.o2": "Preis senken",
+ "s201.sec51.m11.o0": "300 auf 450: OK",
+ "s201.sec51.m11.o1": "Überdenken",
+ "s201.sec51.m12.o0": "300 auf 420: OK",
+ "s201.sec51.m12.o1": "Überdenken",
+ "s201.sec51.m13.o0": "300 auf 390: OK",
+ "s201.sec51.m13.o1": "Überdenken",
+ "s201.sec51.m14.o0": "300 auf 360: OK",
+ "s201.sec51.m14.o1": "Überdenken",
+ "s201.sec51.m15.o0": "300 auf 330: OK",
+ "s201.sec51.m15.o1": "Überdenken",
+ "s201.sec51.m16.o0": "Normalpreis: OK",
+ "s201.sec51.m16.o1": "Überdenken",
+ "s201.sec51.m17.o0": "300 auf 270: OK",
+ "s201.sec51.m17.o1": "Überdenken",
+ "s201.sec51.m18.o0": "300 auf 240: OK",
+ "s201.sec51.m18.o1": "Überdenken",
+ "s201.sec51.m19.o0": "300 auf 210: OK",
+ "s201.sec51.m19.o1": "Überdenken",
+ "s201.sec51.m20.o0": "Preis erhöhen",
+ "s201.sec51.m20.o1": "Bei 1000 Bits bleiben",
+ "s201.sec51.m20.o2": "Preis senken",
+ "s201.sec51.m21.o0": "1000 auf 1500: OK",
+ "s201.sec51.m21.o1": "Überdenken",
+ "s201.sec51.m22.o0": "1000 auf 1400: OK",
+ "s201.sec51.m22.o1": "Überdenken",
+ "s201.sec51.m23.o0": "1000 auf 1300: OK",
+ "s201.sec51.m23.o1": "Überdenken",
+ "s201.sec51.m24.o0": "1000 auf 1200: OK",
+ "s201.sec51.m24.o1": "Überdenken",
+ "s201.sec51.m25.o0": "1000 auf 1100: OK",
+ "s201.sec51.m25.o1": "Überdenken",
+ "s201.sec51.m26.o0": "Normalpreis: OK",
+ "s201.sec51.m26.o1": "Überdenken",
+ "s201.sec51.m27.o0": "1000 auf 900: OK",
+ "s201.sec51.m27.o1": "Überdenken",
+ "s201.sec51.m28.o0": "1000 auf 800: OK",
+ "s201.sec51.m28.o1": "Überdenken",
+ "s201.sec51.m29.o0": "1000 auf 700: OK",
+ "s201.sec51.m29.o1": "Überdenken",
+ "s201.sec51.u0": [
+  [
+   "Ich hätte gern... etwas",
+   "{color 6}Fleisch{color 1}..."
+  ]
+ ],
+ "s201.sec51.u1": [
+  [
+   "Willkommen! {color 6}Fleisch{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s201.sec51.u2": [
+  [
+   "{color 6}Fleisch{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s201.sec51.u3": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 75 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u4": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 70 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u5": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 65 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u6": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 60 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u7": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 55 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u8": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "zum Normalpreis von 50 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s201.sec51.u9": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 45 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u10": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 40 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u11": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 35 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s201.sec51.u12": [
+  [
+   "Dann... nehme ich das..."
+  ]
+ ],
+ "s201.sec51.u13": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +40"
+  ]
+ ],
+ "s201.sec51.u14": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +35"
+  ]
+ ],
+ "s201.sec51.u15": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s201.sec51.u16": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +25"
+  ]
+ ],
+ "s201.sec51.u17": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +20"
+  ]
+ ],
+ "s201.sec51.u18": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +15"
+  ]
+ ],
+ "s201.sec51.u19": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +10"
+  ]
+ ],
+ "s201.sec51.u20": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +5"
+  ]
+ ],
+ "s201.sec51.u21": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s201.sec51.u22": [
+  [
+   "In so einem Laden kann ich",
+   "nicht einkaufen..."
+  ]
+ ],
+ "s201.sec51.u23": [
+  [
+   "Kein Kunde kommt..."
+  ]
+ ],
+ "s201.sec51.u24": [
+  [
+   "Ist das nicht... etwas",
+   "teuer...?"
+  ]
+ ],
+ "s201.sec51.u25": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s201.sec51.u26": [
+  [
+   "Ich hätte gern... ein",
+   "{color 6}Tragbares Klo{color 1}..."
+  ]
+ ],
+ "s201.sec51.u27": [
+  [
+   "Willkommen! {color 6}Tragbares Klo{color 1},",
+   "ja? Ähm..."
+  ]
+ ],
+ "s201.sec51.u28": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s201.sec51.u29": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 450 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u30": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 420 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u31": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 390 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u32": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 360 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u33": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 330 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u34": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "zum Normalpreis von 300 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s201.sec51.u35": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 270 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u36": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 240 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u37": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 210 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s201.sec51.u38": [
+  [
+   "Dann... nehme ich das..."
+  ]
+ ],
+ "s201.sec51.u39": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +240"
+  ]
+ ],
+ "s201.sec51.u40": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +210"
+  ]
+ ],
+ "s201.sec51.u41": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +180"
+  ]
+ ],
+ "s201.sec51.u42": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +150"
+  ]
+ ],
+ "s201.sec51.u43": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +120"
+  ]
+ ],
+ "s201.sec51.u44": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +90"
+  ]
+ ],
+ "s201.sec51.u45": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +60"
+  ]
+ ],
+ "s201.sec51.u46": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s201.sec51.u47": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s201.sec51.u48": [
+  [
+   "Ist das nicht... etwas",
+   "teuer...?"
+  ]
+ ],
+ "s201.sec51.u49": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s201.sec51.u50": [
+  [
+   "Ich hätte gern... etwas",
+   "{color 6}Medizin{color 1}..."
+  ]
+ ],
+ "s201.sec51.u51": [
+  [
+   "Willkommen! {color 6}Medizin{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s201.sec51.u52": [
+  [
+   "{color 6}Medizin{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s201.sec51.u53": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1500 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u54": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1400 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u55": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1300 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u56": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1200 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u57": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1100 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u58": [
+  [
+   "{color 6}Medizin{color 1}",
+   "zum Normalpreis von 1000 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s201.sec51.u59": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 900 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u60": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 800 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u61": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 700 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s201.sec51.u62": [
+  [
+   "Dann... nehme ich das..."
+  ]
+ ],
+ "s201.sec51.u63": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +800"
+  ]
+ ],
+ "s201.sec51.u64": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +700"
+  ]
+ ],
+ "s201.sec51.u65": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +600"
+  ]
+ ],
+ "s201.sec51.u66": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +500"
+  ]
+ ],
+ "s201.sec51.u67": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +400"
+  ]
+ ],
+ "s201.sec51.u68": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +300"
+  ]
+ ],
+ "s201.sec51.u69": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +200"
+  ]
+ ],
+ "s201.sec51.u70": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +100"
+  ]
+ ],
+ "s201.sec51.u71": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s201.sec51.u72": [
+  [
+   "Ist das nicht... etwas",
+   "teuer...?"
+  ]
+ ],
+ "s201.sec51.u73": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s202.sec51.m0.o0": "Preis erhöhen",
+ "s202.sec51.m0.o1": "Bei 50 Bits bleiben",
+ "s202.sec51.m0.o2": "Preis senken",
+ "s202.sec51.m1.o0": "50 auf 75: OK",
+ "s202.sec51.m1.o1": "Überdenken",
+ "s202.sec51.m2.o0": "50 auf 70: OK",
+ "s202.sec51.m2.o1": "Überdenken",
+ "s202.sec51.m3.o0": "50 auf 65: OK",
+ "s202.sec51.m3.o1": "Überdenken",
+ "s202.sec51.m4.o0": "50 auf 60: OK",
+ "s202.sec51.m4.o1": "Überdenken",
+ "s202.sec51.m5.o0": "50 auf 55: OK",
+ "s202.sec51.m5.o1": "Überdenken",
+ "s202.sec51.m6.o0": "Normalpreis: OK",
+ "s202.sec51.m6.o1": "Überdenken",
+ "s202.sec51.m7.o0": "50 auf 45: OK",
+ "s202.sec51.m7.o1": "Überdenken",
+ "s202.sec51.m8.o0": "50 auf 40: OK",
+ "s202.sec51.m8.o1": "Überdenken",
+ "s202.sec51.m9.o0": "50 auf 35: OK",
+ "s202.sec51.m9.o1": "Überdenken",
+ "s202.sec51.m10.o0": "Preis erhöhen",
+ "s202.sec51.m10.o1": "Bei 300 Bits bleiben",
+ "s202.sec51.m10.o2": "Preis senken",
+ "s202.sec51.m11.o0": "300 auf 450: OK",
+ "s202.sec51.m11.o1": "Überdenken",
+ "s202.sec51.m12.o0": "300 auf 420: OK",
+ "s202.sec51.m12.o1": "Überdenken",
+ "s202.sec51.m13.o0": "300 auf 390: OK",
+ "s202.sec51.m13.o1": "Überdenken",
+ "s202.sec51.m14.o0": "300 auf 360: OK",
+ "s202.sec51.m14.o1": "Überdenken",
+ "s202.sec51.m15.o0": "300 auf 330: OK",
+ "s202.sec51.m15.o1": "Überdenken",
+ "s202.sec51.m16.o0": "Normalpreis: OK",
+ "s202.sec51.m16.o1": "Überdenken",
+ "s202.sec51.m17.o0": "300 auf 270: OK",
+ "s202.sec51.m17.o1": "Überdenken",
+ "s202.sec51.m18.o0": "300 auf 240: OK",
+ "s202.sec51.m18.o1": "Überdenken",
+ "s202.sec51.m19.o0": "300 auf 210: OK",
+ "s202.sec51.m19.o1": "Überdenken",
+ "s202.sec51.m20.o0": "Preis erhöhen",
+ "s202.sec51.m20.o1": "Bei 1000 Bits bleiben",
+ "s202.sec51.m20.o2": "Preis senken",
+ "s202.sec51.m21.o0": "1000 auf 1500: OK",
+ "s202.sec51.m21.o1": "Überdenken",
+ "s202.sec51.m22.o0": "1000 auf 1400: OK",
+ "s202.sec51.m22.o1": "Überdenken",
+ "s202.sec51.m23.o0": "1000 auf 1300: OK",
+ "s202.sec51.m23.o1": "Überdenken",
+ "s202.sec51.m24.o0": "1000 auf 1200: OK",
+ "s202.sec51.m24.o1": "Überdenken",
+ "s202.sec51.m25.o0": "1000 auf 1100: OK",
+ "s202.sec51.m25.o1": "Überdenken",
+ "s202.sec51.m26.o0": "Normalpreis: OK",
+ "s202.sec51.m26.o1": "Überdenken",
+ "s202.sec51.m27.o0": "1000 auf 900: OK",
+ "s202.sec51.m27.o1": "Überdenken",
+ "s202.sec51.m28.o0": "1000 auf 800: OK",
+ "s202.sec51.m28.o1": "Überdenken",
+ "s202.sec51.m29.o0": "1000 auf 700: OK",
+ "s202.sec51.m29.o1": "Überdenken",
+ "s202.sec51.u0": [
+  [
+   "Ich hätte so gern etwas",
+   "{color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s202.sec51.u1": [
+  [
+   "Willkommen! {color 6}Fleisch{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s202.sec51.u2": [
+  [
+   "{color 6}Fleisch{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s202.sec51.u3": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 75 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u4": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 70 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u5": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 65 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u6": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 60 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u7": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 55 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u8": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "zum Normalpreis von 50 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s202.sec51.u9": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 45 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u10": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 40 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u11": [
+  [
+   "{color 6}Fleisch{color 1}",
+   "für 35 Bits verkaufen",
+   "(Normalpreis: 50 Bits)."
+  ]
+ ],
+ "s202.sec51.u12": [
+  [
+   "Ach, was soll's, ich kaufe es!"
+  ]
+ ],
+ "s202.sec51.u13": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +40"
+  ]
+ ],
+ "s202.sec51.u14": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +35"
+  ]
+ ],
+ "s202.sec51.u15": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s202.sec51.u16": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +25"
+  ]
+ ],
+ "s202.sec51.u17": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +20"
+  ]
+ ],
+ "s202.sec51.u18": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +15"
+  ]
+ ],
+ "s202.sec51.u19": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +10"
+  ]
+ ],
+ "s202.sec51.u20": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +5"
+  ]
+ ],
+ "s202.sec51.u21": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s202.sec51.u22": [
+  [
+   "Ich gehe nach Hause!"
+  ]
+ ],
+ "s202.sec51.u23": [
+  [
+   "Kein Kunde kommt..."
+  ]
+ ],
+ "s202.sec51.u24": [
+  [
+   "Ist das nicht viel zu teuer?"
+  ]
+ ],
+ "s202.sec51.u25": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s202.sec51.u26": [
+  [
+   "Ich hätte so gern ein",
+   "{color 6}Tragbares Klo{color 1}!"
+  ]
+ ],
+ "s202.sec51.u27": [
+  [
+   "Willkommen! {color 6}Tragbares Klo{color 1},",
+   "ja? Ähm..."
+  ]
+ ],
+ "s202.sec51.u28": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s202.sec51.u29": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 450 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u30": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 420 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u31": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 390 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u32": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 360 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u33": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 330 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u34": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "zum Normalpreis von 300 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s202.sec51.u35": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 270 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u36": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 240 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u37": [
+  [
+   "{color 6}Tragbares Klo{color 1}",
+   "für 210 Bits verkaufen",
+   "(Normalpreis: 300 Bits)."
+  ]
+ ],
+ "s202.sec51.u38": [
+  [
+   "Ach, was soll's, ich kaufe es!"
+  ]
+ ],
+ "s202.sec51.u39": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +240"
+  ]
+ ],
+ "s202.sec51.u40": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +210"
+  ]
+ ],
+ "s202.sec51.u41": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +180"
+  ]
+ ],
+ "s202.sec51.u42": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +150"
+  ]
+ ],
+ "s202.sec51.u43": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +120"
+  ]
+ ],
+ "s202.sec51.u44": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +90"
+  ]
+ ],
+ "s202.sec51.u45": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +60"
+  ]
+ ],
+ "s202.sec51.u46": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +30"
+  ]
+ ],
+ "s202.sec51.u47": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s202.sec51.u48": [
+  [
+   "Ist das nicht viel zu teuer?"
+  ]
+ ],
+ "s202.sec51.u49": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s202.sec51.u50": [
+  [
+   "Ich hätte so gern etwas",
+   "{color 6}Medizin{color 1}!"
+  ]
+ ],
+ "s202.sec51.u51": [
+  [
+   "Willkommen! {color 6}Medizin{color 1}, ja?",
+   "Ähm..."
+  ]
+ ],
+ "s202.sec51.u52": [
+  [
+   "{color 6}Medizin{color 1}",
+   ", richtig... Ähm..."
+  ]
+ ],
+ "s202.sec51.u53": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1500 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u54": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1400 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u55": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1300 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u56": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1200 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u57": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 1100 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u58": [
+  [
+   "{color 6}Medizin{color 1}",
+   "zum Normalpreis von 1000 Bits",
+   "verkaufen."
+  ]
+ ],
+ "s202.sec51.u59": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 900 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u60": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 800 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u61": [
+  [
+   "{color 6}Medizin{color 1}",
+   "für 700 Bits verkaufen",
+   "(Normalpreis: 1000 Bits)."
+  ]
+ ],
+ "s202.sec51.u62": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +800"
+  ]
+ ],
+ "s202.sec51.u63": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +700"
+  ]
+ ],
+ "s202.sec51.u64": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +600"
+  ]
+ ],
+ "s202.sec51.u65": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +500"
+  ]
+ ],
+ "s202.sec51.u66": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +400"
+  ]
+ ],
+ "s202.sec51.u67": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +300"
+  ]
+ ],
+ "s202.sec51.u68": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +200"
+  ]
+ ],
+ "s202.sec51.u69": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +100"
+  ]
+ ],
+ "s202.sec51.u70": [
+  [
+   "Gesamt: {shopvar} Dieser",
+   "Verkauf: +0"
+  ]
+ ],
+ "s202.sec51.u71": [
+  [
+   "Ist das nicht viel zu teuer?"
+  ]
+ ],
+ "s202.sec51.u72": [
+  [
+   "Ach so? Na dann..."
+  ]
+ ],
+ "s203.sec51.u0": [
+  [
+   "Hm...?"
+  ]
+ ],
+ "s203.sec51.u1": "Wow?!",
+ "s204.sec51.u0": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u1": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u2": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u3": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s204.sec51.u4": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s205.sec6.m0.o0": "Klinik",
+ "s205.sec6.m0.o1": "Schatzsucher",
+ "s205.sec6.m0.o2": "Wahrsager",
+ "s205.sec6.m1.o0": "Digimon untersuchen",
+ "s205.sec6.m1.o1": "Medizin kaufen",
+ "s205.sec6.m1.o2": "Nichts. Vielen Dank.",
+ "s205.sec6.m2.o0": "Erneut untersuchen",
+ "s205.sec6.m2.o1": "Medizin kaufen",
+ "s205.sec6.m2.o2": "Das ist alles",
+ "s205.sec6.m3.o0": "Pflaster: 400 Bits",
+ "s205.sec6.m3.o1": "Medizin: 1200 Bits",
+ "s205.sec6.m3.o2": "Schon gut",
+ "s205.sec6.m4.o0": "Digimon untersuchen",
+ "s205.sec6.m4.o1": "Mehr Medizin kaufen",
+ "s205.sec6.m4.o2": "Das ist alles",
+ "s205.sec6.m5.o0": "Bitte erklären",
+ "s205.sec6.m5.o1": "Keine Erklärung nötig",
+ "s205.sec6.m5.o2": "Nichts. Vielen Dank.",
+ "s205.sec6.m6.o0": "Noch mal erklären",
+ "s205.sec6.m6.o1": "Schatzsuche starten",
+ "s205.sec6.m6.o2": "Nein, das ist alles",
+ "s205.sec6.m7.o0": "Normalplan: 1000 Bits",
+ "s205.sec6.m7.o1": "Sonderplan: 5000 Bits",
+ "s205.sec6.m7.o2": "Abbrechen",
+ "s205.sec6.u0": "Welcher Laden soll es sein?",
+ "s205.sec6.u1": [
+  [
+   "Zur Klinik gewechselt!"
+  ]
+ ],
+ "s205.sec6.u2": [
+  [
+   "Oh, deinem Partner geht es",
+   "wohl nicht gut. Du musst auf",
+   "seine Gesundheit achten. Ich"
+  ],
+  [
+   "behandle ihn sofort. Für dich",
+   "nur 300 Bits."
+  ]
+ ],
+ "s205.sec6.u3": [
+  [
+   "Was, nicht genug Bits? Na gut,",
+   "zahl erst mal, was du kannst.",
+   "Und spar dein Geld für"
+  ],
+  [
+   "Notfälle!"
+  ]
+ ],
+ "s205.sec6.u4": [
+  [
+   "So, alles wieder gut. Pass",
+   "künftig besser auf."
+  ]
+ ],
+ "s205.sec6.u5": [
+  [
+   "Hm, er scheint weder krank",
+   "noch verletzt zu sein. Was",
+   "kann ich für dich tun?"
+  ]
+ ],
+ "s205.sec6.u6": [
+  [
+   "Dann sehe ich mir {color 10}{partner}{color 1}",
+   "mal an."
+  ]
+ ],
+ "s205.sec6.u7": [
+  [
+   "Oje, das sieht schlecht aus.",
+   "{color 10}{partner}{color 1} ist völlig",
+   "erschöpft. Wenn du nichts tust,"
+  ],
+  [
+   "ist er in Gefahr!"
+  ]
+ ],
+ "s205.sec6.u8": [
+  [
+   "Hm... {color 10}{partner}{color 1} ist sehr",
+   "müde. Er braucht Ruhe, bevor",
+   "es zu spät ist."
+  ]
+ ],
+ "s205.sec6.u9": [
+  [
+   "Hm, {color 10}{partner}{color 1} wirkt etwas",
+   "müde. Übertreib es nicht."
+  ]
+ ],
+ "s205.sec6.u10": [
+  [
+   "Mhm, {color 10}{partner}{color 1} ist gut in",
+   "Form. Müdigkeit kann viel",
+   "Schaden anrichten, also pass"
+  ],
+  [
+   "auf."
+  ]
+ ],
+ "s205.sec6.u11": [
+  [
+   "Nun zu seiner Stimmung..."
+  ]
+ ],
+ "s205.sec6.u12": [
+  [
+   "{color 10}{partner}{color 1} ist völlig",
+   "entspannt. Er wird lange leben."
+  ]
+ ],
+ "s205.sec6.u13": [
+  [
+   "{color 10}{partner}{color 1} ist bester Laune.",
+   "Das kommt von einem gesunden",
+   "Leben."
+  ]
+ ],
+ "s205.sec6.u14": [
+  [
+   "{color 10}{partner}{color 1} wirkt recht",
+   "entspannt. Ist etwas Schönes",
+   "passiert?"
+  ]
+ ],
+ "s205.sec6.u15": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "besonderen Stress zu haben.",
+   "Ganz normal."
+  ]
+ ],
+ "s205.sec6.u16": [
+  [
+   "{color 10}{partner}{color 1} wirkt etwas",
+   "gestresst. Lass es beim",
+   "Training ruhiger angehen."
+  ]
+ ],
+ "s205.sec6.u17": [
+  [
+   "Bei {color 10}{partner}{color 1} staut sich",
+   "Stress an. Such ihm etwas",
+   "Ablenkung."
+  ]
+ ],
+ "s205.sec6.u18": [
+  [
+   "{color 10}{partner}{color 1} ist sehr",
+   "gestresst und mürrisch.",
+   "Verlang ihm nicht zu viel ab."
+  ]
+ ],
+ "s205.sec6.u19": [
+  [
+   "{color 10}{partner}{color 1} hält den Stress",
+   "kaum noch aus...! So wird sein",
+   "Leben verkürzt!"
+  ]
+ ],
+ "s205.sec6.u20": [
+  [
+   "Hm... Mehr kann ich zu",
+   "{color 10}{partner}{color 1} nicht sagen.",
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s205.sec6.u21": [
+  [
+   "Hm, gut."
+  ]
+ ],
+ "s205.sec6.u22": [
+  [
+   "Hm. Wenn er krank wirkt, komm",
+   "sofort zu mir."
+  ]
+ ],
+ "s205.sec6.u23": "Du kannst nicht mehr tragen.",
+ "s205.sec6.u24": [
+  [
+   "Nicht genug Bits? Dann kann",
+   "ich es dir nicht verkaufen."
+  ]
+ ],
+ "s205.sec6.u25": "Du kannst nicht mehr tragen.",
+ "s205.sec6.u26": [
+  [
+   "Nicht genug Bits? Dann kann",
+   "ich es dir nicht verkaufen."
+  ]
+ ],
+ "s205.sec6.u27": [
+  [
+   "Sonst noch etwas?"
+  ]
+ ],
+ "s205.sec6.u28": [
+  [
+   "Zum Schatzsucher gewechselt!"
+  ]
+ ],
+ "s205.sec6.u29": [
+  [
+   "Na, Lust auf eine",
+   "Schatzsuche? Soll ich dir erst",
+   "erklären, wie es geht?"
+  ]
+ ],
+ "s205.sec6.u30": [
+  [
+   "Du zahlst im Voraus und ich",
+   "finde dir einen Schatz. Es gibt",
+   "zwei Angebote. Normal: drei"
+  ],
+  [
+   "Tage für 1000 Bits. Spezial:",
+   "zehn Tage für 5000 Bits. Mit",
+   "Spezial hast du bessere"
+  ],
+  [
+   "Chancen auf tolle Schätze! Das",
+   "war's. Was darf es sein?"
+  ]
+ ],
+ "s205.sec6.u31": [
+  [
+   "Dann wähle ein Angebot!"
+  ]
+ ],
+ "s205.sec6.u32": [
+  [
+   "Okay. Wir sehen uns später!"
+  ]
+ ],
+ "s205.sec6.u33": [
+  [
+   "Alles klar! In drei Tagen hast",
+   "du das Ergebnis. Ich gebe mein",
+   "Bestes!"
+  ]
+ ],
+ "s205.sec6.u34": [
+  [
+   "Alles klar! In zehn Tagen hast",
+   "du das Ergebnis. Ich gebe mein",
+   "Bestes!"
+  ]
+ ],
+ "s205.sec6.u35": [
+  [
+   "Nicht genug Bits, Kumpel.",
+   "Selbst ich kann ohne",
+   "Startkapital keinen Schatz"
+  ],
+  [
+   "ausgraben."
+  ]
+ ],
+ "s205.sec6.u36": [
+  [
+   "{color 7}Schild{color 1}",
+   "Bin auf Schatzsuche. Bald",
+   "zurück. Bitte etwas Geduld.",
+   "Drimogemon"
+  ]
+ ],
+ "s205.sec6.u37": [
+  [
+   "Hey! Dein Schatz ist gekommen!"
+  ]
+ ],
+ "s205.sec6.u38": [
+  [
+   "Mach erst Platz in deiner",
+   "Tasche!"
+  ]
+ ],
+ "s205.sec6.u39": [
+  [
+   "{color 6}{item 110}{color 1} erhalten!"
+  ]
+ ],
+ "s205.sec6.u40": [
+  [
+   "Danke für deinen Auftrag!"
+  ]
+ ],
+ "s206.sec6.m0.o0": "Abgemacht!",
+ "s206.sec6.m0.o1": "Ich passe",
+ "s206.sec6.m1.o0": "Abgemacht!",
+ "s206.sec6.m1.o1": "Ich passe",
+ "s206.sec6.u0": [
+  [
+   "Hey, Kumpel, Lust auf ein",
+   "Match? Wenn du gewinnst, tue",
+   "ich alles, was du sagst."
+  ]
+ ],
+ "s206.sec6.u1": [
+  [
+   "Hm? Was für ein Match?"
+  ]
+ ],
+ "s206.sec6.u2": [
+  [
+   "Ich nenne es Digimon-Curling!",
+   "Drinnen erkläre ich dir alles."
+  ]
+ ],
+ "s206.sec6.u3": [
+  [
+   "Das ist richtig. Was ist, wenn",
+   "ich verliere?"
+  ]
+ ],
+ "s206.sec6.u4": [
+  [
+   "Beim ersten Mal nichts. Aber",
+   "beim nächsten Mal musst du mir",
+   "vorher einen Fisch geben."
+  ]
+ ],
+ "s206.sec6.u5": [
+  [
+   "Verstanden. Wenn wir gewinnen,",
+   "kommst du in die Stadt. Wenn",
+   "das klargeht, spielen wir."
+  ]
+ ],
+ "s206.sec6.u6": [
+  [
+   "Ja, einverstanden. Komm rein."
+  ]
+ ],
+ "s206.sec6.u7": [
+  [
+   "Hey, Kumpel! Willst du mich",
+   "herausfordern? Kostet einen",
+   "Fisch."
+  ]
+ ],
+ "s206.sec6.u8": [
+  [
+   "Hey, Kumpel! Hier habe ich",
+   "auch eine Eisbahn gebaut. Wie",
+   "vorher: ein Fisch pro Spiel."
+  ],
+  [
+   "Wenn du gewinnst, gibt's einen",
+   "tollen Preis."
+  ]
+ ],
+ "s206.sec6.u9": [
+  [
+   "Na, Kumpel, forderst du mich",
+   "heraus? Kostet einen Fisch."
+  ]
+ ],
+ "s206.sec6.u10": [
+  [
+   "Och, du bist langweilig."
+  ]
+ ],
+ "s206.sec6.u11": [
+  [
+   "Gib mir einen Fisch!"
+  ]
+ ],
+ "s206.sec6.u12": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s206.sec6.u13": [
+  [
+   "Ups! Das zu geben, nützt",
+   "nichts."
+  ]
+ ],
+ "s206.sec6.u14": [
+  [
+   "Wow, sieht lecker aus! Huch,",
+   "erst das Match. Komm rein."
+  ]
+ ],
+ "s206.sec6.u15": [
+  [
+   "Komm schon, Kumpel. Fang dir",
+   "einen Fisch am",
+   "Drachenaugensee!"
+  ]
+ ],
+ "s206.sec7.m0.o0": "Lass uns gehen!",
+ "s206.sec7.m0.o1": "Nein, danke",
+ "s206.sec7.u0": [
+  [
+   "Hey, {color 6}{player}{color 1}. Penguinmon",
+   "hat mir die Eisbahn anvertraut.",
+   "Wie wär's diesmal mit einem"
+  ],
+  [
+   "Match gegen mich? Wenn du",
+   "gewinnst, gibt's einen ganz",
+   "besonderen Preis. Na?"
+  ]
+ ],
+ "s206.sec7.u1": [
+  [
+   "Den Fisch nehme ich vor dem",
+   "Match."
+  ]
+ ],
+ "s206.sec7.u2": [
+  [
+   "Ah, Das stimmt. Ich habe jetzt",
+   "nichts..."
+  ]
+ ],
+ "s206.sec7.u3": [
+  [
+   "Ups! Das zu geben, nützt",
+   "nichts."
+  ]
+ ],
+ "s206.sec7.u4": [
+  [
+   "He. Heute gewinne ich. Gehen",
+   "wir rein."
+  ]
+ ],
+ "s206.sec7.u5": [
+  [
+   "Ich hüte Penguinmons Eisbahn.",
+   "Ohne Fisch kann ich nicht",
+   "spielen. Schade. Komm später"
+  ],
+  [
+   "wieder."
+  ]
+ ],
+ "s206.sec7.u6": [
+  [
+   "Was... Du lehnst mich ab...?!"
+  ]
+ ],
+ "s206.sec10.u0": [
+  [
+   "Tut mir leid, Kumpel. Bring",
+   "noch einen Fisch und versuch's",
+   "noch mal!"
+  ]
+ ],
+ "s206.sec10.u1": [
+  [
+   "Wow, ein perfektes Ergebnis!",
+   "Kumpel... bist du etwa Profi?"
+  ]
+ ],
+ "s206.sec10.u2": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec10.u3": [
+  [
+   "Unglaublich, Kumpel. Ich habe",
+   "zum ersten Mal verloren."
+  ]
+ ],
+ "s206.sec10.u4": [
+  [
+   "Gut, dann kommst du wie",
+   "versprochen in die Stadt."
+  ]
+ ],
+ "s206.sec10.u5": [
+  [
+   "Abgemacht ist abgemacht. Ich",
+   "weiß schon, was ich in der",
+   "Stadt machen werde. Warte nur"
+  ],
+  [
+   "ab!"
+  ]
+ ],
+ "s206.sec10.u6": "Penguinmon ist in die Stadt gezogen!",
+ "s206.sec11.u0": [
+  [
+   "Tut mir leid, Kumpel. Bring",
+   "noch einen Fisch und versuch's",
+   "noch mal!"
+  ]
+ ],
+ "s206.sec11.u1": [
+  [
+   "Wow, ein perfektes Ergebnis!",
+   "Kumpel... bist du etwa Profi?"
+  ]
+ ],
+ "s206.sec11.u2": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec11.u3": [
+  [
+   "Wow, du bist spitze, Kumpel.",
+   "Schon wieder verloren."
+  ]
+ ],
+ "s206.sec11.u4": [
+  [
+   "Abgemacht ist abgemacht. Hier,",
+   "dein Preis."
+  ]
+ ],
+ "s206.sec11.u5": "Du kannst nicht mehr tragen!",
+ "s206.sec11.u6": [
+  [
+   "{color 6}{item 110}{color 1} erhalten!"
+  ]
+ ],
+ "s206.sec12.u0": [
+  [
+   "Hahaha! Streng deinen Kopf",
+   "mehr an, wenn du mich schlagen",
+   "willst! Bis zum nächsten Mal."
+  ]
+ ],
+ "s206.sec12.u1": [
+  [
+   "Ein perfektes Ergebnis gegen",
+   "mich?! Bist du ein",
+   "Curling-Genie?!"
+  ]
+ ],
+ "s206.sec12.u2": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s206.sec12.u3": [
+  [
+   "Hmpf, du bist gut,",
+   "{color 6}{player}{color 1}! Hier ist der",
+   "versprochene Preis."
+  ]
+ ],
+ "s206.sec12.u4": "Du kannst nicht mehr tragen!",
+ "s206.sec12.u5": [
+  [
+   "{color 6}{item 110}{color 1} erhalten!"
+  ]
+ ],
+ "s207.sec11.m0.o0": "Kaufen",
+ "s207.sec11.m0.o1": "Nicht kaufen",
+ "s207.sec11.m1.o0": "Kaufen",
+ "s207.sec11.m1.o1": "Nicht kaufen",
+ "s207.sec11.m2.o0": "Kaufen",
+ "s207.sec11.m2.o1": "Nicht kaufen",
+ "s207.sec11.m3.o0": "Superkarotte: 500 Bits",
+ "s207.sec11.m3.o1": "Falkenrettich: 500 Bits",
+ "s207.sec11.m3.o2": "Schon gut",
+ "s207.sec11.m4.o0": "Kaufen",
+ "s207.sec11.m4.o1": "Nicht kaufen",
+ "s207.sec11.u0": [
+  [
+   "Oh, hallo! Möchtest du Fleisch?",
+   "Hoppla, ich habe es noch nicht",
+   "erklärt. Das ist die"
+  ],
+  [
+   "Fleischfarm. Hier bauen wir das",
+   "Fleisch an, das alle essen."
+  ]
+ ],
+ "s207.sec11.u1": [
+  [
+   "Moment mal. Ihr baut Fleisch",
+   "auf einem Feld an?!"
+  ]
+ ],
+ "s207.sec11.u2": [
+  [
+   "Ja. Ist daran etwas seltsam?"
+  ]
+ ],
+ "s207.sec11.u3": [
+  [
+   "Nein... äh, vergiss es. Also?"
+  ]
+ ],
+ "s207.sec11.u4": [
+  [
+   "Jiji und wir haben beschlossen,",
+   "{color 6}{player}{color 1}: Du bekommst",
+   "täglich drei Stück Fleisch."
+  ],
+  [
+   "Hier, deine heutige Ration!"
+  ]
+ ],
+ "s207.sec11.u5": [
+  [
+   "Hm, du hast zu viel Fleisch. Du",
+   "kannst heute auf deine Ration",
+   "verzichten, oder?"
+  ]
+ ],
+ "s207.sec11.u6": [
+  [
+   "Hm, du hast zu viel Fleisch.",
+   "Ich behalte, was du nicht",
+   "tragen kannst, ja?"
+  ]
+ ],
+ "s207.sec11.u7": [
+  [
+   "Erhalten: {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u8": [
+  [
+   "Du trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u9": [
+  [
+   "Erhalten: 3 x {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u10": [
+  [
+   "Heute war die Ernte reichlich!",
+   "Du bekommst also fünf Stück",
+   "Fleisch."
+  ]
+ ],
+ "s207.sec11.u11": [
+  [
+   "Hm, du hast zu viel Fleisch. Du",
+   "kannst heute auf deine Ration",
+   "verzichten, oder?"
+  ]
+ ],
+ "s207.sec11.u12": [
+  [
+   "Hm, du hast zu viel Fleisch.",
+   "Ich behalte, was du nicht",
+   "tragen kannst, ja?"
+  ]
+ ],
+ "s207.sec11.u13": [
+  [
+   "Erhalten: {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u14": [
+  [
+   "Hm, tut mir leid, aber du",
+   "trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u15": [
+  [
+   "Erhalten: 5 x {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u16": [
+  [
+   "Die nächste Ernte gibt's",
+   "morgen!"
+  ]
+ ],
+ "s207.sec11.u17": [
+  [
+   "Hier, dein Fleisch für heute!"
+  ]
+ ],
+ "s207.sec11.u18": [
+  [
+   "Hm, du hast zu viel Fleisch. Du",
+   "kannst heute auf deine Ration",
+   "verzichten, oder?"
+  ]
+ ],
+ "s207.sec11.u19": [
+  [
+   "Hm, du hast zu viel Fleisch.",
+   "Ich behalte, was du nicht",
+   "tragen kannst, ja?"
+  ]
+ ],
+ "s207.sec11.u20": [
+  [
+   "Erhalten: {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u21": [
+  [
+   "Du trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u22": [
+  [
+   "Erhalten: {color 6}Fleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u23": [
+  [
+   "Die nächste Ernte gibt's",
+   "morgen!"
+  ]
+ ],
+ "s207.sec11.u24": [
+  [
+   "Hm? Ich habe dir heute schon",
+   "Fleisch gegeben, oder? Wenn",
+   "dir das Futter ausgeht... Im"
+  ],
+  [
+   "Urwald soll es viele wilde",
+   "Pilze geben."
+  ]
+ ],
+ "s207.sec11.u25": [
+  [
+   "Oh, {color 6}{player}{color 1}! Die",
+   "Fleischfarm ist jetzt doppelt",
+   "so groß. Du bekommst täglich"
+  ],
+  [
+   "drei Stück Riesenfleisch. Mehr",
+   "verkaufe ich für 500 Bits pro",
+   "Stück. Ich führe die Farm"
+  ],
+  [
+   "jetzt statt Tanemon. Tanemon",
+   "ruht sich irgendwo aus."
+  ]
+ ],
+ "s207.sec11.u26": [
+  [
+   "Wir hatten heute eine tolle",
+   "Ernte!"
+  ]
+ ],
+ "s207.sec11.u27": [
+  [
+   "Hm, du hast zu viel",
+   "Riesenfleisch. Du kannst heute",
+   "auf deine Ration verzichten,"
+  ],
+  [
+   "oder?"
+  ]
+ ],
+ "s207.sec11.u28": [
+  [
+   "Hm, du hast zu viel",
+   "Riesenfleisch. Ich behalte, was",
+   "du nicht tragen kannst, ja?"
+  ]
+ ],
+ "s207.sec11.u29": [
+  [
+   "Erhalten: {color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u30": [
+  [
+   "Hm, tut mir leid, aber du",
+   "trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u31": [
+  [
+   "Erhalten: 5 x {color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u32": [
+  [
+   "Die nächste Ernte gibt's",
+   "morgen!"
+  ]
+ ],
+ "s207.sec11.u33": [
+  [
+   "Hier, deine drei Stück",
+   "Riesenfleisch für heute!"
+  ]
+ ],
+ "s207.sec11.u34": [
+  [
+   "Hm, du hast zu viel",
+   "Riesenfleisch. Du kannst heute",
+   "auf deine Ration verzichten,"
+  ],
+  [
+   "oder?"
+  ]
+ ],
+ "s207.sec11.u35": [
+  [
+   "Hm, du hast zu viel",
+   "Riesenfleisch. Ich behalte, was",
+   "du nicht tragen kannst, ja?"
+  ]
+ ],
+ "s207.sec11.u36": [
+  [
+   "Erhalten: {color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u37": [
+  [
+   "Hm, tut mir leid, aber du",
+   "trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u38": [
+  [
+   "Erhalten: 3 x {color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s207.sec11.u39": [
+  [
+   "Die nächste Ernte ist morgen.",
+   "Willst du jetzt welche für 500",
+   "Bits pro Stück kaufen?"
+  ]
+ ],
+ "s207.sec11.u40": [
+  [
+   "Du hast nicht genug Geld."
+  ]
+ ],
+ "s207.sec11.u41": [
+  [
+   "Du trägst zu viele Items."
+  ]
+ ],
+ "s207.sec11.u42": [
+  [
+   "Noch mehr kaufen?"
+  ]
+ ],
+ "s207.sec11.u43": [
+  [
+   "Okay, bis morgen!"
+  ]
+ ],
+ "s207.sec11.u44": [
+  [
+   "Ke he he! {color 6}{player}{color 1}, sieh",
+   "mal!"
+  ]
+ ],
+ "s207.sec11.u45": [
+  [
+   "Ke he he! Das beste Fleisch",
+   "wächst wie verrückt!",
+   "{color 6}{player}{color 1} bekommt täglich"
+  ],
+  [
+   "drei Filetstücke gratis. Ke he,",
+   "ich baue auch seltenes Gemüse",
+   "an! Kauf, so viel du willst!"
+  ]
+ ],
+ "s207.sec11.u46": [
+  [
+   "Hey! Ich habe heute gute",
+   "Laune, also bekommst du fünf",
+   "Filetstücke. Ke he."
+  ]
+ ],
+ "s207.sec11.u47": [
+  [
+   "Du hast zu viele Filetstücke!",
+   "Dann brauchst du heute wohl",
+   "keine."
+  ]
+ ],
+ "s207.sec11.u48": [
+  [
+   "Du hast zu viele Filetstücke!",
+   "Was du nicht tragen kannst,",
+   "gebe ich dir nicht!"
+  ]
+ ],
+ "s207.sec11.u49": [
+  [
+   "Erhalten: {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s207.sec11.u50": [
+  [
+   "He, du trägst viel zu viele",
+   "Items!"
+  ]
+ ],
+ "s207.sec11.u51": [
+  [
+   "Erhalten: 5 x {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s207.sec11.u52": [
+  [
+   "Dann bis morgen. Ke he he!"
+  ]
+ ],
+ "s207.sec11.u53": [
+  [
+   "Ke he he! Deine drei",
+   "Filetstücke für heute!"
+  ]
+ ],
+ "s207.sec11.u54": [
+  [
+   "Du hast zu viele Filetstücke!",
+   "Dann brauchst du heute wohl",
+   "keine."
+  ]
+ ],
+ "s207.sec11.u55": [
+  [
+   "Du hast zu viele Filetstücke!",
+   "Was du nicht tragen kannst,",
+   "gebe ich dir nicht!"
+  ]
+ ],
+ "s207.sec11.u56": [
+  [
+   "Erhalten: {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s207.sec11.u57": [
+  [
+   "He, du trägst viel zu viele",
+   "Items!"
+  ]
+ ],
+ "s207.sec11.u58": [
+  [
+   "Erhalten: 3 x {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s207.sec11.u59": [
+  [
+   "Hm? Es ist noch nicht morgen!",
+   "Oder kaufst du Gemüse?"
+  ]
+ ],
+ "s207.sec11.u60": [
+  [
+   "Du hast nicht genug Geld, ke",
+   "he!"
+  ]
+ ],
+ "s207.sec11.u61": [
+  [
+   "Du trägst zu viele Items, habe",
+   "ich gesagt!"
+  ]
+ ],
+ "s207.sec11.u62": [
+  [
+   "Du hast nicht genug Geld, ke",
+   "he!"
+  ]
+ ],
+ "s207.sec11.u63": [
+  [
+   "Du trägst zu viele Items, habe",
+   "ich gesagt!"
+  ]
+ ],
+ "s207.sec11.u64": [
+  [
+   "Ke he, kaufst du noch mehr?"
+  ]
+ ],
+ "s207.sec11.u65": [
+  [
+   "Ke he! Bis dann!"
+  ]
+ ],
+ "s208.sec82.m0.o0": "Zurück",
+ "s208.sec82.m0.o1": "Nicht weiterlesen",
+ "s208.sec82.m1.o0": "Zurück",
+ "s208.sec82.m1.o1": "Weiter",
+ "s208.sec82.m1.o2": "Nicht weiterlesen",
+ "s208.sec82.m2.o0": "Zurück",
+ "s208.sec82.m2.o1": "Weiter",
+ "s208.sec82.m2.o2": "Nicht weiterlesen",
+ "s208.sec82.m3.o0": "Zurück",
+ "s208.sec82.m3.o1": "Weiter",
+ "s208.sec82.m3.o2": "Nicht weiterlesen",
+ "s208.sec82.m4.o0": "Zurück",
+ "s208.sec82.m4.o1": "Weiter",
+ "s208.sec82.m4.o2": "Nicht weiterlesen",
+ "s208.sec82.m5.o0": "Zurück",
+ "s208.sec82.m5.o1": "Weiter",
+ "s208.sec82.m5.o2": "Nicht weiterlesen",
+ "s208.sec82.m6.o0": "Zurück",
+ "s208.sec82.m6.o1": "Weiter",
+ "s208.sec82.m6.o2": "Nicht weiterlesen",
+ "s208.sec82.m7.o0": "Weiter",
+ "s208.sec82.m7.o1": "Nicht weiterlesen",
+ "s208.sec82.u0": [
+  [
+   "Shell News Nr. 8: Ein",
+   "außerirdisches Digimon! Das",
+   "unbekannte Flugobjekt wurde",
+   "wieder gesichtet. Ein Wesen"
+  ],
+  [
+   "lehnte sich heraus und sprach",
+   "fremde Worte. Die meisten",
+   "halten es für ein",
+   "außerirdisches Digimon und"
+  ],
+  [
+   "fragen sich, wann es",
+   "wiederkommt."
+  ]
+ ],
+ "s208.sec82.u1": [
+  [
+   "Shell News Nr. 7: Myotismon",
+   "tritt nicht ab. Vor der Presse",
+   "dementierte Myotismon die",
+   "Gerüchte. Seinen Fans zuliebe"
+  ],
+  [
+   "werde er bleiben. Auch das",
+   "Debüt seines Schülers",
+   "SkullGreymon kündigte er an."
+  ]
+ ],
+ "s208.sec82.u2": [
+  [
+   "Shell News Nr. 6: Myotismon im",
+   "Ruhestand? Der berühmte und",
+   "talentierte Myotismon könnte",
+   "die Arena verlassen. Er ist"
+  ],
+  [
+   "dort kaum noch zu sehen.",
+   "Insider sagen, er habe seine",
+   "Grenzen erreicht."
+  ]
+ ],
+ "s208.sec82.u3": [
+  [
+   "Shell News Nr. 5: Ein",
+   "Geheimtipp von Laden! In der",
+   "Zahnradsavanne gibt es einen",
+   "Laden für Kenner. Er öffnet"
+  ],
+  [
+   "nur vom 1. bis 15. Der",
+   "Besitzer: «Stolz auf unser",
+   "Angebot, ja, ja.» Seltene",
+   "Items machen einen Besuch"
+  ],
+  [
+   "lohnend."
+  ]
+ ],
+ "s208.sec82.u4": [
+  [
+   "Shell News Nr. 4: Phantom im",
+   "Schnee? Herr M berichtet aus",
+   "Frostland: «Ich vertrage keine",
+   "Kälte. Ich blieb im Schnee"
+  ],
+  [
+   "stecken und fiel hin. Gerettet",
+   "hat mich... eine Art",
+   "Schneehaufen.»",
+   "Kälteempfindliche Digimon,"
+  ],
+  [
+   "passt auf!"
+  ]
+ ],
+ "s208.sec82.u5": [
+  [
+   "Shell News Nr. 3: Ein Wächter",
+   "im See? Der Wächter des",
+   "Drachenaugensees soll gefangen",
+   "worden sein. Vielmehr kam ein"
+  ],
+  [
+   "großes Digimon, als man es",
+   "rief. Wer es trifft, darf sich",
+   "angeblich etwas wünschen.",
+   "Droht ein Angelfieber?"
+  ]
+ ],
+ "s208.sec82.u6": [
+  [
+   "Shell News Nr. 2: Unbekanntes",
+   "Flugobjekt! Über dem",
+   "Panoramaberg wurde eine",
+   "silberne Scheibe gesichtet, die"
+  ],
+  [
+   "unten leuchtete und 30 m hoch",
+   "flog. Ein außerirdisches",
+   "Digimon? Wir erwarten weitere",
+   "Nachrichten."
+  ]
+ ],
+ "s208.sec82.u7": [
+  [
+   "Shell News Nr. 1: Räuberbande",
+   "zerschlagen! {color 6}{player}{color 1} fand",
+   "Ogremons Versteck. Nach einem",
+   "Kampf ist die Bande, die die"
+  ],
+  [
+   "Insel plagte, fast erledigt.",
+   "Doch Ogremon ist entkommen.",
+   "Die Gefahr ist nicht vorüber."
+  ]
+ ],
+ "s209.sec5.m0.o0": "Laden 1",
+ "s209.sec5.m0.o1": "Laden 2",
+ "s209.sec5.m0.o2": "Andere",
+ "s209.sec5.m0.o3": "Namen eingeben",
+ "s209.sec5.m1.o0": "{color 6}{player}{color 1}",
+ "s209.sec5.m1.o1": "{color 10}{partner}{color 1}",
+ "s209.sec5.m2.o0": "Laden",
+ "s209.sec5.m2.o1": "Markt",
+ "s209.sec5.m2.o2": "Punkte",
+ "s209.sec5.m3.o0": "Karten",
+ "s209.sec5.m3.o1": "Itemlager",
+ "s209.sec5.m3.o2": "Andere Läden",
+ "s209.sec5.m4.o0": "Karten kaufen",
+ "s209.sec5.m4.o1": "Karten verkaufen",
+ "s209.sec5.m4.o2": "Beenden",
+ "s209.sec5.m5.o0": "3er-Pack kaufen",
+ "s209.sec5.m5.o1": "Eine Karte kaufen",
+ "s209.sec5.m5.o2": "Schon gut",
+ "s209.sec5.m6.o0": "Eine Karte kaufen",
+ "s209.sec5.m6.o1": "Schon gut",
+ "s209.sec5.m7.o0": "Kaufen",
+ "s209.sec5.m7.o1": "Schon gut",
+ "s209.sec5.m8.o0": "Soundtest",
+ "s209.sec5.m8.o1": "Teleportladen",
+ "s209.sec5.m8.o2": "Tauschen",
+ "s209.sec5.m9.o0": "Anmeldung",
+ "s209.sec5.m9.o1": "Arena",
+ "s209.sec5.m9.o2": "Sonstiges",
+ "s209.sec5.m9.o3": "Preise",
+ "s209.sec5.m10.o0": "Intro",
+ "s209.sec5.m10.o1": "Ende",
+ "s209.sec5.m10.o2": "Verwandeln",
+ "s209.sec5.m10.o3": "Sterben: verstorben",
+ "s209.sec5.m11.o0": "Löschung",
+ "s209.sec5.m11.o1": "Hinzufügen",
+ "s209.sec5.m11.o2": "Fertig",
+ "s209.sec5.u0": [
+  [
+   "Heute gibt es neue Karten, ja,",
+   "ja!"
+  ]
+ ],
+ "s209.sec5.u1": [
+  [
+   "Ein Pack kostet 500 Bits. Der",
+   "Inhalt ist Glückssache, ja, ja."
+  ]
+ ],
+ "s209.sec5.u2": [
+  [
+   "Öffne dein Pack gleich, ja, ja."
+  ]
+ ],
+ "s209.sec5.u3": [
+  [
+   "Sonst noch etwas, ja?"
+  ]
+ ],
+ "s209.sec5.u4": [
+  [
+   "Komm bald wieder, ja, ja!"
+  ]
+ ],
+ "s209.sec5.u5": [
+  [
+   "Ich hatte nichts."
+  ]
+ ],
+ "s209.sec5.u6": [
+  [
+   "Gibst du mir nichts?"
+  ]
+ ],
+ "s209.sec5.u7": [
+  [
+   "Vielen Dank."
+  ]
+ ],
+ "s209.sec5.u8": [
+  [
+   "Karte Nr. 21 erhalten."
+  ]
+ ],
+ "s209.sec5.u9": [
+  [
+   "Zurückverwandeln."
+  ]
+ ],
+ "s209.sec5.u10": [
+  [
+   "In Sukamon verwandeln."
+  ]
+ ],
+ "s209.sec5.u11": [
+  [
+   "Erledigt."
+  ]
+ ],
+ "s209.sec5.u12": [
+  [
+   "Für «- {cup 3} -»",
+   "angemeldet."
+  ]
+ ],
+ "s209.sec5.u13": [
+  [
+   "Nicht eingetragen."
+  ]
+ ],
+ "s209.sec5.u14": [
+  [
+   "Jetzt: {shopvar} Bits"
+  ]
+ ],
+ "s209.sec10.u0": [
+  [
+   "- Klasse D -",
+   "Vor allem für",
+   "Rookie-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s209.sec10.u1": [
+  [
+   "- Klasse C -",
+   "Vor allem für",
+   "Champion-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s209.sec10.u2": [
+  [
+   "- Klasse B -",
+   "Für Champions, die auf",
+   "ihre Stärke vertrauen.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s209.sec10.u3": [
+  [
+   "- Klasse A -",
+   "Vor allem für",
+   "Ultra-Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s209.sec10.u4": [
+  [
+   "- Klasse S -",
+   "Hier treffen sich die",
+   "stärksten Digimon.",
+   "",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Sieger Klasse A"
+  ]
+ ],
+ "s209.sec10.u5": [
+  [
+   "- Klasse R -",
+   "Eine wilde Schlacht mit",
+   "List und Taktik gewinnen.",
+   "",
+   "",
+   "Vierkampf, 2 Runden, 8 Starter",
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s209.sec10.u6": [
+  [
+   "- Version-1-Pokal -",
+   "Kürt das beste Digimon",
+   "der Version 1.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version 1"
+  ]
+ ],
+ "s209.sec10.u7": [
+  [
+   "- Version-2-Pokal -",
+   "Kürt das beste Digimon",
+   "der Version 2.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version 2"
+  ]
+ ],
+ "s209.sec10.u8": [
+  [
+   "- Version-3-Pokal -",
+   "Kürt das beste Digimon",
+   "der Version 3.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version 3"
+  ]
+ ],
+ "s209.sec10.u9": [
+  [
+   "- Version-4-Pokal -",
+   "Kürt das beste Digimon",
+   "der Version 4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version 4"
+  ]
+ ],
+ "s209.sec10.u10": [
+  [
+   "- Version-O-Pokal -",
+   "Kürt das beste Digimon",
+   "außerhalb der Versionen 1-4.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: außer Version 1-4"
+  ]
+ ],
+ "s209.sec10.u11": [
+  [
+   "- Feuer-Pokal -",
+   "Kürt den König der",
+   "lodernden Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Feuer"
+  ]
+ ],
+ "s209.sec10.u12": [
+  [
+   "- Kampf-Pokal -",
+   "Kürt den Meister der",
+   "Digimon-Kampfkünste.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Kampf"
+  ]
+ ],
+ "s209.sec10.u13": [
+  [
+   "- Donner-und-Wind-Pokal -",
+   "Kürt den König der Digimon",
+   "von Himmel und Sturm.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Luft"
+  ]
+ ],
+ "s209.sec10.u14": [
+  [
+   "- Stil-Pokal -",
+   "Kürt den König der",
+   "coolsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Eis"
+  ]
+ ],
+ "s209.sec10.u15": [
+  [
+   "- Natur-Pokal -",
+   "Kürt den König der",
+   "naturliebenden Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Natur"
+  ]
+ ],
+ "s209.sec10.u16": [
+  [
+   "- Metall-Pokal -",
+   "Kürt den König der",
+   "Supermaschinen-Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Maschinen"
+  ]
+ ],
+ "s209.sec10.u17": [
+  [
+   "- Dreck-Pokal -",
+   "Kürt den König der",
+   "dreeeckigsten Digimon.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Dreck"
+  ]
+ ],
+ "s209.sec10.u18": [
+  [
+   "- Dino-Pokal -",
+   "Digimon mit uraltem Blut",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s209.sec10.u19": [
+  [
+   "- Flügel-Pokal -",
+   "Digimon, stolz auf ihre",
+   "Flügel, messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s209.sec10.u20": [
+  [
+   "- Tier-Pokal -",
+   "Digimon mit tierischem Blut",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s209.sec10.u21": [
+  [
+   "- Menschen-Pokal -",
+   "Menschenähnliche Digimon",
+   "messen ihre Kräfte.",
+   "Kämpfe mit Zeitlimit.",
+   "",
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s210.sec51.u0": [
+  [
+   "Ich hatte dich erwartet,",
+   "{color 6}{player}{color 1}. Endlich ist der",
+   "Tag gekommen."
+  ]
+ ],
+ "s210.sec51.u1": [
+  [
+   "Was ist los?"
+  ]
+ ],
+ "s210.sec51.u2": [
+  [
+   "Der Weg zum Berg der",
+   "Unendlichkeit ist offen!"
+  ]
+ ],
+ "s210.sec51.u3": [
+  [
+   "Was? Wirklich? Wo?"
+  ]
+ ],
+ "s210.sec51.u4": [
+  [
+   "Hier in der Stadt... hinter dem",
+   "Wasserfall."
+  ]
+ ],
+ "s210.sec51.u5": [
+  [
+   "Wow, das ist ja ganz nah!"
+  ]
+ ],
+ "s210.sec51.u6": [
+  [
+   "Soweit ich weiß, wartet der",
+   "letzte Gegner auf dem Berg",
+   "der Unendlichkeit."
+  ]
+ ],
+ "s210.sec51.u7": [
+  [
+   "Also der letzte Dungeon, ja?",
+   "Auf geht's!"
+  ]
+ ],
+ "s210.sec51.u8": [
+  [
+   "Hm, ich zähle auf dich! Aber",
+   "überstürze nichts. Geh kein",
+   "Risiko ein, bevor du bereit"
+  ],
+  [
+   "bist."
+  ]
+ ],
+ "s210.sec51.u9": [
+  [
+   "Hinter dem Wasserfall der",
+   "Stadt ist der Weg zum Berg",
+   "der Unendlichkeit offen."
+  ]
+ ],
+ "s210.sec51.u10": [
+  [
+   "Soweit ich weiß, wartet der",
+   "letzte Gegner auf dem Berg",
+   "der Unendlichkeit. Bereite dich"
+  ],
+  [
+   "gut vor! Ansonsten..."
+  ]
+ ],
+ "s210.sec77.u0": [
+  [
+   "Der Wohlstand der Stadt ist",
+   "jetzt {pstat 1} ."
+  ]
+ ],
+ "s210.sec77.u1": [
+  [
+   "Hm, noch lange nicht so hoch",
+   "wie früher."
+  ]
+ ],
+ "s210.sec77.u2": [
+  [
+   "Langsam nimmt die Stadt endlich",
+   "Gestalt an."
+  ]
+ ],
+ "s210.sec77.u3": [
+  [
+   "Ho ho, es geht wirklich voran."
+  ]
+ ],
+ "s210.sec77.u4": [
+  [
+   "Es ist wirklich eine schöne",
+   "Stadt geworden."
+  ]
+ ],
+ "s210.sec77.u5": [
+  [
+   "Du hast sie so prächtig",
+   "gemacht... Wunderbar!"
+  ]
+ ],
+ "s210.sec77.u6": [
+  [
+   "Mir fehlen die Worte.",
+   "Großartig, mein Junge!"
+  ]
+ ],
+ "s210.sec77.u7": [
+  [
+   "{color 7}Dein Tamer-Level ist gestiegen!{color 1}",
+   ""
+  ]
+ ],
+ "s210.sec77.u8": [
+  [
+   "{color 7}Glückwunsch! Für deine großartige Leistung erhältst du eine Medaille!{color 1}",
+   ""
+  ]
+ ],
+ "s211.sec8.u0": [
+  [
+   "Willkommen zurück,",
+   "{color 6}{player}{color 1}."
+  ]
+ ],
+ "s211.sec8.u1": [
+  [
+   "Ich führe die Aufzeichnungen",
+   "für Jijimon."
+  ]
+ ],
+ "s211.sec8.u2": [
+  [
+   "Ich notiere, woran Jijimon sich",
+   "täglich erinnert, dazu Gerüchte",
+   "und mein eigenes Wissen, und"
+  ],
+  [
+   "gebe alles an dich weiter."
+  ]
+ ],
+ "s211.sec8.u3": [
+  [
+   "Wenn du nicht weiterweißt, komm",
+   "zu mir. Du findest bestimmt",
+   "einen Weg."
+  ]
+ ],
+ "s211.sec8.u4": [
+  [
+   "Alle Digimon sind in der Stadt",
+   "versammelt. Vielen Dank für",
+   "deine ganze Mühe."
+  ]
+ ],
+ "s211.sec8.u5": [
+  [
+   "Hier ist, was ich erfahren",
+   "habe. Mal sehen..."
+  ]
+ ],
+ "s211.sec8.u6": [
+  [
+   "Und dann..."
+  ]
+ ],
+ "s211.sec8.u7": [
+  [
+   "Und außerdem..."
+  ]
+ ],
+ "s211.sec8.u8": [
+  [
+   "Pflanzen-Digimon müssten im",
+   "Wald sein. Was nah ist,",
+   "übersieht man am leichtesten."
+  ]
+ ],
+ "s211.sec8.u9": [
+  [
+   "Insekten-Digimon lieben Grün.",
+   "Ja, wie die Landschaft um diese",
+   "Stadt..."
+  ]
+ ],
+ "s211.sec8.u10": [
+  [
+   "Tief im Tropendschungel soll",
+   "ein seltsamer Labyrinthwald",
+   "liegen. Sein Wächter ist ein"
+  ],
+  [
+   "sehr geschicktes Digimon."
+  ]
+ ],
+ "s211.sec8.u11": [
+  [
+   "Im Fluss wartet ein uraltes",
+   "Wesen auf jemanden."
+  ]
+ ],
+ "s211.sec8.u12": [
+  [
+   "Ein Digimon soll heiße Quellen",
+   "lieben."
+  ]
+ ],
+ "s211.sec8.u13": [
+  [
+   "Wo Gräber sind, gibt es",
+   "Geister. Und Geister reden",
+   "gern mit Leuten."
+  ]
+ ],
+ "s211.sec8.u14": [
+  [
+   "Das Blumenbeet der Stadt soll",
+   "ein Geheimnis bergen. Über",
+   "Pflanzen fragt man am besten"
+  ],
+  [
+   "eine Pflanze."
+  ]
+ ],
+ "s211.sec8.u15": [
+  [
+   "Das Innere der Uralten",
+   "Dino-Region ist gefährlich,",
+   "aber eine Erkundung lohnt sich."
+  ]
+ ],
+ "s211.sec8.u16": [
+  [
+   "Im Panoramaberg soll Lava",
+   "fließen. Manche Digimon mögen",
+   "wohl solche Orte."
+  ]
+ ],
+ "s211.sec8.u17": [
+  [
+   "Ein Digimon, das Wärme liebt,",
+   "an einen kalten Ort bringen...",
+   "Das sollte man nicht tun,"
+  ],
+  [
+   "aber..."
+  ]
+ ],
+ "s211.sec8.u18": [
+  [
+   "In Frostland wollen erstaunlich",
+   "viele Digimon in die Stadt",
+   "kommen. Such vor allem im"
+  ],
+  [
+   "Westen."
+  ]
+ ],
+ "s211.sec8.u19": [
+  [
+   "Manche sagen, ganz oben im",
+   "Großen Canyon lebt ein",
+   "Vogel-Digimon... Andere sagen"
+  ],
+  [
+   "nein..."
+  ]
+ ],
+ "s211.sec8.u20": [
+  [
+   "Der Große Canyon ist ein",
+   "Labyrinth aus Wegen. Fremde",
+   "finden nicht mehr hinaus..."
+  ],
+  [
+   "Auch Digimon nicht."
+  ]
+ ],
+ "s211.sec8.u21": [
+  [
+   "In der Zahnradsavanne hält",
+   "nichts den Strom auf. Dort soll",
+   "ein Digimon leben, das mit"
+  ],
+  [
+   "Elektrizität kämpft."
+  ]
+ ],
+ "s211.sec8.u22": [
+  [
+   "Im Nebelwald soll ein Digimon",
+   "auftauchen, das sehr früh",
+   "aufsteht."
+  ]
+ ],
+ "s211.sec8.u23": [
+  [
+   "Im Großen Canyon soll ein ganz",
+   "unerwartetes Digimon einen",
+   "Laden führen."
+  ]
+ ],
+ "s211.sec8.u24": [
+  [
+   "Ein Digimon soll mit seinen",
+   "Flügeln den Panoramaberg auf",
+   "einmal überqueren können."
+  ],
+  [
+   "Vielleicht triffst du es dort."
+  ]
+ ],
+ "s211.sec8.u25": [
+  [
+   "Die Zahnradsavanne passt zu",
+   "Digimon, die nicht hoch fliegen",
+   "können. Sie ist groß, aber such"
+  ],
+  [
+   "doch mal dort."
+  ]
+ ],
+ "s211.sec8.u26": [
+  [
+   "Manche Digimon hören vielleicht",
+   "die Gerüchte über dich und",
+   "kommen, um dich"
+  ],
+  [
+   "herauszufordern."
+  ]
+ ],
+ "s211.sec8.u27": [
+  [
+   "Ein Digimon in einer Höhle in",
+   "Frostland soll andere zu einem",
+   "seltsamen Spiel locken."
+  ]
+ ],
+ "s211.sec8.u28": [
+  [
+   "Manche Digimon gehen still",
+   "ihrer Arbeit nach... Lade sie",
+   "in die Stadt ein, wenn sie"
+  ],
+  [
+   "fertig sind."
+  ]
+ ],
+ "s211.sec8.u29": [
+  [
+   "Der Nebelwald ist ein gutes",
+   "Versteck. Die Digimon dort zu",
+   "führen, gehört auch zu deiner"
+  ],
+  [
+   "Aufgabe."
+  ]
+ ],
+ "s211.sec8.u30": [
+  [
+   "Wenn die Stadt wächst,",
+   "verbreiten sich die Gerüchte",
+   "über dich. Reise dann noch"
+  ],
+  [
+   "einmal über die Insel."
+  ]
+ ],
+ "s211.sec8.u31": [
+  [
+   "Am Eisbergstrand in Frostland",
+   "taucht manchmal ein großer",
+   "Schatten auf. Vielleicht ein"
+  ],
+  [
+   "Digimon?"
+  ]
+ ],
+ "s211.sec8.u32": [
+  [
+   "Wenn du ein Digimon findest,",
+   "das gern Dinge sammelt, helft",
+   "einander. Versuch es in"
+  ],
+  [
+   "Frostland."
+  ]
+ ],
+ "s211.sec8.u33": [
+  [
+   "Ganz selten erscheint auf dem",
+   "Panoramaberg ein Digimon, das",
+   "dich herausfordert. Bei hundert"
+  ],
+  [
+   "Besuchen triffst du es",
+   "vielleicht dreimal."
+  ]
+ ],
+ "s211.sec8.u34": [
+  [
+   "Digimon leben auch an feuchten",
+   "Orten wie der Kanalisation.",
+   "Hilf ihnen bei ihren Sorgen,"
+  ],
+  [
+   "dann ziehen sie vielleicht in",
+   "die Stadt..."
+  ]
+ ],
+ "s211.sec8.u35": [
+  [
+   "Jenseits des Drachenaugensees",
+   "soll ein Land der",
+   "Insekten-Digimon liegen. Wie"
+  ],
+  [
+   "kommt man hinüber...? Denk beim",
+   "Angeln darüber nach."
+  ]
+ ],
+ "s211.sec8.u36": [
+  [
+   "Maschinen-Digimon sollen sich",
+   "selbst reparieren können. Ehe",
+   "man sich versieht, sind sie wie"
+  ],
+  [
+   "neu."
+  ]
+ ],
+ "s211.sec8.u37": [
+  [
+   "Lass dich von der Angst nicht",
+   "vom Ziel abbringen. Trau dich",
+   "einmal auf eine gefährliche"
+  ],
+  [
+   "Klippe, um nachzusehen."
+  ]
+ ],
+ "s211.sec8.u38": [
+  [
+   "Hör dich in der Stadt um.",
+   "Achte auf die Worte derer, die",
+   "Probleme haben."
+  ]
+ ],
+ "s211.sec8.u39": [
+  [
+   "Ein Schurke hat sich an einem",
+   "belebten Ort niedergelassen.",
+   "Wohl erst vor Kurzem... Ob das"
+  ],
+  [
+   "etwa... ?"
+  ]
+ ],
+ "s211.sec8.u40": [
+  [
+   "Sie sagen, es gibt ein",
+   "Heiligtum irgendwo begraben..."
+  ],
+  [
+   "Aber jemand müsste ihn",
+   "ausgraben."
+  ]
+ ],
+ "s211.sec8.u41": [
+  [
+   "Ganz selten erscheint im",
+   "Dschungel ein Digimon, das dich",
+   "herausfordert. Bei hundert"
+  ],
+  [
+   "Besuchen triffst du es",
+   "vielleicht dreimal."
+  ]
+ ],
+ "s211.sec8.u42": [
+  [
+   "Auch Affen fallen von Bäumen...",
+   "Manche Digimon leben ebenfalls",
+   "auf Bäumen. Ob sie immer so"
+  ],
+  [
+   "trittsicher sind?"
+  ]
+ ],
+ "s211.sec8.u43": [
+  [
+   "Ganz selten erscheint in der",
+   "Eisenstadt im Westen ein",
+   "Digimon, das dich"
+  ],
+  [
+   "herausfordert. Bei hundert",
+   "Besuchen triffst du es",
+   "vielleicht dreimal."
+  ]
+ ],
+ "s211.sec8.u44": [
+  [
+   "Es gibt Gerüchte über ein",
+   "außerirdisches Digimon. Es",
+   "taucht hin und wieder auf."
+  ],
+  [
+   "Vielleicht triffst du es eines",
+   "Tages."
+  ]
+ ],
+ "s211.sec8.u45": [
+  [
+   "Ein seltsames Digimon soll dort",
+   "erscheinen, wo niemand sein",
+   "dürfte... Vielleicht in einem"
+  ],
+  [
+   "Haus ohne Herrn..."
+  ]
+ ],
+ "s211.sec8.u46": [
+  [
+   "Suche weiter nach Nanimon, bis",
+   "du den wahren Schatz hast."
+  ]
+ ],
+ "s211.sec8.u47": [
+  [
+   "Myotismon scheint wirklich",
+   "verschwunden zu sein. Wenn du",
+   "die Rätsel in seinem Herrenhaus"
+  ],
+  [
+   "löst..."
+  ]
+ ],
+ "s211.sec8.u48": [
+  [
+   "Es gibt bestimmt noch",
+   "unbekannte Digimon... Aber",
+   "zuerst hast du etwas anderes"
+  ],
+  [
+   "zu tun!"
+  ]
+ ],
+ "s211.sec8.u49": [
+  [
+   "Das letzte Digimon wird am",
+   "letzten Ort geboren...",
+   "Verstehst du, was das"
+  ],
+  [
+   "bedeutet?"
+  ]
+ ],
+ "s212.sec71.m0.o0": "Namen ändern",
+ "s212.sec71.m0.o1": "So lassen",
+ "s212.sec71.m1.o0": "Erneut umbenennen",
+ "s212.sec71.m1.o1": "OK",
+ "s212.sec71.u0": [
+  [
+   "{color 10}{partner}{color 1} hat wohl sein",
+   "Lebensende erreicht... Doch",
+   "kurz davor hat er das"
+  ],
+  [
+   "gewünschte Digi-Ei gelegt. So",
+   "wird er wiedergeboren und",
+   "vererbt seine Fähigkeiten."
+  ],
+  [
+   "Welches Ei wolltest du?"
+  ]
+ ],
+ "s212.sec71.u1": [
+  [
+   "Du kannst {color 10}{partner}{color 1} einen",
+   "neuen Namen geben. Wie soll er",
+   "heißen?"
+  ]
+ ],
+ "s212.sec71.u2": [
+  [
+   "Also {color 10}{partner}{color 1}?"
+  ]
+ ],
+ "s212.sec72.u0": [
+  [
+   "Nun reiß dich zusammen! Wegen",
+   "einer Krankheit",
+   "zusammenbrechen, also wirklich."
+  ],
+  [
+   "Es war noch etwas Leben",
+   "übrig, also hat {color 10}{partner}{color 1} es",
+   "überstanden... Pass künftig"
+  ],
+  [
+   "besser auf."
+  ]
+ ],
+ "s212.sec72.u1": [
+  [
+   "Oh, du hast einen Kampf",
+   "verloren und bist wieder hier?",
+   "Es war noch etwas Leben"
+  ],
+  [
+   "übrig, also hat {color 10}{partner}{color 1} es",
+   "überstanden, aber... Vielleicht",
+   "wurden dir Sachen gestohlen."
+  ],
+  [
+   "So ist das hier: Wer verliert,",
+   "kann seine Sachen verlieren.",
+   "Man sagt, die Beute wird"
+  ],
+  [
+   "irgendwo verkauft. Gib sie",
+   "nicht auf."
+  ]
+ ],
+ "s212.sec73.m0.o0": "Namen ändern",
+ "s212.sec73.m0.o1": "So lassen",
+ "s212.sec73.u0": [
+  [
+   "Oh, wie schrecklich... Hat",
+   "{color 10}{partner}{color 1} sein letztes",
+   "Leben verloren? Mit letzter"
+  ],
+  [
+   "Kraft hat er ein Digi-Ei",
+   "gelegt, aber... Es stand so",
+   "schlimm um ihn, dass keine"
+  ],
+  [
+   "seiner Fähigkeiten an das Ei",
+   "vererbt wurde..."
+  ]
+ ],
+ "s212.sec73.u1": [
+  [
+   "{color 4}Dein Tamer-Level ist",
+   "gesunken!{color 1}"
+  ]
+ ],
+ "s212.sec73.u2": [
+  [
+   "Du kannst {color 10}{partner}{color 1} einen",
+   "neuen Namen geben. Wie soll er",
+   "heißen?"
+  ]
+ ],
+ "s212.sec73.u3": [
+  [
+   "Oh! {color 10}{partner}{color 1} hat wohl auf",
+   "besondere Weise digitiert!"
+  ]
+ ],
+ "s212.sec73.u4": [
+  [
+   "Oh! {color 10}{partner}{color 1} hat wohl auf",
+   "besondere Weise digitiert!"
+  ]
+ ],
+ "s212.sec73.u5": [
+  [
+   "Oh! {color 10}{partner}{color 1} hat wohl auf",
+   "besondere Weise digitiert!"
+  ]
+ ],
+ "s212.sec73.u6": [
+  [
+   "Oh! {color 10}{partner}{color 1} hat wohl auf",
+   "besondere Weise digitiert!"
+  ]
+ ],
+ "s213.sec10.u0": [
+  [
+   "- Kategorie D - Turnier",
+   "gedacht besonders für Digimon",
+   "Newbie. Individuelle, 3 Runden,"
+  ],
+  [
+   "8 Sitzleuchten Eingang: frei"
+  ]
+ ],
+ "s213.sec10.u1": [
+  [
+   "- Kategorie C - Turnier",
+   "gedacht besonders für Digimon",
+   "Champ. Individuelle, 3 Runden,"
+  ],
+  [
+   "8 Sitzleuchten Eingang: frei"
+  ]
+ ],
+ "s213.sec10.u2": [
+  [
+   "- Kategorie B - bis Digimon",
+   "Champion, der seiner Stärke",
+   "vertraut. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Sitzleuchten",
+   "Eingang: frei"
+  ]
+ ],
+ "s213.sec10.u3": [
+  [
+   "- Kategorie A - Turnier",
+   "gedacht besonders für Digimon",
+   "Das ist gut. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Sitzleuchten",
+   "Eingang: frei"
+  ]
+ ],
+ "s213.sec10.u4": [
+  [
+   "- Kategorie S - So kommen",
+   "sie zusammen. Digimon Mächtiger",
+   "von allen. Einzelne, 3 Runden,"
+  ],
+  [
+   "8 Jobs Eingang: gewinnen",
+   "Kategorie A"
+  ]
+ ],
+ "s213.sec10.u5": [
+  [
+   "- Kategorie R - Das ist ein",
+   "Schlag- und Taktikkampf. Zu",
+   "vier, 2 Runden, 8 Bilder"
+  ],
+  [
+   "Eingang: frei"
+  ]
+ ],
+ "s213.sec10.u6": [
+  [
+   "- Cup Version 1 - Corona zum",
+   "besten Digimon Version 1. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Version 1"
+  ]
+ ],
+ "s213.sec10.u7": [
+  [
+   "- Copa Version 2 - Corona",
+   "zum besten Digimon Version 2.",
+   "Fan mit Zeitlimit."
+  ],
+  [
+   "Individuelle, 3 Runden, 8",
+   "Bilder Eingang: Digimon Version",
+   "2"
+  ]
+ ],
+ "s213.sec10.u8": [
+  [
+   "- Cup Version 3 - Corona zur",
+   "besten Digimon Version 3. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Version 3"
+  ]
+ ],
+ "s213.sec10.u9": [
+  [
+   "- Cup Version 4 - Corona zur",
+   "besten Digimon Version 4. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Version 4"
+  ]
+ ],
+ "s213.sec10.u10": [
+  [
+   "- Cup Version O - Corona",
+   "zum besten Digimon außerhalb",
+   "der Version 1-4. Fan mit"
+  ],
+  [
+   "Zeitlimit. Individuelle, 3",
+   "Runden, 8 Bilder Eingang: aus",
+   "Version 1-4"
+  ]
+ ],
+ "s213.sec10.u11": [
+  [
+   "- Cup Fire - Corona zum",
+   "König des heißesten Digimon.",
+   "Fan mit Zeitlimit."
+  ],
+  [
+   "Individuelle, 3 Runden, 8",
+   "Bilder Eingang: Digimon Feuer"
+  ]
+ ],
+ "s213.sec10.u12": [
+  [
+   "- Cup Fight - Corona zum",
+   "König der Kampfkünste Digimon.",
+   "Fan mit Zeitlimit."
+  ],
+  [
+   "Individuelle, 3 Runden, 8",
+   "Bilder Eingang: Digimon Füllung"
+  ]
+ ],
+ "s213.sec10.u13": [
+  [
+   "- Donner und Wind Cup - An",
+   "den König der Digimon vom",
+   "Himmel und vom Sturm. Fan mit"
+  ],
+  [
+   "Zeitlimit. Individuelle, 3",
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Air"
+  ]
+ ],
+ "s213.sec10.u14": [
+  [
+   "- Copa Cool - Corona zum",
+   "König des besten Digimon. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Eis"
+  ]
+ ],
+ "s213.sec10.u15": [
+  [
+   "- Nature Cup - Corona zum",
+   "König der Digimon Erdfüllung.",
+   "Fan mit Zeitlimit."
+  ],
+  [
+   "Individuelle, 3 Runden, 8",
+   "Bilder Eingang: Digimon von der",
+   "Erde"
+  ]
+ ],
+ "s213.sec10.u16": [
+  [
+   "- Metallschale - An den König",
+   "der Digimon Supermaschine. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Bilder Eingang:",
+   "Digimon Mekka"
+  ]
+ ],
+ "s213.sec10.u17": [
+  [
+   "- Cup Sucia - Corona zum",
+   "König des besten Digimon. Fan",
+   "mit Zeitlimit. Individuelle, 3"
+  ],
+  [
+   "Runden, 8 Sitzplatz Eingabe:",
+   "Digimon von Fight"
+  ]
+ ],
+ "s213.sec10.u18": [
+  [
+   "- Dino Cup - Digimon Mit",
+   "altem Blut messen Sie ihre",
+   "Stärke. Fan mit Zeitlimit."
+  ],
+  [
+   "Einzelperson, 3 Runden, 8",
+   "Plätze Eingang: ???"
+  ]
+ ],
+ "s213.sec10.u19": [
+  [
+   "- Winged Cup - Digimon Stolz",
+   "auf seine Flügel messen seine",
+   "Stärke. Fan mit Zeitlimit."
+  ],
+  [
+   "Einzelperson, 3 Runden, 8",
+   "Plätze Eingang: ???"
+  ]
+ ],
+ "s213.sec10.u20": [
+  [
+   "- Tierbecher - Digimon Mit",
+   "wildem Blut messen Sie ihre",
+   "Stärke. Fan mit Zeitlimit."
+  ],
+  [
+   "Einzelperson, 3 Runden, 8",
+   "Plätze Eingang: ???"
+  ]
+ ],
+ "s213.sec10.u21": [
+  [
+   "- Menschlicher Cup - Digimon",
+   "Und die menschliche Gestalt",
+   "misst ihre Stärke. Fan mit"
+  ],
+  [
+   "Zeitlimit. Einzelperson, 3",
+   "Runden, 8 Plätze Eingang: ???"
+  ]
+ ],
+ "s213.sec54.u0": [
+  [
+   "Hey, du bist nicht zum Turnier",
+   "angemeldet."
+  ]
+ ],
+ "s213.sec54.u1": [
+  [
+   "Hey, Das Turnier ist morgen."
+  ]
+ ],
+ "s213.sec54.u2": [
+  [
+   "Die Türen sind noch zu. Warte",
+   "bis 10 Uhr."
+  ]
+ ],
+ "s213.sec54.u3": [
+  [
+   "{color 4}Dein Tamer-Level ist",
+   "gesunken!{color 1}"
+  ]
+ ],
+ "s213.sec81.m0.o0": "Ja",
+ "s213.sec81.m0.o1": "Nein",
+ "s213.sec81.m0.o2": "Was heißt anmelden?",
+ "s213.sec81.m1.o0": "Nicht absagen",
+ "s213.sec81.m1.o1": "Absagen",
+ "s213.sec81.m2.o0": "Nicht absagen",
+ "s213.sec81.m2.o1": "Absagen",
+ "s213.sec81.m3.o0": "Nicht absagen",
+ "s213.sec81.m3.o1": "Absagen",
+ "s213.sec81.m4.o0": "Ja",
+ "s213.sec81.m4.o1": "Nein",
+ "s213.sec81.m4.o2": "Bitte noch mal erklären",
+ "s213.sec81.u0": [
+  [
+   "Da seid ihr ja, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Das ist die",
+   "Arena der File-Stadt! Bald"
+  ],
+  [
+   "ist sie voller Kämpfer und",
+   "Fans. Bietet ihnen eine gute",
+   "Show! Sieger gewinnen Preise"
+  ],
+  [
+   "und Geld. Ihr habt nichts zu",
+   "verlieren! Die Turnierdetails",
+   "stehen an dem Automaten dort."
+  ]
+ ],
+ "s213.sec81.u1": [
+  [
+   "Hm, Digimon auf dem",
+   "Ausbildungs-Level dürfen nicht",
+   "teilnehmen. Nur den Zeitplan"
+  ],
+  [
+   "ansehen?"
+  ]
+ ],
+ "s213.sec81.u2": [
+  [
+   "Hm, Digimon auf dem",
+   "Ausbildungs-Level dürfen nicht",
+   "teilnehmen. Nur den Zeitplan"
+  ],
+  [
+   "ansehen?"
+  ]
+ ],
+ "s213.sec81.u3": [
+  [
+   "Schön, dass du da bist. Willst",
+   "du dich zu einem Turnier",
+   "anmelden?"
+  ]
+ ],
+ "s213.sec81.u4": [
+  [
+   "Du bist morgen für «-",
+   "{cup 3} -» angemeldet.",
+   "Willst du absagen?"
+  ]
+ ],
+ "s213.sec81.u5": [
+  [
+   "Du bist heute für «-",
+   "{cup 3} -» angemeldet.",
+   "Einlass ist ab 10 Uhr. Sag"
+  ],
+  [
+   "bloß, du willst absagen?"
+  ]
+ ],
+ "s213.sec81.u6": [
+  [
+   "Du bist heute für «-",
+   "{cup 3} -» angemeldet.",
+   "Geh bis 23 Uhr hinein. Sag"
+  ],
+  [
+   "bloß, du willst absagen?"
+  ]
+ ],
+ "s213.sec81.u7": [
+  [
+   "Gut, ich sage ab."
+  ]
+ ],
+ "s213.sec81.u8": [
+  [
+   "Nach der Anmeldung gehst du",
+   "zur Startzeit die linke Treppe",
+   "hinunter. Die Anmeldung ist"
+  ],
+  [
+   "kostenlos. Du kannst dich nur",
+   "für heute oder morgen anmelden,",
+   "für heute aber nur bis 10 Uhr."
+  ],
+  [
+   "Der Zeitplan zeigt die nächsten",
+   "fünf Tage. Plane also voraus.",
+   "An roten Turnieren kannst du"
+  ],
+  [
+   "nicht teilnehmen, sie aber mit",
+   "START ansehen. Auch bei",
+   "freier Teilnahme sind Digimon"
+  ],
+  [
+   "auf dem Ausbildungs-Level",
+   "ausgeschlossen. So läuft die",
+   "Anmeldung. Willst du dich"
+  ],
+  [
+   "anmelden?"
+  ]
+ ],
+ "s214.sec51.u0": [
+  [
+   "Schade. Komm wieder und",
+   "versuch es noch mal!"
+  ]
+ ],
+ "s214.sec51.u1": [
+  [
+   "Auszeichnung für die Teilnahme:",
+   "{color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s214.sec51.u2": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u3": [
+  [
+   "Siegprämie: 2000 Bits!",
+   "Gewonnen: {color 6}Doppelheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u4": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u5": [
+  [
+   "Siegprämie: 4000 Bits!",
+   "Gewonnen: 3 x {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s214.sec51.u6": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u7": [
+  [
+   "Siegprämie: 6000 Bits!",
+   "Gewonnen: {color 6}Regenerator{color 1}!"
+  ]
+ ],
+ "s214.sec51.u8": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u9": [
+  [
+   "{color 7}Dein Tamer-Level ist gestiegen!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u10": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Flammenmähne{color 1}!"
+  ]
+ ],
+ "s214.sec51.u11": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u12": [
+  [
+   "{color 7}Dein Tamer-Level ist gestiegen!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u13": [
+  [
+   "Siegprämie: 10000 Bits!",
+   "Gewonnen: {color 6}Metallteil{color 1}!"
+  ]
+ ],
+ "s214.sec51.u14": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u15": [
+  [
+   "Siegprämie: 10000 Bits!",
+   "Gewonnen: {color 6}Todesknochen{color 1}!"
+  ]
+ ],
+ "s214.sec51.u16": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u17": [
+  [
+   "Siegprämie: 10000 Bits!",
+   "Gewonnen: {color 6}Megahand{color 1}!"
+  ]
+ ],
+ "s214.sec51.u18": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u19": [
+  [
+   "{color 7}Dein Tamer-Level ist gestiegen!{color 1}",
+   ""
+  ]
+ ],
+ "s214.sec51.u20": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Weißer Fangzahn{color 1}!"
+  ]
+ ],
+ "s214.sec51.u21": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u22": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Blauer Kristall{color 1}!"
+  ]
+ ],
+ "s214.sec51.u23": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u24": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Eisenhuf{color 1}!"
+  ]
+ ],
+ "s214.sec51.u25": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u26": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Monostein{color 1}!"
+  ]
+ ],
+ "s214.sec51.u27": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u28": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Roter Rubin{color 1}!"
+  ]
+ ],
+ "s214.sec51.u29": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u30": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Feuerball{color 1}!"
+  ]
+ ],
+ "s214.sec51.u31": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u32": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Stachelkeule{color 1}!"
+  ]
+ ],
+ "s214.sec51.u33": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u34": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Einhorn{color 1}!"
+  ]
+ ],
+ "s214.sec51.u35": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u36": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Polarstern{color 1}!"
+  ]
+ ],
+ "s214.sec51.u37": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u38": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Dünger{color 1}!"
+  ]
+ ],
+ "s214.sec51.u39": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u40": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Cyberteil{color 1}!"
+  ]
+ ],
+ "s214.sec51.u41": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u42": [
+  [
+   "Siegprämie: 8000 Bits!",
+   "Gewonnen: {color 6}Sonnenbrille{color 1}!"
+  ]
+ ],
+ "s214.sec51.u43": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u44": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Graue Krallen{color 1}!"
+  ]
+ ],
+ "s214.sec51.u45": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u46": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Weißer Flügel{color 1}!"
+  ]
+ ],
+ "s214.sec51.u47": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u48": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Stahlbohrer{color 1}!"
+  ]
+ ],
+ "s214.sec51.u49": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u50": [
+  [
+   "Siegprämie: 5000 Bits!",
+   "Gewonnen: {color 6}Schwarzflügel{color 1}!"
+  ]
+ ],
+ "s214.sec51.u51": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u52": [
+  [
+   "Zweiter Platz: 500 Bits!",
+   "Gewonnen: 2 x {color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s214.sec51.u53": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u54": [
+  [
+   "Zweiter Platz: 1000 Bits!",
+   "Gewonnen: {color 6}Filetstück{color 1}!"
+  ]
+ ],
+ "s214.sec51.u55": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u56": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}MP-Heilung L{color 1}!"
+  ]
+ ],
+ "s214.sec51.u57": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u58": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Regenerator{color 1}!"
+  ]
+ ],
+ "s214.sec51.u59": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u60": [
+  [
+   "Zweiter Platz: 4000 Bits!",
+   "Gewonnen: {color 6}Super-Regen.{color 1}!"
+  ]
+ ],
+ "s214.sec51.u61": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u62": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u63": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u64": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u65": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u66": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u67": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u68": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u69": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u70": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Superheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u71": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u72": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u73": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u74": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u75": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u76": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u77": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u78": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u79": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u80": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u81": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u82": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u83": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u84": [
+  [
+   "Zweiter Platz: 3000 Bits!",
+   "Gewonnen: {color 6}Allheilung{color 1}!"
+  ]
+ ],
+ "s214.sec51.u85": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u86": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Gesamtdisk{color 1}!"
+  ]
+ ],
+ "s214.sec51.u87": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u88": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Gesamtdisk{color 1}!"
+  ]
+ ],
+ "s214.sec51.u89": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u90": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Gesamtdisk{color 1}!"
+  ]
+ ],
+ "s214.sec51.u91": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s214.sec51.u92": [
+  [
+   "Zweiter Platz: 2000 Bits!",
+   "Gewonnen: {color 6}Gesamtdisk{color 1}!"
+  ]
+ ],
+ "s214.sec51.u93": [
+  [
+   "Du kannst nicht mehr tragen!"
+  ]
+ ],
+ "s215.sec6.u0": [
+  [
+   "{color 6}{player}{color 1}, meine Wunden",
+   "sind verheilt, also arbeite ich",
+   "auch. Danke euch beiden für"
+  ],
+  [
+   "alles. Ich kann sehen, wie viel",
+   "Glück jemand hat, und will",
+   "damit ein Geschäft eröffnen."
+  ],
+  [
+   "Wenn du neugierig bist, besuch",
+   "meinen Laden. Es kostet dich",
+   "nichts."
+  ]
+ ],
+ "s215.sec6.u1": [
+  [
+   "Oh? Neugierig auf dein Glück?",
+   "Dann lese ich dir die Zukunft.",
+   "Hm, hm... mmm... Ha! Hia!"
+  ]
+ ],
+ "s215.sec6.u2": [
+  [
+   "..............Nun, zuerst..."
+  ]
+ ],
+ "s215.sec6.u3": [
+  [
+   "Dein Gesamtglück ist",
+   "hervorragend."
+  ]
+ ],
+ "s215.sec6.u4": [
+  [
+   "Dein Gesamtglück ist gut."
+  ]
+ ],
+ "s215.sec6.u5": [
+  [
+   "Dein Gesamtglück ist",
+   "ordentlich."
+  ]
+ ],
+ "s215.sec6.u6": [
+  [
+   "Dein Gesamtglück ist",
+   "mittelmäßig."
+  ]
+ ],
+ "s215.sec6.u7": [
+  [
+   "Dein Gesamtglück ist schlecht."
+  ]
+ ],
+ "s215.sec6.u8": [
+  [
+   "Alles, was du versuchst, wird",
+   "gelingen."
+  ]
+ ],
+ "s215.sec6.u9": [
+  [
+   "Eine wunderbare Gelegenheit",
+   "nähert sich."
+  ]
+ ],
+ "s215.sec6.u10": [
+  [
+   "Vielleicht erlebst du etwas",
+   "Unvergessliches."
+  ]
+ ],
+ "s215.sec6.u11": [
+  [
+   "Vielleicht findest du etwas",
+   "Unerwartetes."
+  ]
+ ],
+ "s215.sec6.u12": [
+  [
+   "Eine deiner Fragen wird",
+   "beantwortet."
+  ]
+ ],
+ "s215.sec6.u13": [
+  [
+   "Dein Geldbeutel wird dicker."
+  ]
+ ],
+ "s215.sec6.u14": [
+  [
+   "Ein Freund könnte gute",
+   "Nachrichten für dich haben."
+  ]
+ ],
+ "s215.sec6.u15": [
+  [
+   "Etwas Abwechslung würde dir",
+   "guttun."
+  ]
+ ],
+ "s215.sec6.u16": [
+  [
+   "Besuche einen neuen Ort."
+  ]
+ ],
+ "s215.sec6.u17": [
+  [
+   "Vielleicht hast du einen",
+   "interessanten Traum."
+  ]
+ ],
+ "s215.sec6.u18": [
+  [
+   "Verschwende dein Geld nicht."
+  ]
+ ],
+ "s215.sec6.u19": [
+  [
+   "Eines deiner Geheimnisse könnte",
+   "ans Licht kommen."
+  ]
+ ],
+ "s215.sec6.u20": [
+  [
+   "Geh lieber früh ins Bett."
+  ]
+ ],
+ "s215.sec6.u21": [
+  [
+   "Achte darauf, dass du Dinge",
+   "nicht vergisst."
+  ]
+ ],
+ "s215.sec6.u22": [
+  [
+   "Ein Freund könnte seinen",
+   "Ärger an dir auslassen."
+  ]
+ ],
+ "s215.sec6.u23": [
+  [
+   "Die Probleme könnten sich",
+   "häufen..."
+  ]
+ ],
+ "s215.sec6.u24": [
+  [
+   "Vielleicht triffst du jemanden,",
+   "den du nicht magst."
+  ]
+ ],
+ "s215.sec6.u25": [
+  [
+   "Du könntest einen großen",
+   "Verlust erleiden..."
+  ]
+ ],
+ "s215.sec6.u26": [
+  [
+   "Deine Glücksfarbe ist Rot."
+  ]
+ ],
+ "s215.sec6.u27": [
+  [
+   "Deine Glücksfarbe ist Weiß."
+  ]
+ ],
+ "s215.sec6.u28": [
+  [
+   "Deine Glücksfarbe ist Blau."
+  ]
+ ],
+ "s215.sec6.u29": [
+  [
+   "Deine Glücksfarbe ist Schwarz."
+  ]
+ ],
+ "s215.sec6.u30": [
+  [
+   "Deine Glücksfarbe ist Grün."
+  ]
+ ],
+ "s215.sec6.u31": [
+  [
+   "Deine Glücksfarbe ist Grau."
+  ]
+ ],
+ "s215.sec6.u32": [
+  [
+   "Deine Glücksfarbe ist Braun."
+  ]
+ ],
+ "s215.sec6.u33": [
+  [
+   "Deine Glücksfarbe ist Gelb."
+  ]
+ ],
+ "s215.sec6.u34": [
+  [
+   "Deine Glücksfarbe ist Lila."
+  ]
+ ],
+ "s215.sec6.u35": [
+  [
+   "Deine Glücksfarbe ist Gold."
+  ]
+ ],
+ "s215.sec6.u36": [
+  [
+   "Zuletzt, wie du und",
+   "{color 10}{partner}{color 1} euch versteht..."
+  ]
+ ],
+ "s215.sec6.u37": [
+  [
+   "Ihr passt perfekt zusammen."
+  ]
+ ],
+ "s215.sec6.u38": [
+  [
+   "Ihr versteht euch ziemlich gut."
+  ]
+ ],
+ "s215.sec6.u39": [
+  [
+   "Ihr versteht euch eher gut."
+  ]
+ ],
+ "s215.sec6.u40": [
+  [
+   "So lala."
+  ]
+ ],
+ "s215.sec6.u41": [
+  [
+   "Nicht schlecht."
+  ]
+ ],
+ "s216.sec51.m0.o0": "Müdigkeit lindern",
+ "s216.sec51.m0.o1": "Medizin kaufen",
+ "s216.sec51.m0.o2": "Nichts. Vielen Dank.",
+ "s216.sec51.u0": [
+  [
+   "Hallo, {color 6}{player}{color 1}.",
+   "Überrascht? Du hättest wohl",
+   "nie gedacht, dass ich eine"
+  ],
+  [
+   "Klinik eröffne. Krankheiten und",
+   "Wunden überlässt du mir. Nicht",
+   "gratis, aber günstig!"
+  ]
+ ],
+ "s216.sec51.u1": [
+  [
+   "Oh, deinem Partner geht es",
+   "wohl nicht gut. Du musst auf",
+   "seine Gesundheit achten. Ich"
+  ],
+  [
+   "behandle ihn sofort. Für dich",
+   "nur 300 Bits."
+  ]
+ ],
+ "s216.sec51.u2": [
+  [
+   "Was, zu wenig Bits? Na gut,",
+   "zahl erst mal, was du kannst.",
+   "Verschwende kein Geld mehr,"
+  ],
+  [
+   "damit du im Notfall welches",
+   "hast."
+  ]
+ ],
+ "s216.sec51.u3": [
+  [
+   "So, alles wieder gut. Pass",
+   "künftig besser auf."
+  ]
+ ],
+ "s216.sec51.u4": [
+  [
+   "Hallo. Weder krank noch",
+   "verletzt, wie ich sehe. Was",
+   "kann ich für dich tun?"
+  ]
+ ],
+ "s216.sec51.u5": [
+  [
+   "Oh, das geht nicht.",
+   "{color 10}{partner}{color 1} ist fast völlig",
+   "erschöpft. Er braucht dringend"
+  ],
+  [
+   "Ruhe!"
+  ]
+ ],
+ "s216.sec51.u6": [
+  [
+   "Hm, mal sehen... {color 10}{partner}{color 1}",
+   "ist sehr müde. Er braucht",
+   "Ruhe, bevor es zu spät ist."
+  ]
+ ],
+ "s216.sec51.u7": [
+  [
+   "Hm, {color 10}{partner}{color 1} wirkt etwas",
+   "müde. Übertreib es nicht."
+  ]
+ ],
+ "s216.sec51.u8": [
+  [
+   "Hm, hm. {color 10}{partner}{color 1} ist gut in",
+   "Form. Müdigkeit kann viel",
+   "Schaden anrichten, also achte"
+  ],
+  [
+   "darauf."
+  ]
+ ],
+ "s216.sec52.m0.o0": "Weiter ausruhen",
+ "s216.sec52.m0.o1": "Medizin kaufen",
+ "s216.sec52.m0.o2": "Das ist alles",
+ "s216.sec52.m1.o0": "Pflaster: 400 Bits",
+ "s216.sec52.m1.o1": "Medizin: 1200 Bits",
+ "s216.sec52.m1.o2": "Schon gut",
+ "s216.sec52.m2.o0": "Müdigkeit lindern",
+ "s216.sec52.m2.o1": "Mehr Medizin kaufen",
+ "s216.sec52.m2.o2": "Das ist alles",
+ "s216.sec52.u0": [
+  [
+   "Hm... Die Müdigkeit scheint weg",
+   "zu sein. Sonst noch etwas?"
+  ]
+ ],
+ "s216.sec52.u1": [
+  [
+   "Hm, gut."
+  ]
+ ],
+ "s216.sec52.u2": [
+  [
+   "Ja. Wenn er krank wirkt, komm",
+   "sofort her."
+  ]
+ ],
+ "s216.sec52.u3": [
+  [
+   "Übrigens... Wenn die Müdigkeit",
+   "bleibt, trainiere weniger. Lass",
+   "ihn essen und ruhen."
+  ]
+ ],
+ "s216.sec52.u4": [
+  [
+   "Übrigens... Bleib nicht lange",
+   "an sehr kalten oder heißen",
+   "Orten. Manche Digimon werden"
+  ],
+  [
+   "davon krank."
+  ]
+ ],
+ "s216.sec52.u5": [
+  [
+   "Übrigens... Verlass dich nicht",
+   "zu sehr auf Pflaster. Sie",
+   "helfen bei Wunden, aber kaum"
+  ],
+  [
+   "bei Krankheiten."
+  ]
+ ],
+ "s216.sec52.u6": [
+  [
+   "Übrigens... Medizin heilt",
+   "Krankheiten, hilft aber nicht",
+   "gegen die Müdigkeit, die sie"
+  ],
+  [
+   "auslöst. Es ist eben nur",
+   "Medizin."
+  ]
+ ],
+ "s216.sec52.u7": [
+  [
+   "Übrigens... Hat er nach einem",
+   "Kampf wenig HP, verletzt er",
+   "sich leichter. Pass darauf auf."
+  ]
+ ],
+ "s216.sec52.u8": [
+  [
+   "Übrigens... Ein glückliches,",
+   "ausgeruhtes Digimon lebt",
+   "länger."
+  ]
+ ],
+ "s216.sec52.u9": [
+  [
+   "Nicht genug Bits? Dann kann",
+   "ich es dir nicht verkaufen."
+  ]
+ ],
+ "s216.sec52.u10": [
+  [
+   "Du trägst zu viele Items."
+  ]
+ ],
+ "s216.sec52.u11": [
+  [
+   "Nicht genug Bits? Dann kann",
+   "ich es dir nicht verkaufen."
+  ]
+ ],
+ "s216.sec52.u12": [
+  [
+   "Du trägst zu viele Items."
+  ]
+ ],
+ "s216.sec52.u13": [
+  [
+   "Kann ich sonst noch etwas für",
+   "dich tun?"
+  ]
+ ],
+ "s217.sec51.m0.o0": "Scharfe Ramen: 400 Bits",
+ "s217.sec51.m0.o1": "Feuercurry: 1200 Bits",
+ "s217.sec51.m0.o2": "Lavaeintopf: 3500 Bits",
+ "s217.sec51.m1.o0": "Drachennudeln: 400 Bits",
+ "s217.sec51.m1.o1": "Zaurus-Pizza: 1000 Bits",
+ "s217.sec51.m1.o2": "Juraburger: 2500 Bits",
+ "s217.sec51.m2.o0": "T-Bone-Steak: 1000 Bits",
+ "s217.sec51.m2.o1": "DX-Bone-Steak: 2500 Bits",
+ "s217.sec51.m2.o2": "Phantomsteak: 5000 Bits",
+ "s217.sec51.u0": [
+  [
+   "He... Möchtest du bestellen?"
+  ]
+ ],
+ "s217.sec51.u1": [
+  [
+   "Was möchtest du essen?"
+  ]
+ ],
+ "s217.sec51.u2": [
+  [
+   "Na? Was nimmst du?"
+  ]
+ ],
+ "s217.sec51.u3": [
+  [
+   "Du hast wohl nicht genug Bits."
+  ]
+ ],
+ "s217.sec51.u4": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Scharfe Ramen!"
+  ]
+ ],
+ "s217.sec51.u5": [
+  [
+   "Angriff +1! Intelligenz +1!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s217.sec51.u6": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u7": [
+  [
+   "Du hast wohl nicht genug Bits."
+  ]
+ ],
+ "s217.sec51.u8": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Feuercurry!"
+  ]
+ ],
+ "s217.sec51.u9": [
+  [
+   "Angriff +3! Intelligenz +2!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s217.sec51.u10": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u11": [
+  [
+   "Du hast wohl nicht genug Bits."
+  ]
+ ],
+ "s217.sec51.u12": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Lavaeintopf!"
+  ]
+ ],
+ "s217.sec51.u13": [
+  [
+   "Angriff +5! Intelligenz +3!",
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s217.sec51.u14": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u15": [
+  [
+   "Komm jederzeit wieder zum",
+   "Essen."
+  ]
+ ],
+ "s217.sec51.u16": "Nicht genug Bits.",
+ "s217.sec51.u17": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Drachennudeln!"
+  ]
+ ],
+ "s217.sec51.u18": [
+  [
+   "Abwehr +1! Tempo +1!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s217.sec51.u19": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u20": "Nicht genug Bits.",
+ "s217.sec51.u21": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Zaurus-Pizza!"
+  ]
+ ],
+ "s217.sec51.u22": [
+  [
+   "Abwehr +3! Tempo +2!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s217.sec51.u23": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u24": "Nicht genug Bits.",
+ "s217.sec51.u25": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Juraburger!"
+  ]
+ ],
+ "s217.sec51.u26": [
+  [
+   "Abwehr +5! Tempo +3!",
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s217.sec51.u27": [
+  [
+   "{color 10}{partner}{color 1} scheint keinen",
+   "Hunger zu haben."
+  ]
+ ],
+ "s217.sec51.u28": [
+  [
+   "Was, schon fertig?"
+  ]
+ ],
+ "s217.sec51.u29": [
+  [
+   "Nicht genug Bits, hm."
+  ]
+ ],
+ "s217.sec51.u30": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: T-Bone-Steak!"
+  ]
+ ],
+ "s217.sec51.u31": [
+  [
+   "HP +10! Intelligenz +1!",
+   "Disziplin steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s217.sec51.u32": [
+  [
+   "{color 10}{partner}{color 1} hat wohl keinen",
+   "Hunger."
+  ]
+ ],
+ "s217.sec51.u33": [
+  [
+   "Nicht genug Bits, hm."
+  ]
+ ],
+ "s217.sec51.u34": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: DX-Bone-Steak!"
+  ]
+ ],
+ "s217.sec51.u35": [
+  [
+   "HP +30! Intelligenz +2!",
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s217.sec51.u36": [
+  [
+   "{color 10}{partner}{color 1} hat wohl keinen",
+   "Hunger."
+  ]
+ ],
+ "s217.sec51.u37": [
+  [
+   "Nicht genug Bits, hm."
+  ]
+ ],
+ "s217.sec51.u38": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Phantomsteak!"
+  ]
+ ],
+ "s217.sec51.u39": [
+  [
+   "HP +50! Intelligenz +3!",
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s217.sec51.u40": [
+  [
+   "{color 10}{partner}{color 1} hat wohl keinen",
+   "Hunger."
+  ]
+ ],
+ "s217.sec51.u41": [
+  [
+   "Komm bald wieder zum Essen,",
+   "hörst du!"
+  ]
+ ],
+ "s218.sec51.m0.o0": "Schneeshake: 300 Bits",
+ "s218.sec51.m0.o1": "Eiscreme: 700 Bits",
+ "s218.sec51.m0.o2": "Schabeeis: 1600 Bits",
+ "s218.sec51.m1.o0": "Weltraumsalat: 1500 Bits",
+ "s218.sec51.m1.o1": "UFO-Suppe: 4000 Bits",
+ "s218.sec51.m1.o2": "Galaxie-Menü: 9000 Bits",
+ "s218.sec51.m2.o0": "Wunder-Ei: 1000 Bits",
+ "s218.sec51.m2.o1": "Wunderomelett: 2500 Bits",
+ "s218.sec51.m2.o2": "Wunder-Ei-Bowl: 6000 Bits",
+ "s218.sec51.u0": [
+  [
+   "Hm? Was nimmst du?"
+  ]
+ ],
+ "s218.sec51.u1": [
+  [
+   "......WAS... DU ESSEN?"
+  ]
+ ],
+ "s218.sec51.u2": [
+  [
+   "......?"
+  ]
+ ],
+ "s218.sec51.u3": "Nicht genug Bits!",
+ "s218.sec51.u4": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Schneeshake!"
+  ]
+ ],
+ "s218.sec51.u5": [
+  [
+   "MP +10! Tempo +1!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s218.sec51.u6": [
+  [
+   "{color 10}{partner}{color 1} hat keinen",
+   "Hunger, hm."
+  ]
+ ],
+ "s218.sec51.u7": "Nicht genug Bits!",
+ "s218.sec51.u8": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Eiscreme!"
+  ]
+ ],
+ "s218.sec51.u9": [
+  [
+   "MP +30! Tempo +2!",
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s218.sec51.u10": [
+  [
+   "{color 10}{partner}{color 1} hat keinen",
+   "Hunger, hm."
+  ]
+ ],
+ "s218.sec51.u11": "Nicht genug Bits!",
+ "s218.sec51.u12": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Schabeeis!"
+  ]
+ ],
+ "s218.sec51.u13": [
+  [
+   "MP +50! Tempo +2!",
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u14": [
+  [
+   "{color 10}{partner}{color 1} hat keinen",
+   "Hunger, hm."
+  ]
+ ],
+ "s218.sec51.u15": [
+  [
+   "Okay, bis späääter!"
+  ]
+ ],
+ "s218.sec51.u16": [
+  [
+   "BITS... NICHT GENUG."
+  ]
+ ],
+ "s218.sec51.u17": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Weltraumsalat!"
+  ]
+ ],
+ "s218.sec51.u18": [
+  [
+   "HP +10! MP +10! Angriff +1!",
+   "Abwehr +1! Tempo +1!",
+   "Intelligenz +1! Zufriedenheit"
+  ],
+  [
+   "steigt! Disziplin steigt!",
+   "Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u19": [
+  [
+   "{color 10}{partner}{color 1}... SATT."
+  ]
+ ],
+ "s218.sec51.u20": [
+  [
+   "BITS... NICHT GENUG."
+  ]
+ ],
+ "s218.sec51.u21": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: UFO-Suppe!"
+  ]
+ ],
+ "s218.sec51.u22": [
+  [
+   "HP +20! MP +20! Angriff +2!",
+   "Abwehr +2! Tempo +2!",
+   "Intelligenz +2! Zufriedenheit"
+  ],
+  [
+   "steigt! Disziplin steigt!",
+   "Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u23": [
+  [
+   "{color 10}{partner}{color 1}... SATT."
+  ]
+ ],
+ "s218.sec51.u24": [
+  [
+   "BITS... NICHT GENUG."
+  ]
+ ],
+ "s218.sec51.u25": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Galaxie-Menü!"
+  ]
+ ],
+ "s218.sec51.u26": [
+  [
+   "HP +30! MP +30! Angriff +3!",
+   "Abwehr +3! Tempo +3!",
+   "Intelligenz +3! Zufriedenheit"
+  ],
+  [
+   "steigt! Disziplin steigt!",
+   "Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u27": [
+  [
+   "{color 10}{partner}{color 1}... SATT."
+  ]
+ ],
+ "s218.sec51.u28": [
+  [
+   "......BIS ZUM NÄCHSTEN",
+   "MAL, ALLE."
+  ]
+ ],
+ "s218.sec51.u29": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u30": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Wunder-Ei!"
+  ]
+ ],
+ "s218.sec51.u31": [
+  [
+   "HP +10! Angriff +1! Tempo",
+   "+1!"
+  ]
+ ],
+ "s218.sec51.u32": [
+  [
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s218.sec51.u33": [
+  [
+   "MP +10! Abwehr +1!",
+   "Intelligenz +1!"
+  ]
+ ],
+ "s218.sec51.u34": [
+  [
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s218.sec51.u35": [
+  [
+   "HP +20! MP +20! Angriff +2!",
+   "Abwehr +2! Tempo +2!",
+   "Intelligenz +2!"
+  ]
+ ],
+ "s218.sec51.u36": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u37": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u38": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u39": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Wunderomelett!"
+  ]
+ ],
+ "s218.sec51.u40": [
+  [
+   "HP +20! Angriff +2! Tempo",
+   "+2!"
+  ]
+ ],
+ "s218.sec51.u41": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u42": [
+  [
+   "MP +20! Abwehr +2!",
+   "Intelligenz +2!"
+  ]
+ ],
+ "s218.sec51.u43": [
+  [
+   "Zufriedenheit steigt! Müdigkeit",
+   "sinkt!"
+  ]
+ ],
+ "s218.sec51.u44": [
+  [
+   "HP +30! MP +30! Angriff +3!",
+   "Abwehr +3! Tempo +3!",
+   "Intelligenz +3!"
+  ]
+ ],
+ "s218.sec51.u45": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u46": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u47": [
+  [
+   "......"
+  ]
+ ],
+ "s218.sec51.u48": [
+  [
+   "{color 10}{partner}{color 1} hat es",
+   "geschmeckt: Wunder-Ei-Bowl!"
+  ]
+ ],
+ "s218.sec51.u49": [
+  [
+   "HP +30! Angriff +3! Tempo",
+   "+3!"
+  ]
+ ],
+ "s218.sec51.u50": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u51": [
+  [
+   "MP +30! Abwehr +3!",
+   "Intelligenz +3!"
+  ]
+ ],
+ "s218.sec51.u52": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u53": [
+  [
+   "HP +40! MP +40! Angriff +4!",
+   "Abwehr +4! Tempo +4!",
+   "Intelligenz +4!"
+  ]
+ ],
+ "s218.sec51.u54": [
+  [
+   "Zufriedenheit steigt! Disziplin",
+   "steigt! Müdigkeit sinkt!"
+  ]
+ ],
+ "s218.sec51.u55": [
+  [
+   "......!"
+  ]
+ ],
+ "s218.sec51.u56": [
+  [
+   "......"
+  ]
+ ],
+ "s219.sec51.m0.o0": "Ausprobieren",
+ "s219.sec51.m0.o1": "Jetzt nicht",
+ "s219.sec51.m1.o0": "Noch einmal",
+ "s219.sec51.m1.o1": "Das reicht",
+ "s219.sec51.u0": [
+  [
+   "Ein Digimon-Kartenautomat.",
+   "Eine Karte kostet wohl 100",
+   "Bits."
+  ]
+ ],
+ "s219.sec51.u1": [
+  [
+   "Nicht genug Bits..."
+  ]
+ ],
+ "s219.sec51.u2": "Wow! Eine Phoenixmon-Karte!",
+ "s219.sec51.u3": "Wow! Eine HerculesKabuterimon-Karte!",
+ "s219.sec51.u4": "Wow! Eine MegaSeadramon-Karte!",
+ "s219.sec51.u5": "Wow! Eine ShogunGekomon-Karte!",
+ "s219.sec51.u6": "Wow! Eine Myotismon-Karte!",
+ "s219.sec51.u7": "Eine MetalGreymon-Karte!",
+ "s219.sec51.u8": "Eine Mamemon-Karte!",
+ "s219.sec51.u9": "Eine Monzaemon-Karte!",
+ "s219.sec51.u10": "Eine SkullGreymon-Karte!",
+ "s219.sec51.u11": "Eine MetalMamemon-Karte!",
+ "s219.sec51.u12": "Eine Vademon-Karte!",
+ "s219.sec51.u13": "Eine Andromon-Karte!",
+ "s219.sec51.u14": "Eine Giromon-Karte!",
+ "s219.sec51.u15": "Eine Etemon-Karte!",
+ "s219.sec51.u16": "Eine Megadramon-Karte!",
+ "s219.sec51.u17": "Eine Piximon-Karte!",
+ "s219.sec51.u18": "Eine Digitamamon-Karte!",
+ "s219.sec51.u19": "Eine Gekomon-Karte!",
+ "s219.sec51.u20": "Eine WaruMonzaemon-Karte!",
+ "s219.sec51.u21": "Eine Jijimon-Karte!",
+ "s219.sec51.u22": "Eine KingSukamon-Karte!",
+ "s219.sec51.u23": "Eine Cherrymon-Karte!",
+ "s219.sec51.u24": "Eine Guardromon-Karte!",
+ "s219.sec51.u25": "Eine Hagurumon-Karte!",
+ "s219.sec51.u26": "Eine Brachiomon-Karte!",
+ "s219.sec51.u27": "Eine Greymon-Karte.",
+ "s219.sec51.u28": "Eine Devimon-Karte.",
+ "s219.sec51.u29": "Eine Airdramon-Karte.",
+ "s219.sec51.u30": "Eine Tyrannomon-Karte.",
+ "s219.sec51.u31": "Eine Meramon-Karte.",
+ "s219.sec51.u32": "Eine Seadramon-Karte.",
+ "s219.sec51.u33": "Eine Kabuterimon-Karte.",
+ "s219.sec51.u34": "Eine Angemon-Karte.",
+ "s219.sec51.u35": "Eine Birdramon-Karte.",
+ "s219.sec51.u36": "Eine Garurumon-Karte.",
+ "s219.sec51.u37": "Eine Frigimon-Karte.",
+ "s219.sec51.u38": "Eine Whamon-Karte.",
+ "s219.sec51.u39": "Eine Unimon-Karte.",
+ "s219.sec51.u40": "Eine Ogremon-Karte.",
+ "s219.sec51.u41": "Eine Shellmon-Karte.",
+ "s219.sec51.u42": "Eine Centarumon-Karte.",
+ "s219.sec51.u43": "Eine Bakemon-Karte.",
+ "s219.sec51.u44": "Eine Drimogemon-Karte.",
+ "s219.sec51.u45": "Eine Monochromon-Karte.",
+ "s219.sec51.u46": "Eine Leomon-Karte.",
+ "s219.sec51.u47": "Eine Coelamon-Karte.",
+ "s219.sec51.u48": "Eine Kokatorimon-Karte.",
+ "s219.sec51.u49": "Eine Kuwagamon-Karte.",
+ "s219.sec51.u50": "Eine Mojyamon-Karte.",
+ "s219.sec51.u51": "Eine Ninjamon-Karte.",
+ "s219.sec51.u52": "Eine Penguinmon-Karte...",
+ "s219.sec51.u53": "Eine Otamamon-Karte...",
+ "s219.sec51.u54": "Eine Tentomon-Karte...",
+ "s219.sec51.u55": "Eine Yanmamon-Karte...",
+ "s219.sec51.u56": "Eine Gotsumon-Karte...",
+ "s219.sec51.u57": "Eine Flarerizamon-Karte...",
+ "s219.sec51.u58": "Eine ToyAgumon-Karte...",
+ "s219.sec51.u59": "Eine DemiMeramon-Karte...",
+ "s219.sec51.u60": "Eine Tankmon-Karte...",
+ "s219.sec51.u61": "Eine Goblimon-Karte...",
+ "s219.sec51.u62": [
+  [
+   "Igitt, eine Numemon-Karte..."
+  ]
+ ],
+ "s219.sec51.u63": [
+  [
+   "Igitt, eine Vegiemon-Karte..."
+  ]
+ ],
+ "s219.sec51.u64": [
+  [
+   "Igitt, eine Sukamon-Karte..."
+  ]
+ ],
+ "s219.sec51.u65": [
+  [
+   "Igitt, eine Nanimon-Karte..."
+  ]
+ ],
+ "s220.sec83.u0": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Boing-boing. Ich bin",
+   "Poyomooon."
+  ]
+ ],
+ "s220.sec83.u1": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Wieder was über Digitatiooon.",
+   "Ähm, es geht um das Level",
+   "nach Champion."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Das heißt Ultra, sagt man.",
+   "Nicht jedes Champion kann es",
+   "erreichen."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Die Bedingungen sind suuuper",
+   "schwer. Aber ein Ultra-Digimon",
+   "lebt länger."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Digitiert es aber mit einem",
+   "Item, bleibt seine Lebensdauer",
+   "gleich, glaube ich."
+  ]
+ ],
+ "s220.sec83.u2": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Noch mehr über Digitatiooon.",
+   "Ähm, diesmal geht es um die",
+   "Bedingungen dafür."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Zuerst muss sein Gewicht nah",
+   "an dem seiner nächsten Form",
+   "liegen, sagt man."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Dann die Werte: Höher ist",
+   "natürlich besser. Aber welche",
+   "zählen, hängt wohl von der"
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Form ab."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Und Pflegefehler... Manchmal",
+   "ist es wohl besser, absichtlich",
+   "ganz viele zu machen."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Ach ja, manche Digimon haben",
+   "ihre ganz eigenen",
+   "Sonderbedingungen."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Etwa sehr hohe Disziplin oder",
+   "viele Kämpfe..."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Erfüllt es eine davon, kann es",
+   "digitieren, auch wenn die drei",
+   "Grundbedingungen nicht erfüllt"
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "sind."
+  ]
+ ],
+ "s220.sec83.u3": [
+  [
+   "{color 7}Poyomon {color 1}",
+   "Jiji hat gesagt, dass",
+   "{color 10}{partner}{color 1} digitieren kann,",
+   "weißt duuu."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Von Baby zu Ausbildung dauert",
+   "es nur sechs Stunden, sagt er."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Das nächste Level, Rookie,",
+   "dauert etwa einen Taaag."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Und danach, zu Champion,",
+   "dauert es etwa drei Taaage."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Und danaaach... Was war das",
+   "noch? Vergessen, aber da",
+   "kommt noch mehr."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Digitation hängt von Gewicht,",
+   "Werten und Pflegefehlern ab,",
+   "sagt maaaan."
+  ],
+  [
+   "{color 7}Poyomon {color 1}",
+   "Das verstehe ich noch nicht so",
+   "ganz. Ich frage Jiji beim",
+   "nächsten Maaal."
+  ]
+ ],
+ "s221.sec5.u0": [
+  [
+   "Oh, {color 6}{player}{color 1}, du hast es",
+   "geschafft! Agumon ist gerade in",
+   "die Stadt gekommen. Sieh, er"
+  ],
+  [
+   "hat dort schon seinen Laden",
+   "eröffnet. Bring weiter Digimon",
+   "zurück!"
+  ]
+ ],
+ "s221.sec5.u1": [
+  [
+   "Palmon war hier und sprach vom",
+   "Ausbau der Fleischfarm. Hm,",
+   "hm, dann gibt es reichlich"
+  ],
+  [
+   "Fleisch!"
+  ]
+ ],
+ "s221.sec5.u2": [
+  [
+   "Kunemon war hier und wollte",
+   "Gras fressen. Hm, hm,",
+   "hoffentlich frisst er das"
+  ],
+  [
+   "lästige Unkraut!"
+  ]
+ ],
+ "s221.sec5.u3": [
+  [
+   "Centarumon war hier und sprach",
+   "von einer Klinik. Hm, hm, keine",
+   "Sorgen mehr wegen Krankheiten"
+  ],
+  [
+   "und Wunden!"
+  ]
+ ],
+ "s221.sec5.u4": [
+  [
+   "Coelamon war hier und sprach",
+   "von einem Laden. Hm, hm, die",
+   "Stadt wächst!"
+  ]
+ ],
+ "s221.sec5.u5": [
+  [
+   "Betamon war hier und sprach",
+   "von einem Laden. Hm, hm, die",
+   "Stadt wächst!"
+  ]
+ ],
+ "s221.sec5.u6": [
+  [
+   "Bakemon war hier und sagte",
+   "etwas völlig Unverständliches.",
+   "Hm, hm, ist auch gut."
+  ]
+ ],
+ "s221.sec5.u7": [
+  [
+   "Vegiemon war hier und will die",
+   "Fleischfarm noch vergrößern.",
+   "Hm, hm, keine Futtersorgen"
+  ],
+  [
+   "mehr!"
+  ]
+ ],
+ "s221.sec5.u8": [
+  [
+   "Tyrannomon war hier und pries",
+   "seine Kochkunst. Hm, hm, er",
+   "weiß sich zu verkaufen."
+  ]
+ ],
+ "s221.sec5.u9": [
+  [
+   "Meramon war hier und nannte",
+   "sich Koch der Flammen. Hm, hm,",
+   "er ist Feuer und Flamme!"
+  ]
+ ],
+ "s221.sec5.u10": [
+  [
+   "Frigimon war hier und sprach",
+   "von Snacks. Hm, hm, ich nasche",
+   "selbst gern."
+  ]
+ ],
+ "s221.sec5.u11": [
+  [
+   "Garurumon war hier und sagte,",
+   "er könne etwas kochen. Hm, hm,",
+   "er ist geschickter, als er"
+  ],
+  [
+   "aussieht."
+  ]
+ ],
+ "s221.sec5.u12": [
+  [
+   "Birdramon war hier und will die",
+   "Stadt mit der Außenwelt",
+   "verbinden. Hm, hm, das klingt"
+  ],
+  [
+   "ehrgeizig."
+  ]
+ ],
+ "s221.sec5.u13": [
+  [
+   "Shellmon war hier und will ein",
+   "Schwarzes Brett aufstellen.",
+   "Hm, hm, unser erster Schritt"
+  ],
+  [
+   "ins Informationszeitalter!"
+  ]
+ ],
+ "s221.sec5.u14": [
+  [
+   "Elecmon war hier und will die",
+   "Lichter einschalten. Hm, hm,",
+   "hoffentlich wird es eine helle"
+  ],
+  [
+   "Stadt."
+  ]
+ ],
+ "s221.sec5.u15": [
+  [
+   "Kokatorimon war hier und will",
+   "eine Statue machen. Hm, hm,",
+   "eine Stadt mit Platz für"
+  ],
+  [
+   "Kunst."
+  ]
+ ],
+ "s221.sec5.u16": [
+  [
+   "Monochromon war hier und will",
+   "einen Itemladen eröffnen. Hm,",
+   "hm, ein echter Profi!"
+  ]
+ ],
+ "s221.sec5.u17": [
+  [
+   "Unimon war hier und bot Hilfe",
+   "beim Handel an. Hm, hm, das ist",
+   "die richtige Einstellung!"
+  ]
+ ],
+ "s221.sec5.u18": [
+  [
+   "Patamon war hier und fragte",
+   "nach einer lustigen Arbeit. Hm,",
+   "hm, ich schlug einen Itemladen"
+  ],
+  [
+   "vor!"
+  ]
+ ],
+ "s221.sec5.u19": [
+  [
+   "Biyomon war hier und fragte,",
+   "welche Arbeit ich empfehle. Hm,",
+   "hm, ich empfahl einen"
+  ],
+  [
+   "Itemladen!"
+  ]
+ ],
+ "s221.sec5.u20": [
+  [
+   "Greymon war hier und will eine",
+   "Arena bauen. Hm, hm, das würde",
+   "ich gern sehen."
+  ]
+ ],
+ "s221.sec5.u21": [
+  [
+   "Penguinmon war hier und will",
+   "eine Curlingbahn bauen. Hm, hm,",
+   "hier wird es immer"
+  ],
+  [
+   "abwechslungsreicher."
+  ]
+ ],
+ "s221.sec5.u22": [
+  [
+   "Angemon war hier und will",
+   "unsere Gespräche aufzeichnen.",
+   "Hm, hm, er ist ja gleich"
+  ],
+  [
+   "nebenan!"
+  ]
+ ],
+ "s221.sec5.u23": [
+  [
+   "Drimogemon war hier und will",
+   "beruflich Schätze suchen. Hm,",
+   "hm, eine Arbeit im großen Stil!"
+  ]
+ ],
+ "s221.sec5.u24": [
+  [
+   "Gabumon war hier und wusste",
+   "nicht, was er tun soll. Hm, hm,",
+   "ich sagte ihm, er solle groß"
+  ],
+  [
+   "denken."
+  ]
+ ],
+ "s221.sec5.u25": [
+  [
+   "Ninjamon war hier und sprach",
+   "von seinem Training. Hm, hm,",
+   "nichts geht über Fleiß."
+  ]
+ ],
+ "s221.sec5.u26": [
+  [
+   "Whamon war hier und will als",
+   "Fähre dienen. Hm, hm, jetzt",
+   "kommen wir auch dorthin!"
+  ]
+ ],
+ "s221.sec5.u27": [
+  [
+   "Mojyamon war hier und will",
+   "einen Gemischtwarenladen",
+   "eröffnen. Hm, hm, klingt"
+  ],
+  [
+   "ungewöhnlich!"
+  ]
+ ],
+ "s221.sec5.u28": [
+  [
+   "Mamemon war hier und will ganz",
+   "besondere Items verkaufen. Hm,",
+   "hm, ganz besonders... Was er"
+  ],
+  [
+   "wohl meint?"
+  ]
+ ],
+ "s221.sec5.u29": [
+  [
+   "Numemon war hier und will einen",
+   "Laden führen. Aber das ist",
+   "geheeeim. Hm, hm, jetzt wohl"
+  ],
+  [
+   "nicht mehr."
+  ]
+ ],
+ "s221.sec5.u30": [
+  [
+   "Kabuterimon war hier und",
+   "sprach von Training und",
+   "Verbesserungen. Hm, hm, ist er"
+  ],
+  [
+   "zur Grünen Gym gegangen?"
+  ]
+ ],
+ "s221.sec5.u31": [
+  [
+   "Kuwagamon war hier und fragte",
+   "nach Kabuterimon. Hm, hm, wo",
+   "ist er denn hin?"
+  ]
+ ],
+ "s221.sec5.u32": [
+  [
+   "Giromon war hier und sagte:",
+   "«Wünscht euch ein Lied!",
+   "Bzzzt!» Hm, hm, wünsch dir"
+  ],
+  [
+   "doch eines."
+  ]
+ ],
+ "s221.sec5.u33": [
+  [
+   "Ogremon war hier und will seine",
+   "Muskelkraft vermieten. Hm, hm,",
+   "seine Augen strahlten!"
+  ]
+ ],
+ "s221.sec5.u34": [
+  [
+   "Leomon war hier und fragte viel",
+   "über die Stadt. Hm, hm, er",
+   "patrouilliert wohl noch immer"
+  ],
+  [
+   "durch die Savanne!"
+  ]
+ ],
+ "s221.sec5.u35": [
+  [
+   "Piximon war hier und sagte:",
+   "«Señor, ein geheimes Item?»",
+   "Hm, hm, ich brauche keines,"
+  ],
+  [
+   "aber neugierig bin ich!"
+  ]
+ ],
+ "s221.sec5.u36": [
+  [
+   "Etemon war hier und will einen",
+   "fabelhaften Laden eröffnen. Hm,",
+   "hm, da ist doch etwas faul."
+  ]
+ ],
+ "s221.sec5.u37": [
+  [
+   "MetalMamemon war hier und",
+   "sucht eine Arbeit, bei der er",
+   "gegen {color 6}{player}{color 1} kämpfen"
+  ],
+  [
+   "kann. Hm, hm, er verliert nicht",
+   "gern."
+  ]
+ ],
+ "s221.sec5.u38": [
+  [
+   "Vademon war hier... Hm? War er",
+   "hier? Hm, hm, ich erinnere mich",
+   "nicht."
+  ]
+ ],
+ "s221.sec5.u39": [
+  [
+   "MetalGreymon war hier und will",
+   "die Arena umbauen. Hm, hm, er",
+   "wirkt wie ein hohes Tier!"
+  ]
+ ],
+ "s221.sec5.u40": [
+  [
+   "Nanimon war hier und ist sofort",
+   "wieder verschwunden. Hm, hm,",
+   "was hat das zu bedeuten?"
+  ]
+ ],
+ "s221.sec5.u41": [
+  [
+   "Monzaemon war hier... Oder",
+   "eher sein leeres Kostüm. Hm,",
+   "hm, ich werde es hier im Haus"
+  ],
+  [
+   "aufbewahren."
+  ]
+ ],
+ "s221.sec5.u42": [
+  [
+   "Devimon war hier und will von",
+   "einem unglaublichen Item",
+   "erzählen. Hm, hm, ob es"
+  ],
+  [
+   "wirklich so unglaublich ist?"
+  ]
+ ],
+ "s221.sec5.u43": [
+  [
+   "Airdramons Wunden sind verheilt",
+   "und er will arbeiten. Hm, hm,",
+   "schön, dass er wieder ganz der"
+  ],
+  [
+   "Alte ist."
+  ]
+ ],
+ "s221.sec5.u44": [
+  [
+   "Digitamamon war hier und",
+   "blitzschnell wieder weg. Hm,",
+   "hm, er scheint aber noch"
+  ],
+  [
+   "irgendwo in der Stadt zu sein."
+  ]
+ ],
+ "s221.sec5.u45": [
+  [
+   "SkullGreymon war hier und will",
+   "in der Arena mitmachen. Hm, hm,",
+   "eigentlich hat Myotismon für"
+  ],
+  [
+   "mich übersetzt."
+  ]
+ ],
+ "s221.sec5.u46": [
+  [
+   "Andromon war hier und sagte:",
+   "«Freue mich auf die",
+   "Zusammenarbeit.» Hm, hm, aber"
+  ],
+  [
+   "er kann wohl nicht dauerhaft",
+   "bleiben."
+  ]
+ ]
+}

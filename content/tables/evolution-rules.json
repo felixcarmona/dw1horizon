@@ -1,0 +1,269 @@
+{
+  "_comment": "The evolution rules the game runs. The C holds none: each table starts empty and the build writes these; a key or a list left out means that rule does not exist. evolutionTiming: hours (of the partner's evoTimer) before each level looks for an evolution, the Ultimate's second wait, the Mega wait, and the Rookie fallback (a Rookie with no candidate becomes `target` after `afterHours`). evolutionFresh: a Baby I becomes this Baby II (at most 8). evolutionUltimate: an Ultimate that evolves again into `to` when its requirements score 3 (at most 8). evolutionSpecial: virus = the virus bar value that forces `target` (not for the two species in notFor); championCheck = the level and evoTimer hour that run the praise rules; scold = the level, and the discipline and happiness before a scolding, that arm the scold flag. evolutionRules (at most 10, 4 species and 4 conditions each): `mode` wake (after waking) or praise (after praise or scolding), `chance` percent (one roll shared by all rules, default 100), `from` the species (leave out for any), `level`, `when` [stat, ==|>=, number] with stat discipline, happiness, tiredness, battles, defense, evoTimer, screen, scoldFlag; the last rule that matches wins. clearsScoldFlag consumes the flag. evolutionItemRules (at most 4): an item past the original evolution items that forces `target` on a partner of `partnerLevel`. evolutionFormula: what happens when a partner evolves and the score that picks its next species. stat.gainDiv / averageDiv: a stat at or above the target's value grows by a part of it (the value / gainDiv), below it meets it halfway (/ averageDiv); lifetime.ultimate / mega: hours added on reaching an Ultimate or a Mega; reset.*: 1 = the weight, care mistakes or battles are reset; scale.*: the species whose evolution scales the base stats by a percent (the target's brains value / percentDiv) and the one that gets its backed-up stats back (restoreFrom / restoreDiv); learn.moveBase[element]: the first technique slot an element teaches on evolving (window: how many slots it picks from); score.*: the points and the tolerance of the requirement score (weightTolerance, pointCareMistakes, pointWeight, pointStats, pointBonus, hpMpDiv, raisedBonus) and passPoints, the points a species needs to be a candidate.",
+  "evolutionTiming": {
+    "hours": {
+      "fresh": 6,
+      "inTraining": 24,
+      "rookie": 72,
+      "champion": 144,
+      "ultimate": 48
+    },
+    "ultimateAgainHours": 96,
+    "megaHours": 120,
+    "fallback": {
+      "afterHours": 96,
+      "target": 11
+    }
+  },
+  "evolutionFresh": [
+    {
+      "from": 1,
+      "to": 2
+    },
+    {
+      "from": 15,
+      "to": 16
+    },
+    {
+      "from": 29,
+      "to": 30
+    },
+    {
+      "from": 43,
+      "to": 44
+    }
+  ],
+  "evolutionUltimate": [
+    {
+      "from": 54,
+      "to": 115
+    },
+    {
+      "from": 64,
+      "to": 115
+    }
+  ],
+  "evolutionSpecial": {
+    "virus": {
+      "threshold": 16,
+      "target": 39,
+      "notFor": [
+        39,
+        120
+      ]
+    },
+    "championCheck": {
+      "level": 4,
+      "hours": 360
+    },
+    "scold": {
+      "level": 3,
+      "discipline": 0,
+      "happiness": -100
+    }
+  },
+  "evolutionRules": [
+    {
+      "mode": "wake",
+      "chance": 30,
+      "from": [
+        21,
+        10
+      ],
+      "when": [
+        [
+          "discipline",
+          "==",
+          100
+        ],
+        [
+          "happiness",
+          "==",
+          100
+        ],
+        [
+          "tiredness",
+          "==",
+          0
+        ]
+      ],
+      "target": 7,
+      "note": "Birdramon, Seadramon -> Airdramon"
+    },
+    {
+      "mode": "wake",
+      "chance": 30,
+      "from": [
+        25
+      ],
+      "when": [
+        [
+          "battles",
+          ">=",
+          50
+        ],
+        [
+          "discipline",
+          "==",
+          100
+        ]
+      ],
+      "target": 58,
+      "note": "Vegiemon -> Ninjamon"
+    },
+    {
+      "mode": "wake",
+      "chance": 30,
+      "from": [
+        38
+      ],
+      "when": [
+        [
+          "defense",
+          ">=",
+          500
+        ],
+        [
+          "discipline",
+          "==",
+          100
+        ]
+      ],
+      "target": 47,
+      "note": "Bakemon -> Monochromon"
+    },
+    {
+      "mode": "wake",
+      "chance": 50,
+      "from": [
+        2,
+        30,
+        16,
+        44
+      ],
+      "when": [
+        [
+          "screen",
+          "==",
+          1
+        ]
+      ],
+      "target": 32,
+      "note": "Koromon, Tokomon, Tsunomon, Tanemon on screen 1 (Kunemon's Bed) -> Kunemon"
+    },
+    {
+      "mode": "praise",
+      "chance": 30,
+      "from": [
+        24,
+        35
+      ],
+      "level": 4,
+      "when": [
+        [
+          "evoTimer",
+          "==",
+          200
+        ]
+      ],
+      "target": 49,
+      "note": "Whamon, Shellmon -> Coelamon"
+    },
+    {
+      "mode": "praise",
+      "when": [
+        [
+          "scoldFlag",
+          "==",
+          1
+        ]
+      ],
+      "target": 53,
+      "clearsScoldFlag": true,
+      "note": "scolded to the limit -> Nanimon"
+    },
+    {
+      "mode": "praise",
+      "chance": 50,
+      "level": 4,
+      "when": [
+        [
+          "evoTimer",
+          ">=",
+          240
+        ]
+      ],
+      "target": 28,
+      "note": "any Champion that waits long enough -> Vademon"
+    }
+  ],
+  "evolutionItemRules": [
+    {
+      "item": 125,
+      "target": 64,
+      "partnerLevel": 4,
+      "note": "Giga Hand -> Gigadramon"
+    },
+    {
+      "item": 126,
+      "target": 63,
+      "partnerLevel": 3,
+      "note": "Noble Mane -> Panjyamon"
+    },
+    {
+      "item": 127,
+      "target": 65,
+      "partnerLevel": 4,
+      "note": "Metalbanana -> MetalEtemon"
+    }
+  ],
+  "evolutionFormula": {
+    "stat": {
+      "gainDiv": 10,
+      "averageDiv": 2
+    },
+    "lifetime": {
+      "ultimate": 96,
+      "mega": 120
+    },
+    "reset": {
+      "weight": 1,
+      "careMistakes": 1,
+      "battles": 1
+    },
+    "scale": {
+      "belowLevel": 3,
+      "species": [
+        11,
+        39,
+        53,
+        6
+      ],
+      "restoreFrom": 39,
+      "percentDiv": 10,
+      "restoreDiv": 2
+    },
+    "learn": {
+      "moveBase": [
+        0,
+        40,
+        8,
+        32,
+        16,
+        24,
+        49
+      ],
+      "window": 8
+    },
+    "score": {
+      "weightTolerance": 5,
+      "pointCareMistakes": 1,
+      "pointWeight": 1,
+      "pointStats": 1,
+      "pointBonus": 1,
+      "hpMpDiv": 10,
+      "raisedBonus": 1,
+      "passPoints": 3
+    }
+  }
+}

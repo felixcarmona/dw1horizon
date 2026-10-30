@@ -1,0 +1,50 @@
+From b946c0769502001bdb3bc8e1e6c47b1e35ce7fec Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 09:59:53 +0000
+Subject: [PATCH] Patch 0164: the status bars only red or green, changing where
+ the icons do
+
+Red below half the range (happiness < 0, discipline < 50), green from half up, instead
+of 0163's red-yellow-green blend.
+
+---
+ src/main/partner_impl.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index dc6c606c..9bfb9b47 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2367,7 +2367,7 @@ static void addStatusBarRow(int32_t x, int32_t y, int32_t w, int32_t r, int32_t
+ }
+ 
+ /* MOD (status bars): one bar's 2-pixel-high track: the grey track (50 px) and `segments` segments (2 px each) of a
+-   flat colour from red (value 0) through yellow (half) to green (value max), the top row lighter */
++   flat colour, red below half the range and green from half up (where the icons change), the top row lighter */
+ static void renderStatusBarFill(int32_t x, int32_t y, int32_t segments, int32_t value, int32_t max)
+ {
+ 	int32_t r;
+@@ -2383,9 +2383,9 @@ static void renderStatusBarFill(int32_t x, int32_t y, int32_t segments, int32_t
+ 		return;
+ 	if (value * 2 < max) {
+ 		r = 0xE0;
+-		g = 0x28 + (0xC8 - 0x28) * value * 2 / max;
++		g = 0x30;
+ 	} else {
+-		r = 0xE0 - (0xE0 - 0x30) * (value * 2 - max) / max;
++		r = 0x30;
+ 		g = 0xC8;
+ 	}
+ 	addStatusBarRow(x, y, segments * 2, r + (0xFF - r) / 3, g + (0xFF - g) / 3, 0x60, 13);
+@@ -2422,7 +2422,7 @@ void renderStatusBars(state)
+ 		disciplineTexX = 33;
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X + 3, 95, 11, 11, disciplineTexX, 244, 5, GetClut(96, 498), 14, 0);
+ 	/* MOD (status bars): each bar is one colour over its whole range, empty to full (happiness -100..100, 8 a
+-	   segment; discipline 0..100, 4 a segment), red when low, yellow halfway, green when high, on a grey
++	   segment; discipline 0..100, 4 a segment), red below the midpoint, green from it up, on a grey
+ 	   track; the original filled each half again in a second colour. The icons still change at the midpoint */
+ 	happinessCount = (PARTNER_PARA.happiness + 100) / 8;
+ 	renderStatusBarFill(STATUS_UI_OFFSET_X + 18, 88, happinessCount, PARTNER_PARA.happiness + 100, 200);
+-- 
+2.53.0
+

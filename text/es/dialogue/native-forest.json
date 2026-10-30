@@ -1,0 +1,173 @@
+{
+ "s001.sec5.u0": "¡Venga, que esto acaba de empezar!",
+ "s001.sec6.u0": "Aúpa... aúpa... Arriba... y abajo...",
+ "s001.sec7.u0": "¡Ahora yo comerte enterito, ¿sí?!",
+ "s001.sec8.u0": "¡Por favor, esperar un momentiiito, ¿sí?!",
+ "s001.sec9.u0": "¡Allá voy!",
+ "s001.sec10.u0": "¿Qué? ¿Pero qué te he hecho yo?",
+ "s001.sec11.u0": "Ya sabía yo que no tenía que meterme...",
+ "s001.sec12.u0": "Lo que hay que aguantar... Ñañañá, ñañañá...",
+ "s003.sec5.u0": "¡Venga, venga!",
+ "s003.sec6.u0": "¡Graaaah!",
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   "......Soy una flor."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......Que solo soy una flor,",
+   "¿vale?"
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "¡Que soy una flor, te digo!",
+   "¡Qué pesadito eres!"
+  ]
+ ],
+ "s003.sec7.u4": "¡Ay, vale, vale! ¡Es que odio pelear, de verdad!",
+ "s003.sec7.u5": "Pues entonces...",
+ "s003.sec7.u6": "Vente a la ciudad. Allí se está tranquilo.",
+ "s003.sec7.u7": [
+  [
+   "¿A la ciudad?"
+  ],
+  [
+   "Suena divertido. ¡Pues igual",
+   "sí, oye! Soy Palmon. ¡Ya verás",
+   "qué útil soy!"
+  ]
+ ],
+ "s003.sec7.u8": "¡Palmon se ha unido a la ciudad!",
+ "s003.sec8.u0": "¡Mío!",
+ "s003.sec9.u0": "¡Te pillé!",
+ "s004.sec6.u0": "Solo vas a salir mal parado, ¿sabes?",
+ "s004.sec6_dup4.u0": "Lo que hay que ver... Qué crío.",
+ "s004.sec7.u0": "Muy bien. Iré con suavidad.",
+ "s004.sec8.u0": "¡Te voy a partir esa nariz!",
+ "s004.sec9.u0": "¡Te voy a partir como una ramita!",
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Hasta el mejor mono se cae",
+   "del..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Rodillazo... Volador...",
+   "¡¡¡Desde arribaaa!!!"
+  ]
+ ],
+ "s004.sec51.u1": "¡Uk! ¿El gran yo, derrotado...? ¡No, no! ¡Vosotros no sois nada del otro mundo!",
+ "s004.sec51.u2": "...Qué mal perder tiene. Y eso que fue él quien nos atacó por sorpresa...",
+ "s004.sec51.u3": [
+  [
+   "¡Uk-uk! Grrr... Muy bien,",
+   "pues..."
+  ],
+  [
+   "¡Os voy a enseñar de lo que",
+   "soy capaz en esa ciudad",
+   "vuestra! ¡Ya veréis! ¡Uk!"
+  ]
+ ],
+ "s004.sec51.u4": "¡Etemon se ha unido a la ciudad!",
+ "s004.sec81.u0": "¿Mm? Aquí hay algo grabado.",
+ "s004.sec81.u1": "¡No hay nadie! ¡Largo!",
+ "s004.sec81.u2": "¿Vive alguien aquí?",
+ "s105.sec5.u0": "¡N-no sé nada!",
+ "s105.sec6.u0": "¡Hala!",
+ "s105.sec6.u1": "......¿? ...¡! ...¡Je, je!",
+ "s105.sec6.u2": "¡Eh, así, sin avisar! ¡Vale, a por ti!",
+ "s105.sec6.u3": "He perdido. Jo.",
+ "s105.sec6.u4": "Ah, es verdad. Tengo que invitarle a la ciudad.",
+ "s105.sec6.u5": "...Esto, oye, verás...",
+ "s105.sec6.u6": "¿Te... a lo mejor... te vendrías a la ciudad?",
+ "s105.sec6.u7": [
+  [
+   "¿Eh? ¿A la ciudad?"
+  ],
+  [
+   "¿Te refieres a... ese sitio",
+   "viejo que se cae a trozos?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Mmm..."
+  ],
+  [
+   "Mmmmm......"
+  ],
+  [
+   "Mmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": "Bueno, vale. Soy Agumon. Encantado.",
+ "s105.sec6.u10": "¡Agumon se ha unido a la ciudad!",
+ "s105.sec6.u11": "¡Anda, por preguntar no se pierde nada! ¡Venga, invitaré a todos los que encuentre!",
+ "s105.sec7.u0": "¡Este es mi territorio!",
+ "s105.sec8.u0": "¿¡Eh!?",
+ "s105.sec9.u0": "¡Ahora es mi oportunidad!",
+ "s105.sec52.u0": "...Si huyo ahora, ya no hay vuelta atrás.",
+ "s106.sec5.u0": [
+  [
+   "¡Prueba de combate!"
+  ],
+  [
+   "Es broma. Era mentira."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Cambiar los atributos",
+ "s106.sec6.m0.o1": "Adelantar el tiempo",
+ "s106.sec6.m0.o2": "Aprender todas las técnicas",
+ "s106.sec6.m1.o0": "Subir",
+ "s106.sec6.m1.o1": "Bajar",
+ "s106.sec6.m1.o2": "Reiniciar los atributos",
+ "s106.sec6.m2.o0": "Adelantar 1 hora",
+ "s106.sec6.m2.o1": "Adelantar 6 horas",
+ "s106.sec6.m2.o2": "Adelantar 24 horas",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": "¡Soy el Señor Apañado! ¿Qué va a ser?",
+ "s106.sec81.u0": "Un desprendimiento de rocas bloquea el camino...",
+ "s107.sec5.u0": [
+  [
+   "Ahora mismo es el mes",
+   "{pstat 105}, día",
+   "{pstat 106}, hora"
+  ],
+  [
+   "{pstat 107}, minuto",
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": "{color 10}{partner}{color 1} es de tipo Datos, ¿eh?",
+ "s107.sec5.u2": "{color 10}{partner}{color 1} es de tipo Vacuna, ¿eh?",
+ "s107.sec5.u3": "{color 10}{partner}{color 1} es de tipo Virus, ¿eh?",
+ "s107.sec6.m0.o0": "Cambiar los atributos",
+ "s107.sec6.m0.o1": "Adelantar el tiempo",
+ "s107.sec6.m0.o2": "Convertirse en tienda",
+ "s107.sec6.m1.o0": "Hacerlo el más fuerte",
+ "s107.sec6.m1.o1": "Hacerlo el más débil",
+ "s107.sec6.m1.o2": "Dejarlo a medias",
+ "s107.sec6.m2.o0": "Adelantar 1 hora",
+ "s107.sec6.m2.o1": "Adelantar 6 horas",
+ "s107.sec6.m2.o2": "Adelantar 24 horas",
+ "s107.sec6.u0": "¡Soy el Señor Apañado! ¿Qué va a ser?",
+ "s107.sec51.u0": "¡El terremoto de antes se ha llevado las rocas caídas!"
+}

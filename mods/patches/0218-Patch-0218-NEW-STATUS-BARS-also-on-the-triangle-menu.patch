@@ -1,0 +1,80 @@
+From 6d62da8321365583e6d8d3d42f699b033070883e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:55:36 +0000
+Subject: [PATCH] Patch 0218: NEW STATUS BARS also on the triangle menu's
+ Status page: its happiness and discipline bars are one fill over the whole
+ range (happiness -100..100, discipline 0..100) on a grey track, red below the
+ midpoint and green from it, the top row lighter, like the field's
+ (renderMenuStatusBar in game_menu.c, flat boxes); off, the original's
+ two-pass textured bars. 464 bytes of heap. Tested in PCSX-Redux at six values
+ each way
+
+---
+ src/main/game_menu.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index ebcf5d3a..552a2ce5 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2488,6 +2488,35 @@ void renderCardCount(void)
+ 	renderString(0, 0x6b, 0x4c, 0xc, 0xc, 0xd8, 0xc, 0);
+ }
+ 
++/* MOD (status bars): the stats view's happiness or discipline bar (50 x 6 at x -0x54) drawn like the field's
++   (renderStatusBarFill, partner_impl.c): one fill over the whole range on a grey track, red below the midpoint and
++   green from it, where the icons change, the top row lighter. Sorted fill first: the later box is drawn under it */
++static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max)
++{
++	int32_t w;
++	uint8_t r;
++	uint8_t g;
++
++	if (value < 0)
++		value = 0;
++	if (value > max)
++		value = max;
++	w = value * 0x32 / max;
++	if (value * 2 < max) {
++		r = 0xE0;
++		g = 0x30;
++	} else {
++		r = 0x30;
++		g = 0xC8;
++	}
++	if (w > 0) {
++		renderBox(-0x54, y, w, 1, r + (0xFF - r) / 3, g + (0xFF - g) / 3, 0x60, 0, 5);
++		renderBox(-0x54, y + 1, w, 5, r, g, 0x28, 0, 5);
++	}
++	renderBox(-0x54, y, 0x32, 1, 0x70, 0x70, 0x70, 0, 5);
++	renderBox(-0x54, y + 1, 0x32, 5, 0x58, 0x58, 0x58, 0, 5);
++}
++
+ void renderDigimonStatsView(void)
+ {
+ 	RECT *r;
+@@ -2600,7 +2629,9 @@ void renderDigimonStatsView(void)
+ 		} else {
+ 			renderRectPolyFT4(-0x8a, 0x31, 0xb, 0xb, 0xb, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+ 		}
+-		if (PARTNER_PARA.happiness >= 0) {
++		if (MOD_OPT_BARS) { /* MOD (options): NEW STATUS BARS, as on the field (renderStatusBars) */
++			renderMenuStatusBar(0x35, PARTNER_PARA.happiness + 100, 200);
++		} else if (PARTNER_PARA.happiness >= 0) {
+ 			renderRectPolyFT4(-0x54, 0x35, (uint8_t)(0x32 - (0x32 - PARTNER_PARA.happiness / 2)), 6, 0x18, 0xf0, 0x18, GetClut(0x70, 0x1f6), 5, 0);
+ 			renderRectPolyFT4(-0x54, 0x35, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+ 		} else {
+@@ -2611,7 +2642,9 @@ void renderDigimonStatsView(void)
+ 		} else {
+ 			renderRectPolyFT4(-0x8a, 0x40, 0xb, 0xb, 0x21, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+ 		}
+-		if (PARTNER_PARA.discipline >= 0x32) {
++		if (MOD_OPT_BARS) {
++			renderMenuStatusBar(0x44, PARTNER_PARA.discipline, 100);
++		} else if (PARTNER_PARA.discipline >= 0x32) {
+ 			renderRectPolyFT4(-0x54, 0x44, (uint8_t)(PARTNER_PARA.discipline - 0x32), 6, 0x18, 0xf0, 0x18, GetClut(0x70, 0x1f6), 5, 0);
+ 			renderRectPolyFT4(-0x54, 0x44, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+ 		} else {
+-- 
+2.55.0
+

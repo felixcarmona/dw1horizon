@@ -1,0 +1,59 @@
+{
+  "format": 1,
+  "models_manifest_sha256": "13006e79156331c86298026207c290f4f758c6d90da3a8977a4c4aed0ade1d7f",
+  "species": 33,
+  "outputs": 37,
+  "old_binary_comparison": "all 37 byte-identical",
+  "strict_derive": "record_originals, --strict --record, 37 SHA-256-checked outputs",
+  "pyodide": {
+    "python": "3.14.2",
+    "species": 33,
+    "outputs": 37,
+    "source_delta_target_sha256_and_provider_sha1": true,
+    "forbidden_imports": [
+      "PIL",
+      "unicorn"
+    ]
+  },
+  "literal_audit": {
+    "minimum_match_bytes": 16,
+    "source_match_windows": 0,
+    "dw1_chdat_files": 179,
+    "dw1_chdat_matches": 0,
+    "all_game_corpus_files": 882,
+    "other_game_matches": [
+      {
+        "id": 122,
+        "kind": "mmd",
+        "max_bytes": 25,
+        "distinct_values": 8
+      }
+    ]
+  },
+  "delta_bytes": 206177,
+  "target_bytes": 2392416,
+  "source_slices": 58,
+  "reference": {
+    "commit": "a218f4254cc22880fdaa5a73f959020214f69d4d",
+    "tracked_blobs": 9919,
+    "changed_blobs": 0
+  },
+  "native_everything": {
+    "image_sha1": "0964f7afdcfeb49f73e09f06bd88573b52c6c9ca",
+    "image_bytes": 901022976,
+    "disc_files": 2318,
+    "per_file_sums_sha1": "573010beb855ddd97868dbedb3b33a01f94cd490",
+    "same_reference_bytes": true
+  },
+  "make_release": {
+    "output_sha1": {
+      "us": "0964f7afdcfeb49f73e09f06bd88573b52c6c9ca",
+      "jp1": "13c49c699cb6e7b8108a3780d657b2c50f6d53c1"
+    },
+    "same_reference_outputs": true,
+    "clean_tree_and_bundle_only_reconstruction": true,
+    "private_model_inputs": 0,
+    "workers": 4,
+    "shared_map_steps": "serial in both reference and candidate"
+  }
+}

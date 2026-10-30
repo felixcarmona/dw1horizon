@@ -1,0 +1,12 @@
+{
+  "name": "jijimon-bed-rest",
+  "doc": "Jijimon's house: press X on the bed tile (section 82 of script 178), choose Rest: clock advances an hour, HP/MP/tiredness change, the screen reloads.",
+  "run": [
+    "move 750 -250",
+    "wait 10",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until free max 3000"
+  ],
+  "max_frames": 4000,
+  "expect": {"digest": "f5dbe182826e24e5876b72fde7b63f1fc1884bff", "instructions": 31}
+}

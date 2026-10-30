@@ -1,0 +1,17 @@
+{
+  "id": 32,
+  "name": "Poison Powder",
+  "element": "nature",
+  "power": 117,
+  "mpCost": 57,
+  "distance": 360000,
+  "range": 3,
+  "accuracy": 77,
+  "status": 1,
+  "statusChance": 62,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [26, 19, 14]
+}

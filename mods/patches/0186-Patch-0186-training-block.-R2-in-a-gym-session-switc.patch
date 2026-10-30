@@ -1,0 +1,1092 @@
+From 804096542308fbbcb1ea26fe79f297f834f45b2b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 21:29:29 +0000
+Subject: [PATCH 186/189] Patch 0186: training block. R2 in a gym session
+ switches x1 / x5 (MOD_TRAIN_BLOCK; a plate shows it; never with Bonus Try). A
+ block plays the first session's animation, then runs the gym's award once per
+ session, each with its hour and care costs and the gains of one in the stats
+ before the next, and stops after the session that left the partner hungry,
+ needing the toilet, sleepy, tired, unwell, due to digivolve, at the end of
+ its life, or that opened the gym's own box; the stats box shows the total and
+ a box under it the sessions done and why it stopped (text/trn, text/trn2).
+ The battle and evolution plates and the stop check move to src/main/mod_qol.c
+
+---
+ config/us/main.ld          |   7 ++
+ include/dw/mod_qol.h       |  19 ++++
+ include/dw/trn.h           |   8 ++
+ include/dw/trn2.h          |   8 ++
+ mk/version/us.mk           |   1 +
+ src/btl/battle_hud.c       |  68 ++------------
+ src/evl/evl.c              |  46 +--------
+ src/main/main.c            |   1 +
+ src/main/mod_qol.c         | 129 +++++++++++++++++++++++++
+ src/trn/trn_block.h        | 187 +++++++++++++++++++++++++++++++++++++
+ src/trn/trn_brain.c        |   5 +-
+ src/trn/trn_def.c          |   5 +-
+ src/trn/trn_hp.c           |   5 +-
+ src/trn/trn_hud.c          |  11 ++-
+ src/trn/trn_mp.c           |   5 +-
+ src/trn/trn_off.c          |  10 +-
+ src/trn/trn_reward.c       |   8 ++
+ src/trn/trn_speed.c        |   5 +-
+ src/trn2/trn2_def_map108.c |   5 +-
+ src/trn2/trn2_def_map99.c  |   5 +-
+ src/trn2/trn2_hp_map107.c  |   6 +-
+ src/trn2/trn2_hp_map99.c   |   5 +-
+ src/trn2/trn2_hud.c        |  19 +++-
+ src/trn2/trn2_mp.c         |   5 +-
+ src/trn2/trn2_off.c        |   5 +-
+ src/trn2/trn2_reward.c     |   5 +-
+ text/trn/trn_reward.yaml   |  27 ++++++
+ text/trn2/trn2_hud.yaml    |  25 +++++
+ 28 files changed, 516 insertions(+), 119 deletions(-)
+ create mode 100644 include/dw/mod_qol.h
+ create mode 100644 src/main/mod_qol.c
+ create mode 100644 src/trn/trn_block.h
+ create mode 100644 text/trn2/trn2_hud.yaml
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 27a31cb9..e11fb770 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -116,6 +116,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.text.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.text.*);
+         . = ALIGN(., 4);
+@@ -346,6 +347,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.rodata .rodata.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.rodata .rodata.*);
+         . = ALIGN(., 4);
+@@ -509,6 +511,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.data.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.data.*);
+         . = ALIGN(., 4);
+@@ -646,6 +649,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.sdata.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sdata.*);
+         . = ALIGN(., 4);
+@@ -794,6 +798,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.sbss.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.sbss.*);
+         . = ALIGN(., 4);
+@@ -880,6 +885,7 @@ SECTIONS
+         BUILD_DIR/src/trn/trn_off.c.o(.sbss.*);
+         BUILD_DIR/src/trn/trn_def.c.o(.sbss.*);
+         BUILD_DIR/src/trn/trn_hud.c.o(.sbss.*);
++        BUILD_DIR/src/trn/trn_reward.c.o(.sbss.*); /* MOD (training block) */
+         . = ALIGN(., 4);
+         BUILD_DIR/src/dget/dget.c.o(.sbss.*);
+         . = ALIGN(., 4);
+@@ -932,6 +938,7 @@ SECTIONS
+         BUILD_DIR/src/main/mod_options.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_feed.c.o(.bss.*);
++        BUILD_DIR/src/main/mod_qol.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.bss.*);
+         . = ALIGN(., 4);
+diff --git a/include/dw/mod_qol.h b/include/dw/mod_qol.h
+new file mode 100644
+index 00000000..28343122
+--- /dev/null
++++ b/include/dw/mod_qol.h
+@@ -0,0 +1,19 @@
++#ifndef DW_MOD_QOL_H
++#define DW_MOD_QOL_H
++
++#include <dw/types.h>
++
++/* MOD (quality of life, src/main/mod_qol.c) */
++
++/* a plate at (x, y) with text (the letters R 2 x 1 5 S T A and spaces): the letters from index hi on in (r, g, b), the
++   others white */
++void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b);
++
++/* the training block (src/trn/trn_block.h): x1 (0) or x5 (1), switched with R2 in a gym session (main.c) */
++extern int8_t MOD_TRAIN_BLOCK;
++/* why a block stops after a session that started at minute t0 of the day, with the gym's tiredness rule tiredAt */
++enum { MOD_TB_GO, MOD_TB_HUNGRY, MOD_TB_TOILET, MOD_TB_SLEEPY, MOD_TB_TIRED, MOD_TB_UNWELL, MOD_TB_EVOLVE, MOD_TB_LIFE,
++       MOD_TB_LEARNED };
++int32_t modTrainStopReason(int32_t t0, int32_t tiredAt);
++
++#endif
+diff --git a/include/dw/trn.h b/include/dw/trn.h
+index 538464ef..1a98c52e 100644
+--- a/include/dw/trn.h
++++ b/include/dw/trn.h
+@@ -70,4 +70,12 @@ void TRN_createSlotMachineBox(int32_t arg);
+ int32_t TRN_getSlotMachineResult(void);
+ void TRN_startSlotSpin(void);
+ 
++
++/* MOD (training block, src/trn/trn_block.h) */
++extern int8_t TRN_MOD_QUIET;
++void TRN_modBlockArm(void);
++void TRN_modBlockBegin(void);
++int32_t TRN_modBlockNext(void);
++void TRN_modOpenStatsBox(void);
++
+ #endif
+diff --git a/include/dw/trn2.h b/include/dw/trn2.h
+index cd7793d0..a55ea7cd 100644
+--- a/include/dw/trn2.h
++++ b/include/dw/trn2.h
+@@ -71,4 +71,12 @@ void TRN2_createSlotMachineBox(int32_t arg);
+ int32_t TRN2_getSlotMachineResult(void);
+ void TRN2_startSlotSpin(void);
+ 
++
++/* MOD (training block, src/trn/trn_block.h) */
++extern int8_t TRN2_MOD_QUIET;
++void TRN2_modBlockArm(void);
++void TRN2_modBlockBegin(void);
++int32_t TRN2_modBlockNext(void);
++void TRN2_modOpenStatsBox(void);
++
+ #endif
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 77f4e960..fbfb64cf 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -77,6 +77,7 @@ MAIN_C_SRC := \
+ 	src/main/mod_screen.c \
+ 	src/main/mod_options.c \
+ 	src/main/mod_feed.c \
++	src/main/mod_qol.c \
+ 	src/main/tfs_stream.c \
+ 	src/main/npc_anim_trim.c \
+ 	src/main/npc_anim_keep.c \
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 710bece9..f9f9161f 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -13,6 +13,7 @@
+ #include <dw/font.h>
+ #include <dw/input.h>
+ #include <dw/mod_present.h>
++#include <dw/mod_qol.h>
+ #include <dw/item.h>
+ #include <dw/math.h>
+ #include <dw/model.h>
+@@ -1408,76 +1409,25 @@ void BTL_removePartnerStatusBars(void)
+ 
+ /* MOD (battle speed): R2 switches the fight between x1 and x2 (MOD_BATTLE_FAST, main.c). The fight is held at x1
+  * while the item menu is open or an item is in hand, and while the defeat countdown runs (its seconds stay real).
+- * A plate in the bottom right corner, in the digital clock's style, shows "R2 x1" (white) or "R2 x2" (yellow; grey
+- * while held). Each row of a glyph is 3 bits, bit 2 the left column. */
++ * A plate in the bottom right corner (modPlate, mod_qol.c) shows "R2 x1" (white) or "R2 x2" (yellow; grey while
++ * held). */
+ extern int32_t IS_INVENTORY_INITIALIZED;
+ extern int16_t DEATH_COUNTDOWN;
+ 
+-static const uint8_t BTL_SPEED_GLYPHS[4][5] = {
+-	{ 6, 5, 6, 5, 5 }, /* R */
+-	{ 7, 1, 7, 4, 7 }, /* 2 */
+-	{ 0, 0, 5, 2, 5 }, /* x */
+-	{ 2, 6, 2, 2, 7 }, /* 1 */
+-};
+-
+ static int32_t BTL_modSpeedHeld(void)
+ {
+ 	return IS_INVENTORY_INITIALIZED == 1 || TAMER_ITEM.worldItem.type != ITEM_NONE || DEATH_COUNTDOWN != 0;
+ }
+ 
+-static void BTL_addSpeedRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
+-{
+-	POLY_F4 *p;
+-
+-	p = (POLY_F4 *)GsGetWorkBase();
+-	SetPolyF4(p);
+-	setRGB0(p, r, g, b);
+-	setXYWH(p, x, y, w, h);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
+-	GsSetWorkBase((PACKET *)p);
+-}
+-
+-static void BTL_addSpeedGlyph(int32_t x, int32_t y, int32_t glyph, int32_t r, int32_t g, int32_t b)
+-{
+-	int32_t row;
+-	int32_t col;
+-	int32_t bits;
+-
+-	for (row = 0; row < 5; row++) {
+-		bits = BTL_SPEED_GLYPHS[glyph][row];
+-		for (col = 0; col < 3; col++) {
+-			if (bits & (4 >> col)) {
+-				BTL_addSpeedRect(x + col, y + row, 1, 1, r, g, b, 4);
+-			}
+-		}
+-	}
+-}
+-
+-/* the plate is 23 x 9 pixels; a later prim at the same depth is drawn under an earlier one, so edge, inside and
+- * letters go 6, 5, 4 */
+ void BTL_renderSpeedPlate(void)
+ {
+-	int32_t x = 0x80;
+-	int32_t y = 0x60;
+-	int32_t r = 0xF0;
+-	int32_t g = 0xF0;
+-	int32_t b = 0xF0;
+-
+-	if (MOD_BATTLE_FAST) {
+-		if (BTL_modSpeedHeld()) {
+-			r = g = b = 0x80;
+-		} else {
+-			r = 0xF8;
+-			g = 0xD8;
+-			b = 0x30;
+-		}
++	if (!MOD_BATTLE_FAST) {
++		modPlate(0x80, 0x60, "R2 x1", 3, 0xF0, 0xF0, 0xF0);
++	} else if (BTL_modSpeedHeld()) {
++		modPlate(0x80, 0x60, "R2 x2", 3, 0x80, 0x80, 0x80);
++	} else {
++		modPlate(0x80, 0x60, "R2 x2", 3, 0xF8, 0xD8, 0x30);
+ 	}
+-	BTL_addSpeedRect(x, y, 23, 9, 0x62, 0xB4, 0xF6, 6);
+-	BTL_addSpeedRect(x + 1, y + 1, 21, 7, 0x18, 0x18, 0x18, 5);
+-	BTL_addSpeedGlyph(x + 3, y + 2, 0, 0xF0, 0xF0, 0xF0);
+-	BTL_addSpeedGlyph(x + 7, y + 2, 1, 0xF0, 0xF0, 0xF0);
+-	BTL_addSpeedGlyph(x + 13, y + 2, 2, r, g, b);
+-	BTL_addSpeedGlyph(x + 17, y + 2, MOD_BATTLE_FAST ? 1 : 3, r, g, b);
+ }
+ 
+ /* before each tick of the battle's loops: whether it may run fast */
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index f2d3af90..9e045768 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -15,6 +15,7 @@
+ #include <dw/ids.h>
+ #include <dw/level.h>
+ #include <dw/memmap.h>
++#include <dw/mod_qol.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -347,49 +348,6 @@ static void EVL_modSkipToEnd(EvoSequenceData *data)
+ 	MOD_EVO_SKIP = 0;
+ }
+ 
+-/* the hint: "START" on a plate in the bottom right corner, in the digital clock's style (3x5 letters, each row 3
+- * bits, bit 2 the left column) */
+-static const uint8_t EVL_START_GLYPHS[5][5] = {
+-	{ 7, 4, 7, 1, 7 }, /* S */
+-	{ 7, 2, 2, 2, 2 }, /* T */
+-	{ 2, 5, 7, 5, 5 }, /* A */
+-	{ 6, 5, 6, 5, 5 }, /* R */
+-	{ 7, 2, 2, 2, 2 }, /* T */
+-};
+-
+-static void EVL_addHintRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
+-{
+-	POLY_F4 *p;
+-
+-	p = (POLY_F4 *)GsGetWorkBase();
+-	SetPolyF4(p);
+-	setRGB0(p, r, g, b);
+-	setXYWH(p, x, y, w, h);
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
+-	GsSetWorkBase((PACKET *)p);
+-}
+-
+-static void EVL_renderSkipHint(void)
+-{
+-	int32_t x = 0x80;
+-	int32_t y = 0x60;
+-	int32_t i;
+-	int32_t row;
+-	int32_t col;
+-
+-	EVL_addHintRect(x, y, 23, 9, 0x62, 0xB4, 0xF6, 6);
+-	EVL_addHintRect(x + 1, y + 1, 21, 7, 0x18, 0x18, 0x18, 5);
+-	for (i = 0; i < 5; i++) {
+-		for (row = 0; row < 5; row++) {
+-			for (col = 0; col < 3; col++) {
+-				if (EVL_START_GLYPHS[i][row] & (4 >> col)) {
+-					EVL_addHintRect(x + 2 + i * 4 + col, y + 2 + row, 1, 1, 0xF0, 0xF0, 0xF0, 4);
+-				}
+-			}
+-		}
+-	}
+-}
+-
+ void EVL_tickEvoSequence(int32_t instanceId)
+ {
+ 	int32_t i;
+@@ -647,7 +605,7 @@ shards:
+ void EVL_renderEvoSequence(void)
+ {
+ 	if (MOD_EVO_SKIP == 1 && EVO_SEQUENCE_DATA.state < 3) {
+-		EVL_renderSkipHint(); /* MOD (evolution skip) */
++		modPlate(0x80, 0x60, "START", 5, 0, 0, 0); /* MOD (evolution skip): the hint, white (mod_qol.c) */
+ 	}
+ }
+ 
+diff --git a/src/main/main.c b/src/main/main.c
+index 8ea602cc..d7acaca8 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5211,6 +5211,7 @@ int8_t MOD_BATTLE_FAST_TICK;
+ int8_t MOD_TICK_FAST;
+ int8_t MOD_REAL_TICK = 1;
+ static int32_t modTickPeriod = 3;
++int8_t MOD_TRAIN_BLOCK; /* MOD (training block, src/trn/trn_block.h): R2 in a gym session, x1 (0) or x5 (1) */
+ 
+ static int32_t modTickRefreshes(void)
+ {
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+new file mode 100644
+index 00000000..6aadee8c
+--- /dev/null
++++ b/src/main/mod_qol.c
+@@ -0,0 +1,129 @@
++/*
++ * MOD (quality of life): what the speed-ups share (docs/mods/quality-of-life.md).
++ *
++ * Plates. A battle (R2 x1 / x2, patch 0184), an evolution that can be skipped (START, 0185) and a gym session (R2 x1 /
++ * x5, 0186) show a small plate in the bottom right corner in the digital clock's style: 3x5 letters on a dark plate
++ * with a light blue edge. modPlate draws one; its letters are the ones these plates need.
++ *
++ * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
++ * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
++ * its life, or the gym's own box (a technique or new orders) is open.
++ */
++#include <sys/types.h>
++#include <libgte.h>
++#include <libgpu.h>
++#include <libgs.h>
++
++#include <dw/types.h>
++#include <dw/entity.h>
++#include <dw/level.h>
++#include <dw/mod_qol.h>
++#include <dw/params.h>
++#include <dw/partner.h>
++#include <dw/ui.h>
++
++#include "common.h"
++
++extern GsOT *ACTIVE_ORDERING_TABLE;
++
++/* each row of a letter is 3 bits, bit 2 the left column */
++static const char MOD_PLATE_CHARS[] = "R2x15STA";
++static const uint8_t MOD_PLATE_GLYPHS[8][5] = {
++	{ 6, 5, 6, 5, 5 }, /* R */
++	{ 7, 1, 7, 4, 7 }, /* 2 */
++	{ 0, 0, 5, 2, 5 }, /* x */
++	{ 2, 6, 2, 2, 7 }, /* 1 */
++	{ 7, 4, 7, 1, 7 }, /* 5 */
++	{ 7, 4, 7, 1, 7 }, /* S */
++	{ 7, 2, 2, 2, 2 }, /* T */
++	{ 2, 5, 7, 5, 5 }, /* A */
++};
++
++static void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
++{
++	POLY_F4 *p;
++
++	p = (POLY_F4 *)GsGetWorkBase();
++	SetPolyF4(p);
++	setRGB0(p, r, g, b);
++	setXYWH(p, x, y, w, h);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
++	GsSetWorkBase((PACKET *)p);
++}
++
++/* a letter advances 4 pixels, a space 2; the plate is 9 high and as wide as its text plus 5. A later prim at the same
++   depth is drawn under an earlier one, so edge, inside and letters go 6, 5, 4 */
++void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b)
++{
++	const char *t;
++	int32_t w = 5;
++	int32_t px;
++	int32_t i;
++	int32_t row;
++	int32_t col;
++	int32_t k;
++
++	for (t = text; *t != 0; t++) {
++		w += *t == ' ' ? 2 : 4;
++	}
++	modPlateRect(x, y, w, 9, 0x62, 0xB4, 0xF6, 6);
++	modPlateRect(x + 1, y + 1, w - 2, 7, 0x18, 0x18, 0x18, 5);
++	px = x + 3;
++	for (i = 0; text[i] != 0; i++) {
++		if (text[i] == ' ') {
++			px += 2;
++			continue;
++		}
++		for (k = 0; MOD_PLATE_CHARS[k] != 0 && MOD_PLATE_CHARS[k] != text[i]; k++) {
++		}
++		for (row = 0; row < 5 && MOD_PLATE_CHARS[k] != 0; row++) {
++			for (col = 0; col < 3; col++) {
++				if (MOD_PLATE_GLYPHS[k][row] & (4 >> col)) {
++					if (i >= hi) {
++						modPlateRect(px + col, y + 2 + row, 1, 1, r, g, b, 4);
++					} else {
++						modPlateRect(px + col, y + 2 + row, 1, 1, 0xF0, 0xF0, 0xF0, 4);
++					}
++				}
++			}
++		}
++		px += 4;
++	}
++}
++
++int32_t modTrainStopReason(int32_t t0, int32_t tiredAt)
++{
++	int32_t level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
++	int32_t d;
++
++	if (UI_BOX_DATA[2].state != 0) {
++		return MOD_TB_LEARNED;
++	}
++	if (PARTNER_PARA.remainingLifetime <= 0) {
++		return MOD_TB_LIFE;
++	}
++	/* the hour its next form is looked for; a Champion or Ultimate past it is looked at every hour, which a session
++	   does not hold up */
++	if (level >= 1 && level <= LEVEL_ULTIMATE && MOD_EVO_TIMING[level] >= 0 &&
++	    PARTNER_PARA.evoTimer >= MOD_EVO_TIMING[level] && (level < 4 || PARTNER_PARA.evoTimer == MOD_EVO_TIMING[level])) {
++		return MOD_TB_EVOLVE;
++	}
++	if (PARTNER_PARA.condition & 0x60) {
++		return MOD_TB_UNWELL;
++	}
++	if ((PARTNER_PARA.condition & 4) || PARTNER_PARA.foodLevel <= 0) {
++		return MOD_TB_HUNGRY;
++	}
++	if ((PARTNER_PARA.condition & 8) || PARTNER_PARA.poopLevel <= 0) {
++		return MOD_TB_TOILET;
++	}
++	/* the session ran from t0 to t0 + 60 minutes: its sleepy time fell in it */
++	d = (PARTNER_PARA.sleepyHour * 60 + PARTNER_PARA.sleepyMinute - t0 + 1440) % 1440;
++	if ((PARTNER_PARA.condition & 1) || (d > 0 && d <= 60)) {
++		return MOD_TB_SLEEPY;
++	}
++	if (tiredAt >= 0 && PARTNER_PARA.tiredness >= tiredAt) {
++		return MOD_TB_TIRED;
++	}
++	return MOD_TB_GO;
++}
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+new file mode 100644
+index 00000000..37c011be
+--- /dev/null
++++ b/src/trn/trn_block.h
+@@ -0,0 +1,187 @@
++/*
++ * MOD (training block): R2 during a gym session switches the sessions between x1 and x5 (MOD_TRAIN_BLOCK, main.c,
++ * kept until the console resets; never with Bonus Try, whose reels are played). A plate in the bottom right corner
++ * shows "R2 x1" (white) or "R2 x5" (yellow) until the session's gains are worked out. In a block the animation is
++ * the first session's; then the gym's own award function runs once per session, each with its hour of game time
++ * and its care costs, the gains of one added to the stats before the next (so a brains mark is crossed as it would
++ * be), and the block stops after the session that left the partner hungry, needing the toilet, sleepy, tired, hurt
++ * or sick, due to digivolve, at the end of its life, or that taught it a technique or new orders (the gym's box).
++ * The stats box then shows the block's total, and a box under it how many sessions were done and why it stopped;
++ * the field answers the need as after one session.
++ *
++ * Included by trn_reward.c (TRN) and trn2_hud.c (TRN2) with:
++ *   TB(name)       the overlay's name of a function or variable (TRN_name, TRN2_name)
++ *   TB_SLOT        its Bonus Try flag (pstat 0xf6, read by the setup)
++ *   TB_RULES       its session rules (MOD_TRAIN_RULES, MOD_TRAIN2_RULES)
++ *   TB_START_MIN   the minute of the day its session started at (TB(saveTrainingStartTime))
++ */
++/* the TRN_BLOCK_* texts: in the including file's text (text/trn/trn_reward.yaml, text/trn2/trn2_hud.yaml) */
++
++#include <libgpu.h>
++#include <libgs.h>
++#include <dw/mod_qol.h>
++#include <dw/sound.h>
++#include <dw/ui.h>
++
++extern int16_t INITIAL_COMBAT_STATS[][6];
++extern int16_t STATS_GAINS[6];
++extern uint32_t POLLED_INPUT;
++extern uint32_t POLLED_INPUT_PREVIOUS;
++void clearTextSubArea(RECT *rect);
++void createMenuBox(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, void (*tick)(void), void (*render)(void));
++void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
++
++static TRN_BLOCK_DONE_TEXT
++static TRN_BLOCK_HUNGRY_TEXT
++static TRN_BLOCK_TOILET_TEXT
++static TRN_BLOCK_SLEEPY_TEXT
++static TRN_BLOCK_TIRED_TEXT
++static TRN_BLOCK_UNWELL_TEXT
++static TRN_BLOCK_EVOLVE_TEXT
++static TRN_BLOCK_LIFE_TEXT
++
++/* by MOD_TB_* (dw/mod_qol.h) */
++static char *const TB_REASONS[] = {
++	NULL, TRN_BLOCK_HUNGRY, TRN_BLOCK_TOILET, TRN_BLOCK_SLEEPY, TRN_BLOCK_TIRED,
++	TRN_BLOCK_UNWELL, TRN_BLOCK_EVOLVE, TRN_BLOCK_LIFE,
++};
++
++int8_t TB(MOD_QUIET); /* the stats box waits for the block's last session */
++static int8_t TB_count;
++static int8_t TB_done;
++static int8_t TB_reason;
++static int8_t TB_box1Seen;
++static int16_t TB_pre[6];
++static int16_t TB_sum[6];
++static char TB_doneText[64];
++
++static void TB_renderPlate(int32_t instanceId)
++{
++	(void)instanceId;
++	modPlate(0x80, 0x60, MOD_TRAIN_BLOCK ? "R2 x5" : "R2 x1", 3, 0xF8, MOD_TRAIN_BLOCK ? 0xD8 : 0xF0,
++		 MOD_TRAIN_BLOCK ? 0x30 : 0xF0);
++}
++
++static void TB_tickPlate(int32_t instanceId)
++{
++	(void)instanceId;
++	if (((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 2) && !(POLLED_INPUT & 0x100)) {
++		MOD_TRAIN_BLOCK ^= 1;
++		playSound(0, 2);
++	}
++}
++
++/* from the session's setup (TB(saveTrainingStartTime)): the plate, but not for the Bonus Try or a block's next hour */
++void TB(modBlockArm)(void)
++{
++	if (TB_SLOT == 0 && !TB(MOD_QUIET)) {
++		addObject(0xfb2, 0, (TickFunction)TB_tickPlate, (RenderFunction)TB_renderPlate);
++	}
++}
++
++/* the box under the stats box closes with it */
++static void TB_tickMessage(void)
++{
++	if (UI_BOX_DATA[1].state == 1) {
++		TB_box1Seen = 1;
++	} else if (TB_box1Seen) {
++		TB_box1Seen = 0;
++		removeAnimatedUIBox(2, NULL);
++	}
++}
++
++static void TB_renderMessage(void)
++{
++	renderString(0, -78, 24, 156, 12, 0, 120, 4, 0);
++	renderString(0, -78, 36, 156, 12, 0, 132, 4, 0);
++}
++
++/* before the gym's award function */
++void TB(modBlockBegin)(void)
++{
++	int32_t i;
++
++	removeObject(0xfb2, 0);
++	TB_count = (MOD_TRAIN_BLOCK && TB_SLOT == 0) ? 5 : 1;
++	TB_done = 0;
++	TB_reason = MOD_TB_GO;
++	TB(MOD_QUIET) = TB_count > 1;
++	if (TB_count > 1) {
++		TB(saveBaseStats)();
++		for (i = 0; i < 6; i++) {
++			TB_pre[i] = INITIAL_COMBAT_STATS[0][i];
++			TB_sum[i] = 0;
++		}
++	}
++}
++
++/* after it: 1 to award the next session of the block */
++int32_t TB(modBlockNext)(void)
++{
++	RECT area;
++	int32_t i;
++	int32_t v;
++	char *s;
++	char *d;
++
++	if (TB_count <= 1) {
++		return 0;
++	}
++	/* the session's gains go into the stats the next one starts from */
++	for (i = 0; i < 6; i++) {
++		v = INITIAL_COMBAT_STATS[0][i] + STATS_GAINS[i];
++		if (v > CAP_OF_STAT_INDEX(i)) {
++			v = CAP_OF_STAT_INDEX(i);
++		}
++		TB_sum[i] += v - INITIAL_COMBAT_STATS[0][i];
++		INITIAL_COMBAT_STATS[0][i] = v;
++		STATS_GAINS[i] = 0;
++	}
++	TB(applyBaseStats)();
++	TB_done++;
++	TB_reason = modTrainStopReason(TB_START_MIN, TB_RULES[MOD_TR_TIRED_AT]);
++	if (TB_reason == MOD_TB_GO && TB_done < TB_count) {
++		TB(saveTrainingStartTime)(); /* the next session's hour */
++		return 1;
++	}
++
++	/* the stats box adds the block's total to the stats from before it */
++	for (i = 0; i < 6; i++) {
++		INITIAL_COMBAT_STATS[0][i] = TB_pre[i];
++		STATS_GAINS[i] = TB_sum[i];
++	}
++	TB(applyBaseStats)();
++	TB(MOD_QUIET) = 0;
++	if (TB_reason == MOD_TB_LEARNED) {
++		/* the gym's box drew its text in rows 120..155: only the stats box's rows are cleared */
++		setRECT(&area, 0, 0, 256, 120);
++		clearTextSubArea(&area);
++		setRECT(&area, 0, 240, 256, 12);
++		clearTextSubArea(&area);
++	} else {
++		clearTextArea();
++	}
++	TB(modOpenStatsBox)();
++	if (TB_reason != MOD_TB_GO && TB_reason != MOD_TB_LEARNED) {
++		/* the first one-byte 0 (not the second byte of a two-byte glyph) is the number */
++		s = TRN_BLOCK_DONE;
++		d = TB_doneText;
++		v = 0;
++		while (*s != 0 && d < TB_doneText + sizeof(TB_doneText) - 1) {
++			if (*s == '0' && v == 0 && (s == TRN_BLOCK_DONE || (uint8_t)s[-1] < 0x80)) {
++				*d++ = (char)('0' + TB_done);
++				v = 1;
++			} else {
++				*d++ = *s;
++			}
++			s++;
++		}
++		*d = 0;
++		setTextColor(1);
++		drawString(TB_doneText, 0, 120);
++		drawString(TB_REASONS[TB_reason], 0, 132);
++		TB_box1Seen = 0;
++		createMenuBox(2, -0x58, 0x12, 0xb0, 0x23, 2, TB_tickMessage, TB_renderMessage);
++	}
++	return 0;
++}
+diff --git a/src/trn/trn_brain.c b/src/trn/trn_brain.c
+index a81e87e8..1531b194 100644
+--- a/src/trn/trn_brain.c
++++ b/src/trn/trn_brain.c
+@@ -135,7 +135,10 @@ void TRN_tickBrainsTraining(int32_t instanceId)
+ 			r = TRN_getSlotSessionResult();
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+-			TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			} while (TRN_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			startAnimation(&NPC_ENTITIES[0].digimonEntity.entity, 0);
+diff --git a/src/trn/trn_def.c b/src/trn/trn_def.c
+index b87f1a20..17ed5e5a 100644
+--- a/src/trn/trn_def.c
++++ b/src/trn/trn_def.c
+@@ -227,7 +227,10 @@ int16_t instanceId;
+ 				r = TRN_getSlotSessionResult();
+ 			}
+ 			if (((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+-				TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++				TRN_modBlockBegin(); /* MOD (training block) */
++				do {
++					TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++				} while (TRN_modBlockNext());
+ 				startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 				playSound(8, 0xa);
+ 				thunkStopSoundMask(MAIN_D_80135384);
+diff --git a/src/trn/trn_hp.c b/src/trn/trn_hp.c
+index b68a0c45..b1a9a000 100644
+--- a/src/trn/trn_hp.c
++++ b/src/trn/trn_hp.c
+@@ -122,7 +122,10 @@ int16_t instanceId;
+ 			TRAINING_STATE = 3;
+ 			MAIN_D_8013537A /= TRN_STEP_OF(MOD_TRAIN_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+-			TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			} while (TRN_modBlockNext());
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 		}
+ 		break;
+diff --git a/src/trn/trn_hud.c b/src/trn/trn_hud.c
+index ed52b7a9..174d178a 100644
+--- a/src/trn/trn_hud.c
++++ b/src/trn/trn_hud.c
+@@ -143,7 +143,17 @@ void TRN_applyBaseStats(void)
+ 	PARTNER_ENTITY.digimonEntity.stats.base.brain = INITIAL_COMBAT_STATS[0][5];
+ }
+ 
++/* MOD (training block, src/trn/trn_block.h): a block opens the box once, after its last session */
+ void TRN_createPostTrainingStatsBox(void)
++{
++	if (TRN_MOD_QUIET) {
++		return;
++	}
++	clearTextArea();
++	TRN_modOpenStatsBox();
++}
++
++void TRN_modOpenStatsBox(void)
+ {
+ 	int32_t i;
+ 	DVECTOR screenPos;
+@@ -151,7 +161,6 @@ void TRN_createPostTrainingStatsBox(void)
+ 	RECT startPos;
+ 
+ 	MAIN_D_80135394 = 0;
+-	clearTextArea();
+ 
+ 	for (i = 0; i < 6; i++) {
+ 		if (STATS_GAINS[i] == 0) {
+diff --git a/src/trn/trn_mp.c b/src/trn/trn_mp.c
+index c2484eba..4254bf17 100644
+--- a/src/trn/trn_mp.c
++++ b/src/trn/trn_mp.c
+@@ -94,7 +94,10 @@ int16_t instanceId;
+ 			r = TRN_getSlotSessionResult();
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+-			TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			} while (TRN_modBlockNext());
+ 			setMapObjectsFlag(MAIN_D_80135372, MAIN_D_80135374, 0);
+ 			setMapObjectsFlag(MAIN_D_80135376, MAIN_D_80135378, 1);
+ 			loadMapObjectPosition(TRN_D_8008F368, TRN_D_8008F388, MAIN_D_8013536C, MAIN_D_8013536E);
+diff --git a/src/trn/trn_off.c b/src/trn/trn_off.c
+index 9d30fcf0..c1cf0d6c 100644
+--- a/src/trn/trn_off.c
++++ b/src/trn/trn_off.c
+@@ -161,7 +161,10 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 			r = TRN_getSlotSessionResult();
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
+-			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
++			} while (TRN_modBlockNext());
+ 			startAnimation(ENTITY_TABLE[1], 0x12);
+ 			loadMapObjectPosition(TRN_D_8008F368, TRN_D_8008F388, MAIN_D_8013536C, MAIN_D_8013536E);
+ 			playSound(8, 0xa);
+@@ -227,7 +230,10 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_8013536C, MAIN_D_8013536E, 1);
+-			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 6, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 6, r);
++			} while (TRN_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index eb857f08..517486fc 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -110,6 +110,13 @@ static int32_t TRN_amt(int32_t slot)
+ 	return MOD_TRAIN_RULES[slot] > 0 ? MOD_TRAIN_RULES[slot] : 0;
+ }
+ 
++/* MOD (training block) */
++#define TB(name) TRN_##name
++#define TB_SLOT MAIN_D_80135370
++#define TB_RULES MOD_TRAIN_RULES
++#define TB_START_MIN (TRN_CURRENT_HOUR * 60 + TRN_CURRENT_MINUTE)
++#include "trn_block.h"
++
+ uint8_t TRN_D_8008F14C[56] = {
+ 	0x2, 0x5, 0x0, 0x4, 0x3, 0x1, 0x6, 0x7,
+ 	0x2b, 0x2c, 0x2a, 0x2e, 0x2d, 0x29, 0x28, 0x2f,
+@@ -139,6 +146,7 @@ void TRN_saveTrainingStartTime(void)
+ 	TRN_CURRENT_FRAME = CURRENT_FRAME;
+ 	TRN_CURRENT_HOUR = HOUR;
+ 	TRN_CURRENT_MINUTE = MINUTE;
++	TRN_modBlockArm(); /* MOD (training block) */
+ }
+ 
+ void TRN_startSlotSessionIfEnabled(int16_t arg)
+diff --git a/src/trn/trn_speed.c b/src/trn/trn_speed.c
+index 9085fcf1..c3d37711 100644
+--- a/src/trn/trn_speed.c
++++ b/src/trn/trn_speed.c
+@@ -102,7 +102,10 @@ void TRN_tickSpeedTraining(int32_t instanceId)
+ 			r = TRN_getSlotSessionResult();
+ 		}
+ 		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+-			TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			} while (TRN_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			playSound(8, 0xa);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn2/trn2_def_map108.c b/src/trn2/trn2_def_map108.c
+index 629a1df0..c9fc8824 100644
+--- a/src/trn2/trn2_def_map108.c
++++ b/src/trn2/trn2_def_map108.c
+@@ -86,7 +86,10 @@ void TRN2_tickDefenseTrainingMap108(int32_t instanceId)
+ 		if (((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 0);
+ 			setMapObjectsFlag(MAIN_D_801353BE, MAIN_D_801353C0, 1);
+-			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			} while (TRN2_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+diff --git a/src/trn2/trn2_def_map99.c b/src/trn2/trn2_def_map99.c
+index fb9eafb1..3dea0ef0 100644
+--- a/src/trn2/trn2_def_map99.c
++++ b/src/trn2/trn2_def_map99.c
+@@ -105,7 +105,10 @@ int16_t instanceId;
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+ 		if (((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+-			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			} while (TRN2_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			playSound(8, 0xa);
+diff --git a/src/trn2/trn2_hp_map107.c b/src/trn2/trn2_hp_map107.c
+index f2bb78b3..62113fef 100644
+--- a/src/trn2/trn2_hp_map107.c
++++ b/src/trn2/trn2_hp_map107.c
+@@ -83,7 +83,10 @@ int16_t instanceId;
+ 			playSound(8, 0xa);
+ 			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+-			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			} while (TRN2_modBlockNext());
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			MAIN_D_801353BD = 3;
+ 		}
+@@ -128,6 +131,7 @@ void TRN2_saveTrainingStartTime(void)
+ 	MAIN_D_801353CE = CURRENT_FRAME;
+ 	MAIN_D_801353D0 = HOUR;
+ 	MAIN_D_801353D2 = MINUTE;
++	TRN2_modBlockArm(); /* MOD (training block) */
+ }
+ 
+ GARBAGE(TRN2_setupMpTraining, 8);
+diff --git a/src/trn2/trn2_hp_map99.c b/src/trn2/trn2_hp_map99.c
+index 47f908b0..7bdd1f88 100644
+--- a/src/trn2/trn2_hp_map99.c
++++ b/src/trn2/trn2_hp_map99.c
+@@ -105,7 +105,10 @@ int16_t instanceId;
+ 			MAIN_D_801353BD = 3;
+ 			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+-			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
++			} while (TRN2_modBlockNext());
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 		}
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 335cf47b..7ca4d272 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -18,6 +18,7 @@
+ #include <dw/types.h>
+ #include <dw/ui.h>
+ #include <dw/version.h>
++#include <text/trn2/trn2_hud.h> /* MOD (training block) */
+ 
+ extern int16_t STATS_GAINS[6];
+ extern int16_t INITIAL_COMBAT_STATS[][6];
+@@ -201,6 +202,13 @@ int16_t TRN2_calculateTrainingMultiplier(type, mode)
+ 	return (num * 10) / den;
+ }
+ 
++/* MOD (training block) */
++#define TB(name) TRN2_##name
++#define TB_SLOT MAIN_D_801353BC
++#define TB_RULES MOD_TRAIN2_RULES
++#define TB_START_MIN (MAIN_D_801353D0 * 60 + MAIN_D_801353D2)
++#include "../trn/trn_block.h"
++
+ void TRN2_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happyLoss)
+ {
+ 	int16_t clockHour;
+@@ -298,7 +306,17 @@ void TRN2_applyBaseStats(void)
+ 	PARTNER_ENTITY.digimonEntity.stats.base.brain = INITIAL_COMBAT_STATS[0][5];
+ }
+ 
++/* MOD (training block, src/trn/trn_block.h): a block opens the box once, after its last session */
+ void TRN2_createPostTrainingStatsBox(void)
++{
++	if (TRN2_MOD_QUIET) {
++		return;
++	}
++	clearTextArea();
++	TRN2_modOpenStatsBox();
++}
++
++void TRN2_modOpenStatsBox(void)
+ {
+ 	int32_t i;
+ 	DVECTOR screenPos;
+@@ -306,7 +324,6 @@ void TRN2_createPostTrainingStatsBox(void)
+ 	RECT startPos;
+ 
+ 	MAIN_D_801353D4 = 0;
+-	clearTextArea();
+ 
+ 	for (i = 0; i < 6; i++) {
+ 		if (STATS_GAINS[i] == 0) {
+diff --git a/src/trn2/trn2_mp.c b/src/trn2/trn2_mp.c
+index 1c736129..8cdc7624 100644
+--- a/src/trn2/trn2_mp.c
++++ b/src/trn2/trn2_mp.c
+@@ -62,7 +62,10 @@ int16_t instanceId;
+ 		}
+ 		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			playSound(8, 0xa);
+-			TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, r);
++			} while (TRN2_modBlockNext());
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 2);
+ 			MAIN_D_801353BD = 4;
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 48b2b59f..850078b6 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -175,7 +175,10 @@ int16_t instanceId;
+ 			playSound(8, 0xa);
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_801353B4, MAIN_D_801353B6, 1);
+-			TRN2_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
++			} while (TRN2_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+ 			MAIN_D_801353BD = 4;
+diff --git a/src/trn2/trn2_reward.c b/src/trn2/trn2_reward.c
+index b44faaac..88829bd2 100644
+--- a/src/trn2/trn2_reward.c
++++ b/src/trn2/trn2_reward.c
+@@ -81,7 +81,10 @@ void TRN2_tickSpeedTraining(int32_t instanceId)
+ 		}
+ 		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+-			TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			TRN2_modBlockBegin(); /* MOD (training block) */
++			do {
++				TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
++			} while (TRN2_modBlockNext());
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			playSound(8, 0xa);
+ 			thunkStopSoundMask(MAIN_D_801353C8);
+diff --git a/text/trn/trn_reward.yaml b/text/trn/trn_reward.yaml
+index f5fad6f3..38c54360 100644
+--- a/text/trn/trn_reward.yaml
++++ b/text/trn/trn_reward.yaml
+@@ -27,3 +27,30 @@ MASTERED:
+     TRN_D_8008F19C:
+       ja: をおぼえた。
+       en_us: was mastered!
++
++# MOD (training block): the box under the stats box when a block of sessions stops early (src/trn/trn_block.h).
++# The 0 of TRN_BLOCK_DONE is replaced by the number of sessions done.
++TRN_BLOCK_DONE:
++  ja: 5回中0回 トレーニングした
++  en_us: Trained 0 of 5 sessions.
++TRN_BLOCK_HUNGRY:
++  ja: おなかが すいている
++  en_us: It is hungry.
++TRN_BLOCK_TOILET:
++  ja: トイレに 行きたがっている
++  en_us: It needs the toilet.
++TRN_BLOCK_SLEEPY:
++  ja: ねむそうだ
++  en_us: It is sleepy.
++TRN_BLOCK_TIRED:
++  ja: つかれている
++  en_us: It is tired.
++TRN_BLOCK_UNWELL:
++  ja: ぐあいが わるい
++  en_us: It is not well.
++TRN_BLOCK_EVOLVE:
++  ja: 進化しそうだ！
++  en_us: It is about to digivolve!
++TRN_BLOCK_LIFE:
++  ja: 寿命が つきかけている
++  en_us: Its life is ending.
+diff --git a/text/trn2/trn2_hud.yaml b/text/trn2/trn2_hud.yaml
+new file mode 100644
+index 00000000..99c40e6f
+--- /dev/null
++++ b/text/trn2/trn2_hud.yaml
+@@ -0,0 +1,25 @@
++# MOD (training block): the texts of src/trn/trn_block.h for the TRN2 overlay (a copy of text/trn/trn_reward.yaml's TRN_BLOCK_*)
++TRN_BLOCK_DONE:
++  ja: 5回中0回 トレーニングした
++  en_us: Trained 0 of 5 sessions.
++TRN_BLOCK_HUNGRY:
++  ja: おなかが すいている
++  en_us: It is hungry.
++TRN_BLOCK_TOILET:
++  ja: トイレに 行きたがっている
++  en_us: It needs the toilet.
++TRN_BLOCK_SLEEPY:
++  ja: ねむそうだ
++  en_us: It is sleepy.
++TRN_BLOCK_TIRED:
++  ja: つかれている
++  en_us: It is tired.
++TRN_BLOCK_UNWELL:
++  ja: ぐあいが わるい
++  en_us: It is not well.
++TRN_BLOCK_EVOLVE:
++  ja: 進化しそうだ！
++  en_us: It is about to digivolve!
++TRN_BLOCK_LIFE:
++  ja: 寿命が つきかけている
++  en_us: Its life is ending.
+-- 
+2.53.0
+

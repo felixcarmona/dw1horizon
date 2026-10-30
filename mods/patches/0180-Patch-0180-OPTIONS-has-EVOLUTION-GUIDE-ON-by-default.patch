@@ -1,0 +1,207 @@
+From 95f983b67c6f9df0cf7879b5d87ef0dbc61fa4a3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 20:57:21 +0000
+Subject: [PATCH] Patch 0180: OPTIONS has EVOLUTION GUIDE (ON by default), the
+ evolution chart's requirement card and lit lines of patch 0176; OFF draws the
+ original detail view. Saved as byte 5 of SAVE_TAG_OPTIONS. With six rows
+ FONT's third value (ORIGINAL) goes in the right half of the text area's
+ second value band (modOptTextU/V)
+
+---
+ include/dw/mod_options.h |  1 +
+ src/main/game_menu.c     |  5 +++--
+ src/main/main_menu.c     | 41 +++++++++++++++++++++++++++++++---------
+ src/main/mod_options.c   |  1 +
+ text/main/main_menu.yaml |  3 +++
+ 5 files changed, 40 insertions(+), 11 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index aabb7124..349baac0 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -18,6 +18,7 @@
+ extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h reads it) */
+ extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clock (clock.c), 1 = shown */
+ extern int32_t MOD_OPT_BARS;	/* NEW STATUS BARS: happiness and discipline as one red/green fill (patches 0162-0164), 0 = the original's */
++extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+ /* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 9b909820..63295d6a 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -7,6 +7,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/mod_font.h>
++#include <dw/mod_options.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/mod_fps.h>
+ #include <dw/clock.h>
+@@ -3924,11 +3925,11 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	/* MOD (chart criteria): the partner's tree lights the met evolutions; a "to" box under the cursor shows its card */
+-	mine = chartIsPartnerTree();
++	mine = MOD_OPT_EVO_GUIDE && chartIsPartnerTree(); /* OPTIONS' EVOLUTION GUIDE off: the original chart */
+ 	if (mine) {
+ 		chartUpdateLit(ep);
+ 	}
+-	cardId = CHART_CURSOR_SIDE == 1 ? chartDetailBox(1, CHART_CURSOR_J, &cx, &cy) : 0;
++	cardId = MOD_OPT_EVO_GUIDE && CHART_CURSOR_SIDE == 1 ? chartDetailBox(1, CHART_CURSOR_J, &cx, &cy) : 0;
+ 	dx = cardId > 0 ? CHART_CARD_SHIFT : 0;
+ 
+ 	if ((count1 % 2) == 0) {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 781b4dbb..10f0cdc1 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -257,9 +257,9 @@ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	5 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROWS	6 /* MOD (options): and FONT, in a build with both fonts */
+ #else
+-#define MOD_OPT_ROWS	4
++#define MOD_OPT_ROWS	5
+ #endif
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
+@@ -4598,7 +4598,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[5]; /* MOD (options) */
++	uint8_t options[6]; /* MOD (options) */
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4660,6 +4660,7 @@ static void prepareSaveFile(int32_t fromRam)
+ #else
+ 	options[4] = 0;
+ #endif
++	options[5] = MOD_OPT_EVO_GUIDE;
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+@@ -4903,6 +4904,9 @@ static void applyRecords(uint8_t *e)
+ 				modSetFont(d[4] == 0 ? MOD_FONT_ORIGINAL : d[4] == 2 ? MOD_FONT_CLASSIC : MOD_FONT_NEW);
+ 			}
+ #endif
++			if (len >= 6 && !MOD_OPT_TOUCHED) {
++				MOD_OPT_EVO_GUIDE = d[5] != 0;
++			}
+ 			break;
+ 		}
+ 	}
+@@ -5368,6 +5372,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_JP, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+@@ -5381,6 +5386,19 @@ static int16_t MOD_OPT_LABEL_W;
+ static int16_t MOD_OPT_VALUE_W;
+ static int16_t MOD_OPT_SHOWN;
+ 
++/* where a row's label (k 0) or value (k 1..) is in the text area: the labels in the first rows, the values in a band
++ * each under them; the third values (FONT's) in the right half of the second band, as six rows of three bands would pass
++ * the area's 256 rows */
++static int32_t modOptTextU(int32_t k)
++{
++	return k == 3 ? 0x80 : 0;
++}
++
++static int32_t modOptTextV(int32_t row, int32_t k)
++{
++	return MOD_OPT_VALUE_Y * (k == 3 ? 2 : k) + row * 0xC;
++}
++
+ static int32_t modOptionCount(int32_t row)
+ {
+ 	return MOD_OPT_TEXT[row][3] != NULL ? 3 : 2;
+@@ -5396,8 +5414,10 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_CLOCK != 0;
+ 	case 2:
+ 		return MOD_OPT_BARS != 0;
++	case 3:
++		return MOD_OPT_EVO_GUIDE != 0;
+ #if FONT_SWITCH
+-	case 4: /* NEW, CLASSIC, ORIGINAL */
++	case 5: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+ #endif
+ 	}
+@@ -5422,10 +5442,13 @@ static void modSetOption(int32_t row, int32_t value)
+ 		MOD_OPT_BARS = value;
+ 		break;
+ 	case 3:
++		MOD_OPT_EVO_GUIDE = value;
++		break;
++	case 4:
+ 		modSetFrameRate(value ? 60 : 20);
+ 		break;
+ #if FONT_SWITCH
+-	case 4:
++	case 5:
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+ 		break;
+ #endif
+@@ -5447,7 +5470,7 @@ static void drawOptionsText(void)
+ 	MOD_OPT_VALUE_W = 0;
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		for (k = 0; k <= modOptionCount(r); k++) {
+-			drawString(MOD_OPT_TEXT[r][k], 0, k == 0 ? r * 0xC : MOD_OPT_VALUE_Y * k + r * 0xC);
++			drawString(MOD_OPT_TEXT[r][k], modOptTextU(k), modOptTextV(r, k));
+ 			DrawSync(0);
+ 			w = measureStringMode(MOD_OPT_TEXT[r][k], FIT_VANILLA) + 1; /* and the shadow */
+ 			if (k == 0) {
+@@ -5485,12 +5508,12 @@ static void renderOptionsMenu(void)
+ 		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_LABEL_W, 0xC, 0);
+ 		x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
+ 		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the first one, grey, when none is) */
+-			renderText(cur++, x, y, 0, MOD_OPT_VALUE_Y * (value > 0 ? value + 1 : 1) + r * 0xC, MOD_OPT_VALUE_W, 0xC,
+-				   value >= 0 ? 2 : 1);
++			k = value > 0 ? value + 1 : 1;
++			renderText(cur++, x, y, modOptTextU(k), modOptTextV(r, k), MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
+ 			continue;
+ 		}
+ 		for (k = 0; k < modOptionCount(r); k++) {
+-			renderText(cur++, x, y, 0, MOD_OPT_VALUE_Y * (k + 1) + r * 0xC, MOD_OPT_VALUE_W, 0xC, value == k ? 2 : 1);
++			renderText(cur++, x, y, modOptTextU(k + 1), modOptTextV(r, k + 1), MOD_OPT_VALUE_W, 0xC, value == k ? 2 : 1);
+ 			x += MOD_OPT_VALUE_W + MOD_OPT_GAP;
+ 		}
+ 	}
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 786ca22c..119e5fd8 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -32,6 +32,7 @@ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_BARS = 1;
++int32_t MOD_OPT_EVO_GUIDE = 1;
+ int32_t MOD_OPT_TOUCHED = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index b952b434..3f62bdfd 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -362,6 +362,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_BARS:
+       ja: "NEW STATUS BARS"
+       en_us: "NEW STATUS BARS"
++    MOD_OPT_STR_EVO:
++      ja: "EVOLUTION GUIDE"
++      en_us: "EVOLUTION GUIDE"
+     MOD_OPT_STR_FPS:
+       ja: "FRAME RATE"
+       en_us: "FRAME RATE"
+-- 
+2.53.0
+

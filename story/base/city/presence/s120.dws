@@ -1,0 +1,14 @@
+// Who stands on screen 120 (Misty Trees), and when. Read out of MAPHEAD.SCN section 120 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(120) {                              // Misty Trees
+            npc 139 slot 0 autotalk when not recruited(Gabumon);
+            npc Goblimon slot 1 autotalk when recruited(Gabumon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Goblimon slot 2 autotalk when recruited(Gabumon) and clock.hour >= 7 and clock.hour <= 18;
+            npc Tsukaimon slot 3 autotalk when recruited(Gabumon) and clock.hour <= 6 or recruited(Gabumon) and clock.hour >= 19;
+            npc Darklizardmon slot 4 autotalk when recruited(Gabumon) and clock.hour <= 6 or recruited(Gabumon) and clock.hour >= 19;
+        }
+    }
+}

@@ -1,0 +1,229 @@
+{
+ "s037.sec5.u0": [
+  [
+   "Ti butto giù!"
+  ]
+ ],
+ "s037.sec6.u0": [
+  [
+   "N-non spingere!"
+  ]
+ ],
+ "s037.sec7.u0": [
+  [
+   "Stare in alto mi calma davvero!"
+  ]
+ ],
+ "s037.sec8.u0": [
+  [
+   "Cado! È pericoloso!"
+  ]
+ ],
+ "s037.sec9.u0": [
+  [
+   "Non quassù, smettila!"
+  ]
+ ],
+ "s037.sec10.u0": [
+  [
+   "Non c'è motivo di litigare..."
+  ]
+ ],
+ "s037.sec81.m0.o0": "Premi il tasto giù",
+ "s037.sec81.m0.o1": "Non salire",
+ "s037.sec81.u0": [
+  [
+   "Ascensore"
+  ]
+ ],
+ "s037.sec81.u1": [
+  [
+   "...Non succede niente. Non",
+   "funziona."
+  ]
+ ],
+ "s038.sec5.u0": [
+  [
+   "N-non potremmo evitare?"
+  ]
+ ],
+ "s038.sec6.u0": [
+  [
+   "Shuba, shujaa!"
+  ]
+ ],
+ "s038.sec7.u0": [
+  [
+   "Chis, chis!"
+  ]
+ ],
+ "s038.sec8.u0": [
+  [
+   "Darò tutto!"
+  ]
+ ],
+ "s038.sec9.u0": "Ma che stai dicendo?",
+ "s038.sec81.u0": [
+  [
+   "Nord-ovest: Terra gelata"
+  ]
+ ],
+ "s038.sec82.m0.o0": "Premi il tasto su",
+ "s038.sec82.m0.o1": "Premi il tasto giù",
+ "s038.sec82.m0.o2": "Non salire",
+ "s038.sec82.u0": [
+  [
+   "Ascensore"
+  ]
+ ],
+ "s038.sec82.u1": [
+  [
+   "Eh? Non funziona, non succede",
+   "niente."
+  ]
+ ],
+ "s043.sec5.u0": [
+  [
+   "Grraaaah!"
+  ]
+ ],
+ "s043.sec6.u0": [
+  [
+   "Haaaaaah!"
+  ]
+ ],
+ "s043.sec7.u0": [
+  [
+   "Kiiiiieh!"
+  ]
+ ],
+ "s043.sec51.u0": [
+  [
+   "Da quello che abbiamo sentito,",
+   "è su questa strada che",
+   "compaiono i banditi... Bene."
+  ],
+  [
+   "Andiamo, {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s043.sec51.u1": [
+  [
+   "Evvivaaaa!"
+  ]
+ ],
+ "s043.sec51.u2": [
+  [
+   "Gwahahaha!"
+  ]
+ ],
+ "s043.sec51.u3": [
+  [
+   "Evvivaaaa!"
+  ]
+ ],
+ "s043.sec51.u4": [
+  [
+   "Nuhahaha, arrendetevi e",
+   "lasciate la vostra roba! O vi",
+   "farete male!"
+  ]
+ ],
+ "s043.sec51.u5": [
+  [
+   "Siete voi che dovreste",
+   "arrendervi!"
+  ]
+ ],
+ "s043.sec51.u6": [
+  [
+   "Eh?! Voi mocciosi siete..."
+  ]
+ ],
+ "s043.sec51.u7": [
+  [
+   "Non dirmi..."
+  ]
+ ],
+ "s043.sec51.u8": [
+  [
+   "C-capo, che facciamo?!"
+  ]
+ ],
+ "s043.sec51.u9": [
+  [
+   "Smettetela di starnazzare!",
+   "Siamo più numerosi e più forti.",
+   "Stendeteli!"
+  ]
+ ],
+ "s043.sec51.u10": [
+  [
+   "Grrr... M-me la pagherete!"
+  ]
+ ],
+ "s043.sec51.u11": [
+  [
+   "Guarda come scappano! Non",
+   "dovrebbero farsi vedere qui per",
+   "un po'."
+  ]
+ ],
+ "s043.sec53.u0": [
+  [
+   "?"
+  ]
+ ],
+ "s043.sec53.u1": [
+  [
+   "Il terreno si è appena mosso?",
+   "...Sarà la mia immaginazione."
+  ]
+ ],
+ "s043.sec53.u2": [
+  [
+   "Cosa?? Non può essere. . ."
+  ]
+ ],
+ "s043.sec53.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   "U-uaaaah! !"
+  ]
+ ],
+ "s043.sec81.m0.o0": "Modalità orco: SÌ",
+ "s043.sec81.m0.o1": "Modalità orco: NO",
+ "s043.sec81.u0": [
+  [
+   "Est: Ascensore Ovest:",
+   "Pericolo! Attenti al precipizio"
+  ]
+ ],
+ "s043.sec82.u0": [
+  [
+   "Attenzione alla caduta massi!!"
+  ]
+ ],
+ "s044.sec5.u0": [
+  [
+   "Ti metto al tappeto!"
+  ]
+ ],
+ "s044.sec6.u0": [
+  [
+   "Non essere duro con me, per",
+   "favore."
+  ]
+ ],
+ "s044.sec7.u0": [
+  [
+   "Quando punto una preda, non mi",
+   "sfugge mai."
+  ]
+ ],
+ "s044.sec8.u0": [
+  [
+   "Eh... È finita."
+  ]
+ ]
+}

@@ -1,0 +1,17 @@
+{
+  "_comment": "What the game does for a few species by number. The C holds none of it: a species without a row gets no special treatment. modelScale: the model is drawn at `percent` of its size (the original: Meteormon, 113, at 150). animatedTexture: the species whose texture is animated (the flames of the fire Digimon): `width` is the width of the strip of the texture that moves (9 Agumon-line species of the original). Up to 8 scales and 16 animated textures. The battle music of a species is its own `battle_music`; the last-battle track rule is battle-formulas.json (music).",
+  "modelScale": [
+    { "species": 113, "percent": 150 }
+  ],
+  "animatedTexture": [
+    { "species": 9, "width": 30 },
+    { "species": 133, "width": 30 },
+    { "species": 104, "width": 30 },
+    { "species": 21, "width": 40 },
+    { "species": 106, "width": 40 },
+    { "species": 143, "width": 40 },
+    { "species": 101, "width": 16 },
+    { "species": 69, "width": 16 },
+    { "species": 127, "width": 44 }
+  ]
+}

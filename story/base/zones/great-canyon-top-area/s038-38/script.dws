@@ -1,0 +1,146 @@
+// Readable form of script 38 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 38 {
+    npc weedmon = 5;
+    npc sandyanmamon1 = 6;
+    npc sandyanmamon2 = 7;
+    npc gotsumon3 = 8;
+    npc gotsumon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 81, 82, 55, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 49, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 19, 31);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Pricklypear"), 20, 9);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Deluxmushrm"), 69, 16);
+        }
+    }
+
+    on talk(weedmon) replace {    // section 5
+        say(weedmon, text("s038.sec5.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(sandyanmamon1) replace {    // section 6
+        say(sandyanmamon1, text("s038.sec6.u0"));
+        battle();
+        recruit(species("SandYanmamon"));
+    }
+
+    on talk(sandyanmamon2) replace {    // section 7
+        say(sandyanmamon2, text("s038.sec7.u0"));
+        battle();
+        recruit(species("SandYanmamon"));
+    }
+
+    on talk(gotsumon3) replace {    // section 8
+        say(gotsumon3, text("s038.sec8.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(gotsumon4) replace {    // section 9
+        say(gotsumon4, text("s038.sec9.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on use(1) replace {    // section 81
+        say(narrator, text("s038.sec81.u0"));
+    }
+
+    on use(2) replace {    // section 82
+        entity_set_rotation(tamer, 2048);
+        wait(5);
+        say(narrator, text("s038.sec82.u0"));
+        choice {
+            text("s038.sec82.m0.o0") => {
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(129, 0, 52);
+                return;
+            }
+            text("s038.sec82.m0.o1") => {
+                fadeout_hud(0);
+                if (!canyon_elevator_unjammed) {
+                    say(tamer, text("s038.sec82.u1"));
+                    return;
+                }
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(41, 2, 53);
+                return;
+            }
+            text("s038.sec82.m0.o2") => {}
+        }
+    }
+
+    on step(4) replace {    // section 55
+        sound(8, 5);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2100, -4000);
+        if (canyon_cave_in.collapsed) {
+            warp_to(128, 1, 255);
+        }
+        warp_to(43, 1, 255);
+        return;
+    }
+}

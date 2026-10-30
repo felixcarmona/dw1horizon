@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "recipes": [
+    {
+      "list": "content/imports/lists/second-12.json",
+      "entry": {
+        "name": "WereGarurumon",
+        "game": "dcb",
+        "model": 139,
+        "from": [
+          22
+        ],
+        "donor": 22,
+        "clip_policy": "dcb-original"
+      },
+      "level": 5,
+      "spec": "content/imports/specs/WereGarurumon.json",
+      "spec_sha256": "34b4f5556f59a300d85c5d0c6078bb2e6181c4c625f00f38bfdd4b19521839cf",
+      "out": "build/batch2"
+    },
+    {
+      "list": "content/imports/lists/fifteenth-2.json",
+      "entry": {
+        "name": "Brachiomon",
+        "game": "dcb",
+        "model": 126
+      },
+      "level": 5,
+      "spec": "content/imports/specs/Brachiomon.json",
+      "spec_sha256": "fdd8052998de216b5e344af4582eea1751c9bed7c838b6e2e11d3823896949ba",
+      "out": "build/batch15x"
+    },
+    {
+      "list": "content/imports/lists/fourteenth-12.json",
+      "entry": {
+        "name": "Hagurumon",
+        "game": "dw2",
+        "model": "M122HAGU",
+        "level": 3,
+        "element": 5
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Hagurumon.json",
+      "spec_sha256": "5bafa5ce2fad04ca323a7d3c2dada3fd03bb0a78361296292813a5e7c6ad0b44",
+      "out": "build/batch14"
+    },
+    {
+      "list": "content/imports/lists/fourteenth-12.json",
+      "entry": {
+        "name": "Tinmon",
+        "game": "dw2",
+        "model": "M123BRIK",
+        "level": 3,
+        "element": 5
+      },
+      "level": 3,
+      "spec": "content/imports/specs/Tinmon.json",
+      "spec_sha256": "b0a05cb2ffed3aa9e4c85509d954fcc08a4123f9dafddead441ac2999bd6e573",
+      "out": "build/batch14"
+    }
+  ],
+  "sizes": [
+    {
+      "source": "build/batch2/WereGarurumon.MMD",
+      "source_sha256": "e3de13c76dd81a6a3658a393e50fdb795f4cc277f24d8c1b74016d1664e64807",
+      "bones": 22,
+      "scale": 1.238199576582619,
+      "target": "build/sizes-out/models/WereGarurumon.MMD",
+      "sha256": "3306ca51c7af762045da125ae33ab2c37af213697ce3c1c81bc52e6cde28f797"
+    },
+    {
+      "source": "build/batch15x/Brachiomon.MMD",
+      "source_sha256": "6d5a26f7f7e3b8565a16abfd102df2f02a269cc39b6e39486d3afde927912665",
+      "bones": 20,
+      "scale": 1.396290040590948,
+      "target": "build/sizes-out/models/Brachiomon.MMD",
+      "sha256": "33cf6b7c1e08914bf02f881970fd193e73b1da8b91ff69181d3ff9e36d8cb127"
+    }
+  ]
+}

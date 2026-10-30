@@ -1,0 +1,46 @@
+From 5fa1992e7d827333185e151ba9c7a1b1a7ca99af Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 19:37:27 +0000
+Subject: [PATCH] gcc: make TAMER_MODEL_BUFFER 0xE000 bytes (BOYS.MMD overflows
+ into MAIN_D_801A8B98; GCC does not keep them contiguous)
+
+The tamer model BOYS.MMD is 57036 bytes but TAMER_MODEL_BUFFER is 0x7800.
+The original relies on MAIN_D_801A8B98 (0x6800) following it. GCC emits the
+main.c .bss sections in another order, so the model overflowed into
+TAMER_POSITION_DATA/TAMER_MOMENTUM_DATA/PARTNER_MODEL_BUFFER: the tamer was
+not drawn and, once the partner model was loaded over the tamer animations,
+tickAnimation looped forever (File City intro hang, screen 238).
+
+---
+ src/main/main.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 79a57ff..a8dc5b2 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3280,8 +3280,21 @@ PositionData PARTNER_POSITION_DATA[34];
+ uint8_t PARTNER_MODEL_BUFFER[0x18800];
+ MomentumData TAMER_MOMENTUM_DATA[22];
+ PositionData TAMER_POSITION_DATA[22];
++#ifdef __MWERKS__
+ uint8_t TAMER_MODEL_BUFFER[0x7800];
+ char MAIN_D_801A8B98[0x6800];
++#else
++/*
++ * BOYS.MMD (the tamer model, 57036 bytes) does not fit in the 0x7800 bytes of
++ * TAMER_MODEL_BUFFER: the original relies on MAIN_D_801A8B98 coming right
++ * after it (0x7800 + 0x6800 = 0xE000). GCC lays out the .bss sections in a
++ * different order, so make it one buffer and alias the second half.
++ */
++uint8_t TAMER_MODEL_BUFFER[0x7800 + 0x6800];
++extern char MAIN_D_801A8B98[];
++__asm__(".globl MAIN_D_801A8B98\n"
++	"\t.set MAIN_D_801A8B98, TAMER_MODEL_BUFFER + 0x7800");
++#endif
+ int8_t MAP_COLLISION_DATA[0x2800];
+ StdVsCamera STDVS_CAMERA;
+ 
+-- 
+2.53.0
+

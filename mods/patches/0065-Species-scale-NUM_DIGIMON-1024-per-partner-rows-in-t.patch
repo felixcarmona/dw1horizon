@@ -1,0 +1,2025 @@
+From 741d2b2808f1ad3bd448245ee86cf75e6282b0fd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 20:29:28 +0000
+Subject: [PATCH 65/65] Species scale: NUM_DIGIMON 1024, per-partner rows in
+ the DIGI.DAT records, wide flags, tournament/VS tables
+
+- NUM_DIGIMON 1024; the resident per-partner tables (RAISE_DATA, EVOLUTION_REQS/GAINS,
+  ITEM_TAKE_DISTANCE, VLALL ids, TRN/TRN2 rows) keep the 180 originals' rows; a new species'
+  rows come from its record through the (now 16-slot) cache: RAISE_ROW, EVO_REQ_ROW, EVO_GAINS_ROW,
+  getItemTakeDistance, getPartnerVlallSoundId, getEvolutionPath
+- DIGI.DAT v2: index sectors (partner list, first Mega, evolution links with the originals)
+- raised/recruited flags of species without a trigger: two saved bitsets in the v2 extension
+- lab menu: every partner species of DIGI.DAT (L1/R1 jump 10)
+- tournament/VS name, portrait and sprite tables never read past their end; PARTICIPANT_TYPES u16
+- getSpeciesPara no longer recurses for an undefined id
+
+---
+ include/dw/evl.h         |  23 +++-
+ include/dw/ids.h         |   2 +-
+ include/dw/memmap.h      |   6 +-
+ include/dw/partner.h     |  19 ++-
+ include/dw/sound.h       |   3 +-
+ include/dw/species.h     |  51 ++++++++-
+ include/dw/vs.h          |   2 +
+ src/evl/evl.c            |   4 +-
+ src/main/evl.c           |   2 +-
+ src/main/evolution.c     |  50 ++++----
+ src/main/game_menu.c     |  12 +-
+ src/main/item.c          |   8 +-
+ src/main/main.c          |   2 +-
+ src/main/main_menu.c     |  21 +++-
+ src/main/map.c           |   2 +-
+ src/main/mod_lab.c       |  94 ++++++++-------
+ src/main/mod_species.c   | 241 ++++++++++++++++++++++++++++-----------
+ src/main/partner.c       |   8 +-
+ src/main/partner_impl.c  | 124 ++++++++++----------
+ src/main/script_common.c |  11 +-
+ src/main/script_interp.c |   6 +-
+ src/main/sound.c         |  10 +-
+ src/main/sound_async.c   |   6 +-
+ src/main/tamer.c         |   2 +-
+ src/main/utils2.c        |   5 +-
+ src/std/std_main.c       |  42 ++++---
+ src/trn/trn_reward.c     |   8 +-
+ src/trn2/trn2_hud.c      |   6 +-
+ src/trn2/trn2_off.c      |   2 +-
+ src/vs/vs_intro.c        |   6 +-
+ src/vs/vs_scene.c        |   2 +-
+ src/vs/vs_select.c       |   2 +-
+ 32 files changed, 505 insertions(+), 277 deletions(-)
+
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index b62c5bc..a1ee3b2 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -79,9 +79,28 @@ typedef struct {
+ extern EvlSpark EVL_D_80068F84[];
+ extern EvoSequenceData EVO_SEQUENCE_DATA;
+ 
+-extern EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON];
++extern EvoStatsGains EVOLUTION_STATS_GAINS[NUM_ORIGINAL_DIGIMON];
+ extern EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1];
+-extern EvoRequirements EVOLUTION_REQS[NUM_DIGIMON];
++extern EvoRequirements EVOLUTION_REQS[NUM_ORIGINAL_DIGIMON];
++/* MOD (scale): rows of species >= NUM_ORIGINAL_DIGIMON come from their DIGI.DAT record (partner.h) */
++EvoStatsGains *getSpeciesEvoGains(int32_t type);
++EvoRequirements *getSpeciesEvoReqs(int32_t type);
++static inline EvoStatsGains *evoGainsRow(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &EVOLUTION_STATS_GAINS[type];
++	}
++	return getSpeciesEvoGains(type);
++}
++static inline EvoRequirements *evoReqRow(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &EVOLUTION_REQS[type];
++	}
++	return getSpeciesEvoReqs(type);
++}
++#define EVO_GAINS_ROW(type) (*evoGainsRow(type))
++#define EVO_REQ_ROW(type) (*evoReqRow(type))
+ 
+ extern int8_t MAIN_D_801349F4;
+ 
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index f2efb13..adc6c7f 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -27,7 +27,7 @@ typedef uint16_t CardId;
+ 
+ /* Digimon types */
+ #define NUM_ORIGINAL_DIGIMON	180	/* the disc's species: DIGIMON_DATA, models, skeletons, voices, ALLTIM */
+-#define NUM_DIGIMON		256	/* MOD (species): id capacity; per-partner tables; DIGI.DAT ids < this */
++#define NUM_DIGIMON		1024	/* MOD (scale): id capacity; DIGI.DAT ids < this (was 256, with the per-partner tables sized for it) */
+ #define NUM_PARTNER_DIGIMON	66	/* RAISE_DATA, cards; partners are 1..65 */
+ #define NUM_EVOLVING_DIGIMON	63	/* EVOLUTION_REQS (by type), raised flags; EVOLUTION_PATHS is by type - 1 */
+ #define NUM_EVO_CHART_DIGIMON	61	/* EVO_CHART_BOXES, by type - 1 */
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 85269c7..9702c91 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -95,9 +95,9 @@
+  * The partner model buffer (PARTNER_MODEL_BUFFER, main.c). The original's was
+  * 0x18800 (ETEM.MMD 0x17E14). The size comes from the build (Makefile:
+  * PARTNER_MMD_MAX, default 0x20000 = 128 KB; 0x24000 = 144 KB is the most the
+- * link-time MIN_HEAP assert leaves) through a generated header; every byte over
+- * 0x18800 is a byte less of heap on every screen (docs/mods/memory.md, "Partner
+- * model buffer"). The disc tools check the models against the same number.
++ * link-time MIN_HEAP assert leaves) through a generated header; every byte over 0x18800 is a
++ * byte less of heap on every screen (docs/mods/memory.md, "Partner model
++ * buffer"). The disc tools check the models against the same number.
+  */
+ #include <partner_mmd_max.h>
+ #define TAMER_MMD_MAX		0xE000	/* BOYS.MMD 0xDECC (GCC: one array, mod 0002) */
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index ce1615d..0e477fa 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -29,7 +29,24 @@ typedef struct {
+ 	int8_t size;
+ } PoopPile;
+ 
+-extern RaiseData RAISE_DATA[NUM_DIGIMON];
++/*
++ * MOD (scale): the per-partner rows of the 180 original species are resident
++ * (RAISE_DATA, EVOLUTION_*, ITEM_TAKE_DISTANCE, DIGIMON_VLALL_SOUND_ID, TRN/TRN2
++ * animation rows); the row of a species >= NUM_ORIGINAL_DIGIMON is in its
++ * DIGI.DAT record (mod_species.c, species.h), read through the record cache.
++ * RAISE_ROW(type) is the row as an lvalue, valid until the next species lookup.
++ */
++extern RaiseData RAISE_DATA[NUM_ORIGINAL_DIGIMON];
++RaiseData *getSpeciesRaise(int32_t type);
++int32_t getItemTakeDistance(int32_t type);
++static inline RaiseData *raiseRow(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &RAISE_DATA[type];
++	}
++	return getSpeciesRaise(type);
++}
++#define RAISE_ROW(type) (*raiseRow(type))
+ extern PoopPile WORLD_POOP[];
+ 
+ void partnerTick(int32_t instanceId);
+diff --git a/include/dw/sound.h b/include/dw/sound.h
+index 0f98a24..eab9f5d 100644
+--- a/include/dw/sound.h
++++ b/include/dw/sound.h
+@@ -68,7 +68,8 @@ extern unsigned long VHB_SOUNDBUFFER_START[];
+ extern int32_t ACTIVE_MAP_SOUND_ID;
+ extern MapSoundPara MAP_SOUND_PARA[];
+ extern uint8_t DIGIMON_VBALL_SOUND_ID[];
+-extern uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON];
++extern uint8_t DIGIMON_VLALL_SOUND_ID[NUM_ORIGINAL_DIGIMON];
++int32_t getPartnerVlallSoundId(int32_t type);
+ 
+ int32_t initializeMusic(void);
+ void finalizeMusic(void);
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 5bd716e..6ecf608 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -33,11 +33,11 @@
+ 
+ #define SPECIES_FILE_NAME	"DIGI.DAT"
+ #define SPECIES_MAGIC		"DIGI"
+-#define SPECIES_VERSION		1
++#define SPECIES_VERSION		2
+ #define SPECIES_RECORD_SIZE	0x200
+ #define SPECIES_RECORDS_PER_SECTOR (0x800 / SPECIES_RECORD_SIZE)
+ #define SPECIES_MAX_BONES	64
+-#define SPECIES_CACHE_SLOTS	8
++#define SPECIES_CACHE_SLOTS	16
+ 
+ /* SpeciesRecord.flags */
+ #define SPECIES_FLAG_DEFINED	0x01	/* the id exists */
+@@ -59,8 +59,33 @@ typedef struct {
+ 	uint16_t firstRecord;	/* id of the first record (0) */
+ 	uint32_t recordsSector;	/* sector of the first record */
+ 	uint32_t totalSectors;
++	uint32_t indexSector;	/* MOD (scale): SpeciesPartnerList, then SpeciesLinks in the next sector */
+ } SpeciesHeader;
+ 
++/*
++ * MOD (scale): the two index sectors after the header. The first lists the
++ * species that can be partners (the lab menu walks it), the second the
++ * evolution links of new species with the original ones: the game cannot
++ * know them without reading every record, and the 62 resident
++ * EVOLUTION_PATHS rows are the only place the original species list their
++ * targets. A link is {original type, new type | SPECIES_LINK_FROM?}: the new
++ * type goes into a free "to" slot of the original (SPECIES_LINK_FROM: into a
++ * free "from" slot). New-to-new links are inside the records.
++ */
++#define SPECIES_LINK_FROM	0x8000
++#define SPECIES_MAX_PARTNERS	1022
++#define SPECIES_MAX_LINKS	510
++typedef struct {
++	uint16_t count;
++	uint16_t firstMega;		/* first partner species of level Mega, 0 if none */
++	uint16_t ids[SPECIES_MAX_PARTNERS];
++} SpeciesPartnerList;
++typedef struct {
++	uint16_t count;
++	uint16_t reserved;
++	uint16_t link[SPECIES_MAX_LINKS][2];
++} SpeciesLinks;
++
+ /*
+  * MOD (dcb-import): where this species' technique effects start. The EFE data
+  * of each technique lists, per original type, a bone and an offset in that
+@@ -117,7 +142,25 @@ SPECIES_LAYOUT_CHECK(evoPaths, __builtin_offsetof(SpeciesRecord, evoPaths) == 0x
+ SPECIES_LAYOUT_CHECK(item, __builtin_offsetof(SpeciesRecord, itemTakeDistance) == 0x130);
+ SPECIES_LAYOUT_CHECK(condfx, __builtin_offsetof(SpeciesRecord, conditionFx) == 0x136);
+ SPECIES_LAYOUT_CHECK(origins, __builtin_offsetof(SpeciesRecord, effectOrigins) == 0x140);
+-SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x14);
++SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x18);
++SPECIES_LAYOUT_CHECK(partnerList, sizeof(SpeciesPartnerList) == 0x800);
++SPECIES_LAYOUT_CHECK(links, sizeof(SpeciesLinks) <= 0x800);
++
++/*
++ * MOD (scale): the raised and recruited flags of species that have no trigger
++ * of their own (ids >= NUM_ORIGINAL_DIGIMON and the originals whose trigger is
++ * taken, ids.h HAS_RAISED_FLAG): one bit per type, saved in the v2 extension.
++ */
++extern uint8_t SPECIES_RAISED_BITS[NUM_DIGIMON / 8];
++extern uint8_t SPECIES_RECRUITED_BITS[NUM_DIGIMON / 8];
++void resetSpeciesFlags(void);
++int32_t isDigimonRecruited(int32_t type);
++void setDigimonRecruited(int32_t type);
++
++/* partner species of DIGI.DAT: how many, the n-th id, the first Mega (0: none) */
++int32_t getSpeciesPartnerCount(void);
++int32_t getSpeciesPartnerId(int32_t n);
++int32_t getFirstMegaSpecies(void);
+ 
+ /* ids 0..SPECIES_COUNT-1 exist (NUM_ORIGINAL_DIGIMON without DIGI.DAT) */
+ extern int32_t SPECIES_COUNT;
+@@ -146,6 +189,8 @@ EvolutionPath *getEvolutionPath(int32_t type);
+ /* MOD (dcb-import): the bone offset a technique effect of `type` starts
+  * from: `borrowed` (the originalType's EFE entry) or this species' own one */
+ int16_t *getSpeciesEffectOrigin(int32_t type, int16_t *borrowed);
++/* the original species whose technique effect offsets, aura and condition icons a type borrows */
++int32_t getOriginalType(int32_t type);
+ /* the condition icon offset (x, y, z, bone) of a type */
+ SVECTOR *getConditionFxOffset(int32_t type);
+ /* a training animation row (TRN/TRN2 tables live in the overlays) */
+diff --git a/include/dw/vs.h b/include/dw/vs.h
+index c0cb41d..c71a19b 100644
+--- a/include/dw/vs.h
++++ b/include/dw/vs.h
+@@ -125,6 +125,8 @@ extern SVECTOR VS_AURA_PROJECTILE_VERTEX_3;
+ extern uint16_t VS_FONT_CHARS[];
+ extern int16_t VS_FONT_GLYPHS[];
+ extern uint8_t VS__INTRO_DIGIMON_NAMES[][14];
++/* MOD (scale): the VS name table covers types 0..115; any other type reads row 0 (a blank name) */
++#define VS_NAME_ROW(t) ((uint32_t)(t) < 116 ? (uint32_t)(t) : 0)
+ 
+ extern VsRoundFlagsRaw VS_ROUND_WON;
+ extern VsRoundFlagsRaw VS_ROUND_LOST;
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 427f32a..14cad67 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -1322,7 +1322,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	uint8_t special;
+ 	EvoStatsGains *gains;
+ 
+-	gains = &EVOLUTION_STATS_GAINS[digimonId];
++	gains = &EVO_GAINS_ROW(digimonId);
+ 	newId = gains->targetDigimon;
+ 	oldLevel = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+ 	level = DIGI_PARA(digimonId).level;
+@@ -1383,7 +1383,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 		}
+ 		newId = gains->targetDigimon;
+ 	}
+-	para->weight = RAISE_DATA[newId].defaultWeight;
++	para->weight = RAISE_ROW(newId).defaultWeight;
+ 	para->careMistakes = 0;
+ 	para->battles = 0;
+ 	level = DIGI_PARA(newId).level;
+diff --git a/src/main/evl.c b/src/main/evl.c
+index d9e8ae0..9abcf15 100644
+--- a/src/main/evl.c
++++ b/src/main/evl.c
+@@ -88,7 +88,7 @@ int16_t isInitialized;
+ 	data->partner = partner;
+ 	data->unk_0x8 = 0;
+ 	data->state = 0;
+-	data->digimonId = EVOLUTION_STATS_GAINS[target].targetDigimon;
++	data->digimonId = EVO_GAINS_ROW(target).targetDigimon;
+ 	data->para = para;
+ 	data->evoTarget = target;
+ 	data->heightFactor = (DIGI_PARA(data->digimonId).height << 12) /
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index a24bf55..54f186a 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -28,7 +28,7 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+ int8_t getNumMasteredMoves(void);
+ 
+ // clang-format off
+-EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON (by target type) */
++EvoRequirements EVOLUTION_REQS[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON (by target type) */
+ 	{
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x00,
+@@ -488,7 +488,7 @@ EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON
+ 	},
+ };
+ 
+-EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
++EvoStatsGains EVOLUTION_STATS_GAINS[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0001 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0002 },
+@@ -895,8 +895,8 @@ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon) {
+       continue;
+     }
+ 
+-    isMaxCM = (EVOLUTION_REQS[*targetPtr].flags & 0x10) >> 4;
+-    isMaxBattles = EVOLUTION_REQS[*targetPtr].flags & 1;
++    isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
++    isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+     requirementScore = calculateRequirementScore(
+         currentDigimon, *targetPtr, isMaxCM, isMaxBattles, currentBest);
+ 
+@@ -930,31 +930,31 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+       continue;
+     }
+ 
+-    isMaxCM = (EVOLUTION_REQS[*targetPtr].flags & 0x10) >> 4;
+-    isMaxBattles = EVOLUTION_REQS[*targetPtr].flags & 1;
++    isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
++    isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+     if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+                                   isMaxBattles, currentBestDigimon) >= 3) {
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].hp != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].mp != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).mp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.mp / 10;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].offense != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).offense != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.off;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].defense != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).defense != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.def;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].speed != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).speed != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.speed;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].brain != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).brain != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.brain;
+         statCount++;
+       }
+@@ -995,31 +995,31 @@ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+       continue;
+     }
+ 
+-    isMaxCM = (EVOLUTION_REQS[*targetPtr].flags & 0x10) >> 4;
+-    isMaxBattles = EVOLUTION_REQS[*targetPtr].flags & 1;
++    isMaxCM = (EVO_REQ_ROW(*targetPtr).flags & 0x10) >> 4;
++    isMaxBattles = EVO_REQ_ROW(*targetPtr).flags & 1;
+     if (calculateRequirementScore(currentDigimon, *targetPtr, isMaxCM,
+                                   isMaxBattles, currentBestDigimon) >= 3) {
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].hp != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).hp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.hp / 10;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].mp != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).mp != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.mp / 10;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].offense != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).offense != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.off;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].defense != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).defense != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.def;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].speed != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).speed != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.speed;
+         statCount++;
+       }
+-      if (EVOLUTION_REQS[(int32_t)*targetPtr].brain != -1) {
++      if (EVO_REQ_ROW((int32_t)*targetPtr).brain != -1) {
+         statTotal += PARTNER_ENTITY.digimonEntity.stats.base.brain;
+         statCount++;
+       }
+@@ -1133,7 +1133,7 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+   int8_t numMoves;
+   int8_t isBonusFulfilled;
+ 
+-  reqs = &EVOLUTION_REQS[target];
++  reqs = &EVO_REQ_ROW(target);
+   partnerEntity = &PARTNER_ENTITY.digimonEntity.stats.base;
+   partner = &PARTNER_PARA;
+   reqPoints = 0;
+@@ -1210,9 +1210,9 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+   reqPoints += isBonusFulfilled;
+ 
+   if (reqPoints >= 3 && currentBest != -1) {
+-    isTargetRaised = hasDigimonRaised(EVOLUTION_STATS_GAINS[target].targetDigimon);
++    isTargetRaised = hasDigimonRaised(EVO_GAINS_ROW(target).targetDigimon);
+     isCurrentBestRaised =
+-        hasDigimonRaised(EVOLUTION_STATS_GAINS[currentBest].targetDigimon);
++        hasDigimonRaised(EVO_GAINS_ROW(currentBest).targetDigimon);
+ 
+     if (isTargetRaised == 1 && isCurrentBestRaised == 0)
+       reqPoints = 0;
+@@ -1252,7 +1252,7 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+   int32_t previousId;
+ 
+   DEATH_STATS = *stats;
+-  ptr = &EVOLUTION_STATS_GAINS[digimonId];
++  ptr = &EVO_GAINS_ROW(digimonId);
+   id = ptr->targetDigimon;
+ 
+   PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = 0x2e;
+@@ -1282,7 +1282,7 @@ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ 	if (currentDigimon != DIGIMON_MEGADRAMON && currentDigimon != DIGIMON_GIGADRAMON) {
+ 		return -1;
+ 	}
+-	reqs = &EVOLUTION_REQS[DIGIMON_MACHINEDRAMON];
++	reqs = &EVO_REQ_ROW(DIGIMON_MACHINEDRAMON);
+ 	if (calculateRequirementScore(currentDigimon, DIGIMON_MACHINEDRAMON, (reqs->flags & 0x10) >> 4,
+ 	                              reqs->flags & 1, -1) >= 3) {
+ 		return DIGIMON_MACHINEDRAMON;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 5b52bd8..76e6cb0 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2289,11 +2289,11 @@ void renderDigimonStatsView(void)
+ 		if (DIGI_PARA(ENTITY_TABLE[1]->type).type != 0) {
+ 			renderRectPolyFT4(0x3b, -0x33, 0xc, 0xc, (DIGI_PARA(ENTITY_TABLE[1]->type).type - 1) * 0xc, 0x80, 5, 0x7a06, 5, 0);
+ 		}
+-		if (RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].sleepCycle == 5) {
++		if (RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).sleepCycle == 5) {
+ 			renderString(0, 0x55, -0x33, 0x30, 0xc, 0xcc, 0x30, 5, 0);
+ 		}
+-		if (RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].sleepCycle < 5) {
+-			renderString(0, 0x55, -0x33, 0x30, 0xc, RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].sleepCycle * 0x30, 0x18, 5, 0);
++		if (RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).sleepCycle < 5) {
++			renderString(0, 0x55, -0x33, 0x30, 0xc, RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).sleepCycle * 0x30, 0x18, 5, 0);
+ 		}
+ 		for (i = 0; i < 3; i++) {
+ 			if (i < PARTNER_ENTITY.lives) {
+@@ -3525,9 +3525,9 @@ int8_t entityId;
+ 		savedPos = modDigiviceSavedPos;
+ 		savedRot = modDigiviceSavedRot;
+ 	}
+-	setEntityPosition(entityId, RAISE_DATA[type].viewX,
+-	                  RAISE_DATA[type].viewY,
+-	                  RAISE_DATA[type].viewZ);
++	setEntityPosition(entityId, RAISE_ROW(type).viewX,
++	                  RAISE_ROW(type).viewY,
++	                  RAISE_ROW(type).viewZ);
+ 	setEntityRotation(entityId, 0, 0, 0);
+ 	setupEntityMatrix(entityId);
+ 	startAnimation(entity, 0);
+diff --git a/src/main/item.c b/src/main/item.c
+index bd6c793..98a8518 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2899,7 +2899,7 @@ void handleFood(int16_t itemId)
+ 		break;
+ 	}
+ 
+-	if (itemId == RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].favoriteFood) {
++	if (itemId == RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).favoriteFood) {
+ 		energy = energy * 14 / 10;
+ 		happiness += 2;
+ 	}
+@@ -2960,7 +2960,7 @@ void handlePortaPotty(void)
+ {
+ 	if (PARTNER_PARA.condition & CONDITION_POOPY) {
+ 		PARTNER_PARA.poopLevel =
+-			RAISE_DATA[ENTITY_TABLE[1]->type].poopTimer;
++			RAISE_ROW(ENTITY_TABLE[1]->type).poopTimer;
+ 		PARTNER_PARA.condition &= ~CONDITION_POOPY;
+ 		handlePoopWeightLoss(ENTITY_TABLE[1]->type);
+ 	}
+@@ -2980,9 +2980,9 @@ void addEnergy(int16_t amount)
+ {
+ 	PARTNER_PARA.energyLevel += amount;
+ 	if (PARTNER_PARA.energyLevel >
+-	    RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap) {
++	    RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap) {
+ 		PARTNER_PARA.energyLevel =
+-			RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap;
++			RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
+ 	}
+ }
+ 
+diff --git a/src/main/main.c b/src/main/main.c
+index 167a2fa..94f5a91 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3983,7 +3983,7 @@ void recalculatePPandArena(void)
+ 
+ 	pp = 0;
+ 	for (i = 3; i < 0x3b; i++) {
+-		if ((DIGI_PARA(i).level >= 3) && (isTriggerSet((uint16_t)(TRIGGER_RECRUITED_BASE + i)) != 0)) {
++		if ((DIGI_PARA(i).level >= 3) && (isDigimonRecruited(i) != 0)) {
+ 			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
+ 				pp++;
+ 			} else {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 20f52ea..8162a57 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -17,6 +17,7 @@
+ #include <dw/script.h>
+ #include <dw/sjis.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
+@@ -187,12 +188,14 @@ typedef struct {
+ 	uint16_t wregs[SAVE_EXT_SAVED_WREGS];
+ 	DigimonId registeredTypes[40];	/* battle registration ids (u8 in RAM for now) */
+ 	ScreenId poopMaps[100];		/* WORLD_POOP screens (u8 in RAM for now) */
+-	uint8_t reserved[0x1000 - 0x188 - 4];
++	uint8_t speciesRaised[NUM_DIGIMON / 8];	/* MOD (scale): SPECIES_RAISED_BITS, one bit per type */
++	uint8_t speciesRecruited[NUM_DIGIMON / 8]; /* SPECIES_RECRUITED_BITS */
++	uint8_t reserved[0x1000 - 0x188 - 4 - 2 * (NUM_DIGIMON / 8)];
+ 	int32_t checksum;		/* byte sum of everything before it */
+ } SaveExtension;
+ 
+ SAVE_LAYOUT_CHECK(extension, sizeof(SaveExtension) == 0x1000);
+-SAVE_LAYOUT_CHECK(extensionTail, __builtin_offsetof(SaveExtension, reserved) == 0x188);
++SAVE_LAYOUT_CHECK(extensionTail, __builtin_offsetof(SaveExtension, reserved) == 0x188 + 2 * (NUM_DIGIMON / 8));
+ 
+ typedef struct {
+ 	char id[2];
+@@ -3917,6 +3920,7 @@ int32_t tickSelectSlotInput(MenuCursor *cursor, int32_t which)
+ 
+ void initializeDefaultSavegame(void)
+ {
++	resetSpeciesFlags(); /* MOD (scale) */
+ 	InventoryTable defaultInventoryCounts;
+ 	InventoryTable defaultInventoryItems;
+ 	SavegamePayload *savegame;
+@@ -4245,6 +4249,10 @@ static void prepareSaveFile(int32_t fromRam)
+ 		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
+ 			ext->wregs[i] = SCRIPT_STATE_PTR->wregs[i];
+ 		}
++		for (i = 0; i < NUM_DIGIMON / 8; i++) {
++			ext->speciesRaised[i] = SPECIES_RAISED_BITS[i];
++			ext->speciesRecruited[i] = SPECIES_RECRUITED_BITS[i];
++		}
+ 	} else {
+ 		ext->currentScreen = savegame->currentScreen;
+ 		ext->previousScreen = savegame->previousScreen;
+@@ -4312,8 +4320,13 @@ static int32_t loadSaveCopy(int32_t copy)
+ 	for (i = 0; i < SCRIPT_NUM_WREGS; i++) {
+ 		SCRIPT_STATE_PTR->wregs[i] = 0;
+ 	}
++	resetSpeciesFlags();
+ 	if (isExtensionValid(0)) {
+ 		ext = &SAVE_FILE.ext[0];
++		for (i = 0; i < NUM_DIGIMON / 8; i++) {
++			SPECIES_RAISED_BITS[i] = ext->speciesRaised[i];
++			SPECIES_RECRUITED_BITS[i] = ext->speciesRecruited[i];
++		}
+ 		SAVED_STATE.currentScreen = ext->currentScreen;
+ 		SAVED_STATE.previousScreen = ext->previousScreen;
+ 		for (i = 0; i < 30; i++) {
+@@ -4477,7 +4490,9 @@ void registerBattleData(void)
+ 	rec->speed = PARTNER_ENTITY.digimonEntity.stats.base.speed;
+ 	rec->brains = PARTNER_ENTITY.digimonEntity.stats.base.brain;
+ 	rec->discipline = PARTNER_PARA.discipline;
+-	rec->digimonId = PARTNER_ENTITY.digimonEntity.entity.type;
++	/* MOD (scale): the record keeps a u8; a species >= 256 registers as the original it is based on */
++	rec->digimonId = PARTNER_ENTITY.digimonEntity.entity.type < 256 ? PARTNER_ENTITY.digimonEntity.entity.type
++			 : getOriginalType(PARTNER_ENTITY.digimonEntity.entity.type);
+ 	memcpy(rec->name, PARTNER_ENTITY.name, 0xe);
+ 	memcpy(rec->moves, PARTNER_ENTITY.digimonEntity.stats.base.moves, 3);
+ }
+diff --git a/src/main/map.c b/src/main/map.c
+index 8e41f02..a8ccd69 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4334,7 +4334,7 @@ int32_t loadMapSetup(int32_t *data)
+ 	}
+ 
+ 	MAP_TILE_DATA.partnerAreaResponse = 0;
+-	favoredRegion = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].favoredRegion;
++	favoredRegion = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).favoredRegion;
+ 
+ 	for (j = 0; j < 4; j++) {
+ 		if (regionA[j] == favoredRegion) {
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index e4a2c05..4784197 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -19,9 +19,10 @@
+  *                      partners-npc-a), "To Icemon" (94), "To Meteormon"
+  *                      (113), the partners of MOD partners-npc-b, "To
+  *                      Machinedramon" (115; MOD machinedramon), "To Jijimon"
+- *                      (117), "To Analogman" (116), and the species imported
+- *                      from other games, Veemon (180), Puppetmon (181),
+- *                      Kimeramon (182) (MOD dcb-import), and "To Mega <name>"
++ *                      (117), "To Analogman" (116), then every partner species
++ *                      of DIGI.DAT in id order (MOD scale: the imported ones,
++ *                      Veemon 180, Puppetmon, Kimeramon..., any id up to
++ *                      NUM_DIGIMON; L1/R1 jump 10), and "To Mega <name>"
+  *                      (MOD mega: the Mega the partner, an Ultimate, evolves
+  *                      to, otherwise the first Mega species in DIGI.DAT,
+  *                      docs/mods/mega.md); a species the disc's DIGI.DAT
+@@ -65,6 +66,8 @@
+ #define PAD_DOWN	0x4000
+ #define PAD_LEFT	0x8000
+ #define PAD_RIGHT	0x2000
++#define PAD_L1		0x4
++#define PAD_R1		0x8
+ #define PAD_TRIANGLE	0x10
+ #define PAD_CROSS	0x40
+ 
+@@ -87,8 +90,8 @@ void partnerSetState(int32_t state);
+ int32_t tamerGetState(void);
+ void tamerSetState(int32_t state);
+ 
+-static int32_t modLabCursor;
+-static int32_t modLabEvoChoice; /* MOD (cherrymon): index into MOD_LAB_EVO_TARGETS */
++int32_t MOD_LAB_CURSOR; /* the lab menu's cursor (global for tests) */
++int32_t MOD_LAB_EVO_CHOICE; /* MOD (cherrymon): the evolve entry (global so tests can read and set it) */
+ static char *modLabMessage;
+ 
+ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+@@ -120,14 +123,9 @@ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_MACHINEDRAMON, /* MOD (machinedramon) */
+ 	DIGIMON_JIJIMON,       /* MOD (jijimon) */
+ 	DIGIMON_ANALOGMAN,     /* MOD (analogman) */
+-	/* MOD (dcb-import): the species imported from other games
+-	 * (content/species/: 180 Veemon and 181 Puppetmon from Digimon Digital
+-	 * Card Battle, 182 Kimeramon from Digimon World 2) */
+-	180,
+-	181,
+-	182,
+-	MOD_LAB_EVO_MEGA, /* MOD (mega): "To Mega <name>" */
+ };
++/* MOD (scale): after these come the partner species of DIGI.DAT (getSpeciesPartnerId), then the Mega entry */
++#define MOD_LAB_EVO_FIXED ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
+ static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To MasterTyrannomon",
+@@ -141,12 +139,12 @@ static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To Machinedramon", /* MOD (machinedramon) */
+ 	"To Jijimon",       /* MOD (jijimon) */
+ 	"To Analogman",     /* MOD (analogman) */
+-	"To Veemon",        /* MOD (dcb-import) */
+-	"To Puppetmon",
+-	"To Kimeramon",
+-	NULL, /* MOD (mega): modLabMegaText */
+ };
+-#define MOD_LAB_EVO_COUNT ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
++/* the entries: fixed originals, the species of DIGI.DAT, the Mega */
++static int32_t modLabEvoCount(void)
++{
++	return MOD_LAB_EVO_FIXED + getSpeciesPartnerCount() + 1;
++}
+ 
+ static char *MOD_LAB_FPS_TEXT[3] = {
+ 	"Frame rate  20 fps",
+@@ -188,25 +186,26 @@ static int32_t modLabMegaTarget(void)
+ 			}
+ 		}
+ 	}
+-	for (type = NUM_ORIGINAL_DIGIMON; type < SPECIES_COUNT; type++) {
+-		if (DIGI_PARA(type).level == LEVEL_MEGA) {
+-			return type;
+-		}
+-	}
+-	return -1;
++	/* MOD (scale): the first Mega partner species, from the DIGI.DAT index */
++	type = getFirstMegaSpecies();
++	return type > 0 ? type : -1;
+ }
+ 
+ static char modLabMegaText[32];
++static char modLabSpeciesText[32]; /* MOD (scale): "To <name>" of a DIGI.DAT species */
+ 
+ /* MOD (integration): the species of the current evolve entry, -1 when the disc has none */
+ static int32_t modLabEvoTarget(void)
+ {
+ 	int32_t t;
+ 
+-	t = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
+-	if (t == MOD_LAB_EVO_MEGA) {
++	if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+ 		return modLabMegaTarget();
+ 	}
++	if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED) {
++		return getSpeciesPartnerId(MOD_LAB_EVO_CHOICE - MOD_LAB_EVO_FIXED); /* defined partner species */
++	}
++	t = MOD_LAB_EVO_TARGETS[MOD_LAB_EVO_CHOICE];
+ 	return isValidDigimonType(t) ? t : -1;
+ }
+ 
+@@ -215,8 +214,11 @@ static void modLabStepEvoChoice(int32_t step)
+ {
+ 	int32_t i;
+ 
+-	for (i = 0; i < MOD_LAB_EVO_COUNT; i++) {
+-		modLabEvoChoice = (modLabEvoChoice + step) % MOD_LAB_EVO_COUNT;
++	int32_t count;
++
++	count = modLabEvoCount();
++	for (i = 0; i < count; i++) {
++		MOD_LAB_EVO_CHOICE = ((MOD_LAB_EVO_CHOICE + step) % count + count) % count;
+ 		if (modLabEvoTarget() >= 0) {
+ 			break;
+ 		}
+@@ -274,15 +276,20 @@ static void modLabDrawText(void)
+ 		if (i == MOD_LAB_OPT_FPS) {
+ 			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else if (i == MOD_LAB_OPT_EVOLVE) {
+-			mega = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
+-			if (mega == MOD_LAB_EVO_MEGA) {
++			if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+ 				/* MOD (mega): "To Mega <name>" */
+ 				p = appendStr(modLabMegaText, "To Mega ");
+ 				mega = modLabMegaTarget();
+ 				appendStr(p, mega < 0 ? "none" : DIGIMON_NAME(mega));
+ 				drawString(modLabMegaText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++			} else if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED) {
++				/* MOD (scale): "To <name>" of a species of DIGI.DAT */
++				p = appendStr(modLabSpeciesText, "To ");
++				mega = modLabEvoTarget();
++				appendStr(p, mega < 0 ? "none" : DIGIMON_NAME(mega));
++				drawString(modLabSpeciesText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 			} else {
+-				drawString(MOD_LAB_EVO_TEXT[modLabEvoChoice], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++				drawString(MOD_LAB_EVO_TEXT[MOD_LAB_EVO_CHOICE], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 			}
+ 		} else {
+ 			drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+@@ -309,7 +316,7 @@ static void modLabRender(int32_t instanceId)
+ 		renderString(color, pos->x + 12, pos->y + 8 + row * ROW_PITCH, BOX_W - 24, 0xC,
+ 			     0, TEXT_ROW_Y(row), 0, 1);
+ 	}
+-	renderSelectionCursor(pos->x + 9, pos->y + 6 + (ROW_OPTIONS + modLabCursor) * ROW_PITCH,
++	renderSelectionCursor(pos->x + 9, pos->y + 6 + (ROW_OPTIONS + MOD_LAB_CURSOR) * ROW_PITCH,
+ 			      BOX_W - 18, 0x10, 0);
+ }
+ 
+@@ -338,7 +345,7 @@ static void modLabApply(void)
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 	int32_t mega;
+ 
+-	switch (modLabCursor) {
++	switch (MOD_LAB_CURSOR) {
+ 	case 0:
+ 		MONEY += 1000;
+ 		modLabShowMessage("Bits +1000");
+@@ -364,8 +371,8 @@ static void modLabApply(void)
+ 		/* MOD (master-tyrannomon, mega): as handleEvoItems does, with natural gains */
+ 		mega = modLabEvoTarget();
+ 		if (mega < 0) {
+-			modLabShowMessage(MOD_LAB_EVO_TARGETS[modLabEvoChoice] == MOD_LAB_EVO_MEGA ? "No Mega on this disc"
+-												 : "Not on this disc");
++			modLabShowMessage(MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()
++						  ? "No Mega on this disc" : "Not on this disc");
+ 		} else if (!isPartnerModelFit(mega)) {
+ 			modLabShowMessage("Model too big for it");
+ 		} else if (PARTNER_ENTITY.digimonEntity.entity.type == mega) {
+@@ -397,7 +404,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 	}
+ 
+ 	removeStaticUIBox(MOD_LAB_BOX);
+-	modLabCursor = 0;
++	MOD_LAB_CURSOR = 0;
+ 	modLabMessage = NULL;
+ 	modLabDrawText();
+ 	setRECT(&pos, -BOX_W / 2 + BOX_SHIFT_X, -BOX_H / 2, BOX_W, BOX_H);
+@@ -412,24 +419,27 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		if (pressed & (PAD_TRIANGLE | PAD_SELECT)) {
+ 			break;
+ 		}
+-		if (pressed & (PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_CROSS)) {
++		if (pressed & (PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_L1 | PAD_R1 | PAD_CROSS)) {
+ 			modLabMessage = NULL;
+ 		}
+ 		if (pressed & PAD_UP) {
+-			modLabCursor = (modLabCursor + MOD_LAB_OPTIONS - 1) % MOD_LAB_OPTIONS;
++			MOD_LAB_CURSOR = (MOD_LAB_CURSOR + MOD_LAB_OPTIONS - 1) % MOD_LAB_OPTIONS;
+ 			playSound(0, 2);
+ 		} else if (pressed & PAD_DOWN) {
+-			modLabCursor = (modLabCursor + 1) % MOD_LAB_OPTIONS;
++			MOD_LAB_CURSOR = (MOD_LAB_CURSOR + 1) % MOD_LAB_OPTIONS;
+ 			playSound(0, 2);
+-		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_FPS) {
++		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_FPS) {
+ 			playSound(0, 2);
+ 			modLabSetFps((pressed & PAD_RIGHT) ? 1 : -1);
+-		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_EVOLVE) {
++		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_EVOLVE) {
+ 			/* MOD (cherrymon): choose the evolution target */
+ 			playSound(0, 2);
+-			modLabStepEvoChoice((pressed & PAD_RIGHT) ? 1 : MOD_LAB_EVO_COUNT - 1);
++			modLabStepEvoChoice((pressed & PAD_RIGHT) ? 1 : -1);
++		} else if ((pressed & (PAD_L1 | PAD_R1)) && MOD_LAB_CURSOR == MOD_LAB_OPT_EVOLVE) {
++			playSound(0, 2);
++			modLabStepEvoChoice((pressed & PAD_R1) ? 10 : -10);
+ 		} else if (pressed & PAD_CROSS) {
+-			if (modLabCursor == MOD_LAB_OPTIONS - 1) {
++			if (MOD_LAB_CURSOR == MOD_LAB_OPTIONS - 1) {
+ 				break;
+ 			}
+ 			playSound(0, 3);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index d882d17..90d9704 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -6,6 +6,7 @@
+ #include <dw/file.h>
+ #include <dw/main.h>
+ #include <dw/memmap.h>
++#include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/species.h>
+ 
+@@ -13,7 +14,7 @@
+ 
+ extern int16_t EVOLUTION_TARGET;
+ extern ModelComponent NPC_MODELS[5];
+-extern int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON];
++extern int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON];
+ extern SkeletonBone *DIGIMON_SKELETONS[NUM_ORIGINAL_DIGIMON];
+ extern char *PTR_DIGIMON_FILE_NAMES[NUM_ORIGINAL_DIGIMON];
+ extern uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON];
+@@ -22,23 +23,38 @@ int32_t isFileReadQueueBusy(void);
+ 
+ int32_t SPECIES_COUNT;
+ int32_t SPECIES_RECORD_READS;
++uint8_t SPECIES_RAISED_BITS[NUM_DIGIMON / 8];
++uint8_t SPECIES_RECRUITED_BITS[NUM_DIGIMON / 8];
+ static int32_t SPECIES_RECORDS_SECTOR;
++static int32_t SPECIES_INDEX_SECTOR;
++static int32_t SPECIES_PARTNER_COUNT;
++static uint16_t SPECIES_PARTNER_IDS[SPECIES_MAX_PARTNERS]; /* the partner list of DIGI.DAT, for the lab menu */
++static int32_t SPECIES_FIRST_MEGA;
+ static SpeciesRecord SPECIES_CACHE[SPECIES_CACHE_SLOTS];
+ static int16_t SPECIES_CACHE_ID[SPECIES_CACHE_SLOTS];
+ static uint16_t SPECIES_CACHE_AGE[SPECIES_CACHE_SLOTS];
+ static uint16_t SPECIES_CACHE_CLOCK;
++static int32_t SPECIES_LAST_SLOT;
+ static uint32_t SPECIES_SECTOR[0x800 / 4];
+-/* the evolution paths of the new species (EVOLUTION_PATHS ends at type 62) */
+-static EvolutionPath SPECIES_EVOLUTION_PATHS[NUM_DIGIMON - NUM_ORIGINAL_DIGIMON];
+ static EvolutionPath NO_EVOLUTION_PATH;
++/* what the per-partner rows read for a type that is no partner (zeroes, like the tables past the originals' rows) */
++/* what an id that is no species reads (the original read the bytes past DIGIMON_DATA) */
++static DigimonPara NO_PARA = { "?" };
++static RaiseData NO_RAISE;
++static EvoRequirements NO_EVO_REQS;
++static EvoStatsGains NO_EVO_GAINS;
+ 
+ EvolutionPath *getEvolutionPath(int32_t type)
+ {
++	SpeciesRecord *rec;
++
+ 	if (type >= 1 && type < NUM_EVOLVING_DIGIMON) {
+ 		return &EVOLUTION_PATHS[type - 1];
+ 	}
+-	if (type >= NUM_ORIGINAL_DIGIMON && type < SPECIES_COUNT) {
+-		return &SPECIES_EVOLUTION_PATHS[type - NUM_ORIGINAL_DIGIMON];
++	if (type >= NUM_ORIGINAL_DIGIMON && (rec = getSpeciesRecord(type)) != NULL &&
++	    (rec->flags & SPECIES_FLAG_PARTNER)) {
++		/* in the cache slot: kept while the species is the partner (isSpeciesInUse) */
++		return &rec->evoPaths;
+ 	}
+ 	return &NO_EVOLUTION_PATH;
+ }
+@@ -69,82 +85,138 @@ static int32_t isSpeciesInUse(int32_t type)
+ 	return 0;
+ }
+ 
+-static void applyPartnerRows(int32_t type, SpeciesRecord *rec)
++void resetSpeciesFlags(void)
+ {
+ 	int32_t i;
+-	int32_t j;
+-	int32_t other;
++
++	for (i = 0; i < NUM_DIGIMON / 8; i++) {
++		SPECIES_RAISED_BITS[i] = 0;
++		SPECIES_RECRUITED_BITS[i] = 0;
++	}
++}
++
++int32_t isDigimonRecruited(int32_t type)
++{
++	if ((uint32_t)type < NUM_RECRUITABLE_DIGIMON) {
++		return isTriggerSet((uint16_t)(TRIGGER_RECRUITED_BASE + type)) != 0;
++	}
++	if ((uint32_t)type >= NUM_DIGIMON) {
++		return 0;
++	}
++	return (SPECIES_RECRUITED_BITS[type >> 3] >> (type & 7)) & 1;
++}
++
++void setDigimonRecruited(int32_t type)
++{
++	if ((uint32_t)type < NUM_RECRUITABLE_DIGIMON) {
++		setTrigger((uint16_t)(TRIGGER_RECRUITED_BASE + type));
++	} else if ((uint32_t)type < NUM_DIGIMON) {
++		SPECIES_RECRUITED_BITS[type >> 3] |= 1 << (type & 7);
++	}
++}
++
++/* the partner rows of a new species: its record's partner block (a non-partner has zero rows) */
++RaiseData *getSpeciesRaise(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? &rec->raise : &NO_RAISE;
++}
++
++EvoRequirements *getSpeciesEvoReqs(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? &rec->evoReqs : &NO_EVO_REQS;
++}
++
++EvoStatsGains *getSpeciesEvoGains(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? &rec->evoGains : &NO_EVO_GAINS;
++}
++
++int32_t getItemTakeDistance(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if (type >= 1 && type < NUM_ORIGINAL_DIGIMON) {
++		return ITEM_TAKE_DISTANCE[type - 1]; /* the originals' table is by type - 1 */
++	}
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? rec->itemTakeDistance : 10;
++}
++
++/* the VLALL voice of a partner type (15 for the tamer, 0 or a non-partner) */
++int32_t getPartnerVlallSoundId(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if (type <= 0) {
++		return 15;
++	}
++	if (type < NUM_ORIGINAL_DIGIMON) {
++		return DIGIMON_VLALL_SOUND_ID[type];
++	}
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? rec->vlallId : 15;
++}
++
++static void addEvolutionLink(int32_t orig, int32_t other, int32_t isFrom)
++{
+ 	EvolutionPath *path;
++	DigimonId *list;
++	int32_t n;
++	int32_t j;
+ 
+-	RAISE_DATA[type] = rec->raise;
+-	EVOLUTION_REQS[type] = rec->evoReqs;
+-	EVOLUTION_STATS_GAINS[type] = rec->evoGains;
+-	ITEM_TAKE_DISTANCE[type - 1] = rec->itemTakeDistance;
+-	DIGIMON_VLALL_SOUND_ID[type] = rec->vlallId;
+-	*getEvolutionPath(type) = rec->evoPaths;
+-	/* each species it evolves from lists it among its targets, and the other way round */
+-	for (i = 0; i < 5; i++) {
+-		other = rec->evoPaths.from[i];
+-		path = getEvolutionPath(other);
+-		if (path == &NO_EVOLUTION_PATH) {
+-			continue;
+-		}
+-		for (j = 0; j < 6 && path->to[j] != type; j++) {
+-		}
+-		if (j == 6) {
+-			for (j = 0; j < 6 && path->to[j] != -1; j++) {
+-			}
+-			if (j < 6) {
+-				path->to[j] = type;
+-			}
+-		}
++	if (orig < 1 || orig >= NUM_EVOLVING_DIGIMON) {
++		return;
+ 	}
+-	for (i = 0; i < 6; i++) {
+-		other = rec->evoPaths.to[i];
+-		path = getEvolutionPath(other);
+-		if (path == &NO_EVOLUTION_PATH) {
+-			continue;
+-		}
+-		for (j = 0; j < 5 && path->from[j] != type; j++) {
+-		}
+-		if (j == 5) {
+-			for (j = 0; j < 5 && path->from[j] != -1; j++) {
+-			}
+-			if (j < 5) {
+-				path->from[j] = type;
+-			}
+-		}
++	path = &EVOLUTION_PATHS[orig - 1];
++	list = isFrom ? path->from : path->to;
++	n = isFrom ? 5 : 6;
++	for (j = 0; j < n && list[j] != other; j++) {
++	}
++	if (j < n) {
++		return;
++	}
++	for (j = 0; j < n && list[j] != -1; j++) {
++	}
++	if (j < n) {
++		list[j] = other;
+ 	}
+ }
+ 
+ void initializeSpecies(void)
+ {
+ 	SpeciesHeader *header;
+-	SpeciesRecord *rec;
+ 	FileLookup lookup;
+ 	int32_t count;
+-	int32_t type;
+ 	int32_t i;
++	SpeciesPartnerList *partners;
++	SpeciesLinks *links;
+ 
+ 	SPECIES_COUNT = NUM_ORIGINAL_DIGIMON;
+ 	SPECIES_RECORD_READS = 0;
++	SPECIES_INDEX_SECTOR = 0;
++	SPECIES_PARTNER_COUNT = 0;
++	SPECIES_FIRST_MEGA = 0;
++	resetSpeciesFlags();
++	for (i = 0; i < 16; i++) {
++		NO_PARA.moves[i] = 0xFF;
++	}
+ 	for (i = 0; i < 5; i++) {
+ 		NO_EVOLUTION_PATH.from[i] = -1;
+ 	}
+ 	for (i = 0; i < 6; i++) {
+ 		NO_EVOLUTION_PATH.to[i] = -1;
+ 	}
+-	for (i = 0; i < NUM_DIGIMON - NUM_ORIGINAL_DIGIMON; i++) {
+-		SPECIES_EVOLUTION_PATHS[i] = NO_EVOLUTION_PATH;
+-	}
+-	/* the partner voice of types that were outside DIGIMON_VLALL_SOUND_ID: the
+-	 * 15 the guards gave them, unless a row was given (0 is the tamer's) */
+-	for (i = NUM_PARTNER_DIGIMON; i < NUM_DIGIMON; i++) {
+-		if (DIGIMON_VLALL_SOUND_ID[i] == 0) {
+-			DIGIMON_VLALL_SOUND_ID[i] = 15;
+-		}
+-	}
+ 	SPECIES_CACHE_CLOCK = 0;
++	SPECIES_LAST_SLOT = 0;
+ 	for (i = 0; i < SPECIES_CACHE_SLOTS; i++) {
+ 		SPECIES_CACHE_ID[i] = -1;
+ 		SPECIES_CACHE_AGE[i] = 0;
+@@ -167,20 +239,46 @@ void initializeSpecies(void)
+ 		return;
+ 	}
+ 	SPECIES_RECORDS_SECTOR = header->recordsSector;
++	SPECIES_INDEX_SECTOR = header->indexSector;
+ 	SPECIES_COUNT = count;
+-	/* the partner rows of new species go into the resident per-partner tables */
+-	for (type = NUM_ORIGINAL_DIGIMON; type < count; type++) {
+-		if (type == NUM_ORIGINAL_DIGIMON || type % SPECIES_RECORDS_PER_SECTOR == 0) {
+-			readSpeciesSector(SPECIES_RECORDS_SECTOR + type / SPECIES_RECORDS_PER_SECTOR);
+-		}
+-		rec = (SpeciesRecord *)SPECIES_SECTOR + type % SPECIES_RECORDS_PER_SECTOR;
+-		if ((rec->flags & (SPECIES_FLAG_DEFINED | SPECIES_FLAG_PARTNER)) ==
+-		    (SPECIES_FLAG_DEFINED | SPECIES_FLAG_PARTNER)) {
+-			applyPartnerRows(type, rec);
++	/* the partner list (first Mega) and the evolution links with the original species */
++	readSpeciesSector(SPECIES_INDEX_SECTOR);
++	partners = (SpeciesPartnerList *)SPECIES_SECTOR;
++	SPECIES_PARTNER_COUNT = partners->count > SPECIES_MAX_PARTNERS ? SPECIES_MAX_PARTNERS : partners->count;
++	SPECIES_FIRST_MEGA = partners->firstMega;
++	for (i = 0; i < SPECIES_PARTNER_COUNT; i++) {
++		SPECIES_PARTNER_IDS[i] = partners->ids[i];
++	}
++	readSpeciesSector(SPECIES_INDEX_SECTOR + 1);
++	links = (SpeciesLinks *)SPECIES_SECTOR;
++	for (i = 0; i < links->count && i < SPECIES_MAX_LINKS; i++) {
++		if (links->link[i][1] & SPECIES_LINK_FROM) {
++			addEvolutionLink(links->link[i][0], links->link[i][1] & ~SPECIES_LINK_FROM, 1);
++		} else {
++			addEvolutionLink(links->link[i][0], links->link[i][1], 0);
+ 		}
+ 	}
+ }
+ 
++int32_t getSpeciesPartnerCount(void)
++{
++	return SPECIES_PARTNER_COUNT;
++}
++
++/* the n-th partner species id of DIGI.DAT (0 <= n < getSpeciesPartnerCount()) */
++int32_t getSpeciesPartnerId(int32_t n)
++{
++	if (n < 0 || n >= SPECIES_PARTNER_COUNT) {
++		return -1;
++	}
++	return SPECIES_PARTNER_IDS[n];
++}
++
++int32_t getFirstMegaSpecies(void)
++{
++	return SPECIES_FIRST_MEGA;
++}
++
+ SpeciesRecord *getSpeciesRecord(int32_t type)
+ {
+ 	int32_t i;
+@@ -192,9 +290,16 @@ SpeciesRecord *getSpeciesRecord(int32_t type)
+ 		return NULL;
+ 	}
+ 	SPECIES_CACHE_CLOCK++;
++	/* the slot of the last hit first: the partner is asked for several times a frame */
++	i = SPECIES_LAST_SLOT;
++	if (SPECIES_CACHE_ID[i] == type) {
++		SPECIES_CACHE_AGE[i] = SPECIES_CACHE_CLOCK;
++		return (SPECIES_CACHE[i].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[i] : NULL;
++	}
+ 	for (i = 0; i < SPECIES_CACHE_SLOTS; i++) {
+ 		if (SPECIES_CACHE_ID[i] == type) {
+ 			SPECIES_CACHE_AGE[i] = SPECIES_CACHE_CLOCK;
++			SPECIES_LAST_SLOT = i;
+ 			return (SPECIES_CACHE[i].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[i] : NULL;
+ 		}
+ 	}
+@@ -227,6 +332,7 @@ SpeciesRecord *getSpeciesRecord(int32_t type)
+ 	SPECIES_RECORD_READS++;
+ 	SPECIES_CACHE_ID[slot] = type;
+ 	SPECIES_CACHE_AGE[slot] = SPECIES_CACHE_CLOCK;
++	SPECIES_LAST_SLOT = slot;
+ 	return (SPECIES_CACHE[slot].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[slot] : NULL;
+ }
+ 
+@@ -236,8 +342,7 @@ DigimonPara *getSpeciesPara(int32_t type)
+ 
+ 	rec = getSpeciesRecord(type);
+ 	if (rec == NULL) {
+-		/* not a species: what the original read past the table */
+-		return &DIGI_PARA(type);
++		return &NO_PARA;
+ 	}
+ 	return &rec->para;
+ }
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 134d093..90af3af 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -43,7 +43,7 @@ extern int32_t CHECKED_MEMORY_CARD;
+ extern VECTOR STORED_TAMER_POS;
+ 
+ 
+-extern int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON];
++extern int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON];
+ 
+ void tickMainMenu(int32_t instanceId);
+ void renderMainMenu(int32_t instanceId);
+@@ -420,7 +420,7 @@ void partnerTickFeedItem(void)
+ 
+ 	switch (PARTNER_SUB_STATE) {
+ 	case 0:
+-		if (checkEatDistance(ITEM_TAKE_DISTANCE[PARTNER_ENTITY.digimonEntity.entity.type - 1]) == 1) {
++		if (checkEatDistance(getItemTakeDistance(PARTNER_ENTITY.digimonEntity.entity.type)) == 1) {
+ 			PARTNER_SUB_STATE = 1;
+ 		}
+ 		else {
+@@ -433,7 +433,7 @@ void partnerTickFeedItem(void)
+ 	case 1:
+ 		entityLookAtLocation(&TAMER_ENTITY.entity,
+                                      &PARTNER_ENTITY.digimonEntity.entity.posData->location);
+-		if (checkEatDistance(ITEM_TAKE_DISTANCE[PARTNER_ENTITY.digimonEntity.entity.type - 1]) == 0) {
++		if (checkEatDistance(getItemTakeDistance(PARTNER_ENTITY.digimonEntity.entity.type)) == 0) {
+ 			PARTNER_SUB_STATE = 3;
+ 		}
+ 		break;
+@@ -442,7 +442,7 @@ void partnerTickFeedItem(void)
+                                      &PARTNER_ENTITY.digimonEntity.entity.posData->location);
+ 		entityLookAtLocation(&PARTNER_ENTITY.digimonEntity.entity,
+                                      &TAMER_ENTITY.entity.posData->location);
+-		if (checkEatDistance(ITEM_TAKE_DISTANCE[PARTNER_ENTITY.digimonEntity.entity.type - 1]) == 1) {
++		if (checkEatDistance(getItemTakeDistance(PARTNER_ENTITY.digimonEntity.entity.type)) == 1) {
+ 			PARTNER_SUB_STATE = 3;
+ 		}
+ 		break;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 6c51179..07f20c0 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -39,7 +39,7 @@ extern uint8_t HAS_USED_EVOITEM;
+ IS_SICK_TEXT
+ 
+ char MAIN_D_801225AC[16] = "\\ETCNA\\UNTI.TMD";
+-RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
++RaiseData RAISE_DATA[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+ 	  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 670, 200, -2270 },
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+@@ -277,7 +277,7 @@ SleepPattern SLEEP_PATTERN[8] = {
+ 	{0, 0, 0, 0, 8, 3},
+ };
+ 
+-int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
++int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	10, 10, 10, 10, 15, 10, 10, 15, 10, 15, 10, 15, 10, 10, 10, 10, 10,
+ 	10, 15, 10, 10, 15, 10, 15, 10, 25, 10, 10, 10, 10, 10, 10, 10, 10,
+ 	15, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15,
+@@ -544,7 +544,7 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 	setSleepTimes(&PARTNER_PARA, type);
+ 
+ 	PARTNER_PARA.missedSleepHours = 0;
+-	PARTNER_PARA.poopLevel = RAISE_DATA[type].poopTimer;
++	PARTNER_PARA.poopLevel = RAISE_ROW(type).poopTimer;
+ 	PARTNER_PARA.poopingTimer = -1;
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 	PARTNER_PARA.virusBar = 0;
+@@ -555,9 +555,9 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 	PARTNER_PARA.unused3 = 50;
+ 	setFoodTimer(type);
+ 
+-	PARTNER_PARA.energyLevel = RAISE_DATA[type].energyThreshold;
++	PARTNER_PARA.energyLevel = RAISE_ROW(type).energyThreshold;
+ 	PARTNER_PARA.remainingLifetime = 360;
+-	PARTNER_PARA.weight = RAISE_DATA[type].defaultWeight;
++	PARTNER_PARA.weight = RAISE_ROW(type).defaultWeight;
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 	PARTNER_PARA.trainBoostFlag = PARTNER_PARA.trainBoostValue =
+ 		PARTNER_PARA.trainBoostTimer = 0;
+@@ -664,7 +664,7 @@ void initializeEvolvedPartner(int32_t type, int32_t posX, int32_t posY,
+ 
+ void resetPartnerPara(PartnerPara *para, int32_t type)
+ {
+-	PARTNER_PARA.poopLevel = RAISE_DATA[type].poopTimer;
++	PARTNER_PARA.poopLevel = RAISE_ROW(type).poopTimer;
+ 	PARTNER_PARA.unused2 = 0;
+ 	PARTNER_PARA.unused1 = 0;
+ 	PARTNER_PARA.poopingTimer = -1;
+@@ -682,7 +682,7 @@ void resetPartnerPara(PartnerPara *para, int32_t type)
+ 
+ 	PARTNER_PARA.starvationTimer = -1;
+ 	PARTNER_PARA.emptyStomachTimer = 0;
+-	PARTNER_PARA.weight = RAISE_DATA[type].defaultWeight;
++	PARTNER_PARA.weight = RAISE_ROW(type).defaultWeight;
+ 	PARTNER_PARA.careMistakes = 0;
+ 	PARTNER_PARA.battles = 0;
+ }
+@@ -707,25 +707,25 @@ void setSleepTimes(PartnerPara *para, int32_t type)
+ 		para->sleepyMinute = 0;
+ 		para->wakeupHour =
+ 			(para->sleepyHour +
+-			 SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHours);
++			 SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHours);
+ 		para->wakeupMinute = para->sleepyMinute;
+ 		para->wakeupHour %= 24;
+ 		para->hoursAwakeDefault = awakeTimeBase + roll;
+ 		para->hoursAsleepDefault =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHours;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHours;
+ 	} else {
+ 		para->sleepyHour =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHour;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHour;
+ 		para->sleepyMinute =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyMinute;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyMinute;
+ 		para->wakeupHour =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupHour;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupHour;
+ 		para->wakeupMinute =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupMinute;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupMinute;
+ 		para->hoursAwakeDefault =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].awakeHours;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].awakeHours;
+ 		para->hoursAsleepDefault =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHours;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHours;
+ 	}
+ 
+ 	PARTNER_PARA.timeAwakeToday = PARTNER_PARA.hoursAwakeDefault * 6;
+@@ -757,47 +757,47 @@ void setFoodTimer(int16_t type)
+ 	} else {
+ #if VERSION_IS(JP)
+ 		for (i = 0; i < 8; i++) {
+-			if (HOUR < RAISE_DATA[type].hungerTimes[i]) {
++			if (HOUR < RAISE_ROW(type).hungerTimes[i]) {
+ 				PARTNER_PARA.nextHungerHour =
+-					RAISE_DATA[type].hungerTimes[i];
++					RAISE_ROW(type).hungerTimes[i];
+ 				break;
+ 			}
+-			if ((RAISE_DATA[type].hungerTimes[i + 1] == -1) ||
++			if ((RAISE_ROW(type).hungerTimes[i + 1] == -1) ||
+ 			    (i == 7))
+ 				PARTNER_PARA.nextHungerHour =
+-					RAISE_DATA[type].hungerTimes[0];
++					RAISE_ROW(type).hungerTimes[0];
+ 		}
+ #else
+ 		for (i = 0; i < 8; i++) {
+ 			if (HOUR <= PARTNER_PARA.nextHungerHour) {
+ 				if (PARTNER_PARA.nextHungerHour <
+-				    RAISE_DATA[type].hungerTimes[i]) {
++				    RAISE_ROW(type).hungerTimes[i]) {
+ 					PARTNER_PARA.nextHungerHour =
+-						RAISE_DATA[type].hungerTimes[i];
++						RAISE_ROW(type).hungerTimes[i];
+ 					goto calculateTimer;
+ 				}
+-			} else if (HOUR < RAISE_DATA[type].hungerTimes[i]) {
++			} else if (HOUR < RAISE_ROW(type).hungerTimes[i]) {
+ 				PARTNER_PARA.nextHungerHour =
+-					RAISE_DATA[type].hungerTimes[i];
++					RAISE_ROW(type).hungerTimes[i];
+ 				goto calculateTimer;
+ 			}
+ 
+-			if (RAISE_DATA[type].hungerTimes[i + 1] == -1 ||
++			if (RAISE_ROW(type).hungerTimes[i + 1] == -1 ||
+ 			    i == 7) {
+ 				int32_t j;
+ 
+ 				for (j = 0; j < 8; j++) {
+-					if (HOUR < RAISE_DATA[type].hungerTimes[j]) {
++					if (HOUR < RAISE_ROW(type).hungerTimes[j]) {
+ 						PARTNER_PARA.nextHungerHour =
+-							RAISE_DATA[type]
++							RAISE_ROW(type)
+ 								.hungerTimes[j];
+ 						goto calculateTimer;
+ 					}
+ 
+-					if (RAISE_DATA[type].hungerTimes[j + 1] == -1 ||
++					if (RAISE_ROW(type).hungerTimes[j + 1] == -1 ||
+ 					    j == 7) {
+ 						PARTNER_PARA.nextHungerHour =
+-							RAISE_DATA[type]
++							RAISE_ROW(type)
+ 								.hungerTimes[0];
+ 						goto calculateTimer;
+ 					}
+@@ -870,7 +870,7 @@ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+ 	EVOLUTION_TARGET = -1;
+ 	PARTNER_PARA.careMistakes = 0;
+ 	PARTNER_PARA.battles = 0;
+-	PARTNER_PARA.weight = RAISE_DATA[type].defaultWeight;
++	PARTNER_PARA.weight = RAISE_ROW(type).defaultWeight;
+ 
+ 	TAMER_ENTITY.raisedCount++;
+ 	if (TAMER_ENTITY.raisedCount >= 100)
+@@ -964,9 +964,9 @@ void tickConditionBoundaries(void)
+ 	}
+ 
+ 	if (PARTNER_PARA.energyLevel >
+-	    RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap) {
++	    RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap) {
+ 		PARTNER_PARA.energyLevel =
+-			RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap;
++			RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
+ 	}
+ 
+ 	if (PARTNER_PARA.energyLevel < 0) {
+@@ -1072,13 +1072,13 @@ void tickSleepMechanics(void)
+ 			PARTNER_PARA.wakeupMinute = 0;
+ 		} else {
+ 			PARTNER_PARA.sleepyHour =
+-				SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHour;
++				SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHour;
+ 			PARTNER_PARA.sleepyMinute =
+-				SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyMinute;
++				SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyMinute;
+ 			PARTNER_PARA.wakeupHour =
+-				SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupHour;
++				SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupHour;
+ 			PARTNER_PARA.wakeupMinute =
+-				SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupMinute;
++				SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupMinute;
+ 		}
+ 
+ 		PARTNER_PARA.timeAwakeToday =
+@@ -1262,13 +1262,13 @@ void handleSleeping(void)
+ 		PARTNER_PARA.wakeupMinute = 0;
+ 	} else {
+ 		PARTNER_PARA.sleepyHour =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyHour;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyHour;
+ 		PARTNER_PARA.sleepyMinute =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].sleepyMinute;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].sleepyMinute;
+ 		PARTNER_PARA.wakeupHour =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupHour;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupHour;
+ 		PARTNER_PARA.wakeupMinute =
+-			SLEEP_PATTERN[RAISE_DATA[type].sleepCycle].wakeupMinute;
++			SLEEP_PATTERN[RAISE_ROW(type).sleepCycle].wakeupMinute;
+ 	}
+ 
+ 	setFoodTimer((int16_t)type);
+@@ -1288,7 +1288,7 @@ void handleSleeping(void)
+ 		createPoopPile(tileX, tileY);
+ 		PARTNER_PARA.condition &= ~8;
+ 		PARTNER_PARA.poopLevel =
+-			RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++			RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type)
+ 				.poopTimer;
+ 		PARTNER_PARA.poopingTimer = -1;
+ 	}
+@@ -1356,7 +1356,7 @@ int32_t createPoopPile(int16_t tileX, int16_t tileY)
+ 				WORLD_POOP[i].x = tileX;
+ 				WORLD_POOP[i].y = tileY;
+ 				WORLD_POOP[i].size =
+-					RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopSize;
++					RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopSize;
+ 				break;
+ 			}
+ 		}
+@@ -1367,7 +1367,7 @@ int32_t createPoopPile(int16_t tileX, int16_t tileY)
+ 		WORLD_POOP[CURRENT_POOP_ID].x = tileX;
+ 		WORLD_POOP[CURRENT_POOP_ID].y = tileY;
+ 		WORLD_POOP[CURRENT_POOP_ID].size =
+-			RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopSize;
++			RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopSize;
+ 		CURRENT_POOP_ID++;
+ 	}
+ 	if (count >= 16) {
+@@ -1377,7 +1377,7 @@ int32_t createPoopPile(int16_t tileX, int16_t tileY)
+ 				WORLD_POOP[i].x = tileX;
+ 				WORLD_POOP[i].y = tileY;
+ 				WORLD_POOP[i].size =
+-					RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopSize;
++					RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopSize;
+ 				CURRENT_POOP_ID++;
+ 				break;
+ 			}
+@@ -1454,7 +1454,7 @@ void sleepRegen(void)
+ 		PARTNER_PARA.tiredness = 0;
+ 
+ 	PARTNER_PARA.weight -=
+-		(int16_t)(RAISE_DATA[ENTITY_TABLE[1]->type].defaultWeight / 10);
++		(int16_t)(RAISE_ROW(ENTITY_TABLE[1]->type).defaultWeight / 10);
+ 	if (PARTNER_PARA.weight <= 0)
+ 		PARTNER_PARA.weight = 1;
+ }
+@@ -1554,7 +1554,7 @@ int32_t partnerWillRefuseItem(void)
+ 		}
+ 	}
+ 	if (((isHungry = condition & 4) == 0) &&
+-	    (item == RAISE_DATA[type].favoriteFood) && (chance < 2))
++	    (item == RAISE_ROW(type).favoriteFood) && (chance < 2))
+ 		PARTNER_PARA.refusedFavFood = 2;
+ 
+ 	if (PARTNER_PARA.refusedFavFood != 0) {
+@@ -1581,7 +1581,7 @@ void tickHungerMechanics(void)
+ 
+ 	if (((CURRENT_FRAME % 1200) == 0) &&
+ 	    (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-		PARTNER_PARA.energyLevel -= RAISE_DATA[type].energyUsage;
++		PARTNER_PARA.energyLevel -= RAISE_ROW(type).energyUsage;
+ 		if (PARTNER_PARA.energyLevel < 0)
+ 			PARTNER_PARA.energyLevel = 0;
+ 	}
+@@ -1598,7 +1598,7 @@ void tickHungerMechanics(void)
+ 		PARTNER_PARA.starvationTimer = 0;
+ 		PARTNER_PARA.condition &= ~4;
+ 		if (PARTNER_PARA.energyLevel <
+-		    RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold)
++		    RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold)
+ 			PARTNER_PARA.careMistakes++;
+ 	}
+ 
+@@ -1617,7 +1617,7 @@ void tickHungerMechanics(void)
+ 	    (CURRENT_FRAME != LAST_HANDLED_FRAME))
+ 		PARTNER_PARA.foodLevel -= 3;
+ 
+-	if (RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold <=
++	if (RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold <=
+ 	    PARTNER_PARA.energyLevel)
+ 		setTrigger(0x280);
+ }
+@@ -1696,7 +1696,7 @@ void partnerHandleFoodFeed(int32_t itemType)
+ 		}
+ #endif
+ 
+-		if (!(RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold >
++		if (!(RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold >
+ 		      PARTNER_PARA.energyLevel)) {
+ 			PARTNER_PARA.happiness += 5;
+ 			PARTNER_PARA.discipline += 1;
+@@ -1706,9 +1706,9 @@ void partnerHandleFoodFeed(int32_t itemType)
+ 		}
+ 
+ 		if ((TAMER_ITEM.worldItem.type ==
+-		     RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].favoriteFood) ||
++		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).favoriteFood) ||
+ 		    !(PARTNER_PARA.energyLevel <
+-		      RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold)) {
++		      RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold)) {
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 			PARTNER_ANIMATION = 0xb;
+ #endif
+@@ -1806,11 +1806,11 @@ void handleToilet(void)
+ 	PARTNER_PARA.happiness += 2;
+ 	PARTNER_PARA.discipline += 2;
+ #if !VERSION_IS(US)
+-	PARTNER_PARA.poopLevel = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer;
++	PARTNER_PARA.poopLevel = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer;
+ #else
+ 	PARTNER_PARA.poopLevel =
+-		(RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer +
+-		 RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer);
++		(RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer +
++		 RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer);
+ #endif
+ 	PARTNER_PARA.condition &= ~8;
+ 	handlePoopWeightLoss(ENTITY_TABLE[1]->type);
+@@ -1822,7 +1822,7 @@ void handlePoopWeightLoss(int32_t type)
+ 
+ 	r = randomLimit(4);
+ 
+-	PARTNER_PARA.weight -= (r + RAISE_DATA[type].poopSize) / 4;
++	PARTNER_PARA.weight -= (r + RAISE_ROW(type).poopSize) / 4;
+ 	if (PARTNER_PARA.weight < 1) {
+ 		PARTNER_PARA.weight = 1;
+ 	}
+@@ -1835,11 +1835,11 @@ void handleWildPoop(void)
+ 	PARTNER_PARA.happiness -= 10;
+ 	PARTNER_PARA.discipline -= 5;
+ #if !VERSION_IS(US)
+-	PARTNER_PARA.poopLevel = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer;
++	PARTNER_PARA.poopLevel = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer;
+ #else
+ 	PARTNER_PARA.poopLevel =
+-		(RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer +
+-		 RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].poopTimer);
++		(RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer +
++		 RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer);
+ #endif
+ 
+ 	handlePoopWeightLoss(ENTITY_TABLE[1]->type);
+@@ -2041,13 +2041,13 @@ void skipHours(int16_t hours)
+ 		PARTNER_PARA.starvationTimer -= (int16_t)(hours * 120);
+ 		if ((PARTNER_PARA.starvationTimer <= 0) &&
+ 		    (PARTNER_PARA.energyLevel <
+-		     RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold))
++		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold))
+ 			PARTNER_PARA.careMistakes++;
+ 	} else {
+ 		PARTNER_PARA.foodLevel -= (int16_t)(hours * 60);
+ 	}
+ 	PARTNER_PARA.energyLevel -=
+-		RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyUsage;
++		RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if ((PARTNER_PARA.condition & 8) != 0)
+ 		PARTNER_PARA.poopingTimer -= 1200;
+ 	else
+@@ -2090,13 +2090,13 @@ void skipHours(int32_t hours)
+ 		PARTNER_PARA.starvationTimer -= (int16_t)(rawHours * 120);
+ 		if ((PARTNER_PARA.starvationTimer <= 0) &&
+ 		    (PARTNER_PARA.energyLevel <
+-		     RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold))
++		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold))
+ 			PARTNER_PARA.careMistakes++;
+ 	} else {
+ 		PARTNER_PARA.foodLevel -= (int16_t)(rawHours * 60);
+ 	}
+ 	PARTNER_PARA.energyLevel -=
+-		RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyUsage;
++		RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if ((PARTNER_PARA.condition & 8) != 0)
+ 		PARTNER_PARA.poopingTimer -= 1200;
+ 	else
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 68e02ac..8464a5c 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -11,6 +11,7 @@
+ #include <dw/params.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
+@@ -2926,6 +2927,9 @@ void setDigimonRaised(int32_t digimonId)
+ {
+ 	if (HAS_RAISED_FLAG(digimonId)) { /* MOD: + MasterTyrannomon (ids.h) */
+ 		setTrigger(RAISED_TRIGGER(digimonId)); /* MOD (partners-npc-b): was + 0x200 */
++	} else if ((uint32_t)digimonId < NUM_DIGIMON) {
++		/* MOD (scale): the species without a free trigger (new ones, Icemon, Meteormon...) */
++		SPECIES_RAISED_BITS[digimonId >> 3] |= 1 << (digimonId & 7);
+ 	}
+ }
+ 
+@@ -2938,9 +2942,14 @@ int32_t hasDigimonRaised(digimonId)
+ 	 * MOD: only types that have a raised flag. The original read trigger
+ 	 * 0x200 + any id; with MasterTyrannomon in Tyrannomon's evolution list
+ 	 * the evolution tie-break and the chart ask for 124 (trigger 636).
++	 * MOD (scale): the others have a bit in SPECIES_RAISED_BITS (saved in
++	 * the v2 extension).
+ 	 */
+ 	if (!HAS_RAISED_FLAG(digimonId)) {
+-		return 0;
++		if (digimonId >= NUM_DIGIMON) {
++			return 0;
++		}
++		return (SPECIES_RAISED_BITS[digimonId >> 3] >> (digimonId & 7)) & 1;
+ 	}
+ 	return isTriggerSet(RAISED_TRIGGER(digimonId)); /* MOD (partners-npc-b): was + 0x200 */
+ }
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 6107843..7bab232 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -780,11 +780,11 @@ void scriptInstruction10to27(op)
+ 
+ void scriptUpdateEnergyBoundaries(int32_t a0, int32_t a1)
+ {
+-	if (PARTNER_PARA.energyLevel > RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap) {
+-		PARTNER_PARA.energyLevel = RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyCap;
++	if (PARTNER_PARA.energyLevel > RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap) {
++		PARTNER_PARA.energyLevel = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
+ 	}
+ 	if (PARTNER_PARA.condition & 4) {
+-		if (RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold <= PARTNER_PARA.energyLevel) {
++		if (RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold <= PARTNER_PARA.energyLevel) {
+ 			PARTNER_PARA.condition &= ~4;
+ 			setFoodTimer(PARTNER_ENTITY.digimonEntity.entity.type);
+ 			PARTNER_PARA.starvationTimer = 0;
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 266f0d1..93ef7f2 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -55,7 +55,7 @@ unsigned long VHB_SOUNDBUFFER_START[NUM_SOUND_BUFFERS] = {
+ 	0x0,
+ };
+ 
+-uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
++uint8_t DIGIMON_VLALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	0x00,	/* main character */
+ 	0x00,	/* Botamon */
+ 	0x00,	/* Koromon */
+@@ -127,7 +127,7 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON
+ 	 * were outside it keep the voice the guards gave them (15);
+ 	 * MasterTyrannomon uses Tyrannomon's partner sounds.
+ 	 */
+-	[NUM_PARTNER_DIGIMON ... NUM_DIGIMON - 1] = 15,
++	[NUM_PARTNER_DIGIMON ... NUM_ORIGINAL_DIGIMON - 1] = 15,
+ 	[DIGIMON_MASTER_TYRANNOMON] = 0x02,
+ 	[DIGIMON_CHERRYMON] = 0x0e, /* MOD (cherrymon): Vegiemon's partner sounds */
+ 	[DIGIMON_KING_SUKAMON] = 0x06, /* MOD (partners-npc-a): Sukamon's partner sounds */
+@@ -970,11 +970,7 @@ int32_t loadPartnerSounds(int32_t type)
+ 	int32_t sector;
+ 	int32_t sectors;
+ 
+-	if ((type > 0) && (type < NUM_DIGIMON)) { /* MOD: was NUM_PARTNER_DIGIMON */
+-		soundId = DIGIMON_VLALL_SOUND_ID[type];
+-	} else {
+-		soundId = 15;
+-	}
++	soundId = getPartnerVlallSoundId(type); /* MOD (scale): was DIGIMON_VLALL_SOUND_ID[type] for type < NUM_PARTNER_DIGIMON, else 15 */
+ 
+ 	/* MOD (sound limits): the index instead of soundId * 15 */
+ 	if (!getSoundChunk(SOUND_FILE_VLALL, soundId, &sector, &sectors)) {
+diff --git a/src/main/sound_async.c b/src/main/sound_async.c
+index 8d088b3..ea60558 100644
+--- a/src/main/sound_async.c
++++ b/src/main/sound_async.c
+@@ -275,11 +275,7 @@ int32_t loadVLALL(int32_t idx, uint8_t *buffer)
+ 
+ 	readVBALLSection(4, idx);
+ 
+-	if ((idx >= 1) && (idx < NUM_DIGIMON)) { /* MOD: was idx <= 0x41 */
+-		soundId = DIGIMON_VLALL_SOUND_ID[idx];
+-	} else {
+-		soundId = 0xf;
+-	}
++	soundId = getPartnerVlallSoundId(idx); /* MOD (scale): 0xf outside the partner ids */
+ 
+ 	vabId = 3;
+ 	path = "VLALL";
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 5bb5bb0..241d15e 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -900,7 +900,7 @@ void advanceBattleTime(result)
+ 		PARTNER_PARA.starvationTimer -= 40;
+ 		if ((PARTNER_PARA.starvationTimer < 1) &&
+ 		    (PARTNER_PARA.energyLevel <
+-		     RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold)) {
++		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold)) {
+ 			++PARTNER_PARA.careMistakes;
+ 		}
+ 	} else {
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 2405f53..398da9b 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -15,6 +15,7 @@
+ #include <dw/params.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/std.h>
+ #include <dw/tournament.h>
+ #include <dw/ui.h>
+@@ -610,7 +611,7 @@ void startTournament(void)
+ 	if (i < 0xfe) {
+ 		if (id != 0x16) {
+ 			while ((i = *p++) < 0xfe) {
+-				if (isTriggerSet(i + TRIGGER_RECRUITED_BASE) != 0) {
++				if (isDigimonRecruited(i)) {
+ 					*w++ = i;
+ 					count++;
+ 				}
+@@ -623,7 +624,7 @@ void startTournament(void)
+ 		}
+ 	} else {
+ 		for (i = 0; i < NUM_RECRUITABLE_DIGIMON; i++) {
+-			if (isTriggerSet(i + TRIGGER_RECRUITED_BASE) != 0) {
++			if (isDigimonRecruited(i)) {
+ 				*w++ = i;
+ 				count++;
+ 			}
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index e62ebb2..1d2706e 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -597,7 +597,7 @@ CameraChase STD_INTRO_CAMERA_CHASE;
+ int32_t STD_IS_TIMER_INITIALIZED;
+ uint8_t STD_BRACKET_MATCH;
+ uint8_t STD_PLAYER_SLOT;
+-uint8_t PARTICIPANT_TYPES[8];
++uint16_t PARTICIPANT_TYPES[8]; /* MOD (scale): was u8; a partner can be a species >= 256 */
+ uint8_t STD_ROUND1_WINNERS[4];
+ uint8_t STD_ROUND2_WINNERS[2];
+ int32_t STD_BRACKET_FINISHED;
+@@ -666,6 +666,15 @@ static void *std_main_sbss_order[] = {
+ 	STD_STARTING_HP,
+ };
+ 
++/*
++ * MOD (scale): the name, portrait and projectile tables below cover types
++ * 0..111 only. A partner of another type (MasterTyrannomon, a species of
++ * DIGI.DAT) used to read past them; it now reads row 0 (a blank name) and has
++ * no portrait.
++ */
++#define STD_TABLE_TYPES 112
++#define STD_ROW(t) ((uint32_t)(t) < STD_TABLE_TYPES ? (uint32_t)(t) : 0)
++
+ // clang-format off
+ uint8_t STD_INTRO_DIGIMON_NAMES[112][14] = {
+ 	{
+@@ -1918,9 +1927,9 @@ void STD_renderIntroName(id)
+ 
+ 	charIndex = 0;
+ 	for (i = 0; i < STD_INTRO_DATA_RENDERED_CHARACTERS; ++i) {
+-		character = STD_INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++		character = STD_INTRO_DIGIMON_NAMES[STD_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 		if (character == 0x3d) {
+-			character = STD_INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++			character = STD_INTRO_DIGIMON_NAMES[STD_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 		}
+ 
+ 		if (i == STD_INTRO_DATA_RENDERED_CHARACTERS - 1) {
+@@ -1934,7 +1943,7 @@ void STD_renderIntroName(id)
+ 		STD_renderIntroNameChar((int16_t)STD_INTRO_DATA_POS_X + i * 32, y, size, character);
+ 
+ 		if (character == 0x1f || character == 0x25) {
+-			character = STD_INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++			character = STD_INTRO_DIGIMON_NAMES[STD_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 			STD_renderIntroNameChar((int16_t)STD_INTRO_DATA_POS_X + i * 32, y, size, character);
+ 		}
+ 	}
+@@ -3006,25 +3015,25 @@ void STD_drawBracket(void)
+ 		small = 0;
+ 		for (j = 0; j < len; j++) {
+ 			if (len < 8) {
+-				c = STD_INTRO_DIGIMON_NAMES[PARTICIPANT_TYPES[i]][p++];
++				c = STD_INTRO_DIGIMON_NAMES[STD_ROW(PARTICIPANT_TYPES[i])][p++];
+ 				STD_renderBracketGlyph((int16_t)(STD_BRACKET_PATHS[i].unk0[0] + 4),
+ 				                       (int16_t)(STD_BRACKET_ROW_Y[0] + 0x12 + j * 8), c, 5);
+ 				if (c == 0x1f || c == 0x25) {
+-					c = STD_INTRO_DIGIMON_NAMES[PARTICIPANT_TYPES[i]][p++];
++					c = STD_INTRO_DIGIMON_NAMES[STD_ROW(PARTICIPANT_TYPES[i])][p++];
+ 					STD_renderBracketGlyph((int16_t)(STD_BRACKET_PATHS[i].unk0[0] + 4),
+ 					                       (int16_t)(STD_BRACKET_ROW_Y[0] + 0x12 + j * 8), c, 5);
+ 				}
+ 			} else {
+-				c = STD_INTRO_DIGIMON_NAMES[PARTICIPANT_TYPES[i]][p++];
++				c = STD_INTRO_DIGIMON_NAMES[STD_ROW(PARTICIPANT_TYPES[i])][p++];
+ 				if (c == 0x3d) {
+ 					small = 1;
+-					c = STD_INTRO_DIGIMON_NAMES[PARTICIPANT_TYPES[i]][p++];
++					c = STD_INTRO_DIGIMON_NAMES[STD_ROW(PARTICIPANT_TYPES[i])][p++];
+ 					shift = -((j - 1) * 8);
+ 				}
+ 				STD_renderBracketGlyph((int16_t)((small == 0) ? STD_BRACKET_PATHS[i].unk0[0] + 8 : STD_BRACKET_PATHS[i].unk0[0]),
+ 				                       (int16_t)(shift + (STD_BRACKET_ROW_Y[0] + 0x12 + j * 8)), c, 5);
+ 				if (c == 0x1f || c == 0x25) {
+-					c = STD_INTRO_DIGIMON_NAMES[PARTICIPANT_TYPES[i]][p++];
++					c = STD_INTRO_DIGIMON_NAMES[STD_ROW(PARTICIPANT_TYPES[i])][p++];
+ 					STD_renderBracketGlyph((int16_t)((small == 0) ? STD_BRACKET_PATHS[i].unk0[0] + 8 : STD_BRACKET_PATHS[i].unk0[0]),
+ 					                       (int16_t)(shift + (STD_BRACKET_ROW_Y[0] + 0x12 + j * 8)), c, 5);
+ 				}
+@@ -3083,7 +3092,7 @@ void STD_addBracketHitFlash(int16_t i)
+ void STD_renderBracketDigimon(int16_t id)
+ {
+ 	POLY_FT4 *prim;
+-	uint8_t tile;
++	uint32_t tile;
+ 	uint8_t u;
+ 	uint8_t v;
+ #if !VERSION_IS(US)
+@@ -3097,6 +3106,9 @@ void STD_renderBracketDigimon(int16_t id)
+ #endif
+ 
+ 	tile = PARTICIPANT_TYPES[id];
++	if (tile == 0 || tile >= STD_TABLE_TYPES) {
++		return; /* MOD (scale): no portrait for a type outside the tables */
++	}
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	SetPolyFT4(prim);
+ 	if (STD_BRACKET_FADE != 0) {
+@@ -3210,7 +3222,7 @@ static int32_t stdWinChanceRow(int32_t type)
+ {
+ 	int32_t level = DIGI_PARA(type).level;
+ 
+-	return (level > 5 ? 5 : level) - 3;
++	return (level > 5 ? 5 : level < 3 ? 3 : level) - 3; /* MOD (scale): never a negative row */
+ }
+ 
+ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+@@ -3401,8 +3413,8 @@ void STD_renderBracketProjectile(int16_t id)
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+ 	prim->tpage = GetTPage(0, 2, 0x3c0, 0);
+ 	prim->clut = GetClut(0x130,
+-	                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[PARTICIPANT_TYPES[id]] - 1] + 0x1e0);
+-	setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[PARTICIPANT_TYPES[id]] * 8 - 8, 0xc0, 8, 8);
++	                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] - 1] + 0x1e0);
++	setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] * 8 - 8, 0xc0, 8, 8);
+ 	setPosDataPolyFT4(prim, STD_BRACKET_PROJECTILES[id].x, STD_BRACKET_PROJECTILES[id].y, 8, 8);
+ 	if (STD_BRACKET_SLOTS[id].unk6 == 1) {
+ 		swapShort(&prim->x0, &prim->x1);
+@@ -3416,8 +3428,8 @@ void STD_renderBracketProjectile(int16_t id)
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		prim->tpage = GetTPage(0, 2, 0x3c0, 0);
+ 		prim->clut = GetClut(0x130,
+-		                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[PARTICIPANT_TYPES[id]] - 1] + 0x1e0);
+-		setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[PARTICIPANT_TYPES[id]] * 8 - 8, 0xc0, 8, 8);
++		                     STD_BRACKET_PROJECTILE_CLUTS[STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] - 1] + 0x1e0);
++		setUVDataPolyFT4(prim, STD_BRACKET_PROJECTILE_ICONS[STD_ROW(PARTICIPANT_TYPES[id])] * 8 - 8, 0xc0, 8, 8);
+ 		setPosDataPolyFT4(prim, STD_BRACKET_PROJECTILES[id].x, STD_BRACKET_PROJECTILES[id].y + 8, 8, 8);
+ 		if (STD_BRACKET_SLOTS[id].unk6 == 1) {
+ 			swapShort(&prim->x0, &prim->x1);
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 816fe3c..a39df62 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -53,7 +53,7 @@ static void *trn_reward_functions[] = {
+ };
+ 
+ // clang-format off
+-int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
++int8_t TRN_TRAINING_ANIM_IDS[NUM_ORIGINAL_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
+ 	{ 0x0, 0x0 }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x33, 0xc },
+ 	{ 0x2e, 0x14 }, { 0x35, 0x14 }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x35, 0xd }, { 0x2e, 0xa }, { 0x2e, 0x14 },
+@@ -621,7 +621,7 @@ int16_t TRN_calculateTrainingMultiplier(int32_t type, int16_t mode, int16_t flag
+ 
+ 	num = 0;
+ 	den = 0;
+-	tt = RAISE_DATA[type].trainingType;
++	tt = RAISE_ROW(type).trainingType;
+ 	switch (mode) {
+ 	case 0:
+ 		if ((tt == 0) || (tt == 1)) {
+@@ -794,7 +794,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 	if (PARTNER_PARA.condition & 4) {
+ 		PARTNER_PARA.starvationTimer -= 0x78;
+ 		if (PARTNER_PARA.starvationTimer <= 0) {
+-			if (PARTNER_PARA.energyLevel < RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold) {
++			if (PARTNER_PARA.energyLevel < RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold) {
+ 				PARTNER_PARA.careMistakes++;
+ 			}
+ 		}
+@@ -802,7 +802,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 		PARTNER_PARA.foodLevel -= 0x3c;
+ 	}
+ 
+-	PARTNER_PARA.energyLevel -= RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyUsage;
++	PARTNER_PARA.energyLevel -= RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if (PARTNER_PARA.condition & 8) {
+ 		PARTNER_PARA.poopingTimer -= 0x4b0;
+ 	} else {
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 3984d6e..488ee7d 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -146,7 +146,7 @@ int16_t TRN2_calculateTrainingMultiplier(type, mode)
+ 	int16_t result;
+ 
+ 	num = 0;
+-	tt = RAISE_DATA[type].trainingType;
++	tt = RAISE_ROW(type).trainingType;
+ 	switch (mode) {
+ 	case 0:
+ 		if ((tt == 0) || (tt == 1)) {
+@@ -292,7 +292,7 @@ void TRN2_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t hap
+ 	if (PARTNER_PARA.condition & 4) {
+ 		PARTNER_PARA.starvationTimer -= 0xc;
+ 		if (PARTNER_PARA.starvationTimer <= 0) {
+-			if (PARTNER_PARA.energyLevel < RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyThreshold) {
++			if (PARTNER_PARA.energyLevel < RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold) {
+ 				PARTNER_PARA.careMistakes++;
+ 			}
+ 		}
+@@ -300,7 +300,7 @@ void TRN2_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t hap
+ 		PARTNER_PARA.foodLevel -= 0x3d;
+ 	}
+ 
+-	PARTNER_PARA.energyLevel -= RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].energyUsage;
++	PARTNER_PARA.energyLevel -= RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if (PARTNER_PARA.condition & 8) {
+ 		PARTNER_PARA.poopingTimer -= 0x4b0;
+ 	} else {
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index e092ff7..87fbda1 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -35,7 +35,7 @@ static void *trn2_off_functions[] = {
+ int16_t MAIN_D_801353C6;
+ 
+ // clang-format off
+-int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
++int8_t TRN2_TRAINING_ANIM_IDS[NUM_ORIGINAL_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
+ 	{ 0x0, 0x0 }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x33, 0xc },
+ 	{ 0x2e, 0x14 }, { 0x35, 0x14 }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x35, 0xd }, { 0x2e, 0xa }, { 0x2e, 0x14 },
+diff --git a/src/vs/vs_intro.c b/src/vs/vs_intro.c
+index 53bcda4..4867f6e 100644
+--- a/src/vs/vs_intro.c
++++ b/src/vs/vs_intro.c
+@@ -565,9 +565,9 @@ void VS__renderIntroName(id)
+ 
+ 	charIndex = 0;
+ 	for (i = 0; i < VS__INTRO_DATA_RENDERED_CHARACTERS; ++i) {
+-		character = VS__INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++		character = VS__INTRO_DIGIMON_NAMES[VS_NAME_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 		if (character == 0x3d) {
+-			character = VS__INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++			character = VS__INTRO_DIGIMON_NAMES[VS_NAME_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 		}
+ 
+ 		if (i == VS__INTRO_DATA_RENDERED_CHARACTERS - 1) {
+@@ -581,7 +581,7 @@ void VS__renderIntroName(id)
+ 		VS__renderIntroNameChar((int16_t)VS__INTRO_DATA_POS_X + i * 32, y, size, character);
+ 
+ 		if (character == 0x1f || character == 0x25) {
+-			character = VS__INTRO_DIGIMON_NAMES[ENTITY_TABLE[id]->type][charIndex++];
++			character = VS__INTRO_DIGIMON_NAMES[VS_NAME_ROW(ENTITY_TABLE[id]->type)][charIndex++];
+ 			VS__renderIntroNameChar((int16_t)VS__INTRO_DATA_POS_X + i * 32, y, size, character);
+ 		}
+ 	}
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index b6b30fc..6afa967 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -1294,7 +1294,7 @@ void VS_renderFighterNamePlate(int16_t side)
+ 		SetPolyFT4(prim);
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		prim->tpage = getTPage(0, 0, 896, 0);
+-		prim->clut = GetClut(0x120, VS_DIGIMON_SPRITE_CLUT[type] + 0x1e0);
++		prim->clut = GetClut(0x120, VS_DIGIMON_SPRITE_CLUT[type < 68 ? type : 0] + 0x1e0);
+ 		if (type == 0x73) {
+ 			u = 0xe0;
+ 			v = 0xe0;
+diff --git a/src/vs/vs_select.c b/src/vs/vs_select.c
+index 05e528d..f465fcb 100644
+--- a/src/vs/vs_select.c
++++ b/src/vs/vs_select.c
+@@ -746,7 +746,7 @@ void VS__renderSelectDigimonPlayer(id)
+ 		type = fighters[st->slotIds[baseIdx + i]].digimonId;
+ 		VS__setPolyFT4White(prim);
+ 		prim->tpage = 14;
+-		prim->clut = GetClut(0x120, DIGIMON_SPRITE_CLUT[type] + 0x1e0);
++		prim->clut = GetClut(0x120, DIGIMON_SPRITE_CLUT[type < 68 ? type : 0] + 0x1e0); /* MOD (scale): the table covers 68 types */
+ 		if (type == 0x73) {
+ 			spriteU = (st->unk4 * 16) + 0x3e0;
+ 			spriteV = 0xe0;
+-- 
+2.53.0
+

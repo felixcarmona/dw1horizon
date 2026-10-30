@@ -1,0 +1,16 @@
+{
+  "id": 110,
+  "name": "Glacial Blast",
+  "element": 255,
+  "power": 0,
+  "mpCost": 0,
+  "distance": 0,
+  "range": 0,
+  "accuracy": 0,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0
+}

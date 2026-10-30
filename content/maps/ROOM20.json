@@ -1,0 +1,40 @@
+{
+  "file": "MAP/MAP16/ROOM20.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Penguinmon176",
+      "at": [0, 0],
+      "facing": 3072,
+      "follow": 1,
+      "range": 0,
+      "script": 6,
+      "charge": 1,
+      "moves": [55, 57, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1311, 2991],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "MetalGreymonVirus149",
+      "at": [0, 0],
+      "facing": 3072,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "hp": "+599",
+      "mp": "+1599",
+      "off": "+160",
+      "def": "+160",
+      "speed": "+160",
+      "brain": "+160",
+      "moves": [55, 57, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [1311, 2991],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

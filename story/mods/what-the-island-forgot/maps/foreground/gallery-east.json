@@ -1,0 +1,221 @@
+{
+  "screen": 345,
+  "review": "Both side doorway posts overlap perspective character bodies and receive SAM silhouettes at their visible bases. Retain the seven individual blocked base cells. Rear crates, barrels, sign and plaques remain at the floor boundary; the rear recess is storage, not an exit.",
+  "collision": [
+    {
+      "tile": [
+        44,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        45,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        46,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        52,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        55,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        56,
+        47
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        32,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of rear prop or doorway jamb"
+    },
+    {
+      "tile": [
+        70,
+        52
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid ground contact of the right entry post; perspective body checks found reachable feet on its base"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "345-left-entry-post.png",
+      "at": [
+        115,
+        168
+      ],
+      "depth": [
+        160,
+        329
+      ],
+      "segmentation": {
+        "box": [
+          126,
+          188,
+          180,
+          335
+        ],
+        "positive": [
+          [
+            141,
+            200
+          ],
+          [
+            145,
+            228
+          ],
+          [
+            151,
+            264
+          ],
+          [
+            159,
+            300
+          ],
+          [
+            163,
+            322
+          ],
+          [
+            152,
+            322
+          ]
+        ],
+        "negative": [
+          [
+            130,
+            260
+          ],
+          [
+            178,
+            269
+          ],
+          [
+            176,
+            320
+          ],
+          [
+            142,
+            332
+          ]
+        ],
+        "score": 0.9725226163864136,
+        "area": 4778,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "345-right-entry-post.png",
+      "depth": [
+        794,
+        351
+      ],
+      "at": [
+        778,
+        196
+      ],
+      "segmentation": {
+        "box": [
+          773,
+          189,
+          840,
+          339
+        ],
+        "positive": [
+          [
+            823,
+            213
+          ],
+          [
+            809,
+            259
+          ],
+          [
+            793,
+            317
+          ]
+        ],
+        "negative": [
+          [
+            827,
+            283
+          ],
+          [
+            781,
+            270
+          ],
+          [
+            815,
+            332
+          ]
+        ],
+        "score": 0.9755464792251587,
+        "area": 4356,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/gallery-east-2400x1792.png",
+    "source_sha1": "3023f96674d864ecdd5edcbbe5f0d1b30af4b790",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact."
+}

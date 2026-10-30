@@ -1,0 +1,17 @@
+{
+  "id": 43,
+  "name": "Sonic Jab",
+  "element": "battle",
+  "power": 52,
+  "mpCost": 6,
+  "distance": 0,
+  "range": 1,
+  "accuracy": 53,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [26, 19, 14]
+}

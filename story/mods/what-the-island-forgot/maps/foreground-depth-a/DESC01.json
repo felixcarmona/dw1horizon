@@ -1,0 +1,248 @@
+{
+  "screen": 303,
+  "art": "descent",
+  "review": "Three SAM near-face silhouettes cover reachable approaches along the switchbacks. The lowest shelf has no reachable rear overlap and remains background; its solid face cells stay blocked. Preserve the accepted entry-step piece, with tiers connected only at their actual turns.",
+  "pieces": [
+    {
+      "name": "upper-rock-lip",
+      "png": "303-upper-rock-lip.png",
+      "at": [
+        206,
+        117
+      ],
+      "depth": null,
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/descent-1856x2304.jpg",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "box": [
+          204,
+          145,
+          550,
+          285
+        ],
+        "positive": [
+          [
+            245,
+            216
+          ],
+          [
+            370,
+            229
+          ],
+          [
+            463,
+            258
+          ],
+          [
+            400,
+            174
+          ]
+        ],
+        "negative": [
+          [
+            260,
+            180
+          ],
+          [
+            382,
+            278
+          ],
+          [
+            543,
+            245
+          ]
+        ],
+        "score": 0.9513281583786011,
+        "fill_holes": true,
+        "min_component_area": 12
+      }
+    },
+    {
+      "name": "middle-rock-lip",
+      "png": "303-middle-rock-lip.png",
+      "at": [
+        81,
+        304
+      ],
+      "depth": null,
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/descent-1856x2304.jpg",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "box": [
+          86,
+          294,
+          458,
+          439
+        ],
+        "positive": [
+          [
+            164,
+            343
+          ],
+          [
+            313,
+            384
+          ],
+          [
+            404,
+            374
+          ]
+        ],
+        "negative": [
+          [
+            163,
+            291
+          ],
+          [
+            371,
+            425
+          ],
+          [
+            464,
+            366
+          ]
+        ],
+        "score": 0.9492193460464478,
+        "fill_holes": true,
+        "min_component_area": 12
+      }
+    },
+    {
+      "name": "lower-rock-lip",
+      "png": "303-lower-rock-lip.png",
+      "at": [
+        220,
+        448
+      ],
+      "depth": null,
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/descent-1856x2304.jpg",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "box": [
+          211,
+          439,
+          538,
+          572
+        ],
+        "positive": [
+          [
+            257,
+            483
+          ],
+          [
+            400,
+            518
+          ],
+          [
+            490,
+            541
+          ]
+        ],
+        "negative": [
+          [
+            274,
+            441
+          ],
+          [
+            450,
+            579
+          ],
+          [
+            543,
+            509
+          ]
+        ],
+        "score": 0.9584567546844482,
+        "fill_holes": true,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        51,
+        24
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of upper-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        52,
+        24
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of upper-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        47,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of middle-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        48,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of middle-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        49,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of middle-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        53,
+        67
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of last-rock-lip is not floor; centre of this tile lies on the traced face."
+    },
+    {
+      "tile": [
+        54,
+        67
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Rock face of last-rock-lip is not floor; centre of this tile lies on the traced face."
+    }
+  ],
+  "depth_planes": {
+    "width": 64,
+    "height": 12
+  }
+}

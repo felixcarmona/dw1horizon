@@ -1,0 +1,1438 @@
+{
+  "screen": 358,
+  "review": "Door leaves project onto the courtyard; lintels hide characters entering each opening. Roofs and rear trees have no floor behind them. Preserve four doorway approaches and the west road. Pond and barrel remain solid.",
+  "collision": [
+    {
+      "tile": [
+        25,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        26,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        27,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        28,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        34,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        35,
+        34
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "pond retained footprint"
+    },
+    {
+      "tile": [
+        36,
+        35
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        37,
+        35
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        35
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        36,
+        36
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        37,
+        36
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        36
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        36,
+        37
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        37,
+        37
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        37
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        37,
+        38
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        38
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        62,
+        38
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        63,
+        38
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        37,
+        39
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        39
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        62,
+        39
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        63,
+        39
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        37,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        38,
+        40
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        62,
+        40
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        63,
+        40
+      ],
+      "before": 112,
+      "after": 128,
+      "reason": "cold-door ground footprint"
+    },
+    {
+      "tile": [
+        37,
+        42
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrel ground footprint"
+    },
+    {
+      "tile": [
+        38,
+        42
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrel ground footprint"
+    },
+    {
+      "tile": [
+        37,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrel ground footprint"
+    },
+    {
+      "tile": [
+        38,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrel ground footprint"
+    },
+    {
+      "tile": [
+        39,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "forge-left-door ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        43
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "forge-left-door ground footprint"
+    },
+    {
+      "tile": [
+        39,
+        44
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "forge-left-door ground footprint"
+    },
+    {
+      "tile": [
+        49,
+        45
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "forge-right-door ground footprint"
+    },
+    {
+      "tile": [
+        49,
+        46
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "forge-right-door ground footprint"
+    },
+    {
+      "tile": [
+        56,
+        54
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        57,
+        54
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        56,
+        55
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        57,
+        55
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        59,
+        55
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        56,
+        56
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        57,
+        56
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        56
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        59,
+        56
+      ],
+      "before": 113,
+      "after": 128,
+      "reason": "market-left-door ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        74
+      ],
+      "before": 114,
+      "after": 128,
+      "reason": "container-door ground footprint"
+    },
+    {
+      "tile": [
+        61,
+        74
+      ],
+      "before": 114,
+      "after": 128,
+      "reason": "container-door ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        75
+      ],
+      "before": 114,
+      "after": 128,
+      "reason": "container-door ground footprint"
+    },
+    {
+      "tile": [
+        61,
+        75
+      ],
+      "before": 114,
+      "after": 128,
+      "reason": "container-door ground footprint"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "the-courtyard-forge-left-door.png",
+      "at": [
+        243,
+        198
+      ],
+      "depth": [
+        262,
+        274
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              238,
+              193,
+              285,
+              278
+            ],
+            "positive": [
+              [
+                262,
+                220
+              ]
+            ],
+            "negative": [
+              [
+                239,
+                277
+              ],
+              [
+                284,
+                277
+              ]
+            ],
+            "score": 0.9822460412979126
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-forge-right-door.png",
+      "at": [
+        360,
+        207
+      ],
+      "depth": [
+        374,
+        292
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              356,
+              201,
+              386,
+              295
+            ],
+            "positive": [
+              [
+                371,
+                269
+              ]
+            ],
+            "negative": [
+              [
+                357,
+                294
+              ],
+              [
+                385,
+                294
+              ]
+            ],
+            "score": 0.9667767286300659
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-forge-lintel.png",
+      "at": [
+        274,
+        189
+      ],
+      "depth": [
+        321,
+        271
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3,
+          "largest_component": true
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              235,
+              186,
+              374,
+              216
+            ],
+            "positive": [
+              [
+                255,
+                198
+              ]
+            ],
+            "negative": [
+              [
+                236,
+                215
+              ],
+              [
+                373,
+                215
+              ]
+            ],
+            "score": 0.8294445276260376
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-cold-door.png",
+      "at": [
+        535,
+        178
+      ],
+      "depth": [
+        551,
+        252
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              533,
+              173,
+              571,
+              256
+            ],
+            "positive": [
+              [
+                552,
+                202
+              ]
+            ],
+            "negative": [
+              [
+                534,
+                255
+              ],
+              [
+                570,
+                255
+              ]
+            ],
+            "score": 0.983950138092041
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-market-left-door.png",
+      "at": [
+        469,
+        304
+      ],
+      "depth": [
+        496,
+        374
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              466,
+              301,
+              527,
+              376
+            ],
+            "positive": [
+              [
+                497,
+                332
+              ]
+            ],
+            "negative": [
+              [
+                467,
+                375
+              ],
+              [
+                526,
+                375
+              ]
+            ],
+            "score": 0.9965790510177612
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-market-right-door.png",
+      "at": [
+        607,
+        328
+      ],
+      "depth": [
+        625,
+        418
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              605,
+              322,
+              641,
+              420
+            ],
+            "positive": [
+              [
+                622,
+                389
+              ]
+            ],
+            "negative": [
+              [
+                606,
+                419
+              ],
+              [
+                640,
+                419
+              ]
+            ],
+            "score": 0.9782081842422485
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-market-lintel.png",
+      "at": [
+        492,
+        286
+      ],
+      "depth": [
+        549,
+        383
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              482,
+              280,
+              632,
+              340
+            ],
+            "positive": [
+              [
+                535,
+                301
+              ],
+              [
+                565,
+                305
+              ],
+              [
+                595,
+                319
+              ],
+              [
+                615,
+                328
+              ]
+            ],
+            "negative": [
+              [
+                530,
+                330
+              ],
+              [
+                550,
+                336
+              ],
+              [
+                570,
+                343
+              ],
+              [
+                595,
+                350
+              ],
+              [
+                530,
+                281
+              ]
+            ],
+            "score": 0.887332558631897
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-container-door.png",
+      "at": [
+        543,
+        487
+      ],
+      "depth": [
+        554,
+        558
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              538,
+              484,
+              574,
+              562
+            ],
+            "positive": [
+              [
+                556,
+                520
+              ]
+            ],
+            "negative": [
+              [
+                539,
+                561
+              ],
+              [
+                573,
+                561
+              ]
+            ],
+            "score": 0.9786161184310913
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-container-lintel.png",
+      "at": [
+        568,
+        483
+      ],
+      "depth": [
+        577,
+        550
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              562,
+              480,
+              609,
+              493
+            ],
+            "positive": [
+              [
+                575,
+                485
+              ],
+              [
+                592,
+                489
+              ],
+              [
+                600,
+                490
+              ]
+            ],
+            "negative": [
+              [
+                580,
+                496
+              ],
+              [
+                595,
+                498
+              ],
+              [
+                580,
+                477
+              ],
+              [
+                610,
+                491
+              ]
+            ],
+            "score": 0.8528953790664673
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-barrel.png",
+      "at": [
+        219,
+        217
+      ],
+      "depth": [
+        231,
+        267
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              216,
+              211,
+              246,
+              270
+            ],
+            "positive": [
+              [
+                231,
+                233
+              ]
+            ],
+            "negative": [
+              [
+                217,
+                269
+              ],
+              [
+                245,
+                269
+              ]
+            ],
+            "score": 0.9677692651748657
+          }
+        ]
+      }
+    },
+    {
+      "png": "the-courtyard-anvil.png",
+      "at": [
+        381,
+        266
+      ],
+      "depth": [
+        408,
+        295
+      ],
+      "source": "the-courtyard.png",
+      "segmentation": {
+        "native_size": [
+          768,
+          640
+        ],
+        "source_art": "the-courtyard.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-the-courtyard.jpg",
+            "source_sha1": "1897acb769af1c561b01ed168177be3e7ad9590b",
+            "native_to_source": [
+              [
+                2.88,
+                0,
+                46.08
+              ],
+              [
+                0,
+                2.9,
+                0
+              ]
+            ],
+            "box": [
+              378,
+              266,
+              434,
+              298
+            ],
+            "positive": [
+              [
+                403,
+                281
+              ]
+            ],
+            "negative": [
+              [
+                379,
+                297
+              ],
+              [
+                433,
+                297
+              ]
+            ],
+            "score": 0.9495766162872314
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": null,
+  "footprints": {
+    "forge-left-door": [
+      [
+        241,
+        258
+      ],
+      [
+        279,
+        247
+      ],
+      [
+        281,
+        267
+      ],
+      [
+        244,
+        279
+      ]
+    ],
+    "forge-right-door": [
+      [
+        359,
+        269
+      ],
+      [
+        381,
+        283
+      ],
+      [
+        389,
+        298
+      ],
+      [
+        367,
+        291
+      ]
+    ],
+    "cold-door": [
+      [
+        536,
+        236
+      ],
+      [
+        563,
+        231
+      ],
+      [
+        568,
+        251
+      ],
+      [
+        537,
+        257
+      ]
+    ],
+    "market-left-door": [
+      [
+        469,
+        355
+      ],
+      [
+        522,
+        354
+      ],
+      [
+        523,
+        376
+      ],
+      [
+        469,
+        379
+      ]
+    ],
+    "market-right-door": [
+      [
+        608,
+        389
+      ],
+      [
+        637,
+        407
+      ],
+      [
+        642,
+        425
+      ],
+      [
+        612,
+        412
+      ]
+    ],
+    "container-door": [
+      [
+        540,
+        540
+      ],
+      [
+        568,
+        532
+      ],
+      [
+        573,
+        554
+      ],
+      [
+        542,
+        563
+      ]
+    ],
+    "barrel": [
+      [
+        218,
+        251
+      ],
+      [
+        241,
+        251
+      ],
+      [
+        244,
+        272
+      ],
+      [
+        219,
+        274
+      ]
+    ],
+    "anvil": [
+      [
+        389,
+        286
+      ],
+      [
+        419,
+        286
+      ],
+      [
+        421,
+        299
+      ],
+      [
+        388,
+        299
+      ]
+    ]
+  }
+}

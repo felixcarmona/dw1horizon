@@ -1,0 +1,149 @@
+{
+ "s029.sec51.m0.o0": "Lo farò!",
+ "s029.sec51.m0.o1": "Scusa, un altro giorno",
+ "s029.sec51.m1.o0": "Lo farò!",
+ "s029.sec51.m1.o1": "Scusa, un altro giorno",
+ "s029.sec51.u0": [
+  [
+   "Ehi, quasi tutta la terra è",
+   "stata portata fuori. Grazie a",
+   "te il lavoro procede benissimo."
+  ],
+  [
+   "Aspetta ancora un po'."
+  ]
+ ],
+ "s029.sec51.u1": [
+  [
+   "Oh, Ottimo lavoro. Ecco la tua",
+   "paga."
+  ]
+ ],
+ "s029.sec51.u2": [
+  [
+   "Ricevuti 500 Bit per il lavoro!",
+   "HP +50! Attacco +5! Difesa",
+   "+5!"
+  ]
+ ],
+ "s029.sec51.u3": [
+  [
+   "Scarica la terra fuori dal",
+   "tunnel."
+  ]
+ ],
+ "s029.sec51.u4": [
+  [
+   "Forza, prendi un po' di terra",
+   "da quel mucchio."
+  ]
+ ],
+ "s029.sec51.u5": [
+  [
+   "Mh, vuoi trasportare terra?",
+   "Sei piuttosto stanco. Prima",
+   "riposati, poi torna."
+  ]
+ ],
+ "s029.sec51.u6": [
+  [
+   "Mh, vuoi trasportare terra?"
+  ]
+ ],
+ "s029.sec51.u7": [
+  [
+   "Chi sei? Qui è pericoloso per i",
+   "dilettanti, sta' alla larga."
+  ]
+ ],
+ "s029.sec51.u8": [
+  [
+   "Chi sei? Questo tunnel non è",
+   "ancora aperto. Non stare tra i",
+   "piedi."
+  ]
+ ],
+ "s029.sec51.u9": [
+  [
+   "Ah, Mi dispiace. Quando pensi",
+   "che sarà aperto?"
+  ]
+ ],
+ "s029.sec51.u10": [
+  [
+   "Chissà? Ci vorrà ancora",
+   "parecchio."
+  ]
+ ],
+ "s029.sec51.u11": [
+  [
+   "Mh, è un problema... Non",
+   "possiamo fare qualcosa per",
+   "aiutare?"
+  ]
+ ],
+ "s029.sec51.u12": [
+  [
+   "Ehi, vuoi togliermi il",
+   "divertimento? Aspetta...",
+   "Trasportare terra, quello"
+  ],
+  [
+   "potreste farlo persino voi."
+  ]
+ ],
+ "s029.sec51.u13": [
+  [
+   "Ah, Di che si tratta?"
+  ]
+ ],
+ "s029.sec51.u14": [
+  [
+   "Questa è la terra che ho",
+   "scavato. Portala fuori dal",
+   "tunnel e scaricala."
+  ]
+ ],
+ "s029.sec51.u15": [
+  [
+   "È un lavoro faticoso, quindi ti",
+   "pagherò. 500 Bit per ogni",
+   "viaggio di andata e ritorno."
+  ]
+ ],
+ "s029.sec51.u16": [
+  [
+   "Gli scavi procedono più in",
+   "fretta, mi pagano... ed è anche",
+   "allenamento... Potrebbe essere"
+  ],
+  [
+   "un buon affare...!"
+  ]
+ ],
+ "s029.sec51.u17": [
+  [
+   "Come trasportare terra:",
+   "mettiti davanti alla terra e",
+   "premi {color 6}×{color 1} per prendere una"
+  ],
+  [
+   "cassa. Esci dal tunnel e si",
+   "svuoterà da sola. Dopo ogni",
+   "viaggio di andata e ritorno,"
+  ],
+  [
+   "parla con Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": [
+  [
+   "Che c'è, ti tiri indietro?"
+  ]
+ ],
+ "s029.sec81.u0": [
+  [
+   "Raccolta una cassa di terra."
+  ]
+ ]
+}

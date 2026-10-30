@@ -1,0 +1,122 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 198,
+ "type": 198,
+ "name": "Nefertimon",
+ "source": {
+  "type": 47,
+  "mmd": "extracted/CHDAT/MMD1/MONO.MMD"
+ },
+ "map": {
+  "1": 6,
+  "2": 3,
+  "3": 5,
+  "4": 8,
+  "5": 7,
+  "6": 9,
+  "7": 10,
+  "8": 11,
+  "10": 1,
+  "11": 18,
+  "12": 19,
+  "13": 20,
+  "14": 21,
+  "15": 22,
+  "16": 23,
+  "19": 13,
+  "20": 17
+ },
+ "hips": [
+  10,
+  1,
+  0.887
+ ],
+ "root_scale": 0.887,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 64,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 64,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 69,
+   "end": 159,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 40,
+   "end": 120,
+   "hz": 0.3
+  },
+  "0x39": {
+   "anim": "anim_02",
+   "start": 3,
+   "end": 97,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x38": {
+   "anim": "anim_01",
+   "start": 43,
+   "end": 155,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_03",
+   "start": 120,
+   "end": 189,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

@@ -1,0 +1,105 @@
+{
+  "transparent": 159,
+  "reserve_transparency": true,
+  "replace_index": 153,
+  "screen": 366,
+  "review": "Cut only our RGBA retouch; preserve every original foreground instance outside the replaced art.",
+  "collision": [],
+  "new_pages": [],
+  "pieces": [
+    {
+      "png": "nest-fallen-torn-near-rim.png",
+      "at": [
+        135,
+        304
+      ],
+      "depth": null,
+      "strip_width": 8,
+      "segmentation": {
+        "native_size": [
+          300,
+          240
+        ],
+        "source_art": "gcan10-nest-fallen.png",
+        "source_offset": [
+          0,
+          125
+        ],
+        "boundary_mode": "inside_lower_9",
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-nest-fallen.png",
+            "source_sha1": "e4f8afcc784d5a9dd178194c6003c5ea895d19e2",
+            "native_to_source": [
+              [
+                7.68,
+                0,
+                0
+              ],
+              [
+                0,
+                7.733333333333333,
+                0
+              ]
+            ],
+            "box": [
+              130,
+              130,
+              296,
+              228
+            ],
+            "positive": [
+              [
+                180,
+                185
+              ],
+              [
+                210,
+                177
+              ],
+              [
+                235,
+                161
+              ],
+              [
+                150,
+                205
+              ]
+            ],
+            "negative": [
+              [
+                200,
+                218
+              ],
+              [
+                230,
+                201
+              ],
+              [
+                274,
+                189
+              ],
+              [
+                130,
+                175
+              ],
+              [
+                200,
+                145
+              ]
+            ],
+            "score": 0.9483473300933838
+          }
+        ],
+        "boundary": "Last nine native pixels of the SAM net silhouette in each column, preserving its holes; 8-pixel strips sort the torn near rim."
+      }
+    }
+  ]
+}

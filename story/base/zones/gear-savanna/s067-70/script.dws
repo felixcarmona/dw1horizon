@@ -1,0 +1,81 @@
+// Readable form of script 67 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 67 {
+    npc psychemon0 = 5;
+    npc psychemon1 = 6;
+    npc shimaunimon = 7;
+    npc nisedrimogemon3 = 8;
+    npc nisedrimogemon4 = 9;
+    npc shamamon = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 40, 84);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 68, 72);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 39, 59);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Sweet Nut"), 67, 24);
+        }
+    }
+
+    on talk(psychemon0) replace {    // section 5
+        say(psychemon0, text("s067.sec5.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(psychemon1) replace {    // section 6
+        say(psychemon1, text("s067.sec6.u0"));
+        battle();
+        recruit(species("Psychemon"));
+    }
+
+    on talk(shimaunimon) replace {    // section 7
+        say(shimaunimon, text("s067.sec7.u0"));
+        battle();
+        recruit(species("ShimaUnimon"));
+    }
+
+    on talk(nisedrimogemon3) replace {    // section 8
+        say(nisedrimogemon3, text("s067.sec8.u0"));
+        battle();
+        recruit(species("NiseDrimogemon"));
+    }
+
+    on talk(nisedrimogemon4) replace {    // section 9
+        say(nisedrimogemon4, text("s067.sec9.u0"));
+        battle();
+        recruit(species("NiseDrimogemon"));
+    }
+
+    on talk(shamamon) replace {    // section 10
+        say(shamamon, text("s067.sec10.u0"));
+        battle();
+        recruit(species("Shamamon"));
+    }
+
+    on step(0) replace {    // section 51
+        store_date(date_year);
+        if (date_day >= 15 && date_day < 30) {
+            walk(tamer, -2800, 1723);
+            warp_to(75, 0, 255);
+        }
+        walk(tamer, -2800, 1723);
+        warp_to(131, 0, 255);
+        return;
+    }
+}

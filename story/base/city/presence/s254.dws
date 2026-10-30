@@ -1,0 +1,16 @@
+// Who stands on screen 254 (), and when. Read out of MAPHEAD.SCN section 254 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(254) {                              // 
+            npc Piddomon slot 0 autotalk when recruited(Megadramon);
+            npc Gururumon slot 1 autotalk when recruited(Megadramon);
+            npc Piddomon slot 2 autotalk when recruited(Megadramon);
+            npc Gururumon slot 3 autotalk when recruited(Megadramon);
+            npc Piddomon slot 4 autotalk when recruited(Megadramon);
+            npc Gururumon slot 5 autotalk when recruited(Megadramon);
+            npc 172 slot 6 autotalk when not recruited(Megadramon);
+        }
+    }
+}

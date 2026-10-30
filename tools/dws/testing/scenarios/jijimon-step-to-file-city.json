@@ -1,0 +1,10 @@
+{
+  "name": "jijimon-step-to-file-city",
+  "doc": "Jijimon's house: step on the door tile (51, a step section of script 178): walk, WARP_TO File City, whole screen load of File City (MAPHEAD section, script section 254).",
+  "run": [
+    "move -250 -1550",
+    "until screen==204 and free max 2500"
+  ],
+  "max_frames": 3500,
+  "expect": {"digest": "b327d08e1d76bdc3a77101281b020128fca33029", "instructions": 28}
+}

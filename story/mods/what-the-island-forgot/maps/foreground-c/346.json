@@ -1,0 +1,1144 @@
+{
+  "screen": 346,
+  "name": "the-workshop",
+  "pieces": [
+    {
+      "name": "door-lintel",
+      "depth_px": [
+        620,
+        632
+      ],
+      "block": [],
+      "at": [
+        494,
+        463
+      ],
+      "png": "346-door-lintel.png",
+      "size": [
+        254,
+        81
+      ],
+      "sam": [
+        {
+          "box": [
+            492,
+            461,
+            751,
+            536
+          ],
+          "positive": [
+            [
+              516,
+              518
+            ],
+            [
+              737,
+              470
+            ],
+            [
+              677,
+              481
+            ],
+            [
+              617,
+              492
+            ]
+          ],
+          "negative": [
+            [
+              492,
+              461
+            ],
+            [
+              751,
+              461
+            ],
+            [
+              492,
+              536
+            ],
+            [
+              751,
+              536
+            ]
+          ],
+          "scores": [
+            0.9859012961387634,
+            0.9792113304138184,
+            0.980886697769165
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "12d36d7f6270dd751e8447a7778889950b7661622a69994976ce2fe8cabaed73",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "door-left-post",
+      "depth_px": [
+        517,
+        637
+      ],
+      "block": [],
+      "at": [
+        501,
+        532
+      ],
+      "png": "346-door-left-post.png",
+      "size": [
+        68,
+        108
+      ],
+      "sam": [
+        {
+          "box": [
+            495,
+            520,
+            580,
+            641
+          ],
+          "positive": [
+            [
+              513,
+              580
+            ],
+            [
+              544,
+              540
+            ]
+          ],
+          "negative": [
+            [
+              549,
+              570
+            ],
+            [
+              567,
+              553
+            ],
+            [
+              532,
+              618
+            ],
+            [
+              501,
+              517
+            ]
+          ],
+          "scores": [
+            0.9457361102104187
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "076bb814f50edc4788ec375de42d8b50c419d47e077e282d4847e54cf21d3563",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "door-right-post",
+      "depth_px": [
+        700,
+        609
+      ],
+      "block": [],
+      "at": [
+        674,
+        500
+      ],
+      "png": "346-door-right-post.png",
+      "size": [
+        59,
+        113
+      ],
+      "sam": [
+        {
+          "box": [
+            662,
+            487,
+            740,
+            615
+          ],
+          "positive": [
+            [
+              710,
+              539
+            ],
+            [
+              684,
+              520
+            ]
+          ],
+          "negative": [
+            [
+              677,
+              556
+            ],
+            [
+              730,
+              572
+            ],
+            [
+              665,
+              507
+            ]
+          ],
+          "scores": [
+            0.9587447643280029
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "808eb360f939dffe76b27dceb8d38f5f5ad37cf200ec7b236d4d18bf18133b9b",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "buffer-stop",
+      "depth_px": [
+        465,
+        380
+      ],
+      "block": [
+        [
+          425,
+          340
+        ],
+        [
+          514,
+          350
+        ],
+        [
+          518,
+          380
+        ],
+        [
+          425,
+          380
+        ]
+      ],
+      "at": [
+        419,
+        266
+      ],
+      "png": "346-buffer-stop.png",
+      "size": [
+        103,
+        115
+      ],
+      "sam": [
+        {
+          "box": [
+            420,
+            266,
+            521,
+            383
+          ],
+          "positive": [
+            [
+              438,
+              295
+            ],
+            [
+              434,
+              349
+            ],
+            [
+              475,
+              329
+            ],
+            [
+              480,
+              372
+            ],
+            [
+              474,
+              308
+            ],
+            [
+              471,
+              352
+            ]
+          ],
+          "negative": [
+            [
+              460,
+              303
+            ],
+            [
+              464,
+              344
+            ],
+            [
+              500,
+              362
+            ],
+            [
+              420,
+              371
+            ],
+            [
+              520,
+              377
+            ]
+          ],
+          "scores": [
+            0.8565536141395569
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "f9663acbe3eaebed3bd1b2d7d0871833655ce1a89fb573d72ecef58ccc048bb8",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-lantern",
+      "depth_px": [
+        400,
+        594
+      ],
+      "block": [],
+      "at": [
+        388,
+        490
+      ],
+      "png": "346-near-lantern.png",
+      "size": [
+        27,
+        104
+      ],
+      "sam": [
+        {
+          "box": [
+            387,
+            480,
+            418,
+            570
+          ],
+          "positive": [
+            [
+              403,
+              499
+            ],
+            [
+              395,
+              554
+            ]
+          ],
+          "negative": [
+            [
+              387,
+              480
+            ],
+            [
+              418,
+              480
+            ],
+            [
+              387,
+              570
+            ],
+            [
+              418,
+              570
+            ]
+          ],
+          "scores": [
+            0.8595081567764282,
+            0.9035897254943848,
+            0.9603511095046997
+          ],
+          "best": 2
+        }
+      ],
+      "mask_sha256": "2e8fe879933ce68dd7237a039bf841562272cf8ce9490d55fe070111917022e7",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-crates-and-barrels",
+      "depth_px": [
+        280,
+        595
+      ],
+      "block": [],
+      "at": [
+        81,
+        365
+      ],
+      "png": "346-near-crates-and-barrels.png",
+      "size": [
+        322,
+        227
+      ],
+      "sam": [
+        {
+          "box": [
+            82,
+            361,
+            394,
+            610
+          ],
+          "positive": [
+            [
+              120,
+              391
+            ],
+            [
+              126,
+              421
+            ],
+            [
+              157,
+              384
+            ],
+            [
+              166,
+              402
+            ],
+            [
+              195,
+              410
+            ],
+            [
+              206,
+              438
+            ],
+            [
+              137,
+              474
+            ],
+            [
+              169,
+              488
+            ],
+            [
+              181,
+              508
+            ],
+            [
+              222,
+              489
+            ],
+            [
+              233,
+              533
+            ],
+            [
+              210,
+              452
+            ],
+            [
+              273,
+              472
+            ],
+            [
+              287,
+              498
+            ],
+            [
+              316,
+              500
+            ],
+            [
+              329,
+              525
+            ],
+            [
+              292,
+              539
+            ],
+            [
+              313,
+              559
+            ],
+            [
+              357,
+              542
+            ],
+            [
+              357,
+              576
+            ]
+          ],
+          "negative": [
+            [
+              235,
+              398
+            ],
+            [
+              285,
+              424
+            ],
+            [
+              367,
+              492
+            ],
+            [
+              401,
+              542
+            ],
+            [
+              91,
+              520
+            ],
+            [
+              250,
+              593
+            ],
+            [
+              225,
+              430
+            ]
+          ],
+          "scores": [
+            0.8816211819648743
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "d70f25dee54813b3d1fe16c1d0ed5b0ccb06a1e4af25be6d3d8ff034eb23b1af",
+      "min_component": 80,
+      "fill_holes_max_area": 150
+    },
+    {
+      "name": "camp-crate",
+      "depth_px": [
+        735,
+        319
+      ],
+      "block": [],
+      "at": [
+        697,
+        242
+      ],
+      "png": "346-camp-crate.png",
+      "size": [
+        75,
+        71
+      ],
+      "sam": [
+        {
+          "box": [
+            697,
+            244,
+            778,
+            321
+          ],
+          "positive": [
+            [
+              736,
+              284
+            ]
+          ],
+          "negative": [
+            [
+              697,
+              244
+            ],
+            [
+              778,
+              244
+            ],
+            [
+              697,
+              321
+            ],
+            [
+              778,
+              321
+            ]
+          ],
+          "scores": [
+            0.9500401616096497,
+            0.973335862159729,
+            0.9652091264724731
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "2e57fd52b41186f94d81c22a1530d6b41ff8bd570e29a2411a0b408bb9aa4a70",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "the-workshop.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The floor ends at the lathe, workbench and tent; there is no route behind those objects. Preserve that boundary. Cut the near timber doorway, its two posts, buffer timbers and near lantern. The rail bed is floor; the buffer body is already blocked. The near crate stack and tent-side chest are also cut out; their small lower faces extending beyond the old rectangles are solid. Tile review: restore 21 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts. SAM silhouette review restores 28 additional reachable floor tiles: floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach.",
+  "collision_tiles": [
+    {
+      "tile": [
+        49,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        50,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        51,
+        45
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        49,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        50,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        51,
+        46
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        49,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        50,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        51,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        52,
+        47
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        49,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        50,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        51,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        52,
+        48
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        49,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        50,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        51,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        52,
+        49
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the tall buffer, before its ground braces"
+    },
+    {
+      "tile": [
+        47,
+        63
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the lantern head; keep its pole foot solid"
+    },
+    {
+      "tile": [
+        47,
+        64
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the lantern head; keep its pole foot solid"
+    },
+    {
+      "tile": [
+        47,
+        65
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the lantern head; keep its pole foot solid"
+    },
+    {
+      "tile": [
+        29,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        92,
+        360
+      ]
+    },
+    {
+      "tile": [
+        30,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        110,
+        360
+      ]
+    },
+    {
+      "tile": [
+        30,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        106,
+        372
+      ]
+    },
+    {
+      "tile": [
+        31,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        123,
+        372
+      ]
+    },
+    {
+      "tile": [
+        32,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        141,
+        372
+      ]
+    },
+    {
+      "tile": [
+        33,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        158,
+        372
+      ]
+    },
+    {
+      "tile": [
+        34,
+        54
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        176,
+        372
+      ]
+    },
+    {
+      "tile": [
+        30,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        101,
+        385
+      ]
+    },
+    {
+      "tile": [
+        31,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        119,
+        385
+      ]
+    },
+    {
+      "tile": [
+        32,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        137,
+        385
+      ]
+    },
+    {
+      "tile": [
+        33,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        155,
+        385
+      ]
+    },
+    {
+      "tile": [
+        34,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        172,
+        385
+      ]
+    },
+    {
+      "tile": [
+        35,
+        55
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        190,
+        385
+      ]
+    },
+    {
+      "tile": [
+        30,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        97,
+        398
+      ]
+    },
+    {
+      "tile": [
+        31,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        115,
+        398
+      ]
+    },
+    {
+      "tile": [
+        32,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        133,
+        398
+      ]
+    },
+    {
+      "tile": [
+        33,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        151,
+        398
+      ]
+    },
+    {
+      "tile": [
+        34,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        169,
+        398
+      ]
+    },
+    {
+      "tile": [
+        35,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        187,
+        398
+      ]
+    },
+    {
+      "tile": [
+        36,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        205,
+        398
+      ]
+    },
+    {
+      "tile": [
+        30,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        93,
+        411
+      ]
+    },
+    {
+      "tile": [
+        31,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        111,
+        411
+      ]
+    },
+    {
+      "tile": [
+        32,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        129,
+        411
+      ]
+    },
+    {
+      "tile": [
+        33,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        147,
+        411
+      ]
+    },
+    {
+      "tile": [
+        34,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        165,
+        411
+      ]
+    },
+    {
+      "tile": [
+        35,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        184,
+        411
+      ]
+    },
+    {
+      "tile": [
+        36,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        202,
+        411
+      ]
+    },
+    {
+      "tile": [
+        37,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised barrel/crate stack; its ground bases stay blocked below this back approach",
+      "pixel": [
+        220,
+        411
+      ]
+    }
+  ],
+  "sam_source": {
+    "path": "G-the-workshop/the-workshop-intento-2.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "401ce1308f8f7ac04da93533d06af1759efd220e",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

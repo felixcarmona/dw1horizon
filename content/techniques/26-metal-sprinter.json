@@ -1,0 +1,17 @@
+{
+  "id": 26,
+  "name": "Metal Sprinter",
+  "element": "mech",
+  "power": 150,
+  "mpCost": 55,
+  "distance": 250000,
+  "range": 3,
+  "accuracy": 78,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 2,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [35, 27, 18]
+}

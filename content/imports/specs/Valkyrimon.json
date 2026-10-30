@@ -1,0 +1,102 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 183,
+ "type": 255,
+ "name": "Valkyrimon",
+ "source": {
+  "type": 60,
+  "mmd": "extracted/CHDAT/MMD2/HKAB.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 2,
+  "3": 3,
+  "5": 9,
+  "6": 5,
+  "7": 6,
+  "8": 4,
+  "9": 12,
+  "10": 13,
+  "11": 8,
+  "12": 7,
+  "13": 10,
+  "14": 11,
+  "15": 18,
+  "18": 20,
+  "20": 22,
+  "21": 19,
+  "22": 24,
+  "23": 25,
+  "26": 23,
+  "27": 21,
+  "28": 17
+ },
+ "hips": [
+  1,
+  1,
+  1.011
+ ],
+ "root_scale": 1.011,
+ "tol": 14,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 72,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 72,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 3,
+   "end": 93,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 32,
+   "end": 112,
+   "hz": 0.3,
+   "rise": 250
+  },
+  "0x3c": {
+   "anim": "anim_01",
+   "start": 132,
+   "end": 228,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x35",
+  "0x36",
+  "0x38",
+  "0x39",
+  "0x3a"
+ ]
+}

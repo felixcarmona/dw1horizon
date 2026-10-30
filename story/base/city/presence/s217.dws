@@ -1,0 +1,28 @@
+// Who stands on screen 217 (Secret Item Shop), and when. Read out of MAPHEAD.SCN section 217 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(217) {                              // Secret Item Shop
+            let r1 = recruited(Ninjamon);
+            let r2 = not recruited(Ninjamon) or r1;
+            let r3 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and not (trigger(72) and clock.hour >= 12 and clock.hour < 18) and not (trigger(73) and clock.hour >= 18) and not recruited(Numemon) and not recruited(Mojyamon) and not recruited(Mamemon) and recruited(Devimon);
+            let r4 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and not (trigger(72) and clock.hour >= 12 and clock.hour < 18) and not (trigger(73) and clock.hour >= 18) and not recruited(Numemon) and not recruited(Mojyamon) and recruited(Mamemon);
+            let r5 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and not (trigger(72) and clock.hour >= 12 and clock.hour < 18) and not (trigger(73) and clock.hour >= 18) and not recruited(Numemon) and recruited(Mojyamon);
+            let r6 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and not (trigger(72) and clock.hour >= 12 and clock.hour < 18) and not (trigger(73) and clock.hour >= 18) and recruited(Numemon);
+            let r7 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and not (trigger(72) and clock.hour >= 12 and clock.hour < 18) and trigger(73) and clock.hour >= 18;
+            let r8 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and not (trigger(71) and clock.hour >= 6 and clock.hour < 12) and trigger(72) and clock.hour >= 12 and clock.hour < 18;
+            let r9 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and not (trigger(70) and clock.hour >= 0 and clock.hour < 6) and trigger(71) and clock.hour >= 6 and clock.hour < 12;
+            let r10 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and not (recruited(Devimon) and not trigger(73)) and trigger(70) and clock.hour >= 0 and clock.hour < 6;
+            let r11 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and not (recruited(Mamemon) and not trigger(72)) and recruited(Devimon) and not trigger(73);
+            let r12 = r2 and not (recruited(Numemon) and not trigger(70)) and not (recruited(Mojyamon) and not trigger(71)) and recruited(Mamemon) and not trigger(72);
+            let r13 = r2 and not (recruited(Numemon) and not trigger(70)) and recruited(Mojyamon) and not trigger(71);
+            let r14 = r2 and recruited(Numemon) and not trigger(70);
+            npc 135 slot 0 when r6 or r10 or r14;
+            npc 170 slot 1 when r5 or r9 or r13;
+            npc 137 slot 2 when r4 or r8 or r12;
+            npc 130 slot 3 when r3 or r7 or r11;
+            npc 175 slot 4 when r1;
+        }
+    }
+}

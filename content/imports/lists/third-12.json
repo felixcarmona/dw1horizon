@@ -1,0 +1,104 @@
+{
+ "clip_policy": "dcb-original",
+ "first_id": 205,
+ "out": "build/batch3",
+ "digimon": [
+  {
+   "name": "MegaKabuterimon",
+   "game": "dcb",
+   "model": 137,
+   "from": [
+    19
+   ]
+  },
+  {
+   "name": "MagnaAngemon",
+   "game": "dcb",
+   "model": 142,
+   "from": [
+    20
+   ]
+  },
+  {
+   "name": "Seraphimon",
+   "game": "dcb",
+   "model": 184,
+   "from": [
+    206
+   ]
+  },
+  {
+   "name": "Togemon",
+   "game": "dcb",
+   "model": 155,
+   "from": [
+    46
+   ]
+  },
+  {
+   "name": "Lillymon",
+   "game": "dcb",
+   "model": 141,
+   "from": [
+    208
+   ]
+  },
+  {
+   "name": "GranKuwagamon",
+   "game": "dcb",
+   "model": 182,
+   "from": [
+    51
+   ]
+  },
+  {
+   "name": "MetalSeadramon",
+   "game": "dcb",
+   "model": 229,
+   "from": [
+    61
+   ]
+  },
+  {
+   "name": "VenomMyotismon",
+   "game": "dcb",
+   "model": 177,
+   "from": [
+    66
+   ]
+  },
+  {
+   "name": "AeroVeedramon",
+   "game": "dcb",
+   "model": 136,
+   "from": [
+    203
+   ]
+  },
+  {
+   "name": "Shakkoumon",
+   "game": "dcb",
+   "model": 169,
+   "from": [
+    189
+   ]
+  },
+  {
+   "name": "Magnadramon",
+   "game": "dcb",
+   "model": 186,
+   "from": [
+    190
+   ]
+  },
+  {
+   "name": "Devidramon",
+   "game": "dcb",
+   "model": 156,
+   "from": [
+    6
+   ]
+  }
+ ],
+ "_skipped": "Omnimon (DCB 180): does not fit PARTNER_MODEL_BUFFER even with every size rule (tol 16/16, 2 techniques, no layer); replaced by Devidramon"
+}

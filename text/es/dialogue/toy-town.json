@@ -1,0 +1,40 @@
+{
+ "s138.sec5.m0.o0": "Dárselas",
+ "s138.sec5.m0.o1": "No dárselas",
+ "s138.sec5.u0": "Colecciono cartas Digimon. Si me das un juego de tres cartas, Hagurumon, ToyAgumon y WaruMonzaemon, te daré algo chulo.",
+ "s138.sec5.u1": "Lo siento, no tengo ninguna.",
+ "s138.sec5.u2": "Pues toma. Una {color 6}Tirita del amor{color 1}.",
+ "s138.sec5.u3": "Llevas demasiados objetos, ¿eh?",
+ "s138.sec6.u0": "¿Has probado ya el curling? Si consigues un 10 perfecto, eres un fenómeno.",
+ "s138.sec7.u0": [
+  [
+   "No sé si esto tiene que ver con",
+   "algo, pero te voy a enseñar unos",
+   "trucos de pesca."
+  ],
+  [
+   "Primero, la caña. Una buena caña",
+   "lanza más lejos y el indicador",
+   "te da algo más de margen."
+  ],
+  [
+   "Luego, el cebo. A cada pez le",
+   "gusta una cosa, así que recuerda",
+   "qué ha picado con qué."
+  ],
+  [
+   "Y al lanzar, ¡suelta en {color 6}×{color 1} para",
+   "lanzar con toda la fuerza!",
+   "A que no lo sabías."
+  ],
+  [
+   "Por último, el guardián del",
+   "lago: dicen que solo aparece",
+   "a ciertas horas."
+  ],
+  [
+   "Yo diría que por la mañana",
+   "y por la tarde."
+  ]
+ ]
+}

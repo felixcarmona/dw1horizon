@@ -1,0 +1,125 @@
+{
+  "dcb": 148,
+  "type": 182,
+  "name": "Veemon",
+  "source": {
+    "type": 17,
+    "mmd": "extracted/CHDAT/MMD0/GABU.MMD"
+  },
+  "_map": "DW1 bone (= card-game bone + 1) <- Gabumon bone: hips <- pelvis, chest <- body, head, jaw, arms, legs; the tail (11-13) sways on top",
+  "map": {
+    "1": 13,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 6,
+    "6": 7,
+    "7": 8,
+    "8": 10,
+    "9": 11,
+    "10": 12,
+    "14": 15,
+    "15": 16,
+    "16": 17,
+    "17": 19,
+    "18": 20,
+    "19": 21
+  },
+  "hips": [
+    1,
+    1,
+    0.92
+  ],
+  "root_scale": 1.0,
+  "tol": 8,
+  "tol_clips": 4,
+  "clips": {
+    "0x21": {
+      "anim": "anim_00"
+    },
+    "0x28": {
+      "anim": "anim_04",
+      "start": 0,
+      "end": 66,
+      "hips": "entity"
+    },
+    "0x2a": {
+      "anim": "anim_06",
+      "start": 120,
+      "end": 200,
+      "hz": 0
+    },
+    "0x2b": {
+      "anim": "anim_05",
+      "start": 0,
+      "end": 64,
+      "hips": "entity",
+      "root_scale": 0.3
+    },
+    "0x2c": {
+      "anim": "anim_05",
+      "start": 64,
+      "end": 112,
+      "hips": "entity",
+      "root_scale": 0.3
+    },
+    "0x30": {
+      "anim": "anim_02",
+      "start": 48,
+      "end": 150,
+      "speed": 1.65,
+      "hz": 0.2,
+      "settle": 4
+    },
+    "0x31": {
+      "anim": "anim_03",
+      "start": 36,
+      "end": 110,
+      "speed": 2.0,
+      "hz": 0.15,
+      "settle": 4
+    },
+    "0x32": {
+      "anim": "anim_01",
+      "start": 156,
+      "end": 216,
+      "speed": 1.5,
+      "hz": 0.2,
+      "settle": 4
+    },
+    "0x34": {
+      "anim": "anim_01",
+      "start": 24,
+      "end": 96,
+      "speed": 0.95,
+      "hz": 0.2
+    },
+    "0x29": {
+      "anim": "anim_04",
+      "start": 0,
+      "end": 66,
+      "hips": "entity",
+      "root_scale": -0.8
+    }
+  },
+  "skip": [
+    "0x1c"
+  ],
+  "layer": {
+    "anim": "anim_00",
+    "bones": "unmapped",
+    "slots": [
+      "0x00",
+      "0x01",
+      "0x02",
+      "0x03",
+      "0x04",
+      "0x11",
+      "0x12",
+      "0x1b",
+      "0x22",
+      "0x23",
+      "0x24"
+    ]
+  }
+}

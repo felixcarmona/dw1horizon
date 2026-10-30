@@ -1,0 +1,1125 @@
+From 5ffb4bcd085908973b798226a98219f067a8a2ff Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 14:36:51 +0000
+Subject: [PATCH] Patch 0137: the fight's AI, menus and waits as data
+ (MOD_BATTLE grows to 159 slots): the move weights, element bonus, target
+ score, 'Your call' rows, command menus by brains, post-fight heal, finisher
+ hold and mashing window, and every wait in milliseconds (one slot per
+ period); VS combat reads the same table
+
+---
+ include/dw/mod_battle.h | 79 ++++++++++++++++++++++++++++++++++++
+ src/btl/battle_hud.c    |  7 ++--
+ src/btl/battle_main.c   | 87 ++++++++++++++++++++--------------------
+ src/btl/battle_setup.c  | 11 ++----
+ src/std/std_hud.c       |  7 ++--
+ src/std/std_main.c      | 88 +++++++++++++++++++----------------------
+ src/vs/vs_combat.c      | 78 +++++++++++++++++-------------------
+ src/vs/vs_main.c        | 53 ++++++++++++-------------
+ 8 files changed, 236 insertions(+), 174 deletions(-)
+
+diff --git a/include/dw/mod_battle.h b/include/dw/mod_battle.h
+index cb6d14f9..53e67b02 100644
+--- a/include/dw/mod_battle.h
++++ b/include/dw/mod_battle.h
+@@ -102,6 +102,70 @@ enum {
+ 	MOD_BT_WEAKEST_BRAIN,
+ 	MOD_BT_ENEMY_AIM,
+ 	MOD_BT_LOWHP_DIV,
++	MOD_BT_AI_EMPTY_WEIGHT,
++	MOD_BT_AI_MODE1_WEIGHT,
++	MOD_BT_AI_GROUP_BRAIN,
++	MOD_BT_AI_GROUP_BONUS0,
++	MOD_BT_AI_GROUP_BONUS1,
++	MOD_BT_AI_GROUP_BONUS2,
++	MOD_BT_AI_LOWHP_PCT,
++	MOD_BT_AI_ENEMY_GROUP_WEIGHT,
++	MOD_BT_PRIO_POWER0,
++	MOD_BT_PRIO_POWER1,
++	MOD_BT_PRIO_POWER2,
++	MOD_BT_PRIO_POWER3,
++	MOD_BT_PRIO_MP0,
++	MOD_BT_PRIO_MP1,
++	MOD_BT_PRIO_MP2,
++	MOD_BT_PRIO_MP3,
++	MOD_BT_PRIO_WIDE0,
++	MOD_BT_PRIO_WIDE1,
++	MOD_BT_PRIO_WIDE2,
++	MOD_BT_PRIO_WIDE3,
++	MOD_BT_ELEM0,
++	MOD_BT_ELEM1,
++	MOD_BT_ELEM2,
++	MOD_BT_ELEM3,
++	MOD_BT_ELEM4,
++	MOD_BT_TSCORE_INV0,
++	MOD_BT_TSCORE_INV1,
++	MOD_BT_TSCORE_INV2,
++	MOD_BT_TSCORE_INV3,
++	MOD_BT_TSCORE_DEF,
++	MOD_BT_TSCORE_DIV,
++	MOD_BT_SMART_BRAIN,
++	MOD_BT_SWITCH_GAP,
++	MOD_BT_CMD_STEP,
++	MOD_BT_CMD_MAX,
++	MOD_BT_CMD_BTL0,
++	MOD_BT_CMD_BTL1,
++	MOD_BT_CMD_BTL2,
++	MOD_BT_CMD_BTL3,
++	MOD_BT_CMD_BTL4,
++	MOD_BT_CMD_BTL_TOP,
++	MOD_BT_CMD_STD0,
++	MOD_BT_CMD_STD1,
++	MOD_BT_CMD_STD2,
++	MOD_BT_CMD_STD3,
++	MOD_BT_CMD_STD4,
++	MOD_BT_CMD_STD_TOP,
++	MOD_BT_HEAL_HP,
++	MOD_BT_HEAL_MP,
++	MOD_BT_CHG_MAX,
++	MOD_BT_CHG_PRESS,
++	MOD_BT_CHG_WINDOW,
++	MOD_BT_FIN_HOLD,
++	MOD_BT_T_FLAT_RETARGET,
++	MOD_BT_T_PRIO_STEP,
++	MOD_BT_T_FLAT_REPEAT,
++	MOD_BT_T_SPEED_STEP,
++	MOD_BT_T_APPROACH,
++	MOD_BT_T_APPROACH_STD,
++	MOD_BT_T_APPROACH_REST,
++	MOD_BT_T_FLAT_ATTACK,
++	MOD_BT_T_DEFEAT_SHOW,
++	MOD_BT_T_DEFEAT_END,
++	MOD_BT_T_SETTLE,
+ 	MOD_BT_SIZE
+ };
+ 
+@@ -109,6 +173,8 @@ extern int16_t MOD_BATTLE[MOD_BT_SIZE];
+ 
+ static inline int32_t modBtVal(int32_t slot) { return MOD_BATTLE[slot] > 0 ? MOD_BATTLE[slot] : 0; }
+ static inline int32_t modBtSpan(int32_t slot) { return MOD_BATTLE[slot] > 1 ? MOD_BATTLE[slot] : 1; }
++/* every `slot` ticks (a time key in the JSON is in milliseconds, tools/balance.py divides by one tick = 50 ms); a rule left out never fires */
++static inline int32_t modBtEvery(int32_t count, int32_t slot) { return MOD_BATTLE[slot] > 0 && count % MOD_BATTLE[slot] == 0; }
+ static inline int32_t modBtDiv(int32_t a, int32_t slot) { return MOD_BATTLE[slot] > 0 ? a / MOD_BATTLE[slot] : 0; }
+ int32_t modBtBrainDiscount(int32_t brain);
+ 
+@@ -116,6 +182,19 @@ int32_t modBtBrainDiscount(int32_t brain);
+ #define BMS(X) modBtSpan(MOD_BT_##X)
+ #define BMD(a, X) modBtDiv((a), MOD_BT_##X)
+ #define BMV(X) ((int32_t)MOD_BATTLE[MOD_BT_##X])
++/* the command menu a partner gets from its brains: the table row for brains / CMD_STEP below CMD_MAX, else the top menu (`first` is the row's first slot) */
++static inline int32_t modBtCommands(int32_t brain, int32_t first, int32_t top)
++{
++	int32_t i = brain / modBtSpan(MOD_BT_CMD_STEP);
++
++	if (brain < modBtVal(MOD_BT_CMD_MAX) && i < 5) {
++		i = modBtVal(first + i);
++	} else {
++		i = modBtVal(top);
++	}
++	return i > 0 ? i : 1; /* the menu always has the finisher entry: with none the command menu hangs */
++}
++#define BMEVERY(count, X) modBtEvery((count), MOD_BT_##X)
+ #define BMBRAIN(brain) modBtBrainDiscount(brain)
+ 
+ #endif
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 3a121aa7..1575c854 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -6,6 +6,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/caps.h> /* MOD (caps) */
++#include <dw/mod_battle.h>
+ #include <dw/battle.h>
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+@@ -278,7 +279,7 @@ void BTL_initializeFinisherChargeup(void)
+ 	VECTOR *loc;
+ 
+ 	COMBAT_DATA_PTR->player.finisherChargeup[0] = 0;
+-	COMBAT_DATA_PTR->player.remainingChargeupTime[0] = 0x50;
++	COMBAT_DATA_PTR->player.remainingChargeupTime[0] = BMS(CHG_WINDOW);
+ 	COMBAT_DATA_PTR->fighter[0].finisherProgress = 0;
+ 	if (COMBAT_DATA_PTR->player.hoveredCommand[0] == 0) {
+ 		COMBAT_DATA_PTR->player.hoveredCommand[0] = COMBAT_DATA_PTR->player.numCommands[0] - 1;
+@@ -328,8 +329,8 @@ void BTL_tickFinisherChargeup(void)
+ 		up = 1;
+ 	}
+ 
+-	if ((COMBAT_DATA_PTR->player.finisherChargeup[0] < 0x50) && (up != 0)) {
+-		COMBAT_DATA_PTR->player.finisherChargeup[0] += 2;
++	if ((COMBAT_DATA_PTR->player.finisherChargeup[0] < BM(CHG_MAX)) && (up != 0)) {
++		COMBAT_DATA_PTR->player.finisherChargeup[0] += BM(CHG_PRESS);
+ 	}
+ }
+ 
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index aa0e7b59..f2f54ae5 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -301,9 +301,7 @@ static void *battle_main_functions[] = {
+ };
+ 
+ uint8_t TARGET_ATTACKER_CHANCE[4] = { 70, 40, 30, 0 };
+-uint8_t BTL_YOUR_CALL_POWER_PRIO[4] = { 50, 20, 5, 0 };
+-uint8_t BTL_YOUR_CALL_MP_PRIO[4] = { 50, 20, 10, 0 };
+-uint8_t BTL_YOUR_CALL_WIDE_PRIO[4] = { 10, 5, 0, 0 };
++/* MOD (battle as data): the three "Your call" priority rows (power, MP, wide) are MOD_BT_PRIO_POWER0.. / _MP0.. / _WIDE0.. */
+ int8_t BTL_COMMAND_MENU_CLOSED_FRAMES = -1;
+ 
+ void BTL_tickPartnerAI(void)
+@@ -439,7 +437,7 @@ void BTL_tickPartnerAI(void)
+ 		}
+ 	}
+ 
+-	if ((*flagsPtr & FIGHTER_FLAG_FLATTENED) && ((BATTLE_FRAME_COUNT % 100) == 0)) {
++	if ((*flagsPtr & FIGHTER_FLAG_FLATTENED) && BMEVERY(BATTLE_FRAME_COUNT, T_FLAT_RETARGET)) {
+ 		fighter->targetId = enemies[randomLimit(count)];
+ 	}
+ 
+@@ -531,7 +529,7 @@ void BTL_tickEnemyAI(void)
+ 
+ 	combat = COMBAT_DATA_PTR;
+ 	partner = ENTITY_TABLE[1];
+-	if ((BATTLE_FRAME_COUNT % 20) == 0) {
++	if (BMEVERY(BATTLE_FRAME_COUNT, T_PRIO_STEP)) {
+ 		for (i = 0; i <= ENEMY_COUNT; i++) {
+ 			if (combat->fighter[i].buffPrioTimer != 0) {
+ 				combat->fighter[i].buffPrioTimer--;
+@@ -1142,14 +1140,14 @@ void BTL_tickChargeState(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 	case 1:
+ 		BTL_maintainTargetDistance(digimon, target, fighter);
+ 		tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-		if ((fighter->speedBuffer == 100) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+ 	case 2:
+ 		BTL_setWalking(&digimon->entity, &digimon->stats, fighter->flags);
+ 		BTL_backAwayFromTarget(digimon, target, fighter);
+-		if (fighter->speedBuffer == 100) {
++		if (fighter->speedBuffer >= BM(SPEED_MAX)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -1290,8 +1288,8 @@ int32_t BTL_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 					}
+ 					startAnimation(&digimon->entity, fighter->queuedAnim);
+ 					digimon->entity.anim.animFlag &= 0xfe;
+-					BTL_FINISHER_AURA_ID = BTL_addFinisherAura(&digimon->entity, 0x50);
+-					BTL_FINISHER_TIMER = 0x50;
++					BTL_FINISHER_AURA_ID = BTL_addFinisherAura(&digimon->entity, BM(FIN_HOLD));
++					BTL_FINISHER_TIMER = BM(FIN_HOLD);
+ 					return 0;
+ 				}
+ 			}
+@@ -1337,7 +1335,7 @@ void BTL_tickRangedAttack(DigimonEntity *digimon, DigimonEntity *target, Fighter
+ 	uint32_t dist;
+ 	uint32_t total;
+ 
+-	if (fighter->unk15 > 0x50) {
++	if (fighter->unk15 > BM(T_APPROACH)) {
+ 		BTL_startQueuedMove(digimon, target, fighter);
+ 		fighter->unk15 = 0;
+ 		return;
+@@ -1368,7 +1366,7 @@ void BTL_tickRangedAttack(DigimonEntity *digimon, DigimonEntity *target, Fighter
+ 	fighter->unk15 = 0;
+ 	handleBattleIdle(digimon, &digimon->stats, fighter->flags);
+ 	if (fighter->flags & FIGHTER_FLAG_FLATTENED) {
+-		if ((BATTLE_FRAME_COUNT % 40) == 0) {
++		if (BMEVERY(BATTLE_FRAME_COUNT, T_FLAT_REPEAT)) {
+ 			BTL_startQueuedMove(digimon, target, fighter);
+ 		} else {
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+@@ -1642,7 +1640,7 @@ int32_t BTL_getContactRangeSquared(int32_t *a, int32_t *b)
+ void BTL_increaseSpeedBuffer(FighterData *fighter, Stats *stats)
+ {
+ 	if (fighter->speedBuffer < BM(SPEED_MAX)) { /* MOD (battle as data) */
+-		if ((BATTLE_FRAME_COUNT % 2) == 0) {
++		if (BMEVERY(BATTLE_FRAME_COUNT, T_SPEED_STEP)) {
+ 			fighter->speedBuffer += BMD(stats->base.speed, SPEED_DIV) + BM(SPEED_PLUS);
+ 		}
+ 		if (fighter->speedBuffer > BM(SPEED_MAX)) {
+@@ -2398,12 +2396,12 @@ void BTL_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer != 100) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+ 	case 2:
+-		if (fighter->speedBuffer < 100) {
++		if (fighter->speedBuffer < BM(SPEED_MAX)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -2436,8 +2434,8 @@ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 			startAnimation(&digimon->entity, fighter->queuedAnim);
+ 			digimon->entity.anim.animFlag &= 0xfe;
+-			BTL_FINISHER_AURA_ID = BTL_addFinisherAura(&digimon->entity, 0x50);
+-			BTL_FINISHER_TIMER = 0x50;
++			BTL_FINISHER_AURA_ID = BTL_addFinisherAura(&digimon->entity, BM(FIN_HOLD));
++			BTL_FINISHER_TIMER = BM(FIN_HOLD);
+ 			return;
+ 		}
+ 	}
+@@ -2467,7 +2465,7 @@ void BTL_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 	if (!(fighter->flags & FIGHTER_FLAG_FLATTENED)) {
+ 		BTL_setupMoveExecution(digimon, target, fighter);
+ 	} else {
+-		fighter->flatAttackTimer = 0x1e;
++		fighter->flatAttackTimer = BM(T_FLAT_ATTACK);
+ 	}
+ }
+ 
+@@ -3392,20 +3390,20 @@ int16_t BTL_calculateTargetScore(DigimonEntity *self, DigimonEntity *other)
+ 			      [DIGI_PARA(other->entity.type).special[0]];
+ 	switch (mult) {
+ 	case 20:
+-		mult = 2;
++		mult = BM(TSCORE_INV0);
+ 		break;
+ 	case 15:
+-		mult = 5;
++		mult = BM(TSCORE_INV1);
+ 		break;
+ 	case 5:
+-		mult = 15;
++		mult = BM(TSCORE_INV2);
+ 		break;
+ 	case 2:
+-		mult = 20;
++		mult = BM(TSCORE_INV3);
+ 		break;
+ 	}
+ 
+-	mult = st->current.currentHP * 100 / st->base.hp + mult * (st->base.def * 100 / 999) / 10;
++	mult = st->current.currentHP * 100 / st->base.hp + BMD(mult * BMD(st->base.def * 100, TSCORE_DEF), TSCORE_DIV);
+ 	return mult;
+ }
+ 
+@@ -3494,19 +3492,19 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		BTL_sortScoresDescending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[i]] = BTL_YOUR_CALL_POWER_PRIO[groups[i]];
++				weights[keys[i]] = BM(PRIO_POWER0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+ 	case 1:
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[i] == 0xff) {
+-				weights[i] += 5;
++				weights[i] += BM(AI_EMPTY_WEIGHT);
+ 			}
+ 			if (flags[i] != 0) {
+-				weights[i] += 0x14;
++				weights[i] += BM(AI_MODE1_WEIGHT);
+ 			}
+ 		}
+ 		break;
+@@ -3522,9 +3520,9 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		BTL_sortScoresAscending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[i]] = BTL_YOUR_CALL_MP_PRIO[groups[i]];
++				weights[keys[i]] = BM(PRIO_MP0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+@@ -3550,19 +3548,19 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		count = BTL_countLivingEnemies();
+ 		switch (digimon->stats.current.chargeMode) {
+ 		case 0:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 10;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS0);
+ 			}
+ 			break;
+ 		case 1:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS1);
+ 			}
+ 			break;
+ 		case 2:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
+-			} else if ((stats->current.currentHP * 100 / stats->base.hp) < 0x1f) {
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS2);
++			} else if ((stats->current.currentHP * 100 / stats->base.hp) < BM(AI_LOWHP_PCT)) {
+ 				for (j = 0; j < 3; j++) {
+ 					if (flags[i] == 0) {
+ 						values[i] = -1;
+@@ -3579,7 +3577,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 					if (flags[i] == 0) {
+ 						continue;
+ 					}
+-					weights[keys[i]] = BTL_YOUR_CALL_WIDE_PRIO[groups[i]];
++					weights[keys[i]] = BM(PRIO_WIDE0 + groups[i]);
+ 				}
+ 			}
+ 			break;
+@@ -3614,16 +3612,17 @@ int16_t BTL_calculateElementBonus(int16_t arg0, int16_t arg1)
+ {
+ 	switch (TYPE_FACTORS[arg0][arg1]) {
+ 	case 20:
+-		return 10;
++		return BM(ELEM0);
+ 	case 15:
+-		return 7;
++		return BM(ELEM1);
+ 	case 10:
+-		return 5;
++		return BM(ELEM2);
+ 	case 5:
+-		return 3;
++		return BM(ELEM3);
+ 	case 2:
+-		return 1;
++		return BM(ELEM4);
+ 	}
++	return 0;
+ }
+ 
+ int32_t BTL_countLivingEnemies(void)
+@@ -3767,7 +3766,7 @@ void BTL_selectFighterTarget(DigimonEntity *digimon, FighterData *fighter, uint8
+ 	}
+ 
+ 	brain = digimon->stats.base.brain;
+-	if (brain >= 0x12c) {
++	if (brain >= BM(SMART_BRAIN)) {
+ 		BTL_getStatusAfflictedEnemies(&digimon->entity, enemies, &count);
+ 		if (count >= 2) {
+ 			fighter->targetId = enemies[randomLimit(count)];
+@@ -3786,7 +3785,7 @@ void BTL_selectFighterTarget(DigimonEntity *digimon, FighterData *fighter, uint8
+ 		if (choice == 0xff) {
+ 			return;
+ 		}
+-		if ((eff - score) < 0x28) {
++		if ((eff - score) < BM(SWITCH_GAP)) {
+ 			return;
+ 		}
+ 		fighter->targetId = choice;
+@@ -3883,7 +3882,7 @@ void BTL_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 		if (j != (ENEMY_COUNT + 1)) {
+ 			if (NPC_ENTITIES[BTL_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
+ 				if (MOVE_DATA[tech].range == 3) {
+-					weights[i] += 0x14;
++					weights[i] += BM(AI_ENEMY_GROUP_WEIGHT);
+ 				}
+ 			}
+ 		}
+diff --git a/src/btl/battle_setup.c b/src/btl/battle_setup.c
+index 77c5be3c..1ee5b18c 100644
+--- a/src/btl/battle_setup.c
++++ b/src/btl/battle_setup.c
+@@ -30,7 +30,6 @@ void playSound(int32_t soundId, uint32_t flag);
+ void clearTamerWaypoints(void);
+ 
+ int16_t BTL_CARDINAL_ROTATIONS[4] = { 0, 1024, 2048, 3072 };
+-uint8_t BRAIN_TO_COMMAND_MAP[5] = { 3, 4, 5, 7, 8 };
+ 
+ uint8_t BTL_SAVED_CHARGE_MODE;
+ long BTL_FINISHER_AURA_ID;
+@@ -128,11 +127,7 @@ void BTL_initializeCombat(void)
+ 	}
+ 
+ 	brains = PARTNER_ENTITY.digimonEntity.stats.base.brain;
+-	if (brains < 0x1f4) {
+-		COMBAT_DATA_PTR->player.numCommands[0] = BRAIN_TO_COMMAND_MAP[brains / 100];
+-	} else {
+-		COMBAT_DATA_PTR->player.numCommands[0] = 9;
+-	}
++	COMBAT_DATA_PTR->player.numCommands[0] = modBtCommands(brains, MOD_BT_CMD_BTL0, MOD_BT_CMD_BTL_TOP); /* MOD (battle as data) */
+ 
+ 	COMBAT_DATA_PTR->player.availableCommands[0][0] = 0xb;
+ 	COMBAT_DATA_PTR->player.availableCommands[0][1] = 1;
+@@ -372,10 +367,10 @@ int32_t BTL_isBattleFinished(void)
+ 		if (TAMER_ITEM.worldItem.type == ITEM_NONE) {
+ 			DEATH_COUNTDOWN++;
+ 		}
+-		if (DEATH_COUNTDOWN == 0x14) {
++		if (DEATH_COUNTDOWN == BM(T_DEFEAT_SHOW)) {
+ 			BTL_addDeathCountdown(ENTITY_TABLE[1]);
+ 		}
+-		if (DEATH_COUNTDOWN >= 0xab) {
++		if (DEATH_COUNTDOWN >= BM(T_DEFEAT_END)) {
+ 			return 1;
+ 		}
+ 		return 0;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 6ae7d44b..f1c764b3 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -7,6 +7,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/caps.h> /* MOD (caps) */
++#include <dw/mod_battle.h>
+ #include <dw/aabb.h>
+ #include <dw/anim.h>
+ #include <dw/battle.h>
+@@ -397,7 +398,7 @@ char STD_PATH_STDDAT_T_DAI_TMD[] = "\\STDDAT\\T_DAI.TMD";
+ void STD_initializeFinisherChargeup(int16_t tech)
+ {
+ 	COMBAT_DATA_PTR->player.finisherChargeup[0] = 0;
+-	COMBAT_DATA_PTR->player.remainingChargeupTime[0] = 0x50;
++	COMBAT_DATA_PTR->player.remainingChargeupTime[0] = BMS(CHG_WINDOW);
+ 	COMBAT_DATA_PTR->fighter[0].finisherProgress = 0;
+ 	if (COMBAT_DATA_PTR->player.hoveredCommand[0] == 0) {
+ 		COMBAT_DATA_PTR->player.hoveredCommand[0] = COMBAT_DATA_PTR->player.numCommands[0] - 1;
+@@ -423,8 +424,8 @@ void STD_tickFinisherChargeup(void)
+ 		up = 1;
+ 	}
+ 
+-	if ((COMBAT_DATA_PTR->player.finisherChargeup[0] < 0x50) && (up != 0)) {
+-		COMBAT_DATA_PTR->player.finisherChargeup[0] += 2;
++	if ((COMBAT_DATA_PTR->player.finisherChargeup[0] < BM(CHG_MAX)) && (up != 0)) {
++		COMBAT_DATA_PTR->player.finisherChargeup[0] += BM(CHG_PRESS);
+ 	}
+ }
+ 
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 4edb1cb6..60254002 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -569,10 +569,7 @@ SVECTOR MAIN_D_80134868 = { 0 };
+ int16_t STD_CARDINAL_ROTATIONS[4] = { 0, 1024, 2048, 3072 };
+ /* Dealt */
+ char STD_STR_DEALT[] = "与えた";
+-uint8_t STD_BRAIN_TO_COMMAND_MAP[5] = { 2, 3, 4, 5, 6 };
+-uint8_t STD_YOUR_CALL_POWER_PRIO[4] = { 50, 20, 5, 0 };
+-uint8_t STD_YOUR_CALL_MP_PRIO[4] = { 50, 20, 10, 0 };
+-uint8_t STD_YOUR_CALL_WIDE_PRIO[4] = { 10, 5, 0, 0 };
++/* MOD (battle as data): the three "Your call" priority rows (power, MP, wide) are MOD_BT_PRIO_POWER0.. / _MP0.. / _WIDE0.. */
+ 
+ int16_t STD_STARTING_HP[2];
+ int16_t STD_DAMAGE[2];
+@@ -3721,7 +3718,7 @@ void STD_tickPartnerAI(void)
+ 		}
+ 	}
+ 
+-	if ((*flagsPtr & FIGHTER_FLAG_FLATTENED) && ((BATTLE_FRAME_COUNT % 100) == 0)) {
++	if ((*flagsPtr & FIGHTER_FLAG_FLATTENED) && BMEVERY(BATTLE_FRAME_COUNT, T_FLAT_RETARGET)) {
+ 		fighter->targetId = enemies[randomLimit(count)];
+ 	}
+ 
+@@ -4076,11 +4073,7 @@ void STD_initializeCombat(Entity *entity, Entity *other)
+ 	}
+ 
+ 	brains = PARTNER_ENTITY.digimonEntity.stats.base.brain;
+-	if (brains < 0x1f4) {
+-		COMBAT_DATA_PTR->player.numCommands[0] = STD_BRAIN_TO_COMMAND_MAP[brains / 100];
+-	} else {
+-		COMBAT_DATA_PTR->player.numCommands[0] = 7;
+-	}
++	COMBAT_DATA_PTR->player.numCommands[0] = modBtCommands(brains, MOD_BT_CMD_STD0, MOD_BT_CMD_STD_TOP); /* MOD (battle as data) */
+ 
+ 	COMBAT_DATA_PTR->player.availableCommands[0][0] = 0xb;
+ 
+@@ -4169,7 +4162,7 @@ void STD_tickEnemyAI(void)
+ 
+ 	combat = COMBAT_DATA_PTR;
+ 	partner = ENTITY_TABLE[1];
+-	if ((BATTLE_FRAME_COUNT % 20) == 0) {
++	if (BMEVERY(BATTLE_FRAME_COUNT, T_PRIO_STEP)) {
+ 		for (i = 0; i <= ENEMY_COUNT; i++) {
+ 			if (combat->fighter[i].buffPrioTimer != 0) {
+ 				combat->fighter[i].buffPrioTimer--;
+@@ -4428,7 +4421,7 @@ int16_t STD_deinitializeCombat(int16_t a, int16_t b)
+ 		}
+ 	}
+ 	STD_COMBAT_ACTIVE = 0;
+-	for (i = 0; i < 0x14; i++) {
++	for (i = 0; i < BM(T_SETTLE); i++) { /* MOD (battle as data) */
+ 		STD_battleTickFrame();
+ 	}
+ 	STD_removeFighterStatusBars(0);
+@@ -4442,8 +4435,8 @@ int16_t STD_deinitializeCombat(int16_t a, int16_t b)
+ 	stats->base.def = INITIAL_COMBAT_STATS[0][3];
+ 	stats->base.speed = INITIAL_COMBAT_STATS[0][4];
+ 	stats->base.brain = INITIAL_COMBAT_STATS[0][5];
+-	stats->current.currentHP += (int16_t)(stats->base.hp / 5);
+-	stats->current.currentMP += (int16_t)(stats->base.mp / 5);
++	stats->current.currentHP += (int16_t)BMD(stats->base.hp, HEAL_HP); /* MOD (battle as data) */
++	stats->current.currentMP += (int16_t)BMD(stats->base.mp, HEAL_MP);
+ 	if (stats->current.currentHP > stats->base.hp) {
+ 		stats->current.currentHP = stats->base.hp;
+ 	}
+@@ -4796,14 +4789,14 @@ void STD_tickChargeState(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 	case 1:
+ 		STD_maintainTargetDistance(digimon, target, fighter);
+ 		tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-		if ((fighter->speedBuffer == 100) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+ 	case 2:
+ 		STD_setWalking(&digimon->entity, &digimon->stats, fighter->flags);
+ 		STD_backAwayFromTarget(digimon, target, fighter);
+-		if (fighter->speedBuffer == 100) {
++		if (fighter->speedBuffer >= BM(SPEED_MAX)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -4937,8 +4930,8 @@ int32_t STD_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 					}
+ 					startAnimation(&digimon->entity, fighter->queuedAnim);
+ 					digimon->entity.anim.animFlag &= 0xfe;
+-					STD_FINISHER_AURA_ID = STD_addFinisherAura(&digimon->entity, 0x50);
+-					STD_FINISHER_TIMER = 0x50;
++					STD_FINISHER_AURA_ID = STD_addFinisherAura(&digimon->entity, BM(FIN_HOLD));
++					STD_FINISHER_TIMER = BM(FIN_HOLD);
+ 					return 0;
+ 				}
+ 			}
+@@ -4985,11 +4978,11 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 	uint32_t distance;
+ 	uint32_t total;
+ 
+-	if (data->unk15 > 100) {
++	if (data->unk15 > BM(T_APPROACH_STD)) {
+ 		handleBattleIdle(entity, &entity->stats, data->flags);
+ 
+ 		++data->unk15;
+-		if (data->unk15 > 160) {
++		if (data->unk15 > BM(T_APPROACH_REST)) {
+ 			data->flags &= ~FIGHTER_FLAG_TRANSFORMING;
+ 			data->unk15 = 0;
+ 		}
+@@ -5021,7 +5014,7 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 		handleBattleIdle(entity, &entity->stats, data->flags);
+ 
+ 		if ((data->flags & FIGHTER_FLAG_FLATTENED) != 0) {
+-			if (BATTLE_FRAME_COUNT % 40 == 0) {
++			if (BMEVERY(BATTLE_FRAME_COUNT, T_FLAT_REPEAT)) {
+ 				STD_startQueuedMove(entity, other, data);
+ 			} else {
+ 				entityLookAtLocation(&entity->entity,
+@@ -5297,7 +5290,7 @@ int32_t STD_getContactRangeSquared(int32_t *a, int32_t *b)
+ void STD_increaseSpeedBuffer(FighterData *fighter, Stats *stats)
+ {
+ 	if (fighter->speedBuffer < BM(SPEED_MAX)) { /* MOD (battle as data) */
+-		if ((BATTLE_FRAME_COUNT % 2) == 0) {
++		if (BMEVERY(BATTLE_FRAME_COUNT, T_SPEED_STEP)) {
+ 			fighter->speedBuffer += BMD(stats->base.speed, SPEED_DIV) + BM(SPEED_PLUS);
+ 		}
+ 		if (fighter->speedBuffer > BM(SPEED_MAX)) {
+@@ -6365,7 +6358,7 @@ void STD_selectEnemyMove(DigimonEntity *digimon, FighterData *fighter, int16_t i
+ 		if (j != (ENEMY_COUNT + 1)) {
+ 			if (NPC_ENTITIES[STD_getNpcEntityIndex(&digimon->entity)].unk1 == 0) {
+ 				if (MOVE_DATA[tech].range == 3) {
+-					weights[i] += 0x14;
++					weights[i] += BM(AI_ENEMY_GROUP_WEIGHT);
+ 				}
+ 			}
+ 		}
+@@ -6437,19 +6430,19 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		STD_sortScoresDescending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[i]] = STD_YOUR_CALL_POWER_PRIO[groups[i]];
++				weights[keys[i]] = BM(PRIO_POWER0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+ 	case 1:
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[i] == 0xff) {
+-				weights[i] += 5;
++				weights[i] += BM(AI_EMPTY_WEIGHT);
+ 			}
+ 			if (flags[i] != 0) {
+-				weights[i] += 0x14;
++				weights[i] += BM(AI_MODE1_WEIGHT);
+ 			}
+ 		}
+ 		break;
+@@ -6465,9 +6458,9 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		STD_sortScoresAscending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[keys[i]]] = STD_YOUR_CALL_MP_PRIO[groups[i]];
++				weights[keys[keys[i]]] = BM(PRIO_MP0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+@@ -6493,19 +6486,19 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		count = STD_countLivingEnemies();
+ 		switch (digimon->stats.current.chargeMode) {
+ 		case 0:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 10;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS0);
+ 			}
+ 			break;
+ 		case 1:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS1);
+ 			}
+ 			break;
+ 		case 2:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
+-			} else if ((stats->current.currentHP * 100 / stats->base.hp) < 0x1f) {
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS2);
++			} else if ((stats->current.currentHP * 100 / stats->base.hp) < BM(AI_LOWHP_PCT)) {
+ 				for (j = 0; j < 3; j++) {
+ 					if (flags[i] == 0) {
+ 						values[i] = -1;
+@@ -6522,7 +6515,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 					if (flags[i] == 0) {
+ 						continue;
+ 					}
+-					weights[keys[i]] = STD_YOUR_CALL_WIDE_PRIO[groups[i]];
++					weights[keys[i]] = BM(PRIO_WIDE0 + groups[i]);
+ 				}
+ 			}
+ 			break;
+@@ -6576,12 +6569,12 @@ void STD_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer != 100) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+ 	case 2:
+-		if (fighter->speedBuffer < 100) {
++		if (fighter->speedBuffer < BM(SPEED_MAX)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -6614,8 +6607,8 @@ void STD_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 			startAnimation(&digimon->entity, fighter->queuedAnim);
+ 			digimon->entity.anim.animFlag &= 0xfe;
+-			STD_FINISHER_AURA_ID = STD_addFinisherAura(&digimon->entity, 0x50);
+-			STD_FINISHER_TIMER = 0x50;
++			STD_FINISHER_AURA_ID = STD_addFinisherAura(&digimon->entity, BM(FIN_HOLD));
++			STD_FINISHER_TIMER = BM(FIN_HOLD);
+ 			return;
+ 		}
+ 	}
+@@ -6646,7 +6639,7 @@ void STD_startQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 		STD_setupMoveExecution(digimon, target, fighter);
+ 		return;
+ 	}
+-	fighter->flatAttackTimer = 0x1e;
++	fighter->flatAttackTimer = BM(T_FLAT_ATTACK);
+ }
+ 
+ int32_t STD_selectMoveTarget(Entity *entity, FighterData *fighter)
+@@ -7351,16 +7344,17 @@ int16_t STD_calculateElementBonus(int16_t arg0, int16_t arg1)
+ {
+ 	switch (TYPE_FACTORS[arg0][arg1]) {
+ 	case 20:
+-		return 10;
++		return BM(ELEM0);
+ 	case 15:
+-		return 7;
++		return BM(ELEM1);
+ 	case 10:
+-		return 5;
++		return BM(ELEM2);
+ 	case 5:
+-		return 3;
++		return BM(ELEM3);
+ 	case 2:
+-		return 1;
++		return BM(ELEM4);
+ 	}
++	return 0;
+ }
+ 
+ int32_t STD_countLivingEnemies(void)
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index 86cd0890..e5fd33ea 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -228,9 +228,7 @@ int16_t DIRECTIONS[4] = {
+ 
+ char VS__STR_DEALT[] = "与えた";
+ 
+-uint8_t VS__COMMANDS[8] = {
+-	0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00, 0x00,
+-};
++/* MOD (battle as data): the menu by brains is MOD_BT_CMD_STD0.. (the tournament's: VS__COMMANDS was { 2, 3, 4, 5, 6 } and 7 above 500) */
+ 
+ /* Damage */
+ char STR_DAMAGE[] = "ダメージ";
+@@ -343,20 +341,20 @@ void VS__combatInit(void)
+ 		fighter->finisherProgress = 0;
+ 		fighter->statusFxId = -1;
+ 		fighter->activeEffectSlot = -1;
+-		fighter->speedBuffer = 100;
++		fighter->speedBuffer = BM(SPEED_START);
+ 		fighter->unk15 = 0;
+ 		fighter->hasCollidedWhileDistanceCmd = 0;
+ 
+-		if (stats->base.brain < 400) {
+-			fighter->buffsRemaining = stats->base.brain / 100 + 1;
+-		} else if (stats->base.brain < 600) {
+-			fighter->buffsRemaining = 4;
++		if (stats->base.brain < BM(BUFFUSE_T1)) { /* MOD (battle as data) */
++			fighter->buffsRemaining = BMD(stats->base.brain, BUFFUSE_DIV) + 1;
++		} else if (stats->base.brain < BM(BUFFUSE_T2)) {
++			fighter->buffsRemaining = BM(BUFFUSE_N1);
+ 		} else {
+-			fighter->buffsRemaining = 5;
++			fighter->buffsRemaining = BM(BUFFUSE_N2);
+ 		}
+ 
+-		fighter->buffPrioTimer = stats->base.brain / 10 + 5;
+-		fighter->finisherGoal = 3000 - stats->base.speed;
++		fighter->buffPrioTimer = BMD(stats->base.brain, PRIO_DIV) + BM(PRIO_BASE);
++		fighter->finisherGoal = BM(FIN_GOAL) - stats->base.speed;
+ 
+ 		for (slot = 0; slot < 150; ++slot) {
+ 			fighter->table1[slot] = -1;
+@@ -368,11 +366,7 @@ void VS__combatInit(void)
+ 
+ 	for (i = 0; i < 2; ++i) {
+ 		brain = ((DigimonEntity *)ENTITY_TABLE[i + 1])->stats.base.brain;
+-		if (brain < 500) {
+-			COMBAT_DATA_PTR->player.numCommands[i] = VS__COMMANDS[brain / 100];
+-		} else {
+-			COMBAT_DATA_PTR->player.numCommands[i] = 7;
+-		}
++		COMBAT_DATA_PTR->player.numCommands[i] = modBtCommands(brain, MOD_BT_CMD_STD0, MOD_BT_CMD_STD_TOP); /* MOD (battle as data) */
+ 
+ 		COMBAT_DATA_PTR->player.availableCommands[i][0] = 0xb;
+ 
+@@ -642,7 +636,7 @@ void VS_tickDemoDigimonAI(fighterId)
+ 	data = &COMBAT_DATA_PTR->fighter[fighterId];
+ 	flags = &data->flags;
+ 
+-	if (BATTLE_FRAME_COUNT % 20 == 0 && data->buffPrioTimer != 0) {
++	if (BMEVERY(BATTLE_FRAME_COUNT, T_PRIO_STEP) && data->buffPrioTimer != 0) {
+ 		data->buffPrioTimer--;
+ 	}
+ 
+@@ -655,11 +649,11 @@ void VS_tickDemoDigimonAI(fighterId)
+ 
+ 	if (NO_AI_FLAG == 0) {
+ 		if ((stats->current.currentHP > data->hpDamageBuffer) &&
+-		    (stats->base.brain <= 300) &&
+-		    (BATTLE_FRAME_COUNT % ((stats->base.brain / 2 + 1) * 20) == 0) &&
+-		    (70 - VS_DISCIPLINE[fighterId] > randomLimit(100))) {
++		    (stats->base.brain < BM(SEN_BRAIN)) &&
++		    (BATTLE_FRAME_COUNT % ((BMD(stats->base.brain, SEN_INT_DIV) + 1) * BMS(SEN_INT_MULT)) == 0) &&
++		    (BM(SEN_PARTNER) - VS_DISCIPLINE[fighterId] > randomLimit(100))) {
+ 			*flags |= 0x2000;
+-			data->senileTimer = 100;
++			data->senileTimer = BM(SEN_FRAMES);
+ 		}
+ 
+ 		if (data->cooldown > 1) {
+@@ -966,7 +960,7 @@ void VS__tickDigimonAI(fighterId)
+ 	data = &COMBAT_DATA_PTR->fighter[fighterId];
+ 	flags = &data->flags;
+ 
+-	if (BATTLE_FRAME_COUNT % 20 == 0 && data->buffPrioTimer != 0) {
++	if (BMEVERY(BATTLE_FRAME_COUNT, T_PRIO_STEP) && data->buffPrioTimer != 0) {
+ 		data->buffPrioTimer--;
+ 	}
+ 
+@@ -979,11 +973,11 @@ void VS__tickDigimonAI(fighterId)
+ 
+ 	if (NO_AI_FLAG == 0) {
+ 		if ((stats->current.currentHP > data->hpDamageBuffer) &&
+-		    (stats->base.brain <= 300) &&
+-		    (BATTLE_FRAME_COUNT % ((stats->base.brain / 2 + 1) * 20) == 0) &&
+-		    (70 - VS_DISCIPLINE[fighterId] > randomLimit(100))) {
++		    (stats->base.brain < BM(SEN_BRAIN)) &&
++		    (BATTLE_FRAME_COUNT % ((BMD(stats->base.brain, SEN_INT_DIV) + 1) * BMS(SEN_INT_MULT)) == 0) &&
++		    (BM(SEN_PARTNER) - VS_DISCIPLINE[fighterId] > randomLimit(100))) {
+ 			*flags |= 0x2000;
+-			data->senileTimer = 100;
++			data->senileTimer = BM(SEN_FRAMES);
+ 		}
+ 
+ 		if (data->cooldown > 1) {
+@@ -1103,7 +1097,7 @@ void VS__tickDigimonAI(fighterId)
+ 	switch (COMBAT_DATA_PTR->player.currentCommand[fighterId]) {
+ 	case 2:
+ 		if (VS__hasAffordableMoves2(array, fighterId) == 0) {
+-			data->cooldown = 0x50;
++			data->cooldown = BM(CD_IDLE);
+ 			data->flags |= 0x800;
+ 			return;
+ 		}
+@@ -1112,7 +1106,7 @@ void VS__tickDigimonAI(fighterId)
+ 		break;
+ 	case 4:
+ 		if (VS__hasAffordableMoves2(array, fighterId) == 0) {
+-			data->cooldown = 0x50;
++			data->cooldown = BM(CD_IDLE);
+ 			data->flags |= 0x800;
+ 			return;
+ 		}
+@@ -1643,7 +1637,7 @@ void VS__tickDigimonConfusion(DigimonEntity *entity, DigimonEntity *other,
+ 			return;
+ 		}
+ 
+-		if (randomLimit(100) < 5) {
++		if (randomLimit(100) < BM(IDLE_STOP_PCT)) {
+ 			handleBattleIdle(entity, &entity->stats, data->flags);
+ 			VS_startFighterMove(entity, other, data);
+ 		}
+@@ -1731,7 +1725,7 @@ void VS__tickDigimonOnChargeup(DigimonEntity *entity, DigimonEntity *other,
+ 			VS__tickDigimonWaitingDistance(entity, other, data);
+ 			tech = (int16_t)entityGetTechFromAnim(&entity->entity,
+ 			                                      data->queuedAnim);
+-			if (data->speedBuffer == 100 ||
++			if (data->speedBuffer >= BM(SPEED_MAX) ||
+ 			    data->speedBuffer >= MOVE_DATA[tech].power) {
+ 				data->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 			}
+@@ -1740,7 +1734,7 @@ void VS__tickDigimonOnChargeup(DigimonEntity *entity, DigimonEntity *other,
+ 			VS__setWalking(&entity->entity, &entity->stats,
+ 			               data->flags);
+ 			VS__tickDigimonRotateKeepDistance(entity, other, data);
+-			if (data->speedBuffer == 100) {
++			if (data->speedBuffer >= BM(SPEED_MAX)) {
+ 				data->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 			}
+ 			break;
+@@ -1889,8 +1883,8 @@ int32_t VS__tickDigimonAttackClose(DigimonEntity *entity, DigimonEntity *other,
+ 					VS_addTargetCursor(fighterId, tech);
+ 					startAnimation(&entity->entity, data->queuedAnim);
+ 					entity->entity.anim.animFlag &= 0xfe;
+-					VS_ACTIVE_FINISHER_AURA_ID = VS_addFinisherAura(&entity->entity, 80);
+-					VS_FINISHER_TIMER = 80;
++					VS_ACTIVE_FINISHER_AURA_ID = VS_addFinisherAura(&entity->entity, BM(FIN_HOLD));
++					VS_FINISHER_TIMER = BM(FIN_HOLD);
+ 					return 0;
+ 				}
+ 			}
+@@ -1937,11 +1931,11 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 	uint32_t distance;
+ 	uint32_t total;
+ 
+-	if (data->unk15 > 100) {
++	if (data->unk15 > BM(T_APPROACH_STD)) {
+ 		handleBattleIdle(entity, &entity->stats, data->flags);
+ 
+ 		++data->unk15;
+-		if (data->unk15 > 160) {
++		if (data->unk15 > BM(T_APPROACH_REST)) {
+ 			data->flags &= ~FIGHTER_FLAG_TRANSFORMING;
+ 			data->unk15 = 0;
+ 		}
+@@ -1973,7 +1967,7 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 		handleBattleIdle(entity, &entity->stats, data->flags);
+ 
+ 		if ((data->flags & FIGHTER_FLAG_FLATTENED) != 0) {
+-			if (BATTLE_FRAME_COUNT % 40 == 0) {
++			if (BMEVERY(BATTLE_FRAME_COUNT, T_FLAT_REPEAT)) {
+ 				VS_startFighterMove(entity, other, data);
+ 			} else {
+ 				entityLookAtLocation(&entity->entity,
+@@ -2169,7 +2163,7 @@ void VS__tickDigimonAttackingLogic(int32_t fighterId)
+ 
+ 		fighter->flags &= ~FIGHTER_FLAG_10;
+ 		fighter->flags |= FIGHTER_FLAG_ON_COOLDOWN;
+-		fighter->cooldown = 40;
++		fighter->cooldown = BM(CD_ATTACK);
+ 
+ 		VS_addFinisherProgress(fighter, fighter->finisherGoal * BM(FIN_ATTACK_PCT) / 100);
+ 	}
+@@ -2266,13 +2260,13 @@ int32_t VS__getBaseDistance(Entity *a, Entity *b)
+ 
+ void VS__increaseSpeedBuffer(FighterData *fighter, Stats *stats)
+ {
+-	if (fighter->speedBuffer < 100) {
+-		if (BATTLE_FRAME_COUNT % 2 == 0) {
+-			fighter->speedBuffer += (stats->base.speed / 100) + 1;
++	if (fighter->speedBuffer < BM(SPEED_MAX)) { /* MOD (battle as data) */
++		if (BMEVERY(BATTLE_FRAME_COUNT, T_SPEED_STEP)) {
++			fighter->speedBuffer += BMD(stats->base.speed, SPEED_DIV) + BM(SPEED_PLUS);
+ 		}
+ 
+-		if (fighter->speedBuffer > 100) {
+-			fighter->speedBuffer = 100;
++		if (fighter->speedBuffer > BM(SPEED_MAX)) {
++			fighter->speedBuffer = BM(SPEED_MAX);
+ 		}
+ 	}
+ }
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 8cfbba1e..fdea0c6a 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -159,9 +159,7 @@ static void *vs_main_functions[] = {
+ 	VS_getAttackTech,
+ };
+ 
+-uint8_t VS_YOUR_CALL_POWER_PRIO[4] = { 50, 20, 5, 0 };
+-uint8_t VS_YOUR_CALL_MP_PRIO[4] = { 50, 20, 10, 0 };
+-uint8_t VS_YOUR_CALL_WIDE_PRIO[4] = { 10, 5, 0, 0 };
++/* MOD (battle as data): the three "Your call" priority rows (power, MP, wide) are MOD_BT_PRIO_POWER0.. / _MP0.. / _WIDE0.. */
+ int8_t MAIN_D_80134AC8[2] = { -1, -1 };
+ 
+ COMMANDS_TEXT
+@@ -777,12 +775,12 @@ void VS_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, int
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer != 100) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+ 	case 2:
+-		if (fighter->speedBuffer < 100) {
++		if (fighter->speedBuffer < BM(SPEED_MAX)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -813,8 +811,8 @@ void VS_startFighterMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 			entityLookAtLocation(&digimon->entity, &target->entity.posData->location);
+ 			startAnimation(&digimon->entity, fighter->queuedAnim);
+ 			digimon->entity.anim.animFlag &= 0xfe;
+-			VS_ACTIVE_FINISHER_AURA_ID = VS_addFinisherAura(&digimon->entity, 0x50);
+-			VS_FINISHER_TIMER = 0x50;
++			VS_ACTIVE_FINISHER_AURA_ID = VS_addFinisherAura(&digimon->entity, BM(FIN_HOLD));
++			VS_FINISHER_TIMER = BM(FIN_HOLD);
+ 			return;
+ 		}
+ 	}
+@@ -845,7 +843,7 @@ void VS_startFighterMove(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 		VS_playMoveEffect(digimon, target, fighter);
+ 		return;
+ 	}
+-	fighter->flatAttackTimer = 0x1e;
++	fighter->flatAttackTimer = BM(T_FLAT_ATTACK);
+ }
+ 
+ int32_t VS_selectMoveTarget(Entity *entity, FighterData *fighter)
+@@ -1632,19 +1630,19 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		VS_sortScoresDescending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[i]] = VS_YOUR_CALL_POWER_PRIO[groups[i]];
++				weights[keys[i]] = BM(PRIO_POWER0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+ 	case 1:
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[i] == 0xff) {
+-				weights[i] += 5;
++				weights[i] += BM(AI_EMPTY_WEIGHT);
+ 			}
+ 			if (flags[i] != 0) {
+-				weights[i] += 0x14;
++				weights[i] += BM(AI_MODE1_WEIGHT);
+ 			}
+ 		}
+ 		break;
+@@ -1660,9 +1658,9 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		VS_sortScoresAscending(values, keys, groups, 3);
+ 		for (i = 0; i < 3; i++) {
+ 			if (stats->base.moves[keys[i]] == 0xff) {
+-				weights[keys[i]] += 5;
++				weights[keys[i]] += BM(AI_EMPTY_WEIGHT);
+ 			} else if (flags[keys[i]] != 0) {
+-				weights[keys[i]] = VS_YOUR_CALL_MP_PRIO[groups[i]];
++				weights[keys[i]] = BM(PRIO_MP0 + groups[i]);
+ 			}
+ 		}
+ 		break;
+@@ -1688,19 +1686,19 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		count = VS_countLivingEnemies();
+ 		switch (digimon->stats.current.chargeMode) {
+ 		case 0:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 10;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS0);
+ 			}
+ 			break;
+ 		case 1:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS1);
+ 			}
+ 			break;
+ 		case 2:
+-			if ((stats->base.brain >= 0xc8) && (count >= 2)) {
+-				weights[i] += count * 15;
+-			} else if ((stats->current.currentHP * 100 / stats->base.hp) < 0x1f) {
++			if ((stats->base.brain >= BM(AI_GROUP_BRAIN)) && (count >= 2)) {
++				weights[i] += count * BM(AI_GROUP_BONUS2);
++			} else if ((stats->current.currentHP * 100 / stats->base.hp) < BM(AI_LOWHP_PCT)) {
+ 				for (j = 0; j < 3; j++) {
+ 					if (flags[i] == 0) {
+ 						values[i] = -1;
+@@ -1717,7 +1715,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 					if (flags[i] == 0) {
+ 						continue;
+ 					}
+-					weights[keys[i]] = VS_YOUR_CALL_WIDE_PRIO[groups[i]];
++					weights[keys[i]] = BM(PRIO_WIDE0 + groups[i]);
+ 				}
+ 			}
+ 			break;
+@@ -1752,16 +1750,17 @@ int16_t VS_calculateElementBonus(int16_t arg0, int16_t arg1)
+ {
+ 	switch (TYPE_FACTORS[arg0][arg1]) {
+ 	case 20:
+-		return 10;
++		return BM(ELEM0);
+ 	case 15:
+-		return 7;
++		return BM(ELEM1);
+ 	case 10:
+-		return 5;
++		return BM(ELEM2);
+ 	case 5:
+-		return 3;
++		return BM(ELEM3);
+ 	case 2:
+-		return 1;
++		return BM(ELEM4);
+ 	}
++	return 0;
+ }
+ 
+ int32_t VS_countLivingEnemies(void)
+-- 
+2.53.0
+

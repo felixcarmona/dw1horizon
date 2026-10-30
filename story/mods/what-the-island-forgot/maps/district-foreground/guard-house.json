@@ -1,0 +1,1098 @@
+{
+  "screen": 359,
+  "review": "Desk, chair, bench, searchlight, cooler and waste bucket sort at their ground bases. Ladder is against the rear wall; the floor has no passage behind the locker. The open south doorway stays unobstructed.",
+  "collision": [
+    {
+      "tile": [
+        42,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        54,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        55,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        46,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "desk ground footprint"
+    },
+    {
+      "tile": [
+        47,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "desk ground footprint"
+    },
+    {
+      "tile": [
+        49,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        50,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        51,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        58,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        41,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        58,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        57,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        41,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        59,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        60,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        41,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        41,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        61,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "floor freed behind foreground prop"
+    },
+    {
+      "tile": [
+        39,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bench ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "bench ground footprint"
+    },
+    {
+      "tile": [
+        59,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        64
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        65
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        66
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "guard-house-chair.png",
+      "at": [
+        241,
+        229
+      ],
+      "depth": [
+        268,
+        295
+      ],
+      "source": "guard-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "guard-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-guard-house.jpg",
+            "source_sha1": "61fc43b1aaa9e94dfb680fca74c15af269a06989",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              238,
+              227,
+              295,
+              291
+            ],
+            "positive": [
+              [
+                267,
+                254
+              ]
+            ],
+            "negative": [
+              [
+                239,
+                290
+              ],
+              [
+                294,
+                290
+              ]
+            ],
+            "score": 0.9811668395996094
+          }
+        ]
+      }
+    },
+    {
+      "png": "guard-house-searchlight.png",
+      "at": [
+        392,
+        283
+      ],
+      "depth": [
+        418,
+        353
+      ],
+      "source": "guard-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "guard-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-guard-house.jpg",
+            "source_sha1": "61fc43b1aaa9e94dfb680fca74c15af269a06989",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              385,
+              279,
+              445,
+              356
+            ],
+            "positive": [
+              [
+                415,
+                324
+              ]
+            ],
+            "negative": [
+              [
+                386,
+                355
+              ],
+              [
+                444,
+                355
+              ]
+            ],
+            "score": 0.9946644306182861
+          }
+        ]
+      },
+      "strip_height": 8,
+      "vertical_face": true
+    },
+    {
+      "png": "guard-house-cooler.png",
+      "at": [
+        428,
+        314
+      ],
+      "depth": [
+        455,
+        425
+      ],
+      "source": "guard-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "guard-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-guard-house.jpg",
+            "source_sha1": "61fc43b1aaa9e94dfb680fca74c15af269a06989",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              423,
+              310,
+              487,
+              429
+            ],
+            "positive": [
+              [
+                452,
+                382
+              ]
+            ],
+            "negative": [
+              [
+                424,
+                428
+              ],
+              [
+                486,
+                428
+              ]
+            ],
+            "score": 0.9841238260269165
+          }
+        ]
+      }
+    },
+    {
+      "png": "guard-house-bench.png",
+      "at": [
+        40,
+        295
+      ],
+      "depth": null,
+      "source": "guard-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "guard-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-guard-house.jpg",
+            "source_sha1": "61fc43b1aaa9e94dfb680fca74c15af269a06989",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              31,
+              290,
+              113,
+              439
+            ],
+            "positive": [
+              [
+                82,
+                318
+              ]
+            ],
+            "negative": [
+              [
+                32,
+                438
+              ],
+              [
+                112,
+                438
+              ]
+            ],
+            "score": 0.9928773641586304
+          }
+        ]
+      }
+    },
+    {
+      "png": "guard-house-bucket.png",
+      "at": [
+        422,
+        354
+      ],
+      "depth": [
+        430,
+        389
+      ],
+      "source": "guard-house.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "guard-house.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-guard-house.jpg",
+            "source_sha1": "61fc43b1aaa9e94dfb680fca74c15af269a06989",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              411,
+              335,
+              445,
+              386
+            ],
+            "positive": [
+              [
+                425,
+                365
+              ]
+            ],
+            "negative": [
+              [
+                411,
+                365
+              ],
+              [
+                419,
+                389
+              ],
+              [
+                451,
+                360
+              ]
+            ],
+            "score": 0.9078388214111328
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      128,
+      225
+    ],
+    [
+      190,
+      225
+    ],
+    [
+      190,
+      254
+    ],
+    [
+      322,
+      254
+    ],
+    [
+      327,
+      222
+    ],
+    [
+      415,
+      230
+    ],
+    [
+      410,
+      280
+    ],
+    [
+      451,
+      280
+    ],
+    [
+      485,
+      440
+    ],
+    [
+      470,
+      490
+    ],
+    [
+      330,
+      490
+    ],
+    [
+      330,
+      512
+    ],
+    [
+      180,
+      512
+    ],
+    [
+      180,
+      490
+    ],
+    [
+      30,
+      490
+    ],
+    [
+      20,
+      460
+    ],
+    [
+      40,
+      420
+    ],
+    [
+      108,
+      295
+    ],
+    [
+      125,
+      295
+    ]
+  ],
+  "footprints": {
+    "chair": [
+      [
+        245,
+        269
+      ],
+      [
+        283,
+        267
+      ],
+      [
+        293,
+        285
+      ],
+      [
+        244,
+        291
+      ]
+    ],
+    "searchlight": [
+      [
+        392,
+        333
+      ],
+      [
+        438,
+        333
+      ],
+      [
+        445,
+        353
+      ],
+      [
+        397,
+        360
+      ]
+    ],
+    "cooler": [
+      [
+        426,
+        386
+      ],
+      [
+        475,
+        383
+      ],
+      [
+        482,
+        421
+      ],
+      [
+        456,
+        434
+      ],
+      [
+        426,
+        422
+      ]
+    ],
+    "bench": [
+      [
+        72,
+        317
+      ],
+      [
+        108,
+        308
+      ],
+      [
+        81,
+        432
+      ],
+      [
+        34,
+        442
+      ],
+      [
+        32,
+        415
+      ]
+    ],
+    "desk": [
+      [
+        191,
+        239
+      ],
+      [
+        321,
+        239
+      ],
+      [
+        323,
+        258
+      ],
+      [
+        191,
+        262
+      ]
+    ]
+  }
+}

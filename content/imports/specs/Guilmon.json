@@ -1,0 +1,133 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M366GIRU",
+ "type": 433,
+ "name": "Guilmon",
+ "source": {
+  "type": 8,
+  "mmd": "extracted/CHDAT/MMD0/TYRA.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 5,
+  "3": 7,
+  "4": 9,
+  "5": 2,
+  "6": 3,
+  "7": 4,
+  "10": 11,
+  "11": 13,
+  "12": 15,
+  "13": 17,
+  "14": 21,
+  "15": 22,
+  "17": 23,
+  "18": 24,
+  "22": 18,
+  "23": 19,
+  "24": 20
+ },
+ "hips": [
+  1,
+  1,
+  0.771
+ ],
+ "root_scale": 0.771,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 35,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.01
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.01
+  },
+  "0x38": {
+   "anim": "anim_34",
+   "start": 10,
+   "end": 124,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  },
+  "0x2e": {
+   "anim": "anim_28",
+   "start": 1,
+   "end": 78,
+   "speed": 1.39,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  },
+  "0x30": {
+   "anim": "anim_50",
+   "start": 9,
+   "end": 123,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 160
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.200715,
+ "hub_roots": true,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

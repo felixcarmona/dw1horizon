@@ -1,0 +1,327 @@
+{
+ "s108.sec5.m0.o0": "Què és entrenar?",
+ "s108.sec5.m0.o1": "Com entreno?",
+ "s108.sec5.m0.o2": "Res, gràcies",
+ "s108.sec5.u0": [
+  [
+   "Eh, eh, notícies! Això...",
+   "mentre el teu Digimon encara és",
+   "un bebè, prova de fer el mateix",
+   "entrenament una vegada i una"
+  ],
+  [
+   "altra. Diuen que passa una",
+   "cosa bona!"
+  ]
+ ],
+ "s108.sec5.u1": [
+  [
+   "Eh, eh, notícies! Això... a",
+   "l'entrenament extra, si alinees",
+   "dibuixos iguals al del cartell,",
+   "l'atribut puja encara més!"
+  ]
+ ],
+ "s108.sec5.u2": "Ah, és veritat, et vaig dir que et parlaria de les tècniques! Normalment, després d'un combat, el teu Digimon aprèn una tècnica que l'enemic ha usat contra ell. Encara que només una que pugui equipar ara mateix. No funciona sempre, però és la forma més ràpida d'aconseguir més tècniques. I després... les probabilitats són molt baixes, però també es poden aprendre entrenant. Quan l'Intel·lecte està bastant alt, diuen que fer l'entrenament de la Classe de {color 6}{player}{color 1} pot ensenyar-li una. Ja sé que ho repeteixo molt, però de debò que les probabilitats són baixes, així que no comptis molt amb això. L'important és l'equilibri!",
+ "s108.sec5.u3": [
+  [
+   "Eh, eh, sóc Koromon! Jiji m'ha",
+   "demanat que t'ensenyi a",
+   "entrenar."
+  ],
+  [
+   "Vols saber alguna cosa?"
+  ]
+ ],
+ "s108.sec5.u4": [
+  [
+   "Entrenar aquí puja els atributs",
+   "del teu Digimon. Però el cansa",
+   "i porta una bona estona. Tot i",
+   "així, és una manera més segura"
+  ],
+  [
+   "de pujar atributs que combatre.",
+   "I molt de tant en tant, el teu",
+   "Digimon aprèn una tècnica nova!",
+   "Ja et parlaré de les tècniques"
+  ],
+  [
+   "un altre dia."
+  ]
+ ],
+ "s108.sec5.u5": [
+  [
+   "Aquí hi ha sis aparells",
+   "d'entrenament, i cadascun té un",
+   "cartell al costat."
+  ]
+ ],
+ "s108.sec5.u6": [
+  [
+   "Primer, posa't davant d'un",
+   "cartell i prem {color 6}×{color 1}. Llegeix-lo",
+   "per fer-te una idea de quin",
+   "atribut puja. Alguns Digimon"
+  ],
+  [
+   "pugen uns atributs amb",
+   "facilitat i d'altres no tant.",
+   "No ho sabràs fins que ho",
+   "provis! Tria Començar a"
+  ],
+  [
+   "entrenar i després Entrenament",
+   "normal. El teu Digimon",
+   "entrenarà durant una hora.",
+   "Mentre entrena, pots avançar"
+  ],
+  [
+   "el temps amb {color 5}△{color 1}. Ah, haig de",
+   "parlar-te de l'entrenament",
+   "extra! Si surt bé, l'atribut",
+   "puja moltíssim. Però si surt"
+  ],
+  [
+   "malament... l'atribut gairebé",
+   "no puja. Prova-ho una vegada i",
+   "ho veuràs."
+  ]
+ ],
+ "s108.sec5.u7": [
+  [
+   "Ah, val... Ja buscaré notícies",
+   "noves per a tu."
+  ]
+ ],
+ "s108.sec6.u0": [
+  [
+   "Jo anar ciutat. Ciutat massa",
+   "ciutat per a mi. Jo no",
+   "encaixar. Així que jo venir",
+   "aquí. Jo reconstruir màquines"
+  ],
+  [
+   "aquí. Funcionar millor que",
+   "abans. Tu entrenar molt."
+  ]
+ ],
+ "s108.sec7.u0": [
+  [
+   "Jo anar ciutat. Ciutat massa",
+   "ciutat per a mi. Jo no",
+   "encaixar. Així que jo venir",
+   "aquí. Jo reconstruir màquines"
+  ],
+  [
+   "aquí. Funcionar millor que",
+   "abans. Tu entrenar molt."
+  ]
+ ],
+ "s108.sec81.m0.o0": "Començar a entrenar",
+ "s108.sec81.m0.o1": "Sobre aquest entrenament",
+ "s108.sec81.m0.o2": "Sortir",
+ "s108.sec81.m1.o0": "Entrenament normal",
+ "s108.sec81.m1.o1": "Entrenament extra",
+ "s108.sec81.m1.o2": "Deixa-ho",
+ "s108.sec81.m2.o0": "Explica-m'ho de nou",
+ "s108.sec81.m2.o1": "Començar a entrenar",
+ "s108.sec81.m2.o2": "Sortir",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Entrenament millorat: empènyer",
+   "roca{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "{color 5}Entrenament: empènyer roca{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": [
+  [
+   "Empènyer una roca enorme dóna",
+   "força bruta. El HP máx. puja",
+   "molt, i l'Atac també."
+  ]
+ ],
+ "s108.sec81.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Començar a entrenar",
+ "s108.sec82.m0.o1": "Sobre aquest entrenament",
+ "s108.sec82.m0.o2": "Sortir",
+ "s108.sec82.m1.o0": "Entrenament normal",
+ "s108.sec82.m1.o1": "Entrenament extra",
+ "s108.sec82.m1.o2": "Deixa-ho",
+ "s108.sec82.m2.o0": "Explica-m'ho de nou",
+ "s108.sec82.m2.o1": "Començar a entrenar",
+ "s108.sec82.m2.o2": "Sortir",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Entrenament millorat: cascada{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "{color 5}Entrenament: cascada{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": [
+  [
+   "Posar-se sota una cascada",
+   "tempera l'esperit. El MP máx.",
+   "puja molt, i la Defensa també."
+  ]
+ ],
+ "s108.sec82.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Començar a entrenar",
+ "s108.sec83.m0.o1": "Sobre aquest entrenament",
+ "s108.sec83.m0.o2": "Sortir",
+ "s108.sec83.m1.o0": "Entrenament normal",
+ "s108.sec83.m1.o1": "Entrenament extra",
+ "s108.sec83.m1.o2": "Deixa-ho",
+ "s108.sec83.m2.o0": "Explica-m'ho de nou",
+ "s108.sec83.m2.o1": "Començar a entrenar",
+ "s108.sec83.m2.o2": "Sortir",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Entrenament millorat: cops a",
+   "l'arbre{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "{color 5}Entrenament: cops a l'arbre{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": [
+  [
+   "Practica tècniques contra un",
+   "arbre. L'Atac puja molt, i la",
+   "Velocitat també."
+  ]
+ ],
+ "s108.sec83.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Començar a entrenar",
+ "s108.sec84.m0.o1": "Sobre aquest entrenament",
+ "s108.sec84.m0.o2": "Sortir",
+ "s108.sec84.m1.o0": "Entrenament normal",
+ "s108.sec84.m1.o1": "Entrenament extra",
+ "s108.sec84.m1.o2": "Deixa-ho",
+ "s108.sec84.m2.o0": "Explica-m'ho de nou",
+ "s108.sec84.m2.o1": "Començar a entrenar",
+ "s108.sec84.m2.o2": "Sortir",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Entrenament millorat: guant de",
+   "boxa{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "{color 5}Entrenament: guant de boxa{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": [
+  [
+   "Aguanta els cops d'una màquina",
+   "de cops de puny gegant. La",
+   "Defensa puja molt, i",
+   "l'Intel·lecte també."
+  ]
+ ],
+ "s108.sec84.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Començar a entrenar",
+ "s108.sec85.m0.o1": "Sobre aquest entrenament",
+ "s108.sec85.m0.o2": "Sortir",
+ "s108.sec85.m1.o0": "Entrenament normal",
+ "s108.sec85.m1.o1": "Entrenament extra",
+ "s108.sec85.m1.o2": "Deixa-ho",
+ "s108.sec85.m2.o0": "Explica-m'ho de nou",
+ "s108.sec85.m2.o1": "Començar a entrenar",
+ "s108.sec85.m2.o2": "Sortir",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Entrenament millorat: cursa{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "{color 5}Entrenament: cursa{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": [
+  [
+   "Fes voltes al circuit, una",
+   "vegada i una altra. La",
+   "Velocitat puja molt, i els HP",
+   "màxims també."
+  ]
+ ],
+ "s108.sec85.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Començar a entrenar",
+ "s108.sec86.m0.o1": "Sobre aquest entrenament",
+ "s108.sec86.m0.o2": "Sortir",
+ "s108.sec86.m1.o0": "Entrenament normal",
+ "s108.sec86.m1.o1": "Entrenament extra",
+ "s108.sec86.m1.o2": "Deixa-ho",
+ "s108.sec86.m2.o0": "Explica-m'ho de nou",
+ "s108.sec86.m2.o1": "Començar a entrenar",
+ "s108.sec86.m2.o2": "Sortir",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Entrenament millorat: classe",
+   "de {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Entrenament: classe de",
+   "{color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": [
+  [
+   "{color 6}{player}{color 1}",
+   "fa de professor i ensenya de",
+   "tot. L'Intel·lecte puja molt, i",
+   "el MP máx. també."
+  ]
+ ],
+ "s108.sec86.u3": [
+  [
+   "{color 7}Escurabutxaques{color 1}",
+   "Atura els tres rodets amb {color 6}×{color 1} i",
+   "alinea els dibuixos."
+  ]
+ ]
+}

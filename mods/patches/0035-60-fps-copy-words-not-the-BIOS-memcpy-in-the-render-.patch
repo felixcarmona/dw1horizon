@@ -1,0 +1,87 @@
+From 8e62dc7f28e638e1c8791c7e16c30441222ffb0d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:28:31 +0000
+Subject: [PATCH] 60 fps: copy words, not the BIOS memcpy, in the render pass
+ code
+
+Struct assignments and memcpy() in main.c call the BIOS memcpy, which
+runs from ROM and is slow. The pass-0 view save/restore (three MATRIX
+copies each) and the render rollback ran it on every extra pass. Word and
+byte copy loops instead: about 5 lines less per extra pass (File City
+extra pass 118 -> 112 lines standing).
+
+---
+ src/main/main.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index ce3bb18..9703cd4 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3929,6 +3929,26 @@ static int32_t modLines(void)
+ 	return *(volatile uint16_t *)0x1F801110;
+ }
+ 
++/* MOD (fps): struct assignments and memcpy() here call the BIOS memcpy, which
++ * is slow (it runs from ROM). The per-pass code copies words or bytes itself;
++ * modCopy needs sizes and addresses that are multiples of 4. */
++static void modCopy(void *dst, const void *src, int32_t size)
++{
++	uint32_t *d = dst;
++	const uint32_t *s = src;
++
++	for (size >>= 2; size > 0; size--) {
++		*d++ = *s++;
++	}
++}
++
++static void modCopyBytes(uint8_t *dst, const uint8_t *src, int32_t size)
++{
++	while (size-- > 0) {
++		*dst++ = *src++;
++	}
++}
++
+ static void modPerfAdd(int32_t *sum, int32_t *max, int32_t value)
+ {
+ 	*sum += value;
+@@ -3992,18 +4012,18 @@ static long modPass0Projection;
+ static void modSavePass0View(void)
+ {
+ 	modPass0Position = POSITION;
+-	modPass0WsMatrix = GsWSMATRIX;
+-	modPass0WsMatrixOrg = GsWSMATRIX_ORG;
+-	modPass0LightWsMatrix = GsLIGHTWSMATRIX;
++	modCopy(&modPass0WsMatrix, &GsWSMATRIX, sizeof(MATRIX));
++	modCopy(&modPass0WsMatrixOrg, &GsWSMATRIX_ORG, sizeof(MATRIX));
++	modCopy(&modPass0LightWsMatrix, &GsLIGHTWSMATRIX, sizeof(MATRIX));
+ 	modPass0Projection = ReadGeomScreen();
+ }
+ 
+ static void modRestorePass0View(void)
+ {
+ 	POSITION = modPass0Position;
+-	GsWSMATRIX = modPass0WsMatrix;
+-	GsWSMATRIX_ORG = modPass0WsMatrixOrg;
+-	GsLIGHTWSMATRIX = modPass0LightWsMatrix;
++	modCopy(&GsWSMATRIX, &modPass0WsMatrix, sizeof(MATRIX));
++	modCopy(&GsWSMATRIX_ORG, &modPass0WsMatrixOrg, sizeof(MATRIX));
++	modCopy(&GsLIGHTWSMATRIX, &modPass0LightWsMatrix, sizeof(MATRIX));
+ 	GsSetProjection(modPass0Projection);
+ }
+ 
+@@ -4057,9 +4077,9 @@ static void modRollbackCopy(uint8_t *buf, int32_t toVars)
+ 
+ 	for (i = 0; i < MOD_NUM_ROLLBACK_VARS; i++) {
+ 		if (toVars) {
+-			memcpy(MOD_ROLLBACK_VARS[i].ptr, buf, MOD_ROLLBACK_VARS[i].size);
++			modCopyBytes(MOD_ROLLBACK_VARS[i].ptr, buf, MOD_ROLLBACK_VARS[i].size);
+ 		} else {
+-			memcpy(buf, MOD_ROLLBACK_VARS[i].ptr, MOD_ROLLBACK_VARS[i].size);
++			modCopyBytes(buf, MOD_ROLLBACK_VARS[i].ptr, MOD_ROLLBACK_VARS[i].size);
+ 		}
+ 		buf += MOD_ROLLBACK_VARS[i].size;
+ 	}
+-- 
+2.53.0
+

@@ -1,0 +1,11 @@
+// Who stands on screen 28 (Underground Pond), and when. Read out of MAPHEAD.SCN section 28 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(28) {                              // Underground Pond
+            npc 158 slot 0 when pstat(18) <= 4 and pstat(30) <= 4 or pstat(17) <= 0 and pstat(18) <= 4 or pstat(17) >= 3 and pstat(18) <= 4;
+            npc 158 slot 1 when pstat(18) >= 5 and pstat(18) <= 9 and pstat(30) <= 4 or pstat(17) <= 0 and pstat(18) >= 5 and pstat(18) <= 9 or pstat(17) >= 3 and pstat(18) >= 5 and pstat(18) <= 9;
+        }
+    }
+}

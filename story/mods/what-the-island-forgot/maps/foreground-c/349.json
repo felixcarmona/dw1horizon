@@ -1,0 +1,275 @@
+{
+  "screen": 349,
+  "name": "the-bridge",
+  "pieces": [
+    {
+      "name": "near-rope",
+      "depth_px": [
+        448,
+        357
+      ],
+      "block": [],
+      "at": [
+        44,
+        302
+      ],
+      "png": "349-near-rope.png",
+      "size": [
+        803,
+        24
+      ],
+      "sam": [
+        {
+          "box": [
+            43,
+            300,
+            225,
+            328
+          ],
+          "positive": [
+            [
+              57,
+              309
+            ],
+            [
+              125,
+              315
+            ],
+            [
+              201,
+              320
+            ]
+          ],
+          "negative": [
+            [
+              100,
+              305
+            ],
+            [
+              170,
+              310
+            ],
+            [
+              190,
+              327
+            ]
+          ],
+          "scores": [
+            0.7403064966201782
+          ],
+          "best": 0,
+          "multimask": false
+        },
+        {
+          "box": [
+            215,
+            312,
+            446,
+            328
+          ],
+          "positive": [
+            [
+              241,
+              322
+            ],
+            [
+              308,
+              323
+            ],
+            [
+              405,
+              320
+            ]
+          ],
+          "negative": [
+            [
+              280,
+              315
+            ],
+            [
+              360,
+              327
+            ]
+          ],
+          "scores": [
+            0.6673986315727234
+          ],
+          "best": 0,
+          "multimask": false
+        },
+        {
+          "box": [
+            450,
+            311,
+            680,
+            326
+          ],
+          "positive": [
+            [
+              485,
+              320
+            ],
+            [
+              560,
+              321
+            ],
+            [
+              635,
+              319
+            ]
+          ],
+          "negative": [
+            [
+              520,
+              314
+            ],
+            [
+              590,
+              326
+            ]
+          ],
+          "scores": [
+            0.6130727529525757
+          ],
+          "best": 0,
+          "multimask": false
+        },
+        {
+          "box": [
+            673,
+            301,
+            857,
+            324
+          ],
+          "positive": [
+            [
+              703,
+              316
+            ],
+            [
+              768,
+              314
+            ],
+            [
+              834,
+              309
+            ]
+          ],
+          "negative": [
+            [
+              715,
+              308
+            ],
+            [
+              800,
+              319
+            ]
+          ],
+          "scores": [
+            0.7195249199867249
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "6bb7ddb389d6a8b54e83ba022978a8f5c2874caea4d7b363305df22e9e9ea1f4",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-lamp",
+      "depth_px": [
+        448,
+        357
+      ],
+      "block": [
+        [
+          439,
+          332
+        ],
+        [
+          454,
+          332
+        ],
+        [
+          454,
+          357
+        ],
+        [
+          439,
+          357
+        ]
+      ],
+      "at": [
+        443,
+        307
+      ],
+      "png": "349-near-lamp.png",
+      "size": [
+        10,
+        47
+      ],
+      "sam": [
+        {
+          "box": [
+            440,
+            293,
+            457,
+            352
+          ],
+          "positive": [
+            [
+              448,
+              321
+            ],
+            [
+              448,
+              340
+            ]
+          ],
+          "negative": [
+            [
+              442,
+              292
+            ],
+            [
+              456,
+              318
+            ],
+            [
+              440,
+              331
+            ]
+          ],
+          "scores": [
+            0.905285656452179
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "502fab5d02266ff00f08aa2402b5025e75bb5f4872b3c91491506f653d827224",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "the-bridge.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "Only the upper wooden bridge deck is reachable. The railway visible below is blocked and disconnected; there is no second playable level or ramp. Cut the near rope and centre lamp post at deck-front depth. The far rope is behind everyone on the deck. Do not make the bridge underside walkable. Tile review: restore 0 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [],
+  "sam_source": {
+    "path": "G-the-bridge/puente-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "a45e8203d8451187003588bc7a9c2938e62c519a",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

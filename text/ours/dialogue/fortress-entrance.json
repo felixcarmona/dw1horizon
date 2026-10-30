@@ -1,0 +1,39 @@
+{
+ "s040.sec5.u0": "Huh? Who the heck are you? Get lost!",
+ "s040.sec5.u1": "What, is this your place?",
+ "s040.sec5.u2": "I ain't allowed to tell you!",
+ "s040.sec5.u3": "...So are you a lookout or something?",
+ "s040.sec5.u4": "What, you lookin' for a fight?! I'll pound you flat!",
+ "s040.sec5.m0.o0": "Fine, let's fight",
+ "s040.sec5.m0.o1": "Won't take the bait",
+ "s040.sec5.u5": "W-waaah!",
+ "s040.sec5.u6": "Oh, no...! ...Heeey!",
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Hee hee hee hee..."
+  ]
+ ],
+ "s040.sec5.u8": "Huh, who's there?",
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "We ain't done nothin' wrong.",
+   "Don't go bargin' into other",
+   "folks' homes! Heh heh."
+  ]
+ ],
+ "s040.sec5.u10": "Ugh... Guess I'll have to come back later.",
+ "s040.sec5.u11": "Well, good luck with the lookout job.",
+ "s040.sec5.u12": "Hm...? Haven't I seen you somewhere...? That's it, you were in Ogremon's bandit gang! So this is your hideout.",
+ "s040.sec5.u13": "...Wh-what're you talkin' about?",
+ "s040.sec5.u14": "You got away from me last time! Now, get ready!",
+ "s040.sec5.m1.o0": "Fine, let's fight",
+ "s040.sec5.m1.o1": "Won't take the bait",
+ "s040.sec5.u15": "W-waaah!",
+ "s040.sec5.u16": "You sure fooled me last time. I thought you'd moved your hideout, but... you're taking it easy!",
+ "s040.sec5.u17": "...Wh-what're you talkin' about?",
+ "s040.sec5.u18": "You won't get away this time!",
+ "s040.sec5.u19": "Come on, let me inside.",
+ "s040.sec5.u20": "What, you lookin' for a fight?! I'll pound you flat!"
+}

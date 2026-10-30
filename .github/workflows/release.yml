@@ -1,0 +1,122 @@
+name: Release and Pages
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing annotated vMAJOR.MINOR.PATCH tag (also retries a staged release)'
+        required: true
+        type: string
+
+# Serialize the whole publication, including manual retries, so an older run
+# cannot replace the site while another release is being published.
+concurrency:
+  group: release-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+      - name: Validate and check out the owner tag
+        shell: bash
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          test "$(git cat-file -t "refs/tags/$RELEASE_TAG")" = tag
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - name: Fetch prepared artifacts (never disc images)
+        shell: bash
+        run: |
+          mkdir -p build/pages-input
+          gh release download "$RELEASE_TAG" --dir build/pages-input \
+            --pattern horizon-package.tar.gz --pattern horizon-engine.tar.gz \
+            --pattern horizon-checksums.json || {
+              echo 'Prepare the verified package and engine locally and upload them to a draft release; see docs/release/releasing.md.' >&2
+              exit 1
+            }
+      - name: Check the publication boundary
+        run: python3 tools/release_pages_test.py
+      - name: Validate identity and integrity; build the static site
+        run: python3 tools/release_pages.py build "$RELEASE_TAG" --inputs build/pages-input --out build/pages-site
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test driver
+        run: npm install --prefix "$RUNNER_TEMP/pages-browser" --no-audit --no-fund puppeteer-core@24.31.0
+      - name: Test the generated site without discs
+        shell: bash
+        run: |
+          export PUPPETEER_MODULE="file://$RUNNER_TEMP/pages-browser/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"
+          export CHROMIUM="$(command -v google-chrome)"
+          node web/test/i18n.mjs
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
+          server=$!
+          trap 'kill "$server"; wait "$server" || true' EXIT
+          for i in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8765/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node web/test/langs.mjs http://127.0.0.1:8765/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-metadata
+          path: |
+            build/pages-input/release.json
+            build/pages-input/release-notes.md
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/pages-site
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy the tested artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  publish:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-metadata
+          path: metadata
+      - name: Publish the prepared release after Pages succeeds
+        shell: bash
+        run: |
+          tag=$(python3 -c 'import json; print(json.load(open("metadata/release.json"))["tag"])')
+          version=$(python3 -c 'import json; print(json.load(open("metadata/release.json"))["version"])')
+          date=$(python3 -c 'import json; print(json.load(open("metadata/release.json"))["date"])')
+          gh release edit "$tag" --draft=false \
+            --title "Digimon World Horizon $version ($date)" --notes-file metadata/release-notes.md

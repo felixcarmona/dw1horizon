@@ -1,0 +1,17 @@
+{
+  "id": 8,
+  "name": "Thunder Justice",
+  "element": "air",
+  "power": 586,
+  "mpCost": 110,
+  "distance": 360000,
+  "range": 2,
+  "accuracy": 85,
+  "status": 3,
+  "statusChance": 32,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [13, 9, 0]
+}

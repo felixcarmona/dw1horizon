@@ -1,0 +1,33 @@
+{
+  "file": "MAP/MAP6/KODA07.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Meteormon",
+      "at": [-283, 912],
+      "facing": 0,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 48, 49],
+      "prios": [40, 10, 40, 10],
+      "flee": [1022, -289],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Nanimon171",
+      "at": [182, 1179],
+      "facing": 2048,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [454, 2123],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

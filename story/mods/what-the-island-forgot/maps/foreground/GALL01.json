@@ -1,0 +1,43 @@
+{
+  "screen": 315,
+  "art": "old-gallery",
+  "review": "The ore cart, standing entrance jamb and fallen timber use their own silhouettes for model overhangs on adjacent floor. Their ground contacts, the bucket, pick, walls and rock fall remain solid. The floor below the fallen timber is decorative and disconnected; the real mouth exit leads to screen 337 without inventing a walk-through or upper/lower shortcut.",
+  "pieces": [
+    {
+      "name": "ore-cart",
+      "png": "315-ore-cart.png",
+      "at": [
+        201,
+        202
+      ],
+      "depth": [
+        264,
+        314
+      ]
+    },
+    {
+      "name": "crossing-timber",
+      "png": "315-crossing-timber.png",
+      "at": [
+        246,
+        274
+      ],
+      "depth": null
+    },
+    {
+      "name": "entrance-near-jamb",
+      "png": "315-entrance-near-jamb.png",
+      "at": [
+        0,
+        45
+      ],
+      "depth": [
+        56,
+        244
+      ],
+      "depth_note": "Sort the whole standing post from its real SAM-masked ground contact. The former anchor at y=229 let elevated tails draw through the wood."
+    }
+  ],
+  "collision": [],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/315.json."
+}

@@ -1,0 +1,106 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 230,
+ "type": 248,
+ "name": "MarineAngemon",
+ "source": {
+  "type": 28,
+  "mmd": "extracted/CHDAT/MMD0/VEDA.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 7,
+  "3": 5,
+  "4": 11,
+  "5": 10,
+  "7": 13,
+  "8": 14,
+  "16": 8,
+  "18": 12,
+  "20": 15,
+  "21": 3,
+  "25": 4
+ },
+ "hips": [
+  1,
+  1,
+  0.878
+ ],
+ "root_scale": 0.878,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 67,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.12
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 75,
+   "end": 155,
+   "hz": 0.3,
+   "rise": 175
+  },
+  "0x39": {
+   "anim": "anim_03",
+   "start": 36,
+   "end": 128,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 175
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 120,
+   "end": 230,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 175
+  },
+  "0x35": {
+   "anim": "anim_01",
+   "start": 175,
+   "end": 244,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 175
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x32",
+  "0x33",
+  "0x36",
+  "0x37"
+ ]
+}

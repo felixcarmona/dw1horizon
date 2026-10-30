@@ -1,0 +1,99 @@
+{
+ "s012.sec5.u0": "¿Pretendes pelear conmigo?",
+ "s012.sec6.u0": "Vaya, qué descarado eres.",
+ "s012.sec7.u0": "¿Q-qué vas a hacer?",
+ "s012.sec8.u0": "¡Me voy a chivar!",
+ "s012.sec53.u0": "¡Anda, un puente!",
+ "s012.sec81.m0.o0": "Recuperar 100 MP: 200 Bits",
+ "s012.sec81.m0.o1": "Recuperar 1000 MP: 1800 Bits",
+ "s012.sec81.m0.o2": "No usar",
+ "s012.sec81.u0": "Surtidor de MP",
+ "s012.sec81.u1": "Una máquina que recupera MP, ¿eh?",
+ "s012.sec81.u2": "¡MP recuperados!",
+ "s012.sec81.u3": "No me llega el dinero...",
+ "s012.sec81.u4": "¡MP recuperados!",
+ "s012.sec81.u5": "No me llega el dinero...",
+ "s012.sec81.u6": "Mejor no.",
+ "s013.sec5.m0.o0": "¡Vale, acepto!",
+ "s013.sec5.m0.o1": "Me acabo de acordar de algo...",
+ "s013.sec5.u0": "¡Eh, tú, señor! ¿No serás tú el que está construyendo una ciudad?",
+ "s013.sec5.u1": "Sí, ¿por?",
+ "s013.sec5.u2": [
+  [
+   "Mmm, ¡qué suerte, conocerme a",
+   "mí!"
+  ],
+  [
+   "No lo parece, pero soy un",
+   "Perfecto. Gáname y ayudaré a",
+   "tu ciudad. ¿Vale?"
+  ]
+ ],
+ "s013.sec5.u3": "¡Anda, mira tú! ¡Me has dado una paliza! ¡Pues nos vemos en la ciudad!",
+ "s013.sec5.u4": "¡Piximon se ha unido a la ciudad!",
+ "s013.sec5.u5": "Mmm, ¡qué miedica! Bueno, ya nos veremos algún díaaa.",
+ "s013.sec6.u0": "¡Ay, señorita!",
+ "s013.sec7.u0": "¿¡Qué pasa, amigo!?",
+ "s013.sec8.u0": "¡Uki, uki!",
+ "s013.sec9.u0": "¡Uh-oh!",
+ "s014.sec5.u0": "¡Fssssss!",
+ "s014.sec6.u0": "¡Zuiiiiii!",
+ "s014.sec7.u0": "¡Fiuuu, fiuuu!",
+ "s014.sec8.u0": "¡Pues ya no juego contigo!",
+ "s014.sec9.u0": "¡Ukiaaa! ¡Uh-uh!",
+ "s014.sec10.u0": "¡Jo, jo, jo! ¡Yuju!",
+ "s015.sec5.u0": "Tú ser Digimon, ¿sí?",
+ "s015.sec7.u0": "¿Cómo estar tú? ¿De dónde tú venir?",
+ "s015.sec8.u0": "¡No te burles de mí!",
+ "s015.sec9.u0": "¡Te voy a dar un mordisco!",
+ "s015.sec51.m0.o0": "Probar con algo",
+ "s015.sec51.m0.o1": "No usar nada",
+ "s015.sec51.m1.o0": "Claro que me gustan",
+ "s015.sec51.m1.o1": "Qué va, las odio",
+ "s015.sec51.u0": [
+  [
+   "Mmm, si la dejo así, a lo mejor",
+   "se acaba marchitando de",
+   "verdad."
+  ],
+  [
+   "Si al menos lloviera..."
+  ]
+ ],
+ "s015.sec51.u1": "¡Anda, qué raro! Le están saliendo brotes.",
+ "s015.sec51.u2": [
+  [
+   "¿Mm? ¿Se acaba de mover...?",
+   "¿Será la planta misteriosa de",
+   "la que todos hablan?"
+  ]
+ ],
+ "s015.sec51.u3": "Pero está un poco mustia. Como siga así, se va a marchitar.",
+ "s015.sec51.u4": "¿Usar un objeto?",
+ "s015.sec51.u5": "Ah, es verdad, ahora no llevo nada...",
+ "s015.sec51.u6": "Nada de lo que llevo le va a servir.",
+ "s015.sec51.u7": "Eso no va a servir de nada...",
+ "s015.sec51.u8": [
+  [
+   "¡Ke, je, je, je!"
+  ],
+  [
+   "¡Eh, tú! ¡Soy Vegiemon!"
+  ]
+ ],
+ "s015.sec51.u9": "¡Qué susto me has dado! Un Digimon planta, ¿eh...?",
+ "s015.sec51.u10": "Ke, je. Oye, tú. ¿Te gustan las verduras?",
+ "s015.sec51.u11": "¿Y eso a qué viene...? ¿Las verduras? Mmm...",
+ "s015.sec51.u12": "...Déjalo.",
+ "s015.sec51.u13": "Anda, el que quiere a las verduras no puede ser mala gente.",
+ "s015.sec51.u14": "¡Mal, mal! ¡Las verduras molan un montón!",
+ "s015.sec51.u15": "¿¿¿???",
+ "s015.sec51.u16": "Vale, decidido. ¡Me voy contigo!",
+ "s015.sec51.u17": "¡Uf, qué tío más avasallador...! ¡Espera un momento!",
+ "s015.sec51.u18": "¡Pues entonces no voy! ¡Hasta luego, Lucas!",
+ "s015.sec51.u19": "¡Pero qué veleta eres!",
+ "s015.sec51.u20": "¿Eh? ¿Y entonces qué quieres que haga?",
+ "s015.sec51.u21": "Esto... ¡pues vente a la ciudad y echa una mano!",
+ "s015.sec51.u22": "¡Ke, je, je, vale! De todas formas ya me he hartado de estar aquí. ¡Ke, je!",
+ "s015.sec51.u23": "¡Vegiemon se ha unido a la ciudad!"
+}

@@ -1,0 +1,506 @@
+From 3267234b9fa1657ed7ea13167e7a8d9873e88fcf Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 22:15:17 +0000
+Subject: [PATCH 105/105] Font: the menus' packed labels laid out in the font's
+ spacing (drawStringPieces)
+
+Rows that a screen copies in pieces cut at the original's offsets were drawn in the original's cells, each glyph centred
+in its cell: even but loose with font b ("S t a t u s", the Tech tab's help). drawStringPieces (font.c,
+DRAW_STRING_PIECES in dw/mod_font.h) takes the crops' offsets of the row (read from each screen's renderString calls)
+and draws each piece with the font's own spacing and kerning, from where its first glyph's original cell started, or
+centred in the span its original cells took (PIECE_CENTRE: the tabs, the chart's level names, the centred titles).
+Converted: the status, tech, player, medals, card and chart labels, the Tech tab's help lines (only the first is cut),
+the stat labels Off/Def, YearDay, the save screens' Yes/No rows, Mojyamon's header, the curling options. The digits row
+keeps its cells (renderNumber copies it at 8-pixel steps), and so do the text boxes in cells.
+In cells mode a space advances by the glyph before it, as the original did (the calendar's blank grade cells moved the
+next grade 4 pixels into the wrong column), and the calendar's first date under 10 no longer adds a space after the
+figure space that pads it (the dates of days 1-9 shifted 8 pixels).
+---
+ include/dw/mod_font.h     |  18 +++++++
+ src/dget/dget.c           |   2 +
+ src/kar/kar.c             |   2 +-
+ src/main/font.c           | 105 ++++++++++++++++++++++++++++++++++++++
+ src/main/game_menu.c      |  66 ++++++++++++++++--------
+ src/main/main_menu.c      |  14 ++---
+ src/main/script_textbox.c |  12 ++++-
+ src/shop/script_menu.c    |   2 +-
+ 8 files changed, 190 insertions(+), 31 deletions(-)
+
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index 4b90364..5caa0bb 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -28,6 +28,24 @@ extern uint8_t TEXTBOX_CELLS;
+ #define DRAW_STRING_CELLS(str, x, y) drawString(str, x, y)
+ #endif
+ 
++/*
++ * a C string whose row a screen copies in pieces (the crops' offsets in pixels from x: 0, then each next crop's srcX - x;
++ * PIECE_CENTRE marks a piece centred in its original span): each piece drawn with the font's spacing (font.c
++ * drawStringPieces); the original font draws it as drawString
++ */
++#define PIECE_CENTRE 0x8000
++#define PIECES_END   0xffff
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces);
++#define DRAW_STRING_PIECES(str, x, y, ...)                                         \
++	do {                                                                       \
++		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
++		drawStringPieces(str, x, y, PIECES_);                              \
++	} while (0)
++#else
++#define DRAW_STRING_PIECES(str, x, y, ...) drawString(str, x, y)
++#endif
++
+ /* the rows of a text box (script_textbox.c) that a screen cuts into pieces: after createTextbox, in the original's cells */
+ #if VERSION_IS(US) && FONT_PROPORTIONAL
+ #define TEXTBOX_IN_CELLS(boxId) (TEXTBOX_CELLS |= 1 << (boxId))
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 925752d..d61e6c7 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -172,10 +172,12 @@ void buildScheduleLabels(void)
+ #else
+ 		dayOfMonth = day % 30;
+ 		str = (uint8_t *)intToStringSJIS(str, dayOfMonth + 1, 2, 0);
++#if !FONT_PROPORTIONAL /* MOD (font): the figure space that pads it already advances a digit's 8 pixels */
+ 		if ((i == 0) && ((dayOfMonth + 1) < 10)) {
+ 			*str++ = 0x81;
+ 			*str++ = 0x40;
+ 		}
++#endif
+ #endif
+ 	}
+ 
+diff --git a/src/kar/kar.c b/src/kar/kar.c
+index 508bb1f..84d5eb5 100644
+--- a/src/kar/kar.c
++++ b/src/kar/kar.c
+@@ -2006,7 +2006,7 @@ int8_t KAR_tickYesNoPrompt(void)
+ 	startPos = MAIN_D_80134A18;
+ 	strs = MAIN_D_80134A20;
+ 	while (MAIN_D_80135250 < 2) {
+-		DRAW_STRING_CELLS(strs.text[MAIN_D_80135250], 0, (MAIN_D_80135250 * 13) + 0xdd);
++		DRAW_STRING_PIECES(strs.text[MAIN_D_80135250], 0, (MAIN_D_80135250 * 13) + 0xdd, 0, 0x53);
+ 		MAIN_D_80135250++;
+ 		break;
+ 	}
+diff --git a/src/main/font.c b/src/main/font.c
+index 19eab15..301cb41 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1441,6 +1441,111 @@ void drawStringCells(char *str, int32_t x, int32_t y)
+ 	FONT_CELLS = 0;
+ }
+ 
++/* the next character of a drawString text as drawGlyph takes it (drawString's rule); *str moves on */
++static uint16_t nextCodepoint(char **str)
++{
++	char *s;
++	uint16_t codepoint;
++
++	s = *str;
++	if (isAsciiEncoded(s) != 0) {
++		if (*s == '.') {
++			codepoint = 0x8142;
++		} else if (*s == '\'') {
++			codepoint = 0x8175;
++		} else {
++			codepoint = convertAsciiToJis(*s);
++		}
++		s++;
++	} else {
++		codepoint = ((uint8_t)s[0] << 8) | (uint8_t)s[1];
++		s += 2;
++	}
++	*str = s;
++	return swapShortBytes(codepoint);
++}
++
++/* the piece of a cut row that holds a glyph whose original cell starts at `cell` (drawStringPieces) */
++static int32_t pieceOf(const uint16_t *pieces, int32_t cell)
++{
++	int32_t k;
++
++	for (k = 0; pieces[k + 1] != PIECES_END && (pieces[k + 1] & ~PIECE_CENTRE) <= cell; k++) {
++	}
++	return k;
++}
++
++/*
++ * MOD (font): a C string whose row a screen copies in pieces cut at the original's offsets (the menus' packed labels:
++ * "Status  Tech", "YearDay", "HPMPnight"...), laid out naturally. drawStringCells keeps every glyph in its original
++ * cell, which spaces the narrower letters of a font placed to the pixel loosely ("S t a t u s"); here each piece (the
++ * glyphs whose original cell, on the 4-pixel grid, starts from one of `pieces` to the next) is drawn with the font's own
++ * spacing and kerning, its first glyph where drawStringCells puts it (its ink centred in its original cell), or the
++ * piece centred in the span its original cells took (PIECE_CENTRE). A piece's leading spaces only move its start. `pieces`: the crops' offsets in pixels from x,
++ * ascending, the first 0, ending with PIECES_END (DRAW_STRING_PIECES, dw/mod_font.h).
++ */
++void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces)
++{
++	char *s;
++	char *t;
++	uint16_t cp;
++	uint16_t c2;
++	uint16_t prev;
++	int32_t cell;
++	int32_t pos;
++	int32_t p2;
++	int32_t pen;
++	int32_t piece;
++	int32_t w;
++	int32_t ink;
++	int32_t span;
++
++	if (MOD_RENDER_PASS != 0) {
++		return;
++	}
++	s = str;
++	pos = 0;
++	pen = 0;
++	piece = -1;
++	while (*s != '\0') {
++		t = s;
++		cp = nextCodepoint(&s);
++		cell = glyphRows(cp)[GLYPH_HEIGHT] >> 8;
++		if (pieceOf(pieces, pos & ~3) != piece) {
++			if (cp == 0x4081) {
++				pos += cell; /* a piece's leading space: it starts further */
++				continue;
++			}
++			piece = pieceOf(pieces, pos & ~3);
++			pen = pos + (cell - glyphWidth(cp) + 1) / 2; /* the first glyph where the cells put it (its ink centred) */
++			if ((pieces[piece] & PIECE_CENTRE) != 0) {
++				/* the piece's width as this font draws it (to its last ink) and the span of its original cells */
++				w = 0;
++				ink = 0;
++				span = 0;
++				prev = 0;
++				p2 = pos;
++				while (*t != '\0' && pieceOf(pieces, p2 & ~3) == piece) {
++					c2 = nextCodepoint(&t);
++#ifdef FONT_KERN
++					w += kernOf(prev, swapShortBytes(c2));
++					prev = swapShortBytes(c2);
++#endif
++					w += glyphWidth(c2);
++					p2 += glyphRows(c2)[GLYPH_HEIGHT] >> 8;
++					if (c2 != 0x4081) {
++						ink = w - 1;
++						span = p2 - pos;
++					}
++				}
++				pen = pos + (span - ink) / 2;
++			}
++		}
++		pen += drawGlyph(cp, x + pen, y);
++		pos += cell;
++	}
++}
++
+ /*
+  * MOD (font): drawGlyph places a glyph to the pixel. The text area holds 4 pixels in a VRAM halfword, so the original
+  * landed every glyph on x & ~3 and its 12-pixel cell erased whatever the previous glyph had to its right: the gaps
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index f6ee90d..c061a13 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -870,6 +870,16 @@ char *CARD_CHART_LABELS[5] = {
+ 	MAIN_D_80123B20,
+ };
+ 
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++/* MOD (font): the crops of the player screen's label rows ("NameLevel  Raised", "Bits  Time", "Items  Medals"):
++ * drawStringPieces lays each piece out in the font's spacing (dw/mod_font.h) */
++static const uint16_t PLAYER_LABEL_PIECES[3][6] = {
++	{ 0, 0x24, 0x78, 0xcc, PIECES_END },
++	{ 0, 0x48, 0x60, 0xa8, 0xb4, PIECES_END },
++	{ 0, 0x54, 0x9c, PIECES_END },
++};
++#endif
++
+ char *MEDAL_NAMES[15] = {
+ 	STR_MEDAL_NAME_GRADE_CUP,
+ 	STR_MEDAL_NAME_VERSION_CUP,
+@@ -1185,7 +1195,7 @@ void tickTriangleMenu(void)
+ 			TRIANGLE_MENU_STATE = -1;
+ 		}
+ 		clearTextSubArea(&rect);
+-		DRAW_STRING_CELLS(STR_YEAR_DAY, 0, 0xe8);
++		DRAW_STRING_PIECES(STR_YEAR_DAY, 0, 0xe8, 0, 0x24);
+ 		break;
+ 	case 1:
+ 		closeUIBoxIfOpen(0);
+@@ -1204,7 +1214,7 @@ void tickTriangleMenu(void)
+ 			createMenuBox(1, -0x96, -0x59, 300, 0xbe, 0,
+ 			              tickDigimonMenu, renderDigimonMenu);
+ 			clearTextArea();
+-			DRAW_STRING_CELLS(STATUS_VIEW_LABELS[0], 0, 0);
++			DRAW_STRING_PIECES(STATUS_VIEW_LABELS[0], 0, 0, 0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE);
+ 			MENU_STATE = 0;
+ 			MENU_SUB_STATE = 0;
+ 			TRIANGLE_MENU_STATE = -1;
+@@ -1225,7 +1235,7 @@ void tickTriangleMenu(void)
+ 			createMenuBox(1, -0x96, -0x59, 300, 0xbe, 0,
+ 			              tickPlayerMenu, renderPlayerMenu);
+ 			clearTextArea();
+-			DRAW_STRING_CELLS(PLAYER_VIEW_LABELS[0], 0, 0);
++			DRAW_STRING_PIECES(PLAYER_VIEW_LABELS[0], 0, 0, 0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xc0 | PIECE_CENTRE);
+ 			MENU_STATE = 0;
+ 			MENU_SUB_STATE = 0;
+ 			TRIANGLE_MENU_STATE = -1;
+@@ -2896,7 +2906,16 @@ int32_t drawMoveViewHelpStrings(void)
+ 	/* The original indexed STATUS_VIEW_LABELS[MENU_SUB_STATE + 9], past its 8 entries: the
+ 	 * help lines are TECH_VIEW_LABELS[1..8], which follow it in the original's data. GCC
+ 	 * places TECH_VIEW_LABELS elsewhere, so the help read garbage pointers and hung. */
+-	DRAW_STRING_CELLS(TECH_VIEW_LABELS[MENU_SUB_STATE + 1], 0, MENU_SUB_STATE * 0xc + 0x18);
++	/* MOD (font): only the first help line is cut (around the button icon); the others are copied whole */
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	if (MENU_SUB_STATE == 0) {
++		DRAW_STRING_PIECES(TECH_VIEW_LABELS[MENU_SUB_STATE + 1], 0, MENU_SUB_STATE * 0xc + 0x18, 0, 0x71);
++	} else {
++		DRAW_STRING_PIECES(TECH_VIEW_LABELS[MENU_SUB_STATE + 1], 0, MENU_SUB_STATE * 0xc + 0x18, 0);
++	}
++#else
++	drawString(TECH_VIEW_LABELS[MENU_SUB_STATE + 1], 0, MENU_SUB_STATE * 0xc + 0x18);
++#endif
+ 	MENU_SUB_STATE++;
+ 
+ 	if (MENU_SUB_STATE == 8) {
+@@ -3667,8 +3686,8 @@ int32_t drawDigimonStatsStrings(void)
+ 	case 0:
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+-		DRAW_STRING_CELLS(MAIN_D_80124C0C[2], 0, 0x24);
+-		DRAW_STRING_CELLS(MAIN_D_80124C0C[3], 0x24, 0x24);
++		DRAW_STRING_PIECES(MAIN_D_80124C0C[2], 0, 0x24, 0);
++		DRAW_STRING_PIECES(MAIN_D_80124C0C[3], 0x24, 0x24, 0);
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+@@ -3683,11 +3702,11 @@ int32_t drawDigimonStatsStrings(void)
+ 		MENU_SUB_STATE = 2;
+ 		break;
+ 	case 2:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[1], 0, 0x30);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[1], 0, 0x30, 0, 0x18, 0x48, 0x78, 0x9c, 0xb4, 0xcc);
+ 		MENU_SUB_STATE = 3;
+ 		break;
+ 	case 3:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[2], 0, 0x18);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[2], 0, 0x18, 0, 0x30, 0x60, 0x90, 0xc0);
+ 
+ 		return 1;
+ 	}
+@@ -3883,7 +3902,7 @@ int32_t drawDigimonMovesText(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[3], 0, 0x48);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[3], 0, 0x48, 0, 0x3c, 0x60);
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[1] != 0xff) {
+ 			EQUIPPED_MOVES[1] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[1]);
+@@ -3897,7 +3916,7 @@ int32_t drawDigimonMovesText(void)
+ #endif
+ 		break;
+ 	case 2:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[6], 0x84, 0x6c);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[6], 0x84, 0x6c, 0, 0x1c, 0x38, 0x57);
+ 		if (PARTNER_ENTITY.digimonEntity.stats.base.moves[2] != 0xff) {
+ 			EQUIPPED_MOVES[2] = entityGetTechFromAnim(ENTITY_TABLE[1],
+ 			                                          PARTNER_ENTITY.digimonEntity.stats.base.moves[2]);
+@@ -3918,19 +3937,19 @@ int32_t drawDigimonMovesText(void)
+ 		} else {
+ 			EQUIPPED_MOVES[3] = 0xff;
+ 		}
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[4], 0, 0x6c);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[4], 0, 0x6c, 0, 0x30);
+ 		MENU_SUB_STATE = 4;
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 		DrawSync(0);
+ #endif
+ 		break;
+ 	case 4:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[5], 0, 0x54);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[5], 0, 0x54, 0, 0xc);
+ 		MENU_SUB_STATE = 5;
+ 		break;
+ 	case 5:
+-		DRAW_STRING_CELLS(STATUS_VIEW_LABELS[7], 0, 0x60);
+-		DRAW_STRING_CELLS(TECH_VIEW_LABELS[0], 0, 0x78);
++		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[7], 0, 0x60, 0, 0xc, 0x90);
++		DRAW_STRING_PIECES(TECH_VIEW_LABELS[0], 0, 0x78, 0, 0x24, 0x48, 0x6c);
+ 		MOVE_SELECT_BOX_X = 0x73;
+ 		MOVE_SELECT_BOX_Y = 0x6f;
+ 		return 1;
+@@ -3960,8 +3979,13 @@ int32_t drawPlayerInfoStrings(void)
+ #endif
+ 	case 2:
+ 	case 3:
+-		DRAW_STRING_CELLS(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0,
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++		drawStringPieces(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0, (MENU_SUB_STATE - 1) * 0xc + 0xc,
++		                 PLAYER_LABEL_PIECES[MENU_SUB_STATE - 1]);
++#else
++		drawString(PLAYER_VIEW_LABELS[MENU_SUB_STATE + 1], 0,
+ 		           (MENU_SUB_STATE - 1) * 0xc + 0xc);
++#endif
+ 		MENU_SUB_STATE++;
+ 		break;
+ 	case 4:
+@@ -3991,15 +4015,15 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 	case 0:
+ 		clearTextSubArea(&rect1);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+-		DRAW_STRING_CELLS(CARD_CHART_LABELS[1], 0, 0xc);
++		DRAW_STRING_PIECES(CARD_CHART_LABELS[1], 0, 0xc, 0, 0xc, 0x48, 0x54);
+ 		CHART_SELECTED_COLUMN = CHART_SELECTED_ROW = 0;
+ 		MENU_SUB_STATE = 1;
+ 		/* fall through */
+ 	case 1:
+-		DRAW_STRING_CELLS(CARD_CHART_LABELS[2], 0, 0x18);
++		DRAW_STRING_PIECES(CARD_CHART_LABELS[2], 0, 0x18, 0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE, 0x52 | PIECE_CENTRE, 0xcc);
+ #if VERSION_IS(US)
+-		DRAW_STRING_CELLS(CARD_CHART_LABELS[3], 0, 0x24);
+-		DRAW_STRING_CELLS(CARD_CHART_LABELS[4], 0, 0x3c);
++		DRAW_STRING_PIECES(CARD_CHART_LABELS[3], 0, 0x24, 0 | PIECE_CENTRE, 0x2f | PIECE_CENTRE);
++		DRAW_STRING_PIECES(CARD_CHART_LABELS[4], 0, 0x3c, 0 | PIECE_CENTRE);
+ 		drawString(EVO_CHART_MEGA_LABEL, 0, EVO_CHART_MEGA_ROW); /* MOD (mega) */
+ #endif
+ 		return 1;
+@@ -4029,7 +4053,7 @@ int32_t drawMedalViewStrings(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_CELLS(PLAYER_VIEW_LABELS[1], 0, 0xc);
++		DRAW_STRING_PIECES(PLAYER_VIEW_LABELS[1], 0, 0xc, 0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xc0);
+ 		MENU_SUB_STATE = 2;
+ 		break;
+ 	case 2:
+@@ -4065,7 +4089,7 @@ int32_t drawCardViewStrings(void)
+ 		MENU_SUB_STATE = 1;
+ 		break;
+ 	case 1:
+-		DRAW_STRING_CELLS(CARD_CHART_LABELS[0], 0, 0xC);
++		DRAW_STRING_PIECES(CARD_CHART_LABELS[0], 0, 0xC, 0 | PIECE_CENTRE, 0x48, 0x54, 0x90, 0x9c, 0xd8);
+ 		SELECTED_CARD = 0;
+ 		return 1;
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d722dc0..6f6b082 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -2040,7 +2040,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801312E4, 0, 0x30);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO, 0, 0xF0);
++		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c);
+ 		break;
+ 	case 7:
+ 		drawString(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0);
+@@ -2071,7 +2071,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80131328, 0, 0x18);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO_SPACED, 0, 0xF0);
++		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xF0, 0, 0x1c);
+ 		break;
+ 	case 8:
+ 		drawString(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0);
+@@ -2101,7 +2101,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(SLOT_ACTION_QUESTIONS[MAIN_MENU_ACTION], 0x18, 0x30);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO_SPACED, 0, 0xF0);
++		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xF0, 0, 0x1c);
+ 		if (MAIN_MENU_ACTION == 2) {
+ 			MENU_HIGHLIGHTS[view].pos = 1;
+ 		}
+@@ -2152,7 +2152,7 @@ void drawMainMenuStrings(int32_t menu)
+ 			drawString(MEMORY_CARD_ERROR_MESSAGES[MEMORY_CARD_ERROR], 0, 0x30);
+ 			DrawSync(0);
+ 		}
+-		DRAW_STRING_CELLS(STR_YES_NO, 0, 0xF0);
++		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c);
+ 		break;
+ 	case 13:
+ 		drawString(SLOT_ACTION_TITLES[5], 0, 0);
+@@ -2163,7 +2163,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_8013141C, 0, 0x24);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO, 0, 0xF0);
++		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c);
+ 		if (VS_PLAYER_INDEX == 1) {
+ 			drawString(STR_2, 0x76, 0x24);
+ 			drawString(STR_2, 0xB4, 0x24);
+@@ -2249,7 +2249,7 @@ void drawMainMenuStrings(int32_t menu)
+ 	case 18:
+ 		drawString(MAIN_D_80131568, 0, 0);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO_SPACED, 0, 0xC); /* MOD (font): cut into Yes and No */
++		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xC, 0, 0x1c); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	case 19:
+ 		strcpy(buf, PARTNER_ENTITY.name);
+@@ -2277,7 +2277,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801315EC, 0, 0x18);
+ 		DrawSync(0);
+-		DRAW_STRING_CELLS(STR_YES_NO, 0, 0x24); /* MOD (font): cut into Yes and No */
++		DRAW_STRING_PIECES(STR_YES_NO, 0, 0x24, 0, 0x1c); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	}
+ #endif
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 29b08c6..c3ebba6 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -714,10 +714,16 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 	int16_t rem;
+ #if VERSION_IS(US)
+ 	uint16_t adv;
++#endif
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	uint16_t cellsSpace;
+ #endif
+ 	uint16_t glyph;
+ 
+ 	pos = 0;
++#if VERSION_IS(US) && FONT_PROPORTIONAL
++	cellsSpace = 0xc;
++#endif
+ 	for (;;) {
+ 		ch = *str++;
+ 		switch (ch) {
+@@ -836,7 +842,11 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			} else {
+ 				adv = drawGlyph(glyph, x + pos, y);
+ 				if (FONT_CELLS != 0 && glyph == 0x4081) {
+-					adv = DRAW_STRING2_SPACE_WIDTH; /* the space's cell in these rows */
++					/* as the original advanced a space in these rows: by the glyph before it (the calendar's
++					 * grades: a blank cell after a grade or at the row's start is 12, like the cell) */
++					adv = cellsSpace;
++				} else {
++					cellsSpace = adv;
+ 				}
+ 			}
+ #else
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index b42790d..b56e8bd 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -2550,7 +2550,7 @@ void renderMojyaTradeMenu(void)
+ 	renderString(0, bx + 0x14, by + 5, 0x3c, 0xc, x, y, 5, 1);
+ 	renderString(0, bx + 0x7a, by + 5, 0x3c, 0xc, x + 0x3c, y, 5, 1);
+ #else
+-	DRAW_STRING_CELLS(MAIN_D_801307CC, x, y);
++	DRAW_STRING_PIECES(MAIN_D_801307CC, x, y, 0, 0x42);
+ 	renderString(0, bx + 0x14, by + 5, 0x42, 0xc, x, y, 5, 1);
+ 	renderString(0, bx + 0x7a, by + 5, 0x4e, 0xc, x + 0x42, y, 5, 1);
+ #endif
+-- 
+2.53.0
+

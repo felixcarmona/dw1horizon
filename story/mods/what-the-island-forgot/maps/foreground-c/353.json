@@ -1,0 +1,313 @@
+{
+  "screen": 353,
+  "name": "rubbish-mouth",
+  "pieces": [
+    {
+      "name": "buffer-stop",
+      "depth_px": [
+        324,
+        466
+      ],
+      "block": [],
+      "at": [
+        263,
+        327
+      ],
+      "png": "353-buffer-stop.png",
+      "size": [
+        121,
+        137
+      ],
+      "sam": [
+        {
+          "box": [
+            260,
+            331,
+            383,
+            469
+          ],
+          "positive": [
+            [
+              325,
+              360
+            ],
+            [
+              312,
+              414
+            ]
+          ],
+          "negative": [
+            [
+              351.3333333333333,
+              398.3333333333333
+            ],
+            [
+              295.0,
+              419.6666666666667
+            ],
+            [
+              260,
+              331
+            ],
+            [
+              383,
+              331
+            ],
+            [
+              260,
+              469
+            ],
+            [
+              383,
+              469
+            ]
+          ],
+          "scores": [
+            0.9478500485420227,
+            0.9598568677902222,
+            0.9305059909820557
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "0b3c13e5f96cc11b050e623b4a0e5ac78d997dbaddefcd31a6adbcf010681178",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "ladder-right",
+      "depth_px": [
+        662,
+        378
+      ],
+      "block": [],
+      "at": [
+        632,
+        32
+      ],
+      "png": "353-ladder-right.png",
+      "size": [
+        165,
+        345
+      ],
+      "sam": [
+        {
+          "box": [
+            669,
+            67,
+            800,
+            382
+          ],
+          "positive": [
+            [
+              759,
+              124
+            ],
+            [
+              744,
+              170
+            ],
+            [
+              727,
+              225
+            ],
+            [
+              709,
+              281
+            ],
+            [
+              691,
+              338
+            ],
+            [
+              680,
+              370
+            ],
+            [
+              783,
+              80
+            ],
+            [
+              793,
+              84
+            ],
+            [
+              789,
+              102
+            ]
+          ],
+          "negative": [
+            [
+              741,
+              139
+            ],
+            [
+              721,
+              201
+            ],
+            [
+              701,
+              270
+            ],
+            [
+              681,
+              331
+            ],
+            [
+              778,
+              158
+            ],
+            [
+              757,
+              228
+            ],
+            [
+              734,
+              290
+            ],
+            [
+              710,
+              366
+            ]
+          ],
+          "scores": [
+            0.856048583984375
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "e6e5155feff18febf174d0938110cd2eac45a5019aaff543164fef1b3f4aaa49",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "rubbish-mouth.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The open grate rests against the floor at the ladder foot; the ladder is the return exit, not a second floor. Cut the rail buffer and ladder side, preserving the spaces between buffer timbers. Keep the rubbish pile and buffer footprint blocked. Tile review: restore 12 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [
+    {
+      "tile": [
+        41,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        42,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        43,
+        51
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        41,
+        52
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        42,
+        52
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        43,
+        52
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        44,
+        52
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        41,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        42,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        43,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        44,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    },
+    {
+      "tile": [
+        45,
+        53
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised rail buffer; keep its ground braces solid"
+    }
+  ],
+  "sam_source": {
+    "path": "G-rubbish-mouth/rubbish-mouth-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "99ee48c1c675a22c1843a06df32b02b3e8849a29",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

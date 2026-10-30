@@ -1,0 +1,132 @@
+{
+ "s022.sec5.u0": "My wing...",
+ "s022.sec5.u1": "What's wrong?",
+ "s022.sec5.u2": "I've... hurt my wing... Do you have anything to treat a wound?",
+ "s022.sec5.u3": "That looks bad...! Hang on. Let's see...",
+ "s022.sec5.u4": "Oh, right, I don't have anything right now...",
+ "s022.sec5.u5": "No good. Not with this.",
+ "s022.sec5.u6": "Whew... that's much better. Thank you.",
+ "s022.sec5.u7": "Can you fly now?",
+ "s022.sec5.u8": "...Not far, I don't think...",
+ "s022.sec5.u9": [
+  [
+   "I see... Oh, I know! There's a clinic in the city."
+  ],
+  [
+   "Get yourself looked at there. It's not far from",
+   "here."
+  ]
+ ],
+ "s022.sec5.u10": "Remarkable. I'd heard rumors of the city, but I had no idea it had grown so much.",
+ "s022.sec5.u11": "Heh heh. Take it easy in the city and get some rest.",
+ "s022.sec5.u12": "I'm sorry for the trouble... I'll repay this kindness, I promise.",
+ "s022.sec5.u13": "Unimon joined the city!",
+ "s022.sec5.u14": "Something to treat a wound... Okay. I'll bring you something.",
+ "s022.sec5.u15": "I'm sorry... Please, be quick...",
+ "s022.sec51.u0": "Strange patterns are drawn on the ground...",
+ "s022.sec51.u1": "Is this one of those crop circles? It doesn't look very old.",
+ "s022.sec51.u2": [
+  [
+   "There are more than last time!"
+  ],
+  [
+   "Has this got something to do with that UFO",
+   "people talk about...?"
+  ]
+ ],
+ "s022.sec51.u3": [
+  [
+   "Whoa!? There are more! WAY more!"
+  ],
+  [
+   "This is it, then..."
+  ]
+ ],
+ "s022.sec51.u4": "Hm?",
+ "s022.sec51.u5": "Vademon's UFO appears!",
+ "s022.sec51.u6": "A-an alien!?",
+ "s022.sec51.u7": ".........",
+ "s022.sec51.u8": "Are you... a Digimon...?",
+ "s022.sec51.u9": ".........",
+ "s022.sec51.u10": "Um...",
+ "s022.sec51.u11": ".........",
+ "s022.sec51.u12": "Vademon raises a gun!",
+ "s022.sec51.u13": "Whoa, no, wait! We're not your enemies!",
+ "s022.sec51.u14": "Vademon lowers the gun.",
+ "s022.sec51.u15": "Did he get it? All right...",
+ "s022.sec51.u16": "{color 6}{player}{color 1} tried with all his might to win him over!!",
+ "s022.sec51.u17": ".........",
+ "s022.sec51.u18": "No good...?",
+ "s022.sec51.u19": "Ohh-kay.",
+ "s022.sec51.u20": "Vademon joined the city!",
+ "s022.sec51.u21": [
+  [
+   "Wh... why, that guy..."
+  ],
+  [
+   "He CAN talk!!"
+  ]
+ ],
+ "s189.sec5.u0": "Did you bring me something to treat my wound...?",
+ "s189.sec5.u1": "Hang on. Let's see...",
+ "s189.sec5.u2": "My wing...",
+ "s189.sec5.u3": "What's wrong?",
+ "s189.sec5.u4": "I've... hurt my wing... Do you have anything to treat a wound?",
+ "s189.sec5.u5": "That looks bad...! Hang on. Let's see...",
+ "s189.sec5.u6": "Oh, right, I don't have anything right now...",
+ "s189.sec5.u7": "No good. Not with this.",
+ "s189.sec5.u8": "Whew... that's much better. Thank you.",
+ "s189.sec5.u9": "Can you fly now?",
+ "s189.sec5.u10": "...Not far, I don't think...",
+ "s189.sec5.u11": [
+  [
+   "I see... Oh, I know! There's a clinic in the city."
+  ],
+  [
+   "Get yourself looked at there. It's not far from",
+   "here."
+  ]
+ ],
+ "s189.sec5.u12": "Remarkable. I'd heard rumors of the city, but I had no idea it had grown so much.",
+ "s189.sec5.u13": "Heh heh. Take it easy in the city and get some rest.",
+ "s189.sec5.u14": "I'm sorry for the trouble... I'll repay this kindness, I promise.",
+ "s189.sec5.u15": "Unimon joined the city!",
+ "s189.sec5.u16": "Something to treat a wound... I'll bring you something, so wait here.",
+ "s189.sec5.u17": "I'm sorry... Please, be quick...",
+ "s190.sec51.u0": "Strange patterns are drawn on the ground...",
+ "s190.sec51.u1": "Is this one of those crop circles? It doesn't look very old.",
+ "s190.sec51.u2": [
+  [
+   "There are more than last time!"
+  ],
+  [
+   "Has this got something to do with that UFO",
+   "people talk about...?"
+  ]
+ ],
+ "s190.sec51.u3": "Whoa!?",
+ "s190.sec51.u4": "There are more! WAY more!",
+ "s190.sec51.u5": "This is it, then...",
+ "s190.sec51.u6": "Hm?",
+ "s190.sec51.u7": "A-an alien!?",
+ "s190.sec51.u8": ".........",
+ "s190.sec51.u9": "Are you... a Digimon...?",
+ "s190.sec51.u10": ".........",
+ "s190.sec51.u11": "Um...",
+ "s190.sec51.u12": ".........",
+ "s190.sec51.u13": "Whoa, no, wait! We're not your enemies!",
+ "s190.sec51.u14": "Did he get it? All right...",
+ "s190.sec51.u15": "{color 6}{player}{color 1} tried with all his might to win him over!!",
+ "s190.sec51.u16": ".........",
+ "s190.sec51.u17": "No good...?",
+ "s190.sec51.u18": "Ohh-kay.",
+ "s190.sec51.u19": "Vademon joined the city!",
+ "s190.sec51.u20": [
+  [
+   "Wh... why, that guy..."
+  ],
+  [
+   "He CAN talk!!"
+  ]
+ ]
+}

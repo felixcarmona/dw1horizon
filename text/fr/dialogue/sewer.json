@@ -1,0 +1,194 @@
+{
+ "s180.sec5.u0": [
+  [
+   "Beurk, beurk, beurk. Oh, je me",
+   "sens mal..."
+  ]
+ ],
+ "s180.sec5.u1": [
+  [
+   "Bonjour. Ça va ?"
+  ]
+ ],
+ "s180.sec5.u2": [
+  [
+   "Beurk, beurk. Je me sens mal,",
+   "c'est tout."
+  ]
+ ],
+ "s180.sec5.u3": [
+  [
+   "Tu vis vraiment dans un endroit",
+   "pareil ?"
+  ]
+ ],
+ "s180.sec5.u4": [
+  [
+   "Oh, j'ai la nausée. Je suis si",
+   "mou..."
+  ]
+ ],
+ "s180.sec5.u5": [
+  [
+   "Hmm. Il n'a vraiment pas l'air",
+   "bien. Il ne doit pas être comme",
+   "ça d'habitude. Il a même"
+  ],
+  [
+   "l'air... un peu pâle...",
+   "peut-être."
+  ]
+ ],
+ "s180.sec5.u6": [
+  [
+   "Beurk, beurk. Je me sens de",
+   "plus en plus mal."
+  ]
+ ],
+ "s180.sec5.u7": [
+  [
+   "Hmm. Je vais devoir trouver ce",
+   "qui cause ça..."
+  ]
+ ],
+ "s180.sec5.u8": [
+  [
+   "D'où viennent ces eaux usées ?",
+   "Allons voir !"
+  ]
+ ],
+ "s180.sec6.u0": [
+  [
+   "Bon, les égouts sont revenus à",
+   "la normale. J'ai réglé le",
+   "problème. Il doit aller mieux,"
+  ],
+  [
+   "maintenant..."
+  ]
+ ],
+ "s180.sec6.u1": [
+  [
+   "Hein ?! Il y a quelque chose",
+   "de bizarre !"
+  ]
+ ],
+ "s180.sec6.u2": [
+  [
+   "O-o-o-o-o-ouaaah !"
+  ]
+ ],
+ "s180.sec6.u3": [
+  [
+   "Bâââille... Beurk, beurk. Oh ?",
+   "Quoi de neuf, les amis ?"
+  ]
+ ],
+ "s180.sec6.u4": [
+  [
+   "Ouah ! Il a l'air un peu nigaud",
+   "! Il a repris ses esprits ?"
+  ]
+ ],
+ "s180.sec6.u5": [
+  [
+   "Hein ? Nigaud ? C'est malpoli,",
+   "tu sais. Moi, c'est Numemon. Ou",
+   "je suis Numemon ?"
+  ]
+ ],
+ "s180.sec6.u6": [
+  [
+   "...Pfff, nigaud n'est pas",
+   "vraiment le mot... Hum.",
+   "Numemon, tu sais qui t'a sauvé"
+  ],
+  [
+   "?"
+  ]
+ ],
+ "s180.sec6.u7": [
+  [
+   "Hein ? Tu veux être sauvé ?",
+   "D'accord, comme tu veux."
+  ]
+ ],
+ "s180.sec6.u8": [
+  [
+   "Pfff, il a tout compris à",
+   "l'envers ! Enfin, ça revient au",
+   "même."
+  ]
+ ],
+ "s180.sec6.u9": [
+  [
+   "Alors, je suis ton aide ? Non,",
+   "ton aide-mon !",
+   "Beurk-beurk-beurk-beurk."
+  ],
+  [
+   "Beurk-beurk. Beurk !"
+  ]
+ ],
+ "s180.sec6.u10": [
+  [
+   "...... Enfin, viens dans notre",
+   "ville. Euh, tu sais où elle est",
+   "?"
+  ]
+ ],
+ "s180.sec6.u11": [
+  [
+   "Bien sûr ! Plus ou moins."
+  ]
+ ],
+ "s180.sec6.u12": "Numemon a rejoint la ville !",
+ "s180.sec7.u0": [
+  [
+   "Hein ? Qu'est-ce que tu es ?!"
+  ]
+ ],
+ "s180.sec7.u1": [
+  [
+   "Nanimon, voilà ce que je suis !"
+  ]
+ ],
+ "s180.sec7.u2": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 20",
+   "objets !"
+  ]
+ ],
+ "s180.sec7.u3": [
+  [
+   "{color 4}Porte-clés dimensionnel{color 1} reçu",
+   "! Tu peux porter jusqu'à 30",
+   "objets !"
+  ]
+ ],
+ "s180.sec52.u0": [
+  [
+   "Beurk, qu'est-ce que c'est ?"
+  ]
+ ],
+ "s180.sec52.u1": [
+  [
+   "! Qu'est-ce qui ne va pas,",
+   "{color 10}{partner}{color 1} ?!"
+  ]
+ ],
+ "s180.sec52.u2": [
+  [
+   "Ce serait... l'odeur de cette",
+   "brume... ?"
+  ]
+ ],
+ "s180.sec52.u3": [
+  [
+   "Hmm... C'est suspect. Il y a",
+   "peut-être quelque chose de",
+   "nocif dedans..."
+  ]
+ ]
+}

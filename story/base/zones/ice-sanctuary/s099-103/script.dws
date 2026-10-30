@@ -1,0 +1,41 @@
+// Readable form of script 99 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 99 {
+    npc gururumon0 = 5;
+    npc gururumon1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 53, 5, 6;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Omni Disk"), -1698, 0, -3442, 3072, 662);
+        spawn_chest(item("Omnipotent"), 740, 0, -2753, 0, 663);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -2446, 1282);
+        warp_to(98, 2, 255);
+    }
+
+    on step(1) replace {    // section 52
+        warp_to(92, 1, 255);
+    }
+
+    on step(2) replace {    // section 53
+        warp_to(100, 0, 255);
+    }
+
+    on talk(gururumon0) replace {    // section 5
+        say(gururumon0, text("s099.sec5.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on talk(gururumon1) replace {    // section 6
+        say(gururumon1, text("s099.sec6.u0"));
+        battle();
+        recruit(species("Gururumon"));
+        return;
+    }
+}

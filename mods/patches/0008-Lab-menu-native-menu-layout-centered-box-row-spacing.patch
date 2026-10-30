@@ -1,0 +1,174 @@
+From 3304ceea290c8008b0ac39a815eb4052a4ad7005 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 20:00:58 +0000
+Subject: [PATCH] Lab menu: native menu layout (centered box, row spacing,
+ selection bar, colored title)
+
+---
+ src/main/mod_lab.c | 73 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 46 insertions(+), 27 deletions(-)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 1415946..38064ec 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -6,7 +6,7 @@
+  * triangle or SELECT to close):
+  *   - "+1000 bits"     adds 1000 to the money
+  *   - "Heal partner"   current HP and MP to the maximum
+- *   - "Gift, once"     mini quest: gives 1 Meat and sets MOD_LAB_TRIGGER;
++ *   - "One-time gift"  mini quest: gives 1 Meat and sets MOD_LAB_TRIGGER;
+  *                      afterwards it says the gift was already taken
+  *   - "Close"
+  *
+@@ -28,8 +28,7 @@
+ 
+ #define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+ #define MOD_LAB_BOX	5	/* same box the pause uses */
+-#define MOD_LAB_TEXT_Y	0xA0	/* text area rows we use: 0xA0..0xEF */
+-#define MOD_LAB_LINES	6
++#define MOD_LAB_TEXT_Y	0x9C	/* text area rows we use: 0x9C..0xEF (0xF0 is the pause label) */
+ #define MOD_LAB_OPTIONS	4
+ #define ITEM_MEAT	38
+ 
+@@ -49,6 +48,7 @@ void clearTextSubArea(RECT *rect);
+ char *formatInteger(int32_t value, char *buf, int32_t digits);
+ int32_t giveItem(uint8_t item, uint8_t amount);
+ void pauseFrame(void);
++void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
+ 
+ static int32_t modLabCursor;
+ static char *modLabMessage;
+@@ -56,7 +56,7 @@ static char *modLabMessage;
+ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"+1000 bits",
+ 	"Heal partner",
+-	"Gift, once",
++	"One-time gift",
+ 	"Close",
+ };
+ 
+@@ -69,32 +69,48 @@ static char *appendStr(char *dst, char *src)
+ 	return dst;
+ }
+ 
+-static void modLabDrawText(void)
++/* Layout copied from the game's own menus (inventory option boxes): text 12 px
++ * inside the box, one row every 0x12 px, the native selection bar behind the
++ * selected option. Each row has its own 0xC-high line in the VRAM text area. */
++#define ROW_PITCH	0x12
++#define BOX_W		0xB0
++#define ROW_TITLE	0
++#define ROW_STATS	1
++#define ROW_OPTIONS	2
++#define ROW_MESSAGE	(ROW_OPTIONS + MOD_LAB_OPTIONS)
++#define TEXT_ROW_Y(r)	(MOD_LAB_TEXT_Y + (r) * 0xC)
++
++static void modLabClearRow(int32_t row)
+ {
+ 	RECT area;
++
++	setRECT(&area, 0, TEXT_ROW_Y(row), 0x100, 0xC);
++	clearTextSubArea(&area);
++}
++
++static void modLabDrawText(void)
++{
+ 	char line[40];
+ 	char num[12];
+ 	char *p;
+ 	int32_t i;
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 
+-	setRECT(&area, 0, MOD_LAB_TEXT_Y, 0x100, MOD_LAB_LINES * 0xC);
+-	clearTextSubArea(&area);
+-
+-	drawString("LAB MENU", 0, MOD_LAB_TEXT_Y);
++	for (i = 0; i < ROW_MESSAGE; i++) {
++		modLabClearRow(i);
++	}
++	drawString("LAB MENU", 0, TEXT_ROW_Y(ROW_TITLE));
+ 
+ 	p = appendStr(line, "Bits ");
+ 	p = appendStr(p, formatInteger(MONEY, num, 6));
+-	p = appendStr(p, "  HP ");
++	p = appendStr(p, "    HP ");
+ 	p = appendStr(p, formatInteger(stats->current.currentHP, num, 4));
+ 	p = appendStr(p, " of ");
+ 	appendStr(p, formatInteger(stats->base.hp, num, 4));
+-	drawString(line, 0, MOD_LAB_TEXT_Y + 0xC);
++	drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
+ 
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+-		p = appendStr(line, i == modLabCursor ? "= " : "  ");
+-		appendStr(p, MOD_LAB_OPTION_TEXT[i]);
+-		drawString(line, 0, MOD_LAB_TEXT_Y + 0x18 + i * 0xC);
++		drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 	}
+ 	DrawSync(0);
+ }
+@@ -103,29 +119,32 @@ static void modLabRender(int32_t instanceId)
+ {
+ 	GsBOXF box;
+ 	RECT *pos;
++	int32_t row;
++	int32_t color;
+ 
+ 	box.attribute = 0x40000000;
+ 	box.r = box.g = box.b = 0;
+ 	setRECT(&box, -0xA0, -0x78, 0x140, 0xF0);
+ 	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 7 - instanceId);
+ 	pos = &UI_BOX_DATA[MOD_LAB_BOX].finalPos;
+-	renderString(0, pos->x + 8, pos->y + 6, 0xB8, MOD_LAB_LINES * 0xC, 0,
+-		     MOD_LAB_TEXT_Y, 0, 1);
+-	if (modLabMessage != NULL) {
+-		/* the message goes in the row right after the options (0xE8) */
+-		renderString(3, pos->x + 8, pos->y + 6 + MOD_LAB_LINES * 0xC, 0xB8, 0xC,
+-			     0, MOD_LAB_TEXT_Y + MOD_LAB_LINES * 0xC, 0, 1);
++
++	for (row = 0; row <= ROW_MESSAGE; row++) {
++		if (row == ROW_MESSAGE && modLabMessage == NULL) {
++			break;
++		}
++		color = row == ROW_TITLE ? 4 : row == ROW_MESSAGE ? 3 : 0;
++		renderString(color, pos->x + 12, pos->y + 8 + row * ROW_PITCH, BOX_W - 24, 0xC,
++			     0, TEXT_ROW_Y(row), 0, 1);
+ 	}
++	renderSelectionCursor(pos->x + 9, pos->y + 6 + (ROW_OPTIONS + modLabCursor) * ROW_PITCH,
++			      BOX_W - 18, 0x10, 0);
+ }
+ 
+ static void modLabShowMessage(char *msg)
+ {
+-	RECT area;
+-
+ 	modLabMessage = msg;
+-	setRECT(&area, 0, MOD_LAB_TEXT_Y + MOD_LAB_LINES * 0xC, 0x100, 0xC);
+-	clearTextSubArea(&area);
+-	drawString(msg, 0, MOD_LAB_TEXT_Y + MOD_LAB_LINES * 0xC);
++	modLabClearRow(ROW_MESSAGE);
++	drawString(msg, 0, TEXT_ROW_Y(ROW_MESSAGE));
+ 	DrawSync(0);
+ }
+ 
+@@ -179,7 +198,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 	modLabCursor = 0;
+ 	modLabMessage = NULL;
+ 	modLabDrawText();
+-	setRECT(&pos, -0x60, -0x48, 0xC8, (MOD_LAB_LINES + 2) * 0xC + 0xC);
++	setRECT(&pos, -BOX_W / 2, -0x44, BOX_W, 8 + (ROW_MESSAGE + 1) * ROW_PITCH + 2);
+ 	createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
+ 	playSound(0, 3);
+ 	modLabFrames(12);
+@@ -213,7 +232,7 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 
+ 	playSound(0, 4);
+ 	removeStaticUIBox(MOD_LAB_BOX);
+-	setRECT(&pos, 0, MOD_LAB_TEXT_Y, 0x100, (MOD_LAB_LINES + 1) * 0xC);
++	setRECT(&pos, 0, MOD_LAB_TEXT_Y, 0x100, (ROW_MESSAGE + 1) * 0xC);
+ 	clearTextSubArea(&pos);
+ 	modLabFrames(8);
+ }
+-- 
+2.53.0
+

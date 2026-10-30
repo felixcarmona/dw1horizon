@@ -1,0 +1,769 @@
+From d4bd86f49294e38dcc15da44e1a19a6175a873fb Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 19:44:20 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200223:=20how=20many,=20asked.=20Mojyamon?=
+ =?UTF-8?q?'s=20trades=20and=20the=20card=20packs=20open=20an=20amount=20b?=
+ =?UTF-8?q?ox=20drawn=20like=20the=20shop's=20(UP=20/=20DOWN=20one,=20ALT?=
+ =?UTF-8?q?=20ten,=20round:=20down=20from=201=20is=20the=20most,=20up=20fr?=
+ =?UTF-8?q?om=20the=20most=20is=201;=20=E2=96=A1=20the=20most;=20=E2=9C=95?=
+ =?UTF-8?q?=20takes=20it,=20=E2=96=B3=20nothing);=20the=20shop's=20own=20a?=
+ =?UTF-8?q?mount=20box=20steps=20by=20the=20same=20rule=20(modAmountStep).?=
+ =?UTF-8?q?=20A=20trade=20gives=20at=20most=20what=20the=20player=20has=20?=
+ =?UTF-8?q?and=20the=20got=20item's=20stack=20holds,=20the=20given=20first?=
+ =?UTF-8?q?=20so=20a=20full=20inventory=20works=20(given=20back=20if=20the?=
+ =?UTF-8?q?=20got=20does=20not=20fit),=20and=20replaces=20the=20Yes=20/=20?=
+ =?UTF-8?q?No.=20Packs=20are=20charged=20here,=20MOD=5FECON=5FPACK=5FPRICE?=
+ =?UTF-8?q?=20(content/tables/economy.json=20cardPack.price;=20the=20scrip?=
+ =?UTF-8?q?ts=20of=20the=20two=20card=20shops=20no=20longer=20take=20the?=
+ =?UTF-8?q?=20bits),=20at=20most=20what=20the=20bits=20buy=20and=2099;=20o?=
+ =?UTF-8?q?ne=20pack=20opens=20as=20before,=20more=20open=20all=20at=20onc?=
+ =?UTF-8?q?e=20in=20the=20card=20list:=20the=20rarest=20first,=20how=20man?=
+ =?UTF-8?q?y=20came,=20NEW=20for=20a=20card=20not=20in=20the=20collection?=
+ =?UTF-8?q?=20before,=20rows=20coming=20in=20one=20by=20one=20with=20a=20s?=
+ =?UTF-8?q?ound,=20and=20the=20card=20under=20the=20cursor's=20picture=20a?=
+ =?UTF-8?q?t=20half=20size=20turning=20over=20as=20it=20comes=20(CARD.ALL?=
+ =?UTF-8?q?=20into=20the=20end=20of=20TEXTURE=5FBUFFER,=20whose=20start=20?=
+ =?UTF-8?q?holds=20the=20list).=203=20888=20bytes=20of=20heap.=20Tested=20?=
+ =?UTF-8?q?in=20PCSX-Redux:=2021=20Digimushrm=20for=2021=20Med.Recovery=20?=
+ =?UTF-8?q?at=20once,=2010=20of=2015=20Supercarrots,=201=20and=209=20packs?=
+ =?UTF-8?q?,=20=E2=96=B3=20in=20both=20boxes,=20the=20shop's=20box=20round?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ config/us/main.ld            |   4 +
+ include/dw/mod_rules.h       |   3 +-
+ include/dw/script.h          |   3 +
+ src/main/script_common.c     |  82 ++++---
+ src/shop/script_menu.c       | 438 ++++++++++++++++++++++++++++++++---
+ text/main/script_common.yaml |   9 +
+ text/shop/script_menu.yaml   |  15 ++
+ 7 files changed, 491 insertions(+), 63 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 54b99bd7..de8f9ba0 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -839,6 +839,8 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/font.c.o(.sbss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/shop/script_menu.c.o(.sbss.*); /* MOD (amounts) */
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/main_menu.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/btl/battle_setup.c.o(.sbss.*);
+@@ -937,6 +939,8 @@ SECTIONS
+         BUILD_DIR/src/main/mod_feed.c.o(.bss.*);
+         BUILD_DIR/src/main/mod_qol.c.o(.bss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/shop/script_menu.c.o(.bss.*); /* MOD (amounts) */
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tfs_stream.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/npc_anim_trim.c.o(.bss.*);
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 57f14324..c776ced0 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -32,7 +32,7 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+  * written by tools/balance.py from content/tables/economy.json. A cap left out is the limit of what holds the value (money 2^31 - 1, merit 32767, a stack 255); a
+  * percent left out is 100 (a price ratio) or 0 (the part of the items lost on a defeat); an amount left out is 0.
+  */
+-#define MOD_ECON_SIZE		11
++#define MOD_ECON_SIZE		12
+ #define MOD_ECON_MONEY_CAP	0
+ #define MOD_ECON_MERIT_CAP	1
+ #define MOD_ECON_STACK_CAP	2
+@@ -44,6 +44,7 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ #define MOD_ECON_CARD_CUT2	8
+ #define MOD_ECON_CARD_CUT3	9
+ #define MOD_ECON_CARD_MAX	10
++#define MOD_ECON_PACK_PRICE	11 /* MOD (amounts): what a card pack costs (left out: nothing) */
+ extern int32_t MOD_ECON[MOD_ECON_SIZE];
+ int32_t econCap(int32_t slot, int32_t whenLeftOut);
+ int32_t econAmt(int32_t slot);
+diff --git a/include/dw/script.h b/include/dw/script.h
+index 47bfc3e4..dffb6900 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -308,6 +308,9 @@ extern int32_t SCRIPT_SECTION_IS_EVENT;
+ extern int32_t MONEY;
+ extern char NAMING_BUFFER[20];
+ extern int32_t UPDATE_SHOP_BIT_BOX;
++/* MOD (amounts): the amount boxes step by this rule (script_common.c); the card list shows a purchase of packs (script_menu.c) */
++int32_t modAmountStep(void);
++extern uint8_t MOD_PACK_RESULTS;
+ extern uint8_t ACTIVE_INSTRUCTION;
+ extern uint8_t ITEM_MENU_TYPE;
+ extern uint8_t MAIN_D_80135000;
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index bdc43c3a..a9202078 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1447,11 +1447,43 @@ int32_t isPartnerBaby(void)
+ 	return 0;
+ }
+ 
++/*
++ * MOD (amounts): UP and DOWN change SHOP_AMOUNT by one, by ten with ALT held, from 1 to MAX_SHOP_AMOUNT and round:
++ * down from 1 is the most, up from the most is 1 (a ten-step stops at either end). The shop's amount box, Mojyamon's
++ * trades and the card packs (script_menu.c). 1 when it changed.
++ */
++int32_t modAmountStep(void)
++{
++	int32_t n;
++	int32_t step;
++
++	n = SHOP_AMOUNT;
++	step = (POLLED_INPUT & ALT_BUTTON) ? 10 : 1;
++	if (isKeyDown(0x1000)) {
++		n = n >= MAX_SHOP_AMOUNT ? 1 : n + step;
++		if (n > MAX_SHOP_AMOUNT) {
++			n = MAX_SHOP_AMOUNT;
++		}
++	} else if (isKeyDown(0x4000)) {
++		n = n <= 1 ? MAX_SHOP_AMOUNT : n - step;
++		if (n < 1) {
++			n = 1;
++		}
++	} else {
++		return 0;
++	}
++	if (n != SHOP_AMOUNT) {
++		SHOP_AMOUNT = n;
++		playSound(0, 2);
++	}
++
++	return 1;
++}
++
+ void tickItemMenuAmountBox(void)
+ {
+ 	RECT origin;
+ 	uint8_t owner;
+-	int8_t q;
+ 	int32_t unitPrice;
+ 
+ 	if (UI_BOX_DATA[3].state != 1) {
+@@ -1462,34 +1494,7 @@ void tickItemMenuAmountBox(void)
+ 		return;
+ 	}
+ 
+-	if (SHOP_AMOUNT != MAX_SHOP_AMOUNT && isKeyDown(0x1000)) {
+-		if (POLLED_INPUT & ALT_BUTTON) {
+-			SHOP_AMOUNT += 10;
+-			if (SHOP_AMOUNT > MAX_SHOP_AMOUNT) {
+-				SHOP_AMOUNT -= 10;
+-			}
+-		} else {
+-			SHOP_AMOUNT += 1;
+-		}
+-
+-		playSound(0, 2);
+-		updateItemMenuAmountBoxString();
+-
+-		return;
+-	}
+-	if (SHOP_AMOUNT != 1 && isKeyDown(0x4000)) {
+-		if (POLLED_INPUT & ALT_BUTTON) {
+-			q = SHOP_AMOUNT;
+-			q -= 10;
+-			if (q <= 0) {
+-				q += 10;
+-			}
+-			SHOP_AMOUNT = q;
+-		} else {
+-			SHOP_AMOUNT -= 1;
+-		}
+-
+-		playSound(0, 2);
++	if (modAmountStep() != 0) { /* MOD (amounts): wraps, as the Mojyamon and card pack boxes */
+ 		updateItemMenuAmountBoxString();
+ 
+ 		return;
+@@ -2710,7 +2715,24 @@ void calculateCardMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 	type = box->buf[idx];
+ 	amount = box->buf[idx + 1];
+ 
+-	if (type != 0xff) {
++	if (type != 0xff && MOD_PACK_RESULTS) {
++		/* MOD (amounts): a card of a purchase of packs: its name (colour 7 when it is new), how many came, NEW */
++		*out++ = 1;
++		*out++ = (amount & 0x80) ? 7 : 1;
++		id = CARD_DATA[type].digimonId;
++		strcpy(out, DIGIMON_NAME(id));
++		out += strlen(DIGIMON_NAME(id));
++		*out++ = 0x17;
++		*out++ = 0;
++		*out++ = 'x';
++		out = intToStringSJIS(out, amount & 0x7f, 2, 0);
++		if (amount & 0x80) {
++			*out++ = 0xf;
++			*out++ = 0;
++			strcpy(out, STR_CARD_NEW);
++			out += strlen(STR_CARD_NEW);
++		}
++	} else if (type != 0xff) {
+ 		*out++ = 1;
+ 		if (ITEM_MENU_TYPE == 3) {
+ 			if (amount != 0) {
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 35b185d2..baf1a8a7 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -2,6 +2,9 @@
+ 
+ #include <dw/mod_rules.h>
+ #include <dw/mod_font.h>
++#include <dw/main.h>
++#include <dw/memmap.h>
++#include <dw/font.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+@@ -47,6 +50,7 @@ void renderItemMenuScrollBar(ItemMenuBox *box);
+ void renderItemMenuItemList(ItemMenuBox *box, int16_t x1, int16_t y1, int16_t x2, int16_t y2, int32_t flag);
+ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
+ void setPosDataPolyFT4(POLY_FT4 *prim, int32_t x, int32_t y, int32_t w, int32_t h);
++void setUVDataPolyFT4(POLY_FT4 *prim, int32_t u, int32_t v, int32_t w, int32_t h);
+ void *allocateArray(uint32_t size);
+ void freeArray(uint32_t *array);
+ uint8_t *padWithSpaces(uint8_t *str, int32_t width, int32_t used);
+@@ -58,6 +62,19 @@ int32_t createItemMenuAmountBox(RECT *origin);
+ int32_t createSingleCardShopMenu(RECT *origin);
+ ItemMenuBox *getItemMenuFromType(void);
+ int32_t createItemMenuDescriptionBox(ItemMenuBox *box, RECT *origin, uint8_t uiBoxId);
++/* MOD (amounts) */
++extern int32_t SHOP_ITEM_PRICE;
++extern uint8_t MAX_SHOP_AMOUNT;
++extern int32_t ITEM_MENU_SUB_TEXTBOX_LINE;
++void renderItemSprite(ItemId itemId, int16_t x, int16_t y, int32_t depth);
++void renderCardSprite(uint8_t spriteId, int16_t x, int16_t y, int32_t depth);
++void renderInsetWithoutBox(uint8_t boxId, int16_t x, int16_t y, int16_t w, int16_t h);
++void updateItemMenuSubTextboxLine(void);
++void itemMenuCursorUp(ItemMenuBox *box, int32_t style);
++void itemMenuCursorDown(ItemMenuBox *box, int32_t style);
++static void openAmountBox(int32_t kind);
++static uint8_t MOJYA_GOT; /* the item the trade under the cursor gives */
++static void openPackResults(void);
+ void itemMenuCursorTop(ItemMenuBox *box, int32_t startRow, int32_t style);
+ void itemMenuCursorBottom(ItemMenuBox *box, int32_t startRow, int32_t style);
+ void itemMenuCursorMoveToBottom(ItemMenuBox *box);
+@@ -711,33 +728,58 @@ void openRecycleShop(void)
+ 	}
+ }
+ 
++/*
++ * MOD (amounts): routine 14 without TRIGGER_3/TRIGGER_4 asks how many packs (the amount box, at most what the bits
++ * buy, 99), charges them (MOD_ECON_PACK_PRICE; the script no longer takes the bits) and opens them: one pack as the
++ * original, a card a dialogue box; more, all at once in the list of what they gave (openPackResults). CANCEL_BUTTON (△) buys nothing.
++ */
+ void rollCardPack(void)
+ {
++	int32_t n;
++
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+-		writePStat(PSTAT_249, rollCard());
+-		showCardTextbox();
++		SHOP_ITEM_PRICE = econAmt(MOD_ECON_PACK_PRICE);
++		n = SHOP_ITEM_PRICE > 0 ? MONEY / SHOP_ITEM_PRICE : 99;
++		if (n == 0) {
++			playSound(0, 0xb);
++			ACTIVE_INSTRUCTION = 0;
++			break;
++		}
++		MAX_SHOP_AMOUNT = n > 99 ? 99 : n;
++		openAmountBox(2);
+ 		SCRIPT_STATE_2 = 1;
+-		SCRIPT_NEXT_STATE_2 = 2;
+-		SCRIPT_TEXTBOX_MODE = 1;
++		SCRIPT_TEXTBOX_MODE = 0;
+ 		break;
+ 	case 1:
+ 		break;
+-	case 2:
+-		writePStat(PSTAT_249, rollCard());
+-		showCardTextbox();
+-		SCRIPT_STATE_2 = 1;
+-		SCRIPT_NEXT_STATE_2 = 3;
+-		SCRIPT_TEXTBOX_MODE = 1;
+-		break;
+-	case 3:
++	case 9:
++		setInputRepeatMask(0);
++		MONEY -= SHOP_AMOUNT * SHOP_ITEM_PRICE;
++		UPDATE_SHOP_BIT_BOX = 1;
++		playShopSoundOnlyInSavannah();
++		if (SHOP_AMOUNT > 1) {
++			openPackResults();
++			SCRIPT_STATE_2 = 1;
++			break;
++		}
++		SCRIPT_STATE_2 = 5;
++		/* fallthrough */
++	case 5:
++	case 6:
++	case 7:
+ 		writePStat(PSTAT_249, rollCard());
+ 		showCardTextbox();
++		SCRIPT_NEXT_STATE_2 = SCRIPT_STATE_2 + 1;
+ 		SCRIPT_STATE_2 = 1;
+-		SCRIPT_NEXT_STATE_2 = 4;
+ 		SCRIPT_TEXTBOX_MODE = 1;
+ 		break;
+-	case 4:
++	case 10:
++		destroyItemMenuBox(&ITEM_MENU_LEFT);
++		MOD_PACK_RESULTS = 0;
++		/* fallthrough */
++	case 8:
++		setInputRepeatMask(0);
+ 		ACTIVE_INSTRUCTION = 0;
+ 		break;
+ 	}
+@@ -1085,7 +1127,6 @@ void tickBirdraTransport(void)
+ 
+ void openMojyamonShop(void)
+ {
+-	int32_t selection = 0;
+ 	uint8_t owner = readPStat(PSTAT_254);
+ 
+ 	switch (SCRIPT_STATE_2) {
+@@ -1113,27 +1154,44 @@ void openMojyamonShop(void)
+ 		SCRIPT_STATE_2 = 1;
+ 		SCRIPT_TEXTBOX_MODE = 3;
+ 		break;
+-	case 4:
+-		setInputRepeatMask(0);
+-		showMapheadSelection(0xc, 0xfd, 2, &selection, 0x4d6);
++	case 4: {
++		/* MOD (amounts): how many, instead of the Yes / No: at most what the player has and the stack of the item got
++		   holds (a full inventory works when the whole stack given goes, case 5) */
++		int32_t row;
++		int32_t room;
++
++		row = (ITEM_MENU_LEFT->topRow + ITEM_MENU_LEFT->cursor) * 2;
++		SHOP_ITEM_TYPE = readPStat(PSTAT_249);
++		MOJYA_GOT = ITEM_MENU_RIGHT->buf[row];
++		room = econCap(MOD_ECON_STACK_CAP, 255) - getItemCount(MOJYA_GOT);
++		MAX_SHOP_AMOUNT = getItemCount(SHOP_ITEM_TYPE);
++		if (room < MAX_SHOP_AMOUNT) {
++			MAX_SHOP_AMOUNT = room;
++		}
++		if (MAX_SHOP_AMOUNT == 0) {
++			triggerBoxCloseFlag(1);
++			showMapHeadTextbox(0xe, owner, 0, 0x4d6);
++			SCRIPT_STATE_2 = 1;
++			SCRIPT_NEXT_STATE_2 = 2;
++			SCRIPT_TEXTBOX_MODE = 1;
++			break;
++		}
++		openAmountBox(1);
+ 		SCRIPT_STATE_2 = 1;
+-		SCRIPT_NEXT_STATE_2 = 5;
+-		SCRIPT_TEXTBOX_MODE = 2;
++		SCRIPT_TEXTBOX_MODE = 3;
+ 		break;
++	}
+ 	case 5: {
+-		uint8_t itemId;
+-		int32_t row;
+-
++		/* MOD (amounts): SHOP_AMOUNT of the item given (SHOP_ITEM_TYPE) for as many of the one got (MOJYA_GOT),
++		   the given first so that its slot is free; given back when the got does not fit */
++		setInputRepeatMask(0);
+ 		triggerBoxCloseFlag(1);
+-
+-		row = (ITEM_MENU_LEFT->topRow + ITEM_MENU_LEFT->cursor) * 2;
+-		itemId = ITEM_MENU_RIGHT->buf[row];
+-		if (giveItem(itemId, 1) != 0) {
+-			itemId = readPStat(PSTAT_249);
+-			removeItem(itemId, 1);
++		removeItem(SHOP_ITEM_TYPE, SHOP_AMOUNT);
++		if (giveItem(MOJYA_GOT, SHOP_AMOUNT) != 0) {
+ 			setMojyaItemTradedTrigger();
+ 			showMapHeadTextbox(0xd, owner, 0, 0x4d6);
+ 		} else {
++			giveItem(SHOP_ITEM_TYPE, SHOP_AMOUNT);
+ 			showMapHeadTextbox(0xe, owner, 0, 0x4d6);
+ 		}
+ 
+@@ -2639,9 +2697,7 @@ void tickMojyaTradeMenu(void)
+ 		if ((item & 0x80) != 0) {
+ 			writePStat(PSTAT_249, (item & 0x7f));
+ 			showMapHeadTextbox(0xb, readPStat(PSTAT_254), 0, 0x4d6);
+-			SCRIPT_STATE_2 = 1;
+-			SCRIPT_NEXT_STATE_2 = 4;
+-			SCRIPT_TEXTBOX_MODE = 1;
++			SCRIPT_STATE_2 = 4; /* MOD (amounts): the amount box at once, under the question (was after it, a Yes / No) */
+ 			playSound(0, 3);
+ 		} else {
+ 			playSound(0, 0xb);
+@@ -3370,3 +3426,321 @@ void renderNamingUnderscore(uint8_t boxId, int16_t x, int16_t y, int16_t w)
+ 	color = 0x20202;
+ 	drawLine2P(color, x, y, (x + w) - 1, y, boxId, 0);
+ }
++
++/*
++ * MOD (amounts): how many, asked in an amount box drawn like the shop's (box 3, script_common.c): UP / DOWN one,
++ * by ten with ALT, round from 1 to the most (modAmountStep), □ the most, CONFIRM_BUTTON (✕) takes it, CANCEL_BUTTON (△) none.
++ *   1, Mojyamon's trades (openMojyamonShop): the item given and its name, the item got and its name, the amount;
++ *      ✕ goes to case 5 (the trade), △ to case 6 (his goodbye, as the original's No)
++ *   2, card packs (rollCardPack): "Card pack", the price, the amount and what they cost; ✕ goes to case 9, △ to 8
++ * The text is one row (ITEM_MENU_SUB_TEXTBOX_LINE: the dialogue box's spare page, row 17 for a trade), in columns: names at 0 and
++ * 0x60, the trade's amount at 0xc0; the pack's price at 0x60, amount at 0x9c and cost at 0xb4 (as the shop's).
++ */
++static uint8_t AMOUNT_KIND;
++
++static uint8_t *amountName(uint8_t *out, char *name)
++{
++	int32_t code;
++
++	code = textFitCode(name, ITEM_FIELD_W);
++	if (code != 1) {
++		*out++ = code;
++		*out++ = 0xff;
++	}
++	strcpy(out, name);
++
++	return out + strlen(name);
++}
++
++static void amountBoxString(void)
++{
++	uint8_t *out;
++
++	out = TEXTBOX_LINES_PTR + (ITEM_MENU_SUB_TEXTBOX_LINE << 6);
++	if (AMOUNT_KIND == 1) {
++		out = amountName(out, ITEM_NAME(SHOP_ITEM_TYPE));
++		*out++ = TEXT_COLUMN;
++		*out++ = 0x60;
++		out = amountName(out, ITEM_NAME(MOJYA_GOT));
++		*out++ = TEXT_COLUMN;
++		*out++ = 0xc0;
++	} else {
++		out = amountName(out, STR_CARD_PACK);
++		*out++ = 0x18;
++		*out++ = 0;
++		out = intToStringSJIS(out, SHOP_ITEM_PRICE, 5, 0);
++		*out++ = 0x19;
++		*out++ = 0;
++	}
++	out = intToStringSJIS(out, SHOP_AMOUNT, 2, 0);
++	if (AMOUNT_KIND != 1) {
++		*out++ = 0x1a;
++		*out++ = 0;
++		out = intToStringSJIS(out, SHOP_ITEM_PRICE * SHOP_AMOUNT, 6, 0);
++	}
++	*out++ = 0;
++	*out = 0;
++	TEXTBOX_DATA.box[3].pageReady = 1;
++	TEXTBOX_DATA.box[3].writeCount++;
++}
++
++static void tickAmountBox(void)
++{
++	if (UI_BOX_DATA[3].state != 1) {
++		return;
++	}
++
++	if (isXPressedAfterDialogue() == 0) {
++		return;
++	}
++
++	if (modAmountStep() != 0) {
++		amountBoxString();
++		return;
++	}
++
++	if (isKeyDown(0x80)) {
++		SHOP_AMOUNT = MAX_SHOP_AMOUNT;
++		playSound(0, 2);
++		amountBoxString();
++		return;
++	}
++
++	if (isKeyDown(CONFIRM_BUTTON)) {
++		SCRIPT_STATE_2 = AMOUNT_KIND == 1 ? 5 : 9;
++		playSound(0, 3);
++	} else if (isKeyDown(CANCEL_BUTTON)) {
++		SCRIPT_STATE_2 = AMOUNT_KIND == 1 ? 6 : 8;
++		playSound(0, 4);
++	} else {
++		return;
++	}
++	triggerBoxCloseFlag(3);
++}
++
++static void renderAmountBox(void)
++{
++	int16_t x;
++	int16_t y;
++	int16_t v;
++
++	x = UI_BOX_DATA[3].finalPos.x;
++	y = UI_BOX_DATA[3].finalPos.y;
++	v = TEXTBOX_DATA.box[3].vramRow * 12;
++	renderHorizontalLine(3, 4, 0x17, 0x7a);
++	renderInsetWithoutBox(3, 0x55, 0x2a, 0x1a, 0xe);
++	renderString(0, x + 0x1a, y + 7, 0x60, 0xc, 0, v, 3, 1);
++	if (AMOUNT_KIND == 1) {
++		renderItemSprite(SHOP_ITEM_TYPE, x + 8, y + 5, 3);
++		renderItemSprite(MOJYA_GOT, x + 8, y + 0x19, 3);
++		renderString(0, x + 0x1a, y + 0x1b, 0x60, 0xc, 0x60, v, 3, 1);
++		renderString(0, x + 0x59, y + 0x2b, 0x18, 0xc, 0xc0, v, 3, 1);
++	} else {
++		renderHorizontalLine(3, 0xc, 0x3c, 0x6a);
++		renderCardSprite(0, x + 10, y + 7, 3);
++		renderString(0, x + 0x4a, y + 0x1b, 0x3c, 0xc, 0x60, v, 3, 1);
++		renderString(0, x + 0x59, y + 0x2b, 0x18, 0xc, 0x9c, v, 3, 1);
++		renderString(0, x + 0x40, y + 0x41, 0x48, 0xc, 0xb4, v, 3, 1);
++	}
++}
++
++static void openAmountBox(int32_t kind)
++{
++	RECT rect;
++	RECT origin;
++
++	AMOUNT_KIND = kind;
++	SHOP_AMOUNT = 1;
++	NAMING_CURRENT_LETTER = 1;
++	setInputRepeatMask(0x5000);
++	/* the trade's question changes the dialogue box's page, so its row is past the list's (9..16 with both pages) */
++	updateItemMenuSubTextboxLine();
++	if (kind == 1) {
++		ITEM_MENU_SUB_TEXTBOX_LINE = 17;
++	}
++	setupBoxOrigin(readPStat(PSTAT_254), &origin);
++	if (kind == 1) {
++		setRECT(&rect, -0x41, -0x14, 0x82, 0x3e);
++	} else {
++		setRECT(&rect, -0x41, -0x2a, 0x82, 0x53);
++	}
++	createTextbox(3, 0xc1, &rect, &origin, tickAmountBox, renderAmountBox);
++	registerTextbox(3, ITEM_MENU_SUB_TEXTBOX_LINE, 1, 0, 0);
++	amountBoxString();
++	playSound(0, 3);
++}
++
++/*
++ * MOD (amounts): what a purchase of packs gave, all at once: every card a row (the card list's: rarity, name, colour 7
++ * and NEW when it was not in the collection before the purchase, how many came), the rarest first; a head with how
++ * many cards and how many new. The first rows come in one by one with a sound (a new card's is brighter), ✕ or △ shows
++ * them all; then UP / DOWN scroll, the card under the cursor shown at the left at half size (its picture, CARD.ALL,
++ * read as the Player screen's card list reads it, loadCardImage, to VRAM 576,256, free on the field; but into the
++ * end of TEXTURE_BUFFER, whose start holds the list, allocateArray's), turning over as
++ * it comes, and ✕ or △ closes (rollCardPack's case 10). The cards are counted into the
++ * collection as the original's dialogue boxes count them (showCardTextbox: up to MOD_ECON_CARD_MAX copies).
++ */
++uint8_t MOD_PACK_RESULTS;
++static uint8_t PACK_SHOWN;
++static uint8_t PACK_TICK;
++static uint8_t PACK_ART;  /* the card whose picture is shown (0xff none) */
++static uint8_t PACK_FLIP; /* 0..4: the picture turns over as it comes */
++extern char MAIN_D_80123E78[]; /* "\\CARD\\CARD.ALL" */
++extern uint32_t ARRAY_SECTION_OFFSET;
++int32_t loadStackedTIMEntry(char *path, void *buffer, int32_t offset, int32_t sectors);
++
++static void tickPackResults(void)
++{
++	ItemMenuBox *box;
++
++	box = ITEM_MENU_LEFT;
++	if (UI_BOX_DATA[1].state != 1 || isItemMenuBoxBusy(box) != 0) {
++		return;
++	}
++
++	if (PACK_SHOWN < box->itemCount && PACK_SHOWN < box->visibleRows) {
++		if (isKeyDown(CONFIRM_BUTTON | CANCEL_BUTTON)) {
++			PACK_SHOWN = 0xff;
++		} else if (++PACK_TICK >= 4) {
++			PACK_TICK = 0;
++			playSound(0, (box->buf[PACK_SHOWN * 2 + 1] & 0x80) ? 3 : 2);
++			PACK_SHOWN++;
++		}
++		return;
++	}
++	PACK_SHOWN = 0xff;
++	if (box->buf[(box->topRow + box->cursor) * 2] != PACK_ART) {
++		PACK_ART = box->buf[(box->topRow + box->cursor) * 2];
++		if (ARRAY_SECTION_OFFSET <= TEXTURE_BUFFER_SIZE - 0xe * 0x800) {
++			loadStackedTIMEntry(MAIN_D_80123E78, TEXTURE_BUFFER + TEXTURE_BUFFER_SIZE - 0xe * 0x800, PACK_ART * 0xe, 0xe);
++		}
++		PACK_FLIP = 0;
++	} else if (PACK_FLIP < 4) {
++		PACK_FLIP++;
++	}
++
++	if (isKeyDown(CONFIRM_BUTTON | CANCEL_BUTTON)) {
++		triggerBoxCloseFlag(1);
++		playSound(0, 4);
++		SCRIPT_STATE_2 = 10;
++	} else if (isKeyDown(0x1000)) {
++		itemMenuCursorUp(box, 1);
++	} else if (isKeyDown(0x4000)) {
++		itemMenuCursorDown(box, 1);
++	}
++}
++
++static void renderPackResults(void)
++{
++	ItemMenuBox *box;
++	TextBoxData *text;
++	int32_t u;
++	int32_t w;
++	int16_t v;
++	int16_t bx;
++	int16_t by;
++	uint8_t count;
++
++	box = ITEM_MENU_LEFT;
++	text = &TEXTBOX_DATA.box[1];
++	bx = UI_BOX_DATA[1].finalPos.x;
++	by = UI_BOX_DATA[1].finalPos.y;
++	getVRAMModeCoords(text->vramMode, &u, &w);
++	v = (9 + text->backPage * text->vramRows) * 12;
++	renderString(0, bx + 0xc, by + 5, 0xc0, 0xc, u, v, 5, 1);
++	renderHorizontalLine(1, 4, 0x15, 0xd7);
++	renderItemMenuScrollBar(box);
++	count = box->itemCount;
++	if (PACK_SHOWN < count) {
++		box->itemCount = PACK_SHOWN;
++	} else {
++		renderSelectionCursor(bx + 5, by + box->cursor * 0x12 + 0x19, 0xca, 0x12, 5);
++	}
++	renderItemMenuItemList(box, bx + 0x1a, by + 0x1b, bx + 8, by + 0x1a, 1);
++	box->itemCount = count;
++
++	if (PACK_ART != 0xff && UI_BOX_DATA[1].state == 1) {
++		POLY_FT4 *prim;
++
++		w = (75 * PACK_FLIP + 2) / 4;
++		prim = (POLY_FT4 *)GsGetWorkBase();
++		SetPolyFT4(prim);
++		setRGB0(prim, 0x80, 0x80, 0x80);
++		prim->tpage = GetTPage(1, 0, 576, 256);
++		prim->clut = GetClut(448, 511);
++		setUVDataPolyFT4(prim, 0, 0, 150, 180);
++		setPosDataPolyFT4(prim, bx - 0x50 + (75 - w) / 2, by + 0x14, w, 90);
++		AddPrim(ACTIVE_ORDERING_TABLE->org + 5, prim++);
++		GsSetWorkBase((PACKET *)prim);
++	}
++}
++
++static void openPackResults(void)
++{
++	RECT rect;
++	RECT origin;
++	uint8_t *got;
++	uint8_t *out;
++	int32_t i;
++	int32_t r;
++	int32_t n;
++	int32_t fresh;
++
++	got = (uint8_t *)allocateArray(NUM_CARDS * 2);   /* how many came, the copies before */
++	for (i = 0; i < NUM_CARDS; i++) {
++		got[i] = 0;
++		got[NUM_CARDS + i] = getCardAmount(i);
++	}
++	for (i = SHOP_AMOUNT * 3; i > 0; i--) {
++		r = rollCard();
++		if (got[r] < 99) {
++			got[r]++;
++		}
++		n = getCardAmount(r);
++		if (n < econAmt(MOD_ECON_CARD_MAX)) {
++			setCardAmount(r, n + 1);
++		}
++	}
++
++	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
++	out = ITEM_MENU_LEFT->buf;
++	fresh = 0;
++	for (r = 0; r < 5; r++) {
++		for (i = 0; i < NUM_CARDS; i++) {
++			if (got[i] != 0 && CARD_DATA[i].spriteId == r) {
++				n = got[NUM_CARDS + i] == 0;
++				fresh += n;
++				*out++ = i;
++				*out++ = got[i] | (n << 7);
++			}
++		}
++	}
++	freeArray((uint32_t *)got);
++	ITEM_MENU_LEFT->itemCount = (out - ITEM_MENU_LEFT->buf) / 2;
++
++	/* the head: row 9 of both pages, the box's first, before the rows of cards (drawn from it on, a row ends at 0xd) */
++	for (r = 9; r < 9 + 2 * 6; r += 6) {
++		out = TEXTBOX_LINES_PTR + (r << 6);
++		out = intToStringSJIS(out, SHOP_AMOUNT * 3, 3, 1);
++		strcpy(out, STR_PACK_CARDS);
++		out += strlen(STR_PACK_CARDS);
++		out = intToStringSJIS(out, fresh, 2, 1);
++		strcpy(out, STR_PACK_NEW);
++		out += strlen(STR_PACK_NEW);
++		*out = 0xd;
++	}
++
++	MOD_PACK_RESULTS = 1;
++	ITEM_MENU_TYPE = 4;
++	PACK_SHOWN = 0;
++	PACK_TICK = 0;
++	PACK_ART = 0xff;
++	triggerBoxCloseFlag(0);
++	setInputRepeatMask(0x5000);
++	setupBoxOrigin(readPStat(PSTAT_254), &origin);
++	setRECT(&rect, -0x44, -0x40, 0xde, 0x7a);
++	createTextbox(1, 0xf1, &rect, &origin, tickPackResults, renderPackResults);
++	registerTextbox(1, 9, 6, 1, 0);
++	initItemMenuBox(ITEM_MENU_LEFT, 1, 0xa);
++	updateItemMenuStrings(ITEM_MENU_LEFT, 0xa, 1);
++}
+diff --git a/text/main/script_common.yaml b/text/main/script_common.yaml
+index d8888336..187a44a3 100644
+--- a/text/main/script_common.yaml
++++ b/text/main/script_common.yaml
+@@ -487,3 +487,12 @@ TOURNAMENT_GRADES:
+       ja: ＢＴ
+       en_us: NULL
+       en_eu: BT
++
++# MOD (amounts): the mark of a new card in the list of what a purchase of card packs gave (script_common.c,
++# calculateCardMenuStrings). `storage: define`: a literal where the C uses it.
++MOD_PACK_RESULTS_TEXT:
++  storage: define
++  strings:
++    STR_CARD_NEW:
++      ja: NEW
++      en_us: NEW
+diff --git a/text/shop/script_menu.yaml b/text/shop/script_menu.yaml
+index d1b0415f..8b2fc210 100644
+--- a/text/shop/script_menu.yaml
++++ b/text/shop/script_menu.yaml
+@@ -73,3 +73,18 @@ BOX_LABELS:
+     STR_KEEPING:
+       ja: NULL
+       en_us: Keeping
++
++# MOD (amounts): the card pack's name in its amount box and the head of the list of what the packs gave
++# (script_menu.c, the card packs). `storage: define`: literals where the C uses them.
++MOD_PACK_TEXT:
++  storage: define
++  strings:
++    STR_CARD_PACK:
++      ja: Card pack
++      en_us: Card pack
++    STR_PACK_CARDS:
++      ja: " cards, "
++      en_us: " cards, "
++    STR_PACK_NEW:
++      ja: " new"
++      en_us: " new"
+-- 
+2.55.0
+

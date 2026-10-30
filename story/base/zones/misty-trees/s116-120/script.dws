@@ -1,0 +1,90 @@
+// Readable form of script 116 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 116 {
+    npc gabumon = 5;
+    npc goblimon1 = 6;
+    npc goblimon2 = 7;
+    npc tsukaimon = 8;
+    npc darklizardmon = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 7, 8, 9, 5;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 13) {
+            spawn_item(item("Digimushrm"), 53, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 8) {
+            spawn_item(item("Digimushrm"), 50, 36);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 42, 75);
+        }
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        say(goblimon1, text("s116.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon2) replace {    // section 7
+        say(goblimon2, text("s116.sec7.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 8
+        say(tsukaimon, text("s116.sec8.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on talk(darklizardmon) replace {    // section 9
+        say(darklizardmon, text("s116.sec9.u0"));
+        battle();
+        recruit(species("DarkLizardmon"));
+    }
+
+    on talk(gabumon) replace {    // section 5
+        say(gabumon, text("s116.sec5.u0"));
+        battle(foes: [gabumon]);
+        face(gabumon, tamer);
+        face(tamer, gabumon);
+        face(partner, gabumon);
+        await tamer;
+        await partner;
+        say(gabumon, text("s116.sec5.u1"));
+        say(tamer, text("s116.sec5.u2"));
+        say(gabumon, text("s116.sec5.u3"));
+        animate(tamer, 16);
+        wait(1s);
+        say(tamer, text("s116.sec5.u4"));
+        say(gabumon, text("s116.sec5.u5"));
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s116.sec5.u6"));
+        say(gabumon, text("s116.sec5.u7"));
+        fadeout_hud(0);
+        walk_away(gabumon, -330, -2751, looks: 5);
+        remove(gabumon);
+        glances = 0;
+        sound(8, 10);
+        say(narrator, text("s116.sec5.u8"));
+        animate(tamer, 16);
+        wait(1s);
+        say(tamer, text("s116.sec5.u9"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        recruit(species("Gabumon"));
+        engine.prosperity += 1;
+        return;
+    }
+}

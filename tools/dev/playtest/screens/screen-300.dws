@@ -1,0 +1,39 @@
+// Screens 300 and 301, two screens past the original 255 with files of their own names (tools/dev/playtest/screens/:
+// 300-test-hollow.json, the Native Forest clearing copied to HOLW01, its own caption and toilet, a concave arena;
+// 301-test-bed.json, Kunemon's Bed copied to HOLW02). tools/dev/playtest/screens.sh builds and plays them.
+//  - Jijimon's house: talking to Tokomon warps to screen 300 (WARP_TO16), exit 2 (the clearing's south path)
+//  - screen 300 gets a script of its own (a copy of the clearing's, script 1): its first ModokiBetamon (slot 0) opens
+//    the save machine instead of fighting; the other wild Digimon fight as in the forest
+//  - screen 301 gets a copy of Kunemon's Bed's script (script 2): with trigger 232 (the test sets it) its MAPHEAD
+//    section places RedVegiemon in slot 0 by day or Dokunemon in slot 3 by night; either opens the save machine
+script 178 {
+    npc tokomon = 6;
+    on talk(tokomon) replace {
+        warp(300, exit: 2);
+        return;
+    }
+}
+
+script new for screen 300 {
+    npc saver = 5;
+    on talk(saver) replace {
+        asm("FADEOUT_HUD 0");
+        asm("CALL_ROUTINE 48");
+        return;
+    }
+}
+
+script new for screen 301 {
+    npc saver_day = 5;
+    npc saver_night = 8;
+    on talk(saver_day) replace {
+        asm("FADEOUT_HUD 0");
+        asm("CALL_ROUTINE 48");
+        return;
+    }
+    on talk(saver_night) replace {
+        asm("FADEOUT_HUD 0");
+        asm("CALL_ROUTINE 48");
+        return;
+    }
+}

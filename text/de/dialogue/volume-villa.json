@@ -1,0 +1,323 @@
+{
+ "s135.sec5.u0": [
+  [
+   "Ihr seid also {color 6}{player}{color 1} und",
+   "{color 10}{partner}{color 1}? Willkommen in der",
+   "Volume-Villa!"
+  ]
+ ],
+ "s135.sec5.u1": [
+  [
+   "...... Tut uns leid, dass wir",
+   "Otamamon geärgert haben."
+  ]
+ ],
+ "s135.sec5.u2": [
+  [
+   "Das ist nicht wichtig."
+  ]
+ ],
+ "s135.sec5.u3": [
+  [
+   "Huh?"
+  ]
+ ],
+ "s135.sec5.u4": [
+  [
+   "Ich bin euch beiden dankbar.",
+   "Ich habe gehört, was ihr alles",
+   "zur Rettung der Insel getan"
+  ],
+  [
+   "habt."
+  ]
+ ],
+ "s135.sec5.u5": [
+  [
+   "Ah, Ja?"
+  ]
+ ],
+ "s135.sec5.u6": [
+  [
+   "Auch ich möchte euch schon",
+   "lange helfen. Wart ihr schon in",
+   "dem Wald nördlich von hier, den"
+  ],
+  [
+   "Nebelwaldn?"
+  ]
+ ],
+ "s135.sec5.u7": [
+  [
+   "Noch nicht."
+  ]
+ ],
+ "s135.sec5.u8": [
+  [
+   "Ich war dort."
+  ]
+ ],
+ "s135.sec5.u9": [
+  [
+   "Dort liegt Nebel, was euch das",
+   "Vorankommen wohl erschwert.",
+   "Aber ihr solltet Cherrymon"
+  ],
+  [
+   "treffen, den Ältesten dieses",
+   "Waldes."
+  ]
+ ],
+ "s135.sec5.u10": [
+  [
+   "Cherrymon? Von diesem Digimon",
+   "habe ich noch nie gehört..."
+  ]
+ ],
+ "s135.sec5.u11": [
+  [
+   "Cherrymon erzeugt den Nebel",
+   "der Nebelwald. Er weiß von den",
+   "Unruhen auf der Insel und"
+  ],
+  [
+   "schützt so den Wald."
+  ]
+ ],
+ "s135.sec5.u12": [
+  [
+   "Für uns ist das aber ein",
+   "Problem."
+  ]
+ ],
+ "s135.sec5.u13": [
+  [
+   "Cherrymon scheint etwas über",
+   "den Grund der Unruhen zu",
+   "wissen. Ein Besuch bei ihm"
+  ],
+  [
+   "lohnt sich, auch wenn ihr durch",
+   "den Nebel müsst."
+  ]
+ ],
+ "s135.sec5.u14": [
+  [
+   "Wenn wir wenigstens etwas mit",
+   "dem Nebel machen könnten..."
+  ]
+ ],
+ "s135.sec5.u15": [
+  [
+   "Der Nebel lichtet sich erst,",
+   "wenn Cherrymon ihn aufhebt.",
+   "Aber es gibt einen Weg. Ich"
+  ],
+  [
+   "belege euch mit einem Zauber."
+  ]
+ ],
+ "s135.sec5.u16": [
+  [
+   "Was bewirkt er?"
+  ]
+ ],
+ "s135.sec5.u17": [
+  [
+   "Ihr werdet den Weg auch im",
+   "Nebel erkennen."
+  ]
+ ],
+ "s135.sec5.u18": [
+  [
+   "Das ist cool!"
+  ]
+ ],
+ "s135.sec5.u19": [
+  [
+   "Lasst uns anfangen, Also,",
+   "unverzüglich."
+  ]
+ ],
+ "s135.sec5.u20": [
+  [
+   "Kroak-Kroak! !"
+  ]
+ ],
+ "s135.sec5.u21": [
+  [
+   "So, das war's. Geht nun gleich",
+   "zu den Nebelwaldn."
+  ]
+ ],
+ "s135.sec5.u22": [
+  [
+   "Ich habe ihn gesehen. Und der",
+   "Nebel ist verschwunden."
+  ]
+ ],
+ "s135.sec5.u23": [
+  [
+   "W-was! Beeindruckend. Hm, wie",
+   "kann ich euch dann helfen...",
+   "Ah, ich weiß. Ich gebe euch"
+  ],
+  [
+   "das hier."
+  ]
+ ],
+ "s135.sec5.u24": [
+  [
+   "{color 6}Digibarsch{color 1} erhalten!"
+  ]
+ ],
+ "s135.sec5.u25": [
+  [
+   "Wirf etwas weg, um Platz zu",
+   "schaffen."
+  ]
+ ],
+ "s135.sec5.u26": [
+  [
+   "Das ist etwas Wertvolles. Das",
+   "wird nützlich sein."
+  ]
+ ],
+ "s135.sec5.u27": [
+  [
+   "Danke. Übrigens, kommst du",
+   "nicht in die Stadt, Eure",
+   "Lordschaft?"
+  ]
+ ],
+ "s135.sec5.u28": [
+  [
+   "Ich bin das Oberhaupt der",
+   "hundert Gekomon im",
+   "Geko-Sumpf. Leider kann ich"
+  ],
+  [
+   "nicht. Aber von hier aus helfe",
+   "ich euch, so gut ich kann.",
+   "Kommt jederzeit wieder."
+  ]
+ ],
+ "s135.sec6.u0": [
+  [
+   "Angeln kannst du nur am Ufer",
+   "des Drachenaugensees."
+  ]
+ ],
+ "s135.sec6.u1": [
+  [
+   "Verbeugt euch, verbeugt euch!"
+  ]
+ ],
+ "s135.sec7.u0": [
+  [
+   "Seine Lordschaft sammelt",
+   "Raritäten. Früher waren es",
+   "Items, doch jetzt ist er"
+  ],
+  [
+   "verrückt nach Digimon-Karten."
+  ]
+ ],
+ "s135.sec7.u1": [
+  [
+   "Wer ihm eine seltene Karte",
+   "bringt, erhält Verdienstpunkte."
+  ]
+ ],
+ "s135.sec7.u2": [
+  [
+   "Dann kannst du deine",
+   "gesammelten Verdienstpunkte",
+   "gegen Items tauschen."
+  ]
+ ],
+ "s135.sec8.u0": [
+  [
+   "Äh... Nein, nichts, quak."
+  ]
+ ],
+ "s135.sec8.u1": [
+  [
+   "Äh...! Ich möchte in die Stadt,",
+   "quak!"
+  ]
+ ],
+ "s135.sec8.u2": [
+  [
+   "Klar, das geht, aber was ist",
+   "los?"
+  ]
+ ],
+ "s135.sec8.u3": [
+  [
+   "Ich will in der Arena kämpfen,",
+   "quak. Die Leute sehen auf uns",
+   "Gekomon als Hinterwäldler"
+  ],
+  [
+   "herab, quak... Aber auch",
+   "Hinterwäldler haben ihren",
+   "Stolz, quak! Bitte, ich flehe"
+  ],
+  [
+   "dich an, quak."
+  ]
+ ],
+ "s135.sec8.u4": [
+  [
+   "Verstehe. Ich weiß, wie du dich",
+   "fühlst... Dann geh und gib dein",
+   "Bestes."
+  ]
+ ],
+ "s135.sec8.u5": [
+  [
+   "Gekomon ist der Arena",
+   "beigetreten!"
+  ]
+ ],
+ "s135.sec81.u0": [
+  [
+   "Du wirkst besorgt. Ja, ja, ich",
+   "weiß. Es geht um das Kostüm,",
+   "nicht wahr?"
+  ]
+ ],
+ "s135.sec81.u1": [
+  [
+   "Was! Du weißt davon?"
+  ]
+ ],
+ "s135.sec81.u2": [
+  [
+   "Unterschätze mich nicht. Das",
+   "Kostüm kann Numemon tragen,",
+   "weißt du. Überrascht? Und"
+  ],
+  [
+   "wenn er es trägt...",
+   "unglaublich......! Ein Versuch",
+   "kann jedenfalls nicht schaden."
+  ]
+ ],
+ "s135.sec81.u3": [
+  [
+   "Hm, das erinnert mich daran:",
+   "Die {color 6}Wunderangel{color 1} ist ein",
+   "besonderes Item. Ich nehme"
+  ],
+  [
+   "sie daher aus deinen Items."
+  ]
+ ],
+ "s135.sec81.u4": [
+  [
+   "Gib dein Bestes!"
+  ]
+ ]
+}

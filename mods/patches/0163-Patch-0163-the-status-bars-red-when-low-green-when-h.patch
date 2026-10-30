@@ -1,0 +1,107 @@
+From 8d11bca3834ecbd6e2f69b750d06fa0186015d71 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 09:29:13 +0000
+Subject: [PATCH] Patch 0163: the status bars red when low, green when high, on
+ a grey track
+
+The fill is flat colour (POLY_F4) instead of the HUD texture's blue segments: red at the
+bottom of the range, yellow halfway, green at the top (the top row lighter, as the
+texture's was), and a grey track under it where the texture's light blue showed.
+
+---
+ src/main/partner_impl.c | 52 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 45 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 7f7330ad..dc6c606c 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -1,5 +1,6 @@
+ #include <string.h>
+ 
++#include <libgpu.h>
+ #include <libgs.h>
+ 
+ #include <dw/anim.h>
+@@ -31,6 +32,7 @@
+ #include <text/main/partner_impl.h>
+ 
+ extern int8_t PARTNER_ANIMATION;
++extern GsOT *ACTIVE_ORDERING_TABLE;
+ 
+ extern int32_t HAS_IMMORTAL_HOUR;
+ extern int8_t IMMORTAL_HOUR;
+@@ -2351,12 +2353,50 @@ void tickStatusBarsSlide(int32_t state)
+ 		STATUS_UI_OFFSET_X = 75;
+ }
+ 
++/* MOD (status bars): one flat 1-pixel row of a status bar */
++static void addStatusBarRow(int32_t x, int32_t y, int32_t w, int32_t r, int32_t g, int32_t b, int32_t z)
++{
++	POLY_F4 *p;
++
++	p = (POLY_F4 *)GsGetWorkBase();
++	SetPolyF4(p);
++	setRGB0(p, r, g, b);
++	setXYWH(p, x, y, w, 1);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + z, p++);
++	GsSetWorkBase((PACKET *)p);
++}
++
++/* MOD (status bars): one bar's 2-pixel-high track: the grey track (50 px) and `segments` segments (2 px each) of a
++   flat colour from red (value 0) through yellow (half) to green (value max), the top row lighter */
++static void renderStatusBarFill(int32_t x, int32_t y, int32_t segments, int32_t value, int32_t max)
++{
++	int32_t r;
++	int32_t g;
++
++	if (value < 0)
++		value = 0;
++	if (value > max)
++		value = max;
++	addStatusBarRow(x, y, 50, 0x70, 0x70, 0x70, 14);
++	addStatusBarRow(x, y + 1, 50, 0x58, 0x58, 0x58, 14);
++	if (segments <= 0)
++		return;
++	if (value * 2 < max) {
++		r = 0xE0;
++		g = 0x28 + (0xC8 - 0x28) * value * 2 / max;
++	} else {
++		r = 0xE0 - (0xE0 - 0x30) * (value * 2 - max) / max;
++		g = 0xC8;
++	}
++	addStatusBarRow(x, y, segments * 2, r + (0xFF - r) / 3, g + (0xFF - g) / 3, 0x60, 13);
++	addStatusBarRow(x, y + 1, segments * 2, r, g, 0x28, 13);
++}
++
+ // clang-format off
+ void renderStatusBars(state)
+ 	int8_t state;
+ // clang-format on
+ {
+-	int32_t i;
+ 	uint8_t happinessTexX;
+ 	int32_t happinessCount;
+ 	int32_t disciplineCount;
+@@ -2382,14 +2422,12 @@ void renderStatusBars(state)
+ 		disciplineTexX = 33;
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X + 3, 95, 11, 11, disciplineTexX, 244, 5, GetClut(96, 498), 14, 0);
+ 	/* MOD (status bars): each bar is one colour over its whole range, empty to full (happiness -100..100, 8 a
+-	   segment; discipline 0..100, 4 a segment); the original filled each half again in a second colour. The
+-	   icons still change at the midpoint */
++	   segment; discipline 0..100, 4 a segment), red when low, yellow halfway, green when high, on a grey
++	   track; the original filled each half again in a second colour. The icons still change at the midpoint */
+ 	happinessCount = (PARTNER_PARA.happiness + 100) / 8;
+-	for (i = 0; i < happinessCount; i++)
+-		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 88, 2, 2, 232, 153, 5, GetClut(96, 503), 13, 0);
++	renderStatusBarFill(STATUS_UI_OFFSET_X + 18, 88, happinessCount, PARTNER_PARA.happiness + 100, 200);
+ 	disciplineCount = PARTNER_PARA.discipline / 4;
+-	for (i = 0; i < disciplineCount; i++)
+-		renderRectPolyFT4(STATUS_UI_OFFSET_X + 18 + i * 2, 100, 2, 2, 232, 153, 5, GetClut(96, 503), 13, 0);
++	renderStatusBarFill(STATUS_UI_OFFSET_X + 18, 100, disciplineCount, PARTNER_PARA.discipline, 100);
+ }
+ 
+ void setImmortalHour(void)
+-- 
+2.53.0
+

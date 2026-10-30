@@ -1,0 +1,37 @@
+// A short cutscene on entering Jijimon's house, with a library function and a clock check.
+// Text: house-cutscene.en.json.  python3 tools/dws.py disc tools/dws/examples/house-cutscene.dws --name dws-house
+import "lib/common.dws";
+
+flag intro_seen;
+
+script 178 {
+    npc jijimon = 5;
+    npc tokomon = 6;
+
+    on enter {
+        if (!intro_seen) {
+            cutscene {
+                camera_on(tokomon, speed: 12);
+                await camera;
+                face(tokomon, jijimon);
+                wait(1s);
+                narrate(text("house.intro"));
+                camera_on(tamer);
+                await camera;
+            }
+            intro_seen = true;
+            reward(100);
+        }
+        if (clock.hour >= 18 || clock.hour < 5) {
+            narrate(text("house.night"));
+        }
+    }
+
+    on talk(tokomon) replace {
+        if (intro_seen) {
+            say(tokomon, text("house.tokomon"));
+        } else {
+            say(tokomon, text("house.tokomon.first"));
+        }
+    }
+}

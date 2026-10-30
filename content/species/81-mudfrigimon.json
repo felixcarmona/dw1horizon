@@ -1,0 +1,33 @@
+{
+  "id": 81,
+  "name": "MudFrigimon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["battle", null, null],
+  "techniques": ["Sonic Jab", "Muscle Charge", "Tear Drop", "Water Blit", "Aqua Magic"],
+  "drop": {"item": "med.recovery", "percent": 10},
+  "effects_like": 23,
+  "model": {"name": "TUTI", "bones": 19, "radius": 160, "height": 380},
+  "voice": 65,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 1300, "mp": 2200, "off": 340, "def": 150, "speed": 90, "brain": 100, "bits": 200},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

@@ -1,0 +1,186 @@
+// Readable form of script 140 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 140 {
+    npc tinmon0 = 5;
+    npc slot1 = 6;
+    npc tinmon2 = 7;
+    npc tinmon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        call_routine(routine("spawn_gearbox"));
+        if (toy_tale_heard) {
+            engine.music_mode = 4;
+            set_bgm(22);
+            engine.arg = 0;
+            call_routine(routine("toytown_select_box"));
+            load_digimon(species("Hagurumon"));
+            set_digimon(species("Hagurumon"), 1, 0);
+            entity_move_to(slot1, -100, 1758, 1, 0);
+            await slot1;
+            animate(slot1, 29);
+            entity_set_rotation(slot1, 0);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (!toy_tale_heard && is_recruited(species("WaruMonzaemon"))) {
+            walk(tamer, -52, 650, camera: true);
+            await tamer;
+            entity_set_rotation(tamer, 2065);
+            wait(5);
+            goto sec5;
+        }
+    }
+
+    on talk(tinmon0) replace {    // section 5
+        if (is_recruited(species("WaruMonzaemon")) && !toy_tale_heard && has(item("Gear")) >= 1) {
+            remove_item(item("Gear"), 1);
+            load_digimon(species("Hagurumon"));
+            set_digimon(species("Hagurumon"), 1, 0);
+            animate(slot1, 29);
+            animate(tamer, 15);
+            wait(1s);
+            sound(8, 4);
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s140.sec5.u0"));
+            animate(tamer, anim.idle);
+            face(tamer, slot1);
+            sound(8, 9);
+            wait(10);
+            say(tinmon0, text("s140.sec5.u1"));
+            say(tamer, text("s140.sec5.u2"));
+            sound(8, 8);
+            camera_to(-80, 1048, speed: 18);
+            entity_move_to(slot1, -100, 1758, 20, 0);
+            await slot1;
+            entity_set_rotation(slot1, 0);
+            wait(5);
+            animate(slot1, 30);
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s140.sec5.u3"));
+            animate(tamer, anim.idle);
+            engine.arg = 1;
+            call_routine(routine("toytown_select_box"));
+        } else {
+            if (is_recruited(species("WaruMonzaemon")) && toy_tale_heard && has(item("Gear")) < 1 && !toy_tale_heard) {
+                say(tinmon0, text("s140.sec5.u13"));
+                return;
+            }
+            if (toy_mansion_seal_lifted && !is_recruited(species("WaruMonzaemon"))) {
+                say(tinmon0, text("s140.sec5.u14"));
+                return;
+            }
+            store_digimon_type(partner_type);
+            if (partner_type == 14 && !toy_mansion_seal_lifted) {
+                toy_mansion_seal_lifted = true;
+                say(tinmon0, text("s140.sec5.u17"));
+                say(tamer, text("s140.sec5.u18"));
+                say(tinmon0, text("s140.sec5.u19"));
+                say(tamer, text("s140.sec5.u20"));
+                say(tinmon0, text("s140.sec5.u21"));
+                animate(tamer, 25);
+                wait(15);
+                say(tamer, text("s140.sec5.u22"));
+                animate(tamer, anim.idle);
+                say(tinmon0, text("s140.sec5.u23"));
+                say(tinmon0, text("s140.sec5.u24"));
+                say(tamer, text("s140.sec5.u25"));
+                say(tinmon0, text("s140.sec5.u26"));
+                say(tamer, text("s140.sec5.u27"));
+                return;
+            }
+            say(tinmon0, text("s140.sec5.u15"));
+            return;
+        }
+        camera_to(-80, 1048, speed: 18);
+        engine.music_mode = 4;
+        set_bgm(22);
+        walk(tinmon2, 248, -447);
+        walk(tinmon3, -747, 459);
+        await tinmon2;
+        await tinmon3;
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u4"));
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u5"));
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u6"));
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u7"));
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u8"));
+        animate(tinmon0, 29);
+        animate(tinmon2, 29);
+        animate(tinmon3, 29);
+        wait(10);
+        sound(8, 9);
+        say(narrator, text("s140.sec5.u9"));
+        animate(tinmon0, anim.idle);
+        animate(tinmon2, anim.idle);
+        animate(tinmon3, anim.idle);
+        wait(10);
+        unless (!toy_tale_heard) return;
+        toy_tale_heard = true;
+        say(tamer, text("s140.sec5.u10"));
+        sound(8, 8);
+        say(tinmon0, text("s140.sec5.u11"));
+        recruit(species("Monzaemon"));
+        engine.prosperity += 3;
+        sound(8, 10);
+        say(narrator, text("s140.sec5.u12"));
+        camera_on(tamer, speed: 15);
+        await camera;
+        engine.arg = 0;
+        call_routine(routine("toytown_select_box"));
+        return;
+    }
+
+    on talk(slot1) replace {    // section 6
+        sound(8, 8);
+        say(slot1, text("s140.sec6.u0"));
+    }
+
+    on talk(tinmon2) replace {    // section 7
+        if (toy_tale_heard) {
+            sound(8, 9);
+            say(tinmon2, text("s140.sec7.u0"));
+        }
+    }
+
+    on talk(tinmon3) replace {    // section 8
+        if (toy_tale_heard) {
+            sound(8, 9);
+            say(tinmon3, text("s140.sec8.u0"));
+        }
+        return;
+    }
+}

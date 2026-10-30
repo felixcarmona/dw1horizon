@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "scope": "Combined regional buffer, font and other-payload publication proof",
+  "mandatory_gate_passed": true,
+  "unverified_by_base": {
+    "us": 0,
+    "eu": 0,
+    "fr": 0,
+    "de": 0,
+    "es": 0,
+    "it": 0,
+    "jp1": 0
+  },
+  "host_tests": 120,
+  "python310_tests_passed": 116,
+  "python310_compiler_skips": 4,
+  "heap_bytes": 187888,
+  "heap_setups": 320,
+  "minimum_heap_margin": 5856,
+  "bases": {
+    "us": {
+      "before": "4026984f6175aa492aab31198329f0f3d157e3dd",
+      "after": "8ed42cde458c2422744b1a8233ffd3c64dc837e9",
+      "output_size": 901300512,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "b02a7567988037e6a12c8ce8ef5a667b9d8053cb",
+        "save_checksums_valid": true
+      }
+    },
+    "eu": {
+      "before": "1e123b0f125c825ad535d9bdecce5d1a88ddb52f",
+      "after": "7fa1fb4b63930da948e11f59dd6abfaf236eeb36",
+      "output_size": 901305216,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "f8a0fff46b13aed20ce39288a54e3e5b524a3228",
+        "save_checksums_valid": true
+      }
+    },
+    "fr": {
+      "before": "3e65d810125da2e37ffcc59be5cb209272da30f6",
+      "after": "5eee3bdfe7262088136e39bd3e2fa9c78224e65f",
+      "output_size": 906663072,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "7d0b0986029592f2230e53713bb6623d64fda09d",
+        "save_checksums_valid": true
+      }
+    },
+    "de": {
+      "before": "390ef12cdfdd4e6e90af438e86deec7778084618",
+      "after": "15a8bc06d2423853bd4b70f3b14b0b84c1d92062",
+      "output_size": 906663072,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "f9c93416bcbd35974cc63c2609ed5acb76ed245e",
+        "save_checksums_valid": true
+      }
+    },
+    "es": {
+      "before": "e5c8ae018d66978b999ce5937dd15071e32b5c6d",
+      "after": "29b7ff4c3bb86f5e181bec2ca188ff6ea4278a07",
+      "output_size": 906663072,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "b46c9f9f1c0d06ed9c04274183d43e0fe3efe32c",
+        "save_checksums_valid": true
+      }
+    },
+    "it": {
+      "before": "e44d8822c0cf210a7bd9b549514ee8e95427c864",
+      "after": "c6fc03e14d080ad7c6f10ee50a5b253270d2215f",
+      "output_size": 906663072,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "517eee8e6ebaa89827aa89605e69d30e74bf2332",
+        "save_checksums_valid": true
+      }
+    },
+    "jp1": {
+      "before": "28b9cccc3916b69e9266ff2bc992e7bddd2dc3d1",
+      "after": "3ba1dcb8c9d22e699903581fbb02a1389d3abc5b",
+      "output_size": 900529056,
+      "changed_files": 137,
+      "unchanged_files": 2181,
+      "reason": "Fixed regional font capacities move main data/BSS and their linked references. Generate unused Japanese sprite rows, SDK diagnostics and muted voice reset. Source regional table/header/UI fields and inherited buffers from player discs. Language patches and aliases regenerate accordingly.",
+      "gameplay": {
+        "ram_bytes": 2097152,
+        "field": 218,
+        "outdoor_field": 0,
+        "battle": 1,
+        "options_menu": 4,
+        "save_sha1": "7d3886bd688defed250c9da1ea5dbcc9ac47b014",
+        "save_checksums_valid": true
+      }
+    }
+  },
+  "patch_sha1": "3a9272514d5d6b55a3bf464b266be0d05cc75df9"
+}

@@ -1,0 +1,71 @@
+{
+ "s029.sec51.m0.o0": "I'll do it!",
+ "s029.sec51.m0.o1": "Sorry, maybe next time",
+ "s029.sec51.m1.o0": "I'll do it!",
+ "s029.sec51.m1.o1": "Sorry, maybe next time",
+ "s029.sec51.u0": [
+  [
+   "Yo, looks like most of the dirt's been hauled",
+   "out."
+  ],
+  [
+   "Thanks to you, the work's goin' great. Just",
+   "wait a little longer."
+  ]
+ ],
+ "s029.sec51.u1": "Oh, good work out there. Here's your pay.",
+ "s029.sec51.u2": [
+  [
+   "Got 500 Bits for the job!"
+  ],
+  [
+   "HP went up 50!",
+   "Offense went up 5!",
+   "Defense went up 5!"
+  ]
+ ],
+ "s029.sec51.u3": "Dump the dirt outside the tunnel.",
+ "s029.sec51.u4": "Go on, take some from that pile of dirt there.",
+ "s029.sec51.u5": [
+  [
+   "Hm, you gonna haul dirt?"
+  ],
+  [
+   "You're pretty worn out. Get some rest first,",
+   "then come back."
+  ]
+ ],
+ "s029.sec51.u6": "Hm, you gonna haul dirt?",
+ "s029.sec51.u7": "Who're you? It's dangerous here for amateurs, so keep back.",
+ "s029.sec51.u8": "Who're you? This tunnel ain't open yet. Don't get in the way.",
+ "s029.sec51.u9": "Oh, sorry. When do you think it'll open?",
+ "s029.sec51.u10": "Who knows? It'll be a good while yet.",
+ "s029.sec51.u11": "Hmm, that's a problem... Isn't there anything we can do to help?",
+ "s029.sec51.u12": [
+  [
+   "Hey now, you tryin' to take away my fun?"
+  ],
+  [
+   "Wait... hauling dirt, even you guys could",
+   "manage that."
+  ]
+ ],
+ "s029.sec51.u13": "Oh, what is it?",
+ "s029.sec51.u14": "There's the dirt yours truly dug out. Carry it outside the tunnel and dump it.",
+ "s029.sec51.u15": "It's pretty hard work, so I'll make it a paying job. 500 Bits for every round trip.",
+ "s029.sec51.u16": "The digging goes faster, I get paid... and it's training too... This could be good...!",
+ "s029.sec51.u17": [
+  [
+   "Dirt hauling: how it works",
+   "Face the dirt and press {color 6}×{color 1}",
+   "to pick up a dirt box."
+  ],
+  [
+   "Walk out of the tunnel and it's",
+   "dumped by itself. After each",
+   "round trip, talk to Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": "What, you chickening out?",
+ "s029.sec81.u0": "Picked up a dirt box."
+}

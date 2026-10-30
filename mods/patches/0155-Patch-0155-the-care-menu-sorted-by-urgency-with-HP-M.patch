@@ -1,0 +1,340 @@
+From f5f5313de3148042216162bc7a77b3fa71ff009b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 21 Oct 2026 22:04:06 +0000
+Subject: [PATCH] Patch 0155: the care menu sorted by urgency, with HP/MP and
+ notes. The list is most urgent first with the cursor on it: Scold, the cures
+ of what it has (the surest first: Medicine before Bandage), the Port. potty,
+ food when hungry (its favourite first), what restores HP or MP short of the
+ maximum (field items: itemColor 0 or 2), Sleep. Its favourite food's name is
+ gold, and the description box gets a second line when there is something to
+ know: "Its favourite food!" (gold), "It may not cure its sickness." / "its
+ wound." (red, a cure with a chance under the die). Commands' names in white.
+ The description moves to text rows 0xC0/0xCC (32 entries fill 16 rows of
+ names). Comment: every other use of X on the map comes first
+
+---
+ src/main/mod_feed.c | 194 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 160 insertions(+), 34 deletions(-)
+
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index 115bf1c9..e9cd9524 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -3,16 +3,18 @@
+  *
+  * On the map, with the tamer facing the partner (within 45 degrees) and close enough (its item take distance plus
+  * FEED_SLACK, as checkEatDistance measures), X opens a box laid out as the inventory's (two columns of icon, name
+- * and amount, the description box under it) with what the partner's condition asks for, every need at once:
+- * the triangle menu's commands a need asks for first, Scold when a scolding is fair (ITEM_SCOLD_FLAG 1: it refused
+- * an item out of indiscipline, it pooped on the ground) and Sleep when it is sleepy, then in inventory order the
+- * items that answer a need it has, nothing it does not need: food only when hungry (ITEM_FUNCTIONS[type] ==
+- * handleFood), the Port. potty when it needs to go, what cures an injury or a sickness when it has one (handleStatusItems with a
+- * cure in its effect row: Bandage, Medicine). X gives the chosen item as Items > Use does (startFeedingItem: the
+- * partner comes, takes it or refuses it, one unit is used), a command does what the triangle menu's does (Scold:
+- * discipline up and the next item taken; Sleep), triangle closes the box. When the partner refuses the item this
+- * menu gave and a scolding is fair, the menu opens again on its own with Scold under the cursor. With nothing to
+- * offer X does nothing here. While the box is open the clock stops, as with the triangle menu.
++ * and amount, the description box under it) with what the partner needs now and nothing else, every need at once,
++ * most urgent first with the cursor on it: Scold when a scolding is fair (ITEM_SCOLD_FLAG 1: it refused an item out
++ * of indiscipline, it pooped on the ground), what cures an injury or a sickness it has (handleStatusItems with a
++ * cure in its effect row: Medicine before Bandage), the Port. potty when it needs to go, food when it is hungry (its
++ * favourite first, its name in gold), what restores HP or MP short of the maximum (the items the field can use),
++ * Sleep when it is sleepy (the triangle menu's commands, with their icons). The description box adds a line when
++ * there is something to know: its favourite food, a cure that may not work. X gives the chosen item as Items > Use
++ * does (startFeedingItem: the partner comes, takes it or refuses it, one unit is used), a command does what the
++ * triangle menu's does (Scold: discipline up and the next item taken; Sleep), triangle closes the box. When the
++ * partner refuses the item this menu gave and a scolding is fair, the menu opens again on its own with Scold under
++ * the cursor. With nothing to offer X does nothing here. While the box is open the clock stops, as with the triangle
++ * menu.
+  * Hooked from tamerTickWalkingState() (tamer.c), after checkMapInteraction(): talking to an NPC, a chest or a
+  * press tile take the X first.
+  */
+@@ -48,6 +50,11 @@
+ #define FEED_SLEEP	0xFF
+ #define IS_COMMAND(slot)	((slot) >= FEED_SCOLD)
+ #define SCOLD_PENDING	1	/* ITEM_SCOLD_FLAG: a scolding now is a fair one */
++#define FEED_FAVOURITE_COLOR	4	/* TEXT_COLORS: gold */
++#define FEED_WARNING_COLOR	6	/* TEXT_COLORS: red */
++#define FEED_COMMAND_COLOR	0	/* TEXT_COLORS: white */
++#define FEED_DESC_V	0xC0	/* text area rows of the description and the note: under the 16 rows of names */
++#define FEED_NOTE_V	0xCC
+ 
+ enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING };
+ 
+@@ -102,50 +109,143 @@ static FeedCommand FEED_COMMANDS[2] = {
+ 	{ FEED_SLEEP_NAME, FEED_SLEEP_DESC, 0x28, 0x28, PARTNER_SLEEP }, /* MENU_OPTIONS[6] */
+ };
+ 
+-static uint8_t feedSlots[32]; /* the commands, then the inventory slots shown, in inventory order */
++static char FEED_NOTE_FAVOURITE[] = "Its favourite food!";
++static char FEED_NOTE_MAY_NOT_CURE_SICK[] = "It may not cure its sickness.";
++static char FEED_NOTE_MAY_NOT_CURE_WOUND[] = "It may not cure its wound.";
++
++static uint8_t feedSlots[32]; /* the commands and the inventory slots shown, most urgent first */
++static int32_t feedRanks[32];
++static int32_t feedNoted; /* some entry has a note: the description box has its second line */
+ static int32_t feedCount;
+ static int32_t feedCursor;
+ static int32_t feedRowOffset;
+ static int32_t feedState;
+ 
+-/* the item answers one of the needs in condition */
+-static int32_t answersNeed(ItemId type, uint32_t condition)
++/* the list's order, most urgent first (the cursor starts on it): a rank times 0x100 plus an order inside the rank */
++#define RANK_SCOLD	1	/* walking away clears it */
++#define RANK_CURE	2	/* the surest cure of what it has first */
++#define RANK_POTTY	3
++#define RANK_FOOD	4	/* its favourite first */
++#define RANK_HEAL	5	/* HP or MP short of the maximum */
++#define RANK_SLEEP	6	/* fed and cared for first: sleeping hungry or sick costs */
++
++static int32_t isFavourite(ItemId type)
++{
++	return type == RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).favoriteFood;
++}
++
++/* the item's place in the list for the needs the partner has, 0 when it answers none (nothing it does not need) */
++static int32_t needRank(ItemId type)
+ {
++	uint32_t condition = PARTNER_PARA.condition;
++	ItemFunction fn;
+ 	const int16_t *fx;
++	int32_t cure;
++	int32_t hpShort;
++	int32_t mpShort;
++	int32_t heals;
+ 
+ 	if (type == ITEM_NONE) {
+ 		return 0;
+ 	}
++	fn = ITEM_FUNCTIONS[type];
+ 	fx = itemFx(type);
+-	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleFood) {
+-		return (condition & CONDITION_HUNGRY) != 0; /* eating when not hungry costs happiness and discipline */
++	if (fn == (ItemFunction)handleFood) {
++		/* eating when not hungry costs happiness and discipline */
++		return (condition & CONDITION_HUNGRY) ? RANK_FOOD * 0x100 + !isFavourite(type) : 0;
+ 	}
+-	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleStatusItems) {
+-		return ((condition & CONDITION_INJURED) && MOD_FX(fx, MOD_FX_CURE_INJURY) > 0) ||
+-		       ((condition & CONDITION_SICK) && MOD_FX(fx, MOD_FX_CURE_SICK) > 0);
++	if (type == PORT_POTTY) {
++		return (condition & CONDITION_POOPY) ? RANK_POTTY * 0x100 : 0;
+ 	}
+-	return type == PORT_POTTY && (condition & CONDITION_POOPY);
++	if (fn == (ItemFunction)handleStatusItems) {
++		cure = 0;
++		if (condition & CONDITION_INJURED) {
++			cure += MOD_FX(fx, MOD_FX_CURE_INJURY) * 100 / careDie(MOD_CARE_MEDICINE_INJURY_DIE);
++		}
++		if (condition & CONDITION_SICK) {
++			cure += MOD_FX(fx, MOD_FX_CURE_SICK) * 100 / careDie(MOD_CARE_MEDICINE_SICK_DIE);
++		}
++		if (cure > 0) {
++			return RANK_CURE * 0x100 + 0xFF - (cure > 0xFF ? 0xFF : cure);
++		}
++	}
++	/* HP and MP: only what the field can use (itemColor 0 field, 2 both) */
++	if (ITEM_PARA[type].itemColor != 0 && ITEM_PARA[type].itemColor != 2) {
++		return 0;
++	}
++	hpShort = PARTNER_ENTITY.digimonEntity.stats.current.currentHP < PARTNER_ENTITY.digimonEntity.stats.base.hp;
++	mpShort = PARTNER_ENTITY.digimonEntity.stats.current.currentMP < PARTNER_ENTITY.digimonEntity.stats.base.mp;
++	heals = (hpShort && (fn == (ItemFunction)handleHPHealingItem || fn == (ItemFunction)handleRestore)) ||
++	        (mpShort && fn == (ItemFunction)handleMPHealingItem);
++	if (fn == (ItemFunction)handleDoubleFloppy || fn == (ItemFunction)handleStatusItems) {
++		heals |= (hpShort && MOD_FX(fx, MOD_FX_HEAL_HP) > 0) || (mpShort && MOD_FX(fx, MOD_FX_HEAL_MP) > 0);
++	}
++	return heals ? RANK_HEAL * 0x100 : 0;
++}
++
++static void feedAdd(uint8_t slot, int32_t rank)
++{
++	int32_t i;
++
++	/* insertion by rank; equal ranks keep the inventory order */
++	for (i = feedCount; i > 0 && feedRanks[i - 1] > rank; i--) {
++		feedSlots[i] = feedSlots[i - 1];
++		feedRanks[i] = feedRanks[i - 1];
++	}
++	feedSlots[i] = slot;
++	feedRanks[i] = rank;
++	feedCount++;
+ }
+ 
+ static int32_t feedCollect(void)
+ {
+ 	int32_t i;
++	int32_t rank;
+ 
+ 	feedCount = 0;
+ 	if (ITEM_SCOLD_FLAG == SCOLD_PENDING) {
+-		feedSlots[feedCount++] = FEED_SCOLD;
++		feedAdd(FEED_SCOLD, RANK_SCOLD * 0x100);
+ 	}
+ 	if (PARTNER_PARA.condition & CONDITION_SLEEPY) {
+-		feedSlots[feedCount++] = FEED_SLEEP;
++		feedAdd(FEED_SLEEP, RANK_SLEEP * 0x100);
+ 	}
+ 	for (i = 0; i < INVENTORY.size; i++) {
+-		if (INVENTORY.amounts.array[i] != 0 && answersNeed(INVENTORY.types.array[i], PARTNER_PARA.condition)) {
+-			feedSlots[feedCount++] = i;
++		if (INVENTORY.amounts.array[i] != 0 && (rank = needRank(INVENTORY.types.array[i])) != 0) {
++			feedAdd(i, rank);
+ 		}
+ 	}
+ 	return feedCount;
+ }
+ 
++/* the second line of the description: what to know before giving it, NULL for nothing (color in *color) */
++static char *feedNote(int32_t i, int32_t *color)
++{
++	ItemId type;
++	const int16_t *fx;
++
++	if (IS_COMMAND(feedSlots[i])) {
++		return NULL;
++	}
++	type = INVENTORY.types.array[feedSlots[i]];
++	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleFood && isFavourite(type)) {
++		*color = FEED_FAVOURITE_COLOR;
++		return FEED_NOTE_FAVOURITE;
++	}
++	fx = itemFx(type);
++	if (ITEM_FUNCTIONS[type] == (ItemFunction)handleStatusItems) {
++		*color = FEED_WARNING_COLOR;
++		if ((PARTNER_PARA.condition & CONDITION_SICK) && MOD_FX(fx, MOD_FX_CURE_SICK) > 0 &&
++		    MOD_FX(fx, MOD_FX_CURE_SICK) < careDie(MOD_CARE_MEDICINE_SICK_DIE)) {
++			return FEED_NOTE_MAY_NOT_CURE_SICK;
++		}
++		if ((PARTNER_PARA.condition & CONDITION_INJURED) && MOD_FX(fx, MOD_FX_CURE_INJURY) > 0 &&
++		    MOD_FX(fx, MOD_FX_CURE_INJURY) < careDie(MOD_CARE_MEDICINE_INJURY_DIE)) {
++			return FEED_NOTE_MAY_NOT_CURE_WOUND;
++		}
++	}
++	return NULL;
++}
++
+ static char *feedName(int32_t i)
+ {
+ 	return IS_COMMAND(feedSlots[i]) ? FEED_COMMANDS[feedSlots[i] - FEED_SCOLD].name
+@@ -176,8 +276,8 @@ static int32_t feedRows(void)
+ 	return (feedCount + 1) / 2;
+ }
+ 
+-/* the names in the text area at the inventory's places by list index (column * 0x60, row * 0xC), the description at
+- * 0xB4 (updateItemDescription's row) */
++/* the names in the text area at the inventory's places by list index (column * 0x60, row * 0xC; 32 entries fill 16
++ * rows), the description and its note under them (FEED_DESC_V, FEED_NOTE_V) */
+ static void feedDrawNames(void)
+ {
+ 	int32_t i;
+@@ -194,12 +294,18 @@ static void feedDrawNames(void)
+ static void feedDrawDescription(void)
+ {
+ 	RECT area;
++	char *note;
++	int32_t color;
+ 
+-	setRECT(&area, 0, 0xB4, 0xFC, 0xC);
++	setRECT(&area, 0, FEED_DESC_V, 0xFC, 0x18);
+ 	clearTextSubArea(&area);
+ 	drawString(IS_COMMAND(feedSlots[feedCursor]) ? FEED_COMMANDS[feedSlots[feedCursor] - FEED_SCOLD].desc
+ 	                                             : ITEM_DESCS[INVENTORY.types.array[feedSlots[feedCursor]]],
+-	           0, 0xB4);
++	           0, FEED_DESC_V);
++	note = feedNote(feedCursor, &color);
++	if (note != NULL) {
++		drawString(note, 0, FEED_NOTE_V);
++	}
+ 	DrawSync(0);
+ }
+ 
+@@ -212,6 +318,7 @@ static void feedRenderList(int32_t boxId)
+ 	int32_t y;
+ 	ItemId type;
+ 	FeedCommand *command;
++	int32_t color;
+ 
+ 	for (i = feedRowOffset * 2; i < feedCount && i < (feedRowOffset + FEED_ROWS_SHOWN) * 2; i++) {
+ 		row = i / 2 - feedRowOffset;
+@@ -222,12 +329,16 @@ static void feedRenderList(int32_t boxId)
+ 			command = &FEED_COMMANDS[feedSlots[i] - FEED_SCOLD];
+ 			renderRectPolyFT4(x - 2, y - 2, 0x14, 0x14, command->texX, command->texY + 0xC0, 0x1E,
+ 			                  GetClut(0x100, 0xD + 0x1F0), 6 - boxId, 0);
+-			renderString(8, x + 0x13, y + 2, 0x60, 0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
++			renderString(FEED_COMMAND_COLOR, x + 0x13, y + 2, 0x60, 0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
+ 			continue;
+ 		}
+ 		type = INVENTORY.types.array[feedSlots[i]];
+ 		renderItemSprite(type, x, y, 6 - boxId);
+-		renderString(ITEM_PARA[type].itemColor == 0xFF ? 8 : ITEM_PARA[type].itemColor + 5, x + 0x13, y + 2, 0x60,
++		color = ITEM_PARA[type].itemColor == 0xFF ? 8 : ITEM_PARA[type].itemColor + 5;
++		if (ITEM_FUNCTIONS[type] == (ItemFunction)handleFood && isFavourite(type)) {
++			color = FEED_FAVOURITE_COLOR;
++		}
++		renderString(color, x + 0x13, y + 2, 0x60,
+ 		             0xC, (i & 1) * 0x60, (i / 2) * 0xC, 6 - boxId, 1);
+ 		renderItemAmount(0, 2, x + 0x79, y + 4, INVENTORY.amounts.array[feedSlots[i]], 6 - boxId);
+ 	}
+@@ -239,8 +350,14 @@ static void feedRenderList(int32_t boxId)
+ 
+ static void feedRenderDescription(int32_t boxId)
+ {
+-	renderString(9, UI_BOX_DATA[boxId].finalPos.x + 0x1A, UI_BOX_DATA[boxId].finalPos.y + 8, 0xFC, 0xC, 0, 0xB4,
+-	             6 - boxId, 1);
++	UIBoxData *box = &UI_BOX_DATA[boxId];
++	int32_t color;
++
++	renderString(9, box->finalPos.x + 0x1A, box->finalPos.y + 8, 0xFC, 0xC, 0, FEED_DESC_V, 6 - boxId, 1);
++	if (feedNoted && feedNote(feedCursor, &color) != NULL) {
++		renderString(color, box->finalPos.x + 0x1A, box->finalPos.y + 0x14, 0xFC, 0xC, 0, FEED_NOTE_V, 6 - boxId,
++		             1);
++	}
+ }
+ 
+ static void feedOpenBoxes(void)
+@@ -265,7 +382,7 @@ static void feedOpenBoxes(void)
+ 	setRECT(&startPos, xy.vx - 5, xy.vy - 5, 10, 10);
+ 	createAnimatedUIBox(FEED_LIST_BOX, 0, features, &finalPos, &startPos, NULL, (RenderFunction)feedRenderList);
+ 	setRECT(&startPos, finalPos.x + 8, finalPos.y + 0xE, 0x10, 0x10);
+-	setRECT(&finalPos, -0x98, finalPos.y + finalPos.h + 2, 0x130, 0x1C);
++	setRECT(&finalPos, -0x98, finalPos.y + finalPos.h + 2, 0x130, feedNoted ? 0x28 : 0x1C);
+ 	createAnimatedUIBox(FEED_DESC_BOX, 0, 2, &finalPos, &startPos, NULL, (RenderFunction)feedRenderDescription);
+ }
+ 
+@@ -384,12 +501,19 @@ static void feedTick(int32_t instanceId)
+ /* the box opens with what the partner's condition asks for: 0 when there is nothing to offer */
+ static int32_t feedOpen(void)
+ {
++	int32_t i;
++	int32_t color;
++
+ 	if (feedCollect() == 0) {
+ 		return 0;
+ 	}
+-	feedCursor = 0;
++	feedCursor = 0; /* the most urgent */
+ 	feedRowOffset = 0;
+ 	feedState = FEED_OPENING;
++	feedNoted = 0;
++	for (i = 0; i < feedCount; i++) {
++		feedNoted |= feedNote(i, &color) != NULL;
++	}
+ 	if (!IS_COMMAND(feedSlots[0])) {
+ 		INVENTORY_POINTER = feedSlots[0];
+ 	}
+@@ -400,7 +524,9 @@ static int32_t feedOpen(void)
+ 	return 1;
+ }
+ 
+-/* from tamerTickWalkingState: 1 when X opened the menu */
++/* from tamerTickWalkingState: 1 when X opened the menu. Any other use of X there comes first: an NPC talked to, a
++ * press tile or a warp (a script started: IS_SCRIPT_PAUSED 0), a chest (TAMER_STATE 14), an item on the ground
++ * (checkItemPickup: TAMER_STATE 7) */
+ int32_t modFeedTick(void)
+ {
+ 	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
+-- 
+2.53.0
+

@@ -1,0 +1,968 @@
+{
+ "s066.sec5.u0": [
+  [
+   "La mer, c'est beau, non... ?"
+  ]
+ ],
+ "s066.sec6.u0": [
+  [
+   "Hors de mon chemin !"
+  ]
+ ],
+ "s066.sec7.u0": [
+  [
+   "Ah, Je sais ! Je vais te dire",
+   "quelque chose de bien..."
+  ]
+ ],
+ "s066.sec8.u0": [
+  [
+   "Eh bien, eh bien. Pas mal du",
+   "tout."
+  ]
+ ],
+ "s067.sec5.u0": [
+  [
+   "Tu as un bon instinct."
+  ]
+ ],
+ "s067.sec6.u0": [
+  [
+   "Hmm, tu es peut-être",
+   "prometteur."
+  ]
+ ],
+ "s067.sec7.u0": [
+  [
+   "Alors c'est toi... Intéressant",
+   "!"
+  ]
+ ],
+ "s067.sec8.u0": [
+  [
+   "Tu veux que je te donne ça ?",
+   "Hi hi..."
+  ]
+ ],
+ "s067.sec9.u0": [
+  [
+   "Maintenant, toi et moi sommes",
+   "amis, C'est vrai...?"
+  ]
+ ],
+ "s067.sec10.u0": [
+  [
+   "Toi ennemi ? Toi vouloir combat",
+   "?"
+  ]
+ ],
+ "s068.sec5.u0": [
+  [
+   "Ahaha, touche-moi et tu",
+   "recevras une grosse",
+   "DÉCHARGE, hein ?"
+  ]
+ ],
+ "s068.sec5.u1": [
+  [
+   "Hé, toi... ça ne fait pas mal ?"
+  ]
+ ],
+ "s068.sec5.u2": [
+  [
+   "Waouh, incroyable, tu as du",
+   "cran ! Tu es prometteur !",
+   "D'accord, je vais t'aider."
+  ]
+ ],
+ "s068.sec5.u3": [
+  [
+   "...Et si tu utilisais ton",
+   "électricité pour construire la",
+   "ville ?"
+  ]
+ ],
+ "s068.sec5.u4": [
+  [
+   "...La ville ? Hein, qu'est-ce",
+   "que... ça me dit quelque chose.",
+   "Pourquoi donc ? Hmm. Bon, je"
+  ],
+  [
+   "vais t'aider. Je suis Elecmon.",
+   "Enchanté !"
+  ]
+ ],
+ "s068.sec5.u5": "Elecmon a rejoint la ville !",
+ "s068.sec6.u0": [
+  [
+   "Kueh, kuehhh!"
+  ]
+ ],
+ "s068.sec7.u0": [
+  [
+   "Kiiiiiieh! !"
+  ]
+ ],
+ "s068.sec8.u0": [
+  [
+   "Toi... sacrifice !"
+  ]
+ ],
+ "s068.sec9.u0": [
+  [
+   "Tu es sur la bonne voie. Toi..."
+  ]
+ ],
+ "s068.sec10.u0": [
+  [
+   "Ah... Tu as mauvais goût."
+  ]
+ ],
+ "s068.sec11.u0": [
+  [
+   "Insolent ! Je vais te battre !"
+  ]
+ ],
+ "s068.sec51.u0": [
+  [
+   "Une porte en fer solide. . . Si",
+   "ça ne s'ouvre pas, Pas moyen",
+   "d'entrer."
+  ]
+ ],
+ "s069.sec5.m0.o0": "D'accord",
+ "s069.sec5.m0.o1": "Pas question",
+ "s069.sec5.m1.o0": "Bon, d'accord",
+ "s069.sec5.m1.o1": "Nooon !",
+ "s069.sec5.u0": [
+  [
+   "Je vais te battre !"
+  ]
+ ],
+ "s069.sec5.u1": [
+  [
+   "Mince, encore un combat."
+  ]
+ ],
+ "s069.sec5.u2": [
+  [
+   "Je l'avais presque ! Allez.",
+   "Encore !"
+  ]
+ ],
+ "s069.sec5.u3": [
+  [
+   "Je n'arrive pas à gagneeer !",
+   "Ouin !"
+  ]
+ ],
+ "s069.sec5.u4": [
+  [
+   "Et que feras-tu si tu gagnes",
+   "?"
+  ]
+ ],
+ "s069.sec5.u5": [
+  [
+   "Hein ? Euh, hmm. Je ne sais",
+   "pas."
+  ]
+ ],
+ "s069.sec5.u6": [
+  [
+   "Tu ne sais pas... Il n'y a donc",
+   "aucune raison ?"
+  ]
+ ],
+ "s069.sec5.u7": [
+  [
+   "Pas vraiment de raison. Je",
+   "m'ennuie."
+  ]
+ ],
+ "s069.sec5.u8": [
+  [
+   "Pff... Si tu t'ennuies, viens",
+   "en ville. Il y a toutes sortes",
+   "de Digimon."
+  ]
+ ],
+ "s069.sec5.u9": [
+  [
+   "Oh, ça a l'air bien. J'irai. Je",
+   "suis Patamon. À bientôt !"
+  ]
+ ],
+ "s069.sec5.u10": "Patamon a rejoint la ville !",
+ "s069.sec5.u11": [
+  [
+   "Oh, t'es pas drôle !"
+  ]
+ ],
+ "s069.sec6.u0": [
+  [
+   "Oh, tu viens ?"
+  ]
+ ],
+ "s069.sec7.u0": [
+  [
+   "Toi... pas d'odeur !"
+  ]
+ ],
+ "s069.sec8.u0": [
+  [
+   "Toi avoir l'air bon. Moi manger",
+   "toi !"
+  ]
+ ],
+ "s069.sec9.u0": [
+  [
+   "Gah ha ha ha ! Toi drôle !"
+  ]
+ ],
+ "s070.sec5.u0": [
+  [
+   "Hii, tu es revenu, piou !"
+  ]
+ ],
+ "s070.sec5.u1": [
+  [
+   "Au revoiiir, piou !"
+  ]
+ ],
+ "s070.sec5.u2": [
+  [
+   "Hmm... À ce rythme, on va",
+   "continuer à tourner en rond."
+  ]
+ ],
+ "s070.sec5.u3": [
+  [
+   "On devrait peut-être attendre",
+   "à l'affût..."
+  ]
+ ],
+ "s070.sec5.u4": [
+  [
+   "Hmm ? Qui est là, piou ?"
+  ]
+ ],
+ "s070.sec5.u5": [
+  [
+   "N-ne peut pas être. . ."
+  ]
+ ],
+ "s070.sec5.u6": [
+  [
+   "Hiiii, piou !"
+  ]
+ ],
+ "s070.sec5.u7": [
+  [
+   "Ah, hé, attends !"
+  ]
+ ],
+ "s070.sec5.u8": [
+  [
+   "Ah, encore ! Atteeeends !"
+  ]
+ ],
+ "s070.sec5.u9": [
+  [
+   "Ah, encore ! Atteeeends !"
+  ]
+ ],
+ "s070.sec5.u10": [
+  [
+   "Ah, encore ! Atteeeends !"
+  ]
+ ],
+ "s070.sec5.u11": [
+  [
+   "Ah, encore ! Atteeeends !"
+  ]
+ ],
+ "s070.sec6.u0": [
+  [
+   "Allez, allez, viens te battre !"
+  ]
+ ],
+ "s070.sec7.u0": [
+  [
+   "Ha ha ha, tu as du cran !"
+  ]
+ ],
+ "s070.sec8.u0": [
+  [
+   "Kua, kua!"
+  ]
+ ],
+ "s070.sec9.u0": [
+  [
+   "Moi... ici en premier."
+  ]
+ ],
+ "s070.sec10.u0": [
+  [
+   "Moi fort, toi pas de taille !"
+  ]
+ ],
+ "s070.sec11.u0": [
+  [
+   "Si je gagne, ne te fâche pas,",
+   "d'accord..."
+  ]
+ ],
+ "s070.sec51.m0.o0": "Attendre à l'affût",
+ "s070.sec51.m0.o1": "Aller ailleurs",
+ "s070.sec51.u0": [
+  [
+   "Je pourrais attendre à l'affût",
+   "ici..."
+  ]
+ ],
+ "s070.sec51.u1": [
+  [
+   "Allez, {color 10}{partner}{color 1}, rabats",
+   "Biyomon vers moi !"
+  ]
+ ],
+ "s070.sec51.u2": [
+  [
+   "Ah, elle est partie ailleurs !"
+  ]
+ ],
+ "s070.sec52.m0.o0": "Attendre à l'affût",
+ "s070.sec52.m0.o1": "Aller ailleurs",
+ "s070.sec52.u0": [
+  [
+   "Je pourrais attendre à l'affût",
+   "ici..."
+  ]
+ ],
+ "s070.sec52.u1": [
+  [
+   "Allez, {color 10}{partner}{color 1}, rabats",
+   "Biyomon vers moi !"
+  ]
+ ],
+ "s070.sec52.u2": [
+  [
+   "Ah, elle est partie ailleurs !"
+  ]
+ ],
+ "s070.sec53.m0.o0": "Attendre à l'affût",
+ "s070.sec53.m0.o1": "Aller ailleurs",
+ "s070.sec53.u0": [
+  [
+   "Je pourrais attendre à l'affût",
+   "ici..."
+  ]
+ ],
+ "s070.sec53.u1": [
+  [
+   "Allez, {color 10}{partner}{color 1}, rabats",
+   "Biyomon vers moi !"
+  ]
+ ],
+ "s070.sec53.u2": [
+  [
+   "Ah, elle est partie ailleurs !"
+  ]
+ ],
+ "s070.sec54.m0.o0": "Attendre à l'affût",
+ "s070.sec54.m0.o1": "Aller ailleurs",
+ "s070.sec54.u0": [
+  [
+   "Je pourrais attendre à l'affût",
+   "ici..."
+  ]
+ ],
+ "s070.sec54.u1": [
+  [
+   "Allez, {color 10}{partner}{color 1}, rabats",
+   "Biyomon vers moi !"
+  ]
+ ],
+ "s070.sec54.u2": [
+  [
+   "Ah, elle est partie ailleurs !"
+  ]
+ ],
+ "s070.sec54.u3": [
+  [
+   "L'embuscade a fonctionné!"
+  ]
+ ],
+ "s070.sec54.u4": [
+  [
+   "Hii ! L-laisse-moi partir, s'il",
+   "te plaît, piou."
+  ]
+ ],
+ "s070.sec54.u5": [
+  [
+   "Attends un peu. Nous ne",
+   "sommes pas les méchants."
+  ]
+ ],
+ "s070.sec54.u6": [
+  [
+   "Hein ? Tu n'es pas le",
+   "ravisseur de Digimon dont tout",
+   "le monde parle ?"
+  ]
+ ],
+ "s070.sec54.u7": [
+  [
+   "...On dirait que de fausses",
+   "rumeurs circulent... Écoute,"
+  ]
+ ],
+ "s070.sec54.u8": [
+  [
+   "{color 6}{player}{color 1} a fait de son",
+   "mieux pour la convaincre !"
+  ]
+ ],
+ "s070.sec54.u9": [
+  [
+   "Je vois, piou... J'avais tout",
+   "compris de travers, piou."
+  ]
+ ],
+ "s070.sec54.u10": [
+  [
+   "D'accord, piou. J'irai en",
+   "ville, piou !"
+  ]
+ ],
+ "s070.sec54.u11": "Biyomon a rejoint la ville !",
+ "s071.sec5.u0": [
+  [
+   "Je vois... Vu comme ça,",
+   "peut-être bien."
+  ]
+ ],
+ "s071.sec6.u0": [
+  [
+   "Tu sais apprécier cette beauté",
+   "?"
+  ]
+ ],
+ "s071.sec7.u0": [
+  [
+   "Kukukukukiiieh!"
+  ]
+ ],
+ "s071.sec8.u0": [
+  [
+   "Je m'en fiche désormais !"
+  ]
+ ],
+ "s071.sec9.u0": [
+  [
+   "C'est pas vrai ! ..Je",
+   "plaisante."
+  ]
+ ],
+ "s071.sec10.u0": [
+  [
+   "Ugh... Mal au ventre..."
+  ]
+ ],
+ "s071.sec81.m0.o0": "Petit soin: 200 Bits",
+ "s071.sec81.m0.o1": "Pot portable: 500 Bits",
+ "s071.sec81.m0.o2": "Ne pas acheter",
+ "s071.sec81.u0": [
+  [
+   "Distributeur automatique"
+  ]
+ ],
+ "s071.sec81.u1": [
+  [
+   "Une machine avec des prix !",
+   "Qu'est-ce que je fais ?"
+  ]
+ ],
+ "s071.sec81.u2": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s071.sec81.u3": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s071.sec81.u4": [
+  [
+   "Je porte trop d'objets en ce",
+   "moment."
+  ]
+ ],
+ "s071.sec81.u5": [
+  [
+   "Un {color 6}Petit soin{color 1} est sorti !"
+  ]
+ ],
+ "s071.sec81.u6": [
+  [
+   "Je porte trop d'objets en ce",
+   "moment."
+  ]
+ ],
+ "s071.sec81.u7": [
+  [
+   "Un {color 6}Pot portable{color 1} est sorti !"
+  ]
+ ],
+ "s071.sec81.u8": [
+  [
+   "Maintenant, J'ai gagné !"
+  ]
+ ],
+ "s071.sec81.u9": [
+  [
+   "Un {color 6}Double soin{color 1} est sorti !"
+  ]
+ ],
+ "s071.sec81.u10": [
+  [
+   "Ups! J'ai trop d'objets."
+  ]
+ ],
+ "s071.sec82.m0.o0": "100 MP : 200 Bits",
+ "s071.sec82.m0.o1": "1000 MP : 1800 Bits",
+ "s071.sec82.m0.o2": "Ne pas utiliser",
+ "s071.sec82.u0": [
+  [
+   "Station MP"
+  ]
+ ],
+ "s071.sec82.u1": [
+  [
+   "Une machine qui rend des MP,",
+   "hein."
+  ]
+ ],
+ "s071.sec82.u2": [
+  [
+   "MP rétablis !"
+  ]
+ ],
+ "s071.sec82.u3": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s071.sec82.u4": [
+  [
+   "MP rétablis !"
+  ]
+ ],
+ "s071.sec82.u5": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s072.sec7.u0": [
+  [
+   "Franchement, tu m'as déçu !"
+  ]
+ ],
+ "s072.sec8.u0": [
+  [
+   "Ne me mets pas en colère, je",
+   "te prie."
+  ]
+ ],
+ "s072.sec9.u0": [
+  [
+   "Aliments?"
+  ]
+ ],
+ "s072.sec10.u0": [
+  [
+   "Moi faim !"
+  ]
+ ],
+ "s073.sec8.u0": [
+  [
+   "Tout ici, chez moi. Toi, dehors",
+   "!"
+  ]
+ ],
+ "s073.sec9.u0": [
+  [
+   "Moi, Shamamon... Toi, quoi... ?"
+  ]
+ ],
+ "s073.sec51.u0": [
+  [
+   "HU? Qu'est-ce que c'est ?"
+  ]
+ ],
+ "s073.sec51.u1": [
+  [
+   "À-à-à l'aiiide !"
+  ]
+ ],
+ "s073.sec51.u2": [
+  [
+   "Oh là, il faut l'aider !"
+  ]
+ ],
+ "s073.sec51.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Assez ! Arrête de malmener les",
+   "faibles !"
+  ]
+ ],
+ "s073.sec51.u4": [
+  [
+   "HU? Qui est-ce ?"
+  ]
+ ],
+ "s073.sec51.u5": [
+  [
+   "Tu vas bien ?!"
+  ]
+ ],
+ "s073.sec51.u6": [
+  [
+   "Ouf... M-merci."
+  ]
+ ],
+ "s073.sec51.u7": [
+  [
+   "Pas besoin de me remercier. Si",
+   "tu as des ennuis, appelle-moi.",
+   "Moi, Leomon, j'accourrai ! À la"
+  ],
+  [
+   "prochaine !"
+  ]
+ ],
+ "s073.sec51.u8": [
+  [
+   "Ah, attends-moiii !"
+  ]
+ ],
+ "s073.sec51.u9": [
+  [
+   "......Waouh... Un vrai héros.",
+   "Il nous a un peu volé la",
+   "vedette."
+  ]
+ ],
+ "s074.sec5.u0": [
+  [
+   "Inutile, inutile, inutiiile !"
+  ]
+ ],
+ "s074.sec6.u0": [
+  [
+   "Donne-moi à manger !"
+  ]
+ ],
+ "s074.sec7.u0": [
+  [
+   "Rituel... commence."
+  ]
+ ],
+ "s074.sec8.u0": [
+  [
+   "Pourquoi ne pas essayer de me",
+   "faire confiance ?"
+  ]
+ ],
+ "s074.sec9.u0": [
+  [
+   "Géha géha, géha ?"
+  ]
+ ],
+ "s074.sec10.u0": [
+  [
+   "Moi gagner, toi perdre."
+  ]
+ ],
+ "s075.sec5.u0": [
+  [
+   "Il y a quelque chose que je",
+   "dois trouver... Pardonne-moi..."
+  ]
+ ],
+ "s075.sec51.u0": [
+  [
+   "J'ai entendu parler de toi. Tu",
+   "accomplis de grandes choses."
+  ]
+ ],
+ "s075.sec51.u1": [
+  [
+   "Si tu as entendu parler de",
+   "nous et de la ville, tu",
+   "viendras en ville ?"
+  ]
+ ],
+ "s075.sec51.u2": [
+  [
+   "...Laisse-moi y réfléchir. J'ai",
+   "mes propres idées sur l'avenir",
+   "de l'île. Et... il y a quelque"
+  ],
+  [
+   "chose que je cherche depuis",
+   "longtemps."
+  ]
+ ],
+ "s075.sec51.u3": [
+  [
+   "Que cherches-tu ?"
+  ]
+ ],
+ "s075.sec51.u4": [
+  [
+   "Un objet que mes ancêtres",
+   "auraient laissé pour l'avenir.",
+   "J'ignore ce que c'est..."
+  ]
+ ],
+ "s075.sec51.u5": [
+  [
+   "Je vois... Si on le trouve, on",
+   "te préviendra."
+  ]
+ ],
+ "s075.sec51.u6": [
+  [
+   "Hé... Je le cherche depuis des",
+   "années. Même pour toi, ce ne",
+   "sera pas facile."
+  ]
+ ],
+ "s075.sec51.u7": [
+  [
+   "Mais je te promets une chose.",
+   "Si on le trouve, j'irai dans ta",
+   "ville."
+  ]
+ ],
+ "s075.sec51.u8": [
+  [
+   "...Ce serait ça ?"
+  ]
+ ],
+ "s075.sec51.u9": [
+  [
+   "Oh, c'est... !"
+  ]
+ ],
+ "s075.sec51.u10": [
+  [
+   ". . Ouais, C'est ce que mes",
+   "ancêtres ont écrit ! Voyons",
+   "voir..."
+  ]
+ ],
+ "s075.sec51.u11": [
+  [
+   "« Quand le danger menace",
+   "l'île... va en son centre... et",
+   "unissez vos forces... ! »"
+  ]
+ ],
+ "s075.sec51.u12": [
+  [
+   "C'est... ! Mes ancêtres me",
+   "disent d'aller en ville... !"
+  ]
+ ],
+ "s075.sec51.u13": [
+  [
+   "!! ...Alors... tu vas nous",
+   "aider ?"
+  ]
+ ],
+ "s075.sec51.u14": [
+  [
+   "Bien sûr. Laisse-moi faire !"
+  ]
+ ],
+ "s075.sec51.u15": "Leomon a rejoint la ville !",
+ "s075.sec83.m0.o0": "S'entraîner",
+ "s075.sec83.m0.o1": "Cet entraînement",
+ "s075.sec83.m0.o2": "Quitter",
+ "s075.sec83.m1.o0": "Entraînement normal",
+ "s075.sec83.m1.o1": "Entraînement bonus",
+ "s075.sec83.m1.o2": "Laisse tomber",
+ "s075.sec83.m2.o0": "Explique encore",
+ "s075.sec83.m2.o1": "S'entraîner",
+ "s075.sec83.m2.o2": "Quitter",
+ "s075.sec83.u0": [
+  [
+   "{color 5}Entraînement : Frappes",
+   "spéciales{color 1}"
+  ]
+ ],
+ "s075.sec83.u1": [
+  [
+   "Exerce tes techniques sur un",
+   "sac en béton. Ton Attaque",
+   "augmente beaucoup, ainsi que"
+  ],
+  [
+   "tes HP max."
+  ]
+ ],
+ "s075.sec83.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s075.sec85.m0.o0": "S'entraîner",
+ "s075.sec85.m0.o1": "Cet entraînement",
+ "s075.sec85.m0.o2": "Quitter",
+ "s075.sec85.m1.o0": "Entraînement normal",
+ "s075.sec85.m1.o1": "Entraînement bonus",
+ "s075.sec85.m1.o2": "Laisse tomber",
+ "s075.sec85.m2.o0": "Explique encore",
+ "s075.sec85.m2.o1": "S'entraîner",
+ "s075.sec85.m2.o2": "Quitter",
+ "s075.sec85.u0": [
+  [
+   "{color 5}Entraînement : Parcours",
+   "savane{color 1}"
+  ]
+ ],
+ "s075.sec85.u1": [
+  [
+   "Cours sur tout le parcours de",
+   "la savane. Ta Vitesse augmente",
+   "beaucoup, ainsi que tes HP"
+  ],
+  [
+   "max."
+  ]
+ ],
+ "s075.sec85.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s126.sec51.u0": [
+  [
+   "Oh! ?"
+  ]
+ ],
+ "s126.sec51.u1": "Une boutique !",
+ "s126.sec81.m0.o0": "Acheter des cartes",
+ "s126.sec81.m0.o1": "Vendre des cartes",
+ "s126.sec81.m0.o2": "Quitter",
+ "s126.sec81.m1.o0": "Un paquet de 3",
+ "s126.sec81.m1.o1": "Acheter une carte",
+ "s126.sec81.m1.o2": "Laisse tomber",
+ "s126.sec81.m2.o0": "Acheter une carte",
+ "s126.sec81.m2.o1": "Laisse tomber",
+ "s126.sec81.m3.o0": "Acheter",
+ "s126.sec81.m3.o1": "Laisse tomber",
+ "s126.sec81.u0": [
+  [
+   "C'est une boutique de cartes",
+   "Digimon, oui, oui."
+  ]
+ ],
+ "s126.sec81.u1": [
+  [
+   "Des cartes Digimon ? C'est",
+   "quoi ?"
+  ]
+ ],
+ "s126.sec81.u2": [
+  [
+   "Les collectionner est très à la",
+   "mode, oui, oui. Tu as tout à y",
+   "gagner !"
+  ]
+ ],
+ "s126.sec81.u3": [
+  [
+   "Wow."
+  ]
+ ],
+ "s126.sec81.u4": [
+  [
+   "Pour commencer, je t'offre",
+   "celle-ci. Ravi de te",
+   "rencontrer, oui, oui !"
+  ]
+ ],
+ "s126.sec81.u5": [
+  [
+   "Hé ! C'est une carte à mon",
+   "effigie !"
+  ]
+ ],
+ "s126.sec81.u6": [
+  [
+   "Carte {color 6}{player}{color 1} obtenue !"
+  ]
+ ],
+ "s126.sec81.u7": [
+  [
+   "C'est une boutique de cartes",
+   "Digimon, oui, oui."
+  ]
+ ],
+ "s126.sec81.u8": [
+  [
+   "Aujourd'hui, il y a de",
+   "nouvelles cartes, oui, oui!"
+  ]
+ ],
+ "s126.sec81.u9": [
+  [
+   "Le paquet coûte 500 Bits. Son",
+   "contenu dépend de la chance,",
+   "oui, oui."
+  ]
+ ],
+ "s126.sec81.u10": [
+  [
+   "Ouvre ton paquet tout de",
+   "suite, oui, oui."
+  ]
+ ],
+ "s126.sec81.u11": [
+  [
+   "Autre chose, oui ?"
+  ]
+ ],
+ "s126.sec81.u12": [
+  [
+   "Reviens nous voir, oui, oui !"
+  ]
+ ],
+ "s126.sec82.m0.o0": "Les objets ordinaires",
+ "s126.sec82.m0.o1": "Les objets récupérés",
+ "s126.sec82.m0.o2": "À plus tard",
+ "s126.sec82.u0": [
+  [
+   "C'est une boutique d'objets",
+   "récupérés, oui, oui."
+  ]
+ ]
+}

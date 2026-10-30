@@ -1,0 +1,83 @@
+{
+ "s029.sec51.m0.o0": "Eu faço!",
+ "s029.sec51.m0.o1": "Desculpe, fica pra próxima.",
+ "s029.sec51.m1.o0": "Eu faço!",
+ "s029.sec51.m1.o1": "Desculpe, fica pra próxima.",
+ "s029.sec51.u0": [
+  [
+   "Ei, parece que já levaram quase",
+   "toda a terra. Graças a você, a",
+   "obra vai muito bem. Espere só",
+   "mais um pouco."
+  ]
+ ],
+ "s029.sec51.u1": "Bom trabalho. Aqui está o seu pagamento.",
+ "s029.sec51.u2": [
+  [
+   "Ganhei 500 Bits pelo trabalho!",
+   "HP aumentou 50! Ataque",
+   "aumentou 5! Defesa aumentou 5!"
+  ]
+ ],
+ "s029.sec51.u3": [
+  [
+   "Despeje a terra fora do túnel."
+  ]
+ ],
+ "s029.sec51.u4": "Vá em frente, pegue um pouco daquela pilha de terra lá.",
+ "s029.sec51.u5": [
+  [
+   "Hum, vai carregar terra? Você",
+   "está bem cansado. Descanse",
+   "primeiro, depois volte."
+  ]
+ ],
+ "s029.sec51.u6": [
+  [
+   "Hum, vai carregar terra?"
+  ]
+ ],
+ "s029.sec51.u7": "Quem é você? É perigoso aqui para amadores, então fiquem longe.",
+ "s029.sec51.u8": "Quem é você? Este túnel ainda não abriu. Não fique no caminho.",
+ "s029.sec51.u9": "Oh, desculpe. Quando acha que vai abrir?",
+ "s029.sec51.u10": "Quem sabe? Ainda vai demorar um pouco.",
+ "s029.sec51.u11": "Não há nada que possamos fazer para ajudar?",
+ "s029.sec51.u12": [
+  [
+   "Ei, quer tirar minha diversão?",
+   "Espere... carregar terra, até",
+   "vocês conseguem fazer isso."
+  ]
+ ],
+ "s029.sec51.u13": "O que é isso?",
+ "s029.sec51.u14": [
+  [
+   "Ali está a terra que eu",
+   "escavei. Leve-a para fora do",
+   "túnel e despeje lá."
+  ]
+ ],
+ "s029.sec51.u15": [
+  [
+   "É um trabalho bem pesado,",
+   "então vou pagar. São 500 Bits",
+   "por ida e volta."
+  ]
+ ],
+ "s029.sec51.u16": "A escavação vai mais rápido, eu sou pago... e é treinamento também... isso pode ser bom...!",
+ "s029.sec51.u17": [
+  [
+   "Como carregar terra Fique de",
+   "frente para a terra e aperte",
+   "{color 6}×{color 1} para pegar uma caixa. Saia",
+   "do túnel, e a terra será",
+   "despejada automaticamente.",
+   "Depois de cada ida e volta,"
+  ],
+  [
+   "fale com Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": "O que, está se acovardando?",
+ "s029.sec81.u0": "Peguei uma caixa de terra."
+}

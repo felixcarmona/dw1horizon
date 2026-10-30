@@ -1,0 +1,26 @@
+From cce14f51b14dfd49ada0f3526eab2c1cb188bd36 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 21:14:23 +0000
+Subject: [PATCH] Patch 0252: show internal map codes instead of numeric IDs in
+ Cheats
+
+---
+ src/main/mod_lab_menu.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 750b6bc9..b5e004e9 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -254,7 +254,7 @@ static void modLabEntry(char *out, int32_t id, int32_t evolution)
+         p = appendStr(p, level >= 1 && level <= 6 ? LAB_STAGES[level] : "?");
+     }
+     if (!evolution) {
+-        p = appendStr(p, " - ID "); p = labInt(p, id);
++        p = appendStr(p, " - "); p = appendStr(p, getScreenEntry(id)->filename);
+     }
+     if (evolution ? modLabNewSpecies(id) : isNewScreen(id)) appendStr(p, LAB_STR_NEW_MARK);
+     modLabFit(name, 248 - measureStringMode(suffix, FIT_VANILLA));
+-- 
+2.55.0
+

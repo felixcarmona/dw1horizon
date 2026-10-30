@@ -1,0 +1,113 @@
+// Readable form of script 76 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 76 {
+    npc tyrannomon = 5;
+    npc vermilimon1 = 6;
+    npc vermilimon2 = 7;
+    npc yanmamon3 = 8;
+    npc yanmamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 7, 8, 9, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 34, 56);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 37, 43);
+        }
+        engine.arg = 2;
+        call_routine(routine("save_clock_speed"));
+    }
+
+    on talk(vermilimon1) replace {    // section 6
+        say(vermilimon1, text("s076.sec6.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(vermilimon2) replace {    // section 7
+        say(vermilimon2, text("s076.sec7.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(yanmamon3) replace {    // section 8
+        say(yanmamon3, text("s076.sec8.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on talk(yanmamon4) replace {    // section 9
+        say(yanmamon4, text("s076.sec9.u0"));
+        battle();
+        recruit(species("Yanmamon"));
+    }
+
+    on step(0) replace {    // section 51
+        if (!dino_region_guard_beaten) {
+            run(tyrannomon, -421, 374);
+            await tyrannomon;
+            face(tyrannomon, tamer);
+            face(tamer, tyrannomon);
+            face(partner, tyrannomon);
+            await tyrannomon;
+            sound(8, 10);
+            say(tyrannomon, text("s076.sec51.u0"));
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s076.sec51.u1"));
+            animate(tamer, anim.idle);
+            sound(8, 10);
+            say(tyrannomon, text("s076.sec51.u2"));
+            say(tamer, text("s076.sec51.u3"));
+            battle(foes: [tyrannomon]);
+            walk(tamer, -97, -448);
+            walk(partner, -597, -443);
+            run(tyrannomon, -421, 374);
+            await tamer;
+            await partner;
+            await tyrannomon;
+            face(tamer, tyrannomon);
+            face(tyrannomon, tamer);
+            face(partner, tyrannomon);
+            say(tyrannomon, text("s076.sec51.u4"));
+            animate(tamer, 7);
+            wait(15);
+            say(tamer, text("s076.sec51.u5"));
+            animate(tamer, anim.idle);
+            say(tyrannomon, text("s076.sec51.u6"));
+            say(tamer, text("s076.sec51.u7"));
+            say(tyrannomon, text("s076.sec51.u8"));
+            say(tamer, text("s076.sec51.u9"));
+            say(tyrannomon, text("s076.sec51.u10"));
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s076.sec51.u11"));
+            animate(tamer, anim.idle);
+            say(tyrannomon, text("s076.sec51.u12"));
+            say(tamer, text("s076.sec51.u13"));
+            say(tyrannomon, text("s076.sec51.u14"));
+            say(tamer, text("s076.sec51.u15"));
+            sound(8, 10);
+            say(tyrannomon, text("s076.sec51.u16"));
+            say(tamer, text("s076.sec51.u17"));
+            say(tyrannomon, text("s076.sec51.u18"));
+            dino_region_guard_beaten = true;
+            walk_away(tyrannomon, -293, 1172, looks: 3);
+            remove(tyrannomon);
+            glances = 0;
+            camera_on(tamer, speed: 10);
+            await camera;
+            return;
+        }
+        return;
+    }
+}

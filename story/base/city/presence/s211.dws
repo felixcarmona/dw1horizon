@@ -1,0 +1,12 @@
+// Who stands on screen 211 (Item Keeper), and when. Read out of MAPHEAD.SCN section 211 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(211) {                              // Item Keeper
+            npc Agumon slot 0;
+            npc Poyomon slot 1;
+            npc 171 slot 2 when recruited(Nanimon);
+        }
+    }
+}

@@ -1,0 +1,146 @@
+// Readable form of script 151 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 151 {
+    npc andromon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        warp_to(154, 2, 255);
+    }
+
+    on talk(andromon) replace {    // section 5
+        if (is_recruited(species("Andromon"))) {
+            say(andromon, text("s151.sec5.u0"));
+            return;
+        }
+        if (island_history_read) {
+            say(andromon, text("s151.sec5.u1"));
+            sound(8, 10);
+            say(narrator, text("s151.sec5.u2"));
+            recruit(species("Andromon"));
+            engine.prosperity += 3;
+            return;
+        }
+        if (trigger(329)) {
+            say(andromon, text("s151.sec5.u3"));
+            entity_set_rotation(andromon, 2048);
+            wait(1s);
+            sound(8, 5);
+            say(tamer, text("s151.sec5.u4"));
+            sound(8, 6);
+            say(narrator, text("s151.sec5.u5"));
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s151.sec5.u6"));
+            animate(tamer, anim.idle);
+            say(andromon, text("s151.sec5.u7"));
+            entity_set_rotation(andromon, 0);
+            wait(1s);
+            say(tamer, text("s151.sec5.u8"));
+            say(andromon, text("s151.sec5.u9"));
+            animate(tamer, 25);
+            wait(15);
+            say(tamer, text("s151.sec5.u10"));
+            animate(tamer, anim.idle);
+            say(andromon, text("s151.sec5.u11"));
+            say(tamer, text("s151.sec5.u12"));
+            say(andromon, text("s151.sec5.u13"));
+            say(tamer, text("s151.sec5.u14"));
+            island_history_read = true;
+            return;
+        }
+        if (is_recruited(species("Numemon")) && !factorial_town_reopened) {
+            say(andromon, text("s151.sec5.u15"));
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s151.sec5.u16"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s151.sec5.u17"));
+            say(andromon, text("s151.sec5.u18"));
+            say(tamer, text("s151.sec5.u19"));
+            say(andromon, text("s151.sec5.u20"));
+            say(tamer, text("s151.sec5.u21"));
+            say(andromon, text("s151.sec5.u22"));
+            say(tamer, text("s151.sec5.u23"));
+            say(andromon, text("s151.sec5.u24"));
+            say(tamer, text("s151.sec5.u25"));
+            factorial_town_reopened = true;
+            return;
+        }
+        if (factorial_town_reopened) {
+            say(tamer, text("s151.sec5.u26"));
+            say(andromon, text("s151.sec5.u27"));
+            say(tamer, text("s151.sec5.u28"));
+            return;
+        }
+        if (factory_giromon_beaten && !is_recruited(species("Numemon")) && !factory_shut_down) {
+            animate(tamer, 7);
+            wait(10);
+            say(tamer, text("s151.sec5.u29"));
+            say(andromon, text("s151.sec5.u30"));
+            animate(tamer, 7);
+            wait(15);
+            say(tamer, text("s151.sec5.u31"));
+            animate(tamer, anim.idle);
+            say(andromon, text("s151.sec5.u32"));
+            entity_set_rotation(andromon, 2048);
+            wait(1s);
+            sound(8, 5);
+            say(andromon, text("s151.sec5.u33"));
+            say(tamer, text("s151.sec5.u34"));
+            factory_shut_down = true;
+            return;
+        }
+        if (factory_shut_down) {
+            say(andromon, text("s151.sec5.u35"));
+            say(tamer, text("s151.sec5.u36"));
+            return;
+        }
+        if (factory_check_refused) {
+            say(andromon, text("s151.sec5.u37"));
+            say(tamer, text("s151.sec5.u38"));
+            animate(tamer, 16);
+            wait(1s);
+            animate(tamer, anim.idle);
+            say(tamer, text("s151.sec5.u39"));
+            return;
+        }
+        say(andromon, text("s151.sec5.u40"));
+        if (!factory_permit_required) {
+            say(andromon, text("s151.sec5.u41"));
+            return;
+        }
+        if (!factory_giromon_beaten && factory_permit_required && !factory_check_refused) {
+            say(tamer, text("s151.sec5.u42"));
+            say(andromon, text("s151.sec5.u43"));
+            say(tamer, text("s151.sec5.u44"));
+            say(andromon, text("s151.sec5.u45"));
+            say(tamer, text("s151.sec5.u46"));
+            animate(tamer, 19);
+            wait(5);
+            say(andromon, text("s151.sec5.u47"));
+            say(tamer, text("s151.sec5.u48"));
+            animate(tamer, anim.idle);
+            wait(5);
+            say(andromon, text("s151.sec5.u49"));
+            say(tamer, text("s151.sec5.u50"));
+            animate(tamer, 19);
+            wait(5);
+            say(andromon, text("s151.sec5.u51"));
+            animate(tamer, 22);
+            wait(10);
+            say(tamer, text("s151.sec5.u52"));
+            factory_check_refused = true;
+        }
+        return;
+    }
+}

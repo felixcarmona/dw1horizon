@@ -1,0 +1,719 @@
+From e5f162258e3ee98ce0b990ed83a4fb4feef0c61b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 00:02:24 +0000
+Subject: [PATCH] Inventory: 16-bit item ids in RAM, u8 in the v1 save
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Step 3 of docs/mods/ids.md (§ 10), the inventory.
+
+- INVENTORY.types is ItemId[30]; an empty slot is ITEM_NONE (-1) instead
+  of 0xFF, so 255 is an item like any other. giveItem, removeItem and
+  getItemCount take an ItemId; their logic is unchanged.
+- The save payload keeps the v1 layout through SavedInventory; loading
+  maps 0xFF to ITEM_NONE and saving writes the low byte (ITEM_NONE becomes
+  0xFF again), so saves are byte-identical while ids are < 255.
+- u8 sources keep their meaning through itemFromLegacy (0xFF = none): the
+  initial inventory, GIVE_ITEM/REMOVE_ITEM and the IF item condition.
+- The inventory menu (names, sprites, descriptions, move, sort) works on
+  ItemId; sortItemsById/copyItemArray/swapItemId are 16-bit.
+- FISH_renderBaitMenu read the amounts as types + 0x1E (one array past
+  types); it now reads amounts directly, which also works with 16-bit
+  types.
+
+Shop, Item Keeper and recycle lists are still u8 (ITEM_MENU buffers);
+they change with ITEM.DAT (step 7).
+
+---
+ include/dw/item.h        | 31 +++++++++++++++++++++++----
+ src/fish/fish.c          |  8 +++----
+ src/main/fish.c          |  2 +-
+ src/main/game_menu.c     |  4 ++--
+ src/main/inventory.c     | 45 ++++++++++++++++++++--------------------
+ src/main/item.c          | 18 ++++++++--------
+ src/main/main_menu.c     | 34 ++++++++++++++++++++++++++----
+ src/main/mod_lab.c       |  2 +-
+ src/main/script_common.c |  9 ++++----
+ src/main/script_interp.c |  4 ++--
+ src/main/script_value.c  |  2 +-
+ src/main/utils.c         | 18 ++++++++++++----
+ src/shop/script_menu.c   |  6 +++---
+ src/trn/trn_reward.c     |  2 +-
+ src/trn2/trn2_hud.c      |  2 +-
+ 15 files changed, 122 insertions(+), 65 deletions(-)
+
+diff --git a/include/dw/item.h b/include/dw/item.h
+index 6e9b88b..13b0889 100644
+--- a/include/dw/item.h
++++ b/include/dw/item.h
+@@ -41,13 +41,34 @@ typedef struct {
+ 	uint8_t array[30];
+ } InventoryTable;
+ 
++/* MOD: item ids in RAM are ItemId (ids.md step 3); -1 = no item */
++#define ITEM_NONE (-1)
++
+ typedef struct {
+-	InventoryTable types;
++	ItemId array[30];
++} ItemIdTable;
++
++typedef struct {
++	ItemIdTable types; /* MOD: was u8 with 0xFF = empty; now ITEM_NONE */
+ 	InventoryTable amounts;
+ 	InventoryTable names;
+ 	uint8_t size;
+ } Inventory;
+ 
++/* MOD: the v1 save layout of the inventory (u8 ids, 0xFF = empty) */
++typedef struct {
++	InventoryTable types;
++	InventoryTable amounts;
++	InventoryTable names;
++	uint8_t size;
++} SavedInventory;
++
++/* MOD: an item id from a u8 field (script byte, pstat, table): 0xFF = none */
++static inline ItemId itemFromLegacy(uint8_t id)
++{
++	return (id == LEGACY_ID_NONE) ? ITEM_NONE : id;
++}
++
+ typedef void (*ItemFunction)(int16_t);
+ 
+ extern Item ITEM_PARA[];
+@@ -64,9 +85,11 @@ extern ItemFunction ITEM_FUNCTIONS[NUM_ITEMS];
+ 
+ void initializeInventory(void);
+ void setInventorySize(uint8_t size);
+-int32_t giveItem(uint8_t type, uint8_t amount);
+-void removeItem(uint8_t type, uint8_t amount);
+-uint8_t getItemCount(uint8_t type);
++int32_t giveItem(ItemId type, uint8_t amount);
++void removeItem(ItemId type, uint8_t amount);
++uint8_t getItemCount(ItemId type);
++void sortItemsById(ItemId *data, long count);
++void swapItemId(ItemId *a, ItemId *b);
+ 
+ void initializeDroppedItems(void);
+ void clearDroppedItems(void);
+diff --git a/src/fish/fish.c b/src/fish/fish.c
+index 155caa6..9e6739e 100644
+--- a/src/fish/fish.c
++++ b/src/fish/fish.c
+@@ -1219,7 +1219,7 @@ void FISH_drawBaitMenuRow(int32_t row)
+ 		item = menu->items[(row * 2) + i];
+ 		if (item != -1) {
+ 			item = INVENTORY.types.array[item];
+-			if (item != 0xff) {
++			if (item != ITEM_NONE) {
+ 				setRECT(&rect, i * 0x60, (row % menu->visibleRows) * 12, 0x60, 0xc);
+ 				area = rect;
+ 				clearTextSubArea(&area);
+@@ -1261,7 +1261,7 @@ void FISH_renderBaitMenu(int32_t boxId)
+ 				continue;
+ 			}
+ 			q = INVENTORY.types.array[item];
+-			if (q == 0xff) {
++			if (q == ITEM_NONE) {
+ 				continue;
+ 			}
+ 			FISH_drawItemSprite(q,
+@@ -1283,7 +1283,7 @@ void FISH_renderBaitMenu(int32_t boxId)
+ 
+ 			renderItemAmount(0, 2, x + ((col != 0) ? 0x116 : 0x86),
+ 			                 y + 0x12 + row * 0x12,
+-			                 (INVENTORY.types.array + item)[0x1e], layer);
++			                 INVENTORY.amounts.array[item], layer); /* MOD: was types + 0x1e */
+ 		}
+ 	}
+ 
+@@ -1318,7 +1318,7 @@ int32_t FISH_openBaitMenu(void)
+ 
+ 	n = 0;
+ 	for (i = 0; i < 30U; i++) {
+-		if (INVENTORY.types.array[i] == 0xff) {
++		if (INVENTORY.types.array[i] == ITEM_NONE) {
+ 			continue;
+ 		}
+ 		if (ITEM_PARA[INVENTORY.types.array[i]].sortingValue != 2) {
+diff --git a/src/main/fish.c b/src/main/fish.c
+index 505a96a..106f81c 100644
+--- a/src/main/fish.c
++++ b/src/main/fish.c
+@@ -33,7 +33,7 @@ int32_t hasFoodItem(void)
+ {
+ 	int32_t i;
+ 	for (i = 0; (uint32_t)i < 30u; i++) {
+-		if (INVENTORY.types.array[i] != 0xFF) {
++		if (INVENTORY.types.array[i] != ITEM_NONE) {
+ 			if (ITEM_PARA[INVENTORY.types.array[i]].sortingValue == 2) {
+ 				return 1;
+ 			}
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 2f63e94..e1649dd 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -210,7 +210,7 @@ void renderDateDigits(void);
+ void renderTriangleCursor(int8_t selection, int16_t yOffset);
+ int32_t isUIBoxAvailable(int32_t id);
+ void setSleepDisabled(int16_t arg);
+-void startFeedingItem(uint8_t arg);
++void startFeedingItem(ItemId arg);
+ void removeOneSelectedItem(void);
+ void renderFeedingItem(int16_t arg);
+ int8_t getEquippedSlot(void);
+@@ -2016,7 +2016,7 @@ void setSleepDisabled(int16_t arg)
+ 	MENU_OPTIONS[6].disabled = arg;
+ }
+ 
+-void startFeedingItem(uint8_t arg)
++void startFeedingItem(ItemId arg) /* MOD: was u8 */
+ {
+ 	if (TAMER_ITEM.worldItem.type == 0xff) {
+ 		TAMER_ITEM.worldItem.type = arg;
+diff --git a/src/main/inventory.c b/src/main/inventory.c
+index ea9f3fc..4e03cb0 100644
+--- a/src/main/inventory.c
++++ b/src/main/inventory.c
+@@ -23,7 +23,7 @@ extern char *ITEM_DESCS[];
+ 
+ void addGameMenu(void);
+ void closeTriangleMenu(void);
+-void startFeedingItem(uint8_t type);
++void startFeedingItem(ItemId type);
+ void startThrowingItem(void);
+ void getEntityScreenPos(Entity *e, int32_t mode, DVECTOR *out);
+ void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h,
+@@ -32,7 +32,6 @@ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t l
+ void swapByte(uint8_t *a, uint8_t *b);
+ void playSound(int32_t vabId, uint32_t note);
+ void sortItems(int16_t mode);
+-void sortItemsById(uint8_t *data, long count);
+ void renderItemSprite(int32_t type, int32_t x, int32_t y, int32_t layer);
+ void renderItemAmount(int32_t color, int32_t n, int32_t x, int32_t y,
+                       int32_t value, int32_t layer);
+@@ -68,7 +67,7 @@ void selectDropItem();
+ void selectOptionMenu();
+ void selectRegularInventory();
+ 
+-void copyItemArray(uint8_t *src, uint8_t *dst, long n);
++void copyItemArray(ItemId *src, ItemId *dst, long n);
+ void updateInventoryInputRepeatCounter();
+ int32_t isInventoryButtonPressed(int32_t mask);
+ void tickInventoryOptionSelector(uint8_t *cursor, int32_t unused, int16_t max);
+@@ -167,14 +166,14 @@ void *inventory_text_order[] = {
+ int32_t getItemOptionColor(int32_t mode)
+ {
+ 	Item *item;
+-	uint8_t type;
++	ItemId type; /* MOD: was u8 */
+ 
+ 	if ((mode == 1) || (mode == 2)) {
+ 		return 9;
+ 	}
+ 	type = INVENTORY.types.array[INVENTORY_POINTER];
+ 	if (mode == 0) {
+-		if (type != 0xff) {
++		if (type != ITEM_NONE) {
+ 			item = &ITEM_PARA[type];
+ 			switch (GAME_STATE) {
+ 			case 0:
+@@ -198,7 +197,7 @@ int32_t getItemOptionColor(int32_t mode)
+ 		if (GAME_STATE == 1) {
+ 			return 0xa;
+ 		}
+-		if (type != 0xff) {
++		if (type != ITEM_NONE) {
+ 			item = &ITEM_PARA[type];
+ 			if (item->droppable == 1) {
+ 				return 9;
+@@ -264,7 +263,7 @@ void drawInventoryTextLine(int16_t startSlot)
+ 	long i;
+ 
+ 	for (i = 0; i < 2; i++) {
+-		if (INVENTORY.types.array[startSlot + i] != 0xff) {
++		if (INVENTORY.types.array[startSlot + i] != ITEM_NONE) {
+ 			INVENTORY.names.array[startSlot + i] = startSlot + i;
+ 			drawString(ITEM_NAME(INVENTORY.types.array[startSlot + i]),
+ 			           ((startSlot + i) & 1) * 0x60, ((startSlot + i) / 2) * 0xc);
+@@ -524,7 +523,7 @@ void renderInventoryTop(int16_t boxId)
+ 	int32_t slot;
+ 	int32_t count;
+ 	int32_t row;
+-	uint8_t type;
++	ItemId type; /* MOD: was u8 */
+ 	uint8_t color;
+ 	int16_t x;
+ 	int16_t y;
+@@ -540,7 +539,7 @@ void renderInventoryTop(int16_t boxId)
+ 	}
+ 	for (i = 0; i < count; ++i, ++slot) {
+ 		type = INVENTORY.types.array[slot];
+-		if (type != 0xff) {
++		if (type != ITEM_NONE) {
+ 			renderItemSprite(type, (i & 1) ? x + 0x9a : x + 0xa,
+ 			                 y + 8 + (i / 2) * 0x12, 6 - boxId);
+ 			if (ITEM_PARA[type].itemColor == 0xff) {
+@@ -587,7 +586,7 @@ void renderInventoryTop(int16_t boxId)
+ 
+ void renderInventoryBottom(int16_t boxId)
+ {
+-	if (INVENTORY.types.array[INVENTORY_POINTER] != 0xff) {
++	if (INVENTORY.types.array[INVENTORY_POINTER] != ITEM_NONE) {
+ 		if (INVENTORY_POINTER != ITEM_MOVE_TARGET) {
+ 			updateItemDescription();
+ 		}
+@@ -796,15 +795,15 @@ void updateItemDescription(void)
+ 
+ void moveItem(void)
+ {
+-	uint8_t *p;
+-	uint8_t *src;
++	ItemId *p; /* MOD: was u8 */
++	ItemId *src;
+ 
+ 	p = &INVENTORY.types.array[INVENTORY_POINTER];
+ 	src = &INVENTORY.types.array[ITEM_MOVE_SOURCE];
+-	swapByte(p, src);
++	swapItemId(p, src);
+ 	swapByte(&INVENTORY.amounts.array[INVENTORY_POINTER], &INVENTORY.amounts.array[ITEM_MOVE_SOURCE]);
+ 	swapByte(&INVENTORY.names.array[INVENTORY_POINTER], &INVENTORY.names.array[ITEM_MOVE_SOURCE]);
+-	if (*p != 0xff) {
++	if (*p != ITEM_NONE) {
+ 		updateItemDescription();
+ 	}
+ }
+@@ -834,7 +833,7 @@ void selectOptionMenu(void)
+ 	    (INVENTORY_ACTION != 0xd) && (UI_BOX_DATA[3].state == 0)) {
+ 		switch (ITEM_MENU_SELECTED) {
+ 		case 0:
+-			if (INVENTORY.types.array[INVENTORY_POINTER] != 0xff) {
++			if (INVENTORY.types.array[INVENTORY_POINTER] != ITEM_NONE) {
+ 				item = &ITEM_PARA[INVENTORY.types.array[INVENTORY_POINTER]];
+ 				switch (GAME_STATE) {
+ 				case 0:
+@@ -862,7 +861,7 @@ void selectOptionMenu(void)
+ 			break;
+ 		case 3:
+ 			if (GAME_STATE == 0) {
+-				if ((INVENTORY.types.array[INVENTORY_POINTER] != 0xff) && ITEM_PARA[INVENTORY.types.array[INVENTORY_POINTER]].droppable == 1) {
++				if ((INVENTORY.types.array[INVENTORY_POINTER] != ITEM_NONE) && ITEM_PARA[INVENTORY.types.array[INVENTORY_POINTER]].droppable == 1) {
+ 					INVENTORY_ACTION = 0xe;
+ 				}
+ 			}
+@@ -897,20 +896,20 @@ void selectRegularInventory(void)
+ void sortItems(int16_t mode)
+ {
+ 	long counts[6];
+-	uint8_t desired[30];
+-	uint8_t categories[6][30];
++	ItemId desired[30]; /* MOD: was u8 */
++	ItemId categories[6][30];
+ 	int32_t i;
+ 	int32_t j;
+ 	uint8_t *order;
+ 
+ 	ITEM_MOVE_TARGET = 0xff;
+ 	for (i = 0; i < INVENTORY.size; i++) {
+-		desired[i] = 0xff;
++		desired[i] = ITEM_NONE;
+ 	}
+ 	for (i = 0; i < 6; i++) {
+ 		counts[i] = 0;
+ 		for (j = 0; j < INVENTORY.size; j++) {
+-			if (INVENTORY.types.array[j] != 0xff) {
++			if (INVENTORY.types.array[j] != ITEM_NONE) {
+ 				if (i == ITEM_PARA[INVENTORY.types.array[j]].sortingValue) {
+ 					categories[i][counts[i]] = INVENTORY.types.array[j];
+ 					counts[i]++;
+@@ -927,7 +926,7 @@ void sortItems(int16_t mode)
+ 		order++;
+ 	}
+ 	for (i = 0; i < INVENTORY.size; i++) {
+-		if (desired[i] == 0xff) {
++		if (desired[i] == ITEM_NONE) {
+ 			break;
+ 		}
+ 		if (INVENTORY.types.array[i] != desired[i]) {
+@@ -936,14 +935,14 @@ void sortItems(int16_t mode)
+ 					break;
+ 				}
+ 			}
+-			swapByte(&INVENTORY.types.array[i], &INVENTORY.types.array[j]);
++			swapItemId(&INVENTORY.types.array[i], &INVENTORY.types.array[j]);
+ 			swapByte(&INVENTORY.amounts.array[i], &INVENTORY.amounts.array[j]);
+ 			swapByte(&INVENTORY.names.array[i], &INVENTORY.names.array[j]);
+ 		}
+ 	}
+ }
+ 
+-void copyItemArray(uint8_t *src, uint8_t *dst, long n)
++void copyItemArray(ItemId *src, ItemId *dst, long n)
+ {
+ 	int32_t i;
+ 
+diff --git a/src/main/item.c b/src/main/item.c
+index 509200b..8e3befb 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2535,7 +2535,7 @@ void renderDroppedItemShadow(WorldItem *item)
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
+-uint8_t getItemCount(uint8_t type)
++uint8_t getItemCount(ItemId type) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 
+@@ -2548,7 +2548,7 @@ uint8_t getItemCount(uint8_t type)
+ 	return 0;
+ }
+ 
+-int32_t giveItem(uint8_t item, uint8_t amount)
++int32_t giveItem(ItemId item, uint8_t amount) /* MOD: was u8 */
+ {
+ 	int16_t used[30];
+ 	int32_t i;
+@@ -2569,7 +2569,7 @@ int32_t giveItem(uint8_t item, uint8_t amount)
+ 			}
+ 			return 0;
+ 			/* unreachable */
+-			INVENTORY.types.array[i] = 0xff;
++			INVENTORY.types.array[i] = ITEM_NONE;
+ 			INVENTORY.amounts.array[i] = 0;
+ 			INVENTORY.names.array[i] = 0xff;
+ 		}
+@@ -2577,7 +2577,7 @@ int32_t giveItem(uint8_t item, uint8_t amount)
+ 
+ 	if (result == 0) {
+ 		for (i = 0; i < INVENTORY.size; i++) {
+-			if (INVENTORY.types.array[i] == 0xff) {
++			if (INVENTORY.types.array[i] == ITEM_NONE) {
+ 				INVENTORY.types.array[i] = item;
+ 				INVENTORY.amounts.array[i] = amount;
+ 				for (j = 0; j < INVENTORY.size; j++) {
+@@ -2602,12 +2602,12 @@ int32_t giveItem(uint8_t item, uint8_t amount)
+ 	return result;
+ }
+ 
+-void removeItem(uint8_t type, uint8_t amount)
++void removeItem(ItemId type, uint8_t amount) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 	uint8_t *count;
+ 
+-	if (type == 0xff) {
++	if (type == ITEM_NONE) {
+ 		return;
+ 	}
+ 
+@@ -2618,7 +2618,7 @@ void removeItem(uint8_t type, uint8_t amount)
+ 				*count -= amount;
+ 			} else {
+ 				*count = 0;
+-				INVENTORY.types.array[i] = 0xff;
++				INVENTORY.types.array[i] = ITEM_NONE;
+ 				INVENTORY.names.array[i] = 0xff;
+ 			}
+ 		}
+@@ -2645,7 +2645,7 @@ void initializeInventory(void)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < 30; ++i) {
+-		INVENTORY.types.array[i] = 0xff;
++		INVENTORY.types.array[i] = ITEM_NONE;
+ 		INVENTORY.amounts.array[i] = 0;
+ 		INVENTORY.names.array[i] = 0xff;
+ 	}
+@@ -2655,7 +2655,7 @@ void initializeInventory(void)
+ 	types = INITIAL_INVENTORY_TYPES;
+ 
+ 	for (i = 0; i < 30; ++i) {
+-		INVENTORY.types.array[i] = types.array[i];
++		INVENTORY.types.array[i] = itemFromLegacy(types.array[i]);
+ 		INVENTORY.amounts.array[i] = amounts.array[i];
+ 		INVENTORY.names.array[i] = i;
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index b361e1b..93062fd 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -109,7 +109,7 @@ typedef struct {
+ 	int16_t tournamentsLost;
+ 	Stats stats;
+ 	uint8_t scriptState[0x17C];
+-	Inventory inventory;
++	SavedInventory inventory; /* MOD: u8 ids; INVENTORY is ItemId */
+ 	char playerName[20];
+ 	char digimonName[20];
+ 	int8_t partnerLives;
+@@ -2306,7 +2306,7 @@ void tickMainMenu(void)
+ 	int32_t status;
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ 	int32_t i;
+-	Inventory *inventory;
++	SavedInventory *inventory; /* MOD: the save layout */
+ #endif
+ 
+ 	updateMemoryCardState();
+@@ -3943,6 +3943,32 @@ int32_t createSavegameChecksum(int32_t slot)
+ 	return sum;
+ }
+ 
++/* MOD: the inventory in RAM holds ItemId; the v1 save keeps u8 ids */
++static void loadSavedInventory(SavedInventory *saved)
++{
++	int32_t i;
++
++	for (i = 0; i < 30; i++) {
++		INVENTORY.types.array[i] = itemFromLegacy(saved->types.array[i]);
++	}
++	INVENTORY.amounts = saved->amounts;
++	INVENTORY.names = saved->names;
++	INVENTORY.size = saved->size;
++}
++
++/* MOD: low byte of each id (exact while ids are < 255); ITEM_NONE -> 0xFF */
++static void writeSavedInventory(SavedInventory *saved)
++{
++	int32_t i;
++
++	for (i = 0; i < 30; i++) {
++		saved->types.array[i] = (uint8_t)INVENTORY.types.array[i];
++	}
++	saved->amounts = INVENTORY.amounts;
++	saved->names = INVENTORY.names;
++	saved->size = INVENTORY.size;
++}
++
+ void loadSavegame(SavegamePayload *savegame)
+ {
+ 	int32_t i;
+@@ -3963,7 +3989,7 @@ void loadSavegame(SavegamePayload *savegame)
+ 	PLAYTIME_MINUTES = savegame->playtimeMinutes;
+ 	PARTNER_ENTITY.digimonEntity.stats = savegame->stats;
+ 	SAVED_STATE.partnerStats = savegame->stats;
+-	INVENTORY = savegame->inventory;
++	loadSavedInventory(&savegame->inventory);
+ 	memcpy(PARTNER_ENTITY.name, savegame->digimonName, 0x14);
+ 	TAMER_ENTITY.tamerLevel = savegame->tamerLevel;
+ 	TAMER_ENTITY.raisedCount = savegame->raisedCount;
+@@ -4025,7 +4051,7 @@ void writeSavegame(SavegamePayload *savegame)
+ 	savegame->playtimeFrames = PLAYTIME_FRAMES;
+ 	savegame->playtimeHours = PLAYTIME_HOURS;
+ 	savegame->playtimeMinutes = PLAYTIME_MINUTES;
+-	savegame->inventory = INVENTORY;
++	writeSavedInventory(&savegame->inventory);
+ 	savegame->stats = PARTNER_ENTITY.digimonEntity.stats;
+ 	savegame->partnerLives = PARTNER_ENTITY.lives;
+ 	memcpy(savegame->digimonName, PARTNER_ENTITY.name, 0x14);
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index c9380d7..2054d72 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -46,7 +46,7 @@ void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h,
+ 		  int32_t u, int32_t v, int32_t layer, int32_t shadow);
+ void clearTextSubArea(RECT *rect);
+ char *formatInteger(int32_t value, char *buf, int32_t digits);
+-int32_t giveItem(uint8_t item, uint8_t amount);
++int32_t giveItem(ItemId item, uint8_t amount);
+ void pauseFrame(void);
+ void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
+ 
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 51bcc1b..e66a998 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -673,7 +673,7 @@ int32_t shopFillBuyItemList()
+ 	ITEM_MENU_LEFT->itemCount = 0;
+ 
+ 	for (slotId = 0; slotId < inventorySize; slotId++) {
+-		if (INVENTORY.types.array[slotId] == 0xff) {
++		if (INVENTORY.types.array[slotId] == ITEM_NONE) {
+ 			hasSpace = 1;
+ 
+ 			break;
+@@ -1296,7 +1296,7 @@ void handleItemLoss(void)
+ 	k = 0;
+ 	count = 0;
+ 	while (k < size) {
+-		if (INVENTORY.types.array[k] != 0xff) {
++		if (INVENTORY.types.array[k] != ITEM_NONE) {
+ 			pool[count] = k;
+ 			count += 1;
+ 		}
+@@ -1314,7 +1314,7 @@ void handleItemLoss(void)
+ 		k = 0;
+ 		count = 0;
+ 		while (k < size) {
+-			if (INVENTORY.types.array[k] != 0xff) {
++			if (INVENTORY.types.array[k] != ITEM_NONE) {
+ 				pool[count] = k;
+ 				count += 1;
+ 			}
+@@ -1332,8 +1332,7 @@ void handleItemLoss(void)
+ 			}
+ 		}
+ 
+-		recycleId = INVENTORY.types.array[slot];
+-		removeItem(recycleId, 0x63);
++		removeItem(INVENTORY.types.array[slot], 0x63); /* MOD: the whole id */
+ 	}
+ 
+ 	freeArray((uint32_t *)pool);
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index c068fbe..b917c6f 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1049,7 +1049,7 @@ void scriptInstruction28to3F(op)
+ 	switch (op) {
+ 	case SCRIPT_OP_GIVE_ITEM:
+ 		skipOnePollTwoScriptBytes(&byteArg1, &byteArg2);
+-		result = giveItem(byteArg1, byteArg2);
++		result = giveItem(itemFromLegacy(byteArg1), byteArg2); /* MOD */
+ 		if (result != 0) {
+ 			unsetTrigger(0);
+ 		} else {
+@@ -1058,7 +1058,7 @@ void scriptInstruction28to3F(op)
+ 		break;
+ 	case SCRIPT_OP_REMOVE_ITEM:
+ 		skipOnePollTwoScriptBytes(&byteArg1, &byteArg2);
+-		removeItem(byteArg1, byteArg2);
++		removeItem(itemFromLegacy(byteArg1), byteArg2); /* MOD */
+ 		break;
+ 	case SCRIPT_OP_ADD_MONEY:
+ 		skipOneReadInteger(&intArg);
+diff --git a/src/main/script_value.c b/src/main/script_value.c
+index b1777e8..a1bb5f3 100644
+--- a/src/main/script_value.c
++++ b/src/main/script_value.c
+@@ -350,7 +350,7 @@ int32_t scriptCompareItemCount(void)
+ 
+ 	pollNextTwoScriptBytes(&itemId, &op);
+ 	pollNextScriptUShort(&value);
+-	count = getItemCount(itemId);
++	count = getItemCount(itemFromLegacy(itemId)); /* MOD: 0xFF = none */
+ 
+ 	return scriptCompareValue(op, count, value);
+ }
+diff --git a/src/main/utils.c b/src/main/utils.c
+index f0544be..92993fe 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -5,6 +5,7 @@
+ 
+ #include <dw/btl.h>
+ #include <dw/combat.h>
++#include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/script.h>
+ #include <dw/std.h>
+@@ -19,7 +20,6 @@
+ #endif
+ 
+ void damageTick(FighterData* fighter, Stats* stats);
+-void sortItemsById(uint8_t *data, long count);
+ void initStringFT4(POLY_FT4* poly);
+ #if !VERSION_IS(US)
+ void renderNumber(int32_t color, int16_t x, int16_t y, int16_t n,
+@@ -115,12 +115,12 @@ void damageTick(FighterData* fighter, Stats* stats)
+ 	}
+ }
+ 
+-void sortItemsById(uint8_t *data, long count)
++void sortItemsById(ItemId *data, long count) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 	int32_t j;
+ 	int16_t minIdx;
+-	uint8_t minVal;
++	ItemId minVal;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		minVal = data[i];
+@@ -133,12 +133,22 @@ void sortItemsById(uint8_t *data, long count)
+ 			}
+ 		}
+ 
+-		swapByte(&data[i], &data[minIdx]);
++		swapItemId(&data[i], &data[minIdx]);
+ 	}
+ 
+ 	(void)j;
+ }
+ 
++/* MOD: swapByte for the 16-bit item ids of the inventory */
++void swapItemId(ItemId *a, ItemId *b)
++{
++	ItemId tmp;
++
++	tmp = *a;
++	*a = *b;
++	*b = tmp;
++}
++
+ void swapByte(uint8_t *a, uint8_t *b)
+ {
+ 	uint8_t tmp;
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index e5f6e40..5b75cbc 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1418,7 +1418,7 @@ int32_t shopFillMeritItemList(void)
+ 	ITEM_MENU_RIGHT->itemCount = 0;
+ 
+ 	for (i = 0; i < size; i++) {
+-		if (INVENTORY.types.array[i] == 0xff) {
++		if (INVENTORY.types.array[i] == ITEM_NONE) {
+ 			hasFreeSlot = 1;
+ 			break;
+ 		}
+@@ -1476,7 +1476,7 @@ void itemKeeperFillItemList(void)
+ 	size = INVENTORY.size;
+ 
+ 	for (i = 0; i < size; i++) {
+-		if (INVENTORY.types.array[i] == 0xff) {
++		if (INVENTORY.types.array[i] == ITEM_NONE) {
+ 			hasFreeSlot = 1;
+ 			break;
+ 		}
+@@ -1512,7 +1512,7 @@ next:;
+ 
+ 	for (j = 0; j < size; j++) {
+ 		ITEM_MENU_RIGHT->itemCount++;
+-		if (INVENTORY.types.array[j] != 0xff) {
++		if (INVENTORY.types.array[j] != ITEM_NONE) {
+ 			i = INVENTORY.types.array[j];
+ 			c = INVENTORY.amounts.array[j];
+ 			*out++ = i;
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 0444ba7..2dab60c 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -16,7 +16,7 @@
+ extern int16_t STATS_GAINS[6];
+ extern char *MOVE_NAMES[];
+ 
+-int32_t getItemCount(int32_t type);
++uint8_t getItemCount(ItemId type);
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+ void createCameraMovement(VECTOR *pos, int32_t speed);
+ void initializeDaytimeTransition(int32_t phase);
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index d83dd72..4cedaea 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -24,7 +24,7 @@ extern char MAIN_D_80124C0C[];
+ extern char MAIN_D_80124C54[];
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+ 
+-int32_t getItemCount(int32_t type);
++uint8_t getItemCount(ItemId type);
+ void worldPosToScreenPos(TrainingSpot *item, SVECTOR *out);
+ void renderNumber(int32_t a, int32_t x, int32_t y, int32_t digits, int32_t value, int32_t layer);
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+-- 
+2.53.0
+

@@ -1,0 +1,76 @@
+{
+ "s122.sec5.u0": "Ahh, you saved me!",
+ "s122.sec5.u1": "So it was you who was stuck.",
+ "s122.sec5.u2": "But this works out nicely.",
+ "s122.sec5.u3": "What does?",
+ "s122.sec5.u4": "I was on my way to your city, to put my talents to use!",
+ "s122.sec5.u5": "Uh... what talents?",
+ "s122.sec5.u6": "Oh my, you don't know me? Among Digimon I'm famous for knowing everything!",
+ "s122.sec5.u7": "Huh. Never heard of you.",
+ "s122.sec5.u8": "Well then, I'll be off to the city.",
+ "s122.sec5.u9": "......Is this guy going to be any use?",
+ "s122.sec5.u10": "Good day to you!",
+ "s122.sec5.u11": "Shellmon joined the city!",
+ "s122.sec6.u0": "Am I in the way?",
+ "s123.sec5.u0": "Hrrraaaah!",
+ "s123.sec6.u0": "Haaaaaah!",
+ "s123.sec7.u0": "Kyeeeeh!",
+ "s123.sec51.u0": [
+  [
+   "Going by everything we've",
+   "heard, this looks like the road",
+   "where those bandits show up..."
+  ],
+  [
+   "All right. Let's go,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s123.sec51.u1": "Yahoooooo!",
+ "s123.sec51.u2": "Gwahahaha!",
+ "s123.sec51.u3": "Whoopeee!",
+ "s123.sec51.u4": "Nuhahaha, give up and leave your stuff! Or you'll get hurt!",
+ "s123.sec51.u5": "You're the ones who should give up!",
+ "s123.sec51.u6": "Huh?! You punks are...",
+ "s123.sec51.u7": "Don't tell me...",
+ "s123.sec51.u8": "B-boss, what do we do?!",
+ "s123.sec51.u9": "Quit squawking! We've got the numbers and the muscle. Knock 'em flat!",
+ "s123.sec51.u10": "Grrr... Y-you'll pay for this!",
+ "s123.sec51.u11": "Look at them run! But they shouldn't show up around here for a while.",
+ "s123.sec81.m0.o0": "Ogre Mode: ON",
+ "s123.sec81.m0.o1": "Ogre Mode: OFF",
+ "s123.sec81.u0": [
+  "East: Elevator",
+  "West: Danger! Mind the cliff"
+ ],
+ "s123.sec82.u0": "Beware of falling rocks!!",
+ "s124.sec51.u0": "Hmmm.",
+ "s124.sec51.u1": "Looks like a nest of a bird or something. What do you think?",
+ "s124.sec51.u2": "Hm? A sound...?",
+ "s124.sec51.u3": "Not bad, kid.",
+ "s124.sec51.u4": "So this was your nest.",
+ "s124.sec51.u5": "Heh... as you can see.",
+ "s124.sec51.u6": "Sorry for barging in.",
+ "s124.sec51.u7": "Heh... don't worry about it.",
+ "s124.sec51.u8": "?",
+ "s124.sec51.u9": "I've heard about you.",
+ "s124.sec51.u10": "...People are talking about me?",
+ "s124.sec51.u11": "You're probably about the only human on this island right now.",
+ "s124.sec51.u12": "Right now...? Was there somebody here before?",
+ "s124.sec51.u13": "Heh... Aren't you going to invite me to the city?",
+ "s124.sec51.u14": "Huh? Oh, uh, yeah. Will you come to the city?",
+ "s124.sec51.u15": "OK. Then let's get to my first job. Hold on to me.",
+ "s124.sec51.u16": "Birdramon joined the city!",
+ "s124.sec81.m0.o0": "Press Down button 1",
+ "s124.sec81.m0.o1": "Press Down button 2",
+ "s124.sec81.m0.o2": "Don't get on",
+ "s124.sec81.u0": "Elevator",
+ "s124.sec81.u1": [
+  [
+   "Huh?"
+  ],
+  [
+   "No good, nothing's happening."
+  ]
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "_comment": "What happens at midnight. cardShop: how many cards the shop stocks that day (at most 6), drawn from 1..pool without repeats, never `excluded`. counters: count pstats from firstPstat go up by one a day (255 stays). clearEachDay: that pstat is masked with `mask` (the tournament registration's tomorrow bit). A key left out = it does not happen.",
+  "dailyRules": {
+    "cardShop": {"cards": 6, "pool": 64, "excluded": 4},
+    "counters": {"firstPstat": 28, "count": 4},
+    "clearEachDay": {"pstat": 2, "mask": 127}
+  }
+}

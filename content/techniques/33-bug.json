@@ -1,0 +1,17 @@
+{
+  "id": 33,
+  "name": "Bug",
+  "element": "nature",
+  "power": 500,
+  "mpCost": 118,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 80,
+  "status": 4,
+  "statusChance": 35,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [12, 8, 0]
+}

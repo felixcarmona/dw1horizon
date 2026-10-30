@@ -1,0 +1,88 @@
+{
+ "first_id": 337,
+ "out": "build/batch14",
+ "digimon": [
+  {
+   "name": "Tentomon",
+   "game": "dw1",
+   "type": 111
+  },
+  {
+   "name": "Piddomon",
+   "game": "dw1",
+   "type": 85,
+   "from": [
+    184
+   ]
+  },
+  {
+   "name": "Gururumon",
+   "game": "dw1",
+   "type": 105,
+   "from": [
+    221
+   ]
+  },
+  {
+   "name": "Tankmon",
+   "game": "dw1",
+   "type": 76
+  },
+  {
+   "name": "Guardromon",
+   "game": "dw1",
+   "type": 92,
+   "from": [
+    247
+   ]
+  },
+  {
+   "name": "Hyogamon",
+   "game": "dw1",
+   "type": 72
+  },
+  {
+   "name": "Soulmon",
+   "game": "dw1",
+   "type": 107,
+   "from": [
+    235
+   ]
+  },
+  {
+   "name": "Rockmon",
+   "game": "dw1",
+   "type": 108,
+   "from": [
+    185
+   ]
+  },
+  {
+   "name": "Gekomon",
+   "game": "dw1",
+   "type": 110,
+   "from": [
+    217
+   ]
+  },
+  {
+   "name": "Fugamon",
+   "game": "dw1",
+   "type": 89
+  },
+  {
+   "name": "Hagurumon",
+   "game": "dw2",
+   "model": "M122HAGU",
+   "level": 3,
+   "element": 5
+  },
+  {
+   "name": "Tinmon",
+   "game": "dw2",
+   "model": "M123BRIK",
+   "level": 3,
+   "element": 5
+  }
+ ]
+}

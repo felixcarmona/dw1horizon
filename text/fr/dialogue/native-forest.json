@@ -1,0 +1,376 @@
+{
+ "s001.sec5.u0": [
+  [
+   "Allez, on ne fait que commencer",
+   "!"
+  ]
+ ],
+ "s001.sec6.u0": [
+  [
+   "Hop... hop... Ho... hisse..."
+  ]
+ ],
+ "s001.sec7.u0": [
+  [
+   "Je vais te dévorer, oui !"
+  ]
+ ],
+ "s001.sec8.u0": [
+  [
+   "Attends un instaaant, oui !"
+  ]
+ ],
+ "s001.sec9.u0": [
+  [
+   "J'arrive !"
+  ]
+ ],
+ "s001.sec10.u0": [
+  [
+   "Quoi ? Qu'est-ce que je t'ai",
+   "fait ?"
+  ]
+ ],
+ "s001.sec11.u0": [
+  [
+   "Je savais que j'aurais dû",
+   "rester à l'écart..."
+  ]
+ ],
+ "s001.sec12.u0": [
+  [
+   "Franchement... Gna gna gna..."
+  ]
+ ],
+ "s003.sec5.u0": [
+  [
+   "Allez, allez !"
+  ]
+ ],
+ "s003.sec6.u0": [
+  [
+   "- Graaaah !"
+  ]
+ ],
+ "s003.sec7.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "......"
+  ]
+ ],
+ "s003.sec7.u1": [
+  [
+   "{color 7}??? {color 1}",
+   ".....Je suis une fleur."
+  ]
+ ],
+ "s003.sec7.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "......Je ne suis qu'une fleur,",
+   "tu vois."
+  ]
+ ],
+ "s003.sec7.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "J'ai dit que j'étais une fleur",
+   "! Tu ne lâches jamais l'affaire",
+   "?!"
+  ]
+ ],
+ "s003.sec7.u4": [
+  [
+   "Bon, d'accord ! C'est juste",
+   "que je déteste me battre !"
+  ]
+ ],
+ "s003.sec7.u5": [
+  [
+   "Alors..."
+  ]
+ ],
+ "s003.sec7.u6": [
+  [
+   "Viens en ville. On y est",
+   "tranquille."
+  ]
+ ],
+ "s003.sec7.u7": [
+  [
+   "En ville ? Ça a l'air sympa.",
+   "Pourquoi pas ! Je suis Palmon.",
+   "Tu verras, je saurai me rendre"
+  ],
+  [
+   "utile !"
+  ]
+ ],
+ "s003.sec7.u8": "Palmon a rejoint la ville !",
+ "s003.sec8.u0": [
+  [
+   "À moi !"
+  ]
+ ],
+ "s003.sec9.u0": [
+  [
+   "Je te tiens !"
+  ]
+ ],
+ "s004.sec6.u0": [
+  [
+   "Tu vas seulement te faire mal,",
+   "tu sais."
+  ]
+ ],
+ "s004.sec6_dup4.u0": [
+  [
+   "Franchement... Quel gamin."
+  ]
+ ],
+ "s004.sec7.u0": [
+  [
+   "Très bien. Je vais y aller",
+   "doucement."
+  ]
+ ],
+ "s004.sec8.u0": [
+  [
+   "Je vais te casser le nez !"
+  ]
+ ],
+ "s004.sec9.u0": [
+  [
+   "Je vais te briser comme une",
+   "brindille !"
+  ]
+ ],
+ "s004.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Même les singes tombent de..."
+  ],
+  [
+   "{color 7}??? {color 1}",
+   "Coup... de genou... volaaant",
+   "!!!"
+  ]
+ ],
+ "s004.sec51.u1": [
+  [
+   "Ouk ! Moi, le grand Etemon,",
+   "vaincu... ? Non, non ! Vous",
+   "n'avez rien d'exceptionnel !"
+  ]
+ ],
+ "s004.sec51.u2": [
+  [
+   "...Quel mauvais perdant. Et",
+   "c'est lui qui nous a",
+   "attaqués..."
+  ]
+ ],
+ "s004.sec51.u3": [
+  [
+   "Ouk-ouk ! Grrr... Très bien...",
+   "Je vous montrerai de quoi je",
+   "suis capable, dans votre ville"
+  ],
+  [
+   "! Vous allez voir ! Ouk !"
+  ]
+ ],
+ "s004.sec51.u4": "Etemon a rejoint la ville !",
+ "s004.sec81.u0": [
+  [
+   "Hm ? Il y a quelque chose de",
+   "gravé ici."
+  ]
+ ],
+ "s004.sec81.u1": [
+  [
+   "Il n'y a personne ! Va-t'en !"
+  ]
+ ],
+ "s004.sec81.u2": [
+  [
+   "Quelqu'un habite ici ?"
+  ]
+ ],
+ "s105.sec5.u0": [
+  [
+   "J-je ne sais rien !"
+  ]
+ ],
+ "s105.sec6.u0": "Ouah !",
+ "s105.sec6.u1": [
+  [
+   "......? ...! ...Hé hé !"
+  ]
+ ],
+ "s105.sec6.u2": [
+  [
+   "Hé, tu attaques sans prévenir",
+   "?! Bon, viens te battre !"
+  ]
+ ],
+ "s105.sec6.u3": [
+  [
+   "J'ai perdu. Zut."
+  ]
+ ],
+ "s105.sec6.u4": [
+  [
+   "Ah, oui. Je suis censé",
+   "l'inviter en ville."
+  ]
+ ],
+ "s105.sec6.u5": [
+  [
+   "...Euh, dis, alors..."
+  ]
+ ],
+ "s105.sec6.u6": [
+  [
+   "Tu voudrais... peut-être...",
+   "venir en ville ?"
+  ]
+ ],
+ "s105.sec6.u7": [
+  [
+   "Hein ? En ville ? Tu parles...",
+   "de ce vieux coin délabré ?"
+  ]
+ ],
+ "s105.sec6.u8": [
+  [
+   "Hmm... Hmmmm......",
+   "Hmmmmmmm........."
+  ]
+ ],
+ "s105.sec6.u9": [
+  [
+   "Eh bien, d'accord. Je suis",
+   "Agumon. Enchanté."
+  ]
+ ],
+ "s105.sec6.u10": "Agumon a rejoint la ville !",
+ "s105.sec6.u11": [
+  [
+   "Comme quoi, ça ne coûte rien",
+   "de demander ! Bon, je vais",
+   "inviter tous ceux que je"
+  ],
+  [
+   "trouverai !"
+  ]
+ ],
+ "s105.sec7.u0": [
+  [
+   "C'est mon territoire !"
+  ]
+ ],
+ "s105.sec8.u0": [
+  [
+   "Hein ?!"
+  ]
+ ],
+ "s105.sec9.u0": [
+  [
+   "C'est le moment !"
+  ]
+ ],
+ "s105.sec52.u0": [
+  [
+   "...Si je m'enfuis maintenant,",
+   "impossible de revenir en",
+   "arrière."
+  ]
+ ],
+ "s106.sec5.u0": [
+  [
+   "Test de combat!"
+  ],
+  [
+   "Je plaisante. C'était un",
+   "mensonge."
+  ]
+ ],
+ "s106.sec6.m0.o0": "Modifier les stats",
+ "s106.sec6.m0.o1": "Avancer le temps",
+ "s106.sec6.m0.o2": "Apprendre les techs",
+ "s106.sec6.m1.o0": "Augmenter",
+ "s106.sec6.m1.o1": "Réduire",
+ "s106.sec6.m1.o2": "Réinitialiser les stats",
+ "s106.sec6.m2.o0": "Avancer d'une heure",
+ "s106.sec6.m2.o1": "Avancer de 6 heures",
+ "s106.sec6.m2.o2": "Avancer de 24 heures",
+ "s106.sec6.m3.o0": "+50",
+ "s106.sec6.m3.o1": "+100",
+ "s106.sec6.m3.o2": "+200",
+ "s106.sec6.m4.o0": "-50",
+ "s106.sec6.m4.o1": "-100",
+ "s106.sec6.m4.o2": "-200",
+ "s106.sec6.u0": [
+  [
+   "Je suis M. Dépanne ! Que",
+   "veux-tu ?"
+  ]
+ ],
+ "s106.sec81.u0": [
+  [
+   "Un éboulement bloque le",
+   "chemin..."
+  ]
+ ],
+ "s107.sec5.u0": [
+  [
+   "Mois {pstat 105}, jour",
+   "{pstat 106}, heure",
+   "{pstat 107}, minute"
+  ],
+  [
+   "{pstat 108}."
+  ]
+ ],
+ "s107.sec5.u1": [
+  [
+   "{color 10}{partner}{color 1} est de type",
+   "Données, hein."
+  ]
+ ],
+ "s107.sec5.u2": [
+  [
+   "{color 10}{partner}{color 1} est de type",
+   "Vaccin, hein."
+  ]
+ ],
+ "s107.sec5.u3": [
+  [
+   "{color 10}{partner}{color 1} est de type",
+   "Virus, hein."
+  ]
+ ],
+ "s107.sec6.m0.o0": "Modifier les stats",
+ "s107.sec6.m0.o1": "Avancer le temps",
+ "s107.sec6.m0.o2": "Transformer en boutique",
+ "s107.sec6.m1.o0": "Le rendre très fort",
+ "s107.sec6.m1.o1": "Le rendre très faible",
+ "s107.sec6.m1.o2": "Le rendre moyen",
+ "s107.sec6.m2.o0": "Avancer d'une heure",
+ "s107.sec6.m2.o1": "Avancer de 6 heures",
+ "s107.sec6.m2.o2": "Avancer de 24 heures",
+ "s107.sec6.u0": [
+  [
+   "Je suis M. Dépanne ! Que",
+   "veux-tu ?"
+  ]
+ ],
+ "s107.sec51.u0": [
+  [
+   "Le séisme vient de dégager les",
+   "rochers qui bloquaient le",
+   "chemin !"
+  ]
+ ]
+}

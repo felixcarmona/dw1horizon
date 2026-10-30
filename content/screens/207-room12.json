@@ -1,0 +1,12 @@
+{
+  "id": 207,
+  "file": "ROOM12",
+  "tims8": 1,
+  "tims4": 1,
+  "sound_bank": 12,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 53
+}

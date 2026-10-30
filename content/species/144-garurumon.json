@@ -1,0 +1,33 @@
+{
+  "id": 144,
+  "name": "Garurumon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["ice", "air", "battle"],
+  "techniques": ["Buster Dive", "War Cry", "Giga Freeze", "Ice Statue", "Howling Blaster"],
+  "drop": {"item": "HP Chip", "percent": 100},
+  "effects_like": 22,
+  "model": {"name": "EGAR", "bones": 26, "radius": 220, "height": 290},
+  "voice": 20,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

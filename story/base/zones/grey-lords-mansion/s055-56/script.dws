@@ -1,0 +1,92 @@
+// Readable form of script 55 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 55 {
+    npc soulmon0 = 5;
+    npc soulmon1 = 6;
+    npc soulmon2 = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 83, 81, 82;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Sirloin"), 500, 0, 567, 0, 653);
+        mansion_fridge_open = false;
+    }
+
+    on talk(soulmon0) replace {    // section 5
+        say(soulmon0, text("s055.sec5.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on talk(soulmon1) replace {    // section 6
+        say(soulmon1, text("s055.sec6.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on talk(soulmon2) replace {    // section 7
+        say(soulmon2, text("s055.sec7.u0"));
+        battle();
+        recruit(species("Soulmon"));
+    }
+
+    on use(3) replace {    // section 83
+        entity_set_rotation(tamer, 1024);
+        wait(5);
+        if (mansion_fridge_memo_found) {
+            if (!mansion_fridge_open) {
+                rotate_3d_object(2, 0, 1);
+                rotate_3d_object(3, 0, 1);
+            }
+            wait(1s);
+            say(tamer, text("s055.sec83.u0"));
+            say(narrator, text("s055.sec83.u1"));
+            mansion_fridge_open = true;
+            return;
+        }
+        if (has(item("Frig Key")) >= 1 && !mansion_fridge_memo_found) {
+            mansion_fridge_open = true;
+            sound(8, 3);
+            say(narrator, text("s055.sec83.u2"));
+            rotate_3d_object(2, 0, 1);
+            rotate_3d_object(3, 0, 1);
+            wait(3s);
+            remove_item(item("Frig Key"), 1);
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s055.sec83.u3"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s055.sec83.u4"));
+            say(narrator, text("s055.sec83.u5"));
+            say(tamer, text("s055.sec83.u6"));
+            mansion_fridge_memo_found = true;
+            return;
+        }
+        if (has(item("Frig Key")) < 1 && !mansion_fridge_memo_found) {
+            say(tamer, text("s055.sec83.u7"));
+            say(tamer, text("s055.sec83.u8"));
+            return;
+        }
+    }
+
+    on use(1) replace {    // section 81
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 81, -1600);
+        warp_to(54, 0, 255);
+    }
+
+    on use(2) replace {    // section 82
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -117, 1200);
+        warp_to(57, 1, 255);
+        return;
+    }
+}

@@ -1,0 +1,36 @@
+// Jijimon's errand: bring him two Meat in exchange for bits.
+flag errand_accepted = 717;
+flag errand_done = 718;
+
+script 178 {  // Jijimon's house (screen 218)
+    npc jijimon = 5;
+    on talk(jijimon) {
+        if (errand_done) {
+            say(jijimon, text("jijimon-errand.t1"));
+            return;
+        }
+        if (!errand_accepted) {
+            say(jijimon, text("jijimon-errand.t2"));
+            say(jijimon, text("jijimon-errand.t3"));
+            choice {
+                text("jijimon-errand.t4") => {
+                    errand_accepted = true;
+                    say(jijimon, text("jijimon-errand.t5"));
+                }
+                text("jijimon-errand.t6") => {
+                    say(jijimon, text("jijimon-errand.t7"));
+                }
+            }
+            return;
+        }
+        if (has(item("Meat")) >= 2) {
+            say(jijimon, text("jijimon-errand.t8"));
+            take(item("Meat"), 2);
+            give_bits(1000);
+            errand_done = true;
+        } else {
+            say(jijimon, text("jijimon-errand.t9"));
+        }
+        return;
+    }
+}

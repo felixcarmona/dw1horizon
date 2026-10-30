@@ -1,0 +1,68 @@
+{
+ "s008.sec5.u0": [
+  [
+   "{color 7}Gerent del mercat {color 1}",
+   "Fes alguna cosa, de pressa, sí,",
+   "sí!"
+  ]
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Mode ogre",
+ "s008.sec51.u0": [
+  [
+   "El Túnel Drill..."
+  ]
+ ],
+ "s008.sec51.u1": [
+  [
+   "Uf, una altra vegada aquest!",
+   "No aprèn mai...!"
+  ]
+ ],
+ "s008.sec51.u2": [
+  [
+   "Mm?"
+  ]
+ ],
+ "s008.sec51.u3": [
+  [
+   "{color 7}Gerent del mercat {color 1}",
+   "Ningú no em va dir que el túnel",
+   "fos de pagament, no, no!"
+  ]
+ ],
+ "s008.sec51.u4": [
+  [
+   "{color 7}Gerent del mercat {color 1}",
+   "Oh, tu... No deus ser...? Fes",
+   "alguna cosa, sí, sí!"
+  ]
+ ],
+ "s008.sec51.u5": [
+  [
+   "I els Drimogemon que hi ha",
+   "dins?"
+  ]
+ ],
+ "s008.sec51.u6": [
+  [
+   "{color 7}Gerent del mercat {color 1}",
+   "No ho sé, no, no..."
+  ]
+ ],
+ "s008.sec51.u7": [
+  [
+   "Espero que estiguin bé... Val,",
+   "entrarem!"
+  ]
+ ],
+ "s008.sec53.m0.o0": "Anem!",
+ "s008.sec53.m0.o1": "Millor no",
+ "s008.sec53.u0": [
+  [
+   "En el túnel ja no queda res...",
+   "Ho creuem corrent i ja està?",
+   "Què em dius?"
+  ]
+ ]
+}

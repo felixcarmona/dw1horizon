@@ -1,0 +1,180 @@
+// Readable form of script 149 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 149 {
+    npc geremon0 = 5;
+    npc geremon1 = 6;
+    npc geremon2 = 7;
+    npc platinumsukamon3 = 8;
+    npc platinumsukamon4 = 9;
+    npc platinumsukamon5 = 10;
+    npc guardromon6 = 11;
+    npc guardromon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 12, 11, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        store_date(date_year);
+        if (date_hour == 11 && date_minute >= 55) {
+        } else if (date_hour == 12 && date_minute <= 5) {
+        } else if (date_hour != 23 || date_minute < 55) {
+            unless (date_hour == 0 && date_minute <= 5) return;
+        }
+        if (!factory_guards_passed) {
+            animate(tamer, 24);
+            wait(15);
+            say(tamer, text("s149.sec254.u0"));
+            animate(tamer, anim.idle);
+            camera_to(2799, 74, speed: 20);
+            await camera;
+            camera_on(tamer, speed: 15);
+            await camera;
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1061, -331);
+        warp_to(154, 3, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, 5589, -69);
+        warp_to(161, 1, 255);
+    }
+
+    on talk(guardromon7) replace {    // section 12
+        sound(8, 9);
+        say(guardromon7, text("s149.sec12.u0"));
+    }
+
+    on talk(guardromon6) replace {    // section 11
+        sound(8, 9);
+        say(guardromon6, text("s149.sec11.u0"));
+        store_date(date_year);
+        if (guard_shift_change_heard && date_hour == 11 && date_minute >= 55) {
+        } else if (guard_shift_change_heard && date_hour == 12 && date_minute <= 5) {
+        } else if (guard_shift_change_heard && date_hour == 23 && date_minute >= 55) {
+        } else if (!guard_shift_change_heard || date_hour != 0 || date_minute > 5) {
+            if (guard_shift_change_heard) {
+                say(guardromon6, text("s149.sec11.u1"));
+                say(tamer, text("s149.sec11.u2"));
+                return;
+            }
+            if (sewer_numemon_met && !factory_check_refused) {
+                say(tamer, text("s149.sec11.u3"));
+                face(tamer, partner);
+                wait(5);
+                animate(tamer, 22);
+                animate(partner, 22);
+                wait(5);
+                animate(tamer, 22);
+                animate(partner, 22);
+                wait(5);
+                face(tamer, guardromon6);
+                animate(partner, anim.idle);
+                wait(10);
+                animate(tamer, 19);
+                wait(15);
+                say(tamer, text("s149.sec11.u4"));
+                animate(tamer, anim.idle);
+                sound(8, 9);
+                wait(5);
+                say(guardromon6, text("s149.sec11.u5"));
+                say(tamer, text("s149.sec11.u6"));
+                say(guardromon6, text("s149.sec11.u7"));
+                animate(tamer, 25);
+                wait(15);
+                say(tamer, text("s149.sec11.u8"));
+                animate(tamer, anim.idle);
+                factory_permit_required = true;
+                return;
+            }
+            unless (factory_check_refused) return;
+            if (factory_check_refused) {
+                say(tamer, text("s149.sec11.u9"));
+                choice {
+                    text("s149.sec11.m0.o0") => {}
+                    text("s149.sec11.m0.o1") => {
+                        sound(8, 9);
+                        say(guardromon6, text("s149.sec11.u14"));
+                        choice {
+                            text("s149.sec11.m2.o0") => {}
+                            text("s149.sec11.m2.o1") => {}
+                            cancel => {
+                                return;
+                            }
+                        }
+                        sound(8, 9);
+                        say(guardromon6, text("s149.sec11.u15"));
+                        say(tamer, text("s149.sec11.u16"));
+                        return;
+                    }
+                    text("s149.sec11.m0.o2") or cancel => {
+                        return;
+                    }
+                }
+            }
+            sound(8, 9);
+            say(guardromon6, text("s149.sec11.u10"));
+            choice {
+                text("s149.sec11.m1.o0") => {
+                    sound(8, 9);
+                    say(guardromon6, text("s149.sec11.u11"));
+                    return;
+                }
+                text("s149.sec11.m1.o1") => {
+                    say(guardromon6, text("s149.sec11.u12"));
+                    say(tamer, text("s149.sec11.u13"));
+                    guard_shift_change_heard = true;
+                    return;
+                }
+                cancel => {
+                    return;
+                }
+            }
+        }
+        say(tamer, text("s149.sec11.u17"));
+        say(guardromon6, text("s149.sec11.u18"));
+        say(tamer, text("s149.sec11.u19"));
+    }
+
+    on talk(geremon0) replace {    // section 5
+        say(geremon0, text("s149.sec5.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon1) replace {    // section 6
+        say(geremon1, text("s149.sec6.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon2) replace {    // section 7
+        say(geremon2, text("s149.sec7.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(platinumsukamon3) replace {    // section 8
+        say(platinumsukamon3, text("s149.sec8.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(platinumsukamon4) replace {    // section 9
+        say(platinumsukamon4, text("s149.sec9.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(platinumsukamon5) replace {    // section 10
+        say(platinumsukamon5, text("s149.sec10.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+        return;
+    }
+}

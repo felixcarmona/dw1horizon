@@ -1,0 +1,212 @@
+{
+  "dw2": "M237CHMR",
+  "type": 184,
+  "name": "Kimeramon",
+  "height": 400,
+  "source": {
+    "type": 12,
+    "mmd": "extracted/CHDAT/MMD0/MTGR.MMD"
+  },
+  "_reparent": "DW2 hangs the tail (DW1 bone 28) from the entity, a second root; under the pelvis it follows the hips of the retargeted slots",
+  "reparent": {
+    "28": 1
+  },
+  "_map": "DW1 bone (= DW2 bone + 1) <- MetalGreymon bone: pelvis, chest, neck, head, jaw; the black upper arms (6-8, 9-11) <- its arms; the white wings (18, 19) <- its wings; legs; tail. The pale lower arms (12-17) and the red wings (20, 21) are not mapped: DW2's own idle moves them (layer)",
+  "map": {
+    "1": 18,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 7,
+    "7": 8,
+    "8": 9,
+    "9": 11,
+    "10": 12,
+    "11": 13,
+    "18": 15,
+    "19": 17,
+    "22": 23,
+    "23": 24,
+    "24": 25,
+    "25": 27,
+    "26": 28,
+    "27": 29,
+    "28": 19,
+    "29": 20,
+    "30": 21
+  },
+  "hips": [
+    1,
+    1,
+    0.8
+  ],
+  "root_scale": 0.8,
+  "retarget": [
+    "0x00",
+    "0x01",
+    "0x02",
+    "0x03",
+    "0x04",
+    "0x05",
+    "0x07",
+    "0x08",
+    "0x09",
+    "0x0a",
+    "0x0b",
+    "0x0c",
+    "0x0d",
+    "0x0e",
+    "0x0f",
+    "0x10",
+    "0x11",
+    "0x12",
+    "0x13",
+    "0x15",
+    "0x16",
+    "0x17",
+    "0x18",
+    "0x19",
+    "0x1b",
+    "0x22",
+    "0x23",
+    "0x24",
+    "0x25",
+    "0x2a",
+    "0x2f",
+    "0x32",
+    "0x33"
+  ],
+  "tol": 11,
+  "tol_clips": 8,
+  "concat": {
+    "C012": [
+      "C0",
+      "C1",
+      "C2"
+    ]
+  },
+  "_clips": "DW2's battle animations (ref/DW2-PC fighter.c): A0 idle, B0 hit, C0-C2 knocked down (fall, bounce, settle), J0 getting up, F0/G0/H0 the three technique casts, I0 the second action. DW2 has no victory: 0x2A stays MetalGreymon's",
+  "clips": {
+    "0x21": {
+      "anim": "A0"
+    },
+    "0x28": {
+      "anim": "B0"
+    },
+    "0x29": {
+      "anim": "B0"
+    },
+    "0x2b": {
+      "anim": "C012",
+      "eyes": "closed"
+    },
+    "0x2c": {
+      "anim": "J0"
+    },
+    "0x2e": {
+      "anim": "F0",
+      "settle": 4
+    },
+    "0x30": {
+      "anim": "G0",
+      "speed": 0.75,
+      "settle": 6
+    },
+    "0x31": {
+      "anim": "I0",
+      "start": 7,
+      "end": 40,
+      "speed": 1.1,
+      "settle": 3
+    },
+    "0x34": {
+      "anim": "H0",
+      "settle": 4
+    }
+  },
+  "_eyes": "MetalGreymon's eye frames (texture moves to its eye at (4, 0)): x 22 open, 18 half, 14 closed, 10 angry (no such art in DW2: open)",
+  "eyes": {
+    "src": {
+      "22,0": "open",
+      "18,0": "half",
+      "14,0": "closed",
+      "10,0": "open"
+    }
+  },
+  "layer": {
+    "anim": "A0",
+    "bones": "unmapped",
+    "slots": [
+      "0x00",
+      "0x01",
+      "0x02",
+      "0x03",
+      "0x04",
+      "0x0e",
+      "0x0f",
+      "0x10",
+      "0x11",
+      "0x12",
+      "0x13",
+      "0x17",
+      "0x1b",
+      "0x22",
+      "0x23",
+      "0x24"
+    ]
+  },
+  "_effectOrigins": "MetalGreymon's origins on Kimeramon's DW2 skeleton (bone-local, 400 units): its head (4, and the neck 3) -> Kimeramon's head (4): Heat Laser 40 units in front of the snout, the rest at the mouth; its right hand (9) -> the black right claw (8); its hips (18) -> the pelvis (1) (import_batch.effect_origins). Snout, mouth and claw measured on the mesh",
+  "effectOrigins": [
+    [
+      4,
+      260,
+      30,
+      0,
+      4,
+      -6,
+      9,
+      -179
+    ],
+    [
+      4,
+      "any",
+      0,
+      0,
+      4,
+      -1,
+      3,
+      -93
+    ],
+    [
+      3,
+      "any",
+      0,
+      0,
+      4,
+      -1,
+      3,
+      -93
+    ],
+    [
+      9,
+      "any",
+      0,
+      0,
+      8,
+      -6,
+      -48,
+      6
+    ],
+    [
+      18,
+      30,
+      0,
+      19,
+      1,
+      -11,
+      5,
+      20
+    ]
+  ]
+}

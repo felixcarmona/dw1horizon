@@ -1,0 +1,112 @@
+// Readable form of script 42 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 42 {
+    npc sandyanmamon0 = 5;
+    npc sandyanmamon1 = 6;
+    npc weedmon = 7;
+    npc gotsumon3 = 8;
+    npc gotsumon4 = 9;
+    npc gururumon = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 79, 63);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 48, 37);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 0) {
+            spawn_item(item("Deluxmushrm"), 48, 51);
+        }
+    }
+
+    on talk(sandyanmamon0) replace {    // section 5
+        say(sandyanmamon0, text("s042.sec5.u0"));
+        battle();
+        recruit(species("SandYanmamon"));
+    }
+
+    on talk(sandyanmamon1) replace {    // section 6
+        say(sandyanmamon1, text("s042.sec6.u0"));
+        battle();
+        recruit(species("SandYanmamon"));
+    }
+
+    on talk(weedmon) replace {    // section 7
+        say(weedmon, text("s042.sec7.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(gotsumon3) replace {    // section 8
+        say(gotsumon3, text("s042.sec8.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(gotsumon4) replace {    // section 9
+        say(gotsumon4, text("s042.sec9.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(gururumon) replace {    // section 10
+        say(gururumon, text("s042.sec10.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on step(0) replace {    // section 51
+        store_digimon_type(partner_type);
+        if (partner_type in [6, 7, 12, 19, 20]) {
+        } else if (partner_type in [21, 28, 33, 37, 41]) {
+        } else if (partner_type != 45 && partner_type != 31 && partner_type != 51 && partner_type != 54 && partner_type != 55) {
+            animate(partner, 43);
+            animate(tamer, 18);
+            wait(2s);
+            animate(partner, 44);
+            wait(2s);
+            animate(partner, anim.idle);
+            say(tamer, text("s042.sec51.u5"));
+            engine.arg = 253;
+            call_routine(routine("loop_once"));
+            say(tamer, text("s042.sec51.u6"));
+            entity_set_rotation(tamer, 2002);
+            wait(1s);
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s042.sec51.u7"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s042.sec51.u8"));
+            say(tamer, text("s042.sec51.u9"));
+            return;
+        }
+        animate(tamer, 18);
+        wait(1s);
+        say(tamer, text("s042.sec51.u0"));
+        engine.arg = 253;
+        call_routine(routine("loop_once"));
+        say(tamer, text("s042.sec51.u1"));
+        face(tamer, partner);
+        wait(1s);
+        face(partner, tamer);
+        animate(tamer, 19);
+        wait(15);
+        say(tamer, text("s042.sec51.u2"));
+        animate(tamer, anim.idle);
+        say(tamer, text("s042.sec51.u3"));
+        entity_set_rotation(tamer, 2002);
+        wait(1s);
+        say(tamer, text("s042.sec51.u4"));
+    }
+}

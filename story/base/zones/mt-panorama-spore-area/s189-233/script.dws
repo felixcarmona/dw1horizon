@@ -1,0 +1,106 @@
+// Readable form of script 189 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 189 {
+    npc unimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 53, 64);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 56, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 60, 59);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 63, 55);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Happymushrm"), 56, 65);
+        }
+        if (!is_recruited(species("Unimon")) && centar_clinic_intro_seen) {
+            animate(unimon, 28);
+        }
+    }
+
+    on talk(unimon) replace {    // section 5
+        engine.cutscene = true;
+        if (is_recruited(species("Poyomon"))) {
+            sound(8, 9);
+            say(unimon, text("s189.sec5.u0"));
+            say(tamer, text("s189.sec5.u1"));
+        } else {
+            sound(8, 9);
+            say(unimon, text("s189.sec5.u2"));
+            say(tamer, text("s189.sec5.u3"));
+            say(unimon, text("s189.sec5.u4"));
+            say(tamer, text("s189.sec5.u5"));
+        }
+        animate(tamer, 4);    // slot 4: the tamer after the partner refused an item (partner.c:507)
+        wait(10);
+        engine.picker_mode = true;
+        call_routine(routine("choose_item"));
+        if (engine.picker_mode) {
+            say(tamer, text("s189.sec5.u6"));
+        } else {
+            if (engine.arg in [item("sm.recovery"), item("med.recovery"), item("lrg.recovery"), item("sup.recovery")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else if (engine.arg in [item("Double flop"), item("Omnipotent"), item("Bandage"), item("Medicine")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else {
+                say(tamer, text("s189.sec5.u7"));
+                say(tamer, text("s189.sec5.u16"));
+                sound(8, 9);
+                say(unimon, text("s189.sec5.u17"));
+                recruit(species("Poyomon"));
+                return;
+            }
+            animate(tamer, anim.offer_item);
+            wait(1s);
+            animate(tamer, anim.idle);
+            wait(5);
+            sound(8, 9);
+            say(unimon, text("s189.sec5.u8"));
+            animate(unimon, 29);
+            await unimon;
+            say(tamer, text("s189.sec5.u9"));
+            say(unimon, text("s189.sec5.u10"));
+            say(tamer, text("s189.sec5.u11"));
+            say(unimon, text("s189.sec5.u12"));
+            say(tamer, text("s189.sec5.u13"));
+            sound(8, 9);
+            say(unimon, text("s189.sec5.u14"));
+            loop {
+                run(unimon, -93, -1821);
+                unless (glances < 3) break;
+                glances += 1;
+                sound(8, 0);
+                wait(1s);
+                face(tamer, unimon);
+                face(partner, unimon);
+            }
+            await unimon;
+            join_city(unimon, species("Unimon"), 8, 8, text("s189.sec5.u15"), prosperity: 2);
+            return;
+        }
+        say(tamer, text("s189.sec5.u16"));
+        sound(8, 9);
+        say(unimon, text("s189.sec5.u17"));
+        recruit(species("Poyomon"));
+        return;
+    }
+}

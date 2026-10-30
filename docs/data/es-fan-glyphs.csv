@@ -1,0 +1,392 @@
+code,text,kind,note
+8141,",",punct,the Japanese comma slot
+8145,.,punct,the Japanese middle dot slot
+8146,:,punct,
+8148,?,punct,
+8149,!,punct,
+815B,-,punct,"the long-vowel mark slot, drawn low"
+815E,/,punct,
+8163,…,punct,
+8169,(,punct,
+816A,),punct,
+816F,B,symbol,"a bold B; 816F 8170 together draw Bit, the currency sign"
+8170,it,symbol,a bold it; see 816F
+8175,「,punct,
+8176,」,punct,
+8177,«,punct,
+8178,»,punct,
+817B,+,punct,
+817C,-,punct,minus
+817E,×,symbol,
+8193,%,punct,
+8195,&,punct,
+81A8,→,symbol,filled arrow
+81F4,♪,symbol,
+824F,0,letter,redrawn digit
+8250,1,letter,redrawn digit
+8251,2,letter,redrawn digit
+8252,3,letter,redrawn digit
+8253,4,letter,redrawn digit
+8254,5,letter,redrawn digit
+8255,6,letter,redrawn digit
+8256,7,letter,redrawn digit
+8257,8,letter,redrawn digit
+8258,9,letter,redrawn digit
+8260,A,letter,redrawn letter
+8261,B,letter,redrawn letter
+8262,C,letter,redrawn letter
+8263,D,letter,redrawn letter
+8264,E,letter,redrawn letter
+8265,F,letter,redrawn letter
+8266,G,letter,redrawn letter
+8267,H,letter,redrawn letter
+8268,I,letter,redrawn letter
+8269,J,letter,redrawn letter
+826A,K,letter,redrawn letter
+826B,L,letter,redrawn letter
+826C,M,letter,redrawn letter
+826D,N,letter,redrawn letter
+826E,O,letter,redrawn letter
+826F,P,letter,redrawn letter
+8270,Q,letter,redrawn letter
+8271,R,letter,redrawn letter
+8272,S,letter,redrawn letter
+8273,T,letter,redrawn letter
+8274,U,letter,redrawn letter
+8275,V,letter,redrawn letter
+8276,W,letter,redrawn letter
+8277,X,letter,redrawn letter
+8278,Y,letter,redrawn letter
+8279,Z,letter,redrawn letter
+8281,a,letter,redrawn letter
+8282,b,letter,redrawn letter
+8283,c,letter,redrawn letter
+8284,d,letter,redrawn letter
+8285,e,letter,redrawn letter
+8286,f,letter,added (the lowercase letters were moved to these slots)
+8287,g,letter,redrawn letter
+8288,h,letter,redrawn letter
+8289,i,letter,redrawn letter
+828A,j,letter,redrawn letter
+828B,k,letter,redrawn letter
+828C,l,letter,redrawn letter
+828D,m,letter,redrawn letter
+828E,n,letter,redrawn letter
+828F,o,letter,redrawn letter
+8290,p,letter,added (the lowercase letters were moved to these slots)
+8291,q,letter,added (the lowercase letters were moved to these slots)
+8292,r,letter,added (the lowercase letters were moved to these slots)
+8293,s,letter,added (the lowercase letters were moved to these slots)
+8294,t,letter,redrawn letter
+8295,u,letter,added (the lowercase letters were moved to these slots)
+8296,v,letter,added (the lowercase letters were moved to these slots)
+8297,w,letter,added (the lowercase letters were moved to these slots)
+8298,x,letter,added (the lowercase letters were moved to these slots)
+8299,y,letter,added (the lowercase letters were moved to these slots)
+829A,z,letter,added (the lowercase letters were moved to these slots)
+82A0,¿,accent,
+82A2,¡,accent,
+82A3,ü,accent,
+8347,é,accent,
+8367,á,accent,
+8369,í,accent,
+836A,ó,accent,
+836B,ú,accent,
+836C,ñ,accent,
+8377,AR,tile,
+8378,BO,tile,
+8379,RR,tile,
+837A,Á,accent,
+837B,Í,accent,
+837C,Ó,accent,
+837D,Ú,accent,
+8380,É,accent,
+8381,Ñ,accent,
+88F3,0,letter,a second set of digits on kanji slots
+88F6,1,letter,a second set of digits on kanji slots
+88F8,2,letter,a second set of digits on kanji slots
+8940,3,letter,a second set of digits on kanji slots
+8942,4,letter,a second set of digits on kanji slots
+8945,○,button,the Japanese font drew it for 8281
+8946,5,letter,a second set of digits on kanji slots
+8948,6,letter,a second set of digits on kanji slots
+894A,7,letter,a second set of digits on kanji slots
+895E,8,letter,a second set of digits on kanji slots
+895F,9,letter,a second set of digits on kanji slots
+8F4B,×,button,the Japanese font drew it for 8282
+91AC,ec,tile,
+91AE,no,tile,
+91AF,ici,tile,
+91B0,ld,tile,
+91B1,Ma,tile,
+91B6,na,tile,
+91BC,pli,tile,
+91BD,ci,tile,
+91BE,Dis,tile,
+91C2,Ta,tile,
+91CC,ón,tile,
+91CE,←,symbol,filled arrow
+91D1,→,symbol,filled arrow
+91D2,↓,symbol,filled arrow
+91D4,↑,symbol,filled arrow
+91E0,jl-,tile,"unclear: draws a j-like hook, a bar and a dash; see 91E3"
+91E3,Dll,tile,unclear: draws D and two bars; used with 91E0 as a column heading
+91E4,BI,tile,
+91E5,HU,tile,
+91E6,BE,tile,
+91E8,AL,tile,
+9242,DI,tile,
+9245,CA,tile,
+924E,ME,tile,
+9250,HO,tile,
+9254,FR,tile,
+925B,AG,tile,
+9263,FU,tile,
+9266,VO,tile,
+9269,V4,tile,
+926B,V3,tile,
+926C,V2,tile,
+926D,V1,tile,
+926E,se,tile,
+9275,un,tile,
+9278,lt,tile,
+9283,di,tile,
+9285,ea,tile,
+9286,ab,tile,
+9287,ida!,tile,not used by any string found
+9288,end,tile,
+928B,¡Apr,tile,
+928D,a!,tile,
+928E,id,tile,"also draws one stray pixel, the left edge of the a completed in 928D"
+92A3,nd,tile,
+92A4,re,tile,
+92A7,¡Ap,tile,
+92A9,0 DíA,tile,a 0 and D í A set in a staircase; follows 92AC (AÑO)
+92AC,AÑO,tile,
+92B2,y,tile,
+92B4,P,tile,a capital P drawn right of centre
+92B7, l,tile,an l centred in the cell
+92B9,ct,tile,
+92BC,rfe,tile,
+92BF,Pe,tile,
+92C0,iv,tile,
+92C7,o,tile,
+92C9,ev,tile,
+92CA, ,tile,
+92DC,ea,tile,
+92DE,Lín,tile,
+92E2,ad,tile,
+92E8,En,tile,
+92EA,cr,tile,
+92ED,im,tile,
+9347,re,tile,
+9349,mb,tile,
+934A,No,tile,
+9353,AR,tile,
+9356,CEL,tile,
+9357,N,tile,
+9358,D,tile,
+935D,ION,tile,
+935F,ECC,tile,
+9360,SEL,tile,
+9361,s C,tile,an s and a C drawn close together
+9364,d,tile,
+9366,Me,tile,
+936E,io,tile,
+936F,ot,tile,
+9372,eg,tile,
+9377,Pa,tile,
+9378,el,tile,
+9379,aP,tile,
+937A,uP,tile,
+937C,on,tile,
+9381,NC,tile,
+9387,VE,tile,
+938A,ar,tile,
+938C,en,tile,
+9396,Ord,tile,
+939A,ov,tile,
+93A6,era,tile,
+93AA,rt,tile,
+93AC,Ca,tile,
+93AD,ne,tile,
+93AE,Di,tile,
+93AF,SA,tile,
+93B1,U,tile,
+93B4,PA,tile,
+93B9,,tile,"a two-row block of small capitals: a word or title of the fan translation drawn as one picture; its reading is text, left out"
+93BE,,tile,"a two-row block of small capitals: a word or title of the fan translation drawn as one picture; its reading is text, left out"
+93BF,,tile,"a two-row block of small capitals: a word or title of the fan translation drawn as one picture; its reading is text, left out"
+93C1,dio,tile,
+93C5,é,tile,"é, with the end of the bar of the T of 93C7"
+93C7, T,tile,a T drawn right of centre; its bar ends in 93C5
+93E0,ü,accent,drawn right of centre
+93E4,da,tile,
+93EC,as,tile,
+93EF,an,tile,
+93F0,e,tile,
+93F7,dl,tile,
+93F8,eu,tile,
+93FA,rs,tile,
+93FC,Ho,tile,
+9443,d',tile,
+9446,az,tile,
+944D,La,tile,
+944E,gu,tile,
+944F,ry,tile,
+9452,ct,tile,
+9459,bi,tile,
+945C,ju,tile,
+9465,ca,tile,
+9468,es,tile,
+9470,os,tile,
+9472,ru,tile,
+9473,cu,tile,
+9474, a ,tile,"a narrow a centred in the cell, read with a space on each side"
+9477,ji,tile,
+947A,jo,tile,
+947B,ia,tile,
+9483,iu,tile,
+9484,gi,tile,
+9492,fi,tile,
+94A0,ai,tile,
+94A8,O ,tile,
+94AD,AD,tile,
+94BB,GR,tile,
+94BC,pa,tile,
+94BD,Co,tile,
+94C2,ja,tile,
+94D3,et,tile,
+94D4,ca,tile,
+94DB,le,tile,
+94DE,ue,tile,
+94E6,fu,tile,
+94E9,nf,tile,
+94EC,ic,tile,
+94EF,△,button,the Japanese font drew it for 8284
+94F2,at,tile,
+94F5,gu,tile,
+954B,qu,tile,
+9558,ul,tile,
+955C,ro,tile,
+955D,rb,tile,
+9561,fr,tile,
+9569,je,tile,
+9573,na,tile,
+9576,a,tile,
+957A,gr,tile,
+957E,En,tile,
+9581,a ,tile,
+9589,n,tile,"the right half of an a (from 9590), and n"
+9590,ba,tile,"the right half of an a, b, and the left half of an a"
+9594,Sa,tile,
+9597,n,tile,
+959C,ñó,tile,
+959D,a,tile,"the right half of the C of 959F, and an a"
+959F, C,tile,"the end of the n of 95A0, a gap and the left half of a C"
+95A0,an,tile,
+95A8,Gr,tile,
+95AA,ie,tile,
+95AC,te,tile,
+95B6,tr,tile,
+95B7,ig,tile,
+95BA,TR,tile,
+95BD,or,tile,
+95C2,ar,tile,
+95CA,sí,tile,
+95CF,is,tile,
+95D3,si,tile,
+95D4,ta,tile,
+95D6,to,tile,
+95DB,ra,tile,
+95DF,el,tile,
+95E0,er,tile,
+95E6,re,tile,
+95F1,vi,tile,
+95F3,ur,tile,
+95FA,lo,tile,
+95FB,la,tile,
+9640,ir,tile,
+9643,,tile,"a two-row block of small capitals (cells 9643 964B 9659 965C): a word or title of the fan translation drawn as one picture; its reading is text, left out"
+964B,,tile,second cell of the two-row block of 9643 (RIB over MB)
+9659,,tile,third cell of the two-row block of 9643 (E over RE)
+965C,,tile,fourth cell of the two-row block of 9643 (UN over nothing)
+965F,ci,tile,
+9660,on,tile,
+9664,a,tile,
+9668,Re,tile,
+966B,st,tile,
+966C,a,tile,
+967B,ur,tile,
+9687,□,button,the Japanese font drew it for 8283
+9688,en,tile,
+9696,a,tile,the right half of an a (its left half is in 96A1)
+969C,Me,tile,
+969E,jo,tile,
+96A1,r,tile,"r, and the left half of an a (completed in 9696)"
+96A2,in,tile,
+96A6,il,tile,
+96A7,ll,tile,
+96AD,ol,tile,
+96B0,Fr,tile,
+96B2,ut,tile,
+96B3,a ,tile,the a is at the left; the rest of the cell is blank
+96B6,la,tile,
+96BC,rr,tile,
+96BD,e ,tile,the e is at the left; the rest of the cell is blank
+96BE,Ca,tile,
+96C0,rn,tile,
+96C5,de,tile,
+96CA,IN,tile,
+96CD,T,tile,
+96D8,VE,tile,
+96DA,L,tile,
+96DF,DE,tile,
+96E2,F,tile,
+96E9,Q,tile,
+96EC,AT,tile,
+96F0,CO,tile,
+96F1,MID,tile,
+96F2,A,tile,
+96F3,N,tile,
+96F4,CIÓ,tile,
+96FB,LU,tile,
+9744,DII,tile,draws D I I; no G is drawn although the following tiles continue as if it read DIGI
+9745,E,tile,
+9746,VO,tile,
+974C,Mo,tile,
+9752,do,tile,
+9754,ki,tile,
+9756,ut,tile,
+975C,,tile,"a two-row block of small capitals (cells 975C 975D): a word or title of the fan translation drawn as one picture; its reading is text, left out"
+975D,,tile,second cell of the two-row block of 975C
+975E,yr,tile,
+9761,,tile,"a two-row block of small capitals (cells 9761 9763): a word or title of the fan translation drawn as one picture; its reading is text, left out"
+9763,,tile,second cell of the two-row block of 9761
+976C,Me,tile,
+976E,ga,tile,
+9770,l,tile,
+9774,Sk,tile,
+9776,ul,tile,
+977B,ti,tile,
+977E,it,tile,
+9783,Fl,tile,
+9788,li,tile,
+978A,id,tile,
+978E,ch,tile,
+9790,dr,tile,
+9798,lu,tile,
+979D,ri,tile,
+97A0,Me,tile,
+97A2,tal,tile,
+97A3,,tile,"a two-row block of small capitals: a word or title of the fan translation drawn as one picture; its reading is text, left out"
+97A6,Cl,tile,
+97A7,ni,tile,
+97AC,ª,punct,
+97B3,º,punct,
+97B7,',punct,
+97B9,"""",punct,
+97BF,Ll,tile,
+97C3,al,tile,
+9862,G,symbol,a large bold G: the Japanese font drew it for 8287; no string found uses it
+9872,☺,symbol,a smiley face: the Japanese font drew it for 8285; no string found uses it

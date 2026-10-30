@@ -1,0 +1,120 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 126,
+ "type": 349,
+ "name": "Brachiomon",
+ "source": {
+  "type": 36,
+  "mmd": "extracted/CHDAT/MMD1/CENT.MMD"
+ },
+ "map": {
+  "1": 14,
+  "2": 11,
+  "3": 10,
+  "4": 3,
+  "5": 5,
+  "6": 4,
+  "9": 12,
+  "11": 15,
+  "13": 22,
+  "15": 26,
+  "17": 21,
+  "18": 25
+ },
+ "hips": [
+  1,
+  1,
+  1.158
+ ],
+ "root_scale": 1.158,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 30,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 30,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 116,
+   "end": 206,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 63,
+   "end": 143,
+   "hz": 0.3,
+   "rise": 250
+  },
+  "0x38": {
+   "anim": "anim_03",
+   "start": 118,
+   "end": 214,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 49,
+   "end": 96,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x32": {
+   "anim": "anim_02",
+   "start": 147,
+   "end": 252,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x31",
+  "0x35",
+  "0x36",
+  "0x37"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

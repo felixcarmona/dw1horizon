@@ -1,0 +1,404 @@
+{
+  "screen": 312,
+  "method": "SAM ViT-H",
+  "checkpoint": "sam_vit_h_4b8939.pth",
+  "records": [
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        154,
+        215,
+        215,
+        290
+      ],
+      "pos": [
+        [
+          184,
+          257
+        ],
+        [
+          165,
+          227
+        ],
+        [
+          175,
+          223
+        ],
+        [
+          204,
+          228
+        ],
+        [
+          193,
+          223
+        ]
+      ],
+      "neg": [
+        [
+          135,
+          245
+        ],
+        [
+          222,
+          245
+        ],
+        [
+          178,
+          297
+        ]
+      ],
+      "scores": [
+        0.9396692514419556,
+        0.9657313823699951,
+        0.9730805158615112
+      ],
+      "selected": 2,
+      "at": [
+        144,
+        199
+      ],
+      "bounds": [
+        144,
+        199,
+        212,
+        287
+      ],
+      "area": 4822,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "back-left-console",
+      "png": "312-back-left-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        549,
+        217,
+        630,
+        290
+      ],
+      "pos": [
+        [
+          589,
+          253
+        ],
+        [
+          555,
+          228
+        ]
+      ],
+      "neg": [
+        [
+          546,
+          245
+        ],
+        [
+          635,
+          245
+        ],
+        [
+          590,
+          297
+        ]
+      ],
+      "scores": [
+        0.9708681702613831,
+        0.976192831993103,
+        0.9772343635559082
+      ],
+      "selected": 2,
+      "at": [
+        556,
+        202
+      ],
+      "bounds": [
+        556,
+        202,
+        625,
+        287
+      ],
+      "area": 4778,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "back-right-console",
+      "png": "312-back-right-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        78,
+        305,
+        177,
+        406
+      ],
+      "pos": [
+        [
+          129,
+          353
+        ]
+      ],
+      "neg": [
+        [
+          75,
+          336
+        ],
+        [
+          186,
+          336
+        ],
+        [
+          130,
+          402
+        ]
+      ],
+      "scores": [
+        0.9628704786300659,
+        0.9718464612960815,
+        0.983574390411377
+      ],
+      "selected": 2,
+      "at": [
+        85,
+        277
+      ],
+      "bounds": [
+        85,
+        277,
+        176,
+        392
+      ],
+      "area": 8545,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "middle-left-console",
+      "png": "312-middle-left-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        587,
+        303,
+        688,
+        410
+      ],
+      "pos": [
+        [
+          637,
+          354
+        ]
+      ],
+      "neg": [
+        [
+          582,
+          335
+        ],
+        [
+          692,
+          335
+        ],
+        [
+          637,
+          401
+        ]
+      ],
+      "scores": [
+        0.9741845726966858,
+        0.983756422996521,
+        0.9870419502258301
+      ],
+      "selected": 2,
+      "at": [
+        592,
+        277
+      ],
+      "bounds": [
+        592,
+        277,
+        683,
+        391
+      ],
+      "area": 8075,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "middle-right-console",
+      "png": "312-middle-right-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        0,
+        421,
+        95,
+        598
+      ],
+      "pos": [
+        [
+          15,
+          509
+        ]
+      ],
+      "neg": [
+        [
+          124,
+          491
+        ],
+        [
+          57,
+          584
+        ]
+      ],
+      "scores": [
+        0.924048900604248,
+        0.951602578163147,
+        0.9825949668884277
+      ],
+      "selected": 2,
+      "at": [
+        0,
+        407
+      ],
+      "bounds": [
+        0,
+        407,
+        123,
+        574
+      ],
+      "area": 17857,
+      "parts": [],
+      "components": null,
+      "fill_holes": false,
+      "piece": "front-left-console",
+      "png": "312-front-left-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    },
+    {
+      "source": "story/mods/what-the-island-forgot/art/full/infinity-engine-2304x1856.png",
+      "crop": [
+        38,
+        0,
+        2227,
+        1856
+      ],
+      "box": [
+        636,
+        415,
+        768,
+        599
+      ],
+      "pos": [
+        [
+          715,
+          514
+        ],
+        [
+          650,
+          443
+        ],
+        [
+          658,
+          436
+        ],
+        [
+          642,
+          450
+        ]
+      ],
+      "neg": [
+        [
+          628,
+          491
+        ],
+        [
+          703,
+          583
+        ]
+      ],
+      "scores": [
+        0.9579308032989502,
+        0.9771751165390015,
+        0.9765098094940186
+      ],
+      "selected": 1,
+      "at": [
+        638,
+        409
+      ],
+      "bounds": [
+        638,
+        409,
+        768,
+        572
+      ],
+      "area": 18420,
+      "parts": [
+        {
+          "box": [
+            660,
+            414,
+            760,
+            475
+          ],
+          "pos": [
+            [
+              707,
+              442
+            ]
+          ],
+          "neg": [
+            [
+              653,
+              470
+            ],
+            [
+              751,
+              484
+            ]
+          ]
+        }
+      ],
+      "components": null,
+      "fill_holes": false,
+      "piece": "front-right-console",
+      "png": "312-front-right-console.png",
+      "source_sha1": "13f160f6d41b62e3a31f1b299bc784d1bc947691"
+    }
+  ]
+}

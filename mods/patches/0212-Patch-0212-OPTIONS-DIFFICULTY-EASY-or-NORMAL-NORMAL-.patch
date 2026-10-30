@@ -1,0 +1,282 @@
+From 1609b2edf8bc4bcc03bcdc47a3801745421b6809 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 10:39:45 +0000
+Subject: [PATCH] Patch 0212: OPTIONS' DIFFICULTY, EASY or NORMAL (NORMAL by
+ default). EASY doubles every hit, finisher and block chip the partner deals
+ and halves (rounded up) every one it takes, poison included, in the wild
+ battles and the tournaments: MOD_DIFF_DAMAGE (mod_options.h) in
+ BTL_calculateDamage and STD_calculateDamage before their minimum and cap, and
+ in both poison ticks. The stats and the saved HP are not touched; the VS mode
+ (two players) is not changed. Save byte 10 of SAVE_TAG_OPTIONS (the header's
+ copy holds one more). The OPTIONS text area holds two values a row
+ (MOD_OPT_VALUE_U): 11 labels and 12 values would pass its 256 rows
+
+---
+ include/dw/mod_options.h | 16 ++++++++++++++
+ src/btl/battle_main.c    |  3 +++
+ src/main/main_menu.c     | 46 +++++++++++++++++++++++++++-------------
+ src/main/mod_options.c   |  4 ++++
+ src/std/std_main.c       |  3 +++
+ text/main/main_menu.yaml |  9 ++++++++
+ 6 files changed, 66 insertions(+), 15 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index e1bb48e7..4d7128bb 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -72,4 +72,20 @@ char *modStoryFile(char *name);
+ int32_t modStoryChoice(void);
+ void modSetStory(int32_t extended);
+ 
++/*
++ * MOD (difficulty): DIFFICULTY (docs/mods/options.md). EASY: in the wild battles and the tournaments (the BTL and STD
++ * overlays) every hit, finisher and block chip the partner deals is doubled and every one it takes, poison included, is
++ * halved (rounded up, so a hit still does at least 1); the stats and the saved HP are not touched, so NORMAL is the original
++ * game again at once. The VS mode is two players and stays as it is.
++ */
++#define MOD_DIFF_NORMAL	0
++#define MOD_DIFF_EASY	1
++extern int32_t MOD_OPT_DIFFICULTY; /* DIFFICULTY: MOD_DIFF_EASY or MOD_DIFF_NORMAL */
++/* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
++#define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
++	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
++	 : (Entity *)(attacker) == (partner) ? (dmg) * 2                                                                  \
++	 : (Entity *)(defender) == (partner) ? ((dmg) + 1) / 2                                                               \
++					     : (dmg))
++
+ #endif
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 46345ab7..fe19c751 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -4,6 +4,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/mod_battle.h>
++#include <dw/mod_options.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/attack_object.h>
+ #include <dw/btl.h>
+@@ -2045,6 +2046,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		}
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
++	dmg = MOD_DIFF_DAMAGE(attacker, defender, ENTITY_TABLE[1], dmg); /* MOD (difficulty): EASY, x2 dealt, /2 taken */
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+ 		dmg = BM(DMG_MIN);
+ 	}
+@@ -2854,6 +2856,7 @@ void BTL_tickStatusEffects(void)
+ 			if (fighter->poisonTimer == 0) {
+ 				fighter->poisonTimer = BM(POISON_FRAMES);
+ 				dmg = stats->base.hp * (randomLimit(BMS(POISON_SPAN)) + BM(POISON_MIN)) / 100;
++				dmg = MOD_DIFF_DAMAGE(NULL, entity, ENTITY_TABLE[1], dmg); /* MOD (difficulty) */
+ 				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 				if (i != 0) {
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index c3ecc0d4..4244ef0c 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -259,17 +259,19 @@ int32_t MEMORY_CARD_ERROR;
+ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+-#define MOD_OPT_BYTES	10 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes) */
++#define MOD_OPT_BYTES	11 /* MOD (options): SAVE_TAG_OPTIONS's bytes (modOptionBytes); the header's copy (modTitleOptions)
++			     * holds 12 after its 4: one more option fits there */
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #define MOD_OPT_ROW_STORY	5 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+-#define MOD_OPT_ROW_FPS	6
++#define MOD_OPT_ROW_DIFF	6 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
++#define MOD_OPT_ROW_FPS	7
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	10 /* MOD (options): and FONT, in a build with both fonts */
+-#define MOD_OPT_ROW_FONT	7
+-#define MOD_OPT_ROW_LANG	8
++#define MOD_OPT_ROWS	11 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROW_FONT	8
++#define MOD_OPT_ROW_LANG	9
+ #else
+-#define MOD_OPT_ROWS	9
+-#define MOD_OPT_ROW_LANG	7
++#define MOD_OPT_ROWS	10
++#define MOD_OPT_ROW_LANG	8
+ #endif
+ #define MOD_OPT_ROW_SIGNS	(MOD_OPT_ROW_LANG + 1) /* MOD (language): LANGUAGE and MAP SIGNS, the last two rows */
+ static void renderOptionsMenu(void);
+@@ -4658,6 +4660,7 @@ static void modOptionBytes(uint8_t *d)
+ 	d[7] = MOD_LANG; /* MOD (language) */
+ 	d[8] = MOD_OPT_SIGNS;
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
++	d[10] = MOD_OPT_DIFFICULTY; /* MOD (difficulty) */
+ }
+ 
+ /* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
+@@ -4698,6 +4701,9 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 10) { /* MOD (story) */
+ 		modSetStory(d[9]);
+ 	}
++	if (len >= 11) { /* MOD (difficulty) */
++		MOD_OPT_DIFFICULTY = d[10] == MOD_DIFF_EASY ? MOD_DIFF_EASY : MOD_DIFF_NORMAL;
++	}
+ }
+ 
+ /*
+@@ -5758,7 +5764,8 @@ void renderInitialMenu(void)
+  * and 61 for "20 FPS"): a row then shows its chosen value only, as the original game's own settings do.
+  */
+ #define MOD_OPT_VALUES	3	/* the most values a row has */
+-#define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels, one row each */
++#define MOD_OPT_VALUE_Y	(MOD_OPT_ROWS * 0xC)	/* the values' rows in the text area: under the labels, two values a row */
++#define MOD_OPT_VALUE_U	0x80	/* the second value of a row (the area's 256 rows hold 11 labels and 12 values no other way) */
+ #define MOD_OPT_GAP	8	/* pixels between the labels' column and the values', and between two values */
+ #define MOD_OPT_MARGIN	8	/* the box's frame to its text */
+ 
+@@ -5769,6 +5776,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_NEWDIGI, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_STORY, MOD_OPT_STR_OFF, MOD_OPT_STR_ON }, /* MOD (story) */
++	{ MOD_OPT_STR_DIFF, MOD_OPT_STR_EASY, MOD_OPT_STR_NORMAL }, /* MOD (difficulty) */
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+@@ -5776,7 +5784,8 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH }, /* MOD (language) */
+ 	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
+ };
+-/* the text area row of each value: a value two rows share (OFF, ON, ORIGINAL) is drawn once (drawOptionsText) */
++/* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
++ * drawn once (drawOptionsText) */
+ static int16_t MOD_OPT_V[MOD_OPT_ROWS][MOD_OPT_VALUES];
+ 
+ /* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
+@@ -5807,6 +5816,8 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_NEW_DIGIMON != 0;
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		return MOD_OPT_STORY != 0;
++	case MOD_OPT_ROW_DIFF: /* MOD (difficulty): EASY, NORMAL */
++		return MOD_OPT_DIFFICULTY == MOD_DIFF_EASY ? 0 : 1;
+ #if FONT_SWITCH
+ 	case MOD_OPT_ROW_FONT: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+@@ -5845,6 +5856,9 @@ static void modSetOption(int32_t row, int32_t value)
+ 	case MOD_OPT_ROW_STORY: /* MOD (story) */
+ 		modSetStory(value);
+ 		break;
++	case MOD_OPT_ROW_DIFF: /* MOD (difficulty) */
++		MOD_OPT_DIFFICULTY = value == 0 ? MOD_DIFF_EASY : MOD_DIFF_NORMAL;
++		break;
+ 	case MOD_OPT_ROW_FPS:
+ 		modSetFrameRate(value ? 60 : 20);
+ 		break;
+@@ -5879,7 +5893,7 @@ static void drawOptionsText(void)
+ 
+ 	MOD_OPT_LABEL_W = 0;
+ 	MOD_OPT_VALUE_W = 0;
+-	y = MOD_OPT_VALUE_Y;
++	y = MOD_OPT_VALUE_Y << 1; /* the value's place times two, its half in the low bit */
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+ 		for (k = 0; k <= modOptionCount(r); k++) {
+ 			if (k > 0) { /* MOD (language): a value an earlier row has is drawn once */
+@@ -5890,9 +5904,9 @@ static void drawOptionsText(void)
+ 						}
+ 					}
+ 				}
+-				MOD_OPT_V[r][k - 1] = y;
+-				drawString(MOD_OPT_TEXT[r][k], 0, y);
+-				y += 0xC;
++				MOD_OPT_V[r][k - 1] = (y >> 1) + ((y & 1) << 8);
++				drawString(MOD_OPT_TEXT[r][k], (y & 1) * MOD_OPT_VALUE_U, y >> 1);
++				y += (y & 1) ? 0xC * 2 - 1 : 1;
+ 				goto drawn;
+ 			shared:
+ 				MOD_OPT_V[r][k - 1] = MOD_OPT_V[r2][k2 - 1];
+@@ -5937,11 +5951,13 @@ static void renderOptionsMenu(void)
+ 		renderText(cur++, MOD_OPT_TEXT_X, y, 0, r * 0xC, MOD_OPT_LABEL_W, 0xC, 0);
+ 		x = MOD_OPT_TEXT_X + MOD_OPT_LABEL_W + MOD_OPT_GAP;
+ 		if (MOD_OPT_SHOWN == 1) { /* the chosen value (the first one, grey, when none is) */
+-			renderText(cur++, x, y, 0, MOD_OPT_V[r][value > 0 ? value : 0], MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
++			k = MOD_OPT_V[r][value > 0 ? value : 0];
++			renderText(cur++, x, y, (k >> 8) * MOD_OPT_VALUE_U, k & 0xFF, MOD_OPT_VALUE_W, 0xC, value >= 0 ? 2 : 1);
+ 			continue;
+ 		}
+ 		for (k = 0; k < modOptionCount(r); k++) {
+-			renderText(cur++, x, y, 0, MOD_OPT_V[r][k], MOD_OPT_VALUE_W, 0xC, value == k ? 2 : 1);
++			renderText(cur++, x, y, (MOD_OPT_V[r][k] >> 8) * MOD_OPT_VALUE_U, MOD_OPT_V[r][k] & 0xFF, MOD_OPT_VALUE_W,
++				   0xC, value == k ? 2 : 1);
+ 			x += MOD_OPT_VALUE_W + MOD_OPT_GAP;
+ 		}
+ 	}
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 9ba5df08..1aa230c8 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -36,6 +36,9 @@
+  * one: the files the mods change are read from their copies as the original story has them (modStoryFile); the script
+  * text is read again at once, the maps when they are next entered. A disc built without a story mod has no copies and
+  * no choice.
++ *
++ * DIFFICULTY. EASY doubles the damage the partner deals and halves the damage it takes in the battles and tournaments
++ * (MOD_DIFF_DAMAGE, applied by BTL_calculateDamage and STD_calculateDamage, and to the poison); NORMAL is the original.
+  */
+ #include <dw/mod_options.h>
+ #include <dw/species.h>
+@@ -66,6 +69,7 @@ int32_t MOD_OPT_TOUCHED = 0;
+ int32_t MOD_LANG = MOD_LANG_BASE;
+ int32_t MOD_OPT_SIGNS = 1;
+ int32_t MOD_OPT_STORY = 1;
++int32_t MOD_OPT_DIFFICULTY = MOD_DIFF_NORMAL;
+ int32_t MOD_STORY_ARRIVE = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 15fb6aa8..455b86c1 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -8,6 +8,7 @@
+ #include <libgte.h>
+ 
+ #include <dw/mod_battle.h>
++#include <dw/mod_options.h>
+ #include <dw/mod_font.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/aabb.h>
+@@ -5862,6 +5863,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		}
+ 		dmg = dmg * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
++	dmg = MOD_DIFF_DAMAGE(attacker, defender, ENTITY_TABLE[1], dmg); /* MOD (difficulty): EASY, x2 dealt, /2 taken */
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+ 		dmg = BM(DMG_MIN);
+ 	}
+@@ -6850,6 +6852,7 @@ void STD_applyMoveResult(void)
+ 			if (fighter->poisonTimer == 0) {
+ 				fighter->poisonTimer = BM(POISON_FRAMES);
+ 				dmg = stats->base.hp * (randomLimit(BMS(POISON_SPAN)) + BM(POISON_MIN)) / 100;
++				dmg = MOD_DIFF_DAMAGE(NULL, entity, ENTITY_TABLE[1], dmg); /* MOD (difficulty) */
+ 				/* MOD (caps): summed in 32 bits, up to DAMAGE_CAP (was 9999) */
+ 				fighter->hpDamageBuffer = CAPS_ADD_DAMAGE(fighter->hpDamageBuffer, dmg);
+ 				if (i != 0) {
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index df7a3927..5dce77dc 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -371,6 +371,15 @@ MOD_OPTIONS:
+     MOD_OPT_STR_STORY:
+       ja: "EXTENDED STORY"
+       en_us: "EXTENDED STORY"
++    MOD_OPT_STR_DIFF:
++      ja: "DIFFICULTY"
++      en_us: "DIFFICULTY"
++    MOD_OPT_STR_EASY:
++      ja: "EASY"
++      en_us: "EASY"
++    MOD_OPT_STR_NORMAL:
++      ja: "NORMAL"
++      en_us: "NORMAL"
+     MOD_OPT_STR_FPS:
+       ja: "FRAME RATE"
+       en_us: "FRAME RATE"
+-- 
+2.53.0
+

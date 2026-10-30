@@ -1,0 +1,17 @@
+{
+  "id": 29,
+  "name": "DG Dimension",
+  "element": "mech",
+  "power": 722,
+  "mpCost": 140,
+  "distance": 160000,
+  "range": 3,
+  "accuracy": 100,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 12, 0]
+}

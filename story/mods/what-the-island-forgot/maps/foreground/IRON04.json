@@ -1,0 +1,203 @@
+{
+  "screen": 320,
+  "art": "iron-hills-4",
+  "review": "Broken gear near rim and three tower struts hide rear approaches. The pipe mouths and wall machinery have no reachable rear overlap. Open exposed grass through the tower lattice, keeping both real leg footings solid. Ground cables stay floor. The connected vessel and thin lattice use one SAM object with separately segmented opaque drum faces; foreground/floor color refinement removes grass inside the struts. Depth follows the real support feet, including the former gaps between separately traced bars. Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach.",
+  "pieces": [
+    {
+      "name": "broken-gear-ring",
+      "png": "320-broken-gear-ring.png",
+      "at": [
+        426,
+        138
+      ],
+      "depth": [
+        552,
+        296
+      ]
+    },
+    {
+      "name": "tower-complete",
+      "png": "320-tower-complete.png",
+      "at": [
+        0,
+        148
+      ],
+      "depth": null,
+      "depth_line": [
+        [
+          260,
+          480
+        ],
+        [
+          319,
+          396
+        ]
+      ]
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        42,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        42,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        43,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        42,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        43,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        44,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        45,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        42,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        45,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        46,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Tower far leg foot must remain solid."
+    },
+    {
+      "tile": [
+        42,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        42,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Exposed grass below the tower lattice, to the right of the pipe mouths; beams are foreground."
+    },
+    {
+      "tile": [
+        42,
+        59
+      ],
+      "before": 128,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    },
+    {
+      "tile": [
+        43,
+        58
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    },
+    {
+      "tile": [
+        43,
+        59
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    },
+    {
+      "tile": [
+        44,
+        59
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    },
+    {
+      "tile": [
+        43,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    },
+    {
+      "tile": [
+        44,
+        60
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Polish: block the near low-brace assembly while retaining the existing Shamamon spawn and its clear rear approach."
+    }
+  ],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/320.json."
+}

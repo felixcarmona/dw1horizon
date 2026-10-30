@@ -1,0 +1,3 @@
+Image 1 is a crop of a pre-rendered 3D background from a 1990s PlayStation game: a weathered white notice board with a rusty frame, leaning on a rock, covered in handwritten Japanese text (black vertical lines and a red vertical title along the right edge) and some vandal scribbles.
+
+Erase every written character from the board: all the black Japanese writing and the red Japanese title, leaving the board's white painted surface clean where they were (with the same weathering and dirt). Keep exactly as they are, same shapes and positions: the blue wavy scribble, the black drawn poop swirl near the top right, the red splat, the rust stains, the frame, the rock, the grass. No text anywhere. Same framing and aspect ratio as image 1.

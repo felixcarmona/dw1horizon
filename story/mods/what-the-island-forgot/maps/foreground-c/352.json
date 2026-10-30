@@ -1,0 +1,1163 @@
+{
+  "screen": 352,
+  "name": "rubbish-gallery",
+  "pieces": [
+    {
+      "name": "near-scrap",
+      "depth_px": [
+        290,
+        634
+      ],
+      "block": [],
+      "at": [
+        70,
+        458
+      ],
+      "png": "352-near-scrap.png",
+      "size": [
+        397,
+        182
+      ],
+      "sam": [
+        {
+          "box": [
+            47,
+            410,
+            557,
+            640
+          ],
+          "positive": [
+            [
+              113,
+              516
+            ],
+            [
+              190,
+              573
+            ],
+            [
+              272,
+              535
+            ],
+            [
+              354,
+              560
+            ],
+            [
+              432,
+              578
+            ]
+          ],
+          "negative": [
+            [
+              83,
+              442
+            ],
+            [
+              159,
+              439
+            ],
+            [
+              277,
+              418
+            ],
+            [
+              388,
+              442
+            ],
+            [
+              518,
+              537
+            ],
+            [
+              504,
+              608
+            ],
+            [
+              533,
+              575
+            ]
+          ],
+          "scores": [
+            0.7880361080169678
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "711bb6f8808eacfa208d3cb737fcba37398563a8635dad5a89b495f5830cfc60",
+      "min_component": 80,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "rubbish-gallery.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The rail bed is floor between the rubbish piles. The top piles back onto the wall and have no route behind them. Cut the large foreground pile's upper silhouette; retain its blocked footprint and the wide exit corridor on its right. Tile review: restore 52 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Final footprint pass restores 3 additional tiles of visible bare floor outside the object silhouettes. The unreachable fringe tile (54,71) stays blocked after the body-box reach check. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts. SAM silhouette review restores 48 additional reachable floor tiles: floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid. Polish audit: restore 25 solid upper-heap cells after native walking placed actors inside cans and crate contents. Preserve the rail-side floor, the right aisle, exits, arrivals and spawn positions.",
+  "collision_tiles": [
+    {
+      "tile": [
+        28,
+        56
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        28,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        31,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        32,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        33,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        34,
+        57
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        29,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        30,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        31,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        32,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        33,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        34,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        35,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        36,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        37,
+        58
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        29,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        30,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        31,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        32,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        33,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        34,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        35,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        36,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        37,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        38,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        39,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        40,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        41,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        44,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        45,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        46,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        47,
+        59
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        29,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        30,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        31,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        32,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        33,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        34,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        35,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        36,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        37,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        38,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        39,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        40,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        41,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        42,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        43,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        44,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        45,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        46,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        47,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        48,
+        60
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the front scrap silhouette; keep the lower heap solid"
+    },
+    {
+      "tile": [
+        55,
+        67
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the front scrap pile"
+    },
+    {
+      "tile": [
+        55,
+        68
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "bare floor beside the front scrap pile"
+    },
+    {
+      "tile": [
+        30,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        74,
+        467
+      ]
+    },
+    {
+      "tile": [
+        36,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        189,
+        467
+      ]
+    },
+    {
+      "tile": [
+        37,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        208,
+        467
+      ]
+    },
+    {
+      "tile": [
+        38,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        227,
+        467
+      ]
+    },
+    {
+      "tile": [
+        40,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        266,
+        467
+      ]
+    },
+    {
+      "tile": [
+        41,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        285,
+        467
+      ]
+    },
+    {
+      "tile": [
+        42,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        304,
+        467
+      ]
+    },
+    {
+      "tile": [
+        43,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        323,
+        467
+      ]
+    },
+    {
+      "tile": [
+        44,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        342,
+        467
+      ]
+    },
+    {
+      "tile": [
+        45,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        361,
+        467
+      ]
+    },
+    {
+      "tile": [
+        46,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        380,
+        467
+      ]
+    },
+    {
+      "tile": [
+        47,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        400,
+        467
+      ]
+    },
+    {
+      "tile": [
+        48,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        419,
+        467
+      ]
+    },
+    {
+      "tile": [
+        49,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        438,
+        467
+      ]
+    },
+    {
+      "tile": [
+        50,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        457,
+        467
+      ]
+    },
+    {
+      "tile": [
+        51,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        476,
+        467
+      ]
+    },
+    {
+      "tile": [
+        52,
+        61
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        495,
+        467
+      ]
+    },
+    {
+      "tile": [
+        30,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        69,
+        482
+      ]
+    },
+    {
+      "tile": [
+        50,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        457,
+        482
+      ]
+    },
+    {
+      "tile": [
+        51,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        477,
+        482
+      ]
+    },
+    {
+      "tile": [
+        52,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        496,
+        482
+      ]
+    },
+    {
+      "tile": [
+        53,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        515,
+        482
+      ]
+    },
+    {
+      "tile": [
+        54,
+        62
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised scrap pile and open crate lids; keep their ground footprints in the lower pile solid",
+      "pixel": [
+        535,
+        482
+      ]
+    }
+  ],
+  "sam_source": {
+    "path": "G-rubbish-gallery/rubbish-gallery-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "32a894758dde12b7aa12046ab35bd0921de9b5e2",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  },
+  "retained_blocked_tiles": [
+    [
+      31,
+      61
+    ],
+    [
+      32,
+      61
+    ],
+    [
+      33,
+      61
+    ],
+    [
+      34,
+      61
+    ],
+    [
+      35,
+      61
+    ],
+    [
+      39,
+      61
+    ],
+    [
+      31,
+      62
+    ],
+    [
+      32,
+      62
+    ],
+    [
+      33,
+      62
+    ],
+    [
+      34,
+      62
+    ],
+    [
+      35,
+      62
+    ],
+    [
+      36,
+      62
+    ],
+    [
+      37,
+      62
+    ],
+    [
+      38,
+      62
+    ],
+    [
+      39,
+      62
+    ],
+    [
+      40,
+      62
+    ],
+    [
+      41,
+      62
+    ],
+    [
+      42,
+      62
+    ],
+    [
+      43,
+      62
+    ],
+    [
+      44,
+      62
+    ],
+    [
+      45,
+      62
+    ],
+    [
+      46,
+      62
+    ],
+    [
+      47,
+      62
+    ],
+    [
+      48,
+      62
+    ],
+    [
+      49,
+      62
+    ]
+  ],
+  "polish_footprint": {
+    "reason": "Block actual upper scrap bodies after native 2 MB witnesses 04/06/09; preserve the rail-side strip and right aisle",
+    "polygon_px": [
+      [
+        88,
+        465
+      ],
+      [
+        122,
+        458
+      ],
+      [
+        166,
+        464
+      ],
+      [
+        209,
+        470
+      ],
+      [
+        243,
+        465
+      ],
+      [
+        296,
+        470
+      ],
+      [
+        334,
+        470
+      ],
+      [
+        376,
+        477
+      ],
+      [
+        420,
+        476
+      ],
+      [
+        459,
+        488
+      ],
+      [
+        491,
+        523
+      ],
+      [
+        497,
+        604
+      ],
+      [
+        450,
+        639
+      ],
+      [
+        72,
+        639
+      ]
+    ],
+    "blocked_tiles": [
+      [
+        31,
+        61
+      ],
+      [
+        32,
+        61
+      ],
+      [
+        33,
+        61
+      ],
+      [
+        34,
+        61
+      ],
+      [
+        35,
+        61
+      ],
+      [
+        39,
+        61
+      ],
+      [
+        31,
+        62
+      ],
+      [
+        32,
+        62
+      ],
+      [
+        33,
+        62
+      ],
+      [
+        34,
+        62
+      ],
+      [
+        35,
+        62
+      ],
+      [
+        36,
+        62
+      ],
+      [
+        37,
+        62
+      ],
+      [
+        38,
+        62
+      ],
+      [
+        39,
+        62
+      ],
+      [
+        40,
+        62
+      ],
+      [
+        41,
+        62
+      ],
+      [
+        42,
+        62
+      ],
+      [
+        43,
+        62
+      ],
+      [
+        44,
+        62
+      ],
+      [
+        45,
+        62
+      ],
+      [
+        46,
+        62
+      ],
+      [
+        47,
+        62
+      ],
+      [
+        48,
+        62
+      ],
+      [
+        49,
+        62
+      ]
+    ]
+  }
+}

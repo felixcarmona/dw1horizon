@@ -1,0 +1,17 @@
+{
+  "id": 343,
+  "file": "MINE09",
+  "tims8": 2,
+  "tims4": 0,
+  "sound_bank": 2,
+  "day_night": false,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": "The Galleries",
+  "concave": false,
+  "maphead": {
+    "like": 240,
+    "script": 1
+  }
+}

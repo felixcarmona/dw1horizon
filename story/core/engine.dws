@@ -1,0 +1,24 @@
+// Names for the state the C code and the script commands share.
+// They are aliases: nothing is allocated. Use `engine.result` instead of p255.
+pub group engine {
+    pub alias var prosperity = 1;          // recomputed by C on every save and game start
+    pub alias var shop_hi = 243;           // SHOP_VARIABLE, high byte
+    pub alias var shop_lo = 244;           // SHOP_VARIABLE, low byte
+    pub alias var music_mode = 245;
+    pub alias var object = 247;            // CALL_ROUTINE argument: map object / script entity
+    pub alias var animation = 248;         // CALL_ROUTINE argument: animation / exit / mood
+    pub alias var menu_result = 249;
+    pub alias var battle_mode = 250;       // 1 = the foes are in p251-p253
+    pub alias var foe1 = 251;
+    pub alias var foe2 = 252;
+    pub alias var foe3 = 253;
+    pub alias var arg = 254;               // argument of CALL_ROUTINE; the chosen item after choose_item
+    pub alias var result = 255;            // result of a battle or tournament (won = 1, lost = 255, fled = 0)
+    pub alias flag item_did_not_fit = 0;
+    pub alias flag no_escape = 1;
+    pub alias flag picker_mode = 3;        // item picker: sell/discard mode
+    pub alias flag cutscene = 44;          // no turning in a scene
+    pub alias flag no_cancel = 49;         // a selection cannot be cancelled
+    pub alias flag card_machine = 42;      // routine card_shop sells the item shop's machine cards (patch 0237)
+    pub alias flag game_beaten = 50;
+}

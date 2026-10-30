@@ -1,0 +1,90 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(217) replace {    // section 217
+        set_script(177, 217);
+        engine.music_mode = 0;
+        set_bgm(28);
+        if (is_recruited(species("Ninjamon"))) {
+            load_digimon(species(175));
+            set_digimon(species(175), 4, 0);
+        }
+        if (is_recruited(species("Numemon")) && !secret_shop_keeper_met.numemon) {
+            load_digimon(species(135));
+            set_digimon(species(135), 0, 0);
+            secret_shop_keeper = 0;
+            return;
+        }
+        if (is_recruited(species("Mojyamon")) && !secret_shop_keeper_met.mojyamon) {
+            load_digimon(species(170));
+            set_digimon(species(170), 1, 0);
+            secret_shop_keeper = 1;
+            return;
+        }
+        if (is_recruited(species("Mamemon")) && !secret_shop_keeper_met.mamemon) {
+            load_digimon(species(137));
+            set_digimon(species(137), 2, 0);
+            secret_shop_keeper = 2;
+            return;
+        }
+        if (is_recruited(species("Devimon")) && !secret_shop_keeper_met.devimon) {
+            load_digimon(species(130));
+            set_digimon(species(130), 3, 0);
+            secret_shop_keeper = 3;
+            return;
+        }
+        store_date(date_year);
+        if (secret_shop_keeper_met.numemon && date_hour >= 0 && date_hour < 6) {
+            load_digimon(species(135));
+            set_digimon(species(135), 0, 0);
+            secret_shop_keeper = 0;
+            return;
+        }
+        if (secret_shop_keeper_met.mojyamon && date_hour >= 6 && date_hour < 12) {
+            load_digimon(species(170));
+            set_digimon(species(170), 1, 0);
+            secret_shop_keeper = 1;
+            return;
+        }
+        if (secret_shop_keeper_met.mamemon && date_hour >= 12 && date_hour < 18) {
+            load_digimon(species(137));
+            set_digimon(species(137), 2, 0);
+            secret_shop_keeper = 2;
+            return;
+        }
+        if (secret_shop_keeper_met.devimon && date_hour >= 18) {
+            load_digimon(species(130));
+            set_digimon(species(130), 3, 0);
+            secret_shop_keeper = 3;
+            return;
+        }
+        store_date(date_year);
+        if (is_recruited(species("Numemon"))) {
+            load_digimon(species(135));
+            set_digimon(species(135), 0, 0);
+            secret_shop_keeper = 0;
+            return;
+        }
+        if (is_recruited(species("Mojyamon"))) {
+            load_digimon(species(170));
+            set_digimon(species(170), 1, 0);
+            secret_shop_keeper = 1;
+            return;
+        }
+        if (is_recruited(species("Mamemon"))) {
+            load_digimon(species(137));
+            set_digimon(species(137), 2, 0);
+            secret_shop_keeper = 2;
+            return;
+        }
+        if (is_recruited(species("Devimon"))) {
+            load_digimon(species(130));
+            set_digimon(species(130), 3, 0);
+            secret_shop_keeper = 3;
+            return;
+        }
+    }
+}

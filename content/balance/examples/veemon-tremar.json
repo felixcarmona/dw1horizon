@@ -1,0 +1,9 @@
+{
+  "_about": "Example and in-game proof (docs/mods/balance.md, section 6): Tremar costs 60 MP instead of 168; with examples/species/180-veemon.json (Veemon without Sonic Jab), Veemon learns it on evolving. Not part of the integrated game: build with BALANCE_CONTENT=content/balance/examples (tools/balance-proof.sh, disc C).",
+  "techniques": {
+    "40": {
+      "_name": "Tremar",
+      "mpCost": 20
+    }
+  }
+}

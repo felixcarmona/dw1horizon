@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP15/SAIB03.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "SkullGreymon148",
+      "at": [-1745, -341],
+      "facing": 3072,
+      "follow": 2,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 48, 49, 51],
+      "prios": [45, 35, 10, 10],
+      "flee": [1960, 1033],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[40, 0, 0]]
+    }
+  ]
+}

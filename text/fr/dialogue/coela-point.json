@@ -1,0 +1,134 @@
+{
+ "s006.sec6.u0": [
+  [
+   "Je ne vais pas perdre!"
+  ]
+ ],
+ "s006.sec7.u0": [
+  [
+   "Ne t'approche pas ! Va-t'en !"
+  ]
+ ],
+ "s006.sec8.u0": [
+  [
+   "Ça suffit, maintenant je suis",
+   "vraiment en colère !"
+  ]
+ ],
+ "s006.sec9.u0": [
+  [
+   "Un coup pour un coup !"
+  ]
+ ],
+ "s006.sec10.u0": [
+  [
+   "Vas-y, si tu t'en crois capable",
+   "!"
+  ]
+ ],
+ "s006.sec51.m0.o0": "Je te cherchais !",
+ "s006.sec51.m0.o1": "Par hasard",
+ "s006.sec51.u0": [
+  [
+   "Hmm ? Eh bien, {color 6}{player}{color 1}.",
+   "Le pont est réparé, on dirait.",
+   "Il paraît que vous, les jeunes,"
+  ],
+  [
+   "bâtissez une ville. J'ai donc",
+   "une faveur à te demander. Je",
+   "t'ai aidé, et j'aimerais que tu"
+  ],
+  [
+   "m'aides à ton tour."
+  ]
+ ],
+ "s006.sec51.u1": [
+  [
+   "?"
+  ]
+ ],
+ "s006.sec51.u2": [
+  [
+   "Bâtir une ville, c'est sauver",
+   "cette île. Tout le monde sera",
+   "sauvé, et moi aussi. Tu"
+  ],
+  [
+   "comprends ?"
+  ]
+ ],
+ "s006.sec51.u3": [
+  [
+   "Tu veux dire que tu viens en",
+   "ville ?"
+  ]
+ ],
+ "s006.sec51.u4": [
+  [
+   "Hmm. Alors, je vais rejoindre",
+   "ta ville."
+  ]
+ ],
+ "s006.sec51.u5": "Coelamon a rejoint la ville !",
+ "s006.sec51.u6": [
+  [
+   "Hmm ? Dis-moi, tu es un humain",
+   "? Me rencontrer est une prise",
+   "rare ! Je suis Coelamon, le"
+  ],
+  [
+   "Digimon poisson. Tu as fait",
+   "tout ce chemin pour me voir ?"
+  ]
+ ],
+ "s006.sec51.u7": [
+  [
+   "Ho ho, je vois, je vois !"
+  ]
+ ],
+ "s006.sec51.u8": [
+  [
+   "Hé hé... Je m'en doutais. Ne",
+   "sois pas timide."
+  ]
+ ],
+ "s006.sec51.u9": [
+  [
+   "Je crois savoir ce que tu",
+   "cherches. Le pont en amont",
+   "est cassé, mais tu veux"
+  ],
+  [
+   "traverser... C'est bien ça ?"
+  ]
+ ],
+ "s006.sec51.u10": [
+  [
+   "Hmm, très bien. Je vais voir ce",
+   "que je peux faire."
+  ]
+ ],
+ "s006.sec51.u11": [
+  [
+   "Ha ha, te revoilà ?"
+  ]
+ ],
+ "s006.sec51.u12": [
+  [
+   "Vas-y, marche sur nos têtes.",
+   "Ne te gêne pas. Allez, allez."
+  ]
+ ],
+ "s006.sec51.u13": [
+  [
+   "D'accord, on y va !"
+  ]
+ ],
+ "s006.sec51.u14": [
+  [
+   "Dans ce monde, l'entraide est",
+   "ce qui compte. À bientôt !"
+  ]
+ ]
+}

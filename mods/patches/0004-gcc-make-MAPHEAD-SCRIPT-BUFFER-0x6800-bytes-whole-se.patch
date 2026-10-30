@@ -1,0 +1,41 @@
+From 2ee5714679f7d68aed4c17ea49930e97aba2bb78 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 21:20:45 +0000
+Subject: [PATCH] gcc: make MAPHEAD_SCRIPT_BUFFER 0x6800 bytes (whole-sector
+ read of MAPHEAD.SCN)
+
+readFile reads MAPHEAD.SCN (0x606e bytes) as 13 sectors = 0x6800 bytes into
+a 0x61a8-byte buffer. The original spills into SCRIPT_OFFSET_TABLE, which
+follows it and is filled right after; in the GCC layout the spill lands in
+GLYPH_DRAWING_AREAS (font.c). Harmless today (glyph scratch space), but it
+is an overflow that depends on the layout.
+
+---
+ src/main/script_interp.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 57d3c51..e1a53f9 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -281,8 +281,16 @@ static void *script_interp_sbss_order[] = {
+ 
+ #if !VERSION_IS(US)
+ uint8_t MAPHEAD_SCRIPT_BUFFER[0x6000];
+-#else
++#elif defined(__MWERKS__)
+ uint8_t MAPHEAD_SCRIPT_BUFFER[0x61a8];
++#else
++/*
++ * readFile reads whole sectors: MAPHEAD.SCN (0x606e bytes) takes 13 sectors,
++ * 0x6800 bytes. The original spills 0x658 bytes into SCRIPT_OFFSET_TABLE,
++ * which comes next and is read right after. GCC puts GLYPH_DRAWING_AREAS
++ * (font.c) after this buffer instead, so make it hold the whole read.
++ */
++uint8_t MAPHEAD_SCRIPT_BUFFER[0x6800];
+ #endif
+ uint8_t SCRIPT_OFFSET_TABLE[0x2000];
+ #if !VERSION_IS(US)
+-- 
+2.53.0
+

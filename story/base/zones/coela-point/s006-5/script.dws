@@ -1,0 +1,363 @@
+// Readable form of script 6 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 6 {
+    npc slot0 = 5;
+    npc slot1 = 6;
+    npc slot2 = 7;
+    npc slot3 = 8;
+    npc slot4 = 9;
+    npc slot5 = 10;
+    npc slot6 = 11;
+    npc slot7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 7, 8, 9, 10, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("Digimushrm"), 42, 54);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 59) {
+            spawn_item(item("Digimushrm"), 34, 30);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 53, 47);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 19) {
+            spawn_item(item("Digimushrm"), 69, 60);
+        }
+        if (eastern_bridge_seen && !is_recruited(species("Coelamon"))) {
+            set_obj_visibility(13, 0);
+            set_obj_visibility(14, 0);
+            set_obj_visibility(15, 0);
+            set_obj_visibility(16, 0);
+            set_obj_visibility(17, 0);
+            set_obj_visibility(18, 0);
+            set_obj_visibility(19, 0);
+            set_obj_visibility(20, 0);
+            set_obj_visibility(21, 0);
+            set_obj_visibility(22, 0);
+            set_obj_visibility(23, 0);
+            set_obj_visibility(24, 0);
+            set_obj_visibility(25, 0);
+            set_obj_visibility(26, 0);
+            set_obj_visibility(27, 0);
+            set_obj_visibility(28, 0);
+        }
+        store_date(date_year);
+        if (date_hour >= 15 && date_hour <= 19 && !is_recruited(species("Coelamon"))) {
+            set_obj_visibility(13, 0);
+            set_obj_visibility(14, 0);
+            set_obj_visibility(15, 0);
+            set_obj_visibility(16, 0);
+            set_obj_visibility(17, 0);
+            set_obj_visibility(18, 0);
+            set_obj_visibility(19, 0);
+            set_obj_visibility(20, 0);
+            set_obj_visibility(21, 0);
+            set_obj_visibility(22, 0);
+            set_obj_visibility(23, 0);
+            set_obj_visibility(24, 0);
+            set_obj_visibility(25, 0);
+            set_obj_visibility(26, 0);
+            set_obj_visibility(27, 0);
+            set_obj_visibility(28, 0);
+        }
+    }
+
+    on talk(slot1) replace {    // section 6
+        say(slot1, text("s006.sec6.u0"));
+        battle();
+    }
+
+    on talk(slot2) replace {    // section 7
+        say(slot2, text("s006.sec7.u0"));
+        battle();
+    }
+
+    on talk(slot3) replace {    // section 8
+        say(slot3, text("s006.sec8.u0"));
+        battle();
+    }
+
+    on talk(slot4) replace {    // section 9
+        say(slot4, text("s006.sec9.u0"));
+        battle();
+    }
+
+    on talk(slot5) replace {    // section 10
+        say(slot5, text("s006.sec10.u0"));
+        battle();
+    }
+
+    on step(0) replace {    // section 51
+        if (eastern_bridge_seen && !is_recruited(species("Coelamon"))) {
+            camera_to(2214, 865, speed: 20);
+            await camera;
+            engine.object = 13;
+            engine.animation = 16;
+            call_routine(routine("reset_object_animation"));
+            walk(tamer, 1642, -107);
+            run(partner, 1252, -547);
+            wait(4s);
+            set_obj_visibility(13, 1);
+            set_obj_visibility(14, 1);
+            set_obj_visibility(15, 1);
+            set_obj_visibility(16, 1);
+            set_obj_visibility(17, 1);
+            set_obj_visibility(18, 1);
+            set_obj_visibility(19, 1);
+            set_obj_visibility(20, 1);
+            set_obj_visibility(21, 1);
+            set_obj_visibility(22, 1);
+            set_obj_visibility(23, 1);
+            set_obj_visibility(24, 1);
+            set_obj_visibility(25, 1);
+            set_obj_visibility(26, 1);
+            set_obj_visibility(27, 1);
+            set_obj_visibility(28, 1);
+            set_digimon(species("Coelamon"), 0, 0);
+            sound(8, 7);
+            set_obj_visibility(31, 0);
+            engine.object = 31;
+            engine.animation = 1;
+            call_routine(routine("reset_object_animation"));
+            wait(10);
+            set_obj_visibility(31, 1);
+            set_obj_visibility(34, 0);
+            face(tamer, slot0);
+            face(partner, slot0);
+            wait(1s);
+            face(slot0, tamer);
+            say(slot0, text("s006.sec51.u0"));
+            say(tamer, text("s006.sec51.u1"));
+            say(slot0, text("s006.sec51.u2"));
+            animate(tamer, 19);
+            wait(15);
+            say(tamer, text("s006.sec51.u3"));
+            animate(tamer, anim.idle);
+            say(slot0, text("s006.sec51.u4"));
+            wait(10);
+            set_obj_visibility(34, 1);
+            remove(slot0);
+            sound(8, 7);
+            set_obj_visibility(37, 0);
+            engine.object = 37;
+            engine.animation = 1;
+            call_routine(routine("reset_object_animation"));
+            wait(10);
+            set_obj_visibility(37, 1);
+            set_obj_visibility(29, 0);
+            set_obj_visibility(30, 0);
+            engine.object = 29;
+            engine.animation = 2;
+            call_routine(routine("reset_object_animation"));
+            move_object_to(0, 29, 1, 30, 640, 130);
+            move_object_to(1, 30, 1, 30, 640, 130);
+            wait(2s);
+            set_obj_visibility(29, 1);
+            set_obj_visibility(30, 1);
+            wait(10);
+            sound(8, 11);
+            say(narrator, text("s006.sec51.u5"));
+            run(tamer, 1000, -461);
+            camera_on(tamer, speed: 10);
+            recruit(species("Coelamon"));
+            engine.prosperity += 2;
+            return;
+        }
+        store_date(date_year);
+        unless (date_hour >= 15 && date_hour <= 19 && !is_recruited(species("Coelamon"))) return;
+        camera_to(2214, 865, speed: 20);
+        await camera;
+        engine.object = 13;
+        engine.animation = 16;
+        call_routine(routine("reset_object_animation"));
+        walk(tamer, 1642, -107);
+        run(partner, 1252, -547);
+        wait(4s);
+        set_obj_visibility(13, 1);
+        set_obj_visibility(14, 1);
+        set_obj_visibility(15, 1);
+        set_obj_visibility(16, 1);
+        set_obj_visibility(17, 1);
+        set_obj_visibility(18, 1);
+        set_obj_visibility(19, 1);
+        set_obj_visibility(20, 1);
+        set_obj_visibility(21, 1);
+        set_obj_visibility(22, 1);
+        set_obj_visibility(23, 1);
+        set_obj_visibility(24, 1);
+        set_obj_visibility(25, 1);
+        set_obj_visibility(26, 1);
+        set_obj_visibility(27, 1);
+        set_obj_visibility(28, 1);
+        set_digimon(species("Coelamon"), 0, 0);
+        sound(8, 7);
+        set_obj_visibility(31, 0);
+        engine.object = 31;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(10);
+        set_obj_visibility(31, 1);
+        set_obj_visibility(34, 0);
+        face(tamer, slot0);
+        face(partner, slot0);
+        wait(1s);
+        face(slot0, tamer);
+        animate(tamer, 15);
+        wait(1s);
+        if (!coela_point_crossing_done) {
+            say(slot0, text("s006.sec51.u6"));
+            engine.no_cancel = true;
+            choice(open) {
+                text("s006.sec51.m0.o0") => {
+                    animate(tamer, 19);
+                    wait(1s);
+                    engine.no_cancel = false;
+                    say(slot0, text("s006.sec51.u7"));
+                }
+                text("s006.sec51.m0.o1") => {
+                    animate(tamer, 19);
+                    wait(1s);
+                    engine.no_cancel = false;
+                    say(slot0, text("s006.sec51.u8"));
+                }
+            }
+            say(slot0, text("s006.sec51.u9"));
+            sound(8, 8);
+            animate(tamer, 22);
+            wait(8);
+            animate(tamer, 22);
+            wait(8);
+            animate(tamer, anim.idle);
+            wait(3);
+            sound(8, 14);
+            show_textbox(text("s006.sec51.u10"));
+        }
+        if (coela_point_crossing_done) {
+            say(slot0, text("s006.sec51.u11"));
+        }
+        camera_on(slot0, speed: 10);
+        await camera;
+        set_obj_visibility(34, 1);
+        remove(slot0);
+        sound(8, 7);
+        set_obj_visibility(37, 0);
+        engine.object = 37;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(3s);
+        set_obj_visibility(37, 1);
+        set_digimon(species("Coelamon"), 0, 0);
+        sound(8, 7);
+        set_obj_visibility(31, 0);
+        engine.object = 31;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(15);
+        set_obj_visibility(31, 1);
+        set_obj_visibility(34, 0);
+        set_digimon(species("Coelamon"), 6, 0);
+        sound(8, 7);
+        set_obj_visibility(32, 0);
+        engine.object = 32;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(15);
+        set_obj_visibility(32, 1);
+        set_obj_visibility(35, 0);
+        set_digimon(species("Coelamon"), 7, 0);
+        sound(8, 7);
+        set_obj_visibility(33, 0);
+        engine.object = 33;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(15);
+        set_obj_visibility(33, 1);
+        set_obj_visibility(36, 0);
+        face(slot0, tamer);
+        wait(1s);
+        say(slot0, text("s006.sec51.u12"));
+        sound(8, 14);
+        wait(10);
+        sound(8, 14);
+        wait(10);
+        sound(8, 14);
+        wait(10);
+        animate(tamer, anim.tamer_victory);
+        wait(1s);
+        say(tamer, text("s006.sec51.u13"));
+        face(tamer, slot0);
+        wait(3);
+        animate(tamer, 21);
+        entity_move_to(tamer, 2214, 865, 15, 0);
+        wait(5);
+        sound(8, 9);
+        wait(12);
+        sound(8, 7);
+        set_obj_visibility(31, 0);
+        engine.object = 31;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        face(tamer, slot6);
+        wait(3);
+        animate(tamer, 21);
+        entity_move_to(tamer, 2900, 1300, 14, 0);
+        wait(5);
+        sound(8, 9);
+        wait(12);
+        set_obj_visibility(31, 1);
+        sound(8, 7);
+        set_obj_visibility(32, 0);
+        engine.object = 32;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        face(tamer, slot7);
+        wait(3);
+        animate(tamer, 21);
+        entity_move_to(tamer, 3967, 3068, 15, 0);
+        wait(5);
+        sound(8, 9);
+        wait(12);
+        set_obj_visibility(32, 1);
+        sound(8, 7);
+        set_obj_visibility(33, 0);
+        engine.object = 33;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        face(tamer, slot7);
+        wait(3);
+        animate(tamer, 21);
+        entity_move_to(tamer, 5009, 4260, 15, 0);
+        wait(5);
+        sound(8, 9);
+        wait(12);
+        sound(8, 7);
+        set_obj_visibility(33, 1);
+        face(slot0, tamer);
+        sound(8, 7);
+        set_obj_visibility(31, 0);
+        engine.object = 31;
+        engine.animation = 1;
+        call_routine(routine("reset_object_animation"));
+        wait(15);
+        set_obj_visibility(31, 1);
+        face(slot6, tamer);
+        face(slot7, tamer);
+        wait(1s);
+        say(slot0, text("s006.sec51.u14"));
+        sound(8, 14);
+        coela_point_crossing_done = true;
+        walk(partner, 3500, 2500);
+        warp_to(12, 4, 255);
+    }
+}

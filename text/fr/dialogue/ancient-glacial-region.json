@@ -1,0 +1,493 @@
+{
+ "s077.sec5.u0": [
+  [
+   "Hé, toi ! Viens te battre !"
+  ]
+ ],
+ "s077.sec6.u0": [
+  [
+   "Bzz, bzz, bzzz!"
+  ]
+ ],
+ "s077.sec7.u0": [
+  [
+   "Ne te mets jamais derrière moi",
+   "!!"
+  ]
+ ],
+ "s077.sec8.u0": [
+  [
+   "Fiu-fiu-fiuuuu !"
+  ]
+ ],
+ "s077.sec9.u0": [
+  [
+   "Je suis en feu ! Mon sang",
+   "bouillonne !"
+  ]
+ ],
+ "s077.sec10.u0": [
+  [
+   "Gagner, gagner, gagner ! Je",
+   "vais GAGNEEER !"
+  ]
+ ],
+ "s078.sec5.u0": [
+  [
+   "Un Digimon de mon espèce est",
+   "parti devenir marchand, je",
+   "crois... Il aurait ouvert une"
+  ],
+  [
+   "boutique quelque part. Son",
+   "amitié te serait plus utile que",
+   "la mienne..."
+  ]
+ ],
+ "s078.sec5.u1": [
+  [
+   "Pourquoi le temps passe-t-il",
+   "autrement ici qu'à l'extérieur",
+   "? C'est un endroit agréable"
+  ],
+  [
+   "pour nous, certes, mais..."
+  ]
+ ],
+ "s078.sec6.u0": [
+  [
+   "J'ai volé haut et vu loin... Au",
+   "nord, la neige et la glace ne",
+   "fondent jamais. Il faut être"
+  ],
+  [
+   "fou pour vivre là-bas."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "J'ai volé haut et vu loin... À",
+   "l'ouest, une petite ville de",
+   "fer garde ses portes fermées."
+  ],
+  [
+   "Moi, j'y entrerais en volant.",
+   "Ké hé."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "J'ai volé haut et vu loin... Au",
+   "sud-ouest, un village",
+   "d'étranges Digimon à cornes et"
+  ],
+  [
+   "à pinces se trouve dans les",
+   "arbres."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "J'ai volé haut et vu loin... Au",
+   "nord-ouest, une forêt brumeuse",
+   "abrite un bâtiment. Mais c'est"
+  ],
+  [
+   "très loin."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "J'ai volé haut et vu loin... Tu",
+   "es allé au Grand Canyon, à",
+   "l'est ? Un vrai labyrinthe. Ké"
+  ],
+  [
+   "hé."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "J'ai volé haut et vu loin...",
+   "Qu'y a-t-il au centre exact",
+   "de l'île ? Même moi, je"
+  ],
+  [
+   "l'ignore. Il est toujours",
+   "couvert de gros nuages."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Essayer",
+ "s078.sec81.m0.o1": "Laisser",
+ "s078.sec81.u0": [
+  [
+   "Distributeur automatique"
+  ]
+ ],
+ "s078.sec81.u1": [
+  [
+   "\"Ce qui sort est une",
+   "surprise...\" 200 Bits",
+   "l'essai... ? Ça semble louche."
+  ],
+  [
+   "J'essaie ?"
+  ]
+ ],
+ "s078.sec81.u2": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s078.sec81.u3": [
+  [
+   "De la {color 6}Viande{color 1} est sortie !"
+  ]
+ ],
+ "s078.sec81.u4": [
+  [
+   "Oups, mon sac est plein. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s078.sec81.u5": [
+  [
+   "Un {color 6}Petit soin{color 1} est sorti !"
+  ]
+ ],
+ "s078.sec81.u6": [
+  [
+   "Oups, mon sac est plein. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s078.sec81.u7": [
+  [
+   "De la {color 6}Viande moisie{color 1} est",
+   "sortie !"
+  ]
+ ],
+ "s078.sec81.u8": [
+  [
+   "Oups, mon sac est plein. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s078.sec81.u9": [
+  [
+   "Un {color 6}Soin MP{color 1} est sorti !"
+  ]
+ ],
+ "s078.sec81.u10": [
+  [
+   "Oups, mon sac est plein. Je",
+   "dois jeter quelque chose."
+  ]
+ ],
+ "s078.sec82.u0": [
+  [
+   "...Tu en as sans doute déjà",
+   "entendu parler."
+  ]
+ ],
+ "s078.sec82.u1": [
+  [
+   "Ici, le temps passe lentement.",
+   "Une journée à l'extérieur ne",
+   "dure qu'une demi-journée ici."
+  ]
+ ],
+ "s078.sec82.u2": [
+  [
+   "C'est un bel endroit pour ceux",
+   "qui aiment prendre leur temps."
+  ]
+ ],
+ "s078.sec82.u3": [
+  [
+   "Plus loin, dans la Région",
+   "rapide antique, le temps",
+   "s'accélère. Deux jours y"
+  ],
+  [
+   "passent pendant qu'un seul",
+   "s'écoule dehors."
+  ]
+ ],
+ "s078.sec82.u4": [
+  [
+   "On peut dire que ça permet de",
+   "grandir plus vite... mais une",
+   "fois réduit à l'état d'os,"
+  ],
+  [
+   "c'est trop tard."
+  ]
+ ],
+ "s079.sec6.u0": [
+  [
+   "Après ce point, le temps passe",
+   "deux fois plus vite que dehors.",
+   "Emporte assez de nourriture."
+  ],
+  [
+   "Et surveille ta durée de vie,",
+   "bien sûr."
+  ]
+ ],
+ "s079.sec6.u1": [
+  [
+   "Alors ? Tu as trouvé quelque",
+   "chose ?"
+  ]
+ ],
+ "s079.sec6.u2": [
+  [
+   "Non, pas encore..."
+  ]
+ ],
+ "s079.sec6.u3": [
+  [
+   "Mon maître, qui gardait cet",
+   "endroit avant moi, disait qu'il",
+   "y a un passage secret par ici."
+  ],
+  [
+   "Mais ne me demande pas où."
+  ]
+ ],
+ "s079.sec6.u4": [
+  [
+   "Ah, Comment ça ?..?"
+  ]
+ ],
+ "s079.sec6.u5": [
+  [
+   "La météorite... En fait, elle",
+   "n'avait rien à voir avec tout",
+   "ça. Pfff..."
+  ]
+ ],
+ "s079.sec6.u6": [
+  [
+   "Ah, vraiment. Pas de chance.",
+   "Désolé, mais je ne sais rien",
+   "d'autre."
+  ]
+ ],
+ "s079.sec6.u7": [
+  [
+   "..- Eh bien, A tout à l'heure."
+  ]
+ ],
+ "s079.sec6.u8": [
+  [
+   "Hééé, toooi !!"
+  ]
+ ],
+ "s079.sec6.u9": [
+  [
+   "VOILÀ pourquoi je te dis",
+   "toujours que ta formation est",
+   "loin d'être finie !"
+  ]
+ ],
+ "s079.sec6.u10": [
+  [
+   "M-m-maître ?!"
+  ]
+ ],
+ "s079.sec6.u11": [
+  [
+   "Tête de mule ! Je n'arrive pas",
+   "à croire que tu traînes encore",
+   "ici !"
+  ]
+ ],
+ "s079.sec6.u12": [
+  [
+   "Son maître ?! Que se",
+   "passe-t-il ?!"
+  ]
+ ],
+ "s079.sec6.u13": [
+  [
+   "M-mais qui gardera la Région",
+   "Dino antique..."
+  ]
+ ],
+ "s079.sec6.u14": [
+  [
+   "Imbécile ! L'île est en grand",
+   "danger ! Va en ville te rendre",
+   "utile à tout le monde, idiot !"
+  ]
+ ],
+ "s079.sec6.u15": [
+  [
+   "O... Oui, maître..."
+  ]
+ ],
+ "s079.sec6.u16": [
+  [
+   "Hein, vraiment ?!"
+  ]
+ ],
+ "s079.sec6.u17": [
+  [
+   "Garçon du monde analogique, il",
+   "manque encore d'expérience,",
+   "mais veux-tu le faire"
+  ],
+  [
+   "travailler dans ta ville ? Je",
+   "monterai la garde ici."
+  ]
+ ],
+ "s079.sec6.u18": [
+  [
+   "Maître..."
+  ]
+ ],
+ "s079.sec6.u19": [
+  [
+   "Voilà, {color 6}{player}{color 1}. Je peux",
+   "venir en ville ?"
+  ]
+ ],
+ "s079.sec6.u20": [
+  [
+   "Bien sûr. Mais donne-toi du",
+   "mal."
+  ]
+ ],
+ "s079.sec6.u21": [
+  [
+   "Compte sur moi ! Maître, j'y",
+   "vais !"
+  ]
+ ],
+ "s079.sec6.u22": "Tyrannomon a rejoint la ville !",
+ "s079.sec6.u23": [
+  [
+   "Voyons jusqu'où il ira... Hé."
+  ]
+ ],
+ "s079.sec7.u0": [
+  [
+   "Hé... Combien d'années depuis",
+   "ma dernière garde ici ? Ah, tu",
+   "peux aller et venir librement."
+  ],
+  [
+   "Profites-en."
+  ]
+ ],
+ "s079.sec8.u0": [
+  [
+   "Hé... Combien d'années depuis",
+   "ma dernière garde ici ? Ah, tu",
+   "peux aller et venir librement."
+  ],
+  [
+   "Profites-en."
+  ]
+ ],
+ "s079.sec51.m0.o0": "Tu veux nous aider ?",
+ "s079.sec51.m0.o1": "Non... laisse tomber...",
+ "s079.sec51.u0": [
+  [
+   "Ah, c'est vous. La Région",
+   "rapide antique est devant.",
+   "Mieux vaut ne pas trop s'en"
+  ],
+  [
+   "approcher."
+  ]
+ ],
+ "s079.sec51.u1": [
+  [
+   "Comme je te l'ai dit, nous",
+   "avons deux buts : découvrir la",
+   "cause des problèmes et ramener"
+  ],
+  [
+   "les Digimon en ville."
+  ]
+ ],
+ "s079.sec51.u2": [
+  [
+   "Ah, C'est vrai. C'est ce que",
+   "tu m'as dit. Et?"
+  ]
+ ],
+ "s079.sec51.u3": [
+  [
+   "Ne compte pas sur moi. Je dois",
+   "garder cette forêt, c'est",
+   "important."
+  ]
+ ],
+ "s079.sec51.u4": [
+  [
+   "Alors, tu sais quelque chose",
+   "sur les problèmes de l'île ?"
+  ]
+ ],
+ "s079.sec51.u5": [
+  [
+   "Non, rien du tout... Hm... ?",
+   "Attends... Maintenant que tu le",
+   "dis, un énorme rocher est"
+  ],
+  [
+   "tombé du ciel il y a quelque",
+   "temps... C'était..."
+  ]
+ ],
+ "s079.sec51.u6": [
+  [
+   "Hein ? Où est-elle tombée ?!"
+  ]
+ ],
+ "s079.sec51.u7": [
+  [
+   "...Dans la Région rapide",
+   "antique. Juste par ici..."
+  ]
+ ],
+ "s079.sec51.u8": [
+  [
+   "Laisse-nous passer, s'il te",
+   "plaît ! Il pourrait y avoir un",
+   "indice !"
+  ]
+ ],
+ "s079.sec51.u9": [
+  [
+   "..................... Pfff...",
+   "Puisque tu y tiens tant, je",
+   "n'ai pas le choix... Tu m'as"
+  ],
+  [
+   "battu, après tout. Bon, va",
+   "voir."
+  ]
+ ],
+ "s079.sec51.u10": [
+  [
+   "Après ce point, le temps passe",
+   "deux fois plus vite que dehors.",
+   "Emporte assez de nourriture."
+  ],
+  [
+   "Et surveille ta durée de vie,",
+   "bien sûr."
+  ]
+ ],
+ "s079.sec51.u11": [
+  [
+   "Essaie de demander ailleurs."
+  ]
+ ]
+}

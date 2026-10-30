@@ -1,0 +1,65 @@
+From 39ff0ee06546da4e535397cc3715a47b022099c3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 30 Oct 2026 01:32:05 +0000
+Subject: [PATCH] Generate empty rows for discarded USA Japanese sprite text
+
+---
+ src/std/std_main.c | 8 ++++++++
+ src/vs/vs_scene.c  | 8 ++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 455b86c1..6586337c 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -687,6 +687,13 @@ static uint8_t STD_PORTRAIT_ROW[8];
+ #define STD_PORTRAIT_FIRST_FREE_ROW 8
+ 
+ // clang-format off
++#if VERSION_IS(US)
++/* MOD (player data): the USA renderers discard these Japanese sprite glyphs:
++ * their AddPrim calls are compiled out. Keep empty authored rows rather than
++ * inheriting a Japanese name table that western player discs cannot supply.
++ * Row counts stay fixed for the existing bounded lookups. */
++uint8_t STD_INTRO_DIGIMON_NAMES[112][14] = { { 0 } };
++#else
+ uint8_t STD_INTRO_DIGIMON_NAMES[112][14] = {
+ 	{
+ 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+@@ -1137,6 +1144,7 @@ uint8_t STD_INTRO_DIGIMON_NAMES[112][14] = {
+ 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 	},
+ };
++#endif
+ 
+ char STD_PATH_ARENA_MODEL_STDDAT_T_TOGI_TMD[] = "\\STDDAT\\T_TOGI.TMD";
+ 
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index f60cf8f7..c0ed6d76 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -532,6 +532,13 @@ int16_t VS_FONT_GLYPHS[216] = {
+ 	0x00a1, 0x00a2, 0x00a3, 0x00af, 0x00b0, 0x00b1, 0x00b2, 0x0056,
+ };
+ 
++#if VERSION_IS(US)
++/* MOD (player data): the USA renderers discard these Japanese sprite glyphs:
++ * their AddPrim calls are compiled out. Keep empty authored rows rather than
++ * inheriting a Japanese name table that western player discs cannot supply.
++ * Row counts stay fixed for the existing bounded lookups. */
++uint8_t VS__INTRO_DIGIMON_NAMES[116][14] = { { 0 } };
++#else
+ uint8_t VS__INTRO_DIGIMON_NAMES[116][14] = {
+ 	{
+ 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+@@ -998,6 +1005,7 @@ uint8_t VS__INTRO_DIGIMON_NAMES[116][14] = {
+ 		0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 	},
+ };
++#endif
+ 
+ char VS_PATH_ARENA_MODEL_STDDAT_T_TOGI_TMD[] = "\\STDDAT\\T_TOGI.TMD";
+ 
+-- 
+2.55.0
+

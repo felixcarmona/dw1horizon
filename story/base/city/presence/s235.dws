@@ -1,0 +1,11 @@
+// Who stands on screen 235 (Digimon Curling), and when. Read out of MAPHEAD.SCN section 235 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(235) {                              // Digimon Curling
+            npc 176 slot 0 when not recruited(Metalmamemon) and recruited(Penguinmon) and pstat(122) <= 0 or pstat(122) == 0 or not recruited(Metalmamemon) and recruited(Penguinmon) and pstat(122) >= 2 or recruited(Penguinmon) and pstat(122) <= 0 and roll(1) >= 1 or recruited(Penguinmon) and pstat(122) >= 2 and roll(1) >= 1;
+            npc 149 slot 1 when recruited(Metalmamemon) and pstat(122) <= -1 and roll(1) == 0 or pstat(122) == 1 or recruited(Metalmamemon) and pstat(122) >= 1 and roll(1) == 0;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+// Who stands on screen 155 (Factorial Town), and when. Read out of MAPHEAD.SCN section 155 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(155) {                              // Factorial Town
+            npc Geremon slot 0 autotalk when trigger(332) and clock.hour >= 7 and clock.hour <= 11 and clock.minute <= 54 or trigger(332) and clock.hour >= 13 and clock.hour <= 18 or trigger(332) and clock.hour >= 7 and clock.hour <= 10 or trigger(332) and clock.hour >= 12 and clock.hour <= 18 and clock.minute >= 6;
+            npc Geremon slot 1 autotalk when trigger(332) and clock.hour >= 7 and clock.hour <= 11 and clock.minute <= 54 or trigger(332) and clock.hour >= 13 and clock.hour <= 18 or trigger(332) and clock.hour >= 7 and clock.hour <= 10 or trigger(332) and clock.hour >= 12 and clock.hour <= 18 and clock.minute >= 6;
+            npc Geremon slot 2 autotalk when trigger(332) and clock.hour >= 7 and clock.hour <= 11 and clock.minute <= 54 or trigger(332) and clock.hour >= 13 and clock.hour <= 18 or trigger(332) and clock.hour >= 7 and clock.hour <= 10 or trigger(332) and clock.hour >= 12 and clock.hour <= 18 and clock.minute >= 6;
+            npc Platinumsukamon slot 3 autotalk when trigger(332) and clock.hour >= 1 and clock.hour <= 6 or trigger(332) and clock.hour >= 19 and clock.minute <= 54 or trigger(332) and clock.hour <= 6 and clock.minute >= 6 or trigger(332) and clock.hour >= 19 and clock.hour <= 22;
+            npc Platinumsukamon slot 4 autotalk when trigger(332) and clock.hour >= 1 and clock.hour <= 6 or trigger(332) and clock.hour >= 19 and clock.minute <= 54 or trigger(332) and clock.hour <= 6 and clock.minute >= 6 or trigger(332) and clock.hour >= 19 and clock.hour <= 22;
+            npc Platinumsukamon slot 5 autotalk when trigger(332) and clock.hour >= 1 and clock.hour <= 6 or trigger(332) and clock.hour >= 19 and clock.minute <= 54 or trigger(332) and clock.hour <= 6 and clock.minute >= 6 or trigger(332) and clock.hour >= 19 and clock.hour <= 22;
+            npc Guardromon slot 6 when not trigger(332) and clock.hour >= 1 and clock.hour <= 11 and clock.minute <= 54 or not trigger(332) and clock.hour >= 13 and clock.minute <= 54 or not trigger(332) and clock.hour <= 10 and clock.minute >= 6 or not trigger(332) and clock.hour >= 12 and clock.hour <= 22 and clock.minute >= 6;
+            npc Guardromon slot 7 when not trigger(332) and clock.hour >= 1 and clock.hour <= 11 and clock.minute <= 54 or not trigger(332) and clock.hour >= 13 and clock.minute <= 54 or not trigger(332) and clock.hour <= 10 and clock.minute >= 6 or not trigger(332) and clock.hour >= 12 and clock.hour <= 22 and clock.minute >= 6;
+        }
+    }
+}

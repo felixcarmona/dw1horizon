@@ -1,0 +1,248 @@
+From ff7a0f771765ac9851b033d8d7d73f2e35a19af5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 11:45:18 +0000
+Subject: [PATCH] Remember daily ground pickups with stable IDs instead of an
+ evicting ring
+
+---
+ include/dw/item.h        | 19 +++++-----------
+ include/dw/save_tags.h   |  3 ++-
+ include/dw/script.h      |  1 +
+ src/main/item.c          | 49 +++++++++++++++++++++++-----------------
+ src/main/main_menu.c     | 19 ++++++++--------
+ src/main/script_interp.c |  9 ++++++++
+ 6 files changed, 55 insertions(+), 45 deletions(-)
+
+diff --git a/include/dw/item.h b/include/dw/item.h
+index 34a2f9f4..ae57fbe9 100644
+--- a/include/dw/item.h
++++ b/include/dw/item.h
+@@ -94,20 +94,13 @@ void spawnItem(ItemId type, int16_t tileX, int16_t tileY);
+ void spawnDroppedItems(Entity *e, ItemId type);
+ int32_t pickupItem(int16_t itemId);
+ 
+-/*
+- * MOD (ground items a day): a spot a script spawns an item on (spawnItem) gives it once a day. The spots picked up
+- * today, by screen and tile (a ring of MOD_GROUND_PICKED_MAX), are skipped when the screen spawns again; midnight
+- * (dailyPStatTrigger) forgets them; the save keeps them (SAVE_TAG_GROUND_PICKED). Battle drops are not spots.
+- */
+-#define MOD_GROUND_PICKED_MAX 64
+-typedef struct {
+-	int16_t screen; /* -1: empty */
+-	uint8_t tileX;
+-	uint8_t tileY;
+-} GroundSpot;
+-extern GroundSpot MOD_GROUND_PICKED[MOD_GROUND_PICKED_MAX];
+-extern uint8_t MOD_GROUND_NEXT;
++/* Stable IDs are authored in content/ground-items.json and carried by SPAWN_ITEM_DAILY.
++ * Only this per-day bitset is resident. IDs are append-only save state; never renumber them.
++ * The build checks every spawn and the bound against this target's header. */
++#define MOD_GROUND_PICKUP_MAX 1024
++extern uint8_t MOD_GROUND_PICKED[MOD_GROUND_PICKUP_MAX / 8];
+ void modForgetGroundPicked(void);
++void spawnDailyItem(ItemId type, int16_t tileX, int16_t tileY, int32_t pickupId);
+ void removeTamerItem(void);
+ void renderOverworldItem(WorldItem *item);
+ 
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index 86d78b12..7399536d 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -30,7 +30,8 @@
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
+ #define SAVE_TAG_OPTIONS		0x0009 /* u8[n] the title menu's OPTIONS: [0] button layout (0 US, 1 Japanese) */
+ #define SAVE_TAG_VANILLA_SWAP		0x000A /* i16 species, i16 vanilla species: NEW DIGIMON off turned the partner from the first into the second (main_menu.c modVanillaSwap) */
+-#define SAVE_TAG_GROUND_PICKED		0x000B /* {i16 screen, u8 tileX, u8 tileY}[64]: the ground spots picked up today (item.c MOD_GROUND_PICKED) */
++#define SAVE_TAG_GROUND_PICKED		0x000B /* {i16 screen, u8 tileX, u8 tileY}[64]: the ground spots picked up today (retired; a zero-length record writes an empty legacy history) */
++#define SAVE_TAG_GROUND_PICKUP_BITS	0x000C /* bit array: stable ground pickup IDs collected today; registry content/ground-items.json */
+ #define SAVE_TAG_REQUIRED		0x8000
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+diff --git a/include/dw/script.h b/include/dw/script.h
+index dffb6900..6dbd5eb3 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -146,6 +146,7 @@
+ #define SCRIPT_OP_ADD_W				0x91	/* wreg, u16 value; saturates at 0xFFFF */
+ #define SCRIPT_OP_SUB_W				0x92	/* wreg, u16 value; stops at 0 */
+ #define SCRIPT_OP_SWITCH_W			0x93	/* wreg, u16 count, u16 offsets[count] */
++#define SCRIPT_OP_SPAWN_ITEM_DAILY		0x9F	/* _, u16 item, s16 x, s16 z, u16 stable pickup ID, u16 screen */
+ #define SCRIPT_OP_WIDE_END			0xA0	/* first opcode after the wide block */
+ #define SCRIPT_OP_SET_SCRIPT			0xFB	/* _, u16 script, u16 map */
+ #define SCRIPT_OP_UNUSED_FC			0xFC
+diff --git a/src/main/item.c b/src/main/item.c
+index fa35dbf7..b06c2d36 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -63,9 +63,8 @@ void addTamerLevel(int32_t chance, int32_t amount);
+ Inventory INVENTORY;
+ TamerItem TAMER_ITEM;
+ DroppedItem DROPPED_ITEMS[11];
+-GroundSpot MOD_GROUND_PICKED[MOD_GROUND_PICKED_MAX];
+-uint8_t MOD_GROUND_NEXT;
+-static uint8_t MOD_DROPPED_SPOT[11]; /* MOD (ground items a day): the dropped item came from a script's spot */
++uint8_t MOD_GROUND_PICKED[MOD_GROUND_PICKUP_MAX / 8];
++static uint16_t MOD_DROPPED_SPOT[11]; /* stable pickup ID + 1; 0 for battle/legacy drops */
+ int8_t TAMER_WAYPOINT_Y[30];
+ int8_t TAMER_WAYPOINT_X[30];
+ int8_t PARTNER_WAYPOINT_Y[30];
+@@ -2432,35 +2431,40 @@ void modForgetGroundPicked(void)
+ {
+ 	int32_t i;
+ 
+-	for (i = 0; i < MOD_GROUND_PICKED_MAX; i++) {
+-		MOD_GROUND_PICKED[i].screen = -1;
++	for (i = 0; i < sizeof(MOD_GROUND_PICKED); i++) {
++		MOD_GROUND_PICKED[i] = 0;
+ 	}
+-	MOD_GROUND_NEXT = 0;
+ }
+ 
+-static int32_t modGroundPicked(int16_t tileX, int16_t tileY)
++static int32_t modGroundPicked(int32_t id)
++{
++	return MOD_GROUND_PICKED[id / 8] & (1 << (id % 8));
++}
++
++void spawnDailyItem(ItemId itemId, int16_t tileX, int16_t tileY, int32_t pickupId)
+ {
+ 	int32_t i;
+ 
+-	for (i = 0; i < MOD_GROUND_PICKED_MAX; i++) {
+-		if (MOD_GROUND_PICKED[i].screen == CURRENT_SCREEN && MOD_GROUND_PICKED[i].tileX == (uint8_t)tileX &&
+-		    MOD_GROUND_PICKED[i].tileY == (uint8_t)tileY) {
+-			return 1;
++	/* Invalid/corrupt script IDs must never write outside the bitset or grant an untracked item. */
++	if ((uint32_t)pickupId >= MOD_GROUND_PICKUP_MAX || modGroundPicked(pickupId)) {
++		return;
++	}
++	for (i = 0; i < 11; i++) {
++		if (DROPPED_ITEMS[i].worldItem.type == ITEM_NONE) {
++			spawnItem(itemId, tileX, tileY);
++			MOD_DROPPED_SPOT[i] = pickupId + 1;
++			return;
+ 		}
+ 	}
+-	return 0;
+ }
+ 
+ void spawnItem(ItemId itemId, int16_t tileX, int16_t tileY) /* MOD: was u8 */
+ {
+ 	int32_t i;
+ 
+-	if (modGroundPicked(tileX, tileY)) { /* MOD (ground items a day): picked up here today */
+-		return;
+-	}
+ 	for (i = 0; i < 0xb; i++) {
+ 		if (DROPPED_ITEMS[i].worldItem.type == ITEM_NONE) {
+-			MOD_DROPPED_SPOT[i] = 1;
++			MOD_DROPPED_SPOT[i] = 0;
+ 			DROPPED_ITEMS[i].worldItem.type = itemId;
+ 			DROPPED_ITEMS[i].tileX = tileX;
+ 			DROPPED_ITEMS[i].tileY = tileY;
+@@ -2662,14 +2666,17 @@ int32_t pickupItem(int16_t itemId)
+ 	ItemId type; /* MOD: was u8 */
+ 	int32_t got;
+ 
++	/* Two spawns of the same authored spot must not yield two pickups either. */
++	if (MOD_DROPPED_SPOT[itemId] && modGroundPicked(MOD_DROPPED_SPOT[itemId] - 1)) {
++		deleteDroppedItem(itemId);
++		return 0;
++	}
+ 	type = DROPPED_ITEMS[itemId].worldItem.type;
+ 	got = giveItem(type, 1);
+ 	if (got != 0) {
+-		if (MOD_DROPPED_SPOT[itemId]) { /* MOD (ground items a day) */
+-			MOD_GROUND_PICKED[MOD_GROUND_NEXT].screen = CURRENT_SCREEN;
+-			MOD_GROUND_PICKED[MOD_GROUND_NEXT].tileX = DROPPED_ITEMS[itemId].tileX;
+-			MOD_GROUND_PICKED[MOD_GROUND_NEXT].tileY = DROPPED_ITEMS[itemId].tileY;
+-			MOD_GROUND_NEXT = (MOD_GROUND_NEXT + 1) % MOD_GROUND_PICKED_MAX;
++		if (MOD_DROPPED_SPOT[itemId]) {
++			int32_t id = MOD_DROPPED_SPOT[itemId] - 1;
++			MOD_GROUND_PICKED[id / 8] |= 1 << (id % 8);
+ 		}
+ 		deleteDroppedItem(itemId);
+ 	}
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 7a2b5df3..b82e89f9 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4416,6 +4416,8 @@ void loadSavegame(SavegamePayload *savegame)
+ {
+ 	int32_t i;
+ 
++	modForgetGroundPicked(); /* A missing new record, in any old layout, means no pickups today. */
++
+ 	SAVED_STATE.playerPos = savegame->tamerPosition;
+ 	SAVED_STATE.money = savegame->money;
+ 	SAVED_STATE.partnerPos = savegame->partnerPosition;
+@@ -4957,7 +4959,9 @@ static void prepareSaveFile(int32_t fromRam)
+ 		p = putRecord(p, SAVE_TAG_VANILLA_SWAP, swap, sizeof(swap));
+ 	}
+ 	if (fromRam) { /* MOD (ground items a day) */
+-		p = putRecord(p, SAVE_TAG_GROUND_PICKED, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
++		/* Retain the old tag's meaning (an empty location list) for older readers. */
++		p = putRecord(p, SAVE_TAG_GROUND_PICKED, 0, 0);
++		p = putRecord(p, SAVE_TAG_GROUND_PICKUP_BITS, MOD_GROUND_PICKED, sizeof(MOD_GROUND_PICKED));
+ 	}
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+@@ -5231,6 +5235,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_OPTIONS:
+ 	case SAVE_TAG_VANILLA_SWAP:
+ 	case SAVE_TAG_GROUND_PICKED:
++	case SAVE_TAG_GROUND_PICKUP_BITS:
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -5263,7 +5268,6 @@ static void applyRecords(uint8_t *e)
+ 	int32_t tag, len, i, n;
+ 	uint8_t *d;
+ 
+-	modForgetGroundPicked(); /* MOD (ground items a day): a save without the record picked nothing today */
+ 	for (;;) {
+ 		tag = e[at] | (e[at + 1] << 8);
+ 		len = e[at + 2] | (e[at + 3] << 8);
+@@ -5313,16 +5317,11 @@ static void applyRecords(uint8_t *e)
+ 				MOD_SWAP_TO = readRecord16(d + 2);
+ 			}
+ 			break;
+-		case SAVE_TAG_GROUND_PICKED:
+-			n = len / 4 < MOD_GROUND_PICKED_MAX ? len / 4 : MOD_GROUND_PICKED_MAX;
++		case SAVE_TAG_GROUND_PICKUP_BITS:
++			n = len < sizeof(MOD_GROUND_PICKED) ? len : sizeof(MOD_GROUND_PICKED);
+ 			for (i = 0; i < n; i++) {
+-				MOD_GROUND_PICKED[i].screen = readRecord16(d + 4 * i);
+-				MOD_GROUND_PICKED[i].tileX = d[4 * i + 2];
+-				MOD_GROUND_PICKED[i].tileY = d[4 * i + 3];
+-			}
+-			for (i = 0; i < MOD_GROUND_PICKED_MAX && MOD_GROUND_PICKED[i].screen != -1; i++) {
++				MOD_GROUND_PICKED[i] = d[i];
+ 			}
+-			MOD_GROUND_NEXT = i % MOD_GROUND_PICKED_MAX; /* the first free spot (a full ring: the first) */
+ 			break;
+ 		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
+ 			MOD_SAVE_STORY = len >= 10 ? d[9] != 0 : 1;
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index e314984c..ba779b7c 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2983,6 +2983,15 @@ void scriptInstruction80to9F(uint8_t op)
+ 		pollNextTwoScriptShorts(&posX, &posY);
+ 		spawnItem(id, posX, posY);
+ 		break;
++	case SCRIPT_OP_SPAWN_ITEM_DAILY:
++		skipOneReadOneUShort(&id);
++		pollNextTwoScriptShorts(&posX, &posY);
++		pollNextScriptUShort(&value);
++		pollNextScriptShort(&posZ);
++		if (CURRENT_SCREEN == posZ) {
++			spawnDailyItem(id, posX, posY, value);
++		}
++		break;
+ 	case SCRIPT_OP_SPAWN_CHEST16:
+ 		skipOneReadOneUShort(&id);
+ 		pollNextTwoScriptShorts(&posX, &posY);
+-- 
+2.55.0
+

@@ -1,0 +1,715 @@
+{
+ "s084.sec5.u0": [
+  [
+   "Ah, ist das schön warm!"
+  ]
+ ],
+ "s084.sec6.u0": [
+  [
+   "Du willst hier durch? Bring",
+   "mich nicht zum Lachen!"
+  ]
+ ],
+ "s084.sec7.u0": [
+  [
+   "Armes Ding... Fwahahaha!"
+  ]
+ ],
+ "s084.sec8.u0": [
+  [
+   "Es wird Blut regnen!"
+  ]
+ ],
+ "s084.sec81.u0": [
+  [
+   "Ab hier: gefrorenes Land. Wer",
+   "nicht {color 3}für Kälte geeignet{color 1} ist,",
+   "darf nicht hinein."
+  ]
+ ],
+ "s085.sec5.u0": [
+  [
+   "Kleiner, ich fresse dich",
+   "gaaaanz auf!"
+  ]
+ ],
+ "s085.sec6.u0": [
+  [
+   "Zeit, Ärger zu machen!"
+  ]
+ ],
+ "s085.sec7.u0": [
+  [
+   "Verfluche deine eigene",
+   "Schwäche!"
+  ]
+ ],
+ "s085.sec8.u0": [
+  [
+   "Komm nur. Ich werde dich in",
+   "Stücke schneiden!"
+  ]
+ ],
+ "s086.sec5.u0": [
+  [
+   "Kämpfe gegen miiich!!"
+  ]
+ ],
+ "s086.sec6.u0": [
+  [
+   "Miiist!"
+  ]
+ ],
+ "s086.sec7.u0": [
+  [
+   "Soll ich dich grün und blau",
+   "schlagen?"
+  ]
+ ],
+ "s086.sec8.u0": [
+  [
+   "Ich zerbreche dich wie einen",
+   "Zweig!"
+  ]
+ ],
+ "s087.sec5.u0": [
+  [
+   "Deine Sachen gehören jetzt",
+   "mir!"
+  ]
+ ],
+ "s087.sec6.u0": [
+  [
+   "Hehe, tut mir leid!"
+  ]
+ ],
+ "s087.sec7.u0": [
+  [
+   "Du kannst jemanden wie mich",
+   "unmöglich besiegen!"
+  ]
+ ],
+ "s087.sec8.u0": [
+  [
+   "Geh in die Hölle!"
+  ]
+ ],
+ "s087.sec9.u0": [
+  [
+   "He. Bring mich nicht zum",
+   "Lachen."
+  ]
+ ],
+ "s087.sec10.u0": [
+  [
+   "Ich kann dich nicht",
+   "durchkommen lassen."
+  ]
+ ],
+ "s088.sec51.u0": [
+  [
+   "Eine geheimnisvolle weiße Macht",
+   "blockiert die Passage!"
+  ]
+ ],
+ "s088.sec51.u1": [
+  [
+   "W-was? Meine Beine bewegen",
+   "sich von selbst..."
+  ]
+ ],
+ "s089.sec5.u0": [
+  [
+   "Lass deine Wertsachen hier,",
+   "Kumpel."
+  ]
+ ],
+ "s089.sec6.u0": [
+  [
+   "Ich friere dich völlig ein!"
+  ]
+ ],
+ "s089.sec7.u0": [
+  [
+   "Du gehst weder nach links noch",
+   "nach rechts."
+  ]
+ ],
+ "s089.sec8.u0": [
+  [
+   "Ich werde dich in Eis",
+   "einschließen!"
+  ]
+ ],
+ "s089.sec9.u0": [
+  [
+   "Ich zeige dir eine eisige",
+   "Hölle..."
+  ]
+ ],
+ "s089.sec10.u0": [
+  [
+   "Willst du erfrieren?"
+  ]
+ ],
+ "s089.sec81.u0": [
+  [
+   "Westen: Nebelwald Osten:",
+   "Eisbergstrand"
+  ]
+ ],
+ "s090.sec5.u0": [
+  [
+   "Du bist weit gekommen, was?"
+  ]
+ ],
+ "s090.sec6.u0": [
+  [
+   "Du willst kämpfen? Mir recht!"
+  ]
+ ],
+ "s090.sec7.u0": [
+  [
+   "Hmpf. Du siehst wirklich",
+   "schwach aus."
+  ]
+ ],
+ "s090.sec8.u0": [
+  [
+   "Ich bin perfekt."
+  ]
+ ],
+ "s091.sec5.m0.o0": "Vielleicht hast du recht.",
+ "s091.sec5.m0.o1": "Sei kein schlechter Verlierer",
+ "s091.sec5.m1.o0": "Gut, abgemacht",
+ "s091.sec5.m1.o1": "Zu viel Aufwand",
+ "s091.sec5.u0": [
+  [
+   "Wer vorbei will, muss mich",
+   "zuerst bekämpfen!"
+  ]
+ ],
+ "s091.sec5.u1": [
+  [
+   "Tss, ich war unachtsam. Aber",
+   "zwei gegen einen ist doch etwas",
+   "unfair, oder?"
+  ]
+ ],
+ "s091.sec5.u2": [
+  [
+   "Hör zu, im Einzelkampf verliere",
+   "ich nie! Ich fordere dich zum",
+   "Duell! Komm morgen um 16 Uhr"
+  ],
+  [
+   "wieder her. Diesmal kämpfen nur",
+   "die Digimon."
+  ]
+ ],
+ "s091.sec5.u3": [
+  [
+   "Das ist ein Versprechen. Bis",
+   "morgen!"
+  ]
+ ],
+ "s091.sec5.u4": [
+  [
+   "Du bist gekommen und nicht",
+   "davongelaufen. Nicht schlecht.",
+   "Heute geht es eins gegen eins,"
+  ],
+  [
+   "wie versprochen!"
+  ]
+ ],
+ "s091.sec5.u5": [
+  [
+   "Du bist nicht zur vereinbarten",
+   "Zeit gekommen. Was für ein",
+   "Kerl! Aber so konnte ich mich"
+  ],
+  [
+   "richtig erholen, also verzeihe",
+   "ich dir. Los geht's!"
+  ]
+ ],
+ "s091.sec5.u6": [
+  [
+   "Hm. Ich werde einfach",
+   "hinschauen. Weiter geht's."
+  ]
+ ],
+ "s091.sec5.u7": [
+  [
+   "Ich zähle auf dich,",
+   "{color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s091.sec5.u8": [
+  [
+   "Du bist... stark! Wer bist du",
+   "eigentlich?"
+  ]
+ ],
+ "s091.sec5.u9": [
+  [
+   "Wir sind auf dem Weg, diese",
+   "Insel vor Gefahr zu retten."
+  ]
+ ],
+ "s091.sec5.u10": [
+  [
+   "Was hast du gesagt?"
+  ]
+ ],
+ "s091.sec5.u11": [
+  [
+   "{color 6}{player}{color 1} gab sich alle",
+   "Mühe, ihn zu überzeugen!"
+  ]
+ ],
+ "s091.sec5.u12": [
+  [
+   "Gut, ich helfe dir. Aber",
+   "entscheiden kann ich erst, wenn",
+   "ich deine Stadt gesehen habe."
+  ]
+ ],
+ "s091.sec5.u13": "Garurumon ist in die Stadt gezogen!",
+ "s091.sec6.u0": [
+  [
+   "Ich werde dich besiegen!"
+  ]
+ ],
+ "s091.sec7.u0": [
+  [
+   "Gegen DICH verliere ich auf",
+   "keinen Fall!"
+  ]
+ ],
+ "s091.sec8.u0": [
+  [
+   "Kehehehe! Pech für dich."
+  ]
+ ],
+ "s091.sec9.u0": [
+  [
+   "He, willst du einfach an mir",
+   "vorbeigehen?"
+  ]
+ ],
+ "s092.sec5.u0": [
+  [
+   "Ich gebe alles!"
+  ]
+ ],
+ "s092.sec6.u0": [
+  [
+   "Das macht mich echt wütend!"
+  ]
+ ],
+ "s092.sec7.u0": [
+  [
+   "Wag es nicht, «kalt» zu sagen!"
+  ]
+ ],
+ "s092.sec8.u0": [
+  [
+   "Mach nichts Verrücktes!"
+  ]
+ ],
+ "s127.sec5.u0": [
+  [
+   "Was dagegen, wenn ich dich",
+   "etwas verprügle?"
+  ]
+ ],
+ "s127.sec6.u0": [
+  [
+   "Werd nicht übermütig!"
+  ]
+ ],
+ "s127.sec7.u0": [
+  [
+   "Bild dir nicht so viel ein, du",
+   "Wicht!"
+  ]
+ ],
+ "s127.sec8.u0": [
+  [
+   "Das wird nicht so einfach sein."
+  ]
+ ],
+ "s128.sec5.u0": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec5.u1": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec5.u2": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec5.u3": [
+  [
+   "He, du besuchst mich wieder!"
+  ]
+ ],
+ "s128.sec5.u4": [
+  [
+   "Grüß dich, ich bin Mojyamon!"
+  ]
+ ],
+ "s128.sec5.u5": "{color 6}{player}{color 1}, was du alles für uns getan hast, rührt mich sehr! Ich habe mich entschieden: Ich gehe in die Stadt. Kümmere dich gut um mich!",
+ "s128.sec5.u6": "Mojyamon ist in die Stadt gezogen!",
+ "s130.sec5.u0": [
+  [
+   "Ich spalte dir den Schädel!"
+  ]
+ ],
+ "s130.sec7.u0": [
+  [
+   "Geh zur Hölle."
+  ]
+ ],
+ "s130.sec81.m0.o0": "Ich bin zum Helfen hier",
+ "s130.sec81.m0.o1": "Ich bin noch nicht bereit",
+ "s130.sec81.m1.o0": "Okay. Ich helfe dir.",
+ "s130.sec81.m1.o1": "Ich habe noch was vor...",
+ "s130.sec81.u0": [
+  [
+   "Ah, Das bist du."
+  ]
+ ],
+ "s130.sec81.u1": [
+  [
+   "Ist jemand... da...?"
+  ]
+ ],
+ "s130.sec81.u2": [
+  [
+   "Du kannst nicht sehen!?"
+  ]
+ ],
+ "s130.sec81.u3": [
+  [
+   "Ich bin Whamon. Ich lebe",
+   "normalerweise im Meer. Ich",
+   "habe keine Augen, aber ich"
+  ],
+  [
+   "kann die meisten Dinge",
+   "wahrnehmen."
+  ]
+ ],
+ "s130.sec81.u4": [
+  [
+   "Ich bin {color 6}{player}{color 1}, ein",
+   "Mensch, und das ist... nun, du",
+   "kannst ihn nicht sehen, aber er"
+  ],
+  [
+   "ist {digimon 103},",
+   "{color 10}{partner}{color 1}. Mein Partner."
+  ]
+ ],
+ "s130.sec81.u5": [
+  [
+   "Oh... Ich spüre eine starke",
+   "Kraft..."
+  ]
+ ],
+ "s130.sec81.u6": [
+  [
+   "Hm... Hörst du dir meine",
+   "Geschichte an? In der Nähe",
+   "ist eine Höhle am Meer, in der"
+  ],
+  [
+   "ich mich ausruhe. Doch seit",
+   "Kurzem hausen dort üble",
+   "Gestalten, die mich vertrieben"
+  ],
+  [
+   "haben. Auf der Flucht habe ich",
+   "einen wertvollen Schatz",
+   "verloren."
+  ]
+ ],
+ "s130.sec81.u7": [
+  [
+   "Üble Gestalten, was? Das ist",
+   "beunruhigend."
+  ]
+ ],
+ "s130.sec81.u8": [
+  [
+   "Ich habe eine Bitte. Hilf mir,",
+   "sie zu vertreiben und meinen",
+   "Schatz zurückzuholen."
+  ]
+ ],
+ "s130.sec81.u9": [
+  [
+   "Ich sehe..."
+  ]
+ ],
+ "s130.sec81.u10": [
+  [
+   "Dann steig bitte auf meinen",
+   "Rücken."
+  ]
+ ],
+ "s130.sec81.u11": [
+  [
+   "Lass uns gehen!"
+  ]
+ ],
+ "s132.sec5.u0": [
+  [
+   "Hey, hallo! Ich bin zurück."
+  ]
+ ],
+ "s132.sec5.u1": [
+  [
+   "Du bist es... Was ist mit",
+   "deinem Digimon von vorhin",
+   "passiert?"
+  ]
+ ],
+ "s132.sec5.u2": [
+  [
+   "Wovon redest du? Es ist",
+   "derselbe, derselbe."
+  ]
+ ],
+ "s132.sec5.u3": [
+  [
+   "Hä? Oh... w-wirklich? War er",
+   "das...?"
+  ]
+ ],
+ "s132.sec5.u4": [
+  [
+   "Ich bin zurück, um dich um",
+   "etwas zu bitten. Kurz gesagt:",
+   "Komm doch in die Stadt."
+  ]
+ ],
+ "s132.sec5.u5": [
+  [
+   "Huh? Gibt es etwas Gutes?",
+   "Macht das Spaß?"
+  ]
+ ],
+ "s132.sec5.u6": [
+  [
+   "Äh... Du kannst jeden Laden",
+   "eröffnen, den du willst."
+  ]
+ ],
+ "s132.sec5.u7": [
+  [
+   "Waaas! Einen Laden? Davon",
+   "träume ich schon immer. Oh, oh,",
+   "ich komme mit!"
+  ]
+ ],
+ "s132.sec5.u8": [
+  [
+   "Oh, toll, toll. Dann gehen wir",
+   "gleich los."
+  ]
+ ],
+ "s132.sec5.u9": [
+  [
+   "Ein Laden, ein Laden!",
+   "Schabeis! Eiscreme! Ich kann",
+   "es kaum erwarten!"
+  ]
+ ],
+ "s132.sec5.u10": "Frigimon ist in die Stadt gezogen!",
+ "s132.sec5.u11": [
+  [
+   "He, du! Ich habe dir gesagt,",
+   "dass dieser Digimon keine Kälte",
+   "verträgt!"
+  ]
+ ],
+ "s132.sec5.u12": [
+  [
+   "Oje, ich komme wieder!"
+  ]
+ ],
+ "s132.sec51.u0": [
+  [
+   "Was?.. Was ist dieser Ort?..?",
+   "Ein Traum. . . ?"
+  ]
+ ],
+ "s132.sec51.u1": [
+  [
+   "Wow! Wer bist du?! Wo ist",
+   "{color 10}{partner}{color 1}?! W-w-wo ist er?"
+  ]
+ ],
+ "s132.sec51.u2": [
+  [
+   "Ruhig, ruhig. Ich bin Frigimon,",
+   "ein Eis- und Schnee-Digimon.",
+   "Das ist mein Haus. Ihr wart"
+  ],
+  [
+   "beide im Schnee bewusstlos",
+   "geworden. Ich habe euch",
+   "hergebracht und gepflegt."
+  ],
+  [
+   "Verstanden?"
+  ]
+ ],
+ "s132.sec51.u3": [
+  [
+   "Oh, {color 10}{partner}{color 1}, dir geht es",
+   "gut! Puh!"
+  ]
+ ],
+ "s132.sec51.u4": [
+  [
+   "He! Hörst du zu?! Ohne meine",
+   "Pflege ginge es euch NICHT",
+   "gut!"
+  ]
+ ],
+ "s132.sec51.u5": [
+  [
+   "Hehe, entschuldige. Vielen",
+   "Dank."
+  ]
+ ],
+ "s132.sec51.u6": [
+  [
+   "He, {color 10}{partner}{color 1}! Du bist",
+   "plötzlich umgekippt, und ich",
+   "habe mir auch den Kopf"
+  ],
+  [
+   "gestoßen!"
+  ]
+ ],
+ "s132.sec51.u7": [
+  [
+   "Weißt du nicht, dass",
+   "{digimon 103}",
+   "kälteempfindlich ist? Das war"
+  ],
+  [
+   "leichtsinnig. Du solltest dich",
+   "entschuldigen."
+  ]
+ ],
+ "s132.sec51.u8": [
+  [
+   "Das wusste ich nicht... Tut mir",
+   "leid, {color 10}{partner}{color 1}."
+  ]
+ ],
+ "s132.sec51.u9": [
+  [
+   "...Danke für alles, Frigimon.",
+   "Und, äh, da ich dir schon zur",
+   "Last falle, möchte ich dich"
+  ],
+  [
+   "noch etwas fragen..."
+  ]
+ ],
+ "s132.sec51.u10": [
+  [
+   "Ach, komm! Was tust du, wenn",
+   "{digimon 103} wieder",
+   "umkippt? Schnell nach Hause!"
+  ]
+ ],
+ "s132.sec51.u11": [
+  [
+   "O-okay. Ich lasse",
+   "{color 10}{partner}{color 1} zu einem anderen",
+   "Digimon digitieren."
+  ]
+ ],
+ "s132.sec51.u12": [
+  [
+   "??? Digitieren...?"
+  ]
+ ],
+ "s128.sec6.u0": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec6.u1": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec6.u2": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s128.sec6.u3": [
+  [
+   "He, du besuchst mich wieder!"
+  ]
+ ],
+ "s128.sec6.u4": [
+  [
+   "Grüß dich, ich bin Mojyamon!"
+  ]
+ ],
+ "s128.sec6.u5": "{color 6}{player}{color 1}, was du alles für uns getan hast, rührt mich sehr! Ich habe mich entschieden: Ich gehe in die Stadt. Kümmere dich gut um mich!",
+ "s128.sec6.u6": "Mojyamon ist in die Stadt gezogen!",
+ "s129.sec7.u0": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s129.sec7.u1": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s129.sec7.u2": [
+  [
+   "Na, wenn das nicht",
+   "{color 6}{player}{color 1} ist!"
+  ]
+ ],
+ "s129.sec7.u3": [
+  [
+   "He, du besuchst mich wieder!"
+  ]
+ ],
+ "s129.sec7.u4": [
+  [
+   "Grüß dich, ich bin Mojyamon!"
+  ]
+ ],
+ "s129.sec7.u5": "{color 6}{player}{color 1}, was du alles für uns getan hast, rührt mich sehr! Ich habe mich entschieden: Ich gehe in die Stadt. Kümmere dich gut um mich!",
+ "s129.sec7.u6": "Mojyamon ist in die Stadt gezogen!"
+}

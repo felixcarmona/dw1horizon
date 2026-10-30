@@ -1,0 +1,215 @@
+From 3110076cbaec562b05765dab7a0b02bae02bad38 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 12:04:45 +0000
+Subject: [PATCH] Technique effects: the donors table is data
+ (MOD_DONOR_ENTRIES, MOD_DONOR_ORIGINS, MOD_DONOR_BONES: plain numbers,
+ indexes instead of pointers), written by tools/balance.py from
+ content/tables/effect-donors.json; same results as MOD_TECH_DONORS
+
+---
+ src/main/efe.c | 149 +++++++++++++++++--------------------------------
+ 1 file changed, 51 insertions(+), 98 deletions(-)
+
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 98f8e3df..13a17cd7 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1292,7 +1292,7 @@ void renderParticleFlash(ParticleFlashData *params)
+  * chunk (checkTechCompatibility: bone and offset the effect leaves from) and
+  * is dropped when the type is not there. The partners made from NPCs are in
+  * none (or only some) of those tables, so each borrows a donor's row, moved
+- * onto its own body. One table, MOD_TECH_DONORS, holds every borrower; for a
++ * onto its own body. One table, MOD_DONOR_ENTRIES (with its origin and bone pools, below; content/tables/effect-donors.json), holds every borrower; for a
+  * type, its entries are tried in order and the first that gives an origin
+  * wins:
+  *   1. the donor's row is looked up in the technique's table; without one the
+@@ -1325,111 +1325,64 @@ typedef struct {
+ 	EfeBoneOffset to;   /* the partner's bone and offset */
+ } ModTechOrigin;
+ 
++/*
++
++ * MOD (tech donors): the data of the borrowers, as plain numbers written by tools/balance.py build from
++ * content/tables/effect-donors.json (the initializers are what that file holds): one row per borrowing species and
++ * donor, in the order they are tried; originStart/originCount index MOD_DONOR_ORIGINS, boneStart/boneCount
++ * MOD_DONOR_BONES. A row with type -1 is unused.
++ */
+ typedef struct {
+ 	int16_t type;
+ 	int16_t donor;
+ 	int16_t num;
+ 	int16_t den;
+ 	int16_t flags;
++	int16_t originStart;
+ 	int16_t originCount;
+-	ModTechOrigin *origins;
++	int16_t boneStart;
++	int16_t boneCount; /* partner bone for each donor bone (a bone map), 0 = none */
+ 	EfeBoneOffset fallback;
+-	int8_t *bones; /* partner bone for each donor bone (boneCount entries) */
+-	int32_t boneCount;
+ } ModTechDonor;
+ 
+-#define MOD_COUNT(a) ((int16_t)(sizeof(a) / sizeof((a)[0])))
+-
+-/*
+- * MOD (cherrymon): Cherrymon borrows Piximon's row (the other Earth Ultimate:
+- * it has a row for the eight Earth techniques and Bit Bomb):
+- *   - bone 0: 1.6 times farther, Cherrymon being 550 high and Piximon 330;
+- *   - bone 11 (Piximon's spear hand: Green Trap, the thrown Bit Bomb): the
+- *     palm of Cherrymon's front hand, also bone 11, which its throwing
+- *     animations swing;
+- *   - anything else (Piximon's head: the powders, Bug, Insect Plague), and a
+- *     table without Piximon: Cherrymon's mouth, in front of trunk bone 2.
+- */
+-static ModTechOrigin MOD_TECH_ORIGINS_CHERRYMON[] = {
+-	{ { 11, MOD_ORIGIN_ANY_OFFSET, 0, 0 }, { 11, 25, 55, 0 } },
+-};
+-
+-/*
+- * MOD (partners-npc-a): Icemon's Subzero Ice Punch: Frigimon's point in front
+- * of it (bone 0, scaled), any other Frigimon bone to Icemon's head.
+- */
+-static ModTechOrigin MOD_TECH_ORIGINS_ICEMON_FRIGIMON[] = {
+-	{ { MOD_ORIGIN_ANY_BONE, MOD_ORIGIN_ANY_OFFSET, 0, 0 }, { 4, 60, 35, 0 } },
+-};
+-
+-/* MOD (partners-npc-b): WaruMonzaemon <- Monzaemon (tech-origins.py warumonzaemon; 410/330 high) */
+-static ModTechOrigin MOD_TECH_ORIGINS_WARUMONZAEMON[] = {
+-	{ { 4, 200, 0, 0 }, { 3, 0, -248, -21 } },    /* Electric Cloud: above the head */
+-	{ { 2, 100, 200, 0 }, { 2, -67, -124, -239 } }, /* Megalo Spark: before the chest */
+-	{ { 6, 94, 0, 0 }, { 6, 7, 113, 28 } },       /* Confused Storm: the claw arm */
+-	{ { 2, 50, 150, 0 }, { 2, -50, -62, -179 } },   /* Lovely Attack: before the chest */
++#define MOD_DONOR_MAX        16
++#define MOD_DONOR_ORIGIN_MAX 24
++#define MOD_DONOR_BONE_MAX   48
++
++ModTechDonor MOD_DONOR_ENTRIES[MOD_DONOR_MAX] = {
++	{ 121, 55, 8, 5, 6, 0, 1, 0, 0, { 2, 0, 0, -110 } },
++	{ 120, 39, 171, 100, 1, 1, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ 94, 68, 110, 100, 1, 1, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ 94, 3, 124, 100, 1, 1, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ 94, 23, 82, 100, 0, 1, 1, 0, 0, { 0, 0, 0, 0 } },
++	{ 113, 68, 100, 100, 1, 2, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ 113, 9, 100, 100, 1, 2, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ 119, 24, 440, 400, 2, 2, 4, 0, 0, { 4, 0, -20, -190 } },
++	{ 66, 6, 430, 400, 2, 6, 0, 0, 0, { 3, 0, 0, -60 } },
++	{ 70, 14, 410, 330, 2, 6, 4, 0, 0, { 2, 0, -62, -179 } },
++	{ 117, 34, 16, 25, 0, 10, 0, 0, 18, { 0, 0, 0, 0 } },
++	{ 116, 40, 7, 8, 0, 10, 0, 18, 21, { 0, 0, 0, 0 } },
++	{ -1, 0, 0, 0, 0, 0, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ -1, 0, 0, 0, 0, 0, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ -1, 0, 0, 0, 0, 0, 0, 0, 0, { 0, 0, 0, 0 } },
++	{ -1, 0, 0, 0, 0, 0, 0, 0, 0, { 0, 0, 0, 0 } },
+ };
+ 
+-/*
+- * MOD (partners-npc-b): ShogunGekomon <- Whamon (440/400 high): Whamon's head
+- * points become ShogunGekomon's mouth (head bone 4, in front of the jaw), its
+- * body point (Aurora Freeze) its hips, and Blasting Spout leaves from the bell
+- * of a trumpet (bone 7). The model's head and trumpets carry no rest rotation,
+- * so these offsets are in model axes (0.55 times the NPC's mesh).
+- */
+-static ModTechOrigin MOD_TECH_ORIGINS_SHOGUNGEKOMON[] = {
+-	{ { 2, 60, 0, 10 }, { 4, 0, -20, -190 } },    /* Giga Freeze, Water Blit */
+-	{ { 2, -70, 0, 210 }, { 4, 0, -20, -190 } },  /* Ice Needle */
+-	{ { 1, 0, 0, 0 }, { 1, 0, 0, 0 } },           /* Aurora Freeze */
+-	{ { 2, -102, 0, 155 }, { 7, 90, -270, 30 } }, /* Blasting Spout: a trumpet */
++ModTechOrigin MOD_DONOR_ORIGINS[MOD_DONOR_ORIGIN_MAX] = {
++	{ { 11, 32767, 0, 0 }, { 11, 25, 55, 0 } },
++	{ { -2, 32767, 0, 0 }, { 4, 60, 35, 0 } },
++	{ { 2, 60, 0, 10 }, { 4, 0, -20, -190 } },
++	{ { 2, -70, 0, 210 }, { 4, 0, -20, -190 } },
++	{ { 1, 0, 0, 0 }, { 1, 0, 0, 0 } },
++	{ { 2, -102, 0, 155 }, { 7, 90, -270, 30 } },
++	{ { 4, 200, 0, 0 }, { 3, 0, -248, -21 } },
++	{ { 2, 100, 200, 0 }, { 2, -67, -124, -239 } },
++	{ { 6, 94, 0, 0 }, { 6, 7, 113, 28 } },
++	{ { 2, 50, 150, 0 }, { 2, -50, -62, -179 } },
+ };
+ 
+-/*
+- * MOD (partners-npc-c): Jijimon and Analogman take their donor's animations,
+- * so each donor bone maps to the bone that plays its part in the retargeted
+- * animation (the club hand to the staff hand...), the offset scaled.
+- */
+-/* MOD (jijimon): Ogremon's bones 1-17 -> Jijimon's (head and jaw -> face, club -> staff), 250/390 high */
+-static int8_t MOD_TECH_BONES_JIJIMON[] = { 0, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+-/* MOD (analogman): Andromon's bones 1-20 -> Analogman's (the shoulder joints to the torso,
+- * each arm and leg piece to his), 350/400 high */
+-static int8_t MOD_TECH_BONES_ANALOGMAN[] = { 0, 1, 2, 3, 2, 4, 5, 6, 2, 8, 9, 10, 11, 11, 12, 13, 14, 11, 15, 16, 17 };
+-
+-static ModTechDonor MOD_TECH_DONORS[] = {
+-	/* MOD (cherrymon) */
+-	{ DIGIMON_CHERRYMON, DIGIMON_PIXIMON, 8, 5, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS,
+-	  MOD_COUNT(MOD_TECH_ORIGINS_CHERRYMON), MOD_TECH_ORIGINS_CHERRYMON, { 2, 0, 0, -110 }, NULL, 0 },
+-	/* MOD (partners-npc-a): King of Sukamon is Sukamon (same skeleton) built
+-	 * 2.76 times larger, shrunk to 0.62 by its partner model: 1.71 times Sukamon */
+-	{ DIGIMON_KING_SUKAMON, DIGIMON_SUKAMON, 171, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
+-	/* MOD (partners-npc-a): Icemon has its own rows for Megaton Punch, Giga
+-	 * Freeze and Ice Needle. Tremar and Buster Dive: Gotsumon's (the same
+-	 * model, 280 high); Ice Statue, Winter Blast, Muscle Charge: Agumon's
+-	 * (the same bones, 250 high; SnowAgumon uses Agumon's rows); Subzero Ice
+-	 * Punch: Frigimon's (380 high). */
+-	{ DIGIMON_ICEMON, DIGIMON_GOTSUMON, 110, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
+-	{ DIGIMON_ICEMON, 3, 124, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
+-	{ DIGIMON_ICEMON, DIGIMON_FRIGIMON, 82, 100, 0, MOD_COUNT(MOD_TECH_ORIGINS_ICEMON_FRIGIMON),
+-	  MOD_TECH_ORIGINS_ICEMON_FRIGIMON, { 0 }, NULL, 0 },
+-	/* MOD (partners-npc-a): Meteormon has its own rows for Magma Bomb,
+-	 * Meltdown, Megaton Punch and Tremar (in its unscaled model units, like
+-	 * these). Buster Dive: Gotsumon's; Spit Fire, Heat Laser, Red Inferno,
+-	 * Prominence Beam, Fireball: Meramon's (the same bones, its animations
+-	 * are Meramon's) */
+-	{ DIGIMON_METEORMON, DIGIMON_GOTSUMON, 100, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
+-	{ DIGIMON_METEORMON, DIGIMON_MERAMON, 100, 100, MOD_DONOR_SAME_RIG, 0, NULL, { 0 }, NULL, 0 },
+-	/* MOD (partners-npc-b): a donor row with no explicit origin starts from the fallback */
+-	{ DIGIMON_SHOGUNGEKOMON, DIGIMON_WHAMON, 440, 400, MOD_DONOR_FALLBACK,
+-	  MOD_COUNT(MOD_TECH_ORIGINS_SHOGUNGEKOMON), MOD_TECH_ORIGINS_SHOGUNGEKOMON, { 4, 0, -20, -190 }, NULL, 0 },
+-	/* MOD (partners-npc-b): Myotismon <- Devimon: Sonic Jab and Death Claw leave from bone 0 (430/400 high) */
+-	{ DIGIMON_MYOTISMON, DIGIMON_DEVIMON, 430, 400, MOD_DONOR_FALLBACK, 0, NULL, { 3, 0, 0, -60 }, NULL, 0 },
+-	{ DIGIMON_WARUMONZAEMON, DIGIMON_MONZAEMON, 410, 330, MOD_DONOR_FALLBACK,
+-	  MOD_COUNT(MOD_TECH_ORIGINS_WARUMONZAEMON), MOD_TECH_ORIGINS_WARUMONZAEMON, { 2, 0, -62, -179 }, NULL, 0 },
+-	/* MOD (partners-npc-c) */
+-	{ DIGIMON_JIJIMON, DIGIMON_OGREMON, 16, 25, 0, 0, NULL, { 0 }, MOD_TECH_BONES_JIJIMON,
+-	  MOD_COUNT(MOD_TECH_BONES_JIJIMON) },
+-	{ DIGIMON_ANALOGMAN, DIGIMON_ANDROMON, 7, 8, 0, 0, NULL, { 0 }, MOD_TECH_BONES_ANALOGMAN,
+-	  MOD_COUNT(MOD_TECH_BONES_ANALOGMAN) },
++int8_t MOD_DONOR_BONES[MOD_DONOR_BONE_MAX] = {
++	0, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0, 1, 2, 3, 2, 4, 5, 6, 2, 8, 9, 10, 11, 11, 12, 13, 14, 11, 15, 16, 17,
+ };
+ 
+ static int32_t modOriginMatches(EfeBoneOffset *from, EfeBoneOffset *row)
+@@ -1455,8 +1408,8 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 	SpeciesRecord *rec;
+ 	int32_t i, k, bone, onBone, onEntity, best;
+ 
+-	for (i = 0; i < MOD_COUNT(MOD_TECH_DONORS); i++) {
+-		d = &MOD_TECH_DONORS[i];
++	for (i = 0; i < MOD_DONOR_MAX; i++) {
++		d = &MOD_DONOR_ENTRIES[i];
+ 		if (d->type != type) {
+ 			continue;
+ 		}
+@@ -1482,15 +1435,15 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 			return out;
+ 		}
+ 		for (k = 0; k < d->originCount; k++) {
+-			if (modOriginMatches(&d->origins[k].from, row)) {
+-				*out = d->origins[k].to;
++			if (modOriginMatches(&MOD_DONOR_ORIGINS[d->originStart + k].from, row)) {
++				*out = MOD_DONOR_ORIGINS[d->originStart + k].to;
+ 				next = (next + 1) & 7;
+ 				return out;
+ 			}
+ 		}
+-		if (d->bones != NULL) {
++		if (d->boneCount != 0) {
+ 			bone = row->boneId;
+-			out->boneId = (bone >= 0 && bone < d->boneCount) ? d->bones[bone] : 0;
++			out->boneId = (bone >= 0 && bone < d->boneCount) ? MOD_DONOR_BONES[d->boneStart + bone] : 0;
+ 			next = (next + 1) & 7;
+ 			return out;
+ 		}
+-- 
+2.53.0
+

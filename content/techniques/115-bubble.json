@@ -1,0 +1,16 @@
+{
+  "id": 115,
+  "name": "Bubble",
+  "element": "ice",
+  "power": 5,
+  "mpCost": 0,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 2,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0
+}

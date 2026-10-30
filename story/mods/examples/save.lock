@@ -1,0 +1,13 @@
+{
+ "flags": {
+  "Errand_b0": 783,
+  "Errand_b1": 784,
+  "beaten": 785,
+  "intro_seen": 781,
+  "reward_taken": 780,
+  "sparring_won": 782
+ },
+ "vars": {
+  "visits": 7
+ }
+}

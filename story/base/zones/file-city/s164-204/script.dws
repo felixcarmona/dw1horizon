@@ -1,0 +1,408 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 164 {
+    npc jijimon0 = 5;
+    npc tokomon1 = 6;
+    npc jijimon2 = 7;
+    npc jijimon3 = 8;
+    npc yuramon = 9;
+    npc tanemon = 11;
+    sections 254, 54, 51, 52, 5, 6, 7, 66, 8, 11, 9, 53;
+    on enter replace {    // enter
+        engine.arg = 0;
+        call_routine(routine("save_clock_speed"));
+        set_obj_visibility(73, 0);
+        set_obj_visibility(74, 0);
+        set_obj_visibility(75, 0);
+        set_obj_visibility(76, 0);
+        set_obj_visibility(77, 0);
+        set_obj_visibility(78, 0);
+        set_obj_visibility(79, 1);
+        set_obj_visibility(80, 1);
+        set_obj_visibility(81, 1);
+        set_obj_visibility(82, 1);
+        set_obj_visibility(83, 1);
+    }
+    on step(3) replace {    // step3
+        if (debug_test_npcs) {
+            jump_to_file(193, 54);
+        }
+        goto sec66;
+    }
+    on step(0) replace {    // step0
+        walk(tamer, 250, -5000);
+        if (is_recruited(species(31)) || is_recruited(species(45)) || is_recruited(species(33)) || is_recruited(species(47))) {
+            if (is_recruited(species(9)) || is_recruited(species(8)) || is_recruited(species(22)) || is_recruited(species(23))) {
+                if (is_recruited(species(36))) {
+                    if (is_recruited(species(5))) {
+                        warp_to(192, 1, 255);
+                        return;
+                    }
+                    warp_to(191, 1, 255);
+                    return;
+                }
+                if (is_recruited(species(5))) {
+                    warp_to(193, 1, 255);
+                    return;
+                }
+                warp_to(190, 1, 255);
+                return;
+            }
+            if (is_recruited(species(36))) {
+                if (is_recruited(species(5))) {
+                    warp_to(195, 1, 255);
+                    return;
+                }
+                warp_to(194, 1, 255);
+                return;
+            }
+            if (is_recruited(species(5))) {
+                warp_to(196, 1, 255);
+                return;
+            }
+            warp_to(189, 1, 255);
+            return;
+        }
+        if (is_recruited(species(4)) || is_recruited(species(49))) {
+            if (is_recruited(species(9)) || is_recruited(species(8)) || is_recruited(species(22)) || is_recruited(species(23))) {
+                if (is_recruited(species(36))) {
+                    if (is_recruited(species(5))) {
+                        warp_to(184, 1, 255);
+                        return;
+                    }
+                    warp_to(183, 1, 255);
+                    return;
+                }
+                if (is_recruited(species(5))) {
+                    warp_to(185, 1, 255);
+                    return;
+                }
+                warp_to(182, 1, 255);
+                return;
+            }
+            if (is_recruited(species(36))) {
+                if (is_recruited(species(5))) {
+                    warp_to(187, 1, 255);
+                    return;
+                }
+                warp_to(186, 1, 255);
+                return;
+            }
+            if (is_recruited(species(5))) {
+                warp_to(188, 1, 255);
+                return;
+            }
+            warp_to(181, 1, 255);
+            return;
+        }
+        if (is_recruited(species(9)) || is_recruited(species(8)) || is_recruited(species(22)) || is_recruited(species(23))) {
+            if (is_recruited(species(36))) {
+                if (is_recruited(species(5))) {
+                    warp_to(199, 1, 255);
+                    return;
+                }
+                warp_to(198, 1, 255);
+                return;
+            }
+            if (is_recruited(species(5))) {
+                warp_to(200, 1, 255);
+                return;
+            }
+            warp_to(197, 1, 255);
+            return;
+        }
+        if (is_recruited(species(36))) {
+            if (is_recruited(species(5))) {
+                warp_to(202, 1, 255);
+                return;
+            }
+            warp_to(201, 1, 255);
+            return;
+        }
+        if (is_recruited(species(5))) {
+            warp_to(203, 1, 255);
+            return;
+        }
+        warp_to(180, 1, 255);
+        return;
+    }
+    on step(1) replace {    // step1
+        walk(tamer, -3000, -2588);
+        warp_to(112, 1, 255);
+    }
+    on talk(jijimon0) replace {    // talk
+        set_stat(17, 99);
+        set_stat(18, 99);
+        set_stat(19, 99);
+        say(jijimon0, text("s164.sec5.u0"));
+        store_date(date_year);
+        say(jijimon0, text("s164.sec5.u1"));
+        say(jijimon0, text("s164.sec5.u2"));
+        choice {
+            text("s164.sec5.m0.o0") => {
+                choice {
+                    text("s164.sec5.m1.o0") => {
+                        warp_to(18, 0, 255);
+                        warp_to(12, 0, 255);
+                    }
+                    text("s164.sec5.m1.o1") => {
+                        warp_to(12, 0, 255);
+                    }
+                    text("s164.sec5.m1.o2") => {}
+                    cancel => {
+                        return;
+                    }
+                }
+                warp_to(24, 0, 255);
+                warp_to(69, 0, 255);
+                warp_to(52, 0, 255);
+                warp_to(44, 0, 255);
+            }
+            text("s164.sec5.m0.o1") => {
+                choice {
+                    text("s164.sec5.m2.o0") => {
+                        warp_to(69, 0, 255);
+                        warp_to(52, 0, 255);
+                    }
+                    text("s164.sec5.m2.o1") => {
+                        warp_to(52, 0, 255);
+                    }
+                    text("s164.sec5.m2.o2") => {}
+                    cancel => {
+                        return;
+                    }
+                }
+                warp_to(44, 0, 255);
+            }
+            text("s164.sec5.m0.o2") => {
+                choice {
+                    text("s164.sec5.m3.o0") => {
+                        warp_to(79, 0, 255);
+                        warp_to(86, 0, 255);
+                    }
+                    text("s164.sec5.m3.o1") => {
+                        warp_to(86, 0, 255);
+                    }
+                    text("s164.sec5.m3.o2") => {}
+                    cancel => {
+                        return;
+                    }
+                }
+                choice {
+                    text("s164.sec5.m4.o0") => {
+                        warp_to(134, 0, 255);
+                        warp_to(6, 0, 255);
+                    }
+                    text("s164.sec5.m4.o1") => {
+                        warp_to(6, 0, 255);
+                    }
+                    text("s164.sec5.m4.o2") => {}
+                    cancel => {
+                        return;
+                    }
+                }
+                warp_to(31, 0, 255);
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+        warp_to(79, 0, 255);
+        warp_to(86, 0, 255);
+        choice {
+            text("s164.sec5.m4.o0") => {
+                warp_to(134, 0, 255);
+                warp_to(6, 0, 255);
+            }
+            text("s164.sec5.m4.o1") => {
+                warp_to(6, 0, 255);
+            }
+            text("s164.sec5.m4.o2") => {}
+            cancel => {
+                return;
+            }
+        }
+        warp_to(31, 0, 255);
+    }
+    on talk(tokomon1) replace {    // talk
+        set_stat(22, 3);
+        say(jijimon0, text("s164.sec6.u0"));
+        say(tokomon1, text("s164.sec6.u1"));
+        choice {
+            text("s164.sec6.m0.o0") => {
+                engine.arg = 11;
+                call_digimon_routine(routine("forced_evolution"));
+                await narrator;
+                return;
+            }
+            text("s164.sec6.m0.o1") => {
+                engine.arg = 39;
+                call_digimon_routine(routine("forced_evolution"));
+                await narrator;
+                return;
+            }
+            text("s164.sec6.m0.o2") => {
+                engine.arg = 1;
+                call_digimon_routine(routine("forced_evolution"));
+                await narrator;
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+    on talk(jijimon2) replace {    // talk
+        jump_to_file(209, 5);
+    }
+    on step(15) replace {    // step15
+        unless (!debug_city_entered && !debug_mode) return;
+        debug_city_entered = true;
+        goto L98;
+    }
+    on talk(jijimon3) replace {    // talk
+        choice(jijimon3) {
+            text("s164.sec8.m0.o0") => {
+                set_stat(6, 1);
+                set_stat(13, 1);
+                return;
+            }
+            text("s164.sec8.m0.o1") => {
+                goto L98;
+            }
+            text("s164.sec8.m0.o2") => {
+                goto L99;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+    on talk(tanemon) replace {    // talk
+        if (!meat_farm_explained) {
+            say(tanemon, text("s164.sec11.u0"));
+            say(tamer, text("s164.sec11.u1"));
+            say(tanemon, text("s164.sec11.u2"));
+            say(tamer, text("s164.sec11.u3"));
+            say(tanemon, text("s164.sec11.u4"));
+        } else {
+            store_random(random_roll, 3);
+            if (meat_farm_days >= 1 && random_roll <= 0) {
+                say(tanemon, text("s164.sec11.u10"));
+            } else {
+                if (meat_farm_days >= 1) {
+                    say(tanemon, text("s164.sec11.u17"));
+                } else {
+                    say(tanemon, text("s164.sec11.u24"));
+                    return;
+                }
+                if (has(item(38)) >= 99) {
+                    say(tanemon, text("s164.sec11.u18"));
+                    return;
+                }
+                if (has(item(38)) >= 97) {
+                    say(tanemon, text("s164.sec11.u19"));
+                    say(narrator, text("s164.sec11.u20"));
+                    give(item(38), 3);
+                    meat_farm_explained = true;
+                    meat_farm_days = 0;
+                    return;
+                }
+                give(item(38), 3);
+                if (engine.item_did_not_fit) {
+                    say(tanemon, text("s164.sec11.u21"));
+                    return;
+                }
+                say(narrator, text("s164.sec11.u22"));
+                say(tanemon, text("s164.sec11.u23"));
+                meat_farm_days = 0;
+                return;
+            }
+            if (has(item(38)) >= 99) {
+                say(tanemon, text("s164.sec11.u11"));
+                return;
+            }
+            if (has(item(38)) >= 95) {
+                say(tanemon, text("s164.sec11.u12"));
+                say(narrator, text("s164.sec11.u13"));
+                give(item(38), 5);
+                meat_farm_explained = true;
+                meat_farm_days = 0;
+                return;
+            }
+            give(item(38), 5);
+            if (engine.item_did_not_fit) {
+                say(tanemon, text("s164.sec11.u14"));
+                return;
+            }
+            say(narrator, text("s164.sec11.u15"));
+            say(tanemon, text("s164.sec11.u16"));
+            meat_farm_days = 0;
+            return;
+        }
+        give(item(38), 3);
+        if (has(item(38)) >= 99) {
+            say(tanemon, text("s164.sec11.u5"));
+            meat_farm_days = 1;
+            return;
+        }
+        if (has(item(38)) >= 97) {
+            say(tanemon, text("s164.sec11.u6"));
+            say(narrator, text("s164.sec11.u7"));
+            meat_farm_explained = true;
+            meat_farm_days = 0;
+            return;
+        }
+        if (engine.item_did_not_fit) {
+            say(tanemon, text("s164.sec11.u8"));
+            return;
+        }
+        say(narrator, text("s164.sec11.u9"));
+        meat_farm_explained = true;
+        meat_farm_days = 0;
+        return;
+    }
+    on talk(yuramon) replace {    // talk
+        say(yuramon, text("s164.sec9.u0"));
+    }
+    on step(2) replace {    // step2
+        walk(tamer, 23, -842);
+        warp_to(218, 0, 255);
+        return;
+    }
+    shared L98 {
+        debug_mode = true;
+        debug_test_npcs = true;
+        warp_to(238, 9, 255);
+    }
+    shared L99 {
+        choice {
+            text("s164.sec8.m1.o0") => {
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 60);
+                advance_to_date_at(date_year);
+                return;
+            }
+            text("s164.sec8.m1.o1") => {
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 360);
+                advance_to_date_at(date_year);
+                return;
+            }
+            text("s164.sec8.m1.o2") => {
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 14400);
+                advance_to_date_at(date_year);
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+}

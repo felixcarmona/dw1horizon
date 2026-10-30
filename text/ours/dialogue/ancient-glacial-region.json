@@ -1,0 +1,124 @@
+{
+ "s077.sec5.u0": "Hey, you! Bring it ooon!",
+ "s077.sec6.u0": "Bzzz, bzzz, bzzz!",
+ "s077.sec7.u0": "Never stand behind meee!!",
+ "s077.sec8.u0": "Whoosh-whoosh-whoooosh!",
+ "s077.sec9.u0": "I'm on fire! My blood's boiling!",
+ "s077.sec10.u0": "Win, win, win! I'm gonna WIIIN!",
+ "s078.sec5.u0": "I believe someone of my kind set out to become a merchant... I hear he has opened a shop somewhere. He would be more use to you as a friend than I would...",
+ "s078.sec5.u1": "Why does time flow differently here than outside? It is certainly a comfortable place for us to live, but...",
+ "s078.sec6.u0": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "Up north, there's ice and snow that never",
+   "melts. Anyone living there has gotta be nuts."
+  ]
+ ],
+ "s078.sec6.u1": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "Out west there's a little iron town, but its",
+   "gate stays shut. Me, I'd just fly in. Keh heh."
+  ]
+ ],
+ "s078.sec6.u2": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "Southwest, there's a village",
+   "of odd Digimon with horns and",
+   "pincers. They live in trees."
+  ]
+ ],
+ "s078.sec6.u3": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "Northwest, there's a misty forest with a",
+   "building in it. Mind you, it's way far."
+  ]
+ ],
+ "s078.sec6.u4": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "Been to the Great Canyon",
+   "in the east yet? That place",
+   "is a real maze. Keh heh."
+  ]
+ ],
+ "s078.sec6.u5": [
+  [
+   "I've flown high and seen far..."
+  ],
+  [
+   "What's in the dead center of the island? Even",
+   "I don't know. It's always under thick clouds."
+  ]
+ ],
+ "s078.sec81.m0.o0": "Try it",
+ "s078.sec81.m0.o1": "Leave it",
+ "s078.sec81.u0": "Vending Machine",
+ "s078.sec81.u1": "\"What comes out is a surprise...\" 200 Bits a go...? Looks shady. Should I?",
+ "s078.sec81.u2": "Not enough money, huh.",
+ "s078.sec81.u3": "{color 6}Meat{color 1} came out!",
+ "s078.sec81.u4": "Oops, my bag's full. I need to throw something out.",
+ "s078.sec81.u5": "A {color 6}Small Recovery{color 1} came out!",
+ "s078.sec81.u6": "Oops, my bag's full. I need to throw something out.",
+ "s078.sec81.u7": "{color 6}Moldy Meat{color 1} came out!",
+ "s078.sec81.u8": "Oops, my bag's full. I need to throw something out.",
+ "s078.sec81.u9": "An {color 6}MP Floppy{color 1} came out!",
+ "s078.sec81.u10": "Oops, my bag's full. I need to throw something out.",
+ "s078.sec82.u0": "...I expect you have heard this already.",
+ "s078.sec82.u1": "Time flows slowly here. While a day passes outside, only half a day passes here.",
+ "s078.sec82.u2": "Well, it is a fine place for those who like to take it easy.",
+ "s078.sec82.u3": "Further in, in the Speedy Region, time flows fast. Two days go by there while one day passes outside.",
+ "s078.sec82.u4": "You could say it lets you grow up faster... but once you are bones, it is too late.",
+ "s079.sec6.u0": "Past here, time runs twice as fast as outside. Take plenty of food with ya. And watch your lifespan, of course.",
+ "s079.sec6.u1": "Well? Find anything?",
+ "s079.sec6.u2": "No, not yet...",
+ "s079.sec6.u3": "My master, who used to guard this place before me, said there's a \"secret passage\" around here. Don't ask me where, though.",
+ "s079.sec6.u4": "Oh, what's up...",
+ "s079.sec6.u5": "The meteorite... turns out it had nothing to do with it. Sigh...",
+ "s079.sec6.u6": "Huh. That so. Well, tough luck. Sorry, but I don't know anything else.",
+ "s079.sec6.u7": "...Well, see ya.",
+ "s079.sec6.u8": "Heeey, yooou!!",
+ "s079.sec6.u9": "THIS is why I keep telling you you're still only half-trained!",
+ "s079.sec6.u10": "M-m-master?!",
+ "s079.sec6.u11": "You numbskull! I can't believe you're still loafing around here!",
+ "s079.sec6.u12": "His master?! What's going on?!",
+ "s079.sec6.u13": "B-but who'll guard the Ancient Dino Region...",
+ "s079.sec6.u14": "You blockhead! The island is in grave danger! Go to the city and make yourself useful to everyone, you fool!",
+ "s079.sec6.u15": "Y... yes, sir...",
+ "s079.sec6.u16": "Huh, really?!",
+ "s079.sec6.u17": "Boy from the analog world, he is still green, but will you put him to work in your city? I will keep watch here.",
+ "s079.sec6.u18": "Master...",
+ "s079.sec6.u19": "So that's how it is, {color 6}{player}{color 1}. Can I come to the city?",
+ "s079.sec6.u20": "Of course. Just make sure you pull your weight.",
+ "s079.sec6.u21": "You got it! Master, I'm off!",
+ "s079.sec6.u22": "Tyrannomon joined the city!",
+ "s079.sec6.u23": "Let's see how far he goes... Heh.",
+ "s079.sec7.u0": "Heh... How many years since I last stood guard here? Ah, you are free to come and go as you please. Make good use of it.",
+ "s079.sec8.u0": "Heh... How many years since I last stood guard here? Ah, you are free to come and go as you please. Make good use of it.",
+ "s079.sec51.m0.o0": "Will you help us?",
+ "s079.sec51.m0.o1": "No... never mind...",
+ "s079.sec51.u0": "Oh, it's you guys. The Speedy Region's up ahead. Better not get too close.",
+ "s079.sec51.u1": "Like I told you before, we have two goals. To find what's behind all the trouble, and to bring Digimon to the city.",
+ "s079.sec51.u2": "Ah, right, you did say that. So?",
+ "s079.sec51.u3": "Count me out. I've got the important job of guarding this forest.",
+ "s079.sec51.u4": "Then, about the trouble on the island... know anything about it?",
+ "s079.sec51.u5": "Nope, not a thing... Hm...? Wait a sec... Now that you mention it, a while back a huge rock fell out of the sky... That was...",
+ "s079.sec51.u6": "Huh? Where did it land?!",
+ "s079.sec51.u7": "...The Speedy Region. Right through here...",
+ "s079.sec51.u8": "Please, let us through! There might be a clue there!",
+ "s079.sec51.u9": "..................... Sigh... If you're that set on it, I guess I've got no choice... You did beat me, after all. Well, go have a look.",
+ "s079.sec51.u10": "Past here, time runs twice as fast as outside. Take plenty of food with ya. And watch your lifespan, of course.",
+ "s079.sec51.u11": "Maybe try asking somewhere else."
+}

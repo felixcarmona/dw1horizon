@@ -1,0 +1,27 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(109) replace {    // section 109
+        set_script(105, 109);
+        engine.music_mode = 0;
+        set_bgm(1);
+        if (!is_recruited(species("Agumon"))) {
+            load_digimon(species("Agumon"));
+            set_digimon(species("Agumon"), 2, 1);
+            return;
+        }
+        store_date(date_year);
+        if (date_hour >= 7 && date_hour < 19) {
+            load_digimon(species("ModokiBetamon"));
+            set_digimon(species("ModokiBetamon"), 3, 1);
+            set_digimon(species("ModokiBetamon"), 4, 1);
+        } else {
+            load_digimon(species("Dokunemon"));
+            set_digimon(species("Dokunemon"), 0, 1);
+            set_digimon(species("Dokunemon"), 1, 1);
+        }
+    }
+}

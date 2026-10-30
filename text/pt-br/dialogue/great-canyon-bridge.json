@@ -1,0 +1,55 @@
+{
+ "s039.sec6.u0": "Estou atrapalhando?",
+ "s039.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Me ajude!"
+  ]
+ ],
+ "s039.sec51.u1": "Tem alguém aí em cima?",
+ "s039.sec51.u2": [
+  [
+   "{color 7}??? {color 1}",
+   "Oh! Tem alguém aí embaixo?"
+  ]
+ ],
+ "s039.sec51.u3": "Sim, estou aqui.",
+ "s039.sec51.u4": [
+  [
+   "{color 7}??? {color 1}",
+   "Socorro! O chão subiu de",
+   "repente!"
+  ]
+ ],
+ "s039.sec51.u5": "Isso é loucura.",
+ "s039.sec51.u6": [
+  [
+   "{color 7}??? {color 1}",
+   "É verdade! Ouvi um som, como uma máquina",
+   "funcionando!"
+  ]
+ ],
+ "s039.sec51.u7": "Uma máquina... talvez o esconderijo de Ogremon?",
+ "s039.sec51.u8": [
+  [
+   "{color 7}??? {color 1}",
+   "Você não fez algo diferente lá?"
+  ]
+ ],
+ "s039.sec51.u9": [
+  [
+   "Bem, todo tipo de coisa. O elevador, por",
+   "exemplo..."
+  ],
+  [
+   "Certo, vou voltar para o esconderijo e dar",
+   "uma olhada."
+  ]
+ ],
+ "s039.sec51.u10": [
+  [
+   "{color 7}??? {color 1}",
+   "Estou contando com você!"
+  ]
+ ]
+}

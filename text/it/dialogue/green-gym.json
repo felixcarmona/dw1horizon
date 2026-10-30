@@ -1,0 +1,391 @@
+{
+ "s108.sec5.m0.o0": "Che cosa è l'allenamento?",
+ "s108.sec5.m0.o1": "Come mi alleno?",
+ "s108.sec5.m0.o2": "Niente. Grazie.",
+ "s108.sec5.u0": [
+  [
+   "Ehi, ehi, novità! Ehm... Finché",
+   "il tuo Digimon è ancora un",
+   "cucciolo, prova a ripetere"
+  ],
+  [
+   "sempre lo stesso allenamento.",
+   "Dicono che succeda qualcosa di",
+   "bello!"
+  ]
+ ],
+ "s108.sec5.u1": [
+  [
+   "Ehi, ehi, novità! Ehm...",
+   "Nell'allenamento bonus, se",
+   "allinei le stesse figure del"
+  ],
+  [
+   "cartello, le statistiche",
+   "aumentano ancora di più!"
+  ]
+ ],
+ "s108.sec5.u2": [
+  [
+   "Ah, giusto, dovevo parlarti",
+   "delle tecniche! Di solito, dopo",
+   "una battaglia, il tuo Digimon"
+  ],
+  [
+   "può imparare una tecnica che il",
+   "nemico ha usato contro di lui.",
+   "Però solo una che può"
+  ],
+  [
+   "equipaggiare nella sua forma",
+   "attuale. Non funziona sempre,",
+   "ma è il modo più rapido per"
+  ],
+  [
+   "impararne altre. E poi... è",
+   "molto raro, ma si possono",
+   "imparare anche allenandosi."
+  ],
+  [
+   "Quando l'Ingegno è abbastanza",
+   "alto, pare che le lezioni di",
+   "{color 6}{player}{color 1} possano"
+  ],
+  [
+   "insegnarne una. Lo so, mi",
+   "ripeto, ma le probabilità sono",
+   "davvero basse: non contarci"
+  ],
+  [
+   "troppo. L'equilibrio è ciò che",
+   "conta!"
+  ]
+ ],
+ "s108.sec5.u3": [
+  [
+   "Ehi, ehi, sono Koromon! Jiji mi",
+   "ha chiesto di spiegarti",
+   "l'allenamento. Vuoi sapere"
+  ],
+  [
+   "qualcosa?"
+  ]
+ ],
+ "s108.sec5.u4": [
+  [
+   "Allenarsi qui aumenta le",
+   "statistiche del tuo Digimon.",
+   "Però lo stanca e richiede"
+  ],
+  [
+   "tempo. Resta comunque un",
+   "metodo più sicuro rispetto alle",
+   "battaglie. E molto raramente il"
+  ],
+  [
+   "tuo Digimon impara una nuova",
+   "tecnica! Delle tecniche ti",
+   "parlerò un'altra volta."
+  ]
+ ],
+ "s108.sec5.u5": [
+  [
+   "Qui ci sono sei attrezzi per",
+   "allenarsi, ciascuno con un",
+   "cartello accanto."
+  ]
+ ],
+ "s108.sec5.u6": [
+  [
+   "Per prima cosa, mettiti davanti",
+   "a un cartello e premi {color 6}×{color 1}.",
+   "Leggilo per capire quali"
+  ],
+  [
+   "statistiche aumentano. Alcuni",
+   "Digimon migliorano certe",
+   "statistiche facilmente, altri"
+  ],
+  [
+   "meno. Lo scoprirai solo",
+   "provando! Scegli Allenati, poi",
+   "Allenamento normale: il tuo"
+  ],
+  [
+   "Digimon si allenerà per un'ora.",
+   "Puoi accelerare il tempo con",
+   "{color 5}△{color 1}. Ah, giusto, l'allenamento"
+  ],
+  [
+   "bonus! Se riesce, la statistica",
+   "aumenta tantissimo. Se",
+   "fallisce... aumenta appena."
+  ],
+  [
+   "Provalo e vedrai."
+  ]
+ ],
+ "s108.sec5.u7": [
+  [
+   "Ah, va bene... Andrò a cercarti",
+   "nuove informazioni."
+  ]
+ ],
+ "s108.sec6.u0": [
+  [
+   "Io andare in città. Città",
+   "troppo città per me. Io non",
+   "adatto. Così io venire qui. Io"
+  ],
+  [
+   "rifare macchine qui. Funzionare",
+   "meglio di prima. Tu allenare",
+   "tanto."
+  ]
+ ],
+ "s108.sec7.u0": [
+  [
+   "Io andare in città. Città",
+   "troppo città per me. Io non",
+   "adatto. Così io venire qui. Io"
+  ],
+  [
+   "rifare macchine qui. Funzionare",
+   "meglio di prima. Tu allenare",
+   "tanto."
+  ]
+ ],
+ "s108.sec81.m0.o0": "Allenati",
+ "s108.sec81.m0.o1": "Questo allenamento",
+ "s108.sec81.m0.o2": "Esci",
+ "s108.sec81.m1.o0": "Allenamento normale",
+ "s108.sec81.m1.o1": "Allenamento bonus",
+ "s108.sec81.m1.o2": "Lascia stare",
+ "s108.sec81.m2.o0": "Spiega di nuovo",
+ "s108.sec81.m2.o1": "Allenati",
+ "s108.sec81.m2.o2": "Esci",
+ "s108.sec81.u0": [
+  [
+   "{color 5}Allenamento migliorato: Spinta",
+   "masso{color 1}"
+  ]
+ ],
+ "s108.sec81.u1": [
+  [
+   "{color 5}Allenamento: Spinta masso{color 1}"
+  ]
+ ],
+ "s108.sec81.u2": [
+  [
+   "Spingere un enorme masso",
+   "sviluppa la forza bruta. Gli HP",
+   "max. aumentano molto, e anche"
+  ],
+  [
+   "l'Attacco."
+  ]
+ ],
+ "s108.sec81.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s108.sec82.m0.o0": "Allenati",
+ "s108.sec82.m0.o1": "Questo allenamento",
+ "s108.sec82.m0.o2": "Esci",
+ "s108.sec82.m1.o0": "Allenamento normale",
+ "s108.sec82.m1.o1": "Allenamento bonus",
+ "s108.sec82.m1.o2": "Lascia stare",
+ "s108.sec82.m2.o0": "Spiega di nuovo",
+ "s108.sec82.m2.o1": "Allenati",
+ "s108.sec82.m2.o2": "Esci",
+ "s108.sec82.u0": [
+  [
+   "{color 5}Allenamento migliorato:",
+   "Cascata{color 1}"
+  ]
+ ],
+ "s108.sec82.u1": [
+  [
+   "{color 5}Allenamento: Cascata{color 1}"
+  ]
+ ],
+ "s108.sec82.u2": [
+  [
+   "Stare sotto una cascata",
+   "tempra lo spirito. Gli MP max.",
+   "aumentano molto, e anche la"
+  ],
+  [
+   "Difesa."
+  ]
+ ],
+ "s108.sec82.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s108.sec83.m0.o0": "Allenati",
+ "s108.sec83.m0.o1": "Questo allenamento",
+ "s108.sec83.m0.o2": "Esci",
+ "s108.sec83.m1.o0": "Allenamento normale",
+ "s108.sec83.m1.o1": "Allenamento bonus",
+ "s108.sec83.m1.o2": "Lascia stare",
+ "s108.sec83.m2.o0": "Spiega di nuovo",
+ "s108.sec83.m2.o1": "Allenati",
+ "s108.sec83.m2.o2": "Esci",
+ "s108.sec83.u0": [
+  [
+   "{color 5}Allenamento migliorato: Colpi",
+   "all'albero{color 1}"
+  ]
+ ],
+ "s108.sec83.u1": [
+  [
+   "{color 5}Allenamento: Colpi all'albero{color 1}"
+  ]
+ ],
+ "s108.sec83.u2": [
+  [
+   "Esercita le tecniche su un",
+   "albero. L'Attacco aumenta",
+   "molto, e anche la Velocità."
+  ]
+ ],
+ "s108.sec83.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s108.sec84.m0.o0": "Allenati",
+ "s108.sec84.m0.o1": "Questo allenamento",
+ "s108.sec84.m0.o2": "Esci",
+ "s108.sec84.m1.o0": "Allenamento normale",
+ "s108.sec84.m1.o1": "Allenamento bonus",
+ "s108.sec84.m1.o2": "Lascia stare",
+ "s108.sec84.m2.o0": "Spiega di nuovo",
+ "s108.sec84.m2.o1": "Allenati",
+ "s108.sec84.m2.o2": "Esci",
+ "s108.sec84.u0": [
+  [
+   "{color 5}Allenamento migliorato:",
+   "Guantone{color 1}"
+  ]
+ ],
+ "s108.sec84.u1": [
+  [
+   "{color 5}Allenamento: Guantone{color 1}"
+  ]
+ ],
+ "s108.sec84.u2": [
+  [
+   "Resisti ai colpi di un'enorme",
+   "macchina da pugilato. La Difesa",
+   "aumenta molto, e anche"
+  ],
+  [
+   "l'Ingegno."
+  ]
+ ],
+ "s108.sec84.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s108.sec85.m0.o0": "Allenati",
+ "s108.sec85.m0.o1": "Questo allenamento",
+ "s108.sec85.m0.o2": "Esci",
+ "s108.sec85.m1.o0": "Allenamento normale",
+ "s108.sec85.m1.o1": "Allenamento bonus",
+ "s108.sec85.m1.o2": "Lascia stare",
+ "s108.sec85.m2.o0": "Spiega di nuovo",
+ "s108.sec85.m2.o1": "Allenati",
+ "s108.sec85.m2.o2": "Esci",
+ "s108.sec85.u0": [
+  [
+   "{color 5}Allenamento migliorato: Corsa{color 1}"
+  ]
+ ],
+ "s108.sec85.u1": [
+  [
+   "{color 5}Allenamento: Corsa{color 1}"
+  ]
+ ],
+ "s108.sec85.u2": [
+  [
+   "Fai giri su giri del percorso.",
+   "La Velocità aumenta molto, e",
+   "anche gli HP max."
+  ]
+ ],
+ "s108.sec85.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ],
+ "s108.sec86.m0.o0": "Allenati",
+ "s108.sec86.m0.o1": "Questo allenamento",
+ "s108.sec86.m0.o2": "Esci",
+ "s108.sec86.m1.o0": "Allenamento normale",
+ "s108.sec86.m1.o1": "Allenamento bonus",
+ "s108.sec86.m1.o2": "Lascia stare",
+ "s108.sec86.m2.o0": "Spiega di nuovo",
+ "s108.sec86.m2.o1": "Allenati",
+ "s108.sec86.m2.o2": "Esci",
+ "s108.sec86.u0": [
+  [
+   "{color 5}Lezioni migliorate di",
+   "{color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u1": [
+  [
+   "{color 5}Lezioni di {color 6}{player}{color 1}{color 5}{color 1}"
+  ]
+ ],
+ "s108.sec86.u2": [
+  [
+   "{color 6}{player}{color 1} fa da insegnante",
+   "e spiega tante cose. L'Ingegno",
+   "aumenta molto, e anche gli MP"
+  ],
+  [
+   "massimi."
+  ]
+ ],
+ "s108.sec86.u3": [
+  [
+   "{color 7}Slot machine{color 1}",
+   "Ferma i tre rulli con"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "e allinea le figure."
+  ]
+ ]
+}

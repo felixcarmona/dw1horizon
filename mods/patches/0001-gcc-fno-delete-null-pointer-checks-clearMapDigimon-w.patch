@@ -1,0 +1,25 @@
+From c29cf482bf6c9e1570591eccc53bc0eb894315c6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 18:40:40 +0000
+Subject: [PATCH] gcc: -fno-delete-null-pointer-checks (clearMapDigimon writes
+ through NULL->isOnMap and GCC emitted a trap)
+
+---
+ mk/toolchain/gcc.mk | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mk/toolchain/gcc.mk b/mk/toolchain/gcc.mk
+index df0f0f6..217e293 100644
+--- a/mk/toolchain/gcc.mk
++++ b/mk/toolchain/gcc.mk
+@@ -2,6 +2,7 @@ GCC_FLAGS = -g -Wall -Wextra -std=c99 -Os $(ARCHFLAGS) -G8 \
+ 	    -ffunction-sections -fdata-sections -fno-common \
+ 	    -fno-zero-initialized-in-bss -fno-builtin \
+ 	    -fno-strict-aliasing -fwrapv -fno-tree-switch-conversion \
++	    -fno-delete-null-pointer-checks \
+ 	    -finput-charset=UTF-8 -fexec-charset=CP932
+ 
+ $(BUILD_DIR)/%.c.o: %.c
+-- 
+2.53.0
+

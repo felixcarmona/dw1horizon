@@ -1,0 +1,48 @@
+From d3d8b7441470b1493e896611498d46d908a4c820 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 13 Oct 2026 23:06:17 +0000
+Subject: [PATCH] Technique effects: a fallback origin for the DW1 enemies made
+ partners (provisional finishers)
+
+checkTechCompatibility drops a technique's effect when its table has no row for the attacker's type. The provisional finishers
+(species 337..372, docs/mods/species-identity.md) are DW1 finishers of the species' element, and for 11 of them no finisher has
+a row for their effects_like type (111 110 68 69 109 80 67 and the shared 3 17 21 22): the clip played and nothing hit.
+MOD_TECH_DONORS gets one entry per type with MOD_DONOR_ALWAYS and a bone 0 (0, 0, 0) fallback: the effect starts from the Digimon
+itself. For the four shared types it only applies to a technique that has no row for it (its effect was dropped before).
+---
+ src/main/efe.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/src/main/efe.c b/src/main/efe.c
+index a4124ee..4a06e89 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1428,6 +1428,25 @@ static ModTechDonor MOD_TECH_DONORS[] = {
+ 	  MOD_COUNT(MOD_TECH_BONES_JIJIMON) },
+ 	{ DIGIMON_ANALOGMAN, DIGIMON_ANDROMON, 7, 8, 0, 0, NULL, { 0 }, MOD_TECH_BONES_ANALOGMAN,
+ 	  MOD_COUNT(MOD_TECH_BONES_ANALOGMAN) },
++	/* MOD (provisional finishers, docs/mods/species-identity.md): the DW1 enemies made partners (species 337..372)
++	 * borrow a DW1 finisher of their element, and no finisher's effect has a row for their type (the effect would be
++	 * dropped: the clip plays, nothing hits). Their origin is the Digimon itself, bone 0 (0, 0, 0), where the
++	 * area finishers start. The first column is the type getOriginalType returns for them (effects_like); the donor 0x7FFF
++	 * is a type no table has (not -1: the end of a table is negative), so the fallback is used. */
++	{ 111, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },  /* Tentomon */
++	{ 110, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },  /* Gekomon */
++	{ 68, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },   /* Gotsumon */
++	{ 69, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },   /* Flarerizamon */
++	{ 109, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },  /* Otamamon */
++	{ 80, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },   /* Goburimon */
++	{ 67, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },   /* Yanmamon */
++	/* SnowAgumon, Psychemon, Saberdramon and Gururumon use their donors' types (Agumon, Gabumon, Birdramon,
++	 * Garurumon): the fallback applies to a technique of those four that has no row for the type, which dropped
++	 * its effect before. */
++	{ 3, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },
++	{ 17, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },
++	{ 21, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },
++	{ 22, 0x7FFF, 1, 1, MOD_DONOR_FALLBACK | MOD_DONOR_ALWAYS, 0, NULL, { 0, 0, 0, 0 }, NULL, 0 },
+ };
+ 
+ static int32_t modOriginMatches(EfeBoneOffset *from, EfeBoneOffset *row)
+-- 
+2.53.0
+

@@ -1,0 +1,53 @@
+{
+  "id": 1,
+  "name": "Botamon",
+  "level": "fresh",
+  "vanilla": true,
+  "attribute": "data",
+  "specialties": ["fire", null, null],
+  "techniques": ["Bubble (113)"],
+  "drop": {"item": "sm.recovery", "percent": 0},
+  "model": {"name": "BOTA", "bones": 3, "radius": 95, "height": 120},
+  "voice": 1,
+  "battle_music": "normal-battle",
+  "reincarnation_stats": {"hp": 90, "mp": 110, "offense": 10, "defense": 11, "speed": 9, "brains": 10},
+  "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
+  "partner": {
+    "voice": 0,
+    "hunger_hours": [],
+    "energy_max": 25,
+    "energy_fed": 6,
+    "energy_per_hour": 3,
+    "poop_timer_10min": 18,
+    "poop_size": 6,
+    "favorite_food": "sm.recovery",
+    "sleep_cycle": "fresh",
+    "favored_region": 8,
+    "training_type": "even",
+    "birth_weight": 5,
+    "status_screen_position": [710, 140, -2210],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "from": [-1, -1, -1, -1, -1],
+    "to": [-1, -1, 2, -1, -1, -1],
+    "requirements": {
+      "digimon": -1,
+      "hp": -1,
+      "mp": -1,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": -1,
+      "weight": -1,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 10}
+  }
+}

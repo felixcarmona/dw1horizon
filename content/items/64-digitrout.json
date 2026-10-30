@@ -1,0 +1,14 @@
+{
+  "id": 64,
+  "name": "DigiTrout",
+  "value": 300,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 22,
+    "weight": 2
+  }
+}

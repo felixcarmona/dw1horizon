@@ -1,0 +1,17 @@
+{
+  "id": 28,
+  "name": "Delete Program",
+  "element": "mech",
+  "power": 430,
+  "mpCost": 73,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 65,
+  "status": 4,
+  "statusChance": 50,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [20, 14, 10]
+}

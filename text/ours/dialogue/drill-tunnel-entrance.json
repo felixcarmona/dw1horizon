@@ -1,0 +1,31 @@
+{
+ "s008.sec5.u0": [
+  "{color 7}Market Manager {color 1}",
+  "Please hurry and do something,",
+  "yes yes!"
+ ],
+ "s008.sec51.m0.o0": "Normal",
+ "s008.sec51.m0.o1": "Ogre Mode",
+ "s008.sec51.u0": "The Drill Tunnel...",
+ "s008.sec51.u1": "Ugh, him! He never learns...!",
+ "s008.sec51.u2": "Hm?",
+ "s008.sec51.u3": [
+  "{color 7}Market Manager {color 1}",
+  "Nobody told me the tunnel",
+  "had a toll, no no!"
+ ],
+ "s008.sec51.u4": [
+  "{color 7}Market Manager {color 1}",
+  "Oh, you... could it be? Please",
+  "do something, yes yes!"
+ ],
+ "s008.sec51.u5": "What about the Drimogemon inside?",
+ "s008.sec51.u6": [
+  "{color 7}Market Manager {color 1}",
+  "I don't know, no no..."
+ ],
+ "s008.sec51.u7": "I hope they're okay... All right, we're going in!",
+ "s008.sec53.m0.o0": "Let's go!",
+ "s008.sec53.m0.o1": "Better not",
+ "s008.sec53.u0": "There's nothing left in the tunnel... Should we just dash through? What do you say?"
+}

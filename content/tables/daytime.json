@@ -1,0 +1,9 @@
+{
+  "_comment": "Time of day. hours: dusk, night and dawn start at these hours (the screen changes and tints); leave any of the three out and it is always day. tint: how bright dusk (green) and night (red and green) are, of 10. music: the day music plays from dayFrom to dayTo (exclusive); clock: the clock shows day in the same way.",
+  "daytime": {
+    "hours": {"dusk": 16, "night": 20, "dawn": 6},
+    "tint": {"dusk": 7, "night": 5},
+    "music": {"dayFrom": 6, "dayTo": 21},
+    "clock": {"dayFrom": 6, "dayTo": 17}
+  }
+}

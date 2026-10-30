@@ -1,0 +1,147 @@
+// Readable form of script 212 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 212 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 71, 72, 73;
+
+    on enter replace {    // section 254
+    }
+
+    on step(20) replace {    // section 71
+        engine.no_escape = false;
+        engine.battle_mode = 0;
+        await entity(213);
+        say(slot0, text("s212.sec71.u0"));
+        call_routine(routine("egg_choice"));
+        fadeout_hud(0);
+        call_digimon_routine(routine("dying_b"));
+        await narrator;
+        engine.music_mode = 0;
+        set_bgm(28);
+        say(slot0, text("s212.sec71.u1"));
+        choice {
+            text("s212.sec71.m0.o0") => {
+                goto L1;
+            }
+            text("s212.sec71.m0.o1") => {
+                goto L2;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(21) replace {    // section 72
+        engine.no_escape = false;
+        engine.battle_mode = 0;
+        await entity(213);
+        call_routine(routine("load_shop_library"));
+        if (stat(6) != 0) {
+            remove_condition(32);
+            remove_condition(64);
+            add_stat(6, 9999);
+            add_stat(7, 9999);
+            say(slot0, text("s212.sec72.u0"));
+            await entity(214);
+            goto L5;
+        }
+        add_stat(6, 9999);
+        add_stat(7, 9999);
+        say(slot0, text("s212.sec72.u1"));
+        await entity(214);
+        goto L5;
+    }
+
+    on step(22) replace {    // section 73
+        engine.no_escape = false;
+        engine.battle_mode = 0;
+        await entity(213);
+        say(slot0, text("s212.sec73.u0"));
+        if (stat(21) != 0) {
+            reduce_stat(21, 1);
+            say(narrator, text("s212.sec73.u1"));
+        }
+        call_routine(routine("lost_all_lives"));
+        call_digimon_routine(routine("dying_b"));
+        await narrator;
+        engine.music_mode = 0;
+        set_bgm(28);
+        say(slot0, text("s212.sec73.u2"));
+        choice {
+            text("s212.sec73.m0.o0") => {
+                goto L1;
+            }
+            text("s212.sec73.m0.o1") => {
+                goto L2;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    shared L1 {    // code of sec71 that other code jumps to
+        loop {
+            call_routine(routine("load_shop_library"));
+            await entity(214);
+            engine.arg = 3;
+            call_routine(routine("naming_and_intro"));
+            say(slot0, text("s212.sec71.u2"));
+            choice {
+                text("s212.sec71.m1.o0") or cancel => {}
+                text("s212.sec71.m1.o1") => {
+                    goto L2;
+                }
+            }
+        }
+    }
+
+    shared L2 {    // code of sec71 that other code jumps to
+    }
+
+    shared L5 {    // code of sec73 that other code jumps to
+        fadeout_hud(0);
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 4, 17, 18]) {
+        } else if (partner_type != 31 && partner_type != 32 && partner_type != 45 && partner_type != 46) {
+            if (partner_type in [12, 54]) {
+                store_random(random_roll, 99);
+                unless (random_roll <= 9) return;
+                engine.arg = 26;
+                call_digimon_routine(routine("forced_evolution"));
+                wait(550);
+                say(narrator, text("s212.sec73.u4"));
+                return;
+            }
+            if (partner_type == 50) {
+                store_random(random_roll, 99);
+                unless (random_roll <= 9) return;
+                engine.arg = 59;
+                call_digimon_routine(routine("forced_evolution"));
+                wait(550);
+                say(narrator, text("s212.sec73.u5"));
+                return;
+            }
+            unless (partner_type == 20) return;
+            store_random(random_roll, 99);
+            unless (random_roll <= 49 && stat(10) <= 49) return;
+            engine.arg = 6;
+            call_digimon_routine(routine("forced_evolution"));
+            wait(550);
+            say(narrator, text("s212.sec73.u6"));
+            return;
+        }
+        store_random(random_roll, 99);
+        unless (random_roll <= 9) return;
+        engine.arg = 37;
+        call_digimon_routine(routine("forced_evolution"));
+        wait(550);
+        say(narrator, text("s212.sec73.u3"));
+    }
+}

@@ -1,0 +1,131 @@
+{
+  "format": 1,
+  "models": [
+    {
+      "id": 306,
+      "name": "GrapLeomon",
+      "kind": "MMD",
+      "previous_bytes": 5674,
+      "bytes": 6660
+    },
+    {
+      "id": 310,
+      "name": "Assaultmon",
+      "kind": "MMD",
+      "previous_bytes": 362,
+      "bytes": 1421
+    },
+    {
+      "id": 311,
+      "name": "Arukenimon",
+      "kind": "MMD",
+      "previous_bytes": 407,
+      "bytes": 902
+    },
+    {
+      "id": 312,
+      "name": "Creepymon",
+      "kind": "MMD",
+      "previous_bytes": 330,
+      "bytes": 551
+    },
+    {
+      "id": 314,
+      "name": "SkullSatamon",
+      "kind": "MMD",
+      "previous_bytes": 4929,
+      "bytes": 5054
+    },
+    {
+      "id": 316,
+      "name": "Sakuyamon",
+      "kind": "MMD",
+      "previous_bytes": 4779,
+      "bytes": 5549
+    },
+    {
+      "id": 318,
+      "name": "Gallantmon",
+      "kind": "MMD",
+      "previous_bytes": 4358,
+      "bytes": 5093
+    },
+    {
+      "id": 324,
+      "name": "Maildramon",
+      "kind": "MMD",
+      "previous_bytes": 364,
+      "bytes": 830
+    },
+    {
+      "id": 325,
+      "name": "Musyamon",
+      "kind": "MMD",
+      "previous_bytes": 1777,
+      "bytes": 2314
+    },
+    {
+      "id": 373,
+      "name": "WarGreymon",
+      "kind": "MMD",
+      "previous_bytes": 3895,
+      "bytes": 8227
+    },
+    {
+      "id": 402,
+      "name": "NeoCrimson",
+      "kind": "MMD",
+      "previous_bytes": 571,
+      "bytes": 23960
+    },
+    {
+      "id": 403,
+      "name": "Beelzemon",
+      "kind": "MMD",
+      "previous_bytes": 12317,
+      "bytes": 12383
+    },
+    {
+      "id": 405,
+      "name": "Cannondramon",
+      "kind": "MMD",
+      "previous_bytes": 2651,
+      "bytes": 4450
+    },
+    {
+      "id": 406,
+      "name": "MaloMyotismon",
+      "kind": "MMD",
+      "previous_bytes": 341,
+      "bytes": 393
+    },
+    {
+      "id": 407,
+      "name": "Armageddemon",
+      "kind": "MMD",
+      "previous_bytes": 6849,
+      "bytes": 6915
+    },
+    {
+      "id": 408,
+      "name": "Suijinmon",
+      "kind": "MMD",
+      "previous_bytes": 372,
+      "bytes": 904
+    },
+    {
+      "id": 431,
+      "name": "Kurisarimon",
+      "kind": "MMD",
+      "previous_bytes": 2209,
+      "bytes": 2941
+    },
+    {
+      "id": 402,
+      "name": "NeoCrimson",
+      "kind": "MMD",
+      "previous_bytes": 23960,
+      "bytes": 23736
+    }
+  ]
+}

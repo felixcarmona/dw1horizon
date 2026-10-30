@@ -1,0 +1,235 @@
+[
+ {
+  "en": "○PUSH",
+  "es": "○PULSA",
+  "texture": "ETCDAT/BI_IN.TIM (+ ETCDAT/ETCTIM.BIN entry 0, identical)",
+  "u": 128,
+  "v": 8,
+  "w": 43,
+  "h": 9,
+  "en_rect": [
+   128,
+   8,
+   37,
+   9
+  ],
+  "drawn_by": "btl/battle_hud.c:1232 BTL_renderFinisherReadyIcon (setUVWH 0x80,0x88,37,9); std/std_hud.c:945; vs/vs_hud.c:1126",
+  "screen_xy_change": "quad w 37->43; to keep the right edge where it was move x 110->104 and the backing box (108,-76,41,11) -> (102,-76,47,11); same in all three HUD files"
+ },
+ {
+  "en": "LIFE",
+  "es": "VIDA",
+  "texture": "ETCHI/LIFE.TIM",
+  "u": 48,
+  "v": 0,
+  "w": 64,
+  "h": 24,
+  "en_rect": [
+   48,
+   0,
+   64,
+   24
+  ],
+  "drawn_by": "murd/murd.c:99-117 MURD_LIVES_BACKDROP (GsSPRITE u48 v0 64x24), drawn by MURD_renderLivesBox (murd.c:708)",
+  "screen_xy_change": "none (same rect, same place)"
+ },
+ {
+  "en": "Press Start Button",
+  "es": "Pulsa el botón START",
+  "texture": "ETCNA/TITLE256.TIM",
+  "u": 0,
+  "v": 240,
+  "w": 129,
+  "h": 11,
+  "en_rect": [
+   0,
+   241,
+   121,
+   10
+  ],
+  "drawn_by": "main/main.c:5571-5572 renderPressStartToContinue (setXYWH -0x36,0x32,121,10; setUVWH 0,0xf1,121,10)",
+  "screen_xy_change": "quad (-54,50,121,10) -> (-58,49,129,11), uv (0,241,121,10) -> (0,240,129,11) (one row higher for the accent of ó; letters stay on the same screen rows)"
+ },
+ {
+  "en": "TIME UP",
+  "es": "¡TIEMPO!",
+  "texture": "STDDAT/STDTIM.BIN entry 2",
+  "u": 0,
+  "v": 8,
+  "w": 144,
+  "h": 24,
+  "en_rect": [
+   0,
+   8,
+   144,
+   24
+  ],
+  "drawn_by": "std/std_main.c:5481-5490 STD_renderTimeoutText; vs/vs_combat.c:2497 VS__renderTimeoutText",
+  "screen_xy_change": "none (fits the same 144x24 rect at (-72,-12))"
+ },
+ {
+  "en": "VS MODE",
+  "es": "MODO VS",
+  "texture": "STDDAT/TAISEN2.TIM",
+  "u": 48,
+  "v": 0,
+  "w": 79,
+  "h": 14,
+  "en_rect": [
+   48,
+   0,
+   77,
+   14
+  ],
+  "drawn_by": "vs/vs_scene.c:201 VS_VERSUS_TEXT_PIECES[10] (w77 h14 dx113 dy9, u48 v0), drawn by VS_renderVersusText (vs_scene.c:1433)",
+  "screen_xy_change": "VS_VERSUS_TEXT_PIECES[10]: w and uw 77->79, dx 113->112 (x -39 -> -40, stays centred); cols 125-126 of the texture are free (index 15)"
+ },
+ {
+  "en": "BATTLE MODE SELECT",
+  "es": "MODO DE COMBATE",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 120,
+  "v": 0,
+  "w": 124,
+  "h": 14,
+  "en_rect": [
+   120,
+   0,
+   124,
+   14
+  ],
+  "drawn_by": "vs/vs_select.c:191 MODE_SELECT_SPRITES[0], VS__renderSelectModeBox (vs_select.c:1135)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "STAGE SELECT",
+  "es": "ELIGE ESCENARIO",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 120,
+  "v": 14,
+  "w": 124,
+  "h": 14,
+  "en_rect": [
+   120,
+   14,
+   124,
+   14
+  ],
+  "drawn_by": "vs/vs_select.c:202 MAP_SELECT_SPRITES[0], VS__renderSelectMapBox (vs_select.c:1231)",
+  "screen_xy_change": "none"
+ },
+ {
+  "en": "7 vs 7 / BATTLE",
+  "es": "COMBATE / 7 vs 7",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 0,
+  "v": 232,
+  "w": 52,
+  "h": 23,
+  "en_rect": [
+   0,
+   232,
+   52,
+   23
+  ],
+  "drawn_by": "vs/vs_select.c:195 MODE_SELECT_SPRITES[4]",
+  "screen_xy_change": "none (lines swapped inside the same rect: word rows 232-240, numbers 241-254)"
+ },
+ {
+  "en": "3 vs 3 / BATTLE",
+  "es": "COMBATE / 3 vs 3",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 52,
+  "v": 232,
+  "w": 52,
+  "h": 23,
+  "en_rect": [
+   52,
+   232,
+   52,
+   23
+  ],
+  "drawn_by": "vs/vs_select.c:196 MODE_SELECT_SPRITES[5]",
+  "screen_xy_change": "none (lines swapped inside the same rect: word rows 232-240, numbers 241-254)"
+ },
+ {
+  "en": "5 vs 5 / BATTLE",
+  "es": "COMBATE / 5 vs 5",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 104,
+  "v": 232,
+  "w": 52,
+  "h": 23,
+  "en_rect": [
+   104,
+   232,
+   52,
+   23
+  ],
+  "drawn_by": "vs/vs_select.c:197 MODE_SELECT_SPRITES[6]",
+  "screen_xy_change": "none (lines swapped inside the same rect: word rows 232-240, numbers 241-254)"
+ },
+ {
+  "en": "BEATWOOD / COLISEUM",
+  "es": "COLISEO / BEATWOOD",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 120,
+  "v": 28,
+  "w": 52,
+  "h": 24,
+  "en_rect": [
+   120,
+   28,
+   52,
+   24
+  ],
+  "drawn_by": "vs/vs_select.c:206 MAP_SELECT_SPRITES",
+  "screen_xy_change": "none (lines swapped in the same rect)"
+ },
+ {
+  "en": "DIGIMON / COLISEUM",
+  "es": "COLISEO / DIGIMON",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 120,
+  "v": 52,
+  "w": 52,
+  "h": 24,
+  "en_rect": [
+   120,
+   52,
+   52,
+   24
+  ],
+  "drawn_by": "vs/vs_select.c:205 MAP_SELECT_SPRITES",
+  "screen_xy_change": "none (lines swapped in the same rect)"
+ },
+ {
+  "en": "EXTRA / COLISEUM",
+  "es": "COLISEO / EXTRA",
+  "texture": "STDDAT/TAISEN_F.TIM",
+  "u": 172,
+  "v": 28,
+  "w": 48,
+  "h": 24,
+  "en_rect": [
+   172,
+   28,
+   48,
+   24
+  ],
+  "drawn_by": "vs/vs_select.c:207 MAP_SELECT_SPRITES",
+  "screen_xy_change": "none (lines swapped in the same rect)"
+ },
+ {
+  "en": "BATTLE (start banner, 155 blocks)",
+  "es": "¡LUCHA!",
+  "texture": "ETCDAT/BI_IN.TIM blocks u128..151 v0 (unchanged)",
+  "u": null,
+  "v": null,
+  "w": null,
+  "h": null,
+  "en_rect": null,
+  "drawn_by": "btl/battle_effect.c:586 BTL_BATTLE_START_TEXT_POSITIONS[155][2]; std/std_hud.c:178 STD_..., vs/vs_hud.c:185 VS_... (same table)",
+  "screen_xy_change": "replace the three position tables with battle-banner-es.json (155 entries, 154 distinct blocks)"
+ }
+]

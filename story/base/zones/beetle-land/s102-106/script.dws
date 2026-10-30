@@ -1,0 +1,523 @@
+// Readable form of script 102 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 102 {
+    npc tentomon = 5;
+    npc slot5 = 10;
+    npc slot6 = 11;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 51, 81 as sec81_dup3, 82, 10, 11;
+
+    on enter replace {    // section 254
+    }
+
+    on use(1) replace {    // section 81
+        store_date(date_year);
+        face(tamer, tentomon);
+        face(tentomon, tamer);
+        wait(5);
+        if (!tournament_registered) {
+            if (date_day == 21 && date_hour >= 10) {
+                say(tentomon, text("s102.sec81.u0"));
+                return;
+            } else if (date_day >= 20 && date_day <= 21) {
+                if (date_day == 21 && date_hour >= 23) {
+                    say(tentomon, text("s102.sec81.u2"));
+                }
+                store_digimon_type(partner_type);
+                if (partner_type in [19, 32, 51, 60]) {
+                    if (!tournament_registered) {
+                        say(tentomon, text("s102.sec81.u4"));
+                        choice(tentomon) {
+                            text("s102.sec81.m0.o0") => {
+                                say(tentomon, text("s102.sec81.u5"));
+                            }
+                            text("s102.sec81.m0.o1") or cancel => {}
+                        }
+                    } else {
+                        say(tentomon, text("s102.sec81.u5"));
+                    }
+                    choice(tentomon) {
+                        text("s102.sec81.m1.o0") => {
+                            call_routine(routine("register_cup22"));
+                            say(tentomon, text("s102.sec81.u11"));
+                            return;
+                        }
+                        text("s102.sec81.m1.o1") => {}
+                        cancel => {
+                            return;
+                        }
+                    }
+                } else {
+                    say(tentomon, text("s102.sec81.u3"));
+                    return;
+                }
+            } else {
+                say(tentomon, text("s102.sec81.u1"));
+                return;
+            }
+        } else if (date_day >= 20 && date_day <= 21) {
+            if (date_day == 21 && date_hour >= 23) {
+                say(tentomon, text("s102.sec81.u7"));
+            }
+            say(tentomon, text("s102.sec81.u8"));
+            choice {
+                text("s102.sec81.m2.o0") => {}
+                text("s102.sec81.m2.o1") => {
+                    tournament_registered = false;
+                    say(tentomon, text("s102.sec81.u9"));
+                    return;
+                }
+                cancel => {
+                    return;
+                }
+            }
+        } else {
+            say(tentomon, text("s102.sec81.u6"));
+            return;
+        }
+        say(tentomon, text("s102.sec81.u10"));
+    }
+
+    on step(0) replace {    // section 51
+        store_date(date_year);
+        if (date_day != 21) {
+            face(tentomon, tamer);
+            face(tamer, tentomon);
+            wait(5);
+            say(tentomon, text("s102.sec51.u0"));
+            run(tamer, -126, 546);
+            await tamer;
+            return;
+        }
+        if (!tournament_registered) {
+            face(tentomon, tamer);
+            face(tamer, tentomon);
+            wait(5);
+            say(tentomon, text("s102.sec51.u1"));
+            run(tamer, -126, 546);
+            await tamer;
+            return;
+        }
+        if (date_hour < 10) {
+            face(tentomon, tamer);
+            face(tamer, tentomon);
+            wait(5);
+            say(tentomon, text("s102.sec51.u2"));
+            run(tamer, -126, 546);
+            await tamer;
+            return;
+        }
+        if (date_hour >= 23) {
+            face(tentomon, tamer);
+            face(tamer, tentomon);
+            wait(5);
+            say(tentomon, text("s102.sec51.u3"));
+            run(tamer, -126, 546);
+            await tamer;
+            return;
+        }
+        engine.arg = 5;
+        call_routine(routine("start_tournament"));
+        store_date(date_year);
+        add_minutes_to_date_at(date_year, 360);
+        advance_to_date_at(date_year);
+        warp_to(106, 3, 82);
+    }
+
+    on use(2) replace {    // section 82
+        tournament_registered = false;
+        if (engine.result == 3) {
+            if (tournament.cup == 22) {
+                give_bits(5000);
+                say(narrator, text("s102.sec82.u3"));
+                give_item(item("Beetlepearl"), 1);
+                if (engine.item_did_not_fit) {
+                    say(tentomon, text("s102.sec82.u4"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Beetlepearl"), 1);
+                }
+                jump_to_file(204, 51);
+            }
+        } else if (engine.result != 2) {
+            say(tentomon, text("s102.sec82.u0"));
+            say(narrator, text("s102.sec82.u1"));
+            give_item(item("Giant Meat"), 1);
+            if (engine.item_did_not_fit) {
+                say(tentomon, text("s102.sec82.u2"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Giant Meat"), 1);
+            }
+            return;
+        }
+        store_random(random_roll, 1);
+        if (tournament.cup == 22 && random_roll == 0) {
+            give_bits(2000);
+            say(narrator, text("s102.sec82.u5"));
+            give_item(item("Horn helmet"), 1);
+            insect_contest_horn_helmet_won = true;
+            if (engine.item_did_not_fit) {
+                say(tentomon, text("s102.sec82.u6"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Horn helmet"), 1);
+            }
+            return;
+        }
+        unless (tournament.cup == 22 && random_roll == 1) return;
+        give_bits(2000);
+        say(narrator, text("s102.sec82.u7"));
+        give_item(item("Scissor jaw"), 1);
+        if (engine.item_did_not_fit) {
+            say(tentomon, text("s102.sec82.u8"));
+            engine.picker_mode = true;
+            call_routine(routine("choose_item"));
+            call_routine(routine("remove_all_chosen_item"));
+            give_item(item("Scissor jaw"), 1);
+        }
+    }
+
+    on talk(slot5) replace {    // section 10 (literal)
+        goto l1;
+        goto l3;
+        goto l5;
+        goto l7;
+        goto l9;
+        goto l11;
+        goto l13;
+        goto l15;
+        goto l17;
+        goto l19;
+        goto l21;
+        goto l23;
+        goto l25;
+        goto l27;
+        goto l29;
+        goto l31;
+        goto l33;
+        goto l35;
+        goto l37;
+        goto l39;
+        goto l41;
+        goto l43;
+        goto l45;
+        l1:
+        goto l2;
+        goto L77;
+        goto L91;
+        goto L93;
+        goto L113;
+        l2:
+        show_textbox(text("s102.sec10.u0"));
+        l3:
+        goto l4;
+        goto L78;
+        goto L92;
+        goto L94;
+        goto L114;
+        l4:
+        show_textbox(text("s102.sec10.u1"));
+        l5:
+        goto l6;
+        goto L79;
+        goto L90;
+        goto L95;
+        goto L115;
+        l6:
+        show_textbox(text("s102.sec10.u2"));
+        l7:
+        goto l8;
+        goto L80;
+        goto L90;
+        goto L95;
+        goto L116;
+        l8:
+        show_textbox(text("s102.sec10.u3"));
+        l9:
+        goto l10;
+        goto L81;
+        goto L90;
+        goto L94;
+        goto L117;
+        l10:
+        show_textbox(text("s102.sec10.u4"));
+        l11:
+        goto l12;
+        goto L78;
+        goto L90;
+        goto L94;
+        goto L118;
+        l12:
+        show_textbox(text("s102.sec10.u5"));
+        l13:
+        goto l14;
+        goto L78;
+        goto L90;
+        goto L96;
+        goto L119;
+        l14:
+        show_textbox(text("s102.sec10.u6"));
+        l15:
+        goto l16;
+        goto L78;
+        goto L90;
+        goto L97;
+        goto L120;
+        l16:
+        show_textbox(text("s102.sec10.u7"));
+        l17:
+        goto l18;
+        goto L78;
+        goto L90;
+        goto L98;
+        goto L121;
+        l18:
+        show_textbox(text("s102.sec10.u8"));
+        l19:
+        goto l20;
+        goto L78;
+        goto L90;
+        goto L99;
+        goto L122;
+        l20:
+        show_textbox(text("s102.sec10.u9"));
+        l21:
+        goto l22;
+        goto L78;
+        goto L90;
+        goto L100;
+        goto L123;
+        l22:
+        show_textbox(text("s102.sec10.u10"));
+        l23:
+        goto l24;
+        goto L82;
+        goto L90;
+        goto L101;
+        goto L124;
+        l24:
+        show_textbox(text("s102.sec10.u11"));
+        l25:
+        goto l26;
+        goto L83;
+        goto L90;
+        goto L102;
+        goto L125;
+        l26:
+        show_textbox(text("s102.sec10.u12"));
+        l27:
+        goto l28;
+        goto L84;
+        goto L90;
+        goto L103;
+        goto L126;
+        l28:
+        show_textbox(text("s102.sec10.u13"));
+        l29:
+        goto l30;
+        goto L85;
+        goto L90;
+        goto L104;
+        goto L127;
+        l30:
+        show_textbox(text("s102.sec10.u14"));
+        l31:
+        goto l32;
+        goto L86;
+        goto L90;
+        goto L105;
+        goto L128;
+        l32:
+        show_textbox(text("s102.sec10.u15"));
+        l33:
+        goto l34;
+        goto L87;
+        goto L90;
+        goto L106;
+        goto L129;
+        l34:
+        show_textbox(text("s102.sec10.u16"));
+        l35:
+        goto l36;
+        goto L88;
+        goto L90;
+        goto L107;
+        goto L130;
+        l36:
+        show_textbox(text("s102.sec10.u17"));
+        l37:
+        goto l38;
+        goto L89;
+        goto L90;
+        goto L108;
+        goto L131;
+        l38:
+        show_textbox(text("s102.sec10.u18"));
+        l39:
+        goto l40;
+        goto L86;
+        goto L90;
+        goto L109;
+        goto L132;
+        l40:
+        show_textbox(text("s102.sec10.u19"));
+        l41:
+        goto l42;
+        goto L85;
+        goto L90;
+        goto L110;
+        goto L133;
+        l42:
+        show_textbox(text("s102.sec10.u20"));
+        l43:
+        goto l44;
+        goto L85;
+        goto L90;
+        goto L111;
+        goto L134;
+        l44:
+        show_textbox(text("s102.sec10.u21"));
+        l45:
+        goto l44;
+        goto L77;
+        goto L90;
+        goto L112;
+        goto L135;
+    }
+
+    on talk(slot6) replace {    // section 11 (literal)
+        data(12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61);
+        shared L77:
+        data(0, 0, 0);
+        shared L78:
+        data(8, 0, 0);
+        shared L79:
+        data(24, 0, 0);
+        shared L80:
+        data(8, 4, 2);
+        shared L81:
+        data(8, 0, 1);
+        shared L82:
+        data(8, 4, 56);
+        shared L83:
+        data(8, 4, 48);
+        shared L84:
+        data(8, 4, 59);
+        shared L85:
+        data(8, 4, 61);
+        shared L86:
+        data(8, 4, 60);
+        shared L87:
+        data(6, 3, 60);
+        shared L88:
+        data(3, 2, 53);
+        shared L89:
+        data(8, 4, 61);
+        shared L90:
+        data(254);
+        shared L91:
+        data(12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61, 63, 64, 65, 66);
+        shared L92:
+        data(12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61);
+        shared L93:
+        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 63, 64, 65, 66);
+        shared L94:
+        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 63, 64, 65, 254);
+        shared L95:
+        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61);
+        shared L96:
+        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 254);
+        shared L97:
+        data(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 254);
+        shared L98:
+        data(31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 254);
+        shared L99:
+        data(45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 254);
+        shared L100:
+        data(57, 58, 59, 60, 61, 63, 64, 65, 254);
+        shared L101:
+        data(3, 5, 9, 21, 36, 47, 56);
+        shared L102:
+        data(6, 8, 13, 14, 17, 26, 27, 31, 34, 38, 42, 48, 63, 65, 254);
+        shared L103:
+        data(7, 18, 20, 33, 37, 45, 50, 59, 254);
+        shared L104:
+        data(4, 10, 22, 23, 24, 35, 49, 52, 57, 61, 254);
+        shared L105:
+        data(19, 25, 32, 46, 51, 55, 58, 60, 254);
+        shared L106:
+        data(12, 28, 40, 41, 54, 65, 254);
+        shared L107:
+        data(11, 39, 53);
+        shared L108:
+        data(3, 4, 8, 5, 7, 10, 12, 35, 47, 54, 61, 65, 254);
+        shared L109:
+        data(6, 7, 12, 19, 20, 21, 31, 33, 45, 50, 51, 54, 55, 59, 60);
+        shared L110:
+        data(14, 22, 24, 33, 36, 38, 42, 48, 57, 63, 254);
+        shared L111:
+        data(6, 9, 20, 34, 36, 40, 42, 48, 58, 65, 254);
+        shared L112:
+        data(19, 32, 51, 60, 254);
+        shared L113:
+        data(3, 4, 17, 18, 31, 32, 45, 46, 57, 74, 80, 82, 83, 86, 96, 103, 109, 111, 254);
+        shared L114:
+        data(5, 6, 7, 8, 9, 10, 11, 19, 20, 21, 22, 23, 24, 25, 33, 34, 35, 36, 37, 38, 39, 47, 48, 49, 50, 51, 52, 53, 58, 67, 68, 69, 71, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 86, 87, 91, 92, 93, 94, 95, 96, 97, 98, 99, 101, 102, 103, 105, 106, 107, 109, 111);
+        shared L115:
+        data(5, 6, 7, 8, 9, 10, 11, 19, 20, 21, 22, 23, 24, 25, 33, 34, 35, 36, 37, 38, 39, 47, 48, 49, 50, 51, 52, 53, 58, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111);
+        shared L116:
+        data(5, 6, 7, 12, 13, 14, 19, 20, 21, 26, 27, 28, 32, 33, 34, 40, 41, 42, 47, 48, 49, 54, 55, 56, 58, 59, 60, 61, 63, 64, 65, 66, 70, 72, 85, 88, 89, 90, 100, 104, 108, 110, 254);
+        shared L117:
+        data(12, 13, 14, 26, 27, 28, 40, 41, 42, 54, 55, 56, 59, 60, 61, 66, 254);
+        shared L118:
+        data(254);
+        shared L119:
+        data(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 254);
+        shared L120:
+        data(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 254);
+        shared L121:
+        data(31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 254);
+        shared L122:
+        data(45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 254);
+        shared L123:
+        data(57, 58, 59, 60, 61, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 254);
+        shared L124:
+        data(3, 5, 9, 21, 36, 47, 56, 69, 88, 101, 104, 105, 254);
+        shared L125:
+        data(6, 8, 13, 14, 17, 26, 27, 31, 34, 38, 42, 48, 68, 70, 72, 78, 79, 80, 81, 82, 83, 97, 106, 107, 108, 90, 254);
+        shared L126:
+        data(7, 18, 20, 33, 37, 45, 50, 66, 67, 75, 85, 95, 102);
+        shared L127:
+        data(4, 10, 22, 23, 24, 35, 49, 52, 57, 61, 71, 89, 94, 98, 100, 103, 109, 110, 254);
+        shared L128:
+        data(19, 25, 32, 46, 51, 55, 58, 60, 74, 77, 86, 91, 93, 99, 254);
+        shared L129:
+        data(12, 28, 40, 41, 54, 76, 84, 92);
+        shared L130:
+        data(11, 39, 53, 73, 87);
+        shared L131:
+        data(3, 4, 8, 5, 7, 10, 12, 35, 47, 54, 61, 69, 71, 83, 84, 88, 91, 98, 101, 106, 254);
+        shared L132:
+        data(6, 7, 12, 19, 20, 21, 31, 33, 45, 50, 51, 54, 55, 59, 60, 67, 85, 95, 96, 100, 102, 106, 254);
+        shared L133:
+        data(14, 22, 24, 33, 36, 38, 42, 48, 57, 69, 70, 75, 79, 93, 101, 105, 254);
+        shared L134:
+        data(6, 9, 20, 34, 36, 40, 42, 48, 52, 58, 66, 72, 80, 85, 89, 97, 100, 110, 104);
+        shared L135:
+        data(67, 74, 102, 111, 19, 32, 51, 60, 254);
+        end_section();
+        end_script();
+    }
+
+    shared sec81_dup3 {    // a dead copy of section 81
+        goto sec81;
+    }
+}

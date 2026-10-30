@@ -1,0 +1,73 @@
+{
+  "id": 351,
+  "name": "Kotemon",
+  "_source": "dw3 M383PKEN (tools/import_batch.py run content/imports/lists/sixteenth-4.json)",
+  "level": "rookie",
+  "vanilla_as": 3,
+  "attribute": "data",
+  "specialties": ["battle", "fire", null],
+  "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Spit Fire", "Heat Laser",
+                 "Fire Tower", "Blue Blaster"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 17,
+  "model": {
+    "file": "build/batch16/Kotemon.MMD",
+    "radius": 148,
+    "height": 320,
+    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 2], [6, 6], [7, 7], [8, 2], [9, 9], [10, 10],
+                 [11, 1], [12, 1], [13, 13], [14, 14], [15, 15], [16, 1], [17, 1], [18, 18],
+                 [19, 19], [20, 20], [21, 1], [22, 1]],
+    "slot_aliases": [[50, 46], [51, 47], [47, 49], [49, 52], [54, 46], [55, 48], [48, 52], [52, 46], [46, 55]]
+  },
+  "texture": {"file": "build/batch16/Kotemon.TIM", "entry": 0},
+  "voice": 15,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, -123, -14, 17],
+  "effect_origins": [[3, 110, -140, 0, 17, 0, -30, -188]],
+  "wild": {"hp": 690, "mp": 560, "off": 115, "def": 105, "speed": 100, "brain": 80, "bits": 200},
+  "sizing": {
+    "game": "dw3",
+    "level": 3,
+    "base_model": "build/batch16/Kotemon.MMD",
+    "base_scale": 0.7729,
+    "natural": {"height": 412.8, "half_width": 104.4, "half_depth": 319.2}
+  },
+  "partner": {
+    "voice": 1,
+    "hunger_hours": [2, 5, 8, 11, 14, 17, 20, 23],
+    "energy_max": 40,
+    "energy_fed": 25,
+    "energy_per_hour": 8,
+    "poop_timer_10min": 24,
+    "poop_size": 8,
+    "favorite_food": "Meat",
+    "sleep_cycle": "22:00-07:00",
+    "favored_region": 5,
+    "training_type": "hp-defense",
+    "birth_weight": 15,
+    "status_screen_position": [420, 230, -1610],
+    "item_distance": 10,
+    "training": {"animation": 54, "hit_tick": 20}
+  },
+  "evolution": {
+    "from": [2],
+    "to": [],
+    "requirements": {
+      "digimon": 2,
+      "hp": 1,
+      "mp": -1,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": 0,
+      "weight": 4,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 550, "mp": 450, "offense": 45, "defense": 60, "speed": 45, "brains": 50}
+  }
+}

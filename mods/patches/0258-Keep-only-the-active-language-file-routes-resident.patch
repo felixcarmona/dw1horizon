@@ -1,0 +1,79 @@
+From fb8a030c1d159217291eb8af967f42f8348fc17a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 02:52:47 +0000
+Subject: [PATCH] Keep only the active language file routes resident
+
+---
+ src/main/mod_options.c  | 11 +++++------
+ tools/gen_lang_files.py |  8 +++++---
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 1655e5cc..56b008e1 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -369,13 +369,13 @@ int32_t modFileOnDisc(char *name)
+  */
+ typedef struct {
+ 	uint32_t hash;
+-	uint16_t copy[MOD_LANGS];
+-	uint16_t original[MOD_LANGS]; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
++	uint16_t copy;
++	uint16_t original; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
+ } LangFileRow;
+ 
+ static LangFileRow LANG_FILE_TABLE[] = {
+ #include <lang_files.h>
+-	{ 0, { 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF } },
++	{ 0, 0xFFFF, 0xFFFF },
+ };
+ 
+ static char MOD_LANG_NAME[FILE_NAME_MAX + 1]; /* the copy's name, ended (an entry's has no NUL at 12 letters) */
+@@ -396,7 +396,7 @@ char *modLangFile(char *name)
+ 	uint32_t hash;
+ 	int32_t tfs;
+ 	int32_t copy;
+-	int32_t column, digit;
++	int32_t digit;
+ 	uint32_t key;
+ 
+ 	hash = modNameHash(name);
+@@ -408,8 +408,7 @@ char *modLangFile(char *name)
+ 		if (tfs && !MOD_OPT_SIGNS) {
+ 			return name;
+ 		}
+-		column = MOD_LANG == MOD_LANG_ES ? 0 : MOD_LANG == MOD_LANG_EN ? 1 : MOD_LANG;
+-		copy = !MOD_OPT_STORY && LANG_FILE_TABLE[i].original[column] != 0xFFFF ? LANG_FILE_TABLE[i].original[column] : LANG_FILE_TABLE[i].copy[column];
++		copy = !MOD_OPT_STORY && LANG_FILE_TABLE[i].original != 0xFFFF ? LANG_FILE_TABLE[i].original : LANG_FILE_TABLE[i].copy;
+ 		if (copy == 0xFFFF || (!tfs && MOD_LANG == MOD_LANG_EN)) {
+ 			return name;
+ 		}
+diff --git a/tools/gen_lang_files.py b/tools/gen_lang_files.py
+index 4148fe19..938b801e 100644
+--- a/tools/gen_lang_files.py
++++ b/tools/gen_lang_files.py
+@@ -34,7 +34,7 @@ def main():
+     for value, group in hashes.items():
+         if value == 0 or len(group) > 1:
+             sys.exit(f'gen_lang_files: ambiguous filename hash {value:08X}: {sorted(group)}')
+-    rows = []
++    rows = [[] for _ in range(8)]
+     for spec in a.lang.split():
+         parts = spec.split(':')
+         if not 3 <= len(parts) <= 9:
+@@ -52,8 +52,10 @@ def main():
+             else:
+                 sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
+         original = [where.get('_' + c[1:], 0xFFFF) if c != '-' else 0xFFFF for c in copies]
+-        rows.append('{ 0x%08X, { %s }, { %s } }, /* %s */' % (fnv1a(key), ', '.join(map(str, idx)), ', '.join(map(str, original)), key))
+-    text = ''.join(r + '\n' for r in rows)
++        for lang in range(8):
++            col = 1 if lang == 0 else 0 if lang == 1 else lang
++            rows[lang].append('{ 0x%08X, %d, %d }, /* %s */' % (fnv1a(key), idx[col], original[col], key))
++    text = ''.join('#if MOD_LANG_BUILD == %d\n%s#endif\n' % (lang, ''.join(r + '\n' for r in table)) for lang, table in enumerate(rows))
+     if not os.path.exists(a.out) or open(a.out).read() != text:
+         open(a.out, 'w').write(text)
+ 
+-- 
+2.55.0
+

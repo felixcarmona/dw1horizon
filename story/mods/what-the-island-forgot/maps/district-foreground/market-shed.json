@@ -1,0 +1,1357 @@
+{
+  "screen": 364,
+  "review": "Stacks of crates and barrels, grain sacks, wheelbarrow and bench occlude from behind. Food counters are solid at the rear wall. The large centre aisle and south exit stay free.",
+  "collision": [
+    {
+      "tile": [
+        39,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        50
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrels ground footprint"
+    },
+    {
+      "tile": [
+        61,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        51
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrels ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        52
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "barrels ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        55
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "wheelbarrow ground footprint"
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "wheelbarrow ground footprint"
+    },
+    {
+      "tile": [
+        59,
+        55
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "wheelbarrow ground footprint"
+    },
+    {
+      "tile": [
+        61,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        61
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        39,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        62
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        38,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        39,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        40,
+        63
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "left-crates ground footprint"
+    },
+    {
+      "tile": [
+        60,
+        63
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "market-shed-left-crates.png",
+      "at": [
+        3,
+        296
+      ],
+      "depth": null,
+      "source": "market-shed.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "market-shed.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              0,
+              288,
+              83,
+              447
+            ],
+            "positive": [
+              [
+                38,
+                404
+              ]
+            ],
+            "negative": [
+              [
+                0,
+                446
+              ],
+              [
+                82,
+                446
+              ]
+            ],
+            "score": 0.9857829809188843
+          }
+        ]
+      }
+    },
+    {
+      "png": "market-shed-barrels.png",
+      "at": [
+        63,
+        189
+      ],
+      "depth": [
+        88,
+        299
+      ],
+      "source": "market-shed.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "market-shed.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              53,
+              188,
+              121,
+              294
+            ],
+            "positive": [
+              [
+                86,
+                250
+              ]
+            ],
+            "negative": [
+              [
+                54,
+                293
+              ],
+              [
+                120,
+                293
+              ]
+            ],
+            "score": 0.925739049911499
+          },
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              78,
+              187,
+              119,
+              242
+            ],
+            "positive": [
+              [
+                105,
+                222
+              ],
+              [
+                95,
+                198
+              ]
+            ],
+            "negative": [
+              [
+                120,
+                222
+              ],
+              [
+                118,
+                248
+              ]
+            ],
+            "score": 0.9659618139266968
+          },
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              61,
+              207,
+              109,
+              269
+            ],
+            "positive": [
+              [
+                95,
+                249
+              ],
+              [
+                85,
+                217
+              ]
+            ],
+            "negative": [
+              [
+                112,
+                258
+              ],
+              [
+                56,
+                220
+              ]
+            ],
+            "score": 0.9730969667434692
+          },
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              59,
+              229,
+              103,
+              297
+            ],
+            "positive": [
+              [
+                85,
+                275
+              ],
+              [
+                79,
+                240
+              ]
+            ],
+            "negative": [
+              [
+                106,
+                278
+              ],
+              [
+                75,
+                304
+              ],
+              [
+                54,
+                268
+              ]
+            ],
+            "score": 0.9440726041793823
+          }
+        ]
+      }
+    },
+    {
+      "png": "market-shed-sacks.png",
+      "at": [
+        377,
+        193
+      ],
+      "depth": [
+        420,
+        262
+      ],
+      "source": "market-shed.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "market-shed.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              374,
+              189,
+              459,
+              265
+            ],
+            "positive": [
+              [
+                420,
+                228
+              ]
+            ],
+            "negative": [
+              [
+                375,
+                264
+              ],
+              [
+                458,
+                264
+              ]
+            ],
+            "score": 0.9031050205230713
+          }
+        ]
+      }
+    },
+    {
+      "png": "market-shed-wheelbarrow.png",
+      "at": [
+        382,
+        275
+      ],
+      "depth": [
+        421,
+        328
+      ],
+      "source": "market-shed.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "market-shed.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              376,
+              255,
+              464,
+              329
+            ],
+            "positive": [
+              [
+                425,
+                289
+              ]
+            ],
+            "negative": [
+              [
+                377,
+                328
+              ],
+              [
+                463,
+                328
+              ]
+            ],
+            "score": 0.9640288352966309
+          }
+        ]
+      }
+    },
+    {
+      "png": "market-shed-bench.png",
+      "at": [
+        448,
+        322
+      ],
+      "depth": null,
+      "source": "market-shed.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "market-shed.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-market-shed-edit.jpg",
+            "source_sha1": "03eeaaa5f81a7e442b039fa86d15c9122c77d38d",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              445,
+              317,
+              512,
+              444
+            ],
+            "positive": [
+              [
+                484,
+                397
+              ]
+            ],
+            "negative": [
+              [
+                446,
+                443
+              ],
+              [
+                515,
+                443
+              ]
+            ],
+            "score": 0.9725241661071777
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      86,
+      202
+    ],
+    [
+      427,
+      202
+    ],
+    [
+      453,
+      260
+    ],
+    [
+      478,
+      320
+    ],
+    [
+      512,
+      470
+    ],
+    [
+      512,
+      512
+    ],
+    [
+      0,
+      512
+    ],
+    [
+      0,
+      420
+    ],
+    [
+      26,
+      360
+    ],
+    [
+      30,
+      300
+    ],
+    [
+      57,
+      275
+    ],
+    [
+      66,
+      234
+    ]
+  ],
+  "footprints": {
+    "left-crates": [
+      [
+        28,
+        339
+      ],
+      [
+        66,
+        328
+      ],
+      [
+        79,
+        358
+      ],
+      [
+        70,
+        386
+      ],
+      [
+        80,
+        429
+      ],
+      [
+        34,
+        451
+      ],
+      [
+        0,
+        435
+      ],
+      [
+        0,
+        402
+      ]
+    ],
+    "barrels": [
+      [
+        57,
+        265
+      ],
+      [
+        112,
+        253
+      ],
+      [
+        121,
+        281
+      ],
+      [
+        90,
+        298
+      ],
+      [
+        56,
+        287
+      ]
+    ],
+    "sacks": [
+      [
+        383,
+        238
+      ],
+      [
+        447,
+        234
+      ],
+      [
+        455,
+        259
+      ],
+      [
+        416,
+        269
+      ],
+      [
+        380,
+        256
+      ]
+    ],
+    "wheelbarrow": [
+      [
+        384,
+        298
+      ],
+      [
+        399,
+        285
+      ],
+      [
+        443,
+        280
+      ],
+      [
+        457,
+        296
+      ],
+      [
+        465,
+        325
+      ],
+      [
+        397,
+        331
+      ],
+      [
+        380,
+        319
+      ]
+    ],
+    "bench": [
+      [
+        464,
+        391
+      ],
+      [
+        505,
+        389
+      ],
+      [
+        512,
+        438
+      ],
+      [
+        475,
+        448
+      ]
+    ]
+  }
+}

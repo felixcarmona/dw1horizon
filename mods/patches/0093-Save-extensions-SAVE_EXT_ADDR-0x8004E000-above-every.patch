@@ -1,0 +1,38 @@
+From e12b9133ead1137ef4d65da163113532e0b5557f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 15:38:50 +0000
+Subject: [PATCH] Save extensions: SAVE_EXT_ADDR 0x8004E000, above every sound
+ bank staged at GENERAL_BUFFER
+
+0x8004C000 (0092) was inside the reach of the biggest sound staging at GENERAL_BUFFER: an ESALL chunk of 124 sectors
+ends at 0x8004E000, SB.VHB at 0x8004D000. No card operation runs while one is staged (map loads, battles), but the
+area should not depend on that: it moves to 0x8004E000-0x80052000, still below the battle prefix (0x80052AE0).
+---
+ include/dw/memmap.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 89d9c50..112327b 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -80,11 +80,13 @@
+  * registrations live in it between card operations. An extension is only used from a card read to
+  * loadSaveCopy and from prepareSaveFile to the end of the write, inside one tick of the card menu
+  * (the title's or the save machine's in the world), when this part of the world scratch is free:
+- * the title's TIMs end at 0x8002F000, the world keeps only the TFS ring below WORLD_SCRATCH_START;
+- * it is above the evolution model area (EVO_MMD_ADDR, to 0x80048800) and DOOA_SHARD, below the
+- * battle prefix (0x80052AE0).
++ * the title's TIMs end at 0x8002F000, the world keeps only the TFS ring below WORLD_SCRATCH_START.
++ * It is above every sound bank staged at GENERAL_BUFFER (the largest: an ESALL chunk of 124 sectors,
++ * to 0x8004E000; SB.VHB to 0x8004D000), the evolution model area (EVO_MMD_ADDR, to 0x80048800) and
++ * DOOA_SHARD, and below the battle prefix (0x80052AE0). (A battle's EFE heap covers it: no card
++ * operation runs in a battle.)
+  */
+-#define SAVE_EXT_ADDR		0x8004C000
++#define SAVE_EXT_ADDR		0x8004E000
+ #define SAVE_EXT_MAX		0x4000
+ #define TEXTURE_BUFFER_ADDR	0x80088800	/* temporary TIM, card image, script arrays */
+ #define TEXTURE_BUFFER_SIZE	0x7800
+-- 
+2.53.0
+

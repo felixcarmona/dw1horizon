@@ -1,0 +1,179 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+script 104 {
+    npc kuwagamon0 = 5;
+    npc kuwagamon1 = 6;
+    npc kuwagamon2 = 7;
+    sections 254, 5, 6, 7, 84, 85;
+    on enter replace {    // enter
+    }
+    on talk(kuwagamon0) replace {    // talk
+        say(kuwagamon0, text("s104.sec5.u0"));
+        choice {
+            text("s104.sec5.m0.o0") => {
+                say(kuwagamon0, text("s104.sec5.u1"));
+                return;
+            }
+            text("s104.sec5.m0.o1") => {
+                say(kuwagamon0, text("s104.sec5.u2"));
+                animate(tamer, 19);
+                wait(15);
+                say(tamer, text("s104.sec5.u3"));
+                animate(tamer, anim.idle);
+                say(kuwagamon0, text("s104.sec5.u4"));
+                walk_away(kuwagamon0, 664, -1963, looks: 3);
+                join_city(kuwagamon0, species(51), 8, 17, text("s104.sec5.u5"), prosperity: 2);
+                return;
+            }
+            text("s104.sec5.m0.o2") => {}
+        }
+        say(kuwagamon0, text("s104.sec5.u6"));
+    }
+    on talk(kuwagamon1) replace {    // talk
+        if (insect_contest_horn_helmet_won) {
+            say(kuwagamon1, text("s104.sec6.u0"));
+            return;
+        }
+        store_digimon_type(partner_type);
+        if (partner_type in [species(19), species(32), species(51), species(60)]) {
+            say(kuwagamon1, text("s104.sec6.u2"));
+            say(tamer, text("s104.sec6.u3"));
+            say(kuwagamon1, text("s104.sec6.u4"));
+            say(tamer, text("s104.sec6.u5"));
+            say(kuwagamon1, text("s104.sec6.u6"));
+            say(kuwagamon1, text("s104.sec6.u7"));
+            return;
+        }
+        say(kuwagamon1, text("s104.sec6.u1"));
+        return;
+    }
+    on talk(kuwagamon2) replace {    // talk
+        say(kuwagamon2, text("s104.sec7.u0"));
+        choice {
+            text("s104.sec7.m0.o0") => {
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 60);
+                advance_to_date_at(date_year);
+                add_stat(6, 300);
+                add_stat(7, 300);
+                reduce_stat(8, 5);
+                warp_to(108, 0, 255);
+                return;
+            }
+            text("s104.sec7.m0.o1") => {
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+    on use(4) replace {    // use4
+        rotate(tamer, 2048);
+        set_textbox_origin(-162, 0, 2558);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s104.sec84.u0"));
+        choice(camera) {
+            text("s104.sec84.m0.o0") => {}
+            text("s104.sec84.m0.o1") => {
+                loop {
+                    say(camera, text("s104.sec84.u1"));
+                    choice(camera) {
+                        text("s104.sec84.m2.o0") => {}
+                        text("s104.sec84.m2.o1") => {
+                            break;
+                        }
+                        text("s104.sec84.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s104.sec84.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s104.sec84.m1.o0") => {
+                hide_hud();
+                engine.arg = 3;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 3;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s104.sec84.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s104.sec84.u2"));
+                engine.arg = 3;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s104.sec84.m1.o2") or cancel => {}
+        }
+    }
+    on use(5) replace {    // use5
+        rotate(tamer, 2048);
+        set_textbox_origin(823, 0, 2144);
+        call_routine(routine("load_training_library"));
+        say(camera, text("s104.sec85.u0"));
+        choice(camera) {
+            text("s104.sec85.m0.o0") => {}
+            text("s104.sec85.m0.o1") => {
+                loop {
+                    say(camera, text("s104.sec85.u1"));
+                    choice(camera) {
+                        text("s104.sec85.m2.o0") => {}
+                        text("s104.sec85.m2.o1") => {
+                            break;
+                        }
+                        text("s104.sec85.m2.o2") or cancel => {
+                            return;
+                        }
+                    }
+                }
+            }
+            text("s104.sec85.m0.o2") or cancel => {
+                return;
+            }
+        }
+        choice(narrator) {
+            text("s104.sec85.m1.o0") => {
+                hide_hud();
+                engine.arg = 2;
+                training_slot_game = 0;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("qol.training_x5") => {
+                hide_hud();
+                engine.arg = 2;
+                training_slot_game = 2;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+            }
+            text("s104.sec85.m1.o1") => {
+                set_textbox_mode(1, 0);
+                say(narrator, text("s104.sec85.u2"));
+                engine.arg = 2;
+                training_slot_game = 1;
+                call_digimon_routine(214);
+                call_routine(routine("training"));
+                set_textbox_mode(0, 0);
+            }
+            text("s104.sec85.m1.o2") or cancel => {}
+        }
+    }
+}

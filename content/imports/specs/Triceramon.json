@@ -1,0 +1,112 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M203TRCR",
+ "type": 257,
+ "name": "Triceramon",
+ "source": {
+  "type": 12,
+  "mmd": "extracted/CHDAT/MMD0/MTGR.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 6,
+  "3": 10,
+  "4": 3,
+  "5": 7,
+  "6": 8,
+  "7": 9,
+  "8": 11,
+  "11": 18,
+  "12": 20,
+  "13": 21,
+  "15": 23,
+  "16": 24,
+  "17": 25,
+  "18": 12,
+  "19": 13,
+  "20": 28
+ },
+ "hips": [
+  1,
+  1,
+  0.691
+ ],
+ "root_scale": 0.691,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x3c": {
+   "anim": "F0",
+   "speed": 0.78,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 211
+  },
+  "0x33": {
+   "anim": "G0",
+   "speed": 1.14,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 211
+  },
+  "0x31": {
+   "anim": "H0",
+   "speed": 1.9,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 211
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20"
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

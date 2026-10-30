@@ -1,0 +1,16 @@
+{
+  "id": 40,
+  "name": "Sirloin",
+  "value": 1500,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 35,
+    "happiness": 3,
+    "weight": 3,
+    "tiredness": 5
+  }
+}

@@ -1,0 +1,50 @@
+{
+ "s167.sec6.u0": [
+  [
+   "Bonjour. {color 6}{player}{color 1}."
+  ]
+ ],
+ "s167.sec6.u1": [
+  [
+   "Je retourne de temps en temps",
+   "dans la Savane des engrenages",
+   "pour poursuivre mes"
+  ],
+  [
+   "patrouilles. Cette boutique est",
+   "très pratique pour ça."
+  ]
+ ],
+ "s167.sec6.u2": [
+  [
+   "Au fait, il paraît qu'il y a",
+   "une boutique sur la côte de la",
+   "Savane des engrenages. Tu y"
+  ],
+  [
+   "es déjà allé ?"
+  ]
+ ],
+ "s167.sec81.u0": [
+  [
+   "Vous voilà, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Je suis",
+   "transporteur. Je transporte"
+  ],
+  [
+   "de tout. Mais vous deux, vous",
+   "n'avez que vous-mêmes à",
+   "transporter... Alors... Et si"
+  ],
+  [
+   "je vous emmenais en chair et en",
+   "os ? Pas mal, hein ? Hé... Je",
+   "vous conduirai où vous voulez,"
+  ],
+  [
+   "parmi les lieux que vous",
+   "connaissez. Contre paiement,",
+   "bien sûr."
+  ]
+ ]
+}

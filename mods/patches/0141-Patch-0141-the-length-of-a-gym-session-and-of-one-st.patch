@@ -1,0 +1,490 @@
+From 4ba23949bf1124ad053bd1f01f5d69f299a535e2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 18 Oct 2026 20:59:30 +0000
+Subject: [PATCH 141/143] Patch 0141: the length of a gym session and of one
+ step of it as MOD_TRAIN_RULES / MOD_TRAIN2_RULES slots (60 s and 6 s in the
+ original), in the 14 places of the TRN and TRN2 overlays that counted 0x4b0
+ and 120
+
+---
+ include/dw/mod_rules.h     |  8 +++++++-
+ src/trn/trn_brain.c        |  3 ++-
+ src/trn/trn_def.c          | 21 +++++++++++----------
+ src/trn/trn_hp.c           |  9 +++++----
+ src/trn/trn_mp.c           |  3 ++-
+ src/trn/trn_off.c          |  5 +++--
+ src/trn/trn_reward.c       |  6 +++---
+ src/trn/trn_speed.c        |  3 ++-
+ src/trn2/trn2_def_map108.c |  5 +++--
+ src/trn2/trn2_def_map99.c  |  5 +++--
+ src/trn2/trn2_hp_map107.c  |  9 +++++----
+ src/trn2/trn2_hp_map99.c   |  9 +++++----
+ src/trn2/trn2_mp.c         |  3 ++-
+ src/trn2/trn2_off.c        |  3 ++-
+ src/trn2/trn2_reward.c     |  2 +-
+ 15 files changed, 56 insertions(+), 38 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index ca0f3c7f..734fa300 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -82,7 +82,7 @@ int32_t modNewGame(int32_t slot);
+  */
+ #define MOD_TG_ROWS		16
+ #define MOD_TG_WIDTH		11
+-#define MOD_TR_SIZE		32
++#define MOD_TR_SIZE		34
+ #define MOD_TG_HP	0
+ #define MOD_TG_MP	1
+ #define MOD_TG_OFF	2
+@@ -130,10 +130,16 @@ int32_t modNewGame(int32_t slot);
+ #define MOD_TR_LEARN9	29
+ #define MOD_TR_LEARN10	30
+ #define MOD_TR_LEARN11	31
++#define MOD_TR_SESSION	32 /* logic ticks (50 ms) a gym session runs before it ends by itself */
++#define MOD_TR_STEP	33 /* ticks of one step of a session: the work shown (every step) and the reward (per step done) */
+ extern int16_t MOD_TRAIN_GAIN[MOD_TG_ROWS][MOD_TG_WIDTH];
+ extern int16_t MOD_TRAIN_RULES[MOD_TR_SIZE];
+ extern int16_t MOD_TRAIN2_GAIN[MOD_TG_ROWS][MOD_TG_WIDTH];
+ extern int16_t MOD_TRAIN2_RULES[MOD_TR_SIZE];
++/* the length of a gym session and of one step of it; a session left out ends at once, a step left out is 1 tick */
++#define TRN_SESSION_OF(rules)	((rules)[MOD_TR_SESSION] > 0 ? (rules)[MOD_TR_SESSION] : 0)
++#define TRN_SESSION_SPAN_OF(rules)	((rules)[MOD_TR_SESSION] > 0 ? (rules)[MOD_TR_SESSION] : 1)
++#define TRN_STEP_OF(rules)	((rules)[MOD_TR_STEP] > 0 ? (rules)[MOD_TR_STEP] : 1)
+ #define TG(row, field)		((row) ? (row)[field] : 0)
+ /* the row of a gym for a slot of its minigame: the exact slot, else the row for any slot (-2); NULL = no gain */
+ static inline const int16_t *trainGainRow(int16_t rows[][MOD_TG_WIDTH], int32_t gym, int32_t slot)
+diff --git a/src/trn/trn_brain.c b/src/trn/trn_brain.c
+index 86280b8d..a81e87e8 100644
+--- a/src/trn/trn_brain.c
++++ b/src/trn/trn_brain.c
+@@ -4,6 +4,7 @@
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -133,7 +134,7 @@ void TRN_tickBrainsTraining(int32_t instanceId)
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_awardBrainsTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn/trn_def.c b/src/trn/trn_def.c
+index 85bf1716..b87f1a20 100644
+--- a/src/trn/trn_def.c
++++ b/src/trn/trn_def.c
+@@ -2,6 +2,7 @@
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -119,7 +120,7 @@ int16_t instanceId;
+ 	case 2:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, 0x32, 0, TRN_D_8008F368[0] + 0x64, 0);
+ 		if (done == 1) {
+@@ -133,7 +134,7 @@ int16_t instanceId;
+ 	case 3:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		loc->vx += 0x64;
+ 		PARTNER_ENTITY.digimonEntity.entity.posData->rotation.vy = 0x400;
+@@ -150,7 +151,7 @@ int16_t instanceId;
+ 	case 4:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		loc->vx += 0x64;
+ 		PARTNER_ENTITY.digimonEntity.entity.posData->rotation.vy = 0x400;
+@@ -167,7 +168,7 @@ int16_t instanceId;
+ 	case 5:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, -0x1e, 0, TRN_D_8008F368[0] + 0x3c, 0);
+ 		if (done == 1) {
+@@ -177,7 +178,7 @@ int16_t instanceId;
+ 	case 6:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, 0x14, 0, TRN_D_8008F368[0] + 0x5a, 0);
+ 		if (done == 1) {
+@@ -187,7 +188,7 @@ int16_t instanceId;
+ 	case 7:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, -0xa, 0, TRN_D_8008F368[0] + 0x46, 0);
+ 		if (done == 1) {
+@@ -197,7 +198,7 @@ int16_t instanceId;
+ 	case 8:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, 5, 0, TRN_D_8008F368[0] + 0x5a, 0);
+ 		if (done == 1) {
+@@ -207,7 +208,7 @@ int16_t instanceId;
+ 	case 9:
+ 		MAIN_D_8013537A++;
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		done = moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, -4, 0, TRN_D_8008F368[0], 0);
+ 		if (done == 1) {
+@@ -218,14 +219,14 @@ int16_t instanceId;
+ 		break;
+ 	case 10:
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_8013537A = 0x4b0;
++			MAIN_D_8013537A = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+ 		if (tickEntityWalkTo(0xfc, 0xff, TRN_D_8008F320.vx, TRN_D_8008F320.vz, 0) == 1) {
+ 			r = 10;
+ 			if (MAIN_D_80135370 == 1) {
+ 				r = TRN_getSlotSessionResult();
+ 			}
+-			if (((MAIN_D_8013537A >= 0x4b0) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
++			if (((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 				TRN_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+ 				startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 				playSound(8, 0xa);
+diff --git a/src/trn/trn_hp.c b/src/trn/trn_hp.c
+index b9877759..b68a0c45 100644
+--- a/src/trn/trn_hp.c
++++ b/src/trn/trn_hp.c
+@@ -2,6 +2,7 @@
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -95,7 +96,7 @@ int16_t instanceId;
+ 		break;
+ 	case 2:
+ 		PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+-		if (((MAIN_D_8013537A % 0x78) == 0) && (MAIN_D_8013537A < 0x4b1)) {
++		if (((MAIN_D_8013537A % TRN_STEP_OF(MOD_TRAIN_RULES)) == 0) && (MAIN_D_8013537A <= TRN_SESSION_OF(MOD_TRAIN_RULES))) {
+ 			PARTNER_ENTITY.digimonEntity.entity.anim.animFlag &= 0xfd;
+ 			moveMapObjectsWithLimit(MAIN_D_8013536C, MAIN_D_8013536E, 1, -2, 0, 0);
+ 		}
+@@ -115,11 +116,11 @@ int16_t instanceId;
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (0 <= r))) {
+-			MAIN_D_8013537A %= 0x4b0;
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (0 <= r))) {
++			MAIN_D_8013537A %= TRN_SESSION_SPAN_OF(MOD_TRAIN_RULES);
+ 			playSound(8, 0xa);
+ 			TRAINING_STATE = 3;
+-			MAIN_D_8013537A /= 120;
++			MAIN_D_8013537A /= TRN_STEP_OF(MOD_TRAIN_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn/trn_mp.c b/src/trn/trn_mp.c
+index 125b69ea..c2484eba 100644
+--- a/src/trn/trn_mp.c
++++ b/src/trn/trn_mp.c
+@@ -2,6 +2,7 @@
+ #include <dw/entity.h>
+ #include <dw/garbage.h>
+ #include <dw/input.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -92,7 +93,7 @@ int16_t instanceId;
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+ 			setMapObjectsFlag(MAIN_D_80135372, MAIN_D_80135374, 0);
+ 			setMapObjectsFlag(MAIN_D_80135376, MAIN_D_80135378, 1);
+diff --git a/src/trn/trn_off.c b/src/trn/trn_off.c
+index 63ef3dbf..9d30fcf0 100644
+--- a/src/trn/trn_off.c
++++ b/src/trn/trn_off.c
+@@ -1,6 +1,7 @@
+ #include <dw/anim.h>
+ #include <dw/entity.h>
+ #include <dw/input.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -159,7 +160,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
+ 			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 0, r);
+ 			startAnimation(ENTITY_TABLE[1], 0x12);
+ 			loadMapObjectPosition(TRN_D_8008F368, TRN_D_8008F388, MAIN_D_8013536C, MAIN_D_8013536E);
+@@ -223,7 +224,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((r >= 0) && (MAIN_D_80135370 == 1))) {
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_8013536C, MAIN_D_8013536E, 1);
+ 			TRN_awardOffenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 6, r);
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 9e3c6242..eb857f08 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -168,10 +168,10 @@ void TRN_createCloudFXLine(int16_t a, int16_t b, int16_t x, int16_t z, int16_t d
+ 	int32_t r;
+ 
+ 	if ((a % b) == 0) {
+-		if (a >= 1200) {
+-			a = 1200;
++		if (a >= TRN_SESSION_OF(MOD_TRAIN_RULES)) {
++			a = TRN_SESSION_OF(MOD_TRAIN_RULES);
+ 		}
+-		d = (a / 120) * b;
++		d = (a / TRN_STEP_OF(MOD_TRAIN_RULES)) * b;
+ 		for (i = 0; i < n; i++) {
+ 			r = randomLimit(100);
+ 			pos.vx = (x + d) - r;
+diff --git a/src/trn/trn_speed.c b/src/trn/trn_speed.c
+index a1f5a7aa..9085fcf1 100644
+--- a/src/trn/trn_speed.c
++++ b/src/trn/trn_speed.c
+@@ -2,6 +2,7 @@
+ #include <dw/entity.h>
+ #include <dw/input.h>
+ #include <dw/model.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -100,7 +101,7 @@ void TRN_tickSpeedTraining(int32_t instanceId)
+ 		if (MAIN_D_80135370 == 1) {
+ 			r = TRN_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_8013537A >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
++		if ((((MAIN_D_8013537A >= TRN_SESSION_OF(MOD_TRAIN_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_80135370 == 0)) || ((MAIN_D_80135370 == 1) && (r >= 0))) {
+ 			TRN_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			playSound(8, 0xa);
+diff --git a/src/trn2/trn2_def_map108.c b/src/trn2/trn2_def_map108.c
+index 089f75fe..629a1df0 100644
+--- a/src/trn2/trn2_def_map108.c
++++ b/src/trn2/trn2_def_map108.c
+@@ -8,6 +8,7 @@
+ #include <dw/trn2.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -75,14 +76,14 @@ void TRN2_tickDefenseTrainingMap108(int32_t instanceId)
+ 			MAIN_D_801353BD = 2;
+ 		}
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_801353C2 = 0x4b0;
++			MAIN_D_801353C2 = TRN_SESSION_OF(MOD_TRAIN2_RULES);
+ 		}
+ 		r = 10;
+ 		MAIN_D_801353C2++;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if (((MAIN_D_801353C2 >= 0x4b0) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
++		if (((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 0);
+ 			setMapObjectsFlag(MAIN_D_801353BE, MAIN_D_801353C0, 1);
+ 			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+diff --git a/src/trn2/trn2_def_map99.c b/src/trn2/trn2_def_map99.c
+index b072a9dc..fb9eafb1 100644
+--- a/src/trn2/trn2_def_map99.c
++++ b/src/trn2/trn2_def_map99.c
+@@ -9,6 +9,7 @@
+ #include <dw/types.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -97,13 +98,13 @@ int16_t instanceId;
+ 			MAIN_D_801353BD = 2;
+ 		}
+ 		if (POLLED_INPUT & CANCEL_BUTTON) {
+-			MAIN_D_801353C2 = 0x4b0;
++			MAIN_D_801353C2 = TRN_SESSION_OF(MOD_TRAIN2_RULES);
+ 		}
+ 		r = 10;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if (((MAIN_D_801353C2 >= 0x4b0) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
++		if (((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			TRN2_awardDefenseTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn2/trn2_hp_map107.c b/src/trn2/trn2_hp_map107.c
+index 70a72224..f2bb78b3 100644
+--- a/src/trn2/trn2_hp_map107.c
++++ b/src/trn2/trn2_hp_map107.c
+@@ -9,6 +9,7 @@
+ #include <dw/trn2.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -60,7 +61,7 @@ int16_t instanceId;
+ 		break;
+ 	case 2:
+ 		PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+-		if (((MAIN_D_801353C2 % 0x78) == 0) && (MAIN_D_801353C2 < 0x4b1)) {
++		if (((MAIN_D_801353C2 % TRN_STEP_OF(MOD_TRAIN2_RULES)) == 0) && (MAIN_D_801353C2 <= TRN_SESSION_OF(MOD_TRAIN2_RULES))) {
+ 			PARTNER_ENTITY.digimonEntity.entity.anim.animFlag &= 0xfd;
+ 			moveMapObjectsWithLimit(MAIN_D_801353B4, MAIN_D_801353B6, 0, -1, 0, 0);
+ 		}
+@@ -77,10 +78,10 @@ int16_t instanceId;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_801353C2 >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (0 <= r))) {
+-			MAIN_D_801353C2 %= 0x4b0;
++		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (0 <= r))) {
++			MAIN_D_801353C2 %= TRN_SESSION_SPAN_OF(MOD_TRAIN2_RULES);
+ 			playSound(8, 0xa);
+-			MAIN_D_801353C2 /= 120;
++			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 1, r);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn2/trn2_hp_map99.c b/src/trn2/trn2_hp_map99.c
+index fb67267c..47f908b0 100644
+--- a/src/trn2/trn2_hp_map99.c
++++ b/src/trn2/trn2_hp_map99.c
+@@ -7,6 +7,7 @@
+ #include <dw/types.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -81,7 +82,7 @@ int16_t instanceId;
+ 		break;
+ 	case 2:
+ 		PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+-		if (((MAIN_D_801353C2 % 0x78) == 0) && (MAIN_D_801353C2 < 0x4b1)) {
++		if (((MAIN_D_801353C2 % TRN_STEP_OF(MOD_TRAIN2_RULES)) == 0) && (MAIN_D_801353C2 <= TRN_SESSION_OF(MOD_TRAIN2_RULES))) {
+ 			PARTNER_ENTITY.digimonEntity.entity.anim.animFlag &= 0xfd;
+ 			moveMapObjectsWithLimit(MAIN_D_801353B4, MAIN_D_801353B6, -1, -1, 0, 0);
+ 		}
+@@ -98,11 +99,11 @@ int16_t instanceId;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_801353C2 >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (0 <= r))) {
+-			MAIN_D_801353C2 %= 0x4b0;
++		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (0 <= r))) {
++			MAIN_D_801353C2 %= TRN_SESSION_SPAN_OF(MOD_TRAIN2_RULES);
+ 			playSound(8, 0xa);
+ 			MAIN_D_801353BD = 3;
+-			MAIN_D_801353C2 /= 120;
++			MAIN_D_801353C2 /= TRN_STEP_OF(MOD_TRAIN2_RULES);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+ 			TRN2_awardHpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 3, r);
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+diff --git a/src/trn2/trn2_mp.c b/src/trn2/trn2_mp.c
+index 2433e2d3..1c736129 100644
+--- a/src/trn2/trn2_mp.c
++++ b/src/trn2/trn2_mp.c
+@@ -7,6 +7,7 @@
+ #include <dw/trn2.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -59,7 +60,7 @@ int16_t instanceId;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_801353C2 >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
++		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			playSound(8, 0xa);
+ 			TRN2_awardMpTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, 8, r);
+ 			createCameraMovement(&TAMER_ENTITY.entity.posData->location, 10);
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 87fbda19..48b2b59f 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -10,6 +10,7 @@
+ #include <dw/trn2.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t TRAINING_COMPLETE;
+ extern uint32_t POLLED_INPUT;
+@@ -170,7 +171,7 @@ int16_t instanceId;
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_801353C2 >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((r >= 0) && (MAIN_D_801353BC == 1))) {
++		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((r >= 0) && (MAIN_D_801353BC == 1))) {
+ 			playSound(8, 0xa);
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_801353B4, MAIN_D_801353B6, 1);
+diff --git a/src/trn2/trn2_reward.c b/src/trn2/trn2_reward.c
+index 88d565e8..b44faaac 100644
+--- a/src/trn2/trn2_reward.c
++++ b/src/trn2/trn2_reward.c
+@@ -79,7 +79,7 @@ void TRN2_tickSpeedTraining(int32_t instanceId)
+ 		if (MAIN_D_801353BC == 1) {
+ 			r = TRN2_getSlotSessionResult();
+ 		}
+-		if ((((MAIN_D_801353C2 >= 0x4b0) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
++		if ((((MAIN_D_801353C2 >= TRN_SESSION_OF(MOD_TRAIN2_RULES)) || (POLLED_INPUT & CANCEL_BUTTON)) && (MAIN_D_801353BC == 0)) || ((MAIN_D_801353BC == 1) && (r >= 0))) {
+ 			setMapObjectsFlag(MAIN_D_801353B8, MAIN_D_801353BA, 1);
+ 			TRN2_awardSpeedTrainingGains(PARTNER_ENTITY.digimonEntity.entity.type, instanceId, r);
+ 			startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0x12);
+-- 
+2.53.0
+

@@ -1,0 +1,102 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M191FLRA",
+ "type": 273,
+ "name": "Floramon",
+ "source": {
+  "type": 57,
+  "mmd": "extracted/CHDAT/MMD1/PENM.MMD"
+ },
+ "map": {
+  "1": 2,
+  "3": 3,
+  "4": 10,
+  "5": 11,
+  "6": 12,
+  "8": 13,
+  "9": 14,
+  "11": 15,
+  "14": 1,
+  "15": 18,
+  "16": 19,
+  "18": 22,
+  "19": 23
+ },
+ "hips": [
+  1,
+  1,
+  0.927
+ ],
+ "root_scale": 0.927,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x35": {
+   "anim": "G0",
+   "speed": 0.77,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 124
+  },
+  "0x2e": {
+   "anim": "I0",
+   "speed": 2.2,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 124
+  },
+  "0x2f": {
+   "anim": "F0",
+   "speed": 1.4,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 124
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

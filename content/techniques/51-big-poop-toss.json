@@ -1,0 +1,17 @@
+{
+  "id": 51,
+  "name": "Big Poop Toss",
+  "element": "filth",
+  "power": 211,
+  "mpCost": 64,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 49,
+  "status": 2,
+  "statusChance": 17,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [15, 10, 5]
+}

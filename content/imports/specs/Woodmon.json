@@ -1,0 +1,113 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M222WOOD",
+ "type": 272,
+ "name": "Woodmon",
+ "source": {
+  "type": 38,
+  "mmd": "extracted/CHDAT/MMD1/DORI.MMD"
+ },
+ "map": {
+  "1": 1,
+  "6": 2,
+  "7": 7,
+  "8": 8,
+  "9": 18,
+  "10": 13,
+  "11": 14,
+  "14": 10,
+  "18": 24,
+  "19": 21,
+  "20": 22,
+  "21": 20,
+  "22": 26,
+  "23": 25
+ },
+ "hips": [
+  1,
+  1,
+  0.788
+ ],
+ "root_scale": 0.788,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x38": {
+   "anim": "G0",
+   "speed": 0.75,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 146
+  },
+  "0x37": {
+   "anim": "F0",
+   "speed": 1.31,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 146
+  },
+  "0x36": {
+   "anim": "H0",
+   "speed": 0.99,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 146
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2f",
+  "0x30",
+  "0x31",
+  "0x32"
+ ],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

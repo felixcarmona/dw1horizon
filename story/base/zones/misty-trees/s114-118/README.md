@@ -1,0 +1,14 @@
+# Script 114 (readable)
+
+Screens that load it: 118 Misty Trees.
+
+| section | status | lines | instructions |
+|---|---|---|---|
+| sec254 | readable | 12 | 10 |
+| sec5 | readable | 3 | 7 |
+| sec6 | readable | 3 | 7 |
+| sec7 | readable | 3 | 7 |
+| sec8 | readable | 3 | 7 |
+| sec9 | readable | 3 | 7 |
+| sec51 | readable | 11 | 9 |
+| sec52 | readable | 16 | 13 |

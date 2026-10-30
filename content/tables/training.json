@@ -1,0 +1,198 @@
+{
+  "_comment": "How much a training session gives. gainTenths: one row per stat mode 0..5 (the number the training uses), five numbers each: the species' training type 0, 1, 2, 3 and any other; they are tenths (10 = x1). levelTenths: a multiplier by the partner's level 0..7 (9 = x0.9). bonuses: extra multipliers [num, den]: when trigger (the trigger `arg` is set, i.e. a recruited Digimon; only in a real session), counter (the stat's upgrade counter has reached `arg`; real sessions only) or item (the player carries the item `arg`); modes lists the stats it applies to. A key left out = no gain at all for that part. training2: the same for the second gym set (the TRN2 overlay): the numbers are the original's, whose second gym multiplier was in the code and ignored this file; its only bonus is the training manual (item 33).",
+  "training": {
+    "gainTenths": [
+      [
+        10,
+        10,
+        9,
+        11,
+        8
+      ],
+      [
+        10,
+        9,
+        11,
+        10,
+        8
+      ],
+      [
+        10,
+        11,
+        10,
+        9,
+        8
+      ],
+      [
+        10,
+        10,
+        9,
+        11,
+        8
+      ],
+      [
+        10,
+        11,
+        10,
+        9,
+        8
+      ],
+      [
+        10,
+        9,
+        11,
+        10,
+        8
+      ]
+    ],
+    "levelTenths": [
+      12,
+      9,
+      9,
+      10,
+      11,
+      12,
+      13,
+      12
+    ],
+    "bonuses": [
+      {
+        "when": "trigger",
+        "arg": 219,
+        "modes": [
+          0,
+          3,
+          4
+        ],
+        "multiply": [
+          6,
+          5
+        ],
+        "note": "Kabuterimon recruited"
+      },
+      {
+        "when": "trigger",
+        "arg": 251,
+        "modes": [
+          1,
+          2,
+          5
+        ],
+        "multiply": [
+          6,
+          5
+        ],
+        "note": "Kuwagamon recruited"
+      },
+      {
+        "when": "counter",
+        "arg": 10,
+        "modes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "multiply": [
+          6,
+          5
+        ],
+        "note": "the stat has been upgraded 10 times"
+      },
+      {
+        "when": "item",
+        "arg": 33,
+        "modes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "multiply": [
+          11,
+          10
+        ],
+        "note": "Training Manual in the bag"
+      }
+    ]
+  },
+  "training2": {
+    "gainTenths": [
+      [
+        10,
+        10,
+        9,
+        11,
+        8
+      ],
+      [
+        10,
+        9,
+        11,
+        10,
+        8
+      ],
+      [
+        10,
+        11,
+        10,
+        9,
+        8
+      ],
+      [
+        10,
+        10,
+        9,
+        11,
+        8
+      ],
+      [
+        10,
+        11,
+        10,
+        9,
+        8
+      ],
+      [
+        10,
+        9,
+        11,
+        10,
+        8
+      ]
+    ],
+    "levelTenths": [
+      12,
+      9,
+      9,
+      10,
+      11,
+      12,
+      13,
+      12
+    ],
+    "bonuses": [
+      {
+        "when": "item",
+        "arg": 33,
+        "modes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "multiply": [
+          11,
+          10
+        ],
+        "note": "the training manual"
+      }
+    ]
+  }
+}

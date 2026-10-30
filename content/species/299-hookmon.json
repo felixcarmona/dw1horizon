@@ -1,0 +1,73 @@
+{
+  "id": 299,
+  "name": "Hookmon",
+  "_source": "dw3 M387PIRT (tools/import_batch.py run content/imports/lists/tenth-12.json)",
+  "level": "champion",
+  "vanilla_as": 38,
+  "attribute": "virus",
+  "specialties": ["battle", "mech", null],
+  "techniques": ["Megaton Punch", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Dynamite Kick (44)",
+                 "Pulse Laser", "Power Crane", "Full Potential", "Metal Sprinter", "Dark Shot"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 48,
+  "model": {
+    "file": "build/batch10/Hookmon.MMD",
+    "radius": 173,
+    "height": 460,
+    "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 1], [5, 1], [6, 6], [7, 1], [8, 8], [9, 9], [10, 10],
+                 [11, 11], [12, 8], [13, 13], [14, 14], [15, 15]],
+    "slot_aliases": [[49, 46], [54, 53], [55, 51], [56, 50], [57, 46], [46, 48], [48, 52], [52, 50], [58, 53],
+                     [53, 50], [50, 51], [51, 47], [47, 58]]
+  },
+  "texture": {"file": "build/batch10/Hookmon.TIM", "entry": 0},
+  "voice": 42,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, -88, 18, 5],
+  "effect_origins": [[7, 0, 0, 0, 4, -54, 25, 48], [10, 0, 0, 0, 7, 17, 93, 34], [18, 0, 0, 0, 12, 0, 0, 0]],
+  "wild": {"hp": 1560, "mp": 1470, "off": 245, "def": 205, "speed": 200, "brain": 180, "bits": 600},
+  "sizing": {
+    "game": "dw3",
+    "level": 4,
+    "base_model": "build/batch10/Hookmon.MMD",
+    "base_scale": 0.9808,
+    "natural": {"height": 469.2, "half_width": 293.7, "half_depth": 126.9}
+  },
+  "partner": {
+    "voice": 3,
+    "hunger_hours": [2, 6, 11, 16, 21],
+    "energy_max": 80,
+    "energy_fed": 33,
+    "energy_per_hour": 7,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Sirloin",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 5,
+    "training_type": "even",
+    "birth_weight": 20,
+    "status_screen_position": [200, 330, -1320],
+    "item_distance": 10,
+    "training": {"animation": 57, "hit_tick": 10}
+  },
+  "evolution": {
+    "from": [122, 68],
+    "to": [],
+    "requirements": {
+      "digimon": 122,
+      "hp": 100,
+      "mp": 100,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": 3,
+      "weight": 30,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 28,
+      "flags": 0
+    },
+    "gains": {"hp": 1500, "mp": 1450, "offense": 145, "defense": 155, "speed": 150, "brains": 155}
+  }
+}

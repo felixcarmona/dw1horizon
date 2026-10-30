@@ -1,0 +1,319 @@
+{
+ "s012.sec5.u0": [
+  [
+   "Tu veux te battre contre moi ?"
+  ]
+ ],
+ "s012.sec6.u0": [
+  [
+   "Eh bien, quel toupet !"
+  ]
+ ],
+ "s012.sec7.u0": [
+  [
+   "Q-qu'est-ce que tu vas faire",
+   "?"
+  ]
+ ],
+ "s012.sec8.u0": [
+  [
+   "Je vais te dénoncer !"
+  ]
+ ],
+ "s012.sec53.u0": [
+  [
+   "Oh, un pont !"
+  ]
+ ],
+ "s012.sec81.m0.o0": "100 MP : 200 Bits",
+ "s012.sec81.m0.o1": "1000 MP : 1800 Bits",
+ "s012.sec81.m0.o2": "Ne pas utiliser",
+ "s012.sec81.u0": [
+  [
+   "Station MP"
+  ]
+ ],
+ "s012.sec81.u1": [
+  [
+   "Une machine qui rend des MP,",
+   "hein."
+  ]
+ ],
+ "s012.sec81.u2": [
+  [
+   "MP rétablis !"
+  ]
+ ],
+ "s012.sec81.u3": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s012.sec81.u4": [
+  [
+   "MP rétablis !"
+  ]
+ ],
+ "s012.sec81.u5": [
+  [
+   "Pas assez d'argent..."
+  ]
+ ],
+ "s012.sec81.u6": [
+  [
+   "Laissons tomber."
+  ]
+ ],
+ "s013.sec5.m0.o0": "OK, J'accepte!",
+ "s013.sec5.m0.o1": "J'avais oublié...",
+ "s013.sec5.u0": [
+  [
+   "Hé, toi ! Ce serait toi qui",
+   "bâtis une ville ?"
+  ]
+ ],
+ "s013.sec5.u1": [
+  [
+   "Oui. Pourquoi ?"
+  ]
+ ],
+ "s013.sec5.u2": [
+  [
+   "Hmm, quelle chance tu as de me",
+   "rencontrer ! Je n'en ai pas",
+   "l'air, mais je suis de niveau"
+  ],
+  [
+   "Ultime ! Bats-moi et j'aiderai",
+   "ta ville. Qu'en dis-tu ?"
+  ]
+ ],
+ "s013.sec5.u3": [
+  [
+   "Eh bien, quelle défaite ! On se",
+   "retrouve en ville !"
+  ]
+ ],
+ "s013.sec5.u4": "Piximon a rejoint la ville !",
+ "s013.sec5.u5": [
+  [
+   "Hmm, quel trouillard ! Bon, on",
+   "se reverra !"
+  ]
+ ],
+ "s013.sec6.u0": [
+  [
+   "Oh, señorita !"
+  ]
+ ],
+ "s013.sec7.u0": [
+  [
+   "Quoi de neuf, amigo ?!"
+  ]
+ ],
+ "s013.sec8.u0": [
+  [
+   "Uki, Uki!"
+  ]
+ ],
+ "s013.sec9.u0": [
+  [
+   "Oh ho !"
+  ]
+ ],
+ "s014.sec5.u0": [
+  [
+   "Fsssssss!"
+  ]
+ ],
+ "s014.sec6.u0": [
+  [
+   "Zeiiiiii!"
+  ]
+ ],
+ "s014.sec7.u0": [
+  [
+   "Fiuuuu, fiuuuu!"
+  ]
+ ],
+ "s014.sec8.u0": [
+  [
+   "Je ne joue plus avec toi !"
+  ]
+ ],
+ "s014.sec9.u0": [
+  [
+   "Ukiaaa! Uh-uh!"
+  ]
+ ],
+ "s014.sec10.u0": [
+  [
+   "Ho ho ho ! Youhou !"
+  ]
+ ],
+ "s015.sec5.u0": [
+  [
+   "Toi être Digimon, oui ?"
+  ]
+ ],
+ "s015.sec7.u0": [
+  [
+   "Comment ça va ? Toi venir d'où",
+   "?"
+  ]
+ ],
+ "s015.sec8.u0": [
+  [
+   "Ne te moque pas de moi !"
+  ]
+ ],
+ "s015.sec9.u0": [
+  [
+   "Je vais te croquer !"
+  ]
+ ],
+ "s015.sec51.m0.o0": "Essayons-en un",
+ "s015.sec51.m0.o1": "Ne rien utiliser",
+ "s015.sec51.m1.o0": "Bien sûr que j'aime ça",
+ "s015.sec51.m1.o1": "Non, je déteste ça",
+ "s015.sec51.u0": [
+  [
+   "Hmm, si je la laisse comme ça,",
+   "elle risque vraiment de faner.",
+   "Si seulement il pleuvait..."
+  ]
+ ],
+ "s015.sec51.u1": [
+  [
+   "Tiens, c'est curieux. Ça",
+   "bourgeonne."
+  ]
+ ],
+ "s015.sec51.u2": [
+  [
+   "Hm ? Ça vient de bouger un",
+   "peu... ? C'est la plante",
+   "mystérieuse dont tout le monde"
+  ],
+  [
+   "parle ?"
+  ]
+ ],
+ "s015.sec51.u3": [
+  [
+   "Mais elle est un peu flétrie. À",
+   "ce rythme, elle va faner."
+  ]
+ ],
+ "s015.sec51.u4": [
+  [
+   "Utiliser un objet ?"
+  ]
+ ],
+ "s015.sec51.u5": [
+  [
+   "Ah, C'est vrai. Je n'ai plus",
+   "rien..."
+  ]
+ ],
+ "s015.sec51.u6": [
+  [
+   "Rien de ce que j'ai ne sera",
+   "utile."
+  ]
+ ],
+ "s015.sec51.u7": [
+  [
+   "Ça ne fera rien..."
+  ]
+ ],
+ "s015.sec51.u8": [
+  [
+   "Ké hé hé hé ! Salut ! Je suis",
+   "Vegiemon !"
+  ]
+ ],
+ "s015.sec51.u9": [
+  [
+   "Ah, tu m'as fait peur ! Un",
+   "Digimon plante, hein..."
+  ]
+ ],
+ "s015.sec51.u10": [
+  [
+   "Ké hé. Dis, toi. Tu aimes les",
+   "légumes ?"
+  ]
+ ],
+ "s015.sec51.u11": [
+  [
+   "D'où sort cette question... ?",
+   "Les légumes ? Hmm..."
+  ]
+ ],
+ "s015.sec51.u12": [
+  [
+   "...Laisse tomber."
+  ]
+ ],
+ "s015.sec51.u13": [
+  [
+   "Oh, ceux qui aiment les légumes",
+   "ne peuvent pas être méchants."
+  ]
+ ],
+ "s015.sec51.u14": [
+  [
+   "Non, non ! Les légumes, c'est",
+   "super !"
+  ]
+ ],
+ "s015.sec51.u15": [
+  [
+   "???"
+  ]
+ ],
+ "s015.sec51.u16": [
+  [
+   "Très bien. C'est décidé. Je",
+   "viens avec toi !"
+  ]
+ ],
+ "s015.sec51.u17": [
+  [
+   "Pfff, quel sans-gêne... Attends",
+   "une seconde !"
+  ]
+ ],
+ "s015.sec51.u18": [
+  [
+   "Alors je ne viens pas ! Salut !"
+  ]
+ ],
+ "s015.sec51.u19": [
+  [
+   "Tu changes d'avis comme de",
+   "chemise !"
+  ]
+ ],
+ "s015.sec51.u20": [
+  [
+   "Hein ? Alors, qu'est-ce que je",
+   "dois faire ?"
+  ]
+ ],
+ "s015.sec51.u21": [
+  [
+   "Euh, eh bien... viens aider en",
+   "ville !"
+  ]
+ ],
+ "s015.sec51.u22": [
+  [
+   "Ké hé hé, d'accord ! J'en ai",
+   "marre de traîner ici, de toute",
+   "façon. Ké hé !"
+  ]
+ ],
+ "s015.sec51.u23": "Vegiemon a rejoint la ville !"
+}

@@ -1,0 +1,12 @@
+// Who stands on screen 144 (Toy Town), and when. Read out of MAPHEAD.SCN section 144 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(144) {                              // Toy Town
+            npc Clearagumon slot 0 when trigger(350);
+            npc Toyagumon slot 1 when trigger(350);
+            npc Tankmon slot 2 when trigger(350);
+        }
+    }
+}

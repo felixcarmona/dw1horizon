@@ -1,0 +1,211 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../names.dws";
+maphead {
+    // the section table, in the order of the original header
+    sections 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 1220, 1221, 1222, 1223, 1224, 1225, 1226, 1227, 1228, 1229, 1230, 1235, 1236, 1237, 1238, 1240, 1241, 1242, 1243, 1244, 1245, 1246, 1250, 1251, 1253, 1252;
+
+    shared L228 {    // code of sec177 that other code jumps to
+        top_map_residents_placed = 0;
+        load_digimon(species("Tanemon"));
+        set_digimon(species("Tanemon"), 6, 0);
+        top_map_residents_placed += 1;
+        goto L231;
+    }
+
+    shared L229 {    // code of sec178 that other code jumps to
+        top_map_residents_placed = 0;
+        load_digimon(species(164));
+        set_digimon(species(164), 6, 0);
+        top_map_residents_placed += 1;
+        goto L231;
+    }
+
+    shared L230 {    // code of sec179 that other code jumps to
+        top_map_residents_placed = 0;
+        load_digimon(species(147));
+        set_digimon(species(147), 6, 0);
+        top_map_residents_placed += 1;
+        goto L231;
+    }
+
+    shared L231 {    // code of sec179 that other code jumps to
+        if (is_recruited(species("Whamon"))) {
+            load_digimon(species(146));
+            set_digimon(species(146), 7, 0);
+            top_map_residents_placed += 1;
+        }
+        unless (!greymon_challenge_ready || is_recruited(species("Greymon"))) return;
+        unless (!mt_infinity_entrance_found || trigger(355)) return;
+        if (!city_resident_met.kokatorimon && is_recruited(species("Kokatorimon"))) {
+            load_digimon(species(168));
+            set_digimon(species(168), 3, 0);
+            top_map_residents_placed += 1;
+        }
+        unless (top_map_residents_placed != 3) return;
+        store_date(date_year);
+        if (date_hour >= 7 && date_hour < 19) {
+            store_random(random_roll, 3);
+            if (is_recruited(species("Andromon")) && random_roll <= 0 && top_map_residents_placed <= 2) {
+                load_digimon(species(160));
+                set_digimon(species(160), 2, 0);
+                top_map_residents_placed += 1;
+            }
+            unless (top_map_residents_placed != 3) return;
+            load_digimon(species("Yuramon"));
+            set_digimon(species("Yuramon"), 0, 0);
+            return;
+        }
+        unless (top_map_residents_placed <= 2) return;
+        if (is_recruited(species("Kokatorimon")) && city_resident_met.kokatorimon && date_hour >= 4 && date_hour < 8) {
+            load_digimon(species(168));
+            set_digimon(species(168), 3, 0);
+            top_map_residents_placed += 1;
+        }
+        unless (top_map_residents_placed != 3) return;
+        if (is_recruited(species("Sukamon"))) {
+            load_digimon(species(159));
+            set_digimon(species(159), 1, 0);
+        }
+        return;
+    }
+
+    shared L247 {    // code of sec192 that other code jumps to (literal)
+        p38 = 0;
+        p39 = 0;
+        unless (trigger(204)) goto l2;
+        unless (trigger(231) || trigger(245) || trigger(233) || trigger(247)) goto l1;
+        goto l2;
+        l1:
+        p38 += 1;
+        load_digimon(species(128));
+        set_digimon(species(128), 2, 0);
+        l2:
+        unless (!trigger(77) && trigger(237)) goto l3;
+        p38 += 1;
+        load_digimon(species(157));
+        set_digimon(species(157), 0, 0);
+        l3:
+        unless (!trigger(78) && trigger(235)) goto l4;
+        p38 += 1;
+        load_digimon(species(155));
+        set_digimon(species(155), 1, 0);
+        l4:
+        unless (p38 == 3) goto l5;
+        end_section();
+        l5:
+        unless (!trigger(79) && trigger(232)) goto l6;
+        p38 += 1;
+        load_digimon(species(152));
+        set_digimon(species(152), 3, 0);
+        l6:
+        unless (p38 == 3) goto l7;
+        end_section();
+        l7:
+        store_date(p105);
+        unless (p107 >= 7 && p107 < 19) goto l8;
+        goto l10;
+        l8:
+        unless (!trigger(80) && trigger(218)) goto l9;
+        p38 += 1;
+        load_digimon(species(140));
+        set_digimon(species(140), 5, 0);
+        l9:
+        unless (p38 == 3) goto l10;
+        end_section();
+        l10:
+        store_date(p105);
+        unless (p107 >= 7 && p107 < 19) goto l11;
+        goto l12;
+        goto l12;
+        l11:
+        goto l21;
+        l12:
+        p38 += 1;
+        load_digimon(species("Tsunomon"));
+        set_digimon(species("Tsunomon"), 4, 0);
+        unless (p38 == 3) goto l13;
+        end_section();
+        l13:
+        unless (trigger(204)) goto l14;
+        unless (trigger(231) || trigger(245) || trigger(233) || trigger(247)) goto l14;
+        p38 += 1;
+        load_digimon(species(128));
+        set_digimon(species(128), 2, 0);
+        unless (p38 == 3) goto l14;
+        end_section();
+        l14:
+        store_random(p110, 1);
+        unless (p110 == 0 && trigger(235) && trigger(78)) goto l15;
+        goto l17;
+        l15:
+        unless (trigger(234)) goto l16;
+        p38 += 1;
+        load_digimon(species(154));
+        set_digimon(species(154), 7, 0);
+        l16:
+        unless (p38 == 3) goto l17;
+        end_section();
+        l17:
+        unless (trigger(235) && trigger(78)) goto l18;
+        p38 += 1;
+        load_digimon(species(155));
+        set_digimon(species(155), 1, 0);
+        l18:
+        unless (p38 == 3) goto l19;
+        end_section();
+        l19:
+        p39 += 1;
+        unless (p39 < 2) goto l20;
+        goto l21;
+        l20:
+        end_section();
+        l21:
+        store_date(p105);
+        unless (p107 >= 7 && p107 < 19) goto l22;
+        goto l24;
+        l22:
+        unless (trigger(237) && trigger(77)) goto l23;
+        p38 += 1;
+        load_digimon(species(157));
+        set_digimon(species(157), 0, 0);
+        l23:
+        unless (p38 == 3) goto l24;
+        end_section();
+        l24:
+        unless (trigger(218)) goto l25;
+        p38 += 1;
+        load_digimon(species(140));
+        set_digimon(species(140), 5, 0);
+        l25:
+        unless (p38 == 3) goto l26;
+        end_section();
+        l26:
+        store_random(p110, 1);
+        unless (p110 == 0 && trigger(254)) goto l27;
+        goto l29;
+        l27:
+        unless (trigger(232) && trigger(79)) goto l28;
+        p38 += 1;
+        load_digimon(species(152));
+        set_digimon(species(152), 3, 0);
+        l28:
+        unless (p38 == 3) goto l29;
+        end_section();
+        l29:
+        unless (trigger(254)) goto l30;
+        p38 += 1;
+        load_digimon(species(172));
+        set_digimon(species(172), 6, 0);
+        l30:
+        unless (p38 == 3) goto l31;
+        end_section();
+        l31:
+        p39 += 1;
+        unless (p39 < 2) goto l32;
+        goto l12;
+        l32:
+        end_section();
+    }
+}

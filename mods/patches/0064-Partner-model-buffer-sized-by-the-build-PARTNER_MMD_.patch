@@ -1,0 +1,240 @@
+From 109b96b251e93acd9fa506a0c59d5a2285a19d69 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 20:29:28 +0000
+Subject: [PATCH 64/65] Partner model buffer sized by the build
+ (PARTNER_MMD_MAX), loaders never write past it
+
+PARTNER_MODEL_BUFFER is PARTNER_MMD_MAX bytes: Makefile variable (default 0x20000, at most 0x24000 for
+the link-time MIN_HEAP assert) through a generated header; loadMMD/loadMMDAsync/applyMMD refuse a bigger
+partner model, natural evolution skips it, the lab menu says so.
+
+---
+ Makefile               |  8 ++++++++
+ include/dw/memmap.h    | 10 +++++++++-
+ include/dw/species.h   |  2 ++
+ mk/platform/psx.mk     |  2 +-
+ src/main/evolution.c   |  6 +++---
+ src/main/main.c        |  5 +++++
+ src/main/mod_lab.c     |  2 ++
+ src/main/mod_species.c | 12 ++++++++++++
+ src/main/model.c       | 19 +++++++++++++++++++
+ 9 files changed, 61 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 5f2bc5a..c468fe7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -25,6 +25,14 @@ GEN_DIR := build/$(VERSION)/$(PLATFORM)/generated
+ 
+ VERSION_MACRO := VERSION_$(shell echo $(VERSION) | tr a-z A-Z)
+ 
++# MOD (scale): bytes of the partner model buffer (include/dw/memmap.h, docs/mods/memory.md
++# "Partner model buffer"). The original's is 0x18800; the default fits the largest imported
++# model. The value goes through a generated header so a change rebuilds what depends on it.
++PARTNER_MMD_MAX ?= 0x20000
++$(shell mkdir -p $(GEN_DIR); printf '#define PARTNER_MMD_MAX %s\n' '$(PARTNER_MMD_MAX)' > $(GEN_DIR)/partner_mmd_max.h.tmp; \
++	cmp -s $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h && rm $(GEN_DIR)/partner_mmd_max.h.tmp \
++	|| mv $(GEN_DIR)/partner_mmd_max.h.tmp $(GEN_DIR)/partner_mmd_max.h)
++
+ PYTHON := python3
+ 
+ .DEFAULT_GOAL := all
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 23dd1ef..85269c7 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -91,7 +91,15 @@
+ #define BATTLE_BUFF_MODEL_ADDR		0x80055328
+ 
+ /* Sizes of buffers that receive files (largest original in a comment) */
+-#define PARTNER_MMD_MAX		0x18800	/* ETEM.MMD 0x17E14 */
++/*
++ * The partner model buffer (PARTNER_MODEL_BUFFER, main.c). The original's was
++ * 0x18800 (ETEM.MMD 0x17E14). The size comes from the build (Makefile:
++ * PARTNER_MMD_MAX, default 0x20000 = 128 KB; 0x24000 = 144 KB is the most the
++ * link-time MIN_HEAP assert leaves) through a generated header; every byte over
++ * 0x18800 is a byte less of heap on every screen (docs/mods/memory.md, "Partner
++ * model buffer"). The disc tools check the models against the same number.
++ */
++#include <partner_mmd_max.h>
+ #define TAMER_MMD_MAX		0xE000	/* BOYS.MMD 0xDECC (GCC: one array, mod 0002) */
+ #define MAP_SCRIPT_MAX		0x4000	/* a DG.SCN entry; the largest is 0x3800 */
+ #define SCRIPT_OFFSET_TABLE_SIZE 0x2000	/* start of DG.SCN (offset table), read at boot */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index d8a25ec..5bd716e 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -129,6 +129,8 @@ void initializeSpecies(void);
+ SpeciesRecord *getSpeciesRecord(int32_t type);
+ /* 1 if a model can be loaded for the type */
+ int32_t isValidDigimonType(int32_t type);
++/* 1 if the type's partner model fits PARTNER_MODEL_BUFFER (memmap.h PARTNER_MMD_MAX) */
++int32_t isPartnerModelFit(int32_t type);
+ 
+ SkeletonBone *getDigimonSkeleton(int32_t type);
+ /* the 4-letter model name (CHDAT\MMDn\NAME.MMD); empty for a model inside DIGI.DAT */
+diff --git a/mk/platform/psx.mk b/mk/platform/psx.mk
+index 30bad54..3abd743 100644
+--- a/mk/platform/psx.mk
++++ b/mk/platform/psx.mk
+@@ -37,7 +37,7 @@ all: $(EXE)
+ 
+ generate: $(LINKER_SCRIPTS)
+ 
+-$(BUILD_DIR)/config/%.ld: $(CONFIG_DIR)/%.ld
++$(BUILD_DIR)/config/%.ld: $(CONFIG_DIR)/%.ld include/dw/memmap.h $(GEN_DIR)/partner_mmd_max.h
+ 	@mkdir -p $(dir $@)
+ 	$(CPP) -P -x c $(INC) -DBUILD_DIR=$(BUILD_DIR) -o $@ $<
+ 
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 9983dba..a24bf55 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -890,7 +890,7 @@ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon) {
+   targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1) {
++    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr)) { /* MOD (scale): a model that does not fit is no target */
+       targetPtr++;
+       continue;
+     }
+@@ -925,7 +925,7 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+   bestScore = statTotal = statCount = 0U;
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1) {
++    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr)) { /* MOD (scale): a model that does not fit is no target */
+       targetPtr++;
+       continue;
+     }
+@@ -990,7 +990,7 @@ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+   bestScore = statTotal = statCount = 0U;
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1) {
++    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr)) { /* MOD (scale): a model that does not fit is no target */
+       targetPtr++;
+       continue;
+     }
+diff --git a/src/main/main.c b/src/main/main.c
+index 0817b37..167a2fa 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -28,6 +28,7 @@
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
++#include <dw/memmap.h>
+ #include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/types.h>
+@@ -3375,7 +3376,11 @@ GsRVIEW2 GS_VIEWPOINT;
+ GsRVIEW2 GS_VIEWPOINT_COPY;
+ MomentumData PARTNER_MOMENTUM_DATA[34];
+ PositionData PARTNER_POSITION_DATA[34];
++#ifdef __MWERKS__
+ uint8_t PARTNER_MODEL_BUFFER[0x18800];
++#else
++uint8_t PARTNER_MODEL_BUFFER[PARTNER_MMD_MAX]; /* MOD (scale): sized by the build (memmap.h) */
++#endif
+ MomentumData TAMER_MOMENTUM_DATA[22];
+ PositionData TAMER_POSITION_DATA[22];
+ #ifdef __MWERKS__
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index ca59920..e4a2c05 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -366,6 +366,8 @@ static void modLabApply(void)
+ 		if (mega < 0) {
+ 			modLabShowMessage(MOD_LAB_EVO_TARGETS[modLabEvoChoice] == MOD_LAB_EVO_MEGA ? "No Mega on this disc"
+ 												 : "Not on this disc");
++		} else if (!isPartnerModelFit(mega)) {
++			modLabShowMessage("Model too big for it");
+ 		} else if (PARTNER_ENTITY.digimonEntity.entity.type == mega) {
+ 			modLabShowMessage("Already evolved");
+ 		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 6f9ff70..d882d17 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -5,6 +5,7 @@
+ #include <string.h>
+ #include <dw/file.h>
+ #include <dw/main.h>
++#include <dw/memmap.h>
+ #include <dw/sound.h>
+ #include <dw/species.h>
+ 
+@@ -252,6 +253,17 @@ int32_t isValidDigimonType(int32_t type)
+ 	return rec != NULL && (rec->modelName[0] != '\0' || rec->modelSize != 0);
+ }
+ 
++int32_t isPartnerModelFit(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return 1; /* the originals and the partner-only files of the mods fit the original size */
++	}
++	rec = getSpeciesRecord(type);
++	return rec != NULL && rec->modelSize <= PARTNER_MMD_MAX;
++}
++
+ SkeletonBone *getDigimonSkeleton(int32_t type)
+ {
+ 	SpeciesRecord *rec;
+diff --git a/src/main/model.c b/src/main/model.c
+index 5d3438a..626a54b 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -13,6 +13,7 @@
+ #include <dw/file_queue.h>
+ #include <dw/file_table.h>
+ #include <dw/ids.h>
++#include <dw/memmap.h>
+ #include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+@@ -3517,6 +3518,9 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	concatStrings(path, MAIN_D_8011D484, name);
+ 	concatStrings(path, path, MAIN_D_801340E4);
+ 	path[9] = digiType / 30 + '0';
++	if (modelType == 3 && getDigimonModelFileSize(digiType, path) > PARTNER_MMD_MAX) {
++		return 0; /* MOD (scale): never past PARTNER_MODEL_BUFFER (isPartnerModelFit) */
++	}
+ 	readDigimonModel(digiType, path, m->mmdPtr);
+ 	m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 	m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+@@ -3712,6 +3716,18 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 		buffer += 4 - (buffer & 3);
+ 	}
+ 	getDigimonModelRef(digimonType, &file, &sector, &size);
++	if (entityType == 3 && !isPartnerModelFit(digimonType)) {
++		/*
++		 * MOD (scale): a model bigger than PARTNER_MODEL_BUFFER is not read
++		 * (applyMMD does not copy it): the load completes at once and the
++		 * partner keeps its old model, instead of overwriting what follows
++		 * the buffer.
++		 */
++		modelData->modelPtr = (uint8_t *)buffer;
++		modelData->modelSize = PARTNER_MMD_MAX + 1;
++		*readComplete = 1;
++		return buffer;
++	}
+ 	if (file != NULL) {
+ 		addFileReadRequestSection(file, (uint8_t *)buffer, sector, (size + 0x7FF) >> 11, readComplete, 0, 0);
+ 	} else if (name != getDigimonModelName(digimonType)) {
+@@ -3803,6 +3819,9 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 	if (m->useCount != 1) {
+ 		return m;
+ 	}
++	if (entityType == 3 && modelData->modelSize > PARTNER_MMD_MAX) {
++		return 0; /* MOD (scale): see loadMMDAsync */
++	}
+ 	GsGetTimInfo((unsigned long *)modelData->imagePtr + 1, &img);
+ 	img.px = ((m->pixelPage % 16) << 6) + m->pixelOffsetX;
+ 	img.py = ((m->pixelPage / 16) << 8) + m->pixelOffsetY;
+-- 
+2.53.0
+

@@ -1,0 +1,64 @@
+From fcbd7d6b2a38afc6176bd459d6e1654f4241c8a0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 16:02:55 +0000
+Subject: [PATCH] Patch 0213: the chart's L1/R1 turn its tab with the focus on
+ the player menu's Chart tab too, before X enters the grid
+ (chartOverviewInput(0): the tabs only, the D-pad stays the menu's)
+
+---
+ src/main/game_menu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index adbc7e7f..6ad81000 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -185,7 +185,7 @@ void renderMedalView(void);
+ void renderEvoChartView(void);
+ static void chartDetailOpen(int32_t id); /* MOD (portraits) */
+ static int32_t chartDetailInput(void);
+-static void chartOverviewInput(void); /* MOD (chart) */
++static void chartOverviewInput(int32_t grid); /* MOD (chart) */
+ static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y);
+ static void chartCardRelease(void); /* MOD (chart criteria) */
+ static void chartVanillaInput(void); /* MOD (options): NEW DIGIMON off */
+@@ -2045,6 +2045,10 @@ void tickPlayerMenu(void)
+ 	uint8_t previousCard;
+ 
+ 	if (MENU_STATE < 2) {
++		/* MOD (chart): L1/R1 turn the chart's tab with the focus on the menu's tab too, before the grid is entered */
++		if (PLAYER_MENU_STATE == 1 && MENU_STATE == 1 && MOD_OPT_NEW_DIGIMON && (CHANGED_INPUT & 0xC)) {
++			chartOverviewInput(0);
++		}
+ 		if (CHANGED_INPUT & 0x2000) {
+ 			PLAYER_MENU_STATE++;
+ 			if (PLAYER_MENU_STATE >= 4) {
+@@ -2087,7 +2091,7 @@ void tickPlayerMenu(void)
+ 			if (MENU_STATE == 2) {
+ 				/* MOD (chart): the tabs, pages and grid of every partner species (chartOverviewInput) */
+ 				if (MOD_OPT_NEW_DIGIMON) {
+-					chartOverviewInput();
++					chartOverviewInput(1);
+ 				} else {
+ 					chartVanillaInput(); /* MOD (options): NEW DIGIMON off, the original sheet */
+ 				}
+@@ -3725,7 +3729,7 @@ static void chartSelect(void)
+ 	CHART_SELECTED_DIGIMON = k < CHART_PAGE_COUNT ? CHART_PAGE_IDS[k] : -1;
+ }
+ 
+-static void chartOverviewInput(void)
++static void chartOverviewInput(int32_t grid)
+ {
+ 	int32_t tab;
+ 	int32_t page;
+@@ -3740,6 +3744,7 @@ static void chartOverviewInput(void)
+ 		CHART_TAB = (CHART_TAB + SPECIES_CHART_TABS - 1) % SPECIES_CHART_TABS;
+ 	} else if (CHANGED_INPUT & 0x8) {
+ 		CHART_TAB = (CHART_TAB + 1) % SPECIES_CHART_TABS;
++	} else if (!grid) { /* the focus on the menu's tab: the D-pad is the menu's, the grid stays */
+ 	} else if (CHANGED_INPUT & 0x8000) { /* left: past the first column, the page before */
+ 		if (CHART_SELECTED_COLUMN > 0) {
+ 			CHART_SELECTED_COLUMN--;
+-- 
+2.55.0
+

@@ -1,0 +1,42 @@
+// Readable form of script 46 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 46 {
+    npc gabumon0 = 5;
+    npc gabumon1 = 6;
+    npc agumon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 51;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Auto Pilot"), -1235, 0, 1587, 3072, 670);
+        if (ogre_fortress_cleared) {
+            set_obj_visibility(8, 0);
+        }
+    }
+
+    on talk(gabumon0) replace {    // section 5
+        say(gabumon0, text("s046.sec5.u0"));
+        battle();
+    }
+
+    on talk(gabumon1) replace {    // section 6
+        say(gabumon1, text("s046.sec6.u0"));
+        battle();
+    }
+
+    on talk(agumon) replace {    // section 7
+        say(agumon, text("s046.sec7.u0"));
+        battle();
+    }
+
+    on step(0) replace {    // section 51
+        if (ogre_fortress_cleared) {
+            walk(tamer, 500, 3100);
+            warp_to(130, 0, 255);
+        }
+        return;
+    }
+}

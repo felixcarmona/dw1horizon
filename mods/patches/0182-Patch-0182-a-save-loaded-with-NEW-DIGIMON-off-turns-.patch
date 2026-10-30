@@ -1,0 +1,266 @@
+From bc3d5a853526f8896b3f2f647812eadbaa0622b2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 22:12:27 +0000
+Subject: [PATCH] Patch 0182: a save loaded with NEW DIGIMON off turns a
+ partner of a new species into its vanilla species (the record's vanillaAs,
+ from the species files' vanilla_as): stats, care and age kept, the same
+ techniques re-slotted (else its first learned one, else its first one,
+ learned), its own finisher. SAVE_TAG_VANILLA_SWAP remembers it; loaded with
+ the option on and the partner still that species, it is turned back. Raised
+ and recruited flags stay
+
+---
+ include/dw/mod_options.h |   4 ++
+ include/dw/save_tags.h   |   1 +
+ include/dw/species.h     |   5 +-
+ src/main/main_menu.c     | 108 +++++++++++++++++++++++++++++++++++++++
+ src/main/mod_options.c   |   2 +
+ src/main/mod_species.c   |   8 +++
+ 6 files changed, 127 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 29d9aff0..01e2c52c 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -32,6 +32,10 @@ uint16_t modButtonClut(void);
+ void modSetButtons(int32_t layout);
+ /* 1 when the partner may become `type` (NEW DIGIMON on, or a species the original raises: isVanillaSpecies) */
+ int32_t modSpeciesAllowed(int32_t type);
++/* NEW DIGIMON off turned the loaded partner from MOD_SWAP_FROM into MOD_SWAP_TO (0: no); back on, a partner still of
++ * MOD_SWAP_TO is turned back (main_menu.c, SAVE_TAG_VANILLA_SWAP) */
++extern int16_t MOD_SWAP_FROM;
++extern int16_t MOD_SWAP_TO;
+ /* FRAME RATE: the rate the game is shown at, 30 or 60 (20 in an FPS=20 build, which has no choice) */
+ int32_t modFrameRate(void);
+ void modSetFrameRate(int32_t fps);
+diff --git a/include/dw/save_tags.h b/include/dw/save_tags.h
+index e04ae6c9..5a2d8f99 100644
+--- a/include/dw/save_tags.h
++++ b/include/dw/save_tags.h
+@@ -29,6 +29,7 @@
+ #define SAVE_TAG_SPECIES_RAISED		0x0007 /* bit array: species the tamer has raised */
+ #define SAVE_TAG_SPECIES_RECRUITED	0x0008 /* bit array: species the tamer has recruited */
+ #define SAVE_TAG_OPTIONS		0x0009 /* u8[n] the title menu's OPTIONS: [0] button layout (0 US, 1 Japanese) */
++#define SAVE_TAG_VANILLA_SWAP		0x000A /* i16 species, i16 vanilla species: NEW DIGIMON off turned the partner from the first into the second (main_menu.c modVanillaSwap) */
+ #define SAVE_TAG_REQUIRED		0x8000
+ /* engine tier 2 */
+ #define SAVE_TAG_STORY_FLAGS		0x8001 /* bit array: story flag n = trigger 800 + n */
+diff --git a/include/dw/species.h b/include/dw/species.h
+index e8d49e4c..485d9a46 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -93,6 +93,8 @@ typedef struct {
+ #define SPECIES_HEADER_VANILLA	0x780
+ #define SPECIES_VANILLA_BYTES	(NUM_DIGIMON / 8)
+ int32_t isVanillaSpecies(int32_t type);
++/* the vanilla species a new partner species becomes with NEW DIGIMON off (its record's vanillaAs), 0 none */
++int32_t getSpeciesVanillaAs(int32_t type);
+ /* 1 if the original type is carried by its DIGI.DAT record (always 0 for ids >= NUM_ORIGINAL_DIGIMON) */
+ int32_t isRecordOriginal(int32_t type);
+ 
+@@ -167,7 +169,8 @@ typedef struct {
+ 	/* MOD (effect origins): where a technique whose EFE table has no row for originalType starts when its table's
+ 	 * rows are on bones (shots, breaths): bone, x, y, z of this species (SPECIES_FLAG_EFFECT_DEFAULT; efe.c) */
+ 	int16_t effectDefault[4];	/* 0x1C4 */
+-	uint8_t reserved1CC[SPECIES_RECORD_SIZE - 0x1CC];
++	int16_t vanillaAs;		/* 0x1CC MOD (options): NEW DIGIMON off, the vanilla species a loaded partner becomes */
++	uint8_t reserved1CE[SPECIES_RECORD_SIZE - 0x1CE];
+ } SpeciesRecord;
+ 
+ #define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 3f3b2c81..876b2c56 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4599,6 +4599,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+ 	uint8_t options[7]; /* MOD (options) */
++	int16_t swap[2];
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4663,6 +4664,11 @@ static void prepareSaveFile(int32_t fromRam)
+ 	options[5] = MOD_OPT_EVO_GUIDE;
+ 	options[6] = MOD_OPT_NEW_DIGIMON;
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
++	if (MOD_SWAP_TO > 0 && MOD_SWAP_TO == partnerType) { /* MOD (options): the partner NEW DIGIMON off turned */
++		swap[0] = MOD_SWAP_FROM;
++		swap[1] = MOD_SWAP_TO;
++		p = putRecord(p, SAVE_TAG_VANILLA_SWAP, swap, sizeof(swap));
++	}
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+ 	p = &savegame->unknown4E1[3];
+@@ -4744,6 +4750,99 @@ static void dropAbsentRegistered(RegisteredDigimon *p, int32_t n)
+ 	}
+ }
+ 
++void setDigimonRaised(int32_t type);
++
++/* MOD (options): the loaded partner becomes species `to`, its stats, care and age kept: the equipped techniques are
++ * the new species' slots of the same techniques (none: its first learned one), the finisher its own */
++static void swapPartnerSpecies(int32_t to)
++{
++	uint32_t *learned = &PARTNER_ENTITY.learnedMoves[0];
++	uint8_t old[16];
++	uint8_t *equipped;
++	int32_t from;
++	int32_t i;
++	int32_t k;
++	int32_t anim;
++	int32_t tech;
++
++	from = SAVED_STATE.partnerType;
++	for (k = 0; k < 16; k++) {
++		old[k] = DIGI_PARA(from).moves[k];
++	}
++	equipped = PARTNER_ENTITY.digimonEntity.stats.base.moves;
++	for (i = 0; i < 3; i++) {
++		anim = equipped[i];
++		if (anim >= 0x2e && anim < 0x2e + 16) {
++			tech = old[anim - 0x2e];
++			for (k = 0; k < 16 && DIGI_PARA(to).moves[k] != tech; k++) {
++			}
++			equipped[i] = k < 16 ? 0x2e + k : 0xff;
++		}
++	}
++	if (equipped[0] == 0xff && equipped[1] == 0xff && equipped[2] == 0xff) {
++		for (k = 0; k < 16; k++) {
++			tech = DIGI_PARA(to).moves[k];
++			if (tech != 0xff && tech < 0x80 && (learned[tech / 32] >> (tech % 32)) & 1) {
++				equipped[0] = 0x2e + k;
++				break;
++			}
++		}
++	}
++	if (equipped[0] == 0xff && equipped[1] == 0xff && equipped[2] == 0xff) { /* none learned: its first one, learned */
++		for (k = 0; k < 16; k++) {
++			tech = DIGI_PARA(to).moves[k];
++			if (tech != 0xff && tech < 0x3a) {
++				learned[tech / 32] |= 1u << (tech % 32);
++				equipped[0] = 0x2e + k;
++				break;
++			}
++		}
++	}
++	equipped[3] = 0xff; /* the finisher: the last special technique of its list (as EVL_applyEvolution) */
++	for (k = 0; k < 16; k++) {
++		tech = DIGI_PARA(to).moves[k];
++		if (tech >= 0x3a && tech <= 0x70) {
++			equipped[3] = 0x2e + k;
++		}
++	}
++	for (i = 0; i < 4; i++) {
++		SAVED_STATE.partnerStats.base.moves[i] = equipped[i];
++	}
++	SAVED_STATE.partnerType = to;
++	PARTNER_ENTITY.digimonEntity.entity.type = to;
++	setDigimonRaised(to);
++}
++
++/*
++ * MOD (options): NEW DIGIMON off and a partner of a new species: it becomes its vanilla species (vanilla_as), and the
++ * save remembers what it was (SAVE_TAG_VANILLA_SWAP). Back on, a partner that is still that vanilla species is turned
++ * back. Raised and recruited flags are never touched: the chart only hides the new species while the option is off.
++ */
++static void modVanillaSwap(void)
++{
++	int32_t t;
++	int32_t to;
++
++	t = SAVED_STATE.partnerType;
++	if (MOD_OPT_NEW_DIGIMON) {
++		if (MOD_SWAP_TO > 0 && t == MOD_SWAP_TO && MOD_SWAP_FROM > 0 && DIGIMON_NAME(MOD_SWAP_FROM)[0] != '\0') {
++			swapPartnerSpecies(MOD_SWAP_FROM);
++		}
++		MOD_SWAP_FROM = MOD_SWAP_TO = 0;
++		return;
++	}
++	if (t <= 0 || isVanillaSpecies(t)) {
++		return;
++	}
++	to = getSpeciesVanillaAs(t);
++	if (to <= 0 || !isVanillaSpecies(to) || DIGIMON_NAME(to)[0] == '\0') {
++		return;
++	}
++	MOD_SWAP_FROM = t;
++	MOD_SWAP_TO = to;
++	swapPartnerSpecies(to);
++}
++
+ static void dropAbsentSaveContent(void)
+ {
+ 	uint32_t *learned = &PARTNER_ENTITY.learnedMoves[0]; /* 128 bits: the struct names 64 (unk1, unk2 follow) */
+@@ -4812,6 +4911,7 @@ static int32_t isRecordKnown(int32_t tag)
+ 	case SAVE_TAG_SPECIES_RAISED:
+ 	case SAVE_TAG_SPECIES_RECRUITED:
+ 	case SAVE_TAG_OPTIONS:
++	case SAVE_TAG_VANILLA_SWAP:
+ 		return 1;
+ 	}
+ 	return 0;
+@@ -4887,6 +4987,12 @@ static void applyRecords(uint8_t *e)
+ 				SPECIES_RECRUITED_BITS[i] = d[i];
+ 			}
+ 			break;
++		case SAVE_TAG_VANILLA_SWAP:
++			if (len >= 4) {
++				MOD_SWAP_FROM = readRecord16(d);
++				MOD_SWAP_TO = readRecord16(d + 2);
++			}
++			break;
+ 		case SAVE_TAG_OPTIONS: /* MOD (options): what the save had, unless OPTIONS changed it since the start */
+ 			if (len >= 1 && !MOD_OPT_TOUCHED) {
+ 				modSetButtons(d[0]);
+@@ -4943,6 +5049,7 @@ static int32_t loadSaveCopy(int32_t copy)
+ 		SCRIPT_STATE_PTR->wregs[i] = 0;
+ 	}
+ 	resetSpeciesFlags();
++	MOD_SWAP_FROM = MOD_SWAP_TO = 0;
+ 	if (isExtensionValid(0)) {
+ 		if (isTaggedVersion(getSaveVersion(&SAVE_FILE.saves[0]))) {
+ 			applyRecords(saveExtOf(0));
+@@ -4963,6 +5070,7 @@ static int32_t loadSaveCopy(int32_t copy)
+ 		}
+ 	}
+ 	dropAbsentSaveContent();
++	modVanillaSwap();
+ 	return 1;
+ }
+ 
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 54541b0c..9aeb27ce 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -35,6 +35,8 @@ int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_BARS = 1;
+ int32_t MOD_OPT_EVO_GUIDE = 1;
+ int32_t MOD_OPT_NEW_DIGIMON = 1;
++int16_t MOD_SWAP_FROM;
++int16_t MOD_SWAP_TO;
+ 
+ int32_t modSpeciesAllowed(int32_t type)
+ {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 60bb34e2..223bcbbd 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -65,6 +65,14 @@ int32_t isVanillaSpecies(int32_t type)
+ 	return (uint32_t)type < NUM_DIGIMON && ((SPECIES_VANILLA[type >> 3] >> (type & 7)) & 1);
+ }
+ 
++int32_t getSpeciesVanillaAs(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	return (rec != NULL && (rec->flags & SPECIES_FLAG_PARTNER)) ? rec->vanillaAs : 0;
++}
++
+ int32_t isRecordOriginal(int32_t type)
+ {
+ 	if ((uint32_t)type >= NUM_ORIGINAL_DIGIMON) {
+-- 
+2.53.0
+

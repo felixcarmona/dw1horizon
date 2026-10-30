@@ -1,0 +1,48 @@
+{
+ "s167.sec6.u0": [
+  [
+   "Hola, {color 6}{player}{color 1}."
+  ]
+ ],
+ "s167.sec6.u1": [
+  [
+   "De tant en tant torno a la",
+   "Sabana dels engranatges per a",
+   "seguir amb les meves patrulles."
+  ],
+  [
+   "Per a això, aquesta botiga em",
+   "ve molt bé."
+  ]
+ ],
+ "s167.sec6.u2": [
+  [
+   "Per cert, sembla que hi ha una",
+   "botiga en la costa de la Sabana",
+   "dels engranatges."
+  ],
+  [
+   "Has estat ja allí?"
+  ]
+ ],
+ "s167.sec81.u0": [
+  [
+   "Així que heu vingut,",
+   "{color 6}{player}{color 1}, {color 10}{partner}{color 1}.",
+   "Sóc transportista. Porto el",
+   "que sigui. Encara que l'única"
+  ],
+  [
+   "cosa que porteu vosaltres sou",
+   "vosaltres mateixos... Així",
+   "que... i si us porto a",
+   "vosaltres, en cos i ànima? Res"
+  ],
+  [
+   "malament la idea, eh? Je... Us",
+   "porto a qualsevol lloc que",
+   "conegueu, quan vulgueu. Pagant,",
+   "clar."
+  ]
+ ]
+}

@@ -1,0 +1,253 @@
+{
+ "s084.sec5.u0": "Ahh, está tão quente!",
+ "s084.sec6.u0": "Quer passar por aqui? Não me faça rir!",
+ "s084.sec7.u0": "Coitadinho, Fwa ha ha ha ha!",
+ "s084.sec8.u0": "O sangue vai cair!",
+ "s084.sec81.u0": [
+  [
+   "Além deste ponto: terra",
+   "congelada. Proibida a entrada",
+   "de quem não for {color 3}resistente ao",
+   "frio{color 1}."
+  ]
+ ],
+ "s085.sec5.u0": "Garoto, vou te comer!",
+ "s085.sec6.u0": "Hora de causar problemas!",
+ "s085.sec7.u0": "Amaldiçoe sua própria fraqueza!",
+ "s085.sec8.u0": "Venha, então. Vou cortá-lo em pedaços!",
+ "s086.sec5.u0": "Lute contra mim!",
+ "s086.sec6.u0": "Droga!",
+ "s086.sec7.u0": [
+  [
+   "Quer ficar roxo de tanto",
+   "apanhar?"
+  ]
+ ],
+ "s086.sec8.u0": "Vou te quebrar como um galho!",
+ "s087.sec5.u0": "Suas coisas são minhas agora!",
+ "s087.sec6.u0": "Desculpe por isso!",
+ "s087.sec7.u0": "Sem chance de vencer pessoas como eu!",
+ "s087.sec8.u0": "Vá para o inferno!",
+ "s087.sec9.u0": "Heh. Não me faça rir.",
+ "s087.sec10.u0": "Não posso deixá-lo ir mais longe.",
+ "s088.sec51.u0": "Um misterioso poder branco bloqueia o caminho!",
+ "s088.sec51.u1": "O quê? Minhas pernas estão se movendo sozinhas...",
+ "s089.sec5.u0": "Deixe seus pertences aqui, amigo.",
+ "s089.sec6.u0": [
+  [
+   "Vou congelar você por inteiro!"
+  ]
+ ],
+ "s089.sec7.u0": [
+  [
+   "Você não vai para a esquerda",
+   "NEM para a direita."
+  ]
+ ],
+ "s089.sec8.u0": "Vou te colocar no gelo!",
+ "s089.sec9.u0": "Deixe-me mostrar-lhe um inferno gelado...",
+ "s089.sec10.u0": "Quer congelar até a morte?",
+ "s089.sec81.u0": [
+  [
+   "Oeste: Bosque Nebuloso.",
+   "Leste: Praia Iceberg."
+  ]
+ ],
+ "s090.sec5.u0": "Você veio de longe, hein?",
+ "s090.sec6.u0": "Quer brigar? Por mim tudo bem!",
+ "s090.sec7.u0": "Hmph. Você certamente parece fraco.",
+ "s090.sec8.u0": "Eu sou perfeita.",
+ "s091.sec5.m0.o0": "Você pode ter razão.",
+ "s091.sec5.m0.o1": "Não seja um mau perdedor.",
+ "s091.sec5.m1.o0": "Certo, eu aceito",
+ "s091.sec5.m1.o1": "Dá trabalho demais",
+ "s091.sec5.u0": "Quem quiser passar por aqui tem que lutar comigo primeiro!",
+ "s091.sec5.u1": [
+  [
+   "Tsc, baixei a guarda. Mas dois",
+   "contra um não é meio desleal?"
+  ]
+ ],
+ "s091.sec5.u2": [
+  [
+   "Escute, num duelo eu nunca",
+   "perco! Desafio você para uma",
+   "luta de um contra um! Volte",
+   "amanhã às 16h. Desta vez, só"
+  ],
+  [
+   "os Digimon lutam."
+  ]
+ ],
+ "s091.sec5.u3": "É uma promessa. Até amanhã!",
+ "s091.sec5.u4": "Você veio e não fugiu. Nada mal. Hoje é um contra um, como prometemos!",
+ "s091.sec5.u5": [
+  [
+   "Não apareceu na hora",
+   "combinada, hein! Mas tive tempo",
+   "de me recuperar direito, então",
+   "vou deixar passar. Lá vou eu!"
+  ]
+ ],
+ "s091.sec5.u6": "Mm. Eu só vou assistir. Vá em frente.",
+ "s091.sec5.u7": [
+  [
+   "Conto com você, {color 10}{partner}{color 1}!"
+  ]
+ ],
+ "s091.sec5.u8": "Você é... forte! Quem no mundo é você?",
+ "s091.sec5.u9": "Estamos em uma jornada para salvar esta ilha do perigo.",
+ "s091.sec5.u10": "O que você disse?",
+ "s091.sec5.u11": "{color 6}{player}{color 1} tentou persuadi-lo!",
+ "s091.sec5.u12": "Tudo bem. Eu vou te ajudar. Não que eu possa decidir qualquer coisa até que eu tenha visto esta sua cidade.",
+ "s091.sec5.u13": "Garurumon veio para a cidade!",
+ "s091.sec6.u0": "Eu vou bater em você!",
+ "s091.sec7.u0": "De jeito nenhum vou perder para você!",
+ "s091.sec8.u0": "Keh heh heh heh! Que pena para você.",
+ "s091.sec9.u0": "Ei, você vai passar por mim?",
+ "s092.sec5.u0": [
+  [
+   "Vou com tudo!"
+  ]
+ ],
+ "s092.sec6.u0": "Isso realmente me irrita!",
+ "s092.sec7.u0": "Não ouse dizer \"frio\"!",
+ "s092.sec8.u0": "Não faça nenhuma loucura!",
+ "s127.sec5.u0": "Posso te dar uma surra?",
+ "s127.sec6.u0": "Não seja arrogante!",
+ "s127.sec7.u0": "Não fique tão convencido, miserável!",
+ "s127.sec8.u0": "Não será tão fácil.",
+ "s128.sec5.u0": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec5.u1": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec5.u2": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec5.u3": "Ei, você voltou para me ver!",
+ "s128.sec5.u4": "Olá, eu sou Mojyamon!",
+ "s128.sec5.u5": "{color 6}{player}{color 1}, estou muito emocionado, estou! Todas as coisas que fez por nós... eu decidi. Vou para a cidade. Cuide bem de mim, agora!",
+ "s128.sec5.u6": "Mojyamon veio para a cidade!",
+ "s130.sec5.u0": "Vou abrir seu crânio!",
+ "s130.sec7.u0": [
+  [
+   "Vá pro infernooo."
+  ]
+ ],
+ "s130.sec81.m0.o0": "Vim ajudar",
+ "s130.sec81.m0.o1": "Ainda não estou pronto...",
+ "s130.sec81.m1.o0": "Certo. Eu vou ajudar.",
+ "s130.sec81.m1.o1": "Tenho outras coisas...",
+ "s130.sec81.u0": "Oh, é você.",
+ "s130.sec81.u1": "Tem alguém... aí...?",
+ "s130.sec81.u2": "Você não pode ver?",
+ "s130.sec81.u3": "Eu sou Whamon. Eu geralmente vivo no mar. Não tenho olhos, mas sinto a maioria das coisas.",
+ "s130.sec81.u4": [
+  [
+   "Eu sou {color 6}{player}{color 1}, um",
+   "humano, e isso é... bem, você",
+   "não pode vê-lo, mas ele é"
+  ],
+  [
+   "{digimon 103}",
+   ", {color 10}{partner}{color 1}. Meu parceiro."
+  ]
+ ],
+ "s130.sec81.u5": "Sinto um forte poder...",
+ "s130.sec81.u6": "Você vai ouvir minha história? Não muito longe daqui é uma caverna à beira-mar onde vou descansar meu corpo. Mas ultimamente alguns personagens desagradáveis se instalaram lá, e eles me expulsaram. Quando fugi, deixei cair um tesouro precioso.",
+ "s130.sec81.u7": [
+  [
+   "Uns sujeitos desagradáveis,",
+   "hein? Isso é preocupante."
+  ]
+ ],
+ "s130.sec81.u8": "Tenho um favor a pedir. Por favor, me ajude a tirá-los e pegar meu tesouro de volta.",
+ "s130.sec81.u9": "Entendo...",
+ "s130.sec81.u10": "Então, por favor, suba nas minhas costas.",
+ "s130.sec81.u11": "Vamos!",
+ "s132.sec5.u0": "Olá. Estou de volta.",
+ "s132.sec5.u1": "O que aconteceu com seu Digimon de antes?",
+ "s132.sec5.u2": "Do que está falando? O mesmo, o mesmo.",
+ "s132.sec5.u3": "Huh? Sério? Foi...?",
+ "s132.sec5.u4": "Voltei para te pedir um favor. Simplificando, gostaria que viesse à cidade.",
+ "s132.sec5.u5": "Huh? Tem algo bom aí? É divertido?",
+ "s132.sec5.u6": "Pode abrir qualquer loja que quiser.",
+ "s132.sec5.u7": "Whaaat! Uma loja? Sempre sonhei com isso. Ooh, ooh, eu vou, eu vou!",
+ "s132.sec5.u8": "Oh, ótimo, ótimo. Então vamos imediatamente.",
+ "s132.sec5.u9": [
+  [
+   "Uma loja, uma loja! Raspadinha!",
+   "Sorvete! Mal posso esperar!"
+  ]
+ ],
+ "s132.sec5.u10": "Frigimon veio para a cidade!",
+ "s132.sec5.u11": [
+  [
+   "Ei, você! Eu disse que esse",
+   "Digimon não aguenta o frio!"
+  ]
+ ],
+ "s132.sec5.u12": [
+  [
+   "Opa, eu vooolto!"
+  ]
+ ],
+ "s132.sec51.u0": "Que lugar é esse? Um sonho?",
+ "s132.sec51.u1": "Whoa! Quem é você? Onde está {color 10}{partner}{color 1}? Onde ele está?",
+ "s132.sec51.u2": "Tudo bem, tudo bem, acalme-se. Sou Frigimon, um Digimon de gelo e neve. Esta é a minha casa. Vocês dois tinham desmaiado na neve. Eu te peguei e cuidei de você. Entendeu?",
+ "s132.sec51.u3": "{color 10}{partner}{color 1}, você está bem! Ufa!",
+ "s132.sec51.u4": "Hey! Você está ouvindo? Se eu não tivesse cuidado de você, você não estaria bem!",
+ "s132.sec51.u5": "Desculpe, desculpe. Muito obrigado.",
+ "s132.sec51.u6": "Ei, vamos lá, {color 10}{partner}{color 1}! Você caiu de repente, e eu bati minha cabeça também!",
+ "s132.sec51.u7": [
+  [
+   "Você não sabe que",
+   "{digimon 103}",
+   "é fraco contra o frio? Você"
+  ],
+  [
+   "fez algo imprudente. Você é",
+   "quem deveria se desculpar."
+  ]
+ ],
+ "s132.sec51.u8": [
+  [
+   "Eu não sabia... Desculpe,",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s132.sec51.u9": "Obrigado por tudo, Frigimon. E, enquanto estou sendo um incômodo, há algo que quero te perguntar...",
+ "s132.sec51.u10": [
+  [
+   "Qual é. O que você vai fazer",
+   "se",
+   "{digimon 103}"
+  ],
+  [
+   "cair de novo? Rápido para",
+   "casa!"
+  ]
+ ],
+ "s132.sec51.u11": [
+  [
+   "T-tá bom. Vou fazer",
+   "{color 10}{partner}{color 1} digievoluir para",
+   "outro Digimon."
+  ]
+ ],
+ "s132.sec51.u12": [
+  [
+   "??? Digievoluir...?"
+  ]
+ ],
+ "s128.sec6.u0": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec6.u1": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec6.u2": "Ora, se não é {color 6}{player}{color 1}!",
+ "s128.sec6.u3": "Ei, você voltou para me ver!",
+ "s128.sec6.u4": "Olá, eu sou Mojyamon!",
+ "s128.sec6.u5": "{color 6}{player}{color 1}, estou muito emocionado, estou! Todas as coisas que fez por nós... eu decidi. Vou para a cidade. Cuide bem de mim, agora!",
+ "s128.sec6.u6": "Mojyamon veio para a cidade!",
+ "s129.sec7.u0": "Ora, se não é {color 6}{player}{color 1}!",
+ "s129.sec7.u1": "Ora, se não é {color 6}{player}{color 1}!",
+ "s129.sec7.u2": "Ora, se não é {color 6}{player}{color 1}!",
+ "s129.sec7.u3": "Ei, você voltou para me ver!",
+ "s129.sec7.u4": "Olá, eu sou Mojyamon!",
+ "s129.sec7.u5": "{color 6}{player}{color 1}, estou muito emocionado, estou! Todas as coisas que fez por nós... eu decidi. Vou para a cidade. Cuide bem de mim, agora!",
+ "s129.sec7.u6": "Mojyamon veio para a cidade!"
+}

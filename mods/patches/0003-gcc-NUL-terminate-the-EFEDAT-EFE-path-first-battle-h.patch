@@ -1,0 +1,147 @@
+From a21a4c2b322e207fcc0e2f3ea4feffb67a1fb2d5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 21:20:45 +0000
+Subject: [PATCH] gcc: NUL-terminate the EFEDAT.EFE path (first battle hung
+ loading move EFEs)
+
+MAIN_D_8012342C is char[16] = "ETCHI\\EFEDAT.EFE", 16 characters and no
+NUL. findEFEDATFile strcpy()s it into the CdSearchFile name; the original
+works because EFEDAT_CD_LOCATION (still 0) follows it. In the GCC layout
+CLOUD_FX_COLOR follows it, the search fails, EFEDAT_CD_LOCATION gets a
+garbage sector (0x8ee9f instead of 0x1d88), and the first battle hangs in
+CdControl(CdlSetloc) with LOAD_EFE_STATE stuck at 1. Give the GCC build a
+terminated string.
+
+Also, without changing behaviour today: getEFEDATEntry is defined void but
+its callers use its result (a pointer to a dead stack local); return a
+pointer to static storage instead. And the never-written path[] passed to
+addFileReadRequest by the three *_loadNextEFEFile gets an empty name, so the
+request cannot be rejected when the stack holds no NUL in its first 29
+bytes.
+
+---
+ src/btl/battle_effect.c |  5 +++++
+ src/main/efe.c          | 34 ++++++++++++++++++++++++++++++++++
+ src/std/std_effect.c    |  5 +++++
+ src/vs/vs_effect.c      |  5 +++++
+ 4 files changed, 49 insertions(+)
+
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index c641aba..ba1f32b 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1379,6 +1379,11 @@ void BTL_loadNextEFEFile(EfeLoad *arg)
+ 	m->mmdPtr = BTL_getEFEHeapPointer();
+ 	p->model = m;
+ 	loc = *getEFEDATEntry(id + 0x100);
++#ifndef __MWERKS__
++	/* path is never set: make it an empty name so addFileReadRequest accepts
++	 * the request whatever the stack holds (the read uses loc and size) */
++	path[0] = '\0';
++#endif
+ 	addFileReadRequest(path, (uint8_t *)m->mmdPtr, NULL, (void *)BTL_handleEFEFileLoaded, arg, &loc, 0x5000);
+ }
+ 
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 33685e5..2617436 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -117,7 +117,17 @@ uint8_t CLOUD_FX_COLOR[16] = {
+ 	0x80, 0x80, 0x80, 0x80, 0x79, 0x73, 0x6c, 0x66,
+ 	0x60, 0x59, 0x53, 0x4c, 0x46, 0x40, 0x00, 0x00,
+ };
++#ifdef __MWERKS__
+ char MAIN_D_8012342C[16] = "ETCHI\\EFEDAT.EFE";
++#else
++/*
++ * 16 characters in 16 bytes: no NUL. findEFEDATFile strcpy()s it, and the
++ * original only works because EFEDAT_CD_LOCATION (still 0) comes next.
++ * GCC places CLOUD_FX_COLOR there, CdSearchFile fails, and every move EFE
++ * is read from a garbage sector (the first battle hangs in CdControl).
++ */
++char MAIN_D_8012342C[] = "ETCHI\\EFEDAT.EFE";
++#endif
+ uint32_t EFEDAT_CD_LOCATION[4] = {0};
+ 
+ static void *efe_data_order[] = {
+@@ -166,7 +176,11 @@ void modifySomeImage(long dim);
+ #endif
+ void findEFEDATFile(void);
+ void initializeEFE();
++#ifdef __MWERKS__
+ void getEFEDATEntry();
++#else
++CdlLOC *getEFEDATEntry(int32_t id);
++#endif
+ void renderParticleFlash();
+ 
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+@@ -1000,6 +1014,7 @@ void initializeEFE(void)
+ 	findEFEDATFile();
+ }
+ 
++#ifdef __MWERKS__
+ void getEFEDATEntry(int32_t id)
+ {
+ 	int32_t sector;
+@@ -1009,6 +1024,25 @@ void getEFEDATEntry(int32_t id)
+ 	sector = EFEDAT_CD_LOCATION[0] + (id * 0xA);
+ 	CdIntToPos(sector, &loc);
+ }
++#else
++/*
++ * The callers (BTL/STD/VS *_loadNextEFEFile) declare this as returning
++ * CdlLOC * and copy through the result. The original works because v0 still
++ * holds CdIntToPos's return value, a pointer to the dead stack local `loc`,
++ * which the caller copies at once. GCC copies it with a call to the BIOS
++ * memcpy; the first three bytes survived, the fourth did not. Return a
++ * pointer to static storage so it does not depend on that.
++ */
++CdlLOC *getEFEDATEntry(int32_t id)
++{
++	static CdlLOC loc;
++	int32_t sector;
++
++	id -= 0x100;
++	sector = EFEDAT_CD_LOCATION[0] + (id * 0xA);
++	return CdIntToPos(sector, &loc);
++}
++#endif
+ 
+ void renderParticleFlash(ParticleFlashData *params)
+ {
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index 825e2c2..d86a467 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -2135,6 +2135,11 @@ void STD_loadNextEFEFile(EfeLoad *arg)
+ 	m->mmdPtr = STD_getEFEHeapPointer();
+ 	p->model = m;
+ 	loc = *getEFEDATEntry(id + 0x100);
++#ifndef __MWERKS__
++	/* path is never set: make it an empty name so addFileReadRequest accepts
++	 * the request whatever the stack holds (the read uses loc and size) */
++	path[0] = '\0';
++#endif
+ 	addFileReadRequest(path, (uint8_t *)m->mmdPtr, NULL, (void *)STD_handleEFEFileLoaded, arg, &loc, 0x5000);
+ }
+ 
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 452fa30..2137e10 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -1133,6 +1133,11 @@ void VS_loadNextEFEFile(EfeLoad *arg)
+ 	m->mmdPtr = (void *)VS_getEFEHeapPointer();
+ 	p->model = m;
+ 	loc = *getEFEDATEntry(id + 0x100);
++#ifndef __MWERKS__
++	/* path is never set: make it an empty name so addFileReadRequest accepts
++	 * the request whatever the stack holds (the read uses loc and size) */
++	path[0] = '\0';
++#endif
+ 	addFileReadRequest(path, (uint8_t *)m->mmdPtr, NULL, (void *)VS_handleEFEFileLoaded, arg, &loc, 0x5000);
+ }
+ 
+-- 
+2.53.0
+

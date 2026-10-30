@@ -1,0 +1,63 @@
+{
+ "s063.sec5.u0": "Carne... a geladeira... a chave...",
+ "s063.sec5.u1": [
+  [
+   "!"
+  ]
+ ],
+ "s063.sec5.u2": "Alguém... veio me salvar?",
+ "s063.sec5.u3": "Um Digimon...? Você está bem?",
+ "s063.sec5.u4": "Eu não sei quem você é... mas comida...",
+ "s063.sec5.u5": "Está faminto? O que você quer?",
+ "s063.sec5.u6": "Carne... gotejando... com sangue...",
+ "s063.sec5.u7": "Eu tenho carne!",
+ "s063.sec5.u8": [
+  [
+   "Ugh... Essa não... Carne...",
+   "pingando... sangue..."
+  ]
+ ],
+ "s063.sec5.u9": "Huh...?",
+ "s063.sec5.u10": [
+  [
+   "Carne...? Ah, não, não tenho",
+   "nenhuma comigo."
+  ]
+ ],
+ "s063.sec5.u11": "Tome isso...",
+ "s063.sec5.u12": "O que é isso? Uma chave?",
+ "s063.sec5.u13": "Oops, preciso jogar algo fora.",
+ "s063.sec5.u14": [
+  [
+   "Recebi a {color 6}Chave da geladeira{color 1}!"
+  ]
+ ],
+ "s063.sec5.u15": "...Hah... hah...",
+ "s063.sec5.u16": "É melhor eu me apressar! Vou trazê-lo agora, então aguente mais um pouco!",
+ "s063.sec5.u17": "Ohh...!",
+ "s063.sec5.u18": "Ahh, eu me sinto vivo de novo! Meu Deus, eu te causei muitos problemas. Perdoe-me.",
+ "s063.sec5.u19": "O que aconteceu com você?",
+ "s063.sec5.u20": "Antes disso, deixe-me me apresentar. Eu sou Myotismon, mestre desta mansão. E você é?",
+ "s063.sec5.u21": "Sou {color 6}{player}{color 1}, um humano do mundo exterior. Este é meu parceiro, {color 10}{partner}{color 1}. Estamos em uma jornada para salvar esta ilha.",
+ "s063.sec5.u22": "Oh ho! Parece que temos muito o que discutir. Eu deveria recebê-lo corretamente, com um banquete. Siga-me.",
+ "s063.sec60.u0": "Yeeugh!",
+ "s063.sec60.u1": ".........",
+ "s063.sec60.u2": "Você só pode estar brincando!",
+ "s063.sec60.u3": "Desapareceu... foi uma ilusão?",
+ "s063.sec60.u4": "Parece que vencemos... de alguma forma.",
+ "s063.sec60.u5": "Huh?",
+ "s063.sec60.u6": [
+  [
+   "Hum, hummm... Hã?!"
+  ]
+ ],
+ "s063.sec60.u7": "Eu meio que apaguei de repente... Desculpe-me por isso!",
+ "s063.sec60.u8": [
+  [
+   "Hummm?? O que foi isso? A",
+   "maldição de Analogman?! Bem,",
+   "agora deve estar tudo certo."
+  ]
+ ],
+ "s063.sec254.u0": "...Myotismon não está aqui."
+}

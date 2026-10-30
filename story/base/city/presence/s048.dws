@@ -1,0 +1,15 @@
+// Who stands on screen 48 (Ogre Fortress), and when. Read out of MAPHEAD.SCN section 48 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(48) {                              // Ogre Fortress
+            npc Agumon slot 0 autotalk when not trigger(175);
+            npc Agumon slot 1 autotalk when not trigger(175);
+            npc 154 slot 2 autotalk when not trigger(175);
+            npc Agumon slot 3 autotalk when not trigger(175);
+            npc Agumon slot 4 autotalk when not trigger(175);
+            npc 171 slot 6 when trigger(150) and not trigger(334);
+        }
+    }
+}

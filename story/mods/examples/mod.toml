@@ -1,0 +1,12 @@
+name = "examples"
+version = "0.2.0"
+description = "Small worked examples of a story mod in Python: a gift, a cutscene, a sparring match, an errand quest, a new guardian with its own stats"
+authors = ["Digimon World: Horizon authors"]
+requires = ["base >= 1.0"]
+load_after = []
+conflicts = []
+
+[save]
+namespace = "examples"
+flags = "780-799"                          # free flags of the original engine (717-799): the examples run on tier 0
+vars = "7-8"                               # saved counters (the original engine has 7-15 and 20 free)

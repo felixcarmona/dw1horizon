@@ -1,0 +1,13 @@
+// Who stands on screen 14 (Tropical Jungle), and when. Read out of MAPHEAD.SCN section 14 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(14) {                              // Tropical Jungle
+            npc Redvegiemon slot 0 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Redvegiemon slot 2 autotalk when clock.hour >= 7 and clock.hour <= 18;
+            npc Tsukaimon slot 3 autotalk when clock.hour <= 6 or clock.hour >= 19;
+            npc 78 slot 4 autotalk when clock.hour <= 6 or clock.hour >= 19;
+        }
+    }
+}

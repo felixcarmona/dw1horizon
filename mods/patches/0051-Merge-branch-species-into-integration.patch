@@ -1,0 +1,4303 @@
+From 67bdfbf25beb374ed93cef76d31bbc6ef772a63d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:15:02 +0000
+Subject: [PATCH] Merge branch 'species' into integration
+
+---
+ config/us/main.ld         |  18 +++
+ include/dw/evl.h          |   4 +-
+ include/dw/ids.h          |   3 +-
+ include/dw/params.h       |  22 ++-
+ include/dw/partner.h      |   2 +-
+ include/dw/sound.h        |   3 +-
+ include/dw/species.h      | 121 +++++++++++++++++
+ mk/version/us.mk          |   1 +
+ src/btl/battle_effect.c   |  48 +++----
+ src/btl/battle_hud.c      |   4 +-
+ src/btl/battle_main.c     |  36 ++---
+ src/dooa/dooa.c           |  19 +--
+ src/endi/endi.c           |   4 +-
+ src/evl/evl.c             |  81 +++++------
+ src/fish/fish.c           |   2 +-
+ src/main/aabb.c           |   8 +-
+ src/main/anim.c           |   4 +-
+ src/main/battle_ui.c      |   8 +-
+ src/main/btl.c            |  12 +-
+ src/main/bubble.c         |   2 +-
+ src/main/drop_shadow.c    |  12 +-
+ src/main/efe.c            |   6 +-
+ src/main/evl.c            |   4 +-
+ src/main/evolution.c      |  15 +-
+ src/main/file_queue.c     |   6 +
+ src/main/file_table_us.c  |   5 +-
+ src/main/game_menu.c      |  34 ++---
+ src/main/item.c           |   4 +-
+ src/main/main.c           |  14 +-
+ src/main/main_menu.c      | 331 ++++++++++++++++++++++++++++++++++++++++-----
+ src/main/map.c            |  25 ++--
+ src/main/map_collision.c  |   4 +-
+ src/main/map_object.c     |   2 +-
+ src/main/mod_species.c    | 338 ++++++++++++++++++++++++++++++++++++++++++++++
+ src/main/model.c          |  95 +++++++++----
+ src/main/particle.c       |   4 +-
+ src/main/partner.c        |   4 +-
+ src/main/partner_impl.c   |  38 +++---
+ src/main/script_interp.c  |   2 +-
+ src/main/script_textbox.c |   4 +-
+ src/main/sound.c          |   9 +-
+ src/main/sound_async.c    |   5 +-
+ src/main/tamer.c          |   2 +-
+ src/main/utils2.c         |   2 +-
+ src/murd/murd.c           |  10 +-
+ src/std/std_effect.c      |  42 +++---
+ src/std/std_main.c        |  84 ++++++------
+ src/std/std_setup.c       |   6 +-
+ src/trn/trn_brain.c       |   2 +-
+ src/trn/trn_def.c         |   2 +-
+ src/trn/trn_hp.c          |   2 +-
+ src/trn/trn_mp.c          |   4 +-
+ src/trn/trn_off.c         |  13 +-
+ src/trn/trn_reward.c      |  12 +-
+ src/trn/trn_speed.c       |   2 +-
+ src/trn2/trn2_hud.c       |   6 +-
+ src/trn2/trn2_off.c       |  17 +--
+ src/vs/vs_camera.c        |  36 ++---
+ src/vs/vs_combat.c        |  22 +--
+ src/vs/vs_demo.c          |   8 +-
+ src/vs/vs_effect.c        |  38 +++---
+ src/vs/vs_intro.c         |   2 +-
+ src/vs/vs_main.c          |  18 +--
+ src/vs/vs_scene.c         |   4 +-
+ src/vs/vs_select.c        |   2 +-
+ 65 files changed, 1265 insertions(+), 434 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 9241993..1a488c3 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -108,6 +108,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.text.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.text.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.text.*);
+@@ -331,6 +334,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.rodata.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.rodata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.rodata.*);
+@@ -487,6 +493,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.data.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.data.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.data.*);
+@@ -611,6 +620,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.sdata.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.sdata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/efe_table.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sound_async.c.o(.sdata.*);
+@@ -744,6 +756,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.sbss.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.sbss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/world_object.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/entity_text.c.o(.sbss.*);
+@@ -867,6 +882,9 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_lab.c.o(.bss.*);
+         . = ALIGN(., 4);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/mod_species.c.o(.bss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/game_menu.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tamer.c.o(.bss.*);
+diff --git a/include/dw/evl.h b/include/dw/evl.h
+index 5ccc8f4..b62c5bc 100644
+--- a/include/dw/evl.h
++++ b/include/dw/evl.h
+@@ -79,9 +79,9 @@ typedef struct {
+ extern EvlSpark EVL_D_80068F84[];
+ extern EvoSequenceData EVO_SEQUENCE_DATA;
+ 
+-extern EvoStatsGains EVOLUTION_STATS_GAINS[];
++extern EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON];
+ extern EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1];
+-extern EvoRequirements EVOLUTION_REQS[NUM_EVOLVING_DIGIMON];
++extern EvoRequirements EVOLUTION_REQS[NUM_DIGIMON];
+ 
+ extern int8_t MAIN_D_801349F4;
+ 
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index c321f7c..337cba1 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -26,7 +26,8 @@ typedef uint16_t CardId;
+ #define ITEM_NONE (-1)
+ 
+ /* Digimon types */
+-#define NUM_DIGIMON		180	/* DIGIMON_DATA, models, skeletons, voices */
++#define NUM_ORIGINAL_DIGIMON	180	/* the disc's species: DIGIMON_DATA, models, skeletons, voices, ALLTIM */
++#define NUM_DIGIMON		256	/* MOD (species): id capacity; per-partner tables; DIGI.DAT ids < this */
+ #define NUM_PARTNER_DIGIMON	66	/* RAISE_DATA, cards; partners are 1..65 */
+ #define NUM_EVOLVING_DIGIMON	63	/* EVOLUTION_REQS (by type), raised flags; EVOLUTION_PATHS is by type - 1 */
+ #define NUM_EVO_CHART_DIGIMON	61	/* EVO_CHART_BOXES, by type - 1 */
+diff --git a/include/dw/params.h b/include/dw/params.h
+index 06ef089..ff3eef0 100644
+--- a/include/dw/params.h
++++ b/include/dw/params.h
+@@ -97,12 +97,28 @@ typedef struct {
+ 	int16_t unused12;
+ } PartnerPara;
+ 
+-extern DigimonPara DIGIMON_DATA[NUM_DIGIMON];
++extern DigimonPara DIGIMON_DATA[NUM_ORIGINAL_DIGIMON];
++
++/*
++ * MOD (species): a Digimon's parameters by type. The 180 original species
++ * are the resident DIGIMON_DATA; new species (ids NUM_ORIGINAL_DIGIMON and up)
++ * come from DIGI.DAT through a small cache (mod_species.c, species.h).
++ */
++DigimonPara *getSpeciesPara(int32_t type);
++static inline DigimonPara *digimonPara(int32_t type)
++{
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return &DIGIMON_DATA[type];
++	}
++	return getSpeciesPara(type);
++}
++#define DIGI_PARA(type) (*digimonPara(type))
++
+ #if VERSION_IS(EU)
+-extern char *DIGIMON_NAMES[NUM_DIGIMON];
++extern char *DIGIMON_NAMES[NUM_ORIGINAL_DIGIMON];
+ #define DIGIMON_NAME(type) DIGIMON_NAMES[type]
+ #else
+-#define DIGIMON_NAME(type) DIGIMON_DATA[type].name
++#define DIGIMON_NAME(type) DIGI_PARA(type).name
+ #endif
+ extern PartnerPara PARTNER_PARA;
+ 
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index 1ccf0cc..ce1615d 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -29,7 +29,7 @@ typedef struct {
+ 	int8_t size;
+ } PoopPile;
+ 
+-extern RaiseData RAISE_DATA[NUM_PARTNER_DIGIMON];
++extern RaiseData RAISE_DATA[NUM_DIGIMON];
+ extern PoopPile WORLD_POOP[];
+ 
+ void partnerTick(int32_t instanceId);
+diff --git a/include/dw/sound.h b/include/dw/sound.h
+index 8438bd3..0300ab7 100644
+--- a/include/dw/sound.h
++++ b/include/dw/sound.h
+@@ -1,6 +1,7 @@
+ #ifndef DW_SOUND_H
+ #define DW_SOUND_H
+ 
++#include <dw/ids.h>
+ #include <dw/types.h>
+ 
+ #define NUM_SOUND_BUFFERS	10
+@@ -20,7 +21,7 @@ extern unsigned long VHB_SOUNDBUFFER_START[];
+ extern int32_t ACTIVE_MAP_SOUND_ID;
+ extern MapSoundPara MAP_SOUND_PARA[];
+ extern uint8_t DIGIMON_VBALL_SOUND_ID[];
+-extern uint8_t DIGIMON_VLALL_SOUND_ID[];
++extern uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON];
+ 
+ int32_t initializeMusic(void);
+ void finalizeMusic(void);
+diff --git a/include/dw/species.h b/include/dw/species.h
+new file mode 100644
+index 0000000..0c931f5
+--- /dev/null
++++ b/include/dw/species.h
+@@ -0,0 +1,121 @@
++#ifndef DW_SPECIES_H
++#define DW_SPECIES_H
++
++/*
++ * MOD (species): Digimon species beyond the disc's 180, described by the
++ * disc file DIGI.DAT (docs/mods/ids.md, "Species beyond 180").
++ *
++ * DIGI.DAT is written by tools/species.py:
++ *
++ *   sector 0           SpeciesHeader
++ *   sector 1..         one 512-byte SpeciesRecord per id, 4 per sector, ids
++ *                      0..count-1 (0..179 are generated from the executable's
++ *                      tables; the game only reads ids >= NUM_ORIGINAL_DIGIMON)
++ *   after the records  each new species' MMD and its 0x4800-byte texture
++ *                      (an ALLTIM.TIM entry), sector aligned, found through
++ *                      the record (no fixed stride)
++ *
++ * The 180 original species keep their resident tables (DIGIMON_DATA,
++ * DIGIMON_SKELETONS, ...): they are read every frame and never miss. A new
++ * species' record is read into a small cache (SPECIES_CACHE_SLOTS records)
++ * when its model is loaded, and its slot is not given away while a model of
++ * it is in use (partner, NPC slots, evolution target). The per-partner
++ * tables (RAISE_DATA, EVOLUTION_*, ...) are resident and sized NUM_DIGIMON;
++ * the rows of new partner species are filled from DIGI.DAT at boot.
++ */
++
++#include <dw/evl.h>
++#include <dw/ids.h>
++#include <dw/model.h>
++#include <dw/params.h>
++#include <dw/partner.h>
++#include <dw/types.h>
++
++#define SPECIES_FILE_NAME	"DIGI.DAT"
++#define SPECIES_MAGIC		"DIGI"
++#define SPECIES_VERSION		1
++#define SPECIES_RECORD_SIZE	0x200
++#define SPECIES_RECORDS_PER_SECTOR (0x800 / SPECIES_RECORD_SIZE)
++#define SPECIES_MAX_BONES	64
++#define SPECIES_CACHE_SLOTS	8
++
++/* SpeciesRecord.flags */
++#define SPECIES_FLAG_DEFINED	0x01	/* the id exists */
++#define SPECIES_FLAG_PARTNER	0x02	/* the partner block is valid: it can be a partner */
++
++/* SpeciesRecord.texFile */
++#define SPECIES_TEX_ALLTIM	0	/* CHDAT\ALLTIM.TIM */
++#define SPECIES_TEX_ARCHIVE	1	/* DIGI.DAT */
++
++typedef struct {
++	char magic[4];		/* "DIGI" */
++	uint16_t version;	/* SPECIES_VERSION */
++	uint16_t recordSize;	/* SPECIES_RECORD_SIZE */
++	uint16_t count;		/* ids 0..count-1 */
++	uint16_t firstRecord;	/* id of the first record (0) */
++	uint32_t recordsSector;	/* sector of the first record */
++	uint32_t totalSectors;
++} SpeciesHeader;
++
++typedef struct {
++	DigimonPara para;		/* 0x000 name, bones, radius, height, level, specials, drop, techniques */
++	char modelName[8];		/* 0x034 "AGUM" = CHDAT\MMDn\AGUM.MMD; empty: the model is in DIGI.DAT */
++	uint32_t modelSector;		/* 0x03C in DIGI.DAT (modelName empty) */
++	uint32_t modelSize;		/* 0x040 bytes */
++	uint32_t texSector;		/* 0x044 sector of the texture in texFile */
++	uint16_t texFile;		/* 0x048 SPECIES_TEX_* */
++	uint16_t texSectors;		/* 0x04A 9 (0x4800 bytes) */
++	int16_t originalType;		/* 0x04C getOriginalType: technique effect offsets, aura, condition icons */
++	uint8_t vballId;		/* 0x04E VBALL voice */
++	uint8_t vlallId;		/* 0x04F VLALL voice (partners) */
++	uint16_t flags;			/* 0x050 SPECIES_FLAG_* */
++	uint16_t reserved52;
++	SkeletonBone bones[SPECIES_MAX_BONES]; /* 0x054 para.boneCount used */
++	/* partner block (SPECIES_FLAG_PARTNER) */
++	RaiseData raise;		/* 0x0D4 */
++	EvoRequirements evoReqs;	/* 0x0F0 requirements to evolve into this species */
++	EvoStatsGains evoGains;		/* 0x10C */
++	EvolutionPath evoPaths;		/* 0x11A from[5] / to[6]; each "from" also gets this id in its "to" */
++	int8_t itemTakeDistance;	/* 0x130 */
++	int8_t trainingAnims[2];	/* 0x131 TRN_TRAINING_ANIM_IDS row */
++	int8_t training2Anims[2];	/* 0x133 TRN2_TRAINING_ANIM_IDS row */
++	uint8_t reserved135[SPECIES_RECORD_SIZE - 0x135];
++} SpeciesRecord;
++
++#define SPECIES_LAYOUT_CHECK(name, cond) typedef char species_layout_##name[(cond) ? 1 : -1]
++SPECIES_LAYOUT_CHECK(size, sizeof(SpeciesRecord) == SPECIES_RECORD_SIZE);
++SPECIES_LAYOUT_CHECK(para, sizeof(DigimonPara) == 0x34);
++SPECIES_LAYOUT_CHECK(bones, __builtin_offsetof(SpeciesRecord, bones) == 0x54);
++SPECIES_LAYOUT_CHECK(raise, __builtin_offsetof(SpeciesRecord, raise) == 0xD4);
++SPECIES_LAYOUT_CHECK(evoReqs, __builtin_offsetof(SpeciesRecord, evoReqs) == 0xF0);
++SPECIES_LAYOUT_CHECK(evoGains, __builtin_offsetof(SpeciesRecord, evoGains) == 0x10C);
++SPECIES_LAYOUT_CHECK(evoPaths, __builtin_offsetof(SpeciesRecord, evoPaths) == 0x11A);
++SPECIES_LAYOUT_CHECK(item, __builtin_offsetof(SpeciesRecord, itemTakeDistance) == 0x130);
++SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x14);
++
++/* ids 0..SPECIES_COUNT-1 exist (NUM_ORIGINAL_DIGIMON without DIGI.DAT) */
++extern int32_t SPECIES_COUNT;
++/* records read from the disc (cache misses), for tests */
++extern int32_t SPECIES_RECORD_READS;
++
++void initializeSpecies(void);
++/* the record of a new species (id >= NUM_ORIGINAL_DIGIMON), NULL if it does not exist */
++SpeciesRecord *getSpeciesRecord(int32_t type);
++/* 1 if a model can be loaded for the type */
++int32_t isValidDigimonType(int32_t type);
++
++SkeletonBone *getDigimonSkeleton(int32_t type);
++/* the 4-letter model name (CHDAT\MMDn\NAME.MMD); empty for a model inside DIGI.DAT */
++char *getDigimonModelName(int32_t type);
++int32_t getDigimonVballId(int32_t type);
++/* where the model and the texture of a type are: file name (or NULL for the
++ * CHDAT\MMDn\NAME.MMD path), first sector and size */
++int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *size);
++int32_t getDigimonTextureRef(int32_t type, char **file, int32_t *sector, int32_t *sectors);
++/* the evolution paths of a type (EVOLUTION_PATHS covers types 1..62, new
++ * species have their own rows; any other type has none) */
++EvolutionPath *getEvolutionPath(int32_t type);
++/* a training animation row (TRN/TRN2 tables live in the overlays) */
++int8_t *getTrainingAnimRow(int8_t (*table)[2], int32_t type, int32_t which);
++
++#endif
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 042bb73..37053c6 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -73,6 +73,7 @@ MAIN_C_SRC := \
+ 	src/main/utils.c \
+ 	src/main/utils2.c \
+ 	src/main/mod_lab.c \
++	src/main/mod_species.c \
+ 	src/main/vecmath.c \
+ 	src/main/world_object.c
+ 
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 9711edb..4d69a1d 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -2190,7 +2190,7 @@ void BTL_applyRadiusAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			goto next;
+ 		}
+-		radius = DIGIMON_DATA[e->type].radius;
++		radius = DIGI_PARA(e->type).radius;
+ 		radius *= radius;
+ 		radius += r;
+ 		dx = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 4) - (int32_t)e->posData->location.vx;
+@@ -2205,8 +2205,8 @@ void BTL_applyRadiusAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[*(int32_t *)&EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		BTL_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
+-		pos.vy = -DIGIMON_DATA[e->type].height / 2;
++		BTL_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
++		pos.vy = -DIGI_PARA(e->type).height / 2;
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, i);
+ 		*hitFlag = 1;
+ next:
+@@ -2251,7 +2251,7 @@ void BTL_applyLineAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			continue;
+ 		}
+-		r = DIGIMON_DATA[e->type].radius;
++		r = DIGI_PARA(e->type).radius;
+ 		rect[0] = e->posData->location.vx - r;
+ 		rect[2] = e->posData->location.vx + r;
+ 		rect[1] = e->posData->location.vz - r;
+@@ -2259,7 +2259,7 @@ void BTL_applyLineAttackHit(void)
+ 		if (doSomethingWithSomePoints(rect, line) != -1) {
+ 			continue;
+ 		}
+-		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGIMON_DATA[e->type].height - arg[1])) {
++		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGI_PARA(e->type).height - arg[1])) {
+ 			continue;
+ 		}
+ 		for (j = 1; j < 10; j++) {
+@@ -2268,7 +2268,7 @@ void BTL_applyLineAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		BTL_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
++		BTL_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
+ 		pos.vy = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8);
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, j);
+ 		*out = 1;
+@@ -3516,8 +3516,8 @@ void BTL_getSourceDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -3995,8 +3995,8 @@ void BTL_getTargetDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -5026,7 +5026,7 @@ int16_t BTL_calculateAttackHitPosition(SVECTOR *out, Entity *self, Entity *other
+ 	rot.vz = 0;
+ 	RotMatrixZYX(&rot, &m);
+ 	out->vx = 0;
+-	out->vy = -DIGIMON_DATA[self->type].height;
++	out->vy = -DIGI_PARA(self->type).height;
+ 	out->vz = y;
+ 	ApplyMatrixSV(&m, out, out);
+ 	out->vx += (int16_t)self->posData->location.vx;
+@@ -5534,7 +5534,7 @@ void BTL_renderStunEffect(int32_t idx)
+ 	}
+ 
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = -DIGIMON_DATA[p->entity->type].height * 113 / 100;
++	pos.vy = -DIGI_PARA(p->entity->type).height * 113 / 100;
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
+@@ -5632,9 +5632,9 @@ void BTL_renderStunSubEffect(int32_t i)
+ 
+ 	p = &BTL_STUN_SUB_EFFECTS[i];
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = lerp(-DIGIMON_DATA[p->entity->type].height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
++	pos.vy = lerp(-DIGI_PARA(p->entity->type).height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
+ 	pos.vz = p->entity->posData->location.vz;
+-	s = DIGIMON_DATA[p->entity->type].radius * 0x4000 / 350;
++	s = DIGI_PARA(p->entity->type).radius * 0x4000 / 350;
+ 	if (p->frame < 4) {
+ 		s = lerp(s * 10 / 100, s, 0, 4, p->frame);
+ 	}
+@@ -5759,7 +5759,7 @@ void BTL_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sx = 0x1000;
+ 	}
+-	sx = sx * DIGIMON_DATA[e->type].radius / 150;
++	sx = sx * DIGI_PARA(e->type).radius / 150;
+ 
+ 	t = lerp(0, 0x200, 0, 0x10, fa->frame);
+ 	if (fa->frame < 5) {
+@@ -5767,7 +5767,7 @@ void BTL_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sy = 0x1000;
+ 	}
+-	sy = sy * DIGIMON_DATA[e->type].height / 350;
++	sy = sy * DIGI_PARA(e->type).height / 350;
+ 	sy = sy * 85 / 100 + sy * 15 / 100 * _sin(t) / 0x1000;
+ 
+ 	rot = BTL_FINISHER_AURA_ROTATION;
+@@ -5788,7 +5788,7 @@ void BTL_renderFinisherAura(int32_t id)
+ 
+ 		col = BTL_FINISHER_AURA_COLOR;
+ 		s = fa->frame * 0x1000 / 7;
+-		s = s * DIGIMON_DATA[e->type].radius / 150;
++		s = s * DIGI_PARA(e->type).radius / 150;
+ 		col.r = (uint32_t)col.r * (7 - fa->frame) / 7;
+ 		col.g = (uint32_t)col.g * (7 - fa->frame) / 7;
+ 		col.b = (uint32_t)col.b * (7 - fa->frame) / 7;
+@@ -6031,8 +6031,8 @@ int32_t BTL_addAuraProjectile(Entity *e)
+ 	aura->type = type;
+ 	q = &e->posData->posMatrix.workm;
+ 	aura->position.vx = 0;
+-	aura->position.vy = -DIGIMON_DATA[e->type].height * 50 / 100;
+-	aura->position.vz = -DIGIMON_DATA[e->type].height * 50 / 100;
++	aura->position.vy = -DIGI_PARA(e->type).height * 50 / 100;
++	aura->position.vz = -DIGI_PARA(e->type).height * 50 / 100;
+ 	ApplyMatrixSV(q, &aura->position, &aura->position);
+ 	aura->position.vx += (int16_t)q->t[0];
+ 	aura->position.vy += (int16_t)q->t[1];
+@@ -6170,7 +6170,7 @@ int32_t BTL_addItemParticles(Entity *e)
+ 		fx->life = 0x19;
+ 		workm = &e->posData->posMatrix.workm;
+ 		fx->positionX = workm->t[0] << 4;
+-		fx->positionY = (workm->t[1] - DIGIMON_DATA[e->type].height) << 4;
++		fx->positionY = (workm->t[1] - DIGI_PARA(e->type).height) << 4;
+ 		fx->positionZ = workm->t[2] << 4;
+ 		fx->velocityX = src->vx;
+ 		fx->velocityY = src->vy;
+@@ -6341,7 +6341,7 @@ void BTL_tickBuffTrails(int32_t i)
+ 		r += k;
+ 		r->life = 8;
+ 		r->p[0].vy = r->p[1].vy = r->p[2].vy = r->p[3].vy = 0;
+-		radius = DIGIMON_DATA[t->entity->type].radius;
++		radius = DIGI_PARA(t->entity->type).radius;
+ 		r->p[0].vx = r->p[2].vx = t->matrix->t[0] + (radius * BTL_BUFF_TRAIL_A_X[k] / 200);
+ 		r->p[0].vy = r->p[2].vy = t->matrix->t[1];
+ 		r->p[0].vz = r->p[2].vz = t->matrix->t[2] + (radius * BTL_BUFF_TRAIL_A_Z[k] / 200);
+@@ -6414,8 +6414,8 @@ int32_t BTL_addBuffDiskEffect(Entity *e)
+ 	d->rotation.vy = 0;
+ 	d->rotation.vz = 0;
+ 	d->scaleXZ = 0;
+-	d->scaleTargetXZ = DIGIMON_DATA[e->type].radius * 0xbb8 / 200;
+-	d->scaleTargetY = DIGIMON_DATA[e->type].height * 0xb22 / 200;
++	d->scaleTargetXZ = DIGI_PARA(e->type).radius * 0xbb8 / 200;
++	d->scaleTargetY = DIGI_PARA(e->type).height * 0xb22 / 200;
+ 	addObject(0x815, i, BTL_tickBuffDisk, BTL_renderBuffDisk);
+ 	BTL_addBuffTrails(i, e);
+ 
+@@ -6607,7 +6607,7 @@ int32_t BTL_addBuffRingsEffect(idx, e)
+ 		b->unk48[j] = -1;
+ 	}
+ 
+-	b->scaleTarget = 0x1000 - ((0xc8 - DIGIMON_DATA[e->type].radius) * 400 / 200);
++	b->scaleTarget = 0x1000 - ((0xc8 - DIGI_PARA(e->type).radius) * 400 / 200);
+ 	addObject(0x814, i, BTL_tickBuffRings, BTL_renderBuffRings);
+ 
+ 	return i;
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index e8a8932..06feef7 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -287,7 +287,7 @@ void BTL_initializeFinisherChargeup(void)
+ 	GsSetLsMatrix(&GsWSMATRIX);
+ 	loc = &ENTITY_TABLE[1]->posData->location;
+ 	v.vx = loc->vx;
+-	v.vy = -DIGIMON_DATA[ENTITY_TABLE[1]->type].height - 0x64;
++	v.vy = -DIGI_PARA(ENTITY_TABLE[1]->type).height - 0x64;
+ 	v.vz = loc->vz;
+ 	gte_ldv0(&v);
+ 	gte_rtps();
+@@ -525,7 +525,7 @@ void BTL_appendItemDroppedText(Entity *e)
+ 	strcat(BTL_END_BOX_TEXTBUFFER, DIGIMON_NAME(e->type));
+ 	strcat(BTL_END_BOX_TEXTBUFFER, BTL_STR_DROPPED);
+ 	strcat(BTL_END_BOX_TEXTBUFFER,
+-	       ITEM_NAME(DIGIMON_DATA[e->type].dropItem));
++	       ITEM_NAME(DIGI_PARA(e->type).dropItem));
+ 	strcat(BTL_END_BOX_TEXTBUFFER, BTL_STR_WHITE_WAIT);
+ 	BATTLE_END_BOX_LINE_COUNT += 2;
+ }
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index 88efec1..25dc4d8 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -421,7 +421,7 @@ void BTL_tickPartnerAI(void)
+ 			if ((((DigimonEntity *)partner)->stats.base.moves[COMBAT_DATA_PTR->player.currentCommand[0] - 8] != fighter->queuedAnim) || (fighter->moveRange <= 0)) {
+ 				BTL_setupQueuedMove((DigimonEntity *)partner, fighter, 0, COMBAT_DATA_PTR->player.currentCommand[0] - 8);
+ 			}
+-			BTL_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGIMON_DATA[partner->type].moves[fighter->queuedAnim - 0x2e]);
++			BTL_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGI_PARA(partner->type).moves[fighter->queuedAnim - 0x2e]);
+ 			return;
+ 		case 11:
+ 			if ((fighter->targetId != 0) && (BTL_isFighterDefeated(fighter->targetId) != 0)) {
+@@ -974,7 +974,7 @@ void BTL_tickAttackState(Entity *entity, DigimonEntity *target, int32_t id)
+ 			for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 				if (i != id) {
+ 					other = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+-					if (DIGIMON_DATA[other->type].moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
++					if (DIGI_PARA(other->type).moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
+ 						if (id == COMBAT_DATA_PTR->fighter[i].targetId) {
+ 							return;
+ 						}
+@@ -1194,7 +1194,7 @@ void BTL_tickQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterDa
+ 			break;
+ 		case 2:
+ 		case 3:
+-			BTL_tickRangedAttack(digimon, target, fighter, DIGIMON_DATA[digimon->entity.type].moves[fighter->queuedAnim - 0x2e]);
++			BTL_tickRangedAttack(digimon, target, fighter, DIGI_PARA(digimon->entity.type).moves[fighter->queuedAnim - 0x2e]);
+ 			break;
+ 		case 4:
+ 			handleBattleIdle(digimon, &digimon->stats, fighter->flags);
+@@ -1263,7 +1263,7 @@ int32_t BTL_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	orig = *rot;
+ 	if (target != NULL) {
+ 		dist = BTL_getDistanceSquared(&digimon->entity, &target->entity);
+-		radius = DIGIMON_DATA[digimon->entity.type].radius + DIGIMON_DATA[target->entity.type].radius;
++		radius = DIGI_PARA(digimon->entity.type).radius + DIGI_PARA(target->entity.type).radius;
+ 		radius = radius * radius;
+ 		if (dist <= radius) {
+ 			handleBattleIdle(digimon, &digimon->stats, fighter->flags);
+@@ -1347,7 +1347,7 @@ void BTL_tickRangedAttack(DigimonEntity *digimon, DigimonEntity *target, Fighter
+ 	}
+ 
+ 	dist = BTL_getDistanceSquared(&digimon->entity, &target->entity);
+-	total = DIGIMON_DATA[digimon->entity.type].radius + DIGIMON_DATA[target->entity.type].radius;
++	total = DIGI_PARA(digimon->entity.type).radius + DIGI_PARA(target->entity.type).radius;
+ 	total = *(uint32_t *)&MOVE_DATA[move].distance + (total * total);
+ 	if (dist > (total + (total * 3 / 10))) {
+ 		BTL_setWalking(&digimon->entity, &digimon->stats, fighter->flags);
+@@ -1632,7 +1632,7 @@ int32_t BTL_getContactRangeSquared(int32_t *a, int32_t *b)
+ {
+ 	int32_t reach;
+ 
+-	reach = DIGIMON_DATA[*a].radius + DIGIMON_DATA[*b].radius + 0xc8;
++	reach = DIGI_PARA(*a).radius + DIGI_PARA(*b).radius + 0xc8;
+ 
+ 	return reach * reach;
+ }
+@@ -1925,7 +1925,7 @@ int16_t BTL_calculateHitChance(DigimonEntity *attacker, DigimonEntity *defender,
+ 	int32_t x;
+ 	int16_t result;
+ 
+-	if (DIGIMON_DATA[defender->entity.type].level < 3) {
++	if (DIGI_PARA(defender->entity.type).level < 3) {
+ 		return 100;
+ 	}
+ 
+@@ -1996,8 +1996,8 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	int16_t def;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		if (DIGIMON_DATA[defender->entity.type].special[i] != 0xff) {
+-			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGIMON_DATA[defender->entity.type].special[i]];
++		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
++			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			mult[i] = 10;
+ 		}
+@@ -2114,7 +2114,7 @@ void BTL_tickAttackHits(void)
+ 		}
+ 		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 		tech = BTL_getAttackTech(&attack);
+-		if (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
++		if (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
+ 			if (COMBAT_DATA_PTR->player.entityIds[fighter->targetId] == attack.casterId) {
+ 				((DigimonEntity *)entity)->stats.current.isHit = 0;
+ 				continue;
+@@ -2161,14 +2161,14 @@ void BTL_tickAttackHits(void)
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < 0xa5) {
+ 					break;
+ 				}
+-				if ((moves[j] != 0xff) && (DIGIMON_DATA[entity->type].moves[moves[j] - 0x2e] == 0x2d)) {
+-					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGIMON_DATA[entity->type].level)) {
++				if ((moves[j] != 0xff) && (DIGI_PARA(entity->type).moves[moves[j] - 0x2e] == 0x2d)) {
++					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGI_PARA(entity->type).level)) {
+ 						fighter->queuedAnim = moves[j];
+ 						fighter->targetId = BTL_getFighterSlot(attack.casterId);
+ 						fighter->moveRange = 1;
+@@ -3143,7 +3143,7 @@ int16_t BTL_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGIMON_DATA[target->type].special[0]];
++			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -3409,8 +3409,8 @@ int16_t BTL_calculateTargetScore(DigimonEntity *self, DigimonEntity *other)
+ 	int16_t mult;
+ 
+ 	st = &self->stats;
+-	mult = TYPE_FACTORS[DIGIMON_DATA[self->entity.type].special[0]]
+-			      [DIGIMON_DATA[other->entity.type].special[0]];
++	mult = TYPE_FACTORS[DIGI_PARA(self->entity.type).special[0]]
++			      [DIGI_PARA(other->entity.type).special[0]];
+ 	switch (mult) {
+ 	case 20:
+ 		mult = 2;
+@@ -3561,10 +3561,10 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[digimon->entity.type].special[0]);
++			weights[i] += fighter->buffPrioTimer + BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type].special[0]);
++		weights[i] += BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+diff --git a/src/dooa/dooa.c b/src/dooa/dooa.c
+index 947597c..8c2f55d 100644
+--- a/src/dooa/dooa.c
++++ b/src/dooa/dooa.c
+@@ -24,6 +24,7 @@
+ #include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/sound_async.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/utils.h>
+ #include <dw/vecmath.h>
+@@ -418,7 +419,7 @@ void DOOA_tickDissolve(int32_t instanceId)
+ 			seq->phase = 0x64;
+ 			DOOA_SAVED_LOCATION.vy = entity->posData->location.vy;
+ 			target = &seq->flash;
+-			target->targetY = DOOA_getStoredDigimonY() - (DIGIMON_DATA[entity->type].height + 100);
++			target->targetY = DOOA_getStoredDigimonY() - (DIGI_PARA(entity->type).height + 100);
+ 			target->pos.vx = entity->posData->location.vx;
+ 			target->pos.vz = entity->posData->location.vz;
+ 			stopSound();
+@@ -570,9 +571,9 @@ int32_t DOOA_hasIrisClosed(Entity *entity, int32_t startFrame, long endFrame, lo
+ 		frame = endFrame;
+ 	}
+ 	worldPos.vx = entity->posData->location.vx;
+-	worldPos.vy = entity->posData->location.vy - (DIGIMON_DATA[entity->type].height / 2);
++	worldPos.vy = entity->posData->location.vy - (DIGI_PARA(entity->type).height / 2);
+ 	worldPos.vz = entity->posData->location.vz;
+-	size = getDistance(DIGIMON_DATA[entity->type].radius * 2, DIGIMON_DATA[entity->type].height, DIGIMON_DATA[entity->type].radius * 2);
++	size = getDistance(DIGI_PARA(entity->type).radius * 2, DIGI_PARA(entity->type).height, DIGI_PARA(entity->type).radius * 2);
+ 	radius = (lerp(200, 0, startFrame, endFrame, frame) << 12) / 128;
+ 	depth = worldPosToScreenPos(&worldPos, &screenPos);
+ 	if (depth <= 0) {
+@@ -700,7 +701,7 @@ void DOOA_updateCutsceneCamera(VECTOR *position, int32_t angle, int32_t startFra
+ 	mid = (startFrame + endFrame) / 2;
+ 	end = endFrame;
+ 	seq = &DOOA_REINCARNATION_SEQ;
+-	height = DIGIMON_DATA[seq->entity->type].height;
++	height = DIGI_PARA(seq->entity->type).height;
+ 
+ 	if ((frame < startFrame) || (frame > endFrame)) {
+ 		return;
+@@ -753,7 +754,7 @@ void DOOA_spawnShardWave(long wireIndex)
+ 	effect = &DOOA_SHARD_EFFECT;
+ 	entity = effect->entity;
+ 
+-	for (boneIndex = 2; boneIndex < DIGIMON_DATA[entity->type].boneCount; boneIndex++) {
++	for (boneIndex = 2; boneIndex < DIGI_PARA(entity->type).boneCount; boneIndex++) {
+ 		DOOA_spawnBoneShards(effect, boneIndex, wireIndex);
+ 	}
+ }
+@@ -794,7 +795,7 @@ void DOOA_renderDigimonModel(Entity *entity, uint32_t otPoint)
+ 	type = entity->type;
+ 	animId = entity->anim.animId;
+ 	posData = entity->posData;
+-	boneCount = DIGIMON_DATA[type].boneCount;
++	boneCount = DIGI_PARA(type).boneCount;
+ 	location = posData->location;
+ 	rotation = posData->rotation;
+ 	lightMatrix = GsWSMATRIX;
+@@ -858,9 +859,9 @@ int32_t DOOA_renderIrisWindow(Entity *entity, int32_t startFrame, long endFrame,
+ 	}
+ 
+ 	pos.vx = entity->posData->location.vx;
+-	pos.vy = entity->posData->location.vy - (DIGIMON_DATA[entity->type].height / 2);
++	pos.vy = entity->posData->location.vy - (DIGI_PARA(entity->type).height / 2);
+ 	pos.vz = entity->posData->location.vz;
+-	size = getDistance(DIGIMON_DATA[entity->type].radius * 2, DIGIMON_DATA[entity->type].height, DIGIMON_DATA[entity->type].radius * 2);
++	size = getDistance(DIGI_PARA(entity->type).radius * 2, DIGI_PARA(entity->type).height, DIGI_PARA(entity->type).radius * 2);
+ 	radius = (lerp(200, 0, startFrame, endFrame, frame) << 12) / 128;
+ 	z = worldPosToScreenPos(&pos, &screen);
+ 	if (z <= 0) {
+@@ -1541,7 +1542,7 @@ void DOOA_spawnBoneShards(DooaShardEffect *effect, int32_t boneIndex, long wireI
+ 	tmd = model->modelPtr;
+ 	header = tmd;
+ 	objects = header->obj;
+-	objIndex = DIGIMON_SKELETONS[entity->type][boneIndex].objIndex;
++	objIndex = getDigimonSkeleton(entity->type)[boneIndex].objIndex; /* MOD (species) */
+ 	if (objIndex == -1) {
+ 		return;
+ 	}
+diff --git a/src/endi/endi.c b/src/endi/endi.c
+index 0dca1f7..64b9d2c 100644
+--- a/src/endi/endi.c
++++ b/src/endi/endi.c
+@@ -162,14 +162,14 @@ static void ENDI_updateEnding(int32_t objectId)
+ 	switch (state->phase) {
+ 	case 0:
+ 		ENDI_fadeClut(ENDI_CLUT_BUFFER, entity, ENDI_FADE_CLUT_BUFFER, 0, 60, state->frame);
+-		ENDI_spawnParticle(entity, state->frame % (DIGIMON_DATA[entity->type].boneCount - 1) + 1);
++		ENDI_spawnParticle(entity, state->frame % (DIGI_PARA(entity->type).boneCount - 1) + 1);
+ 
+ 		if (state->frame >= 60) {
+ 			state->phase = 1;
+ 		}
+ 		break;
+ 	case 1:
+-		ENDI_spawnParticle(entity, state->frame % (DIGIMON_DATA[entity->type].boneCount - 1) + 1);
++		ENDI_spawnParticle(entity, state->frame % (DIGI_PARA(entity->type).boneCount - 1) + 1);
+ 
+ 		peakFrame = 78;
+ 		if (state->frame <= peakFrame) {
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index 1ead345..e8719de 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -21,6 +21,7 @@
+ #include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/sound_async.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+@@ -385,9 +386,9 @@ void EVL_tickEvoSequence(int32_t instanceId)
+ 			tmp = EVL_D_80063EFC[data->timer - 0x70L];
+ 			if (tmp >= 0) {
+ shards:
+-				if (data->unk_0x8 < DIGIMON_DATA[partner->digimonEntity.entity.type].boneCount - 1) {
++				if (data->unk_0x8 < DIGI_PARA(partner->digimonEntity.entity.type).boneCount - 1) {
+ 					bone = EVL_D_80067994[data->unk_0x8++];
+-					obj = DIGIMON_SKELETONS[partner->digimonEntity.entity.type][bone].objIndex;
++					obj = getDigimonSkeleton(partner->digimonEntity.entity.type)[bone].objIndex; /* MOD (species) */
+ 					if (obj == -1) {
+ 						goto shards;
+ 					}
+@@ -415,23 +416,23 @@ shards:
+ 			}
+ 		}
+ 		if ((int32_t)*(uint8_t **)&data->timer < 0xcc) {
+-			tmp = DIGIMON_DATA[partner->digimonEntity.entity.type].radius;
+-			size = DIGIMON_DATA[partner->digimonEntity.entity.type].height;
+-			height = DIGIMON_DATA[partner->digimonEntity.entity.type].height;
++			tmp = DIGI_PARA(partner->digimonEntity.entity.type).radius;
++			size = DIGI_PARA(partner->digimonEntity.entity.type).height;
++			height = DIGI_PARA(partner->digimonEntity.entity.type).height;
+ 		} else if (((int32_t)*(uint8_t **)&data->timer >= 0xcc) && ((int32_t)*(uint8_t **)&data->timer < 0x108)) {
+ 			scale = &partner->digimonEntity.entity.posData->scale;
+-			rRatio = (DIGIMON_DATA[data->digimonId].radius << 12) / DIGIMON_DATA[partner->digimonEntity.entity.type].radius;
+-			hRatio = (DIGIMON_DATA[data->digimonId].height << 12) / DIGIMON_DATA[partner->digimonEntity.entity.type].height;
++			rRatio = (DIGI_PARA(data->digimonId).radius << 12) / DIGI_PARA(partner->digimonEntity.entity.type).radius;
++			hRatio = (DIGI_PARA(data->digimonId).height << 12) / DIGI_PARA(partner->digimonEntity.entity.type).height;
+ 			scale->vx = lerp(0x1000, rRatio, 0xcc, 0x108, data->timer);
+ 			scale->vy = lerp(0x1000, hRatio, 0xcc, 0x108, data->timer);
+ 			scale->vz = scale->vx;
+-			tmp = lerp(DIGIMON_DATA[partner->digimonEntity.entity.type].radius, DIGIMON_DATA[data->digimonId].radius, 0xcc, 0x108, data->timer);
+-			size = lerp(DIGIMON_DATA[partner->digimonEntity.entity.type].height, DIGIMON_DATA[data->digimonId].height, 0xcc, 0x108, data->timer);
+-			height = lerp(DIGIMON_DATA[partner->digimonEntity.entity.type].height, DIGIMON_DATA[data->digimonId].height, 0xcc, 0x108, data->timer);
++			tmp = lerp(DIGI_PARA(partner->digimonEntity.entity.type).radius, DIGI_PARA(data->digimonId).radius, 0xcc, 0x108, data->timer);
++			size = lerp(DIGI_PARA(partner->digimonEntity.entity.type).height, DIGI_PARA(data->digimonId).height, 0xcc, 0x108, data->timer);
++			height = lerp(DIGI_PARA(partner->digimonEntity.entity.type).height, DIGI_PARA(data->digimonId).height, 0xcc, 0x108, data->timer);
+ 		} else if ((int32_t)*(uint8_t **)&data->timer >= 0x108) {
+-			tmp = DIGIMON_DATA[data->digimonId].radius;
+-			size = DIGIMON_DATA[data->digimonId].height;
+-			height = DIGIMON_DATA[data->digimonId].height;
++			tmp = DIGI_PARA(data->digimonId).radius;
++			size = DIGI_PARA(data->digimonId).height;
++			height = DIGI_PARA(data->digimonId).height;
+ 		}
+ 		if (data->timer >= 0xa5) {
+ 			if (data->timer >= 0xc3) {
+@@ -683,13 +684,13 @@ void EVL_updateEvoCamera(Entity *entity, int32_t unused, int32_t frame)
+ 		MAIN_D_801351F8 = 0x638;
+ 		rot = MAIN_D_801349F8;
+ 		rot.vy = MAIN_D_801351F8 + entity->posData->rotation.vy;
+-		if (DIGIMON_DATA[entity->type].height < DIGIMON_DATA[entity->type].radius) {
+-			size = DIGIMON_DATA[entity->type].radius;
++		if (DIGI_PARA(entity->type).height < DIGI_PARA(entity->type).radius) {
++			size = DIGI_PARA(entity->type).radius;
+ 		} else {
+-			size = DIGIMON_DATA[entity->type].height;
++			size = DIGI_PARA(entity->type).height;
+ 		}
+ 		size = (size * 5) + 0x4b0;
+-		EVL_calculateCameraVectors(&viewRef, &viewPos, entity, &rot, size, DIGIMON_DATA[entity->type].height);
++		EVL_calculateCameraVectors(&viewRef, &viewPos, entity, &rot, size, DIGI_PARA(entity->type).height);
+ 		if (frame <= mid) {
+ 			GS_VIEWPOINT.vrx = lerp(EVL_D_800688E8.vrx, viewRef.vx, start, mid, frame);
+ 			GS_VIEWPOINT.vry = lerp(EVL_D_800688E8.vry, viewRef.vy, start, mid, frame);
+@@ -701,7 +702,7 @@ void EVL_updateEvoCamera(Entity *entity, int32_t unused, int32_t frame)
+ 			GS_VIEWPOINT.vpx = lerp(EVL_D_800688E8.vpx, viewPos.vx, mid, end, frame);
+ 			GS_VIEWPOINT.vpy = lerp(EVL_D_800688E8.vpy, viewPos.vy, mid, end, frame);
+ 			GS_VIEWPOINT.vpz = lerp(EVL_D_800688E8.vpz, viewPos.vz, mid, end, frame);
+-			t = lerp(0, 0x14, 0, 0xc8, DIGIMON_DATA[entity->type].height);
++			t = lerp(0, 0x14, 0, 0xc8, DIGI_PARA(entity->type).height);
+ 			DRAWING_OFFSET_Y = lerp(0x78, t + 0x78, mid, end, frame);
+ 			VIEWPORT_DISTANCE = lerp(MAIN_D_801351EC, 0x3e8, mid, end, frame);
+ 		}
+@@ -714,13 +715,13 @@ void EVL_updateEvoCamera(Entity *entity, int32_t unused, int32_t frame)
+ 		MAIN_D_801351F8 += 0x16;
+ 		rot = MAIN_D_80134A00;
+ 		rot.vy = MAIN_D_801351F8 + entity->posData->rotation.vy;
+-		if (DIGIMON_DATA[entity->type].height < DIGIMON_DATA[entity->type].radius) {
+-			size = DIGIMON_DATA[entity->type].radius;
++		if (DIGI_PARA(entity->type).height < DIGI_PARA(entity->type).radius) {
++			size = DIGI_PARA(entity->type).radius;
+ 		} else {
+-			size = DIGIMON_DATA[entity->type].height;
++			size = DIGI_PARA(entity->type).height;
+ 		}
+ 		size = (size * 5) + 0x4b0;
+-		EVL_calculateCameraVectors(&viewRef, &viewPos, entity, &rot, size, DIGIMON_DATA[entity->type].height);
++		EVL_calculateCameraVectors(&viewRef, &viewPos, entity, &rot, size, DIGI_PARA(entity->type).height);
+ 		GS_VIEWPOINT.vrx = viewRef.vx;
+ 		GS_VIEWPOINT.vry = viewRef.vy;
+ 		GS_VIEWPOINT.vrz = viewRef.vz;
+@@ -1262,16 +1263,16 @@ void EVL_initEvoSequence(void)
+ 		EVL_D_80067994[i] = -1;
+ 	}
+ 
+-	EVL_D_80067994[DIGIMON_DATA[partner->digimonEntity.entity.type].boneCount - 1L] = -2;
++	EVL_D_80067994[DIGI_PARA(partner->digimonEntity.entity.type).boneCount - 1L] = -2;
+ 
+-	for (i = 1; i < DIGIMON_DATA[partner->digimonEntity.entity.type].boneCount; i++) {
++	for (i = 1; i < DIGI_PARA(partner->digimonEntity.entity.type).boneCount; i++) {
+ 		order[i] = rand() & 0xfff;
+ 	}
+ 
+-	for (i = 1; i < DIGIMON_DATA[partner->digimonEntity.entity.type].boneCount; i++) {
++	for (i = 1; i < DIGI_PARA(partner->digimonEntity.entity.type).boneCount; i++) {
+ 		best = 1;
+ 		bestVal = order[1];
+-		for (j = 2; j < DIGIMON_DATA[partner->digimonEntity.entity.type].boneCount; j++) {
++		for (j = 2; j < DIGI_PARA(partner->digimonEntity.entity.type).boneCount; j++) {
+ 			if (bestVal > order[j]) {
+ 				best = j;
+ 				bestVal = order[j];
+@@ -1307,8 +1308,8 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 
+ 	gains = &EVOLUTION_STATS_GAINS[digimonId];
+ 	newId = gains->targetDigimon;
+-	oldLevel = DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level;
+-	level = DIGIMON_DATA[digimonId].level;
++	oldLevel = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
++	level = DIGI_PARA(digimonId).level;
+ 	if (digimonId == 0x0b || digimonId == 0x27 || digimonId == 0x35 || digimonId == 6 ||
+ 	    PARTNER_ENTITY.digimonEntity.entity.type == 0x27L || level < 3) {
+ 		EVL_scaleBaseStats(stats, (int8_t)gains->brains, digimonId);
+@@ -1353,10 +1354,10 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 
+ 			EVL_clampBaseStats();
+ 			if (IS_SCRIPT_PAUSED == 1) {
+-				if (DIGIMON_DATA[newId].level == 4) {
++				if (DIGI_PARA(newId).level == 4) {
+ 					addTamerLevel(20, 1);
+ 				}
+-				if (DIGIMON_DATA[newId].level == 5) {
++				if (DIGI_PARA(newId).level == 5) {
+ 					addTamerLevel(100, 1);
+ 				}
+ 			}
+@@ -1366,11 +1367,11 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	para->weight = RAISE_DATA[newId].defaultWeight;
+ 	para->careMistakes = 0;
+ 	para->battles = 0;
+-	level = DIGIMON_DATA[newId].level;
++	level = DIGI_PARA(newId).level;
+ 	if (level == 5 && HAS_USED_EVOITEM == 0) {
+ 		para->remainingLifetime += 96;
+ 	}
+-	special = DIGIMON_DATA[newId].special[0];
++	special = DIGI_PARA(newId).special[0];
+ 	if (special == 0) {
+ 		moveBase = 0;
+ 	} else if (special == 1) {
+@@ -1386,7 +1387,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	} else if (special == 6) {
+ 		moveBase = 49;
+ 	}
+-	movePtr = DIGIMON_DATA[newId].moves;
++	movePtr = DIGI_PARA(newId).moves;
+ 	count = 0;
+ 	for (i = 0; i < 16; movePtr++, i++) {
+ 		if (moveBase <= *movePtr && *movePtr <= moveBase + 8) {
+@@ -1402,7 +1403,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 		}
+ 	}
+ 	learnMove(best);
+-	for (movePtr = DIGIMON_DATA[newId].moves, i = 0; i < 16; i++) {
++	for (movePtr = DIGI_PARA(newId).moves, i = 0; i < 16; i++) {
+ 		if (*movePtr++ == best) {
+ 			break;
+ 		}
+@@ -1410,17 +1411,17 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = i + 0x2e;
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[1] = 0xff;
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[2] = 0xff;
+-	if (DIGIMON_DATA[newId].level < 3) {
++	if (DIGI_PARA(newId).level < 3) {
+ 		PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = 0x2e;
+ 	}
+ 	for (i = 15; i >= 0; i--) {
+-		if (DIGIMON_DATA[newId].moves[i] == 0xff) {
++		if (DIGI_PARA(newId).moves[i] == 0xff) {
+ 			continue;
+ 		}
+-		if (DIGIMON_DATA[newId].moves[i] < 0x3a) {
++		if (DIGI_PARA(newId).moves[i] < 0x3a) {
+ 			continue;
+ 		}
+-		if (DIGIMON_DATA[newId].moves[i] >= 0x71) {
++		if (DIGI_PARA(newId).moves[i] >= 0x71) {
+ 			continue;
+ 		}
+ 		PARTNER_ENTITY.digimonEntity.stats.base.moves[3] = i + 0x2e;
+@@ -1429,7 +1430,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	if (i < 0) {
+ 		PARTNER_ENTITY.digimonEntity.stats.base.moves[3] = 0xff;
+ 	}
+-	level = DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level;
++	level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+ 	x = entity->posData->location.vx;
+ 	y = entity->posData->location.vy;
+ 	z = entity->posData->location.vz;
+@@ -1442,7 +1443,7 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	thunkUnloadModel(oldType, 3);
+ 	initializeEvolvedPartner(newId, x, y, z, rx, ry, rz);
+ 	setDigimonRaised((uint16_t)newId);
+-	if (oldLevel != DIGIMON_DATA[newId].level) {
++	if (oldLevel != DIGI_PARA(newId).level) {
+ 		para->evoTimer = 0;
+ 	}
+ }
+diff --git a/src/fish/fish.c b/src/fish/fish.c
+index fd21e33..dc946d2 100644
+--- a/src/fish/fish.c
++++ b/src/fish/fish.c
+@@ -4500,7 +4500,7 @@ void FISH_getBoneTransform(Entity *e, int32_t bone, VECTOR *outPos, SVECTOR *out
+ {
+ 	MATRIX m;
+ 
+-	if (!(bone < DIGIMON_DATA[e->type].boneCount)) {
++	if (!(bone < DIGI_PARA(e->type).boneCount)) {
+ 		bone = 0;
+ 	}
+ 
+diff --git a/src/main/aabb.c b/src/main/aabb.c
+index 94c56ad..161258a 100644
+--- a/src/main/aabb.c
++++ b/src/main/aabb.c
+@@ -58,12 +58,12 @@ int32_t findAABBHitEntity(AABB *aabb, Entity *ignoreEntity, int32_t startId)
+ 			location = &entity->posData->location;
+ 			center.vx = location->vx;
+ 			center.vy = location->vy -
+-				(DIGIMON_DATA[entity->type].height >> 1);
++				(DIGI_PARA(entity->type).height >> 1);
+ 			center.vz = location->vz;
+ 			b.center = &center;
+-			b.extent.vx = DIGIMON_DATA[entity->type].radius >> 1;
+-			b.extent.vy = DIGIMON_DATA[entity->type].height >> 1;
+-			b.extent.vz = DIGIMON_DATA[entity->type].radius >> 1;
++			b.extent.vx = DIGI_PARA(entity->type).radius >> 1;
++			b.extent.vy = DIGI_PARA(entity->type).height >> 1;
++			b.extent.vz = DIGI_PARA(entity->type).radius >> 1;
+ 			if (hasAABBOverlap(aabb, &b) == 1) {
+ 				return startId;
+ 			}
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 5339209..075c5ff 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -147,7 +147,7 @@ void tickMomentum(Entity *entity, MomentumData *momentumBase)
+ 	int32_t updateLoc;
+ 
+ 	posData = entity->posData;
+-	boneCount = DIGIMON_DATA[entity->type].boneCount;
++	boneCount = DIGI_PARA(entity->type).boneCount;
+ 
+ 	for (i = 0; i < boneCount; i++, momentumBase++, posData++) {
+ 		updateLoc = 0;
+@@ -221,7 +221,7 @@ void startAnimation(entity, animId)
+ 	modInterpAnimStarted(entity); /* MOD (fps): a pose jump */
+ 	instrPtr = (int16_t *)((int32_t)animTable + animTable[animId]);
+ 	anim = &entity->anim;
+-	boneCount = DIGIMON_DATA[entity->type].boneCount;
++	boneCount = DIGI_PARA(entity->type).boneCount;
+ 	posData = entity->posData;
+ 	model = getEntityModelComponent(entity->type, getEntityType(entity));
+ 
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index 7df43e4..fc3bad4 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -180,8 +180,8 @@ void battleStatsGainsAndDrops(uint8_t *droppedItems)
+ 				continue;
+ 			}
+ 
+-			if (DIGIMON_DATA[ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i + 1]]->type].dropChance > randomLimit(100)) {
+-				droppedItems[i] = DIGIMON_DATA[ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i + 1]]->type].dropItem;
++			if (DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i + 1]]->type).dropChance > randomLimit(100)) {
++				droppedItems[i] = DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i + 1]]->type).dropItem;
+ 				continue;
+ 			}
+ 		}
+@@ -224,7 +224,7 @@ void battleMoveLearning(void)
+ 		}
+ 
+ 		for (j = 0; j < 3; j++) {
+-			if (MOVE_DATA[moveId].special == DIGIMON_DATA[ENTITY_TABLE[1]->type].special[j]) {
++			if (MOVE_DATA[moveId].special == DIGI_PARA(ENTITY_TABLE[1]->type).special[j]) {
+ 				foundIdx = j;
+ 				break;
+ 			}
+@@ -235,7 +235,7 @@ void battleMoveLearning(void)
+ 		}
+ 
+ 		for (j = 0; j < 16; j++) {
+-			if (DIGIMON_DATA[ENTITY_TABLE[1]->type].moves[j] == moveId) {
++			if (DIGI_PARA(ENTITY_TABLE[1]->type).moves[j] == moveId) {
+ 				break;
+ 			}
+ 		}
+diff --git a/src/main/btl.c b/src/main/btl.c
+index faa261b..0dbb066 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -308,9 +308,9 @@ int32_t handleBattleStart(id)
+ 		}
+ 
+ 		flag = 1;
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].type != 0xff) {
+-			if (chance < (&FLEE_CHANCES[(DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].type - 1) * 3])
+-			                     [DIGIMON_DATA[NPC_ENTITIES[i - 2].digimonEntity.entity.type].type - 1]) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).type != 0xff) {
++			if (chance < (&FLEE_CHANCES[(DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).type - 1) * 3])
++			                     [DIGI_PARA(NPC_ENTITIES[i - 2].digimonEntity.entity.type).type - 1]) {
+ 				COMBAT_DATA_PTR->player.entityIds[++count] = i;
+ 				flag = 0;
+ 			}
+@@ -449,7 +449,7 @@ void loadBattleData(int32_t entityId, int32_t count)
+ 				if (entityGetTechFromAnim(&e->entity, e->stats.base.moves[j]) == 0xff) {
+ 					e->stats.base.moves[j] = 0xff;
+ 				} else {
+-					move = DIGIMON_DATA[e->entity.type].moves[e->stats.base.moves[j] - 0x2e] + 0x100;
++					move = DIGI_PARA(e->entity.type).moves[e->stats.base.moves[j] - 0x2e] + 0x100;
+ 					moveList[n++] = move;
+ 				}
+ 			}
+@@ -508,11 +508,11 @@ void renderFleeBubble(int32_t instanceId)
+ 	loc = &e->posData->location;
+ 	if (FLEE_BUBBLE_DATA[instanceId - 2].frame < 5) {
+ 		pos.vx = loc->vx;
+-		pos.vy = -DIGIMON_DATA[e->type].height - 0xc8 - ((FLEE_BUBBLE_DATA[instanceId - 2].frame + 1) * 50 / 5);
++		pos.vy = -DIGI_PARA(e->type).height - 0xc8 - ((FLEE_BUBBLE_DATA[instanceId - 2].frame + 1) * 50 / 5);
+ 		pos.vz = loc->vz;
+ 	} else {
+ 		pos.vx = loc->vx;
+-		pos.vy = -DIGIMON_DATA[e->type].height - 0xfa;
++		pos.vy = -DIGI_PARA(e->type).height - 0xfa;
+ 		pos.vz = loc->vz;
+ 	}
+ 
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 9d6fa8a..3501f7a 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -442,7 +442,7 @@ int32_t addConditionBubble(int32_t type, Entity *entity)
+ 
+ 	bubble = &CONDITION_BUBBLES[i];
+ 	bubble->frameCount = 0;
+-	bubble->baseHeight = -DIGIMON_DATA[entity->type].height + 20;
++	bubble->baseHeight = -DIGI_PARA(entity->type).height + 20;
+ 	bubble->activeHeight = bubble->baseHeight;
+ 	bubble->entity = entity;
+ 	bubble->scale = 0;
+diff --git a/src/main/drop_shadow.c b/src/main/drop_shadow.c
+index bd88014..0a802e9 100644
+--- a/src/main/drop_shadow.c
++++ b/src/main/drop_shadow.c
+@@ -37,8 +37,8 @@ void renderDropShadow(Entity *entity)
+ 	if (getTileTrigger(&entity->posData->location) == -1) {
+ 		return;
+ 	}
+-	radiusX = DIGIMON_DATA[entity->type].radius;
+-	radiusZ = DIGIMON_DATA[entity->type].radius;
++	radiusX = DIGI_PARA(entity->type).radius;
++	radiusZ = DIGI_PARA(entity->type).radius;
+ 	x = entity->posData->location.vx;
+ 	y = entity->posData->location.vy;
+ 	z = entity->posData->location.vz;
+@@ -69,11 +69,11 @@ void renderDropShadow(Entity *entity)
+ 	prim++;
+ 	GsSetWorkBase((PACKET *)prim);
+ 	c.vx = entity->posData->location.vx;
+-	c.vy = -(DIGIMON_DATA[entity->type].height >> 1);
++	c.vy = -(DIGI_PARA(entity->type).height >> 1);
+ 	c.vz = entity->posData->location.vz;
+ 	box.center = &c;
+-	box.extent.vx = DIGIMON_DATA[entity->type].radius;
+-	box.extent.vy = DIGIMON_DATA[entity->type].height >> 1;
+-	box.extent.vz = DIGIMON_DATA[entity->type].radius;
++	box.extent.vx = DIGI_PARA(entity->type).radius;
++	box.extent.vy = DIGI_PARA(entity->type).height >> 1;
++	box.extent.vz = DIGI_PARA(entity->type).radius;
+ 	renderAABB(&box);
+ }
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 8e68d87..32aec4e 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -495,7 +495,7 @@ void tickParticleFX(int32_t id)
+ 	if ((fx->endFrame < 4) && (fx->endFrame >= 0) && (fx->mode == 1)) {
+ 		baseX = fx->entity->posData->posMatrix.workm.t[0];
+ 		baseZ = fx->entity->posData->posMatrix.workm.t[2];
+-		radius = DIGIMON_DATA[entity->type].radius;
++		radius = DIGI_PARA(entity->type).radius;
+ 		spread = radius >> 1;
+ 		for (i = 0; i < fx->endFrame + 2; i++) {
+ 			angle = rand();
+@@ -602,7 +602,7 @@ int32_t addEntityParticleFX(Entity *owner, int32_t timer)
+ 	}
+ 	fx = &ENTITY_PARTICLE_FX_DATA[i];
+ 	fx->timer = timer;
+-	fx->boneId = ((int32_t)rand() % (DIGIMON_DATA[owner->type].boneCount - 1)) + 1;
++	fx->boneId = ((int32_t)rand() % (DIGI_PARA(owner->type).boneCount - 1)) + 1;
+ 	fx->unk8 = 0;
+ 	fx->owner = owner;
+ 	addObject(0x502, i, tickEntityParticleFX, renderEntityParticleFX);
+@@ -624,7 +624,7 @@ void tickEntityParticleFX(int32_t id)
+ 		return;
+ 	}
+ 	if ((fx->timer % 4) == 0) {
+-		fx->boneId = (rand() % (DIGIMON_DATA[fx->owner->type].boneCount - 1)) + 1;
++		fx->boneId = (rand() % (DIGI_PARA(fx->owner->type).boneCount - 1)) + 1;
+ 		fx->unk8 = rand() % 9;
+ 	}
+ 	fx->timer--;
+diff --git a/src/main/evl.c b/src/main/evl.c
+index 3d9141c..d9e8ae0 100644
+--- a/src/main/evl.c
++++ b/src/main/evl.c
+@@ -91,8 +91,8 @@ int16_t isInitialized;
+ 	data->digimonId = EVOLUTION_STATS_GAINS[target].targetDigimon;
+ 	data->para = para;
+ 	data->evoTarget = target;
+-	data->heightFactor = (DIGIMON_DATA[data->digimonId].height << 12) /
+-			     DIGIMON_DATA[partner->digimonEntity.entity.type].height;
++	data->heightFactor = (DIGI_PARA(data->digimonId).height << 12) /
++			     DIGI_PARA(partner->digimonEntity.entity.type).height;
+ 
+ 	startAnimation(&PARTNER_ENTITY.digimonEntity.entity, 0);
+ 	stopSound();
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 35d36d0..7e62a17 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -3,6 +3,7 @@
+ 
+ #include <dw/entity.h>
+ #include <dw/evl.h>
++#include <dw/species.h>
+ #include <dw/garbage.h>
+ #include <dw/ids.h>
+ #include <dw/math.h>
+@@ -27,7 +28,7 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+ int8_t getNumMasteredMoves(void);
+ 
+ // clang-format off
+-EvoRequirements EVOLUTION_REQS[NUM_EVOLVING_DIGIMON] = {
++EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON (by target type) */
+ 	{
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 		0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0x00,
+@@ -345,7 +346,7 @@ EvoRequirements EVOLUTION_REQS[NUM_EVOLVING_DIGIMON] = {
+ 	},
+ };
+ 
+-EvoStatsGains EVOLUTION_STATS_GAINS[NUM_PARTNER_DIGIMON] = {
++EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0001 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x000a, 0x0002 },
+@@ -698,7 +699,7 @@ int16_t getInTrainingEvolutionTarget(int32_t currentDigimon) {
+ 
+   currentBest = -1;
+   bestScore = 0;
+-  targetPtr = EVOLUTION_PATHS[currentDigimon - 1].to;
++  targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+ 
+   for (i = 0; i < 6; i++) {
+     if (*targetPtr == -1) {
+@@ -731,7 +732,7 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+   int8_t isMaxCM;
+   int8_t isMaxBattles;
+ 
+-  targetPtr = EVOLUTION_PATHS[currentDigimon - 1].to;
++  targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+   currentBestDigimon = -1;
+   bestScore = statTotal = statCount = 0U;
+ 
+@@ -796,7 +797,7 @@ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+   int8_t isMaxCM;
+   int8_t isMaxBattles;
+ 
+-  targetPtr = EVOLUTION_PATHS[currentDigimon - 1].to;
++  targetPtr = getEvolutionPath(currentDigimon)->to; /* MOD (species) */
+   currentBestDigimon = -1;
+   bestScore = statTotal = statCount = 0U;
+ 
+@@ -869,7 +870,7 @@ int32_t handleSpecialEvolutions(mode, entity)
+     return -1;
+ 
+   type = entity->type;
+-  level = DIGIMON_DATA[type].level;
++  level = DIGI_PARA(type).level;
+   def = PARTNER_ENTITY.digimonEntity.stats.base.def;
+   discipline = PARTNER_PARA.discipline;
+   happiness = PARTNER_PARA.happiness;
+@@ -960,7 +961,7 @@ int8_t calculateRequirementScore(int32_t current, DigimonId target,
+       partner->weight <= reqs->weight + 5)
+     reqPoints += 1;
+ 
+-  if (DIGIMON_DATA[target].level == 3U) {
++  if (DIGI_PARA(target).level == 3U) {
+     statsArray[0] = statsArray2[0] = partnerEntity->hp / 10;
+     statsArray[1] = statsArray2[1] = partnerEntity->mp / 10;
+     statsArray[2] = statsArray2[2] = partnerEntity->off;
+diff --git a/src/main/file_queue.c b/src/main/file_queue.c
+index f5bb66a..b7d44ac 100644
+--- a/src/main/file_queue.c
++++ b/src/main/file_queue.c
+@@ -164,6 +164,12 @@ void setFileReadCallback2(FileRequestCallback callback, void *param)
+ 	FILE_QUEUE_CALLBACK_PARAM = param;
+ }
+ 
++/* MOD (species): 1 while asynchronous reads are queued or running */
++int32_t isFileReadQueueBusy(void)
++{
++	return FILE_READ_QUEUE_HEAD != NULL;
++}
++
+ int32_t addFileReadRequestPath(char *path, uint8_t *buffer,
+ 			       uint8_t *isRunning,
+ 			       FileRequestCallback callback,
+diff --git a/src/main/file_table_us.c b/src/main/file_table_us.c
+index 603d839..d299898 100644
+--- a/src/main/file_table_us.c
++++ b/src/main/file_table_us.c
+@@ -3,7 +3,7 @@
+ #include <dw/atan_lookup_table.h>
+ 
+ // clang-format off
+-FileEntry FILE_OFFSET_TABLE[819] = {
++FileEntry FILE_OFFSET_TABLE[820] = { /* MOD: + DIGI.DAT */
+ 	{ 0x00000017, 0x00000044, "SYSTEM.CNF" },
+ 	{ 0x00000019, 0x001ce000, "CARD.ALL" },
+ 	{ 0x000003b6, 0x0032a000, "ALLTIM.TIM" },
+@@ -822,6 +822,9 @@ FileEntry FILE_OFFSET_TABLE[819] = {
+ 	{ 0x00024331, 0x00020788, "VS_REL.BIN" },
+ 	{ 0x00024372, 0x000a5000, "PSX.EXE" },
+ 	{ 0x000244bc, 0x01a5e000, "MMM.DAT" },
++	/* MOD (species): new species (tools/species.py); build-disc.py --relayout
++	 * writes its sector and size. Without the file the header check fails. */
++	{ 0x00000000, 0x00000800, "DIGI.DAT" },
+ 	{ 0x00000000, 0x00000000, "NULL" },
+ };
+ // clang-format on
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 3144eb8..e49d57d 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2120,29 +2120,29 @@ void equipMove(void)
+ 
+ 	for (animation = 0; animation < 16; animation++) {
+ 		if (moveId == 0x2c) {
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type)
+ 			            .moves[animation] == 0x2c) {
+ 				break;
+ 			}
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type)
+ 			            .moves[animation] == 0x30) {
+ 				moveId = 0x30;
+ 				break;
+ 			}
+ 		}
+ 		if (moveId == 0x37) {
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type)
+ 			            .moves[animation] == 0x37) {
+ 				break;
+ 			}
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type)
+ 			            .moves[animation] == 0x39) {
+ 				moveId = 0x39;
+ 				break;
+ 			}
+ 		}
+ 		if (moveId ==
+-		    DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type]
++		    DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type)
+ 		            .moves[animation]) {
+ 			break;
+ 		}
+@@ -2261,7 +2261,7 @@ void renderDigimonStatsView(void)
+ 		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.speed, 0x3e7, 0x32, 0x24, 0x48);
+ 		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.brain, 0x3e7, 0x32, 0x24, 0x57);
+ 		for (i = 0, k = 0; i < 3; i++) {
+-			special = DIGIMON_DATA[ENTITY_TABLE[1]->type].special[i];
++			special = DIGI_PARA(ENTITY_TABLE[1]->type).special[i];
+ 			if (special != 0xff) {
+ 				clut = 0x7a06;
+ 				if ((special == 2) || (special == 3) || (special == 4)) {
+@@ -2278,8 +2278,8 @@ void renderDigimonStatsView(void)
+ 				k += 0xc;
+ 			}
+ 		}
+-		if (DIGIMON_DATA[ENTITY_TABLE[1]->type].type != 0) {
+-			renderRectPolyFT4(0x3b, -0x33, 0xc, 0xc, (DIGIMON_DATA[ENTITY_TABLE[1]->type].type - 1) * 0xc, 0x80, 5, 0x7a06, 5, 0);
++		if (DIGI_PARA(ENTITY_TABLE[1]->type).type != 0) {
++			renderRectPolyFT4(0x3b, -0x33, 0xc, 0xc, (DIGI_PARA(ENTITY_TABLE[1]->type).type - 1) * 0xc, 0x80, 5, 0x7a06, 5, 0);
+ 		}
+ 		if (RAISE_DATA[PARTNER_ENTITY.digimonEntity.entity.type].sleepCycle == 5) {
+ 			renderString(0, 0x55, -0x33, 0x30, 0xc, 0xcc, 0x30, 5, 0);
+@@ -2764,7 +2764,7 @@ void renderDigimonMoveBox(void)
+ 	}
+ 
+ 	for (i = 0; i < 0x10; i++) {
+-		moves[i] = DIGIMON_DATA[ENTITY_TABLE[1]->type].moves[i];
++		moves[i] = DIGI_PARA(ENTITY_TABLE[1]->type).moves[i];
+ 	}
+ 	sortArray(moves, 0x10);
+ 
+@@ -3113,7 +3113,8 @@ void renderEvoChartDetail(void)
+ 	for (j = 0; j < fromCount; j++) {
+ 		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].from[j];
+ 		if (id > 0) {
+-			if (hasDigimonRaised(id & 0xffff) == 1) {
++			/* MOD: no portrait beyond the chart's 61 (MasterTyrannomon): an empty box */
++			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(fromSprites->posX, fromSprites->posY,
+ 				                  0x10, 0x10,
+ 				                  EVO_CHART_BOXES[id - 1].u,
+@@ -3131,7 +3132,8 @@ void renderEvoChartDetail(void)
+ 	for (j = 0; j < toCount; j++) {
+ 		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].to[j];
+ 		if (id > 0) {
+-			if (hasDigimonRaised(id & 0xffff) == 1) {
++			/* MOD: no portrait beyond the chart's 61 (MasterTyrannomon): an empty box */
++			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(toSprites->posX, toSprites->posY,
+ 				                  0x10, 0x10,
+ 				                  EVO_CHART_BOXES[id - 1].u,
+@@ -3149,11 +3151,11 @@ void renderEvoChartDetail(void)
+ #if !VERSION_IS(US)
+ 	renderString(3, -0x19, -0x4f, 0x30, 0xc, 0, 0x18, 4);
+ 	renderString(0, -0x56, 0x3a, 0x24, 0xc,
+-	             ((DIGIMON_DATA[CHART_SELECTED_DIGIMON].level - 1) * 36) + 0x30, 0x18,
++	             ((DIGI_PARA(CHART_SELECTED_DIGIMON).level - 1) * 36) + 0x30, 0x18,
+ 	             4);
+ #else
+ 	renderString(3, -0x14, -0x4f, 0x24, 0xc, 0, 0x18, 4);
+-	switch (DIGIMON_DATA[CHART_SELECTED_DIGIMON].level) {
++	switch (DIGI_PARA(CHART_SELECTED_DIGIMON).level) {
+ 	case 1:
+ 		renderString(0, -0x5b, 0x3a, 0x2e, 0xc, 0x24, 0x18, 4);
+ 		break;
+@@ -3479,7 +3481,7 @@ int8_t entityId;
+ 	type = entity->type;
+ 	anim = entity->anim.animId;
+ 	pos = entity->posData;
+-	count = DIGIMON_DATA[type].boneCount;
++	count = DIGI_PARA(type).boneCount;
+ 	modInterpUnapplyEntity(entityId); /* MOD (fps): its own position */
+ 	savedPos = pos->location;
+ 	savedRot = pos->rotation;
+@@ -3654,7 +3656,7 @@ int32_t drawPlayerInfoStrings(void)
+ 		MENU_SUB_STATE++;
+ 		break;
+ 	case 4:
+-		drawString((char *)DIGIMON_DATA, 0, 0x30);
++		drawString((char *)digimonPara(0), 0, 0x30);
+ 		for (i = 0; i < 4; i++) {
+ 			drawString(TAMER_LEVEL_TITLES[i], 0, i * 0xc + 0x40);
+ 		}
+@@ -3693,7 +3695,7 @@ int32_t drawEvoChartStrings(int8_t arg)
+ 		return 1;
+ 	case 2:
+ 		clearTextSubArea(&rect2);
+-		drawString((char *)(DIGIMON_DATA + arg), 0, 0x30);
++		drawString((char *)digimonPara(arg), 0, 0x30);
+ 	}
+ 	return 0;
+ }
+diff --git a/src/main/item.c b/src/main/item.c
+index 2c8b5f2..8595c35 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -2191,8 +2191,8 @@ void handleEvoItems(int16_t item)
+ 			EVOLUTION_TARGET = 0x41;
+ 		}
+ 	} else {
+-		level = DIGIMON_DATA[EVOLUTION_ITEM_TARGET[item - 0x47]].level - 1;
+-		if (level != DIGIMON_DATA[ENTITY_TABLE[1]->type].level) {
++		level = DIGI_PARA(EVOLUTION_ITEM_TARGET[item - 0x47]).level - 1;
++		if (level != DIGI_PARA(ENTITY_TABLE[1]->type).level) {
+ 			return;
+ 		}
+ 		EVOLUTION_TARGET = EVOLUTION_ITEM_TARGET[item - 0x47];
+diff --git a/src/main/main.c b/src/main/main.c
+index 009a155..11ce03b 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -27,6 +27,7 @@
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
++#include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/types.h>
+ #include <dw/ui.h>
+@@ -3365,6 +3366,7 @@ int32_t main(void)
+ 	initializeMedalModel();
+ 	initializeClockData();
+ 	initializeStatusObjects();
++	initializeSpecies(); /* MOD (species): DIGI.DAT */
+ 	loadTIMFile(MAIN_D_8012CE64, GENERAL_BUFFER_PTR);
+ 
+ 	for (;;) {
+@@ -3859,11 +3861,11 @@ void recalculatePPandArena(void)
+ 
+ 	pp = 0;
+ 	for (i = 3; i < 0x3b; i++) {
+-		if ((DIGIMON_DATA[i].level >= 3) && (isTriggerSet((uint16_t)(TRIGGER_RECRUITED_BASE + i)) != 0)) {
++		if ((DIGI_PARA(i).level >= 3) && (isTriggerSet((uint16_t)(TRIGGER_RECRUITED_BASE + i)) != 0)) {
+ 			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
+ 				pp++;
+ 			} else {
+-				pp += (uint8_t)(DIGIMON_DATA[i].level - 2);
++				pp += (uint8_t)(DIGI_PARA(i).level - 2);
+ 			}
+ 		}
+ 	}
+@@ -4394,7 +4396,7 @@ static int32_t modAbs(int32_t v)
+ static void modClearBoneFlags(Entity *entity)
+ {
+ 	PositionData *pd = entity->posData;
+-	int32_t n = DIGIMON_DATA[entity->type].boneCount;
++	int32_t n = DIGI_PARA(entity->type).boneCount;
+ 	int32_t i;
+ 
+ 	for (i = 0; i < n; i++, pd++) {
+@@ -4462,7 +4464,7 @@ static void modInterpSnapshotBones(int32_t snap)
+ 		    !(modBonePrevAnimFlag[i] & 1)) {
+ 			continue;
+ 		}
+-		n = DIGIMON_DATA[e->type].boneCount;
++		n = DIGI_PARA(e->type).boneCount;
+ 		pd = e->posData + 1;
+ 		pb = modBonePrev[i];
+ 		mask = 0;
+@@ -4570,7 +4572,7 @@ static void modInterpKeepBones(void)
+ 		    modRootOwnRender[i]) {
+ 			continue;
+ 		}
+-		n = DIGIMON_DATA[e->type].boneCount;
++		n = DIGI_PARA(e->type).boneCount;
+ 		if (n - 1 > MOD_BONES_MAX) {
+ 			continue;
+ 		}
+@@ -5038,7 +5040,7 @@ static void modInterpEndTick(void)
+ 		}
+ 		e = ENTITY_TABLE[i];
+ 		pd = e->posData;
+-		n = DIGIMON_DATA[e->type].boneCount;
++		n = DIGI_PARA(e->type).boneCount;
+ 		for (b = 0; b < n; b++, pd++) {
+ 			if (pd->obj.tmd != NULL) {
+ 				GsGetLws(pd->obj.coord2, &lw, &ls);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 2ad7074..20f52ea 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -145,6 +145,54 @@ SAVE_LAYOUT_CHECK(inventorySize, sizeof(((SavegamePayload *)0)->inventory) == 0x
+ SAVE_LAYOUT_CHECK(playerName, __builtin_offsetof(SavegamePayload, playerName) == 0x467);
+ SAVE_LAYOUT_CHECK(currentScreen, __builtin_offsetof(SavegamePayload, currentScreen) == 0x49A);
+ SAVE_LAYOUT_CHECK(checksum, __builtin_offsetof(SavegamePayload, checksum) == 0x4FC);
++SAVE_LAYOUT_CHECK(versionWord, __builtin_offsetof(SavegamePayload, unknown4E1) + 3 == 0x4E4);
++
++/*
++ * MOD (save v2, docs/mods/ids.md "Save format v2"): the file grows from one
++ * memory card block to two. The first 0x2000 bytes stay a complete v1 file
++ * (header and the two SavegamePayload copies, ids as their low byte), so the
++ * original executable and VS mode read it as before; after them come two
++ * extensions, one per copy, with the 16-bit ids and the wide registers.
++ *
++ * - The v1 payload carries a version word in the bytes its checksum skips:
++ *   0x4E4 "DW2\0", 0x4E8 the format version. v1 saves have zeros there.
++ *   A higher version than SAVE_FORMAT_VERSION is a "Data Error".
++ * - An extension is used only if its magic, its checksum and its copy of its
++ *   v1 payload's checksum all match. An older build that saved over a v2 file
++ *   rewrote the v1 part only, so the stale extension fails the last test and
++ *   the v1 data is migrated, as for a v1 save.
++ * - Saving a v1 (one-block) file makes it two blocks (delete and create) when
++ *   the card has a free block; otherwise it stays a v1 file.
++ * - A save holding content the original executable does not have (a partner
++ *   species >= NUM_ORIGINAL_DIGIMON, an item >= NUM_ITEMS, a screen >= 255)
++ *   stores its v1 checksum inverted: the original reports "Data Error"
++ *   instead of loading cut ids; this build accepts it through the extension.
++ *   Without room for the extension (a one-block file on a full card) it is
++ *   written as a plain v1 file instead, readable by both.
++ */
++#define SAVE_FORMAT_VERSION	2
++#define SAVE_V1_BYTES		0x2000
++#define SAVE_V2_BYTES		0x4000
++#define SAVE_EXT_SAVED_WREGS	16	/* w0..w15 are saved, w16..w63 are scratch */
++
++typedef struct {
++	char magic[4];			/* "DW2E" */
++	uint16_t version;		/* SAVE_FORMAT_VERSION */
++	uint16_t size;			/* sizeof(SaveExtension) */
++	int32_t v1Checksum;		/* the checksum of the v1 payload saved with it */
++	ScreenId currentScreen;		/* authoritative; the v1 bytes are the low byte */
++	ScreenId previousScreen;
++	ItemId inventoryTypes[30];	/* authoritative; ITEM_NONE = empty */
++	int32_t partnerType;		/* the same as the v1 field (already 32-bit) */
++	uint16_t wregs[SAVE_EXT_SAVED_WREGS];
++	DigimonId registeredTypes[40];	/* battle registration ids (u8 in RAM for now) */
++	ScreenId poopMaps[100];		/* WORLD_POOP screens (u8 in RAM for now) */
++	uint8_t reserved[0x1000 - 0x188 - 4];
++	int32_t checksum;		/* byte sum of everything before it */
++} SaveExtension;
++
++SAVE_LAYOUT_CHECK(extension, sizeof(SaveExtension) == 0x1000);
++SAVE_LAYOUT_CHECK(extensionTail, __builtin_offsetof(SaveExtension, reserved) == 0x188);
+ 
+ typedef struct {
+ 	char id[2];
+@@ -156,8 +204,12 @@ typedef struct {
+ 	uint16_t iconClut[16];
+ 	uint8_t iconFrames[3][0x80];
+ 	SavegamePayload saves[2];
++	SaveExtension ext[2]; /* MOD (save v2): file offsets 0x2000 and 0x3000 */
+ } SaveFile;
+ 
++SAVE_LAYOUT_CHECK(file, sizeof(SaveFile) == SAVE_V2_BYTES);
++SAVE_LAYOUT_CHECK(fileV1, __builtin_offsetof(SaveFile, ext) == SAVE_V1_BYTES);
++
+ uint32_t CONNECTED_CARDS;
+ int32_t MAIN_MENU_ACTION;
+ int32_t SAVE_SLOT_SCROLL_TENTHS;
+@@ -283,6 +335,13 @@ char *_strncpy(char *dst, char *src, int32_t n);
+ int32_t createSavegameChecksum(int32_t slot);
+ void loadSavegame(SavegamePayload *savegame);
+ void writeSavegame(SavegamePayload *savegame);
++/* MOD (save v2) */
++static int32_t SAVE_FILE_BYTES = SAVE_V1_BYTES;
++static int32_t getSaveFileBytes(void);
++static int32_t loadSaveCopy(int32_t copy);
++static int32_t isSaveCopyValid(int32_t copy);
++static void prepareSaveFile(int32_t fromRam);
++static int32_t writeSaveFile(void);
+ int32_t countRegisteredDigimon(RegisteredDigimon *p);
+ void renderMainMenu();
+ void registerBattleData();
+@@ -2216,7 +2275,7 @@ void drawMoveName(long type, int32_t anim, int32_t color, int32_t pos)
+ 	int16_t move;
+ 
+ 	if (anim >= 0x2E && anim < 0x3E) {
+-		move = DIGIMON_DATA[type].moves[anim - 0x2E];
++		move = DIGI_PARA(type).moves[anim - 0x2E];
+ 		if (move >= 0 && move < NUM_MOVE_NAMES) {
+ 			drawString(MOVE_NAMES[move], color, pos);
+ 		}
+@@ -2528,7 +2587,13 @@ void tickMainMenu(void)
+ 	case 0x10:
+ 		if ((MAIN_MENU_TICKS >= 3) && MemCardSync(1, &command, &result)) {
+ 			SAVE_FILE_NAME[0xF] = HEX_DIGITS[MEMORY_CARD_SLOT];
+-			status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
++			/* MOD (save v2): two blocks; one (a v1 file) if the card has one left */
++			SAVE_FILE_BYTES = SAVE_V2_BYTES;
++			status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, SAVE_V2_BYTES / SAVE_V1_BYTES);
++			if (status == 7) {
++				SAVE_FILE_BYTES = SAVE_V1_BYTES;
++				status = MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
++			}
+ 			switch (status) {
+ 			case 0:
+ 				TARGET_MENU = 0x11;
+@@ -2583,18 +2648,15 @@ void tickMainMenu(void)
+ 			 0x11);
+ 		memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ #endif
+-		SAVE_FILE.saves[0].checksum = createSavegameChecksum(0);
+-		SAVE_FILE.saves[1] =
+-			SAVE_FILE.saves[0];
+-		status = MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME,
+-					 (void *)&SAVE_FILE, 0, 0x2000);
++		prepareSaveFile(0); /* MOD (save v2): checksums, extension, mirror */
++		status = writeSaveFile();
+ 		if (status != 1) {
+ 			setMemoryCardReadError(0, 0);
+ 		}
+ 		MemCardSync(0, &command, &result);
+ 		if (result == 0) {
+ 			TARGET_MENU = 9;
+-			loadSavegame(&SAVE_FILE.saves[0]);
++			loadSaveCopy(0);
+ 			MAIN_STATE = 0;
+ 		} else {
+ 			setMemoryCardReadError(status, 0);
+@@ -2612,7 +2674,8 @@ void tickMainMenu(void)
+ 					MEMORY_CARD_ID = -1;
+ 					MEMORY_CARD_SLOT = -1;
+ 					initializeDefaultSavegame();
+-					loadSavegame(&SAVE_FILE.saves[0]);
++					prepareSaveFile(0); /* MOD (save v2) */
++					loadSaveCopy(0);
+ 				} else {
+ 					TARGET_MENU = 0xA;
+ 				}
+@@ -2714,24 +2777,22 @@ void tickMainMenu(void)
+ 		if (MAIN_MENU_TICKS >= 3) {
+ 			MemCardSync(0, &command, &result);
+ 			SAVE_FILE_NAME[0xF] = HEX_DIGITS[MEMORY_CARD_SLOT];
++			/* MOD (save v2): a two-block file is read whole */
++			SAVE_FILE_BYTES = getSaveFileBytes();
+ 			status = MemCardReadFile(MEMORY_CARD_ID, SAVE_FILE_NAME,
+-					    (void *)&SAVE_FILE, 0, 0x2000);
++					    (void *)&SAVE_FILE, 0, SAVE_FILE_BYTES);
+ 			if (status != 1) {
+ 				setMemoryCardReadError(0, 0);
+ 			}
+ 			MemCardSync(0, &command, &result);
+ 			if (result == 0) {
+-				if (SAVE_FILE.saves[0].checksum ==
+-				    createSavegameChecksum(0)) {
+-					loadSavegame(&SAVE_FILE.saves[0]);
++				/* MOD (save v2): loadSaveCopy also takes the extension, or
++				 * refuses a newer format ("Data Error") */
++				if (isSaveCopyValid(0) && loadSaveCopy(0)) {
+ 					TARGET_MENU = 9;
+ 					break;
+ 				}
+-				if (SAVE_FILE.saves[1].checksum ==
+-				    createSavegameChecksum(1)) {
+-					SAVE_FILE.saves[0] =
+-						SAVE_FILE.saves[1];
+-					loadSavegame(&SAVE_FILE.saves[0]);
++				if (isSaveCopyValid(1) && loadSaveCopy(1)) {
+ 					TARGET_MENU = 9;
+ 					break;
+ 				}
+@@ -2903,6 +2964,8 @@ void tickMainMenu(void)
+ 			setMemoryCardReadError(0, 0x28);
+ 			break;
+ 		case 0:
++			/* MOD (save v2): one or two blocks */
++			SAVE_FILE_BYTES = MEMCARD_DIRENTRIES[0].size >= SAVE_V2_BYTES ? SAVE_V2_BYTES : SAVE_V1_BYTES;
+ 			if (count == 0) {
+ 				MEMORY_CARD_ERROR = 5;
+ 				TARGET_MENU = 0x30;
+@@ -2955,11 +3018,8 @@ void tickMainMenu(void)
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ #endif
+-			SAVE_FILE.saves[0].checksum = createSavegameChecksum(0);
+-			SAVE_FILE.saves[1] =
+-				SAVE_FILE.saves[0];
+-			status = MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME,
+-						 (void *)&SAVE_FILE, 0, 0x2000);
++			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
++			status = writeSaveFile();
+ 			if (status != 1) {
+ 				setMemoryCardReadError(0, 0x28);
+ 			}
+@@ -3110,19 +3170,19 @@ void tickMainMenu(void)
+ 		if (MAIN_MENU_TICKS >= 3) {
+ 			MemCardSync(0, &command, &result);
+ 			SAVE_FILE_NAME[0xF] = HEX_DIGITS[MEMORY_CARD_SLOT];
++			SAVE_FILE_BYTES = getSaveFileBytes(); /* MOD (save v2) */
+ 			status = MemCardReadFile(MEMORY_CARD_ID, SAVE_FILE_NAME,
+-					    (void *)&SAVE_FILE, 0, 0x2000);
++					    (void *)&SAVE_FILE, 0, SAVE_FILE_BYTES);
+ 			if (status != 1) {
+ 				setMemoryCardReadError(0, 0x32);
+ 			}
+ 			MemCardSync(0, &command, &result);
+ 			if (result == 0) {
+-				if (SAVE_FILE.saves[0].checksum ==
+-				    createSavegameChecksum(0)) {
++				/* MOD (save v2): a refusing v2 save needs its extension to be checked */
++				if (isSaveCopyValid(0)) {
+ 					memcpy(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28],
+ 					       SAVE_FILE.saves[0].battleRegistrationData, 0xA00);
+-				} else if (SAVE_FILE.saves[1].checksum ==
+-					   createSavegameChecksum(1)) {
++				} else if (isSaveCopyValid(1)) {
+ 					memcpy(&VS__REGISTERED_DIGIMON_BUFFER[VS_PLAYER_INDEX * 0x28],
+ 					       SAVE_FILE.saves[1].battleRegistrationData, 0xA00);
+ 				} else {
+@@ -3258,6 +3318,8 @@ void tickMainMenu(void)
+ 			setMemoryCardReadError(0, SAVE_RETRY_RETURN_MENU);
+ 			break;
+ 		case 0:
++			/* MOD (save v2): one or two blocks */
++			SAVE_FILE_BYTES = MEMCARD_DIRENTRIES[0].size >= SAVE_V2_BYTES ? SAVE_V2_BYTES : SAVE_V1_BYTES;
+ 			if (count == 0) {
+ 				MEMORY_CARD_ERROR = 5;
+ 				TARGET_MENU = 0x42;
+@@ -3310,11 +3372,8 @@ void tickMainMenu(void)
+ 				 0x11);
+ 			memcpy(SAVE_FILE.reserved, SAVE_TITLE_RESERVED, 0x1C);
+ #endif
+-			SAVE_FILE.saves[0].checksum = createSavegameChecksum(0);
+-			SAVE_FILE.saves[1] =
+-				SAVE_FILE.saves[0];
+-			status = MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME,
+-						 (void *)&SAVE_FILE, 0, 0x2000);
++			prepareSaveFile(1); /* MOD (save v2): checksums, extension, mirror */
++			status = writeSaveFile();
+ 			if (status != 1) {
+ 				setMemoryCardReadError(0, SAVE_RETRY_RETURN_MENU);
+ 			}
+@@ -4108,6 +4167,210 @@ void writeSavegame(SavegamePayload *savegame)
+ 	}
+ }
+ 
++/* MOD (save v2) ------------------------------------------------------------ */
++
++static int32_t getSaveVersion(SavegamePayload *savegame)
++{
++	uint8_t *w;
++
++	w = &savegame->unknown4E1[3];
++	if (w[0] == 'D' && w[1] == 'W' && w[2] == '2' && w[3] == '\0') {
++		return w[4];
++	}
++	return 1;
++}
++
++static int32_t createExtensionChecksum(SaveExtension *ext)
++{
++	return createByteSum((uint8_t *)ext, __builtin_offsetof(SaveExtension, checksum));
++}
++
++/* MOD (save v2): content the original executable cannot represent */
++static int32_t needsNewExecutable(SaveExtension *ext)
++{
++	int32_t i;
++
++	if ((uint32_t)ext->partnerType >= NUM_ORIGINAL_DIGIMON || ext->currentScreen >= NUM_SCREENS ||
++	    ext->previousScreen >= NUM_SCREENS) {
++		return 1;
++	}
++	for (i = 0; i < 30; i++) {
++		if (ext->inventoryTypes[i] >= NUM_ITEMS) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
++static int32_t isExtensionValid(int32_t copy)
++{
++	SaveExtension *ext;
++
++	ext = &SAVE_FILE.ext[copy];
++	return SAVE_FILE_BYTES >= SAVE_V2_BYTES && ext->magic[0] == 'D' && ext->magic[1] == 'W' &&
++	       ext->magic[2] == '2' && ext->magic[3] == 'E' && ext->version == SAVE_FORMAT_VERSION &&
++	       ext->size == sizeof(SaveExtension) && ext->checksum == createExtensionChecksum(ext) &&
++	       ext->v1Checksum == SAVE_FILE.saves[copy].checksum;
++}
++
++/*
++ * The extension of copy 0 from the game state in RAM (fromRam) or, for the
++ * default save of a new game, from its v1 payload; the version word, both
++ * checksums and the mirror copy.
++ */
++static void prepareSaveFile(int32_t fromRam)
++{
++	SavegamePayload *savegame;
++	SaveExtension *ext;
++	uint8_t *p;
++	int32_t i;
++
++	savegame = &SAVE_FILE.saves[0];
++	ext = &SAVE_FILE.ext[0];
++	for (p = (uint8_t *)ext, i = 0; i < (int32_t)sizeof(SaveExtension); i++) {
++		*p++ = 0;
++	}
++	ext->magic[0] = 'D';
++	ext->magic[1] = 'W';
++	ext->magic[2] = '2';
++	ext->magic[3] = 'E';
++	ext->version = SAVE_FORMAT_VERSION;
++	ext->size = sizeof(SaveExtension);
++	if (fromRam) {
++		ext->currentScreen = CURRENT_SCREEN;
++		ext->previousScreen = PREVIOUS_SCREEN;
++		for (i = 0; i < 30; i++) {
++			ext->inventoryTypes[i] = INVENTORY.types.array[i];
++		}
++		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
++			ext->wregs[i] = SCRIPT_STATE_PTR->wregs[i];
++		}
++	} else {
++		ext->currentScreen = savegame->currentScreen;
++		ext->previousScreen = savegame->previousScreen;
++		for (i = 0; i < 30; i++) {
++			ext->inventoryTypes[i] = itemFromLegacy(savegame->inventory.types.array[i]);
++		}
++	}
++	ext->partnerType = savegame->partnerType;
++	for (i = 0; i < 40; i++) {
++		ext->registeredTypes[i] = savegame->battleRegistrationData[i].digimonId;
++	}
++	for (i = 0; i < 100; i++) {
++		ext->poopMaps[i] = savegame->worldPoop[i].map == 0xFF ? -1 : savegame->worldPoop[i].map;
++	}
++	p = &savegame->unknown4E1[3];
++	p[0] = 'D';
++	p[1] = 'W';
++	p[2] = '2';
++	p[3] = '\0';
++	p[4] = SAVE_FORMAT_VERSION;
++	savegame->checksum = createSavegameChecksum(0);
++	if (needsNewExecutable(ext)) {
++		savegame->checksum = ~savegame->checksum; /* the original refuses it */
++	}
++	ext->v1Checksum = savegame->checksum;
++	ext->checksum = createExtensionChecksum(ext);
++	SAVE_FILE.saves[1] = SAVE_FILE.saves[0];
++	SAVE_FILE.ext[1] = SAVE_FILE.ext[0];
++	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
++}
++
++/*
++ * Copy 0 or 1 is intact: its v1 checksum matches, or it is a v2 save that
++ * refuses the original executable (inverted checksum) with a valid extension.
++ */
++static int32_t isSaveCopyValid(int32_t copy)
++{
++	int32_t sum;
++
++	sum = createSavegameChecksum(copy);
++	if (SAVE_FILE.saves[copy].checksum == sum) {
++		return 1;
++	}
++	return SAVE_FILE.saves[copy].checksum == ~sum && getSaveVersion(&SAVE_FILE.saves[copy]) >= 2 &&
++	       isExtensionValid(copy);
++}
++
++/*
++ * Loads copy 0 or 1 (isSaveCopyValid): the v1 payload, then
++ * the extension when it is valid. 0 = a newer format this build cannot read.
++ */
++static int32_t loadSaveCopy(int32_t copy)
++{
++	SaveExtension *ext;
++	int32_t i;
++
++	if (getSaveVersion(&SAVE_FILE.saves[copy]) > SAVE_FORMAT_VERSION) {
++		return 0;
++	}
++	if (copy != 0) {
++		SAVE_FILE.saves[0] = SAVE_FILE.saves[1];
++		SAVE_FILE.ext[0] = SAVE_FILE.ext[1];
++	}
++	loadSavegame(&SAVE_FILE.saves[0]);
++	for (i = 0; i < SCRIPT_NUM_WREGS; i++) {
++		SCRIPT_STATE_PTR->wregs[i] = 0;
++	}
++	if (isExtensionValid(0)) {
++		ext = &SAVE_FILE.ext[0];
++		SAVED_STATE.currentScreen = ext->currentScreen;
++		SAVED_STATE.previousScreen = ext->previousScreen;
++		for (i = 0; i < 30; i++) {
++			INVENTORY.types.array[i] = ext->inventoryTypes[i];
++		}
++		for (i = 0; i < SAVE_EXT_SAVED_WREGS; i++) {
++			SCRIPT_STATE_PTR->wregs[i] = ext->wregs[i];
++		}
++	}
++	return 1;
++}
++
++/* the size of the slot's file on the card (SAVE_FILE_NAME), one block if unknown */
++static int32_t getSaveFileBytes(void)
++{
++	long count;
++
++	if (MemCardGetDirentry(MEMORY_CARD_ID, SAVE_FILE_NAME, MEMCARD_DIRENTRIES, &count, 0, 1) == 0 &&
++	    count == 1 && MEMCARD_DIRENTRIES[0].size >= SAVE_V2_BYTES) {
++		return SAVE_V2_BYTES;
++	}
++	return SAVE_V1_BYTES;
++}
++
++/*
++ * Starts writing SAVE_FILE (prepared) to the slot's file, as MemCardWriteFile.
++ * A one-block file becomes two blocks first when the card has a free block.
++ */
++static int32_t writeSaveFile(void)
++{
++	long count;
++	int32_t blocks;
++	int32_t i;
++
++	if (SAVE_FILE_BYTES < SAVE_V2_BYTES &&
++	    MemCardGetDirentry(MEMORY_CARD_ID, MAIN_D_801346C0[1], MEMCARD_DIRENTRIES, &count, 0, 15) == 0) {
++		blocks = 0;
++		for (i = 0; i < count; i++) {
++			blocks += (MEMCARD_DIRENTRIES[i].size + 0x1FFF) / 0x2000;
++		}
++		if (blocks < 15 && MemCardDeleteFile(MEMORY_CARD_ID, SAVE_FILE_NAME) == 0) {
++			if (MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, SAVE_V2_BYTES / SAVE_V1_BYTES) == 0) {
++				SAVE_FILE_BYTES = SAVE_V2_BYTES;
++			} else {
++				MemCardCreateFile(MEMORY_CARD_ID, SAVE_FILE_NAME, 1);
++			}
++		}
++	}
++	if (SAVE_FILE_BYTES < SAVE_V2_BYTES && SAVE_FILE.saves[0].checksum != createSavegameChecksum(0)) {
++		/* no room for the extension: a plain v1 file, which the original reads with cut ids */
++		SAVE_FILE.saves[0].checksum = createSavegameChecksum(0);
++		SAVE_FILE.saves[1] = SAVE_FILE.saves[0];
++	}
++	SAVE_FILE.blockNumber = SAVE_FILE_BYTES / SAVE_V1_BYTES;
++	return MemCardWriteFile(MEMORY_CARD_ID, SAVE_FILE_NAME, (void *)&SAVE_FILE, 0, SAVE_FILE_BYTES);
++}
++
+ int32_t countRegisteredDigimon(RegisteredDigimon *p)
+ {
+ 	int32_t i;
+@@ -4251,7 +4514,7 @@ void openSaveMachine(void)
+ 	CURRENT_MENU = -2;
+ 	MAIN_STATE = 1;
+ 	TARGET_MENU = 0x3C;
+-	if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++	if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 		TARGET_MENU = 0x46;
+ 	}
+ 
+diff --git a/src/main/map.c b/src/main/map.c
+index c1aa70e..a90fe1c 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -19,6 +19,7 @@
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
++#include <dw/species.h>
+ #include <dw/tamer.h>
+ #include <dw/types.h>
+ #include <dw/utils.h>
+@@ -2915,7 +2916,7 @@ SVECTOR CONDITION_FX_OFFSETS[177] = {
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ };
+ 
+-int16_t ORIGINAL_DIGIMON_TYPES[NUM_DIGIMON] = {
++int16_t ORIGINAL_DIGIMON_TYPES[NUM_ORIGINAL_DIGIMON] = {
+ 	0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 	0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+ 	0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
+@@ -3191,7 +3192,7 @@ int32_t entityCheckCombatArea(Entity *entity, VECTOR *target, int32_t w,
+ 	GsSetLsMatrix(&GsWSMATRIX);
+ 
+ 	loc = &entity->posData->location;
+-	radius = DIGIMON_DATA[entity->type].radius;
++	radius = DIGI_PARA(entity->type).radius;
+ 
+ 	for (i = 0; i < 2; i++) {
+ 		for (j = 0; j < 4; j++) {
+@@ -3886,9 +3887,9 @@ int32_t entityCheckEntityCollision(Entity *entity, Entity *other,
+ 	int16_t rotation;
+ 
+ 	myLoc = &entity->posData->location;
+-	myRadius = DIGIMON_DATA[entity->type].radius;
++	myRadius = DIGI_PARA(entity->type).radius;
+ 	loc = &other->posData->location;
+-	radius = DIGIMON_DATA[other->type].radius;
++	radius = DIGI_PARA(other->type).radius;
+ 	setRECT(&rect, loc->vx - radius, loc->vz + radius, radius * 2, radius * 2);
+ 	left = myLoc->vx - myRadius;
+ 	right = myLoc->vx + myRadius;
+@@ -3979,9 +3980,9 @@ int32_t entityIsInEntity(Entity *entityA, Entity *entityB)
+ 	int16_t radB;
+ 
+ 	locA = &entityA->posData->location;
+-	radA = DIGIMON_DATA[entityA->type].radius;
++	radA = DIGI_PARA(entityA->type).radius;
+ 	locB = &entityB->posData->location;
+-	radB = DIGIMON_DATA[entityB->type].radius;
++	radB = DIGI_PARA(entityB->type).radius;
+ 
+ 	if ((locA->vx - radA) > (locB->vx + radB)) {
+ 		return 0;
+@@ -4017,12 +4018,12 @@ int32_t entityIsOffScreen(Entity *entity, int32_t width, int32_t height)
+ 
+ 	GsSetLsMatrix(&GsWSMATRIX);
+ 	loc = &entity->posData->location;
+-	radius = DIGIMON_DATA[entity->type].radius;
++	radius = DIGI_PARA(entity->type).radius;
+ 
+ 	for (i = 0; i < 2; i++) {
+ 		for (j = 0; j < 4; j++) {
+ 			corner.vx = loc->vx + (radius * QUADRANTS[j][0]);
+-			corner.vy = loc->vy + i * -DIGIMON_DATA[entity->type].height;
++			corner.vy = loc->vy + i * -DIGI_PARA(entity->type).height;
+ 			corner.vz = loc->vz + (radius * QUADRANTS[j][1]);
+ 			gte_ldv0(&corner);
+ 			gte_rtps();
+@@ -5837,7 +5838,13 @@ void translateConditionFXToEntity(Entity *entity, SVECTOR *out)
+ int32_t getOriginalType(int32_t type)
+ {
+ 	int32_t originalType;
++	SpeciesRecord *rec;
+ 
++	/* MOD (species): a new species borrows the effect offsets of an original one */
++	if (type >= NUM_ORIGINAL_DIGIMON) {
++		rec = getSpeciesRecord(type);
++		return rec != NULL ? rec->originalType : -1;
++	}
+ 	if ((type < 0) || (type > 0xb0)) {
+ 		return -1;
+ 	}
+@@ -5855,7 +5862,7 @@ void calculateBoneMatrix(Entity *entity, int32_t boneId, MATRIX *out)
+ 	GsCOORDINATE2 *coord;
+ 	GsCOORDINATE2 *bone;
+ 
+-	if (boneId >= DIGIMON_DATA[entity->type].boneCount) {
++	if (boneId >= DIGI_PARA(entity->type).boneCount) {
+ 		boneId = 0;
+ 	}
+ 
+diff --git a/src/main/map_collision.c b/src/main/map_collision.c
+index a331f94..a53a69b 100644
+--- a/src/main/map_collision.c
++++ b/src/main/map_collision.c
+@@ -67,7 +67,7 @@ int8_t direction;
+ 	int16_t radius;
+ 
+ 	position = &entity->posData->location;
+-	radius = DIGIMON_DATA[entity->type].radius;
++	radius = DIGI_PARA(entity->type).radius;
+ 
+ 	pos = position->vx - radius / 2;
+ 	tile = pos / 100 + 0x32;
+@@ -113,7 +113,7 @@ int8_t direction;
+ 	int16_t pos;
+ 
+ 	position = &entity->posData->location;
+-	radius = DIGIMON_DATA[entity->type].radius;
++	radius = DIGI_PARA(entity->type).radius;
+ 	if (direction == 0) {
+ 		edgePos = position->vx - radius;
+ 	} else {
+diff --git a/src/main/map_object.c b/src/main/map_object.c
+index 8669572..69c1c0a 100644
+--- a/src/main/map_object.c
++++ b/src/main/map_object.c
+@@ -1198,7 +1198,7 @@ void renderDirtCartModel(int32_t instanceId)
+ 	location = &PARTNER_ENTITY.digimonEntity.entity.posData->location;
+ 	translation.vx = 0;
+ 	translation.vy = 0;
+-	translation.vz = DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].radius + 100;
++	translation.vz = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).radius + 100;
+ 
+ 	RotMatrix(&PARTNER_ENTITY.digimonEntity.entity.posData->rotation,
+ 		  &matrix);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+new file mode 100644
+index 0000000..cf4142b
+--- /dev/null
++++ b/src/main/mod_species.c
+@@ -0,0 +1,338 @@
++/*
++ * MOD (species): Digimon species beyond the disc's 180 (include/dw/species.h,
++ * docs/mods/ids.md "Species beyond 180").
++ */
++#include <string.h>
++#include <dw/file.h>
++#include <dw/main.h>
++#include <dw/sound.h>
++#include <dw/species.h>
++
++#include "common.h"
++
++extern int16_t EVOLUTION_TARGET;
++extern ModelComponent NPC_MODELS[5];
++extern int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON];
++extern SkeletonBone *DIGIMON_SKELETONS[NUM_ORIGINAL_DIGIMON];
++extern char *PTR_DIGIMON_FILE_NAMES[NUM_ORIGINAL_DIGIMON];
++extern uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON];
++void tickFileReadQueue(int32_t unused);
++int32_t isFileReadQueueBusy(void);
++
++int32_t SPECIES_COUNT;
++int32_t SPECIES_RECORD_READS;
++static int32_t SPECIES_RECORDS_SECTOR;
++static SpeciesRecord SPECIES_CACHE[SPECIES_CACHE_SLOTS];
++static int16_t SPECIES_CACHE_ID[SPECIES_CACHE_SLOTS];
++static uint16_t SPECIES_CACHE_AGE[SPECIES_CACHE_SLOTS];
++static uint16_t SPECIES_CACHE_CLOCK;
++static uint32_t SPECIES_SECTOR[0x800 / 4];
++/* the evolution paths of the new species (EVOLUTION_PATHS ends at type 62) */
++static EvolutionPath SPECIES_EVOLUTION_PATHS[NUM_DIGIMON - NUM_ORIGINAL_DIGIMON];
++static EvolutionPath NO_EVOLUTION_PATH;
++
++EvolutionPath *getEvolutionPath(int32_t type)
++{
++	if (type >= 1 && type < NUM_EVOLVING_DIGIMON) {
++		return &EVOLUTION_PATHS[type - 1];
++	}
++	if (type >= NUM_ORIGINAL_DIGIMON && type < SPECIES_COUNT) {
++		return &SPECIES_EVOLUTION_PATHS[type - NUM_ORIGINAL_DIGIMON];
++	}
++	return &NO_EVOLUTION_PATH;
++}
++
++static void readSpeciesSector(int32_t sector)
++{
++	/* never in the middle of an asynchronous read (evolution, sounds, overlays) */
++	while (isFileReadQueueBusy()) {
++		tickFileReadQueue(0);
++	}
++	readFileSectors(SPECIES_FILE_NAME, SPECIES_SECTOR, sector, 1);
++}
++
++/* 1 while a model of the type is in use: its record must stay in the cache */
++static int32_t isSpeciesInUse(int32_t type)
++{
++	int32_t i;
++
++	if (PARTNER_ENTITY.digimonEntity.entity.type == type || EVOLUTION_TARGET == type ||
++	    EVO_SEQUENCE_DATA.digimonId == type) {
++		return 1;
++	}
++	for (i = 0; i < 5; i++) {
++		if (NPC_MODELS[i].useCount != 0 && NPC_MODELS[i].digiType == type) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
++static void applyPartnerRows(int32_t type, SpeciesRecord *rec)
++{
++	int32_t i;
++	int32_t j;
++	int32_t other;
++	EvolutionPath *path;
++
++	RAISE_DATA[type] = rec->raise;
++	EVOLUTION_REQS[type] = rec->evoReqs;
++	EVOLUTION_STATS_GAINS[type] = rec->evoGains;
++	ITEM_TAKE_DISTANCE[type - 1] = rec->itemTakeDistance;
++	DIGIMON_VLALL_SOUND_ID[type] = rec->vlallId;
++	*getEvolutionPath(type) = rec->evoPaths;
++	/* each species it evolves from lists it among its targets, and the other way round */
++	for (i = 0; i < 5; i++) {
++		other = rec->evoPaths.from[i];
++		path = getEvolutionPath(other);
++		if (path == &NO_EVOLUTION_PATH) {
++			continue;
++		}
++		for (j = 0; j < 6 && path->to[j] != type; j++) {
++		}
++		if (j == 6) {
++			for (j = 0; j < 6 && path->to[j] != -1; j++) {
++			}
++			if (j < 6) {
++				path->to[j] = type;
++			}
++		}
++	}
++	for (i = 0; i < 6; i++) {
++		other = rec->evoPaths.to[i];
++		path = getEvolutionPath(other);
++		if (path == &NO_EVOLUTION_PATH) {
++			continue;
++		}
++		for (j = 0; j < 5 && path->from[j] != type; j++) {
++		}
++		if (j == 5) {
++			for (j = 0; j < 5 && path->from[j] != -1; j++) {
++			}
++			if (j < 5) {
++				path->from[j] = type;
++			}
++		}
++	}
++}
++
++void initializeSpecies(void)
++{
++	SpeciesHeader *header;
++	SpeciesRecord *rec;
++	FileLookup lookup;
++	int32_t count;
++	int32_t type;
++	int32_t i;
++
++	SPECIES_COUNT = NUM_ORIGINAL_DIGIMON;
++	SPECIES_RECORD_READS = 0;
++	for (i = 0; i < 5; i++) {
++		NO_EVOLUTION_PATH.from[i] = -1;
++	}
++	for (i = 0; i < 6; i++) {
++		NO_EVOLUTION_PATH.to[i] = -1;
++	}
++	for (i = 0; i < NUM_DIGIMON - NUM_ORIGINAL_DIGIMON; i++) {
++		SPECIES_EVOLUTION_PATHS[i] = NO_EVOLUTION_PATH;
++	}
++	/* the partner voice of types that were outside DIGIMON_VLALL_SOUND_ID: the
++	 * 15 the guards gave them, unless a row was given (0 is the tamer's) */
++	for (i = NUM_PARTNER_DIGIMON; i < NUM_DIGIMON; i++) {
++		if (DIGIMON_VLALL_SOUND_ID[i] == 0) {
++			DIGIMON_VLALL_SOUND_ID[i] = 15;
++		}
++	}
++	SPECIES_CACHE_CLOCK = 0;
++	for (i = 0; i < SPECIES_CACHE_SLOTS; i++) {
++		SPECIES_CACHE_ID[i] = -1;
++		SPECIES_CACHE_AGE[i] = 0;
++	}
++	if (lookupFileTable(&lookup, SPECIES_FILE_NAME) == 0 || lookup.size < 0x800) {
++		return;
++	}
++	readSpeciesSector(0);
++	header = (SpeciesHeader *)SPECIES_SECTOR;
++	if (header->magic[0] != 'D' || header->magic[1] != 'I' || header->magic[2] != 'G' ||
++	    header->magic[3] != 'I' || header->version != SPECIES_VERSION ||
++	    header->recordSize != SPECIES_RECORD_SIZE || header->firstRecord != 0) {
++		return;
++	}
++	count = header->count;
++	if (count > NUM_DIGIMON) {
++		count = NUM_DIGIMON;
++	}
++	if (count <= NUM_ORIGINAL_DIGIMON) {
++		return;
++	}
++	SPECIES_RECORDS_SECTOR = header->recordsSector;
++	SPECIES_COUNT = count;
++	/* the partner rows of new species go into the resident per-partner tables */
++	for (type = NUM_ORIGINAL_DIGIMON; type < count; type++) {
++		if (type == NUM_ORIGINAL_DIGIMON || type % SPECIES_RECORDS_PER_SECTOR == 0) {
++			readSpeciesSector(SPECIES_RECORDS_SECTOR + type / SPECIES_RECORDS_PER_SECTOR);
++		}
++		rec = (SpeciesRecord *)SPECIES_SECTOR + type % SPECIES_RECORDS_PER_SECTOR;
++		if ((rec->flags & (SPECIES_FLAG_DEFINED | SPECIES_FLAG_PARTNER)) ==
++		    (SPECIES_FLAG_DEFINED | SPECIES_FLAG_PARTNER)) {
++			applyPartnerRows(type, rec);
++		}
++	}
++}
++
++SpeciesRecord *getSpeciesRecord(int32_t type)
++{
++	int32_t i;
++	int32_t slot;
++	int32_t oldest;
++	int32_t age;
++
++	if (type < NUM_ORIGINAL_DIGIMON || type >= SPECIES_COUNT) {
++		return NULL;
++	}
++	SPECIES_CACHE_CLOCK++;
++	for (i = 0; i < SPECIES_CACHE_SLOTS; i++) {
++		if (SPECIES_CACHE_ID[i] == type) {
++			SPECIES_CACHE_AGE[i] = SPECIES_CACHE_CLOCK;
++			return (SPECIES_CACHE[i].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[i] : NULL;
++		}
++	}
++	/* a free slot, else the least recently used one whose species is not in use */
++	slot = -1;
++	oldest = -1;
++	for (i = 0; i < SPECIES_CACHE_SLOTS; i++) {
++		if (SPECIES_CACHE_ID[i] == -1) {
++			slot = i;
++			break;
++		}
++		age = (uint16_t)(SPECIES_CACHE_CLOCK - SPECIES_CACHE_AGE[i]);
++		if (age > oldest && !isSpeciesInUse(SPECIES_CACHE_ID[i])) {
++			oldest = age;
++			slot = i;
++		}
++	}
++	if (slot == -1) {
++		slot = 0;
++		for (i = 1; i < SPECIES_CACHE_SLOTS; i++) {
++			if ((uint16_t)(SPECIES_CACHE_CLOCK - SPECIES_CACHE_AGE[i]) >
++			    (uint16_t)(SPECIES_CACHE_CLOCK - SPECIES_CACHE_AGE[slot])) {
++				slot = i;
++			}
++		}
++	}
++	readSpeciesSector(SPECIES_RECORDS_SECTOR + type / SPECIES_RECORDS_PER_SECTOR);
++	memcpy(&SPECIES_CACHE[slot], (SpeciesRecord *)SPECIES_SECTOR + type % SPECIES_RECORDS_PER_SECTOR,
++	       SPECIES_RECORD_SIZE);
++	SPECIES_RECORD_READS++;
++	SPECIES_CACHE_ID[slot] = type;
++	SPECIES_CACHE_AGE[slot] = SPECIES_CACHE_CLOCK;
++	return (SPECIES_CACHE[slot].flags & SPECIES_FLAG_DEFINED) ? &SPECIES_CACHE[slot] : NULL;
++}
++
++DigimonPara *getSpeciesPara(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	rec = getSpeciesRecord(type);
++	if (rec == NULL) {
++		/* not a species: what the original read past the table */
++		return &DIGI_PARA(type);
++	}
++	return &rec->para;
++}
++
++int32_t isValidDigimonType(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		return 1;
++	}
++	rec = getSpeciesRecord(type);
++	return rec != NULL && (rec->modelName[0] != '\0' || rec->modelSize != 0);
++}
++
++SkeletonBone *getDigimonSkeleton(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON || (rec = getSpeciesRecord(type)) == NULL) {
++		return DIGIMON_SKELETONS[type];
++	}
++	return rec->bones;
++}
++
++int32_t getDigimonVballId(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON || (rec = getSpeciesRecord(type)) == NULL) {
++		return DIGIMON_VBALL_SOUND_ID[type];
++	}
++	return rec->vballId;
++}
++
++int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *size)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON) {
++		*file = NULL;
++		*sector = 0;
++		*size = 0;
++		return 1;
++	}
++	rec = getSpeciesRecord(type);
++	if (rec == NULL) {
++		return 0;
++	}
++	if (rec->modelName[0] != '\0') {
++		/* an original model under another id: the path is built from modelName */
++		*file = NULL;
++		*sector = 0;
++		*size = 0;
++		return 1;
++	}
++	*file = SPECIES_FILE_NAME;
++	*sector = rec->modelSector;
++	*size = rec->modelSize;
++	return rec->modelSize != 0;
++}
++
++/* the 4-letter model name of a type (CHDAT\MMDn\NAME.MMD) */
++char *getDigimonModelName(int32_t type)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON || (rec = getSpeciesRecord(type)) == NULL) {
++		return PTR_DIGIMON_FILE_NAMES[type];
++	}
++	return rec->modelName;
++}
++
++int32_t getDigimonTextureRef(int32_t type, char **file, int32_t *sector, int32_t *sectors)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON || (rec = getSpeciesRecord(type)) == NULL) {
++		/* ALLTIM.TIM: entry `type`, 9 sectors each */
++		*file = "ALLTIM.TIM";
++		*sector = type * 9;
++		*sectors = 9;
++		return 1;
++	}
++	*file = rec->texFile == SPECIES_TEX_ARCHIVE ? SPECIES_FILE_NAME : "ALLTIM.TIM";
++	*sector = rec->texSector;
++	*sectors = rec->texSectors;
++	return 1;
++}
++
++int8_t *getTrainingAnimRow(int8_t (*table)[2], int32_t type, int32_t which)
++{
++	SpeciesRecord *rec;
++
++	if ((uint32_t)type < NUM_ORIGINAL_DIGIMON || (rec = getSpeciesRecord(type)) == NULL) {
++		return table[type];
++	}
++	return which == 0 ? rec->trainingAnims : rec->training2Anims;
++}
+diff --git a/src/main/model.c b/src/main/model.c
+index 5eb3552..ca4208d 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -14,6 +14,7 @@
+ #include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
++#include <dw/species.h>
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ 
+@@ -2303,7 +2304,7 @@ SkeletonBone SKELETON_ANALOGMAN[18] = {
+ 	{ 0x0e, 0x10 },
+ };
+ 
+-SkeletonBone *DIGIMON_SKELETONS[NUM_DIGIMON] = {
++SkeletonBone *DIGIMON_SKELETONS[NUM_ORIGINAL_DIGIMON] = {
+ 	SKELETON_HIRO,
+ 	SKELETON_BOTAMON,
+ 	SKELETON_KOROMON,
+@@ -2501,7 +2502,7 @@ int8_t WIREFRAME_RNG_TABLE[16] = {
+ 
+ char MAIN_D_8011D190[] = "ALLTIM.TIM";
+ 
+-char *PTR_DIGIMON_FILE_NAMES[NUM_DIGIMON] = {
++char *PTR_DIGIMON_FILE_NAMES[NUM_ORIGINAL_DIGIMON] = {
+ 	STR_DIGIMON_FILE_NAME_BOYS,
+ 	STR_DIGIMON_FILE_NAME_BOTA,
+ 	STR_DIGIMON_FILE_NAME_KORO,
+@@ -2750,7 +2751,7 @@ void renderFlatDigimon(Entity *entity)
+ 	        ((entity->flatSprite % 2) == 0) ? 0xE0 : 0xF0,
+ 	        (entity->flatSprite < 2) ? model->pixelOffsetY + 0x60 : model->pixelOffsetY + 0x70,
+ 	        0xF, 0xF);
+-	height = DIGIMON_DATA[entity->type].height;
++	height = DIGI_PARA(entity->type).height;
+ 	half = height / 2;
+ 	in[0].vx = 0;
+ 	in[0].vy = -height;
+@@ -2801,7 +2802,7 @@ void initializeDigimonObject(int32_t type, int32_t instanceId,
+ 	if (instanceId < 0 || instanceId >= ENTITY_MAX) {
+ 		return;
+ 	}
+-	boneCount = DIGIMON_DATA[type].boneCount;
++	boneCount = DIGI_PARA(type).boneCount;
+ 	entity = ENTITY_TABLE[instanceId];
+ 	entityType = getEntityType(entity);
+ 	entity->type = type;
+@@ -2822,7 +2823,7 @@ void initializeDigimonObject(int32_t type, int32_t instanceId,
+ 	model = getEntityModelComponent(type, entityType);
+ 	entity->animPtr = model->animTablePtr;
+ 	pos = entity->posData;
+-	bone = DIGIMON_SKELETONS[type];
++	bone = getDigimonSkeleton(type); /* MOD (species) */
+ 	for (i = 0; i < boneCount; ++pos, ++bone, ++i) {
+ 		if (bone->objIndex != -1) {
+ 			GsLinkObject4((u_long)model->modelPtr->obj, &pos->obj, bone->objIndex);
+@@ -2885,7 +2886,7 @@ void renderDigimon(instanceId)
+ 		}
+ 	}
+ 	pos = ENTITY_TABLE[instanceId]->posData;
+-	boneCount = DIGIMON_DATA[ENTITY_TABLE[instanceId]->type].boneCount;
++	boneCount = DIGI_PARA(ENTITY_TABLE[instanceId]->type).boneCount;
+ 	for (i = 0; i < boneCount; pos++, i++) {
+ 		if (pos->obj.tmd == NULL) {
+ 			continue;
+@@ -3276,18 +3277,21 @@ void loadDigimonTexture(int32_t digiType, char *path,
+ {
+ 	void *buffer;
+ 	char *p;
+-	char fileName[32];
++	char *file;
++	int32_t sector;
++	int32_t sectors;
+ 
+ 	if (NULL == (p = strrchr(path, '\\'))) {
+ 		p = path;
+ 	} else {
+ 		p++;
+ 	}
+-	strcpy(fileName, MAIN_D_8011D190);
++	/* MOD (species): ALLTIM.TIM entry `type`, or the new species' texture in DIGI.DAT */
++	getDigimonTextureRef(digiType, &file, &sector, &sectors);
+ 
+ 	buffer = malloc3(0x4800);
+ 
+-	readFileSectors(fileName, buffer, digiType * 9, 9);
++	readFileSectors(file, buffer, sector, sectors);
+ 	uploadModelTexture(buffer, component);
+ 
+ 	free3(buffer);
+@@ -3342,6 +3346,37 @@ void initializeModelComponents(void)
+ 	}
+ }
+ 
++/*
++ * MOD (species): the size and the contents of a type's MMD: CHDAT\MMDn\NAME.MMD
++ * for the original models, a sector range of DIGI.DAT for new species.
++ */
++static int32_t getDigimonModelFileSize(int32_t type, char *path)
++{
++	char *file;
++	int32_t sector;
++	int32_t size;
++
++	getDigimonModelRef(type, &file, &sector, &size);
++	if (file != NULL) {
++		return size;
++	}
++	return lookupFileSize(path);
++}
++
++static void readDigimonModel(int32_t type, char *path, void *buffer)
++{
++	char *file;
++	int32_t sector;
++	int32_t size;
++
++	getDigimonModelRef(type, &file, &sector, &size);
++	if (file != NULL) {
++		readFileSectors(file, buffer, sector, (size + 0x7FF) >> 11);
++	} else {
++		readFile(path, buffer);
++	}
++}
++
+ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ {
+ 	ModelComponent *m;
+@@ -3355,7 +3390,7 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	if (modelType == 1) {
+ 		return m;
+ 	}
+-	if (digiType < 0 || digiType >= NUM_DIGIMON) {
++	if (!isValidDigimonType(digiType)) { /* MOD (species): was digiType < 0 || >= 0xB4 */
+ 		return 0;
+ 	}
+ 	if (modelType == 0) {
+@@ -3391,16 +3426,16 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 		m->pixelOffsetX = 0;
+ 		m->pixelOffsetY = (k % 2) << 7;
+ 		m->modelId = k;
+-		name = PTR_DIGIMON_FILE_NAMES[digiType];
++		name = getDigimonModelName(digiType);
+ 		loadDigimonTexture(digiType, name, m);
+ 		concatStrings(path, MAIN_D_8011D484, name);
+ 		concatStrings(path, path, MAIN_D_801340E4);
+ 		path[9] = digiType / 30 + '0';
+-		m->mmdPtr = malloc3(((int32_t)lookupFileSize(path) + 0x7FF) & ~0x7FF);
++		m->mmdPtr = malloc3((getDigimonModelFileSize(digiType, path) + 0x7FF) & ~0x7FF);
+ 		if (m->mmdPtr == NULL) {
+ 			handleNullModel();
+ 		}
+-		readFile(path, m->mmdPtr);
++		readDigimonModel(digiType, path, m->mmdPtr);
+ 		m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 		m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+ 		GsMapModelingData((u_long *)&m->modelPtr->flags);
+@@ -3427,12 +3462,12 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 	} else {
+ 		return 0;
+ 	}
+-	name = PTR_DIGIMON_FILE_NAMES[digiType];
++	name = getDigimonModelName(digiType);
+ 	loadDigimonTexture(digiType, name, m);
+ 	concatStrings(path, MAIN_D_8011D484, name);
+ 	concatStrings(path, path, MAIN_D_801340E4);
+ 	path[9] = digiType / 30 + '0';
+-	readFile(path, m->mmdPtr);
++	readDigimonModel(digiType, path, m->mmdPtr);
+ 	m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 	m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+ 	GsMapModelingData((u_long *)&m->modelPtr->flags);
+@@ -3574,9 +3609,12 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	char *name;
+ 	int32_t i;
+ 	int32_t slot;
+-	char tim[32];
++	char *tim;
++	char *file;
++	int32_t sector;
++	int32_t size;
+ 
+-	if (digimonType < 0 || digimonType >= NUM_DIGIMON) {
++	if (!isValidDigimonType(digimonType)) { /* MOD (species) */
+ 		return 0;
+ 	}
+ 	if (entityType == 0) {
+@@ -3606,12 +3644,13 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	} else {
+ 		return 0;
+ 	}
+-	name = PTR_DIGIMON_FILE_NAMES[digimonType];
+-	strcpy(tim, MAIN_D_8011D190);
++	name = getDigimonModelName(digimonType);
+ 	if ((buffer & 3L) != 0) {
+ 		buffer += 4 - (buffer & 3);
+ 	}
+-	readFileSectors(tim, (void *)buffer, digimonType * 9, 9);
++	/* MOD (species): the texture and the model of a new species are in DIGI.DAT */
++	getDigimonTextureRef(digimonType, &tim, &sector, &size);
++	readFileSectors(tim, (void *)buffer, sector, size);
+ 	modelData->imagePtr = (uint8_t *)buffer;
+ 	modelData->imageSize = 0x4800;
+ 	buffer += modelData->imageSize;
+@@ -3621,9 +3660,15 @@ int32_t loadMMDAsync(int32_t digimonType, int32_t entityType, int32_t buffer,
+ 	if ((buffer & 3L) != 0) {
+ 		buffer += 4 - (buffer & 3);
+ 	}
+-	addFileReadRequestPath(path, (uint8_t *)buffer, readComplete, 0, 0);
++	getDigimonModelRef(digimonType, &file, &sector, &size);
++	if (file != NULL) {
++		addFileReadRequestSection(file, (uint8_t *)buffer, sector, (size + 0x7FF) >> 11, readComplete, 0, 0);
++	} else {
++		addFileReadRequestPath(path, (uint8_t *)buffer, readComplete, 0, 0);
++		size = lookupFileSize(path);
++	}
+ 	modelData->modelPtr = (uint8_t *)buffer;
+-	modelData->modelSize = lookupFileSize(path);
++	modelData->modelSize = size;
+ 	buffer += modelData->modelSize;
+ 	return buffer;
+ }
+@@ -3639,7 +3684,7 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 	RECT rect;
+ 	int32_t k;
+ 
+-	if (digimonType < 0 || digimonType >= NUM_DIGIMON) {
++	if (!isValidDigimonType(digimonType)) { /* MOD (species) */
+ 		return 0;
+ 	}
+ 	if (entityType == 0) {
+@@ -3664,7 +3709,7 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 		m->pixelOffsetX = 0;
+ 		m->pixelOffsetY = (k % 2) << 7;
+ 		m->modelId = k;
+-		name = PTR_DIGIMON_FILE_NAMES[digimonType];
++		name = getDigimonModelName(digimonType);
+ 		loadDigimonTexture(digimonType, name, m);
+ 		concatStrings(path, MAIN_D_8011D46C, name);
+ 		concatStrings(path, path, MAIN_D_801340EC);
+@@ -3694,7 +3739,7 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 	} else {
+ 		return 0;
+ 	}
+-	name = PTR_DIGIMON_FILE_NAMES[digimonType];
++	name = getDigimonModelName(digimonType);
+ 	++m->useCount;
+ 	if (m->useCount != 1) {
+ 		return m;
+diff --git a/src/main/particle.c b/src/main/particle.c
+index c160e2d..483b82c 100644
+--- a/src/main/particle.c
++++ b/src/main/particle.c
+@@ -217,10 +217,10 @@ int32_t addHealingParticleEffect(Entity *entity, int32_t hasParticle2) {
+     particle->frameId = 0;
+     mat = &entity->posData->posMatrix.workm;
+     particle->off.vx = mat->t[0];
+-    particle->off.vy = -DIGIMON_DATA[entity->type].height - 70;
++    particle->off.vy = -DIGI_PARA(entity->type).height - 70;
+     particle->off.pad = -particle->off.vy / 10;
+     particle->off.vz = mat->t[2];
+-    particle->radius = (DIGIMON_DATA[entity->type].radius * 12) / 10;
++    particle->radius = (DIGI_PARA(entity->type).radius * 12) / 10;
+     particle->hasParticle2 = hasParticle2;
+ 
+     // using the same for-loops didn't match
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 28eae76..134d093 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -43,7 +43,7 @@ extern int32_t CHECKED_MEMORY_CARD;
+ extern VECTOR STORED_TAMER_POS;
+ 
+ 
+-extern int8_t ITEM_TAKE_DISTANCE[NUM_PARTNER_DIGIMON];
++extern int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON];
+ 
+ void tickMainMenu(int32_t instanceId);
+ void renderMainMenu(int32_t instanceId);
+@@ -971,7 +971,7 @@ int8_t getPartnerTamerCloseness(void)
+ 	distance = (tamerLocation->vx - partnerLocation->vx) * (tamerLocation->vx - partnerLocation->vx) +
+ 		   (tamerLocation->vz - partnerLocation->vz) * (tamerLocation->vz - partnerLocation->vz);
+ 
+-	radius = DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].radius;
++	radius = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).radius;
+ 	walkDistance = (radius * 5 / 2) * (radius * 5 / 2);
+ 	sprintDistanceSquared = (radius * 7 / 2) * (radius * 7 / 2);
+ 
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index d8cfc1e..63bd6b7 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -38,7 +38,7 @@ extern uint8_t HAS_USED_EVOITEM;
+ IS_SICK_TEXT
+ 
+ char MAIN_D_801225AC[16] = "\\ETCNA\\UNTI.TMD";
+-RaiseData RAISE_DATA[NUM_PARTNER_DIGIMON] = {
++RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+ 	  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 670, 200, -2270 },
+ 	{ { -1, -1, -1, -1, -1, -1, -1, -1 },
+@@ -193,7 +193,7 @@ SleepPattern SLEEP_PATTERN[8] = {
+ 	{0, 0, 0, 0, 8, 3},
+ };
+ 
+-int8_t ITEM_TAKE_DISTANCE[NUM_PARTNER_DIGIMON] = {
++int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	10, 10, 10, 10, 15, 10, 10, 15, 10, 15, 10, 15, 10, 10, 10, 10, 10,
+ 	10, 15, 10, 10, 15, 10, 15, 10, 25, 10, 10, 10, 10, 10, 10, 10, 10,
+ 	15, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15,
+@@ -478,11 +478,11 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[1] = 0xff;
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[2] = 0xff;
+ 	for (i = 15; i >= 0; i--) {
+-		if (DIGIMON_DATA[type].moves[i] == 0xff)
++		if (DIGI_PARA(type).moves[i] == 0xff)
+ 			continue;
+-		if (DIGIMON_DATA[type].moves[i] < 0x3a)
++		if (DIGI_PARA(type).moves[i] < 0x3a)
+ 			continue;
+-		if (DIGIMON_DATA[type].moves[i] >= 0x71)
++		if (DIGI_PARA(type).moves[i] >= 0x71)
+ 			continue;
+ 
+ 		PARTNER_ENTITY.digimonEntity.stats.base.moves[3] = i + 0x2e;
+@@ -591,7 +591,7 @@ void setSleepTimes(PartnerPara *para, int32_t type)
+ 	int16_t roll;
+ 	int16_t awakeTimeBase;
+ 
+-	level = DIGIMON_DATA[type].level;
++	level = DIGI_PARA(type).level;
+ 
+ 	if (level < 3) {
+ 		if (level == 1) {
+@@ -636,7 +636,7 @@ void setFoodTimer(int16_t type)
+ 	int32_t i;
+ 	uint8_t level;
+ 
+-	level = DIGIMON_DATA[type].level;
++	level = DIGI_PARA(type).level;
+ 
+ 	if (level == 1) {
+ 		PARTNER_PARA.nextHungerHour = HOUR / 2 * 2 + 2;
+@@ -919,7 +919,7 @@ void tickSleepMechanics(void)
+ 	}
+ 
+ 	type = PARTNER_ENTITY.digimonEntity.entity.type;
+-	level = DIGIMON_DATA[type].level;
++	level = DIGI_PARA(type).level;
+ 	if (PARTNER_PARA.condition & 1) {
+ 		if (level == 1) {
+ 			if (((CURRENT_FRAME % 200) == 0) &&
+@@ -1118,7 +1118,7 @@ void handlePraiseScold(state)
+ 
+ 	if (state == 4) {
+ 		NANIMON_TRIGGER = 0;
+-		if ((DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level == 3) && (oldDiscipline == 0) &&
++		if ((DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level == 3) && (oldDiscipline == 0) &&
+ 		    (oldHappiness == -100)) {
+ 			NANIMON_TRIGGER = 1;
+ 		}
+@@ -1144,7 +1144,7 @@ void handleSleeping(void)
+ 	if (PARTNER_PARA.remainingLifetime < 0)
+ 		PARTNER_PARA.remainingLifetime = 0;
+ 
+-	if (DIGIMON_DATA[type].level < 3) {
++	if (DIGI_PARA(type).level < 3) {
+ 		PARTNER_PARA.sleepyHour =
+ 			PARTNER_PARA.wakeupHour +
+ 			PARTNER_PARA.hoursAwakeDefault;
+@@ -1422,17 +1422,17 @@ int32_t partnerWillRefuseItem(void)
+ 	if (((item >= 0x47) && (item < 0x73)) ||
+ 	    ((item >= 0x7D) && (item < 0x80))) {
+ 		if (item == 0x7E) {
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level != 3)
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level != 3)
+ 				return 1;
+ 		} else if ((item == 0x7D) || (item == 0x7F)) {
+-			if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level != 4)
++			if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level != 4)
+ 				return 1;
+-		} else if ((DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level ==
+-			    DIGIMON_DATA[ITEM_EVOLUTION_TARGET(item)].level) ||
+-			   (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level + 2 ==
+-			    DIGIMON_DATA[ITEM_EVOLUTION_TARGET(item)].level) ||
+-			   (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level - 1 ==
+-			    DIGIMON_DATA[ITEM_EVOLUTION_TARGET(item)].level)) {
++		} else if ((DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level ==
++			    DIGI_PARA(ITEM_EVOLUTION_TARGET(item)).level) ||
++			   (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level + 2 ==
++			    DIGI_PARA(ITEM_EVOLUTION_TARGET(item)).level) ||
++			   (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level - 1 ==
++			    DIGI_PARA(ITEM_EVOLUTION_TARGET(item)).level)) {
+ 			return 1;
+ 		}
+ 	}
+@@ -2074,7 +2074,7 @@ void tickConditions(void)
+ 		IMMORTAL_HOUR = -1;
+ 	}
+ 	evoTimer = PARTNER_PARA.evoTimer;
+-	level = DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level;
++	level = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+ 	tamerState = tamerGetState();
+ 	if (CURRENT_FRAME != LAST_HANDLED_FRAME && PARTNER_STATE == 1 &&
+ 	    tamerState == 0) {
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index aa3167d..95b0bc3 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1229,7 +1229,7 @@ void scriptInstruction28to3F(op)
+ 	case SCRIPT_OP_STORE_DIGIMON_VALUE:
+ 		skipOnePollTwoScriptBytes(&byteArg1, &byteArg2);
+ 		byteArg1 = readPStat(byteArg1);
+-		byteArg1 = DIGIMON_DATA[byteArg1].type;
++		byteArg1 = DIGI_PARA(byteArg1).type;
+ 		writePStat(byteArg2, byteArg1);
+ 		break;
+ 	}
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 4a525a8..c75c3b3 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -1092,9 +1092,9 @@ top: {
+ 			{
+ 				ctrl = readPStat(ctrl);
+ 				strcpy(out,
+-				       (const char *)&DIGIMON_DATA[ctrl]);
++				       (const char *)&DIGI_PARA(ctrl));
+ 				lines = strlen(
+-					(const char *)&DIGIMON_DATA[ctrl]);
++					(const char *)&DIGI_PARA(ctrl));
+ 				out += lines;
+ 				col += (uint16_t)(lines >> 1);
+ 			}
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 8574112..9a4e6ec 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -7,6 +7,7 @@
+ #include <dw/main.h>
+ #include <dw/params.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ 
+ #define VAB_MAX_PROGRAMS	128
+@@ -54,7 +55,7 @@ unsigned long VHB_SOUNDBUFFER_START[NUM_SOUND_BUFFERS] = {
+ 	0x0,
+ };
+ 
+-uint8_t DIGIMON_VLALL_SOUND_ID[NUM_PARTNER_DIGIMON] = {
++uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	0x00,	/* main character */
+ 	0x00,	/* Botamon */
+ 	0x00,	/* Koromon */
+@@ -123,7 +124,7 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_PARTNER_DIGIMON] = {
+ 	0x0c,	/* MetalEtemon */
+ };
+ 
+-uint8_t DIGIMON_VBALL_SOUND_ID[NUM_DIGIMON] = {
++uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+ 	0x00,	/* main character */
+ 	0x01,	/* Botamon */
+ 	0x02,	/* Koromon */
+@@ -681,7 +682,7 @@ int32_t loadPartnerSounds(int32_t type)
+ {
+ 	int32_t soundId;
+ 
+-	if ((type > 0) && (type < NUM_PARTNER_DIGIMON)) {
++	if ((type > 0) && (type < NUM_DIGIMON)) { /* MOD: was NUM_PARTNER_DIGIMON */
+ 		soundId = DIGIMON_VLALL_SOUND_ID[type];
+ 	} else {
+ 		soundId = 15;
+@@ -703,7 +704,7 @@ int32_t loadDigimonSounds(int32_t vabId, int32_t type)
+ 		return 0;
+ 	}
+ 
+-	soundId = DIGIMON_VBALL_SOUND_ID[type];
++	soundId = getDigimonVballId(type); /* MOD (species) */
+ 	if (readVHBFileSectors(vabId, "VBALL", GENERAL_BUFFER, soundId * 7, 7) == -1) {
+ 		return 0;
+ 	}
+diff --git a/src/main/sound_async.c b/src/main/sound_async.c
+index 0521574..7599b46 100644
+--- a/src/main/sound_async.c
++++ b/src/main/sound_async.c
+@@ -5,6 +5,7 @@
+ #include <dw/main.h>
+ #include <dw/sound.h>
+ #include <dw/sound_async.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+ 
+@@ -224,7 +225,7 @@ int32_t readVBALLSection(int32_t vabId, int32_t idx)
+ 		sb->vabId = -1;
+ 	}
+ 
+-	soundId = DIGIMON_VBALL_SOUND_ID[idx];
++	soundId = getDigimonVballId(idx); /* MOD (species) */
+ 	loadVHBFile(vabId, "VBALL", GENERAL_BUFFER, soundId * 7, 7);
+ 
+ 	return vabId;
+@@ -278,7 +279,7 @@ int32_t loadVLALL(int32_t idx, uint8_t *buffer)
+ 
+ 	readVBALLSection(4, idx);
+ 
+-	if ((idx >= 1) && (idx <= 0x41)) {
++	if ((idx >= 1) && (idx < NUM_DIGIMON)) { /* MOD: was idx <= 0x41 */
+ 		soundId = DIGIMON_VLALL_SOUND_ID[idx];
+ 	} else {
+ 		soundId = 0xf;
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index a2690fa..76481be 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -1575,7 +1575,7 @@ void tamerTickPraiseScold(int8_t state)
+ 	case 0:
+ 		if (state == 0xd) {
+ 			type = PARTNER_ENTITY.digimonEntity.entity.type;
+-			if ((DIGIMON_DATA[type].level < 4) ||
++			if ((DIGI_PARA(type).level < 4) ||
+ 			    (type == 0xd) ||
+ 			    (type == 0x1b) ||
+ 			    (type == 0x38)) {
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index f21fed6..f5f0a6c 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -335,7 +335,7 @@ uint8_t entityGetTechFromAnim(Entity *e, uint8_t anim)
+ 	if ((e->type == 0x3cL) && (anim == 0x3c)) {
+ 		return 0x70;
+ 	}
+-	return DIGIMON_DATA[e->type].moves[anim - 0x2e];
++	return DIGI_PARA(e->type).moves[anim - 0x2e];
+ }
+ 
+ void entityLookAtTile(Entity *entity, int8_t tileX, int8_t tileY)
+diff --git a/src/murd/murd.c b/src/murd/murd.c
+index af84cbc..151c5b2 100644
+--- a/src/murd/murd.c
++++ b/src/murd/murd.c
+@@ -356,9 +356,9 @@ int32_t MURD_isDigimonLargerThanIris(Entity *entity, int32_t start, int32_t end,
+ 	int32_t result;
+ 
+ 	pos.vx = entity->posData->location.vx;
+-	pos.vy = entity->posData->location.vy - (DIGIMON_DATA[entity->type].height / 2);
++	pos.vy = entity->posData->location.vy - (DIGI_PARA(entity->type).height / 2);
+ 	pos.vz = entity->posData->location.vz;
+-	size = getDistance(DIGIMON_DATA[entity->type].radius * 2, DIGIMON_DATA[entity->type].height, DIGIMON_DATA[entity->type].radius * 2);
++	size = getDistance(DIGI_PARA(entity->type).radius * 2, DIGI_PARA(entity->type).height, DIGI_PARA(entity->type).radius * 2);
+ 	radius = (lerp(0xc8, 0, start, end, t) << 12) / 128;
+ 
+ 	z = worldPosToScreenPos(&pos, &screen);
+@@ -501,7 +501,7 @@ void MURD_renderDigimon(Entity *entity, int32_t depth)
+ 	type = entity->type;
+ 	animId = entity->anim.animId;
+ 	pos = entity->posData;
+-	count = DIGIMON_DATA[type].boneCount;
++	count = DIGI_PARA(type).boneCount;
+ 	location = pos->location;
+ 	rotation = pos->rotation;
+ 	m = GsWSMATRIX;
+@@ -560,9 +560,9 @@ int32_t MURD_renderIris(Entity *entity, int32_t start, int32_t end, int32_t t)
+ 	int32_t right;
+ 
+ 	pos.vx = entity->posData->location.vx;
+-	pos.vy = entity->posData->location.vy - (DIGIMON_DATA[entity->type].height / 2);
++	pos.vy = entity->posData->location.vy - (DIGI_PARA(entity->type).height / 2);
+ 	pos.vz = entity->posData->location.vz;
+-	size = getDistance(DIGIMON_DATA[entity->type].radius * 2, DIGIMON_DATA[entity->type].height, DIGIMON_DATA[entity->type].radius * 2);
++	size = getDistance(DIGI_PARA(entity->type).radius * 2, DIGI_PARA(entity->type).height, DIGI_PARA(entity->type).radius * 2);
+ 	radius = (lerp(0xc8, 0, start, end, t) << 12) / 128;
+ 	z = worldPosToScreenPos(&pos, &screen);
+ 	if (z <= 0) {
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index b73b48a..c7b90e3 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -1089,11 +1089,11 @@ void STD_tickChampionScene(void)
+ 			rot.vz = 0;
+ 			rot.vy &= 0xfff;
+ 			GS_VIEWPOINT.vry = ENTITY_TABLE[1]->posData->location.vy -
+-			                   DIGIMON_DATA[ENTITY_TABLE[1]->type].height * 2 / 3;
++			                   DIGI_PARA(ENTITY_TABLE[1]->type).height * 2 / 3;
+ 			RotMatrix(&rot, &m);
+ 			trans.vx = 0;
+ 			trans.vy = 0;
+-			trans.vz = -(DIGIMON_DATA[ENTITY_TABLE[1]->type].radius * 2 + 0x320);
++			trans.vz = -(DIGI_PARA(ENTITY_TABLE[1]->type).radius * 2 + 0x320);
+ 			ApplyMatrixLV(&m, &trans, &out);
+ 			GS_VIEWPOINT.vpx = out.vx;
+ 			GS_VIEWPOINT.vpz = out.vz;
+@@ -2320,7 +2320,7 @@ void STD_applyRadiusAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			goto next;
+ 		}
+-		radius = DIGIMON_DATA[e->type].radius;
++		radius = DIGI_PARA(e->type).radius;
+ 		radius *= radius;
+ 		radius += r;
+ 		dx = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 4) - (int32_t)e->posData->location.vx;
+@@ -2335,8 +2335,8 @@ void STD_applyRadiusAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[*(int32_t *)&EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		STD_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
+-		pos.vy = -DIGIMON_DATA[e->type].height / 2;
++		STD_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
++		pos.vy = -DIGI_PARA(e->type).height / 2;
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, i);
+ 		*hitFlag = 1;
+ next:
+@@ -2381,7 +2381,7 @@ void STD_applyLineAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			continue;
+ 		}
+-		r = DIGIMON_DATA[e->type].radius;
++		r = DIGI_PARA(e->type).radius;
+ 		rect[0] = e->posData->location.vx - r;
+ 		rect[2] = e->posData->location.vx + r;
+ 		rect[1] = e->posData->location.vz - r;
+@@ -2389,7 +2389,7 @@ void STD_applyLineAttackHit(void)
+ 		if (doSomethingWithSomePoints(rect, line) != -1) {
+ 			continue;
+ 		}
+-		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGIMON_DATA[e->type].height - arg[1])) {
++		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGI_PARA(e->type).height - arg[1])) {
+ 			continue;
+ 		}
+ 		for (j = 1; j < 10; j++) {
+@@ -2398,7 +2398,7 @@ void STD_applyLineAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		STD_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
++		STD_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
+ 		pos.vy = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8);
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, j);
+ 		*out = 1;
+@@ -3660,8 +3660,8 @@ void STD_getSourceDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -4139,8 +4139,8 @@ void STD_getTargetDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -5177,7 +5177,7 @@ int16_t STD_calculateAttackHitPosition(SVECTOR *out, Entity *self, Entity *other
+ 	rot.vz = 0;
+ 	RotMatrixZYX(&rot, &m);
+ 	out->vx = 0;
+-	out->vy = -DIGIMON_DATA[self->type].height;
++	out->vy = -DIGI_PARA(self->type).height;
+ 	out->vz = y;
+ 	ApplyMatrixSV(&m, out, out);
+ 	out->vx += (int16_t)self->posData->location.vx;
+@@ -5690,7 +5690,7 @@ void STD_renderStunEffect(int32_t idx)
+ 	}
+ 
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = -DIGIMON_DATA[p->entity->type].height * 113 / 100;
++	pos.vy = -DIGI_PARA(p->entity->type).height * 113 / 100;
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
+@@ -5788,9 +5788,9 @@ void STD_renderStunSubEffect(int32_t i)
+ 
+ 	p = &STD_STUN_SUB_EFFECTS[i];
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = lerp(-DIGIMON_DATA[p->entity->type].height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
++	pos.vy = lerp(-DIGI_PARA(p->entity->type).height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
+ 	pos.vz = p->entity->posData->location.vz;
+-	s = DIGIMON_DATA[p->entity->type].radius * 0x4000 / 350;
++	s = DIGI_PARA(p->entity->type).radius * 0x4000 / 350;
+ 	if (p->frame < 4) {
+ 		s = lerp(s * 10 / 100, s, 0, 4, p->frame);
+ 	}
+@@ -5915,7 +5915,7 @@ void STD_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sx = 0x1000;
+ 	}
+-	sx = sx * DIGIMON_DATA[e->type].radius / 150;
++	sx = sx * DIGI_PARA(e->type).radius / 150;
+ 
+ 	t = lerp(0, 0x200, 0, 0x10, fa->frame);
+ 	if (fa->frame < 5) {
+@@ -5923,7 +5923,7 @@ void STD_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sy = 0x1000;
+ 	}
+-	sy = sy * DIGIMON_DATA[e->type].height / 350;
++	sy = sy * DIGI_PARA(e->type).height / 350;
+ 	sy = sy * 85 / 100 + sy * 15 / 100 * _sin(t) / 0x1000;
+ 
+ 	rot = STD_FINISHER_AURA_ROTATION;
+@@ -5944,7 +5944,7 @@ void STD_renderFinisherAura(int32_t id)
+ 
+ 		col = STD_FINISHER_AURA_COLOR;
+ 		s = fa->frame * 0x1000 / 7;
+-		s = s * DIGIMON_DATA[e->type].radius / 150;
++		s = s * DIGI_PARA(e->type).radius / 150;
+ 		col.r = (uint32_t)col.r * (7 - fa->frame) / 7;
+ 		col.g = (uint32_t)col.g * (7 - fa->frame) / 7;
+ 		col.b = (uint32_t)col.b * (7 - fa->frame) / 7;
+@@ -6187,8 +6187,8 @@ int32_t STD_addAuraProjectile(Entity *e)
+ 	aura->type = type;
+ 	q = &e->posData->posMatrix.workm;
+ 	aura->position.vx = 0;
+-	aura->position.vy = -DIGIMON_DATA[e->type].height * 50 / 100;
+-	aura->position.vz = -DIGIMON_DATA[e->type].height * 50 / 100;
++	aura->position.vy = -DIGI_PARA(e->type).height * 50 / 100;
++	aura->position.vz = -DIGI_PARA(e->type).height * 50 / 100;
+ 	ApplyMatrixSV(q, &aura->position, &aura->position);
+ 	aura->position.vx += (int16_t)q->t[0];
+ 	aura->position.vy += (int16_t)q->t[1];
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 4e80e6e..7100cd1 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -1425,7 +1425,7 @@ void STD_addIntroText(entity, id)
+ 	STD_INTRO_DATA_FRAME_COUNT = 4;
+ 	STD_INTRO_DATA_RENDERED_CHARACTERS = 0;
+ 
+-	switch (DIGIMON_DATA[entity->type].special[0]) {
++	switch (DIGI_PARA(entity->type).special[0]) {
+ 	case 0:
+ 		STD_INTRO_DATA_COLOR = 3;
+ 		break;
+@@ -2276,9 +2276,9 @@ void STD_setChampionCamera(void)
+ 	STD_CAMERA_STATE = 0xb;
+ 	GS_VIEWPOINT.vpx = 0;
+ 	GS_VIEWPOINT.vpy = -0xc8;
+-	GS_VIEWPOINT.vpz = -((DIGIMON_DATA[ENTITY_TABLE[1]->type].radius * 2) + 0x320);
++	GS_VIEWPOINT.vpz = -((DIGI_PARA(ENTITY_TABLE[1]->type).radius * 2) + 0x320);
+ 	GS_VIEWPOINT.vrx = 0;
+-	GS_VIEWPOINT.vry = (-DIGIMON_DATA[ENTITY_TABLE[1]->type].height * 2) / 3;
++	GS_VIEWPOINT.vry = (-DIGI_PARA(ENTITY_TABLE[1]->type).height * 2) / 3;
+ 	GS_VIEWPOINT.vrz = 0;
+ 	GS_VIEWPOINT.rz = 0;
+ 	VIEWPORT_DISTANCE = 0x200;
+@@ -2335,8 +2335,8 @@ void STD_updateCameraLerp(int32_t t, int8_t flip)
+ 
+ 	off = STD_INTRO_CAMERA_STAGE2_POS;
+ 	rot = STD_INTRO_CAMERA_STAGE2_ROT;
+-	base = ((((DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height +
+-	           DIGIMON_DATA[STD_FOCUSED_ENTITY->type].radius) /
++	base = ((((DIGI_PARA(STD_FOCUSED_ENTITY->type).height +
++	           DIGI_PARA(STD_FOCUSED_ENTITY->type).radius) /
+ 	          2) *
+ 	         0x62c) /
+ 	        450);
+@@ -2355,7 +2355,7 @@ void STD_updateCameraLerp(int32_t t, int8_t flip)
+ 	}
+ 
+ 	rot.vy += STD_FOCUSED_ENTITY->posData->rotation.vy;
+-	off.vy = (-DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height * 2) / 3;
++	off.vy = (-DIGI_PARA(STD_FOCUSED_ENTITY->type).height * 2) / 3;
+ 	STD_setViewpointFromBone(STD_FOCUSED_ENTITY, &off, &rot, dist);
+ }
+ 
+@@ -2432,8 +2432,8 @@ void STD_tickCameraChase(void)
+ 				rot.vy = lerp(0x638, 0x293, 0, 0x23, dist);
+ 			}
+ 			rot.vy += STD_FOCUSED_ENTITY->posData->rotation.vy;
+-			off.vy = (-DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height * 7) / 10;
+-			d2 = (((DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height + DIGIMON_DATA[STD_FOCUSED_ENTITY->type].radius) / 2) * 0x5aa) / 450;
++			off.vy = (-DIGI_PARA(STD_FOCUSED_ENTITY->type).height * 7) / 10;
++			d2 = (((DIGI_PARA(STD_FOCUSED_ENTITY->type).height + DIGI_PARA(STD_FOCUSED_ENTITY->type).radius) / 2) * 0x5aa) / 450;
+ 			STD_setViewpointFromBone(STD_FOCUSED_ENTITY, &off, &rot, d2);
+ 			GS_VIEWPOINT.vpy = (off.vy * 7) / 10;
+ 			if (GS_VIEWPOINT.vpy > -0xb4) {
+@@ -2489,8 +2489,8 @@ void STD_startCameraChase(entity, dx, side)
+ 		rot.vy = 0x638;
+ 	}
+ 	rot.vy += STD_FOCUSED_ENTITY->posData->rotation.vy;
+-	off.vy = (-DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height * 2) / 3;
+-	dist = (((DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height + DIGIMON_DATA[STD_FOCUSED_ENTITY->type].radius) / 2) * 0x5aa) / 450;
++	off.vy = (-DIGI_PARA(STD_FOCUSED_ENTITY->type).height * 2) / 3;
++	dist = (((DIGI_PARA(STD_FOCUSED_ENTITY->type).height + DIGI_PARA(STD_FOCUSED_ENTITY->type).radius) / 2) * 0x5aa) / 450;
+ 	STD_setViewpointFromBone(STD_FOCUSED_ENTITY, &off, &rot, dist);
+ 	GS_VIEWPOINT.vpy = (off.vy * 3) / 10;
+ 	if (GS_VIEWPOINT.vpy > -0xb4) {
+@@ -2528,7 +2528,7 @@ void STD_tickCameraIntro(void)
+ 	 * STD_D_8007B9D0.target, which follows it there; GCC places other data next. */
+ 	STD_setViewpointFromBone(STD_D_8007B9D0.target, &off, &rot, STD_D_8007B9BC[8]);
+ #endif
+-	GS_VIEWPOINT.vry = (-DIGIMON_DATA[STD_D_8007B9D0.target->type].height * 2) / 3;
++	GS_VIEWPOINT.vry = (-DIGI_PARA(STD_D_8007B9D0.target->type).height * 2) / 3;
+ 	GS_VIEWPOINT.vpy = -processSomeArenaArrays(0x16, p[0], STD_D_8007A41C, STD_D_8007BA9C, STD_D_8007BA44);
+ 	p[0]++;
+ }
+@@ -2567,19 +2567,19 @@ void STD_startCameraIntro(Entity *target, Entity *entity)
+ 	}
+ 	STD_setViewpointFromBone(target, &off, &rot, STD_D_8007B9BC[8]);
+ 
+-	STD_D_8007B9BC[9] = DIGIMON_DATA[target->type].radius * 3 * 2;
+-	GS_VIEWPOINT.vry = (-DIGIMON_DATA[target->type].height * 2) / 3;
+-	GS_VIEWPOINT.vpy = -DIGIMON_DATA[entity->type].height;
++	STD_D_8007B9BC[9] = DIGI_PARA(target->type).radius * 3 * 2;
++	GS_VIEWPOINT.vry = (-DIGI_PARA(target->type).height * 2) / 3;
++	GS_VIEWPOINT.vpy = -DIGI_PARA(entity->type).height;
+ 	STD_D_8007B9D0.unk0 = GS_VIEWPOINT.vpy;
+ 	STD_D_8007B9D0.unk2 = GS_VIEWPOINT.vpy * 250 / 100;
+-	STD_D_8007BA9C[0] = DIGIMON_DATA[entity->type].height;
+-	STD_D_8007BA9C[1] = DIGIMON_DATA[entity->type].height;
+-	STD_D_8007BA9C[2] = DIGIMON_DATA[entity->type].height * 200 / 100;
+-	STD_D_8007BA9C[3] = DIGIMON_DATA[target->type].height * 380 / 100;
+-	STD_D_8007BAAC[0] = DIGIMON_DATA[target->type].height * 250 / 100;
++	STD_D_8007BA9C[0] = DIGI_PARA(entity->type).height;
++	STD_D_8007BA9C[1] = DIGI_PARA(entity->type).height;
++	STD_D_8007BA9C[2] = DIGI_PARA(entity->type).height * 200 / 100;
++	STD_D_8007BA9C[3] = DIGI_PARA(target->type).height * 380 / 100;
++	STD_D_8007BAAC[0] = DIGI_PARA(target->type).height * 250 / 100;
+ 	for (i = 5; i < 0x16; i++) {
+ 		STD_D_8007BA9C[i] =
+-			customRandom(0x50, DIGIMON_DATA[target->type].height * 180 / 100);
++			customRandom(0x50, DIGI_PARA(target->type).height * 180 / 100);
+ 	}
+ 	initializeSomeArenaArrays(0x16, (int32_t)STD_D_8007A41C, (int32_t)STD_D_8007BA9C, STD_D_8007BA44);
+ 
+@@ -2613,7 +2613,7 @@ void STD_applyEntityViewpoint(void)
+ 	GsSetProjection(VIEWPORT_DISTANCE);
+ 	m = &STD_FOCUSED_ENTITY->posData->posMatrix.workm;
+ 	GS_VIEWPOINT.vrx = m->t[0];
+-	GS_VIEWPOINT.vry = -DIGIMON_DATA[STD_FOCUSED_ENTITY->type].height * 2 / 3;
++	GS_VIEWPOINT.vry = -DIGI_PARA(STD_FOCUSED_ENTITY->type).height * 2 / 3;
+ 	GS_VIEWPOINT.vrz = m->t[2];
+ 	GsSetRefView2(&GS_VIEWPOINT);
+ }
+@@ -3204,7 +3204,7 @@ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ 	}
+ 
+ 	for (i = 0; i < 4; i++) {
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGIMON_DATA[PARTICIPANT_TYPES[i * 2]].level - 3][DIGIMON_DATA[PARTICIPANT_TYPES[i * 2 + 1L]].level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[i * 2]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[i * 2 + 1L]).level - 3]) {
+ 			STD_ROUND1_WINNERS[i] = i * 2;
+ 		} else {
+ 			STD_ROUND1_WINNERS[i] = i * 2 + 1;
+@@ -3217,13 +3217,13 @@ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ 		} else {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[0];
+ 		}
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGIMON_DATA[PARTICIPANT_TYPES[STD_ROUND1_WINNERS[2]]].level - 3][DIGIMON_DATA[PARTICIPANT_TYPES[STD_ROUND1_WINNERS[3]]].level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[2]]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[3]]).level - 3]) {
+ 			STD_ROUND2_WINNERS[1] = STD_ROUND1_WINNERS[2];
+ 		} else {
+ 			STD_ROUND2_WINNERS[1] = STD_ROUND1_WINNERS[3];
+ 		}
+ 	} else {
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGIMON_DATA[PARTICIPANT_TYPES[STD_ROUND1_WINNERS[0]]].level - 3][DIGIMON_DATA[PARTICIPANT_TYPES[STD_ROUND1_WINNERS[1]]].level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[0]]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[1]]).level - 3]) {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[0];
+ 		} else {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[1];
+@@ -3592,14 +3592,14 @@ void STD_tickPartnerAI(void)
+ 			if ((((DigimonEntity *)partner)->stats.base.moves[COMBAT_DATA_PTR->player.currentCommand[0] - 8] != fighter->queuedAnim) || (fighter->moveRange <= 0)) {
+ 				STD_setupQueuedMove((DigimonEntity *)partner, fighter, 0, COMBAT_DATA_PTR->player.currentCommand[0] - 8);
+ 			}
+-			STD_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGIMON_DATA[partner->type].moves[fighter->queuedAnim - 0x2e]);
++			STD_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGI_PARA(partner->type).moves[fighter->queuedAnim - 0x2e]);
+ 			return;
+ 		case 11:
+ 			fighter->targetId = 1;
+ 			if ((((DigimonEntity *)partner)->stats.base.moves[3] != fighter->queuedAnim) || (fighter->moveRange <= 0)) {
+ 				STD_setupQueuedMove((DigimonEntity *)partner, fighter, 0, 3);
+ 			}
+-			STD_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGIMON_DATA[partner->type].moves[fighter->queuedAnim - 0x2e]);
++			STD_applyChargeRequirement((DigimonEntity *)partner, fighter, DIGI_PARA(partner->type).moves[fighter->queuedAnim - 0x2e]);
+ 			return;
+ 		}
+ 		if ((COMBAT_DATA_PTR->player.currentCommand[0] != 2) && (COMBAT_DATA_PTR->player.currentCommand[0] != 4)) {
+@@ -3712,7 +3712,7 @@ void STD_combatSetup(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGIMON_DATA[entity->entity.type].moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+@@ -4495,7 +4495,7 @@ void STD_tickAttackState(Entity *entity, DigimonEntity *target, int32_t id)
+ 			for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 				if (i != id) {
+ 					other = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+-					if (DIGIMON_DATA[other->type].moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
++					if (DIGI_PARA(other->type).moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
+ 						if (id == COMBAT_DATA_PTR->fighter[i].targetId) {
+ 							return;
+ 						}
+@@ -4712,7 +4712,7 @@ void STD_tickQueuedMove(DigimonEntity *digimon, DigimonEntity *target, FighterDa
+ 			break;
+ 		case 2:
+ 		case 3:
+-			STD_tickDigimonAttackRanged(digimon, target, fighter, DIGIMON_DATA[digimon->entity.type].moves[fighter->queuedAnim - 0x2e]);
++			STD_tickDigimonAttackRanged(digimon, target, fighter, DIGI_PARA(digimon->entity.type).moves[fighter->queuedAnim - 0x2e]);
+ 			break;
+ 		case 4:
+ 			handleBattleIdle(digimon, &digimon->stats, fighter->flags);
+@@ -4774,7 +4774,7 @@ int32_t STD_tickMeleeAttack(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	orig = *rot;
+ 	if (target != NULL) {
+ 		dist = STD_getDistanceSquared(&digimon->entity, &target->entity);
+-		radius = DIGIMON_DATA[digimon->entity.type].radius + DIGIMON_DATA[target->entity.type].radius;
++		radius = DIGI_PARA(digimon->entity.type).radius + DIGI_PARA(target->entity.type).radius;
+ 		radius = radius * radius;
+ 		if (dist <= radius) {
+ 			handleBattleIdle(digimon, &digimon->stats, fighter->flags);
+@@ -4865,7 +4865,7 @@ void STD_tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 	}
+ 
+ 	distance = STD_getDistanceSquared(&entity->entity, &other->entity);
+-	total = DIGIMON_DATA[entity->entity.type].radius + DIGIMON_DATA[other->entity.type].radius;
++	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
+ 	total = *(uint32_t *)&MOVE_DATA[move].distance + total * total;
+ 
+ 	if (distance > total + total * 3 / 10) {
+@@ -5151,7 +5151,7 @@ int32_t STD_getContactRangeSquared(int32_t *a, int32_t *b)
+ {
+ 	int32_t reach;
+ 
+-	reach = DIGIMON_DATA[*a].radius + DIGIMON_DATA[*b].radius + 0xc8;
++	reach = DIGI_PARA(*a).radius + DIGI_PARA(*b).radius + 0xc8;
+ 
+ 	return reach * reach;
+ }
+@@ -5433,7 +5433,7 @@ void STD_renderPlayerMarker(int16_t id)
+ 	gte_stszotz(&otz);
+ 	sxy.vx -= (int16_t)(160 - DRAWING_OFFSET_X);
+ 	sxy.vy -= (int16_t)(120 - DRAWING_OFFSET_Y);
+-	offset = VIEWPORT_DISTANCE * (DIGIMON_DATA[entity->type].radius / 2) / (otz * 4);
++	offset = VIEWPORT_DISTANCE * (DIGI_PARA(entity->type).radius / 2) / (otz * 4);
+ 	sxy.vx += (int16_t)offset;
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+@@ -5477,7 +5477,7 @@ void STD_tickAttackHits(void)
+ 		}
+ 		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 		tech = STD_getAttackTech(&attack);
+-		if (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
++		if (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
+ 			if (COMBAT_DATA_PTR->player.entityIds[fighter->targetId] == attack.casterId) {
+ 				((DigimonEntity *)entity)->stats.current.isHit = 0;
+ 				continue;
+@@ -5529,14 +5529,14 @@ skipViewpoint:
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < 0xa5) {
+ 					break;
+ 				}
+-				if ((moves[j] != 0xff) && (DIGIMON_DATA[entity->type].moves[moves[j] - 0x2e] == 0x2d)) {
+-					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGIMON_DATA[entity->type].level)) {
++				if ((moves[j] != 0xff) && (DIGI_PARA(entity->type).moves[moves[j] - 0x2e] == 0x2d)) {
++					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGI_PARA(entity->type).level)) {
+ 						fighter->queuedAnim = moves[j];
+ 						fighter->targetId = STD_getFighterSlot(attack.casterId);
+ 						fighter->moveRange = 1;
+@@ -5714,8 +5714,8 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 	int16_t def;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		if (DIGIMON_DATA[defender->entity.type].special[i] != 0xff) {
+-			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGIMON_DATA[defender->entity.type].special[i]];
++		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
++			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			mult[i] = 10;
+ 		}
+@@ -6366,10 +6366,10 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + STD_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[digimon->entity.type].special[0]);
++			weights[i] += fighter->buffPrioTimer + STD_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += STD_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type].special[0]);
++		weights[i] += STD_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+@@ -7088,7 +7088,7 @@ int16_t STD_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGIMON_DATA[target->type].special[0]];
++			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 0970f4f..7fc011c 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -280,7 +280,7 @@ void STD_initializeOpponent(int16_t type, int16_t slot, uint8_t tier)
+ 	scriptLoadModel(type);
+ 	ENTITY_TABLE[slot + 2] = (Entity *)&NPC_ENTITIES[slot];
+ 	initializeDigimonObject(type, slot + 2, STD_tickNPCTournament);
+-	switch (DIGIMON_DATA[ENTITY_TABLE[slot + 2]->type].level) {
++	switch (DIGI_PARA(ENTITY_TABLE[slot + 2]->type).level) {
+ 	case 3:
+ 		div = 1;
+ 		mul = 1;
+@@ -373,8 +373,8 @@ void STD_initializeOpponent(int16_t type, int16_t slot, uint8_t tier)
+ 	}
+ 	stats->base.moves[3] = 0xff;
+ 	for (i = 0; i < 0x10; i++) {
+-		if (DIGIMON_DATA[ENTITY_TABLE[slot + 2]->type].moves[i] >= 0x3a &&
+-		    DIGIMON_DATA[ENTITY_TABLE[slot + 2]->type].moves[i] < 0x71) {
++		if (DIGI_PARA(ENTITY_TABLE[slot + 2]->type).moves[i] >= 0x3a &&
++		    DIGI_PARA(ENTITY_TABLE[slot + 2]->type).moves[i] < 0x71) {
+ 			stats->base.moves[3] = i + 0x2e;
+ 			return;
+ 		}
+diff --git a/src/trn/trn_brain.c b/src/trn/trn_brain.c
+index d8fd40e..86280b8 100644
+--- a/src/trn/trn_brain.c
++++ b/src/trn/trn_brain.c
+@@ -40,7 +40,7 @@ int16_t arg;
+ 		TRN_D_8008F320.vy = 0;
+ 		TRN_D_8008F320.vz = 0x3f3;
+ 		addObject(0xfb0, 0, (TickFunction)TRN_tickBrainsTraining, NULL);
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeBrainCounter++;
+ 		}
+ 		TRAINING_COMPLETE = 0;
+diff --git a/src/trn/trn_def.c b/src/trn/trn_def.c
+index c2931fc..85bf171 100644
+--- a/src/trn/trn_def.c
++++ b/src/trn/trn_def.c
+@@ -72,7 +72,7 @@ int16_t arg;
+ 		MAIN_D_8013536C = 0x47;
+ 		MAIN_D_8013536E = 0xd;
+ 		addObject(0xfae, 0, (TickFunction)TRN_tickDefenseTraining, NULL);
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeDefenseCounter++;
+ 		}
+ 		TRAINING_COMPLETE = 0;
+diff --git a/src/trn/trn_hp.c b/src/trn/trn_hp.c
+index 5b8137d..b987775 100644
+--- a/src/trn/trn_hp.c
++++ b/src/trn/trn_hp.c
+@@ -53,7 +53,7 @@ int16_t arg;
+ 		MAIN_D_8013536E = 0x10;
+ 		addObject(0xfab, 0, (TickFunction)TRN_tickHpTraining, NULL);
+ 		MAIN_D_80135370 = readPStat(0xf6);
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeHPcounter++;
+ 		}
+ 		TRAINING_COMPLETE = 0;
+diff --git a/src/trn/trn_mp.c b/src/trn/trn_mp.c
+index 45fdb73..125b69e 100644
+--- a/src/trn/trn_mp.c
++++ b/src/trn/trn_mp.c
+@@ -73,7 +73,7 @@ int16_t instanceId;
+ 			setMapObjectsFlag(MAIN_D_80135372, MAIN_D_80135374, 1);
+ 			setMapObjectsFlag(MAIN_D_80135376, MAIN_D_80135378, 0);
+ 			svec.vx = PARTNER_ENTITY.digimonEntity.entity.posData->location.vx;
+-			svec.vy = PARTNER_ENTITY.digimonEntity.entity.posData->location.vy - DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].height;
++			svec.vy = PARTNER_ENTITY.digimonEntity.entity.posData->location.vy - DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).height;
+ 			svec.vz = PARTNER_ENTITY.digimonEntity.entity.posData->location.vz;
+ 			getDrawPosition(&svec, &screen.vx, &screen.vy);
+ 			moveMapObjects(MAIN_D_8013536C, MAIN_D_8013536E, 0, screen.vy - 0x14);
+@@ -151,7 +151,7 @@ int16_t arg;
+ 		MAIN_D_80135376 = 0xa3;
+ 		MAIN_D_80135378 = 0x18;
+ 		addObject(0xfaf, 0, (TickFunction)TRN_tickMpTraining, NULL);
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeMPcounter++;
+ 		}
+ 		TRAINING_COMPLETE = 0;
+diff --git a/src/trn/trn_off.c b/src/trn/trn_off.c
+index 395b1a6..63ef3db 100644
+--- a/src/trn/trn_off.c
++++ b/src/trn/trn_off.c
+@@ -5,6 +5,7 @@
+ #include <dw/partner.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/trn.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
+@@ -56,7 +57,7 @@ int16_t arg;
+ 		TRN_D_8008F340[2].vz = -0xb22;
+ 		MAIN_D_8013536C = 0x64;
+ 		MAIN_D_8013536E = 8;
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeOffCounter++;
+ 		}
+ 		addObject(0xfac, 0, (TickFunction)TRN_tickOffenseTraining, NULL);
+@@ -109,7 +110,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 	case 1:
+ 		TRN_func_800888A0(4);
+ 		if (tickEntityWalkTo(0xfc, 0xff, TRN_D_8008F320.vx, TRN_D_8008F320.vz, 0) == 1) {
+-			startAnimation(ENTITY_TABLE[1], TRN_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][0]);
++			startAnimation(ENTITY_TABLE[1], getTrainingAnimRow(TRN_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 0)[0]);
+ 			PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+ 			MAIN_D_8013537E = 0;
+ 			if (instanceId == 0) {
+@@ -128,7 +129,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		MAIN_D_8013537E++;
+ 		MAIN_D_8013537A++;
+ 		PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+-		if (MAIN_D_8013537E == TRN_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][1]) {
++		if (MAIN_D_8013537E == getTrainingAnimRow(TRN_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 0)[1]) {
+ 			createParticleFX(0, 0, &TRN_D_8008F340[0], NULL, 0);
+ 			createParticleFX(0, 0, &TRN_D_8008F340[1], NULL, 0);
+ 			createParticleFX(0, 0, &TRN_D_8008F340[2], NULL, 0);
+@@ -151,7 +152,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		}
+ 		if (MAIN_D_8013537E >= 0x29) {
+ 			MAIN_D_8013537E = 0;
+-			startAnimation(ENTITY_TABLE[1], TRN_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][0]);
++			startAnimation(ENTITY_TABLE[1], getTrainingAnimRow(TRN_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 0)[0]);
+ 			TRAINING_STATE = 2;
+ 		}
+ 		r = 10;
+@@ -196,7 +197,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 	case 7:
+ 		MAIN_D_8013537E++;
+ 		MAIN_D_8013537A++;
+-		if (MAIN_D_8013537E == TRN_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][1]) {
++		if (MAIN_D_8013537E == getTrainingAnimRow(TRN_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 0)[1]) {
+ 			createParticleFX(0, 0, &TRN_D_8008F340[0], NULL, 0);
+ 			createParticleFX(0, 0, &TRN_D_8008F340[1], NULL, 0);
+ 			createParticleFX(0, 0, &TRN_D_8008F340[2], NULL, 0);
+@@ -214,7 +215,7 @@ void TRN_tickOffenseTraining(int32_t instanceId)
+ 		if (MAIN_D_8013537E == 0x2e) {
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_8013536C, MAIN_D_8013536E, 1);
+-			startAnimation(ENTITY_TABLE[1], TRN_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][0]);
++			startAnimation(ENTITY_TABLE[1], getTrainingAnimRow(TRN_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 0)[0]);
+ 			MAIN_D_8013537E = 0;
+ 			TRAINING_STATE = 7;
+ 		}
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 2dab60c..c4af63c 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -52,7 +52,7 @@ static void *trn_reward_functions[] = {
+ };
+ 
+ // clang-format off
+-int8_t TRN_TRAINING_ANIM_IDS[67][2] = {
++int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
+ 	{ 0x0, 0x0 }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x33, 0xc },
+ 	{ 0x2e, 0x14 }, { 0x35, 0x14 }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x35, 0xd }, { 0x2e, 0xa }, { 0x2e, 0x14 },
+@@ -671,11 +671,11 @@ int16_t TRN_calculateTrainingMultiplier(int32_t type, int16_t mode, int16_t flag
+ 	}
+ 
+ 	den = 10;
+-	if ((DIGIMON_DATA[type].level == 1) || (DIGIMON_DATA[type].level == 2)) {
++	if ((DIGI_PARA(type).level == 1) || (DIGI_PARA(type).level == 2)) {
+ 		num = num * 9;
+-	} else if (DIGIMON_DATA[type].level == 3) {
++	} else if (DIGI_PARA(type).level == 3) {
+ 		num = num * 10;
+-	} else if (DIGIMON_DATA[type].level == 4) {
++	} else if (DIGI_PARA(type).level == 4) {
+ 		num = num * 11;
+ 	} else {
+ 		num = num * 12;
+@@ -823,7 +823,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+ 	int8_t best;
+ 
+ 	for (n = 0; n < 3; n++) {
+-		special[n] = DIGIMON_DATA[type].special[n];
++		special[n] = DIGI_PARA(type).special[n];
+ 	}
+ 
+ 	moveId[0] = moveId[1] = moveId[2] = -1;
+@@ -837,7 +837,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+ 				continue;
+ 			}
+ 			for (j = 0; j < 16; j++) {
+-				if (TRN_D_8008F14C[k + special[i] * 8] == DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].moves[j]) {
++				if (TRN_D_8008F14C[k + special[i] * 8] == DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).moves[j]) {
+ 					moveId[i] = TRN_D_8008F14C[k + special[i] * 8];
+ 					weight[i] = TRN_D_8008F184[k][i];
+ 				}
+diff --git a/src/trn/trn_speed.c b/src/trn/trn_speed.c
+index 4261ea1..a1f5a7a 100644
+--- a/src/trn/trn_speed.c
++++ b/src/trn/trn_speed.c
+@@ -34,7 +34,7 @@ int16_t arg;
+ 		TRN_D_8008F320.vx = 0x2d;
+ 		TRN_D_8008F320.vy = 0;
+ 		TRN_D_8008F320.vz = -0x184;
+-		if (DIGIMON_DATA[PARTNER_ENTITY.digimonEntity.entity.type].level < 3) {
++		if (DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level < 3) {
+ 			PARTNER_PARA.upgradeSpeedCounter++;
+ 		}
+ 		addObject(0xfad, 0, (TickFunction)TRN_tickSpeedTraining, NULL);
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 4cedaea..acf3ae2 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -216,11 +216,11 @@ int16_t TRN2_calculateTrainingMultiplier(type, mode)
+ 	}
+ 
+ 	den = 10;
+-	if ((DIGIMON_DATA[type].level == 1) || (DIGIMON_DATA[type].level == 2)) {
++	if ((DIGI_PARA(type).level == 1) || (DIGI_PARA(type).level == 2)) {
+ 		num = num * 9;
+-	} else if (DIGIMON_DATA[type].level == 3) {
++	} else if (DIGI_PARA(type).level == 3) {
+ 		num = num * 10;
+-	} else if (DIGIMON_DATA[type].level == 4) {
++	} else if (DIGI_PARA(type).level == 4) {
+ 		num = num * 11;
+ 	} else {
+ 		num = num * 12;
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 6f8bcab..7984c97 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -6,6 +6,7 @@
+ #include <dw/partner.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/trn2.h>
+ #include <dw/types.h>
+ #include <dw/world_object.h>
+@@ -34,7 +35,7 @@ static void *trn2_off_functions[] = {
+ int16_t MAIN_D_801353C6;
+ 
+ // clang-format off
+-int8_t TRN2_TRAINING_ANIM_IDS[67][2] = {
++int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66) */
+ 	{ 0x0, 0x0 }, { 0x2e, 0xa }, { 0x2e, 0xa }, { 0x33, 0xc },
+ 	{ 0x2e, 0x14 }, { 0x35, 0x14 }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	{ 0x2e, 0xa }, { 0x35, 0xd }, { 0x2e, 0xa }, { 0x2e, 0x14 },
+@@ -109,7 +110,7 @@ int16_t instanceId;
+ 	case 1:
+ 		TRN2_func_8008AA84(4);
+ 		if (tickEntityWalkTo(0xfc, 0xff, TRN2_D_8008DC1C.vx, TRN2_D_8008DC1C.vz, 0) == 1) {
+-			startAnimation(ENTITY_TABLE[1], TRN2_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][0]);
++			startAnimation(ENTITY_TABLE[1], getTrainingAnimRow(TRN2_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 1)[0]);
+ 			PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+ 			MAIN_D_801353C6 = 0;
+ 			PARTNER_ENTITY.digimonEntity.entity.posData->rotation.vy = 0x400;
+@@ -123,7 +124,7 @@ int16_t instanceId;
+ 		MAIN_D_801353C6++;
+ 		MAIN_D_801353C2++;
+ 		PARTNER_ENTITY.digimonEntity.entity.anim.animFlag |= 2;
+-		if (MAIN_D_801353C6 == TRN2_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][1]) {
++		if (MAIN_D_801353C6 == getTrainingAnimRow(TRN2_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 1)[1]) {
+ 			createParticleFX(0, 0, &TRN2_D_8008DC3C[0], NULL, 0);
+ 			createParticleFX(0, 0, &TRN2_D_8008DC3C[1], NULL, 0);
+ 			createParticleFX(0, 0, &TRN2_D_8008DC3C[2], NULL, 0);
+@@ -141,7 +142,7 @@ int16_t instanceId;
+ 		if (MAIN_D_801353C6 == 0x2e) {
+ 			setMapObjectsFlag(0x27, 4, 0);
+ 			setMapObjectsFlag(MAIN_D_801353B4, MAIN_D_801353B6, 1);
+-			startAnimation(ENTITY_TABLE[1], TRN2_TRAINING_ANIM_IDS[PARTNER_ENTITY.digimonEntity.entity.type][0]);
++			startAnimation(ENTITY_TABLE[1], getTrainingAnimRow(TRN2_TRAINING_ANIM_IDS, PARTNER_ENTITY.digimonEntity.entity.type, 1)[0]);
+ 			MAIN_D_801353C6 = 0;
+ 			MAIN_D_801353BD = 2;
+ 		}
+@@ -197,13 +198,13 @@ int16_t arg;
+ 		TRN2_D_8008DC1C.vy = 0;
+ 		TRN2_D_8008DC1C.vz = 0x3f8;
+ 		TRN2_D_8008DC3C[0].vx = -0x3c6;
+-		TRN2_D_8008DC3C[0].vy = -DIGIMON_DATA[ENTITY_TABLE[1]->type].height;
++		TRN2_D_8008DC3C[0].vy = -DIGI_PARA(ENTITY_TABLE[1]->type).height;
+ 		TRN2_D_8008DC3C[0].vz = 0x3f8;
+ 		TRN2_D_8008DC3C[1].vx = -0x3b6;
+-		TRN2_D_8008DC3C[1].vy = -DIGIMON_DATA[ENTITY_TABLE[1]->type].height;
++		TRN2_D_8008DC3C[1].vy = -DIGI_PARA(ENTITY_TABLE[1]->type).height;
+ 		TRN2_D_8008DC3C[1].vz = 0x3e8;
+ 		TRN2_D_8008DC3C[2].vx = -0x3a2;
+-		TRN2_D_8008DC3C[2].vy = -DIGIMON_DATA[ENTITY_TABLE[1]->type].height;
++		TRN2_D_8008DC3C[2].vy = -DIGI_PARA(ENTITY_TABLE[1]->type).height;
+ 		TRN2_D_8008DC3C[2].vz = 0x3d4;
+ 		MAIN_D_801353B8 = 4;
+ 		MAIN_D_801353BA = 3;
+@@ -216,7 +217,7 @@ int16_t arg;
+ 		TRN2_D_8008DC1C.vy = 0;
+ 		TRN2_D_8008DC1C.vz = -0x3bf;
+ 		TRN2_D_8008DC3C[0].vx = 0x63e;
+-		TRN2_D_8008DC3C[0].vy = -DIGIMON_DATA[ENTITY_TABLE[1]->type].height;
++		TRN2_D_8008DC3C[0].vy = -DIGI_PARA(ENTITY_TABLE[1]->type).height;
+ 		TRN2_D_8008DC3C[0].vz = -0x3bf;
+ 		MAIN_D_801353B4 = 0xe;
+ 		MAIN_D_801353B6 = 1;
+diff --git a/src/vs/vs_camera.c b/src/vs/vs_camera.c
+index 7fc14f6..2b194e9 100644
+--- a/src/vs/vs_camera.c
++++ b/src/vs/vs_camera.c
+@@ -469,8 +469,8 @@ void VS_updateCameraLerp(int32_t t, int8_t flip)
+ 
+ 	off = VS_INTRO_CAMERA_STAGE2_POS;
+ 	rot = VS_INTRO_CAMERA_STAGE2_ROT;
+-	base = ((((DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height +
+-	           DIGIMON_DATA[VS_FOCUSED_ENTITY->type].radius) /
++	base = ((((DIGI_PARA(VS_FOCUSED_ENTITY->type).height +
++	           DIGI_PARA(VS_FOCUSED_ENTITY->type).radius) /
+ 	          2) *
+ 	         0x62c) /
+ 	        450);
+@@ -489,7 +489,7 @@ void VS_updateCameraLerp(int32_t t, int8_t flip)
+ 	}
+ 
+ 	rot.vy += VS_FOCUSED_ENTITY->posData->rotation.vy;
+-	off.vy = (-DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height * 2) / 3;
++	off.vy = (-DIGI_PARA(VS_FOCUSED_ENTITY->type).height * 2) / 3;
+ 	VS_setViewpointFromBone(VS_FOCUSED_ENTITY, &off, &rot, dist);
+ }
+ 
+@@ -566,8 +566,8 @@ void VS_tickCameraChase(void)
+ 				rot.vy = lerp(0x638, 0x293, 0, 0x23, dist);
+ 			}
+ 			rot.vy += VS_FOCUSED_ENTITY->posData->rotation.vy;
+-			off.vy = (-DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height * 7) / 10;
+-			d2 = (((DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height + DIGIMON_DATA[VS_FOCUSED_ENTITY->type].radius) / 2) * 0x5aa) / 450;
++			off.vy = (-DIGI_PARA(VS_FOCUSED_ENTITY->type).height * 7) / 10;
++			d2 = (((DIGI_PARA(VS_FOCUSED_ENTITY->type).height + DIGI_PARA(VS_FOCUSED_ENTITY->type).radius) / 2) * 0x5aa) / 450;
+ 			VS_setViewpointFromBone(VS_FOCUSED_ENTITY, &off, &rot, d2);
+ 			GS_VIEWPOINT.vpy = (off.vy * 7) / 10;
+ 			if (GS_VIEWPOINT.vpy > -0xb4) {
+@@ -623,8 +623,8 @@ void VS_startCameraChase(entity, dx, side)
+ 		rot.vy = 0x638;
+ 	}
+ 	rot.vy += VS_FOCUSED_ENTITY->posData->rotation.vy;
+-	off.vy = (-DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height * 2) / 3;
+-	dist = (((DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height + DIGIMON_DATA[VS_FOCUSED_ENTITY->type].radius) / 2) * 0x5aa) / 450;
++	off.vy = (-DIGI_PARA(VS_FOCUSED_ENTITY->type).height * 2) / 3;
++	dist = (((DIGI_PARA(VS_FOCUSED_ENTITY->type).height + DIGI_PARA(VS_FOCUSED_ENTITY->type).radius) / 2) * 0x5aa) / 450;
+ 	VS_setViewpointFromBone(VS_FOCUSED_ENTITY, &off, &rot, dist);
+ 	GS_VIEWPOINT.vpy = (off.vy * 3) / 10;
+ 	if (GS_VIEWPOINT.vpy > -0xb4) {
+@@ -658,7 +658,7 @@ void VS_tickCameraIntro(void)
+ 	 * VS_D_80071A18[0], which follows it there; GCC places other data next. */
+ 	VS_setViewpointFromBone(VS_D_80071A18[0], &off, &rot, VS_D_80071A0C[2]);
+ #endif
+-	GS_VIEWPOINT.vry = (-DIGIMON_DATA[VS_D_80071A18[0]->type].height * 2) / 3;
++	GS_VIEWPOINT.vry = (-DIGI_PARA(VS_D_80071A18[0]->type).height * 2) / 3;
+ 	GS_VIEWPOINT.vpy = -processSomeArenaArrays(0x16, p[0], VS_D_800706C8, VS_D_80071AE0, VS_D_80071A88);
+ 	p[0]++;
+ }
+@@ -697,19 +697,19 @@ void VS_startCameraIntro(Entity *target, Entity *entity)
+ 	}
+ 	VS_setViewpointFromBone(target, &off, &rot, VS_D_80071A0C[2]);
+ 
+-	VS_D_80071A0C[3] = DIGIMON_DATA[target->type].radius * 3 * 2;
+-	GS_VIEWPOINT.vry = (-DIGIMON_DATA[target->type].height * 2) / 3;
+-	GS_VIEWPOINT.vpy = -DIGIMON_DATA[entity->type].height;
++	VS_D_80071A0C[3] = DIGI_PARA(target->type).radius * 3 * 2;
++	GS_VIEWPOINT.vry = (-DIGI_PARA(target->type).height * 2) / 3;
++	GS_VIEWPOINT.vpy = -DIGI_PARA(entity->type).height;
+ 	VS_D_80071A0C[4] = GS_VIEWPOINT.vpy;
+ 	VS_D_80071A0C[5] = GS_VIEWPOINT.vpy * 250 / 100;
+-	VS_D_80071AE0[0] = DIGIMON_DATA[entity->type].height;
+-	VS_D_80071AE0[1] = DIGIMON_DATA[entity->type].height;
+-	VS_D_80071AE0[2] = DIGIMON_DATA[entity->type].height * 200 / 100;
+-	VS_D_80071AE0[3] = DIGIMON_DATA[target->type].height * 380 / 100;
+-	VS_D_80071AF0[0] = DIGIMON_DATA[target->type].height * 250 / 100;
++	VS_D_80071AE0[0] = DIGI_PARA(entity->type).height;
++	VS_D_80071AE0[1] = DIGI_PARA(entity->type).height;
++	VS_D_80071AE0[2] = DIGI_PARA(entity->type).height * 200 / 100;
++	VS_D_80071AE0[3] = DIGI_PARA(target->type).height * 380 / 100;
++	VS_D_80071AF0[0] = DIGI_PARA(target->type).height * 250 / 100;
+ 	for (i = 5; i < 0x16; i++) {
+ 		VS_D_80071AE0[i] =
+-			customRandom(0x50, DIGIMON_DATA[target->type].height * 180 / 100);
++			customRandom(0x50, DIGI_PARA(target->type).height * 180 / 100);
+ 	}
+ 	initializeSomeArenaArrays(0x16, (int32_t)VS_D_800706C8, (int32_t)VS_D_80071AE0, VS_D_80071A88);
+ 
+@@ -743,7 +743,7 @@ void VS_applyEntityViewpoint(void)
+ 	GsSetProjection(VIEWPORT_DISTANCE);
+ 	m = &VS_FOCUSED_ENTITY->posData->posMatrix.workm;
+ 	GS_VIEWPOINT.vrx = m->t[0];
+-	GS_VIEWPOINT.vry = -DIGIMON_DATA[VS_FOCUSED_ENTITY->type].height * 2 / 3;
++	GS_VIEWPOINT.vry = -DIGI_PARA(VS_FOCUSED_ENTITY->type).height * 2 / 3;
+ 	GS_VIEWPOINT.vrz = m->t[2];
+ 	GsSetRefView2(&GS_VIEWPOINT);
+ }
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index 273c27c..68167bc 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -461,7 +461,7 @@ void VS_setupDemoCombat(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGIMON_DATA[entity->entity.type].moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+@@ -792,7 +792,7 @@ void VS__combatSetup(void)
+ 
+ 		for (j = 0; j < 4; ++j) {
+ 			if (entity->stats.base.moves[j] != 0xff) {
+-				effect = DIGIMON_DATA[entity->entity.type].moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
++				effect = DIGI_PARA(entity->entity.type).moves[entity->stats.base.moves[j] - 0x2e] + 0x100;
+ 				moves[moveCount++] = effect;
+ 			}
+ 		}
+@@ -1042,7 +1042,7 @@ void VS__tickDigimonAI(fighterId)
+ 					                   COMBAT_DATA_PTR->player.currentCommand[fighterId] - 8);
+ 				}
+ 				VS_applyChargeRequirement(entity, data,
+-				                          DIGIMON_DATA[entity->entity.type].moves[data->queuedAnim - 0x2e]);
++				                          DIGI_PARA(entity->entity.type).moves[data->queuedAnim - 0x2e]);
+ 				return;
+ 			}
+ 			break;
+@@ -1052,7 +1052,7 @@ void VS__tickDigimonAI(fighterId)
+ 				VS_setupQueuedMove(entity, data, fighterId, 3);
+ 			}
+ 			VS_applyChargeRequirement(entity, data,
+-			                          DIGIMON_DATA[entity->entity.type].moves[data->queuedAnim - 0x2e]);
++			                          DIGI_PARA(entity->entity.type).moves[data->queuedAnim - 0x2e]);
+ 			return;
+ 		}
+ 
+@@ -1562,7 +1562,7 @@ void VS__tickDigimonAttacking(Entity *entity, DigimonEntity *target,
+ 			for (i = 0; i <= ENEMY_COUNT; ++i) {
+ 				if (i != fighterId) {
+ 					other = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+-					if (DIGIMON_DATA[other->type].moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
++					if (DIGI_PARA(other->type).moves[(uint32_t)(other->anim.animId - 0x2e)] == 0x2d) {
+ 						if (fighterId == COMBAT_DATA_PTR->fighter[i].targetId) {
+ 							return;
+ 						}
+@@ -1794,7 +1794,7 @@ void VS__tickDigimonOther(DigimonEntity *entity, DigimonEntity *other,
+ 	case 2:
+ 	case 3:
+ 		VS__tickDigimonAttackRanged(entity, other, data,
+-		                            DIGIMON_DATA[entity->entity.type].moves[data->queuedAnim - 0x2e]);
++		                            DIGI_PARA(entity->entity.type).moves[data->queuedAnim - 0x2e]);
+ 		break;
+ 	case 4:
+ 		handleBattleIdle(entity, &entity->stats, data->flags);
+@@ -1865,7 +1865,7 @@ int32_t VS__tickDigimonAttackClose(DigimonEntity *entity, DigimonEntity *other,
+ 	savedRotation = *rotation;
+ 	if (other != NULL) {
+ 		distance = VS_getDistanceSquared(&entity->entity, &other->entity);
+-		radius = DIGIMON_DATA[entity->entity.type].radius + DIGIMON_DATA[other->entity.type].radius;
++		radius = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
+ 		radius = radius * radius;
+ 		if (distance <= radius) {
+ 			handleBattleIdle(entity, &entity->stats, data->flags);
+@@ -1954,7 +1954,7 @@ void VS__tickDigimonAttackRanged(DigimonEntity *entity, DigimonEntity *other,
+ 	}
+ 
+ 	distance = VS_getDistanceSquared(&entity->entity, &other->entity);
+-	total = DIGIMON_DATA[entity->entity.type].radius + DIGIMON_DATA[other->entity.type].radius;
++	total = DIGI_PARA(entity->entity.type).radius + DIGI_PARA(other->entity.type).radius;
+ 	total = *(uint32_t *)&MOVE_DATA[move].distance + total * total;
+ 
+ 	if (distance > total + total * 3 / 10) {
+@@ -2257,8 +2257,8 @@ int32_t VS__getBaseDistance(Entity *a, Entity *b)
+ {
+ 	int32_t range;
+ 
+-	range = (DIGIMON_DATA[a->type].radius +
+-	         DIGIMON_DATA[b->type].radius + 200);
++	range = (DIGI_PARA(a->type).radius +
++	         DIGI_PARA(b->type).radius + 200);
+ 
+ 	return range * range;
+ }
+@@ -2560,7 +2560,7 @@ void VS__renderPlayerMarker(id)
+ 	gte_stszotz(&otz);
+ 	sxy[0] -= (int16_t)(160 - DRAWING_OFFSET_X);
+ 	sxy[1] -= (int16_t)(120 - DRAWING_OFFSET_Y);
+-	offset = VIEWPORT_DISTANCE * (DIGIMON_DATA[entity->type].radius / 2) / (otz * 4);
++	offset = VIEWPORT_DISTANCE * (DIGI_PARA(entity->type).radius / 2) / (otz * 4);
+ 	sxy[0] += (int16_t)offset;
+ 
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+diff --git a/src/vs/vs_demo.c b/src/vs/vs_demo.c
+index f23444d..3e1515d 100644
+--- a/src/vs/vs_demo.c
++++ b/src/vs/vs_demo.c
+@@ -206,7 +206,7 @@ void VS_randomizeDemoFighter(Entity *entity)
+ 	int16_t base;
+ 
+ 	base = 100;
+-	switch (DIGIMON_DATA[entity->type].level) {
++	switch (DIGI_PARA(entity->type).level) {
+ 	case 3:
+ 		div = 1;
+ 		mul = 1;
+@@ -294,8 +294,8 @@ void VS_randomizeDemoFighter(Entity *entity)
+ 	}
+ 	stats->base.moves[3] = 0xff;
+ 	for (i = 0; i < 0x10; i++) {
+-		if (DIGIMON_DATA[entity->type].moves[i] >= 0x3a &&
+-		    DIGIMON_DATA[entity->type].moves[i] < 0x71) {
++		if (DIGI_PARA(entity->type).moves[i] >= 0x3a &&
++		    DIGI_PARA(entity->type).moves[i] < 0x71) {
+ 			stats->base.moves[3] = i + 0x2e;
+ 			return;
+ 		}
+@@ -394,7 +394,7 @@ void VS_randomizeTrialDigimon(RegisteredDigimon *digimon)
+ 	int16_t base;
+ 
+ 	base = 100;
+-	switch (DIGIMON_DATA[digimon->digimonId].level) {
++	switch (DIGI_PARA(digimon->digimonId).level) {
+ 	case 3:
+ 		div = 1;
+ 		mul = 1;
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 1d5c303..0ccabee 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -1918,7 +1918,7 @@ void VS_applyRadiusAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			goto next;
+ 		}
+-		radius = DIGIMON_DATA[e->type].radius;
++		radius = DIGI_PARA(e->type).radius;
+ 		radius *= radius;
+ 		radius += r;
+ 		dx = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 4) - (int32_t)e->posData->location.vx;
+@@ -1933,8 +1933,8 @@ void VS_applyRadiusAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[*(int32_t *)&EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		VS_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
+-		pos.vy = -DIGIMON_DATA[e->type].height / 2;
++		VS_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
++		pos.vy = -DIGI_PARA(e->type).height / 2;
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, i);
+ 		*hitFlag = 1;
+ next:
+@@ -1979,7 +1979,7 @@ void VS_applyLineAttackHit(void)
+ 		if (e->isOnMap == 0) {
+ 			continue;
+ 		}
+-		r = DIGIMON_DATA[e->type].radius;
++		r = DIGI_PARA(e->type).radius;
+ 		rect[0] = e->posData->location.vx - r;
+ 		rect[2] = e->posData->location.vx + r;
+ 		rect[1] = e->posData->location.vz - r;
+@@ -1987,7 +1987,7 @@ void VS_applyLineAttackHit(void)
+ 		if (doSomethingWithSomePoints(rect, line) != -1) {
+ 			continue;
+ 		}
+-		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGIMON_DATA[e->type].height - arg[1])) {
++		if (*(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8) < (-DIGI_PARA(e->type).height - arg[1])) {
+ 			continue;
+ 		}
+ 		for (j = 1; j < 10; j++) {
+@@ -1996,7 +1996,7 @@ void VS_applyLineAttackHit(void)
+ 			}
+ 		}
+ 		((DigimonEntity *)ENTITY_TABLE[EFE_HIT_ENTITY_INDEX])->stats.current.isHit = 1;
+-		VS_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGIMON_DATA[e->type].radius);
++		VS_calculateAttackHitPosition(&pos, e, EFE_SCRIPT_CONTEXT->sourceEntity, DIGI_PARA(e->type).radius);
+ 		pos.vy = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 8);
+ 		addAttackObject(EFE_HIT_ENTITY_INDEX, 1, &pos, COMBAT_EFFECT_ITR, EFE_SUB_EFFECT_INDEX, j);
+ 		*out = 1;
+@@ -3258,8 +3258,8 @@ void VS_getSourceDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->sourceEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->sourceEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -3737,8 +3737,8 @@ void VS_getTargetDigimonSize(void)
+ 	int16_t height;
+ 
+ 	out = EFE_POP1(EfeVector *);
+-	radius = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].radius;
+-	height = DIGIMON_DATA[EFE_SCRIPT_CONTEXT->targetEntity->type].height;
++	radius = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).radius;
++	height = DIGI_PARA(EFE_SCRIPT_CONTEXT->targetEntity->type).height;
+ 	out->vx = radius;
+ 	out->vy = height;
+ 	out->vz = radius;
+@@ -4777,7 +4777,7 @@ int16_t VS_calculateAttackHitPosition(SVECTOR *out, Entity *self, Entity *other,
+ 	rot.vz = 0;
+ 	RotMatrixZYX(&rot, &m);
+ 	out->vx = 0;
+-	out->vy = -DIGIMON_DATA[self->type].height;
++	out->vy = -DIGI_PARA(self->type).height;
+ 	out->vz = y;
+ 	ApplyMatrixSV(&m, out, out);
+ 	out->vx += (int16_t)self->posData->location.vx;
+@@ -5289,7 +5289,7 @@ void VS_renderStunEffect(int32_t idx)
+ 	}
+ 
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = -DIGIMON_DATA[p->entity->type].height * 113 / 100;
++	pos.vy = -DIGI_PARA(p->entity->type).height * 113 / 100;
+ 	pos.vz = p->entity->posData->location.vz;
+ 	otz = worldPosToScreenPos(&pos, &screen);
+ 
+@@ -5387,9 +5387,9 @@ void VS_renderStunSubEffect(int32_t i)
+ 
+ 	p = &VS_STUN_SUB_EFFECTS[i];
+ 	pos.vx = p->entity->posData->location.vx;
+-	pos.vy = lerp(-DIGIMON_DATA[p->entity->type].height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
++	pos.vy = lerp(-DIGI_PARA(p->entity->type).height * 113 / 100, p->entity->posData->location.vy, 0, 0xf, p->frame);
+ 	pos.vz = p->entity->posData->location.vz;
+-	s = DIGIMON_DATA[p->entity->type].radius * 0x4000 / 350;
++	s = DIGI_PARA(p->entity->type).radius * 0x4000 / 350;
+ 	if (p->frame < 4) {
+ 		s = lerp(s * 10 / 100, s, 0, 4, p->frame);
+ 	}
+@@ -5514,7 +5514,7 @@ void VS_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sx = 0x1000;
+ 	}
+-	sx = sx * DIGIMON_DATA[e->type].radius / 150;
++	sx = sx * DIGI_PARA(e->type).radius / 150;
+ 
+ 	t = lerp(0, 0x200, 0, 0x10, fa->frame);
+ 	if (fa->frame < 5) {
+@@ -5522,7 +5522,7 @@ void VS_renderFinisherAura(int32_t id)
+ 	} else {
+ 		sy = 0x1000;
+ 	}
+-	sy = sy * DIGIMON_DATA[e->type].height / 350;
++	sy = sy * DIGI_PARA(e->type).height / 350;
+ 	sy = sy * 85 / 100 + sy * 15 / 100 * _sin(t) / 0x1000;
+ 
+ 	rot = VS_FINISHER_AURA_ROTATION;
+@@ -5543,7 +5543,7 @@ void VS_renderFinisherAura(int32_t id)
+ 
+ 		col = VS_FINISHER_AURA_COLOR;
+ 		s = fa->frame * 0x1000 / 7;
+-		s = s * DIGIMON_DATA[e->type].radius / 150;
++		s = s * DIGI_PARA(e->type).radius / 150;
+ 		col.r = (uint32_t)col.r * (7 - fa->frame) / 7;
+ 		col.g = (uint32_t)col.g * (7 - fa->frame) / 7;
+ 		col.b = (uint32_t)col.b * (7 - fa->frame) / 7;
+@@ -5786,8 +5786,8 @@ int32_t VS_addAuraProjectile(Entity *e)
+ 	aura->type = type;
+ 	q = &e->posData->posMatrix.workm;
+ 	aura->position.vx = 0;
+-	aura->position.vy = -DIGIMON_DATA[e->type].height * 50 / 100;
+-	aura->position.vz = -DIGIMON_DATA[e->type].height * 50 / 100;
++	aura->position.vy = -DIGI_PARA(e->type).height * 50 / 100;
++	aura->position.vz = -DIGI_PARA(e->type).height * 50 / 100;
+ 	ApplyMatrixSV(q, &aura->position, &aura->position);
+ 	aura->position.vx += (int16_t)q->t[0];
+ 	aura->position.vy += (int16_t)q->t[1];
+diff --git a/src/vs/vs_intro.c b/src/vs/vs_intro.c
+index aa13efb..53bcda4 100644
+--- a/src/vs/vs_intro.c
++++ b/src/vs/vs_intro.c
+@@ -191,7 +191,7 @@ void VS__addIntroText(entity, id)
+ 	VS__INTRO_DATA_FRAME_COUNT = 4;
+ 	VS__INTRO_DATA_RENDERED_CHARACTERS = 0;
+ 
+-	switch (DIGIMON_DATA[entity->type].special[0]) {
++	switch (DIGI_PARA(entity->type).special[0]) {
+ 	case 0:
+ 		VS__INTRO_DATA_COLOR = 3;
+ 		break;
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 0be9a6d..d3ecaa6 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -354,8 +354,8 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 	int32_t dmg;
+ 
+ 	for (i = 0; i < 3; i++) {
+-		if (DIGIMON_DATA[defender->entity.type].special[i] != 0xff) {
+-			eff[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGIMON_DATA[defender->entity.type].special[i]];
++		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
++			eff[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			eff[i] = 10;
+ 		}
+@@ -589,7 +589,7 @@ void VS_resolveAttack(void)
+ 		}
+ 		entity = ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[i]];
+ 		tech = VS_getAttackTech(&attack);
+-		if (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
++		if (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] == 0x2d) {
+ 			if (COMBAT_DATA_PTR->player.entityIds[fighter->targetId] == attack.casterId) {
+ 				((DigimonEntity *)entity)->stats.current.isHit = 0;
+ 				continue;
+@@ -632,14 +632,14 @@ skipViewpoint:
+ 			continue;
+ 		}
+ 		handled = 0;
+-		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGIMON_DATA[entity->type].moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
++		if (!(fighter->flags & FIGHTER_FLAG_BLOCKING) && (MOVE_DATA[tech].range == 1) && (DIGI_PARA(entity->type).moves[(uint32_t)(entity->anim.animId - 0x2e)] != 0x2d)) {
+ 			moves = ((DigimonEntity *)entity)->stats.base.moves;
+ 			for (j = 0; j < 4; j++) {
+ 				if (((DigimonEntity *)entity)->stats.current.currentMP < 0xa5) {
+ 					break;
+ 				}
+-				if ((moves[j] != 0xff) && (DIGIMON_DATA[entity->type].moves[moves[j] - 0x2e] == 0x2d)) {
+-					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGIMON_DATA[entity->type].level)) {
++				if ((moves[j] != 0xff) && (DIGI_PARA(entity->type).moves[moves[j] - 0x2e] == 0x2d)) {
++					if (randomLimit(100) < (((DigimonEntity *)entity)->stats.base.speed / DIGI_PARA(entity->type).level)) {
+ 						fighter->queuedAnim = moves[j];
+ 						fighter->targetId = VS_getFighterSlot(attack.casterId);
+ 						fighter->moveRange = 1;
+@@ -1455,7 +1455,7 @@ int16_t VS_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGIMON_DATA[target->type].special[0]];
++			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -1684,10 +1684,10 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + VS_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[digimon->entity.type].special[0]);
++			weights[i] += fighter->buffPrioTimer + VS_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += VS_calculateElementBonus(MOVE_DATA[tech].special, DIGIMON_DATA[ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type].special[0]);
++		weights[i] += VS_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index b33ec38..b6b30fc 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -1495,8 +1495,8 @@ int32_t VS_getFirstSpecialMove(int32_t index)
+ 	int32_t i;
+ 
+ 	for (i = 15; i >= 0; i--) {
+-		if (DIGIMON_DATA[index].moves[i] != 0xff) {
+-			if (DIGIMON_DATA[index].moves[i] >= 0x3a) {
++		if (DIGI_PARA(index).moves[i] != 0xff) {
++			if (DIGI_PARA(index).moves[i] >= 0x3a) {
+ 				return i + 0x2e;
+ 			}
+ 		}
+diff --git a/src/vs/vs_select.c b/src/vs/vs_select.c
+index a14c3a3..05e528d 100644
+--- a/src/vs/vs_select.c
++++ b/src/vs/vs_select.c
+@@ -788,7 +788,7 @@ void VS__renderSelectDigimonPlayer(id)
+ 				strcpy(buf, STR_NOT_EQUIPPED);
+ 				text = (uint16_t *)buf;
+ 			} else {
+-				moveId = DIGIMON_DATA[fighter->digimonId].moves[fighter->moves[j] - 0x2e];
++				moveId = DIGI_PARA(fighter->digimonId).moves[fighter->moves[j] - 0x2e];
+ 				text = (uint16_t *)MOVE_NAMES[moveId];
+ 			}
+ 			halfLen = strlen((char *)text) / 2;

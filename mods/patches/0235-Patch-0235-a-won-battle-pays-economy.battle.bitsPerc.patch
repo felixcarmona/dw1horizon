@@ -1,0 +1,68 @@
+From efb6b8bf395b13c3a3d88f6fc945512417801f9c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 25 Oct 2026 06:47:58 +0000
+Subject: [PATCH] Patch 0235: a won battle pays economy.battle.bitsPercent of
+ the enemies' bits (MOD_ECON_BATTLE_BITS, slot 12; left out: 100). The bits
+ are summed wide, scaled, then put in the u16 counter (at most 65535). 52
+ bytes of heap
+
+---
+ include/dw/mod_rules.h | 3 ++-
+ src/main/battle_ui.c   | 8 ++++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index c776ced0..1ca3ded5 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -32,7 +32,7 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+  * written by tools/balance.py from content/tables/economy.json. A cap left out is the limit of what holds the value (money 2^31 - 1, merit 32767, a stack 255); a
+  * percent left out is 100 (a price ratio) or 0 (the part of the items lost on a defeat); an amount left out is 0.
+  */
+-#define MOD_ECON_SIZE		12
++#define MOD_ECON_SIZE		13
+ #define MOD_ECON_MONEY_CAP	0
+ #define MOD_ECON_MERIT_CAP	1
+ #define MOD_ECON_STACK_CAP	2
+@@ -45,6 +45,7 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ #define MOD_ECON_CARD_CUT3	9
+ #define MOD_ECON_CARD_MAX	10
+ #define MOD_ECON_PACK_PRICE	11 /* MOD (amounts): what a card pack costs (left out: nothing) */
++#define MOD_ECON_BATTLE_BITS	12 /* MOD (economy): the per cent of the enemies' bits a won battle pays (left out: 100) */
+ extern int32_t MOD_ECON[MOD_ECON_SIZE];
+ int32_t econCap(int32_t slot, int32_t whenLeftOut);
+ int32_t econAmt(int32_t slot);
+diff --git a/src/main/battle_ui.c b/src/main/battle_ui.c
+index d8681e6c..dd0955e4 100644
+--- a/src/main/battle_ui.c
++++ b/src/main/battle_ui.c
+@@ -1,6 +1,7 @@
+ #include <libgs.h>
+ 
+ #include <dw/mod_font.h>
++#include <dw/mod_rules.h>
+ #include <dw/caps.h> /* MOD (caps) */
+ #include <dw/combat.h>
+ #include <dw/entity.h>
+@@ -291,13 +292,16 @@ void handleBattleEndBox(void)
+ 	RECT boxPosition;
+ 	long i;
+ 	int32_t done;
++	int32_t bits;
+ 
+ 	initializeBitText();
+ 
+-	BITS_TO_GAIN = 0;
++	bits = 0; /* MOD (economy): summed wide, scaled by economy.battle.bitsPercent, then into the u16 counter */
+ 	for (i = 1; i <= ENEMY_COUNT; i++) {
+-		BITS_TO_GAIN += NPC_ENTITIES[COMBAT_DATA_PTR->player.entityIds[i] - 2].bits;
++		bits += NPC_ENTITIES[COMBAT_DATA_PTR->player.entityIds[i] - 2].bits;
+ 	}
++	bits = bits * econPercent(MOD_ECON_BATTLE_BITS) / 100;
++	BITS_TO_GAIN = bits > 0xffff ? 0xffff : bits;
+ 
+ 	battleStatsGainsAndDrops(droppedItems);
+ 	setRECT(&boxPosition, -78, 54, 156, 24);
+-- 
+2.55.0
+

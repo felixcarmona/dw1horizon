@@ -1,0 +1,283 @@
+// Readable form of script 178 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 178 {
+    npc jijimon = 5;
+    npc tokomon = 6;
+    npc botamon = 7;
+
+    // the section table, in the order of the original header
+    sections 254, 54, 5, 6, 7, 20, 71, 72, 73, 85, 82, 83, 84, 86, 51;
+
+    on enter replace {    // section 254
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            set_obj_visibility(7, 1);
+        }
+        if (is_recruited(species("Agumon"))) {
+            set_obj_visibility(8, 1);
+        } else {
+            set_rect_impassable(0, 40, 38, 2, 2);
+        }
+    }
+
+    on step(3) replace {    // section 54
+        jump_to_file(193, 55);
+    }
+
+    on talk(jijimon) replace {    // section 5
+        if (!is_recruited(species("Koromon")) && !is_recruited(species("Punimon")) && back_dimension_portal != 0 && is_recruited(species("Botamon")) && is_recruited(species("Yuramon"))) {
+            say(jijimon, text("s178.sec5.u0"));
+            say(tamer, text("s178.sec5.u1"));
+            say(jijimon, text("s178.sec5.u2"));
+            say(tamer, text("s178.sec5.u3"));
+            say(jijimon, text("s178.sec5.u4"));
+        } else {
+            if (is_recruited(species("Koromon")) && !is_recruited(species("Punimon"))) {
+                say(jijimon, text("s178.sec5.u5"));
+                say(tamer, text("s178.sec5.u6"));
+                say(jijimon, text("s178.sec5.u7"));
+                say(tamer, text("s178.sec5.u8"));
+                say(jijimon, text("s178.sec5.u9"));
+                say(tamer, text("s178.sec5.u10"));
+                give_item(item("Chain melon"), 1);
+                if (engine.item_did_not_fit) {
+                    unless (has(item("Spike Club")) < 99) return;
+                    say(tamer, text("s178.sec5.u11"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Chain melon"), 1);
+                }
+                say(tamer, text("s178.sec5.u12"));
+                days_since_passed_out = 0;
+                recruit(species("Punimon"));
+                return;
+            }
+            if (engine.game_beaten && !is_recruited(species("Botamon"))) {
+                say(jijimon, text("s178.sec5.u13"));
+                say(tamer, text("s178.sec5.u14"));
+                say(jijimon, text("s178.sec5.u15"));
+                say(tamer, text("s178.sec5.u16"));
+                say(jijimon, text("s178.sec5.u17"));
+                recruit(species("Botamon"));
+            }
+        }
+        if (is_recruited(species("Agumon"))) {
+            jump_to_file(210, 51);
+        }
+        unless (!debug_test_npcs) goto sec6;
+        animate(jijimon, anim.idle);
+        animate(jijimon, 29);
+        wait(5);
+        say(jijimon, text("s178.sec5.u18"));
+        animate(jijimon, anim.idle);
+        animate(jijimon, 29);
+        wait(5);
+        say(jijimon, text("s178.sec5.u19"));
+        animate(jijimon, anim.idle);
+        animate(jijimon, 29);
+        wait(5);
+        say(jijimon, text("s178.sec5.u20"));
+        animate(jijimon, anim.idle);
+    }
+
+    on talk(tokomon) replace {    // section 6
+        if (!starter_items_given) {
+            if (!coela_point_crossing_done && underground_pond_dig_work < 10) {
+                say(tokomon, text("s178.sec6.u0"));
+                say(narrator, text("s178.sec6.u1"));
+                give_item(item("sm.recovery"), 3);
+                give_item(item("Meat"), 3);
+                give_item(item("MP Floppy"), 3);
+                give_item(item("Restore"), 1);
+                give_item(item("Bandage"), 2);
+                give_item(item("Medicine"), 1);
+                say(tokomon, text("s178.sec6.u2"));
+                starter_items_given = true;
+                return;
+            }
+        }
+        if (!is_recruited(species("Whamon")) && ogre_fortress_cleared) {
+            say(tokomon, text("s178.sec6.u3"));
+            return;
+        }
+        if (invisible_bridge_rumor_heard && invisible_bridge_crossed) {
+            say(tokomon, text("s178.sec6.u4"));
+            return;
+        }
+        if (engine.prosperity >= 6) {
+            say(tokomon, text("s178.sec6.u5"));
+            return;
+        }
+        say(tokomon, text("s178.sec6.u6"));
+    }
+
+    on talk(botamon) replace {    // section 7
+        if (!debug_mode) {
+            jump_to_file(209, 5);
+        }
+        store_random(random_roll, 2);
+        if (engine.prosperity >= 3 && random_roll == 0) {
+            say(botamon, text("s178.sec7.u0"));
+            return;
+        }
+        if (engine.prosperity >= 3 && random_roll == 1) {
+            say(botamon, text("s178.sec7.u1"));
+            return;
+        }
+        if (engine.prosperity >= 3 && random_roll == 2) {
+            say(botamon, text("s178.sec7.u2"));
+            return;
+        }
+        say(botamon, text("s178.sec7.u3"));
+    }
+
+    section(20) replace {    // section 20
+        camera_to(183, 221, speed: 20);
+        await camera;
+        wait(1s);
+        add_stat(6, 9999);
+        add_stat(7, 9999);
+        engine.no_escape = false;
+        animate(jijimon, 29);
+        wait(5);
+        say(jijimon, text("s178.sec20.u0"));
+        animate(jijimon, anim.idle);
+    }
+
+    on step(20) replace {    // section 71
+        jump_to_file(212, 71);
+    }
+
+    on step(21) replace {    // section 72
+        jump_to_file(212, 72);
+    }
+
+    on step(22) replace {    // section 73
+        jump_to_file(212, 73);
+    }
+
+    on use(5) replace {    // section 85
+        if (!save_machine_explained) {
+            save_machine_explained = true;
+            say(tamer, text("s178.sec85.u0"));
+            face(jijimon, tamer);
+            face(tamer, jijimon);
+            wait(5);
+            say(jijimon, text("s178.sec85.u1"));
+            entity_set_rotation(tamer, 0);
+            wait(5);
+            return;
+        }
+        say(narrator, text("s178.sec85.u2"));
+        choice(narrator) {
+            text("s178.sec85.m0.o0") => {
+                fadeout_hud(0);
+                call_routine(routine("save_machine"));
+                return;
+            }
+            text("s178.sec85.m0.o1") => {
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on use(2) replace {    // section 82
+        entity_set_rotation(tamer, 3072);
+        wait(5);
+        sound(0, 0);
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            say(tamer, text("s178.sec82.u0"));
+        } else {
+            say(narrator, text("s178.sec82.u1"));
+        }
+        choice {
+            text("s178.sec82.m0.o0") => {
+                store_date(date_year);
+                add_minutes_to_date_at(date_year, 60);
+                advance_to_date_at(date_year);
+                add_stat(6, 300);
+                add_stat(7, 300);
+                reduce_stat(8, 10);
+                warp_to(218, 2, 255);
+                return;
+            }
+            text("s178.sec82.m0.o1") => {
+                sound(0, 1);
+                return;
+            }
+            cancel => {
+                sound(0, 1);
+                return;
+            }
+        }
+    }
+
+    on use(3) replace {    // section 83
+        unless (!is_recruited(species("Agumon"))) return;
+        entity_set_rotation(tamer, 3072);
+        wait(5);
+        jump_to_file(220, 83);
+    }
+
+    on use(4) replace {    // section 84
+        unless (!is_recruited(species("Agumon"))) return;
+        entity_set_rotation(tamer, 1024);
+        wait(5);
+        jump_to_file(220, 83);
+    }
+
+    on use(6) replace {    // section 86
+        unless (!is_recruited(species("Agumon"))) return;
+        entity_set_rotation(tamer, 2048);
+        wait(5);
+        jump_to_file(220, 83);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -470, -1970);
+        if (!is_recruited(species("Agumon"))) {
+            warp_to(204, 2, 255);
+        }
+        if (!is_recruited(species("Angemon")) && !is_recruited(species("Monzaemon")) && engine.prosperity < 50) {
+            if (!is_recruited(species("Birdramon"))) {
+                if (is_recruited(species("Vegiemon"))) {
+                    warp_to(170, 2, 255);
+                }
+                if (is_recruited(species("Palmon"))) {
+                    warp_to(169, 2, 255);
+                }
+                warp_to(168, 2, 255);
+            }
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(173, 2, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(172, 2, 255);
+            }
+            warp_to(171, 2, 255);
+        }
+        if (!is_recruited(species("Birdramon"))) {
+            if (is_recruited(species("Vegiemon"))) {
+                warp_to(176, 2, 255);
+            }
+            if (is_recruited(species("Palmon"))) {
+                warp_to(175, 2, 255);
+            }
+            warp_to(174, 2, 255);
+        }
+        if (is_recruited(species("Vegiemon"))) {
+            warp_to(179, 2, 255);
+        }
+        if (is_recruited(species("Palmon"))) {
+            warp_to(178, 2, 255);
+        }
+        warp_to(177, 2, 255);
+    }
+}

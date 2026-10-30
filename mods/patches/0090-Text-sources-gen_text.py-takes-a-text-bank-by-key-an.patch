@@ -1,0 +1,491 @@
+From 69eedb6e2ec073ca1f76ac444d55e7929920c920 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 11:19:04 +0000
+Subject: [PATCH] Text sources: gen_text.py takes a text bank by key and
+ encodes the mod font's glyphs; the lab menu, the keeper's box labels and the
+ calendar title keyed
+
+tools/gen_text.py reads text-bank.json ($TEXT_BANK), written by the project's tools/build-full.sh for TEXT=<source>:
+{"font": {char: code}, "text": {key: text}}. A key replaces the yaml's text of that entry (<dir>.<SYMBOL>,
+<dir>.<BLOCK>, <dir>.<BLOCK>.<index>); a character of the mod executable's extra glyphs (F040.., docs/mods/font.md)
+encodes as its two-byte code instead of failing as not Shift-JIS. An empty bank gives the same headers as before.
+A strings block with storage: define writes #define SYMBOL "text": literals of the code become keys without changing
+the binary. Keyed so: the lab menu (text/main/mod_lab.yaml, main.LAB_STR_*), the item keeper's "In hand" and
+"Keeping" (shop.STR_IN_HAND, shop.STR_KEEPING) and the arena calendar's "Tournament" (dget.DGET_STR_TOURNAMENT).
+The headers depend on text-bank.json (mk/text.mk).
+---
+ .gitignore                 |  1 +
+ mk/text.mk                 |  4 +-
+ src/dget/dget.c            |  3 +-
+ src/main/mod_lab.c         | 47 ++++++++++++------------
+ src/shop/script_menu.c     |  4 +-
+ text/dget/dget.yaml        |  8 ++++
+ text/main/mod_lab.yaml     | 75 ++++++++++++++++++++++++++++++++++++++
+ text/shop/script_menu.yaml | 12 ++++++
+ tools/gen_text.py          | 62 +++++++++++++++++++++++++------
+ 9 files changed, 177 insertions(+), 39 deletions(-)
+ create mode 100644 text/dget/dget.yaml
+ create mode 100644 text/main/mod_lab.yaml
+
+diff --git a/.gitignore b/.gitignore
+index eb91000..c31c69a 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -8,3 +8,4 @@ expected/
+ permuter/
+ local.mk
+ objdiff.json
++text-bank.json
+diff --git a/mk/text.mk b/mk/text.mk
+index 5e127d1..44024d9 100644
+--- a/mk/text.mk
++++ b/mk/text.mk
+@@ -3,7 +3,9 @@
+ TEXT_YAML := $(shell find text -mindepth 2 -name '*.yaml')
+ TEXT_SRC := $(TEXT_YAML:text/%.yaml=%)
+ 
+-$(GEN_DIR)/text/%.h: text/%.yaml tools/gen_text.py
++# MOD (text sources): text-bank.json (written by the project's tools/build-full.sh) replaces texts by key and encodes the
++# mod font's extra glyphs; the headers are made again when it changes
++$(GEN_DIR)/text/%.h: text/%.yaml tools/gen_text.py $(wildcard text-bank.json)
+ 	$(PYTHON) tools/gen_text.py $(VERSION) $< $@
+ 
+ $(TEXT_SRC:%=$(BUILD_DIR)/src/%.c.o): $(BUILD_DIR)/src/%.c.o: \
+diff --git a/src/dget/dget.c b/src/dget/dget.c
+index 230c7f7..c7b7d15 100644
+--- a/src/dget/dget.c
++++ b/src/dget/dget.c
+@@ -10,6 +10,7 @@
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+ #include <dw/params.h>
++#include <text/dget/dget.h>
+ #include <dw/pstat.h>
+ #include <dw/script.h>
+ #include <dw/species.h>
+@@ -461,7 +462,7 @@ void renderTournamentTextbox(void)
+ #if !VERSION_IS(US)
+ 	renderString(0, posX, posY, 0x60, 0xc, 0, uvY, 5, 1);
+ #else
+-	drawString("Tournament", 0, (uint32_t)uvY);
++	drawString(DGET_STR_TOURNAMENT, 0, (uint32_t)uvY);   /* MOD (text sources): keyed, text/dget/dget.yaml */
+ 	renderString(0, posX, posY, 0x54, 0xc, 0, uvY, 5, 1);
+ #endif
+ }
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 948c65d..ec52a9d 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -51,6 +51,7 @@
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <text/main/mod_lab.h>   /* MOD (text sources): the lab menu's text, keyed (main.LAB_STR_*) */
+ #include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/ui.h>
+@@ -99,12 +100,12 @@ int32_t MOD_LAB_EVO_CHOICE; /* MOD (cherrymon): the evolve entry (global so test
+ static char *modLabMessage;
+ 
+ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+-	"+1000 bits",
+-	"Heal partner",
+-	"One-time gift",
++	LAB_STR_ADD_BITS,
++	LAB_STR_HEAL,
++	LAB_STR_GIFT,
+ 	NULL, /* the evolve entry: "To <name>" of its target, drawn from the species data */
+-	"Status bubbles  All",
+-	"Close",
++	LAB_STR_BUBBLES_ALL,
++	LAB_STR_CLOSE,
+ };
+ 
+ /*
+@@ -235,37 +236,37 @@ static void modLabDrawText(void)
+ 	for (i = 0; i < ROW_COUNT; i++) {
+ 		modLabClearRow(i);
+ 	}
+-	drawString("LAB MENU", 0, TEXT_ROW_Y(ROW_TITLE));
++	drawString(LAB_STR_TITLE, 0, TEXT_ROW_Y(ROW_TITLE));
+ 
+ 	if (modLabMessage != NULL) {
+ 		drawString(modLabMessage, 0, TEXT_ROW_Y(ROW_STATS));
+ 	} else {
+-		p = appendStr(line, "Bits ");
++		p = appendStr(line, LAB_STR_BITS);
+ 		p = appendStr(p, formatInteger(MONEY, num, 6));
+-		p = appendStr(p, "   HP ");
++		p = appendStr(p, LAB_STR_HP);
+ 		p = appendStr(p, formatInteger(stats->current.currentHP, num, 4));
+-		p = appendStr(p, " of ");
++		p = appendStr(p, LAB_STR_OF);
+ 		appendStr(p, formatInteger(stats->base.hp, num, 4));
+ 		drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
+ 	}
+ 
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+ 		if (i == MOD_LAB_OPT_BUBBLES) {
+-			drawString(MOD_STATUS_BUBBLES ? "Status bubbles  All" : "Status bubbles  Classic",
++			drawString(MOD_STATUS_BUBBLES ? LAB_STR_BUBBLES_ALL : LAB_STR_BUBBLES_CLASSIC,
+ 				   0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else if (i == MOD_LAB_OPT_EVOLVE) {
+ 			if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+ 				/* MOD (mega): "To Mega <name>" */
+-				p = appendStr(modLabMegaText, "To Mega ");
++				p = appendStr(modLabMegaText, LAB_STR_TO_MEGA);
+ 				mega = modLabMegaTarget();
+-				appendStr(p, mega < 0 ? "none" : DIGIMON_NAME(mega));
++				appendStr(p, mega < 0 ? LAB_STR_NONE : DIGIMON_NAME(mega));
+ 				drawString(modLabMegaText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 			} else {
+ 				/* MOD (scale): "To <name>" of a species of DIGI.DAT; MOD (renames): of the fixed entries too,
+ 				 * so the menu shows the species' name as the data has it */
+-				p = appendStr(modLabSpeciesText, "To ");
++				p = appendStr(modLabSpeciesText, LAB_STR_TO);
+ 				mega = modLabEvoTarget();
+-				appendStr(p, mega < 0 ? "none" : DIGIMON_NAME(mega));
++				appendStr(p, mega < 0 ? LAB_STR_NONE : DIGIMON_NAME(mega));
+ 				drawString(modLabSpeciesText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 			}
+ 		} else {
+@@ -318,20 +319,20 @@ static void modLabApply(void)
+ 	switch (MOD_LAB_CURSOR) {
+ 	case 0:
+ 		MONEY += 1000;
+-		modLabShowMessage("Bits +1000");
++		modLabShowMessage(LAB_STR_MSG_BITS);
+ 		break;
+ 	case 1:
+ 		stats->current.currentHP = stats->base.hp;
+ 		stats->current.currentMP = stats->base.mp;
+-		modLabShowMessage("Partner healed");
++		modLabShowMessage(LAB_STR_MSG_HEALED);
+ 		break;
+ 	case 2:
+ 		if (isTriggerSet(MOD_LAB_TRIGGER)) {
+-			modLabShowMessage("Gift already taken");
++			modLabShowMessage(LAB_STR_MSG_GIFT_TAKEN);
+ 		} else {
+ 			giveItem(ITEM_MEAT, 1);
+ 			setTrigger(MOD_LAB_TRIGGER);
+-			modLabShowMessage("You got 1 Meat");
++			modLabShowMessage(LAB_STR_MSG_GOT_MEAT);
+ 		}
+ 		break;
+ 	case MOD_LAB_OPT_BUBBLES:
+@@ -342,19 +343,19 @@ static void modLabApply(void)
+ 		mega = modLabEvoTarget();
+ 		if (mega < 0) {
+ 			modLabShowMessage(MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()
+-						  ? "No Mega on this disc" : "Not on this disc");
++						  ? LAB_STR_MSG_NO_MEGA : LAB_STR_MSG_NOT_ON_DISC);
+ 		} else if (!isPartnerModelFit(mega)) {
+-			modLabShowMessage("Model too big for it");
++			modLabShowMessage(LAB_STR_MSG_TOO_BIG);
+ 		} else if (PARTNER_ENTITY.digimonEntity.entity.type == mega) {
+-			modLabShowMessage("Already evolved");
++			modLabShowMessage(LAB_STR_MSG_ALREADY);
+ 		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+-			modLabShowMessage("Not now, try later");
++			modLabShowMessage(LAB_STR_MSG_NOT_NOW);
+ 		} else {
+ 			EVOLUTION_TARGET = mega;
+ 			HAS_USED_EVOITEM = 0;
+ 			tamerSetState(6);
+ 			partnerSetState(13);
+-			modLabShowMessage("Unpause to evolve");
++			modLabShowMessage(LAB_STR_MSG_UNPAUSE);
+ 		}
+ 		break;
+ 	}
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 5b75cbc..bca3369 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -425,9 +425,9 @@ uint16_t NAMING_ROLLOVER_CHARS[10] = {
+ 	0x8000, 0x0000,
+ };
+ 
+-BoxLabel MAIN_D_801307B4 = { "In hand" };
++BoxLabel MAIN_D_801307B4 = { STR_IN_HAND };   /* MOD (text sources): keyed, text/shop/script_menu.yaml */
+ 
+-BoxLabel MAIN_D_801307C0 = { "Keeping" };
++BoxLabel MAIN_D_801307C0 = { STR_KEEPING };
+ #endif
+ 
+ TRADE_LABEL_TEXT
+diff --git a/text/dget/dget.yaml b/text/dget/dget.yaml
+new file mode 100644
+index 0000000..512d09b
+--- /dev/null
++++ b/text/dget/dget.yaml
+@@ -0,0 +1,8 @@
++# MOD (text sources): the arena calendar's title, a literal of dget.c that had no entry (key dget.DGET_STR_TOURNAMENT).
++# `storage: define`: still a literal where the C uses it (the same binary). US only, as the code that draws it.
++CALENDAR:
++  storage: define
++  strings:
++    DGET_STR_TOURNAMENT:
++      ja: NULL
++      en_us: Tournament
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+new file mode 100644
+index 0000000..04fe2d2
+--- /dev/null
++++ b/text/main/mod_lab.yaml
+@@ -0,0 +1,75 @@
++# MOD (lab menu; text sources, docs/handoff/text-sources-design.md 2.9 E): the lab menu's own text, ours (not the game's),
++# keyed so a text source can translate it (keys main.LAB_STR_*). `storage: define`: each is a literal where src/main/mod_lab.c
++# uses it, as before (the same binary). The same text for every release.
++MOD_LAB:
++  storage: define
++  strings:
++    LAB_STR_TITLE:
++      ja: "LAB MENU"
++      en_us: "LAB MENU"
++    LAB_STR_ADD_BITS:
++      ja: "+1000 bits"
++      en_us: "+1000 bits"
++    LAB_STR_HEAL:
++      ja: "Heal partner"
++      en_us: "Heal partner"
++    LAB_STR_GIFT:
++      ja: "One-time gift"
++      en_us: "One-time gift"
++    LAB_STR_BUBBLES_ALL:
++      ja: "Status bubbles  All"
++      en_us: "Status bubbles  All"
++    LAB_STR_BUBBLES_CLASSIC:
++      ja: "Status bubbles  Classic"
++      en_us: "Status bubbles  Classic"
++    LAB_STR_CLOSE:
++      ja: "Close"
++      en_us: "Close"
++    LAB_STR_BITS:
++      ja: "Bits "
++      en_us: "Bits "
++    LAB_STR_HP:
++      ja: "   HP "
++      en_us: "   HP "
++    LAB_STR_OF:
++      ja: " of "
++      en_us: " of "
++    LAB_STR_TO_MEGA:
++      ja: "To Mega "
++      en_us: "To Mega "
++    LAB_STR_TO:
++      ja: "To "
++      en_us: "To "
++    LAB_STR_NONE:
++      ja: "none"
++      en_us: "none"
++    LAB_STR_MSG_BITS:
++      ja: "Bits +1000"
++      en_us: "Bits +1000"
++    LAB_STR_MSG_HEALED:
++      ja: "Partner healed"
++      en_us: "Partner healed"
++    LAB_STR_MSG_GIFT_TAKEN:
++      ja: "Gift already taken"
++      en_us: "Gift already taken"
++    LAB_STR_MSG_GOT_MEAT:
++      ja: "You got 1 Meat"
++      en_us: "You got 1 Meat"
++    LAB_STR_MSG_NO_MEGA:
++      ja: "No Mega on this disc"
++      en_us: "No Mega on this disc"
++    LAB_STR_MSG_NOT_ON_DISC:
++      ja: "Not on this disc"
++      en_us: "Not on this disc"
++    LAB_STR_MSG_TOO_BIG:
++      ja: "Model too big for it"
++      en_us: "Model too big for it"
++    LAB_STR_MSG_ALREADY:
++      ja: "Already evolved"
++      en_us: "Already evolved"
++    LAB_STR_MSG_NOT_NOW:
++      ja: "Not now, try later"
++      en_us: "Not now, try later"
++    LAB_STR_MSG_UNPAUSE:
++      ja: "Unpause to evolve"
++      en_us: "Unpause to evolve"
+diff --git a/text/shop/script_menu.yaml b/text/shop/script_menu.yaml
+index 79c64bc..d1b0415 100644
+--- a/text/shop/script_menu.yaml
++++ b/text/shop/script_menu.yaml
+@@ -61,3 +61,15 @@ NAMING_BUTTONS:
+     MAIN_D_80134600:
+       ja: NULL
+       en_us: "BackOK\0"
++
++# MOD (text sources): the item keeper's box labels were literals of script_menu.c with no entry (keys shop.STR_IN_HAND,
++# shop.STR_KEEPING). `storage: define`: still literals where the C uses them (the same binary).
++BOX_LABELS:
++  storage: define
++  strings:
++    STR_IN_HAND:
++      ja: NULL
++      en_us: In hand
++    STR_KEEPING:
++      ja: NULL
++      en_us: Keeping
+diff --git a/tools/gen_text.py b/tools/gen_text.py
+index 931f250..e9cb69e 100755
+--- a/tools/gen_text.py
++++ b/tools/gen_text.py
+@@ -1,11 +1,23 @@
+ #!/usr/bin/env python3
++# MOD (text sources, docs/handoff/text-sources-design.md): a text bank can replace any entry's text by its key, and the
++# characters of the mod executable's extra glyphs (F040.., docs/mods/font.md) encode as their two-byte codes. The bank is
++# the JSON file $TEXT_BANK (default: text-bank.json in the working directory, if it exists), written by the project's
++# tools/build-full.sh: {"font": {"á": "F040", ...}, "text": {"main.MOVE_NAMES.12": "...", "main.STR_YES": "..."}}. Keys:
++# <dir>.<SYMBOL> for a `strings:` entry, <dir>.<BLOCK> for a single entry, <dir>.<BLOCK>.<index> for a table row (<dir> is
++# the folder of the yaml under text/). An empty bank gives the yaml's own text: the same headers as without it.
++# `storage: define` on a `strings:` block writes `#define SYMBOL "text"` (a literal where the C uses it, as the original
++# literal was), so text that was a literal in the code can be keyed without changing the binary.
+ 
+ import argparse
++import json
++import os
+ import sys
+ from pathlib import Path
+ 
+ import yaml
+ 
++__BANK = {'font': {}, 'text': {}}
++
+ __LANGUAGES = {
+     'jp': 'ja',
+     'jp_trial': 'ja',
+@@ -49,10 +61,14 @@ def __fail(where, message):
+ def __c_string(text, where):
+     out = ''
+     for c in text:
++        if c in __BANK['font']:
++            code = int(__BANK['font'][c], 16)
++            out += '\\{:03o}\\{:03o}'.format(code >> 8, code & 0xff)
++            continue
+         try:
+             b = c.encode('cp932')
+         except UnicodeEncodeError:
+-            __fail(where, 'no Shift-JIS character for {!r}'.format(c))
++            __fail(where, 'no Shift-JIS character for {!r} (and no glyph of the mod font)'.format(c))
+         if c in '"\\':
+             out += '\\' + c
+         elif c == '?' and out.endswith('?'):
+@@ -98,15 +114,22 @@ def __text(entry, release, where):
+     __fail(where, 'no {} text'.format(__LANGUAGES[release]))
+ 
+ 
+-def __string(entry, release, where):
+-    value = __text(entry, release, where)
++def __banked(key, value):
++    # an entry with no text for this release stays without one (the same symbol may be another file's in this release)
++    if key is not None and value is not None and key in __BANK['text']:
++        return __BANK['text'][key]
++    return value
++
++
++def __string(entry, release, where, key=None):
++    value = __banked(key, __text(entry, release, where))
+     if isinstance(value, list):
+         __fail(where, 'expected one string, not lines')
+     return value
+ 
+ 
+-def __lines(entry, release, count, where):
+-    value = __text(entry, release, where)
++def __lines(entry, release, count, where, key=None):
++    value = __banked(key, __text(entry, release, where))
+     if not isinstance(value, list):
+         value = [value]
+     if len(value) > count:
+@@ -119,11 +142,15 @@ def __generate(release, blocks, source):
+     header = []
+     macros = {}
+     named = {}
++    folder = Path(source).parent.name
+ 
+-    def define(symbol, entry, where):
+-        text = __string(entry, release, where)
++    def define(symbol, entry, where, key=None, as_macro=False):
++        text = __string(entry, release, where, key)
+         if text is None:
+             return []
++        if as_macro:
++            header.append('#define {} {}'.format(symbol, __c_string(text, where)))
++            return []
+         literal = __c_string(text, where)
+         if literal in named:
+             header.append('#define {} {}'.format(symbol, named[literal]))
+@@ -137,18 +164,19 @@ def __generate(release, blocks, source):
+             __fail(where, 'expected a mapping')
+ 
+         if 'strings' in body:
+-            __check_keys(body, {'strings'}, where)
++            __check_keys(body, {'strings', 'storage'}, where)
++            as_macro = body.get('storage') == 'define'
+             lines = []
+             for symbol, entry in body['strings'].items():
+                 where = '{}: {}'.format(source, symbol)
+                 __check_keys(entry, (), where)
+-                lines += define(symbol, entry, where)
++                lines += define(symbol, entry, where, '{}.{}'.format(folder, symbol), as_macro)
+             macros[block + '_TEXT'] = lines
+             continue
+ 
+         if 'entries' not in body:
+             __check_keys(body, (), where)
+-            macros[block + '_TEXT'] = define(block, body, where)
++            macros[block + '_TEXT'] = define(block, body, where, '{}.{}'.format(folder, block))
+             continue
+ 
+         __check_keys(body, __TABLE_KEYS, where)
+@@ -181,17 +209,21 @@ def __generate(release, blocks, source):
+             __check_keys(entry, {'name', 'named'}, where)
+             name = entry.get('name')
+ 
++            key = '{}.{}.{}'.format(folder, block, index)
+             if storage == 'embedded':
+                 if not name:
+                     __fail(where, 'embedded entries need a name')
+-                literal = __c_string(__string(entry, release, where), where)
++                text = __string(entry, release, where, key)
++                if text is None:
++                    continue
++                literal = __c_string(text, where)
+                 header.append('#define {}_{} {},'.format(macro, name,
+                                                          literal))
+                 continue
+ 
+             named_here = release in entry.get('named', ())
+             refs = []
+-            for line in __lines(entry, release, count, where):
++            for line in __lines(entry, release, count, where, key):
+                 if line is None:
+                     refs.append('NULL')
+                     continue
+@@ -204,6 +236,8 @@ def __generate(release, blocks, source):
+                 elif literal in named:
+                     refs.append(named[literal])
+                     continue
++                elif not name and key in __BANK['text']:
++                    symbol = '{}_BANK_{}'.format(block, index)      # a banked text no other entry has
+                 elif not name:
+                     __fail(where,
+                            'a new {} text needs a name'.format(release))
+@@ -246,6 +280,10 @@ def __parse_args():
+ 
+ def __main():
+     args = __parse_args()
++    bank = os.environ.get('TEXT_BANK') or 'text-bank.json'
++    if os.path.exists(bank):
++        with open(bank, encoding='utf-8') as f:
++            __BANK.update(json.load(f))
+ 
+     with open(args.yaml, encoding='utf-8') as f:
+         blocks = yaml.load(f, Loader=yaml.BaseLoader)
+-- 
+2.53.0
+

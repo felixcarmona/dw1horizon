@@ -1,0 +1,97 @@
+{
+ "s012.sec5.u0": "You mean to fight me?",
+ "s012.sec6.u0": "My, aren't you a cheeky one.",
+ "s012.sec7.u0": "Wh-what are you going to do?",
+ "s012.sec8.u0": "I'm telling on you!",
+ "s012.sec53.u0": "Oh, a bridge!",
+ "s012.sec81.m0.o0": "Restore 100 MP: 200 Bits",
+ "s012.sec81.m0.o1": "Restore 1000 MP: 1800 Bits",
+ "s012.sec81.m0.o2": "Don't use",
+ "s012.sec81.u0": "MP Station",
+ "s012.sec81.u1": "A machine that restores MP, huh.",
+ "s012.sec81.u2": "MP restored!",
+ "s012.sec81.u3": "Not enough money, huh.",
+ "s012.sec81.u4": "MP restored!",
+ "s012.sec81.u5": "Not enough money, huh.",
+ "s012.sec81.u6": "Let's not.",
+ "s013.sec5.m0.o0": "All right, I accept!",
+ "s013.sec5.m0.o1": "I just remembered something...",
+ "s013.sec5.u0": "Hey there, you! Would you be the one building a city?",
+ "s013.sec5.u1": "Yeah, why?",
+ "s013.sec5.u2": [
+  [
+   "Mm, lucky you, getting to meet me!"
+  ],
+  [
+   "I don't look it, but I'm an Ultimate, you know!",
+   "Beat me in a match, and I'll help out your city.",
+   "How's that?"
+  ]
+ ],
+ "s013.sec5.u3": "Well, I'll be! A total loss for me! See you in the city, then!",
+ "s013.sec5.u4": "Piximon joined the city!",
+ "s013.sec5.u5": "Mm, what a scaredy-cat! Well, we'll meet again sometime!",
+ "s013.sec6.u0": "Oh, señorita!",
+ "s013.sec7.u0": "What's up, amigo?!",
+ "s013.sec8.u0": "Ookie, ookie!",
+ "s013.sec9.u0": "Ooh-hoh!",
+ "s014.sec5.u0": "Hsssss!",
+ "s014.sec6.u0": "Zweeeeee!",
+ "s014.sec7.u0": "Whoosh, whoosh!",
+ "s014.sec8.u0": "Fine! I'm not playing with you anymore!",
+ "s014.sec9.u0": "Ookyaa! Ooh-ooh!",
+ "s014.sec10.u0": "Ho ho ho! Woo-hoo!",
+ "s015.sec5.u0": "You are Digimon, yes?",
+ "s015.sec7.u0": "How are you? Where you are coming from?",
+ "s015.sec8.u0": "Don't you make fun of me!",
+ "s015.sec9.u0": "I'm gonna chomp you!",
+ "s015.sec51.m0.o0": "Let's try one",
+ "s015.sec51.m0.o1": "Don't use any",
+ "s015.sec51.m1.o0": "Sure I like them",
+ "s015.sec51.m1.o1": "Nope, I hate them",
+ "s015.sec51.u0": [
+  [
+   "Hmm, if I just leave it like this, it really might",
+   "wither away."
+  ],
+  [
+   "If only it would rain..."
+  ]
+ ],
+ "s015.sec51.u1": "Huh, that's unusual. It's sprouting.",
+ "s015.sec51.u2": [
+  [
+   "Hm? Did it just move a little...? Is this the",
+   "mysterious plant everyone's been talking",
+   "about?"
+  ]
+ ],
+ "s015.sec51.u3": "But it's drooping a bit. At this rate, it's going to wither.",
+ "s015.sec51.u4": "Use an item?",
+ "s015.sec51.u5": "Oh, right, I don't have anything right now...",
+ "s015.sec51.u6": "Nothing I've got will help.",
+ "s015.sec51.u7": "That won't do anything...",
+ "s015.sec51.u8": [
+  [
+   "Keh heh heh heh!"
+  ],
+  [
+   "Yo! I'm Vegiemon!"
+  ]
+ ],
+ "s015.sec51.u9": "Yikes, you scared me! A plant Digimon, huh...",
+ "s015.sec51.u10": "Keh heh. Hey, you. You like veggies?",
+ "s015.sec51.u11": "Where'd that come from...? Veggies? Hmm...",
+ "s015.sec51.u12": "...Never mind.",
+ "s015.sec51.u13": "Oh, nobody who likes veggies is a bad guy.",
+ "s015.sec51.u14": "No good, no good! Veggies are great!",
+ "s015.sec51.u15": "???",
+ "s015.sec51.u16": "Okay, it's decided. I'm coming with you!",
+ "s015.sec51.u17": "Ugh, what a pushy guy... Hold on a second!",
+ "s015.sec51.u18": "Then I'm not coming! See ya!",
+ "s015.sec51.u19": "You're way too fickle!",
+ "s015.sec51.u20": "Huh? So what am I supposed to do?",
+ "s015.sec51.u21": "Uh, well... come to the city and help out!",
+ "s015.sec51.u22": "Keh heh heh, sure! I'm sick of hanging around here anyway. Keh heh!",
+ "s015.sec51.u23": "Vegiemon joined the city!"
+}

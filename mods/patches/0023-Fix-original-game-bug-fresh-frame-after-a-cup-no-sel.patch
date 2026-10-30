@@ -1,0 +1,53 @@
+From 26527708289f4a68905f005ce6feb50fa4057282 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 05:48:08 +0000
+Subject: [PATCH] Fix (original game bug): fresh frame after a cup, no
+ self-linked GPU tag
+
+startTournament runs from tickScript inside a gameLoop frame. When
+STD_tournamentMain returns, gameLoop finished that frame with STD's last
+ordering table, already sent; applyDrawOffset then added DR_OFFSETS[n] to
+the slot that already held it, linking the tag to itself. The endless list
+hung PCSX-Redux in loadMapSounds after every cup (won or lost).
+
+Start a fresh frame after reinitializeAfterTournament, as tamerTickBattle
+does after BTL. No DrawSync: STD's last frame already waited for the list
+of the buffer that becomes active.
+
+---
+ src/main/utils2.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 54943e8..f21fed6 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -70,6 +70,9 @@ int32_t STD_tournamentMain(uint8_t *arg);
+ extern uint8_t ITEM_CLUT_DATA[];
+ extern uint8_t MAP_LAYER_ENABLED;
+ extern RGB8 TEXT_COLORS[];
++extern int32_t ACTIVE_FRAMEBUFFER;
++extern GsOT GS_ORDERING_TABLE[2];
++extern PACKET GS_WORK_BASES[2][0x14000];
+ extern char btl_START[];
+ extern char dget_START[];
+ extern char doo2_START[];
+@@ -661,6 +664,15 @@ void startTournament(void)
+ 	loadDynamicLibrary(STD_REL, &isComplete, 0, NULL, NULL);
+ 	result = STD_tournamentMain(&t.cup);
+ 	thunkReinitializeAfterTournament();
++	/* MOD (original game bug): gameLoop resumes the frame STD interrupted
++	 * with STD's last, already sent ordering table; its applyDrawOffset
++	 * would then link a DR_OFFSET tag to itself (endless GPU list). Start
++	 * a fresh frame, as tamerTickBattle does after BTL. No DrawSync is
++	 * needed: STD's last frame already waited for this buffer's list. */
++	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
++	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
++	GsClearOt(0, 0, GS_ORDERING_TABLE + ACTIVE_FRAMEBUFFER);
++	ACTIVE_ORDERING_TABLE = GS_ORDERING_TABLE + ACTIVE_FRAMEBUFFER;
+ 	unsetTrigger(0x25);
+ 	id = readPStat(3);
+ 	if (id != 5) {
+-- 
+2.53.0
+

@@ -1,0 +1,33 @@
+{
+  "id": 148,
+  "name": "SkullGreymon",
+  "level": "ultimate",
+  "attribute": "virus",
+  "specialties": ["battle", "ice", "mech"],
+  "techniques": ["Dynamite Kick (48)", "Megaton Punch", "Buster Dive", "War Cry", "All Range Beam", "Dark Shot"],
+  "drop": {"item": "Off. Chip", "percent": 100},
+  "effects_like": 26,
+  "model": {"name": "ESKU", "bones": 26, "radius": 260, "height": 480},
+  "voice": 24,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 5800, "mp": 4800, "off": 650, "def": 340, "speed": 380, "brain": 150, "bits": 3500},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

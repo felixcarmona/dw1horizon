@@ -1,0 +1,125 @@
+// Readable form of script 109 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 109 {
+    npc nanimon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5;
+
+    on enter replace {    // section 254
+        if (leomon_stone_taken) {
+            set_obj_visibility(2, 1);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (!leomon_cave_first_seen) {
+            entity_set_rotation(tamer, 1900);
+            await tamer;
+            say(tamer, text("s109.sec51.u0"));
+            camera_to(-400, 4000, speed: 50);
+            await camera;
+            wait(2s);
+            camera_on(tamer, speed: 20);
+            await camera;
+            leomon_cave_first_seen = true;
+            return;
+        }
+    }
+
+    on step(1) replace {    // section 52
+        if (!leomon_stone_taken) {
+            entity_set_rotation(tamer, 1900);
+            await tamer;
+            say(tamer, text("s109.sec52.u0"));
+            walk(tamer, -477, 2801, camera: true);
+            await tamer;
+            entity_set_rotation(tamer, 1900);
+            wait(10);
+            animate(tamer, 25);
+            wait(10);
+            sound(8, 7);
+            set_obj_visibility(2, 1);
+            wait(10);
+            say(tamer, text("s109.sec52.u1"));
+            animate(tamer, 16);
+            wait(15);
+            say(tamer, text("s109.sec52.u2"));
+            animate(tamer, anim.idle);
+            say(tamer, text("s109.sec52.u3"));
+            give_item(item("Leomonstone"), 1);
+            if (engine.item_did_not_fit) {
+                say(tamer, text("s109.sec52.u4"));
+                engine.picker_mode = false;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Leomonstone"), 1);
+            }
+            sound(0, 7);
+            say(narrator, text("s109.sec52.u5"));
+            leomon_stone_taken = true;
+            return;
+        }
+    }
+
+    on talk(nanimon) replace {    // section 5
+        wait(10);
+        animate(nanimon, 28);
+        wait(10);
+        say(tamer, text("s109.sec5.u0"));
+        say(nanimon, text("s109.sec5.u1"));
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        entity_set_rotation(nanimon, 1276);
+        wait(5);
+        entity_set_rotation(nanimon, 2300);
+        wait(5);
+        entity_set_rotation(nanimon, 3324);
+        wait(5);
+        entity_set_rotation(nanimon, 252);
+        wait(5);
+        run(nanimon, -1412, 1251);
+        await nanimon;
+        remove(nanimon);
+        if (key_chains == 0) {
+            set_obj_visibility(3, 0);
+            run(tamer, -1878, 2900);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(3, 1);
+            sound(0, 7);
+            say(narrator, text("s109.sec5.u2"));
+            sound(0, 7);
+            set_inventory_size(20);
+            inventory_expanded.to_20 = true;
+        }
+        if (key_chains == 4) {
+            set_obj_visibility(4, 0);
+            run(tamer, -1878, 2900);
+            await tamer;
+            animate(tamer, 12);
+            wait(10);
+            set_obj_visibility(4, 1);
+            sound(0, 7);
+            say(narrator, text("s109.sec5.u3"));
+            inventory_expanded.to_30 = true;
+            set_inventory_size(30);
+            recruit(species("Nanimon"));
+            engine.prosperity += 1;
+        }
+        key_chains += 1;
+        key_chain_found.leomon_cave = true;
+        return;
+    }
+}

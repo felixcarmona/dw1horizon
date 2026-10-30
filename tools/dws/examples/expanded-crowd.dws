@@ -1,0 +1,55 @@
+// Engine Story-state target: 16 NPC slots per screen (the original has 8). Jijimon's house (screen 218) places Jijimon,
+// Tokomon, Botamon and an Airdramon that MAPHEAD never spawns (slots 0-3). Slot 3 becomes a Koromon (the
+// compiler makes MAPHEAD spawn it) and twelve more Koromon fill slots 4-15, so 16 NPCs stand in the room. The
+// models are shared (five different species at most are in memory at once; here Jijimon, Tokomon, Botamon,
+// Koromon) and the heap is what limits a crowd: the compiler checks it against the story-state executable. Slots 8-15 are the "extended" ones: they walk, talk and collide in the world and
+// never fight, a battle hides them.
+//
+//   python3 tools/dws.py disc tools/dws/examples/expanded-crowd.dws --exe story-state --name large-crowd
+//
+// Slot K answers on section 5 + K (the entity number of slot K is 5 + K); `section: N` gives a new slot another one, as
+// slot 15 needs because the section 20 of this script is Jijimon's healing.
+fn hello(who: entity) {
+    say(who, text("crowd.hello"));
+}
+
+place(species("Koromon"), screen: 218, slot: 3, at: (1200, 400));
+place(species("Koromon"), screen: 218, slot: 4, at: (-1000, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 5, at: (-600, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 6, at: (-200, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 7, at: (200, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 8, at: (600, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 9, at: (1000, 700), like: 0);
+place(species("Koromon"), screen: 218, slot: 10, at: (-1000, 100), like: 0);
+place(species("Koromon"), screen: 218, slot: 11, at: (-600, 100), like: 0);
+place(species("Koromon"), screen: 218, slot: 12, at: (300, 100), like: 0);
+place(species("Koromon"), screen: 218, slot: 13, at: (700, 100), like: 0);
+place(species("Koromon"), screen: 218, slot: 14, at: (1000, 100), like: 0);
+place(species("Koromon"), screen: 218, slot: 15, at: (-800, -200), like: 0, section: 25);   // 5 + 15 = 20 is the heal section of this script
+
+script 178 {  // Jijimon's house (screen 218)
+    npc n4 = 9;
+    npc n5 = 10;
+    npc n6 = 11;
+    npc n7 = 12;
+    npc n8 = 13;
+    npc n9 = 14;
+    npc n10 = 15;
+    npc n11 = 16;
+    npc n12 = 17;
+    npc n13 = 18;
+    npc n14 = 19;
+    npc n15 = 25;
+    on talk(n4) replace { hello(n4); }
+    on talk(n5) replace { hello(n5); }
+    on talk(n6) replace { hello(n6); }
+    on talk(n7) replace { hello(n7); }
+    on talk(n8) replace { hello(n8); }
+    on talk(n9) replace { hello(n9); }
+    on talk(n10) replace { hello(n10); }
+    on talk(n11) replace { hello(n11); }
+    on talk(n12) replace { hello(n12); }
+    on talk(n13) replace { hello(n13); }
+    on talk(n14) replace { hello(n14); }
+    on talk(n15) replace { hello(n15); }
+}

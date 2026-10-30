@@ -1,0 +1,173 @@
+From e729ea70a20db99713a32880bffec06c0936d467 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 22 Oct 2026 06:14:48 +0000
+Subject: [PATCH] Patch 0158: X badge. The dialogue box's X button
+ (renderUIBox: the UI texture page, three frames pressing it) beside the
+ condition bubbles while X in front of the partner would open the care menu
+ (mod_feed.c sets MOD_FEED_HINT for that tick): beside the bottom row's right
+ edge, or where the bubbles would be when there is none (a scolding, HP
+ short); it grows in and shrinks out in 0.2 s and moves with the row. Not
+ drawn with the classic bubble (lab option)
+
+---
+ src/main/bubble.c   | 76 ++++++++++++++++++++++++++++++++++++++++++++-
+ src/main/mod_feed.c | 14 +++++++--
+ 2 files changed, 86 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 608f39fd..67b8f33a 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -1,3 +1,6 @@
++#include <libgs.h>
++
++#include <dw/btl.h> /* MOD (care menu): ACTIVE_ORDERING_TABLE for the X badge */
+ #include <dw/bubble.h>
+ #include <dw/params.h>
+ #include <dw/world_object.h>
+@@ -710,6 +713,44 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ 	bg->my = 0x1f;
+ }
+ 
++/*
++ * MOD (care menu): the X badge. While X in front of the partner would open the care menu (mod_feed.c sets
++ * MOD_FEED_HINT for that tick), the dialogue box's X button (renderUIBox, script_textbox.c: the UI texture page,
++ * three 16x12 frames pressing it) is drawn beside the bottom right bubble of the row, or where the bubbles would be
++ * when it has none (a scolding or HP short of the maximum need no bubble). It grows in and shrinks out in
++ * RING_BADGE_TICKS and moves with the row (its bob and its steps), one ordering table slot nearer than the bubbles.
++ */
++#define RING_BADGE_TICKS	4	/* 0.2 s to grow in or shrink out */
++#define RING_BADGE_W	16	/* texels, as the dialogue box draws it */
++#define RING_BADGE_H	12
++
++extern int32_t MOD_FEED_HINT;
++int32_t MOD_RING_BADGE = 0; /* the badge's size in ticks, 0..RING_BADGE_TICKS */
++
++/* the badge centred on (x, y); k as renderConditionRing's, size 0..256 */
++static void renderBadge(int32_t x, int32_t y, int32_t depth, int32_t k, int32_t size)
++{
++	int32_t kk = (k * size) >> 8;
++	int32_t w = (RING_BADGE_W * kk) >> 12;
++	int32_t h = (RING_BADGE_H * kk) >> 12;
++	int32_t slot = (depth >> 4) - 1;
++	POLY_FT4 *p;
++
++	if (slot < 0 || slot >= 0x1000 || w < 1 || h < 1) {
++		return;
++	}
++	p = (POLY_FT4 *)GsGetWorkBase();
++	setPolyFT4(p);
++	setSemiTrans(p, 1);
++	p->tpage = GetTPage(0, 1, 320, 128);
++	p->clut = GetClut(96, 500);
++	setRGB0(p, 0x80, 0x80, 0x80);
++	setUVWH(p, (MOD_RING_CLOCK / 4) % 3 * 16 + 0x4c, 0xb7, RING_BADGE_W, RING_BADGE_H);
++	setXYWH(p, x - w / 2, y - h / 2, w, h);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + slot, p);
++	GsSetWorkBase((PACKET *)(p + 1));
++}
++
+ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+ 				uint32_t scale)
+ {
+@@ -750,6 +791,30 @@ static void renderConditionRing(int32_t x, int32_t y, int32_t depth,
+ 		bs[b] = -bs[b];
+ 		++drawn;
+ 	}
++	if (MOD_RING_BADGE > 0) {
++		int32_t right = -0x8000;
++		int32_t bottom = 0;
++		int32_t bx0 = 0;
++		int32_t by0 = 0;
++
++		/* beside the right edge of the bottom row, a bit under its centre */
++		for (j = 0; j < 6; ++j) {
++			if (bs[j] < -24) {
++				if (bx[j] + ((168 * -bs[j]) >> 8) > right) {
++					right = bx[j] + ((168 * -bs[j]) >> 8);
++				}
++				if (by[j] > bottom) {
++					bottom = by[j];
++				}
++			}
++		}
++		if (right != -0x8000) {
++			bx0 = right + RING_BADGE_W * 16 / 3;
++			by0 = bottom + 96;
++		}
++		renderBadge(x + ((bx0 * k) >> 16), cy0 + ((by0 * k) >> 16), depth, k,
++			    (MOD_RING_BADGE * 256) / RING_BADGE_TICKS);
++	}
+ 	MOD_RING_SHOWN[2] = big < 0 ? 0 :
+ 			    ((big << 24) | (-bs[big] << 8) | (full > 1));
+ 	MOD_RING_SHOWN[3] = p | (MOD_RING_STEPS << 16);
+@@ -783,7 +848,7 @@ void renderConditionRingObject(int32_t instanceId)
+ 
+ 	if ((MOD_STATUS_BUBBLES == 0) || (IS_IN_MENU == 1) || (GAME_STATE != 0) ||
+ 	    ((PARTNER_STATE != 1) && (PARTNER_STATE != 0xa)) ||
+-	    (entity == NULL) || (ringAnyBubble() == 0)) {
++	    (entity == NULL) || (ringAnyBubble() == 0 && MOD_RING_BADGE == 0)) {
+ 		MOD_RING_SHOWN[2] = 0;
+ 		return;
+ 	}
+@@ -841,6 +906,15 @@ void tickConditionRingObject(int32_t instanceId)
+ 		return;
+ 	}
+ 	++MOD_RING_CLOCK;
++	/* MOD (care menu): the X badge follows the hint, which lasts one tick */
++	if (MOD_FEED_HINT) {
++		if (MOD_RING_BADGE < RING_BADGE_TICKS) {
++			++MOD_RING_BADGE;
++		}
++	} else if (MOD_RING_BADGE > 0) {
++		--MOD_RING_BADGE;
++	}
++	MOD_FEED_HINT = 0;
+ 
+ 	/* a running step goes on to its end; it ends the tick after its last
+ 	 * frame, so that every pass of that tick still shows it */
+diff --git a/src/main/mod_feed.c b/src/main/mod_feed.c
+index e9cd9524..a8be125d 100644
+--- a/src/main/mod_feed.c
++++ b/src/main/mod_feed.c
+@@ -14,7 +14,7 @@
+  * triangle menu's does (Scold: discipline up and the next item taken; Sleep), triangle closes the box. When the
+  * partner refuses the item this menu gave and a scolding is fair, the menu opens again on its own with Scold under
+  * the cursor. With nothing to offer X does nothing here. While the box is open the clock stops, as with the triangle
+- * menu.
++ * menu. While X would open it, an X button is drawn beside the condition bubbles (bubble.c).
+  * Hooked from tamerTickWalkingState() (tamer.c), after checkMapInteraction(): talking to an NPC, a chest or a
+  * press tile take the X first.
+  */
+@@ -56,6 +56,10 @@
+ #define FEED_DESC_V	0xC0	/* text area rows of the description and the note: under the 16 rows of names */
+ #define FEED_NOTE_V	0xCC
+ 
++/* 1 for a tick in which X would open the menu: bubble.c (tickConditionRingObject) reads it and clears it, and
++ * draws an X badge beside the condition bubbles while it comes */
++int32_t MOD_FEED_HINT = 0;
++
+ enum { FEED_OPENING, FEED_OPEN, FEED_CLOSING, FEED_GIVING, FEED_WATCHING };
+ 
+ typedef struct {
+@@ -529,11 +533,15 @@ static int32_t feedOpen(void)
+  * (checkItemPickup: TAMER_STATE 7) */
+ int32_t modFeedTick(void)
+ {
+-	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
++	if (TAMER_STATE != 0 || IS_SCRIPT_PAUSED != 1 || FADE_PROTECTION != 0 ||
+ 	    UI_BOX_DATA[FEED_LIST_BOX].state != 0 || UI_BOX_DATA[FEED_LIST_BOX].frame != 0 ||
+ 	    UI_BOX_DATA[FEED_DESC_BOX].state != 0 || UI_BOX_DATA[FEED_DESC_BOX].frame != 0 ||
+ 	    PARTNER_STATE != PARTNER_NORMAL || TAMER_ITEM.worldItem.type != ITEM_NONE || !feedPartnerAhead() ||
+-	    !feedOpen()) {
++	    feedCollect() == 0) {
++		return 0;
++	}
++	MOD_FEED_HINT = 1; /* X would open the menu: bubble.c draws the X badge */
++	if ((CHANGED_INPUT & CONFIRM_BUTTON) == 0 || !feedOpen()) {
+ 		return 0;
+ 	}
+ 	addObject(FEED_OBJECT_ID, 0, feedTick, NULL);
+-- 
+2.53.0
+

@@ -1,0 +1,162 @@
+From c429f85a8c5858c755ecd5ddf29d5e153ea83812 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 02:02:41 +0000
+Subject: [PATCH 86/87] Long names: the status screen and the evolution chart
+ fit a name of up to 19 characters
+
+The US status screen copied len * 10 pixels of the name, cut at 0x78 (MetalGreymonVirus showed as
+"MetalGreymonVi"), and the chart's detail view cleared and copied 120 pixels, centred by an estimate of 12 pixels
+a character ("MetalGreymonVir"). drawString now records where it ended (MOD_STRING_END_X); both screens use the
+drawn width, and renderStringFit draws a text wider than its field narrower (the textured quad scales it): the
+status field stays 0x78 wide, the chart's name 0x88, centred in its panel; the chart's name area is cleared 200
+pixels wide.
+---
+ include/dw/font.h    |  4 ++++
+ src/main/font.c      |  2 ++
+ src/main/game_menu.c | 27 +++++++++++++++++++++------
+ src/main/utils2.c    | 28 ++++++++++++++++++++++++++++
+ 4 files changed, 55 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index c160bd6..c42d707 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -16,5 +16,9 @@ void drawGlyph(uint16_t codepoint, uint16_t x, uint16_t y);
+ int32_t drawGlyph(/* uint16_t codepoint, uint16_t x, uint16_t y */);
+ #endif
+ void drawString(/* char *str, uint16_t x, uint16_t y */);
++#if VERSION_IS(US)
++/* MOD (long names): the x where the last drawString ended (its width when drawn at x 0) */
++extern int16_t MOD_STRING_END_X;
++#endif
+ 
+ #endif
+diff --git a/src/main/font.c b/src/main/font.c
+index 9d8ef2c..cb02512 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1490,6 +1490,7 @@ void drawString(str, x, y)
+ 	}
+ }
+ #else
++int16_t MOD_STRING_END_X; /* MOD (long names): font.h */
+ // clang-format off
+ void drawString(str, x, y)
+ 	char *str;
+@@ -1529,5 +1530,6 @@ void drawString(str, x, y)
+ 
+ 		x += drawGlyph(codepoint, x, y);
+ 	}
++	MOD_STRING_END_X = x;
+ }
+ #endif
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 5283851..030c5a6 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -400,7 +400,11 @@ char FMT_PLAYTIME[8] = "%d : %d";
+ 
+ RECT EVO_CHART_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+-RECT EVO_CHART_NAME_AREA = { 0, 48, 120, 12 };
++RECT EVO_CHART_NAME_AREA = { 0, 48, 200, 12 }; /* MOD (long names): was 120 wide (a name of 19 characters is ~160) */
++static int16_t MOD_STATUS_NAME_WIDTH; /* MOD (long names): drawn widths of the status screen's and the chart's name */
++static int16_t MOD_CHART_NAME_WIDTH;
++void renderStringFit(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t maxW, int16_t h, uint8_t u, uint8_t v,
++		     long layer, int32_t shadow);
+ 
+ /* MOD (mega): the level name of the Megas, drawn into the text area with the
+  * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
+@@ -2238,11 +2242,10 @@ void renderDigimonStatsView(void)
+ #if !VERSION_IS(US)
+ 		renderString(0, -0x6d, -0x33, (w / 2) * 12, 0xc, 0x9c, 0x24, 5, 0);
+ #else
+-		w = w * 10;
+-		if (w >= 0x79) {
+-			w = 0x78;
+-		}
+-		renderString(0, -0x6c, -0x32, w, 0xc, 0, 0x48, 5, 0);
++		/* MOD (long names): the name as wide as drawn, a longer one narrowed into the field (was len * 10, cut
++		 * at 0x78: MetalGreymonVirus showed as "MetalGreymonVi") */
++		(void)w;
++		renderStringFit(0, -0x6c, -0x32, MOD_STATUS_NAME_WIDTH, 0x78, 0xc, 0, 0x48, 5, 0);
+ #endif
+ 		renderNumber(0, -0x6d, -0x22, 2, PARTNER_PARA.age, 5);
+ #if !VERSION_IS(US)
+@@ -3436,8 +3439,16 @@ void renderEvoChartDetail(void)
+ 		break;
+ 	}
+ #endif
++#if VERSION_IS(US)
++	/* MOD (long names): centred by its drawn width in the level's panel, a long name narrowed (was centred by
++	 * an estimate of 12 px a character and cut at 0x78) */
++	(void)len;
++	len = MOD_CHART_NAME_WIDTH > 0x88 ? 0x88 : MOD_CHART_NAME_WIDTH;
++	renderStringFit(0, -0x42 - len / 2, 0x4d, MOD_CHART_NAME_WIDTH, 0x88, 0xc, 0, 0x30, 4, 0);
++#else
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+ 	renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
++#endif
+ 	/* MOD (portraits): the cursor of the navigation, blinking, on the box it points at */
+ 	if (chartDetailBox(CHART_CURSOR_SIDE, CHART_CURSOR_J, &cx, &cy) != 0 && (PLAYTIME_FRAMES % 10) < 7) {
+ 		renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x20e0ff, 0x1070a0, 0xd0, 0xc0, 0x20, 4);
+@@ -3642,6 +3653,7 @@ int32_t drawDigimonStatsStrings(void)
+ 		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0x9c, 0x24);
+ #else
+ 		drawString(DIGIMON_NAME(ENTITY_TABLE[1]->type), 0, 0x48);
++		MOD_STATUS_NAME_WIDTH = MOD_STRING_END_X; /* MOD (long names) */
+ #endif
+ 		drawString(PARTNER_ENTITY.name, 0, 0x3c);
+ 		MENU_SUB_STATE = 2;
+@@ -3970,6 +3982,9 @@ int32_t drawEvoChartStrings(int32_t arg)
+ 	case 2:
+ 		clearTextSubArea(&rect2);
+ 		drawString((char *)digimonPara(arg), 0, 0x30);
++#if VERSION_IS(US)
++		MOD_CHART_NAME_WIDTH = MOD_STRING_END_X; /* MOD (long names) */
++#endif
+ 	}
+ 	return 0;
+ }
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 978e5d0..38ae136 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -269,6 +269,34 @@ void renderString(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t h,
+ 	GsSetWorkBase((PACKET *)prim);
+ }
+ 
++/*
++ * MOD (long names): renderString of a text `w` pixels wide in a field of `maxW`: wider texts are drawn
++ * narrower (the textured quad scales them), so a name of 19 characters (MetalGreymonVaccine) stays whole
++ * where the screen has room for some 14.
++ */
++void renderStringFit(uint8_t color, int16_t x, int16_t y, int16_t w, int16_t maxW, int16_t h, uint8_t u, uint8_t v,
++		     long layer, int32_t shadow)
++{
++	POLY_FT4 *prim;
++	int16_t dw;
++
++	dw = w > maxW ? maxW : w;
++	prim = (POLY_FT4 *)GsGetWorkBase();
++	initStringFT4(prim);
++	setRGB0(prim, TEXT_COLORS[color].r, TEXT_COLORS[color].g, TEXT_COLORS[color].b);
++	setUVDataPolyFT4(prim, u, v, w, h);
++	setPosDataPolyFT4(prim, x, y, dw, h);
++	AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
++	if (shadow != 0) {
++		initStringFT4(prim);
++		setRGB0(prim, 0, 0, 0);
++		setUVDataPolyFT4(prim, u, v, w, h);
++		setPosDataPolyFT4(prim, x + 1, y + 1, dw, h);
++		AddPrim(ACTIVE_ORDERING_TABLE->org + layer, prim++);
++	}
++	GsSetWorkBase((PACKET *)prim);
++}
++
+ void renderItemSprite(ItemId type, int16_t x, int16_t y, int32_t layer) /* MOD: was u8 */
+ {
+ 	POLY_FT4 *prim;
+-- 
+2.53.0
+

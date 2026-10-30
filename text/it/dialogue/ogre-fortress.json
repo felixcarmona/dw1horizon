@@ -1,0 +1,203 @@
+{
+ "s045.sec5.u0": [
+  [
+   "Sembra brutto!"
+  ]
+ ],
+ "s045.sec6.u0": [
+  [
+   "D-devo scappare!"
+  ]
+ ],
+ "s045.sec7.u0": [
+  [
+   "A-aspetta un secondo!"
+  ]
+ ],
+ "s046.sec5.u0": [
+  [
+   "Prendeteli!"
+  ]
+ ],
+ "s046.sec6.u0": [
+  [
+   "Prendeteli!"
+  ]
+ ],
+ "s046.sec7.u0": [
+  [
+   "Prendeteli!"
+  ]
+ ],
+ "s047.sec5.u0": [
+  [
+   "Formazione C!"
+  ]
+ ],
+ "s047.sec6.u0": [
+  [
+   "Formazione A!"
+  ]
+ ],
+ "s047.sec7.u0": [
+  [
+   "Formazione B!"
+  ]
+ ],
+ "s047.sec60.u0": [
+  [
+   "Bleah!"
+  ]
+ ],
+ "s047.sec60.u1": [
+  [
+   "........."
+  ]
+ ],
+ "s047.sec60.u2": [
+  [
+   "N-non è possibile!"
+  ]
+ ],
+ "s047.sec60.u3": [
+  [
+   "È svanito... Era",
+   "un'illusione...?"
+  ]
+ ],
+ "s047.sec60.u4": [
+  [
+   "Sembra che l'abbiamo",
+   "sconfitto... in qualche modo."
+  ]
+ ],
+ "s047.sec60.u5": [
+  [
+   "Eh?!"
+  ]
+ ],
+ "s047.sec60.u6": [
+  [
+   "Mmm, mmm. Eh?!"
+  ]
+ ],
+ "s047.sec60.u7": [
+  [
+   "Ho avuto una specie di vuoto",
+   "all'improvviso... Oh!",
+   "S-scusate!"
+  ]
+ ],
+ "s047.sec60.u8": [
+  [
+   "Mmm?? Cos'è stato? La",
+   "maledizione di Analogman?! Be',",
+   "ora dovrebbe essere tutto a"
+  ],
+  [
+   "posto."
+  ]
+ ],
+ "s048.sec5.u0": [
+  [
+   "Ah. . . !"
+  ]
+ ],
+ "s048.sec6.u0": [
+  [
+   "Ah. . . !"
+  ]
+ ],
+ "s048.sec11.u0": [
+  [
+   "Eh? Cosa sei tu?!"
+  ]
+ ],
+ "s048.sec11.u1": [
+  [
+   "Nanimon, ecco chi!"
+  ]
+ ],
+ "s048.sec11.u2": [
+  [
+   "Ottenuto il {color 4}Portachiavi",
+   "dimensionale{color 1}! Ora puoi portare",
+   "fino a 20 oggetti!"
+  ]
+ ],
+ "s048.sec11.u3": [
+  [
+   "Ottenuto il {color 4}Portachiavi",
+   "dimensionale{color 1}! Ora puoi portare",
+   "fino a 30 oggetti!"
+  ]
+ ],
+ "s048.sec51.u0": [
+  [
+   "Mmm... Sarà questo ascensore a",
+   "sollevare il terreno lassù?"
+  ]
+ ],
+ "s048.sec51.m0.o0": "Prendi l'ascensore",
+ "s048.sec51.m0.o1": "Non salire",
+ "s048.sec52.u0": [
+  [
+   "Hey!"
+  ]
+ ],
+ "s048.sec52.u1": [
+  [
+   "Mmm? Muahahah, sei venuto a",
+   "farti battere?"
+  ]
+ ],
+ "s048.sec52.u2": [
+  [
+   "Questa è la mia battuta!"
+  ]
+ ],
+ "s048.sec52.u3": [
+  [
+   "Stavolta non ci andrò piano",
+   "come l'altra volta! Ti farò",
+   "piangere!"
+  ]
+ ],
+ "s048.sec52.u4": [
+  [
+   "Iiih!"
+  ]
+ ],
+ "s048.sec52.u5": [
+  [
+   "Ay, ay, ay!"
+  ]
+ ],
+ "s048.sec52.u6": [
+  [
+   "M-mannaggia!"
+  ]
+ ],
+ "s048.sec52.u7": [
+  [
+   "Ehi, cos'è quello?!"
+  ]
+ ],
+ "s048.sec52.u8": [
+  [
+   "Gyahahah! Addio, babbei!"
+  ]
+ ],
+ "s048.sec52.u9": [
+  [
+   "Mannaggia, è scappato di nuovo!"
+  ]
+ ],
+ "s048.sec52.u10": [
+  [
+   "Aveva persino un ascensore per",
+   "fuggire... Ormai è inutile",
+   "inseguirlo. Quel tipo!"
+  ]
+ ]
+}

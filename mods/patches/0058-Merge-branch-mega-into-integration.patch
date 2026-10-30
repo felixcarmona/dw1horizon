@@ -1,0 +1,506 @@
+From 4b92ff54fec1f8eb1902f5cc431e8c88793fda0e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:21:28 +0000
+Subject: [PATCH] Merge branch 'mega' into integration
+
+- mod_lab.c: the Mega option becomes the last entry of the one evolve list
+  ("To Mega <name>", modLabMegaTarget unchanged); the entries of a species
+  the disc lacks are skipped as dcb-import does.
+- tickConditions: one Ultimate branch: Machinedramon (48 h), then
+  getChampionEvolutionTarget after 96 h, a Mega target only from
+  MEGA_EVOLUTION_HOURS (120 h).
+- The effect-origin commit (538a4c0 / 8434651) is the same change: merged
+  clean.
+
+---
+ include/dw/level.h      |  23 +++++++++++
+ src/evl/evl.c           |   7 ++++
+ src/main/game_menu.c    |  30 ++++++++++++--
+ src/main/mod_lab.c      | 106 ++++++++++++++++++++++++++++++++++++++----------
+ src/main/partner_impl.c |  14 +++++--
+ src/std/std_main.c      |  16 ++++++--
+ src/std/std_setup.c     |   4 ++
+ src/trn/trn_reward.c    |   2 +
+ src/trn2/trn2_hud.c     |   2 +
+ src/vs/vs_demo.c        |   8 ++++
+ 10 files changed, 181 insertions(+), 31 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+new file mode 100644
+index 0000000..89ccd98
+--- /dev/null
++++ b/include/dw/level.h
+@@ -0,0 +1,23 @@
++#ifndef DW_LEVEL_H
++#define DW_LEVEL_H
++
++/*
++ * MOD (mega): Digimon levels (DigimonPara.level) and the Mega level above
++ * Ultimate (docs/mods/mega.md). The original game has 1..5 and 0 for NPCs
++ * that never evolve; the code compares with literals, so only the places that
++ * had to learn about 6 use these names.
++ */
++
++#define LEVEL_FRESH		1
++#define LEVEL_IN_TRAINING	2
++#define LEVEL_ROOKIE		3
++#define LEVEL_CHAMPION		4
++#define LEVEL_ULTIMATE		5
++#define LEVEL_MEGA		6
++
++/* hours as an Ultimate before a Mega evolution is looked for (Champion: 144) */
++#define MEGA_EVOLUTION_HOURS	120
++/* lifetime added on reaching Mega naturally (Ultimate: +96) */
++#define MEGA_LIFETIME_BONUS	120
++
++#endif
+diff --git a/src/evl/evl.c b/src/evl/evl.c
+index d0fc144..e3f48ee 100644
+--- a/src/evl/evl.c
++++ b/src/evl/evl.c
+@@ -12,6 +12,7 @@
+ #include <dw/file_queue.h>
+ #include <dw/graphics.h>
+ #include <dw/ids.h>
++#include <dw/level.h>
+ #include <dw/memmap.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+@@ -1360,6 +1361,9 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 				if (DIGI_PARA(newId).level == 5) {
+ 					addTamerLevel(100, 1);
+ 				}
++				if (DIGI_PARA(newId).level == LEVEL_MEGA) { /* MOD (mega) */
++					addTamerLevel(100, 1);
++				}
+ 			}
+ 		}
+ 		newId = gains->targetDigimon;
+@@ -1372,6 +1376,9 @@ void EVL_applyEvolution(Entity *entity, Stats *stats, PartnerPara *para, int16_t
+ 	if (level == 5 && oldLevel != 5 && HAS_USED_EVOITEM == 0) {
+ 		para->remainingLifetime += 96;
+ 	}
++	if (level == LEVEL_MEGA && HAS_USED_EVOITEM == 0) { /* MOD (mega) */
++		para->remainingLifetime += MEGA_LIFETIME_BONUS;
++	}
+ 	special = DIGI_PARA(newId).special[0];
+ 	if (special == 0) {
+ 		moveBase = 0;
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index e49d57d..e207a2b 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -16,6 +16,7 @@
+ #include <dw/graphics.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
++#include <dw/level.h>
+ #include <dw/main.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+@@ -397,6 +398,12 @@ RECT EVO_CHART_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+ RECT EVO_CHART_NAME_AREA = { 0, 48, 120, 12 };
+ 
++/* MOD (mega): the level name of the Megas, drawn into the text area with the
++ * chart's other level names (row 0x3C holds "Ultimate"; 0x48 is free) */
++#define EVO_CHART_MEGA_ROW	0x48
++#define EVO_CHART_MEGA_WIDTH	0x22
++static char EVO_CHART_MEGA_LABEL[] = "Mega";
++
+ RECT MEDAL_VIEW_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+ RECT MEDAL_DETAIL_AREA = { 0, 24, 252, 48 };
+@@ -3141,9 +3148,20 @@ void renderEvoChartDetail(void)
+ 				                  clut.m[EVO_CHART_BOXES[id - 1].clut],
+ 				                  4, 0);
+ 			}
+-			renderBorderBox(toSprites->posX + 0x9f,
+-			                toSprites->posY + 0x77, 0x12, 0x12,
+-			                0xbebebe, 0x3c3c3c, 0x87, 0x87, 0x87, 4);
++			if (DIGI_PARA(id).level == LEVEL_MEGA) {
++				/* MOD (mega): the chart has no Mega column and no Mega portraits: a
++				 * gold box with the level name under it */
++				renderBorderBox(toSprites->posX + 0x9f,
++				                toSprites->posY + 0x77, 0x12, 0x12,
++				                0x60e0ff, 0x104878, 0xb0, 0x88, 0x28, 4);
++				renderString(0, toSprites->posX + 8 - EVO_CHART_MEGA_WIDTH / 2,
++				             toSprites->posY + 0x13, EVO_CHART_MEGA_WIDTH, 0xc, 0,
++				             EVO_CHART_MEGA_ROW, 4);
++			} else {
++				renderBorderBox(toSprites->posX + 0x9f,
++				                toSprites->posY + 0x77, 0x12, 0x12,
++				                0xbebebe, 0x3c3c3c, 0x87, 0x87, 0x87, 4);
++			}
+ 		}
+ 		toSprites++;
+ 	}
+@@ -3170,6 +3188,11 @@ void renderEvoChartDetail(void)
+ 		break;
+ 	case 5:
+ 		renderString(0, -0x64, 0x3a, 0x41, 0xc, 0, 0x3c, 4);
++		break;
++	case LEVEL_MEGA: /* MOD (mega) */
++		renderString(0, -0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
++		             EVO_CHART_MEGA_ROW, 4);
++		break;
+ 	}
+ #endif
+ 	len = strlen(DIGIMON_NAME(CHART_SELECTED_DIGIMON)) / 2;
+@@ -3691,6 +3714,7 @@ int32_t drawEvoChartStrings(int8_t arg)
+ #if VERSION_IS(US)
+ 		drawString(CARD_CHART_LABELS[3], 0, 0x24);
+ 		drawString(CARD_CHART_LABELS[4], 0, 0x3c);
++		drawString(EVO_CHART_MEGA_LABEL, 0, EVO_CHART_MEGA_ROW); /* MOD (mega) */
+ #endif
+ 		return 1;
+ 	case 2:
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index b6345f2..4ec4506 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -21,8 +21,11 @@
+  *                      Machinedramon" (115; MOD machinedramon), "To Jijimon"
+  *                      (117), "To Analogman" (116), and the species imported
+  *                      from other games, Veemon (182), Puppetmon (183),
+- *                      Kimeramon (184) (MOD dcb-import); a species the disc's
+- *                      DIGI.DAT does not define is skipped
++ *                      Kimeramon (184) (MOD dcb-import), and "To Mega <name>"
++ *                      (MOD mega: the Mega the partner, an Ultimate, evolves
++ *                      to, otherwise the first Mega species in DIGI.DAT,
++ *                      docs/mods/mega.md); a species the disc's DIGI.DAT
++ *                      does not define is skipped
+  *   - "Close"
+  *
+  * The result of an option replaces the stats line until the next key, so the
+@@ -39,11 +42,13 @@
+ #include <dw/btl.h>
+ #include <dw/entity.h>
+ #include <dw/ids.h>
++#include <dw/level.h>
+ #include <dw/params.h>
+ #include <dw/species.h>
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
++#include <dw/species.h>
+ #include <dw/types.h>
+ #include <dw/ui.h>
+ 
+@@ -52,7 +57,7 @@
+ #define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
+ #define MOD_LAB_OPTIONS	6
+ #define MOD_LAB_OPT_FPS	3	/* the frame rate option */
+-#define MOD_LAB_OPT_EVOLVE	4	/* MOD (master-tyrannomon) */
++#define MOD_LAB_OPT_EVOLVE	4	/* MOD (master-tyrannomon, mega) */
+ #define ITEM_MEAT	38
+ 
+ #define PAD_SELECT	0x100
+@@ -100,6 +105,9 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+  * MOD (partners-npc-c): the count follows the arrays, so new targets are
+  * only appended to both.
+  */
++/* MOD (mega): the entry whose target is modLabMegaTarget() */
++#define MOD_LAB_EVO_MEGA	-2
++
+ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	DIGIMON_MASTER_TYRANNOMON,
+ 	DIGIMON_CHERRYMON,
+@@ -118,6 +126,7 @@ static int16_t MOD_LAB_EVO_TARGETS[] = {
+ 	182,
+ 	183,
+ 	184,
++	MOD_LAB_EVO_MEGA, /* MOD (mega): "To Mega <name>" */
+ };
+ 
+ static char *MOD_LAB_EVO_TEXT[] = {
+@@ -135,22 +144,10 @@ static char *MOD_LAB_EVO_TEXT[] = {
+ 	"To Veemon",        /* MOD (dcb-import) */
+ 	"To Puppetmon",
+ 	"To Kimeramon",
++	NULL, /* MOD (mega): modLabMegaText */
+ };
+ #define MOD_LAB_EVO_COUNT ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+ 
+-/* MOD (dcb-import): next target (step 1 or COUNT-1) whose species exists */
+-static void modLabStepEvoChoice(int32_t step)
+-{
+-	int32_t i;
+-
+-	for (i = 0; i < MOD_LAB_EVO_COUNT; i++) {
+-		modLabEvoChoice = (modLabEvoChoice + step) % MOD_LAB_EVO_COUNT;
+-		if (isValidDigimonType(MOD_LAB_EVO_TARGETS[modLabEvoChoice])) {
+-			break;
+-		}
+-	}
+-}
+-
+ static char *MOD_LAB_FPS_TEXT[3] = {
+ 	"Frame rate  20 fps",
+ 	"Frame rate  30 fps",
+@@ -174,6 +171,58 @@ static char *appendStr(char *dst, char *src)
+ 	return dst;
+ }
+ 
++/* MOD (mega): the Mega the partner evolves to if it is an Ultimate with one in
++ * its paths, otherwise the first Mega species (-1: none on the disc) */
++static int32_t modLabMegaTarget(void)
++{
++	EvolutionPath *path;
++	int32_t type;
++	int32_t i;
++
++	type = PARTNER_ENTITY.digimonEntity.entity.type;
++	if (DIGI_PARA(type).level == LEVEL_ULTIMATE) {
++		path = getEvolutionPath(type);
++		for (i = 0; i < 6; i++) {
++			if (path->to[i] > 0 && DIGI_PARA(path->to[i]).level == LEVEL_MEGA) {
++				return path->to[i];
++			}
++		}
++	}
++	for (type = NUM_ORIGINAL_DIGIMON; type < SPECIES_COUNT; type++) {
++		if (DIGI_PARA(type).level == LEVEL_MEGA) {
++			return type;
++		}
++	}
++	return -1;
++}
++
++static char modLabMegaText[32];
++
++/* MOD (integration): the species of the current evolve entry, -1 when the disc has none */
++static int32_t modLabEvoTarget(void)
++{
++	int32_t t;
++
++	t = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
++	if (t == MOD_LAB_EVO_MEGA) {
++		return modLabMegaTarget();
++	}
++	return isValidDigimonType(t) ? t : -1;
++}
++
++/* MOD (dcb-import): next target (step 1 or COUNT-1) whose species exists */
++static void modLabStepEvoChoice(int32_t step)
++{
++	int32_t i;
++
++	for (i = 0; i < MOD_LAB_EVO_COUNT; i++) {
++		modLabEvoChoice = (modLabEvoChoice + step) % MOD_LAB_EVO_COUNT;
++		if (modLabEvoTarget() >= 0) {
++			break;
++		}
++	}
++}
++
+ /* Layout copied from the game's own menus (inventory option boxes): text 12 px
+  * inside the box, one row every 0x12 px, the native selection bar behind the
+  * selected option. Each row has its own 0xC-high line in the VRAM text area. */
+@@ -201,6 +250,7 @@ static void modLabDrawText(void)
+ 	char num[12];
+ 	char *p;
+ 	int32_t i;
++	int32_t mega;
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 
+ 	for (i = 0; i < ROW_COUNT; i++) {
+@@ -224,7 +274,16 @@ static void modLabDrawText(void)
+ 		if (i == MOD_LAB_OPT_FPS) {
+ 			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else if (i == MOD_LAB_OPT_EVOLVE) {
+-			drawString(MOD_LAB_EVO_TEXT[modLabEvoChoice], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++			mega = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
++			if (mega == MOD_LAB_EVO_MEGA) {
++				/* MOD (mega): "To Mega <name>" */
++				p = appendStr(modLabMegaText, "To Mega ");
++				mega = modLabMegaTarget();
++				appendStr(p, mega < 0 ? "none" : DIGIMON_NAME(mega));
++				drawString(modLabMegaText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++			} else {
++				drawString(MOD_LAB_EVO_TEXT[modLabEvoChoice], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++			}
+ 		} else {
+ 			drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		}
+@@ -277,6 +336,7 @@ static void modLabSetFps(int32_t step)
+ static void modLabApply(void)
+ {
+ 	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
++	int32_t mega;
+ 
+ 	switch (modLabCursor) {
+ 	case 0:
+@@ -301,15 +361,17 @@ static void modLabApply(void)
+ 		modLabSetFps(1);
+ 		break;
+ 	case MOD_LAB_OPT_EVOLVE:
+-		/* MOD (master-tyrannomon): as handleEvoItems does, with natural gains */
+-		if (!isValidDigimonType(MOD_LAB_EVO_TARGETS[modLabEvoChoice])) {
+-			modLabShowMessage("Not on this disc");
+-		} else if (PARTNER_ENTITY.digimonEntity.entity.type == MOD_LAB_EVO_TARGETS[modLabEvoChoice]) {
++		/* MOD (master-tyrannomon, mega): as handleEvoItems does, with natural gains */
++		mega = modLabEvoTarget();
++		if (mega < 0) {
++			modLabShowMessage(MOD_LAB_EVO_TARGETS[modLabEvoChoice] == MOD_LAB_EVO_MEGA ? "No Mega on this disc"
++												 : "Not on this disc");
++		} else if (PARTNER_ENTITY.digimonEntity.entity.type == mega) {
+ 			modLabShowMessage("Already evolved");
+ 		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+ 			modLabShowMessage("Not now, try later");
+ 		} else {
+-			EVOLUTION_TARGET = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
++			EVOLUTION_TARGET = mega;
+ 			HAS_USED_EVOITEM = 0;
+ 			tamerSetState(6);
+ 			partnerSetState(13);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 0ad7341..6c51179 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -15,6 +15,7 @@
+ #include <dw/garbage.h>
+ #include <dw/ids.h>
+ #include <dw/item.h>
++#include <dw/level.h>
+ #include <dw/map.h>
+ #include <dw/map_object.h>
+ #include <dw/math.h>
+@@ -2203,14 +2204,21 @@ void tickConditions(void)
+ 		 *   - partners-npc-c: Megadramon/Gigadramon -> Machinedramon after
+ 		 *     48 h (getModUltimateEvolutionTarget, evolution.c);
+ 		 *   - partners-npc-a: an Ultimate with a path (Etemon ->
+-		 *     MetalEtemon) after 96 h, like a Champion.
++		 *     MetalEtemon) after 96 h, like a Champion;
++		 *   - mega: an Ultimate looks for a Mega the way a Champion looks
++		 *     for an Ultimate (best requirement score, then best average
++		 *     stat), after MEGA_EVOLUTION_HOURS (120 h).
+ 		 */
+-		else if (level == 5 && evoTimer >= 48) {
++		else if (level == LEVEL_ULTIMATE && evoTimer >= 48) {
+ 			EVOLUTION_TARGET = getModUltimateEvolutionTarget(
+ 				PARTNER_ENTITY.digimonEntity.entity.type);
+-			if (EVOLUTION_TARGET == -1 && evoTimer >= 96)
++			if (EVOLUTION_TARGET == -1 && evoTimer >= 96) {
+ 				EVOLUTION_TARGET = getChampionEvolutionTarget(
+ 					PARTNER_ENTITY.digimonEntity.entity.type);
++				if (EVOLUTION_TARGET != -1 && evoTimer < MEGA_EVOLUTION_HOURS &&
++				    DIGI_PARA(EVOLUTION_TARGET).level == LEVEL_MEGA)
++					EVOLUTION_TARGET = -1;
++			}
+ 		}
+ 		if (level == 4 && evoTimer == 360)
+ 			EVOLUTION_TARGET = handleSpecialEvolutions(
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 7100cd1..e5320d8 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -3181,6 +3181,16 @@ void STD_initializeBracket(void)
+ 	}
+ }
+ 
++/* MOD (mega): STD_WIN_CHANCES has rows for Rookie, Champion and Ultimate
++ * (level - 3); a Mega (the player's partner) counts as an Ultimate there,
++ * where it used to read past the row. */
++static int32_t stdWinChanceRow(int32_t type)
++{
++	int32_t level = DIGI_PARA(type).level;
++
++	return (level > 5 ? 5 : level) - 3;
++}
++
+ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ {
+ 	int32_t i;
+@@ -3204,7 +3214,7 @@ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ 	}
+ 
+ 	for (i = 0; i < 4; i++) {
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[i * 2]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[i * 2 + 1L]).level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[stdWinChanceRow(PARTICIPANT_TYPES[i * 2])][stdWinChanceRow(PARTICIPANT_TYPES[i * 2 + 1L])]) {
+ 			STD_ROUND1_WINNERS[i] = i * 2;
+ 		} else {
+ 			STD_ROUND1_WINNERS[i] = i * 2 + 1;
+@@ -3217,13 +3227,13 @@ void STD_setupParticipants(uint8_t *out, uint8_t *list)
+ 		} else {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[0];
+ 		}
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[2]]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[3]]).level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[stdWinChanceRow(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[2]])][stdWinChanceRow(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[3]])]) {
+ 			STD_ROUND2_WINNERS[1] = STD_ROUND1_WINNERS[2];
+ 		} else {
+ 			STD_ROUND2_WINNERS[1] = STD_ROUND1_WINNERS[3];
+ 		}
+ 	} else {
+-		if (randomLimit(100) < STD_WIN_CHANCES[DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[0]]).level - 3][DIGI_PARA(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[1]]).level - 3]) {
++		if (randomLimit(100) < STD_WIN_CHANCES[stdWinChanceRow(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[0]])][stdWinChanceRow(PARTICIPANT_TYPES[STD_ROUND1_WINNERS[1]])]) {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[0];
+ 		} else {
+ 			STD_ROUND2_WINNERS[0] = STD_ROUND1_WINNERS[1];
+diff --git a/src/std/std_setup.c b/src/std/std_setup.c
+index 7fc011c..7f639f8 100644
+--- a/src/std/std_setup.c
++++ b/src/std/std_setup.c
+@@ -293,6 +293,10 @@ void STD_initializeOpponent(int16_t type, int16_t slot, uint8_t tier)
+ 		div = 10;
+ 		mul = 25;
+ 		break;
++	case 6: /* MOD (mega): x3.5; without it div and mul were left unset */
++		div = 10;
++		mul = 35;
++		break;
+ 	}
+ 	stats = &NPC_ENTITIES[slot].digimonEntity.stats;
+ 	stats->base.off = mul * (base + base * (0x1e - randomLimit(0x3d)) / 100) / div;
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 222b632..78ae52f 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -697,6 +697,8 @@ int16_t TRN_calculateTrainingMultiplier(int32_t type, int16_t mode, int16_t flag
+ 		num = num * 10;
+ 	} else if (DIGI_PARA(type).level == 4) {
+ 		num = num * 11;
++	} else if (DIGI_PARA(type).level == 6) { /* MOD (mega): x1.3 */
++		num = num * 13;
+ 	} else {
+ 		num = num * 12;
+ 	}
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index acf3ae2..2d2db84 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -222,6 +222,8 @@ int16_t TRN2_calculateTrainingMultiplier(type, mode)
+ 		num = num * 10;
+ 	} else if (DIGI_PARA(type).level == 4) {
+ 		num = num * 11;
++	} else if (DIGI_PARA(type).level == 6) { /* MOD (mega): x1.3 */
++		num = num * 13;
+ 	} else {
+ 		num = num * 12;
+ 	}
+diff --git a/src/vs/vs_demo.c b/src/vs/vs_demo.c
+index 3e1515d..f63a291 100644
+--- a/src/vs/vs_demo.c
++++ b/src/vs/vs_demo.c
+@@ -219,6 +219,10 @@ void VS_randomizeDemoFighter(Entity *entity)
+ 		div = 10;
+ 		mul = 25;
+ 		break;
++	case 6: /* MOD (mega): x3.5; without it div and mul were left unset */
++		div = 10;
++		mul = 35;
++		break;
+ 	}
+ 	stats = &((DigimonEntity *)entity)->stats;
+ 	stats->base.off = mul * (base + base * (0x1e - randomLimit(0x3d)) / 100) / div;
+@@ -407,6 +411,10 @@ void VS_randomizeTrialDigimon(RegisteredDigimon *digimon)
+ 		div = 10;
+ 		mul = 25;
+ 		break;
++	case 6: /* MOD (mega): x3.5; without it div and mul were left unset */
++		div = 10;
++		mul = 35;
++		break;
+ 	}
+ 	digimon->offense = mul * (base + base * (0x1e - randomLimit(0x3d)) / 100) / div;
+ 	digimon->defense = mul * (base + base * (0x1e - randomLimit(0x3d)) / 100) / div;

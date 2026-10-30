@@ -1,0 +1,33 @@
+{
+  "id": 129,
+  "name": "Greymon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["fire", "battle", "air"],
+  "techniques": ["Magma Bomb", "Red Inferno", "Dynamite Kick (44)", "Mega Flame"],
+  "drop": {"item": "Off. Chip", "percent": 100},
+  "effects_like": 5,
+  "model": {"name": "EGRE", "bones": 26, "radius": 230, "height": 400},
+  "voice": 5,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 4800, "mp": 3800, "off": 630, "def": 340, "speed": 360, "brain": 200, "bits": 2900},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

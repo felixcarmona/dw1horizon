@@ -1,0 +1,33 @@
+{
+  "id": 73,
+  "name": "PlatinumSukamon",
+  "level": "champion",
+  "attribute": "vaccine",
+  "specialties": ["filth", null, null],
+  "techniques": ["Odor Spray", "Big Poop Toss", "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell"],
+  "drop": {"item": "Medicine", "percent": 10},
+  "effects_like": 39,
+  "model": {"name": "PCSC", "bones": 21, "radius": 175, "height": 290},
+  "voice": 35,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 4800, "mp": 4500, "off": 500, "def": 270, "speed": 210, "brain": 100, "bits": 3300},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

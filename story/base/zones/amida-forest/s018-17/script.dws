@@ -1,0 +1,1050 @@
+// Readable form of script 18 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 18 {
+    npc slot0 = 5;
+    npc slot1 = 6;
+    npc slot2 = 7;
+    npc slot5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 10, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 5, 6, 71, 72, 73;
+
+    on enter replace {    // section 254
+        engine.arg = 0;
+        call_routine(routine("save_clock_speed"));
+        unless (!is_recruited(species("Centarumon"))) return;
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("Giant Meat"), 33, 49);
+        } else if (random_roll <= 49) {
+            spawn_item(item("Off. Disk"), 33, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("MP Floppy"), 49, 53);
+        } else if (random_roll <= 49) {
+            spawn_item(item("sm.recovery"), 49, 53);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 29) {
+            spawn_item(item("Def. Disk"), 67, 42);
+        } else if (random_roll <= 49) {
+            spawn_item(item("Meat"), 67, 42);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Port. potty"), 34, 29);
+        } else if (random_roll <= 29) {
+            spawn_item(item("Hispeed dsk"), 34, 29);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("med.recovery"), 50, 34);
+        } else if (random_roll <= 29) {
+            spawn_item(item("Moldy Meat"), 50, 34);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 1) {
+            spawn_item(item("Orange bana"), 49, 18);
+        } else if (random_roll <= 9) {
+            spawn_item(item("Happymushrm"), 49, 18);
+        } else if (random_roll <= 29) {
+            spawn_item(item("Auto Pilot"), 49, 18);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 4) {
+            spawn_item(item("Omni Disk"), 65, 22);
+            return;
+        }
+        if (random_roll <= 29) {
+            spawn_item(item("Medium MP"), 65, 22);
+        }
+    }
+
+    on step(0) replace {    // section 51
+        set_obj_visibility(38, 1);
+        set_obj_visibility(39, 1);
+        set_obj_visibility(40, 1);
+        set_obj_visibility(41, 1);
+        set_obj_visibility(42, 1);
+        set_obj_visibility(43, 1);
+        unless (!is_recruited(species("Centarumon"))) return;
+        store_random(random_roll, 2);
+        if (random_roll == 0) {
+            amida_correct_path = 0;
+            set_obj_visibility(38, 0);
+            set_obj_visibility(42, 0);
+            set_obj_visibility(43, 0);
+        }
+        if (random_roll == 1) {
+            amida_correct_path = 1;
+            set_obj_visibility(39, 0);
+            set_obj_visibility(41, 0);
+            set_obj_visibility(43, 0);
+        }
+        if (random_roll == 2) {
+            amida_correct_path = 2;
+            set_obj_visibility(40, 0);
+            set_obj_visibility(41, 0);
+            set_obj_visibility(42, 0);
+        }
+        if (!amida_forest_warning_heard) {
+            amida_forest_warning_heard = true;
+            entity_set_rotation(tamer, 2048);
+            sound(8, 0);
+            wait(1s);
+            sound(8, 0);
+            wait(1s);
+            sound(8, 0);
+            wait(1s);
+            say(narrator, text("s018.sec51.u0"));
+        }
+        gosub sec10;
+    }
+
+    on talk(slot5) replace {    // section 10
+        amida_path_passed.zone1 = false;
+        amida_path_passed.zone2 = false;
+        amida_path_passed.zone3 = false;
+        amida_path_passed.zone4 = false;
+        amida_path_passed.zone5 = false;
+        amida_path_passed.zone6 = false;
+        amida_path_passed.zone7 = false;
+        amida_path_passed.zone8 = false;
+        amida_path_passed.zone9 = false;
+        amida_path_passed.zone10 = false;
+        amida_path_passed.zone11 = false;
+        amida_path_passed.zone12 = false;
+        amida_path_passed.zone13 = false;
+        amida_path_passed.zone14 = false;
+        amida_path_passed.zone15 = false;
+        amida_path_passed.zone16 = false;
+        jump_return();
+    }
+
+    on step(1) replace {    // section 52
+        unless (!is_recruited(species("Centarumon"))) return;
+        gosub L24;
+        amida_path_passed.zone1 = true;
+        amida_path_passed.zone2 = false;
+        amida_path_passed.zone3 = false;
+        unless (amida_path_passed.zone4) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 109, 428);
+        move_object_to(1, 47, 1, 0, 109, 432);
+        move_object_to(2, 48, 1, 0, 109, 436);
+        wait(1);
+        move_object_to(0, 46, 1, 10, 52, 765);
+        move_object_to(1, 47, 1, 10, 52, 769);
+        move_object_to(2, 48, 1, 10, 52, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        animate(tamer, 17);
+        entity_move_to_axis_with_camera(tamer, -3800, 2, 10);
+        wait(2s);
+        gosub L27;
+        camera_on(tamer, speed: 10);
+        await camera;
+        gosub sec10;
+        gosub L22;
+    }
+
+    on step(2) replace {    // section 53
+        unless (!is_recruited(species("Centarumon"))) return;
+        gosub L24;
+        amida_path_passed.zone2 = true;
+        amida_path_passed.zone1 = false;
+        amida_path_passed.zone3 = false;
+        unless (amida_path_passed.zone5) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 430);
+        move_object_to(1, 47, 1, 0, 300, 434);
+        move_object_to(2, 48, 1, 0, 300, 438);
+        wait(1);
+        move_object_to(0, 46, 1, 10, 300, 765);
+        move_object_to(1, 47, 1, 10, 300, 769);
+        move_object_to(2, 48, 1, 10, 300, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        animate(tamer, 17);
+        entity_move_to_axis_with_camera(tamer, -3800, 2, 10);
+        wait(2s);
+        gosub L27;
+        camera_on(tamer, speed: 10);
+        await camera;
+        gosub sec10;
+        gosub L22;
+    }
+
+    on step(3) replace {    // section 54
+        unless (!is_recruited(species("Centarumon"))) return;
+        gosub L24;
+        amida_path_passed.zone3 = true;
+        amida_path_passed.zone1 = false;
+        amida_path_passed.zone2 = false;
+        unless (amida_path_passed.zone7) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 495, 430);
+        move_object_to(1, 47, 1, 0, 495, 434);
+        move_object_to(2, 48, 1, 0, 495, 438);
+        wait(1);
+        move_object_to(0, 46, 1, 10, 540, 765);
+        move_object_to(1, 47, 1, 10, 540, 769);
+        move_object_to(2, 48, 1, 10, 540, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        animate(tamer, 17);
+        entity_move_to_axis_with_camera(tamer, -3800, 2, 10);
+        wait(2s);
+        gosub L27;
+        camera_on(tamer, speed: 10);
+        await camera;
+        gosub sec10;
+        gosub L22;
+    }
+
+    on step(4) replace {    // section 55
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone4 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone8) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 135, 215);
+        move_object_to(1, 47, 1, 0, 135, 219);
+        move_object_to(2, 48, 1, 0, 135, 223);
+        wait(1);
+        move_object_to(0, 46, 1, 17, 52, 765);
+        move_object_to(1, 47, 1, 17, 52, 769);
+        move_object_to(2, 48, 1, 17, 52, 773);
+        wait(5);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -3800, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(5) replace {    // section 56
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone5 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone6) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 225);
+        move_object_to(1, 47, 1, 0, 300, 229);
+        move_object_to(2, 48, 1, 0, 300, 233);
+        wait(1);
+        move_object_to(0, 46, 1, 17, 300, 765);
+        move_object_to(1, 47, 1, 17, 300, 769);
+        move_object_to(2, 48, 1, 17, 300, 773);
+        wait(5);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -3800, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(6) replace {    // section 57
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone6 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone2 || !amida_path_passed.zone5) {
+            unless (amida_path_passed.zone9) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 200);
+        move_object_to(1, 47, 1, 0, 300, 204);
+        move_object_to(2, 48, 1, 0, 300, 208);
+        wait(1);
+        move_object_to(0, 46, 1, 19, 300, 765);
+        move_object_to(1, 47, 1, 19, 300, 769);
+        move_object_to(2, 48, 1, 19, 300, 773);
+        wait(4);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -1000, 2, 5);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(7) replace {    // section 58
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone7 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone12) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 470, 225);
+        move_object_to(1, 47, 1, 0, 470, 229);
+        move_object_to(2, 48, 1, 0, 470, 223);
+        wait(1);
+        move_object_to(0, 46, 1, 19, 540, 765);
+        move_object_to(1, 47, 1, 19, 540, 769);
+        move_object_to(2, 48, 1, 19, 540, 773);
+        wait(4);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -3650, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(8) replace {    // section 59
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone8 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone1 || !amida_path_passed.zone4) {
+            unless (amida_path_passed.zone10) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 150, 95);
+        move_object_to(1, 47, 1, 0, 150, 99);
+        move_object_to(2, 48, 1, 0, 150, 103);
+        wait(1);
+        move_object_to(0, 46, 1, 21, 52, 765);
+        move_object_to(1, 47, 1, 21, 52, 769);
+        move_object_to(2, 48, 1, 21, 52, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -400, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(9) replace {    // section 60
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone9 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone6 || !amida_path_passed.zone5) {
+            unless (amida_path_passed.zone11) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 95);
+        move_object_to(1, 47, 1, 0, 300, 99);
+        move_object_to(2, 48, 1, 0, 300, 103);
+        wait(1);
+        move_object_to(0, 46, 1, 21, 300, 765);
+        move_object_to(1, 47, 1, 21, 300, 769);
+        move_object_to(2, 48, 1, 21, 300, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -1100, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2600, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(10) replace {    // section 61
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone10 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone4 || !amida_path_passed.zone8) {
+            unless (amida_path_passed.zone14) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 165, 0);
+        move_object_to(1, 47, 1, 0, 165, 4);
+        move_object_to(2, 48, 1, 0, 165, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 25, 52, 765);
+        move_object_to(1, 47, 1, 25, 52, 769);
+        move_object_to(2, 48, 1, 25, 52, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 2000, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 0, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(11) replace {    // section 62
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone11 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone6 || !amida_path_passed.zone9) {
+            unless (amida_path_passed.zone13) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 0);
+        move_object_to(1, 47, 1, 0, 300, 4);
+        move_object_to(2, 48, 1, 0, 300, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 25, 300, 765);
+        move_object_to(1, 47, 1, 25, 300, 769);
+        move_object_to(2, 48, 1, 25, 300, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        animate(tamer, 17);
+        entity_move_to_axis_with_camera(tamer, 1400, 2, 10);
+        wait(2s);
+        gosub L27;
+        gosub sec10;
+        camera_on(tamer, speed: 10);
+        await camera;
+        gosub L22;
+    }
+
+    on step(12) replace {    // section 63
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone12 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone3 || !amida_path_passed.zone7) {
+            unless (amida_path_passed.zone16) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 445, 0);
+        move_object_to(1, 47, 1, 0, 445, 4);
+        move_object_to(2, 48, 1, 0, 445, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 25, 540, 765);
+        move_object_to(1, 47, 1, 25, 540, 769);
+        move_object_to(2, 48, 1, 25, 540, 773);
+        wait(5);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 800, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -2000, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(13) replace {    // section 64
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone13 = true;
+        store_random(random_roll, 1);
+        if (!amida_path_passed.zone9 || !amida_path_passed.zone11) {
+            unless (amida_path_passed.zone15) return;
+        }
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 0);
+        move_object_to(1, 47, 1, 0, 300, 4);
+        move_object_to(2, 48, 1, 0, 300, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 29, 300, 765);
+        move_object_to(1, 47, 1, 29, 300, 769);
+        move_object_to(2, 48, 1, 29, 300, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        animate(tamer, 17);
+        entity_move_to_axis_with_camera(tamer, 1500, 2, 10);
+        wait(2s);
+        gosub L27;
+        gosub sec10;
+        camera_on(tamer, speed: 10);
+        await camera;
+        gosub L22;
+    }
+
+    on step(14) replace {    // section 65
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone14 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone8 && amida_path_passed.zone10) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 158, 0);
+        move_object_to(1, 47, 1, 0, 158, 4);
+        move_object_to(2, 48, 1, 0, 158, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 29, 25, 765);
+        move_object_to(1, 47, 1, 29, 25, 769);
+        move_object_to(2, 48, 1, 29, 25, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 1800, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -400, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(15) replace {    // section 66
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone15 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone13 && amida_path_passed.zone11) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 300, 0);
+        move_object_to(1, 47, 1, 0, 300, 4);
+        move_object_to(2, 48, 1, 0, 300, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 29, 300, 765);
+        move_object_to(1, 47, 1, 29, 300, 769);
+        move_object_to(2, 48, 1, 29, 300, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 2550, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 1400, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(16) replace {    // section 67
+        unless (!is_recruited(species("Centarumon"))) return;
+        amida_path_passed.zone16 = true;
+        store_random(random_roll, 1);
+        unless (amida_path_passed.zone12 && amida_path_passed.zone7) return;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        gosub L26;
+        sound(8, 2);
+        sound(8, 2);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        engine.object = 46;
+        engine.animation = 3;
+        call_routine(routine("reset_object_animation"));
+        move_object_to(0, 46, 1, 0, 445, 0);
+        move_object_to(1, 47, 1, 0, 445, 4);
+        move_object_to(2, 48, 1, 0, 445, 8);
+        wait(1);
+        move_object_to(0, 46, 1, 25, 540, 765);
+        move_object_to(1, 47, 1, 25, 540, 769);
+        move_object_to(2, 48, 1, 25, 540, 773);
+        wait(3);
+        animate(partner, 40);
+        damage_percent = 50;
+        deal_damage(damage_percent);
+        if (random_roll == 0) {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, 1000, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        } else {
+            animate(tamer, 17);
+            entity_move_to_axis_with_camera(tamer, -1800, 2, 10);
+            wait(2s);
+            gosub L27;
+            gosub sec10;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+        gosub L22;
+    }
+
+    on step(17) replace {    // section 68
+        unless (!is_recruited(species("Centarumon"))) return;
+        if (amida_correct_path == 0) {
+            say(tamer, text("s018.sec68.u0"));
+            sound(8, 2);
+            wait(1s);
+            set_obj_visibility(38, 1);
+            run(tamer, -1750, 3600, camera: true);
+            run(partner, -1450, 3600);
+            await partner;
+            await tamer;
+            entity_set_rotation(tamer, 2048);
+            entity_set_rotation(partner, 2048);
+            set_digimon(species(156), 0, 0);
+            walk(slot0, -1600, 4300);
+            await slot0;
+            say(slot0, text("s018.sec68.u1"));
+            recruit(species("Centarumon"));
+            engine.prosperity += 2;
+            say(slot0, text("s018.sec68.u2"));
+            walk_away(slot0, -1600, 1000, looks: 4);
+            remove(slot0);
+            glances = 0;
+            sound(8, 9);
+            say(narrator, text("s018.sec68.u3"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            face(tamer, partner);
+            face(partner, tamer);
+            wait(5);
+            say(tamer, text("s018.sec68.u4"));
+            animate(tamer, anim.tamer_victory);
+            say(tamer, text("s018.sec68.u5"));
+            walk(tamer, -1600, 5200);
+            wait(1s);
+            walk(partner, -1600, 5200);
+            wait(1s);
+            warp_to(79, 0, 255);
+            return;
+        }
+        sound(0, 11);
+        say(narrator, text("s018.sec68.u6"));
+        warp_to(17, 0, 255);
+    }
+
+    on step(18) replace {    // section 69
+        unless (!is_recruited(species("Centarumon"))) return;
+        if (amida_correct_path == 1) {
+            say(tamer, text("s018.sec69.u0"));
+            sound(8, 2);
+            wait(1s);
+            set_obj_visibility(39, 1);
+            run(tamer, -241, 3600, camera: true);
+            run(partner, 200, 3600);
+            await partner;
+            await tamer;
+            entity_set_rotation(tamer, 2048);
+            entity_set_rotation(partner, 2048);
+            set_digimon(species(156), 1, 0);
+            walk(slot1, 0, 4300);
+            await slot1;
+            say(slot1, text("s018.sec69.u1"));
+            recruit(species("Centarumon"));
+            engine.prosperity += 2;
+            say(slot1, text("s018.sec69.u2"));
+            walk_away(slot1, 0, 1000, looks: 4);
+            remove(slot1);
+            glances = 0;
+            sound(8, 9);
+            say(narrator, text("s018.sec69.u3"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            face(tamer, partner);
+            face(partner, tamer);
+            wait(5);
+            say(tamer, text("s018.sec69.u4"));
+            animate(tamer, anim.tamer_victory);
+            say(tamer, text("s018.sec69.u5"));
+            walk(tamer, 0, 5200);
+            wait(1s);
+            walk(partner, 0, 5200);
+            wait(1s);
+            warp_to(79, 0, 255);
+            return;
+        }
+        sound(0, 11);
+        say(narrator, text("s018.sec69.u6"));
+        warp_to(17, 0, 255);
+    }
+
+    on step(19) replace {    // section 70
+        unless (!is_recruited(species("Centarumon"))) return;
+        if (amida_correct_path == 2) {
+            say(tamer, text("s018.sec70.u0"));
+            sound(8, 2);
+            wait(1s);
+            set_obj_visibility(40, 1);
+            run(tamer, 1450, 3600, camera: true);
+            run(partner, 1667, 3600);
+            await partner;
+            await tamer;
+            entity_set_rotation(tamer, 2048);
+            entity_set_rotation(partner, 2048);
+            set_digimon(species(156), 2, 0);
+            walk(slot2, 1600, 4300);
+            await slot2;
+            say(slot2, text("s018.sec70.u1"));
+            recruit(species("Centarumon"));
+            engine.prosperity += 2;
+            say(slot2, text("s018.sec70.u2"));
+            walk_away(slot2, 1600, 1000, looks: 4);
+            remove(slot2);
+            glances = 0;
+            sound(8, 9);
+            say(narrator, text("s018.sec70.u3"));
+            camera_on(tamer, speed: 10);
+            await camera;
+            face(tamer, partner);
+            face(partner, tamer);
+            wait(5);
+            say(tamer, text("s018.sec70.u4"));
+            animate(tamer, anim.tamer_victory);
+            say(tamer, text("s018.sec70.u5"));
+            walk(tamer, 1600, 5200);
+            wait(1s);
+            walk(partner, 1600, 5200);
+            wait(1s);
+            warp_to(79, 0, 255);
+            return;
+        }
+        sound(0, 11);
+        say(narrator, text("s018.sec70.u6"));
+        warp_to(17, 0, 255);
+    }
+
+    on talk(slot0) replace {    // section 5
+    }
+
+    on talk(slot1) replace {    // section 6
+    }
+
+    on step(20) replace {    // section 71
+        walk(tamer, -1600, 5200);
+        warp_to(79, 0, 255);
+    }
+
+    on step(21) replace {    // section 72
+        walk(tamer, 0, 5200);
+        warp_to(79, 0, 255);
+    }
+
+    on step(22) replace {    // section 73
+        walk(tamer, 1600, 5200);
+        warp_to(79, 0, 255);
+        return;
+    }
+
+    shared L22 {    // code of sec10 that other code jumps to
+        if (stat(6) == 1) {
+            face(tamer, partner);
+            say(tamer, text("s018.sec10.u0"));
+            warp_to(17, 0, 51);
+        }
+        jump_return();
+    }
+
+    shared L24 {    // code of sec10 that other code jumps to
+        if (stat(6) == 1) {
+            face(tamer, partner);
+            say(tamer, text("s018.sec10.u1"));
+            warp_to(17, 0, 51);
+        }
+        jump_return();
+    }
+
+    shared L26 {    // code of sec10 that other code jumps to
+        sound(8, 1);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        spawn_sprite_at_entity(tamer, 10, 44);
+        spawn_sprite_at_entity(tamer, 10, 45);
+        wait(4);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        wait(4);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        spawn_sprite_at_entity(tamer, 10, 44);
+        spawn_sprite_at_entity(tamer, 10, 45);
+        wait(4);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        wait(4);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        spawn_sprite_at_entity(tamer, 10, 44);
+        spawn_sprite_at_entity(tamer, 10, 45);
+        wait(4);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        wait(10);
+        jump_return();
+    }
+
+    shared L27 {    // code of sec10 that other code jumps to
+        set_obj_visibility(46, 1);
+        set_obj_visibility(47, 1);
+        set_obj_visibility(48, 1);
+        move_object_to(0, 46, 1, 0, 600, 900);
+        move_object_to(1, 47, 1, 0, 600, 900);
+        move_object_to(2, 48, 1, 0, 600, 900);
+        wait(1);
+        jump_return();
+    }
+}

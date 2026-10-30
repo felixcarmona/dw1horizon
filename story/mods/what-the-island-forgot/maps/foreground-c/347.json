@@ -1,0 +1,653 @@
+{
+  "screen": 347,
+  "name": "workshop-gallery",
+  "pieces": [
+    {
+      "name": "crate",
+      "depth_px": [
+        450,
+        153
+      ],
+      "block": [],
+      "at": [
+        413,
+        62
+      ],
+      "png": "347-crate.png",
+      "size": [
+        78,
+        89
+      ],
+      "sam": [
+        {
+          "box": [
+            406,
+            52,
+            503,
+            155
+          ],
+          "positive": [
+            [
+              454,
+              102
+            ]
+          ],
+          "negative": [
+            [
+              406,
+              52
+            ],
+            [
+              503,
+              52
+            ],
+            [
+              406,
+              155
+            ],
+            [
+              503,
+              155
+            ]
+          ],
+          "scores": [
+            0.9865025281906128,
+            0.9939409494400024,
+            0.9868483543395996
+          ],
+          "best": 1
+        }
+      ],
+      "mask_sha256": "57b9f6bc467d402ae9488ba20b697675b1a2ca5672cf12d4a4ced3ca3bc7ccff",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "workshop-gallery.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The rails and plank strips lie on the ground. Wall supports remain on the blocked perimeter. Cut the protruding crate so its near/side faces can hide an approaching character; its occupied tiles remain blocked. Tile review: restore 63 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [
+    {
+      "tile": [
+        59,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        66,
+        11
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        66,
+        12
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        13
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        58,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        14
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        58,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        15
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        58,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        16
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        58,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        17
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        58,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        59,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        60,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        61,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        62,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        63,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        64,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    },
+    {
+      "tile": [
+        65,
+        18
+      ],
+      "was": 128,
+      "value": 0,
+      "reason": "floor behind the raised crate back; keep its lower footprint solid"
+    }
+  ],
+  "sam_source": {
+    "path": "G-workshop-gallery/workshop-gallery-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      38,
+      1856,
+      2265
+    ],
+    "sha1": "27fd85527947b9c94b227b1558c015fa6b9a6cc4",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

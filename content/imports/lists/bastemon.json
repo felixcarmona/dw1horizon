@@ -1,0 +1,14 @@
+{
+ "first_id": 432,
+ "out": "build/bastemon",
+ "digimon": [
+  {
+   "name": "Bastemon",
+   "game": "dw3",
+   "model": "M437BAST",
+   "level": 5,
+   "element": 2,
+   "donor": 40
+  }
+ ]
+}

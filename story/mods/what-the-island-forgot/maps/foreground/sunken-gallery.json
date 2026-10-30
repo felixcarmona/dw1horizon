@@ -1,0 +1,72 @@
+{
+  "screen": 344,
+  "review": "The fallen support crosses the recessed rail route: draw its exact own-art pixels over the characters passing behind it. Its near edge is sorted locally in narrow strips, so characters in front stay visible. The collapse void and large rocks stay blocked; no path runs onto the timber or into the pit.",
+  "collision": [],
+  "pieces": [
+    {
+      "png": "344-collapse-left-spar.png",
+      "at": [
+        230,
+        277
+      ],
+      "depth": null,
+      "strip_width": 4,
+      "segmentation": {
+        "box": [
+          229,
+          265,
+          445,
+          468
+        ],
+        "positive": [
+          [
+            321,
+            348
+          ]
+        ],
+        "negative": [
+          [
+            226,
+            366.5
+          ],
+          [
+            448,
+            366.5
+          ],
+          [
+            337.0,
+            472
+          ]
+        ],
+        "score": 0.992712676525116,
+        "area": 11903,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/sunken-gallery-2400x1792.png",
+    "source_sha1": "69f3ba7c7efd44c0aeec8ab484f14c0cc7b80c6f",
+    "top": 39,
+    "scale": 2.6785714285714284,
+    "size": [
+      896,
+      640
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  },
+  "fill_background_tiles": true,
+  "background_review": "The donor has five omitted 128-pixel corner tiles. They become visible near foreground props; fill only those holes from our art, quantized to existing used palette entries. Existing tiles and all their colours remain exact."
+}

@@ -1,0 +1,73 @@
+// Readable form of script 52 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 52 {
+    // the section table, in the order of the original header
+    sections 254, 82, 83, 81, 81 as sec81_dup4;
+
+    on enter replace {    // section 254
+    }
+
+    on use(2) replace {    // section 82
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s53_s64) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 3);
+            say(narrator, text("s052.sec82.u0"));
+            mansion_door_unlocked.s53_s64 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s53_s64) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s052.sec82.u1"));
+            return;
+        }
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 2000, 2500);
+        warp_to(64, 0, 255);
+    }
+
+    on use(3) replace {    // section 83
+        if (!mansion_door_unlocked.s53_s63) {
+            entity_set_rotation(tamer, 1024);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s052.sec83.u0"));
+            return;
+        }
+        walk(tamer, -2000, 554);
+        rotate_3d_object(2, 0, 1);
+        sound(8, 1);
+        wait(10);
+        warp_to(63, 0, 255);
+    }
+
+    on use(1) replace {    // section 81
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s53_s232) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 3);
+            say(narrator, text("s052.sec81.u0"));
+            mansion_door_unlocked.s53_s232 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s53_s232) {
+            entity_set_rotation(tamer, 3072);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s052.sec81.u1"));
+            return;
+        }
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 2000, 550);
+        warp_to(232, 0, 255);
+    }
+
+    shared sec81_dup4 {    // a dead copy of section 81
+        return;
+    }
+}

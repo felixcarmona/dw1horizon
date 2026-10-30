@@ -1,0 +1,72 @@
+{
+ "s010.sec5.u0": "¡No sabes cuál es tu sitio!",
+ "s010.sec7.u0": "¿¡Pero qué te he hecho yo!?",
+ "s010.sec8.m0.o0": "Pagar",
+ "s010.sec8.m0.o1": "No pagar",
+ "s010.sec8.u0": [
+  [
+   "¡Uk-uk-uuuk!"
+  ],
+  [
+   "¿¡Que qué hago aquí, dices!?"
+  ],
+  [
+   "¡Escucha, {color 6}{player}{color 1}!",
+   "¡Intenté montarme mi harén en",
+   "la ciudad y me echaron!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tsk... Ah, sí. Dicen que ahora",
+   "nadas en dinero, ¿eh? Te voy a",
+   "vender algo"
+  ],
+  [
+   "guapo, ¡uk!"
+  ],
+  [
+   "Lo más raro del mundo: el",
+   "{color 6}Plátano de oro{color 1}. ¡Por 50000",
+   "Bits! Sin fiar, uk."
+  ]
+ ],
+ "s010.sec8.u2": "¿Estás tonto? ¡Llevas demasiadas cosas!",
+ "s010.sec8.u3": "¡Ups! Llevo la bolsa llena.",
+ "s010.sec8.u4": "¡Uk, un placer hacer negocios contigo!",
+ "s010.sec8.u5": "El dinero no sirve de nada si no lo gastas, colega.",
+ "s010.sec51.m0.o0": "Vale",
+ "s010.sec51.m0.o1": "En otro momento",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "¡¡¡Alto ahí mismooo!!!"
+  ]
+ ],
+ "s010.sec51.u1": "¡Este humilde servidor se llama Ninjamon!",
+ "s010.sec51.u2": [
+  [
+   "¡Debéis de ser {color 6}{player}{color 1}...",
+   "y {color 10}{partner}{color 1}!"
+  ],
+  [
+   "Vuestra fama ha llegado hasta",
+   "la lejana Aldea Ninja, ¡así es!",
+   "¿Cruzaréis los aceros"
+  ],
+  [
+   "con este humilde servidor?"
+  ]
+ ],
+ "s010.sec51.u3": "Je, ¡no tan deprisa, así es!",
+ "s010.sec51.u4": "¡Tu destreza es tal como dicen! ¡Por favor, haz de este humilde servidor tu dishípulo!",
+ "s010.sec51.u5": "¿Dishípulo...? Ah, discípulo. Pues no, gracias. Pero si ayudas a construir la ciudad, vale.",
+ "s010.sec51.u6": "¡Entendido! Eso también es un buen entrenamiento, ¡así es! ¡Este humilde servidor se esforzará!",
+ "s010.sec51.u7": "¡Ninjamon se ha unido a la ciudad!",
+ "s011.sec5.u0": "¡Podría contigo con una mano!",
+ "s011.sec6.u0": "¡Parece que te puedo ganar!",
+ "s011.sec7.u0": "Ji, ji. No tienes ni idea...",
+ "s011.sec8.u0": "¡Ya vale, hombre!",
+ "s011.sec9.u0": "Meterse con los demás no mola, ¿sabes?",
+ "s011.sec10.u0": "¡Escúchame, por favor!"
+}

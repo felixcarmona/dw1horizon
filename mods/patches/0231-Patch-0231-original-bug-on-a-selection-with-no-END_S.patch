@@ -1,0 +1,60 @@
+From 5012bf8240efbc8bb626a91946702799c65d1550 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 21:55:34 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200231:=20original=20bug,=20=E2=96=B3=20o?=
+ =?UTF-8?q?n=20a=20selection=20with=20no=20END=5FSELECTION=20ran=20script?=
+ =?UTF-8?q?=20garbage.=20scriptShowSelection=20skipped=202=20bytes=20after?=
+ =?UTF-8?q?=20the=20text=20as=20the=2012=2000=20marker=20it=20expected;=20?=
+ =?UTF-8?q?23=20selections=20of=20the=20disc=20have=20none=20(Piximon's=20?=
+ =?UTF-8?q?Training=20Manual,=20Meteormon,=20WaruMonzaemon,=20Bakemon...;?=
+ =?UTF-8?q?=20story/base=20keeps=20them=20as=20`choice(open)`,=20proven=20?=
+ =?UTF-8?q?equal=20to=20the=20disc),=20so=20=E2=96=B3=20went=20on=20from?=
+ =?UTF-8?q?=20the=20third=20byte=20of=20the=20first=20option's=20code=20(i?=
+ =?UTF-8?q?nstant=20wins,=20tournament=20entries,=20prosperity=20and=20bit?=
+ =?UTF-8?q?s=20by=20accident).=20The=20marker=20is=20checked;=20without=20?=
+ =?UTF-8?q?it=20=E2=96=B3=20is=20refused=20(the=20error=20sound,=20as=20un?=
+ =?UTF-8?q?der=20trigger=2049):=20those=20questions=20take=20an=20answer.?=
+ =?UTF-8?q?=2048=20bytes=20of=20heap?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ src/main/script_textbox.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index bd634097..119f29dd 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -267,7 +267,8 @@ int32_t tickSelectionDialogue(void)
+ 	}
+ 
+ 	if (isKeyDown(CANCEL_BUTTON)) {
+-		if (isTriggerSet(0x31) == 0) {
++		if (isTriggerSet(0x31) == 0 &&
++		    (ACTIVE_INSTRUCTION == SCRIPT_OP_CALL_ROUTINE || DIALOGUE_SELECTION.endPointer != NULL)) { /* MOD (cancel) */
+ 			if (ACTIVE_INSTRUCTION != SCRIPT_OP_CALL_ROUTINE) {
+ 				advanceTextbox(0);
+ 				SCRIPT_POINTER = DIALOGUE_SELECTION.endPointer;
+@@ -1252,8 +1253,15 @@ void scriptShowSelection(void)
+ 	}
+ #endif
+ 
+-	SCRIPT_POINTER += 2;
+-	DIALOGUE_SELECTION.endPointer = SCRIPT_POINTER;
++	/* MOD (cancel): the original skipped 2 bytes as the END_SELECTION (12 00) every selection was thought to end with; 23
++	 * of the disc's have none, so △ ran their next instruction from its third byte (Piximon's Buy, Meteormon,
++	 * WaruMonzaemon...). Without the marker there is no cancel path: △ is refused as under trigger 49. */
++	if (SCRIPT_POINTER[0] == 0x12 && SCRIPT_POINTER[1] == 0) {
++		SCRIPT_POINTER += 2;
++		DIALOGUE_SELECTION.endPointer = SCRIPT_POINTER;
++	} else {
++		DIALOGUE_SELECTION.endPointer = NULL;
++	}
+ 
+ 	if (CURRENT_DIALOGUE_OWNER != 0xff) {
+ 		DIALOGUE_SELECTION.cursorOffsetY = 0xd;
+-- 
+2.55.0
+

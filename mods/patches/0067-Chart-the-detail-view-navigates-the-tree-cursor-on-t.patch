@@ -1,0 +1,524 @@
+From e87f2b0cb5c2a82292020c9fe18b239fe44b9d7d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 08:39:05 +0000
+Subject: [PATCH] Chart: the detail view navigates the tree (cursor on the
+ from/to boxes, X opens a species, TRIANGLE comes back); fix the unaligned
+ condition bubble offset; tournament levels from the cup's list
+
+- evolution chart detail: any species of the tree can be shown (CHART_DETAIL_ID), new species included, with a stack to go back
+- getConditionFxOffset copies the record's x, y, z, bone to an aligned SVECTOR: the GTE loads it with LWC2 and the record field is 2-aligned
+  (a hungry or sleepy imported partner crashed ApplyMatrixSV with a LoadAddressError)
+- the species that join a cup's pool take the levels of the cup's list, recruited or not
+
+---
+ src/main/game_menu.c   | 242 ++++++++++++++++++++++++++++++++++++-----
+ src/main/mod_species.c |   9 +-
+ src/main/utils2.c      |  52 ++++-----
+ 3 files changed, 241 insertions(+), 62 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 7880a51..5283851 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -180,7 +180,8 @@ void renderDigimonStatsView(void);
+ void renderCardsView(void);
+ void renderMedalView(void);
+ void renderEvoChartView(void);
+-static void loadChartPortraits(int32_t chartId); /* MOD (portraits) */
++static void chartDetailOpen(int32_t id); /* MOD (portraits) */
++static int32_t chartDetailInput(void);
+ void renderPlayerInfoView(void);
+ void renderString();
+ void renderMenuTab(int16_t x, int8_t w, int8_t layer);
+@@ -271,7 +272,7 @@ int32_t drawCardViewStrings(void);
+ int32_t drawMedalViewStrings(void);
+ void renderDigimonStatsBar(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e);
+ int32_t entityGetTechFromAnim(Entity *entity, int32_t anim);
+-int32_t drawEvoChartStrings(int8_t arg);
++int32_t drawEvoChartStrings(int32_t arg); /* MOD (portraits): was int8_t, a species can be > 127 */
+ 
+ static void *game_menu_functions[] = {
+ 	drawCardViewStrings,
+@@ -1814,7 +1815,7 @@ void tickPlayerMenu(void)
+ 								CHART_SELECTED_ROW * 0x13 - 0x45;
+ 							setWH(&startPos, 10, 10);
+ 							MAIN_D_80134D46 = 0;
+-							loadChartPortraits(CHART_SELECTED_DIGIMON); /* MOD (portraits) */
++							chartDetailOpen(CHART_SELECTED_DIGIMON); /* MOD (portraits) */
+ 							createAnimatedUIBox(
+ 								2, 1, 0, &finalPos, &startPos,
+ 								NULL,
+@@ -1826,6 +1827,8 @@ void tickPlayerMenu(void)
+ 						playSound(0, 4);
+ 					}
+ 				}
++			} else if ((MENU_STATE == 3) && chartDetailInput()) {
++				/* MOD (portraits): moved the cursor, or went to another species of the tree */
+ 			} else if ((MENU_STATE == 3) &&
+ 			           (isKeyDown(CANCEL_BUTTON) != 0)) {
+ 				if (MENU_STATE == 3) {
+@@ -2924,31 +2927,46 @@ void removeUIBox1(void)
+ #define CHART_EXTRA_TPAGE	((CHART_EXTRA_Y / 256) * 16 + CHART_EXTRA_X / 64)
+ static int16_t CHART_EXTRA_ID[CHART_EXTRA_SLOTS];
+ 
+-static void loadChartPortraits(int32_t chartId)
++/*
++ * MOD (portraits): the detail view can go from a species to one of its "from" or "to" boxes (D-pad moves a
++ * cursor between them, X opens the species, TRIANGLE comes back), so it shows any species of the tree:
++ * CHART_DETAIL_ID, the one in the middle (the overview's CHART_SELECTED_DIGIMON is where the box opened from).
++ */
++#define CHART_DETAIL_DEPTH_MAX	8
++static int16_t CHART_DETAIL_ID;
++static int16_t CHART_DETAIL_STACK[CHART_DETAIL_DEPTH_MAX];
++static int8_t CHART_DETAIL_DEPTH;
++static int8_t CHART_CURSOR_SIDE; /* 0 the "from" boxes, 1 the "to" boxes */
++static int8_t CHART_CURSOR_J;	 /* the slot in that side's array */
++
++static void loadChartPortraits(int32_t id)
+ {
+ 	EvolutionPath *path;
+ 	int32_t n;
+ 	int32_t i;
+-	int32_t id;
++	int32_t other;
+ 
+ 	for (i = 0; i < CHART_EXTRA_SLOTS; i++) {
+ 		CHART_EXTRA_ID[i] = 0;
+ 	}
+-	path = &EVOLUTION_PATHS[chartId - 1];
++	path = getEvolutionPath(id);
+ 	n = 0;
+-	for (i = 0; i < 11 && n < CHART_EXTRA_SLOTS; i++) {
+-		id = i < 5 ? path->from[i] : path->to[i - 5];
+-		if (id <= NUM_EVO_CHART_DIGIMON || id >= NUM_DIGIMON) {
++	for (i = -1; i < 11 && n < CHART_EXTRA_SLOTS; i++) {
++		other = i < 0 ? id : (i < 5 ? path->from[i] : path->to[i - 5]);
++		if (other <= NUM_EVO_CHART_DIGIMON || other >= NUM_DIGIMON) {
+ 			continue;
+ 		}
+-		CHART_EXTRA_ID[n] = id;
+-		loadSpeciesPortrait(id, CHART_EXTRA_X + (n % 8) * 8, CHART_EXTRA_Y + (n / 8) * 16, 16,
++		CHART_EXTRA_ID[n] = other;
++		loadSpeciesPortrait(other, CHART_EXTRA_X + (n % 8) * 8, CHART_EXTRA_Y + (n / 8) * 16, 16,
+ 		                    CHART_EXTRA_X + (n % 8) * 16, CHART_EXTRA_CLUT_Y + n / 8);
+ 		n++;
++		if (i >= 0) {
++			path = getEvolutionPath(id); /* the loads may have moved the record of a new species */
++		}
+ 	}
+ }
+ 
+-/* draws the icon of a species outside the chart's 61 at (x, y); 0 when it has none loaded */
++/* draws the icon of a species outside the chart's 61 at (x, y) */
+ static void renderChartPortrait(int32_t id, int16_t x, int16_t y)
+ {
+ 	int32_t i;
+@@ -2962,6 +2980,162 @@ static void renderChartPortrait(int32_t id, int16_t x, int16_t y)
+ 	}
+ }
+ 
++/* the box of a side/slot: its species (0 for none) and position on the detail view, as renderEvoChartDetail lays them out */
++static int32_t chartDetailBox(int32_t side, int32_t j, int16_t *x, int16_t *y)
++{
++	EvolutionPath *path;
++	ChartSprite *sprites;
++	int32_t count;
++	int32_t n;
++	int32_t i;
++	int32_t id;
++
++	path = getEvolutionPath(CHART_DETAIL_ID);
++	n = side == 0 ? 5 : 6;
++	count = 0;
++	for (i = 0; i < n; i++) {
++		if ((side == 0 ? path->from[i] : path->to[i]) != -1) {
++			count++;
++		}
++	}
++	if (side == 0) {
++		sprites = (count % 2) == 0 ? CHART_FROM_SPRITES_EVEN : CHART_FROM_SPRITES_ODD;
++		n = (count % 2) == 0 ? 4 : 5;
++	} else {
++		sprites = (count % 2) == 0 ? CHART_TO_SPRITES_EVEN : CHART_TO_SPRITES_ODD;
++		n = (count % 2) == 0 ? 6 : 5;
++	}
++	if (j < 0 || j >= n) {
++		return 0;
++	}
++	id = side == 0 ? path->from[j] : path->to[j];
++	if (id <= 0) {
++		return 0;
++	}
++	*x = sprites[j].posX;
++	*y = sprites[j].posY;
++	return id;
++}
++
++static void chartDetailMoveCursor(int32_t side, int32_t j)
++{
++	CHART_CURSOR_SIDE = side;
++	CHART_CURSOR_J = j;
++	playSound(0, 2);
++}
++
++/* the cursor on the first box of the species in the middle: the "to" side first */
++static void chartDetailPlaceCursor(void)
++{
++	int16_t x;
++	int16_t y;
++	int32_t side;
++	int32_t j;
++
++	CHART_CURSOR_SIDE = 1;
++	CHART_CURSOR_J = 0;
++	for (side = 1; side >= 0; side--) {
++		for (j = 0; j < 6; j++) {
++			if (chartDetailBox(side, j, &x, &y) != 0) {
++				CHART_CURSOR_SIDE = side;
++				CHART_CURSOR_J = j;
++				return;
++			}
++		}
++	}
++}
++
++static void chartDetailOpen(int32_t id)
++{
++	CHART_DETAIL_ID = id;
++	CHART_DETAIL_DEPTH = 0;
++	chartDetailPlaceCursor();
++	loadChartPortraits(id);
++}
++
++static void chartDetailGoto(int32_t id)
++{
++	CHART_DETAIL_ID = id;
++	chartDetailPlaceCursor();
++	loadChartPortraits(id);
++	playSound(0, 3);
++}
++
++/* the input of the detail view; 1 when it took the key (the caller then does not close the view) */
++static int32_t chartDetailInput(void)
++{
++	int16_t x;
++	int16_t y;
++	int16_t ox;
++	int16_t oy;
++	int32_t j;
++	int32_t best;
++	int32_t d;
++	int32_t bestd;
++	int32_t id;
++	int32_t side;
++
++	side = CHART_CURSOR_SIDE;
++	if (chartDetailBox(side, CHART_CURSOR_J, &x, &y) == 0) {
++		chartDetailPlaceCursor(); /* no box under the cursor (a species without boxes on that side) */
++		side = CHART_CURSOR_SIDE;
++		if (chartDetailBox(side, CHART_CURSOR_J, &x, &y) == 0) {
++			return 0; /* no box at all: TRIANGLE closes */
++		}
++	}
++	if (CHANGED_INPUT & 0x1000) { /* up */
++		for (j = CHART_CURSOR_J - 1; j >= 0; j--) {
++			if (chartDetailBox(side, j, &ox, &oy) != 0) {
++				chartDetailMoveCursor(side, j);
++				break;
++			}
++		}
++		return 1;
++	}
++	if (CHANGED_INPUT & 0x4000) { /* down */
++		for (j = CHART_CURSOR_J + 1; j < 6; j++) {
++			if (chartDetailBox(side, j, &ox, &oy) != 0) {
++				chartDetailMoveCursor(side, j);
++				break;
++			}
++		}
++		return 1;
++	}
++	if (CHANGED_INPUT & (0x8000 | 0x2000)) { /* left, right: the other side, the box nearest in height */
++		best = -1;
++		bestd = 0x7fff;
++		for (j = 0; j < 6; j++) {
++			if (chartDetailBox(1 - side, j, &ox, &oy) != 0) {
++				d = oy > y ? oy - y : y - oy;
++				if (d < bestd) {
++					bestd = d;
++					best = j;
++				}
++			}
++		}
++		if (best >= 0) {
++			chartDetailMoveCursor(1 - side, best);
++		}
++		return 1;
++	}
++	if (isKeyDown(CONFIRM_BUTTON) != 0) {
++		id = chartDetailBox(side, CHART_CURSOR_J, &x, &y);
++		if (id > 0 && id < NUM_DIGIMON && hasDigimonRaised(id & 0xffff) == 1 &&
++		    CHART_DETAIL_DEPTH < CHART_DETAIL_DEPTH_MAX) {
++			CHART_DETAIL_STACK[(int32_t)CHART_DETAIL_DEPTH++] = CHART_DETAIL_ID;
++			chartDetailGoto(id);
++		} else {
++			playSound(0, 4);
++		}
++		return 1;
++	}
++	if (isKeyDown(CANCEL_BUTTON) != 0 && CHART_DETAIL_DEPTH > 0) {
++		chartDetailGoto(CHART_DETAIL_STACK[(int32_t)--CHART_DETAIL_DEPTH]);
++		return 1;
++	}
++	return 0;
++}
++
+ void renderEvoChartView(void)
+ {
+ 	int32_t i;
+@@ -3057,18 +3231,22 @@ void renderEvoChartDetail(void)
+ 	int8_t count2;
+ 	int8_t fromCount;
+ 	int8_t toCount;
++	EvolutionPath *ep;
++	int16_t cx;
++	int16_t cy;
+ 
+ 	clut = EVO_CHART_DETAIL_COLORS;
+ 	MENU_SUB_STATE = 2;
+-	drawEvoChartStrings((int8_t)CHART_SELECTED_DIGIMON);
++	ep = getEvolutionPath(CHART_DETAIL_ID); /* MOD (portraits): any species of the tree */
++	drawEvoChartStrings(CHART_DETAIL_ID);
+ 	count1 = (count2 = 0);
+ 	for (i = 0; i < 5; i++) {
+-		if (EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].from[i] != -1) {
++		if ((*ep).from[i] != -1) {
+ 			count1++;
+ 		}
+ 	}
+ 	for (i = 0; i < 6; i++) {
+-		if (EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].to[i] != -1) {
++		if ((*ep).to[i] != -1) {
+ 			count2++;
+ 		}
+ 	}
+@@ -3093,7 +3271,7 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < fromCount; j++) {
+-		if (EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].from[j] > 0) {
++		if ((*ep).from[j] > 0) {
+ 			drawLine3P(0x65db,
+ 			           fromLines->x1, fromLines->y1 - 1,
+ 			           fromLines->x2, fromLines->y2 - 1,
+@@ -3126,7 +3304,7 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < toCount; j++) {
+-		if (EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].to[j] > 0) {
++		if ((*ep).to[j] > 0) {
+ 			color1 = (MAIN_D_80124A84[j * 2].r & 0xff) |
+ 			         ((MAIN_D_80124A84[j * 2].g & 0xff) << 8) |
+ 			         ((MAIN_D_80124A84[j * 2].b & 0xff) << 16);
+@@ -3164,16 +3342,20 @@ void renderEvoChartDetail(void)
+ 		toLines++;
+ 	}
+ 
+-	renderRectPolyFT4(-8, -0x14, 0x10, 0x10,
+-	                  EVO_CHART_BOXES[CHART_SELECTED_DIGIMON - 1].u,
+-	                  EVO_CHART_BOXES[CHART_SELECTED_DIGIMON - 1].v, 0x18,
+-	                  clut.m[EVO_CHART_BOXES[CHART_SELECTED_DIGIMON - 1].clut],
+-	                  4, 0);
++	if (CHART_DETAIL_ID <= NUM_EVO_CHART_DIGIMON) {
++		renderRectPolyFT4(-8, -0x14, 0x10, 0x10,
++		                  EVO_CHART_BOXES[CHART_DETAIL_ID - 1].u,
++		                  EVO_CHART_BOXES[CHART_DETAIL_ID - 1].v, 0x18,
++		                  clut.m[EVO_CHART_BOXES[CHART_DETAIL_ID - 1].clut],
++		                  4, 0);
++	} else {
++		renderChartPortrait(CHART_DETAIL_ID, -8, -0x14);
++	}
+ 	renderBorderBox(0x97, 99, 0x12, 0x12, 0xbebebe, 0x3c3c3c, 0x87, 0x87,
+ 	                0x87, 4);
+ 
+ 	for (j = 0; j < fromCount; j++) {
+-		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].from[j];
++		id = (*ep).from[j];
+ 		if (id > 0) {
+ 			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+@@ -3194,7 +3376,7 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < toCount; j++) {
+-		id = EVOLUTION_PATHS[CHART_SELECTED_DIGIMON - 1].to[j];
++		id = (*ep).to[j];
+ 		if (id > 0) {
+ 			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+@@ -3228,11 +3410,11 @@ void renderEvoChartDetail(void)
+ #if !VERSION_IS(US)
+ 	renderString(3, -0x19, -0x4f, 0x30, 0xc, 0, 0x18, 4);
+ 	renderString(0, -0x56, 0x3a, 0x24, 0xc,
+-	             ((DIGI_PARA(CHART_SELECTED_DIGIMON).level - 1) * 36) + 0x30, 0x18,
++	             ((DIGI_PARA(CHART_DETAIL_ID).level - 1) * 36) + 0x30, 0x18,
+ 	             4);
+ #else
+ 	renderString(3, -0x14, -0x4f, 0x24, 0xc, 0, 0x18, 4);
+-	switch (DIGI_PARA(CHART_SELECTED_DIGIMON).level) {
++	switch (DIGI_PARA(CHART_DETAIL_ID).level) {
+ 	case 1:
+ 		renderString(0, -0x5b, 0x3a, 0x2e, 0xc, 0x24, 0x18, 4);
+ 		break;
+@@ -3254,8 +3436,12 @@ void renderEvoChartDetail(void)
+ 		break;
+ 	}
+ #endif
+-	len = strlen(DIGIMON_NAME(CHART_SELECTED_DIGIMON)) / 2;
++	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+ 	renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
++	/* MOD (portraits): the cursor of the navigation, blinking, on the box it points at */
++	if (chartDetailBox(CHART_CURSOR_SIDE, CHART_CURSOR_J, &cx, &cy) != 0 && (PLAYTIME_FRAMES % 10) < 7) {
++		renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x20e0ff, 0x1070a0, 0xd0, 0xc0, 0x20, 4);
++	}
+ 	for (i = 0; i < 6; i++) {
+ 		renderInsetBox(MAIN_D_80124B48[i].posX, MAIN_D_80124B48[i].posY,
+ 		               MAIN_D_80124B48[i].width,
+@@ -3758,7 +3944,7 @@ int32_t drawPlayerInfoStrings(void)
+ 	return 0;
+ }
+ 
+-int32_t drawEvoChartStrings(int8_t arg)
++int32_t drawEvoChartStrings(int32_t arg)
+ {
+ 	RECT rect1;
+ 	RECT rect2;
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 163cdb3..1111a2f 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -36,6 +36,7 @@ static uint16_t SPECIES_CACHE_AGE[SPECIES_CACHE_SLOTS];
+ static uint16_t SPECIES_CACHE_CLOCK;
+ static int32_t SPECIES_LAST_SLOT;
+ static uint32_t SPECIES_SECTOR[0x800 / 4];
++static SVECTOR CONDITION_FX_COPY __attribute__((aligned(4)));
+ static uint32_t SPECIES_FALLBACK_PORTRAIT;
+ static uint8_t SPECIES_PORTRAIT_BUFFER[SPECIES_PORTRAIT_SIZE] __attribute__((aligned(4)));
+ static EvolutionPath NO_EVOLUTION_PATH;
+@@ -492,7 +493,13 @@ SVECTOR *getConditionFxOffset(int32_t type)
+ 
+ 	rec = getSpeciesRecord(type);
+ 	if (rec != NULL && (rec->flags & SPECIES_FLAG_COND_FX)) {
+-		return (SVECTOR *)rec->conditionFx;
++		/* the record's x, y, z, bone are 2-aligned: the GTE loads an SVECTOR with LWC2, which needs 4 (the
++		 * condition bubble of a hungry WarGrowlmon crashed on it) */
++		CONDITION_FX_COPY.vx = rec->conditionFx[0];
++		CONDITION_FX_COPY.vy = rec->conditionFx[1];
++		CONDITION_FX_COPY.vz = rec->conditionFx[2];
++		CONDITION_FX_COPY.pad = rec->conditionFx[3];
++		return &CONDITION_FX_COPY;
+ 	}
+ 	return &CONDITION_FX_OFFSETS[getOriginalType(type)];
+ }
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index c3bf40e..978e5d0 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -585,49 +585,23 @@ void updateMapLightState(void)
+ 
+ /*
+  * MOD (portraits): species of DIGI.DAT as opponents. The cup's pool is the recruited originals of its list
+- * (all recruited ones when the list is empty); partner species whose level lies in the levels of that pool
+- * (Rookie..Ultimate: a Mega is not drawn) join it, up to as many as half the pool, at least seven, so
+- * an early game with few recruits still meets a different bracket. The opponents' stats depend on the cup
+- * and the level only (STD_initializeOpponent), so a species of the level is as strong as the original.
++ * (all recruited ones when the list is empty); partner species whose level lies in the levels of that list
++ * (all of the list, recruited or not: Rookie, Champion, Ultimate; a Mega is not drawn) join it, up to as many
++ * as half the pool, at least seven, so an early game with few recruits still meets a different bracket. The
++ * opponents' stats depend on the cup and the level only (STD_initializeOpponent), so a species of the level
++ * is as strong as the original.
+  */
+ #define TOURNAMENT_NEW_MAX	64
+ 
+-static int32_t addTournamentSpecies(uint16_t *pool, int32_t count)
++static int32_t addTournamentSpecies(uint16_t *pool, int32_t count, int32_t lo, int32_t hi)
+ {
+ 	uint16_t *cand;
+-	int32_t lo;
+-	int32_t hi;
+-	int32_t level;
+ 	int32_t n;
+ 	int32_t add;
+ 	int32_t i;
+ 	int32_t j;
+ 	uint16_t t;
+ 
+-	lo = 9;
+-	hi = 0;
+-	for (i = 0; i < count; i++) {
+-		level = DIGI_PARA(pool[i]).level;
+-		if (level < lo) {
+-			lo = level;
+-		}
+-		if (level > hi) {
+-			hi = level;
+-		}
+-	}
+-	if (count == 0) {
+-		/* no recruit: the levels of the partner itself */
+-		lo = hi = DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).level;
+-	}
+-	if (lo < 3) {
+-		lo = 3;
+-	}
+-	if (hi > 5) {
+-		hi = 5;
+-	}
+-	if (hi < lo) {
+-		hi = lo;
+-	}
+ 	cand = (uint16_t *)allocateArray(SPECIES_MAX_PARTNERS * 2);
+ 	n = getSpeciesPartnersByLevel(lo, hi, cand, SPECIES_MAX_PARTNERS);
+ 	add = count > 7 ? count / 2 : 7;
+@@ -667,6 +641,8 @@ void startTournament(void)
+ 	int32_t count;
+ 	uint16_t *o;
+ 	int32_t k;
++	int32_t lo;
++	int32_t hi;
+ 
+ 	id = readPStat(3);
+ 	t.cup = id;
+@@ -675,10 +651,20 @@ void startTournament(void)
+ 	jumpTable = getCupDataJumpTable(10, id);
+ 	p = getCupDataJumpTableEntry(jumpTable, 4) + 2;
+ 	count = 0;
++	lo = 3; /* MOD (portraits): the levels of the cup's list: Rookie..Ultimate for a list that is every recruit */
++	hi = 5;
+ 	i = *p;
+ 	if (i < 0xfe) {
++		lo = 9;
++		hi = 0;
+ 		if (id != 0x16) {
+ 			while ((i = *p++) < 0xfe) {
++				if (DIGI_PARA(i).level < lo) {
++					lo = DIGI_PARA(i).level;
++				}
++				if (DIGI_PARA(i).level > hi) {
++					hi = DIGI_PARA(i).level;
++				}
+ 				if (isDigimonRecruited(i)) {
+ 					*w++ = i;
+ 					count++;
+@@ -700,7 +686,7 @@ void startTournament(void)
+ 	}
+ 	if (id != 0x16) {
+ 		/* MOD (portraits): the special cup 0x16 lists its own contestants */
+-		count = addTournamentSpecies(pool, count);
++		count = addTournamentSpecies(pool, count, lo > 5 ? 5 : lo, hi > 5 ? 5 : hi);
+ 	}
+ 	o = t.opponents;
+ 	if (count == 7) {
+-- 
+2.53.0
+

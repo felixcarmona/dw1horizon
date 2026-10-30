@@ -1,0 +1,230 @@
+{
+ "s174.sec81.u0": [
+  [
+   "Benvenuto. Guarda,",
+   "{color 6}{player}{color 1}. Sono diventato",
+   "proprietario e cuoco di questo"
+  ],
+  [
+   "ristorante. Prendetevi il",
+   "vostro tempo e gustate la mia",
+   "cucina fiammeggiante... Eh eh"
+  ],
+  [
+   "eh..."
+  ]
+ ],
+ "s174.sec81.u1": [
+  [
+   "Ah ah ah! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}, venite a mangiare",
+   "i miei piatti! Non pensavo che"
+  ],
+  [
+   "il mio talento nascosto sarebbe",
+   "servito. Questo è cibo vero,",
+   "mica oggetti! Buon appetito!"
+  ]
+ ],
+ "s174.sec81.u2": [
+  [
+   "Ehi, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Ho deciso di fare",
+   "il cuoco. Non fatevi ingannare"
+  ],
+  [
+   "dall'aspetto, sono bravissimo.",
+   "Le razioni da viaggio stancano,",
+   "vero? Ogni tanto sedersi a"
+  ],
+  [
+   "mangiare al ristorante è una",
+   "vera gioia!"
+  ]
+ ],
+ "s174.sec81.u3": [
+  [
+   "Ciaooo! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Il mio ristorante",
+   "è finalmente aperto! I miei"
+  ],
+  [
+   "speciali dolci gelati sono",
+   "deliziosi, dovete provarli!"
+  ]
+ ],
+ "s174.sec81.u4": [
+  [
+   "Eh... {color 6}{player}{color 1}, lavorerò",
+   "come cuoco di questo",
+   "ristorante. Prendetevi il"
+  ],
+  [
+   "vostro tempo e gustate i miei",
+   "piatti roventi."
+  ]
+ ],
+ "s174.sec81.u5": [
+  [
+   "Ah ah! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Ora faccio il",
+   "cuoco! Non pensavo che il mio"
+  ],
+  [
+   "talento nascosto sarebbe",
+   "servito. Le mie specialità sono",
+   "una spanna sopra le altre,"
+  ],
+  [
+   "venite a provarle!"
+  ]
+ ],
+ "s174.sec81.u6": [
+  [
+   "Ehi, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Ho deciso di",
+   "vivere per la cucina! Le mie"
+  ],
+  [
+   "specialità sono ricche di",
+   "sostanze nutritive! Controllate",
+   "quando sono al lavoro!"
+  ]
+ ],
+ "s174.sec81.u7": [
+  [
+   "Ciaooo! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Ho deciso di",
+   "aiutare al ristorante. Mi hanno"
+  ],
+  [
+   "detto che potevo fare i dolci!",
+   "I miei dolci speciali sono così",
+   "buoni che dovete provarli."
+  ]
+ ],
+ "s175.sec6.u0": [
+  [
+   "Bzzt-bzzt! Ehi, {color 6}{player}{color 1}!",
+   "Cos'è questa macchina? Bzzt!",
+   "Non è pericolosa! È un jukebox"
+  ],
+  [
+   "che mi infiamma il cuore!",
+   "Eh-eh-ih! Anche tu devi",
+   "scatenarti ogni tanto! Esplodi,"
+  ],
+  [
+   "amico! Aspetto una richiesta",
+   "musicale bollente! Bzzt!"
+  ]
+ ],
+ "s175.sec81.u0": [
+  [
+   "Benvenuto. Guarda,",
+   "{color 6}{player}{color 1}. Sono diventato",
+   "proprietario e cuoco di questo"
+  ],
+  [
+   "ristorante. Prendetevi il",
+   "vostro tempo e gustate la mia",
+   "cucina fiammeggiante... Eh eh"
+  ],
+  [
+   "eh..."
+  ]
+ ],
+ "s175.sec81.u1": [
+  [
+   "Ah ah ah! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}, venite a mangiare",
+   "i miei piatti! Non pensavo che"
+  ],
+  [
+   "il mio talento nascosto sarebbe",
+   "servito. Questo è cibo vero,",
+   "mica oggetti! Buon appetito!"
+  ]
+ ],
+ "s175.sec81.u2": [
+  [
+   "Ehi, {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Ho deciso di fare",
+   "il cuoco. Non fatevi ingannare"
+  ],
+  [
+   "dall'aspetto, sono bravissimo.",
+   "Le razioni da viaggio stancano,",
+   "vero? Ogni tanto sedersi a"
+  ],
+  [
+   "mangiare al ristorante è una",
+   "vera gioia!"
+  ]
+ ],
+ "s175.sec81.u3": [
+  [
+   "Ciaooo! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Il mio ristorante",
+   "è finalmente aperto! I miei"
+  ],
+  [
+   "speciali dolci gelati sono",
+   "deliziosi, dovete provarli!"
+  ]
+ ],
+ "s175.sec81.u4": [
+  [
+   "Eh... {color 6}{player}{color 1}, lavorerò",
+   "come cuoco di questo",
+   "ristorante. Prendetevi il"
+  ],
+  [
+   "vostro tempo e gustate i miei",
+   "piatti, caldi come il sole di",
+   "mezzogiorno."
+  ]
+ ],
+ "s175.sec81.u5": [
+  [
+   "Ah ah! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}. Ora faccio il",
+   "cuoco! Non pensavo che il mio"
+  ],
+  [
+   "talento nascosto sarebbe",
+   "servito. Se volete le mie",
+   "specialità, venite prima di"
+  ],
+  [
+   "mezzogiorno!"
+  ]
+ ],
+ "s175.sec81.u6": [
+  [
+   "Ehi, {color 6}{player}{color 1} e",
+   "{color 10}{partner}{color 1}! Ho deciso di",
+   "vivere per la cucina! Le mie"
+  ],
+  [
+   "specialità si servono solo a",
+   "tarda notte o al mattino",
+   "presto, ma sono ricchissime di"
+  ],
+  [
+   "sostanze nutritive!"
+  ]
+ ],
+ "s175.sec81.u7": [
+  [
+   "Ciaooo! {color 6}{player}{color 1},",
+   "{color 10}{partner}{color 1}! Ho deciso di",
+   "aiutare al ristorante. Mi hanno"
+  ],
+  [
+   "detto che potevo fare i dolci!",
+   "I miei dolci speciali sono così",
+   "buoni che dovete provarli."
+  ]
+ ]
+}

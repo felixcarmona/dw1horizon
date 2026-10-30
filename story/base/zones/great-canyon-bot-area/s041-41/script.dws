@@ -1,0 +1,158 @@
+// Readable form of script 41 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 41 {
+    npc muchomon0 = 5;
+    npc muchomon1 = 6;
+    npc weedmon2 = 7;
+    npc weedmon3 = 8;
+    npc weedmon4 = 9;
+    npc goblimon = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 81, 53;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 69, 49);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Happymushrm"), 37, 33);
+        }
+    }
+
+    on talk(muchomon0) replace {    // section 5
+        say(muchomon0, text("s041.sec5.u0"));
+        battle();
+        recruit(species("Muchomon"));
+    }
+
+    on talk(muchomon1) replace {    // section 6
+        say(muchomon1, text("s041.sec6.u0"));
+        battle();
+        recruit(species("Muchomon"));
+    }
+
+    on talk(weedmon2) replace {    // section 7
+        say(weedmon2, text("s041.sec7.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(weedmon3) replace {    // section 8
+        say(weedmon3, text("s041.sec8.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(weedmon4) replace {    // section 9
+        say(weedmon4, text("s041.sec9.u0"));
+        battle();
+        recruit(species("Weedmon"));
+    }
+
+    on talk(goblimon) replace {    // section 10
+        say(goblimon, text("s041.sec10.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 2128);
+        wait(5);
+        say(narrator, text("s041.sec81.u0"));
+        choice {
+            text("s041.sec81.m0.o0") => {
+                if (!canyon_elevator_unjammed) {
+                    animate(tamer, 16);
+                    wait(15);
+                    say(tamer, text("s041.sec81.u1"));
+                    animate(tamer, anim.idle);
+                    entity_set_rotation(tamer, 2297);
+                    wait(10);
+                    entity_set_rotation(tamer, 1785);
+                    wait(10);
+                    entity_set_rotation(tamer, 2297);
+                    show_textbox(text("s041.sec81.u2"));
+                    animate(tamer, 25);
+                    wait(1s);
+                    say(narrator, text("s041.sec81.u3"));
+                    say(tamer, text("s041.sec81.u4"));
+                    canyon_elevator_unjammed = true;
+                    return;
+                }
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(129, 0, 52);
+                return;
+            }
+            text("s041.sec81.m0.o1") => {
+                fadeout_hud(0);
+                if (!canyon_elevator_unjammed) {
+                    animate(tamer, 16);
+                    wait(15);
+                    say(tamer, text("s041.sec81.u5"));
+                    animate(tamer, anim.idle);
+                    entity_set_rotation(tamer, 2297);
+                    wait(10);
+                    entity_set_rotation(tamer, 1785);
+                    wait(10);
+                    entity_set_rotation(tamer, 2297);
+                    show_textbox(text("s041.sec81.u6"));
+                    say(narrator, text("s041.sec81.u7"));
+                    say(tamer, text("s041.sec81.u8"));
+                    canyon_elevator_unjammed = true;
+                    return;
+                }
+                sound(8, 4);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                rotate_3d_object(0, 0, 1);
+                wait(1);
+                rotate_3d_object(1, 0, 1);
+                wait(1);
+                sound(8, 5);
+                warp_to(38, 2, 55);
+                return;
+            }
+            text("s041.sec81.m0.o2") => {}
+        }
+    }
+
+    on step(2) replace {    // section 53
+        sound(8, 5);
+        canyon_elevator_ridden = true;
+        ogre_fortress_elevator_ridden = false;
+        return;
+    }
+}

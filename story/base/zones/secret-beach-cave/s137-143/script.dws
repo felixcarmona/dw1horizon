@@ -1,0 +1,101 @@
+// Readable form of script 137 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 137 {
+    npc ogremon = 5;
+    npc gabumon1 = 6;
+    npc gabumon2 = 7;
+    npc slot3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Mysty Egg"), 1667, 0, -1966, 2048, 672);
+    }
+
+    on step(0) replace {    // section 51
+        if (!new_ogre_fortress_cleared) {
+            say(tamer, text("s137.sec51.u0"));
+            run(tamer, 1104, 243);
+            run(partner, 675, 290);
+            await tamer;
+            camera_to(1156, -416, speed: 20);
+            await camera;
+            face(tamer, ogremon);
+            face(partner, ogremon);
+            wait(5);
+            say(ogremon, text("s137.sec51.u1"));
+            face(ogremon, tamer);
+            face(gabumon1, tamer);
+            face(gabumon2, tamer);
+            say(ogremon, text("s137.sec51.u2"));
+            face(gabumon2, ogremon);
+            wait(10);
+            face(gabumon2, tamer);
+            say(gabumon2, text("s137.sec51.u3"));
+            animate(tamer, 20);
+            wait(15);
+            say(tamer, text("s137.sec51.u4"));
+            animate(tamer, anim.idle);
+            say(ogremon, text("s137.sec51.u5"));
+            animate(tamer, 7);
+            wait(15);
+            say(tamer, text("s137.sec51.u6"));
+            animate(tamer, anim.idle);
+            say(ogremon, text("s137.sec51.u7"));
+            say(tamer, text("s137.sec51.u8"));
+            say(ogremon, text("s137.sec51.u9"));
+            face(gabumon1, ogremon);
+            face(ogremon, gabumon1);
+            wait(10);
+            say(gabumon1, text("s137.sec51.u10"));
+            wait(10);
+            say(ogremon, text("s137.sec51.u11"));
+            run(gabumon1, 861, -1338);
+            await gabumon1;
+            remove(gabumon1);
+            run(gabumon2, 8, -717);
+            await gabumon2;
+            face(gabumon2, tamer);
+            wait(5);
+            set_digimon(species("WaruSeadramon"), 3, 0);
+            walk(slot3, 586, -461);
+            await slot3;
+            face(slot3, tamer);
+            wait(5);
+            say(tamer, text("s137.sec51.u12"));
+            face(ogremon, slot3);
+            wait(5);
+            say(ogremon, text("s137.sec51.u13"));
+            say(tamer, text("s137.sec51.u14"));
+            face(ogremon, tamer);
+            wait(5);
+            say(ogremon, text("s137.sec51.u15"));
+            battle(foes: [ogremon, gabumon2, slot3]);
+            face(tamer, ogremon);
+            face(ogremon, tamer);
+            face(partner, ogremon);
+            run(ogremon, 1100, 1000);
+            run(gabumon2, 1100, 1000);
+            run(slot3, 1100, 1000);
+            say(ogremon, text("s137.sec51.u16"));
+            say(gabumon2, text("s137.sec51.u17"));
+            await ogremon;
+            await gabumon2;
+            await slot3;
+            remove(ogremon);
+            remove(gabumon2);
+            remove(slot3);
+            say(tamer, text("s137.sec51.u18"));
+            new_ogre_fortress_cleared = true;
+            run(tamer, 1100, 1000);
+            wait(10);
+            run(partner, 1100, 1000);
+            warp_to(142, 0, 6);
+        }
+        return;
+    }
+}

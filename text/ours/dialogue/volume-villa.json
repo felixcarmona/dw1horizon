@@ -1,0 +1,129 @@
+{
+ "s135.sec5.u0": "So you are {color 6}{player}{color 1} and {color 10}{partner}{color 1}? Welcome to Volume Villa!",
+ "s135.sec5.u1": "...... Sorry we picked on Otamamon.",
+ "s135.sec5.u2": "That is of no matter.",
+ "s135.sec5.u3": "Huh?",
+ "s135.sec5.u4": "I am grateful to you both. I have heard of all you have done to save the island.",
+ "s135.sec5.u5": "Oh yeah?",
+ "s135.sec5.u6": [
+  [
+   "I, too, have long wished to lend you a hand.",
+   "Have you yet been to the forest north of",
+   "here, called Misty Trees?"
+  ]
+ ],
+ "s135.sec5.u7": "Not yet.",
+ "s135.sec5.u8": "I've been there.",
+ "s135.sec5.u9": [
+  [
+   "Fog hangs over that place, so it must be hard",
+   "going."
+  ],
+  [
+   "But you ought to meet Cherrymon, the elder",
+   "of that forest."
+  ]
+ ],
+ "s135.sec5.u10": "Cherrymon? Never heard of that Digimon...",
+ "s135.sec5.u11": [
+  [
+   "The fog of Misty Trees is Cherrymon's doing."
+  ],
+  [
+   "He knows of the island's troubles, and makes",
+   "the fog to protect the forest."
+  ]
+ ],
+ "s135.sec5.u12": "That's a problem for us, though.",
+ "s135.sec5.u13": [
+  [
+   "Cherrymon seems to know something of what",
+   "is behind the troubles."
+  ],
+  [
+   "He is worth seeing, even if you must go",
+   "through the fog."
+  ]
+ ],
+ "s135.sec5.u14": "If only we could do something about the fog.",
+ "s135.sec5.u15": [
+  [
+   "The fog will not lift unless Cherrymon stops",
+   "it. But there is a way."
+  ],
+  [
+   "I shall put a charm on you."
+  ]
+ ],
+ "s135.sec5.u16": "What'll it do?",
+ "s135.sec5.u17": "You will be able to see the path, even in the fog.",
+ "s135.sec5.u18": "That's great!",
+ "s135.sec5.u19": "Then let us begin at once.",
+ "s135.sec5.u20": "Ribbit-ribbit-croooak!!",
+ "s135.sec5.u21": "There, that does it. Go on to Misty Trees straight away.",
+ "s135.sec5.u22": "I met him. And the fog's already gone.",
+ "s135.sec5.u23": [
+  [
+   "Wh-what! Most impressive. Hmm, then how am",
+   "I to help you..."
+  ],
+  [
+   "Ah, I know. I shall give you this."
+  ]
+ ],
+ "s135.sec5.u24": "Got a {color 6}Digiseabass{color 1}!",
+ "s135.sec5.u25": "Throw something away to make room.",
+ "s135.sec5.u26": "It is a rare thing. It should serve you well.",
+ "s135.sec5.u27": "Thanks. By the way, won't you come to the city, Your Lordship?",
+ "s135.sec5.u28": [
+  [
+   "I am chief of the hundred Gekomon of Geko",
+   "Swamp. Sadly, I cannot."
+  ],
+  [
+   "But I will spare no help from here. Come again",
+   "anytime."
+  ]
+ ],
+ "s135.sec6.u0": "You can only fish on the shore of Dragon Eye Lake.",
+ "s135.sec6.u1": "Bow down, bow down!",
+ "s135.sec7.u0": [
+  [
+   "His Lordship collects rare things. He used to",
+   "collect items, but now he's crazy about",
+   "Digimon cards."
+  ]
+ ],
+ "s135.sec7.u1": "Anyone who brings him a rare card gets Merit points.",
+ "s135.sec7.u2": "Then you can trade the Merit you've saved up for items.",
+ "s135.sec8.u0": "Um... No, it's nothing, ribbit.",
+ "s135.sec8.u1": "Um...! I want to go to the city, ribbit!",
+ "s135.sec8.u2": "Sure, that's fine, but what's up?",
+ "s135.sec8.u3": [
+  [
+   "I want to try fighting at a place called the",
+   "Arena, ribbit. Folks seem to look down on us",
+   "Gekomon as country bumpkins, ribbit..."
+  ],
+  [
+   "But bumpkins have their pride too, ribbit!",
+   "Please, I'm begging you, ribbit."
+  ]
+ ],
+ "s135.sec8.u4": "I see. I know how you feel... Well then, go give it your best.",
+ "s135.sec8.u5": "Gekomon joined the Arena!",
+ "s135.sec81.u0": "You seem troubled. Yes, yes, I know. It is about the costume, is it not?",
+ "s135.sec81.u1": "Huh! You know?",
+ "s135.sec81.u2": "Do not underestimate me. Now, the costume. Numemon can wear it, you see. Surprised? What is more, when he wears it... unbelievably......! Well, it cannot hurt to try.",
+ "s135.sec81.u3": [
+  [
+   "Mm, that reminds me. The",
+   "{color 6}Amazing Rod{color 1} is a special",
+   "item, so I shall take it out"
+  ],
+  [
+   "of your items."
+  ]
+ ],
+ "s135.sec81.u4": "Do your best!"
+}

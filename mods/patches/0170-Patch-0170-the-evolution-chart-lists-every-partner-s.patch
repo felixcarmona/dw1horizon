@@ -1,0 +1,679 @@
+From 8960721db7ad5e84fe20128b4211a5386037b569 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 15:09:08 +0000
+Subject: [PATCH] Patch 0170: the evolution chart lists every partner species.
+ The overview is one tab per level (Baby, Rookie, Champion, Ultimate, Mega;
+ L1/R1), a page of 14 x 7 boxes in the level's colour (the D-pad past the edge
+ turns the page), the raised species' name and the tab's raised/total and page
+ on the bottom row; the list and the icons come from DIGI.DAT's chart block
+ (SpeciesHeader.chartSector, readSpeciesChart), read per page into the
+ battle-effect VRAM; the sheet's 61 keep their hand-drawn icons
+
+---
+ include/dw/species.h   |  17 +-
+ src/main/game_menu.c   | 510 ++++++++++++++++++++++++++++-------------
+ src/main/mod_species.c |  12 +
+ 3 files changed, 380 insertions(+), 159 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 5a49b5da..74744fb1 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -62,6 +62,7 @@ typedef struct {
+ 	uint32_t totalSectors;
+ 	uint32_t indexSector;	/* MOD (scale): SpeciesPartnerList, then SpeciesLinks in the next sector */
+ 	uint32_t fallbackPortrait; /* MOD (portraits): SPECIES_PORTRAIT_REF of the icon of a species without one (0: none) */
++	uint32_t chartSector;	/* MOD (chart): the first sector of the chart block (0: none) */
+ } SpeciesHeader;
+ 
+ /*
+@@ -173,7 +174,7 @@ SPECIES_LAYOUT_CHECK(evoPaths, __builtin_offsetof(SpeciesRecord, evoPaths) == 0x
+ SPECIES_LAYOUT_CHECK(item, __builtin_offsetof(SpeciesRecord, itemTakeDistance) == 0x130);
+ SPECIES_LAYOUT_CHECK(condfx, __builtin_offsetof(SpeciesRecord, conditionFx) == 0x136);
+ SPECIES_LAYOUT_CHECK(origins, __builtin_offsetof(SpeciesRecord, effectOrigins) == 0x140);
+-SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x1C);
++SPECIES_LAYOUT_CHECK(header, sizeof(SpeciesHeader) == 0x20);
+ SPECIES_LAYOUT_CHECK(portrait, __builtin_offsetof(SpeciesRecord, portrait) == 0x1C0);
+ SPECIES_LAYOUT_CHECK(effectDefault, __builtin_offsetof(SpeciesRecord, effectDefault) == 0x1C4);
+ SPECIES_LAYOUT_CHECK(partnerList, sizeof(SpeciesPartnerList) == 0x800);
+@@ -205,6 +206,20 @@ int32_t getSpeciesPortrait(int32_t type, void *dest);
+ /* uploads the icon of `type` to VRAM: its top `rows` (16 or 32) pixel rows at (x, y) in halfwords/rows
+  * (a 32-pixel strip is 8 halfwords wide) and its CLUT at (clutX, clutY) */
+ void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32_t clutX, int32_t clutY);
++/*
++ * MOD (chart): the evolution chart's block, written by tools/species.py (chart_tabs, chart_block). Its first sector
++ * holds the number of species of each tab (CHART_TABS: Fresh and In-Training, Rookie, Champion, Ultimate, Mega) and
++ * their ids, tab after tab, in the chart's order; the sectors after it the icons in the same order,
++ * SPECIES_CHART_ICONS_PER_SECTOR to a sector: a 16-colour CLUT and the 16x16 4 bpp idle frame (blank for the species
++ * of the chart sheet, which keep their hand-drawn icon).
++ */
++#define SPECIES_CHART_TABS		5
++#define SPECIES_CHART_ICON_SIZE		0xA0
++#define SPECIES_CHART_ICONS_PER_SECTOR	12
++/* the sector `k` of the chart block (0: the counts and ids, 1.. the icons) read into the species sector buffer, which
++ * the next read of DIGI.DAT reuses; NULL when the file has no chart block */
++uint8_t *readSpeciesChart(int32_t k);
++
+ /* the partner species of DIGI.DAT whose level is lo..hi: writes their ids to `out` (at most `max`), returns how many */
+ int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t max);
+ 
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index c061a13f..a7433ba3 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -183,6 +183,8 @@ void renderMedalView(void);
+ void renderEvoChartView(void);
+ static void chartDetailOpen(int32_t id); /* MOD (portraits) */
+ static int32_t chartDetailInput(void);
++static void chartOverviewInput(void); /* MOD (chart) */
++static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y);
+ void renderPlayerInfoView(void);
+ void renderString();
+ void renderMenuTab(int16_t x, int8_t w, int8_t layer);
+@@ -1686,13 +1688,10 @@ void tickPlayerMenu(void)
+ 	RECT finalPos;
+ 	RECT secondFinalPos;
+ 	RECT startPos;
+-	int16_t previousRow;
+-	int16_t previousColumn;
+ 	int16_t cardX;
+-	uint8_t maxColumn;
+-	int16_t selectorX;
++	int16_t boxX; /* MOD (chart): the selected box (chartBoxXY) */
++	int16_t boxY;
+ 	uint8_t previousCard;
+-	int32_t i;
+ 
+ 	if (MENU_STATE < 2) {
+ 		if (CHANGED_INPUT & 0x2000) {
+@@ -1735,98 +1734,16 @@ void tickPlayerMenu(void)
+ 
+ 		if (PLAYER_MENU_STATE == 1) {
+ 			if (MENU_STATE == 2) {
+-				previousRow = CHART_SELECTED_COLUMN;
+-				previousColumn = CHART_SELECTED_ROW;
+-				if (CHANGED_INPUT & 0x8000) {
+-					CHART_SELECTED_COLUMN--;
+-				}
+-				if (CHANGED_INPUT & 0x2000) {
+-					CHART_SELECTED_COLUMN++;
+-				}
+-				if (CHART_SELECTED_COLUMN < 0) {
+-					CHART_SELECTED_COLUMN = 0;
+-				}
+-				if (CHART_SELECTED_COLUMN >= 9) {
+-					CHART_SELECTED_COLUMN = 8;
+-				}
+-				if ((CHART_SELECTED_COLUMN == 0) ||
+-				    (CHART_SELECTED_COLUMN == 1)) {
+-					if (CHANGED_INPUT & 0x1000) {
+-						CHART_SELECTED_ROW -= 2;
+-					}
+-					if (CHANGED_INPUT & 0x4000) {
+-						CHART_SELECTED_ROW += 2;
+-					}
+-					if (CHART_SELECTED_COLUMN < 2) {
+-						CHART_SELECTED_ROW =
+-							(CHART_SELECTED_ROW / 2) * 2;
+-					}
+-					maxColumn = 6;
+-				} else {
+-					if (CHANGED_INPUT & 0x1000) {
+-						CHART_SELECTED_ROW--;
+-					}
+-					if (CHANGED_INPUT & 0x4000) {
+-						CHART_SELECTED_ROW++;
+-					}
+-					if (CHART_SELECTED_COLUMN == 2) {
+-						maxColumn = 8;
+-					} else if (((CHART_SELECTED_COLUMN >= 4) &&
+-					            (CHART_SELECTED_COLUMN < 7)) ||
+-					           (CHART_SELECTED_COLUMN == 8)) {
+-						maxColumn = 6;
+-					} else {
+-						maxColumn = 7;
+-					}
+-				}
+-				if (CHART_SELECTED_ROW < 0) {
+-					CHART_SELECTED_ROW = 0;
+-				}
+-				if (maxColumn < CHART_SELECTED_ROW) {
+-					CHART_SELECTED_ROW = maxColumn;
+-				}
+-				if ((previousRow != CHART_SELECTED_COLUMN) ||
+-				    (previousColumn != CHART_SELECTED_ROW)) {
+-					playSound(0, 2);
+-				}
+-
+-				if (CHART_SELECTED_COLUMN < 3) {
+-					selectorX = CHART_SELECTED_COLUMN * 0x25 + 0x1c;
+-				} else if (CHART_SELECTED_COLUMN < 7) {
+-					selectorX =
+-						(CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b;
+-				} else {
+-					selectorX =
+-						(CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8;
+-				}
+-				CHART_SELECTED_DIGIMON = -1;
+-				for (i = 0; i < 0x3e; i++) {
+-					if (((selectorX + 2) ==
+-					     EVO_CHART_BOXES[i].posX) &&
+-					    ((CHART_SELECTED_ROW * 0x13 + 0x2b) ==
+-					     EVO_CHART_BOXES[i].posY)) {
+-						break;
+-					}
+-				}
+-				CHART_SELECTED_DIGIMON = i + 1;
++				/* MOD (chart): the tabs, pages and grid of every partner species (chartOverviewInput) */
++				chartOverviewInput();
+ 				if (isKeyDown(CONFIRM_BUTTON) != 0) {
+-					if (hasDigimonRaised(
+-						    (uint16_t)CHART_SELECTED_DIGIMON) != 0) {
+-						if (CHART_SELECTED_COLUMN < 3) {
+-							selectorX =
+-								CHART_SELECTED_COLUMN * 0x25 + 0x1c;
+-						} else if (CHART_SELECTED_COLUMN < 7) {
+-							selectorX =
+-								(CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b;
+-						} else {
+-							selectorX =
+-								(CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8;
+-						}
++					if (CHART_SELECTED_DIGIMON > 0 &&
++					    hasDigimonRaised((uint16_t)CHART_SELECTED_DIGIMON) != 0) {
++						chartBoxXY(CHART_SELECTED_COLUMN, CHART_SELECTED_ROW, &boxX, &boxY);
+ 						if (isUIBoxAvailable(2) == 1) {
+ 							setRECT(&finalPos, -0x96, -0x59, 0x12c, 0xbe);
+-							startPos.x = selectorX - 0x99;
+-							startPos.y =
+-								CHART_SELECTED_ROW * 0x13 - 0x45;
++							startPos.x = boxX - 0x9b;
++							startPos.y = boxY - 0x70;
+ 							setWH(&startPos, 10, 10);
+ 							MAIN_D_80134D46 = 0;
+ 							chartDetailOpen(CHART_SELECTED_DIGIMON); /* MOD (portraits) */
+@@ -1846,16 +1763,8 @@ void tickPlayerMenu(void)
+ 			} else if ((MENU_STATE == 3) &&
+ 			           (isKeyDown(CANCEL_BUTTON) != 0)) {
+ 				if (MENU_STATE == 3) {
+-					if (CHART_SELECTED_COLUMN < 3) {
+-						selectorX = CHART_SELECTED_COLUMN * 0x25 + 0x1c;
+-					} else if (CHART_SELECTED_COLUMN < 7) {
+-						selectorX =
+-							(CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b;
+-					} else {
+-						selectorX =
+-							(CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8;
+-					}
+-					setRECT(&finalPos, selectorX - 0x99, CHART_SELECTED_ROW * 0x13 - 0x45, 10, 10);
++					chartBoxXY(CHART_SELECTED_COLUMN, CHART_SELECTED_ROW, &boxX, &boxY);
++					setRECT(&finalPos, boxX - 0x9b, boxY - 0x70, 10, 10);
+ 					removeAnimatedUIBox(2, &finalPos);
+ 					playSound(0, 3);
+ 					MENU_STATE = 2;
+@@ -3175,10 +3084,286 @@ static int32_t chartDetailInput(void)
+ 	return 0;
+ }
+ 
+-void renderEvoChartView(void)
++/*
++ * MOD (chart): the overview shows every partner species of the build, not the sheet's 61: DIGI.DAT's chart block
++ * (tools/species.py chart_tabs) lists them by tab (Fresh and In-Training, Rookie, Champion, Ultimate, Mega), each level
++ * in the order of its parents. One tab is shown at a time (L1/R1 change it), a page of CHART_COLS x CHART_ROWS boxes;
++ * the D-pad past the grid's left or right edge turns the page. The species of the sheet (1..61) keep their
++ * hand-drawn icon; the page's other icons are read from the block when the page is shown, into the battle effect
++ * VRAM (idle outside battle; the detail view's icons are in its first 32 rows, the card viewer reloads over it and
++ * the page is read again when the tab comes back). The bottom row names the raised species under the cursor and
++ * counts the tab's raised species.
++ */
++#define CHART_COLS		14
++#define CHART_ROWS		7
++#define CHART_PAGE_SIZE		(CHART_COLS * CHART_ROWS)
++#define CHART_GRID_X		27	/* the first box's border, screen pixels */
++#define CHART_GRID_Y		57
++#define CHART_PITCH		0x13
++#define CHART_ICON_X		576	/* the page's icons: 16 a row, 4 halfwords each */
++#define CHART_ICON_Y		288
++#define CHART_ICON_TPAGE	((CHART_ICON_Y / 256) * 16 + CHART_ICON_X / 64)
++#define CHART_CLUT_X		640	/* their CLUTs: 4 a row */
++#define CHART_CLUT_Y		288
++#define CHART_LABEL_ROW		0x60	/* text area rows: the tab names, the name under the cursor, the counters */
++#define CHART_NAME_ROW		0x6c
++#define CHART_COUNT_ROW		0x78
++#define CHART_KEYS_ROW		0x84
++
++static char *CHART_TAB_NAMES[SPECIES_CHART_TABS] = { "Baby", "Rookie", "Champion", "Ultimate", "Mega" };
++/* the band of each tab: light and dark edges (0xBBGGRR) and fill, the original's level colours (Mega: gold) */
++static int32_t CHART_TAB_EDGES[SPECIES_CHART_TABS][2] = {
++	{ 0xaaa0c8, 0x5a3c8c }, { 0xc88250, 0x5f370a }, { 0x6eaf5a, 0x285a00 }, { 0x6996d2, 0x1e4178 }, { 0x60d8f8, 0x105878 },
++};
++static uint8_t CHART_TAB_FILL[SPECIES_CHART_TABS][3] = {
++	{ 0xa5, 0x5a, 0x73 }, { 0x0f, 0x50, 0x82 }, { 0x00, 0x87, 0x41 }, { 0xaf, 0x64, 0x2d }, { 0xb4, 0x8c, 0x18 },
++};
++static int8_t CHART_TAB;
++static int8_t CHART_PAGE;
++static int16_t CHART_TAB_COUNT[SPECIES_CHART_TABS];
++static int16_t CHART_RAISED;		/* raised species of the tab */
++static int16_t CHART_PAGE_IDS[CHART_PAGE_SIZE];
++static int16_t CHART_PAGE_COUNT;
++static int16_t CHART_TAB_LABEL_X[SPECIES_CHART_TABS]; /* where each tab name is in the text area, and its width */
++static int16_t CHART_TAB_LABEL_W[SPECIES_CHART_TABS];
++static int16_t CHART_TEXT_ID;		/* the species whose name is in the text area (-2: none drawn yet) */
++static int16_t CHART_SHOWN_NAME_W;
++static int16_t CHART_COUNT_W;
++static int16_t CHART_PAGE_X;		/* the page counter's place in its row, and its width (0: one page) */
++static int16_t CHART_PAGE_W;
++
++static int32_t chartPages(void)
++{
++	int32_t n;
++
++	n = (CHART_TAB_COUNT[(int32_t)CHART_TAB] + CHART_PAGE_SIZE - 1) / CHART_PAGE_SIZE;
++	return n > 0 ? n : 1;
++}
++
++/* the icon's top-left corner of a grid box, screen pixels (its border is one pixel out) */
++static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y)
+ {
++	*x = CHART_GRID_X + 1 + col * CHART_PITCH;
++	*y = CHART_GRID_Y + 1 + row * CHART_PITCH;
++}
++
++/* reads the shown page: the tab's counts and ids, the raised count, the icons of the species past the sheet */
++static void chartLoadPage(void)
++{
++	uint8_t *s;
++	uint16_t *ids;
++	int32_t first;
++	int32_t g;
++	int32_t k;
++	int32_t sector;
++	int32_t last;
++	RECT rect;
++
++	CHART_PAGE_COUNT = 0;
++	CHART_RAISED = 0;
++	CHART_TEXT_ID = -2;
++	s = readSpeciesChart(0);
++	if (s == NULL) {
++		return;
++	}
++	ids = (uint16_t *)s;
++	first = 0;
++	for (k = 0; k < SPECIES_CHART_TABS; k++) {
++		CHART_TAB_COUNT[k] = ids[k];
++		if (k < CHART_TAB) {
++			first += ids[k];
++		}
++	}
++	ids += SPECIES_CHART_TABS;
++	for (k = 0; k < CHART_TAB_COUNT[(int32_t)CHART_TAB]; k++) {
++		if (hasDigimonRaised(ids[first + k]) != 0) {
++			CHART_RAISED++;
++		}
++	}
++	if (CHART_PAGE >= chartPages()) {
++		CHART_PAGE = chartPages() - 1;
++	}
++	first += CHART_PAGE * CHART_PAGE_SIZE;
++	CHART_PAGE_COUNT = CHART_TAB_COUNT[(int32_t)CHART_TAB] - CHART_PAGE * CHART_PAGE_SIZE;
++	if (CHART_PAGE_COUNT > CHART_PAGE_SIZE) {
++		CHART_PAGE_COUNT = CHART_PAGE_SIZE;
++	}
++	for (k = 0; k < CHART_PAGE_COUNT; k++) {
++		CHART_PAGE_IDS[k] = ids[first + k];
++	}
++	last = -1;
++	for (k = 0; k < CHART_PAGE_COUNT; k++) {
++		if (CHART_PAGE_IDS[k] <= NUM_EVO_CHART_DIGIMON) {
++			continue;
++		}
++		g = first + k;
++		sector = 1 + g / SPECIES_CHART_ICONS_PER_SECTOR;
++		if (sector != last) {
++			DrawSync(0); /* the uploads read the sector buffer */
++			s = readSpeciesChart(sector);
++			last = sector;
++		}
++		setRECT(&rect, CHART_CLUT_X + (k % 4) * 16, CHART_CLUT_Y + k / 4, 16, 1);
++		LoadImage(&rect, (u_long *)(s + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE));
++		setRECT(&rect, CHART_ICON_X + (k % 16) * 4, CHART_ICON_Y + (k / 16) * 16, 4, 16);
++		LoadImage(&rect, (u_long *)(s + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE + 0x20));
++	}
++	DrawSync(0);
++}
++
++/* the mod font's solidus (tools/font/extra.txt F061): an ASCII '/' draws the original font's triangle */
++#define CHART_SLASH_1	((char)0xF0)
++#define CHART_SLASH_2	((char)0x61)
++
++/* writes a number's digits at `p`, returns the end */
++static char *chartDigits(char *p, int32_t n)
++{
++	char tmp[6];
+ 	int32_t i;
+-	int16_t x;
++
++	i = 0;
++	do {
++		tmp[i++] = '0' + n % 10;
++		n /= 10;
++	} while (n > 0 && i < 6);
++	while (i > 0) {
++		*p++ = tmp[--i];
++	}
++	*p = 0;
++	return p;
++}
++
++/* the tab names and keys, once when the view opens (after drawEvoChartStrings cleared the text area) */
++static void chartDrawLabels(void)
++{
++	int32_t k;
++	int32_t x;
++
++	x = 0;
++	for (k = 0; k < SPECIES_CHART_TABS; k++) {
++		CHART_TAB_LABEL_X[k] = x;
++		CHART_TAB_LABEL_W[k] = measureStringMode(CHART_TAB_NAMES[k], FIT_VANILLA);
++		drawString(CHART_TAB_NAMES[k], x, CHART_LABEL_ROW);
++		x += CHART_TAB_LABEL_W[k] + 4;
++	}
++	drawString("L1", 0, CHART_KEYS_ROW);
++	drawString("R1", 0x20, CHART_KEYS_ROW);
++}
++
++/* the name under the cursor (raised species only) and the counters, when they change */
++static void chartDrawStatus(void)
++{
++	RECT rect;
++	char buf[16];
++	char *p;
++	int32_t id;
++
++	id = (MENU_STATE >= 2 && CHART_SELECTED_DIGIMON > 0 && hasDigimonRaised((uint16_t)CHART_SELECTED_DIGIMON) != 0)
++		     ? CHART_SELECTED_DIGIMON : -1;
++	if (id == CHART_TEXT_ID) {
++		return;
++	}
++	if (CHART_TEXT_ID == -2) { /* a new page: the counters */
++		setRECT(&rect, 0, CHART_COUNT_ROW, 256, 12);
++		clearTextSubArea(&rect);
++		p = chartDigits(buf, CHART_RAISED);
++		*p++ = CHART_SLASH_1;
++		*p++ = CHART_SLASH_2;
++		chartDigits(p, CHART_TAB_COUNT[(int32_t)CHART_TAB]);
++		CHART_COUNT_W = measureStringMode(buf, FIT_VANILLA);
++		drawString(buf, 0, CHART_COUNT_ROW);
++		CHART_PAGE_W = 0;
++		if (chartPages() > 1) {
++			p = chartDigits(buf, CHART_PAGE + 1);
++			*p++ = CHART_SLASH_1;
++			*p++ = CHART_SLASH_2;
++			chartDigits(p, chartPages());
++			CHART_PAGE_X = CHART_COUNT_W + 8;
++			CHART_PAGE_W = measureStringMode(buf, FIT_VANILLA);
++			drawString(buf, CHART_PAGE_X, CHART_COUNT_ROW);
++		}
++	}
++	setRECT(&rect, 0, CHART_NAME_ROW, 256, 12);
++	clearTextSubArea(&rect);
++	CHART_SHOWN_NAME_W = 0;
++	if (id > 0) {
++		CHART_SHOWN_NAME_W = measureStringMode((char *)digimonPara(id), FIT_VANILLA);
++		drawString((char *)digimonPara(id), 0, CHART_NAME_ROW);
++	}
++	CHART_TEXT_ID = id;
++}
++
++/* the species under the cursor (-1: an empty box) */
++static void chartSelect(void)
++{
++	int32_t k;
++
++	k = CHART_SELECTED_ROW * CHART_COLS + CHART_SELECTED_COLUMN;
++	if (k >= CHART_PAGE_COUNT && CHART_PAGE_COUNT > 0) { /* past the last species: onto it */
++		k = CHART_PAGE_COUNT - 1;
++		CHART_SELECTED_ROW = k / CHART_COLS;
++		CHART_SELECTED_COLUMN = k % CHART_COLS;
++	}
++	CHART_SELECTED_DIGIMON = k < CHART_PAGE_COUNT ? CHART_PAGE_IDS[k] : -1;
++}
++
++static void chartOverviewInput(void)
++{
++	int32_t tab;
++	int32_t page;
++	int32_t row;
++	int32_t col;
++
++	tab = CHART_TAB;
++	page = CHART_PAGE;
++	row = CHART_SELECTED_ROW;
++	col = CHART_SELECTED_COLUMN;
++	if (CHANGED_INPUT & 0x4) { /* L1, R1: the tab before or after, wrapping */
++		CHART_TAB = (CHART_TAB + SPECIES_CHART_TABS - 1) % SPECIES_CHART_TABS;
++	} else if (CHANGED_INPUT & 0x8) {
++		CHART_TAB = (CHART_TAB + 1) % SPECIES_CHART_TABS;
++	} else if (CHANGED_INPUT & 0x8000) { /* left: past the first column, the page before */
++		if (CHART_SELECTED_COLUMN > 0) {
++			CHART_SELECTED_COLUMN--;
++		} else if (CHART_PAGE > 0) {
++			CHART_PAGE--;
++			CHART_SELECTED_COLUMN = CHART_COLS - 1;
++		}
++	} else if (CHANGED_INPUT & 0x2000) { /* right: past the last column or species, the page after */
++		if (CHART_SELECTED_COLUMN < CHART_COLS - 1 &&
++		    CHART_SELECTED_ROW * CHART_COLS + CHART_SELECTED_COLUMN + 1 < CHART_PAGE_COUNT) {
++			CHART_SELECTED_COLUMN++;
++		} else if (CHART_PAGE + 1 < chartPages()) {
++			CHART_PAGE++;
++			CHART_SELECTED_COLUMN = 0;
++		}
++	} else if ((CHANGED_INPUT & 0x1000) && CHART_SELECTED_ROW > 0) {
++		CHART_SELECTED_ROW--;
++	} else if ((CHANGED_INPUT & 0x4000) && CHART_SELECTED_ROW < CHART_ROWS - 1 &&
++	           (CHART_SELECTED_ROW + 1) * CHART_COLS < CHART_PAGE_COUNT) {
++		CHART_SELECTED_ROW++;
++	}
++	if (CHART_TAB != tab) {
++		CHART_PAGE = 0;
++		CHART_SELECTED_ROW = CHART_SELECTED_COLUMN = 0;
++	}
++	if (CHART_TAB != tab || CHART_PAGE != page) {
++		chartLoadPage();
++	}
++	chartSelect();
++	if (CHART_TAB != tab || CHART_PAGE != page || CHART_SELECTED_ROW != row || CHART_SELECTED_COLUMN != col) {
++		playSound(0, 2);
++	}
++}
++
++void renderEvoChartView(void)
++{
++	int32_t k;
++	int32_t x;
++	int32_t w;
++	int16_t bx;
++	int16_t by;
++	int16_t id;
+ 	int8_t shift;
+ 	EvoClutTable cluts;
+ 
+@@ -3186,68 +3371,77 @@ void renderEvoChartView(void)
+ 	switch (MENU_STATE) {
+ 	case 0:
+ 		if (drawEvoChartStrings(0) == 1) {
++			chartDrawLabels();
++			chartLoadPage();
++			chartSelect();
+ 			MENU_STATE = 1;
+ 		}
+ 		break;
+ 	case 2:
+ 	case 3:
+ 	case 4:
+-		if (CHART_SELECTED_COLUMN < 3) {
+-			x = (int16_t)(CHART_SELECTED_COLUMN * 0x25 + 0x1c);
+-		} else if (CHART_SELECTED_COLUMN < 7) {
+-			x = (int16_t)((CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b);
+-		} else {
+-			x = (int16_t)((CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8);
+-		}
+-		renderRectPolyFT4((int16_t)(x - 0xa2),
+-		                  (int16_t)(CHART_SELECTED_ROW * 0x13 - 0x4e), 0x18, 0x14,
+-		                  0, 0xe8, 0x18, 0x7dc7, 5, 0);
++		chartBoxXY(CHART_SELECTED_COLUMN, CHART_SELECTED_ROW, &bx, &by);
++		renderRectPolyFT4(bx - 0xa4, by - 0x79, 0x18, 0x14, 0, 0xe8, 0x18, 0x7dc7, 5, 0);
+ 		/* fall through */
+ 	case 1:
+-		for (i = 0; i < 0x3e; i++) {
+-			if (hasDigimonRaised((i + 1) & 0xffff)) {
+-				shift = 0;
+-				if ((i + 1 == CHART_SELECTED_DIGIMON) && (1 < MENU_STATE) &&
+-				    ((PLAYTIME_FRAMES % 10) < 5)) {
+-					shift = 0x10;
+-				}
+-				renderRectPolyFT4(
+-					(int16_t)(EVO_CHART_BOXES[i].posX - 0xa0),
+-					(int16_t)(EVO_CHART_BOXES[i].posY - 0x78),
+-					0x10, 0x10,
+-					(uint8_t)(shift + EVO_CHART_BOXES[i].u),
+-					EVO_CHART_BOXES[i].v, 0x18,
+-					cluts.m[EVO_CHART_BOXES[i].clut],
+-					5, 0);
++		chartDrawStatus();
++		for (k = 0; k < CHART_PAGE_COUNT; k++) {
++			id = CHART_PAGE_IDS[k];
++			if (hasDigimonRaised((uint16_t)id) == 0) {
++				continue;
++			}
++			chartBoxXY(k % CHART_COLS, k / CHART_COLS, &bx, &by);
++			shift = (id == CHART_SELECTED_DIGIMON) && (1 < MENU_STATE) && ((PLAYTIME_FRAMES % 10) < 5);
++			if (id <= NUM_EVO_CHART_DIGIMON) {
++				renderRectPolyFT4(bx - 0xa0, by - 0x78, 0x10, 0x10,
++				                  (uint8_t)((shift ? 0x10 : 0) + EVO_CHART_BOXES[id - 1].u),
++				                  EVO_CHART_BOXES[id - 1].v, 0x18, cluts.m[EVO_CHART_BOXES[id - 1].clut], 5, 0);
++			} else {
++				renderRectPolyFT4(bx - 0xa0, by - 0x78 - shift, 0x10, 0x10, (k % 16) * 16,
++				                  CHART_ICON_Y - 256 + (k / 16) * 16, CHART_ICON_TPAGE,
++				                  GetClut(CHART_CLUT_X + (k % 4) * 16, CHART_CLUT_Y + k / 4), 5, 0);
+ 			}
+ 		}
+-		for (i = 0; i < 0x3e; i++) {
+-			renderBorderBox((EVO_CHART_BOXES[i].posX - 1),
+-			                (EVO_CHART_BOXES[i].posY - 1), 0x12, 0x12,
+-			                0xbebebe, 0x3c3c3c, 0x87, 0x87, 0x87, 5);
+-		}
+-		renderBorderBox(0x15, 0x27, 0x22, 0x9f, 0xaaa0c8, 0x5a3c8c,
+-		                0xa5, 0x5a, 0x73, 5);
+-		renderBorderBox(0x3a, 0x27, 0x22, 0x9f, 0xa078a5, 0x46144b,
+-		                0x6e, 0x2d, 0x5a, 5);
+-		renderBorderBox(0x5f, 0x27, 0x22, 0xb0, 0xc88250, 0x5f370a,
+-		                0xf, 0x50, 0x82, 5);
+-		renderBorderBox(0x84, 0x27, 0x6a, 0x9f, 0x6eaf5a, 0x285a00,
+-		                0, 0x87, 0x41, 5);
+-		renderBorderBox(0xf1, 0x27, 0x38, 0x9f, 0x6996d2, 0x1e4178,
+-		                0xaf, 0x64, 0x2d, 5);
+-#if !VERSION_IS(US)
+-		renderString(0xe, -0x1a, 0x54, 0xc, 0xc, 0, 0xc, 5, 1);
+-#else
+-		renderString(0xf, -0x1a, 0x54, 0xc, 0xc, 0, 0xc, 5, 1);
+-#endif
+-		renderString(0, -0xe, 0x54, 0x3c, 0xc, 0xc, 0xc, 5, 1);
+-#if !VERSION_IS(US)
+-		renderString(0xf, 0x3a, 0x54, 0xc, 0xc, 0x48, 0xc, 5, 1);
+-#else
+-		renderString(7, 0x3a, 0x54, 0xc, 0xc, 0x48, 0xc, 5, 1);
+-#endif
+-		renderString(0, 0x46, 0x54, 0x3c, 0xc, 0x54, 0xc, 5, 1);
++		/* the texts: the tab names on their chips, the keys, the name and the counters on the bottom row */
++		renderString(9, 20 - 0xa0, 40 - 0x78, 0x10, 0xc, 0, CHART_KEYS_ROW, 5, 1);
++		x = 38;
++		for (k = 0; k < SPECIES_CHART_TABS; k++) {
++			w = CHART_TAB_LABEL_W[k];
++			renderString(k == CHART_TAB ? 0 : 9, x + 5 - 0xa0, 40 - 0x78, w, 0xc, CHART_TAB_LABEL_X[k],
++			             CHART_LABEL_ROW, 5, 1);
++			x += w + 13;
++		}
++		renderString(9, x + 2 - 0xa0, 40 - 0x78, 0x10, 0xc, 0x20, CHART_KEYS_ROW, 5, 1);
++		if (CHART_SHOWN_NAME_W > 0) {
++			renderString(0, 22 - 0xa0, 0x52, CHART_SHOWN_NAME_W, 0xc, 0, CHART_NAME_ROW, 5, 1);
++		}
++		if (CHART_PAGE_W > 0) {
++			renderString(2, 297 - CHART_PAGE_W - 0xa0, 0x52, CHART_PAGE_W, 0xc, CHART_PAGE_X, CHART_COUNT_ROW, 5, 1);
++			renderString(0, 297 - CHART_PAGE_W - 12 - CHART_COUNT_W - 0xa0, 0x52, CHART_COUNT_W, 0xc, 0,
++			             CHART_COUNT_ROW, 5, 1);
++		} else {
++			renderString(0, 297 - CHART_COUNT_W - 0xa0, 0x52, CHART_COUNT_W, 0xc, 0, CHART_COUNT_ROW, 5, 1);
++		}
++		/* the boxes, the tab's band, the chips */
++		for (k = 0; k < CHART_PAGE_COUNT; k++) {
++			chartBoxXY(k % CHART_COLS, k / CHART_COLS, &bx, &by);
++			renderBorderBox(bx - 1, by - 1, 0x12, 0x12, 0xbebebe, 0x3c3c3c, 0x87, 0x87, 0x87, 5);
++		}
++		k = CHART_TAB;
++		renderBorderBox(20, 53, 279, 143, CHART_TAB_EDGES[k][0], CHART_TAB_EDGES[k][1], CHART_TAB_FILL[k][0],
++		                CHART_TAB_FILL[k][1], CHART_TAB_FILL[k][2], 5);
++		x = 38;
++		for (k = 0; k < SPECIES_CHART_TABS; k++) {
++			w = CHART_TAB_LABEL_W[k] + 10;
++			if (k == CHART_TAB) {
++				renderBorderBox(x, 37, w - 1, 16, CHART_TAB_EDGES[k][0], CHART_TAB_EDGES[k][1],
++				                CHART_TAB_FILL[k][0], CHART_TAB_FILL[k][1], CHART_TAB_FILL[k][2], 5);
++			} else {
++				renderBox(x - 0xa0, 39 - 0x78, w, 14, CHART_TAB_FILL[k][0] * 9 / 16, CHART_TAB_FILL[k][1] * 9 / 16,
++				          CHART_TAB_FILL[k][2] * 9 / 16, 0, 5);
++			}
++			x += w + 3;
++		}
+ 	}
+ }
+ 
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 48a6f8be..ba1516a2 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -44,6 +44,7 @@ static int32_t SPECIES_LAST_SLOT;
+ static uint32_t SPECIES_SECTOR[0x800 / 4];
+ static SVECTOR CONDITION_FX_COPY __attribute__((aligned(4)));
+ static uint32_t SPECIES_FALLBACK_PORTRAIT;
++static uint32_t SPECIES_CHART_SECTOR; /* MOD (chart) */
+ static uint8_t SPECIES_PORTRAIT_BUFFER[SPECIES_PORTRAIT_SIZE] __attribute__((aligned(4)));
+ static EvolutionPath NO_EVOLUTION_PATH;
+ /* what the per-partner rows read for a type that is no partner (zeroes, like the tables past the originals' rows) */
+@@ -292,6 +293,7 @@ void initializeSpecies(void)
+ 	SPECIES_RECORD_READS = 0;
+ 	SPECIES_INDEX_SECTOR = 0;
+ 	SPECIES_FALLBACK_PORTRAIT = 0;
++	SPECIES_CHART_SECTOR = 0;
+ 	SPECIES_PARTNER_COUNT = 0;
+ 	SPECIES_FIRST_MEGA = 0;
+ 	for (i = 0; i < SPECIES_RECORD_ORIGINALS_BYTES; i++) {
+@@ -339,6 +341,7 @@ void initializeSpecies(void)
+ 		SPECIES_RECORD_ORIGINALS[i] = ((uint8_t *)SPECIES_SECTOR)[SPECIES_HEADER_RECORD_ORIGINALS + i];
+ 	}
+ 	SPECIES_FALLBACK_PORTRAIT = header->fallbackPortrait;
++	SPECIES_CHART_SECTOR = header->chartSector;
+ 	SPECIES_RECORDS_SECTOR = header->recordsSector;
+ 	SPECIES_INDEX_SECTOR = header->indexSector;
+ 	SPECIES_COUNT = count;
+@@ -668,6 +671,15 @@ void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32
+ 	DrawSync(0);
+ }
+ 
++uint8_t *readSpeciesChart(int32_t k)
++{
++	if (SPECIES_INDEX_SECTOR == 0 || SPECIES_CHART_SECTOR == 0) {
++		return NULL;
++	}
++	readSpeciesSector(SPECIES_CHART_SECTOR + k);
++	return (uint8_t *)SPECIES_SECTOR;
++}
++
+ int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t max)
+ {
+ 	int32_t i;
+-- 
+2.53.0
+

@@ -1,0 +1,146 @@
+// Readable form of script 123 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 123 {
+    npc goblimon = 5;
+    npc slot1 = 6;
+    npc slot2 = 7;
+    npc slot3 = 8;
+    npc slot4 = 9;
+    npc slot5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 81, 82, 51, 52;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 48, 68);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Pricklypear"), 76, 49);
+        }
+        clear_trigger(98);
+    }
+
+    on talk(goblimon) replace {    // section 5
+        say(goblimon, text("s123.sec5.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(slot1) replace {    // section 6
+        say(slot1, text("s123.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(slot2) replace {    // section 7
+        say(slot2, text("s123.sec7.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 1944);
+        await tamer;
+        say(narrator, text("s123.sec81.u0"));
+        unless (!debug_mode) return;
+        choice(narrator, open) {
+            text("s123.sec81.m0.o0") => {
+                canyon_bandits_active = true;
+                warp_to(128, 0, 255);
+                return;
+            }
+            text("s123.sec81.m0.o1") => {
+                canyon_bandits_active = false;
+                warp_to(128, 0, 255);
+                return;
+            }
+        }
+    }
+
+    on use(2) replace {    // section 82
+        entity_set_rotation(tamer, 1944);
+        await tamer;
+        say(narrator, text("s123.sec82.u0"));
+    }
+
+    on step(0) replace {    // section 51
+        unless (canyon_bandits_active) return;
+        unless (!canyon_bandits_beaten) return;
+        unless (!trigger(98)) return;
+        entity_set_rotation(tamer, 1944);
+        camera_to(2000, 173, speed: 30);
+        await camera;
+        say(tamer, text("s123.sec51.u0"));
+        walk(tamer, 1925, 468);
+        walk(partner, 1925, 78);
+        await tamer;
+        await partner;
+        load_digimon(species(154));
+        load_digimon(species("Agumon"));
+        set_digimon(species(154), 3, 0);
+        set_digimon(species("Agumon"), 4, 0);
+        set_digimon(species("Agumon"), 5, 0);
+        say(slot4, text("s123.sec51.u1"));
+        sound(8, 11);
+        say(slot3, text("s123.sec51.u2"));
+        say(slot5, text("s123.sec51.u3"));
+        wait(10);
+        sound(8, 1);
+        animate(slot3, 31);
+        entity_move_to(slot3, 1000, 1288, 30, 0);
+        run(slot4, 2067, 1561);
+        run(slot5, 2059, -383);
+        await slot3;
+        await slot4;
+        await slot5;
+        face(slot3, tamer);
+        face(slot4, tamer);
+        face(slot5, tamer);
+        face(tamer, slot3);
+        face(partner, slot4);
+        wait(10);
+        sound(8, 11);
+        say(slot3, text("s123.sec51.u4"));
+        animate(tamer, 20);
+        wait(15);
+        say(tamer, text("s123.sec51.u5"));
+        animate(tamer, anim.idle);
+        say(slot3, text("s123.sec51.u6"));
+        say(slot3, text("s123.sec51.u7"));
+        say(slot4, text("s123.sec51.u8"));
+        face(slot4, slot3);
+        say(slot3, text("s123.sec51.u9"));
+        face(slot3, slot4);
+        battle(foes: [slot3, slot4, slot5]);
+        face(tamer, slot3);
+        face(slot3, tamer);
+        face(partner, slot3);
+        run(slot4, 1350, 2350);
+        run(slot5, 1850, 2350);
+        await slot4;
+        await slot5;
+        remove(slot4);
+        remove(slot5);
+        say(slot3, text("s123.sec51.u10"));
+        run(slot3, 1650, 2350);
+        await slot3;
+        remove(slot3);
+        say(tamer, text("s123.sec51.u11"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        canyon_bandits_beaten = true;
+        canyon_cave_in.collapsed = true;
+        canyon_elevator_unjammed = true;
+    }
+
+    on step(1) replace {    // section 52
+        set_trigger(98);
+        return;
+    }
+}

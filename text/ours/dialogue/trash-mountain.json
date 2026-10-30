@@ -1,0 +1,177 @@
+{
+ "s158.sec5.u0": "You've got no talent at all!",
+ "s158.sec6.u0": "Byepyeee!",
+ "s158.sec7.u0": "Bassuppi, bossuppi!",
+ "s158.sec8.u0": "Bopyeeee!",
+ "s158.sec9.u0": "Is that all you've really got?",
+ "s158.sec10.u0": "Go wash your face and try again!",
+ "s159.sec6.m0.o0": "Trade",
+ "s159.sec6.m0.o1": "Don't trade",
+ "s159.sec6.u0": [
+  [
+   "Hmm, see, I collect Digimon cards, yeah."
+  ],
+  [
+   "I want a KingSukamon card. Would you swap",
+   "me one for an Etemon card?"
+  ]
+ ],
+ "s159.sec6.u1": "Sorry, I don't have any.",
+ "s159.sec6.u2": [
+  [
+   "Whoa, what a stink... Is this",
+   "one of those garbage dumps?"
+  ],
+  [
+   "So the Digimon world has",
+   "'em too."
+  ]
+ ],
+ "s159.sec6.u3": "Hmm? Why, welcome. We always welcome new friends, yeah!",
+ "s159.sec6.u4": "Is this a village of the Sukamon tribe?",
+ "s159.sec6.u5": [
+  [
+   "Indeed. This is the Sukamon paradise, Dust",
+   "Kingdom."
+  ],
+  [
+   "His Majesty KingSukamon lives here as well."
+  ]
+ ],
+ "s159.sec6.u6": "KingSukamon...",
+ "s159.sec6.u7": "His Majesty is amazing. Defy him, and he'll change you into a different species!",
+ "s159.sec6.u8": "Whoa!? You mean you'd stop being a Sukamon? That means... he can change you back!?",
+ "s159.sec6.u9": "Yeah... mmm, it's a scary story. Horrible.",
+ "s159.sec6.u10": "That's good to know!",
+ "s159.sec6.u11": "Huh, a Sukamon?!",
+ "s159.sec6.u12": "Hmm? You know who I am?",
+ "s159.sec6.u13": "W-well, sort of. Hmm, do we have to bring Sukamon to the city too...?",
+ "s159.sec6.u14": "Hmm? Well, this is a rare sight, yeah!",
+ "s159.sec6.u15": "Ew, the poop is moving and talking!",
+ "s159.sec6.u16": "Hmm? You mean me? I'm Sukamon, a Mutant Digimon.",
+ "s159.sec6.u17": "So you're not poop?",
+ "s159.sec6.u18": "In a way, that's right. We're made from the scraps of digital data.",
+ "s159.sec6.u19": "Hmm... Should we invite this guy to the city too? Well, it's not nice to discriminate.",
+ "s159.sec6.u20": "You guys planning to live here?",
+ "s159.sec6.u21": "Huh? That never even crossed my mind.",
+ "s159.sec6.u22": [
+  [
+   "Hmm, this is a paradise for the Sukamon tribe",
+   "only."
+  ],
+  [
+   "Sorry, but other species can't live here, yeah."
+  ]
+ ],
+ "s159.sec6.u23": "So you can't live anywhere else, then?",
+ "s159.sec6.u24": "Well, duh!",
+ "s159.sec6.u25": "Oh, right, I figured... Phew.",
+ "s159.sec6.u26": "Hmm? You can't live here, but you're welcome to look around, honored guest, yeah.",
+ "s159.sec6.u27": "Oh, uh, yeah. Just looking.",
+ "s159.sec6.u28": [
+  [
+   "Oh, right: don't make His Majesty angry."
+  ],
+  [
+   "If his changing magic turns you into something",
+   "pitiful, don't blame me, yeah!"
+  ]
+ ],
+ "s159.sec6.u29": "Hey hey, you've got too many Etemon cards! Better not.",
+ "s159.sec6.u30": "Oh, thank you!",
+ "s159.sec7.u0": [
+  [
+   "Hmm, say, you guys. Did you",
+   "come from that city or",
+   "whatever?"
+  ],
+  [
+   "Hmm, just between us, I'm",
+   "kinda curious about it."
+  ],
+  [
+   "I'll drop by one of these days."
+  ]
+ ],
+ "s159.sec7.u1": [
+  [
+   "Hmm, say, you guys. Do you",
+   "know the Sukamon tribe's",
+   "special talent?"
+  ],
+  [
+   "We take the poop lying by the",
+   "road into our bodies and turn",
+   "it into energy!"
+  ]
+ ],
+ "s159.sec8.u0": [
+  [
+   "Hmm? This is Dust Kingdom. To you it's just a",
+   "trash heap, I bet."
+  ],
+  [
+   "But there might be useful stuff lying around."
+  ],
+  [
+   "Now that I think of it, I saw something like a",
+   "long pole over there, yeah."
+  ]
+ ],
+ "s159.sec51.u0": "Hey, an {color 6}Old Rod{color 1}!",
+ "s159.sec81.m0.o0": "We want to live here",
+ "s159.sec81.m0.o1": "Change him back!",
+ "s159.sec81.u0": "Hmph! You again! Be gone with you!",
+ "s159.sec81.u1": "Um...",
+ "s159.sec81.u2": "Bah, how persistent! There! Are you satisfied?",
+ "s159.sec81.u3": "Hmph! You again! Be gone with you!",
+ "s159.sec81.u4": "Hmmm! Welcome, my fellow Sukamon. If you wish to live here, I grant you permission.",
+ "s159.sec81.u5": "Hmmm! Very good, very good. Hm? Not you, analog creature.",
+ "s159.sec81.u6": "We have to stay together!",
+ "s159.sec81.u7": "Hmph, then out you go, together!",
+ "s159.sec81.u8": "Wh-what? What are you saying?",
+ "s159.sec81.u9": "He wasn't a Sukamon to begin with. King, please change him back!",
+ "s159.sec81.u10": "But is it not wonderful? He got to be a Sukamon.",
+ "s159.sec81.u11": "No, right now it's kind of a problem. Please!",
+ "s159.sec81.u12": [
+  [
+   "If you think one just naturally becomes a",
+   "Sukamon, you are sorely mistaken!"
+  ],
+  [
+   "Only those who strive may become Sukamon!"
+  ]
+ ],
+ "s159.sec81.u13": "He sort of just naturally became a Sukamon. That's the problem...",
+ "s159.sec81.u14": "Hmph, you are hopeless! Enough! This suits the likes of you!",
+ "s159.sec81.u15": "Wow, thanks, King!",
+ "s159.sec81.u16": "Now be gone with you!",
+ "s159.sec81.u17": "Hmph, what business have you with me?",
+ "s159.sec81.u18": "Um...",
+ "s159.sec81.u19": "Hmph, I hear no requests. I am king of the Sukamon, and of the Sukamon alone!",
+ "s159.sec81.u20": "So I can't invite him to the city...",
+ "s159.sec82.m0.o0": "Start training",
+ "s159.sec82.m0.o1": "About this training",
+ "s159.sec82.m0.o2": "Quit",
+ "s159.sec82.m1.o0": "Normal training",
+ "s159.sec82.m1.o1": "Bonus Try training",
+ "s159.sec82.m1.o2": "Never mind",
+ "s159.sec82.m2.o0": "Explain again",
+ "s159.sec82.m2.o1": "Start training",
+ "s159.sec82.m2.o2": "Quit",
+ "s159.sec82.u0": [
+  [
+   "",
+   "{color 5}Training: Hide in Trash{color 1}"
+  ]
+ ],
+ "s159.sec82.u1": "Bury yourself in filthy trash to train your willpower. Max MP goes up a lot.",
+ "s159.sec82.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ]
+}

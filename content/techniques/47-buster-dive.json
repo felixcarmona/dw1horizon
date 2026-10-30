@@ -1,0 +1,17 @@
+{
+  "id": 47,
+  "name": "Buster Dive",
+  "element": "battle",
+  "power": 500,
+  "mpCost": 86,
+  "distance": 360000,
+  "range": 2,
+  "accuracy": 80,
+  "status": 2,
+  "statusChance": 14,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [16, 7, 0]
+}

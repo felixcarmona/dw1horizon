@@ -1,0 +1,559 @@
+{
+ "s101.sec5.u0": "Report, report.",
+ "s101.sec6.u0": "Enemy spotted!",
+ "s101.sec7.u0": "Heave, ho. Heave, ho.",
+ "s101.sec8.u0": "Today's a bad day for this.",
+ "s101.sec9.u0": "Ku-ku-ku-ku...",
+ "s101.sec10.u0": "Isn't this unfair?",
+ "s101.sec11.u0": "Hold them back!",
+ "s101.sec12.u0": "So busy, so busy.",
+ "s101.sec81.m0.o0": "Play the flute",
+ "s101.sec81.m0.o1": "Don't play it",
+ "s101.sec81.u0": "Play the {color 6}Blue Flute{color 1}?",
+ "s102.sec10.u0": [
+  [
+   "- Grade D -",
+   "A tournament mainly for",
+   "Rookie Digimon.",
+   "",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: open to all"
+  ]
+ ],
+ "s102.sec10.u1": [
+  [
+   "- Grade C -",
+   "A tournament mainly for",
+   "Champion Digimon.",
+   "",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: open to all"
+  ]
+ ],
+ "s102.sec10.u2": [
+  [
+   "- Grade B -",
+   "For Champion Digimon who",
+   "are sure of their strength.",
+   "",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: open to all"
+  ]
+ ],
+ "s102.sec10.u3": [
+  [
+   "- Grade A -",
+   "A tournament mainly for",
+   "Ultimate Digimon.",
+   "",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: open to all"
+  ]
+ ],
+ "s102.sec10.u4": [
+  [
+   "- Grade S -",
+   "Where the strongest",
+   "Digimon of all gather.",
+   "",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Grade A winners"
+  ]
+ ],
+ "s102.sec10.u5": [
+  [
+   "- Grade R -",
+   "A battle royal won by",
+   "cunning and tactics.",
+   "",
+   "",
+   "4-way, 2 rounds, 8 entrants",
+   "Entry: open to all"
+  ]
+ ],
+ "s102.sec10.u6": [
+  [
+   "- Version 1 Cup -",
+   "Crowns the best of the",
+   "Version 1 Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Version 1 Digimon"
+  ]
+ ],
+ "s102.sec10.u7": [
+  [
+   "- Version 2 Cup -",
+   "Crowns the best of the",
+   "Version 2 Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Version 2 Digimon"
+  ]
+ ],
+ "s102.sec10.u8": [
+  [
+   "- Version 3 Cup -",
+   "Crowns the best of the",
+   "Version 3 Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Version 3 Digimon"
+  ]
+ ],
+ "s102.sec10.u9": [
+  [
+   "- Version 4 Cup -",
+   "Crowns the best of the",
+   "Version 4 Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Version 4 Digimon"
+  ]
+ ],
+ "s102.sec10.u10": [
+  [
+   "- Version O Cup -",
+   "Crowns the best Digimon",
+   "outside Versions 1 to 4.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: outside Versions 1 to 4"
+  ]
+ ],
+ "s102.sec10.u11": [
+  [
+   "- Fire Cup -",
+   "Crowns the king of the",
+   "blazing Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Fire Digimon"
+  ]
+ ],
+ "s102.sec10.u12": [
+  [
+   "- Grapple Cup -",
+   "Crowns the king of",
+   "Digimon fighting arts.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Fighter Digimon"
+  ]
+ ],
+ "s102.sec10.u13": [
+  [
+   "- Thunder Wind Cup -",
+   "Crowns the king of the",
+   "sky and storm Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Air Digimon"
+  ]
+ ],
+ "s102.sec10.u14": [
+  [
+   "- Cool Cup -",
+   "Crowns the king of the",
+   "coolest Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Ice Digimon"
+  ]
+ ],
+ "s102.sec10.u15": [
+  [
+   "- Nature Cup -",
+   "Crowns the king of the",
+   "nature-loving Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Nature Digimon"
+  ]
+ ],
+ "s102.sec10.u16": [
+  [
+   "- Metallic Cup -",
+   "Crowns the king of the",
+   "super-machine Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Mech Digimon"
+  ]
+ ],
+ "s102.sec10.u17": [
+  [
+   "- Filth Cup -",
+   "Crowns the king of the",
+   "fiiilthy Digimon.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: Filth Digimon"
+  ]
+ ],
+ "s102.sec10.u18": [
+  [
+   "- Dino Cup -",
+   "Digimon of ancient blood",
+   "test their strength.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: ???"
+  ]
+ ],
+ "s102.sec10.u19": [
+  [
+   "- Wing Cup -",
+   "Digimon proud of their",
+   "wings test their strength.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: ???"
+  ]
+ ],
+ "s102.sec10.u20": [
+  [
+   "- Animal Cup -",
+   "Digimon of beastly blood",
+   "test their strength.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: ???"
+  ]
+ ],
+ "s102.sec10.u21": [
+  [
+   "- Human Cup -",
+   "Humanlike Digimon test",
+   "their strength.",
+   "Time-limited matches.",
+   "",
+   "Singles, 3 rounds, 8 entrants",
+   "Entry: ???"
+  ]
+ ],
+ "s102.sec51.u0": "Today no tournament.",
+ "s102.sec51.u1": "Who not entered, no come in.",
+ "s102.sec51.u2": "Still getting ready. Come in on the 22nd, from 10:00 in morning to 23:00 at night.",
+ "s102.sec51.u3": "Too bad. Tournament over already. Come again next year.",
+ "s102.sec81.m0.o0": "Explain, please",
+ "s102.sec81.m0.o1": "No need to explain",
+ "s102.sec81.m1.o0": "Enter",
+ "s102.sec81.m1.o1": "Don't enter",
+ "s102.sec81.m2.o0": "Don't cancel",
+ "s102.sec81.m2.o1": "Cancel",
+ "s102.sec81.u0": "Too bad. Entry over already. Wait one more year.",
+ "s102.sec81.u1": "Now not tournament time. Me bored.",
+ "s102.sec81.u2": "Tournament just ended. Wait one more year.",
+ "s102.sec81.u3": "You not insect. No entering tournament.",
+ "s102.sec81.u4": "You enter tournament?",
+ "s102.sec81.u5": [
+  [
+   "On the 22nd, fighting tournament for insect",
+   "Digimon only. Now you can enter it."
+  ],
+  [
+   "Not insect Digimon, no entering."
+  ],
+  [
+   "Win, and you get big fancy prize. No harm in",
+   "trying."
+  ]
+ ],
+ "s102.sec81.u6": "Now not tournament time. Me bored.",
+ "s102.sec81.u7": "Tournament just ended. Wait one more year.",
+ "s102.sec81.u8": "You entered for \"{cup 3}\". You cancel?",
+ "s102.sec81.u9": "Canceled.",
+ "s102.sec81.u10": "What, you sure?",
+ "s102.sec81.u11": "Entered.",
+ "s102.sec82.u0": "Too bad. Next year again.",
+ "s102.sec82.u1": [
+  [
+   "",
+   "Got {color 6}Giant Meat{color 1}, the prize",
+   "for taking part!"
+  ]
+ ],
+ "s102.sec82.u2": "Items full. Throw some away.",
+ "s102.sec82.u3": [
+  [
+   "",
+   "Winner's purse: 5000 Bits!",
+   "",
+   "Won {color 6}Beetle Pearl{color 1}!"
+  ]
+ ],
+ "s102.sec82.u4": "Items full!",
+ "s102.sec82.u5": [
+  [
+   "",
+   "Runner-up purse: 2000 Bits!",
+   "",
+   "Won {color 6}Horn Helmet{color 1}!"
+  ]
+ ],
+ "s102.sec82.u6": "Items full!",
+ "s102.sec82.u7": [
+  [
+   "",
+   "Runner-up purse: 2000 Bits!",
+   "",
+   "Won {color 6}Scissor Jaw{color 1}!"
+  ]
+ ],
+ "s102.sec82.u8": "Items full!",
+ "s103.sec5.m0.o0": "A training ground, I guess",
+ "s103.sec5.m0.o1": "The Arena, maybe",
+ "s103.sec5.u0": "Me bored of training here. What to do?",
+ "s103.sec5.u1": "What to do, you say...",
+ "s103.sec5.u2": "Where you train?",
+ "s103.sec5.u3": "A training ground, I guess.",
+ "s103.sec5.u4": "Training boring. Me want to get strong in real fights.",
+ "s103.sec5.u5": "Training boring. Me want to get strong in real fights.",
+ "s103.sec5.u6": "Me go there. Me train.",
+ "s103.sec5.u7": "Kabuterimon joined the city!",
+ "s103.sec6.u0": [
+  [
+   "Every year, on day with two",
+   "2s, insect fighting tournament",
+   "held here. Winner gets great"
+  ],
+  [
+   "thing."
+  ],
+  [
+   "But only insect Digimon can",
+   "enter."
+  ]
+ ],
+ "s103.sec6.u1": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon, and one more kind of",
+   "insect. But not Numemon."
+  ],
+  [
+   "Every year, on day with two",
+   "2s, insect fighting tournament",
+   "held here... Hm?"
+  ],
+  [
+   "You won tournament before."
+  ]
+ ],
+ "s103.sec6.u2": [
+  [
+   "Kabuterimon, Kuwagamon, Kunemon, and one",
+   "more kind of insect: HerculesKabuterimon."
+  ],
+  [
+   "Hercules super strong. Tournament winner",
+   "gets item that makes Hercules."
+  ],
+  [
+   "You can enter insect tournament many times."
+  ]
+ ],
+ "s103.sec7.m0.o0": "You bet!",
+ "s103.sec7.m0.o1": "No thanks",
+ "s103.sec7.u0": "You strong. Nothing for me to teach you.",
+ "s103.sec7.u1": [
+  [
+   "We study techniques. Strong techniques hard",
+   "to learn."
+  ],
+  [
+   "If you have ability, maybe you learn technique.",
+   "You want strong technique?"
+  ]
+ ],
+ "s103.sec7.u2": "Then we try.",
+ "s103.sec7.u3": "You not enough Defense. Train more.",
+ "s103.sec7.u4": "You not enough Speed. Train more.",
+ "s103.sec7.u5": "You not enough HP. Train more.",
+ "s103.sec7.u6": "You learned technique.",
+ "s103.sec7.u7": "Learned Bug!",
+ "s103.sec81.u0": [
+  [
+   "",
+   "{color 5}Training: Boulder Push{color 1}"
+  ]
+ ],
+ "s103.sec81.u1": "Pushing the boulder builds hidden strength. Max HP goes up a lot.",
+ "s103.sec81.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s103.sec83.u0": [
+  [
+   "",
+   "{color 5}Training: Striking Drill{color 1}"
+  ]
+ ],
+ "s103.sec83.u1": "Practice striking techniques on a dummy. Offense goes up a lot.",
+ "s103.sec83.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s104.sec5.m0.o0": "Hmm. Just get stronger",
+ "s104.sec5.m0.o1": "Actually, I know a trick...",
+ "s104.sec5.m0.o2": "Hang in there",
+ "s104.sec5.u0": "Me want to beat those Kabuterimon. How me win?",
+ "s104.sec5.u1": "Yes, me thought so. Me train.",
+ "s104.sec5.u2": "What? Tell me.",
+ "s104.sec5.u3": "Just come to the city.",
+ "s104.sec5.u4": [
+  [
+   "..."
+  ],
+  [
+   "You kind. Me go city."
+  ]
+ ],
+ "s104.sec5.u5": "Kuwagamon joined the city!",
+ "s104.sec5.u6": "You not kind. Me disappointed.",
+ "s104.sec6.u0": [
+  [
+   "Hm, you been in insect fighting tournament",
+   "before."
+  ],
+  [
+   "Then me tell you good thing."
+  ],
+  [
+   "You know \"Kunemon's Bed\"? It in Native",
+   "Forest."
+  ],
+  [
+   "Child Digimon sleep there. Wake up, become",
+   "Kunemon. Sometimes not. Depends on luck."
+  ]
+ ],
+ "s104.sec6.u1": [
+  [
+   "You, insect fighting tournament... Hm? You",
+   "now can't enter."
+  ],
+  [
+   "Then me tell you good thing."
+  ],
+  [
+   "You know \"Kunemon's Bed\"? It in Native",
+   "Forest."
+  ],
+  [
+   "Child Digimon sleep there. Wake up, become",
+   "Kunemon. Sometimes not. Depends on luck."
+  ]
+ ],
+ "s104.sec6.u2": "You enter insect fighting tournament?",
+ "s104.sec6.u3": "What's that?",
+ "s104.sec6.u4": "Sign up by 10 o'clock on the 22nd, or no entering.",
+ "s104.sec6.u5": "???",
+ "s104.sec6.u6": "Details on the day.",
+ "s104.sec6.u7": "No idea what he means.",
+ "s104.sec7.m0.o0": "Rest a while",
+ "s104.sec7.m0.o1": "Don't rest",
+ "s104.sec7.u0": [
+  [
+   "We train lots, but rest important."
+  ],
+  [
+   "You rest one hour?"
+  ]
+ ],
+ "s104.sec84.u0": [
+  [
+   "",
+   "{color 5}Training: Hammer Machine{color 1}"
+  ]
+ ],
+ "s104.sec84.u1": "Take hits from the hammer machine to toughen up. Defense goes up a lot.",
+ "s104.sec84.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s104.sec85.u0": [
+  [
+   "",
+   "{color 5}Training: Running Belt{color 1}"
+  ]
+ ],
+ "s104.sec85.u1": "Run against the moving belt. Speed goes up a lot.",
+ "s104.sec85.u2": [
+  [
+   "{color 7}Slot Game{color 1}",
+   "",
+   "Stop the three reels with {color 6}×{color 1}",
+   "and line up the pictures."
+  ]
+ ],
+ "s103.sec81.m0.o0": "Start training",
+ "s103.sec81.m0.o1": "About this training",
+ "s103.sec81.m0.o2": "Quit",
+ "s103.sec81.m1.o0": "Normal training",
+ "s103.sec81.m1.o1": "Bonus Try training",
+ "s103.sec81.m1.o2": "Never mind",
+ "s103.sec81.m2.o0": "Explain again",
+ "s103.sec81.m2.o1": "Start training",
+ "s103.sec81.m2.o2": "Quit",
+ "s103.sec83.m0.o0": "Start training",
+ "s103.sec83.m0.o1": "About this training",
+ "s103.sec83.m0.o2": "Quit",
+ "s103.sec83.m1.o0": "Normal training",
+ "s103.sec83.m1.o1": "Bonus Try training",
+ "s103.sec83.m1.o2": "Never mind",
+ "s103.sec83.m2.o0": "Explain again",
+ "s103.sec83.m2.o1": "Start training",
+ "s103.sec83.m2.o2": "Quit",
+ "s104.sec84.m0.o0": "Start training",
+ "s104.sec84.m0.o1": "About this training",
+ "s104.sec84.m0.o2": "Quit",
+ "s104.sec84.m1.o0": "Normal training",
+ "s104.sec84.m1.o1": "Bonus Try training",
+ "s104.sec84.m1.o2": "Never mind",
+ "s104.sec84.m2.o0": "Explain again",
+ "s104.sec84.m2.o1": "Start training",
+ "s104.sec84.m2.o2": "Quit",
+ "s104.sec85.m0.o0": "Start training",
+ "s104.sec85.m0.o1": "About this training",
+ "s104.sec85.m0.o2": "Quit",
+ "s104.sec85.m1.o0": "Normal training",
+ "s104.sec85.m1.o1": "Bonus Try training",
+ "s104.sec85.m1.o2": "Never mind",
+ "s104.sec85.m2.o0": "Explain again",
+ "s104.sec85.m2.o1": "Start training",
+ "s104.sec85.m2.o2": "Quit"
+}

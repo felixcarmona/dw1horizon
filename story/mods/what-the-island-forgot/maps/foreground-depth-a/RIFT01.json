@@ -1,0 +1,389 @@
+{
+  "screen": 301,
+  "art": "rift",
+  "review": "SAM silhouettes for canvas, crates, cot and sign. Restore bare ground behind the raised sign board; keep the post ground contact, cot and tent footprint solid. Cave mouths and both exits remain open.",
+  "pieces": [
+    {
+      "name": "tent",
+      "png": "301-tent.png",
+      "at": [
+        413,
+        83
+      ],
+      "depth": null,
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/rift-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          410,
+          79,
+          539,
+          199
+        ],
+        "positive": [
+          [
+            469,
+            129
+          ],
+          [
+            487,
+            172
+          ],
+          [
+            429,
+            167
+          ]
+        ],
+        "negative": [
+          [
+            408,
+            164
+          ],
+          [
+            542,
+            141
+          ],
+          [
+            443,
+            198
+          ]
+        ],
+        "score": 0.9884375333786011
+      }
+    },
+    {
+      "name": "camp-crates",
+      "png": "301-camp-crates.png",
+      "at": [
+        379,
+        97
+      ],
+      "depth": [
+        410,
+        151
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/rift-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          376,
+          93,
+          448,
+          154
+        ],
+        "positive": [
+          [
+            422,
+            108
+          ],
+          [
+            394,
+            132
+          ]
+        ],
+        "negative": [
+          [
+            376,
+            138
+          ],
+          [
+            433,
+            153
+          ]
+        ],
+        "score": 0.9657583236694336
+      }
+    },
+    {
+      "name": "camp-cot",
+      "png": "301-camp-cot.png",
+      "at": [
+        500,
+        152
+      ],
+      "depth": [
+        537,
+        204
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/rift-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          491,
+          150,
+          580,
+          211
+        ],
+        "positive": [
+          [
+            532,
+            177
+          ],
+          [
+            505,
+            194
+          ],
+          [
+            552,
+            197
+          ]
+        ],
+        "negative": [
+          [
+            492,
+            174
+          ],
+          [
+            559,
+            210
+          ]
+        ],
+        "score": 0.9489425420761108
+      }
+    },
+    {
+      "name": "camp-sign",
+      "png": "301-camp-sign.png",
+      "at": [
+        477,
+        193
+      ],
+      "depth": [
+        495,
+        250
+      ],
+      "sam": {
+        "model": "SAM ViT-H",
+        "source": "art/full/rift-2304x1856.png",
+        "crop": [
+          0,
+          0,
+          2304,
+          1856
+        ],
+        "box": [
+          473,
+          190,
+          526,
+          254
+        ],
+        "positive": [
+          [
+            496,
+            215
+          ],
+          [
+            496,
+            242
+          ]
+        ],
+        "negative": [
+          [
+            479,
+            237
+          ],
+          [
+            512,
+            246
+          ]
+        ],
+        "score": 0.981694221496582
+      }
+    }
+  ],
+  "collision": [
+    {
+      "tile": [
+        65,
+        49
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Sign post is a standing object; feet cannot stand on its wooden stem."
+    },
+    {
+      "tile": [
+        65,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        66,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        67,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        68,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        65,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        66,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        67,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        68,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        64,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        65,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        66,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        67,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        68,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        64,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        65,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        66,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        67,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    },
+    {
+      "tile": [
+        68,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Bare ground behind the raised sign board; its shadow is not solid. The post ground contact at (65,49) remains blocked."
+    }
+  ],
+  "depth_planes": {
+    "width": 32,
+    "height": 8
+  }
+}

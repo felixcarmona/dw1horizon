@@ -1,0 +1,53 @@
+{
+  "id": 17,
+  "name": "Gabumon",
+  "level": "rookie",
+  "vanilla": true,
+  "attribute": "data",
+  "specialties": ["battle", null, "fire"],
+  "techniques": ["Fire Tower", "Heat Laser", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Tremar",
+                 "War Cry", "Blue Blaster"],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "model": {"name": "GABU", "bones": 22, "radius": 130, "height": 260},
+  "voice": 15,
+  "battle_music": "normal-battle",
+  "new_game_technique": "Sonic Jab",
+  "partner": {
+    "voice": 1,
+    "hunger_hours": [2, 5, 8, 11, 14, 17, 20, 23],
+    "energy_max": 40,
+    "energy_fed": 25,
+    "energy_per_hour": 8,
+    "poop_timer_10min": 24,
+    "poop_size": 8,
+    "favorite_food": "Meat",
+    "sleep_cycle": "22:00-07:00",
+    "favored_region": 5,
+    "training_type": "hp-defense",
+    "birth_weight": 15,
+    "status_screen_position": [420, 230, -1610],
+    "item_distance": 10,
+    "training": {"animation": 46, "hit_tick": 20}
+  },
+  "evolution": {
+    "from": [-1, -1, 2, -1, -1],
+    "to": [36, 47, 38, 8, 34, 22],
+    "requirements": {
+      "digimon": 2,
+      "hp": -1,
+      "mp": -1,
+      "offense": -1,
+      "defense": 1,
+      "speed": 1,
+      "brain": 1,
+      "care": 0,
+      "weight": 15,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -2,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 500, "mp": 500, "offense": 50, "defense": 100, "speed": 100, "brains": 50}
+  }
+}

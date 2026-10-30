@@ -1,0 +1,127 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 178,
+ "type": 400,
+ "name": "Apocalymon",
+ "source": {
+  "type": 54,
+  "mmd": "extracted/CHDAT/MMD1/MGDR.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 6,
+  "3": 3,
+  "6": 4,
+  "7": 21,
+  "8": 13,
+  "9": 12,
+  "10": 19,
+  "18": 14,
+  "21": 7,
+  "24": 10,
+  "25": 11,
+  "27": 22
+ },
+ "hips": [
+  1,
+  1,
+  0.713
+ ],
+ "root_scale": 0.713,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 67,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 37,
+   "end": 127,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 329,
+   "end": 409,
+   "hz": 0.3,
+   "rise": 215
+  },
+  "0x3b": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 137,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 215
+  },
+  "0x2e": {
+   "anim": "anim_01",
+   "start": 195,
+   "end": 255,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 215
+  },
+  "0x2f": {
+   "anim": "anim_02",
+   "start": 28,
+   "end": 102,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 215
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x32",
+  "0x33",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x37",
+  "0x38",
+  "0x39"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "meshfix": {}
+}

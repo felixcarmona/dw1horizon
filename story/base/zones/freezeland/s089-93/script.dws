@@ -1,0 +1,90 @@
+// Readable form of script 89 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 89 {
+    npc hyogamon0 = 5;
+    npc hyogamon1 = 6;
+    npc hyogamon2 = 7;
+    npc icedevimon3 = 8;
+    npc icedevimon4 = 9;
+    npc hyogamon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 81, 53;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 11) {
+            spawn_item(item("Digimushrm"), 72, 53);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 48, 45);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Ice mushrm"), 35, 91);
+        }
+        freezeland_birdra_stop_unlocked = true;
+    }
+
+    on talk(hyogamon0) replace {    // section 5
+        say(hyogamon0, text("s089.sec5.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(hyogamon1) replace {    // section 6
+        say(hyogamon1, text("s089.sec6.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(hyogamon2) replace {    // section 7
+        say(hyogamon2, text("s089.sec7.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on talk(icedevimon3) replace {    // section 8
+        say(icedevimon3, text("s089.sec8.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(icedevimon4) replace {    // section 9
+        say(icedevimon4, text("s089.sec9.u0"));
+        battle();
+        recruit(species("IceDevimon"));
+    }
+
+    on talk(hyogamon5) replace {    // section 10
+        say(hyogamon5, text("s089.sec10.u0"));
+        battle();
+        recruit(species("Hyogamon"));
+    }
+
+    on use(1) replace {    // section 81
+        entity_set_rotation(tamer, 2468);
+        say(narrator, text("s089.sec81.u0"));
+    }
+
+    on step(2) replace {    // section 53
+        unless (condition(64) && !digivolve_scene_seen) return;
+        store_digimon_type(partner_type);
+        if (partner_type in [3, 5, 8, 9, 47]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [19, 32, 51, 1, 2]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [15, 16, 29, 30, 43]) {
+            jump_to_file(203, 51);
+        }
+        if (partner_type in [44, 21]) {
+            jump_to_file(203, 51);
+        }
+        return;
+    }
+}

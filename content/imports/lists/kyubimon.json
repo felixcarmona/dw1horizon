@@ -1,0 +1,29 @@
+{
+ "first_id": 409,
+ "out": "build/rescue-kyubimon",
+ "digimon": [
+  {
+   "name": "Kyubimon",
+   "game": "dw3",
+   "model": "M374KYBI",
+   "level": 4,
+   "element": 0,
+   "meshfix": true,
+   "roles": true,
+   "donor": 22,
+   "root_slots": {
+    "0x02": 0.67,
+    "0x03": 0.67,
+    "0x04": 0.55,
+    "0x1b": 0.67,
+    "0x23": 0.67,
+    "0x24": 0.55
+   },
+   "from": [
+    354,
+    17,
+    31
+   ]
+  }
+ ]
+}

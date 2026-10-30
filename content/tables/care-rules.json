@@ -1,0 +1,254 @@
+{
+  "_comment": "The partner's daily care: sleep, sulking, tiredness, hunger, poop, sickness and the lifetime lost to unhappiness. The C holds none of these numbers: a period or threshold left out switches its rule off, an amount left out counts as 0. Every period and every stretch of time is game time, never real time or frames: a whole number of game seconds or text with units (\\\"45s\\\", \\\"10m\\\", \\\"1h\\\", \\\"1h30m\\\"), in steps of 3 s; how long a game day lasts in real seconds is clock.json (sleep.fresh is a level 1 partner, inTraining level 2, later level 3 and up). The direction of each amount is its name (happinessLoss, tirednessGain...). sleep: tiredness.period/percent: every period the sleep timer grows by tiredness x percent / 100; it reaches sleepyAt, checked every sleepyPeriod, and the partner gets sleepy ten minutes earlier; while sleepy past its hour it loses happiness and discipline every period of its level, and every missed.period hour of the night counts for sickness. sulk: below zero happiness it may sulk (chance = -happiness - discipline, rolled every period); a sulking partner regains 1 happiness every recoverPeriod and loses statLossPercent of every base stat every statLossPeriod. area: every period spent on a good or bad screen. area.subTirednessAt: the training tiredness points that make 1 tiredness. tired: hungerAt starts the timer that makes it hungrier (hunger.tiredAfter); exhaustedAt: the exhausted condition. hunger: foodPeriod lowers the food level; the hungry partner has starveTimer, lowered every starvePeriod; with no energy left the weight drops every emptyWeightPeriod. poop: poopLevel drops every period; a full one holds (discipline + holdOffset) x holdScale / 100 frames before it goes. sickness: every period, with minCounter or more sickness points, a roll with chance (tries - freeTries) x perTry + (tiredness - restTiredness) percent (the original keeps the result in one unsigned byte: a negative one wraps and always makes it sick); a sick partner loses the tick amounts every period; an injury becomes a sickness after injuryAfter periods; after lifeLostAfter periods sick it loses a life. lifetime: every period, below happinessBelow, the lifetime drops by 1 + (below - happiness) / perPoints. A species file may override any key with its own \"care\" block (an absolute number, \"+n\", \"-n\", \"+n%\", \"-n%\" or null), see docs/mods/data-sources.md. More of the same table (patch 0130): scold/praise (disciplineGain, happinessLoss...), refuse (the partner refusing an item: discipline.base - (discipline + offset + roll(jitter)) against a roll of 100, favourite: a roll of die below `below` when it is not hungry), limit (the clamps of happiness, discipline, tiredness and weight: a min or max left out means no clamp; a min cannot be -1), sleep.awakeHours and hunger.everyHours (how long a baby stays awake / how often it gets hungry, in game hours), sleep.whileHungry/whileSick/whileInjured (what a night's sleep costs), regen (what sleeping gives back: percent factors and the base and roll of the HP/MP and tiredness recovery), feed (fed while hungry / full), toilet, poop.wild and poop.weightLoss*, poop.eat (three sizes: hpDiv/mpDiv = the part of the maximum HP/MP given, weightGain, curePercent; mediumFrom/largeFrom are the poop sizes), skip (what skipping an hour costs), battle (tiredness and food after a fight, what losing, fleeing or winning does to the partner, and timeCost: the game time a fight takes; the starvation, food, poop timers a fight costs follow from it and the periods above). food (patch 0132): favouritePercent / favouriteHappiness (the partner's favourite food gives its energy x percent / 100 and this much more happiness), boostHour (the unit of a training boost's duration), sicknessDie (the die of the sickness roll of an item: the item's sickChance against a roll of this many); medicine: the dice of the cure rolls (an item's cureInjury / cureSickness against a roll of injuryDie / sicknessDie). Patch 0140: sulk.recoverGain (the happiness a sulking partner regains every recoverPeriod), tired.subTirednessGain (the tiredness one full sub-tiredness counter adds, capped by limit.tiredness.max), poop.eat.species (the species that go and eat a poop near the tamer, up to two) with reachNear / reachFar (how close the tamer must be, in world units, to a poop smaller than / of farFrom or more); the hours skipped by a script (skip) take the lifetime lost to unhappiness from the lifetime rule above. Left in code on purpose: the sleep-hour arithmetic (timeAwakeToday counts ten-minute steps: 6 an hour, 24 hours a day, the sleepy minute is steps x 10), the condition bits, the condition bubbles' timers (presentation) and the item ranges that are never accepted (item ids).",
+  "careRules": {
+    "sleep": {
+      "tiredness": {
+        "period": "1m",
+        "percent": 30
+      },
+      "sleepyAt": 180,
+      "sleepyPeriod": "10m",
+      "fresh": {
+        "period": "10m",
+        "happinessLoss": 1,
+        "disciplineLoss": 1
+      },
+      "inTraining": {
+        "period": "15m",
+        "happinessLoss": 1,
+        "disciplineLoss": 1
+      },
+      "later": {
+        "period": "1h",
+        "happinessLoss": 2,
+        "disciplineLoss": 4
+      },
+      "missed": {
+        "period": "1h"
+      },
+      "awakeHours": {
+        "fresh": 3,
+        "inTraining": 7
+      },
+      "awakeJitter": 1,
+      "lateCareMistakes": 1,
+      "whileHungry": {
+        "weightLoss": 1
+      },
+      "whileSick": {
+        "happinessLoss": 20,
+        "disciplineLoss": 10,
+        "tirednessGain": 10
+      },
+      "whileInjured": {
+        "happinessLoss": 10,
+        "disciplineLoss": 5,
+        "tirednessGain": 5
+      }
+    },
+    "sulk": {
+      "period": "10m",
+      "recoverPeriod": "45s",
+      "statLossPeriod": "15m",
+      "statLossPercent": 2,
+      "statFloor": 1,
+      "recoverGain": 1
+    },
+    "area": {
+      "period": "1h",
+      "good": {
+        "happinessGain": 1,
+        "tirednessLoss": 2
+      },
+      "bad": {
+        "happinessLoss": 1,
+        "tirednessGain": 1
+      },
+      "subTirednessAt": 60
+    },
+    "tired": {
+      "hungerAt": 50,
+      "exhaustedAt": 80,
+      "exhaustedPeriod": "5m",
+      "exhaustedHappinessLoss": 2,
+      "subTirednessGain": 1
+    },
+    "hunger": {
+      "foodPeriod": "1m",
+      "starvePeriod": "30s",
+      "starveTimer": 180,
+      "emptyWeightPeriod": "10m",
+      "emptyStomachPeriod": "1m",
+      "tiredAfter": "2m30s",
+      "tiredPeriod": "1h",
+      "tiredFoodLoss": 3,
+      "energyPeriod": "1h",
+      "everyHours": {
+        "fresh": 2,
+        "inTraining": 3
+      },
+      "starveCareMistakes": 1,
+      "emptyWeightLoss": 1
+    },
+    "poop": {
+      "period": "10m",
+      "holdOffset": 20,
+      "holdScale": "1h",
+      "weightLossDie": 4,
+      "weightLossDiv": 4,
+      "wild": {
+        "careMistakes": 1,
+        "happinessLoss": 10,
+        "disciplineLoss": 5
+      },
+      "eat": {
+        "mediumFrom": 11,
+        "largeFrom": 14,
+        "species": [11, 39],
+        "reachNear": 200,
+        "reachFar": 300,
+        "farFrom": 11,
+        "small": {
+          "hpDiv": 20,
+          "mpDiv": 50,
+          "weightGain": 1,
+          "curePercent": 2
+        },
+        "medium": {
+          "hpDiv": 10,
+          "mpDiv": 20,
+          "weightGain": 3,
+          "curePercent": 7
+        },
+        "large": {
+          "hpDiv": 2,
+          "mpDiv": 10,
+          "weightGain": 10,
+          "curePercent": 20
+        }
+      }
+    },
+    "sickness": {
+      "period": "1h",
+      "minCounter": 10,
+      "freeTries": 10,
+      "perTry": 5,
+      "restTiredness": 50,
+      "onsetHappinessLoss": 20,
+      "areaAfter": "10h",
+      "tick": {
+        "happinessLoss": 10,
+        "disciplineLoss": 5,
+        "tirednessGain": 5
+      },
+      "injuryAfter": 12,
+      "lifeLostAfter": 12
+    },
+    "lifetime": {
+      "period": "4h",
+      "happinessBelow": 80,
+      "perPoints": 50
+    },
+    "scold": {
+      "valid": {
+        "disciplineGain": 8
+      },
+      "unjust": {
+        "disciplineGain": 2,
+        "happinessLoss": 10
+      }
+    },
+    "praise": {
+      "disciplineLoss": 5,
+      "happinessBase": 2,
+      "happinessPerDisciplineDiv": 10
+    },
+    "refuse": {
+      "discipline": {
+        "base": 110,
+        "offset": 10,
+        "jitter": 10
+      },
+      "favourite": {
+        "die": 10,
+        "below": 2
+      }
+    },
+    "limit": {
+      "happiness": {
+        "min": -100,
+        "max": 100
+      },
+      "discipline": {
+        "min": 0,
+        "max": 100
+      },
+      "tiredness": {
+        "min": 0,
+        "max": 100
+      },
+      "weight": {
+        "min": 1,
+        "max": 99
+      }
+    },
+    "regen": {
+      "bedPercent": 120,
+      "goodAreaPercent": 120,
+      "badAreaPercent": 80,
+      "hpmpBase": 70,
+      "hpmpRoll": 10,
+      "tirednessBase": 80,
+      "tirednessRoll": 20,
+      "weightLossDiv": 10
+    },
+    "feed": {
+      "hungry": {
+        "happinessGain": 5,
+        "disciplineGain": 1
+      },
+      "full": {
+        "happinessLoss": 3,
+        "disciplineLoss": 2
+      }
+    },
+    "toilet": {
+      "happinessGain": 2,
+      "disciplineGain": 2
+    },
+    "skip": {
+      "starvationPerHour": 120,
+      "foodPerHour": 60,
+      "poopPerHour": 6
+    },
+    "battle": {
+      "tirednessGain": 5,
+      "mpLowPercent": 20,
+      "mpTirednessMult": 10,
+      "foodCost": 15,
+      "lost": {
+        "happinessLoss": 30,
+        "disciplineLoss": 20
+      },
+      "fled": {
+        "happinessLoss": 10,
+        "disciplineLoss": 6,
+        "tirednessGain": 2
+      },
+      "won": {
+        "happinessGain": 2
+      },
+      "timeCost": "20m"
+    },
+    "food": {
+      "favouritePercent": 140,
+      "favouriteHappiness": 2,
+      "boostHour": "1h",
+      "sicknessDie": 100
+    },
+    "medicine": {
+      "injuryDie": 3,
+      "sicknessDie": 10
+    }
+  }
+}

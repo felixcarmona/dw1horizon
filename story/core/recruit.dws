@@ -1,0 +1,29 @@
+import "scene.dws";
+
+// A Digimon "joins the city": the flag 200+type that the C code reads for prosperity, the city layout,
+// tournament pools and the revival screen. Prosperity itself is recomputed by C (story-system.md 1.4).
+pub fn recruit_digimon(sp: species) { recruit(sp); }
+
+
+// The end of a Digimon's departure to the city: it is gone, the counter is reset, a jingle and one line of narration, and it
+// becomes a resident (`engine.prosperity` is recomputed by C; the original adds to it as well).
+pub fn join_city(who: entity, sp: species, bank: int, n: int, line: text, prosperity: int = 1) {
+    remove(who);
+    glances = 0;
+    sound(bank, n);
+    say(narrator, line);
+    recruit(sp);
+    engine.prosperity += prosperity;
+}
+
+// The same, with the camera coming back to the tamer before the Digimon is entered in the city book.
+pub fn join_city_camera(who: entity, sp: species, bank: int, n: int, line: text, prosperity: int = 1) {
+    remove(who);
+    glances = 0;
+    sound(bank, n);
+    say(narrator, line);
+    camera_on(tamer, speed: 10);
+    await camera;
+    recruit(sp);
+    engine.prosperity += prosperity;
+}

@@ -1,0 +1,175 @@
+{
+ "s135.sec5.u0": [
+  [
+   "Então vocês são {color 6}{player}{color 1}",
+   "e {color 10}{partner}{color 1}? Bem-vindos à",
+   "Vila Volume!"
+  ]
+ ],
+ "s135.sec5.u1": [
+  [
+   "......Desculpe por termos",
+   "implicado com Otamamon."
+  ]
+ ],
+ "s135.sec5.u2": "Isso não importa.",
+ "s135.sec5.u3": "Hã?",
+ "s135.sec5.u4": "Sou grato aos dois. Ouvi falar de tudo que fez para salvar a ilha.",
+ "s135.sec5.u5": "Ah, é?",
+ "s135.sec5.u6": [
+  [
+   "Há tempos também desejo ajudar",
+   "vocês. Já foram à floresta ao",
+   "norte daqui, chamada Bosque",
+   "Nebuloso?"
+  ]
+ ],
+ "s135.sec5.u7": "Ainda não.",
+ "s135.sec5.u8": [
+  [
+   "Já estive lá."
+  ]
+ ],
+ "s135.sec5.u9": [
+  [
+   "A névoa cobre aquele lugar e",
+   "dificulta a passagem. Mas vocês",
+   "devem conhecer Cherrymon, o",
+   "ancião da floresta."
+  ]
+ ],
+ "s135.sec5.u10": "Cherrymon? Nunca ouvi falar desse Digimon...",
+ "s135.sec5.u11": [
+  [
+   "A névoa do Bosque Nebuloso é",
+   "obra de Cherrymon. Ele sabe",
+   "dos problemas da ilha e cria a",
+   "névoa para proteger a floresta."
+  ]
+ ],
+ "s135.sec5.u12": "Isso é um problema para nós.",
+ "s135.sec5.u13": [
+  [
+   "Cherrymon parece saber algo",
+   "sobre a causa dos problemas.",
+   "Vale a pena encontrá-lo, mesmo",
+   "que precisem atravessar a"
+  ],
+  [
+   "névoa."
+  ]
+ ],
+ "s135.sec5.u14": "Se ao menos pudéssemos fazer algo sobre o nevoeiro.",
+ "s135.sec5.u15": [
+  [
+   "A névoa só vai se dissipar se",
+   "Cherrymon a desfizer. Mas há",
+   "um jeito. Vou lançar um",
+   "encantamento em vocês."
+  ]
+ ],
+ "s135.sec5.u16": "O que vai fazer?",
+ "s135.sec5.u17": "Você será capaz de ver o caminho, mesmo na névoa.",
+ "s135.sec5.u18": "Isso é ótimo!",
+ "s135.sec5.u19": "Então vamos começar de uma vez.",
+ "s135.sec5.u20": [
+  [
+   "Coax-coax-coooax!!"
+  ]
+ ],
+ "s135.sec5.u21": [
+  [
+   "Pronto, feito. Vão agora ao",
+   "Bosque Nebuloso."
+  ]
+ ],
+ "s135.sec5.u22": "Eu o conheci. E a névoa já se foi.",
+ "s135.sec5.u23": [
+  [
+   "O quê? Impressionante. Então, como posso",
+   "ajudá-lo..."
+  ],
+  [
+   "Eu sei. Eu vou te dar isso."
+  ]
+ ],
+ "s135.sec5.u24": "Peguei um {color 6}Digirobalo{color 1}!",
+ "s135.sec5.u25": "Jogue algo fora para dar espaço.",
+ "s135.sec5.u26": "É uma coisa rara. Deve servir bem.",
+ "s135.sec5.u27": "Obrigado. A propósito, não quer vir à cidade, Vossa Senhoria?",
+ "s135.sec5.u28": [
+  [
+   "Sou o chefe dos cem Gekomon do pântano",
+   "Geko. Infelizmente, não posso."
+  ],
+  [
+   "Mas não pouparei ajuda daqui. Volte sempre",
+   "que quiser."
+  ]
+ ],
+ "s135.sec6.u0": "Você só pode pescar na costa do Lago Olho de Dragão.",
+ "s135.sec6.u1": "Curvem-se, curvem-se!",
+ "s135.sec7.u0": [
+  [
+   "Sua Senhoria coleciona coisas",
+   "raras. Antes eram itens; agora,",
+   "ele é louco por cartas Digimon."
+  ]
+ ],
+ "s135.sec7.u1": [
+  [
+   "Quem traz uma carta rara para",
+   "ele ganha pontos de Mérito."
+  ]
+ ],
+ "s135.sec7.u2": "Então você pode trocar o mérito que você guardou por itens.",
+ "s135.sec8.u0": [
+  [
+   "Hum... Não, não é nada, coax."
+  ]
+ ],
+ "s135.sec8.u1": [
+  [
+   "Hum...! Quero ir para a cidade,",
+   "coax!"
+  ]
+ ],
+ "s135.sec8.u2": "Claro, tudo bem, mas e aí?",
+ "s135.sec8.u3": [
+  [
+   "Quero lutar num lugar chamado",
+   "Arena, coax. Parece que",
+   "tratam nós, Gekomon, como",
+   "caipiras, coax... Mas caipira"
+  ],
+  [
+   "também tem orgulho, coax! Por",
+   "favor, eu imploro, coax."
+  ]
+ ],
+ "s135.sec8.u4": "Entendo. Sei como se sente, então vá dar o seu melhor.",
+ "s135.sec8.u5": "Gekomon entrou para a Arena!",
+ "s135.sec81.u0": "Você parece preocupado. Sim, sim, eu sei. É sobre a fantasia, não é?",
+ "s135.sec81.u1": "Huh! Sabe?",
+ "s135.sec81.u2": [
+  [
+   "Não me subestime. Sobre a",
+   "fantasia: Numemon pode",
+   "vesti-la, sabia? Surpreso? E",
+   "mais, quando ele a veste... é"
+  ],
+  [
+   "inacreditável...! Bem, não",
+   "custa tentar."
+  ]
+ ],
+ "s135.sec81.u3": [
+  [
+   "Hum, isso me lembra. A {color 6}Vara",
+   "incrível{color 1} é um item especial,",
+   "então vou retirá-la da sua",
+   "bolsa."
+  ]
+ ],
+ "s135.sec81.u4": "Faça o seu melhor!"
+}

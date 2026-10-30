@@ -1,0 +1,95 @@
+// Readable form of script 93 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 93 {
+    npc slot0 = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5;
+
+    on enter replace {    // section 254
+        if (angemon_voice_heard) {
+            set_obj_visibility(7, 1);
+        }
+        call_routine(routine("spawn_angemon_pedestal"));
+        if (angemon_pedestal_raised) {
+            call_routine(routine("raise_angemon_pedestal"));
+        }
+    }
+
+    on step(0) replace {    // section 51
+        if (angemon_pedestal_raised) {
+            warp_to(98, 0, 255);
+            return;
+        }
+        if (!trigger(324)) {
+            entity_set_rotation(tamer, 2048);
+            wait(5);
+            animate(tamer, 23);
+            wait(5);
+            say(tamer, text("s093.sec51.u0"));
+            say(tamer, text("s093.sec51.u1"));
+            animate(tamer, anim.idle);
+            set_trigger(324);
+            return;
+        }
+    }
+
+    on step(1) replace {    // section 52
+        unless (!angemon_voice_heard || !is_recruited(species("Angemon"))) goto sec5;
+        if (!angemon_pedestal_raised && trigger(324)) {
+            walk(partner, 50, 1050);
+            await partner;
+            wait(10);
+            face(tamer, partner);
+            say(tamer, text("s093.sec52.u0"));
+            call_routine(routine("raise_angemon_pedestal"));
+            wait(1s);
+            say(tamer, text("s093.sec52.u1"));
+            angemon_pedestal_raised = true;
+            return;
+        }
+    }
+
+    on talk(slot0) replace {    // section 5
+        unless (!is_recruited(species("Angemon"))) return;
+        entity_set_rotation(tamer, 2048);
+        wait(1s);
+        entity_set_rotation(tamer, 1536);
+        wait(10);
+        entity_set_rotation(tamer, 2560);
+        wait(1s);
+        say(tamer, text("s093.sec5.u0"));
+        entity_set_rotation(tamer, 2048);
+        animate(tamer, 23);
+        wait(1s);
+        camera_to(-831, 2975, speed: 20);
+        await camera;
+        say(tamer, text("s093.sec5.u1"));
+        load_digimon(species(142));
+        set_digimon(species(142), 0, 0);
+        sound(8, 10);
+        animate(slot0, 28);
+        wait(3s);
+        animate(slot0, anim.idle);
+        say(slot0, text("s093.sec5.u2"));
+        say(tamer, text("s093.sec5.u3"));
+        say(slot0, text("s093.sec5.u4"));
+        say(tamer, text("s093.sec5.u5"));
+        say(slot0, text("s093.sec5.u6"));
+        say(tamer, text("s093.sec5.u7"));
+        say(slot0, text("s093.sec5.u8"));
+        say(tamer, text("s093.sec5.u9"));
+        say(slot0, text("s093.sec5.u10"));
+        say(tamer, text("s093.sec5.u11"));
+        walk_away(slot0, 47, -2650, looks: 3);
+        join_city(slot0, species("Angemon"), 8, 11, text("s093.sec5.u12"), prosperity: 2);
+        camera_on(tamer, speed: 10);
+        await camera;
+        return;
+    }
+}

@@ -1,0 +1,15 @@
+{
+  "id": 45,
+  "name": "Ice mushrm",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 19,
+    "weight": 2,
+    "discipline": 50
+  }
+}

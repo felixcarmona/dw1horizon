@@ -1,0 +1,47 @@
+{
+ "s045.sec5.u0": "¡Esto pinta mal!",
+ "s045.sec6.u0": "¡H-hay que largarse!",
+ "s045.sec7.u0": "¡E-espera un momento!",
+ "s046.sec5.u0": "¡A por ellos!",
+ "s046.sec6.u0": "¡A por ellos!",
+ "s046.sec7.u0": "¡A por ellos!",
+ "s047.sec5.u0": "¡Formación C!",
+ "s047.sec6.u0": "¡Formación A!",
+ "s047.sec7.u0": "¡Formación B!",
+ "s047.sec60.u0": "¡Puaaaj!",
+ "s047.sec60.u1": ".........",
+ "s047.sec60.u2": "¡N-no me fastidies!",
+ "s047.sec60.u3": "Ha desaparecido... ¿Era una ilusión...?",
+ "s047.sec60.u4": "Parece que lo hemos vencido... a duras penas.",
+ "s047.sec60.u5": "¿¡Eh!?",
+ "s047.sec60.u6": "Mm, mmm. ¿¡Eh!?",
+ "s047.sec60.u7": "Me he quedado como en blanco de repente... ¡Ah! ¡P-perdona!",
+ "s047.sec60.u8": "¿¿Mmmmm?? ¿Qué ha sido eso? ¿¡La maldición de Analogman!? Bueno, ya debería estar todo bien.",
+ "s048.sec5.u0": "¡Ah...!",
+ "s048.sec6.u0": "¡Ah...!",
+ "s048.sec11.u0": "¿Eh? ¿¡Y tú quién eres!?",
+ "s048.sec11.u1": "¡Nanimon, eso es lo que soy!",
+ "s048.sec11.u2": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 20 objetos!",
+ "s048.sec11.u3": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 30 objetos!",
+ "s048.sec51.u0": "Mmm... ¿Será este ascensor lo que empuja hacia arriba el suelo de encima?",
+ "s048.sec51.m0.o0": "Subir al ascensor",
+ "s048.sec51.m0.o1": "No subir",
+ "s048.sec52.u0": "¡Eh!",
+ "s048.sec52.u1": [
+  [
+   "¿Mm?"
+  ],
+  [
+   "¡Muajajá! ¿Vienes a por más?"
+  ]
+ ],
+ "s048.sec52.u2": "¡Eso digo yo!",
+ "s048.sec52.u3": "¡Esta vez no me voy a cortar como la última! ¡Te voy a hacer llorar!",
+ "s048.sec52.u4": "¡Iiih!",
+ "s048.sec52.u5": "¡Ay, ay, ay!",
+ "s048.sec52.u6": "¡M-maldita sea!",
+ "s048.sec52.u7": "¡Hala! ¿¡Qué es eso!?",
+ "s048.sec52.u8": "¡Guajajaja! ¡Hasta nunca, pringaos!",
+ "s048.sec52.u9": "¡Mecachis, se ha vuelto a escapar!",
+ "s048.sec52.u10": "Hasta tenía un ascensor para huir... Ya no sirve de nada perseguirlo. ¡Será...!"
+}

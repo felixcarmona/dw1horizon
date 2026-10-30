@@ -1,0 +1,598 @@
+{
+ "s165.sec5.u0": [
+  [
+   "Ah, tu tombes à pic ! J'ai une",
+   "faveur importante à te",
+   "demander, une tâche que toi"
+  ],
+  [
+   "seul peux accomplir."
+  ]
+ ],
+ "s165.sec5.u1": [
+  [
+   "De quoi s'agit-il ?"
+  ]
+ ],
+ "s165.sec5.u2": [
+  [
+   "Je viens de la ressentir : la",
+   "même présence maléfique que",
+   "celle d'Analogman et de"
+  ],
+  [
+   "Machinedramon. Mais j'ignore",
+   "encore d'où elle vient..."
+  ]
+ ],
+ "s165.sec5.u3": [
+  [
+   "Encore ?! D'accord, je m'en",
+   "occupe !"
+  ]
+ ],
+ "s165.sec5.u4": [
+  [
+   "Oh, merci. Au fait..."
+  ]
+ ],
+ "s165.sec5.u5": [
+  [
+   "Il paraît que tu as vaincu",
+   "Machinedramon !"
+  ]
+ ],
+ "s165.sec5.u6": [
+  [
+   "Oui. Mais je ne comprends pas",
+   "bien. On aurait dit une sorte",
+   "de malédiction d'Analogman."
+  ]
+ ],
+ "s165.sec5.u7": [
+  [
+   "Sa rancoeur doit encore",
+   "persister, terriblement",
+   "forte... Enfin, avec ça, nous"
+  ],
+  [
+   "retrouverons peut-être la",
+   "paix."
+  ]
+ ],
+ "s165.sec5.u8": [
+  [
+   "Si Machinedramon revient, on le",
+   "battra encore. Ce sera comme",
+   "une fête annuelle. Sympa, non ?"
+  ]
+ ],
+ "s165.sec5.u9": [
+  [
+   "Ha ha, voilà qui me rassure.",
+   "Ah, oui, prends ceci en",
+   "remerciement. Ça a poussé par"
+  ],
+  [
+   "hasard à la ferme à viande."
+  ]
+ ],
+ "s165.sec5.u10": [
+  [
+   "Ouah, un {color 6}Melon trop mûr{color 1} ?"
+  ]
+ ],
+ "s165.sec5.u11": [
+  [
+   "Oups, mon sac est plein."
+  ]
+ ],
+ "s165.sec5.u12": [
+  [
+   "Je le prends, merci !"
+  ]
+ ],
+ "s165.sec5.u13": [
+  [
+   "Ah, te voilà ! C'est une",
+   "affaire importante, que je ne",
+   "peux confier qu'à toi."
+  ]
+ ],
+ "s165.sec5.u14": [
+  [
+   "Hé hé, pas de quoi. Alors,",
+   "c'est quoi cette histoire de",
+   "retour d'Analogman ?"
+  ]
+ ],
+ "s165.sec5.u15": [
+  [
+   "Hmm, je la sens. Une présence",
+   "tout aussi maléfique que la",
+   "sienne. Mais je n'arrive pas à"
+  ],
+  [
+   "savoir d'où elle vient..."
+  ]
+ ],
+ "s165.sec5.u16": [
+  [
+   "D'accord, je m'en occupe ! Je",
+   "le trouverai et je le vaincrai."
+  ]
+ ],
+ "s165.sec5.u17": [
+  [
+   "Oh, merci. Au fait..."
+  ]
+ ],
+ "s165.sec7.u0": [
+  [
+   "On dirait que Yuramon a",
+   "entendu de nouvelles rumeurs."
+  ]
+ ],
+ "s165.sec7.u1": [
+  [
+   "Ah oui, Yuramon dit connaître",
+   "de nouvelles rumeurs."
+  ]
+ ],
+ "s165.sec7.u2": [
+  [
+   "La ville s'anime de plus en",
+   "plus, et les conversations",
+   "changent un peu, elles aussi."
+  ]
+ ],
+ "s165.sec7.u3": [
+  [
+   "{color 6}{player}{color 1}, ta façon de vivre",
+   "l'aventure est assez originale,",
+   "tu sais."
+  ]
+ ],
+ "s165.sec20.u0": [
+  [
+   "Alors, tu as repris",
+   "connaissance... Je suis désolé,",
+   "mon garçon."
+  ]
+ ],
+ "s165.sec85.m0.o0": "L'utiliser",
+ "s165.sec85.m0.o1": "Ne pas l'utiliser",
+ "s165.sec85.u0": [
+  [
+   "Oh ? C'est quoi, cette machine",
+   "?"
+  ]
+ ],
+ "s165.sec85.u1": [
+  [
+   "Hmm, ça ? C'est la {color 4}machine de",
+   "sauvegarde des données de",
+   "combat sur carte mémoire{color 1}. Elle"
+  ],
+  [
+   "enregistre les données de ton",
+   "partenaire actuel pour les",
+   "combats. Appuie sur {color 6}×{color 1} devant"
+  ],
+  [
+   "elle et suis ses instructions."
+  ]
+ ],
+ "s165.sec85.u2": [
+  [
+   "Utiliser la {color 4}machine de",
+   "sauvegarde des données de",
+   "combat{color 1} ?"
+  ]
+ ],
+ "s166.sec5.u0": [
+  [
+   "Ils travaillent tous si dur !"
+  ]
+ ],
+ "s166.sec6.u0": [
+  [
+   "On dirait que rien n'est là."
+  ]
+ ],
+ "s166.sec7.u0": [
+  [
+   "Airdramon est endormi. . ."
+  ]
+ ],
+ "s166.sec60.u0": [
+  [
+   "Hmm, il a l'air d'aller bien",
+   "pour le moment."
+  ]
+ ],
+ "s166.sec60.u1": [
+  [
+   "Ouf, tant mieux..."
+  ]
+ ],
+ "s166.sec60.u2": [
+  [
+   "Pour lui aussi, nous devons",
+   "vaincre leur chef au plus vite."
+  ]
+ ],
+ "s166.sec60.u3": [
+  [
+   "...Je sais, je sais."
+  ]
+ ],
+ "s178.sec5.u0": [
+  [
+   "Ah, tu tombes à pic ! J'ai une",
+   "faveur importante à te",
+   "demander, une tâche que toi"
+  ],
+  [
+   "seul peux accomplir."
+  ]
+ ],
+ "s178.sec5.u1": [
+  [
+   "De quoi s'agit-il ?"
+  ]
+ ],
+ "s178.sec5.u2": [
+  [
+   "Je viens de la ressentir : la",
+   "même présence maléfique que",
+   "celle d'Analogman et de"
+  ],
+  [
+   "Machinedramon. Mais j'ignore",
+   "encore d'où elle vient..."
+  ]
+ ],
+ "s178.sec5.u3": [
+  [
+   "Encore ?! D'accord, je m'en",
+   "occupe !"
+  ]
+ ],
+ "s178.sec5.u4": [
+  [
+   "Oh, merci. Au fait..."
+  ]
+ ],
+ "s178.sec5.u5": [
+  [
+   "Il paraît que tu as vaincu",
+   "Machinedramon !"
+  ]
+ ],
+ "s178.sec5.u6": [
+  [
+   "Oui. Mais je ne comprends pas",
+   "bien. On aurait dit une sorte",
+   "de malédiction d'Analogman."
+  ]
+ ],
+ "s178.sec5.u7": [
+  [
+   "Sa rancoeur doit encore",
+   "persister, terriblement",
+   "forte... Enfin, avec ça, nous"
+  ],
+  [
+   "retrouverons peut-être la",
+   "paix."
+  ]
+ ],
+ "s178.sec5.u8": [
+  [
+   "Si Machinedramon revient, on le",
+   "battra encore. Ce sera comme",
+   "une fête annuelle. Sympa, non ?"
+  ]
+ ],
+ "s178.sec5.u9": [
+  [
+   "Ha ha, voilà qui me rassure.",
+   "Ah, oui, prends ceci en",
+   "remerciement. Ça a poussé par"
+  ],
+  [
+   "hasard à la ferme à viande."
+  ]
+ ],
+ "s178.sec5.u10": [
+  [
+   "Ouah, un {color 6}Melon trop mûr{color 1} ?"
+  ]
+ ],
+ "s178.sec5.u11": [
+  [
+   "Oups, mon sac est plein."
+  ]
+ ],
+ "s178.sec5.u12": [
+  [
+   "Je le prends, merci !"
+  ]
+ ],
+ "s178.sec5.u13": [
+  [
+   "Ah, te voilà ! C'est une",
+   "affaire importante, que je ne",
+   "peux confier qu'à toi."
+  ]
+ ],
+ "s178.sec5.u14": [
+  [
+   "Hé hé, pas de quoi. Alors,",
+   "c'est quoi cette histoire de",
+   "retour d'Analogman ?"
+  ]
+ ],
+ "s178.sec5.u15": [
+  [
+   "Hmm, je la sens. Une présence",
+   "tout aussi maléfique que la",
+   "sienne. Mais je n'arrive pas à"
+  ],
+  [
+   "savoir d'où elle vient..."
+  ]
+ ],
+ "s178.sec5.u16": [
+  [
+   "D'accord, je m'en occupe ! Je",
+   "le trouverai et je le vaincrai."
+  ]
+ ],
+ "s178.sec5.u17": [
+  [
+   "Oh, merci. Au fait..."
+  ]
+ ],
+ "s178.sec5.u18": [
+  [
+   "Ah, hum. Avec les Digimon qui",
+   "reviendront, je vais",
+   "reconstruire File City."
+  ]
+ ],
+ "s178.sec5.u19": [
+  [
+   "Je compte construire des",
+   "boutiques utiles pour toi et",
+   "{color 10}{partner}{color 1}."
+  ]
+ ],
+ "s178.sec5.u20": [
+  [
+   "Pour commencer... Voyons.",
+   "Pourquoi ne pas explorer la",
+   "Forêt natale, juste à la sortie"
+  ],
+  [
+   "de la ville ?"
+  ]
+ ],
+ "s178.sec6.u0": [
+  [
+   "C'est pour toi. Bonne chance."
+  ]
+ ],
+ "s178.sec6.u1": [
+  [
+   "Tu reçois toutes sortes",
+   "d'objets !"
+  ]
+ ],
+ "s178.sec6.u2": [
+  [
+   "Pour voir tes objets, appuie",
+   "sur {color 5}△{color 1}, choisis Objets, puis",
+   "regarde-les avec {color 6}×{color 1}."
+  ]
+ ],
+ "s178.sec6.u3": [
+  [
+   "On dirait que Yuramon a",
+   "entendu de nouvelles rumeurs."
+  ]
+ ],
+ "s178.sec6.u4": [
+  [
+   "Ah oui, Yuramon dit connaître",
+   "de nouvelles rumeurs."
+  ]
+ ],
+ "s178.sec6.u5": [
+  [
+   "La ville s'anime de plus en",
+   "plus, et les conversations",
+   "changent un peu, elles aussi."
+  ]
+ ],
+ "s178.sec6.u6": [
+  [
+   "Je vais t'apprendre les bases",
+   "de notre monde ! Une journée",
+   "compte 24 heures : matin, jour"
+  ],
+  [
+   "et nuit. Ça te semblera",
+   "peut-être un peu rapide. Une",
+   "année dure 30 jours. Les mois"
+  ],
+  [
+   "? Qu'est-ce que c'est ? Les",
+   "saisons... ? Ça se mange ? Bien",
+   "sûr, on a de l'argent. On"
+  ],
+  [
+   "l'appelle les Bits. On n'en a",
+   "jamais assez ! Sur cette île,",
+   "quand on dit \"la ville\", on"
+  ],
+  [
+   "parle d'ici, même s'il y a",
+   "quelques petits bourgs et",
+   "villages. Ah, et l'horloge : le"
+  ],
+  [
+   "point jaune indique l'heure, et",
+   "l'aiguille les minutes. Minuit",
+   "est en haut, midi en bas. Le"
+  ],
+  [
+   "rouge à gauche, c'est le soir :",
+   "de 16 h à 20 h. Le violet à",
+   "droite, c'est le matin : de 4 h"
+  ],
+  [
+   "à 8 h. Les Digimon ont chacun",
+   "leur rythme. La plupart se",
+   "lèvent le matin et dorment la"
+  ],
+  [
+   "nuit, mais pas tous. Si tu ne",
+   "trouves pas un Digimon que tu",
+   "veux rencontrer, reviens à une"
+  ],
+  [
+   "autre heure."
+  ]
+ ],
+ "s178.sec7.u0": [
+  [
+   "Va souvent voir Tsunomon et",
+   "Yuramon, d'accord ?"
+  ]
+ ],
+ "s178.sec7.u1": [
+  [
+   "Je vais t'expliquer le niveau",
+   "de Dresseur ! Plus il est",
+   "élevé, plus un Digimon transmet"
+  ],
+  [
+   "ses stats quand il meurt de",
+   "vieillesse. Au début, le niveau",
+   "monte peu, mais continue à"
+  ],
+  [
+   "élever des Digimon et il finira",
+   "par augmenter, d'accord ?"
+  ]
+ ],
+ "s178.sec7.u2": [
+  [
+   "Quand tu utilises une technique",
+   "finale, tu appuies bien sans",
+   "arrêt sur L1 et R1 ? Avec la"
+  ],
+  [
+   "jauge pleine, les dégâts sont",
+   "deux fois plus élevés qu'avec",
+   "une jauge vide. Deux fois !"
+  ]
+ ],
+ "s178.sec7.u3": [
+  [
+   "Je vais t'expliquer la vie des",
+   "Digimon ! D'abord, bien sûr,",
+   "ils mangent. Quand ils ont"
+  ],
+  [
+   "faim, ils te le font savoir.",
+   "Ensuite, ils font leurs",
+   "besoins. Mieux vaut les emmener"
+  ],
+  [
+   "aux toilettes dès que possible.",
+   "Quand ils ont sommeil, ils",
+   "dorment. Ils attendent que toi,"
+  ],
+  [
+   "{color 6}{player}{color 1}, tu leur en",
+   "donnes l'ordre, mais le plus",
+   "tôt sera le mieux. Ils se"
+  ],
+  [
+   "fatiguent, tombent malades et",
+   "deviennent grognons aussi. Ils",
+   "sont assez fragiles, tu sais !"
+  ],
+  [
+   "Les Digimon gardent un coeur",
+   "sauvage : parfois, il faut les",
+   "féliciter, et parfois les"
+  ],
+  [
+   "gronder. Quoi que tu fasses,",
+   "observe bien ton Digimon et",
+   "prends soin de lui."
+  ]
+ ],
+ "s178.sec20.u0": [
+  [
+   "Alors, tu as repris",
+   "connaissance... Je suis désolé,",
+   "mon garçon."
+  ]
+ ],
+ "s178.sec82.m0.o0": "Se reposer un peu",
+ "s178.sec82.m0.o1": "Ne pas se reposer",
+ "s178.sec82.u0": [
+  [
+   "Punimon n'est pas là, mais je",
+   "peux quand même me reposer."
+  ]
+ ],
+ "s178.sec82.u1": [
+  [
+   "{color 7}Punimon {color 1}",
+   "Je suis Punimon ! Pourquoi ne",
+   "pas te reposer un peu ici ?"
+  ],
+  [
+   "{color 7}Punimon {color 1}",
+   "Une heure de repos rend",
+   "quelques HP et MP, et réduit",
+   "un peu la fatigue."
+  ]
+ ],
+ "s178.sec85.m0.o0": "L'utiliser",
+ "s178.sec85.m0.o1": "Ne pas l'utiliser",
+ "s178.sec85.u0": [
+  [
+   "Hein, c'est quoi cette machine",
+   "?"
+  ]
+ ],
+ "s178.sec85.u1": [
+  [
+   "Hmm, ça ? C'est la {color 4}machine de",
+   "sauvegarde des données de",
+   "combat sur carte mémoire{color 1}. Elle"
+  ],
+  [
+   "enregistre les données de ton",
+   "partenaire actuel pour les",
+   "combats. Appuie sur {color 6}×{color 1} devant"
+  ],
+  [
+   "elle et suis ses instructions."
+  ]
+ ],
+ "s178.sec85.u2": [
+  [
+   "Utiliser la {color 4}machine de",
+   "sauvegarde des données de",
+   "combat{color 1} ?"
+  ]
+ ]
+}

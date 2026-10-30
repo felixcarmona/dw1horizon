@@ -1,0 +1,712 @@
+{
+  "screen": 334,
+  "review": "Reviewed the complete floor and both borders. Rock walls remain solid. Tall boundary rocks, tree trunks and projecting machinery need to cover bodies on their far side; the central floor and exits remain available.",
+  "pieces": [
+    {
+      "image": "descent-5-east-rock.png",
+      "at": [
+        423,
+        392
+      ],
+      "depth": [
+        434,
+        504
+      ],
+      "reason": "Upright stone at the east edge of the bend.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          418,
+          386,
+          482,
+          507
+        ],
+        "positive": [
+          [
+            449,
+            457
+          ],
+          [
+            454,
+            436
+          ],
+          [
+            459,
+            416
+          ],
+          [
+            440,
+            474
+          ]
+        ],
+        "negative": [
+          [
+            444,
+            386
+          ],
+          [
+            457,
+            386
+          ],
+          [
+            470,
+            386
+          ],
+          [
+            431,
+            413
+          ],
+          [
+            418,
+            440
+          ],
+          [
+            418,
+            467
+          ],
+          [
+            418,
+            494
+          ],
+          [
+            457,
+            494
+          ]
+        ],
+        "score": 0.9898949861526489,
+        "area": 3484,
+        "part_scores": [],
+        "source": "descent-5-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "fill_holes": true
+      }
+    },
+    {
+      "image": "descent-5-west-rock.png",
+      "at": [
+        126,
+        530
+      ],
+      "depth": [
+        179,
+        659
+      ],
+      "reason": "Upright stone beside the southern approach.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          121,
+          524,
+          210,
+          659
+        ],
+        "positive": [
+          [
+            170,
+            614
+          ],
+          [
+            160,
+            587
+          ],
+          [
+            149,
+            561
+          ],
+          [
+            183,
+            637
+          ]
+        ],
+        "negative": [
+          [
+            121,
+            524
+          ],
+          [
+            140,
+            524
+          ],
+          [
+            159,
+            524
+          ],
+          [
+            121,
+            555
+          ],
+          [
+            178,
+            555
+          ],
+          [
+            121,
+            586
+          ],
+          [
+            197,
+            586
+          ],
+          [
+            140,
+            617
+          ],
+          [
+            159,
+            648
+          ]
+        ],
+        "score": 0.9903280735015869,
+        "area": 5295,
+        "part_scores": [],
+        "source": "descent-5-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "fill_holes": true
+      }
+    },
+    {
+      "image": "descent-5-west-tree.png",
+      "at": [
+        31,
+        90
+      ],
+      "depth": [
+        171,
+        391
+      ],
+      "reason": "Dead tree trunks and branches project above the edge of the floor.",
+      "mask": {
+        "method": "SAM ViT-H; full-resolution generated art; best-score object mask",
+        "box": [
+          5,
+          45,
+          310,
+          402
+        ],
+        "positive": [
+          [
+            110,
+            350
+          ],
+          [
+            145,
+            290
+          ],
+          [
+            178,
+            240
+          ],
+          [
+            245,
+            255
+          ],
+          [
+            128,
+            200
+          ],
+          [
+            205,
+            215
+          ],
+          [
+            260,
+            145
+          ],
+          [
+            90,
+            150
+          ],
+          [
+            190,
+            160
+          ]
+        ],
+        "negative": [
+          [
+            155,
+            350
+          ],
+          [
+            210,
+            330
+          ],
+          [
+            270,
+            330
+          ],
+          [
+            305,
+            250
+          ],
+          [
+            310,
+            120
+          ],
+          [
+            130,
+            75
+          ],
+          [
+            175,
+            85
+          ],
+          [
+            200,
+            80
+          ],
+          [
+            210,
+            290
+          ],
+          [
+            160,
+            290
+          ]
+        ],
+        "colour_windows": [
+          {
+            "box": [
+              0,
+              40,
+              315,
+              410
+            ],
+            "max_red_green": 42
+          }
+        ],
+        "score": 0.919840931892395,
+        "area": 27939,
+        "part_scores": [],
+        "source": "descent-5-1856x2304.png",
+        "crop": [
+          0,
+          38,
+          1856,
+          2227
+        ],
+        "component_policy": "prompted"
+      },
+      "depth_line": [
+        [
+          100,
+          390
+        ],
+        [
+          145,
+          335
+        ],
+        [
+          185,
+          290
+        ],
+        [
+          245,
+          305
+        ]
+      ],
+      "strip_width": 16
+    }
+  ],
+  "collision_review": [
+    {
+      "tile": [
+        58,
+        49
+      ],
+      "pixel": [
+        440,
+        378
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        59,
+        49
+      ],
+      "pixel": [
+        455,
+        378
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        50
+      ],
+      "pixel": [
+        441,
+        389
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        59,
+        50
+      ],
+      "pixel": [
+        456,
+        389
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        51
+      ],
+      "pixel": [
+        443,
+        401
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        59,
+        51
+      ],
+      "pixel": [
+        457,
+        401
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        52
+      ],
+      "pixel": [
+        400,
+        412
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        52
+      ],
+      "pixel": [
+        414,
+        412
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        52
+      ],
+      "pixel": [
+        429,
+        412
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        52
+      ],
+      "pixel": [
+        444,
+        412
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        59,
+        52
+      ],
+      "pixel": [
+        458,
+        412
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        53
+      ],
+      "pixel": [
+        401,
+        424
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        53
+      ],
+      "pixel": [
+        415,
+        424
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        53
+      ],
+      "pixel": [
+        430,
+        424
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        53
+      ],
+      "pixel": [
+        445,
+        424
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        54
+      ],
+      "pixel": [
+        401,
+        436
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        54
+      ],
+      "pixel": [
+        416,
+        436
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        54
+      ],
+      "pixel": [
+        431,
+        436
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        54
+      ],
+      "pixel": [
+        446,
+        436
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        55,
+        55
+      ],
+      "pixel": [
+        402,
+        449
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        56,
+        55
+      ],
+      "pixel": [
+        417,
+        449
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        57,
+        55
+      ],
+      "pixel": [
+        432,
+        449
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        58,
+        55
+      ],
+      "pixel": [
+        447,
+        449
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "pixel": [
+        135,
+        542
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        39,
+        62
+      ],
+      "pixel": [
+        151,
+        542
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        38,
+        63
+      ],
+      "pixel": [
+        133,
+        556
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        39,
+        63
+      ],
+      "pixel": [
+        149,
+        556
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        38,
+        64
+      ],
+      "pixel": [
+        131,
+        571
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        39,
+        64
+      ],
+      "pixel": [
+        148,
+        571
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    },
+    {
+      "tile": [
+        40,
+        64
+      ],
+      "pixel": [
+        164,
+        571
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "Floor behind the isolated object; its solid base stays blocked and its upper silhouette is foreground."
+    }
+  ]
+}

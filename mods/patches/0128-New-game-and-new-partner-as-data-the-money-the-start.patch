@@ -1,0 +1,205 @@
+From 9701b68952e2829ef3c3c8ef7bb43413bd7766f3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 21:11:05 +0000
+Subject: [PATCH] New game and new partner as data: the money, the start time,
+ the first partner's lifetime and age, the lives, and the lifetime, discipline
+ and happiness of every partner at birth are MOD_NEWGAME slots (-1 = the rule
+ does not exist) written by tools/balance.py from content/tables/new-game.json
+
+---
+ include/dw/mod_rules.h  | 15 +++++++++++++++
+ src/main/clock.c        |  6 +++---
+ src/main/evolution.c    |  3 ++-
+ src/main/main_menu.c    | 22 +++++++++++++++-------
+ src/main/partner.c      |  5 +++--
+ src/main/partner_impl.c | 18 +++++++++---------
+ 6 files changed, 47 insertions(+), 22 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 0df3e451..584f205c 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -31,6 +31,21 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
+ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ 
++/* a new game and a new partner: MOD_NEWGAME[], every slot -1 = the rule does not exist (modNewGame answers 0), written by tools/balance.py
++ * from content/tables/new-game.json */
++#define MOD_NEWGAME_SIZE	9
++#define MOD_NG_MONEY		0 /* the tamer's money in a new game */
++#define MOD_NG_START_HOUR	1 /* the game clock in a new game */
++#define MOD_NG_START_MINUTE	2
++#define MOD_NG_FIRST_LIFETIME	3 /* the first partner's lifetime (hours) and age (days) */
++#define MOD_NG_FIRST_AGE	4
++#define MOD_NG_LIVES		5 /* the lives of a partner at its start (a new game, a reincarnation) */
++#define MOD_NG_BIRTH_LIFETIME	6 /* the lifetime (hours) of every partner that is born or reborn */
++#define MOD_NG_BIRTH_DISCIPLINE	7
++#define MOD_NG_BIRTH_HAPPINESS	8
++extern int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE];
++int32_t modNewGame(int32_t slot);
++
+ /* the game clock: how many real seconds one game day lasts (MOD_CLOCK[0], -1: game time does not run). A frame of CURRENT_FRAME is
+  * 1/20 of a game minute (3 game seconds) whatever the screen's frame rate; the logic runs at 20 ticks a second. */
+ #define MOD_CLOCK_SIZE		1
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 196b1d73..98f8386a 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -210,9 +210,9 @@ void initializeClockData(void)
+ {
+ 	YEAR = 0;
+ 	DAY = 0;
+-	HOUR = 8;
+-	MINUTE = 0;
+-	CURRENT_FRAME = 9600;
++	HOUR = modNewGame(MOD_NG_START_HOUR);
++	MINUTE = modNewGame(MOD_NG_START_MINUTE);
++	CURRENT_FRAME = HOUR * 1200 + MINUTE * 20;
+ 	PLAYTIME_FRAMES = 0;
+ 	PLAYTIME_HOURS = 0;
+ 	PLAYTIME_MINUTES = 0;
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index de54e785..0510dc21 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -12,6 +12,7 @@
+ #include <dw/params.h>
+ #include <dw/tamer.h>
+ #include <dw/types.h>
++#include <dw/mod_rules.h>
+ 
+ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+                                    int32_t posZ, int32_t rotX, int32_t rotY,
+@@ -1307,7 +1308,7 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+   ENTITY_TABLE[1] = NULL;
+   thunkUnloadModel(previousId, 3);
+   initializeReincarnatedPartner(id, 0, 0, 0, 0, 0, 0);
+-  PARTNER_ENTITY.lives = 3;
++  PARTNER_ENTITY.lives = modNewGame(MOD_NG_LIVES);
+   setDigimonRaised(id);
+ }
+ 
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index d4ad39cf..d565aeac 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4060,6 +4060,14 @@ int32_t tickSelectSlotInput(MenuCursor *cursor, int32_t which)
+ 	return 0;
+ }
+ 
++/* MOD (new game as data): written by tools/balance.py from content/tables/new-game.json; -1 = the rule does not exist */
++int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
++
++int32_t modNewGame(int32_t slot)
++{
++	return MOD_NEWGAME[slot] > 0 ? MOD_NEWGAME[slot] : 0;
++}
++
+ void initializeDefaultSavegame(void)
+ {
+ 	resetSpeciesFlags(); /* MOD (scale) */
+@@ -4087,17 +4095,17 @@ void initializeDefaultSavegame(void)
+ 		savegame->worldPoop[i].y = 0xFF;
+ 		savegame->worldPoop[i].size = 0;
+ 	}
+-	savegame->money = 50000;
++	savegame->money = modNewGame(MOD_NG_MONEY); /* MOD (new game as data) */
+ 	savegame->tamerLevel = 0;
+ 	savegame->raisedCount = 1;
+ 	savegame->year = 0;
+ 	savegame->day = 0;
+-	savegame->hour = 8;
+-	savegame->minute = 0;
+-	savegame->lastHandledFrame = savegame->currentFrame = 0x2580;
+-	savegame->partnerLives = 3;
+-	savegame->partnerPara.remainingLifetime = 0x120;
+-	savegame->partnerPara.age = 3;
++	savegame->hour = modNewGame(MOD_NG_START_HOUR);
++	savegame->minute = modNewGame(MOD_NG_START_MINUTE);
++	savegame->lastHandledFrame = savegame->currentFrame = modNewGame(MOD_NG_START_HOUR) * 1200 + modNewGame(MOD_NG_START_MINUTE) * 20;
++	savegame->partnerLives = modNewGame(MOD_NG_LIVES);
++	savegame->partnerPara.remainingLifetime = modNewGame(MOD_NG_FIRST_LIFETIME);
++	savegame->partnerPara.age = modNewGame(MOD_NG_FIRST_AGE);
+ 	for (i = 0; i < 6; i++) {
+ 		savegame->scriptState[i] = 0x3A + i;
+ 	}
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 9d0a318e..05743c65 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -21,6 +21,7 @@
+ #include <dw/ui.h>
+ #include <dw/utils.h>
+ #include <dw/version.h>
++#include <dw/mod_rules.h>
+ 
+ extern int32_t HAS_BUTTERFLY;
+ extern int32_t BUTTERFLY_ID;
+@@ -661,7 +662,7 @@ void partnerTickDying(void)
+ 		value = DOOA_tick((PartnerEntity*)ENTITY_TABLE[1], GENERAL_BUFFER_PTR + DOOA_WORK_OFFSET, 1);
+ 		if (value == -1) {
+ 			setFishingEnabled();
+-			PARTNER_PARA.remainingLifetime = 360;
++			PARTNER_PARA.remainingLifetime = modNewGame(MOD_NG_BIRTH_LIFETIME);
+ 			PARTNER_PARA.sicknessTimer = 0;
+ 			PARTNER_PARA.injuryTimer = 0;
+ 			STORED_TAMER_POS =
+@@ -798,7 +799,7 @@ void partnerTickDying2(void)
+ 			loadMapSounds(getMapSoundId(CURRENT_SCREEN));
+ 			readMapTFS(CURRENT_SCREEN);
+ 			setFishingEnabled();
+-			PARTNER_PARA.remainingLifetime = 360;
++			PARTNER_PARA.remainingLifetime = modNewGame(MOD_NG_BIRTH_LIFETIME);
+ 			PARTNER_PARA.evoTimer = 0;
+ 			PARTNER_PARA.sicknessTimer = 0;
+ 			PARTNER_PARA.injuryTimer = 0;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index defa5002..638ce560 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -580,13 +580,13 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 	PARTNER_PARA.virusBar = 0;
+ 	PARTNER_PARA.tiredness = 0;
+ #endif
+-	PARTNER_PARA.discipline = 50;
+-	PARTNER_PARA.happiness = 50;
+-	PARTNER_PARA.unused3 = 50;
++	PARTNER_PARA.discipline = modNewGame(MOD_NG_BIRTH_DISCIPLINE);
++	PARTNER_PARA.happiness = modNewGame(MOD_NG_BIRTH_HAPPINESS);
++	PARTNER_PARA.unused3 = modNewGame(MOD_NG_BIRTH_HAPPINESS);
+ 	setFoodTimer(type);
+ 
+ 	PARTNER_PARA.energyLevel = RAISE_ROW(type).energyThreshold;
+-	PARTNER_PARA.remainingLifetime = 360;
++	PARTNER_PARA.remainingLifetime = modNewGame(MOD_NG_BIRTH_LIFETIME);
+ 	PARTNER_PARA.weight = RAISE_ROW(type).defaultWeight;
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 	PARTNER_PARA.trainBoostFlag = PARTNER_PARA.trainBoostValue =
+@@ -597,7 +597,7 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 		PARTNER_PARA.sicknessTimer = PARTNER_PARA.injuryTimer = 0;
+ #endif
+ 
+-	PARTNER_ENTITY.lives = 3;
++	PARTNER_ENTITY.lives = modNewGame(MOD_NG_LIVES);
+ 	for (i = 0; i < 2; i++) {	/* MOD (species JSON): was Agumon and Gabumon by literal */
+ 		if (NEW_GAME_TECHNIQUES[i].type == type) {
+ 			PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = NEW_GAME_TECHNIQUES[i].animation;
+@@ -889,11 +889,11 @@ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+ 	PARTNER_PARA.tirednessSleepTimer = 0;
+ 	resetPartnerPara(&PARTNER_PARA, type);
+ 
+-	PARTNER_PARA.discipline = 50;
+-	PARTNER_PARA.happiness = 50;
+-	PARTNER_PARA.unused3 = 50;
++	PARTNER_PARA.discipline = modNewGame(MOD_NG_BIRTH_DISCIPLINE);
++	PARTNER_PARA.happiness = modNewGame(MOD_NG_BIRTH_HAPPINESS);
++	PARTNER_PARA.unused3 = modNewGame(MOD_NG_BIRTH_HAPPINESS);
+ 	PARTNER_PARA.timesBeingSick = 0;
+-	PARTNER_PARA.remainingLifetime = 360;
++	PARTNER_PARA.remainingLifetime = modNewGame(MOD_NG_BIRTH_LIFETIME);
+ 	PARTNER_PARA.age = 0;
+ 	PARTNER_PARA.evoTimer = 0;
+ 	EVOLUTION_TARGET = -1;
+-- 
+2.53.0
+

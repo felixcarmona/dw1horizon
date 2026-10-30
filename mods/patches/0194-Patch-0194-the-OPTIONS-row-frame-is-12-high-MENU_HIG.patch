@@ -1,0 +1,27 @@
+From ff50225db60228e2e33bcc89e72f383a59f95afb Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:20:36 +0000
+Subject: [PATCH] Patch 0194: the OPTIONS row frame is 12 high
+ (MENU_HIGHLIGHTS[22].h 0x0a), in the gaps of rows 12 apart; at 0x0c its
+ bottom line was drawn on the next row's first line of letters
+
+---
+ src/main/main_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index f1c92c20..79d0109b 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -1015,7 +1015,7 @@ MenuHighlight MENU_HIGHLIGHTS[23] = { /* MOD (options): view 22 */
+ 		0x0035,
+ 		0x0037,
+ 		0x00d6,
+-		0x000c,
++		0x000a, /* the frame 12 high, in the gaps of rows 12 apart (0x0c put its bottom on the next row's letters) */
+ 	},
+ };
+ 
+-- 
+2.53.0
+

@@ -1,0 +1,213 @@
+From bb892d7739cb19cc12d07a40b4db070f35cac1a5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 20:17:24 +0000
+Subject: [PATCH] Clock as data: how many real seconds a game day lasts is
+ MOD_CLOCK[0] (content/tables/clock.json); the game frame (1/20 of a game
+ minute) accumulates from it and runs one by one, the care periods and the
+ hourly screen update use clockCrossed, and the per-tick care counters add
+ clockAdvance
+
+---
+ include/dw/mod_rules.h  |  9 ++++++
+ src/main/clock.c        | 62 +++++++++++++++++++++++++++++++----------
+ src/main/map.c          |  2 +-
+ src/main/partner_impl.c | 16 +++++------
+ 4 files changed, 65 insertions(+), 24 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index d2b9d14f..0df3e451 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -31,6 +31,15 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ #define MOD_DAILY_CLEAR_MASK	6 /* ... with this mask */
+ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ 
++/* the game clock: how many real seconds one game day lasts (MOD_CLOCK[0], -1: game time does not run). A frame of CURRENT_FRAME is
++ * 1/20 of a game minute (3 game seconds) whatever the screen's frame rate; the logic runs at 20 ticks a second. */
++#define MOD_CLOCK_SIZE		1
++#define MOD_CLK_DAY_SECONDS	0
++extern int16_t MOD_CLOCK[MOD_CLOCK_SIZE];
++/* game frames the clock advanced this tick (at least 1), and whether a period of frames was crossed this tick (a jump of a script, more than 64 frames, crosses nothing) */
++int32_t clockAdvance(void);
++int32_t clockCrossed(int32_t period);
++
+ /* time of day: the hours the screen changes, the tint, the music variant and the clock icon */
+ #define MOD_DAYTIME_SIZE	9
+ #define MOD_DT_DUSK		0 /* the hour dusk starts (-1 in any of the first three: always day) */
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 56cbae98..196b1d73 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -50,6 +50,8 @@ uint8_t HOUR_POINT_Y[24] = {
+ };
+ 
+ uint16_t SUBFRAME_COUNT;
++int16_t MOD_CLOCK[MOD_CLOCK_SIZE] = { -1 };       /* MOD (clock as data): written by tools/balance.py from content/tables/clock.json */
++static int32_t CLOCK_ACC;                       /* the fraction of a frame the clock owes (in 1/(2 x day ticks)) */
+ int16_t CLOCK_OFFSET_X;
+ int8_t IS_GAMETIME_RUNNING;
+ 
+@@ -87,6 +89,7 @@ void addClock(void)
+ void tickGameClock(int32_t instanceId)
+ {
+ 	uint8_t timeSpeed;
++	int32_t steps;
+ 
+ 	LAST_HANDLED_FRAME = CURRENT_FRAME;
+ 
+@@ -107,23 +110,23 @@ void tickGameClock(int32_t instanceId)
+ 		return;
+ 	}
+ 
+-	if (timeSpeed == 0) {
+-		CURRENT_FRAME++;
+-	} else if (timeSpeed == 1) {
+-		CURRENT_FRAME += 2;
+-		if ((CURRENT_FRAME % 2) != 0) {
+-			CURRENT_FRAME--;
+-		}
+-	} else if (timeSpeed == 2) {
+-		SUBFRAME_COUNT++;
+-		if ((SUBFRAME_COUNT % 2) == 0) {
+-			CURRENT_FRAME++;
+-		}
++	/*
++	 * MOD (clock as data): a day lasts MOD_CLOCK[MOD_CLK_DAY_SECONDS] real seconds (28800 frames = 24 h x 60 min x 20): the frames
++	 * this tick adds accumulate in halves (speed 0 = 1 frame at a 1440 s day, speed 1 = twice that, speed 2 = half) and every
++	 * frame is run one by one, so a minute never slips by. No value: game time does not run.
++	 */
++	steps = 0;
++	if (MOD_CLOCK[MOD_CLK_DAY_SECONDS] > 0) {
++		CLOCK_ACC += 28800 * (timeSpeed == 0 ? 2 : (timeSpeed == 1 ? 4 : 1));
++		steps = CLOCK_ACC / (MOD_CLOCK[MOD_CLK_DAY_SECONDS] * 40);
++		CLOCK_ACC %= MOD_CLOCK[MOD_CLK_DAY_SECONDS] * 40;
+ 	}
+ 
+-	if (((timeSpeed != 2) && ((CURRENT_FRAME % 20) == 0)) ||
+-	    ((timeSpeed == 2) && ((SUBFRAME_COUNT % 2) == 0) &&
+-	     ((CURRENT_FRAME % 20) == 0))) {
++	for (; steps > 0; steps--) {
++		CURRENT_FRAME++;
++		if ((CURRENT_FRAME % 20) != 0) {
++			continue;
++		}
+ 		MINUTE++;
+ 		if (MINUTE == 60) {
+ 			HOUR++;
+@@ -325,3 +328,32 @@ void startGameTime(void)
+ {
+ 	IS_GAMETIME_RUNNING = 1;
+ }
++
++/* MOD (clock as data): frames the clock advanced since the last tick (CURRENT_FRAME - LAST_HANDLED_FRAME, across the midnight wrap);
++ * a script's jump in time (advanceToTime) counts as one */
++int32_t clockAdvance(void)
++{
++	int32_t d = (int32_t)CURRENT_FRAME - (int32_t)LAST_HANDLED_FRAME;
++
++	if (d < 0) {
++		d += 28800;
++	}
++	return (d >= 1 && d <= 64) ? d : 1;
++}
++
++/* a multiple of period (frames) was reached or passed this tick: the clock ticks one frame at the default day, more on a short one */
++int32_t clockCrossed(int32_t period)
++{
++	int32_t d = (int32_t)CURRENT_FRAME - (int32_t)LAST_HANDLED_FRAME;
++
++	if (period <= 0) {
++		return 0;
++	}
++	if (d < 0) {
++		d += 28800;
++	}
++	if (d < 1 || d > 64) {
++		return 0;
++	}
++	return ((int32_t)CURRENT_FRAME / period) != ((int32_t)LAST_HANDLED_FRAME / period);
++}
+diff --git a/src/main/map.c b/src/main/map.c
+index 0a0683aa..c7f9c089 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4097,7 +4097,7 @@ void lateTickMap(int32_t arg0)
+ 	tickCameraFollowPlayer();
+ 
+ 	skipTimeOfDay = MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40;
+-	if ((skipTimeOfDay == 0) && ((CURRENT_FRAME % 1200) == 0)) {
++	if ((skipTimeOfDay == 0) && (clockCrossed(1200))) {
+ 		/* MOD (rules as data): the hours come from MOD_DAYTIME (-1: no transition) */
+ 		if (HOUR == MOD_DAYTIME[MOD_DT_DUSK]) {
+ 			initializeDaytimeTransition(0);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index b7cac359..defa5002 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -16,6 +16,7 @@
+ #include <dw/ids.h>
+ #include <dw/item.h>
+ #include <dw/level.h>
++#include <dw/mod_rules.h>
+ #include <dw/map.h>
+ #include <dw/map_object.h>
+ #include <dw/math.h>
+@@ -994,11 +995,10 @@ static int32_t careGet(int32_t slot)
+ 	return MOD_CARE[slot];
+ }
+ 
++/* a period (frames of game time: 20 = a game minute) came round this tick; clockCrossed does not need the tick to land on it */
+ static int32_t careEveryRaw(int32_t slot)
+ {
+-	int32_t period = careGet(slot);
+-
+-	return period > 0 && (CURRENT_FRAME % period) == 0;
++	return clockCrossed(careGet(slot));
+ }
+ 
+ static int32_t careEvery(int32_t slot)
+@@ -1539,7 +1539,7 @@ void tickTirednessMechanics(void)
+ 	uint8_t animId;
+ 
+ 	animId = PARTNER_ENTITY.digimonEntity.entity.anim.animId;
+-	if (careGet(MOD_CARE_AREA_PERIOD) > 0 && ((PARTNER_PARA.areaEffectTimer % careGet(MOD_CARE_AREA_PERIOD)) == 0) &&
++	if (careGet(MOD_CARE_AREA_PERIOD) > 0 && ((PARTNER_PARA.areaEffectTimer % careGet(MOD_CARE_AREA_PERIOD)) < clockAdvance()) &&
+ 	    (PARTNER_PARA.areaEffectTimer > 0)) {
+ 		if (MAP_TILE_DATA.partnerAreaResponse == 1) {
+ 			PARTNER_PARA.happiness += careAmt(MOD_CARE_AREA_GOOD_HAPPY);
+@@ -1558,7 +1558,7 @@ void tickTirednessMechanics(void)
+ 		PARTNER_PARA.subTiredness = 0;
+ 	}
+ 	if (careHas(MOD_CARE_TIRED_HUNGER_AT) && PARTNER_PARA.tiredness >= careGet(MOD_CARE_TIRED_HUNGER_AT)) {
+-		PARTNER_PARA.tirednessHungerTimer += 1;
++		PARTNER_PARA.tirednessHungerTimer += clockAdvance();
+ 	} else {
+ 		PARTNER_PARA.tirednessHungerTimer = 0;
+ 	}
+@@ -1821,7 +1821,7 @@ void tickPoopingMechanic(void)
+ 	}
+ 
+ 	if (isPoopy && (CURRENT_FRAME != LAST_HANDLED_FRAME)) {
+-		PARTNER_PARA.poopingTimer -= 1;
++		PARTNER_PARA.poopingTimer -= clockAdvance();
+ 	}
+ 
+ 	if (isPoopy && (PARTNER_PARA.poopingTimer <= 0)) {
+@@ -2222,12 +2222,12 @@ void tickConditions(void)
+ 	tickHungerMechanics();
+ 	tickUnhappinessMechanics();
+ 	tickConditionBoundaries();
+-	PARTNER_PARA.areaEffectTimer++;
++	PARTNER_PARA.areaEffectTimer += clockAdvance();
+ #if VERSION_EQUAL_OR_NEWER(JP_TRIAL)
+ 	if (PARTNER_PARA.areaEffectTimer > 28800)
+ 		PARTNER_PARA.areaEffectTimer = 0;
+ #endif
+-	PARTNER_PARA.trainBoostTimer--;
++	PARTNER_PARA.trainBoostTimer -= clockAdvance();
+ 	if (PARTNER_PARA.trainBoostTimer <= 0) {
+ 		PARTNER_PARA.trainBoostFlag = 0;
+ 		PARTNER_PARA.trainBoostTimer = 0;
+-- 
+2.53.0
+

@@ -1,0 +1,32 @@
+// Readable form of MAPHEAD.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../core/engine.dws";
+import "../names.dws";
+maphead {
+    section(1246) replace {    // section 1246
+        engine.no_escape = false;
+        partner_death_started = true;
+        if (stat(22) == 0 && stat(6) == 0) {
+            section_on_exit(73);
+            call_digimon_routine(routine("sickness_death"));
+            await narrator;
+            return;
+        }
+        if (stat(22) == 0 && stat(6) != 0) {
+            section_on_exit(73);
+            call_digimon_routine(routine("sickness_death"));
+            await narrator;
+            return;
+        }
+        if (stat(13) <= 0) {
+            section_on_exit(71);
+            call_digimon_routine(routine("dying_a"));
+            await narrator;
+            return;
+        }
+        section_on_exit(72);
+        call_digimon_routine(routine("battle_death"));
+        await narrator;
+    }
+}

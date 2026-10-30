@@ -1,0 +1,17 @@
+{
+  "id": 16,
+  "name": "Giga Freeze",
+  "element": "ice",
+  "power": 264,
+  "mpCost": 40,
+  "distance": 40000,
+  "range": 2,
+  "accuracy": 65,
+  "status": 3,
+  "statusChance": 10,
+  "iframes": 5,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [17, 10, 5]
+}

@@ -1,0 +1,63 @@
+{
+  "file": "MAP/MAP17/MGEN08.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Gururumon",
+      "at": [18, 20],
+      "facing": 3072,
+      "follow": 2,
+      "range": 2000,
+      "charge": 0,
+      "unk1": 0,
+      "moves": [47, 49, 50, 51],
+      "prios": [20, 30, 20, 30],
+      "flee": [-661, 1887],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Gururumon",
+      "at": [-2894, 1156],
+      "facing": 3072,
+      "follow": 12,
+      "range": 300,
+      "charge": 0,
+      "unk1": 0,
+      "moves": [47, 49, 50, 51],
+      "prios": [20, 30, 20, 30],
+      "flee": [-434, 2229],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 2,
+      "species": "Vermilimon",
+      "at": [1214, -1277],
+      "facing": 2048,
+      "follow": 12,
+      "range": 300,
+      "charge": 1,
+      "moves": [48, 49, 52, 53],
+      "prios": [40, 35, 20, 5],
+      "flee": [-89, 110],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 3,
+      "species": "Vermilimon",
+      "at": [2829, 1861],
+      "facing": 2048,
+      "follow": 12,
+      "range": 400,
+      "charge": 1,
+      "moves": [48, 49, 52, 53],
+      "prios": [40, 35, 20, 5],
+      "flee": [647, 2269],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

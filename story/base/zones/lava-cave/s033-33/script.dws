@@ -1,0 +1,24 @@
+// Readable form of script 33 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 33 {
+    npc demimeramon0 = 5;
+    npc demimeramon1 = 6;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Off. Chip"), 2483, 0, 247, 1024, 658);
+        spawn_chest(item("Quick Chip"), 2544, 0, -110, 1024, 659);
+    }
+
+    on talk(demimeramon0) replace {    // section 5
+        say(demimeramon0, text("s033.sec5.u0"));
+    }
+
+    on talk(demimeramon1) replace {    // section 6
+        say(demimeramon1, text("s033.sec6.u0"));
+        return;
+    }
+}

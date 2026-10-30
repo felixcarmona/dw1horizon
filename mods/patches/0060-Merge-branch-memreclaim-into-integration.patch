@@ -1,0 +1,1564 @@
+From c696789ae26bcddeaaf9049396541c1375e9c879 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:22:15 +0000
+Subject: [PATCH] Merge branch 'memreclaim' into integration
+
+- main.ld / us.mk: mod_species.c and memreclaim's tfs_stream.c,
+  npc_anim_trim.c, npc_anim_keep.c all linked;
+- loadMMD (NPC class 0): the model is read through readDigimonModel
+  (DIGI.DAT for new species) and then trimmed with its real size
+  (getDigimonModelFileSize); trimNpcModel leaves types >= 180 alone.
+
+The linker asserts (MIN_HEAP below the 20 KB stack, TFS ring, overlays in
+the load area) hold with every merged table.
+
+---
+ config/us/main.ld        |  41 +++
+ include/dw/memmap.h      |  43 ++-
+ include/dw/tfs_stream.h  |  46 ++++
+ mk/version/us.mk         |   3 +
+ src/main/anim.c          |   9 +
+ src/main/file.c          |   3 +
+ src/main/file_queue.c    |  19 ++
+ src/main/main.c          |  24 ++
+ src/main/map.c           |  78 +++---
+ src/main/model.c         |   4 +
+ src/main/npc_anim_keep.c |  45 +++
+ src/main/npc_anim_trim.c | 188 +++++++++++++
+ src/main/script_interp.c |   2 +
+ src/main/tamer.c         |   2 +
+ src/main/tfs_stream.c    | 691 +++++++++++++++++++++++++++++++++++++++++++++++
+ 15 files changed, 1151 insertions(+), 47 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index 1a488c3..f3a4404 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -111,6 +111,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.text.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.text.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.text.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.text.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.text.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.text.*);
+@@ -337,6 +343,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.rodata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.rodata.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.rodata.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.rodata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.rodata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.rodata.*);
+@@ -496,6 +508,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.data.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.data.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.data.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.data.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/tournament.c.o(.data.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/evl.c.o(.data.*);
+@@ -623,6 +641,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.sdata.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.sdata.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.sdata.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.sdata.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/efe_table.c.o(.sdata.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/sound_async.c.o(.sdata.*);
+@@ -759,6 +783,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.sbss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.sbss.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.sbss.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.sbss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/world_object.c.o(.sbss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/entity_text.c.o(.sbss.*);
+@@ -885,6 +915,12 @@ SECTIONS
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/mod_species.c.o(.bss.*);
+         . = ALIGN(., 4);
++        BUILD_DIR/src/main/tfs_stream.c.o(.bss.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_trim.c.o(.bss.*);
++        . = ALIGN(., 4);
++        BUILD_DIR/src/main/npc_anim_keep.c.o(.bss.*);
++        . = ALIGN(., 4);
+         BUILD_DIR/src/main/game_menu.c.o(.bss.*);
+         . = ALIGN(., 4);
+         BUILD_DIR/src/main/tamer.c.o(.bss.*);
+@@ -990,5 +1026,10 @@ ASSERT(OVL_END(.DOOA) <= OVL_OT_0_ADDR, "DOOA overlay overlaps its ordering tabl
+ ASSERT(OVL_END(.DGET) <= LOAD_AREA_END, "DGET overlay overflows the load area")
+ ASSERT(OVL_END(.TRN) <= OVL_TRN_MAX_END, "TRN overlay is larger than the original's slot")
+ ASSERT(OVL_END(.TRN2) <= OVL_TRN_MAX_END, "TRN2 overlay is larger than the original's slot")
++ASSERT(TFS_RING_ADDR + TFS_RING_SLOTS * TFS_SLOT_SIZE == TFS_RING_END,
++       "TFS ring size does not match TFS_RING_END")
++ASSERT(TFS_RING_END <= OVL_KAR_BASE, "TFS ring overlaps KAR, which coexists with the curling map")
++ASSERT(STACK_SIZE_KB * 1024 >= 4 * STACK_MEASURED_MAX,
++       "the stack is less than 4 times the deepest use measured")
+ ASSERT(main_BSS_END + MIN_HEAP <= STACK_ADDR - STACK_SIZE_KB * 1024,
+        "main leaves less than MIN_HEAP bytes of heap below the stack")
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index e9b9e40..498ffe5 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -16,15 +16,27 @@
+ /* PS-X EXE header and the main executable */
+ #define EXE_HEADER_ADDR		0x80090000
+ 
+-/* Stack (_stack_addr / _stack_size, in KB) and the malloc3 heap between */
++/*
++ * Stack (_stack_addr / _stack_size, in KB) and the malloc3 heap between.
++ * The original reserved 64 KB of stack; the deepest use measured in this
++ * build is STACK_MEASURED_MAX bytes (a battle with two enemies and their
++ * effects, Secret Beach Cave; the cup, menus and map loads stay under
++ * 1.7 KB; memory.md "Stack"), so 20 KB keeps a 5x margin and the other
++ * 44 KB go to the heap. A canary at the stack limit counts overflows
++ * (MOD_STACK_GUARD_HITS, main.c).
++ */
+ #define STACK_ADDR		0x801FFF00
+-#define STACK_SIZE_KB		0x40
++#define STACK_SIZE_KB		0x14
++#define STACK_MEASURED_MAX	0xF78
+ /*
+- * The heap the game needs in its worst measured case (Native Forest with
+- * five wild Digimon: 197520 - 91080 = 106440 bytes used, memory.md),
+- * rounded up. The link fails if main's bss leaves less than this.
++ * The heap the game needs in its worst case: the MAPHEAD setup path that
++ * takes the most (tools/membudget.py worst --trimmed: File City 198-203,
++ * Betamon + Kunemon + Megadramon, 157680 bytes with NPC models trimmed on
++ * load and the loading peak of the last one; 185304 bytes with whole
++ * models, Ogre Fortress 48), rounded up. The link fails if main's bss
++ * leaves less than this.
+  */
+-#define MIN_HEAP		0x1A000
++#define MIN_HEAP		0x26800
+ 
+ /* Overlay bases (config/us/overlay.ld) */
+ #define OVL_MOV_BASE		0x80010000	/* videos */
+@@ -42,6 +54,25 @@
+ /* Fixed buffers in the load area */
+ #define GENERAL_BUFFER_ADDR	0x80010000	/* .MAP then .TFS, VHB staging, EFE base */
+ #define DOOA_WORK_OFFSET	0x4B000		/* GENERAL_BUFFER + this: DOOA work area */
++/*
++ * Map background streaming (MOD, src/main/tfs_stream.c, docs/mods/memory.md):
++ * the .TFS header (palettes) in its first two sectors, then a ring of
++ * TFS_RING_SLOTS tile slots of 9 sectors (a 128x128 8 bpp tile is 0x4004
++ * bytes in the file and never sector-aligned). The rest of the old TFS area
++ * is free in the world (WORLD_SCRATCH_*): every mode that writes there
++ * (battle, evolution, death, menus, sound staging) is followed by a
++ * readMapTFS, the same as when the whole TFS lived there.
++ */
++#define TFS_HEADER_ADDR		0x80010000
++#define TFS_HEADER_SIZE		0x1000
++#define TFS_RING_ADDR		0x80011000
++#define TFS_SLOT_SIZE		0x4800
++#define TFS_RING_SLOTS		8
++#define TFS_RING_END		0x80035000	/* TFS_RING_ADDR + 8 * TFS_SLOT_SIZE */
++/* free in the world on every screen; above it FISH (0x80070000) and KAR
++ * (0x80053800) coexist with their screens' maps */
++#define WORLD_SCRATCH_START	TFS_RING_END
++#define WORLD_SCRATCH_END	0x80053800
+ #define TEXTURE_BUFFER_ADDR	0x80088800	/* temporary TIM, card image, script arrays */
+ #define TEXTURE_BUFFER_SIZE	0x7800
+ #define BOSS_EFE_TMD_BUFFER_ADDR 0x80058000
+diff --git a/include/dw/tfs_stream.h b/include/dw/tfs_stream.h
+new file mode 100644
+index 0000000..579ca67
+--- /dev/null
++++ b/include/dw/tfs_stream.h
+@@ -0,0 +1,46 @@
++#ifndef DW_TFS_STREAM_H
++#define DW_TFS_STREAM_H
++
++#include <sys/types.h>
++#include <libgpu.h>
++
++#include <dw/types.h>
++
++/* MOD (memreclaim): map background streaming, src/main/tfs_stream.c */
++
++typedef struct {
++	int32_t opens;			/* readMapTFS calls */
++	int32_t prefetches;		/* tiles read ahead (async) */
++	int32_t hits;			/* window uploads served from the ring */
++	int32_t waits;			/* ... that had to wait for their own prefetch */
++	int32_t misses;			/* ... that read the tile synchronously */
++	int32_t syncVsyncs;		/* vsyncs spent in waits + misses */
++	int32_t syncVsyncsMax;		/* longest single wait or miss */
++	int32_t prefetchVsyncsMax;	/* longest async tile read, start to done */
++	int32_t invalidations;		/* ring dropped (a load or battle wrote over it) */
++	int32_t reopens;		/* tile needed while the ring was invalid */
++	int32_t readErrors;
++	int32_t rowReads;		/* whole-window rows read in one go */
++	int32_t rowVsyncs;
++	int32_t captures;		/* tiles leaving the window copied back from VRAM */
++	int32_t captureWaitMax;		/* lines waiting for the GPU before one */
++	int32_t captureLinesMax;	/* lines of one StoreImage */
++	int32_t startLinesMax;		/* lines to start one tile read (CdControl + CdRead) */
++} TfsStreamStats;
++
++extern int8_t MOD_TFS_TILE_SEQ[35];
++extern TfsStreamStats MOD_TFS_STATS;
++
++void tfsStreamOpen(char *path);
++void tfsStreamInvalidate(void);
++void tfsStreamWaitIdle(void);
++int32_t tfsStreamBusy(void);
++void tfsStreamCheckTarget(void *buffer, int32_t bytes);
++void tfsStreamTick(void);
++u_long *tfsTilePixels(int32_t tile);
++void tfsStageRow(int32_t firstTile, int32_t count);
++void tfsUnstage(void);
++void tfsLoadTile(RECT *rect, int32_t tile);
++void tfsClearTile(RECT *rect);
++
++#endif
+diff --git a/mk/version/us.mk b/mk/version/us.mk
+index 37053c6..d80fc78 100644
+--- a/mk/version/us.mk
++++ b/mk/version/us.mk
+@@ -74,6 +74,9 @@ MAIN_C_SRC := \
+ 	src/main/utils2.c \
+ 	src/main/mod_lab.c \
+ 	src/main/mod_species.c \
++	src/main/tfs_stream.c \
++	src/main/npc_anim_trim.c \
++	src/main/npc_anim_keep.c \
+ 	src/main/vecmath.c \
+ 	src/main/world_object.c
+ 
+diff --git a/src/main/anim.c b/src/main/anim.c
+index 075c5ff..46a27c9 100644
+--- a/src/main/anim.c
++++ b/src/main/anim.c
+@@ -199,6 +199,9 @@ void tickMomentum(Entity *entity, MomentumData *momentumBase)
+ 	}
+ }
+ 
++extern int32_t MOD_NPC_STUB_HITS;
++extern int32_t MOD_NPC_STUB_LAST;
++
+ void startAnimation(entity, animId)
+ 	Entity *entity;
+ 	uint8_t animId;
+@@ -220,6 +223,12 @@ void startAnimation(entity, animId)
+ 
+ 	modInterpAnimStarted(entity); /* MOD (fps): a pose jump */
+ 	instrPtr = (int16_t *)((int32_t)animTable + animTable[animId]);
++	if ((*instrPtr & 0x7fff) == 1) {
++		/* MOD (memreclaim): an NPC slot trimmed away (npc_anim_trim.c);
++		 * no original animation is 1 frame long */
++		MOD_NPC_STUB_HITS++;
++		MOD_NPC_STUB_LAST = (entity->type << 8) | animId;
++	}
+ 	anim = &entity->anim;
+ 	boneCount = DIGI_PARA(entity->type).boneCount;
+ 	posData = entity->posData;
+diff --git a/src/main/file.c b/src/main/file.c
+index e54fe9b..9e90982 100644
+--- a/src/main/file.c
++++ b/src/main/file.c
+@@ -6,6 +6,7 @@
+ #include <dw/file.h>
+ #include <dw/file_table.h>
+ #include <dw/main.h>
++#include <dw/tfs_stream.h>
+ 
+ #include "common.h"
+ 
+@@ -83,6 +84,7 @@ int32_t readFile(char *path, void *buffer)
+ 	int32_t result;
+ 
+ 	if (lookupFileTable(&lookup, path) != 0) {
++		tfsStreamCheckTarget(buffer, lookup.size); /* MOD (memreclaim) */
+ 		do {
+ 			do {
+ 				while (CdControl(CdlSetloc,
+@@ -139,6 +141,7 @@ int32_t readFileSectors(char *path, void *buffer, int32_t offset,
+ 
+ 	if (lookupFileTable(&lookup, path) != 0) {
+ 		CdIntToPos(offset + CdPosToInt(&lookup.pos), &lookup.pos);
++		tfsStreamCheckTarget(buffer, sectors << 11); /* MOD (memreclaim) */
+ 		do {
+ 			do {
+ 				while (CdControl(CdlSetloc,
+diff --git a/src/main/file_queue.c b/src/main/file_queue.c
+index b7d44ac..3a3c80f 100644
+--- a/src/main/file_queue.c
++++ b/src/main/file_queue.c
+@@ -4,6 +4,7 @@
+ 
+ #include <dw/file.h>
+ #include <dw/file_queue.h>
++#include <dw/tfs_stream.h>
+ #include <dw/world_object.h>
+ 
+ #define FILE_QUEUE_SIZE		32
+@@ -66,6 +67,19 @@ void initializeFileReadQueue(void)
+ void _tickFileReadQueue(int32_t instanceId)
+ {
+ 	tickFileReadQueue(0);
++	tfsStreamTick(); /* MOD (memreclaim): map background prefetch */
++}
++
++/* MOD (memreclaim): nothing queued or reading */
++int32_t isFileReadQueueIdle(void)
++{
++	return FILE_READ_QUEUE_HEAD == NULL;
++}
++
++/* MOD (memreclaim): the head request's CdRead has been started */
++int32_t isFileReadQueueReading(void)
++{
++	return (FILE_READ_QUEUE_HEAD != NULL) && (FILE_READ_QUEUE_HEAD->state == 1);
+ }
+ 
+ void _renderFileReadQueue(int32_t instanceId)
+@@ -101,6 +115,9 @@ void tickFileReadQueue(int32_t unused)
+ 	}
+ 
+ 	if (req->state == 2) {
++		if (tfsStreamBusy()) {
++			return; /* MOD (memreclaim): a background tile read is in flight */
++		}
+ 		if ((int32_t)req->size < 0) {
+ 			mode = CdlModeSpeed;
+ 			pathBuf[0] = '\\';
+@@ -219,6 +236,8 @@ int32_t addFileReadRequest(char *path, uint8_t *buffer, uint8_t *isRunning,
+ 	}
+ 
+ 	slot->next = NULL;
++	/* MOD (memreclaim): size < 0 = unknown until CdSearchFile */
++	tfsStreamCheckTarget(buffer, (size < 0) ? 0x80000 : size);
+ 
+ 	if (isRunning != NULL) {
+ 		*isRunning = 1;
+diff --git a/src/main/main.c b/src/main/main.c
+index 0b85310..0817b37 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3584,6 +3584,24 @@ int32_t main(void)
+ 	}
+ }
+ 
++/* MOD (memreclaim): the stack's last 16 bytes; overwritten = the stack
++ * reached the heap (include/dw/memmap.h STACK_SIZE_KB) */
++#define MOD_STACK_GUARD_WORD	0x57A6C0DE
++uint32_t *MOD_STACK_GUARD;
++int32_t MOD_STACK_GUARD_HITS;
++
++void modCheckStackGuard(void)
++{
++	int32_t i;
++
++	for (i = 0; i < 4; i++) {
++		if (MOD_STACK_GUARD[i] != MOD_STACK_GUARD_WORD) {
++			MOD_STACK_GUARD_HITS++;
++			MOD_STACK_GUARD[i] = MOD_STACK_GUARD_WORD;
++		}
++	}
++}
++
+ void initializeHeap(void)
+ {
+ 	unsigned long heap;
+@@ -3592,6 +3610,11 @@ void initializeHeap(void)
+ 	heap = (_end & 0xfffffff0) + 0x10;
+ 	size = ((_stack_addr - (_stack_size << 10)) & 0xfffffff0) - heap;
+ 	InitHeap3((unsigned long *)heap, size);
++	/* MOD (memreclaim): canary at the stack limit, checked by modPresent */
++	MOD_STACK_GUARD = (uint32_t *)((_stack_addr - (_stack_size << 10)) & 0xfffffff0);
++	for (size = 0; size < 4; size++) {
++		MOD_STACK_GUARD[size] = MOD_STACK_GUARD_WORD;
++	}
+ }
+ 
+ void initializeFramebuffer(void)
+@@ -5249,6 +5272,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	modInterpBattle = battle;
+ 	modExtraRollback = n > 1 ? extra : NULL;
+ 	lateTickObjects();
++	modCheckStackGuard(); /* MOD (memreclaim) */
+ 	MOD_FPS_TICKS++;
+ 	l1 = modLines();
+ 	tickLines = (l1 - l0) & 0xFFFF;
+diff --git a/src/main/map.c b/src/main/map.c
+index b426454..8e41f02 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -21,6 +21,7 @@
+ #include <dw/script.h>
+ #include <dw/species.h>
+ #include <dw/tamer.h>
++#include <dw/tfs_stream.h>
+ #include <dw/types.h>
+ #include <dw/utils.h>
+ #include <dw/vecmath.h>
+@@ -4367,7 +4368,8 @@ void readMapTFS(int32_t mapId)
+ 	char path[32];
+ 
+ 	buildMapPath(path, MAP_ENTRIES[mapId].filename, MAP_FILE_EXT_TFS, mapId);
+-	readFile(path, GENERAL_BUFFER_PTR);
++	/* MOD (memreclaim): only the header; tiles are streamed (tfs_stream.c) */
++	tfsStreamOpen(path);
+ }
+ 
+ void setupMap(void)
+@@ -4378,6 +4380,7 @@ void setupMap(void)
+ 	int32_t y;
+ 	int32_t i;
+ 	int16_t numCluts;
++	int32_t seq;
+ 
+ 	data = (u_long *)GENERAL_BUFFER_PTR;
+ 	data++;
+@@ -4391,20 +4394,23 @@ void setupMap(void)
+ 
+ 	updateTimeOfDay();
+ 
++	/*
++	 * MOD (memreclaim): the TFS is consumed in order; remember each tile's
++	 * place in the file instead of a pointer into it (tfs_stream.c).
++	 */
++	seq = 0;
++	for (i = 0; i < 35; i++) {
++		MOD_TFS_TILE_SEQ[i] = -1;
++	}
+ 	tile = MAP_TILE_DATA.tiles;
+ 	for (y = 0; y < MAP_TILE_DATA.height; y++) {
+ 		for (x = 0; x < MAP_TILE_DATA.width; x++) {
+ 			tile->tileId = MAP_TILES[x + (y * MAP_TILE_DATA.width)];
+-			if (tile->tileId == -1) {
+-				fillTileData(tile, (uint8_t *)NULL,
+-					     x % 4 * 64 + 768, y % 3 * 128,
+-					     x * 128, y * 128);
+-			} else {
+-				data++;
+-				fillTileData(tile, (uint8_t *)data,
+-					     x % 4 * 64 + 768, y % 3 * 128,
+-					     x * 128, y * 128);
+-				data += 4096;
++			fillTileData(tile, (uint8_t *)NULL,
++				     x % 4 * 64 + 768, y % 3 * 128,
++				     x * 128, y * 128);
++			if (tile->tileId != -1) {
++				MOD_TFS_TILE_SEQ[tile - MAP_TILE_DATA.tiles] = seq++;
+ 			}
+ 			tile++;
+ 		}
+@@ -4550,45 +4556,35 @@ void uploadMapTileImages(MapTileData *tiles, int16_t index)
+ 	int16_t stride;
+ 	int16_t count;
+ 	int32_t i;
++	int32_t row;
+ 
+ 	count = stride = *(int8_t *)((int8_t *)tiles + 0x1bb8);
+ 	if (stride > 3) {
+ 		count = 4;
+ 	}
+ 
+-	for (i = 0; i < count; i++) {
+-		setRECT(&rect, tiles[index + i].texU, tiles[index + i].texV, 64, 128);
+-
+-		if (tiles[index + i].tileId == -1) {
+-			ClearImage(&rect, 0, 0, 0);
+-		} else {
+-			LoadImage(&rect, (u_long *)tiles[index + i].imagePtr);
+-		}
+-
+-		DrawSync(0);
+-
+-		setRECT(&rect, tiles[index + stride + i].texU, tiles[index + stride + i].texV, 64, 128);
+-
+-		if (tiles[index + stride + i].tileId == -1) {
+-			ClearImage(&rect, 0, 0, 0);
+-		} else {
+-			LoadImage(&rect, (u_long *)tiles[index + stride + i].imagePtr);
++	/*
++	 * MOD (memreclaim): row by row, each row read from the CD in one go
++	 * (tfsStageRow); same rectangles and data as the original's column order.
++	 */
++	for (row = 0; row < 3; row++) {
++		if ((row == 2) && (MAP_TILE_DATA.height <= 2)) {
++			break;
+ 		}
++		tfsStageRow(index + stride * row, count);
++		for (i = 0; i < count; i++) {
++			setRECT(&rect, tiles[index + stride * row + i].texU,
++				tiles[index + stride * row + i].texV, 64, 128);
+ 
+-		DrawSync(0);
+-
+-		if (MAP_TILE_DATA.height > 2) {
+-			setRECT(&rect, tiles[index + (stride * 2) + i].texU, tiles[index + (stride * 2) + i].texV, 64, 128);
+-
+-			if (tiles[index + (stride * 2) + i].tileId == -1) {
+-				ClearImage(&rect, 0, 0, 0);
++			if (tiles[index + stride * row + i].tileId == -1) {
++				tfsClearTile(&rect);
+ 			} else {
+-				LoadImage(&rect,
+-					  (u_long *)tiles[index + stride * 2 + i].imagePtr);
++				tfsLoadTile(&rect, index + stride * row + i);
+ 			}
+ 
+ 			DrawSync(0);
+ 		}
++		tfsUnstage();
+ 	}
+ }
+ 
+@@ -5371,9 +5367,9 @@ void updateTileRow(bottom)
+ 			setRECT(&rect, MAP_TILE_DATA.tiles[i + (base + start)].texU, MAP_TILE_DATA.tiles[i + (base + start)].texV, 64, 128);
+ 
+ 			if (MAP_TILE_DATA.tiles[base + i].tileId == -1) {
+-				ClearImage(&rect, 0, 0, 0);
++				tfsClearTile(&rect);
+ 			} else {
+-				LoadImage(&rect, (u_long *)MAP_TILE_DATA.tiles[i + (base + start)].imagePtr);
++				tfsLoadTile(&rect, i + (base + start));
+ 			}
+ 
+ 			DrawSync(0);
+@@ -5412,9 +5408,9 @@ void updateTileColumn(right)
+ 			setRECT(&rect, MAP_TILE_DATA.tiles[start + (base + stride * i)].texU, MAP_TILE_DATA.tiles[start + (base + stride * i)].texV, 64, 128);
+ 
+ 			if (MAP_TILE_DATA.tiles[start + (base + stride * i)].tileId == -1) {
+-				ClearImage(&rect, 0, 0, 0);
++				tfsClearTile(&rect);
+ 			} else {
+-				LoadImage(&rect, (u_long *)MAP_TILE_DATA.tiles[start + (base + stride * i)].imagePtr);
++				tfsLoadTile(&rect, start + (base + stride * i));
+ 			}
+ 
+ 			DrawSync(0);
+diff --git a/src/main/model.c b/src/main/model.c
+index 23c973b..5d3438a 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -20,6 +20,8 @@
+ #include <dw/version.h>
+ #include <dw/world_object.h>
+ 
++uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size); /* MOD (memreclaim) */
++
+ extern uint8_t PARTNER_MODEL_BUFFER[];
+ extern uint8_t TAMER_MODEL_BUFFER[];
+ 
+@@ -3481,6 +3483,8 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 			handleNullModel();
+ 		}
+ 		readDigimonModel(digiType, path, m->mmdPtr);
++		/* MOD (memreclaim): drop the animations NPCs never play */
++		m->mmdPtr = trimNpcModel(digiType, m->mmdPtr, getDigimonModelFileSize(digiType, path));
+ 		m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 		m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+ 		GsMapModelingData((u_long *)&m->modelPtr->flags);
+diff --git a/src/main/npc_anim_keep.c b/src/main/npc_anim_keep.c
+new file mode 100644
+index 0000000..cac9b5d
+--- /dev/null
++++ b/src/main/npc_anim_keep.c
+@@ -0,0 +1,45 @@
++/*
++ * MOD (memreclaim): animation slots each Digimon type keeps when it is
++ * loaded as an NPC (heap model).
++ * GENERATED by tools/npcanims.py gen from DG.SCN, MAPHEAD.SCN and the .MAP
++ * files; do not edit (see that tool for the rules). Slot s is bit s % 32
++ * of word s / 32 of NPC_ANIM_KEEP_MASKS[NPC_ANIM_KEEP_INDEX[type]].
++ */
++#include <dw/types.h>
++
++const uint32_t NPC_ANIM_KEEP_MASKS[13][2] = {
++	{ 0xFFFFFFFF, 0xFFFFFFFF },
++	{ 0xF008001F, 0xFFFFFFFF },
++	{ 0xF04C001F, 0xFFFFFFFF },
++	{ 0xF008081F, 0xFFFFFFFF },
++	{ 0xF008183F, 0xFFFFFFFF },
++	{ 0xF008003F, 0xFFFFFFFF },
++	{ 0xF008801F, 0xFFFFFFFF },
++	{ 0xF048001F, 0xFFFFFFFF },
++	{ 0xF008011F, 0xFFFFFFFF },
++	{ 0xF028381F, 0xFFFFFFFF },
++	{ 0xF008009F, 0xFFFFFFFF },
++	{ 0xF348001F, 0xFFFFFFFF },
++	{ 0xF028001F, 0xFFFFFFFF },
++};
++
++const uint8_t NPC_ANIM_KEEP_INDEX[180] = {
++	 0,  1,  1,  2,  1,  1,  1,  1,  1,  1,  /* 0-9 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 10-19 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  3,  /* 20-29 */
++	 4,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 30-39 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 40-49 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 50-59 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 60-69 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 70-79 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 80-89 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 90-99 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 100-109 */
++	 1,  1,  1,  1,  1,  1,  1,  3,  1,  5,  /* 110-119 */
++	 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  /* 120-129 */
++	 1,  1,  1,  1,  1,  6,  1,  1,  1,  1,  /* 130-139 */
++	 1,  1,  1,  1,  1,  3,  1,  1,  1,  1,  /* 140-149 */
++	 7,  1,  8,  1,  1,  1,  1,  9,  1,  1,  /* 150-159 */
++	 1,  1, 10,  1,  1,  1, 11,  1,  1,  1,  /* 160-169 */
++	 1,  1,  1,  1,  1,  1,  1, 12,  1,  1,  /* 170-179 */
++};
+diff --git a/src/main/npc_anim_trim.c b/src/main/npc_anim_trim.c
+new file mode 100644
+index 0000000..efbe16e
+--- /dev/null
++++ b/src/main/npc_anim_trim.c
+@@ -0,0 +1,188 @@
++/*
++ * MOD (memreclaim): NPC models without the animations they never play.
++ *
++ * An NPC model (loadMMD class 0) is read whole into a malloc3 block: TMD,
++ * animation table and every animation, although an NPC only ever plays a
++ * few of them (the partner's care animations take a third of most MMDs).
++ * Right after the read, trimNpcModel keeps the slots NPC_ANIM_KEEP_* mark for
++ * the type (src/main/npc_anim_keep.c, generated by tools/npcanims.py: map
++ * AI, battle, the scripts' animations on that type), points every other
++ * slot to a one-frame stub (the idle's first pose), packs the kept
++ * animations and gives the rest of the block back to the heap.
++ *
++ * - The stub instead of 0: startAnimation ignores a 0 slot and the previous
++ *   animation goes on, so a scene that waits for an animation the audit
++ *   missed would wait forever; with the stub the NPC holds still one frame
++ *   and the scene goes on.
++ * - The packed model is moved to the top of its block and the bottom is
++ *   freed: malloc3 carves blocks from the top of a free block, so the freed
++ *   part joins the free block below it instead of leaving a hole.
++ * - Runs before GsMapModelingData (the TMD is still in file form) and only
++ *   for types below NUM_NPC_ANIM_TYPES; partner and tamer models (fixed
++ *   buffers) are never touched.
++ */
++#include <dw/params.h>
++#include <dw/types.h>
++
++#define NUM_NPC_ANIM_TYPES	180
++#define MAX_ANIM_SLOTS		64
++
++typedef struct {
++	int32_t models;		/* NPC models trimmed */
++	int32_t bytes;		/* heap bytes given back, all loads */
++	int32_t last;		/* ... by the last one */
++} NpcTrimStats;
++
++extern const uint32_t NPC_ANIM_KEEP_MASKS[][2];
++extern const uint8_t NPC_ANIM_KEEP_INDEX[NUM_NPC_ANIM_TYPES];
++NpcTrimStats MOD_NPC_TRIM_STATS;
++int32_t MOD_NPC_STUB_HITS;	/* startAnimation landed on a stub (should stay 0) */
++int32_t MOD_NPC_STUB_LAST;	/* (type << 8) | slot of the last one */
++
++void free3(void *ptr);
++
++static void copyDown16(uint16_t *dst, uint16_t *src, int32_t n)
++{
++	while (n-- > 0) {
++		*dst++ = *src++;
++	}
++}
++
++static void copyUp32(uint32_t *dst, uint32_t *src, int32_t n)
++{
++	while (n-- > 0) {
++		dst[n] = src[n];
++	}
++}
++
++/* Gives back the bottom of the malloc3 block at mmd beyond `size` bytes. */
++static uint8_t *shrinkBlock(uint8_t *mmd, int32_t size)
++{
++	uint32_t *hdr = (uint32_t *)mmd - 2;
++	int32_t units = hdr[1];
++	int32_t need = (size + 7) & ~7;
++	int32_t spare = ((units - 1) * 8 - need) & ~7;
++	uint8_t *base;
++
++	if (spare < 16) {
++		return mmd;
++	}
++	base = mmd + spare;
++	copyUp32((uint32_t *)base, (uint32_t *)mmd, need / 4);
++	((uint32_t *)base)[-2] = 0;
++	((uint32_t *)base)[-1] = units - spare / 8;
++	hdr[0] = 0;
++	hdr[1] = spare / 8;
++	free3(mmd);
++	MOD_NPC_TRIM_STATS.models++;
++	MOD_NPC_TRIM_STATS.bytes += spare;
++	MOD_NPC_TRIM_STATS.last = spare;
++	return base;
++}
++
++/*
++ * mmd: a just-read NPC model of `size` bytes in its malloc3 block. Returns
++ * where the model is now (the block may have moved up).
++ */
++uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
++{
++	uint32_t starts[MAX_ANIM_SLOTS];
++	uint32_t newOff[MAX_ANIM_SLOTS];
++	int8_t kept[MAX_ANIM_SLOTS];
++	uint32_t *tab;
++	uint32_t animBytes;
++	uint32_t first = 0;
++	uint32_t o;
++	uint32_t len;
++	uint32_t pos;
++	uint32_t dropped = 0;
++	int32_t n;
++	int32_t ns = 0;
++	int32_t i;
++	int32_t j;
++	int32_t k;
++	int32_t isKept;
++	int32_t poseWords;
++	int32_t stubBytes;
++	int16_t *anim0;
++	int16_t *stub;
++
++	if ((type < 0) || (type >= NUM_NPC_ANIM_TYPES)) {
++		return mmd;
++	}
++	tab = (uint32_t *)(mmd + ((uint32_t *)mmd)[1]);
++	animBytes = size - ((uint32_t *)mmd)[1];
++
++	/* the table has (smallest offset) / 4 slots */
++	for (i = 0; (i < MAX_ANIM_SLOTS) && ((first == 0) || (4 * (uint32_t)i < first)); i++) {
++		if ((tab[i] != 0) && ((first == 0) || (tab[i] < first))) {
++			first = tab[i];
++		}
++	}
++	n = first / 4;
++	if ((first == 0) || (n > MAX_ANIM_SLOTS) || (tab[0] == 0)) {
++		return mmd;
++	}
++
++	/* distinct animations in file order; kept if any slot that uses it is */
++	for (i = 0; i < n; i++) {
++		o = tab[i];
++		if (o == 0) {
++			continue;
++		}
++		isKept = (NPC_ANIM_KEEP_MASKS[NPC_ANIM_KEEP_INDEX[type]][i >> 5] >> (i & 31)) & 1;
++		for (j = 0; (j < ns) && (starts[j] != o); j++);
++		if (j == ns) {
++			for (k = ns++; (k > 0) && (starts[k - 1] > o); k--) {
++				starts[k] = starts[k - 1];
++				kept[k] = kept[k - 1];
++			}
++			starts[k] = o;
++			kept[k] = isKept;
++		} else if (isKept) {
++			kept[j] = 1;
++		}
++	}
++	for (j = 0; j < ns; j++) {
++		if (!kept[j]) {
++			dropped += ((j + 1 < ns) ? starts[j + 1] : animBytes) - starts[j];
++		}
++	}
++
++	/* the stub: frame count 1, slot 0's first pose, end */
++	anim0 = (int16_t *)((uint8_t *)tab + tab[0]);
++	poseWords = (DIGIMON_DATA[type].boneCount - 1) * ((anim0[0] & 0x8000) ? 9 : 6);
++	stubBytes = (poseWords + 2) * 2;
++	if (dropped < (uint32_t)stubBytes + 16) {
++		return mmd;
++	}
++
++	/* pack the kept animations down, in file order (each only moves down) */
++	pos = first;
++	for (j = 0; j < ns; j++) {
++		len = ((j + 1 < ns) ? starts[j + 1] : animBytes) - starts[j];
++		if (kept[j]) {
++			newOff[j] = pos;
++			if (pos != starts[j]) {
++				copyDown16((uint16_t *)((uint8_t *)tab + pos),
++					   (uint16_t *)((uint8_t *)tab + starts[j]), len / 2);
++			}
++			pos += len;
++		}
++	}
++	for (i = 0; i < n; i++) {
++		if (tab[i] == 0) {
++			continue;
++		}
++		for (j = 0; starts[j] != tab[i]; j++);
++		tab[i] = kept[j] ? newOff[j] : pos;
++	}
++	anim0 = (int16_t *)((uint8_t *)tab + tab[0]);
++	stub = (int16_t *)((uint8_t *)tab + pos);
++	stub[0] = (anim0[0] & 0x8000) | 1;
++	copyDown16((uint16_t *)&stub[1], (uint16_t *)&anim0[1], poseWords);
++	stub[poseWords + 1] = 0;
++	pos += stubBytes;
++
++	return shrinkBlock(mmd, ((uint8_t *)tab - mmd) + pos);
++}
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index 2f68b74..6107843 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -21,6 +21,7 @@
+ #include <dw/sound.h>
+ #include <dw/sound_async.h>
+ #include <dw/tamer.h>
++#include <dw/tfs_stream.h>
+ #include <dw/tournament.h>
+ #include <dw/trigger.h>
+ #include <dw/trn.h>
+@@ -2735,6 +2736,7 @@ void readFileSection(char *filename, void *dest, uint32_t offset,
+ 	int32_t sector;
+ 
+ 	mode = 0x80;
++	tfsStreamCheckTarget(dest, size); /* MOD (memreclaim) */
+ 
+ 	if (LOAD_FILE_SECTION_STARTPOS == 0) {
+ 		path[0] = '\\';
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 2cfbf73..5bb5bb0 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -20,6 +20,7 @@
+ #include <dw/kar.h>
+ #include <dw/main.h>
+ #include <dw/map.h>
++#include <dw/tfs_stream.h>
+ #include <dw/math.h>
+ #include <dw/model.h>
+ #include <dw/murd.h>
+@@ -800,6 +801,7 @@ int8_t startBattle(int16_t instanceId)
+ 	int32_t battleData;
+ 
+ 	GAME_STATE = 1;
++	tfsStreamInvalidate(); /* MOD (memreclaim): the battle reuses the load area */
+ 	copyVector(&STORED_TAMER_POS, &TAMER_ENTITY.entity.posData->location);
+ 
+ 	unsetCameraFollowPlayer();
+diff --git a/src/main/tfs_stream.c b/src/main/tfs_stream.c
+new file mode 100644
+index 0000000..3633e30
+--- /dev/null
++++ b/src/main/tfs_stream.c
+@@ -0,0 +1,691 @@
++/*
++ * MOD (memreclaim): stream the map background (.TFS) from the CD.
++ *
++ * The original reads the whole .TFS (up to 482 KB, 30 tiles of 128x128 8 bpp)
++ * into GENERAL_BUFFER and keeps it there for as long as the screen lasts;
++ * only the 4x3 tiles of the VRAM window are visible at a time. Here only the
++ * header (the 1-5 palettes, which MAP_CLUTS points into) stays resident at
++ * TFS_HEADER_ADDR, and a ring of TFS_RING_SLOTS tile slots follows it
++ * (include/dw/memmap.h). The window logic (handleTileUpdate,
++ * updateTileColumn/Row, uploadMapTileImages) and what reaches VRAM are
++ * unchanged; only the LoadImage source changes (tfsTilePixels).
++ *
++ * - Prefetch: once per tick (from the file read queue object), the tile the
++ *   window may need soonest that is not in the ring is read asynchronously
++ *   (one tile per CdRead, 9 sectors), only while the game's own read queue
++ *   is empty. "Soonest" is how far the camera is from each of
++ *   handleTileUpdate's four thresholds (wantTiles).
++ * - The window's hysteresis is 1-10 px, so right after a shift the strip
++ *   that just left is the nearest again; it is copied back from VRAM into
++ *   the ring as it leaves (StoreImage in tfsLoadTile), not read again.
++ * - A tile that is not in the ring when the window needs it is read
++ *   synchronously (a "miss", counted in MOD_TFS_STATS). Whole-window
++ *   uploads (map load, curling, fishing) read each row in one go
++ *   (tfsStageRow).
++ * - CD arbitration: the read queue does not start a request while a tile
++ *   read is in flight, and the synchronous readers (readFile,
++ *   readFileSectors, readFileSection) wait for it first.
++ * - Anything that loads into [GENERAL_BUFFER, TFS_RING_END) (sound staging,
++ *   overlays, the evolution model) and every battle invalidate the ring; the
++ *   game's readMapTFS calls (map load, battle exit, evolution, death,
++ *   jukebox...) reopen it. A tile needed while the ring is invalid reopens
++ *   it first, which only happens in the world.
++ */
++#include <libcd.h>
++#include <libetc.h>
++#include <libgpu.h>
++#include <sys/types.h>
++
++#include <dw/btl.h>
++#include <dw/file.h>
++#include <dw/map.h>
++#include <dw/memmap.h>
++#include <dw/tfs_stream.h>
++#include <dw/types.h>
++
++#define TFS_TILE_STRIDE	0x4004	/* u32 source position + 128 * 128 bytes */
++#define TFS_TILE_BYTES	0x4000
++
++#define SLOT_FREE	0
++#define SLOT_LOADING	1
++#define SLOT_READY	2
++
++typedef struct {
++	int8_t tile;		/* MAP_TILE_DATA.tiles index */
++	int8_t state;
++	int16_t pad;
++	uint32_t lastUse;
++} TfsSlot;
++
++/* k-th non-empty tile of the file for each MAP_TILE_DATA.tiles entry (setupMap) */
++int8_t MOD_TFS_TILE_SEQ[35];
++TfsStreamStats MOD_TFS_STATS;
++
++static TfsSlot TFS_SLOTS[TFS_RING_SLOTS];
++static char TFS_PATH[32];
++static int32_t TFS_ACTIVE;
++static int32_t TFS_FIRST_SECTOR;
++static int32_t TFS_DATA_OFFSET;	/* 8 + 512 * nCLUT */
++static int32_t TFS_NUM_SLOTS;
++static int32_t TFS_INFLIGHT = -1;
++static int32_t TFS_INFLIGHT_START;
++static uint32_t TFS_CLOCK;
++static int32_t TFS_LAST_END;	/* vsync the last tile read ended */
++
++int32_t isFileReadQueueIdle(void);
++int32_t isFileReadQueueReading(void);
++int CD_sync(int mode, u_char *result);	/* libcd: CdSync without the wrapper (not linked) */
++void tfsForgetCells(void);
++static int32_t wantTiles(int8_t *tiles, int16_t *dist);
++
++/*
++ * Never poll CdReadSync for a read that ended a while ago: libcd's
++ * CdReadSync takes "no progress for 60 vsyncs" as a stalled read and
++ * restarts the LAST read into its buffer (cd_read_retry, "CdRead:
++ * retry..."), even when that read had finished. So it is only called for a
++ * read of ours that is in flight, or for the queue's while the queue says it
++ * is reading (it polls every tick).
++ */
++static void waitQueueRead(void)
++{
++	if (isFileReadQueueReading()) {
++		while (CdReadSync(1, NULL) > 0);
++	}
++}
++
++static uint8_t *slotAddr(int32_t slot)
++{
++	return (uint8_t *)TFS_RING_ADDR + slot * TFS_SLOT_SIZE;
++}
++
++static int32_t tileOffset(int32_t seq)
++{
++	return TFS_DATA_OFFSET + seq * TFS_TILE_STRIDE + 4;
++}
++
++static void finishInflight(int32_t result)
++{
++	int32_t t;
++
++	TFS_SLOTS[TFS_INFLIGHT].state = (result == 0) ? SLOT_READY : SLOT_FREE;
++	if (result != 0) {
++		MOD_TFS_STATS.readErrors++;
++	}
++	t = VSync(-1) - TFS_INFLIGHT_START;
++	if (t > MOD_TFS_STATS.prefetchVsyncsMax) {
++		MOD_TFS_STATS.prefetchVsyncsMax = t;
++	}
++	TFS_INFLIGHT = -1;
++	TFS_LAST_END = VSync(-1);
++}
++
++int32_t tfsStreamBusy(void)
++{
++	int32_t r;
++
++	if (TFS_INFLIGHT < 0) {
++		return 0;
++	}
++	r = CdReadSync(1, NULL);
++	if (r > 0) {
++		return 1;
++	}
++	finishInflight(r);
++	return 0;
++}
++
++void tfsStreamWaitIdle(void)
++{
++	int32_t r;
++
++	if (TFS_INFLIGHT < 0) {
++		return;
++	}
++	while ((r = CdReadSync(1, NULL)) > 0);
++	finishInflight(r);
++}
++
++/* file seq range of a whole-window row staged at its original place (-1: none) */
++static int32_t TFS_SPAN_FIRST = -1;
++static int32_t TFS_SPAN_LAST = -1;
++static uint32_t TFS_SPAN_BASE;	/* + file offset = where the staged row is */
++
++void tfsStreamInvalidate(void)
++{
++	int32_t i;
++
++	TFS_SPAN_FIRST = TFS_SPAN_LAST = -1;
++	tfsStreamWaitIdle();
++	if (TFS_ACTIVE) {
++		MOD_TFS_STATS.invalidations++;
++	}
++	TFS_ACTIVE = 0;
++	for (i = 0; i < TFS_RING_SLOTS; i++) {
++		TFS_SLOTS[i].state = SLOT_FREE;
++		TFS_SLOTS[i].tile = -1;
++	}
++}
++
++void tfsStreamCheckTarget(void *buffer, int32_t bytes)
++{
++	uint32_t a = (uint32_t)buffer;
++
++	tfsStreamWaitIdle();
++	if ((a < TFS_RING_END) && (a + bytes > TFS_HEADER_ADDR)) {
++		tfsStreamInvalidate();
++	}
++}
++
++static void startRead(int32_t slot, int32_t tile)
++{
++	CdlLOC loc;
++	int32_t off;
++	int32_t sectors;
++
++	uint16_t l0 = *(volatile uint16_t *)0x1F801110;
++
++	off = tileOffset(MOD_TFS_TILE_SEQ[tile]);
++	sectors = ((off & 0x7FF) + TFS_TILE_BYTES + 0x7FF) >> 11;
++	CdIntToPos(TFS_FIRST_SECTOR + (off >> 11), &loc);
++	do {
++		while (CdControl(CdlSetloc, (u_char *)&loc, NULL) == 0);
++	} while (CdRead(sectors, (u_long *)slotAddr(slot), CdlModeSpeed) == 0);
++
++	TFS_SLOTS[slot].tile = tile;
++	TFS_SLOTS[slot].state = SLOT_LOADING;
++	TFS_SLOTS[slot].lastUse = ++TFS_CLOCK;
++	TFS_INFLIGHT = slot;
++	TFS_INFLIGHT_START = VSync(-1);
++	l0 = (*(volatile uint16_t *)0x1F801110 - l0) & 0xFFFF;
++	if (l0 > MOD_TFS_STATS.startLinesMax) {
++		MOD_TFS_STATS.startLinesMax = l0;
++	}
++}
++
++/* Reads the header (palettes) of the .TFS at path and empties the ring. */
++void tfsStreamOpen(char *path)
++{
++	FileLookup lookup;
++	int32_t size;
++	int32_t i;
++
++	tfsStreamInvalidate();
++	tfsForgetCells();	/* VRAM may hold another map's (or file's) tiles */
++	if (path != TFS_PATH) {
++		for (i = 0; (TFS_PATH[i] = path[i]) != 0 && i < 31; i++);
++		TFS_PATH[31] = 0;
++	}
++	if (lookupFileTable(&lookup, TFS_PATH) == 0) {
++		return;
++	}
++	TFS_FIRST_SECTOR = CdPosToInt(&lookup.pos);
++	readFileSectors(TFS_PATH, (void *)TFS_HEADER_ADDR, 0, TFS_HEADER_SIZE >> 11);
++	TFS_DATA_OFFSET = 8 + 512 * ((uint32_t *)TFS_HEADER_ADDR)[1];
++
++	/*
++	 * Never use more of the load area than this screen's whole TFS took in
++	 * the original (whatever the game writes above a small TFS stays safe).
++	 */
++	size = ((lookup.size + 0x7FF) & ~0x7FF) - TFS_HEADER_SIZE;
++	TFS_NUM_SLOTS = size / TFS_SLOT_SIZE;
++	if (TFS_NUM_SLOTS > TFS_RING_SLOTS) {
++		TFS_NUM_SLOTS = TFS_RING_SLOTS;
++	} else if (TFS_NUM_SLOTS < 1) {
++		TFS_NUM_SLOTS = 1;
++	}
++	TFS_ACTIVE = 1;
++	MOD_TFS_STATS.opens++;
++}
++
++static int32_t findSlot(int32_t tile)
++{
++	int32_t i;
++
++	for (i = 0; i < TFS_NUM_SLOTS; i++) {
++		if ((TFS_SLOTS[i].state != SLOT_FREE) && (TFS_SLOTS[i].tile == tile)) {
++			return i;
++		}
++	}
++	return -1;
++}
++
++static int8_t TFS_CELL[12];	/* tile in each VRAM window cell, -1 = none (tfsLoadTile) */
++
++static int32_t inVram(int32_t tile)
++{
++	int32_t i;
++
++	for (i = 0; i < 12; i++) {
++		if (TFS_CELL[i] == tile) {
++			return 1;
++		}
++	}
++	return 0;
++}
++
++static int32_t inWindow(int32_t tile)
++{
++	int32_t x = tile % MAP_TILE_DATA.width;
++	int32_t y = tile / MAP_TILE_DATA.width;
++
++	return (x >= MAP_TILE_X) && (x < MAP_TILE_X + 4) && (y >= MAP_TILE_Y) && (y < MAP_TILE_Y + 3);
++}
++
++/*
++ * A slot to load into: a free one; else the least recently used ready one
++ * whose tile is already in the VRAM window (nothing needs it from RAM until
++ * it leaves, and then it is captured back); else one outside the window
++ * that is not in protect[0..count). Never a tile inside the window that is
++ * not in VRAM yet (a strip being uploaded) nor `avoid`.
++ */
++static int32_t victimSlot(int8_t *protect, int32_t count, int32_t avoid)
++{
++	int32_t i;
++	int32_t j;
++	int32_t cls;
++	int32_t best = -1;
++	int32_t bestCls = 3;
++	int32_t tile;
++
++	for (i = 0; i < TFS_NUM_SLOTS; i++) {
++		if (TFS_SLOTS[i].state == SLOT_FREE) {
++			return i;
++		}
++	}
++	for (i = 0; i < TFS_NUM_SLOTS; i++) {
++		tile = TFS_SLOTS[i].tile;
++		if ((TFS_SLOTS[i].state != SLOT_READY) || (tile == avoid)) {
++			continue;
++		}
++		if (inVram(tile)) {
++			cls = 0;
++		} else if (inWindow(tile)) {
++			continue;
++		} else {
++			for (j = 0; j < count; j++) {
++				if (protect[j] == tile) {
++					break;
++				}
++			}
++			if (j != count) {
++				continue;
++			}
++			cls = 1;
++		}
++		if ((cls < bestCls) || ((cls == bestCls) && (TFS_SLOTS[i].lastUse < TFS_SLOTS[best].lastUse))) {
++			best = i;
++			bestCls = cls;
++		}
++	}
++	return best;
++}
++
++/*
++ * Whole-window upload (uploadMapTileImages: map load, curling, fishing):
++ * each window row is contiguous in the file, so it is read in one CdRead
++ * over the ring instead of tile by tile. tfsTilePixels returns the row's
++ * tiles from there; the ring is emptied because the row lands on top of it.
++ */
++
++void tfsStageRow(int32_t firstTile, int32_t count)
++{
++	int32_t i;
++	int32_t first = -1;
++	int32_t last = -1;
++	int32_t off0;
++	int32_t off1;
++	int32_t s0;
++	CdlLOC loc;
++
++	for (i = 0; i < count; i++) {
++		if (MOD_TFS_TILE_SEQ[firstTile + i] >= 0) {
++			if (first < 0) {
++				first = MOD_TFS_TILE_SEQ[firstTile + i];
++			}
++			last = MOD_TFS_TILE_SEQ[firstTile + i];
++		}
++	}
++	if (first < 0) {
++		return;
++	}
++	if (!TFS_ACTIVE) {
++		MOD_TFS_STATS.reopens++;
++		tfsStreamOpen(TFS_PATH);
++	}
++	tfsStreamInvalidate();	/* the row overwrites the ring */
++	TFS_ACTIVE = 1;
++	waitQueueRead();
++	off0 = tileOffset(first);
++	off1 = tileOffset(last) + TFS_TILE_BYTES;
++	s0 = off0 >> 11;
++	/*
++	 * Into the ring when the row fits (8 slots take a row of 4 tiles), so
++	 * WORLD_SCRATCH is not touched; else where the original had it (only on
++	 * maps whose whole TFS ends below the ring's end).
++	 */
++	if ((((off1 + 0x7FF) >> 11) - s0) << 11 <= TFS_NUM_SLOTS * TFS_SLOT_SIZE) {
++		TFS_SPAN_BASE = TFS_RING_ADDR - (s0 << 11);
++	} else {
++		TFS_SPAN_BASE = TFS_HEADER_ADDR;
++	}
++	CdIntToPos(TFS_FIRST_SECTOR + s0, &loc);
++	i = VSync(-1);
++	do {
++		do {
++			while (CdControl(CdlSetloc, (u_char *)&loc, NULL) == 0);
++		} while (CdRead(((off1 + 0x7FF) >> 11) - s0,
++				(u_long *)(TFS_SPAN_BASE + (s0 << 11)), CdlModeSpeed) == 0);
++	} while (CdReadSync(0, NULL) != 0);
++	i = VSync(-1) - i;
++	MOD_TFS_STATS.rowReads++;
++	MOD_TFS_STATS.rowVsyncs += i;
++	TFS_SPAN_FIRST = first;
++	TFS_SPAN_LAST = last;
++}
++
++void tfsUnstage(void)
++{
++	TFS_SPAN_FIRST = TFS_SPAN_LAST = -1;
++}
++
++/* The pixels of tile (MAP_TILE_DATA.tiles index) for LoadImage. */
++u_long *tfsTilePixels(int32_t tile)
++{
++	int32_t slot;
++	int32_t t;
++
++	t = MOD_TFS_TILE_SEQ[tile];
++	if (t < 0) {
++		/* off the map (the original reads a stale pointer here too) */
++		return (u_long *)TFS_HEADER_ADDR;
++	}
++	if ((t >= TFS_SPAN_FIRST) && (t <= TFS_SPAN_LAST)) {
++		return (u_long *)(TFS_SPAN_BASE + tileOffset(t));
++	}
++	if (!TFS_ACTIVE) {
++		MOD_TFS_STATS.reopens++;
++		tfsStreamOpen(TFS_PATH);
++	}
++	slot = findSlot(tile);
++	if ((slot >= 0) && (TFS_SLOTS[slot].state == SLOT_LOADING)) {
++		t = VSync(-1);
++		tfsStreamWaitIdle();
++		MOD_TFS_STATS.waits++;
++		t = VSync(-1) - t;
++		MOD_TFS_STATS.syncVsyncs += t;
++		if (t > MOD_TFS_STATS.syncVsyncsMax) {
++			MOD_TFS_STATS.syncVsyncsMax = t;
++		}
++		if (TFS_SLOTS[slot].state != SLOT_READY) {
++			slot = -1;
++		}
++	}
++	if (slot >= 0) {
++		MOD_TFS_STATS.hits++;
++	} else {
++		/* miss: read it now, after whatever the CD is doing */
++		MOD_TFS_STATS.misses++;
++		t = VSync(-1);
++		tfsStreamWaitIdle();
++		waitQueueRead();
++		slot = victimSlot(NULL, 0, -1);
++		if (slot < 0) {
++			slot = 0;	/* cannot happen with 1 slot or more free of the window */
++		}
++		startRead(slot, tile);
++		tfsStreamWaitIdle();
++		t = VSync(-1) - t;
++		MOD_TFS_STATS.syncVsyncs += t;
++		if (t > MOD_TFS_STATS.syncVsyncsMax) {
++			MOD_TFS_STATS.syncVsyncsMax = t;
++		}
++	}
++	TFS_SLOTS[slot].lastUse = ++TFS_CLOCK;
++	return (u_long *)(slotAddr(slot) + (tileOffset(MOD_TFS_TILE_SEQ[tile]) & 0x7FF));
++}
++
++/*
++ * The tiles the window may need next, nearest first. For each side, how far
++ * the camera has to move before handleTileUpdate shifts the window there
++ * (its thresholds: right at cameraX >= 128 * (wx + 1) + 10, left below
++ * 128 * wx + 1, down at cameraY >= 128 * (wy + 1), up below 128 * wy + 1).
++ * Right after a shift the strip that just left is 1-10 px away (the
++ * original's hysteresis is that small), which is why it is also captured
++ * from VRAM when it leaves (tfsLoadTile).
++ */
++#define TFS_MAX_WANTED	24
++
++/*
++ * Recent camera motion per axis (sign, held for TFS_MOVE_HOLD ticks after
++ * the camera stops): a side the camera is not moving toward is
++ * TFS_AWAY_PENALTY px farther, so the strip ahead is read before a nearer
++ * one beside or behind (the one behind is captured from VRAM anyway).
++ */
++#define TFS_AWAY_PENALTY	96
++#define TFS_MOVE_HOLD		40
++static int8_t TFS_MOVE_X;
++static int8_t TFS_MOVE_Y;
++static int16_t TFS_MOVE_TIMER_X;
++static int16_t TFS_MOVE_TIMER_Y;
++static int16_t TFS_PREV_CAM_X;
++static int16_t TFS_PREV_CAM_Y;
++
++static void trackMotion(void)
++{
++	int32_t dx = MAP_TILE_DATA.cameraX - TFS_PREV_CAM_X;
++	int32_t dy = MAP_TILE_DATA.cameraY - TFS_PREV_CAM_Y;
++
++	TFS_PREV_CAM_X = MAP_TILE_DATA.cameraX;
++	TFS_PREV_CAM_Y = MAP_TILE_DATA.cameraY;
++	if ((dx != 0) && (dx > -64) && (dx < 64)) {
++		TFS_MOVE_X = (dx > 0) ? 1 : -1;
++		TFS_MOVE_TIMER_X = TFS_MOVE_HOLD;
++	} else if ((TFS_MOVE_TIMER_X > 0) && (--TFS_MOVE_TIMER_X == 0)) {
++		TFS_MOVE_X = 0;
++	}
++	if ((dy != 0) && (dy > -64) && (dy < 64)) {
++		TFS_MOVE_Y = (dy > 0) ? 1 : -1;
++		TFS_MOVE_TIMER_Y = TFS_MOVE_HOLD;
++	} else if ((TFS_MOVE_TIMER_Y > 0) && (--TFS_MOVE_TIMER_Y == 0)) {
++		TFS_MOVE_Y = 0;
++	}
++}
++
++static int32_t wantTiles(int8_t *tiles, int16_t *dist)
++{
++	int32_t W = MAP_TILE_DATA.width;
++	int32_t H = MAP_TILE_DATA.height;
++	int32_t cx = MAP_TILE_DATA.cameraX;
++	int32_t cy = MAP_TILE_DATA.cameraY;
++	int32_t wx = MAP_TILE_X;
++	int32_t wy = MAP_TILE_Y;
++	int32_t sx[2], sd[2], ns = 0;	/* candidate columns and their distance */
++	int32_t ty[2], td[2], nt = 0;	/* candidate rows */
++	int32_t n = 0;
++	int32_t i, j, k, x, y, d, tile;
++
++	if (wx + 4 < W) {
++		sx[ns] = wx + 4;
++		sd[ns++] = 128 * wx + 138 - cx + ((TFS_MOVE_X > 0) ? 0 : TFS_AWAY_PENALTY);
++	}
++	if (wx > 0) {
++		sx[ns] = wx - 1;
++		sd[ns++] = cx - 128 * wx + ((TFS_MOVE_X < 0) ? 0 : TFS_AWAY_PENALTY);
++	}
++	if (wy + 3 < H) {
++		ty[nt] = wy + 3;
++		td[nt++] = 128 * (wy + 1) - cy + ((TFS_MOVE_Y > 0) ? 0 : TFS_AWAY_PENALTY);
++	}
++	if (wy > 0) {
++		ty[nt] = wy - 1;
++		td[nt++] = cy - 128 * wy + ((TFS_MOVE_Y < 0) ? 0 : TFS_AWAY_PENALTY);
++	}
++	/* columns (3 tiles), rows (4 tiles) and the corners between them */
++	for (i = 0; i < ns; i++) {
++		for (k = 0; k < 3; k++) {
++			tiles[n] = sx[i] + (wy + k) * W;
++			dist[n++] = sd[i];
++		}
++	}
++	for (j = 0; j < nt; j++) {
++		for (k = 0; k < 4; k++) {
++			tiles[n] = (wx + k) + ty[j] * W;
++			dist[n++] = td[j];
++		}
++	}
++	for (i = 0; i < ns; i++) {
++		for (j = 0; j < nt; j++) {
++			tiles[n] = sx[i] + ty[j] * W;
++			dist[n++] = (sd[i] > td[j]) ? sd[i] : td[j];
++		}
++	}
++	/* drop off-map and empty tiles, then sort by distance (insertion) */
++	for (i = j = 0; i < n; i++) {
++		tile = tiles[i];
++		x = tile % W;
++		y = tile / W;
++		if ((x >= W) || (y >= H) || (MOD_TFS_TILE_SEQ[tile] < 0)) {
++			continue;
++		}
++		d = (dist[i] < 0) ? 0 : dist[i];
++		for (k = j; (k > 0) && (dist[k - 1] > d); k--) {
++			tiles[k] = tiles[k - 1];
++			dist[k] = dist[k - 1];
++		}
++		tiles[k] = tile;
++		dist[k] = d;
++		j++;
++	}
++	return j;
++}
++
++/*
++ * Once per tick: finish the read in flight, then start reading the nearest
++ * tile the window may need that is not in the ring. A ring tile is only
++ * given up for one at least TFS_EVICT_MARGIN px nearer (so a camera standing
++ * between two strips does not make them evict each other).
++ */
++#define TFS_EVICT_MARGIN	32
++
++void tfsStreamTick(void)
++{
++	int8_t wanted[TFS_MAX_WANTED];
++	int16_t dist[TFS_MAX_WANTED];
++	int32_t n;
++	int32_t i;
++	int32_t p;
++	int32_t slot;
++
++	if (tfsStreamBusy()) {
++		return;
++	}
++	if (GAME_STATE != 0) {
++		/* battles write the load area outside the CD (EFE engine) */
++		if (TFS_ACTIVE) {
++			tfsStreamInvalidate();
++		}
++		return;
++	}
++	if (!TFS_ACTIVE || (MAP_TILE_DATA.width == 0)) {
++		return;
++	}
++	trackMotion();
++	if (!isFileReadQueueIdle()) {
++		return;
++	}
++	/*
++	 * Starting a read waits for the drive to acknowledge each command; right
++	 * after a read the drive is still pausing and that wait took up to 565
++	 * lines of the tick. Start only when the last command has completed and
++	 * not in the vsyncs right after a read ended.
++	 */
++	if ((CD_sync(1, NULL) == CdlNoIntr) || ((uint32_t)(VSync(-1) - TFS_LAST_END) < 3)) {
++		return;
++	}
++
++	n = wantTiles(wanted, dist);
++	for (i = 0; i < n; i++) {
++		if (findSlot(wanted[i]) >= 0) {
++			continue;
++		}
++		/* protect every wanted tile not clearly farther than this one */
++		for (p = i + 1; (p < n) && (dist[p] < dist[i] + TFS_EVICT_MARGIN); p++);
++		slot = victimSlot(wanted, p, -1);
++		if (slot < 0) {
++			return;
++		}
++		MOD_TFS_STATS.prefetches++;
++		startRead(slot, wanted[i]);
++		return;
++	}
++}
++
++/*
++ * The window's VRAM uploads (map.c) go through these two: they remember
++ * which tile each of the 12 VRAM cells holds, and before a cell is
++ * overwritten the tile leaving the window is copied back from VRAM into the
++ * ring (StoreImage) if the ring does not have it, so walking back across
++ * the threshold never waits for the CD.
++ */
++static void captureOutgoing(RECT *rect, int32_t incoming)
++{
++	int32_t c = ((rect->x - 768) >> 6) + (rect->y >> 7) * 4;
++	int32_t old;
++	int32_t slot;
++	int32_t n;
++	int8_t wanted[TFS_MAX_WANTED];
++	int16_t dist[TFS_MAX_WANTED];
++	uint16_t l0, l1, l2;
++
++	if ((c < 0) || (c >= 12)) {
++		return;
++	}
++	old = TFS_CELL[c];
++	TFS_CELL[c] = incoming;
++	if (!TFS_ACTIVE || (old < 0) || (old == incoming) || (MOD_TFS_TILE_SEQ[old] < 0) ||
++	    (findSlot(old) >= 0)) {
++		return;
++	}
++	n = wantTiles(wanted, dist);
++	slot = victimSlot(wanted, n, incoming);
++	if (slot < 0) {
++		return;
++	}
++	l0 = *(volatile uint16_t *)0x1F801110;	/* root counter 1: lines */
++	DrawSync(0);
++	l1 = *(volatile uint16_t *)0x1F801110;
++	StoreImage(rect, (u_long *)(slotAddr(slot) + (tileOffset(MOD_TFS_TILE_SEQ[old]) & 0x7FF)));
++	DrawSync(0);
++	l2 = *(volatile uint16_t *)0x1F801110;
++	if (((l1 - l0) & 0xFFFF) > MOD_TFS_STATS.captureWaitMax) {
++		MOD_TFS_STATS.captureWaitMax = (l1 - l0) & 0xFFFF;
++	}
++	if (((l2 - l1) & 0xFFFF) > MOD_TFS_STATS.captureLinesMax) {
++		MOD_TFS_STATS.captureLinesMax = (l2 - l1) & 0xFFFF;
++	}
++	TFS_SLOTS[slot].tile = old;
++	TFS_SLOTS[slot].state = SLOT_READY;
++	TFS_SLOTS[slot].lastUse = ++TFS_CLOCK;
++	MOD_TFS_STATS.captures++;
++}
++
++void tfsLoadTile(RECT *rect, int32_t tile)
++{
++	captureOutgoing(rect, tile);
++	LoadImage(rect, tfsTilePixels(tile));
++}
++
++void tfsClearTile(RECT *rect)
++{
++	captureOutgoing(rect, -1);
++	ClearImage(rect, 0, 0, 0);
++}
++
++void tfsForgetCells(void)
++{
++	int32_t i;
++
++	for (i = 0; i < 12; i++) {
++		TFS_CELL[i] = -1;
++	}
++}

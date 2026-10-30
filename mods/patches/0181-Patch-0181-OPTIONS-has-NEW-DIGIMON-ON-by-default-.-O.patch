@@ -1,0 +1,554 @@
+From bc5dce04b7eb28b11a621586e6c09b541551b9c4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 21:42:24 +0000
+Subject: [PATCH] Patch 0181: OPTIONS has NEW DIGIMON (ON by default). OFF
+ keeps the partner to the species the original game raises (DIGI.DAT's vanilla
+ bitmap, SPECIES_HEADER_VANILLA, isVanillaSpecies; modSpeciesAllowed at every
+ evolution choice: Fresh, In-Training and its extras, Rookie,
+ Champion/Ultimate, the Ultimate rules, the new evolution items), and the
+ chart is the original sheet (renderEvoChartViewVanilla, chartVanillaInput)
+ with trees of the original rows (chartEvolutionPath). Byte 6 of
+ SAVE_TAG_OPTIONS
+
+---
+ include/dw/mod_options.h |   3 +
+ include/dw/species.h     |   8 ++
+ src/main/evolution.c     |  11 +--
+ src/main/game_menu.c     | 184 +++++++++++++++++++++++++++++++++++++--
+ src/main/item.c          |   3 +-
+ src/main/main_menu.c     |  20 +++--
+ src/main/mod_options.c   |   7 ++
+ src/main/mod_species.c   |  16 ++++
+ text/main/main_menu.yaml |   3 +
+ 9 files changed, 239 insertions(+), 16 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 349baac0..29d9aff0 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -19,6 +19,7 @@ extern int32_t MOD_OPT_BUTTONS;	/* JAPANESE CONTROLS: MOD_BUTTONS_JP (input.h re
+ extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clock (clock.c), 1 = shown */
+ extern int32_t MOD_OPT_BARS;	/* NEW STATUS BARS: happiness and discipline as one red/green fill (patches 0162-0164), 0 = the original's */
+ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
++extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+ /* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
+@@ -29,6 +30,8 @@ int32_t modButtonColor(uint16_t code, int32_t color);
+ uint16_t modButtonClut(void);
+ /* the button layout changes: the dialogue box's button in VRAM follows it */
+ void modSetButtons(int32_t layout);
++/* 1 when the partner may become `type` (NEW DIGIMON on, or a species the original raises: isVanillaSpecies) */
++int32_t modSpeciesAllowed(int32_t type);
+ /* FRAME RATE: the rate the game is shown at, 30 or 60 (20 in an FPS=20 build, which has no choice) */
+ int32_t modFrameRate(void);
+ void modSetFrameRate(int32_t fps);
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 74744fb1..e8d49e4c 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -85,6 +85,14 @@ typedef struct {
+  */
+ #define SPECIES_HEADER_RECORD_ORIGINALS	0x20
+ #define SPECIES_RECORD_ORIGINALS_BYTES	((NUM_ORIGINAL_DIGIMON + 7) / 8)
++/*
++ * MOD (options): a bitmap of the species the original game raises (the species files' "vanilla") at SPECIES_HEADER_VANILLA
++ * of the header sector, one bit per id; OPTIONS' NEW DIGIMON off keeps the partner to them. A file without one (all 0)
++ * has no new species to keep out: every species counts as vanilla then.
++ */
++#define SPECIES_HEADER_VANILLA	0x780
++#define SPECIES_VANILLA_BYTES	(NUM_DIGIMON / 8)
++int32_t isVanillaSpecies(int32_t type);
+ /* 1 if the original type is carried by its DIGI.DAT record (always 0 for ids >= NUM_ORIGINAL_DIGIMON) */
+ int32_t isRecordOriginal(int32_t type);
+ 
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 7b2daceb..41d51db0 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -13,6 +13,7 @@
+ #include <dw/tamer.h>
+ #include <dw/types.h>
+ #include <dw/mod_rules.h>
++#include <dw/mod_options.h>
+ 
+ void initializeReincarnatedPartner(int32_t type, int32_t posX, int32_t posY,
+                                    int32_t posZ, int32_t rotX, int32_t rotY,
+@@ -917,7 +918,7 @@ int16_t getFreshEvolutionTarget(int32_t currentDigimon) {
+ 
+   result = -1;
+   for (i = 0; i < MOD_EVO_PAIR_MAX; i++) {
+-    if (MOD_EVO_FRESH[i][0] == currentDigimon)
++    if (MOD_EVO_FRESH[i][0] == currentDigimon && modSpeciesAllowed(MOD_EVO_FRESH[i][1]))
+       result = MOD_EVO_FRESH[i][1];
+   }
+ 
+@@ -932,7 +933,7 @@ static void scoreInTrainingTarget(int32_t currentDigimon, DigimonId target, int3
+   int8_t isMaxCM;
+   int8_t isMaxBattles;
+ 
+-  if (target == -1 || target == 0 || !isPartnerModelFit(target)) /* MOD (scale): a model that does not fit is no target */
++  if (target == -1 || target == 0 || !isPartnerModelFit(target) || !modSpeciesAllowed(target)) /* MOD (scale): a model that does not fit is no target; MOD (options): NEW DIGIMON */
+     return;
+   isMaxCM = (EVO_REQ_ROW(target).flags & 0x10) >> 4;
+   isMaxBattles = EVO_REQ_ROW(target).flags & 1;
+@@ -981,7 +982,7 @@ int16_t getRookieEvolutionTarget(int32_t currentDigimon) {
+   bestScore = statTotal = statCount = 0U;
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr)) { /* MOD (scale): a model that does not fit is no target */
++    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr) || !modSpeciesAllowed(*targetPtr)) { /* MOD (scale): a model that does not fit is no target; MOD (options): NEW DIGIMON off, the original's species only */
+       targetPtr++;
+       continue;
+     }
+@@ -1050,7 +1051,7 @@ int16_t getChampionEvolutionTarget(int32_t currentDigimon) {
+   bestScore = statTotal = statCount = 0U;
+ 
+   for (i = 0; i < 6; i++) {
+-    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr)) { /* MOD (scale): a model that does not fit is no target */
++    if (*targetPtr == -1 || !isPartnerModelFit(*targetPtr) || !modSpeciesAllowed(*targetPtr)) { /* MOD (scale): a model that does not fit is no target; MOD (options): NEW DIGIMON off, the original's species only */
+       targetPtr++;
+       continue;
+     }
+@@ -1378,7 +1379,7 @@ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ 	/* MOD (evolution rules as data): the {from, to} pairs of MOD_EVO_ULTIMATE (Megadramon/Gigadramon -> Machinedramon) */
+ 	for (i = 0; i < MOD_EVO_PAIR_MAX; i++) {
+ 		target = MOD_EVO_ULTIMATE[i][1];
+-		if (MOD_EVO_ULTIMATE[i][0] != currentDigimon || target < 0) {
++		if (MOD_EVO_ULTIMATE[i][0] != currentDigimon || target < 0 || !modSpeciesAllowed(target)) {
+ 			continue;
+ 		}
+ 		reqs = &EVO_REQ_ROW(target);
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 63295d6a..cfa723f9 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -187,6 +187,7 @@ static int32_t chartDetailInput(void);
+ static void chartOverviewInput(void); /* MOD (chart) */
+ static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y);
+ static void chartCardRelease(void); /* MOD (chart criteria) */
++static void chartVanillaInput(void); /* MOD (options): NEW DIGIMON off */
+ void renderPlayerInfoView(void);
+ void renderString();
+ void renderMenuTab(int16_t x, int8_t w, int8_t layer);
+@@ -1737,7 +1738,11 @@ void tickPlayerMenu(void)
+ 		if (PLAYER_MENU_STATE == 1) {
+ 			if (MENU_STATE == 2) {
+ 				/* MOD (chart): the tabs, pages and grid of every partner species (chartOverviewInput) */
+-				chartOverviewInput();
++				if (MOD_OPT_NEW_DIGIMON) {
++					chartOverviewInput();
++				} else {
++					chartVanillaInput(); /* MOD (options): NEW DIGIMON off, the original sheet */
++				}
+ 				if (isKeyDown(CONFIRM_BUTTON) != 0) {
+ 					if (CHART_SELECTED_DIGIMON > 0 &&
+ 					    hasDigimonRaised((uint16_t)CHART_SELECTED_DIGIMON) != 0) {
+@@ -2890,6 +2895,36 @@ static int8_t CHART_DETAIL_DEPTH;
+ static int8_t CHART_CURSOR_SIDE; /* 0 the "from" boxes, 1 the "to" boxes */
+ static int8_t CHART_CURSOR_J;	 /* the slot in that side's array */
+ 
++/*
++ * MOD (options): a species' evolution paths as the chart shows them: with NEW DIGIMON off, the species the original does
++ * not raise are left out (DIGI.DAT's links fill the original rows' empty slots, so what stays is the original row).
++ * Not to be kept across a load (getEvolutionPath).
++ */
++static EvolutionPath CHART_PATH;
++
++static EvolutionPath *chartEvolutionPath(int32_t id)
++{
++	EvolutionPath *path;
++	int32_t j;
++
++	path = getEvolutionPath(id);
++	if (MOD_OPT_NEW_DIGIMON) {
++		return path;
++	}
++	CHART_PATH = *path;
++	for (j = 0; j < 5; j++) {
++		if (CHART_PATH.from[j] > 0 && !modSpeciesAllowed(CHART_PATH.from[j])) {
++			CHART_PATH.from[j] = -1;
++		}
++	}
++	for (j = 0; j < 6; j++) {
++		if (CHART_PATH.to[j] > 0 && !modSpeciesAllowed(CHART_PATH.to[j])) {
++			CHART_PATH.to[j] = -1;
++		}
++	}
++	return &CHART_PATH;
++}
++
+ static void loadChartPortraits(int32_t id)
+ {
+ 	EvolutionPath *path;
+@@ -2900,7 +2935,7 @@ static void loadChartPortraits(int32_t id)
+ 	for (i = 0; i < CHART_EXTRA_SLOTS; i++) {
+ 		CHART_EXTRA_ID[i] = 0;
+ 	}
+-	path = getEvolutionPath(id);
++	path = chartEvolutionPath(id);
+ 	n = 0;
+ 	for (i = -1; i < 11 && n < CHART_EXTRA_SLOTS; i++) {
+ 		other = i < 0 ? id : (i < 5 ? path->from[i] : path->to[i - 5]);
+@@ -2912,7 +2947,7 @@ static void loadChartPortraits(int32_t id)
+ 		                    CHART_EXTRA_X + (n % 8) * 16, CHART_EXTRA_CLUT_Y + n / 8);
+ 		n++;
+ 		if (i >= 0) {
+-			path = getEvolutionPath(id); /* the loads may have moved the record of a new species */
++			path = chartEvolutionPath(id); /* the loads may have moved the record of a new species */
+ 		}
+ 	}
+ }
+@@ -2941,7 +2976,7 @@ static int32_t chartDetailBox(int32_t side, int32_t j, int16_t *x, int16_t *y)
+ 	int32_t i;
+ 	int32_t id;
+ 
+-	path = getEvolutionPath(CHART_DETAIL_ID);
++	path = chartEvolutionPath(CHART_DETAIL_ID);
+ 	n = side == 0 ? 5 : 6;
+ 	count = 0;
+ 	for (i = 0; i < n; i++) {
+@@ -3154,6 +3189,11 @@ static int32_t chartPages(void)
+ /* the icon's top-left corner of a grid box, screen pixels (its border is one pixel out) */
+ static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y)
+ {
++	if (!MOD_OPT_NEW_DIGIMON) { /* MOD (options): the original sheet's columns (chartVanillaInput) */
++		*x = (col < 3 ? col * 0x25 + 0x1c : col < 7 ? (col - 3) * 0x18 + 0x8b : (col - 7) * 0x18 + 0xf8) + 2;
++		*y = row * 0x13 + 0x2b;
++		return;
++	}
+ 	*x = CHART_GRID_X + 1 + col * CHART_PITCH;
+ 	*y = CHART_GRID_Y + 1 + row * CHART_PITCH;
+ }
+@@ -3401,6 +3441,136 @@ static void chartOverviewInput(void)
+ 	}
+ }
+ 
++/*
++ * MOD (options): with NEW DIGIMON off the overview is the original one: the sheet of the original's species in its level
++ * columns, its cursor and its input (the code before patch 0170).
++ */
++static void chartVanillaInput(void)
++{
++	int16_t previousRow;
++	int16_t previousColumn;
++	uint8_t maxColumn;
++	int16_t selectorX;
++	int32_t i;
++
++	previousRow = CHART_SELECTED_COLUMN;
++	previousColumn = CHART_SELECTED_ROW;
++	if (CHANGED_INPUT & 0x8000) {
++		CHART_SELECTED_COLUMN--;
++	}
++	if (CHANGED_INPUT & 0x2000) {
++		CHART_SELECTED_COLUMN++;
++	}
++	if (CHART_SELECTED_COLUMN < 0) {
++		CHART_SELECTED_COLUMN = 0;
++	}
++	if (CHART_SELECTED_COLUMN >= 9) {
++		CHART_SELECTED_COLUMN = 8;
++	}
++	if ((CHART_SELECTED_COLUMN == 0) || (CHART_SELECTED_COLUMN == 1)) {
++		if (CHANGED_INPUT & 0x1000) {
++			CHART_SELECTED_ROW -= 2;
++		}
++		if (CHANGED_INPUT & 0x4000) {
++			CHART_SELECTED_ROW += 2;
++		}
++		CHART_SELECTED_ROW = (CHART_SELECTED_ROW / 2) * 2;
++		maxColumn = 6;
++	} else {
++		if (CHANGED_INPUT & 0x1000) {
++			CHART_SELECTED_ROW--;
++		}
++		if (CHANGED_INPUT & 0x4000) {
++			CHART_SELECTED_ROW++;
++		}
++		if (CHART_SELECTED_COLUMN == 2) {
++			maxColumn = 8;
++		} else if (((CHART_SELECTED_COLUMN >= 4) && (CHART_SELECTED_COLUMN < 7)) || (CHART_SELECTED_COLUMN == 8)) {
++			maxColumn = 6;
++		} else {
++			maxColumn = 7;
++		}
++	}
++	if (CHART_SELECTED_ROW < 0) {
++		CHART_SELECTED_ROW = 0;
++	}
++	if (maxColumn < CHART_SELECTED_ROW) {
++		CHART_SELECTED_ROW = maxColumn;
++	}
++	if ((previousRow != CHART_SELECTED_COLUMN) || (previousColumn != CHART_SELECTED_ROW)) {
++		playSound(0, 2);
++	}
++	if (CHART_SELECTED_COLUMN < 3) {
++		selectorX = CHART_SELECTED_COLUMN * 0x25 + 0x1c;
++	} else if (CHART_SELECTED_COLUMN < 7) {
++		selectorX = (CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b;
++	} else {
++		selectorX = (CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8;
++	}
++	for (i = 0; i < NUM_EVO_CHART_DIGIMON; i++) {
++		if (((selectorX + 2) == EVO_CHART_BOXES[i].posX) &&
++		    ((CHART_SELECTED_ROW * 0x13 + 0x2b) == EVO_CHART_BOXES[i].posY)) {
++			break;
++		}
++	}
++	CHART_SELECTED_DIGIMON = i < NUM_EVO_CHART_DIGIMON ? i + 1 : -1;
++}
++
++static void renderEvoChartViewVanilla(void)
++{
++	int32_t i;
++	int16_t x;
++	int8_t shift;
++	EvoClutTable cluts;
++
++	cluts = EVO_CHART_VIEW_COLORS;
++	switch (MENU_STATE) {
++	case 0:
++		if (drawEvoChartStrings(0) == 1) {
++			MENU_STATE = 1;
++		}
++		break;
++	case 2:
++	case 3:
++	case 4:
++		if (CHART_SELECTED_COLUMN < 3) {
++			x = (int16_t)(CHART_SELECTED_COLUMN * 0x25 + 0x1c);
++		} else if (CHART_SELECTED_COLUMN < 7) {
++			x = (int16_t)((CHART_SELECTED_COLUMN - 3) * 0x18 + 0x8b);
++		} else {
++			x = (int16_t)((CHART_SELECTED_COLUMN - 7) * 0x18 + 0xf8);
++		}
++		renderRectPolyFT4((int16_t)(x - 0xa2), (int16_t)(CHART_SELECTED_ROW * 0x13 - 0x4e), 0x18, 0x14, 0, 0xe8, 0x18,
++		                  0x7dc7, 5, 0);
++		/* fall through */
++	case 1:
++		for (i = 0; i < NUM_EVO_CHART_DIGIMON; i++) {
++			if (hasDigimonRaised((i + 1) & 0xffff)) {
++				shift = 0;
++				if ((i + 1 == CHART_SELECTED_DIGIMON) && (1 < MENU_STATE) && ((PLAYTIME_FRAMES % 10) < 5)) {
++					shift = 0x10;
++				}
++				renderRectPolyFT4((int16_t)(EVO_CHART_BOXES[i].posX - 0xa0), (int16_t)(EVO_CHART_BOXES[i].posY - 0x78),
++				                  0x10, 0x10, (uint8_t)(shift + EVO_CHART_BOXES[i].u), EVO_CHART_BOXES[i].v, 0x18,
++				                  cluts.m[EVO_CHART_BOXES[i].clut], 5, 0);
++			}
++		}
++		for (i = 0; i < NUM_EVO_CHART_DIGIMON; i++) {
++			renderBorderBox((EVO_CHART_BOXES[i].posX - 1), (EVO_CHART_BOXES[i].posY - 1), 0x12, 0x12, 0xbebebe,
++			                0x3c3c3c, 0x87, 0x87, 0x87, 5);
++		}
++		renderBorderBox(0x15, 0x27, 0x22, 0x9f, 0xaaa0c8, 0x5a3c8c, 0xa5, 0x5a, 0x73, 5);
++		renderBorderBox(0x3a, 0x27, 0x22, 0x9f, 0xa078a5, 0x46144b, 0x6e, 0x2d, 0x5a, 5);
++		renderBorderBox(0x5f, 0x27, 0x22, 0xb0, 0xc88250, 0x5f370a, 0xf, 0x50, 0x82, 5);
++		renderBorderBox(0x84, 0x27, 0x6a, 0x9f, 0x6eaf5a, 0x285a00, 0, 0x87, 0x41, 5);
++		renderBorderBox(0xf1, 0x27, 0x38, 0x9f, 0x6996d2, 0x1e4178, 0xaf, 0x64, 0x2d, 5);
++		renderString(0xf, -0x1a, 0x54, 0xc, 0xc, 0, 0xc, 5, 1);
++		renderString(0, -0xe, 0x54, 0x3c, 0xc, 0xc, 0xc, 5, 1);
++		renderString(7, 0x3a, 0x54, 0xc, 0xc, 0x48, 0xc, 5, 1);
++		renderString(0, 0x46, 0x54, 0x3c, 0xc, 0x54, 0xc, 5, 1);
++	}
++}
++
+ void renderEvoChartView(void)
+ {
+ 	int32_t k;
+@@ -3412,6 +3582,10 @@ void renderEvoChartView(void)
+ 	int8_t shift;
+ 	EvoClutTable cluts;
+ 
++	if (!MOD_OPT_NEW_DIGIMON) {
++		renderEvoChartViewVanilla();
++		return;
++	}
+ 	cluts = EVO_CHART_VIEW_COLORS;
+ 	switch (MENU_STATE) {
+ 	case 0:
+@@ -3910,7 +4084,7 @@ void renderEvoChartDetail(void)
+ 
+ 	clut = EVO_CHART_DETAIL_COLORS;
+ 	MENU_SUB_STATE = 2;
+-	ep = getEvolutionPath(CHART_DETAIL_ID); /* MOD (portraits): any species of the tree */
++	ep = chartEvolutionPath(CHART_DETAIL_ID); /* MOD (portraits): any species of the tree; MOD (options): NEW DIGIMON */
+ 	drawEvoChartStrings(CHART_DETAIL_ID);
+ 	count1 = (count2 = 0);
+ 	for (i = 0; i < 5; i++) {
+diff --git a/src/main/item.c b/src/main/item.c
+index 78aeadd1..1362de5e 100644
+--- a/src/main/item.c
++++ b/src/main/item.c
+@@ -4,6 +4,7 @@
+ #include <inline_n.h>
+ #include <libgs.h>
+ 
++#include <dw/mod_options.h>
+ #include <dw/anim.h>
+ #include <dw/btl.h>
+ #include <dw/combat.h>
+@@ -2201,7 +2202,7 @@ void handleEvoItems(int16_t item)
+ 	if (item >= 0x7d) {
+ 		/* MOD (evolution rules as data): Giga Hand, Noble Mane, Metalbanana: MOD_EVO_ITEMS (content/tables/evolution-rules.json) */
+ 		modItem = getModEvoItem(item);
+-		if (modItem == NULL) {
++		if (modItem == NULL || !modSpeciesAllowed(modItem->target)) { /* MOD (options): NEW DIGIMON off */
+ 			return;
+ 		}
+ 		EVOLUTION_TARGET = modItem->target;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 10f0cdc1..3f3b2c81 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -257,9 +257,9 @@ int32_t MEMORY_CARD_ID;
+ int32_t MAIN_MENU_TICKS;
+ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back from OPTIONS */
+ #if FONT_SWITCH
+-#define MOD_OPT_ROWS	6 /* MOD (options): and FONT, in a build with both fonts */
++#define MOD_OPT_ROWS	7 /* MOD (options): and FONT, in a build with both fonts */
+ #else
+-#define MOD_OPT_ROWS	5
++#define MOD_OPT_ROWS	6
+ #endif
+ static void renderOptionsMenu(void);
+ static void drawOptionsText(void);
+@@ -4598,7 +4598,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	int16_t screens[2];
+ 	int16_t inventory[30];
+ 	int32_t partnerType;
+-	uint8_t options[6]; /* MOD (options) */
++	uint8_t options[7]; /* MOD (options) */
+ 	int32_t size;
+ 	int32_t i;
+ 
+@@ -4661,6 +4661,7 @@ static void prepareSaveFile(int32_t fromRam)
+ 	options[4] = 0;
+ #endif
+ 	options[5] = MOD_OPT_EVO_GUIDE;
++	options[6] = MOD_OPT_NEW_DIGIMON;
+ 	p = putRecord(p, SAVE_TAG_OPTIONS, options, sizeof(options));
+ 	/* MOD (tier 2): the story state's records go here */
+ 	putRecord(p, SAVE_TAG_END, 0, 0);
+@@ -4907,6 +4908,9 @@ static void applyRecords(uint8_t *e)
+ 			if (len >= 6 && !MOD_OPT_TOUCHED) {
+ 				MOD_OPT_EVO_GUIDE = d[5] != 0;
+ 			}
++			if (len >= 7 && !MOD_OPT_TOUCHED) {
++				MOD_OPT_NEW_DIGIMON = d[6] != 0;
++			}
+ 			break;
+ 		}
+ 	}
+@@ -5373,6 +5377,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ 	{ MOD_OPT_STR_CLOCK, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_BARS, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_EVO, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
++	{ MOD_OPT_STR_NEWDIGI, MOD_OPT_STR_OFF, MOD_OPT_STR_ON },
+ 	{ MOD_OPT_STR_FPS, MOD_OPT_STR_20, MOD_OPT_STR_60 },
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+@@ -5416,8 +5421,10 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_OPT_BARS != 0;
+ 	case 3:
+ 		return MOD_OPT_EVO_GUIDE != 0;
++	case 4:
++		return MOD_OPT_NEW_DIGIMON != 0;
+ #if FONT_SWITCH
+-	case 5: /* NEW, CLASSIC, ORIGINAL */
++	case 6: /* NEW, CLASSIC, ORIGINAL */
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+ #endif
+ 	}
+@@ -5445,10 +5452,13 @@ static void modSetOption(int32_t row, int32_t value)
+ 		MOD_OPT_EVO_GUIDE = value;
+ 		break;
+ 	case 4:
++		MOD_OPT_NEW_DIGIMON = value;
++		break;
++	case 5:
+ 		modSetFrameRate(value ? 60 : 20);
+ 		break;
+ #if FONT_SWITCH
+-	case 5:
++	case 6:
+ 		modSetFont(value == 0 ? MOD_FONT_NEW : value == 1 ? MOD_FONT_CLASSIC : MOD_FONT_ORIGINAL);
+ 		break;
+ #endif
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 119e5fd8..54541b0c 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -23,6 +23,7 @@
+  * keeps 20 and the option shows it without a choice.
+  */
+ #include <dw/mod_options.h>
++#include <dw/species.h>
+ #include <dw/mod_fps.h>
+ 
+ #include "common.h"
+@@ -33,6 +34,12 @@ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_BARS = 1;
+ int32_t MOD_OPT_EVO_GUIDE = 1;
++int32_t MOD_OPT_NEW_DIGIMON = 1;
++
++int32_t modSpeciesAllowed(int32_t type)
++{
++	return MOD_OPT_NEW_DIGIMON || isVanillaSpecies(type);
++}
+ int32_t MOD_OPT_TOUCHED = 0;
+ 
+ /* the colour the text draws a button glyph in (the US disc's: × cyan, △ green, ○ orange); -1 = not a button */
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index ba1516a2..60bb34e2 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -54,6 +54,17 @@ static RaiseData NO_RAISE;
+ static EvoRequirements NO_EVO_REQS;
+ static EvoStatsGains NO_EVO_GAINS;
+ 
++static uint8_t SPECIES_VANILLA[SPECIES_VANILLA_BYTES];
++static int8_t SPECIES_HAS_VANILLA;
++
++int32_t isVanillaSpecies(int32_t type)
++{
++	if (!SPECIES_HAS_VANILLA) {
++		return 1;
++	}
++	return (uint32_t)type < NUM_DIGIMON && ((SPECIES_VANILLA[type >> 3] >> (type & 7)) & 1);
++}
++
+ int32_t isRecordOriginal(int32_t type)
+ {
+ 	if ((uint32_t)type >= NUM_ORIGINAL_DIGIMON) {
+@@ -340,6 +351,11 @@ void initializeSpecies(void)
+ 	for (i = 0; i < SPECIES_RECORD_ORIGINALS_BYTES; i++) {
+ 		SPECIES_RECORD_ORIGINALS[i] = ((uint8_t *)SPECIES_SECTOR)[SPECIES_HEADER_RECORD_ORIGINALS + i];
+ 	}
++	SPECIES_HAS_VANILLA = 0;
++	for (i = 0; i < SPECIES_VANILLA_BYTES; i++) {
++		SPECIES_VANILLA[i] = ((uint8_t *)SPECIES_SECTOR)[SPECIES_HEADER_VANILLA + i];
++		SPECIES_HAS_VANILLA |= SPECIES_VANILLA[i] != 0;
++	}
+ 	SPECIES_FALLBACK_PORTRAIT = header->fallbackPortrait;
+ 	SPECIES_CHART_SECTOR = header->chartSector;
+ 	SPECIES_RECORDS_SECTOR = header->recordsSector;
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 3f62bdfd..e6f40dc4 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -365,6 +365,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_EVO:
+       ja: "EVOLUTION GUIDE"
+       en_us: "EVOLUTION GUIDE"
++    MOD_OPT_STR_NEWDIGI:
++      ja: "NEW DIGIMON"
++      en_us: "NEW DIGIMON"
+     MOD_OPT_STR_FPS:
+       ja: "FRAME RATE"
+       en_us: "FRAME RATE"
+-- 
+2.53.0
+

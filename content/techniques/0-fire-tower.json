@@ -1,0 +1,17 @@
+{
+  "id": 0,
+  "name": "Fire Tower",
+  "element": "fire",
+  "power": 155,
+  "mpCost": 27,
+  "distance": 90000,
+  "range": 2,
+  "accuracy": 55,
+  "status": 3,
+  "statusChance": 8,
+  "iframes": 26,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [25, 16, 11]
+}

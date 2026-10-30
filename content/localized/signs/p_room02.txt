@@ -1,0 +1,5 @@
+Image 1 is a crop of a pre-rendered 3D background from a 1990s PlayStation game: a green doormat lying on a tiled floor, seen from above at an angle, with the word "Welcome" printed on it in yellow-orange italic sans-serif letters that follow the mat's perspective.
+
+Edit only the lettering: replace "Welcome" with the Spanish word "Bienvenido", in exactly the same yellow-orange colour, the same bold italic sans-serif lettering, the same letter height, and the same perspective and slant on the mat, centred on the mat in the same place. Fit the longer word inside the mat with a margin like the original's (slightly smaller letters are fine).
+
+Keep everything else pixel-identical: the mat's shape, size, position, dark border and green colour, the floor tiles, their lines and shading, the black area and the green object at the bottom right. Same lighting, no new effects, no glow, no shadows added. Output the same framing and aspect ratio as image 1.

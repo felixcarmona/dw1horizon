@@ -1,0 +1,36 @@
+From ad201552957f0305e3fc889235243cd73ae48c5d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 21:22:29 +0000
+Subject: [PATCH] Patch 0229: the recycle bin's cap on items lost in a defeat
+ is economy.item.stackCap again (econCap(MOD_ECON_STACK_CAP, 255)): patch 0133
+ left its generator's placeholder ' + STACK + ' in handleItemLoss, a
+ multi-character constant GCC folded into a test that is never true, so the
+ bin's u8 count grew past 99 and wrapped after 255 (at 128 its bit 7 is the
+ recycle list's affordable flag: unaffordable items looked buyable and could
+ take the bits below 0). 32 bytes of heap
+
+---
+ src/main/script_common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index a9202078..4bb69cd6 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1355,10 +1355,11 @@ void handleItemLoss(void)
+ 		recycleId = INVENTORY.types.array[slot];
+ 		recycleId = getRecycleId(recycleId);
+ 		if (recycleId != 0xff) {
++			int32_t cap = econCap(MOD_ECON_STACK_CAP, 255); /* MOD: 0133 left a template placeholder here */
+ 			SCRIPT_STATE_PTR->smth[recycleId + 6] +=
+ 				INVENTORY.amounts.array[slot];
+-			if (SCRIPT_STATE_PTR->smth[recycleId + 6] > ' + STACK + ') {
+-				SCRIPT_STATE_PTR->smth[recycleId + 6] = ' + STACK + ';
++			if (SCRIPT_STATE_PTR->smth[recycleId + 6] > cap) {
++				SCRIPT_STATE_PTR->smth[recycleId + 6] = cap;
+ 			}
+ 		}
+ 
+-- 
+2.55.0
+

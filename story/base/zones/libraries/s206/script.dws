@@ -1,0 +1,254 @@
+// Readable form of script 206 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 206 {
+    npc slot1 = 6;
+    npc slot2 = 7;
+    npc slot5 = 10;
+    npc slot6 = 11;
+    npc slot7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 6, 10, 11, 7, 12;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(slot1) replace {    // section 6
+        curling_opponent = 0;
+        if (!is_recruited(species("Penguinmon")) && !penguinmon_curling_offered) {
+            say(slot1, text("s206.sec6.u0"));
+            say(tamer, text("s206.sec6.u1"));
+            say(slot1, text("s206.sec6.u2"));
+            say(tamer, text("s206.sec6.u3"));
+            say(slot1, text("s206.sec6.u4"));
+            say(tamer, text("s206.sec6.u5"));
+            say(slot1, text("s206.sec6.u6"));
+            penguinmon_curling_offered = true;
+            walk(slot1, 1905, 1667);
+            wait(10);
+            walk(tamer, 1905, 1667);
+            wait(10);
+            walk(partner, 1905, 1667);
+            wait(10);
+            warp_to(136, 1, 255);
+            return;
+        }
+        if (!is_recruited(species("Penguinmon"))) {
+            say(slot1, text("s206.sec6.u7"));
+            choice {
+                text("s206.sec6.m0.o0") => {}
+                text("s206.sec6.m0.o1") => {
+                    curling_match_pending = 0;
+                    say(slot1, text("s206.sec6.u10"));
+                    return;
+                }
+                cancel => {
+                    return;
+                }
+            }
+        } else {
+            if (!curling_rink_intro_seen) {
+                curling_rink_intro_seen = true;
+                say(slot1, text("s206.sec6.u8"));
+            }
+            curling_opponent = 0;
+            say(slot1, text("s206.sec6.u9"));
+            choice {
+                text("s206.sec6.m1.o0") => {}
+                text("s206.sec6.m1.o1") => {
+                    curling_match_pending = 0;
+                    say(slot1, text("s206.sec6.u10"));
+                    return;
+                }
+                cancel => {
+                    return;
+                }
+            }
+        }
+        say(slot1, text("s206.sec6.u11"));
+        engine.picker_mode = true;
+        call_routine(routine("choose_item"));
+        if (engine.picker_mode) {
+            say(tamer, text("s206.sec6.u12"));
+        } else {
+            if (engine.arg in [item("Digianchovy"), item("Digisnapper"), item("DigiTrout"), item("Black trout")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else if (engine.arg in [item("Digicatfish"), item("Digiseabass")]) {
+                call_routine(routine("remove_chosen_item"));
+            } else {
+                if (engine.arg != 255) {
+                    say(tamer, text("s206.sec6.u13"));
+                }
+                curling_match_pending = 0;
+                say(slot1, text("s206.sec6.u15"));
+                return;
+            }
+            say(slot1, text("s206.sec6.u14"));
+            warp_to(136, 1, 255);
+            return;
+        }
+        curling_match_pending = 0;
+        say(slot1, text("s206.sec6.u15"));
+    }
+
+    on talk(slot5) replace {    // section 10
+        if (curling_result == 0) {
+            say(slot1, text("s206.sec10.u0"));
+            return;
+        }
+        if (curling_result == 2) {
+            say(slot1, text("s206.sec10.u1"));
+            if (!medal.perfect_curling) {
+                medal.perfect_curling = true;
+                sound(0, 7);
+                say(narrator, text("s206.sec10.u2"));
+            }
+        }
+        say(slot1, text("s206.sec10.u3"));
+        say(tamer, text("s206.sec10.u4"));
+        say(slot1, text("s206.sec10.u5"));
+        walk_away(slot1, -105, 1821, looks: 3);
+        join_city_camera(slot1, species("Penguinmon"), 8, 11, text("s206.sec10.u6"));
+    }
+
+    on talk(slot6) replace {    // section 11
+        if (curling_result == 0) {
+            say(slot1, text("s206.sec11.u0"));
+            return;
+        }
+        if (curling_result == 2) {
+            say(slot1, text("s206.sec11.u1"));
+            if (!medal.perfect_curling) {
+                medal.perfect_curling = true;
+                sound(0, 7);
+                say(narrator, text("s206.sec11.u2"));
+            }
+        }
+        say(slot1, text("s206.sec11.u3"));
+        say(slot1, text("s206.sec11.u4"));
+        store_random(prize_roll, 49);
+        loop {
+            if (prize_roll <= 0) {
+                give_item(item("Rooster"), 1);
+                random_roll = 85;
+            } else if (prize_roll <= 5) {
+                give_item(item("Restore"), 1);
+                random_roll = 11;
+            } else if (prize_roll <= 15) {
+                give_item(item("Omni Disk"), 1);
+                random_roll = 18;
+            } else if (prize_roll <= 22) {
+                give_item(item("Giant Meat"), 1);
+                random_roll = 39;
+            } else if (prize_roll <= 30) {
+                give_item(item("lrg.recovery"), 1);
+                random_roll = 2;
+            } else if (prize_roll <= 50) {
+                give_item(item("Medium MP"), 1);
+                random_roll = 5;
+            }
+            unless (engine.item_did_not_fit) break;
+            say(slot1, text("s206.sec11.u5"));
+            engine.picker_mode = false;
+            call_routine(routine("choose_item"));
+            call_routine(routine("remove_all_chosen_item"));
+        }
+        say(narrator, text("s206.sec11.u6"));
+        camera_on(tamer, speed: 10);
+        await camera;
+    }
+
+    on talk(slot2) replace {    // section 7
+        curling_opponent = 1;
+        say(slot1, text("s206.sec7.u0"));
+        choice {
+            text("s206.sec7.m0.o0") => {
+                say(slot1, text("s206.sec7.u1"));
+                engine.picker_mode = true;
+                call_routine(routine("choose_item"));
+                if (engine.picker_mode) {
+                    say(tamer, text("s206.sec7.u2"));
+                } else {
+                    if (engine.arg in [item("Digianchovy"), item("Digisnapper"), item("DigiTrout"), item("Black trout")]) {
+                        call_routine(routine("remove_chosen_item"));
+                    } else if (engine.arg in [item("Digicatfish"), item("Digiseabass")]) {
+                        call_routine(routine("remove_chosen_item"));
+                    } else {
+                        if (engine.arg != 255) {
+                            say(tamer, text("s206.sec7.u3"));
+                        }
+                        curling_match_pending = 0;
+                        say(slot1, text("s206.sec7.u5"));
+                        return;
+                    }
+                    say(slot1, text("s206.sec7.u4"));
+                    warp_to(136, 1, 255);
+                    return;
+                }
+                curling_match_pending = 0;
+                say(slot1, text("s206.sec7.u5"));
+            }
+            text("s206.sec7.m0.o1") => {
+                say(slot1, text("s206.sec7.u6"));
+            }
+        }
+    }
+
+    on talk(slot7) replace {    // section 12
+        if (curling_result == 0) {
+            say(slot1, text("s206.sec12.u0"));
+            return;
+        }
+        if (curling_result == 2) {
+            say(slot1, text("s206.sec12.u1"));
+            if (!medal.perfect_curling) {
+                medal.perfect_curling = true;
+                sound(0, 7);
+                say(narrator, text("s206.sec12.u2"));
+            }
+        }
+        say(slot1, text("s206.sec12.u3"));
+        store_random(prize_roll, 49);
+        loop {
+            if (prize_roll <= 0) {
+                give_item(item("Silver ball"), 1);
+                random_roll = 103;
+            } else if (prize_roll <= 1) {
+                give_item(item("Metal armor"), 1);
+                random_roll = 104;
+            } else if (prize_roll <= 2) {
+                give_item(item("Chainsaw"), 1);
+                random_roll = 105;
+            } else if (prize_roll <= 3) {
+                give_item(item("Small spear"), 1);
+                random_roll = 106;
+            } else if (prize_roll <= 11) {
+                give_item(item("sup.recovery"), 1);
+                random_roll = 3;
+            } else if (prize_roll <= 21) {
+                give_item(item("Restore"), 1);
+                random_roll = 11;
+            } else if (prize_roll <= 33) {
+                give_item(item("Omnipotent"), 1);
+                random_roll = 9;
+            } else if (prize_roll <= 49) {
+                give_item(item("Sirloin"), 1);
+                random_roll = 40;
+            }
+            unless (engine.item_did_not_fit) break;
+            say(slot1, text("s206.sec12.u4"));
+            engine.picker_mode = false;
+            call_routine(routine("choose_item"));
+            call_routine(routine("remove_all_chosen_item"));
+        }
+        say(narrator, text("s206.sec12.u5"));
+        camera_on(tamer, speed: 10);
+        await camera;
+        return;
+    }
+}

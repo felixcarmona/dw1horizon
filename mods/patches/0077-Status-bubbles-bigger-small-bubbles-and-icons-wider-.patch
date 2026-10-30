@@ -1,0 +1,91 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 18:30:00 +0000
+Subject: [PATCH] Status bubbles: bigger small bubbles (0.6 of the big circle)
+ and icons (0.7 of the big icon), wider arc (radius 30, six at +-86 degrees)
+
+Measured in the reference video: small circle 0.53 of the big one's
+diameter, small icon about 0.7 of the big icon (it fills more of a small
+bubble). Before, both were 0.5 and the icon read as a smudge. Sizes
+interpolate between the new small and the big one; the tail grows from the
+small size to full.
+
+---
+ src/main/bubble.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index f372640..28724ab 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -579,8 +579,13 @@ int32_t MOD_STATUS_BUBBLES = 1;
+  */
+ #define RING_HOLD_TICKS	40	/* ticks at rest before the next rotation (+ a step = 2.5 s, the original bubble's 50 ticks) */
+ #define RING_STEP_TICKS	10	/* ticks per step: 0.5 s */
+-#define RING_RADIUS	28	/* texels from the anchor to the small bubbles */
++#define RING_RADIUS	30	/* texels from the anchor to the small bubbles (a small circle is 19 texels wide: 5 of them 43 degrees apart do not touch) */
+ #define RING_BULGE	12	/* texels a centre <-> arc path bows sideways */
++/* sizes of a small bubble, 256 = the big one, from the owner's reference
++ * video: small circle 0.53 of the big one's diameter, small icon 0.67-0.7 of
++ * the big icon (the icon fills more of a small bubble); a little bigger here */
++#define RING_SMALL	154	/* circle: 0.6 */
++#define RING_SMALL_ICON	180	/* icon: 0.7 */
+ #define RING_NONE	0x1000	/* slot codes: no bubble, */
+ #define RING_CENTRE	0x2000	/* the big bubble, else the angle (512 = turn) */
+ 
+@@ -588,7 +593,7 @@ int32_t MOD_STATUS_BUBBLES = 1;
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+ static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
+ /* half span of the arc in degrees by the number of small bubbles */
+-static const uint8_t RING_SPAN[6] = { 0, 0, 36, 60, 72, 82 };
++static const uint8_t RING_SPAN[6] = { 0, 0, 36, 60, 72, 86 };
+ 
+ int32_t MOD_RING_CLOCK = 1;
+ int32_t MOD_RING_BIG = 0;	/* the big condition (index in RING_BIT) */
+@@ -609,7 +614,7 @@ extern int32_t MOD_RENDER_ALPHA;
+ 
+ static int32_t ringSlotSize(int32_t slot)
+ {
+-	return slot == RING_NONE ? 0 : (slot == RING_CENTRE ? 256 : 128);
++	return slot == RING_NONE ? 0 : (slot == RING_CENTRE ? 256 : RING_SMALL);
+ }
+ 
+ static void ringSlotPos(int32_t slot, int32_t *x, int32_t *y)
+@@ -691,22 +696,29 @@ static void ringBubbleAt(int32_t j, int32_t p, int32_t *x, int32_t *y,
+ }
+ 
+ /* one bubble: its circle centred on (cx, cy); the tail of the big bubble
+- * grows with the size from half to full */
++ * grows with the size from small to full; the icon's size goes from
++ * RING_SMALL_ICON to full as the circle's goes from RING_SMALL to full */
+ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ 			   uint32_t scale, int32_t size, int32_t k)
+ {
+ 	GsSPRITE *bg = &CONDITION_SPRITES[11];
+ 	uint32_t s = (scale * size) >> 8;
+ 	int32_t kk = (k * size) >> 8; /* screen pixels per texel, 4096 = 1 */
++	int32_t isize = size <= RING_SMALL ?
++			(size * RING_SMALL_ICON) / RING_SMALL :
++			RING_SMALL_ICON + ((size - RING_SMALL) * (256 - RING_SMALL_ICON)) /
++					  (256 - RING_SMALL);
+ 	int32_t icon = RING_ICON[j];
+-	int32_t tail = (size - 128) * 2;
++	int32_t tail = ((size - RING_SMALL) * 256) / (256 - RING_SMALL);
+ 
+ 	if (icon == 4) {
+ 		icon = 4 + ((MOD_RING_CLOCK / 8) % 5);
+ 	}
+-	/* icon pivots are 18 texels under the circle's centre */
+-	drawConditionIcon(icon, MOD_RING_CLOCK, cx, cy + ((18 * kk) >> 12),
+-			  depth, s);
++	/* icon pivots are 18 texels under the circle's centre (in the icon's
++	 * own scale, so that it stays centred) */
++	drawConditionIcon(icon, MOD_RING_CLOCK, cx,
++			  cy + ((18 * ((k * isize) >> 8)) >> 12),
++			  depth, (scale * isize) >> 8);
+ 	bg->h = 26;
+ 	bg->my = 13;
+ 	renderSprite(bg, cx, cy, depth, s, s);
+-- 
+2.43.0
+

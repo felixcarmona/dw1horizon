@@ -1,0 +1,152 @@
+{
+ "s010.sec5.u0": [
+  [
+   "Non sai stare al tuo posto!"
+  ]
+ ],
+ "s010.sec7.u0": [
+  [
+   "Cosa ti ho fatto??"
+  ]
+ ],
+ "s010.sec8.m0.o0": "Paga",
+ "s010.sec8.m0.o1": "Non pagare",
+ "s010.sec8.u0": [
+  [
+   "Uuk-uuk-uuuk! Mi chiedi",
+   "perché sono qui?! Ascolta,",
+   "{color 6}{player}{color 1}! Ho provato a"
+  ],
+  [
+   "farmi un harem in città e mi",
+   "hanno cacciato!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tsk... Ah, giusto. Dicono che",
+   "ultimamente navighi nell'oro,",
+   "eh? Ti vendo una cosa bella,"
+  ],
+  [
+   "uuk! La più rara al mondo: la",
+   "{color 6}Banana d'oro{color 1}. Solo 50000 Bit!",
+   "Niente credito, uuk-uuk."
+  ]
+ ],
+ "s010.sec8.u2": [
+  [
+   "Sei matto? Hai troppa roba con",
+   "te!"
+  ]
+ ],
+ "s010.sec8.u3": [
+  [
+   "Ops, ho la borsa piena."
+  ]
+ ],
+ "s010.sec8.u4": [
+  [
+   "Uuk, un piacere fare affari!"
+  ]
+ ],
+ "s010.sec8.u5": [
+  [
+   "I soldi non servono se non li",
+   "spendi, amico."
+  ]
+ ],
+ "s010.sec51.m0.o0": "Certo",
+ "s010.sec51.m0.o1": "Un'altra volta",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Fermati subiiito!!!"
+  ]
+ ],
+ "s010.sec51.u1": [
+  [
+   "Il tuo umile servitore si",
+   "chiama Ninjamon!"
+  ]
+ ],
+ "s010.sec51.u2": [
+  [
+   "Tu devi essere {color 6}{player}{color 1}...",
+   "e tu {color 10}{partner}{color 1}! La vostra",
+   "fama ha raggiunto persino il"
+  ],
+  [
+   "lontano villaggio ninja. Vuoi",
+   "incrociare le lame con il tuo",
+   "umile servitore?"
+  ]
+ ],
+ "s010.sec51.u3": [
+  [
+   "Eheh, non così in fretta,",
+   "proprio così!"
+  ]
+ ],
+ "s010.sec51.u4": [
+  [
+   "La tua abilità è all'altezza",
+   "della tua fama! Ti prego, fai",
+   "di questo umile servitore il"
+  ],
+  [
+   "tuo disciepolo!"
+  ]
+ ],
+ "s010.sec51.u5": [
+  [
+   "Disciepolo...? Ah, discepolo.",
+   "No, grazie. Ma se aiuti a",
+   "costruire la città, va bene."
+  ]
+ ],
+ "s010.sec51.u6": [
+  [
+   "Capito! Anche questo è un",
+   "buon allenamento, proprio così.",
+   "Il tuo umile servitore farà del"
+  ],
+  [
+   "suo meglio!"
+  ]
+ ],
+ "s010.sec51.u7": "Ninjamon si è unito alla città!",
+ "s011.sec5.u0": [
+  [
+   "Potrei batterti con una mano",
+   "sola!"
+  ]
+ ],
+ "s011.sec6.u0": [
+  [
+   "Sembra che io possa batterti!"
+  ]
+ ],
+ "s011.sec7.u0": [
+  [
+   "Ih ih. Non sai proprio",
+   "niente..."
+  ]
+ ],
+ "s011.sec8.u0": [
+  [
+   "Ora basta!"
+  ]
+ ],
+ "s011.sec9.u0": [
+  [
+   "Fare il prepotente non è bello,",
+   "sai."
+  ]
+ ],
+ "s011.sec10.u0": [
+  [
+   "Ascoltami, Per favore!"
+  ]
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "screen": 317,
+  "art": "iron-hills-1",
+  "review": "Great gear spokes and stacked pipe silhouettes overlap the track's rear approaches. Pipe mouths and machinery feet remain solid; flat wall circuitry and ground cables remain background. Both end exits and all visible central grass stay connected.",
+  "pieces": [
+    {
+      "name": "great-gear",
+      "png": "317-great-gear.png",
+      "at": [
+        505,
+        19
+      ],
+      "depth": [
+        604,
+        311
+      ]
+    },
+    {
+      "name": "stacked-pipes",
+      "png": "317-stacked-pipes.png",
+      "at": [
+        12,
+        273
+      ],
+      "depth": [
+        180,
+        450
+      ]
+    }
+  ],
+  "collision": [],
+  "segmentation": "SAM ViT-H on the matching full-resolution generated art; object boxes, positive/negative points, best-score masks, components below three native pixels removed. See maps/author/foreground-a2/317.json."
+}

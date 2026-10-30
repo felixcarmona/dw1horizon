@@ -1,0 +1,137 @@
+{
+ "s093.sec5.u0": "Huh? Pensando bem, a estátua...",
+ "s093.sec5.u1": "Ah!",
+ "s093.sec5.u2": "Agora, então.",
+ "s093.sec5.u3": [
+  [
+   "Você voltou à vida. Que bom!"
+  ]
+ ],
+ "s093.sec5.u4": "Eu sou Angemon, o anjo que te guarda. Acordei aqui para cumprir meu dever com você.",
+ "s093.sec5.u5": "Não faço ideia do que ele está dizendo.",
+ "s093.sec5.u6": "Eu conheço as leis do céu. Seguindo a orientação da terra, ofereço minha alma.",
+ "s093.sec5.u7": "Isso não vai dar em nada... então, você vem para a cidade... ou o quê?",
+ "s093.sec5.u8": "Sua missão será meu dever. Eu vou.",
+ "s093.sec5.u9": "Desculpe, mas poderia falar em palavras que eu entendo?",
+ "s093.sec5.u10": [
+  [
+   "...Vou para a cidade. Faça o",
+   "seu melhor também... Assim está",
+   "melhor?"
+  ]
+ ],
+ "s093.sec5.u11": "Sim, isso eu entendo. Ok, prazer em tê-lo.",
+ "s093.sec5.u12": "Angemon veio para a cidade!",
+ "s093.sec51.u0": "Uau, parece quase vivo...",
+ "s093.sec51.u1": "Na verdade, você vê esse tipo de coisa o tempo todo. Você faz algo e começa a se mover, certo? Heh heh, espere!",
+ "s093.sec52.u0": "O que foi? {color 10}{partner}{color 1}, achou alguma coisa?",
+ "s093.sec52.u1": "Muito bem, {color 10}{partner}{color 1}!",
+ "s094.sec5.u0": "Ei, você está tremendo!",
+ "s094.sec6.u0": "Frio? É mesmo?",
+ "s094.sec7.u0": "Não é tudo inútil?",
+ "s095.sec81.u0": [
+  [
+   "{color 5}Treino: Empurrar gelo{color 1}"
+  ]
+ ],
+ "s095.sec81.u1": [
+  [
+   "Empurrar grandes blocos de",
+   "gelo desenvolve a resistência.",
+   "O HP máximo aumenta muito, e",
+   "a Defesa também."
+  ]
+ ],
+ "s095.sec81.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s095.sec84.u0": [
+  [
+   "{color 5}Treino: Queda de estalactites{color 1}"
+  ]
+ ],
+ "s095.sec84.u1": [
+  [
+   "Treine segurando enormes",
+   "estalactites de gelo que caem.",
+   "A Defesa aumenta muito, e a",
+   "Velocidade também."
+  ]
+ ],
+ "s095.sec84.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s096.sec5.u0": "Eu vou te derrubar!",
+ "s096.sec6.u0": "Chame de azar e desista!",
+ "s096.sec7.u0": [
+  [
+   "Alguma última palavra antes de",
+   "ser apagado?"
+  ]
+ ],
+ "s097.sec5.u0": "Quem é você?",
+ "s097.sec6.u0": "É tudo inútil.",
+ "s097.sec7.u0": "Hmm, eu peguei um resfriado?",
+ "s097.sec8.u0": "Ei, isso é frio da sua parte!",
+ "s098.sec5.u0": "Talvez devesse ir para casa?",
+ "s098.sec6.u0": "Vá para casa!",
+ "s098.sec7.u0": "É melhor você voltar!",
+ "s098.sec52.u0": "Tão brilhante...!",
+ "s098.sec52.u1": [
+  [
+   "{color 7}???mon {color 1}",
+   "Você que procura minha alma, agora chegou a",
+   "hora de acordar. Sobre você, a bênção das",
+   "minhas asas!"
+  ]
+ ],
+ "s098.sec52.u2": "O que...? Onde é isso? De quem é a voz? Ngh......!",
+ "s098.sec52.u3": "O que foi isso? A luz se foi... não há mais nada aqui embaixo... o que significa... que está lá em cima!",
+ "s099.sec5.u0": "Aqui é onde realmente dizemos adeus.",
+ "s099.sec6.u0": "Eu não cometo erros!",
+ "s095.sec81.m0.o0": "Começar o treino",
+ "s095.sec81.m0.o1": "Sobre este treino",
+ "s095.sec81.m0.o2": "Sair",
+ "s095.sec81.m1.o0": "Treino normal",
+ "s095.sec81.m1.o1": "Treino bônus",
+ "s095.sec81.m1.o2": "Deixa pra lá",
+ "s095.sec81.m2.o0": "Explique de novo",
+ "s095.sec81.m2.o1": "Começar o treino",
+ "s095.sec81.m2.o2": "Sair",
+ "s095.sec84.m0.o0": "Começar o treino",
+ "s095.sec84.m0.o1": "Sobre este treino",
+ "s095.sec84.m0.o2": "Sair",
+ "s095.sec84.m1.o0": "Treino normal",
+ "s095.sec84.m1.o1": "Treino bônus",
+ "s095.sec84.m1.o2": "Deixa pra lá",
+ "s095.sec84.m2.o0": "Explique de novo",
+ "s095.sec84.m2.o1": "Começar o treino",
+ "s095.sec84.m2.o2": "Sair",
+ "s100.sec60.u0": "Yeeugh!",
+ "s100.sec60.u1": ".........",
+ "s100.sec60.u2": "Você só pode estar brincando!",
+ "s100.sec60.u3": "Desapareceu... foi uma ilusão?",
+ "s100.sec60.u4": "Parece que vencemos... de alguma forma.",
+ "s100.sec60.u5": "Huh?",
+ "s100.sec60.u6": [
+  [
+   "Hum, hummm... Hã?!"
+  ]
+ ],
+ "s100.sec60.u7": "Eu meio que apaguei de repente... Desculpe-me por isso!",
+ "s100.sec60.u8": [
+  [
+   "Hummm?? O que foi isso? A",
+   "maldição de Analogman?! Bem,",
+   "agora deve estar tudo certo."
+  ]
+ ]
+}

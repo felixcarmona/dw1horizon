@@ -1,0 +1,813 @@
+{
+ "s101.sec5.u0": [
+  [
+   "Rapport, rapport ."
+  ]
+ ],
+ "s101.sec6.u0": [
+  [
+   "Ennemi repéré !"
+  ]
+ ],
+ "s101.sec7.u0": [
+  [
+   "Oh, hisse. Oh, hisse."
+  ]
+ ],
+ "s101.sec8.u0": [
+  [
+   "Aujourd'hui, c'est mauvais pour",
+   "ça."
+  ]
+ ],
+ "s101.sec9.u0": [
+  [
+   "Ku-ku-ku-ku..."
+  ]
+ ],
+ "s101.sec10.u0": [
+  [
+   "Ce n'est pas injuste ?"
+  ]
+ ],
+ "s101.sec11.u0": [
+  [
+   "Retenez-les !"
+  ]
+ ],
+ "s101.sec12.u0": [
+  [
+   "Tant à faire, tant à faire."
+  ]
+ ],
+ "s101.sec81.m0.o0": "Jouer de la flûte",
+ "s101.sec81.m0.o1": "Ne pas en jouer",
+ "s101.sec81.u0": [
+  [
+   "Jouer de la {color 6}Flûte bleue{color 1} ?"
+  ]
+ ],
+ "s102.sec10.u0": [
+  [
+   "- Rang D - Tournoi destiné",
+   "surtout aux Digimon Disciples.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s102.sec10.u1": [
+  [
+   "- Rang C - Tournoi destiné",
+   "surtout aux Digimon Champions.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s102.sec10.u2": [
+  [
+   "- Rang B - Pour les",
+   "Champions sûrs de leur force.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s102.sec10.u3": [
+  [
+   "- Rang A - Tournoi destiné",
+   "surtout aux Digimon Ultimes.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s102.sec10.u4": [
+  [
+   "- Rang S - Les Digimon les",
+   "plus puissants se réunissent.",
+   "Duels, 3 tours, 8 inscrits"
+  ],
+  [
+   "Accès : vainqueurs du rang A"
+  ]
+ ],
+ "s102.sec10.u5": [
+  [
+   "- Rang R - Une mêlée gagnée",
+   "par la ruse et la tactique. À",
+   "quatre, 2 tours, 8 inscrits"
+  ],
+  [
+   "Accès : ouvert à tous"
+  ]
+ ],
+ "s102.sec10.u6": [
+  [
+   "- Coupe Version 1 - Couronne",
+   "le meilleur Digimon de la",
+   "version 1. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 1"
+  ]
+ ],
+ "s102.sec10.u7": [
+  [
+   "- Coupe Version 2 - Couronne",
+   "le meilleur Digimon de la",
+   "version 2. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 2"
+  ]
+ ],
+ "s102.sec10.u8": [
+  [
+   "- Coupe Version 3 - Couronne",
+   "le meilleur Digimon de la",
+   "version 3. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 3"
+  ]
+ ],
+ "s102.sec10.u9": [
+  [
+   "- Coupe Version 4 - Couronne",
+   "le meilleur Digimon de la",
+   "version 4. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Digimon de",
+   "version 4"
+  ]
+ ],
+ "s102.sec10.u10": [
+  [
+   "- Coupe Version O -",
+   "Couronne le meilleur Digimon",
+   "hors des versions 1 à 4."
+  ],
+  [
+   "Combats à durée limitée. Duels,",
+   "3 tours, 8 inscrits Accès :",
+   "hors versions 1-4"
+  ]
+ ],
+ "s102.sec10.u11": [
+  [
+   "- Coupe Feu - Couronne le",
+   "roi des Digimon des flammes.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Feu"
+  ]
+ ],
+ "s102.sec10.u12": [
+  [
+   "- Coupe Combat - Couronne le",
+   "maître des arts martiaux",
+   "Digimon. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Combat"
+  ]
+ ],
+ "s102.sec10.u13": [
+  [
+   "- Coupe Tonnerre et Vent -",
+   "Couronne le roi des Digimon du",
+   "ciel et des tempêtes. Combats"
+  ],
+  [
+   "à durée limitée. Duels, 3",
+   "tours, 8 inscrits Accès : Air"
+  ]
+ ],
+ "s102.sec10.u14": [
+  [
+   "- Coupe Style - Couronne le",
+   "roi des Digimon les plus cool.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Glace"
+  ]
+ ],
+ "s102.sec10.u15": [
+  [
+   "- Coupe Nature - Couronne le",
+   "roi des Digimon qui aiment la",
+   "nature. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Nature"
+  ]
+ ],
+ "s102.sec10.u16": [
+  [
+   "- Coupe Métal - Couronne le",
+   "roi des Digimon supermachines.",
+   "Combats à durée limitée. Duels,"
+  ],
+  [
+   "3 tours, 8 inscrits Accès :",
+   "Mécaniques"
+  ]
+ ],
+ "s102.sec10.u17": [
+  [
+   "- Coupe Crasse - Couronne le",
+   "roi des Digimon les plus",
+   "crasseux. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : Crasse"
+  ]
+ ],
+ "s102.sec10.u18": [
+  [
+   "- Coupe Dino - Les Digimon",
+   "au sang ancien mesurent leurs",
+   "forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s102.sec10.u19": [
+  [
+   "- Coupe Ailes - Les Digimon",
+   "fiers de leurs ailes mesurent",
+   "leurs forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s102.sec10.u20": [
+  [
+   "- Coupe Animaux - Les",
+   "Digimon au sang bestial",
+   "mesurent leurs forces. Combats"
+  ],
+  [
+   "à durée limitée. Duels, 3",
+   "tours, 8 inscrits Accès : ???"
+  ]
+ ],
+ "s102.sec10.u21": [
+  [
+   "- Coupe Humaine - Les",
+   "Digimon humanoïdes mesurent",
+   "leurs forces. Combats à durée"
+  ],
+  [
+   "limitée. Duels, 3 tours, 8",
+   "inscrits Accès : ???"
+  ]
+ ],
+ "s102.sec51.u0": [
+  [
+   "Pas de tournoi aujourd'hui."
+  ]
+ ],
+ "s102.sec51.u1": [
+  [
+   "Pas inscrit, pas entrer."
+  ]
+ ],
+ "s102.sec51.u2": [
+  [
+   "Encore préparer. Entrer le 22,",
+   "entre 10 h et 23 h."
+  ]
+ ],
+ "s102.sec51.u3": [
+  [
+   "Dommage. Tournoi déjà fini.",
+   "Revenir l'an prochain."
+  ]
+ ],
+ "s102.sec81.m0.o0": "Explique-moi",
+ "s102.sec81.m0.o1": "Pas besoin d'explication",
+ "s102.sec81.m1.o0": "M'inscrire",
+ "s102.sec81.m1.o1": "Ne pas m'inscrire",
+ "s102.sec81.m2.o0": "Ne pas annuler",
+ "s102.sec81.m2.o1": "Annuler",
+ "s102.sec81.u0": [
+  [
+   "Dommage. Inscriptions finies.",
+   "Attendre encore un an."
+  ]
+ ],
+ "s102.sec81.u1": [
+  [
+   "Pas période de tournoi. Moi",
+   "ennuyer."
+  ]
+ ],
+ "s102.sec81.u2": [
+  [
+   "Tournoi juste fini. Attendre",
+   "encore un an."
+  ]
+ ],
+ "s102.sec81.u3": [
+  [
+   "Toi pas insecte. Pas entrer",
+   "tournoi."
+  ]
+ ],
+ "s102.sec81.u4": [
+  [
+   "Toi entrer tournoi ?"
+  ]
+ ],
+ "s102.sec81.u5": [
+  [
+   "Le 22, tournoi réservé aux",
+   "Digimon insectes. Pouvoir",
+   "s'inscrire maintenant. Pas"
+  ],
+  [
+   "Digimon insecte, pas entrer. Si",
+   "gagner, beau grand prix. Rien",
+   "perdre à essayer."
+  ]
+ ],
+ "s102.sec81.u6": [
+  [
+   "Pas période de tournoi. Moi",
+   "ennuyer."
+  ]
+ ],
+ "s102.sec81.u7": [
+  [
+   "Tournoi juste fini. Attendre",
+   "encore un an."
+  ]
+ ],
+ "s102.sec81.u8": [
+  [
+   "Toi inscrit à « {cup 3} ».",
+   "Toi annuler ?"
+  ]
+ ],
+ "s102.sec81.u9": [
+  [
+   "Annulé."
+  ]
+ ],
+ "s102.sec81.u10": [
+  [
+   "Quoi, toi sûr ?"
+  ]
+ ],
+ "s102.sec81.u11": [
+  [
+   "Inscription faite."
+  ]
+ ],
+ "s102.sec82.u0": [
+  [
+   "Dommage. Recommencer l'an",
+   "prochain."
+  ]
+ ],
+ "s102.sec82.u1": [
+  [
+   "Prix de participation: {color 6}",
+   "Viande géante{color 1}!"
+  ]
+ ],
+ "s102.sec82.u2": [
+  [
+   "Trop d'objets. Jeter quelque",
+   "chose."
+  ]
+ ],
+ "s102.sec82.u3": [
+  [
+   "Prix du vainqueur : 5000 Bits !",
+   "{color 6}Perle scarabée{color 1} obtenue !"
+  ]
+ ],
+ "s102.sec82.u4": [
+  [
+   "Inventaire plein !"
+  ]
+ ],
+ "s102.sec82.u5": [
+  [
+   "Deuxième prix : 2000 Bits !",
+   "{color 6}Casque à cornes{color 1} obtenu !"
+  ]
+ ],
+ "s102.sec82.u6": [
+  [
+   "Inventaire plein !"
+  ]
+ ],
+ "s102.sec82.u7": [
+  [
+   "Deuxième prix : 2000 Bits !",
+   "{color 6}Mâchoire ciseaux{color 1} obtenue !"
+  ]
+ ],
+ "s102.sec82.u8": [
+  [
+   "Inventaire plein !"
+  ]
+ ],
+ "s103.sec5.m0.o0": "Dans un gymnase",
+ "s103.sec5.m0.o1": "À l'arène, peut-être",
+ "s103.sec5.u0": [
+  [
+   "Moi ennuyer à s'entraîner ici.",
+   "Que faire ?"
+  ]
+ ],
+ "s103.sec5.u1": [
+  [
+   "Que faire, tu dis..."
+  ]
+ ],
+ "s103.sec5.u2": "Toi, où t'entraîner ?",
+ "s103.sec5.u3": [
+  [
+   "Dans une salle de sport, Je",
+   "crois."
+  ]
+ ],
+ "s103.sec5.u4": [
+  [
+   "Entraînement ennuyeux. Moi",
+   "vouloir devenir fort en vrais",
+   "combats."
+  ]
+ ],
+ "s103.sec5.u5": [
+  [
+   "Entraînement ennuyeux. Moi",
+   "vouloir devenir fort en vrais",
+   "combats."
+  ]
+ ],
+ "s103.sec5.u6": [
+  [
+   "Moi aller là-bas. Moi",
+   "entraîner."
+  ]
+ ],
+ "s103.sec5.u7": "Kabuterimon a rejoint la ville !",
+ "s103.sec6.u0": [
+  [
+   "Chaque année, jour avec deux",
+   "2, tournoi d'insectes ici.",
+   "Gagnant recevoir super prix."
+  ],
+  [
+   "Mais seuls Digimon insectes",
+   "pouvoir entrer."
+  ]
+ ],
+ "s103.sec6.u1": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon et autre sorte",
+   "d'insecte. Mais pas Numemon."
+  ],
+  [
+   "Chaque année, jour avec deux",
+   "2, tournoi d'insectes ici...",
+   "Hmm ? Toi déjà gagné tournoi."
+  ]
+ ],
+ "s103.sec6.u2": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon et autre insecte :",
+   "HerculesKabuterimon. Hercules"
+  ],
+  [
+   "super fort. Vainqueur du",
+   "tournoi recevoir objet qui",
+   "transforme en Hercules. Toi"
+  ],
+  [
+   "pouvoir participer plusieurs",
+   "fois."
+  ]
+ ],
+ "s103.sec7.m0.o0": "Bien sûr !",
+ "s103.sec7.m0.o1": "Non, merci",
+ "s103.sec7.u0": [
+  [
+   "Toi fort. Moi rien à",
+   "t'apprendre."
+  ]
+ ],
+ "s103.sec7.u1": [
+  [
+   "Nous étudier techniques.",
+   "Techniques fortes difficiles à",
+   "apprendre. Si toi capable,"
+  ],
+  [
+   "pouvoir apprendre technique.",
+   "Toi vouloir technique forte ?"
+  ]
+ ],
+ "s103.sec7.u2": [
+  [
+   "Alors nous essayer."
+  ]
+ ],
+ "s103.sec7.u3": [
+  [
+   "Toi pas assez Défense.",
+   "Entraîner plus."
+  ]
+ ],
+ "s103.sec7.u4": [
+  [
+   "Toi pas assez Vitesse.",
+   "Entraîner plus."
+  ]
+ ],
+ "s103.sec7.u5": [
+  [
+   "Toi pas assez HP. Entraîner",
+   "plus."
+  ]
+ ],
+ "s103.sec7.u6": "Toi, technique apprise.",
+ "s103.sec7.u7": [
+  [
+   "Insecte appris !"
+  ]
+ ],
+ "s103.sec81.u0": [
+  [
+   "{color 5}Entraînement : Pousser le",
+   "rocher{color 1}"
+  ]
+ ],
+ "s103.sec81.u1": [
+  [
+   "Pousser le rocher développe ta",
+   "force cachée. Tes HP max",
+   "augmentent beaucoup."
+  ]
+ ],
+ "s103.sec81.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s103.sec83.u0": [
+  [
+   "{color 5}Entraînement : Exercice de",
+   "frappe{color 1}"
+  ]
+ ],
+ "s103.sec83.u1": [
+  [
+   "Exerce tes techniques de",
+   "frappe sur un mannequin. Ton",
+   "Attaque augmente beaucoup."
+  ]
+ ],
+ "s103.sec83.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s104.sec5.m0.o0": "Deviens plus fort",
+ "s104.sec5.m0.o1": "Je connais une astuce...",
+ "s104.sec5.m0.o2": "Tiens bon",
+ "s104.sec5.u0": [
+  [
+   "Moi vouloir battre ces",
+   "Kabuterimon. Comment gagner ?"
+  ]
+ ],
+ "s104.sec5.u1": [
+  [
+   "Oui, moi penser pareil. Moi",
+   "entraîner."
+  ]
+ ],
+ "s104.sec5.u2": [
+  [
+   "Quoi ? Dis-moi."
+  ]
+ ],
+ "s104.sec5.u3": [
+  [
+   "Viens simplement en ville."
+  ]
+ ],
+ "s104.sec5.u4": [
+  [
+   "...Toi gentil. Moi aller ville."
+  ]
+ ],
+ "s104.sec5.u5": "Kuwagamon a rejoint la ville !",
+ "s104.sec5.u6": [
+  [
+   "Toi pas gentil. Moi déçu."
+  ]
+ ],
+ "s104.sec6.u0": [
+  [
+   "Hmm, toi déjà participé tournoi",
+   "d'insectes. Alors moi dire",
+   "bonne chose. Toi connaître «"
+  ],
+  [
+   "Nid de Kunemon » ? Dans",
+   "Forêt natale. Digimon enfant",
+   "dormir là, se réveiller en"
+  ],
+  [
+   "Kunemon. Parfois non. Dépendre",
+   "de chance."
+  ]
+ ],
+ "s104.sec6.u1": [
+  [
+   "Toi, tournoi d'insectes... Hmm",
+   "? Toi pas pouvoir entrer",
+   "maintenant. Alors moi dire"
+  ],
+  [
+   "bonne chose. Toi connaître «",
+   "Nid de Kunemon » ? Dans",
+   "Forêt natale. Digimon enfant"
+  ],
+  [
+   "dormir là, se réveiller en",
+   "Kunemon. Parfois non. Dépendre",
+   "de chance."
+  ]
+ ],
+ "s104.sec6.u2": [
+  [
+   "Toi participer tournoi",
+   "d'insectes ?"
+  ]
+ ],
+ "s104.sec6.u3": [
+  [
+   "Qu'est-ce que c'est ?"
+  ]
+ ],
+ "s104.sec6.u4": [
+  [
+   "S'inscrire avant 10 h le 22,",
+   "sinon pas entrer."
+  ]
+ ],
+ "s104.sec6.u5": [
+  [
+   "???"
+  ]
+ ],
+ "s104.sec6.u6": [
+  [
+   "Détails le même jour."
+  ]
+ ],
+ "s104.sec6.u7": [
+  [
+   "Je ne comprends rien à ce qu'il",
+   "dit."
+  ]
+ ],
+ "s104.sec7.m0.o0": "Se reposer un peu",
+ "s104.sec7.m0.o1": "Ne pas se reposer",
+ "s104.sec7.u0": [
+  [
+   "Nous entraîner beaucoup, mais",
+   "repos important. Toi reposer",
+   "une heure ?"
+  ]
+ ],
+ "s104.sec84.u0": [
+  [
+   "{color 5}Entraînement : Machine à",
+   "marteaux{color 1}"
+  ]
+ ],
+ "s104.sec84.u1": [
+  [
+   "Encaisse les coups de la",
+   "machine à marteaux pour",
+   "t'endurcir. Ta Défense"
+  ],
+  [
+   "augmente beaucoup."
+  ]
+ ],
+ "s104.sec84.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s104.sec85.u0": [
+  [
+   "{color 5}Entraînement : Tapis roulant{color 1}"
+  ]
+ ],
+ "s104.sec85.u1": [
+  [
+   "Cours à contre-courant sur le",
+   "tapis roulant. Ta Vitesse",
+   "augmente beaucoup."
+  ]
+ ],
+ "s104.sec85.u2": [
+  [
+   "{color 7}Machine à sous{color 1}",
+   "Arrête les trois rouleaux avec"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "et aligne les images."
+  ]
+ ],
+ "s103.sec81.m0.o0": "S'entraîner",
+ "s103.sec81.m0.o1": "Cet entraînement",
+ "s103.sec81.m0.o2": "Quitter",
+ "s103.sec81.m1.o0": "Entraînement normal",
+ "s103.sec81.m1.o1": "Entraînement bonus",
+ "s103.sec81.m1.o2": "Laisse tomber",
+ "s103.sec81.m2.o0": "Explique encore",
+ "s103.sec81.m2.o1": "S'entraîner",
+ "s103.sec81.m2.o2": "Quitter",
+ "s103.sec83.m0.o0": "S'entraîner",
+ "s103.sec83.m0.o1": "Cet entraînement",
+ "s103.sec83.m0.o2": "Quitter",
+ "s103.sec83.m1.o0": "Entraînement normal",
+ "s103.sec83.m1.o1": "Entraînement bonus",
+ "s103.sec83.m1.o2": "Laisse tomber",
+ "s103.sec83.m2.o0": "Explique encore",
+ "s103.sec83.m2.o1": "S'entraîner",
+ "s103.sec83.m2.o2": "Quitter",
+ "s104.sec84.m0.o0": "S'entraîner",
+ "s104.sec84.m0.o1": "Cet entraînement",
+ "s104.sec84.m0.o2": "Quitter",
+ "s104.sec84.m1.o0": "Entraînement normal",
+ "s104.sec84.m1.o1": "Entraînement bonus",
+ "s104.sec84.m1.o2": "Laisse tomber",
+ "s104.sec84.m2.o0": "Explique encore",
+ "s104.sec84.m2.o1": "S'entraîner",
+ "s104.sec84.m2.o2": "Quitter",
+ "s104.sec85.m0.o0": "S'entraîner",
+ "s104.sec85.m0.o1": "Cet entraînement",
+ "s104.sec85.m0.o2": "Quitter",
+ "s104.sec85.m1.o0": "Entraînement normal",
+ "s104.sec85.m1.o1": "Entraînement bonus",
+ "s104.sec85.m1.o2": "Laisse tomber",
+ "s104.sec85.m2.o0": "Explique encore",
+ "s104.sec85.m2.o1": "S'entraîner",
+ "s104.sec85.m2.o2": "Quitter"
+}

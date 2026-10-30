@@ -1,0 +1,183 @@
+From d9c91ad2441030b58fa9e4685ab1abb997bb65e5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 28 Oct 2026 04:24:49 +0000
+Subject: [PATCH] Compact field NPC models in scratch before allocating heap
+
+---
+ config/us/main.ld        |  3 +++
+ include/dw/memmap.h      |  4 ++++
+ src/main/model.c         | 39 ++++++++++++++++++++++++++++++++-------
+ src/main/npc_anim_trim.c | 28 ++++++++++++++++++----------
+ 4 files changed, 57 insertions(+), 17 deletions(-)
+
+diff --git a/config/us/main.ld b/config/us/main.ld
+index de8f9ba0..99eac9e4 100644
+--- a/config/us/main.ld
++++ b/config/us/main.ld
+@@ -1079,3 +1079,6 @@ ASSERT(STACK_SIZE_KB * 1024 >= 4 * STACK_MEASURED_MAX,
+        "the stack is less than 4 times the deepest use measured")
+ ASSERT(main_BSS_END + MIN_HEAP <= STACK_ADDR - STACK_SIZE_KB * 1024,
+        "main leaves less than MIN_HEAP bytes of heap below the stack")
++
++ASSERT(NPC_STAGE_ADDR >= TFS_RING_END && NPC_STAGE_ADDR + NPC_STAGE_MAX <= SAVE_EXT_ADDR,
++       "NPC staging overlaps the TFS ring or save extensions");
+diff --git a/include/dw/memmap.h b/include/dw/memmap.h
+index 2a18939f..8e988deb 100644
+--- a/include/dw/memmap.h
++++ b/include/dw/memmap.h
+@@ -93,6 +93,10 @@
+  * DOOA_SHARD, and below the battle prefix (0x80052AE0). (A battle's EFE heap covers it: no card
+  * operation runs in a battle.)
+  */
++/* NPC CD reads are sector-rounded; compact in field scratch, then copy to
++ * the heap. Never retain a pointer here. Drained sound staging may reuse it. */
++#define NPC_STAGE_ADDR WORLD_SCRATCH_START
++#define NPC_STAGE_MAX  0x19000
+ #define SAVE_EXT_ADDR		0x8004E000
+ /*
+  * MOD (save robustness): the most a sound bank staged at GENERAL_BUFFER may take (a VHB chunk or file, in
+diff --git a/src/main/model.c b/src/main/model.c
+index e386c099..6befc65d 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -5,6 +5,7 @@
+ #include <libetc.h>
+ #include <libgs.h>
+ #include <libgte.h>
++#include <libspu.h>
+ 
+ #include <dw/anim.h>
+ #include <dw/entity.h>
+@@ -3445,6 +3446,24 @@ static void readDigimonModel(int32_t type, char *path, void *buffer)
+ 	}
+ }
+ 
++/* No read of staged bytes survives this call. The TFS ring ends at the
++ * staging start; pending CD/SPU sound transfers finish before reusing it. */
++int32_t compactNpcModel(int32_t type, uint8_t *mmd, int32_t size);
++extern int8_t GAME_STATE;
++__attribute__((noinline)) uint8_t *loadStagedNpcModel(int32_t type, char *path, int32_t size)
++{
++    uint8_t *stage = (uint8_t *)NPC_STAGE_ADDR;
++    uint8_t *model;
++    int32_t compact;
++    while (isFileReadQueueBusy()) tickFileReadQueue(0);
++    SpuIsTransferCompleted(1);
++    readDigimonModel(type, path, stage);
++    compact = compactNpcModel(type, stage, size);
++    model = malloc3(compact);
++    if (model != NULL) memcpy(model, stage, compact);
++    return model;
++}
++
+ /*
+  * MOD (partners-npc-c): NPC characters that can also be the partner get a
+  * partner-only model file: the partner needs some 45 animation slots, while
+@@ -3542,13 +3561,19 @@ ModelComponent *loadMMD(int32_t digiType, int32_t modelType)
+ 		concatStrings(path, MAIN_D_8011D484, name);
+ 		concatStrings(path, path, MAIN_D_801340E4);
+ 		path[9] = digiType / 30 + '0';
+-		m->mmdPtr = malloc3((getDigimonModelFileSize(digiType, path) + 0x7FF) & ~0x7FF);
+-		if (m->mmdPtr == NULL) {
+-			handleNullModel();
+-		}
+-		readDigimonModel(digiType, path, m->mmdPtr);
+-		/* MOD (memreclaim): drop the animations NPCs never play */
+-		m->mmdPtr = trimNpcModel(digiType, m->mmdPtr, getDigimonModelFileSize(digiType, path));
++        {
++            int32_t size = getDigimonModelFileSize(digiType, path);
++            if (GAME_STATE == 0 && size > 0 && ((size + 0x7FF) & ~0x7FF) <= NPC_STAGE_MAX) {
++                m->mmdPtr = loadStagedNpcModel(digiType, path, size);
++            } else {
++                m->mmdPtr = malloc3((size + 0x7FF) & ~0x7FF);
++                if (m->mmdPtr != NULL) {
++                    readDigimonModel(digiType, path, m->mmdPtr);
++                    m->mmdPtr = trimNpcModel(digiType, m->mmdPtr, size);
++                }
++            }
++            if (m->mmdPtr == NULL) { handleNullModel(); return NULL; }
++        }
+ 		m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 		m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
+ 		GsMapModelingData((u_long *)&m->modelPtr->flags);
+diff --git a/src/main/npc_anim_trim.c b/src/main/npc_anim_trim.c
+index efbe16e4..9a8f1863 100644
+--- a/src/main/npc_anim_trim.c
++++ b/src/main/npc_anim_trim.c
+@@ -1,14 +1,14 @@
+ /*
+  * MOD (memreclaim): NPC models without the animations they never play.
+  *
+- * An NPC model (loadMMD class 0) is read whole into a malloc3 block: TMD,
++ * An NPC model (loadMMD class 0) contains TMD,
+  * animation table and every animation, although an NPC only ever plays a
+  * few of them (the partner's care animations take a third of most MMDs).
+- * Right after the read, trimNpcModel keeps the slots NPC_ANIM_KEEP_* mark for
++ * Before heap allocation in the field, compactNpcModel keeps the slots NPC_ANIM_KEEP_* mark for
+  * the type (src/main/npc_anim_keep.c, generated by tools/npcanims.py: map
+  * AI, battle, the scripts' animations on that type), points every other
+  * slot to a one-frame stub (the idle's first pose), packs the kept
+- * animations and gives the rest of the block back to the heap.
++ * animations. Other callers use trimNpcModel to return the unused heap bytes.
+  *
+  * - The stub instead of 0: startAnimation ignores a 0 slot and the previous
+  *   animation goes on, so a scene that waits for an animation the audit
+@@ -81,10 +81,10 @@ static uint8_t *shrinkBlock(uint8_t *mmd, int32_t size)
+ }
+ 
+ /*
+- * mmd: a just-read NPC model of `size` bytes in its malloc3 block. Returns
+- * where the model is now (the block may have moved up).
++ * Compact a just-read model in place without allocating or freeing memory.
++ * Return its byte size; the caller owns the buffer and its lifetime.
+  */
+-uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
++int32_t compactNpcModel(int32_t type, uint8_t *mmd, int32_t size)
+ {
+ 	uint32_t starts[MAX_ANIM_SLOTS];
+ 	uint32_t newOff[MAX_ANIM_SLOTS];
+@@ -108,7 +108,7 @@ uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
+ 	int16_t *stub;
+ 
+ 	if ((type < 0) || (type >= NUM_NPC_ANIM_TYPES)) {
+-		return mmd;
++		return size;
+ 	}
+ 	tab = (uint32_t *)(mmd + ((uint32_t *)mmd)[1]);
+ 	animBytes = size - ((uint32_t *)mmd)[1];
+@@ -121,7 +121,7 @@ uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
+ 	}
+ 	n = first / 4;
+ 	if ((first == 0) || (n > MAX_ANIM_SLOTS) || (tab[0] == 0)) {
+-		return mmd;
++		return size;
+ 	}
+ 
+ 	/* distinct animations in file order; kept if any slot that uses it is */
+@@ -154,7 +154,7 @@ uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
+ 	poseWords = (DIGIMON_DATA[type].boneCount - 1) * ((anim0[0] & 0x8000) ? 9 : 6);
+ 	stubBytes = (poseWords + 2) * 2;
+ 	if (dropped < (uint32_t)stubBytes + 16) {
+-		return mmd;
++		return size;
+ 	}
+ 
+ 	/* pack the kept animations down, in file order (each only moves down) */
+@@ -184,5 +184,13 @@ uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
+ 	stub[poseWords + 1] = 0;
+ 	pos += stubBytes;
+ 
+-	return shrinkBlock(mmd, ((uint8_t *)tab - mmd) + pos);
++	return ((uint8_t *)tab - mmd) + pos;
++}
++
++/* Heap callers retain the original allocation/shrink interface. The field
++ * staging path compacts bytes before making any model allocation. */
++uint8_t *trimNpcModel(int32_t type, uint8_t *mmd, int32_t size)
++{
++    int32_t compact = compactNpcModel(type, mmd, size);
++    return compact < size ? shrinkBlock(mmd, compact) : mmd;
+ }
+-- 
+2.55.0
+

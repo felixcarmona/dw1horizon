@@ -1,0 +1,7 @@
+// Species 180 (Veemon, content/species/180-veemon.json): a Digimon that is not on the disc,
+// read from DIGI.DAT (its model, texture and record are inside it). It takes the first
+// NPC slot of screen 2 (a Veemon model is 98 KB: on Native Forest, screen 0, it would not
+// fit the heap next to the forest's other Digimon), with the battle stats of its definition ("wild").
+// Needs the species executable: python3 tools/dws.py disc tools/dws/examples/species-180.dws --exe species
+// (and its model: tools/dcb2mmd.py partner content/models/dcb-import/veemon.json build/dcb)
+place(species("Veemon"), screen: 2, slot: 0);

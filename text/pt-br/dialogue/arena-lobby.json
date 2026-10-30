@@ -1,0 +1,276 @@
+{
+ "s168.sec10.u0": [
+  [
+   "- Classe D - Torneio para",
+   "Digimon Novatos. Individual, 3",
+   "rodadas, 8 vagas Entrada livre"
+  ]
+ ],
+ "s168.sec10.u1": [
+  [
+   "- Classe C - Torneio para",
+   "Digimon Campeões. Individual, 3",
+   "rodadas, 8 vagas Entrada livre"
+  ]
+ ],
+ "s168.sec10.u2": [
+  [
+   "- Classe B - Para Campeões",
+   "confiantes na própria força.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada livre"
+  ]
+ ],
+ "s168.sec10.u3": [
+  [
+   "- Classe A - Torneio para",
+   "Digimon Perfeitos. Individual,",
+   "3 rodadas, 8 vagas Entrada",
+   "livre"
+  ]
+ ],
+ "s168.sec10.u4": [
+  [
+   "- Classe S - Reúne os",
+   "Digimon mais fortes.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: vencedores da Classe",
+   "A"
+  ]
+ ],
+ "s168.sec10.u5": [
+  [
+   "- Classe R - Batalha campal",
+   "de astúcia e tática. 4 por",
+   "luta, 2 rodadas, 8 vagas",
+   "Entrada livre"
+  ]
+ ],
+ "s168.sec10.u6": [
+  [
+   "- Copa Versão 1 - Decide o",
+   "melhor da Versão 1. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 1"
+  ]
+ ],
+ "s168.sec10.u7": [
+  [
+   "- Copa Versão 2 - Decide o",
+   "melhor da Versão 2. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 2"
+  ]
+ ],
+ "s168.sec10.u8": [
+  [
+   "- Copa Versão 3 - Decide o",
+   "melhor da Versão 3. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 3"
+  ]
+ ],
+ "s168.sec10.u9": [
+  [
+   "- Copa Versão 4 - Decide o",
+   "melhor da Versão 4. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon da Versão 4"
+  ]
+ ],
+ "s168.sec10.u10": [
+  [
+   "- Copa Versão O - Para",
+   "Digimon fora das Versões 1 a",
+   "4. Combates com limite de",
+   "tempo. Individual, 3 rodadas, 8",
+   "vagas Entrada: fora das",
+   "Versões 1 a 4"
+  ]
+ ],
+ "s168.sec10.u11": [
+  [
+   "- Copa Fogo - Decide o rei",
+   "dos Digimon de Fogo. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Fogo"
+  ]
+ ],
+ "s168.sec10.u12": [
+  [
+   "- Copa Luta - Decide o rei",
+   "dos Digimon de Luta. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Luta"
+  ]
+ ],
+ "s168.sec10.u13": [
+  [
+   "- Copa Trovão e Vento -",
+   "Decide o rei dos Digimon de",
+   "Ar. Combates com limite de",
+   "tempo. Individual, 3 rodadas, 8",
+   "vagas Entrada: Digimon de Ar"
+  ]
+ ],
+ "s168.sec10.u14": [
+  [
+   "- Copa Estilo - Decide o rei",
+   "dos Digimon de Gelo. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Gelo"
+  ]
+ ],
+ "s168.sec10.u15": [
+  [
+   "- Copa Natureza - Decide o",
+   "rei dos Digimon de Natureza.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Natureza"
+  ]
+ ],
+ "s168.sec10.u16": [
+  [
+   "- Copa Metálica - Decide o",
+   "rei dos Digimon de Máquina.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Máquina"
+  ]
+ ],
+ "s168.sec10.u17": [
+  [
+   "- Copa Sujeira - Decide o rei",
+   "dos Digimon de Sujeira.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: Digimon de Sujeira"
+  ]
+ ],
+ "s168.sec10.u18": [
+  [
+   "- Copa Dino - Digimon de",
+   "sangue antigo competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u19": [
+  [
+   "- Copa Asas - Digimon de",
+   "belas asas competem. Combates",
+   "com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u20": [
+  [
+   "- Copa Animal - Digimon de",
+   "sangue animal competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec10.u21": [
+  [
+   "- Copa Humana - Digimon de",
+   "forma humana competem.",
+   "Combates com limite de tempo.",
+   "Individual, 3 rodadas, 8 vagas",
+   "Entrada: ???"
+  ]
+ ],
+ "s168.sec53.u0": "Calma aí, esses são os assentos do público.",
+ "s168.sec82.m0.o0": "Histórico",
+ "s168.sec82.m0.o1": "Sobre torneios de classe",
+ "s168.sec82.m0.o2": "Sobre torneios especiais",
+ "s168.sec82.u0": "Informações da Arena",
+ "s168.sec82.u1": [
+  [
+   "Torneios vencidos:",
+   "{cupswon} {wins}",
+   "vitórias {losses} derrotas"
+  ]
+ ],
+ "s168.sec82.u2": [
+  [
+   "Qualquer Digimon pode",
+   "participar dos frequentes",
+   "torneios de classe. Evite",
+   "inscrever um muito acima do"
+  ],
+  [
+   "nível do torneio. Se o Digimon",
+   "mudar de espécie entre a",
+   "inscrição e o torneio, a",
+   "inscrição será cancelada."
+  ]
+ ],
+ "s168.sec82.u3": [
+  [
+   "Torneios especiais têm",
+   "requisitos de entrada e são",
+   "raros. Se não houver Digimon",
+   "suficientes na cidade que"
+  ],
+  [
+   "cumpram as condições, eles nem",
+   "acontecem. Cada um ocorre só",
+   "uma ou duas vezes por ano.",
+   "Consulte a programação com"
+  ],
+  [
+   "antecedência."
+  ]
+ ],
+ "s168.sec84.u0": [
+  [
+   "{color 10}{partner}{color 1}, você salvou o mundo.",
+   "Deixe-me pensar no título de herói."
+  ],
+  [
+   "Vamos ver..."
+  ]
+ ],
+ "s168.sec84.u1": "Que tal \"{color 10}{partner}{color 1}, o Rei Invencível\"?",
+ "s168.sec84.u2": "Que tal \"{color 10}{partner}{color 1}, o herói lendário\"?",
+ "s168.sec84.u3": "Que tal \"{color 10}{partner}{color 1}, Senhor do Novo Mundo\"?",
+ "s168.sec84.u4": [
+  [
+   "Que tal \"{color 10}{partner}{color 1}, o",
+   "Pacificador\"?"
+  ]
+ ],
+ "s168.sec84.u5": "Que tal \"{color 10}{partner}{color 1} da Lenda Invencível\"?",
+ "s168.sec84.u6": "Que tal \"{color 10}{partner}{color 1}, o Valente\"?",
+ "s168.sec84.u7": [
+  [
+   "Que tal \"{color 10}{partner}{color 1}, o",
+   "Descolado\"?"
+  ]
+ ],
+ "s168.sec84.u8": "Que tal \"{color 10}{partner}{color 1}, Deus Supremo da Guerra\"?",
+ "s168.sec84.u9": [
+  [
+   "Que tal \"{color 10}{partner}{color 1},",
+   "Vendaval dos Céus\"?"
+  ]
+ ],
+ "s168.sec84.u10": [
+  [
+   "Que tal \"{color 10}{partner}{color 1}, o",
+   "Ladrão Elegante\"?"
+  ]
+ ]
+}

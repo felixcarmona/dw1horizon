@@ -1,0 +1,39 @@
+{
+  "file": "MAP/MAP9/FRZL15.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Penguinmon",
+      "at": [1792, 1185],
+      "facing": 533,
+      "follow": 1,
+      "range": 1000,
+      "script": 6,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [46, 51, 53, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    },
+    {
+      "slot": 1,
+      "species": "Mojyamon170",
+      "at": [733, -1881],
+      "facing": 1200,
+      "follow": 1,
+      "range": 1000,
+      "script": 7,
+      "charge": 1,
+      "currentHP": 500,
+      "currentMP": 500,
+      "moves": [46, 51, 53, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [2718, 202],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

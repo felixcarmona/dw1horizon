@@ -1,0 +1,35 @@
+{
+  "id": 136,
+  "name": "MetalGreymonVirus",
+  "level": "ultimate",
+  "attribute": "virus",
+  "specialties": ["mech", "fire", "battle"],
+  "techniques": ["Inifinity Burn", "Meltdown", "Megaton Punch", "Buster Dive", "Reverse Prog", "DG Dimension",
+                 "Full Potential", "Giga Scissor Claw"],
+  "drop": {"item": "Def. Chip", "percent": 100},
+  "effects_like": 12,
+  "model": {"name": "EMTG", "bones": 30, "radius": 280, "height": 430},
+  "voice": 12,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 8600, "mp": 7800, "off": 900, "def": 620, "speed": 400, "brain": 300, "bits": 6200},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  },
+  "_former_name": "MetalGreymon"
+}

@@ -1,0 +1,1080 @@
+From 369950ed9db192f9ad7d02d5d46e23960ce86bae Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 05:54:13 +0000
+Subject: [PATCH] 60 fps step 4: tournament and VS loops through the helper
+
+STD_battleTickFrame and VS_tickFrame call modTickStart/modPresent like
+the story battle. The render-side state of both overlays is rolled back
+around the extra passes (COMBAT_DATA and the fighters' stats, start text
+pieces and timers, finisher gauge, intro name letters, the VS select
+panels); the effect render scripts run on every pass with their data
+area put back and their outside effects on the first pass only, as in
+BTL (the copy goes below the arena model, ARENA_TMD_ADDR, through a new
+main-executable helper modEfeAreaSave/Restore). The bracket simulation
+moves from STD_renderBracket into a late tick; its projectiles and hit
+flashes, which draw from their ticks, are replayed on the extra passes
+(ModRollbackSet.replay). The finisher chargeup / target cursor remove
+themselves after the passes.
+
+---
+ include/dw/mod_present.h |  10 +++
+ src/main/main.c          |  25 ++++++
+ src/std/std_effect.c     |  81 ++++++++++++++---
+ src/std/std_hud.c        |  16 +++-
+ src/std/std_main.c       | 186 ++++++++++++++++++++++++++++++++++++---
+ src/vs/vs_effect.c       |  81 ++++++++++++++---
+ src/vs/vs_hud.c          |  16 +++-
+ src/vs/vs_main.c         |  85 ++++++++++++++++--
+ 8 files changed, 453 insertions(+), 47 deletions(-)
+
+diff --git a/include/dw/mod_present.h b/include/dw/mod_present.h
+index e34d169..2c31d60 100644
+--- a/include/dw/mod_present.h
++++ b/include/dw/mod_present.h
+@@ -19,6 +19,9 @@ typedef struct {
+ 	int32_t count;
+ 	uint32_t *pre;
+ 	uint32_t *post;
++	/* adds again, at the start of every extra pass, the prims the caller's
++	 * ticks put straight into the first pass's ordering table (NULL: none) */
++	void (*replay)(void);
+ } ModRollbackSet;
+ 
+ /* the tick / present helper (main.c): modTickStart before the loop's logic,
+@@ -34,5 +37,12 @@ int32_t modRenderRand(void);
+ int32_t modRenderCustomRandom(long min, long max);
+ void removeObjectAfterRender(int32_t objectId, int32_t instanceId);
+ extern int32_t MOD_FPS_EFE_NO_ROOM;
++/* the effect render scripts' script/data area (before the file's TMD),
++ * copied aside before an extra pass runs them and put back after: the copy
++ * goes right below top (the start of whatever the battle loaded above the
++ * EFE heap), at least 0x5000 bytes above the heap pointer; 0 if it does not
++ * fit (counted in MOD_FPS_EFE_NO_ROOM) */
++int32_t modEfeAreaSave(int32_t data, uint32_t top, uint32_t **buf);
++void modEfeAreaRestore(int32_t data, uint32_t *buf, int32_t size);
+ 
+ #endif
+diff --git a/src/main/main.c b/src/main/main.c
+index 472d369..775f7b8 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -13,6 +13,7 @@
+ #include <dw/butterfly.h>
+ #include <dw/clock.h>
+ #include <dw/combat.h>
++#include <dw/efe.h>
+ #include <dw/entity.h>
+ #include <dw/fade.h>
+ #include <dw/font.h>
+@@ -4152,6 +4153,27 @@ void modRenderRollbackEnd(void)
+ 	}
+ }
+ 
++int32_t modEfeAreaSave(int32_t data, uint32_t top, uint32_t **buf)
++{
++	int32_t size = ((EfeFileHeader *)(data - 0x34))->tmdStart & ~3;
++	uint32_t *b;
++
++	b = (uint32_t *)((top - (uint32_t)size) & ~3u);
++	if (size <= 0 || size > 0x10000 ||
++	    (uint32_t)b < (uint32_t)EFE_HEAP_POINTER + 0x5000) {
++		MOD_FPS_EFE_NO_ROOM++;
++		return 0;
++	}
++	modCopy(b, (void *)data, size);
++	*buf = b;
++	return size;
++}
++
++void modEfeAreaRestore(int32_t data, uint32_t *buf, int32_t size)
++{
++	modCopy((void *)data, buf, size);
++}
++
+ static uint32_t modRenderLcg = 0x1234567;
+ 
+ /* The random numbers the first render pass of a tick drew (modRenderRand,
+@@ -4966,6 +4988,9 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			modFpsBeginFrame();
+ 			modRestorePass0View();
+ 			modReplayTickPrims();
++			if (modExtraRollback != NULL && modExtraRollback->replay != NULL) {
++				modExtraRollback->replay();
++			}
+ 		} else {
+ 			modSavePass0View();
+ 			if (interp) {
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index d86a467..b73b48a 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -20,6 +20,8 @@
+ #include <dw/graphics.h>
+ #include <dw/line.h>
+ #include <dw/math.h>
++#include <dw/memmap.h>
++#include <dw/mod_present.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -1437,14 +1439,38 @@ void STD_tickEFEEngine(void)
+ 	}
+ }
+ 
++/* MOD (fps): as BTL_renderEFEEngine (battle_effect.c): the render scripts run
++ * on every render pass of a tick; on the extra passes the effect's
++ * script/data area is copied aside before the slot's scripts and put back
++ * after them, the opcodes that reach outside the effect do nothing and the
++ * random numbers are the first pass's. The copy goes below the arena model
++ * (ARENA_TMD_ADDR), the top of the free part of the EFE heap here. */
+ void STD_renderEFEEngine(void)
+ {
+ 	int32_t i;
+ 	int32_t j;
+ 	int32_t n;
++	int32_t saved;
++	uint32_t *buf = NULL;
++	int32_t target;
++	int32_t hit;
++	int32_t section;
+ 
++	target = EFE_TARGET_ENTITY_INDEX;
++	hit = EFE_HIT_ENTITY_INDEX;
++	section = EFE_ACTIVE_SECTION;
+ 	EFE_DATA_ITERATOR = EFE_DATA_PTR;
+ 	for (i = 0; i < 0x10; i++) {
++		saved = 0;
++		if (MOD_RENDER_PASS != 0 && EFE_DATA_ITERATOR->data != 0L) {
++			n = EFE_DATA_ITERATOR->numSubEffects;
++			for (j = 0; j < n; j++) {
++				if (EFE_DATA_ITERATOR->subEffects[j].inst != NULL) {
++					saved = modEfeAreaSave(EFE_DATA_ITERATOR->data, ARENA_TMD_ADDR, &buf);
++					break;
++				}
++			}
++		}
+ 		n = EFE_DATA_ITERATOR->numObjects;
+ 		for (j = 0; j < n; j++) {
+ 			EFE_DATA_ITERATOR->uvAnims[j].unk2 = 0;
+@@ -1461,9 +1487,18 @@ void STD_renderEFEEngine(void)
+ 				}
+ 			}
+ 		}
++		if (saved) {
++			modEfeAreaRestore(EFE_DATA_ITERATOR->data, buf, saved);
++		}
+ 		EFE_DATA_ITERATOR++;
+ 	}
+ 
++	if (MOD_RENDER_PASS != 0) {
++		/* interpreter state a later tick may read */
++		EFE_TARGET_ENTITY_INDEX = target;
++		EFE_HIT_ENTITY_INDEX = hit;
++		EFE_ACTIVE_SECTION = section;
++	}
+ 	STD_renderParticleEmitters();
+ }
+ 
+@@ -2157,6 +2192,9 @@ void STD_isTargetUnhit(void)
+ 
+ void STD_markEFEFinished(void)
+ {
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	UNUSED_EFE_ARRAY[COMBAT_EFFECT_ITR] = 0;
+ }
+ 
+@@ -2217,6 +2255,9 @@ void STD_applyBoxAttackHit(void)
+ 	out = EFE_POP1(int32_t *);
+ 	ext = EFE_POP1(EfeVector *);
+ 	*out = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	if (r < 0) {
+ 		r = EFE_SUB_EFFECT_INDEX;
+ 	}
+@@ -2260,6 +2301,9 @@ void STD_applyRadiusAttackHit(void)
+ 	hitFlag = EFE_POP1(int32_t *);
+ 	r = EFE_POP1(int32_t);
+ 	*hitFlag = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	r = r * r;
+ 	EFE_HIT_ENTITY_INDEX = 1;
+ 	while (EFE_HIT_ENTITY_INDEX < 10) {
+@@ -2316,6 +2360,9 @@ void STD_applyLineAttackHit(void)
+ 	out = EFE_POP1(int32_t *);
+ 	arg = EFE_POP1(int32_t *);
+ 	*out = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	line[0].vx = ((EfeTransform *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 4))->position.vx;
+ 	line[0].vy = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 0xc);
+ 	line[1].vx = EFE_SCRIPT_CONTEXT->sourceEntity->posData->location.vx;
+@@ -2363,7 +2410,7 @@ void STD_faceTargetEntity(void)
+ {
+ 	PositionData *pd;
+ 
+-	if (EFE_SCRIPT_CONTEXT->targetEntity == NULL) {
++	if (EFE_SCRIPT_CONTEXT->targetEntity == NULL || MOD_RENDER_PASS != 0) { /* MOD (fps) */
+ 		return;
+ 	}
+ 
+@@ -2691,7 +2738,7 @@ void STD_loadClutColors(void)
+ 	x = EFE_POP1(int32_t);
+ 	y = EFE_POP1(int32_t);
+ 
+-	if ((count > 0) && (count <= 16)) {
++	if ((count > 0) && (count <= 16) && MOD_RENDER_PASS == 0) { /* MOD (fps) */
+ 		m = EFE_DATA_ITERATOR->model;
+ 		for (i = 0; i < count; i++) {
+ 			clut[i] = *src++;
+@@ -2753,7 +2800,7 @@ void STD_selectRandomTargetEntity(void)
+ 	int32_t n;
+ 
+ 	excludeSelf = *--EFE_DATA_STACK;
+-	for (n = rand() % 8; n >= 0; n--) {
++	for (n = modRenderRand() % 8; n >= 0; n--) { /* MOD (fps): see STD_renderEFEEngine */
+ 		EFE_TARGET_ENTITY_INDEX++;
+ 		while (1) {
+ 			while (EFE_TARGET_ENTITY_INDEX < 10) {
+@@ -3542,7 +3589,7 @@ void STD_getRandomInRange(void)
+ 	a = EFE_POP1(int32_t);
+ 	b = EFE_POP1(int32_t);
+ 	out = EFE_POP1(int32_t *);
+-	*out = customRandom(b, a);
++	*out = modRenderCustomRandom(b, a); /* MOD (fps): see STD_renderEFEEngine */
+ }
+ 
+ void STD_interpolateValue(void)
+@@ -3969,7 +4016,7 @@ void STD_playEFESound(void)
+ 	EfeSound *p;
+ 
+ 	id = EFE_POP1(int32_t);
+-	if (id < 0) {
++	if (id < 0 || MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
+ 		return;
+ 	}
+ 
+@@ -3994,7 +4041,9 @@ void STD_addSourceEntityParticleFX(void)
+ 	int32_t timer;
+ 
+ 	timer = EFE_POP1(int32_t);
+-	addEntityParticleFX(EFE_SCRIPT_CONTEXT->sourceEntity, timer);
++	if (MOD_RENDER_PASS == 0) { /* MOD (fps): see STD_renderEFEEngine */
++		addEntityParticleFX(EFE_SCRIPT_CONTEXT->sourceEntity, timer);
++	}
+ }
+ 
+ void STD_copyFromParentTransform(void)
+@@ -4207,6 +4256,9 @@ void STD_addCloudEffect(void)
+ 	EfeVector *v;
+ 
+ 	v = EFE_POP1(EfeVector *);
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	pos.vx = v->vx;
+ 	pos.vy = v->vy;
+ 	pos.vz = v->vz;
+@@ -4263,6 +4315,9 @@ void STD_addParticleEmitter(void)
+ 	vec = EFE_POP1(EfeVector *);
+ 	n = EFE_POP1(int32_t);
+ 	b = EFE_POP1(int32_t);
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
++		return;
++	}
+ 	for (i = 0; i < 4; i++) {
+ 		if (EFE_PARTICLE_EMITTERS[i].transform == NULL) {
+ 			break;
+@@ -4442,9 +4497,10 @@ void STD_getScatteredSpawnPosition(void)
+ 	}
+ 
+ 	if (r > 0) {
+-		out->vx = out->vx + ((rand() % r) - (r >> 1));
+-		out->vy = out->vy + ((rand() % r) - (r >> 1));
+-		out->vz = out->vz + ((rand() % r) - (r >> 1));
++		/* MOD (fps): see STD_renderEFEEngine */
++		out->vx = out->vx + ((modRenderRand() % r) - (r >> 1));
++		out->vy = out->vy + ((modRenderRand() % r) - (r >> 1));
++		out->vz = out->vz + ((modRenderRand() % r) - (r >> 1));
+ 	}
+ }
+ 
+@@ -4460,7 +4516,8 @@ void STD_addAttackObjectToTarget(void)
+ 	int32_t i;
+ 	int32_t j;
+ 
+-	if (((DigimonEntity *)EFE_SCRIPT_CONTEXT->targetEntity)->stats.current.isHit != 0) {
++	if (((DigimonEntity *)EFE_SCRIPT_CONTEXT->targetEntity)->stats.current.isHit != 0 ||
++	    MOD_RENDER_PASS != 0) { /* MOD (fps): see STD_renderEFEEngine */
+ 		return;
+ 	}
+ 
+@@ -4892,7 +4949,7 @@ void STD_loadEFEIndexedVariable(void)
+ 
+ void STD_loadEFERandomValue(void)
+ {
+-	EFE_SCRIPT_REGISTER = rand();
++	EFE_SCRIPT_REGISTER = modRenderRand(); /* MOD (fps): see STD_renderEFEEngine */
+ 	EFE_SCRIPT_PTR = (int16_t *)((int32_t)EFE_SCRIPT_PTR + 2);
+ }
+ 
+@@ -5876,7 +5933,7 @@ void STD_renderFinisherAura(int32_t id)
+ 	scale.vy = sy;
+ 	renderTMDModel(*(uint8_t **)&STD_FINISHER_AURA_MODEL, STD_FINISHER_AURA_OBJECTS[fa->frame / 2 % 3], &coord, NULL, &trans, &rot, &scale);
+ 	renderTMDModel(*(uint8_t **)&STD_FINISHER_AURA_MODEL, 3, &coord, NULL, &trans, &rot, &scale);
+-	rot.vy = rand();
++	rot.vy = modRenderRand(); /* MOD (fps): render-side random number */
+ 	scale.vx = scale.vz = sx * 140 / 100;
+ 	renderTMDModel(*(uint8_t **)&STD_FINISHER_AURA_MODEL, 4, &coord, NULL, &trans, &rot, &scale);
+ 
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 9e88eac..7681205 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -17,6 +17,7 @@
+ #include <dw/input.h>
+ #include <dw/math.h>
+ #include <dw/memmap.h>
++#include <dw/mod_present.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -141,6 +142,9 @@ uint8_t *STD_DRAW_TMD;
+ int32_t MAIN_D_801351AC;
+ uint8_t *STD_DAI_TMD;
+ uint8_t STD_CHAMPION_SCENE_STATE;
++/* MOD (fps): the start text object (0x1a6) exists; its pieces are rolled back
++ * around the extra render passes (std_main.c) */
++int8_t STD_START_TEXT_ACTIVE;
+ 
+ static void *std_hud_sbss_order[] = {
+ 	&STD_CHAMPION_SCENE_STATE,
+@@ -444,7 +448,13 @@ void STD_renderFinisherChargeup(void)
+ 	}
+ 
+ 	if (COMBAT_DATA_PTR->player.remainingChargeupTime[0] == 0) {
+-		STD_removeFinisherChargeup();
++		/* MOD (fps): the other render passes of this tick still draw it */
++		if (MOD_RENDER_MULTIPASS) {
++			removeObjectAfterRender(0x19a, 0);
++			COMBAT_DATA_PTR->player.remainingChargeupTime[0] = -1;
++		} else {
++			STD_removeFinisherChargeup();
++		}
+ 	}
+ }
+ 
+@@ -572,6 +582,7 @@ void STD_initializeBattleStartText(void)
+ 	}
+ 
+ 	addObject(0x1a6, 0, NULL, (RenderFunction)STD_renderBattleStartText);
++	STD_START_TEXT_ACTIVE = 1;
+ }
+ 
+ void STD_renderBattleStartText(void)
+@@ -713,12 +724,14 @@ void STD_renderBattleStartText(void)
+ void STD_removeBattleStartText(void)
+ {
+ 	removeObject(0x1a6, 0);
++	STD_START_TEXT_ACTIVE = 0;
+ }
+ 
+ void STD_initializeBattleStartTextBurst(void)
+ {
+ 	STD_BATTLE_TEXT_FINISHED = 0;
+ 	addObject(0x1a6, 0, NULL, (RenderFunction)STD_renderBattleStartTextBurst);
++	STD_START_TEXT_ACTIVE = 1;
+ }
+ 
+ void STD_renderBattleStartTextBurst(void)
+@@ -832,6 +845,7 @@ void STD_renderBattleStartTextBurst(void)
+ void STD_removeBattleStartTextBurst(void)
+ {
+ 	removeObject(0x1a6, 0);
++	STD_START_TEXT_ACTIVE = 0;
+ }
+ 
+ int32_t STD_isBattleStartTextFinished(void)
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index 853a439..4e80e6e 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -21,6 +21,7 @@
+ #include <dw/item.h>
+ #include <dw/main.h>
+ #include <dw/math.h>
++#include <dw/mod_fps.h>
+ #include <dw/model.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+@@ -36,6 +37,11 @@
+ 
+ #include "common.h"
+ 
++/* MOD (fps): see STD_battleTickFrame */
++static void STD_modTickPrimBegin(void *workBase, int32_t layer);
++static void STD_modTickPrimEnd(void *workBase);
++void STD_lateTickBracket(void);
++
+ typedef struct {
+ 	int16_t score[5];
+ 	int16_t best;
+@@ -2933,9 +2939,8 @@ void STD_updateBracket(void)
+ 		}
+ 	}
+ 
+-	for (i = 0; i < 8; i++) {
+-		STD_renderBracketDigimon((int16_t)i);
+-	}
++	/* MOD (fps): the 8 STD_renderBracketDigimon calls that were here are
++	 * in STD_renderBracket (this runs in the late tick) */
+ 
+ 	if (match != 0 && STD_BRACKET_FADE == 0x80 && STD_BRACKET_SLOTS[STD_PLAYER_SLOT].unk7 == 2) {
+ 		STD_BRACKET_SLOTS[STD_PLAYER_SLOT].unk7 = (STD_BRACKET_MATCH != 7) ? 6 : 7;
+@@ -3262,7 +3267,11 @@ void STD_addBracket(int16_t track)
+ 	ENTITY_TABLE[1]->isOnMap = 0;
+ 	STD_BRACKET_FINISHED = 0;
+ 	STD_BRACKET_FADE = 0;
+-	addObject(0x1ae, 0, (TickFunction)STD_tickBracket, (RenderFunction)STD_renderBracket);
++	/* MOD (fps): the bracket simulation runs once per tick in a late tick
++	 * (after every tick, where the render used to run it); the render only
++	 * draws, so it can run several times per tick */
++	addObjectLate(0x1ae, 0, (TickFunction)STD_tickBracket, (TickFunction)STD_lateTickBracket,
++		      (RenderFunction)STD_renderBracket);
+ 	stopBGM();
+ 	stopSound();
+ 	playMusic(0x1d, track);
+@@ -3272,9 +3281,19 @@ void STD_tickBracket(void)
+ {
+ }
+ 
+-void STD_renderBracket(void)
++void STD_lateTickBracket(void)
+ {
+ 	STD_updateBracket();
++}
++
++void STD_renderBracket(void)
++{
++	int32_t i;
++
++	/* MOD (fps): STD_updateBracket drew these right after its simulation */
++	for (i = 0; i < 8; i++) {
++		STD_renderBracketDigimon((int16_t)i);
++	}
+ 	STD_drawBracket();
+ }
+ 
+@@ -3303,6 +3322,7 @@ void STD_tickBracketHitFlash(int32_t idx)
+ 	}
+ 	if ((STD_BRACKET_SLOTS[idx].unk8 % 5) == 4) {
+ 		prim = (POLY_FT4 *)GsGetWorkBase();
++		STD_modTickPrimBegin(prim, 3);
+ 		SetPolyFT4(prim);
+ 		setRGB0(prim, 0x80, 0x80, 0x80);
+ 		prim->tpage = getTPage(0, 0, 960, 0);
+@@ -3311,6 +3331,7 @@ void STD_tickBracketHitFlash(int32_t idx)
+ 		setPosDataPolyFT4(prim, STD_BRACKET_SLOTS[idx].unk0, STD_BRACKET_SLOTS[idx].unk2, 0x10, 0x10);
+ 		AddPrim(ACTIVE_ORDERING_TABLE->org + 3, prim++);
+ 		GsSetWorkBase((PACKET *)prim);
++		STD_modTickPrimEnd(prim);
+ 	}
+ }
+ 
+@@ -3332,7 +3353,11 @@ void STD_tickBracketProjectile(id)
+ 	} else {
+ 		STD_BRACKET_PROJECTILES[id].x -= d;
+ 	}
++	/* MOD (fps): drawn here, in the tick: the extra render passes add the
++	 * same prims again (STD_modReplayTickPrims) */
++	STD_modTickPrimBegin(GsGetWorkBase(), 4);
+ 	STD_renderBracketProjectile(id);
++	STD_modTickPrimEnd(GsGetWorkBase());
+ }
+ 
+ void STD_renderBracketProjectile(int16_t id)
+@@ -5906,23 +5931,158 @@ void STD_tickFrames(int16_t count)
+ 	}
+ }
+ 
++/* MOD (fps): tournament state that render callbacks advance, rolled back
++ * around the extra render passes of a tick as in the story battle
++ * (battle_main.c): every pass starts from the values the first pass started
++ * from and the first pass's results are put back afterwards.
++ * - COMBAT_DATA and the two fighters' stats: the status bars drain the HP and
++ *   MP damage buffers (damageTick);
++ * - the "BATTLE" start text pieces (while the text exists), its colour timer
++ *   and STD_BATTLE_TEXT_FINISHED (the match start waits on it);
++ * - the finisher gauge counters and STD_FINISHER_READY;
++ * - the intro name's letter count and letter animation (its tick waits on
++ *   them). */
++extern uint8_t STD_BATTLE_START_TEXT_TIMER;
++extern int32_t STD_BATTLE_TEXT_FINISHED;
++extern uint8_t STD_FINISHER_FULL_FRAMES[2];
++extern uint8_t STD_FINISHER_PULSE_FRAME[2];
++extern uint8_t STD_FINISHER_BRIGHTNESS[2];
++extern uint8_t STD_FINISHER_SEGMENTS[2];
++extern uint8_t STD_FINISHER_READY[2];
++extern int8_t STD_START_TEXT_ACTIVE;
++
++#define STD_MOD_ROLLBACK_MAX 16
++#define STD_MOD_ROLLBACK_WORDS 1400
++static ModRollbackVar STD_MOD_ROLLBACK_VARS[STD_MOD_ROLLBACK_MAX];
++static uint32_t STD_MOD_ROLLBACK_PRE[STD_MOD_ROLLBACK_WORDS];
++static uint32_t STD_MOD_ROLLBACK_POST[STD_MOD_ROLLBACK_WORDS];
++static void STD_modReplayTickPrims(void);
++static ModRollbackSet STD_MOD_ROLLBACK = {
++	STD_MOD_ROLLBACK_VARS, 0, STD_MOD_ROLLBACK_PRE, STD_MOD_ROLLBACK_POST,
++	STD_modReplayTickPrims
++};
++
++static void STD_modRollbackAdd(void *ptr, int32_t size)
++{
++	ModRollbackVar *v = &STD_MOD_ROLLBACK_VARS[STD_MOD_ROLLBACK.count++];
++
++	v->ptr = ptr;
++	v->size = size;
++}
++
++static ModRollbackSet *STD_modRollbackSet(void)
++{
++	int32_t i;
++	int32_t id;
++	Entity *e;
++	Entity *first = NULL;
++
++	STD_MOD_ROLLBACK.count = 0;
++	STD_modRollbackAdd(COMBAT_DATA_PTR, sizeof(CombatData));
++	for (i = 0; i < 2; i++) {
++		id = COMBAT_DATA_PTR->player.entityIds[i];
++		if (id < 1 || id >= 10) {
++			continue;
++		}
++		e = ENTITY_TABLE[id];
++		if (e != NULL && e != first) {
++			STD_modRollbackAdd(&((DigimonEntity *)e)->stats, sizeof(Stats));
++			first = e;
++		}
++	}
++	if (STD_START_TEXT_ACTIVE) {
++		STD_modRollbackAdd(STD_BATTLE_START_TEXT_PIECES, sizeof(STD_BATTLE_START_TEXT_PIECES));
++	}
++	STD_modRollbackAdd(&STD_BATTLE_START_TEXT_TIMER, 1);
++	STD_modRollbackAdd(&STD_BATTLE_TEXT_FINISHED, sizeof(STD_BATTLE_TEXT_FINISHED));
++	STD_modRollbackAdd(STD_FINISHER_FULL_FRAMES, 2);
++	STD_modRollbackAdd(STD_FINISHER_PULSE_FRAME, 2);
++	STD_modRollbackAdd(STD_FINISHER_BRIGHTNESS, 2);
++	STD_modRollbackAdd(STD_FINISHER_SEGMENTS, 2);
++	STD_modRollbackAdd(STD_FINISHER_READY, 2);
++	STD_modRollbackAdd(&STD_INTRO_DATA_RENDERED_CHARACTERS, sizeof(STD_INTRO_DATA_RENDERED_CHARACTERS));
++	STD_modRollbackAdd(&STD_INTRO_DATA_ANIM_FRAME, 1);
++	return &STD_MOD_ROLLBACK;
++}
++
++/* MOD (fps): the bracket's projectiles and hit flashes draw from their ticks,
++ * straight into the first pass's ordering table. Their prims are kept and
++ * added again, in the same order, at the start of each extra pass. */
++#define STD_MOD_TICK_PRIMS_MAX 32
++static POLY_FT4 STD_MOD_TICK_PRIMS[STD_MOD_TICK_PRIMS_MAX];
++static uint8_t STD_MOD_TICK_PRIM_LAYERS[STD_MOD_TICK_PRIMS_MAX];
++static int32_t STD_MOD_TICK_PRIM_COUNT;
++static int32_t STD_MOD_TICK_PRIM_TICK; /* MOD_FPS_TICKS during the tick that drew them */
++extern int32_t MOD_FPS_TICKS;
++static POLY_FT4 *STD_modTickPrimStart;
++static int32_t STD_modTickPrimLayer;
++
++static void STD_modTickPrimBegin(void *workBase, int32_t layer)
++{
++	STD_modTickPrimStart = workBase;
++	STD_modTickPrimLayer = layer;
++}
++
++static void STD_modTickPrimEnd(void *workBase)
++{
++	POLY_FT4 *p;
++	uint32_t *d;
++	uint32_t *s;
++	int32_t k;
++
++	if (STD_MOD_TICK_PRIM_TICK != MOD_FPS_TICKS) {
++		STD_MOD_TICK_PRIM_TICK = MOD_FPS_TICKS;
++		STD_MOD_TICK_PRIM_COUNT = 0;
++	}
++	for (p = STD_modTickPrimStart; p < (POLY_FT4 *)workBase; p++) {
++		if (STD_MOD_TICK_PRIM_COUNT == STD_MOD_TICK_PRIMS_MAX) {
++			break;
++		}
++		d = (uint32_t *)&STD_MOD_TICK_PRIMS[STD_MOD_TICK_PRIM_COUNT];
++		s = (uint32_t *)p;
++		for (k = 0; k < sizeof(POLY_FT4) / 4; k++) {
++			*d++ = *s++;
++		}
++		STD_MOD_TICK_PRIM_LAYERS[STD_MOD_TICK_PRIM_COUNT++] = STD_modTickPrimLayer;
++	}
++}
++
++static void STD_modReplayTickPrims(void)
++{
++	POLY_FT4 *prim;
++	uint32_t *d;
++	uint32_t *s;
++	int32_t i;
++	int32_t k;
++
++	if (STD_MOD_TICK_PRIM_TICK != MOD_FPS_TICKS - 1) {
++		return; /* none drawn in this tick (modPresent counted it already) */
++	}
++	prim = (POLY_FT4 *)GsGetWorkBase();
++	for (i = 0; i < STD_MOD_TICK_PRIM_COUNT; i++) {
++		d = (uint32_t *)prim;
++		s = (uint32_t *)&STD_MOD_TICK_PRIMS[i];
++		for (k = 0; k < sizeof(POLY_FT4) / 4; k++) {
++			*d++ = *s++;
++		}
++		AddPrim(ACTIVE_ORDERING_TABLE->org + STD_MOD_TICK_PRIM_LAYERS[i], prim++);
++	}
++	GsSetWorkBase((PACKET *)prim);
++}
++
+ void STD_battleTickFrame(void)
+ {
++	/* MOD (fps): rendered by the shared tick / present helper (main.c),
++	 * like BTL_battleTickFrame; the AI before this call is part of the tick */
++	modTickStart(MOD_PRESENT_BATTLE);
+ 	POLLED_INPUT = PadRead(1);
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+ 	GsClearOt(0, 0, ACTIVE_ORDERING_TABLE);
+ 	tickObjects();
+-	renderObjects();
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + 0x20, &DR_OFFSETS[ACTIVE_FRAMEBUFFER]);
+-	DrawSync(0);
+-	VSync(3);
++	modPresent(MOD_PRESENT_BATTLE, STD_modRollbackSet());
+ 	POLLED_INPUT_PREVIOUS = POLLED_INPUT;
+-	GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+-	GsSwapDispBuff();
+-	GsSortClear(0, 0, 0, ACTIVE_ORDERING_TABLE);
+-	GsDrawOt(ACTIVE_ORDERING_TABLE);
+ }
+ 
+ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t slot)
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 2137e10..1d5c303 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -17,6 +17,8 @@
+ #include <dw/graphics.h>
+ #include <dw/line.h>
+ #include <dw/math.h>
++#include <dw/memmap.h>
++#include <dw/mod_present.h>
+ #include <dw/model.h>
+ #include <dw/params.h>
+ #include <dw/rng.h>
+@@ -1035,14 +1037,38 @@ void VS_tickEFEEngine(void)
+ 	}
+ }
+ 
++/* MOD (fps): as BTL_renderEFEEngine (battle_effect.c): the render scripts run
++ * on every render pass of a tick; on the extra passes the effect's
++ * script/data area is copied aside before the slot's scripts and put back
++ * after them, the opcodes that reach outside the effect do nothing and the
++ * random numbers are the first pass's. The copy goes below the arena model
++ * (ARENA_TMD_ADDR), the top of the free part of the EFE heap here. */
+ void VS_renderEFEEngine(void)
+ {
+ 	int32_t i;
+ 	int32_t j;
+ 	int32_t n;
++	int32_t saved;
++	uint32_t *buf = NULL;
++	int32_t target;
++	int32_t hit;
++	int32_t section;
+ 
++	target = EFE_TARGET_ENTITY_INDEX;
++	hit = EFE_HIT_ENTITY_INDEX;
++	section = EFE_ACTIVE_SECTION;
+ 	EFE_DATA_ITERATOR = EFE_DATA_PTR;
+ 	for (i = 0; i < 0x10; i++) {
++		saved = 0;
++		if (MOD_RENDER_PASS != 0 && EFE_DATA_ITERATOR->data != 0L) {
++			n = EFE_DATA_ITERATOR->numSubEffects;
++			for (j = 0; j < n; j++) {
++				if (EFE_DATA_ITERATOR->subEffects[j].inst != NULL) {
++					saved = modEfeAreaSave(EFE_DATA_ITERATOR->data, ARENA_TMD_ADDR, &buf);
++					break;
++				}
++			}
++		}
+ 		n = EFE_DATA_ITERATOR->numObjects;
+ 		for (j = 0; j < n; j++) {
+ 			EFE_DATA_ITERATOR->uvAnims[j].unk2 = 0;
+@@ -1059,9 +1085,18 @@ void VS_renderEFEEngine(void)
+ 				}
+ 			}
+ 		}
++		if (saved) {
++			modEfeAreaRestore(EFE_DATA_ITERATOR->data, buf, saved);
++		}
+ 		EFE_DATA_ITERATOR++;
+ 	}
+ 
++	if (MOD_RENDER_PASS != 0) {
++		/* interpreter state a later tick may read */
++		EFE_TARGET_ENTITY_INDEX = target;
++		EFE_HIT_ENTITY_INDEX = hit;
++		EFE_ACTIVE_SECTION = section;
++	}
+ 	VS_renderParticleEmitters();
+ }
+ 
+@@ -1755,6 +1790,9 @@ void VS_isTargetUnhit(void)
+ 
+ void VS_markEFEFinished(void)
+ {
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	UNUSED_EFE_ARRAY[COMBAT_EFFECT_ITR] = 0;
+ }
+ 
+@@ -1815,6 +1853,9 @@ void VS_applyBoxAttackHit(void)
+ 	out = EFE_POP1(int32_t *);
+ 	ext = EFE_POP1(EfeVector *);
+ 	*out = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	if (r < 0) {
+ 		r = EFE_SUB_EFFECT_INDEX;
+ 	}
+@@ -1858,6 +1899,9 @@ void VS_applyRadiusAttackHit(void)
+ 	hitFlag = EFE_POP1(int32_t *);
+ 	r = EFE_POP1(int32_t);
+ 	*hitFlag = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	r = r * r;
+ 	EFE_HIT_ENTITY_INDEX = 1;
+ 	while (EFE_HIT_ENTITY_INDEX < 10) {
+@@ -1914,6 +1958,9 @@ void VS_applyLineAttackHit(void)
+ 	out = EFE_POP1(int32_t *);
+ 	arg = EFE_POP1(int32_t *);
+ 	*out = 0;
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	line[0].vx = ((EfeTransform *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 4))->position.vx;
+ 	line[0].vy = *(int32_t *)((int32_t)EFE_CURRENT_DATA_SEGMENT + 0xc);
+ 	line[1].vx = EFE_SCRIPT_CONTEXT->sourceEntity->posData->location.vx;
+@@ -1961,7 +2008,7 @@ void VS_faceTargetEntity(void)
+ {
+ 	PositionData *pd;
+ 
+-	if (EFE_SCRIPT_CONTEXT->targetEntity == NULL) {
++	if (EFE_SCRIPT_CONTEXT->targetEntity == NULL || MOD_RENDER_PASS != 0) { /* MOD (fps) */
+ 		return;
+ 	}
+ 
+@@ -2289,7 +2336,7 @@ void VS_loadClutColors(void)
+ 	x = EFE_POP1(int32_t);
+ 	y = EFE_POP1(int32_t);
+ 
+-	if ((count > 0) && (count <= 16)) {
++	if ((count > 0) && (count <= 16) && MOD_RENDER_PASS == 0) { /* MOD (fps) */
+ 		m = EFE_DATA_ITERATOR->model;
+ 		for (i = 0; i < count; i++) {
+ 			clut[i] = *src++;
+@@ -2351,7 +2398,7 @@ void VS_selectRandomTargetEntity(void)
+ 	int32_t n;
+ 
+ 	excludeSelf = *--EFE_DATA_STACK;
+-	for (n = rand() % 8; n >= 0; n--) {
++	for (n = modRenderRand() % 8; n >= 0; n--) { /* MOD (fps): see VS_renderEFEEngine */
+ 		EFE_TARGET_ENTITY_INDEX++;
+ 		while (1) {
+ 			while (EFE_TARGET_ENTITY_INDEX < 10) {
+@@ -3140,7 +3187,7 @@ void VS_getRandomInRange(void)
+ 	a = EFE_POP1(int32_t);
+ 	b = EFE_POP1(int32_t);
+ 	out = EFE_POP1(int32_t *);
+-	*out = customRandom(b, a);
++	*out = modRenderCustomRandom(b, a); /* MOD (fps): see VS_renderEFEEngine */
+ }
+ 
+ void VS_interpolateValue(void)
+@@ -3567,7 +3614,7 @@ void VS_playEFESound(void)
+ 	EfeSound *p;
+ 
+ 	id = EFE_POP1(int32_t);
+-	if (id < 0) {
++	if (id < 0 || MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
+ 		return;
+ 	}
+ 
+@@ -3592,7 +3639,9 @@ void VS_addSourceEntityParticleFX(void)
+ 	int32_t timer;
+ 
+ 	timer = EFE_POP1(int32_t);
+-	addEntityParticleFX(EFE_SCRIPT_CONTEXT->sourceEntity, timer);
++	if (MOD_RENDER_PASS == 0) { /* MOD (fps): see VS_renderEFEEngine */
++		addEntityParticleFX(EFE_SCRIPT_CONTEXT->sourceEntity, timer);
++	}
+ }
+ 
+ void VS_copyFromParentTransform(void)
+@@ -3805,6 +3854,9 @@ void VS_addCloudEffect(void)
+ 	EfeVector *v;
+ 
+ 	v = EFE_POP1(EfeVector *);
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	pos.vx = v->vx;
+ 	pos.vy = v->vy;
+ 	pos.vz = v->vz;
+@@ -3861,6 +3913,9 @@ void VS_addParticleEmitter(void)
+ 	vec = EFE_POP1(EfeVector *);
+ 	n = EFE_POP1(int32_t);
+ 	b = EFE_POP1(int32_t);
++	if (MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
++		return;
++	}
+ 	for (i = 0; i < 4; i++) {
+ 		if (EFE_PARTICLE_EMITTERS[i].transform == NULL) {
+ 			break;
+@@ -4040,9 +4095,10 @@ void VS_getScatteredSpawnPosition(void)
+ 	}
+ 
+ 	if (r > 0) {
+-		out->vx = out->vx + ((rand() % r) - (r >> 1));
+-		out->vy = out->vy + ((rand() % r) - (r >> 1));
+-		out->vz = out->vz + ((rand() % r) - (r >> 1));
++		/* MOD (fps): see VS_renderEFEEngine */
++		out->vx = out->vx + ((modRenderRand() % r) - (r >> 1));
++		out->vy = out->vy + ((modRenderRand() % r) - (r >> 1));
++		out->vz = out->vz + ((modRenderRand() % r) - (r >> 1));
+ 	}
+ }
+ 
+@@ -4058,7 +4114,8 @@ void VS_addAttackObjectToTarget(void)
+ 	int32_t i;
+ 	int32_t j;
+ 
+-	if (((DigimonEntity *)EFE_SCRIPT_CONTEXT->targetEntity)->stats.current.isHit != 0) {
++	if (((DigimonEntity *)EFE_SCRIPT_CONTEXT->targetEntity)->stats.current.isHit != 0 ||
++	    MOD_RENDER_PASS != 0) { /* MOD (fps): see VS_renderEFEEngine */
+ 		return;
+ 	}
+ 
+@@ -4492,7 +4549,7 @@ void VS_loadEFEIndexedVariable(void)
+ 
+ void VS_loadEFERandomValue(void)
+ {
+-	EFE_SCRIPT_REGISTER = rand();
++	EFE_SCRIPT_REGISTER = modRenderRand(); /* MOD (fps): see VS_renderEFEEngine */
+ 	EFE_SCRIPT_PTR = (int16_t *)((int32_t)EFE_SCRIPT_PTR + 2);
+ }
+ 
+@@ -5475,7 +5532,7 @@ void VS_renderFinisherAura(int32_t id)
+ 	scale.vy = sy;
+ 	renderTMDModel(*(uint8_t **)&VS_FINISHER_AURA_MODEL, VS_FINISHER_AURA_OBJECTS[fa->frame / 2 % 3], &coord, NULL, &trans, &rot, &scale);
+ 	renderTMDModel(*(uint8_t **)&VS_FINISHER_AURA_MODEL, 3, &coord, NULL, &trans, &rot, &scale);
+-	rot.vy = rand();
++	rot.vy = modRenderRand(); /* MOD (fps): render-side random number */
+ 	scale.vx = scale.vz = sx * 140 / 100;
+ 	renderTMDModel(*(uint8_t **)&VS_FINISHER_AURA_MODEL, 4, &coord, NULL, &trans, &rot, &scale);
+ 
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index 5a383b1..03abc4c 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -11,6 +11,7 @@
+ #include <dw/input.h>
+ #include <dw/math.h>
+ #include <dw/memmap.h>
++#include <dw/mod_present.h>
+ #include <dw/sound.h>
+ #include <dw/types.h>
+ #include <dw/version.h>
+@@ -144,6 +145,9 @@ uint8_t MAIN_D_801352DA[2];
+ uint8_t *VS_DRAW_MODEL_BUFFER;
+ int16_t VS_WIN_LOSS_DRAW_TIMER;
+ uint8_t VS_WINNER_ID;
++/* MOD (fps): the start text object (0x1a6) exists; its pieces are rolled back
++ * around the extra render passes (vs_main.c) */
++int8_t VS_START_TEXT_ACTIVE;
+ 
+ static void *vs_hud_sbss_order[] = {
+ 	&VS_WINNER_ID,
+@@ -583,7 +587,13 @@ void VS_renderTargetCursor(uint8_t id)
+ 	}
+ 
+ 	if (COMBAT_DATA_PTR->player.remainingChargeupTime[id] == 0) {
+-		VS_removeTargetCursor(id);
++		/* MOD (fps): the other render passes of this tick still draw it */
++		if (MOD_RENDER_MULTIPASS) {
++			removeObjectAfterRender(0x19a, id);
++			COMBAT_DATA_PTR->player.remainingChargeupTime[id] = -1;
++		} else {
++			VS_removeTargetCursor(id);
++		}
+ 	}
+ }
+ 
+@@ -751,6 +761,7 @@ void VS_initializeBattleStartText(void)
+ 	}
+ 
+ 	addObject(0x1a6, 0, NULL, VS_renderBattleStartText);
++	VS_START_TEXT_ACTIVE = 1;
+ }
+ 
+ void VS_renderBattleStartText(void)
+@@ -900,12 +911,14 @@ void VS_renderBattleStartText(void)
+ void VS_removeBattleStartText(void)
+ {
+ 	removeObject(0x1a6, 0);
++	VS_START_TEXT_ACTIVE = 0;
+ }
+ 
+ void VS_initializeBattleStartTextBurst(void)
+ {
+ 	VS_BATTLE_TEXT_FINISHED = 0;
+ 	addObject(0x1a6, 0, NULL, VS_renderBattleStartTextBurst);
++	VS_START_TEXT_ACTIVE = 1;
+ }
+ 
+ void VS_renderBattleStartTextBurst(void)
+@@ -1027,6 +1040,7 @@ void VS_renderBattleStartTextBurst(void)
+ void VS_removeBattleStartTextBurst(void)
+ {
+ 	removeObject(0x1a6, 0);
++	VS_START_TEXT_ACTIVE = 0;
+ }
+ 
+ int32_t VS_isBattleStartTextFinished(void)
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index bab65b8..0be9a6d 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -9,6 +9,7 @@
+ #include <dw/font.h>
+ #include <dw/item.h>
+ #include <dw/math.h>
++#include <dw/mod_present.h>
+ #include <dw/move.h>
+ #include <dw/params.h>
+ #include <dw/types.h>
+@@ -993,8 +994,83 @@ void VS_removeMoveEffect(DigimonEntity *digimon, FighterData *fighter)
+ 	fighter->activeEffectSlot = -1;
+ }
+ 
++/* MOD (fps): VS state that render callbacks advance, rolled back around the
++ * extra render passes of a tick as in the story battle (battle_main.c) and
++ * the tournament (std_main.c): COMBAT_DATA and the two fighters' stats (the
++ * status bars' damageTick and MP drain), the start text pieces, its colour
++ * timer and VS_BATTLE_TEXT_FINISHED, the finisher gauge counters, the intro
++ * name's letter count and animation, and the select screen's panels (their
++ * render scrolls and blinks them). */
++extern uint8_t VS_BATTLE_START_TEXT_TIMER;
++extern int32_t VS_BATTLE_TEXT_FINISHED;
++extern uint8_t VS_FINISHER_FULL_FRAMES[2];
++extern uint8_t VS_FINISHER_PULSE_FRAME[2];
++extern uint8_t VS_FINISHER_BRIGHTNESS[2];
++extern uint8_t VS_FINISHER_SEGMENTS[2];
++extern uint8_t VS_FINISHER_READY[2];
++extern int8_t VS_START_TEXT_ACTIVE;
++extern int16_t VS__INTRO_DATA_RENDERED_CHARACTERS;
++extern uint8_t VS__INTRO_DATA_ANIM_FRAME;
++extern VsSelectDigimonData VS__SELECT_DIGIMON_DATA[2];
++
++#define VS_MOD_ROLLBACK_MAX 16
++#define VS_MOD_ROLLBACK_WORDS 1400
++static ModRollbackVar VS_MOD_ROLLBACK_VARS[VS_MOD_ROLLBACK_MAX];
++static uint32_t VS_MOD_ROLLBACK_PRE[VS_MOD_ROLLBACK_WORDS];
++static uint32_t VS_MOD_ROLLBACK_POST[VS_MOD_ROLLBACK_WORDS];
++static ModRollbackSet VS_MOD_ROLLBACK = {
++	VS_MOD_ROLLBACK_VARS, 0, VS_MOD_ROLLBACK_PRE, VS_MOD_ROLLBACK_POST, NULL
++};
++
++static void VS_modRollbackAdd(void *ptr, int32_t size)
++{
++	ModRollbackVar *v = &VS_MOD_ROLLBACK_VARS[VS_MOD_ROLLBACK.count++];
++
++	v->ptr = ptr;
++	v->size = size;
++}
++
++static ModRollbackSet *VS_modRollbackSet(void)
++{
++	int32_t i;
++	int32_t id;
++	Entity *e;
++	Entity *first = NULL;
++
++	VS_MOD_ROLLBACK.count = 0;
++	VS_modRollbackAdd(COMBAT_DATA_PTR, sizeof(CombatData));
++	for (i = 0; i < 2; i++) {
++		id = COMBAT_DATA_PTR->player.entityIds[i];
++		if (id < 1 || id >= 10) {
++			continue;
++		}
++		e = ENTITY_TABLE[id];
++		if (e != NULL && e != first) {
++			VS_modRollbackAdd(&((DigimonEntity *)e)->stats, sizeof(Stats));
++			first = e;
++		}
++	}
++	if (VS_START_TEXT_ACTIVE) {
++		VS_modRollbackAdd(VS_BATTLE_START_TEXT_PIECES, sizeof(VS_BATTLE_START_TEXT_PIECES));
++	}
++	VS_modRollbackAdd(&VS_BATTLE_START_TEXT_TIMER, 1);
++	VS_modRollbackAdd(&VS_BATTLE_TEXT_FINISHED, sizeof(VS_BATTLE_TEXT_FINISHED));
++	VS_modRollbackAdd(VS_FINISHER_FULL_FRAMES, 2);
++	VS_modRollbackAdd(VS_FINISHER_PULSE_FRAME, 2);
++	VS_modRollbackAdd(VS_FINISHER_BRIGHTNESS, 2);
++	VS_modRollbackAdd(VS_FINISHER_SEGMENTS, 2);
++	VS_modRollbackAdd(VS_FINISHER_READY, 2);
++	VS_modRollbackAdd(&VS__INTRO_DATA_RENDERED_CHARACTERS, sizeof(VS__INTRO_DATA_RENDERED_CHARACTERS));
++	VS_modRollbackAdd(&VS__INTRO_DATA_ANIM_FRAME, 1);
++	VS_modRollbackAdd(VS__SELECT_DIGIMON_DATA, sizeof(VS__SELECT_DIGIMON_DATA));
++	return &VS_MOD_ROLLBACK;
++}
++
+ void VS_tickFrame(void)
+ {
++	/* MOD (fps): rendered by the shared tick / present helper (main.c),
++	 * like BTL_battleTickFrame */
++	modTickStart(MOD_PRESENT_BATTLE);
+ 	POLLED_INPUT_PREVIOUS = POLLED_INPUT;
+ 	POLLED_INPUT = PadRead(1);
+ 	ACTIVE_FRAMEBUFFER = GsGetActiveBuff();
+@@ -1002,14 +1078,7 @@ void VS_tickFrame(void)
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+ 	GsClearOt(0, 0, ACTIVE_ORDERING_TABLE);
+ 	tickObjects();
+-	renderObjects();
+-	AddPrim(ACTIVE_ORDERING_TABLE->org + 0x20, &DR_OFFSETS[ACTIVE_FRAMEBUFFER]);
+-	DrawSync(0);
+-	VSync(3);
+-	GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+-	GsSwapDispBuff();
+-	GsSortClear(0, 0, 0, ACTIVE_ORDERING_TABLE);
+-	GsDrawOt(ACTIVE_ORDERING_TABLE);
++	modPresent(MOD_PRESENT_BATTLE, VS_modRollbackSet());
+ }
+ 
+ void VS_addFinisherProgress(FighterData *fighter, int16_t amount)
+-- 
+2.53.0
+

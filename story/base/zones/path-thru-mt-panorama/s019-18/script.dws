@@ -1,0 +1,87 @@
+// Readable form of script 19 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 19 {
+    npc goblimon0 = 5;
+    npc goblimon1 = 6;
+    npc aruraumon2 = 7;
+    npc aruraumon3 = 8;
+    npc slot4 = 9;
+    npc slot5 = 10;
+    npc gotsumon6 = 11;
+    npc gotsumon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10, 11, 12, 51;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 37, 19);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 9) {
+            spawn_item(item("Digimushrm"), 60, 72);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Big Berry"), 57, 54);
+        }
+        native_forest_rockslide_cleared = true;
+        native_forest_rockslide_cleared_seen = true;
+    }
+
+    on talk(goblimon0) replace {    // section 5
+        say(goblimon0, text("s019.sec5.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(goblimon1) replace {    // section 6
+        say(goblimon1, text("s019.sec6.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(aruraumon2) replace {    // section 7
+        say(aruraumon2, text("s019.sec7.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(aruraumon3) replace {    // section 8
+        say(aruraumon3, text("s019.sec8.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(slot4) replace {    // section 9
+        say(slot4, text("s019.sec9.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(slot5) replace {    // section 10
+        say(slot5, text("s019.sec10.u0"));
+        battle();
+        recruit(species("Goblimon"));
+    }
+
+    on talk(gotsumon6) replace {    // section 11
+        say(gotsumon6, text("s019.sec11.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on talk(gotsumon7) replace {    // section 12
+        say(gotsumon7, text("s019.sec12.u0"));
+        battle();
+        recruit(species("Gotsumon"));
+    }
+
+    on step(0) replace {    // section 51
+        warp_to(20, 0, 255);
+        return;
+    }
+}

@@ -1,0 +1,59 @@
+// Readable form of script 183 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 183 {
+    npc myotismon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 60;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        goto sec60;
+    }
+
+    on step(9) replace {    // section 60
+        set_digimon(species(177), 0, 0);
+        entity_move_to(tamer, 276, -1057, 6, 0);
+        entity_move_to(partner, -688, 481, 6, 0);
+        await tamer;
+        await partner;
+        entity_set_rotation(tamer, 2128);
+        entity_set_rotation(partner, 3072);
+        say(tamer, text("s183.sec60.u0"));
+        say(myotismon, text("s183.sec60.u1"));
+        face(myotismon, tamer);
+        say(myotismon, text("s183.sec60.u2"));
+        say(tamer, text("s183.sec60.u3"));
+        say(myotismon, text("s183.sec60.u4"));
+        say(tamer, text("s183.sec60.u5"));
+        say(myotismon, text("s183.sec60.u6"));
+        face(tamer, myotismon);
+        say(tamer, text("s183.sec60.u7"));
+        say(myotismon, text("s183.sec60.u8"));
+        say(tamer, text("s183.sec60.u9"));
+        say(myotismon, text("s183.sec60.u10"));
+        say(tamer, text("s183.sec60.u11"));
+        say(myotismon, text("s183.sec60.u12"));
+        say(tamer, text("s183.sec60.u13"));
+        say(myotismon, text("s183.sec60.u14"));
+        say(tamer, text("s183.sec60.u15"));
+        say(myotismon, text("s183.sec60.u16"));
+        if (!is_recruited(species("Greymon"))) {
+            say(myotismon, text("s183.sec60.u17"));
+            say(tamer, text("s183.sec60.u18"));
+            say(myotismon, text("s183.sec60.u19"));
+            say(tamer, text("s183.sec60.u20"));
+        } else {
+            say(tamer, text("s183.sec60.u21"));
+            say(myotismon, text("s183.sec60.u22"));
+            say(tamer, text("s183.sec60.u23"));
+            say(myotismon, text("s183.sec60.u24"));
+            recruit(species("Myotismon"));
+        }
+        warp_to(52, 4, 255);
+        return;
+    }
+}

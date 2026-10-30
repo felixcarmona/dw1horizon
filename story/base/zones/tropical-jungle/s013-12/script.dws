@@ -1,0 +1,98 @@
+// Readable form of script 13 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 13 {
+    npc piximon = 5;
+    npc muchomon1 = 6;
+    npc muchomon2 = 7;
+    npc j_mojyamon3 = 8;
+    npc j_mojyamon4 = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+        spawn_chest(item("med.recovery"), 1941, 0, 142, 0, 693);
+        store_random(random_roll, 99);
+        if (random_roll <= 14) {
+            spawn_item(item("Digimushrm"), 79, 34);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 17) {
+            spawn_item(item("Digimushrm"), 56, 61);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 5) {
+            spawn_item(item("Digimushrm"), 87, 67);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 2) {
+            spawn_item(item("Orange bana"), 21, 57);
+        }
+    }
+
+    on talk(piximon) replace {    // section 5
+        say(piximon, text("s013.sec5.u0"));
+        say(tamer, text("s013.sec5.u1"));
+        sound(8, 6);
+        say(piximon, text("s013.sec5.u2"));
+        animate(tamer, 16);
+        choice {
+            text("s013.sec5.m0.o0") => {
+                battle(foes: [piximon]);
+                face(tamer, piximon);
+                face(piximon, tamer);
+                face(partner, piximon);
+                face(tamer, piximon);
+                face(partner, piximon);
+                face(piximon, tamer);
+                await tamer;
+                say(piximon, text("s013.sec5.u3"));
+                walk_away(piximon, -2444, -3233, looks: 10, pause: 10);
+                remove(piximon);
+                glances = 0;
+                sound(8, 3);
+                say(narrator, text("s013.sec5.u4"));
+                engine.no_escape = false;
+                recruit(species("Piximon"));
+                engine.prosperity += 3;
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s013.sec5.m0.o1") => {}
+        }
+        say(piximon, text("s013.sec5.u5"));
+        walk_away(piximon, -2444, -3233, looks: 10, pause: 10);
+        remove(piximon);
+        glances = 0;
+    }
+
+    on talk(muchomon1) replace {    // section 6
+        say(muchomon1, text("s013.sec6.u0"));
+        battle();
+        recruit(species("Muchomon"));
+    }
+
+    on talk(muchomon2) replace {    // section 7
+        say(muchomon2, text("s013.sec7.u0"));
+        battle();
+        recruit(species("Muchomon"));
+    }
+
+    on talk(j_mojyamon3) replace {    // section 8
+        say(j_mojyamon3, text("s013.sec8.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+    }
+
+    on talk(j_mojyamon4) replace {    // section 9
+        say(j_mojyamon4, text("s013.sec9.u0"));
+        battle();
+        recruit(species("J-Mojyamon"));
+        return;
+    }
+}

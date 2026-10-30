@@ -1,0 +1,370 @@
+// Readable form of script 10 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../names.dws";
+script 10 {
+    npc aruraumon = 5;
+    npc slot1 = 6;
+    npc tsukaimon = 7;
+    npc etemon = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 7, 55, 51, 8, 52;
+
+    on enter replace {    // section 254
+        if (is_recruited(species("Kunemon"))) {
+            set_obj_visibility(68, 1);
+            set_obj_visibility(69, 1);
+            set_obj_visibility(70, 1);
+        } else {
+            set_rect_impassable(0, 22, 16, 3, 12);
+        }
+        if (is_recruited(species("Kunemon")) && engine.prosperity >= 35) {
+            set_obj_visibility(71, 0);
+            set_obj_visibility(72, 0);
+            set_obj_visibility(73, 0);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 39) {
+            spawn_item(item("Digimushrm"), 37, 48);
+        }
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Blue apple"), 38, 52);
+        }
+    }
+
+    on talk(aruraumon) replace {    // section 5
+        say(aruraumon, text("s010.sec5.u0"));
+        battle();
+        recruit(species("Aruraumon"));
+    }
+
+    on talk(tsukaimon) replace {    // section 7
+        say(tsukaimon, text("s010.sec7.u0"));
+        battle();
+        recruit(species("Tsukaimon"));
+    }
+
+    on step(4) replace {    // section 55
+    }
+
+    on step(0) replace {    // section 51
+        unless (!is_recruited(species("Ninjamon"))) return;
+        unless (is_recruited(species("Devimon")) || is_recruited(species("Numemon")) || is_recruited(species("Mojyamon")) || is_recruited(species("Mamemon"))) return;
+        say(narrator, text("s010.sec51.u0"));
+        animate(tamer, 16);
+        wait(1s);
+        animate(tamer, anim.idle);
+        run(tamer, -1050, -1473);
+        run(partner, -709, -1473);
+        await tamer;
+        await partner;
+        entity_set_rotation(tamer, 2048);
+        entity_set_rotation(partner, 2048);
+        call_routine(routine("ninjamon_effect"));
+        sound(8, 0);
+        camera_to(-836, -663, speed: 20);
+        await camera;
+        set_obj_visibility(41, 0);
+        move_object_to(1, 41, 1, 7, 153, 349);
+        wait(12);
+        move_object_to(1, 41, 1, 7, 184, 381);
+        wait(12);
+        move_object_to(1, 41, 1, 7, 153, 411);
+        wait(12);
+        move_object_to(1, 41, 1, 7, 184, 443);
+        wait(12);
+        move_object_to(1, 41, 1, 7, 153, 475);
+        wait(12);
+        set_digimon(species(175), 1, 1);
+        set_obj_visibility(42, 0);
+        set_obj_visibility(43, 0);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        set_obj_visibility(49, 0);
+        set_obj_visibility(50, 0);
+        set_obj_visibility(51, 0);
+        set_obj_visibility(52, 0);
+        set_obj_visibility(53, 0);
+        set_obj_visibility(54, 0);
+        set_obj_visibility(55, 0);
+        set_obj_visibility(56, 0);
+        set_obj_visibility(57, 0);
+        set_obj_visibility(58, 0);
+        set_obj_visibility(59, 0);
+        set_obj_visibility(60, 0);
+        set_obj_visibility(61, 0);
+        set_obj_visibility(62, 0);
+        set_obj_visibility(63, 0);
+        set_obj_visibility(64, 0);
+        set_obj_visibility(65, 0);
+        set_obj_visibility(66, 0);
+        set_obj_visibility(67, 0);
+        engine.object = 42;
+        engine.animation = 26;
+        call_routine(routine("reset_object_animation"));
+        set_obj_visibility(41, 1);
+        sound(8, 0);
+        animate(slot1, 28);
+        wait(10);
+        set_obj_visibility(42, 1);
+        set_obj_visibility(43, 1);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        set_obj_visibility(46, 1);
+        set_obj_visibility(47, 1);
+        set_obj_visibility(48, 1);
+        set_obj_visibility(49, 1);
+        set_obj_visibility(50, 1);
+        set_obj_visibility(51, 1);
+        set_obj_visibility(52, 1);
+        set_obj_visibility(53, 1);
+        set_obj_visibility(54, 1);
+        set_obj_visibility(55, 1);
+        set_obj_visibility(56, 1);
+        set_obj_visibility(57, 1);
+        set_obj_visibility(58, 1);
+        set_obj_visibility(59, 1);
+        set_obj_visibility(60, 1);
+        set_obj_visibility(61, 1);
+        set_obj_visibility(62, 1);
+        set_obj_visibility(63, 1);
+        set_obj_visibility(64, 1);
+        set_obj_visibility(65, 1);
+        set_obj_visibility(66, 1);
+        set_obj_visibility(67, 1);
+        sound(8, 1);
+        wait(10);
+        say(slot1, text("s010.sec51.u1"));
+        animate(tamer, 15);
+        wait(1s);
+        face(slot1, tamer);
+        wait(10);
+        face(slot1, partner);
+        wait(10);
+        face(slot1, tamer);
+        say(slot1, text("s010.sec51.u2"));
+        choice {
+            text("s010.sec51.m0.o0") => {}
+            text("s010.sec51.m0.o1") or cancel => {
+                say(slot1, text("s010.sec51.u3"));
+            }
+        }
+        battle(foes: [slot1]);
+        run(partner, -633, -581);
+        run(partner, -1033, -481);
+        run(slot1, -905, -1096);
+        await entity(20);
+        face(tamer, slot1);
+        face(slot1, tamer);
+        face(partner, slot1);
+        await tamer;
+        say(slot1, text("s010.sec51.u4"));
+        animate(tamer, 19);
+        wait(1s);
+        say(tamer, text("s010.sec51.u5"));
+        say(slot1, text("s010.sec51.u6"));
+        wait(1s);
+        animate(slot1, 28);
+        wait(10);
+        set_obj_visibility(42, 0);
+        set_obj_visibility(43, 0);
+        set_obj_visibility(44, 0);
+        set_obj_visibility(45, 0);
+        set_obj_visibility(46, 0);
+        set_obj_visibility(47, 0);
+        set_obj_visibility(48, 0);
+        set_obj_visibility(49, 0);
+        set_obj_visibility(50, 0);
+        set_obj_visibility(51, 0);
+        set_obj_visibility(52, 0);
+        set_obj_visibility(53, 0);
+        set_obj_visibility(54, 0);
+        set_obj_visibility(55, 0);
+        set_obj_visibility(56, 0);
+        set_obj_visibility(57, 0);
+        set_obj_visibility(58, 0);
+        set_obj_visibility(59, 0);
+        set_obj_visibility(60, 0);
+        set_obj_visibility(61, 0);
+        set_obj_visibility(62, 0);
+        set_obj_visibility(63, 0);
+        set_obj_visibility(64, 0);
+        set_obj_visibility(65, 0);
+        set_obj_visibility(66, 0);
+        set_obj_visibility(67, 0);
+        engine.object = 42;
+        engine.animation = 26;
+        call_routine(routine("reset_object_animation"));
+        sound(8, 0);
+        wait(10);
+        remove(slot1);
+        wait(2s);
+        set_obj_visibility(42, 1);
+        set_obj_visibility(43, 1);
+        set_obj_visibility(44, 1);
+        set_obj_visibility(45, 1);
+        set_obj_visibility(46, 1);
+        set_obj_visibility(47, 1);
+        set_obj_visibility(48, 1);
+        set_obj_visibility(49, 1);
+        set_obj_visibility(50, 1);
+        set_obj_visibility(51, 1);
+        set_obj_visibility(52, 1);
+        set_obj_visibility(53, 1);
+        set_obj_visibility(54, 1);
+        set_obj_visibility(55, 1);
+        set_obj_visibility(56, 1);
+        set_obj_visibility(57, 1);
+        set_obj_visibility(58, 1);
+        set_obj_visibility(59, 1);
+        set_obj_visibility(60, 1);
+        set_obj_visibility(61, 1);
+        set_obj_visibility(62, 1);
+        set_obj_visibility(63, 1);
+        set_obj_visibility(64, 1);
+        set_obj_visibility(65, 1);
+        set_obj_visibility(66, 1);
+        set_obj_visibility(67, 1);
+        wait(10);
+        sound(8, 11);
+        say(narrator, text("s010.sec51.u7"));
+        engine.no_escape = false;
+        camera_on(tamer, speed: 10);
+        await camera;
+        recruit(species("Ninjamon"));
+        engine.prosperity += 2;
+    }
+
+    on talk(etemon) replace {    // section 8
+        say(etemon, text("s010.sec8.u0"));
+        unless (bits >= 50000) return;
+        say(etemon, text("s010.sec8.u1"));
+        choice {
+            text("s010.sec8.m0.o0") => {
+                take_bits(50000);
+                give_item(item("Gold banana"), 1);
+                if (engine.item_did_not_fit) {
+                    if (has(item("Gold banana")) >= 99) {
+                        say(etemon, text("s010.sec8.u2"));
+                        give_bits(50000);
+                        return;
+                    }
+                    say(tamer, text("s010.sec8.u3"));
+                    engine.picker_mode = true;
+                    call_routine(routine("choose_item"));
+                    call_routine(routine("remove_all_chosen_item"));
+                    give_item(item("Gold banana"), 1);
+                }
+                say(etemon, text("s010.sec8.u4"));
+                return;
+            }
+            text("s010.sec8.m0.o1") => {}
+        }
+        say(etemon, text("s010.sec8.u5"));
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2800, 3000);
+        if (is_recruited(species("Patamon")) || is_recruited(species("Biyomon")) || is_recruited(species("Unimon")) || is_recruited(species("Monochromon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(192, 2, 255);
+                        return;
+                    }
+                    warp_to(191, 2, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(193, 2, 255);
+                    return;
+                }
+                warp_to(190, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(195, 2, 255);
+                    return;
+                }
+                warp_to(194, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(196, 2, 255);
+                return;
+            }
+            warp_to(189, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Betamon")) || is_recruited(species("Coelamon"))) {
+            if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+                if (is_recruited(species("Centarumon"))) {
+                    if (is_recruited(species("Greymon"))) {
+                        warp_to(184, 2, 255);
+                        return;
+                    }
+                    warp_to(183, 2, 255);
+                    return;
+                }
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(185, 2, 255);
+                    return;
+                }
+                warp_to(182, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(187, 2, 255);
+                    return;
+                }
+                warp_to(186, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(188, 2, 255);
+                return;
+            }
+            warp_to(181, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Meramon")) || is_recruited(species("Tyrannomon")) || is_recruited(species("Garurumon")) || is_recruited(species("Frigimon"))) {
+            if (is_recruited(species("Centarumon"))) {
+                if (is_recruited(species("Greymon"))) {
+                    warp_to(199, 2, 255);
+                    return;
+                }
+                warp_to(198, 2, 255);
+                return;
+            }
+            if (is_recruited(species("Greymon"))) {
+                warp_to(200, 2, 255);
+                return;
+            }
+            warp_to(197, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Centarumon"))) {
+            if (is_recruited(species("Greymon"))) {
+                warp_to(202, 2, 255);
+                return;
+            }
+            warp_to(201, 2, 255);
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            warp_to(203, 2, 255);
+            return;
+        }
+        warp_to(180, 2, 255);
+        return;
+    }
+}

@@ -1,0 +1,148 @@
+{
+ "s007.sec81.m0.o0": "Tocar a flauta",
+ "s007.sec81.m0.o1": "Não tocar",
+ "s007.sec81.u0": "Oh, isso mesmo.",
+ "s007.sec81.u1": "Tocar {color 6}Flauta azul{color 1}?",
+ "s007.sec81.u2": "Meu amigo, você precisa do meu poder?",
+ "s007.sec81.u3": "Me dê uma carona até a outra margem.",
+ "s007.sec81.u4": [
+  [
+   "Sem problema. Agora, suba."
+  ]
+ ],
+ "s007.sec82.m0.o0": "Vamos ser amigos",
+ "s007.sec82.m0.o1": "Ensine uma técnica!",
+ "s007.sec82.m0.o2": "Quero um item",
+ "s007.sec82.m1.o0": "Vamos ser amigos",
+ "s007.sec82.m1.o1": "Ensine uma técnica!",
+ "s007.sec82.m1.o2": "Quero um item",
+ "s007.sec82.m2.o0": "Oh, eu vou, eu vou!",
+ "s007.sec82.m2.o1": "Vou me preparar e voltar.",
+ "s007.sec82.u0": "Seadramon!",
+ "s007.sec82.u1": "Nos encontramos de novo. Você tem um desejo?",
+ "s007.sec82.u2": "Você e eu já somos amigos. Algum outro desejo?",
+ "s007.sec82.u3": "Wh-whoaaaa! É o guardião do lago!",
+ "s007.sec82.u4": [
+  [
+   "De fato. Eu sou Seadramon. É você quem tem",
+   "pescado tanto ultimamente, não é?"
+  ],
+  [
+   "Bem, não importa. Você tem um desejo?"
+  ]
+ ],
+ "s007.sec82.u5": [
+  [
+   "Uau! ...É o que se espera do",
+   "guardião do lago. Incrível.",
+   "Bem, então..."
+  ]
+ ],
+ "s007.sec82.u6": [
+  [
+   "Muito bem, que assim seja."
+  ],
+  [
+   "De agora em diante, você e eu somos amigos.",
+   "Como um símbolo, eu lhe dou esta flauta."
+  ]
+ ],
+ "s007.sec82.u7": "Oh não, estou carregando muitos itens. Preciso jogar algo fora.",
+ "s007.sec82.u8": [
+  [
+   "Peguei a {color 6}Flauta azul{color 1}!"
+  ]
+ ],
+ "s007.sec82.u9": [
+  [
+   "Toque perto do lago, e eu",
+   "aparecerei a qualquer hora.",
+   "Como amigo, vou levar você até",
+   "a outra margem."
+  ]
+ ],
+ "s007.sec82.u10": [
+  [
+   "Uau, então posso chegar à",
+   "outra margem! Obrigado!"
+  ]
+ ],
+ "s007.sec82.u11": "Do outro lado do lago fica uma floresta bastante estranha. Você vai lá agora?",
+ "s007.sec82.u12": "Mm. Então vou ensinar-lhe esta técnica.",
+ "s007.sec82.u13": [
+  [
+   "Aprendeu Magia Aquática!"
+  ]
+ ],
+ "s007.sec82.u14": [
+  [
+   "Aprendeu Rajada de Inverno!"
+  ]
+ ],
+ "s007.sec82.u15": [
+  [
+   "Aprendeu Gigacongelamento!"
+  ]
+ ],
+ "s007.sec82.u16": "Parece que não há mais técnicas que eu possa te ensinar...",
+ "s007.sec82.u17": "Então, adeus.",
+ "s007.sec82.u18": [
+  [
+   "Hum. Vou dar a você a {color 6}Garrafa",
+   "de água{color 1}."
+  ]
+ ],
+ "s007.sec82.u19": "Oh não, estou carregando muitos itens. Preciso jogar algo fora.",
+ "s007.sec82.u20": [
+  [
+   "Peguei a {color 6}Garrafa de água{color 1}!"
+  ]
+ ],
+ "s007.sec82.u21": "Então, adeus por enquanto.",
+ "s007.sec82.u22": "Então suba nas minhas costas.",
+ "s007.sec82.u23": "Então, adeus por enquanto.",
+ "s009.sec81.m0.o0": "Carne: 300 Bits",
+ "s009.sec81.m0.o1": "Digicogumelo: 600 Bits",
+ "s009.sec81.m0.o2": "Não comprar",
+ "s009.sec81.u0": [
+  [
+   "Máquina de vendas"
+  ]
+ ],
+ "s009.sec81.u1": "Nossa, essa máquina é cara.",
+ "s009.sec81.u2": "Não tem dinheiro suficiente, hein?",
+ "s009.sec81.u3": "Não tem dinheiro suficiente, hein?",
+ "s009.sec81.u4": "{color 6}Carne{color 1} saiu!",
+ "s009.sec81.u5": "Opa, minha bolsa está cheia.",
+ "s009.sec81.u6": "Um {color 6}Digicogumelo{color 1} saiu!",
+ "s009.sec81.u7": "Opa, minha bolsa está cheia.",
+ "s009.sec82.u0": [
+  [
+   "Como pescar Primeiro, consiga",
+   "uma vara. Um ícone de pesca",
+   "aparecerá no submenu, em {color 5}△{color 1}.",
+   "Selecione-o. Aperte {color 6}×{color 1} para",
+   "pôr a isca no anzol: escolha um",
+   "dos alimentos que carrega. Use",
+   "os botões de direção para"
+  ],
+  [
+   "virar à esquerda ou à direita.",
+   "Aperte {color 6}×{color 1} para levantar a vara",
+   "e {color 6}×{color 1} de novo para lançar.",
+   "Espere a boia afundar: isso",
+   "indica que um peixe mordeu a",
+   "isca. Puxe com {color 6}×{color 1}. Observe o",
+   "medidor no canto superior"
+  ],
+  [
+   "esquerdo: solte {color 6}×{color 1} antes que",
+   "ele encha, ou a linha",
+   "arrebentará. Recolha a boia",
+   "até o fim para pegar o peixe.",
+   "Se aparecer um X na sombra",
+   "de um peixe, ele não morderá a",
+   "isca que você está usando."
+  ]
+ ]
+}

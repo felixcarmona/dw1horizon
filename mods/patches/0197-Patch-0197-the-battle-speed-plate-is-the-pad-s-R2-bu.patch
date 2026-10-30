@@ -1,0 +1,131 @@
+From df174f62c9f376b3d61aabeeaa325067ceacb2c6 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 06:30:18 +0000
+Subject: [PATCH 198/199] Patch 0197: the battle speed plate is the pad's R2
+ button (a grey pill) and fast-forward arrows: one white at x1, two yellow at
+ x2, two grey while held (design B of six)
+
+---
+ src/main/mod_qol.c | 51 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 17 deletions(-)
+
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 4db2d247..bc72660b 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -1,9 +1,9 @@
+ /*
+  * MOD (quality of life): what the speed-ups share (docs/mods/quality-of-life.md).
+  *
+- * Plates. A battle (R2 x1 / x2, patches 0184, 0192) and an evolution (START SKIP, 0185, 0193) show a small plate in
+- * the bottom right corner in the digital clock's style: 3x5 letters on a dark plate with a light blue edge. modPlate
+- * draws one; its letters are the ones these plates need.
++ * Plates. A battle shows the pad's R2 button and fast-forward arrows in the bottom right corner (patches 0184, 0192),
++ * an evolution a START SKIP plate there (0185, 0192), in the digital clock's style: 3x5 letters on a dark plate with a
++ * light blue edge. modPlate draws one; its letters are the ones these plates need.
+  *
+  * Training block. After each session of a block (src/trn/trn_block.h), modTrainStopReason says whether the block
+  * stops: the partner is hungry, needs the toilet, is sleepy, tired, hurt or sick, is due to digivolve or at the end of
+@@ -33,8 +33,8 @@ extern uint32_t POLLED_INPUT;
+ extern uint32_t POLLED_INPUT_PREVIOUS;
+ 
+ /* each row of a letter is 3 bits, bit 2 the left column */
+-static const char MOD_PLATE_CHARS[] = "R2x15STAKIPOM";
+-static const uint8_t MOD_PLATE_GLYPHS[13][5] = {
++static const char MOD_PLATE_CHARS[] = "R2x15STAKIPOM>";
++static const uint8_t MOD_PLATE_GLYPHS[14][5] = {
+ 	{ 6, 5, 6, 5, 5 }, /* R */
+ 	{ 7, 1, 7, 4, 7 }, /* 2 */
+ 	{ 0, 0, 5, 2, 5 }, /* x */
+@@ -48,6 +48,7 @@ static const uint8_t MOD_PLATE_GLYPHS[13][5] = {
+ 	{ 6, 5, 6, 4, 4 }, /* P */
+ 	{ 7, 5, 5, 5, 7 }, /* O */
+ 	{ 5, 7, 7, 5, 5 }, /* M */
++	{ 4, 6, 7, 6, 4 }, /* > (fast forward) */
+ };
+ 
+ /* the skip hint's words after START, by MOD_LANG */
+@@ -77,18 +78,15 @@ static int32_t modPlateWidth(const char *text)
+ 
+ /* a letter advances 4 pixels, a space 2; the plate is 9 high and as wide as its text plus 5. A later prim at the same
+    depth is drawn under an earlier one, so edge, inside and letters go 6, 5, 4 */
+-void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b)
++/* the letters alone, their top left at (x, y) */
++static void modPlateText(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b)
+ {
+-	int32_t w = modPlateWidth(text);
+-	int32_t px;
++	int32_t px = x;
+ 	int32_t i;
+ 	int32_t row;
+ 	int32_t col;
+ 	int32_t k;
+ 
+-	modPlateRect(x, y, w, 9, 0x62, 0xB4, 0xF6, 6);
+-	modPlateRect(x + 1, y + 1, w - 2, 7, 0x18, 0x18, 0x18, 5);
+-	px = x + 3;
+ 	for (i = 0; text[i] != 0; i++) {
+ 		if (text[i] == ' ') {
+ 			px += 2;
+@@ -100,9 +98,9 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 			for (col = 0; col < 3; col++) {
+ 				if (MOD_PLATE_GLYPHS[k][row] & (4 >> col)) {
+ 					if (i >= hi) {
+-						modPlateRect(px + col, y + 2 + row, 1, 1, r, g, b, 4);
++						modPlateRect(px + col, y + row, 1, 1, r, g, b, 4);
+ 					} else {
+-						modPlateRect(px + col, y + 2 + row, 1, 1, 0xF0, 0xF0, 0xF0, 4);
++						modPlateRect(px + col, y + row, 1, 1, 0xF0, 0xF0, 0xF0, 4);
+ 					}
+ 				}
+ 			}
+@@ -111,6 +109,15 @@ void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int
+ 	}
+ }
+ 
++void modPlate(int32_t x, int32_t y, const char *text, int32_t hi, int32_t r, int32_t g, int32_t b)
++{
++	int32_t w = modPlateWidth(text);
++
++	modPlateRect(x, y, w, 9, 0x62, 0xB4, 0xF6, 6);
++	modPlateRect(x + 1, y + 1, w - 2, 7, 0x18, 0x18, 0x18, 5);
++	modPlateText(x + 3, y + 2, text, hi, r, g, b);
++}
++
+ /* the evolution's skip hint, its right edge where the battle's plate ends: START white, the word light blue */
+ void modSkipPlate(void)
+ {
+@@ -139,16 +146,26 @@ void modSpeedInput(void)
+ 	}
+ }
+ 
+-/* "R2 x1" white, "R2 x2" yellow, grey while held */
++/* the pad's R2 button, a grey pill, then fast-forward arrows: one white at x1, two yellow at x2, two grey while held
++   (owner's choice B of six, 2026-10-24) */
+ static void modSpeedPlate(int32_t instanceId)
+ {
++	int32_t x = 0x7E;
++	int32_t y = 0x66;
++
+ 	(void)instanceId;
++	modPlateRect(x + 2, y, 9, 9, 0xB0, 0xB0, 0xB8, 6);
++	modPlateRect(x + 1, y + 1, 11, 7, 0xB0, 0xB0, 0xB8, 6);
++	modPlateRect(x, y + 2, 13, 5, 0xB0, 0xB0, 0xB8, 6);
++	modPlateRect(x + 2, y + 1, 9, 7, 0x50, 0x50, 0x58, 5);
++	modPlateRect(x + 1, y + 2, 11, 5, 0x50, 0x50, 0x58, 5);
++	modPlateText(x + 3, y + 2, "R2", 2, 0, 0, 0);
+ 	if (!MOD_BATTLE_FAST) {
+-		modPlate(0x80, 0x60, "R2 x1", 3, 0xF0, 0xF0, 0xF0);
++		modPlateText(x + 19, y + 2, ">", 1, 0, 0, 0);
+ 	} else if (MOD_SPEED_HELD) {
+-		modPlate(0x80, 0x60, "R2 x2", 3, 0x80, 0x80, 0x80);
++		modPlateText(x + 16, y + 2, ">>", 0, 0x80, 0x80, 0x80);
+ 	} else {
+-		modPlate(0x80, 0x60, "R2 x2", 3, 0xF8, 0xD8, 0x30);
++		modPlateText(x + 16, y + 2, ">>", 0, 0xF8, 0xD8, 0x30);
+ 	}
+ }
+ 
+-- 
+2.53.0
+

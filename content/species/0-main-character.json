@@ -1,0 +1,34 @@
+{
+  "id": 0,
+  "name": "main character",
+  "level": "none",
+  "attribute": "none",
+  "specialties": ["fire", null, null],
+  "techniques": null,
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 0,
+  "model": {"name": "BOYS", "bones": 17, "radius": 100, "height": 300},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "status_screen_position": [670, 200, -2270],
+  "partner_voice": 0,
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": -1,
+      "mp": -1,
+      "offense": -1,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": -1,
+      "weight": -1,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": -1,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 10}
+  }
+}

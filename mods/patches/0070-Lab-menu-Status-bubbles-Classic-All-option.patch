@@ -1,0 +1,72 @@
+From 839404ec722ef715cad196a79bc8299ff6eeb626 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 12 Oct 2026 14:47:55 +0000
+Subject: [PATCH 70/70] Lab menu: Status bubbles Classic / All option
+
+---
+ src/main/mod_lab.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 4784197..5bd5ad7 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -56,7 +56,8 @@
+ #define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+ #define MOD_LAB_BOX	5	/* same box the pause uses */
+ #define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
+-#define MOD_LAB_OPTIONS	6
++#define MOD_LAB_OPTIONS	7
++#define MOD_LAB_OPT_BUBBLES	5	/* MOD (status-bubbles): Classic / All */
+ #define MOD_LAB_OPT_FPS	3	/* the frame rate option */
+ #define MOD_LAB_OPT_EVOLVE	4	/* MOD (master-tyrannomon, mega) */
+ #define ITEM_MEAT	38
+@@ -90,6 +91,7 @@ void partnerSetState(int32_t state);
+ int32_t tamerGetState(void);
+ void tamerSetState(int32_t state);
+ 
++extern int32_t MOD_STATUS_BUBBLES;
+ int32_t MOD_LAB_CURSOR; /* the lab menu's cursor (global for tests) */
+ int32_t MOD_LAB_EVO_CHOICE; /* MOD (cherrymon): the evolve entry (global so tests can read and set it) */
+ static char *modLabMessage;
+@@ -100,6 +102,7 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"One-time gift",
+ 	NULL, /* MOD_LAB_FPS_TEXT */
+ 	NULL, /* MOD_LAB_EVO_TEXT */
++	"Status bubbles  All",
+ 	"Close",
+ };
+ 
+@@ -275,6 +278,9 @@ static void modLabDrawText(void)
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+ 		if (i == MOD_LAB_OPT_FPS) {
+ 			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++		} else if (i == MOD_LAB_OPT_BUBBLES) {
++			drawString(MOD_STATUS_BUBBLES ? "Status bubbles  All" : "Status bubbles  Classic",
++				   0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else if (i == MOD_LAB_OPT_EVOLVE) {
+ 			if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+ 				/* MOD (mega): "To Mega <name>" */
+@@ -367,6 +373,9 @@ static void modLabApply(void)
+ 	case MOD_LAB_OPT_FPS:
+ 		modLabSetFps(1);
+ 		break;
++	case MOD_LAB_OPT_BUBBLES:
++		MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
++		break;
+ 	case MOD_LAB_OPT_EVOLVE:
+ 		/* MOD (master-tyrannomon, mega): as handleEvoItems does, with natural gains */
+ 		mega = modLabEvoTarget();
+@@ -431,6 +440,9 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_FPS) {
+ 			playSound(0, 2);
+ 			modLabSetFps((pressed & PAD_RIGHT) ? 1 : -1);
++		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_BUBBLES) {
++			playSound(0, 2);
++			MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
+ 		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_EVOLVE) {
+ 			/* MOD (cherrymon): choose the evolution target */
+ 			playSound(0, 2);
+-- 
+2.53.0
+

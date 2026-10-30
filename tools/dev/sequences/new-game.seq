@@ -1,0 +1,16 @@
+# From disc boot until having control in File City with the starting partner.
+# Works with the original executable and with the compiled ones (symbols resolve themselves).
+# Usage: tools/dev/emulator.py start DISC.cue && tools/dev/emulator.py seq tools/dev/sequences/new-game.seq
+# Result: build/states/file-city-control.state (about 8-10 minutes of real time).
+wait 45, START 20, wait 6, START 20, wait 12
+# NEW GAME -> NO MEMORY CARD -> Yes (extra X presses: if the dialog does not accept input yet, the next one does).
+# The menu takes a while to accept input since the options are read from the cards at boot (patch 0205): a press lost
+# there moved the DOWNs below onto DELETE GAME
+CROSS 10, wait 4, DOWN 8, wait 1, DOWN 8, wait 1, CROSS 10, wait 6, CROSS 10, wait 3, CROSS 10
+# Jijimon's questions, names, movie and dialogs: X only when the game waits for text or
+# a choice, name "A" on the naming screen, until out of the house (screen 204)
+talk CURRENT_SCREEN 1 0xCC 500
+# and until no script is left running (free control)
+talk IS_SCRIPT_PAUSED 4 1 100
+wait 3
+save build/states/file-city-control.state, shot build/states/file-city-control.png

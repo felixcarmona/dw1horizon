@@ -1,0 +1,11 @@
+// Who stands on screen 136 (Freezeland), and when. Read out of MAPHEAD.SCN section 136 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(136) {                              // Freezeland
+            npc Penguinmon slot 0 when pstat(113) == 1 and pstat(122) <= 0 or pstat(113) == 1 and pstat(122) >= 2;
+            npc 149 slot 1 when pstat(122) == 1;
+        }
+    }
+}

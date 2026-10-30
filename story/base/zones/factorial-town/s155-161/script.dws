@@ -1,0 +1,58 @@
+// Readable form of script 155 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 155 {
+    npc guardromon0 = 5;
+    npc platinumsukamon = 6;
+    npc guardromon2 = 7;
+    npc geremon3 = 8;
+    npc geremon4 = 9;
+    npc geremon5 = 10;
+
+    // the section table, in the order of the original header
+    sections 254, 5, 6, 7, 8, 9, 10;
+
+    on enter replace {    // section 254
+        factory_guards_passed = true;
+        spawn_chest(item("HP Chip"), -2886, 0, -683, 2048, 677);
+        spawn_chest(item("MP Chip"), -3672, 0, -683, 2048, 678);
+    }
+
+    on talk(guardromon0) replace {    // section 5
+        say(guardromon0, text("s155.sec5.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(platinumsukamon) replace {    // section 6
+        say(platinumsukamon, text("s155.sec6.u0"));
+        battle();
+        recruit(species("PlatinumSukamon"));
+    }
+
+    on talk(guardromon2) replace {    // section 7
+        say(guardromon2, text("s155.sec7.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(geremon3) replace {    // section 8
+        say(geremon3, text("s155.sec8.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon4) replace {    // section 9
+        say(geremon4, text("s155.sec9.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon5) replace {    // section 10
+        say(geremon5, text("s155.sec10.u0"));
+        battle();
+        recruit(species("Geremon"));
+        return;
+    }
+}

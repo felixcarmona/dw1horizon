@@ -1,0 +1,12 @@
+{
+  "id": 78,
+  "file": "GIAS09",
+  "tims8": 3,
+  "tims4": 1,
+  "sound_bank": 14,
+  "day_night": true,
+  "reads_digimon": true,
+  "doors": 0,
+  "toilet": 0,
+  "caption": 30
+}

@@ -1,0 +1,14 @@
+{
+  "id": 13,
+  "name": "Bandage",
+  "value": 200,
+  "meritValue": 0,
+  "sortingValue": 1,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "cureInjury": 3,
+    "cureSickness": 2
+  }
+}

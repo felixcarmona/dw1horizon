@@ -1,0 +1,922 @@
+{
+ "s146.sec5.u0": [
+  [
+   "Identifiziere dich."
+  ]
+ ],
+ "s146.sec6.u0": [
+  [
+   "Nenne den Grund deines",
+   "Besuchs."
+  ]
+ ],
+ "s146.sec7.u0": [
+  [
+   "Wir haben jetzt eine kurze",
+   "Pause."
+  ]
+ ],
+ "s146.sec8.u0": [
+  [
+   "Was?"
+  ]
+ ],
+ "s146.sec81.m0.o0": "Zurückgehen",
+ "s146.sec81.m0.o1": "Nicht zurückgehen",
+ "s146.sec81.u0": [
+  [
+   "Zurück in die Stadt?"
+  ]
+ ],
+ "s147.sec5.u0": [
+  [
+   "Du. Wohin gehst du?"
+  ]
+ ],
+ "s147.sec6.u0": [
+  [
+   "Stop!"
+  ]
+ ],
+ "s147.sec7.u0": [
+  [
+   "Gupiiii!"
+  ]
+ ],
+ "s147.sec8.u0": [
+  [
+   "Daijiefi"
+  ]
+ ],
+ "s147.sec9.m0.o0": "Abgemacht!",
+ "s147.sec9.m0.o1": "Später, tut mir leid",
+ "s147.sec9.u0": [
+  [
+   "Hm, du da! Ich bin",
+   "MetalMamemon, unbesiegt in 99",
+   "Kämpfen! Dich zu besiegen wird"
+  ],
+  [
+   "mein 100. Sieg sein! Der große",
+   "{color 6}{player}{color 1} wird doch nicht",
+   "weglaufen?"
+  ]
+ ],
+ "s147.sec9.u1": [
+  [
+   "Hm... Du bist besser als",
+   "gedacht! Beschlossen: Ich",
+   "erkenne dich als Rivalen an!"
+  ],
+  [
+   "Eines Tages besiege ich dich,",
+   "warte nur!"
+  ]
+ ],
+ "s147.sec9.u2": "MetalMamemon ist in die Stadt gezogen!",
+ "s147.sec9.u3": [
+  [
+   "Fwahaha, dachte ich mir. Wir",
+   "sehen uns wieder, wenn mir",
+   "danach ist."
+  ]
+ ],
+ "s148.sec5.u0": [
+  [
+   "Eindringling erkannt!"
+  ]
+ ],
+ "s148.sec6.u0": [
+  [
+   "Wir sind müde, weißt du."
+  ]
+ ],
+ "s148.sec7.u0": [
+  [
+   "Hohoho, mach es so, wie du es",
+   "für richtig hältst!"
+  ]
+ ],
+ "s148.sec8.u0": [
+  [
+   "Hárajog."
+  ]
+ ],
+ "s148.sec9.u0": [
+  [
+   "Ab hier kein Zutritt!"
+  ]
+ ],
+ "s148.sec10.u0": [
+  [
+   "Du. Wer bist du?"
+  ]
+ ],
+ "s149.sec5.u0": [
+  [
+   "Bopi bopi pouuuh."
+  ]
+ ],
+ "s149.sec6.u0": [
+  [
+   "Geba, geba!"
+  ]
+ ],
+ "s149.sec7.u0": [
+  [
+   "Buhyo?"
+  ]
+ ],
+ "s149.sec8.u0": [
+  [
+   "Wir sind sehr zufrieden!"
+  ]
+ ],
+ "s149.sec9.u0": [
+  [
+   "Auch das ist unsere Pflicht,",
+   "weißt du."
+  ]
+ ],
+ "s149.sec10.u0": [
+  [
+   "Was für ein Lärm. Was soll das",
+   "alles?"
+  ]
+ ],
+ "s149.sec11.m0.o0": "Hey, Schichtwechsel",
+ "s149.sec11.m0.o1": "Lass mich durch, sonst...",
+ "s149.sec11.m0.o2": "Ah, Nichts",
+ "s149.sec11.m1.o0": "Vergiss es.",
+ "s149.sec11.m1.o1": "Wann ist Schichtwechsel?",
+ "s149.sec11.m2.o0": "Ich habe eine Erlaubnis",
+ "s149.sec11.m2.o1": "Ich erlaube es mir selbst!",
+ "s149.sec11.u0": [
+  [
+   "Du darfst hier nicht durch."
+  ]
+ ],
+ "s149.sec11.u1": [
+  [
+   "......"
+  ]
+ ],
+ "s149.sec11.u2": [
+  [
+   "Oh, er starrt uns an! Ist er",
+   "misstrauisch? Wir kommen später",
+   "wieder... Warten wir außer"
+  ],
+  [
+   "Sichtweite. Es war um 0 und 12",
+   "Uhr, oder?"
+  ]
+ ],
+ "s149.sec11.u3": [
+  [
+   "Die Fabrik leitet wohl Abfälle",
+   "in die Kanalisation. Wir müssen",
+   "nachsehen."
+  ]
+ ],
+ "s149.sec11.u4": [
+  [
+   "Äh... könntest du zur Seite",
+   "gehen?"
+  ]
+ ],
+ "s149.sec11.u5": [
+  [
+   "Ohne Erlaubnis des",
+   "Verantwortlichen darfst du",
+   "nicht durch."
+  ]
+ ],
+ "s149.sec11.u6": [
+  [
+   "Ich habe es eilig."
+  ]
+ ],
+ "s149.sec11.u7": [
+  [
+   "Abgelehnt. Bitte eine Erlaubnis",
+   "einholen."
+  ]
+ ],
+ "s149.sec11.u8": [
+  [
+   "Uff... Da bleibt wohl keine",
+   "Wahl."
+  ]
+ ],
+ "s149.sec11.u9": [
+  [
+   "Was machen wir jetzt? . . ? ?"
+  ]
+ ],
+ "s149.sec11.u10": [
+  [
+   "Es ist nicht Zeit für den",
+   "Schichtwechsel."
+  ]
+ ],
+ "s149.sec11.u11": [
+  [
+   "Abgelehnt. Die Zeitpläne",
+   "müssen strikt eingehalten",
+   "werden."
+  ]
+ ],
+ "s149.sec11.u12": [
+  [
+   "Schichtwechsel ist um 0 und 12",
+   "Uhr."
+  ]
+ ],
+ "s149.sec11.u13": [
+  [
+   "Ach so? Verstanden!"
+  ]
+ ],
+ "s149.sec11.u14": [
+  [
+   "Drohungen helfen nicht. Bitte",
+   "eine Erlaubnis einholen."
+  ]
+ ],
+ "s149.sec11.u15": [
+  [
+   "Autorisierung fehlgeschlagen.",
+   "Bitte eine ordnungsgemäße",
+   "Erlaubnis einholen."
+  ]
+ ],
+ "s149.sec11.u16": [
+  [
+   "Uff, so streng!"
+  ]
+ ],
+ "s149.sec11.u17": [
+  [
+   "He, ist nicht gerade",
+   "Schichtwechsel?"
+  ]
+ ],
+ "s149.sec11.u18": [
+  [
+   "......"
+  ]
+ ],
+ "s149.sec11.u19": [
+  [
+   "Oh, er starrt uns an! Sie",
+   "wechseln wohl nicht die",
+   "Schicht, solange wir hier"
+  ],
+  [
+   "stehen. Wir kommen später",
+   "wieder... Warten wir außer",
+   "Sichtweite."
+  ]
+ ],
+ "s149.sec12.u0": [
+  [
+   "Du darfst hier nicht durch."
+  ]
+ ],
+ "s149.sec254.u0": [
+  [
+   "He, die Wachen sind weg!"
+  ]
+ ],
+ "s151.sec5.u0": [
+  [
+   "Hier ist alles normal. Gib",
+   "bitte dein Bestes."
+  ]
+ ],
+ "s151.sec5.u1": [
+  [
+   "Ich muss ebenfalls helfen. Wenn",
+   "ich Zeit habe, reise ich",
+   "zwischen hier und der Stadt hin"
+  ],
+  [
+   "und her."
+  ]
+ ],
+ "s151.sec5.u2": "Andromon ist in die Stadt gezogen!",
+ "s151.sec5.u3": [
+  [
+   "Die Datenreparatur ist",
+   "abgeschlossen. Lesen wir die",
+   "Daten nun."
+  ]
+ ],
+ "s151.sec5.u4": [
+  [
+   "Weiter geht's."
+  ]
+ ],
+ "s151.sec5.u5": [
+  [
+   "Vor 100 Jahren: Analoge",
+   "Menschen erscheinen auf der",
+   "Digimon-Insel. Es kommt zu"
+  ],
+  [
+   "heftigen Kämpfen mit den",
+   "einheimischen Digimon. Nach 10",
+   "Jahren werden die Menschen"
+  ],
+  [
+   "besiegt und verschwinden",
+   "spurlos. In den folgenden 10",
+   "Jahren wächst die Insel auf"
+  ],
+  [
+   "fast das Doppelte ihrer Größe.",
+   "Ursache unbekannt."
+  ]
+ ],
+ "s151.sec5.u6": [
+  [
+   "Menschen... kämpften gegen",
+   "Digimon..."
+  ]
+ ],
+ "s151.sec5.u7": [
+  [
+   "Das ist alles, was ich",
+   "reparieren konnte. Es tut mir",
+   "leid."
+  ]
+ ],
+ "s151.sec5.u8": [
+  [
+   "Nein, das ist eine wertvolle",
+   "Information. Sie erklärt",
+   "vieles."
+  ]
+ ],
+ "s151.sec5.u9": [
+  [
+   "Ah, Ja?"
+  ]
+ ],
+ "s151.sec5.u10": [
+  [
+   "Derjenige, der die Insel ins",
+   "Chaos gestürzt hat, ist wohl",
+   "dieser verschwundene Mensch."
+  ]
+ ],
+ "s151.sec5.u11": [
+  [
+   "Können Menschen 100 Jahre",
+   "Leben?"
+  ]
+ ],
+ "s151.sec5.u12": [
+  [
+   "In dieser Welt scheint die Zeit",
+   "nur für Menschen sehr langsam",
+   "zu vergehen. Deshalb geht es"
+  ],
+  [
+   "mir auch ohne Essen und Schlaf",
+   "gut. Trotzdem sind 100 Jahre",
+   "ziemlich lang. Er muss ein"
+  ],
+  [
+   "zäher Kerl sein."
+  ]
+ ],
+ "s151.sec5.u13": [
+  [
+   "Ob er sich irgendwo versteckt?"
+  ]
+ ],
+ "s151.sec5.u14": [
+  [
+   "Ich finde ihn... und kümmere",
+   "mich um ihn. Jetzt verstehe",
+   "ich. Ich wurde hergerufen, um"
+  ],
+  [
+   "ihn zu besiegen, weil ich",
+   "ebenfalls ein Mensch bin."
+  ]
+ ],
+ "s151.sec5.u15": [
+  [
+   "...Wir entschuldigen uns",
+   "aufrichtig für das Geschehene.",
+   "Die Fabrik bleibt eine Weile"
+  ],
+  [
+   "geschlossen."
+  ]
+ ],
+ "s151.sec5.u16": [
+  [
+   "Die Insel ist so seltsam",
+   "geworden, dass niemand",
+   "vorhersagen kann, was passiert."
+  ],
+  [
+   "Es ist nicht deine Schuld."
+  ]
+ ],
+ "s151.sec5.u17": [
+  [
+   "Jemand muss Giromon von",
+   "irgendwo aus kontrolliert",
+   "haben. Der Computer wird"
+  ],
+  [
+   "zerstört... und Abfälle fließen",
+   "aus, die Digimon verrückt",
+   "machen. Das ist wohl kein"
+  ],
+  [
+   "Zufall."
+  ]
+ ],
+ "s151.sec5.u18": [
+  [
+   "Dieser Computer ist sehr",
+   "wichtig. Wir können davon",
+   "ausgehen, dass jemand ihn"
+  ],
+  [
+   "gezielt angegriffen hat. Auch",
+   "wenn es spät ist, das zu",
+   "sagen..."
+  ]
+ ],
+ "s151.sec5.u19": [
+  [
+   "Was hast du gesagt?"
+  ]
+ ],
+ "s151.sec5.u20": [
+  [
+   "Hier waren wohl Daten über die",
+   "Vergangenheit der Insel",
+   "gespeichert. Doch Giromons"
+  ],
+  [
+   "Wüten hat sie beschädigt."
+  ]
+ ],
+ "s151.sec5.u21": [
+  [
+   "Du hast die Daten nicht",
+   "gesehen?"
+  ]
+ ],
+ "s151.sec5.u22": [
+  [
+   "Leider nicht. Ein Teil der",
+   "Daten scheint jedoch",
+   "reparierbar. Ich versuche, sie"
+  ],
+  [
+   "zusammenzusetzen."
+  ]
+ ],
+ "s151.sec5.u23": [
+  [
+   "Verstehe, bitte versuch es.",
+   "Wie lange dauert es?"
+  ]
+ ],
+ "s151.sec5.u24": [
+  [
+   "Noch eine Weile... Ich hebe die",
+   "Sperre am Haupteingang der",
+   "Stadt auf. Komm bitte wieder."
+  ]
+ ],
+ "s151.sec5.u25": [
+  [
+   "Vielen Dank. Ich komme dann",
+   "wieder."
+  ]
+ ],
+ "s151.sec5.u26": [
+  [
+   "Ist die Datenreparatur fertig?"
+  ]
+ ],
+ "s151.sec5.u27": [
+  [
+   "Es dauert noch etwas länger.",
+   "Komm bitte wieder."
+  ]
+ ],
+ "s151.sec5.u28": [
+  [
+   "Ich komme dann wieder."
+  ]
+ ],
+ "s151.sec5.u29": [
+  [
+   "Huhu!"
+  ]
+ ],
+ "s151.sec5.u30": [
+  [
+   "...Du bist es. Ich muss mich",
+   "bei dir entschuldigen."
+  ]
+ ],
+ "s151.sec5.u31": [
+  [
+   "Ach, das hat Zeit! Stell",
+   "schnell die Maschinen der",
+   "Fabrik ab!"
+  ]
+ ],
+ "s151.sec5.u32": [
+  [
+   "Ja. Verstanden."
+  ]
+ ],
+ "s151.sec5.u33": [
+  [
+   "Die Funktionen der Fabrik",
+   "wurden gestoppt."
+  ]
+ ],
+ "s151.sec5.u34": [
+  [
+   "Okay, Ich werde die",
+   "Kanalisation überprüfen. Wir",
+   "sehen uns später!"
+  ]
+ ],
+ "s151.sec5.u35": [
+  [
+   "Ich muss mich entschuldigen..."
+  ]
+ ],
+ "s151.sec5.u36": [
+  [
+   "He, dafür ist jetzt keine Zeit!"
+  ]
+ ],
+ "s151.sec5.u37": [
+  [
+   "Unser Computer ist unfehlbar."
+  ]
+ ],
+ "s151.sec5.u38": [
+  [
+   "Ist die Fabrik wirklich in",
+   "Ordnung? Das sieht schlecht",
+   "aus..."
+  ]
+ ],
+ "s151.sec5.u39": [
+  [
+   "Gut, dann müssen wir etwas",
+   "wegen der Wachen unternehmen.",
+   "Eine andere Spur haben wir"
+  ],
+  [
+   "nicht!"
+  ]
+ ],
+ "s151.sec5.u40": [
+  [
+   "Oh... du bist es... Wie bist du",
+   "in diese Stadt gelangt?"
+  ]
+ ],
+ "s151.sec5.u41": [
+  [
+   "Wenn du hier nichts zu tun",
+   "hast, geh bitte sofort."
+  ]
+ ],
+ "s151.sec5.u42": [
+  [
+   "Äh... Das ist jetzt egal. Ich",
+   "will die Fabrik überprüfen. Es",
+   "geht um Leben und Tod. Gib"
+  ],
+  [
+   "mir die Erlaubnis!"
+  ]
+ ],
+ "s151.sec5.u43": [
+  [
+   "Hm...? Ich verstehe deine",
+   "Absichten nicht. Erlaubnis",
+   "verweigert."
+  ]
+ ],
+ "s151.sec5.u44": [
+  [
+   "Digimon sterben an den",
+   "Abfällen, die aus der Fabrik",
+   "fließen."
+  ]
+ ],
+ "s151.sec5.u45": [
+  [
+   "...? Aus der Fabrik? Das muss",
+   "ein Fehler sein."
+  ],
+  [
+   "Das Abfallbehandlungssystem",
+   "funktioniert normal."
+  ]
+ ],
+ "s151.sec5.u46": [
+  [
+   "Ohne nachzusehen, kannst du",
+   "nicht wissen, ob alles normal",
+   "läuft!"
+  ]
+ ],
+ "s151.sec5.u47": [
+  [
+   "Unser Computer ist unfehlbar.",
+   "Bei einer Störung greift der",
+   "«Netzwächter» ein und schaltet"
+  ],
+  [
+   "ihn ab."
+  ]
+ ],
+ "s151.sec5.u48": [
+  [
+   "Was ist das? Und der kann",
+   "nicht kaputtgehen?"
+  ]
+ ],
+ "s151.sec5.u49": [
+  [
+   "«Netzwächter» ist ein anderer",
+   "Name für Giromon, einen",
+   "perfekten Digimon. Sein Urteil"
+  ],
+  [
+   "und seine Fähigkeiten sind",
+   "wirklich unfehlbar."
+  ]
+ ],
+ "s151.sec5.u50": [
+  [
+   "Ein Digimon?! Das ist im",
+   "Moment noch gefährlicher!",
+   "Bitte, gib mir die Erlaubnis!"
+  ]
+ ],
+ "s151.sec5.u51": [
+  [
+   "...... Geh bitte."
+  ]
+ ],
+ "s151.sec5.u52": [
+  [
+   "Uff..."
+  ]
+ ],
+ "s152.sec5.u0": [
+  [
+   "Mampf, mampf."
+  ]
+ ],
+ "s152.sec6.u0": [
+  [
+   "Foojajiii"
+  ]
+ ],
+ "s152.sec7.u0": [
+  [
+   "Brauchst du etwas von mir?"
+  ]
+ ],
+ "s152.sec8.u0": [
+  [
+   "Nicht bewegen!"
+  ]
+ ],
+ "s152.sec9.u0": [
+  [
+   "Stop! Ich habe gesagt, Stopp!"
+  ]
+ ],
+ "s152.sec10.u0": [
+  [
+   "Um dich kümmere ich mich",
+   "später."
+  ]
+ ],
+ "s153.sec5.u0": [
+  [
+   "Bzzt! Ich habe auf dich",
+   "gewartet!"
+  ]
+ ],
+ "s153.sec5.u1": [
+  [
+   "Hm, bist du wieder bei Sinnen?"
+  ]
+ ],
+ "s153.sec5.u2": [
+  [
+   "Gyahaha. Ich war wohl etwas",
+   "durchgedreht, was?"
+  ]
+ ],
+ "s153.sec5.u3": [
+  [
+   "Hey, Das ist nicht zu",
+   "scherzen..."
+  ]
+ ],
+ "s153.sec5.u4": [
+  [
+   "Die Fabrik steht still, also",
+   "habe ich nichts zu tun. Ich",
+   "helfe dir, hehehe!"
+  ]
+ ],
+ "s153.sec5.u5": [
+  [
+   "Auch bei klarem Verstand ist",
+   "er kaum anders..."
+  ]
+ ],
+ "s153.sec5.u6": [
+  [
+   "Ich bin weg, bzzzzt!"
+  ]
+ ],
+ "s153.sec5.u7": "Giromon ist in die Stadt gezogen!",
+ "s154.sec51.u0": [
+  [
+   "Jemand ist hier! Wer ist da!?"
+  ]
+ ],
+ "s154.sec51.u1": [
+  [
+   "Hehehe! Ich bösen Computer",
+   "kaputtmachen! Hihihihi!"
+  ]
+ ],
+ "s154.sec51.u2": [
+  [
+   "Das ist er also... He! Was",
+   "machst du da?!"
+  ]
+ ],
+ "s154.sec51.u3": [
+  [
+   "Hehe! Kaputtmachen! Alles",
+   "kaputtmachen! Böse Dinge",
+   "kaputtmachen!"
+  ]
+ ],
+ "s154.sec51.u4": [
+  [
+   "Uff... Er ist völlig",
+   "durchgedreht. Er ist auf",
+   "Ultra-Level, aber... wir müssen"
+  ],
+  [
+   "ihn stoppen!"
+  ]
+ ],
+ "s154.sec51.u5": [
+  [
+   "Hihihi! Kaputtmachen! Euch alle",
+   "kaputtmachen!"
+  ]
+ ],
+ "s154.sec51.u6": [
+  [
+   "Bzzzt, bzzz... Meine Kraft...",
+   "schwin... det..."
+  ]
+ ],
+ "s154.sec51.u7": [
+  [
+   "Oh... Seine Kraft schwindet",
+   "wohl. Ach ja! Ich muss",
+   "Andromon Bescheid sagen, damit"
+  ],
+  [
+   "er den Abfallstrom stoppt!"
+  ]
+ ],
+ "s155.sec5.u0": [
+  [
+   "Einen-Moment!"
+  ]
+ ],
+ "s155.sec6.u0": [
+  [
+   "Wir lassen dich nicht durch!"
+  ]
+ ],
+ "s155.sec7.u0": [
+  [
+   "Du. Was machst du da?"
+  ]
+ ],
+ "s155.sec8.u0": [
+  [
+   "Gapiooo!"
+  ]
+ ],
+ "s155.sec9.u0": [
+  [
+   "Geba, gebaaa! !"
+  ]
+ ],
+ "s155.sec10.u0": [
+  [
+   "Zuposhi?"
+  ]
+ ],
+ "s156.sec5.m0.o0": "Nur zu",
+ "s156.sec5.m0.o1": "Bitte nicht!",
+ "s156.sec5.u0": [
+  [
+   "Umbau beginnt. Kosten: 2000",
+   "Bits."
+  ]
+ ],
+ "s156.sec5.u1": [
+  [
+   "Inkompatibles Modell. Kann",
+   "nicht umgestalten."
+  ]
+ ],
+ "s156.sec5.u2": [
+  [
+   "Unzureichende Mittel."
+  ]
+ ],
+ "s156.sec5.u3": [
+  [
+   "Bitte einen Moment warten."
+  ]
+ ],
+ "s156.sec5.u4": [
+  [
+   "Operation fehlgeschlagen.",
+   "Allerdings..."
+  ]
+ ],
+ "s156.sec5.u5": [
+  [
+   "Wow, er ist zu Giromon",
+   "geworden!"
+  ]
+ ],
+ "s156.sec5.u6": [
+  [
+   "Operation erfolgreich",
+   "abgeschlossen!"
+  ]
+ ],
+ "s156.sec5.u7": [
+  [
+   "Wow, er ist zu MetalMamemon",
+   "geworden!"
+  ]
+ ],
+ "s156.sec5.u8": [
+  [
+   "Operation fehlgeschlagen..."
+  ]
+ ],
+ "s156.sec5.u9": [
+  [
+   "Was für eine Katastrophe!"
+  ]
+ ],
+ "s156.sec5.u10": [
+  [
+   "Verzeihung..."
+  ]
+ ],
+ "s156.sec6.u0": [
+  [
+   "Ziel erfasst. Eliminieren!"
+  ]
+ ],
+ "s156.sec7.u0": [
+  [
+   "Hauptziel: feindliche Maschine",
+   "zerstören."
+  ]
+ ]
+}

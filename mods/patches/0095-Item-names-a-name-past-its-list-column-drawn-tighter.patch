@@ -1,0 +1,348 @@
+From c939c9b4bd538862cfe346321c2900dc2e109d29 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 14 Oct 2026 17:44:47 +0000
+Subject: [PATCH] Item names: a name past its list column drawn tighter, as
+ 0089 does for species; the "Got X" box copies the whole name
+
+The item record holds 19 bytes but the lists cut a name at their column (~96 px): Happymushroom, Deluxe Mushroom,
+Overripe Melon... A name that fits its column is drawn exactly as before (drawString / drawString2: the original pixels);
+a longer one goes through 0089's drawStringMode, tight or condensed, the first that fits (fitStringMode). No column moves.
+- Inventory (field, battle item command) and the fishing bait list: 96 px (ITEM_FIELD_W), drawStringMode.
+- Script-text lists (drawString2 lines): two codes of the mod, TEXT_FIT_TIGHT / TEXT_FIT_CONDENSED + colour, draw the
+  name that follows up to the next code with drawStringMode (textFitCode picks 1, the plain colour code, for a name
+  that fits); TEXT_COLUMN x moves the pen to a column. Shop buy/sell/merit lists: 93 px (a glyph cell before the price); item keeper:
+  96 before the count (a 19-byte name drops the 0x0f gap: the keeper's rows are 32 bytes); the shop's amount box: 96.
+- Mojyamon's trades: a row that would end past where the US rows end (218 px) puts the item got at the header's second
+  column (0x72), each name within 96 px. padWithSpaces no longer loops forever on a name of 18-19 bytes.
+- "Got X" box (chests, pick-ups): the name's row is copied as wide as the name (was 96 px; the box is 262).
+- FIT_STRIP covers 144 px instead of 256 (the widest composed line is a 19-character name drawn tight, 131 + 3): 616
+  bytes of bss back, more than the code costs (+72 bytes of main_BSS_END on integration).
+---
+ include/dw/font.h         | 14 +++++++++
+ src/fish/fish.c           |  5 ++++
+ src/main/font.c           | 22 +++++++++++++-
+ src/main/inventory.c      |  7 +++++
+ src/main/script_common.c  | 63 ++++++++++++++++++++++++++++++++++++++-
+ src/main/script_textbox.c | 40 +++++++++++++++++++++++++
+ src/main/tamer.c          |  6 ++--
+ 7 files changed, 153 insertions(+), 4 deletions(-)
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index 67fe2b9..d9202f6 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -24,6 +24,20 @@ void drawString(/* char *str, uint16_t x, uint16_t y */);
+ int32_t measureStringMode(char *str, int32_t mode);
+ int32_t fitStringMode(char *str, int32_t maxW);
+ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode);
++/*
++ * MOD (item names): drawString2 codes of the mod for the item lists that are script-text lines (shop, keeper, amount
++ * box, Mojyamon's trades). Scripts never pass these bytes to drawString2 (showTextbox expands 0x10-0x15).
++ *   TEXT_FIT_TIGHT / TEXT_FIT_CONDENSED, colour (0xFF keeps it): the name that follows, up to the next code, drawn
++ *     with drawStringMode; textFitCode gives 1 (the plain colour code) for a name that fits as the font draws it
++ *   TEXT_COLUMN, x: clears to column x and moves the pen there
++ */
++#define TEXT_FIT_TIGHT		0x10
++#define TEXT_FIT_CONDENSED	0x11
++#define TEXT_COLUMN		0x12
++int32_t textFitCode(char *str, int32_t maxW);
++/* MOD (item names): the item name field of the inventory, the fishing bait list, the shop's amount box, the keeper and
++ * Mojyamon's trades: 96 pixels (the shop's lists: 93) */
++#define ITEM_FIELD_W		0x60
+ #endif
+ 
+ #endif
+diff --git a/src/fish/fish.c b/src/fish/fish.c
+index dc946d2..eeb87b7 100644
+--- a/src/fish/fish.c
++++ b/src/fish/fish.c
+@@ -1223,7 +1223,12 @@ void FISH_drawBaitMenuRow(int32_t row)
+ 				setRECT(&rect, i * 0x60, (row % menu->visibleRows) * 12, 0x60, 0xc);
+ 				area = rect;
+ 				clearTextSubArea(&area);
++#if VERSION_IS(US)
++				/* MOD (item names): a name past its 96-pixel column drawn tighter (font.c drawStringMode) */
++				drawStringMode(ITEM_NAME(item), rect.x, rect.y, fitStringMode(ITEM_NAME(item), ITEM_FIELD_W));
++#else
+ 				drawString(ITEM_NAME(item), rect.x, rect.y);
++#endif
+ 				DrawSync(0);
+ 			}
+ 		}
+diff --git a/src/main/font.c b/src/main/font.c
+index 42d24f9..242399f 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1547,7 +1547,11 @@ void drawString(str, x, y)
+ #define FIT_GAP		1	/* blank columns between two letters (tools/fontgen.py FIT_GAP) */
+ #define FIT_SPACE	3	/* what a glyph without ink (a space) adds (FIT_SPACE) */
+ 
+-static uint8_t FIT_STRIP[(TEXT_AREA_SIZE / 2) * GLYPH_HEIGHT] __attribute__((aligned(4))); /* LoadImage reads words */
++/* MOD (item names): the strip covers 144 pixels, not the text area's 256: the widest line it composes is a name drawn
++ * tight within a field of at most 136 (MetalGreymonVaccine: 131, at most 136 with x & 3); 616 bytes of bss back for
++ * the item lists' code */
++#define FIT_STRIP_W	144
++static uint8_t FIT_STRIP[(FIT_STRIP_W / 2) * GLYPH_HEIGHT] __attribute__((aligned(4))); /* LoadImage reads words */
+ 
+ /* the glyph of the next character of a drawString text (its GLYPH_HEIGHT rows, then the advance); *str moves on */
+ static uint16_t *nextGlyph(char **str, int32_t mode)
+@@ -1688,6 +1692,9 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ 	if ((x & ~3) + stride > TEXT_AREA_SIZE) {
+ 		stride = TEXT_AREA_SIZE - (x & ~3);
+ 	}
++	if (stride > FIT_STRIP_W) {
++		stride = FIT_STRIP_W; /* MOD (item names): ink past it is not drawn (px < stride below) */
++	}
+ 	DrawSync(0); /* the previous strip's upload has read FIT_STRIP */
+ 	for (i = 0; i < (stride / 2) * GLYPH_HEIGHT; i++) {
+ 		FIT_STRIP[i] = 0;
+@@ -1717,4 +1724,17 @@ int32_t drawStringMode(char *str, int32_t x, int32_t y, int32_t mode)
+ 	LoadImage(&rect, (u_long *)FIT_STRIP);
+ 	return w;
+ }
++
++/* MOD (item names): the drawString2 code that draws a name within maxW pixels: 1 (a colour code, the name as the font
++ * draws it) when it fits so, else TEXT_FIT_TIGHT or TEXT_FIT_CONDENSED (font.h) */
++int32_t textFitCode(char *str, int32_t maxW)
++{
++	int32_t mode;
++
++	mode = fitStringMode(str, maxW);
++	if (mode == FIT_VANILLA) {
++		return 1;
++	}
++	return TEXT_FIT_TIGHT - FIT_TIGHT + mode;
++}
+ #endif
+diff --git a/src/main/inventory.c b/src/main/inventory.c
+index 9b37e33..d3586ce 100644
+--- a/src/main/inventory.c
++++ b/src/main/inventory.c
+@@ -265,8 +265,15 @@ void drawInventoryTextLine(int16_t startSlot)
+ 	for (i = 0; i < 2; i++) {
+ 		if (INVENTORY.types.array[startSlot + i] != ITEM_NONE) {
+ 			INVENTORY.names.array[startSlot + i] = startSlot + i;
++#if VERSION_IS(US)
++			/* MOD (item names): a name past its 96-pixel column drawn tighter (font.c drawStringMode) */
++			drawStringMode(ITEM_NAME(INVENTORY.types.array[startSlot + i]),
++			               ((startSlot + i) & 1) * 0x60, ((startSlot + i) / 2) * 0xc,
++			               fitStringMode(ITEM_NAME(INVENTORY.types.array[startSlot + i]), ITEM_FIELD_W));
++#else
+ 			drawString(ITEM_NAME(INVENTORY.types.array[startSlot + i]),
+ 			           ((startSlot + i) & 1) * 0x60, ((startSlot + i) / 2) * 0xc);
++#endif
+ 		}
+ 	}
+ 	DrawSync(0);
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 8464a5c..af43062 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -5,6 +5,7 @@
+ #include <dw/garbage.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
++#include <dw/font.h>
+ #include <dw/main.h>
+ #include <dw/map.h>
+ #include <dw/math.h>
+@@ -987,6 +988,14 @@ void updateItemMenuAmountBoxString(void)
+ 	out = TEXTBOX_LINES_PTR + (ITEM_MENU_SUB_TEXTBOX_LINE << 6);
+ 
+ 	if (ITEM_MENU_TYPE < 3) {
++#if VERSION_IS(US)
++		/* MOD (item names): a name past the field's 96 pixels (AMOUNT_BOX_LAYOUT, 8 x 12) drawn tighter */
++		len = textFitCode(ITEM_NAME(SHOP_ITEM_TYPE), ITEM_FIELD_W);
++		if (len != 1) {
++			*out++ = len;
++			*out++ = 0xff;
++		}
++#endif
+ 		strcpy(out, ITEM_NAME(SHOP_ITEM_TYPE));
+ 		len = strlen(ITEM_NAME(SHOP_ITEM_TYPE));
+ 	} else {
+@@ -1521,6 +1530,11 @@ void calculateItemListStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 	uint8_t item;
+ 	int32_t idx;
+ 	uint32_t len;
++#if VERSION_IS(US)
++	int32_t pad; /* MOD (item names) */
++	char *name;
++	char *got;
++#endif
+ 
+ 	out = getTextboxLine(box, row);
+ 	*out++ = 1;
+@@ -1542,6 +1556,36 @@ void calculateItemListStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 
+ 	idx = (box->topRow + row) * 2;
+ 	item = ITEM_MENU_LEFT->buf[idx];
++#if VERSION_IS(US)
++	/*
++	 * MOD (item names): the item given runs on into the item got (padded to 8 characters, then 6 pixels). A row that
++	 * would end past where the US rows end (12 + both names + the padding + 10, 218 pixels; the cursor ends at 209)
++	 * puts the item got at the header's second column (0x72) instead, each name drawn tighter if it must: the given
++	 * one 6 pixels before the column, the got one within 96 (to 0xd2, the cursor's end).
++	 */
++	name = ITEM_NAME(item & 0x7f);
++	got = ITEM_NAME(ITEM_MENU_RIGHT->buf[idx]);
++	len = strlen(name);
++	pad = len < 16 ? 8 - (len >> 1) : 0;
++	pad = measureStringMode(name, FIT_VANILLA) + pad * 8 + measureStringMode(got, FIT_VANILLA) > 218 - 22;
++	*out++ = pad ? textFitCode(name, 0x72 - 6 - 12) : 1;
++	*out++ = (item & 0x80) != 0 ? 1 : 3;
++	strcpy(out, name);
++	out += len;
++	if (pad) {
++		*out++ = TEXT_COLUMN;
++		*out++ = 0x72;
++		*out++ = textFitCode(got, ITEM_FIELD_W);
++	} else {
++		out = padWithSpaces(out, 8, len);
++		*out++ = 0xf;
++		*out++ = 0;
++		*out++ = 1;
++	}
++	*out++ = 1;
++	strcpy(out, got);
++	out += strlen(got);
++#else
+ 	*out++ = 1;
+ 
+ 	if ((item & 0x80) != 0) {
+@@ -1564,6 +1608,7 @@ void calculateItemListStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 	strcpy(out, ITEM_NAME(item));
+ 	len = strlen(ITEM_NAME(item));
+ 	out += len;
++#endif
+ 	terminateString(out, isLast);
+ }
+ 
+@@ -2523,7 +2568,14 @@ void calculateItemMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 	amount = box->buf[i + 1];
+ 
+ 	if (type != 0xff) {
++#if VERSION_IS(US)
++		/* MOD (item names): the colour code, or a fit code for a name that would come closer than a glyph's cell (12
++		 * pixels) to the price (0x16: column 0x69; a price of 4 digits starts at its edge) or, in the keeper (type
++		 * 5), than 4 to the count (0x1c: 0x64; its tens are a space below 10) */
++		*out++ = textFitCode(ITEM_NAME(type), ITEM_MENU_TYPE == 5 ? ITEM_FIELD_W : 0x69 - 12);
++#else
+ 		*out++ = 1;
++#endif
+ 		if (ITEM_MENU_TYPE == 0 || ITEM_MENU_TYPE == 7) {
+ 			if (amount != 0) {
+ 				*out++ = 1;
+@@ -2545,8 +2597,17 @@ void calculateItemMenuStrings(ItemMenuBox *box, uint8_t row, int32_t isLast)
+ 		*out++ = 0xc;
+ 		*out++ = 0;
+ #endif
++#if VERSION_IS(US)
++		/* MOD (item names): the keeper's rows are 32 bytes (half the text area): a name of 19 drops the 6-pixel gap,
++		 * which the count's column code (0x1c) clears anyway */
++		if (len < 19 || ITEM_MENU_TYPE != 5) {
++			*out++ = 0xf;
++			*out++ = 0;
++		}
++#else
+ 		*out++ = 0xf;
+ 		*out++ = 0;
++#endif
+ 
+ 		if (ITEM_MENU_TYPE != 5) {
+ #if VERSION_IS(US)
+@@ -2845,7 +2906,7 @@ void terminateString(uint8_t *str, int32_t flag)
+ uint8_t *padWithSpaces(uint8_t *str, int32_t width, int32_t used)
+ {
+ 	used = width - (used >> 1);
+-	while (used != 0) {
++	while (used > 0) { /* MOD (item names): was != 0, endless for a name of 18 or 19 bytes */
+ 		*str++ = 0x81;
+ 		*str++ = 0x40;
+ 		used--;
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index c75c3b3..629c40f 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -621,6 +621,33 @@ void registerTextbox(boxId, row, rows, doubleBuffer, mode)
+ 
+ #define DRAW_STRING2_SPACE_WIDTH 8 /* MOD: advance of a space (81 40) */
+ 
++#if VERSION_IS(US)
++/*
++ * MOD (item names): TEXT_FIT_TIGHT / TEXT_FIT_CONDENSED (font.h): the name after the code and its colour, up to the next
++ * code, drawn with drawStringMode; returns the pen after it, on the next cell of the text area's 4-pixel grid (the
++ * clears of the codes that follow work in whole cells and would erase the name's last columns).
++ */
++static int16_t drawString2Fit(uint8_t **str, int16_t x, int16_t y, int16_t pos, int32_t code)
++{
++	char run[24];
++	uint8_t *s;
++	int32_t n;
++
++	s = *str;
++	if (*s != 0xff) {
++		setTextColor(*s);
++	}
++	s++;
++	for (n = 0; *s >= 0x20 && n < 23; n++) {
++		run[n] = *s++;
++	}
++	run[n] = '\0';
++	*str = s;
++	n = x + pos + drawStringMode(run, x + pos, y, code == TEXT_FIT_TIGHT ? FIT_TIGHT : FIT_CONDENSED);
++	return ((n + 3) & ~3) - x;
++}
++#endif
++
+ #if !VERSION_IS(US)
+ int32_t drawString2(uint8_t *str, int16_t x, int16_t y)
+ #else
+@@ -712,6 +739,19 @@ int32_t drawString2(uint8_t *str, int16_t x, int16_t y, int32_t flag)
+ 			clearTextSubArea(&rect);
+ 			pos = 0xb4;
+ 			break;
++		case TEXT_FIT_TIGHT: /* MOD (item names) */
++		case TEXT_FIT_CONDENSED:
++			pos = drawString2Fit(&str, x, y, pos, ch);
++			break;
++		case TEXT_COLUMN: /* MOD (item names): from the next cell to the column */
++			rem = *str++;
++			pos = ((x + pos + 3) & ~3) - x;
++			if (rem > pos) {
++				setRECT(&rect, x + pos, y, rem - pos, 0xc);
++				clearTextSubArea(&rect);
++			}
++			pos = rem;
++			break;
+ #endif
+ 		case 0xe:
+ 			str++;
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 241d15e..3b412a0 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -770,8 +770,8 @@ void checkPendingAwards(void)
+ 
+ void renderItemPickupTextbox(int32_t instanceId)
+ {
++	int32_t halfLength; /* MOD (item names): the US code uses it too */
+ #if !VERSION_IS(US)
+-	int32_t halfLength;
+ 
+ 	renderString(0xf, -0x7d, 0x2d, 0x48, 0xc, 0, 0xc, 5, 0);
+ #endif
+@@ -783,7 +783,9 @@ void renderItemPickupTextbox(int32_t instanceId)
+ 		renderString(0, halfLength * 12 - 0x4d, 0x39, 0x24, 0xc, 0x30, 0x24, 5, 0);
+ #else
+ 		renderString(0, 0xffffff83, 0x39, 0x5a, 0xc, 0, 0x24, 5, 0);
+-		renderString(0xf, 0xffffff83, 0x2d, 0x60, 0xc, 0, 0x18, 5, 0);
++		/* MOD (item names): the name's row copied as wide as the name (was 96 pixels; the box is 262 wide) */
++		halfLength = measureStringMode(ITEM_NAME(TAKE_CHEST_ITEM), FIT_VANILLA);
++		renderString(0xf, 0xffffff83, 0x2d, halfLength > 0x60 ? halfLength : 0x60, 0xc, 0, 0x18, 5, 0);
+ #endif
+ 	} else if (TAKE_CHEST_STATE == 1) {
+ 		renderString(0, 0xffffff83, 0x39, 0xf0, 0xc, 0, 0x18, 5, 0);
+-- 
+2.53.0
+

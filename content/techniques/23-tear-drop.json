@@ -1,0 +1,17 @@
+{
+  "id": 23,
+  "name": "Tear Drop",
+  "element": "ice",
+  "power": 60,
+  "mpCost": 14,
+  "distance": 160000,
+  "range": 2,
+  "accuracy": 44,
+  "status": 4,
+  "statusChance": 46,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [30, 22, 15]
+}

@@ -1,0 +1,103 @@
+// Kunemon's conversation (DG.SCN script 2, section 6), written the way a person would write it.
+// It is the readable twin of `python3 tools/dws.py decompile 2` (section 6): the same game behaviour, and
+// tools/test_dws.py proves it by comparing the control flow of both compiled sections.
+// Text: it only names utterances and options of the disc's own text bank (text/us/dialogue.json, made by `dws text-extract`).
+//   python3 tools/dws.py check tools/dws/examples/kunemon-readable.dws
+import "../../../story/core/engine.dws";
+
+alias var glances = 101;               // scratch counter of the original: how often Kunemon has looked back
+
+// Animation numbers of Kunemon
+const HUNGRY = 29;
+const CHEW   = 30;
+const HAPPY  = 8;
+const IDLE   = 0;
+const SULK   = 28;
+
+// The food Kunemon accepts. The disc tests the two groups one after the other.
+const FOOD_1 = [item("Meat"), item("Giant Meat"), item("Sirloin"), item("Supercarrot")];
+const FOOD_2 = [item("Hawk radish"), item("Digimushrm"), item("Digianchovy"), item("Moldy Meat")];
+
+// He trots to the city and looks back `looks` times; the tamer and the partner watch him go.
+fn walk_away(who: entity, x: int, z: int, looks: int) {
+    run(who, x, z);
+    while (glances < looks) {
+        glances += 1;
+        wait(1s);
+        face(tamer, who);
+        face(partner, who);
+        run(who, x, z);
+    }
+    await who;
+}
+
+script 2 {
+    npc kunemon = 6;
+
+    on talk(kunemon) replace {
+        engine.cutscene = true;                      // no turning during the scene
+        animate(kunemon, HUNGRY);
+        say(kunemon, text("s002.sec6.u0"));
+
+        choice {
+            text("s002.sec6.m0.o0") => {                // give food
+                engine.picker_mode = true;           // the item menu clears this when it opens
+                call_routine(routine("choose_item"));    // the chosen item is left in engine.arg
+                if (engine.picker_mode) {            // it never opened: nothing to give
+                    say(tamer, text("s002.sec6.u1"));
+                    goto declined;
+                }
+                if (engine.arg == 255) { goto declined; }    // the menu was cancelled
+
+                if (engine.arg in FOOD_1) {
+                    call_routine(routine("remove_chosen_item"));
+                } else if (engine.arg in FOOD_2) {
+                    call_routine(routine("remove_chosen_item"));
+                } else {
+                    say(tamer, text("s002.sec6.u2"));  // not something he eats
+                    goto declined;
+                }
+
+                // He eats, and then wants a fight.
+                animate(kunemon, CHEW);
+                wait(1s);
+                animate(kunemon, HAPPY);
+                await kunemon;
+                say(kunemon, text("s002.sec6.u3"));
+                animate(kunemon, IDLE);
+                say(kunemon, text("s002.sec6.u4"));
+                battle(foes: [kunemon], escape: false);      // the result is not tested: he joins either way
+
+                face(tamer, kunemon);
+                face(kunemon, tamer);
+                face(partner, kunemon);
+                say(kunemon, text("s002.sec6.u5"));
+                animate(tamer, 20);
+                await tamer;
+                say(tamer, text("s002.sec6.u6"));
+                animate(tamer, IDLE);
+                wait(10);
+                say(kunemon, text("s002.sec6.u7"));
+
+                // He leaves for the city and becomes a resident.
+                walk_away(kunemon, 1219, 984, looks: 3);
+                remove(kunemon);
+                glances = 0;
+                sound(8, 11);
+                say(narrator, text("s002.sec6.u8"));
+                camera_on(tamer, speed: 10);
+                await camera;
+                recruit(species("Kunemon"));
+                engine.prosperity += 1;
+                return;
+            }
+            text("s002.sec6.m0.o1") => { goto declined; }   // don't give food
+        }
+
+        // Declined, cancelled, or nothing to give: he sulks.
+        declined:
+        say(kunemon, text("s002.sec6.u9"));
+        animate(kunemon, SULK);
+        wait(1s);
+    }
+}

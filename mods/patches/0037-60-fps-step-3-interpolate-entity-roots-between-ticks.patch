@@ -1,0 +1,356 @@
+From 04d0568c7422e9df6b00c729d6d4b1a194ca9298 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 23:31:50 +0000
+Subject: [PATCH] 60 fps step 3: interpolate entity roots between ticks
+
+For each ENTITY_TABLE entry the snapshot keeps bone 0's built matrix,
+location, rotation and scale. A pass writes the root matrix rebuilt from
+the interpolated rotation (shortest arc per axis, so turns across angle 0
+and the 4096 jumps of rotateEntity do not spin), the cur scale and the
+interpolated translation, plus the interpolated location (drop shadow),
+clears flg on every bone, and puts everything back after the pass (flg
+cleared again), so the tick sees exactly its own matrices.
+
+- Only entities whose matrix changed during the tick and is still what
+  their rotation/scale build (so rotations written to a stopped entity
+  stay invisible, as in the original, and code that writes coord directly
+  is left alone), drawn in both ticks, same entity and type.
+- Snaps: everything the camera snaps on, and a root step over 256 units
+  (teleports, respawns).
+- renderDigiviceEntity moves the partner itself: it gets the tick's values
+  back first (modInterpUnapplyEntity).
+- If the last pass of a tick was interpolated, the bone world matrices
+  (workm, read by some ticks) are recomputed from the tick's matrices.
+
+---
+ include/dw/mod_fps.h |   5 +-
+ src/main/game_menu.c |   1 +
+ src/main/main.c      | 196 ++++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 197 insertions(+), 5 deletions(-)
+
+diff --git a/include/dw/mod_fps.h b/include/dw/mod_fps.h
+index a52a595..9885f61 100644
+--- a/include/dw/mod_fps.h
++++ b/include/dw/mod_fps.h
+@@ -41,10 +41,13 @@ int32_t modRenderRand(void);
+ 
+ /* Interpolation of the render passes (main.c, docs/mods/60fps.md 2.3-2.4):
+  * MOD_FPS_INTERP switches it (with more than one render per tick);
+- * MOD_INTERP_MAP_GEN is bumped when a map is set up or unloaded (a snap). */
++ * MOD_INTERP_MAP_GEN is bumped when a map is set up or unloaded (a snap);
++ * render code that moves an entity itself calls modInterpUnapplyEntity first
++ * to get the tick's values back. */
+ extern int32_t MOD_FPS_INTERP;
+ extern int32_t MOD_INTERP_MAP_GEN;
+ extern int32_t MOD_MIST_SHIFT[3];
++void modInterpUnapplyEntity(int32_t entityId);
+ void modInterpInvalidate(void);
+ 
+ #endif
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index eb6747a..3144eb8 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -3480,6 +3480,7 @@ int8_t entityId;
+ 	anim = entity->anim.animId;
+ 	pos = entity->posData;
+ 	count = DIGIMON_DATA[type].boneCount;
++	modInterpUnapplyEntity(entityId); /* MOD (fps): its own position */
+ 	savedPos = pos->location;
+ 	savedRot = pos->rotation;
+ 	/* MOD (fps): this moves the live entity to the menu view, poses it and
+diff --git a/src/main/main.c b/src/main/main.c
+index b397dd6..6491830 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4126,23 +4126,47 @@ int32_t modRenderRand(void)
+  *   DRAWING_OFFSET_X/Y renderMap places the tiles and map sprites with. Each
+  *   is interpolated between its own values of the two ticks, so the one-tick
+  *   lag between them is kept and the tiles stay where the 3D is.
++ * - Entity roots (bone 0 of ENTITY_TABLE): the translation of the built
++ *   matrix, the location field (drop shadow) and the rotation (shortest arc),
++ *   rebuilt like setupModelMatrix. Only entities whose matrix was rebuilt
++ *   during the tick and still matches its rotation/scale (anything else shows
++ *   the matrix as the tick left it), drawn in both ticks, of the same type.
+  * - Snaps (render the tick's own state): map load, a change of the 3D view,
+- *   game state or the interpolation switch, a camera step over 64 px; and a pass whose interpolated camera would
++ *   game state or the interpolation switch, a camera step over 64 px, an
++ *   entity step over 256 units; and a pass whose interpolated camera would
+  *   need background tiles outside the VRAM tile window gets the smallest
+  *   later fraction that does not. */
+ int32_t MOD_FPS_INTERP = 1;
+ int32_t MOD_INTERP_MAP_GEN;   /* bumped on every map setup/unload */
+-int32_t MOD_INTERP_STATS[4];  /* passes with alpha < 1, (unused),
++int32_t MOD_INTERP_STATS[4];  /* passes with alpha < 1, entity roots written,
+ 				 VRAM window clamps, snapped ticks */
+ int32_t MOD_MIST_SHIFT[3];    /* renderMist: x, y and x of the far layer */
+ int32_t isMistActive(void);
+ 
++typedef struct {
++	Entity *entity;
++	int32_t type;
++	MATRIX coord;
++	VECTOR location;
++	VECTOR scale;
++	SVECTOR rotation;
++	int8_t valid;
++} ModInterpRoot;
++
+ typedef struct {
+ 	int16_t ox, oy;  /* POSITION of the first pass */
+ 	int16_t cx, cy;  /* MAP_TILE_DATA.cameraX/Y */
+ 	int32_t dx, dy;  /* DRAWING_OFFSET_X/Y */
+ } ModInterpCam;
+ 
++static ModInterpRoot modRootPrev[ENTITY_MAX];
++static ModInterpRoot modRootCur[ENTITY_MAX];
++static int8_t modRootLerp[ENTITY_MAX];   /* interpolate this tick */
++static int8_t modRootApplied[ENTITY_MAX]; /* written for the current pass */
++static int8_t modRootOwnRender[ENTITY_MAX]; /* moved by its own render this tick */
++static MATRIX modRootSaveCoord[ENTITY_MAX];
++static VECTOR modRootSaveLoc[ENTITY_MAX];
++static SVECTOR modRootSaveRot[ENTITY_MAX];
+ static ModInterpCam modCamPrev;
+ static ModInterpCam modCamCur;
+ static int8_t modCamLerp;
+@@ -4160,6 +4184,13 @@ static int32_t modLerp(int32_t a, int32_t b, int32_t alpha)
+ 	return a + (((b - a) * alpha + 2048) >> 12);
+ }
+ 
++static int32_t modLerpAngle(int32_t a, int32_t b, int32_t alpha)
++{
++	int32_t d = ((b - a) << 20) >> 20; /* shortest arc, -2048..2047 */
++
++	return a + ((d * alpha + 2048) >> 12);
++}
++
+ /* main.c has its own memcpy, and no memory compare */
+ static int32_t modSame(const void *a, const void *b, int32_t size)
+ {
+@@ -4179,6 +4210,22 @@ static int32_t modAbs(int32_t v)
+ 	return v < 0 ? -v : v;
+ }
+ 
++static void modClearBoneFlags(Entity *entity)
++{
++	PositionData *pd = entity->posData;
++	int32_t n = DIGIMON_DATA[entity->type].boneCount;
++	int32_t i;
++
++	for (i = 0; i < n; i++, pd++) {
++		pd->posMatrix.flg = 0;
++	}
++}
++
++static int32_t modEntityDrawn(Entity *e)
++{
++	return e->isOnMap == 2 || (e->isOnMap != 0 && e->isOnScreen != 0);
++}
++
+ /* forget the previous tick: the next tick renders its own state */
+ void modInterpInvalidate(void)
+ {
+@@ -4188,7 +4235,13 @@ void modInterpInvalidate(void)
+ /* after the tick (and late tick), before the first pass */
+ static void modInterpSnapshot(void)
+ {
++	int32_t i;
+ 	int32_t snap;
++	Entity *e;
++	PositionData *pd;
++	ModInterpRoot *cur;
++	ModInterpRoot *prev;
++	MATRIX m;
+ 
+ 	snap = !modInterpValid || modInterpMapGen != MOD_INTERP_MAP_GEN ||
+ 	       modInterpGameState != GAME_STATE ||
+@@ -4208,7 +4261,7 @@ static void modInterpSnapshot(void)
+ 	    (modAbs(modCamCur.ox - modCamPrev.ox) > 64 || modAbs(modCamCur.oy - modCamPrev.oy) > 64 ||
+ 	     modAbs(modCamCur.cx - modCamPrev.cx) > 64 || modAbs(modCamCur.cy - modCamPrev.cy) > 64 ||
+ 	     modAbs(modCamCur.dx - modCamPrev.dx) > 64 || modAbs(modCamCur.dy - modCamPrev.dy) > 64)) {
+-		snap = 1; /* a camera cut */
++		snap = 1; /* a camera cut: the entities would not match it either */
+ 	}
+ 	modCamLerp = !snap &&
+ 		     (modCamCur.ox != modCamPrev.ox || modCamCur.oy != modCamPrev.oy ||
+@@ -4218,6 +4271,50 @@ static void modInterpSnapshot(void)
+ 		MOD_INTERP_STATS[3]++;
+ 	}
+ 
++	for (i = 0; i < ENTITY_MAX; i++) {
++		cur = &modRootCur[i];
++		prev = &modRootPrev[i];
++		modCopy(prev, cur, sizeof(ModInterpRoot));
++		modRootLerp[i] = 0;
++		modRootOwnRender[i] = 0;
++		e = ENTITY_TABLE[i];
++		if (e == NULL || e->posData == NULL) {
++			cur->valid = 0;
++			continue;
++		}
++		pd = e->posData;
++		cur->entity = e;
++		cur->type = e->type;
++		modCopy(&cur->coord, &pd->posMatrix.coord, sizeof(MATRIX));
++		modCopy(&cur->location, &pd->location, sizeof(VECTOR));
++		modCopy(&cur->scale, &pd->scale, sizeof(VECTOR));
++		modCopy(&cur->rotation, &pd->rotation, sizeof(SVECTOR));
++		/* the matrix must be what rotation/scale build, or interpolating
++		 * them would show something the tick did not */
++		RotMatrix(&cur->rotation, &m);
++		ScaleMatrix(&m, &cur->scale);
++		cur->valid = modEntityDrawn(e) &&
++			     modSame(m.m, cur->coord.m, sizeof(m.m));
++		if (snap || !cur->valid || !prev->valid || prev->entity != e ||
++		    prev->type != cur->type) {
++			continue;
++		}
++		if (modSame(&prev->coord, &cur->coord, sizeof(MATRIX)) &&
++		    prev->location.vx == cur->location.vx &&
++		    prev->location.vy == cur->location.vy &&
++		    prev->location.vz == cur->location.vz) {
++			continue; /* not moved: nothing to interpolate */
++		}
++		if (modAbs(cur->coord.t[0] - prev->coord.t[0]) > 256 ||
++		    modAbs(cur->coord.t[1] - prev->coord.t[1]) > 256 ||
++		    modAbs(cur->coord.t[2] - prev->coord.t[2]) > 256 ||
++		    modAbs(cur->location.vx - prev->location.vx) > 256 ||
++		    modAbs(cur->location.vy - prev->location.vy) > 256 ||
++		    modAbs(cur->location.vz - prev->location.vz) > 256) {
++			continue; /* a teleport */
++		}
++		modRootLerp[i] = 1;
++	}
+ 	modInterpValid = 1;
+ }
+ 
+@@ -4250,7 +4347,13 @@ static int32_t modTilesCovered(int32_t ex, int32_t ey, int32_t exCur, int32_t ey
+ /* before renderObjects of a pass shown at fraction alpha (0..4096) of the tick */
+ static void modInterpApply(int32_t alpha)
+ {
++	int32_t i;
+ 	int32_t cx, cy, dx, dy, ox, oy;
++	Entity *e;
++	PositionData *pd;
++	ModInterpRoot *cur;
++	ModInterpRoot *prev;
++	SVECTOR rot;
+ 
+ 	modInterpLastPassLerped = 0;
+ 	MOD_MIST_SHIFT[0] = MOD_MIST_SHIFT[1] = MOD_MIST_SHIFT[2] = 0;
+@@ -4298,12 +4401,66 @@ static void modInterpApply(int32_t alpha)
+ 		modInterpLastPassLerped = 1;
+ 	}
+ 
++	for (i = 0; i < ENTITY_MAX; i++) {
++		if (!modRootLerp[i]) {
++			continue;
++		}
++		e = ENTITY_TABLE[i];
++		pd = e->posData;
++		cur = &modRootCur[i];
++		prev = &modRootPrev[i];
++		modCopy(&modRootSaveCoord[i], &pd->posMatrix.coord, sizeof(MATRIX));
++		modCopy(&modRootSaveLoc[i], &pd->location, sizeof(VECTOR));
++		modCopy(&modRootSaveRot[i], &pd->rotation, sizeof(SVECTOR));
++		rot.vx = modLerpAngle(prev->rotation.vx, cur->rotation.vx, alpha);
++		rot.vy = modLerpAngle(prev->rotation.vy, cur->rotation.vy, alpha);
++		rot.vz = modLerpAngle(prev->rotation.vz, cur->rotation.vz, alpha);
++		RotMatrix(&rot, &pd->posMatrix.coord);
++		ScaleMatrix(&pd->posMatrix.coord, &cur->scale);
++		pd->posMatrix.coord.t[0] = modLerp(prev->coord.t[0], cur->coord.t[0], alpha);
++		pd->posMatrix.coord.t[1] = modLerp(prev->coord.t[1], cur->coord.t[1], alpha);
++		pd->posMatrix.coord.t[2] = modLerp(prev->coord.t[2], cur->coord.t[2], alpha);
++		pd->location.vx = modLerp(prev->location.vx, cur->location.vx, alpha);
++		pd->location.vy = modLerp(prev->location.vy, cur->location.vy, alpha);
++		pd->location.vz = modLerp(prev->location.vz, cur->location.vz, alpha);
++		modCopy(&pd->rotation, &rot, sizeof(SVECTOR));
++		modClearBoneFlags(e);
++		modRootApplied[i] = 1;
++		modInterpLastPassLerped = 1;
++		MOD_INTERP_STATS[1]++;
++	}
+ 	MOD_INTERP_STATS[0]++;
+ }
+ 
++static void modInterpRestoreRoot(int32_t i)
++{
++	Entity *e = ENTITY_TABLE[i];
++	PositionData *pd = e->posData;
++
++	modCopy(&pd->posMatrix.coord, &modRootSaveCoord[i], sizeof(MATRIX));
++	modCopy(&pd->location, &modRootSaveLoc[i], sizeof(VECTOR));
++	modCopy(&pd->rotation, &modRootSaveRot[i], sizeof(SVECTOR));
++	modClearBoneFlags(e);
++	modRootApplied[i] = 0;
++}
++
++/* for render code that moves an entity itself (the Digivice model): give it
++ * the tick's values back first */
++void modInterpUnapplyEntity(int32_t entityId)
++{
++	if (entityId >= 0 && entityId < ENTITY_MAX) {
++		modRootOwnRender[entityId] = 1;
++		if (modRootApplied[entityId]) {
++			modInterpRestoreRoot(entityId);
++		}
++	}
++}
++
+ /* after renderObjects of a pass (the 2D origin stays until the swap) */
+ static void modInterpRestore(void)
+ {
++	int32_t i;
++
+ 	if (!modInterpLastPassLerped) {
+ 		return;
+ 	}
+@@ -4315,13 +4472,44 @@ static void modInterpRestore(void)
+ 		MOD_MIST_SHIFT[0] = MOD_MIST_SHIFT[1] = MOD_MIST_SHIFT[2] = 0;
+ 		modCamApplied = 0;
+ 	}
++	for (i = 0; i < ENTITY_MAX; i++) {
++		if (modRootApplied[i]) {
++			modInterpRestoreRoot(i);
++		}
++	}
+ }
+ 
+-/* after the last pass of a tick */
++/* after the last pass of a tick: if it was interpolated, the bone world
++ * matrices (workm, read by some ticks) are recomputed from the tick's own
++ * matrices, as the original's single render left them */
+ static void modInterpEndTick(void)
+ {
++	int32_t i;
++	int32_t n;
++	int32_t b;
++	Entity *e;
++	PositionData *pd;
++	MATRIX lw;
++	MATRIX ls;
++
+ 	POSITION = modPass0Position;
++	if (!modInterpLastPassLerped) {
++		return;
++	}
+ 	modInterpLastPassLerped = 0;
++	for (i = 0; i < ENTITY_MAX; i++) {
++		if (!modRootLerp[i] || modRootOwnRender[i]) {
++			continue;
++		}
++		e = ENTITY_TABLE[i];
++		pd = e->posData;
++		n = DIGIMON_DATA[e->type].boneCount;
++		for (b = 0; b < n; b++, pd++) {
++			if (pd->obj.tmd != NULL) {
++				GsGetLws(pd->obj.coord2, &lw, &ls);
++			}
++		}
++	}
+ }
+ 
+ void gameLoop(void)
+-- 
+2.53.0
+

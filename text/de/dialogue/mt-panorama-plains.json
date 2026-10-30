@@ -1,0 +1,71 @@
+{
+ "s020.sec5.m0.o0": "Ich werde gewinnen!",
+ "s020.sec5.m0.o1": "Hey, warte",
+ "s020.sec5.u0": [
+  [
+   "Du willst gegen mich kämpfen?",
+   "Na guuut!"
+  ]
+ ],
+ "s020.sec5.u1": [
+  [
+   "Bwaaah, ich habe verloren! So",
+   "ein Mist!"
+  ]
+ ],
+ "s020.sec5.u2": [
+  [
+   "Der war ziemlich stark..."
+  ]
+ ],
+ "s020.sec5.u3": [
+  [
+   "Du bist nett. Mamemon kommt",
+   "mit dir."
+  ]
+ ],
+ "s020.sec5.u4": [
+  [
+   "Hm, mit uns mitkommen ist",
+   "etwas... Könntest du",
+   "stattdessen in die Stadt"
+  ],
+  [
+   "gehen?"
+  ]
+ ],
+ "s020.sec5.u5": [
+  [
+   "Guut. Mamemon geht in die",
+   "Stadt."
+  ]
+ ],
+ "s020.sec5.u6": "Mamemon ist in die Stadt gezogen!",
+ "s020.sec5.u7": [
+  [
+   "Hm, werde stärker und komm",
+   "dann wieder."
+  ]
+ ],
+ "s020.sec6.u0": [
+  [
+   "Daaah!"
+  ]
+ ],
+ "s020.sec7.u0": [
+  [
+   "Bwahaha!"
+  ]
+ ],
+ "s020.sec8.u0": [
+  [
+   "Noooh!"
+  ]
+ ],
+ "s020.sec81.u0": [
+  [
+   "Osten: Urwald Westen:",
+   "Zahnradsavanne"
+  ]
+ ]
+}

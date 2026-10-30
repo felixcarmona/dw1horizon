@@ -1,0 +1,30 @@
+// Readable form of script 153 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/recruit.dws";
+import "../../../../core/scene.dws";
+script 153 {
+    npc giromon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 5;
+
+    on enter replace {    // section 254
+    }
+
+    on talk(giromon) replace {    // section 5
+        say(giromon, text("s153.sec5.u0"));
+        say(tamer, text("s153.sec5.u1"));
+        sound(8, 11);
+        say(giromon, text("s153.sec5.u2"));
+        say(tamer, text("s153.sec5.u3"));
+        say(giromon, text("s153.sec5.u4"));
+        say(giromon, text("s153.sec5.u5"));
+        sound(8, 11);
+        say(giromon, text("s153.sec5.u6"));
+        walk_away(giromon, 3050, -150, looks: 3);
+        join_city_camera(giromon, species("Giromon"), 8, 10, text("s153.sec5.u7"), prosperity: 3);
+        return;
+    }
+}

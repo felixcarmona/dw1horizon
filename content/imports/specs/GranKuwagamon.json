@@ -1,0 +1,110 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 182,
+ "type": 210,
+ "name": "GranKuwagamon",
+ "source": {
+  "type": 47,
+  "mmd": "extracted/CHDAT/MMD1/MONO.MMD"
+ },
+ "map": {
+  "1": 17,
+  "2": 2,
+  "3": 3,
+  "4": 5,
+  "7": 7,
+  "8": 9,
+  "9": 10,
+  "10": 12,
+  "11": 1,
+  "13": 6,
+  "14": 11,
+  "17": 13,
+  "19": 14,
+  "20": 19,
+  "21": 21,
+  "22": 22
+ },
+ "hips": [
+  1,
+  1,
+  0.965
+ ],
+ "root_scale": 0.965,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 0,
+   "end": 76,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.27
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 198,
+   "end": 278,
+   "hz": 0.3
+  },
+  "0x39": {
+   "anim": "anim_01",
+   "start": 119,
+   "end": 213,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x35": {
+   "anim": "anim_02",
+   "start": 62,
+   "end": 154,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x34": {
+   "anim": "anim_03",
+   "start": 146,
+   "end": 204,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

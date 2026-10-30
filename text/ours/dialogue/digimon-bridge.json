@@ -1,0 +1,72 @@
+{
+ "s010.sec5.u0": "You don't know your place!",
+ "s010.sec7.u0": "Just what did I ever do to you?!",
+ "s010.sec8.m0.o0": "Pay",
+ "s010.sec8.m0.o1": "Don't pay",
+ "s010.sec8.u0": [
+  [
+   "Ook-ook-ooook!"
+  ],
+  [
+   "\"Why am I here,\" you ask?!"
+  ],
+  [
+   "Listen, {color 6}{player}{color 1}! I tried to set up my",
+   "own harem in the city, and they threw me out!"
+  ]
+ ],
+ "s010.sec8.u1": [
+  [
+   "Tch... Oh, right. I hear you've",
+   "been rolling in money lately,",
+   "huh? I'll sell you somethin'"
+  ],
+  [
+   "nice, ook!"
+  ],
+  [
+   "The rarest thing in the world:",
+   "the {color 6}Gold Banana{color 1}. Now just",
+   "50000 Bits! No loans, ook-ook."
+  ]
+ ],
+ "s010.sec8.u2": "Are you nuts? You're carrying way too much!",
+ "s010.sec8.u3": "Oops, my bag's full.",
+ "s010.sec8.u4": "Ook, pleasure doing business!",
+ "s010.sec8.u5": "Money's no good unless you spend it, pal.",
+ "s010.sec51.m0.o0": "Sure",
+ "s010.sec51.m0.o1": "Another time",
+ "s010.sec51.u0": [
+  [
+   "{color 7}??? {color 1}",
+   "Hold it right therrre!!!"
+  ]
+ ],
+ "s010.sec51.u1": "This humble one is called Ninjamon!",
+ "s010.sec51.u2": [
+  [
+   "I take it you are",
+   "{color 6}{player}{color 1}... and",
+   "{color 10}{partner}{color 1}!"
+  ],
+  [
+   "Your fame has reached even",
+   "far-off Ninja Village, it has.",
+   "Won't you cross blades with"
+  ],
+  [
+   "this humble one?"
+  ]
+ ],
+ "s010.sec51.u3": "Heh, not so fast, so it is!",
+ "s010.sec51.u4": "Your skill is all they say it is! Please, make this humble one your dishiple!",
+ "s010.sec51.u5": "Dishiple...? Oh, disciple. No thanks. But if you help build the city, sure.",
+ "s010.sec51.u6": "Understood! That is fine training too, so it is. This humble one will do his best!",
+ "s010.sec51.u7": "Ninjamon joined the city!",
+ "s011.sec5.u0": "I could take you with one hand!",
+ "s011.sec6.u0": "Looks like I can beat you!",
+ "s011.sec7.u0": "Tee-hee. You don't know a thing...",
+ "s011.sec8.u0": "Cut it out already!",
+ "s011.sec9.u0": "Bullying isn't cool, you know.",
+ "s011.sec10.u0": "Just listen to me, please!"
+}

@@ -1,0 +1,120 @@
+{
+ "s169.sec6.u0": [
+  [
+   "Bonjour, {color 6} {player} {color 1} ! J'ai",
+   "commencé à aider Drimogemon."
+  ],
+  [
+   "Je suis doué pour trouver des",
+   "choses !"
+  ]
+ ],
+ "s169.sec81.m0.o0": "Explique-moi",
+ "s169.sec81.m0.o1": "Pas besoin d'explication",
+ "s169.sec81.m0.o2": "Rien, merci.",
+ "s169.sec81.m1.o0": "Trouver un trésor",
+ "s169.sec81.m1.o1": "Explique encore",
+ "s169.sec81.m1.o2": "Non, c'est tout",
+ "s169.sec81.m2.o0": "Plan normal: 1000 Bits",
+ "s169.sec81.m2.o1": "Plan spécial: 5000 Bits",
+ "s169.sec81.m2.o2": "Annuler",
+ "s169.sec81.u0": [
+  [
+   "Salut, bienvenue, {color 6}{player}{color 1}",
+   "! Ici, c'est la chasse au",
+   "trésor. Je mets mon talent"
+  ],
+  [
+   "pour creuser à profit et je",
+   "rapporte des trésors enfouis.",
+   "Voilà mon métier ! Cette île"
+  ],
+  [
+   "regorge de trésors enterrés un",
+   "peu partout. Laisse-moi faire !"
+  ]
+ ],
+ "s169.sec81.u1": [
+  [
+   "Salut ! Tu veux une chasse au",
+   "trésor ? Je t'explique d'abord",
+   "comment ça marche ?"
+  ]
+ ],
+ "s169.sec81.u2": [
+  [
+   "Tu paies d'avance et je te",
+   "trouve un trésor. Il y a deux",
+   "formules. La normale : trois"
+  ],
+  [
+   "jours pour 1000 Bits. La",
+   "spéciale : dix jours pour 5000",
+   "Bits. Avec la spéciale, tu as"
+  ],
+  [
+   "plus de chances de trouver un",
+   "beau trésor ! Voilà. Alors, que",
+   "choisis-tu ?"
+  ]
+ ],
+ "s169.sec81.u3": [
+  [
+   "Allez, choisis une formule !"
+  ]
+ ],
+ "s169.sec81.u4": [
+  [
+   "Très bien. A tout à l'heure !"
+  ]
+ ],
+ "s169.sec81.u5": [
+  [
+   "D'accord, résultats dans trois",
+   "jours. Je ferai de mon mieux !"
+  ]
+ ],
+ "s169.sec81.u6": [
+  [
+   "D'accord, résultats dans dix",
+   "jours. Je ferai de mon mieux !"
+  ]
+ ],
+ "s169.sec81.u7": [
+  [
+   "Tu n'as pas assez de Bits.",
+   "Même moi, je ne peux pas",
+   "chercher un trésor sans un peu"
+  ],
+  [
+   "d'argent pour commencer."
+  ]
+ ],
+ "s169.sec81.u8": [
+  [
+   "Je cherche encore le trésor.",
+   "Patiente un peu."
+  ]
+ ],
+ "s169.sec81.u9": [
+  [
+   "Hééé, ton trésor est arrivé !"
+  ]
+ ],
+ "s169.sec81.u10": [
+  [
+   "Va faire de la place dans ton",
+   "sac !"
+  ]
+ ],
+ "s169.sec81.u11": [
+  [
+   "Reçu : {color 6}{item 110}{color 1} !"
+  ]
+ ],
+ "s169.sec81.u12": [
+  [
+   "Merci de ta visite !"
+  ]
+ ]
+}

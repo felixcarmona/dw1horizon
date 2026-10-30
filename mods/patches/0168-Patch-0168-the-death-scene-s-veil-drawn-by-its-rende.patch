@@ -1,0 +1,97 @@
+From d1a1a651ca0e0685ec2ce1601ca1d0358b50cb13 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 23 Oct 2026 12:04:16 +0000
+Subject: [PATCH] Patch 0168: the death scene's veil drawn by its render, not
+ its tick
+
+MURD_tickScene drew the fullscreen veil (the fade to black after the lives box, the hold over
+the death map's load, the fade back in) with AddPrim from the tick. At 60 fps a tick has three
+render passes and only one of them got the veil: losing a life blinked black for seconds and the
+death map showed through for a frame before its fade. The tick now stores the colour and
+MURD_renderScene draws it on every pass; measured frame by frame it matches the original disc.
+---
+ src/murd/murd.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/src/murd/murd.c b/src/murd/murd.c
+index 151c5b23..acabec59 100644
+--- a/src/murd/murd.c
++++ b/src/murd/murd.c
+@@ -173,6 +173,11 @@ MurdScene MURD_SCENE = {
+ 
+ GARBAGE(MURD_tickScene, 9);
+ 
++/* MOD (fps): the tick chooses the fullscreen veil and MURD_renderScene draws it, so every render
++ * pass of a tick has it. Drawn from the tick it reached one image of three at 60 fps: the death
++ * scene blinked, and the death map showed through for a frame. Black (0) is no veil. */
++static VECTOR MURD_FADE_COLOR;
++
+ void MURD_tickScene(int32_t instanceId)
+ {
+ 	MurdScene *scene = &MURD_SCENE;
+@@ -235,7 +240,7 @@ void MURD_tickScene(int32_t instanceId)
+ 
+ 		color.vx = lerp(0, 0xa0, 0x5f, 0x87, scene->timer);
+ 		color.vy = color.vz = color.vx;
+-		MURD_renderFullscreenFade(&color);
++		MURD_FADE_COLOR = color; /* MOD (fps): drawn by MURD_renderScene */
+ 		if (scene->timer < 0x87) {
+ 			break;
+ 		}
+@@ -246,7 +251,7 @@ void MURD_tickScene(int32_t instanceId)
+ 	case 4: {
+ 		VECTOR color = MURD_FLASH_HOLD_1;
+ 
+-		MURD_renderFullscreenFade(&color);
++		MURD_FADE_COLOR = color; /* MOD (fps): drawn by MURD_renderScene */
+ 		if (UI_BOX_DATA[3].state != 0) {
+ 			break;
+ 		}
+@@ -256,7 +261,7 @@ void MURD_tickScene(int32_t instanceId)
+ 	case 5: {
+ 		VECTOR color = MURD_FLASH_HOLD_2;
+ 
+-		MURD_renderFullscreenFade(&color);
++		MURD_FADE_COLOR = color; /* MOD (fps): drawn by MURD_renderScene */
+ 		waitForDeathMapLoading(0);
+ 		changeToDeathMap();
+ 		tamerSetFullState(0x13, 1);
+@@ -268,7 +273,7 @@ void MURD_tickScene(int32_t instanceId)
+ 	case 6: {
+ 		VECTOR color = MURD_FLASH_HOLD_3;
+ 
+-		MURD_renderFullscreenFade(&color);
++		MURD_FADE_COLOR = color; /* MOD (fps): drawn by MURD_renderScene */
+ 		if (scene->timer < 0x91) {
+ 			break;
+ 		}
+@@ -281,7 +286,7 @@ void MURD_tickScene(int32_t instanceId)
+ 
+ 		color.vx = lerp(0xa0, 0, 0x91, 0xb9, scene->timer);
+ 		color.vy = color.vz = color.vx;
+-		MURD_renderFullscreenFade(&color);
++		MURD_FADE_COLOR = color; /* MOD (fps): drawn by MURD_renderScene */
+ 		if (scene->timer < 0xb9) {
+ 			break;
+ 		}
+@@ -320,6 +325,9 @@ void MURD_renderScene(void)
+ 		}
+ 		MURD_renderIris(scene->entity, 0, 0x23, scene->timer);
+ 	}
++	if (MURD_FADE_COLOR.vx != 0) { /* MOD (fps) */
++		MURD_renderFullscreenFade(&MURD_FADE_COLOR);
++	}
+ }
+ 
+ void MURD_initializeOrderingTables(void)
+@@ -760,6 +768,7 @@ int32_t MURD_tick(partner, isInitialized)
+ 
+ 	scene->timer = 0;
+ 	scene->phase = 0;
++	MURD_FADE_COLOR.vx = 0; /* MOD (fps) */
+ 	scene->entity = (Entity *)partner;
+ 	scene->lives = partner->lives;
+ 
+-- 
+2.53.0
+

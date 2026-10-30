@@ -1,0 +1,19 @@
+{
+  "file": "MAP/MAP8/LEOM01.MAP",
+  "digimon": [
+    {
+      "slot": 0,
+      "species": "Nanimon171",
+      "at": [-1754, 3274],
+      "facing": 1788,
+      "follow": 1,
+      "range": 0,
+      "charge": 1,
+      "moves": [46, 47, 56, 255],
+      "prios": [50, 30, 20, 0],
+      "flee": [454, 2123],
+      "ai": [0, -1, -1, -1, -1, -1, -1, -1],
+      "path": [[10, 0, 0]]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+ "first_id": 407,
+ "out": "build/rescue-armagemon",
+ "digimon": [
+  {
+   "name": "Armagemon",
+   "game": "dw3",
+   "model": "M382ARMG",
+   "level": "mega",
+   "element": 1,
+   "meshfix": true,
+   "max_half_width": 800,
+   "max_half_depth": 900,
+   "victory": "anim_14"
+  }
+ ]
+}

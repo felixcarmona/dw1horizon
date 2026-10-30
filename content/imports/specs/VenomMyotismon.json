@@ -1,0 +1,122 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 177,
+ "type": 212,
+ "name": "VenomMyotismon",
+ "source": {
+  "type": 8,
+  "mmd": "extracted/CHDAT/MMD0/TYRA.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 3,
+  "3": 5,
+  "4": 6,
+  "5": 9,
+  "6": 11,
+  "7": 12,
+  "8": 15,
+  "17": 1,
+  "18": 17,
+  "19": 18,
+  "22": 21,
+  "23": 23,
+  "25": 24,
+  "26": 26,
+  "27": 19
+ },
+ "hips": [
+  17,
+  1,
+  1.205
+ ],
+ "root_scale": 1.205,
+ "tol": 12,
+ "tol_clips": 8,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 75,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 125,
+   "end": 215,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 86,
+   "end": 166,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_02",
+   "start": 42,
+   "end": 156,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x36": {
+   "anim": "anim_01",
+   "start": 44,
+   "end": 158,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x37": {
+   "anim": "anim_03",
+   "start": 73,
+   "end": 187,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x32",
+  "0x33",
+  "0x34"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

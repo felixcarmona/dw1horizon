@@ -1,0 +1,107 @@
+{
+ "s176.sec7.u0": "Ah, sim! Sua bolsa está muito cheia? Boing! Dizem que em algum lugar do mundo há um chaveiro que liga sua bolsa a outra dimensão, para que você possa carregar mais itens! Talvez voltar para os lugares que você já esteve!",
+ "s176.sec7.u1": [
+  [
+   "Vou ensinar meus segredos para",
+   "comprar itens! Na lista, aperte",
+   "START para ver o efeito de",
+   "um item. Ao escolher a"
+  ],
+  [
+   "quantidade, {color 4}□{color 1} seleciona o",
+   "máximo que pode pagar. Segure",
+   "{color 10}○{color 1} e aperte para cima ou para",
+   "baixo para mudar de dez em"
+  ],
+  [
+   "dez! Segure R1 e aperte para",
+   "cima ou para baixo para",
+   "percorrer listas longas. Mais",
+   "um segredo: compre algo logo"
+  ],
+  [
+   "após seu Digimon renascer!",
+   "Algo bom vai acontecer! Boing!"
+  ]
+ ],
+ "s176.sec81.u0": [
+  [
+   "Bem-vindo, {color 6}{player}{color 1}! Veja,",
+   "minha própria loja! Vou vender",
+   "itens sem parar! O estoque...",
+   "Ah, resolvo isso depois. Traga"
+  ],
+  [
+   "alguns Digimon para ajudar,",
+   "seria ótimo!"
+  ]
+ ],
+ "s176.sec81.u1": "Bem-vindo, peep! Decidi comprar e vender itens, Peep. Prazer em conhecê-lo, Peep! Ainda não há muito estoque... mas se algum Digimon veio para ajudar, talvez eu possa fazer isso, Peep.",
+ "s176.sec81.u2": [
+  [
+   "Bem-vindo. Tomei a liberdade",
+   "de abrir uma loja de itens.",
+   "Espero poder servi-lo bem. A",
+   "variedade ainda é pequena, mas"
+  ],
+  [
+   "pretendo ampliar a loja. Tenha",
+   "paciência por enquanto."
+  ]
+ ],
+ "s176.sec81.u3": [
+  [
+   "{color 6}{player}{color 1}",
+   ", {color 10}{partner}{color 1}, finalmente abri a loja de",
+   "artigos."
+  ],
+  [
+   "Tenho um pressentimento que os negócios vão",
+   "explodir!"
+  ],
+  [
+   "Com mais Digimon na cidade, eu deveria ser",
+   "capaz de estocar bens melhores."
+  ],
+  [
+   "Por favor, seja paciente até lá."
+  ]
+ ],
+ "s176.sec81.u4": "Ei, {color 6}{player}{color 1}! Comecei a ajudar nesta loja. Compre muito, está bem?",
+ "s176.sec81.u5": "Bem-vindo, peep! A partir de hoje eu vou ajudar na loja, Peep. Prazer em conhecê-lo, Peep!",
+ "s176.sec81.u6": "Bem-vindo, {color 6}{player}{color 1}. Se me permite ser tão ousado, decidi ajudar nesta loja. Estou ansioso pelo seu negócio.",
+ "s176.sec81.u7": "Ah, {color 6}{player}{color 1}. Aqui é onde meus talentos são melhor usados, afinal. Darei tudo de mim a partir de agora.",
+ "s176.sec82.m0.o0": "Comprar",
+ "s176.sec82.m0.o1": "Não comprar",
+ "s176.sec82.u0": [
+  [
+   "Oh, señor, como vai? Ando",
+   "muuuito ocupado vendendo itens",
+   "todo dia... Brincadeira! Sou",
+   "bem preguiçoso, então não devo"
+  ],
+  [
+   "aparecer muito na loja. Mas",
+   "tenho algo incrível: o Manual",
+   "de treino! Só de carregá-lo,",
+   "seu treino rende muito mais! É"
+  ],
+  [
+   "valioso, então vendo por 50000",
+   "Bits. Se não comprar, vai se",
+   "arrepender!"
+  ]
+ ],
+ "s176.sec82.u1": [
+  [
+   "Faltam muuuitos Bits!"
+  ]
+ ],
+ "s176.sec82.u2": "Sua bolsa está cheia!",
+ "s176.sec82.u3": "Peguei o {color 6}Manual de treino{color 1}!",
+ "s176.sec82.u4": [
+  [
+   "Nem um Bit de desconto, señor!"
+  ]
+ ]
+}

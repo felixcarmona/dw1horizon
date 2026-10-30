@@ -1,0 +1,22 @@
+{
+ "s167.sec6.u0": "Hola, {color 6}{player}{color 1}.",
+ "s167.sec6.u1": [
+  [
+   "De vez en cuando vuelvo a la Sabana Gear",
+   "para seguir con mis patrullas."
+  ],
+  [
+   "Para eso, esta tienda me viene muy bien."
+  ]
+ ],
+ "s167.sec6.u2": [
+  [
+   "Por cierto, parece que hay una tienda en la",
+   "costa de la Sabana Gear."
+  ],
+  [
+   "¿Has estado ya allí?"
+  ]
+ ],
+ "s167.sec81.u0": "Así que habéis venido, {color 6}{player}{color 1}, {color 10}{partner}{color 1}. Soy transportista. Llevo lo que sea. Aunque lo único que lleváis vosotros sois vosotros mismos... Así que... ¿y si os llevo a vosotros, en cuerpo y alma? Nada mal la idea, ¿eh? Je... Os llevo a cualquier sitio que conozcáis, cuando queráis. Pagando, claro."
+}

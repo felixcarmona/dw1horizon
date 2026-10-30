@@ -1,0 +1,452 @@
+{
+ "s066.sec5.u0": "O mar é bom, não é?",
+ "s066.sec6.u0": "Saia do meu caminho!",
+ "s066.sec7.u0": "Oh, eu sei! Vou te dizer uma coisa boa...",
+ "s066.sec8.u0": "Ora, ora. Nada mal mesmo.",
+ "s067.sec5.u0": "Você tem alguns bons instintos.",
+ "s067.sec6.u0": [
+  [
+   "Hm hm, você tem futuro."
+  ]
+ ],
+ "s067.sec7.u0": [
+  [
+   "Então é você... Interessante!"
+  ]
+ ],
+ "s067.sec8.u0": "Quer que eu te dê isso? Tee-hee...",
+ "s067.sec9.u0": "Você e eu somos amigos agora, certo...",
+ "s067.sec10.u0": "Você é inimigo? Você quer lutar?",
+ "s068.sec5.u0": "Toque em mim e terá um grande ZAP, certo?",
+ "s068.sec5.u1": "Ei, ei, você... isso não dói?",
+ "s068.sec5.u2": [
+  [
+   "Uau, você tem coragem! Tem",
+   "futuro! Tudo bem, vou dar uma",
+   "mão."
+  ]
+ ],
+ "s068.sec5.u3": "Que tal colocar essa energia elétrica para trabalhar construindo a cidade?",
+ "s068.sec5.u4": [
+  [
+   "...A cidade? O que é isso? Parece familiar. Eu",
+   "me pergunto por quê?"
+  ],
+  [
+   "Mmm. Ok, eu vou te ajudar. Eu sou Elecmon.",
+   "Prazer em conhecê-lo!"
+  ]
+ ],
+ "s068.sec5.u5": "Elecmon veio para a cidade!",
+ "s068.sec6.u0": "Kweh kwehhh!",
+ "s068.sec7.u0": "Keeeeeeeh!",
+ "s068.sec8.u0": [
+  [
+   "Você... sacrifício!"
+  ]
+ ],
+ "s068.sec9.u0": "Você está no caminho certo. Você...",
+ "s068.sec10.u0": "Hahh... você tem mau gosto.",
+ "s068.sec11.u0": [
+  [
+   "Que atrevido! Vou te vencer!"
+  ]
+ ],
+ "s068.sec51.u0": "Uma porta de ferro resistente... se não abrir, não tem como entrarmos.",
+ "s069.sec5.m0.o0": "Claro",
+ "s069.sec5.m0.o1": "De jeito nenhum",
+ "s069.sec5.m1.o0": "Ah, tudo bem",
+ "s069.sec5.m1.o1": "Nããão",
+ "s069.sec5.u0": "Eu vou bater em você!",
+ "s069.sec5.u1": "Droga, vamos mais uma vez.",
+ "s069.sec5.u2": "Quase consegui! Vamos, mais uma vez!",
+ "s069.sec5.u3": [
+  [
+   "Não consigo ganhaaar! Buaaa!"
+  ]
+ ],
+ "s069.sec5.u4": "E o que fará se ganhar?",
+ "s069.sec5.u5": "Huh? Uh, ummm. Não sei.",
+ "s069.sec5.u6": "Você não sabe... quer dizer que não há razão?",
+ "s069.sec5.u7": [
+  [
+   "Sem motivo. Estou entediado."
+  ]
+ ],
+ "s069.sec5.u8": "Se está entediado, venha para a cidade. Há todos os tipos de Digimon lá.",
+ "s069.sec5.u9": "Ooh, parece bom. Eu vou. Sou Patamon. Até logo!",
+ "s069.sec5.u10": "Patamon veio para a cidade!",
+ "s069.sec5.u11": "Você não é divertido!",
+ "s069.sec6.u0": "Oh, você vem?",
+ "s069.sec7.u0": "Você... sem cheiro!",
+ "s069.sec8.u0": [
+  [
+   "Parecer gostoso. Eu comer",
+   "você!"
+  ]
+ ],
+ "s069.sec9.u0": "Gah ha ha ha! Você é engraçado!",
+ "s070.sec5.u0": [
+  [
+   "Eek, você voltou, piu!"
+  ]
+ ],
+ "s070.sec5.u1": [
+  [
+   "Tchaaau, piu!"
+  ]
+ ],
+ "s070.sec5.u2": "Nesse ritmo, continuaremos andando em círculos.",
+ "s070.sec5.u3": [
+  [
+   "Talvez devêssemos ficar à",
+   "espreita..."
+  ]
+ ],
+ "s070.sec5.u4": [
+  [
+   "Hm? Quem está aí, piu?"
+  ]
+ ],
+ "s070.sec5.u5": "De jeito nenhum...",
+ "s070.sec5.u6": [
+  [
+   "Aaaaaai, piu!"
+  ]
+ ],
+ "s070.sec5.u7": "Ei, espere!",
+ "s070.sec5.u8": [
+  [
+   "Ah, de novo! Espeeera!"
+  ]
+ ],
+ "s070.sec5.u9": [
+  [
+   "Ah, de novo! Espeeera!"
+  ]
+ ],
+ "s070.sec5.u10": [
+  [
+   "Ah, de novo! Espeeera!"
+  ]
+ ],
+ "s070.sec5.u11": [
+  [
+   "Ah, de novo! Espeeera!"
+  ]
+ ],
+ "s070.sec6.u0": "Vamos, vamos, vamos!",
+ "s070.sec7.u0": "Ha ha ha, você tem coragem!",
+ "s070.sec8.u0": "Kwah, kwah!",
+ "s070.sec9.u0": "Eu... o primeiro aqui.",
+ "s070.sec10.u0": "Eu sou forte, você não é páreo!",
+ "s070.sec11.u0": "Não fique bravo se eu ganhar, ok...",
+ "s070.sec51.m0.o0": "Ficar à espreita",
+ "s070.sec51.m0.o1": "Ir a outro lugar",
+ "s070.sec51.u0": "Talvez eu fique esperando aqui...",
+ "s070.sec51.u1": [
+  [
+   "Vai, {color 10}{partner}{color 1}, faça Biyomon",
+   "correr para cá!"
+  ]
+ ],
+ "s070.sec51.u2": "Ah, ela foi para outro lugar!",
+ "s070.sec52.m0.o0": "Ficar à espreita",
+ "s070.sec52.m0.o1": "Ir a outro lugar",
+ "s070.sec52.u0": "Talvez eu fique esperando aqui...",
+ "s070.sec52.u1": [
+  [
+   "Vai, {color 10}{partner}{color 1}, faça Biyomon",
+   "correr para cá!"
+  ]
+ ],
+ "s070.sec52.u2": "Ah, ela foi para outro lugar!",
+ "s070.sec53.m0.o0": "Ficar à espreita",
+ "s070.sec53.m0.o1": "Ir a outro lugar",
+ "s070.sec53.u0": "Talvez eu fique esperando aqui...",
+ "s070.sec53.u1": [
+  [
+   "Vai, {color 10}{partner}{color 1}, faça Biyomon",
+   "correr para cá!"
+  ]
+ ],
+ "s070.sec53.u2": "Ah, ela foi para outro lugar!",
+ "s070.sec54.m0.o0": "Ficar à espreita",
+ "s070.sec54.m0.o1": "Ir a outro lugar",
+ "s070.sec54.u0": "Talvez eu fique esperando aqui...",
+ "s070.sec54.u1": [
+  [
+   "Vai, {color 10}{partner}{color 1}, faça Biyomon",
+   "correr para cá!"
+  ]
+ ],
+ "s070.sec54.u2": "Ah, ela foi para outro lugar!",
+ "s070.sec54.u3": "A emboscada funcionou!",
+ "s070.sec54.u4": [
+  [
+   "Ai! P-por favor, me deixe ir,",
+   "piu."
+  ]
+ ],
+ "s070.sec54.u5": "Espere um segundo. Não somos os bandidos.",
+ "s070.sec54.u6": "Huh? Você não é o sequestrador Digimon que todos falam?",
+ "s070.sec54.u7": "Parece que há rumores errados por aí.",
+ "s070.sec54.u8": "{color 6}{player}{color 1} tentou convencê-la!",
+ "s070.sec54.u9": [
+  [
+   "Entendi, piu... Entendi tudo",
+   "errado, piu."
+  ]
+ ],
+ "s070.sec54.u10": [
+  [
+   "Certo, piu. Vou para a cidade,",
+   "piu!"
+  ]
+ ],
+ "s070.sec54.u11": "Biyomon veio para a cidade!",
+ "s071.sec5.u0": "Entendo... quando você coloca assim, talvez sim.",
+ "s071.sec6.u0": "Consegue entender essa beleza?",
+ "s071.sec7.u0": "Kukukukukweeh!",
+ "s071.sec8.u0": "Eu não me importo mais!",
+ "s071.sec9.u0": "Droga! Brincadeira.",
+ "s071.sec10.u0": "Ugh... a barriga dói...",
+ "s071.sec81.m0.o0": "Cura pequena: 200 Bits",
+ "s071.sec81.m0.o1": "Penico portátil: 500 Bits",
+ "s071.sec81.m0.o2": "Não comprar",
+ "s071.sec81.u0": "Máquina de venda",
+ "s071.sec81.u1": "Uma máquina com prêmios! O que devo fazer?",
+ "s071.sec81.u2": "Não tem dinheiro suficiente, hein?",
+ "s071.sec81.u3": "Não tem dinheiro suficiente, hein?",
+ "s071.sec81.u4": "Estou carregando muitos itens agora.",
+ "s071.sec81.u5": [
+  [
+   "Saiu uma {color 6}Cura pequena{color 1}!"
+  ]
+ ],
+ "s071.sec81.u6": "Estou carregando muitos itens agora.",
+ "s071.sec81.u7": "Um {color 6}Penico portátil{color 1} saiu!",
+ "s071.sec81.u8": "Tudo bem, eu ganhei!",
+ "s071.sec81.u9": "Um {color 6}Disquete duplo{color 1} saiu!",
+ "s071.sec81.u10": "Opa, estou carregando muitos itens.",
+ "s071.sec82.m0.o0": "100 MP: 200 Bits",
+ "s071.sec82.m0.o1": "1000 MP: 1800 Bits",
+ "s071.sec82.m0.o2": "Não use",
+ "s071.sec82.u0": "Estação MP",
+ "s071.sec82.u1": "Uma máquina que restaura MP.",
+ "s071.sec82.u2": "MP restaurado!",
+ "s071.sec82.u3": "Não tem dinheiro suficiente, hein?",
+ "s071.sec82.u4": "MP restaurado!",
+ "s071.sec82.u5": "Não tem dinheiro suficiente, hein?",
+ "s072.sec7.u0": "Honestamente, você me decepcionou!",
+ "s072.sec8.u0": "Por favor, não me deixe com raiva.",
+ "s072.sec9.u0": "Comida?",
+ "s072.sec10.u0": "Eu com fome!",
+ "s073.sec8.u0": "Tudo aqui, minha casa. Você, saia!",
+ "s073.sec9.u0": "Eu, Shamamon... você, o quê...?",
+ "s073.sec51.u0": "Huh? O que é isso?",
+ "s073.sec51.u1": "Socorro!",
+ "s073.sec51.u2": "Tenho que ajudá-lo!",
+ "s073.sec51.u3": [
+  [
+   "{color 7}??? {color 1}",
+   "Chega de implicar com os fracos!"
+  ]
+ ],
+ "s073.sec51.u4": "Huh, quem é esse?",
+ "s073.sec51.u5": "Você está bem?",
+ "s073.sec51.u6": "Obrigado.",
+ "s073.sec51.u7": [
+  [
+   "Não precisa agradecer. Sempre",
+   "que estiver em apuros, me",
+   "chame. Eu, Leomon, virei na",
+   "hora! Até a próxima!"
+  ]
+ ],
+ "s073.sec51.u8": "Espere por mim!",
+ "s073.sec51.u9": "Como um herói. Ele meio que roubou o show de nós.",
+ "s074.sec5.u0": "Inúteis, inúteis, inúteis!",
+ "s074.sec6.u0": "Me dê comida!",
+ "s074.sec7.u0": "Ritual... começa.",
+ "s074.sec8.u0": "Não vai tentar confiar em mim?",
+ "s074.sec9.u0": "Geha geha, geha?",
+ "s074.sec10.u0": "Eu ganho, você perde.",
+ "s075.sec5.u0": "Há algo que preciso encontrar... perdoe-me...",
+ "s075.sec51.u0": "Ouvi falar de você. Você tem feito grandes coisas.",
+ "s075.sec51.u1": "Se você ouviu falar de nós e da cidade, você virá para a cidade?",
+ "s075.sec51.u2": [
+  [
+   "Deixe-me pensar. Tenho meus próprios",
+   "pensamentos sobre o futuro da ilha."
+  ],
+  [
+   "E... há algo que eu venho procurando há muito",
+   "tempo."
+  ]
+ ],
+ "s075.sec51.u3": "O que está procurando?",
+ "s075.sec51.u4": [
+  [
+   "Um objeto que meus ancestrais deixaram para",
+   "o futuro, dizem."
+  ],
+  [
+   "O que é, eu não sei..."
+  ]
+ ],
+ "s075.sec51.u5": "Se acharmos, avisaremos.",
+ "s075.sec51.u6": "Procurei por muitos anos. Mesmo para você, duvido que seja fácil de encontrar.",
+ "s075.sec51.u7": "Mas eu prometo isso a você. Se for encontrado, irei para sua cidade.",
+ "s075.sec51.u8": "Poderia ser isso?",
+ "s075.sec51.u9": "Isso é...!",
+ "s075.sec51.u10": "Sim, meus ancestrais escreveram isso! Deixe-me ver...",
+ "s075.sec51.u11": [
+  [
+   "\"Quando o perigo chegar à",
+   "ilha... vá ao centro dela... e",
+   "una forças...!\""
+  ]
+ ],
+ "s075.sec51.u12": "Isso é...! Meus ancestrais estão me dizendo para ir para a cidade!",
+ "s075.sec51.u13": [
+  [
+   "!! ...Então... você vai nos",
+   "ajudar?"
+  ]
+ ],
+ "s075.sec51.u14": "Claro. Deixe comigo!",
+ "s075.sec51.u15": "Leomon veio para a cidade!",
+ "s075.sec83.m0.o0": "Começar o treino",
+ "s075.sec83.m0.o1": "Sobre este treino",
+ "s075.sec83.m0.o2": "Sair",
+ "s075.sec83.m1.o0": "Treino normal",
+ "s075.sec83.m1.o1": "Treino bônus",
+ "s075.sec83.m1.o2": "Deixa pra lá",
+ "s075.sec83.m2.o0": "Explique de novo",
+ "s075.sec83.m2.o1": "Começar o treino",
+ "s075.sec83.m2.o2": "Sair",
+ "s075.sec83.u0": [
+  [
+   "{color 5}Treino: golpes especiais{color 1}"
+  ]
+ ],
+ "s075.sec83.u1": [
+  [
+   "Pratique técnicas em um saco",
+   "de concreto. Aumenta bastante",
+   "o Ataque e também o HP",
+   "máximo."
+  ]
+ ],
+ "s075.sec83.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s075.sec85.m0.o0": "Começar o treino",
+ "s075.sec85.m0.o1": "Sobre este treino",
+ "s075.sec85.m0.o2": "Sair",
+ "s075.sec85.m1.o0": "Treino normal",
+ "s075.sec85.m1.o1": "Treino bônus",
+ "s075.sec85.m1.o2": "Deixa pra lá",
+ "s075.sec85.m2.o0": "Explique de novo",
+ "s075.sec85.m2.o1": "Começar o treino",
+ "s075.sec85.m2.o2": "Sair",
+ "s075.sec85.u0": [
+  [
+   "{color 5}Treino: circuito da savana{color 1}"
+  ]
+ ],
+ "s075.sec85.u1": [
+  [
+   "Corra pelo circuito da savana.",
+   "Aumenta bastante a Velocidade",
+   "e também o HP máximo."
+  ]
+ ],
+ "s075.sec85.u2": [
+  [
+   "{color 7}Caça-níqueis{color 1}",
+   "Pare os três rolos com {color 6}×{color 1} e",
+   "alinhe as figuras."
+  ]
+ ],
+ "s126.sec51.u0": "Oh!",
+ "s126.sec51.u1": "Uma loja!",
+ "s126.sec81.m0.o0": "Comprar cartas",
+ "s126.sec81.m0.o1": "Vender cartas",
+ "s126.sec81.m0.o2": "Sair",
+ "s126.sec81.m1.o0": "Pacote de 3 cartas",
+ "s126.sec81.m1.o1": "Comprar uma carta",
+ "s126.sec81.m1.o2": "Deixa pra lá",
+ "s126.sec81.m2.o0": "Comprar uma carta",
+ "s126.sec81.m2.o1": "Deixa pra lá",
+ "s126.sec81.m3.o0": "Comprar",
+ "s126.sec81.m3.o1": "Deixa pra lá",
+ "s126.sec81.u0": [
+  [
+   "Esta é uma loja de \"cartas",
+   "Digimon\", sim, sim."
+  ]
+ ],
+ "s126.sec81.u1": [
+  [
+   "\"Cartas Digimon\"? O que é",
+   "isso?"
+  ]
+ ],
+ "s126.sec81.u2": [
+  [
+   "Colecionar cartas está na",
+   "moda, sim, sim. Você só tem a",
+   "ganhar!"
+  ]
+ ],
+ "s126.sec81.u3": "Huh.",
+ "s126.sec81.u4": "Para começar, tenha este de graça. Prazer em conhecê-lo, sim!",
+ "s126.sec81.u5": [
+  [
+   "Ei! Esta é uma carta minha!"
+  ]
+ ],
+ "s126.sec81.u6": [
+  [
+   "Ganhou uma carta de",
+   "{color 6}{player}{color 1}!"
+  ]
+ ],
+ "s126.sec81.u7": [
+  [
+   "Esta é uma loja de \"cartas",
+   "Digimon\", sim, sim."
+  ]
+ ],
+ "s126.sec81.u8": "Cartas frescas em estoque hoje, sim!",
+ "s126.sec81.u9": [
+  [
+   "Um pacote custa 500 Bits. O",
+   "conteúdo depende da sorte, sim,",
+   "sim."
+  ]
+ ],
+ "s126.sec81.u10": [
+  [
+   "Abra seu pacote agora mesmo,",
+   "sim, sim."
+  ]
+ ],
+ "s126.sec81.u11": "Mais alguma coisa, sim?",
+ "s126.sec81.u12": "Volte de novo, sim!",
+ "s126.sec82.m0.o0": "Itens normais",
+ "s126.sec82.m0.o1": "Itens recuperados",
+ "s126.sec82.m0.o2": "Até mais",
+ "s126.sec82.u0": [
+  [
+   "Esta é uma loja de \"itens",
+   "recuperados\", sim, sim."
+  ]
+ ]
+}

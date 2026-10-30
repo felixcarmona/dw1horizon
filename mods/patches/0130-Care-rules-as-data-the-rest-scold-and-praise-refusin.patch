@@ -1,0 +1,730 @@
+From eab066aab2e8a9842d8fafbff98c17914ec7c4ee Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 17 Oct 2026 07:45:36 +0000
+Subject: [PATCH] Care rules as data, the rest: scold and praise, refusing an
+ item, the clamps of happiness, discipline, tiredness and weight, how long
+ babies stay awake and how often they get hungry, what a night's sleep costs
+ and gives back, feeding, the toilet, poop (wild, weight, eating it in three
+ sizes), skipping hours, what a fight does to the partner and how long it
+ takes (MOD_CARE grows to 137 slots, per-species overridable)
+
+---
+ include/dw/level.h      |  91 ++++++++++++++++-
+ src/main/partner_impl.c | 221 ++++++++++++++++++++--------------------
+ src/main/tamer.c        |  32 +++---
+ 3 files changed, 220 insertions(+), 124 deletions(-)
+
+diff --git a/include/dw/level.h b/include/dw/level.h
+index 857c5986..a83e9222 100644
+--- a/include/dw/level.h
++++ b/include/dw/level.h
+@@ -114,7 +114,7 @@ void modTamerLevelEvent(int32_t slot, int32_t amount);
+  * A period or a threshold left out (-1) switches its rule off; an amount left out counts as 0. Periods are logic frames: 20 = one game minute,
+  * 1200 = one game hour. The direction of each amount (a loss, a gain) is its name and stays in the code.
+  */
+-#define MOD_CARE_SIZE		55
++#define MOD_CARE_SIZE		137
+ #define MOD_CARE_SLEEP_TIRED_PERIOD	0
+ #define MOD_CARE_SLEEP_TIRED_PERCENT	1
+ #define MOD_CARE_SLEEP_SLEEPY_AT	2
+@@ -170,7 +170,96 @@ void modTamerLevelEvent(int32_t slot, int32_t amount);
+ #define MOD_CARE_LIFE_PERIOD	52
+ #define MOD_CARE_LIFE_BELOW	53
+ #define MOD_CARE_LIFE_PER_POINTS	54
++#define MOD_CARE_SCOLD_VALID_DISC	55
++#define MOD_CARE_SCOLD_UNJUST_DISC	56
++#define MOD_CARE_SCOLD_UNJUST_HAPPY	57
++#define MOD_CARE_PRAISE_DISC	58
++#define MOD_CARE_PRAISE_HAPPY_BASE	59
++#define MOD_CARE_PRAISE_HAPPY_DIV	60
++#define MOD_CARE_REFUSE_BASE	61
++#define MOD_CARE_REFUSE_OFFSET	62
++#define MOD_CARE_REFUSE_JITTER	63
++#define MOD_CARE_REFUSE_FAV_DIE	64
++#define MOD_CARE_REFUSE_FAV_BELOW	65
++#define MOD_CARE_LIM_HAPPY_MIN	66
++#define MOD_CARE_LIM_HAPPY_MAX	67
++#define MOD_CARE_LIM_DISC_MIN	68
++#define MOD_CARE_LIM_DISC_MAX	69
++#define MOD_CARE_LIM_TIRED_MIN	70
++#define MOD_CARE_LIM_TIRED_MAX	71
++#define MOD_CARE_LIM_WEIGHT_MIN	72
++#define MOD_CARE_LIM_WEIGHT_MAX	73
++#define MOD_CARE_SLEEP_AWAKE_FRESH	74
++#define MOD_CARE_SLEEP_AWAKE_TRAIN	75
++#define MOD_CARE_SLEEP_AWAKE_JITTER	76
++#define MOD_CARE_HUNGER_EVERY_FRESH	77
++#define MOD_CARE_HUNGER_EVERY_TRAIN	78
++#define MOD_CARE_SLEEP_LATE_MISTAKES	79
++#define MOD_CARE_SLEEP_HUNGRY_WEIGHT	80
++#define MOD_CARE_SLEEP_SICK_HAPPY	81
++#define MOD_CARE_SLEEP_SICK_DISC	82
++#define MOD_CARE_SLEEP_SICK_TIRED	83
++#define MOD_CARE_SLEEP_INJ_HAPPY	84
++#define MOD_CARE_SLEEP_INJ_DISC	85
++#define MOD_CARE_SLEEP_INJ_TIRED	86
++#define MOD_CARE_REGEN_BED	87
++#define MOD_CARE_REGEN_GOOD	88
++#define MOD_CARE_REGEN_BAD	89
++#define MOD_CARE_REGEN_HPMP_BASE	90
++#define MOD_CARE_REGEN_HPMP_ROLL	91
++#define MOD_CARE_REGEN_TIRED_BASE	92
++#define MOD_CARE_REGEN_TIRED_ROLL	93
++#define MOD_CARE_REGEN_WEIGHT_DIV	94
++#define MOD_CARE_HUNGER_STARVE_MISTAKES	95
++#define MOD_CARE_HUNGER_EMPTY_WEIGHT	96
++#define MOD_CARE_SULK_STAT_FLOOR	97
++#define MOD_CARE_FEED_HUNGRY_HAPPY	98
++#define MOD_CARE_FEED_HUNGRY_DISC	99
++#define MOD_CARE_FEED_FULL_HAPPY	100
++#define MOD_CARE_FEED_FULL_DISC	101
++#define MOD_CARE_TOILET_HAPPY	102
++#define MOD_CARE_TOILET_DISC	103
++#define MOD_CARE_POOPW_DIE	104
++#define MOD_CARE_POOPW_DIV	105
++#define MOD_CARE_WILD_MISTAKES	106
++#define MOD_CARE_WILD_HAPPY	107
++#define MOD_CARE_WILD_DISC	108
++#define MOD_CARE_EAT_MED_FROM	109
++#define MOD_CARE_EAT_LARGE_FROM	110
++#define MOD_CARE_EAT_S_HP	111
++#define MOD_CARE_EAT_S_MP	112
++#define MOD_CARE_EAT_S_W	113
++#define MOD_CARE_EAT_S_CURE	114
++#define MOD_CARE_EAT_M_HP	115
++#define MOD_CARE_EAT_M_MP	116
++#define MOD_CARE_EAT_M_W	117
++#define MOD_CARE_EAT_M_CURE	118
++#define MOD_CARE_EAT_L_HP	119
++#define MOD_CARE_EAT_L_MP	120
++#define MOD_CARE_EAT_L_W	121
++#define MOD_CARE_EAT_L_CURE	122
++#define MOD_CARE_SKIP_STARVE	123
++#define MOD_CARE_SKIP_FOOD	124
++#define MOD_CARE_SKIP_POOP	125
++#define MOD_CARE_BATTLE_TIRED	126
++#define MOD_CARE_BATTLE_MP_LOW	127
++#define MOD_CARE_BATTLE_MP_MULT	128
++#define MOD_CARE_BATTLE_FOOD	129
++#define MOD_CARE_LOST_HAPPY	130
++#define MOD_CARE_LOST_DISC	131
++#define MOD_CARE_FLED_HAPPY	132
++#define MOD_CARE_FLED_DISC	133
++#define MOD_CARE_FLED_TIRED	134
++#define MOD_CARE_WON_HAPPY	135
++#define MOD_CARE_BATTLE_TIME	136
+ extern int16_t MOD_CARE[MOD_CARE_SIZE];
++/* the value of a care rule for the partner's species (its own override or the global one), whether it exists (>= 0), and as an amount (a missing one is 0) */
++int32_t careGet(int32_t slot);
++int32_t careHas(int32_t slot);
++int32_t careAmt(int32_t slot);
++int32_t carePercent(int32_t slot);
++int32_t careDie(int32_t slot);
++void careClamp(int16_t *value, int32_t minSlot, int32_t maxSlot);
+ /* a species' own values: {species, slot, value} rows, ended by species -1 (the rest of the table is filled with -1 at build) */
+ #define MOD_CARE_OVERRIDE_MAX	192
+ extern int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3];
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 638ce560..14e0043e 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -725,12 +725,12 @@ void setSleepTimes(PartnerPara *para, int32_t type)
+ 
+ 	if (level < 3) {
+ 		if (level == 1) {
+-			awakeTimeBase = 3;
++			awakeTimeBase = careAmt(MOD_CARE_SLEEP_AWAKE_FRESH);
+ 		} else {
+-			awakeTimeBase = 7;
++			awakeTimeBase = careAmt(MOD_CARE_SLEEP_AWAKE_TRAIN);
+ 		}
+ 
+-		roll = randomLimit(1);
++		roll = randomLimit(careDie(MOD_CARE_SLEEP_AWAKE_JITTER));
+ 		para->sleepyHour = (HOUR + (awakeTimeBase + roll)) % 24;
+ 		para->sleepyMinute = 0;
+ 		para->wakeupHour =
+@@ -765,11 +765,14 @@ void setFoodTimer(int16_t type)
+ {
+ 	int32_t i;
+ 	uint8_t level;
++	int32_t hungerEvery;
+ 
+ 	level = DIGI_PARA(type).level;
+ 
+ 	if (level == 1) {
+-		PARTNER_PARA.nextHungerHour = HOUR / 2 * 2 + 2;
++		/* MOD (care rules as data): every hungerEvery hours aligned to the clock (a rule that is left out: once a day) */
++		hungerEvery = careAmt(MOD_CARE_HUNGER_EVERY_FRESH) > 0 ? careAmt(MOD_CARE_HUNGER_EVERY_FRESH) : 24;
++		PARTNER_PARA.nextHungerHour = HOUR / hungerEvery * hungerEvery + hungerEvery;
+ 		if (PARTNER_PARA.nextHungerHour >= 24) {
+ 			PARTNER_PARA.nextHungerHour -= 24;
+ 		}
+@@ -778,7 +781,8 @@ void setFoodTimer(int16_t type)
+ 	else
+ #endif
+ 	if (level == 2) {
+-		PARTNER_PARA.nextHungerHour = HOUR / 3 * 3 + 3;
++		hungerEvery = careAmt(MOD_CARE_HUNGER_EVERY_TRAIN) > 0 ? careAmt(MOD_CARE_HUNGER_EVERY_TRAIN) : 24;
++		PARTNER_PARA.nextHungerHour = HOUR / hungerEvery * hungerEvery + hungerEvery;
+ 		if (PARTNER_PARA.nextHungerHour >= 24) {
+ 			PARTNER_PARA.nextHungerHour -= 24;
+ 		}
+@@ -973,9 +977,7 @@ void setupPartnerOnWarp(posX, posY, posZ, rotation)
+  * careEveryRaw: the same without the new-frame test, for the places the original had none; careHas: the threshold exists;
+  * careAmt: an amount (left out = 0).
+  */
+-int16_t MOD_CARE[MOD_CARE_SIZE] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-				    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-				    -1, -1, -1, -1, -1, -1, -1 };
++int16_t MOD_CARE[MOD_CARE_SIZE] = { [0 ... MOD_CARE_SIZE - 1] = -1 };
+ /* MOD (care rules as data): per-species overrides of MOD_CARE, written by tools/balance.py from the species files' "care" (-1 rows = none) */
+ int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3] = { { -1, -1, -1 } };
+ 
+@@ -983,7 +985,7 @@ int16_t MOD_CARE_SPECIES[MOD_CARE_OVERRIDE_MAX][3] = { { -1, -1, -1 } };
+  * careGet: a rule's value for the partner's species: its own override (MOD_CARE_SPECIES, {species, slot, value} rows ended by
+  * species -1; a value of -1 switches the rule off for it) or the global MOD_CARE.
+  */
+-static int32_t careGet(int32_t slot)
++int32_t careGet(int32_t slot)
+ {
+ 	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
+ 	int32_t i;
+@@ -1006,43 +1008,50 @@ static int32_t careEvery(int32_t slot)
+ 	return careEveryRaw(slot) && CURRENT_FRAME != LAST_HANDLED_FRAME;
+ }
+ 
+-static int32_t careHas(int32_t slot)
++int32_t careHas(int32_t slot)
+ {
+ 	return careGet(slot) >= 0;
+ }
+ 
+-static int32_t careAmt(int32_t slot)
++int32_t careAmt(int32_t slot)
+ {
+ 	int32_t v = careGet(slot);
+ 
+ 	return v > 0 ? v : 0;
+ }
+ 
+-void tickConditionBoundaries(void)
++/* a percent factor: a rule that is left out changes nothing (100) */
++int32_t carePercent(int32_t slot)
+ {
+-	if (PARTNER_PARA.happiness > 100) {
+-		PARTNER_PARA.happiness = 100;
+-	}
++	int32_t v = careGet(slot);
+ 
+-	if (PARTNER_PARA.happiness < -100) {
+-		PARTNER_PARA.happiness = -100;
+-	}
++	return v >= 0 ? v : 100;
++}
+ 
+-	if (PARTNER_PARA.discipline > 100) {
+-		PARTNER_PARA.discipline = 100;
+-	}
++/* a die: rolling 0 or less is a roll of 1 (always 0) */
++int32_t careDie(int32_t slot)
++{
++	int32_t v = careGet(slot);
+ 
+-	if (PARTNER_PARA.discipline < 0) {
+-		PARTNER_PARA.discipline = 0;
+-	}
++	return v > 0 ? v : 1;
++}
+ 
+-	if (PARTNER_PARA.tiredness > 100) {
+-		PARTNER_PARA.tiredness = 100;
++/* the clamps of the partner's states (limit.* of care-rules.json): a bound that is left out is not applied */
++void careClamp(int16_t *value, int32_t minSlot, int32_t maxSlot)
++{
++	if (careGet(maxSlot) != -1 && *value > careGet(maxSlot)) {
++		*value = careGet(maxSlot);
+ 	}
+-
+-	if (PARTNER_PARA.tiredness < 0) {
+-		PARTNER_PARA.tiredness = 0;
++	if (careGet(minSlot) != -1 && *value < careGet(minSlot)) {
++		*value = careGet(minSlot);
+ 	}
++}
++
++void tickConditionBoundaries(void)
++{
++	careClamp(&PARTNER_PARA.happiness, MOD_CARE_LIM_HAPPY_MIN, MOD_CARE_LIM_HAPPY_MAX); /* MOD (care rules as data) */
++	careClamp(&PARTNER_PARA.discipline, MOD_CARE_LIM_DISC_MIN, MOD_CARE_LIM_DISC_MAX);
++	careClamp(&PARTNER_PARA.tiredness, MOD_CARE_LIM_TIRED_MIN, MOD_CARE_LIM_TIRED_MAX);
+ 
+ 	if (PARTNER_PARA.energyLevel >
+ 	    RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap) {
+@@ -1054,13 +1063,7 @@ void tickConditionBoundaries(void)
+ 		PARTNER_PARA.energyLevel = 0;
+ 	}
+ 
+-	if (PARTNER_PARA.weight > 99) {
+-		PARTNER_PARA.weight = 99;
+-	}
+-
+-	if (PARTNER_PARA.weight < 1) {
+-		PARTNER_PARA.weight = 1;
+-	}
++	careClamp(&PARTNER_PARA.weight, MOD_CARE_LIM_WEIGHT_MIN, MOD_CARE_LIM_WEIGHT_MAX);
+ }
+ 
+ void tickSleepMechanics(void)
+@@ -1160,7 +1163,7 @@ void tickSleepMechanics(void)
+ 			PARTNER_PARA.hoursAwakeDefault * 6;
+ 		PARTNER_PARA.tirednessSleepTimer = 0;
+ 		PARTNER_PARA.condition &= ~1;
+-		PARTNER_PARA.careMistakes++;
++		PARTNER_PARA.careMistakes += careAmt(MOD_CARE_SLEEP_LATE_MISTAKES);
+ 		updateConditionAnimation();
+ 		modTamerLevelEvent(MOD_TL_SLEEPS_LATE_CHANCE, -1); /* MOD (tamer level as data) */
+ 	}
+@@ -1225,17 +1228,17 @@ void tickUnhappinessMechanics(void)
+ 				(int16_t)(stats->base.brain * careAmt(MOD_CARE_SULK_STAT_PERCENT) / 100);
+ 
+ 			if (stats->base.hp <= 0)
+-				stats->base.hp = 1;
++				stats->base.hp = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 			if (stats->base.mp <= 0)
+-				stats->base.mp = 1;
++				stats->base.mp = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 			if (stats->base.off <= 0)
+-				stats->base.off = 1;
++				stats->base.off = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 			if (stats->base.def <= 0)
+-				stats->base.def = 1;
++				stats->base.def = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 			if (stats->base.speed <= 0)
+-				stats->base.speed = 1;
++				stats->base.speed = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 			if (stats->base.brain <= 0)
+-				stats->base.brain = 1;
++				stats->base.brain = careAmt(MOD_CARE_SULK_STAT_FLOOR);
+ 
+ 			if (stats->current.currentHP >= stats->base.hp)
+ 				stats->current.currentHP = stats->base.hp;
+@@ -1268,11 +1271,11 @@ void handlePraiseScold(state)
+ 
+ 	if (state == 4) {
+ 		if (ITEM_SCOLD_FLAG == 1) {
+-			disciplineDelta = 8;
++			disciplineDelta = careAmt(MOD_CARE_SCOLD_VALID_DISC);
+ 			ITEM_SCOLD_FLAG = 2;
+ 		} else {
+-			disciplineDelta = 2;
+-			happinessDelta = -10;
++			disciplineDelta = careAmt(MOD_CARE_SCOLD_UNJUST_DISC);
++			happinessDelta = -careAmt(MOD_CARE_SCOLD_UNJUST_HAPPY);
+ 		}
+ 
+ 		PARTNER_PARA.refusedFavFood = 0;
+@@ -1283,8 +1286,9 @@ void handlePraiseScold(state)
+ 			HAS_BUTTERFLY = -1;
+ 		}
+ 	} else {
+-		disciplineDelta = -5;
+-		happinessDelta = (PARTNER_PARA.discipline / 10) + 2;
++		disciplineDelta = -careAmt(MOD_CARE_PRAISE_DISC);
++		happinessDelta = (careGet(MOD_CARE_PRAISE_HAPPY_DIV) > 0 ? PARTNER_PARA.discipline / careGet(MOD_CARE_PRAISE_HAPPY_DIV) : 0) +
++				 careAmt(MOD_CARE_PRAISE_HAPPY_BASE);
+ 	}
+ 
+ 	PARTNER_PARA.discipline += disciplineDelta;
+@@ -1369,20 +1373,20 @@ void handleSleeping(void)
+ 	}
+ 
+ 	if (PARTNER_PARA.condition & 4)
+-		PARTNER_PARA.weight--;
++		PARTNER_PARA.weight -= careAmt(MOD_CARE_SLEEP_HUNGRY_WEIGHT);
+ 
+ 	if (PARTNER_PARA.condition & 0x40) {
+ 		PARTNER_PARA.sicknessTimer += hoursSlept;
+-		PARTNER_PARA.happiness -= 20;
+-		PARTNER_PARA.discipline -= 10;
+-		PARTNER_PARA.tiredness += 10;
++		PARTNER_PARA.happiness -= careAmt(MOD_CARE_SLEEP_SICK_HAPPY);
++		PARTNER_PARA.discipline -= careAmt(MOD_CARE_SLEEP_SICK_DISC);
++		PARTNER_PARA.tiredness += careAmt(MOD_CARE_SLEEP_SICK_TIRED);
+ 	}
+ 
+ 	if (PARTNER_PARA.condition & 0x20) {
+ 		PARTNER_PARA.injuryTimer += hoursSlept;
+-		PARTNER_PARA.happiness -= 10;
+-		PARTNER_PARA.discipline -= 5;
+-		PARTNER_PARA.tiredness += 5;
++		PARTNER_PARA.happiness -= careAmt(MOD_CARE_SLEEP_INJ_HAPPY);
++		PARTNER_PARA.discipline -= careAmt(MOD_CARE_SLEEP_INJ_DISC);
++		PARTNER_PARA.tiredness += careAmt(MOD_CARE_SLEEP_INJ_TIRED);
+ 	}
+ }
+ 
+@@ -1498,27 +1502,27 @@ void sleepRegen(void)
+ 	sleepFactor =
+ 		(int16_t)(hoursSlept * 100 / hoursAsleepDefault);
+ 	if (getItemCount(0x22) != 0)
+-		sleepFactor = (int16_t)(sleepFactor * 12 / 10);
++		sleepFactor = (int16_t)(sleepFactor * carePercent(MOD_CARE_REGEN_BED) / 100);
+ 
+ 	if (MAP_TILE_DATA.partnerAreaResponse == 1)
+-		sleepFactor = (int16_t)(sleepFactor * 12 / 10);
++		sleepFactor = (int16_t)(sleepFactor * carePercent(MOD_CARE_REGEN_GOOD) / 100);
+ 	else if (MAP_TILE_DATA.partnerAreaResponse == 2)
+-		sleepFactor = (int16_t)(sleepFactor * 8 / 10);
++		sleepFactor = (int16_t)(sleepFactor * carePercent(MOD_CARE_REGEN_BAD) / 100);
+ 
+ 	maxHP = PARTNER_ENTITY.digimonEntity.stats.base.hp;
+ 	maxMP = PARTNER_ENTITY.digimonEntity.stats.base.mp;
+-	healRoll = randomLimit(10);
++	healRoll = randomLimit(careDie(MOD_CARE_REGEN_HPMP_ROLL));
+ 	PARTNER_ENTITY.digimonEntity.stats.current.currentHP +=
+-		(int16_t)(sleepFactor * (maxHP * (healRoll + 70) / 100) /
++		(int16_t)(sleepFactor * (maxHP * (healRoll + careAmt(MOD_CARE_REGEN_HPMP_BASE)) / 100) /
+ 			  100);
+ 	PARTNER_ENTITY.digimonEntity.stats.current.currentMP +=
+-		(int16_t)(sleepFactor * (maxMP * (healRoll + 70) / 100) /
++		(int16_t)(sleepFactor * (maxMP * (healRoll + careAmt(MOD_CARE_REGEN_HPMP_BASE)) / 100) /
+ 			  100);
+ 
+-	healRoll = randomLimit(20);
++	healRoll = randomLimit(careDie(MOD_CARE_REGEN_TIRED_ROLL));
+ 	PARTNER_PARA.tiredness -=
+ 		(int16_t)(sleepFactor *
+-			  (PARTNER_PARA.tiredness * (healRoll + 80) / 100) /
++			  (PARTNER_PARA.tiredness * (healRoll + careAmt(MOD_CARE_REGEN_TIRED_BASE)) / 100) /
+ 			  100);
+ 
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentHP >= maxHP)
+@@ -1529,7 +1533,7 @@ void sleepRegen(void)
+ 		PARTNER_PARA.tiredness = 0;
+ 
+ 	PARTNER_PARA.weight -=
+-		(int16_t)(RAISE_ROW(ENTITY_TABLE[1]->type).defaultWeight / 10);
++		(int16_t)(careGet(MOD_CARE_REGEN_WEIGHT_DIV) > 0 ? RAISE_ROW(ENTITY_TABLE[1]->type).defaultWeight / careGet(MOD_CARE_REGEN_WEIGHT_DIV) : 0);
+ 	if (PARTNER_PARA.weight <= 0)
+ 		PARTNER_PARA.weight = 1;
+ }
+@@ -1590,7 +1594,7 @@ int32_t partnerWillRefuseItem(void)
+ 	PARTNER_PARA.refusedFavFood = 0;
+ 	type = PARTNER_ENTITY.digimonEntity.entity.type;
+ 	condition = PARTNER_PARA.condition;
+-	chance = randomLimit(10);
++	chance = randomLimit(careDie(MOD_CARE_REFUSE_FAV_DIE));
+ 	item = TAMER_ITEM.worldItem.type;
+ 
+ 	if ((item >= 0x73) && (item != 0x79) && (item != 0x7A) &&
+@@ -1624,14 +1628,16 @@ int32_t partnerWillRefuseItem(void)
+ 	}
+ 	if ((0 <= item) && (item < 0x26)) {
+ 		disciplineChance = randomLimit(100);
+-		if (disciplineChance < 110 -
+-		    (PARTNER_PARA.discipline + (randomLimit(10) + 10))) {
++		if (careHas(MOD_CARE_REFUSE_BASE) &&
++		    disciplineChance < careGet(MOD_CARE_REFUSE_BASE) -
++		    (PARTNER_PARA.discipline + (randomLimit(careDie(MOD_CARE_REFUSE_JITTER)) + careAmt(MOD_CARE_REFUSE_OFFSET)))) {
+ 			ITEM_SCOLD_FLAG = 1;
+ 			return 1;
+ 		}
+ 	}
+ 	if (((isHungry = condition & 4) == 0) &&
+-	    (item == RAISE_ROW(type).favoriteFood) && (chance < 2))
++	    (item == RAISE_ROW(type).favoriteFood) && careHas(MOD_CARE_REFUSE_FAV_DIE) && careHas(MOD_CARE_REFUSE_FAV_BELOW) &&
++	    (chance < careGet(MOD_CARE_REFUSE_FAV_BELOW)))
+ 		PARTNER_PARA.refusedFavFood = 2;
+ 
+ 	if (PARTNER_PARA.refusedFavFood != 0) {
+@@ -1673,12 +1679,12 @@ void tickHungerMechanics(void)
+ 		PARTNER_PARA.condition &= ~4;
+ 		if (PARTNER_PARA.energyLevel <
+ 		    RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold)
+-			PARTNER_PARA.careMistakes++;
++			PARTNER_PARA.careMistakes += careAmt(MOD_CARE_HUNGER_STARVE_MISTAKES);
+ 	}
+ 
+ 	if (PARTNER_PARA.energyLevel <= 0) {
+ 		if (careEveryRaw(MOD_CARE_HUNGER_WEIGHT_PERIOD)) {
+-			PARTNER_PARA.weight--;
++			PARTNER_PARA.weight -= careAmt(MOD_CARE_HUNGER_EMPTY_WEIGHT);
+ 			if (PARTNER_PARA.weight <= 0)
+ 				PARTNER_PARA.weight = 1;
+ 		}
+@@ -1771,8 +1777,8 @@ void partnerHandleFoodFeed(int32_t itemType)
+ 
+ 		if (!(RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold >
+ 		      PARTNER_PARA.energyLevel)) {
+-			PARTNER_PARA.happiness += 5;
+-			PARTNER_PARA.discipline += 1;
++			PARTNER_PARA.happiness += careAmt(MOD_CARE_FEED_HUNGRY_HAPPY);
++			PARTNER_PARA.discipline += careAmt(MOD_CARE_FEED_HUNGRY_DISC);
+ 			PARTNER_PARA.condition &= ~4;
+ 			setFoodTimer(PARTNER_ENTITY.digimonEntity.entity.type);
+ 			PARTNER_PARA.starvationTimer = 0;
+@@ -1796,8 +1802,8 @@ void partnerHandleFoodFeed(int32_t itemType)
+ 		return;
+ 	}
+ 
+-	PARTNER_PARA.happiness -= 3;
+-	PARTNER_PARA.discipline -= 2;
++	PARTNER_PARA.happiness -= careAmt(MOD_CARE_FEED_FULL_HAPPY);
++	PARTNER_PARA.discipline -= careAmt(MOD_CARE_FEED_FULL_DISC);
+ }
+ 
+ void tickPoopingMechanic(void)
+@@ -1875,8 +1881,8 @@ void tickPoopDetection(void)
+ 
+ void handleToilet(void)
+ {
+-	PARTNER_PARA.happiness += 2;
+-	PARTNER_PARA.discipline += 2;
++	PARTNER_PARA.happiness += careAmt(MOD_CARE_TOILET_HAPPY);
++	PARTNER_PARA.discipline += careAmt(MOD_CARE_TOILET_DISC);
+ #if !VERSION_IS(US)
+ 	PARTNER_PARA.poopLevel = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer;
+ #else
+@@ -1892,9 +1898,9 @@ void handlePoopWeightLoss(int32_t type)
+ {
+ 	int32_t r;
+ 
+-	r = randomLimit(4);
++	r = randomLimit(careDie(MOD_CARE_POOPW_DIE));
+ 
+-	PARTNER_PARA.weight -= (r + RAISE_ROW(type).poopSize) / 4;
++	PARTNER_PARA.weight -= careGet(MOD_CARE_POOPW_DIV) > 0 ? (r + RAISE_ROW(type).poopSize) / careGet(MOD_CARE_POOPW_DIV) : 0;
+ 	if (PARTNER_PARA.weight < 1) {
+ 		PARTNER_PARA.weight = 1;
+ 	}
+@@ -1903,9 +1909,9 @@ void handlePoopWeightLoss(int32_t type)
+ void handleWildPoop(void)
+ {
+ 	PARTNER_PARA.condition &= ~8;
+-	PARTNER_PARA.careMistakes += 1;
+-	PARTNER_PARA.happiness -= 10;
+-	PARTNER_PARA.discipline -= 5;
++	PARTNER_PARA.careMistakes += careAmt(MOD_CARE_WILD_MISTAKES);
++	PARTNER_PARA.happiness -= careAmt(MOD_CARE_WILD_HAPPY);
++	PARTNER_PARA.discipline -= careAmt(MOD_CARE_WILD_DISC);
+ #if !VERSION_IS(US)
+ 	PARTNER_PARA.poopLevel = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).poopTimer;
+ #else
+@@ -1926,21 +1932,22 @@ void handleEatingPoop(void)
+ 	stats = &PARTNER_ENTITY.digimonEntity.stats;
+ 	healingChance = 0;
+ 
+-	if (WORLD_POOP[POOP_TO_EAT].size < 11) {
+-		stats->current.currentHP += (int16_t)(stats->base.hp / 20);
+-		stats->current.currentMP += (int16_t)(stats->base.mp / 50);
+-		PARTNER_PARA.weight += 1;
+-		healingChance = 2;
+-	} else if (WORLD_POOP[POOP_TO_EAT].size < 14) {
+-		stats->current.currentHP += (int16_t)(stats->base.hp / 10);
+-		stats->current.currentMP += (int16_t)(stats->base.mp / 20);
+-		PARTNER_PARA.weight += 3;
+-		healingChance = 7;
++	/* MOD (care rules as data): three sizes of poop; the part of the maximum HP/MP it gives (a divisor; left out: none), its weight and the chance it cures */
++	if (WORLD_POOP[POOP_TO_EAT].size < careAmt(MOD_CARE_EAT_MED_FROM)) {
++		stats->current.currentHP += (int16_t)(careGet(MOD_CARE_EAT_S_HP) > 0 ? stats->base.hp / careGet(MOD_CARE_EAT_S_HP) : 0);
++		stats->current.currentMP += (int16_t)(careGet(MOD_CARE_EAT_S_MP) > 0 ? stats->base.mp / careGet(MOD_CARE_EAT_S_MP) : 0);
++		PARTNER_PARA.weight += careAmt(MOD_CARE_EAT_S_W);
++		healingChance = careAmt(MOD_CARE_EAT_S_CURE);
++	} else if (WORLD_POOP[POOP_TO_EAT].size < careAmt(MOD_CARE_EAT_LARGE_FROM)) {
++		stats->current.currentHP += (int16_t)(careGet(MOD_CARE_EAT_M_HP) > 0 ? stats->base.hp / careGet(MOD_CARE_EAT_M_HP) : 0);
++		stats->current.currentMP += (int16_t)(careGet(MOD_CARE_EAT_M_MP) > 0 ? stats->base.mp / careGet(MOD_CARE_EAT_M_MP) : 0);
++		PARTNER_PARA.weight += careAmt(MOD_CARE_EAT_M_W);
++		healingChance = careAmt(MOD_CARE_EAT_M_CURE);
+ 	} else {
+-		stats->current.currentHP += (int16_t)(stats->base.hp / 2);
+-		stats->current.currentMP += (int16_t)(stats->base.mp / 10);
+-		PARTNER_PARA.weight += 10;
+-		healingChance = 20;
++		stats->current.currentHP += (int16_t)(careGet(MOD_CARE_EAT_L_HP) > 0 ? stats->base.hp / careGet(MOD_CARE_EAT_L_HP) : 0);
++		stats->current.currentMP += (int16_t)(careGet(MOD_CARE_EAT_L_MP) > 0 ? stats->base.mp / careGet(MOD_CARE_EAT_L_MP) : 0);
++		PARTNER_PARA.weight += careAmt(MOD_CARE_EAT_L_W);
++		healingChance = careAmt(MOD_CARE_EAT_L_CURE);
+ 	}
+ 
+ 	if (stats->current.currentHP > stats->base.hp) {
+@@ -1951,9 +1958,7 @@ void handleEatingPoop(void)
+ 		stats->current.currentMP = stats->base.mp;
+ 	}
+ 
+-	if (PARTNER_PARA.weight > 99) {
+-		PARTNER_PARA.weight = 99;
+-	}
++	careClamp(&PARTNER_PARA.weight, MOD_CARE_LIM_WEIGHT_MIN, MOD_CARE_LIM_WEIGHT_MAX);
+ 
+ 	r = randomLimit(100);
+ 	if (r < healingChance) {
+@@ -2106,20 +2111,20 @@ void skipHours(int16_t hours)
+ 		PARTNER_PARA.missedSleepHours += hours;
+ 	}
+ 	if ((PARTNER_PARA.condition & 4) != 0) {
+-		PARTNER_PARA.starvationTimer -= (int16_t)(hours * 120);
++		PARTNER_PARA.starvationTimer -= (int16_t)(hours * careAmt(MOD_CARE_SKIP_STARVE));
+ 		if ((PARTNER_PARA.starvationTimer <= 0) &&
+ 		    (PARTNER_PARA.energyLevel <
+ 		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold))
+ 			PARTNER_PARA.careMistakes++;
+ 	} else {
+-		PARTNER_PARA.foodLevel -= (int16_t)(hours * 60);
++		PARTNER_PARA.foodLevel -= (int16_t)(hours * careAmt(MOD_CARE_SKIP_FOOD));
+ 	}
+ 	PARTNER_PARA.energyLevel -=
+ 		RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if ((PARTNER_PARA.condition & 8) != 0)
+ 		PARTNER_PARA.poopingTimer -= 1200;
+ 	else
+-		PARTNER_PARA.poopLevel -= (int16_t)(hours * 6);
++		PARTNER_PARA.poopLevel -= (int16_t)(hours * careAmt(MOD_CARE_SKIP_POOP));
+ 
+ 	if ((PARTNER_PARA.condition & 0x40) != 0)
+ 		PARTNER_PARA.sicknessTries += hours;
+@@ -2155,20 +2160,20 @@ void skipHours(int32_t hours)
+ 		PARTNER_PARA.missedSleepHours += shortHours;
+ 	}
+ 	if ((PARTNER_PARA.condition & 4) != 0) {
+-		PARTNER_PARA.starvationTimer -= (int16_t)(rawHours * 120);
++		PARTNER_PARA.starvationTimer -= (int16_t)(rawHours * careAmt(MOD_CARE_SKIP_STARVE));
+ 		if ((PARTNER_PARA.starvationTimer <= 0) &&
+ 		    (PARTNER_PARA.energyLevel <
+ 		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold))
+ 			PARTNER_PARA.careMistakes++;
+ 	} else {
+-		PARTNER_PARA.foodLevel -= (int16_t)(rawHours * 60);
++		PARTNER_PARA.foodLevel -= (int16_t)(rawHours * careAmt(MOD_CARE_SKIP_FOOD));
+ 	}
+ 	PARTNER_PARA.energyLevel -=
+ 		RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyUsage;
+ 	if ((PARTNER_PARA.condition & 8) != 0)
+ 		PARTNER_PARA.poopingTimer -= 1200;
+ 	else
+-		PARTNER_PARA.poopLevel -= (int16_t)(rawHours * 6);
++		PARTNER_PARA.poopLevel -= (int16_t)(rawHours * careAmt(MOD_CARE_SKIP_POOP));
+ 
+ 	if ((PARTNER_PARA.condition & 0x40) != 0)
+ 		PARTNER_PARA.sicknessTries += shortHours;
+@@ -2183,19 +2188,19 @@ void handlePostBattleTiredness(void)
+ {
+ 	int16_t diff;
+ 
+-	PARTNER_PARA.tiredness += 5;
++	PARTNER_PARA.tiredness += careAmt(MOD_CARE_BATTLE_TIRED);
+ 
+-	diff = (PARTNER_ENTITY.digimonEntity.stats.base.mp * 2) / 10;
++	diff = (PARTNER_ENTITY.digimonEntity.stats.base.mp * careAmt(MOD_CARE_BATTLE_MP_LOW)) / 100;
+ 	if (PARTNER_ENTITY.digimonEntity.stats.current.currentMP < (PARTNER_ENTITY.digimonEntity.stats.base.mp - diff)) {
+ 		diff = PARTNER_ENTITY.digimonEntity.stats.base.mp - PARTNER_ENTITY.digimonEntity.stats.current.currentMP;
+ 		/*
+ 		 * NOTE: Vanilla MP factor calculation is broken.
+ 		 * The factor should be ((diff * 10) / base.mp).
+ 		 */
+-		PARTNER_PARA.tiredness += (diff / PARTNER_ENTITY.digimonEntity.stats.base.mp) * 10;
++		PARTNER_PARA.tiredness += (diff / PARTNER_ENTITY.digimonEntity.stats.base.mp) * careAmt(MOD_CARE_BATTLE_MP_MULT);
+ 	}
+ 
+-	PARTNER_PARA.foodLevel -= 15;
++	PARTNER_PARA.foodLevel -= careAmt(MOD_CARE_BATTLE_FOOD);
+ }
+ 
+ void tickConditions(void)
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 6b6e1d28..968f90d1 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -16,6 +16,7 @@
+ #include <dw/font.h>
+ #include <dw/ids.h>
+ #include <dw/level.h>
++#include <dw/mod_rules.h>
+ #include <dw/tournament.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+@@ -821,14 +822,14 @@ int8_t startBattle(int16_t instanceId)
+ 	GAME_STATE = 0;
+ 
+ 	if (result == -1) {
+-		PARTNER_PARA.happiness -= 0x1e;
+-		PARTNER_PARA.discipline -= 0x14;
++		PARTNER_PARA.happiness -= careAmt(MOD_CARE_LOST_HAPPY); /* MOD (care rules as data) */
++		PARTNER_PARA.discipline -= careAmt(MOD_CARE_LOST_DISC);
+ 		partnerSetState(-1);
+ 		SKIP_DAYTIME_TRANSITION = 1;
+ 	} else if (result == 0) {
+-		PARTNER_PARA.happiness -= 10;
+-		PARTNER_PARA.discipline -= 6;
+-		PARTNER_PARA.tiredness += 2;
++		PARTNER_PARA.happiness -= careAmt(MOD_CARE_FLED_HAPPY);
++		PARTNER_PARA.discipline -= careAmt(MOD_CARE_FLED_DISC);
++		PARTNER_PARA.tiredness += careAmt(MOD_CARE_FLED_TIRED);
+ 		handlePostBattleTiredness();
+ 		SKIP_DAYTIME_TRANSITION = 1;
+ 	} else if (result == 1) {
+@@ -836,7 +837,7 @@ int8_t startBattle(int16_t instanceId)
+ 		readMapTFS(CURRENT_SCREEN);
+ 		STORED_TAMER_POS = TAMER_ENTITY.entity.posData->location;
+ 		partnerSetState(1);
+-		PARTNER_PARA.happiness += 2;
++		PARTNER_PARA.happiness += careAmt(MOD_CARE_WON_HAPPY);
+ 		handlePostBattleTiredness();
+ 		++PARTNER_PARA.battles;
+ 		SKIP_DAYTIME_TRANSITION = 0;
+@@ -859,9 +860,10 @@ void advanceBattleTime(result)
+ 	int8_t result;
+ // clang-format on
+ {
+-	MINUTE += 20;
++	/* MOD (care rules as data): a fight takes MOD_CARE_BATTLE_TIME frames of game time (20 = a minute); what it costs the partner follows from the periods of the care rules */
++	MINUTE += careAmt(MOD_CARE_BATTLE_TIME) / 20;
+ 
+-	CURRENT_FRAME += 400;
++	CURRENT_FRAME += careAmt(MOD_CARE_BATTLE_TIME);
+ 	if (MINUTE > 59) {
+ 		++HOUR;
+ 		MINUTE -= 60;
+@@ -903,20 +905,20 @@ void advanceBattleTime(result)
+ 	}
+ 
+ 	if ((PARTNER_PARA.condition & 4) != 0) {
+-		PARTNER_PARA.starvationTimer -= 40;
++		PARTNER_PARA.starvationTimer -= careGet(MOD_CARE_HUNGER_STARVE_PERIOD) > 0 ? careAmt(MOD_CARE_BATTLE_TIME) / careGet(MOD_CARE_HUNGER_STARVE_PERIOD) : 0;
+ 		if ((PARTNER_PARA.starvationTimer < 1) &&
+ 		    (PARTNER_PARA.energyLevel <
+ 		     RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyThreshold)) {
+ 			++PARTNER_PARA.careMistakes;
+ 		}
+ 	} else {
+-		PARTNER_PARA.foodLevel -= 20;
++		PARTNER_PARA.foodLevel -= careGet(MOD_CARE_HUNGER_FOOD_PERIOD) > 0 ? careAmt(MOD_CARE_BATTLE_TIME) / careGet(MOD_CARE_HUNGER_FOOD_PERIOD) : 0;
+ 	}
+ 
+ 	if ((PARTNER_PARA.condition & 8) != 0) {
+-		PARTNER_PARA.poopingTimer -= 400;
++		PARTNER_PARA.poopingTimer -= careAmt(MOD_CARE_BATTLE_TIME);
+ 	} else {
+-		PARTNER_PARA.poopLevel -= 2;
++		PARTNER_PARA.poopLevel -= careGet(MOD_CARE_POOP_PERIOD) > 0 ? careAmt(MOD_CARE_BATTLE_TIME) / careGet(MOD_CARE_POOP_PERIOD) : 0;
+ 	}
+ 
+ 	updateMinuteHand(HOUR, MINUTE);
+@@ -926,11 +928,11 @@ void advanceBattleTime(result)
+ 
+ 		flags = MAP_ENTRIES[CURRENT_SCREEN].flags & 0x40;
+ 		if (flags == 0) {
+-			if (HOUR == 0x10) {
++			if (HOUR == MOD_DAYTIME[MOD_DT_DUSK]) {
+ 				initializeDaytimeTransition(0);
+-			} else if (HOUR == 0x14) {
++			} else if (HOUR == MOD_DAYTIME[MOD_DT_NIGHT]) {
+ 				initializeDaytimeTransition(1);
+-			} else if (HOUR == 6) {
++			} else if (HOUR == MOD_DAYTIME[MOD_DT_DAWN]) {
+ 				initializeDaytimeTransition(2);
+ 			}
+ 		}
+-- 
+2.53.0
+

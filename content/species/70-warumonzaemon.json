@@ -1,0 +1,52 @@
+{
+  "id": 70,
+  "name": "WaruMonzaemon",
+  "level": "ultimate",
+  "vanilla_as": 14,
+  "attribute": "virus",
+  "specialties": ["battle", "air", null],
+  "techniques": ["Megaton Punch", "Buster Dive", "Muscle Charge", "Thunder Justice", "Sonic Jab",
+                 "Dynamite Kick (44)", "Counter", "Tremar", "War Cry", "Static Elect",
+                 "Megalo Spark", "Electric Cloud", "Confused Storm", "Lovely Attack"],
+  "drop": {"item": "HP Chip", "percent": 50},
+  "model": {"name": "WARU", "bones": 12, "file": "build/models/WARU-partner.MMD", "radius": 150, "height": 410},
+  "voice": 60,
+  "battle_music": "normal-battle-2",
+  "wild": {"hp": 5200, "mp": 2600, "off": 680, "def": 340, "speed": 380, "brain": 100, "bits": 3500},
+  "partner": {
+    "voice": 15,
+    "hunger_hours": [2, 6, 11, 16, 21],
+    "energy_max": 80,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
+    "poop_timer_10min": 36,
+    "poop_size": 10,
+    "favorite_food": "Digipine",
+    "sleep_cycle": "19:00-04:00",
+    "favored_region": 2,
+    "training_type": "hp-defense",
+    "birth_weight": 40,
+    "status_screen_position": [100, 375, -1005],
+    "item_distance": 12,
+    "training": {"animation": 46, "hit_tick": 10}
+  },
+  "evolution": {
+    "requirements": {
+      "digimon": -1,
+      "hp": 300,
+      "mp": -1,
+      "offense": 400,
+      "defense": 300,
+      "speed": -1,
+      "brain": -1,
+      "care": 10,
+      "weight": 40,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": 50,
+      "techs": 40,
+      "flags": 0
+    },
+    "gains": {"hp": 5000, "mp": 4000, "offense": 600, "defense": 450, "speed": 450, "brains": 400}
+  }
+}

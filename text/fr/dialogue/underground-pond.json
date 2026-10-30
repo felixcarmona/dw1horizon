@@ -1,0 +1,154 @@
+{
+ "s029.sec51.m0.o0": "Je le ferai !",
+ "s029.sec51.m0.o1": "Désolé, une autre fois",
+ "s029.sec51.m1.o0": "Je le ferai !",
+ "s029.sec51.m1.o1": "Désolé, une autre fois",
+ "s029.sec51.u0": [
+  [
+   "Hé, presque toute la terre a",
+   "été évacuée. Grâce à toi, le",
+   "travail avance bien. Encore un"
+  ],
+  [
+   "peu de patience."
+  ]
+ ],
+ "s029.sec51.u1": [
+  [
+   "Oh, beau travail. Voici ta",
+   "paie."
+  ]
+ ],
+ "s029.sec51.u2": [
+  [
+   "500 Bits gagnés pour le travail",
+   "! HP +50 ! Attaque +5 !",
+   "Défense +5 !"
+  ]
+ ],
+ "s029.sec51.u3": [
+  [
+   "Vide la terre à l'extérieur du",
+   "tunnel."
+  ]
+ ],
+ "s029.sec51.u4": [
+  [
+   "Allez, prends de la terre dans",
+   "ce tas."
+  ]
+ ],
+ "s029.sec51.u5": [
+  [
+   "Hmm, tu veux transporter de la",
+   "terre ? Tu es épuisé.",
+   "Repose-toi d'abord, puis"
+  ],
+  [
+   "reviens."
+  ]
+ ],
+ "s029.sec51.u6": [
+  [
+   "Hmm, tu veux transporter de la",
+   "terre ?"
+  ]
+ ],
+ "s029.sec51.u7": [
+  [
+   "T'es qui ? C'est dangereux",
+   "pour les amateurs ici, reste à",
+   "l'écart."
+  ]
+ ],
+ "s029.sec51.u8": [
+  [
+   "T'es qui ? Ce tunnel n'est pas",
+   "encore ouvert. Ne gêne pas le",
+   "travail."
+  ]
+ ],
+ "s029.sec51.u9": [
+  [
+   "Ah, pardon. Tu penses qu'il",
+   "ouvrira quand ?"
+  ]
+ ],
+ "s029.sec51.u10": [
+  [
+   "Qui sait ? Il y en a encore",
+   "pour un bon moment."
+  ]
+ ],
+ "s029.sec51.u11": [
+  [
+   "Hmm, c'est embêtant... On ne",
+   "peut rien faire pour aider ?"
+  ]
+ ],
+ "s029.sec51.u12": [
+  [
+   "Hé, tu veux me voler mon",
+   "plaisir ? Attends... Même vous,",
+   "vous pourriez transporter de la"
+  ],
+  [
+   "terre."
+  ]
+ ],
+ "s029.sec51.u13": [
+  [
+   "Ah, De quoi s'agit-il ?"
+  ]
+ ],
+ "s029.sec51.u14": [
+  [
+   "Voilà la terre que j'ai",
+   "creusée. Porte-la hors du",
+   "tunnel et vide-la."
+  ]
+ ],
+ "s029.sec51.u15": [
+  [
+   "C'est un travail pénible, alors",
+   "je te paierai. 500 Bits pour",
+   "chaque aller-retour."
+  ]
+ ],
+ "s029.sec51.u16": [
+  [
+   "Le creusement avance plus",
+   "vite, je suis payé... et ça me",
+   "fait de l'entraînement... Ça"
+  ],
+  [
+   "pourrait être bien... !"
+  ]
+ ],
+ "s029.sec51.u17": [
+  [
+   "Transport de terre : mode",
+   "d'emploi. Place-toi devant la",
+   "terre et appuie sur {color 6}×{color 1} pour"
+  ],
+  [
+   "prendre une caisse. Sors du",
+   "tunnel : elle se videra",
+   "automatiquement. Après chaque"
+  ],
+  [
+   "aller-retour, parle à",
+   "Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": [
+  [
+   "Quoi, tu te dégonfles ?"
+  ]
+ ],
+ "s029.sec81.u0": [
+  [
+   "Caisse de terre ramassée."
+  ]
+ ]
+}

@@ -1,0 +1,539 @@
+{
+ "_doc": "The \"What's new\" cards, in this order (js/features.js renders them). Each: id, one {title, body} per page language (en, es, pt-br, fr, de, it, ja, ca; a missing one falls back to en; {n} and {languages} in them: how many languages the released disc plays in and their names in the page's language, from data/discs.json languages), media (src, webm, poster and alt may be one value or one per language: the Spanish page shows the Spanish picture; a missing language falls back to en): a list of {type: 'image', src, alt: {en, es, ...}} (a still), {type: 'video', src: the .mp4, webm: a smaller .webm when there is one, poster: a .jpg, alt} (a silent loop, played muted and inline only while on screen; the poster stands in under prefers-reduced-motion) or {type: 'compare', ...the same fields} (a side by side, original left and Horizon right, labelled in the picture itself; the card spans the row). The clips live in media/clips/ (an external media directory, supplied only during deployment). An entry with no media is text only; \"wide\": true spans the row. note: the small print under the cards, one per language. Set controls: true for a long video: manual playback with native controls, no loop, lazy metadata loading; available under reduced motion too.",
+ "note": {
+  "en": "Recorded in an emulator with enhancements on (3x resolution, texture filtering, geometry correction); the game itself draws at 320 x 240.",
+  "es": "Grabado en un emulador con mejoras activadas (resolución 3x, filtrado de texturas, corrección de geometría); el juego en sí dibuja a 320 x 240.",
+  "pt-br": "Gravado em um emulador com melhorias ativadas (resolução 3x, filtro de texturas, correção de geometria); o jogo em si desenha em 320 x 240.",
+  "fr": "Enregistré dans un émulateur avec améliorations (résolution x3, filtrage des textures, correction de la géométrie) ; le jeu lui-même s'affiche en 320 x 240.",
+  "de": "Aufgenommen in einem Emulator mit Verbesserungen (3-fache Auflösung, Texturfilter, Geometriekorrektur); das Spiel selbst zeichnet in 320 x 240.",
+  "it": "Registrato in un emulatore con i miglioramenti attivi (risoluzione 3x, filtro delle texture, correzione della geometria); il gioco in sé disegna a 320 x 240.",
+  "ja": "エミュレーターの画質向上機能（3倍解像度、テクスチャフィルタリング、ジオメトリ補正）を有効にして録画しています。ゲーム本来の描画解像度は320×240です。",
+  "ca": "Gravat en un emulador amb millores activades (resolució 3x, filtratge de textures, correcció de geometria); el joc en si dibuixa a 320 x 240."
+ },
+ "features": [
+  {
+   "id": "story",
+   "media": [
+    {
+     "type": "video",
+     "src": "media/clips/story.mp4",
+     "poster": "media/clips/story.jpg",
+     "alt": {
+      "en": "The tamer and Agumon walking through new places: a rope bridge in a mine, a terrace over a lake, a great chamber",
+      "es": "El tamer y Agumon recorriendo lugares nuevos: un puente de cuerdas en una mina, una terraza sobre un lago, una gran cámara",
+      "pt-br": "O domador e o Agumon andando por lugares novos: uma ponte de corda em uma mina, um terraço sobre um lago, um grande salão",
+      "fr": "Le dresseur et Agumon traversent de nouveaux lieux : un pont de corde dans une mine, une terrasse au-dessus d'un lac, une grande salle",
+      "de": "Der Tamer und Agumon unterwegs an neuen Orten: eine Hängebrücke in einer Mine, eine Terrasse über einem See, eine große Halle",
+      "it": "Il tamer e Agumon camminano per luoghi nuovi: un ponte di corda in una miniera, una terrazza su un lago, una grande sala",
+      "ja": "テイマーとアグモンが新しい場所を歩く様子：鉱山の吊り橋、湖を見下ろすテラス、大広間",
+      "ca": "El domador i Agumon caminant per llocs nous: un pont de corda en una mina, una terrassa sobre un llac, una gran sala"
+     }
+    }
+   ],
+   "en": {
+    "title": "A new story: What the Island Forgot",
+    "body": "New places beyond the screens you know, with their own paths, residents and fights, woven into the 1999 adventure. The Digimon you recruit move into File City and make it their own. Prefer the original story? Switch EXTENDED STORY off."
+   },
+   "es": {
+    "title": "Una historia nueva: What the Island Forgot",
+    "body": "Lugares nuevos más allá de las pantallas que conoces, con sus caminos, sus habitantes y sus combates, entretejidos con la aventura de 1999. Los Digimon que reclutas se mudan a Ciudad File y la hacen suya. ¿Prefieres la historia original? Desactiva EXTENDED STORY."
+   },
+   "pt-br": {
+    "title": "Uma história nova: What the Island Forgot",
+    "body": "Lugares novos além das telas que você conhece, com caminhos, moradores e lutas próprios, entrelaçados com a aventura de 1999. Os Digimon que você recruta se mudam para a File City e a tornam deles. Prefere a história original? Desligue EXTENDED STORY."
+   },
+   "fr": {
+    "title": "Une nouvelle histoire : What the Island Forgot",
+    "body": "De nouveaux lieux au-delà des écrans que tu connais, avec leurs chemins, leurs habitants et leurs combats, mêlés à l'aventure de 1999. Les Digimon que tu recrutes s'installent à File City et la font leur. Tu préfères l'histoire originale ? Désactive EXTENDED STORY."
+   },
+   "de": {
+    "title": "Eine neue Geschichte: What the Island Forgot",
+    "body": "Neue Orte jenseits der Bildschirme, die du kennst, mit eigenen Wegen, Bewohnern und Kämpfen, verwoben mit dem Abenteuer von 1999. Die Digimon, die du anwirbst, ziehen nach File City und machen die Stadt zu ihrer eigenen. Lieber die Originalgeschichte? Schalte EXTENDED STORY aus."
+   },
+   "it": {
+    "title": "Una nuova storia: What the Island Forgot",
+    "body": "Nuovi luoghi oltre le schermate che conosci, con i loro percorsi, abitanti e combattimenti, intrecciati all'avventura del 1999. I Digimon che recluti si trasferiscono a File City e la fanno loro. Preferisci la storia originale? Disattiva EXTENDED STORY."
+   },
+   "ja": {
+    "title": "新たなストーリー：What the Island Forgot",
+    "body": "「島が忘れたもの」をめぐる物語。おなじみの画面の先に、独自の道や住人、バトルを持つ新しい場所が広がり、1999年の冒険と織り合わされます。仲間にしたデジモンはファイルシティに移り住み、街を自分たちのものにしていきます。オリジナルのストーリーで遊びたいなら、EXTENDED STORYをオフにしてください。"
+   },
+   "ca": {
+    "title": "Una història nova: What the Island Forgot",
+    "body": "Llocs nous més enllà de les pantalles que coneixes, amb els seus camins, habitants i combats, entreteixits amb l'aventura de 1999. Els Digimon que reclutes es muden a Ciutat File i la fan seva. Prefereixes la història original? Desactiva EXTENDED STORY."
+   }
+  },
+  {
+   "id": "maps-tour",
+   "media": [
+    {
+     "type": "video",
+     "controls": true,
+     "src": "media/clips/maps-tour.mp4",
+     "poster": "media/clips/maps-tour.jpg",
+     "alt": {
+      "en": "Explore all 69 new areas",
+      "es": "Recorre las 69 zonas nuevas",
+      "pt-br": "Explore as 69 áreas novas",
+      "fr": "Explore les 69 nouvelles zones",
+      "de": "Alle 69 neuen Gebiete erkunden",
+      "it": "Esplora tutte le 69 nuove aree",
+      "ja": "69の新エリアをすべて巡る",
+      "ca": "Explora les 69 zones noves"
+     }
+    }
+   ],
+   "en": {
+    "title": "Explore all 69 new areas",
+    "body": "A walking tour of every new screen in What the Island Forgot, with Agumon. English captions."
+   },
+   "es": {
+    "title": "Recorre las 69 zonas nuevas",
+    "body": "Un paseo con Agumon por todas las pantallas nuevas de What the Island Forgot. Rótulos en inglés."
+   },
+   "pt-br": {
+    "title": "Explore as 69 áreas novas",
+    "body": "Um passeio com Agumon por todas as telas novas de What the Island Forgot. Legendas em inglês."
+   },
+   "fr": {
+    "title": "Explore les 69 nouvelles zones",
+    "body": "Une promenade avec Agumon dans chaque nouvel écran de What the Island Forgot. Légendes en anglais."
+   },
+   "de": {
+    "title": "Alle 69 neuen Gebiete erkunden",
+    "body": "Ein Rundgang mit Agumon durch alle neuen Bildschirme von What the Island Forgot. Englische Beschriftung."
+   },
+   "it": {
+    "title": "Esplora tutte le 69 nuove aree",
+    "body": "Una passeggiata con Agumon in ogni nuova schermata di What the Island Forgot. Didascalie in inglese."
+   },
+   "ja": {
+    "title": "69の新エリアをすべて巡る",
+    "body": "アグモンと一緒にWhat the Island Forgotの新しい全画面を歩くツアー。画面内の地名は英語です。"
+   },
+   "ca": {
+    "title": "Explora les 69 zones noves",
+    "body": "Un passeig amb Agumon per totes les pantalles noves de What the Island Forgot. Rètols en anglès."
+   }
+  },
+  {
+   "id": "digimon",
+   "media": [
+    {
+     "type": "video",
+     "controls": true,
+     "src": "media/clips/digimon-tour.mp4",
+     "poster": "media/clips/digimon-tour.jpg",
+     "alt": {
+      "en": "All 175 imported Digimon",
+      "es": "Los 175 Digimon importados",
+      "pt-br": "Os 175 Digimon importados",
+      "fr": "Les 175 Digimon importés",
+      "de": "Alle 175 importierten Digimon",
+      "it": "Tutti i 175 Digimon importati",
+      "ja": "取り込まれた全175体のデジモン",
+      "ca": "Els 175 Digimon importats"
+     }
+    }
+   ],
+   "en": {
+    "title": "All 175 imported Digimon",
+    "body": "Every imported partner, one after another, playing its idle animation. English names."
+   },
+   "es": {
+    "title": "Los 175 Digimon importados",
+    "body": "Todos los compañeros importados, uno tras otro, con su animación de reposo. Nombres en inglés."
+   },
+   "pt-br": {
+    "title": "Os 175 Digimon importados",
+    "body": "Todos os parceiros importados, um após o outro, com sua animação de repouso. Nomes em inglês."
+   },
+   "fr": {
+    "title": "Les 175 Digimon importés",
+    "body": "Tous les partenaires importés, chacun avec son animation au repos. Noms en anglais."
+   },
+   "de": {
+    "title": "Alle 175 importierten Digimon",
+    "body": "Alle importierten Partner nacheinander mit ihrer Ruheanimation. Englische Namen."
+   },
+   "it": {
+    "title": "Tutti i 175 Digimon importati",
+    "body": "Tutti i partner importati, uno dopo l’altro, con la loro animazione a riposo. Nomi in inglese."
+   },
+   "ja": {
+    "title": "取り込まれた全175体のデジモン",
+    "body": "すべての追加パートナーが順番に待機アニメーションを披露します。名前は英語です。"
+   },
+   "ca": {
+    "title": "Els 175 Digimon importats",
+    "body": "Tots els companys importats, un darrere l’altre, amb la seva animació de repòs. Noms en anglès."
+   }
+  },
+  {
+   "id": "fps",
+   "media": [
+    {
+     "type": "compare",
+     "src": "media/clips/fps.mp4",
+     "poster": "media/clips/fps.jpg",
+     "alt": {
+      "en": "The same walk through File City, side by side: the original at 20 frames per second, Horizon at 60",
+      "es": "El mismo paseo por Ciudad File, lado a lado: el original a 20 imágenes por segundo, Horizon a 60",
+      "pt-br": "O mesmo passeio pela File City, lado a lado: o original a 20 quadros por segundo, Horizon a 60",
+      "fr": "La même promenade dans File City, côte à côte : l'original à 20 images par seconde, Horizon à 60",
+      "de": "Derselbe Gang durch File City, nebeneinander: das Original mit 20 Bildern pro Sekunde, Horizon mit 60",
+      "it": "La stessa passeggiata per File City, fianco a fianco: l'originale a 20 fotogrammi al secondo, Horizon a 60",
+      "ja": "ファイルシティを歩く同じ場面の比較：20fpsのオリジナルと60fpsのHorizon",
+      "ca": "El mateix passeig per Ciutat File, un al costat de l'altre: l'original a 20 imatges per segon, Horizon a 60"
+     }
+    }
+   ],
+   "en": {
+    "title": "60 frames per second",
+    "body": "The world, the battles and the tournaments are drawn at up to 60 frames per second (the original draws 20) while the game keeps its original timing underneath: your partner ages, trains and gets hungry exactly as before. Left, the original; right, Horizon."
+   },
+   "es": {
+    "title": "60 imágenes por segundo",
+    "body": "El mundo, los combates y los torneos se dibujan hasta a 60 imágenes por segundo (el original dibuja 20), y por debajo el juego mantiene su ritmo original: tu compañero crece, entrena y tiene hambre exactamente igual que antes. A la izquierda, el original; a la derecha, Horizon."
+   },
+   "pt-br": {
+    "title": "60 quadros por segundo",
+    "body": "O mundo, as batalhas e os torneios são desenhados a até 60 quadros por segundo (o original desenha 20), enquanto o jogo mantém o ritmo original por baixo: seu parceiro envelhece, treina e sente fome exatamente como antes. À esquerda, o original; à direita, Horizon."
+   },
+   "fr": {
+    "title": "60 images par seconde",
+    "body": "Le monde, les combats et les tournois s'affichent jusqu'à 60 images par seconde (l'original en affiche 20), tandis que le jeu garde son rythme d'origine en dessous : ton partenaire vieillit, s'entraîne et a faim exactement comme avant. À gauche, l'original ; à droite, Horizon."
+   },
+   "de": {
+    "title": "60 Bilder pro Sekunde",
+    "body": "Die Welt, die Kämpfe und die Turniere laufen mit bis zu 60 Bildern pro Sekunde (das Original zeigt 20), während das Spiel darunter sein ursprüngliches Timing behält: Dein Partner altert, trainiert und bekommt Hunger genau wie vorher. Links das Original, rechts Horizon."
+   },
+   "it": {
+    "title": "60 fotogrammi al secondo",
+    "body": "Il mondo, le battaglie e i tornei sono disegnati fino a 60 fotogrammi al secondo (l'originale ne disegna 20), mentre sotto il gioco mantiene i suoi tempi originali: il tuo partner invecchia, si allena e ha fame esattamente come prima. A sinistra l'originale; a destra Horizon."
+   },
+   "ja": {
+    "title": "毎秒60フレーム",
+    "body": "フィールド、バトル、大会を最大60fpsで描画します（オリジナルは20fps）。ゲーム内部のタイミングは元のままなので、パートナーの成長、トレーニング、空腹は以前とまったく同じです。左がオリジナル、右がHorizonです。"
+   },
+   "ca": {
+    "title": "60 imatges per segon",
+    "body": "El món, els combats i els tornejos es dibuixen fins a 60 imatges per segon (l'original en dibuixa 20) mentre el joc conserva per sota el ritme original: el teu company envelleix, entrena i té gana exactament com abans. A l'esquerra, l'original; a la dreta, Horizon."
+   }
+  },
+  {
+   "id": "battle",
+   "media": [
+    {
+     "type": "compare",
+     "src": "media/clips/battle.mp4",
+     "poster": "media/clips/battle.jpg",
+     "alt": {
+      "en": "The same wild encounter, side by side: the original waits with its bubble, then its BATTLE letters and loading; Horizon is fighting at once",
+      "es": "El mismo encuentro salvaje, lado a lado: el original espera con su bocadillo, luego sus letras BATTLE y la carga; Horizon ya está luchando",
+      "pt-br": "O mesmo encontro selvagem, lado a lado: o original espera com seu balão, depois as letras BATTLE e o carregamento; Horizon já está lutando",
+      "fr": "La même rencontre sauvage, côte à côte : l'original attend avec sa bulle, puis ses lettres BATTLE et le chargement ; Horizon se bat aussitôt",
+      "de": "Dieselbe wilde Begegnung, nebeneinander: Das Original wartet mit seiner Sprechblase, dann kommen die BATTLE-Buchstaben und das Laden; Horizon kämpft sofort",
+      "it": "Lo stesso incontro selvatico, fianco a fianco: l'originale aspetta con il suo fumetto, poi la scritta BATTLE e il caricamento; Horizon combatte subito",
+      "ja": "同じ野生デジモンとの遭遇の比較：オリジナルはフキダシ、BATTLEの文字、読み込みを待つが、Horizonはすぐに戦闘開始",
+      "ca": "El mateix encontre salvatge, un al costat de l'altre: l'original espera amb la bombolla, després les lletres BATTLE i la càrrega; Horizon ja està lluitant"
+     }
+    }
+   ],
+   "en": {
+    "title": "Battles start the moment they begin",
+    "body": "No waiting: a field battle is on the instant a Digimon comes at you, its letters flash over the fight already running, and R2 runs any fight at double speed. Left, the original; right, Horizon, from the same press of X."
+   },
+   "es": {
+    "title": "Los combates empiezan al instante",
+    "body": "Sin esperas: un combate de campo arranca en el momento en que un Digimon se te echa encima, sus letras pasan sobre la pelea ya en marcha, y R2 pone cualquier combate a doble velocidad. A la izquierda, el original; a la derecha, Horizon, desde la misma pulsación de X."
+   },
+   "pt-br": {
+    "title": "Batalhas que começam na hora",
+    "body": "Sem espera: a batalha de campo começa no instante em que um Digimon vem até você, as letras piscam sobre a luta já em andamento, e R2 deixa qualquer luta em velocidade dupla. À esquerda, o original; à direita, Horizon, a partir do mesmo toque em X."
+   },
+   "fr": {
+    "title": "Les combats démarrent tout de suite",
+    "body": "Plus d'attente : un combat sur le terrain commence dès qu'un Digimon fonce sur toi, ses lettres s'affichent sur le combat déjà lancé, et R2 accélère n'importe quel combat au double de la vitesse. À gauche, l'original ; à droite, Horizon, à partir du même appui sur X."
+   },
+   "de": {
+    "title": "Kämpfe starten sofort",
+    "body": "Kein Warten: Ein Kampf im Gelände läuft, sobald ein Digimon auf dich zukommt, seine Buchstaben blitzen über dem schon laufenden Kampf auf, und R2 lässt jeden Kampf doppelt so schnell laufen. Links das Original, rechts Horizon, nach demselben Druck auf X."
+   },
+   "it": {
+    "title": "Le battaglie partono subito",
+    "body": "Niente attese: la battaglia sul campo parte nell'istante in cui un Digimon ti viene addosso, la sua scritta lampeggia sul combattimento già in corso, e R2 fa andare qualsiasi lotta a velocità doppia. A sinistra l'originale; a destra Horizon, dalla stessa pressione di X."
+   },
+   "ja": {
+    "title": "バトルは即スタート",
+    "body": "待ち時間なし。デジモンが向かってきた瞬間にフィールドバトルが始まり、文字の演出はバトル中の画面に重ねて表示されます。R2でどのバトルも2倍速に。左がオリジナル、右がHorizonで、同じタイミングでXを押しています。"
+   },
+   "ca": {
+    "title": "Els combats comencen a l'instant",
+    "body": "Sense esperes: un combat de camp comença just quan un Digimon se't llança a sobre, les lletres llampeguen sobre la lluita ja en marxa, i R2 accelera qualsevol combat al doble de velocitat. A l'esquerra, l'original; a la dreta, Horizon, amb la mateixa pulsació de X."
+   }
+  },
+  {
+   "id": "guide",
+   "media": [
+    {
+     "type": "compare",
+     "src": "media/clips/guide.jpg",
+     "alt": {
+      "en": "Agumon's evolution tree, side by side: the original only draws it, Horizon adds a card with what the selected evolution asks for, ticked against your partner",
+      "es": "El árbol de evolución de Agumon, lado a lado: el original solo lo dibuja, Horizon añade una ficha con lo que pide la evolución elegida, comprobado contra tu compañero",
+      "pt-br": "A árvore de evolução do Agumon, lado a lado: o original só a desenha, Horizon acrescenta um cartão com o que a evolução selecionada exige, conferido com seu parceiro",
+      "fr": "L'arbre d'évolution d'Agumon, côte à côte : l'original se contente de le dessiner, Horizon ajoute une carte avec ce que demande l'évolution choisie, cochée selon ton partenaire",
+      "de": "Agumons Digitationsbaum, nebeneinander: Das Original zeichnet ihn nur, Horizon fügt eine Karte hinzu mit dem, was die gewählte Digitation verlangt, abgehakt für deinen Partner",
+      "it": "L'albero delle evoluzioni di Agumon, fianco a fianco: l'originale lo disegna e basta, Horizon aggiunge una scheda con cosa chiede l'evoluzione selezionata, spuntata in base al tuo partner",
+      "ja": "アグモンの進化ツリーの比較：オリジナルはツリーを表示するだけ、Horizonは選んだ進化の条件をカードで表示し、パートナーの達成状況にチェックを付ける",
+      "ca": "L'arbre d'evolucions d'Agumon, un al costat de l'altre: l'original només el dibuixa, Horizon hi afegeix una fitxa amb el que demana l'evolució triada, marcat segons el teu company"
+     }
+    }
+   ],
+   "en": {
+    "title": "An evolution guide that tells you why",
+    "body": "The evolution chart shows what each evolution asks for (care, weight, stats), so you can raise the partner you want without a walkthrough open beside you. Left, the original chart; right, Horizon's."
+   },
+   "es": {
+    "title": "Una guía de evoluciones que te dice por qué",
+    "body": "La tabla de evoluciones muestra qué pide cada evolución (cuidados, peso, estadísticas), para que puedas criar al compañero que quieres sin una guía abierta al lado. A la izquierda, la tabla original; a la derecha, la de Horizon."
+   },
+   "pt-br": {
+    "title": "Um guia de evolução que explica o porquê",
+    "body": "O quadro de evolução mostra o que cada evolução exige (cuidados, peso, atributos), para você criar o parceiro que quiser sem um detonado aberto ao lado. À esquerda, o quadro original; à direita, o de Horizon."
+   },
+   "fr": {
+    "title": "Un guide des évolutions qui t'explique pourquoi",
+    "body": "Le tableau des évolutions montre ce que demande chaque évolution (soins, poids, stats), pour élever le partenaire que tu veux sans soluce ouverte à côté. À gauche, le tableau original ; à droite, celui d'Horizon."
+   },
+   "de": {
+    "title": "Ein Digitationsführer, der dir sagt, warum",
+    "body": "Der Digitationsbaum zeigt, was jede Digitation verlangt (Pflege, Gewicht, Werte), so kannst du den Partner großziehen, den du willst, ohne Lösungsweg daneben. Links der Originalbaum, rechts der von Horizon."
+   },
+   "it": {
+    "title": "Una guida alle evoluzioni che ti dice il perché",
+    "body": "Lo schema delle evoluzioni mostra cosa chiede ogni evoluzione (cure, peso, statistiche), così puoi crescere il partner che vuoi senza una guida aperta accanto. A sinistra lo schema originale; a destra quello di Horizon."
+   },
+   "ja": {
+    "title": "条件がわかる進化ガイド",
+    "body": "進化チャートに各進化の条件（世話、体重、ステータス）を表示。攻略情報を横に開かなくても、育てたいパートナーを目指せます。左がオリジナルのチャート、右がHorizonのチャートです。"
+   },
+   "ca": {
+    "title": "Una guia d'evolucions que t'explica el perquè",
+    "body": "El quadre d'evolucions mostra què demana cada evolució (cures, pes, estadístiques), perquè puguis criar el company que vulguis sense tenir una guia oberta al costat. A l'esquerra, el quadre original; a la dreta, el d'Horizon."
+   }
+  },
+  {
+   "id": "language",
+   "media": [
+    {
+     "type": "compare",
+     "src": {
+      "en": "media/clips/language-en.jpg",
+      "es": "media/clips/language-es.jpg"
+     },
+     "alt": {
+      "en": "The partner's status page, side by side: the original's spaced-out letters and Horizon's new font",
+      "es": "La página de estado del compañero, lado a lado: el original en inglés y Horizon en español, con la letra nueva",
+      "pt-br": "A tela de status do parceiro, lado a lado: as letras espaçadas do original e a fonte nova de Horizon",
+      "fr": "La page d'état du partenaire, côte à côte : les lettres espacées de l'original et la nouvelle police d'Horizon",
+      "de": "Die Statusseite des Partners, nebeneinander: die weit auseinanderstehenden Buchstaben des Originals und die neue Schrift von Horizon",
+      "it": "La pagina di stato del partner, fianco a fianco: le lettere spaziate dell'originale e il nuovo font di Horizon",
+      "ja": "パートナーのステータス画面の比較：間延びしたオリジナルの文字と、Horizonの新フォント",
+      "ca": "La pàgina d'estat del company, una al costat de l'altra: les lletres espaiades de l'original i la lletra nova d'Horizon"
+     }
+    }
+   ],
+   "en": {
+    "title": "{n} languages, in letters you can read",
+    "body": "The whole game in {languages}, in a new translation, the labels painted in the menus and the signs in the maps included, switchable in OPTIONS at any time. A new, evenly spaced font, or the original one if you miss it. Left, the original; right, Horizon. The new translations are beta drafts with partial editorial review."
+   },
+   "es": {
+    "title": "{n} idiomas, con una letra que se lee",
+    "body": "Todo el juego en {languages}, con una traducción nueva, incluidos los rótulos pintados en los menús y los carteles de los mapas, y se cambia en OPTIONS cuando quieras. Una letra nueva, bien espaciada, o la original si la echas de menos. A la izquierda, el original; a la derecha, Horizon en español. Las traducciones nuevas son borradores beta con revisión editorial parcial."
+   },
+   "pt-br": {
+    "title": "{n} idiomas, com letras que dá para ler",
+    "body": "O jogo inteiro em {languages}, numa tradução nova, incluindo os textos pintados nos menus e as placas nos mapas, e dá para trocar em OPTIONS a qualquer momento. Uma fonte nova, de espaçamento uniforme, ou a original se sentir falta dela. À esquerda, o original; à direita, Horizon. As novas traduções são versões beta com revisão editorial parcial."
+   },
+   "fr": {
+    "title": "{n} langues, en lettres bien lisibles",
+    "body": "Tout le jeu en {languages}, dans une nouvelle traduction, y compris les libellés peints dans les menus et les panneaux des cartes, à changer dans OPTIONS à tout moment. Une nouvelle police aux espacements réguliers, ou l'originale si elle te manque. À gauche, l'original ; à droite, Horizon. Les nouvelles traductions sont des versions bêta avec une révision éditoriale partielle."
+   },
+   "de": {
+    "title": "{n} Sprachen, in gut lesbarer Schrift",
+    "body": "Das ganze Spiel auf {languages}, in einer neuen Übersetzung, samt den gemalten Beschriftungen in den Menüs und den Schildern auf den Karten, jederzeit in OPTIONS umschaltbar. Eine neue, gleichmäßige Schrift, oder die originale, wenn sie dir fehlt. Links das Original, rechts Horizon. Die neuen Übersetzungen sind Beta-Entwürfe und erst teilweise redaktionell geprüft."
+   },
+   "it": {
+    "title": "{n} lingue, con lettere che si leggono",
+    "body": "Tutto il gioco in {languages}, con una nuova traduzione, comprese le scritte dipinte nei menu e i cartelli nelle mappe, da cambiare in OPTIONS quando vuoi. Un nuovo font a spaziatura regolare, o quello originale se ti manca. A sinistra l'originale; a destra Horizon. Le nuove traduzioni sono bozze beta con revisione editoriale parziale."
+   },
+   "ja": {
+    "title": "{n}言語対応、読みやすい文字で",
+    "body": "ゲーム全体を{languages}で新たに翻訳。メニュー内の文字画像やマップ上の看板まで翻訳済みで、OPTIONSでいつでも切り替えられます。文字間隔の整った新フォントのほか、オリジナルのフォントも選べます。左がオリジナル、右がHorizonです。 新しい翻訳はベータ版で、文章の校閲は一部のみ完了しています。"
+   },
+   "ca": {
+    "title": "{n} idiomes, amb lletres que es llegeixen bé",
+    "body": "Tot el joc en {languages}, amb una traducció nova, incloses les etiquetes pintades als menús i els rètols dels mapes, i es pot canviar a OPTIONS quan vulguis. Una lletra nova d'espaiat uniforme, o l'original si la trobes a faltar. A l'esquerra, l'original; a la dreta, Horizon. Les traduccions noves són esborranys beta amb revisió editorial parcial."
+   }
+  },
+  {
+   "id": "waiting",
+   "media": [
+    {
+     "type": "video",
+     "src": "media/clips/waiting.mp4",
+     "poster": "media/clips/waiting.jpg",
+     "alt": {
+      "en": "An evolution skipped with START, and a battle at double speed",
+      "es": "Una evolución saltada con START y un combate a doble velocidad",
+      "pt-br": "Uma evolução pulada com START e uma batalha em velocidade dupla",
+      "fr": "Une évolution passée avec START, et un combat en vitesse double",
+      "de": "Eine mit START übersprungene Digitation und ein Kampf in doppelter Geschwindigkeit",
+      "it": "Un'evoluzione saltata con START, e una battaglia a velocità doppia",
+      "ja": "STARTでスキップされる進化と、2倍速のバトル",
+      "ca": "Una evolució saltada amb START i un combat a doble velocitat"
+     }
+    }
+   ],
+   "en": {
+    "title": "Less waiting",
+    "body": "START skips an evolution you have seen before, R2 doubles the speed of any battle, and the gym trains five sessions in one go. None of it changes what your partner gains."
+   },
+   "es": {
+    "title": "Menos esperas",
+    "body": "START se salta una evolución que ya has visto, R2 dobla la velocidad de cualquier combate y el gimnasio entrena cinco sesiones seguidas. Nada de esto cambia lo que gana tu compañero."
+   },
+   "pt-br": {
+    "title": "Menos espera",
+    "body": "START pula uma evolução que você já viu, R2 dobra a velocidade de qualquer batalha, e a academia treina cinco sessões de uma vez. Nada disso muda o que seu parceiro ganha."
+   },
+   "fr": {
+    "title": "Moins d'attente",
+    "body": "START passe une évolution déjà vue, R2 double la vitesse de n'importe quel combat, et la salle d'entraînement enchaîne cinq séances d'un coup. Rien de tout cela ne change ce que gagne ton partenaire."
+   },
+   "de": {
+    "title": "Weniger Warten",
+    "body": "START überspringt eine Digitation, die du schon gesehen hast, R2 verdoppelt das Tempo jedes Kampfes, und im Fitnessstudio trainierst du fünf Einheiten auf einmal. Nichts davon ändert, was dein Partner dazugewinnt."
+   },
+   "it": {
+    "title": "Meno attese",
+    "body": "START salta un'evoluzione che hai già visto, R2 raddoppia la velocità di qualsiasi battaglia, e in palestra fai cinque allenamenti in una volta. Niente di tutto ciò cambia quello che guadagna il tuo partner."
+   },
+   "ja": {
+    "title": "待ち時間を短縮",
+    "body": "一度見た進化はSTARTでスキップ、R2でどのバトルも2倍速、ジムでは5回分のトレーニングをまとめて実行できます。パートナーが得るものは一切変わりません。"
+   },
+   "ca": {
+    "title": "Menys esperes",
+    "body": "START salta una evolució que ja has vist, R2 duplica la velocitat de qualsevol combat i el gimnàs entrena cinc sessions d'una tirada. Res d'això canvia el que guanya el teu company."
+   }
+  },
+  {
+   "id": "care",
+   "media": [
+    {
+     "type": "image",
+     "src": "media/clips/care.jpg",
+     "alt": {
+      "en": "Agumon with three condition bubbles (hungry, sleepy, tired), the clock with its digital time and the status bars",
+      "es": "Agumon con tres burbujas de estado (hambre, sueño, cansancio), el reloj con la hora en dígitos y las barras de estado",
+      "pt-br": "Agumon com três balões de condição (fome, sono, cansaço), o relógio com a hora digital e as barras de status",
+      "fr": "Agumon avec trois bulles d'état (faim, sommeil, fatigue), l'horloge avec son heure numérique et les barres d'état",
+      "de": "Agumon mit drei Zustandsblasen (hungrig, schläfrig, müde), die Uhr mit ihrer Digitalzeit und die Statusbalken",
+      "it": "Agumon con tre fumetti di condizione (fame, sonno, stanchezza), l'orologio con l'ora digitale e le barre di stato",
+      "ja": "3つの状態フキダシ（空腹、眠気、疲れ）を出したアグモン、デジタル時刻付きの時計、ステータスバー",
+      "ca": "Agumon amb tres bombolles d'estat (gana, son, cansament), el rellotge amb l'hora digital i les barres d'estat"
+     }
+    }
+   ],
+   "en": {
+    "title": "Your partner's needs at a glance",
+    "body": "A digital clock under the dial, status bars that read at a glance, every condition shown at once, and a care menu: press X in front of your partner and it lists what it needs, the most urgent first."
+   },
+   "es": {
+    "title": "Lo que necesita tu compañero, de un vistazo",
+    "body": "Un reloj digital bajo la esfera, barras de estado que se leen de un vistazo, todas sus condiciones a la vez y un menú de cuidados: pulsa X delante de tu compañero y te dice qué necesita, lo más urgente primero."
+   },
+   "pt-br": {
+    "title": "As necessidades do parceiro num relance",
+    "body": "Um relógio digital sob o mostrador, barras de status fáceis de ler, todas as condições à mostra de uma vez, e um menu de cuidados: aperte X na frente do seu parceiro e ele mostra do que precisa, o mais urgente primeiro."
+   },
+   "fr": {
+    "title": "Les besoins de ton partenaire en un coup d'œil",
+    "body": "Une horloge numérique sous le cadran, des barres d'état lisibles d'un coup d'œil, tous les états affichés en même temps, et un menu de soins : appuie sur X face à ton partenaire et il liste ce dont il a besoin, le plus urgent en premier."
+   },
+   "de": {
+    "title": "Die Bedürfnisse deines Partners auf einen Blick",
+    "body": "Eine Digitaluhr unter dem Zifferblatt, Statusbalken, die sich auf einen Blick lesen lassen, alle Zustände gleichzeitig sichtbar und ein Pflegemenü: Drück X vor deinem Partner, und er listet auf, was er braucht, das Dringendste zuerst."
+   },
+   "it": {
+    "title": "I bisogni del tuo partner a colpo d'occhio",
+    "body": "Un orologio digitale sotto il quadrante, barre di stato che si leggono a colpo d'occhio, ogni condizione mostrata insieme, e un menu delle cure: premi X davanti al tuo partner e ti elenca di cosa ha bisogno, partendo dalla cosa più urgente."
+   },
+   "ja": {
+    "title": "パートナーの状態がひと目でわかる",
+    "body": "時計の下にデジタル時刻、ひと目で読めるステータスバー、すべての状態を同時に表示、そしてお世話メニューも。パートナーの前でXを押すと、必要なことを緊急度の高い順に一覧表示します。"
+   },
+   "ca": {
+    "title": "Les necessitats del teu company d'un cop d'ull",
+    "body": "Un rellotge digital sota l'esfera, barres d'estat que es llegeixen d'un cop d'ull, tots els estats mostrats alhora i un menú de cures: prem X davant del teu company i et mostra què necessita, el més urgent primer."
+   }
+  },
+  {
+   "id": "options",
+   "media": [
+    {
+     "type": "image",
+     "src": {
+      "en": "media/clips/options-en.jpg",
+      "es": "media/clips/options-es.jpg"
+     },
+     "alt": {
+      "en": "The title screen's OPTIONS menu",
+      "es": "El menú OPTIONS de la pantalla de título",
+      "pt-br": "O menu OPTIONS da tela de título",
+      "fr": "Le menu OPTIONS de l'écran titre",
+      "de": "Das OPTIONS-Menü auf dem Titelbild",
+      "it": "Il menu OPTIONS della schermata del titolo",
+      "ja": "タイトル画面のOPTIONSメニュー",
+      "ca": "El menú OPTIONS de la pantalla de títol"
+     }
+    }
+   ],
+   "en": {
+    "title": "Choose your settings",
+    "body": "Language, frame rate, font, difficulty, the new Digimon, the extended story, the quick battle start, the digital clock and the status bars: each has its row in OPTIONS at the title, and your choices are kept with your save."
+   },
+   "es": {
+    "title": "Elige tus ajustes",
+    "body": "Idioma, imágenes por segundo, letra, dificultad, los Digimon nuevos, la historia extendida, el inicio rápido de los combates, el reloj digital y las barras de estado: cada cosa tiene su fila en OPTIONS en la pantalla de título, y tus elecciones se guardan con la partida."
+   },
+   "pt-br": {
+    "title": "Escolha seus ajustes",
+    "body": "Idioma, taxa de quadros, fonte, dificuldade, os Digimon novos, a história estendida, o início rápido das batalhas, o relógio digital e as barras de status: cada um tem sua linha em OPTIONS na tela de título, e suas escolhas ficam guardadas no seu save."
+   },
+   "fr": {
+    "title": "Choisis tes réglages",
+    "body": "Langue, fréquence d'images, police, difficulté, les nouveaux Digimon, l'histoire étendue, le démarrage rapide des combats, l'horloge numérique et les barres d'état : chacun a sa ligne dans OPTIONS sur l'écran titre, et tes choix sont gardés avec ta sauvegarde."
+   },
+   "de": {
+    "title": "Wähle deine Einstellungen",
+    "body": "Sprache, Bildrate, Schrift, Schwierigkeit, die neuen Digimon, die erweiterte Geschichte, der schnelle Kampfstart, die Digitaluhr und die Statusbalken: Alles hat seine Zeile in OPTIONS auf dem Titelbild, und deine Wahl wird mit deinem Spielstand gespeichert."
+   },
+   "it": {
+    "title": "Scegli le impostazioni",
+    "body": "Lingua, frame rate, font, difficoltà, i nuovi Digimon, la storia estesa, l'avvio rapido delle battaglie, l'orologio digitale e le barre di stato: ognuno ha la sua riga in OPTIONS dalla schermata del titolo, e le tue scelte restano salvate con la partita."
+   },
+   "ja": {
+    "title": "自分に合った設定を",
+    "body": "言語、フレームレート、フォント、難易度、新デジモン、拡張ストーリー、バトル即スタート、デジタル時計、ステータスバー。タイトル画面のOPTIONSでそれぞれ設定でき、選択はセーブデータに保存されます。"
+   },
+   "ca": {
+    "title": "Tria els teus ajustos",
+    "body": "Idioma, imatges per segon, lletra, dificultat, els Digimon nous, la història ampliada, l'inici ràpid dels combats, el rellotge digital i les barres d'estat: cada opció té la seva fila a OPTIONS a la pantalla de títol, i el que triïs es desa amb la partida."
+   }
+  }
+ ]
+}

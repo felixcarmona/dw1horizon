@@ -1,0 +1,199 @@
+{
+  "screen": 343,
+  "review": "The north lintel and both jambs overlap the approach beside the recessed stair. Two right-jamb base cells are solid; the stair and rails remain connected through the real central opening. Side beams, shovel and rope do not cross reachable bodies.",
+  "collision": [
+    {
+      "tile": [
+        58,
+        38
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of timber upright"
+    },
+    {
+      "tile": [
+        58,
+        39
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "Solid base of timber upright"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "343-entrance-lintel.png",
+      "at": [
+        138,
+        0
+      ],
+      "depth": [
+        322,
+        287
+      ],
+      "segmentation": {
+        "box": [
+          132,
+          0,
+          510,
+          49
+        ],
+        "positive": [
+          [
+            180,
+            0
+          ]
+        ],
+        "negative": [
+          [
+            129,
+            24.5
+          ],
+          [
+            513,
+            24.5
+          ],
+          [
+            321.0,
+            53
+          ]
+        ],
+        "score": 0.9879292249679565,
+        "area": 13835,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "343-entrance-left-post.png",
+      "at": [
+        155,
+        39
+      ],
+      "depth": [
+        199,
+        281
+      ],
+      "segmentation": {
+        "box": [
+          157,
+          39,
+          219,
+          293
+        ],
+        "positive": [
+          [
+            181,
+            76
+          ],
+          [
+            181,
+            81
+          ],
+          [
+            187,
+            166
+          ],
+          [
+            195,
+            250
+          ]
+        ],
+        "negative": [
+          [
+            154,
+            166.0
+          ],
+          [
+            222,
+            166.0
+          ],
+          [
+            188.0,
+            297
+          ]
+        ],
+        "score": 0.9910598397254944,
+        "area": 8421,
+        "min_component_area": 12
+      }
+    },
+    {
+      "png": "343-entrance-right-post.png",
+      "at": [
+        422,
+        38
+      ],
+      "depth": [
+        440,
+        283
+      ],
+      "segmentation": {
+        "box": [
+          416,
+          35,
+          479,
+          289
+        ],
+        "positive": [
+          [
+            452,
+            107
+          ],
+          [
+            453,
+            77
+          ],
+          [
+            447,
+            162
+          ],
+          [
+            439,
+            246
+          ]
+        ],
+        "negative": [
+          [
+            413,
+            162.0
+          ],
+          [
+            482,
+            162.0
+          ],
+          [
+            447.5,
+            293
+          ]
+        ],
+        "score": 0.9884421825408936,
+        "area": 8588,
+        "min_component_area": 12
+      }
+    }
+  ],
+  "reviewed_body_box": {
+    "half_width_px": 7,
+    "height_px": 25,
+    "radius_world": 100,
+    "perspective_audit": {
+      "radius_world": 120,
+      "height_world": 500,
+      "reach_step_world": 50,
+      "method": "Project foot/head and lateral world points at each reachable position; verify in the original 2 MB emulator"
+    }
+  },
+  "segmentation_source": {
+    "source": "art/full/gallery-west-2-1856x2304.png",
+    "source_sha1": "68c7a7230be3f426fbbbd202d96b082adb909783",
+    "top": 38,
+    "scale": 2.9,
+    "size": [
+      640,
+      768
+    ],
+    "model": "SAM ViT-H sam_vit_h_4b8939",
+    "cleanup": "Remove connected components smaller than 12 screen pixels; area downscale > 0.5"
+  }
+}

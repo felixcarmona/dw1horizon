@@ -1,0 +1,78 @@
+From f4e75ce8dd52afd16d0b5c0317c5d802de2d83ec Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 08:07:34 +0000
+Subject: [PATCH] Patch 0205: the newest save's options at boot, before the
+ title (modBootOptions: the card slots asked at once, then modCardOptions):
+ the title screen and its menu are in the save's language and font, not only
+ once OPTIONS opens (the menu was English until then)
+
+---
+ src/main/main.c      |  4 ++++
+ src/main/main_menu.c | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 6147e982..0e649c0e 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -149,6 +149,7 @@ void playMovie(int32_t movieId, int32_t shouldPlay);
+ void loadStackedTIMFile(char *path);
+ void runLandingScreen(void);
+ void runMainMenu(void);
++void modBootOptions(void); /* MOD (options) */
+ void newGameScene(void);
+ void initializeLoadedMap(void);
+ void recalculatePPandArena(void);
+@@ -3470,6 +3471,9 @@ int32_t main(void)
+ 	initializeStatusObjects();
+ 	initializeSpecies(); /* MOD (species): DIGI.DAT */
+ 	loadTIMFile(MAIN_D_8012CE64, GENERAL_BUFFER_PTR);
++#if VERSION_IS(US)
++	modBootOptions(); /* MOD (options): the newest save's options before the title (main_menu.c) */
++#endif
+ 
+ 	for (;;) {
+ 		loadTIMFile(MAIN_D_8012CE78, GENERAL_BUFFER_PTR);
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index b3c2c8b7..8d7ea862 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4807,6 +4807,35 @@ static void modCardOptions(void)
+ 	}
+ }
+ 
++/*
++ * MOD (options): at boot, before the title (main.c), the newest save's options (modCardOptions), so the title screen
++ * and its menu are in the save's language and font, not only once OPTIONS opens: which card slots hold a card, asked
++ * at once (MemCardExist, waited for; the menu's own poll, updateMemoryCardState, finds one slot per answer)
++ */
++void modBootOptions(void)
++{
++	MemCardSyncWord cmd;
++	MemCardSyncWord result;
++	int32_t c;
++	int32_t bit;
++
++	for (c = 0; c < 2; c++) {
++		bit = c ? 0x10 : 1;
++		MemCardSync(0, &cmd, &result); /* the poll's request in flight, if any */
++		MemCardExist(c ? 0x10 : 0);
++		MemCardSync(0, &cmd, &result);
++		if (result == 0 || result == 3) {
++			CONNECTED_CARDS |= bit;
++			if (result == 3) {
++				NEW_CARDS |= bit;
++			}
++		} else {
++			CONNECTED_CARDS &= ~bit;
++		}
++	}
++	modCardOptions();
++}
++
+ static void prepareSaveFile(int32_t fromRam)
+ {
+ 	SavegamePayload *savegame;
+-- 
+2.53.0
+

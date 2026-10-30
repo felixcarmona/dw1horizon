@@ -1,0 +1,1584 @@
+{
+  "screen": 363,
+  "review": "Table, stools, ice blocks, filing cabinet and potted plant hide rear approaches; footprints block the actual objects. Shelves and cot sit at the back edge with no walkable space behind.",
+  "collision": [
+    {
+      "tile": [
+        45,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        45
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        46
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        47
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        48
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        49
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        50
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        51
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        52
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        53
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        54
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        55
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        56
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "front-stool ground footprint"
+    },
+    {
+      "tile": [
+        44,
+        56
+      ],
+      "before": 0,
+      "after": 128,
+      "reason": "front-stool ground footprint"
+    },
+    {
+      "tile": [
+        38,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        57
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        58
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        37,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        59
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        60
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        61
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        38,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        39,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        40,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        41,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        42,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        43,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        44,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        45,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        46,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        47,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        48,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        49,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        50,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        51,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        52,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        53,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        54,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        55,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        56,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        57,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        58,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        59,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        60,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    },
+    {
+      "tile": [
+        61,
+        62
+      ],
+      "before": 128,
+      "after": 0,
+      "reason": "visible floor traced on our art"
+    }
+  ],
+  "pieces": [
+    {
+      "png": "cold-store-table.png",
+      "at": [
+        56,
+        229
+      ],
+      "depth": null,
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": 280,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              38,
+              232,
+              139,
+              335
+            ],
+            "positive": [
+              [
+                102,
+                255
+              ]
+            ],
+            "negative": [
+              [
+                39,
+                334
+              ],
+              [
+                138,
+                334
+              ]
+            ],
+            "score": 0.9665672779083252
+          },
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              83,
+              220,
+              114,
+              253
+            ],
+            "positive": [
+              [
+                96,
+                239
+              ]
+            ],
+            "negative": [
+              [
+                83,
+                241
+              ],
+              [
+                111,
+                252
+              ]
+            ],
+            "score": 0.9452811479568481
+          },
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              55,
+              244,
+              94,
+              280
+            ],
+            "positive": [
+              [
+                75,
+                261
+              ]
+            ],
+            "negative": [
+              [
+                55,
+                264
+              ],
+              [
+                94,
+                274
+              ]
+            ],
+            "score": 0.9576458930969238
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-rear-stool.png",
+      "at": [
+        139,
+        258
+      ],
+      "depth": [
+        149,
+        298
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              132,
+              251,
+              168,
+              303
+            ],
+            "positive": [
+              [
+                150,
+                267
+              ]
+            ],
+            "negative": [
+              [
+                133,
+                302
+              ],
+              [
+                167,
+                302
+              ]
+            ],
+            "score": 0.9419915676116943
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-left-stool.png",
+      "at": [
+        71,
+        304
+      ],
+      "depth": [
+        86,
+        349
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              69,
+              299,
+              105,
+              353
+            ],
+            "positive": [
+              [
+                88,
+                318
+              ]
+            ],
+            "negative": [
+              [
+                70,
+                352
+              ],
+              [
+                104,
+                352
+              ]
+            ],
+            "score": 0.9533002376556396
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-ice.png",
+      "at": [
+        369,
+        183
+      ],
+      "depth": [
+        410,
+        311
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              364,
+              177,
+              454,
+              314
+            ],
+            "positive": [
+              [
+                406,
+                252
+              ]
+            ],
+            "negative": [
+              [
+                365,
+                313
+              ],
+              [
+                453,
+                313
+              ]
+            ],
+            "score": 0.9793609380722046
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-cabinet.png",
+      "at": [
+        403,
+        259
+      ],
+      "depth": [
+        451,
+        366
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": true,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              400,
+              252,
+              492,
+              369
+            ],
+            "positive": [
+              [
+                446,
+                297
+              ]
+            ],
+            "negative": [
+              [
+                401,
+                368
+              ],
+              [
+                491,
+                368
+              ]
+            ],
+            "score": 0.9884454011917114
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-front-stool.png",
+      "at": [
+        130,
+        280
+      ],
+      "depth": [
+        144,
+        332
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              126,
+              284,
+              163,
+              338
+            ],
+            "positive": [
+              [
+                143,
+                300
+              ],
+              [
+                143,
+                316
+              ]
+            ],
+            "negative": [
+              [
+                125,
+                317
+              ],
+              [
+                161,
+                329
+              ]
+            ],
+            "score": 0.940147876739502
+          }
+        ]
+      }
+    },
+    {
+      "png": "cold-store-plant.png",
+      "at": [
+        433,
+        318
+      ],
+      "depth": [
+        453,
+        399
+      ],
+      "source": "cold-store.png",
+      "segmentation": {
+        "native_size": [
+          512,
+          512
+        ],
+        "source_art": "cold-store.png",
+        "source_offset": [
+          0,
+          0
+        ],
+        "boundary_mode": null,
+        "cleanup": {
+          "min_component": 12,
+          "fill_holes": false,
+          "fill_holes_above": null,
+          "fill_small_holes": 3
+        },
+        "method": "SAM ViT-H, best score, native alpha threshold 0.5",
+        "components": [
+          {
+            "source": "raw-cold-store.jpg",
+            "source_sha1": "aede27c686ee19d6ddc8d51d9b0c6ebed3f86e32",
+            "native_to_source": [
+              [
+                4.0,
+                0,
+                0
+              ],
+              [
+                0,
+                4.0,
+                0
+              ]
+            ],
+            "box": [
+              421,
+              313,
+              486,
+              402
+            ],
+            "positive": [
+              [
+                452,
+                379
+              ],
+              [
+                453,
+                348
+              ],
+              [
+                440,
+                338
+              ],
+              [
+                474,
+                350
+              ]
+            ],
+            "negative": [
+              [
+                427,
+                375
+              ],
+              [
+                482,
+                387
+              ],
+              [
+                451,
+                402
+              ]
+            ],
+            "score": 0.9629002809524536
+          }
+        ]
+      }
+    }
+  ],
+  "floor_px": [
+    [
+      183,
+      199
+    ],
+    [
+      390,
+      199
+    ],
+    [
+      376,
+      250
+    ],
+    [
+      395,
+      263
+    ],
+    [
+      455,
+      265
+    ],
+    [
+      488,
+      347
+    ],
+    [
+      497,
+      418
+    ],
+    [
+      17,
+      418
+    ],
+    [
+      18,
+      367
+    ],
+    [
+      43,
+      330
+    ],
+    [
+      47,
+      279
+    ],
+    [
+      103,
+      236
+    ],
+    [
+      161,
+      244
+    ],
+    [
+      172,
+      211
+    ]
+  ],
+  "footprints": {
+    "table": [
+      [
+        46,
+        302
+      ],
+      [
+        127,
+        283
+      ],
+      [
+        130,
+        315
+      ],
+      [
+        49,
+        337
+      ]
+    ],
+    "rear-stool": [
+      [
+        134,
+        282
+      ],
+      [
+        165,
+        282
+      ],
+      [
+        168,
+        300
+      ],
+      [
+        133,
+        303
+      ]
+    ],
+    "front-stool": [
+      [
+        130,
+        316
+      ],
+      [
+        156,
+        314
+      ],
+      [
+        161,
+        334
+      ],
+      [
+        128,
+        337
+      ]
+    ],
+    "left-stool": [
+      [
+        70,
+        330
+      ],
+      [
+        101,
+        330
+      ],
+      [
+        104,
+        352
+      ],
+      [
+        70,
+        354
+      ]
+    ],
+    "ice": [
+      [
+        372,
+        250
+      ],
+      [
+        443,
+        242
+      ],
+      [
+        452,
+        284
+      ],
+      [
+        405,
+        318
+      ],
+      [
+        377,
+        310
+      ]
+    ],
+    "cabinet": [
+      [
+        406,
+        310
+      ],
+      [
+        481,
+        298
+      ],
+      [
+        493,
+        363
+      ],
+      [
+        473,
+        374
+      ],
+      [
+        416,
+        363
+      ]
+    ],
+    "plant": [
+      [
+        434,
+        374
+      ],
+      [
+        466,
+        374
+      ],
+      [
+        472,
+        397
+      ],
+      [
+        439,
+        401
+      ]
+    ]
+  }
+}

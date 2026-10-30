@@ -1,0 +1,35 @@
+From 4b7fbf5c99e154fc92cf860873bc660310c99aee Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Thu, 22 Oct 2026 15:03:46 +0000
+Subject: [PATCH] Patch 0161: prosperity counts every recruited species, not
+ only the original's 3..58
+
+recalculatePPandArena (main.c) runs on every save and at game start and
+rebuilds pstat 1 from the recruit flags; its loop stopped at 0x3b, so a
+story mod's recruits of types 59..111 (Gotsumon, Guardromon, Gekomon...)
+were worth nothing to the city. The loop now runs to
+NUM_RECRUITABLE_DIGIMON with the same rule (stage - 2; the three sludges
++1). The tournament clean-up below it is unchanged.
+---
+ src/main/main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index 6a3a1759..523ea802 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3983,7 +3983,10 @@ void recalculatePPandArena(void)
+ 	int32_t i;
+ 
+ 	pp = 0;
+-	for (i = 3; i < 0x3b; i++) {
++	/* MOD (city recruits): every species with a recruit flag counts, not only the
++	 * original's 3..58: a story mod recruits Gotsumon, Guardromon, Gekomon... and
++	 * the rule is the same (stage - 2: rookie 1, champion 2, ultimate 3). */
++	for (i = 3; i < NUM_RECRUITABLE_DIGIMON; i++) {
+ 		if ((DIGI_PARA(i).level >= 3) && (isDigimonRecruited(i) != 0)) {
+ 			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
+ 				pp++;
+-- 
+2.53.0
+

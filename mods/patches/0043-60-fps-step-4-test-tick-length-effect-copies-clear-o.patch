@@ -1,0 +1,175 @@
+From dbaa711a0f72616d383ad0634da8d167728945c1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 02:55:44 +0000
+Subject: [PATCH] 60 fps step 4: test tick length; effect copies clear of loads
+
+- MOD_FPS_FORCE_PASSES becomes MOD_FPS_TEST_TICK (refreshes per tick, 0 =
+  off): every tick lasts that many refreshes with any number of renders,
+  and every pass is rendered at its fraction of the tick. State checks
+  compare 1 and 3 renders with the same value (8), so the emulated time per
+  tick is the same in both and CD reads end on the same tick; forcing the
+  passes alone made only the 3-render ticks longer, which delayed the
+  result boxes after the reads that follow the victory.
+- An effect's script/data area is copied, on the extra passes, into the
+  top of the free EFE heap (right below the overlay) and only if that is
+  at least 0x5000 bytes above the heap pointer, where an effect file
+  being loaded is read and set up during the battle data load.
+
+---
+ src/btl/battle_effect.c | 22 ++++++++++++++--------
+ src/main/main.c         | 40 +++++++++++++++++++++++-----------------
+ 2 files changed, 37 insertions(+), 25 deletions(-)
+
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 58b3d17..9711edb 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1289,22 +1289,28 @@ void BTL_tickEFEEngine(void)
+  * (sounds, CLUT uploads, particle emitters, flashes, clouds, entity particles,
+  * attack objects and hit tests, turning the source entity, the "finished"
+  * mark). On the extra passes the area is copied aside before the slot's
+- * scripts and put back after them (into the free part of the EFE heap, above
+- * the last loaded effect), those opcodes do nothing and the random numbers
+- * come from a private generator (modRenderRand), so after the passes the
+- * battle is exactly as one render per tick left it. */
++ * scripts and put back after them (into the top of the free part of the EFE
++ * heap, below the overlay), those opcodes do nothing and the random numbers
++ * come from modRenderRand / modRenderCustomRandom (the first pass's numbers
++ * again), so after the passes the battle is exactly as one render per tick
++ * left it. */
+ static int32_t BTL_modEfeSave(int32_t data, uint32_t **buf)
+ {
+ 	int32_t size = ((EfeFileHeader *)(data - 0x34))->tmdStart & ~3;
+-	uint32_t *b = (uint32_t *)(((int32_t)EFE_HEAP_POINTER + 3) & ~3);
++	uint32_t *b;
+ 	uint32_t *s = (uint32_t *)data;
+-	uint32_t *d = b;
++	uint32_t *d;
+ 	int32_t k;
+ 
+-	/* the heap is free up to the battle overlay (BTL_REL at 0x80052ae0) */
+-	if (size <= 0 || (uint32_t)b + size > 0x80052ae0u) {
++	/* the heap is free up to the battle overlay (BTL_REL at 0x80052ae0);
++	 * the copy goes at its top, clear of the 0x5000 bytes above the heap
++	 * pointer where an effect file being loaded is read and set up */
++	b = (uint32_t *)((0x80052ae0u - (uint32_t)size) & ~3u);
++	if (size <= 0 || size > 0x10000 ||
++	    (uint32_t)b < (uint32_t)EFE_HEAP_POINTER + 0x5000) {
+ 		return 0; /* no room: not expected (MOD_FPS_EFE_NO_ROOM counts it) */
+ 	}
++	d = b;
+ 	for (k = size >> 2; k > 0; k--) {
+ 		*d++ = *s++;
+ 	}
+diff --git a/src/main/main.c b/src/main/main.c
+index 4d52cd2..6eb150c 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3984,13 +3984,14 @@ static void modPerfReset(void)
+  * not end before the next tick is due (judging by the previous pass's cost),
+  * is skipped; the logic never is. See dw/mod_fps.h for how renders stay idempotent. */
+ int32_t MOD_FPS_RENDERS_PER_TICK = 3;
+-/* test switch (state checks with the slow interpreter CPU): render every pass
+- * of a tick even when it is late, so the extra passes always run (with the
+- * interpolation fraction they would have had). Ticks then last longer than 3
+- * refreshes, which changes on which tick a CD read ends: 1 forces only in
+- * battle (GAME_STATE 1 or 2: the battle data is loaded in state 3), 2
+- * everywhere (a walk on one map). */
+-int32_t MOD_FPS_FORCE_PASSES;
++/* test switch (state checks with the slow interpreter CPU, where the extra
++ * passes rarely fit): with N > 0 every tick lasts N refreshes instead of 3,
++ * with any number of renders, and every pass is rendered, shown at refresh
++ * tickStart + (r + 1) * N / n with that fraction of the tick. Comparing 1 and
++ * 3 renders with the same N (large enough for 3 passes, e.g. 8) keeps the
++ * emulated time per tick equal, so CD reads end on the same tick in both. */
++int32_t MOD_FPS_TEST_TICK;
++static int32_t modTickRefreshes(void);
+ int32_t MOD_FPS_TICKS;
+ int32_t MOD_FPS_RENDERS;
+ int32_t MOD_RENDER_PASS;
+@@ -4563,7 +4564,7 @@ static void modInterpSnapshot(void)
+ 
+ 	/* a tick much longer than 3 refreshes: a battle or a load ran inside it */
+ 	snap = !modInterpValid || modInterpMapGen != MOD_INTERP_MAP_GEN ||
+-	       modInterpGameState != GAME_STATE || modInterpTickGap > 6 ||
++	       modInterpGameState != GAME_STATE || modInterpTickGap > 2 * modTickRefreshes() ||
+ 	       modInterpLastBattle != modInterpBattle ||
+ 	       /* a camera cut that does not go through GS_VIEWPOINT (the battle
+ 		* effects' fixed camera, EFE opcodes 63/64) */
+@@ -4873,6 +4874,11 @@ static int32_t modTickL0;
+ static int32_t modLastEndV = -1000;
+ static int32_t modLastEndLines;
+ 
++static int32_t modTickRefreshes(void)
++{
++	return MOD_FPS_TEST_TICK > 0 ? MOD_FPS_TEST_TICK : 3;
++}
++
+ void modTickStart(int32_t flags)
+ {
+ 	int32_t now;
+@@ -4883,7 +4889,7 @@ void modTickStart(int32_t flags)
+ 	modFlushRemovals();
+ 	MOD_RENDER_PASS = 0;
+ 	now = VSync(-1);
+-	if ((flags & MOD_PRESENT_BATTLE) && now - modLastEndV < 3) {
++	if ((flags & MOD_PRESENT_BATTLE) && now - modLastEndV < modTickRefreshes()) {
+ 		/* VSync(3) counts from the previous tick's last VSync: the battle
+ 		 * AI, which runs before the loop function, is part of this tick */
+ 		modTickV = modLastEndV;
+@@ -4917,8 +4923,8 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	int32_t interp;
+ 	int32_t shownV;
+ 	int32_t battle = flags & MOD_PRESENT_BATTLE;
+-	int32_t force = MOD_FPS_FORCE_PASSES == 2 ||
+-			(MOD_FPS_FORCE_PASSES == 1 && (GAME_STATE == 1 || GAME_STATE == 2));
++	int32_t period = modTickRefreshes(); /* refreshes per tick: 3 */
++	int32_t force = MOD_FPS_TEST_TICK > 0;
+ 
+ 	tickV = modTickV;
+ 	l0 = modTickL0;
+@@ -4944,7 +4950,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 
+ 	MOD_RENDER_MULTIPASS = 1;
+ 	for (r = 0; r < n; r++) {
+-		endV = tickV + (r + 1) * 3 / n;
++		endV = tickV + (r + 1) * period / n;
+ 		if (r > 0) {
+ 			lc = modLines();
+ 			if (force) {
+@@ -4952,7 +4958,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 				 * lasts longer, the logic per tick is the same) */
+ 			} else if (VSync(-1) >= endV) {
+ 				continue; /* this pass would be shown late: skip it */
+-			} else if ((tickV + 3 - vLast) * 263 - VSync(1) <
++			} else if ((tickV + period - vLast) * 263 - VSync(1) <
+ 				   passLines + modPassSetupLines + 4) {
+ 				/* lines left before the vblank that ends the tick,
+ 				 * counted from the last vblank waited for; the pass costs
+@@ -4988,11 +4994,11 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 			if (shownV < endV || force) {
+ 				shownV = endV; /* forced: the fraction it would have had */
+ 			}
+-			if (shownV > tickV + 3) {
+-				shownV = tickV + 3;
++			if (shownV > tickV + period) {
++				shownV = tickV + period;
+ 			}
+ 			l2 = modLines();
+-			modInterpApply((shownV - tickV) * 4096 / 3);
++			modInterpApply((shownV - tickV) * 4096 / period);
+ 			MOD_PERF_INTERP[0] += (modLines() - l2) & 0xFFFF;
+ 			MOD_PERF_INTERP[2]++;
+ 		}
+@@ -5054,7 +5060,7 @@ void modPresent(int32_t flags, ModRollbackSet *extra)
+ 	if (battle) {
+ 		GsSetOrign(DRAWING_OFFSET_X, DRAWING_OFFSET_Y);
+ 	}
+-	while (VSync(-1) < tickV + 3) {
++	while (VSync(-1) < tickV + period) {
+ 		VSync(0); /* the tick lasts 3 refreshes, as VSync(3) did */
+ 	}
+ 	MOD_RENDER_PASS = 0;
+-- 
+2.53.0
+

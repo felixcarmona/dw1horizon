@@ -1,0 +1,59 @@
+{
+ "clip_policy": "dcb-original",
+ "first_id": 183,
+ "out": "build/batch",
+ "digimon": [
+  {
+   "name": "Wormmon",
+   "game": "dcb",
+   "model": 149
+  },
+  {
+   "name": "Hawkmon",
+   "game": "dcb",
+   "model": 150
+  },
+  {
+   "name": "Armadillomon",
+   "game": "dcb",
+   "model": 151
+  },
+  {
+   "name": "Gatomon",
+   "game": "dcb",
+   "model": 152
+  },
+  {
+   "name": "Stingmon",
+   "game": "dcb",
+   "model": 159
+  },
+  {
+   "name": "Aquilamon",
+   "game": "dcb",
+   "model": 160
+  },
+  {
+   "name": "Ankylomon",
+   "game": "dcb",
+   "model": 161
+  },
+  {
+   "name": "Angewomon",
+   "game": "dcb",
+   "model": 170
+  },
+  {
+   "name": "MetalGarurumon",
+   "game": "dcb",
+   "model": 174,
+   "level": "mega"
+  },
+  {
+   "name": "Imperialdramon",
+   "game": "dcb",
+   "model": 181,
+   "level": "mega"
+  }
+ ]
+}

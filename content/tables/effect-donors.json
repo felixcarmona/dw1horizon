@@ -1,0 +1,109 @@
+{
+  "_comment": "Species that borrow another species' technique effect points. For a technique whose EFE table has no row for `species`, its `donor` row is used, scaled by scale[0]/scale[1]: bone 0 stays a point in front of the Digimon; an `origins` entry whose `from` matches [bone, x, y, z] (bone -2 = any bone, x 32767 = any offset) gives its `to`; `bones` maps each donor bone to the species' own; flag same_rig keeps the bone; flag fallback uses `fallback`; flag always uses it even when the donor has no row. Entries of a species are tried in order, the first that gives a point wins. At most 16 entries, 24 origins, 48 bones.",
+  "effectDonors": [
+    {
+      "species": 121,
+      "donor": 55,
+      "scale": [8, 5],
+      "flags": ["fallback", "always"],
+      "fallback": [2, 0, 0, -110],
+      "origins": [{"from": [11, 32767, 0, 0], "to": [11, 25, 55, 0]}],
+      "note": "Cherrymon borrows Piximon's row (the other Earth Ultimate). Bone 0: 1.6 times farther (550 high against 330); bone 11 (Piximon's spear hand: Green Trap, the thrown Bit Bomb): the palm of Cherrymon's front hand, also bone 11; anything else (the powders, Bug, Insect Plague), and a table without Piximon: Cherrymon's mouth, in front of trunk bone 2."
+    },
+    {
+      "species": 120,
+      "donor": 39,
+      "scale": [171, 100],
+      "flags": ["same_rig"],
+      "note": "King of Sukamon is Sukamon (same skeleton) built 2.76 times larger, shrunk to 0.62 by its partner model: 1.71 times Sukamon."
+    },
+    {
+      "species": 94,
+      "donor": 68,
+      "scale": [110, 100],
+      "flags": ["same_rig"],
+      "note": "Icemon has its own rows for Megaton Punch, Giga Freeze and Ice Needle. Tremar and Buster Dive: Gotsumon's (the same model, 280 high)."
+    },
+    {
+      "species": 94,
+      "donor": 3,
+      "scale": [124, 100],
+      "flags": ["same_rig"],
+      "note": "Ice Statue, Winter Blast, Muscle Charge: Agumon's (the same bones, 250 high; SnowAgumon uses Agumon's rows)."
+    },
+    {
+      "species": 94,
+      "donor": 23,
+      "scale": [82, 100],
+      "flags": [],
+      "origins": [{"from": [-2, 32767, 0, 0], "to": [4, 60, 35, 0]}],
+      "note": "Subzero Ice Punch: Frigimon's (380 high): its point in front of Icemon (bone 0, scaled), any other Frigimon bone to Icemon's head."
+    },
+    {
+      "species": 113,
+      "donor": 68,
+      "scale": [100, 100],
+      "flags": ["same_rig"],
+      "note": "Meteormon has its own rows for Magma Bomb, Meltdown, Megaton Punch and Tremar. Buster Dive: Gotsumon's."
+    },
+    {
+      "species": 113,
+      "donor": 9,
+      "scale": [100, 100],
+      "flags": ["same_rig"],
+      "note": "Spit Fire, Heat Laser, Red Inferno, Prominence Beam, Fireball: Meramon's (the same bones, its animations are Meramon's)."
+    },
+    {
+      "species": 119,
+      "donor": 24,
+      "scale": [440, 400],
+      "flags": ["fallback"],
+      "fallback": [4, 0, -20, -190],
+      "origins": [
+        {"from": [2, 60, 0, 10], "to": [4, 0, -20, -190]},
+        {"from": [2, -70, 0, 210], "to": [4, 0, -20, -190]},
+        {"from": [1, 0, 0, 0], "to": [1, 0, 0, 0]},
+        {"from": [2, -102, 0, 155], "to": [7, 90, -270, 30]}
+      ],
+      "note": "ShogunGekomon <- Whamon (440/400 high): Whamon's head points become the mouth (head bone 4, in front of the jaw: Giga Freeze, Water Blit, Ice Needle), its body point (Aurora Freeze) the hips, and Blasting Spout leaves from the bell of a trumpet (bone 7). Offsets are in model axes (0.55 times the NPC's mesh)."
+    },
+    {
+      "species": 66,
+      "donor": 6,
+      "scale": [430, 400],
+      "flags": ["fallback"],
+      "fallback": [3, 0, 0, -60],
+      "note": "Myotismon <- Devimon: Sonic Jab and Death Claw leave from bone 0 (430/400 high); a donor row with no explicit origin starts from the fallback."
+    },
+    {
+      "species": 70,
+      "donor": 14,
+      "scale": [410, 330],
+      "flags": ["fallback"],
+      "fallback": [2, 0, -62, -179],
+      "origins": [
+        {"from": [4, 200, 0, 0], "to": [3, 0, -248, -21]},
+        {"from": [2, 100, 200, 0], "to": [2, -67, -124, -239]},
+        {"from": [6, 94, 0, 0], "to": [6, 7, 113, 28]},
+        {"from": [2, 50, 150, 0], "to": [2, -50, -62, -179]}
+      ],
+      "note": "WaruMonzaemon <- Monzaemon (410/330 high): Electric Cloud above the head, Megalo Spark and Lovely Attack before the chest, Confused Storm from the claw arm."
+    },
+    {
+      "species": 117,
+      "donor": 34,
+      "scale": [16, 25],
+      "flags": [],
+      "bones": [0, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "note": "Jijimon <- Ogremon (250/390 high): Ogremon's bones 1-17 -> Jijimon's (head and jaw -> face, club -> staff). A bone map: the donor bone to the bone that plays its part in the retargeted animation, the offset scaled."
+    },
+    {
+      "species": 116,
+      "donor": 40,
+      "scale": [7, 8],
+      "flags": [],
+      "bones": [0, 1, 2, 3, 2, 4, 5, 6, 2, 8, 9, 10, 11, 11, 12, 13, 14, 11, 15, 16, 17],
+      "note": "Analogman <- Andromon (350/400 high): Andromon's bones 1-20 -> Analogman's (the shoulder joints to the torso, each arm and leg piece to his)."
+    }
+  ]
+}

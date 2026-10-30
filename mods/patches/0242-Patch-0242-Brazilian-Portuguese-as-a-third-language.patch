@@ -1,0 +1,1330 @@
+From 2555ef9ad1a8199607f1989cdc355d64b893b70a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 14:00:00 +0000
+Subject: [PATCH] Patch 0242: Brazilian Portuguese as a third runtime language
+
+OPTIONS lists only the languages present on the disc. Portuguese uses its own
+file copies, overlays, patch and texture layouts. The shared padding bank keeps
+all language strings at the same addresses, including unbanked US defaults;
+identity padding avoids aliases that hold in two languages but not in a third.
+Portuguese has its own triangle labels, title/finisher crops and LUTA blocks.
+---
+ Makefile                 |  12 +--
+ include/dw/lang.h        |   3 +-
+ include/dw/mod_options.h |   2 +
+ src/btl/battle_effect.c  | 158 ++++++++++++++++++++++++++++++++++++-
+ src/btl/battle_hud.c     |   6 +-
+ src/main/game_menu.c     |  61 ++++++++-------
+ src/main/main.c          |   4 +-
+ src/main/main_menu.c     |  57 ++++++++++----
+ src/main/mod_options.c   |  30 +++++--
+ src/main/script_common.c |   2 +-
+ src/shop/script_menu.c   |   6 +-
+ src/std/std_hud.c        | 164 ++++++++++++++++++++++++++++++++++++++-
+ src/vs/vs_hud.c          | 164 ++++++++++++++++++++++++++++++++++++++-
+ src/vs/vs_scene.c        |   2 +-
+ text/main/main_menu.yaml |   3 +
+ tools/gen_lang_files.py  |  10 ++-
+ tools/gen_text.py        |  21 ++++-
+ 17 files changed, 628 insertions(+), 77 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f187b4c8..f28229f9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -23,7 +23,7 @@ CONFIG_DIR := config/$(VERSION)
+ ASM_DIR := asm/$(VERSION)
+ GEN_DIR := build/$(VERSION)/$(PLATFORM)/generated
+ 
+-VERSION_MACRO := VERSION_$(shell echo $(VERSION) | tr a-z A-Z)
++VERSION_MACRO := VERSION_$(shell echo $(VERSION) | tr 'a-z-' 'A-Z_')
+ 
+ # MOD (scale): bytes of the partner model buffer (include/dw/memmap.h, docs/mods/memory.md
+ # "Partner model buffer"). The original's is 0x18800, the default: tools/build-full.sh passes the
+@@ -55,23 +55,23 @@ FONT ?= b
+ ifeq ($(filter $(FONT),original b),)
+ $(error FONT=$(FONT): the font must be original or b)
+ endif
+-$(shell mkdir -p $(GEN_DIR); printf '#define FONT_%s 1\n' '$(shell echo $(FONT) | tr a-z A-Z)' > $(GEN_DIR)/font_sel.h.tmp; \
++$(shell mkdir -p $(GEN_DIR); printf '#define FONT_%s 1\n' '$(shell echo $(FONT) | tr 'a-z-' 'A-Z_')' > $(GEN_DIR)/font_sel.h.tmp; \
+ 	cmp -s $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h && rm $(GEN_DIR)/font_sel.h.tmp \
+ 	|| mv $(GEN_DIR)/font_sel.h.tmp $(GEN_DIR)/font_sel.h)
+ 
+ # MOD (language): the language the executable's own strings are in at boot (docs/mods/language.md): en or es. A
+ # two-language disc carries the other one as a patch (LANGEN.BIN / LANGES.BIN) and OPTIONS (LANGUAGE) switches.
+ LANG_BASE ?= en
+-ifeq ($(filter $(LANG_BASE),en es),)
+-$(error LANG_BASE=$(LANG_BASE): en or es)
++ifeq ($(filter $(LANG_BASE),en es pt-br),)
++$(error LANG_BASE=$(LANG_BASE): en, es or pt-br)
+ endif
+ # LANG_BUILD: the language of this build's strings and language tables (tools/build-full.sh builds the tree twice, once
+ # per language; the two builds differ only in data, tools/langpatch.py checks it). Default: LANG_BASE.
+ LANG_BUILD ?= $(LANG_BASE)
+-$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BUILD MOD_LANG_%s\n' '$(shell echo $(LANG_BUILD) | tr a-z A-Z)' > $(GEN_DIR)/lang_build.h.tmp; \
++$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BUILD MOD_LANG_%s\n' '$(shell echo $(LANG_BUILD) | tr 'a-z-' 'A-Z_')' > $(GEN_DIR)/lang_build.h.tmp; \
+ 	cmp -s $(GEN_DIR)/lang_build.h.tmp $(GEN_DIR)/lang_build.h && rm $(GEN_DIR)/lang_build.h.tmp \
+ 	|| mv $(GEN_DIR)/lang_build.h.tmp $(GEN_DIR)/lang_build.h)
+-$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BASE MOD_LANG_%s\n' '$(shell echo $(LANG_BASE) | tr a-z A-Z)' > $(GEN_DIR)/lang_base.h.tmp; \
++$(shell mkdir -p $(GEN_DIR); printf '#define MOD_LANG_BASE MOD_LANG_%s\n' '$(shell echo $(LANG_BASE) | tr 'a-z-' 'A-Z_')' > $(GEN_DIR)/lang_base.h.tmp; \
+ 	cmp -s $(GEN_DIR)/lang_base.h.tmp $(GEN_DIR)/lang_base.h && rm $(GEN_DIR)/lang_base.h.tmp \
+ 	|| mv $(GEN_DIR)/lang_base.h.tmp $(GEN_DIR)/lang_base.h)
+ 
+diff --git a/include/dw/lang.h b/include/dw/lang.h
+index f96bd27b..f3a6bc2b 100644
+--- a/include/dw/lang.h
++++ b/include/dw/lang.h
+@@ -7,7 +7,8 @@
+  */
+ #define MOD_LANG_EN	0
+ #define MOD_LANG_ES	1
+-#define MOD_LANGS	2
++#define MOD_LANG_PT_BR	2
++#define MOD_LANGS	3
+ 
+ #include <lang_build.h>
+ 
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 6d296b39..98d724d2 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -55,6 +55,8 @@ void modButtonsBoot(void);
+ extern int32_t MOD_LANG;	/* the language the game shows */
+ extern int32_t MOD_OPT_SIGNS;	/* MAP SIGNS: 1 = translated (the language's), 0 = as the disc has them */
+ void modSetLanguage(int32_t lang);
++int32_t modLanguageAt(int32_t index);
++int32_t modLanguageCount(void);
+ void modSetSigns(int32_t translated);
+ /* the file name to read for `name` (no folder): its language's or translated signs' copy when the disc has it */
+ char *modLangFile(char *name);
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 64c6c69f..04f08b26 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -587,7 +587,163 @@ MATRIX BTL_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t BTL_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	{ -132, -48 },
++	{ -124, -48 },
++	{ -132, -36 },
++	{ -124, -36 },
++	{ -132, -24 },
++	{ -124, -24 },
++	{ -132, -12 },
++	{ -124, -12 },
++	{ -132, 0 },
++	{ -124, 0 },
++	{ -132, 12 },
++	{ -124, 12 },
++	{ -132, 24 },
++	{ -124, 24 },
++	{ -132, 36 },
++	{ -124, 36 },
++	{ -116, 36 },
++	{ -108, 36 },
++	{ -100, 36 },
++	{ -92, 36 },
++	{ -68, -48 },
++	{ -60, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -68, -36 },
++	{ -60, -36 },
++	{ -36, -36 },
++	{ -28, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -68, -12 },
++	{ -60, -12 },
++	{ -36, -12 },
++	{ -28, -12 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ -68, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -28, 12 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -36, 24 },
++	{ -28, 24 },
++	{ -60, 36 },
++	{ -52, 36 },
++	{ -44, 36 },
++	{ -36, 36 },
++	{ -4, -48 },
++	{ 4, -48 },
++	{ 12, -48 },
++	{ 20, -48 },
++	{ 28, -48 },
++	{ 12, -36 },
++	{ 12, -24 },
++	{ 12, -12 },
++	{ 12, 0 },
++	{ 12, 12 },
++	{ 12, 24 },
++	{ 12, 36 },
++	{ 76, -48 },
++	{ 84, -48 },
++	{ 76, -36 },
++	{ 84, -36 },
++	{ 68, -24 },
++	{ 76, -24 },
++	{ 84, -24 },
++	{ 92, -24 },
++	{ 60, -12 },
++	{ 68, -12 },
++	{ 92, -12 },
++	{ 100, -12 },
++	{ 60, 0 },
++	{ 68, 0 },
++	{ 92, 0 },
++	{ 100, 0 },
++	{ 52, 12 },
++	{ 60, 12 },
++	{ 68, 12 },
++	{ 76, 12 },
++	{ 84, 12 },
++	{ 92, 12 },
++	{ 100, 12 },
++	{ 108, 12 },
++	{ 52, 24 },
++	{ 60, 24 },
++	{ 100, 24 },
++	{ 108, 24 },
++	{ 52, 36 },
++	{ 60, 36 },
++	{ 100, 36 },
++	{ 108, 36 },
++	{ 124, -48 },
++	{ 124, -36 },
++	{ 124, -24 },
++	{ 124, -12 },
++	{ 124, 0 },
++	{ 124, 12 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff54, 0xffe8 },
+ 	{ 0xff54, 0xfff4 },
+diff --git a/src/btl/battle_hud.c b/src/btl/battle_hud.c
+index 0690a0d1..4f2d712a 100644
+--- a/src/btl/battle_hud.c
++++ b/src/btl/battle_hud.c
+@@ -134,7 +134,7 @@ MESSAGES_TEXT
+ 
+ /* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
+  * (tools/localize/textures/misc build.py finish), its eighth segment empty */
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ uint8_t BTL_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+ uint8_t BTL_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
+ uint8_t BTL_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+@@ -1241,7 +1241,9 @@ void BTL_renderFinisherGauge(int16_t idx)
+ /* MOD (language): the finisher's "○PUSH" label: the quad's x and w, its backing box's x and w; the Spanish ○PULSA is 43
+  * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
+ int16_t BTL_FINISHER_LABEL[4] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	99, 48, 97, 52,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	0x68, 43, 0x66, 0x2f,
+ #else
+ 	0x6e, 37, 0x6c, 0x29,
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index ac3de870..5cce226e 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -480,7 +480,16 @@ GameMenuSprite MENU_OPTIONS[8] = {
+ /* MOD (language): the Spanish build's labels are in FI_INFO.TIM's Spanish copy, where the disc has its unused status
+  * words (tools/localize/textures/fi-info/build.py prints these rows); DIGIMON keeps the disc's */
+ GameMenuLabel GAME_MENU_TEXT_SPRITES[8] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	{ 0, 0, 0, 0, 0, 0 },
++	{ 0x0015, 0x0060, 0x13, 0x07, 0x80, 0x21 },
++	{ 0x0035, 0x0060, 0x1c, 0x07, 0x50, 0x1b },
++	{ 0x0057, 0x0060, 0x1c, 0x07, 0xa0, 0x21 },
++	{ 0x0012, 0x0088, 0x19, 0x07, 0x80, 0x28 },
++	{ 0x0036, 0x0088, 0x19, 0x07, 0xa0, 0x2f },
++	{ 0x005a, 0x0088, 0x17, 0x07, 0xa0, 0x28 },
++	{ 0x0012, 0x0038, 0x18, 0x07, 0x80, 0x2f },
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00 },
+ 	{ 0x0010, 0x0060, 0x1c, 0x07, 0x80, 0x21 },
+ 	{ 0x0035, 0x0060, 0x1c, 0x07, 0x50, 0x1b },
+@@ -598,7 +607,7 @@ Line DIGIMON_MOVE_INFO_LINES_RIGHT[18] = {
+ 
+ /* MOD (language): POTENCIA, ALC., EFECTO in the Spanish SYSTEM_W.TIM (tools/localize/textures/systemw/NOTES.md) */
+ IconRect MOVES_VIEW_TECHSET_TEXT[13] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0x000e, 0xffb4, 0x20, 0x07, 0x00, 0x29 },
+ 	{ 0x0062, 0xffb4, 0x0f, 0x07, 0x20, 0x29 },
+ 	{ 0x0075, 0xffb4, 0x19, 0x07, 0x4d, 0x29 },
+@@ -716,7 +725,7 @@ StringRect STATS_VIEW_TEXT[9] = {
+ /* MOD (language): the Spanish labels in SYSTEM_W.TIM's Spanish copy (tools/localize/textures/systemw/NOTES.md):
+  * NOMBRE, ESPECIE, PESO, EDAD, ESPECIAL, FELICIDAD, VELOCIDAD, INTELECTO */
+ IconRect STATS_VIEW_ELEMENTS[21] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff74, 0xffaf, 0x35, 0x0b, 0x00, 0x4b },
+ 	{ 0xff74, 0xfff4, 0x35, 0x0b, 0x00, 0x56 },
+ 	{ 0xffee, 0xfff4, 0x35, 0x0b, 0x00, 0x61 },
+@@ -769,7 +778,7 @@ IconRect STATS_VIEW_ELEMENTS[21] = {
+  * 100; posY unused; texY with the 0x80 of the texture's v). The Spanish words are not all 20 wide (COMBATE, TIERRA,
+  * MUGRE): each has its own cell and the left column is right-aligned, 3 px before the grid */
+ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xffbf, 0x0000, 0x14, 0x0a, 0x00, 0x98 },
+ 	{ 0xffb5, 0x0000, 0x1e, 0x0a, 0x14, 0x98 },
+ 	{ 0xffc5, 0x0000, 0x0e, 0x0a, 0x32, 0x98 },
+@@ -792,7 +801,7 @@ IconRect MOVES_VIEW_ELEMENT_NAMES[7] = {
+  * with the 0x80 of the texture's v); Spanish DATOS TEC. (9 rows for the accent, 2 px higher), POTENCIA, MP, ALCANCE,
+  * EFECTO */
+ IconRect MOVES_SELECTED_LABELS[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff74, 0xfffc, 0x25, 0x09, 0x90, 0xe0 },
+ 	{ 0xff74, 0x001d, 0x20, 0x07, 0x00, 0xa9 },
+ 	{ 0xff74, 0x002e, 0x0b, 0x07, 0x74, 0xa2 },
+@@ -852,7 +861,7 @@ StringRect TAMER_WINDOW_NAME_STRING[11] = {
+ #else
+ /* MOD (language): Spanish Nombre is wider than Name (taken further left) and Nivel starts further (PLAYER_LABEL_PIECES) */
+ StringRect TAMER_WINDOW_NAME_STRING[11] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff76, 0xffaf, 0x0034, 0x00, 0x0c },
+ 	{ 0xffdb, 0xffca, 0x0040, 0x38, 0x0c },
+ #else
+@@ -997,7 +1006,7 @@ char *CARD_CHART_LABELS[5] = {
+  * drawStringPieces lays each piece out in the font's spacing (dw/mod_font.h). MOD (language): Spanish "Nombre" is
+  * wider than Name's crop, so Nivel starts further (TAMER_WINDOW_NAME_STRING) */
+ uint16_t PLAYER_LABEL_PIECES[3][6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0, 0x38, 0x78, 0xcc, PIECES_END },
+ #else
+ 	{ 0, 0x24, 0x78, 0xcc, PIECES_END },
+@@ -1021,7 +1030,7 @@ typedef struct {
+ 
+ /* the Digimon screen's tabs ("Status  Tech"): Técnicas takes the whole tab */
+ LabelCrop DIGIMON_TAB_CROPS[2] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x8a, 0x00, 0x3c },
+ 	{ -0x46, 0x3c, 0x40 },
+ #else
+@@ -1032,7 +1041,7 @@ LabelCrop DIGIMON_TAB_CROPS[2] = {
+ 
+ /* the player screen's tabs ("Player  Chart  Med. Card Fish"): Cartas takes the whole tab, Fish (never shown) is left out */
+ LabelCrop PLAYER_TAB_CROPS[4] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x89, 0x00, 0x3c },
+ 	{ -0x3e, 0x3c, 0x3c },
+ 	{ 0x0d, 0x78, 0x24 },
+@@ -1046,7 +1055,7 @@ LabelCrop PLAYER_TAB_CROPS[4] = {
+ };
+ 
+ uint16_t PLAYER_TAB_PIECES[6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xd4 | PIECE_CENTRE, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x3c | PIECE_CENTRE, 0x78 | PIECE_CENTRE, 0x9c | PIECE_CENTRE, 0xc0 | PIECE_CENTRE, PIECES_END,
+@@ -1055,7 +1064,7 @@ uint16_t PLAYER_TAB_PIECES[6] = {
+ 
+ /* the technique screen's titles ("TechsetFinal  Techs"): Equipadas, Final, Técnicas */
+ LabelCrop TECH_TITLE_CROPS[3] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x8e, 0x00, 0x48 },
+ 	{ -0x8e, 0x48, 0x24 },
+ 	{ -0x8e, 0x6c, 0x40 },
+@@ -1067,7 +1076,7 @@ LabelCrop TECH_TITLE_CROPS[3] = {
+ };
+ 
+ uint16_t TECH_TITLE_PIECES[4] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0, 0x48, 0x6c, PIECES_END,
+ #else
+ 	0, 0x3c, 0x60, PIECES_END,
+@@ -1076,7 +1085,7 @@ uint16_t TECH_TITLE_PIECES[4] = {
+ 
+ /* the technique grid's "Tech" over "help" (the Digimon tab's word): Técnicas is wider, centred over ayuda */
+ LabelCrop TECH_GRID_TITLE_CROP = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x95, 0x3c, 0x40,
+ #else
+ 	-0x87, 0x3c, 0x30,
+@@ -1085,7 +1094,7 @@ LabelCrop TECH_GRID_TITLE_CROP = {
+ 
+ /* the technique grid's "help" label: ayuda is wider */
+ LabelCrop TECH_HELP_CROP = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x81, 0x00, 0x28,
+ #else
+ 	-0x81, 0x00, 0x24,
+@@ -1095,7 +1104,7 @@ LabelCrop TECH_HELP_CROP = {
+ /* the technique panel's status effects ("poisconfstunflat", the row drawn at MOVE_STATUS_ROW_X; x unused): the Spanish
+  * words need the row to start further left (its last glyph must start before 244, drawGlyph's limit) */
+ LabelCrop MOVE_STATUS_CROPS[4] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0, 0x40, 0x1c },
+ 	{ 0, 0x60, 0x2c },
+ 	{ 0, 0x8c, 0x30 },
+@@ -1109,7 +1118,7 @@ LabelCrop MOVE_STATUS_CROPS[4] = {
+ };
+ 
+ int16_t MOVE_STATUS_ROW_X = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0x40,
+ #else
+ 	0x84,
+@@ -1117,7 +1126,7 @@ int16_t MOVE_STATUS_ROW_X = {
+ };
+ 
+ uint16_t MOVE_STATUS_PIECES[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0, 0x20, 0x4c, 0x7c, PIECES_END,
+ #else
+ 	0, 0x1c, 0x38, 0x57, PIECES_END,
+@@ -1127,7 +1136,7 @@ uint16_t MOVE_STATUS_PIECES[5] = {
+ /* the card list's row ("Card List×Select   △Cancel": the title, ×, Select, △, Cancel; 0xd8 is the card count's
+  * suffix, renderCardCount): Cartas centred, Cancelar wider, so × and Cancelar start further left */
+ LabelCrop CARD_LIST_CROPS[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x1a, 0x00, 0x34 },
+ 	{ -0x23, 0x48, 0x0c },
+ 	{ -0x17, 0x54, 0x30 },
+@@ -1143,7 +1152,7 @@ LabelCrop CARD_LIST_CROPS[5] = {
+ };
+ 
+ uint16_t CARD_LIST_PIECES[7] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x48, 0x54, 0x84, 0x90, 0xd8, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x48, 0x54, 0x90, 0x9c, 0xd8, PIECES_END,
+@@ -1153,7 +1162,7 @@ uint16_t CARD_LIST_PIECES[7] = {
+ /* the medal screen's row ("Medals Chart   ×△ Select  Cancel": the title, ×, Select in two crops, △, Cancel):
+  * Medallas centred, Cancelar wider and further left (its last glyph must start before 244, drawGlyph's limit) */
+ LabelCrop MEDAL_VIEW_CROPS[6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x1e, 0x00, 0x3c },
+ 	{ -0x23, 0x6c, 0x0c },
+ 	{ -0x17, 0x84, 0x18 },
+@@ -1171,7 +1180,7 @@ LabelCrop MEDAL_VIEW_CROPS[6] = {
+ };
+ 
+ uint16_t MEDAL_VIEW_PIECES[6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xb4, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x6c, 0x78, 0x84, 0xc0, PIECES_END,
+@@ -1180,7 +1189,7 @@ uint16_t MEDAL_VIEW_PIECES[6] = {
+ 
+ /* the original evolution chart's keys ("×Select   △Cancel", NEW DIGIMON off): Cancelar is wider */
+ LabelCrop EVO_CHART_KEY_CROPS[4] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x1a, 0x00, 0x0c },
+ 	{ -0x0e, 0x0c, 0x3c },
+ 	{ 0x3a, 0x48, 0x0c },
+@@ -1196,7 +1205,7 @@ LabelCrop EVO_CHART_KEY_CROPS[4] = {
+ /* the chart detail's "Tree" (x from the card's shift) and level names (x from dx: each centred at dx - 0x44), rows 0x18
+  * ("Tree FreshTraining"), 0x24 ("RookieChampion"), 0x3c ("Ultimate"): Árbol, Novato and Perfecto are wider */
+ LabelCrop CHART_TREE_CROP = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x16, 0x00, 0x28,
+ #else
+ 	-0x14, 0x00, 0x24,
+@@ -1204,7 +1213,7 @@ LabelCrop CHART_TREE_CROP = {
+ };
+ 
+ LabelCrop CHART_LEVEL_CROPS[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ -0x58, 0x28, 0x28 },
+ 	{ -0x61, 0x50, 0x3a },
+ 	{ -0x5e, 0x00, 0x34 },
+@@ -1220,7 +1229,7 @@ LabelCrop CHART_LEVEL_CROPS[5] = {
+ };
+ 
+ uint16_t CHART_TREE_ROW_PIECES[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x28 | PIECE_CENTRE, 0x50 | PIECE_CENTRE, 0xcc, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE, 0x52 | PIECE_CENTRE, 0xcc, PIECES_END,
+@@ -1228,7 +1237,7 @@ uint16_t CHART_TREE_ROW_PIECES[5] = {
+ };
+ 
+ uint16_t CHART_LEVEL_ROW_PIECES[3] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0 | PIECE_CENTRE, 0x34 | PIECE_CENTRE, PIECES_END,
+ #else
+ 	0 | PIECE_CENTRE, 0x2f | PIECE_CENTRE, PIECES_END,
+diff --git a/src/main/main.c b/src/main/main.c
+index 35ff3137..2d0097be 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -5629,7 +5629,9 @@ void pollInputMenu(void)
+ /* MOD (language): the title screen's "Press Start Button" (x, y, w, h, u, v in TITLE256.TIM); the Spanish "Pulsa el
+  * botón START" is 129 wide and one row higher for the accent (its letters on the same screen rows) */
+ int16_t PRESS_START_QUAD[6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	-36, 49, 85, 11, 0, 240,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	-58, 49, 129, 11, 0, 240,
+ #else
+ 	-0x36, 0x32, 121, 10, 0, 0xf1,
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index bf34a20c..78ddf278 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -40,11 +40,26 @@ void modMenuVsBattle(int32_t trial); /* MOD (menu overlay) */
+ #define NO_TEXT_U 0xc
+ #define NO_TEXT_W 0x24
+ #else
+-#define YES_TEXT_W 0x1c
+-#define NO_TEXT_U 0x1c
+-#define NO_TEXT_W 0x1c
++int16_t YES_NO_CROPS[3] = {
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++    0x24, 0x24, 0x24,
++#else
++    0x1c, 0x1c, 0x1c,
++#endif
++};
++#define YES_TEXT_W YES_NO_CROPS[0]
++#define NO_TEXT_U YES_NO_CROPS[1]
++#define NO_TEXT_W YES_NO_CROPS[2]
+ #endif
+ 
++uint16_t YES_NO_PIECES[3] = {
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++    0, 0x24 | PIECE_LEFT, PIECES_END,
++#else
++    0, 0x1c | PIECE_LEFT, PIECES_END,
++#endif
++};
++
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+ #define VS_RETURN_MENU 0x47
+ #else
+@@ -2141,7 +2156,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801312E4, 0, 0x30);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
++		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 7:
+ 		/* MOD (language): the title of slot 2 drawn whole (the original drew a "2" at the x of the US title's "1") */
+@@ -2158,7 +2173,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_80131328, 0, 0x18);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 8:
+ 		modDrawSlot2(SLOT_ACTION_TITLES[MAIN_MENU_ACTION], 0, 0, MAIN_MENU_ACTION <= 2 && MEMORY_CARD_ID != 0); /* MOD (language) */
+@@ -2177,7 +2192,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(SLOT_ACTION_QUESTIONS[MAIN_MENU_ACTION], 0x18, 0x30);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xF0, YES_NO_PIECES);
+ 		if (MAIN_MENU_ACTION == 2) {
+ 			MENU_HIGHLIGHTS[view].pos = 1;
+ 		}
+@@ -2229,7 +2244,7 @@ void drawMainMenuStrings(int32_t menu)
+ 			drawString(MEMORY_CARD_ERROR_MESSAGES[MEMORY_CARD_ERROR], 0, 0x30);
+ 			DrawSync(0);
+ 		}
+-		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
++		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 13:
+ 		drawString(SLOT_ACTION_TITLES[5], 0, 0);
+@@ -2241,7 +2256,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		modDrawSlot2(MAIN_D_8013141C, 0, 0x24, VS_PLAYER_INDEX == 1);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO, 0, 0xF0, 0, 0x1c | PIECE_LEFT);
++		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 14:
+ 		drawString(SLOT_ACTION_TITLES[6], 0, 0);
+@@ -2323,7 +2338,7 @@ void drawMainMenuStrings(int32_t menu)
+ 	case 18:
+ 		drawString(MAIN_D_80131568, 0, 0);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO_SPACED, 0, 0xC, 0, 0x1c | PIECE_LEFT); /* MOD (font): cut into Yes and No */
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xC, YES_NO_PIECES); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	case 19:
+ 		strcpy(buf, PARTNER_ENTITY.name);
+@@ -2355,7 +2370,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801315EC, 0, 0x18);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES(STR_YES_NO, 0, 0x24, 0, 0x1c | PIECE_LEFT); /* MOD (font): cut into Yes and No */
++		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0x24, YES_NO_PIECES); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	}
+ #endif
+@@ -5806,7 +5821,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ #if FONT_SWITCH
+ 	{ MOD_OPT_STR_FONT, MOD_OPT_STR_NEW, MOD_OPT_STR_CLASSIC, MOD_OPT_STR_ORIGINAL },
+ #endif
+-	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH }, /* MOD (language) */
++	{ MOD_OPT_STR_LANG, MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE }, /* MOD (language) */
+ 	{ MOD_OPT_STR_SIGNS, MOD_OPT_STR_ORIGINAL, MOD_OPT_STR_TRANSLATED },
+ };
+ /* the text area place of each value, its row + 0x100 in the right half: a value two rows share (OFF, ON, ORIGINAL) is
+@@ -5814,6 +5829,7 @@ static char *MOD_OPT_TEXT[MOD_OPT_ROWS][1 + MOD_OPT_VALUES] = {
+ static int16_t MOD_OPT_V[MOD_OPT_ROWS][MOD_OPT_VALUES];
+ /* the pixels of each label and value as the font draws them (drawOptionsText) */
+ static uint8_t MOD_OPT_W[MOD_OPT_ROWS][1 + MOD_OPT_VALUES];
++static char *MOD_LANGUAGE_NAMES[MOD_LANGS] = { MOD_OPT_STR_ENGLISH, MOD_OPT_STR_SPANISH, MOD_OPT_STR_PORTUGUESE };
+ 
+ /* the box's layout in the font that draws it (drawOptionsText measures it): the labels' column on the screen, its
+  * width, a value's, how many values a row shows (all, or 1 with the original font, 0 for 1 at the right edge: above)
+@@ -5826,7 +5842,7 @@ static int16_t MOD_OPT_SHOWN;
+ 
+ static int32_t modOptionCount(int32_t row)
+ {
+-	return MOD_OPT_TEXT[row][3] != NULL ? 3 : 2;
++	return row == MOD_OPT_ROW_LANG ? modLanguageCount() : MOD_OPT_TEXT[row][3] != NULL ? 3 : 2;
+ }
+ 
+ /* the index of the row's chosen value, -1 none (an FPS=20 build's frame rate, or 30 from an FPS=30 build) */
+@@ -5854,7 +5870,13 @@ static int32_t modOptionValue(int32_t row)
+ 		return MOD_FONT == MOD_FONT_NEW ? 0 : MOD_FONT == MOD_FONT_CLASSIC ? 1 : 2;
+ #endif
+ 	case MOD_OPT_ROW_LANG: /* MOD (language) */
+-		return MOD_LANG;
++		{
++            int32_t index;
++            for (index = 0; index < modLanguageCount(); index++) {
++                if (modLanguageAt(index) == MOD_LANG) return index;
++            }
++            return 0;
++        }
+ 	case MOD_OPT_ROW_SIGNS:
+ 		return MOD_OPT_SIGNS;
+ 	}
+@@ -5902,7 +5924,7 @@ static void modSetOption(int32_t row, int32_t value)
+ 		break;
+ #endif
+ 	case MOD_OPT_ROW_LANG: /* MOD (language) */
+-		modSetLanguage(value);
++		modSetLanguage(modLanguageAt(value));
+ 		break;
+ 	case MOD_OPT_ROW_SIGNS:
+ 		modSetSigns(value);
+@@ -5925,7 +5947,10 @@ static void drawOptionsText(void)
+ 	int32_t r2;
+ 	int32_t k2;
+ 
+-	MOD_OPT_LABEL_W = 0;
++	for (k = 0; k < modLanguageCount(); k++) {
++        MOD_OPT_TEXT[MOD_OPT_ROW_LANG][k + 1] = MOD_LANGUAGE_NAMES[modLanguageAt(k)];
++    }
++    MOD_OPT_LABEL_W = 0;
+ 	MOD_OPT_VALUE_W = 0;
+ 	y = MOD_OPT_VALUE_Y << 1; /* the value's place times two, its half in the low bit */
+ 	for (r = 0; r < MOD_OPT_ROWS; r++) {
+@@ -5959,7 +5984,7 @@ static void drawOptionsText(void)
+ 			}
+ 		}
+ 	}
+-	MOD_OPT_SHOWN = FONT_SWITCH ? MOD_OPT_VALUES : 2;
++	MOD_OPT_SHOWN = MOD_OPT_VALUES;
+ 	w = MOD_OPT_LABEL_W + MOD_OPT_SHOWN * (MOD_OPT_GAP + MOD_OPT_VALUE_W);
+ 	if (w + 2 * MOD_OPT_MARGIN > 0x140 - 0x10) {
+ 		MOD_OPT_SHOWN = 1;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index e4ae85d3..03a49370 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -368,12 +368,12 @@ int32_t modFileOnDisc(char *name)
+  */
+ typedef struct {
+ 	uint32_t hash;
+-	uint16_t copy[2]; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
++	uint16_t copy[3]; /* Spanish, English signs: a place after FILE_TABLE_NEW_FIRST, 0xFFFF none */
+ } LangFileRow;
+ 
+ static LangFileRow LANG_FILE_TABLE[] = {
+ #include <lang_files.h>
+-	{ 0, { 0xFFFF, 0xFFFF } },
++	{ 0, { 0xFFFF, 0xFFFF, 0xFFFF } },
+ };
+ 
+ static char MOD_LANG_NAME[FILE_NAME_MAX + 1]; /* the copy's name, ended (an entry's has no NUL at 12 letters) */
+@@ -404,8 +404,8 @@ char *modLangFile(char *name)
+ 		if (tfs && !MOD_OPT_SIGNS) {
+ 			return name;
+ 		}
+-		copy = LANG_FILE_TABLE[i].copy[MOD_LANG == MOD_LANG_ES ? 0 : 1];
+-		if (copy == 0xFFFF || (!tfs && MOD_LANG != MOD_LANG_ES)) {
++		copy = LANG_FILE_TABLE[i].copy[MOD_LANG == MOD_LANG_ES ? 0 : MOD_LANG == MOD_LANG_PT_BR ? 2 : 1];
++		if (copy == 0xFFFF || (!tfs && MOD_LANG == MOD_LANG_EN)) {
+ 			return name;
+ 		}
+ 		memcpy(MOD_LANG_NAME, FILE_OFFSET_TABLE[FILE_TABLE_NEW_FIRST + copy].filename, FILE_NAME_MAX);
+@@ -439,7 +439,25 @@ int32_t modStoryChoice(void)
+ }
+ 
+ /* MOD (language): the patch that turns the executable's strings into each language */
+-static char *LANG_PATCH_FILE[MOD_LANGS] = { "LANGEN.BIN", "LANGES.BIN" };
++static char *LANG_PATCH_FILE[MOD_LANGS] = { "LANGEN.BIN", "LANGES.BIN", "LANGPT.BIN" };
++int32_t modLanguageAt(int32_t index)
++{
++    int32_t lang;
++    for (lang = 0; lang < MOD_LANGS; lang++) {
++        if (lang == MOD_LANG || modFileOnDisc(LANG_PATCH_FILE[lang])) {
++            if (index-- == 0) return lang;
++        }
++    }
++    return -1;
++}
++
++int32_t modLanguageCount(void)
++{
++    int32_t count = 0;
++    while (modLanguageAt(count) >= 0) count++;
++    return count;
++}
++
+ extern char MAIN_D_8012CE64[]; /* main.c: "\\ETCDAT\\FI_INFO.TIM" */
+ void tickFileReadQueue(int32_t unused);
+ int32_t isFileReadQueueBusy(void);
+@@ -453,7 +471,7 @@ void modSetLanguage(int32_t lang)
+ 	uint32_t count;
+ 	uint32_t len;
+ 
+-	lang = lang == MOD_LANG_ES ? MOD_LANG_ES : MOD_LANG_EN;
++	lang = lang >= 0 && lang < MOD_LANGS ? lang : MOD_LANG_EN;
+ 	if (lang == MOD_LANG || !modFileOnDisc(LANG_PATCH_FILE[lang])) { /* a disc in one language: no choice */
+ 		return;
+ 	}
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 7920d82c..cd6a14f6 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -320,7 +320,7 @@ ConfirmBoxLayout CONFIRM_BOX_LAYOUT = {
+  * OBJETO, PRECIO, PUNTOS, CANT., Nº, TÍTULO (9 rows for the accent), LUGAR */
+ BoxUVTable ITEM_MENU_HEADER_UVS = {
+ 	{
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 		0x0200, 0x01a2, 0x0019, 0x0007,
+ 		0x0219, 0x01a2, 0x0017, 0x0007,
+ 		0x0250, 0x01a2, 0x001a, 0x0007,
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 350f1fcb..dc77cfce 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -527,7 +527,7 @@ static char *NAMING_PAGE_LABELS[NAMING_PAGES] = { "ABC", "\xF0\x4C\xF0\x56\xF0\x
+  * the three page keys, Back and OK. The Spanish words do not fit 12-pixel cells, so their row is laid out in pieces
+  * (NAMING_LABEL_PIECES) */
+ int16_t NAMING_CTRL_BOXES[18] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0x000e, 0x0006, 0x0034, 0x000e, 0x0022, 0x0024, 0x000e, 0x0030,
+ 	0x0024, 0x000e, 0x003e, 0x0018, 0x000e, 0x005a, 0x0034, 0x000e,
+ 	0x0076, 0x0018,
+@@ -541,7 +541,7 @@ int16_t NAMING_CTRL_BOXES[18] = {
+ /* MOD (language): the label row ("Name" "ABC" "ÁÑÇ" "!?#" "Back" "OK") in pieces at these offsets in the original's
+  * cells, or (PIECES_END first) in the keyboard's 12-pixel cells as the US drew it */
+ uint16_t NAMING_LABEL_PIECES[7] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0, 0x34, 0x58, 0x7c, 0x94, 0xc8, PIECES_END,
+ #else
+ 	PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END, PIECES_END,
+@@ -2568,7 +2568,7 @@ void tickJukeboxMenu(void)
+ 
+ /* MOD (language): the jukebox's TITLE header's y in the box; the Spanish TÍTULO is 9 rows tall (the accent), 2 higher */
+ int16_t JUKEBOX_TITLE_Y =
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 	3;
+ #else
+ 	5;
+diff --git a/src/std/std_hud.c b/src/std/std_hud.c
+index 6f3446a0..d025a076 100644
+--- a/src/std/std_hud.c
++++ b/src/std/std_hud.c
+@@ -180,7 +180,163 @@ MATRIX STD_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t STD_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	{ -132, -48 },
++	{ -124, -48 },
++	{ -132, -36 },
++	{ -124, -36 },
++	{ -132, -24 },
++	{ -124, -24 },
++	{ -132, -12 },
++	{ -124, -12 },
++	{ -132, 0 },
++	{ -124, 0 },
++	{ -132, 12 },
++	{ -124, 12 },
++	{ -132, 24 },
++	{ -124, 24 },
++	{ -132, 36 },
++	{ -124, 36 },
++	{ -116, 36 },
++	{ -108, 36 },
++	{ -100, 36 },
++	{ -92, 36 },
++	{ -68, -48 },
++	{ -60, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -68, -36 },
++	{ -60, -36 },
++	{ -36, -36 },
++	{ -28, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -68, -12 },
++	{ -60, -12 },
++	{ -36, -12 },
++	{ -28, -12 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ -68, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -28, 12 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -36, 24 },
++	{ -28, 24 },
++	{ -60, 36 },
++	{ -52, 36 },
++	{ -44, 36 },
++	{ -36, 36 },
++	{ -4, -48 },
++	{ 4, -48 },
++	{ 12, -48 },
++	{ 20, -48 },
++	{ 28, -48 },
++	{ 12, -36 },
++	{ 12, -24 },
++	{ 12, -12 },
++	{ 12, 0 },
++	{ 12, 12 },
++	{ 12, 24 },
++	{ 12, 36 },
++	{ 76, -48 },
++	{ 84, -48 },
++	{ 76, -36 },
++	{ 84, -36 },
++	{ 68, -24 },
++	{ 76, -24 },
++	{ 84, -24 },
++	{ 92, -24 },
++	{ 60, -12 },
++	{ 68, -12 },
++	{ 92, -12 },
++	{ 100, -12 },
++	{ 60, 0 },
++	{ 68, 0 },
++	{ 92, 0 },
++	{ 100, 0 },
++	{ 52, 12 },
++	{ 60, 12 },
++	{ 68, 12 },
++	{ 76, 12 },
++	{ 84, 12 },
++	{ 92, 12 },
++	{ 100, 12 },
++	{ 108, 12 },
++	{ 52, 24 },
++	{ 60, 24 },
++	{ 100, 24 },
++	{ 108, 24 },
++	{ 52, 36 },
++	{ 60, 36 },
++	{ 100, 36 },
++	{ 108, 36 },
++	{ 124, -48 },
++	{ 124, -36 },
++	{ 124, -24 },
++	{ 124, -12 },
++	{ 124, 0 },
++	{ 124, 12 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff54, 0xffe8 },
+ 	{ 0xff54, 0xfff4 },
+@@ -544,7 +700,7 @@ char STD_PATH_STDDAT_DRAW_TMD[] = "\\STDDAT\\DRAW.TMD";
+ 
+ /* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
+  * (tools/localize/textures/misc build.py finish), its eighth segment empty */
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ uint8_t STD_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+ uint8_t STD_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
+ uint8_t STD_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+@@ -1107,7 +1263,9 @@ void STD_renderFighterHPBar(int16_t id)
+  * box's x and w; the Spanish ○PULSA is 43
+  * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
+ int16_t STD_FINISHER_LABEL[5] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	-97, 99, 48, -99, 52,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x5c, 0x68, 43, -0x5e, 0x2f,
+ #else
+ 	-0x56, 0x6e, 37, -0x58, 0x29,
+diff --git a/src/vs/vs_hud.c b/src/vs/vs_hud.c
+index f144af98..0ced3850 100644
+--- a/src/vs/vs_hud.c
++++ b/src/vs/vs_hud.c
+@@ -186,7 +186,163 @@ MATRIX VS_BATTLE_START_TEXT_MATRIX = {
+ /* MOD (language): the BATTLE banner's blocks; Spanish ¡LUCHA! (154 blocks, the last one repeated:
+  * tools/localize/textures/misc/battle-banner-es.json) */
+ int16_t VS_BATTLE_START_TEXT_POSITIONS[155][2] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	{ -132, -48 },
++	{ -124, -48 },
++	{ -132, -36 },
++	{ -124, -36 },
++	{ -132, -24 },
++	{ -124, -24 },
++	{ -132, -12 },
++	{ -124, -12 },
++	{ -132, 0 },
++	{ -124, 0 },
++	{ -132, 12 },
++	{ -124, 12 },
++	{ -132, 24 },
++	{ -124, 24 },
++	{ -132, 36 },
++	{ -124, 36 },
++	{ -116, 36 },
++	{ -108, 36 },
++	{ -100, 36 },
++	{ -92, 36 },
++	{ -68, -48 },
++	{ -60, -48 },
++	{ -36, -48 },
++	{ -28, -48 },
++	{ -68, -36 },
++	{ -60, -36 },
++	{ -36, -36 },
++	{ -28, -36 },
++	{ -68, -24 },
++	{ -60, -24 },
++	{ -36, -24 },
++	{ -28, -24 },
++	{ -68, -12 },
++	{ -60, -12 },
++	{ -36, -12 },
++	{ -28, -12 },
++	{ -68, 0 },
++	{ -60, 0 },
++	{ -36, 0 },
++	{ -28, 0 },
++	{ -68, 12 },
++	{ -60, 12 },
++	{ -36, 12 },
++	{ -28, 12 },
++	{ -68, 24 },
++	{ -60, 24 },
++	{ -36, 24 },
++	{ -28, 24 },
++	{ -60, 36 },
++	{ -52, 36 },
++	{ -44, 36 },
++	{ -36, 36 },
++	{ -4, -48 },
++	{ 4, -48 },
++	{ 12, -48 },
++	{ 20, -48 },
++	{ 28, -48 },
++	{ 12, -36 },
++	{ 12, -24 },
++	{ 12, -12 },
++	{ 12, 0 },
++	{ 12, 12 },
++	{ 12, 24 },
++	{ 12, 36 },
++	{ 76, -48 },
++	{ 84, -48 },
++	{ 76, -36 },
++	{ 84, -36 },
++	{ 68, -24 },
++	{ 76, -24 },
++	{ 84, -24 },
++	{ 92, -24 },
++	{ 60, -12 },
++	{ 68, -12 },
++	{ 92, -12 },
++	{ 100, -12 },
++	{ 60, 0 },
++	{ 68, 0 },
++	{ 92, 0 },
++	{ 100, 0 },
++	{ 52, 12 },
++	{ 60, 12 },
++	{ 68, 12 },
++	{ 76, 12 },
++	{ 84, 12 },
++	{ 92, 12 },
++	{ 100, 12 },
++	{ 108, 12 },
++	{ 52, 24 },
++	{ 60, 24 },
++	{ 100, 24 },
++	{ 108, 24 },
++	{ 52, 36 },
++	{ 60, 36 },
++	{ 100, 36 },
++	{ 108, 36 },
++	{ 124, -48 },
++	{ 124, -36 },
++	{ 124, -24 },
++	{ 124, -12 },
++	{ 124, 0 },
++	{ 124, 12 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++	{ 124, 36 },
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	{ 0xff54, 0xffd0 },
+ 	{ 0xff54, 0xffe8 },
+ 	{ 0xff54, 0xfff4 },
+@@ -542,7 +698,7 @@ uint8_t VS_COMMAND_LABEL_U[5] = { 0, 11, 25, 39, 50 };
+ uint8_t VS_COMMAND_LABEL_W[5] = { 11, 14, 14, 11, 11 };
+ /* MOD (language): the gauge's segments are the letters of BI_IN.TIM's FINISH!!; the Spanish texture has REMATE! there
+  * (tools/localize/textures/misc build.py finish), its eighth segment empty */
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ uint8_t VS_FINISHER_SEGMENT_U[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+ uint8_t VS_FINISHER_SEGMENT_W[8] = { 7, 6, 9, 7, 6, 6, 5, 0 };
+ uint8_t VS_FINISHER_SEGMENT_X[8] = { 0, 7, 13, 22, 29, 35, 41, 46 };
+@@ -1283,7 +1439,9 @@ void VS_renderFighterHPBar(int16_t id)
+  * box's x (left, right) and w; the Spanish ○PULSA is 43
+  * wide, moved left so its right edge stays (tools/localize/textures/misc/NOTES.md) */
+ int16_t VS_FINISHER_LABEL[6] = {
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD == MOD_LANG_PT_BR
++	-97, 99, 48, -99, 97, 52,
++#elif MOD_LANG_BUILD != MOD_LANG_EN
+ 	-0x5c, 0x68, 43, -0x5e, 0x66, 0x2f,
+ #else
+ 	-0x56, 0x6e, 37, -0x58, 0x6c, 0x29,
+diff --git a/src/vs/vs_scene.c b/src/vs/vs_scene.c
+index 1ac99d3b..f60cf8f7 100644
+--- a/src/vs/vs_scene.c
++++ b/src/vs/vs_scene.c
+@@ -322,7 +322,7 @@ VsTextPiece VS_VERSUS_TEXT_PIECES[21] = {
+ 	},
+ 	/* MOD (language): VS MODE; the Spanish MODO VS (TAISEN2.TIM) is 2 px wider, 1 px further left */
+ 	{
+-#if MOD_LANG_BUILD == MOD_LANG_ES
++#if MOD_LANG_BUILD != MOD_LANG_EN
+ 		0x004f,
+ 		0x000e,
+ 		0x0070,
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index d5239e72..43951358 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -410,6 +410,9 @@ MOD_OPTIONS:
+     MOD_OPT_STR_ENGLISH:
+       ja: "ENGLISH"
+       en_us: "ENGLISH"
++    MOD_OPT_STR_PORTUGUESE:
++      ja: "PORTUGUES"
++      en_us: "PORTUGUES"
+     MOD_OPT_STR_SPANISH:
+       ja: "ESPANOL"
+       en_us: "ESPANOL"
+diff --git a/tools/gen_lang_files.py b/tools/gen_lang_files.py
+index dd2a7a27..9987feef 100644
+--- a/tools/gen_lang_files.py
++++ b/tools/gen_lang_files.py
+@@ -33,18 +33,22 @@ def main():
+         hashes.setdefault(fnv1a(n), set()).add(n)
+     rows = []
+     for spec in a.lang.split():
+-        key, es, en = spec.split(':')
++        parts = spec.split(':')
++        if len(parts) not in (3, 4):
++            sys.exit(f'gen_lang_files: expected NAME:ES:EN[:PT], got {spec}')
++        key, es, en = parts[:3]
++        pt = parts[3] if len(parts) == 4 else '-'
+         if len(hashes.get(fnv1a(key), ())) > 1:
+             sys.exit(f'gen_lang_files: {key} shares its hash with {sorted(hashes[fnv1a(key)] - {key})}')
+         idx = []
+-        for c in (es, en):
++        for c in (es, en, pt):
+             if c == '-':
+                 idx.append(0xFFFF)
+             elif c in where:
+                 idx.append(where[c])
+             else:
+                 sys.exit(f'gen_lang_files: {c} (a copy of {key}) is not in NEW_FILES')
+-        rows.append(f'{{ 0x{fnv1a(key):08X}, {idx[0]}, {idx[1]} }}, /* {key} */')
++        rows.append(f'{{ 0x{fnv1a(key):08X}, {idx[0]}, {idx[1]}, {idx[2]} }}, /* {key} */')
+     text = ''.join(r + '\n' for r in rows)
+     if not os.path.exists(a.out) or open(a.out).read() != text:
+         open(a.out, 'w').write(text)
+diff --git a/tools/gen_text.py b/tools/gen_text.py
+index 6376e407..045cd4f2 100755
+--- a/tools/gen_text.py
++++ b/tools/gen_text.py
+@@ -150,6 +150,10 @@ def __banked_pad(key, value):
+ def __other_string(entry, release, where, key=None):
+     """the other language's text of a string (a two-language build), else the string's own"""
+     value = __banked_pad(key, __text(entry, release, where)) if __PAD_ON else __banked(key, __text(entry, release, where))
++    if __PAD_ON and __PAD.get('identity'):
++        original = __text(entry, release, where)
++        if isinstance(original, str) and (not isinstance(value, str) or __c_bytes(original, where) > __c_bytes(value, where)):
++            value = original
+     return value if not isinstance(value, list) else None
+ 
+ 
+@@ -157,7 +161,14 @@ def __other_lines(entry, release, count, where, key=None):
+     value = __banked_pad(key, __text(entry, release, where)) if __PAD_ON else __banked(key, __text(entry, release, where))
+     if not isinstance(value, list):
+         value = [value]
+-    return (value + [''] * count)[:count]
++    out = (value + [''] * count)[:count]
++    if __PAD_ON and __PAD.get('identity'):
++        original = __text(entry, release, where)
++        original = original if isinstance(original, list) else [original]
++        for n, old in enumerate(original[:count]):
++            if isinstance(old, str) and (out[n] is None or __c_bytes(old, where) > __c_bytes(out[n], where)):
++                out[n] = old
++    return out
+ 
+ 
+ def __padded(text, other, where):
+@@ -167,7 +178,9 @@ def __padded(text, other, where):
+     return __c_string(text, where, __c_bytes(other, where))
+ 
+ 
+-def __pair(text, other):
++def __pair(text, other, identity):
++    if __PAD_ON and __PAD.get("identity"):
++        return (identity, None)
+     return (text, other if __PAD_ON else None)
+ 
+ 
+@@ -207,7 +220,7 @@ def __generate(release, blocks, source):
+                 literal = __c_string(text, where, max(__c_bytes(text, where), __c_bytes(other or '', where)) + 1)
+             header.append('#define {} {}'.format(symbol, literal))
+             return []
+-        pair = __pair(literal, other)
++        pair = __pair(literal, other, key or where)
+         if pair in named:
+             header.append('#define {} {}'.format(symbol, named[pair]))
+             return []
+@@ -285,7 +298,7 @@ def __generate(release, blocks, source):
+                     refs.append('NULL')
+                     continue
+                 literal = __padded(line, others[n], where)
+-                pair = __pair(literal, others[n])
++                pair = __pair(literal, others[n], (key, n))
+                 if storage == 'literal' and line == '' and body.get('empty'):
+                     symbol = body['empty']
+                 elif storage == 'literal' and not named_here and not __PAD_ON:
+-- 
+2.55.0
+

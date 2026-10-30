@@ -1,0 +1,1110 @@
+From de0dd2a9204c5e47240987cc5aee2aebc395f121 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 27 Oct 2026 19:26:21 +0000
+Subject: [PATCH] Patch 0247: laboratory scenario editor, full needs, evolution
+ and map pickers
+
+---
+ src/main/mod_lab.c        | 428 +-----------------------------------
+ src/main/mod_lab_menu.inc | 442 ++++++++++++++++++++++++++++++++++++++
+ src/main/utils.c          |   5 +-
+ src/main/utils2.c         |  10 +-
+ text/main/mod_lab.yaml    | 120 ++++++++++-
+ 5 files changed, 576 insertions(+), 429 deletions(-)
+ create mode 100644 src/main/mod_lab_menu.inc
+
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 7bf8acd3..1d900584 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -1,443 +1,33 @@
+-/*
+- * MOD: lab menu.
+- *
+- * With the game paused (START) and no script running, SELECT opens a box with
+- * the partner's state and six options (up/down to choose, X to accept,
+- * triangle or SELECT to close):
+- *   - "+1000 bits"     adds 1000 to the money
+- *   - "Heal partner"   current HP and MP to the maximum
+- *   - "One-time gift"  mini quest: gives 1 Meat and sets MOD_LAB_TRIGGER;
+- *                      afterwards it says the gift was already taken
+- *   - "To MasterTyrannomon"  starts the real evolution sequence into the shown
+- *                      species when the game is unpaused, the way an
+- *                      evolution item does, but with the natural stat gains
+- *                      (HAS_USED_EVOITEM = 0). Left/right choose the target:
+- *                      "To MasterTyrannomon" (124), "To Cherrymon" (121; MOD
+- *                      cherrymon), "To King of Sukamon" (120; MOD
+- *                      partners-npc-a), "To Icemon" (94), "To Meteormon"
+- *                      (113), the partners of MOD partners-npc-b, "To
+- *                      Machinedramon" (115; MOD machinedramon), "To Jijimon"
+- *                      (117), "To Analogman" (116), then every partner species
+- *                      of DIGI.DAT in id order (MOD scale: the imported ones,
+- *                      Veemon 180, Puppetmon, Kimeramon..., any id up to
+- *                      NUM_DIGIMON; L1/R1 jump 10), and "To Mega <name>"
+- *                      (MOD mega: the Mega the partner, an Ultimate, evolves
+- *                      to, otherwise the first Mega species in DIGI.DAT,
+- *                      docs/mods/mega.md); a species the disc's DIGI.DAT
+- *                      does not define is skipped
+- *   - "Status bubbles  All"  X (or left/right) switches Classic / All
+- *                      (MOD status-bubbles)
+- *   - "Close"
+- * (The frame rate is not an option: it is chosen when the game is built,
+- * Makefile FPS=20|30|60.)
+- *
+- * The result of an option replaces the stats line until the next key, so the
+- * box keeps 8 text rows (0x90..0xEF; the pause label is at 0xF0).
+- *
+- * Hooked from handlePause() (utils2.c). Only uses game functions:
+- * drawString/renderString (text in the VRAM text area), UI boxes
+- * (createStaticUIBox), giveItem, setTrigger/isTriggerSet, playSound.
+- * The game font has no '>', '/' or parentheses: only A-Z a-z 0-9 space
+- * . ? ! " ' , \ : ; + - = are safe.
+- */
++/* Laboratory UI and scenario editing; the field shortcuts below share its roster. */
+ #include <libetc.h>
+-
++#include <stddef.h>
++#include <string.h>
+ #include <dw/btl.h>
+ #include <dw/entity.h>
+ #include <dw/ids.h>
+ #include <dw/level.h>
++#include <dw/mod_rules.h>
++#include <dw/caps.h>
+ #include <dw/params.h>
+ #include <dw/species.h>
+ #include <dw/font.h>
+ #include <dw/script.h>
+ #include <dw/screen.h>
+ #include <dw/mod_options.h>
++#include <dw/input.h>
+ #include <dw/tamer.h>
+ #include <dw/clock.h>
+ #include <dw/sound.h>
+-#include <text/main/mod_lab.h>   /* MOD (text sources): the lab menu's text, keyed (main.LAB_STR_*) */
+-#include <dw/species.h>
+-#include <dw/types.h>
+ #include <dw/ui.h>
+ #include <dw/anim.h>
+ #include <dw/model.h>
+ #include <dw/mod_font.h>
+ #include <dw/partner.h>
+ #include <dw/world_object.h>
++#include <dw/bubble.h>
++#include <text/main/mod_lab.h>
+ 
+-#define MOD_LAB_TRIGGER	799	/* free and saved trigger (docs/mods/scripts.md, 717-799) */
+-#define MOD_LAB_BOX	5	/* same box the pause uses */
+-#define MOD_LAB_TEXT_Y	0x90	/* text area rows we use: 0x90..0xEF (0xF0 is the pause label) */
+-/* MOD (fps): no frame rate option; the frame rate is a build parameter
+- * (Makefile FPS=20|30|60, docs/mods/60fps.md) */
+-#define MOD_LAB_OPTIONS	6
+-#define MOD_LAB_OPT_BUBBLES	4	/* MOD (status-bubbles): Classic / All */
+-#define MOD_LAB_OPT_EVOLVE	3	/* MOD (master-tyrannomon, mega) */
+-#define ITEM_MEAT	38
+-
+-#define PAD_SELECT	0x100
+-#define PAD_UP		0x1000
+-#define PAD_DOWN	0x4000
+-#define PAD_LEFT	0x8000
+-#define PAD_RIGHT	0x2000
+-#define PAD_L1		0x4
+-#define PAD_R1		0x8
+-#define PAD_TRIANGLE	0x10
+-#define PAD_CROSS	0x40
+-
+-extern UIBoxData UI_BOX_DATA[];
+-extern int32_t IS_SCRIPT_PAUSED;
+-extern int16_t EVOLUTION_TARGET;
+-extern uint8_t HAS_USED_EVOITEM;
+-
+-void drawString(char *str, int32_t x, int32_t y);
+-void renderString(int32_t color, int32_t x, int32_t y, int32_t w, int32_t h,
+-		  int32_t u, int32_t v, int32_t layer, int32_t shadow);
+-void clearTextSubArea(RECT *rect);
+-char *formatInteger(int32_t value, char *buf, int32_t digits);
+-int32_t giveItem(ItemId item, uint8_t amount);
+-void pauseFrame(void);
+-void renderSelectionCursor(int32_t x, int32_t y, int16_t w, int16_t h, int32_t layer);
+-int32_t partnerGetState(void);
+-void partnerSetState(int32_t state);
+-int32_t tamerGetState(void);
+-void tamerSetState(int32_t state);
+-
+-extern int32_t MOD_STATUS_BUBBLES;
+-int32_t MOD_LAB_CURSOR; /* the lab menu's cursor (global for tests) */
+-int32_t MOD_LAB_EVO_CHOICE; /* MOD (cherrymon): the evolve entry (global so tests can read and set it) */
+-static char *modLabMessage;
+-
+-static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+-	LAB_STR_ADD_BITS,
+-	LAB_STR_HEAL,
+-	LAB_STR_GIFT,
+-	NULL, /* the evolve entry: "To <name>" of its target, drawn from the species data */
+-	LAB_STR_BUBBLES_ALL,
+-	LAB_STR_CLOSE,
+-};
+-
+-/*
+- * MOD (cherrymon): the evolve option cycles through these targets.
+- * MOD (partners-npc-c): the count follows the arrays, so new targets are
+- * only appended to both.
+- */
+-/* MOD (mega): the entry whose target is modLabMegaTarget() */
+-#define MOD_LAB_EVO_MEGA	-2
+-
+-static int16_t MOD_LAB_EVO_TARGETS[] = {
+-	DIGIMON_MASTER_TYRANNOMON,
+-	DIGIMON_CHERRYMON,
+-	DIGIMON_KING_SUKAMON, /* MOD (partners-npc-a) */
+-	DIGIMON_ICEMON,       /* MOD (partners-npc-a) */
+-	DIGIMON_METEORMON,    /* MOD (partners-npc-a) */
+-	DIGIMON_WARUMONZAEMON, /* MOD (partners-npc-b) */
+-	DIGIMON_MYOTISMON,
+-	DIGIMON_SHOGUNGEKOMON,
+-	DIGIMON_MACHINEDRAMON, /* MOD (machinedramon) */
+-	DIGIMON_JIJIMON,       /* MOD (jijimon) */
+-	DIGIMON_ANALOGMAN,     /* MOD (analogman) */
+-};
+-/* MOD (scale): after these come the partner species of DIGI.DAT (getSpeciesPartnerId), then the Mega entry */
+-#define MOD_LAB_EVO_FIXED ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
+-
+-/* the entries: fixed originals, the species of DIGI.DAT, the Mega */
+-static int32_t modLabEvoCount(void)
+-{
+-	return MOD_LAB_EVO_FIXED + getSpeciesPartnerCount() + 1;
+-}
+-
+-static char *appendStr(char *dst, char *src)
+-{
+-	while (*src != '\0') {
+-		*dst++ = *src++;
+-	}
+-	*dst = '\0';
+-	return dst;
+-}
+-
+-/* MOD (mega): the Mega the partner evolves to if it is an Ultimate with one in
+- * its paths, otherwise the first Mega species (-1: none on the disc) */
+-static int32_t modLabMegaTarget(void)
+-{
+-	EvolutionPath *path;
+-	int32_t type;
+-	int32_t i;
+-
+-	type = PARTNER_ENTITY.digimonEntity.entity.type;
+-	if (DIGI_PARA(type).level == LEVEL_ULTIMATE) {
+-		path = getEvolutionPath(type);
+-		for (i = 0; i < 6; i++) {
+-			if (path->to[i] > 0 && DIGI_PARA(path->to[i]).level == LEVEL_MEGA) {
+-				return path->to[i];
+-			}
+-		}
+-	}
+-	/* MOD (scale): the first Mega partner species, from the DIGI.DAT index */
+-	type = getFirstMegaSpecies();
+-	return type > 0 ? type : -1;
+-}
+-
+-static char modLabMegaText[32];
+-static char modLabSpeciesText[32]; /* MOD (scale): "To <name>" of a DIGI.DAT species */
+-
+-/* MOD (integration): the species of the current evolve entry, -1 when the disc has none */
+-static int32_t modLabEvoTarget(void)
+-{
+-	int32_t t;
+-
+-	if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+-		return modLabMegaTarget();
+-	}
+-	if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED) {
+-		return getSpeciesPartnerId(MOD_LAB_EVO_CHOICE - MOD_LAB_EVO_FIXED); /* defined partner species */
+-	}
+-	t = MOD_LAB_EVO_TARGETS[MOD_LAB_EVO_CHOICE];
+-	return isValidDigimonType(t) ? t : -1;
+-}
+-
+-/* MOD (dcb-import): next target (step 1 or COUNT-1) whose species exists */
+-static void modLabStepEvoChoice(int32_t step)
+-{
+-	int32_t i;
+-
+-	int32_t count;
+-
+-	count = modLabEvoCount();
+-	for (i = 0; i < count; i++) {
+-		MOD_LAB_EVO_CHOICE = ((MOD_LAB_EVO_CHOICE + step) % count + count) % count;
+-		if (modLabEvoTarget() >= 0) {
+-			break;
+-		}
+-	}
+-}
+-
+-/* Layout copied from the game's own menus (inventory option boxes): text 12 px
+- * inside the box, one row every 0x12 px, the native selection bar behind the
+- * selected option. Each row has its own 0xC-high line in the VRAM text area. */
+-#define ROW_PITCH	0x12
+-#define BOX_W		0xD0
+-#define BOX_SHIFT_X	0x16	/* 22 px right of centre: the HUD clock (top left) reaches x = 77 */
+-#define ROW_TITLE	0
+-#define ROW_STATS	1
+-#define ROW_OPTIONS	2
+-#define ROW_COUNT	(ROW_OPTIONS + MOD_LAB_OPTIONS)
+-#define TEXT_ROW_Y(r)	(MOD_LAB_TEXT_Y + (r) * 0xC)
+-#define BOX_H		(8 + ROW_COUNT * ROW_PITCH + 2) /* centred vertically */
+-
+-static void modLabClearRow(int32_t row)
+-{
+-	RECT area;
+-
+-	setRECT(&area, 0, TEXT_ROW_Y(row), 0x100, 0xC);
+-	clearTextSubArea(&area);
+-}
+-
+-static void modLabDrawText(void)
+-{
+-	char line[40];
+-	char num[12];
+-	char *p;
+-	int32_t i;
+-	int32_t mega;
+-	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+-
+-	for (i = 0; i < ROW_COUNT; i++) {
+-		modLabClearRow(i);
+-	}
+-	drawString(LAB_STR_TITLE, 0, TEXT_ROW_Y(ROW_TITLE));
+-
+-	if (modLabMessage != NULL) {
+-		drawString(modLabMessage, 0, TEXT_ROW_Y(ROW_STATS));
+-	} else {
+-		p = appendStr(line, LAB_STR_BITS);
+-		p = appendStr(p, formatInteger(MONEY, num, 6));
+-		p = appendStr(p, LAB_STR_HP);
+-		p = appendStr(p, formatInteger(stats->current.currentHP, num, 4));
+-		p = appendStr(p, LAB_STR_OF);
+-		appendStr(p, formatInteger(stats->base.hp, num, 4));
+-		drawString(line, 0, TEXT_ROW_Y(ROW_STATS));
+-	}
+-
+-	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+-		if (i == MOD_LAB_OPT_BUBBLES) {
+-			drawString(MOD_STATUS_BUBBLES ? LAB_STR_BUBBLES_ALL : LAB_STR_BUBBLES_CLASSIC,
+-				   0, TEXT_ROW_Y(ROW_OPTIONS + i));
+-		} else if (i == MOD_LAB_OPT_EVOLVE) {
+-			if (MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()) {
+-				/* MOD (mega): "To Mega <name>" */
+-				p = appendStr(modLabMegaText, LAB_STR_TO_MEGA);
+-				mega = modLabMegaTarget();
+-				appendStr(p, mega < 0 ? LAB_STR_NONE : DIGIMON_NAME(mega));
+-				drawString(modLabMegaText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+-			} else {
+-				/* MOD (scale): "To <name>" of a species of DIGI.DAT; MOD (renames): of the fixed entries too,
+-				 * so the menu shows the species' name as the data has it */
+-				p = appendStr(modLabSpeciesText, LAB_STR_TO);
+-				mega = modLabEvoTarget();
+-				appendStr(p, mega < 0 ? LAB_STR_NONE : DIGIMON_NAME(mega));
+-				drawString(modLabSpeciesText, 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+-			}
+-		} else {
+-			drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+-		}
+-	}
+-	DrawSync(0);
+-}
+-
+-static void modLabRender(int32_t instanceId)
+-{
+-	GsBOXF box;
+-	RECT *pos;
+-	int32_t row;
+-	int32_t color;
+-
+-	box.attribute = 0x40000000;
+-	box.r = box.g = box.b = 0;
+-	setRECT(&box, -0xA0, -0x78, 0x140, 0xF0);
+-	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 7 - instanceId);
+-	pos = &UI_BOX_DATA[MOD_LAB_BOX].finalPos;
+-
+-	for (row = 0; row < ROW_COUNT; row++) {
+-		color = row == ROW_TITLE ? 4 : (row == ROW_STATS && modLabMessage != NULL) ? 3 : 0;
+-		renderString(color, pos->x + 12, pos->y + 8 + row * ROW_PITCH, BOX_W - 24, 0xC,
+-			     0, TEXT_ROW_Y(row), 0, 1);
+-	}
+-	renderSelectionCursor(pos->x + 9, pos->y + 6 + (ROW_OPTIONS + MOD_LAB_CURSOR) * ROW_PITCH,
+-			      BOX_W - 18, 0x10, 0);
+-}
+-
+-/* shown in the stats row by the next modLabDrawText, until the next key */
+-static void modLabShowMessage(char *msg)
+-{
+-	modLabMessage = msg;
+-}
+-
+-static void modLabFrames(int32_t n)
+-{
+-	while (n-- > 0) {
+-		pauseFrame();
+-	}
+-}
+-
+-static void modLabApply(void)
+-{
+-	Stats *stats = &PARTNER_ENTITY.digimonEntity.stats;
+-	int32_t mega;
+-
+-	switch (MOD_LAB_CURSOR) {
+-	case 0:
+-		MONEY += 1000;
+-		modLabShowMessage(LAB_STR_MSG_BITS);
+-		break;
+-	case 1:
+-		stats->current.currentHP = stats->base.hp;
+-		stats->current.currentMP = stats->base.mp;
+-		modLabShowMessage(LAB_STR_MSG_HEALED);
+-		break;
+-	case 2:
+-		if (isTriggerSet(MOD_LAB_TRIGGER)) {
+-			modLabShowMessage(LAB_STR_MSG_GIFT_TAKEN);
+-		} else {
+-			giveItem(ITEM_MEAT, 1);
+-			setTrigger(MOD_LAB_TRIGGER);
+-			modLabShowMessage(LAB_STR_MSG_GOT_MEAT);
+-		}
+-		break;
+-	case MOD_LAB_OPT_BUBBLES:
+-		MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
+-		break;
+-	case MOD_LAB_OPT_EVOLVE:
+-		/* MOD (master-tyrannomon, mega): as handleEvoItems does, with natural gains */
+-		mega = modLabEvoTarget();
+-		if (mega < 0) {
+-			modLabShowMessage(MOD_LAB_EVO_CHOICE >= MOD_LAB_EVO_FIXED + getSpeciesPartnerCount()
+-						  ? LAB_STR_MSG_NO_MEGA : LAB_STR_MSG_NOT_ON_DISC);
+-		} else if (!isPartnerModelFit(mega)) {
+-			modLabShowMessage(LAB_STR_MSG_TOO_BIG);
+-		} else if (PARTNER_ENTITY.digimonEntity.entity.type == mega) {
+-			modLabShowMessage(LAB_STR_MSG_ALREADY);
+-		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+-			modLabShowMessage(LAB_STR_MSG_NOT_NOW);
+-		} else {
+-			EVOLUTION_TARGET = mega;
+-			HAS_USED_EVOITEM = 0;
+-			tamerSetState(6);
+-			partnerSetState(13);
+-			modLabShowMessage(LAB_STR_MSG_UNPAUSE);
+-		}
+-		break;
+-	}
+-}
+-
+-/*
+- * Called from the pause loop with the pad input already read. Returns when
+- * the menu closes; the caller recreates the pause box.
+- */
+-void modLabMenu(uint32_t *input, uint32_t *previous)
+-{
+-	RECT pos;
+-	uint32_t pressed;
+-
+-	if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) {
+-		return; /* with a dialogue running the text area is in use */
+-	}
+-
+-	removeStaticUIBox(MOD_LAB_BOX);
+-	MOD_LAB_CURSOR = 0;
+-	modLabMessage = NULL;
+-	modLabDrawText();
+-	setRECT(&pos, -BOX_W / 2 + BOX_SHIFT_X, -BOX_H / 2, BOX_W, BOX_H);
+-	createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
+-	playSound(0, 3);
+-	modLabFrames(12);
+-
+-	for (;;) {
+-		*input = PadRead(1);
+-		pressed = *input & ~*previous;
+-		*previous = *input;
+-		if (pressed & (PAD_TRIANGLE | PAD_SELECT)) {
+-			break;
+-		}
+-		if (pressed & (PAD_UP | PAD_DOWN | PAD_LEFT | PAD_RIGHT | PAD_L1 | PAD_R1 | PAD_CROSS)) {
+-			modLabMessage = NULL;
+-		}
+-		if (pressed & PAD_UP) {
+-			MOD_LAB_CURSOR = (MOD_LAB_CURSOR + MOD_LAB_OPTIONS - 1) % MOD_LAB_OPTIONS;
+-			playSound(0, 2);
+-		} else if (pressed & PAD_DOWN) {
+-			MOD_LAB_CURSOR = (MOD_LAB_CURSOR + 1) % MOD_LAB_OPTIONS;
+-			playSound(0, 2);
+-		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_BUBBLES) {
+-			playSound(0, 2);
+-			MOD_STATUS_BUBBLES = !MOD_STATUS_BUBBLES;
+-		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && MOD_LAB_CURSOR == MOD_LAB_OPT_EVOLVE) {
+-			/* MOD (cherrymon): choose the evolution target */
+-			playSound(0, 2);
+-			modLabStepEvoChoice((pressed & PAD_RIGHT) ? 1 : -1);
+-		} else if ((pressed & (PAD_L1 | PAD_R1)) && MOD_LAB_CURSOR == MOD_LAB_OPT_EVOLVE) {
+-			playSound(0, 2);
+-			modLabStepEvoChoice((pressed & PAD_R1) ? 10 : -10);
+-		} else if (pressed & PAD_CROSS) {
+-			if (MOD_LAB_CURSOR == MOD_LAB_OPTIONS - 1) {
+-				break;
+-			}
+-			playSound(0, 3);
+-			modLabApply();
+-		} else {
+-			VSync(0);
+-			continue;
+-		}
+-		modLabDrawText();
+-		modLabFrames(2);
+-	}
+-
+-	playSound(0, 4);
+-	removeStaticUIBox(MOD_LAB_BOX);
+-	setRECT(&pos, 0, MOD_LAB_TEXT_Y, 0x100, ROW_COUNT * 0xC);
+-	clearTextSubArea(&pos);
+-	modLabFrames(8);
+-}
++#include "mod_lab_menu.inc"
+ 
+ /*
+  * MOD (roster switch, temporary test tool): on the map, SELECT + L1 turns the partner into the next species of
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+new file mode 100644
+index 00000000..aab3ba9b
+--- /dev/null
++++ b/src/main/mod_lab_menu.inc
+@@ -0,0 +1,442 @@
++/* Private laboratory implementation; included by mod_lab.c. Nine texture rows end before the pause label. */
++#define MOD_LAB_TRIGGER 799
++#define MOD_LAB_BOX 5
++#define MOD_LAB_TEXT_Y 0x84
++#define MOD_LAB_OPTIONS 8
++#define MOD_LAB_OPT_EVOLVE 3
++#define ITEM_MEAT 38
++#define PAD_SELECT 0x100
++#define PAD_UP 0x1000
++#define PAD_DOWN 0x4000
++#define PAD_LEFT 0x8000
++#define PAD_RIGHT 0x2000
++#define PAD_L1 4
++#define PAD_R1 8
++#define PAD_TRIANGLE 0x10
++#define PAD_CROSS 0x40
++#define LAB_VISIBLE 6
++#define LAB_ROWS 9
++#define LAB_PITCH 18
++#define LAB_WIDTH 288
++#define LAB_HEIGHT (LAB_ROWS * LAB_PITCH + 16)
++#define TEXT_ROW_Y(r) (MOD_LAB_TEXT_Y + (r) * 12)
++
++extern UIBoxData UI_BOX_DATA[];
++extern int32_t IS_SCRIPT_PAUSED;
++extern int16_t EVOLUTION_TARGET;
++extern uint8_t HAS_USED_EVOITEM, PAUSE_STATE;
++extern int32_t HAS_BUTTERFLY, BUTTERFLY_ID, CONDITION_BUBBLE_ID, CONDITION_BUBBLE_TYPE;
++extern ScreenId TARGET_MAP;
++extern uint8_t CURRENT_EXIT;
++void pauseFrame(void);
++void renderString(int32_t, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
++void renderSelectionCursor(int32_t, int32_t, int16_t, int16_t, int32_t);
++char *formatInteger(int32_t, char *, int32_t);
++int32_t giveItem(ItemId, uint8_t);
++int32_t isFileReadQueueBusy(void);
++void setFoodTimer(int16_t);
++void setSleepTimes(PartnerPara *, int32_t);
++void setSleepDisabled(int32_t);
++void unsetButterfly(int32_t);
++void unsetCameraFollowPlayer(void);
++static int32_t modRosterIsPartner(int32_t type);
++
++/* Retained for the field shortcut's set of added native partners. */
++static int16_t MOD_LAB_EVO_TARGETS[] = { DIGIMON_MASTER_TYRANNOMON, DIGIMON_CHERRYMON,
++    DIGIMON_KING_SUKAMON, DIGIMON_ICEMON, DIGIMON_METEORMON, DIGIMON_WARUMONZAEMON,
++    DIGIMON_MYOTISMON, DIGIMON_SHOGUNGEKOMON, DIGIMON_MACHINEDRAMON, DIGIMON_JIJIMON, DIGIMON_ANALOGMAN };
++#define MOD_LAB_EVO_FIXED ((int32_t)(sizeof(MOD_LAB_EVO_TARGETS) / sizeof(MOD_LAB_EVO_TARGETS[0])))
++
++enum { LAB_HOME, LAB_VALUES, LAB_NUMBER, LAB_EVOLVE, LAB_MAPS, LAB_CONFIRM };
++int32_t MOD_LAB_VIEW, MOD_LAB_CURSOR, MOD_LAB_VALUE, MOD_LAB_TARGET;
++int32_t MOD_LAB_ACTIVE; /* pauseFrame renders the frozen world while this static UI is open */
++int32_t MOD_LAB_EVO_CHOICE; /* selected species id, exposed for playtests */
++static int32_t labTop, labCount, labField, labPrevious, labPreviousCursor;
++static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the UI closes */
++static char *modLabMessage;
++static char labText[LAB_ROWS][96];
++static char *LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
++    LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_GIFT, LAB_STR_CLOSE };
++static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
++
++static char *appendStr(char *dst, char *src)
++{
++    while (*src) *dst++ = *src++;
++    *dst = '\0';
++    return dst;
++}
++
++static char *labInt(char *p, int32_t value)
++{
++    char digits[16];
++    if (value < 0) { p = appendStr(p, "-"); value = -value; }
++    return appendStr(p, formatInteger(value, digits, 1));
++}
++
++/* Every selectable field is an int16_t. Bounds use the active species' care rules. */
++typedef struct {
++    char *name;
++    uint16_t offset;
++    int16_t min, max, careMin, careMax;
++    uint8_t group; /* 0 PartnerPara, 1 Stats */
++} LabField;
++#define LAB_P(name, field, lo, hi, cmin, cmax) { name, __builtin_offsetof(PartnerPara, field), lo, hi, cmin, cmax, 0 }
++#define LAB_S(name, field, lo, hi) { name, __builtin_offsetof(Stats, field), lo, hi, -1, -1, 1 }
++static LabField LAB_FIELDS[] = {
++    LAB_P(LAB_STR_DISCIPLINE, discipline, 0, 100, MOD_CARE_LIM_DISC_MIN, MOD_CARE_LIM_DISC_MAX),
++    LAB_P(LAB_STR_HAPPINESS, happiness, -100, 100, MOD_CARE_LIM_HAPPY_MIN, MOD_CARE_LIM_HAPPY_MAX),
++    LAB_P(LAB_STR_WEIGHT, weight, 1, 99, MOD_CARE_LIM_WEIGHT_MIN, MOD_CARE_LIM_WEIGHT_MAX),
++    LAB_P(LAB_STR_MISTAKES, careMistakes, 0, 999, -1, -1),
++    LAB_P(LAB_STR_BATTLES, battles, 0, 9999, -1, -1),
++    LAB_P(LAB_STR_EVO_HOURS, evoTimer, 0, 32767, -1, -1),
++    LAB_P(LAB_STR_AGE, age, 0, 999, -1, -1),
++    LAB_P(LAB_STR_LIFETIME, remainingLifetime, 0, 32767, -1, -1),
++    LAB_P(LAB_STR_VIRUS, virusBar, 0, 100, -1, -1),
++    LAB_P(LAB_STR_TIREDNESS, tiredness, 0, 100, MOD_CARE_LIM_TIRED_MIN, MOD_CARE_LIM_TIRED_MAX),
++    LAB_P(LAB_STR_ENERGY, energyLevel, 0, 32767, -1, -1),
++    LAB_P(LAB_STR_FOOD, foodLevel, 0, 1440, -1, -1),
++    LAB_S(LAB_STR_HP_MAX, base.hp, 1, HPMP_CAP),
++    LAB_S(LAB_STR_MP_MAX, base.mp, 1, HPMP_CAP),
++    LAB_S(LAB_STR_OFFENSE, base.off, 1, STAT_CAP),
++    LAB_S(LAB_STR_DEFENSE, base.def, 1, STAT_CAP),
++    LAB_S(LAB_STR_SPEED, base.speed, 1, STAT_CAP),
++    LAB_S(LAB_STR_BRAINS, base.brain, 1, STAT_CAP),
++    LAB_S(LAB_STR_HP_CURRENT, current.currentHP, 0, HPMP_CAP),
++    LAB_S(LAB_STR_MP_CURRENT, current.currentMP, 0, HPMP_CAP),
++};
++#define LAB_FIELD_COUNT ((int32_t)(sizeof(LAB_FIELDS) / sizeof(LAB_FIELDS[0])))
++
++static int16_t *modLabFieldPtr(int32_t field)
++{
++    LabField *f = &LAB_FIELDS[field];
++    uint8_t *base = f->group ? (uint8_t *)&PARTNER_ENTITY.digimonEntity.stats : (uint8_t *)&PARTNER_PARA;
++    return (int16_t *)(base + f->offset);
++}
++
++static int32_t modLabBound(int32_t field, int32_t maximum)
++{
++    LabField *f = &LAB_FIELDS[field];
++    int32_t slot = maximum ? f->careMax : f->careMin;
++    int32_t value = slot >= 0 ? careGet(slot) : -1;
++    if (value == -1) value = maximum ? f->max : f->min;
++    if (maximum && field == 10) value = RAISE_ROW(PARTNER_ENTITY.digimonEntity.entity.type).energyCap;
++    if (maximum && field == 18) value = PARTNER_ENTITY.digimonEntity.stats.base.hp;
++    if (maximum && field == 19) value = PARTNER_ENTITY.digimonEntity.stats.base.mp;
++    return value;
++}
++
++static int32_t modLabClamp(int32_t field, int32_t value)
++{
++    int32_t lo = modLabBound(field, 0), hi = modLabBound(field, 1);
++    return value < lo ? lo : value > hi ? hi : value;
++}
++
++static void modLabSetValue(int32_t field, int32_t value)
++{
++    Stats *s = &PARTNER_ENTITY.digimonEntity.stats;
++    *modLabFieldPtr(field) = modLabClamp(field, value);
++    if (s->current.currentHP > s->base.hp) s->current.currentHP = s->base.hp;
++    if (s->current.currentMP > s->base.mp) s->current.currentMP = s->base.mp;
++}
++
++static void modLabHeal(void)
++{
++    Stats *s = &PARTNER_ENTITY.digimonEntity.stats;
++    s->current.currentHP = s->base.hp;
++    s->current.currentMP = s->base.mp;
++}
++
++static void modLabSatiate(void)
++{
++    int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++    int32_t awake;
++    modLabHeal();
++    setFoodTimer(type);
++    setSleepTimes(&PARTNER_PARA, type);
++    awake = PARTNER_PARA.hoursAwakeDefault;
++    if (awake < 1 || awake > 23) awake = 16;
++    PARTNER_PARA.sleepyHour = (HOUR + awake) % 24;
++    PARTNER_PARA.sleepyMinute = MINUTE;
++    PARTNER_PARA.wakeupHour = (PARTNER_PARA.sleepyHour + PARTNER_PARA.hoursAsleepDefault) % 24;
++    PARTNER_PARA.wakeupMinute = MINUTE;
++    PARTNER_PARA.timeAwakeToday = awake * 6;
++    PARTNER_PARA.condition &= ~0x7f;
++    PARTNER_PARA.energyLevel = RAISE_ROW(type).energyCap;
++    PARTNER_PARA.poopLevel = RAISE_ROW(type).poopTimer;
++    PARTNER_PARA.poopingTimer = -1;
++    PARTNER_PARA.tiredness = PARTNER_PARA.subTiredness = PARTNER_PARA.tirednessHungerTimer = 0;
++    PARTNER_PARA.starvationTimer = PARTNER_PARA.emptyStomachTimer = PARTNER_PARA.refusedFavFood = 0;
++    PARTNER_PARA.sicknessCounter = PARTNER_PARA.sicknessTries = PARTNER_PARA.sicknessTimer = 0;
++    PARTNER_PARA.injuryTimer = PARTNER_PARA.missedSleepHours = PARTNER_PARA.tirednessSleepTimer = 0;
++    PARTNER_PARA.happiness = modLabBound(1, 1);
++    setSleepDisabled(1);
++    if (HAS_BUTTERFLY == 0) { unsetButterfly(BUTTERFLY_ID); HAS_BUTTERFLY = -1; }
++    if (CONDITION_BUBBLE_ID >= 0) removeConditionBubble(CONDITION_BUBBLE_ID);
++    CONDITION_BUBBLE_TYPE = -1;
++    if (partnerGetState() == 1) updateConditionAnimation();
++}
++
++static int32_t modLabNewSpecies(int32_t type)
++{
++    return type >= NUM_PARTNER_DIGIMON || !isVanillaSpecies(type);
++}
++
++static void modLabList(int32_t view)
++{
++    int32_t i, first, id;
++    labCount = 0;
++    MOD_LAB_VIEW = view;
++    MOD_LAB_CURSOR = labTop = 0;
++    if (view == LAB_EVOLVE) {
++        for (i = 1; i < NUM_ORIGINAL_DIGIMON; i++) {
++            if (modRosterIsPartner(i)) labChoices[labCount++] = i;
++        }
++        /* The partner index is ordered by id; no duplicate added native species. */
++        for (i = 0; i < getSpeciesPartnerCount(); i++) {
++            id = getSpeciesPartnerId(i);
++            if (id >= NUM_ORIGINAL_DIGIMON && modRosterIsPartner(id)) labChoices[labCount++] = id;
++        }
++    } else {
++        for (i = 0; i < NUM_ORIGINAL_SCREENS; i++) {
++            MapEntry *e = getScreenEntry(i);
++            char filename[16];
++            if (!e->filename[0]) continue;
++            appendStr(appendStr(filename, e->filename), ".MAP");
++            /* Zero background images is valid (Mount Infinity, 3D rooms). */
++            if (modFileOnDisc(filename)) labChoices[labCount++] = i;
++        }
++        first = findNewScreen(-1, 1);
++        if (first >= 0) {
++            id = first;
++            do {
++                labChoices[labCount++] = id;
++                id = findNewScreen(id, 1);
++            } while (id >= 0 && id != first && labCount < NUM_SCREENS);
++        }
++    }
++    id = view == LAB_EVOLVE ? PARTNER_ENTITY.digimonEntity.entity.type : CURRENT_SCREEN;
++    for (i = 0; i < labCount; i++) if (labChoices[i] == id) MOD_LAB_CURSOR = i;
++}
++
++static int32_t modLabRowCount(void)
++{
++    return MOD_LAB_VIEW == LAB_HOME ? MOD_LAB_OPTIONS : MOD_LAB_VIEW == LAB_VALUES ? LAB_FIELD_COUNT : labCount;
++}
++
++/* Copy only whole encoded glyphs, then fit to the texture width in every font. */
++static void modLabFit(char *s)
++{
++    char *p, *last;
++    while (measureStringMode(s, FIT_VANILLA) > 248) {
++        last = s;
++        for (p = s; *p; ) {
++            last = p;
++            p += (uint8_t)*p >= 0x80 ? 2 : 1;
++        }
++        if (last == s) { *s = 0; break; }
++        *last = 0;
++    }
++}
++
++static void modLabDrawText(void)
++{
++    RECT area;
++    char lines[LAB_ROWS][96];
++    char *p;
++    int32_t row, n, id, level, count = modLabRowCount();
++    if (MOD_LAB_CURSOR < labTop) labTop = MOD_LAB_CURSOR;
++    if (MOD_LAB_CURSOR >= labTop + LAB_VISIBLE) labTop = MOD_LAB_CURSOR - LAB_VISIBLE + 1;
++    memset(lines, 0, sizeof(lines));
++    appendStr(lines[0], MOD_LAB_VIEW == LAB_HOME ? LAB_STR_TITLE :
++        MOD_LAB_VIEW == LAB_VALUES ? LAB_STR_PARAMETERS : MOD_LAB_VIEW == LAB_NUMBER ? LAB_FIELDS[labField].name :
++        MOD_LAB_VIEW == LAB_EVOLVE ? LAB_STR_EVOLVE : MOD_LAB_VIEW == LAB_MAPS ? LAB_STR_TELEPORT : LAB_STR_CONFIRM);
++    if (MOD_LAB_VIEW != LAB_NUMBER && MOD_LAB_VIEW != LAB_CONFIRM) {
++        p = appendStr(lines[0] + strlen(lines[0]), "  ");
++        p = labInt(p, MOD_LAB_CURSOR + 1); p = appendStr(p, LAB_STR_OF); labInt(p, count);
++    }
++    p = lines[1];
++    if (modLabMessage) appendStr(p, modLabMessage);
++    else if (MOD_LAB_VIEW == LAB_HOME) {
++        p = appendStr(p, LAB_STR_BITS); labInt(p, MONEY);
++    } else if ((MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS || MOD_LAB_VIEW == LAB_CONFIRM) && labCount) {
++        id = MOD_LAB_VIEW == LAB_CONFIRM ? MOD_LAB_TARGET : labChoices[MOD_LAB_CURSOR];
++        p = appendStr(p, "ID "); p = labInt(p, id);
++        if (MOD_LAB_VIEW == LAB_EVOLVE || (MOD_LAB_VIEW == LAB_CONFIRM && labPrevious == LAB_EVOLVE)) {
++            level = DIGI_PARA(id).level;
++            p = appendStr(p, "  "); p = appendStr(p, level >= 1 && level <= 6 ? LAB_STAGES[level] : "?");
++            appendStr(p, modLabNewSpecies(id) ? LAB_STR_NEW_MARK : "  Original");
++        } else appendStr(p, isNewScreen(id) ? LAB_STR_NEW_MARK : "  Original");
++    } else if (MOD_LAB_VIEW == LAB_VALUES) {
++        p = appendStr(p, LAB_STR_VALUE); p = labInt(p, *modLabFieldPtr(MOD_LAB_CURSOR));
++        p = appendStr(p, "  "); p = labInt(p, modLabBound(MOD_LAB_CURSOR, 0));
++        p = appendStr(p, " ... "); labInt(p, modLabBound(MOD_LAB_CURSOR, 1));
++    }
++    if (MOD_LAB_VIEW == LAB_NUMBER) {
++        p = appendStr(lines[2], LAB_STR_VALUE); labInt(p, MOD_LAB_VALUE);
++        p = labInt(lines[3], modLabBound(labField, 0)); p = appendStr(p, " ... "); labInt(p, modLabBound(labField, 1));
++        appendStr(lines[4], LAB_STR_STEP_ONE);
++        appendStr(lines[5], LAB_STR_STEP_TEN);
++        appendStr(lines[6], LAB_STR_STEP_HUNDRED);
++        appendStr(lines[7], LAB_STR_MINIMUM);
++    } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
++        id = MOD_LAB_TARGET;
++        appendStr(lines[3], labPrevious == LAB_EVOLVE ? DIGIMON_NAME(id) : getScreenCaption(id));
++        if (labPrevious == LAB_MAPS) appendStr(lines[4], getScreenEntry(id)->filename);
++        appendStr(lines[5], labPrevious == LAB_EVOLVE ? LAB_STR_EVOLVE : LAB_STR_TELEPORT);
++    } else for (row = 0; row < LAB_VISIBLE; row++) {
++        n = labTop + row;
++        if (n >= count) break;
++        p = lines[row + 2];
++        if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, LAB_HOME_TEXT[n]);
++        else if (MOD_LAB_VIEW == LAB_VALUES) {
++            p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, "  "); labInt(p, *modLabFieldPtr(n));
++        } else {
++            id = labChoices[n];
++            p = labInt(p, id); p = appendStr(p, " ");
++            if (MOD_LAB_VIEW == LAB_EVOLVE ? modLabNewSpecies(id) : isNewScreen(id)) p = appendStr(p, "+ ");
++            appendStr(p, MOD_LAB_VIEW == LAB_EVOLVE ? DIGIMON_NAME(id) : getScreenCaption(id));
++        }
++    }
++    appendStr(lines[8], MOD_LAB_VIEW == LAB_NUMBER || MOD_LAB_VIEW == LAB_CONFIRM ? LAB_STR_ACCEPT_CANCEL : (MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS) ? LAB_STR_PICK_HINT : LAB_STR_LIST_HINT);
++    for (row = 0; row < LAB_ROWS; row++) {
++        modLabFit(lines[row]);
++        if (!strcmp(labText[row], lines[row])) continue;
++        setRECT(&area, 0, TEXT_ROW_Y(row), 256, 12); clearTextSubArea(&area);
++        drawString(lines[row], 0, TEXT_ROW_Y(row));
++        strcpy(labText[row], lines[row]);
++    }
++    DrawSync(0);
++}
++
++static void modLabRender(int32_t instanceId)
++{
++    GsBOXF box;
++    RECT *pos = &UI_BOX_DATA[MOD_LAB_BOX].finalPos;
++    int32_t row;
++    box.attribute = 0x40000000; box.r = box.g = box.b = 0;
++    setRECT(&box, -160, -120, 320, 240); GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, 7 - instanceId);
++    /* Texture UVs are bytes: a width of 256 wraps to zero. */
++    for (row = 0; row < LAB_ROWS; row++)
++        renderString(row == 0 ? 4 : row == 1 ? 3 : row == 8 ? 1 : 0,
++            pos->x + 16, pos->y + 8 + row * LAB_PITCH, 248, 12, 0, TEXT_ROW_Y(row), 0, 1);
++    if (MOD_LAB_VIEW != LAB_NUMBER && MOD_LAB_VIEW != LAB_CONFIRM)
++        renderSelectionCursor(pos->x + 12, pos->y + 8 + (2 + MOD_LAB_CURSOR - labTop) * LAB_PITCH, 260, 12, 0);
++}
++
++static void modLabFrames(int32_t frames)
++{
++    while (frames-- > 0) pauseFrame();
++}
++
++/* Confirmations stage navigation only after the lab has closed and pause has ended. */
++static int32_t modLabPerform(void)
++{
++    int32_t type = MOD_LAB_TARGET;
++    if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1 || isFileReadQueueBusy()) {
++        modLabMessage = LAB_STR_MSG_NOT_NOW; return 0;
++    }
++    if (labPrevious == LAB_EVOLVE) {
++        if (!isPartnerModelFit(type)) { modLabMessage = LAB_STR_MSG_TOO_BIG; return 0; }
++        if (type == PARTNER_ENTITY.digimonEntity.entity.type) { modLabMessage = LAB_STR_MSG_ALREADY; return 0; }
++        EVOLUTION_TARGET = type; HAS_USED_EVOITEM = 0;
++        tamerSetState(6); partnerSetState(13);
++    } else {
++        TARGET_MAP = type; CURRENT_EXIT = 0;
++        tamerSetState(5); unsetCameraFollowPlayer(); stopGameTime();
++    }
++    PAUSE_STATE = 0;
++    return 1;
++}
++
++void modLabMenu(uint32_t *input, uint32_t *previous)
++{
++    uint16_t choices[NUM_DIGIMON > NUM_SCREENS ? NUM_DIGIMON : NUM_SCREENS];
++    uint32_t pressed;
++    RECT pos;
++    int32_t count, step, done = 0;
++    if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) return;
++    MOD_LAB_ACTIVE = 1;
++    labChoices = choices;
++    MOD_LAB_VIEW = LAB_HOME; MOD_LAB_CURSOR = labTop = 0;
++    modLabMessage = NULL;
++    removeStaticUIBox(MOD_LAB_BOX);
++    setRECT(&pos, 0, MOD_LAB_TEXT_Y, 256, LAB_ROWS * 12); clearTextSubArea(&pos);
++    memset(labText, 0, sizeof(labText));
++    modLabDrawText();
++    setRECT(&pos, -LAB_WIDTH / 2, -LAB_HEIGHT / 2, LAB_WIDTH, LAB_HEIGHT);
++    createStaticUIBox(MOD_LAB_BOX, 1, 0, &pos, NULL, modLabRender);
++    playSound(0, 3); modLabFrames(12);
++    while (!done) {
++        *input = PadRead(1); pressed = *input & ~*previous; *previous = *input;
++        if (!pressed) { VSync(0); continue; }
++        modLabMessage = NULL;
++        if (pressed & PAD_SELECT) break;
++        if (pressed & CANCEL_BUTTON) {
++            if (MOD_LAB_VIEW == LAB_HOME) break;
++            if (MOD_LAB_VIEW == LAB_NUMBER) { MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; }
++            else if (MOD_LAB_VIEW == LAB_CONFIRM) { MOD_LAB_VIEW = labPrevious; MOD_LAB_CURSOR = labPreviousCursor; }
++            else { MOD_LAB_CURSOR = MOD_LAB_VIEW == LAB_VALUES ? 2 : MOD_LAB_VIEW == LAB_EVOLVE ? 3 : 4; MOD_LAB_VIEW = LAB_HOME; }
++            labTop = 0;
++        } else if (MOD_LAB_VIEW == LAB_NUMBER) {
++            if (pressed & CONFIRM_BUTTON) {
++                modLabSetValue(labField, MOD_LAB_VALUE); MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labField; labTop = 0;
++                modLabMessage = LAB_STR_APPLIED;
++            } else {
++                step = (pressed & (1 | 2)) ? 100 : (pressed & (PAD_L1 | PAD_R1)) ? 10 : 1;
++                if (pressed & 0x80) MOD_LAB_VALUE = modLabBound(labField, 0);
++                else if (pressed & (PAD_UP | PAD_RIGHT | PAD_R1 | 2)) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE + step);
++                else if (pressed & (PAD_DOWN | PAD_LEFT | PAD_L1 | 1)) MOD_LAB_VALUE = modLabClamp(labField, MOD_LAB_VALUE - step);
++            }
++        } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
++            if (pressed & CONFIRM_BUTTON) done = modLabPerform();
++        } else if (pressed & CONFIRM_BUTTON) {
++            if (MOD_LAB_VIEW == LAB_HOME) {
++                switch (MOD_LAB_CURSOR) {
++                case 0:
++                    step = econCap(MOD_ECON_MONEY_CAP, 2147483647);
++                    MONEY = MONEY > step - 10000 ? step : MONEY + 10000;
++                    modLabMessage = LAB_STR_MSG_BITS; break;
++                case 1:
++                    if (partnerGetState() != 1 || tamerGetState() != 0) modLabMessage = LAB_STR_MSG_NOT_NOW;
++                    else { modLabSatiate(); modLabMessage = LAB_STR_SATISFIED; }
++                    break;
++                case 2: MOD_LAB_VIEW = LAB_VALUES; MOD_LAB_CURSOR = labTop = 0; break;
++                case 3: modLabList(LAB_EVOLVE); break;
++                case 4: modLabList(LAB_MAPS); break;
++                case 5: modLabHeal(); modLabMessage = LAB_STR_MSG_HEALED; break;
++                case 6:
++                    if (isTriggerSet(MOD_LAB_TRIGGER)) modLabMessage = LAB_STR_MSG_GIFT_TAKEN;
++                    else if (giveItem(ITEM_MEAT, 1) == 0) modLabMessage = LAB_STR_MSG_NOT_NOW;
++                    else { setTrigger(MOD_LAB_TRIGGER); modLabMessage = LAB_STR_MSG_GOT_MEAT; }
++                    break;
++                case 7: done = 1; break;
++                }
++            } else if (MOD_LAB_VIEW == LAB_VALUES) {
++                labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER;
++            } else if (labCount) {
++                labPrevious = MOD_LAB_VIEW; labPreviousCursor = MOD_LAB_CURSOR;
++                MOD_LAB_TARGET = labChoices[MOD_LAB_CURSOR];
++                if (MOD_LAB_VIEW == LAB_EVOLVE) MOD_LAB_EVO_CHOICE = MOD_LAB_TARGET;
++                MOD_LAB_VIEW = LAB_CONFIRM;
++            }
++        } else if ((MOD_LAB_VIEW == LAB_EVOLVE || MOD_LAB_VIEW == LAB_MAPS) && (pressed & 3)) {
++            for (step = 0; step < labCount; step++) {
++                count = MOD_LAB_VIEW == LAB_EVOLVE ? modLabNewSpecies(labChoices[step]) : isNewScreen(labChoices[step]);
++                if (!!count == !!(pressed & 2)) { MOD_LAB_CURSOR = step; break; }
++            }
++        } else {
++            count = modLabRowCount();
++            step = (pressed & (PAD_L1 | PAD_R1)) ? 10 : 1;
++            if (pressed & (PAD_UP | PAD_LEFT | PAD_L1)) MOD_LAB_CURSOR -= step;
++            if (pressed & (PAD_DOWN | PAD_RIGHT | PAD_R1)) MOD_LAB_CURSOR += step;
++            if (count > 0) { if (MOD_LAB_CURSOR < 0) MOD_LAB_CURSOR = 0; if (MOD_LAB_CURSOR >= count) MOD_LAB_CURSOR = count - 1; }
++        }
++        playSound(0, (pressed & CONFIRM_BUTTON) ? 3 : (pressed & CANCEL_BUTTON) ? 4 : 2);
++        modLabDrawText(); modLabFrames(2);
++    }
++    removeStaticUIBox(MOD_LAB_BOX);
++    setRECT(&pos, 0, MOD_LAB_TEXT_Y, 256, LAB_ROWS * 12); clearTextSubArea(&pos);
++    labChoices = NULL;
++    playSound(0, 4); modLabFrames(8);
++    MOD_LAB_ACTIVE = 0;
++}
+diff --git a/src/main/utils.c b/src/main/utils.c
+index 3cd30cc5..718df1d3 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -67,6 +67,8 @@ RGB8 TEXT_COLORS[17] = {
+ char NUMBER_FORMATS[32] = "%01d\0%02d\0%03d\0%04d\0%05d\0%06d";
+ // clang-format on
+ 
++extern int32_t MOD_LAB_ACTIVE;
++
+ void pauseFrame(void)
+ {
+ 	/* MOD (fps): rendered by the shared tick / present helper (main.c); the
+@@ -78,7 +80,8 @@ void pauseFrame(void)
+ 	ACTIVE_ORDERING_TABLE = &GS_ORDERING_TABLE[ACTIVE_FRAMEBUFFER];
+ 	GsSetWorkBase(GS_WORK_BASES[ACTIVE_FRAMEBUFFER]);
+ 	GsClearOt(0, 0, ACTIVE_ORDERING_TABLE);
+-	tickObjects();
++	/* The lab edits live care/evolution values: only render until it closes. */
++	if (!MOD_LAB_ACTIVE) tickObjects();
+ 	modPresent(MOD_PRESENT_BATTLE | MOD_PRESENT_PAUSE, NULL);
+ }
+ 
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 0e9e645c..7d02cfe0 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -451,9 +451,13 @@ void handlePause(void)
+ 			PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+ 			modLabMenu(&PAUSE_INPUT, &PAUSE_INPUT_PREVIOUS);
+ 			MAIN_D_80134E7C = 0;
+-			createPauseBox();
+-			pauseFrame();
+-			pauseFrame();
++			if (PAUSE_STATE != 0) {
++				createPauseBox();
++				pauseFrame();
++				pauseFrame();
++			} else {
++				PAUSE_BOX_VISIBLE = 0;
++			}
+ 			continue;
+ 		}
+ 		PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index beb05cd8..84f18dff 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -5,11 +5,11 @@ MOD_LAB:
+   storage: define
+   strings:
+     LAB_STR_TITLE:
+-      ja: "LAB MENU"
+-      en_us: "LAB MENU"
++      ja: "LABORATORY"
++      en_us: "LABORATORY"
+     LAB_STR_ADD_BITS:
+-      ja: "+1000 bits"
+-      en_us: "+1000 bits"
++      ja: "+10000 bits"
++      en_us: "+10000 bits"
+     LAB_STR_HEAL:
+       ja: "Heal partner"
+       en_us: "Heal partner"
+@@ -44,8 +44,8 @@ MOD_LAB:
+       ja: "none"
+       en_us: "none"
+     LAB_STR_MSG_BITS:
+-      ja: "Bits +1000"
+-      en_us: "Bits +1000"
++      ja: "Bits +10000"
++      en_us: "Bits +10000"
+     LAB_STR_MSG_HEALED:
+       ja: "Partner healed"
+       en_us: "Partner healed"
+@@ -91,3 +91,111 @@ MOD_LAB:
+     LAB_STR_LEVEL_MEGA:
+       ja: "  Mega"
+       en_us: "  Mega"
++    LAB_STR_SATIATE:
++      ja: "Satisfy all needs"
++      en_us: "Satisfy all needs"
++    LAB_STR_PARAMETERS:
++      ja: "Edit parameters"
++      en_us: "Edit parameters"
++    LAB_STR_EVOLVE:
++      ja: "Evolve Digimon"
++      en_us: "Evolve Digimon"
++    LAB_STR_TELEPORT:
++      ja: "Teleport to map"
++      en_us: "Teleport to map"
++    LAB_STR_CONFIRM:
++      ja: "Confirm action"
++      en_us: "Confirm action"
++    LAB_STR_NEW_MARK:
++      ja: " + NEW"
++      en_us: " + NEW"
++    LAB_STR_VALUE:
++      ja: "Value: "
++      en_us: "Value: "
++    LAB_STR_STEP_ONE:
++      ja: "Up/down: +1 / -1"
++      en_us: "Up/down: +1 / -1"
++    LAB_STR_MINIMUM:
++      ja: "Square: minimum"
++      en_us: "Square: minimum"
++    LAB_STR_ACCEPT_CANCEL:
++      ja: "Confirm / Cancel"
++      en_us: "Confirm / Cancel"
++    LAB_STR_LIST_HINT:
++      ja: "L1/R1: 10   OK"
++      en_us: "L1/R1: 10   OK"
++    LAB_STR_APPLIED:
++      ja: "Value applied"
++      en_us: "Value applied"
++    LAB_STR_SATISFIED:
++      ja: "All needs satisfied"
++      en_us: "All needs satisfied"
++    LAB_STR_DISCIPLINE:
++      ja: "Discipline"
++      en_us: "Discipline"
++    LAB_STR_HAPPINESS:
++      ja: "Happiness"
++      en_us: "Happiness"
++    LAB_STR_WEIGHT:
++      ja: "Weight"
++      en_us: "Weight"
++    LAB_STR_MISTAKES:
++      ja: "Care mistakes"
++      en_us: "Care mistakes"
++    LAB_STR_BATTLES:
++      ja: "Battles"
++      en_us: "Battles"
++    LAB_STR_EVO_HOURS:
++      ja: "Evolution hours"
++      en_us: "Evolution hours"
++    LAB_STR_AGE:
++      ja: "Age in days"
++      en_us: "Age in days"
++    LAB_STR_LIFETIME:
++      ja: "Life left in hours"
++      en_us: "Life left in hours"
++    LAB_STR_VIRUS:
++      ja: "Virus gauge"
++      en_us: "Virus gauge"
++    LAB_STR_TIREDNESS:
++      ja: "Tiredness"
++      en_us: "Tiredness"
++    LAB_STR_ENERGY:
++      ja: "Energy"
++      en_us: "Energy"
++    LAB_STR_FOOD:
++      ja: "Food in minutes"
++      en_us: "Food in minutes"
++    LAB_STR_HP_MAX:
++      ja: "Maximum HP"
++      en_us: "Maximum HP"
++    LAB_STR_MP_MAX:
++      ja: "Maximum MP"
++      en_us: "Maximum MP"
++    LAB_STR_OFFENSE:
++      ja: "Offense"
++      en_us: "Offense"
++    LAB_STR_DEFENSE:
++      ja: "Defense"
++      en_us: "Defense"
++    LAB_STR_SPEED:
++      ja: "Speed"
++      en_us: "Speed"
++    LAB_STR_BRAINS:
++      ja: "Brains"
++      en_us: "Brains"
++    LAB_STR_HP_CURRENT:
++      ja: "Current HP"
++      en_us: "Current HP"
++    LAB_STR_MP_CURRENT:
++      ja: "Current MP"
++      en_us: "Current MP"
++    LAB_STR_STEP_TEN:
++      ja: "L1/R1: -10 / +10"
++      en_us: "L1/R1: -10 / +10"
++    LAB_STR_STEP_HUNDRED:
++      ja: "L2/R2: -100 / +100"
++      en_us: "L2/R2: -100 / +100"
++    LAB_STR_PICK_HINT:
++      ja: "L1/R1 10  L2/R2 +"
++      en_us: "L1/R1 10  L2/R2 +"
+-- 
+2.55.0
+

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title data-i18n="meta.title">Horizon, a Digimon World mod</title>
+  <meta name="description" data-i18n-attr="content:meta.description" content="">
+  <meta name="theme-color" content="#cfd8f6">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="bar">
+      <a class="brand" href="#top">☀ Horizon</a>
+      <nav class="pill" aria-label="Main">
+        <a class="nav-link" href="#features" data-i18n="nav.features">What's new</a>
+        <a class="nav-link" href="#community" data-i18n="nav.community">Community</a>
+        <!-- The page's language: each by its own name (options made by js/app.js from js/i18n.js NAMES). -->
+        <label class="lang">
+          <svg class="lang-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M2.5 10h15M10 2.5c2.2 2.3 3.2 4.8 3.2 7.5s-1 5.2-3.2 7.5c-2.2-2.3-3.2-4.8-3.2-7.5s1-5.2 3.2-7.5z"/></svg>
+          <select id="lang" data-i18n-attr="aria-label:lang.label"></select>
+        </label>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <h1 data-i18n="hero.title"></h1>
+        <p class="hero-lead" data-i18n="hero.lead"></p>
+        <!-- The languages the released disc plays in (data/discs.json languages), each by its own name. -->
+        <p id="hero-langs" class="hero-langs"></p>
+        <div class="hero-actions">
+          <a class="button primary" href="#patch" data-i18n="hero.cta"></a>
+          <a class="button soft" href="#features" data-i18n="hero.cta2"></a>
+        </div>
+      </section>
+
+      <section id="patch" class="patcher" data-batches="0">
+        <h2 data-i18n="patcher.title"></h2>
+        <p class="sub" data-i18n="patcher.lead"></p>
+        <!-- Photo: Evan-Amos, public domain (Wikimedia Commons). -->
+        <!-- The four discs, one slot each (made from data/discs.json by js/app.js): the cover in grey until its disc
+             is added, the game and what it is for, the check's progress over the cover, then the check and ×. The
+             release and checksums under Details. -->
+        <ul id="slots" class="slots" data-i18n-attr="aria-label:slot.listLabel"></ul>
+        <ul id="jobs" class="jobs" aria-live="polite"></ul>
+        <!-- The drop zone: one button (click, Enter, or drop files on it or anywhere on the page). The icon is our
+             own drawing: an arrow down into an open tray; on drag-over the arrow dips into it. -->
+        <button id="add-button" class="drop-zone" type="button">
+          <svg class="drop-border" width="100%" height="100%" aria-hidden="true"><rect x="1.5" y="1.5" rx="20.5" /></svg>
+          <svg class="drop-icon" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <g class="drop-arrow"><path d="M16 4v14"/><path d="M10.5 12.5 16 18l5.5-5.5"/></g>
+            <path d="M5 21.5v4a2.5 2.5 0 0 0 2.5 2.5h17a2.5 2.5 0 0 0 2.5-2.5v-4"/>
+          </svg>
+          <span class="drop-text" data-i18n="add.button"></span>
+          <span class="drop-hint" data-i18n="add.hint"></span>
+        </button>
+        <input id="add-input" class="file" type="file" multiple tabindex="-1" aria-hidden="true">
+        <details class="sums" hidden>
+          <summary data-i18n="slot.details"></summary>
+          <div class="sums-scroll">
+            <table>
+              <thead><tr><th></th><th>CRC-32</th><th>SHA-1</th><th data-i18n="slot.size"></th></tr></thead>
+              <tbody id="sums-body"></tbody>
+            </table>
+          </div>
+        </details>
+        <div class="patch-row">
+          <button id="patch-button" class="button primary" type="button" disabled data-i18n="patch.button"></button>
+          <div id="patch-status" class="patch-status" role="status" aria-live="polite"></div>
+        </div>
+        <!-- The build, in this browser: progress, then the disc to download. -->
+        <div id="build" class="build" hidden>
+          <div class="build-head">
+            <b id="build-phase" role="status" aria-live="polite"></b>
+            <span id="build-time" class="build-time"></span>
+          </div>
+          <div id="build-progress" class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+          <div id="build-detail" class="build-detail" hidden>
+            <ol id="build-steps" class="build-steps"></ol>
+            <ul id="build-workers" class="build-workers"></ul>
+          </div>
+          <div id="build-error" class="build-error" role="alert" hidden></div>
+          <div id="build-done" class="build-done" hidden>
+            <div class="build-links">
+              <a id="dl-bin" class="button primary" href="#"></a>
+              <a id="dl-cue" class="button soft" href="#"></a>
+            </div>
+            <p class="build-note" data-i18n="build.howTo"></p>
+            <p id="build-sha" class="build-sha"></p>
+          </div>
+          <div class="build-foot">
+            <button id="build-stop" class="link-button" type="button" data-i18n="build.stop"></button>
+            <details class="build-log"><summary data-i18n="build.details"></summary><pre id="build-log"></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <h2 data-i18n="features.title"></h2>
+        <p class="sub" data-i18n="features.lead"></p>
+        <div id="feature-list" class="feature-list"></div>
+      </section>
+
+      <section id="community" class="community">
+        <h2 data-i18n="community.title"></h2>
+        <p class="sub" data-i18n="community.lead"></p>
+        <div class="links">
+          <a class="link-pill" id="link-discord" href="#" target="_blank" rel="noopener" data-i18n="community.discord"></a>
+          <a class="link-pill" id="link-github" href="#" target="_blank" rel="noopener" data-i18n="community.github"></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p data-i18n="footer.legal"></p>
+      <p id="release" class="release" hidden></p>
+    </footer>
+  </div>
+
+  <div id="drop-veil" class="drop-veil" aria-hidden="true"><p data-i18n="patcher.dropHint"></p></div>
+
+  <!-- The files that cannot be used, from one drop or choice. -->
+  <dialog id="problems" class="problems" aria-labelledby="problems-title">
+    <h3 id="problems-title"></h3>
+    <ul id="problems-list" class="problems-list"></ul>
+    <div class="problems-foot"><button id="problems-close" class="button primary" type="button" data-i18n="problems.close" autofocus></button></div>
+  </dialog>
+</body>
+</html>

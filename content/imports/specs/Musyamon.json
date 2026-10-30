@@ -1,0 +1,123 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw3": "M173MSHA",
+ "type": 325,
+ "name": "Musyamon",
+ "source": {
+  "type": 34,
+  "mmd": "extracted/CHDAT/MMD1/OGRE.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 1,
+  "4": 15,
+  "5": 12,
+  "6": 13,
+  "7": 14,
+  "9": 11,
+  "10": 16,
+  "11": 17,
+  "14": 6,
+  "15": 7,
+  "16": 5,
+  "18": 8,
+  "21": 9,
+  "22": 10,
+  "23": 3
+ },
+ "hips": [
+  1,
+  1,
+  1.127
+ ],
+ "root_scale": 1.127,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 45,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_03",
+   "start": 0,
+   "end": 45,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "fall",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x2c": {
+   "anim": "anim_11",
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.0
+  },
+  "0x39": {
+   "anim": "anim_16",
+   "start": 1,
+   "end": 42,
+   "speed": 1.09,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  },
+  "0x36": {
+   "anim": "anim_12",
+   "start": 0,
+   "end": 86,
+   "speed": 1.4,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x2e",
+  "0x2f",
+  "0x30",
+  "0x33",
+  "0x34",
+  "0x37",
+  "0x38"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.121821,
+ "hub_roots": true,
+ "quad_angle": 40.0,
+ "reverse": {
+  "fall": "anim_11"
+ }
+}

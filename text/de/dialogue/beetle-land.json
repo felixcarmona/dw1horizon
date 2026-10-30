@@ -1,0 +1,817 @@
+{
+ "s101.sec5.u0": [
+  [
+   "Bericht, -Bericht."
+  ]
+ ],
+ "s101.sec6.u0": [
+  [
+   "Feind gesichtet!"
+  ]
+ ],
+ "s101.sec7.u0": [
+  [
+   "Hau ruck. Hau ruck."
+  ]
+ ],
+ "s101.sec8.u0": [
+  [
+   "Heute ist es schlecht dafür."
+  ]
+ ],
+ "s101.sec9.u0": [
+  [
+   "Ku-ku-ku-ku..."
+  ]
+ ],
+ "s101.sec10.u0": [
+  [
+   "Ist das nicht unfair?"
+  ]
+ ],
+ "s101.sec11.u0": [
+  [
+   "Haltet sie auf!"
+  ]
+ ],
+ "s101.sec12.u0": [
+  [
+   "So viel zu tun, so viel zu tun."
+  ]
+ ],
+ "s101.sec81.m0.o0": "Flöte spielen",
+ "s101.sec81.m0.o1": "Nicht spielen",
+ "s101.sec81.u0": [
+  [
+   "Die {color 6}Blaue Flöte{color 1} spielen?"
+  ]
+ ],
+ "s102.sec10.u0": [
+  [
+   "- Klasse D - Vor allem für",
+   "Rookie-Digimon. Einzel, 3",
+   "Runden, 8 Teilnehmer Teilnahme:"
+  ],
+  [
+   "offen für alle"
+  ]
+ ],
+ "s102.sec10.u1": [
+  [
+   "- Klasse C - Vor allem für",
+   "Champion-Digimon. Einzel, 3",
+   "Runden, 8 Teilnehmer Teilnahme:"
+  ],
+  [
+   "offen für alle"
+  ]
+ ],
+ "s102.sec10.u2": [
+  [
+   "- Klasse B - Für Champions,",
+   "die auf ihre Stärke vertrauen.",
+   "Einzel, 3 Runden, 8 Teilnehmer"
+  ],
+  [
+   "Teilnahme: offen für alle"
+  ]
+ ],
+ "s102.sec10.u3": [
+  [
+   "- Klasse A - Vor allem für",
+   "Ultra-Digimon. Einzel, 3",
+   "Runden, 8 Teilnehmer Teilnahme:"
+  ],
+  [
+   "offen für alle"
+  ]
+ ],
+ "s102.sec10.u4": [
+  [
+   "- Klasse S - Hier treffen",
+   "sich die stärksten Digimon.",
+   "Einzel, 3 Runden, 8 Teilnehmer"
+  ],
+  [
+   "Teilnahme: Sieger Klasse A"
+  ]
+ ],
+ "s102.sec10.u5": [
+  [
+   "- Klasse R - Eine wilde",
+   "Schlacht mit List und Taktik",
+   "gewinnen. Vierkampf, 2 Runden,"
+  ],
+  [
+   "8 Starter Teilnahme: offen für",
+   "alle"
+  ]
+ ],
+ "s102.sec10.u6": [
+  [
+   "- Version-1-Pokal - Kürt",
+   "das beste Digimon der Version",
+   "1. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version",
+   "1"
+  ]
+ ],
+ "s102.sec10.u7": [
+  [
+   "- Version-2-Pokal - Kürt",
+   "das beste Digimon der Version",
+   "2. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version",
+   "2"
+  ]
+ ],
+ "s102.sec10.u8": [
+  [
+   "- Version-3-Pokal - Kürt",
+   "das beste Digimon der Version",
+   "3. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version",
+   "3"
+  ]
+ ],
+ "s102.sec10.u9": [
+  [
+   "- Version-4-Pokal - Kürt",
+   "das beste Digimon der Version",
+   "4. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Digimon der Version",
+   "4"
+  ]
+ ],
+ "s102.sec10.u10": [
+  [
+   "- Version-O-Pokal - Kürt",
+   "das beste Digimon außerhalb der",
+   "Versionen 1-4. Kämpfe mit"
+  ],
+  [
+   "Zeitlimit. Einzel, 3 Runden, 8",
+   "Teilnehmer Teilnahme: außer",
+   "Version 1-4"
+  ]
+ ],
+ "s102.sec10.u11": [
+  [
+   "- Feuer-Pokal - Kürt den",
+   "König der lodernden Digimon.",
+   "Kämpfe mit Zeitlimit. Einzel, 3"
+  ],
+  [
+   "Runden, 8 Teilnehmer Teilnahme:",
+   "Feuer"
+  ]
+ ],
+ "s102.sec10.u12": [
+  [
+   "- Kampf-Pokal - Kürt den",
+   "Meister der",
+   "Digimon-Kampfkünste. Kämpfe"
+  ],
+  [
+   "mit Zeitlimit. Einzel, 3",
+   "Runden, 8 Teilnehmer Teilnahme:",
+   "Kampf"
+  ]
+ ],
+ "s102.sec10.u13": [
+  [
+   "- Donner-und-Wind-Pokal -",
+   "Kürt den König der Digimon von",
+   "Himmel und Sturm. Kämpfe mit"
+  ],
+  [
+   "Zeitlimit. Einzel, 3 Runden, 8",
+   "Teilnehmer Teilnahme: Luft"
+  ]
+ ],
+ "s102.sec10.u14": [
+  [
+   "- Stil-Pokal - Kürt den",
+   "König der coolsten Digimon.",
+   "Kämpfe mit Zeitlimit. Einzel, 3"
+  ],
+  [
+   "Runden, 8 Teilnehmer Teilnahme:",
+   "Eis"
+  ]
+ ],
+ "s102.sec10.u15": [
+  [
+   "- Natur-Pokal - Kürt den",
+   "König der naturliebenden",
+   "Digimon. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Natur"
+  ]
+ ],
+ "s102.sec10.u16": [
+  [
+   "- Metall-Pokal - Kürt den",
+   "König der",
+   "Supermaschinen-Digimon. Kämpfe"
+  ],
+  [
+   "mit Zeitlimit. Einzel, 3",
+   "Runden, 8 Teilnehmer Teilnahme:",
+   "Maschinen"
+  ]
+ ],
+ "s102.sec10.u17": [
+  [
+   "- Dreck-Pokal - Kürt den",
+   "König der dreeeckigsten",
+   "Digimon. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: Dreck"
+  ]
+ ],
+ "s102.sec10.u18": [
+  [
+   "- Dino-Pokal - Digimon mit",
+   "uraltem Blut messen ihre",
+   "Kräfte. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s102.sec10.u19": [
+  [
+   "- Flügel-Pokal - Digimon,",
+   "stolz auf ihre Flügel, messen",
+   "ihre Kräfte. Kämpfe mit"
+  ],
+  [
+   "Zeitlimit. Einzel, 3 Runden, 8",
+   "Teilnehmer Teilnahme: ???"
+  ]
+ ],
+ "s102.sec10.u20": [
+  [
+   "- Tier-Pokal - Digimon mit",
+   "tierischem Blut messen ihre",
+   "Kräfte. Kämpfe mit Zeitlimit."
+  ],
+  [
+   "Einzel, 3 Runden, 8 Teilnehmer",
+   "Teilnahme: ???"
+  ]
+ ],
+ "s102.sec10.u21": [
+  [
+   "- Menschen-Pokal -",
+   "Menschenähnliche Digimon messen",
+   "ihre Kräfte. Kämpfe mit"
+  ],
+  [
+   "Zeitlimit. Einzel, 3 Runden, 8",
+   "Teilnehmer Teilnahme: ???"
+  ]
+ ],
+ "s102.sec51.u0": [
+  [
+   "Heute kein Turnier."
+  ]
+ ],
+ "s102.sec51.u1": [
+  [
+   "Wer nicht angemeldet, nicht",
+   "rein."
+  ]
+ ],
+ "s102.sec51.u2": [
+  [
+   "Noch Vorbereitung. Am 22. von",
+   "10 bis 23 Uhr reinkommen."
+  ]
+ ],
+ "s102.sec51.u3": [
+  [
+   "Schade. Turnier schon vorbei.",
+   "Nächstes Jahr wiederkommen."
+  ]
+ ],
+ "s102.sec81.m0.o0": "Bitte erklären",
+ "s102.sec81.m0.o1": "Keine Erklärung nötig",
+ "s102.sec81.m1.o0": "Anmelden",
+ "s102.sec81.m1.o1": "Nicht anmelden",
+ "s102.sec81.m2.o0": "Nicht absagen",
+ "s102.sec81.m2.o1": "Abbrechen",
+ "s102.sec81.u0": [
+  [
+   "Schade. Anmeldung schon",
+   "vorbei. Noch ein Jahr warten."
+  ]
+ ],
+ "s102.sec81.u1": [
+  [
+   "Jetzt keine Turnierzeit. Mir",
+   "langweilig."
+  ]
+ ],
+ "s102.sec81.u2": [
+  [
+   "Turnier gerade vorbei. Noch",
+   "ein Jahr warten."
+  ]
+ ],
+ "s102.sec81.u3": [
+  [
+   "Du kein Insekt. Keine",
+   "Turnierteilnahme."
+  ]
+ ],
+ "s102.sec81.u4": [
+  [
+   "Du am Turnier teilnehmen?"
+  ]
+ ],
+ "s102.sec81.u5": [
+  [
+   "Am 22. Kampfturnier nur für",
+   "Insekten-Digimon. Jetzt",
+   "anmelden möglich. Kein"
+  ],
+  [
+   "Insekten-Digimon, keine",
+   "Teilnahme. Wer gewinnt, bekommt",
+   "tollen Preis. Versuch schadet"
+  ],
+  [
+   "nicht."
+  ]
+ ],
+ "s102.sec81.u6": [
+  [
+   "Jetzt keine Turnierzeit. Mir",
+   "langweilig."
+  ]
+ ],
+ "s102.sec81.u7": [
+  [
+   "Turnier gerade vorbei. Noch",
+   "ein Jahr warten."
+  ]
+ ],
+ "s102.sec81.u8": [
+  [
+   "Du für «{cup 3}»",
+   "angemeldet. Absagen?"
+  ]
+ ],
+ "s102.sec81.u9": [
+  [
+   "Abgesagt."
+  ]
+ ],
+ "s102.sec81.u10": [
+  [
+   "Was, du sicher?"
+  ]
+ ],
+ "s102.sec81.u11": [
+  [
+   "Angemeldet."
+  ]
+ ],
+ "s102.sec82.u0": [
+  [
+   "Schade. Nächstes Jahr wieder."
+  ]
+ ],
+ "s102.sec82.u1": [
+  [
+   "Auszeichnung für die Teilnahme:",
+   "{color 6}Riesenfleisch{color 1}!"
+  ]
+ ],
+ "s102.sec82.u2": [
+  [
+   "Items voll. Etwas wegwerfen."
+  ]
+ ],
+ "s102.sec82.u3": [
+  [
+   "Siegerpreis: 5000 Bits!",
+   "{color 6}Käferperle{color 1} erhalten!"
+  ]
+ ],
+ "s102.sec82.u4": [
+  [
+   "Items voll!"
+  ]
+ ],
+ "s102.sec82.u5": [
+  [
+   "Zweiter Preis: 2000 Bits!",
+   "{color 6}Hörnerhelm{color 1} erhalten!"
+  ]
+ ],
+ "s102.sec82.u6": [
+  [
+   "Items voll!"
+  ]
+ ],
+ "s102.sec82.u7": [
+  [
+   "Zweiter Preis: 2000 Bits!",
+   "{color 6}Scherenkiefer{color 1} erhalten!"
+  ]
+ ],
+ "s102.sec82.u8": [
+  [
+   "Items voll!"
+  ]
+ ],
+ "s103.sec5.m0.o0": "Auf einem Trainingsplatz",
+ "s103.sec5.m0.o1": "In der Arena vielleicht",
+ "s103.sec5.u0": [
+  [
+   "Mir hier beim Training",
+   "langweilig. Was tun?"
+  ]
+ ],
+ "s103.sec5.u1": [
+  [
+   "Was tun, sagst du..."
+  ]
+ ],
+ "s103.sec5.u2": "Wo du trainieren?",
+ "s103.sec5.u3": [
+  [
+   "Auf einem Trainingsplatz, denke",
+   "ich."
+  ]
+ ],
+ "s103.sec5.u4": [
+  [
+   "Training langweilig. Ich in",
+   "echten Kämpfen stark werden",
+   "wollen."
+  ]
+ ],
+ "s103.sec5.u5": [
+  [
+   "Training langweilig. Ich in",
+   "echten Kämpfen stark werden",
+   "wollen."
+  ]
+ ],
+ "s103.sec5.u6": [
+  [
+   "Ich dorthin gehen. Ich",
+   "trainieren."
+  ]
+ ],
+ "s103.sec5.u7": "Kabuterimon ist in die Stadt gezogen!",
+ "s103.sec6.u0": [
+  [
+   "Jedes Jahr, am Tag mit zwei",
+   "Zweien, hier",
+   "Insektenkampfturnier. Sieger"
+  ],
+  [
+   "bekommt tollen Preis. Aber nur",
+   "Insekten-Digimon dürfen",
+   "teilnehmen."
+  ]
+ ],
+ "s103.sec6.u1": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon und noch eine",
+   "Insektenart. Aber nicht"
+  ],
+  [
+   "Numemon. Jedes Jahr, am Tag",
+   "mit zwei Zweien, hier",
+   "Insektenkampfturnier... Hm? Du"
+  ],
+  [
+   "Turnier schon gewonnen."
+  ]
+ ],
+ "s103.sec6.u2": [
+  [
+   "Kabuterimon, Kuwagamon,",
+   "Kunemon und noch ein Insekt:",
+   "HerculesKabuterimon. Hercules"
+  ],
+  [
+   "superstark. Turniersieger",
+   "bekommt Item, das zu Hercules",
+   "macht. Du oft am"
+  ],
+  [
+   "Insektenturnier teilnehmen",
+   "können."
+  ]
+ ],
+ "s103.sec7.m0.o0": "Na klar!",
+ "s103.sec7.m0.o1": "Nein, danke",
+ "s103.sec7.u0": [
+  [
+   "Du stark. Ich dir nichts",
+   "beibringen können."
+  ]
+ ],
+ "s103.sec7.u1": [
+  [
+   "Wir Techniken studieren.",
+   "Starke Techniken schwer zu",
+   "lernen. Wenn du fähig,"
+  ],
+  [
+   "vielleicht Technik lernen. Du",
+   "starke Technik wollen?"
+  ]
+ ],
+ "s103.sec7.u2": [
+  [
+   "Dann wir versuchen."
+  ]
+ ],
+ "s103.sec7.u3": [
+  [
+   "Du nicht genug Abwehr. Mehr",
+   "trainieren."
+  ]
+ ],
+ "s103.sec7.u4": [
+  [
+   "Du nicht genug Geschwindigkeit.",
+   "Mehr trainieren."
+  ]
+ ],
+ "s103.sec7.u5": [
+  [
+   "Du nicht genug HP. Mehr",
+   "trainieren."
+  ]
+ ],
+ "s103.sec7.u6": "Du Technik gelernt.",
+ "s103.sec7.u7": [
+  [
+   "Käfer erlernt!"
+  ]
+ ],
+ "s103.sec81.u0": [
+  [
+   "{color 5}Training: Felsen schieben{color 1}"
+  ]
+ ],
+ "s103.sec81.u1": [
+  [
+   "Das Schieben des Felsens",
+   "weckt verborgene Kraft. Die",
+   "maximalen HP steigen stark."
+  ]
+ ],
+ "s103.sec81.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s103.sec83.u0": [
+  [
+   "{color 5}Training: Schlagübung{color 1}"
+  ]
+ ],
+ "s103.sec83.u1": [
+  [
+   "Übe Schlagtechniken an einer",
+   "Puppe. Der Angriff steigt",
+   "stark."
+  ]
+ ],
+ "s103.sec83.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s104.sec5.m0.o0": "Werde einfach stärker",
+ "s104.sec5.m0.o1": "Ich kenne einen Trick...",
+ "s104.sec5.m0.o2": "Halte durch",
+ "s104.sec5.u0": [
+  [
+   "Ich diese Kabuterimon besiegen",
+   "wollen. Wie gewinnen?"
+  ]
+ ],
+ "s104.sec5.u1": [
+  [
+   "Ja, ich auch gedacht. Ich",
+   "trainieren."
+  ]
+ ],
+ "s104.sec5.u2": [
+  [
+   "Was? Sag es mir."
+  ]
+ ],
+ "s104.sec5.u3": [
+  [
+   "Komm einfach in die Stadt."
+  ]
+ ],
+ "s104.sec5.u4": [
+  [
+   "...Du nett. Ich in Stadt",
+   "gehen."
+  ]
+ ],
+ "s104.sec5.u5": "Kuwagamon ist in die Stadt gezogen!",
+ "s104.sec5.u6": [
+  [
+   "Du nicht nett. Ich enttäuscht."
+  ]
+ ],
+ "s104.sec6.u0": [
+  [
+   "Hm, du schon am",
+   "Insektenturnier teilgenommen.",
+   "Dann ich dir etwas Gutes"
+  ],
+  [
+   "sagen. Du «Kunemons Nest»",
+   "kennen? Im Urwald.",
+   "Kind-Digimon dort schlafen, als"
+  ],
+  [
+   "Kunemon aufwachen. Manchmal",
+   "nicht. Hängt vom Glück ab."
+  ]
+ ],
+ "s104.sec6.u1": [
+  [
+   "Du, Insektenturnier... Hm? Du",
+   "jetzt nicht teilnehmen können.",
+   "Dann ich dir etwas Gutes"
+  ],
+  [
+   "sagen. Du «Kunemons Nest»",
+   "kennen? Im Urwald.",
+   "Kind-Digimon dort schlafen, als"
+  ],
+  [
+   "Kunemon aufwachen. Manchmal",
+   "nicht. Hängt vom Glück ab."
+  ]
+ ],
+ "s104.sec6.u2": [
+  [
+   "Du am Insektenturnier",
+   "teilnehmen?"
+  ]
+ ],
+ "s104.sec6.u3": [
+  [
+   "Was ist das?"
+  ]
+ ],
+ "s104.sec6.u4": [
+  [
+   "Bis 10 Uhr am 22. anmelden,",
+   "sonst keine Teilnahme."
+  ]
+ ],
+ "s104.sec6.u5": [
+  [
+   "???"
+  ]
+ ],
+ "s104.sec6.u6": [
+  [
+   "Details am selben Tag."
+  ]
+ ],
+ "s104.sec6.u7": [
+  [
+   "Keine Ahnung, was er meint."
+  ]
+ ],
+ "s104.sec7.m0.o0": "Etwas ausruhen",
+ "s104.sec7.m0.o1": "Nicht ausruhen",
+ "s104.sec7.u0": [
+  [
+   "Wir viel trainieren, aber Ruhe",
+   "wichtig. Du eine Stunde",
+   "ausruhen?"
+  ]
+ ],
+ "s104.sec84.u0": [
+  [
+   "{color 5}Training: Hammermaschine{color 1}"
+  ]
+ ],
+ "s104.sec84.u1": [
+  [
+   "Halte die Schläge der",
+   "Hammermaschine aus, um dich",
+   "abzuhärten. Die Abwehr steigt"
+  ],
+  [
+   "stark."
+  ]
+ ],
+ "s104.sec84.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s104.sec85.u0": [
+  [
+   "{color 5}Training: Laufband{color 1}"
+  ]
+ ],
+ "s104.sec85.u1": [
+  [
+   "Laufe gegen das laufende Band",
+   "an. Die Geschwindigkeit steigt",
+   "stark."
+  ]
+ ],
+ "s104.sec85.u2": [
+  [
+   "{color 7}Spielautomat{color 1}",
+   "Halte die drei Walzen mit"
+  ],
+  [
+   "{color 6}×{color 1}",
+   "an und reihe die Bilder auf."
+  ]
+ ],
+ "s103.sec81.m0.o0": "Trainieren",
+ "s103.sec81.m0.o1": "Über dieses Training",
+ "s103.sec81.m0.o2": "Beenden",
+ "s103.sec81.m1.o0": "Normales Training",
+ "s103.sec81.m1.o1": "Bonustraining",
+ "s103.sec81.m1.o2": "Schon gut",
+ "s103.sec81.m2.o0": "Noch mal erklären",
+ "s103.sec81.m2.o1": "Trainieren",
+ "s103.sec81.m2.o2": "Beenden",
+ "s103.sec83.m0.o0": "Trainieren",
+ "s103.sec83.m0.o1": "Über dieses Training",
+ "s103.sec83.m0.o2": "Beenden",
+ "s103.sec83.m1.o0": "Normales Training",
+ "s103.sec83.m1.o1": "Bonustraining",
+ "s103.sec83.m1.o2": "Schon gut",
+ "s103.sec83.m2.o0": "Noch mal erklären",
+ "s103.sec83.m2.o1": "Trainieren",
+ "s103.sec83.m2.o2": "Beenden",
+ "s104.sec84.m0.o0": "Trainieren",
+ "s104.sec84.m0.o1": "Über dieses Training",
+ "s104.sec84.m0.o2": "Beenden",
+ "s104.sec84.m1.o0": "Normales Training",
+ "s104.sec84.m1.o1": "Bonustraining",
+ "s104.sec84.m1.o2": "Schon gut",
+ "s104.sec84.m2.o0": "Noch mal erklären",
+ "s104.sec84.m2.o1": "Trainieren",
+ "s104.sec84.m2.o2": "Beenden",
+ "s104.sec85.m0.o0": "Trainieren",
+ "s104.sec85.m0.o1": "Über dieses Training",
+ "s104.sec85.m0.o2": "Beenden",
+ "s104.sec85.m1.o0": "Normales Training",
+ "s104.sec85.m1.o1": "Bonustraining",
+ "s104.sec85.m1.o2": "Schon gut",
+ "s104.sec85.m2.o0": "Noch mal erklären",
+ "s104.sec85.m2.o1": "Trainieren",
+ "s104.sec85.m2.o2": "Beenden"
+}

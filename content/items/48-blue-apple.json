@@ -1,0 +1,15 @@
+{
+  "id": 48,
+  "name": "Blue apple",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 30,
+    "happiness": 50,
+    "weight": 3
+  }
+}

@@ -1,0 +1,153 @@
+// Readable form of script 54 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../names.dws";
+script 54 {
+    npc myotismon = 5;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 82, 84, 83, 60, 5;
+
+    on enter replace {    // section 254
+        if (mansion_key_found) {
+            set_obj_visibility(14, 1);
+        }
+        if (myotismon_missing && !myotismon_absence_seen.mansion) {
+            wait(1s);
+            entity_set_rotation(tamer, 1024);
+            wait(5);
+            camera_to(234, 211, speed: 30);
+            await camera;
+            say(tamer, text("s054.sec254.u0"));
+            myotismon_absence_seen.mansion = true;
+            camera_on(tamer, speed: 10);
+            await camera;
+        }
+    }
+
+    on use(1) replace {    // section 81
+        if (!mansion_key_found) {
+            say(tamer, text("s054.sec81.u0"));
+            animate(tamer, 12);
+            wait(1s);
+            set_obj_visibility(14, 1);
+            give_item(item("Mansion key"), 1);
+            say(tamer, text("s054.sec81.u1"));
+            say(narrator, text("s054.sec81.u2"));
+            if (engine.item_did_not_fit) {
+                say(tamer, text("s054.sec81.u3"));
+                engine.picker_mode = false;
+                call_routine(routine("choose_item"));
+                call_routine(routine("remove_all_chosen_item"));
+                give_item(item("Mansion key"), 1);
+            }
+            mansion_key_found = true;
+        } else {
+            return;
+        }
+    }
+
+    on use(2) replace {    // section 82
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s52_s55_exit4) {
+            entity_set_rotation(tamer, 2954);
+            sound(8, 3);
+            say(narrator, text("s054.sec82.u0"));
+            mansion_door_unlocked.s52_s55_exit4 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s52_s55_exit4) {
+            entity_set_rotation(tamer, 2954);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s054.sec82.u1"));
+            return;
+        }
+        rotate_3d_object(1, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 1600, 1674);
+        warp_to(52, 4, 255);
+    }
+
+    on use(4) replace {    // section 84
+        rotate_3d_object(0, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, -866, 3000);
+        warp_to(54, 1, 255);
+    }
+
+    on use(3) replace {    // section 83
+        if (has(item("Mansion key")) >= 1 && !mansion_door_unlocked.s52_s55_exit5) {
+            entity_set_rotation(tamer, 2954);
+            sound(8, 3);
+            say(narrator, text("s054.sec83.u0"));
+            mansion_door_unlocked.s52_s55_exit5 = true;
+        } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s52_s55_exit5) {
+            entity_set_rotation(tamer, 2954);
+            sound(8, 2);
+            wait(5);
+            sound(8, 2);
+            say(narrator, text("s054.sec83.u1"));
+            return;
+        }
+        rotate_3d_object(2, 0, 1);
+        sound(8, 1);
+        wait(10);
+        walk(tamer, 1600, -1546);
+        warp_to(52, 5, 255);
+    }
+
+    on step(9) replace {    // section 60
+        set_digimon(species("Devimon"), 0, 0);
+        entity_set_rotation(tamer, 906);
+        run(partner, 775, -69);
+        await partner;
+        entity_set_rotation(partner, 906);
+        say(tamer, text("s054.sec60.u0"));
+        say(myotismon, text("s054.sec60.u1"));
+        face(myotismon, tamer);
+        say(myotismon, text("s054.sec60.u2"));
+        say(tamer, text("s054.sec60.u3"));
+        say(myotismon, text("s054.sec60.u4"));
+        say(tamer, text("s054.sec60.u5"));
+        say(myotismon, text("s054.sec60.u6"));
+        face(tamer, myotismon);
+        say(tamer, text("s054.sec60.u7"));
+        say(myotismon, text("s054.sec60.u8"));
+        say(tamer, text("s054.sec60.u9"));
+        say(myotismon, text("s054.sec60.u10"));
+        say(tamer, text("s054.sec60.u11"));
+        say(myotismon, text("s054.sec60.u12"));
+        say(tamer, text("s054.sec60.u13"));
+        say(myotismon, text("s054.sec60.u14"));
+        say(tamer, text("s054.sec60.u15"));
+        say(myotismon, text("s054.sec60.u16"));
+        say(tamer, text("s054.sec60.u17"));
+        say(myotismon, text("s054.sec60.u18"));
+        say(tamer, text("s054.sec60.u19"));
+        return;
+    }
+
+    on talk(myotismon) replace {    // section 5
+        if (is_recruited(species("SkullGreymon"))) {
+            say(myotismon, text("s054.sec5.u0"));
+            return;
+        }
+        if (is_recruited(species("Myotismon"))) {
+            say(myotismon, text("s054.sec5.u1"));
+            say(tamer, text("s054.sec5.u2"));
+            return;
+        }
+        if (is_recruited(species("Greymon"))) {
+            say(myotismon, text("s054.sec5.u3"));
+            say(myotismon, text("s054.sec5.u4"));
+            say(tamer, text("s054.sec5.u5"));
+            recruit(species("Myotismon"));
+        } else {
+            say(myotismon, text("s054.sec5.u6"));
+            return;
+        }
+        return;
+    }
+}

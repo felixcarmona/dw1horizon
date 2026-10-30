@@ -1,0 +1,17 @@
+{
+  "id": 49,
+  "name": "Red Berry",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 25,
+    "happiness": 20,
+    "weight": 2,
+    "tiredness": 20,
+    "discipline": 20
+  }
+}

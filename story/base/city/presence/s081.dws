@@ -1,0 +1,13 @@
+// Who stands on screen 81 (Ancient Glacial Region), and when. Read out of MAPHEAD.SCN section 81 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(81) {                              // Ancient Glacial Region
+            npc 165 slot 0;
+            npc Saberdramon slot 1;
+            npc Brachiomon slot 2;
+            npc Brachiomon slot 3;
+        }
+    }
+}

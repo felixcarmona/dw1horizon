@@ -1,0 +1,141 @@
+{
+ "s029.sec51.m0.o0": "Ho faré!",
+ "s029.sec51.m0.o1": "Ho sento, un altre dia",
+ "s029.sec51.m1.o0": "Ho faré!",
+ "s029.sec51.m1.o1": "Ho sento, un altre dia",
+ "s029.sec51.u0": [
+  [
+   "Ep! Sembla que ja heu tret",
+   "gairebé tota la terra. Gràcies",
+   "a tu, l'obra va d'allò més bé.",
+   "Espera una miqueta més."
+  ]
+ ],
+ "s029.sec51.u1": [
+  [
+   "Oh, bona feina. Aquí tens la",
+   "teva paga."
+  ]
+ ],
+ "s029.sec51.u2": [
+  [
+   "Has guanyat 500 Bits!"
+  ],
+  [
+   "Els HP pugen 50! L'Atac puja",
+   "5! La Defensa puja 5!"
+  ]
+ ],
+ "s029.sec51.u3": [
+  [
+   "Aboca la terra fora del túnel."
+  ]
+ ],
+ "s029.sec51.u4": [
+  [
+   "Vinga, agafa una mica d'aquest",
+   "munt de terra."
+  ]
+ ],
+ "s029.sec51.u5": [
+  [
+   "Mmm, transportaràs terra?",
+   "Estàs fet pols. Descansa",
+   "primer i després torna."
+  ]
+ ],
+ "s029.sec51.u6": [
+  [
+   "Mmm, transportaràs terra?"
+  ]
+ ],
+ "s029.sec51.u7": [
+  [
+   "Qui ets? Això és perillós per",
+   "als afeccionats, així que no",
+   "t'acostis."
+  ]
+ ],
+ "s029.sec51.u8": [
+  [
+   "Qui ets? Aquest túnel encara",
+   "no està obert. No destorbis."
+  ]
+ ],
+ "s029.sec51.u9": [
+  [
+   "Ah, perdona. Quan creus que",
+   "estarà obert?"
+  ]
+ ],
+ "s029.sec51.u10": [
+  [
+   "Qui sap? Encara falta una bona",
+   "estona."
+  ]
+ ],
+ "s029.sec51.u11": [
+  [
+   "Mmm, quin problema... No podem",
+   "fer res per a ajudar?"
+  ]
+ ],
+ "s029.sec51.u12": [
+  [
+   "Ep, em vols prendre la",
+   "diversió? Espera... transportar",
+   "terra, això fins i tot",
+   "vosaltres ho podríeu fer."
+  ]
+ ],
+ "s029.sec51.u13": [
+  [
+   "Ah, de què es tracta?"
+  ]
+ ],
+ "s029.sec51.u14": [
+  [
+   "Aquí hi ha la terra que he",
+   "cavat jo. Porta-la fora del",
+   "túnel i aboca-la."
+  ]
+ ],
+ "s029.sec51.u15": [
+  [
+   "És un treball bastant dur, així",
+   "que t'ho pagaré. 500 Bits per",
+   "cada viatge d'anada i volta."
+  ]
+ ],
+ "s029.sec51.u16": [
+  [
+   "L'excavació va més ràpid, em",
+   "paguen... i damunt és",
+   "entrenament... Això pot estar",
+   "bé...!"
+  ]
+ ],
+ "s029.sec51.u17": [
+  [
+   "Com transportar terra Posa't",
+   "davant de la terra i prem {color 6}×{color 1}",
+   "per agafar una caixa. Surt del",
+   "túnel i es buidarà sola.",
+   "Després de cada viatge d'anada",
+   "i tornada, parla amb"
+  ],
+  [
+   "Drimogemon."
+  ]
+ ],
+ "s029.sec51.u18": [
+  [
+   "Què passa, t'arronses?"
+  ]
+ ],
+ "s029.sec81.u0": [
+  [
+   "Has agafat una caixa de terra."
+  ]
+ ]
+}

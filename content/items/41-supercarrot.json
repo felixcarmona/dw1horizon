@@ -1,0 +1,17 @@
+{
+  "id": 41,
+  "name": "Supercarrot",
+  "value": 500,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 10,
+    "weight": -2,
+    "boostFlag": 41,
+    "boostValue": 12,
+    "boostHours": 6
+  }
+}

@@ -1,0 +1,34 @@
+{
+ "first_id": 351,
+ "out": "build/batch16",
+ "digimon": [
+  {
+   "name": "Kotemon",
+   "game": "dw3",
+   "model": "M383PKEN",
+   "level": 3,
+   "element": 1
+  },
+  {
+   "name": "Monmon",
+   "game": "dw3",
+   "model": "M384KOET",
+   "level": 3,
+   "element": 1
+  },
+  {
+   "name": "Bearmon",
+   "game": "dw3",
+   "model": "M385KOGU",
+   "level": 3,
+   "element": 1
+  },
+  {
+   "name": "Renamon",
+   "game": "dw3",
+   "model": "M373RENA",
+   "level": 3,
+   "element": 2
+  }
+ ]
+}

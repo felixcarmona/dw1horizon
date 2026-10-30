@@ -1,0 +1,80 @@
+From 33e1a74a5529b3e49f7a6ca00ba11b4f8c494709 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 25 Oct 2026 07:47:56 +0000
+Subject: [PATCH] =?UTF-8?q?Patch=200239:=20the=20OPTIONS=20row=20of=20the?=
+ =?UTF-8?q?=20quick=20start=20is=20QUICK=20BATTLE=20START=20(Spanish=20INI?=
+ =?UTF-8?q?CIO=20R=C3=81PIDO),=20was=20QUICK=20BATTLES:=20it=20changes=20h?=
+ =?UTF-8?q?ow=20a=20battle=20starts,=20not=20its=20speed=20(R2's=20x2).=20?=
+ =?UTF-8?q?0=20bytes=20of=20heap?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ include/dw/mod_options.h | 2 +-
+ src/main/main_menu.c     | 2 +-
+ src/main/mod_options.c   | 6 +++---
+ text/main/main_menu.yaml | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 19c1f632..7dce5404 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -81,7 +81,7 @@ void modSetStory(int32_t extended);
+ #define MOD_DIFF_NORMAL	0
+ #define MOD_DIFF_EASY	1
+ extern int32_t MOD_OPT_DIFFICULTY; /* DIFFICULTY: MOD_DIFF_EASY or MOD_DIFF_NORMAL */
+-extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, without the BATTLE letters (battle_setup.c); 0 = the original intro */
++extern int32_t MOD_OPT_QUICK_BATTLE; /* QUICK BATTLE START: a field battle starts at once, its intro over the fight (battle_setup.c, btl.c); 0 = the original start */
+ /* the damage `dmg` that `attacker` deals `defender` with the difficulty (`partner`: the partner's entity) */
+ #define MOD_DIFF_DAMAGE(attacker, defender, partner, dmg)                                                              \
+ 	(MOD_OPT_DIFFICULTY != MOD_DIFF_EASY ? (dmg)                                                                       \
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index f591b708..65e71a16 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -264,7 +264,7 @@ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back fro
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #define MOD_OPT_ROW_STORY	5 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+ #define MOD_OPT_ROW_DIFF	6 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+-#define MOD_OPT_ROW_QUICK	7 /* MOD (quick battle start): QUICK BATTLES, under DIFFICULTY */
++#define MOD_OPT_ROW_QUICK	7 /* MOD (quick battle start): QUICK BATTLE START, under DIFFICULTY */
+ #define MOD_OPT_ROW_FPS	8
+ #if FONT_SWITCH
+ #define MOD_OPT_ROWS	12 /* MOD (options): and FONT, in a build with both fonts */
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index 575e6090..2f92a769 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -40,9 +40,9 @@
+  * DIFFICULTY. EASY doubles the damage the partner deals and halves the damage it takes in the battles and tournaments
+  * (MOD_DIFF_DAMAGE, applied by BTL_calculateDamage and STD_calculateDamage, and to the poison); NORMAL is the original.
+  *
+- * QUICK BATTLES. A field battle starts the moment it is triggered: no BATTLE letters, no bubbles over who joins and who
+- * flees, BTL_REL read ahead in the world and the rest loaded while the fight runs (btl.c, docs/mods/features/
+- * quick-battle-start.md); OFF is the original start.
++ * QUICK BATTLE START. A field battle starts the moment it is triggered: the BATTLE letters and the bubbles over who
++ * joins and who flees run over the fight instead of holding it, BTL_REL is read ahead in the world and the rest loads
++ * while the fight runs (btl.c, docs/mods/features/quick-battle-start.md); OFF is the original start.
+  */
+ #include <dw/mod_options.h>
+ #include <dw/species.h>
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 71272513..d5239e72 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -381,8 +381,8 @@ MOD_OPTIONS:
+       ja: "NORMAL"
+       en_us: "NORMAL"
+     MOD_OPT_STR_QUICK:
+-      ja: "QUICK BATTLES"
+-      en_us: "QUICK BATTLES"
++      ja: "QUICK BATTLE START"
++      en_us: "QUICK BATTLE START"
+     MOD_OPT_STR_FPS:
+       ja: "FRAME RATE"
+       en_us: "FRAME RATE"
+-- 
+2.55.0
+

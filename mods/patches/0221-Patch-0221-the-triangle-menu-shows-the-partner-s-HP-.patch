@@ -1,0 +1,158 @@
+From bcd4c1b80a6062fc37d32ed4aff2f50d1315250d Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 24 Oct 2026 17:22:40 +0000
+Subject: [PATCH] Patch 0221: the triangle menu shows the partner's HP and MP:
+ under the commands, each a row of the Status page's heart / MP icon and
+ "current/max" in the menu's Year/Day digits (the slash drawn as lines), over
+ a bar (HP green, yellow under half, red under a quarter; MP blue) on a grey
+ track; the box 0x2c taller (renderMenuVitals, game_menu.c). Only what the
+ menu already has in VRAM, nothing in the text area. 1296 bytes of heap.
+ Tested in PCSX-Redux: 800/600 full, 150, 350, 0 and 12345/30000, 9999/30000
+
+---
+ src/main/game_menu.c | 105 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 103 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 81871cad..dfce3c51 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -1532,6 +1532,11 @@ void addGameMenu(void)
+ 	addObject(0xfa4, 0, (void (*)(int32_t))tickTriangleMenu, NULL);
+ }
+ 
++/* MOD (vitals): the partner's HP and MP at the foot of the triangle menu, each a row "icon  current/max" over a bar.
++   Only what the menu already has in VRAM: the Status page's heart and MP icons (SYSTEM_W, tpage 5), the Year/Day
++   digits (tpage 0x1e), lines and flat boxes; nothing in the text area */
++#define MENU_VITALS_H 0x2c
++
+ void tickTriangleMenu(void)
+ {
+ 	RECT rect;
+@@ -1539,11 +1544,12 @@ void tickTriangleMenu(void)
+ 	rect = MENU_TEXT_AREA;
+ 	switch (TRIANGLE_MENU_STATE) {
+ 	case 0:
++		/* MOD (vitals): MENU_VITALS_H taller, the partner's HP and MP under the commands (renderMenuVitals) */
+ 		if (HAS_FISHING_ROD != 0) {
+-			createMenuBox(0, -0x42, -0x50, 0x84, 0x95, 2,
++			createMenuBox(0, -0x42, -0x50, 0x84, 0x95 + MENU_VITALS_H, 2,
+ 			              tickGameMenu, renderGameMenu);
+ 		} else {
+-			createMenuBox(0, -0x42, -0x50, 0x84, 0x6e, 2,
++			createMenuBox(0, -0x42, -0x50, 0x84, 0x6e + MENU_VITALS_H, 2,
+ 			              tickGameMenu, renderGameMenu);
+ 		}
+ 		if (UI_BOX_DATA[0].frame == 4) {
+@@ -1628,6 +1634,100 @@ void closeUIBoxIfOpen(id)
+ 	}
+ }
+ 
++/* one of the menu's 7 x 12 digits (as renderDateDigits) */
++static void renderMenuDigit(int32_t x, int32_t y, int32_t digit)
++{
++	int16_t texX;
++	int16_t texY;
++
++	texY = 0x34;
++	if (digit == 0) {
++		texX = 0x78;
++	} else if (digit < 5) {
++		texX = (digit - 1) * 8 + 0x60;
++		texY = 0x28;
++	} else {
++		texX = (digit - 5) * 8 + 0x50;
++	}
++	renderRectPolyFT4(x, y, 7, 0xc, texX + 1, texY + 0xc0, 0x1e, 0x7f10, 5, 0);
++}
++
++/* `value` with its last digit ending at `right`; returns where its first digit starts */
++static int32_t renderMenuDigits(int32_t right, int32_t y, int32_t value)
++{
++	int32_t digits[6];
++	int32_t count;
++	int32_t i;
++
++	convertValueToDigits(5, value, &count, digits);
++	for (i = 0; i < count; i++) {
++		right -= 9;
++		renderMenuDigit(right + 2, y, digits[i]);
++	}
++	return right + 2;
++}
++
++/* "current/max" ending at x 0x3c; the slash drawn as lines in the digits' white with their dark outline */
++static void renderMenuVitalRow(int32_t y, int32_t iconU, int32_t current, int32_t max, uint8_t r, uint8_t g, uint8_t b)
++{
++	int32_t x;
++	int32_t w;
++
++	if (current < 0)
++		current = 0;
++	if (current > max)
++		current = max;
++	renderRectPolyFT4(-0x3c, y + 2, 0xb, 0xb, iconU, 0x3a + 0x80, 5, GetClut(0x60, 0x0b + 0x1e8), 5, 0);
++	x = renderMenuDigits(0x3d, y, max) - 8;
++	drawLine2P(0xf0f0f0, x + 5, y + 1, x + 1, y + 10, 5, 0);
++	drawLine2P(0xf0f0f0, x + 6, y + 1, x + 2, y + 10, 5, 0);
++	drawLine2P(0x101010, x + 4, y + 1, x, y + 10, 5, 0);
++	drawLine2P(0x101010, x + 7, y + 1, x + 3, y + 10, 5, 0);
++	renderMenuDigits(x - 1, y, current);
++	/* the bar: fill first, a later box on the same layer is drawn under it */
++	w = max > 0 ? current * 0x6a / max : 0;
++	if (w > 0) {
++		renderBox(-0x2e, y + 0xd, w, 1, r + (0xFF - r) / 3, g + (0xFF - g) / 3, b + (0xFF - b) / 3, 0, 5);
++		renderBox(-0x2e, y + 0xe, w, 2, r, g, b, 0, 5);
++	}
++	renderBox(-0x2e, y + 0xd, 0x6a, 1, 0x70, 0x70, 0x70, 0, 5);
++	renderBox(-0x2e, y + 0xe, 0x6a, 2, 0x58, 0x58, 0x58, 0, 5);
++}
++
++/* under the commands, from the box's original foot */
++static void renderMenuVitals(void)
++{
++	Line lines[2];
++	int32_t top;
++	int32_t hp;
++	int32_t maxHp;
++	uint8_t r;
++	uint8_t g;
++
++	top = -0x50 + (HAS_FISHING_ROD != 0 ? 0x95 : 0x6e);
++	lines[0] = GAME_MENU_LINES[0];
++	lines[1] = GAME_MENU_LINES[1];
++	lines[0].y1 = lines[0].y2 = top;
++	lines[1].y1 = lines[1].y2 = top + 1;
++	renderSeparatorLines(lines, 2, 5);
++	hp = PARTNER_ENTITY.digimonEntity.stats.current.currentHP;
++	maxHp = PARTNER_ENTITY.digimonEntity.stats.base.hp;
++	/* HP green, yellow under half, red under a quarter; MP blue */
++	if (hp * 4 < maxHp) {
++		r = 0xE0;
++		g = 0x30;
++	} else if (hp * 2 < maxHp) {
++		r = 0xE0;
++		g = 0xC0;
++	} else {
++		r = 0x30;
++		g = 0xC8;
++	}
++	renderMenuVitalRow(top + 5, 0x93, hp, maxHp, r, g, 0x28);
++	renderMenuVitalRow(top + 0x18, 0x9e, PARTNER_ENTITY.digimonEntity.stats.current.currentMP,
++	                   PARTNER_ENTITY.digimonEntity.stats.base.mp, 0x30, 0x80, 0xF0);
++}
++
+ void renderGameMenu(void)
+ {
+ 	GameMenuSprite *sprite;
+@@ -1640,6 +1740,7 @@ void renderGameMenu(void)
+ 
+ 	renderSeparatorLines(GAME_MENU_LINES, 2, 5);
+ 	renderDateDigits();
++	renderMenuVitals(); /* MOD (vitals) */
+ 	yOffset = 0;
+ 	if (MENU_OPTION_COUNT == 7) {
+ 		yOffset = -0x28;
+-- 
+2.55.0
+

@@ -1,0 +1,141 @@
+From dd4bf34a5d28a3e1214b02646e8d78e3c559df47 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 25 Oct 2026 07:26:22 +0000
+Subject: [PATCH] Patch 0237: the item shop's card machine asks how many, as
+ the card packs (0223). Under TRIGGER_CARD_MACHINE (42, set by libraries/s219
+ around routine 14) rollCardPack charges economy.cardMachine.price a card
+ (MOD_ECON_MACHINE_PRICE, slot 13), rollCard rolls the machine's rarity marks
+ (slots 14-17), a unit is one card: one opens in its dialogue box, more in the
+ list of what came; the amount box reads Card (STR_CARD_ONE). The machine's
+ odds move from its script to economy.json
+
+---
+ include/dw/mod_rules.h     |  6 +++++-
+ src/shop/script_menu.c     | 26 ++++++++++++++++----------
+ text/shop/script_menu.yaml |  3 +++
+ 3 files changed, 24 insertions(+), 11 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 1ca3ded5..d6174580 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -32,7 +32,7 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+  * written by tools/balance.py from content/tables/economy.json. A cap left out is the limit of what holds the value (money 2^31 - 1, merit 32767, a stack 255); a
+  * percent left out is 100 (a price ratio) or 0 (the part of the items lost on a defeat); an amount left out is 0.
+  */
+-#define MOD_ECON_SIZE		13
++#define MOD_ECON_SIZE		18
+ #define MOD_ECON_MONEY_CAP	0
+ #define MOD_ECON_MERIT_CAP	1
+ #define MOD_ECON_STACK_CAP	2
+@@ -46,6 +46,10 @@ extern int16_t MOD_TOURNAMENT[MOD_TOURNAMENT_SIZE];
+ #define MOD_ECON_CARD_MAX	10
+ #define MOD_ECON_PACK_PRICE	11 /* MOD (amounts): what a card pack costs (left out: nothing) */
+ #define MOD_ECON_BATTLE_BITS	12 /* MOD (economy): the per cent of the enemies' bits a won battle pays (left out: 100) */
++#define MOD_ECON_MACHINE_PRICE	13 /* MOD (amounts): what a card of the item shop's machine costs (left out: nothing) */
++#define MOD_ECON_MACHINE_CUT0	14 /* .. 17: the machine's rarity marks, as the packs' CARD_CUT0..3 */
++/* MOD (amounts): set by the item shop's card machine (libraries/s219) around routine 14: it sells single cards */
++#define TRIGGER_CARD_MACHINE	42
+ extern int32_t MOD_ECON[MOD_ECON_SIZE];
+ int32_t econCap(int32_t slot, int32_t whenLeftOut);
+ int32_t econAmt(int32_t slot);
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 579874f3..350f1fcb 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -739,7 +739,7 @@ void rollCardPack(void)
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+-		SHOP_ITEM_PRICE = econAmt(MOD_ECON_PACK_PRICE);
++		SHOP_ITEM_PRICE = econAmt(isTriggerSet(TRIGGER_CARD_MACHINE) ? MOD_ECON_MACHINE_PRICE : MOD_ECON_PACK_PRICE);
+ 		n = SHOP_ITEM_PRICE > 0 ? MONEY / SHOP_ITEM_PRICE : 99;
+ 		if (n == 0) {
+ 			playSound(0, 0xb);
+@@ -763,7 +763,7 @@ void rollCardPack(void)
+ 			SCRIPT_STATE_2 = 1;
+ 			break;
+ 		}
+-		SCRIPT_STATE_2 = 5;
++		SCRIPT_STATE_2 = isTriggerSet(TRIGGER_CARD_MACHINE) ? 7 : 5; /* the machine's one card: one box */
+ 		/* fallthrough */
+ 	case 5:
+ 	case 6:
+@@ -1534,15 +1534,19 @@ uint8_t rollCard(void)
+ 	uint8_t i;
+ 	uint8_t rarity;
+ 
+-	/* MOD (economy as data): the rarity is the first whose "below" mark the roll (of 100) is under */
++	int32_t *cut;
++
++	/* MOD (economy as data): the rarity is the first whose "below" mark the roll (of 100) is under; the card
++	 * machine's marks (TRIGGER_CARD_MACHINE) or the packs' */
++	cut = &MOD_ECON[isTriggerSet(TRIGGER_CARD_MACHINE) ? MOD_ECON_MACHINE_CUT0 : MOD_ECON_CARD_CUT0];
+ 	rarity = randomLimit(100);
+-	if (rarity < MOD_ECON[MOD_ECON_CARD_CUT0]) {
++	if (rarity < cut[0]) {
+ 		rarity = 0;
+-	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT1]) {
++	} else if (rarity < cut[1]) {
+ 		rarity = 1;
+-	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT2]) {
++	} else if (rarity < cut[2]) {
+ 		rarity = 2;
+-	} else if (rarity < MOD_ECON[MOD_ECON_CARD_CUT3]) {
++	} else if (rarity < cut[3]) {
+ 		rarity = 3;
+ 	} else {
+ 		rarity = 4;
+@@ -3465,7 +3469,7 @@ static void amountBoxString(void)
+ 		*out++ = TEXT_COLUMN;
+ 		*out++ = 0xc0;
+ 	} else {
+-		out = amountName(out, STR_CARD_PACK);
++		out = amountName(out, isTriggerSet(TRIGGER_CARD_MACHINE) ? STR_CARD_ONE : STR_CARD_PACK);
+ 		*out++ = 0x18;
+ 		*out++ = 0;
+ 		out = intToStringSJIS(out, SHOP_ITEM_PRICE, 5, 0);
+@@ -3686,6 +3690,7 @@ static void openPackResults(void)
+ 	int32_t r;
+ 	int32_t n;
+ 	int32_t fresh;
++	int32_t per;
+ 
+ 	/* the list first: the arrays are a stack (allocateArray), got is freed above it */
+ 	allocateItemMenuBox(&ITEM_MENU_LEFT, NUM_CARDS * 2, 5, 0xd2, 0x1c, 6, 0x56);
+@@ -3694,7 +3699,8 @@ static void openPackResults(void)
+ 		got[i] = 0;
+ 		got[NUM_CARDS + i] = getCardAmount(i);
+ 	}
+-	for (i = SHOP_AMOUNT * 3; i > 0; i--) {
++	per = isTriggerSet(TRIGGER_CARD_MACHINE) ? 1 : 3; /* cards a unit: the machine's one, a pack's three */
++	for (i = SHOP_AMOUNT * per; i > 0; i--) {
+ 		r = rollCard();
+ 		if (got[r] < 99) {
+ 			got[r]++;
+@@ -3723,7 +3729,7 @@ static void openPackResults(void)
+ 	/* the head: row 9 of both pages, the box's first, before the rows of cards (drawn from it on, a row ends at 0xd) */
+ 	for (r = 9; r < 9 + 2 * 6; r += 6) {
+ 		out = TEXTBOX_LINES_PTR + (r << 6);
+-		out = intToStringSJIS(out, SHOP_AMOUNT * 3, 3, 1);
++		out = intToStringSJIS(out, SHOP_AMOUNT * per, 3, 1);
+ 		strcpy(out, STR_PACK_CARDS);
+ 		out += strlen(STR_PACK_CARDS);
+ 		out = intToStringSJIS(out, fresh, 2, 1);
+diff --git a/text/shop/script_menu.yaml b/text/shop/script_menu.yaml
+index 8b2fc210..3182093c 100644
+--- a/text/shop/script_menu.yaml
++++ b/text/shop/script_menu.yaml
+@@ -82,6 +82,9 @@ MOD_PACK_TEXT:
+     STR_CARD_PACK:
+       ja: Card pack
+       en_us: Card pack
++    STR_CARD_ONE:
++      ja: Card
++      en_us: Card
+     STR_PACK_CARDS:
+       ja: " cards, "
+       en_us: " cards, "
+-- 
+2.55.0
+

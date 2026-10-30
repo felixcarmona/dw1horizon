@@ -1,0 +1,322 @@
+{
+ "s135.sec5.u0": [
+  [
+   "Vous êtes donc {color 6}{player}{color 1}",
+   "et {color 10}{partner}{color 1} ? Bienvenue à",
+   "la Villa Volume !"
+  ]
+ ],
+ "s135.sec5.u1": [
+  [
+   "...... Désolé de nous en être",
+   "pris à Otamamon."
+  ]
+ ],
+ "s135.sec5.u2": [
+  [
+   "C'est sans importance."
+  ]
+ ],
+ "s135.sec5.u3": [
+  [
+   "HU?"
+  ]
+ ],
+ "s135.sec5.u4": [
+  [
+   "Je vous remercie tous les",
+   "deux. J'ai entendu parler de",
+   "tout ce que vous avez fait"
+  ],
+  [
+   "pour sauver l'île."
+  ]
+ ],
+ "s135.sec5.u5": [
+  [
+   "Ah, Oui ?"
+  ]
+ ],
+ "s135.sec5.u6": [
+  [
+   "Moi aussi, je souhaite vous",
+   "aider depuis longtemps.",
+   "Avez-vous déjà visité la forêt"
+  ],
+  [
+   "au nord d'ici, les Bois brumeux",
+   "?"
+  ]
+ ],
+ "s135.sec5.u7": [
+  [
+   "Pas encore."
+  ]
+ ],
+ "s135.sec5.u8": [
+  [
+   "J'y suis allé."
+  ]
+ ],
+ "s135.sec5.u9": [
+  [
+   "Le brouillard y est épais, ce",
+   "qui doit compliquer votre",
+   "voyage. Mais vous devriez"
+  ],
+  [
+   "rencontrer Cherrymon, le doyen",
+   "de cette forêt."
+  ]
+ ],
+ "s135.sec5.u10": [
+  [
+   "Cherrymon ? Jamais entendu",
+   "parler de ce Digimon..."
+  ]
+ ],
+ "s135.sec5.u11": [
+  [
+   "C'est Cherrymon qui crée le",
+   "brouillard des Bois brumeux. Il",
+   "connaît les troubles de l'île"
+  ],
+  [
+   "et protège ainsi la forêt."
+  ]
+ ],
+ "s135.sec5.u12": [
+  [
+   "Mais ça nous pose un problème."
+  ]
+ ],
+ "s135.sec5.u13": [
+  [
+   "Cherrymon semble savoir ce qui",
+   "se cache derrière ces troubles.",
+   "Il vaut la peine de le"
+  ],
+  [
+   "rencontrer, même au prix d'une",
+   "traversée du brouillard."
+  ]
+ ],
+ "s135.sec5.u14": [
+  [
+   "Si on pouvait au moins faire",
+   "quelque chose avec le",
+   "brouillard..."
+  ]
+ ],
+ "s135.sec5.u15": [
+  [
+   "Le brouillard ne se lèvera que",
+   "si Cherrymon l'arrête. Mais il",
+   "y a un moyen : je vais vous"
+  ],
+  [
+   "jeter un sort."
+  ]
+ ],
+ "s135.sec5.u16": [
+  [
+   "Quel effet aura-t-il ?"
+  ]
+ ],
+ "s135.sec5.u17": [
+  [
+   "Vous verrez le chemin, Même",
+   "dans le brouillard."
+  ]
+ ],
+ "s135.sec5.u18": [
+  [
+   "C'est cool !"
+  ]
+ ],
+ "s135.sec5.u19": [
+  [
+   "Commençons, Alors, sans délai."
+  ]
+ ],
+ "s135.sec5.u20": [
+  [
+   "Croac-croac! !"
+  ]
+ ],
+ "s135.sec5.u21": [
+  [
+   "Voilà, c'est fait. Allez sans",
+   "tarder aux Bois brumeux."
+  ]
+ ],
+ "s135.sec5.u22": [
+  [
+   "Je l'ai vu. Et le brouillard a",
+   "disparu."
+  ]
+ ],
+ "s135.sec5.u23": [
+  [
+   "Q-quoi ! Impressionnant. Hmm,",
+   "comment puis-je donc vous",
+   "aider... Ah, je sais. Je vais"
+  ],
+  [
+   "vous donner ceci."
+  ]
+ ],
+ "s135.sec5.u24": [
+  [
+   "{color 6}Digibar{color 1} obtenu !"
+  ]
+ ],
+ "s135.sec5.u25": [
+  [
+   "Jette quelque chose pour faire",
+   "de la place."
+  ]
+ ],
+ "s135.sec5.u26": [
+  [
+   "C'est quelque chose de",
+   "précieux. Ça sera utile."
+  ]
+ ],
+ "s135.sec5.u27": [
+  [
+   "Merci. Au fait, tu ne viendrais",
+   "pas en ville, Votre Seigneurie",
+   "?"
+  ]
+ ],
+ "s135.sec5.u28": [
+  [
+   "Je dirige les cent Gekomon du",
+   "Marais Geko. Hélas, je ne le",
+   "peux pas. Mais je ferai tout"
+  ],
+  [
+   "pour vous aider d'ici. Revenez",
+   "quand vous voulez."
+  ]
+ ],
+ "s135.sec6.u0": [
+  [
+   "On ne peut pêcher que sur la",
+   "rive du Lac Oeil-de-dragon."
+  ]
+ ],
+ "s135.sec6.u1": [
+  [
+   "Inclinez-vous, inclinez-vous !"
+  ]
+ ],
+ "s135.sec7.u0": [
+  [
+   "Sa Seigneurie collectionne les",
+   "raretés. Avant, c'étaient les",
+   "objets, mais maintenant il"
+  ],
+  [
+   "raffole des cartes Digimon."
+  ]
+ ],
+ "s135.sec7.u1": [
+  [
+   "Quiconque lui apporte une carte",
+   "rare reçoit des points de",
+   "mérite."
+  ]
+ ],
+ "s135.sec7.u2": [
+  [
+   "Tu peux ensuite échanger tes",
+   "points de mérite contre des",
+   "objets."
+  ]
+ ],
+ "s135.sec8.u0": [
+  [
+   "Euh... Non, rien, coâ."
+  ]
+ ],
+ "s135.sec8.u1": [
+  [
+   "Euh... ! Je veux aller en",
+   "ville, coâ !"
+  ]
+ ],
+ "s135.sec8.u2": [
+  [
+   "Bien sûr, mais qu'est-ce qui",
+   "t'arrive ?"
+  ]
+ ],
+ "s135.sec8.u3": [
+  [
+   "Je veux combattre dans un",
+   "endroit appelé l'arène, coâ. On",
+   "nous prend pour des ploucs,"
+  ],
+  [
+   "nous les Gekomon, coâ... Mais",
+   "même les ploucs ont leur",
+   "fierté, coâ ! S'il te plaît, je"
+  ],
+  [
+   "t'en supplie, coâ."
+  ]
+ ],
+ "s135.sec8.u4": [
+  [
+   "Je vois. Je comprends ce que",
+   "tu ressens... Alors, vas-y et",
+   "donne tout !"
+  ]
+ ],
+ "s135.sec8.u5": [
+  [
+   "Gekomon a rejoint l'arène !"
+  ]
+ ],
+ "s135.sec81.u0": [
+  [
+   "Tu sembles inquiet. Oui, oui,",
+   "je sais. C'est à propos du",
+   "costume, n'est-ce pas ?"
+  ]
+ ],
+ "s135.sec81.u1": [
+  [
+   "Hein ! Tu es au courant ?"
+  ]
+ ],
+ "s135.sec81.u2": [
+  [
+   "Ne me sous-estime pas. Ce",
+   "costume, Numemon peut",
+   "l'enfiler, vois-tu. Surpris ?"
+  ],
+  [
+   "Et quand il le porte... c'est",
+   "incroyable...... ! Enfin, ça ne",
+   "coûte rien d'essayer."
+  ]
+ ],
+ "s135.sec81.u3": [
+  [
+   "Hmm, cela me rappelle que la",
+   "{color 6}Canne incroyable{color 1} est un objet",
+   "spécial. Je vais donc la"
+  ],
+  [
+   "retirer de tes objets."
+  ]
+ ],
+ "s135.sec81.u4": [
+  [
+   "Donne le meilleur de toi-même !"
+  ]
+ ]
+}

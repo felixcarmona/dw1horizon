@@ -1,0 +1,22 @@
+{
+  "name": "kunemon-decline",
+  "doc": "Kunemon's Bed (screen 1): talk to Kunemon (script 2 section 6, slot 1), answer 'Don't give food' (second menu entry).",
+  "pre": [
+    "warp 1 0",
+    "until screen==1 and free max 2500",
+    "wait 30"
+  ],
+  "run": [
+    "approach 1",
+    "wait 20",
+    "until running press CROSS 3 every 40 max 300",
+    "talk until ACTIVE_INSTRUCTION==16 max 1500",
+    "wait 40",
+    "press DOWN 3",
+    "wait 15",
+    "press CROSS 3",
+    "talk until free max 3000"
+  ],
+  "max_frames": 8000,
+  "expect": {"digest": "27380c64975fa29737937dac2dabef12556167d5", "instructions": 12}
+}

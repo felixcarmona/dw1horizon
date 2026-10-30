@@ -1,0 +1,51 @@
+// Readable form of script 196 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+script 196 {
+    npc gururumon0 = 5;
+    npc gururumon1 = 6;
+    npc vermilimon2 = 7;
+    npc vermilimon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Double flop"), -2816, 0, 318, 3072, 688);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2759, 254);
+        warp_to(253, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -1123, -532);
+        warp_to(248, 0, 255);
+    }
+
+    on talk(gururumon0) replace {    // section 5
+        say(gururumon0, text("s196.sec5.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on talk(gururumon1) replace {    // section 6
+        say(gururumon1, text("s196.sec6.u0"));
+        battle();
+        recruit(species("Gururumon"));
+    }
+
+    on talk(vermilimon2) replace {    // section 7
+        say(vermilimon2, text("s196.sec7.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+    }
+
+    on talk(vermilimon3) replace {    // section 8
+        say(vermilimon3, text("s196.sec8.u0"));
+        battle();
+        recruit(species("Vermilimon"));
+        return;
+    }
+}

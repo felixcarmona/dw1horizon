@@ -1,0 +1,15 @@
+{
+  "id": 58,
+  "name": "Speed Leaf",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 20,
+    "weight": 2,
+    "addSpeed": 20
+  }
+}

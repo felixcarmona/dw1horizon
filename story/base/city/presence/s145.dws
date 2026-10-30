@@ -1,0 +1,10 @@
+// Who stands on screen 145 (Costume House), and when. Read out of MAPHEAD.SCN section 145 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(145) {                              // Costume House
+            npc 138 slot 0 when not trigger(350) and partner.type <= 13 or not trigger(350) and partner.type >= 15;
+        }
+    }
+}

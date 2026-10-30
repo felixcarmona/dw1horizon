@@ -1,0 +1,17 @@
+{
+  "id": 9,
+  "name": "Spinning Shot",
+  "element": "air",
+  "power": 389,
+  "mpCost": 50,
+  "distance": 640000,
+  "range": 2,
+  "accuracy": 77,
+  "status": 0,
+  "statusChance": 0,
+  "iframes": 1,
+  "unk3": 1,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [22, 14, 10]
+}

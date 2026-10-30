@@ -1,0 +1,62 @@
+{
+ "s080.sec5.u0": "Te voy a quitar la vida, si no te importa.",
+ "s080.sec6.u0": "¿Has venido hasta aquí para morir, o qué?",
+ "s080.sec7.u0": "¡Hala, qué valor tienes!",
+ "s080.sec8.u0": "Je. ¿Tantas ganas tienes de morir?",
+ "s080.sec9.u0": "Debes desaparecer...",
+ "s080.sec10.u0": "Perdona, ¿me harías el favor de quitarte de en medio?",
+ "s080.sec51.u0": "Hala, de verdad que aquí parece otra época.",
+ "s080.sec51.u1": "...¡Uy, espera! No hay tiempo para quedarse parado. El meteorito, el meteorito...",
+ "s081.sec5.u0": "Tú eres de ESOS, ¿verdad...? Je, je...",
+ "s081.sec5.u1": "Je, je... Junto al túnel de huesos... se gira...",
+ "s082.sec5.m0.o0": "¡Tocarlo y mirar!",
+ "s082.sec5.m0.o1": "¡Romperlo!",
+ "s082.sec5.u0": "¡Es este...! Desde luego parece un meteorito. Primero...",
+ "s082.sec5.u1": "Mmm...",
+ "s082.sec5.u2": "Es como... un meteorito más normalito de lo que esperaba...",
+ "s082.sec5.u3": [
+  [
+   "{color 7}???mon {color 1}",
+   "Pues perdona por ser",
+   "normalito..."
+  ]
+ ],
+ "s082.sec5.u4": "¡!",
+ "s082.sec5.u5": "¿¡Eras un Digimon!? ¿Quién eres?",
+ "s082.sec5.u6": [
+  [
+   "{color 7}???mon {color 1}",
+   "...Por ahí me llaman Meteormon."
+  ]
+ ],
+ "s082.sec5.u7": "¿Sabes algo de los disturbios de la isla?",
+ "s082.sec5.u8": "...¡Yo no sé ná de ná!",
+ "s082.sec5.u9": "¿Nada de nada? ¿En serio...? ¿No me estarás ocultando algo?",
+ "s082.sec5.u10": "¡Hmpf, qué forastero más maleducao! ¡Pues ea, peleemos! ¡A ver quién lleva razón!",
+ "s082.sec5.u11": "¡V-vale! De acuerdo...",
+ "s082.sec5.u12": "Hmpf... Me rindo. Eres fuerte de verdad.",
+ "s082.sec5.u13": "Lo que sea sobre los disturbios de la isla... ¿Sabes algo? Por favor.",
+ "s082.sec5.u14": "Que no. Que yo acabo de nacer, como quien dice.",
+ "s082.sec5.u15": "¿¡Qué!?",
+ "s082.sec5.u16": "Los Meteormon nacemos allá arriba en el cielo, caemos al suelo enseguida y nos pasamos un buen rato dormidos, quietecitos.",
+ "s082.sec5.u17": "Aunque yo tenía que haberme estao quieto muchísimo más tiempo, ¿eh?...",
+ "s082.sec5.u18": "Ya lo pillo. Aquí el tiempo pasa deprisa.",
+ "s082.sec5.u19": "Eso parece. Bueno, me voy a dar una vuelta por la isla. Suerte, zagal.",
+ "s082.sec5.u20": "...Ay. Así que no hay ninguna pista... Venga, salgamos de aquí rápido.",
+ "s082.sec5.u21": "Total, mirándolo no voy a sacar nada en claro. ¡Vamos a romperlo!",
+ "s082.sec5.u22": [
+  [
+   "{color 7}???mon {color 1}",
+   "¡Eh, ¿pero tú qué te crees que",
+   "haces?! ¡Qué bruto!"
+  ]
+ ],
+ "s082.sec6.u0": "¿Eh? ¿¡Y tú quién eres!?",
+ "s082.sec6.u1": "¡Nanimon, eso es lo que soy!",
+ "s082.sec6.u2": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 20 objetos!",
+ "s082.sec6.u3": "¡Has conseguido el {color 4}Llavero dimensional{color 1}! ¡Ahora puedes llevar hasta 30 objetos!",
+ "s083.sec5.u0": "¡¡Oh. My. Gosh!!",
+ "s083.sec6.u0": "¡Hey, boy! Hazme pasar un buen rato.",
+ "s083.sec7.u0": "Adiós...",
+ "s083.sec8.u0": "Qué vida más corta."
+}

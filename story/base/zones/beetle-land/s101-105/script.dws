@@ -1,0 +1,96 @@
+// Readable form of script 101 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 101 {
+    npc tentomon0 = 5;
+    npc tentomon1 = 6;
+    npc tentomon2 = 7;
+    npc dokunemon3 = 8;
+    npc dokunemon4 = 9;
+    npc dokunemon5 = 10;
+    npc tentomon6 = 11;
+    npc tentomon7 = 12;
+
+    // the section table, in the order of the original header
+    sections 254, 81, 51, 5, 6, 7, 8, 9, 10, 11, 12;
+
+    on enter replace {    // section 254
+        store_random(random_roll, 99);
+        if (random_roll <= 3) {
+            spawn_item(item("Gold Acorn"), 36, 69);
+        }
+    }
+
+    on use(1) replace {    // section 81
+        unless (has(item("Blue Flute")) >= 1) return;
+        say(narrator, text("s101.sec81.u0"));
+        choice {
+            text("s101.sec81.m0.o0") => {
+                wait(3s);
+                warp_to(6, 0, 255);
+                goto sec51;
+            }
+            text("s101.sec81.m0.o1") => {
+                return;
+            }
+            cancel => {
+                return;
+            }
+        }
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, -1061, -331);
+        warp_to(154, 3, 255);
+    }
+
+    on talk(tentomon0) replace {    // section 5
+        say(tentomon0, text("s101.sec5.u0"));
+        battle();
+        recruit(species("Tentomon"));
+    }
+
+    on talk(tentomon1) replace {    // section 6
+        say(tentomon1, text("s101.sec6.u0"));
+        battle();
+        recruit(species("Tentomon"));
+    }
+
+    on talk(tentomon2) replace {    // section 7
+        say(tentomon2, text("s101.sec7.u0"));
+        battle();
+        recruit(species("Tentomon"));
+    }
+
+    on talk(dokunemon3) replace {    // section 8
+        say(dokunemon3, text("s101.sec8.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(dokunemon4) replace {    // section 9
+        say(dokunemon4, text("s101.sec9.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(dokunemon5) replace {    // section 10
+        say(dokunemon5, text("s101.sec10.u0"));
+        battle();
+        recruit(species("Dokunemon"));
+    }
+
+    on talk(tentomon6) replace {    // section 11
+        say(dokunemon4, text("s101.sec11.u0"));
+        battle();
+        recruit(species("Tentomon"));
+    }
+
+    on talk(tentomon7) replace {    // section 12
+        say(dokunemon5, text("s101.sec12.u0"));
+        battle();
+        recruit(species("Tentomon"));
+        return;
+    }
+}

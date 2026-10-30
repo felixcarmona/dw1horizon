@@ -1,0 +1,131 @@
+{
+ "s040.sec5.u0": [
+  [
+   "Eh? Chi diavolo sei? Sparisci!"
+  ]
+ ],
+ "s040.sec5.u1": [
+  [
+   "Come, è casa tua?"
+  ]
+ ],
+ "s040.sec5.u2": [
+  [
+   "Non posso dirtelo!"
+  ]
+ ],
+ "s040.sec5.u3": [
+  [
+   "...Quindi fai la vedetta o",
+   "cosa?"
+  ]
+ ],
+ "s040.sec5.u4": [
+  [
+   "Che c'è, cerchi rogne?! Ti",
+   "riduco una frittella!"
+  ]
+ ],
+ "s040.sec5.m0.o0": "Va bene, lottiamo",
+ "s040.sec5.m0.o1": "Non ci casco",
+ "s040.sec5.u5": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u6": [
+  [
+   "Oh, no...! ...Eeehi!"
+  ]
+ ],
+ "s040.sec5.u7": [
+  [
+   "{color 7}???mon {color 1}",
+   "Ih ih ih ih..."
+  ]
+ ],
+ "s040.sec5.u8": [
+  [
+   "Huh? Chi c'è?"
+  ]
+ ],
+ "s040.sec5.u9": [
+  [
+   "{color 7}???mon {color 1}",
+   "Non abbiamo fatto niente di",
+   "male. Non irrompere in casa",
+   "altrui! Eh eh."
+  ]
+ ],
+ "s040.sec5.u10": [
+  [
+   ". . Dovrò tornare più tardi."
+  ]
+ ],
+ "s040.sec5.u11": [
+  [
+   "Be', buona fortuna con il tuo",
+   "turno di guardia."
+  ]
+ ],
+ "s040.sec5.u12": [
+  [
+   "Mmm...? Non ti ho già visto da",
+   "qualche parte...? Ecco, eri",
+   "nella banda di briganti di"
+  ],
+  [
+   "Ogremon! Quindi questo è il",
+   "vostro covo."
+  ]
+ ],
+ "s040.sec5.u13": [
+  [
+   "...D-di cosa stai parlando?"
+  ]
+ ],
+ "s040.sec5.u14": [
+  [
+   "L'altra volta mi sei sfuggito!",
+   "Ora preparati!"
+  ]
+ ],
+ "s040.sec5.m1.o0": "Va bene, lottiamo",
+ "s040.sec5.m1.o1": "Non ci casco",
+ "s040.sec5.u15": [
+  [
+   "U-uaaah!"
+  ]
+ ],
+ "s040.sec5.u16": [
+  [
+   "L'altra volta mi hai proprio",
+   "ingannato. Credevo aveste",
+   "spostato il covo, ma... ve la"
+  ],
+  [
+   "prendete comoda!"
+  ]
+ ],
+ "s040.sec5.u17": [
+  [
+   "...D-di cosa stai parlando?"
+  ]
+ ],
+ "s040.sec5.u18": [
+  [
+   "Stavolta non mi scappi!"
+  ]
+ ],
+ "s040.sec5.u19": [
+  [
+   "Dai, fammi entrare."
+  ]
+ ],
+ "s040.sec5.u20": [
+  [
+   "Che c'è, cerchi rogne?! Ti",
+   "riduco una frittella!"
+  ]
+ ]
+}

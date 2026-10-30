@@ -1,0 +1,113 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 161,
+ "type": 191,
+ "name": "Ankylomon",
+ "source": {
+  "type": 38,
+  "mmd": "extracted/CHDAT/MMD1/DORI.MMD"
+ },
+ "map": {
+  "1": 18,
+  "2": 2,
+  "3": 5,
+  "4": 8,
+  "5": 10,
+  "6": 11,
+  "7": 14,
+  "8": 16,
+  "9": 17,
+  "11": 21,
+  "12": 22,
+  "14": 25,
+  "15": 26
+ },
+ "hips": [
+  1,
+  1,
+  0.795
+ ],
+ "root_scale": 0.795,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 55,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 55,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 32,
+   "end": 122,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 104,
+   "end": 184,
+   "hz": 0.3
+  },
+  "0x38": {
+   "anim": "anim_01",
+   "start": 125,
+   "end": 271,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x34": {
+   "anim": "anim_03",
+   "start": 103,
+   "end": 195,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  },
+  "0x35": {
+   "anim": "anim_02",
+   "start": 43,
+   "end": 135,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

@@ -1,0 +1,14 @@
+{
+  "id": 62,
+  "name": "Digianchovy",
+  "value": 50,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 8,
+    "weight": 1
+  }
+}

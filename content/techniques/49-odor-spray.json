@@ -1,0 +1,17 @@
+{
+  "id": 49,
+  "name": "Odor Spray",
+  "element": "filth",
+  "power": 88,
+  "mpCost": 25,
+  "distance": 10000,
+  "range": 2,
+  "accuracy": 37,
+  "status": 3,
+  "statusChance": 10,
+  "iframes": 1,
+  "unk3": 0,
+  "unk4": 0,
+  "unk5": 0,
+  "learnChances": [24, 14, 9]
+}

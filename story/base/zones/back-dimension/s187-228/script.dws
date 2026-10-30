@@ -1,0 +1,64 @@
+// Readable form of script 187 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../names.dws";
+script 187 {
+    npc tankmon0 = 5;
+    npc tankmon1 = 6;
+    npc golemon2 = 7;
+    npc golemon3 = 8;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 52, 5, 6, 7, 8;
+
+    on enter replace {    // section 254
+        spawn_chest(item("Off. Chip"), -412, 0, 1068, 2048, 712);
+        spawn_chest(item("HP Chip"), 452, 0, -446, 1024, 713);
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 2019, -420);
+        warp_to(227, 0, 255);
+    }
+
+    on step(1) replace {    // section 52
+        walk(tamer, -2797, 365);
+        if (back_dimension_portal == 1) {
+            warp_to(104, 0, 60);
+            return;
+        }
+        if (back_dimension_portal == 2) {
+            warp_to(66, 1, 60);
+            return;
+        }
+        if (back_dimension_portal == 3) {
+            warp_to(47, 0, 60);
+            return;
+        }
+    }
+
+    on talk(tankmon0) replace {    // section 5
+        say(tankmon0, text("s187.sec5.u0"));
+        battle();
+        recruit(species("Tankmon"));
+    }
+
+    on talk(tankmon1) replace {    // section 6
+        say(tankmon1, text("s187.sec6.u0"));
+        battle();
+        recruit(species("Tankmon"));
+    }
+
+    on talk(golemon2) replace {    // section 7
+        say(golemon2, text("s187.sec7.u0"));
+        battle();
+        recruit(species("Golemon"));
+    }
+
+    on talk(golemon3) replace {    // section 8
+        say(golemon3, text("s187.sec8.u0"));
+        battle();
+        recruit(species("Golemon"));
+        return;
+    }
+}

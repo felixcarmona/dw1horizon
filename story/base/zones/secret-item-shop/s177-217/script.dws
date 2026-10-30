@@ -1,0 +1,150 @@
+// Horizon intermediate generated from script.py by the Python lowerer.
+// Keys only; Python and DWS builds are checked byte for byte.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
+import "../../../names.dws";
+alias flag py_stock_script_18 = 402;
+alias flag py_stock_script_19 = 403;
+alias flag py_stock_script_20 = 404;
+alias flag py_stock_script_21 = 405;
+alias flag py_stock_script_23 = 407;
+alias flag py_stock_script_24 = 408;
+alias flag py_stock_script_25 = 409;
+alias flag py_stock_script_26 = 410;
+alias flag py_stock_script_27 = 411;
+alias flag py_stock_script_28 = 412;
+alias flag py_stock_script_29 = 413;
+alias flag py_stock_script_30 = 414;
+alias flag py_stock_script_31 = 415;
+alias flag py_stock_script_34 = 418;
+alias flag py_stock_script_35 = 419;
+alias flag py_stock_script_36 = 420;
+alias flag py_stock_script_37 = 421;
+// Horizon's extra chips use the shop's existing stock bits; no saved state is allocated.
+group shop_stock {
+    alias flag def_chip = 408;
+    alias flag brain_chip = 409;
+    alias flag quick_chip = 410;
+    alias flag hp_chip = 411;
+    alias flag mp_chip = 412;
+}
+script 177 {
+    npc keeper = 5;
+    npc ninjamon = 6;
+    sections 254, 51, 6, 5;
+    on enter replace {    // enter
+    }
+    on step(0) replace {    // step0
+        warp_to(216, 1, 255);
+    }
+    on talk(ninjamon) replace {    // talk
+        if (p44 == 0) {
+            say(ninjamon, text("s177.sec6.u0"));
+            p44 = 1;
+            return;
+        }
+        if (p44 == 1) {
+            say(ninjamon, text("s177.sec6.u1"));
+            p44 = 0;
+        }
+    }
+    on talk(keeper) replace {    // talk
+        face(tamer, keeper);
+        face(keeper, tamer);
+        if (secret_shop_keeper_met.numemon || secret_shop_keeper_met.mojyamon || secret_shop_keeper_met.mamemon || secret_shop_keeper_met.devimon) {
+        } else if (is_recruited(species(11)) && !secret_shop_keeper_met.numemon && secret_shop_keeper == 0) {
+            say(keeper, text("s177.sec5.u0"));
+            secret_shop_keeper_met.numemon = true;
+            return;
+        } else if (is_recruited(species(52)) && !secret_shop_keeper_met.mojyamon && secret_shop_keeper == 1) {
+            say(keeper, text("s177.sec5.u1"));
+            secret_shop_keeper_met.mojyamon = true;
+            return;
+        } else if (is_recruited(species(13)) && !secret_shop_keeper_met.mamemon && secret_shop_keeper == 2) {
+            say(keeper, text("s177.sec5.u2"));
+            secret_shop_keeper_met.mamemon = true;
+            return;
+        } else if (is_recruited(species(6)) && !secret_shop_keeper_met.devimon && secret_shop_keeper == 3) {
+            say(keeper, text("s177.sec5.u3"));
+            secret_shop_keeper_met.devimon = true;
+            return;
+        }
+        if (is_recruited(species(11)) && !secret_shop_keeper_met.numemon && secret_shop_keeper == 0) {
+            say(keeper, text("s177.sec5.u4"));
+            secret_shop_keeper_met.numemon = true;
+            return;
+        }
+        if (is_recruited(species(52)) && !secret_shop_keeper_met.mojyamon && secret_shop_keeper == 1) {
+            say(keeper, text("s177.sec5.u5"));
+            secret_shop_keeper_met.mojyamon = true;
+            return;
+        }
+        if (is_recruited(species(13)) && !secret_shop_keeper_met.mamemon && secret_shop_keeper == 2) {
+            say(keeper, text("s177.sec5.u6"));
+            secret_shop_keeper_met.mamemon = true;
+            return;
+        }
+        if (is_recruited(species(6)) && !secret_shop_keeper_met.devimon && secret_shop_keeper == 3) {
+            say(keeper, text("s177.sec5.u7"));
+            secret_shop_keeper_met.devimon = true;
+            return;
+        }
+        if (secret_shop_keeper == 0) {
+            py_stock_script_35 = true;
+            py_stock_script_36 = true;
+            engine.picker_mode = false;
+            engine.arg = 5;
+            call_routine(routine("shop"));
+            py_stock_script_35 = false;
+            py_stock_script_36 = false;
+            return;
+        }
+        if (secret_shop_keeper == 1) {
+            py_stock_script_34 = true;
+            py_stock_script_37 = true;
+            engine.picker_mode = false;
+            engine.arg = 5;
+            call_routine(routine("shop"));
+            py_stock_script_34 = false;
+            py_stock_script_37 = false;
+            return;
+        }
+        if (secret_shop_keeper == 2) {
+            py_stock_script_18 = true;
+            py_stock_script_19 = true;
+            py_stock_script_20 = true;
+            py_stock_script_21 = true;
+            engine.picker_mode = false;
+            engine.arg = 5;
+            call_routine(routine("shop"));
+            py_stock_script_18 = false;
+            py_stock_script_19 = false;
+            py_stock_script_20 = false;
+            py_stock_script_21 = false;
+            return;
+        }
+        unless (secret_shop_keeper == 3) return;
+        py_stock_script_29 = true;
+        py_stock_script_30 = true;
+        py_stock_script_31 = true;
+        py_stock_script_23 = true;
+        py_stock_script_24 = true;
+        py_stock_script_25 = true;
+        py_stock_script_26 = true;
+        py_stock_script_27 = true;
+        py_stock_script_28 = true;
+        engine.picker_mode = false;
+        engine.arg = 5;
+        call_routine(routine("shop"));
+        py_stock_script_29 = false;
+        py_stock_script_30 = false;
+        py_stock_script_31 = false;
+        py_stock_script_23 = false;
+        py_stock_script_24 = false;
+        py_stock_script_25 = false;
+        py_stock_script_26 = false;
+        py_stock_script_27 = false;
+        py_stock_script_28 = false;
+    }
+}

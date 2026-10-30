@@ -1,0 +1,13 @@
+{
+  "id": 12,
+  "name": "Sup.restore",
+  "value": 9500,
+  "meritValue": 250,
+  "sortingValue": 1,
+  "itemColor": 2,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "healHP": 9999
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": 54,
+  "name": "Pricklypear",
+  "value": 1000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 33,
+    "weight": -5
+  }
+}

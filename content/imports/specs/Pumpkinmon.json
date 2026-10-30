@@ -1,0 +1,100 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dw2": "M201PUMP",
+ "type": 280,
+ "name": "Pumpkinmon",
+ "source": {
+  "type": 23,
+  "mmd": "extracted/CHDAT/MMD0/YUKI.MMD"
+ },
+ "map": {
+  "1": 1,
+  "2": 3,
+  "3": 6,
+  "4": 7,
+  "6": 10,
+  "7": 11,
+  "9": 2,
+  "11": 14,
+  "12": 15,
+  "13": 17,
+  "14": 18
+ },
+ "hips": [
+  1,
+  1,
+  1.078
+ ],
+ "root_scale": 1.078,
+ "tol": 8,
+ "tol_clips": 4,
+ "clips": {
+  "0x21": {
+   "anim": "A0"
+  },
+  "0x28": {
+   "anim": "B0"
+  },
+  "0x29": {
+   "anim": "B0"
+  },
+  "0x2b": {
+   "anim": "C012",
+   "eyes": "closed"
+  },
+  "0x2c": {
+   "anim": "J0"
+  },
+  "0x38": {
+   "anim": "I0",
+   "speed": 1.53,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 213
+  },
+  "0x2f": {
+   "anim": "H0",
+   "speed": 0.99,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 213
+  },
+  "0x2e": {
+   "anim": "G0",
+   "speed": 2.2,
+   "hz": 0.2,
+   "settle": 4,
+   "loop": false,
+   "rise": 213
+  }
+ },
+ "skip": [],
+ "layer": {
+  "anim": "A0",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ },
+ "scale": 0.196078,
+ "hub_roots": true,
+ "concat": {
+  "C012": [
+   "C0",
+   "C1",
+   "C2"
+  ]
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "s041.sec5.u0": "Boy, you're no fun!",
+ "s041.sec6.u0": "Ha ha, did you say something?",
+ "s041.sec7.u0": "I told you, I really can't...",
+ "s041.sec8.u0": "I'm not all that sure of myself, you know.",
+ "s041.sec9.u0": "Go easy on me...",
+ "s041.sec10.u0": "Hmph, don't underestimate me!",
+ "s041.sec81.m0.o0": "Press the Roof button",
+ "s041.sec81.m0.o1": "Press the Up button",
+ "s041.sec81.m0.o2": "Don't get on",
+ "s041.sec81.u0": "Elevator",
+ "s041.sec81.u1": "Hmm, nothing's happening...",
+ "s041.sec81.u2": "Hey, there's a pebble stuck in the machine. So that's the problem...?",
+ "s041.sec81.u3": "Removed the pebble!",
+ "s041.sec81.u4": "That should do it.",
+ "s041.sec81.u5": "Hmm, nothing's happening...",
+ "s041.sec81.u6": "Hey, there's a pebble stuck in the machine. So that's the problem...?",
+ "s041.sec81.u7": "Removed the pebble!",
+ "s041.sec81.u8": "That should do it.",
+ "s042.sec5.u0": "Shwaaah!",
+ "s042.sec6.u0": "Shashasha!",
+ "s042.sec7.u0": "Looks like you're not hurt, huh?",
+ "s042.sec8.u0": "I'll give you a nice discount.",
+ "s042.sec9.u0": "Don't you go looking down on me!",
+ "s042.sec10.u0": "Don't think you're getting home alive.",
+ "s042.sec51.u0": "Owwwww!",
+ "s042.sec51.u1": "...But for falling from that high up... I'm fine.",
+ "s042.sec51.u2": "Oh, {color 10}{partner}{color 1}, are you okay?!",
+ "s042.sec51.u3": [
+  [
+   "Huh? You look totally fine."
+  ],
+  [
+   "Hey, you flew, didn't you? No fair! ...Well, I",
+   "guess it's not really unfair."
+  ]
+ ],
+ "s042.sec51.u4": "Okay, let's go.",
+ "s042.sec51.u5": "Owwwww!",
+ "s042.sec51.u6": "...But for falling from that high up... I'm fine.",
+ "s042.sec51.u7": "Oh, {color 10}{partner}{color 1}, are you okay?!",
+ "s042.sec51.u8": "Looks like that hurt a little. Sorry.",
+ "s042.sec51.u9": "Okay, let's go."
+}

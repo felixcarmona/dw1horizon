@@ -1,0 +1,285 @@
+From 958314189473ecbf86d51e6680d2474f92db844a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 16 Oct 2026 15:31:10 +0000
+Subject: [PATCH] Rules as data, training and the VS unlock: the stat gain
+ multiplier by training type and level with its bonus rows (the recruited
+ Kabuterimon and Kuwagamon, the upgrade counters, the training manual:
+ MOD_TRAIN_NUM / MOD_TRAIN_LEVEL / MOD_TRAIN_BONUS) and the record a game
+ clear unlocks for the VS mode (MOD_VS_UNLOCK); all start empty and
+ tools/balance.py writes them
+
+---
+ include/dw/mod_rules.h |  21 ++++++
+ src/main/main_menu.c   |  17 +++--
+ src/trn/trn_reward.c   | 156 ++++++++++++-----------------------------
+ 3 files changed, 79 insertions(+), 115 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index 5acbede9..d2b9d14f 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -46,4 +46,25 @@ extern int16_t MOD_DAYTIME[MOD_DAYTIME_SIZE];
+ /* 0 dusk, 1 night, 2 day at an hour */
+ int32_t modTimeOfDay(int32_t hour);
+ 
++/* training: the gain multiplier of a stat (mode 0..5) by the species' training type, by level, and the bonus rows */
++#define MOD_TRAIN_MODES		6
++#define MOD_TRAIN_TYPES		5 /* training types 0..3 and "other" */
++#define MOD_TRAIN_LEVELS	8 /* level 0..7 (a level past 7 uses 7) */
++#define MOD_TRAIN_BONUS_MAX	6
++/* a bonus row: kind 0 = a trigger is set (arg), 1 = the upgrade counter of the mode >= arg (both only when training for real), 2 = the
++ * player holds the item (arg); modes = bit mask of the modes it applies to; the gain is multiplied by num/den; kind -1 = unused row */
++typedef struct {
++	int16_t kind;
++	int16_t arg;
++	int16_t modes;
++	int16_t num;
++	int16_t den;
++} ModTrainBonus;
++extern int16_t MOD_TRAIN_NUM[MOD_TRAIN_MODES][MOD_TRAIN_TYPES]; /* tenths; -1 = no gain */
++extern int16_t MOD_TRAIN_LEVEL[MOD_TRAIN_LEVELS];               /* tenths of the multiplier by level; -1 = no gain */
++extern ModTrainBonus MOD_TRAIN_BONUS[MOD_TRAIN_BONUS_MAX];
++
++/* the battle registration record a game clear unlocks for the VS mode: species, three techniques, slot (-1: nothing is unlocked) */
++extern int16_t MOD_VS_UNLOCK[5];
++
+ #endif
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index a96204c8..d4ad39cf 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -8,6 +8,7 @@
+ #include <dw/entity.h>
+ #include <dw/font.h>
+ #include <dw/ids.h>
++#include <dw/mod_rules.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+ #include <dw/main.h>
+@@ -4881,11 +4882,17 @@ int32_t tickSaveMachine(void)
+ 	return 0;
+ }
+ 
++int16_t MOD_VS_UNLOCK[5] = { -1, -1, -1, -1, -1 };
++
+ void awardMachinedramonData(void)
+ {
+ 	RegisteredDigimon *rec;
+ 
+-	rec = &SAVE_FILE.saves[0].battleRegistrationData[39];
++	/* MOD (rules as data): the species, techniques and slot come from MOD_VS_UNLOCK (-1: nothing is unlocked) */
++	if (MOD_VS_UNLOCK[0] < 0 || MOD_VS_UNLOCK[4] < 0) {
++		return;
++	}
++	rec = &SAVE_FILE.saves[0].battleRegistrationData[MOD_VS_UNLOCK[4]];
+ 	rec->hp = PARTNER_ENTITY.digimonEntity.stats.base.hp;
+ 	rec->mp = PARTNER_ENTITY.digimonEntity.stats.base.mp;
+ 	rec->offense = PARTNER_ENTITY.digimonEntity.stats.base.off;
+@@ -4893,11 +4900,11 @@ void awardMachinedramonData(void)
+ 	rec->speed = PARTNER_ENTITY.digimonEntity.stats.base.speed;
+ 	rec->brains = PARTNER_ENTITY.digimonEntity.stats.base.brain;
+ 	rec->discipline = PARTNER_PARA.discipline;
+-	rec->digimonId = 0x73;
++	rec->digimonId = MOD_VS_UNLOCK[0];
+ 	memcpy(rec->name, PARTNER_ENTITY.name, 0xe);
+-	rec->moves[0] = 0x2e;
+-	rec->moves[1] = 0x30;
+-	rec->moves[2] = 0x32;
++	rec->moves[0] = MOD_VS_UNLOCK[1];
++	rec->moves[1] = MOD_VS_UNLOCK[2];
++	rec->moves[2] = MOD_VS_UNLOCK[3];
+ }
+ 
+ void gameClearSave(void)
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index ce3cc2f5..51729928 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -6,6 +6,7 @@
+ #include <dw/entity.h>
+ #include <dw/font.h>
+ #include <dw/math.h>
++#include <dw/mod_rules.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/script.h>
+@@ -612,131 +613,66 @@ int32_t c;
+ 	}
+ }
+ 
++/*
++ * MOD (rules as data): the tables below are written by tools/balance.py build from content/tables/training.json; -1 = does not exist.
++ * The gain is num * level * bonuses / (10 * 10 * bonuses), in tenths.
++ */
++int16_t MOD_TRAIN_NUM[MOD_TRAIN_MODES][MOD_TRAIN_TYPES] = {
++	{ -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 },
++	{ -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 }, { -1, -1, -1, -1, -1 },
++};
++int16_t MOD_TRAIN_LEVEL[MOD_TRAIN_LEVELS] = { -1, -1, -1, -1, -1, -1, -1, -1 };
++ModTrainBonus MOD_TRAIN_BONUS[MOD_TRAIN_BONUS_MAX] = {
++	{ -1, 0, 0, 0, 1 }, { -1, 0, 0, 0, 1 }, { -1, 0, 0, 0, 1 }, { -1, 0, 0, 0, 1 }, { -1, 0, 0, 0, 1 }, { -1, 0, 0, 0, 1 },
++};
++
+ int16_t TRN_calculateTrainingMultiplier(int32_t type, int16_t mode, int16_t flag)
+ {
+ 	uint32_t num;
+ 	uint32_t den;
+ 	uint8_t tt;
++	int32_t lv;
++	int32_t i;
++	ModTrainBonus *bonus;
++	int16_t counter;
+ 	int16_t result;
+ 
+-	num = 0;
+-	den = 0;
++	if (mode < 0 || mode >= MOD_TRAIN_MODES) {
++		return 0;
++	}
+ 	tt = RAISE_ROW(type).trainingType;
+-	switch (mode) {
+-	case 0:
+-		if ((tt == 0) || (tt == 1)) {
+-			num = 10;
+-		} else if (tt == 2) {
+-			num = 9;
+-		} else if (tt == 3) {
+-			num = 11;
+-		} else {
+-			num = 8;
+-		}
+-		break;
+-	case 1:
+-		if ((tt == 0) || (tt == 3)) {
+-			num = 10;
+-		} else if (tt == 1) {
+-			num = 9;
+-		} else if (tt == 2) {
+-			num = 11;
+-		} else {
+-			num = 8;
+-		}
+-		break;
+-	case 2:
+-		if ((tt == 0) || (tt == 2)) {
+-			num = 10;
+-		} else if (tt == 1) {
+-			num = 11;
+-		} else if (tt == 3) {
+-			num = 9;
+-		} else {
+-			num = 8;
+-		}
+-		break;
+-	case 3:
+-		if ((tt == 0) || (tt == 1)) {
+-			num = 10;
+-		} else if (tt == 2) {
+-			num = 9;
+-		} else if (tt == 3) {
+-			num = 11;
+-		} else {
+-			num = 8;
+-		}
+-		break;
+-	case 4:
+-		if ((tt == 0) || (tt == 2)) {
+-			num = 10;
+-		} else if (tt == 1) {
+-			num = 11;
+-		} else if (tt == 3) {
+-			num = 9;
+-		} else {
+-			num = 8;
+-		}
+-		break;
+-	case 5:
+-		if ((tt == 0) || (tt == 3)) {
+-			num = 10;
+-		} else if (tt == 1) {
+-			num = 9;
+-		} else if (tt == 2) {
+-			num = 11;
+-		} else {
+-			num = 8;
+-		}
+-		break;
++	if (tt >= MOD_TRAIN_TYPES) {
++		tt = MOD_TRAIN_TYPES - 1;
+ 	}
+-
+-	den = 10;
+-	if ((DIGI_PARA(type).level == 1) || (DIGI_PARA(type).level == 2)) {
+-		num = num * 9;
+-	} else if (DIGI_PARA(type).level == 3) {
+-		num = num * 10;
+-	} else if (DIGI_PARA(type).level == 4) {
+-		num = num * 11;
+-	} else if (DIGI_PARA(type).level == 6) { /* MOD (mega): x1.3 */
+-		num = num * 13;
+-	} else {
+-		num = num * 12;
++	lv = DIGI_PARA(type).level;
++	if (lv >= MOD_TRAIN_LEVELS) {
++		lv = MOD_TRAIN_LEVELS - 1;
+ 	}
+-
+-	den = den * 10;
+-	if (flag == 0) {
+-		if ((mode == 0) || (mode == 3) || (mode == 4)) {
+-			if (isTriggerSet(0xdb) == 1) {
+-				num = num * 6;
+-				den = den * 5;
+-			}
+-		}
+-		if ((mode == 2) || (mode == 1) || (mode == 5)) {
+-			if (isTriggerSet(0xfb) == 1) {
+-				num = num * 6;
+-				den = den * 5;
+-			}
+-		}
+-		if ((mode == 0) || (mode == 1) || (mode == 2)) {
+-			if ((&PARTNER_PARA.upgradeHPcounter)[mode] >= 10) {
+-				num = num * 6;
+-				den = den * 5;
+-			}
++	if (MOD_TRAIN_NUM[mode][tt] < 0 || MOD_TRAIN_LEVEL[lv] < 0) {
++		return 0;
++	}
++	num = MOD_TRAIN_NUM[mode][tt] * MOD_TRAIN_LEVEL[lv];
++	den = 100;
++	for (i = 0; i < MOD_TRAIN_BONUS_MAX; i++) {
++		bonus = &MOD_TRAIN_BONUS[i];
++		if (bonus->kind < 0 || bonus->den <= 0 || (bonus->modes & (1 << mode)) == 0) {
++			continue;
+ 		}
+-		if ((mode == 3) || (mode == 4) || (mode == 5)) {
+-			if ((&PARTNER_PARA.upgradeDefenseCounter)[mode - 3] >= 10) {
+-				num = num * 6;
+-				den = den * 5;
++		if (bonus->kind == 0 && flag == 0 && isTriggerSet(bonus->arg) == 1) {
++			num = num * bonus->num;
++			den = den * bonus->den;
++		} else if (bonus->kind == 1 && flag == 0) {
++			counter = mode < 3 ? (&PARTNER_PARA.upgradeHPcounter)[mode] : (&PARTNER_PARA.upgradeDefenseCounter)[mode - 3];
++			if (counter >= bonus->arg) {
++				num = num * bonus->num;
++				den = den * bonus->den;
+ 			}
++		} else if (bonus->kind == 2 && getItemCount(bonus->arg) > 0) {
++			num = num * bonus->num;
++			den = den * bonus->den;
+ 		}
+ 	}
+ 
+-	if (getItemCount(0x21) > 0) {
+-		num = num * 11;
+-		den = den * 10;
+-	}
+-
+ 	result = (num * 10) / den;
+ 	return result;
+ }
+-- 
+2.53.0
+

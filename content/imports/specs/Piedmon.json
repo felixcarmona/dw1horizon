@@ -1,0 +1,128 @@
+{
+ "_generated": "tools/import_batch.py (do not edit: rerun the batch)",
+ "dcb": 171,
+ "type": 245,
+ "name": "Piedmon",
+ "source": {
+  "type": 54,
+  "mmd": "extracted/CHDAT/MMD1/MGDR.MMD"
+ },
+ "map": {
+  "1": 2,
+  "2": 6,
+  "3": 3,
+  "4": 20,
+  "5": 7,
+  "8": 13,
+  "12": 19,
+  "15": 21,
+  "18": 12,
+  "19": 18,
+  "20": 1,
+  "21": 8,
+  "22": 10,
+  "23": 22,
+  "25": 24,
+  "26": 14,
+  "27": 23
+ },
+ "hips": [
+  1,
+  1,
+  0.829
+ ],
+ "root_scale": 0.829,
+ "tol": 10,
+ "tol_clips": 6,
+ "clips": {
+  "0x21": {
+   "anim": "anim_00"
+  },
+  "0x28": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity"
+  },
+  "0x29": {
+   "anim": "anim_04",
+   "start": 0,
+   "end": 60,
+   "hips": "entity",
+   "root_scale": -0.8
+  },
+  "0x2b": {
+   "anim": "anim_05",
+   "start": 29,
+   "end": 119,
+   "hips": "entity",
+   "root_scale": 0.3,
+   "speed": 1.5
+  },
+  "0x2a": {
+   "anim": "anim_06",
+   "start": 148,
+   "end": 228,
+   "hz": 0.3,
+   "rise": 250
+  },
+  "0x3b": {
+   "anim": "anim_01",
+   "start": 29,
+   "end": 166,
+   "speed": 1.5,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x2e": {
+   "anim": "anim_02",
+   "start": 64,
+   "end": 124,
+   "speed": 1.48,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  },
+  "0x2f": {
+   "anim": "anim_03",
+   "start": 53,
+   "end": 127,
+   "speed": 1.49,
+   "hz": 0.2,
+   "settle": 4,
+   "rise": 250
+  }
+ },
+ "skip": [
+  "0x1c",
+  "0x1d",
+  "0x1e",
+  "0x1f",
+  "0x20",
+  "0x30",
+  "0x32",
+  "0x34",
+  "0x35",
+  "0x36",
+  "0x38",
+  "0x39"
+ ],
+ "layer": {
+  "anim": "anim_00",
+  "bones": "unmapped",
+  "slots": [
+   "0x00",
+   "0x01",
+   "0x02",
+   "0x03",
+   "0x04",
+   "0x11",
+   "0x12",
+   "0x1b",
+   "0x22",
+   "0x23",
+   "0x24"
+  ]
+ }
+}

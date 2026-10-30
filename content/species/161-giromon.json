@@ -1,0 +1,33 @@
+{
+  "id": 161,
+  "name": "Giromon",
+  "level": "ultimate",
+  "attribute": "vaccine",
+  "specialties": ["mech", "air", "battle"],
+  "techniques": ["Power Crane", "Delete Program", "Reverse Prog", "DG Dimension", "Deadly Bomb"],
+  "drop": {"item": "Def. Chip", "percent": 100},
+  "effects_like": 41,
+  "model": {"name": "EGIR", "bones": 11, "radius": 130, "height": 300},
+  "voice": 37,
+  "battle_music": "normal-battle",
+  "wild": {"hp": 5700, "mp": 4800, "off": 690, "def": 450, "speed": 490, "brain": 300, "bits": 3500},
+  "evolution": {
+    "requirements": {
+      "digimon": 0,
+      "hp": 0,
+      "mp": 0,
+      "offense": 0,
+      "defense": 0,
+      "speed": 0,
+      "brain": 0,
+      "care": 0,
+      "weight": 0,
+      "discipline": 0,
+      "happiness": 0,
+      "battles": 0,
+      "techs": 0,
+      "flags": 0
+    },
+    "gains": {"hp": 0, "mp": 0, "offense": 0, "defense": 0, "speed": 0, "brains": 0, "target": 0}
+  }
+}

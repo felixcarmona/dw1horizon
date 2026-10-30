@@ -1,0 +1,174 @@
+{
+ "s041.sec5.u0": [
+  [
+   "Uff, non sei divertente!"
+  ]
+ ],
+ "s041.sec6.u0": [
+  [
+   "Ah ah, hai detto qualcosa?"
+  ]
+ ],
+ "s041.sec7.u0": [
+  [
+   "Te l'ho detto, Non posso",
+   "proprio. . . ."
+  ]
+ ],
+ "s041.sec8.u0": [
+  [
+   "Non sono poi così sicuro di me,",
+   "sai."
+  ]
+ ],
+ "s041.sec9.u0": [
+  [
+   "Vacci piano con me..."
+  ]
+ ],
+ "s041.sec10.u0": [
+  [
+   "Umpf, non sottovalutarmi!"
+  ]
+ ],
+ "s041.sec81.m0.o0": "Premi il tasto tetto",
+ "s041.sec81.m0.o1": "Premi il tasto su",
+ "s041.sec81.m0.o2": "Non salire",
+ "s041.sec81.u0": [
+  [
+   "Ascensore"
+  ]
+ ],
+ "s041.sec81.u1": [
+  [
+   "Mh, non succede niente..."
+  ]
+ ],
+ "s041.sec81.u2": [
+  [
+   "Ehi, c'è un sassolino",
+   "incastrato nella macchina. Sarà",
+   "questo il problema...?"
+  ]
+ ],
+ "s041.sec81.u3": [
+  [
+   "Sassolino rimosso!"
+  ]
+ ],
+ "s041.sec81.u4": [
+  [
+   "Dovrebbe andare."
+  ]
+ ],
+ "s041.sec81.u5": [
+  [
+   "Mh, non succede niente..."
+  ]
+ ],
+ "s041.sec81.u6": [
+  [
+   "Ehi, c'è un sassolino",
+   "incastrato nella macchina. Sarà",
+   "questo il problema...?"
+  ]
+ ],
+ "s041.sec81.u7": [
+  [
+   "Sassolino rimosso!"
+  ]
+ ],
+ "s041.sec81.u8": [
+  [
+   "Dovrebbe andare."
+  ]
+ ],
+ "s042.sec5.u0": [
+  [
+   "Shuba!"
+  ]
+ ],
+ "s042.sec6.u0": [
+  [
+   "Shashasha!"
+  ]
+ ],
+ "s042.sec7.u0": [
+  [
+   "Sembra che tu non sia ferito,",
+   "eh?"
+  ]
+ ],
+ "s042.sec8.u0": [
+  [
+   "Ti darò un buon sconto."
+  ]
+ ],
+ "s042.sec9.u0": [
+  [
+   "Non guardarmi dall'alto in",
+   "basso!"
+  ]
+ ],
+ "s042.sec10.u0": [
+  [
+   "Non pensare di tornare a casa",
+   "vivo."
+  ]
+ ],
+ "s042.sec51.u0": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u1": [
+  [
+   "...Per una caduta da così in",
+   "alto... sto bene."
+  ]
+ ],
+ "s042.sec51.u2": [
+  [
+   "Oh, {color 10}{partner}{color 1}, stai bene?!"
+  ]
+ ],
+ "s042.sec51.u3": [
+  [
+   "Eh? Stai benissimo. Ehi, hai",
+   "volato, vero? Non vale! ...Beh,",
+   "in fondo non è ingiusto."
+  ]
+ ],
+ "s042.sec51.u4": [
+  [
+   "Ok, Andiamo."
+  ]
+ ],
+ "s042.sec51.u5": [
+  [
+   "Aaaay!"
+  ]
+ ],
+ "s042.sec51.u6": [
+  [
+   "...Per una caduta da così in",
+   "alto... sto bene."
+  ]
+ ],
+ "s042.sec51.u7": [
+  [
+   "Oh, {color 10}{partner}{color 1}, stai bene?!"
+  ]
+ ],
+ "s042.sec51.u8": [
+  [
+   "Sembra che tu ti sia fatto un",
+   "po' male. Scusa."
+  ]
+ ],
+ "s042.sec51.u9": [
+  [
+   "Ok, Andiamo."
+  ]
+ ]
+}

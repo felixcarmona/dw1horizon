@@ -1,0 +1,15 @@
+// Who stands on screen 247 (), and when. Read out of MAPHEAD.SCN section 247 by `dws city-extract`;
+// `dws city-verify` proves it against the original instructions (docs/mods/city-rules.md).
+
+city {
+    presence {                                     // who is on which screen, and when (MAPHEAD setup sections, one rule per NPC)
+        screen(247) {                              // 
+            npc Vermilimon slot 0 autotalk when trigger(321);
+            npc Piddomon slot 1 autotalk when trigger(321);
+            npc Piddomon slot 2 autotalk when trigger(321);
+            npc Vermilimon slot 3 autotalk when trigger(321);
+            npc Piddomon slot 4 autotalk when trigger(321);
+            npc 130 slot 5 autotalk when not trigger(321);
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "format": 1,
+  "commands": [
+    ["tools/dcb2mmd.py", "partner", "content/models/dcb-import/veemon.json", "build/dcb"],
+    ["tools/dcb2mmd.py", "partner", "content/models/dcb-import/puppetmon.json", "build/dcb"],
+    ["tools/dw2mmd.py", "partner", "content/models/dcb-import/kimeramon-dw2.json", "build/dw2"],
+    ["content/models/mega/make-model.py", "build/models"]
+  ]
+}

@@ -1,0 +1,160 @@
+From 869afe6a2e15609a84c9d3f761d14beb07cbf6b3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 10 Oct 2026 22:12:05 +0000
+Subject: [PATCH] 60 fps step 1: clock and status bar slide in the late tick
+
+renderGameClock moved CLOCK_OFFSET_X by 50 per render and renderStatusBars
+moved STATUS_UI_OFFSET_X (the HUD slides out while game time is stopped).
+Both now move in lateTickGameClock, the clock object's late tick.
+
+---
+ include/dw/clock.h      |  1 +
+ src/main/clock.c        | 36 +++++++++++++++++++++++-------------
+ src/main/map.c          |  2 +-
+ src/main/partner_impl.c | 22 ++++++++++++++--------
+ 4 files changed, 39 insertions(+), 22 deletions(-)
+
+diff --git a/include/dw/clock.h b/include/dw/clock.h
+index 49e785f..a5f523f 100644
+--- a/include/dw/clock.h
++++ b/include/dw/clock.h
+@@ -19,6 +19,7 @@ void initializeClockData(void);
+ void addClock(void);
+ void tickGameClock(int32_t instanceId);
+ void renderGameClock(int32_t instanceId);
++void lateTickGameClock(int32_t instanceId);
+ void tickPlaytime(int32_t instanceId);
+ void advanceToTime(int32_t hour, int16_t minute);
+ void updateMinuteHand(int32_t hour, int32_t minute);
+diff --git a/src/main/clock.c b/src/main/clock.c
+index 9198e55..08274af 100644
+--- a/src/main/clock.c
++++ b/src/main/clock.c
+@@ -4,6 +4,7 @@
+ #include <dw/params.h>
+ #include <dw/pstat.h>
+ #include <dw/script.h>
++#include <dw/mod_fps.h>
+ #include <dw/world_object.h>
+ 
+ void renderRectPolyFT4(int32_t posX, int32_t posY,
+@@ -17,6 +18,7 @@ int32_t isFishing();
+ void addTamerLevel(int32_t chance, int32_t amount);
+ void updateBGM();
+ void renderStatusBars(int32_t isGameTimeRunning);
++void tickStatusBarsSlide(int32_t isGameTimeRunning);
+ 
+ extern uint16_t LAST_HANDLED_FRAME;
+ extern int8_t GAME_STATE;
+@@ -76,7 +78,7 @@ static void *clock_data_order[] = {
+ 
+ void addClock(void)
+ {
+-	addObject(0xfa2, 0, tickGameClock, renderGameClock);
++	addObjectLate(0xfa2, 0, tickGameClock, lateTickGameClock, renderGameClock);
+ 	addObject(0xfb9, 0, tickPlaytime, 0);
+ }
+ 
+@@ -225,19 +227,11 @@ void initializeClockData(void)
+ 	IS_GAMETIME_RUNNING = 1;
+ }
+ 
+-void renderGameClock(int32_t instanceId)
++/* MOD (fps): the clock and the status bars slide in or out (when game time
++ * stops) once per tick, after all the object ticks, where the render used to
++ * move them. */
++void lateTickGameClock(int32_t instanceId)
+ {
+-	uint8_t isNight;
+-	uint8_t frame;
+-
+-	if (HOUR >= 6 && HOUR < 17) {
+-		isNight = 0;
+-	} else {
+-		isNight = 1;
+-	}
+-
+-	frame = (CURRENT_FRAME % 16) / 4;
+-
+ 	if (IS_GAMETIME_RUNNING == 0) {
+ 		CLOCK_OFFSET_X -= 50;
+ 	} else {
+@@ -252,6 +246,22 @@ void renderGameClock(int32_t instanceId)
+ 		CLOCK_OFFSET_X = -220;
+ 	}
+ 
++	tickStatusBarsSlide(IS_GAMETIME_RUNNING);
++}
++
++void renderGameClock(int32_t instanceId)
++{
++	uint8_t isNight;
++	uint8_t frame;
++
++	if (HOUR >= 6 && HOUR < 17) {
++		isNight = 0;
++	} else {
++		isNight = 1;
++	}
++
++	frame = (CURRENT_FRAME % 16) / 4;
++
+ 	renderRectPolyFT4(CLOCK_OFFSET_X - 2, -90, 16, 16, 192, 224,
+ 			  GetTPage(0, 0, 896, 448), GetClut(256, 497), 9, 0);
+ 
+diff --git a/src/main/map.c b/src/main/map.c
+index a04f957..d6425c8 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -5585,7 +5585,7 @@ void renderMapName(mapId)
+ 
+ void reinitializeAfterTournament(void)
+ {
+-	addObject(0xfa2, 0, tickGameClock, renderGameClock);
++	addObjectLate(0xfa2, 0, tickGameClock, lateTickGameClock, renderGameClock);
+ 	addObjectLate(0xfa0, 0, NULL, lateTickMap, renderMap);
+ #if VERSION_IS(JP)
+ 	addObject(0xfa6, 0, tickConditions, NULL);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index ca56851..d8cfc1e 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -2119,6 +2119,19 @@ void tickConditions(void)
+ 	}
+ }
+ 
++/* MOD (fps): called by lateTickGameClock once per tick */
++void tickStatusBarsSlide(int32_t state)
++{
++	if (state == 0)
++		STATUS_UI_OFFSET_X += 50;
++	else
++		STATUS_UI_OFFSET_X -= 50;
++	if (STATUS_UI_OFFSET_X > 240)
++		STATUS_UI_OFFSET_X = 240;
++	if (STATUS_UI_OFFSET_X < 75)
++		STATUS_UI_OFFSET_X = 75;
++}
++
+ // clang-format off
+ void renderStatusBars(state)
+ 	int8_t state;
+@@ -2132,14 +2145,7 @@ void renderStatusBars(state)
+ 	uint8_t disciplineTexX;
+ 	uint8_t disciplineTexY;
+ 
+-	if (state == 0)
+-		STATUS_UI_OFFSET_X += 50;
+-	else
+-		STATUS_UI_OFFSET_X -= 50;
+-	if (STATUS_UI_OFFSET_X > 240)
+-		STATUS_UI_OFFSET_X = 240;
+-	if (STATUS_UI_OFFSET_X < 75)
+-		STATUS_UI_OFFSET_X = 75;
++	/* MOD (fps): the slide is in tickStatusBarsSlide (late tick) */
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X, 85, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
+ 	renderRectPolyFT4(STATUS_UI_OFFSET_X, 97, 75, 8, 0, 236, 5, 0x7D06, 15, 0);
+ 	if (PARTNER_PARA.happiness >= 0)
+-- 
+2.53.0
+

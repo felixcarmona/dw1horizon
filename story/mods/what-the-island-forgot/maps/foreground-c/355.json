@@ -1,0 +1,176 @@
+{
+  "screen": 355,
+  "name": "heart-of-the-mine",
+  "pieces": [
+    {
+      "name": "entrance-rim",
+      "depth_px": [
+        166,
+        207
+      ],
+      "block": [],
+      "at": [
+        84,
+        62
+      ],
+      "png": "355-entrance-rim.png",
+      "size": [
+        193,
+        125
+      ],
+      "sam": [
+        {
+          "box": [
+            91,
+            75,
+            245,
+            167
+          ],
+          "positive": [
+            [
+              126,
+              103
+            ],
+            [
+              157,
+              90
+            ],
+            [
+              184,
+              91
+            ],
+            [
+              217,
+              104
+            ],
+            [
+              231,
+              131
+            ]
+          ],
+          "negative": [
+            [
+              172,
+              126
+            ],
+            [
+              145,
+              148
+            ],
+            [
+              206,
+              146
+            ],
+            [
+              110,
+              158
+            ],
+            [
+              100,
+              86
+            ],
+            [
+              242,
+              86
+            ]
+          ],
+          "scores": [
+            0.7591695785522461
+          ],
+          "best": 0,
+          "multimask": false
+        }
+      ],
+      "mask_sha256": "d4d7d126d421a5f6d123590691bcf5133749e23dd96fa1b8958d543eefb7bbda",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    },
+    {
+      "name": "near-rubble",
+      "depth_px": [
+        355,
+        640
+      ],
+      "block": [],
+      "at": [
+        230,
+        598
+      ],
+      "png": "355-near-rubble.png",
+      "size": [
+        236,
+        42
+      ],
+      "sam": [
+        {
+          "box": [
+            238,
+            581,
+            480,
+            639
+          ],
+          "positive": [
+            [
+              291,
+              639
+            ],
+            [
+              344,
+              622
+            ],
+            [
+              399,
+              631
+            ]
+          ],
+          "negative": [
+            [
+              238,
+              581
+            ],
+            [
+              480,
+              581
+            ],
+            [
+              238,
+              639
+            ],
+            [
+              480,
+              639
+            ]
+          ],
+          "scores": [
+            0.8505699038505554,
+            0.828477144241333,
+            0.8388862609863281
+          ],
+          "best": 0
+        }
+      ],
+      "mask_sha256": "9ba10c52ae197a2de21c08b717efdbd7a4e7fa918f5c9ad691aa903c1ca4479a",
+      "min_component": 3,
+      "fill_holes_max_area": 0
+    }
+  ],
+  "source": "heart-of-the-mine.png",
+  "source_at": [
+    0,
+    0
+  ],
+  "audit": "The drill, fallen scaffolding, consoles and wall plaques stand against blocked perimeter tiles. There is no route behind the drill. Cut the left entrance rim and near rubble where the character can overlap them; keep the central chamber open. Tile review: restore 0 floor tiles behind foreground silhouettes; block 0 occupied tiles. Every changed tile is listed below with its previous value and reason. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "collision_tiles": [],
+  "sam_source": {
+    "path": "G-heart-of-the-mine/heart-of-the-mine-intento-1.png",
+    "repo_relative": false,
+    "crop": [
+      0,
+      39,
+      2400,
+      1753
+    ],
+    "sha1": "741cc0e59ed4b6092468ba8d2bfc2364eaee890d",
+    "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
+  }
+}

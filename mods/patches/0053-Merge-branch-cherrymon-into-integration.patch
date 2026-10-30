@@ -1,0 +1,487 @@
+From 1bdbc23937a55a4c527141d089b6a843b2236a7e Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 11 Oct 2026 14:15:05 +0000
+Subject: [PATCH] Merge branch 'cherrymon' into integration
+
+---
+ include/dw/efe.h        |  3 +++
+ include/dw/ids.h        | 14 +++++++++++--
+ src/btl/battle_effect.c | 12 +++++++++++-
+ src/main/efe.c          | 52 +++++++++++++++++++++++++++++++++++++++++++++++++
+ src/main/evolution.c    | 17 +++++++++++++++-
+ src/main/main.c         | 21 ++++++++++++++------
+ src/main/map.c          |  2 +-
+ src/main/mod_lab.c      | 30 ++++++++++++++++++++++++----
+ src/main/partner_impl.c | 11 +++++++++++
+ src/main/sound.c        |  3 ++-
+ src/std/std_effect.c    | 12 +++++++++++-
+ src/trn/trn_reward.c    |  2 ++
+ src/trn2/trn2_off.c     |  2 ++
+ src/vs/vs_effect.c      | 12 +++++++++++-
+ 14 files changed, 175 insertions(+), 18 deletions(-)
+
+diff --git a/include/dw/efe.h b/include/dw/efe.h
+index 26023c2..1a535a4 100644
+--- a/include/dw/efe.h
++++ b/include/dw/efe.h
+@@ -344,6 +344,9 @@ extern int32_t EFE_ACTIVE_SECTION;
+ extern EfeSubEffect *EFE_SCRIPT_CONTEXT;
+ extern int32_t EFE_SCRIPT_REGISTER;
+ extern EfeBoneOffset *EFE_BONE_OFFSET;
++
++/* MOD (cherrymon): origin of a technique effect for a type the EFE table lacks (efe.c) */
++EfeBoneOffset *getModTechBoneOffset(int32_t type, EfeTechBoneOffset *table);
+ extern int32_t *EFE_CALL_STACK;
+ extern int16_t *EFE_SCRIPT_PTR;
+ extern int16_t EFE_SCRIPT_CURRENT_VALUE;
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 28287aa..9030d98 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -44,8 +44,18 @@ typedef uint16_t CardId;
+  */
+ #define DIGIMON_TYRANNOMON		8
+ #define DIGIMON_MASTER_TYRANNOMON	124
+-#define HAS_RAISED_FLAG(type) \
+-	((uint32_t)(type) < NUM_EVOLVING_DIGIMON || (type) == DIGIMON_MASTER_TYRANNOMON)
++/*
++ * MOD (cherrymon): Cherrymon is a partner too, reached from Vegiemon, with
++ * its own model, animations and techniques (the Earth ones and Bit Bomb).
++ * Its per-partner rows are at index 121 of the same tables; its "raised"
++ * flag is trigger 0x200 + 121 = 633, also free (627-639).
++ */
++#define DIGIMON_VEGIEMON		25
++#define DIGIMON_PIXIMON			55
++#define DIGIMON_CHERRYMON		121
++#define HAS_RAISED_FLAG(type)                                                 \
++	((uint32_t)(type) < NUM_EVOLVING_DIGIMON || (type) == DIGIMON_CHERRYMON || \
++	 (type) == DIGIMON_MASTER_TYRANNOMON)
+ 
+ /* Screens (maps) */
+ #define NUM_SCREENS		255	/* MAP_ENTRIES; screen ids are u8 */
+diff --git a/src/btl/battle_effect.c b/src/btl/battle_effect.c
+index 4d69a1d..c782110 100644
+--- a/src/btl/battle_effect.c
++++ b/src/btl/battle_effect.c
+@@ -1196,7 +1196,7 @@ EfeAuraType BTL_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007b, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007c, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+@@ -4531,12 +4531,22 @@ void BTL_initializeUVAnim(void)
+ void BTL_checkTechCompatibility(void)
+ {
+ 	EfeTechBoneOffset *entry;
++	EfeTechBoneOffset *table;
++	EfeBoneOffset *mod;
+ 	int16_t type;
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
++	table = entry;
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
++			/* MOD (cherrymon): a type without a row may borrow one (efe.c) */
++			mod = getModTechBoneOffset(type, table);
++			if (mod != NULL) {
++				EFE_BONE_OFFSET = mod;
++				EFE_SCRIPT_CONTEXT->boneOffset = mod;
++				return;
++			}
+ 			EFE_ACTIVE_SECTION = -1;
+ 			EFE_SCRIPT_PTR = NULL;
+ 			break;
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 32aec4e..06a3e0a 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -9,6 +9,7 @@
+ #include <dw/entity.h>
+ #include <dw/mod_present.h>
+ #include <dw/garbage.h>
++#include <dw/ids.h>
+ #include <dw/math.h>
+ #include <dw/params.h>
+ #include <dw/types.h>
+@@ -1283,3 +1284,54 @@ void renderParticleFlash(ParticleFlashData *params)
+ 
+ 	GsSetWorkBase((PACKET *)prim);
+ }
++
++/*
++ * MOD (cherrymon): every technique effect starts by looking up the attacker's
++ * type in a table of the technique's EFE chunk (checkTechCompatibility: bone
++ * and offset the effect leaves from) and is dropped when the type is not
++ * there. Cherrymon is in none of them, so it borrows Piximon's row (the other
++ * Earth Ultimate: it has a row for the eight Earth techniques and Bit Bomb)
++ * moved onto its own body:
++ *   - bone 0 (a point in front of the Digimon, in the entity's frame):
++ *     1.6 times farther, Cherrymon being 550 high and Piximon 330;
++ *   - bone 11 (Piximon's spear hand: Green Trap, the thrown Bit Bomb):
++ *     the palm of Cherrymon's front hand, also bone 11, which its throwing
++ *     animations swing;
++ *   - anything else (Piximon's head: the powders, Bug, Insect Plague):
++ *     Cherrymon's mouth, in front of trunk bone 2.
++ * Returns NULL for other types (the effect is dropped as before). The result
++ * lives in a small ring because the effect keeps the pointer while it runs.
++ */
++EfeBoneOffset *getModTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
++{
++	static EfeBoneOffset ring[8];
++	static int32_t next;
++	EfeTechBoneOffset *entry;
++	EfeBoneOffset *out;
++
++	if (type != DIGIMON_CHERRYMON) {
++		return NULL;
++	}
++	for (entry = table; entry->type >= 0 && entry->type != DIGIMON_PIXIMON;
++	     entry = (EfeTechBoneOffset *)((int32_t)entry + 0xa)) {
++	}
++	out = &ring[next];
++	next = (next + 1) & 7;
++	if (entry->type == DIGIMON_PIXIMON && entry->offset.boneId == 0) {
++		out->boneId = 0;
++		out->positionX = entry->offset.positionX * 8 / 5;
++		out->positionY = entry->offset.positionY * 8 / 5;
++		out->positionZ = entry->offset.positionZ * 8 / 5;
++	} else if (entry->type == DIGIMON_PIXIMON && entry->offset.boneId == 11) {
++		out->boneId = 11;
++		out->positionX = 25;
++		out->positionY = 55;
++		out->positionZ = 0;
++	} else {
++		out->boneId = 2;
++		out->positionX = 0;
++		out->positionY = 0;
++		out->positionZ = -110;
++	}
++	return out;
++}
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 103ccbd..8886bbb 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -356,6 +356,17 @@ EvoRequirements EVOLUTION_REQS[NUM_DIGIMON] = { /* MOD: was NUM_EVOLVING_DIGIMON
+ 		0x0005, 0x0050, 0x005a, 0xffff, 0x0032, 0xffff, 0x10,
+ 		0x00,
+ 	},
++	/*
++	 * MOD (cherrymon): from Vegiemon (with Piximon, which needs 15 care
++	 * mistakes or more). A well kept, heavy tree: HP 4000, MP 4000,
++	 * Def 400, Brains 400, at most 5 care mistakes (flag 0x10), weight
++	 * 25..35; bonus: discipline 90 or 30 techniques learned.
++	 */
++	[DIGIMON_CHERRYMON] = {
++		0xffff, 0x0190, 0x0190, 0xffff, 0x0190, 0xffff, 0x0190,
++		0x0005, 0x001e, 0x005a, 0xffff, 0xffff, 0x001e, 0x10,
++		0x00,
++	},
+ };
+ 
+ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+@@ -428,6 +439,9 @@ EvoStatsGains EVOLUTION_STATS_GAINS[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIG
+ 	/* MOD (master-tyrannomon): an Ultimate between MetalGreymon and Gigadramon */
+ 	[DIGIMON_MASTER_TYRANNOMON] = { 0x1770, 0x0fa0, 0x028a, 0x028a, 0x0190, 0x01f4,
+ 					DIGIMON_MASTER_TYRANNOMON },
++	/* MOD (cherrymon): a slow, sturdy Ultimate: HP 6000, MP 5000, Off 550, Def 650,
++	 * Speed 350, Brains 550 */
++	[DIGIMON_CHERRYMON] = { 0x1770, 0x1388, 0x0226, 0x028a, 0x015e, 0x0226, DIGIMON_CHERRYMON },
+ };
+ 
+ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+@@ -530,7 +544,8 @@ EvolutionPath EVOLUTION_PATHS[NUM_EVOLVING_DIGIMON - 1] = {
+ 	},
+ 	{
+ 		{   -1, 0x20, 0x2e,   -1,   -1 },
+-		{   -1,   -1, 0x37,   -1,   -1,   -1 },
++		/* MOD (cherrymon): + Cherrymon, centred like the other pairs */
++		{   -1,   -1, 0x37, DIGIMON_CHERRYMON,   -1,   -1 },
+ 	},
+ 	{
+ 		{ 0x05, 0x06, 0x25, 0x16, 0x34 },
+diff --git a/src/main/main.c b/src/main/main.c
+index 87977df..18593cc 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -2200,17 +2200,26 @@ DigimonPara DIGIMON_DATA[180] = {
+ 	},
+ 	{
+ 		DIGIMON_PARA_NAME(CHERRYMON)
++		/*
++		 * MOD (cherrymon): a partner. Was level 0 with no specialty
++		 * and no techniques (the Misty Trees NPC). Now an Ultimate
++		 * of the Earth specialty with the eight Earth techniques (in
++		 * Piximon's order) and Piximon's finisher Bit Bomb (0x49,
++		 * animation 0x36). Its model is 0.55 times the original
++		 * (JURE.MMD rebuilt by mods/experimental/cherrymon), so the
++		 * radius and height go from 400/1000 to 220/550.
++		 */
+ 		0x0000001a,
+-		0x0190,
+-		0x03e8,
++		0x00dc,
++		0x0226,
+ 		0x02,
+-		0x00,
+-		{ 0xff, 0xff, 0xff },
++		0x05,
++		{ 0x03, 0xff, 0xff },
+ 		0x00,
+ 		0x0a,
+ 		{
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+-			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++			0x25, 0x26, 0x27, 0x23, 0x21, 0x24, 0x20, 0x22,
++			0x49, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+ 		},
+ 		0x00,
+ 	},
+diff --git a/src/main/map.c b/src/main/map.c
+index f690933..44874c4 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -2858,7 +2858,7 @@ SVECTOR CONDITION_FX_OFFSETS[177] = {
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+-	{ 0x0000, 0x0000, 0x0000, 0x0000 },
++	{ 0x0000, 0xfe70, 0xffa6, 0x0002 }, /* MOD (cherrymon): above the face, trunk bone 2 (was 0) */
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+ 	{ 0x0000, 0x0000, 0x0000, 0x0000 },
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 2174d09..21976e4 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -13,7 +13,9 @@
+  *   - "To MasterTyrannomon"  starts the real evolution sequence into
+  *                      MasterTyrannomon (type 124) when the game is unpaused,
+  *                      the way an evolution item does, but with the natural
+- *                      stat gains (HAS_USED_EVOITEM = 0)
++ *                      stat gains (HAS_USED_EVOITEM = 0). Left/right choose
++ *                      the target: "To MasterTyrannomon" or "To Cherrymon"
++ *                      (type 121; MOD cherrymon)
+  *   - "Close"
+  *
+  * The result of an option replaces the stats line until the next key, so the
+@@ -73,6 +75,7 @@ int32_t tamerGetState(void);
+ void tamerSetState(int32_t state);
+ 
+ static int32_t modLabCursor;
++static int32_t modLabEvoChoice; /* MOD (cherrymon): index into MOD_LAB_EVO_TARGETS */
+ static char *modLabMessage;
+ 
+ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+@@ -80,10 +83,22 @@ static char *MOD_LAB_OPTION_TEXT[MOD_LAB_OPTIONS] = {
+ 	"Heal partner",
+ 	"One-time gift",
+ 	NULL, /* MOD_LAB_FPS_TEXT */
+-	"To MasterTyrannomon",
++	NULL, /* MOD_LAB_EVO_TEXT */
+ 	"Close",
+ };
+ 
++/* MOD (cherrymon): the evolve option cycles through these targets */
++#define MOD_LAB_EVO_COUNT 2
++static int16_t MOD_LAB_EVO_TARGETS[MOD_LAB_EVO_COUNT] = {
++	DIGIMON_MASTER_TYRANNOMON,
++	DIGIMON_CHERRYMON,
++};
++
++static char *MOD_LAB_EVO_TEXT[MOD_LAB_EVO_COUNT] = {
++	"To MasterTyrannomon",
++	"To Cherrymon",
++};
++
+ static char *MOD_LAB_FPS_TEXT[3] = {
+ 	"Frame rate  20 fps",
+ 	"Frame rate  30 fps",
+@@ -156,6 +171,8 @@ static void modLabDrawText(void)
+ 	for (i = 0; i < MOD_LAB_OPTIONS; i++) {
+ 		if (i == MOD_LAB_OPT_FPS) {
+ 			drawString(MOD_LAB_FPS_TEXT[modLabFpsMode()], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
++		} else if (i == MOD_LAB_OPT_EVOLVE) {
++			drawString(MOD_LAB_EVO_TEXT[modLabEvoChoice], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		} else {
+ 			drawString(MOD_LAB_OPTION_TEXT[i], 0, TEXT_ROW_Y(ROW_OPTIONS + i));
+ 		}
+@@ -233,12 +250,12 @@ static void modLabApply(void)
+ 		break;
+ 	case MOD_LAB_OPT_EVOLVE:
+ 		/* MOD (master-tyrannomon): as handleEvoItems does, with natural gains */
+-		if (PARTNER_ENTITY.digimonEntity.entity.type == DIGIMON_MASTER_TYRANNOMON) {
++		if (PARTNER_ENTITY.digimonEntity.entity.type == MOD_LAB_EVO_TARGETS[modLabEvoChoice]) {
+ 			modLabShowMessage("Already evolved");
+ 		} else if (partnerGetState() != 1 || tamerGetState() != 0 || EVOLUTION_TARGET != -1) {
+ 			modLabShowMessage("Not now, try later");
+ 		} else {
+-			EVOLUTION_TARGET = DIGIMON_MASTER_TYRANNOMON;
++			EVOLUTION_TARGET = MOD_LAB_EVO_TARGETS[modLabEvoChoice];
+ 			HAS_USED_EVOITEM = 0;
+ 			tamerSetState(6);
+ 			partnerSetState(13);
+@@ -289,6 +306,11 @@ void modLabMenu(uint32_t *input, uint32_t *previous)
+ 		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_FPS) {
+ 			playSound(0, 2);
+ 			modLabSetFps((pressed & PAD_RIGHT) ? 1 : -1);
++		} else if ((pressed & (PAD_LEFT | PAD_RIGHT)) && modLabCursor == MOD_LAB_OPT_EVOLVE) {
++			/* MOD (cherrymon): choose the evolution target */
++			playSound(0, 2);
++			modLabEvoChoice = (modLabEvoChoice + ((pressed & PAD_RIGHT) ? 1 : MOD_LAB_EVO_COUNT - 1)) %
++					  MOD_LAB_EVO_COUNT;
+ 		} else if (pressed & PAD_CROSS) {
+ 			if (modLabCursor == MOD_LAB_OPTIONS - 1) {
+ 				break;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index dc43360..ac724a4 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -179,6 +179,15 @@ RaiseData RAISE_DATA[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	 */
+ 	[DIGIMON_MASTER_TYRANNOMON] = { { 1, 5, 9, 13, 17, 21, -1, -1 },
+ 	  80, 55, 14, 36, 1200, 13, 51, 3, 0, 0, 45, 75, 510, -1410 },
++	/*
++	 * MOD (cherrymon): Vegiemon's row (25) with fewer, bigger meals and
++	 * bigger poop, Red Berry (49) as the favourite food and the weight of
++	 * a tree. The status screen draws the model at (viewX, viewY, viewZ)
++	 * seen from DIGIVICE_ENTITY_VIEW (1300, 0, -3280): this puts the whole
++	 * 650-high tree inside the Condition panel, feet at its bottom.
++	 */
++	[DIGIMON_CHERRYMON] = { { 3, 8, 13, 18, 23, -1, -1, -1 },
++	  80, 35, 8, 36, 1200, 14, 49, 0, 5, 2, 30, -511, 630, -232 },
+ };
+ 
+ typedef struct {
+@@ -208,6 +217,8 @@ int8_t ITEM_TAKE_DISTANCE[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON */
+ 	10, 10, 10, 10, 10, 10, 10, 10, 15, 15, 10, 10, 10, 10, 10,
+ 	/* MOD (master-tyrannomon): by type - 1; Tyrannomon's 15 at 1.5 times */
+ 	[DIGIMON_MASTER_TYRANNOMON - 1] = 22,
++	/* MOD (cherrymon): long branch arms */
++	[DIGIMON_CHERRYMON - 1] = 20,
+ };
+ 
+ extern uint8_t ITEM_CLUT_DATA[];
+diff --git a/src/main/sound.c b/src/main/sound.c
+index 7fb63f4..b8c5aec 100644
+--- a/src/main/sound.c
++++ b/src/main/sound.c
+@@ -129,6 +129,7 @@ uint8_t DIGIMON_VLALL_SOUND_ID[NUM_DIGIMON] = { /* MOD: was NUM_PARTNER_DIGIMON
+ 	 */
+ 	[NUM_PARTNER_DIGIMON ... NUM_DIGIMON - 1] = 15,
+ 	[DIGIMON_MASTER_TYRANNOMON] = 0x02,
++	[DIGIMON_CHERRYMON] = 0x0e, /* MOD (cherrymon): Vegiemon's partner sounds */
+ };
+ 
+ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+@@ -253,7 +254,7 @@ uint8_t DIGIMON_VBALL_SOUND_ID[NUM_ORIGINAL_DIGIMON] = {
+ 	0x00,	/* Market Manager */
+ 	0x00,	/* ShogunGekomon */
+ 	0x00,	/* King of Sukamon */
+-	0x00,	/* Cherrymon */
++	0x17,	/* Cherrymon; MOD (cherrymon): Vegiemon's voice (was 0x00) */
+ 	0x00,	/* Hagurumon */
+ 	0x00,	/* Tinmon */
+ 	0x00,	/* Master Tyrannomon */
+diff --git a/src/std/std_effect.c b/src/std/std_effect.c
+index c7b90e3..4efa126 100644
+--- a/src/std/std_effect.c
++++ b/src/std/std_effect.c
+@@ -1006,7 +1006,7 @@ EfeAuraType STD_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007b, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007c, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+@@ -4682,12 +4682,22 @@ void STD_initializeUVAnim(void)
+ void STD_checkTechCompatibility(void)
+ {
+ 	EfeTechBoneOffset *entry;
++	EfeTechBoneOffset *table;
++	EfeBoneOffset *mod;
+ 	int16_t type;
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
++	table = entry;
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
++			/* MOD (cherrymon): a type without a row may borrow one (efe.c) */
++			mod = getModTechBoneOffset(type, table);
++			if (mod != NULL) {
++				EFE_BONE_OFFSET = mod;
++				EFE_SCRIPT_CONTEXT->boneOffset = mod;
++				return;
++			}
+ 			EFE_ACTIVE_SECTION = -1;
+ 			EFE_SCRIPT_PTR = NULL;
+ 			break;
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 775e9af..eef49dd 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -72,6 +72,8 @@ int8_t TRN_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	{ 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	/* MOD (master-tyrannomon): Tyrannomon's (8) */
+ 	[DIGIMON_MASTER_TYRANNOMON] = { 0x2e, 0xa },
++	/* MOD (cherrymon): its first technique, like Vegiemon (25) */
++	[DIGIMON_CHERRYMON] = { 0x2e, 0xa },
+ };
+ 
+ MESSAGES_TEXT
+diff --git a/src/trn2/trn2_off.c b/src/trn2/trn2_off.c
+index 8fdd219..5a276cf 100644
+--- a/src/trn2/trn2_off.c
++++ b/src/trn2/trn2_off.c
+@@ -55,6 +55,8 @@ int8_t TRN2_TRAINING_ANIM_IDS[NUM_DIGIMON][2] = { /* MOD: was [67] (types 0..66)
+ 	{ 0x2e, 0xa }, { 0x2e, 0xa }, { 0x2e, 0xa },
+ 	/* MOD (master-tyrannomon): Tyrannomon's (8) */
+ 	[DIGIMON_MASTER_TYRANNOMON] = { 0x2e, 0xa },
++	/* MOD (cherrymon): its first technique, like Vegiemon (25) */
++	[DIGIMON_CHERRYMON] = { 0x2e, 0xa },
+ };
+ // clang-format on
+ 
+diff --git a/src/vs/vs_effect.c b/src/vs/vs_effect.c
+index 0ccabee..b40c5bc 100644
+--- a/src/vs/vs_effect.c
++++ b/src/vs/vs_effect.c
+@@ -955,7 +955,7 @@ EfeAuraType VS_AURA_PROJECTILE_TYPES[129] = {
+ 	{ 0x0076, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0077, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x0078, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+-	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
++	{ 0x0079, 0x0000, 0x0000, 0xff6a, 0xff38, 0x0040 }, /* MOD (cherrymon): Vegiemon's u (was 0xffff) */
+ 	{ 0x007a, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007b, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+ 	{ 0x007c, 0x0000, 0x0000, 0xff6a, 0xff38, 0xffff },
+@@ -4282,12 +4282,22 @@ void VS_initializeUVAnim(void)
+ void VS_checkTechCompatibility(void)
+ {
+ 	EfeTechBoneOffset *entry;
++	EfeTechBoneOffset *table;
++	EfeBoneOffset *mod;
+ 	int16_t type;
+ 
+ 	entry = EFE_POP1(EfeTechBoneOffset *);
++	table = entry;
+ 	type = (int16_t)getOriginalType(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	while (entry->type != type) {
+ 		if (entry->type < 0) {
++			/* MOD (cherrymon): a type without a row may borrow one (efe.c) */
++			mod = getModTechBoneOffset(type, table);
++			if (mod != NULL) {
++				EFE_BONE_OFFSET = mod;
++				EFE_SCRIPT_CONTEXT->boneOffset = mod;
++				return;
++			}
+ 			EFE_ACTIVE_SECTION = -1;
+ 			EFE_SCRIPT_PTR = NULL;
+ 			break;

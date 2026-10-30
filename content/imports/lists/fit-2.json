@@ -1,0 +1,23 @@
+{
+ "first_id": 460,
+ "out": "build/fitfix",
+ "digimon": [
+  {
+   "name": "Garudamon",
+   "game": "dcb",
+   "model": 138,
+   "from": [
+    21
+   ]
+  },
+  {
+   "name": "Omnimon",
+   "game": "dcb",
+   "model": 180,
+   "from": [
+    12,
+    62
+   ]
+  }
+ ]
+}

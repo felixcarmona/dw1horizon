@@ -1,0 +1,80 @@
+// Readable form of script 147 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
+// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
+// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+script 147 {
+    npc guardromon0 = 5;
+    npc guardromon1 = 6;
+    npc geremon2 = 7;
+    npc geremon3 = 8;
+    npc metalgreymonvirus = 9;
+
+    // the section table, in the order of the original header
+    sections 254, 51, 5, 6, 7, 8, 9;
+
+    on enter replace {    // section 254
+    }
+
+    on step(0) replace {    // section 51
+        walk(tamer, 1591, 607);
+        await tamer;
+        walk(tamer, 1593, -343);
+        warp_to(154, 0, 255);
+    }
+
+    on talk(guardromon0) replace {    // section 5
+        say(guardromon0, text("s147.sec5.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(guardromon1) replace {    // section 6
+        say(guardromon1, text("s147.sec6.u0"));
+        battle();
+        recruit(species("Guardromon"));
+    }
+
+    on talk(geremon2) replace {    // section 7
+        say(geremon2, text("s147.sec7.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(geremon3) replace {    // section 8
+        say(geremon3, text("s147.sec8.u0"));
+        battle();
+        recruit(species("Geremon"));
+    }
+
+    on talk(metalgreymonvirus) replace {    // section 9
+        say(metalgreymonvirus, text("s147.sec9.u0"));
+        choice {
+            text("s147.sec9.m0.o0") => {
+                battle(foes: [metalgreymonvirus]);
+                face(tamer, metalgreymonvirus);
+                face(metalgreymonvirus, tamer);
+                face(partner, metalgreymonvirus);
+                await tamer;
+                say(metalgreymonvirus, text("s147.sec9.u1"));
+                walk_away(metalgreymonvirus, -3120, 1836, looks: 3);
+                remove(metalgreymonvirus);
+                glances = 0;
+                sound(8, 10);
+                say(narrator, text("s147.sec9.u2"));
+                engine.no_escape = false;
+                recruit(species("MetalMamemon"));
+                engine.prosperity += 3;
+                camera_on(tamer, speed: 10);
+                await camera;
+                return;
+            }
+            text("s147.sec9.m0.o1") => {}
+        }
+        say(metalgreymonvirus, text("s147.sec9.u3"));
+        walk_away(metalgreymonvirus, -3120, 1836, looks: 3);
+        remove(metalgreymonvirus);
+        glances = 0;
+        return;
+    }
+}

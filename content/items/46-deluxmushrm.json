@@ -1,0 +1,20 @@
+{
+  "id": 46,
+  "name": "Deluxmushrm",
+  "value": 5000,
+  "meritValue": 0,
+  "sortingValue": 2,
+  "itemColor": 0,
+  "droppable": 1,
+  "unk": 0,
+  "effect": {
+    "energy": 38,
+    "weight": 4,
+    "addHP": 100,
+    "addMP": 100,
+    "addOffense": 10,
+    "addDefense": 10,
+    "addSpeed": 10,
+    "addBrain": 10
+  }
+}
