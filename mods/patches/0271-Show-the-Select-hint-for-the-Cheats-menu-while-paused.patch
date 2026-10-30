@@ -1,0 +1,210 @@
+From 54049892982a51820f9a8d3c72bec106f10e9fc2 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 30 Oct 2026 22:35:38 +0000
+Subject: [PATCH] Show the Select hint for the Cheats menu while paused
+
+With CHEATS on, a box at the bottom of the screen says how to open the menu, exactly when Select would open it. The hint borrows a text-area row and puts its pixels back when the pause ends.
+---
+ include/dw/font.h     |  3 +++
+ include/dw/ui.h       |  1 +
+ src/main/font.c       |  2 --
+ src/main/ui.c         | 18 ++++++++++++++
+ src/main/utils2.c     | 57 +++++++++++++++++++++++++++++++++++++++++++
+ text/main/utils2.yaml |  7 ++++++
+ 6 files changed, 86 insertions(+), 2 deletions(-)
+
+diff --git a/include/dw/font.h b/include/dw/font.h
+index e60248e..99086da 100644
+--- a/include/dw/font.h
++++ b/include/dw/font.h
+@@ -8,6 +8,9 @@
+ #include <dw/version.h>
+ 
+ void initializeFontCLUT(void);
++#define TEXT_VRAM_X		704
++#define TEXT_VRAM_Y		256
++
+ void clearTextArea(void);
+ void clearTextSubArea(RECT *rect);
+ void setTextColor(int32_t color);
+diff --git a/include/dw/ui.h b/include/dw/ui.h
+index 4872f48..85465f3 100644
+--- a/include/dw/ui.h
++++ b/include/dw/ui.h
+@@ -59,6 +59,7 @@ extern UIBoxData UI_BOX_DATA[6];
+ extern TextBoxTable TEXTBOX_DATA;
+ 
+ void initializeUIBoxData(void);
++void renderUIBoxPlain(RECT *rect, int32_t color, int32_t layer);
+ void createStaticUIBox(int32_t id, uint8_t color, uint8_t features, RECT *pos,
+ 		       TickFunction tickFunc, RenderFunction renderFunc);
+ void removeStaticUIBox(int16_t id);
+diff --git a/src/main/font.c b/src/main/font.c
+index 88c4caf..225de4e 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -15,8 +15,6 @@
+ #define GLYPH_WIDTH		12
+ #define GLYPH_HEIGHT		11
+ 
+-#define TEXT_VRAM_X		704
+-#define TEXT_VRAM_Y		256
+ #define TEXT_AREA_SIZE		256
+ #define TEXT_DRAW_LIMIT		(TEXT_AREA_SIZE - GLYPH_WIDTH)
+ 
+diff --git a/src/main/ui.c b/src/main/ui.c
+index 1ee2aca..6f789b1 100644
+--- a/src/main/ui.c
++++ b/src/main/ui.c
+@@ -273,6 +273,24 @@ void removeAnimatedUIBox(int16_t id, RECT *target)
+ 	UI_BOX_DATA[id].state = 3;
+ }
+ 
++/* MOD (cheats): a box without an instance: the frame and fill renderUIBoxStatic gives a featureless box */
++void renderUIBoxPlain(RECT *rect, int32_t color, int32_t layer)
++{
++	GsBOXF box;
++
++	renderUIBoxBorder(rect, layer);
++	drawLine2P(0x20202, rect->x + 3, rect->y + 3, rect->x + 3, rect->y + rect->h - 3, layer, 0);
++	drawLine2P(0x20202, rect->x + rect->w - 4, rect->y + 3, rect->x + rect->w - 4, rect->y + rect->h - 3, layer, 0);
++	box.attribute = 0;
++	box.r = UI_BOX_COLORS[color].r;
++	box.g = UI_BOX_COLORS[color].g;
++	box.b = UI_BOX_COLORS[color].b;
++	box.x = rect->x + 4;
++	box.y = rect->y + 3;
++	setWH(&box, rect->w - 8, rect->h - 3);
++	GsSortBoxFill(&box, ACTIVE_ORDERING_TABLE, layer);
++}
++
+ void renderUIBoxBorder(RECT *rect, int32_t layer)
+ {
+ 	POLY_FT4 *p;
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 7d02cfe..34ccc01 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -177,6 +177,13 @@ uint32_t PAUSE_INPUT_PREVIOUS;
+ uint8_t PAUSE_BOX_VISIBLE;
+ uint8_t PAUSE_STATE;
+ int32_t MAIN_D_80134E7C;
++/* MOD (cheats): the Select hint's text width while it is on screen, 0 = hidden */
++static int16_t MOD_PAUSE_HINT_WIDTH;
++
++#define PAUSE_HINT_TEXT_Y	0xE4 /* a text-area row only the status page shares: modPauseHintShow keeps what was there */
++#define PAUSE_HINT_TEXT_W	216
++#define PAUSE_HINT_TEXT_H	12
++#define PAUSE_HINT_BAR_LEFT	232 /* the box is centred left of the status bars */
+ 
+ static void *utils2_sbss_order[] = {
+ 	&MAIN_D_80134E7C,
+@@ -418,8 +425,44 @@ void startMovie(int32_t movieId)
+ 	ResetGraph(3);
+ }
+ 
++/* MOD (cheats): the hint appears exactly when Select opens the menu (modLabMenu's guard). The pause can
++ * interrupt a screen using the row, so its pixels wait in the caller's `saved` until modPauseHintHide */
++static void modPauseHintShow(u_long *saved)
++{
++	RECT area;
++
++	if (!MOD_OPT_CHEATS || IS_SCRIPT_PAUSED != 1) {
++		return;
++	}
++	DrawSync(0);
++	setRECT(&area, TEXT_VRAM_X, TEXT_VRAM_Y + PAUSE_HINT_TEXT_Y, PAUSE_HINT_TEXT_W / 4, PAUSE_HINT_TEXT_H);
++	StoreImage(&area, saved);
++	DrawSync(0);
++	setRECT(&area, 0, PAUSE_HINT_TEXT_Y, PAUSE_HINT_TEXT_W, PAUSE_HINT_TEXT_H);
++	clearTextSubArea(&area);
++	drawString(LAB_STR_PAUSE_HINT, 0, PAUSE_HINT_TEXT_Y);
++	MOD_PAUSE_HINT_WIDTH = measureStringMode(LAB_STR_PAUSE_HINT, FIT_VANILLA);
++}
++
++static void modPauseHintHide(u_long *saved)
++{
++	RECT area;
++
++	if (MOD_PAUSE_HINT_WIDTH == 0) {
++		return;
++	}
++	MOD_PAUSE_HINT_WIDTH = 0;
++	setRECT(&area, 0, PAUSE_HINT_TEXT_Y, PAUSE_HINT_TEXT_W, PAUSE_HINT_TEXT_H);
++	clearTextSubArea(&area); /* and forgets the last glyph's cell */
++	setRECT(&area, TEXT_VRAM_X, TEXT_VRAM_Y + PAUSE_HINT_TEXT_Y, PAUSE_HINT_TEXT_W / 4, PAUSE_HINT_TEXT_H);
++	LoadImage(&area, saved);
++	DrawSync(0);
++}
++
+ void handlePause(void)
+ {
++	u_long hintPixels[PAUSE_HINT_TEXT_W / 4 * PAUSE_HINT_TEXT_H / 2];
++
+ 	if (PAUSE_BOX_VISIBLE != 0) {
+ 		removePauseBox();
+ 		PAUSE_BOX_VISIBLE = 0;
+@@ -437,6 +480,7 @@ void handlePause(void)
+ 	PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+ 	if (PAUSE_STATE != 0) {
+ 		createPauseBox();
++		modPauseHintShow(hintPixels);
+ 		pauseFrame();
+ 		pauseFrame();
+ 		PAUSE_BOX_VISIBLE++;
+@@ -449,10 +493,12 @@ void handlePause(void)
+ 		/* MOD: SELECT while paused opens the lab menu (mod_lab.c) */
+ 		if (MOD_OPT_CHEATS && (PAUSE_INPUT & 0x100) && !(PAUSE_INPUT_PREVIOUS & 0x100)) {
+ 			PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
++			modPauseHintHide(hintPixels);
+ 			modLabMenu(&PAUSE_INPUT, &PAUSE_INPUT_PREVIOUS);
+ 			MAIN_D_80134E7C = 0;
+ 			if (PAUSE_STATE != 0) {
+ 				createPauseBox();
++				modPauseHintShow(hintPixels);
+ 				pauseFrame();
+ 				pauseFrame();
+ 			} else {
+@@ -462,6 +508,7 @@ void handlePause(void)
+ 		}
+ 		PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+ 	}
++	modPauseHintHide(hintPixels);
+ }
+ 
+ void removePauseBox(void)
+@@ -506,6 +553,16 @@ void renderPauseBox(instanceId)
+ #else
+ 	renderString(0, pos->x + 6, pos->y + 6, 0x2A, 0xC, 0x78, 0xF0, 0, 1);
+ #endif
++	if (MOD_PAUSE_HINT_WIDTH != 0) {
++		RECT hint;
++
++		hint.w = MOD_PAUSE_HINT_WIDTH + 16;
++		hint.h = 0x18;
++		hint.x = (PAUSE_HINT_BAR_LEFT - hint.w) / 2 - 0xA0;
++		hint.y = 0x56;
++		renderString(0, hint.x + 8, hint.y + 6, MOD_PAUSE_HINT_WIDTH, PAUSE_HINT_TEXT_H, 0, PAUSE_HINT_TEXT_Y, 0, 1);
++		renderUIBoxPlain(&hint, 1, 1);
++	}
+ }
+ 
+ void thunkReinitializeAfterTournament(void)
+diff --git a/text/main/utils2.yaml b/text/main/utils2.yaml
+index 02a86cf..c3c0ebf 100644
+--- a/text/main/utils2.yaml
++++ b/text/main/utils2.yaml
+@@ -3,3 +3,10 @@ PAUSE:
+     MAIN_D_80134430:
+       ja: ポーズ
+       en_us: Pause
++# MOD (cheats): keyed so a text source can translate it (main.LAB_STR_PAUSE_HINT)
++MOD_PAUSE:
++  storage: define
++  strings:
++    LAB_STR_PAUSE_HINT:
++      ja: "Press SELECT to open Cheats"
++      en_us: "Press SELECT to open Cheats"
+-- 
+2.55.0
+

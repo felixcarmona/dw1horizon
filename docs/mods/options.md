@@ -213,6 +213,11 @@ jumps where the existing world-state guards allow them. The menu freezes world
 ticks while editing. It provides money, care recovery, parameter editing,
 evolution, teleportation, healing, native save/load and return to title.
 
+While the game is paused and Select would open the menu, a box at the bottom of
+the screen says so (`LAB_STR_PAUSE_HINT`, `utils2.c`). Keep each translation within
+200 pixels so the box stays clear of the status bars. The hint borrows the text-area row at 0xE4 and
+restores its pixels when the pause ends.
+
 The parameter editor covers care, evolution timers, age and lifetime, current and
 maximum HP/MP, and combat stats. Left/right adjusts by the displayed amount;
 up/down changes that amount. Confirm applies the value and Cancel discards it.
