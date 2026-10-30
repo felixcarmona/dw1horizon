@@ -9,5 +9,118 @@
   "{color 6}{player}{color 1}",
   "Sì",
   "No"
+ ],
+ "name.quiz.intro": [
+  "{color 7}Jijimon {color 1}",
+  "Sono solo 7 domande. Le tue",
+  "risposte mi diranno quale",
+  "Digimon fa per te."
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 1 di 7."
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}Jijimon {color 1}",
+  "Hai un Digital Monster?"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "Sì",
+  "No",
+  "Ne avevo uno"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 2 di 7."
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}Jijimon {color 1}",
+  "Preferisci il giorno o la",
+  "notte?"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "Il giorno",
+  "Il crepuscolo",
+  "La notte"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 3 di 7."
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}Jijimon {color 1}",
+  "Hai tanti amici?"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "Tanti",
+  "Pochi, ma buoni",
+  "Vado per la mia strada"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 4 di 7."
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}Jijimon {color 1}",
+  "Dove ti accamperesti?"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "Su un vulcano",
+  "Sulla costa",
+  "Nella foresta"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 5 di 7."
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}Jijimon {color 1}",
+  "Un Digimon gigante ti sbarra la",
+  "strada..."
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "Lo affronto",
+  "Gli passo sopra",
+  "Aspetto"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}Jijimon {color 1}",
+  "Domanda 6 di 7."
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}Jijimon {color 1}",
+  "Cosa porti con te sull'isola?"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "Una spada",
+  "Una mappa",
+  "Dei semi"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}Jijimon {color 1}",
+  "L'ultima domanda."
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}Jijimon {color 1}",
+  "Cosa conta di più in un",
+  "compagno?"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "Il coraggio",
+  "L'ingegno",
+  "La libertà"
+ ],
+ "name.quiz.result": [
+  "{color 7}Jijimon {color 1}",
+  "Mmm. Ora vedo tutto chiaro. Il",
+  "tuo compagno sarà",
+  "{partner}."
  ]
 }

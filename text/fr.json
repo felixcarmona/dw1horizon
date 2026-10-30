@@ -9,5 +9,119 @@
   "{color 6}{player}{color 1}",
   "Oui",
   "Non"
+ ],
+ "name.quiz.intro": [
+  "{color 7}Jijimon {color 1}",
+  "Il n'y a que 7 questions. Tes",
+  "réponses me diront quel Digimon",
+  "te convient."
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 1 sur 7."
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}Jijimon {color 1}",
+  "As-tu un Digital Monster ?"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "J'en ai un",
+  "Je n'en ai pas",
+  "J'en avais un"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 2 sur 7."
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}Jijimon {color 1}",
+  "Préfères-tu le jour ou la nuit",
+  "?"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "Le jour",
+  "Le crépuscule",
+  "La nuit"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 3 sur 7."
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}Jijimon {color 1}",
+  "As-tu beaucoup d'amis ?"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "Beaucoup",
+  "Peu, mais de vrais amis",
+  "Je suis ma propre voie"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 4 sur 7."
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}Jijimon {color 1}",
+  "Où camperais-tu ?"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "Sur un volcan",
+  "Sur la côte",
+  "Dans la forêt"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 5 sur 7."
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}Jijimon {color 1}",
+  "Un Digimon géant te barre la",
+  "route..."
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "Je l'affronte",
+  "Je passe par-dessus",
+  "J'attends"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 6 sur 7."
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}Jijimon {color 1}",
+  "Que prends-tu pour aller sur",
+  "l'île ?"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "Une épée",
+  "Une carte",
+  "Des graines"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}Jijimon {color 1}",
+  "Dernière question."
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}Jijimon {color 1}",
+  "Que recherches-tu chez un",
+  "partenaire ?"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "Le courage",
+  "L'esprit",
+  "La liberté"
+ ],
+ "name.quiz.result": [
+  "{color 7}Jijimon {color 1}",
+  "Hmm. Je vois clair à présent.",
+  "Ton partenaire sera",
+  "{partner}."
  ]
 }

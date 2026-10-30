@@ -9,5 +9,116 @@
   "{color 6}{player}{color 1}",
   "Sí",
   "No"
+ ],
+ "name.quiz.intro": [
+  "{color 7}Jijimon {color 1}",
+  "Només són 7 preguntes. Les",
+  "teves respostes em diran quin",
+  "Digimon et convé."
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 1 de 7."
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}Jijimon {color 1}",
+  "Tens un Digital Monster?"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "Sí",
+  "No",
+  "Abans en tenia un"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 2 de 7."
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}Jijimon {color 1}",
+  "Què t'agrada més, el dia o la",
+  "nit?"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "El dia",
+  "El capvespre",
+  "La nit"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 3 de 7."
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}Jijimon {color 1}",
+  "Tens molts amics?"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "Molts",
+  "Pocs, però bons",
+  "Vaig a la meva"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 4 de 7."
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}Jijimon {color 1}",
+  "On acamparies?"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "En un volcà",
+  "A la costa",
+  "Al bosc"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 5 de 7."
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}Jijimon {color 1}",
+  "Un Digimon gegant et barra el",
+  "pas..."
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "M'hi enfronto",
+  "Passo per sobre",
+  "M'espero"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}Jijimon {color 1}",
+  "Pregunta 6 de 7."
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}Jijimon {color 1}",
+  "Què t'enduries a l'illa?"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "Una espasa",
+  "Un mapa",
+  "Llavors"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}Jijimon {color 1}",
+  "L'última pregunta."
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}Jijimon {color 1}",
+  "Què valores més en un company?"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "El coratge",
+  "L'enginy",
+  "La llibertat"
+ ],
+ "name.quiz.result": [
+  "{color 7}Jijimon {color 1}",
+  "Mmm. Ara ho veig clar. El teu",
+  "company serà {partner}."
  ]
 }

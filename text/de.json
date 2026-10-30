@@ -9,5 +9,119 @@
   "{color 6}{player}{color 1}",
   "Ja",
   "Nein"
+ ],
+ "name.quiz.intro": [
+  "{color 7}Jijimon {color 1}",
+  "Nur 7 Fragen. Deine",
+  "Antworten verraten mir,",
+  "welches Digimon zu dir passt."
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 1 von 7."
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}Jijimon {color 1}",
+  "Hast du ein Digital Monster?"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "Ja",
+  "Nein",
+  "Früher hatte ich eins"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 2 von 7."
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}Jijimon {color 1}",
+  "Magst du lieber den Tag oder",
+  "die Nacht?"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "Den Tag",
+  "Die Abenddämmerung",
+  "Die Nacht"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 3 von 7."
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}Jijimon {color 1}",
+  "Hast du viele Freunde?"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "Viele",
+  "Wenige, aber gute",
+  "Ich gehe meinen Weg"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 4 von 7."
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}Jijimon {color 1}",
+  "Wo würdest du zelten?"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "An einem Vulkan",
+  "An der Küste",
+  "Im Wald"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 5 von 7."
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}Jijimon {color 1}",
+  "Ein riesiges Digimon versperrt",
+  "den Weg..."
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "Mich ihm stellen",
+  "Darüber hinweg",
+  "Warten"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}Jijimon {color 1}",
+  "Frage 6 von 7."
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}Jijimon {color 1}",
+  "Was nimmst du auf die Insel",
+  "mit?"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "Ein Schwert",
+  "Eine Karte",
+  "Samen"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}Jijimon {color 1}",
+  "Die letzte Frage."
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}Jijimon {color 1}",
+  "Was zählt bei einem Partner am",
+  "meisten?"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "Mut",
+  "Köpfchen",
+  "Freiheit"
+ ],
+ "name.quiz.result": [
+  "{color 7}Jijimon {color 1}",
+  "Hm. Nun sehe ich es klar. Dein",
+  "Partner wird {partner}",
+  "sein."
  ]
 }

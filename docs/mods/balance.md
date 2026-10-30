@@ -291,3 +291,58 @@ Species records, including imported evolution data, are described in
 compiler; translated names belong to the text bank. Model and sound formats
 have their own authoring tools. Rebuild through derive and the integrated builder
 so these sources remain consistent.
+
+## Jijimon's starter quiz
+
+`content/tables/new-game.json` owns the 43-rookie starter list, seven questions' weights and 45 cells.
+All seven answers count. Each axis chooses its highest score, breaking a tie by the most recent answer that
+supported it. If that answer supported both tied choices, the earlier axis wins: battle/fire/ice/nature/air,
+vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
+`tools/starter_quiz.py` enumerates all 2187 paths: minimum 32/2187 (1.4632%), maximum 98/2187 (4.4810%).
+Agumon keeps fire/vaccine/bold; Gabumon keeps battle/data/calm. Palmon and Betamon occupy the spare cells.
+
+There are 17 Data rookies but only 15 Data cells, so Renamon uses battle/vaccine/cunning and Candlemon uses
+fire/vaccine/cunning. Two specialty exceptions fill thin cells: Monmon uses fire/virus/cunning and Kotemon uses
+nature/data/cunning. Their species attributes and specialties remain unchanged. All other cells match attribute
+and at least one specialty. The assignments are:
+
+| element / attribute | bold | calm | cunning |
+|---|---|---|---|
+| battle / vaccine | Psychemon | Veemon | Renamon |
+| battle / data | Patamon | Gabumon | Gotsumon |
+| battle / virus | Gazimon | Tsukaimon | BlackGatomon |
+| fire / vaccine | Agumon | Solarmon | Candlemon |
+| fire / data | Flarerizamon | ToyAgumon | RedOtamamon |
+| fire / virus | Guilmon | Goblimon | Monmon |
+| ice / vaccine | SnowAgumon | Gomamon | Bearmon |
+| ice / data | Penguinmon | Muchomon | Otamamon |
+| ice / virus | Betamon | Gizamon | Betamon |
+| nature / vaccine | Palmon | Armadillomon | Palmon |
+| nature / data | Tentomon | Floramon | Kotemon |
+| nature / virus | Kunemon | Dokunemon | Wormmon |
+| air / vaccine | Biyomon | Hagurumon | Salamon |
+| air / data | Elecmon | Hawkmon | Kokuwamon |
+| air / virus | Yanmamon | VioletElecmon | DemiDevimon |
+
+The self-test rejects missing pool species, invalid cells/weights and frequencies outside 0.5%..6%.
+`tools/test_starter_quiz.py` also compares the production C result function with the model on every path when
+a prepared tree and host compiler are available. This host comparison does not verify emulator dialogue or input.
+
+Starter evolution coverage is counted from distinct champions' `evolution.from` and `requirements.digimon`,
+not a rookie's `to` list or duplicate NPC names. Patch 0271's data companion adds the following shared-specialty
+routes, keeping the existing primary-parent bonus and every disc species' own route and requirement:
+
+| rookie | added champions |
+|---|---|
+| Yanmamon | Roachmon |
+| VioletElecmon | Lighdramon |
+| Monmon | Hookmon |
+| Bearmon | Ebidramon |
+| Renamon | Wizardmon |
+| Psychemon | Minotarumon, Lighdramon |
+| BlackGatomon | Devidramon, Vilemon |
+| RedOtamamon | Shadramon, Growlmon |
+| Kokuwamon | Thundermon, Snatchmon |
+| Solarmon | Starmon, BomberNanimon |
+
+Every affected champion has at most three parents. Every starter now has at least two distinct champions.

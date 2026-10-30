@@ -196,7 +196,7 @@ DG.SCN container begins with a u32 offset table (222 entries plus the file size)
 | 80-109 | a collision tile: runs when ✕ is pressed on it |
 | 110-119 | exits, handled by C (not scripts); 120 = toilet → MH 0x4E2 |
 | MAPHEAD 0-254 | `runMapHeadScript(map)` on load: `FB script map`, `1E p245`, `5D` music, `46`/`47` NPCs |
-| MAPHEAD 1220-1253 | text tables and scenes called from C: 0x4C4-0x4CE shopkeeper lines (`getShopkeeperLine`), 0x4D3 cards, 0x4D4 merit, 0x4D5 Item Keeper, 0x4D6 jukebox/Birdra/Mojyamon/Jijimon's questions (entries 0x10-0x20), 0x4D8 tournament, 0x4D9/0x4DA tournament reminders, 0x4DB medal categories, 0x4DC found-item line, 0x4DD Auto Pilot (`item.c:2252`), 0x4DE partner death, 0x4E2 toilet, 0x4E3 Birdra departure, 0x4E4 the Seadramon scene → 7:82, 0x4E5 `58 p247` |
+| MAPHEAD 1220-1253 | text tables and scenes called from C: 0x4C4-0x4CE shopkeeper lines (`getShopkeeperLine`), 0x4D3 cards, 0x4D4 merit, 0x4D5 Item Keeper, 0x4D6 jukebox/Birdra/Mojyamon/Jijimon's questions and naming (entries 0x10-0x39), 0x4D8 tournament, 0x4D9/0x4DA tournament reminders, 0x4DB medal categories, 0x4DC found-item line, 0x4DD Auto Pilot (`item.c:2252`), 0x4DE partner death, 0x4E2 toilet, 0x4E3 Birdra departure, 0x4E4 the Seadramon scene → 7:82, 0x4E5 `58 p247` |
 
 The text tables are lists of `16 00 offset` (JUMP): `resolveMapHeadEntry` (`script_common.c:1160`) reads the u16 at
 `section + idx*4 + 2` and skips the `1A 00`. Which screens use which script: MAPHEAD section *screen* starts with
@@ -379,16 +379,20 @@ bubble (routine 0x1C) is a separate sprite driven by p247/p248.
 
 ## How the flags tell the story
 
-- **Jijimon's questions** (new game): `loadNewGameScene` sets p254 = 0 and p243 = 0xFF, `new_game.c:37` sets p243 = 0
-  when the scene is ready, then `newGameStateMachine` (`script_menu.c:1070`) runs. The texts are entries 0x10-0x20 of
-  MH 0x4D6 (`showNewGameDialogue/Selection`). The flow: a greeting (0x10) and a yes/no question about owning a
-  Digivice (0x11-0x12); yes leads to a day-or-night question (0x13-0x15), no to a question about friends (0x16-0x18);
-  either answer sets **p254 = 0 or 1**; then the player's name (0x19-0x1A, naming states 0x13-0x16 with
-  `NAMING_BUFFER`), its confirmation (0x1B-0x1C), the partner's name and confirmation (0x1D-0x1F) and a closing line
-  (0x20). Then `main.c:3389`: **p254 == 0 → Agumon (3), otherwise Gabumon (17)**; `setDigimonRaised` and
-  `runMapHeadScript(204)` (TWNA01, the empty city; its script 164 also holds two debug NPCs, a warp and a forced
-  evolution, behind trigger 55). The mod makes the starting partners data (patch 0143) and the partner name optional
-  (patches 0202, 0207).
+- **Jijimon's questions** (new game, patch 0271): the greeting remains MAPHEAD 1238 entry 0x10
+  (`m1238.u16`). Entry 0x23 introduces seven questions. Each question uses three consecutive entries starting
+  at 0x24: its numbered heading (the seventh says "Last question."), question, and speaker plus three answers.
+  The topics are owning a Digital Monster, day/dusk/night, friends, camping, a blocked path, island supplies,
+  and a partner's most valued quality. All seven are mandatory. Entry 0x39 announces the selected species using
+  `{partner}`, populated from its real species name before the tamer-name prompt.
+  `newGameStateMachine` loops through the questions in states 0x23-0x28. The answer vector feeds
+  `modQuizResult`; **p254 is an index into `newGame.starters`**, never the species id. All three consumers
+  (partner creation and the two default-name paths) call `modNewGameStarter`, which reads the packed uint16 list.
+  The existing tamer-name and optional partner-name states follow unchanged; `modPartnerNameSetSpecies` supplies
+  the default. Script 204 still places the new tamer in File City. Weights, cells and the complete 43-rookie pool
+  live in `content/tables/new-game.json`; `tools/starter_quiz.py` checks all 2187 answer paths.
+  `story/new-game-quiz.dws` extends the base text table only for the expanded engine; original-engine builds keep
+  the legacy table and its smaller MAPHEAD buffer.
 - **Recruiting** (Kunemon, script 2 section 6, the NPC in slot 1 of Kunemon's Bed): sets trigger 44, the NPC asks for
   food (a two-option selection), then trigger 3 and routine 0 let the player pick an item (into p254); `IF p254` is one
   of the meats 38..41 → animations and a challenge → trigger 1, p250 = 1, p251 = 6, p252/253 = 0xFF → `66` → clear

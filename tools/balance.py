@@ -514,6 +514,9 @@ def decode_named(key, exe):
             elif path in EXTRA_MS.get(key, ()): v = (v - 1) * TICK_MS
             elif path in TIME_SLOTS.get(key, ()): v *= FRAME_SECONDS
             _set(out, path, v)
+    if key == 'newGame' and len(raw) == 276 and raw[80:] != b'\xff' * 196:
+        import starter_quiz
+        out.update(starter_quiz.unpack(raw[80:]))
     return out
 
 
@@ -536,6 +539,10 @@ def encode_item_effects(fx):
 
 
 def encode_named(key, obj, exe):
+    quiz = obj.get('quiz') if key == 'newGame' else None
+    if quiz is not None:
+        obj = dict(obj)
+        obj.pop('quiz')
     paths = NAMED_RULES[key]; known = {re.sub(r'\[\d+\]', '', p) for p in paths if p}; seen = set()
     def walk(o, pre):
         for k, v in o.items():
@@ -560,7 +567,13 @@ def encode_named(key, obj, exe):
             v = d
         vals.append(v)
     fmt = NAMED_FMT.get(key, "h"); n = exe.where(key)[2] // struct.calcsize(fmt)   # an executable from before a table grew
-    return struct.pack(f'<{n}{fmt}', *(vals[:n] + [-1] * (n - len(vals))))   # holds its first slots only
+    raw = struct.pack(f'<{n}{fmt}', *(vals[:n] + [-1] * (n - len(vals))))
+    if key == 'newGame' and n > 20 and quiz is not None:
+        import starter_quiz
+        if n != 69:
+            raise SystemExit('newGame: unsupported packed quiz table size')
+        raw = raw[:80] + starter_quiz.pack(dict(obj, quiz=quiz))
+    return raw   # older executables hold only their original slots
 
 
 TRAIN_KINDS = {'trigger': 0, 'counter': 1, 'item': 2}

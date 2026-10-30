@@ -79,3 +79,7 @@ Each patch's commit message describes its change in detail.
 Patches 0258–0263 recover heap space through compact file routes and tables, overlay helpers, and staged NPC models.
 Patch 0264 fixes gym calendar rollover; 0265 tracks daily pickups by stable location IDs.
 Patches 0266–0269 correct composed reward text, guide rows and localized raster labels.
+
+| patch | feature | main executable cost (`main_BSS_END`) |
+|---|---|---|
+| 0271 | Jijimon's seven-question, three-answer starter quiz; all 43 partner rookies and opening techniques | +788 bytes: 0x801c9cd0 → 0x801c9fe4 (same EN bank, original 2 MB target); heapcheck passes |

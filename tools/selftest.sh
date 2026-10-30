@@ -52,6 +52,8 @@ if [ -d "$DERIVED/species" ]; then
 else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
+run starter-quiz      $PY tools/starter_quiz.py
+run starter-quiz-tests $PY tools/test_starter_quiz.py
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
 run npc-staging       $PY tools/test_npc_staging.py                     # actual model routes and transient allocation peaks
 run release-version   $PY tools/test_version.py
