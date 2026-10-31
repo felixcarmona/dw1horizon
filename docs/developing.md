@@ -60,6 +60,7 @@ Other checks worth running after a specific change:
 | evolution data | `tools/evo_check.py` (every target reachable), `tools/evo_graph.py` |
 | story scripts | `tools/dws.py check FILE --build`, then the story tests of section 5 |
 | a C patch's tables | the matching script in `tools/dev/playtest/` (section 6) |
+| laboratory overlay storage | `tools/lab_storage_check.py build/decomp-int` for each full-build language tree, `tools/xref.py classes`/`refs` on its ELF, full eight-language heap checks and the Cheats/field/card-menu runtime checks in [memory.md](reference/memory.md) |
 
 ## 2. Emulators
 
