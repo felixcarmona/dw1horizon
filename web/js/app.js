@@ -1,5 +1,6 @@
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
+import { setupDigimon, labels as digimonLabels } from './digimon.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
 import { FLAGS } from './flags.js';
@@ -655,6 +656,7 @@ function renderAll() {
   renderPatch();
   renderFeatures();
   mapLabels();
+  digimonLabels();
 }
 
 async function start() {
@@ -687,6 +689,7 @@ async function start() {
   setupDialog();
   renderAll();
   setupMaps().catch(() => { $('#maps').hidden = true; });
+  setupDigimon().catch(() => { $('#digimon').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
 }
 

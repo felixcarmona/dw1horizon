@@ -55,6 +55,8 @@ The project's site: a static page with no backend. The patcher runs in the visit
 - `content/features.json`: the "What's new" entries, text in both languages and their media: loops, stills and side by sides in
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
+- `content/digimon.json`: the Digimon list and evolution guide (`js/digimon.js`). Not tracked: the release workflow
+  writes it with `tools/site_digimon.py` from the tag's content, so it always matches the release the page builds.
 - Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
 - `media/psx.webp`: the console photo, Evan-Amos, public domain (Wikimedia Commons, PSX-Console-wController.png).
   See the [publication media inventory](../docs/release/media.md) before supplying media.

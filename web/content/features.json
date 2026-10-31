@@ -592,7 +592,7 @@
   },
   {
    "id": "carem",
-   "media": [],
+   "media": [{"type": "image", "src": {"en": "media/clips/carem-en.jpg", "es": "media/clips/carem-es.jpg"}, "alt": {"en": "The care menu listing what the partner needs", "es": "El menú de cuidados con lo que necesita el compañero", "pt-br": "O menu de cuidados com o que o parceiro precisa", "fr": "Le menu de soins avec ce dont le partenaire a besoin", "de": "Das Pflegemenü mit dem, was der Partner braucht", "it": "Il menu delle cure con ciò che serve al compagno", "ja": "パートナーに必要なものを並べたお世話メニュー", "ca": "El menú de cures amb el que necessita el company"}}],
    "en": {
     "title": "A care menu that knows what is wrong",
     "body": "Press X in front of your partner and the menu lists only what it needs, the most urgent first: a scolding when it deserves one, the cure for what it has, the potty, food when it is hungry (its favourite first) and sleep. A small X badge tells you when the menu is there."
@@ -701,7 +701,7 @@
   {
    "id": "cheats",
    "wide": true,
-   "media": [],
+   "media": [{"type": "image", "src": {"en": "media/clips/cheats-en.jpg", "es": "media/clips/cheats-es.jpg"}, "alt": {"en": "The cheat menu", "es": "El menú de trucos", "pt-br": "O menu de trapaças", "fr": "Le menu de triches", "de": "Das Cheat-Menü", "it": "Il menu dei trucchi", "ja": "チートメニュー", "ca": "El menú de trucs"}}],
    "en": {
     "title": "A cheat menu, off until you ask",
     "body": "Turn CHEATS on in OPTIONS and press SELECT on the pause screen: add bits, satisfy every need, edit your partner's numbers, evolve it, teleport to any map of the extended story, heal it, save or load. SELECT with L1/R1 changes the partner and with L2/R2 jumps between maps. It is off by default."
@@ -773,7 +773,7 @@
   },
   {
    "id": "naming",
-   "media": [],
+   "media": [{"type": "image", "src": {"en": "media/clips/naming-en.jpg", "es": "media/clips/naming-es.jpg"}, "alt": {"en": "The name keyboard with letters, numbers and symbols", "es": "El teclado de nombres con letras, números y símbolos", "pt-br": "O teclado de nomes com letras, números e símbolos", "fr": "Le clavier de noms avec lettres, chiffres et symboles", "de": "Die Namenstastatur mit Buchstaben, Zahlen und Symbolen", "it": "La tastiera dei nomi con lettere, numeri e simboli", "ja": "文字、数字、記号が使える名前入力キーボード", "ca": "El teclat de noms amb lletres, números i símbols"}}],
    "en": {
     "title": "A name keyboard like a phone's",
     "body": "Three pages: letters, accents and symbols (♥ ★ ♪ included). Naming your partner is optional: skip it and it keeps its species name through evolutions and rebirths. A new game asks you, through Jijimon, whether to name it."
@@ -809,7 +809,7 @@
   },
   {
    "id": "amount",
-   "media": [],
+   "media": [{"type": "image", "src": {"en": "media/clips/amount-en.jpg", "es": "media/clips/amount-es.jpg"}, "alt": {"en": "Choosing how many items to trade", "es": "Elegir cuántos objetos cambiar", "pt-br": "Escolher quantos itens trocar", "fr": "Choisir combien d'objets échanger", "de": "Auswählen, wie viele Gegenstände getauscht werden", "it": "Scegliere quanti oggetti scambiare", "ja": "交換するアイテムの数を選ぶ画面", "ca": "Triar quants objectes canviar"}}],
    "en": {
     "title": "Say how many you want",
     "body": "The item shop's card machine, the card packs and Mojyamon's trades open an amount box: change it by one or by ten, up to the most you have or can carry."
