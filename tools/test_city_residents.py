@@ -16,9 +16,9 @@ class CityResidents(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json')
                    for s in [json.loads(p.read_text())]}
         self.assertEqual([sum(species[r['id']]['level'] == lv for r in rows)
-                          for lv in ('rookie', 'champion', 'ultimate')], [28, 52, 16])
+                          for lv in ('rookie', 'champion', 'ultimate')], [26, 53, 17])
         points = lambda i: 1 if i in (11, 39, 53) else city.LEVELS[species[i]['level']] - 2
-        self.assertEqual(sum(points(r['id']) for r in rows), 177)
+        self.assertEqual(sum(points(r['id']) for r in rows), 180)
         original = [r for r in rows if r['id'] < 59]
         self.assertEqual((len(original), sum(points(r['id']) for r in original)), (50, 100))
         self.assertEqual({r['id'] for r in rows if r['hidden']}, {6, 7, 12})
