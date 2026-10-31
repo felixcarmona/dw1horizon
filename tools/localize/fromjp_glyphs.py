@@ -39,7 +39,8 @@ MENU6 = dict(_PF.LABEL6)
 # PRAISE has 20 px (the sprite at u 108..127): its E 2 wide ('e'), as the font's L
 MENU6['e'] = '##/#./##/#./#./##'.split('/')
 
-# FI_INFO's status bubbles (nothing draws them in the US game): the 3x7 font of fi-info/pixfont.py
+# FI_INFO's status-bubble interiors: the 3x7 font of fi-info/pixfont.py.
+# These rects exclude the live night-clock frame at u128..159, rows32..47.
 BUBBLE7 = dict(_PF.BUBBLE7)
 # POOP and DEAD have room for 4-wide letters with 2-px gaps, as the US bubbles have them
 BUBBLE7W = F('''

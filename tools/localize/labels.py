@@ -84,7 +84,7 @@ def apply(files, language, work):
             grids[key] = w, h, px
         return grids[key]
 
-    def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False):
+    def draw(path, rect, text, ink, background, shadow=None, entry=0, gradient=None, preserve=False, padding=2):
         w, h, px = grid(path, entry)
         u, v, rw, rh = rect
         if not (0 <= u < u + rw <= w and 0 <= v < v + rh <= h):
@@ -92,7 +92,7 @@ def apply(files, language, work):
         bands = [Counter(px[(v+y)*w+u:(v+y)*w+u+rw]).most_common(1)[0][0] for y in range(rh)] if background is None else [background] * rh
         for y in range(rh):
             px[(v+y)*w+u:(v+y)*w+u+rw] = [bands[y]] * rw
-        bitmap = mask(text, rw - 2, rh - 2, preserve=preserve)
+        bitmap = mask(text, rw - padding, rh - padding, preserve=preserve)
         bh, bw = len(bitmap), len(bitmap[0])
         x0, y0 = u + (rw-bw)//2, v + (rh-bh)//2
         points = {(x0+x, y0+y) for y, row in enumerate(bitmap) for x, on in enumerate(row) if on}
@@ -119,10 +119,16 @@ def apply(files, language, work):
             draw(path, rect, text, ink, bg, sh, entry, preserve=True)
 
     # Triangle-menu cells; the unchanged DIGIMON label uses the disc's lettering.
-    cells = [('OBJETOS',128,32,29), ('JUGADOR',160,32,30), ('ALABAR',128,39,25),
-             ('DORMIR',160,39,24), ('PESCAR',128,46,24), ('REÑIR',160,46,22)]
-    for text, u, v, width in cells:
-        draw('ETCDAT/FI_INFO.TIM',(u,v,width,7),word(text,language),15,0,1)
+    from tools.localize.fi_info import CELLS, SHARED_SIZES, check_cells
+    # These dimensions are the shared non-English GameMenuLabel rows printed by
+    # fi-info/build.py. Include the shadow and the nine-row REÑIR sprite.
+    sizes = SHARED_SIZES
+    check_cells([(u, v, *sizes[e]) for e, (_, u, v) in CELLS.items()])
+    for e, (text, u, v) in CELLS.items():
+        width, height = sizes[e]
+        for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
+            draw(path, (u, v, width, height), word(text, language), 15, 0, 1,
+                 entry, preserve=True, padding=1)
 
     # The four open-tournament captions sit below the AI-generated logo band.
     from tools.localize.build import tim_rgb

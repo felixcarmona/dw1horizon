@@ -52,6 +52,7 @@ if [ -d "$DERIVED/species" ]; then
 else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
+run fi-info-clock     $PY tools/test_fi_info.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
