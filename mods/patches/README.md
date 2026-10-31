@@ -58,7 +58,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0199 | the EXTENDED STORY option |
 | 0202, 0207 | optional partner name |
 | 0212 | the DIFFICULTY option |
-| 0217, 0232, 0240, 0286 | imported field animation transitions |
+| 0217, 0232, 0240, 0290 | imported field animation transitions |
 | 0221-0222 | the partner's HP and MP in the triangle menu |
 | 0223-0228, 0237 | amount boxes for trades, card packs and the card machine |
 | 0230 | ground items once a day |
@@ -99,4 +99,4 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0287 | Cheats lists: left/right moves ten rows, up/down one, clamped at the ends; shared by parameters, evolution and teleport | +0 resident bytes; MENU size unchanged at 47,128 bytes. Controlled eight-bank base padding: main_BSS_END stays 0x801cf200. |
 | 0288 | Show the shared title version during field START pause, above the clock; preserve the borrowed text row | +144 resident bytes: 0x801cf200 → 0x801cf290 (controlled eight-bank base padding). Integrated Spanish padding adds another 48 bytes: final 0x801cf2c0, heap 183,344 bytes; all 320 setups fit in each language, screen 361 minimum 1,312 bytes. |
 | 0289 | Clamp wild-battle target-score Defense to the old range, including external cheats; preserve old-range scores and target ties | +0 bytes: 0x801cb880 → 0x801cb880 (same English test bank, original 2 MB target); heap stays 198,256 bytes; BTL +36 bytes (151,240 → 151,276), overlay assertions and heapcheck pass |
-| 0286 | Species 224 follows immediately from its native idle and switches walking state at completed 16/20-tick strides | +144 bytes: 0x801cb2b4 → 0x801cb344 (controlled same English bank, default file table, original 2 MB target); code +144, BSS unchanged; controlled heapcheck passes |
+| 0290 | Species 224 follows immediately from its native idle and switches walking state at completed 16/20-tick strides | +144 bytes: 0x801cb2b4 → 0x801cb344 (controlled same English bank, default file table, original 2 MB target); code +144, BSS unchanged; controlled heapcheck passes |

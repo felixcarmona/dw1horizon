@@ -73,7 +73,7 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   partner slow to react. Patch 0232 lets the two reviewed 73-frame quadruped walks (Ankylomon 189, Lighdramon 201:
   three 24-tick steps inside one 72-tick acting span) switch at the end of each completed step, and their 73-frame idle
   yield to a walk request at any tick.
-  Patch 0286 applies the same principle to MetalGreymon Vaccine (224): its
+  Patch 0290 applies the same principle to MetalGreymon Vaccine (224): its
   80-tick native acting span contains five 16-tick walks or four 20-tick
   condition walks. Pending navigation changes yield at completed strides;
   its idle can yield immediately. The complete upper-body performance remains
@@ -340,6 +340,14 @@ loop closure, limb lengths, scales, native upper acting and footstep bank/note;
 all other programs, the mesh and skeleton stay exact. The resulting resident
 model is 95,820 bytes (578 more than round 2), still inside the original
 100,352-byte buffer; cold storage and its read limits are unchanged.
+
+The English 2 MB test confirms the engine uses these speeds: during steady
+slot-4 following, partner/tamer displacement measures 52 versus 50 units per
+logic tick (the old model measured approximately 30). On a straight MAYO01
+walk starting 600 units behind, the gap after 2,900 units of tamer travel is
+684 rather than 1,270; the revised walking trace never exceeds 690. Starting
+1,400 units behind a walking tamer plays slot 4 and closes to 744, then walks.
+Player control and the straight path remain uninterrupted in those traces.
 
 ### 3. The production models and their field recipes
 
