@@ -235,6 +235,13 @@ def resolve(sp, editable, primary, problems):
             kind = 'in-training' if levels[p] == 2 else 'stats'
             if not E.reachable(p, c, kids[p], reqs, levels, kind): return False
             if levels[p] == 4 and not practical(p, c, kids, reqs, levels, sp): return False
+            if levels[p] == 4 and c in editable:
+                signature = {stat for stat in ALL if reqs[c][stat] != -1}
+                # Identical averages always tie, so the earlier sibling wins
+                # every overlap even if care/weight bands let both win alone.
+                if any(signature == {stat for stat in ALL if reqs[k][stat] != -1}
+                       for k in kids[p] if k != c and k in reqs):
+                    return False
             if c in primary and levels[p] == 5:
                 if not chain_witness(p, c, kids, reqs, levels, sp): return False
             old = [k for k in kids[p] if k not in managed]

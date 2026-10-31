@@ -388,3 +388,7 @@ A second round brings every partner rookie to at least four distinct champions:
 | Tentomon | Stingmon |
 
 Every added link shares a specialty, goes to an imported champion and leaves it with at most three parents.
+
+The later curated evolution tree is data in `content/tables/evolution-tree.json`, applied by `tools/evo_tree.py`. Canon main lines come first, then family/shared specialty; imported canon Megas follow Perfects. The generator leaves the 45-cell quiz, its results and all Rookie → Champion links unchanged. Up to five parents and six children fit the existing species rows. Requirements are resolved against sibling competition and disc canonical states, then checked with conservative File City training gains and the natural evolution gains. Timing and lifetime tables are unchanged: Champion 144 h, another Ultimate 96 h, engine Mega 120 h; natural Ultimate adds 96 h. The documented specialty exceptions preserve disc/engine routes, Otamamon → Geremon and the canon Kurisarimon → Infermon line.
+
+A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` row. The balance layer therefore writes its species file’s padded `from`/`to` lists there, while its other rows retain the existing record-original behavior. This makes WereGarurumon’s three curated parents fit without counting unused reverse entries from the disc placeholder. Native partners 63, 66, 121 and 124 carry cached records for their onward evolution paths; requirements and gains are retained.

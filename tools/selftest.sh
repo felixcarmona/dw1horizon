@@ -59,6 +59,8 @@ else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
 run fi-info-clock     $PY tools/test_fi_info.py
+disc evolution-tree   $PY tools/test_evo_tree.py --practical
+disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
 run city-residents $PY -m unittest tools.test_city_residents

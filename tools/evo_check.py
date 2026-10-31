@@ -153,6 +153,8 @@ def main():
     # child before the new species were added to its parent's list, how many still choose it
     sp = S.load_content()
     managed = {t for t, s in sp.items() if 'evolution' in s and (t >= S.NUM_ORIGINAL or S.is_record_original(s))}
+    table = json.load(open(os.path.join(ROOT, 'content/tables/evolution-tree.json')))
+    managed -= {t for t, s in sp.items() if s['name'] in table['record_parents']}
     lost = []; m = 0
     for p, x in sorted(g.items()):
         if p in managed or x['level'] not in ('in-training', 'rookie', 'champion', 'ultimate'): continue
@@ -189,7 +191,13 @@ def main():
                 broken.append((x['name'], g[t]['name'], g[got]['name'] if got in g else got))
     print(f'disc routes whose canonical state now picks a new species: {len(broken)}')
     for p, t, w in broken: print(f'  {p} -> {t}: now {w}')
+    import test_evo_tree
+    table = json.load(open(os.path.join(ROOT, 'content/tables/evolution-tree.json')))
+    topology = test_evo_tree.check(sp, {p: [c for c in x['to'] if c in sp] for p, x in g.items()}, table)
+    for error in topology: print('ERROR:', error)
+    print(f'evolution topology failures: {len(topology)}')
+    return bool(bad or broken or topology)
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

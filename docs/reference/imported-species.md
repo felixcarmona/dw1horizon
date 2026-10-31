@@ -14,7 +14,7 @@ What is documented elsewhere and only linked here:
   `effect_origin_fallback`, `species.py` commands: [../mods/species.md](../mods/species.md);
 - species ids above 180, `DIGI.DAT` records, the world object ids of patch 0082: [ids.md](ids.md); save v2 and later:
   [save-format.md](save-format.md);
-- the species provider and disc replay of all 175 imports and 33 record originals (no private converted inputs):
+- the species provider and disc replay of all 175 imports and 37 record originals (no private converted inputs):
   [../building.md](../building.md), [../derive.md](../derive.md).
 
 ## The source games
@@ -245,8 +245,7 @@ training type (all stats ×0.8) only on the junk lines (Numemon, Sukamon, Nanimo
 name and stat. Evolution gains are the level's flat row (Rookie 500/500/50/50/50/50, Champion 1500/1500/150..., Ultimate
 5000/5000/600/500/500/500) scaled the same way, HP/MP in steps of 50, the rest of 5.
 
-**Evolution parents.** A natural parent one level down with a free target slot (each species has 6), sharing the
-element, preferring one that evolves into the donor. The four Baby II partners have their 6 targets in the executable's
+**Evolution parents.** The curated table (`content/tables/evolution-tree.json`) prefers canon main lines, then family and shared specialty. A child has up to five parents; a parent has six targets. Imported canon Megas follow Perfect parents even when their engine level remains `ultimate`; no Champion fallback is allowed. The original disc routes to Phoenixmon and HerculesKabuterimon stay. Requirement rows distinguish siblings through stats, care and weight, with a primary-parent bonus applying only to the first parent. `tools/evo_tree.py` checks each parent with the picker; `tools/test_evo_tree.py` guards the tree in the self-test. Unlisted species and the starter quiz's hand-authored links stay unchanged. The four Baby II partners have their 6 targets in the executable's
 `EVOLUTION_PATHS` (`int8_t to[6]`) full; patch 0111 gives each Baby II up to 12 more Rookie targets
 (`getEvolutionExtraTargets`, made from the `DIGI.DAT` links that find no free slot), walked after the 6 by
 `getInTrainingEvolutionTarget`.
@@ -306,7 +305,7 @@ when it has one, else the closest-range attack of 15-50 ticks), with the hit tic
 The original game has levels 1 Fresh to 5 Ultimate (0 = NPCs that never evolve). The `mega` patches (0058 in the
 series) add **6 = Mega** (`include/dw/level.h`): a species whose record says level 6 is a Mega wherever the game asks
 for a level. Only species of `DIGI.DAT` can be Megas. One species is level `mega` (373 WarGreymon); the imported
-Digimon that are Megas in canon are stored as `ultimate`, with the Mega size range.
+Digimon that are Megas in canon are stored as `ultimate`, with the Mega size range. Their curated parents are Perfects, so the engine's Ultimate → Ultimate wait of 96 h applies. This level representation does not permit Champion → imported canon Mega shortcuts. A well-kept earliest chain reaches its third form at age 342 h with 114 h left before the new lifetime bonus; WarGreymon waits 120 h and reaches age 366 h with 90 h left. Delayed raises and happiness below 80 reduce those margins.
 
 **Reaching it.** `tickConditions` has one Ultimate branch: Machinedramon's special case (48 h), then
 `getChampionEvolutionTarget` after 96 h for another Ultimate, and a Mega target only once `evoTimer >= 120`

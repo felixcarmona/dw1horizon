@@ -62,6 +62,10 @@ saved partners continue to use the existing ids; field loading resolves the NPC
 record internally. Speaker names resolve back to the existing species, in the
 active language. Partner, wild-battle and tournament definitions stay separate.
 
+IceLeomon, Myotismon, Cherrymon and MasterTyrannomon also carry native records for their evolution paths. Their native engine ids (63, 66, 121, 124) have no resident path row; without records they can be children but cannot naturally evolve onward. The latter three keep the existing generated partner models and requirement rows. IceLeomon uses Leomon's matching skeleton and mesh with its own texture; the unused `PANJ.MMD` filename is absent from the USA disc. All four keep their raise data and gains. Their model deltas are rebuilt from disc inputs, with no additional executable allocation.
+
+WereGarurumon (62) is the one record original inside the resident path table. `balance.py` and `species.py build` seed that resident path row from its species file, then archive links fill the remaining slots. Its obsolete disc reverse entries do not consume the new parents' slots; existing forward evolution routes remain.
+
 ## How the game reads them
 
 - **The 180 originals stay as they were**: `DIGIMON_DATA`, the skeletons,
@@ -226,7 +230,11 @@ A species of the executable's tables (0..179 without a record) holds its own evo
 
 Every one of the 147 has `requirements` and `gains` (the rows of a species that is no partner are zeros, kept so the
 table is byte for byte). An imported species links itself into these lists with its own `evolution.from` (the build
-fills free `to` slots at boot); a deleted species (no file) is taken out of them. `species.py extract`/`sync` write the
+fills free `to` slots at boot). A record parent reaching a disc child with no paths of its own (for example Myotismon) stores the route in the parent's `evolution.to`; no reverse slot exists on that disc child. Such a forward route is valid and the builder does not warn about the absent reverse row. Real slot overflow still warns and loses the link.
+
+The curated additions and Mega reparenting live in `content/tables/evolution-tree.json`; apply them with `tools/evo_tree.py --write`. Only listed children's `from` and requirements change, plus record parents' `to` entries for disc children. Parent order names the primary bonus. Limits remain six children, five parents and 510 links with originals (the two-sector index); the builder counts the engine layer's existing slots too. Canon main lines precede family/shared-specialty routes, and imported canon Megas require Perfect parents. The documented exceptions preserve existing disc/engine routes and the Kurisarimon → Infermon canon line. The starter quiz's Rookie → Champion routes are outside this generator's scope.
+
+A deleted species (no file) is taken out of them. `species.py extract`/`sync` write the
 key from an executable (the round trip is exact).
 
 ## Deleting a species

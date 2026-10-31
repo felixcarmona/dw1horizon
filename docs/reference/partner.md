@@ -377,7 +377,7 @@ The species added by the mod join the same pickers; the disc's own routes are un
   the 6 slots of its `EVOLUTION_PATHS.to` list. `getInTrainingEvolutionTarget` and the evolution chart's overview walk
   the extra list after the original one; `EvolutionPath` itself is unchanged. The picker still keeps the best score >= 3
   with ties going to the first listed, so the Rookies of one In-Training need distinct requirements.
-- **Parents**: each imported species has 1 or 2 parents, and every parent shares at least one specialty with the child.
+- **Parents**: the curated tree in `content/tables/evolution-tree.json` permits up to five parents and six children. Canon main lines come first, then family and shared specialty; documented disc routes and two specialty exceptions are retained. Every Champion reachable from a Fresh has at least two Ultimates, every Rookie at least four Champions, and every In-Training a Rookie. Imported canon Megas follow Perfects (engine level `ultimate`), never Champions. The disc’s Phoenixmon and HerculesKabuterimon routes remain.
 - **`requirements.digimon`** names the primary parent: the game reads that field as "the species it evolves from", so
   the bonus point applies to that route only.
 - **Rookie weight bands**: the added Rookies ask for weight 26 (overfed) or 4 (underfed; weight drops while energy is
@@ -386,6 +386,12 @@ The species added by the mod join the same pickers; the disc's own routes are un
   parent gained new children, that the disc child's own requirements met exactly still choose the disc child; it also
   checks that every link is reachable from some partner state. `tools/evo_graph.py` checks that every partner species has
   a natural route. The special routes (`handleSpecialEvolutions`, items) stay as they are.
+
+`tools/evo_tree.py --write` resolves requirement rows only for the listed children. Unlisted species, the starter quiz and Rookie-to-Champion links retain their data. A disc child without its own paths is linked through the record parent's `evolution.to`.
+
+The chain is Champion at age 102 h → Perfect after 144 more hours (age 246 h) → imported canon Mega after another 96 h (age 342 h). At happiness ≥ 80, birth lifetime 360 plus the Perfect's 96 leaves 114 h immediately before the third evolution. WarGreymon is engine level 6 and waits 120 h instead, leaving 90 h. Each further natural level-5 evolution adds another 96 h; Omnimon through MetalGarurumon therefore also has a lifetime margin. Stat and sibling competition are checked separately: the generator searches attainable training states before and after the Perfect's natural gains, including secondary parents without the primary bonus. Imported siblings of a Champion also use distinct stat-average formulas: identical formulas always tie and let the earlier child win every overlap. The generator chooses another row from `candidates()` to remove those ties. Preserved disc sibling ties remain. These are conditional model witnesses, not a simulation of feeding, battles or travel. Disc routes may use techniques inherited through rebirth; they do not all describe a first-generation raise.
+
+`tools/test_evo_tree.py` guards topology, specialties, special-only roots and wild-only recolours in the self-test. `tools/evo_check.py` checks the built graph and exits with failure for an unreachable picker route or a lost disc canonical state.
 
 Species data, requirements and links are edited as described in [../mods/species.md](../mods/species.md).
 

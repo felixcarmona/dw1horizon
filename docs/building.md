@@ -118,7 +118,7 @@ Full artwork used to author them stays untracked in `build/localized-src/`.
 Developers regenerate with `tools/localize/signs.py --make-deltas` and
 `tools/localize/build.py --make-deltas`.
 
-Record originals are also rebuilt from the four player discs. The 33 models and
+Record originals are also rebuilt from the four player discs. The 37 models and
 four textures use plain deltas under `content/record-originals/`; native DW1
 records copy their source model and animation donor, while four cross-game
 records use the same Card Battle and World 2 importers. The provider verifies
