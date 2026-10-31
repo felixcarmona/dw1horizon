@@ -712,3 +712,16 @@ against 183,336 available after allocator overhead, leaving **1,312 bytes**.
 The same-version base leaves 1,616 bytes there. No setup has a negative margin;
 no feature was removed to achieve this budget. Recheck the final archive and
 all language padding whenever resident code, text banks or models change.
+Patch 0290 (MetalGreymon Vaccine field stride transitions) adds 144 bytes of
+main code and no BSS: `main_BSS_END` moves from `0x801cb2b4` to `0x801cb344`
+in a controlled English-bank compile with the default file table and identical
+make arguments. The aligned heap loses 144 bytes. Its model grows 578 resident
+bytes inside the existing fixed partner buffer; that buffer is not enlarged.
+The final disc still requires the normal heap and story gates.
+
+Measured before this patch was rebased over 0282-0284, the completed English test disc left 197,744 bytes of heap.
+All 320 story screen setups fit the actual archive data; the tightest story
+margin is 15,488 bytes on screen 361. In the original-2-MB emulator, species
+224 on OGRE03 at noon leaves 70,096 bytes free (largest block 68,688), with no
+corruption. These are English test-build figures, distinct from the controlled
+patch-cost comparison above.

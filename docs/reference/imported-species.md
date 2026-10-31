@@ -297,8 +297,20 @@ returns on an empty entry, so the previous clip goes on and code waiting for its
 | technique origin for `effects_like` | `checkTechCompatibility`, `efe.c` | error when it would never hit |
 | aura / condition rows: `effects_like` ≤ 128 | `*_AURA_PROJECTILE_TYPES[129]`, `CONDITION_FX_OFFSETS[177]` | error above 128 |
 
+MetalGreymon Vaccine (224) uses the native MetalGreymon Virus voice pair:
+`voice: 12` (VBALL animation voice) and `partner.voice: 10` (VLALL care voice).
+VBALL chunk 12 has tones for notes 53, 54 and 55, covering every bank-4 event
+in its final model, including the replaced care/attack clips. Field slots 2–4
+use bank 1, note 12 for footsteps; these are independent of the species voice.
+
 A gym clip on a slot the model leaves empty plays nothing: an import uses one of its own attack clips (a melee clip
 when it has one, else the closest-range attack of 15-50 ticks), with the hit tick at half the clip, at least 6.
+
+MetalGreymon Vaccine (224) adds a generated DW1 MetalGreymon care/battle pass
+following its field recipe. Its events, blocking ends and offense-training clip
+remain compatible with the table above. Seven rejected actions retain their legacy
+clips, including external HP training and battle movement; the exact exceptions
+and regeneration contract are in [motion](motion.md#generated-metalgreymon-care-repair).
 
 ## The Mega level
 

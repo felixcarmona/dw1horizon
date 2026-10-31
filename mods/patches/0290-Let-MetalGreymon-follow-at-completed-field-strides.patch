@@ -1,0 +1,52 @@
+From 937a647d1eb4d29ed793879a5dbc0fa15dd5635f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 19:44:29 +0000
+Subject: [PATCH] Let MetalGreymon follow at completed field strides
+
+---
+ src/main/partner.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index b276ab9..7c7ec1a 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -825,6 +825,10 @@ void partnerTickDying2(void)
+ static int32_t partnerReviewedIdleMayWalk(EntityAnim *anim)
+ {
+ 	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	/* MetalGreymon keeps its native80-tick acting, but follows immediately. */
++	if (type == 224 && anim->animId == 0 && anim->frameCount == 81) {
++		return 1;
++	}
+ 	return (type == 189 || type == 201) && anim->animId == 0 &&
+ 	       anim->frameCount == 73;
+ }
+@@ -835,6 +839,14 @@ static int32_t partnerReviewedIdleMayWalk(EntityAnim *anim)
+ static int32_t partnerReviewedWalkCycleEnd(EntityAnim *anim)
+ {
+ 	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	/* Species224: five normal or four condition strides per acting span.
++	 * Yield only after a complete stride, keeping the feet on their contacts. */
++	if (type == 224 && anim->frameCount == 81 && anim->loopCount != 0) {
++		int32_t stride = anim->animId == 2 ? 16 : 20;
++		return (anim->animId == 2 || anim->animId == 3) &&
++		       anim->animFrame >= stride + 2 &&
++		       (anim->animFrame - 2) % stride == 0;
++	}
+ 	return (type == 189 || type == 201) && anim->animId == 2 &&
+ 	       anim->frameCount == 73 && anim->loopCount != 0 &&
+ 	       anim->animFrame >= 26 && (anim->animFrame - 2) % 24 == 0;
+@@ -893,7 +905,8 @@ void partnerTickWalking(void)
+ 			}
+ 		}
+ 		else if (anim->loopCount == 0 ||
+-		         (partnerReviewedWalkCycleEnd(anim) && (PARTNER_PARA.condition & 0x63))) {
++		         (anim->animId == 2 && partnerReviewedWalkCycleEnd(anim) &&
++		          (PARTNER_PARA.condition & 0x63))) {
+ 			setPartnerSlowWalking();
+ 		}
+ 
+-- 
+2.55.0
+

@@ -22,7 +22,7 @@
                      [58, 46], [59, 52], [60, 46], [46, 52], [61, 52], [52, 51], [51, 61]]
   },
   "texture": {"file": "build/batch4/RealMetalGreymon.TIM", "entry": 0},
-  "voice": 38,
+  "voice": 12,
   "battle_music": "normal-battle",
   "condition_bubble": [29, -242, -33, 4],
   "effect_origins": [[4, 180, 0, 0, 4, 48, 261, -350], [9, 50, 0, 0, 5, -116, -107, -120],
@@ -37,7 +37,7 @@
     "natural": {"height": 642.6, "half_width": 442.6, "half_depth": 296.8}
   },
   "partner": {
-    "voice": 12,
+    "voice": 10,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 40,

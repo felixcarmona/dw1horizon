@@ -14,6 +14,7 @@ import animsheet
 import motionsecondary
 import motioncyclelayer
 import motionstorage
+import motiontailspace
 from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.aero_veedramon import _forward
 from motiondiscidentity import changed_programs
@@ -21,6 +22,51 @@ from tools.models.field_animations.war_greymon import rotation, set_rotation
 
 SOURCE = '1db1618b8978560d8f41cba496e8151923455dfe64fad0248c47a2ea99cbffd5'
 PARENTS = [-1, 13, 1, 2, 3, 1, 5, 6, 1, 8, 9, 1, 1, 0, 13, 14, 15, 13, 17, 18, 13, 20, 21]
+# Match the reviewed large-partner pace (WarGreymon), including the slower
+# condition walk. The same speed drives the planted footprint and entity root:
+# increasing just the root would slide the feet through every support phase.
+FIELD_SPEEDS = {0: 0, 1: 0, 2: 22, 3: 15, 4: 52}
+
+
+def _plant(model, anim, slot, vertices, gait, contact):
+    """Keep the encoded gait inside the care repair's floor/support band.
+
+    Adjust only the common carrier height: the planted X/Z footprints and
+    native limb lengths remain exact. Include engine interpolation thirds.
+    """
+    from tools.models.field_animations.metal_greymon_care import carrier_offsets
+    player = mmd.AnimPlayer(anim, 23, slot)
+    decoded = []
+    for _ in range(anim.frame_count):
+        assert player.tick()
+        decoded.append(copy.deepcopy(player.pose))
+    for tick, pose in enumerate(decoded):
+        pose[0] = [4096] * 3 + [0] * 6
+        if slot == 4 and not any((tick - side * gait / 2) % gait <= contact for side in (0, 1)):
+            # The run has a real flight phase. Pulling its swinging feet down
+            # to the floor turns an otherwise planted run into skating.
+            continue
+        w = np.array(mmd.bone_matrices(model, pose))
+        bottom = max(float((vertices[b] @ w[b, :3, :3].T + w[b, :3, 3])[:, 1].max()) for b in (19, 22))
+        pose[13][7] -= round(bottom + 1)
+    bounds = []
+    for tick, (first, second) in enumerate(zip(decoded, decoded[1:])):
+        samples = []
+        for alpha in (0, 1365, 2730, 4096):
+            pose = motiontailspace.interpolate_pose(first, second, alpha)
+            w = np.array(mmd.bone_matrices(model, pose))
+            lows = {b: float((v @ w[b, :3, :3].T + w[b, :3, 3])[:, 1].max()) for b, v in vertices.items()}
+            feet = [19, 22]
+            if slot == 4:
+                time = tick + alpha / 4096
+                feet = [foot for side, foot in enumerate(feet)
+                        if (time - side * gait / 2) % gait <= contact]
+            support = max((lows[b] for b in feet), default=math.inf)
+            samples.append((alpha, max(lows.values()), support))
+        bounds.append((first[13][7], second[13][7], samples))
+    for pose, offset in zip(decoded, carrier_offsets(bounds, 0)):
+        pose[13][7] += offset
+    return replace_channels(anim, decoded, 0, 23, {(13, 7)}, tolerance=0)
 
 
 def _parse(data, sk):
@@ -53,10 +99,10 @@ def _author(old, sk):
         fs = animsheet.slot_frames(old,n,1)[0] if slot == 1 else native
         duration = len(fs) - 1
         period = {0: 80, 1: 16, 2: 16, 3: 20, 4: 10}[slot]
-        contact = {0: 80, 1: 16, 2: 9, 3: 12, 4: 3}[slot]
-        speed = {0: 0, 1: 0, 2: 11, 3: 8, 4: 30}[slot]
+        contact = {0: 80, 1: 16, 2: 7, 3: 10, 4: 3}[slot]
+        speed = FIELD_SPEEDS[slot]
         lift = {0: 0, 1: 0, 2: 16, 3: 10, 4: 24}[slot]
-        rock = {0: 0, 1: 0, 2: 5, 3: 4, 4: 7}[slot]
+        rock = {0: 0, 1: 0, 2: 5, 3: 4, 4: 2}[slot]
         poses = []
         hist = {}
         errs = []
@@ -117,7 +163,7 @@ def _author(old, sk):
             for branch in [1,14]:
                 set_rotation(f,branch,reparent @ np.array(mmd.rot_matrix(*source[branch][3:6])),hist)
             f[1][6:9] = np.rint(reparent @ np.array(source[1][6:9])).astype(int).tolist()
-            f[13][7] = round({0: -220, 1: -220, 2: -224, 3: -224, 4: -224}[slot] + (2 if not slot else 3) * np.sin(2*np.pi*t/duration))
+            f[13][7] = round({0: -220, 1: -220, 2: -224, 3: -224, 4: -216}[slot] + (2 if not slot else 3) * np.sin(2*np.pi*t/duration))
             if slot == 4:
                 q = t % (period / 2)
                 f[13][7] += round(2 * np.sin(np.pi*q/contact)**2 if q <= contact else -5*np.sin(np.pi*(q-contact)/(period/2-contact))**2)
@@ -174,6 +220,7 @@ def _author(old, sk):
                 e = dict(event, frame=tick + 1)
                 at = next((j for j, i in enumerate(authored.instrs) if i.get('frame', -1) > tick + 1), len(authored.instrs) - 1)
                 authored.instrs.insert(at, e)
+            authored = _plant(old, authored, slot, vs, period, contact)
         new.anims.table[slot] = len(new.anims.anims)
         new.anims.anims.append(authored)
         reports.append(dict(slot=slot, period=duration, gait=period, contact=contact, speed=speed, channels=sorted(channels), max_ankle_error=max(errs, default=0)))
@@ -235,6 +282,60 @@ def build(data, sk):
         sounds = [i for i in selected.instrs if i['op'] == 'sound']
         assert all((i['bank'], i['note']) == (1, 12) for i in sounds)
         assert len(sounds) == (0 if slot in [0, 1] else duration // (row['gait'] // 2))
+        contact_proof = {}
+        if slot in (2, 3, 4):
+            from tools.models.field_animations.metal_greymon_care import contact
+            contact_proof = contact(actual, slot)
+            if slot == 4:
+                contact_proof['maximum_airborne_clearance'] = contact_proof['maximum_support_clearance']
+                floating, airborne = -math.inf, 0
+                for tick, pose in enumerate(decoded):
+                    for alpha in (0, 1365, 2730):
+                        time = tick + alpha / 4096
+                        feet = [foot for side, foot in enumerate((19, 22))
+                                if (time - side * row['gait'] / 2) % row['gait'] <= row['contact']]
+                        if not feet:
+                            airborne += 1
+                            continue
+                        f = motiontailspace.interpolate_pose(pose, decoded[min(tick + 1, duration)], alpha)
+                        f[0] = [4096] * 3 + [0] * 6
+                        w = np.array(mmd.bone_matrices(actual, f))
+                        bottom = max(float((np.array(actual.tmd.obj_verts(sk[b][0]))[:, :3] @
+                                            w[b, :3, :3].T + w[b, :3, 3])[:, 1].max()) for b in feet)
+                        floating = max(floating, -bottom)
+                contact_proof.update(maximum_support_clearance=floating, airborne_samples=airborne)
+            assert contact_proof['maximum_floor_y'] <= 2, (slot, contact_proof)
+            assert contact_proof['maximum_support_clearance'] <= 4, (slot, contact_proof)
+            tracks, bottoms = {}, {}
+            for foot in (19, 22):
+                vertices = np.array(actual.tmd.obj_verts(sk[foot][0]))[:, :3]
+                center = vertices.mean(0)
+                tracks[foot], bottoms[foot] = [], []
+                for pose in decoded:
+                    neutral = copy.deepcopy(pose)
+                    neutral[0] = [4096] * 3 + [0] * 6
+                    w = np.array(mmd.bone_matrices(actual, neutral))[foot]
+                    point = center @ w[:3, :3].T + w[:3, 3]
+                    tracks[foot].append(point[[0, 2]] + [pose[0][6], pose[0][8]])
+                    bottoms[foot].append(float((vertices @ w[:3, :3].T + w[:3, 3])[:, 1].max()))
+            slip = []
+            for foot, other in ((19, 22), (22, 19)):
+                for tick in range(duration):
+                    # Measure actual supporting surfaces, independently of the
+                    # authored phase. Otherwise lowering an airborne swing foot
+                    # to the floor could hide severe skating outside "stance".
+                    if all(bottoms[foot][t] >= -4 and
+                           bottoms[foot][t] >= bottoms[other][t] - 1
+                           for t in (tick, tick + 1)):
+                        slip.append(float(np.linalg.norm(tracks[foot][tick + 1] - tracks[foot][tick])))
+            assert slip, slot
+            mean_slip = sum(slip) / len(slip)
+            assert mean_slip <= max(2, row['speed'] * .08), (slot, mean_slip)
+            assert max(slip) <= max(4, row['speed'] * .15), (slot, max(slip))
+            contact_proof.update(stance_centroid_mean_units_per_tick=mean_slip,
+                                 stance_centroid_max_units_per_tick=max(slip),
+                                 stance_samples=len(slip), stance_slip_fraction=mean_slip / row['speed'],
+                                 support_selected_from_decoded_surfaces=True)
         maximum_rotation_error = maximum_position_error = 0
         for source, pose in zip(original, decoded):
             a, b = copy.deepcopy(source), copy.deepcopy(pose)
@@ -255,6 +356,7 @@ def build(data, sk):
                            maximum_native_upper_joint_position_error_after_carrier_shift=maximum_position_error,
                            pose_repeat_exact_nine_cycles=True,
                            original_non_sound_controls_exact=True,
+                           contact=contact_proof,
                            footstep_ticks=[i['frame'] - 1 for i in sounds]))
     storage = motionstorage.audit(result, 23)
     assert storage['fits'], storage
