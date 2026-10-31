@@ -1,6 +1,7 @@
 """Arrival safety from lowered placements and resolved maps; never edits build content."""
 from dataclasses import dataclass, field
 import math
+import os
 from pathlib import Path
 
 
@@ -149,8 +150,8 @@ def suggestion_diffs(changes):
 def run(args):
     import json
     from .. import backend as B, build
-    B.configure(screen_dirs=args.screen_content.split(':') if args.screen_content else [],
-                maps=args.maps.split(':') if args.maps else [], locks_read_only=True)
+    B.configure(screen_dirs=args.screen_content.split(os.pathsep) if args.screen_content else [],
+                maps=args.maps.split(os.pathsep) if args.maps else [], locks_read_only=True)
     try:
         prog = build.compile_sources(args.files, exe=args.exe, lang=args.lang,
                                      text=args.text, lock=args.lock, profile=args.profile or 'original',

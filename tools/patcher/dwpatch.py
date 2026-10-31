@@ -1972,6 +1972,8 @@ def _stop(msg):
 
 
 if __name__ == '__main__':
+    for stream in (sys.stdout, sys.stderr):              # (a piped Windows stream is not UTF-8: errors must still print)
+        stream.reconfigure(errors='replace')
     code = main()
     if os.name == 'nt' and len(sys.argv) == 2 and os.path.isfile(sys.argv[1]):
         input('Press Enter to close.')                      # a disc dropped onto the script: keep the window open
