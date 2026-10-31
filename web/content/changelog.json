@@ -2,6 +2,322 @@
  "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
  "versions": [
   {
+   "version": "0.0.2",
+   "date": "2026-11-01",
+   "en": {
+    "new": [
+     "A new game now opens with Jijimon's seven-question test, which picks your partner from 35 rookies, or from the original nine with NEW DIGIMON off.",
+     "New City tab in the Player menu: see who has joined your city and who is still missing.",
+     "New enemy life bars above each enemy's head, with their current HP. NEW ENEMY BARS in OPTIONS turns them off, and your Select choice for showing them is now saved.",
+     "The status screen shows care mistakes, discipline and a tiredness bar when NEW STATUS BARS is on.",
+     "Monochromon's shop shift shows your profit and customer count as you work.",
+     "The field pause shows the game version and, with CHEATS on, a hint that Select opens the Cheats menu.",
+     "A new row in the Cheats menu turns the Select shortcuts on or off. They are off by default."
+    ],
+    "changed": [
+     "The evolution tree is rebuilt: Digimon levels are corrected, every raisable Rookie reaches at least four Champions and every raisable Champion at least two Ultimates. Old saves keep their partner, who continues at the new level.",
+     "Music keeps playing between screens that share it instead of restarting.",
+     "The camera frames big partners properly and settles when they stand still.",
+     "MetalGreymon Vaccine now moves and sounds like a MetalGreymon. Fifteen other Digimon get a voice closer to their family, and five of the slowest partners move faster.",
+     "Monochromon's shop shift is easier to win: the recruit target is lower.",
+     "The hungriest partners use less energy, so they need feeding less often.",
+     "In the Cheats lists, left and right jump 10 rows.",
+     "Spanish area names and signs follow the official Spanish release."
+    ],
+    "fixed": [
+     "Text no longer piles up over the previous line in DuckStation with Enable Texture Cache on.",
+     "Patching with the command line now works on Windows, and in folders with spaces in their names.",
+     "Several routes in the new areas let you arrive too early. They now open at the right moment, and a save already past them can still walk back.",
+     "NPCs and chests no longer block paths or treasure in the new areas.",
+     "Fixed walls, stairs, arrivals and camera problems in the new areas.",
+     "A fight's time limit now waits for active techniques to finish, which removes a cause of freezes.",
+     "A partner with high Brains no longer loses its target against enemies with very high Defense.",
+     "Jijimon talks again instead of opening the save machine.",
+     "Greymon's challenge in File City no longer repeats on every visit.",
+     "Pressing Select while paused no longer darkens the screen during a fight.",
+     "At night, the clock no longer shows pieces of menu labels in translated languages, and those labels now read properly in German, French, Italian and Catalan.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon and Hagurumon are back to their original size and gestures as NPCs.",
+     "Kotemon, Taomon, Roachmon and MegaGargomon no longer show spare equipment in their animations, Kotemon's hit reactions recover properly, and Nefertimon's front legs are corrected.",
+     "Whamon no longer waits at the docks while the ferry is closed, and Akatorimon can be reached in the Treasure Hunt.",
+     "The Thriving City medal is no longer lost past 100 prosperity, seven wild recruits count for the right Digimon, and the jungle music is back on the screen that had lost it."
+    ],
+    "upgrade": "Saves from v0.0.1 keep working and the four required discs have not changed. Emulator save states do not carry over: load your memory-card save on the new disc."
+   },
+   "es": {
+    "new": [
+     "Ahora las partidas nuevas empiezan con el test de siete preguntas de Jijimon, que elige a tu compañero entre 35 Digimon de nivel Novato, o entre los nueve originales si desactivas DIGIMON NUEVOS.",
+     "Nueva pestaña Ciudad en el menú Jugador: consulta quién se ha unido a tu ciudad y quién falta todavía.",
+     "Nuevas barras de vida sobre la cabeza de cada enemigo, con sus HP actuales. Puedes desactivarlas con BARRAS ENEM. NUEVAS en OPTIONS, y ahora se guarda tu elección de mostrarlas con SELECT.",
+     "La pantalla de estado muestra los errores de cuidado, la disciplina y una barra de cansancio al activar BARRAS NUEVAS.",
+     "Durante el turno en la tienda de Monochromon puedes ver tus beneficios y el número de clientes atendidos.",
+     "La pausa fuera de los combates muestra la versión del juego y, con TRUCOS activado, un aviso de que SELECT abre el menú Trucos.",
+     "Una nueva fila del menú Trucos permite activar o desactivar los atajos con SELECT. Vienen desactivados por defecto."
+    ],
+    "changed": [
+     "Se ha rehecho el árbol evolutivo: se han corregido los niveles de los Digimon, cada Novato que puedes criar llega al menos a cuatro Campeones y cada Campeón que puedes criar, al menos a dos Perfectos. Las partidas anteriores conservan a su compañero, que continúa con el nuevo nivel.",
+     "La música sigue sonando al pasar entre pantallas que comparten tema, sin volver a empezar.",
+     "La cámara encuadra bien a los compañeros grandes y deja de moverse cuando se quedan quietos.",
+     "MetalGreymon Vaccine ahora se mueve y suena como un MetalGreymon. Otros quince Digimon tienen una voz más cercana a la de su familia, y cinco de los compañeros más lentos se mueven más rápido.",
+     "Es más fácil superar el turno en la tienda de Monochromon: se han reducido los beneficios necesarios para reclutarlo.",
+     "Los compañeros más comilones gastan menos energía, así que necesitan comer con menos frecuencia.",
+     "En las listas de Trucos, izquierda y derecha saltan diez filas.",
+     "Los nombres de zonas y los carteles en español siguen la versión oficial española."
+    ],
+    "fixed": [
+     "El texto ya no se superpone a la línea anterior en DuckStation con Enable Texture Cache activado.",
+     "El parcheo desde la línea de comandos ya funciona en Windows y en carpetas con espacios en el nombre.",
+     "Varias rutas de las zonas nuevas permitían llegar antes de tiempo. Ahora se abren en el momento adecuado, y las partidas que ya las habían cruzado permiten volver atrás.",
+     "Los PNJ y los cofres ya no bloquean caminos ni tesoros en las zonas nuevas.",
+     "Se han corregido problemas con paredes, escaleras, puntos de llegada y cámaras en las zonas nuevas.",
+     "El límite de tiempo de los combates ahora espera a que terminen las técnicas en curso, lo que elimina una causa de bloqueos.",
+     "Un compañero con mucho Cerebro ya no pierde su objetivo al enfrentarse a enemigos con una Defensa muy alta.",
+     "Jijimon vuelve a hablar en vez de abrir la máquina de guardado.",
+     "El desafío de Greymon en Ciudad File ya no se repite en cada visita.",
+     "Pulsar SELECT en pausa ya no oscurece la pantalla durante un combate.",
+     "Por la noche, el reloj ya no muestra fragmentos de las etiquetas de los menús en los idiomas traducidos, y esas etiquetas ahora se leen correctamente en alemán, francés, italiano y catalán.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon y Hagurumon recuperan su tamaño y sus gestos originales como PNJ.",
+     "Kotemon, Taomon, Roachmon y MegaGargomon ya no muestran equipamiento sobrante en sus animaciones; Kotemon se recupera correctamente de las reacciones a los golpes y se han corregido las patas delanteras de Nefertimon.",
+     "Whamon ya no espera en el muelle cuando el servicio de transporte está cerrado, y se puede llegar hasta Akatorimon en Caza del Tesoro.",
+     "La medalla Ciudad próspera ya no se pierde al superar los 100 puntos de prosperidad, siete reclutamientos de Digimon salvajes cuentan para el Digimon correcto y vuelve la música de la jungla a la pantalla donde faltaba."
+    ],
+    "upgrade": "Las partidas de v0.0.1 siguen funcionando y los cuatro discos necesarios no han cambiado. Los estados guardados del emulador no son compatibles: carga tu partida de la tarjeta de memoria en el disco nuevo."
+   },
+   "pt-br": {
+    "new": [
+     "Agora uma nova partida começa com o teste de sete perguntas de Jijimon, que escolhe seu parceiro entre 35 Digimon de nível Novato, ou entre os nove originais com NOVOS DIGIMON desligado.",
+     "Nova aba Cidade no menu Jogador: veja quem já se mudou para sua cidade e quem ainda falta.",
+     "Novas barras de vida acima da cabeça de cada inimigo, com os HP atuais. NOVAS BARRAS INIM. em OPTIONS permite desligá-las, e sua escolha de exibi-las com SELECT agora fica salva.",
+     "A tela de status mostra os erros de cuidado, a disciplina e uma barra de cansaço com NOVAS BARRAS ligado.",
+     "Durante o turno na loja de Monochromon, você pode acompanhar seu lucro e a quantidade de clientes atendidos.",
+     "A pausa fora das lutas mostra a versão do jogo e, com TRUQUES ligado, uma dica de que SELECT abre o menu Truques.",
+     "Uma nova linha no menu Truques liga ou desliga os atalhos com SELECT. Eles vêm desligados por padrão."
+    ],
+    "changed": [
+     "A árvore de evolução foi refeita: os níveis dos Digimon foram corrigidos, cada Novato que você pode criar chega a pelo menos quatro Campeões e cada Campeão que você pode criar, a pelo menos dois Perfeitos. Partidas antigas mantêm seu parceiro, que continua no novo nível.",
+     "A música continua tocando entre telas que usam o mesmo tema, sem recomeçar.",
+     "A câmera enquadra os parceiros grandes corretamente e para de se mover quando eles ficam parados.",
+     "MetalGreymon Vaccine agora se move e soa como um MetalGreymon. Outros quinze Digimon ganham uma voz mais próxima da sua família, e cinco dos parceiros mais lentos se movem mais rápido.",
+     "Ficou mais fácil vencer o turno na loja de Monochromon: a meta de lucro para recrutá-lo é menor.",
+     "Os parceiros mais comilões gastam menos energia e precisam comer com menos frequência.",
+     "Nas listas de Truques, esquerda e direita pulam dez linhas.",
+     "Os nomes das áreas e as placas em espanhol seguem a versão oficial espanhola."
+    ],
+    "fixed": [
+     "O texto não se sobrepõe mais à linha anterior no DuckStation com Enable Texture Cache ativado.",
+     "Aplicar o patch pela linha de comando agora funciona no Windows e em pastas com espaços no nome.",
+     "Vários caminhos nas áreas novas permitiam chegar antes da hora. Agora eles abrem no momento certo, e partidas que já passaram por eles ainda permitem voltar.",
+     "NPCs e baús não bloqueiam mais caminhos ou tesouros nas áreas novas.",
+     "Corrigidos problemas com paredes, escadas, pontos de chegada e câmeras nas áreas novas.",
+     "O limite de tempo das lutas agora espera as técnicas em andamento terminarem, eliminando uma causa de travamentos.",
+     "Um parceiro com Inteligência alta não perde mais o alvo ao enfrentar inimigos com Defesa muito alta.",
+     "Jijimon volta a conversar em vez de abrir a máquina de salvar.",
+     "O desafio de Greymon na Cidade File não se repete mais a cada visita.",
+     "Apertar SELECT durante a pausa não escurece mais a tela em uma luta.",
+     "À noite, o relógio não mostra mais pedaços dos rótulos dos menus nos idiomas traduzidos, e esses rótulos agora aparecem corretamente em alemão, francês, italiano e catalão.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon e Hagurumon voltam ao tamanho e aos gestos originais como NPCs.",
+     "Kotemon, Taomon, Roachmon e MegaGargomon não mostram mais equipamentos sobrando nas animações; Kotemon se recupera corretamente das reações aos golpes, e as patas dianteiras de Nefertimon foram corrigidas.",
+     "Whamon não espera mais no cais enquanto o transporte está fechado, e agora é possível chegar até Akatorimon na Caça ao Tesouro.",
+     "A medalha Cidade Próspera não é mais perdida ao passar de 100 pontos de prosperidade, sete recrutamentos de Digimon selvagens contam para o Digimon correto, e a música da selva voltou à tela em que faltava."
+    ],
+    "upgrade": "As partidas salvas na v0.0.1 continuam funcionando, e os quatro discos necessários não mudaram. Os estados salvos do emulador não são compatíveis: carregue sua partida do cartão de memória no disco novo."
+   },
+   "fr": {
+    "new": [
+     "Une nouvelle partie commence désormais par les sept questions de Jijimon, qui choisit ton partenaire parmi 35 Digimon de niveau Disciple, ou parmi les neuf d'origine si NOUV. DIGIMON est désactivé.",
+     "Nouvel onglet Ville dans le menu Joueur : vois qui a rejoint ta ville et qui manque encore.",
+     "De nouvelles barres de vie au-dessus de la tête de chaque ennemi affichent ses HP actuels. NOUV. BARRES ENNEMIES dans OPTIONS permet de les désactiver, et ton choix d'affichage avec SELECT est désormais sauvegardé.",
+     "L'écran de statut affiche les erreurs de soin, la discipline et une jauge de fatigue quand NOUV. JAUGES est activé.",
+     "Pendant ton service dans la boutique de Monochromon, tu peux suivre tes bénéfices et le nombre de clients servis.",
+     "La pause hors combat affiche la version du jeu et, si TRICHE est activé, un rappel que SELECT ouvre le menu Triches.",
+     "Une nouvelle ligne du menu Triches permet d'activer ou de désactiver les raccourcis SELECT. Ils sont désactivés par défaut."
+    ],
+    "changed": [
+     "L'arbre d'évolution a été refait : les niveaux des Digimon sont corrigés, chaque Disciple que tu peux élever peut atteindre au moins quatre Champions, et chaque Champion que tu peux élever, au moins deux Ultimes. Les anciennes sauvegardes conservent leur partenaire, qui poursuit l'aventure au nouveau niveau.",
+     "La musique continue entre les écrans qui partagent le même morceau, sans repartir du début.",
+     "La caméra cadre correctement les grands partenaires et se stabilise quand ils restent immobiles.",
+     "MetalGreymon Vaccine bouge et sonne désormais comme un MetalGreymon. Quinze autres Digimon ont une voix plus proche de leur famille, et cinq des partenaires les plus lents se déplacent plus vite.",
+     "Il est plus facile de réussir le service dans la boutique de Monochromon : le bénéfice requis pour le recruter a été réduit.",
+     "Les partenaires les plus gourmands dépensent moins d'énergie et ont donc besoin de manger moins souvent.",
+     "Dans les listes de Triches, gauche et droite permettent de sauter dix lignes.",
+     "Les noms des zones et les panneaux en espagnol suivent la version officielle espagnole."
+    ],
+    "fixed": [
+     "Le texte ne se superpose plus à la ligne précédente dans DuckStation quand Enable Texture Cache est activé.",
+     "L'application du patch en ligne de commande fonctionne désormais sous Windows et dans les dossiers dont le nom contient des espaces.",
+     "Plusieurs passages des nouvelles zones permettaient d'arriver trop tôt. Ils s'ouvrent désormais au bon moment, et une sauvegarde qui les a déjà franchis permet toujours de revenir en arrière.",
+     "Les PNJ et les coffres ne bloquent plus les chemins ni les trésors dans les nouvelles zones.",
+     "Les problèmes de murs, d'escaliers, de points d'arrivée et de caméra dans les nouvelles zones ont été corrigés.",
+     "La limite de temps des combats attend désormais la fin des techniques en cours, ce qui élimine une cause de blocage.",
+     "Un partenaire avec un Esprit élevé ne perd plus sa cible face aux ennemis dont la Défense est très élevée.",
+     "Jijimon parle à nouveau au lieu d'ouvrir la machine de sauvegarde.",
+     "Le défi de Greymon à Ville File ne se répète plus à chaque visite.",
+     "Appuyer sur SELECT en pause n'assombrit plus l'écran pendant un combat.",
+     "La nuit, l'horloge n'affiche plus de morceaux des libellés des menus dans les langues traduites, et ces libellés s'affichent désormais correctement en allemand, en français, en italien et en catalan.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon et Hagurumon retrouvent leur taille et leurs gestes d'origine en tant que PNJ.",
+     "Kotemon, Taomon, Roachmon et MegaGargomon n'affichent plus d'équipement superflu dans leurs animations ; Kotemon se remet correctement de ses réactions aux coups, et les pattes avant de Nefertimon ont été corrigées.",
+     "Whamon n'attend plus au quai quand la traversée est fermée, et Akatorimon est désormais accessible à la Chasse au trésor.",
+     "La médaille Ville prospère n'est plus perdue au-delà de 100 points de prospérité, sept recrutements de Digimon sauvages comptent pour le bon Digimon, et la musique de la jungle est de retour sur l'écran où elle manquait."
+    ],
+    "upgrade": "Les sauvegardes de la v0.0.1 fonctionnent toujours et les quatre disques nécessaires n'ont pas changé. Les états de sauvegarde de l'émulateur ne sont pas compatibles : charge ta sauvegarde de carte mémoire sur le nouveau disque."
+   },
+   "de": {
+    "new": [
+     "Ein neues Spiel beginnt jetzt mit Jijimons sieben Fragen. Deine Antworten bestimmen deinen Partner aus 35 Digimon auf dem Rookie-Level, oder aus den ursprünglichen neun, wenn NEUE DIGIMON ausgeschaltet ist.",
+     "Neuer Reiter Stadt im Menü Spieler: Sieh nach, wer schon in deine Stadt gezogen ist und wer noch fehlt.",
+     "Neue Lebensbalken über den Köpfen der Gegner zeigen ihre aktuellen HP. Mit NEUE GEGNERBALKEN in OPTIONS kannst du sie ausschalten. Deine Auswahl zur Anzeige mit SELECT wird jetzt gespeichert.",
+     "Die Statusanzeige zeigt Pflegefehler, Disziplin und einen Müdigkeitsbalken, wenn NEUE BALKEN eingeschaltet ist.",
+     "Während deiner Schicht in Monochromons Laden siehst du deinen Gewinn und die Zahl der bedienten Kunden.",
+     "Die Pause außerhalb von Kämpfen zeigt die Spielversion und bei eingeschaltetem CHEATS einen Hinweis darauf, dass SELECT das Menü Cheats öffnet.",
+     "Eine neue Zeile im Menü Cheats schaltet die SELECT-Kürzel ein oder aus. Standardmäßig sind sie ausgeschaltet."
+    ],
+    "changed": [
+     "Der Entwicklungsbaum wurde neu aufgebaut: Die Digimon-Level wurden korrigiert. Jeder aufziehbare Rookie kann mindestens vier Champions erreichen und jeder aufziehbare Champion mindestens zwei Ultras. Alte Spielstände behalten ihren Partner, der mit dem neuen Level weitermacht.",
+     "Die Musik läuft beim Wechsel zwischen Bildschirmen mit demselben Stück weiter, ohne neu zu beginnen.",
+     "Die Kamera erfasst große Partner richtig und kommt zur Ruhe, wenn sie stillstehen.",
+     "MetalGreymon Vaccine bewegt sich und klingt jetzt wie ein MetalGreymon. Fünfzehn weitere Digimon erhalten eine Stimme, die besser zu ihrer Familie passt, und fünf der langsamsten Partner bewegen sich schneller.",
+     "Die Schicht in Monochromons Laden lässt sich leichter schaffen: Der nötige Gewinn für seine Anwerbung wurde gesenkt.",
+     "Die hungrigsten Partner verbrauchen weniger Energie und müssen deshalb seltener gefüttert werden.",
+     "In den Listen unter Cheats springen links und rechts jeweils zehn Zeilen weiter.",
+     "Die spanischen Gebietsnamen und Schilder entsprechen der offiziellen spanischen Version."
+    ],
+    "fixed": [
+     "In DuckStation überlagert Text bei eingeschaltetem Enable Texture Cache nicht mehr die vorherige Zeile.",
+     "Das Patchen über die Kommandozeile funktioniert jetzt unter Windows und in Ordnern mit Leerzeichen im Namen.",
+     "Mehrere Wege in den neuen Gebieten ließen dich zu früh weiterkommen. Sie öffnen sich jetzt zum richtigen Zeitpunkt. Spielstände, die bereits dahinter liegen, erlauben weiterhin den Rückweg.",
+     "NPCs und Truhen versperren in den neuen Gebieten keine Wege oder Schätze mehr.",
+     "Probleme mit Wänden, Treppen, Ankunftspunkten und Kameras in den neuen Gebieten wurden behoben.",
+     "Das Zeitlimit eines Kampfes wartet jetzt, bis laufende Techniken beendet sind. Damit entfällt eine Ursache für Hänger.",
+     "Ein Partner mit hoher Klugheit verliert gegen Gegner mit sehr hoher Verteidigung nicht mehr sein Ziel.",
+     "Jijimon spricht wieder, statt die Speichermaschine zu öffnen.",
+     "Greymons Herausforderung in der File-Stadt wiederholt sich nicht mehr bei jedem Besuch.",
+     "SELECT während der Pause verdunkelt in einem Kampf nicht mehr den Bildschirm.",
+     "Nachts zeigt die Uhr in den übersetzten Sprachen keine Teile von Menübeschriftungen mehr an. Diese Beschriftungen werden jetzt auf Deutsch, Französisch, Italienisch und Katalanisch korrekt dargestellt.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon und Hagurumon haben als NPCs wieder ihre ursprüngliche Größe und Gestik.",
+     "Kotemon, Taomon, Roachmon und MegaGargomon zeigen in ihren Animationen keine überflüssige Ausrüstung mehr. Kotemon kehrt nach Trefferreaktionen korrekt zur normalen Haltung zurück, und Nefertimons Vorderbeine wurden korrigiert.",
+     "Whamon wartet nicht mehr am Anleger, während die Fähre geschlossen ist, und Akatorimon ist bei der Schatzsuche erreichbar.",
+     "Die Medaille Blühende Stadt geht bei mehr als 100 Wohlstand nicht mehr verloren, sieben Anwerbungen wilder Digimon zählen für das richtige Digimon, und auf dem Bildschirm ohne Dschungelmusik ist sie wieder zu hören."
+    ],
+    "upgrade": "Spielstände aus v0.0.1 funktionieren weiterhin, und die vier benötigten Discs bleiben dieselben. Speicherzustände des Emulators sind nicht kompatibel: Lade auf der neuen Disc deinen Spielstand von der Memory Card."
+   },
+   "it": {
+    "new": [
+     "Ora una nuova partita inizia con le sette domande di Jijimon, che sceglie il tuo compagno tra 35 Digimon di livello Intermedio, o tra i nove originali se NUOVI DIGIMON è disattivato.",
+     "Nuova scheda Città nel menu Giocatore: scopri chi si è trasferito nella tua città e chi manca ancora.",
+     "Nuove barre della vita sopra la testa di ogni nemico, con gli HP attuali. NUOVE BARRE NEMICI in OPTIONS permette di disattivarle, e ora viene salvata la tua scelta di mostrarle con SELECT.",
+     "La schermata di stato mostra gli errori di cura, la disciplina e una barra della stanchezza quando NUOVE BARRE è attivato.",
+     "Durante il turno nel negozio di Monochromon puoi vedere i tuoi profitti e il numero di clienti serviti.",
+     "La pausa fuori dai combattimenti mostra la versione del gioco e, con TRUCCHI attivato, un suggerimento che ricorda che SELECT apre il menu Trucchi.",
+     "Una nuova voce nel menu Trucchi attiva o disattiva le scorciatoie SELECT. Sono disattivate per impostazione predefinita."
+    ],
+    "changed": [
+     "L'albero evolutivo è stato ricostruito: i livelli dei Digimon sono stati corretti, ogni Intermedio allevabile può raggiungere almeno quattro Campioni e ogni Campione allevabile almeno due Evoluti. I vecchi salvataggi mantengono il proprio compagno, che prosegue con il nuovo livello.",
+     "La musica continua tra le schermate che condividono lo stesso brano, senza ricominciare da capo.",
+     "La telecamera inquadra correttamente i compagni grandi e si ferma quando restano immobili.",
+     "MetalGreymon Vaccine ora si muove e suona come un MetalGreymon. Altri quindici Digimon hanno una voce più vicina alla loro famiglia, e cinque dei compagni più lenti si muovono più velocemente.",
+     "È più facile superare il turno nel negozio di Monochromon: il profitto richiesto per reclutarlo è stato ridotto.",
+     "I compagni più affamati consumano meno energia, quindi hanno bisogno di mangiare meno spesso.",
+     "Negli elenchi di Trucchi, sinistra e destra fanno saltare dieci righe.",
+     "I nomi delle aree e i cartelli in spagnolo seguono la versione ufficiale spagnola."
+    ],
+    "fixed": [
+     "Il testo non si sovrappone più alla riga precedente in DuckStation con Enable Texture Cache attivato.",
+     "L'applicazione della patch dalla riga di comando ora funziona su Windows e nelle cartelle con spazi nel nome.",
+     "Diversi percorsi nelle nuove aree permettevano di arrivare troppo presto. Ora si aprono al momento giusto, e i salvataggi che li hanno già superati consentono ancora di tornare indietro.",
+     "I PNG e i forzieri non bloccano più i percorsi o i tesori nelle nuove aree.",
+     "Corretti problemi con muri, scale, punti di arrivo e telecamere nelle nuove aree.",
+     "Il limite di tempo dei combattimenti ora attende la fine delle tecniche in corso, eliminando una causa di blocchi.",
+     "Un compagno con Ingegno alto non perde più il bersaglio contro nemici con Difesa molto alta.",
+     "Jijimon torna a parlare invece di aprire la macchina per salvare.",
+     "La sfida di Greymon a Città File non si ripete più a ogni visita.",
+     "Premere SELECT in pausa non oscura più lo schermo durante un combattimento.",
+     "Di notte, l'orologio non mostra più frammenti delle etichette dei menu nelle lingue tradotte, e ora queste etichette si leggono correttamente in tedesco, francese, italiano e catalano.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon e Hagurumon tornano alle dimensioni e ai gesti originali come PNG.",
+     "Kotemon, Taomon, Roachmon e MegaGargomon non mostrano più equipaggiamento superfluo nelle animazioni; Kotemon si riprende correttamente dalle reazioni ai colpi, e le zampe anteriori di Nefertimon sono state corrette.",
+     "Whamon non aspetta più al molo quando il traghetto è chiuso, e Akatorimon è raggiungibile alla Caccia al tesoro.",
+     "La medaglia Città prospera non viene più persa oltre i 100 punti di prosperità, sette reclutamenti di Digimon selvatici contano per il Digimon corretto, e la musica della giungla è tornata nella schermata in cui mancava."
+    ],
+    "upgrade": "I salvataggi della v0.0.1 continuano a funzionare e i quattro dischi necessari non sono cambiati. Gli stati salvati dell'emulatore non sono compatibili: carica il tuo salvataggio dalla scheda di memoria sul nuovo disco."
+   },
+   "ja": {
+    "new": [
+     "新しくゲームを始めると、まずJijimonの7つの質問に答えます。答えに応じて35体の成長期からパートナーが選ばれます。あたらしいデジモンがオフなら、元の9体から選ばれます。",
+     "プレイヤーメニューに「まち」タブを追加しました。街に来たデジモンと、まだ来ていないデジモンを確認できます。",
+     "敵の頭上に、現在のHPを示す新しいライフバーを追加しました。OPTIONSの「敵の新HPバー」でオフにできます。SELECTで切り替えた表示設定も保存されるようになりました。",
+     "「あたらしいバー」がオンのとき、ステータス画面にいくせいミスとしつけに加え、つかれのバーを表示します。",
+     "Monochromonの店で働いている間、利益と接客した人数を確認できるようになりました。",
+     "フィールドでポーズすると、ゲームのバージョンを表示します。「チート」がオンなら、SELECTでチートメニューを開けることも案内します。",
+     "チートメニューに、SELECTを使うショートカットのオン・オフを切り替える項目を追加しました。初期設定はオフです。"
+    ],
+    "changed": [
+     "進化チャートを作り直しました。デジモンの世代を修正し、育てられる成長期はすべて4体以上の成熟期に、育てられる成熟期はすべて2体以上の完全体に進化できます。以前のセーブデータではパートナーはそのまま、新しい世代で冒険を続けます。",
+     "同じ曲が流れる画面の間を移動しても、音楽が最初から再生されず、そのまま続くようになりました。",
+     "大きなパートナーもカメラに正しく収まり、立ち止まるとカメラも落ち着くようになりました。",
+     "MetalGreymon Vaccineの動きと声を、MetalGreymonに合ったものにしました。ほかの15体も同じ系統に近い声になり、特に移動が遅かったパートナー5体の速度を上げました。",
+     "Monochromonの店での仕事を成功させやすくしました。仲間にするために必要な利益が下がっています。",
+     "特に食いしん坊のパートナーはエネルギー消費が減り、食事の回数が少なくて済むようになりました。",
+     "チートのリストで、左右を押すと10行ずつ移動できるようになりました。",
+     "スペイン語の地名と看板を、公式スペイン語版に合わせました。"
+    ],
+    "fixed": [
+     "DuckStationでEnable Texture Cacheをオンにしていても、文字が前の行に重ならなくなりました。",
+     "コマンドラインでのパッチ作成が、Windowsや名前に空白を含むフォルダーでも動作するようになりました。",
+     "新エリアの一部の道から、早すぎる段階で先に進めていた問題を修正しました。道は適切なタイミングで開き、すでに通過したセーブデータでも戻れます。",
+     "新エリアで、NPCや宝箱が道や宝物をふさがなくなりました。",
+     "新エリアの壁、階段、到着位置、カメラの問題を修正しました。",
+     "バトルの制限時間に達しても、発動中のわざが終わるまで待つようにしました。これにより、フリーズの原因をひとつ解消しました。",
+     "かしこさの高いパートナーが、ぼうぎょのとても高い敵を相手にしたときに、ターゲットを見失わなくなりました。",
+     "Jijimonに話しかけると、セーブ装置を開かずに会話できるようになりました。",
+     "はじまりの街でのGreymonの挑戦が、訪れるたびに繰り返されなくなりました。",
+     "バトル中、ポーズしてからSELECTを押しても画面が暗くならなくなりました。",
+     "翻訳した言語で、夜の時計にメニューの文字の一部が混ざらなくなりました。ドイツ語、フランス語、イタリア語、カタルーニャ語のメニューの文字も正しく表示されるようになりました。",
+     "NPCのKingSukamon、Cherrymon、ShogunGekomon、Brachiomon、Tinmon、MasterTyrannomon、Hagurumonを、元の大きさとしぐさに戻しました。",
+     "Kotemon、Taomon、Roachmon、MegaGargomonのアニメーションに余分な装備が表示されなくなりました。Kotemonが攻撃を受けたあとの動きが正しく戻るようになり、Nefertimonの前脚も修正しました。",
+     "渡し船が休止中のとき、Whamonが船着き場で待たなくなりました。トレジャーハントではAkatorimonのところまで行けるようになりました。",
+     "繁栄度が100を超えても「街の発展」メダルを失わなくなりました。野生のデジモン7体を仲間にしたときに正しいデジモンとして数えられるようになり、音楽が抜けていた画面にジャングルの曲が戻りました。"
+    ],
+    "upgrade": "v0.0.1のセーブデータは引き続き使えます。必要な4枚のディスクも変わりません。エミュレーターのステートセーブは引き継げないため、新しいディスクでメモリーカードのセーブデータをロードしてください。"
+   },
+   "ca": {
+    "new": [
+     "Ara les partides noves comencen amb el test de set preguntes de Jijimon, que tria el teu company entre 35 Digimon de nivell Novell, o entre els nou originals si desactives NOUS DIGIMON.",
+     "Nova pestanya Ciutat al menú Jugador: consulta qui s'ha unit a la teva ciutat i qui encara hi falta.",
+     "Noves barres de vida damunt del cap de cada enemic, amb els HP actuals. NOVES BARRES ENEM. a OPTIONS permet desactivar-les, i ara es desa la teva tria de mostrar-les amb SELECT.",
+     "La pantalla d'estat mostra els errors de cura, la disciplina i una barra de cansament quan BARRES NOVES està activat.",
+     "Durant el torn a la botiga de Monochromon pots veure els beneficis i el nombre de clients atesos.",
+     "La pausa fora dels combats mostra la versió del joc i, amb TRUCS activat, un avís que SELECT obre el menú Trucs.",
+     "Una nova fila del menú Trucs permet activar o desactivar les dreceres amb SELECT. Estan desactivades per defecte."
+    ],
+    "changed": [
+     "S'ha refet l'arbre evolutiu: s'han corregit els nivells dels Digimon, cada Novell que pots criar arriba com a mínim a quatre Campions i cada Campió que pots criar, com a mínim a dos Perfectes. Les partides anteriors conserven el company, que continua amb el nou nivell.",
+     "La música continua sonant entre pantalles que comparteixen tema, sense tornar a començar.",
+     "La càmera enquadra bé els companys grans i deixa de moure's quan es queden quiets.",
+     "MetalGreymon Vaccine ara es mou i sona com un MetalGreymon. Quinze Digimon més tenen una veu més propera a la de la seva família, i cinc dels companys més lents es mouen més de pressa.",
+     "És més fàcil superar el torn a la botiga de Monochromon: s'han reduït els beneficis necessaris per reclutar-lo.",
+     "Els companys més golafres gasten menys energia i, per tant, necessiten menjar menys sovint.",
+     "A les llistes de Trucs, esquerra i dreta salten deu files.",
+     "Els noms de les zones i els rètols en espanyol segueixen la versió oficial espanyola."
+    ],
+    "fixed": [
+     "El text ja no se superposa a la línia anterior al DuckStation amb Enable Texture Cache activat.",
+     "L'aplicació del pedaç des de la línia d'ordres ja funciona al Windows i en carpetes amb espais al nom.",
+     "Diversos camins de les zones noves permetien arribar abans d'hora. Ara s'obren en el moment adequat, i les partides que ja els havien travessat permeten tornar enrere.",
+     "Els PNJ i els cofres ja no bloquegen camins ni tresors a les zones noves.",
+     "S'han corregit problemes amb parets, escales, punts d'arribada i càmeres a les zones noves.",
+     "El límit de temps dels combats ara espera que acabin les tècniques en curs, cosa que elimina una causa de bloquejos.",
+     "Un company amb molt Intel·lecte ja no perd l'objectiu davant d'enemics amb una Defensa molt alta.",
+     "Jijimon torna a parlar en comptes d'obrir la màquina de desar.",
+     "El repte de Greymon a Ciutat File ja no es repeteix a cada visita.",
+     "Prémer SELECT en pausa ja no enfosqueix la pantalla durant un combat.",
+     "De nit, el rellotge ja no mostra fragments de les etiquetes dels menús en els idiomes traduïts, i ara aquestes etiquetes es llegeixen correctament en alemany, francès, italià i català.",
+     "KingSukamon, Cherrymon, ShogunGekomon, Brachiomon, Tinmon, MasterTyrannomon i Hagurumon recuperen la mida i els gestos originals com a PNJ.",
+     "Kotemon, Taomon, Roachmon i MegaGargomon ja no mostren equipament sobrant a les animacions; Kotemon es recupera correctament de les reaccions als cops i s'han corregit les potes davanteres de Nefertimon.",
+     "Whamon ja no s'espera al moll mentre el servei de transport està tancat, i es pot arribar fins a Akatorimon a Cerca del tresor.",
+     "La medalla Ciutat pròspera ja no es perd en superar els 100 punts de prosperitat, set reclutaments de Digimon salvatges compten per al Digimon correcte i torna la música de la jungla a la pantalla on faltava."
+    ],
+    "upgrade": "Les partides de v0.0.1 continuen funcionant i els quatre discos necessaris no han canviat. Els estats desats de l'emulador no són compatibles: carrega la partida de la targeta de memòria al disc nou."
+   }
+  },
+  {
    "version": "0.0.1",
    "date": "2026-10-31",
    "en": {
