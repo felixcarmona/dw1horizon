@@ -24,7 +24,40 @@ per rate. Compare separate discs and save states for each frame rate. `MOD_FPS_I
 | `ticks_input.py` | replays a fixed input per tick (same walk in every mode) |
 | `framedump.py` | every presented frame (true 60 fps capture; needs the interpreter CPU mode); `FD_FROM=ADDR:VALUE` starts at a RAM condition, `mp4 RAW OUT K` holds each swap K refreshes (game time for forced passes) |
 | `tracer.py` | per-stage timing traces |
+| `curlingprofile.py` | inclusive CPU-cycle profile of curling and its render/collision callees in the interpreter |
+| `curlingcheck.py` | tick-scripted curling inputs; records stone physics, scores, RNG and entity/bone/momentum hashes; runtime modes 0/1/2 on the same FPS=60 disc |
+| `curlingdscheck.py` | fixed-seed complete DuckStation match, pad input after polling per tick, semantic state trace and optional per-state checkpoints (`DS_CHECKPOINTS=1`) |
+| `duckframes.py` | every DuckStation refresh with FrameStep/F12, PNGs and RAM samples; verifies exactly one Vcount step per picture |
+| `curlingmatch.py` | DuckStation pad driver and state/outcome trace for a complete curling match, including original-disc overclock smoke tests |
+
+For curling comparisons, start from an aiming save state of the same disc and
+set `FPS_MAP` to its linker map. `curlingcheck.py STATE MODE INTERP TICKS OUT`
+uses twelve refreshes per tick by default so every requested pass fits in every
+run. `KC_PERIOD=0` tests actual scheduling, and `KC_FIXTURE=FILE.json` applies a
+recorded semantic starting fixture across builds. Mode arguments in this tool
+set the runtime option. `curlingmatch.py` uses wall-timed pad input and records
+actual powers and outcomes; differing scores alone do not prove a physics
+difference between overclock settings.
 
 `FPS_MAP` selects the executable linker map (default `build/full/exe/SLUS_010.32.elf.map`).
 For overlay hashing, `FPS_DECOMP` selects its matching patched source worktree
 (default `build/decomp-full`). Presented-frame capture uses `FD_MAP`.
+
+Use `DS_DISPLAY` and `DS_GDB_PORT` for a private DuckStation instance. The
+complete replay starts from free control in File City. Debugger pauses are
+excluded from wall-time performance claims; measure each saved state separately.
+
+`curlingdscheck.py` lets the intro's cadence calibration run without debugger
+stops, then records from its one-time assignment onward. `recording_first_tick`
+and `recorded_ticks` identify the captured range; pad timing keeps the original
+absolute tick phase. `DS_FREE_WARMUP=0` records the intro too, but those debugger
+stops can bias the cadence selector and must not be used for cadence acceptance.
+Use free-running perf and `duckframes.py` for presentation checks. Optional
+`DS_CURLING_GEOMETRY=1` records stone history, matrices and the player's hand.
+
+For clean DuckStation captures, shorten `Display/OSDErrorDuration`,
+`OSDWarningDuration`, `OSDInfoDuration` and `OSDQuickDuration` to `0.1`, and turn
+`AnimateOSDMessages` off. `ShowOSDMessages=false` alone leaves overclock/RAM
+warnings over the HUD; their fading pixels are not PSX frame changes.
+`python3 -m unittest tools.test_curling_collision tools.test_duckstation_protocol`
+checks the scanner/SDK cutoff and RSP acknowledgement/stop handling.

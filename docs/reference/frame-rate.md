@@ -469,6 +469,81 @@ costs 10-14 lines per pass.
 - Background tiles are 12 `POLY_FT4` (negligible CPU); a typical Digimon model is about 400 TMD primitives, about 35
   lines per model with `GsSortObject4`.
 
+## Curling (0292)
+
+The KAR overlay draws its HUD on every pass. The arrow pulse and ready timer
+advance in `KAR_tick` only; the arrow keeps the original pre-physics origin and
+interpolates its displayed direction. A late tick records stone positions after
+physics and evaluates held stones from the nominal hand matrix. Rendering uses
+local interpolated positions, or the interpolated hand, without writing those
+positions back into physics. Selection, removal, match resets and moves over
+512 units snap; the held-to-released transition remains continuous. The previous
+poses and validity flags stay in KAR, outside the resident small-data sections.
+The camera tile-coverage guard chooses the effective fraction before applying
+any interpolation; it publishes that fraction as `MOD_RENDER_ALPHA`, so the
+view, camera, actors and stones stay together at tile-window boundaries.
+
+`KAR_updateCollisions` keeps positive-state stones in their original row/slot
+order and scans that compact list. Stationary stones remain included. All
+eleven substeps, the repeat of a colliding final substep, resolver argument order,
+rounding, friction and collision functions are unchanged. Resolvers preserve
+positive states, so the list remains valid throughout the tick. Before this
+change the scanner consumed about 393,000 CPU cycles per throw tick even with
+no resolved collisions; square roots accounted for less than 1% of that cost.
+The differential test extracts both C implementations and checks callback order,
+coordinates and resulting state across 40,960 fixtures. The SDK square-root
+lookup has a different cutoff from exact integer square root; it is preserved.
+
+Curling's forced background uploads were cheap when the whole TFS stayed in
+RAM. With streaming they synchronously reread three CD rows repeatedly during
+camera returns. KAR now checks the streamer's existing VRAM cell identities,
+keeps cells already displayed, and uses the ring for actual replacements. The
+12-byte identity table is exposed without changing its size; the helper stays
+in KAR. Tile replacement is deferred until all CPU geometry preparation is
+complete, before submitting the new ordering table. This overlaps preparation
+with the previous GPU draw: a row crossing previously waited about 155 scanlines
+in tick-side VRAM readback. The native row uploader defers while the tamer is
+in curling. Camera targets, movement and tile destinations remain unchanged.
+
+The intro samples tick/render cost after three cold setup ticks, allows half
+a render of headroom for the HUD/previews that appear later, and chooses a cadence for the entire match:
+the player's requested rate when 60 fits, otherwise steady 30. The 20 FPS option
+always takes precedence. This avoids oscillating between one and two extra
+passes as the camera moves. The overlay arms `MOD_RENDER_CADENCE` each tick;
+`modTickStart` clears it, so other scenes retain their existing scheduling.
+
+At 30 FPS the display deadlines are refreshes 2, 4 and 6 over two nominal
+three-refresh ticks. After the single-pass half, the helper uses its unused
+third refresh to compute the next tick early. Nominal tick timestamps remain
+three refreshes apart, and interpolation uses those timestamps. Logic therefore
+advances twice per six refreshes, while input is sampled one refresh early on
+that half of the pair. Forced-period comparisons disable this cadence override
+to exercise all three passes; actual-cadence comparisons use `KC_PERIOD=0`.
+
+The PCSX refresh capture of the initial cadence implementation showed 58 aiming
+and 119 throw display intervals, all exactly two refreshes, with no late frames.
+The score box appeared in all 240 throw refreshes, versus 165/240 before the fix.
+At the VSync sample immediately preceding each render-counter increment, all
+120 submitted stone matrices matched the recorded poses and `MOD_RENDER_ALPHA`.
+
+The final DuckStation software-renderer checks requested 60 FPS. At CPU 100%,
+all four states (aim, power, throw, tally) stay at 30 FPS; at CPU 200% and 250%
+they stay at 60 FPS. Enabling 8 MB alone changes neither cadence nor results.
+The original 2 MB profile remains the target. Rates are nominal; NTSC uses
+59.94 refreshes/s. Aiming's 294 render lines alone exceed a 263-line refresh at
+100%, so the match keeps steady 30 even when an individual throw is cheaper.
+
+With seed `0x12345678`, all six profiles and the final 20 FPS option finish ten
+throws at 2–2 with identical recorded state, RNG, aim and power on 2,798 ticks.
+The baseline 20 FPS disc also matches every recorded tick and all ten released
+stone trajectories. Recording starts after nine uninterrupted calibration ticks;
+those intro ticks are not part of the hash. Per-state refresh captures check
+HUD pixels, display spacing, stone/hand matrices and counters separately from
+replay timing, which debugger pauses can distort.
+
+Resident `main_BSS_END` changes from `0x801cb9fc` to `0x801cba40` (+68 bytes);
+aligned heap falls by 80 bytes. KAR contains the history and tile helper.
+
 ## RAM variables
 
 | Symbol | Meaning |
@@ -480,6 +555,7 @@ costs 10-14 lines per pass.
 | `MOD_RENDER_PASS` | 0 in the tick and first pass, 1, 2 on extra passes |
 | `MOD_RENDER_MULTIPASS` | set around the passes (removals wait) |
 | `MOD_RENDER_ALPHA` | this pass's fraction of the tick, 0..4096 |
+| `MOD_RENDER_CADENCE` | 0 = inactive; 1/2 = normal/early half of steady 30 FPS; 4 = curling at requested rate with deferred tiles; reset at each tick; preserves the player's 20 FPS option |
 | `MOD_FPS_INTERP` | interpolation on (1, default) or off; test switch |
 | `MOD_FPS_INTERP_BONES` | 0 / 1 / 2, see above; test switch |
 | `MOD_FPS_TEST_TICK` | test switch: every tick lasts that many refreshes (0 = off) and every pass is rendered at its fraction of the tick |
