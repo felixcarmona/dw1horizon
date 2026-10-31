@@ -37,7 +37,7 @@ DARK_POS = [(90, 430), (180, 520), (330, 545), (470, 490), (120, 330), (60, 380)
 DARK_NEG = [(390, 50), (340, 300), (190, 250), (490, 230), (690, 550), (290, 610), (90, 630), (710, 470), (590, 520), (210, 600), (560, 580),
             (640, 480), (750, 400)]
 WRECK = [(70, 170), (300, 160), (570, 185), (590, 330), (450, 430), (180, 420), (100, 370), (50, 250)]    # traced on the art: hull, mast, spars
-SPAWN_PX = (480, 455)                                   # the foreshore where Whamon drops the player, facing the beach (on the frosted strip by the ice plates)
+SPAWN_PX = (457, 460)                                   # the foreshore where Whamon drops the player, facing the beach (on the frosted strip by the ice plates)
 ROTATION = 0                                            # facing +Z (up the screen)
 
 

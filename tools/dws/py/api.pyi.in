@@ -165,7 +165,7 @@ class ScreenRef:
         `when=`: it is there only while this holds (saved state: quest stages, flags, `recruited(...)`; on every engine);
         `range=N`: how far (world units) a chasing NPC runs after the player; 0 waits to be touched; a zigzag screen whose
         legs lie one above the other wants a short range, or the chase crosses the terrace and the battle cannot be fought.
-        `autotalk=True`: it talks when touched. On `screen(a, b)` it stands in the same slot of each. Slots 8-15 and
+        A new NPC without `when=` talks when touched; `autotalk=False` makes it wait for CROSS (a friendly NPC by an arrival). On `screen(a, b)` it stands in the same slot of each. Slots 8-15 and
         species beyond the game's 180 need the story-state engine (`check --exe story-state`); `check` also tests the screen's heap."""
     @overload
     def on_enter(self, fn: _F, /) -> _F:
