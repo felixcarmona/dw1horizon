@@ -3,7 +3,7 @@
 from dw import *
 from dw.names import *
 from dw.base.file_city_168 import city_168, yuramon
-from ...state import rumours_asked, rumours_spread
+from ...state import greymon_heard_of_tamer, rumours_asked, rumours_spread
 
 @yuramon.on_talk(when=not rumours_asked)
 def the_word():
@@ -16,6 +16,9 @@ def the_word():
     else:
         say("Okaaay. It'll be our secret, then. Ehehe.")
 
-@city_168.on_enter(when=rumours_spread and engine.prosperity >= 10 and not greymon_challenge_ready and not recruited(Species.Greymon))
+@city_168.on_enter(when=rumours_spread and not greymon_heard_of_tamer and engine.prosperity >= 10 and not greymon_challenge_ready and not recruited(Species.Greymon))
 def greymon_heard():
+    # Once only. His step tiles ring the door of Jijimon's house, where a defeat wakes the tamer: armed on every entry,
+    # the fight (no escape) would come back each time the tamer steps out. Lost, the game's own way brings him back.
+    greymon_heard_of_tamer.set()
     greymon_challenge_ready.set()

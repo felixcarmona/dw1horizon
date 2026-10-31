@@ -1,6 +1,6 @@
 # Jijimon's house (218): ToyAgumon, fallen out of a toy box in Toy Town, plays with Tokomon. And Jijimon counts what the
 # city remembers (story-bible.md §2.6, §3.8): after each memory fragment, the next time the tamer comes home Jijimon says
-# how much the city remembers now (his talk is the build's dev-save script, so it is told on entering).
+# how much the city remembers now (told on entering, so it needs no talk).
 from dw import *
 from dw.base.jijimons_house import house, botamon, jijimon
 from ..state import memories, memory_news

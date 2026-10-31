@@ -102,6 +102,7 @@ def main(argv=None):
     p.add_argument('--run', action='store_true', help='boot original-2-MB PCSX-Redux for --run-seconds, then stop it')
     p.add_argument('--run-seconds', type=int, default=60)
     p.add_argument('--name', default='dev-everything')
+    p.add_argument('--dev-save', action='store_true', help="add the helper where talking to Jijimon opens the save machine (never on a player's disc)")
     a = p.parse_args(argv)
     if not a.name or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_' for c in a.name):
         p.error('--name must contain only letters, digits, - and _')
@@ -134,6 +135,8 @@ def execute(a):
         else:
             env[k] = str(v)
     env.update(DWS_RELAYOUT='1', SCNASM_PACK_ASCII='1', PYTHONDONTWRITEBYTECODE='1')
+    if a.dev_save:
+        env['MAIN_STORY'] = 'tools/dws/examples/dev-save.dws'
     env.update(NAME=a.name, DERIVE_JOBS=str(a.jobs), REUSE_MODELS='0',
                DW_PORTRAITS_CACHE=str(out / 'derived/portraits-cache'))
     # Never inherit the old unchecked model reuse shortcut.

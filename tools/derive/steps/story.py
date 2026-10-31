@@ -2,10 +2,10 @@
 and the dev-save script (build-full.sh 2b, :206-257), with the two music fonts set in each MAPHEAD (set-bgm, :278-288).
 
 A pass is one `dws.py story-build` (tools/dws/basebuild.py) into a folder of build/NAME, as the bash ran them:
-  .             the extended story (MAIN_STORY + EXTRA_STORY, the mods' overrides), paged for the executable's font
+  .             the extended story (EXTRA_STORY, the mods' overrides, a developer's MAIN_STORY), paged for the executable's font
   orig          the same paged for the original font (ORIG: the executable has both fonts, FONT=b and DGORIG.SCN in its
                 file table): DGORIG.SCN, MHORIG.SCN
-  base          EXTENDED STORY's original story (ALT: a story mod and patch 0199): MAIN_STORY only, no mod, none of the
+  base          EXTENDED STORY's original story (ALT: a story mod and patch 0199): a developer's MAIN_STORY only, no mod, none of the
                 mods' retouched maps: _G.SCN, _APHEAD.SCN
   base/orig     that one paged for the original font: _GORIG.SCN, _HORIG.SCN
 and with LANGS=en,es the same four in Spanish (TEXT=es, STORY_LANG=es) in build/NAME/es (bash: build/NAME-es, made by a
@@ -70,7 +70,7 @@ class Settings:
         self.languages = translations(env)
         self.lang_on = bool(self.languages)
         self.story_lang = env.get('STORY_LANG') or 'en'
-        self.main = env.get('MAIN_STORY') or DEV_SAVE
+        self.main = env.get('MAIN_STORY') or ''   # none on a player's disc: a developer's helper never ships
         self.extra = (env.get('EXTRA_STORY') or '').split()
         self.screens = [d for d in (env.get('SCREEN_CONTENT') or '').split(':') if d]
         self.maps = env.get('DWS_MAPS') or ''
@@ -117,7 +117,7 @@ def pass_argv(s, v, text, lang, zones, pack, locks_read_only=True):
     """The story-build command line of the pass in folder v (build-full.sh :229-247)."""
     base = v.startswith('base')
     exe = s.exe(text, 'original' if v.endswith('orig') else s.exe_font)
-    files = [s.main] + ([] if base else s.extra)
+    files = ([s.main] if s.main else []) + ([] if base else s.extra)
     return (['story-build'] + files + ['--text-source', text, '--lang', lang] + exe +
             ['--audio', 'story/core/audio.json', '--mods', 'none' if base else s.mods, '--screen-content', ':'.join(s.screens),
              '--maps', '' if base else s.maps, '--relayout', '1' if s.relayout else '0',
@@ -272,10 +272,10 @@ def units(ctx):
             first = False
             base = v.startswith('base')
             inputs = (['story/base', 'tools', 'extracted/SCN', 'extracted/MAP', 'content/screens', 'text/us',
-                       f'text/{text}', s.main] + ([] if base else ['story/mods'] + s.extra) +
+                       f'text/{text}'] + ([s.main] if s.main else []) + ([] if base else ['story/mods'] + s.extra) +
                       [f'step:maps ({p})' for p in s.screens] + ([] if base or not s.maps else [f'step:retouch ({s.maps})']))
             outs = [os.path.relpath(os.path.join(d, f), ctx.out) for f in ('DG.SCN', 'MAPHEAD.SCN', 'dws.log')]
-            ordered = not base or s.main != DEV_SAVE   # a custom main source can edit new maps even without mods
+            ordered = not base or s.main not in ('', DEV_SAVE)   # a custom main source can edit new maps even without mods
             out.append(runner.Unit(pass_name(lang, v), run_pass, (ctx.root, d, argv, lowered, s.scrn,
                         ctx.path('DIGI.DAT') if os.path.isfile(ctx.path('DIGI.DAT')) else None,
                         ctx.path('derived/exe-facts.json') if os.path.isfile(ctx.path('derived/exe-facts.json')) else None),
