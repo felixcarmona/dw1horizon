@@ -957,7 +957,7 @@
  "main.MAIN_D_8012394C": "△ Cancelar",
  "main.MAIN_D_80123958": "C      L      A      S",
  "main.MAIN_D_80123970": "Usar - pulsa      para equipar",
- "main.MAIN_D_80123A18": "JogadorGuia       Med. Cartas",
+ "main.MAIN_D_80123A18": "JogadorGuiaMed.CartasCidade",
  "main.MAIN_D_80123A60": "Nome     Nível       Criados",
  "main.MAIN_D_80123A7C": "Bits                Tempo",
  "main.MAIN_D_80123A98": "Itens          Medalhas",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "Salvar o jogo atual?",
  "main.LAB_STR_ASK_TITLE": "Voltar ao menu principal?",
  "main.LAB_STR_UNSAVED": "Perderá mudanças não salvas.",
- "main.LAB_STR_ASK_LOAD": "Carregar este jogo?"
+ "main.LAB_STR_ASK_LOAD": "Carregar este jogo?",
+ "main.CITY_STR_PROSPERITY": "Prosperidade",
+ "main.CITY_STR_RESIDENTS": "Residentes"
 }

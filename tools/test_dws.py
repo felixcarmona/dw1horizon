@@ -1559,7 +1559,7 @@ class PythonView(unittest.TestCase):
         self.assertIn('region = screen(Screen.ancient_glacial_region_80)', v)
         self.assertIn('vermilimon4 = region.npc(Species.Vermilimon, slot=4)', v)
         self.assertIn('recruitable(vermilimon0, line=t5.u0)', v)
-        self.assertIn('recruitable(vermilimon4, line=t9.u0, joins=Species.Yanmamon)', v)     # the disc's quirk stays explicit
+        self.assertIn('recruitable(vermilimon4, line=t9.u0, joins=Species.Vermilimon)', v)  # reviewed balanced-map recruitment fix
         self.assertIn('roll = random.roll(99)\n    if roll <= 14:', v)                               # the draw, then its test (one form)
         self.assertIn('sections(254, 5, 6, 7, 8, 9, 10)', v)
         self.assertNotIn('"I', v)                                                               # keys, never the game's words
@@ -1578,12 +1578,12 @@ class PythonView(unittest.TestCase):
         self.assertIn('forest: ScreenRef', open(os.path.join(ROOT, 'typings/dw/base/native_forest_2.pyi')).read())
 
     def test_views_lower_to_the_proven_story(self):
-        """M4a: every view lowered (tools/dws/py/lower.py) and proven against the disc's sections; the build from the views is the
-        build from the DWS, byte for byte."""
+        """Prove original views against the disc; both original and authored Python builds match their DWS byte for byte."""
         from dws import readable, basebuild as BB
         from dws.py import lower as PL
         lifted, mhl, _ = readable.lift_disc(only={2, 18, 77, 102, 178, 216})
-        proven, bad = PL.check_base(self.base, lifted, [], log=lambda m: None)
+        # Authored changes are pinned separately; only original views must match the disc.
+        proven, bad = PL.check_base(original_story(), lifted, [], log=lambda m: None)
         self.assertEqual(bad, []); self.assertGreater(proven, 60)
         d = tempfile.mkdtemp(prefix='frompy-', dir=TMP)
         for label, base in (('original', original_story()), ('authored', self.base)):

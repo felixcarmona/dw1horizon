@@ -177,3 +177,18 @@ layout; slots 9/10 remain compatible copies of the first two starters. The game 
 
 `story/new-game-quiz.dws` extends the base MAPHEAD 1238 table for expanded-engine builds.
 The original and core engines keep the base table and their existing buffer limits.
+
+## City residents
+
+`content/tables/city-residents.json` owns the resident IDs and hidden flags.
+Levels, names and points come from the species data (level minus two, except
+Numemon, Sukamon and Nanimon worth one). Compiled story recruit writes are the
+reachability witness, checked by `tools/city_residents.py`; balanced
+`content/maps` slots determine which species a wild recruitment site fights.
+`tools/species.py` writes the roster and extra icons to DIGI.DAT. Its optional
+header extension at `0x38` preserves all existing v2 offsets, including
+`SpeciesHeader.chartSector`. Python archive readers and browser patcher replay
+keep the same record format; the patcher bundles and executes the derive tools,
+which regenerate the City block from owned data and player-disc models. The
+City validator is explicitly included in published bundles even when its import
+was cached; the isolated bundle startup test imports it without repository access.

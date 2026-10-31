@@ -292,6 +292,11 @@ def finish(ctx):
     """After the passes: their FILE: maps copied by disc path, the Spanish passes' log (build-full.sh's step 4b reads
     it: bash's second run's log)."""
     s = Settings(ctx)
+    from tools.city_residents import verify
+    # Enumerate the build's passes, not one hand-picked mod or language. This
+    # runs after cache restores too, on the actual compiled stories on the disc.
+    stories = [os.path.join(ctx.out, u.outputs[0]) for u in units(ctx)]
+    verify(stories + [os.path.join(os.path.dirname(p), 'MAPHEAD.SCN') for p in stories])
     copy_maps(ctx, s)
     if s.lang_on:
         with open(ctx.path('lang-es-story.log'), 'w') as f:

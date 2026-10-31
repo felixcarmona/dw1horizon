@@ -1134,6 +1134,7 @@ HEADER_LEVELS = 0x40             # the header sector: the level of each partner 
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
 VERSION = 2
+HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
 MAX_PARTNERS, MAX_LINKS = 1022, 510
 EXTRA_PARENTS, EXTRA_TARGETS = 4, 12   # a Baby II's Rookies past its 6 "to" slots (species.h SPECIES_EXTRA_*)
@@ -1301,8 +1302,11 @@ def build(out=OUT, content=None, quiet=False, select=None):
     # icons (tools/portraits.py), three to a sector after the blobs: the first is the fallback of a species without one
     icons = [None]
     chart = chart_tabs(allsp, species)
+    from city_residents import residents, verify_archive
+    city = residents(allsp)
     # the originals of the chart past its sheet's 61 (no hand-drawn chart icon): an icon from their model, in their record
-    drawn = sorted(set(species) | {t for tab in chart for t in tab if CHART_SHEET < t < NUM_ORIGINAL})
+    drawn = sorted(set(species) | {t for tab in chart for t in tab if CHART_SHEET < t < NUM_ORIGINAL}
+                   | {r['id'] for r in city if r['id'] > CHART_SHEET})
     icon_of = {}
     if PORTRAITS:
         try:
@@ -1338,6 +1342,16 @@ def build(out=OUT, content=None, quiet=False, select=None):
         chart_ref = sector
         blobs.append(cb)
         sector += len(cb) // SECTOR
+    # City uses the chart block layout with one tab. The high id bit marks a
+    # spoiler hidden until recruited; icon order still follows the unflagged ids.
+    city_ref = sector
+    if any(r['id'] > CHART_SHEET and r['id'] not in icon_of for r in city):
+        raise SystemExit('City: every resident past the chart sheet needs a generated icon')
+    cb = bytearray(chart_block([[r['id'] for r in city]], icon_of, icons[0]))
+    for k, row in enumerate(city):
+        struct.pack_into('<H', cb, 2 + k * 2, row['id'] | (0x8000 if row['hidden'] else 0))
+    blobs.append(bytes(cb))
+    sector += len(cb) // SECTOR
     # links with the 62 original species that have evolution paths: the game applies them at boot, in this order
     extra = {}
     for t in sorted(species):
@@ -1374,6 +1388,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     first_mega = next((t for t in partners if recs[t]['para']['level'] == 6), 0)
     hdr = bytearray(SECTOR)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
+    struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
     for i, t in enumerate(partners): hdr[HEADER_LEVELS + i] = recs[t]['para']['level']
     for t in species:                                     # the record originals (include/dw/species.h)
         if t < NUM_ORIGINAL: hdr[HEADER_RECORD_ORIGINALS + t // 8] |= 1 << (t % 8)
@@ -1387,6 +1402,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     body += b'\0' * (rec_sectors * SECTOR - len(body))
     data = bytes(hdr) + bytes(plist) + bytes(llist) + body + b''.join(blobs)
     assert len(data) == sector * SECTOR
+    verify_archive(data)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'wb').write(data)
     if not quiet: print(f'{os.path.relpath(out, ROOT)}: {count} ids ({len(species)} carried species, {len(partners)} partners, '
@@ -2170,6 +2186,9 @@ def cmd_show(a):
 
 def cmd_check(a):
     d, count, recs = read_archive(a.path)
+    from city_residents import verify_archive
+    if struct.unpack_from('<I', d, HEADER_CITY)[0]:
+        verify_archive(d)
     carried_orig = record_originals(d)
     want, src = original_records(a.content, count > NUM_ORIGINAL or bool(carried_orig))
     bad = 0

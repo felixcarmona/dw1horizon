@@ -46,13 +46,13 @@ script 36 {
     on talk(gotsumon2) replace {    // section 7
         say(gotsumon2, text("s036.sec7.u0"));
         battle();
-        recruit(species("Goblimon"));
+        recruit(species("Gotsumon"));
     }
 
     on talk(gotsumon3) replace {    // section 8
         say(gotsumon3, text("s036.sec8.u0"));
         battle();
-        recruit(species("Goblimon"));
+        recruit(species("Gotsumon"));
     }
 
     on step(0) replace {    // section 51

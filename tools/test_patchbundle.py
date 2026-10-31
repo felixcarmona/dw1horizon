@@ -40,6 +40,7 @@ class BundleStartup(unittest.TestCase):
             (repo / recipe).parent.mkdir(parents=True)
             (repo / recipe).write_text('{"untracked_inputs":{"build_folders":["private-models"]}}')
             (repo / 'tools/languages.py').write_text('')
+            (repo / 'tools/city_residents.py').write_text('')
             private = repo / 'build/private-models/input'
             private.parent.mkdir(parents=True)
             private.write_bytes(b'not a published build input')
@@ -50,7 +51,7 @@ class BundleStartup(unittest.TestCase):
                 self.assertFalse((Path(root) / 'build/private-models/input').exists())
                 return {'steps': {}}, str(work)
 
-            git = [SimpleNamespace(stdout=recipe + '\ntools/languages.py\n'), SimpleNamespace(stdout='')]
+            git = [SimpleNamespace(stdout=recipe + '\ntools/languages.py\ntools/city_residents.py\n'), SimpleNamespace(stdout='')]
             with patch.object(D, 'REPO', str(repo)), \
                  patch.object(D.subprocess, 'run', side_effect=git), \
                  patch.object(D, 'needs_usa_paths', return_value=set()), \
@@ -69,7 +70,7 @@ class BundleStartup(unittest.TestCase):
             repo, work, out = (tmp / n for n in ('repo', 'work', 'out'))
             tracked = [p.relative_to(ROOT).as_posix()
                        for p in (ROOT / 'tools/derive').rglob('*.py')]
-            tracked += ['tools/languages.py', 'tools/derive/recipes/everything.json']
+            tracked += ['tools/languages.py', 'tools/city_residents.py', 'tools/derive/recipes/everything.json']
             for name in tracked:
                 target = repo / name
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -91,7 +92,7 @@ class BundleStartup(unittest.TestCase):
             env = dict(os.environ)
             env.pop('PYTHONPATH', None)
             result = subprocess.run([sys.executable, '-S', '-c',
-                                     'from tools.derive.steps import owned; owned()'],
+                                     'from tools.derive.steps import owned; from tools import city_residents; owned()'],
                                     cwd=out / 'bundle', env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
 

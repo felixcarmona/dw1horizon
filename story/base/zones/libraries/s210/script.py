@@ -61,7 +61,7 @@ def step26():    # section 77
     if engine.prosperity <= 99:
         slot0.say(t77.u5)
         return
-    if engine.prosperity <= 100:
+    if engine.prosperity >= 100:
         slot0.say(t77.u6)
         if tamer.level != 10 and not recruited(Species.Tsunomon):
             tamer.add(level=1)

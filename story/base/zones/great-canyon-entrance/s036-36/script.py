@@ -43,11 +43,11 @@ def talk():    # section 6
 
 @gotsumon2.on_talk
 def talk():    # section 7
-    recruitable(gotsumon2, line=t7.u0, joins=Species.Goblimon)
+    recruitable(gotsumon2, line=t7.u0, joins=Species.Gotsumon)
 
 @gotsumon3.on_talk
 def talk():    # section 8
-    recruitable(gotsumon3, line=t8.u0, joins=Species.Goblimon)
+    recruitable(gotsumon3, line=t8.u0, joins=Species.Gotsumon)
 
 @entrance.on_step(0)
 def step0():    # section 51

@@ -32,7 +32,7 @@ def talk():    # section 6
 
 @guardromon2.on_talk
 def talk():    # section 7
-    recruitable(guardromon2, line=t7.u0, joins=Species.Geremon)
+    recruitable(guardromon2, line=t7.u0, joins=Species.Guardromon)
 
 @guardromon3.on_talk
 def talk():    # section 8

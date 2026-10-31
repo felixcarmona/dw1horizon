@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "Tipus incompatible",
  "main.MAIN_D_801239E8": "Seleccionada",
  "main.MAIN_D_801239F4": "Combats Vict. Derr. %",
- "main.MAIN_D_80123A18": "JugadorTaula     Med. Cartes",
+ "main.MAIN_D_80123A18": "JugadorTaulaMed.CartesCiutat",
  "main.MAIN_D_80123A3C": "Medalles            ×△Tria    Torna",
  "main.MAIN_D_80123A60": "Nom       Niv.         Criats",
  "main.MAIN_D_80123A7C": "Bits                Temps",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "Desar la partida actual?",
  "main.LAB_STR_ASK_TITLE": "Tornar al menú principal?",
  "main.LAB_STR_UNSAVED": "Canvis sense desar: es perden.",
- "main.LAB_STR_ASK_LOAD": "Carregar aquesta partida?"
+ "main.LAB_STR_ASK_LOAD": "Carregar aquesta partida?",
+ "main.CITY_STR_PROSPERITY": "Prosperitat",
+ "main.CITY_STR_RESIDENTS": "Residents"
 }

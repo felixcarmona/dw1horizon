@@ -520,7 +520,7 @@ revival screen and NPC presence as data are in [../mods/city-rules.md](../mods/c
 Prosperity is pstat 1 (`0x801BE032`). The scripts raise it with `ADD_TO_PSTAT` (`1F _ 01 value`, capped at 255) at the
 end of each recruitment event and mark the recruit with `SET_TRIGGER 200+type`; the city script and
 `getFileCityTopMap` read those triggers to change the city's scenery and NPCs (recruits appear as placements of the
-TWNA/TWNB screens). `recalculatePPandArena` rewrites pstat 1 from the triggers before every save ([scripts.md](scripts.md#pstats)).
+TWNA/TWNB screens). `recalculateProsperity` rewrites pstat 1 from the triggers before every save, at game start and on City entry (IDs 3..58 in original story, 3..111 in extended story) ([scripts.md](scripts.md#pstats)).
 What each Digimon requires (a battle, an item, a time of day) is in each screen's bytecode, not in C.
 
 Points per screen, from a byte scan of `DG.SCN` for `1F ?? 01 vv` `[inferred; several figures on one screen are

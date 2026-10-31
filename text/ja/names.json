@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "タイプがちがう",
  "main.MAIN_D_801239E8": "選択された",
  "main.MAIN_D_801239F4": "バトル 勝ち 負け %",
- "main.MAIN_D_80123A18": "ひと         ずかん      メダルカード",
+ "main.MAIN_D_80123A18": "ひとずかんメダルカードまち",
  "main.MAIN_D_80123A3C": "メダル                  ×△えらぶ   もどる",
  "main.MAIN_D_80123A60": "なまえ     レベル       そだてた数",
  "main.MAIN_D_80123A7C": "Bits                じかん",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "現在のゲームをセーブしますか？",
  "main.LAB_STR_ASK_TITLE": "タイトルに戻りますか？",
  "main.LAB_STR_UNSAVED": "セーブしていない変更は失われます。",
- "main.LAB_STR_ASK_LOAD": "このデータをロードしますか？"
+ "main.LAB_STR_ASK_LOAD": "このデータをロードしますか？",
+ "main.CITY_STR_PROSPERITY": "繁栄度",
+ "main.CITY_STR_RESIDENTS": "住人"
 }

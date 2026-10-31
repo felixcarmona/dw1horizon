@@ -45,7 +45,7 @@ script 74 {
     on talk(nisedrimogemon) replace {    // section 8
         say(nisedrimogemon, text("s074.sec8.u0"));
         battle();
-        recruit(species("ShimaUnimon"));
+        recruit(species("NiseDrimogemon"));
     }
 
     on talk(shamamon4) replace {    // section 9

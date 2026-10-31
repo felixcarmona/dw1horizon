@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "Tipo errato",
  "main.MAIN_D_801239E8": "Selezionato",
  "main.MAIN_D_801239F4": "Lotte Vitt. Sconf. %",
- "main.MAIN_D_80123A18": "Giocat.  Lista     Med. Carte",
+ "main.MAIN_D_80123A18": "Giocat.ListaMed.CarteCittà",
  "main.MAIN_D_80123A3C": "Medaglie            ×△Scegli Annulla",
  "main.MAIN_D_80123A60": "Nome     Livello    Allevati",
  "main.MAIN_D_80123A7C": "Bits                Tempo",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "Salvare la partita attuale?",
  "main.LAB_STR_ASK_TITLE": "Tornare al menu principale?",
  "main.LAB_STR_UNSAVED": "Modifiche non salvate: perse.",
- "main.LAB_STR_ASK_LOAD": "Caricare questa partita?"
+ "main.LAB_STR_ASK_LOAD": "Caricare questa partita?",
+ "main.CITY_STR_PROSPERITY": "Prosperità",
+ "main.CITY_STR_RESIDENTS": "Residenti"
 }

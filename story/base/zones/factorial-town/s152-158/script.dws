@@ -30,7 +30,7 @@ script 152 {
     on talk(guardromon2) replace {    // section 7
         say(guardromon2, text("s152.sec7.u0"));
         battle();
-        recruit(species("Geremon"));
+        recruit(species("Guardromon"));
     }
 
     on talk(guardromon3) replace {    // section 8

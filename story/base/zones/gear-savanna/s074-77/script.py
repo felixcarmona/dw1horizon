@@ -41,7 +41,7 @@ def talk():    # section 7
 
 @nisedrimogemon.on_talk
 def talk():    # section 8
-    recruitable(nisedrimogemon, line=t8.u0, joins=Species.ShimaUnimon)
+    recruitable(nisedrimogemon, line=t8.u0, joins=Species.NiseDrimogemon)
 
 @shamamon4.on_talk
 def talk():    # section 9

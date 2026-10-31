@@ -51,11 +51,11 @@ def talk():    # section 8
 
 @vermilimon4.on_talk
 def talk():    # section 9
-    recruitable(vermilimon4, line=t9.u0, joins=Species.Yanmamon)
+    recruitable(vermilimon4, line=t9.u0, joins=Species.Vermilimon)
 
 @vermilimon5.on_talk
 def talk():    # section 10
-    recruitable(vermilimon5, line=t10.u0, joins=Species.Yanmamon)
+    recruitable(vermilimon5, line=t10.u0, joins=Species.Vermilimon)
     return
 
 # the section table, in the order of the original header

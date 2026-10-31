@@ -59,13 +59,13 @@ script 77 {
     on talk(vermilimon4) replace {    // section 9
         say(vermilimon4, text("s077.sec9.u0"));
         battle();
-        recruit(species("Yanmamon"));
+        recruit(species("Vermilimon"));
     }
 
     on talk(vermilimon5) replace {    // section 10
         say(vermilimon5, text("s077.sec10.u0"));
         battle();
-        recruit(species("Yanmamon"));
+        recruit(species("Vermilimon"));
         return;
     }
 }
