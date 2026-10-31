@@ -1,0 +1,27 @@
+From 0ebe1b7b7c65178441e24c09f33114cba402bda0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 17:38:28 +0000
+Subject: [PATCH] Clamp target-score Defense to the original stat range
+
+---
+ src/btl/battle_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index a1ecab4..17aa68a 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -3453,7 +3453,9 @@ int16_t BTL_calculateTargetScore(DigimonEntity *self, DigimonEntity *other)
+ 		break;
+ 	}
+ 
+-	mult = st->current.currentHP * 100 / st->base.hp + BMD(mult * BMD(st->base.def * 100, TSCORE_DEF), TSCORE_DIV);
++	/* MOD (caps): keep the score below the selector's 1000 sentinel even past STAT_CAP.
++	 * Defense through the original cap keeps exactly the same integer divisions. */
++	mult = st->current.currentHP * 100 / st->base.hp + BMD(mult * BMD(CAPS_OLD_STAT(st->base.def) * 100, TSCORE_DEF), TSCORE_DIV);
+ 	return mult;
+ }
+ 
+-- 
+2.55.0
+
