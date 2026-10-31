@@ -9,7 +9,17 @@
                  "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
-  "model": {"name": "PANJ", "bones": 23, "radius": 160, "height": 400},
+  "model": {
+    "name": "PANJ",
+    "bones": 23,
+    "radius": 160,
+    "height": 400,
+    "file": "build/record-originals/63.MMD",
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 2], [4, 5], [5, 6], [6, 2], [7, 8], [8, 9], [9, 1],
+                 [10, 11], [11, 12], [12, 13], [13, 11], [14, 15], [15, 16], [16, 17], [17, 11],
+                 [18, 19], [19, 20], [20, 21]]
+  },
+  "texture": {"from": 63},
   "voice": 42,
   "battle_music": "normal-battle",
   "partner": {
@@ -46,7 +56,9 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 2250, "mp": 2250, "offense": 375, "defense": 225, "speed": 300, "brains": 300}
+    "gains": {"hp": 2250, "mp": 2250, "offense": 375, "defense": 225, "speed": 300, "brains": 300},
+    "from": [18],
+    "to": []
   },
   "_former_name": "Panjyamon"
 }

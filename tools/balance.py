@@ -1238,6 +1238,12 @@ def content_layer(base):
     (tools/content.py: complete, they replace the disc's or the executable's values)."""
     files = SP.load_content()
     for t, s in files.items():
+        # Record originals <= 62 still use EVOLUTION_PATHS, unlike their other
+        # partner rows. Seed it from the record before archive links fill it.
+        if 1 <= t <= 62 and SP.is_record_original(s) and 'evolution' in s:
+            base['species'].setdefault(str(t), {})['evoPaths'] = {
+                k: (list(s['evolution'].get(k, [])) + [-1] * n)[:n]
+                for k, n in (('from', 5), ('to', 6))}
         if t < NUM_ORIGINAL and not SP.is_record_original(s) and 'evolution' in s:
             r, g, paths = SP.disc_evolution_rows(t, s['evolution'])
             b = base['species'].setdefault(str(t), {})

@@ -8,7 +8,18 @@
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug", "Charm Perfume",
                  "Poison Powder", "Mass Morph", "Bit Bomb"],
   "drop": {"item": "sm.recovery", "percent": 10},
-  "model": {"name": "JURE", "bones": 26, "file": "build/models/JURE-partner.MMD", "radius": 220, "height": 550},
+  "effects_like": 121,
+  "model": {
+    "name": "JURE",
+    "bones": 26,
+    "file": "build/record-originals/121.MMD",
+    "radius": 220,
+    "height": 550,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 2], [4, 1], [5, 6], [6, 7], [7, 1], [8, 9], [9, 10],
+                 [10, 1], [11, 12], [12, 13], [13, 1], [14, 15], [15, 16], [16, 1], [17, 18],
+                 [18, 1], [19, 20], [20, 1], [21, 22], [22, 1], [23, 24]]
+  },
+  "texture": {"from": 121},
   "voice": 23,
   "battle_music": "normal-battle",
   "wild": {"hp": 1000, "mp": 4000, "off": 250, "def": 100, "speed": 500, "brain": 400, "bits": 1000},
@@ -46,6 +57,8 @@
       "techs": 30,
       "flags": 16
     },
-    "gains": {"hp": 6000, "mp": 5000, "offense": 550, "defense": 650, "speed": 350, "brains": 550}
+    "gains": {"hp": 6000, "mp": 5000, "offense": 550, "defense": 650, "speed": 350, "brains": 550},
+    "from": [25, 286, 282, 263, 272],
+    "to": []
   }
 }

@@ -34,6 +34,45 @@
       }
     },
     {
+      "id": 63,
+      "name": "IceLeomon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD1/LEOM.MMD",
+            "size": 85908,
+            "sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7"
+          }
+        ],
+        "delta": "content/record-originals/deltas/63.MMD.mdelta",
+        "delta_sha256": "907c27c4613eb392c57832b1f3b68e232229ac93c7f62959ad46d6bab095c94e",
+        "sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
+        "size": 85908
+      }
+    },
+    {
+      "id": 66,
+      "name": "Myotismon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD2/VAND.MMD",
+            "size": 65772,
+            "sha256": "0b145cd01d19f51d6d552715ae208e5cae36df5f459d234f576df038d6e9674c"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/DEVI.MMD",
+            "size": 88448,
+            "sha256": "92133a92320bb61053d93fe7d643c0a096a20966ff7bb7495ad897ac279b882c"
+          }
+        ],
+        "delta": "content/record-originals/deltas/66.MMD.mdelta",
+        "delta_sha256": "0424ef0ad160aea41997a96a8ecece5efeed7ce7bb490a1af7a6648a04e165c3",
+        "sha256": "3bde2f2c3b16a554ea9e16d9cd6725d568daadb02be106558700c61b6739616d",
+        "size": 99822
+      }
+    },
+    {
       "id": 67,
       "name": "Yanmamon",
       "mmd": {
@@ -1020,6 +1059,28 @@
       }
     },
     {
+      "id": 121,
+      "name": "Cherrymon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD4/JURE.MMD",
+            "size": 30044,
+            "sha256": "dffb9b4716e18c0e927dd94aca1cc20e11187427f7b13561a356ecc3370ca30e"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/VEGI.MMD",
+            "size": 62044,
+            "sha256": "7e3d3c77eb9fc05f2a793c44884903262304727583f0ea109b72f8e9de15a3f0"
+          }
+        ],
+        "delta": "content/record-originals/deltas/121.MMD.mdelta",
+        "delta_sha256": "af7c34b9a829669c4671519e1f4daad1f5e122a8caacb144bdbe08eb0d0b730c",
+        "sha256": "22c50591da49622a5735591b0a414ed68e441bd77c356ae8e52d22480a42576d",
+        "size": 99522
+      }
+    },
+    {
       "id": 122,
       "name": "Hagurumon",
       "mmd": {
@@ -1081,6 +1142,28 @@
         "delta_sha256": "86beb033690c32cd8a70dc27bf8e1e776e4500b21c6906589e335bd34c3633d7",
         "sha256": "717157a3db4b41df942fe8041c2b5e1fac8e008ebbc42b9eed4c538bb6ab41d0",
         "size": 18432
+      }
+    },
+    {
+      "id": 124,
+      "name": "MasterTyrannomon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD4/TIRS.MMD",
+            "size": 25544,
+            "sha256": "067ff8daf2c3a8cc9b45dd699b57b5c604636396cbe143abf95cc032b28c82fa"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/TYRA.MMD",
+            "size": 89428,
+            "sha256": "1e3c5d50f35f006574ad5755fe922e57b713f17a86b50cd8f619e96963589b44"
+          }
+        ],
+        "delta": "content/record-originals/deltas/124.MMD.mdelta",
+        "delta_sha256": "785852557dbca81fa469cf5bed9d82c9f0f7469ba10237aa09674ab429d618c5",
+        "sha256": "47975d059067b6ae649c8424a089746b92dec10a7e138d1a166a4f5007f5018d",
+        "size": 92658
       }
     },
     {

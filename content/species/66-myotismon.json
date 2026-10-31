@@ -8,7 +8,18 @@
   "techniques": ["Megaton Punch", "Thunder Justice", "Hurricane", "Giga Freeze", "Aurora Freeze", "Sonic Jab",
                  "Death Claw"],
   "drop": {"item": "sm.recovery", "percent": 0},
-  "model": {"name": "VAND", "bones": 25, "file": "build/models/VAND-partner.MMD", "radius": 160, "height": 430},
+  "effects_like": 66,
+  "model": {
+    "name": "VAND",
+    "bones": 25,
+    "file": "build/record-originals/66.MMD",
+    "radius": 160,
+    "height": 430,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 8], [8, 2], [9, 10],
+                 [10, 11], [11, 12], [12, 2], [13, 14], [14, 15], [15, 16], [16, 2], [17, 18],
+                 [18, 19], [19, 20], [20, 18], [21, 22], [22, 23]]
+  },
+  "texture": {"from": 66},
   "voice": 56,
   "battle_music": "normal-battle",
   "partner": {
@@ -45,6 +56,8 @@
       "techs": 35,
       "flags": 16
     },
-    "gains": {"hp": 6000, "mp": 6000, "offense": 550, "defense": 450, "speed": 600, "brains": 600}
+    "gains": {"hp": 6000, "mp": 6000, "offense": 550, "defense": 450, "speed": 600, "brains": 600},
+    "from": [6, 107, 216, 106],
+    "to": []
   }
 }

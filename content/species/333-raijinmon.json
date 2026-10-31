@@ -53,23 +53,23 @@
     "training": {"animation": 61, "hit_tick": 12}
   },
   "evolution": {
-    "from": [252],
+    "from": [226, 322],
     "to": [],
     "requirements": {
-      "digimon": 252,
+      "digimon": 226,
       "hp": -1,
-      "mp": 400,
+      "mp": 500,
       "offense": -1,
       "defense": -1,
-      "speed": 300,
-      "brain": 400,
+      "speed": 500,
+      "brain": -1,
       "care": 10,
       "weight": 40,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 35,
-      "flags": 0
+      "techs": 40,
+      "flags": 16
     },
     "gains": {"hp": 4950, "mp": 5850, "offense": 580, "defense": 455, "speed": 515, "brains": 560}
   }

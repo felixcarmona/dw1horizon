@@ -9,7 +9,17 @@
                  "Buster Dive", "Tremar", "War Cry", "Muscle Charge", "Blaze Blast"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
-  "model": {"name": "TIRS", "bones": 27, "file": "build/models/TIRS-partner.MMD", "radius": 380, "height": 590},
+  "model": {
+    "name": "TIRS",
+    "bones": 27,
+    "file": "build/record-originals/124.MMD",
+    "radius": 380,
+    "height": 590,
+    "skeleton": [[-1, -1], [-1, 0], [1, 1], [2, 2], [3, 3], [7, 2], [8, 5], [9, 6], [11, 7], [10, 7], [12, 7],
+                 [16, 2], [17, 11], [18, 12], [20, 13], [19, 13], [21, 13], [0, 1], [4, 17],
+                 [5, 18], [6, 19], [13, 17], [14, 21], [15, 22], [22, 17], [23, 24], [24, 25]]
+  },
+  "texture": {"from": 124},
   "voice": 0,
   "battle_music": "normal-battle",
   "wild": {"hp": 999, "mp": 999, "off": 200, "def": 200, "speed": 200, "brain": 200, "bits": 100},
@@ -47,7 +57,9 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 6000, "mp": 4000, "offense": 650, "defense": 650, "speed": 400, "brains": 500}
+    "gains": {"hp": 6000, "mp": 4000, "offense": 650, "defense": 650, "speed": 400, "brains": 500},
+    "from": [8],
+    "to": []
   },
   "_former_name": "Master Tyrannomon"
 }

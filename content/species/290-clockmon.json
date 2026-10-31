@@ -52,7 +52,7 @@
     "training": {"animation": 57, "hit_tick": 20}
   },
   "evolution": {
-    "from": [92, 76],
+    "from": [92, 76, 313],
     "to": [],
     "requirements": {
       "digimon": 92,
@@ -60,8 +60,8 @@
       "mp": 400,
       "offense": -1,
       "defense": -1,
-      "speed": 300,
-      "brain": 400,
+      "speed": 400,
+      "brain": -1,
       "care": 10,
       "weight": 30,
       "discipline": -1,

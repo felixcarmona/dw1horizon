@@ -35,7 +35,7 @@ class RecordOriginalsTest(unittest.TestCase):
         self.assertEqual(step.ids(SimpleNamespace(env={'IMPORTS': '0'})), set())
         self.assertEqual(step.ids(SimpleNamespace(env={'SPECIES_PROVIDER': 'imports'})), set())
         self.assertEqual(step.ids(SimpleNamespace(env={'SPECIES': '67'})), {67})
-        self.assertEqual(len(step.ids(SimpleNamespace(env={'SPECIES': 'all'}))), 33)
+        self.assertEqual(len(step.ids(SimpleNamespace(env={'SPECIES': 'all'}))), 37)
 
     def test_manifest_is_plain_and_matches_provider_pins(self):
         pins = json.loads((R.ROOT / 'tools/derive/recipes/species-pins.json').read_text())['record_originals']
