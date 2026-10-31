@@ -379,11 +379,15 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   those whose trigger is set; charges `SHOP_VARIABLE` and jumps to section `0x4E3` of script 0.
 - Routine 9, `openJukebox` (`:873`): 63 tracks; `0x3E` only with `TRIGGER_50`
   (game finished); the table `MAIN_D_801303B8` gives (bank, variant) for each track.
-- Monochromon and the restaurant (maps 131 and 215 of `SHOP_MAPS`): the exe only provides
+- Monochromon and the restaurant (maps 131 and 215 of `SHOP_MAPS`): the exe provides
   the mood bubble (`createMonochromonMoodBubble`, `pstat 0xF7/0xF8`, mood 0–4) and
   sub-ops `0x1e` (set `SHOP_VARIABLE` to 0), `0x1f` (add `pstat 0xF3:0xF4`) and `0x38`
   (dump it into those pstats) (`script_interp.c:1710-1718`); customers and income are in
-  the map script.
+  the map script. Patch 0279 adds a top-right plate during the screen-49 shop shift:
+  `<profit> B  <customer>/20`, plus a blue bar full at 3072 B and a white tick at 1792 B.
+  Routine `0x1e` on screen 49 explicitly arms its world object; leaving the screen removes it.
+  The count reads p123 (capped at 20), including the extra step for a customer who storms off.
+  Other uses of `SHOP_VARIABLE` do not arm it. Prices, odds and payouts stay in the scripts.
 
 ### Triangle menu and Digimon screens
 
