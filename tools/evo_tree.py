@@ -207,7 +207,13 @@ def arrival_witness(target, kids, reqs, levels, sp, visited=()):
     if target in visited:
         return None
     parents = [p for p, cs in kids.items() if target in cs]
+    # Prefer ordinary raises. Leaving Sukamon restores backed-up stats rather
+    # than applying after_evolution()'s blend, so it cannot supply that witness.
+    restore = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionFormula']['scale']['restoreFrom']
+    parents.sort(key=lambda p: not any(levels[q] == 3 and p in cs for q, cs in kids.items()))
     for p in parents:
+        if p == restore:
+            continue
         if levels[p] == 4:
             w = practical(p, target, kids, reqs, levels, sp)
             if w:

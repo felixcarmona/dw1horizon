@@ -4,6 +4,7 @@ getInTrainingEvolutionTarget, getRookie/ChampionEvolutionTarget), run on the gra
 DIGI.DAT: for each parent and each of its targets, a search over partner states (each stat 0, the target's
 threshold or 999; care mistakes 0, the target's or 30; the target's weight; battles, techniques, discipline and
 happiness none, the target's or all) for one where the picker chooses it.
+The stat-average accumulator follows the C, including its carry after a qualifying loser.
 The "raised" adjustment is left out (no species raised yet).
 
   tools/evo_check.py [DIGI.DAT]      lists the targets no state reaches, per parent
@@ -64,6 +65,7 @@ def score(cur, req, level, st, care, weight, bonus=(0, 0, 0, 0)):
 
 def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
     best, best_score = -1, 0
+    stat_total, stat_count = 0, 0
     for t in targets:
         if t not in R: continue
         sc = score(cur, R[t], levels[t], st, care, weight, bonus)
@@ -72,8 +74,15 @@ def pick(cur, targets, R, levels, st, care, weight, kind, bonus=(0, 0, 0, 0)):
         elif sc >= 3:
             req = R[t]; vals = [st['hp'] // 10, st['mp'] // 10, st['offense'], st['defense'], st['speed'], st['brain']]
             used = [vals[i] for i, k in enumerate(STATS) if req[k] != -1]
-            avg = sum(used) // len(used) if used else 0
-            if best_score < avg: best, best_score = t, avg
+            # Both production stat pickers reset these accumulators only
+            # after selecting a new best. A qualifying loser leaves its
+            # average and count behind for the next qualifying candidate.
+            stat_total += sum(used)
+            stat_count += len(used)
+            stat_total = stat_total // stat_count if stat_count else 0
+            if best_score < stat_total:
+                best, best_score = t, stat_total
+                stat_total = stat_count = 0
     return best
 
 

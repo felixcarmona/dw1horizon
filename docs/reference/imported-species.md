@@ -245,7 +245,7 @@ training type (all stats ×0.8) only on the junk lines (Numemon, Sukamon, Nanimo
 name and stat. Evolution gains are the level's flat row (Rookie 500/500/50/50/50/50, Champion 1500/1500/150..., Ultimate
 5000/5000/600/500/500/500) scaled the same way, HP/MP in steps of 50, the rest of 5.
 
-**Evolution parents.** The curated table (`content/tables/evolution-tree.json`) prefers canon main lines, then family and shared specialty. A child has up to five parents; a parent has six targets. Imported canon Megas follow Perfect parents even when their engine level remains `ultimate`; no Champion fallback is allowed. The original disc routes to Phoenixmon and HerculesKabuterimon stay. Requirement rows distinguish siblings through stats, care and weight, with a primary-parent bonus applying only to the first parent. `tools/evo_tree.py` checks each parent with the picker; `tools/test_evo_tree.py` guards the tree in the self-test. Unlisted species and the starter quiz's hand-authored links stay unchanged. The four Baby II partners have their 6 targets in the executable's
+**Evolution parents.** The curated table (`content/tables/evolution-tree.json`) prefers canon main lines, then family and shared specialty. A child has up to five parents; a parent has six targets. The sheet’s 48 imported canon Megas are engine level `mega`, following Ultimate parents; no Champion fallback is allowed. The original disc routes to Phoenixmon and HerculesKabuterimon stay. Requirement rows distinguish siblings through stats, care and weight, with a primary-parent bonus applying only to the first parent. `tools/evo_tree.py` checks each parent with the picker; `tools/test_evo_tree.py` guards the tree in the self-test. The final tier table revises the affected Rookie links; the 35-entry quiz uses Crabmon and Tapirmon and preserves NEW DIGIMON off. The four Baby II partners have their 6 targets in the executable's
 `EVOLUTION_PATHS` (`int8_t to[6]`) full; patch 0111 gives each Baby II up to 12 more Rookie targets
 (`getEvolutionExtraTargets`, made from the `DIGI.DAT` links that find no free slot), walked after the 6 by
 `getInTrainingEvolutionTarget`.
@@ -304,8 +304,7 @@ when it has one, else the closest-range attack of 15-50 ticks), with the hit tic
 
 The original game has levels 1 Fresh to 5 Ultimate (0 = NPCs that never evolve). The `mega` patches (0058 in the
 series) add **6 = Mega** (`include/dw/level.h`): a species whose record says level 6 is a Mega wherever the game asks
-for a level. Only species of `DIGI.DAT` can be Megas. One species is level `mega` (373 WarGreymon); the imported
-Digimon that are Megas in canon are stored as `ultimate`, with the Mega size range. Their curated parents are Perfects, so the engine's Ultimate → Ultimate wait of 96 h applies. This level representation does not permit Champion → imported canon Mega shortcuts. A well-kept earliest chain reaches its third form at age 342 h with 114 h left before the new lifetime bonus; WarGreymon waits 120 h and reaches age 366 h with 90 h left. Delayed raises and happiness below 80 reduce those margins.
+for a level. The identity sheet defines 48 imported level-6 Megas (47 promoted species and the existing WarGreymon). Their committed ids are `sheet_megas` in `content/tables/evolution-tree.json`; their parents are Ultimates. The original Phoenixmon, HerculesKabuterimon and MetalEtemon retain Ultimate for their established routes; Machinedramon, Jijimon and Analogman retain Ultimate for story behavior. There are no imported Mega routes from Champions.
 
 **Reaching it.** `tickConditions` has one Ultimate branch: Machinedramon's special case (48 h), then
 `getChampionEvolutionTarget` after 96 h for another Ultimate, and a Mega target only once `evoTimer >= 120`
@@ -327,14 +326,14 @@ Every read of the level, and what level 6 does there:
 | `setFoodTimer`, sleepy penalties | levels 1 and 2 special | as adults |
 | `partnerWillRefuseItem` | refuses evolution items of its own level, +2 or −1 | refuses Ultimate and Mega items |
 | `calculateRequirementScore` | Rookie targets use the highest-stat rule | all six stats |
-| `EVL_applyEvolution` | tamer level, lifetime | **changed**: 100 %, +120 h |
+| `EVL_applyEvolution` | tamer level, lifetime | **changed**: 100 %, +120 h; timer resets on level change |
 | training multiplier (`trn_reward.c`, `trn2_hud.c`) | ×0.9 (1-2), ×1.0, ×1.1, else ×1.2 | **changed**: ×1.3 |
 | `BTL_calculateHitChance` | `< 3` defenders always hit | normal |
 | counter chance (BTL/STD/VS) | `rand(100) < speed / level` | speed/6 |
 | `STD_setupParticipants` | `STD_WIN_CHANCES[level − 3][level − 3]` (rows 3..5) | **changed**: counts as an Ultimate (it read past the rows) |
 | `STD_initializeOpponent`, `vs_demo.c` | opponent stats ×1, ×2, ×2.5 for 3/4/5 | **changed**: ×3.5 (was uninitialised) |
 | `dget.c` cup eligibility | per-species lists in the arena script | not changed |
-| evolution chart | level name under the portrait | **changed**: a "Mega" name and a gold box for level 6 targets in an Ultimate's detail view (the overview has no room for a sixth column) |
+| evolution chart | level tabs and target cards | **changed**: Rookie, Champion, Ultimate and Mega tabs; level-6 targets have a gold box in an Ultimate’s detail view |
 | Status page, save | no level shown or stored | unchanged |
 
 The lab menu's "To Mega" option starts the real sequence with the natural gains (the Mega of the partner's paths, else
@@ -367,7 +366,7 @@ model costs its new size in the heap where it is an NPC.
   (`efe.c`), which borrows Piximon's row and moves it: points in front of the body 1.6 times farther out, the spear
   hand to the front-hand palm, everything else from the mouth.
 
-**WarGreymon 373, the Mega.** DCB's card model 173 as it is (20 bones and the entity, 621 primitives, 14 palettes,
+**WarGreymon 373, the original level-6 sample.** DCB's card model 173 as it is (20 bones and the entity, 621 primitives, 14 palettes,
 473 tall), converted with `dcb2mmd.py` (`content/models/mega/make-model.py`, `wargreymon-dcb.json`). The everyday slots
 are Greymon's retargeted (two-piece arms from Greymon's three, the side tassets following the thighs at half weight);
 the card game's idle, hit, victory, knock-down and five technique clips fill the battle slots; the other technique slots
@@ -391,3 +390,5 @@ texture exact, DW2's blink, its tail re-hung under the pelvis) with MetalGreymon
 - What new species can do in cups and VS: [../mods/species.md](../mods/species.md), "Limits".
 - The donor match is a heuristic over skeleton shape: a winged humanoid can get a centaur's walk; [motion.md](motion.md)
   describes the field recipes that replace such gaits.
+
+The second evolution is a real tier change: every promoted species uses Mega training, tamer level, lifetime, chart and arena rules. The archive’s `first_mega` and per-partner level array are generated from these rows. Evolution items still require the adjacent level; the laboratory follows paths and otherwise uses `first_mega`. General arena brackets now include levels 3–6; fixed cup species lists remain authored by the story. The two `evolutionUltimate` special pairs into Machinedramon remain separate from natural path rows; the web guide includes their timed requirements.

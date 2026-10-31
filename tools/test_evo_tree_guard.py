@@ -35,6 +35,37 @@ class GuardTests(unittest.TestCase):
             sp[c]['evolution']['requirements']['digimon'] = p
         self.assertIn('parent bonus names a removed route', self.errors(stale_bonus))
 
+    def test_native_story_level_is_preserved(self):
+        c = self.names['Jijimon']
+        self.assertIn('disc/story Mega must remain Ultimate',
+                      self.errors(lambda s, k: s[c].update(level='mega')))
+
+    def test_mega_cannot_have_a_mega_parent(self):
+        p, c = self.names['MetalGarurumon'], self.names['Omnimon']
+        self.assertIn('imported Mega parent must be Ultimate',
+                      self.errors(lambda s, k: k[p].append(c)))
+
+    def test_picker_retains_a_qualifying_losers_average(self):
+        rows = {}
+        for t, stat in ((1, 'offense'), (2, 'hp'), (3, 'mp')):
+            row = dict.fromkeys(('digimon',) + T.ALL +
+                                ('care', 'weight', 'discipline', 'happiness', 'battles', 'techs'), -1)
+            row.update(care=0, weight=30, techs=0, flags=16)
+            row[stat] = 1
+            rows[t] = row
+        stats = dict(hp=2000, mp=6000, offense=400, defense=100, speed=100, brain=100)
+        # The engine keeps 200/count 1 after target 2 loses to 400;
+        # target 3 then averages (200+600)/2, tying target 1.
+        self.assertEqual(T.E.pick(10, [1, 2, 3], rows, {1: 5, 2: 5, 3: 5},
+                                  stats, 0, 30, 'stats'), 1)
+
+    def test_chain_does_not_assume_normal_gains_when_leaving_sukamon(self):
+        _, reqs, levels = T.model(self.sp)
+        p, c = self.names['Garbagemon'], self.names['BlackKingNumemon']
+        witness = T.chain_witness(p, c, self.kids, reqs, levels, self.sp)
+        self.assertIsNotNone(witness)
+        self.assertNotIn(self.names['Sukamon'], witness['path'])
+
     def test_specialty_exceptions_are_forbidden(self):
         table = copy.deepcopy(self.table)
         table['specialty_exceptions'] = [{'parent': 'Agumon', 'child': 'Palmon'}]

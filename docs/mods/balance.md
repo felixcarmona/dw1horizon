@@ -304,37 +304,30 @@ so these sources remain consistent.
 ## Jijimon's starter quiz
 
 `content/tables/new-game.json` owns the 35-rookie starter list, seven questions' weights and two 45-cell grids.
-The eight partner rookies that reuse another species' model (SnowAgumon, Dokunemon, Psychemon, Muchomon, Tsukaimon,
-BlackGatomon, RedOtamamon, VioletElecmon; `RECOLOURS` in `tools/starter_quiz.py`) are never a quiz result. They
-stay in the game through evolution.
+Seven partner Rookie recolours stay evolution-only: SnowAgumon, Dokunemon, Psychemon, Muchomon, Tsukaimon, RedOtamamon and VioletElecmon. Mushroomon and Syakomon also use Baby II evolution rather than the fixed quiz table. Crabmon and Tapirmon replace Flarerizamon and Yanmamon, which are now Champions.
 All seven answers count. Each axis chooses its highest score, breaking a tie by the most recent answer that
 supported it. If that answer supported both tied choices, the earlier axis wins: battle/fire/ice/nature/air,
 vaccine/data/virus, bold/calm/cunning. Mech shares air. There is no random draw.
-`tools/starter_quiz.py` enumerates all 2187 paths: minimum 32/2187 (1.4632%), maximum 103/2187 (4.7096%).
-Agumon keeps fire/vaccine/bold; Gabumon keeps battle/data/calm. Ten cells are spare: Palmon, Betamon, Salamon, DemiDevimon, Guilmon, Flarerizamon,
-Bearmon, Penguinmon, Kunemon and Yanmamon each hold two.
-
-Renamon uses battle/vaccine/cunning and Candlemon uses fire/vaccine/cunning although both are Data. Two specialty exceptions fill thin cells: Monmon uses fire/virus/cunning and Kotemon uses
-nature/data/cunning. Their species attributes and specialties remain unchanged. All other cells match attribute
-and at least one specialty. The assignments are:
+`tools/starter_quiz.py` enumerates all 2187 paths: minimum 32/2187 (1.4632%), maximum 126/2187 (5.7613%). NEW DIGIMON off remains byte-for-byte identical. Agumon and Gabumon keep their fixed cells. Cells favor attribute, then shared specialty; the scarce fire/virus and air/virus combinations require a few cross-attribute or cross-element choices.
 
 | element / attribute | bold | calm | cunning |
 |---|---|---|---|
-| battle / vaccine | Salamon | Veemon | Renamon |
+| battle / vaccine | Salamon | Veemon | Tapirmon |
 | battle / data | Patamon | Gabumon | Gotsumon |
-| battle / virus | Gazimon | DemiDevimon | Guilmon |
-| fire / vaccine | Agumon | Solarmon | Candlemon |
-| fire / data | Flarerizamon | ToyAgumon | Flarerizamon |
-| fire / virus | Guilmon | Goblimon | Monmon |
+| battle / virus | Gazimon | Crabmon | Guilmon |
+| fire / vaccine | Agumon | Solarmon | Biyomon |
+| fire / data | Renamon | ToyAgumon | Candlemon |
+| fire / virus | Guilmon | Goblimon | Kotemon |
 | ice / vaccine | Bearmon | Gomamon | Bearmon |
-| ice / data | Penguinmon | Penguinmon | Otamamon |
+| ice / data | Crabmon | Penguinmon | Otamamon |
 | ice / virus | Betamon | Gizamon | Betamon |
 | nature / vaccine | Palmon | Armadillomon | Palmon |
-| nature / data | Tentomon | Floramon | Kotemon |
+| nature / data | Tentomon | Floramon | Penguinmon |
 | nature / virus | Kunemon | Kunemon | Wormmon |
-| air / vaccine | Biyomon | Hagurumon | Salamon |
+| air / vaccine | Tapirmon | Hagurumon | Salamon |
 | air / data | Elecmon | Hawkmon | Kokuwamon |
-| air / virus | Yanmamon | Yanmamon | DemiDevimon |
+| air / virus | DemiDevimon | Monmon | DemiDevimon |
+
 
 With NEW DIGIMON off the same answers read `quiz.vanillaCells`, a second 45-cell grid holding only the nine rookies of
 the original game, so the partner never starts as a species that option forbids. `modQuizResult` picks the grid once;
@@ -345,50 +338,57 @@ The self-test rejects missing pool species, invalid cells/weights and frequencie
 `tools/test_starter_quiz.py` also compares the production C result function with the model on every path when
 a prepared tree and host compiler are available. This host comparison does not verify emulator dialogue or input.
 
-Starter evolution coverage is counted from distinct champions' `evolution.from` and `requirements.digimon`,
-not a rookie's `to` list or duplicate NPC names. Patch 0273's data companion adds the following shared-specialty
-routes, keeping the existing primary-parent bonus and every disc species' own route and requirement:
+Every partner Rookie has at least four distinct Champion targets in the final tree. These replace the earlier additions wherever a species changed tier.
 
-| rookie | added champions |
+| Rookie | Champions |
 |---|---|
-| Yanmamon | Roachmon |
-| VioletElecmon | Lighdramon |
-| Monmon | Hookmon |
-| Bearmon | Ebidramon |
-| Renamon | Wizardmon |
-| Psychemon | Minotarumon, Lighdramon |
-| BlackGatomon | Devidramon, Vilemon |
-| RedOtamamon | Shadramon, Growlmon |
-| Kokuwamon | Thundermon, Snatchmon |
-| Solarmon | Starmon, BomberNanimon |
+| Agumon | Greymon, Meramon, Birdramon, Centarumon, Monochromon, Tyrannomon |
+| Armadillomon | Ankylomon, Digmon, Submarimon, Tortomon, Dinohyumon |
+| Bearmon | Gururumon, Golemon, Ikkakumon, Grizzlymon, Leomon |
+| Betamon | Seadramon, Whamon, Shellmon, Coelamon, Dolphmon |
+| Biyomon | Birdramon, Airdramon, Kokatorimon, Unimon, Kabuterimon, Saberdramon |
+| Candlemon | Baronmon, Wizardmon, Shadramon, Flarerizamon, Lynxmon |
+| Crabmon | Ebidramon, Coelamon, Shellmon, Tylomon, Gesomon |
+| DemiDevimon | IceDevimon, Devidramon, Vilemon, BlackGatomon, Devimon |
+| Dokunemon | Flymon, Dokugumon, Roachmon, Kurisarimon |
+| Elecmon | Leomon, Angemon, Bakemon, Kokatorimon, Thundermon |
+| Floramon | MoriShellmon, Woodmon, Kiwimon, Snimon, Vegiemon |
+| Gabumon | Centarumon, Monochromon, Drimogemon, Tyrannomon, Ogremon, Garurumon |
+| Gazimon | Gururumon, Dinohyumon, Gargoylemon, Minotarumon, Grizzlymon |
+| Gizamon | Hyogamon, Gesomon, Tylomon, Octomon, ShellNumemon |
+| Goblimon | Fugamon, Tuskmon, Flarerizamon, Raremon, Cyclonemon, Ogremon |
+| Gomamon | Submarimon, Ikkakumon, Dolphmon, Gesomon, Tylomon, Octomon |
+| Gotsumon | Guardromon, Golemon, Tortomon, Gargoylemon, Minotarumon, Monochromon |
+| Guilmon | Flamedramon, Veedramon, Tuskmon, Growlmon |
+| Hagurumon | Tankmon, Guardromon, Hookmon, Snatchmon, Clockmon |
+| Hawkmon | Saberdramon, Aquilamon, Halsemon, Shurimon, Quetzalmon |
+| Kokuwamon | Thundermon, Flymon, Snatchmon, Clockmon, Guardromon |
+| Kotemon | Flamedramon, Apemon, Baronmon, Tuskmon, DarkTyrannomon, Musyamon |
+| Kunemon | Bakemon, Kabuterimon, Kuwagamon, Vegiemon, Flymon |
+| Monmon | Golemon, Apemon, Hookmon, Raremon, Musyamon, Ninjamon |
+| Muchomon | Soulmon, Aquilamon, Sorcermon, Quetzalmon |
+| Mushroomon | Woodmon, Kiwimon, Snimon, Vegiemon |
+| Otamamon | Geremon, MoriShellmon, Gekomon, Ebidramon |
+| Palmon | Kuwagamon, Vegiemon, Ninjamon, Whamon, Coelamon, Togemon |
+| Patamon | Drimogemon, Tyrannomon, Ogremon, Leomon, Angemon, Unimon |
+| Penguinmon | Whamon, Shellmon, Garurumon, Frigimon, Mojyamon, Sorcermon |
+| Psychemon | Ankylomon, Lighdramon, Minotarumon, Gururumon |
+| RedOtamamon | Shadramon, Growlmon, Maildramon, Flarerizamon, Meramon |
+| Renamon | Baronmon, Gatomon, Wizardmon, Kyubimon |
+| Salamon | Nefertimon, Pegasusmon, Gatomon, BlackGatomon, Piddomon |
+| SnowAgumon | Hyogamon, Gururumon, Ikkakumon, Ebidramon, Icemon, Frigimon |
+| Solarmon | Guardromon, BomberNanimon, Starmon, Cyclonemon, Lynxmon |
+| Syakomon | Ebidramon, Octomon, Coelamon, Icemon, Shellmon |
+| Tapirmon | Wizardmon, Bakemon, Apemon, Aquilamon |
+| Tentomon | Stingmon, Woodmon, Roachmon, Snimon, Yanmamon, Kabuterimon |
+| ToyAgumon | Tankmon, Digmon, Starmon, DarkTyrannomon, Deltamon, ShellNumemon |
+| Tsukaimon | Piddomon, Soulmon, Devidramon, Wizardmon, Devimon |
+| Veemon | ExVeemon, Flamedramon, Lighdramon, Veedramon, Maildramon |
+| VioletElecmon | Aquilamon, Pegasusmon, Lighdramon, Thundermon |
+| Wormmon | Stingmon, Shurimon, Dokugumon, Kurisarimon, Snimon, Yanmamon |
 
-A second round brings every partner rookie to at least four distinct champions:
+The later curated evolution tree is data in `content/tables/evolution-tree.json`, applied by `tools/evo_tree.py`. Canon main lines come first, then family/shared specialty; imported canon Megas follow Perfects. The revised tier table includes Rookie and Champion changes; the quiz keeps 35 entries, all seven questions and its unchanged NEW DIGIMON off grid. Up to five parents and six children fit the existing species rows. Requirements are resolved against sibling competition and disc canonical states, then checked with conservative File City training gains and the natural evolution gains. Timing and lifetime tables are unchanged: Champion 144 h, Mega 120 h; entering Ultimate from another level adds 96 h and entering Mega adds 120 h. Same-level Ultimate evolution adds no lifetime. No specialty exceptions remain.
 
-| rookie | added champions |
-|---|---|
-| Guilmon | Flamedramon, Tuskmon |
-| Renamon | Baronmon, Gatomon |
-| Monmon | Golemon, Tapirmon |
-| Bearmon | Ikkakumon, Golemon |
-| SnowAgumon | Ikkakumon, Gururumon |
-| Psychemon | ExVeemon, Ankylomon |
-| BlackGatomon | Gatomon, Fugamon |
-| RedOtamamon | Syakomon, ExVeemon |
-| ToyAgumon | Magnamon, Digmon |
-| Solarmon | Bulbmon, Guardromon |
-| Kokuwamon | Bulbmon, Flymon |
-| VioletElecmon | Pegasusmon, Aquilamon |
-| Yanmamon | Stingmon, Shurimon |
-| Wormmon | Shurimon, Kurisarimon |
-| Dokunemon | Kurisarimon |
-| Goblimon | Veedramon |
-| Kotemon | Flamedramon |
-| Muchomon | Aquilamon |
-| Salamon | Halsemon |
-| Tentomon | Stingmon |
+A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` row. The balance layer therefore writes its species file’s padded `from`/`to` lists there, while its other rows retain the existing record-original behavior. This makes WereGarurumon’s three curated parents fit without counting unused reverse entries from the disc placeholder. Native partners 63, 66, 121 and 124 carry cached records for their onward evolution paths; the moved tiers use the frozen peer balance rows.
 
-Every added link shares a specialty, goes to an imported champion and leaves it with at most three parents.
-
-The later curated evolution tree is data in `content/tables/evolution-tree.json`, applied by `tools/evo_tree.py`. Canon main lines come first, then family/shared specialty; imported canon Megas follow Perfects. The generator leaves the 45-cell quiz, its results and all Rookie → Champion links unchanged. Up to five parents and six children fit the existing species rows. Requirements are resolved against sibling competition and disc canonical states, then checked with conservative File City training gains and the natural evolution gains. Timing and lifetime tables are unchanged: Champion 144 h, another Ultimate 96 h, engine Mega 120 h; natural Ultimate adds 96 h. The documented specialty exceptions preserve disc/engine routes, Otamamon → Geremon and the canon Kurisarimon → Infermon line.
-
-A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` row. The balance layer therefore writes its species file’s padded `from`/`to` lists there, while its other rows retain the existing record-original behavior. This makes WereGarurumon’s three curated parents fit without counting unused reverse entries from the disc placeholder. Native partners 63, 66, 121 and 124 carry cached records for their onward evolution paths; requirements and gains are retained.
+Placed enemies whose species changed tier retain their previous zone stats and bits through explicit map overrides (45 slots), including the deliberately weaker Gear Savanna Vermilimon. Species defaults now fit their new tier; the area fights retain their established difficulty. General recruited-species tournament brackets include level 6; fixed named cups and story recruit triggers keep their identities.

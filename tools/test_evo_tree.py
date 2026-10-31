@@ -27,6 +27,8 @@ def check(sp, kids, table):
     for t in table['sheet_megas']:
         if t >= T.S.NUM_ORIGINAL and sp[t]['level'] != 'mega':
             errors.append(f'{sp[t]["name"]}: sheet Mega must be level 6')
+        if t < T.S.NUM_ORIGINAL and sp[t]['level'] != 'ultimate':
+            errors.append(f'{sp[t]["name"]}: disc/story Mega must remain Ultimate')
     incoming = {}
     for p, children in kids.items():
         if sp[p]['level'] != 'in-training' and len(set(children)) > 6:
@@ -76,6 +78,8 @@ def check(sp, kids, table):
                 original = parent['name'] in disc_megas.get(child['name'], []) and p < 63 and c < 63
                 if not original:
                     errors.append(f'{pair[0]} -> {pair[1]}: Champion parent of a canon Mega')
+            if c in table['sheet_megas'] and c >= T.S.NUM_ORIGINAL and parent['level'] != 'ultimate':
+                errors.append(f'{pair[0]} -> {pair[1]}: imported Mega parent must be Ultimate')
     for name in table['record_parents']:
         if not T.S.is_record_original(sp[names[name]]):
             errors.append(f'{name}: evolution parent requires a cached record row')
