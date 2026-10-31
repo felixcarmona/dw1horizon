@@ -82,20 +82,28 @@ class DataCopyTests(unittest.TestCase):
             dw.apply_ops(ops, b'AB')
 
     def test_boot_rename_comes_from_the_build_file_plan(self):
+        for whole in (False, True):
+            with self.subTest(whole=whole):
+                self._boot_rename(whole)
+
+    def _boot_rename(self, whole):
         target = b'BOOT = cdrom:\\PATCHED.EXE;1\nTCB = 4\n'
         sources = {key: b'BOOT = cdrom:\\' + boot + b';1\nTCB = 4\n'
                    for key, boot in [('us', b'BASE-A.EXE'), ('eu', b'BASE-B.EXE')]}
-        payload = dict(files={'SYSTEM.CNF': [['l', 0, len(target)]]}, blob=target + b'own',
-            sources=[], code=[], reloc={'eu': {}}, fix={}, layout='',
+        if whole:
+            sources['us'] = target
+        payload = dict(files={'SYSTEM.CNF': [['s', 0]] if whole else [['l', 0, len(target)]]}, blob=target + b'own',
+            sources=['SYSTEM.CNF'] if whole else [], code=[], reloc={'eu': {}}, fix={}, layout='',
             table={'file': 'PATCHED.EXE'}, license=[['l', len(target), 3]],
-            sha1={'SYSTEM.CNF': hashlib.sha1(target).hexdigest()})
+            sha1={})
         def image(path):
             return types.SimpleNamespace(read=lambda q: sources[path], f=io.BytesIO())
         with patch.object(datacopy.audit.iw, 'Image', side_effect=image):
             stats = datacopy.copy_boot_config(payload, {'us': 'us', 'eu': 'eu'}, {'SYSTEM.CNF': target})
-        self.assertEqual(stats['generated_literals'], len(target))
+        self.assertEqual(stats['generated_literals'], 0 if whole else len(target))
         self.assertEqual(payload['blob'], b'own')
-        self.assertEqual(payload['sources'], ['@boot:PATCHED.EXE'])
+        self.assertEqual(payload['sources'], (['SYSTEM.CNF'] if whole else []) + ['@boot:PATCHED.EXE'])
+        self.assertEqual(payload['sha1']['SYSTEM.CNF'], hashlib.sha1(target).hexdigest())
         # This fixture has no executable sector table; exercise the real operation reader.
         del payload['table']
         writer = types.SimpleNamespace(Layout=lambda x: x,

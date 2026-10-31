@@ -122,6 +122,12 @@ def mapping_chunks(release):
             for i, child in enumerate(value):
                 if isinstance(child, dict) and 'data' in child:
                     encoded = child['data']
+                    # Numeric attribute scores are metadata, not byte operations.
+                    # Mapping operation lists still require hexadecimal data.
+                    if isinstance(encoded, (int, float)) and not location.endswith('/ops'):
+                        last = None
+                        visit(child, owner, location + '/' + str(i))
+                        continue
                     if not isinstance(encoded, str):
                         raise GateFailure(f'{owner}{location}/{i}: non-hex inline data')
                     try:

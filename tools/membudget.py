@@ -175,6 +175,10 @@ def model_block_resident(t):
 
 def instance_blocks(t):
     b = int(DIGI[t]['bone_count']) if t in DIGI else 0
+    if MODEL_ARCHIVE:
+        _, rows, originals = archive_models(MODEL_ARCHIVE)
+        if t >= 180 or t in originals:
+            b = rows[t]['para']['boneCount']
     return blk(b * POS_DATA) + blk(b * MOMENTUM)
 
 
@@ -697,6 +701,14 @@ def setup_paths(text, screen, hour=None):
     return sorted(set(paths))
 
 
+@lru_cache(None)
+def npc_twin_types(archive):
+    """Field model identities present in this target archive; legacy builds keep theirs."""
+    _, rows, _ = archive_models(archive)
+    return {s['_npc_original']: t for t, s in _species.load_content().items()
+            if '_npc_original' in s and t < len(rows) and rows[t]['modelSize']}
+
+
 def path_cost(loads, sets):
     """Conservative peak for any interleaving of model loads and placements.
 
@@ -705,6 +717,10 @@ def path_cost(loads, sets):
     Field staging allocates only compact bytes; larger/non-field models still
     need the whole sector-rounded allocation before compaction.
     """
+    if MODEL_ARCHIVE and _species:
+        twins = npc_twin_types(MODEL_ARCHIVE)
+        loads = tuple(twins.get(t, t) for t in loads)
+        sets = tuple((twins.get(t, t), slot) for t, slot in sets)
     order = list(dict.fromkeys(list(loads) + [t for t, _ in sets]))
     mod = sum(model_block_resident(t) for t in order)
     inst = sum(instance_blocks(t) for t, _ in sets)
@@ -739,6 +755,7 @@ def configure(env=None, partner_mmd_max=None, heap_map=None):
     path = e.get('DW_EXE_FACTS')
     TARGET_FACTS = json.load(open(path)) if path else {}
     NPC_STAGE_MAX = TARGET_FACTS.get('npc_stage_max') or 0
+    npc_twin_types.cache_clear()
     model_data.cache_clear()
     model_block.cache_clear()
     if 'npcanims' in sys.modules:

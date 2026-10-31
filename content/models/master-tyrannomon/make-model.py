@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """MasterTyrannomon partner model: TIRS mesh + Tyrannomon's animations scaled by 1.5.
 
+Field NPCs use disc-derived twins; this output supplies the partner only.
+
 MasterTyrannomon (type 124, TIRS.MMD) and Tyrannomon (type 8, TYRA.MMD) share the
 skeleton (DIGIMON_SKELETONS 0x8011c25c, 27 bones), but TIRS is built exactly 1.5 times
 larger: every bone offset of its rest pose is 1.5 times Tyrannomon's (hips -330 vs -220).

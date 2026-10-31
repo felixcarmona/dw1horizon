@@ -1,0 +1,131 @@
+From 6c908f69f3ff5c081baad83ba7abe49cc76814e7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 13:34:06 +0000
+Subject: [PATCH] Restore disc models and rows for field NPC partners
+
+---
+ include/dw/species.h     |  3 +++
+ src/main/mod_species.c   | 17 +++++++++++++++++
+ src/main/overworld.c     |  5 ++++-
+ src/main/script_interp.c |  6 +++++-
+ src/main/script_value.c  |  3 ++-
+ 5 files changed, 31 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 485d9a4..78892c4 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -294,4 +294,7 @@ SVECTOR *getConditionFxOffset(int32_t type);
+ /* a training animation row (TRN/TRN2 tables live in the overlays) */
+ int8_t *getTrainingAnimRow(int8_t (*table)[2], int32_t type, int32_t which);
+ 
++/* Field NPC twins; reverse maps an entity back to its script identity. */
++int32_t npcSpeciesType(int32_t type, int32_t reverse);
++
+ #endif
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 223bcbb..cfb5ac0 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -14,6 +14,7 @@
+ 
+ #include "common.h"
+ 
++extern int8_t GAME_STATE;
+ extern int16_t EVOLUTION_TARGET;
+ extern ModelComponent NPC_MODELS[5];
+ extern int8_t ITEM_TAKE_DISTANCE[NUM_ORIGINAL_DIGIMON];
+@@ -785,3 +786,19 @@ int32_t modAnimatedTextureWidth(int32_t type)
+ 	}
+ 	return 0;
+ }
++
++/* Keep script/map identities stable while field NPCs use the disc originals.
++ * Battle/tournament requests retain their type; partner loading bypasses it. */
++int32_t npcSpeciesType(int32_t type, int32_t reverse)
++{
++    static const int16_t twins[][2] = {
++        {119, 462}, {120, 463}, {121, 464}, {122, 465},
++        {123, 466}, {124, 467}, {126, 468}
++    };
++    int32_t i;
++    if (!reverse && GAME_STATE != 0) return type;
++    for (i = 0; i < 7; i++) {
++        if (twins[i][reverse != 0] == type) return twins[i][reverse == 0];
++    }
++    return type;
++}
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 249bdb9..12495c0 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <inline_n.h>
+ 
+ #include <dw/anim.h>
+@@ -1139,12 +1140,14 @@ void loadMapDigimon(int16_t *data, int16_t mapId)
+ 
+ void loadNPCModel(DigimonId digimonId) /* MOD: was u8 */
+ {
++	digimonId = npcSpeciesType(digimonId, 0);
+ 	thunkLoadMMD(digimonId, 0);
+ }
+ 
+ int32_t scriptSetDigimon(DigimonId type, uint8_t slot, uint8_t autotalk) /* MOD: type was u8 */
+ {
+-	if (type != MAP_DIGIMON_TABLE[slot].typeId) {
++	type = npcSpeciesType(type, 0);
++	if (type != npcSpeciesType(MAP_DIGIMON_TABLE[slot].typeId, 0)) {
+ 		return 0;
+ 	}
+ 	if (ENTITY_TABLE[slot + 2] != NULL) {
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index ba779b7..7577c72 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <string.h>
+ 
+ #include <libcd.h>
+@@ -2558,6 +2559,8 @@ void scriptLoadModel(int32_t modelId)
+ {
+ 	int32_t i;
+ 
++	modelId = npcSpeciesType(modelId, 0);
++
+ 	for (i = 0; i < 8; i++) {
+ 		if (LOADED_DIGIMON_MODELS[i] == -1) {
+ 			LOADED_DIGIMON_MODELS[i] = modelId;
+@@ -2643,7 +2646,8 @@ void scriptUnloadModel(int16_t modelId)
+ 	int32_t i;
+ 
+ 	for (i = 0; i < 8; i++) {
+-		if (LOADED_DIGIMON_MODELS[i] == modelId) {
++		if (npcSpeciesType(LOADED_DIGIMON_MODELS[i], 1) == npcSpeciesType(modelId, 1)) {
++			modelId = LOADED_DIGIMON_MODELS[i];
+ 			LOADED_DIGIMON_MODELS[i] = -1;
+ 			unloadDigimonModel(modelId);
+ 			return;
+diff --git a/src/main/script_value.c b/src/main/script_value.c
+index f7a766f..cdb7518 100644
+--- a/src/main/script_value.c
++++ b/src/main/script_value.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <string.h>
+ 
+ #include <dw/mod_font.h>
+@@ -84,7 +85,7 @@ int32_t getSpeakerName(speakerId, buf)
+ 
+ 	if (speakerId < 0xc8) {
+ 		speakerId = scriptIdToEntityId(speakerId);
+-		type = ENTITY_TABLE[speakerId]->type;
++		type = npcSpeciesType(ENTITY_TABLE[speakerId]->type, 1);
+ 		goto digimon;
+ 	}
+ 
+-- 
+2.55.0
+

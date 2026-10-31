@@ -954,7 +954,7 @@ def species_record(s):
         if not 0 <= r['effectDefault'][0] < len(r['bones']):
             raise SystemExit(f'{w}: effect origin default bone {r["effectDefault"][0]} is not a bone')
         r['flags'] |= FLAG_EFFECT_DEFAULT
-    if (t >= NUM_ORIGINAL or is_record_original(s)) and len([m for m in para['moves'] if m != 0xFF]) == 0:
+    if (t >= NUM_ORIGINAL or is_record_original(s)) and 'partner' in s and len([m for m in para['moves'] if m != 0xFF]) == 0:
         raise SystemExit(f'{w}: no techniques: it could not fight')
     return r
 
@@ -1305,7 +1305,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     from city_residents import residents, verify_archive
     city = residents(allsp)
     # the originals of the chart past its sheet's 61 (no hand-drawn chart icon): an icon from their model, in their record
-    drawn = sorted(set(species) | {t for tab in chart for t in tab if CHART_SHEET < t < NUM_ORIGINAL}
+    drawn = sorted({t for t, s in species.items() if 'partner' in s} | {t for tab in chart for t in tab if CHART_SHEET < t < NUM_ORIGINAL}
                    | {r['id'] for r in city if r['id'] > CHART_SHEET})
     icon_of = {}
     if PORTRAITS:
@@ -1448,7 +1448,7 @@ def read_index(d):
 def parse_selection(sel, content=None):
     """Species ids >= 180 of a selection: ids, "all" (every import of the content), folders (every file in them),
     comma or space separated. Returns (ids, extra folders)."""
-    ids, folders = set(), []
+    ids, folders = {t for t, s in load_content(content).items() if '_npc_original' in s}, []
     for tok in re.split(r'[,\s]+', (sel or '').strip()):
         if not tok: continue
         if tok == 'all': ids |= set(carried(content))
@@ -1537,7 +1537,7 @@ def all_rows(content=None):
         species = load_content(content)
     except SystemExit:
         return {}
-    return {t: table_row(t, s) for t, s in species.items()}
+    return {t: table_row(t, s) for t, s in species.items() if '_npc_original' not in s}
 
 
 def extra_rows(content=None):
@@ -1898,9 +1898,31 @@ def lint(species, check_files=False):
         level = para['level']; partner = s.get('partner')
         placeholder = partner is not None and level == 0 and partner.get('birth_weight') == 0   # 62 WereGarurumon's row
         fights = bool(s['techniques']) and any(m is not None for m in s['techniques'])
+        # NPC twins are engine implementation records, never roster members.
+        if '_npc_original' in s:
+            original = s['_npc_original']
+            if not isinstance(original, int) or not 0 <= original < NUM_ORIGINAL:
+                E('_npc_original', original, 'a disc species 0..179')
+            else:
+                disc = disc_file(original)
+                if s['voice'] != originals().rec[original]['vball']:
+                    E('voice', s['voice'], 'must equal the disc NPC voice')
+                if original in species and s['name'] != species[original]['name']:
+                    E('name', s['name'], 'must equal its partner species name')
+                if partner or moves or s.get('evolution'):
+                    E('_npc_original', original, 'an NPC twin has no partner, techniques or evolution')
+                if (set(s['model']) != {'from', 'radius', 'height', 'skeleton'} or
+                        s['model'].get('from') != original or s.get('texture') != {'from': original}):
+                    E('_npc_original', original, 'model and texture must read the unmodified disc species')
+                for key in ('radius', 'height'):
+                    if s['model'].get(key) != disc['model'][key]:
+                        E('model.' + key, s['model'].get(key), 'must equal the disc NPC')
+                if s['model'].get('skeleton') != originals().rec[original]['bones']:
+                    E('model.skeleton', s['model'].get('skeleton'), 'must equal the disc skeleton')
         # names
         if len(s['name'].encode('ascii', 'replace')) > 19: E('name', s['name'], 'at most 19 characters (DigimonPara.name)')
-        byname.setdefault(s['name'].lower(), []).append(t)
+        if '_npc_original' not in s:
+            byname.setdefault(s['name'].lower(), []).append(t)
         # enums and ranges
         if not 0 <= level <= 6: E('level', s['level'], '0..6 (none .. mega)')
         if not 0 <= para['type'] <= 3: E('attribute', s['attribute'], 'none, data, vaccine or virus')
@@ -1919,7 +1941,7 @@ def lint(species, check_files=False):
             W('techniques', s['techniques'], f'a bubble ({BABY_FIRST}..{BABY_LAST}) on a species of level {s["level"]}')
         if level >= 3 and partner and not placeholder and not any(FINISHER_FIRST <= m <= FINISHER_LAST for m in moves):
             W('techniques', s['techniques'], f'no finisher (an id {FINISHER_FIRST}..{FINISHER_LAST}): the partner has none in battle')
-        if t >= NUM_ORIGINAL and not moves: E('techniques', s['techniques'], 'an imported species needs a technique')
+        if t >= NUM_ORIGINAL and partner and not moves: E('techniques', s['techniques'], 'an imported species needs a technique')
         if para['dropItem'] not in names('items'): E('drop.item', para['dropItem'], 'not an item (0..127)')
         if not 0 <= para['dropChance'] <= 100: E('drop.percent', para['dropChance'], '0..100')
         for k in ('radius', 'height'):
@@ -1935,7 +1957,7 @@ def lint(species, check_files=False):
             elif ot > MAX_AURA_TYPE and (partner and not placeholder or fights):
                 E('effects_like', ot, f'the aura rows (BTL/STD/VS_AURA_PROJECTILE_TYPES) have {MAX_AURA_TYPE + 1} entries: a fighter indexes '
                   f'them with its effects_like type, so name a species 0..{MAX_AURA_TYPE}')
-            elif ot != t and ot in species and species[ot].get('effects_like', ot) not in (ot, -1):
+            elif (partner or fights) and ot != t and ot in species and species[ot].get('effects_like', ot) not in (ot, -1):
                 E('effects_like', ot, f'{species[ot]["name"]} borrows its effects itself (effects_like {species[ot]["effects_like"]}): name that one')
         fb = rows.get('effectFallback')
         if fb is not None:

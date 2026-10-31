@@ -71,6 +71,16 @@ class GateInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(gate.GateFailure, 'new payload opcode'):
             gate.validate_blob(dict(files={'EXE': [['new', 0, 0, 4]]}, license=[], blob=b'', code=[]))
 
+    def test_numeric_data_scores_are_metadata_but_mapping_data_stays_strict(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); (root/'bundle').mkdir()
+            path = root/'bundle/quiz.json'
+            path.write_text(json.dumps({'weights': [[{'data': 2}, {'data': 'aa'}]]}))
+            self.assertEqual([c['data'] for c in gate.mapping_chunks(root)], [b'\xaa'])
+            path.write_text(json.dumps({'ops': [{'data': 2}]}))
+            with self.assertRaisesRegex(gate.GateFailure, 'non-hex inline data'):
+                gate.mapping_chunks(root)
+
     def test_missing_code_query_fails_closed(self):
         with patch.dict(sys.modules, codecopy=types.ModuleType('codecopy')):
             with self.assertRaisesRegex(gate.GateFailure, 'audit_literals is required'):

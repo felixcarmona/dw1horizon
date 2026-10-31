@@ -37,6 +37,14 @@ runs only when that build exists.
 The unit tests (`tools/test_*.py`) are plain `unittest` files; each runs alone (`python3 tools/test_species.py`) and
 needs no emulator. The `test_motion*.py` files use synthetic skeletons and animations (no game assets).
 
+`npc-originals` reads the built image selected by `DW_SELFTEST_DERIVE`. For
+all native species used by NPC maps/scripts it compares the effective NPC's
+posed idle dimensions (within 1%), original animation slots, radius and height
+against the unmodified extraction. Twin records are checked through DIGI.DAT;
+other native rows use the built executable and its linker map. Reviewed
+exceptions belong in the small, reasoned list in `tools/npc_originals.py` (currently
+empty). Run it directly with `python3 tools/npc_originals.py build/NAME`.
+
 Other checks worth running after a specific change:
 
 | After changing | Run |

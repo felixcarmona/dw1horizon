@@ -1,0 +1,21 @@
+{
+  "id": 465,
+  "name": "Hagurumon",
+  "level": "none",
+  "attribute": "vaccine",
+  "specialties": [null, null, null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 122,
+  "model": {
+    "radius": 120,
+    "height": 320,
+    "from": 122,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 1], [2, 1]]
+  },
+  "texture": {"from": 122},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, 0, 0, 0],
+  "_npc_original": 122
+}

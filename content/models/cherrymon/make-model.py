@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Cherrymon partner model: JURE mesh at 0.55 times + a full partner animation set.
 
+Field NPCs use disc-derived twins; this output supplies the partner only.
+
 Cherrymon (type 121, JURE.MMD) is an NPC: 26 bones on a skeleton no other model uses
 (trunk, three canopy layers, four three-piece branch arms, four two-piece roots) and
 only three animation slots (0 idle, 0x1D and 0x1E, used by its Misty Trees scripts).
@@ -9,7 +11,7 @@ This script builds the partner model:
   - the mesh and every bone offset scaled by SCALE (Cherrymon is 1000 high, twice the
     biggest partner; at 0.55 it is 550, a bit under MasterTyrannomon's 590);
   - slots 0x1D/0x1E: the NPC's own animations, replayed tick by tick and re-encoded
-    with their translations scaled (so the Misty Trees scenes still work);
+    with their translations scaled (for the partner animation set);
   - every slot a partner uses (the union over the 64 partner models: 0-5, 7-0x13,
     0x15-0x19, 0x1B, 0x21-0x25, 0x28-0x2C) plus 0x2E-0x36 (eight Earth techniques
     and Bit Bomb): authored here as per-tick poses (`clips.py`) and encoded with
