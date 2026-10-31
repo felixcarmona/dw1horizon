@@ -21,7 +21,7 @@
                      [57, 48], [48, 50]]
   },
   "texture": {"file": "build/batch8/DarkTyrannomon.TIM", "entry": 0},
-  "voice": 54,
+  "voice": 8,
   "battle_music": "normal-battle",
   "condition_bubble": [1, -113, -3, 20],
   "effect_origins": [[3, 130, -10, 0, 20, -1, 6, -147], [3, 130, -50, 0, 20, -1, 52, -148],
@@ -36,7 +36,7 @@
     "natural": {"height": 436.9, "half_width": 290.2, "half_depth": 373.6}
   },
   "partner": {
-    "voice": 8,
+    "voice": 2,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 50,

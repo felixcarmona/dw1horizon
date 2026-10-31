@@ -20,7 +20,7 @@
                      [58, 48], [48, 52], [52, 46], [46, 58]]
   },
   "texture": {"file": "build/batch5/R-Gatomon.TIM", "entry": 0},
-  "voice": 15,
+  "voice": 27,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -60, -5, 1],
   "effect_origins": [[3, 110, -140, 0, 1, 0, -2, -114]],

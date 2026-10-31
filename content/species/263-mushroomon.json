@@ -19,7 +19,7 @@
     "slot_aliases": [[48, 55], [49, 55], [50, 47], [51, 47], [52, 47], [47, 55], [53, 55], [54, 46], [46, 55]]
   },
   "texture": {"file": "build/batch7/Mushroomon.TIM", "entry": 0},
-  "voice": 46,
+  "voice": 23,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -109, -17, 8],
   "effect_origins": [[2, 0, -140, 0, 8, 0, 0, -117], [8, 0, 0, 0, 6, -51, -15, 26], [1, 0, 0, 0, 1, 0, 0, 0],
@@ -33,7 +33,7 @@
     "natural": {"height": 251.0, "half_width": 113.6, "half_depth": 93.0}
   },
   "partner": {
-    "voice": 3,
+    "voice": 14,
     "hunger_hours": [3, 8, 13, 18, 23],
     "energy_max": 40,
     "energy_fed": 20,

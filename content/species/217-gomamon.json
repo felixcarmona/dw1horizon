@@ -20,7 +20,7 @@
     "slot_aliases": [[46, 50], [47, 50], [48, 52], [49, 50], [51, 52], [54, 53], [53, 50], [50, 52]]
   },
   "texture": {"file": "build/batch4/Gomamon.TIM", "entry": 0},
-  "voice": 39,
+  "voice": 4,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -135, 16, 21],
   "effect_origins": [[3, 60, 0, 0, 21, -1, -58, -32], [3, 120, 0, 0, 21, -3, -53, -86], [1, 0, 0, 0, 21, 0, 0, 0],

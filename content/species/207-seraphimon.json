@@ -23,7 +23,7 @@
                      [58, 49], [59, 49], [60, 56], [56, 49], [61, 49], [49, 54]]
   },
   "texture": {"file": "build/batch3/Seraphimon.TIM", "entry": 0},
-  "voice": 30,
+  "voice": 18,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -68, 1, 2],
   "effect_origins": [[7, 60, 0, 0, 6, 10, 88, 12], [3, 85, -55, 0, 2, -1, 149, -13],
@@ -38,7 +38,7 @@
     "natural": {"height": 651.3, "half_width": 376.8, "half_depth": 174.5}
   },
   "partner": {
-    "voice": 3,
+    "voice": 11,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 40,

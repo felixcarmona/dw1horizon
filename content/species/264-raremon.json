@@ -21,7 +21,7 @@
                      [57, 46], [46, 58]]
   },
   "texture": {"file": "build/batch7/Raremon.TIM", "entry": 0},
-  "voice": 38,
+  "voice": 11,
   "battle_music": "normal-battle",
   "condition_bubble": [23, -157, -40, 4],
   "effect_origins": [[4, 180, 0, 0, 4, -32, 193, -216], [9, 50, 0, 0, 6, -80, -15, -116],
@@ -36,7 +36,7 @@
     "natural": {"height": 321.0, "half_width": 172.0, "half_depth": 259.4}
   },
   "partner": {
-    "voice": 12,
+    "voice": 6,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 35,

@@ -23,7 +23,7 @@
                      [51, 46], [59, 52], [60, 52], [61, 53], [53, 52], [52, 61]]
   },
   "texture": {"file": "build/batch10/GuardiAngemon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 18,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -119, 26, 18],
   "effect_origins": [[7, 0, 0, 0, 4, -1, 114, 47], [10, 0, 0, 0, 7, 1, 114, 47], [18, 0, 0, 0, 23, 0, 0, 0]],
@@ -36,7 +36,7 @@
     "natural": {"height": 696.6, "half_width": 291.0, "half_depth": 218.8}
   },
   "partner": {
-    "voice": 3,
+    "voice": 11,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,

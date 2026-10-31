@@ -22,7 +22,7 @@
                      [59, 52], [60, 51], [51, 46], [61, 46], [46, 47], [47, 52]]
   },
   "texture": {"file": "build/batch11/KingEtemon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 38,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -125, 5, 18],
   "effect_origins": [[7, 0, 0, 0, 12, -79, -31, 100], [10, 0, 0, 0, 16, -79, 93, 17], [18, 0, 0, 0, 6, 0, 0, 0]],
@@ -35,7 +35,7 @@
     "natural": {"height": 749.4, "half_width": 242.4, "half_depth": 160.7}
   },
   "partner": {
-    "voice": 3,
+    "voice": 12,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,
