@@ -46,7 +46,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0150-0155, 0158 | the care menu in front of the partner (food, cures, sleep, scold) |
 | 0159-0160, 0198, 0206 | streaming fixes: map palettes from a resident copy, the background stream in battles, background overlay loads |
 | 0161 | prosperity counts every recruited species |
-| 0162-0164, 0218 | new status bars |
+| 0162-0164, 0218, 0282 | new status bars, the status screen's care numbers and tiredness bar |
 | 0166 | the digital clock |
 | 0167, 0169, 0173-0174, 0193-0194, 0201, 0205, 0214, 0241 | the OPTIONS menu and its rows (`docs/mods/options.md`) |
 | 0168 | the death scene's veil |
@@ -93,3 +93,5 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0279 | Show Monochromon shift profit, customer count and blue target bar | +960 bytes, measured before the rebase over 0275-0276: 0x801cab40 → 0x801caf00 (same English test bank, original 2 MB target); 0x801ced18 with 0280 in the eight-language image; heapcheck passes |
 | 0280 | Lower Monochromon recruitment from 3072 to 2560 bits and rescale the profit bar | +0 bytes: 0x801caf00 → 0x801caf00 (same English test bank, original 2 MB target); series ends at 0x801ced18 in the eight-language image; heapcheck passes |
 | 0281 | Restore seven original field NPCs through disc-derived NPC records; preserve partner and tournament identities | +400 bytes before the rebase over 0277-0280 (0x801ce948 → 0x801cead8); series ends at 0x801cf74c in the eight-language image, original 2 MB target; heapcheck passes, story minimum 160 bytes on screen 361 |
+| 0282 | Status screen: discipline and care mistakes as numbers beside the weight, a tiredness bar as the fourth row (red from 50); only with NEW STATUS BARS on; the original bars' four calls compacted | about +600 bytes: the function and data sizes of the ELF against the originals; 181,968 bytes of heap with 0282 still out |
+| 0283 | The card menus' read-only messages, labels and save icon move from the executable into `MENU_REL` | about -2,400 bytes: series ends at 0x801cf040 in the eight-language image (0x801cf74c before 0282-0283, about -1,800 net); `heapcheck` and the 320 story setups pass, screen 361 keeps 1,952 bytes |

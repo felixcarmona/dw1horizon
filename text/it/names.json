@@ -1060,5 +1060,7 @@
  "main.LAB_STR_UNSAVED": "Modifiche non salvate: perse.",
  "main.LAB_STR_ASK_LOAD": "Caricare questa partita?",
  "main.CITY_STR_PROSPERITY": "Prosperità",
- "main.CITY_STR_RESIDENTS": "Residenti"
+ "main.CITY_STR_RESIDENTS": "Residenti",
+ "main.STATUS_STR_TIRED": "Stanc.",
+ "main.STATUS_STR_DISC": "Disc"
 }

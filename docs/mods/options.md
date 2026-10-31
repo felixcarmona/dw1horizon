@@ -7,7 +7,7 @@ opens a box of fourteen switches (thirteen in a `FONT=original` build, which has
 |---|---|---|---|
 | JAPANESE CONTROLS | OFF / ON | OFF; ON on a Japanese base disc (patch 0241) | the Japanese disc's buttons (below) |
 | DIGITAL CLOCK | OFF / ON | ON | the HH:MM plate under the clock (patch 0166, `renderDigitalClock` in `clock.c`) |
-| NEW STATUS BARS | OFF / ON | ON | the happiness and discipline bars as 0162-0164 draw them; OFF draws the original's: the field's (`renderStatusBars`, `partner_impl.c`) and the triangle menu's Status page (`renderMenuStatusBar`, `game_menu.c`, patch 0218) |
+| NEW STATUS BARS | OFF / ON | ON | the happiness and discipline bars as 0162-0164 draw them, plus the status screen's tiredness bar and its discipline and care-mistake numbers (0282); OFF draws the original's: the field's (`renderStatusBars`, `partner_impl.c`) and the triangle menu's Status page (`renderMenuStatusBar`, `game_menu.c`, patch 0218) |
 | EVOLUTION GUIDE | OFF / ON | ON | the evolution chart's requirement card and green lines (patch 0176); OFF draws the original detail view |
 | NEW DIGIMON | OFF / ON | ON | OFF: the partner evolves only into the species the original game raises (the species files' `"vanilla": true`, ids 1-65: the chart's 61 and WereGarurumon, IceLeomon, Gigadramon, MetalEtemon by items), so no Megas; the chart is the original sheet and its trees show the original rows (below) |
 | EXTENDED STORY | OFF / ON | ON | patch 0199: the story with the story mods built onto the disc (What the Island Forgot: its new places, the city's new residents), or OFF the original story; changing it on a save moves the tamer to Jijimon's house (below) |

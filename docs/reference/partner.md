@@ -241,6 +241,8 @@ stats -2 % every 300 frames** (minimum 1) until happiness is back to >= 0 or the
 
 ## Tiredness (`tickTirednessMechanics`)
 
+The status screen shows it as a bar when NEW STATUS BARS is on: green below 50, red from 50.
+
 +5 per battle (`handlePostBattleTiredness`; its factor for MP spent is always 0), +6..10 per training session, +5/h
 sick, +1/h on a hated map, +10 when sleeping sick; falls when sleeping, with items and -2/h on a favoured map.
 `subTiredness` never rises in US, so tiredness never grows by itself. The Health shoe (0x25) gives +5 HP and +5 MP every

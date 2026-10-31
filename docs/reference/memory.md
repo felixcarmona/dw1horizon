@@ -472,8 +472,11 @@ must keep `SYSTEM.CNF`), read at `OVL_BTL_BASE` by `loadMenuOverlay` where a men
 | `gameClearSave` (routine 0x36) | the same, after waiting for the ending's sound bank; ENDI loads at `OVL_EVL_BASE`, above the overlay's end (link assert) |
 
 What stays resident: the entry points, the boot options (they run before any menu), `modNewGame` (evolution and
-rebirth call it), the lab's helpers, `modReplayMainMenu` (the extra frame passes) and all of the file's data, rodata and
-bss except the moved functions' switch tables. `config/us/overlay.ld` names the moved functions one by one, so a new
+rebirth call it), the lab's helpers, `modReplayMainMenu` (the extra frame passes) and the file's data, rodata and bss,
+except the moved functions' switch tables and, since patch 0283, the read-only data only the overlay reaches (2.4 KB:
+card messages, labels, the save icon; found with `xref.py classes`). Data that is ever written, or that the balance
+tables encode (`MOD_VS_UNLOCK`), stays resident: a reload of the overlay would undo a write. `SLOT_ACTION_TITLES` and
+`SLOT_ACTION_QUESTIONS` stay resident and point into the overlay; only the overlay reads them. `config/us/overlay.ld` names the moved functions one by one, so a new
 function in `main_menu.c` stays resident unless it is added there, which is always safe.
 
 A VS battle started from the title's registration screens needs `VS_REL` in the same slot: `modMenuVsBattle`
@@ -644,3 +647,6 @@ The roster and icons live in DIGI.DAT and the chart's existing buffers and VRAM
 are reused. The actual-archive story check covers 320 setups; screen 361 is
 smallest at 1,840 bytes free. The general heap sweep also passes. Recheck these
 figures whenever the patch series, language padding, models or story changes.
+
+Through patch 0283 the series ends at `0x801cf040` and screen 361 keeps 1,952 bytes. A new resident patch
+must fit those bytes or free its own first: `xref.py classes` lists what is left to move.

@@ -1,0 +1,205 @@
+From eb13744f64fcd2434f61b35ee16ceffb38ccee38 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 16:46:12 +0000
+Subject: [PATCH 282/283] Show care numbers and tiredness on the status screen
+
+---
+ src/main/game_menu.c     | 102 ++++++++++++++++++++++++++++-----------
+ src/main/utils.c         |   3 +-
+ text/main/game_menu.yaml |   6 +++
+ 3 files changed, 83 insertions(+), 28 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 47840f4..8e7ce1d 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -2913,8 +2913,9 @@ void renderCardCount(void)
+ 
+ /* MOD (status bars): the stats view's happiness or discipline bar (50 x 6 at x -0x54) drawn like the field's
+    (renderStatusBarFill, partner_impl.c): one fill over the whole range on a grey track, red below the midpoint and
+-   green from it, where the icons change, the top row lighter. Sorted fill first: the later box is drawn under it */
+-static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max)
++   green from it, where the icons change, the top row lighter. Sorted fill first: the later box is drawn under it.
++   A bar where more is worse (tiredness) has the colours the other way round: red from the midpoint */
++static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max, int32_t moreIsWorse)
+ {
+ 	int32_t w;
+ 	uint8_t r;
+@@ -2925,7 +2926,7 @@ static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max)
+ 	if (value > max)
+ 		value = max;
+ 	w = value * 0x32 / max;
+-	if (value * 2 < max) {
++	if ((value * 2 < max) != (moreIsWorse != 0)) {
+ 		r = 0xE0;
+ 		g = 0x30;
+ 	} else {
+@@ -2940,6 +2941,49 @@ static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max)
+ 	renderBox(-0x54, y + 1, 0x32, 5, 0x58, 0x58, 0x58, 0, 5);
+ }
+ 
++/* MOD (care numbers): with NEW STATUS BARS the stats view's left block holds four rows instead of three, tiredness third,
++   and the row of the age and weight adds the care mistakes and the discipline. Off, the screen is the original's.
++   The labels are drawn by drawDigimonStatsStrings into a free row of the text area */
++#define STATS_CARE_TEXT_V   0x54
++static int16_t STATS_CARE_LABEL_W[3];
++static char *STATS_CARE_LABELS[3] = { STATUS_STR_TIRED, CHART_STR_MISTAKES, STATUS_STR_DISC };
++
++/* the left block's rows, in the tables' own entries (the same in every language): once, when the screen opens */
++static void statsCareLayout(int32_t bars)
++{
++	STATS_VIEW_ELEMENTS[17].posY = bars ? 0x30 : 0x31;
++	STATS_VIEW_TEXT[1].posY = bars ? 0x3c : 0x40;
++	STATS_VIEW_TEXT[2].posY = STATS_VIEW_ELEMENTS[10].posY = STATS_VIEW_ELEMENTS[20].posY = bars ? 0x54 : 0x4f;
++	STATS_VIEW_INSETS[4].y = bars ? 170 : 171;
++	STATS_VIEW_INSETS[5].y = bars ? 182 : 186;
++	STATS_VIEW_INSETS[6].y = bars ? 206 : 201;
++}
++
++/* a number in a field like the weight's, its label on the same cyan as the weight's. Sorted: what is drawn later lies under */
++static void renderStatsCareField(int32_t label, int32_t value)
++{
++	int32_t w;
++	int32_t x;
++	int32_t boxX;
++
++	boxX = label * 72 + 124;
++	w = STATS_CARE_LABEL_W[label];
++	x = boxX - 0xa0 - w - 3;
++	renderNumber(0, boxX - 0xa0 + 1, -0x22, 3, value, 5);
++	renderString(17, x, -0x23, w, 0xc, label << 6, STATS_CARE_TEXT_V, 5, 0);
++	renderBox(x - 1, -0x22, w + 2, 10, 0x40, 0xe0, 0xff, 0, 5);
++	renderInsetBox(boxX, 84, 0x1a, 14, 5);
++}
++
++/* the original bar: above the midpoint a fill over its track, below it the fill alone in the track's colours */
++static void renderOriginalStatsBar(int32_t y, int32_t w, int32_t high)
++{
++	renderRectPolyFT4(-0x54, y, (uint8_t)w, 6, high ? 0x18 : 0x4a, 0xf0, 0x18, GetClut(0x70, high ? 0x1f6 : 0x1f5), 5, 0);
++	if (high) {
++		renderRectPolyFT4(-0x54, y, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
++	}
++}
++
+ void renderDigimonStatsView(void)
+ {
+ 	RECT *r;
+@@ -3047,33 +3091,29 @@ void renderDigimonStatsView(void)
+ 			renderRectPolyFT4(i * 0xe - 0x54, 0x22, 0xc, 0xb, 0xf4, 0x8c, 5, 0x7b86, 5, 0);
+ 		}
+ 		renderDigimonStatusConditions(PARTNER_PARA.condition);
+-		if (PARTNER_PARA.happiness >= 0) {
+-			renderRectPolyFT4(-0x8a, 0x31, 0xb, 0xb, 0, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+-		} else {
+-			renderRectPolyFT4(-0x8a, 0x31, 0xb, 0xb, 0xb, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+-		}
++		/* MOD (care numbers): each icon and original bar in one call, the choice in its arguments (heap) */
++		renderRectPolyFT4(-0x8a, STATS_VIEW_ELEMENTS[17].posY, 0xb, 0xb, PARTNER_PARA.happiness >= 0 ? 0 : 0xb, 0xf4, 5,
++		                  GetClut(0x60, 0x1f2), 5, 0);
++		renderRectPolyFT4(-0x8a, STATS_VIEW_TEXT[1].posY, 0xb, 0xb, PARTNER_PARA.discipline >= 0x32 ? 0x16 : 0x21, 0xf4, 5,
++		                  GetClut(0x60, 0x1f2), 5, 0);
+ 		if (MOD_OPT_BARS) { /* MOD (options): NEW STATUS BARS, as on the field (renderStatusBars) */
+-			renderMenuStatusBar(0x35, PARTNER_PARA.happiness + 100, 200);
+-		} else if (PARTNER_PARA.happiness >= 0) {
+-			renderRectPolyFT4(-0x54, 0x35, (uint8_t)(0x32 - (0x32 - PARTNER_PARA.happiness / 2)), 6, 0x18, 0xf0, 0x18, GetClut(0x70, 0x1f6), 5, 0);
+-			renderRectPolyFT4(-0x54, 0x35, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
++			renderMenuStatusBar(0x34, PARTNER_PARA.happiness + 100, 200, 0);
++			renderMenuStatusBar(0x40, PARTNER_PARA.discipline, 100, 0);
+ 		} else {
+-			renderRectPolyFT4(-0x54, 0x35, (uint8_t)(0x32 - (0x32 - (PARTNER_PARA.happiness + 0x64) / 2)), 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
++			renderOriginalStatsBar(0x35, PARTNER_PARA.happiness >= 0 ? PARTNER_PARA.happiness / 2 : (PARTNER_PARA.happiness + 0x64) / 2,
++			                       PARTNER_PARA.happiness >= 0);
++			renderOriginalStatsBar(0x44, PARTNER_PARA.discipline >= 0x32 ? PARTNER_PARA.discipline - 0x32 : PARTNER_PARA.discipline,
++			                       PARTNER_PARA.discipline >= 0x32);
++		}
++		renderBox(-0x54, MOD_OPT_BARS ? 0x57 : 0x52, PARTNER_PARA.virusBar * 3, 6, 0xc8, 0xc8, 0x3c, 0, 5);
++		if (MOD_OPT_BARS) { /* MOD (care numbers): the new row, the condition bubble's own icon and the fields */
++			renderRectPolyFT4(-0x8a, 0x48, 0xc, 0xc, 5 * 0xc + 0x30, 0x8c, 5, 0x7a46, 5, 0);
++			renderString(3, -0x7c, 0x49, STATS_CARE_LABEL_W[0], 0xc, 0, STATS_CARE_TEXT_V, 5, 1);
++			renderMenuStatusBar(0x4c, PARTNER_PARA.tiredness, 100, 1);
++			renderInsetBox(75, 194, 50, 8, 5);
++			renderStatsCareField(1, PARTNER_PARA.careMistakes);
++			renderStatsCareField(2, PARTNER_PARA.discipline);
+ 		}
+-		if (PARTNER_PARA.discipline >= 0x32) {
+-			renderRectPolyFT4(-0x8a, 0x40, 0xb, 0xb, 0x16, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+-		} else {
+-			renderRectPolyFT4(-0x8a, 0x40, 0xb, 0xb, 0x21, 0xf4, 5, GetClut(0x60, 0x1f2), 5, 0);
+-		}
+-		if (MOD_OPT_BARS) {
+-			renderMenuStatusBar(0x44, PARTNER_PARA.discipline, 100);
+-		} else if (PARTNER_PARA.discipline >= 0x32) {
+-			renderRectPolyFT4(-0x54, 0x44, (uint8_t)(PARTNER_PARA.discipline - 0x32), 6, 0x18, 0xf0, 0x18, GetClut(0x70, 0x1f6), 5, 0);
+-			renderRectPolyFT4(-0x54, 0x44, 0x32, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+-		} else {
+-			renderRectPolyFT4(-0x54, 0x44, (uint8_t)PARTNER_PARA.discipline, 6, 0x4a, 0xf0, 0x18, GetClut(0x70, 0x1f5), 5, 0);
+-		}
+-		renderBox(-0x54, 0x52, PARTNER_PARA.virusBar * 3, 6, 0xc8, 0xc8, 0x3c, 0, 5);
+ 		for (j = 0; j < 0xd; j++) {
+ 			r = &STATS_VIEW_INSETS[j];
+ 			renderInsetBox(r->x, r->y, r->w, r->h, 5);
+@@ -5433,11 +5473,13 @@ void renderBorderBox(int16_t x, int16_t y, int16_t w, int16_t h, int32_t c1,
+ int32_t drawDigimonStatsStrings(void)
+ {
+ 	RECT rect;
++	int32_t i;
+ 
+ 	rect = DIGIMON_STATS_TEXT_AREA;
+ 
+ 	switch (MENU_SUB_STATE) {
+ 	case 0:
++		statsCareLayout(MOD_OPT_BARS);
+ 		clearTextSubArea(&rect);
+ 		DRAW_STRING_CELLS(MAIN_D_80124C54, 0, 0xf0);
+ 		DRAW_STRING_PIECES(MAIN_D_80124C0C[2], 0, 0x24, 0);
+@@ -5464,6 +5506,12 @@ int32_t drawDigimonStatsStrings(void)
+ 		break;
+ 	case 3:
+ 		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[2], 0, 0x18, 0, 0x30, 0x60, 0x90, 0xc0);
++		if (MOD_OPT_BARS) { /* MOD (care numbers): the three labels renderDigimonStatsView adds */
++			for (i = 0; i < 3; i++) {
++				STATS_CARE_LABEL_W[i] = drawStringMode(STATS_CARE_LABELS[i], i << 6, STATS_CARE_TEXT_V,
++				                                       fitStringMode(STATS_CARE_LABELS[i], i == 1 ? 0x2c : 0x24));
++			}
++		}
+ 
+ 		return 1;
+ 	}
+diff --git a/src/main/utils.c b/src/main/utils.c
+index 718df1d..ca4c043 100644
+--- a/src/main/utils.c
++++ b/src/main/utils.c
+@@ -43,7 +43,7 @@ extern PACKET GS_WORK_BASES[2][0x14000];
+ extern DR_OFFSET DR_OFFSETS[2];
+ 
+ // clang-format off
+-RGB8 TEXT_COLORS[17] = {
++RGB8 TEXT_COLORS[18] = {
+ 	{ 0x80, 0x80, 0x80 },
+ 	{ 0x19, 0x55, 0x80 },
+ 	{ 0x69, 0xc2, 0xff },
+@@ -61,6 +61,7 @@ RGB8 TEXT_COLORS[17] = {
+ 	{ 0x70, 0x44, 0x2c },
+ 	{ 0x48, 0x54, 0x7c },
+ 	{ 0x7c, 0x4c, 0x68 },
++	{ 0x25, 0x1c, 0x73 }, /* MOD (care numbers): the ink of the status screen's cyan labels */
+ };
+ 
+ /* six 5-byte formats: "%01d" to "%06d" */
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index fca2f2e..e5eca56 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -331,3 +331,9 @@ CHART_TEXT:
+     CITY_STR_RESIDENTS:
+       en_us: Residents
+       ja: 住人
++    STATUS_STR_TIRED:
++      en_us: Tired
++      ja: つかれ
++    STATUS_STR_DISC:
++      en_us: Disc
++      ja: しつけ度
+-- 
+2.55.0
+

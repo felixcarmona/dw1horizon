@@ -1060,5 +1060,7 @@
  "main.LAB_STR_UNSAVED": "Modifs non sauvées perdues.",
  "main.LAB_STR_ASK_LOAD": "Charger cette partie ?",
  "main.CITY_STR_PROSPERITY": "Prospérité",
- "main.CITY_STR_RESIDENTS": "Résidents"
+ "main.CITY_STR_RESIDENTS": "Résidents",
+ "main.STATUS_STR_TIRED": "Fatig.",
+ "main.STATUS_STR_DISC": "Disc"
 }
