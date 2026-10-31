@@ -1,0 +1,61 @@
+From 6d8984b3af3cfbe4da41b7604ec3b860603a0ce0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 17:47:28 +0000
+Subject: [PATCH 283/283] Move the card menus' read-only data into the menu
+ overlay
+
+---
+ config/us/overlay.ld | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index e2141f2..4e8392c 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -782,7 +782,7 @@ SECTIONS
+ 	 * is open (the title's menus, new game and continue, the save and load screens of the title, the save machine,
+ 	 * the sleep save and the game-clear save), read by loadMenuOverlay where each opens. The functions are named
+ 	 * one by one: one this list does not name (a new one) stays in the executable (main.ld takes the rest of the
+-	 * file), which is always safe. Its rodata, data and bss stay in the executable too (they outlive the overlay).
++	 * file), which is always safe. Its data and bss stay in the executable (they outlive the overlay) unless named below.
+ 	 */
+ 	OVERLAY OVL_BTL_BASE : NOCROSSREFS
+ 	{
+@@ -861,6 +861,34 @@ SECTIONS
+ 			BUILD_DIR/src/main/main_menu.c.o(.rodata.tickMainMenu .rodata.renderMainMenu .rodata.drawMainMenuStrings
+ 				.rodata.drawMainMenuStrings.str1.4 .rodata.loadSaveCopy .rodata.modOptionValue);
+ 			. = ALIGN(., 4);
++			/* MOD (heap): read-only data of the card menus that only this overlay reaches (tools/xref.py classes): their
++			 * messages, labels and the save icon. Nothing that is ever written goes here: a reload would undo it */
++			BUILD_DIR/src/main/main_menu.c.o(
++				.data.PLAIN_LETTERS .data.SAVE_ICON_FRAME_1 .data.SAVE_ICON_FRAME_0 .data.MENU_VIEWS
++				.data.MEMORY_CARD_ERROR_MESSAGES .data.SAVE_ICON_CLUT .data.MOD_LANGUAGE_NAMES .data.MAIN_D_801315A0
++				.data.MAIN_D_80131390 .data.MAIN_D_8013134C .data.MAIN_D_801311D4 .data.MAIN_D_80131580
++				.data.MAIN_D_80131500 .data.MAIN_D_801313E4 .data.MAIN_D_80131264 .data.MAIN_D_80131200
++				.data.MAIN_D_801311EC .data.MAIN_D_801315C0 .data.MAIN_D_8013154C .data.MAIN_D_801314B0
++				.data.MAIN_D_8013147C .data.MAIN_D_80131460 .data.MAIN_D_80131290 .data.MAIN_D_80131218
++				.data.SAVE_TITLE_RESERVED .data.MAIN_D_801315EC .data.MAIN_D_801315D0 .data.MAIN_D_80131538
++				.data.MAIN_D_801314C8 .data.MAIN_D_8013141C .data.MAIN_D_80131400 .data.MAIN_D_801313B0
++				.data.MAIN_D_801312FC .data.MAIN_D_80131568 .data.MAIN_D_8013151C .data.MAIN_D_801313D0
++				.data.MAIN_D_80131278 .data.MAIN_D_8013119C .data.MAIN_D_80131150 .data.MAIN_D_801314E4
++				.data.MAIN_D_80131228 .data.MAIN_D_8013118C .data.MAIN_D_8013111C .data.MAIN_D_801310CC
++				.data.MEMORY_CARD_OPERATION_MESSAGES .data.MAIN_D_8013136C .data.MAIN_D_80131498 .data.MAIN_D_80131378
++				.data.MAIN_D_80131328 .data.MAIN_D_80131318 .data.MAIN_D_801312A0 .data.MAIN_D_80131240
++				.data.MAIN_D_801311B4 .data.MAIN_D_80131134 .data.MAIN_D_80131108 .data.MAIN_D_801312E4
++				.data.MAIN_D_801312D0 .data.MAIN_D_801312B8 .data.MAIN_D_801311C0 .data.MAIN_D_80131090
++				.data.MAIN_D_8013107C .data.MAIN_D_8013104C .data.MAIN_D_80131168 .data.MAIN_D_801310F4
++				.data.MAIN_D_801310E0 .data.MAIN_D_80131234 .data.MAIN_D_80131178 .data.MAIN_D_8013106C
++				.data.MAIN_D_8013103C .data.MAIN_D_80131144 .data.MAIN_D_801310A4 .data.MAIN_D_80131030
++				.data.MAIN_D_80131254 .data.MAIN_D_8013105C .data.MAIN_D_80131024 .data.TITLE_MENU_ITEMS
++				.data.MAIN_D_80131638 .data.MAIN_D_80131008 .data.BATTLE_MODE_ITEMS .data.STR_YES_NO_SPACED
++				.data.STR_YES_NO .data.MAIN_D_801346A4 .data.MAIN_D_80131448 .data.MAIN_D_80131340
++				.data.MAIN_D_80131454 .data.MAIN_D_8013143C .data.MAIN_D_801346C4 .data.MAIN_D_80131014
++				.data.MAIN_D_8013468C
++			);
++			. = ALIGN(., 4);
+             /* Lab UI runs synchronously after the resident entry loads MENU.
+              * The roster callbacks and state stay resident. */
+             BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFieldPtr .text.modLabFit .text.modLabBound
+-- 
+2.55.0
+

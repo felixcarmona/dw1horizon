@@ -1060,5 +1060,7 @@
  "main.LAB_STR_UNSAVED": "Se pierden cambios sin guardar.",
  "main.LAB_STR_ASK_LOAD": "¿Cargar esta partida?",
  "main.CITY_STR_PROSPERITY": "Prosperidad",
- "main.CITY_STR_RESIDENTS": "Residentes"
+ "main.CITY_STR_RESIDENTS": "Residentes",
+ "main.STATUS_STR_TIRED": "Cans.",
+ "main.STATUS_STR_DISC": "Disc"
 }

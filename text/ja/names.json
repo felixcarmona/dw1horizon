@@ -1060,5 +1060,7 @@
  "main.LAB_STR_UNSAVED": "セーブしていない変更は失われます。",
  "main.LAB_STR_ASK_LOAD": "このデータをロードしますか？",
  "main.CITY_STR_PROSPERITY": "繁栄度",
- "main.CITY_STR_RESIDENTS": "住人"
+ "main.CITY_STR_RESIDENTS": "住人",
+ "main.STATUS_STR_TIRED": "つかれ",
+ "main.STATUS_STR_DISC": "しつけ度"
 }

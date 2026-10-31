@@ -1060,5 +1060,7 @@
  "main.LAB_STR_UNSAVED": "Canvis sense desar: es perden.",
  "main.LAB_STR_ASK_LOAD": "Carregar aquesta partida?",
  "main.CITY_STR_PROSPERITY": "Prosperitat",
- "main.CITY_STR_RESIDENTS": "Residents"
+ "main.CITY_STR_RESIDENTS": "Residents",
+ "main.STATUS_STR_TIRED": "Cans.",
+ "main.STATUS_STR_DISC": "Disc"
 }
