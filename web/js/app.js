@@ -1,4 +1,5 @@
 import { renderFeatureList } from './features.js';
+import { setupMaps, labels as mapLabels } from './maps.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
 import { FLAGS } from './flags.js';
@@ -653,6 +654,7 @@ function renderAll() {
   renderSlots();
   renderPatch();
   renderFeatures();
+  mapLabels();
 }
 
 async function start() {
@@ -684,6 +686,7 @@ async function start() {
   setupAdd();
   setupDialog();
   renderAll();
+  setupMaps().catch(() => { $('#maps').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
 }
 

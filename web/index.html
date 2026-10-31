@@ -119,6 +119,23 @@
       <section id="features" class="features">
         <h2 data-i18n="features.title"></h2>
         <p class="sub" data-i18n="features.lead"></p>
+        <!-- The new maps at full size (js/maps.js). -->
+        <div id="maps" class="maps">
+          <span class="maps-badge" data-i18n="maps.badge"></span>
+          <h3 data-i18n="maps.title"></h3>
+          <p data-i18n="maps.lead"></p>
+          <div class="map-carousel">
+            <div id="map-grid" class="map-grid"></div>
+            <button type="button" class="map-nav map-back" data-i18n-attr="aria-label:maps.prev">‹</button>
+            <button type="button" class="map-nav map-forward" data-i18n-attr="aria-label:maps.next">›</button>
+          </div>
+          <dialog id="map-view" class="map-view">
+            <img alt="">
+            <button type="button" class="map-nav map-close" data-i18n-attr="aria-label:maps.close">×</button>
+            <button type="button" class="map-nav map-prev" data-i18n-attr="aria-label:maps.prev">‹</button>
+            <button type="button" class="map-nav map-next" data-i18n-attr="aria-label:maps.next">›</button>
+          </dialog>
+        </div>
         <div id="feature-list" class="feature-list"></div>
       </section>
     </main>
