@@ -86,3 +86,4 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 |---|---|---|
 | 0273 | Jijimon's seven-question, three-answer starter quiz; 35 partner rookies and opening techniques | +832 bytes: 0x801ca0b8 → 0x801ca3f8 (series through 0272 → 0273, same EN bank, original 2 MB target); heapcheck passes |
 | 0274 | Keep translated triangle-menu labels clear of all five clock frames | +0 bytes: 0x801ce870 → 0x801ce870 (all eight padded language banks, original 2 MB target); eight-entry label table stays 64 bytes; heapcheck passes |
+| 0275 | Ignore Cheats menu Select outside the field pause; match the hint/menu guard before replacing box 5 | +16 bytes: 0x801cb2b4 → 0x801cb2c4 (controlled build, same EN bank and padding); heapcheck passes |

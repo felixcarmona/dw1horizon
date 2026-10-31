@@ -1,0 +1,26 @@
+From 1ce40b36dd973fd8976672f5a99d88cf497bba88 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 12:12:13 +0000
+Subject: [PATCH] Guard the Cheats menu entry during non-field pauses
+
+Match the pause hint and menu guard before touching the pause box. A rejected menu entry must not reset its flag and register another translucent render object.
+---
+ src/main/utils2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/utils2.c b/src/main/utils2.c
+index 34ccc01..5d8c21e 100644
+--- a/src/main/utils2.c
++++ b/src/main/utils2.c
+@@ -491,7 +491,7 @@ void handlePause(void)
+ 			PAUSE_STATE = (PAUSE_STATE + 1) & 1;
+ 		}
+ 		/* MOD: SELECT while paused opens the lab menu (mod_lab.c) */
+-		if (MOD_OPT_CHEATS && (PAUSE_INPUT & 0x100) && !(PAUSE_INPUT_PREVIOUS & 0x100)) {
++		if (MOD_OPT_CHEATS && IS_SCRIPT_PAUSED == 1 && (PAUSE_INPUT & 0x100) && !(PAUSE_INPUT_PREVIOUS & 0x100)) {
+ 			PAUSE_INPUT_PREVIOUS = PAUSE_INPUT;
+ 			modPauseHintHide(hintPixels);
+ 			modLabMenu(&PAUSE_INPUT, &PAUSE_INPUT_PREVIOUS);
+-- 
+2.55.0
+

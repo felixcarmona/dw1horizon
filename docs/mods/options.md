@@ -208,8 +208,9 @@ the nine original rookies from Jijimon's quiz (`quiz.vanillaCells`, [balance.md]
 
 ## Cheats
 
-CHEATS defaults to OFF. Enabling it permits Select while paused to open the
-Cheats menu. The menu freezes world ticks while editing. It provides money, care
+CHEATS defaults to OFF. With it on, Select opens the Cheats menu from the field
+pause only. Select does nothing when the menu cannot open; the hint is hidden
+there too. The menu freezes world ticks while editing. It provides money, care
 recovery, parameter editing, evolution, teleportation, healing, native save/load
 and return to title.
 
