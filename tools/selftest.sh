@@ -86,7 +86,13 @@ both balance-check     $PY tools/balance.py check --exe-dir extracted
 run balance-map-outputs $PY -m unittest tools.test_balance_maps
 run ground-pickup-ids $PY tools/test_ground_items.py
 run economy-audit     $PY tools/economy_audit.py                            # no repeatable conversion turns bits into more bits
-[ -f build/decomp-int/build/us/psx/gcc/SLUS_010.32.elf ] && run balance-int $PY tools/balance.py verify   # the drift check: content == the linked C
+if [ -f "$DERIVED/exe/SLUS_010.32.elf" ]; then
+    run balance-int $PY tools/balance.py verify --exe-dir "$DERIVED/exe"
+elif [ -f build/decomp-int/build/us/psx/gcc/SLUS_010.32.elf ]; then
+    run balance-int $PY tools/balance.py verify
+else
+    skip balance-int "needs a balanced executable (DW_SELFTEST_DERIVE)"
+fi
 disc dwtables          sh -c 'rm -rf "$2/tables" && "$1" tools/dwtables.py extracted/SLUS_010.32 "$2/tables" >/dev/null && for f in "$2"/tables/*.csv; do [ -f "docs/data/$(basename "$f")" ] || continue; cmp -s "$f" "docs/data/$(basename "$f")" || { echo "differs: $f"; exit 1; }; done' sh "$PY" "$OUT"
 disc dws-tests         $PY -W ignore tools/test_dws.py
 disc dws-safety        $PY -W ignore tools/test_dws_safety.py
