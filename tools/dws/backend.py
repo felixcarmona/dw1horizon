@@ -319,8 +319,8 @@ def configure(screen_dirs=None, maps=None, relayout=None, pack_ascii=None, text_
     SCREEN_CONTENT, DWS_MAPS, DWS_RELAYOUT, SCNASM_PACK_ASCII, TEXT_ZONES (a test build of some zones of a source)."""
     global MAPS_DIRS, RELAYOUT, PACK_ASCII, LOCKS_READ_ONLY
     env = os.environ.get
-    set_screen_dirs(screen_dirs if screen_dirs is not None else env('SCREEN_CONTENT', '').split(':'))
-    MAPS_DIRS = [d for d in (maps if maps is not None else env('DWS_MAPS', '').split(':')) if d]
+    set_screen_dirs(screen_dirs if screen_dirs is not None else env('SCREEN_CONTENT', '').split(os.pathsep))
+    MAPS_DIRS = [d for d in (maps if maps is not None else env('DWS_MAPS', '').split(os.pathsep)) if d]
     RELAYOUT = relayout if relayout is not None else env('DWS_RELAYOUT') == '1'
     PACK_ASCII = pack_ascii if pack_ascii is not None else env('SCNASM_PACK_ASCII') == '1'
     LOCKS_READ_ONLY = locks_read_only
@@ -624,7 +624,7 @@ def place_digimon(comp, mh, report):
             disc = next(iter(glob.glob(os.path.join(ROOT, f'extracted/MAP/*/{name}.MAP'))), None) if name else None
             if not disc: raise BackendError(f'screen {screen} has no .MAP (a new screen: `map: "path/NAME.MAP"`)', ln)
             src = map_path(name)                            # its Digimon list from content/maps
-        rel = os.path.relpath(disc, os.path.join(ROOT, 'extracted')) if disc else f'MAP/NEW/{name}.MAP'
+        rel = os.path.relpath(disc, os.path.join(ROOT, 'extracted')).replace(os.sep, '/') if disc else f'MAP/NEW/{name}.MAP'
         if inplace: inplace_maps[rel] = inplace
         if rel not in maps:
             m = dwmap.MapFile(open(src, 'rb').read())

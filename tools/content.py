@@ -470,7 +470,7 @@ NEVER_READ = {'YAKA22'}        # digimon_count 63 with no parseable list; the ga
 def map_files():
     """{NAME: path relative to extracted/} of every .MAP of the disc."""
     base = os.path.join(ROOT, 'extracted')
-    return {os.path.basename(p)[:-4]: os.path.relpath(p, base) for p in sorted(glob.glob(os.path.join(base, 'MAP', '*', '*.MAP')))}
+    return {os.path.basename(p)[:-4]: os.path.relpath(p, base).replace(os.sep, '/') for p in sorted(glob.glob(os.path.join(base, 'MAP', '*', '*.MAP')))}
 
 
 def _species_names():

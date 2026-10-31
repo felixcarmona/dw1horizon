@@ -115,7 +115,7 @@ class Provider:
                  'build/dcb/Puppetmon': 'content/models/dcb-import/puppetmon.json',
                  'build/dw2/Kimeramon': 'content/models/dcb-import/kimeramon-dw2.json',
                  'build/models/WarGreymon': 'content/models/mega/wargreymon-dcb.json'}
-        key = str(Path(name).with_suffix(''))
+        key = os.path.splitext(name)[0]        # (the recipes' names keep / on every system)
         if key not in paths:
             raise ValueError(f'no import recipe for {name}')
         spec = json.loads((self.repo / paths[key]).read_text())
