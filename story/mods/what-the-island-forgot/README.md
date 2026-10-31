@@ -43,3 +43,15 @@ in `arcs/galleries/` and `arcs/seam/`, with block lines in all eight text banks.
 Mineward exits and a legacy escape for saves stranded inside the Seam stay open.
 See [the world audit](../../../docs/mods/world-audit.md) before changing these
 connections or regenerating their step-trigger tiles.
+
+
+The rumour hunters in Native Forest (screen 2) and Gear Savanna (70) receive one
+short tamer line per save, shared through `hunter_noticed`. The line runs on
+nearby floor step tiles (0 and 1 respectively), after the night hunter is loaded;
+`on_enter` runs during the arrival transition. `maps/hunter_sightings.py` marks only
+ordinary floor within 800 units of the unchanged spawn points, preserving walls,
+exits and other triggers. The tamer keeps control after closing the line. Both
+handlers require the rumours to have spread and the clock to be 20:00–04:59.
+The unsaved p120 records the arrival's hunter presence, so waiting from day to
+night on the same screen cannot announce a hunter that was never spawned. No
+engine code or heap allocation is added.

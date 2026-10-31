@@ -673,6 +673,17 @@
     ]
    },
    {
+    "script": "maps/hunter_sightings.py",
+    "args": [
+     "{retouch}"
+    ],
+    "step": "retouch",
+    "writes": [
+     "retouch/GIAS01.MAP",
+     "retouch/GIAS01.TFS"
+    ]
+   },
+   {
     "script": "maps/mayo05-path.py",
     "args": [
      "{retouch}"
