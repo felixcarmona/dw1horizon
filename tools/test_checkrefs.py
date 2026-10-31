@@ -24,6 +24,14 @@ class References(unittest.TestCase):
             Path(root, 'content/README.md').write_text('`sound/long-demo/`\n')
             self.assertTrue(checkrefs.check_file('content/README.md', False)[0])
 
+    def test_generated_page_data_is_optional_and_its_neighbours_are_not(self):
+        with tempfile.TemporaryDirectory() as root, patch.object(checkrefs, 'ROOT', root):
+            Path(root, 'web').mkdir()
+            neighbour = 'content' + '/gone.json'                    # not one literal: this file is checked too
+            Path(root, 'web/README.md').write_text(f'`content/digimon.json`\n`{neighbour}`\n')
+            bad, _ = checkrefs.check_file('web/README.md', False)
+            self.assertEqual([b[2] for b in bad], [neighbour])
+
     def test_relocated_evidence_requires_the_current_file(self):
         with tempfile.TemporaryDirectory() as root, patch.object(checkrefs, 'ROOT', root):
             target = Path(root, 'content/imports/specs/Monmon.json')

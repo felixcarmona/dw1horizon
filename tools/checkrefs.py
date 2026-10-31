@@ -29,6 +29,8 @@ OPTIONAL_REFERENCES = {
     'story/mods/what-the-island-forgot/art/full/the-new-street-2304x1856.jpg',
     'docs/data/crossgame-models.csv', 'docs/data/crossgame-identified.csv',
     'docs/data/crossgame-sources.csv', 'content/motion-loop-contracts.json',
+    # web/README.md, relative to web/: the release workflow writes it (tools/site_digimon.py) and git ignores it.
+    'content/digimon.json',
 }
 PATH = re.compile(r'(?<![\w/.:-])((?:%s)/[\w./+-]*[\w/])' % '|'.join(TOP))
 LINK = re.compile(r'\[[^\]]*\]\(([^)\s]+)\)')
