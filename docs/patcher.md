@@ -139,7 +139,9 @@ Only HEAD and the tags count, not uncommitted changes: one commit builds one dis
 
 - **the game**: "v0.1.0" in the bottom left corner of the title screen (Press Start) and of the title menu, small and
   grey (patch 0257; `tools/build-full.sh` gives `tools/version.py game` to the executable's make as `MOD_VERSION`, a
-  fixed 32-byte array, so a new version changes those bytes of `SLUS_010.32` only). The executable is authored: the
+  fixed 32-byte array, so a new version changes those bytes of `SLUS_010.32` only). Field START pause also shows the
+  same string at (8, 4), above the clock, with the same grey and shadow (patch 0288). Empty `MOD_VERSION` draws
+  nothing in either place; all eight languages share the string. The executable is authored: the
   package carries it and apply checks its SHA-1 like every other file, on every base;
 - **the package**: make-release writes `version` and `date` into `manifest.json` (`--version` still overrides the
   version, never the date); apply's first line and `info` print `TITLE VERSION (DATE)`;
