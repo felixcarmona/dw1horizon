@@ -336,14 +336,14 @@
       "es": "media/clips/language-es.jpg"
      },
      "alt": {
-      "en": "The partner's status page, side by side: the original's spaced-out letters and Horizon's new font",
-      "es": "La página de estado del compañero, lado a lado: el original en inglés y Horizon en español, con la letra nueva",
-      "pt-br": "A tela de status do parceiro, lado a lado: as letras espaçadas do original e a fonte nova de Horizon",
-      "fr": "La page d'état du partenaire, côte à côte : les lettres espacées de l'original et la nouvelle police d'Horizon",
-      "de": "Die Statusseite des Partners, nebeneinander: die weit auseinanderstehenden Buchstaben des Originals und die neue Schrift von Horizon",
-      "it": "La pagina di stato del partner, fianco a fianco: le lettere spaziate dell'originale e il nuovo font di Horizon",
-      "ja": "パートナーのステータス画面の比較：間延びしたオリジナルの文字と、Horizonの新フォント",
-      "ca": "La pàgina d'estat del company, una al costat de l'altra: les lletres espaiades de l'original i la lletra nova d'Horizon"
+      "en": "A character's dialogue, side by side: the original's spaced-out letters and Horizon's new font",
+      "es": "Un diálogo de un personaje, lado a lado: las letras separadas del original y la letra nueva de Horizon",
+      "pt-br": "Um diálogo de um personagem, lado a lado: as letras espaçadas do original e a nova fonte do Horizon",
+      "fr": "Un dialogue d'un personnage, côte à côte : les lettres espacées de l'original et la nouvelle police de Horizon",
+      "de": "Ein Figurendialog im Vergleich: die weit auseinanderstehenden Buchstaben des Originals und die neue Schrift von Horizon",
+      "it": "Un dialogo di un personaggio, fianco a fianco: le lettere distanziate dell'originale e il nuovo carattere di Horizon",
+      "ja": "キャラクターの会話の比較：オリジナルの間隔の広い文字と Horizon の新しいフォント",
+      "ca": "Un diàleg d'un personatge, costat a costat: les lletres separades de l'original i la lletra nova d'Horizon"
      }
     }
    ],
