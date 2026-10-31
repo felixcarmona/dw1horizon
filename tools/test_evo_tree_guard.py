@@ -79,6 +79,13 @@ class GuardTests(unittest.TestCase):
         p, c = self.names['MegaKabuterimon'], self.names['HerculesKabuterimon']
         self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))
 
+    def test_native_step_exception_cannot_be_reused_by_an_import(self):
+        def imported_copy(sp, kids):
+            sp[999] = copy.deepcopy(sp[self.names['Etemon']])
+            sp[999]['id'] = 999
+            kids[999] = [self.names['MetalEtemon']]
+        self.assertIn('evolution level step must be +1', self.errors(imported_copy))
+
     def test_vanilla_swap_cannot_change_level(self):
         c = self.names['Tapirmon']
         self.assertIn('vanilla_as must name a vanilla rookie',

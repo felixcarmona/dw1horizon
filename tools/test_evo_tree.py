@@ -88,7 +88,7 @@ def check(sp, kids, table):
             pair = parent['name'], child['name']
             # Etemon -> MetalEtemon is an established mod continuation,
             # explicitly retained by the tier review, not an original disc row.
-            step_exception = pair == ('Etemon', 'MetalEtemon') or (
+            step_exception = (p, c) == (42, 65) or (
                 (p, c) in original_routes and child['name'] in ('Phoenixmon', 'HerculesKabuterimon'))
             if T.LEVEL_NO.get(child['level'], 0) != T.LEVEL_NO.get(parent['level'], 0) + 1 and not step_exception:
                 errors.append(f'{pair[0]} -> {pair[1]}: evolution level step must be +1')
