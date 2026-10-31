@@ -72,7 +72,7 @@ class Settings:
         self.story_lang = env.get('STORY_LANG') or 'en'
         self.main = env.get('MAIN_STORY') or ''   # none on a player's disc: a developer's helper never ships
         self.extra = (env.get('EXTRA_STORY') or '').split()
-        self.screens = [d for d in (env.get('SCREEN_CONTENT') or '').split(':') if d]
+        self.screens = [d for d in (env.get('SCREEN_CONTENT') or '').split(os.pathsep) if d]
         self.maps = env.get('DWS_MAPS') or ''
         self.mods = env.get('STORY_MODS') or 'all'
         # (build-full.sh exports both before the story: DWS_RELAYOUT=1 always, SCNASM_PACK_ASCII by PACK_ASCII and TEXT)
@@ -119,7 +119,7 @@ def pass_argv(s, v, text, lang, zones, pack, locks_read_only=True):
     exe = s.exe(text, 'original' if v.endswith('orig') else s.exe_font)
     files = ([s.main] if s.main else []) + ([] if base else s.extra)
     return (['story-build'] + files + ['--text-source', text, '--lang', lang] + exe +
-            ['--audio', 'story/core/audio.json', '--mods', 'none' if base else s.mods, '--screen-content', ':'.join(s.screens),
+            ['--audio', 'story/core/audio.json', '--mods', 'none' if base else s.mods, '--screen-content', os.pathsep.join(s.screens),
              '--maps', '' if base else s.maps, '--relayout', '1' if s.relayout else '0',
              '--pack-ascii', '1' if pack else '0', '--text-zones', zones] +
             (['--read-only-locks'] if locks_read_only else []))

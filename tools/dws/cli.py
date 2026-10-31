@@ -219,8 +219,8 @@ def main(argv=None):
         sys.exit(spawns.run(a))
     if a.cmd == 'story-build':
         flag = lambda v: None if v is None else v == '1'
-        B.BE.configure(screen_dirs=None if a.screen_content is None else a.screen_content.split(':'),
-                       maps=None if a.maps is None else a.maps.split(':'), relayout=flag(a.relayout),
+        B.BE.configure(screen_dirs=None if a.screen_content is None else a.screen_content.split(os.pathsep),
+                       maps=None if a.maps is None else a.maps.split(os.pathsep), relayout=flag(a.relayout),
                        pack_ascii=flag(a.pack_ascii), text_zones=a.text_zones, locks_read_only=a.read_only_locks)
     try:
         if a.cmd in ('compile', 'disc', 'show', 'check'): cmd_build(a)

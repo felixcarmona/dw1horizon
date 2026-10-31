@@ -180,8 +180,8 @@ def isolated_story(fn, args, folder, roots):
     argv = list(args[2])
     for flag in ('--screen-content', '--maps'):
         i = argv.index(flag) + 1
-        argv[i] = ':'.join(replacements.get(str(Path(p).absolute()), p) if p else p
-                           for p in argv[i].split(':'))
+        argv[i] = os.pathsep.join(replacements.get(str(Path(p).absolute()), p) if p else p
+                           for p in argv[i].split(os.pathsep))
     if folder.name != '0' and '--read-only-locks' not in argv:
         argv.append('--read-only-locks')
     args[2] = argv
@@ -214,7 +214,7 @@ def story_roots(unit, writable):
     argv = unit.args[2]
     paths = []
     for flag in ('--screen-content', '--maps'):
-        for value in argv[argv.index(flag)+1].split(':'):
+        for value in argv[argv.index(flag)+1].split(os.pathsep):
             if value and Path(value).absolute().is_relative_to(writable):
                 paths.append(str(Path(value).absolute()))
     return sorted(set(paths))
