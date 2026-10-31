@@ -64,6 +64,16 @@ Spanish area names follow the **official Spanish PAL disc**, except garbled or m
 (such as Sabana Gear, which stays Sabana Gear). Apply the same spelling to map captions, music titles,
 dialogue and mod translations; English keeps its own naming rule above. In particular, Misty Trees is
 **Árboles de Niebla** (plural masculine: los, de los, en los, a los) and Freezeland is **Tierra Helada**.
+
+The Spanish map signs use **Cabo Iceberg / Árboles de Niebla** (`frzl06`),
+**Tienda Monocromática** (`gcan09`, two black lines; the red **de todo** stays),
+**TÚNEL TALADRO** (`audit-13`) and **GIMNASIO VERDE** (`audit-14`).
+The gym name wraps across the tall board in grey `GIM / NA / SIO` and magenta
+`VER / DE`. Authoring wording is recorded in `content/localized/signs/jobs.py`
+and `audit.json`. After regenerating private full edits, use
+`python3 tools/localize/signs.py --make-cutouts --src build/localized-src/signs`
+to publish only masked deltas; inspect the composed, quantized text at game scale.
+
 Check articles and agreement in each sentence when changing a name. Map names must fit the on-screen
 caption and music titles their list field; validate the build and review them in the game. Rewrap explicit
 dialogue rows by hand when a longer name exceeds the font's row limits below. Check both the original
