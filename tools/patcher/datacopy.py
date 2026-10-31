@@ -7,6 +7,7 @@ Unmatched bytes are retained for the publication gate to diagnose, never encoded
 as byte dictionaries, XOR records or frozen per-release coordinates.
 """
 import bisect
+import hashlib
 from pathlib import Path
 import subprocess
 import tempfile
@@ -241,6 +242,8 @@ def copy_boot_config(payload, bases, targets):
     k = len(payload['code'])
     payload['code'].append([payload['sources'].index(view), 0, len(target)])
     payload['files']['SYSTEM.CNF'] = [['r', k]]
+    # A whole-disc copy had no per-file digest before becoming generated data.
+    payload['sha1']['SYSTEM.CNF'] = hashlib.sha1(target).hexdigest()
     for key in bases:
         if key != 'us':
             payload['reloc'].setdefault(key, {})[str(k)] = [[view, 0, len(target)]]
