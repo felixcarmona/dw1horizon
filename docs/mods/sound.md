@@ -300,6 +300,12 @@ executable; a separate historical sound worktree is unnecessary.
 builds FAALL with our committed song and instruments from `content/sound/house-theme/`.
 The story step selects the added music in the appropriate MAPHEAD setups.
 `tools/build-full.sh` checks staging and SPU budgets using the final resources.
+
+The bindings in `story/core/audio.json` select the house theme only for Jijimon's
+house (screen 218, font 34). Tropical Jungle, including the toilet screen
+(13, TROP02), keeps the original font 2 and its day/night variants. Toilet use
+itself does not select music.
+
 For additional sound work, update the generator inputs and matching story setup
 through these steps rather than manually assembling a release disc.
 

@@ -13,22 +13,20 @@ from dws.checks import heap
 
 
 class StoryResources(unittest.TestCase):
-    def test_music_replaces_first_instruction_without_reordering(self):
-        source = '.section 218 house\n.section 13 jungle\nhouse:\n SET_BGM 4\n SET_BGM 5\n END_SECTION\njungle:\n SET_BGM 6\n END_SECTION\n'
+    def test_house_music_override_preserves_jungle_and_instruction_order(self):
+        source = '.section 218 house\n.section 13 jungle\nhouse:\n SET_BGM 4\n SET_BGM 5\n END_SECTION\njungle:\n SET_BGM 2\n END_SECTION\n'
         data = bytecode.assemble_script(source, 'fixture', {'quiet': True})[0]
         sections = dict(bytecode.sweep(data)[1])
         expected = bytearray(data)
         expected[sections[218] + 1] = 0x22
-        expected[sections[13] + 1] = 0x23
         with tempfile.TemporaryDirectory() as tmp:
             src, out = Path(tmp) / 'input', Path(tmp) / 'output'
             src.write_bytes(data)
             from dws import audio
             lines = audio.rewrite_maphead(src, out, Path(__file__).resolve().parents[1] / 'story/core/audio.json')
             self.assertEqual(out.read_bytes(), bytes(expected))
-            self.assertEqual(len(lines), 2)
+            self.assertEqual(len(lines), 1)
             self.assertIn('screen 218: SET_BGM 0x4 -> 0x22', lines[0])
-            self.assertIn('screen 13: SET_BGM 0x6 -> 0x23', lines[1])
 
     def test_audio_intermediates_keep_the_bank_identity_required_by_the_codec(self):
         from dws import audio

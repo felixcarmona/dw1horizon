@@ -1,5 +1,5 @@
 """The script text of the story, every copy the disc carries: DG.SCN and MAPHEAD.SCN compiled from story/base, the mods
-and the dev-save script (build-full.sh 2b, :206-257), with the two music fonts set in each MAPHEAD (set-bgm, :278-288).
+and the dev-save script (build-full.sh 2b, :206-257), with story-owned music bindings applied to each MAPHEAD.
 
 A pass is one `dws.py story-build` (tools/dws/basebuild.py) into a folder of build/NAME, as the bash ran them:
   .             the extended story (EXTRA_STORY, the mods' overrides, a developer's MAIN_STORY), paged for the executable's font
