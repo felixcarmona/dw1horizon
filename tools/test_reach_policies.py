@@ -62,6 +62,16 @@ class ReachPolicies(unittest.TestCase):
         m.collision[49 * 100 + 50] = 110
         self.assertIn('arrival 0: stands on or beside its own exit', MAP.check_arrivals(m))
 
+    def test_npc_collision_uses_inclusive_square_and_both_radii(self):
+        m = scene()
+        points = MAP.reach(m, footprints=[(200, 0, 50)])
+        self.assertIn((40, 0), points)
+        self.assertNotIn((50, 0), points)     # 100 tamer + 50 NPC, inclusive edge
+        self.assertNotIn((350, 150), points) # square corner, outside a circle
+        self.assertIn((360, 150), points)
+        self.assertIn((200, 160), points)
+        self.assertIn((200, 0), MAP.reach(m)) # absent NPC leaves its ground open
+
     def test_disconnected_arrivals_do_not_union_components(self):
         m = scene()
         for tx in range(70, 81):

@@ -26,6 +26,8 @@ def main(out):
     check_arrivals(m, 'BONE01')
     import_png('KODA04', ART, os.path.join(out, 'BONE01.TFS'))
     apply_foreground(m, 'BONE01', os.path.join(out, 'BONE01.TFS'))
+    from check_npc_routes import bone_field
+    bone_field(m)
     open(os.path.join(out, 'BONE01.MAP'), 'wb').write(m.build())
     print(f'BONE01: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')
 
