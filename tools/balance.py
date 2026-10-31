@@ -514,7 +514,7 @@ def decode_named(key, exe):
             elif path in EXTRA_MS.get(key, ()): v = (v - 1) * TICK_MS
             elif path in TIME_SLOTS.get(key, ()): v *= FRAME_SECONDS
             _set(out, path, v)
-    if key == 'newGame' and len(raw) == 276 and raw[80:] != b'\xff' * 196:
+    if key == 'newGame' and len(raw) == 80 + 224 and raw[80:] != b'\xff' * 224:
         import starter_quiz
         out.update(starter_quiz.unpack(raw[80:]))
     return out
@@ -570,7 +570,7 @@ def encode_named(key, obj, exe):
     raw = struct.pack(f'<{n}{fmt}', *(vals[:n] + [-1] * (n - len(vals))))
     if key == 'newGame' and n > 20 and quiz is not None:
         import starter_quiz
-        if n != 69:
+        if n != 76:
             raise SystemExit('newGame: unsupported packed quiz table size')
         raw = raw[:80] + starter_quiz.pack(dict(obj, quiz=quiz))
     return raw   # older executables hold only their original slots

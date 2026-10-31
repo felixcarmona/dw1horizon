@@ -67,6 +67,11 @@ project, commit and SHA-256 of every copied file; `vendor/README.md` describes
 local numerical and dependency changes. They contain no game models, textures,
 executables or assembly. Replay uses only the Python standard library.
 
+## Console photo
+
+`web/media/psx.webp` is a reduced copy of PSX-Console-wController.png by Evan-Amos, released into the
+public domain (Wikimedia Commons).
+
 ## Raster implementation
 
 `tools/image.py` implements PNG and raster operations with the Python standard library.

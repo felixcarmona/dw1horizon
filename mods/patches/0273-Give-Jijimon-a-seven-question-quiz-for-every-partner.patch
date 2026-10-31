@@ -1,18 +1,18 @@
-From eaf1e4d069f19b7bb36ae8b4c7d6586f0ab159b8 Mon Sep 17 00:00:00 2001
+From 10c086a842d5cd3db62af8aa60126c2953787e46 Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Fri, 30 Oct 2026 22:29:35 +0000
 Subject: [PATCH] Give Jijimon a seven-question quiz for every partner rookie
 
 ---
- include/dw/mod_rules.h  | 13 ++++++---
+ include/dw/mod_rules.h  | 14 +++++++---
  src/main/main.c         |  7 ++---
  src/main/main_menu.c    | 40 +++++++++++++++++++++++++++
  src/main/partner_impl.c | 30 ++++++++++++++++-----
  src/shop/script_menu.c  | 60 +++++++++++++++++++----------------------
- 5 files changed, 103 insertions(+), 47 deletions(-)
+ 5 files changed, 104 insertions(+), 47 deletions(-)
 
 diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
-index d617458..43d7548 100644
+index d617458..9861c6b 100644
 --- a/include/dw/mod_rules.h
 +++ b/include/dw/mod_rules.h
 @@ -68,7 +68,7 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
@@ -20,11 +20,11 @@ index d617458..43d7548 100644
  /* a new game and a new partner: MOD_NEWGAME[], every slot -1 = the rule does not exist (modNewGame answers 0), written by tools/balance.py
   * from content/tables/new-game.json */
 -#define MOD_NEWGAME_SIZE	20
-+#define MOD_NEWGAME_SIZE	69
++#define MOD_NEWGAME_SIZE	76
  #define MOD_NG_MONEY		0 /* the tamer's money in a new game */
  #define MOD_NG_START_HOUR	1 /* the game clock in a new game */
  #define MOD_NG_START_MINUTE	2
-@@ -78,14 +78,21 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+@@ -78,14 +78,22 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
  #define MOD_NG_BIRTH_LIFETIME	6 /* the lifetime (hours) of every partner that is born or reborn */
  #define MOD_NG_BIRTH_DISCIPLINE	7
  #define MOD_NG_BIRTH_HAPPINESS	8
@@ -40,8 +40,9 @@ index d617458..43d7548 100644
  int32_t modNewGame(int32_t slot);
 +/* Packed tail of MOD_NEWGAME: species ids, three sparse axis/weight bytes per answer, cells. */
 +#define MOD_QUIZ_STARTERS ((uint16_t *)&MOD_NEWGAME[20])
-+#define MOD_QUIZ_WEIGHTS ((uint8_t *)&MOD_NEWGAME[20] + 86)
-+#define MOD_QUIZ_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 149)
++#define MOD_QUIZ_WEIGHTS ((uint8_t *)&MOD_NEWGAME[20] + 70)
++#define MOD_QUIZ_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 133)
++#define MOD_QUIZ_VANILLA_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 178) /* read with NEW DIGIMON off: original rookies only */
 +int32_t modNewGameStarter(void);
 +void modInitializeStarterTechniques(int32_t type);
 +uint8_t modQuizResult(const uint8_t *answers);
@@ -68,7 +69,7 @@ index 6ae803e..0cc1ecf 100644
  			initializeMap();
  			initializeChest();
 diff --git a/src/main/main_menu.c b/src/main/main_menu.c
-index b82e89f..9e63d41 100644
+index b82e89f..75c50f8 100644
 --- a/src/main/main_menu.c
 +++ b/src/main/main_menu.c
 @@ -13,6 +13,7 @@ extern int MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE;
@@ -87,7 +88,7 @@ index b82e89f..9e63d41 100644
 +int32_t modNewGameStarter(void)
 +{
 +	uint32_t index = readPStat(PSTAT_254);
-+	return MOD_QUIZ_STARTERS[index < 43 ? index : 0];
++	return MOD_QUIZ_STARTERS[index < 35 ? index : 0];
 +}
 +
 +/* MOD (starter quiz): all seven answers contribute. A tie goes to the latest
@@ -119,7 +120,7 @@ index b82e89f..9e63d41 100644
 +		}
 +		cell = cell * (hi - lo) + best - lo;
 +	}
-+	return MOD_QUIZ_CELLS[cell];
++	return (MOD_OPT_NEW_DIGIMON ? MOD_QUIZ_CELLS : MOD_QUIZ_VANILLA_CELLS)[cell];
 +}
 +
  int32_t modNewGame(int32_t slot)

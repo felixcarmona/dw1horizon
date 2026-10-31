@@ -13,8 +13,8 @@ function watch(video) {
     for (const e of entries) {
       const v = e.target;
       if (e.isIntersecting) {
-        if (!v.dataset.loaded) { v.dataset.loaded = '1'; if (v.controls) v.preload = 'metadata'; v.load(); }
-        if (!v.controls) v.play().catch(() => {});
+        if (!v.dataset.loaded) { v.dataset.loaded = '1'; if (v.controls && !v.dataset.autoplay) v.preload = 'metadata'; v.load(); }
+        if (!v.controls || v.dataset.autoplay) v.play().catch(() => {});
       } else if (!v.paused) v.pause();
     }
   }, { rootMargin: '160px 0px' });
@@ -32,7 +32,7 @@ function mediaElement(m, lang) {
   let el;
   if (src.endsWith('.mp4') && (m.controls || !reducedMotion.matches)) {
     el = document.createElement('video');
-    Object.assign(el, { muted: true, loop: !m.controls, controls: Boolean(m.controls), playsInline: true, preload: 'none', autoplay: false, disablePictureInPicture: true });
+    Object.assign(el, { muted: true, loop: !m.controls || Boolean(m.autoplay), controls: Boolean(m.controls), playsInline: true, preload: 'none', autoplay: false, disablePictureInPicture: true });
     el.setAttribute('muted', '');          // the attribute is what lets autoplay through on iOS
     el.setAttribute('playsinline', '');
     if (poster) el.poster = poster;
@@ -42,6 +42,7 @@ function mediaElement(m, lang) {
     }
     const s = document.createElement('source'); s.src = src; s.type = 'video/mp4'; el.append(s);
     if (!m.controls) el.addEventListener('click', () => { if (el.paused) el.play().catch(() => {}); else el.pause(); });
+    if (m.autoplay && !reducedMotion.matches) el.dataset.autoplay = '1';   // starts by itself while on screen
     watch(el);
   } else {
     el = document.createElement('img');
@@ -89,9 +90,10 @@ function filler(lang, languages) {
 
 export function renderFeatureList(list, data, lang, languages = ['en']) {
   list.replaceChildren();
-  const span = spans(data.features);
+  const features = data.features.filter((f) => !f.hidden);
+  const span = spans(features);
   const fill = filler(lang, languages);
-  data.features.forEach((f, i) => {
+  features.forEach((f, i) => {
     const own = f[lang] || f.en;
     const text = { title: fill(own.title), body: fill(own.body) };
     const art = document.createElement('article');
@@ -108,6 +110,16 @@ export function renderFeatureList(list, data, lang, languages = ['en']) {
     art.append(body);
     list.append(art);
   });
+  if (data.more?.items?.length) {
+    const more = document.createElement('section');
+    more.className = 'feature-more';
+    const h = document.createElement('h3');
+    h.textContent = pick(data.more.title, lang);
+    const ul = document.createElement('ul');
+    for (const item of data.more.items) ul.append(Object.assign(document.createElement('li'), { textContent: fill(pick(item, lang)) }));
+    more.append(h, ul);
+    list.append(more);
+  }
   if (data.note) {
     const note = document.createElement('p');
     note.className = 'feature-note';

@@ -379,7 +379,7 @@ bubble (routine 0x1C) is a separate sprite driven by p247/p248.
 
 ## How the flags tell the story
 
-- **Jijimon's questions** (new game, patch 0271): the greeting remains MAPHEAD 1238 entry 0x10
+- **Jijimon's questions** (new game, patch 0273): the greeting remains MAPHEAD 1238 entry 0x10
   (`m1238.u16`). Entry 0x23 introduces seven questions. Each question uses three consecutive entries starting
   at 0x24: its numbered heading (the seventh says "Last question."), question, and speaker plus three answers.
   The topics are owning a Digital Monster, day/dusk/night, friends, camping, a blocked path, island supplies,
@@ -389,7 +389,7 @@ bubble (routine 0x1C) is a separate sprite driven by p247/p248.
   `modQuizResult`; **p254 is an index into `newGame.starters`**, never the species id. All three consumers
   (partner creation and the two default-name paths) call `modNewGameStarter`, which reads the packed uint16 list.
   The existing tamer-name and optional partner-name states follow unchanged; `modPartnerNameSetSpecies` supplies
-  the default. Script 204 still places the new tamer in File City. Weights, cells and the complete 43-rookie pool
+  the default. Script 204 still places the new tamer in File City. Weights, cells and the 35-rookie pool
   live in `content/tables/new-game.json`; `tools/starter_quiz.py` checks all 2187 answer paths.
   `story/new-game-quiz.dws` extends the base text table only for the expanded engine; original-engine builds keep
   the legacy table and its smaller MAPHEAD buffer.

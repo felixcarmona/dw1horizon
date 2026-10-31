@@ -203,15 +203,25 @@ vanilla ancestor down the vanilla rows, a shared specialty first; reviewable and
 age stay; the equipped techniques become the new species' slots of the same techniques (none: its first learned one, or
 its first one, learned), the finisher its own. The save remembers the swap (`SAVE_TAG_VANILLA_SWAP` 0x000A: the species
 and the vanilla one); loaded with the row on and the partner still that vanilla species, it is turned back. Raised and
-recruited flags are never cleared: with the row off the chart only hides the new species.
+recruited flags are never cleared: with the row off the chart only hides the new species. A New Game with the row off gets one of
+the nine original rookies from Jijimon's quiz (`quiz.vanillaCells`, [balance.md](balance.md)), so no swap is needed.
 
 ## Cheats
 
 CHEATS defaults to OFF. Enabling it permits Select while paused to open the
-Cheats menu, plus Select + L1/R1 for partner changes and Select + L2/R2 for map
-jumps where the existing world-state guards allow them. The menu freezes world
-ticks while editing. It provides money, care recovery, parameter editing,
-evolution, teleportation, healing, native save/load and return to title.
+Cheats menu. The menu freezes world ticks while editing. It provides money, care
+recovery, parameter editing, evolution, teleportation, healing, native save/load
+and return to title.
+
+The menu's SELECT SHORTCUTS row (`MOD_OPT_SHORTCUTS`) defaults to OFF. Turned on,
+under CHEATS, it adds Select + L1/R1 for partner changes and Select + L2/R2 for
+map jumps where the existing world-state guards allow them. Turned off, those
+presses do nothing, not even the refusal sound.
+
+While the game is paused and Select would open the menu, a box at the bottom of
+the screen says so (`LAB_STR_PAUSE_HINT`, `utils2.c`). Keep each translation within
+200 pixels so the box stays clear of the status bars. The hint borrows the text-area row at 0xE4 and
+restores its pixels when the pause ends.
 
 The parameter editor covers care, evolution timers, age and lifetime, current and
 maximum HP/MP, and combat stats. Left/right adjusts by the displayed amount;
@@ -221,9 +231,11 @@ value. Evolution rows show species stages; map rows show internal map codes.
 Choosing a destination performs the action through the normal idle/model guards.
 
 Save/load retains the native memory-card flow and its confirmations. The saved
-CHEATS option occupies byte 12 of the options extension; its title-header copy
-uses the high bit of the options count. Older records default to OFF, and explicit
-OPTIONS edits retain priority over Continue.
+CHEATS option occupies bit 0 of byte 12 of the options extension; its title-header
+copy uses the high bit of the options count. SELECT SHORTCUTS is bit 1 of that byte
+and has no header copy: it is not a row of OPTIONS, so the loaded save always decides
+it. Older records default to OFF, and explicit OPTIONS edits retain priority over
+Continue.
 
 `tools/test_cheats.py`, `tools/test_lab.py` and `tools/test_lab_labels.py` compile
 the actual patched helpers with address/undefined-behavior sanitizers to check

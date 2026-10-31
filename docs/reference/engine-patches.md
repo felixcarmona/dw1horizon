@@ -362,13 +362,13 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0220 | the Status page's happiness label read the wrong texture columns (a stray mark before it, its last letter cut) |
 | 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code (instant wins, entries, prosperity and money by accident); cancel is now refused there |
 
-## Jijimon's starter quiz (0271)
+## Jijimon's starter quiz (0273)
 
 All seven three-option questions run through a single state loop. `modQuizResult` totals three axes and
 resolves ties by the latest supporting answer; equal scores supported last by the same answer use the earlier
 axis in the documented order. It maps the element/attribute/temperament cell to a starter-list index.
 `modNewGameStarter` resolves p254 to a uint16 species id for creation and both default-name paths.
-The packed table adds 196 bytes; the linked main executable grows by 788 bytes (`main_BSS_END`, same EN bank).
+The packed table adds 224 bytes; the linked main executable grows by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
 New-game technique exceptions remain the two authored rows; every other starter equips 0x2e and learns
 `DIGI_PARA(type).moves[0]`. `modInitializeStarterTechniques` runs only in main's new-game branch, after
 `initializePartner`. Neither Continue branch teaches a technique: `loadSavegame` has already restored the

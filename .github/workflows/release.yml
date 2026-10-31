@@ -50,7 +50,8 @@ jobs:
           mkdir -p build/pages-input
           gh release download "$RELEASE_TAG" --dir build/pages-input \
             --pattern horizon-package.tar.gz --pattern horizon-engine.tar.gz \
-            --pattern horizon-checksums.json || {
+            --pattern horizon-checksums.json --pattern horizon-media.tar.gz \
+            --pattern horizon-maps.tar.gz || {
               echo 'Prepare the verified package and engine locally and upload them to a draft release; see docs/release/releasing.md.' >&2
               exit 1
             }
@@ -58,6 +59,26 @@ jobs:
         run: python3 tools/release_pages_test.py
       - name: Validate identity and integrity; build the static site
         run: python3 tools/release_pages.py build "$RELEASE_TAG" --inputs build/pages-input --out build/pages-site
+      - name: Take the page from the commit running this workflow, with the showcase media
+        shell: bash
+        run: |
+          # The engine and package stay the tag's; a page-only change is redeployed with workflow_dispatch from main.
+          git checkout "$GITHUB_SHA" -- web
+          for path in index.html style.css js i18n content media; do
+            rm -rf "build/pages-site/$path"
+            cp -R "web/$path" "build/pages-site/$path"
+          done
+          test -z "$(tar -tzf build/pages-input/horizon-media.tar.gz | grep -vE '^[a-z0-9-]+\.(mp4|jpg)$')"
+          mkdir build/pages-site/media/clips
+          tar -xzf build/pages-input/horizon-media.tar.gz -C build/pages-site/media/clips
+          test -z "$(tar -tzf build/pages-input/horizon-maps.tar.gz | grep -vE '^map-[0-9]+\.(png|jpg)$')"
+          mkdir build/pages-site/media/maps
+          tar -xzf build/pages-input/horizon-maps.tar.gz -C build/pages-site/media/maps
+          sed -i "s|</head>|  <meta name=\"source-repository\" content=\"https://github.com/$GITHUB_REPOSITORY\">\n</head>|" build/pages-site/index.html
+          # A new address per deployment: a browser never mixes this page with a stale stylesheet or script.
+          sed -i -E "s/(href=\"style\.css|src=\"js\/app\.js)\"/\1?v=${GITHUB_SHA::8}\"/" build/pages-site/index.html
+          grep -q "style.css?v=${GITHUB_SHA::8}" build/pages-site/index.html
+          grep -q "js/app.js?v=${GITHUB_SHA::8}" build/pages-site/index.html
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

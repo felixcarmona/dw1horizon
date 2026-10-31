@@ -55,10 +55,8 @@ The project's site: a static page with no backend. The patcher runs in the visit
 - `content/features.json`: the "What's new" entries, text in both languages and their media: loops, stills and side by sides in
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
-- Optional `media/covers/<disc id>.jpg`: historical deployment used libretro-thumbnails box art.
-  It is not tracked or approved for publication; the public site uses its disc placeholder.
-- Optional `media/psx.webp`: historical console photo attribution names Evan-Amos,
-  Wikimedia Commons, PSX-Console-wController.png. The file is absent from the public tree.
+- Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
+- `media/psx.webp`: the console photo, Evan-Amos, public domain (Wikimedia Commons, PSX-Console-wController.png).
   See the [publication media inventory](../docs/release/media.md) before supplying media.
 - The Discord and GitHub links: `LINKS` at the top of `js/app.js`.
 - "Build my disc" builds the everything disc from the player's four discs, all required: Digimon World (any of the
