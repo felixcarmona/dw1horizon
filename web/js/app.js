@@ -12,7 +12,7 @@ const LINKS = {
 
 // The box art is not ours and is not in this repository: the visitor's browser asks libretro-thumbnails for it, and
 // the plain disc stands in when that fails.
-const COVERS = 'https://thumbnails.libretro.com/Sony%20-%20PlayStation/Named_Boxarts/';
+const COVERS = 'https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/';
 const BOXART = {
   us: 'Digimon World (USA)', dcb: 'Digimon - Digital Card Battle (USA)',
   dw2: 'Digimon World 2 (USA)', dw2003: 'Digimon World 2003 (Europe) (En,Fr,De,Es,It)',

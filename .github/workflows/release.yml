@@ -71,6 +71,10 @@ jobs:
           mkdir build/pages-site/media/clips
           tar -xzf build/pages-input/horizon-media.tar.gz -C build/pages-site/media/clips
           sed -i "s|</head>|  <meta name=\"source-repository\" content=\"https://github.com/$GITHUB_REPOSITORY\">\n</head>|" build/pages-site/index.html
+          # A new address per deployment: a browser never mixes this page with a stale stylesheet or script.
+          sed -i -E "s/(href=\"style\.css|src=\"js\/app\.js)\"/\1?v=${GITHUB_SHA::8}\"/" build/pages-site/index.html
+          grep -q "style.css?v=${GITHUB_SHA::8}" build/pages-site/index.html
+          grep -q "js/app.js?v=${GITHUB_SHA::8}" build/pages-site/index.html
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
