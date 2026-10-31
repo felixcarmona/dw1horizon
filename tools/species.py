@@ -1485,6 +1485,7 @@ def select(sel, out, models=None, content=None):
     allsp = {t: s for t, s in allsp.items() if t < NUM_ORIGINAL or t in ids}
     missing = sorted(ids - set(allsp))
     if missing: raise SystemExit(f'species selection: no file for {", ".join(map(str, missing))}')
+    absent_records = {t for t, s in allsp.items() if is_record_original(s) and t not in ids}
     os.makedirs(out, exist_ok=True)
     for f in glob.glob(os.path.join(out, '*.json')): os.remove(f)
     for t, s in sorted(allsp.items()):
@@ -1495,7 +1496,11 @@ def select(sel, out, models=None, content=None):
         ev = s.get('evolution')
         if ev:                                   # a link to an import this disc does not carry is left out
             for k in ('from', 'to'):
-                if k in ev: ev[k] = [o for o in ev[k] if o < NUM_ORIGINAL or o in ids]
+                if k in ev:
+                    ev[k] = [o for o in ev[k] if o not in absent_records and (o < NUM_ORIGINAL or o in ids)]
+                    if 1 <= t <= 62 and not is_record_original(s):
+                        n = 5 if k == 'from' else 6
+                        ev[k] = (ev[k] + [-1] * n)[:n]
         for k in ('model', 'texture'):
             for kk in ('file', 'partner_file'):
                 f = (s.get(k) or {}).get(kk)

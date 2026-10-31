@@ -346,8 +346,8 @@ def plan():
         elif 1 <= t <= 62:
             ev['from'] = list(route['from']) + [-1] * (5-len(route['from']))
             # Native record children must remain here on subset discs too.
-            # A carried child's reverse row adds no duplicate link. Native
-            # fallback rows remain the existing C rows when a record is absent.
+            # A carried child's reverse row adds no duplicate link. Selection
+            # drops absent record children before balance writes native rows.
             native = [c for c in route['to'] if c < S.NUM_ORIGINAL]
             ev['to'] = native + [-1] * (6-len(native))
         elif route['to']:
