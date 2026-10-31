@@ -322,59 +322,363 @@
    "date": "2026-10-31",
    "en": {
     "new": [
-     "First public release"
+     "First public release. Everything listed here is what Horizon adds to the original Digimon World.",
+     "What the Island Forgot: a new story woven into the 1999 adventure, with 69 new areas that have their own paths, residents and fights. EXTENDED STORY in OPTIONS switches it off.",
+     "The Digimon you recruit move into File City and make it their own.",
+     "175 imported Digimon from Digital Card Battle, Digimon World 2 and Digimon World 2003 join the evolution chart, each with its own animations. NEW DIGIMON in OPTIONS switches them off.",
+     "A new Mega level on the evolution chart.",
+     "Up to 60 frames per second in the world, battles and tournaments, while the game keeps its original timing: your partner ages, trains and gets hungry exactly as before. The rate is chosen in OPTIONS.",
+     "The whole game in eight languages: English, Spanish, Brazilian Portuguese, French, German, Italian, Japanese and Catalan, in a new translation that includes menu labels and map signs. Switch language in OPTIONS at any time. The translations are beta drafts.",
+     "The first start asks for your language, with flags, and remembers it.",
+     "A new, evenly spaced font, or the original one if you miss it.",
+     "The evolution chart shows what each evolution asks for (care, weight, stats).",
+     "Field battles start the moment a Digimon comes at you, with no loading wait. QUICK BATTLE START in OPTIONS switches this off.",
+     "R2 runs any battle at double speed.",
+     "START skips an evolution you have seen before.",
+     "The gym trains five sessions in one go, with the same gains.",
+     "A care menu: press X in front of your partner and it lists only what it needs, most urgent first. A small X badge tells you when it is there.",
+     "A digital clock under the dial.",
+     "Every active condition (hungry, sleepy, sick…) shows at once as bubbles over your partner.",
+     "New status bars: happiness and discipline are one bar each, on the field and on the Status page.",
+     "Your partner's HP and MP appear in the triangle menu.",
+     "DIFFICULTY in OPTIONS: on EASY your partner deals double damage and takes half, in wild battles and tournaments.",
+     "An optional Cheats menu, off by default: add bits, satisfy needs, edit your partner, evolve it, teleport, heal, save or load.",
+     "A three-page name keyboard with accents and symbols.",
+     "Naming your partner is optional: skip it and it keeps its species name through evolutions and rebirths.",
+     "Amount boxes for the item shop's card machine, card packs and Mojyamon's trades: change the amount by one or by ten.",
+     "JAPANESE CONTROLS in OPTIONS (○ confirms, × cancels), on by default with a Japanese disc.",
+     "Build the disc in your browser at dw1horizon.com or with the command-line patcher, from your own four discs. Nothing is uploaded.",
+     "The USA disc, the five European releases and the Japanese Rev 1 disc all work as the base game."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "A reworked OPTIONS menu: every setting has its row, and your choices are kept with your save.",
+     "Each spot on the ground gives its item once a day, not again every time you re-enter a screen.",
+     "Big Digimon are framed by the camera instead of leaving the screen.",
+     "Saves are written so that a cut write still leaves a whole copy.",
+     "Higher limits for screens, items and species."
+    ],
+    "fixed": [
+     "Bugs of the original game: a tamer named B no longer appears as \"Bayer\" in the save list.",
+     "HAPPINESS is drawn whole on the Status page.",
+     "Long names fit: \"MetalGreymonVirus\" is no longer cut to \"MetalGreymonVi\", nor are item names in lists, and the gym's \"learned\" box shows the whole technique name.",
+     "A tournament cup no longer hangs the game on some emulators.",
+     "△ on a question with no answers to pick no longer runs script garbage."
+    ]
    },
    "es": {
     "new": [
-     "Primera versión pública"
+     "Primera versión pública. Todo lo que se enumera aquí es lo que Horizon añade al Digimon World original.",
+     "What the Island Forgot: una historia nueva entretejida con la aventura de 1999, con 69 zonas nuevas que tienen sus propios caminos, habitantes y combates. HIST. EXTRA en OPTIONS permite desactivarla.",
+     "Los Digimon que reclutas se mudan a Ciudad File y la hacen suya.",
+     "175 Digimon importados de Digital Card Battle, Digimon World 2 y Digimon World 2003 se incorporan a la tabla de evoluciones, cada uno con sus propias animaciones. DIGIMON NUEVOS en OPTIONS permite desactivarlos.",
+     "Un nuevo nivel Mega en la tabla de evoluciones.",
+     "Hasta 60 imágenes por segundo en el mundo, los combates y los torneos, mientras el juego mantiene su ritmo original: tu compañero crece, entrena y tiene hambre exactamente igual que antes. Puedes elegir la tasa en OPTIONS.",
+     "Todo el juego en ocho idiomas: inglés, español, portugués de Brasil, francés, alemán, italiano, japonés y catalán, con una traducción nueva que incluye los rótulos de los menús y los carteles de los mapas. Cambia de idioma en OPTIONS cuando quieras. Las traducciones son borradores beta.",
+     "El primer arranque te pregunta el idioma, con banderas, y lo recuerda.",
+     "Una letra nueva, bien espaciada, o la original si la echas de menos.",
+     "La tabla de evoluciones muestra qué pide cada evolución (cuidados, peso, estadísticas).",
+     "Un combate de campo arranca en el momento en que un Digimon se te echa encima, sin esperas de carga. INICIO RÁPIDO en OPTIONS permite desactivarlo.",
+     "R2 pone cualquier combate a doble velocidad.",
+     "START se salta una evolución que ya has visto.",
+     "El gimnasio entrena cinco sesiones seguidas, con las mismas ganancias.",
+     "Un menú de cuidados: pulsa X delante de tu compañero y lista solo lo que necesita, lo más urgente primero. Una pequeña X te avisa de cuándo está el menú.",
+     "Un reloj digital bajo la esfera.",
+     "Todas las condiciones activas (hambre, sueño, enfermedad…) se muestran a la vez como burbujas sobre tu compañero.",
+     "Nuevas barras de estado: la felicidad y la disciplina son una barra cada una, en el campo y en la pantalla Estado.",
+     "Los HP y MP de tu compañero aparecen en el menú triángulo.",
+     "DIFICULTAD en OPTIONS: en FÁCIL tu compañero hace el doble de daño y recibe la mitad, en combates salvajes y torneos.",
+     "Un menú Trucos opcional, desactivado por defecto: suma bits, satisface las necesidades, edita a tu compañero, hazlo evolucionar, teletranspórtate, cura, guarda o carga.",
+     "Un teclado de tres páginas para los nombres, con acentos y símbolos.",
+     "Ponerle nombre al compañero es opcional: si no lo haces, conserva el nombre de su especie en las evoluciones y las reencarnaciones.",
+     "Cajas de cantidad para la máquina de cartas de la tienda, los sobres de cartas y los trueques de Mojyamon: cambia la cantidad de uno en uno o de diez en diez.",
+     "MANDO JAPONÉS en OPTIONS (○ confirma, × cancela), activado por defecto con un disco japonés.",
+     "Crea el disco en tu navegador en dw1horizon.com o con el parcheador de línea de comandos, a partir de tus propios cuatro discos. No se sube nada.",
+     "El disco de EE. UU., las cinco versiones europeas y el disco japonés Rev 1 sirven como juego base."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Un menú OPTIONS renovado: cada ajuste tiene su fila, y tus elecciones se guardan con la partida.",
+     "Cada punto del suelo da su objeto una vez al día, no otra vez cada vez que entras en la pantalla.",
+     "Los Digimon grandes los encuadra la cámara, en vez de salirse de la pantalla.",
+     "Las partidas se escriben de modo que un corte a medias deja una copia entera.",
+     "Límites más altos para pantallas, objetos y especies."
+    ],
+    "fixed": [
+     "Errores del juego original: un tamer llamado B ya no aparece como \"Bayer\" en la lista de partidas.",
+     "FELICIDAD se dibuja entera en la pantalla Estado.",
+     "Los nombres largos caben: \"MetalGreymonVirus\" ya no se corta en \"MetalGreymonVi\", ni los de objetos en las listas, y la caja de \"¡aprendida!\" del gimnasio muestra el nombre entero de la técnica.",
+     "Una copa de torneo ya no cuelga el juego en algunos emuladores.",
+     "△ en una pregunta sin opciones que elegir ya no ejecuta basura del script."
+    ]
    },
    "pt-br": {
     "new": [
-     "Primeira versão pública"
+     "Primeira versão pública. Tudo o que está listado aqui é o que Horizon acrescenta ao Digimon World original.",
+     "What the Island Forgot: uma história nova entrelaçada com a aventura de 1999, com 69 áreas novas que têm caminhos, moradores e lutas próprios. HIST. EXTRA em OPTIONS permite desligá-la.",
+     "Os Digimon que você recruta se mudam para a Cidade File e a tornam deles.",
+     "175 Digimon importados de Digital Card Battle, Digimon World 2 e Digimon World 2003 entram no quadro de evolução, cada um com suas próprias animações. NOVOS DIGIMON em OPTIONS permite desligá-los.",
+     "Um novo nível Mega no quadro de evolução.",
+     "Até 60 quadros por segundo no mundo, nas batalhas e nos torneios, enquanto o jogo mantém o ritmo original: seu parceiro envelhece, treina e sente fome exatamente como antes. A taxa é escolhida em OPTIONS.",
+     "O jogo inteiro em oito idiomas: inglês, espanhol, português brasileiro, francês, alemão, italiano, japonês e catalão, numa tradução nova que inclui os textos dos menus e as placas nos mapas. Troque de idioma em OPTIONS a qualquer momento. As traduções são versões beta preliminares.",
+     "A primeira inicialização pergunta o idioma, com bandeiras, e o lembra.",
+     "Uma fonte nova, de espaçamento uniforme, ou a original se sentir falta dela.",
+     "O quadro de evolução mostra o que cada evolução exige (cuidados, peso, atributos).",
+     "A batalha de campo começa no instante em que um Digimon vem até você, sem espera de carregamento. INÍCIO RÁPIDO em OPTIONS permite desligar isso.",
+     "R2 deixa qualquer luta em velocidade dupla.",
+     "START pula uma evolução que você já viu.",
+     "A academia treina cinco sessões de uma vez, com os mesmos ganhos.",
+     "Um menu de cuidados: aperte X na frente do seu parceiro e ele lista só o que ele precisa, o mais urgente primeiro. Um pequeno X avisa quando o menu está disponível.",
+     "Um relógio digital sob o mostrador.",
+     "Todas as condições ativas (fome, sono, doença…) aparecem ao mesmo tempo como bolhas sobre seu parceiro.",
+     "Novas barras de status: felicidade e disciplina são uma barra cada, no campo e na tela Estado.",
+     "O HP e o MP do seu parceiro aparecem no menu triângulo.",
+     "DIFICULDADE em OPTIONS: em FÁCIL seu parceiro causa o dobro de dano e recebe metade, em lutas selvagens e torneios.",
+     "Um menu Truques opcional, desligado por padrão: some bits, satisfaça as necessidades, edite seu parceiro, faça-o evoluir, teletransporte-se, cure, salve ou carregue.",
+     "Um teclado de nomes com três páginas, acentos e símbolos.",
+     "Dar nome ao parceiro é opcional: se não der, ele mantém o nome da espécie nas evoluções e renascimentos.",
+     "Caixas de quantidade para a máquina de cartas da loja, os pacotes de cartas e as trocas do Mojyamon: mude a quantidade de um em um ou de dez em dez.",
+     "CONTROLE JP em OPTIONS (○ confirma, × cancela), ligado por padrão com um disco japonês.",
+     "Crie o disco no navegador em dw1horizon.com ou com o aplicador de patches de linha de comando, a partir dos seus próprios quatro discos. Nada é enviado.",
+     "O disco dos EUA, as cinco versões europeias e o disco japonês Rev 1 funcionam como jogo base."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Um menu OPTIONS reformulado: cada configuração tem sua linha, e suas escolhas ficam guardadas no seu save.",
+     "Cada ponto do chão dá o seu item uma vez por dia, e não de novo toda vez que você entra na tela.",
+     "Digimon grandes são enquadrados pela câmera, em vez de saírem da tela.",
+     "Os saves são gravados de modo que uma gravação interrompida deixa uma cópia inteira.",
+     "Limites maiores para telas, itens e espécies."
+    ],
+    "fixed": [
+     "Bugs do jogo original: um domador chamado B não aparece mais como \"Bayer\" na lista de saves.",
+     "FELICID. é desenhado inteiro na tela Estado.",
+     "Nomes longos cabem: \"MetalGreymonVirus\" não é mais cortado em \"MetalGreymonVi\", nem os nomes de itens nas listas, e a caixa de \"aprendeu!\" da academia mostra o nome inteiro da técnica.",
+     "Uma copa de torneio não trava mais o jogo em alguns emuladores.",
+     "△ numa pergunta sem opções para escolher não executa mais lixo do script."
+    ]
    },
    "fr": {
     "new": [
-     "Première version publique"
+     "Première version publique. Tout ce qui est indiqué ici est ce qu'Horizon ajoute au Digimon World d'origine.",
+     "What the Island Forgot : une nouvelle histoire mêlée à l'aventure de 1999, avec 69 nouvelles zones qui ont leurs propres chemins, habitants et combats. HIST. ÉTENDUE dans OPTIONS permet de la désactiver.",
+     "Les Digimon que tu recrutes s'installent à Ville File et la font leur.",
+     "175 Digimon importés de Digital Card Battle, Digimon World 2 et Digimon World 2003 rejoignent le tableau des évolutions, chacun avec ses propres animations. NOUV. DIGIMON dans OPTIONS permet de les désactiver.",
+     "Un nouveau niveau Méga dans le tableau des évolutions.",
+     "Jusqu'à 60 images par seconde dans le monde, les combats et les tournois, tandis que le jeu garde son rythme d'origine : ton partenaire vieillit, s'entraîne et a faim exactement comme avant. La fréquence se choisit dans OPTIONS.",
+     "Tout le jeu en huit langues : anglais, espagnol, portugais brésilien, français, allemand, italien, japonais et catalan, dans une nouvelle traduction qui comprend les libellés des menus et les panneaux des cartes. Change de langue dans OPTIONS à tout moment. Les traductions sont des versions préliminaires bêta.",
+     "Le premier lancement demande ta langue, avec des drapeaux, et s'en souvient.",
+     "Une nouvelle police aux espacements réguliers, ou l'originale si elle te manque.",
+     "Le tableau des évolutions montre ce que demande chaque évolution (soins, poids, stats).",
+     "Un combat sur le terrain commence dès qu'un Digimon fonce sur toi, sans attente de chargement. DÉPART RAPIDE dans OPTIONS permet de désactiver cela.",
+     "R2 accélère n'importe quel combat au double de la vitesse.",
+     "START passe une évolution déjà vue.",
+     "La salle d'entraînement enchaîne cinq séances d'un coup, avec les mêmes gains.",
+     "Un menu de soins : appuie sur X devant ton partenaire et il ne liste que ce dont il a besoin, le plus urgent d'abord. Un petit X te prévient que le menu est disponible.",
+     "Une horloge numérique sous le cadran.",
+     "Toutes les conditions actives (faim, sommeil, maladie…) s'affichent en même temps sous forme de bulles au-dessus de ton partenaire.",
+     "De nouvelles barres de statut : le bonheur et la discipline ont chacun leur barre, sur le terrain et sur l'écran État.",
+     "Les HP et MP de ton partenaire s'affichent dans le menu triangle.",
+     "DIFFICULTÉ dans OPTIONS : en FACILE, ton partenaire inflige le double de dégâts et en subit la moitié, dans les combats sauvages et les tournois.",
+     "Un menu Triches facultatif, désactivé par défaut : ajoute des bits, satisfais les besoins, modifie ton partenaire, fais-le évoluer, téléporte-toi, soigne, sauvegarde ou charge.",
+     "Un clavier de noms à trois pages, avec accents et symboles.",
+     "Nommer son partenaire est facultatif : sans nom, il garde celui de son espèce à travers les évolutions et les renaissances.",
+     "Des boîtes de quantité pour la machine à cartes de la boutique, les paquets de cartes et les échanges de Mojyamon : change la quantité de un en un ou de dix en dix.",
+     "BOUTONS JAP. dans OPTIONS (○ valide, × annule), activé par défaut avec un disque japonais.",
+     "Crée le disque dans ton navigateur sur dw1horizon.com ou avec l'outil de patch en ligne de commande, à partir de tes quatre disques. Rien n'est envoyé.",
+     "Le disque américain, les cinq versions européennes et le disque japonais Rev 1 peuvent tous servir de jeu de base."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Un menu OPTIONS remanié : chaque réglage a sa ligne, et tes choix sont gardés avec ta sauvegarde.",
+     "Chaque endroit du sol donne son objet une fois par jour, pas à chaque fois que tu retournes sur l'écran.",
+     "Les gros Digimon sont cadrés par la caméra au lieu de sortir de l'écran.",
+     "Les sauvegardes sont écrites de façon qu'une écriture interrompue laisse une copie entière.",
+     "Des limites plus élevées pour les écrans, les objets et les espèces."
+    ],
+    "fixed": [
+     "Bugs du jeu d'origine : un dresseur nommé B n'apparaît plus comme « Bayer » dans la liste des sauvegardes.",
+     "BONHEUR s'affiche en entier sur l'écran État.",
+     "Les noms longs tiennent : « MetalGreymonVirus » n'est plus coupé en « MetalGreymonVi », pas plus que les noms d'objets dans les listes, et la boîte « apprise ! » de la salle d'entraînement affiche le nom complet de la technique.",
+     "Une coupe de tournoi ne bloque plus le jeu sur certains émulateurs.",
+     "△ devant une question sans choix possible n'exécute plus du code de script au hasard."
+    ]
    },
    "de": {
     "new": [
-     "Erste öffentliche Veröffentlichung"
+     "Erste öffentliche Veröffentlichung. Alles, was hier aufgeführt ist, fügt Horizon dem ursprünglichen Digimon World hinzu.",
+     "What the Island Forgot: eine neue Geschichte, verwoben mit dem Abenteuer von 1999, mit 69 neuen Gebieten mit eigenen Wegen, Bewohnern und Kämpfen. Mit EXTRA-STORY in OPTIONS kannst du sie ausschalten.",
+     "Die Digimon, die du anwirbst, ziehen in die File-Stadt und machen die Stadt zu ihrer eigenen.",
+     "175 importierte Digimon aus Digital Card Battle, Digimon World 2 und Digimon World 2003 kommen zum Entwicklungsbaum hinzu, jedes mit eigenen Animationen. Mit NEUE DIGIMON in OPTIONS kannst du sie ausschalten.",
+     "Ein neues Mega-Level im Entwicklungsbaum.",
+     "Bis zu 60 Bilder pro Sekunde in der Welt, in Kämpfen und Turnieren, während das Spiel sein ursprüngliches Timing behält: Dein Partner altert, trainiert und bekommt Hunger genau wie vorher. Die Bildrate wählst du in OPTIONS.",
+     "Das ganze Spiel in acht Sprachen: Englisch, Spanisch, brasilianisches Portugiesisch, Französisch, Deutsch, Italienisch, Japanisch und Katalanisch, in einer neuen Übersetzung samt Menübeschriftungen und Schildern auf den Karten. Du kannst die Sprache jederzeit in OPTIONS wechseln. Die Übersetzungen sind Beta-Entwürfe.",
+     "Beim ersten Start wirst du nach deiner Sprache gefragt, mit Flaggen, und sie wird gemerkt.",
+     "Eine neue, gleichmäßige Schrift, oder die originale, wenn sie dir fehlt.",
+     "Der Entwicklungsbaum zeigt, was jede Entwicklung verlangt (Pflege, Gewicht, Werte).",
+     "Ein Kampf im Gelände beginnt, sobald ein Digimon auf dich zukommt, ohne Ladepause. Mit SCHNELLSTART in OPTIONS kannst du das ausschalten.",
+     "R2 lässt jeden Kampf doppelt so schnell laufen.",
+     "START überspringt eine Entwicklung, die du schon gesehen hast.",
+     "Im Fitnessstudio trainierst du fünf Einheiten auf einmal, mit denselben Zuwächsen.",
+     "Ein Pflegemenü: Drücke X vor deinem Partner, und es listet nur, was er braucht, das Dringendste zuerst. Ein kleines X zeigt an, dass das Menü bereitsteht.",
+     "Eine digitale Uhr unter dem Zifferblatt.",
+     "Alle aktiven Zustände (Hunger, Müdigkeit, Krankheit …) erscheinen gleichzeitig als Blasen über deinem Partner.",
+     "Neue Statusbalken: Zufriedenheit und Disziplin haben je einen Balken, im Feld und auf der Statusseite.",
+     "HP und MP deines Partners erscheinen im Dreiecksmenü.",
+     "SCHWIERIGKEIT in OPTIONS: Auf LEICHT teilt dein Partner doppelt so viel Schaden aus und steckt nur die Hälfte ein, in wilden Kämpfen und Turnieren.",
+     "Ein optionales Menü Cheats, standardmäßig ausgeschaltet: Bits hinzufügen, Bedürfnisse stillen, deinen Partner bearbeiten, ihn entwickeln, teleportieren, heilen, speichern oder laden.",
+     "Eine dreiseitige Namenstastatur mit Akzenten und Symbolen.",
+     "Dem Partner einen Namen zu geben ist optional: Ohne Namen behält er den seiner Art, auch durch Entwicklungen und Wiedergeburten.",
+     "Mengenfelder für den Kartenautomaten im Itemshop, die Kartenpäckchen und Mojyamons Tauschgeschäfte: Ändere die Menge in Einer- oder Zehnerschritten.",
+     "JAPAN-TASTEN in OPTIONS (○ bestätigt, × bricht ab), bei einer japanischen Disc standardmäßig an.",
+     "Erstelle die Disc in deinem Browser auf dw1horizon.com oder mit dem Kommandozeilen-Patcher aus deinen eigenen vier Discs. Nichts wird hochgeladen.",
+     "Die US-Disc, die fünf europäischen Veröffentlichungen und die japanische Rev-1-Disc können alle als Basisspiel dienen."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Ein überarbeitetes Menü OPTIONS: Jede Einstellung hat ihre Zeile, und deine Wahl wird mit deinem Spielstand gespeichert.",
+     "Jede Stelle am Boden gibt ihren Gegenstand einmal am Tag, nicht bei jedem Betreten des Bildschirms neu.",
+     "Große Digimon werden von der Kamera eingerahmt, statt aus dem Bild zu ragen.",
+     "Spielstände werden so geschrieben, dass ein abgebrochener Schreibvorgang eine vollständige Kopie übrig lässt.",
+     "Höhere Grenzen für Bildschirme, Gegenstände und Arten."
+    ],
+    "fixed": [
+     "Fehler des Originalspiels: Ein Tamer namens B erscheint in der Speicherliste nicht mehr als „Bayer“.",
+     "FREUDE wird auf der Statusseite vollständig gezeichnet.",
+     "Lange Namen passen: „MetalGreymonVirus“ wird nicht mehr zu „MetalGreymonVi“ abgeschnitten, ebenso wenig Gegenstandsnamen in den Listen, und das „erlernt!“-Fenster im Fitnessstudio zeigt den ganzen Namen der Technik.",
+     "Ein Turnierpokal lässt das Spiel auf manchen Emulatoren nicht mehr hängen.",
+     "△ bei einer Frage ohne Auswahlmöglichkeiten führt keinen Skript-Müll mehr aus."
+    ]
    },
    "it": {
     "new": [
-     "Prima versione pubblica"
+     "Prima versione pubblica. Tutto ciò che è elencato qui è quello che Horizon aggiunge al Digimon World originale.",
+     "What the Island Forgot: una nuova storia intrecciata all'avventura del 1999, con 69 nuove aree che hanno i propri percorsi, abitanti e combattimenti. STORIA EXTRA in OPTIONS permette di disattivarla.",
+     "I Digimon che recluti si trasferiscono a Città File e la fanno loro.",
+     "175 Digimon importati da Digital Card Battle, Digimon World 2 e Digimon World 2003 si aggiungono allo schema delle evoluzioni, ciascuno con le proprie animazioni. NUOVI DIGIMON in OPTIONS permette di disattivarli.",
+     "Un nuovo livello Mega nello schema delle evoluzioni.",
+     "Fino a 60 fotogrammi al secondo nel mondo, nelle battaglie e nei tornei, mentre il gioco mantiene i suoi tempi originali: il tuo compagno invecchia, si allena e ha fame esattamente come prima. Puoi scegliere la frequenza in OPTIONS.",
+     "Tutto il gioco in otto lingue: inglese, spagnolo, portoghese brasiliano, francese, tedesco, italiano, giapponese e catalano, con una nuova traduzione che comprende le scritte dei menu e i cartelli nelle mappe. Cambia lingua in OPTIONS quando vuoi. Le traduzioni sono bozze beta.",
+     "Al primo avvio ti chiede la lingua, con le bandiere, e la ricorda.",
+     "Un nuovo font a spaziatura regolare, o quello originale se ti manca.",
+     "Lo schema delle evoluzioni mostra cosa chiede ogni evoluzione (cure, peso, statistiche).",
+     "La battaglia sul campo parte nell'istante in cui un Digimon ti viene addosso, senza attese di caricamento. AVVIO RAPIDO in OPTIONS permette di disattivarlo.",
+     "R2 fa andare qualsiasi lotta a velocità doppia.",
+     "START salta un'evoluzione che hai già visto.",
+     "In palestra fai cinque allenamenti in una volta, con gli stessi guadagni.",
+     "Un menu di cura: premi X davanti al tuo compagno ed elenca solo ciò di cui ha bisogno, il più urgente per primo. Una piccola X ti avvisa che il menu è disponibile.",
+     "Un orologio digitale sotto il quadrante.",
+     "Tutte le condizioni attive (fame, sonno, malattia…) sono mostrate insieme come bolle sopra il tuo compagno.",
+     "Nuove barre di stato: felicità e disciplina hanno una barra ciascuna, sul campo e nella schermata Stato.",
+     "HP e MP del tuo compagno compaiono nel menu triangolo.",
+     "DIFFICOLTÀ in OPTIONS: su FACILE il tuo compagno infligge il doppio dei danni e ne subisce la metà, nei combattimenti selvatici e nei tornei.",
+     "Un menu Trucchi facoltativo, disattivato per impostazione predefinita: aggiungi bit, soddisfa i bisogni, modifica il tuo compagno, fallo evolvere, teletrasportati, cura, salva o carica.",
+     "Una tastiera dei nomi a tre pagine, con accenti e simboli.",
+     "Dare un nome al compagno è facoltativo: senza nome mantiene quello della sua specie attraverso evoluzioni e rinascite.",
+     "Finestre della quantità per la macchina delle carte del negozio, i pacchetti di carte e gli scambi di Mojyamon: cambia la quantità di uno o di dieci.",
+     "COMANDI GIAPP. in OPTIONS (○ conferma, × annulla), attivo di default con un disco giapponese.",
+     "Crea il disco nel browser su dw1horizon.com o con lo strumento di patch da riga di comando, a partire dai tuoi quattro dischi. Non viene caricato nulla online.",
+     "Il disco statunitense, le cinque versioni europee e il disco giapponese Rev 1 funzionano tutti come gioco base."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Un menu OPTIONS rinnovato: ogni impostazione ha la sua riga e le tue scelte restano salvate con la partita.",
+     "Ogni punto del terreno dà il suo oggetto una volta al giorno, non di nuovo a ogni rientro nella schermata.",
+     "I Digimon grandi sono inquadrati dalla camera invece di uscire dallo schermo.",
+     "I salvataggi sono scritti in modo che una scrittura interrotta lasci una copia intera.",
+     "Limiti più alti per schermate, oggetti e specie."
+    ],
+    "fixed": [
+     "Bug del gioco originale: un tamer chiamato B non compare più come «Bayer» nell'elenco dei salvataggi.",
+     "FELICITÀ viene disegnata per intero nella schermata Stato.",
+     "I nomi lunghi ci stanno: «MetalGreymonVirus» non viene più tagliato in «MetalGreymonVi», né i nomi degli oggetti negli elenchi, e il riquadro «appresa!» della palestra mostra il nome intero della tecnica.",
+     "Una coppa di torneo non blocca più il gioco su alcuni emulatori.",
+     "△ su una domanda senza opzioni da scegliere non esegue più codice di script a caso."
+    ]
    },
    "ja": {
     "new": [
-     "初の一般公開版"
+     "初の一般公開版です。ここに記載したものはすべて、HorizonがオリジナルのDigimon Worldに追加する内容です。",
+     "What the Island Forgot：1999年の冒険と織り合わされる新たなストーリーです。独自の道や住人、バトルを持つ69の新エリアを追加しました。OPTIONSの「ついかストーリー」でオフにできます。",
+     "仲間にしたデジモンははじまりの街に移り住み、街を自分たちのものにしていきます。",
+     "Digital Card Battle、Digimon World 2、Digimon World 2003から取り込んだ175体のデジモンが、それぞれのアニメーションとともに進化チャートに加わります。OPTIONSの「あたらしいデジモン」でオフにできます。",
+     "進化チャートに新しい世代「究極体」を追加しました。",
+     "フィールド、バトル、大会を最大60fpsで描画します。ゲーム内部のタイミングは元のままなので、パートナーの成長、トレーニング、空腹は以前とまったく同じです。フレームレートはOPTIONSで選べます。",
+     "ゲーム全体が英語、スペイン語、ブラジルポルトガル語、フランス語、ドイツ語、イタリア語、日本語、カタルーニャ語の8言語に対応しました。メニュー内の文字画像やマップ上の看板まで含む新たな翻訳です。OPTIONSでいつでも言語を切り替えられます。翻訳はベータ版の草稿です。",
+     "初回起動時に国旗つきで言語を選ぶ画面が出て、選んだ言語は記憶されます。",
+     "文字間隔の整った新フォントのほか、オリジナルのフォントも選べます。",
+     "進化チャートに各進化の条件（世話、体重、ステータス）を表示します。",
+     "デジモンが向かってきた瞬間に、読み込みの待ち時間なしでフィールドバトルが始まります。OPTIONSの「クイックスタート」でオフにできます。",
+     "R2でどのバトルも2倍速になります。",
+     "一度見た進化はSTARTでスキップできます。",
+     "ジムでは5回分のトレーニングをまとめて実行でき、得られる効果は同じです。",
+     "お世話メニューを追加しました。パートナーの前でXを押すと、必要なことだけが緊急度の高い順に並びます。メニューが開けるときは小さなXバッジが出ます。",
+     "文字盤の下にデジタル時計を追加しました。",
+     "空腹、眠気、病気など、いま出ているすべての状態がパートナーの頭上に吹き出しでまとめて表示されます。",
+     "新しいステータスバーを追加しました。きげんとしつけをそれぞれ1本のバーで表示します。フィールドでも「状態」画面でも同じです。",
+     "△メニューにパートナーのHPとMPを表示します。",
+     "OPTIONSの「むずかしさ」を「かんたん」にすると、野生バトルとトーナメントで、パートナーが与えるダメージは2倍、受けるダメージは半分になります。",
+     "任意で使えるチートメニューを追加しました。初期設定はオフです。ビットの追加、欲求の充足、パートナーの編集、進化、テレポート、回復、セーブ・ロードができます。",
+     "名前入力用キーボードは3ページ構成で、アクセントつきの文字や記号も使えます。",
+     "パートナーの名前入力は任意で、入力しなければ進化や転生を経ても種族名のままになります。",
+     "アイテムショップのカードマシン、カードパック、Mojyamonの交換に個数ボックスを追加しました。1つ単位または10単位で個数を変更できます。",
+     "OPTIONSのにほんのボタン（○で決定、×でキャンセル）は、日本版ディスクでは初期設定でオンです。",
+     "dw1horizon.comのブラウザ版かコマンドラインのパッチツールで、お手持ちの4枚のディスクからディスクを作成できます。何もアップロードされません。",
+     "北米版、欧州の5つの発売版、日本版Rev 1のディスクをベースとなるゲームとして使えます。"
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "OPTIONSメニューを作り直しました。各設定に項目があり、選択はセーブデータに保存されます。",
+     "地面の各スポットは、画面に入り直すたびではなく1日に1回だけアイテムをくれます。",
+     "大きなデジモンは画面からはみ出さず、カメラがちゃんとフレームに収めます。",
+     "セーブは書き込みが途中で止まっても完全なコピーが残るように書かれます。",
+     "画面、アイテム、種族の数の上限を引き上げました。"
+    ],
+    "fixed": [
+     "オリジナルの不具合を修正しました。名前がBのテイマーが、セーブ一覧で「Bayer」と表示されなくなりました。",
+     "「状態」画面の「きげん」の文字が欠けずに表示されるようになりました。",
+     "長い名前も収まるようになりました。「MetalGreymonVirus」が「MetalGreymonVi」と切れたり、リストのアイテム名が切れたりせず、ジムの「おぼえた！」ボックスもわざの名前を最後まで表示します。",
+     "一部のエミュレーターで、トーナメントの杯によってゲームが固まる不具合を修正しました。",
+     "選択肢のない質問で△を押しても、スクリプトが暴走しなくなりました。"
+    ]
    },
    "ca": {
     "new": [
-     "Primera versió pública"
+     "Primera versió pública. Tot el que s'enumera aquí és el que Horizon afegeix al Digimon World original.",
+     "What the Island Forgot: una història nova entreteixida amb l'aventura de 1999, amb 69 zones noves que tenen els seus propis camins, habitants i combats. HIST. EXTRA a OPTIONS permet desactivar-la.",
+     "Els Digimon que reclutes es muden a Ciutat File i la fan seva.",
+     "175 Digimon importats de Digital Card Battle, Digimon World 2 i Digimon World 2003 s'incorporen al quadre d'evolucions, cadascun amb les seves animacions. NOUS DIGIMON a OPTIONS permet desactivar-los.",
+     "Un nou nivell Mega al quadre d'evolucions.",
+     "Fins a 60 imatges per segon al món, als combats i als tornejos, mentre el joc conserva el ritme original: el teu company envelleix, entrena i té gana exactament com abans. Pots triar la freqüència a OPTIONS.",
+     "Tot el joc en vuit idiomes: anglès, espanyol, portuguès del Brasil, francès, alemany, italià, japonès i català, amb una traducció nova que inclou les etiquetes dels menús i els rètols dels mapes. Canvia d'idioma a OPTIONS quan vulguis. Les traduccions són esborranys beta.",
+     "El primer arrencada et demana l'idioma, amb banderes, i se'n recorda.",
+     "Una lletra nova d'espaiat uniforme, o l'original si la trobes a faltar.",
+     "El quadre d'evolucions mostra què demana cada evolució (cures, pes, estadístiques).",
+     "Un combat de camp comença just quan un Digimon se't llança a sobre, sense esperes de càrrega. INICI RÀPID a OPTIONS permet desactivar-ho.",
+     "R2 accelera qualsevol combat al doble de velocitat.",
+     "START salta una evolució que ja has vist.",
+     "El gimnàs entrena cinc sessions d'una tirada, amb els mateixos guanys.",
+     "Un menú de cures: prem X davant del teu company i llista només el que necessita, el més urgent primer. Una petita X t'avisa que el menú és disponible.",
+     "Un rellotge digital sota l'esfera.",
+     "Totes les condicions actives (gana, son, malaltia…) es mostren alhora com a bombolles damunt del teu company.",
+     "Noves barres d'estat: la felicitat i la disciplina tenen una barra cadascuna, al camp i a la pantalla Estat.",
+     "Els HP i MP del teu company apareixen al menú triangle.",
+     "DIFICULTAT a OPTIONS: amb FÀCIL el teu company fa el doble de mal i en rep la meitat, en combats salvatges i tornejos.",
+     "Un menú Trucs opcional, desactivat per defecte: suma bits, satisfés les necessitats, edita el teu company, fes-lo evolucionar, teletransporta't, cura, desa o carrega.",
+     "Un teclat de noms de tres pàgines, amb accents i símbols.",
+     "Posar nom al company és opcional: si no ho fas, conserva el nom de la seva espècie en les evolucions i les reencarnacions.",
+     "Caixes de quantitat per a la màquina de cartes de la botiga, els sobres de cartes i els intercanvis de Mojyamon: canvia la quantitat d'un en un o de deu en deu.",
+     "BOTONS JAP. a OPTIONS (○ confirma, × cancel·la), activat per defecte amb un disc japonès.",
+     "Crea el disc al navegador a dw1horizon.com o amb l'eina de pedaços de línia d'ordres, a partir dels teus quatre discos. No es puja res.",
+     "El disc dels EUA, les cinc versions europees i el disc japonès Rev 1 serveixen com a joc base."
     ],
-    "changed": [],
-    "fixed": []
+    "changed": [
+     "Un menú OPTIONS renovat: cada ajust té la seva fila, i el que triïs es desa amb la partida.",
+     "Cada punt del terra dona el seu objecte un cop al dia, no un altre cop cada vegada que entres a la pantalla.",
+     "Els Digimon grans els enquadra la càmera, en lloc de sortir de la pantalla.",
+     "Les partides s'escriuen de manera que una escriptura tallada deixa una còpia sencera.",
+     "Límits més alts per a pantalles, objectes i espècies."
+    ],
+    "fixed": [
+     "Errors del joc original: un domador anomenat B ja no apareix com a «Bayer» a la llista de partides.",
+     "FELICITAT es dibuixa sencera a la pantalla Estat.",
+     "Els noms llargs hi caben: «MetalGreymonVirus» ja no es talla en «MetalGreymonVi», ni els noms d'objectes a les llistes, i la caixa d'«apresa!» del gimnàs mostra el nom sencer de la tècnica.",
+     "Una copa de torneig ja no penja el joc en alguns emuladors.",
+     "△ en una pregunta sense opcions per triar ja no executa brossa de l'script."
+    ]
    }
   }
  ]
