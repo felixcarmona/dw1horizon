@@ -98,3 +98,5 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0284 | Clear text with VRAM fills and zeroes so DuckStation with Enable Texture Cache stops showing old text over new | +336 bytes: 208 of code and 128 of zeroes, from the symbol sizes of the English test build (original 2 MB target) |
 
 | 0285 | Finish active techniques, hit reactions and buffered damage before a field-battle timeout; preserve natural outcomes | +0 resident bytes: 0x801cb9fc → 0x801cb9fc (same English-only bank and version stamp, original 2 MB target); BTL +120 bytes; heap unchanged at 197,888 bytes; heapcheck passes and all 320 story setups fit, minimum 15,488 bytes on screen 361 |
+
+| 0286 | Bound large-partner world framing; converge while idle without replaying the tamer delta; retain small-partner and battle behavior | +128 bytes resident text: 0x801cb9fc → 0x801cba7c, same English test bank and original 2 MB target; data/BSS unchanged; heap 197,888 → 197,760 bytes; heapcheck and all 320 story setups pass (minimum conservative margin 15,488 bytes) |

@@ -658,3 +658,18 @@ Patch 0285 adds 120 bytes to `BTL_REL.BIN` and no resident growth. Controlled En
 heap. The general heap projection passes, and all 320 actual-archive story setups fit; screen 361 has the smallest
 margin at 15,488 bytes. These English test-bank figures are not an eight-language release measurement. The guard
 uses only battle-stack locals and the existing combat state; it adds no allocation, model or effects buffer.
+
+
+## Camera follow budget
+
+Patch 0286 adds 128 bytes of resident text in the English test build for the
+original 2 MB target. `main_BSS_END` moves from `0x801cb9fc` to `0x801cba7c`;
+initialized heap falls from 197,888 to 197,760 bytes. Data, rodata, SBSS and BSS
+sizes stay unchanged. The general sweep and all 320 actual-archive story setups
+pass. The conservative story margin stays at 15,488 bytes on screen 361 because
+this English build still exceeds the checker's original-heap ceiling.
+
+The eight-bank base recorded under 0281 has only 160 bytes spare on that setup.
+Applying the measured 128-byte loss projects 32 bytes remaining; this projection
+has not been checked by rebuilding all eight languages. Release heap checks must
+use the release's actual language padding, executable and archive.
