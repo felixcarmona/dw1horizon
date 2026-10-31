@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 20:15:52 +0000
+Subject: [PATCH] Bound pending transitions out of long imported field walks
+
+---
+ src/main/partner.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -847,6 +847,13 @@
+ 		       anim->animFrame >= stride + 2 &&
+ 		       (anim->animFrame - 2) % stride == 0;
+ 	}
++	/* Other long imported field walks yield to a pending navigation or needs
++	 * change after 24 logic ticks, reusing animation state: no timer, no allocation. */
++	if (type >= 180 && type != 189 && type != 201 &&
++	    (anim->animId == 2 || anim->animId == 3) &&
++	    anim->frameCount >= 41 && anim->loopCount != 0) {
++		return anim->animFrame >= 26;
++	}
+ 	return (type == 189 || type == 201) && anim->animId == 2 &&
+ 	       anim->frameCount == 73 && anim->loopCount != 0 &&
+ 	       anim->animFrame >= 26 && (anim->animFrame - 2) % 24 == 0;
+-- 
+2.55.0
+

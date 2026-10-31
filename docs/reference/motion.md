@@ -78,6 +78,10 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   condition walks. Pending navigation changes yield at completed strides;
   its idle can yield immediately. The complete upper-body performance remains
   on its original clock. Unhappy partners still walk instead of running.
+  Patch 0287 bounds the wait for the other imported walks and condition walks (slots 2/3) of at least 40 ticks: a pending
+  navigation or needs change may yield after 24 completed logic ticks, and a request arriving later yields at once. That
+  is not a stride boundary: the existing four-tick field blend hides the cut. Ordinary following still plays the full loop,
+  189, 201 and 224 keep their step-aligned rules, and no timer or allocation is added.
 - **Condition idles depend on the idle's length.** Standing near the tamer, `STOP_DISTANCE_TIMER` counts up each tick
   and `updateConditionAnimation` runs when it is greater than `anim->frameCount × EMOTION_ANIM_TIMEOUT`, the timeout a
   random 1..5 drawn when the idle starts. The timer is a signed 8-bit value (it wraps after 127), so with an idle of
