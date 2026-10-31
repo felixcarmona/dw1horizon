@@ -27,9 +27,10 @@ hills2_gururumon = hills2.npc(Species.Gururumon, at=(950, -550), hp=1200, mp=270
 
 # 319, the third Iron Hills screen (the zigzag climb): the same roster, one per leg, with a short chase range (400): the
 # legs lie one above the other and a chase across the terrace face starts a battle the two cannot fight (2026-10-21).
+# Stand beside the turns rather than sealing either leg with the starting body footprint.
 hills3 = new_screen(319, map="build/what-the-island-forgot-maps/screens/IRON03.MAP")
-hills3_psychemon = hills3.npc(Species.Psychemon, at=(-120, 326), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300, range=400)
-hills3_shamamon = hills3.npc(Species.Shamamon, at=(650, -1150), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300, range=400,
+hills3_psychemon = hills3.npc(Species.Psychemon, at=(-250, 250), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300, range=400)
+hills3_shamamon = hills3.npc(Species.Shamamon, at=(650, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300, range=400,
                              autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
 hills3_gururumon = hills3.npc(Species.Gururumon, at=(250, 2450), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400, range=400,
                               autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
@@ -195,8 +196,9 @@ gallery_w2_goblin_a = gallery_w2.npc(Species.Goblimon, at=(200, 0), hp=400, mp=8
 gallery_w2_goblin_b = gallery_w2.npc(Species.Goblimon, at=(-200, 2400), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300)
 
 # 344, the Sunken Gallery (the roof fall): one Goblimon at each side of the narrows.
+# Keep the west Goblimon beside the crossing so its body leaves the upper route open.
 sunken = new_screen(344, map="build/what-the-island-forgot-maps/screens/MINE10.MAP")
-sunken_goblin_a = sunken.npc(Species.Goblimon, at=(-550, -50), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300, range=700)
+sunken_goblin_a = sunken.npc(Species.Goblimon, at=(-400, -150), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300, range=700)
 sunken_goblin_b = sunken.npc(Species.Goblimon, at=(950, -450), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300, range=700)
 
 # 345, Gallery East (the signpost): two Goblimon.
