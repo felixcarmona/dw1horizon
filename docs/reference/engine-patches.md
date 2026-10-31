@@ -41,6 +41,18 @@ What changes:
 
 `renderNumber`'s wider boxes apply to every caller: a value that did not fit its box now shows all its digits.
 
+Patch **0289** closes another old-range assumption: wild-battle target scoring
+uses `CAPS_OLD_STAT(Defense)` before its percentage calculation. Without it,
+the default formula can reach the selector's 1000 sentinel below `STAT_CAP`,
+leaving target `0xff` and the partner moving without a valid target. Timed-out
+casts can spend MP without hitting the opponent. Brains ≥ 150 enables this
+path; Speed does not enter the score.
+The clamp also covers external-cheat Defense above 9999, while every score
+through 999 is identical. Formula values remain in
+`content/tables/battle-formulas.json`. BTL is the only copy; STD and VS select
+one opponent directly. See [combat](combat.md)
+for the formula, reproduction matrix and host regression.
+
 ## Memory reclaim (merge 0060, then 0092-0098, 0159-0160, 0198, 0206, 0208-0211)
 
 Three changes come with the merge:

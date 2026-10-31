@@ -457,11 +457,47 @@ ticks the partner ignores everything for 100 ticks (anim 0x13) with probability
 
 **Partner's target** (`BTL_selectFighterTarget`, `:3686`): brains ≥ 300
 → an enemy with a status ailment; otherwise, the «weakest» by
-`HP% + inverted_type_mult·Def/999·10` (`:3342`; 20↔2, 15↔5, lower = weaker),
+`selfHP*100/selfMaxHP + inv*((selfDef*100)/999)/10`
+(`:3342`; type factors 20→2, 15→5, 5→15, 2→20; neutral stays 10;
+each division truncates, lower = weaker),
 switching only if it improves by ≥ 40;
 brains ≥ 150 → the weakest, and keeps it; less → the nearest. On
 taking a hit it switches to the aggressor with probability `TARGET_ATTACKER_CHANCE
 [chargeMode] − discipline` (70/40/30 %) or if its target has fallen (`:1976`).
+
+Horizon patch **0289** applies `CAPS_OLD_STAT(selfDef)` before this score's
+multiplication. The normalizer, inverse factors and final divisor still come
+from `content/tables/battle-formulas.json`; the first-specialty matchup comes
+from `TYPE_FACTORS`. With the default table, scores are at most 300 at normal
+HP, including Defense above `STAT_CAP` from external cheats. Every score and
+target decision for Defense ≤ 999 is unchanged, including integer rounding
+and ties.
+
+Previously `BTL_getWeakestEnemy` started with `best = 1000`, required a strictly
+lower score, and could leave choice/target at `0xff` for a living opponent.
+At full HP this starts at Defense **4496** for inverse 20, **5994** for inverse
+15, or **8991** for neutral 10, all below the 9999 cap. The partner can then
+move without a target until it is retargeted, including after taking a hit.
+The approach timeout can still play a technique animation and spend MP;
+in the reproduced invalid-target fights these casts did no damage. Brains
+enables the scored targeting paths (≥ 150); Speed is absent from this score.
+Below 150 Brains the nearest-enemy path bypasses it. STD and VS have no copy
+of this formula: they select their sole opponent directly.
+
+The Cheats parameter editor clamps Defense, Brains and Speed to `STAT_CAP`
+(9999); 12000 requires an external memory write. For reproduction, use
+`game_state.py trigger 1 1`, `warp 0 0`, `approach 0`, then save a field snapshot
+beside the wild opponent once its dialogue has finished revealing, before
+dismissing it (a Cross press may only finish the text). On a private 2 MB
+emulator, `tools/dev/playtest/target_score.py CONTACT.state OUT.json` reloads
+that snapshot for the 24-case matrix (each stat alone and all three at 999,
+9999 and 12000; inverse 20 and neutral matchups). Its docstring describes the
+controlled elemental fixture and fixed stats; `--expect-fixed` checks that
+each fight targets and attacks without an invalid target after setup.
+`python3 tools/test_target_score.py build/decomp-int` compiles the real C scorer
+and selector with the authored data, checks all positive signed-16-bit Defense
+values and HP percentages across all 49 matchups, and preserves old-range
+results, tie ordering and candidate exclusions.
 
 **Enemy AI** (`BTL_tickEnemyAI`, `:515`; `BTL_selectEnemyMove`, `:3804`):
 on each decision `chargeMode` = 2 if it is off screen, otherwise 0 or 1 at
