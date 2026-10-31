@@ -12,6 +12,7 @@ facing north.
 import os, shutil, sys
 from mapbase import extracted, Cam, dwmap, MOD, check_arrivals
 from maps import reach
+from hunter_sightings import mark_sighting
 
 EXIT_TILES = [(tx, tz) for tz in (71, 72) for tx in range(39, 43)]   # the bottom of the gap, right of the tuft of grass
 SPAWN = (39, 67)                                        # tile of the arrival from the clearing
@@ -30,6 +31,7 @@ def main(out):
     m.collision = col
     sx, sz = (SPAWN[0] - 50) * 100 + 50, (49 - SPAWN[1]) * 100 + 50
     m.warps[WARP].update({'x': sx, 'z': sz, 'rotation': ROTATION, 'targetMap': TARGET[0], 'targetExit': TARGET[1]})
+    mark_sighting(m, 'MAYO03')
     check_arrivals(m, 'MAYO03')
     open(os.path.join(out, 'MAYO03.MAP'), 'wb').write(m.build())
     R = reach.from_spawn_coordinates(m, starts=[(m.warps[0]['x'], m.warps[0]['z'])])          # from the arrival from MAYO01
