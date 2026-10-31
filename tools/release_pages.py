@@ -21,6 +21,7 @@ PACKAGE = 'horizon-package.tar.gz'
 ENGINE = 'horizon-engine.tar.gz'
 LIMIT = 900 * 1024 * 1024
 RAW = {'.bin', '.cue', '.iso', '.img', '.chd', '.ecm', '.pbp', '.str', '.xa', '.vab'}
+LOCAL_PATH = re.compile(rb'/home/[a-z_][^/\s"]*/|/var/tmp/|/Users/[A-Za-z][^/\s"]*/|[A-Z]:\\+Users\\+')
 
 
 def require(condition, message):
@@ -85,6 +86,9 @@ def load(entries, name):
 
 
 def validate(package, engine, info):
+    for name, data in package.items():
+        found = LOCAL_PATH.search(data)
+        require(not found, f'local path in package: {name}: {found and found[0].decode("latin-1")}')
     m = load(package, 'manifest.json')
     require(m.get('format') == 3, 'expected format 3 patch package')
     for key in ('version', 'date', 'commit'):

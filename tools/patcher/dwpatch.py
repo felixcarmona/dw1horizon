@@ -482,7 +482,7 @@ def release_line(m):
 
 def git_commit():
     try:
-        return subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], cwd=REPO, capture_output=True, text=True).stdout.strip() + \
+        return subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=REPO, capture_output=True, text=True).stdout.strip() + \
             ('+dirty' if subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=REPO,
                                         capture_output=True, text=True).stdout.strip() else '')
     except OSError:
@@ -1837,7 +1837,7 @@ def cmd_make_release3(a):
                                        output=dict(name=f'{a.title} ({name})'), outputs=outputs,
                                        holes=holes)
             say(f'  {fn}: {len(payload)} bytes, {len(blob)} compressed')
-            audit_txt.append(f'== {name} ({target} -> {fn}, {len(blob)} bytes; bases: {", ".join(base_paths)})')
+            audit_txt.append(f'== {name} ({os.path.basename(target)} -> {fn}, {len(blob)} bytes; bases: {", ".join(base_paths)})')
             for key, counts in enc.reloc_stats.items():
                 audit_txt.append(f'code sources on {key}: {counts["absent"]} bytes absent, '
                                  f'{counts["fixed"]} address bytes fixed (after output reuse, before shared-file copies)')

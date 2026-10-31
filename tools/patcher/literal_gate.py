@@ -229,7 +229,7 @@ def check(chunks, sources, original_findings, output, canonical_mappings=(), inp
     with tempfile.TemporaryDirectory(prefix='literal-gate-', dir=output.parent) as temp:
         matches = scan_chunks(chunks, sources, Path(temp))
     report = dict(schema=1, inputs=inputs or {}, policy='exact 16-byte seeds, bytewise extension; adjacent literals joined',
-                  sources=sources['sha1'], literal_bytes=sum(len(c['data']) for c in chunks),
+                  sources={Path(path).name: sha1 for path, sha1 in sources['sha1'].items()}, literal_bytes=sum(len(c['data']) for c in chunks),
                   short_literal_bytes=sum(len(c['data']) for c in chunks if len(c['data']) < 16),
                   disc_matching_bytes=sum(r['length'] for r in matches),
                   copyable_original_bytes=sum(r['length'] for r in original_findings),

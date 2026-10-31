@@ -446,11 +446,11 @@ def inspect(payload, build, bases, secondary, plan=None):
                        'mixed fonts and inherited buffer objects always require verified sources',
                 classes=dict(classes), regions=regions, low_similarity_controls=controls,
                 short_buffer_objects=records,
-                maps_sha1={str(path.resolve()): hashlib.sha1(path.read_bytes()).hexdigest()
+                maps_sha1={path.relative_to(build).as_posix(): hashlib.sha1(path.read_bytes()).hexdigest()
                            for path in sorted(build.glob('exe*/SLUS_010.32.elf.map'))},
-                text_banks_sha1={str(path.resolve()): hashlib.sha1(path.read_bytes()).hexdigest()
+                text_banks_sha1={path.relative_to(build).as_posix(): hashlib.sha1(path.read_bytes()).hexdigest()
                                 for path in sorted(build.glob('text-bank-*.json'))},
-                elf_sha1={str(path.resolve()): hashlib.sha1(path.read_bytes()).hexdigest()
+                elf_sha1={path.relative_to(build).as_posix(): hashlib.sha1(path.read_bytes()).hexdigest()
                           for path in sorted(build.glob('exe*/SLUS_010.32.elf'))},
                 decomp_pin=pin,
                 unavailable_bytes_by_base=dict(totals), unavailable=unavailable)

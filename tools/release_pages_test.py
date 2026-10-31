@@ -3,6 +3,7 @@
 import hashlib
 import json
 from pathlib import Path
+import sys
 import tarfile
 import tempfile
 import unittest
@@ -46,6 +47,19 @@ class PublicationTests(unittest.TestCase):
         engine[name] += b'corrupt'
         with self.assertRaisesRegex(ValueError, 'checksum'):
             pages.validate(package, engine, self.info)
+
+    def test_package_writes_the_full_commit(self):
+        sys.path.insert(0, str(pages.ROOT / 'tools/patcher'))
+        import dwpatch
+        self.assertEqual(dwpatch.git_commit().split('+')[0], pages.release.git('rev-parse', 'HEAD'))
+
+    def test_local_paths_are_refused(self):
+        for path in (b'/var/tmp/build/x.map', b'/Users/someone/game.bin',
+                     b'C:\\Users\\someone\\game.bin'):
+            package, engine = fixture(self.info)
+            package['audit.txt'] += path
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'local path in package'):
+                pages.validate(package, engine, self.info)
 
     def test_embedded_manifest_is_exact_package(self):
         package, engine = fixture(self.info)
