@@ -55,9 +55,29 @@ class GuardTests(unittest.TestCase):
         p, c = self.names['Snatchmon'], self.names['Apocalymon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
 
+    def test_imperialdramon_shortcut(self):
+        p, c = self.names['Snatchmon'], self.names['Imperialdramon']
+        self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
+
+    def test_primary_mega_parent(self):
+        c = self.names['Apocalymon']
+        def remove_bonus(sp, kids):
+            sp[c]['evolution']['requirements']['digimon'] = -1
+        self.assertIn('Mega bonus must name its first listed parent', self.errors(remove_bonus))
+
     def test_new_disc_mega_shortcut(self):
         p, c = self.names['Greymon'], self.names['Phoenixmon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
+
+    def test_six_child_limit(self):
+        p = self.names['Agumon']
+        c = self.names['Lillymon']
+        self.assertIn('more than six children', self.errors(lambda s, k: k[p].append(c)))
+
+    def test_five_parent_limit(self):
+        c = self.names['Zudomon']
+        p = self.names['Agumon']
+        self.assertIn('more than five parents', self.errors(lambda s, k: k[p].append(c)))
 
     def test_specialty(self):
         p, c = self.names['Agumon'], self.names['Palmon']

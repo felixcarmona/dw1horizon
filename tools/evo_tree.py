@@ -166,8 +166,14 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=72):
                 # Disc routes retain their original late-raise requirements. Learned
                 # moves survive rebirth, so 35 techniques is possible for Gigadramon.
                 tech_counts = (20, 35) if child < S.NUM_ORIGINAL and not S.is_record_original(sp[child]) else (20,)
-                for techs in tech_counts:
-                    bonus = (0 if row['flags'] & 1 else 50, techs, 100, 100)
+                for techs, battles in itertools.product(tech_counts, (0, 50, 100) if levels[cur] == 5 else (0, 50)):
+                    # Reserve eight hours of sleep per day. A battle advances
+                    # twenty game minutes; MetalEtemon's original 100-battle
+                    # bonus fits its 96-hour wait without requiring huge stats.
+                    awake = 64 if levels[cur] == 5 else 96
+                    if sessions + (battles + 2) // 3 > awake:
+                        continue
+                    bonus = (battles, techs, 100, 100)
                     if E.pick(cur, kids[cur], reqs, levels, st, mistakes, weight, 'stats', bonus) == child:
                         result = dict(stats=vals, care=mistakes, weight=weight, sessions=sessions, bonus=bonus)
                         _PRACTICAL[cache_key] = result

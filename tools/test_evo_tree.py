@@ -22,6 +22,15 @@ def check(sp, kids, table):
         natural.add(t)
         todo.extend(kids.get(t, []))
     errors = []
+    incoming = {}
+    for p, children in kids.items():
+        if sp[p]['level'] != 'in-training' and len(set(children)) > 6:
+            errors.append(f'{sp[p]["name"]}: more than six children')
+        for c in set(children):
+            incoming.setdefault(c, set()).add(p)
+    for c, parents in incoming.items():
+        if len(parents) > 5:
+            errors.append(f'{sp[c]["name"]}: more than five parents')
     checked = natural | {t for t, s in sp.items() if 'partner' in s and s['level'] in ('rookie', 'in-training')}
     for p in sorted(checked):
         level = sp[p]['level']
@@ -41,6 +50,9 @@ def check(sp, kids, table):
     for t, s in sp.items():
         if 'partner' in s and s['level'] != 'none' and t not in accessible:
             errors.append(f'{s["name"]}: no natural or documented special route')
+    for name, entry in table['children'].items():
+        if entry.get('chain') and sp[names[name]]['evolution']['requirements']['digimon'] != names[entry['parents'][0]]:
+            errors.append(f'{name}: Mega bonus must name its first listed parent')
     exceptions = {(e['parent'], e['child']) for e in table['specialty_exceptions']}
     megas = set(table['canon_megas'])
     # Only the disc's own existing routes are allowed, never an imported parent.
@@ -83,10 +95,18 @@ def practical_errors(sp, kids, table):
                     if any(signature == {stat for stat in T.ALL if reqs[k][stat] != -1}
                            for k in kids[p] if k != c and k in reqs):
                         errors.append(f'{parent} -> {name}: identical sibling picker average')
-            if entry.get('chain'):
-                chains += 1
-                if not T.chain_witness(p, c, kids, reqs, levels, sp):
-                    errors.append(f'{parent} -> {name}: no practical chain')
+    preserved = {'Jijimon', 'Machinedramon'} | set(table.get('disc_mega_routes', {}))
+    for name in table.get('canon_megas', []):
+        if name in preserved:
+            continue
+        c = names[name]
+        parents = [p for p, cs in kids.items() if c in cs]
+        if not parents:
+            errors.append(f'{name}: no Mega chain parent')
+        for p in parents:
+            chains += 1
+            if not T.chain_witness(p, c, kids, reqs, levels, sp):
+                errors.append(f'{sp[p]["name"]} -> {name}: no practical chain')
     return errors, checked, chains
 
 

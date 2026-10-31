@@ -79,6 +79,7 @@
     "Triceramon": {"parents": ["Monochromon", "Ankylomon", "Digmon", "Minotarumon", "Tortomon"], "reason": "Canon: Monochromon, Ankylomon, Digmon, Minotarumon, Tortomon."},
     "Valkyrimon": {"parents": ["Silphymon", "Angewomon"], "reason": "Canon: Silphymon, Angewomon. Mega follows Perfects.", "chain": true},
     "VenomMyotismon": {"parents": ["Myotismon"], "reason": "Canon: Myotismon. Mega follows Perfects.", "chain": true},
+    "WarGrowlmon": {"parents": ["Growlmon"], "reason": "Keeps the canon main line; two trained stats let a well-kept Champion reach the Perfect in time for Gallantmon."},
     "WarGreymon": {"parents": ["MetalGreymonVirus", "MetalGreymonVaccine"], "reason": "Canon: MetalGreymonVirus, MetalGreymonVaccine. Mega follows Perfects.", "chain": true},
     "WaruSeadramon": {"parents": ["Whamon", "Seadramon", "Dolphmon", "Submarimon", "Tylomon"], "reason": "Canon: Whamon, Seadramon, Submarimon, Tylomon. Family/shared specialty: Dolphmon."},
     "WereGarurumon": {"parents": ["Garurumon", "Apemon", "Gururumon"], "reason": "Canon: Garurumon, Apemon, Gururumon."},
@@ -91,7 +92,7 @@
     "Cherrymon": "Carries its existing partner model and requirements so its Perfect-to-Mega path has a cached row.",
     "MasterTyrannomon": "Carries its existing partner model and requirements so its Perfect-to-Mega path has a cached row."
   },
-  "canon_megas": ["Apocalymon", "Armageddemon", "Baihumon", "Beelzemon", "BlackWarGreymon", "Boltmon", "Cannondramon", "ChaosLord", "Creepymon", "Diaboromon", "Fujinmon", "Gallantmon", "Ghoulmon", "GranKuwagamon", "Gryphonmon", "HerculesKabuterimon", "HiAndromon", "Jijimon", "KingEtemon", "Machinedramon", "Magnadramon", "MaloMyotismon", "MarineAngemon", "Marsmon", "MegaGargomon", "MetalEtemon", "MetalGarurumon", "MetalSeadramon", "NeoCrimson", "Omnimon", "Pharaohmon", "Phoenixmon", "Piedmon", "Plesiomon", "PrinceMamemon", "Pukumon", "Puppetmon", "Raidenmon", "Raijinmon", "Rosemon", "SaberLeomon", "Sakuyamon", "Seraphimon", "SkullMammothmon", "SlashAngemon", "Suijinmon", "Valkyrimon", "VenomMyotismon", "Vikemon", "WarGreymon", "Zanbamon"],
+  "canon_megas": ["Apocalymon", "Armageddemon", "Baihumon", "Beelzemon", "BlackWarGreymon", "Boltmon", "Cannondramon", "ChaosLord", "Creepymon", "Diaboromon", "Fujinmon", "Gallantmon", "Ghoulmon", "GranKuwagamon", "Gryphonmon", "HerculesKabuterimon", "HiAndromon", "Imperialdramon", "Jijimon", "KingEtemon", "Machinedramon", "Magnadramon", "MaloMyotismon", "MarineAngemon", "Marsmon", "MegaGargomon", "MetalEtemon", "MetalGarurumon", "MetalSeadramon", "NeoCrimson", "Omnimon", "Pharaohmon", "Phoenixmon", "Piedmon", "Plesiomon", "PrinceMamemon", "Pukumon", "Puppetmon", "Raidenmon", "Raijinmon", "Rosemon", "SaberLeomon", "Sakuyamon", "Seraphimon", "SkullMammothmon", "SlashAngemon", "Suijinmon", "Valkyrimon", "VenomMyotismon", "Vikemon", "WarGreymon", "Zanbamon"],
   "disc_mega_routes": {"Phoenixmon": ["Airdramon", "Angemon", "Birdramon", "Unimon", "Kokatorimon"], "HerculesKabuterimon": ["Kabuterimon", "Shellmon", "Kuwagamon"]},
   "wild_only": ["PlatinumSukamon", "ShimaUnimon", "RedVegiemon", "J-Mojyamon", "NiseDrimogemon", "MudFrigimon", "Akatorimon", "Weedmon"],
   "special_routes": {
