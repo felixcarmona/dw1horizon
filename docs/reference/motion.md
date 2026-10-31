@@ -90,8 +90,13 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
 
 ### Speeds
 
-The tamer walks at 20 units per tick and runs at 50. A field gait is only playable if its root travel lets the partner
-keep up: the walk near the tamer's walk, the catch-up run at or above the tamer's run, the condition walk slower.
+The tamer walks at 20 units per tick and runs at 50. Measured native partners walk at
+15–31 and run at 35–52 units per tick. Imports below 15 walking or 35 running need
+review, but a run below 50 is also normal among natives. The partner follows a
+trail and can teleport when both it and the next tile are off screen
+([world.md](world.md)); matching the tamer's speed is not a native requirement.
+Keep the condition walk slower than the ordinary walk. Cadence and travel must
+change together on planted gaits: increasing root travel alone makes feet skate.
 Typical authored values:
 
 | Gait | Cycle (ticks) | Root units per tick |
@@ -477,3 +482,20 @@ pose of the game is in the file), loop points, sounds and texture moves in the a
 by the texture's real size. A keyframe-only exporter is smaller but loses the shape between keys (above), and must
 apply the finite-loop rule and the out-of-range normals ([imported-species.md](imported-species.md)) to agree with the
 game.
+
+### Footless native-range post-pass
+
+`tools/models/field_animations/locomotion.py` applies a pinned travel-only
+post-pass to ShellNumemon (slug slide), Solarmon (hover), Tylomon (swim), Syakomon
+(clam glide) and Apocalymon (floating base). Its manifest is
+`content/models/imports/locomotion.json`. The manifest pins the source model,
+skeleton and, when present, the preceding reviewed recipe's output. Only root TZ
+changes in the named field slots. Nine-cycle comparisons keep all poses, events,
+loop durations and lateral/vertical root movement exact, so tick and interpolated
+mesh-floor positions are unchanged. The final resident and cold reads must fit.
+
+This post-pass deliberately covers footless locomotion. A general planted-gait
+retime needs separate contact and thirds checks: resampling can cut across the
+floor even when all original tick poses were supported, and re-encoding may
+exceed a model's storage budget. Source pins and speed thresholds alone do not
+prove a successful gait repair.

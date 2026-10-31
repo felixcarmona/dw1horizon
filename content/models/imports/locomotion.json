@@ -1,0 +1,60 @@
+{
+  "231": {
+    "name": "ShellNumemon",
+    "source_sha256": "e1ccebf36cff30e6d2cdf8843ec345b58ae193fdb11d553360da99c3e56c6b12",
+    "bones": 16,
+    "base_generator": "tools.models.field_animations.shell_numemon",
+    "post_source_sha256": "9cb0cacdad2c506b7c0e1bb40a95f092a3cbf1006f95811cdf5e5a380b0f9c35",
+    "speeds": {
+      "4": 35
+    },
+    "skeleton_sha256": "11dc36270a02aa6cf20dc091dc5e49083f0353b44664c1bc35d1a792ccf8952f"
+  },
+  "251": {
+    "name": "Solarmon",
+    "source_sha256": "fea01758a0e16af9d699bd4a47ee5a07d60996176ae817a8e3912a0b0446f59e",
+    "bones": 5,
+    "base_generator": "tools.models.field_animations.gliding",
+    "post_source_sha256": "9dc120b009aa6c86d9f024ac3a9aaabfed355d3d2039ea9a38e6e6fee75bc5e7",
+    "speeds": {
+      "4": 35
+    },
+    "skeleton_sha256": "9a372d6cb1443e7530220bba1d71aba4e87e9d03ace4c353f08d676703c4eba4"
+  },
+  "254": {
+    "name": "Tylomon",
+    "source_sha256": "ad339a618eb3914b090dad47dbb15274725d7e0d6a73acd8628c33d25971bfd3",
+    "bones": 20,
+    "base_generator": null,
+    "post_source_sha256": "ad339a618eb3914b090dad47dbb15274725d7e0d6a73acd8628c33d25971bfd3",
+    "speeds": {
+      "2": 15,
+      "3": 14.7,
+      "4": 35
+    },
+    "skeleton_sha256": "4e31eb1bcc20b3543bdb4385d32c72b8acc5ed921206057956b146d6c892598e"
+  },
+  "283": {
+    "name": "Syakomon",
+    "source_sha256": "1e5bccea53ea808e8c4d7fddc07c9b23c459aa9f9eb9b3f61bf7fcb90ea4bbbe",
+    "bones": 7,
+    "base_generator": null,
+    "post_source_sha256": "1e5bccea53ea808e8c4d7fddc07c9b23c459aa9f9eb9b3f61bf7fcb90ea4bbbe",
+    "speeds": {
+      "4": 35
+    },
+    "skeleton_sha256": "e3d9809b43918567a3a6be35279649dd913629f8e8c3d85f1312e8d48110496b"
+  },
+  "400": {
+    "name": "Apocalymon",
+    "source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "bones": 31,
+    "base_generator": null,
+    "post_source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "speeds": {
+      "2": 15,
+      "3": 13
+    },
+    "skeleton_sha256": "0f2e0ced80dae8601d860eae19c28c84b4cca45f5bc502edc7e739be79fb0f43"
+  }
+}

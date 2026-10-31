@@ -41,3 +41,14 @@ check mesh registration, events, loop replay, floor/support at thirds, and stora
 See [motion](../../docs/reference/motion.md#generated-metalgreymon-care-repair)
 for slot provenance and the retained exceptions. Disc-free solver checks run with
 `python3 -m unittest tools.test_metal_greymon_care`.
+Measure final field speeds and voice-note coverage with:
+
+```sh
+python3 tools/models/audit_field.py --from build/dev-everything --out build/field-audit.json
+PYTHONPATH=tools python3 -m unittest tools.test_field_audit tools.test_model_provider
+```
+
+The audit uses each overlay report's generated skeleton. Its JSON includes
+walk/condition/run durations, root travel per tick, bank-4 notes and missing
+voice tones. Long programs (40 ticks or more) need an in-game switch-latency
+measurement as well as an offline speed measurement.

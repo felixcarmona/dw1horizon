@@ -29,7 +29,7 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 175)
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 68)
+        self.assertEqual(len(selected), 71)
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
@@ -38,6 +38,13 @@ class ModelProvider(unittest.TestCase):
         for sid, name in (('315', '315-taomon-equipment'), ('332', '332-roachmon-equipment'),
                           ('335', '335-megagargomon-equipment'), ('351', '351-kotemon-field')):
             self.assertEqual(assignments[sid], ('tools.models.field_animations.imported_equipment', name))
+        # Reviewed footless post-passes wrap these original generators.
+        for sid, module in (('231', 'shell_numemon'), ('251', 'gliding')):
+            self.assertEqual(assignments[sid][0], 'tools.models.field_animations.locomotion')
+            assignments[sid] = ('tools.models.field_animations.' + module, assignments[sid][1])
+        for sid in ('254', '283', '400'):
+            self.assertEqual(assignments[sid][0], 'tools.models.field_animations.locomotion')
+            del assignments[sid]
         # All pre-existing bindings outside the four repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
