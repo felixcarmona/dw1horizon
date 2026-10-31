@@ -269,6 +269,13 @@ class BackendUnits(unittest.TestCase):
         open(os.path.join(gen, 'font_sel.h'), 'w').write('#define FONT_A 1\n')
         self.assertEqual(fontgen.exe_font(exe)[0], 'a')
 
+        from unittest.mock import patch
+        for filename in ('SLUS_010.32', 'SLUS_010.32.elf'):
+            open(os.path.join(exe, filename), 'wb').close()
+        symbols = '80100000 T drawStringCells\n80110000 t LATIN_GLYPH_BITS\n'
+        with patch('subprocess.run', return_value=subprocess.CompletedProcess([], 0, symbols)):
+            self.assertEqual(fontgen.exe_font(exe)[0], 'b')
+
     def test_repage_for_font_b_and_back(self):
         """tools/dws/text/repage.py re-pages wrapped prose for font b (words unchanged; a page that ends a sentence keeps its
         break); a text paged for b built for the original font is wrapped again (textbank.fit, counted in `rewrapped`)."""

@@ -520,7 +520,17 @@ def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, re
     def make_mh(extra):
         mprog = B.compile_sources(mh_files + names, sexe, lang, list(text) + extra, text_source=text_source)
         minfo = {'events': getattr(mprog.b, 'mh_events', []), 'shared': getattr(mprog.b, 'mh_shared', [])}
-        new = generate_text('MAPHEAD', minfo, getattr(mprog.b, 'orders', {}).get('maphead'), mprog.b.gen_event)
+        gen_event = mprog.b.gen_event
+        # The unmodified engine keeps its small MAPHEAD buffer and original quiz.
+        # The everything driver uses the mods opcode profile with the expanded
+        # engine's explicit 32 KB buffer; it needs the appended quiz table too.
+        if exe != 'original' and BE.MAPHEAD_LIMIT >= 0x8000 and any(e[0] == 1238 for e in minfo['events']):
+            quiz = B.compile_sources([os.path.join(ROOT, 'story/new-game-quiz.dws')] + names,
+                                     sexe, lang, list(text) + extra, text_source=text_source)
+            event = quiz.b.mh_events[0]
+            minfo['events'] = [event if e[0] == 1238 else e for e in minfo['events']]
+            gen_event = lambda *e: quiz.b.gen_event(*e) if e[0] == 1238 else mprog.b.gen_event(*e)
+        new = generate_text('MAPHEAD', minfo, getattr(mprog.b, 'orders', {}).get('maphead'), gen_event)
         done = set()
         if mh_overrides:                       # MAPHEAD overrides (compiled with the mod layer): in place, or at new code
             new, _, _, done = splice_events(new, mh_overrides, mh_gen, prefix='o')
@@ -529,7 +539,7 @@ def compile_base_story(base, work, lang, text, exclude, mh_overrides, mh_gen, re
                 new = repoint(new, sec, prefixed(mh_gen(sec, rep, code, ents, path), f'o{sec}_'), f'dws_mh{sec}_override')
         mh_txt = os.path.join(work, 'maphead.scn.txt'); open(mh_txt, 'w', encoding='utf-8').write('\n'.join(new))
         mh = os.path.join(work, 'MAPHEAD.SCN')
-        big = 0x10000 if text_source != 'us' else BE.MAPHEAD_LIMIT   # checked below (a source may not fit)
+        big = 0x10000 if text_source != 'us' else max(BE.MAPHEAD_LIMIT, 0x8000 if exe in ('species', 'story-state') else 0)   # checked below (a source may not fit)
         r = bytecode.asm(mh_txt, mh, maphead_max=big, pack_ascii=BE.PACK_ASCII)
         if r.returncode: raise DwsError('story MAPHEAD: ' + (r.stderr.strip() or r.stdout.strip())[-1500:], None)
         return mprog, minfo, done, mh

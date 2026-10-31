@@ -529,8 +529,10 @@ reachable if they are added to `EVOLUTION_PATHS`, and 63..65 only through items.
   each specialty, the first technique in `TRN_D_8008F14C` (8 per specialty) that the partner lacks and can learn, with
   weight `TRN_D_8008F184[k][i]` (main 25/22/20/18/15/12/10 %..., tertiary 10/8/7/5/2/0); the highest weight is kept and
   learned if `weight > rand(100)`. On crossing 100/200/300/400/500 it teaches battle commands instead.
-- **On evolving**: the weakest technique of the main specialty (above). At birth (`initializePartner`): Agumon Spit Fire,
-  Gabumon Blaster. Scripts give and take techniques (`LEARN_MOVE`, `unlearnMove`).
+- **On evolving**: the weakest technique of the main specialty (above). New games (`modInitializeStarterTechniques`):
+  Agumon Spit Fire, Gabumon Sonic Jab, other quiz starters their first listed technique. This runs only after new-game
+  partner creation; Continue preserves the saved learned bits and equipped slots. Scripts give and take techniques
+  (`LEARN_MOVE`, `unlearnMove`).
 
 ## Number limits and the caps patch
 

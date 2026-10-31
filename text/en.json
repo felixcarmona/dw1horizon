@@ -9,5 +9,118 @@
   "{color 6}{player}{color 1}",
   "Yes",
   "No"
+ ],
+ "name.quiz.intro": [
+  "{color 7}Jijimon {color 1}",
+  "There are only 7 questions.",
+  "Your answers will tell me which",
+  "Digimon suits you."
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 1 of 7."
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}Jijimon {color 1}",
+  "Do you have a Digital Monster?"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "I do",
+  "I don't",
+  "I used to"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 2 of 7."
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}Jijimon {color 1}",
+  "Do you like day or night",
+  "better?"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "Day",
+  "Dusk",
+  "Night"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 3 of 7."
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}Jijimon {color 1}",
+  "Do you have lots of friends?"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "Lots",
+  "A few good ones",
+  "I go my own way"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 4 of 7."
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}Jijimon {color 1}",
+  "Where would you camp?"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "A volcano",
+  "The coast",
+  "The forest"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 5 of 7."
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}Jijimon {color 1}",
+  "A giant Digimon blocks the",
+  "path..."
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "Face it",
+  "Go over it",
+  "Wait"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}Jijimon {color 1}",
+  "Question 6 of 7."
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}Jijimon {color 1}",
+  "What do you take to the",
+  "island?"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "A sword",
+  "A map",
+  "Seeds"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}Jijimon {color 1}",
+  "Last question."
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}Jijimon {color 1}",
+  "What matters most in a",
+  "partner?"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "Courage",
+  "Wits",
+  "Freedom"
+ ],
+ "name.quiz.result": [
+  "{color 7}Jijimon {color 1}",
+  "Mm. I see it clearly now. Your",
+  "partner will be {partner}."
  ]
 }

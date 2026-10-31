@@ -203,7 +203,8 @@ vanilla ancestor down the vanilla rows, a shared specialty first; reviewable and
 age stay; the equipped techniques become the new species' slots of the same techniques (none: its first learned one, or
 its first one, learned), the finisher its own. The save remembers the swap (`SAVE_TAG_VANILLA_SWAP` 0x000A: the species
 and the vanilla one); loaded with the row on and the partner still that vanilla species, it is turned back. Raised and
-recruited flags are never cleared: with the row off the chart only hides the new species.
+recruited flags are never cleared: with the row off the chart only hides the new species. A New Game with the row off gets one of
+the nine original rookies from Jijimon's quiz (`quiz.vanillaCells`, [balance.md](balance.md)), so no swap is needed.
 
 ## Cheats
 

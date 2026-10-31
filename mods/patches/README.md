@@ -81,3 +81,7 @@ Patch 0264 fixes gym calendar rollover; 0265 tracks daily pickups by stable loca
 Patches 0266–0269 correct composed reward text, guide rows and localized raster labels.
 Patch 0271 shows the Select hint for the Cheats menu while paused.
 Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats menu, off by default.
+
+| patch | feature | main executable cost (`main_BSS_END`) |
+|---|---|---|
+| 0273 | Jijimon's seven-question, three-answer starter quiz; 35 partner rookies and opening techniques | +832 bytes: 0x801ca0b8 → 0x801ca3f8 (series through 0272 → 0273, same EN bank, original 2 MB target); heapcheck passes |

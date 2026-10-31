@@ -675,6 +675,9 @@ def exe_font(exe_dir):
         if out is not None:
             if not re.search(r' T drawStringCells$', out, re.M):
                 return 'original', elf
+            # Packed font b replaces the old GlyphData table with Latin bitmaps.
+            if re.search(r'^([0-9a-f]+) \w LATIN_GLYPH_BITS$', out, re.M):
+                return 'b', elf
             addr = int(re.search(r'^([0-9a-f]+) \w GLYPH_DATA$', out, re.M).group(1), 16)
             data = open(exe, 'rb').read()
             t_addr = struct.unpack_from('<I', data, 0x18)[0]

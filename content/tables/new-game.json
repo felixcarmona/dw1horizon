@@ -1,5 +1,5 @@
 {
-  "_comment": "A new game and a new partner. The C holds none of these numbers: a key left out means that does not exist (counts as 0). money: the tamer's money at the start. startHour/startMinute: the game clock the game boots with and the empty save of a new slot holds. partnerBirth: the lifetime (game hours), discipline and happiness every partner starts with when it is born or reborn, the partner of a new game included (the Jijimon scene picks Agumon or Gabumon and the game gives it these). lives: the lives of a partner at its start. firstPartner: the lifetime (game hours) and age (days) in the empty save a new slot is created with, which is what Continue loads from a slot that was never saved over; the first save of a real game holds the running partner's. Patch 0143: starters are the partners the Jijimon scene can give, the first (Agumon) and the second (Gabumon) choice; startScript is the MAPHEAD section a new game runs once the scene and the movie are over (it puts the tamer on the first screen); firstPartner.exit and firstPartner.species are the exit and the partner type stored in the empty save of a new slot (species 114 is a placeholder the first real partner replaces); cardShopStart is the first six values of the card shop's script state in that save (the cards on offer on day one). Left in code: the conversation itself (the state machine of the Jijimon scene).",
+  "_comment": "New-game clock, money, save defaults and partner birth values. Jijimon asks all seven questions; starters is every partner rookie except the eight recolours listed in tools/starter_quiz.py (p254 stores its index); those eight stay in the game through evolution. quiz.weights are sparse points by axis; quiz.cells has 45 starter indices in element/attribute/temperament order: battle, fire, ice, nature, air (mech counts as air); vaccine, data, virus; bold, calm, cunning. quiz.vanillaCells is the same grid for NEW DIGIMON off, holding only the original game's nine rookies. Highest score wins each axis; ties favour the most recent answer, then the earlier axis in that order if the same answer last supported both. Weights are packed as up to three axis/weight nibbles per answer; species ids are uint16, cells and vanillaCells uint8. Ten spare cells repeat species. The cell assignment favours attributes, then specialties: unavoidable exceptions are documented in docs/mods/balance.md. startScript selects the opening MAPHEAD section; cardShopStart is the first six card-shop script-state values. Missing ordinary rules mean zero. The conversation is in script_menu.c; dialogue uses the named text-bank mechanism.",
   "newGame": {
     "money": 50000,
     "startHour": 8,
@@ -10,14 +10,243 @@
       "exit": 9,
       "species": 114
     },
-    "starters": [3, 17],
+    "starters": [
+      3,
+      17,
+      4,
+      18,
+      31,
+      32,
+      45,
+      46,
+      57,
+      67,
+      68,
+      69,
+      80,
+      84,
+      109,
+      111,
+      122,
+      180,
+      183,
+      184,
+      185,
+      217,
+      221,
+      235,
+      236,
+      239,
+      247,
+      251,
+      273,
+      285,
+      351,
+      352,
+      353,
+      354,
+      433
+    ],
     "startScript": 204,
-    "cardShopStart": [58, 59, 60, 61, 62, 63],
+    "cardShopStart": [
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ],
     "lives": 3,
     "partnerBirth": {
       "lifetimeHours": 360,
       "discipline": 50,
       "happiness": 50
+    },
+    "quiz": {
+      "weights": [
+        [
+          {
+            "bold": 1
+          },
+          {
+            "calm": 1
+          },
+          {
+            "cunning": 1
+          }
+        ],
+        [
+          {
+            "vaccine": 5
+          },
+          {
+            "data": 5
+          },
+          {
+            "virus": 5
+          }
+        ],
+        [
+          {
+            "vaccine": 1,
+            "bold": 1
+          },
+          {
+            "data": 1,
+            "calm": 1
+          },
+          {
+            "virus": 1,
+            "cunning": 1
+          }
+        ],
+        [
+          {
+            "fire": 2
+          },
+          {
+            "ice": 2
+          },
+          {
+            "nature": 2
+          }
+        ],
+        [
+          {
+            "battle": 2
+          },
+          {
+            "air": 2
+          },
+          {
+            "ice": 1,
+            "nature": 1,
+            "calm": 1
+          }
+        ],
+        [
+          {
+            "battle": 1,
+            "fire": 2
+          },
+          {
+            "ice": 1,
+            "air": 1
+          },
+          {
+            "nature": 1,
+            "air": 1
+          }
+        ],
+        [
+          {
+            "vaccine": 1,
+            "bold": 1
+          },
+          {
+            "data": 1,
+            "cunning": 4
+          },
+          {
+            "virus": 3,
+            "calm": 1
+          }
+        ]
+      ],
+      "cells": [
+        22,
+        17,
+        33,
+        4,
+        1,
+        10,
+        29,
+        24,
+        34,
+        0,
+        27,
+        23,
+        11,
+        13,
+        11,
+        34,
+        12,
+        31,
+        32,
+        21,
+        32,
+        8,
+        8,
+        14,
+        2,
+        25,
+        2,
+        7,
+        20,
+        7,
+        15,
+        28,
+        30,
+        5,
+        5,
+        18,
+        6,
+        16,
+        22,
+        3,
+        19,
+        26,
+        9,
+        9,
+        24
+      ],
+      "vanillaCells": [
+        3,
+        1,
+        4,
+        3,
+        1,
+        4,
+        1,
+        4,
+        4,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        6,
+        8,
+        2,
+        7,
+        8,
+        8,
+        8,
+        2,
+        2,
+        2,
+        7,
+        7,
+        7,
+        7,
+        5,
+        8,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        3,
+        3,
+        3,
+        6,
+        6,
+        3
+      ]
     }
   }
 }

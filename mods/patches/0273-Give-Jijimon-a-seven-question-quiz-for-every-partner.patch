@@ -1,0 +1,275 @@
+From 10c086a842d5cd3db62af8aa60126c2953787e46 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Fri, 30 Oct 2026 22:29:35 +0000
+Subject: [PATCH] Give Jijimon a seven-question quiz for every partner rookie
+
+---
+ include/dw/mod_rules.h  | 14 +++++++---
+ src/main/main.c         |  7 ++---
+ src/main/main_menu.c    | 40 +++++++++++++++++++++++++++
+ src/main/partner_impl.c | 30 ++++++++++++++++-----
+ src/shop/script_menu.c  | 60 +++++++++++++++++++----------------------
+ 5 files changed, 104 insertions(+), 47 deletions(-)
+
+diff --git a/include/dw/mod_rules.h b/include/dw/mod_rules.h
+index d617458..9861c6b 100644
+--- a/include/dw/mod_rules.h
++++ b/include/dw/mod_rules.h
+@@ -68,7 +68,7 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ 
+ /* a new game and a new partner: MOD_NEWGAME[], every slot -1 = the rule does not exist (modNewGame answers 0), written by tools/balance.py
+  * from content/tables/new-game.json */
+-#define MOD_NEWGAME_SIZE	20
++#define MOD_NEWGAME_SIZE	76
+ #define MOD_NG_MONEY		0 /* the tamer's money in a new game */
+ #define MOD_NG_START_HOUR	1 /* the game clock in a new game */
+ #define MOD_NG_START_MINUTE	2
+@@ -78,14 +78,22 @@ extern int16_t MOD_DAILY[MOD_DAILY_SIZE];
+ #define MOD_NG_BIRTH_LIFETIME	6 /* the lifetime (hours) of every partner that is born or reborn */
+ #define MOD_NG_BIRTH_DISCIPLINE	7
+ #define MOD_NG_BIRTH_HAPPINESS	8
+-#define MOD_NG_STARTER0		9 /* the partner the Jijimon scene gives: the first choice (pstat 0xfe = 0) ... */
+-#define MOD_NG_STARTER1		10 /* ... and the second */
++#define MOD_NG_STARTER0		9 /* legacy copy of starters[0]; quiz readers use the packed list */
++#define MOD_NG_STARTER1		10 /* legacy copy of starters[1] */
+ #define MOD_NG_START_SCRIPT	11 /* the MAPHEAD section that starts a new game (puts the tamer on its first screen) */
+ #define MOD_NG_START_EXIT	12 /* the exit stored in the empty save of a new slot */
+ #define MOD_NG_FIRST_SPECIES	13 /* the partner type stored in that empty save */
+ #define MOD_NG_SHOP_CARD0	14 /* the first six values of the card shop's script state (SAVE scriptState[0..5]) */
+ extern int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE];
+ int32_t modNewGame(int32_t slot);
++/* Packed tail of MOD_NEWGAME: species ids, three sparse axis/weight bytes per answer, cells. */
++#define MOD_QUIZ_STARTERS ((uint16_t *)&MOD_NEWGAME[20])
++#define MOD_QUIZ_WEIGHTS ((uint8_t *)&MOD_NEWGAME[20] + 70)
++#define MOD_QUIZ_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 133)
++#define MOD_QUIZ_VANILLA_CELLS ((uint8_t *)&MOD_NEWGAME[20] + 178) /* read with NEW DIGIMON off: original rookies only */
++int32_t modNewGameStarter(void);
++void modInitializeStarterTechniques(int32_t type);
++uint8_t modQuizResult(const uint8_t *answers);
+ 
+ /*
+  * MOD (training as data): the gains of each gym by the slot of its minigame (MOD_TRAIN_GAIN / MOD_TRAIN2_GAIN: rows of the gym, the slot (-2: any), the base gain in tenths of the
+diff --git a/src/main/main.c b/src/main/main.c
+index 6ae803e..0cc1ecf 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -3516,12 +3516,9 @@ int32_t main(void)
+ 			initializeMusic();
+ 			loadStackedTIMFile(MAIN_D_8012CE8C);
+ 			initializeTamer(0, 0, 0, 0, 0, 0, 0);
+-			if (readPStat(0xfe) == 0) {
+-				partnerId = modNewGame(MOD_NG_STARTER0); /* MOD (new game as data): was 0x3 */
+-			} else {
+-				partnerId = modNewGame(MOD_NG_STARTER1); /* was 0x11 */
+-			}
++			partnerId = modNewGameStarter();
+ 			initializePartner(partnerId, 0, 0, 0, 0, 0, 0);
++			modInitializeStarterTechniques(partnerId);
+ 			setDigimonRaised(partnerId);
+ 			initializeMap();
+ 			initializeChest();
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index b82e89f..75c50f8 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -13,6 +13,7 @@ extern int MOD_CHEATS_CARD_MODE, MOD_CHEATS_CARD_DONE;
+ #include <dw/mod_options.h>
+ #include <dw/mod_version.h>
+ #include <dw/mod_rules.h>
++#include <dw/pstat.h>
+ #include <dw/save_tags.h>
+ #include <dw/input.h>
+ #include <dw/item.h>
+@@ -4275,6 +4276,45 @@ int32_t tickSelectSlotInput(MenuCursor *cursor, int32_t which)
+ /* MOD (new game as data): written by tools/balance.py from content/tables/new-game.json; -1 = the rule does not exist */
+ int32_t MOD_NEWGAME[MOD_NEWGAME_SIZE] = { [0 ... MOD_NEWGAME_SIZE - 1] = -1 };
+ 
++/* MOD (starter quiz): p254 is a list index, never a truncated species id. */
++int32_t modNewGameStarter(void)
++{
++	uint32_t index = readPStat(PSTAT_254);
++	return MOD_QUIZ_STARTERS[index < 35 ? index : 0];
++}
++
++/* MOD (starter quiz): all seven answers contribute. A tie goes to the latest
++ * supporting answer, then the earlier axis if both were supported together. */
++uint8_t modQuizResult(const uint8_t *answers)
++{
++	uint8_t score[11] = { 0 };
++	uint8_t last[11] = { 0 };
++	int32_t q, j, axis, weight, lo, hi, best, cell = 0;
++
++	for (q = 0; q < 7; q++) {
++		for (j = 0; j < 3; j++) {
++			weight = MOD_QUIZ_WEIGHTS[q * 9 + answers[q] * 3 + j];
++			axis = weight >> 4;
++			weight &= 15;
++			if (weight != 0) {
++				score[axis] += weight;
++				last[axis] = q + 1;
++			}
++		}
++	}
++	for (lo = 0; lo < 11; lo = hi) {
++		hi = lo == 0 ? 5 : lo + 3;
++		best = lo;
++		for (j = lo + 1; j < hi; j++) {
++			if (score[j] > score[best] || (score[j] == score[best] && last[j] > last[best])) {
++				best = j;
++			}
++		}
++		cell = cell * (hi - lo) + best - lo;
++	}
++	return (MOD_OPT_NEW_DIGIMON ? MOD_QUIZ_CELLS : MOD_QUIZ_VANILLA_CELLS)[cell];
++}
++
+ int32_t modNewGame(int32_t slot)
+ {
+ 	return MOD_NEWGAME[slot] > 0 ? MOD_NEWGAME[slot] : 0;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 04a828f..98b4228 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -602,13 +602,6 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ #endif
+ 
+ 	PARTNER_ENTITY.lives = modNewGame(MOD_NG_LIVES);
+-	for (i = 0; i < 2; i++) {	/* MOD (species JSON): was Agumon and Gabumon by literal */
+-		if (NEW_GAME_TECHNIQUES[i].type == type) {
+-			PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = NEW_GAME_TECHNIQUES[i].animation;
+-			learnMove(NEW_GAME_TECHNIQUES[i].technique);
+-		}
+-	}
+-
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[1] = 0xff;
+ 	PARTNER_ENTITY.digimonEntity.stats.base.moves[2] = 0xff;
+ 	for (i = 15; i >= 0; i--) {
+@@ -630,6 +623,29 @@ void initializePartner(int32_t type, int32_t posX, int32_t posY,
+ 	IMMORTAL_HOUR = -1;
+ }
+ 
++/* Starter techniques belong to new games. Continue has already restored the
++ * learned bits; initializeLoadedMap restores the equipped slots afterward. */
++void modInitializeStarterTechniques(int32_t type)
++{
++	int32_t i;
++
++	/* The rebirth path equips the first list animation (0x2e). New starters
++	 * also learn that list entry; keep the two authored opening exceptions. */
++	PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = 0x2e;
++	for (i = 0; i < 2; i++) {	/* MOD (species JSON): was Agumon and Gabumon by literal */
++		if (NEW_GAME_TECHNIQUES[i].type == type) {
++			PARTNER_ENTITY.digimonEntity.stats.base.moves[0] = NEW_GAME_TECHNIQUES[i].animation;
++			learnMove(NEW_GAME_TECHNIQUES[i].technique);
++			break;
++		}
++	}
++
++	/* Fresh Bubble attacks are intrinsic, outside the learned-move bitset. */
++	if (i == 2 && DIGI_PARA(type).moves[0] < 0x3a) {
++		learnMove(DIGI_PARA(type).moves[0]);
++	}
++}
++
+ void renderPoop(int32_t instanceId)
+ {
+ 	VECTOR pos;
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index dc77cfc..90e1c89 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -1238,7 +1238,10 @@ void initializeNamingBuffer(uint8_t flags)
+ 
+ int32_t newGameStateMachine(void)
+ {
++	static uint8_t answers[7];
++	static uint8_t question;
+ 	int32_t i;
++	int32_t sel = 0;
+ 
+ 	switch (SCRIPT_STATE_2) {
+ 	case 0:
+@@ -1259,39 +1262,32 @@ int32_t newGameStateMachine(void)
+ 		break;
+ #endif
+ 	case 2:
+-		showNewGameDialogue(0x11, 3);
+-		break;
+-	case 3:
+-		showNewGameSelection(0x12, 4);
+-		break;
+-	case 4:
+-		showNewGameDialogue(0x13, 6);
+-		break;
+-	case 5:
+-		showNewGameDialogue(0x16, 10);
+-		break;
+-	case 6:
+-		showNewGameDialogue(0x14, 7);
+-		break;
+-	case 7:
+-		showNewGameSelection(0x15, 8);
+-		break;
+-	case 8:
+-		writePStat(PSTAT_254, 0);
+-		SCRIPT_STATE_2 = 0x11;
+-		break;
+-	case 9:
+-		writePStat(PSTAT_254, 1);
+-		SCRIPT_STATE_2 = 0x11;
++		question = 0;
++		showNewGameDialogue(0x23, 0x23);
++		break;
++	case 0x23:
++		if (question == 7) {
++			writePStat(PSTAT_254, modQuizResult(answers));
++			modPartnerNameSetSpecies(modNewGameStarter());
++			showNewGameDialogue(0x39, 0x12);
++		} else {
++			showNewGameDialogue(0x24 + question * 3, 0x24);
++		}
+ 		break;
+-	case 10:
+-		showNewGameDialogue(0x17, 0xb);
++	case 0x24:
++		showNewGameDialogue(0x25 + question * 3, 0x25);
+ 		break;
+-	case 0xb:
+-		showNewGameSelection(0x18, 8);
++	case 0x25:
++		showMapheadSelection(0x26 + question * 3, 0xfe, 3, &sel, 0x4d6);
++		SCRIPT_STATE_2 = 1;
++		SCRIPT_NEXT_STATE_2 = 0x26;
++		SCRIPT_TEXTBOX_MODE = 2;
+ 		break;
+-	case 0x11:
+-		showNewGameDialogue(0x19, 0x12);
++	case 0x26:
++	case 0x27:
++	case 0x28:
++		answers[question++] = SCRIPT_STATE_2 - 0x26;
++		SCRIPT_STATE_2 = 0x23;
+ 		break;
+ 	case 0x12:
+ 		showNewGameDialogue(0x1a, 0x13);
+@@ -1319,7 +1315,7 @@ int32_t newGameStateMachine(void)
+ 			if ((NAMING_BOX_FLAG & 2) != 0) {
+ 				modPartnerNameSetSpecies(PARTNER_ENTITY.digimonEntity.entity.type);
+ 			} else {
+-				modPartnerNameSetSpecies(modNewGame(readPStat(PSTAT_254) == 0 ? MOD_NG_STARTER0 : MOD_NG_STARTER1));
++				modPartnerNameSetSpecies(modNewGameStarter());
+ 			}
+ 		} else {
+ 			strcpy(PARTNER_ENTITY.name, NAMING_BUFFER);
+@@ -1400,7 +1396,7 @@ int32_t newGameStateMachine(void)
+ 		break;
+ 	case 0x22:
+ 		NAMING_BOX_FLAG |= 1;
+-		modPartnerNameSetSpecies(modNewGame(readPStat(PSTAT_254) == 0 ? MOD_NG_STARTER0 : MOD_NG_STARTER1));
++		modPartnerNameSetSpecies(modNewGameStarter());
+ 		SCRIPT_STATE_2 = 0x1e;
+ 		break;
+ 	}
+-- 
+2.55.0
+

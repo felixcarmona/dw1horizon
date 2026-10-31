@@ -9,5 +9,113 @@
   "{color 6}{player}{color 1}",
   "はい",
   "いいえ"
+ ],
+ "name.quiz.intro": [
+  "{color 7}ジジモン{color 1}",
+  "質問は７つだけじゃ。答えを聞けば、おぬし",
+  "に合うデジモンがわかる。"
+ ],
+ "name.quiz.q1.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、1つ目の質問じゃ。"
+ ],
+ "name.quiz.q1.question": [
+  "{color 7}ジジモン{color 1}",
+  "デジタルモンスターを持っておるか？"
+ ],
+ "name.quiz.q1.answers": [
+  "{color 6}{player}{color 1}",
+  "持っている",
+  "持っていない",
+  "前は持っていた"
+ ],
+ "name.quiz.q2.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、2つ目の質問じゃ。"
+ ],
+ "name.quiz.q2.question": [
+  "{color 7}ジジモン{color 1}",
+  "昼と夜、どちらが好きかの？"
+ ],
+ "name.quiz.q2.answers": [
+  "{color 6}{player}{color 1}",
+  "昼",
+  "夕暮れ",
+  "夜"
+ ],
+ "name.quiz.q3.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、3つ目の質問じゃ。"
+ ],
+ "name.quiz.q3.question": [
+  "{color 7}ジジモン{color 1}",
+  "友だちはたくさんおるか？"
+ ],
+ "name.quiz.q3.answers": [
+  "{color 6}{player}{color 1}",
+  "たくさんいる",
+  "少ないけど仲がいい",
+  "自分の道を行く"
+ ],
+ "name.quiz.q4.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、4つ目の質問じゃ。"
+ ],
+ "name.quiz.q4.question": [
+  "{color 7}ジジモン{color 1}",
+  "どこでキャンプをしたいかの？"
+ ],
+ "name.quiz.q4.answers": [
+  "{color 6}{player}{color 1}",
+  "火山",
+  "海辺",
+  "森"
+ ],
+ "name.quiz.q5.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、5つ目の質問じゃ。"
+ ],
+ "name.quiz.q5.question": [
+  "{color 7}ジジモン{color 1}",
+  "巨大なデジモンが道をふさいでおる…"
+ ],
+ "name.quiz.q5.answers": [
+  "{color 6}{player}{color 1}",
+  "立ち向かう",
+  "上を越えていく",
+  "待つ"
+ ],
+ "name.quiz.q6.number": [
+  "{color 7}ジジモン{color 1}",
+  "７つのうち、6つ目の質問じゃ。"
+ ],
+ "name.quiz.q6.question": [
+  "{color 7}ジジモン{color 1}",
+  "島には何を持っていくかの？"
+ ],
+ "name.quiz.q6.answers": [
+  "{color 6}{player}{color 1}",
+  "剣",
+  "地図",
+  "種"
+ ],
+ "name.quiz.q7.number": [
+  "{color 7}ジジモン{color 1}",
+  "最後の質問じゃ。"
+ ],
+ "name.quiz.q7.question": [
+  "{color 7}ジジモン{color 1}",
+  "パートナーに一番大切なものは？"
+ ],
+ "name.quiz.q7.answers": [
+  "{color 6}{player}{color 1}",
+  "勇気",
+  "知恵",
+  "自由"
+ ],
+ "name.quiz.result": [
+  "{color 7}ジジモン{color 1}",
+  "うむ、はっきりわかったぞ。おぬしのパート",
+  "ナーは{partner}じゃ。"
  ]
 }

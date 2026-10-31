@@ -96,7 +96,7 @@ documents every key.
 | `care-rules.json` | `MOD_CARE`, 150 slots (patches 0125, 0130, 0140) | the periods, thresholds and amounts of the partner's daily care: sleep, sulking, area effects, tiredness, hunger, poop, sickness, the lifetime lost to unhappiness, scold and praise, item refusal, clamps, babies' awake/hunger, sleep costs and regeneration, feeding, toilet, poop eaten (species 11 and 39, radii `reachNear` 200 / `reachFar` 300), skipped hours, what a fight costs. Periods are logic frames (20 = a game minute, 1200 = an hour) |
 | species files' `care` | `MOD_CARE_SPECIES`, 192 rows (patch 0126) | a per-species override with the keys of `careRules`: a whole number (absolute), `"+n"` / `"-n"` (the global value plus n), `"+n%"` / `"-n%"` (changed by n percent, rounded) or `null` (the rule does not exist for that species); a relative value needs the global key. `balance.py` resolves them to plain numbers (the build stops if the files need more rows, or name an unknown key); the C looks the partner's species up and falls back to the global value |
 | `clock.json` | patch 0127 | `dayRealSeconds`: how many real seconds a game day lasts (1440 is the original; from 144), independent of the frame rate (below) |
-| `new-game.json` | `MOD_NEWGAME`, 20 32-bit slots (patches 0128, 0143) | the money (50000), the start time (8:00), the lifetime (288 h) and age (3) of the empty save, the lives (3), what every partner starts with when born or reborn (lifetime 360 h, discipline 50, happiness 50), `starters` (3, 17), `startScript` (204), `firstPartner.exit` / `species` (9, 114), `cardShopStart` (58..63) |
+| `new-game.json` | `MOD_NEWGAME`, 20 32-bit rules plus 224 packed bytes (patches 0128, 0143, 0273) | the money (50000), the start time (8:00), the lifetime (288 h) and age (3) of the empty save, the lives (3), what every partner starts with when born or reborn (lifetime 360 h, discipline 50, happiness 50), `starters` (35 partner rookies), `quiz.weights` (7 × 3 sparse answers), `quiz.cells` and `quiz.vanillaCells` (45 list indices each), `startScript` (204), `firstPartner.exit` / `species` (9, 114), `cardShopStart` (58..63) |
 | `effect` blocks of `content/items/*.json` | `MOD_ITEM_FX` (patch 0132) | what items do |
 | `economy.json` | patch 0133 | money and merit caps, stack cap, defeat loss, shop ratios, card packs and copies, the tournament pool and win rules |
 | `training-gains.json` | `MOD_TRAIN_RULES`, 34 slots (patches 0134, 0141) | both gym sets' gains; `session.durationMs` (60000) and `session.stepMs` (6000): how long a gym's minigame runs and the step its work is shown in (the hour of game time a session costs stays in code, tied to `HOUR + 1`) |
@@ -166,3 +166,14 @@ overlays' copies of UI tables) and about 40 are run-time state with an initial v
   formulas, special evolutions, the training rewards (`trn_reward.c`): code, changed by C patches (`mods/patches`),
   with their numbers in the rule tables above.
 - **Assets**: models, textures, backgrounds (`.TFS`, the `.MAP` TIMs), sounds and music.
+
+The quiz tail of `MOD_NEWGAME` begins at byte 80: 35 little-endian uint16 species ids (70 bytes),
+21 answers of three bytes each (63 bytes), 45 uint8 cell indices, 45 more for NEW DIGIMON off, and one zero padding byte.
+Each nonzero answer byte is `(axis << 4) | weight`; zero is an unused slot. Axes are battle/fire/ice/nature/air,
+vaccine/data/virus, bold/calm/cunning. Weights are positive nibbles (1..15); at most three axes per answer.
+`tools/balance.py` uses `tools/starter_quiz.py` to pack and validate the tail. The original 20 rules retain their
+layout; slots 9/10 remain compatible copies of the first two starters. The game reads the full list through
+`modNewGameStarter`; the saved byte p254 holds a list index.
+
+`story/new-game-quiz.dws` extends the base MAPHEAD 1238 table for expanded-engine builds.
+The original and core engines keep the base table and their existing buffer limits.

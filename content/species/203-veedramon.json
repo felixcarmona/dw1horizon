@@ -53,7 +53,7 @@
     "training": {"animation": 47, "hit_tick": 20}
   },
   "evolution": {
-    "from": [180, 433],
+    "from": [180, 433, 80],
     "to": [],
     "requirements": {
       "digimon": 180,

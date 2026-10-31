@@ -98,7 +98,7 @@ code; patch 0112 returns an `END_SECTION` instead (section 9).
 | Section | Hex | Called from | What it is |
 |---|---|---|---|
 | 1220-1229 | 0x4C4-0x4CD | `script_common.c` (`SHOPKEEP_DIGIMON_TYPES`) | the shopkeeper's lines, one section per shopkeeper species (11 species); 1220-1230 are jump tables that run on into the next section |
-| 1238 | 0x4D6 | `newGameStateMachine` (`script_menu.c`) | the texts of Jijimon's new-game questions (entries 0x10-0x20); the flow itself is C |
+| 1238 | 0x4D6 | `newGameStateMachine` (`script_menu.c`) | Jijimon's new-game dialogue and naming (entries 0x10-0x39); the seven-question loop is C |
 | 1240-1242 | 0x4D8-0x4DA | `tournament.c`, `utils2.c` | tournament text and the registration reminders |
 | 1243 | 0x4DB | `tournament.c` | medals |
 | 1245 | 0x4DD | `item.c` (Auto Pilot) | the only item that calls a script: chooses the File City screen to fly to |
@@ -254,7 +254,7 @@ new-game conversation. Several C systems read recruit flags and so carry story r
 | Tamer level | 0-10, moved by chance at the year's turn, by poop eaten, evolutions, a medal and scripts (stat 0x15) | `tamer.c`; now data, patch 0121 |
 | Clock | 20 frames = 1 minute; at midnight the card shop restocks and counters p28-p31 change; at the year's turn the tamer-level chance | `clock.c`, `dailyPStatTrigger` (`script_common.c`); now data, patches 0122, 0127 |
 | Day and night | tint from 16-20-6, music variant at 6 and 21, clock icon at 6 and 17: three different thresholds | `map.c`, `script_interp.c`; now data, patch 0122 |
-| New game | Jijimon's questions are a C state machine of about 30 states; the texts are MAPHEAD 1238; the partner choice maps p254 0/1 to species 3/17 | `newGameStateMachine` (`script_menu.c`), `main.c`; its start state is data (patches 0128, 0143) |
+| New game | Jijimon asks all seven three-answer questions in a generic C loop; MAPHEAD 1238 entries 0x23-0x39 hold the new text; p254 indexes the 35 uint16 starter ids, resolved by `modNewGameStarter` | `newGameStateMachine` (`script_menu.c`), `main.c`; its start state, quiz weights, 45 cells and starter pool are data (patches 0128, 0143, 0273) |
 | Death and rebirth | MAPHEAD 1246 after sickness, old age or defeat; the revival screen above; four eggs | `partner_impl.c`, `murd.c`, `dooa.c` |
 | Item and recycle shops | item shop stock = trigger 384 + item, set by scripts; recycle stock is C | `script_common.c` |
 | Birdramon, Mojyamon, jukebox, cards, Item Keeper | tables inside C (6 Birdramon targets `{screen, exit, unlock trigger, price}`, 3 x 3 trades, 63 tracks) with menus in C | `script_common.c`, `script_menu.c` |
