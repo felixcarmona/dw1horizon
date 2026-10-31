@@ -9,6 +9,7 @@ import unittest
 
 class Counter:
     def __init__(self, value=0): self.value = value
+    def __bool__(self): return bool(self.value)
     def __eq__(self, other): return self.value == other
     def __lt__(self, other): return self.value < other
     def __le__(self, other): return self.value <= other
@@ -58,7 +59,10 @@ class WhamonWait(unittest.TestCase):
         path = Path(__file__).resolve().parents[4] / 'story/mods/what-the-island-forgot/arcs/shore/city-dock.py'
         tree = ast.parse(path.read_text())
         funcs = [copy.deepcopy(n) for n in tree.body if isinstance(n, ast.FunctionDef)
-                 and n.name in ('elapsed_days', 'chasing', 'resting')]
+                 and n.name in ('elapsed_days', 'chasing', 'resting', 'city_ferry_presence')]
+        sea = ast.parse(path.with_name('sea-ambush.py').read_text())
+        funcs += [copy.deepcopy(n) for n in sea.body if isinstance(n, ast.FunctionDef)
+                  and n.name in ('factory_ferry_presence', 'factory_ferry_closed')]
         for fn in funcs: fn.decorator_list = []
         cls.code = compile(ast.Module(body=funcs, type_ignores=[]), str(path), 'exec')
 
@@ -116,6 +120,62 @@ class WhamonWait(unittest.TestCase):
                      and isinstance(n.func.value, ast.Name) and n.func.value.id == 'whamon_left_year']
             self.assertEqual([(c.func.attr, ast.unparse(c.args[0])) for c in calls],
                              [('set', 'clock.year'), ('add', '1')], name)
+
+    def test_dock_visibility_uses_the_same_wait_after_reentry(self):
+        for handler in ('city_ferry_presence', 'factory_ferry_presence'):
+            for chased, hurt, days in [(0, 0, 0), (1, 0, 5), (0, 1, 10), (1, 1, 10)]:
+                for year in (0, 42, 99):
+                    for departure in range(30):
+                        for elapsed in (0, 4, 5, 9, 10, 30, 60):
+                            env = self.handlers(departure, year + 1)
+                            env['seadramon_chased'] = Counter(chased)
+                            env['whamon_hurt'].set(hurt)
+                            env['clock'].day = (departure + elapsed) % 30
+                            env['clock'].year = (year + (departure + elapsed) // 30) % 100
+                            left = []
+                            env['whamon'] = SimpleNamespace(leave=lambda: left.append(True))
+                            with self.subTest(handler=handler, chased=chased, hurt=hurt, year=year,
+                                              departure=departure, elapsed=elapsed):
+                                env[handler]()
+                                self.assertEqual(bool(left), elapsed < days)
+                                # Reentry does not start a new wait or consume the departure date.
+                                self.assertEqual(env['whamon_left_day'].value, departure)
+                                self.assertEqual(env['whamon_left_year'].value, year + 1)
+                                env['whamon_left_year'].set(0)
+                                left.clear()
+                                env[handler]()
+                                self.assertFalse(left, 'undated old saves must remain open')
+
+    def test_both_docks_keep_the_same_calendar_calculation(self):
+        root = Path(__file__).resolve().parents[4] / 'story/mods/what-the-island-forgot/arcs/shore'
+        helpers = []
+        for name in ('city-dock.py', 'sea-ambush.py'):
+            tree = ast.parse((root / name).read_text())
+            helpers.append(next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'elapsed_days'))
+        self.assertEqual(ast.dump(helpers[0]), ast.dump(helpers[1]))
+
+    def test_factory_use_tile_cannot_offer_an_invisible_ferry(self):
+        for chased, hurt, days in [(0, 0, 0), (1, 0, 5), (0, 1, 10), (1, 1, 10)]:
+            for departure in range(30):
+                for elapsed in (0, 4, 5, 9, 10, 30, 60):
+                    env = self.handlers(departure, 100)
+                    env['seadramon_chased'] = Counter(chased)
+                    env['whamon_hurt'].set(hurt)
+                    env['clock'].day = (departure + elapsed) % 30
+                    env['clock'].year = (99 + (departure + elapsed) // 30) % 100
+                    lines = []
+                    env['tamer'] = SimpleNamespace(say=lines.append)
+                    def end_section(code):
+                        self.assertEqual(code, 'return;')
+                        raise Closed()
+                    env['dws'] = end_section
+                    with self.subTest(chased=chased, hurt=hurt, departure=departure, elapsed=elapsed):
+                        if elapsed < days:
+                            with self.assertRaises(Closed): env['factory_ferry_closed']()
+                            self.assertIn('resting' if hurt else 'chasing', lines[0])
+                        else:
+                            env['factory_ferry_closed']()
+                            self.assertFalse(lines)
 
 
 if __name__ == '__main__':
