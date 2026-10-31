@@ -129,7 +129,7 @@ def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False):
 def find_map(name, ext):
     for d, _, fs in os.walk(os.path.join(ext, 'MAP')):
         if f'{name}.MAP' in fs:
-            return os.path.relpath(os.path.join(d, name), ext)
+            return os.path.relpath(os.path.join(d, name), ext).replace(os.sep, '/')
     sys.exit(f'no {name}.MAP in {ext}')
 
 
