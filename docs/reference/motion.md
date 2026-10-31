@@ -172,6 +172,37 @@ arms still; bones the map leaves out (tails, extra wings) only play the source i
 Feet that do not pair (flying, swimming, many legs, hands counted as feet), legs of two pieces hanging from one bone and
 models with no legs are left as imported.
 
+### Imported equipment and hit reactions
+
+`tools/models/field_animations/imported_equipment.py` is a post-delta recipe
+selected by the imports provider. `content/models/imports/animation-repairs.json`
+pins its effective source, skeleton size, hidden bones and changed slots. It
+restores the native hidden-part scales in donor clips that have no scale header:
+Kotemon's two spare swords, Taomon's brush, Roachmon's alternate hand and
+MegaGargomon's missile panels. Explicit native scale tracks remain intact,
+including Roachmon's native hand swap. Kotemon first receives its existing
+walking articulation; its two native hit clips then recoil within three ticks
+and recover, keeping their 20-tick duration and root programs.
+
+These are generated overlays, so the frozen import specs and model deltas stay
+unchanged. A clean build applies the existing delta, this pinned recipe, then
+checks the final species pins. Changing this recipe requires updating those
+pins; editing only an extracted model does not affect a clean build.
+
+Audit all imports after rebuilding:
+
+```sh
+python3 tools/models/audit_animations.py --models build/dev-everything/imported-models \
+  --overlays build/dev-everything/imported-species-models --out build/animation-audit.json
+```
+
+The audit reports missing, zero-duration and static hit reactions, plus every
+bone that is hidden only in some slots. Visibility findings need visual review:
+mesh-free helpers and native part swaps are legitimate. Hit recovery also needs
+runtime evidence: the battle engine considers the animation's running flag and
+the incoming technique's iframe timer (`BTL_tickHitState`,
+`BTL_tickFighterAction`); duration alone does not prove shortened hit-stun.
+
 ### 3. The production models and their field recipes
 
 The build's species provider `imports` (`content/models/imports/`: `models.json` and `species.py`) rebuilds the 175 imported

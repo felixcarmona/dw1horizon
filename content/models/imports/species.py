@@ -18,6 +18,9 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'taomon-equipment': ('315', 'tools.models.field_animations.imported_equipment', '315-taomon-equipment'),
+    'roachmon-equipment': ('332', 'tools.models.field_animations.imported_equipment', '332-roachmon-equipment'),
+    'megagargomon-equipment': ('335', 'tools.models.field_animations.imported_equipment', '335-megagargomon-equipment'),
     'solarmon-steady-hover': ('251', 'tools.models.field_animations.gliding', '251-solarmon-steady-hover'),
     'thundermon-rolling-boots': ('252', 'tools.models.field_animations.thundermon', '252-thundermon-rolling-boots'),
     'tuskmon-heavy-field': ('253', 'tools.models.field_animations.tuskmon', '253-tuskmon-heavy-field'),
@@ -72,7 +75,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'beelzemon-field': ('403', 'tools.models.field_animations.gaits', '403-beelzemon-field'),
     'magnamon-field': ('197', 'tools.models.field_animations.gaits', '197-magnamon-field'),
     'puppetmon-field': ('181', 'tools.models.field_animations.articulation', '181-puppetmon-field'),
-    'kotemon-field': ('351', 'tools.models.field_animations.articulation', '351-kotemon-field'),
+    'kotemon-field': ('351', 'tools.models.field_animations.imported_equipment', '351-kotemon-field'),
     'bastemon-field': ('432', 'tools.models.field_animations.gaits', '432-bastemon-field'),
     'veemon-field': ('180', 'tools.models.field_animations.gaits', '180-veemon-field'),
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),

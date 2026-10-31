@@ -29,12 +29,19 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 175)
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 65)
+        self.assertEqual(len(selected), 68)
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        for sid, name in (('315', '315-taomon-equipment'), ('332', '332-roachmon-equipment'),
+                          ('335', '335-megagargomon-equipment'), ('351', '351-kotemon-field')):
+            self.assertEqual(assignments[sid], ('tools.models.field_animations.imported_equipment', name))
+        # All pre-existing bindings outside the four repairs stay pinned.
+        for sid in ('315', '332', '335'):
+            del assignments[sid]
+        assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
                          '520fa1214ae8f4a7a0d706407dc3b507f50be270')
 
