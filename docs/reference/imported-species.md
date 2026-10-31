@@ -404,3 +404,21 @@ texture exact, DW2's blink, its tail re-hung under the pelvis) with MetalGreymon
   describes the field recipes that replace such gaits.
 
 The second evolution is a real tier change: every promoted species uses Mega training, tamer level, lifetime, chart and arena rules. The archive’s `first_mega` and per-partner level array are generated from these rows. Evolution items still require the adjacent level; the laboratory follows paths and otherwise uses `first_mega`. General arena brackets now include levels 3–6; fixed cup species lists remain authored by the story. The two `evolutionUltimate` special pairs into Machinedramon remain separate from natural path rows; the web guide includes their timed requirements.
+
+### Imported family voices
+
+Reviewed family assignments use each native's VBALL **and** VLALL rows: Angemon
+for MagnaAngemon, Angewomon, Seraphimon and SlashAngemon; Greymon for
+BlackWarGreymon; Tyrannomon for DarkTyrannomon; Numemon for ShellNumemon,
+Raremon and BlackKingNumemon; Etemon for KingEtemon; Palmon for Lillymon;
+Devimon for LadyDevimon; Betamon for Gomamon; Vegiemon for Mushroomon.
+Salamon, Gatomon and BlackGatomon share Patamon's small voice (the fallback
+selection without comparative listening evidence). Piddomon, Omnimon, Kotemon
+and Monmon retain their existing matching pairs. All bank-4 animation notes
+must be covered by the selected native VBALL chunk before accepting a change.
+
+`python3 tools/models/audit_field.py --from build/dev-everything --out build/field-audit.json`
+measures final gait durations/travel and voice coverage. It reads generated
+skeletons from overlay reports: MagnaAngemon's overlay has 28 bones rather than
+its source's 26. Parsing that final model with the source skeleton misreads pose
+words as animation opcodes (including `0xffe9`); that is an audit error.

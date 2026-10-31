@@ -18,10 +18,13 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'tylomon-native-range': ('254', 'tools.models.field_animations.locomotion', '254-tylomon-native-range'),
+    'syakomon-native-range': ('283', 'tools.models.field_animations.locomotion', '283-syakomon-native-range'),
+    'apocalymon-native-range': ('400', 'tools.models.field_animations.locomotion', '400-apocalymon-native-range'),
     'taomon-equipment': ('315', 'tools.models.field_animations.imported_equipment', '315-taomon-equipment'),
     'roachmon-equipment': ('332', 'tools.models.field_animations.imported_equipment', '332-roachmon-equipment'),
     'megagargomon-equipment': ('335', 'tools.models.field_animations.imported_equipment', '335-megagargomon-equipment'),
-    'solarmon-steady-hover': ('251', 'tools.models.field_animations.gliding', '251-solarmon-steady-hover'),
+    'solarmon-steady-hover': ('251', 'tools.models.field_animations.locomotion', '251-solarmon-steady-hover'),
     'thundermon-rolling-boots': ('252', 'tools.models.field_animations.thundermon', '252-thundermon-rolling-boots'),
     'tuskmon-heavy-field': ('253', 'tools.models.field_animations.tuskmon', '253-tuskmon-heavy-field'),
     'shadramon-supported-field': ('250', 'tools.models.field_animations.shadramon', '250-shadramon-supported-field'),
@@ -41,7 +44,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'candlemon-pedestal-field': ('235', 'tools.models.field_animations.candlemon', '235-candlemon-pedestal-field'),
     'gatomon-supported-field': ('234', 'tools.models.field_animations.gatomon', '234-gatomon-supported-field'),
     'bombernanimon-boxer-field': ('232', 'tools.models.field_animations.bomber_nanimon', '232-bombernanimon-boxer-field'),
-    'shellnumemon-slug-field': ('231', 'tools.models.field_animations.shell_numemon', '231-shellnumemon-slug-field'),
+    'shellnumemon-slug-field': ('231', 'tools.models.field_animations.locomotion', '231-shellnumemon-slug-field'),
     'rosemon-field': ('230', 'tools.models.field_animations.rosemon', '230-rosemon-field'),
     'phantomon-native-glide': ('229', 'tools.models.field_animations.phantomon', '229-phantomon-native-glide'),
     'apemon-knuckle-field': ('227', 'tools.models.field_animations.apemon', '227-apemon-knuckle-field'),

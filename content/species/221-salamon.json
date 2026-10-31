@@ -20,7 +20,7 @@
     "slot_aliases": [[46, 49], [47, 49], [48, 55], [50, 51], [53, 51], [51, 49], [54, 49], [49, 55]]
   },
   "texture": {"file": "build/batch4/Salamon.TIM", "entry": 0},
-  "voice": 29,
+  "voice": 27,
   "battle_music": "normal-battle",
   "condition_bubble": [-4, -74, -61, 2],
   "effect_origins": [[5, 0, 10, -100, 2, -1, -19, -59], [2, 0, 0, 0, 1, 0, 0, 0],
@@ -34,7 +34,7 @@
     "natural": {"height": 154.1, "half_width": 91.2, "half_depth": 99.9}
   },
   "partner": {
-    "voice": 9,
+    "voice": 1,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,

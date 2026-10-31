@@ -21,7 +21,7 @@
                      [59, 55], [55, 54], [54, 59]]
   },
   "texture": {"file": "build/batch5/ShellNumemon.TIM", "entry": 0},
-  "voice": 5,
+  "voice": 11,
   "battle_music": "normal-battle",
   "condition_bubble": [59, -67, -69, 14],
   "effect_origins": [[5, 100, 30, 0, 14, 36, 75, -107], [5, 120, -50, 0, 14, 43, 36, -156],
@@ -36,7 +36,7 @@
     "natural": {"height": 345.9, "half_width": 158.5, "half_depth": 324.0}
   },
   "partner": {
-    "voice": 2,
+    "voice": 6,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,

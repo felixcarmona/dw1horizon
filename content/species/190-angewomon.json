@@ -23,7 +23,7 @@
                      [58, 50], [59, 56], [56, 50]]
   },
   "texture": {"file": "build/batch/Angewomon.TIM", "entry": 0},
-  "voice": 32,
+  "voice": 18,
   "battle_music": "normal-battle",
   "condition_bubble": [1, -130, -18, 2],
   "effect_origins": [[7, 30, 0, 0, 7, -32, 18, -15], [25, 48, 37, 0, 28, -88, 85, 134],
@@ -37,7 +37,7 @@
     "natural": {"height": 447.2, "half_width": 291.3, "half_depth": 294.7}
   },
   "partner": {
-    "voice": 9,
+    "voice": 11,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 40,

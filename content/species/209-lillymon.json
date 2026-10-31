@@ -22,7 +22,7 @@
                      [58, 48], [59, 46], [60, 53], [53, 46]]
   },
   "texture": {"file": "build/batch3/Lillymon.TIM", "entry": 0},
-  "voice": 26,
+  "voice": 40,
   "battle_music": "normal-battle",
   "condition_bubble": [115, -136, 118, 18],
   "effect_origins": [[10, 40, -60, 0, 8, -74, -61, -60], [4, 50, -120, 0, 1, 10, -50, -197],
@@ -38,7 +38,7 @@
     "natural": {"height": 552.3, "half_width": 176.8, "half_depth": 126.2}
   },
   "partner": {
-    "voice": 10,
+    "voice": 1,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,

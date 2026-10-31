@@ -23,7 +23,7 @@
                      [58, 53], [59, 49], [60, 53], [53, 56], [56, 49]]
   },
   "texture": {"file": "build/batch4/LadyDevimon.TIM", "entry": 0},
-  "voice": 26,
+  "voice": 6,
   "battle_music": "normal-battle",
   "condition_bubble": [45, -194, 72, 2],
   "effect_origins": [[10, 40, -60, 0, 25, -97, -58, 0], [4, 50, -120, 0, 15, -125, -124, -99],
@@ -39,7 +39,7 @@
     "natural": {"height": 542.0, "half_width": 287.2, "half_depth": 268.9}
   },
   "partner": {
-    "voice": 10,
+    "voice": 3,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,

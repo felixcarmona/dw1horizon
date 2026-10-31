@@ -22,7 +22,7 @@
                      [51, 62]]
   },
   "texture": {"file": "build/batch11/BK-KingNumemon.TIM", "entry": 0},
-  "voice": 38,
+  "voice": 11,
   "battle_music": "normal-battle",
   "condition_bubble": [23, -141, -69, 9],
   "effect_origins": [[4, 180, 0, 0, 9, -39, 225, -168], [9, 50, 0, 0, 14, -70, 12, -34],
@@ -37,7 +37,7 @@
     "natural": {"height": 446.1, "half_width": 241.0, "half_depth": 425.5}
   },
   "partner": {
-    "voice": 12,
+    "voice": 6,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 40,

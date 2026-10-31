@@ -22,7 +22,7 @@
                      [57, 52], [58, 59], [59, 55], [60, 52], [52, 55]]
   },
   "texture": {"file": "build/batch3/MagnaAngemon.TIM", "entry": 0},
-  "voice": 54,
+  "voice": 18,
   "battle_music": "normal-battle",
   "condition_bubble": [-1, -113, -49, 2],
   "effect_origins": [[3, 130, -10, 0, 2, -5, 67, -146], [3, 130, -50, 0, 2, -5, 113, -128],
@@ -37,7 +37,7 @@
     "natural": {"height": 517.5, "half_width": 266.1, "half_depth": 250.9}
   },
   "partner": {
-    "voice": 8,
+    "voice": 11,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,
