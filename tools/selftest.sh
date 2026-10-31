@@ -74,7 +74,11 @@ else
 fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
 run npc-footprints   $PY tools/test_reach_policies.py
-run npc-routes       $PY tools/check_npc_routes.py                     # saved guided-state footprints keep the Bone Field connected
+run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
+run npc-route-mutations $PY tools/test_npc_routes.py
+if [ -d "${DERIVED}-maps/screens" ]; then
+    run npc-routes-built $PY tools/check_npc_routes.py --maps "${DERIVED}-maps/screens"
+fi
 run npc-staging       $PY tools/test_npc_staging.py                     # actual model routes and transient allocation peaks
 run release-version   $PY tools/test_version.py
 run derive-sum        $PY tools/test_pysum.py                             # tools/derive's sum() is CPython 3.12's, bit for bit
