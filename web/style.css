@@ -435,3 +435,16 @@ section { padding-top: 120px; }
 .sums .serial { font-family: var(--mono); font-weight: 400; font-size: 11.5px; color: var(--muted); }
 .sums td.files { font-family: var(--font); white-space: normal; }
 @media (max-width: 560px) { .problems { padding: 18px 16px; } }
+
+/* Release history uses the page's existing card and text styles. */
+#changelog-list { max-width: 760px; margin: auto; }
+.changelog-version { margin-bottom: 16px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 24px; background: #fff; }
+.changelog-version summary { cursor: pointer; font-size: 20px; font-weight: 700; }
+.changelog-version time { display: inline-block; margin-left: 16px; color: var(--muted); font-size: 14px; font-weight: 400; }
+.changelog-version h3 { font-size: 16px; margin: 20px 0 4px; }
+.changelog-version ul { margin: 0; padding-left: 24px; }
+.changelog-version li, .changelog-upgrade { overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .changelog-version { padding: 16px; }
+  .changelog-version time { display: block; margin: 4px 0 0; }
+}
