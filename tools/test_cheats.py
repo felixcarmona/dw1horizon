@@ -35,6 +35,8 @@ def main():
 #define MOD_OPT_BYTES 13
 #define MOD_OPT_HEADER_BYTES 12
 #define MOD_OPT_HEADER_CHEATS 0x80
+#define MOD_OPT_CHEATS_BIT 1
+#define MOD_OPT_SHORTCUTS_BIT 2
 #define PAD_SELECT 0x100
 #define PAD_L1 4
 #define PAD_R1 8
@@ -42,7 +44,7 @@ def main():
 #define PAD_R2 2
 int32_t MOD_OPT_BUTTONS, MOD_OPT_CLOCK, MOD_OPT_BARS, MOD_OPT_EVO_GUIDE;
 int32_t MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
-int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_TOUCHED;
+int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
 int32_t MOD_SAVE_NUMBER, fps = 60;
 struct { uint8_t prefix[0x50], pocketStation[16], icon[32]; } SAVE_FILE;
 int32_t modFrameRate(void) { return fps; }
@@ -89,17 +91,34 @@ int main(void) {
         }
     }
     for (int len = 0; len <= 12; len++) {
-        MOD_OPT_CHEATS = 1; modApplyOptions(options, len); assert(!MOD_OPT_CHEATS);
+        MOD_OPT_CHEATS = 1; MOD_OPT_SHORTCUTS = 1; modApplyOptions(options, len); assert(!MOD_OPT_CHEATS && !MOD_OPT_SHORTCUTS);
     }
+    for (int cheats = 0; cheats < 2; cheats++) {
+        for (int shortcuts = 0; shortcuts < 2; shortcuts++) {
+            MOD_OPT_CHEATS = cheats; MOD_OPT_SHORTCUTS = shortcuts;
+            modOptionBytes(options);
+            MOD_OPT_CHEATS = !cheats; MOD_OPT_SHORTCUTS = !shortcuts;
+            modApplyOptions(options, 13);
+            assert(MOD_OPT_CHEATS == cheats && MOD_OPT_SHORTCUTS == shortcuts);
+            /* OPTIONS has no such row: a save decides the shortcuts even after OPTIONS was touched */
+            MOD_OPT_TOUCHED = 1; MOD_OPT_SHORTCUTS = !shortcuts;
+            modApplyOptions(options, 13); assert(MOD_OPT_SHORTCUTS == shortcuts);
+            MOD_OPT_TOUCHED = 0;
+        }
+    }
+    MOD_OPT_SHORTCUTS = 0; modOptionBytes(options); modApplyOptions(options, 12); /* the card header's copy */
+    assert(!MOD_OPT_SHORTCUTS);
     for (int count = 0; count < 128; count++) {
         SAVE_FILE.pocketStation[1] = count;
         assert((modHeaderSaveNumber((uint8_t *)&SAVE_FILE) >= 0) == (count > 0 && count <= 12));
     }
     for (int key = 1; key <= 8; key *= 2) {
         POLLED_INPUT = PAD_SELECT | key; POLLED_INPUT_PREVIOUS = 0;
-        MOD_OPT_CHEATS = 0; effects = 0;
+        MOD_OPT_CHEATS = 0; MOD_OPT_SHORTCUTS = 1; effects = 0;
         assert(modRosterTick() == 0 && effects == 0);
-        MOD_OPT_CHEATS = 1;
+        MOD_OPT_CHEATS = 1; MOD_OPT_SHORTCUTS = 0;
+        assert(modRosterTick() == 0 && effects == 0);
+        MOD_OPT_SHORTCUTS = 1;
         assert(modRosterTick() == 1 && effects > 0);
         POLLED_INPUT_PREVIOUS = POLLED_INPUT; effects = 0;
         assert(modRosterTick() == 0 && effects == 0);

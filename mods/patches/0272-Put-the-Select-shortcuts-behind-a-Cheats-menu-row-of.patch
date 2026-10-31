@@ -1,0 +1,170 @@
+From a20b55542b2e59975668e13f22faa3d31afdc4be Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 07:58:20 +0000
+Subject: [PATCH] Put the Select shortcuts behind a Cheats menu row, off by
+ default
+
+---
+ include/dw/mod_options.h  |  3 ++-
+ src/main/main_menu.c      |  8 ++++++--
+ src/main/mod_lab.c        |  2 +-
+ src/main/mod_lab_menu.inc | 19 ++++++++++++-------
+ src/main/mod_options.c    |  1 +
+ text/main/mod_lab.yaml    |  9 +++++++++
+ 6 files changed, 31 insertions(+), 11 deletions(-)
+
+diff --git a/include/dw/mod_options.h b/include/dw/mod_options.h
+index 5260b5b..5adba8e 100644
+--- a/include/dw/mod_options.h
++++ b/include/dw/mod_options.h
+@@ -21,7 +21,8 @@ extern int32_t MOD_OPT_CLOCK;	/* DIGITAL CLOCK: the hour in digits under the clo
+ extern int32_t MOD_OPT_BARS;	/* NEW STATUS BARS: happiness and discipline as one red/green fill (patches 0162-0164), 0 = the original's */
+ extern int32_t MOD_OPT_EVO_GUIDE; /* EVOLUTION GUIDE: the evolution chart's requirement card and lit lines (patch 0176), 0 = the original chart */
+ extern int32_t MOD_OPT_NEW_DIGIMON; /* NEW DIGIMON: the species the mod made raisable; 0 = the original's only */
+-extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu and Select shortcuts, off by default */
++extern int32_t MOD_OPT_CHEATS; /* CHEATS: lab menu, off by default */
++extern int32_t MOD_OPT_SHORTCUTS; /* the Cheats menu's row: Select + L1/R1/L2/R2 under CHEATS, off by default */
+ extern int32_t MOD_OPT_TOUCHED;	/* changed in OPTIONS since the console started: a loaded save keeps it */
+ 
+ /* the code of the button glyph that does what the US layout's glyph `code` (Shift-JIS, big endian) does */
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index b82e89f..5e767c8 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -286,6 +286,8 @@ static int32_t MOD_OPTIONS_BACK; /* MOD (options): the title menu comes back fro
+ #define MOD_OPT_BYTES	13 /* SAVE_TAG_OPTIONS; header stores the first 12 and packs CHEATS into its count byte */
+ #define MOD_OPT_HEADER_BYTES 12
+ #define MOD_OPT_HEADER_CHEATS 0x80
++#define MOD_OPT_CHEATS_BIT 1 /* byte 12: CHEATS, and the Cheats menu's Select shortcuts in the bit above it */
++#define MOD_OPT_SHORTCUTS_BIT 2
+ static int32_t MOD_SAVE_NUMBER; /* MOD (options): the highest save number seen in a save header (modTitleOptions) */
+ #define MOD_OPT_ROW_STORY	5 /* MOD (story): EXTENDED STORY, under NEW DIGIMON */
+ #define MOD_OPT_ROW_DIFF	6 /* MOD (difficulty): DIFFICULTY, under EXTENDED STORY */
+@@ -4705,12 +4707,14 @@ static void modOptionBytes(uint8_t *d)
+ 	d[9] = MOD_OPT_STORY; /* MOD (story) */
+ 	d[10] = MOD_OPT_DIFFICULTY; /* MOD (difficulty) */
+ 	d[11] = MOD_OPT_QUICK_BATTLE;
+-	d[12] = MOD_OPT_CHEATS;
++	d[12] = (MOD_OPT_CHEATS ? MOD_OPT_CHEATS_BIT : 0) | (MOD_OPT_SHORTCUTS ? MOD_OPT_SHORTCUTS_BIT : 0);
+ }
+ 
+ /* MOD (options): a save's options (modOptionBytes, `len` of them), unless OPTIONS changed them since the start */
+ static void modApplyOptions(const uint8_t *d, int32_t len)
+ {
++	/* not a row of OPTIONS: a save always decides it. Old saves and the card header: OFF */
++	MOD_OPT_SHORTCUTS = len >= 13 && (d[12] & MOD_OPT_SHORTCUTS_BIT) != 0;
+ 	if (MOD_OPT_TOUCHED) {
+ 		return;
+ 	}
+@@ -4752,7 +4756,7 @@ static void modApplyOptions(const uint8_t *d, int32_t len)
+ 	if (len >= 12) { /* MOD (quick battle start) */
+ 		MOD_OPT_QUICK_BATTLE = d[11] != 0;
+ 	}
+-	MOD_OPT_CHEATS = len >= 13 && d[12] != 0; /* old saves: OFF */
++	MOD_OPT_CHEATS = len >= 13 && (d[12] & MOD_OPT_CHEATS_BIT) != 0; /* old saves: OFF */
+ }
+ 
+ /*
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 12c7729..6b5eeed 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -232,7 +232,7 @@ int32_t modRosterTick(void)
+ 	int32_t type;
+ 
+ 	pressed = POLLED_INPUT & ~POLLED_INPUT_PREVIOUS;
+-	if (!MOD_OPT_CHEATS || !(POLLED_INPUT & PAD_SELECT) || !(pressed & (PAD_L1 | PAD_L2 | PAD_R1 | PAD_R2))) {
++	if (!MOD_OPT_CHEATS || !MOD_OPT_SHORTCUTS || !(POLLED_INPUT & PAD_SELECT) || !(pressed & (PAD_L1 | PAD_L2 | PAD_R1 | PAD_R2))) {
+ 		return 0;
+ 	}
+ 	if (IS_SCRIPT_PAUSED != 1 || partnerGetState() != 1 || EVOLUTION_TARGET != -1 || isFileReadQueueBusy()) {
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index c3cf8da..8e85314 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -1,7 +1,8 @@
+ /* Private laboratory implementation; included by mod_lab.c. Ten texture rows fit below UV 256; createPauseBox restores its shared last row on return. */
+ #define MOD_LAB_BOX 5
+ #define MOD_LAB_TEXT_Y 0x84
+-#define MOD_LAB_OPTIONS 10
++#define MOD_LAB_OPTIONS 11
++#define LAB_ROW_SHORTCUTS 6
+ #define MOD_LAB_OPT_EVOLVE 3
+ #define PAD_SELECT 0x100
+ #define PAD_UP 0x1000
+@@ -56,7 +57,7 @@ static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the
+ static char *modLabMessage;
+ static char labText[LAB_ROWS][96];
+ static char *LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+-    LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_CLOSE };
++    LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_CLOSE };
+ static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+ static char *appendStr(char *dst, char *src)
+@@ -316,7 +317,7 @@ static void modLabDrawText(void)
+         n = labTop + row;
+         if (n >= count) break;
+         p = lines[row + firstRow];
+-        if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, LAB_HOME_TEXT[n]);
++        if (MOD_LAB_VIEW == LAB_HOME) appendStr(p, n == LAB_ROW_SHORTCUTS && MOD_OPT_SHORTCUTS ? LAB_STR_SHORTCUTS_ON : LAB_HOME_TEXT[n]);
+         else if (MOD_LAB_VIEW == LAB_VALUES) {
+             p = appendStr(p, LAB_FIELDS[n].name); p = appendStr(p, ": "); labInt(p, *modLabFieldPtr(n));
+         } else {
+@@ -518,14 +519,18 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+                 case 3: modLabList(LAB_EVOLVE); break;
+                 case 4: modLabList(LAB_MAPS); break;
+                 case 5: modLabHeal(); modLabMessage = LAB_STR_MSG_HEALED; break;
+-                case 6: case 8:
++                case LAB_ROW_SHORTCUTS:
++                    MOD_OPT_SHORTCUTS = !MOD_OPT_SHORTCUTS;
++                    if (MOD_OPT_SHORTCUTS) modLabMessage = LAB_STR_SHORTCUTS_HELP;
++                    break;
++                case 7: case 9:
+                     labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+-                    MOD_LAB_TARGET = MOD_LAB_CURSOR == 6 ? 1 : 3;
++                    MOD_LAB_TARGET = MOD_LAB_CURSOR == 7 ? 1 : 3;
+                     MOD_LAB_VIEW = LAB_CONFIRM; break;
+-                case 7:
++                case 8:
+                     labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+                     MOD_LAB_TARGET = 2; done = modLabPerform(); break;
+-                case 9: done = 1; break;
++                case 10: done = 1; break;
+                 }
+             } else if (MOD_LAB_VIEW == LAB_VALUES) {
+                 labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
+diff --git a/src/main/mod_options.c b/src/main/mod_options.c
+index c2dfcde..c4ea70f 100644
+--- a/src/main/mod_options.c
++++ b/src/main/mod_options.c
+@@ -59,6 +59,7 @@
+ extern uint8_t COLORCODE_LOWBITS; /* font.c: the text's colour */
+ 
+ int32_t MOD_OPT_CHEATS = 0;
++int32_t MOD_OPT_SHORTCUTS = 0;
+ int32_t MOD_OPT_BUTTONS = MOD_BUTTONS_US;
+ int32_t MOD_OPT_CLOCK = 1;
+ int32_t MOD_OPT_BARS = 1;
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index 10a46df..b9d4374 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -10,6 +10,15 @@ MOD_LAB:
+     LAB_STR_ADD_BITS:
+       ja: "Add 10000 bits"
+       en_us: "Add 10000 bits"
++    LAB_STR_SHORTCUTS_OFF:
++      ja: "SELECT shortcuts: OFF"
++      en_us: "SELECT shortcuts: OFF"
++    LAB_STR_SHORTCUTS_ON:
++      ja: "SELECT shortcuts: ON"
++      en_us: "SELECT shortcuts: ON"
++    LAB_STR_SHORTCUTS_HELP:
++      ja: "SELECT + L1/R1: Digimon, L2/R2: map"
++      en_us: "SELECT + L1/R1: Digimon, L2/R2: map"
+     LAB_STR_HEAL:
+       ja: "Heal Digimon"
+       en_us: "Heal Digimon"
+-- 
+2.55.0
+

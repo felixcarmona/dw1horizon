@@ -79,3 +79,5 @@ Each patch's commit message describes its change in detail.
 Patches 0258–0263 recover heap space through compact file routes and tables, overlay helpers, and staged NPC models.
 Patch 0264 fixes gym calendar rollover; 0265 tracks daily pickups by stable location IDs.
 Patches 0266–0269 correct composed reward text, guide rows and localized raster labels.
+Patch 0271 shows the Select hint for the Cheats menu while paused.
+Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats menu, off by default.
