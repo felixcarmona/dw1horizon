@@ -52,14 +52,6 @@ def check(sp, kids, table):
     for c, parents in incoming.items():
         if len(parents) > 5:
             errors.append(f'{sp[c]["name"]}: more than five parents')
-    checked = natural | {t for t, s in sp.items() if 'partner' in s and s['level'] in ('rookie', 'in-training')}
-    for p in sorted(checked):
-        level = sp[p]['level']
-        target_level, count = {'champion': ('ultimate', 2), 'rookie': ('champion', 4),
-                               'in-training': ('rookie', 1)}.get(level, ('', 0))
-        actual = sum(sp[c]['level'] == target_level for c in set(kids.get(p, [])))
-        if actual < count:
-            errors.append(f'{sp[p]["name"]}: {actual} {target_level} targets; needs {count}')
     accessible = set(natural)
     todo = [names[n] for n in table['special_routes']]
     while todo:
@@ -68,6 +60,18 @@ def check(sp, kids, table):
             continue
         accessible.add(t)
         todo.extend(kids.get(t, []))
+    # Numemon's fallback and other documented special raises are partners too.
+    checked = accessible | {t for t, s in sp.items() if 'partner' in s and s['level'] in ('rookie', 'in-training')}
+    for p in sorted(checked):
+        level = sp[p]['level']
+        target_level, count = {'champion': ('ultimate', 2), 'rookie': ('champion', 4),
+                               'in-training': ('rookie', 1)}.get(level, ('', 0))
+        actual = sum(sp[c]['level'] == target_level for c in set(kids.get(p, [])))
+        if actual < count:
+            errors.append(f'{sp[p]["name"]}: {actual} {target_level} targets; needs {count}')
+    for p, c in sorted(original_routes):
+        if c not in kids.get(p, []):
+            errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: original disc route removed')
     for t, s in sp.items():
         if 'partner' in s and s['level'] != 'none' and t not in accessible:
             errors.append(f'{s["name"]}: no natural or documented special route')

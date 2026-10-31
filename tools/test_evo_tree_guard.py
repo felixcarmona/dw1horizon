@@ -114,6 +114,14 @@ class GuardTests(unittest.TestCase):
         p = self.names['Baronmon']
         self.assertIn('Baronmon: 0 ultimate', self.errors(lambda s, k: k[p].clear()))
 
+    def test_special_champion_still_needs_two_ultimates(self):
+        p, c = self.names['Numemon'], self.names['KingSukamon']
+        self.assertIn('Numemon: 1 ultimate', self.errors(lambda s, k: k[p].remove(c)))
+
+    def test_disc_route_cannot_disappear(self):
+        p, c = self.names['Agumon'], self.names['Greymon']
+        self.assertIn('original disc route removed', self.errors(lambda s, k: k[p].remove(c)))
+
     def test_rookie_choices(self):
         p = self.names['Agumon']
         self.assertIn('Agumon: 0 champion', self.errors(lambda s, k: k[p].clear()))
