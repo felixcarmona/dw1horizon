@@ -60,3 +60,4 @@ __pycache__/
 
 # Showcase media is supplied only at deployment.
 /web/media/clips/
+/web/content/digimon.json

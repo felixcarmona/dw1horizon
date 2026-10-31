@@ -77,6 +77,7 @@ section { padding-top: 120px; }
 /* a phone: two rows of two, the same width */
 @media (max-width: 560px) {
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero-actions .button.guide { grid-column: 1 / -1; order: 3; }
   .hero-actions .button { min-width: 0; padding-inline: 10px; white-space: normal; text-align: center; line-height: 1.15; }
 }
 
@@ -92,6 +93,8 @@ section { padding-top: 120px; }
 .button.soft { background: rgba(255, 255, 255, .7); color: var(--ink); }
 .button.soft:hover { background: #fff; }
 /* the community buttons: each in its brand colour, with its logo */
+.button.guide { color: #2a1a10; background: #ffb86b; }
+.button.guide:hover { background: #ffa64d; }
 .button.discord, .button.github { gap: 9px; color: #fff; }
 .button.discord { background: #5865f2; }
 .button.discord:hover { background: #4752c4; }
@@ -338,6 +341,64 @@ section { padding-top: 120px; }
 .map-prev, .map-next { top: calc(50% - 23px); }
 .map-prev { left: 14px; }
 .map-next { right: 14px; }
+
+/* ------------------------------------------------------------ the Digimon list and evolution guide */
+
+.digimon { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; outline: 0; background: #f7f6f9;
+           padding: 0 var(--gutter) 40px; overflow-y: auto; --gutter: max(16px, calc(50vw - 380px)); }
+.digimon > h2 { margin-top: 56px; }
+.digi-tools { position: sticky; top: 0; z-index: 4; display: grid; gap: 8px; margin: 0 calc(-1 * var(--gutter)); padding: 10px var(--gutter); background: #f7f6f9; }
+/* 16px at least: iOS zooms the page into a smaller field; the room on its right is the close button's */
+.digi-tools input { width: calc(100% - 58px); height: 44px; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px;
+                    font: 400 16px var(--font); color: var(--ink); background: #fff; appearance: none; -webkit-appearance: none; }
+.digi-tools input::placeholder { color: var(--muted); }
+.digi-levels { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.digi-levels::-webkit-scrollbar { display: none; }
+@media (min-width: 620px) { .digi-levels { justify-content: center; } }
+.digi-chip { flex: none; min-height: 34px; padding: 0 14px; border: 0; border-radius: 999px; font: 500 14px var(--font); color: var(--ink-2);
+             background: #ece9f1; cursor: pointer; }
+.digi-chip[aria-pressed="true"] { color: #fff; background: var(--ink); }
+.digi-count { margin: 10px 0 6px; color: var(--muted); font-size: 14px; text-align: center; }
+.digi-group { margin-top: 22px; }
+.digi-group h3 { position: sticky; top: var(--tools, 100px); z-index: 2; display: flex; align-items: baseline; gap: 8px; padding: 6px 2px; font-size: 16px; font-weight: 700; letter-spacing: -.01em; background: #f7f6f9; }
+.digi-group-count { font-size: 13px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+.digi-group { content-visibility: auto; contain-intrinsic-size: auto 1200px; }
+.digi-cards { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; }
+@media (min-width: 620px) { .digi-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.digi-card { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; width: 100%; height: 100%; min-height: 60px; padding: 9px 11px;
+             border: 0; border-radius: 10px; font: 400 15px var(--font); color: var(--ink); text-align: left; background: #fff; box-shadow: 0 0 0 1px #ebe7f0; cursor: pointer; }
+.digi-card:hover { box-shadow: 0 0 0 1px #c9c2d6; }
+.digi-name { font-size: 14.5px; font-weight: 600; letter-spacing: -.01em; line-height: 1.2; overflow-wrap: anywhere; }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 6px; font-size: 12px; font-weight: 600; line-height: 1.5; white-space: nowrap; }
+.tag-new { color: #a84a0c; background: #fdeedd; }
+.tag-vaccine { color: #1f7a4d; background: #e4f3ea; }
+.tag-data { color: #2a5fb0; background: #e6eefa; }
+.tag-virus { color: #9a2f5f; background: #f6e7ee; }
+.digi-note { margin: 18px auto 0; max-width: 34em; color: var(--muted); font-size: 14px; text-align: center; }
+.digi-view { width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: 0; border-radius: 22px;
+             box-shadow: 0 30px 80px -20px rgba(40, 30, 60, .45); color: var(--ink); overscroll-behavior: contain; }
+.digi-view::backdrop { background: rgba(27, 26, 36, .35); }
+.digi-close { position: sticky; top: 10px; float: right; width: 44px; height: 44px; margin: 10px 10px 0 0; border: 0; border-radius: 50%;
+              font-size: 24px; line-height: 1; color: var(--ink-2); background: var(--soft); cursor: pointer; }
+.digi-guide-close { position: fixed; top: 10px; right: var(--gutter); z-index: 5; float: none; margin: 0; }
+.digi-body { padding: 24px 24px 26px; font-size: 15px; outline: 0; }
+.digi-body h3 { padding-right: 44px; font-size: 24px; letter-spacing: -.03em; overflow-wrap: anywhere; }
+:lang(ja) .digi-body h3 { letter-spacing: 0; }
+.digi-kind { margin: 2px 0 0; color: var(--muted); }
+.digi-part, .digi-req { margin: 18px 0 0; }
+.digi-body h4 { margin: 0 0 2px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.digi-body p { overflow-wrap: anywhere; }
+.digi-part p { margin: 0; }
+.digi-link { padding: 0; border: 0; font: 500 15px var(--font); color: var(--ink); text-decoration: underline; text-decoration-color: var(--sun);
+             text-underline-offset: 3px; background: none; cursor: pointer; }
+.digi-after { margin: 0 0 6px; color: var(--ink-2); }
+.digi-req dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 8px 14px; margin: 6px 0 0; padding: 14px; border-radius: 14px; background: var(--soft); }
+.digi-req dt { color: var(--ink-2); }
+.digi-req dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+.digi-req ul { list-style: none; margin: 0; padding: 0; }
+@media (max-width: 480px) { .digi-req dl { grid-template-columns: minmax(0, 1fr); gap: 0; }
+                            .digi-req dt { font-size: 13px; color: var(--muted); }
+                            .digi-req dt:not(:first-child) { margin-top: 10px; } }
 
 /* ------------------------------------------------------------ footer */
 

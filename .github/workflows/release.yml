@@ -63,11 +63,13 @@ jobs:
         shell: bash
         run: |
           # The engine and package stay the tag's; a page-only change is redeployed with workflow_dispatch from main.
-          git checkout "$GITHUB_SHA" -- web
+          git checkout "$GITHUB_SHA" -- web tools/site_digimon.py
           for path in index.html style.css js i18n content media; do
             rm -rf "build/pages-site/$path"
             cp -R "web/$path" "build/pages-site/$path"
           done
+          # The guide describes the tag's species, which this checkout still has; main may be ahead of the release.
+          python3 tools/site_digimon.py --out build/pages-site/content/digimon.json
           test -z "$(tar -tzf build/pages-input/horizon-media.tar.gz | grep -vE '^[a-z0-9-]+\.(mp4|jpg)$')"
           mkdir build/pages-site/media/clips
           tar -xzf build/pages-input/horizon-media.tar.gz -C build/pages-site/media/clips
