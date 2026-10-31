@@ -42,6 +42,7 @@ disc sound-spu-budget  $PY tools/sound.py spu-budget
 DERIVED=${DW_SELFTEST_DERIVE:-build/wtif}
 if [ -f "$DERIVED/DIGI.DAT" ] && [ -d "$DERIVED/species" ]; then
     run species-archive "$PY" tools/dev/check_species_archive.py "$DERIVED"
+    disc record-original-deltas "$PY" tools/audit_recordoriginals.py --from "$DERIVED" --check --out "$OUT/record-original-deltas.json"
 else
     skip species-archive "needs the everything build (DW_SELFTEST_DERIVE)"
 fi
