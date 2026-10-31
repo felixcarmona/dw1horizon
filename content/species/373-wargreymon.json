@@ -32,7 +32,7 @@
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 96,
     "energy_fed": 54,
-    "energy_per_hour": 13,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
     "poop_size": 15,
     "favorite_food": "Super veggy",

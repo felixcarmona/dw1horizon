@@ -29,7 +29,7 @@
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 80,
     "energy_fed": 56,
-    "energy_per_hour": 14,
+    "energy_per_hour": 10,
     "poop_timer_10min": 36,
     "poop_size": 15,
     "favorite_food": "Pricklypear",
