@@ -1,12 +1,21 @@
 import { renderFeatureList } from './features.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
+import { FLAGS } from './flags.js';
 import { Build, missingSupport, tidyStorage } from './engine/engine.js';
 
-// The two community links: change them here.
+// The links (the hero's Discord and GitHub buttons, the privacy note's code link): change them here.
 const LINKS = {
   discord: 'https://discord.gg/SkVDPjYwS',
   github: document.querySelector('meta[name="source-repository"]')?.content || '',
+};
+
+// The box art is not ours and is not in this repository: the visitor's browser asks libretro-thumbnails for it, and
+// the plain disc stands in when that fails.
+const COVERS = 'https://thumbnails.libretro.com/Sony%20-%20PlayStation/Named_Boxarts/';
+const BOXART = {
+  us: 'Digimon World (USA)', dcb: 'Digimon - Digital Card Battle (USA)',
+  dw2: 'Digimon World 2 (USA)', dw2003: 'Digimon World 2003 (Europe) (En,Fr,De,Es,It)',
 };
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -196,16 +205,6 @@ function cancel(entry) {
   end(entry);
 }
 
-function remove(id) {
-  const g = games.get(id);
-  for (const q of g.queue.splice(0)) release(q.batch);
-  if (g.pending) { const p = g.pending; g.pending = null; cancel(p); }
-  g.cur = null;
-  if (id === 'us' && !building) last = null;
-  renderAll();
-  $('#add-button').focus();      // (the slot has nothing to focus now)
-}
-
 // ---------------------------------------------------------------- archives, ECM, PBP: turned into images first
 
 const JOB_ERROR = { encrypted: 'why.encrypted', parts: 'why.parts', open: 'why.archiveBroken',
@@ -363,22 +362,21 @@ function setupDialog() {
 // One slot per game, made once (start) and updated in place (renderSlots: a rebuild at each progress tick would
 // restart the cover's transition and lose the focus of a button inside). Its parts: the cover twice (grey, and the
 // colour revealed from the left to --p) with the check's percentage or the check mark on its corner, the game's name,
-// what it is for, and ×. The same height in every state; the release and checksums are under Details.
+// what it is for. The same height in every state; the release and checksums are under Details.
 function buildSlots() {
   const items = [];
   for (const g of games.values()) {
     const li = el('li', { className: 'slot' });
     li.dataset.game = g.id;
-    const cover = (cls) => el('img', { className: `cover ${cls}`, src: 'media/disc.svg', alt: '', width: 320, height: 320 });
+    const cover = (cls) => el('img', { className: `cover ${cls}`, src: COVERS + encodeURIComponent(BOXART[g.id]) + '.png', alt: '', width: 320, height: 320,
+                                       referrerPolicy: 'no-referrer', onerror: (e) => { e.target.onerror = null; e.target.src = 'media/disc.svg'; } });
     const pct = el('span', { className: 'slot-pct' });                        // (the cover is the progress bar)
     pct.setAttribute('aria-hidden', 'true');
     const check = el('span', { className: 'slot-check', textContent: '✓' });   // labelled "checked" (renderSlots)
     check.setAttribute('role', 'img');
     const art = el('div', { className: 'slot-art' }, cover('cover-grey'), cover('cover-colour'), pct, check);
-    const x = el('button', { type: 'button', className: 'disc-remove', textContent: '×' });
-    x.addEventListener('click', () => remove(g.id));
     li.append(art, el('div', { className: 'slot-text' }, el('b', { className: 'slot-name', textContent: gameName(g.id) }),
-                      el('small', { className: 'slot-purpose' })), x);
+                      el('small', { className: 'slot-purpose' })));
     g.el = li;
     items.push(li);
   }
@@ -409,9 +407,6 @@ function renderSlots() {
     check.hidden = state !== 'ready';
     check.setAttribute('aria-label', t('disc.ok'));
     $('.slot-purpose', li).textContent = g.id === 'us' ? t('slot.purpose.us') : t('slot.purpose.source', { n: g.disc.species });
-    const x = $('.disc-remove', li);
-    x.hidden = state === 'empty';
-    x.setAttribute('aria-label', t('disc.remove', { title: gameName(g.id) }));
   }
   renderSums();
 }
@@ -429,11 +424,11 @@ function renderSums() {
                     el('div', { className: 'serial', textContent: ex.serial || '' }));
     tr.append(name);
     for (const [exp, got] of [[ex.crc32, e.got.crc32], [ex.sha1, e.got.sha1], [num(ex.size), num(e.got.size)]]) {
-      const td = el('td', {}, el('div', { textContent: exp || '' }));
-      if (got) {
-        td.append(el('div', { className: 'got', textContent: got }));
-        td.lastChild.dataset.match = String(got === exp);
-      }
+      // one line, in green, when what the disc gave is what was expected; both lines only when they differ
+      const td = el('td');
+      if (got && got === exp) td.append(el('div', { className: 'got', textContent: got }));
+      else td.append(el('div', { textContent: exp || '' }), ...(got ? [el('div', { className: 'got', textContent: got })] : []));
+      if (got) td.lastChild.dataset.match = String(got === exp);
       tr.append(td);
     }
     if (e.via === 'files') tr.append(el('td', { className: 'files', textContent: i18n.t('disc.byFiles') }));
@@ -489,12 +484,6 @@ function renderPatch() {
   const [key, ready, vars] = patchState();
   const btn = $('#patch-button');
   btn.disabled = !ready;
-  // with the four discs in, the drop zone goes (a × on a slot brings it back; a drop on the page still works)
-  const zone = $('#add-button'), full = [...games.values()].every((g) => g.cur && !g.pending);
-  if (zone.hidden !== full) {
-    if (full && document.activeElement === zone) btn.focus();
-    zone.hidden = full;
-  }
   $('#patch-status').textContent = i18n.t(patching && ready ? patching : key, vars);
   supportHelp($('#patch-status'), key);
   renderBuild();
@@ -612,8 +601,7 @@ function renderBuild() {
     done.dataset.ready = '1';
   }
   if (st.result) {
-    $('#dl-bin').textContent = t('build.downloadBin', { mb: mb(st.result.size) });
-    $('#dl-cue').textContent = t('build.downloadCue');
+    $('#dl-all').textContent = t('build.downloadBin', { mb: mb(st.result.size) });
     $('#build-sha').textContent = t(st.result.want ? 'build.checked' : 'build.checkedFiles',
                                     { sha1: st.result.sha1, n: st.result.holes, base: st.base ? st.base.title : '' });
   }
@@ -634,8 +622,8 @@ const discLanguages = () => discs.languages || ['en'];
 
 function renderLanguages() {
   const langs = discLanguages();
-  $('#hero-langs').textContent = i18n.t('hero.languages', { n: langs.length, list: langs.map((l) => NAMES[l] || l).join(', ') });
   $('#lang').value = i18n.lang;
+  $('#lang-flag').innerHTML = FLAGS[i18n.lang] || '';
 }
 
 function renderAll() {
@@ -658,8 +646,16 @@ async function start() {
   $('#link-discord').href = LINKS.discord;
   $('#link-github').href = LINKS.github;
   $('#link-github').hidden = !LINKS.github;
+  $('#audit-link').href = `${LINKS.github}/tree/main/web/js/engine`;   // the code that builds the disc in the browser
+  $('#audit-link').closest('p').hidden = !LINKS.github;
   $('#patch-button').addEventListener('click', patch);
   $('#build-stop').addEventListener('click', () => { if (building) building.cancel(); });
+  // one button, both files: the .bin now, the .cue just after (the browser may ask once to allow several downloads)
+  $('#dl-all').addEventListener('click', (e) => {
+    e.preventDefault();
+    $('#dl-bin').click();
+    setTimeout(() => $('#dl-cue').click(), 400);
+  });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('engine-sw.js').catch(() => {});
   const menu = $('#lang');
   menu.replaceChildren(...LANGS.map((l) => el('option', { value: l, lang: tag(l), textContent: NAMES[l] })));
@@ -674,7 +670,7 @@ start();
 
 // ---------------------------------------------------------------- release version
 
-// The footer's "v0.1.0 · 27 Oct 2026": the release the engine builds (engine/current.json, written by web/build-engine.sh
+// The line under "Create my disc", "v0.1.0 · 27 Oct 2026": the release the engine builds (engine/current.json, written by web/build-engine.sh
 // from the release's manifest; tools/version.py), its date in the page's language. Nothing without an engine.
 (async () => {
   const el = $('#release');

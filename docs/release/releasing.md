@@ -58,7 +58,8 @@ python3 tools/release_pages.py prepare v0.0.1 \
 Preparation reads only those artifact directories, never discs. It writes
 `horizon-package.tar.gz` (unpacks directly to the player package files),
 `horizon-engine.tar.gz` (current.json and one engine folder), and
-`horizon-checksums.json` (SHA-256 of every payload file). Create a **draft** Release
+`horizon-checksums.json` (SHA-256 of every payload file), plus `horizon-media.tar.gz`
+(the showcase clips: a flat archive of `.mp4` and `.jpg`). Create a **draft** Release
 for this tag in the new public repo and attach these three files. For example,
 using GitHub CLI from that repo:
 
@@ -66,7 +67,8 @@ using GitHub CLI from that repo:
 gh release create v0.0.1 --draft --target "$(git rev-parse HEAD)" \
   --title 'Digimon World Horizon 0.0.1' --notes 'Prepared; awaiting CI validation.'
 gh release upload v0.0.1 build/pages-upload/horizon-package.tar.gz \
-  build/pages-upload/horizon-engine.tar.gz build/pages-upload/horizon-checksums.json
+  build/pages-upload/horizon-engine.tar.gz build/pages-upload/horizon-checksums.json \
+  horizon-media.tar.gz
 git push origin refs/tags/v0.0.1
 ```
 
@@ -79,10 +81,10 @@ assets support a deployment retry. Avoid manually dispatching an old tag unless
 an intentional rollback is wanted. Serialized runs prevent simultaneous deploys;
 they do not enforce semantic version ordering.
 
-CI downloads only the three named assets, validates them without executing their
+CI downloads only the four named assets, validates them without executing their
 code, regenerates `data/discs.json`, and copies tracked page assets. Developer
-clips, tests, engine build tools and ignored files are excluded. Showcase cards
-whose media is absent render as text, with no broken image or video requests. The engine's
+clips, tests, engine build tools and ignored files are excluded. The showcase
+clips come from `horizon-media.tar.gz`. The engine's
 embedded manifest must match the package byte for byte. The built site preserves
 `web/CNAME` and includes `.nojekyll`. Pyodide, plan and packs are served from the
 same origin; browser code never needs to fetch GitHub Release assets across CORS.
@@ -119,3 +121,12 @@ required by the current worker/OPFS implementation.
 
 See GitHub's [custom workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 and [custom domain records](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+
+## Page-only changes
+
+The page comes from the commit running the workflow; the engine, package and disc metadata
+always come from the tag. To publish a page change without a new release, merge it to `main`
+and run the workflow from `main` with the current tag, then restore the release notes
+(`gh release edit TAG --notes-file ...`): the run rewrites them. The Pages check does not cover
+the clips or the box art: the clips are release assets and the browser fetches the box art from
+libretro-thumbnails.
