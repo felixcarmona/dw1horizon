@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile actual option/save and shortcut functions on the host.
+"""Compile actual option/save, shortcut and pause functions on the host.
 
 Usage: python3 tools/test_cheats.py [build/decomp-cheats]
 """
@@ -17,6 +17,63 @@ def function(source, name):
     assert start, name
     end = source.index('\n}', start.end()) + 2
     return source[start.start():end]
+
+
+def test_pause(work):
+    source = (work / 'src/main/utils2.c').read_text()
+    code = r'''
+#include <stdint.h>
+#include <assert.h>
+#include <stdio.h>
+typedef unsigned long u_long;
+#define PAUSE_HINT_TEXT_W 200
+#define PAUSE_HINT_TEXT_H 12
+int PAUSE_BOX_VISIBLE, IS_GAMETIME_RUNNING = 1, GAME_STATE, FADE_PROTECTION;
+int PAUSE_STATE, MOD_OPT_CHEATS, IS_SCRIPT_PAUSED, MAIN_D_80134E7C;
+uint32_t PAUSE_INPUT, PAUSE_INPUT_PREVIOUS;
+int reads, creates, removes, menus, hints;
+int readPStat(int n) { return 0; }
+void removePauseBox(void) { removes++; MAIN_D_80134E7C = 0; }
+void createPauseBox(void) { creates++; MAIN_D_80134E7C = 1; }
+void modPauseHintShow(u_long *p) { hints++; }
+void modPauseHintHide(u_long *p) { }
+void pauseFrame(void) { }
+void modLabMenu(uint32_t *input, uint32_t *previous) { menus++; }
+uint32_t PadRead(int port) {
+    assert(reads < 24);
+    /* Enter pause, ten distinct Select presses, then unpause. */
+    int n = reads++;
+    return n == 0 || n == 21 ? 0x800 : n % 2 ? 0x100 : 0;
+}
+''' + function(source, 'handlePause') + r'''
+int main(void) {
+    for (int cheats = 0; cheats < 2; cheats++) {
+        for (int script = 0; script < 3; script++) {
+            MOD_OPT_CHEATS = cheats; IS_SCRIPT_PAUSED = script;
+            PAUSE_STATE = PAUSE_BOX_VISIBLE = MAIN_D_80134E7C = 0;
+            PAUSE_INPUT = PAUSE_INPUT_PREVIOUS = 0;
+            reads = creates = removes = menus = hints = 0;
+            handlePause();
+            int allowed = cheats && script == 1;
+            assert(reads == 22 && PAUSE_STATE == 0);
+            assert(menus == (allowed ? 10 : 0));
+            assert(creates == (allowed ? 11 : 1));
+            assert(hints == creates && removes == 0);
+        }
+    }
+    puts("PASS: ten paused Select presses leave forbidden states untouched; field menu still opens");
+}
+'''
+    compile_check(code)
+
+
+def compile_check(code):
+    with tempfile.TemporaryDirectory(prefix='dw-cheats-') as tmp:
+        source = Path(tmp) / 'check.c'
+        source.write_text(code)
+        binary = Path(tmp) / 'check'
+        subprocess.run(['cc', '-std=c99', '-fsanitize=address,undefined', str(source), '-o', str(binary)], check=True)
+        subprocess.run([str(binary)], check=True)
 
 
 def main():
@@ -119,6 +176,11 @@ int main(void) {
         MOD_OPT_CHEATS = 1; MOD_OPT_SHORTCUTS = 0;
         assert(modRosterTick() == 0 && effects == 0);
         MOD_OPT_SHORTCUTS = 1;
+        for (int script = 0; script < 3; script += 2) {
+            IS_SCRIPT_PAUSED = script; effects = 0;
+            assert(modRosterTick() == 0 && effects == 1); /* refusal sound only */
+        }
+        IS_SCRIPT_PAUSED = 1;
         assert(modRosterTick() == 1 && effects > 0);
         POLLED_INPUT_PREVIOUS = POLLED_INPUT; effects = 0;
         assert(modRosterTick() == 0 && effects == 0);
@@ -126,12 +188,8 @@ int main(void) {
     puts("PASS: save round trips, old saves OFF, header bounds, explicit options retained, all four shortcuts gated");
 }
 '''
-    with tempfile.TemporaryDirectory(prefix='dw-cheats-') as tmp:
-        source = Path(tmp) / 'check.c'
-        source.write_text(code)
-        binary = Path(tmp) / 'check'
-        subprocess.run(['cc', '-std=c99', '-fsanitize=address,undefined', str(source), '-o', str(binary)], check=True)
-        subprocess.run([str(binary)], check=True)
+    compile_check(code)
+    test_pause(work)
 
 
 if __name__ == '__main__':
