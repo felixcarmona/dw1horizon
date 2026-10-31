@@ -43,6 +43,27 @@ that publication boundary before uploading playable artifacts. Filename and
 checksum validation cannot establish copyright provenance. An authored-source
 page can be tested now; a copyright-free playable release is not proven here.
 
+## Changelog
+
+Before tagging, commit the release's entry in `web/content/changelog.json` as the
+last change. An AI session reads what changed since the previous tag, writes
+bullets for players and translates them into all eight page languages. Use
+`tools/changelog_sources.sh PREVIOUS_TAG` to print PR titles and bodies, commits
+without a PR and the diff stat; without an argument it uses the newest `v*` tag.
+The helper reads Git and GitHub only, writes to stdout and needs no discs.
+
+Use plain names, with no history labels, story spoilers, patch numbers, internal
+names or names of people. Include one `upgrade` line in every language saying
+whether saves from the previous version work and whether the required discs
+changed. Empty New, Changed or Fixed groups are fine.
+
+Both preparation and assembly require the tag's version in the changelog. The
+English entry supplies the GitHub release notes. On a tag push or manual dispatch,
+assembly reads `web/content/changelog.json` from the checked-out tag. The later
+page copy reads that file from the workflow commit (main for a page-only dispatch,
+the tag for a dispatch from that tag). The page hides entries newer than the
+engine's `release_tag`; previews without that metadata show all entries.
+
 ## Stage the verified artifacts, then publish
 
 After the local gates and publication review pass, start with a clean checkout
@@ -127,7 +148,8 @@ and [custom domain records](https://docs.github.com/en/pages/configuring-a-custo
 
 The page comes from the commit running the workflow; the engine, package and disc metadata
 always come from the tag. To publish a page change without a new release, merge it to `main`
-and run the workflow from `main` with the current tag, then restore the release notes
-(`gh release edit TAG --notes-file ...`): the run rewrites them. The Pages check does not cover
+and run the workflow from `main` with the current tag. The run regenerates release notes
+from the tag's English changelog entry. v0.0.1 predates this: a run on that tag still writes
+the old text, so restore its notes afterwards (`gh release edit TAG --notes-file ...`). The Pages check does not cover
 the clips or the box art: the clips are release assets and the browser fetches the box art from
 libretro-thumbnails.

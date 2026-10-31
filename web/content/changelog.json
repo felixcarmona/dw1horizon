@@ -1,0 +1,65 @@
+{
+ "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
+ "versions": [
+  {
+   "version": "0.0.1",
+   "date": "2026-10-31",
+   "en": {
+    "new": [
+     "First public release"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "es": {
+    "new": [
+     "Primera versión pública"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "pt-br": {
+    "new": [
+     "Primeira versão pública"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "fr": {
+    "new": [
+     "Première version publique"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "de": {
+    "new": [
+     "Erste öffentliche Veröffentlichung"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "it": {
+    "new": [
+     "Prima versione pubblica"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "ja": {
+    "new": [
+     "初の一般公開版"
+    ],
+    "changed": [],
+    "fixed": []
+   },
+   "ca": {
+    "new": [
+     "Primera versió pública"
+    ],
+    "changed": [],
+    "fixed": []
+   }
+  }
+ ]
+}

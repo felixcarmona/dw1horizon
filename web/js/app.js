@@ -1,3 +1,4 @@
+import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
 import { setupDigimon, labels as digimonLabels } from './digimon.js';
@@ -59,6 +60,9 @@ function supportHelp(node, key) {
                            textContent: i18n.t('engine.playerGuide') }));
   errorDetails(node, SUPPORT_DETAILS[key]);
 }
+const currentRelease = fetch(new URL('../engine/current.json', import.meta.url))
+  .then((r) => r.ok ? r.json() : null).catch(() => null);
+
 let discs, features;   // features: content/features.json as it is (js/features.js renders it)
 
 // ---------------------------------------------------------------- the four games
@@ -655,6 +659,7 @@ function renderAll() {
   renderSlots();
   renderPatch();
   renderFeatures();
+  renderChangelog();
   mapLabels();
   digimonLabels();
 }
@@ -688,6 +693,7 @@ async function start() {
   setupAdd();
   setupDialog();
   renderAll();
+  setupChangelog(currentRelease).catch(() => { $('#changelog').hidden = true; });
   setupMaps().catch(() => { $('#maps').hidden = true; });
   setupDigimon().catch(() => { $('#digimon').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
@@ -703,7 +709,7 @@ start();
   const el = $('#release');
   let cur;
   try {
-    cur = await fetch(new URL('../engine/current.json', import.meta.url)).then((r) => (r.ok ? r.json() : null));
+    cur = await currentRelease;
   } catch { return; }
   if (!cur || !cur.release_version) return;
   const show = () => {

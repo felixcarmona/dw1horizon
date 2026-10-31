@@ -7,6 +7,8 @@ import sys
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 import release_pages as pages
 
@@ -36,6 +38,52 @@ def fixture(info):
 
 class PublicationTests(unittest.TestCase):
     info = dict(version='1.2.3', date='2026-10-29', commit='a' * 40)
+
+    def test_changelog_notes(self):
+        entry = dict(new=['A new feature'], changed=[], fixed=['A fix'], upgrade='Previous saves work; discs unchanged.')
+        notes = pages.release_notes(self.info, entry)
+        self.assertEqual(notes, "Digimon World: Horizon 1.2.3 (2026-10-29, UTC).\n\n"
+                         "## New\n\n- A new feature\n\n## Fixed\n\n- A fix\n\n"
+                         "Previous saves work; discs unchanged.\n\n"
+                         "Apply the attached package to your own discs; see its README.\n\n"
+                         f"Source commit: {self.info['commit']}.\n")
+        self.assertNotIn('Upgrade', pages.release_notes(self.info, dict(new=[], changed=[], fixed=[])))
+
+    def test_changelog_lookup_and_missing_release_gates(self):
+        with tempfile.TemporaryDirectory() as td, patch.object(pages, 'ROOT', Path(td)):
+            path = Path(td) / 'web/content/changelog.json'
+            with self.assertRaisesRegex(ValueError, 'missing changelog'):
+                pages.changelog_entry('1.2.3')
+            path.parent.mkdir(parents=True)
+            entry = dict(new=['First release'], changed=[], fixed=[])
+            path.write_text(json.dumps(dict(versions=[dict(version='1.2.3', en=entry)])))
+            self.assertEqual(pages.changelog_entry('1.2.3'), entry)
+            with patch.object(pages.release, 'identity', return_value=dict(self.info, version='9.9.9')):
+                with self.assertRaisesRegex(ValueError, 'missing English changelog entry for version 9.9.9'):
+                    pages.build(SimpleNamespace(tag='v9.9.9'))
+                with patch.object(sys, 'argv', ['release_pages.py', 'prepare', 'v9.9.9', '--package', 'unused', '--engine', 'unused', '--out', 'unused']):
+                    with self.assertRaisesRegex(ValueError, 'missing English changelog entry for version 9.9.9'):
+                        pages.main()
+
+    def test_build_writes_changelog_notes_and_release_tag(self):
+        package, engine = fixture(self.info)
+        entry = dict(new=['A feature'], changed=['A change'], fixed=[])
+        with tempfile.TemporaryDirectory() as td:
+            inputs = Path(td) / 'inputs'
+            inputs.mkdir()
+            pages.write_archive(inputs / pages.PACKAGE, package)
+            pages.write_archive(inputs / pages.ENGINE, engine)
+            (inputs / 'horizon-checksums.json').write_text(json.dumps({
+                kind: {name: pages.digest(data) for name, data in entries.items()}
+                for kind, entries in [('package', package), ('engine', engine)]}))
+            out = Path(td) / 'site'
+            with patch.object(pages.release, 'identity', return_value=self.info), \
+                    patch.object(pages, 'changelog_entry', return_value=entry) as lookup, \
+                    patch.object(pages, 'page', side_effect=lambda dest: dest.mkdir()):
+                pages.build(SimpleNamespace(tag='v1.2.3', inputs=inputs, out=out))
+            lookup.assert_called_once_with('1.2.3')
+            self.assertEqual((inputs / 'release-notes.md').read_text(), pages.release_notes(self.info, entry))
+            self.assertEqual(json.loads((out / 'engine/current.json').read_text())['release_tag'], 'v1.2.3')
 
     def test_identity_and_pack_corruption(self):
         package, engine = fixture(self.info)

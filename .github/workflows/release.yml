@@ -92,6 +92,7 @@ jobs:
           export PUPPETEER_MODULE="file://$RUNNER_TEMP/pages-browser/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js"
           export CHROMIUM="$(command -v google-chrome)"
           node web/test/i18n.mjs
+          node web/test/changelog.mjs
           python3 -m http.server 8765 --bind 127.0.0.1 --directory build/pages-site > build/pages-server.log 2>&1 &
           server=$!
           trap 'kill "$server"; wait "$server" || true' EXIT

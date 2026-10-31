@@ -55,6 +55,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
 - `content/features.json`: the "What's new" entries, text in both languages and their media: loops, stills and side by sides in
   `media/clips/` (optional local recordings, excluded from public Pages artifacts;
   `js/features.js` renders text-only cards when media is absent).
+- `js/changelog.js` renders `content/changelog.json`: translated release history, limited to the served engine's release tag; the English entry also supplies release notes.
 - `content/digimon.json`: the Digimon list and evolution guide (`js/digimon.js`). Not tracked: the release workflow
   writes it with `tools/site_digimon.py` from the tag's content, so it always matches the release the page builds.
 - Box art is not stored here: the browser fetches it from libretro-thumbnails (`BOXART` in `js/app.js`), with `media/disc.svg` as the fallback.
@@ -187,6 +188,8 @@ Details showing the new one), one drop of files that cannot be used (one dialog,
 ignored), the four slots ready,
 × by keyboard (the focus going to the drop zone), a disc given while another is still being checked; with SHOTS the
 screenshots of those states in English and Spanish, desktop and phone width. `web/test/shots.mjs` takes the build's.
+`web/test/changelog-browser.mjs SITE [SHOTS]` checks release history on an isolated copy of a generated preview,
+including language changes, release filtering and loading failures, without discs.
 `web/test/langs.mjs URL [SHOTS]`: the first visit's language from the browser's, the menu, each of the eight switching
 the whole page (no key left untranslated, the cards, the languages line), the choice kept after a reload; with SHOTS the
 hero and slots in ja, de and pt-br, desktop and phone.

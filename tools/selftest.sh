@@ -80,6 +80,9 @@ if [ -d "${DERIVED}-maps/screens" ]; then
     run npc-routes-built $PY tools/check_npc_routes.py --maps "${DERIVED}-maps/screens"
 fi
 run npc-staging       $PY tools/test_npc_staging.py                     # actual model routes and transient allocation peaks
+run web-i18n node web/test/i18n.mjs
+run web-changelog node web/test/changelog.mjs
+run release-pages $PY tools/release_pages_test.py
 run release-version   $PY tools/test_version.py
 run derive-sum        $PY tools/test_pysum.py                             # tools/derive's sum() is CPython 3.12's, bit for bit
 run derive-units      $PY tools/test_derive_units.py                      # a unit that fails stops the step at once, no worker left (fork, spawn)

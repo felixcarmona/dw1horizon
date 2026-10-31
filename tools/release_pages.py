@@ -187,8 +187,31 @@ def page(out):
     (out / '.nojekyll').write_text('')
 
 
+def changelog_entry(version):
+    path = ROOT / 'web/content/changelog.json'
+    require(path.is_file(), f'missing changelog: web/content/changelog.json (version {version})')
+    entries = json.loads(path.read_text())['versions']
+    entry = next((entry for entry in entries if entry['version'] == version), None)
+    require(entry is not None and isinstance(entry.get('en'), dict),
+            f'missing English changelog entry for version {version} in web/content/changelog.json')
+    return entry['en']
+
+
+def release_notes(info, entry):
+    text = f"Digimon World: Horizon {info['version']} ({info['date']}, UTC).\n\n"
+    for group in ('new', 'changed', 'fixed'):
+        if entry.get(group):
+            text += f"## {group.capitalize()}\n\n"
+            text += ''.join(f'- {bullet}\n' for bullet in entry[group]) + '\n'
+    if entry.get('upgrade'):
+        text += entry['upgrade'] + '\n\n'
+    return (text + 'Apply the attached package to your own discs; see its README.\n\n'
+            + f"Source commit: {info['commit']}.\n")
+
+
 def build(a):
     info = release.identity(a.tag)
+    entry = changelog_entry(info['version'])
     package = read_archive(a.inputs / PACKAGE)
     engine = read_archive(a.inputs / ENGINE)
     checks = json.loads((a.inputs / 'horizon-checksums.json').read_text())
@@ -210,10 +233,7 @@ def build(a):
             'site file exceeds 100 MiB')
     metadata = dict(info, tag=a.tag)
     (a.inputs / 'release.json').write_text(json.dumps(metadata) + '\n')
-    (a.inputs / 'release-notes.md').write_text(
-        f"Digimon World: Horizon {info['version']} ({info['date']}, UTC).\n\n"
-        'Apply the attached package to your own discs; see its README.\n\n'
-        f"Source commit: {info['commit']}.\n")
+    (a.inputs / 'release-notes.md').write_text(release_notes(info, entry))
     print(json.dumps(metadata))
 
 
@@ -238,6 +258,7 @@ def main():
         build(a)
     else:
         info = release.identity(a.tag)
+        changelog_entry(info['version'])
         package, engine = files(a.package), files(a.engine)
         validate(package, engine, info)
         require(not a.out.exists(), 'prepare output must be a new directory')
