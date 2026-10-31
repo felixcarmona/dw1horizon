@@ -295,6 +295,50 @@ section { padding-top: 120px; }
   .feature.wide .feature-text { grid-template-columns: 1fr; }
 }
 
+/* ------------------------------------------------------------ the new maps */
+
+/* edge to edge: the band leaves the page's column, and its content has a wider one of its own */
+.maps { width: 100vw; margin: 0 0 56px calc(50% - 50vw); padding: 52px 28px 44px; text-align: center; color: #1c1a26;
+        background: linear-gradient(120deg, #cfd8f6, #f4d0dd 45%, #fbdcb9); }
+.maps-badge { display: inline-block; margin-bottom: 12px; padding: 5px 12px; border-radius: 999px; font-size: 12px;
+              font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #fff; background: #1c1a26; }
+.maps h3 { margin: 0; color: #1c1a26; font-size: clamp(30px, 5vw, 50px); line-height: 1.05; letter-spacing: -.04em; font-weight: 800; }
+.maps > p { margin: 10px auto 26px; max-width: 30em; font-size: 18px; color: #4b4658; }
+:lang(ja) .maps h3 { letter-spacing: 0; }
+@media (max-width: 560px) { .maps { padding: 36px 0 28px; } .maps > :not(.map-carousel):not(dialog) { margin-inline: 16px; } .maps > p { font-size: 16px; } }
+.map-carousel { position: relative; max-width: 1500px; margin: 0 auto; }
+/* one row: the next map shows at the edge, so the row reads as something to slide */
+.map-grid { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+            -webkit-overflow-scrolling: touch; }
+.map-grid::-webkit-scrollbar { display: none; }
+.map-grid > .map-tile { flex: 0 0 23%; scroll-snap-align: start; }
+@media (max-width: 1100px) { .map-grid > .map-tile { flex-basis: 31%; } }
+@media (max-width: 860px) { .map-grid > .map-tile { flex-basis: 46%; } }
+@media (max-width: 560px) { .map-grid { padding-inline: 16px; scroll-padding-inline: 16px; } .map-grid > .map-tile { flex-basis: 82%; } }
+.map-carousel > .map-nav { top: calc(50% - 23px); background: rgba(28, 26, 38, .62); }
+.map-carousel > .map-nav:hover { background: rgba(28, 26, 38, .85); }
+.map-carousel > .map-nav[hidden] { display: none; }
+.map-back { left: 10px; }
+.map-forward { right: 10px; }
+.map-more { flex: 0 0 23%; margin: 0; display: grid; place-items: center; padding: 16px; scroll-snap-align: start;
+            border-radius: 12px; border: 2px dashed currentColor; font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+@media (max-width: 1100px) { .map-more { flex-basis: 31%; } }
+@media (max-width: 860px) { .map-more { flex-basis: 46%; } }
+@media (max-width: 560px) { .map-more { flex-basis: 82%; } }
+.map-tile { display: block; padding: 0; border: 0; border-radius: 12px; overflow: hidden; background: var(--soft); cursor: zoom-in; }
+.map-tile img { display: block; width: 100%; height: auto; aspect-ratio: 6 / 5; object-fit: cover; }
+.map-view { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+            background: rgba(15, 12, 22, .94); overflow: hidden; }
+.map-view[open] { display: grid; place-items: center; }
+.map-view img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+.map-nav { position: absolute; width: 46px; height: 46px; border: 0; border-radius: 50%; font-size: 26px; line-height: 1;
+           color: #fff; background: rgba(255, 255, 255, .16); cursor: pointer; }
+.map-nav:hover { background: rgba(255, 255, 255, .28); }
+.map-close { top: max(14px, env(safe-area-inset-top)); right: 14px; }
+.map-prev, .map-next { top: calc(50% - 23px); }
+.map-prev { left: 14px; }
+.map-next { right: 14px; }
+
 /* ------------------------------------------------------------ footer */
 
 .foot { padding: 100px 0 48px; color: var(--muted); font-size: 13px; text-align: center; }

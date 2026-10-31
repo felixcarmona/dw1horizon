@@ -72,48 +72,48 @@
      "src": "media/clips/maps-tour.mp4",
      "poster": "media/clips/maps-tour.jpg",
      "alt": {
-      "en": "Explore all 69 new areas",
-      "es": "Recorre las 69 zonas nuevas",
-      "pt-br": "Explore as 69 áreas novas",
-      "fr": "Explore les 69 nouvelles zones",
-      "de": "Alle 69 neuen Gebiete erkunden",
-      "it": "Esplora tutte le 69 nuove aree",
-      "ja": "69の新エリアをすべて巡る",
-      "ca": "Explora les 69 zones noves"
+      "en": "Take a walk with Agumon",
+      "es": "Da un paseo con Agumon",
+      "pt-br": "Dê um passeio com Agumon",
+      "fr": "Promène-toi avec Agumon",
+      "de": "Geh mit Agumon spazieren",
+      "it": "Fai una passeggiata con Agumon",
+      "ja": "アグモンと散歩しよう",
+      "ca": "Fes un passeig amb Agumon"
      }
     }
    ],
    "en": {
-    "title": "Explore all 69 new areas",
-    "body": "A walking tour of every new screen in What the Island Forgot, with Agumon."
+    "title": "Take a walk with Agumon",
+    "body": "A video stroll through What the Island Forgot, from the first step to the last."
    },
    "es": {
-    "title": "Recorre las 69 zonas nuevas",
-    "body": "Un paseo con Agumon por todas las pantallas nuevas de What the Island Forgot."
+    "title": "Da un paseo con Agumon",
+    "body": "Un vídeo caminando por What the Island Forgot, del primer paso al último."
    },
    "pt-br": {
-    "title": "Explore as 69 áreas novas",
-    "body": "Um passeio com Agumon por todas as telas novas de What the Island Forgot."
+    "title": "Dê um passeio com Agumon",
+    "body": "Um vídeo caminhando por What the Island Forgot, do primeiro ao último passo."
    },
    "fr": {
-    "title": "Explore les 69 nouvelles zones",
-    "body": "Une promenade avec Agumon dans chaque nouvel écran de What the Island Forgot."
+    "title": "Promène-toi avec Agumon",
+    "body": "Une vidéo de balade dans What the Island Forgot, du premier au dernier pas."
    },
    "de": {
-    "title": "Alle 69 neuen Gebiete erkunden",
-    "body": "Ein Rundgang mit Agumon durch alle neuen Bildschirme von What the Island Forgot."
+    "title": "Geh mit Agumon spazieren",
+    "body": "Ein Video-Spaziergang durch What the Island Forgot, vom ersten bis zum letzten Schritt."
    },
    "it": {
-    "title": "Esplora tutte le 69 nuove aree",
-    "body": "Una passeggiata con Agumon in ogni nuova schermata di What the Island Forgot."
+    "title": "Fai una passeggiata con Agumon",
+    "body": "Un video a piedi in What the Island Forgot, dal primo all'ultimo passo."
    },
    "ja": {
-    "title": "69の新エリアをすべて巡る",
-    "body": "アグモンと一緒にWhat the Island Forgotの新しい全画面を歩くツアー。"
+    "title": "アグモンと散歩しよう",
+    "body": "What the Island Forgot を最初の一歩から最後まで歩く動画です。"
    },
    "ca": {
-    "title": "Explora les 69 zones noves",
-    "body": "Un passeig amb Agumon per totes les pantalles noves de What the Island Forgot."
+    "title": "Fes un passeig amb Agumon",
+    "body": "Un vídeo caminant per What the Island Forgot, del primer pas a l'últim."
    }
   },
   {

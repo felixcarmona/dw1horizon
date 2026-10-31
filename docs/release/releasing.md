@@ -59,7 +59,8 @@ Preparation reads only those artifact directories, never discs. It writes
 `horizon-package.tar.gz` (unpacks directly to the player package files),
 `horizon-engine.tar.gz` (current.json and one engine folder), and
 `horizon-checksums.json` (SHA-256 of every payload file), plus `horizon-media.tar.gz`
-(the showcase clips: a flat archive of `.mp4` and `.jpg`). Create a **draft** Release
+(the showcase clips: a flat archive of `.mp4` and `.jpg`) and
+`horizon-maps.tar.gz` (the map gallery: flat `map-NN.png` and `.jpg`). Create a **draft** Release
 for this tag in the new public repo and attach these three files. For example,
 using GitHub CLI from that repo:
 
@@ -68,7 +69,7 @@ gh release create v0.0.1 --draft --target "$(git rev-parse HEAD)" \
   --title 'Digimon World Horizon 0.0.1' --notes 'Prepared; awaiting CI validation.'
 gh release upload v0.0.1 build/pages-upload/horizon-package.tar.gz \
   build/pages-upload/horizon-engine.tar.gz build/pages-upload/horizon-checksums.json \
-  horizon-media.tar.gz
+  horizon-media.tar.gz horizon-maps.tar.gz
 git push origin refs/tags/v0.0.1
 ```
 
@@ -81,7 +82,7 @@ assets support a deployment retry. Avoid manually dispatching an old tag unless
 an intentional rollback is wanted. Serialized runs prevent simultaneous deploys;
 they do not enforce semantic version ordering.
 
-CI downloads only the four named assets, validates them without executing their
+CI downloads only the five named assets, validates them without executing their
 code, regenerates `data/discs.json`, and copies tracked page assets. Developer
 clips, tests, engine build tools and ignored files are excluded. The showcase
 clips come from `horizon-media.tar.gz`. The engine's
