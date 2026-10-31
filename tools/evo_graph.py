@@ -38,6 +38,11 @@ def graph(dat):
         elif t < S.NUM_ORIGINAL and O.rec[t].get('evoPaths'):
             p = {k: list(v) for k, v in O.rec[t]['evoPaths'].items()}
             for k, v in eng.get(str(t), {}).get('evoPaths', {}).items(): p[k] = list(v)
+            # balance.py writes authored resident paths after the engine layer.
+            # Archive links omit entries already present in those native rows.
+            authored = s.get('evolution', {})
+            if 'from' in authored:
+                p = {k: list(authored.get(k, [])) for k in ('from', 'to')}
         else:
             p = {'from': [], 'to': []}
         g[t] = dict(name=s['name'], level=s['level'], partner='partner' in s,
