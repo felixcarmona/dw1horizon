@@ -208,7 +208,7 @@ the incoming technique's iframe timer (`BTL_tickHitState`,
 Species 224's frozen `RealMetalGreymon.json` import uses Etemon (42), not
 MetalGreymon (12). The reviewed `metal_greymon.py` generator changes only 0-4.
 Consequently, a corrected field walk does not establish correct care animations.
-The following audit describes the **final post-delta, post-field-overlay** model;
+The following baseline audit describes the **post-delta, post-field-overlay** model before the care repair;
 the import spec's `clips` dictionary alone does not describe its techniques.
 
 | Final slots (hexadecimal) | Motion provenance |
@@ -230,9 +230,7 @@ the import spec's `clips` dictionary alone does not describe its techniques.
 These rows cover every populated slot. Source-program comparisons exclude
 unconsumed stream tails (`motiondiscidentity.program`). In particular, final
 35 and 3B no longer contain their originally assigned DCB `anim_01` and
-`anim_03`: aliases replace them with Etemon's source 33. A repair must explicitly
-resolve whether to preserve those slot numbers or replace their effective
-Etemon programs. Conversely, replacing every technique outside the spec's
+`anim_03`: aliases replace them with Etemon's source 33. The care repair replaces those effective Etemon programs as well. Conversely, replacing every technique outside the spec's
 native slot numbers would overwrite several aliases of DCB `anim_02`.
 
 `animstudio.py bones` identifies the corresponding mesh parts below. DW1's
@@ -259,6 +257,60 @@ nor committed disc animation bytes are necessary. Each new clip still needs
 decoded subframe contact checks, loop replay, effect/training timing review and
 the resident/cold storage gates; anatomical correspondence alone proves none
 of these.
+
+#### Generated MetalGreymon care repair
+
+After `metal_greymon.py`, the imports provider runs
+`tools/models/field_animations/metal_greymon_care.py` for species 224 only.
+Its source hash pins the first pass; its donor hash pins the player's extracted
+`CHDAT/MMD0/MTGR.MMD`. Neither frozen import specs nor model deltas change.
+The final species pin includes both passes. The generated report nests the
+unchanged field proof under `field` and records the care pass separately.
+
+The second pass replaces 26 Etemon-derived slots: 05, 07, 08, 0B-13, 16-19,
+22, 25, 2E, 2F, 32, 33, 35, 37, 3B, 3D. The mesh, texture, skeleton,
+reviewed 00-04 and every effective DCB-native program remain exact.
+**Seven Etemon actions remain:** 09 (sleep), 0A (toilet), 15 (fallen pose), 1B (external HP
+training), 23/24 (battle movement), and 2C (get-up). Their candidates failed
+floor/contact checks, so only those slots keep their old programs. In particular,
+1B's root keys and external loop controls and 23/24's old per-loop travel remain
+unchanged; this repair does not claim to fix their skating.
+
+The anatomy map above selects corresponding parts. A rigid shape registration
+then matches each mesh's baked axes and pivot against the native mesh, rather
+than retaining the importer's neck/claw calibration. Registration reads the
+player's vertices, handles their different order, and rejects RMS error over
+1.5 units. Native helper joints are folded into the mapped world transforms;
+the target's local translations carry those different pivots. The head/neck
+follow the native orientation without an additional bow.
+
+Native gestures drive a two-bone solve above fixed care/attack footprints,
+with flat foot orientations and a carrier that can move into reach. Body height is projected from the lowest
+transformed foot vertices after encoding. A bounded integer carrier solve then
+checks every vertex at logic samples and Euler/SRT thirds simultaneously:
+no vertex below the floor by more than 2 units, and the supporting foot no more
+than 4 units above it. The native's long claws sometimes cross the floor too;
+elbow/shoulder and tail clearance corrections bend those branches instead of
+lifting the feet. The finisher needs extra elbow clearance during its wind-up.
+
+All changed slots keep their existing duration, decoded events and non-key
+controls. Stationary native care actions also remove Etemon's entity-translation
+keys: a native eating pose over an inherited shuffle would still skate.
+The seven shared technique aliases use native Pulse Laser (36); slot 3D uses
+native finisher action 3C. Both map native attack tick 26 to existing effect
+sample 15, with separate interpolation before and after the anchor. Original
+sound timestamps remain exact. The current species technique list selects 3B
+as its gameplay finisher; 3D remains an additional model slot. Offense
+training uses untouched DCB slot 3C,
+with its existing `hit_tick` 15. Blocking/eating/refusal still terminate, and
+looping replacements replay eight cycles without pose drift.
+
+The resident model is 95,242 bytes (limit 100,352); cold data is 28,764 bytes,
+and the largest sector-aligned cold read is 6,144 bytes (limit 8,192). The
+partner buffer therefore stays at its original size. These storage checks and
+the decoded contact/event/loop proofs run inside the generator, before its
+output is accepted. They apply to the 26 replacements, not the seven retained
+legacy clips. Visual and in-game review remain necessary.
 
 ### 3. The production models and their field recipes
 

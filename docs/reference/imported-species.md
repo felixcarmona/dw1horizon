@@ -300,6 +300,12 @@ returns on an empty entry, so the previous clip goes on and code waiting for its
 A gym clip on a slot the model leaves empty plays nothing: an import uses one of its own attack clips (a melee clip
 when it has one, else the closest-range attack of 15-50 ticks), with the hit tick at half the clip, at least 6.
 
+MetalGreymon Vaccine (224) adds a generated DW1 MetalGreymon care/battle pass
+following its field recipe. Its events, blocking ends and offense-training clip
+remain compatible with the table above. Seven rejected actions retain their legacy
+clips, including external HP training and battle movement; the exact exceptions
+and regeneration contract are in [motion](motion.md#generated-metalgreymon-care-repair).
+
 ## The Mega level
 
 The original game has levels 1 Fresh to 5 Ultimate (0 = NPCs that never evolve). The `mega` patches (0058 in the

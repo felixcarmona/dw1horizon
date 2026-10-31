@@ -140,6 +140,11 @@ def overlay(out, t, recs=None, names=None, s=None):
     generator = __import__(recipe[1], fromlist=['build'])
     s['_path'] = os.path.join(ROOT, 'content/species', name)
     model, proof = generator.build(species_tools.species_model(s)[0], s['model']['skeleton'])
+    if t == '224':
+        from tools.models.field_animations import metal_greymon_care
+        model, care = metal_greymon_care.build(model, s['model']['skeleton'])
+        care['field'] = proof
+        proof = care
     model_path, report = overlay_paths(out, t, e)
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     with open(model_path, 'wb') as f:
