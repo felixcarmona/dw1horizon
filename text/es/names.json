@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "Otro tipo",
  "main.MAIN_D_801239E8": "Seleccionada",
  "main.MAIN_D_801239F4": "Combates Victorias Derrotas Porcentaje",
- "main.MAIN_D_80123A18": "JugadorTabla     Med. Cartas",
+ "main.MAIN_D_80123A18": "JugadorTablaMed.CartasCiudad",
  "main.MAIN_D_80123A3C": "Medallas            ×△Elegir Cancelar",
  "main.MAIN_D_80123A60": "Nombre Nivel       Criados",
  "main.MAIN_D_80123A7C": "Bits                Tiempo",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "¿Guardar la partida actual?",
  "main.LAB_STR_ASK_TITLE": "¿Volver al menú principal?",
  "main.LAB_STR_UNSAVED": "Se pierden cambios sin guardar.",
- "main.LAB_STR_ASK_LOAD": "¿Cargar esta partida?"
+ "main.LAB_STR_ASK_LOAD": "¿Cargar esta partida?",
+ "main.CITY_STR_PROSPERITY": "Prosperidad",
+ "main.CITY_STR_RESIDENTS": "Residentes"
 }

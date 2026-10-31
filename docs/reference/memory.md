@@ -634,3 +634,13 @@ records losslessly into eight bytes, move laboratory helpers into overlays and
 stage NPC models before their final allocation. Heap acceptance uses the final
 executable and DIGI.DAT, including transient loading peaks. New content must pass
 all story setups within the original PlayStation's 2 MB RAM.
+
+## City page budget
+
+With all eight padded language banks, patch 0277 moves `main_BSS_END` from
+`0x801ce958` to `0x801cf0bc`: 1,892 bytes, including 1,824 bytes of code. Heap
+alignment makes the available heap fall by 1,888 bytes to 183,872 bytes.
+The roster and icons live in DIGI.DAT and the chart's existing buffers and VRAM
+are reused. The actual-archive story check covers 320 setups; screen 361 is
+smallest at 1,840 bytes free. The general heap sweep also passes. Recheck these
+figures whenever the patch series, language padding, models or story changes.

@@ -72,7 +72,7 @@ script 210 {
             say(slot0, text("s210.sec77.u5"));
             return;
         }
-        if (engine.prosperity <= 100) {
+        if (engine.prosperity >= 100) {
             say(slot0, text("s210.sec77.u6"));
             if (stat(21) != 10 && !is_recruited(species("Tsunomon"))) {
                 add_stat(21, 1);

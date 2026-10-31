@@ -238,7 +238,7 @@ new-game conversation. Several C systems read recruit flags and so carry story r
 
 | Area | What the C does | Where (`decomp/src`) |
 |---|---|---|
-| Prosperity | pstat 1 rebuilt on every save and at game start from the recruit flags: level - 2 per recruited species of level 3 or more, 1 for Numemon, Sukamon and Nanimon | `recalculatePPandArena` (`main.c`); patch 0161 extends the loop from the original's types 3-58 to every recruitable type, same rule. Details: [city data](../mods/city-rules.md#city-data) |
+| Prosperity | pstat 1 rebuilt on every save and at game start from the recruit flags: level - 2 per recruited species of level 3 or more, 1 for Numemon, Sukamon and Nanimon | `recalculateProsperity` (`main.c`), called by `recalculatePPandArena` and City entry; types 3-58 in original story, 3-111 in extended story, same weights. Details: [city data](../mods/city-rules.md#city-data) |
 | File City top map | 12 variants of the upper city chosen from five recruit flags; used only by the game-clear save | `getFileCityTopMap` (`map.c`), `gameClearSave` |
 | The same choice in script | the Auto Pilot scene repeats the choice with a different "big city" rule (Angemon or Monzaemon or prosperity >= 50); the C needs both | MAPHEAD 1245 |
 | Revival screen | Jijimon's house 205 when Angemon or Monzaemon is recruited or prosperity >= 50, else 218 | `murd.c`, `dooa.c` |

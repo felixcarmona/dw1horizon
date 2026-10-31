@@ -24,7 +24,7 @@ RAM addresses are those of the original USA executable. The `ITEM_PARA` record l
 - Cards: 66 entries (`CARD_DATA`), collection in `SCRIPT_STATE.cards` (one nibble per
   card, 0–9). Six new random cards in the shop every day.
 - The triangle menu (`game_menu.c`) has 6 options (+ Fish): Items, Digimon
-  (Status / Techniques), Player (Player / Chart / Medals / Cards), Praise, Scold,
+  (Status / Techniques), Player (Player / Chart / Medals / Cards / City), Praise, Scold,
   Sleep, Fish. The original has no in-game options screen (sound and vibration are set in the title menu,
   `main_menu.c`); our build adds one ([../mods/options.md](../mods/options.md)).
 - The DOOA/DOO2 overlays are the death and reincarnation cutscene (and the egg choice
@@ -35,6 +35,14 @@ RAM addresses are those of the original USA executable. The `ITEM_PARA` record l
   restaurant lives in the map scripts (the executable only provides the `SHOP_VARIABLE` accumulator and the mood
   bubble).
 
+## City page
+
+City is read-only: prosperity, recruited residents and their points. Missing
+residents are grey; Devimon, Airdramon and MetalGreymonVirus stay unnamed and
+have empty boxes until recruited. Extended story shows 96 residents (177
+points maximum); original story shows 50 (100 points). NEW DIGIMON does not
+change this page. Opening it refreshes prosperity using the save's rule.
+
 ## Source files
 
 | File | Contents |
@@ -44,7 +52,7 @@ RAM addresses are those of the original USA executable. The `ITEM_PARA` record l
 | `src/main/main.c:4149-4345` | `initializeInventoryModules`, throwing the item in battle (`startThrowingItem`, `tickThrownItem`) and `handleBuffDisks` |
 | `src/main/partner.c:418-520` | partner state 5: approach, accept or refuse the item, eat it and run the handler |
 | `src/main/partner_impl.c:1401-1462` | `partnerWillRefuseItem` (which items it refuses and why) |
-| `src/main/game_menu.c` | triangle menu, Digimon screens (status, techniques) and Player screens (player, evolution chart, medals, cards) |
+| `src/main/game_menu.c` | triangle menu, Digimon screens (status, techniques) and Player screens (player, evolution chart, medals, cards, City) |
 | `src/main/script_common.c` | normal shop (`openShop`), buy/sell lists, amount box, single-card shop, item loss on death (`handleItemLoss`), daily restock (`dailyPStatTrigger`), tables `CARD_DATA`, `CARD_PRICES`, `SHOP_MAPS`, `RECYCLABLE_ITEMS`, `BIRDRA_TRANSPORT_TARGETS`, medals and album (`hasMedal`, `hasDigimonRaised`) |
 | `src/main/script_interp.c` | script ops for items/cards/money (`0x23`, `0x28-0x2B`, `0x2F-0x33`, `0x74`), `getCardAmount`/`setCardAmount`, dispatch of the shop routines (`:345-382`) |
 | `src/shop/script_menu.c` | recycling, card packs and card shop, merit shop, item keeper, jukebox, Birdramon, Mojyamon trades, name box and new game dialogue. In USA it is in `SLUS` itself (`config/us/main.yaml:131`), although `SHOP_REL.BIN` is still on the disc and `checkShopMap` (`script_common.c:2978`) loads it in the 8 maps of `SHOP_MAPS` |

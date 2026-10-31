@@ -280,7 +280,10 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   being talked to opens the game's buy/sell menu with these items, in its own box), `roll = random.roll(2)` then
   `if roll == 0:` (a draw, kept until the next; `random.chance(p)` for a percentage), `call(Routine.x, arg=)`; the writer types the
   "Received ..." narrator line. Three ways a Digimon joins the city: `recruitable(npc, line=)` is the game's wild
-  recruit (a line, a battle, the flag: what the views print); `if fight(x) == "won":` then `send_to_city(line=)` is a
+  recruit (a line, a battle, the flag: what the views print). For a base wild NPC,
+  check its balanced `content/maps` slot before supplying `joins=`; the variable
+  name and original disc placement can differ from the species fought. City
+  roster verification checks the compiled flags across all story passes; `if fight(x) == "won":` then `send_to_city(line=)` is a
   story's (the departure scene: it walks off, the jingle, the narrator's line); `recruit(species)` only sets the flag
   (for a scene written by hand). Reusable pieces are plain `def`s: inlined with parameters; without them, compiled once
   when the def always ends the handler (a warp or `dws("return;")` last), inlined where it is called otherwise, so the

@@ -55,6 +55,12 @@ fi
 run fi-info-clock     $PY tools/test_fi_info.py
 run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
+run city-residents $PY -m unittest tools.test_city_residents
+if [ -f "$DERIVED/DIGI.DAT" ]; then
+    run city-compiled $PY -m tools.city_residents $(find "$DERIVED" -name DG.SCN -o -name MAPHEAD.SCN)
+else
+    skip city-compiled "needs compiled stories (DW_SELFTEST_DERIVE)"
+fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # saved guided-state footprints keep the Bone Field connected

@@ -151,6 +151,15 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   boxes in the level's colour, scrolling. `tools/species.py` writes the list into DIGI.DAT's chart block
   (`SpeciesHeader.chartSector`: tab counts and ids, then a 16x16 idle frame and CLUT per species, 12 to a sector); a page
   is read when shown (`chartLoadPage`) into battle-effect VRAM. The tabs fit any font.
+- **City** (0277): the fifth Player tab shares the chart's 14 by 7 grid,
+  cursor, scrolling, text rows and icon VRAM. Its separate one-tab block uses a
+  sector pointer at header byte `0x38`, between the record-original bitmap and
+  partner levels. The v2 record/header fields keep their existing offsets;
+  older archives have a zero pointer. IDs carry a hidden-until-owned bit at
+  `0x8000`. The block includes generated idle icons for every resident beyond
+  the sheet, including non-partners. Missing icons use luminance CLUTs made on
+  entry: zero remains transparent and every nonzero colour remains nonzero.
+  City, chart and card transitions reload their shared VRAM on entry.
 - **Evolution requirements** (0176, 0179, 0180): on a "to" box the detail view shows that evolution's requirements;
   in the partner's own tree it adds the partner's values, met/unmet marks and a points count, and lights the reachable
   lines. Marks come from `evoRequirementsMet` (`evolution.c`), the same function `calculateRequirementScore` scores with,

@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "Type incompatible",
  "main.MAIN_D_801239E8": "Sélectionné",
  "main.MAIN_D_801239F4": "Combats Vic. Déf. %",
- "main.MAIN_D_80123A18": "Joueur  Liste     Méd. Cartes",
+ "main.MAIN_D_80123A18": "JoueurListeMéd.CartesVille",
  "main.MAIN_D_80123A3C": "Méd.                   ×△Choix  Annuler",
  "main.MAIN_D_80123A60": "Nom       Niveau    Élevés",
  "main.MAIN_D_80123A7C": "Bits                Temps",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "Sauvegarder la partie ?",
  "main.LAB_STR_ASK_TITLE": "Retourner au menu principal ?",
  "main.LAB_STR_UNSAVED": "Modifs non sauvées perdues.",
- "main.LAB_STR_ASK_LOAD": "Charger cette partie ?"
+ "main.LAB_STR_ASK_LOAD": "Charger cette partie ?",
+ "main.CITY_STR_PROSPERITY": "Prospérité",
+ "main.CITY_STR_RESIDENTS": "Résidents"
 }

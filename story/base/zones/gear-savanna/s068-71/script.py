@@ -128,7 +128,7 @@ def talk():    # section 10
 
 @slot6.on_talk
 def talk():    # section 11
-    recruitable(slot6, line=t11.u0, joins=Species.Akatorimon)
+    recruitable(slot6, line=t11.u0, joins=Species.Shamamon)
 
 @savanna.on_step(0)
 def step0():    # section 51

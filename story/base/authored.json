@@ -150,6 +150,66 @@
       "original_sha256": "06478c10d23b9dcc2a488c8964edbbf6903b545703e5e7df94b955661a80d125",
       "authored_sha256": "35ee7a0892d5035238e315399fad9fcb45ca8bed2407735a380220d8c7652969",
       "reason": "Five-session training and narrator choice ownership"
+    },
+    "zones/ancient-glacial-region/s077-80/script.py": {
+      "original_sha256": "845799c5e66bba2b18ddf0de3eeb6c8c2a57271d854f65338c43dd4ab347b3d4",
+      "authored_sha256": "2e88cfac6473beed83a138542f1bcc31bda93f1aa3648229f26afb6df08e5e74",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/ancient-glacial-region/s077-80/script.dws": {
+      "original_sha256": "ca80aa459f3f3e9acd9d2a8d033bc2a6029d5ea5239c180169ce832c4fb6d62f",
+      "authored_sha256": "90443f735200252ad86042788b18ba2afb01170ba0f184ad041fc80206ef987e",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/factorial-town/s152-158/script.py": {
+      "original_sha256": "e6c8e8477bb4e633ee753b4f6fedb382a84f2592b1788b913a7aa11d645f9e9a",
+      "authored_sha256": "7bab0c9e1175d6771503ba3706a7bb04aafae6aab2ec44e4e83421d8e3eab106",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/factorial-town/s152-158/script.dws": {
+      "original_sha256": "0f3a696c7f495553f230befcc9a3f0b725bf80a9eba89b0ab2c1fc8e332681c2",
+      "authored_sha256": "188472cbf47dec8858759bcfba2ae5a6bd7e1e7b8a4720e1887fcdabdca9304c",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/gear-savanna/s068-71/script.py": {
+      "original_sha256": "f4ef98877708b7a5a5a6e7742e5fb8e4c0ba4b2425b83ed4659518df6954b722",
+      "authored_sha256": "6d218285ccede06d043ed78fc7ed08c09aa29a05cc846e2e48151d2ea34528f2",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/gear-savanna/s068-71/script.dws": {
+      "original_sha256": "407d809138a86652adedc287bf9166f1079e9e167f7c02b556a48ace90d89eac",
+      "authored_sha256": "d1c7a7fe412fd5f8e6aef99e56dfec29ff21d716e64aa1af264f22c1ec85884f",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/gear-savanna/s074-77/script.py": {
+      "original_sha256": "3c8999ae59e7a48948fda8218bd9fece39289727fb86b71f1b0b45d408c24fc1",
+      "authored_sha256": "7da66fa526ac3538554c9bd3bafb040a599c16883cda9303ad267bc615d0ec12",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/gear-savanna/s074-77/script.dws": {
+      "original_sha256": "c85d13a942dc83002a2482504f7f38e79f0babd2e695b3235ec0703a32ebba1a",
+      "authored_sha256": "325d60b34fe291cefe6a6bd21060e5f1ced010d82a8874a1393e7b902cfbfaf6",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/great-canyon-entrance/s036-36/script.py": {
+      "original_sha256": "2f43ea5d6e12ba434ef9f44d7a5e6dd5e6c62cdf72c40bcc7e8056f3708ea7cf",
+      "authored_sha256": "368d3ae399cbefdc9ad3aba716380a5c20eda17d161ef24cae788cb4b594fdc3",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/great-canyon-entrance/s036-36/script.dws": {
+      "original_sha256": "0c1afc853c917166ad7c5aea0d3fe42b715d923bc5d7888974a2446202371d18",
+      "authored_sha256": "9a66634debc79d04d63decfc9544fde89a29fca4c8a6f79073d6d06d69636dcb",
+      "reason": "Recruit the species fought in the balanced map slot"
+    },
+    "zones/libraries/s210/script.py": {
+      "original_sha256": "cca0a20ad7afaf03631c5ca87382ea83bd9239234439f2cac96433bc51e7b0dd",
+      "authored_sha256": "332f7334a3c3531a85239f886af5441f6e1b3bcdf338fc005db5a2e2f1adac79",
+      "reason": "Award the city medal at any prosperity of at least 100"
+    },
+    "zones/libraries/s210/script.dws": {
+      "original_sha256": "050b0ba7da1e5aece537a0f7f51cfbce85f2abc60f39db2cb50eff197672ef00",
+      "authored_sha256": "4d714a77c39f3cf4a05b5b0f0fc27d5637e144c0344a45b9beafed406dee40a1",
+      "reason": "Award the city medal at any prosperity of at least 100"
     }
   }
 }

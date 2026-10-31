@@ -22,6 +22,38 @@ This data shares the target's resident MAPHEAD buffer. Current mod targets allow
 Historical heap measurements from a different patch series do not establish that
 a changed city fits; validate the actual final build at the original 2 MB.
 
+## Residents and prosperity
+
+`content/tables/city-residents.json` owns the City page's species IDs and hidden
+flags. Species must be Rookie or higher and have a recruit flag. The current
+roster has 28 Rookies, 52 Champions and 16 Ultimates, worth 177 points. The 50 IDs
+below 59 are worth 100 points. Baby flags are deliberately excluded: several
+represent story state, including the city medal.
+
+`tools.city_residents` decodes SET_TRIGGER instructions in every compiled
+DG.SCN and MAPHEAD.SCN produced by the story derive passes, including base,
+mods, languages and font variants. The build compares their union with the
+roster after cache restores too. The story compiler already rejects recruit
+IDs 112 and above; roster validation also rejects them and any total above 255.
+Run `python3 -m tools.city_residents PATH/TO/DG.SCN ...` for a standalone check.
+The same gate is in `tools/selftest.sh` when compiled stories are available.
+
+`recalculateProsperity` rebuilds pstat 1 independently of tournament cleanup.
+It runs before the City page is shown; saves and game start still call
+`recalculatePPandArena`, which calls it before its arena work. Original story
+counts only IDs 3..58; extended story counts IDs 3..111. Continue applies the
+story option before game start recalculates. `city.dws` continues to describe
+the original rule, which `city-verify` compares against the unmodified C.
+Wild recruit scripts do not add points immediately, and some scripted recruits
+add more than their level weight. Opening City therefore shows what the next
+save would write, so Jijimon and city layout read the same pstat.
+
+The base story awards the Thriving City medal at any prosperity of at least
+100. Seven wild recruitment sites now set the species present in the balanced
+`content/maps` slot; nine other explicit joins already matched their slots.
+These are reviewed authored base changes, pinned in `story/base/authored.json`;
+the original-disc generator remains unchanged.
+
 ## Presence
 
 NPC presence comes from MAPHEAD setup, rather than the city C table.

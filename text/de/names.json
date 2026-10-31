@@ -467,7 +467,7 @@
  "main.MAIN_D_801239DC": "Falscher Typ",
  "main.MAIN_D_801239E8": "Ausgewählt",
  "main.MAIN_D_801239F4": "Kämpfe Siege Niederl. %",
- "main.MAIN_D_80123A18": "Spieler  Liste     Med. Karten",
+ "main.MAIN_D_80123A18": "SpielerListeMed.KartenStadt",
  "main.MAIN_D_80123A3C": "Medaill.              ×△Wahl    Zurück",
  "main.MAIN_D_80123A60": "Name     Level      Aufgez.",
  "main.MAIN_D_80123A7C": "Bits                Zeit",
@@ -1058,5 +1058,7 @@
  "main.LAB_STR_ASK_SAVE": "Aktuelles Spiel speichern?",
  "main.LAB_STR_ASK_TITLE": "Zum Hauptmenü zurückkehren?",
  "main.LAB_STR_UNSAVED": "Ungespeichertes verfällt.",
- "main.LAB_STR_ASK_LOAD": "Diesen Spielstand laden?"
+ "main.LAB_STR_ASK_LOAD": "Diesen Spielstand laden?",
+ "main.CITY_STR_PROSPERITY": "Wohlstand",
+ "main.CITY_STR_RESIDENTS": "Bewohner"
 }

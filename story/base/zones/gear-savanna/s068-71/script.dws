@@ -146,7 +146,7 @@ script 68 {
     on talk(slot6) replace {    // section 11
         say(slot6, text("s068.sec11.u0"));
         battle();
-        recruit(species("Akatorimon"));
+        recruit(species("Shamamon"));
     }
 
     on step(0) replace {    // section 51

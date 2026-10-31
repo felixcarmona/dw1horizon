@@ -1287,6 +1287,8 @@ def make_bundle_derive(usa, work, out, recipe, facts, source_discs=None):
     # trace cannot discover this required dependency of story and localize.
     bundle = {'exe-facts.json', 'tools/languages.py'} | {r for r in files if r.startswith(('tools/derive/', 'story/base/', 'content/'))
                                    and '__pycache__' not in r}
+    if 'tools/city_residents.py' in files:
+        bundle.add('tools/city_residents.py')  # also needed when an import came from a cached module
     if source_discs:
         bundle |= {r for r in files if r.startswith('content/imports/releases/')}
         bundle.add('tools/discs.py')
