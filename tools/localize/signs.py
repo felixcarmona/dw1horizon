@@ -70,10 +70,11 @@ def sign_mask(orig, new, w, h, inside=None):
     return out
 
 
-def sprite_paste(m, t, new, mask, x0, y0):
+def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False):
     """The sprites drawn over the sign (MAP instances: pieces of the background that cover the characters) get the
     edit too, where their pixel is opaque and the edit changed the background: requantized to the sprite's palette.
-    -> how many pixels changed"""
+    -> how many pixels changed. palette_alpha uses the palette's transparent
+    colour rather than assuming index zero (the Spanish gym board needs this)."""
     box = (x0, y0, x0 + new.width, y0 + new.height)
     tims = [dwmap.TIM(r) for r in m.tims]
     n = 0
@@ -110,7 +111,8 @@ def sprite_paste(m, t, new, mask, x0, y0):
                         u, v = u0 + sx, sp['texY'] - tim.y + sy
                         o = pix + v * stride + (u if bpp == 8 else u // 2)
                         old = raw[o] if bpp == 8 else (raw[o] >> (4 * (u & 1))) & 15
-                        if old == 0:
+                        transparent = clut[old] == 0 if palette_alpha else old == 0
+                        if transparent:
                             continue                              # transparent: the background shows
                         val = rq(*new.getpixel((X, Y)))
                         if bpp == 8:
@@ -205,7 +207,11 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
                     dwmap.png_write(p, w, h, [bytes(c for i in range(y * w, (y + 1) * w) for c in (*new[i], mask[i]))
                                               for y in range(h)], mode='RGBA')
                     dwmap.bg_paste(m, t, p, x0, y0)
-                    if sprite_paste(mapcopy(lang, mp), t, Pixels(w, h, new), Pixels(w, h, mask), x0, y0):
+                    # TRAI00 uses opaque green at index 0 and transparent 255.
+                    # Opt in only for this revised Spanish sign; retain every
+                    # other accepted sign's historical sprite pixels.
+                    if sprite_paste(mapcopy(lang, mp), t, Pixels(w, h, new), Pixels(w, h, mask), x0, y0,
+                                    palette_alpha=(lang == 'es' and sign == 'audit-14')):
                         sprites_changed.add((lang, mp))
         lines = []
         for (lang, mp), t in sorted(edits.items()):
