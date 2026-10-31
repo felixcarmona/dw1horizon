@@ -22,15 +22,16 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # a draft release cannot be read with less; only the fetch step gets the token
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
-      GH_TOKEN: ${{ github.token }}
-      GH_REPO: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: false
+          persist-credentials: false
       - name: Validate and check out the owner tag
         shell: bash
         run: |
@@ -42,6 +43,9 @@ jobs:
           python-version: '3.10'
       - name: Fetch prepared artifacts (never disc images)
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           mkdir -p build/pages-input
           gh release download "$RELEASE_TAG" --dir build/pages-input \
