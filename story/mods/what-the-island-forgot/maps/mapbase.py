@@ -85,6 +85,10 @@ class Cam:
         """heading from world a towards world b: 0 = +Z, 1024 = +X."""
         return int(round(math.degrees(math.atan2(b[0] - a[0], b[1] - a[1])) / 360 * 4096)) % 4096
 
+    def arrival_rotation(self, a, b):
+        """Engine heading towards b: 0 = -Z, 1024 = -X (map.c/_atan)."""
+        return (self.rotation(a, b) + 2048) % 4096
+
     def tiles(self):
         """every tile with its centre's pixel: (tx, tz, u, v) or u, v None when off screen."""
         for tz in range(100):
@@ -110,3 +114,31 @@ def inside(poly, u, v):
         if (y0 > v) != (y1 > v) and u < x0 + (v - y0) * (x1 - x0) / (y1 - y0):
             hit = not hit
     return hit
+
+
+def trim_exit(m, warp, spawn, face, inset=200):
+    """Trim the approach side of an exit by two tiles, retaining a two-row strip.
+
+    Work on the existing trigger mask, preserving hand-tuned floors and mouths.
+    Narrow exits already only two rows deep keep that usable depth.
+    """
+    points = [(i, i % 100 * 100 - 4950, 4950 - i // 100 * 100)
+              for i, tile in enumerate(m.collision) if tile == 110 + warp]
+    if not points:
+        raise ValueError(f'warp {warp} has no exit tiles')
+    xs = [x for _, x, _ in points]; zs = [z for _, _, z in points]
+    # Face points can lead diagonally across the room. Trim the bounding edge
+    # nearest the arrival, so the closest trigger retreats too (e.g. the ladder).
+    gap, dx, dz = max((min(xs) - spawn[0], -1, 0), (spawn[0] - max(xs), 1, 0),
+                      (min(zs) - spawn[1], 0, -1), (spawn[1] - max(zs), 0, 1))
+    if gap <= 0:                                        # an irregular mouth surrounds the arrival's bounding box
+        dx, dz = face[0] - spawn[0], face[1] - spawn[1]
+        length = math.hypot(dx, dz)
+        if not length:
+            raise ValueError('exit arrival must face away from its mouth')
+        dx, dz = dx / length, dz / length
+    tiles = [(i, x * dx + z * dz) for i, x, z in points]
+    limit = max(min(v for _, v in tiles) + 100, max(v for _, v in tiles) - inset)
+    for i, v in tiles:
+        if v > limit + 1e-6:
+            m.collision[i] = 0

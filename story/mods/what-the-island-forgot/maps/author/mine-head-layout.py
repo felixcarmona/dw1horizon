@@ -18,7 +18,7 @@ import json, os, sys
 import numpy as np, cv2
 from tools.image import Image
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from mapbase import base_map, Cam, MOD, check_arrivals
+from mapbase import base_map, Cam, MOD, check_arrivals, trim_exit
 from maps import reach
 
 ART = os.path.join(MOD, 'art', 'mine-head.png')
@@ -67,8 +67,10 @@ def main(out):
     m.collision = col
     for e in EXITS:
         x, z = cam.world(*e['spawn_px']); e['spawn_world'] = (x, z)
-        m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': cam.rotation((x, z), cam.world(*e['face_px'])),
+        m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': cam.arrival_rotation((x, z), cam.world(*e['face_px'])),
                                    'targetMap': e['target'][0], 'targetExit': e['target'][1]})
+    for e in EXITS:
+        trim_exit(m, e['warp'], e['spawn_world'], cam.world(*e['face_px']))
     check_arrivals(m, 'MINE01')
     R = reach.from_spawn_coordinates(m, starts=[EXITS[0]['spawn_world']])
     for e in EXITS:
