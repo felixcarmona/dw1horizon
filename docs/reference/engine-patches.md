@@ -228,7 +228,11 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   the goal, a block +6 % to the defender and +8 % to the attacker), so x2 changes neither.
 - What x2 shortens is reaction time: a finisher charge press counts twice (`BTL_tickFinisherChargeup`, STD alike); the
   defeat countdown (`DEATH_COUNTDOWN`) and the item menu (open or with an item in hand) hold the fight at x1
-  (`BTL_modSpeedHeld`). A timed field battle (patch 0172, pstat 242) counts fight ticks. Play time (`tickPlaytime`)
+  (`BTL_modSpeedHeld`). A timed field battle (patch 0172, pstat 242) counts fight ticks. Patch 0285 defers expiry until
+  the finisher lock, active attacks, hit/block reactions and buffered HP damage have closed. The last enemy's defeat
+  finishes through normal victory, and partner defeat still takes priority. `pstat(241)` becomes 1 only when the
+  timeout is accepted. Airdramon's “Hold back” remains 90 seconds and may continue until combat reaches that safe boundary;
+  “No choice: fight!” has no timer. It is the only authored `pstat(242)` user. Play time (`tickPlaytime`)
   counts real time, skipping the second tick of each fast pair (`MOD_REAL_TICK`).
 - **Timing** (`modTickStart`, `modPresent`, `main.c`): the battle arms `MOD_BATTLE_FAST_TICK` before each tick
   (`BTL_modSpeedBeforeTick` from `BTL_battleTickFrame`). Fast ticks run in pairs over 3 refreshes, 40 ticks a second;

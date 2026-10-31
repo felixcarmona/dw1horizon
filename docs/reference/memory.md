@@ -650,3 +650,11 @@ figures whenever the patch series, language padding, models or story changes.
 
 Through patch 0283 the series ends at `0x801cf040` and screen 361 keeps 1,952 bytes. A new resident patch
 must fit those bytes or free its own first: `xref.py classes` lists what is left to move.
+
+## Timed field-battle teardown
+
+Patch 0285 adds 120 bytes to `BTL_REL.BIN` and no resident growth. Controlled English-only builds with the same
+`MOD_VERSION=airdramon-test` keep `main_BSS_END` at `0x801cb9fc` before and after the change, with 197,888 bytes of
+heap. The general heap projection passes, and all 320 actual-archive story setups fit; screen 361 has the smallest
+margin at 15,488 bytes. These English test-bank figures are not an eight-language release measurement. The guard
+uses only battle-stack locals and the existing combat state; it adds no allocation, model or effects buffer.

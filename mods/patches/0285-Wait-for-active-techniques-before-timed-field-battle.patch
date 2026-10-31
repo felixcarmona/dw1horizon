@@ -1,0 +1,56 @@
+From 7893deef067d87872c90d2477182ab716a2693cd Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 20:00:30 +0000
+Subject: [PATCH] Wait for active techniques before timed field battles end
+
+Do not tear down the EFE engine while a finisher, attack, hit reaction or buffered damage is still active. If no enemy remains, leave the normal victory path to finish its animations. Keep natural victory, defeat and flee checks ahead of the timeout.
+---
+ src/btl/battle_main.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index a1ecab4..eb6e1d0 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -1837,6 +1837,9 @@ int32_t BTL_battleMain(void)
+ 	COMBAT_AREA_Y = 0x78 - DRAWING_OFFSET_Y;
+ 	int32_t timeLimit; /* MOD (timed battle) */
+ 	int32_t timedOut;
++	int32_t fighterIndex;
++	int16_t enemies[4];
++	int16_t remaining;
+ 
+ 	timeLimit = readPStat(PSTAT_BATTLE_TIME_LIMIT) * 20;
+ 	timedOut = 0;
+@@ -1849,10 +1852,25 @@ int32_t BTL_battleMain(void)
+ 			break;
+ 		}
+ 		if ((timeLimit > 0) && (BATTLE_FRAME_COUNT >= timeLimit) &&
++		    (NO_AI_FLAG == 0) && (FINISHING_ENTITY == NULL) &&
+ 		    (PARTNER_ENTITY.digimonEntity.stats.current.currentHP - COMBAT_DATA_PTR->fighter[0].hpDamageBuffer > 0)) {
+-			timedOut = 1;
+-			writePStat(PSTAT_BATTLE_TIMED_OUT, 1);
+-			break;
++			/* Let techniques and hit reactions close before removing their EFE engine.
++			 * With no surviving enemy, let the normal victory/death animations finish. */
++			BTL_getRemainingEnemies(ENTITY_TABLE[1], enemies, &remaining);
++			if (remaining > 0) {
++				for (fighterIndex = 0; fighterIndex <= ENEMY_COUNT; fighterIndex++) {
++					FighterData *fighter = &COMBAT_DATA_PTR->fighter[fighterIndex];
++					if ((fighter->flags & (FIGHTER_FLAG_ATTACKING | FIGHTER_FLAG_KNOCKED_BACK | FIGHTER_FLAG_BLOCKING)) ||
++					    (fighter->hpDamageBuffer != 0)) {
++						break;
++					}
++				}
++				if (fighterIndex > ENEMY_COUNT) {
++					timedOut = 1;
++					writePStat(PSTAT_BATTLE_TIMED_OUT, 1);
++					break;
++				}
++			}
+ 		}
+ 		BTL_tickPartnerAI();
+ 		BTL_tickEnemyAI();
+-- 
+2.55.0
+
