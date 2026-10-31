@@ -6,11 +6,12 @@ from ...state import memories, m12_shore, memory_news
 
 shore = new_screen(309, map="build/what-the-island-forgot-maps/screens/SHOR01.MAP")
 chest_shore = flag()
-whamon = shore.npc(Species.Whamon, at=(750, -650), range=0)
+whamon = shore.npc(Species.Whamon, at=(750, -650), range=0, autotalk=False)
 
 @shore.on_enter
 def the_wreck():
-    spawn_chest(Item.SupRecovery, at=(-600, -800), opened=chest_shore)
+    # West of the narrow strip by the water: opened from its east side, it leaves the way along the beach free.
+    spawn_chest(Item.SupRecovery, at=(-1400, -800), opened=chest_shore, facing=3072)
     music(15)                     # Freezeland's
     if not m12_shore:
         tamer.say("Whoa... A ship! A real ship, like from my world. Stuck in the rocks.")
