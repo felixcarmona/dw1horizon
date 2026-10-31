@@ -682,3 +682,33 @@ byte-identical: `main_BSS_END` remains `0x801cb9fc` and the heap remains 197,888
 bytes (zero heap cost). Heapcheck passes and all 320 actual-archive story setups
 fit, with a minimum margin of 15,488 bytes on screen 361. These are English test
 bank measurements, separate from the eight-language city-page figures above.
+
+
+## Eight-language integration through 0288
+
+A full eight-language `MOD_VERSION=v0.0.2-test` build on `b392ddf` ends at
+`main_BSS_END = 0x801cf190`, with 183,648 bytes of heap. Integrating the twelve
+fix branches ends at `0x801cf2c0`, with 183,344 bytes: 304 resident bytes added.
+The language set is en, es, pt-br, fr, de, it, ja and ca, with shared padding.
+
+Controlled native builds retain the base text banks, padding and file tables:
+
+| Change | Resident delta | Other allocation effect |
+|---|---:|---|
+| 0285 timed field-battle teardown | 0 bytes | BTL grows 120 bytes |
+| 0286 camera framing and idle settling | +112 bytes | Includes linker alignment; no new heap allocation |
+| 0287 Cheats paging | 0 bytes | MENU size unchanged |
+| 0288 version during field pause | +144 bytes | Saved text pixels use the existing stack |
+| Updated Spanish names in shared language padding | +48 bytes | Verified by swapping only the text banks/padding after 0288 |
+
+The controlled series ends at `0x801cf290`; applying the integration's text
+padding reproduces `0x801cf2c0`. These measurements supersede projections from
+English-only test builds for this eight-language configuration.
+
+Heapcheck passes with a minimum projected 26,992 bytes on OGRE03. The actual
+archive check passes all 320 setups in each of the eight languages (2,560 checks).
+Screen 361 is tightest: Goblimon, Geremon and Gekomon peak at 182,024 bytes,
+against 183,336 available after allocator overhead, leaving **1,312 bytes**.
+The same-version base leaves 1,616 bytes there. No setup has a negative margin;
+no feature was removed to achieve this budget. Recheck the final archive and
+all language padding whenever resident code, text banks or models change.
