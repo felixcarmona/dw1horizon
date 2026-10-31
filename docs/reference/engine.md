@@ -372,7 +372,17 @@ track; `seqPlay` (`482-498`): volume 0x50, infinite loop except for fonts
 and `handleMusicOverride` (`1508-1560`) picks the track according to `PSTAT_245`:
 mode 0 → 0 by day (6–21 h) and 1 by night; 1 → always 0; 2..0xA → fixed
 pairs (6,2), (0xB,2), (0xF,2), (0x15,0/1), (0x1A,0/1), (0x1B,0/1). In
-combat (`btl.c:349-365`) font 0x21 plays: track 3 against type
+patch 0278, `playBGM` preserves an open, infinitely looping sequence whose
+resolved font and track already match, updating the active map BGM even on
+that return. One-shot requests and closed sequences still restart. The first
+`0xFB` of normal `runMapHeadScript` entry calls `modHeaderKeepsMusic` to peek
+at an optional `1E 00 F5 mode` followed by `SET_BGM`. With the override applied,
+a different font or variant stops before `loadMap`; immediate `FE` and font
+0xFF stop too. The peek restores `PSTAT_245`. A header that branches first
+stays deferred until its executed music request; absent a request, entry
+finishes by stopping. Explicit script
+`0xFB`, `STOP_BGM`, and font 0xFF still reset. Day/night updates, forced updates
+and async battle music are unchanged. In combat (`btl.c:349-365`) font 0x21 plays: track 3 against type
 0x73 (Machinedramon), 0 in scripted battles, 1 or 2 per
 `ENEMY_MUSIC_MAPPING[type − 0x43]` (types 0x43..0x6F), 1 otherwise.
 

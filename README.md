@@ -22,6 +22,7 @@ and it is delivered as a patch that you apply to your own disc. Original disc im
 - **An evolution guide**: the evolution chart shows what each evolution asks for.
 - **Digimon from three more games**: Digimon from Digital Card Battle, Digimon World 2 and Digimon World 2003 join
   the evolution chart, Megas included, each with its own animations.
+- **Continuous music**: moving between screens with the same music keeps the track playing.
 - Many fixes and comforts: original bugs fixed, larger limits (screens, items, species), a reworked OPTIONS menu,
   a Japanese base disc with its own controls.
 
