@@ -269,6 +269,10 @@ def build(out, extracted, run_with=None, scratch=None, language="es"):
         from tools.localize import labels
         labels.apply(files, language, work)
 
+        from tools.localize.fi_info import check_clock
+        for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
+            check_clock(open(os.path.join(ext, path), 'rb').read(), files[language, path], entry)
+
         lines = []
         for (lang, path), data in sorted(files.items()):
             p = os.path.join(out, lang, path)

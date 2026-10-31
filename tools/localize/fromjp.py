@@ -180,7 +180,8 @@ def bi_in(t):
 
 def fi_info(t):
     """FI_INFO.TIM (= ETCTIM.BIN entry 4): the triangle menu's labels at GAME_MENU_TEXT_SPRITES' rects (texY - 1,
-    7 rows: ink F, shadow 1 at +1,+1) and the status bubbles EVOLVE / POOP / DEAD"""
+    7 rows: ink F, shadow 1 at +1,+1). Reletter only the three status-bubble
+    interiors; u128..159, rows32..47 is a live night-clock frame and stays intact."""
     t.fill(80, 19, 128, 40, 0)
     t.fill(80, 40, 99, 47, 0)
     for word, x, y in (('ITEM', 81, 19), ('DIGIMON', 81, 26), ('PLAYER', 81, 33), ('FISH', 81, 40),
