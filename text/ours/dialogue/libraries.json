@@ -1258,7 +1258,7 @@
    "lots of wild mushrooms in Native Forest."
   ]
  ],
- "s207.sec11.u25": "Oh, {color 6}{player}{color 1}! I made the Meat Farm twice as big. From now on I can give you three Giant Meat a day. And if you want extra, I'll sell it for 500 Bits apiece. Also, I'm minding the farm in Tanemon's place now. Tanemon is resting somewhere.",
+ "s207.sec11.u25": "Oh, {color 6}{player}{color 1}! I made the Meat Farm twice as big. From now on I can give you three Giant Meat a day. And if you want extra, I'll sell it for 500 Bits each. Also, I'm minding the farm in Tanemon's place now. Tanemon is resting somewhere.",
  "s207.sec11.u26": "We had a big harvest today!",
  "s207.sec11.u27": "Hmm, you have too much Giant Meat. You can skip today's share, right?",
  "s207.sec11.u28": "Hmm, you have too much Giant Meat. I'll keep what you can't carry, okay?",
@@ -1278,7 +1278,7 @@
   ],
   [
    "Or do you want to buy some now, for 500 Bits",
-   "apiece?"
+   "each?"
   ]
  ],
  "s207.sec11.u40": "You don't have enough money.",

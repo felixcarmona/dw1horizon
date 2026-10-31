@@ -113,6 +113,15 @@ nInstances × { frames[8], times[8], x, y, flag }                            19 
   0x14–0x22 at random (snow, `overworld.c:330`); fog on 115–119, 121, 163, 220
   (`renderMapOverlays`, `overworld.c:436`).
 
+A background retouch must also update overlapping foreground cutouts. Coela Point
+(`MAYO05`, screen 5) adds stairs to the TFS, beneath the original cliff sprite.
+Its recipe copies the changed background indices into the existing cliff TIM so
+that the donor cliff does not hide the entrance up to a rectangular sprite edge.
+The copy keeps existing transparent texels, testing all three CLUTs: index 1 is
+transparent by day but coloured at dusk and night. It changes no palette, sprite
+geometry or VRAM allocation. The beach turning grey-green at night is the
+original TFS palette, shared by the background and cutouts.
+
 ### Entity section (all `s16`)
 
 ```

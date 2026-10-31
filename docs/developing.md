@@ -37,6 +37,12 @@ runs only when that build exists.
 The unit tests (`tools/test_*.py`) are plain `unittest` files; each runs alone (`python3 tools/test_species.py`) and
 needs no emulator. The `test_motion*.py` files use synthetic skeletons and animations (no game assets).
 
+The world-gate audit and its unsafe-edge regression tests also run without an
+extraction. Run `python3 tools/world_audit.py --built-maps build/NAME-maps` after
+changing connections to check the model against actual map outputs as well.
+See [the world audit](mods/world-audit.md) for story frontiers, original baselines,
+deliberate exceptions and old-save escape checks.
+
 `npc-originals` reads the built image selected by `DW_SELFTEST_DERIVE`. For
 all native species used by NPC maps/scripts it compares the effective NPC's
 posed idle dimensions (within 1%), original animation slots, radius and height
@@ -185,6 +191,26 @@ NPC in front and taps X until its script runs; `shopnav.py` drives a shop by the
 starts a tournament from the lobby; `technique_proof.py` and `species_proof.py` play every technique and species of a
 disc unattended; `fonttour.py` screenshots every screen that draws text; `battle_stream.py` runs battles in a row on
 one screen (the background stream and the battle camera).
+
+`python3 tools/dev/playtest/timed_battle_host.py build/decomp-int` runs the actual field battle loop with deterministic events: expiry during
+finishers, attacks, hit/block reactions and pending damage; victory or defeat at the deadline; and an unlimited fight.
+For the Airdramon ambush, use the real script and original 2 MB RAM:
+
+```bash
+python3 tools/dev/playtest/airdramon_timeout.py build/air-fixed.cue \
+  --exe build/air-fixed/exe/SLUS_010.32 --port 39141 --case hold --release-tick 90 \
+  --out build/air-held --field-state build/air-field.state
+python3 tools/dev/playtest/airdramon_timeout.py build/air-fixed.cue \
+  --exe build/air-fixed/exe/SLUS_010.32 --port 39141 --case fight --release-tick 100 \
+  --out build/air-fought --field-state build/air-field.state
+```
+
+The harness copies the save corpus to a private native-Agumon test card, shortens only the test's “Hold back” limit
+to ten seconds, keeps Airdramon at quarter HP and starts his finisher at the selected tick. Tick 90 places expiry
+during impact; `--release-tick 140 --allow-charge` tests the aura hold. The unlimited path wins by a real partner
+attack after the finisher. JSON, screenshots and states record the deadline and completed story outcome, including
+HUD objects, finisher globals and the partner's hit state. Field checkpoints require the same disc and test-card
+hashes. `--expect-unsafe` diagnoses the old premature teardown; it does not assert that every timing visibly freezes.
 
 Other suites:
 

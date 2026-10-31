@@ -2,7 +2,8 @@
 from dw import *
 from dw.base.treasure_hunt import hunt, gabumon
 
-akatorimon = hunt.npc(Species.Akatorimon, at=(-150, 850), behaves_like=gabumon, when=recruited(Species.Akatorimon))
+# The back counter is a disconnected walkable island; stand on the customer floor.
+akatorimon = hunt.npc(Species.Akatorimon, at=(-550, -350), behaves_like=gabumon, when=recruited(Species.Akatorimon))
 
 
 @akatorimon.on_talk

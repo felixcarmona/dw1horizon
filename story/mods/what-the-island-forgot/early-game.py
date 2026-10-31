@@ -15,12 +15,7 @@ goblin_south = clearing.npc(Species.Goblimon, at=(750, -850), hp=400, mp=800, of
 # stats), and at night the first hunter, a Gururumon (GCAN09's stats), in Shamamon's place. (The screen file's tims4
 # must match the donor's map: a wrong count made the engine read a TIM that is not there and the player arrived with no
 # position, 2026-10-21.)
-hills1 = new_screen(317, map="build/what-the-island-forgot-maps/screens/IRON01.MAP")
-hills1_psychemon = hills1.npc(Species.Psychemon, at=(-250, -450), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-hills1_shamamon = hills1.npc(Species.Shamamon, at=(289, 699), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills1_gururumon = hills1.npc(Species.Gururumon, at=(-50, 450), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                              autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+# Screen 317 and its northern road gate: arcs/seam/iron-hills-gate.py.
 
 # 318, the second Iron Hills screen: the same roster as 317 (Psychemon always, Shamamon by day, Gururumon by night).
 hills2 = new_screen(318, map="build/what-the-island-forgot-maps/screens/IRON02.MAP")
@@ -146,12 +141,7 @@ descent5_shamamon = descent5.npc(Species.Shamamon, at=(1050, -1250), hp=1000, mp
 
 # 335, the last descent: Overdell's roster; three arrivals (the top, Overdell below, the ossuary's cave) leave no spot
 # a full tracking range away, so the ranges are shorter (tools/dws.py check-spawns).
-descent6 = new_screen(335, map="build/what-the-island-forgot-maps/screens/OVPS06.MAP")
-descent6_gururumon = descent6.npc(Species.Gururumon, at=(450, 1250), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent6_psychemon = descent6.npc(Species.Psychemon, at=(450, 1900), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent6_shamamon = descent6.npc(Species.Shamamon, at=(-1150, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+# Screen 335 and the jungle road gate: arcs/seam/overdell-gate.py.
 
 # 336, the ossuary: the hunters' dumping ground. A Bakemon haunts it at every hour (Overdell's native ghost).
 ossuary = new_screen(336, map="build/what-the-island-forgot-maps/screens/OVPS07.MAP")
@@ -240,8 +230,7 @@ rubbish_g_goblin = rubbish_g.npc(Species.Goblimon, at=(-550, -250), hp=400, mp=8
 rubbish_g_psychemon = rubbish_g.npc(Species.Psychemon, at=(550, -150), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
 
 # 353, the Rubbish Mouth (the ladder up to Trash Mountain): one Psychemon by the ladder.
-rubbish_m = new_screen(353, map="build/what-the-island-forgot-maps/screens/MINE17.MAP")
-rubbish_m_psychemon = rubbish_m.npc(Species.Psychemon, at=(-350, -350), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300, range=800)
+# Screen 353 and its hatch gate: arcs/galleries/rubbish-mouth.py.
 
 # 354, the Stair (down to the heart): the deep roster (Tsukaimon, Bakemon, Soulmon in the design) waits for a test fight;
 # a Gururumon meanwhile, at the steps.
@@ -254,8 +243,7 @@ heart = new_screen(355, map="build/what-the-island-forgot-maps/screens/MINE19.MA
 heart_gururumon = heart.npc(Species.Gururumon, at=(300, -500), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400, range=600)
 
 # 356, the Drain (up to Factorial Town's sewer, 220): one Gururumon on the walkway (Numemon and Nanimon wait for a test fight).
-drain = new_screen(356, map="build/what-the-island-forgot-maps/screens/MINE20.MAP")
-drain_gururumon = drain.npc(Species.Gururumon, at=(-100, -300), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400, range=800)
+# Screen 356 and its sewer gate: arcs/galleries/drain.py.
 
 # --- File City's new district, the Works (design/district-proposals.md, concept 3): two outdoor screens behind the lower
 # town and seven buildings, each a file of its own (district/*.py). Its residents are the recruits the game already makes

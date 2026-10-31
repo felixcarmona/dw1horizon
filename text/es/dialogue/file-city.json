@@ -28,43 +28,54 @@
  "s162.sec5.u10": "¿Has vuelto a derrotar a Machinedramon? Increííble.",
  "s162.sec5.u11": [
   [
-   "Ji, ji, te voy a explicar lo que hay fuera",
-   "de la ciudad."
+   "Ji, ji, te voy a explicar",
+   "lo que hay fuera de la ciudad."
   ],
   [
-   "Alrededor de la ciudad está el Bosque",
-   "Native. Allí los Digimon no son muy fuertes."
+   "Alrededor de la ciudad está el",
+   "Bosque Indígena. Allí los",
+   "Digimon no son muy fuertes."
   ],
   [
-   "Justo al oeste está el Gimnasio Green.",
-   "Creo que irás mucho por allí."
+   "Justo al oeste está el",
+   "Gimnasio Verde. Creo que irás",
+   "mucho por allí."
   ],
   [
-   "Cruzando el río, al este, está la Jungla",
-   "Tropical. No sé qué hay más allá."
+   "Cruzando el río, al este, está",
+   "la Selva Tropical. No sé qué",
+   "hay más allá."
   ],
   [
-   "Al oeste, una montaña y un lago cortan",
-   "el paso, pero puede que detrás haya más",
-   "tierra."
+   "Al oeste, una montaña y un",
+   "lago cortan el paso, pero puede",
+   "que detrás haya más tierra."
   ],
   [
-   "Muy al sur está el mar. Al norte hay una",
-   "montaña muuuy alta. Por los dos lados",
+   "Muy al sur está el mar.",
+   "Al norte hay una montaña",
+   "muuuy alta."
+  ],
+  [
+   "Por los dos lados",
    "no se puede seguir."
   ],
   [
-   "Es todo lo que sé. Pero la ciudad es el",
-   "centro de la isla, así que creo que al",
-   "norte hay más cosas."
+   "Es todo lo que sé. Pero la",
+   "ciudad es el centro de la isla,"
   ],
   [
-   "Yo iré averiguando rumores de fuera, así",
-   "que ven a escucharlos de vez en cuando."
+   "así que creo que al norte",
+   "hay más cosas."
+  ],
+  [
+   "Yo iré averiguando rumores",
+   "de fuera, así que ven a",
+   "escucharlos de vez en cuando."
   ]
  ],
  "s162.sec6.u0": "¿Mmm? He venido a ver qué tal está esto, ¡sí, señor! El váter no me gusta, pero lo demás está bastante bien, ¡sí, señor!",
- "s162.sec7.u0": "Mmm... Parece que aquí hay... bastante animación. ¿Que si no debería volver a Pueblo Factorial... dice usted? Mi función de planificación opera con normalidad. No hay ningún problema.",
+ "s162.sec7.u0": "Mmm... Parece que aquí hay... bastante animación. ¿Que si no debería volver a Ciudad Factorial... dice usted? Mi función de planificación opera con normalidad. No hay ningún problema.",
  "s162.sec8.u0": [
   [
    "¡Oh, llegas en el momento justo!"
@@ -94,8 +105,8 @@
    "Si lo averiguas, ¿me lo dirás?"
   ]
  ],
- "s162.sec55.m0.o0": "A Pueblo Factorial",
- "s162.sec55.m0.o1": "A la Cala Secreta",
+ "s162.sec55.m0.o0": "A Ciudad Factorial",
+ "s162.sec55.m0.o1": "Cueva Secreta de la Playa",
  "s162.sec55.m0.o2": "Mejor no",
  "s162.sec55.u0": [
   [
@@ -111,7 +122,7 @@
    "llega por mar. Bien, pues..."
   ]
  ],
- "s162.sec55.u1": "Mmm, ¿adónde vamos? ¿A Pueblo Factorial... o quizá a la cueva de la cala?",
+ "s162.sec55.u1": "Mmm, ¿adónde vamos? ¿A Ciudad Factorial... o quizá a la Cueva Secreta de la Playa?",
  "s162.sec57.u0": "¡Te encontré!",
  "s162.sec57.u1": "¿¡Q-qué!? ¿¡Viene a por nosotros!?",
  "s162.sec57.u2": "¡Por fin nos vemos! Soy Greymon, un trotamundos. ¡Vamos al grano!",
@@ -146,7 +157,7 @@
  "s162.sec57.u15": "Ngh... así... aunque me cueste la vida... derrotarlos... esas eran... mis órdenes...",
  "s162.sec57.u16": "¿Pero qué dices? ¡Así te vas a morir de verdad! Necesitas que te curen, rápido...",
  "s162.sec81.u0": "Zzz...",
- "s162.sec81.u1": "Oye, ¿te has enterado? En la Jungla Tropical está creciendo una planta muy rara.",
+ "s162.sec81.u1": "Oye, ¿te has enterado? En la Selva Tropical está creciendo una planta muy rara.",
  "s162.sec81.u2": [
   [
    "¡Ah, es verdad!"
@@ -214,17 +225,17 @@
    "presumir."
   ]
  ],
- "s163.sec8.u3": "Ahora que lo pienso, la {color 6}Manzana azul{color 1} del Bosque Native está riquísima.",
- "s163.sec8.u4": "Ahora que lo pienso, el {color 6}Plátano naranja{color 1} de la Jungla Tropical está riquísimo.",
+ "s163.sec8.u3": "Ahora que lo pienso, la {color 6}Manzana azul{color 1} del Bosque Indígena está riquísima.",
+ "s163.sec8.u4": "Ahora que lo pienso, el {color 6}Plátano naranja{color 1} de la Selva Tropical está riquísimo.",
  "s163.sec8.u5": "Ahora que lo pienso, la {color 6}Fresa gorda{color 1} del Monte Panorama está riquísima.",
  "s163.sec8.u6": "Ahora que lo pienso, la {color 6}Castaña dulce{color 1} de la Sabana Gear está riquísima.",
  "s163.sec8.u7": "Ahora que lo pienso, la {color 6}Superverdura{color 1} del Cementerio de Overdell está riquísima.",
- "s163.sec8.u8": "Ahora que lo pienso, la {color 6}Baya roja{color 1} de la Antigua Región Dino está riquísima.",
+ "s163.sec8.u8": "Ahora que lo pienso, la {color 6}Baya roja{color 1} de la Región Dino Prehistórica está riquísima.",
  "s163.sec8.u9": "Ahora que lo pienso, el {color 6}Higo chumbo{color 1} del Gran Cañón está riquísimo.",
- "s163.sec8.u10": "Ahora que lo pienso, la {color 6}Digipiña{color 1} de la Arboleda Misty está riquísima.",
+ "s163.sec8.u10": "Ahora que lo pienso, la {color 6}Digipiña{color 1} de los Árboles de Niebla está riquísima.",
  "s163.sec8.u11": "Ahora que lo pienso, la {color 6}Hierba espinosa{color 1} del Pantano Geko está riquísima.",
- "s163.sec8.u12": "Ahora que lo pienso, la {color 6}Seta de hielo{color 1} de Freezeland está riquísima.",
- "s163.sec8.u13": "Ahora que lo pienso, la {color 6}Bellota de oro{color 1} de Tierra Beetle está riquísima.",
+ "s163.sec8.u12": "Ahora que lo pienso, la {color 6}Seta de hielo{color 1} de la Tierra Helada está riquísima.",
+ "s163.sec8.u13": "Ahora que lo pienso, la {color 6}Bellota de oro{color 1} de la Tierra de Escarabajos está riquísima.",
  "s163.sec9.m0.o0": "¿Qué pasa?",
  "s163.sec9.m0.o1": "Luego, ¿vale?",
  "s163.sec9.u0": "Oye, escúchame un momento.",
@@ -288,13 +299,13 @@
  "s164.sec5.m0.o1": "Lejos",
  "s164.sec5.m0.o2": "Muuuy lejos",
  "s164.sec5.m1.o0": "Cima del Panorama",
- "s164.sec5.m1.o1": "Jungla Tropical",
- "s164.sec5.m1.o2": "Túnel Drill",
+ "s164.sec5.m1.o1": "Selva Tropical",
+ "s164.sec5.m1.o2": "Túnel Taladro",
  "s164.sec5.m2.o0": "Sabana Gear",
  "s164.sec5.m2.o1": "Mansión de Grey Lord",
  "s164.sec5.m2.o2": "Gran Cañón",
- "s164.sec5.m3.o0": "Región Dino: entrada",
- "s164.sec5.m3.o1": "Región Dino: fondo",
+ "s164.sec5.m3.o0": "Región Dino Prehistórica: ent.",
+ "s164.sec5.m3.o1": "Región Dino Prehistórica: fondo",
  "s164.sec5.m3.o2": "Mundo desconocido",
  "s164.sec5.m4.o0": "Ante la cueva curling",
  "s164.sec5.m4.o1": "Pesca de Seadramon",
@@ -319,39 +330,50 @@
  "s164.sec8.m1.o2": "Adelantar 240 horas",
  "s164.sec9.u0": [
   [
-   "Ji, ji, te voy a explicar lo que hay fuera",
-   "de la ciudad."
+   "Ji, ji, te voy a explicar",
+   "lo que hay fuera de la ciudad."
   ],
   [
-   "Alrededor de la ciudad está el Bosque",
-   "Native. Allí los Digimon no son muy fuertes."
+   "Alrededor de la ciudad está el",
+   "Bosque Indígena. Allí los",
+   "Digimon no son muy fuertes."
   ],
   [
-   "Justo al oeste está el Gimnasio Green.",
-   "Creo que irás mucho por allí."
+   "Justo al oeste está el",
+   "Gimnasio Verde. Creo que irás",
+   "mucho por allí."
   ],
   [
-   "Cruzando el río, al este, está la Jungla",
-   "Tropical. No sé qué hay más allá."
+   "Cruzando el río, al este, está",
+   "la Selva Tropical. No sé qué",
+   "hay más allá."
   ],
   [
-   "Al oeste, una montaña y un lago cortan",
-   "el paso, pero puede que detrás haya más",
-   "tierra."
+   "Al oeste, una montaña y un",
+   "lago cortan el paso, pero puede",
+   "que detrás haya más tierra."
   ],
   [
-   "Muy al sur está el mar. Al norte hay una",
-   "montaña muuuy alta. Por los dos lados",
+   "Muy al sur está el mar.",
+   "Al norte hay una montaña",
+   "muuuy alta."
+  ],
+  [
+   "Por los dos lados",
    "no se puede seguir."
   ],
   [
-   "Es todo lo que sé. Pero la ciudad es el",
-   "centro de la isla, así que creo que al",
-   "norte hay más cosas."
+   "Es todo lo que sé. Pero la",
+   "ciudad es el centro de la isla,"
   ],
   [
-   "Yo iré averiguando rumores de fuera, así",
-   "que ven a escucharlos de vez en cuando."
+   "así que creo que al norte",
+   "hay más cosas."
+  ],
+  [
+   "Yo iré averiguando rumores",
+   "de fuera, así que ven a",
+   "escucharlos de vez en cuando."
   ]
  ],
  "s164.sec11.u0": [
@@ -408,12 +430,12 @@
   ],
   [
    "Si te quedas sin comida...",
-   "dicen que en el Bosque Native",
-   "hay muchas setas silvestres."
+   "dicen que el Bosque Indígena",
+   "tiene muchas setas silvestres."
   ]
  ],
  "s164.sec54.m0.o0": "Sala del ordenador",
- "s164.sec54.m0.o1": "Pueblo Toy, al fondo",
+ "s164.sec54.m0.o1": "Ciudad Juguete, al fondo",
  "s164.sec54.m0.o2": "Probar combate",
  "s164.sec54.m0.o3": "Último combate",
  "s164.sec66.m0.o0": "Debug: atrib. altos",

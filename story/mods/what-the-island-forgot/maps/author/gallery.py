@@ -29,13 +29,13 @@ from pathlib import Path as _ImagePath
 _image_sys.path.insert(0, str(next(p for p in _ImagePath(__file__).resolve().parents if (p / 'tools').is_dir())))
 import json, math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from mapbase import base_map, Cam, MOD, check_arrivals
+from mapbase import base_map, Cam, MOD, check_arrivals, trim_exit
 import dwmap
 
 HERE = os.path.join(MOD, 'maps', 'author', os.environ.get('GALLERY_SET', 'galleries'))   # GALLERY_SET=district: File City's new district
 GREY = {'floor': (128, 128, 128), 'decor': (100, 100, 100), 'blocked': (18, 18, 18)}
-EXIT_DEPTH = 400                                         # world units: the exit tiles are the band's tiles this close to the edge (four tiles)
-SPAWN_IN = 700                                           # world units from the edge to the arrival point (three tiles past the exit tiles)
+EXIT_DEPTH = 400                                         # world units: the exit tiles are the band's tiles this close to the edge (four tiles before trim_exit removes the inner two)
+SPAWN_IN = 700                                           # world units from the edge to the arrival point (five tiles past the trimmed exit tiles)
 
 
 class Screen:
@@ -184,8 +184,11 @@ class Screen:
         m.collision = col
         for e in exits:
             x, z = e['spawn_world']
-            m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': cam.rotation((x, z), e['face_world']),
+            m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': cam.arrival_rotation((x, z), e['face_world']),
                                        'targetMap': e['target'][0], 'targetExit': e['target'][1]})
+        for e in exits:
+            if 'step' not in e:
+                trim_exit(m, e['warp'], e['spawn_world'], e['face_world'])
         check_arrivals(m, c['file'])
         R = reach.from_spawn_coordinates(m, starts=[exits[0]['spawn_world']])
         for e in exits:

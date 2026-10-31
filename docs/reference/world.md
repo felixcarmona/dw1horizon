@@ -561,6 +561,16 @@ scripts. The shops and buildings that open with each recruit are `ROOM*`/`TWNB*`
 player enter by trigger; the C code only knows `SHOP_MAPS` and `ARENA_MAPS`, and `checkShopMap` skips loading the shop
 overlay once when trigger 41 is set (`script_common.c:2985`).
 
+## Horizon connections
+
+Horizon connections preserve the original story's road and area unlocks. The
+Drain's sewer connection needs Whamon or the reopened town; the Rubbish Mouth and
+Iron Hills use the existing northern-road flags; the Overdell Pass preserves the
+first jungle crossing. Their checks are step handlers on the new screens, with
+unrestricted retreats and an escape for older saves stranded inside the Seam.
+The [world audit](../mods/world-audit.md) documents the exact conditions, original
+alternatives, deliberate arc changes and source/output verification.
+
 ## Birdramon
 
 `BIRDRA_TRANSPORT_TARGETS[6]` (`0x8013024C`, `{u8 mapId, u8 exit, u16 trigger, u32 bits}`); the menu

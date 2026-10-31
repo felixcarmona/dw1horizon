@@ -206,9 +206,9 @@ ALT=0; [ -n "${EXTRA_STORY:-}" ] && [ "${STORY_ALT:-1}" = 1 ] && grep -q 'modSto
 BASE_V=(); if [ "$ALT" = 1 ]; then BASE_V=(base); [ "$ORIG" = 1 ] && BASE_V+=(base/orig); fi
 
 # ---------------------------------------------------------------- 3. sound (soundlimits)
-# Indexed VBALL/VLALL/ESALL, FAALL with font 34 (the 5-minute song, Jijimon's house) and font 35 (+148 KB of instruments,
-# Tropical Jungle TROP02), as in the soundlimits README: derive's sound step, in $S; its story step sets the two fonts'
-# music in every MAPHEAD.
+# Indexed VBALL/VLALL/ESALL and FAALL with the house theme and synthesized instruments:
+# derive's sound step writes the banks in $S; its story step applies story/core/audio.json
+# music bindings to every MAPHEAD variant.
 step "sound files"
 # a bank is staged at GENERAL_BUFFER in whole sectors and must end below the save extensions: SOUND_STAGING_MAX of this
 # executable (patch 0096; an older tree: the original's largest, 124 sectors)

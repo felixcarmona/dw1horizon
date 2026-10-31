@@ -519,14 +519,14 @@
         "sources": [
           {
             "path": "build/batch2/Nefertimon.MMD",
-            "sha256": "fff440024a498ce201c188d67b03f011ad94fd354fb00f760f0e3fa6852cd6de",
-            "size": 96734
+            "sha256": "2e5900742e6727d7cbac72b1e79d760a47c42c8c1822dfa3134090aa4697f881",
+            "size": 97404
           }
         ],
         "delta": "content/modeldelta/deltas/198-Nefertimon.MMD.mdelta",
-        "delta_sha256": "93677034a825ea642ff2a7d446c2907705a6825a62a75356ed6b82362e1d4875",
-        "sha256": "c6faa4ca5ac44cb95dcb7e547358654eae3dd64bd485de719aeecd2100e57c33",
-        "size": 97496
+        "delta_sha256": "e2f8e238ff80ccdbc08e749f9c3520817fd99f60954e5764ed844f5657849cca",
+        "sha256": "3e08dcd32be9fc3205b1beb687883210ba1a75e87ae148d991657edd7e2b40eb",
+        "size": 86250
       },
       "tim": {
         "sources": [

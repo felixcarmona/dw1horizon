@@ -1,0 +1,22 @@
+[
+  {
+    "profile": "root3-nonvaccine",
+    "screens": [
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103
+    ],
+    "reason": "Existing R3 arc deliberately melts the white barrier for every partner attribute (arcs/vault/white-barrier.py). R3 requires Angemon and prior Sanctuary access; this permits later re-entry with another partner, not an earlier first visit."
+  },
+  {
+    "profile": "vault-postgame-without-angemon",
+    "screens": [
+      310
+    ],
+    "reason": "The existing postgame hall 104 gateway can visit the empty Vault before Angemon joins. The decision NPC still requires Angemon, and R3 cannot be completed early. Closing this gateway could strand an old save in hall 104, which has no ordinary walking exit. Preserve it pending a decision on restricting map visits rather than arc progression."
+  }
+]

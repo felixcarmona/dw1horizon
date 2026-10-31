@@ -650,3 +650,65 @@ figures whenever the patch series, language padding, models or story changes.
 
 Through patch 0283 the series ends at `0x801cf040` and screen 361 keeps 1,952 bytes. A new resident patch
 must fit those bytes or free its own first: `xref.py classes` lists what is left to move.
+
+## Timed field-battle teardown
+
+Patch 0285 adds 120 bytes to `BTL_REL.BIN` and no resident growth. Controlled English-only builds with the same
+`MOD_VERSION=airdramon-test` keep `main_BSS_END` at `0x801cb9fc` before and after the change, with 197,888 bytes of
+heap. The general heap projection passes, and all 320 actual-archive story setups fit; screen 361 has the smallest
+margin at 15,488 bytes. These English test-bank figures are not an eight-language release measurement. The guard
+uses only battle-stack locals and the existing combat state; it adds no allocation, model or effects buffer.
+
+
+## Camera follow budget
+
+Patch 0286 adds 128 bytes of resident text in the English test build for the
+original 2 MB target. `main_BSS_END` moves from `0x801cb9fc` to `0x801cba7c`;
+initialized heap falls from 197,888 to 197,760 bytes. Data, rodata, SBSS and BSS
+sizes stay unchanged. The general sweep and all 320 actual-archive story setups
+pass. The conservative story margin stays at 15,488 bytes on screen 361 because
+this English build still exceeds the checker's original-heap ceiling.
+
+The eight-bank base recorded under 0281 has only 160 bytes spare on that setup.
+Applying the measured 128-byte loss projects 32 bytes remaining; this projection
+has not been checked by rebuilding all eight languages. Release heap checks must
+use the release's actual language padding, executable and archive.
+
+## Cheats list paging
+
+Patch 0287 changes one input-mask byte in the MENU overlay without changing its
+44,804-byte size. In matching English-only builds, the main executable is
+byte-identical: `main_BSS_END` remains `0x801cb9fc` and the heap remains 197,888
+bytes (zero heap cost). Heapcheck passes and all 320 actual-archive story setups
+fit, with a minimum margin of 15,488 bytes on screen 361. These are English test
+bank measurements, separate from the eight-language city-page figures above.
+
+
+## Eight-language integration through 0288
+
+A full eight-language `MOD_VERSION=v0.0.2-test` build on `b392ddf` ends at
+`main_BSS_END = 0x801cf190`, with 183,648 bytes of heap. Integrating the twelve
+fix branches ends at `0x801cf2c0`, with 183,344 bytes: 304 resident bytes added.
+The language set is en, es, pt-br, fr, de, it, ja and ca, with shared padding.
+
+Controlled native builds retain the base text banks, padding and file tables:
+
+| Change | Resident delta | Other allocation effect |
+|---|---:|---|
+| 0285 timed field-battle teardown | 0 bytes | BTL grows 120 bytes |
+| 0286 camera framing and idle settling | +112 bytes | Includes linker alignment; no new heap allocation |
+| 0287 Cheats paging | 0 bytes | MENU size unchanged |
+| 0288 version during field pause | +144 bytes | Saved text pixels use the existing stack |
+| Updated Spanish names in shared language padding | +48 bytes | Verified by swapping only the text banks/padding after 0288 |
+
+The controlled series ends at `0x801cf290`; applying the integration's text
+padding reproduces `0x801cf2c0`. These measurements supersede projections from
+English-only test builds for this eight-language configuration.
+
+Heapcheck passes with a minimum projected 26,992 bytes on OGRE03. The actual
+archive check passes all 320 setups in each of the eight languages (2,560 checks).
+Screen 361 is tightest: Goblimon, Geremon and Gekomon peak at 182,024 bytes,
+against 183,336 available after allocator overhead, leaving **1,312 bytes**.
+The same-version base leaves 1,616 bytes there. No setup has a negative margin;
+no feature was removed to achieve this budget. Recheck the final archive and
+all language padding whenever resident code, text banks or models change.

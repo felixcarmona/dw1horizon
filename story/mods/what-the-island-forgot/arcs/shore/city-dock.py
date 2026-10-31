@@ -11,6 +11,7 @@ from dw import *
 from dw.base.file_city_168 import city_168, whamon
 from ...state import seadramon_chased, seadramon_let_go, whamon_left_day, whamon_left_year, whamon_hurt
 shore_told = flag()
+city_docks = screen(168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179)
 
 def to_the_dock():
     tamer.run(2594, 630, wait=False)
@@ -61,6 +62,18 @@ def elapsed_days():
                     break
                 pstat(91).sub(1)
                 pstat(92).sub(1)
+
+# Presence cannot test the saved date. Remove him after setup on every square
+# layout, using the same non-yielding calculation as the dock's closed-ferry line.
+@city_docks.on_enter(when=recruited(Species.Whamon) and (seadramon_chased or whamon_hurt))
+def city_ferry_presence():
+    elapsed_days()
+    if whamon_hurt:
+        if pstat(91) < 10:
+            whamon.leave()
+    elif seadramon_chased:
+        if pstat(91) < 5:
+            whamon.leave()
 
 @city_168.on_step(4, when=seadramon_chased and not whamon_hurt)
 def chasing():

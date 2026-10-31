@@ -35,6 +35,23 @@ RAM addresses are those of the original USA executable. The `ITEM_PARA` record l
   restaurant lives in the map scripts (the executable only provides the `SHOP_VARIABLE` accumulator and the mood
   bubble).
 
+## Pause version (patch 0288)
+
+The field START pause shows `MOD_VERSION_TEXT` at (8, 4), in the title's dim
+`TEXT_COLORS[MOD_VERSION_COLOR]` and drop shadow. The top strip clears all five
+clock frames (their highest y is 20), the digital clock below them, the status
+bars at bottom right, and the Cheats hint at y=206..230. The title keeps (8, 224).
+Empty `MOD_VERSION` draws nothing; all eight languages use the same 32-byte string.
+See [release versions](../patcher.md#release-versions).
+
+`utils2.c` saves the shared text row `MOD_VERSION_ROW` (0x3C) on the pause stack,
+then calls `modVersionDraw`; unpause or opening Cheats restores the pixels and
+forgets the font's last glyph cell. Returning from Cheats saves and draws again.
+`renderPauseBox` only submits primitives through `modVersionRenderAt`, so repeated
+30/60 fps render passes do not change the row. The version follows the Select
+hint's `IS_SCRIPT_PAUSED == 1` guard and requires the actual Pause box; it is
+absent during scripted scenes and battle pause.
+
 ## City page
 
 City is read-only: prosperity, recruited residents and their points. Missing

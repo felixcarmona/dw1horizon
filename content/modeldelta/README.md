@@ -40,3 +40,27 @@ A spec's donor is an original DW1 species: its motion is read from the player's
 DW1 extraction during import. Changing donors requires rebuilding and rebasing
 the import before editing the model. Donor motion belongs in the regenerated
 source, rather than as additions inside an edit delta.
+
+## Nefertimon front legs
+
+Nefertimon (198) uses Monochromon's three-joint front legs. The reviewed import
+spec maps right upper leg/shin/paw `4,5,6` to donor `7,8,9`, and left
+`7,8,9` to donor `10,11,12`. The former right upper/shin assignments were
+reversed; the missing left paw assignment layered native idle movement onto
+that paw during field locomotion. This was a mapping defect, not a missing
+animation in the source disc.
+
+The corrected spec is pinned in `import-batches.json`. Its regenerated source
+was rebased with `tools/models/edit.py sources --unchecked` and `rebase`, then
+stored with `put`. The final delta preserves the reviewed native idle in slots
+0 and 0x21 and the existing technique aliases. Mesh, texture, native hit clips,
+root motion and slot durations are unchanged. Unreferenced animation streams
+and parse tails were removed with `share_identical_streams`; only identical
+referenced programs are shared.
+
+Review with `tools/animstudio.py` using the regenerated species 198 model and
+`extracted/CHDAT/MMD1/MONO.MMD:47`, especially slots 0, 2, 3, 4, 0x21 and
+0x24. Select front paws 6 and 9 explicitly when calling its `metrics()` helper:
+the CLI's two lowest joints include a hind leg on this rig. Paw joint positions
+do not measure paw rotation, so also compare the paw's local rotation ranges
+and world rotation swing. A mapped paw can turn without moving its own joint.

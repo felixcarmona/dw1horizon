@@ -45,7 +45,7 @@
     "from": [2],
     "to": [],
     "requirements": {
-      "digimon": 180,
+      "digimon": 2,
       "hp": -1,
       "mp": -1,
       "offense": -1,

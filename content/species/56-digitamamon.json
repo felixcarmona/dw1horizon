@@ -17,7 +17,7 @@
     "hunger_hours": [0, 3, 6, 9, 12, 15, 18, 21],
     "energy_max": 80,
     "energy_fed": 50,
-    "energy_per_hour": 14,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
     "poop_size": 9,
     "favorite_food": "Chain melon",

@@ -228,7 +228,11 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   the goal, a block +6 % to the defender and +8 % to the attacker), so x2 changes neither.
 - What x2 shortens is reaction time: a finisher charge press counts twice (`BTL_tickFinisherChargeup`, STD alike); the
   defeat countdown (`DEATH_COUNTDOWN`) and the item menu (open or with an item in hand) hold the fight at x1
-  (`BTL_modSpeedHeld`). A timed field battle (patch 0172, pstat 242) counts fight ticks. Play time (`tickPlaytime`)
+  (`BTL_modSpeedHeld`). A timed field battle (patch 0172, pstat 242) counts fight ticks. Patch 0285 defers expiry until
+  the finisher lock, active attacks, hit/block reactions and buffered HP damage have closed. The last enemy's defeat
+  finishes through normal victory, and partner defeat still takes priority. `pstat(241)` becomes 1 only when the
+  timeout is accepted. Airdramon's “Hold back” remains 90 seconds and may continue until combat reaches that safe boundary;
+  “No choice: fight!” has no timer. It is the only authored `pstat(242)` user. Play time (`tickPlaytime`)
   counts real time, skipping the second tick of each fast pair (`MOD_REAL_TICK`).
 - **Timing** (`modTickStart`, `modPresent`, `main.c`): the battle arms `MOD_BATTLE_FAST_TICK` before each tick
   (`BTL_modSpeedBeforeTick` from `BTL_battleTickFrame`). Fast ticks run in pairs over 3 refreshes, 40 ticks a second;
@@ -406,3 +410,31 @@ match `shop_hi` in `story/base/zones/monochrome-shop/s049-49/script.py`; patch 0
 recruit target from 3072. The object removes itself when the screen changes; accepting another shift
 adds it again. It uses the existing per-pass packet allocator, with no saved flag or persistent drawing
 primitives, for interpolated 30/60 fps passes.
+
+## Large-partner world framing (0286)
+
+Patch 0078 frames large partners above `MOD_CAM_CFG.liftFrom` (450 world units)
+by shifting the world scroll toward the pair's projected bounding box. Patch
+0286 caps that world shift relative to the tamer's feet: X is within ±24 pixels,
+Y within −64 to +24 pixels. This preserves the upward framing for a tall partner
+without letting a slow partner pull the tamer far across the screen.
+
+The shift approaches its target by at most three pixels per axis per **logic
+tick**, including idle ticks with free control. Idle ticks use the tamer's current
+position for both projection endpoints, so a stale walking delta cannot repeat.
+The extra render passes at 60 fps continue to use the camera interpolation from
+0036–0037. The idle path requires normal world follow, an idle tamer, no running
+script or menu, and no active camera movement. Scene authors must still close a
+fixed camera with `camera.on(tamer, speed=10); camera.arrived()` before returning
+control. Battle framing keeps its existing target and VRAM-window restrictions.
+Partners at or below the height threshold retain the existing input-gated path;
+Jijimon's height is 250 and therefore does not activate this framing.
+
+The host regression compares the actual camera functions with the pre-0286 C:
+
+```sh
+python3 tools/dev/playtest/camera_follow_host.py BASE/src/main/map.c build/decomp-int/src/main/map.c
+```
+
+Its projection and tile handling are stubs; use the emulator for screenshots,
+real map bounds, streaming, scene exits and interpolation.

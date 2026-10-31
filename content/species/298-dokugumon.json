@@ -38,7 +38,7 @@
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 60,
-    "energy_per_hour": 12,
+    "energy_per_hour": 10,
     "poop_timer_10min": 36,
     "poop_size": 12,
     "favorite_food": "Giant Meat",

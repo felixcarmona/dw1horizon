@@ -236,6 +236,9 @@ maximum HP/MP, and combat stats. Left/right adjusts by the displayed amount;
 up/down changes that amount. Confirm applies the value and Cancel discards it.
 Stat and care limits are enforced, and lowering maximum HP/MP clamps the current
 value. Evolution rows show species stages; map rows show internal map codes.
+In lists, up/down moves one row; left/right or L1/R1 moves ten rows, clamped at
+either end (patch 0287). This also applies to the parameter list. The numeric
+editor keeps the adjustment controls described above.
 Choosing a destination performs the action through the normal idle/model guards.
 
 Save/load retains the native memory-card flow and its confirmations. The saved
@@ -249,6 +252,15 @@ Continue.
 the actual patched helpers with address/undefined-behavior sanitizers to check
 save compatibility, bounds, care actions and labels. Pass the patched decompilation
 worktree as their first argument.
+
+`python3 tools/dev/playtest/qol.py DISC --exe EXE --out build/qol-proof` checks list
+navigation and the numeric editor in original 2 MB RAM. It also checks three
+consecutive farm purchases, insufficient bits and a full inventory for Palmon's
+Giant Meat and both Vegiemon vegetables. Set `EMU_PORT` for your own instance.
+The harness uses a private English copy of the release save, original 2 MB RAM
+and counted emulated refreshes for input. Farm sections start through the script
+hook; purchases and leaving use pad input. A `--boot-state` checkpoint must come
+from the exact same disc. `--case navigation` runs only the list checks.
 
 ## Enemy life bars
 

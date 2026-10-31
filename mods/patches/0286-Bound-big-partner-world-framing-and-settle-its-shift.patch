@@ -1,0 +1,69 @@
+From aedee5b0f53a5334c0b34dbcd3f4f8343838717c Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 18:23:21 +0000
+Subject: [PATCH] Bound big-partner world framing and settle its shift while
+ idle
+
+---
+ src/main/map.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index b23b17c..d439097 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -4535,8 +4535,8 @@ void fillTileData(MapTileData *tile, uint8_t *imagePtr,
+  *  - frame: the scroll keeps a point between the tamer and the partner's body on the
+  *    screen spot where it keeps the tamer (MOD_CAM_SHIFT, px). Set where the scroll is
+  *    placed on the tamer (map entry: initializeDrawingOffsets; createCameraMovement) and
+- *    moved toward its target, 3 px per tick at most, while the tamer walks
+- *    (tickCameraFollowPlayer is delta based and runs only with the pad held); in a
++ *    moved toward its target, 3 px per logic tick at most, including while idle.
++ *    World shifts are capped to keep a trailing partner from pulling the tamer away; in a
+  *    wild battle (GAME_STATE 1) it pans toward the same target (modCamBattleStep).
+  *    Off for partners up to liftFrom tall.
+  *  - fit: the partner is drawn (render only: collision, follow distance, bubbles' data
+@@ -4620,10 +4620,19 @@ static void modCamTarget(DVECTOR *out)
+ 	}
+ 	out->vx = ((x0 + x1) / 2 - fx) * w / 100;
+ 	out->vy = ((y0 + y1) / 2 - fy) * w / 100;
++	/* World framing: retain the height lift, but keep the tamer within a small
++	 * screen-space box even when a slow partner is far behind. Battle framing
++	 * retains its existing target and VRAM-window restrictions. */
++	if (GAME_STATE == 0) {
++		if (out->vx < -24) out->vx = -24;
++		if (out->vx > 24) out->vx = 24;
++		if (out->vy < -64) out->vy = -64;
++		if (out->vy > 24) out->vy = 24;
++	}
+ }
+ 
+-/* one follow step of the shift: at most 3 px per axis */
+-static int16_t modCamStep(int16_t want)
++/* One follow step: at most 3 px per axis. Share the calls to save resident code. */
++static __attribute__((noinline)) int16_t modCamStep(int16_t want)
+ {
+ 	return want > 3 ? 3 : want < -3 ? -3 : want;
+ }
+@@ -4866,10 +4875,16 @@ void tickCameraFollowPlayer(void)
+ 	    (((POLLED_INPUT & 0x1000) != 0) ||
+ 	     ((POLLED_INPUT & 0x4000) != 0) ||
+ 	     ((POLLED_INPUT & 0x8000) != 0) ||
+-	     ((POLLED_INPUT & 0x2000) != 0))) {
++	     ((POLLED_INPUT & 0x2000) != 0) ||
++	     (CAMERA_HAS_TARGET == 0 && IS_SCRIPT_PAUSED == 1 && IS_IN_MENU == 0 &&
++	      DIGI_PARA(PARTNER_ENTITY.digimonEntity.entity.type).height > MOD_CAM_CFG.liftFrom))) {
+ 		SetRotMatrix(&GsWSMATRIX);
+ 		SetTransMatrix(&GsWSMATRIX);
+-		copyVector(&worldPos, &STORED_TAMER_POS);
++		/* Without directional input there is no tamer delta. STORED_TAMER_POS
++		 * can still contain the last walking step: never replay it while idle.
++		 * Small partners keep the original pad-gated path byte for byte. */
++		copyVector(&worldPos, (POLLED_INPUT & 0xf000) ? &STORED_TAMER_POS :
++			   &TAMER_ENTITY.entity.posData->location);
+ 		gte_ldv0(&worldPos);
+ 		gte_rtps();
+ 		gte_stsxy(&screenStart);
+-- 
+2.55.0
+

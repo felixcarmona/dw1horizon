@@ -242,8 +242,17 @@ Check reciprocal links and arrivals in both directions, including dynamic story 
 
 Place edge exits by world/tile rows at the actual visible edge. Perspective can put
 five rows in a small pixel box; avoid broad pixel bands at foreshortened far ends.
-The gallery author uses the last 400 world units for an exit and arrivals 700 units
-inward. Keep arrivals at least two tiles clear of their own exit tiles and avoid a
+The gallery author starts with the last 400 world units for an edge exit, then
+`mapbase.trim_exit` removes the inner 200 units (two tiles). Pixel mouths use the
+same trim on the bounding edge facing the arrival; a diagonal facing point must
+not leave the closest trigger unchanged. Already shallow mouths retain a
+100-unit span between tile centers, so an exit still has a usable strip. Arrivals
+stay 700 units inward. `Cam.arrival_rotation` uses the engine's heading convention
+(0 = −Z, 1024 = −X); use it for warp arrivals facing into the map. The older
+`Cam.rotation` describes the opposite vector and is retained for existing recipes.
+For a trigger-only correction, trim the committed map data rather than rebuilding
+its floor from an older authoring description; verify that every blocked bit is
+unchanged. Keep arrivals at least two tiles clear of their own exit tiles and avoid a
 one-step re-trigger. An interior mouth uses `box_px`, `spawn_px` and `face_px` traced
 on the actual mouth. Rerun layout after changing targets.
 
