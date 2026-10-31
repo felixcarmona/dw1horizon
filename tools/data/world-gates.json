@@ -1,0 +1,594 @@
+{
+  "gates": [
+    {
+      "name": "Northern forest rockslide",
+      "screens": [
+        111
+      ],
+      "condition": "native_forest_rockslide_cleared",
+      "evidence": "story/base/zones/native-forest/s001-0/script.py:80"
+    },
+    {
+      "name": "Invisible bridge",
+      "screens": [
+        44
+      ],
+      "from": [
+        36
+      ],
+      "condition": "invisible_bridge_rumor_heard",
+      "evidence": "story/base/zones/great-canyon-entrance/s036-36/script.py:69"
+    },
+    {
+      "name": "Fortress guard",
+      "screens": [
+        45
+      ],
+      "from": [
+        40
+      ],
+      "condition": "canyon_bandits_beaten or recruited(Species.MainCharacter)",
+      "evidence": "story/base/zones/fortress-entrance/s040-40/script.py:28"
+    },
+    {
+      "name": "Secret Beach",
+      "screens": [
+        142,
+        143
+      ],
+      "condition": "ogre_fortress_cleared or recruited(Species.Whamon)",
+      "evidence": "story/base/zones/freezeland/s130-135/script.py:36"
+    },
+    {
+      "name": "Factorial Town",
+      "screens": [
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        160,
+        161,
+        162,
+        163,
+        220
+      ],
+      "condition": "recruited(Species.Whamon) or factorial_town_reopened",
+      "evidence": "story/base/zones/file-city/s162-168-169-170/script.py:359; story/base/zones/gear-savanna/s068-71/script.py:155"
+    },
+    {
+      "name": "Mansion attribute",
+      "screens": [
+        52
+      ],
+      "from": [
+        35
+      ],
+      "condition": "partner_attribute == 3",
+      "evidence": "story/base/zones/overdell-cemetery/s035-35/script.py:196"
+    },
+    {
+      "name": "Ice Sanctuary attribute",
+      "screens": [
+        97
+      ],
+      "from": [
+        92
+      ],
+      "condition": "partner_attribute == 2",
+      "evidence": "story/base/zones/freezeland/s088-92/script.py:22"
+    },
+    {
+      "name": "Toy Mansion seal",
+      "screens": [
+        148,
+        149,
+        150,
+        151
+      ],
+      "condition": "toy_mansion_seal_lifted",
+      "evidence": "story/base/zones/robot-house/s140-146/script.py:78"
+    },
+    {
+      "name": "Mt. Infinity",
+      "screens": [
+        166,
+        167,
+        210,
+        212,
+        219,
+        222,
+        225,
+        229,
+        230,
+        231,
+        247,
+        248,
+        249,
+        253,
+        254
+      ],
+      "condition": "mt_infinity_entrance_found",
+      "evidence": "story/base/zones/file-city/s162-168-169-170/script.py:step5"
+    },
+    {
+      "name": "Back Dimension",
+      "screens": [
+        226,
+        227,
+        228,
+        104
+      ],
+      "condition": "engine.game_beaten and back_dimension_portal >= 1",
+      "evidence": "story/base/zones/back-dimension/s187-228/script.py:step1"
+    },
+    {
+      "name": "Factory shift gate",
+      "screens": [
+        161
+      ],
+      "from": [
+        155
+      ],
+      "condition": "factory_guards_passed or (clock.hour == 11 and clock.minute >= 55) or (clock.hour == 12 and clock.minute <= 5) or (clock.hour == 23 and clock.minute >= 55) or (clock.hour == 0 and clock.minute <= 5)",
+      "evidence": "story/base/maphead/screen155.dws"
+    },
+    {
+      "name": "Underground Pond excavation",
+      "screens": [
+        29
+      ],
+      "from": [
+        28
+      ],
+      "condition": "underground_pond_dig_work >= 8",
+      "evidence": "story/base/zones/underground-pond/s029-28/script.py:50"
+    },
+    {
+      "name": "Drill Tunnel boulder",
+      "screens": [
+        30,
+        122
+      ],
+      "from": [
+        29
+      ],
+      "condition": "drill_tunnel_boulder_moved",
+      "evidence": "story/base/zones/drill-tunnel-2nd-floor/s030-29/script.py:15"
+    },
+    {
+      "name": "Mansion sealed door",
+      "screens": [
+        60
+      ],
+      "from": [
+        52
+      ],
+      "condition": "mansion_devimon_met",
+      "evidence": "story/base/zones/grey-lords-mansion/s051-52/script.py:204"
+    },
+    {
+      "name": "Infinity Devimon barrier",
+      "screens": [
+        248
+      ],
+      "from": [
+        247
+      ],
+      "condition": "(mt_infinity_devimon_beaten) or arrival_entry == 1",
+      "evidence": "story/base/zones/libraries/s194/script.py:step2; MGEN03 step 2 spans the passage"
+    },
+    {
+      "name": "Infinity MetalGreymon barrier",
+      "screens": [
+        225
+      ],
+      "from": [
+        222
+      ],
+      "condition": "(mt_infinity_metalgreymon_beaten) or arrival_entry == 1",
+      "evidence": "story/base/zones/mt-infinity/s182-222/script.py:step2; MGEN98 step 2 spans the bridge"
+    },
+    {
+      "name": "Volume Villa concealed approach",
+      "screens": [
+        140
+      ],
+      "from": [
+        139
+      ],
+      "condition": "shogun_gekomon_met",
+      "evidence": "story/base/zones/geko-swamp/s134-139/script.py:34; original rectangles block exit 1 before meeting ShogunGekomon"
+    }
+  ],
+  "profiles": [
+    {
+      "name": "before-regional-unlocks",
+      "state": {
+        "recruited(Species.Agumon)": true,
+        "root1": false,
+        "root2": false,
+        "root3": false,
+        "post_guided": false,
+        "bone_field_visited": false,
+        "back_dimension_portal": 0,
+        "engine.prosperity": 1,
+        "trigger(221)": false,
+        "trigger(190)": false,
+        "trigger(188)": false,
+        "trigger(351)": false,
+        "trigger(147)": false,
+        "trigger(210)": false,
+        "engine.game_beaten": false
+      },
+      "fresh": true
+    },
+    {
+      "name": "factory-closed",
+      "state": {
+        "recruited(Species.Whamon)": false,
+        "factorial_town_reopened": false,
+        "root2": false
+      }
+    },
+    {
+      "name": "before-ending",
+      "state": {
+        "back_dimension_portal": 0,
+        "engine.game_beaten": false
+      }
+    },
+    {
+      "name": "before-canyon-rumor",
+      "state": {
+        "native_forest_rockslide_cleared": true,
+        "recruited(Species.Agumon)": true,
+        "root1": false,
+        "root2": false,
+        "root3": false,
+        "post_guided": false,
+        "bone_field_visited": false,
+        "back_dimension_portal": 0,
+        "engine.prosperity": 1,
+        "trigger(221)": false,
+        "trigger(190)": false,
+        "trigger(188)": false,
+        "trigger(351)": false,
+        "trigger(147)": false,
+        "trigger(210)": false,
+        "engine.game_beaten": false
+      },
+      "fresh": true
+    },
+    {
+      "name": "canyon-only",
+      "state": {
+        "invisible_bridge_rumor_heard": true,
+        "invisible_bridge_crossed": true,
+        "recruited(Species.Agumon)": true,
+        "root1": false,
+        "root2": false,
+        "root3": false,
+        "post_guided": false,
+        "bone_field_visited": false,
+        "back_dimension_portal": 0,
+        "engine.prosperity": 1,
+        "trigger(221)": false,
+        "trigger(190)": false,
+        "trigger(188)": false,
+        "trigger(351)": false,
+        "trigger(147)": false,
+        "trigger(210)": false,
+        "engine.game_beaten": false,
+        "coela_point_crossing_done": true,
+        "eastern_bridge_seen": true
+      },
+      "fresh": true
+    },
+    {
+      "name": "mansion-nonvirus",
+      "state": {
+        "partner_attribute": 2,
+        "root2": false,
+        "back_dimension_portal": 0,
+        "engine.game_beaten": false
+      }
+    },
+    {
+      "name": "sanctuary-nonvaccine",
+      "state": {
+        "partner_attribute": 3,
+        "root3": false,
+        "recruited(Species.Angemon)": false,
+        "back_dimension_portal": 0,
+        "engine.game_beaten": false
+      }
+    },
+    {
+      "name": "infinity-closed",
+      "state": {
+        "mt_infinity_entrance_found": false
+      }
+    },
+    {
+      "name": "fortress-closed",
+      "state": {
+        "canyon_bandits_beaten": false,
+        "recruited(Species.MainCharacter)": false,
+        "ogre_fortress_elevator_working": false,
+        "back_dimension_portal": 0,
+        "ogre_fortress_cleared": false,
+        "root1": false,
+        "Canyon.CHASING": false
+      }
+    },
+    {
+      "name": "mansion-sealed-door",
+      "state": {
+        "mansion_devimon_met": false,
+        "root2": false,
+        "engine.game_beaten": false,
+        "back_dimension_portal": 0
+      }
+    },
+    {
+      "name": "toy-mansion-sealed",
+      "state": {
+        "toy_mansion_seal_lifted": false
+      }
+    },
+    {
+      "name": "before-excavation",
+      "fresh": true,
+      "state": {
+        "recruited(Species.Agumon)": true,
+        "underground_pond_dig_work": 0,
+        "root1": false,
+        "root2": false,
+        "root3": false,
+        "post_guided": false,
+        "bone_field_visited": false,
+        "back_dimension_portal": 0,
+        "engine.game_beaten": false
+      }
+    },
+    {
+      "name": "devimon-barrier",
+      "state": {
+        "mt_infinity_devimon_beaten": false
+      }
+    },
+    {
+      "name": "metalgreymon-barrier",
+      "state": {
+        "mt_infinity_metalgreymon_beaten": false
+      }
+    },
+    {
+      "name": "root3-nonvaccine",
+      "state": {
+        "partner_attribute": 3,
+        "root3": true,
+        "recruited(Species.Angemon)": false,
+        "engine.game_beaten": false,
+        "back_dimension_portal": 0
+      }
+    },
+    {
+      "name": "jungle-open-north-closed",
+      "fresh": true,
+      "state": {
+        "recruited(Species.Agumon)": true,
+        "eastern_bridge_seen": true,
+        "coela_point_crossing_done": true,
+        "engine.prosperity": 1,
+        "root1": false,
+        "root2": false,
+        "root3": false,
+        "post_guided": false,
+        "bone_field_visited": false,
+        "back_dimension_portal": 0,
+        "engine.game_beaten": false
+      }
+    },
+    {
+      "name": "secret-beach-closed",
+      "state": {
+        "ogre_fortress_cleared": false,
+        "recruited(Species.Whamon)": false
+      }
+    },
+    {
+      "name": "boulder-closed",
+      "state": {
+        "drill_tunnel_boulder_moved": false
+      }
+    },
+    {
+      "name": "factory-between-shifts",
+      "state": {
+        "factory_guards_passed": false,
+        "clock.hour": 6,
+        "clock.minute": 30
+      }
+    },
+    {
+      "name": "volume-villa-concealed",
+      "state": {
+        "shogun_gekomon_met": false
+      }
+    }
+  ],
+  "arc_frontiers": [
+    {
+      "name": "canyon-before-chase",
+      "state": {
+        "ogre_fortress_cleared": false,
+        "root1": false,
+        "Canyon.CHASING": false
+      },
+      "closed_screens": [
+        300,
+        301,
+        302,
+        303
+      ],
+      "evidence": "arcs/canyon/fortress-elevator.py; arcs/canyon/canyon-bottom.py"
+    },
+    {
+      "name": "canyon-declined",
+      "state": {
+        "root1": false,
+        "Canyon.OPEN": false,
+        "Canyon.CHASING": false
+      },
+      "closed_screens": [
+        300,
+        301,
+        302,
+        303
+      ],
+      "evidence": "arcs/canyon/fortress-elevator.py"
+    },
+    {
+      "name": "crypt-before-root2",
+      "state": {
+        "root2": false
+      },
+      "closed_screens": [
+        307,
+        308
+      ],
+      "evidence": "arcs/mansion/basement.py"
+    },
+    {
+      "name": "bone-field-before-guide",
+      "state": {
+        "post_guided": false,
+        "bone_field_visited": false
+      },
+      "closed_screens": [
+        305,
+        306
+      ],
+      "evidence": "arcs/glacial/glacial-82.py; arcs/glacial/glacial-86.py"
+    },
+    {
+      "name": "vault-before-angemon",
+      "state": {
+        "root3": false,
+        "recruited(Species.Angemon)": false,
+        "engine.game_beaten": false,
+        "back_dimension_portal": 0
+      },
+      "closed_screens": [
+        310,
+        311
+      ],
+      "evidence": "arcs/vault/statue-room.py"
+    },
+    {
+      "name": "vault-before-thaw",
+      "state": {
+        "root3": false
+      },
+      "closed_screens": [
+        311
+      ],
+      "evidence": "arcs/vault/wall-of-hearts.py; arcs/vault/statue-room.py"
+    },
+    {
+      "name": "engine-before-infinity",
+      "state": {
+        "mt_infinity_entrance_found": false
+      },
+      "closed_screens": [
+        312,
+        313
+      ],
+      "evidence": "arcs/infinity/devimon-247.py; arcs/infinity/megadramon-254.py"
+    },
+    {
+      "name": "works-before-golemon",
+      "state": {
+        "recruited(Species.Golemon)": false
+      },
+      "closed_screens": [
+        357,
+        358,
+        359,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365
+      ],
+      "evidence": "arcs/works/gate.py"
+    },
+    {
+      "name": "shore-before-whamon",
+      "state": {
+        "recruited(Species.Whamon)": false
+      },
+      "closed_screens": [
+        309
+      ],
+      "evidence": "arcs/shore/city-dock.py"
+    },
+    {
+      "name": "shore-during-chase",
+      "state": {
+        "recruited(Species.Whamon)": true,
+        "seadramon_chased": true,
+        "whamon_hurt": false,
+        "ferry_elapsed_days": 4
+      },
+      "closed_screens": [
+        309
+      ],
+      "evidence": "arcs/shore/city-dock.py:chasing"
+    },
+    {
+      "name": "shore-during-recovery",
+      "state": {
+        "recruited(Species.Whamon)": true,
+        "whamon_hurt": true,
+        "ferry_elapsed_days": 9
+      },
+      "closed_screens": [
+        309
+      ],
+      "evidence": "arcs/shore/city-dock.py:resting"
+    },
+    {
+      "name": "vault-postgame-without-angemon",
+      "state": {
+        "recruited(Species.Angemon)": false,
+        "root3": false,
+        "engine.game_beaten": true,
+        "back_dimension_portal": 1
+      },
+      "closed_screens": [
+        310,
+        311
+      ],
+      "evidence": "maps/icsa08-north.py; arcs/vault/statue-room.py; arcs/vault/wall-of-hearts.py"
+    },
+    {
+      "name": "canyon-variants-before-root1",
+      "state": {
+        "root1": false
+      },
+      "closed_screens": [
+        366,
+        367,
+        368
+      ],
+      "evidence": "arcs/canyon/birdramon-nest.py; arcs/canyon/top-way.py; arcs/canyon/gcan06-way.py"
+    }
+  ]
+}

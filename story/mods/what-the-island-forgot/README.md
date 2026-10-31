@@ -35,3 +35,11 @@ Rules the maps follow:
   palette packing preserves exact background colours in every time-of-day CLUT;
 - wild Digimon stand at least their chase range + 300 from every arrival point (`maps/author/audit-spawns.py` checks
   every screen at build time).
+
+Connections into original areas retain their story gates: the Galleries' Drain
+needs Whamon or the reopened town; the Rubbish Mouth and Iron Hills need an opened
+northern road; the Overdell Pass retains the jungle crossing. The conditions live
+in `arcs/galleries/` and `arcs/seam/`, with block lines in all eight text banks.
+Mineward exits and a legacy escape for saves stranded inside the Seam stay open.
+See [the world audit](../../../docs/mods/world-audit.md) before changing these
+connections or regenerating their step-trigger tiles.

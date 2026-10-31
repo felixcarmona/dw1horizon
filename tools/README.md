@@ -16,6 +16,7 @@ see [THIRD-PARTY.md](../THIRD-PARTY.md).
 | Fonts and localization | `fontgen.py`, `font/compact.py`, `localize/`, `localize/executable/`, `image.py`, `mediancut.py` |
 | Developer tools | `dev/` contains emulator transport, symbols, game state, captures, playtests, saves, frame-rate and memory checks; [developer tools](dev/README.md) |
 | Offline checks | `selftest.sh`, `test_*.py`, `checkrefs.py`; [developing](../docs/developing.md) |
+| World gates | `world_audit.py`, `data/world-*.json`, `test_world_audit.py`; [conditional reachability](../docs/mods/world-audit.md) |
 
 Imported species are rebuilt from the player's source discs by `derive/importers/`,
 using frozen recipes under `content/imports/` and authored model deltas under

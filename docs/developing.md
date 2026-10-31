@@ -37,6 +37,12 @@ runs only when that build exists.
 The unit tests (`tools/test_*.py`) are plain `unittest` files; each runs alone (`python3 tools/test_species.py`) and
 needs no emulator. The `test_motion*.py` files use synthetic skeletons and animations (no game assets).
 
+The world-gate audit and its unsafe-edge regression tests also run without an
+extraction. Run `python3 tools/world_audit.py --built-maps build/NAME-maps` after
+changing connections to check the model against actual map outputs as well.
+See [the world audit](mods/world-audit.md) for story frontiers, original baselines,
+deliberate exceptions and old-save escape checks.
+
 `npc-originals` reads the built image selected by `DW_SELFTEST_DERIVE`. For
 all native species used by NPC maps/scripts it compares the effective NPC's
 posed idle dimensions (within 1%), original animation slots, radius and height
