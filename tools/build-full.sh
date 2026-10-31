@@ -27,7 +27,8 @@
 #   SPECIES_PROVIDER=imports           the imports' species files from a provider (tools/derive/steps/species.py): imports, the
 #                                  imported models of content/models/imports (its species.py, into $O/imported-species),
 #                                  every file it hands over pinned by SHA-1; the four imports converted below are then not made
-#   MAIN_STORY=FILE.dws            compiled in place of the dev-save script (e.g. tools/dws/examples/font-proof.dws, which
+#   MAIN_STORY=FILE.dws            compiled in place of the dev-save script, this script's default and never a player's
+#                                  disc (e.g. tools/dws/examples/font-proof.dws, which
 #                                  also opens the save machine; docs/mods/font.md "Fonts")
 #   EXTRA_STORY="a.dws b.dws"      more story sources compiled with the dev-save one (.dws, .py, a mod's folder; SPECIES_CONTENT names the
 #                                  species folders they place)

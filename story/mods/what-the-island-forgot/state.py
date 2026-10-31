@@ -78,6 +78,7 @@ whamon_hurt = flag()
 # Gear Savanna from the start). Kept quiet: the original pace.
 rumours_asked = flag()
 rumours_spread = flag()
+greymon_heard_of_tamer = flag()    # one time: a defeat by Greymon must not bring him back at the door of Jijimon's house
 
 # The fog (§3.1d): Cherrymon clears it after its tale (the original) or keeps the forest hidden: then no hunters in
 # Misty Trees, and the end of the legend (M4) only comes after Toy Town, when the tamer asks it to clear the fog.

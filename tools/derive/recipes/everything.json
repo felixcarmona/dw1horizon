@@ -17,7 +17,6 @@
   "SPECIES_PROVIDER": "imports",
   "REUSE_MODELS": 1,
   "STORY_MODS": "all",
-  "MAIN_STORY": "tools/dws/examples/dev-save.dws",
   "DEV": 0,
   "NAME": "everything",
   "DW_HEAP_MAP": "/nonexistent",

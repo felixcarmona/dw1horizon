@@ -474,8 +474,8 @@ in `story/base/authored.json`. An existing base is preserved during builds;
    - a jump table keeps its layout (MAPHEAD 1220-1230 have no `END_SECTION` after their last jump and run on);
    - entry 0 is generated too and cut to one sector; the container header is the offset table and zeros. Only the
      disc's `DG.SCN` size is taken from the disc, for the padding.
-2. **Stage 2, the mods.** One program with the sources given on the command line (the development save helper
-   `tools/dws/examples/dev-save.dws`, the recipe's extra story sources) and the selected mods (their Python lowered to DWS,
+2. **Stage 2, the mods.** One program with the sources given on the command line (the recipe's extra story sources and, on a
+   developer's build only, the save helper `tools/dws/examples/dev-save.dws`) and the selected mods (their Python lowered to DWS,
    their DWS, deprecated overrides), applied by the back end to the stage-1 text: an event inserted at the start of a
    section, a `replace`, new scripts and sections, `place`, the city table and `.MAP` edits ([../mods/dws.md](../mods/dws.md)
    "Compiler and build integration").
@@ -494,7 +494,7 @@ pass, each pass a separate process with its settings on its command line:
 
 | Pass | What | Files |
 |---|---|---|
-| `.` | the extended story: `story/base`, the dev-save helper, the recipe's story sources and the mods | `DG.SCN`, `MAPHEAD.SCN` |
+| `.` | the extended story: `story/base`, the recipe's story sources and the mods | `DG.SCN`, `MAPHEAD.SCN` |
 | `orig` | the same paged for the original font | `DGORIG.SCN`, `MHORIG.SCN` |
 | `base` | EXTENDED STORY's original story: `story/base` only, no mod, none of the mods' retouched maps | `_G.SCN`, `_APHEAD.SCN` |
 | `base/orig` | that one for the original font | `_GORIG.SCN`, `_HORIG.SCN` |

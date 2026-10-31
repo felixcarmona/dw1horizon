@@ -20,6 +20,9 @@ overlays. `--run` boots PCSX-Redux with its original 2 MB RAM and stops it after
 60 seconds (change with `--run-seconds`). It uses port 39129 unless `EMU_PORT` is
 set; it needs the local emulator installation described in [08-emulator.md](developing.md).
 
+`--dev-save` adds the development helper `tools/dws/examples/dev-save.dws`, where talking to Jijimon opens the save
+machine; `tools/dev/saves/capture_save.sh` and `tools/dev/playtest/species_proof.py --save` need it. Players' discs never have it.
+
 Outputs are `build/dev-everything.bin` and `.cue`. `--name NAME` selects another
 output name. `build/NAME-timings.json` records stage seconds and the image SHA-1.
 The command creates a private, detached, patched decomp worktree under

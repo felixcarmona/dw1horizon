@@ -24,7 +24,7 @@ python3 tools/dws.py disc  tools/dws/examples/first-quest.dws --name dws-first-q
 | `jungle-newcomer.dws` | a new NPC slot in a map (the `.MAP` grows, needs `--exe mods`) |
 | `species-180.dws` | a species that is not on the disc (needs `--exe species`) |
 | `expanded-state.dws` | the story-state engine (needs `--exe story-state`): story flags above 799 (bit 16000), 32-bit and scene variables, saved in the three-block save file |
-| `dev-save.dws` | development helper: talking to Jijimon opens the save machine (used by `tools/build-full.sh` and the DLC's `DEV=1` build) |
+| `dev-save.dws` | development helper: talking to Jijimon opens the save machine (used by `tools/build-full.sh`, `python3 -m tools.dev build --dev-save` and the DLC's `DEV=1` build; never on a player's disc) |
 | `kunemon-readable.dws` | Kunemon's talk (script 2 section 6) as a person writes it in DWS; a test proves it is the disc's section |
 | `expanded-crowd.dws`, `expanded-city-rules.dws` | Story-state target: placed Digimon by rules, the city's own rules |
 

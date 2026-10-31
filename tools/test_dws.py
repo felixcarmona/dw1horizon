@@ -1432,6 +1432,12 @@ class StoryBuild(unittest.TestCase):
         self.assertEqual(self.BB.verify(dg, mh, dg2, mh2, log=out.append), 1)
         self.assertIn('script 178 sec5', '\n'.join(out))
 
+    def test_player_disc_has_no_developer_helper(self):
+        # v0.0.1 shipped dev-save.dws: Jijimon only opened the save machine, his talk and all that hangs from it never ran
+        recipe = json.load(open(os.path.join(ROOT, 'tools/derive/recipes/everything.json')))
+        self.assertNotIn('MAIN_STORY', recipe['environment'])
+        self.assertFalse([s for s in recipe['story']['sources'] if 'examples/' in s], recipe['story']['sources'])
+
     OVERRIDE = {   # the retired override example mod (overrides/ are deprecated; a Python mod writes a handler instead)
         'script_002/sec5.dws': 'script 2 {\n    npc redvegiemon5 = 5;\n    on talk(redvegiemon5) replace {\n'
                                '        say(redvegiemon5, "Psst. Take this instead.");\n        give(item("Meat"), 1);\n    }\n}\n',
