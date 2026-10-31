@@ -135,7 +135,7 @@ def use2():    # section 82
             raw.advance_to_date_at(date_year)
             warp(Screen.great_canyon_top_area_44, entry=2)
             return
-        if engine.shop_hi <= 11:
+        if engine.shop_hi <= 9:
             monochromon.say(t82.u7)
             give(bits=1500)
             narrator.say(t82.u8)
@@ -174,7 +174,7 @@ def use2():    # section 82
             monochromon.say(t82.u1)
             tamer.turn(80)
             hide_hud()
-        elif engine.shop_hi <= 5:
+        elif engine.shop_hi <= 4:
             monochromon.say(t82.u2)
             tamer.turn(80)
             hide_hud()

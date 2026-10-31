@@ -387,3 +387,13 @@ bitset survives rebirth.
 The result announcement initializes the species default name before displaying `{partner}`. Naming then
 continues through the existing optional-name flow. The expanded table in `story/new-game-quiz.dws` uses the existing `name.*` translation
 mechanism in `text/<language>.json`, with speaker plus at most three lines.
+
+## Monochromon shift plate (0279)
+
+`script_interp.c` arms `modShopPlateAdd` only when routine `0x1e` clears the shift total on screen 49.
+World object `0x1fb3` renders the right-anchored 3×5-font profit/count plate and blue progress bar in
+`mod_qol.c`, reading `SHOP_VARIABLE` and p123 without changing either. The named 1792/2560 thresholds
+match `shop_hi` in `story/base/zones/monochrome-shop/s049-49/script.py`; patch 0280 lowers the
+recruit target from 3072. The object removes itself when the screen changes; accepting another shift
+adds it again. It uses the existing per-pass packet allocator, with no saved flag or persistent drawing
+primitives, for interpolated 30/60 fps passes.
