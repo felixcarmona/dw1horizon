@@ -203,6 +203,63 @@ runtime evidence: the battle engine considers the animation's running flag and
 the incoming technique's iframe timer (`BTL_tickHitState`,
 `BTL_tickFighterAction`); duration alone does not prove shortened hit-stun.
 
+### MetalGreymon Vaccine: donor provenance
+
+Species 224's frozen `RealMetalGreymon.json` import uses Etemon (42), not
+MetalGreymon (12). The reviewed `metal_greymon.py` generator changes only 0-4.
+Consequently, a corrected field walk does not establish correct care animations.
+The following audit describes the **final post-delta, post-field-overlay** model;
+the import spec's `clips` dictionary alone does not describe its techniques.
+
+| Final slots (hexadecimal) | Motion provenance |
+|---|---|
+| 00-04 | Reviewed field generator; preserve these programs |
+| 05, 07-0D | Etemon, same-numbered imported programs |
+| 0E-12, 22 | Shared Etemon poor-condition idle (source 01) |
+| 13, 18 | Shared Etemon source 13/18 program |
+| 15-17, 19 | Etemon, same-numbered imported programs |
+| 1B | Delta-adjusted Etemon condition walk; rotations match source 03/1B |
+| 21 | Delta-adjusted DCB native idle |
+| 23 | Etemon walk (source 02/23) |
+| 24 | Delta-adjusted Etemon run; rotations match source 04/24 |
+| 25, 2C | Etemon block and get-up |
+| 28, 29, 2A, 2B | DCB native hit, knockback, victory and faint |
+| 2E, 2F, 32, 33, 35, 37, 3B, 3D | Shared Etemon source 33 technique |
+| 30, 31, 34, 36, 38, 39, 3A, 3C | Shared DCB `anim_02` (imported source 34) |
+
+These rows cover every populated slot. Source-program comparisons exclude
+unconsumed stream tails (`motiondiscidentity.program`). In particular, final
+35 and 3B no longer contain their originally assigned DCB `anim_01` and
+`anim_03`: aliases replace them with Etemon's source 33. A repair must explicitly
+resolve whether to preserve those slot numbers or replace their effective
+Etemon programs. Conversely, replacing every technique outside the spec's
+native slot numbers would overwrite several aliases of DCB `anim_02`.
+
+`animstudio.py bones` identifies the corresponding mesh parts below. DW1's
+seven additional mesh-free helper joints mean that bone numbers cannot simply
+be copied. This is an anatomical correspondence, not approval of a retargeted
+clip or its contact behavior.
+
+| Part | Species 224 bones | DW1 MetalGreymon bones |
+|---|---|---|
+| Torso, neck, metal head, jaw | 1, 2, 3, 4 | 2, 3, 4, 5 |
+| Metal arm, forearm, claw | 5, 6, 7 | 7, 8, 9 |
+| Organic arm, forearm, hand | 8, 9, 10 | 11, 12, 13 |
+| Right and left wings | 11, 12 | 15, 17 |
+| Pelvis | 13 | 18 (translation carrier: 1) |
+| Tail base, middle, tip | 14, 15, 16 | 19, 20, 21 |
+| Right thigh, shin, foot | 17, 18, 19 | 23, 24, 25 |
+| Left thigh, shin, foot | 20, 21, 22 | 27, 28, 29 |
+
+A generated second pass can read the player's
+`extracted/CHDAT/MMD0/MTGR.MMD`: extraction precedes imports and overlays, and
+derive's recorded read roots include `extracted/`. The provider passes the
+post-delta model into its generator. Neither a donor change in a frozen spec
+nor committed disc animation bytes are necessary. Each new clip still needs
+decoded subframe contact checks, loop replay, effect/training timing review and
+the resident/cold storage gates; anatomical correspondence alone proves none
+of these.
+
 ### 3. The production models and their field recipes
 
 The build's species provider `imports` (`content/models/imports/`: `models.json` and `species.py`) rebuilds the 175 imported
