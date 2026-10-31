@@ -144,7 +144,7 @@ script 49 {
                 warp_to(44, 2, 255);
                 return;
             }
-            if (engine.shop_hi <= 11) {
+            if (engine.shop_hi <= 9) {
                 say(monochromon, text("s049.sec82.u7"));
                 give_bits(1500);
                 say(narrator, text("s049.sec82.u8"));
@@ -185,7 +185,7 @@ script 49 {
                 say(monochromon, text("s049.sec82.u1"));
                 entity_set_rotation(tamer, 80);
                 fadeout_hud(0);
-            } else if (engine.shop_hi <= 5) {
+            } else if (engine.shop_hi <= 4) {
                 say(monochromon, text("s049.sec82.u2"));
                 entity_set_rotation(tamer, 80);
                 fadeout_hud(0);

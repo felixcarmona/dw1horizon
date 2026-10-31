@@ -283,6 +283,15 @@ bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, r
 free). Drimogemon's 5000-bit dig gives one item, and no item sells for more than 4999, so it cannot pay without
 changing its price, which its text says.
 
+## 6.2 Monochromon recruitment
+
+The shift recruit target falls from 3072 to 2560 bits of profit. Recruitment was
+an approximately 1 % outcome at list prices and 13 % at a steady +10 %; simulation
+at 2560 gives 8 % and 37 %, respectively. The top halfway comment moves from
+1536 to 1280 bits, half the new target. The 1792-bit payout tier and the
+500/1500/2000-bit payouts stay unchanged, as do prices, odds, customers and text.
+The plate fills at 2560 bits, with its 1792-bit tick at 70 % of the inside width.
+
 ## 7. Related sources
 
 Runtime rules and their numeric data are mapped in [data sources](data-sources.md).

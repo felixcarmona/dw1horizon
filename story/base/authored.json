@@ -131,6 +131,16 @@
       "authored_sha256": "f216a59bbae51a10ba1a36bb3e4e67f70d396a60972df5864b9e8f9f6b61ef84",
       "reason": "Five-session training and narrator choice ownership"
     },
+    "zones/monochrome-shop/s049-49/script.dws": {
+      "original_sha256": "3e9d6770660fb29e4bb595634cdb633aec5931903cb8a584704d2f581fd641f2",
+      "authored_sha256": "76d902e99e531ad45e58dc45aa71561a6f5b205f5f9739b0399d489616a1123f",
+      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits; DWS synchronized with the authored Python source"
+    },
+    "zones/monochrome-shop/s049-49/script.py": {
+      "original_sha256": "3f196b431498c56dd4f9677e4c0d6bff1e80351fff4bf78fdb00a080c441d7ed",
+      "authored_sha256": "4da0a204c83e977e200c4c1fd466044200484c2b34cd4debccec60504344eee0",
+      "reason": "Monochromon recruit target 3072 -> 2560 bits; top halfway comment at 1280 bits"
+    },
     "zones/secret-item-shop/s177-217/script.dws": {
       "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
       "authored_sha256": "d1c67bc1e40735ec815de32bafbaf71fa9f60b07cd6078c49bcb5c37b7cc8076",
