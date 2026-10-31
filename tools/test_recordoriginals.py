@@ -11,6 +11,20 @@ from tools import recordoriginals as R
 
 
 class RecordOriginalsTest(unittest.TestCase):
+    def test_subset_keeps_carried_children_and_drops_missing_records(self):
+        from tools import species as S
+        with tempfile.TemporaryDirectory() as tmp:
+            for selection, carried in [('66,121,124', True), ('', False)]:
+                S.select(selection, tmp)
+                rows = S.load_content(tmp)
+                for parent, child in ((6, 66), (25, 121), (8, 124)):
+                    self.assertEqual(child in rows[parent]['evolution']['to'], carried)
+                    self.assertEqual(S.is_record_original(rows[child]), carried)
+                for t, s in rows.items():
+                    if 1 <= t <= 62 and not S.is_record_original(s):
+                        self.assertEqual(len(s['evolution']['from']), 5)
+                        self.assertEqual(len(s['evolution']['to']), 6)
+
     def test_checked_slice_and_all_pins(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -35,7 +49,7 @@ class RecordOriginalsTest(unittest.TestCase):
         self.assertEqual(step.ids(SimpleNamespace(env={'IMPORTS': '0'})), set())
         self.assertEqual(step.ids(SimpleNamespace(env={'SPECIES_PROVIDER': 'imports'})), set())
         self.assertEqual(step.ids(SimpleNamespace(env={'SPECIES': '67'})), {67})
-        self.assertEqual(len(step.ids(SimpleNamespace(env={'SPECIES': 'all'}))), 33)
+        self.assertEqual(len(step.ids(SimpleNamespace(env={'SPECIES': 'all'}))), 38)
 
     def test_manifest_is_plain_and_matches_provider_pins(self):
         pins = json.loads((R.ROOT / 'tools/derive/recipes/species-pins.json').read_text())['record_originals']

@@ -1,0 +1,1287 @@
+{
+  "description": "Final evolution topology and identity-sheet levels. Canon main lines precede family and shared specialty; imported canon Megas follow Ultimates. Parent order selects the primary requirement bonus.",
+  "children": {
+    "Koromon": {"parents": ["Botamon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Agumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Betamon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Greymon": {"parents": ["Agumon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Devimon": {
+      "parents": ["DemiDevimon", "Tsukaimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Airdramon": {"parents": ["Biyomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Tyrannomon": {
+      "parents": ["Agumon", "Gabumon", "Patamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Meramon": {
+      "parents": ["Agumon", "RedOtamamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Seadramon": {"parents": ["Betamon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "MetalGreymonVirus": {
+      "parents": ["Greymon", "Meramon", "Monochromon", "Drimogemon", "Tyrannomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Mamemon": {
+      "parents": ["Leomon", "Ninjamon", "Whamon", "Frigimon", "Mojyamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Monzaemon": {"parents": ["Numemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Tsunomon": {"parents": ["Punimon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Gabumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Elecmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Kabuterimon": {
+      "parents": ["Biyomon", "Kunemon", "Tentomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Angemon": {
+      "parents": ["Patamon", "Elecmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Birdramon": {
+      "parents": ["Agumon", "Biyomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Garurumon": {
+      "parents": ["Gabumon", "Penguinmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Frigimon": {
+      "parents": ["Penguinmon", "SnowAgumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Whamon": {
+      "parents": ["Palmon", "Betamon", "Penguinmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Vegiemon": {
+      "parents": ["Kunemon", "Palmon", "Mushroomon", "Floramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "SkullGreymon": {
+      "parents": ["Greymon", "Devimon", "Bakemon", "Garurumon", "Mojyamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "MetalMamemon": {
+      "parents": ["Monochromon", "Kabuterimon", "Ninjamon", "Frigimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Tokomon": {"parents": ["Poyomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Patamon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Unimon": {
+      "parents": ["Patamon", "Biyomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Ogremon": {
+      "parents": ["Gabumon", "Patamon", "Goblimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Shellmon": {
+      "parents": ["Betamon", "Penguinmon", "Crabmon", "Syakomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Centarumon": {
+      "parents": ["Agumon", "Gabumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Bakemon": {
+      "parents": ["Elecmon", "Kunemon", "Tapirmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Drimogemon": {
+      "parents": ["Gabumon", "Patamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Andromon": {
+      "parents": ["Meramon", "Centarumon", "Ogremon", "Leomon", "Angemon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Giromon": {
+      "parents": ["Centarumon", "Ogremon", "Bakemon", "Unimon", "Thundermon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Etemon": {
+      "parents": ["Sukamon", "Apemon", "ShellNumemon", "Geremon", "Nanimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Tanemon": {"parents": ["Yuramon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Biyomon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Palmon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Monochromon": {
+      "parents": ["Agumon", "Gabumon", "Gotsumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Leomon": {
+      "parents": ["Patamon", "Elecmon", "Bearmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Coelamon": {
+      "parents": ["Palmon", "Betamon", "Syakomon", "Crabmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Kokatorimon": {
+      "parents": ["Elecmon", "Biyomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Kuwagamon": {
+      "parents": ["Kunemon", "Palmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Mojyamon": {"parents": ["Penguinmon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Megadramon": {
+      "parents": ["Tyrannomon", "Devimon", "Airdramon", "Seadramon", "Quetzalmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Piximon": {
+      "parents": ["Kokatorimon", "Kuwagamon", "Vegiemon", "Ninjamon", "Flymon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Digitamamon": {"parents": ["Nanimon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Penguinmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Ninjamon": {
+      "parents": ["Palmon", "Monmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "Phoenixmon": {
+      "parents": ["Birdramon", "Angemon", "Airdramon", "Kokatorimon", "Unimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "HerculesKabuterimon": {
+      "parents": ["Kabuterimon", "Kuwagamon", "Shellmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "MegaSeadramon": {
+      "parents": ["Seadramon", "Whamon", "Shellmon", "Coelamon", "Garurumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "WereGarurumon": {
+      "parents": ["Garurumon", "Apemon", "Gururumon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "IceLeomon": {
+      "parents": ["Lynxmon", "Leomon", "Grizzlymon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Gigadramon": {
+      "parents": ["Seadramon", "Tylomon", "Ebidramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "MetalEtemon": {"parents": ["Etemon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
+    "Myotismon": {
+      "parents": ["Devimon", "Soulmon", "Devidramon", "Saberdramon", "BlackGatomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Yanmamon": {"parents": ["Tentomon", "Wormmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gotsumon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Flarerizamon": {
+      "parents": ["Candlemon", "Goblimon", "RedOtamamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "WaruMonzaemon": {
+      "parents": ["Raremon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "SnowAgumon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Hyogamon": {"parents": ["SnowAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Dokunemon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tankmon": {"parents": ["Hagurumon", "ToyAgumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Goblimon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Psychemon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "ToyAgumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Piddomon": {"parents": ["Tsukaimon", "Salamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Geremon": {"parents": ["Otamamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Vermilimon": {
+      "parents": ["Flarerizamon", "Cyclonemon", "Baronmon", "Monochromon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Fugamon": {"parents": ["Goblimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tekkamon": {
+      "parents": ["Guardromon", "Unimon", "Golemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MoriShellmon": {"parents": ["Otamamon", "Floramon"], "reason": "Canon main line, then family and shared specialty."},
+    "Guardromon": {
+      "parents": ["Hagurumon", "Gotsumon", "Solarmon", "Kokuwamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Muchomon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Icemon": {"parents": ["Syakomon", "SnowAgumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tsukaimon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "IceDevimon": {"parents": ["DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
+    "BlueMeramon": {
+      "parents": ["Flarerizamon", "Meramon", "Shadramon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Gururumon": {
+      "parents": ["Gazimon", "Bearmon", "SnowAgumon", "Psychemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Saberdramon": {"parents": ["Hawkmon", "Biyomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Soulmon": {"parents": ["Tsukaimon", "Muchomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Golemon": {
+      "parents": ["Gotsumon", "Monmon", "Bearmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Otamamon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gekomon": {"parents": ["Otamamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tentomon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "WaruSeadramon": {
+      "parents": ["Whamon", "Seadramon", "Dolphmon", "Submarimon", "Tylomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Meteormon": {
+      "parents": ["Monochromon", "BomberNanimon", "Starmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "ShogunGekomon": {
+      "parents": ["Whamon", "Gekomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "disc": true
+    },
+    "KingSukamon": {"parents": ["Sukamon", "Numemon"], "reason": "Filth-family alternative for Numemon without altering original specialties.", "disc": true},
+    "Cherrymon": {
+      "parents": ["Vegiemon", "Kiwimon", "Woodmon", "MoriShellmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Hagurumon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tinmon": {"parents": ["MoriShellmon", "Vegiemon"], "reason": "Canon main line, then family and shared specialty."},
+    "MasterTyrannomon": {"parents": ["Tyrannomon", "Cyclonemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Brachiomon": {
+      "parents": ["Monochromon", "Ankylomon", "Drimogemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Veemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Puppetmon": {
+      "parents": ["Cherrymon", "Pumpkinmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Kimeramon": {
+      "parents": ["Greymon", "Deltamon", "Tuskmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Wormmon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Hawkmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Armadillomon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Stingmon": {"parents": ["Wormmon", "Tentomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Aquilamon": {
+      "parents": ["Hawkmon", "VioletElecmon", "Muchomon", "Tapirmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Ankylomon": {"parents": ["Armadillomon", "Psychemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Angewomon": {
+      "parents": ["Gatomon", "Nefertimon", "Piddomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MetalGarurumon": {
+      "parents": ["WereGarurumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Imperialdramon": {
+      "parents": ["Paildramon", "AeroVeedramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Digmon": {"parents": ["Armadillomon", "ToyAgumon"], "reason": "Canon main line, then family and shared specialty."},
+    "ExVeemon": {"parents": ["Veemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Flamedramon": {
+      "parents": ["Veemon", "Guilmon", "Kotemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Halsemon": {"parents": ["Hawkmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Magnamon": {
+      "parents": ["Maildramon", "Flamedramon", "Lighdramon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Nefertimon": {"parents": ["Salamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Paildramon": {"parents": ["ExVeemon", "Stingmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Pegasusmon": {"parents": ["Salamon", "VioletElecmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Lighdramon": {
+      "parents": ["Veemon", "VioletElecmon", "Psychemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Submarimon": {"parents": ["Armadillomon", "Gomamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Veedramon": {"parents": ["Veemon", "Guilmon"], "reason": "Canon main line, then family and shared specialty."},
+    "MegaKabuterimon": {"parents": ["Kabuterimon"], "reason": "Canon main line, then family and shared specialty."},
+    "MagnaAngemon": {
+      "parents": ["Angemon", "Pegasusmon", "Piddomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Seraphimon": {
+      "parents": ["MagnaAngemon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Togemon": {"parents": ["Palmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Lillymon": {"parents": ["Togemon", "Vegiemon"], "reason": "Canon main line, then family and shared specialty."},
+    "GranKuwagamon": {"parents": ["Okuwamon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "MetalSeadramon": {
+      "parents": ["MegaSeadramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "VenomMyotismon": {"parents": ["Myotismon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "AeroVeedramon": {
+      "parents": ["Veedramon", "ExVeemon", "Flamedramon", "Maildramon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Shakkoumon": {"parents": ["Ankylomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Magnadramon": {"parents": ["Angewomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Devidramon": {"parents": ["DemiDevimon", "Tsukaimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gomamon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Ikkakumon": {
+      "parents": ["Gomamon", "Bearmon", "SnowAgumon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Zudomon": {
+      "parents": ["Ikkakumon", "Dolphmon", "Hyogamon", "Submarimon", "Tortomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Vikemon": {"parents": ["Zudomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Salamon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "BlackGatomon": {"parents": ["Salamon", "DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
+    "LadyDevimon": {
+      "parents": ["Gatomon", "Vilemon", "Devidramon", "BlackGatomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MetalGreymonVaccine": {"parents": ["Greymon", "Veedramon"], "reason": "Canon main line, then family and shared specialty."},
+    "Shurimon": {"parents": ["Hawkmon", "Wormmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Silphymon": {
+      "parents": ["Aquilamon", "Gatomon", "Halsemon", "Nefertimon", "Pegasusmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Apemon": {
+      "parents": ["Monmon", "Kotemon", "Tapirmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Baronmon": {
+      "parents": ["Kotemon", "Candlemon", "Renamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Phantomon": {
+      "parents": ["Bakemon", "IceDevimon", "Sorcermon", "Soulmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Rosemon": {
+      "parents": ["Lillymon", "Blossomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "ShellNumemon": {"parents": ["ToyAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
+    "BomberNanimon": {"parents": ["Solarmon"], "reason": "Canon main line, then family and shared specialty."},
+    "RedOtamamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gatomon": {"parents": ["Salamon", "Renamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Candlemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "DemiDevimon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Diaboromon": {"parents": ["Infermon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Dolphmon": {"parents": ["Gomamon", "Betamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gizamon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gesomon": {
+      "parents": ["Gizamon", "Gomamon", "Crabmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Wizardmon": {
+      "parents": ["Candlemon", "Tsukaimon", "Renamon", "Tapirmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Sorcermon": {"parents": ["Muchomon", "Penguinmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Starmon": {"parents": ["ToyAgumon", "Solarmon"], "reason": "Canon main line, then family and shared specialty."},
+    "SuperStarmon": {"parents": ["Starmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Piedmon": {
+      "parents": ["Pumpkinmon", "LadyDevimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Infermon": {
+      "parents": ["Guardromon", "Hookmon", "Kurisarimon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Kokuwamon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "MarineAngemon": {
+      "parents": ["Angewomon", "Zudomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Quetzalmon": {"parents": ["Muchomon", "Hawkmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Shadramon": {"parents": ["Candlemon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Solarmon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Thundermon": {
+      "parents": ["VioletElecmon", "Elecmon", "Kokuwamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Tuskmon": {
+      "parents": ["Goblimon", "Kotemon", "Guilmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Tylomon": {
+      "parents": ["Gizamon", "Gomamon", "Crabmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Valkyrimon": {
+      "parents": ["Silphymon", "Angewomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "VioletElecmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Triceramon": {
+      "parents": ["Monochromon", "Ankylomon", "Digmon", "Minotarumon", "Tortomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "SaberLeomon": {
+      "parents": ["GrapLeomon", "IceLeomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Okuwamon": {
+      "parents": ["Kuwagamon", "Digmon", "Flymon", "Stingmon", "Yanmamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MetalTyrannomon": {
+      "parents": ["DarkTyrannomon", "Tyrannomon", "Growlmon", "Flarerizamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Tortomon": {"parents": ["Armadillomon", "Gotsumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Flymon": {
+      "parents": ["Dokunemon", "Kokuwamon", "Kunemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Mushroomon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Raremon": {"parents": ["Goblimon", "Monmon"], "reason": "Canon main line, then family and shared specialty."},
+    "DarkTyrannomon": {"parents": ["ToyAgumon", "Kotemon"], "reason": "Canon main line, then family and shared specialty."},
+    "ExTyrannomon": {
+      "parents": ["Tyrannomon", "Tuskmon", "DarkTyrannomon", "Deltamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Mammothmon": {
+      "parents": ["Mojyamon", "Frigimon", "Golemon", "Hyogamon", "Ikkakumon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "SkullMammothmon": {"parents": ["Mammothmon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Garbagemon": {
+      "parents": ["Sukamon", "Geremon", "Roachmon", "Raremon", "ShellNumemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "PrinceMamemon": {"parents": ["Mamemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Plesiomon": {
+      "parents": ["Zudomon", "MegaSeadramon", "Divermon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Woodmon": {
+      "parents": ["Floramon", "Tentomon", "Mushroomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Floramon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Blossomon": {"parents": ["Togemon", "Kiwimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Scorpiomon": {
+      "parents": ["Ebidramon", "Shellmon", "Gekomon", "Icemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Baihumon": {
+      "parents": ["GrapLeomon", "IceLeomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "SkullMeramon": {
+      "parents": ["Meramon", "Shadramon", "Baronmon", "Fugamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Octomon": {
+      "parents": ["Gizamon", "Gomamon", "Syakomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MarineDevimon": {
+      "parents": ["Gesomon", "Octomon", "IceDevimon", "Icemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Pumpkinmon": {"parents": ["Wizardmon", "Woodmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Cyclonemon": {"parents": ["Goblimon", "Solarmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Kiwimon": {"parents": ["Floramon", "Mushroomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Syakomon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Crabmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gazimon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Deramon": {"parents": ["Kiwimon", "Woodmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tapirmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Boltmon": {
+      "parents": ["Pumpkinmon", "Mummymon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "ChaosLord": {
+      "parents": ["Datamon", "Assaultmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Clockmon": {"parents": ["Hagurumon", "Kokuwamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Dragomon": {
+      "parents": ["Octomon", "Coelamon", "Gesomon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Deltamon": {"parents": ["ToyAgumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gryphonmon": {
+      "parents": ["Garudamon", "Silphymon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Datamon": {
+      "parents": ["Guardromon", "Tankmon", "BomberNanimon", "Clockmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Vilemon": {"parents": ["DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Grizzlymon": {"parents": ["Bearmon", "Gazimon"], "reason": "Canon main line, then family and shared specialty."},
+    "Marsmon": {
+      "parents": ["GrapLeomon", "MasterTyrannomon", "Vermilimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Dokugumon": {"parents": ["Dokunemon", "Wormmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Hookmon": {"parents": ["Hagurumon", "Monmon"], "reason": "Canon main line, then family and shared specialty."},
+    "SlashAngemon": {
+      "parents": ["MagnaAngemon", "Knightmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "HiAndromon": {"parents": ["Andromon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "KingEtemon": {"parents": ["Etemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Divermon": {"parents": ["Octomon", "Gesomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Ebidramon": {
+      "parents": ["Otamamon", "SnowAgumon", "Syakomon", "Crabmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "GrapLeomon": {
+      "parents": ["Leomon", "Grizzlymon", "Lynxmon", "Gururumon", "Dinohyumon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "BlackKingNumemon": {
+      "parents": ["Garbagemon", "Etemon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Dinohyumon": {"parents": ["Gazimon", "Armadillomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Antylamon": {"parents": ["Unimon", "Lighdramon"], "reason": "Canon main line, then family and shared specialty."},
+    "Assaultmon": {
+      "parents": ["Tankmon", "Guardromon", "Hookmon", "Snatchmon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Arukenimon": {
+      "parents": ["Dokugumon", "Kurisarimon", "Roachmon", "Yanmamon", "Snimon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Creepymon": {
+      "parents": ["SkullSatamon", "SkullMeramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Bulbmon": {"parents": ["Clockmon", "Guardromon"], "reason": "Canon main line, then family and shared specialty."},
+    "SkullSatamon": {
+      "parents": ["Vilemon", "Devidramon", "Gargoylemon", "Fugamon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Taomon": {"parents": ["Kyubimon", "Sorcermon"], "reason": "Canon main line, then family and shared specialty."},
+    "Sakuyamon": {"parents": ["Taomon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "Fujinmon": {
+      "parents": ["Silphymon", "Kyukimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Gallantmon": {
+      "parents": ["WarGrowlmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Pharaohmon": {
+      "parents": ["Mummymon", "Bastemon", "Shakkoumon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Growlmon": {"parents": ["Guilmon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Knightmon": {
+      "parents": ["Snatchmon", "Dinohyumon", "Musyamon", "Shurimon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Kyukimon": {
+      "parents": ["Shurimon", "Kyubimon", "Thundermon", "Musyamon", "Snimon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Lynxmon": {"parents": ["Solarmon", "Candlemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Maildramon": {"parents": ["Veemon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Musyamon": {"parents": ["Kotemon", "Monmon"], "reason": "Canon main line, then family and shared specialty."},
+    "WarGrowlmon": {"parents": ["Growlmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Gargoylemon": {"parents": ["Gazimon", "Gotsumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Snimon": {
+      "parents": ["Mushroomon", "Tentomon", "Wormmon", "Floramon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Ghoulmon": {
+      "parents": ["Giromon", "Mummymon", "Megadramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Minotarumon": {
+      "parents": ["Gotsumon", "Gazimon", "Psychemon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Snatchmon": {"parents": ["Hagurumon", "Kokuwamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Roachmon": {"parents": ["Tentomon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Raijinmon": {
+      "parents": ["Silphymon", "Kyukimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Mummymon": {
+      "parents": ["Wizardmon", "Bakemon", "Dokugumon", "Gargoylemon", "Minotarumon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "MegaGargomon": {
+      "parents": ["Andromon", "Assaultmon", "Magnamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Raidenmon": {
+      "parents": ["Giromon", "Andromon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Kotemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Monmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Bearmon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Renamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "WarGreymon": {
+      "parents": ["MetalGreymonVirus", "MetalGreymonVaccine"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Apocalymon": {
+      "parents": ["Phantomon", "Datamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Pukumon": {
+      "parents": ["Dragomon", "MarineDevimon", "Divermon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "NeoCrimson": {
+      "parents": ["SkullMeramon", "Vermilimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Beelzemon": {
+      "parents": ["SkullSatamon", "LadyDevimon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "BlackWarGreymon": {
+      "parents": ["MetalGreymonVirus", "SkullGreymon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Cannondramon": {
+      "parents": ["Assaultmon", "MetalTyrannomon", "Bulbmon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "MaloMyotismon": {
+      "parents": ["Myotismon", "Phantomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Armageddemon": {
+      "parents": ["Infermon", "Datamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Suijinmon": {
+      "parents": ["MegaSeadramon", "WaruSeadramon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Kyubimon": {"parents": ["Renamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Zanbamon": {
+      "parents": ["Knightmon", "GrapLeomon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    },
+    "Kurisarimon": {"parents": ["Wormmon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
+    "Bastemon": {"parents": ["Gatomon", "BlackGatomon"], "reason": "Canon main line, then family and shared specialty."},
+    "Guilmon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
+    "Garudamon": {
+      "parents": ["Birdramon", "Aquilamon", "Halsemon", "Quetzalmon", "Saberdramon"],
+      "reason": "Canon main line, then family and shared specialty."
+    },
+    "Omnimon": {
+      "parents": ["MetalGreymonVirus"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true
+    }
+  },
+  "record_parents": {
+    "IceLeomon": "Native partner had no path row; carries Leomon's matching mesh with IceLeomon's texture and unchanged raise data.",
+    "Myotismon": "Carries its existing partner model and requirements so its Perfect-to-Mega path has a cached row.",
+    "Cherrymon": "Carries its existing partner model and requirements so its Perfect-to-Mega path has a cached row.",
+    "MasterTyrannomon": "Carries its existing partner model and requirements so its Perfect-to-Mega path has a cached row.",
+    "Icemon": "Carries its existing partner model verbatim to supply evolution paths."
+  },
+  "canon_megas": [
+    "Phoenixmon",
+    "HerculesKabuterimon",
+    "MetalEtemon",
+    "Machinedramon",
+    "Analogman",
+    "Jijimon",
+    "Puppetmon",
+    "MetalGarurumon",
+    "Imperialdramon",
+    "Seraphimon",
+    "GranKuwagamon",
+    "MetalSeadramon",
+    "VenomMyotismon",
+    "Magnadramon",
+    "Vikemon",
+    "Rosemon",
+    "Diaboromon",
+    "Piedmon",
+    "MarineAngemon",
+    "Valkyrimon",
+    "SaberLeomon",
+    "SkullMammothmon",
+    "PrinceMamemon",
+    "Plesiomon",
+    "Baihumon",
+    "Boltmon",
+    "ChaosLord",
+    "Gryphonmon",
+    "Marsmon",
+    "SlashAngemon",
+    "HiAndromon",
+    "KingEtemon",
+    "BlackKingNumemon",
+    "Creepymon",
+    "Sakuyamon",
+    "Fujinmon",
+    "Gallantmon",
+    "Pharaohmon",
+    "Ghoulmon",
+    "Raijinmon",
+    "MegaGargomon",
+    "Raidenmon",
+    "WarGreymon",
+    "Apocalymon",
+    "Pukumon",
+    "NeoCrimson",
+    "Beelzemon",
+    "BlackWarGreymon",
+    "Cannondramon",
+    "MaloMyotismon",
+    "Armageddemon",
+    "Suijinmon",
+    "Zanbamon",
+    "Omnimon"
+  ],
+  "disc_mega_routes": {
+    "Phoenixmon": ["Airdramon", "Angemon", "Birdramon", "Unimon", "Kokatorimon"],
+    "HerculesKabuterimon": ["Kabuterimon", "Shellmon", "Kuwagamon"]
+  },
+  "wild_only": [
+    "PlatinumSukamon",
+    "ShimaUnimon",
+    "RedVegiemon",
+    "J-Mojyamon",
+    "NiseDrimogemon",
+    "MudFrigimon",
+    "Akatorimon",
+    "Weedmon"
+  ],
+  "special_routes": {
+    "Devimon": "Special Devimon transformation; no ordinary picker route.",
+    "Numemon": "Rookie fallback at 96 hours.",
+    "Kunemon": "Sleep at Kunemon’s Bed.",
+    "Sukamon": "Virus bar transformation.",
+    "Nanimon": "Scolding special.",
+    "Vademon": "Champion praise special after 240 hours.",
+    "Machinedramon": "Story or Megadramon/Gigadramon timed special.",
+    "Analogman": "Story character; laboratory only.",
+    "Jijimon": "Story character; laboratory only.",
+    "KingSukamon": "Special King of Sukamon form; laboratory only."
+  },
+  "specialty_exceptions": [{"parent": "Otamamon", "child": "Geremon", "reason": "Retained canon route explicitly permitted despite no shared specialty; Geremon retains its original filth specialty."}],
+  "version": 2,
+  "sheet_megas": [
+    59,
+    60,
+    65,
+    115,
+    116,
+    117,
+    181,
+    191,
+    192,
+    207,
+    210,
+    211,
+    212,
+    215,
+    220,
+    230,
+    237,
+    245,
+    248,
+    255,
+    258,
+    268,
+    270,
+    271,
+    276,
+    288,
+    289,
+    293,
+    297,
+    300,
+    302,
+    303,
+    307,
+    312,
+    316,
+    317,
+    318,
+    319,
+    329,
+    333,
+    335,
+    336,
+    373,
+    400,
+    401,
+    402,
+    403,
+    404,
+    405,
+    406,
+    407,
+    408,
+    430,
+    461
+  ],
+  "levels": {
+    "63": "ultimate",
+    "67": "champion",
+    "69": "champion",
+    "88": "ultimate",
+    "94": "champion",
+    "104": "ultimate",
+    "197": "ultimate",
+    "222": "champion",
+    "263": "rookie",
+    "264": "champion",
+    "265": "champion",
+    "274": "ultimate",
+    "281": "champion",
+    "283": "rookie",
+    "284": "rookie",
+    "286": "ultimate",
+    "287": "rookie",
+    "290": "champion",
+    "292": "champion",
+    "296": "champion",
+    "304": "ultimate",
+    "313": "ultimate",
+    "323": "champion",
+    "324": "champion",
+    "325": "champion",
+    "328": "champion",
+    "181": "mega",
+    "191": "mega",
+    "192": "mega",
+    "207": "mega",
+    "210": "mega",
+    "211": "mega",
+    "212": "mega",
+    "215": "mega",
+    "220": "mega",
+    "230": "mega",
+    "237": "mega",
+    "245": "mega",
+    "248": "mega",
+    "255": "mega",
+    "258": "mega",
+    "268": "mega",
+    "270": "mega",
+    "271": "mega",
+    "276": "mega",
+    "288": "mega",
+    "289": "mega",
+    "293": "mega",
+    "297": "mega",
+    "300": "mega",
+    "302": "mega",
+    "303": "mega",
+    "307": "mega",
+    "312": "mega",
+    "316": "mega",
+    "317": "mega",
+    "318": "mega",
+    "319": "mega",
+    "329": "mega",
+    "333": "mega",
+    "335": "mega",
+    "336": "mega",
+    "400": "mega",
+    "401": "mega",
+    "402": "mega",
+    "403": "mega",
+    "404": "mega",
+    "405": "mega",
+    "406": "mega",
+    "407": "mega",
+    "408": "mega",
+    "430": "mega",
+    "461": "mega"
+  },
+  "routes": {
+    "1": {"from": [], "to": [2]},
+    "2": {"from": [1], "to": [3, 17, 80, 84, 180, 233, 235, 251, 351, 354, 433]},
+    "3": {"from": [2], "to": [5, 9, 21, 36, 47, 8]},
+    "4": {"from": [44], "to": [10, 24, 35, 49, 238]},
+    "5": {"from": [3], "to": [12, 26, 182, 224]},
+    "6": {"from": [236, 96], "to": [26, 54, 66]},
+    "7": {"from": [45], "to": [54, 59]},
+    "8": {"from": [3, 17, 31], "to": [12, 54, 124, 260, 266]},
+    "9": {"from": [3, 233], "to": [12, 40, 277, 104]},
+    "10": {"from": [4], "to": [54, 61, 64, 112]},
+    "11": {"from": [], "to": [14, 120]},
+    "12": {"from": [5, 9, 47, 38, 8], "to": [373, 404, 461]},
+    "13": {"from": [48, 58, 24, 23, 52], "to": [270]},
+    "14": {"from": [11], "to": []},
+    "15": {"from": [], "to": [16]},
+    "16": {"from": [15], "to": [18, 57, 71, 93, 217, 239, 247, 256, 353, 283, 284]},
+    "17": {"from": [2], "to": [36, 47, 38, 8, 34, 22]},
+    "18": {"from": [16], "to": [48, 20, 37, 50, 252]},
+    "19": {"from": [45, 32, 111], "to": [60, 27, 205]},
+    "20": {"from": [31, 18], "to": [40, 59, 206]},
+    "21": {"from": [3, 45], "to": [59, 460]},
+    "22": {"from": [17, 57], "to": [26, 61, 62]},
+    "23": {"from": [57, 71], "to": [27, 13, 267]},
+    "24": {"from": [46, 4, 57], "to": [61, 13, 119, 112]},
+    "25": {"from": [32, 46, 263, 273], "to": [55, 121, 123, 209]},
+    "26": {"from": [5, 6, 37, 22, 52], "to": [404]},
+    "27": {"from": [47, 19, 58, 23], "to": []},
+    "28": {"from": [], "to": []},
+    "29": {"from": [], "to": [30]},
+    "30": {"from": [29], "to": [31, 45, 68, 82, 96, 122, 184, 221, 236, 352, 287]},
+    "31": {"from": [30], "to": [38, 8, 34, 48, 20, 33]},
+    "32": {"from": [], "to": [37, 19, 51, 25, 262]},
+    "33": {"from": [31, 45], "to": [41, 59, 90, 309]},
+    "34": {"from": [17, 31, 80], "to": [40, 41]},
+    "35": {"from": [4, 57, 284, 283], "to": [60, 61, 275]},
+    "36": {"from": [3, 17], "to": [40, 41]},
+    "37": {"from": [18, 32, 287], "to": [26, 41, 229, 334]},
+    "38": {"from": [17, 31], "to": [12, 126]},
+    "39": {"from": [], "to": [42, 120, 269]},
+    "40": {"from": [9, 36, 34, 48, 20], "to": [302, 335, 336]},
+    "41": {"from": [36, 34, 37, 33, 252], "to": [329, 336]},
+    "42": {"from": [39, 227, 231, 87, 53], "to": [65, 303, 307]},
+    "43": {"from": [], "to": [44]},
+    "44": {"from": [43], "to": [46, 4, 74, 109, 111, 183, 185, 273, 285, 263]},
+    "45": {"from": [30], "to": [21, 7, 50, 33, 19, 106]},
+    "46": {"from": [44], "to": [51, 25, 58, 24, 49, 208]},
+    "47": {"from": [3, 17, 68], "to": [12, 27, 113, 126, 257, 88]},
+    "48": {"from": [31, 18, 353], "to": [40, 13, 306, 63]},
+    "49": {"from": [46, 4, 283, 284], "to": [61, 291]},
+    "50": {"from": [18, 45], "to": [59, 55]},
+    "51": {"from": [32, 46], "to": [60, 55, 259]},
+    "52": {"from": [57], "to": [26, 13, 267]},
+    "53": {"from": [], "to": [56, 42]},
+    "54": {"from": [8, 6, 7, 10, 249], "to": [329]},
+    "55": {"from": [50, 51, 25, 58, 262], "to": []},
+    "56": {"from": [53], "to": []},
+    "57": {"from": [16], "to": [24, 35, 22, 23, 52, 242]},
+    "58": {"from": [46, 352], "to": [55, 27, 13]},
+    "59": {"from": [21, 20, 7, 50, 33], "to": []},
+    "60": {"from": [19, 51, 35], "to": []},
+    "61": {"from": [10, 24, 35, 49, 22], "to": [211, 271, 408]},
+    "62": {"from": [22, 227, 105], "to": [191]},
+    "63": {"from": [323, 48, 296], "to": [258, 276]},
+    "64": {"from": [10, 254, 305], "to": []},
+    "65": {"from": [42], "to": []},
+    "66": {"from": [6, 107, 216, 106, 222], "to": [212, 406]},
+    "67": {"from": [111, 183], "to": [259, 311]},
+    "68": {"from": [30], "to": [92, 108, 261, 327, 330, 47]},
+    "69": {"from": [235, 80, 233], "to": [88, 104, 260]},
+    "70": {"from": [264], "to": []},
+    "71": {"from": [16], "to": [72, 105, 218, 305, 94, 23]},
+    "72": {"from": [71, 239], "to": [219, 267]},
+    "74": {"from": [44], "to": [262, 298, 332, 431]},
+    "76": {"from": [122, 84], "to": [294, 310]},
+    "80": {"from": [2], "to": [89, 253, 69, 264, 281, 34]},
+    "82": {"from": [30], "to": [189, 201, 330, 105]},
+    "84": {"from": [2], "to": [76, 193, 243, 265, 292, 231]},
+    "85": {"from": [96, 221], "to": [190, 206]},
+    "87": {"from": [109], "to": [269, 42]},
+    "88": {"from": [69, 281, 228, 47], "to": [402, 297]},
+    "89": {"from": [80], "to": [314, 277]},
+    "90": {"from": [92, 33, 108], "to": []},
+    "91": {"from": [109, 273], "to": [123, 121]},
+    "92": {"from": [122, 68, 251, 247], "to": [90, 246, 294, 310, 313]},
+    "93": {"from": [16], "to": [107, 188, 242, 249]},
+    "94": {"from": [283, 71], "to": [275, 279]},
+    "96": {"from": [30], "to": [85, 107, 216, 241, 6]},
+    "100": {"from": [236], "to": [229, 279]},
+    "104": {"from": [69, 9, 250], "to": []},
+    "105": {"from": [285, 353, 71, 82], "to": [62, 306]},
+    "106": {"from": [184, 45], "to": [66, 460]},
+    "107": {"from": [96, 93], "to": [66, 229]},
+    "108": {"from": [68, 352, 353], "to": [267, 90]},
+    "109": {"from": [44], "to": [87, 91, 110, 305]},
+    "110": {"from": [109], "to": [119, 275]},
+    "111": {"from": [44], "to": [187, 272, 332, 328, 67, 19]},
+    "112": {"from": [24, 10, 238, 202, 254], "to": [408]},
+    "113": {"from": [47, 232, 243], "to": []},
+    "115": {"from": [], "to": []},
+    "116": {"from": [], "to": []},
+    "117": {"from": [], "to": []},
+    "119": {"from": [24, 110], "to": []},
+    "120": {"from": [39, 11], "to": []},
+    "121": {"from": [25, 282, 272, 91], "to": [181]},
+    "122": {"from": [30], "to": [76, 92, 299, 331, 290]},
+    "123": {"from": [91, 25], "to": []},
+    "124": {"from": [8, 281], "to": [297]},
+    "126": {"from": [47, 189, 38], "to": []},
+    "180": {"from": [2], "to": [194, 195, 201, 203, 324]},
+    "181": {"from": [121, 280], "to": []},
+    "182": {"from": [5, 292, 253], "to": []},
+    "183": {"from": [44], "to": [187, 225, 298, 431, 328, 67]},
+    "184": {"from": [30], "to": [106, 188, 196, 225, 249]},
+    "185": {"from": [44], "to": [189, 193, 202, 261, 308]},
+    "187": {"from": [183, 111], "to": [199, 259]},
+    "188": {"from": [184, 256, 93, 287], "to": [226, 460]},
+    "189": {"from": [185, 82], "to": [126, 214, 257]},
+    "190": {"from": [234, 198, 85], "to": [215, 248, 255]},
+    "191": {"from": [62], "to": []},
+    "192": {"from": [199, 213], "to": []},
+    "193": {"from": [185, 84], "to": [257, 259]},
+    "194": {"from": [180], "to": [199, 213]},
+    "195": {"from": [180, 433, 351], "to": [213, 197]},
+    "196": {"from": [184], "to": [226, 460]},
+    "197": {"from": [324, 195, 201], "to": [335]},
+    "198": {"from": [221], "to": [190, 226]},
+    "199": {"from": [194, 187], "to": [192]},
+    "200": {"from": [221, 256], "to": [206, 226]},
+    "201": {"from": [180, 256, 82], "to": [309, 197]},
+    "202": {"from": [185, 217], "to": [112, 219]},
+    "203": {"from": [180, 433], "to": [213, 224]},
+    "205": {"from": [19], "to": []},
+    "206": {"from": [20, 200, 85], "to": [207, 300]},
+    "207": {"from": [206], "to": []},
+    "208": {"from": [46], "to": [209, 274]},
+    "209": {"from": [208, 25], "to": [230]},
+    "210": {"from": [259], "to": []},
+    "211": {"from": [61], "to": []},
+    "212": {"from": [66], "to": []},
+    "213": {"from": [203, 194, 195, 324], "to": [192]},
+    "214": {"from": [189], "to": [319]},
+    "215": {"from": [190], "to": []},
+    "216": {"from": [236, 96], "to": [66, 223, 314]},
+    "217": {"from": [16], "to": [202, 218, 238, 240, 254, 278]},
+    "218": {"from": [217, 353, 71], "to": [219, 267]},
+    "219": {"from": [218, 238, 72, 202, 261], "to": [220, 248, 271]},
+    "220": {"from": [219], "to": []},
+    "221": {"from": [30], "to": [198, 200, 234, 222, 85]},
+    "222": {"from": [221, 236], "to": [223, 66, 432]},
+    "223": {"from": [234, 295, 216, 222], "to": [245, 403]},
+    "224": {"from": [5, 203], "to": [373]},
+    "225": {"from": [184, 183], "to": [322, 321]},
+    "226": {"from": [188, 234, 196, 198, 200], "to": [255, 293, 317, 333]},
+    "227": {"from": [352, 351, 287], "to": [42, 62]},
+    "228": {"from": [351, 235, 354], "to": [88, 277]},
+    "229": {"from": [37, 100, 242, 107], "to": [400, 406]},
+    "230": {"from": [209, 274], "to": []},
+    "231": {"from": [84, 239], "to": [269, 42]},
+    "232": {"from": [251], "to": [113, 294]},
+    "233": {"from": [2], "to": [250, 320, 324, 69, 9]},
+    "234": {"from": [221, 354], "to": [190, 223, 226, 432]},
+    "235": {"from": [2], "to": [228, 241, 250, 69, 323]},
+    "236": {"from": [30], "to": [100, 216, 295, 222, 6]},
+    "237": {"from": [246], "to": []},
+    "238": {"from": [217, 4], "to": [112, 219]},
+    "239": {"from": [16], "to": [72, 240, 254, 278, 231]},
+    "240": {"from": [239, 217, 284], "to": [279, 291, 304]},
+    "241": {"from": [235, 96, 354, 287], "to": [280, 334]},
+    "242": {"from": [93, 57], "to": [229, 315]},
+    "243": {"from": [84, 251], "to": [113, 244]},
+    "244": {"from": [243], "to": []},
+    "245": {"from": [280, 223], "to": []},
+    "246": {"from": [92, 299, 431], "to": [237, 407]},
+    "247": {"from": [16], "to": [252, 262, 331, 290, 92]},
+    "248": {"from": [190, 219], "to": []},
+    "249": {"from": [93, 184], "to": [54, 460]},
+    "250": {"from": [235, 233], "to": [277, 104]},
+    "251": {"from": [2], "to": [92, 232, 243, 281, 323]},
+    "252": {"from": [256, 18, 247], "to": [41, 322]},
+    "253": {"from": [80, 351, 433], "to": [266, 182]},
+    "254": {"from": [239, 217, 284], "to": [64, 112]},
+    "255": {"from": [226, 190], "to": []},
+    "256": {"from": [16], "to": [188, 200, 201, 252]},
+    "257": {"from": [47, 189, 193, 330, 261], "to": []},
+    "258": {"from": [306, 63], "to": []},
+    "259": {"from": [51, 193, 262, 187, 67], "to": [210]},
+    "260": {"from": [265, 8, 320, 69], "to": [405]},
+    "261": {"from": [185, 68], "to": [219, 257]},
+    "262": {"from": [74, 247, 32], "to": [259, 55]},
+    "263": {"from": [44], "to": [272, 282, 328, 25]},
+    "264": {"from": [80, 352], "to": [269, 70]},
+    "265": {"from": [84, 351], "to": [260, 266]},
+    "266": {"from": [8, 253, 265, 292], "to": []},
+    "267": {"from": [52, 23, 108, 72, 218], "to": [268]},
+    "268": {"from": [267], "to": []},
+    "269": {"from": [39, 87, 332, 264, 231], "to": [307]},
+    "270": {"from": [13], "to": []},
+    "271": {"from": [219, 61, 304], "to": []},
+    "272": {"from": [273, 111, 263], "to": [121, 280, 286]},
+    "273": {"from": [44], "to": [91, 272, 282, 328, 25]},
+    "274": {"from": [208, 282], "to": [230]},
+    "275": {"from": [305, 35, 110, 94], "to": []},
+    "276": {"from": [306, 63], "to": []},
+    "277": {"from": [9, 250, 228, 89], "to": [312, 402]},
+    "278": {"from": [239, 217, 283], "to": [279, 291, 304]},
+    "279": {"from": [240, 278, 100, 94], "to": [401]},
+    "280": {"from": [241, 272], "to": [181, 245, 288]},
+    "281": {"from": [80, 251], "to": [88, 124]},
+    "282": {"from": [273, 263], "to": [121, 274, 286]},
+    "283": {"from": [16], "to": [305, 278, 49, 94, 35]},
+    "284": {"from": [16], "to": [305, 49, 35, 254, 240]},
+    "285": {"from": [44], "to": [105, 308, 327, 330, 296]},
+    "286": {"from": [282, 272], "to": []},
+    "287": {"from": [30], "to": [241, 37, 227, 188]},
+    "288": {"from": [280, 334], "to": []},
+    "289": {"from": [294, 310], "to": []},
+    "290": {"from": [122, 247], "to": [294, 313]},
+    "291": {"from": [278, 49, 240], "to": [401]},
+    "292": {"from": [84], "to": [266, 182]},
+    "293": {"from": [460, 226], "to": []},
+    "294": {"from": [92, 76, 232, 290], "to": [289, 400, 407]},
+    "295": {"from": [236], "to": [223, 314]},
+    "296": {"from": [353, 285], "to": [306, 63]},
+    "297": {"from": [306, 124, 88], "to": []},
+    "298": {"from": [74, 183], "to": [311, 334]},
+    "299": {"from": [122, 352], "to": [246, 310]},
+    "300": {"from": [206, 321], "to": []},
+    "302": {"from": [40], "to": []},
+    "303": {"from": [42], "to": []},
+    "304": {"from": [278, 240], "to": [401, 271]},
+    "305": {"from": [109, 71, 283, 284], "to": [64, 275]},
+    "306": {"from": [48, 296, 323, 105, 308], "to": [258, 276, 297, 430]},
+    "307": {"from": [269, 42], "to": []},
+    "308": {"from": [285, 185], "to": [321, 306]},
+    "309": {"from": [33, 201], "to": []},
+    "310": {"from": [76, 92, 299, 331], "to": [289, 335, 405]},
+    "311": {"from": [298, 431, 332, 67, 328], "to": []},
+    "312": {"from": [314, 277], "to": []},
+    "313": {"from": [290, 92], "to": [405]},
+    "314": {"from": [295, 216, 327, 89], "to": [312, 403]},
+    "315": {"from": [409, 242], "to": [316]},
+    "316": {"from": [315], "to": []},
+    "317": {"from": [226, 322], "to": []},
+    "318": {"from": [326], "to": []},
+    "319": {"from": [334, 432, 214], "to": []},
+    "320": {"from": [433, 233], "to": [260, 326]},
+    "321": {"from": [331, 308, 325, 225], "to": [300, 430]},
+    "322": {"from": [225, 409, 252, 325, 328], "to": [317, 333]},
+    "323": {"from": [251, 235], "to": [306, 63]},
+    "324": {"from": [180, 233], "to": [213, 197]},
+    "325": {"from": [351, 352], "to": [321, 322]},
+    "326": {"from": [320], "to": [318]},
+    "327": {"from": [285, 68], "to": [314, 334]},
+    "328": {"from": [263, 111, 183, 273], "to": [311, 322]},
+    "329": {"from": [41, 334, 54], "to": []},
+    "330": {"from": [68, 285, 82], "to": [257, 334]},
+    "331": {"from": [122, 247], "to": [310, 321]},
+    "332": {"from": [111, 74], "to": [269, 311]},
+    "333": {"from": [226, 322], "to": []},
+    "334": {"from": [241, 37, 298, 327, 330], "to": [288, 319, 329]},
+    "335": {"from": [40, 310, 197], "to": []},
+    "336": {"from": [41, 40], "to": []},
+    "351": {"from": [2], "to": [195, 227, 228, 253, 265, 325]},
+    "352": {"from": [30], "to": [108, 227, 299, 264, 325, 58]},
+    "353": {"from": [16], "to": [105, 108, 218, 296, 48]},
+    "354": {"from": [2], "to": [228, 234, 241, 409]},
+    "373": {"from": [12, 224], "to": []},
+    "400": {"from": [229, 294], "to": []},
+    "401": {"from": [291, 279, 304], "to": []},
+    "402": {"from": [277, 88], "to": []},
+    "403": {"from": [314, 223], "to": []},
+    "404": {"from": [12, 26], "to": []},
+    "405": {"from": [310, 260, 313], "to": []},
+    "406": {"from": [66, 229], "to": []},
+    "407": {"from": [246, 294], "to": []},
+    "408": {"from": [61, 112], "to": []},
+    "409": {"from": [354], "to": [315, 322]},
+    "430": {"from": [321, 306], "to": []},
+    "431": {"from": [183, 74], "to": [246, 311]},
+    "432": {"from": [234, 222], "to": [319]},
+    "433": {"from": [2], "to": [195, 203, 253, 320]},
+    "460": {"from": [21, 188, 196, 249, 106], "to": [293]},
+    "461": {"from": [12], "to": []}
+  },
+  "specialty_updates": {
+    "431": ["mech", "nature", null]
+  },
+  "specialty_reason": "Kurisarimon follows the identity sheet. Original battle specialties are unchanged; original-disc links are exempt from shared-specialty checks.",
+  "requirement_overrides": {
+    "6": {
+      "digimon": 236,
+      "hp": 100,
+      "mp": 100,
+      "offense": 100,
+      "defense": -1,
+      "speed": -1,
+      "brain": -1,
+      "care": 3,
+      "weight": 20,
+      "discipline": -1,
+      "happiness": -1,
+      "battles": -1,
+      "techs": 28,
+      "flags": 0
+    }
+  },
+  "requirement_reason": "Devimon gains ordinary Rookie parents; its old all-disabled requirement row could never pass the picker."
+}

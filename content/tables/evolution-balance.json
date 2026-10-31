@@ -1,0 +1,1173 @@
+{
+  "note": "Frozen same-level, same-training-role medians; disc peers first. Megas use top Ultimate peers and the original WarGreymon gains. Models, textures, diet and sleep schedules are preserved.",
+  "species": {
+    "63": {
+      "level": "ultimate",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 5000, "mp": 5000, "offense": 600, "defense": 500, "speed": 520, "brains": 500},
+      "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "67": {
+      "level": "champion",
+      "training_type": "hp-defense",
+      "peers": [10, 24, 35, 47, 50, 51],
+      "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 50,
+        "energy_per_hour": 12,
+        "poop_timer_10min": 36,
+        "poop_size": 13,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "69": {
+      "level": "champion",
+      "training_type": "even",
+      "peers": [5, 8, 22, 33, 48, 52],
+      "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 200, "speed": 200, "brains": 150},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 42,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 11,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "88": {
+      "level": "ultimate",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500},
+      "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "94": {
+      "level": "champion",
+      "training_type": "mp-brains",
+      "peers": [7, 20, 23, 25, 36, 37],
+      "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 150, "brains": 200},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 11,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "104": {
+      "level": "ultimate",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 4000, "mp": 5000, "offense": 600, "defense": 600, "speed": 500, "brains": 600},
+      "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "197": {
+      "level": "ultimate",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 5000, "mp": 5000, "offense": 600, "defense": 500, "speed": 520, "brains": 500},
+      "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "222": {
+      "level": "champion",
+      "training_type": "hp-defense",
+      "peers": [10, 24, 35, 47, 50, 51],
+      "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 50,
+        "energy_per_hour": 12,
+        "poop_timer_10min": 36,
+        "poop_size": 13,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "263": {
+      "level": "rookie",
+      "training_type": "even",
+      "peers": [3, 31, 57],
+      "gains": {"hp": 500, "mp": 500, "offense": 100, "defense": 50, "speed": 50, "brains": 100},
+      "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},
+      "raise": {
+        "energy_max": 40,
+        "energy_fed": 20,
+        "energy_per_hour": 5,
+        "poop_timer_10min": 24,
+        "poop_size": 8,
+        "birth_weight": 15
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "264": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "265": {
+      "level": "champion",
+      "training_type": "hp-defense",
+      "peers": [10, 24, 35, 47, 50, 51],
+      "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 50,
+        "energy_per_hour": 12,
+        "poop_timer_10min": 36,
+        "poop_size": 13,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "274": {
+      "level": "ultimate",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 4000, "mp": 5000, "offense": 600, "defense": 600, "speed": 500, "brains": 600},
+      "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "281": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "283": {
+      "level": "rookie",
+      "training_type": "hp-defense",
+      "peers": [4, 17],
+      "gains": {"hp": 1000, "mp": 500, "offense": 50, "defense": 100, "speed": 100, "brains": 50},
+      "wild": {"hp": 660, "mp": 620, "off": 120, "def": 100, "speed": 100, "brain": 80, "bits": 200},
+      "raise": {
+        "energy_max": 40,
+        "energy_fed": 25,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 24,
+        "poop_size": 8,
+        "birth_weight": 15
+      },
+      "drop": {"item": "MP Floppy", "percent": 30}
+    },
+    "284": {
+      "level": "rookie",
+      "training_type": "even",
+      "peers": [3, 31, 57],
+      "gains": {"hp": 500, "mp": 500, "offense": 100, "defense": 50, "speed": 50, "brains": 100},
+      "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},
+      "raise": {
+        "energy_max": 40,
+        "energy_fed": 20,
+        "energy_per_hour": 5,
+        "poop_timer_10min": 24,
+        "poop_size": 8,
+        "birth_weight": 15
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "286": {
+      "level": "ultimate",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 5000, "mp": 5000, "offense": 600, "defense": 500, "speed": 520, "brains": 500},
+      "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "287": {
+      "level": "rookie",
+      "training_type": "even",
+      "peers": [3, 31, 57],
+      "gains": {"hp": 500, "mp": 500, "offense": 100, "defense": 50, "speed": 50, "brains": 100},
+      "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},
+      "raise": {
+        "energy_max": 40,
+        "energy_fed": 20,
+        "energy_per_hour": 5,
+        "poop_timer_10min": 24,
+        "poop_size": 8,
+        "birth_weight": 15
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "290": {
+      "level": "champion",
+      "training_type": "mp-brains",
+      "peers": [7, 20, 23, 25, 36, 37],
+      "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 150, "brains": 200},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 11,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "292": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "296": {
+      "level": "champion",
+      "training_type": "hp-defense",
+      "peers": [10, 24, 35, 47, 50, 51],
+      "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 50,
+        "energy_per_hour": 12,
+        "poop_timer_10min": 36,
+        "poop_size": 13,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "304": {
+      "level": "ultimate",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 5000, "mp": 5000, "offense": 600, "defense": 500, "speed": 520, "brains": 500},
+      "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "313": {
+      "level": "ultimate",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 5000, "mp": 6000, "offense": 500, "defense": 500, "speed": 600, "brains": 600},
+      "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "323": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "324": {
+      "level": "champion",
+      "training_type": "mp-brains",
+      "peers": [7, 20, 23, 25, 36, 37],
+      "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 150, "brains": 200},
+      "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 11,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "325": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "328": {
+      "level": "champion",
+      "training_type": "offense-speed",
+      "peers": [9, 19, 21, 34, 38, 49, 58],
+      "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150},
+      "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "181": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "191": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "192": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "207": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "210": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "211": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "212": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "215": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "220": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "230": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "237": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "245": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "248": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "255": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "258": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "268": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "270": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "271": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "276": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "288": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "289": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "293": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "297": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "300": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "302": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "303": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "307": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "312": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "316": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "317": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "318": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "319": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "329": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "333": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "335": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "336": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "400": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "401": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "402": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "403": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "404": {
+      "level": "mega",
+      "training_type": "mp-brains",
+      "peers": [28, 40, 55, 59],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 35,
+        "energy_per_hour": 7,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "405": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "406": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "407": {
+      "level": "mega",
+      "training_type": "hp-defense",
+      "peers": [14, 27, 60],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 40
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "408": {
+      "level": "mega",
+      "training_type": "offense-speed",
+      "peers": [26, 41, 42, 61],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 40,
+        "energy_per_hour": 8,
+        "poop_timer_10min": 36,
+        "poop_size": 12,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 30}
+    },
+    "430": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
+    "461": {
+      "level": "mega",
+      "training_type": "even",
+      "peers": [12, 13, 54, 56, 62],
+      "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700},
+      "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+      "raise": {
+        "energy_max": 80,
+        "energy_fed": 45,
+        "energy_per_hour": 11,
+        "poop_timer_10min": 36,
+        "poop_size": 10,
+        "birth_weight": 30
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    }
+  }
+}

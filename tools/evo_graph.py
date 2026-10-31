@@ -38,6 +38,11 @@ def graph(dat):
         elif t < S.NUM_ORIGINAL and O.rec[t].get('evoPaths'):
             p = {k: list(v) for k, v in O.rec[t]['evoPaths'].items()}
             for k, v in eng.get(str(t), {}).get('evoPaths', {}).items(): p[k] = list(v)
+            # balance.py writes authored resident paths after the engine layer.
+            # Archive links omit entries already present in those native rows.
+            authored = s.get('evolution', {})
+            if 'from' in authored:
+                p = {k: list(authored.get(k, [])) for k in ('from', 'to')}
         else:
             p = {'from': [], 'to': []}
         g[t] = dict(name=s['name'], level=s['level'], partner='partner' in s,
@@ -63,11 +68,14 @@ def main():
     if '--json' in sys.argv:
         print(json.dumps({str(k): v for k, v in sorted(g.items())}, indent=1)); return
     # reachable from the four Fresh by natural evolution ("to" lists)
-    seen = set(); st = [t for t, x in g.items() if x['level'] == 'fresh'] + [t for t in SPECIAL if t in g]
+    table = json.load(open(os.path.join(ROOT, 'content/tables/evolution-tree.json')))
+    special = {t for t, x in g.items() if x['name'] in table['special_routes']} | SPECIAL
+    seen = set(); st = [t for t, x in g.items() if x['level'] == 'fresh'] + [t for t in special if t in g]
     while st:
         t = st.pop()
         if t in seen: continue
         seen.add(t); st += [c for c in g.get(t, {}).get('to', []) if c in g]
+    print("documented special/story roots:", ", ".join(sorted({g[t]["name"] for t in special if t in g})))
     for lv in LEVELS[1:]:
         ps = [t for t, x in g.items() if x['level'] == lv and x['partner']]
         if not ps: continue

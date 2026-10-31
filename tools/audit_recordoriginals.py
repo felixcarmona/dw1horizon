@@ -89,6 +89,7 @@ def main():
     p.add_argument('--from', dest='from_dir', type=Path, help='derive output containing source-games')
     p.add_argument('--corpus', type=Path, action='append', help='corpus folder (repeatable; default extracted/CHDAT)')
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--check', action='store_true', help='fail if any ADD run retains a 16-byte game-data match')
     a = p.parse_args()
     from tools.derive.steps.species import species_tools
     from tools.derive.importers import source_context
@@ -107,6 +108,8 @@ def main():
     print(f'{report["deltas"]} plain deltas, {report["delta_bytes"]} B; {report["corpus_files"]} corpus files')
     for row in report['files']:
         if row['max_game_match']: print(row['id'], row['kind'], row['max_game_match'], row['matches'])
+    if a.check and any(row['max_game_match'] or row['source_match_windows'] for row in report['files']):
+        raise SystemExit('record-original delta audit: game bytes must be copies from declared sources')
 
 
 if __name__ == '__main__':

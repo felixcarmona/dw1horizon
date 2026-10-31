@@ -2,8 +2,8 @@
   "id": 296,
   "name": "Grizzlymon",
   "_source": "dw3 M388GRIZ (tools/import_batch.py run content/imports/lists/tenth-12.json)",
-  "level": "ultimate",
-  "vanilla_as": 26,
+  "level": "champion",
+  "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "ice", null],
   "techniques": ["Megaton Punch", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Ice Needle",
@@ -25,7 +25,7 @@
   "condition_bubble": [0, -152, -11, 2],
   "effect_origins": [[4, 55, -50, 0, 2, -1, 26, -73], [1, 0, 0, 0, 1, 0, 161, -43],
                      [4, 65, 130, 0, 2, 0, -152, -11]],
-  "wild": {"hp": 3400, "mp": 2760, "off": 375, "def": 405, "speed": 265, "brain": 295, "bits": 1500},
+  "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
   "sizing": {
     "game": "dw3",
     "level": 5,
@@ -37,10 +37,10 @@
     "voice": 6,
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 80,
-    "energy_fed": 56,
-    "energy_per_hour": 14,
+    "energy_fed": 50,
+    "energy_per_hour": 12,
     "poop_timer_10min": 36,
-    "poop_size": 15,
+    "poop_size": 13,
     "favorite_food": "Pricklypear",
     "sleep_cycle": "22:00-07:00",
     "favored_region": 4,
@@ -51,24 +51,24 @@
     "training": {"animation": 57, "hit_tick": 16}
   },
   "evolution": {
-    "from": [105, 52],
-    "to": [],
+    "from": [353, 285],
+    "to": [306, 63],
     "requirements": {
-      "digimon": 105,
-      "hp": 400,
+      "digimon": 353,
+      "hp": 100,
       "mp": -1,
       "offense": -1,
-      "defense": 400,
+      "defense": 100,
       "speed": -1,
-      "brain": 300,
-      "care": 5,
+      "brain": 100,
+      "care": 1,
       "weight": 20,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 35,
+      "techs": 28,
       "flags": 16
     },
-    "gains": {"hp": 5650, "mp": 4650, "offense": 560, "defense": 555, "speed": 435, "brains": 495}
+    "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150}
   }
 }

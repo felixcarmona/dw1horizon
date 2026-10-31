@@ -312,7 +312,7 @@ def main():
             wait_complete(f)
         print(response)
     elif cmd in ('pause', 'resume'):
-        api('/api/v1/execution-flow?function=' + ('pause' if cmd == 'pause' else 'start')); print(cmd)
+        api('/api/v1/execution-flow?function=' + ('pause' if cmd == 'pause' else 'start'), data=b''); print(cmd)
     elif cmd == 'log':
         n = int(rest[0]) if rest else 20; lines = open(os.path.join(ROOT, f'build/emu-{PORT}.out')).read().splitlines()
         print('\n'.join([l for l in lines if 'web api request' not in l][-n:]))

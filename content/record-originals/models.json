@@ -34,6 +34,110 @@
       }
     },
     {
+      "id": 63,
+      "name": "IceLeomon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD1/LEOM.MMD",
+            "size": 85908,
+            "sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7"
+          }
+        ],
+        "delta": "content/record-originals/deltas/63.MMD.mdelta",
+        "delta_sha256": "907c27c4613eb392c57832b1f3b68e232229ac93c7f62959ad46d6bab095c94e",
+        "sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7",
+        "size": 85908
+      }
+    },
+    {
+      "id": 66,
+      "name": "Myotismon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD1/PATA.MMD",
+            "offset": 32727,
+            "size": 17,
+            "sha256": "3bd530ca3ae4fe28cbde2301da66f3e9a42711d3c93f546539727b3b4e8383c2"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/ANDR.MMD",
+            "offset": 80611,
+            "size": 17,
+            "sha256": "c4e11bbdd5e5c95480f55353a3fc908a95586de0b4c99159406d7b1bea420942"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/ELEC.MMD",
+            "offset": 24153,
+            "size": 17,
+            "sha256": "c5dc4e8f5d8ee75a3beff2d46aa3d0b571c869b750daa9ce001a37a10ed68f37"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/AIRD.MMD",
+            "offset": 54080,
+            "size": 20,
+            "sha256": "6b843a00d54a29a8854d0e6dfdfa60e5a5b20bb83b1aa7c56cb9281aecf0d2a3"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/MAME.MMD",
+            "offset": 72227,
+            "size": 21,
+            "sha256": "83cb847f2e8f3c8a5c43e8cc5e47a675d554a5dc86a23a0e8321e6db57bd852c"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/VEGI.MMD",
+            "offset": 31912,
+            "size": 23,
+            "sha256": "2f0b8fc6a6d6e067f8bcd7148b10e543317f379548a0faecb4c4e7be295cf27a"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/MGDR.MMD",
+            "offset": 28357,
+            "size": 26,
+            "sha256": "9e79e3140d816516c386e8102a9d69023d7d6dea5182f15c4a53539fc88efdc7"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/SKUL.MMD",
+            "offset": 36229,
+            "size": 27,
+            "sha256": "ce7a99eb7a36fc9ce8f9ad00e100ffeb1ee9e4cac1e261f3f616c14b0f4c1099"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/ETEM.MMD",
+            "offset": 46833,
+            "size": 31,
+            "sha256": "31ebafdd24fb037b88fce08da00e42022fef5add4eebfcc31fe64ed98cc469f1"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/SKUL.MMD",
+            "offset": 31915,
+            "size": 31,
+            "sha256": "bf2415b4fe3dcff0625430119a562dde14060591599fa890395c9b33bdb660e4"
+          },
+          {
+            "path": "extracted/CHDAT/MMD2/VAND.MMD",
+            "size": 65772,
+            "sha256": "0b145cd01d19f51d6d552715ae208e5cae36df5f459d234f576df038d6e9674c"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/DEVI.MMD",
+            "size": 88448,
+            "sha256": "92133a92320bb61053d93fe7d643c0a096a20966ff7bb7495ad897ac279b882c"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/MERA.MMD",
+            "size": 87824,
+            "sha256": "e2af14f82ebc4281644dae8c0e26f7cc36788120ce22ff737b83b686fc2256cb"
+          }
+        ],
+        "delta": "content/record-originals/deltas/66.MMD.mdelta",
+        "delta_sha256": "7d0e7e65b3ed10be6931dbc5db051ed0bc0a013a8417d63b2b2a4ae9e532d1f8",
+        "sha256": "3bde2f2c3b16a554ea9e16d9cd6725d568daadb02be106558700c61b6739616d",
+        "size": 99822
+      }
+    },
+    {
       "id": 67,
       "name": "Yanmamon",
       "mmd": {
@@ -688,6 +792,51 @@
       }
     },
     {
+      "id": 94,
+      "name": "Icemon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD1/KUNE.MMD",
+            "offset": 75399,
+            "size": 16,
+            "sha256": "652d29636f2a21aecd6f897f8bceb883f7cfb3ad4e3c237c7b911617f273ab29"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/ANDR.MMD",
+            "offset": 80609,
+            "size": 19,
+            "sha256": "5b628974a42252e29c0807bcb60e690f876b22f2ca56ea8b5c0cab43c0c9b6fd"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/AIRD.MMD",
+            "offset": 33776,
+            "size": 38,
+            "sha256": "5d2a0fc82462d86f7e337e260418a33ba143089a55d7e84d6d46d556bd92ec92"
+          },
+          {
+            "path": "extracted/CHDAT/MMD3/ICEM.MMD",
+            "size": 38972,
+            "sha256": "1af7c1d694aae9dfe2e5ffcc3312c24c0eac0c156f0dfd40dd8bde2f3bdfe133"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/AGUM.MMD",
+            "size": 72012,
+            "sha256": "60d5e920b6cf621da8d2f67f703a2fe75f384000cbcdefd9398c76c1477c7c7d"
+          },
+          {
+            "path": "extracted/CHDAT/MMD2/GOTU.MMD",
+            "size": 40976,
+            "sha256": "9c35c953d3411ad79461fd2bf1e4cb9e24c8a9024549b838108bfd7588c7f480"
+          }
+        ],
+        "delta": "content/record-originals/deltas/94.MMD.mdelta",
+        "delta_sha256": "a0059ab940ab5011b024182e1f344945cba77f7622d04a57bec7b921a6c2ece5",
+        "sha256": "4256b1a818a3c2806f3fc962c955f192124111da1de020bb1012a423332b774d",
+        "size": 93854
+      }
+    },
+    {
       "id": 96,
       "name": "Tsukaimon",
       "mmd": {
@@ -1020,6 +1169,63 @@
       }
     },
     {
+      "id": 121,
+      "name": "Cherrymon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD1/HOUO.MMD",
+            "offset": 69177,
+            "size": 16,
+            "sha256": "b78119bc694cfd4bcb187bdce373cba433b8a4b4dbc1165b2d5cfffcb7fc0843"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/ETEM.MMD",
+            "offset": 36734,
+            "size": 18,
+            "sha256": "43c83b69333e8992c41ae2f322eb1db0bc2600912a748f807cd36c097b9eead3"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/BOYS.MMD",
+            "offset": 45257,
+            "size": 19,
+            "sha256": "9d059e116a04b7e9b918acc902f9871f7daa256b52cf7e9511f1559050974e23"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/HOUO.MMD",
+            "offset": 87175,
+            "size": 20,
+            "sha256": "345707e7e0b88a946815addabb5e50b84281c65d7faaa943046ea8bb481656b7"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/SCUM.MMD",
+            "offset": 39121,
+            "size": 21,
+            "sha256": "d7ad5eeafe932a23f25891130509e4f79861f47e5cfe7f0aaffc9b6f4e397232"
+          },
+          {
+            "path": "extracted/CHDAT/MMD4/JURE.MMD",
+            "size": 30044,
+            "sha256": "dffb9b4716e18c0e927dd94aca1cc20e11187427f7b13561a356ecc3370ca30e"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/VEGI.MMD",
+            "size": 62044,
+            "sha256": "7e3d3c77eb9fc05f2a793c44884903262304727583f0ea109b72f8e9de15a3f0"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/LEOM.MMD",
+            "size": 85908,
+            "sha256": "390092e3b3471adc84645a512f8671b2b036413d72e09d046fc982355f1488c7"
+          }
+        ],
+        "delta": "content/record-originals/deltas/121.MMD.mdelta",
+        "delta_sha256": "d940ed81af5a13a831f12470e990bd8db88056633cb10b9859bf67e74d146dc1",
+        "sha256": "22c50591da49622a5735591b0a414ed68e441bd77c356ae8e52d22480a42576d",
+        "size": 99522
+      }
+    },
+    {
       "id": 122,
       "name": "Hagurumon",
       "mmd": {
@@ -1081,6 +1287,63 @@
         "delta_sha256": "86beb033690c32cd8a70dc27bf8e1e776e4500b21c6906589e335bd34c3633d7",
         "sha256": "717157a3db4b41df942fe8041c2b5e1fac8e008ebbc42b9eed4c538bb6ab41d0",
         "size": 18432
+      }
+    },
+    {
+      "id": 124,
+      "name": "MasterTyrannomon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD0/ANGE.MMD",
+            "offset": 90855,
+            "size": 16,
+            "sha256": "0627e04dbfde20d5b6d2d730f4f498474a3109e836d60d40ead7c32efd0130a4"
+          },
+          {
+            "path": "extracted/CHDAT/ALLTIM.TIM",
+            "offset": 16652,
+            "size": 16,
+            "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/VEGI.MMD",
+            "offset": 23108,
+            "size": 21,
+            "sha256": "e332a7562503e32105baa238f94db597aace014639269e7a42a1c8460cafcc79"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/MERA.MMD",
+            "offset": 76710,
+            "size": 23,
+            "sha256": "1b445abb9f1f8c62e7810202ba98c637924f019cc14bdd9dd56e6919fe8d2a19"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/GREY.MMD",
+            "offset": 30503,
+            "size": 39,
+            "sha256": "d91c3271c09d9050cfb1b8b39a6b042afe289ea6b031b777125300107e30b942"
+          },
+          {
+            "path": "extracted/CHDAT/MMD4/TIRS.MMD",
+            "size": 25544,
+            "sha256": "067ff8daf2c3a8cc9b45dd699b57b5c604636396cbe143abf95cc032b28c82fa"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/TYRA.MMD",
+            "size": 89428,
+            "sha256": "1e3c5d50f35f006574ad5755fe922e57b713f17a86b50cd8f619e96963589b44"
+          },
+          {
+            "path": "extracted/CHDAT/MMD1/UNIM.MMD",
+            "size": 90732,
+            "sha256": "3a88c26fa3592770ff1735549aeeab838eb6719d77e43eb321a18275030ad8b8"
+          }
+        ],
+        "delta": "content/record-originals/deltas/124.MMD.mdelta",
+        "delta_sha256": "cdc35c5a3df4a7b13e28738ded67785c2044f4ee0eaf814cbe07632c9daf92cd",
+        "sha256": "47975d059067b6ae649c8424a089746b92dec10a7e138d1a166a4f5007f5018d",
+        "size": 92658
       }
     },
     {

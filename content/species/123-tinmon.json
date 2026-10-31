@@ -54,7 +54,7 @@
     "requirements": {
       "digimon": 91,
       "hp": 400,
-      "mp": 300,
+      "mp": -1,
       "offense": -1,
       "defense": -1,
       "speed": -1,

@@ -1265,8 +1265,10 @@ def build(out=OUT, content=None, quiet=False, select=None):
     has_disc = any(t < NUM_ORIGINAL for t in allsp)
     for f in list(paths):
         if has_disc and f not in allsp: paths[f] = {'from': [-1] * 5, 'to': [-1] * 6}; continue     # no file: no species
-        e = allsp[f].get('evolution') if f in allsp and not is_record_original(allsp[f]) else None
-        if e and 'from' in e: paths[f] = {'from': list(e['from']), 'to': list(e['to'])}
+        e = allsp[f].get('evolution') if f in allsp else None
+        if e and 'from' in e:
+            # Even a record original <= 62 uses the resident path row in C.
+            paths[f] = {k: (list(e.get(k, [])) + [-1] * n)[:n] for k, n in (('from', 5), ('to', 6))}
         gone = {t for t in range(NUM_ORIGINAL) if t not in allsp} if any(t < NUM_ORIGINAL for t in allsp) else set()
         paths[f] = {k: [-1 if x in gone else x for x in v] for k, v in paths[f].items()}       # (balance.py: absent ids)
     first_records = 1 + INDEX_SECTORS
@@ -1368,6 +1370,10 @@ def build(out=OUT, content=None, quiet=False, select=None):
                     elif t not in lst: print(f'warning: {recs[o]["para"]["name"]} ({o}) has no free evolution slot for {r["para"]["name"]}')
                     continue
                 if o not in paths:
+                    # A record parent's forward route already lives in its own row.
+                    # Disc children >= 63 have no reverse row to fill.
+                    if key == 'to' and recs[o] and recs[o]['flags'] & FLAG_PARTNER:
+                        continue
                     print(f'warning: {r["para"]["name"]}: {o} has no evolution paths in the game (types 1..62 and new species)'); continue
                 lst = paths[o][other_key]
                 if t in lst: continue
@@ -1479,6 +1485,7 @@ def select(sel, out, models=None, content=None):
     allsp = {t: s for t, s in allsp.items() if t < NUM_ORIGINAL or t in ids}
     missing = sorted(ids - set(allsp))
     if missing: raise SystemExit(f'species selection: no file for {", ".join(map(str, missing))}')
+    absent_records = {t for t, s in allsp.items() if is_record_original(s) and t not in ids}
     os.makedirs(out, exist_ok=True)
     for f in glob.glob(os.path.join(out, '*.json')): os.remove(f)
     for t, s in sorted(allsp.items()):
@@ -1489,7 +1496,11 @@ def select(sel, out, models=None, content=None):
         ev = s.get('evolution')
         if ev:                                   # a link to an import this disc does not carry is left out
             for k in ('from', 'to'):
-                if k in ev: ev[k] = [o for o in ev[k] if o < NUM_ORIGINAL or o in ids]
+                if k in ev:
+                    ev[k] = [o for o in ev[k] if o not in absent_records and (o < NUM_ORIGINAL or o in ids)]
+                    if 1 <= t <= 62 and not is_record_original(s):
+                        n = 5 if k == 'from' else 6
+                        ev[k] = (ev[k] + [-1] * n)[:n]
         for k in ('model', 'texture'):
             for kk in ('file', 'partner_file'):
                 f = (s.get(k) or {}).get(kk)

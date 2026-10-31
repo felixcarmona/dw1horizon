@@ -53,15 +53,15 @@
   },
   "evolution": {
     "from": [320],
-    "to": [],
+    "to": [318],
     "requirements": {
       "digimon": 320,
       "hp": -1,
       "mp": -1,
       "offense": 400,
       "defense": -1,
-      "speed": 400,
-      "brain": 300,
+      "speed": -1,
+      "brain": -1,
       "care": 10,
       "weight": 30,
       "discipline": -1,

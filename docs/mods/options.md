@@ -208,6 +208,11 @@ and the vanilla one); loaded with the row on and the partner still that vanilla 
 recruited flags are never cleared: with the row off the chart only hides the new species. A New Game with the row off gets one of
 the nine original rookies from Jijimon's quiz (`quiz.vanillaCells`, [balance.md](balance.md)), so no swap is needed.
 
+After changing a species’ tier, clear its old `vanilla_as` and regenerate with `tools/vanilla_as.py --write`.
+The evolution guard rejects a fallback of another level, except Mega → Ultimate because the original game has no Mega.
+Saved partner ids remain valid; Continue reads the current mapping. Existing swap tags restore their recorded original
+id when the option returns to ON, without depending on either species’ level.
+
 ## Cheats
 
 CHEATS defaults to OFF. With it on, Select opens the Cheats menu from the field

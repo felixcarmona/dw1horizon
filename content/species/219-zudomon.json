@@ -54,13 +54,13 @@
     "training": {"animation": 60, "hit_tick": 14}
   },
   "evolution": {
-    "from": [218],
-    "to": [],
+    "from": [218, 238, 72, 202, 261],
+    "to": [220, 248, 271],
     "requirements": {
       "digimon": 218,
       "hp": -1,
       "mp": 400,
-      "offense": 300,
+      "offense": -1,
       "defense": -1,
       "speed": 400,
       "brain": -1,

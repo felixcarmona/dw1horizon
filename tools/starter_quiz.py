@@ -18,9 +18,12 @@ SIZE = VANILLA_CELLS + 45 + 1  # one padding byte
 # Partner rookies that reuse another species' model: they are reached by evolution, never as a quiz result.
 RECOLOURS = {
     71: 'SnowAgumon', 74: 'Dokunemon', 82: 'Psychemon', 93: 'Muchomon',
-    96: 'Tsukaimon', 222: 'BlackGatomon', 233: 'RedOtamamon', 256: 'VioletElecmon',
+    96: 'Tsukaimon', 233: 'RedOtamamon', 256: 'VioletElecmon',
 }
 
+
+# These new rookies have Baby II routes but no quiz slot in the fixed 35-row table.
+EVOLUTION_ONLY = {263: 'Mushroomon', 283: 'Syakomon'}
 
 def load():
     return json.loads((ROOT / 'content/tables/new-game.json').read_text())['newGame']
@@ -31,8 +34,8 @@ def validate(data):
     species = [json.loads(p.read_text()) for p in (ROOT / 'content/species').glob('*.json')]
     pool = {s['id'] for s in species if s.get('level') == 'rookie' and 'partner' in s}
     vanilla = {s['id'] for s in species if s.get('vanilla')} & set(starters)
-    if len(starters) != COUNT or len(set(starters)) != COUNT or set(starters) != pool - set(RECOLOURS):
-        raise ValueError(f'starters must contain each of the {COUNT} non-recolour partner rookies exactly once')
+    if len(starters) != COUNT or len(set(starters)) != COUNT or set(starters) != pool - set(RECOLOURS) - set(EVOLUTION_ONLY):
+        raise ValueError(f'starters must contain each of the {COUNT} selected partner rookies exactly once')
     if any(type(s) is not int or not 0 <= s <= 65535 for s in starters):
         raise ValueError('starter ids must be uint16')
     quiz = data['quiz']

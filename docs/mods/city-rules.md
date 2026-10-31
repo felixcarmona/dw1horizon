@@ -26,7 +26,7 @@ a changed city fits; validate the actual final build at the original 2 MB.
 
 `content/tables/city-residents.json` owns the City page's species IDs and hidden
 flags. Species must be Rookie or higher and have a recruit flag. The current
-roster has 28 Rookies, 52 Champions and 16 Ultimates, worth 177 points. The 50 IDs
+roster has 26 Rookies, 53 Champions and 17 Ultimates, worth 180 points. The 50 IDs
 below 59 are worth 100 points. Baby flags are deliberately excluded: several
 represent story state, including the city medal.
 

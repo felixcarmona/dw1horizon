@@ -35,7 +35,7 @@ the Moon Mirror, which evolves into 62, reaches it).
 | | the disc carries it (`SPECIES` names it, or `all`) | it does not (an explicitly reduced selection) |
 |---|---|---|
 | the game | the record (patch 0084: at boot its rows are copied over the resident tables; skeleton, model, texture, effects, evolution paths are read from the record) | the disc's species, as the original game |
-| the executable's tables | the C's rows, but the name is the file's (a renamed record original, Goblimon 80, Golemon 108, is named alike without its record): `balance.py build` writes the file's other values only into the record, never into the executable (`species.py verify` skips these species) | the same |
+| the executable's tables | the C's rows, but the name and explicitly curated native tier are the file's (a renamed record original, Goblimon 80, Golemon 108, is named alike without its record): `balance.py build` writes the file's other values only into the record, never into the executable (`species.py verify` checks their resident fallback rows and curated tiers; the archive check verifies their carried data) | the same |
 | `species.py select` | the file | the disc's file (`species.py extract`), written into the build's folder |
 
 Rules: `model.name` and `model.bones` stay the disc's (the executable's row); `model.file`, `skeleton`, `slot_aliases`,
@@ -61,6 +61,10 @@ partner list, site guide, portraits and DWS species names. Scripts, maps and
 saved partners continue to use the existing ids; field loading resolves the NPC
 record internally. Speaker names resolve back to the existing species, in the
 active language. Partner, wild-battle and tournament definitions stay separate.
+
+IceLeomon, Myotismon, Cherrymon and MasterTyrannomon also carry native records for their evolution paths. Their native engine ids (63, 66, 121, 124) have no resident path row; without their records they are neither valid evolution children nor parents. Their native ids in resident parents’ forward lists are retained, so subset discs carrying these records keep Devimon → Myotismon, Vegiemon → Cherrymon and Tyrannomon → MasterTyrannomon. Selection removes links to omitted records and pads resident rows back to five/six slots; a subset therefore cannot select a missing record’s NPC model as a partner. The latter three keep the existing generated partner models and requirement rows. IceLeomon uses Leomon's matching skeleton and mesh with its own texture; the unused `PANJ.MMD` filename is absent from the USA disc. Their tier changes and peer balance rows are applied from the curated tree. Icemon (94) also carries its existing partner model verbatim in a record, because its new Champion tier needs onward paths. No model or texture bytes change for this conversion. Their model deltas are rebuilt from disc inputs, with no additional executable allocation.
+
+WereGarurumon (62) is the one record original inside the resident path table. `balance.py` and `species.py build` seed that resident path row from its species file, then archive links fill the remaining slots. Its obsolete disc reverse entries do not consume the new parents' slots; existing forward evolution routes remain.
 
 ## How the game reads them
 
@@ -226,7 +230,11 @@ A species of the executable's tables (0..179 without a record) holds its own evo
 
 Every one of the 147 has `requirements` and `gains` (the rows of a species that is no partner are zeros, kept so the
 table is byte for byte). An imported species links itself into these lists with its own `evolution.from` (the build
-fills free `to` slots at boot); a deleted species (no file) is taken out of them. `species.py extract`/`sync` write the
+fills free `to` slots at boot). A record parent reaching a disc child with no paths of its own (for example Myotismon) stores the route in the parent's `evolution.to`; no reverse slot exists on that disc child. Such a forward route is valid and the builder does not warn about the absent reverse row. Real slot overflow still warns and loses the link.
+
+The curated additions and Mega reparenting live in `content/tables/evolution-tree.json`; apply them with `tools/evo_tree.py --write`. Only listed children's `from` and requirements change, plus record parents' `to` entries for disc children. Parent order names the primary bonus. Limits remain six children, five parents and 510 links with originals (the two-sector index); the builder counts the engine layer's existing slots too. Canon main lines precede family/shared-specialty routes, and imported canon Megas require Perfect parents. The documented exceptions preserve existing disc/engine routes and the Kurisarimon → Infermon canon line. The starter quiz's Rookie → Champion routes are outside this generator's scope.
+
+A deleted species (no file) is taken out of them. `species.py extract`/`sync` write the
 key from an executable (the round trip is exact).
 
 ## Deleting a species
@@ -325,3 +333,9 @@ and screen transitions on the integrated disc with the original 2 MB settings.
 - A record not cached when first needed (a species shown in a menu without
   its model loaded) is read synchronously, after the asynchronous file queue
   is empty.
+
+## Curated tiers and balance
+
+`content/tables/evolution-tree.json` owns the complete partner topology, identity-sheet Mega ids and 26 other tier changes. The six moved native ids are 63, 67, 69, 88, 94 and 104. `balance.py` mirrors their level into the resident table as well as their carried record; `species.py verify` checks that path after balance build. Record originals still keep their other resident fallback rows. Parents are limited to five, children to six, with Baby II extra Rookie slots handled separately. Mod-added routes share a specialty, apart from the documented canon Otamamon → Geremon exception. Original-disc routes are exempt by membership in the committed disc path tables; original battle specialties are preserved. Numemon → KingSukamon replaces its non-shared WaruMonzaemon route. MegaKabuterimon → HerculesKabuterimon is removed because both remain Ultimate. Every other link advances exactly one level, except the explicitly retained Etemon → MetalEtemon continuation.
+
+`content/tables/evolution-balance.json` freezes peer-derived evolution gains, wild stats, drops and raise capacities/consumption/weight for each moved species. Peers have the same level and training role, with native disc peers preferred. Mega gains use the top Ultimate distribution and the original WarGreymon sample. Model dimensions, model/texture bytes, food preferences and sleep personality are preserved. Kurisarimon follows the identity sheet's Mech/Nature specialties and complete proposed techniques, with Sweet Breath as finisher. Technique-slot aliases point the new attacks at Kurisarimon’s existing attack/buff programs; no mesh, texture or new animation assets are authored. Rookie requirements use distinct highest-stat/weight slots under each Baby II; Mega rows retain their first-parent bonus and are resolved from every Ultimate parent.

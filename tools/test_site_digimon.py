@@ -98,8 +98,13 @@ class Guide(unittest.TestCase):
         agumon = names['Agumon']
         self.assertEqual(agumon['req']['bonus'], {'from': names['Koromon']['id']})
         self.assertEqual(agumon['req']['weight'], [10, 20])
-        self.assertIn(names['Elecmon']['id'], names['IceLeomon']['from'])      # only a "to" of the parent's row says so
-        self.assertEqual(names['WereGarurumon']['from'], [names['Garurumon']['id']])
+        self.assertEqual(names['IceLeomon']['level'], 'ultimate')
+        self.assertEqual(set(names['IceLeomon']['from']),
+                         {names[n]['id'] for n in ('Lynxmon', 'Leomon', 'Grizzlymon')})
+        self.assertEqual(set(names['WereGarurumon']['from']),
+                         {names[n]['id'] for n in ('Garurumon', 'Apemon', 'Gururumon')})
+        self.assertEqual(names['SaberLeomon']['level'], 'mega')
+        self.assertIn(names['IceLeomon']['id'], names['SaberLeomon']['from'])
 
     def test_every_ultimate_rule_is_a_route(self):
         with open(G.RULES) as f: rules = json.load(f)
