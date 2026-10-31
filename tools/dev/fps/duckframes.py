@@ -102,7 +102,7 @@ def main():
     g = None if raw_fd else BatchGDB()
     if raw_fd:
         subprocess.run(['xdotool', 'key', 'space'], env=ds.ENV, check=True)
-        time.sleep(.1)
+        time.sleep(.25)
     names = ['Vcount', 'MOD_FPS_TICKS', 'MOD_FPS_RENDERS', 'MOD_RENDER_PASS',
              'MOD_RENDER_ALPHA', 'MOD_STACK_GUARD_HITS', 'MOD_INTERP_STATS+8', 'MAIN_D_80135244', 'MOD_PERF_LATE',
              'MOD_RENDER_CADENCE', 'MAIN_D_80135238', 'MAIN_D_8013523E',

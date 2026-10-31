@@ -43,6 +43,7 @@ class BatchGDB(ds.GDB):
                 match = re.search(rb'\$([^#]*)#..', self.buf)
                 if match:
                     self.buf = self.buf[match.end():]
+                    self.s.sendall(b'+')
                     value = match.group(1).decode()
                     if value.startswith(('S', 'T')) and packet != 'c':
                         continue  # unsolicited stop after UI frame stepping
@@ -90,6 +91,7 @@ def main():
     previous, age, previous_pad = -1, 0, 0
     tick_base = None
     first_recorded = None
+    transport_recoveries = 0
     bp(tick, False)
     g.write(ds.sym('SCRIPT_STATE')+458, bytes([1]))
     g.write(ds.sym('TAMER_SUB_STATE'), bytes([0]))
@@ -130,11 +132,36 @@ def main():
             print('free intro calibration', g.cmd('c'), flush=True)
             bp(ready, False)
         bp(tick, True)
-        g.s.settimeout(10)
+        g.s.settimeout(30)
         with out.with_suffix('.jsonl').open('w') as stream:
             n = -1
             for attempt in range(20000):
-                stop = g.cmd('c')
+                try:
+                    stop = g.cmd('c')
+                except TimeoutError:
+                    # Halt before inspecting a transport timeout. Rearm only
+                    # at this tick's display wait or its next breakpoint;
+                    # the ordinal check below rejects any lost logic tick.
+                    transport_recoveries += 1
+                    g.s.sendall(b'\x03')  # stop before inspecting/rearming
+                    registers = g.batch(['g'])[0]
+                    regs = struct.unpack('<38I', bytes.fromhex(registers[:304]))
+                    now = int.from_bytes(g.read(ds.sym('MOD_FPS_TICKS'), 4), 'little')
+                    diagnostic = dict(pc=hex(regs[37]), previous_tick=last_tick, tick=now)
+                    print('stop notification timeout', diagnostic, flush=True)
+                    safe_tick = last_tick is not None and now in (last_tick, last_tick+1)
+                    in_wait = ds.sym('v_wait') <= regs[37] < ds.sym('VSyncCallback')
+                    if not safe_tick or (regs[37] != tick and not in_wait):
+                        out.with_suffix('.timeout.json').write_text(json.dumps(diagnostic)+'\n')
+                        raise
+                    if regs[37] == tick:
+                        stop = 'S05'
+                    else:
+                        replies = g.batch(['z0,%x,4' % tick, 'Z0,%x,4' % tick])
+                        if replies != ['OK', 'OK']:
+                            raise RuntimeError('cannot rearm tick breakpoint')
+                        stop = g.cmd('c')
+                        print('tick breakpoint rearmed', diagnostic, flush=True)
                 if not stop.startswith(('T', 'S')):
                     raise RuntimeError('unexpected stop '+repr(stop))
                 requests = [('MAIN_D_80135244', 4), ('MAIN_D_8013523E', 2),
@@ -230,7 +257,7 @@ def main():
                     stream.flush()
                     print('tick', n, 'wall', round(time.monotonic()-started, 1), flush=True)
                 previous_pad = pad
-        result = dict(finished=finished, ticks=n+1, recorded_ticks=len(presentation), recording_first_tick=first_recorded, states=states,
+        result = dict(finished=finished, ticks=n+1, recorded_ticks=len(presentation), recording_first_tick=first_recorded, transport_recoveries=transport_recoveries, states=states,
                       seed='12345678', sha256=digest.hexdigest(),
                       scores=[raw[p*868] for p in range(2)],
                       thrown=[raw[p*868+1] for p in range(2)],
