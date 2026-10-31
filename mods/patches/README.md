@@ -63,13 +63,11 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0223-0228, 0237 | amount boxes for trades, card packs and the card machine |
 | 0230 | ground items once a day |
 | 0233-0234, 0236, 0238-0239 | quick battle start |
-
 | 0242-0243 | additional translations and Japanese font |
 | 0244 | optional cheats and save-compatible option storage |
 | 0245 | first-boot language picker and Catalan |
 | 0246 | compact hashed sector entries for the eight-language disc |
 | 0247-0254 | care/stat editing, evolution, teleportation, native save/load and menu labels |
-
 | 0255-0256 | Fit complete translated title labels within the existing menu and glyph buffer; no additional RAM. |
 
 Each patch's commit message describes its change in detail.
@@ -96,11 +94,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0282 | Status screen: discipline and care mistakes as numbers beside the weight, a tiredness bar as the fourth row (red from 50); only with NEW STATUS BARS on; the original bars' four calls compacted | about +600 bytes: the function and data sizes of the ELF against the originals; 181,968 bytes of heap with 0282 still out |
 | 0283 | The card menus' read-only messages, labels and save icon move from the executable into `MENU_REL` | about -2,400 bytes: series ends at 0x801cf040 in the eight-language image (0x801cf74c before 0282-0283, about -1,800 net); `heapcheck` and the 320 story setups pass, screen 361 keeps 1,952 bytes |
 | 0284 | Clear text with VRAM fills and zeroes so DuckStation with Enable Texture Cache stops showing old text over new | +336 bytes: 208 of code and 128 of zeroes, from the symbol sizes of the English test build (original 2 MB target) |
-
 | 0285 | Finish active techniques, hit reactions and buffered damage before a field-battle timeout; preserve natural outcomes | +0 resident bytes: 0x801cb9fc → 0x801cb9fc (same English-only bank and version stamp, original 2 MB target); BTL +120 bytes; heap unchanged at 197,888 bytes; heapcheck passes and all 320 story setups fit, minimum 15,488 bytes on screen 361 |
-
 | 0286 | Bound large-partner world framing; converge while idle without replaying the tamer delta; retain small-partner and battle behavior | +128 bytes resident text: 0x801cb9fc → 0x801cba7c, same English test bank and original 2 MB target; data/BSS unchanged; heap 197,888 → 197,760 bytes; heapcheck and all 320 story setups pass (minimum conservative margin 15,488 bytes) |
-
 | 0287 | Cheats lists: left/right moves ten rows, up/down one, clamped at the ends; shared by parameters, evolution and teleport | +0 bytes: `main_BSS_END` stays `0x801cb9fc`, heap 197,888 bytes (same English-only test bank); main executable byte-identical, one byte changes in the 44,804-byte MENU overlay. Heapcheck and all 320 actual-archive story setups pass; minimum margin 15,488 bytes on screen 361. |
-
 | 0288 | Show the shared title version during field START pause, above the clock; preserve the borrowed text row | +128 bytes: 0x801cb9fc → 0x801cba7c (same English bank); +144 bytes: 0x801cf74c → 0x801cf7dc (same eight-language padded EN bank and file tables); heapcheck passes, all 320 story setups fit, minimum 16 bytes on screen 361 |

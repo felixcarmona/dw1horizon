@@ -110,3 +110,11 @@ The tests insert unsafe sewer, northern and summit edges and require the audit t
 reject them. They also exercise both original road unlocks, old saves on either
 side, arc prerequisites, ferry cooldowns and the Vault recipe override. The audit
 and its tests run in `tools/selftest.sh`.
+
+## Integration with the arrival fixes
+
+The gated Rubbish Mouth and Drain exits retain the narrower exit regions and
+inward-facing arrival rotations from the Galleries arrival fix. Convert only
+the remaining gated exit tiles (111) to step trigger 0 (51); keep the cleared
+floor tiles free. Spanish block lines use Sabana Gear and Selva Tropical,
+matching the shared area-name bank.
