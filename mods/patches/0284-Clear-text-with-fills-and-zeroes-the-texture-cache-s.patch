@@ -1,0 +1,62 @@
+From 955c49ff4e897ec600701e8693248e18d97c6da3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 17:52:07 +0000
+Subject: [PATCH] Clear text with fills and zeroes the texture cache sees
+
+---
+ src/main/font.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/font.c b/src/main/font.c
+index 225de4e..cd56ce9 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1421,15 +1421,44 @@ extern int8_t DRAW_STRING2_IS_FIXED_WIDTH; /* dw/script.h: the name keyboard's 1
+ #endif
+ #endif
+ 
++/* MOD (text clear): the VRAM width of a text row, and zeroes for clearing part of one. */
++#define TEXT_ROW_VRAM_W (TEXT_AREA_SIZE / 4)
++static uint32_t TEXT_CLEAR_ZEROES[TEXT_ROW_VRAM_W / 2];
++
++/*
++ * MOD (text clear): ClearImage draws a rectangle unless x and w are multiples of 64, and DuckStation with
++ * Enable Texture Cache keeps showing what LoadImage wrote under such a rectangle, so old text stays. Whole rows
++ * go through ClearImage with w = 64, which is a VRAM fill, and anything narrower is overwritten with zeroes.
++ */
+ void clearTextSubArea(RECT *rect)
+ {
++	RECT part;
++	int rowsPerLoad;
++	int rowsLeft;
++
+ 	if (MOD_RENDER_PASS != 0) {
+ 		return;
+ 	}
+ 	rect->x = (rect->x / 4) + TEXT_VRAM_X;
+ 	rect->y = rect->y + TEXT_VRAM_Y;
+ 	rect->w >>= 2;
+-	ClearImage(rect, 0, 0, 0);
++	if (rect->w == TEXT_ROW_VRAM_W - 1) {
++		rect->w = TEXT_ROW_VRAM_W; /* widths 252-255 mean the whole row */
++	}
++	if (rect->w == TEXT_ROW_VRAM_W && rect->x == TEXT_VRAM_X) {
++		ClearImage(rect, 0, 0, 0);
++	} else if (rect->w > 0) {
++		part = *rect;
++		if (part.w > TEXT_ROW_VRAM_W) {
++			part.w = TEXT_ROW_VRAM_W;
++		}
++		rowsPerLoad = TEXT_ROW_VRAM_W / part.w;
++		for (rowsLeft = rect->h; rowsLeft > 0; rowsLeft -= part.h) {
++			part.h = rowsLeft < rowsPerLoad ? rowsLeft : rowsPerLoad;
++			LoadImage(&part, (u_long *)TEXT_CLEAR_ZEROES);
++			part.y += part.h;
++		}
++	}
+ #if FONT_SWITCH
+ 	GLYPH_CARRY_Y = -1; /* the previous glyph's cell may be cleared: never copy its pixels back */
+ #ifdef FONT_KERN
+-- 
+2.55.0
+
