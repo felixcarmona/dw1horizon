@@ -58,7 +58,7 @@
     "requirements": {
       "digimon": 33,
       "hp": -1,
-      "mp": 300,
+      "mp": -1,
       "offense": 400,
       "defense": -1,
       "speed": 400,
@@ -69,7 +69,7 @@
       "happiness": -1,
       "battles": -1,
       "techs": 35,
-      "flags": 0
+      "flags": 16
     },
     "gains": {"hp": 4950, "mp": 5150, "offense": 580, "defense": 495, "speed": 515, "brains": 490}
   }

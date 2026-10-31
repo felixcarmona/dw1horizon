@@ -2,7 +2,7 @@
   "id": 215,
   "name": "Magnadramon",
   "_source": "dcb 186 (card Magnadramon) (tools/import_batch.py run content/imports/lists/third-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["fire", "air", null],
@@ -28,7 +28,7 @@
   "condition_bubble": [0, -77, -172, 1],
   "effect_origins": [[2, 60, 0, 10, 1, 0, 264, -9], [2, -70, 0, 210, 1, 0, -77, -172], [1, 0, 0, 0, 1, 0, 207, 59],
                      [2, -102, 0, 155, 1, 0, -75, -71]],
-  "wild": {"hp": 3400, "mp": 2750, "off": 380, "def": 390, "speed": 260, "brain": 295, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -40,10 +40,10 @@
     "voice": 5,
     "hunger_hours": [2, 6, 10, 14, 18, 21],
     "energy_max": 80,
-    "energy_fed": 50,
-    "energy_per_hour": 13,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 15,
+    "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 4,
@@ -72,6 +72,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 5950, "mp": 4700, "offense": 555, "defense": 575, "speed": 440, "brains": 490}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

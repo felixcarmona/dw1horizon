@@ -2,14 +2,14 @@
   "id": 212,
   "name": "VenomMyotismon",
   "_source": "dcb 177 (card VenomMyotismon) (tools/import_batch.py run content/imports/lists/third-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
   "techniques": ["Inifinity Burn", "Meltdown", "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Heat Laser", "Spit Fire", "Megaton Punch", "Buster Dive", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sonic Jab", "Nightmare Syndromer"],
-  "drop": {"item": "sm.recovery", "percent": 0},
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {
     "file": "build/sizes-out/models/VenomMyotismon.MMD",
@@ -28,7 +28,7 @@
   "battle_music": "normal-battle",
   "condition_bubble": [-5, -195, -93, 2],
   "effect_origins": [[3, 100, -45, 0, 2, -12, 47, -171], [4, 0, 0, 0, 2, -11, 40, -152]],
-  "wild": {"hp": 2980, "mp": 3060, "off": 405, "def": 345, "speed": 295, "brain": 295, "bits": 1500},
+  "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -40,10 +40,10 @@
     "voice": 2,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
-    "energy_fed": 55,
-    "energy_per_hour": 14,
+    "energy_fed": 45,
+    "energy_per_hour": 11,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "02:00-11:00",
     "favored_region": 0,
@@ -72,6 +72,6 @@
       "techs": 40,
       "flags": 0
     },
-    "gains": {"hp": 5200, "mp": 4900, "offense": 610, "defense": 510, "speed": 510, "brains": 480}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

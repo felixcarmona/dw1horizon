@@ -2,7 +2,7 @@
 """Apply the curated evolution tree without rewriting unrelated species.
 
 Run without arguments to inspect the picker-resolved plan; --write applies it.
-Topology and documented exceptions live in content/tables/evolution-tree.json.
+Topology, tier changes and documented special roots live in content/tables/evolution-tree.json.
 """
 import collections
 import functools
@@ -56,6 +56,12 @@ def care(s, level):
 def candidates(s, req, lv):
     """Other requirement rows for a species whose first one a sibling shadows, or that takes a disc route's
     canonical state: other stat sets (its role's stats first), the other care mode, no parent bonus."""
+    if lv == 'rookie':
+        for weight, stat in itertools.product((4, 26), ALL):
+            row = dict(req, weight=weight, digimon=-1, care=0, flags=16, techs=0)
+            for k in ALL: row[k] = 1 if k == stat else -1
+            yield row
+        return
     rs = list(role_stats(s)) or ['hp', 'mp', 'offense']
     rest = [k for k in ALL if k not in rs]
     sets = [tuple(rs[:2]), (rs[0],), tuple(rs[:3]), (rs[0], rs[2]), (rs[1], rs[2]), (rs[1],)]
@@ -137,7 +143,7 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=72):
 
     A Champion starts from 1500 HP/MP and 150 other stats; 72 sessions leave
     half its 144 hours for sleep, food, rest and 50 short battles. Chain callers supply
-    the actual stats after the Perfect's gains and allow 48 more sessions.
+    the actual stats after the Ultimate's gains and allow 60 more sessions.
     Secondary gym gains are omitted, making the session bound conservative.
     """
     base = tuple(base or (150,) * 6)
@@ -160,20 +166,21 @@ def practical(cur, child, kids, reqs, levels, sp, base=None, budget=72):
         # Round each requested stat up to a whole attainable training gain.
         vals = tuple(b + ((max(0, v-b) + rate-1)//rate)*rate for v, b, rate in zip(vals, base, rates))
         st = {stat: vals[i] * (10 if i < 2 else 1) for i, stat in enumerate(ALL)}
-        mistakes_allowed = (0, 1, 3, 5, max(0, row['care'])) if child < S.NUM_ORIGINAL and not S.is_record_original(sp[child]) else (0, 1, 3, 5)
+        mistakes_allowed = (0, 1, 3, 5, max(0, row['care'])) if child < S.NUM_ORIGINAL else (0, 1, 3, 5)
         for mistakes in dict.fromkeys(mistakes_allowed):
             for weight in (row['weight'], row['weight'] - 5, row['weight'] + 5):
                 # Disc routes retain their original late-raise requirements. Learned
                 # moves survive rebirth, so 35 techniques is possible for Gigadramon.
                 tech_counts = (20, 35) if child < S.NUM_ORIGINAL and not S.is_record_original(sp[child]) else (20,)
-                for techs, battles in itertools.product(tech_counts, (0, 50, 100) if levels[cur] == 5 else (0, 50)):
+                happiness_values = (100, max(80, row['happiness']))
+                for techs, battles, happiness in itertools.product(tech_counts, (0, 50, 100), dict.fromkeys(happiness_values)):
                     # Reserve eight hours of sleep per day. A battle advances
                     # twenty game minutes; MetalEtemon's original 100-battle
                     # bonus fits its 96-hour wait without requiring huge stats.
-                    awake = 64 if levels[cur] == 5 else 96
+                    awake = 80 if levels[cur] == 5 else 96
                     if sessions + (battles + 2) // 3 > awake:
                         continue
-                    bonus = (battles, techs, 100, 100)
+                    bonus = (battles, techs, 100, happiness)
                     if E.pick(cur, kids[cur], reqs, levels, st, mistakes, weight, 'stats', bonus) == child:
                         result = dict(stats=vals, care=mistakes, weight=weight, sessions=sessions, bonus=bonus)
                         _PRACTICAL[cache_key] = result
@@ -196,7 +203,7 @@ def after_evolution(s, stats):
 
 
 def arrival_witness(target, kids, reqs, levels, sp, visited=()):
-    """Find a real chain into an Ultimate, including existing Mega-to-Mega lines."""
+    """Find a real chain into an Ultimate."""
     if target in visited:
         return None
     parents = [p for p, cs in kids.items() if target in cs]
@@ -220,9 +227,26 @@ def arrival_witness(target, kids, reqs, levels, sp, visited=()):
 def chain_witness(parent, child, kids, reqs, levels, sp):
     previous = arrival_witness(parent, kids, reqs, levels, sp)
     if previous:
-        w = practical(parent, child, kids, reqs, levels, sp, previous['stats'], 48)
+        w = practical(parent, child, kids, reqs, levels, sp, previous['stats'], 60)
         if w:
-            return dict(path=previous['path'] + [child], witnesses=previous['witnesses'] + [w])
+            path = previous['path'] + [child]
+            rules = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())
+            timing = rules['evolutionTiming']
+            age, life = 102, 258  # earliest Champion; birth lifetime 360, happiness >=80
+            for p, c in zip(path, path[1:]):
+                wait = timing['hours']['champion'] if levels[p] == 4 else timing['megaHours'] if levels[c] == 6 else timing['ultimateAgainHours']
+                age += wait
+                life -= wait
+                if life <= 0:
+                    return None
+                if c == child:
+                    before = life
+                if levels[c] == 6:
+                    life += rules['evolutionFormula']['lifetime']['mega']
+                elif levels[c] == 5 and levels[p] != 5:
+                    life += rules['evolutionFormula']['lifetime']['ultimate']
+            return dict(path=path, witnesses=previous['witnesses'] + [w],
+                        age_hours=age, life_before=before, life_after=life)
     return None
 
 
@@ -235,13 +259,13 @@ def resolve(sp, editable, primary, problems):
     managed = {t for t, s in sp.items() if 'evolution' in s and
                (t >= S.NUM_ORIGINAL or S.is_record_original(s))}
     table = json.loads(TABLE.read_text())
-    managed -= {t for t, s in sp.items() if s['name'] in table['record_parents']}
+    managed -= {t for t, s in sp.items() if s['name'] in table['record_parents'] and str(t) not in table['levels']}
     def ok(c):
         for p in parents[c]:
             kind = 'in-training' if levels[p] == 2 else 'stats'
             if not E.reachable(p, c, kids[p], reqs, levels, kind): return False
             if levels[p] == 4 and not practical(p, c, kids, reqs, levels, sp): return False
-            if levels[p] == 4 and c in editable:
+            if levels[p] == 4 and c in editable and c >= S.NUM_ORIGINAL:
                 signature = {stat for stat in ALL if reqs[c][stat] != -1}
                 # Identical averages always tie, so the earlier sibling wins
                 # every overlap even if care/weight bands let both win alone.
@@ -251,7 +275,7 @@ def resolve(sp, editable, primary, problems):
             if c in primary and levels[p] == 5:
                 if not chain_witness(p, c, kids, reqs, levels, sp): return False
             old = [k for k in kids[p] if k not in managed]
-            if any(k in reqs and not E.keeps_canonical(p, k, old, kids[p], reqs, levels, kind) for k in old):
+            if any(k in reqs and not E.keeps_canonical(p, k, old, old + ([c] if c not in old else []), reqs, levels, kind) for k in old):
                 return False
         return True
     for _ in range(10):
@@ -274,48 +298,75 @@ def resolve(sp, editable, primary, problems):
         if not ok(c): problems.append(f'{sp[c]["name"]}: no practical picker row from every parent with canonical routes kept')
 
 
+def requirement(s, parents, rookie_slot=0):
+    """Initial row for the level; resolve() separates competing averages."""
+    req = {k: -1 for k in ('digimon',) + ALL + ('care', 'weight', 'discipline', 'happiness', 'battles', 'techs')}
+    req.update(digimon=parents[0], flags=16)
+    if s['level'] == 'rookie':
+        req.update(digimon=-1, care=0, weight=4 if rookie_slot < 6 else 26, techs=0)
+        req[ALL[rookie_slot % 6]] = 1
+        return req
+    hi, lo = {'champion': (100, 100), 'ultimate': (400, 300), 'mega': (500, 400)}[s['level']]
+    for i, stat in enumerate(role_stats(s)[:3]): req[stat] = hi if i < 2 else lo
+    req['care'], req['flags'] = care(s, s['level'])
+    req['weight'] = size_weight(s, 40 if s['level'] == 'champion' else 60)
+    req['techs'] = {'champion': 28, 'ultimate': 35, 'mega': 40}[s['level']]
+    return req
+
+
 def plan():
     sp, names, table = load()
     editable, primary, problems = set(), {}, []
-    # Only listed children's reverse lists change. Disc children have no record
-    # reverse list; their added routes belong in the record parents' to lists.
-    for name, entry in table['children'].items():
-        c = names[name]
-        parents = [names[p] for p in entry['parents']]
-        if entry.get('disc'):
-            for p in parents:
-                if p < S.NUM_ORIGINAL and not S.is_record_original(sp[p]): continue
-                to = sp[p]['evolution']['to']
-                if c not in to: to.append(c)
-            continue
-        ev = sp[c]['evolution']
-        ev['from'] = parents
-        editable.add(c)
-        req = {k: -1 for k in ('digimon',) + ALL + ('care', 'weight', 'discipline', 'happiness', 'battles', 'techs')}
-        req.update(digimon=parents[0], flags=0)
-        chain = entry.get('chain', False)
-        hi, lo = (500, 400) if chain else (400, 300)
-        for i, stat in enumerate(role_stats(sp[c])[:3]): req[stat] = hi if i < 2 else lo
-        req['care'], req['flags'] = care(sp[c], 'ultimate')
-        req['weight'] = size_weight(sp[c], 60)
-        req['techs'] = 40 if chain else 35
-        ev['requirements'] = req
-        if chain: primary[c] = parents[0]
-    resolve(sp, editable, primary, problems)
+    balance = json.loads((ROOT / 'content/tables/evolution-balance.json').read_text())['species']
+    for key, level in table['levels'].items():
+        s = sp[int(key)]
+        s['level'] = level
+        s['evolution']['gains'] = dict(balance[key]['gains'])
+        s['wild'] = dict(balance[key]['wild'])
+        s['drop'] = dict(balance[key]['drop'])
+        s['partner'].update(balance[key]['raise'])
+    for key, specialties in table['specialty_updates'].items():
+        sp[int(key)]['specialties'] = list(specialties)
+    sp[431]['techniques'] = ['Power Crane', 'Full Potential', 'Metal Sprinter', 'Reverse Prog',
+                             'Pulse Laser', 'Delete Program', 'Poison Claw', 'Mass Morph',
+                             'Insect Plague', 'Poison Powder', 'Sweet Breath']
+    # A record child owns its reverse list; a resident child is reached through
+    # its parent's forward list. Only resident 1..62 have native path rows.
+    for key, route in table['routes'].items():
+        t = int(key); s = sp[t]
+        ev = s.setdefault('evolution', {})
+        if t >= S.NUM_ORIGINAL or S.is_record_original(s):
+            ev['from'], ev['to'] = list(route['from']), list(route['to'])
+        elif 1 <= t <= 62:
+            ev['from'] = list(route['from']) + [-1] * (5-len(route['from']))
+            # Imported children's from rows supply additional boot links.
+            native = [c for c in route['to'] if c < S.NUM_ORIGINAL and not S.is_record_original(sp[c])]
+            ev['to'] = native + [-1] * (6-len(native))
+        elif route['to']:
+            problems.append(f'{s["name"]}: non-record species has no resident path row')
+    # Keep existing rows where possible. A changed tier always gets a new row;
+    # every record row is then checked against every parent with the real picker.
     original, _, _ = load()
-    for t, s in sp.items():
-        before = original[t]
-        if s == before:
-            continue
-        allowed = {'from', 'requirements'} if s['name'] in table['children'] and not table['children'][s['name']].get('disc') else set()
-        # A forward list belongs to the record parent when a disc child has no reverse row.
-        if any(e.get('disc') and s['name'] in e['parents'] for e in table['children'].values()):
-            allowed.add('to')
-        old_ev, new_ev = before.get('evolution', {}), s.get('evolution', {})
-        if any(old_ev.get(k) != new_ev.get(k) for k in old_ev.keys() | new_ev.keys() if k not in allowed):
-            problems.append(f'{s["name"]}: changed an unmanaged evolution field')
-        if {k: v for k, v in before.items() if k != 'evolution'} != {k: v for k, v in s.items() if k != 'evolution'}:
-            problems.append(f'{s["name"]}: changed an unmanaged species field')
+    rookie_slots = collections.Counter()
+    for key, route in table['routes'].items():
+        c = int(key); parents = route['from']; s = sp[c]
+        if not parents or s['level'] not in ('rookie', 'champion', 'ultimate', 'mega'): continue
+        record = c >= S.NUM_ORIGINAL or S.is_record_original(s)
+        if not record: continue
+        editable.add(c)
+        if original[c]['level'] != s['level'] or not s['evolution'].get('requirements'):
+            slot = rookie_slots[parents[0]]
+            s['evolution']['requirements'] = requirement(s, parents, slot)
+            rookie_slots[parents[0]] += 1
+        if s['evolution']['requirements']['digimon'] > 0 and s['evolution']['requirements']['digimon'] not in parents:
+            s['evolution']['requirements']['digimon'] = parents[0]
+        if s['level'] == 'mega':
+            primary[c] = parents[0]
+            s['evolution']['requirements']['digimon'] = parents[0]
+    for key, row in table.get('requirement_overrides', {}).items():
+        sp[int(key)]['evolution']['requirements'] = dict(row)
+        editable.add(int(key))
+    resolve(sp, editable, primary, problems)
     return sp, problems
 
 

@@ -1158,7 +1158,13 @@ def species_rows(exe):
             # rows (the disc's species), which the game uses on a disc that does not carry it. The name is the file's
             # (a renamed record original is named alike with or without its record)
             rows = SP.table_rows(s); c = c_rows(exe)[str(t)]
-            out[str(t)] = dict(c, para=dict(c['para'], name=rows['para']['name']))
+            para = dict(c['para'], name=rows['para']['name'])
+            # Tier changes also belong to the resident native table: scripts
+            # and builds without a cached partner row read that table.
+            tiers = json.load(open(os.path.join(ROOT, 'content/tables/evolution-tree.json')))['levels']
+            if str(t) in tiers:
+                para['level'] = rows['para']['level']
+            out[str(t)] = dict(c, para=para)
         else:
             out[str(t)] = SP.table_rows(s)
     if exe.compiled:                                     # an id without a file: the species does not exist (zero rows)

@@ -2,7 +2,7 @@
   "id": 281,
   "name": "Cyclonemon",
   "_source": "dw2 M134CYCL (tools/import_batch.py run content/imports/lists/ninth-12.json)",
-  "level": "ultimate",
+  "level": "champion",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
@@ -25,7 +25,7 @@
   "battle_music": "normal-battle",
   "condition_bubble": [-9, -74, -32, 9],
   "effect_origins": [[4, 0, 50, -80, 10, -16, 47, -85], [14, 0, 0, 170, 20, 9, 95, 149], [1, 0, 0, 0, 1, 0, 0, 0]],
-  "wild": {"hp": 2840, "mp": 2980, "off": 460, "def": 320, "speed": 340, "brain": 290, "bits": 1500},
+  "wild": {"hp": 2000, "mp": 2000, "off": 300, "def": 200, "speed": 100, "brain": 100, "bits": 100},
   "sizing": {
     "game": "dw2",
     "level": 5,
@@ -38,7 +38,7 @@
     "hunger_hours": [4, 8, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,
-    "energy_per_hour": 7,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
     "poop_size": 10,
     "favorite_food": "DigiTrout",
@@ -51,24 +51,24 @@
     "training": {"animation": 57, "hit_tick": 10}
   },
   "evolution": {
-    "from": [47, 88, 228, 89],
-    "to": [],
+    "from": [80, 251],
+    "to": [88, 124],
     "requirements": {
-      "digimon": 47,
-      "hp": 400,
+      "digimon": 80,
+      "hp": 100,
       "mp": -1,
-      "offense": -1,
+      "offense": 100,
       "defense": -1,
-      "speed": 400,
+      "speed": 100,
       "brain": -1,
-      "care": 10,
+      "care": 3,
       "weight": 30,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 35,
-      "flags": 16
+      "techs": 28,
+      "flags": 0
     },
-    "gains": {"hp": 4600, "mp": 4850, "offense": 685, "defense": 440, "speed": 595, "brains": 500}
+    "gains": {"hp": 1500, "mp": 1500, "offense": 200, "defense": 150, "speed": 150, "brains": 150}
   }
 }

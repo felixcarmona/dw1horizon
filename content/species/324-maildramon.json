@@ -2,7 +2,7 @@
   "id": 324,
   "name": "Maildramon",
   "_source": "dw3 M334MLDR (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
-  "level": "ultimate",
+  "level": "champion",
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
@@ -27,7 +27,7 @@
   "condition_bubble": [1, -150, -22, 19],
   "effect_origins": [[7, 30, 0, 0, 20, -8, 44, 4], [25, 48, 37, 0, 12, -5, 71, 58],
                      [9, 115, 0, 0, 25, -98, 91, 112], [9, 140, 0, 0, 25, -119, 111, 136]],
-  "wild": {"hp": 2920, "mp": 3460, "off": 395, "def": 325, "speed": 305, "brain": 345, "bits": 1500},
+  "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
   "sizing": {
     "game": "dw3",
     "level": 5,
@@ -53,24 +53,24 @@
     "training": {"animation": 57, "hit_tick": 20}
   },
   "evolution": {
-    "from": [201, 195],
-    "to": [],
+    "from": [180, 233],
+    "to": [213, 197],
     "requirements": {
-      "digimon": 201,
+      "digimon": 180,
       "hp": -1,
-      "mp": 400,
+      "mp": 100,
       "offense": -1,
       "defense": -1,
-      "speed": 300,
-      "brain": 400,
-      "care": 5,
+      "speed": 100,
+      "brain": 100,
+      "care": 1,
       "weight": 40,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 35,
+      "techs": 28,
       "flags": 16
     },
-    "gains": {"hp": 4950, "mp": 5850, "offense": 590, "defense": 470, "speed": 490, "brains": 580}
+    "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 150, "brains": 200}
   }
 }

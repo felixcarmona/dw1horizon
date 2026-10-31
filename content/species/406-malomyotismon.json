@@ -2,14 +2,14 @@
   "id": 406,
   "name": "MaloMyotismon",
   "_source": "dw3 M378BVND (tools/import_batch.py run content/imports/lists/twentieth-9.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", "air"],
   "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",
                  "Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Spinning Shot",
                  "Megalo Spark", "Confused Storm", "Wind Cutter", "Nightmare Syndromer"],
-  "drop": {"item": "sm.recovery", "percent": 10},
+  "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
   "model": {
     "file": "build/meshfix2-out/MaloMyotismon.MMD",
@@ -30,15 +30,15 @@
   "effect_origins": [[7, 60, 0, 0, 14, -23, 60, 4], [3, 85, -55, 0, 1, 0, -63, -40],
                      [10, 50, -210, 0, 7, 100, 34, -206], [3, 80, -20, 0, 1, 0, -99, -54],
                      [7, 0, 0, 0, 14, 0, 0, 0]],
-  "wild": {"hp": 2700, "mp": 2960, "off": 455, "def": 320, "speed": 340, "brain": 300, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 3,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
-    "energy_fed": 48,
-    "energy_per_hour": 12,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 12,
     "favorite_food": "Gold Acorn",
     "sleep_cycle": "02:00-11:00",
     "favored_region": 5,
@@ -49,11 +49,11 @@
     "training": {"animation": 61, "hit_tick": 10}
   },
   "evolution": {
-    "from": [212],
+    "from": [66, 229],
     "to": [],
     "requirements": {
-      "digimon": 212,
-      "hp": 400,
+      "digimon": 66,
+      "hp": -1,
       "mp": -1,
       "offense": 500,
       "defense": -1,
@@ -65,8 +65,8 @@
       "happiness": -1,
       "battles": -1,
       "techs": 40,
-      "flags": 0
+      "flags": 16
     },
-    "gains": {"hp": 4750, "mp": 4750, "offense": 700, "defense": 450, "speed": 580, "brains": 470}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

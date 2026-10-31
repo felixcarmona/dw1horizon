@@ -31,7 +31,7 @@
     "training": {"animation": 51, "hit_tick": 12}
   },
   "evolution": {
-    "from": [-1, -1, 2, -1, -1],
+    "from": [2, -1, -1, -1, -1],
     "to": [5, 9, 21, 36, 47, 8],
     "requirements": {
       "digimon": 2,

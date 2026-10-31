@@ -2,14 +2,14 @@
   "id": 197,
   "name": "Magnamon",
   "_source": "dcb 189 (card Magnamon) (tools/import_batch.py run content/imports/lists/second-12.json)",
-  "level": "champion",
+  "level": "ultimate",
   "vanilla_as": 5,
   "attribute": "vaccine",
   "specialties": ["battle", "mech", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",
                  "Muscle Charge", "War Cry", "Pulse Laser", "DG Dimension", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Iga School Knife Throw"],
-  "drop": {"item": "sm.recovery", "percent": 0},
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 8,
   "model": {
     "file": "build/batch2/Magnamon.MMD",
@@ -26,7 +26,7 @@
   "battle_music": "normal-battle",
   "condition_bubble": [-23, -122, 32, 4],
   "effect_origins": [[3, 100, -45, 0, 4, -10, -43, -96], [4, 0, 0, 0, 17, 0, 0, 0]],
-  "wild": {"hp": 1540, "mp": 1560, "off": 260, "def": 205, "speed": 200, "brain": 180, "bits": 600},
+  "wild": {"hp": 3090, "mp": 3010, "off": 415, "def": 340, "speed": 290, "brain": 300, "bits": 1500},
   "sizing": {
     "game": "dcb",
     "level": 4,
@@ -38,10 +38,10 @@
     "voice": 2,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
-    "energy_fed": 55,
-    "energy_per_hour": 14,
+    "energy_fed": 45,
+    "energy_per_hour": 11,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "02:00-11:00",
     "favored_region": 0,
@@ -52,24 +52,24 @@
     "training": {"animation": 60, "hit_tick": 10}
   },
   "evolution": {
-    "from": [180, 84],
-    "to": [],
+    "from": [324, 195, 201],
+    "to": [335],
     "requirements": {
-      "digimon": 180,
+      "digimon": 324,
       "hp": -1,
       "mp": -1,
-      "offense": 100,
+      "offense": 400,
       "defense": -1,
       "speed": -1,
-      "brain": 100,
-      "care": 1,
+      "brain": 400,
+      "care": 5,
       "weight": 20,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 28,
+      "techs": 35,
       "flags": 16
     },
-    "gains": {"hp": 1450, "mp": 1450, "offense": 155, "defense": 145, "speed": 155, "brains": 150}
+    "gains": {"hp": 5000, "mp": 5000, "offense": 600, "defense": 500, "speed": 520, "brains": 500}
   }
 }

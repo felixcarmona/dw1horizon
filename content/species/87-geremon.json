@@ -5,7 +5,7 @@
   "level": "champion",
   "vanilla_as": 51,
   "attribute": "virus",
-  "specialties": ["filth", null, null],
+  "specialties": ["filth", "ice", null],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Poop Rnd Toss", "Rnd Spd Toss",
                  "Big Poop Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"],
   "drop": {"item": "Port. potty", "percent": 10},
@@ -44,7 +44,7 @@
   },
   "evolution": {
     "from": [109],
-    "to": [],
+    "to": [269, 42],
     "requirements": {
       "digimon": 109,
       "hp": 100,

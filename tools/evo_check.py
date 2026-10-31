@@ -23,7 +23,7 @@ def reqs_table(dat):
     """evoReqs per species id: the records (DIGI.DAT), the engine layer, the disc."""
     d, count, recs = S.read_archive(dat)
     eng = json.load(open(os.path.join(ROOT, 'content/balance/engine/tables.json')))['species']
-    O = S.originals(); out = {}
+    O = S.originals(); out = {}; source = S.load_content()
     for t in range(count):
         if recs[t] and recs[t]['flags'] & S.FLAG_PARTNER and (t >= S.NUM_ORIGINAL or t in S.record_originals(d)):
             out[t] = recs[t]['evoReqs']
@@ -33,6 +33,8 @@ def reqs_table(dat):
                 r = dict(r or {k: -1 for k in STATS + ('digimon', 'care', 'weight', 'discipline', 'happiness',
                                                        'battles', 'techs')}, flags=(r or {}).get('flags', 0))
                 r.update(eng[str(t)]['evoReqs'])
+            r = dict(r or {})
+            r.update(source.get(t, {}).get('evolution', {}).get('requirements', {}))
             if r: out[t] = r
     return out
 

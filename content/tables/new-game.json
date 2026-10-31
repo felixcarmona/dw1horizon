@@ -1,15 +1,10 @@
 {
-  "_comment": "New-game clock, money, save defaults and partner birth values. Jijimon asks all seven questions; starters is every partner rookie except the eight recolours listed in tools/starter_quiz.py (p254 stores its index); those eight stay in the game through evolution. quiz.weights are sparse points by axis; quiz.cells has 45 starter indices in element/attribute/temperament order: battle, fire, ice, nature, air (mech counts as air); vaccine, data, virus; bold, calm, cunning. quiz.vanillaCells is the same grid for NEW DIGIMON off, holding only the original game's nine rookies. Highest score wins each axis; ties favour the most recent answer, then the earlier axis in that order if the same answer last supported both. Weights are packed as up to three axis/weight nibbles per answer; species ids are uint16, cells and vanillaCells uint8. Ten spare cells repeat species. The cell assignment favours attributes, then specialties: unavoidable exceptions are documented in docs/mods/balance.md. startScript selects the opening MAPHEAD section; cardShopStart is the first six card-shop script-state values. Missing ordinary rules mean zero. The conversation is in script_menu.c; dialogue uses the named text-bank mechanism.",
+  "_comment": "New-game clock, money, save defaults and partner birth values. Jijimon asks all seven questions; starters is the fixed 35-Rookie quiz pool (p254 stores its index); seven recolours plus Mushroomon and Syakomon use evolution instead. quiz.weights are sparse points by axis; quiz.cells has 45 starter indices in element/attribute/temperament order: battle, fire, ice, nature, air (mech counts as air); vaccine, data, virus; bold, calm, cunning. quiz.vanillaCells is the same grid for NEW DIGIMON off, holding only the original game's nine rookies. Highest score wins each axis; ties favour the most recent answer, then the earlier axis in that order if the same answer last supported both. Weights are packed as up to three axis/weight nibbles per answer; species ids are uint16, cells and vanillaCells uint8. Ten spare cells repeat species. The cell assignment favours attributes, then specialties: unavoidable exceptions are documented in docs/mods/balance.md. startScript selects the opening MAPHEAD section; cardShopStart is the first six card-shop script-state values. Missing ordinary rules mean zero. The conversation is in script_menu.c; dialogue uses the named text-bank mechanism.",
   "newGame": {
     "money": 50000,
     "startHour": 8,
     "startMinute": 0,
-    "firstPartner": {
-      "lifetimeHours": 288,
-      "age": 3,
-      "exit": 9,
-      "species": 114
-    },
+    "firstPartner": {"lifetimeHours": 288, "age": 3, "exit": 9, "species": 114},
     "starters": [
       3,
       17,
@@ -20,9 +15,9 @@
       45,
       46,
       57,
-      67,
+      287,
       68,
-      69,
+      284,
       80,
       84,
       109,
@@ -48,134 +43,42 @@
       433
     ],
     "startScript": 204,
-    "cardShopStart": [
-      58,
-      59,
-      60,
-      61,
-      62,
-      63
-    ],
+    "cardShopStart": [58, 59, 60, 61, 62, 63],
     "lives": 3,
-    "partnerBirth": {
-      "lifetimeHours": 360,
-      "discipline": 50,
-      "happiness": 50
-    },
+    "partnerBirth": {"lifetimeHours": 360, "discipline": 50, "happiness": 50},
     "quiz": {
       "weights": [
-        [
-          {
-            "bold": 1
-          },
-          {
-            "calm": 1
-          },
-          {
-            "cunning": 1
-          }
-        ],
-        [
-          {
-            "vaccine": 5
-          },
-          {
-            "data": 5
-          },
-          {
-            "virus": 5
-          }
-        ],
-        [
-          {
-            "vaccine": 1,
-            "bold": 1
-          },
-          {
-            "data": 1,
-            "calm": 1
-          },
-          {
-            "virus": 1,
-            "cunning": 1
-          }
-        ],
-        [
-          {
-            "fire": 2
-          },
-          {
-            "ice": 2
-          },
-          {
-            "nature": 2
-          }
-        ],
-        [
-          {
-            "battle": 2
-          },
-          {
-            "air": 2
-          },
-          {
-            "ice": 1,
-            "nature": 1,
-            "calm": 1
-          }
-        ],
-        [
-          {
-            "battle": 1,
-            "fire": 2
-          },
-          {
-            "ice": 1,
-            "air": 1
-          },
-          {
-            "nature": 1,
-            "air": 1
-          }
-        ],
-        [
-          {
-            "vaccine": 1,
-            "bold": 1
-          },
-          {
-            "data": 1,
-            "cunning": 4
-          },
-          {
-            "virus": 3,
-            "calm": 1
-          }
-        ]
+        [{"bold": 1}, {"calm": 1}, {"cunning": 1}],
+        [{"vaccine": 5}, {"data": 5}, {"virus": 5}],
+        [{"vaccine": 1, "bold": 1}, {"data": 1, "calm": 1}, {"virus": 1, "cunning": 1}],
+        [{"fire": 2}, {"ice": 2}, {"nature": 2}],
+        [{"battle": 2}, {"air": 2}, {"ice": 1, "nature": 1, "calm": 1}],
+        [{"battle": 1, "fire": 2}, {"ice": 1, "air": 1}, {"nature": 1, "air": 1}],
+        [{"vaccine": 1, "bold": 1}, {"data": 1, "cunning": 4}, {"virus": 3, "calm": 1}]
       ],
       "cells": [
         22,
         17,
-        33,
+        9,
         4,
         1,
         10,
         29,
-        24,
+        11,
         34,
         0,
         27,
-        23,
-        11,
+        6,
+        33,
         13,
-        11,
+        23,
         34,
         12,
-        31,
+        30,
         32,
         21,
         32,
-        8,
+        11,
         8,
         14,
         2,
@@ -186,18 +89,18 @@
         7,
         15,
         28,
-        30,
+        8,
         5,
         5,
         18,
-        6,
+        9,
         16,
         22,
         3,
         19,
         26,
-        9,
-        9,
+        24,
+        31,
         24
       ],
       "vanillaCells": [

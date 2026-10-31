@@ -2,14 +2,14 @@
   "id": 274,
   "name": "Blossomon",
   "_source": "dw2 M200BLSA (tools/import_batch.py run content/imports/lists/eighth-12.json)",
-  "level": "champion",
+  "level": "ultimate",
   "vanilla_as": 51,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Powder", "Green Trap", "Danger Sting", "Bug", "Charm Perfume", "Poison Claw",
                  "Insect Plague", "Mass Morph", "Buster Dive", "Megaton Punch", "Counter",
                  "Dynamite Kick (44)", "Tremar", "Sweet Breath"],
-  "drop": {"item": "sm.recovery", "percent": 10},
+  "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 19,
   "model": {
     "file": "build/batch8/Blossomon.MMD",
@@ -28,7 +28,7 @@
   "effect_origins": [[3, 125, -10, 0, 8, 0, 30, -69], [7, 100, -120, 0, 13, 30, -21, -137],
                      [7, 75, -30, -65, 13, 88, -35, -104], [13, 75, -30, -65, 11, -30, 16, 52],
                      [10, 75, -30, 65, 17, 16, 85, 25], [16, 75, -30, 65, 16, -106, 36, 58]],
-  "wild": {"hp": 1350, "mp": 1500, "off": 275, "def": 185, "speed": 225, "brain": 175, "bits": 600},
+  "wild": {"hp": 2970, "mp": 2980, "off": 395, "def": 340, "speed": 295, "brain": 300, "bits": 1500},
   "sizing": {
     "game": "dw2",
     "level": 4,
@@ -40,8 +40,8 @@
     "voice": 8,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
-    "energy_fed": 45,
-    "energy_per_hour": 9,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
     "poop_size": 12,
     "favorite_food": "Deluxmushrm",
@@ -54,24 +54,24 @@
     "training": {"animation": 51, "hit_tick": 10}
   },
   "evolution": {
-    "from": [273],
-    "to": [],
+    "from": [208, 282],
+    "to": [230],
     "requirements": {
-      "digimon": 273,
+      "digimon": 208,
       "hp": -1,
       "mp": -1,
-      "offense": 100,
+      "offense": 400,
       "defense": -1,
-      "speed": 100,
+      "speed": 400,
       "brain": -1,
-      "care": 3,
+      "care": 10,
       "weight": 20,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 28,
+      "techs": 35,
       "flags": 16
     },
-    "gains": {"hp": 1400, "mp": 1450, "offense": 180, "defense": 130, "speed": 180, "brains": 140}
+    "gains": {"hp": 4000, "mp": 5000, "offense": 600, "defense": 600, "speed": 500, "brains": 600}
   }
 }

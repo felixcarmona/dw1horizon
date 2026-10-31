@@ -2,7 +2,7 @@
   "id": 255,
   "name": "Valkyrimon",
   "_source": "dcb 183 (card Valkyrimon) (tools/import_batch.py run content/imports/lists/seventh-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["air", "battle", "ice"],
@@ -29,7 +29,7 @@
   "effect_origins": [[3, 130, -10, 0, 3, 44, 1, -154], [3, 130, -50, 0, 3, 43, 50, -158],
                      [6, 150, 0, 0, 7, 147, 86, 71], [11, 100, 0, 0, 14, 90, 80, -26],
                      [8, 150, 0, 0, 11, -44, 179, -11], [14, 100, 0, 0, 10, -80, 88, 131]],
-  "wild": {"hp": 3450, "mp": 2790, "off": 380, "def": 390, "speed": 265, "brain": 285, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -41,10 +41,10 @@
     "voice": 8,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
-    "energy_fed": 45,
-    "energy_per_hour": 9,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 10,
     "favorite_food": "Muscle Yam",
     "sleep_cycle": "10:00-19:00",
     "favored_region": 7,
@@ -59,12 +59,12 @@
     "to": [],
     "requirements": {
       "digimon": 226,
-      "hp": -1,
+      "hp": 500,
       "mp": -1,
       "offense": -1,
       "defense": 500,
       "speed": -1,
-      "brain": 500,
+      "brain": -1,
       "care": 10,
       "weight": 40,
       "discipline": -1,
@@ -73,6 +73,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 5850, "mp": 4850, "offense": 545, "defense": 600, "speed": 435, "brains": 470}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

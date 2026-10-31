@@ -2,7 +2,7 @@
   "id": 245,
   "name": "Piedmon",
   "_source": "dcb 171 (card Piedmon) (tools/import_batch.py run content/imports/lists/sixth-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
@@ -26,7 +26,7 @@
   "battle_music": "normal-battle",
   "condition_bubble": [0, -144, 3, 3],
   "effect_origins": [[4, 90, 0, 0, 3, 0, -49, -92], [8, 330, 0, 0, 21, 134, 172, -273], [1, 0, 0, 0, 20, 0, 0, 0]],
-  "wild": {"hp": 3010, "mp": 2970, "off": 385, "def": 360, "speed": 290, "brain": 300, "bits": 1500},
+  "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -41,12 +41,12 @@
     "energy_fed": 45,
     "energy_per_hour": 11,
     "poop_timer_10min": 36,
-    "poop_size": 14,
+    "poop_size": 10,
     "favorite_food": "Blue apple",
     "sleep_cycle": "07:00-16:00",
     "favored_region": 3,
     "training_type": "even",
-    "birth_weight": 50,
+    "birth_weight": 30,
     "status_screen_position": [0, 460, -940],
     "item_distance": 10,
     "training": {"animation": 61, "hit_tick": 10}
@@ -70,6 +70,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 5100, "mp": 5200, "offense": 625, "defense": 500, "speed": 490, "brains": 510}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

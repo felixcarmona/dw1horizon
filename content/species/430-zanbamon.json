@@ -2,7 +2,7 @@
   "id": 430,
   "name": "Zanbamon",
   "_source": "dw3 M337ZAMB (tools/import_batch.py run content/imports/lists/nineteenth-7.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 41,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
@@ -28,15 +28,15 @@
   "condition_bubble": [0, -169, -65, 4],
   "effect_origins": [[5, 0, 10, -100, 4, 0, -18, -100], [2, 0, 0, 0, 2, 0, 0, 0],
                      [5, 0, -143, -108, 4, 0, -169, -65]],
-  "wild": {"hp": 3000, "mp": 2990, "off": 415, "def": 360, "speed": 305, "brain": 300, "bits": 1500},
+  "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 9,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
-    "energy_fed": 35,
-    "energy_per_hour": 7,
+    "energy_fed": 45,
+    "energy_per_hour": 11,
     "poop_timer_10min": 36,
-    "poop_size": 11,
+    "poop_size": 10,
     "favorite_food": "Sweet Nut",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 2,
@@ -47,10 +47,10 @@
     "training": {"animation": 46, "hit_tick": 20}
   },
   "evolution": {
-    "from": [325, 321],
+    "from": [321, 306],
     "to": [],
     "requirements": {
-      "digimon": 325,
+      "digimon": 321,
       "hp": -1,
       "mp": -1,
       "offense": -1,
@@ -65,6 +65,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 4900, "mp": 5150, "offense": 585, "defense": 485, "speed": 490, "brains": 500}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

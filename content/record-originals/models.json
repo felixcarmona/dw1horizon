@@ -727,6 +727,28 @@
       }
     },
     {
+      "id": 94,
+      "name": "Icemon",
+      "mmd": {
+        "sources": [
+          {
+            "path": "extracted/CHDAT/MMD3/ICEM.MMD",
+            "size": 38972,
+            "sha256": "1af7c1d694aae9dfe2e5ffcc3312c24c0eac0c156f0dfd40dd8bde2f3bdfe133"
+          },
+          {
+            "path": "extracted/CHDAT/MMD0/AGUM.MMD",
+            "size": 72012,
+            "sha256": "60d5e920b6cf621da8d2f67f703a2fe75f384000cbcdefd9398c76c1477c7c7d"
+          }
+        ],
+        "delta": "content/record-originals/deltas/94.MMD.mdelta",
+        "delta_sha256": "cd8ac3cc6db179f5de3719b73edf82ea6a5b77c0af3b583150b7d24ea888c920",
+        "sha256": "4256b1a818a3c2806f3fc962c955f192124111da1de020bb1012a423332b774d",
+        "size": 93854
+      }
+    },
+    {
       "id": 96,
       "name": "Tsukaimon",
       "mmd": {

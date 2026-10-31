@@ -2,7 +2,7 @@
   "id": 265,
   "name": "DarkTyrannomon",
   "_source": "dw2 M133DTRN (tools/import_batch.py run content/imports/lists/eighth-12.json)",
-  "level": "ultimate",
+  "level": "champion",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
@@ -27,7 +27,7 @@
   "effect_origins": [[3, 130, -10, 0, 20, -1, 6, -147], [3, 130, -50, 0, 20, -1, 52, -148],
                      [6, 150, 0, 0, 17, 68, 152, -31], [11, 100, 0, 0, 2, 255, 98, 8],
                      [8, 150, 0, 0, 13, -41, 163, 17], [14, 100, 0, 0, 2, -252, 92, -10]],
-  "wild": {"hp": 3330, "mp": 2910, "off": 355, "def": 420, "speed": 275, "brain": 300, "bits": 1500},
+  "wild": {"hp": 1450, "mp": 1480, "off": 250, "def": 195, "speed": 190, "brain": 175, "bits": 600},
   "sizing": {
     "game": "dw2",
     "level": 5,
@@ -39,8 +39,8 @@
     "voice": 8,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
-    "energy_fed": 45,
-    "energy_per_hour": 9,
+    "energy_fed": 50,
+    "energy_per_hour": 12,
     "poop_timer_10min": 36,
     "poop_size": 13,
     "favorite_food": "Power Ice",
@@ -53,24 +53,24 @@
     "training": {"animation": 57, "hit_tick": 10}
   },
   "evolution": {
-    "from": [8, 253, 88],
-    "to": [],
+    "from": [84, 351],
+    "to": [260, 266],
     "requirements": {
-      "digimon": 8,
-      "hp": 400,
+      "digimon": 84,
+      "hp": 100,
       "mp": -1,
       "offense": -1,
-      "defense": -1,
+      "defense": 100,
       "speed": -1,
-      "brain": 400,
-      "care": 10,
+      "brain": 100,
+      "care": 3,
       "weight": 30,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
-      "techs": 35,
-      "flags": 16
+      "techs": 28,
+      "flags": 0
     },
-    "gains": {"hp": 5900, "mp": 4750, "offense": 545, "defense": 585, "speed": 460, "brains": 480}
+    "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150}
   }
 }

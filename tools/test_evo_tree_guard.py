@@ -24,6 +24,32 @@ class GuardTests(unittest.TestCase):
     def test_current_tree(self):
         self.assertEqual(check(self.sp, self.kids, self.table), [])
 
+    def test_sheet_mega_level(self):
+        c = self.names['Apocalymon']
+        self.assertIn('sheet Mega must be level 6',
+                      self.errors(lambda s, k: s[c].update(level='ultimate')))
+
+    def test_removed_parent_bonus(self):
+        c, p = self.names['Kurisarimon'], self.names['Tentomon']
+        def stale_bonus(sp, kids):
+            sp[c]['evolution']['requirements']['digimon'] = p
+        self.assertIn('parent bonus names a removed route', self.errors(stale_bonus))
+
+    def test_specialty_exceptions_are_forbidden(self):
+        table = copy.deepcopy(self.table)
+        table['specialty_exceptions'] = [{'parent': 'Agumon', 'child': 'Palmon'}]
+        self.assertIn('specialty exceptions must be empty', check(self.sp, self.kids, table))
+
+    def test_mega_chain_uses_real_clock_and_lifetime(self):
+        _, reqs, levels = T.model(self.sp)
+        c = self.names['Apocalymon']
+        p = self.sp[c]['evolution']['from'][0]
+        witness = T.chain_witness(p, c, self.kids, reqs, levels, self.sp)
+        self.assertIsNotNone(witness)
+        self.assertEqual(witness['age_hours'], 366)
+        self.assertEqual(witness['life_before'], 90)
+        self.assertEqual(witness['life_after'], 210)
+
     def test_champion_dead_end(self):
         p = self.names['Baronmon']
         self.assertIn('Baronmon: 0 ultimate', self.errors(lambda s, k: k[p].clear()))

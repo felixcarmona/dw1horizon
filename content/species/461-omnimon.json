@@ -2,14 +2,14 @@
   "id": 461,
   "name": "Omnimon",
   "_source": "dcb 180 (card Omnimon *e1) (tools/import_batch.py run content/imports/lists/fit-2.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "ice", "fire"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
                  "Ice Statue", "Aurora Freeze", "Giga Freeze", "Water Blit", "Prominence Beam",
                  "Magma Bomb", "Red Inferno", "Fire Tower", "Mail Strome"],
-  "drop": {"item": "Giant Meat", "percent": 30},
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 5,
   "model": {
     "file": "build/fitfix/Omnimon.MMD",
@@ -29,15 +29,15 @@
   "effect_origins": [[5, 100, 30, 0, 8, -71, -91, -152], [5, 120, -50, 0, 8, -142, -137, -118],
                      [5, 120, -100, 0, 8, -179, -164, -86], [5, 65, -30, 0, 8, -92, -117, -83],
                      [4, 160, -190, 0, 8, -245, -196, -108], [1, 0, 0, 0, 14, 0, 0, 0]],
-  "wild": {"hp": 2980, "mp": 3010, "off": 390, "def": 350, "speed": 295, "brain": 305, "bits": 1500},
+  "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 2,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,
-    "energy_per_hour": 9,
+    "energy_per_hour": 11,
     "poop_timer_10min": 36,
-    "poop_size": 12,
+    "poop_size": 10,
     "favorite_food": "Sweet Nut",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 0,
@@ -48,7 +48,7 @@
     "training": {"animation": 61, "hit_tick": 20}
   },
   "evolution": {
-    "from": [12, 191],
+    "from": [12],
     "to": [],
     "requirements": {
       "digimon": 12,
@@ -66,6 +66,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 4900, "mp": 4950, "offense": 590, "defense": 485, "speed": 495, "brains": 515}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

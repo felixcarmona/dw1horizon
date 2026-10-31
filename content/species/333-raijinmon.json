@@ -2,14 +2,14 @@
   "id": 333,
   "name": "Raijinmon",
   "_source": "dw3 M441RAIZ (tools/import_batch.py run content/imports/lists/thirteenth-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 40,
   "attribute": "virus",
   "specialties": ["air", "mech", "battle"],
   "techniques": ["Thunder Justice", "Megalo Spark", "Spinning Shot", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Power Crane", "DG Dimension", "All Range Beam", "Delete Program", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "Deadly Bomb"],
-  "drop": {"item": "S.speed.disk", "percent": 30},
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
   "model": {
     "file": "build/sizes-out/models/Raijinmon.MMD",
@@ -27,7 +27,7 @@
   "condition_bubble": [0, -140, 8, 4],
   "effect_origins": [[7, "any", 0, 0, 10, -43, 452, 163], [10, "any", 0, 0, 7, 80, -80, -43],
                      [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 50, 307, 66]],
-  "wild": {"hp": 2800, "mp": 3390, "off": 400, "def": 335, "speed": 300, "brain": 355, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw3",
     "level": 5,
@@ -39,15 +39,15 @@
     "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
-    "energy_fed": 32,
-    "energy_per_hour": 6,
+    "energy_fed": 35,
+    "energy_per_hour": 7,
     "poop_timer_10min": 36,
     "poop_size": 10,
     "favorite_food": "Deluxmushrm",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 3,
     "training_type": "mp-brains",
-    "birth_weight": 40,
+    "birth_weight": 30,
     "status_screen_position": [260, 360, -1400],
     "item_distance": 10,
     "training": {"animation": 61, "hit_tick": 12}
@@ -61,7 +61,7 @@
       "mp": 500,
       "offense": -1,
       "defense": -1,
-      "speed": 500,
+      "speed": -1,
       "brain": -1,
       "care": 10,
       "weight": 40,
@@ -71,6 +71,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 4950, "mp": 5850, "offense": 580, "defense": 455, "speed": 515, "brains": 560}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

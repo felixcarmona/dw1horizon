@@ -8,38 +8,10 @@
       "remindSection": 1241,
       "missedSection": 1242
     },
-    "beetleCup": {
-      "cup": 22,
-      "day": 22,
-      "otherDay": 149
-    },
-    "pool": {
-      "levelLow": 3,
-      "levelHigh": 5,
-      "extraMin": 7,
-      "extraDivisor": 2
-    },
-    "win": {
-      "result": 3,
-      "specialCup": 5,
-      "specialCupResult": 2
-    }
+    "beetleCup": {"cup": 22, "day": 22, "otherDay": 149},
+    "pool": {"levelLow": 3, "levelHigh": 6, "extraMin": 7, "extraDivisor": 2},
+    "win": {"result": 3, "specialCup": 5, "specialCupResult": 2}
   },
-  "tournamentRemap": [
-    {
-      "from": 64,
-      "to": 54
-    },
-    {
-      "from": 63,
-      "to": 48
-    },
-    {
-      "from": 65,
-      "to": 42
-    }
-  ],
-  "stdArena": {
-    "screen": 106
-  }
+  "tournamentRemap": [{"from": 64, "to": 54}, {"from": 63, "to": 48}, {"from": 65, "to": 42}],
+  "stdArena": {"screen": 106}
 }

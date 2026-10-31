@@ -2,14 +2,14 @@
   "id": 408,
   "name": "Suijinmon",
   "_source": "dw3 M440SIJN (tools/import_batch.py run content/imports/lists/twentieth-9.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 54,
   "attribute": "data",
   "specialties": ["ice", "mech", null],
   "techniques": ["Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",
                  "Tear Drop", "Aqua Magic", "DG Dimension", "Pulse Laser", "All Range Beam",
                  "Delete Program", "Reverse Prog", "Power Crane", "Mail Strome"],
-  "drop": {"item": "sm.recovery", "percent": 10},
+  "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 26,
   "model": {
     "file": "build/meshfix2-out/Suijinmon.MMD",
@@ -28,15 +28,15 @@
   "condition_bubble": [0, -128, -132, 17],
   "effect_origins": [[4, -70, 70, 0, 17, 0, 83, -17], [17, 118, 0, 129, 2, -40, 71, -125],
                      [2, 230, -100, 0, 1, 0, -121, -63], [2, 0, 0, 0, 1, 0, -38, 134]],
-  "wild": {"hp": 2730, "mp": 2880, "off": 450, "def": 315, "speed": 340, "brain": 305, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 2,
     "hunger_hours": [4, 12, 20],
     "energy_max": 80,
-    "energy_fed": 30,
-    "energy_per_hour": 4,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 14,
+    "poop_size": 12,
     "favorite_food": "Digiseabass",
     "sleep_cycle": "07:00-16:00",
     "favored_region": 6,
@@ -65,6 +65,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 4650, "mp": 5000, "offense": 690, "defense": 455, "speed": 585, "brains": 500}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

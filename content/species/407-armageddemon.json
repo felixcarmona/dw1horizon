@@ -2,7 +2,7 @@
   "id": 407,
   "name": "Armageddemon",
   "_source": "dw3 M382ARMG (tools/import_batch.py run content/imports/lists/armagemon.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["fire", "battle", "mech"],
@@ -27,15 +27,15 @@
   "condition_bubble": [0, -37, -80, 2],
   "effect_origins": [[4, 0, 80, -100, 2, 0, 87, -71], [4, 0, 80, -280, 2, 0, 120, -225],
                      [9, 0, 80, -30, 1, 79, 201, 6], [4, 0, 80, -200, 2, 0, 106, -156]],
-  "wild": {"hp": 3340, "mp": 2780, "off": 365, "def": 400, "speed": 280, "brain": 295, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 7,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
-    "energy_fed": 53,
-    "energy_per_hour": 12,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 10,
     "favorite_food": "Digicatfish",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 0,
@@ -46,25 +46,25 @@
     "training": {"animation": 61, "hit_tick": 10}
   },
   "evolution": {
-    "from": [237],
+    "from": [246, 294],
     "to": [],
     "requirements": {
-      "digimon": 237,
+      "digimon": 246,
       "hp": 500,
       "mp": -1,
       "offense": -1,
-      "defense": 500,
+      "defense": -1,
       "speed": -1,
-      "brain": 400,
+      "brain": -1,
       "care": 10,
       "weight": 30,
       "discipline": -1,
       "happiness": -1,
       "battles": -1,
       "techs": 40,
-      "flags": 0
+      "flags": 16
     },
-    "gains": {"hp": 5950, "mp": 4750, "offense": 545, "defense": 590, "speed": 460, "brains": 490}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   },
   "_former_name": "Armagemon"
 }

@@ -2,14 +2,14 @@
   "id": 207,
   "name": "Seraphimon",
   "_source": "dcb 184 (card Seraphimon) (tools/import_batch.py run content/imports/lists/third-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["air", "fire", "battle"],
   "techniques": ["Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm", "Wind Cutter",
                  "Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Megaton Punch",
                  "Counter", "Dynamite Kick (44)", "Sonic Jab", "High Electro Shocker"],
-  "drop": {"item": "sm.recovery", "percent": 10},
+  "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 34,
   "model": {
     "file": "build/sizes-out/models/Seraphimon.MMD",
@@ -29,7 +29,7 @@
   "effect_origins": [[7, 60, 0, 0, 6, 10, 88, 12], [3, 85, -55, 0, 2, -1, 149, -13],
                      [10, 50, -210, 0, 10, 43, 107, -297], [3, 80, -20, 0, 2, -1, 111, -48],
                      [7, 0, 0, 0, 6, 0, 0, 0]],
-  "wild": {"hp": 2700, "mp": 2850, "off": 460, "def": 305, "speed": 355, "brain": 305, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -41,10 +41,10 @@
     "voice": 3,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
-    "energy_fed": 48,
-    "energy_per_hour": 12,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 12,
     "favorite_food": "Gold Acorn",
     "sleep_cycle": "02:00-11:00",
     "favored_region": 5,
@@ -73,6 +73,6 @@
       "techs": 40,
       "flags": 16
     },
-    "gains": {"hp": 4550, "mp": 4750, "offense": 665, "defense": 435, "speed": 575, "brains": 500}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }

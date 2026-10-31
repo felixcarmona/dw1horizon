@@ -22,6 +22,11 @@ def check(sp, kids, table):
         natural.add(t)
         todo.extend(kids.get(t, []))
     errors = []
+    if table['specialty_exceptions']:
+        errors.append('specialty exceptions must be empty')
+    for t in table['sheet_megas']:
+        if t >= T.S.NUM_ORIGINAL and sp[t]['level'] != 'mega':
+            errors.append(f'{sp[t]["name"]}: sheet Mega must be level 6')
     incoming = {}
     for p, children in kids.items():
         if sp[p]['level'] != 'in-training' and len(set(children)) > 6:
@@ -51,6 +56,10 @@ def check(sp, kids, table):
         if 'partner' in s and s['level'] != 'none' and t not in accessible:
             errors.append(f'{s["name"]}: no natural or documented special route')
     for name, entry in table['children'].items():
+        s = sp[names[name]]
+        bonus = s['evolution']['requirements']['digimon']
+        if not entry.get('disc') and bonus > 0 and bonus not in [names[p] for p in entry['parents']]:
+            errors.append(f'{name}: parent bonus names a removed route')
         if entry.get('chain') and sp[names[name]]['evolution']['requirements']['digimon'] != names[entry['parents'][0]]:
             errors.append(f'{name}: Mega bonus must name its first listed parent')
     exceptions = {(e['parent'], e['child']) for e in table['specialty_exceptions']}
@@ -95,7 +104,7 @@ def practical_errors(sp, kids, table):
                     if any(signature == {stat for stat in T.ALL if reqs[k][stat] != -1}
                            for k in kids[p] if k != c and k in reqs):
                         errors.append(f'{parent} -> {name}: identical sibling picker average')
-    preserved = {'Jijimon', 'Machinedramon'} | set(table.get('disc_mega_routes', {}))
+    preserved = {'Analogman', 'Jijimon', 'Machinedramon', 'MetalEtemon'} | set(table.get('disc_mega_routes', {}))
     for name in table.get('canon_megas', []):
         if name in preserved:
             continue

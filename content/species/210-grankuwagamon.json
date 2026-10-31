@@ -2,7 +2,7 @@
   "id": 210,
   "name": "GranKuwagamon",
   "_source": "dcb 182 (card GranKuwagamon) (tools/import_batch.py run content/imports/lists/third-12.json)",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 60,
   "attribute": "virus",
   "specialties": ["nature", "battle", "air"],
@@ -27,7 +27,7 @@
   "condition_bubble": [0, -162, -42, 3],
   "effect_origins": [[4, 0, 80, -100, 3, 0, 16, -66], [4, 0, 80, -280, 3, 0, 20, -295],
                      [9, 0, 80, -30, 8, 92, 14, -54], [4, 0, 80, -200, 3, 0, 18, -194]],
-  "wild": {"hp": 3500, "mp": 2760, "off": 375, "def": 390, "speed": 265, "brain": 285, "bits": 1500},
+  "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dcb",
     "level": 5,
@@ -39,10 +39,10 @@
     "voice": 7,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
-    "energy_fed": 53,
-    "energy_per_hour": 12,
+    "energy_fed": 40,
+    "energy_per_hour": 8,
     "poop_timer_10min": 36,
-    "poop_size": 13,
+    "poop_size": 10,
     "favorite_food": "Digicatfish",
     "sleep_cycle": "19:00-04:00",
     "favored_region": 0,
@@ -71,6 +71,6 @@
       "techs": 40,
       "flags": 0
     },
-    "gains": {"hp": 5850, "mp": 4600, "offense": 545, "defense": 570, "speed": 445, "brains": 510}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 700, "brains": 700}
   }
 }
