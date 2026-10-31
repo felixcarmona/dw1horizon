@@ -13,6 +13,27 @@ const LINKS = {
 // The box art is not ours and is not in this repository: the visitor's browser asks libretro-thumbnails for it, and
 // the plain disc stands in when that fails.
 const COVERS = 'https://raw.githubusercontent.com/libretro-thumbnails/Sony_-_PlayStation/master/Named_Boxarts/';
+// The disc shows until the box art is ready. Each cover is drawn here at the size it is shown, in colour and in grey:
+// phones do not have to paint two large filtered pictures per card, and a failed download leaves the disc.
+async function showBoxart(id, art) {
+  const image = Object.assign(new Image(), { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer',
+                                             src: COVERS + encodeURIComponent(BOXART[id]) + '.png' });
+  await image.decode();
+  const canvas = Object.assign(document.createElement('canvas'), { width: 320, height: 320 });
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0, 320, 320);
+  const colour = canvas.toDataURL('image/jpeg', .85);
+  const pixels = ctx.getImageData(0, 0, 320, 320);
+  for (let i = 0; i < pixels.data.length; i += 4) {
+    const [r, g, b] = pixels.data.subarray(i, i + 3);
+    pixels.data.fill(((.3 * r + .59 * g + .11 * b - 128) * .78 + 128) * 1.14, i, i + 3);   // grey, low contrast, light
+  }
+  ctx.putImageData(pixels, 0, 0);
+  const grey = art.querySelector('.cover-grey');
+  grey.style.filter = 'none';
+  grey.src = canvas.toDataURL('image/jpeg', .85);
+  art.querySelector('.cover-colour').src = colour;
+}
 const BOXART = {
   us: 'Digimon World (USA)', dcb: 'Digimon - Digital Card Battle (USA)',
   dw2: 'Digimon World 2 (USA)', dw2003: 'Digimon World 2003 (Europe) (En,Fr,De,Es,It)',
@@ -368,13 +389,13 @@ function buildSlots() {
   for (const g of games.values()) {
     const li = el('li', { className: 'slot' });
     li.dataset.game = g.id;
-    const cover = (cls) => el('img', { className: `cover ${cls}`, src: COVERS + encodeURIComponent(BOXART[g.id]) + '.png', alt: '', width: 320, height: 320,
-                                       referrerPolicy: 'no-referrer', onerror: (e) => { e.target.onerror = null; e.target.src = 'media/disc.svg'; } });
+    const cover = (cls) => el('img', { className: `cover ${cls}`, src: 'media/disc.svg', alt: '', width: 320, height: 320 });
     const pct = el('span', { className: 'slot-pct' });                        // (the cover is the progress bar)
     pct.setAttribute('aria-hidden', 'true');
     const check = el('span', { className: 'slot-check', textContent: '✓' });   // labelled "checked" (renderSlots)
     check.setAttribute('role', 'img');
     const art = el('div', { className: 'slot-art' }, cover('cover-grey'), cover('cover-colour'), pct, check);
+    showBoxart(g.id, art).catch(() => {});
     li.append(art, el('div', { className: 'slot-text' }, el('b', { className: 'slot-name', textContent: gameName(g.id) }),
                       el('small', { className: 'slot-purpose' })));
     g.el = li;
