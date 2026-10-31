@@ -66,7 +66,7 @@ def load_extra(path=EXTRA, include_japanese=True):
     out, cur = [], None
     paths = [path]
     japanese = os.path.join(ROOT, 'tools/font/japanese.txt')
-    if include_japanese and os.path.abspath(path) == os.path.join(ROOT, 'tools/font/extra.txt') and os.path.isfile(japanese):
+    if include_japanese and os.path.abspath(path) == os.path.abspath(os.path.join(ROOT, 'tools/font/extra.txt')) and os.path.isfile(japanese):
         paths.append(japanese)
     stamp = tuple((os.path.abspath(p), os.stat(p).st_mtime_ns, os.stat(p).st_size) for p in paths)
     if stamp in _EXTRA_CACHE:

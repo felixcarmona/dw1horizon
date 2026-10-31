@@ -15,6 +15,13 @@ from . import naming as N
 
 ROOT = BE.ROOT
 CORE = [os.path.join(ROOT, 'story', 'core', f) for f in ('engine.dws', 'scene.dws', 'recruit.dws')]
+
+
+def import_line(path):
+    """An `import` of the lowered code: a backslash in a story string is an escape, so paths keep forward slashes."""
+    return 'import "' + path.replace(os.sep, '/') + '";'
+
+
 ROOTS = ('dw', 'dw.text', 'dw.names')
 CMP = {ast.Eq: '==', ast.NotEq: '!=', ast.Lt: '<', ast.LtE: '<=', ast.Gt: '>', ast.GtE: '>='}
 TICK_MS = 50                                           # the game counts 20 ticks a second
@@ -728,14 +735,14 @@ class Module:
     def lower(self):
         """-> (script DWS text or None, MAPHEAD DWS text or None, declarations DWS text or None)"""
         self.check_owning()
-        imports = [f'import "{p}";' for p in CORE]
+        imports = [import_line(p) for p in CORE]
         names_dws = os.path.abspath(os.path.join(self.base or os.path.join(ROOT, 'story', 'base'), 'names.dws'))
-        if os.path.exists(names_dws): imports.append(f'import "{names_dws}";')
+        if os.path.exists(names_dws): imports.append(import_line(names_dws))
         head_mod = [f'module {self.module};'] if self.module else []
         decl = self.decls()
-        if decl: imports.append(f'import "{lowered_path(self.path, "decl")}";')
+        if decl: imports.append(import_line(lowered_path(self.path, "decl")))
         for d in self.deps:
-            if d in self.dep_decls: imports.append(f'import "{lowered_path(d, "decl")}";')     # (constants only: nothing to import)
+            if d in self.dep_decls: imports.append(import_line(lowered_path(d, "decl")))     # (constants only: nothing to import)
         script = []; mh = []
         evs = [h for h in self.handlers if h.kind != 'maphead']
         mhs = [h for h in self.handlers if h.kind == 'maphead']
@@ -771,7 +778,7 @@ class Module:
         temps = [f'temp var {t};' for t in sorted(self.temps)] + sorted(self.aliases_dws)    # (`clock.day - x`, shop stock)
         sc = head + '\n'.join(temps + top + script) + '\n' if (script or top) else None
         return sc, (head + '\n'.join(mh) + '\n' if mh else None), \
-            ('\n'.join([f'import "{p}";' for p in CORE] + head_mod + decl) + '\n' if decl else None)
+            ('\n'.join([import_line(p) for p in CORE] + head_mod + decl) + '\n' if decl else None)
 
     def guarded(self, f, *args):
         """f(*args), with its error kept for the report of the whole file."""
