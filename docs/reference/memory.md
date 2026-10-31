@@ -673,3 +673,12 @@ The eight-bank base recorded under 0281 has only 160 bytes spare on that setup.
 Applying the measured 128-byte loss projects 32 bytes remaining; this projection
 has not been checked by rebuilding all eight languages. Release heap checks must
 use the release's actual language padding, executable and archive.
+
+## Cheats list paging
+
+Patch 0287 changes one input-mask byte in the MENU overlay without changing its
+44,804-byte size. In matching English-only builds, the main executable is
+byte-identical: `main_BSS_END` remains `0x801cb9fc` and the heap remains 197,888
+bytes (zero heap cost). Heapcheck passes and all 320 actual-archive story setups
+fit, with a minimum margin of 15,488 bytes on screen 361. These are English test
+bank measurements, separate from the eight-language city-page figures above.

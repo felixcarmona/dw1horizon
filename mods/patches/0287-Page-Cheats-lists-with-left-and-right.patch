@@ -1,0 +1,25 @@
+From 57b4643b680193ec3132412debdb95c160e8a077 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 18:25:29 +0000
+Subject: [PATCH] Patch 0287: page Cheats lists with left and right
+
+---
+ src/main/mod_lab_menu.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index 8e85314..b74264f 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -542,7 +542,7 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+             }
+         } else {
+             count = modLabRowCount();
+-            step = (pressed & (PAD_L1 | PAD_R1)) ? 10 : 1;
++            step = (pressed & (PAD_LEFT | PAD_RIGHT | PAD_L1 | PAD_R1)) ? 10 : 1;
+             if (pressed & (PAD_UP | PAD_LEFT | PAD_L1)) MOD_LAB_CURSOR -= step;
+             if (pressed & (PAD_DOWN | PAD_RIGHT | PAD_R1)) MOD_LAB_CURSOR += step;
+             if (count > 0) { if (MOD_LAB_CURSOR < 0) MOD_LAB_CURSOR = 0; if (MOD_LAB_CURSOR >= count) MOD_LAB_CURSOR = count - 1; }
+-- 
+2.55.0
+
