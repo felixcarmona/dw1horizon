@@ -90,7 +90,7 @@ State machine and global variables (all in the executable, bss):
 | `FLEE_DISABLED[0]` | `0x80134D7C` | i32 | = trigger 1: boss battle, no «Run», everyone on screen joins, enemies spend no MP |
 | `FLEE_DISABLED[1]` | `0x80134D80` | i32 | misnamed: global 110-tick lock after an area technique (`battle_main.c:2469,2487`) |
 | `IS_PREDEFINED_BATTLE` | `0x80134E84` | u8 | = PStat 0xFA: the enemies are set by the script (PStats 0xFB–0xFD) |
-| `BATTLE_TOGGLE_LIFEBAR` | `0x80134D64` | u8 | Select toggles the enemy life bars |
+| `BATTLE_TOGGLE_LIFEBAR` | `0x80134D64` | u8 | Select: 1 continuous enemy bars (default), 0 briefly after hits; saved with options |
 | `BATTLE_ATTACKING_DIGIMON` / `BATTLE_TARGETED_DIGIMON` | `0x80134EF8` / `0x80134EF4` | ptr | who attacks and whom, for the EFE engine |
 | `BTL_FINISHER_TIMER` / `BTL_FINISHER_AURA_ID` / `BTL_SAVED_CHARGE_MODE` | `0x80135080` / `0x8013507C` / `0x80135078` | i32, i32, u8 | 0x50-tick aura before releasing the finisher; partner's `chargeMode` on entry (restored on exit) |
 | `BATTLES_STARTED` / `BATTLES_FLED` / `BITS_TO_GAIN` / `MONEY` | `0x80134FC8` / `0x80134FCA` / `0x80134E90` / `0x80134EB8` | u16, u16, u16, u32 | counters (cap 9999); bits being counted in the victory box; bits (cap 999 999) |
@@ -425,7 +425,7 @@ Then `BTL_tickAttackHits` (hit resolution) and `BTL_tickStatusEffects`.
 Distance, 6 Defensive, 7 Change, 8–10 technique 1–3, 11 Finisher. Left /
 right cycle through the menu (skipping Run if trigger 1), Cross confirms (no
 effect if no enemies remain), Square launches the finisher if
-`finisherProgress == finisherGoal`, Select toggles the bars, Triangle opens
+`finisherProgress == finisherGoal`, Select toggles continuous/brief enemy bars (saved across fights and resets), Triangle opens
 the inventory (`battle_tick.c:249`). `commandDelay` is computed from
 discipline and set to 0 right afterwards (`:135-141`): dead code, the
 commands are immediate. Effect (`BTL_tickPartnerAI` `:372-513`,
@@ -733,3 +733,29 @@ the start (`INITIAL_COMBAT_STATS`) and restores it at the end.
 - The ×1.2 in the hit chance against a standing defender (anim 0x21/0x22) is applied to `x`, so it **reduces** the
   chance of hitting someone who stands still (`battle_main.c:1960`); counter-intuitive, but that is the code.
 - The EFE effect interpreter (`battle_effect.c`) is outlined in [engine.md](engine.md#effects-efedatefe).
+
+### Enemy head bars (0276)
+
+`BTL_renderEnemyHPBars` selects the original renderer unchanged when NEW ENEMY
+BARS is OFF. ON uses `dw/enemy_bars.h`, compiled only into BTL/STD/VS overlays.
+STD and VS add the head bar for fighter 1 alongside their existing fixed panels;
+Select also gates the opponent HP/MP panels, while finisher state keeps ticking.
+The head uses `DIGI_PARA(type).height` and world projection, as `renderFleeBubble`
+does, including the scrolling camera offset conversion; the body bone is not the anchor. The group clamps to the screen and clears the wild portrait/Auto label and
+partner HP/MP panel, or the two wider arena/VS HP/MP panels. Off-screen feet, dead fighters, `NO_AI_FLAG`
+(finisher/cinematic) and non-combat states suppress the new bar. Its OT levels
+7–10 match the battle HUD, above models and below menus/inventory.
+
+HP and max HP are signed 16-bit fields (`Stats`); modded species and balance
+records use the same fields. The maximum positive value is **32767** (five
+digits), even though ordinary species currently use at most 9999. The renderer
+formats the whole positive value with a fixed two-pixel gap, no padding and no
+right alignment; it clamps using the wider of current/max HP, keeping the group steady as HP loses
+digits while leaving the current value unpadded. The track
+is 32×3 (34×5 including its frame), grey (52,52,60), and the original green →
+yellow → red rule supplies its fill, with a top row 50 brighter per channel.
+
+`BATTLE_TOGGLE_LIFEBAR` starts at 1 and battle setup never resets it. Select
+retains the original hit timer for brief mode; the new renderer continues HP
+animation while hidden. The save's inverted flags and header copy are described
+in [options](../mods/options.md#enemy-life-bars).

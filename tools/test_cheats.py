@@ -89,7 +89,10 @@ def main():
 #define MOD_BUTTONS_US 0
 #define MOD_DIFF_EASY 0
 #define MOD_DIFF_NORMAL 1
-#define MOD_OPT_BYTES 13
+#define MOD_OPT_BYTES 14
+#define MOD_OPT_HEADER_COUNT 0x1f
+#define MOD_OPT_HEADER_OLD_BARS 0x40
+#define MOD_OPT_HEADER_HIDE_BARS 0x20
 #define MOD_OPT_HEADER_BYTES 12
 #define MOD_OPT_HEADER_CHEATS 0x80
 #define MOD_OPT_CHEATS_BIT 1
@@ -102,6 +105,8 @@ def main():
 int32_t MOD_OPT_BUTTONS, MOD_OPT_CLOCK, MOD_OPT_BARS, MOD_OPT_EVO_GUIDE;
 int32_t MOD_OPT_NEW_DIGIMON, MOD_LANG, MOD_OPT_SIGNS, MOD_OPT_STORY;
 int32_t MOD_OPT_DIFFICULTY, MOD_OPT_QUICK_BATTLE, MOD_OPT_CHEATS, MOD_OPT_SHORTCUTS, MOD_OPT_TOUCHED;
+int32_t MOD_OPT_ENEMY_BARS = 1;
+uint8_t BATTLE_TOGGLE_LIFEBAR = 1;
 int32_t MOD_SAVE_NUMBER, fps = 60;
 struct { uint8_t prefix[0x50], pocketStation[16], icon[32]; } SAVE_FILE;
 int32_t modFrameRate(void) { return fps; }
@@ -133,7 +138,7 @@ int main(void) {
             memset(&SAVE_FILE, 0xA5, sizeof(SAVE_FILE));
             MOD_OPT_CHEATS = cheats; MOD_OPT_QUICK_BATTLE = quick;
             modOptionBytes(options);
-            assert(options[11] == quick && options[12] == cheats && options[13] == 0xA5);
+            assert(options[11] == quick && options[12] == cheats && options[13] == 0 && options[14] == 0xA5);
             modTitleOptions();
             assert(modHeaderSaveNumber((uint8_t *)&SAVE_FILE) == MOD_SAVE_NUMBER);
             assert(!memcmp(SAVE_FILE.pocketStation + 4, options, 12));
@@ -167,7 +172,26 @@ int main(void) {
     assert(!MOD_OPT_SHORTCUTS);
     for (int count = 0; count < 128; count++) {
         SAVE_FILE.pocketStation[1] = count;
-        assert((modHeaderSaveNumber((uint8_t *)&SAVE_FILE) >= 0) == (count > 0 && count <= 12));
+        assert((modHeaderSaveNumber((uint8_t *)&SAVE_FILE) >= 0) == ((count & 0x1f) > 0 && (count & 0x1f) <= 12));
+    }
+    /* Explicit migration from any old record, including no record at all. */
+    for (int len = 0; len < 14; len++) {
+        MOD_OPT_ENEMY_BARS = BATTLE_TOGGLE_LIFEBAR = 0;
+        modApplyOptions(len ? options : NULL, len);
+        assert(MOD_OPT_ENEMY_BARS && BATTLE_TOGGLE_LIFEBAR);
+    }
+    for (int style = 0; style < 2; style++) for (int shown = 0; shown < 2; shown++) {
+        MOD_OPT_ENEMY_BARS = style; BATTLE_TOGGLE_LIFEBAR = shown;
+        modOptionBytes(options); modTitleOptions();
+        assert(!!(SAVE_FILE.pocketStation[1] & 0x40) == !style);
+        assert(!!(SAVE_FILE.pocketStation[1] & 0x20) == !shown);
+        MOD_OPT_ENEMY_BARS = !style; BATTLE_TOGGLE_LIFEBAR = !shown;
+        modApplyOptions(options, 14);
+        assert(MOD_OPT_ENEMY_BARS == style && BATTLE_TOGGLE_LIFEBAR == shown);
+        MOD_OPT_TOUCHED = 1; MOD_OPT_ENEMY_BARS = !style; BATTLE_TOGGLE_LIFEBAR = !shown;
+        modApplyOptions(options, 14);
+        assert(MOD_OPT_ENEMY_BARS == !style && BATTLE_TOGGLE_LIFEBAR == shown);
+        MOD_OPT_TOUCHED = 0;
     }
     for (int key = 1; key <= 8; key *= 2) {
         POLLED_INPUT = PAD_SELECT | key; POLLED_INPUT_PREVIOUS = 0;
@@ -185,7 +209,7 @@ int main(void) {
         POLLED_INPUT_PREVIOUS = POLLED_INPUT; effects = 0;
         assert(modRosterTick() == 0 && effects == 0);
     }
-    puts("PASS: save round trips, old saves OFF, header bounds, explicit options retained, all four shortcuts gated");
+    puts("PASS: save round trips, legacy defaults, enemy-bar migration, header bounds, explicit options retained, all four shortcuts gated");
 }
 '''
     compile_check(code)

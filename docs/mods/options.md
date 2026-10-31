@@ -1,7 +1,7 @@
 # Options: the title menu's OPTIONS
 
-Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239 and 0244 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
-opens a box of thirteen switches (twelve in a `FONT=original` build, which has no FONT):
+Patches 0167, 0169, 0173-0175, 0177, 0180-0182, 0199, 0212, 0234, 0239, 0244 and 0276 (`mods/patches/`). The title menu has a fifth row, **OPTIONS**, under BATTLE MODE. It
+opens a box of fourteen switches (thirteen in a `FONT=original` build, which has no FONT):
 
 | Row | Values | Default | Effect |
 |---|---|---|---|
@@ -17,6 +17,8 @@ opens a box of thirteen switches (twelve in a `FONT=original` build, which has n
 | FONT | NEW / CLASSIC / ORIGINAL | NEW | font b, ours; the original letters evenly spaced; the original font as the original draws it (below) |
 | LANGUAGE | eight languages selected at build time | the build's (`LANG_BASE`) | the selected runtime languages ([languages](language.md)) |
 | MAP SIGNS | ORIGINAL / TRANSLATED | TRANSLATED | patch 0183: the signs painted in the map backgrounds as the disc has them, or in the language |
+| CHEATS | OFF / ON | OFF | the paused Cheats menu and its editing tools (below) |
+| NEW ENEMY BARS | OFF / ON | ON | patch 0276: compact bars above enemy heads; OFF keeps the original floating bar and leader line in wild fights, and the original fixed arena/VS panels |
 
 Each row shows its label and its values (two, three for FONT); the chosen value is yellow and the others grey. Left and
 right step to the value before and after, confirm takes the next one (round); cancel goes back to the title menu with the cursor on OPTIONS. A new setting needs the current menu row, value/get/set handling and runtime effect,
@@ -123,7 +125,7 @@ All the controls as in the Japanese version.
   options (`modBootOptions` calls `modButtonsBoot`), `SYSTEM_W.TIM` (9 sectors) is read into `GENERAL_BUFFER` and a
   Japanese ○ there turns JAPANESE CONTROLS on; a save's options, read right after, still win (the title shows a
   card's newest save's choice, a Continue its own). The US disc is as before. 464 bytes of heap.
-- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[9]`: buttons, clock, frame rate as 30/60, bars, font, evolution guide, new digimon, language, map signs),
+- **Saved.** The options are the record `SAVE_TAG_OPTIONS` 0x0009 (`u8[14]`: buttons, clock, frame rate as 30/60, bars, font, evolution guide, new digimon, language, map signs, story, difficulty, quick battle start, cheats flags, enemy-bar flags),
   written with every save. A Continue takes them, unless OPTIONS changed any since the
   console started; a shorter record (0167's 1 byte) leaves the rest at their defaults. So the title screen before a Continue
   has the US controls (on a Japanese base disc with no saves, the Japanese ones: ○ confirms there), and the test tools, which press × at the title, keep working.
@@ -242,3 +244,28 @@ Continue.
 the actual patched helpers with address/undefined-behavior sanitizers to check
 save compatibility, bounds, care actions and labels. Pass the patched decompilation
 worktree as their first argument.
+
+## Enemy life bars
+
+NEW ENEMY BARS defaults to ON. The 32×3 fill sits in a black frame above each
+living, on-screen enemy's species height, with its current HP in outlined 3×5
+clock digits immediately to the right. The fill keeps at least one pixel until
+the enemy dies. The group moves inside the screen and below the top corner HUDs;
+finishers, cutscenes and results suppress the new head bars. Arena and VS keep
+their fixed HP/MP panels and add the same head bar for the opponent.
+
+Select switches between continuous display (default) and brief display after a
+hit, in either style. The choice survives every fight and is saved; there is no
+OPTIONS row for it. The arena/VS opponent HP/MP panels follow the same continuous/brief choice;
+the player panels and finisher meters keep their native behaviour. Cheats uses Select while paused and its optional shoulder-button
+shortcuts in the field; battle Select keeps its own action.
+
+Both settings upgrade to ON/shown from older saves, including the v0.0.1 options
+record, shorter records and original cards with no options record. Record 0x0009
+now has 14 bytes: byte 12 retains CHEATS/SELECT SHORTCUTS; byte 13 has bit 0 for
+original enemy bars and bit 1 for brief display. Missing flags explicitly mean
+zero, so both defaults are ON. OFF survives save/load too. The 16-byte title
+header keeps its first 12 option bytes; count bits 6 and 5 store the same inverted
+flags, bit 7 keeps CHEATS, and bits 0–4 give the count. Loading a save always
+applies its Select choice; an explicit OPTIONS edit still takes precedence for
+the style, as for other menu rows.

@@ -182,9 +182,16 @@ options from the same 0x80-byte header read the slot list makes:
 | Offset | Field |
 |---|---|
 | 0x50 | `"O"` |
-| 0x51 | u8 count of option bytes that follow (at most 12) |
+| 0x51 | bits 0–4: count of option bytes that follow (at most 12); bit 7: CHEATS; bit 6: original enemy bars; bit 5: brief enemy-bar display |
 | 0x52 | u16 save number: one past the highest number seen on the cards (`MOD_SAVE_NUMBER`), so the newest save has the highest |
 | 0x54 | u8[count] the options bytes |
+
+Patch 0276 extends record 0x0009 to 14 bytes. Byte 12 retains the Cheats flags;
+byte 13 uses inverted enemy-bar flags (bit 0: original style, bit 1: brief display).
+An absent byte or record explicitly sets both to zero, upgrading older cards to
+new bars shown continuously. Header bits 6 and 5 mirror these flags without
+expanding the PocketStation area. Older headers leave them clear. The patcher
+copies these saved bytes; no save version or required tag changes.
 
 The extension's record stays what a Continue applies; the header copy is for display and for the boot options. At boot
 (patch 0205, `modBootOptions`) the card slots are read before the title so the title screen is already in the newest

@@ -185,10 +185,10 @@ def check_card(js, card, locks, rows):
     for k in ('money', 'partnerType', 'player', 'stats', 'roster', 'bank', 'cards', 'headerOptions'):
         if k in f:
             want = f[k]
-            # Patch 0244's decoder exposes CHEATS as a thirteenth option. Older corpus entries recorded twelve;
-            # their missing flag must be off. Compare it too, so a changed flag still fails the gate.
-            if k == 'headerOptions' and len(want) == 24 and len(now.get(k, '')) == 26:
-                want += '00'
+            # Header flags decode as appended options. Old metadata lacks the flags;
+            # their explicit zero defaults must compare too, so any changed flag fails.
+            if k == 'headerOptions' and len(want) in (24, 26) and len(now.get(k, '')) == 28:
+                want += '00' * ((28 - len(want)) // 2)
             compare(rows, f'file {k}', want, now.get(k))
     for name, hexv in f['records'].items():
         compare(rows, f'record {name}', hexv, now['records'].get(name))
@@ -422,8 +422,10 @@ def ram_values(emu, locks, profile):
     for k, s in (('japaneseControls', 'MOD_OPT_BUTTONS'), ('digitalClock', 'MOD_OPT_CLOCK'), ('newStatusBars', 'MOD_OPT_BARS'),
                  ('evolutionGuide', 'MOD_OPT_EVO_GUIDE'), ('newDigimon', 'MOD_OPT_NEW_DIGIMON'), ('language', 'MOD_LANG'),
                  ('mapSigns', 'MOD_OPT_SIGNS'), ('extendedStory', 'MOD_OPT_STORY'), ('difficulty', 'MOD_OPT_DIFFICULTY'),
-                 ('quickBattleStart', 'MOD_OPT_QUICK_BATTLE'), ('cheats', 'MOD_OPT_CHEATS')):
+                 ('quickBattleStart', 'MOD_OPT_QUICK_BATTLE'), ('cheats', 'MOD_OPT_CHEATS'),
+                 ('newEnemyBars', 'MOD_OPT_ENEMY_BARS')):
         if emu.has(s): opts[k] = pk(s, 'i')
+    if emu.has('MOD_OPT_ENEMY_BARS') and emu.has('BATTLE_TOGGLE_LIFEBAR'): opts['enemyBarsShown'] = pk('BATTLE_TOGGLE_LIFEBAR', 'B')
     if emu.has('MOD_FONT'): opts['font'] = {0: 1, 1: 0, 2: 2}[pk('MOD_FONT', 'b')]
     if emu.has('MOD_FPS_MODE_RUN'): opts['frameRate'] = {0: 20, 1: 30, 2: 60}[pk('MOD_FPS_MODE_RUN', 'i')]
     v['options'] = opts
@@ -462,6 +464,13 @@ def check_emu(emu, js, card, locks, rows, keep):
         for k, val in want['options'].items():
             if k in got['options']: compare(rows, f'RAM option {k}', val, got['options'][k])
             else: rows.append((False, f'RAM option {k}', f'recorded {val}; this build has no such setting'))
+        # The new flags are inverted: every shorter released record upgrades to ON/shown.
+        _, _, saved_records = read_card(card)
+        options = saved_records.get(9, b'')
+        enemy_flags = options[13] if len(options) >= 14 else 0
+        for key, mask in (('newEnemyBars', 1), ('enemyBarsShown', 2)):
+            if key in got['options']:
+                compare(rows, f'RAM option {key} (upgrade default)', int(not (enemy_flags & mask)), got['options'][key])
         story_rows(rows, want['story'], locks, lambda kind, n: flag_of(n, trig, sf) if kind == 'flags' else var_of(n, locks['profile'], pst, sv))
         # the round trip: save again at Jijimon (the loaded screen and place put back at the last confirm)
         here = (got['screen'], got['previousScreen'], emu.raw('TAMER_POSITION_DATA+0x78', 12, emu.ram()))
@@ -526,7 +535,8 @@ def cmd_emu(a):
 # RAM before the game's own save writes it)
 RICH = dict(
     options=dict(japaneseControls=1, digitalClock=0, frameRate=30, newStatusBars=0, font=2, evolutionGuide=0, newDigimon=1,
-                 language=1, mapSigns=0, extendedStory=1, difficulty=0, quickBattleStart=0),
+                 language=1, mapSigns=0, extendedStory=1, difficulty=0, quickBattleStart=0, cheats=0,
+                 newEnemyBars=1, enemyBarsShown=1),
     money=123456, merit=321,
     stats=dict(off=432, def_=321, speed=234, brain=345, hp=4321, mp=3210),
     inventory=[(0, 3), (1, 2), (12, 5), (26, 1), (39, 9), (50, 2), (73, 1), (100, 4)],   # (item id, amount)

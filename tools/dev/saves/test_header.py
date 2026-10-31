@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Old corpus headers acquire a default CHEATS flag; changing any saved option must still fail."""
+"""Old corpus headers acquire default flags; changing any saved option must still fail."""
 
 from pathlib import Path as _DevPath
 import sys as _dev_sys
@@ -58,6 +58,12 @@ class HeaderCompatibilityTests(unittest.TestCase):
         for current in (False, True):
             with self.subTest(current_metadata=current):
                 self.assertEqual([what for what, _ in self.check_copy((0x51, 0x8C), current)], ['file headerOptions'])
+
+    def test_changed_enemy_flags(self):
+        for flag in (0x20, 0x40, 0x60):
+            for current in (False, True):
+                with self.subTest(flag=flag, current_metadata=current):
+                    self.assertEqual([what for what, _ in self.check_copy((0x51, 12 | flag), current)], ['file headerOptions'])
 
 
 if __name__ == '__main__':
