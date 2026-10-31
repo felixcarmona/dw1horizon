@@ -3,7 +3,7 @@
   "name": "Marsmon",
   "_source": "dw3 M394MARS (tools/import_batch.py run content/imports/lists/tenth-12.json)",
   "level": "mega",
-  "vanilla_as": 40,
+  "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "fire", null],
   "techniques": ["Megaton Punch", "Sonic Jab", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar",

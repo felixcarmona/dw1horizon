@@ -3,7 +3,7 @@
   "name": "Musyamon",
   "_source": "dw3 M173MSHA (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Wind Cutter",

@@ -3,7 +3,7 @@
   "name": "Crabmon",
   "_source": "dw2 M197GANI (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "rookie",
-  "vanilla_as": 48,
+  "vanilla_as": 18,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
   "techniques": ["Water Blit", "Ice Needle", "Aqua Magic", "Tear Drop", "Sonic Jab", "Muscle Charge", "War Cry",

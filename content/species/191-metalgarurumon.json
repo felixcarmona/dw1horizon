@@ -3,7 +3,7 @@
   "name": "MetalGarurumon",
   "_source": "dcb 174 (card MetalGarurumon) (tools/import_batch.py run content/imports/lists/first-10.json)",
   "level": "mega",
-  "vanilla_as": 26,
+  "vanilla_as": 62,
   "attribute": "data",
   "specialties": ["ice", "mech", "battle"],
   "techniques": ["Ice Statue", "Aurora Freeze", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",

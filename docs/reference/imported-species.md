@@ -14,7 +14,7 @@ What is documented elsewhere and only linked here:
   `effect_origin_fallback`, `species.py` commands: [../mods/species.md](../mods/species.md);
 - species ids above 180, `DIGI.DAT` records, the world object ids of patch 0082: [ids.md](ids.md); save v2 and later:
   [save-format.md](save-format.md);
-- the species provider and disc replay of all 175 imports and 37 record originals (no private converted inputs):
+- the species provider and disc replay of all 175 imports and 38 record originals (no private converted inputs):
   [../building.md](../building.md), [../derive.md](../derive.md).
 
 ## The source games

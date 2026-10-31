@@ -3,7 +3,7 @@
   "name": "Raremon",
   "_source": "dw2 M139RARE (tools/import_batch.py run content/imports/lists/seventh-12.json)",
   "level": "champion",
-  "vanilla_as": 14,
+  "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["filth", "battle", null],
   "techniques": ["Odor Spray", "Poop Rnd Toss", "Horizontal Kick (55)", "Poop Spd Toss", "Rnd Spd Toss",

@@ -3,7 +3,7 @@
   "name": "VenomMyotismon",
   "_source": "dcb 177 (card VenomMyotismon) (tools/import_batch.py run content/imports/lists/third-12.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
   "techniques": ["Inifinity Burn", "Meltdown", "Prominence Beam", "Magma Bomb", "Red Inferno", "Fire Tower",

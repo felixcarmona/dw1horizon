@@ -3,7 +3,7 @@
   "name": "Syakomon",
   "_source": "dw2 M218SHAK (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "rookie",
-  "vanilla_as": 51,
+  "vanilla_as": 18,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
   "techniques": ["Water Blit", "Tear Drop", "Aqua Magic", "Winter Blast", "Sonic Jab", "Muscle Charge", "War Cry",

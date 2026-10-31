@@ -3,7 +3,7 @@
   "name": "MegaGargomon",
   "_source": "dw3 M372SGRG (tools/import_batch.py run content/imports/lists/thirteenth-12.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 40,
   "attribute": "vaccine",
   "specialties": ["mech", "battle", null],
   "techniques": ["All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",

@@ -3,7 +3,7 @@
   "name": "Cyclonemon",
   "_source": "dw2 M134CYCL (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
   "techniques": ["Prominence Beam", "Heat Laser", "Spit Fire", "Fire Tower", "Red Inferno", "Magma Bomb",

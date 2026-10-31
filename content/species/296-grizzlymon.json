@@ -3,7 +3,7 @@
   "name": "Grizzlymon",
   "_source": "dw3 M388GRIZ (tools/import_batch.py run content/imports/lists/tenth-12.json)",
   "level": "champion",
-  "vanilla_as": 26,
+  "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "ice", null],
   "techniques": ["Megaton Punch", "Counter", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar", "Ice Needle",

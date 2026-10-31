@@ -3,7 +3,7 @@
   "name": "Deramon",
   "_source": "dw2 M192DERA (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "ultimate",
-  "vanilla_as": 51,
+  "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
   "techniques": ["Green Trap", "Poison Powder", "Bug", "Charm Perfume", "Danger Sting", "Poison Claw",

@@ -11,6 +11,11 @@ import sys
 import evo_tree as T
 
 
+def disc_routes():
+    return {(p, c) for p, row in enumerate(T.S.originals().rec)
+            for c in (row.get('evoPaths') or {}).get('to', []) if c > 0}
+
+
 def check(sp, kids, table):
     names = {s['name']: t for t, s in sorted(sp.items(), reverse=True) if 'partner' in s}
     natural = set()
@@ -22,8 +27,17 @@ def check(sp, kids, table):
         natural.add(t)
         todo.extend(kids.get(t, []))
     errors = []
-    if table['specialty_exceptions']:
-        errors.append('specialty exceptions must be empty')
+    original_routes = disc_routes()
+    allowed_specialties = {('Otamamon', 'Geremon')}
+    for entry in table['specialty_exceptions']:
+        if (entry['parent'], entry['child']) not in allowed_specialties or not entry.get('reason'):
+            errors.append('specialty exception must be a documented permitted canon route')
+    for t, s in sp.items():
+        if 'vanilla_as' in s:
+            target = sp.get(s['vanilla_as'], {})
+            level = 'ultimate' if s['level'] == 'mega' else s['level']
+            if target.get('level') != level or not target.get('vanilla'):
+                errors.append(f'{s["name"]}: vanilla_as must name a vanilla {level}')
     for t in table['sheet_megas']:
         if t >= T.S.NUM_ORIGINAL and sp[t]['level'] != 'mega':
             errors.append(f'{sp[t]["name"]}: sheet Mega must be level 6')
@@ -72,7 +86,13 @@ def check(sp, kids, table):
         for c in children:
             parent, child = sp[p], sp[c]
             pair = parent['name'], child['name']
-            if not (set(parent['specialties']) - {None}) & (set(child['specialties']) - {None}) and pair not in exceptions:
+            # Etemon -> MetalEtemon is an established mod continuation,
+            # explicitly retained by the tier review, not an original disc row.
+            step_exception = pair == ('Etemon', 'MetalEtemon') or (
+                (p, c) in original_routes and child['name'] in ('Phoenixmon', 'HerculesKabuterimon'))
+            if T.LEVEL_NO.get(child['level'], 0) != T.LEVEL_NO.get(parent['level'], 0) + 1 and not step_exception:
+                errors.append(f'{pair[0]} -> {pair[1]}: evolution level step must be +1')
+            if (p, c) not in original_routes and not (set(parent['specialties']) - {None}) & (set(child['specialties']) - {None}) and pair not in exceptions:
                 errors.append(f'{pair[0]} -> {pair[1]}: no shared specialty')
             if child['name'] in megas and parent['level'] == 'champion':
                 original = parent['name'] in disc_megas.get(child['name'], []) and p < 63 and c < 63

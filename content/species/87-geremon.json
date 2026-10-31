@@ -5,7 +5,7 @@
   "level": "champion",
   "vanilla_as": 51,
   "attribute": "virus",
-  "specialties": ["filth", "ice", null],
+  "specialties": ["filth", null, null],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Poop Rnd Toss", "Rnd Spd Toss",
                  "Big Poop Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (65)"],
   "drop": {"item": "Port. potty", "percent": 10},

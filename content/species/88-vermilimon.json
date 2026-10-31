@@ -3,7 +3,7 @@
   "name": "Vermilimon",
   "_source": "dw1 Vermilimon type 88, native model and texture (tools/import_batch.py run content/imports/lists/seventeenth-12.json); was species 364 until 2026-10-13, merged into the disc's id 88 (a record original)",
   "level": "ultimate",
-  "vanilla_as": 5,
+  "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["fire", "battle", null],
   "techniques": ["Prominence Beam", "Heat Laser", "Red Inferno", "Meltdown", "Megaton Punch", "Counter", "Tremar",

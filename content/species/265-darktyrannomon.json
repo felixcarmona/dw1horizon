@@ -3,7 +3,7 @@
   "name": "DarkTyrannomon",
   "_source": "dw2 M133DTRN (tools/import_batch.py run content/imports/lists/eighth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Fire Tower", "Red Inferno", "Magma Bomb",

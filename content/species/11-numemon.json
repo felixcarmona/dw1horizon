@@ -4,7 +4,7 @@
   "level": "champion",
   "vanilla": true,
   "attribute": "virus",
-  "specialties": ["filth", "battle", null],
+  "specialties": ["filth", null, null],
   "techniques": ["Horizontal Kick (57)", "Odor Spray", "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss",
                  "Rnd Spd Toss", "Big Rnd Toss", "Ult Poop Hell", "Party time (108)"],
   "drop": {"item": "sm.recovery", "percent": 0},
@@ -30,7 +30,7 @@
   },
   "evolution": {
     "from": [-1, -1, -1, -1, -1],
-    "to": [14, 70, -1, -1, -1, -1],
+    "to": [14, 120, -1, -1, -1, -1],
     "requirements": {
       "digimon": -1,
       "hp": -1,

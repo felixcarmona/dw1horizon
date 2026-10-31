@@ -3,7 +3,7 @@
   "name": "Pharaohmon",
   "_source": "dw3 M358PHAR (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
   "level": "mega",
-  "vanilla_as": 60,
+  "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Charm Perfume", "Poison Powder", "Bug", "Green Trap", "Danger Sting", "Poison Claw",

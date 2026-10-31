@@ -3,7 +3,7 @@
   "name": "Mushroomon",
   "_source": "dw2 M219MUSH (tools/import_batch.py run content/imports/lists/seventh-12.json)",
   "level": "rookie",
-  "vanilla_as": 51,
+  "vanilla_as": 46,
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Powder", "Mass Morph", "Insect Plague", "Poison Claw", "Sonic Jab", "Muscle Charge",

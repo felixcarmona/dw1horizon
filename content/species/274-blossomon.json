@@ -3,7 +3,7 @@
   "name": "Blossomon",
   "_source": "dw2 M200BLSA (tools/import_batch.py run content/imports/lists/eighth-12.json)",
   "level": "ultimate",
-  "vanilla_as": 51,
+  "vanilla_as": 60,
   "attribute": "data",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Powder", "Green Trap", "Danger Sting", "Bug", "Charm Perfume", "Poison Claw",

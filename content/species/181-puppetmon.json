@@ -3,7 +3,7 @@
   "name": "Puppetmon",
   "_source": "Digimon Digital Card Battle F.DRV/231.PAK (tools/dcb2mmd.py partner content/models/dcb-import/puppetmon.json build/dcb)",
   "level": "mega",
-  "vanilla_as": 60,
+  "vanilla_as": 55,
   "attribute": "virus",
   "specialties": ["nature", "battle", "mech"],
   "techniques": ["Green Trap", "Bug", "Charm Perfume", "Danger Sting", "Poison Powder", "Poison Claw",

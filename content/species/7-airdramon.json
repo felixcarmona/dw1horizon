@@ -4,7 +4,7 @@
   "level": "champion",
   "vanilla": true,
   "attribute": "vaccine",
-  "specialties": ["air", "fire", "mech"],
+  "specialties": ["air", "fire", null],
   "techniques": ["Spit Fire", "Prominence Beam", "Heat Laser", "Static Elect", "Megalo Spark", "Electric Cloud",
                  "Wind Cutter", "Spinning Shot", "Confused Storm", "Hurricane", "Spnning Needle"],
   "drop": {"item": "sm.recovery", "percent": 0},

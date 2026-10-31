@@ -3,7 +3,7 @@
   "name": "Zanbamon",
   "_source": "dw3 M337ZAMB (tools/import_batch.py run content/imports/lists/nineteenth-7.json)",
   "level": "mega",
-  "vanilla_as": 41,
+  "vanilla_as": 40,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
   "techniques": ["Megaton Punch", "Counter", "Buster Dive", "Dynamite Kick (44)", "Tremar", "Sonic Jab",

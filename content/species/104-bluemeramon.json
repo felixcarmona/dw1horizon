@@ -3,7 +3,7 @@
   "name": "BlueMeramon",
   "_source": "dw1 BlueMeramon type 104, native model and texture (tools/import_batch.py run content/imports/lists/eighteenth-6.json); was species 369 until 2026-10-13, merged into the disc's id 104 (a record original)",
   "level": "ultimate",
-  "vanilla_as": 5,
+  "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["ice", "fire", null],
   "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",

@@ -3,7 +3,7 @@
   "name": "Flarerizamon",
   "_source": "dw1 Flarerizamon type 69, native model and texture (tools/import_batch.py run content/imports/lists/seventeenth-12.json); was species 358 until 2026-10-13, merged into the disc's id 69 (a record original)",
   "level": "champion",
-  "vanilla_as": 3,
+  "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["fire", null, null],
   "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Meltdown",

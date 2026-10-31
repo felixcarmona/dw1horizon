@@ -3,7 +3,7 @@
   "name": "BlackGatomon",
   "_source": "dcb 206 (card BKGatomon) (tools/import_batch.py run content/imports/lists/fourth-12.json)",
   "level": "champion",
-  "vanilla_as": 31,
+  "vanilla_as": 38,
   "attribute": "virus",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Tremar", "Counter", "Wind Cutter",

@@ -3,7 +3,7 @@
   "name": "Apocalymon",
   "_source": "dcb 178 (card Apokarimon) (tools/import_batch.py run content/imports/lists/twentieth-9.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["mech", "battle", "ice"],
   "techniques": ["DG Dimension", "All Range Beam", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",

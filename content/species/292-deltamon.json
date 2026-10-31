@@ -3,7 +3,7 @@
   "name": "Deltamon",
   "_source": "dw2 M138DELT (tools/import_batch.py run content/imports/lists/tenth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "virus",
   "specialties": ["battle", "fire", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Sonic Jab", "Tremar",

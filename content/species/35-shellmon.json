@@ -4,7 +4,7 @@
   "level": "champion",
   "vanilla": true,
   "attribute": "data",
-  "specialties": ["ice", "nature", "air"],
+  "specialties": ["ice", null, "air"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
                  "Ice Statue", "Winter Blast", "Aurora Freeze", "Aqua Magic", "Hydro Pressure"],
   "drop": {"item": "sm.recovery", "percent": 10},

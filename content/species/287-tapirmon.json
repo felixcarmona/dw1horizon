@@ -3,7 +3,7 @@
   "name": "Tapirmon",
   "_source": "dw2 M206BAKU (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "rookie",
-  "vanilla_as": 38,
+  "vanilla_as": 31,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Static Elect", "Electric Cloud", "Wind Cutter",

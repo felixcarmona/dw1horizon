@@ -3,7 +3,7 @@
   "name": "Magnamon",
   "_source": "dcb 189 (card Magnamon) (tools/import_batch.py run content/imports/lists/second-12.json)",
   "level": "ultimate",
-  "vanilla_as": 5,
+  "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", "mech", null],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Buster Dive", "Counter", "Tremar", "Sonic Jab",

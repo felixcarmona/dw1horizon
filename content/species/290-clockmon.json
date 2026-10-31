@@ -3,7 +3,7 @@
   "name": "Clockmon",
   "_source": "dw2 M143CLOK (tools/import_batch.py run content/imports/lists/tenth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 38,
   "attribute": "data",
   "specialties": ["mech", "battle", null],
   "techniques": ["Power Crane", "Reverse Prog", "Full Potential", "Metal Sprinter", "Pulse Laser", "Delete Program",

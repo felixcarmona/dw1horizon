@@ -3,7 +3,7 @@
   "name": "Boltmon",
   "_source": "dw2 M190BOLT (tools/import_batch.py run content/imports/lists/ninth-12.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 26,
   "attribute": "data",
   "specialties": ["battle", "mech", null],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",

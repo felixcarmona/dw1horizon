@@ -3,7 +3,7 @@
   "name": "Pukumon",
   "_source": "dw2 M229PUKU (tools/import_batch.py run content/imports/lists/twentieth-9.json)",
   "level": "mega",
-  "vanilla_as": 40,
+  "vanilla_as": 61,
   "attribute": "virus",
   "specialties": ["ice", "battle", null],
   "techniques": ["Water Blit", "Aqua Magic", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Ice Needle",

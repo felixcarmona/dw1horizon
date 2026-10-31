@@ -3,7 +3,7 @@
   "name": "Lynxmon",
   "_source": "dw3 M327RUNX (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "data",
   "specialties": ["fire", "battle", null],
   "techniques": ["Spit Fire", "Red Inferno", "Heat Laser", "Fire Tower", "Magma Bomb", "Meltdown",

@@ -3,7 +3,7 @@
   "name": "Yanmamon",
   "_source": "dw1 Yanmamon type 67, native model and texture (tools/import_batch.py run content/imports/lists/seventeenth-12.json); was species 356 until 2026-10-13, merged into the disc's id 67 (a record original)",
   "level": "champion",
-  "vanilla_as": 46,
+  "vanilla_as": 51,
   "attribute": "virus",
   "specialties": ["air", "nature", null],
   "techniques": ["Electric Cloud", "Wind Cutter", "Spinning Shot", "Danger Sting", "Insect Plague", "Static Elect",

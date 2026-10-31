@@ -3,7 +3,7 @@
   "name": "Vikemon",
   "_source": "dcb 185 (card Vikemon) (tools/import_batch.py run content/imports/lists/fourth-12.json)",
   "level": "mega",
-  "vanilla_as": 40,
+  "vanilla_as": 54,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
   "techniques": ["Aurora Freeze", "Ice Statue", "Giga Freeze", "Water Blit", "Ice Needle", "Winter Blast",

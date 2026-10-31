@@ -3,7 +3,7 @@
   "name": "Bulbmon",
   "_source": "dw3 M436VALV (tools/import_batch.py run content/imports/lists/eleventh-12.json)",
   "level": "ultimate",
-  "vanilla_as": 38,
+  "vanilla_as": 12,
   "attribute": "data",
   "specialties": ["mech", "ice", null],
   "techniques": ["Pulse Laser", "All Range Beam", "DG Dimension", "Delete Program", "Reverse Prog", "Power Crane",

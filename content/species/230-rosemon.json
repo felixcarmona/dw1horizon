@@ -3,7 +3,7 @@
   "name": "Rosemon",
   "_source": "dcb 172 (card Rosemon) (tools/import_batch.py run content/imports/lists/fifth-12.json)",
   "level": "mega",
-  "vanilla_as": 60,
+  "vanilla_as": 55,
   "attribute": "data",
   "specialties": ["nature", "air", null],
   "techniques": ["Green Trap", "Charm Perfume", "Poison Powder", "Bug", "Danger Sting", "Poison Claw",

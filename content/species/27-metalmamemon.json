@@ -4,7 +4,7 @@
   "level": "ultimate",
   "vanilla": true,
   "attribute": "data",
-  "specialties": ["battle", "mech", "nature"],
+  "specialties": ["battle", "mech", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Delete Program", "Pulse Laser", "Reverse Prog", "Metal Sprinter",
                  "All Range Beam", "Energy Bomb"],

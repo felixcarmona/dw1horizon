@@ -66,10 +66,32 @@ class GuardTests(unittest.TestCase):
         self.assertIsNotNone(witness)
         self.assertNotIn(self.names['Sukamon'], witness['path'])
 
-    def test_specialty_exceptions_are_forbidden(self):
+    def test_unapproved_specialty_exceptions_are_forbidden(self):
         table = copy.deepcopy(self.table)
         table['specialty_exceptions'] = [{'parent': 'Agumon', 'child': 'Palmon'}]
-        self.assertIn('specialty exceptions must be empty', check(self.sp, self.kids, table))
+        self.assertIn('specialty exception must be a documented permitted canon route', check(self.sp, self.kids, table))
+
+    def test_rookie_cannot_skip_champion(self):
+        p, c = self.names['Agumon'], self.names['MetalGreymonVirus']
+        self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))
+
+    def test_import_cannot_evolve_at_the_same_level(self):
+        p, c = self.names['MegaKabuterimon'], self.names['HerculesKabuterimon']
+        self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))
+
+    def test_vanilla_swap_cannot_change_level(self):
+        c = self.names['Tapirmon']
+        self.assertIn('vanilla_as must name a vanilla rookie',
+                      self.errors(lambda s, k: s[c].update(vanilla_as=self.names['Drimogemon'])))
+
+    def test_native_record_children_stay_in_resident_paths(self):
+        for parent, child in [('Devimon', 'Myotismon'), ('Vegiemon', 'Cherrymon'),
+                              ('Tyrannomon', 'MasterTyrannomon')]:
+            self.assertIn(self.names[child], self.sp[self.names[parent]]['evolution']['to'])
+
+    def test_original_battle_specialties_are_preserved(self):
+        for t in (7, 11, 24, 27, 35, 53, 87):
+            self.assertEqual(self.sp[t]['specialties'], T.S.disc_file(t)['specialties'])
 
     def test_mega_chain_uses_real_clock_and_lifetime(self):
         _, reqs, levels = T.model(self.sp)

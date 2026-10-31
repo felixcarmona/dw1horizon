@@ -3,7 +3,7 @@
   "name": "Snimon",
   "_source": "dw3 M238SNAI (tools/import_batch.py run content/imports/lists/thirteenth-12.json)",
   "level": "champion",
-  "vanilla_as": 60,
+  "vanilla_as": 51,
   "attribute": "vaccine",
   "specialties": ["battle", "air", "nature"],
   "techniques": ["Sonic Jab", "Muscle Charge", "War Cry", "Tremar", "Dynamite Kick (44)", "Wind Cutter",

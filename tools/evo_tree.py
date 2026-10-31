@@ -345,8 +345,10 @@ def plan():
             ev['from'], ev['to'] = list(route['from']), list(route['to'])
         elif 1 <= t <= 62:
             ev['from'] = list(route['from']) + [-1] * (5-len(route['from']))
-            # Imported children's from rows supply additional boot links.
-            native = [c for c in route['to'] if c < S.NUM_ORIGINAL and not S.is_record_original(sp[c])]
+            # Native record children must remain here on subset discs too.
+            # A carried child's reverse row adds no duplicate link. Native
+            # fallback rows remain the existing C rows when a record is absent.
+            native = [c for c in route['to'] if c < S.NUM_ORIGINAL]
             ev['to'] = native + [-1] * (6-len(native))
         elif route['to']:
             problems.append(f'{s["name"]}: non-record species has no resident path row')

@@ -4,7 +4,7 @@
   "level": "champion",
   "vanilla": true,
   "attribute": "vaccine",
-  "specialties": ["ice", "battle", "nature"],
+  "specialties": ["ice", null, "nature"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
                  "Ice Statue", "Winter Blast", "Aurora Freeze", "Aqua Magic", "Blasting Spout"],
   "drop": {"item": "sm.recovery", "percent": 10},
@@ -30,7 +30,7 @@
   },
   "evolution": {
     "from": [46, 4, 57, -1, -1],
-    "to": [61, 13, 119, -1, -1, -1],
+    "to": [61, 13, 119, 112, -1, -1],
     "requirements": {
       "digimon": -1,
       "hp": 100,

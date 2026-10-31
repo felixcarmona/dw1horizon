@@ -3,7 +3,7 @@
   "name": "Divermon",
   "_source": "dw3 M241HNGY (tools/import_batch.py run content/imports/lists/eleventh-12.json)",
   "level": "ultimate",
-  "vanilla_as": 51,
+  "vanilla_as": 40,
   "attribute": "data",
   "specialties": ["ice", "battle", null],
   "techniques": ["Ice Needle", "Water Blit", "Aurora Freeze", "Ice Statue", "Giga Freeze", "Winter Blast",

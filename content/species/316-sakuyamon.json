@@ -3,7 +3,7 @@
   "name": "Sakuyamon",
   "_source": "dw3 M376SKYA (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 61,
   "attribute": "data",
   "specialties": ["air", "fire", "battle"],
   "techniques": ["Thunder Justice", "Spinning Shot", "Megalo Spark", "Hurricane", "Confused Storm", "Wind Cutter",

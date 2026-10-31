@@ -3,7 +3,7 @@
   "name": "Gryphonmon",
   "_source": "dw2 M193GRFO (tools/import_batch.py run content/imports/lists/tenth-12.json)",
   "level": "mega",
-  "vanilla_as": 41,
+  "vanilla_as": 59,
   "attribute": "data",
   "specialties": ["air", "battle", null],
   "techniques": ["Hurricane", "Thunder Justice", "Spinning Shot", "Megalo Spark", "Confused Storm", "Wind Cutter",

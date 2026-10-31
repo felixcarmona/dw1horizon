@@ -3,7 +3,7 @@
   "name": "Ghoulmon",
   "_source": "dw3 M312DETH (tools/import_batch.py run content/imports/lists/thirteenth-12.json)",
   "level": "mega",
-  "vanilla_as": 26,
+  "vanilla_as": 41,
   "attribute": "data",
   "specialties": ["mech", "battle", "air"],
   "techniques": ["All Range Beam", "DG Dimension", "Delete Program", "Pulse Laser", "Reverse Prog", "Power Crane",

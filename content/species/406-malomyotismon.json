@@ -3,7 +3,7 @@
   "name": "MaloMyotismon",
   "_source": "dw3 M378BVND (tools/import_batch.py run content/imports/lists/twentieth-9.json)",
   "level": "mega",
-  "vanilla_as": 12,
+  "vanilla_as": 26,
   "attribute": "virus",
   "specialties": ["fire", "battle", "air"],
   "techniques": ["Inifinity Burn", "Prominence Beam", "Meltdown", "Magma Bomb", "Red Inferno", "Fire Tower",

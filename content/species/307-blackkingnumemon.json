@@ -3,7 +3,7 @@
   "name": "BlackKingNumemon",
   "_source": "dw3 M446BKNM (tools/import_batch.py run content/imports/lists/eleventh-12.json)",
   "level": "mega",
-  "vanilla_as": 14,
+  "vanilla_as": 42,
   "attribute": "virus",
   "specialties": ["filth", "battle", null],
   "techniques": ["Ult Poop Hell", "Big Rnd Toss", "Big Poop Toss", "Poop Spd Toss", "Rnd Spd Toss", "Odor Spray",

@@ -3,7 +3,7 @@
   "name": "Maildramon",
   "_source": "dw3 M334MLDR (tools/import_batch.py run content/imports/lists/twelfth-12.json)",
   "level": "champion",
-  "vanilla_as": 12,
+  "vanilla_as": 5,
   "attribute": "vaccine",
   "specialties": ["battle", "air", null],
   "techniques": ["Megaton Punch", "Tremar", "Muscle Charge", "War Cry", "Sonic Jab", "Dynamite Kick (44)",
