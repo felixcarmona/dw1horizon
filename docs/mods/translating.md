@@ -60,6 +60,16 @@ Official English names wherever they exist:
 - **a fresh translation from the Japanese only where the US invented or garbled a name** (truncated item names such as
   `Happymushrm`, a pun lost in English, one place with two names). Apply each chosen name consistently across the translation.
 
+Spanish area names follow the **official Spanish PAL disc**, except garbled or mistranslated names
+(such as Sabana Gear, which stays Sabana Gear). Apply the same spelling to map captions, music titles,
+dialogue and mod translations; English keeps its own naming rule above. In particular, Misty Trees is
+**Árboles de Niebla** (plural masculine: los, de los, en los, a los) and Freezeland is **Tierra Helada**.
+Check articles and agreement in each sentence when changing a name. Map names must fit the on-screen
+caption and music titles their list field; validate the build and review them in the game. Rewrap explicit
+dialogue rows by hand when a longer name exceeds the font's row limits below. Check both the original
+font and font b: the multilingual build compiles both layouts. Keep the full place name in music labels;
+shorten the `Tema de...` framing or use `(n.)` for the night variant when necessary.
+
 Display names and identifiers are separate: renaming an item in `names.json` changes what the player reads, never the
 `Item.X` a story file uses. A mod's line that names an item writes
 `{item Item.Digimushrm}` (or `{item 44}`): the name the inventory shows, whatever the text source.

@@ -34,8 +34,8 @@ struct { int level; } para[1024];
 '''
 code += function(source, 'modLabTrimLabel') + '\n' + function(source, 'modLabStage')
 code += '\nint main(void) {\n' + '\n'.join(checks) + r'''
-char a[] = "       Bosque nativo     "; modLabTrimLabel(a); assert(!strcmp(a, "Bosque nativo"));
-char b[] = "\x81\x40" " Monte Infinity " "\x81\x40"; modLabTrimLabel(b); assert(!strcmp(b, "Monte Infinity"));
+char a[] = "       Bosque Indígena     "; modLabTrimLabel(a); assert(!strcmp(a, "Bosque Indígena"));
+char b[] = "\x81\x40" " Monte Infinito " "\x81\x40"; modLabTrimLabel(b); assert(!strcmp(b, "Monte Infinito"));
 char c[] = "    "; modLabTrimLabel(c); assert(!strcmp(c, ""));
 char d[] = ""; modLabTrimLabel(d); assert(!strcmp(d, ""));
 char e[] = "Test Hollow"; modLabTrimLabel(e); assert(!strcmp(e, "Test Hollow"));

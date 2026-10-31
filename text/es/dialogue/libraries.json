@@ -1411,7 +1411,7 @@
  "s206.sec6.u12": "Ah, es verdad, ahora no llevo nada...",
  "s206.sec6.u13": "¡Ups! Darle esto no servirá de nada.",
  "s206.sec6.u14": "¡Hala, qué buena pinta! Uy, primero la partida. Pasa, pasa.",
- "s206.sec6.u15": "Venga ya, tío. ¡Ve a pescar un pez al Lago Dragon Eye!",
+ "s206.sec6.u15": "Venga ya, tío. ¡Ve a pescar un pez al Lago del Ojo del Dragón!",
  "s206.sec7.m0.o0": "¡Vamos allá!",
  "s206.sec7.m0.o1": "No, gracias",
  "s206.sec7.u0": "Hola, {color 6}{player}{color 1}. Penguinmon me ha pedido que le cuide la pista. Oye, ¿por qué no me retas esta vez? Si me ganas, te llevas un premio muy especial. ¿Qué me dices?",
@@ -1515,8 +1515,8 @@
   ],
   [
    "Si te quedas sin comida...",
-   "dicen que en el Bosque Native",
-   "hay muchas setas silvestres."
+   "dicen que el Bosque Indígena",
+   "tiene muchas setas silvestres."
   ]
  ],
  "s207.sec11.u25": "¡Ah, {color 6}{player}{color 1}! He hecho la granja de Carne el doble de grande. A partir de ahora te puedo dar tres trozos de Carne gigante al día. Y si quieres más, te las vendo a 500 Bits cada una. Además, ahora cuido la granja en lugar de Tanemon. Tanemon está descansando por ahí.",
@@ -1653,9 +1653,9 @@
    "Noticias Shell, número 4",
    "¿Fantasma en la nieve?",
    "El señor M cuenta algo raro en",
-   "Freezeland: «El frío no es lo",
-   "mío. Me atasqué en la nieve y",
-   "me caí, pero me salvó... algo",
+   "la Tierra Helada: «El frío no",
+   "es lo mío. Me atasqué y me caí",
+   "en la nieve, pero me salvó algo",
    "así como un montón de nieve.»",
    "Digimon frioleros, tened",
    "cuidado."
@@ -1666,12 +1666,12 @@
    "Noticias Shell, número 3",
    "¿Un guardián en el lago?",
    "Dicen que han pescado al",
-   "guardián del Lago Dragon Eye.",
-   "O más bien, un gran Digimon",
-   "acudió a la llamada. Dicen que",
-   "verlo concede un deseo, así que",
-   "se avecina una fiebre de la",
-   "pesca."
+   "guardián del Lago del Ojo del",
+   "Dragón. O más bien, un gran",
+   "Digimon acudió a la llamada.",
+   "Dicen que verlo concede un",
+   "deseo, así que se avecina una",
+   "fiebre de la pesca."
   ]
  ],
  "s208.sec82.u6": [
@@ -1994,11 +1994,11 @@
  ],
  "s210.sec51.u0": "Te estaba esperando, {color 6}{player}{color 1}. Por fin ha llegado el día.",
  "s210.sec51.u1": "¿Qué pasa?",
- "s210.sec51.u2": "¡Ha aparecido el camino al Monte Infinity!",
+ "s210.sec51.u2": "¡Ha aparecido el camino al Monte Infinito!",
  "s210.sec51.u3": "¿Eh? ¿En serio? ¿Dónde?",
  "s210.sec51.u4": "Aquí mismo, en la ciudad... al otro lado de la cascada.",
  "s210.sec51.u5": "¡Hala, pues está cerquísima!",
- "s210.sec51.u6": "Por lo que sé, el enemigo final espera en el Monte Infinity.",
+ "s210.sec51.u6": "Por lo que sé, el enemigo final espera en el Monte Infinito.",
  "s210.sec51.u7": "Así que es la última mazmorra, ¿eh? ¡Que venga!",
  "s210.sec51.u8": [
   [
@@ -2010,11 +2010,11 @@
    "que estés preparado."
   ]
  ],
- "s210.sec51.u9": "El camino al Monte Infinity ha aparecido al otro lado de la cascada de la ciudad.",
+ "s210.sec51.u9": "El camino al Monte Infinito ha aparecido al otro lado de la cascada de la ciudad.",
  "s210.sec51.u10": [
   [
    "Por lo que sé, el enemigo final",
-   "espera en el Monte Infinity."
+   "espera en el Monte Infinito."
   ],
   [
    "¡Prepárate bien antes de ir!"
@@ -2065,7 +2065,7 @@
    "alrededor de esta ciudad..."
   ]
  ],
- "s211.sec8.u10": "Dicen que en lo más hondo de la Jungla Tropical hay un bosque extraño, como un laberinto. Su guardián es un Digimon de gran destreza.",
+ "s211.sec8.u10": "Dicen que en lo más hondo de la Selva Tropical hay un bosque extraño, como un laberinto. Su guardián es un Digimon de gran destreza.",
  "s211.sec8.u11": "En el río, un anciano espera a alguien.",
  "s211.sec8.u12": "Dicen que hay un Digimon al que le encantan las aguas calientes.",
  "s211.sec8.u13": [
@@ -2091,8 +2091,8 @@
  ],
  "s211.sec8.u15": [
   [
-   "Las profundidades de la",
-   "Antigua Región Dino son",
+   "Las profundidades de la Región",
+   "Dino Prehistórica son",
    "peligrosas..."
   ],
   [
@@ -2111,7 +2111,7 @@
    "pero..."
   ]
  ],
- "s211.sec8.u18": "En Freezeland hay, aunque no lo parezca, muchos Digimon dispuestos a venir a la ciudad. Busca sobre todo en el oeste.",
+ "s211.sec8.u18": "En la Tierra Helada hay, aunque no lo parezca, muchos Digimon dispuestos a venir a la ciudad. Busca sobre todo en el oeste.",
  "s211.sec8.u19": [
   [
    "Unos dicen que en lo más alto",
@@ -2124,7 +2124,7 @@
  ],
  "s211.sec8.u20": "El Gran Cañón es una maraña de caminos. Los forasteros que se meten no encuentran la salida... Los Digimon no son una excepción.",
  "s211.sec8.u21": "En la Sabana Gear nada frena la electricidad, así que parece que allí vive un Digimon que lucha con electricidad.",
- "s211.sec8.u22": "Dicen que en la Arboleda Misty aparece un Digimon muy madrugador.",
+ "s211.sec8.u22": "Dicen que en los Árboles de Niebla aparece un Digimon muy madrugador.",
  "s211.sec8.u23": "Dicen que en el Gran Cañón hay una tienda que lleva un Digimon de lo más inesperado.",
  "s211.sec8.u24": [
   [
@@ -2148,7 +2148,7 @@
   ]
  ],
  "s211.sec8.u26": "Bien podría ser que algunos Digimon oigan los rumores sobre ti y vengan a retarte.",
- "s211.sec8.u27": "Dicen que un Digimon de una cueva de Freezeland atrae a los demás a un juego extraño.",
+ "s211.sec8.u27": "Dicen que un Digimon de una cueva de la Tierra Helada atrae a los demás a un juego extraño.",
  "s211.sec8.u28": [
   [
    "Los Digimon que trabajan en",
@@ -2160,7 +2160,7 @@
    "ciudad."
   ]
  ],
- "s211.sec8.u29": "La Arboleda Misty es un buen sitio para esconderse. Guiar a los Digimon que se esconden allí también es tarea tuya.",
+ "s211.sec8.u29": "Los Árboles de Niebla son un buen sitio para esconderse. Guiar a los Digimon que se esconden allí también es tarea tuya.",
  "s211.sec8.u30": [
   [
    "A medida que la ciudad crezca,",
@@ -2176,7 +2176,7 @@
   [
    "A veces aparece una gran",
    "sombra en la Playa Iceberg de",
-   "Freezeland."
+   "la Tierra Helada."
   ],
   [
    "¿Será un Digimon?"
@@ -2189,7 +2189,8 @@
    "ayudaos el uno al otro."
   ],
   [
-   "Prueba a ir a Freezeland."
+   "Prueba a ir a la Tierra",
+   "Helada."
   ]
  ],
  "s211.sec8.u33": "Dicen que en lo alto del Monte Panorama aparece muy de vez en cuando un Digimon rarísimo que te reta. Si vas cien veces, puede que lo veas tres.",
@@ -2205,7 +2206,7 @@
    "ciudad..."
   ]
  ],
- "s211.sec8.u35": "Dicen que al otro lado del Lago Dragon Eye hay una tierra de Digimon insecto. Cómo cruzar el lago... ¿Por qué no lo piensas mientras pescas?",
+ "s211.sec8.u35": "Dicen que al otro lado del Lago del Ojo del Dragón hay una tierra de Digimon insecto. Cómo cruzar el lago... ¿Por qué no lo piensas mientras pescas?",
  "s211.sec8.u36": "Dicen que los Digimon máquina pueden repararse solos y quedar como nuevos en un abrir y cerrar de ojos.",
  "s211.sec8.u37": "No temas tanto al peligro como para perder de vista tu meta. Ten el valor de pisar aunque sea una vez un acantilado peligroso, solo para ver.",
  "s211.sec8.u38": [
@@ -4203,7 +4204,7 @@
   ],
   [
    "Ajá, ajá, ¿se habrá ido al",
-   "Gimnasio Green?"
+   "Gimnasio Verde?"
   ]
  ],
  "s221.sec5.u31": [

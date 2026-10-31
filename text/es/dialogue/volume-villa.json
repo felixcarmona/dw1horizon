@@ -1,5 +1,5 @@
 {
- "s135.sec5.u0": "¿Así que vosotros sois {color 6}{player}{color 1} y {color 10}{partner}{color 1}? ¡Bienvenidos a Villa Volume!",
+ "s135.sec5.u0": "¿Así que vosotros sois {color 6}{player}{color 1} y {color 10}{partner}{color 1}? ¡Bienvenidos a Villa Volumen!",
  "s135.sec5.u1": "...... Siento que nos metiéramos con Otamamon.",
  "s135.sec5.u2": "Eso no tiene importancia.",
  "s135.sec5.u3": "¿Eh?",
@@ -8,8 +8,8 @@
  "s135.sec5.u6": [
   [
    "Yo también quería echaros una",
-   "mano. ¿Habéis ido ya al bosque",
-   "del norte, la Arboleda Misty?"
+   "mano. ¿Habéis ido ya a los",
+   "Árboles de Niebla, al norte?"
   ]
  ],
  "s135.sec5.u7": "Todavía no.",
@@ -28,8 +28,8 @@
  "s135.sec5.u10": "¿Cherrymon? Nunca he oído hablar de ese Digimon...",
  "s135.sec5.u11": [
   [
-   "La niebla de la Arboleda Misty",
-   "es obra de Cherrymon."
+   "La niebla de los Árboles de",
+   "Niebla es obra de Cherrymon."
   ],
   [
    "Él conoce los disturbios de la",
@@ -64,7 +64,7 @@
  "s135.sec5.u18": "¡Qué guay!",
  "s135.sec5.u19": "Empecemos, pues, sin demora.",
  "s135.sec5.u20": "¡¡Croac-croac-croooac!!",
- "s135.sec5.u21": "Listo, ya está. Id ahora mismo a la Arboleda Misty.",
+ "s135.sec5.u21": "Listo, ya está. Id ahora mismo a los Árboles de Niebla.",
  "s135.sec5.u22": "Ya lo he visto. Y la niebla ya ha desaparecido.",
  "s135.sec5.u23": [
   [
@@ -92,7 +92,7 @@
    "queráis."
   ]
  ],
- "s135.sec6.u0": "Solo se puede pescar a la orilla del Lago Dragon Eye.",
+ "s135.sec6.u0": "Solo se puede pescar a la orilla del Lago del Ojo del Dragón.",
  "s135.sec6.u1": "¡Inclinaos, inclinaos!",
  "s135.sec7.u0": [
   [
