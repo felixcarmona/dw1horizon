@@ -96,3 +96,6 @@ ambush3_fought = flag()
 factory_asked = flag()
 factory_kept_shut = flag()
 m3_stations = flag()      # M3+: the archive, with all the power, tells of the three stations (counts one)
+
+# The crater cleft is a return route, unlocked on every Bone Field arrival (including old saves).
+bone_field_visited = flag()

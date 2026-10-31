@@ -1,15 +1,16 @@
 # 306, the Bone Field (§3.1f, §5.7): where the old war ended. MasterTyrannomon, who guided the tamer here, and a
 # Brachiomon, who left the slow meadow, tell what they half remember (fragment M11): the man did not die, he went down.
 from dw import *
-from ...state import post_guided, memories, m11_field, memory_news
+from ...state import post_guided, memories, m11_field, memory_news, bone_field_visited
 
 field = new_screen(306, map="build/what-the-island-forgot-maps/screens/BONE01.MAP")
 chest_bone_field = flag()
-master = field.npc(Species.MasterTyrannomon, at=(-318, -97), range=0, when=post_guided)
-elder = field.npc(Species.Brachiomon, at=(511, -724), range=0, when=post_guided)
+master = field.npc(Species.MasterTyrannomon, at=(900, 1900), range=0, when=post_guided)
+elder = field.npc(Species.Brachiomon, at=(1500, 2300), range=0, when=post_guided)
 
 @field.on_enter
 def enter():
+    bone_field_visited.set()
     spawn_chest(Item.HPChip, at=(-900, 700), opened=chest_bone_field)
     music(13)                     # the Speedy Region's
 

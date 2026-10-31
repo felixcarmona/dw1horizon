@@ -25,12 +25,18 @@ def can_z(m, x, z, d, r):                              # checkMapCollisionX
     e = row(z + d * r)
     return not any(blocked(m, t, e) for t in range(col(x - r // 2), col(x + r // 2) + 1))
 
-def reach(m, starts=None, r=100, step=10, *, seed_policy="used_free_arrivals"):
+def reach(m, starts=None, r=100, step=10, *, seed_policy="used_free_arrivals", footprints=()):
     """Flood with explicit author or walking seed behavior.
 
     used_free_arrivals skips unused warps and blocked starts. spawn_coordinates
     includes nonzero unused warps and retains blocked starts for walking/recipes.
     """
+    # map.c entityCheckEntityCollision/entityIsInEntity: inclusive AABB overlap.
+    # Footprints are (x, z, model radius) for visible, living stationary NPCs.
+    def entity_blocked(x, z):
+        return any(abs(x - nx) <= r + nr and abs(z - nz) <= r + nr
+                   for nx, nz, nr in footprints)
+
     if seed_policy not in ("used_free_arrivals", "spawn_coordinates"):
         raise ValueError(f"unknown reach seed policy: {seed_policy}")
     if starts is None:
@@ -46,6 +52,7 @@ def reach(m, starts=None, r=100, step=10, *, seed_policy="used_free_arrivals"):
         for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             n = (x + dx * step, z + dz * step)
             if n in seen or not (-5000 <= n[0] < 5000 and -5000 <= n[1] < 5000): continue
+            if entity_blocked(*n): continue
             if dx and not can_x(m, x, z, dx, r): continue
             if dz and not can_z(m, x, z, dz, r): continue
             seen.add(n); q.append(n)
