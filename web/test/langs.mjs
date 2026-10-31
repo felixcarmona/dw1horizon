@@ -4,7 +4,7 @@
 //      remembered choice wins over them
 //   2. the menu lists the eight by their own names; choosing each one switches the page: <html lang>, every
 //      data-i18n string and attribute is that language's (none left as its key), the cards' titles are that
-//      language's (with {n} and {languages} filled), the languages line names data/discs.json's languages
+//      language's (with {n} and {languages} filled; a hidden card is not shown)
 //   3. the choice is remembered after a reload
 // With SHOTS_DIR, the hero and the four slots in Japanese, German and Brazilian Portuguese, desktop and phone width.
 import puppeteer from './browser.mjs';
@@ -38,7 +38,7 @@ const visit = async (langs, keep = false) => {
   await p.goto(url, { waitUntil: 'networkidle0' });
   await p.evaluate((l, keep) => { if (!keep) localStorage.removeItem('horizon.lang'); localStorage.setItem('test.navlangs', JSON.stringify(l)); }, langs, keep);
   await p.reload({ waitUntil: 'networkidle0' });
-  await p.waitForFunction(() => document.querySelector('#hero-langs').textContent !== '');
+  await p.waitForFunction(() => document.querySelector('h1').textContent !== '');
 };
 const page = () => p.evaluate(() => ({ lang: document.documentElement.lang, menu: document.querySelector('#lang').value }));
 
@@ -58,7 +58,6 @@ const opts = await p.$$eval('#lang option', (os) => os.map((o) => [o.value, o.te
 ok(JSON.stringify(opts.map((o) => o[0])) === JSON.stringify(LANGS) && opts.every(([v, t]) => t === NAMES[v]),
    `the menu: ${opts.map((o) => o[1]).join(', ')}`);
 ok(await p.$eval('#lang', (s) => !!s.getAttribute('aria-label')), 'the menu has its label');
-const shown = discs.languages.map((l) => NAMES[l]).join(', ');
 for (const lang of LANGS) {
   await p.select('#lang', lang);
   await p.waitForFunction((t) => document.documentElement.lang === t, {}, lang.replace(/-(\w+)$/, (m, r) => `-${r.toUpperCase()}`));
@@ -67,16 +66,14 @@ for (const lang of LANGS) {
     texts: [...document.querySelectorAll('[data-i18n]')].map((e) => [e.dataset.i18n, e.textContent]),
     attrs: [...document.querySelectorAll('[data-i18n-attr]')].map((e) => { const [a, k] = e.dataset.i18nAttr.split(':'); return [k, e.getAttribute(a)]; }),
     cards: [...document.querySelectorAll('.feature h3')].map((h) => h.textContent),
-    line: document.querySelector('#hero-langs').textContent,
     braces: /\{\w+\}/.test(document.querySelector('main').innerText),
   }));
   const wrong = [...got.texts, ...got.attrs].filter(([k, v]) => v !== t[k]);
   ok(!wrong.length, `${lang}: every string is this language's (${got.texts.length + got.attrs.length})${wrong.length ? ': ' + wrong.slice(0, 3).map(([k, v]) => `${k}=${v}`).join('; ') : ''}`);
   ok(lang === 'en' || t['hero.title'] !== en['hero.title'], `${lang}: the title is translated: ${t['hero.title']}`);
-  const want = features.features.map((f) => (f[lang] || f.en).title);
+  const want = features.features.filter((f) => !f.hidden).map((f) => (f[lang] || f.en).title);
   ok(got.cards.length === want.length && got.cards.every((c, i) => !want[i].includes('{') ? c === want[i] : !/\{/.test(c)),
      `${lang}: the cards are this language's: ${got.cards.find((c) => /\d/.test(c)) || got.cards[0]}`);
-  ok(got.line.includes(shown) && got.line.includes(String(discs.languages.length)), `${lang}: the languages line: ${got.line}`);
   ok(!got.braces, `${lang}: no {placeholder} left in the page`);
 }
 
