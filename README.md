@@ -16,6 +16,8 @@ and it is delivered as a patch that you apply to your own disc. Original disc im
   timing underneath (your partner ages, trains and gets hungry exactly as before).
 - **Eight languages, switchable in game**: English, Spanish, Brazilian Portuguese, French, German, Italian,
   Japanese and Catalan, with a first-boot language picker and Japanese bitmap font.
+- **Enemy life bars**: compact bars above enemy heads, always shown by default. NEW ENEMY BARS in OPTIONS
+  restores the original style; Select switches to brief display after hits. Both choices are saved.
 - **Optional cheats**: care and stat editing, evolution, teleportation, save/load and return to title.
 - **An evolution guide**: the evolution chart shows what each evolution asks for.
 - **Digimon from three more games**: Digimon from Digital Card Battle, Digimon World 2 and Digimon World 2003 join

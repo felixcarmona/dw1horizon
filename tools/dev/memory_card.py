@@ -194,11 +194,12 @@ def v1_checksum(p):
 
 def decode_save(data):
     out = {'bytes': len(data), 'blocks': data[3]}
-    count = data[0x51] & 0x7F  # patch 0244: high bit carries CHEATS; first 12 options stay in place
+    count = data[0x51] & 0x1F  # high bits: CHEATS, original enemy style, brief enemy bars
     if data[0x50] == ord('O') and 0 < count <= 12:
         options = data[0x54:0x54 + count]
         if count == 12:
-            options += bytes([int(bool(data[0x51] & 0x80))])
+            options += bytes([int(bool(data[0x51] & 0x80)),
+                              int(bool(data[0x51] & 0x40)) | (int(bool(data[0x51] & 0x20)) << 1)])
         out['header_options'] = dict(number=struct.unpack_from('<H', data, 0x52)[0], bytes=options.hex())
     for k, base in enumerate((0x200, 0x1100)):
         p = data[base:base + 0xF00]
