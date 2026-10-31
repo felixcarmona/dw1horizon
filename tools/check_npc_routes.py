@@ -22,8 +22,9 @@ MOD = ROOT / 'story/mods/what-the-island-forgot'
 
 def placements():
     species = {}
-    for path in (ROOT / 'content/species').glob('*.json'):
-        d = json.loads(path.read_text())
+    # A twin shares its partner's name and is what the field actually spawns.
+    records = [json.loads(path.read_text()) for path in (ROOT / 'content/species').glob('*.json')]
+    for d in sorted(records, key=lambda d: '_npc_original' in d):
         species[''.join(c for c in d['name'] if c.isalnum()).lower()] = d['model']['radius']
     screens = []
     for path in sorted(MOD.rglob('*.py')):

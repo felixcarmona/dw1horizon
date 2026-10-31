@@ -74,7 +74,7 @@ Removes the engine limits on music, voices and sound memory while the original f
 
 The formats and `tools/sound.py` commands are in [../mods/sound.md](../mods/sound.md) (section 8).
 
-## NPC Digimon as partners (merges 0052-0056)
+## NPC Digimon as partners (merges 0052-0056, restoration 0281)
 
 Eleven Digimon that were only enemies or NPCs became partners: MasterTyrannomon (124), Cherrymon (121), King of Sukamon
 (120), Icemon (94), Meteormon (113), WaruMonzaemon (70), Myotismon (66), ShogunGekomon (119), Machinedramon (115),
@@ -97,8 +97,15 @@ Analogman (116) and Jijimon (117). Their data now lives in their species files
   added at the disc root and to `FILE_OFFSET_TABLE`) is loaded when that species is the partner: `loadMMD` and
   `loadMMDAsync` with model class 3 (Continue, evolution, reincarnation, VS) use the table's name. The asynchronous read
   goes through the file table, because a path search looks in `CHDAT\MMDn\`. Without the file on the disc the partner
-  falls back to the NPC model. The other partners grew the NPC's own MMD instead, which the NPC then also uses (its
-  data row changes too: a boss may now use a finisher).
+  falls back to the NPC model. Other partner generators still replace their native CHDAT output. Patch 0281
+  routes field NPC requests for types 119–124 and 126 to disc-derived records
+  462–468, preserving the original NPC model and rows independently of those
+  partner files. The helper is used by the shared 8/16-bit script load/set/unload
+  paths and the field loader; map identities remain unchanged. Tournament
+  loads bypass the field mapping. NPC speaker names use the original identity.
+  The main executable grows by 384 bytes (`main_BSS_END` 0x801ce880 →
+  0x801cea00, same eight padded banks); species caches and bitsets retain their
+  fixed 1024-id capacity.
 - **Technique effect origins.** A technique's EFE table holds launch points per attacker type; a type missing from it
   would play the clip with no hit. A donor table maps another type's row onto the partner's bones, bone 0 scaled by the
   height ratio and other bones through an explicit map. Since patch 0116 the table is data (`MOD_DONOR_ENTRIES`,
@@ -111,8 +118,10 @@ Analogman (116) and Jijimon (117). Their data now lives in their species files
 - **Lab menu** (a development tool in the pause screen): the evolve list includes the new partners; its count follows
   the array.
 
-Known limits: the NPC and the partner share the data row, and the tournament intro's name tables do not cover these
-types.
+Known limits: species outside the seven restored twins retain their existing
+row-sharing behavior. The tournament intro's name tables do not cover all added
+partner types. NPC twins contain their original scene animations, not partner
+combat animations.
 
 ## Portraits (0066-0068, 0170, 0176, 0178-0180, 0213, 0219)
 

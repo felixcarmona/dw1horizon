@@ -32,7 +32,7 @@ not a separate import under the same name); so is
 WereGarurumon 62 (the disc's row is a placeholder without a model; the Card Battle import that was 204 is it now, and
 the Moon Mirror, which evolves into 62, reaches it).
 
-| | the disc carries it (`SPECIES` names it, or `all`) | it does not (the default build, the release) |
+| | the disc carries it (`SPECIES` names it, or `all`) | it does not (an explicitly reduced selection) |
 |---|---|---|
 | the game | the record (patch 0084: at boot its rows are copied over the resident tables; skeleton, model, texture, effects, evolution paths are read from the record) | the disc's species, as the original game |
 | the executable's tables | the C's rows, but the name is the file's (a renamed record original, Goblimon 80, Golemon 108, is named alike without its record): `balance.py build` writes the file's other values only into the record, never into the executable (`species.py verify` skips these species) | the same |
@@ -41,11 +41,26 @@ the Moon Mirror, which evolves into 62, reaches it).
 Rules: `model.name` and `model.bones` stay the disc's (the executable's row); `model.file`, `skeleton`, `slot_aliases`,
 `radius`, `height` are the record's. `evolution.from` / `to` may name any partner: an original 1..62 gets the record
 original in its paths by a link (as an import), a record original 63..179 has the paths of its record (the disc's
-species of those ids have none). Selection: by id like an import (`SPECIES="111 68"`, `all`). The release keeps the
-disc's species (the release builds carry no imports, `IMPORTS=0`). The wild enemy of a carried species is the record
+species of those ids have none). Selection: by id like an import (`SPECIES="111 68"`, `all`). The everything release uses `SPECIES=all`, including record originals. A reduced
+`IMPORTS=0` build keeps the disc species for unselected record originals. The wild enemy of a carried species is the record
 too: same mesh, the record's technique list (the provisional finisher is appended last, so the enemy's own slots keep
-their numbers); the town NPCs of the three with a foreign model (Hagurumon, Tinmon: DW2 mesh; Brachiomon: Card
-Battle mesh) look like the partner on a disc that carries them.
+their numbers); field NPC requests for the seven restored species use the NPC twins below.
+
+## Original NPC twins
+
+Ids 462–468 are internal NPC records for ShogunGekomon, KingSukamon,
+Cherrymon, Hagurumon, Tinmon, MasterTyrannomon and Brachiomon, in that order.
+`_npc_original` names the native script identity. They copy the disc skeleton,
+bone count, radius, height and voice. `model.from` and `texture.from` read the
+unmodified player-disc extraction, before any output CHDAT replacement. The MMD
+is archived byte for byte. No models or textures are committed.
+
+They have no `partner`, techniques or evolution. All selections include them,
+including `SPECIES=all` and reduced builds. They are absent from the chart, lab
+partner list, site guide, portraits and DWS species names. Scripts, maps and
+saved partners continue to use the existing ids; field loading resolves the NPC
+record internally. Speaker names resolve back to the existing species, in the
+active language. Partner, wild-battle and tournament definitions stay separate.
 
 ## How the game reads them
 

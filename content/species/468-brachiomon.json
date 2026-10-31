@@ -1,0 +1,23 @@
+{
+  "id": 468,
+  "name": "Brachiomon",
+  "level": "none",
+  "attribute": "data",
+  "specialties": [null, null, null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 126,
+  "model": {
+    "radius": 400,
+    "height": 1200,
+    "from": 126,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 2], [9, 10],
+                 [10, 2], [11, 12], [12, 2], [13, 14], [14, 2], [15, 16], [16, 2], [17, 18],
+                 [18, 19]]
+  },
+  "texture": {"from": 126},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, 0, 0, 0],
+  "_npc_original": 126
+}

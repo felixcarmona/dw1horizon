@@ -12,8 +12,10 @@ and model bytes independent of the source directory layout.
 
 MasterTyrannomon and Cherrymon retain their dedicated model folders. Generators
 read models and animations from the player's extracted USA disc. Their output
-must fit the original 2 MB target's partner buffer. Models with separate partner
-files preserve the original NPC model for encounters.
+must fit the original 2 MB target's partner buffer. Machinedramon, Jijimon and Analogman keep separate partner files. Field NPCs
+for types 119–124 and 126 use internal records 462–468, whose MMDs and textures
+come directly from the unmodified disc. These records preserve native size,
+skeleton and scene animations; none of the partner generator outputs feed them.
 
 ```sh
 python3 content/models/partners/icemon-model.py build/Icemon.MMD

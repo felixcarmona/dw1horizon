@@ -1,0 +1,23 @@
+{
+  "id": 464,
+  "name": "Cherrymon",
+  "level": "none",
+  "attribute": "vaccine",
+  "specialties": [null, null, null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 121,
+  "model": {
+    "radius": 400,
+    "height": 1000,
+    "from": 121,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 2], [4, 1], [5, 6], [6, 7], [7, 1], [8, 9], [9, 10],
+                 [10, 1], [11, 12], [12, 13], [13, 1], [14, 15], [15, 16], [16, 1], [17, 18],
+                 [18, 1], [19, 20], [20, 1], [21, 22], [22, 1], [23, 24]]
+  },
+  "texture": {"from": 121},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, 0, 0, 0],
+  "_npc_original": 121
+}

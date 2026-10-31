@@ -1,0 +1,21 @@
+{
+  "id": 466,
+  "name": "Tinmon",
+  "level": "none",
+  "attribute": "vaccine",
+  "specialties": [null, null, null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 123,
+  "model": {
+    "radius": 170,
+    "height": 400,
+    "from": 123,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 2], [4, 1]]
+  },
+  "texture": {"from": 123},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, 0, 0, 0],
+  "_npc_original": 123
+}

@@ -1,0 +1,24 @@
+{
+  "id": 462,
+  "name": "ShogunGekomon",
+  "level": "none",
+  "attribute": "data",
+  "specialties": [null, null, null],
+  "techniques": [],
+  "drop": {"item": "sm.recovery", "percent": 10},
+  "effects_like": 119,
+  "model": {
+    "radius": 400,
+    "height": 800,
+    "from": 119,
+    "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [-1, 1], [4, 6], [5, 6], [-1, 1], [6, 9],
+                 [7, 10], [8, 11], [9, 12], [10, 9], [11, 14], [12, 15], [13, 16], [14, 17],
+                 [-1, 1], [15, 19], [16, 20], [17, 21], [18, 22], [19, 19], [20, 24], [21, 25],
+                 [22, 26]]
+  },
+  "texture": {"from": 119},
+  "voice": 0,
+  "battle_music": "normal-battle",
+  "condition_bubble": [0, 0, 0, 0],
+  "_npc_original": 119
+}

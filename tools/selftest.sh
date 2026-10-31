@@ -45,6 +45,12 @@ if [ -f "$DERIVED/DIGI.DAT" ] && [ -d "$DERIVED/species" ]; then
 else
     skip species-archive "needs the everything build (DW_SELFTEST_DERIVE)"
 fi
+if [ -f "$DERIVED.bin" ] && [ -f "$DERIVED/exe/SLUS_010.32.elf.map" ] && [ "$DISC" = 1 ]; then
+    run npc-originals "$PY" tools/npc_originals.py "$DERIVED"
+else
+    skip npc-originals "needs a built disc image and extracted/ (DW_SELFTEST_DERIVE)"
+fi
+run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
 run species-format    $PY tools/species.py fmt --check                      # content/species in the canonical layout (docs/mods/species.md)
 run species-lint      $PY tools/species.py lint --quiet                     # what the game cannot handle (docs/mods/species.md)
 if [ -d "$DERIVED/species" ]; then

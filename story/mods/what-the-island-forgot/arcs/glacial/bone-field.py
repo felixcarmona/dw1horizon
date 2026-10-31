@@ -6,7 +6,7 @@ from ...state import post_guided, memories, m11_field, memory_news, bone_field_v
 field = new_screen(306, map="build/what-the-island-forgot-maps/screens/BONE01.MAP")
 chest_bone_field = flag()
 master = field.npc(Species.MasterTyrannomon, at=(900, 1900), range=0, when=post_guided)
-elder = field.npc(Species.Brachiomon, at=(1500, 2300), range=0, when=post_guided)
+elder = field.npc(Species.Brachiomon, at=(1400, 2400), range=0, when=post_guided)
 
 @field.on_enter
 def enter():

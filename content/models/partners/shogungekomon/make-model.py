@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """ShogunGekomon partner model: TONO mesh at SCALE + a full partner animation set.
 
+Field NPCs use disc-derived twins; this output supplies the partner only.
+
 ShogunGekomon (type 119, TONO.MMD) is the Gekomon Swamp NPC: 28 bones on a skeleton no
 other model uses and 8 animation slots (0 idle; 5, 6, 7, 0xB, 0x1D-0x1F for its
 scripts). This builds the partner model:
@@ -8,7 +10,7 @@ scripts). This builds the partner model:
   - mesh and bone offsets scaled by SCALE (981 high and 1060 wide with the legs: at
     0.55 it is about 540 high, a bit under Cherrymon);
   - the eight NPC slots replayed tick by tick and re-encoded with their translations
-    scaled, so the Volume Villa scenes still work; 5 (laugh), 7 (fidget) and 0xB (fan
+    scaled, for the partner animation set; 5 (laugh), 7 (fidget) and 0xB (fan
     wave) are also its happy, unhappy and joy, and 0x1F (the big fan dance) is its victory;
   - every other partner slot and its nine techniques authored in anims.py.
 

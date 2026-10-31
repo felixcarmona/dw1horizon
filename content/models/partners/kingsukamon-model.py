@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """King of Sukamon partner model: SCUD mesh at SCALE + Sukamon's animations at its size.
 
+Field NPCs use disc-derived twins; this output supplies the partner only.
+
 King of Sukamon (type 120, SCUD.MMD) and Sukamon (type 39, SCUM.MMD) have the same
 skeleton contents (21 bones, the same bone -> object and parent lists; only the
 DIGIMON_SKELETONS pointer differs: 0x8011cc20 vs 0x8011c348). SCUD is Sukamon built about
