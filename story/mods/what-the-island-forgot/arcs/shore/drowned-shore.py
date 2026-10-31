@@ -22,6 +22,8 @@ def the_wreck():
         memories.add(1)
         memory_news.set()
         tamer.say("Children? There were kids on this ship?")
+        camera.on(tamer, speed=10)
+        camera.arrived()
 
 @whamon.on_talk
 def ride_back():

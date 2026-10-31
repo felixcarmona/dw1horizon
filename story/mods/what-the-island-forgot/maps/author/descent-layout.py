@@ -51,6 +51,15 @@ EXTRA2 = [[(140, 158), (200, 136), (226, 138), (226, 162), (168, 188), (140, 186
           [(162, 415), (214, 415), (214, 466), (162, 466)], [(193, 468), (226, 468), (226, 504), (193, 504)],
           [(425, 528), (480, 528), (480, 628), (425, 628)], [(286, 616), (344, 616), (344, 698), (286, 698)],
           [(276, 694), (320, 694), (320, 738), (276, 738)]]
+# Final wall-body exclusions: the passage polygons above also admit these rock faces.
+# Apply after rasterizing the floor and the stair trigger, so reauthoring cannot reopen them.
+WALL_TILES = [
+    (55, 20), (53, 21), (52, 22), (53, 22), (51, 23), (52, 23),  # right wall beside the entry steps
+    (47, 24), (48, 24), (49, 24), (50, 24),                      # the entry shelf's solid face
+    (39, 32), (40, 32),                                        # upper switchback's rock tip
+    (36, 53), (36, 54),                                        # middle switchback's rock tip
+    (60, 64), (61, 64), (62, 64), (61, 65), (62, 65), (62, 66),  # rock face inside the lower-right turn
+]
 # the pale rock shelf under the steps is drawn over the character: a foreground piece, its depth
 # at its lower edge, so whoever comes down the steps passes behind it
 SHELF = (272, 148, 366, 208)                            # box for SAM, 640x768 px
@@ -86,6 +95,8 @@ def main(out):
         if u is None or not (0 <= u < W and 0 <= v < H): continue
         if ux0 <= u <= ux1 and uy0 <= v <= uy1: col[tz * 100 + tx] = 110
         elif floor[v, u]: col[tz * 100 + tx] = 111 if (ox0 <= u <= ox1 and oy0 <= v <= oy1) else 0
+    for tx, tz in WALL_TILES:
+        col[tz * 100 + tx] = 0x80
     m.collision = col
     for e in EXITS:
         x, z = cam.world(*e['spawn'])

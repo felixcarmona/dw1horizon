@@ -69,3 +69,6 @@ def the_motor():
     else:
         tamer.say("Better leave it alone. Who knows what'd happen up there.")
     advance(Canyon.SETTLED)
+    # Keep the gear in view during the scene, then replace the camera walk's retained follow offset.
+    camera.on(tamer, speed=10)
+    camera.arrived()
