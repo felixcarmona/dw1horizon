@@ -195,7 +195,7 @@ def build(ctx):
             p = PROVIDERS[name](S)
             got = pinned(ctx, p)
             print(f'provider {name}: {len(got)} species')
-            sel += ' ' + p.folder(ctx)
+            sel += ' ' + os.path.relpath(p.folder(ctx), ctx.root)  # (the selection splits on spaces; the folder's path may have them)
         sel += ' ' + env.get('EXTRA_SPECIES', '')
         out = ctx.path('species')
         ids = S.select(sel, out, ctx.path('models'))

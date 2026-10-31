@@ -624,7 +624,7 @@ def place_digimon(comp, mh, report):
             disc = next(iter(glob.glob(os.path.join(ROOT, f'extracted/MAP/*/{name}.MAP'))), None) if name else None
             if not disc: raise BackendError(f'screen {screen} has no .MAP (a new screen: `map: "path/NAME.MAP"`)', ln)
             src = map_path(name)                            # its Digimon list from content/maps
-        rel = os.path.relpath(disc, os.path.join(ROOT, 'extracted')) if disc else f'MAP/NEW/{name}.MAP'
+        rel = os.path.relpath(disc, os.path.join(ROOT, 'extracted')).replace(os.sep, '/') if disc else f'MAP/NEW/{name}.MAP'
         if inplace: inplace_maps[rel] = inplace
         if rel not in maps:
             m = dwmap.MapFile(open(src, 'rb').read())

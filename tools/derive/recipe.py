@@ -50,7 +50,7 @@ def retouched(rec, out):
         found = glob.glob(os.path.join(ROOT, 'extracted', 'MAP', '*', n.rsplit('.', 1)[0] + '.MAP'))
         if len(found) != 1:
             raise SystemExit(f'recipe: {n}: {len(found)} maps of that name on the disc')
-        d = os.path.relpath(os.path.dirname(found[0]), os.path.join(ROOT, 'extracted'))
+        d = os.path.relpath(os.path.dirname(found[0]), os.path.join(ROOT, 'extracted')).replace(os.sep, '/')
         out.append(f'{d}/{n}={m}/retouch/{n}')
     return out
 
