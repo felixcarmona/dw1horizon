@@ -117,6 +117,18 @@ play once (`SsSetTableSize(SEQ_TABLE, 1, 1)`: one sequence at a time).
    6:00 to 20:59, 1 at night; 1 → track 0; 2..10 → fixed (font, track)
    pairs (6,2) (0xB,2) (0xF,2) (0x15,0) (0x15,1) (0x1A,0) (0x1A,1) (0x1B,0)
    (0x1B,1). `updateBGM` re-runs it so the day/night switch is live.
+   Patch 0278 keeps an already open, infinitely looping sequence when the
+   resolved font and variant match `CURRENT_SEQ_FONT/TRACK`; it still updates
+   `ACTIVE_BGM_FONT/TRACK`. One-shot fonts 0x1D–0x20 retain their replay behavior,
+   including after the sequence ends. A closed sequence always restarts.
+   At normal entry's first `0xFB`, `modHeaderKeepsMusic` peeks at a plain
+   optional `1E 00 F5 mode` followed by `SET_BGM`. It resolves the override,
+   restores `PSTAT_245`, and stops before `loadMap` when font or variant differs.
+   An immediate `FE` or font 0xFF also stops before loading. Headers that branch
+   first stay deferred until their executed `SET_BGM`; absent a request, entry
+   finishes by stopping. `STOP_BGM` and explicit script `0xFB` still reset.
+   `updateBGM`, `forceUpdateBGM`, the jukebox, and asynchronous battle music
+   retain their existing paths.
 3. `playMusic(font, track)` (`sound.c:747-771`): rejects font ≤ 0 or > 0x21;
    if the font changed, `loadMusicFont` reads **39 sectors at
    `(font−1)·39`** of `FAALL.VHB` into `GENERAL_BUFFER`, uploads the VAB to
@@ -130,6 +142,11 @@ play once (`SsSetTableSize(SEQ_TABLE, 1, 1)`: one sequence at a time).
 5. The jukebox (`script_menu.c:1572`) lists 63 (font, track) pairs from
    `MAIN_D_801303B8` with names from `BGM_TRACK_NAMES`; `sound.py list` prints
    them per font.
+
+`python3 tools/dev/playtest/music_continuity_host.py build/decomp-dev` checks
+`playBGM` against the actual `seqPlay` loop policy, plus normal map entry,
+explicit resets and day/night updates. Room crossings still need an emulator
+trace: the sequence must advance through `loadMap` without `SsSeqPlay`.
 
 ## 3. Sound effects
 

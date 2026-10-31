@@ -1,0 +1,116 @@
+From 12540ceaebd87862d95f40e816ab299a1cfe314f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 13:19:33 +0000
+Subject: [PATCH] Keep music playing across screens that share it
+
+---
+ src/main/script_interp.c | 68 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index ba779b7..c6e7877 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -32,6 +32,13 @@
+ #include <dw/version.h>
+ #include <dw/screen.h>
+ 
++extern int16_t CURRENT_SEQ_FONT;
++extern int16_t CURRENT_SEQ_TRACK;
++extern int16_t SEQ_ACCESS_NUM;
++
++/* Only the first SET_SCRIPT of normal map entry may retain the sequence. */
++static uint8_t modMapHeadBGM;
++
+ extern int8_t MAIN_STATE;
+ extern int16_t SCRIPT_MAP_CHANGE_STATE;
+ extern uint8_t PREVIOUS_EXIT;
+@@ -2229,10 +2236,54 @@ void initializeLoadedNPCModels(void)
+ 	}
+ }
+ 
++/*
++ * MOD: at the header's first SET_SCRIPT, before loadMap. Most headers go on
++ * with an optional PSTAT_245 write and SET_BGM: read that request now, so
++ * different music stops before the load, as in the original game. A header
++ * that branches first is only known at its SET_BGM, so it is kept until then.
++ */
++static int32_t modHeaderKeepsMusic(void)
++{
++	uint8_t *next;
++	uint8_t font;
++	uint8_t variant;
++	uint8_t saved;
++	uint8_t mode;
++
++	next = SCRIPT_POINTER;
++	saved = readPStat(PSTAT_245);
++	mode = saved;
++	if ((next[0] == 0x1e) && (next[1] == 0) && (next[2] == PSTAT_245)) {
++		mode = next[3];
++		next += 4;
++	}
++	if (next[0] == 0xfe) {
++		return 0;
++	}
++	if (next[0] != SCRIPT_OP_SET_BGM) {
++		return 1;
++	}
++	font = next[1];
++	if (font == 0xff) {
++		return 0;
++	}
++	variant = CURRENT_SEQ_TRACK;
++	writePStat(PSTAT_245, mode);
++	handleMusicOverride(&font, &variant);
++	writePStat(PSTAT_245, saved);
++	return (font == CURRENT_SEQ_FONT) && (variant == CURRENT_SEQ_TRACK);
++}
++
+ void runMapHeadScript(int32_t section) /* MOD: was u8 */
+ {
++	modMapHeadBGM = 1;
+ 	callScriptSection(0, section, 1);
+ 	tickScript();
++	modMapHeadBGM = 0;
++	/* A header without SET_BGM keeps the original silent-map behavior. */
++	if (ACTIVE_BGM_FONT == 0xff) {
++		stopBGM();
++	}
+ }
+ 
+ // clang-format off
+@@ -2596,6 +2647,14 @@ void playBGM(bgmId)
+ 	handleMusicOverride(&font, &variant);
+ 	ACTIVE_BGM_FONT = font;
+ 	ACTIVE_BGM_TRACK = variant;
++	/* seqPlay loops forever except for the arena one-shots. Keep those
++	 * replayable even after EOS, and never retain a closed sequence. */
++	if ((font == CURRENT_SEQ_FONT) && (variant == CURRENT_SEQ_TRACK) &&
++	    (SEQ_ACCESS_NUM != -1) &&
++	    ((font < 0x1d) || (font > 0x20) ||
++	     (variant == (font == 0x1d ? 1 : 2)))) {
++		return;
++	}
+ 	stopBGM();
+ 	playMusic(font, variant);
+ }
+@@ -2860,7 +2919,14 @@ void scriptInstructionFBtoFF(op)
+ 
+ 		MAIN_D_80134FEC = 1;
+ 
+-		resetBGM();
++		if (modMapHeadBGM && modHeaderKeepsMusic()) {
++			/* The same music runs through loadMap; the header's SET_BGM
++			 * confirms it. Explicit script reloads still reset it. */
++			ACTIVE_BGM_FONT = 0xff;
++		} else {
++			resetBGM();
++		}
++		modMapHeadBGM = 0;
+ 		loadMap(CURRENT_SCREEN_ID);
+ 		longjmp(SCRIPT_JMP_BUF, 1);
+ 		break;
+-- 
+2.55.0
+
