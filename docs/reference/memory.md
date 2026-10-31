@@ -712,3 +712,9 @@ against 183,336 available after allocator overhead, leaving **1,312 bytes**.
 The same-version base leaves 1,616 bytes there. No setup has a negative margin;
 no feature was removed to achieve this budget. Recheck the final archive and
 all language padding whenever resident code, text banks or models change.
+Patch 0286 (MetalGreymon Vaccine field stride transitions) adds 144 bytes of
+main code and no BSS: `main_BSS_END` moves from `0x801cb2b4` to `0x801cb344`
+in a controlled English-bank compile with the default file table and identical
+make arguments. The aligned heap loses 144 bytes. Its model grows 578 resident
+bytes inside the existing fixed partner buffer; that buffer is not enlarged.
+The final disc still requires the normal heap and story gates.

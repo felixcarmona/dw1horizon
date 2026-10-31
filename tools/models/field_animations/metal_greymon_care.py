@@ -26,7 +26,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.war_greymon import set_rotation
 from tools.models.field_animations.metal_greymon import PARENTS
-SOURCE = 'e021622a3ae698bb0f2150ed3a783aa8171d9ceae3420143cd4e74aeea3c0dae'
+SOURCE = 'a963fda714f588b750aa8e4de911aa4cd1b08d270b9cf321b6c50b1c41cd21a8'
 DONOR = '2b330474fc2c5ab1f308c51b7ddaa3c503c79255c0cd2168e9979073125c304d'
 BONES = dict(enumerate([2, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29], 1))
 KEEP = {0, 1, 2, 3, 4, 0x21, 0x28, 0x29, 0x2a, 0x2b,

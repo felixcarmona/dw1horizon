@@ -73,6 +73,11 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   partner slow to react. Patch 0232 lets the two reviewed 73-frame quadruped walks (Ankylomon 189, Lighdramon 201:
   three 24-tick steps inside one 72-tick acting span) switch at the end of each completed step, and their 73-frame idle
   yield to a walk request at any tick.
+  Patch 0286 applies the same principle to MetalGreymon Vaccine (224): its
+  80-tick native acting span contains five 16-tick walks or four 20-tick
+  condition walks. Pending navigation changes yield at completed strides;
+  its idle can yield immediately. The complete upper-body performance remains
+  on its original clock. Unhappy partners still walk instead of running.
 - **Condition idles depend on the idle's length.** Standing near the tamer, `STOP_DISTANCE_TIMER` counts up each tick
   and `updateConditionAnimation` runs when it is greater than `anim->frameCount × EMOTION_ANIM_TIMEOUT`, the timeout a
   random 1..5 drawn when the idle starts. The timer is a signed 8-bit value (it wraps after 127), so with an idle of
@@ -94,6 +99,13 @@ Typical authored values:
 | walk (2) | 14-20 | 20-22.5 |
 | condition walk (3) | 16-24 | 14-15 |
 | run (4) | 8-12 | 45-52 |
+
+MetalGreymon Vaccine uses 22 / 15 / 52 units per tick in slots 2 / 3 / 4,
+matching WarGreymon 373. Its gait periods are 16 / 20 / 10 ticks, with
+7 / 10 / 3 ticks of support per foot. Native MetalGreymon Virus (12) travels
+25 / 20.833 / 50 units per tick. The former Vaccine speeds, 11 / 8 / 30,
+could neither walk alongside the tamer nor catch a running one. Its technique
+aliases only reference slots 46–61 and cannot redirect field slots.
 
 Scaling a donor's root travel by the size ratio alone (a big import walking with a small donor's legs) leaves a
 catch-up slower than the tamer (13.9 units per tick was measured once, so the partner never caught up); cadence and
@@ -305,12 +317,29 @@ training uses untouched DCB slot 3C,
 with its existing `hit_tick` 15. Blocking/eating/refusal still terminate, and
 looping replacements replay eight cycles without pose drift.
 
-The resident model is 95,242 bytes (limit 100,352); cold data is 28,764 bytes,
+The round-2 resident model is 95,242 bytes (limit 100,352); cold data is 28,764 bytes,
 and the largest sector-aligned cold read is 6,144 bytes (limit 8,192). The
 partner buffer therefore stays at its original size. These storage checks and
 the decoded contact/event/loop proofs run inside the generator, before its
 output is accepted. They apply to the 26 replacements, not the seven retained
 legacy clips. Visual and in-game review remain necessary.
+
+The subsequent field-speed repair changes only slots 2–4 relative to that care
+repair. Foot targets and entity travel use the same new speeds; increasing
+root travel alone would skate. Shorter walk support phases keep the longer
+strides inside the native leg reach. The run lowers the carrier by eight units
+and reduces foot roll; an encoded carrier-height solve enforces the same
+2-unit floor limit everywhere and 4-unit supporting-foot limit at ticks and
+interpolation thirds. The run retains its airborne phase (maximum foot
+clearance 15.46 units); flight has no supporting foot. Pulling those swinging
+feet onto the floor would skate. Slip is selected from decoded supporting
+surfaces, independently of the authored phase, so such a regression fails.
+Mean supporting-foot centroid travel is 0.62 / 0.34 / 0.52 units per tick
+(approximately 2.8 / 2.3 / 1.0 percent of root travel). Nine-cycle checks retain
+loop closure, limb lengths, scales, native upper acting and footstep bank/note;
+all other programs, the mesh and skeleton stay exact. The resulting resident
+model is 95,820 bytes (578 more than round 2), still inside the original
+100,352-byte buffer; cold storage and its read limits are unchanged.
 
 ### 3. The production models and their field recipes
 
