@@ -71,7 +71,7 @@ In our builds (GCC, [compiler.md](compiler.md)) the executable still starts at 0
 | evolution, ending | `EVL`, `ENDI`, `EAB` at 0x80060000; the evolving model at `EVO_MMD_ADDR` 0x80020000 |
 | battle | the EFE engine from 0x80010000 (16 slots and an effects heap of 0x41000), `BTL_REL` (TIM and TMD prefix, then code) from 0x80052AE0. The background is reread on exit |
 | tournament, VS | `STD_REL` / `VS_REL` from 0x80052AE0 (STD ends at 0x8007D0DC; BTL and VS are kept at or below it by link asserts), arena model at 0x80038000 |
-| title card menus, save machine, sleep save | `MENU_REL` at 0x80052AE0 (patch 0211) |
+| title card menus, save machine, sleep save | `MENU_REL` at 0x80052AE0 (patch 0211). Its whole sectors may reach one sector into `OVL_EVL_BASE`: nothing is resident there in the world but ENDI during the game-clear save, and `start_ending` reads ENDI again (patch 0308) |
 | always | `TEXTURE_BUFFER` at 0x80088800 (0x7800: temporary TIMs, the card image, script arrays); DOOA/MURD ordering tables at 0x8008C000 and 0x8008E000 |
 
 The top 2 KB, 0x8008F800–0x8008FFFF, are reached by nothing.
