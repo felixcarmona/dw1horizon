@@ -264,7 +264,7 @@ player, 0xFC partner, 5-12 NPC slots, 0xC8+ special. Lines refer to `script_inte
 | `3F` | STORE_DIGIMON_VALUE | `DIGIMON_DATA[type].type` |
 | `46` / `79` | LOAD / UNLOAD_DIGIMON | NPC models (8 slots). A second `46` inside a talk hangs the game; load models in MAPHEAD |
 | `47` | SET_DIGIMON | places the NPC in a slot (see [world.md](world.md)) |
-| `48` | UNLOAD_ENTITY | |
+| `48` | UNLOAD_ENTITY | removes a placed NPC by script id. The original looked it up with `getEntityFromScriptId`, which returns an undefined value when no placed Digimon has that id, and freed it: a story `.leave()` on an NPC its presence rule never spawned corrupted the heap and a later big load hung. Patch 0302 returns when the slot is empty (an NPC that already left is the same case: `removeEntity` clears the slot) |
 | `49` | CALL_DIGIMON_ROUTINE | `callDigimonRoutine` (evolution, death; MH 0x4DE uses 7) |
 | `4A` | WAIT_FOR_ENTITY | waits for its movement to finish; 0xFF all; 0xC8 camera; 0xC9/0xD5 sync bit; 0xD6 training load |
 | `4B` | WARP_TO | screen change; `sec` runs afterwards (255 = none) |

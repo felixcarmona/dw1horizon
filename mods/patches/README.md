@@ -110,6 +110,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0299 | Stop training x5 for natural evolution only when the tick's shared target picker finds a target; leave Fresh timer resets in the tick | +336 resident bytes: 0x801ceb2c → 0x801cec7c, aligned heap 185,296 → 184,960 bytes (controlled eight-language text padding and full file table, original 2 MB target); shared ladder saves 80 bytes over duplication; all 320 actual-archive setups fit, screen 361 margin 2,928 bytes. |
 | 0300 | Complete exact half-turns by choosing counterclockwise on equal rotation distances; applies to scripted tamer, partner and NPC turns | −16 resident bytes: 0x801cb3cc → 0x801cb3bc in controlled EN builds; heap +16 to 199,488 bytes; 320 story setups fit, screen 361 margin 15,488 bytes |
 | 0301 | Finish partner walks within one root-travel step; bound blocked or stopped arrival waits to 600 logic ticks | +512 resident bytes including a 16-byte watchdog: 0x801cb3cc → 0x801cb5cc; English test-disc heap 199,472 → 198,960 bytes; screen 361 margin stays positive at 15,488 bytes (conservative cap) |
+| 0302 | Ignore the script command that unloads a Digimon which is not placed (a `.leave()` on an NPC the map never spawned freed an undefined entity and hung later loads) | RESULT |
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.

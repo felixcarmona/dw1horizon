@@ -1,0 +1,40 @@
+From 9d5fe7e877cc3c5d1e63279f1ded397ca74c9eca Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 11:39:33 +0000
+Subject: [PATCH] Ignore script unloads of Digimon that are not placed
+
+---
+ src/main/overworld.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 122caebb..387d5b09 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -1197,7 +1197,23 @@ void NPCEntityTick(int32_t instanceId)
+ void scriptUnloadEntity(uint8_t scriptId)
+ {
+ 	Entity *entity;
++	int32_t i;
+ 
++	/* MOD (absent NPC): getEntityFromScriptId returns an undefined value when no
++	 * placed Digimon has this script id (a story .leave() on an NPC that the
++	 * map's presence rules never spawned, or that already left). Freeing the
++	 * garbage entity corrupted the heap, and a later big load hung. Unload only
++	 * an entity that exists; the tamer and partner ids keep their old path. */
++	if (scriptId != 0xfd && scriptId != 0xfc) {
++		for (i = 0; i < 8; i++) {
++			if ((ENTITY_TABLE[i + 2] != NULL) && (scriptId == NPC_ENTITIES[i].scriptId)) {
++				break;
++			}
++		}
++		if (i == 8) {
++			return;
++		}
++	}
+ 	entity = getEntityFromScriptId(&scriptId);
+ 	entity->isOnMap = 0;
+ 	removeEntity(entity->type, scriptId);
+-- 
+2.55.0
+
