@@ -788,3 +788,64 @@ The separate English test disc has 198,272 bytes of heap (198,368 without this
 patch). Its conservative screen 361 check remains 15,488 bytes before and after:
 the budget tool caps extra heap above the original sweep rather than crediting
 it to unmeasured screens. The paired eight-language result is the tighter limit.
+
+## Native MetalGreymon Vaccine
+
+Figures in this section were measured before patches 0294-0297, on the tree they
+were built from; those patches lower screen 361's margin on their own.
+
+Species 224 is generated from DW1's MTGR.MMD and ALLTIM entry 12. Its
+30-bone native rig replaces the 23-bone import. No animation program is
+retimed; technique slots select native clips. The approved palette and
+polygon CLUT selections are generated from the player's extraction.
+
+| Storage | Imported model | Native model |
+|---|---:|---:|
+| Complete MMD | 124,578 B | 89,824 B |
+| Resident MMD | 95,820 B | 78,480 B |
+| Cold animations | 28,764 B | 11,352 B |
+| Largest aligned cold read | 6,144 B | 4,096 B |
+| Bones | 23 | 30 |
+
+The fixed partner model buffer stays at 100,352 bytes. Partner position and
+momentum arrays are also fixed, with capacity for 34 bones; the extra bones
+allocate no partner heap. An NPC instance's position/momentum allocations,
+including allocator headers, grow from 5,032 to 6,560 bytes (+1,528).
+Its sector-rounded resident model allocation shrinks by 16,384 bytes.
+
+Removing the 224-only follow patch 0290 and retaining the general condition
+walk guard as 0298 moves `main_BSS_END` from `0x801cea5c` to `0x801ce9bc`
+(**160 resident bytes saved**). The initialized heap grows from 185,504 to
+185,664 bytes. These are full eight-language builds with the same version
+stamp and original 2 MB target; all eight final endpoints are identical.
+
+Heapcheck passes. The actual archive check passes all 320 setup sections in
+each of eight languages (2,560 checks). Screen 361 remains tightest: peak
+182,024 bytes, 185,656 available after allocator overhead, **3,632 bytes
+remaining**, compared with 3,472 before the replacement. The assembled ISO's
+DIGI.DAT is byte-identical to the archive checked. Species 189 and 201's
+resident model bytes are unchanged.
+
+Live original-2-MB samples with 224 as partner, on this full disc:
+
+| Situation | Free heap | Largest block |
+|---|---:|---:|
+| Screen 19, field | 135,624 B | 135,624 B |
+| Screen 0, technique in battle | 80,664 B | 80,664 B |
+| Screen 48, noon | 58,016 B | 56,216 B |
+| Screen 143, crowded battle | 38,368 B | 31,752 B |
+| Screen 15, night | 35,360 B | 35,360 B |
+| Screen 361, worst ordinary pack | 3,632 B | 3,632 B |
+| Screen 361, three 224 enemies, field and battle | 87,488 B | 87,488 B |
+
+The old card's story state leaves screen 361 empty. For the worst-pack probe,
+the engine loaded its actual setup's Goblimon, Geremon and Gekomon models and
+instances in the conservative allocation order. Sixteen allocator samples
+confirmed a minimum of 3,632 bytes, matching the archive check. A separate
+controlled encounter loaded three 30-bone 224 enemies alongside partner 224,
+entered battle and returned to the field.
+
+These samples have no heap corruption. Palette rows 5–7 match the generated
+TIM in live partner VRAM; the live mesh selects them on 29 claw, 12 horn and
+94 stripe polygons. The old 224 memory card retains its equipped technique
+slots while loading the native model.
