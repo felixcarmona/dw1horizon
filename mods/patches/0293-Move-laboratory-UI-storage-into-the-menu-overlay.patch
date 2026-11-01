@@ -1,0 +1,112 @@
+From 00fc8b20281a6e05badd74dd91e566342f4fa2e5 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sat, 31 Oct 2026 22:20:33 +0000
+Subject: [PATCH] Move laboratory UI storage into the menu overlay
+
+---
+ config/us/overlay.ld      |  8 ++++++++
+ src/main/mod_lab.c        | 16 ++++++++++++----
+ src/main/mod_lab_menu.inc | 11 ++++++-----
+ 3 files changed, 26 insertions(+), 9 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 4e8392c..3a27419 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -896,6 +896,14 @@ SECTIONS
+                 .text.modLabDrawText .text.modLabRowY .text.modLabRender
+                 .text.modLabMenuLoaded* .text.labInt
+                 .rodata.modLabMenuLoaded*);
++            /* UI-only storage: the anonymous translated-literal pool, immutable
++             * field/home tables and redraw cache. Roster captions, their level
++             * table and all shared state remain resident. labText is scratch:
++             * modLabMenuLoaded clears it before the first read on every entry;
++             * the BIOS does not zero overlay bss. Card reloads occur only after
++             * the lab's render callback has been removed. */
++            BUILD_DIR/src/main/mod_lab.c.o(.rodata .rodata.LAB_FIELDS
++                .rodata.LAB_HOME_TEXT .bss.labText);
+             . = ALIGN(., 4);
+ 
+ 			LONG(0);
+diff --git a/src/main/mod_lab.c b/src/main/mod_lab.c
+index 6b5eeed..851772c 100644
+--- a/src/main/mod_lab.c
++++ b/src/main/mod_lab.c
+@@ -144,10 +144,18 @@ static void modRosterTickCaption(int32_t instanceId)
+ 
+ static void modRosterShowCaption(int32_t type)
+ {
+-	static char *LEVEL_TEXT[] = {
+-		"", LAB_STR_LEVEL_FRESH, LAB_STR_LEVEL_IN_TRAINING, LAB_STR_LEVEL_ROOKIE,
+-		LAB_STR_LEVEL_CHAMPION, LAB_STR_LEVEL_ULTIMATE, LAB_STR_LEVEL_MEGA,
+-	};
++    /* These captions also run in the field with MENU absent. Give every
++     * translated literal its own resident section before moving the UI pool. */
++    static const char ROSTER_FRESH[] = LAB_STR_LEVEL_FRESH;
++    static const char ROSTER_IN_TRAINING[] = LAB_STR_LEVEL_IN_TRAINING;
++    static const char ROSTER_ROOKIE[] = LAB_STR_LEVEL_ROOKIE;
++    static const char ROSTER_CHAMPION[] = LAB_STR_LEVEL_CHAMPION;
++    static const char ROSTER_ULTIMATE[] = LAB_STR_LEVEL_ULTIMATE;
++    static const char ROSTER_MEGA[] = LAB_STR_LEVEL_MEGA;
++    static const char *const LEVEL_TEXT[] = {
++        "", ROSTER_FRESH, ROSTER_IN_TRAINING, ROSTER_ROOKIE,
++        ROSTER_CHAMPION, ROSTER_ULTIMATE, ROSTER_MEGA,
++    };
+ 	RECT area;
+ 	char *p;
+ 	int32_t level;
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index b74264f..b5ee997 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -56,11 +56,11 @@ static int32_t labStep;
+ static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the UI closes */
+ static char *modLabMessage;
+ static char labText[LAB_ROWS][96];
+-static char *LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
++static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+     LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_CLOSE };
+ static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+-static char *appendStr(char *dst, char *src)
++static char *appendStr(char *dst, const char *src)
+ {
+     while (*src) *dst++ = *src++;
+     *dst = '\0';
+@@ -83,7 +83,7 @@ typedef struct {
+ } LabField;
+ #define LAB_P(name, field, lo, hi, cmin, cmax) { name, __builtin_offsetof(PartnerPara, field), lo, hi, cmin, cmax, 0 }
+ #define LAB_S(name, field, lo, hi) { name, __builtin_offsetof(Stats, field), lo, hi, -1, -1, 1 }
+-static LabField LAB_FIELDS[] = {
++static const LabField LAB_FIELDS[] = {
+     LAB_P(LAB_STR_DISCIPLINE, discipline, 0, 100, MOD_CARE_LIM_DISC_MIN, MOD_CARE_LIM_DISC_MAX),
+     LAB_P(LAB_STR_HAPPINESS, happiness, -100, 100, MOD_CARE_LIM_HAPPY_MIN, MOD_CARE_LIM_HAPPY_MAX),
+     LAB_P(LAB_STR_WEIGHT, weight, 1, 99, MOD_CARE_LIM_WEIGHT_MIN, MOD_CARE_LIM_WEIGHT_MAX),
+@@ -109,14 +109,14 @@ static LabField LAB_FIELDS[] = {
+ 
+ static int16_t *modLabFieldPtr(int32_t field)
+ {
+-    LabField *f = &LAB_FIELDS[field];
++    const LabField *f = &LAB_FIELDS[field];
+     uint8_t *base = f->group ? (uint8_t *)&PARTNER_ENTITY.digimonEntity.stats : (uint8_t *)&PARTNER_PARA;
+     return (int16_t *)(base + f->offset);
+ }
+ 
+ static int32_t modLabBound(int32_t field, int32_t maximum)
+ {
+-    LabField *f = &LAB_FIELDS[field];
++    const LabField *f = &LAB_FIELDS[field];
+     int32_t slot = maximum ? f->careMax : f->careMin;
+     int32_t value = slot >= 0 ? careGet(slot) : -1;
+     if (value == -1) value = maximum ? f->max : f->min;
+@@ -476,6 +476,7 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+     modLabMessage = NULL; labAction = 0;
+     removeStaticUIBox(MOD_LAB_BOX);
+     setRECT(&pos, 0, MOD_LAB_TEXT_Y, 256, LAB_ROWS * 12); clearTextSubArea(&pos);
++    /* MENU scratch is not BIOS-zeroed and may contain another overlay. */
+     memset(labText, 0, sizeof(labText));
+     modLabDrawText();
+     setRECT(&pos, -LAB_WIDTH / 2, -LAB_HEIGHT / 2, LAB_WIDTH, LAB_HEIGHT);
+-- 
+2.55.0
+
