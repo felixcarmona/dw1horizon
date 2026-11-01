@@ -131,6 +131,7 @@ run sign-sprites      $PY -m unittest tools.test_signs
 run image-dependencies $PY -m unittest tools.test_no_pillow
 run numeric-replay    $PY -m unittest tools.test_arraymath tools.test_dcbplayer tools.test_texel
 run patcher-python-only $PY -m unittest tools.test_no_numpy
+run partner-species   $PY -W ignore -m unittest tools.test_partner_species
 run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals

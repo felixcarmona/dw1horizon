@@ -1,0 +1,149 @@
+From 1b5a16bedb366862792da8396812da68ac8f35d4 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 13:42:10 +0000
+Subject: [PATCH] Keep the whole partner species past 255 in scripts
+
+A pstat holds one byte, so a partner past 255 read as its low byte: VioletElecmon (256) became the main character at the
+attribute gates, and a Sukamon reverted to another species. Partners past 254 are stored as 0xFF, the readers of a
+species pstat get the whole id back, and the Sukamon backup also lives in saved wide register 15.
+---
+ include/dw/script.h       |  8 ++++++++
+ src/main/partner.c        |  2 +-
+ src/main/partner_impl.c   |  3 ++-
+ src/main/script_interp.c  | 32 +++++++++++++++++++++++++++-----
+ src/main/script_textbox.c |  9 ++++-----
+ 5 files changed, 42 insertions(+), 12 deletions(-)
+
+diff --git a/include/dw/script.h b/include/dw/script.h
+index 6dbd5eb..1f6c052 100644
+--- a/include/dw/script.h
++++ b/include/dw/script.h
+@@ -402,6 +402,14 @@ void callScriptSection(int32_t scriptId, int32_t section, int32_t param);
+ int32_t tickScript(void);
+ uint8_t *getScript(uint16_t mapId);
+ uint8_t readPStat(uint8_t index);
++/* MOD (species past 255): a pstat is one byte and a species is not. storePartnerSpecies keeps a partner past 254 as
++   PSTAT_WIDE_SPECIES, which no narrow test matches by accident, and pstatSpecies reads the whole species back. The
++   Sukamon backup outlives the partner it names, so it also keeps the species in a saved wide register. */
++#define PSTAT_WIDE_SPECIES	0xFF
++#define WREG_SUKAMON_BACKUP	15
++void storePartnerSpecies(uint8_t index);
++int32_t pstatSpecies(uint8_t index);
++int32_t sukamonBackupSpecies(void);
+ int32_t isTriggerSet(uint16_t trigger);
+ void writePStat(uint8_t index, uint8_t value);
+ void skipOneReadTwoShort(uint16_t *out1, uint16_t *out2);
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 553fe08..0f4def0 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -1186,7 +1186,7 @@ uint8_t routine;
+ 		SOME_SCRIPT_SYNC_BIT = 0;
+ 		break;
+ 	case 2:
+-		EVOLUTION_TARGET = readPStat(PSTAT_SUKAMON_BACKUP_DIGIMON);
++		EVOLUTION_TARGET = sukamonBackupSpecies();
+ 		partnerSetState(13);
+ 		SOME_SCRIPT_SYNC_BIT = 0;
+ 		break;
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 9718e90..45b58ae 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -416,6 +416,7 @@ extern uint16_t LAST_HANDLED_FRAME;
+ extern int32_t IS_SCRIPT_PAUSED;
+ 
+ void writePStat(int32_t id, uint8_t value);
++void storePartnerSpecies(uint8_t index);
+ void callScriptSection(int32_t a, int32_t b, int32_t c);
+ ModelComponent *thunkLoadMMD(int32_t digiType, int32_t modelType);
+ void learnMove(int32_t move);
+@@ -2303,7 +2304,7 @@ void tickConditions(void)
+ 		if (PARTNER_ENTITY.digimonEntity.entity.type != MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_IMMUNE_A] &&
+ 		    PARTNER_ENTITY.digimonEntity.entity.type != MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_IMMUNE_B]) {
+ 			EVOLUTION_TARGET = MOD_EVO_SPECIAL[MOD_SPECIAL_VIRUS_TARGET];
+-			writePStat(5, PARTNER_ENTITY.digimonEntity.entity.type);
++			storePartnerSpecies(5);
+ 			PARTNER_PARA.sukaBackupHP =
+ 				PARTNER_ENTITY.digimonEntity.stats.base.hp;
+ 			PARTNER_PARA.sukaBackupMP =
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index ab6b08b..5548e61 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -772,8 +772,7 @@ void scriptInstruction10to27(op)
+ 		break;
+ 	case SCRIPT_OP_STORE_DIGIMON_TYPE:
+ 		pollNextScriptUByte(&pstat);
+-		value = PARTNER_ENTITY.digimonEntity.entity.type;
+-		writePStat(pstat, value);
++		storePartnerSpecies(pstat);
+ 		break;
+ 	case SCRIPT_OP_SET_INVENTORY_SIZE:
+ 		pollNextScriptUByte(&pstat);
+@@ -1265,9 +1264,7 @@ void scriptInstruction28to3F(op)
+ 		break;
+ 	case SCRIPT_OP_STORE_DIGIMON_VALUE:
+ 		skipOnePollTwoScriptBytes(&byteArg1, &byteArg2);
+-		byteArg1 = readPStat(byteArg1);
+-		byteArg1 = DIGI_PARA(byteArg1).type;
+-		writePStat(byteArg2, byteArg1);
++		writePStat(byteArg2, DIGI_PARA(pstatSpecies(byteArg1)).type);
+ 		break;
+ 	}
+ 
+@@ -2951,6 +2948,31 @@ void scriptInstructionFBtoFF(op)
+  */
+ #define WREG(n) (SCRIPT_STATE_PTR->wregs[(n) & (SCRIPT_NUM_WREGS - 1)])
+ 
++void storePartnerSpecies(uint8_t index)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++
++	writePStat(index, type < PSTAT_WIDE_SPECIES ? type : PSTAT_WIDE_SPECIES);
++	if (index == PSTAT_SUKAMON_BACKUP_DIGIMON)
++		WREG(WREG_SUKAMON_BACKUP) = type;
++}
++
++int32_t pstatSpecies(uint8_t index)
++{
++	int32_t id = readPStat(index);
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++
++	return id == PSTAT_WIDE_SPECIES && type > id ? type : id;
++}
++
++/* A save from before this register has 0 here and the backup in its pstat. */
++int32_t sukamonBackupSpecies(void)
++{
++	int32_t type = WREG(WREG_SUKAMON_BACKUP);
++
++	return type != 0 ? type : readPStat(PSTAT_SUKAMON_BACKUP_DIGIMON);
++}
++
+ void scriptSetChosenItem(int32_t item)
+ {
+ 	writePStat(PSTAT_254, item);
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 81549e3..55c92a2 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -1401,11 +1401,10 @@ top: {
+ 		case 7:
+ 			ctrl = *SCRIPT_POINTER++;
+ 			{
+-				ctrl = readPStat(ctrl);
+-				strcpy(out,
+-				       (const char *)&DIGI_PARA(ctrl));
+-				lines = strlen(
+-					(const char *)&DIGI_PARA(ctrl));
++				const char *name = (const char *)&DIGI_PARA(pstatSpecies(ctrl));
++
++				strcpy(out, name);
++				lines = strlen(name);
+ 				out += lines;
+ 				col += (uint16_t)(lines >> 1);
+ 			}
+-- 
+2.55.0
+

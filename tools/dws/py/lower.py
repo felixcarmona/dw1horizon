@@ -1266,6 +1266,9 @@ class Body:
     def atom(self, c, pre):
         if isinstance(c, ast.Compare):
             if len(c.ops) != 1: raise self.err(c, 'one comparison at a time: a < b and b < c')
+            if isinstance(c.left, ast.Name) and c.left.id == 'partner_type' and TARGET['exe'] in WIDE_EXES:
+                # `partner.species` reads a wide register on these engines, so no earlier test can be trusted to have filled p103
+                if 'store_digimon_type(partner_type);' not in pre: pre.append('store_digimon_type(partner_type);')
             op, r = c.ops[0], c.comparators[0]
             if isinstance(op, (ast.Is, ast.IsNot)):                      # pick is Picked.EMPTY / Picked.CANCELLED
                 if not (isinstance(c.left, ast.Name) and c.left.id in self.picks and isinstance(r, ast.Attribute) and isinstance(r.value, ast.Name)

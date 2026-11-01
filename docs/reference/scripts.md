@@ -261,7 +261,7 @@ player, 0xFC partner, 5-12 NPC slots, 0xC8+ special. Lines refer to `script_inte
 | `34` / `35` / `36` | SET / ADD / REDUCE_STAT | `SCRIPT_STAT_*` 0-22 (`getStatsPointer`), caps in `STATS_LIMIT_ARRAY` (see [partner.md](partner.md)) |
 | `37` | ADVANCE_TO_DATE_AT | advances the clock to the stored date (`skipHours`) |
 | `38` / `39` | ADD / SUB_MINUTES_TO_DATE_AT | on the stored date |
-| `3F` | STORE_DIGIMON_VALUE | `DIGIMON_DATA[type].type` |
+| `3F` | STORE_DIGIMON_VALUE | `DIGIMON_DATA[type].type`; 0306 reads a partner past 254 back whole, see [ids](ids.md) |
 | `46` / `79` | LOAD / UNLOAD_DIGIMON | NPC models (8 slots). A second `46` inside a talk hangs the game; load models in MAPHEAD |
 | `47` | SET_DIGIMON | places the NPC in a slot (see [world.md](world.md)) |
 | `48` | UNLOAD_ENTITY | removes a placed NPC by script id. The original looked it up with `getEntityFromScriptId`, which returns an undefined value when no placed Digimon has that id, and freed it: a story `.leave()` on an NPC its presence rule never spawned corrupted the heap and a later big load hung. Patch 0303 returns when the slot is empty (an NPC that already left is the same case: `removeEntity` clears the slot) |
