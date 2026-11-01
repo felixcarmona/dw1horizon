@@ -134,7 +134,7 @@ def words(build, mapped, targets, plan):
         paths['SCN/' + dest] = (lang, '.' + source.removesuffix('_REL.BIN'))
     for file in mapped:
         if file.endswith('_REL.BIN'):
-            paths.setdefault(file, ('en', '.' + file.removesuffix('_REL.BIN')))
+            paths.setdefault(file, ('en', '.' + Path(file).name.removesuffix('_REL.BIN')))
     cache, result = {}, {}
     for file, (lang, section) in paths.items():
         if file not in targets:

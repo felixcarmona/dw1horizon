@@ -70,6 +70,11 @@ def sections(build, plan):
         maps[lang] = rows
     if 'en' not in maps:
         raise ValueError('delta provenance requires the current English linker map')
+    # An overlay the disc plan places in a folder keeps its linker output name.
+    for file in plan.get('authored', []):
+        folder, _, name = file.rpartition('/')
+        if folder and name.endswith('_REL.BIN'):
+            paths.setdefault(file, ('en', name))
     return {file: [dict(row) for row in maps.get(lang, maps['en']) if row['output'] == source]
             for file, (lang, source) in paths.items()}
 
