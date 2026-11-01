@@ -1,3 +1,10 @@
+# Alternate messages use the same canonical background crop and masked-delta
+# authoring route, but are pasted only into the listed sprite frames.
+SPRITE_JOBS = {
+ 'mayo11_ogre': {'map': 'MAP/MAP1/MAYO11', 'box': (27,148,223,258), 'frames': (6,),
+                 'en': 'OGRE TUNNEL', 'es': 'TÚNEL OGRO', 'pt-br': 'TÚNEL DO OGRO'},
+}
+
 JOBS = [
  ('betl02','BETL02',(336,112,528,240),'3:2',
   'a curved neon sign over an arena entrance: Japanese katakana letters in red-orange neon tubes inside a green neon border, glowing on a dark background',

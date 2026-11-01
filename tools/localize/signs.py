@@ -10,7 +10,8 @@ content/localized/signs/delta/<lang>/<sign>.png and index.json). The build adds
 the deltas to the player's canonical disc crop to recover the generator edit,
 then applies the original threshold and one-pixel mask growth at each placement.
 Only differences and masks are committed; unchanged original colours are read
-from the disc. Requantization and sprite pasting are unchanged.
+from the disc. Alternate messages in SPRITE_JOBS target their own frames and
+fill transparent pixels so the background's normal wording cannot bleed through.
 
 --file DEST=SRC (DEST a disc path, MAP/MAP1/MAYO10.TFS): the build puts SRC on the disc in place of the disc's file (a story
 mod's retouch, the story compiler's map with its Digimon): the sign is pasted into SRC. Which pixels are the sign's is
@@ -31,7 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 sys.path.insert(0, os.path.join(ROOT, 'content', 'localized', 'signs'))
 import dwmap  # noqa: E402
-from jobs import JOBS  # noqa: E402
+from jobs import JOBS, SPRITE_JOBS  # noqa: E402
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 from tools.localize import cutout  # noqa: E402
@@ -70,18 +71,29 @@ def sign_mask(orig, new, w, h, inside=None):
     return out
 
 
-def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False):
+def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False, frames=None, opaque=False):
     """The sprites drawn over the sign (MAP instances: pieces of the background that cover the characters) get the
     edit too, where their pixel is opaque and the edit changed the background: requantized to the sprite's palette.
     -> how many pixels changed. palette_alpha uses the palette's transparent
-    colour rather than assuming index zero (the Spanish gym board needs this)."""
+    colour rather than assuming index zero (the Spanish gym board needs this).
+    frames selects an alternate message even in a hidden instance; opaque fills
+    its transparent holes and excludes every transparent palette entry."""
     box = (x0, y0, x0 + new.width, y0 + new.height)
     tims = [dwmap.TIM(r) for r in m.tims]
     n = 0
-    for i in dwmap.covering_instances(m, *box):
+    # Explicit alternate messages can be hidden until a script swaps them in.
+    candidates = range(len(m.instances)) if frames is not None else dwmap.covering_instances(m, *box)
+    for i in candidates:
         inst = m.instances[i]
+        if inst['flag'] & 0x80:
+            continue
         for f in {f for f in inst['frames'] if 0 <= f < len(m.sprites)}:
+            if frames is not None and f not in frames:
+                continue
             sp = m.sprites[f]
+            if not (inst['x'] < box[2] and box[0] < inst['x'] + sp['width']
+                    and inst['y'] < box[3] and box[1] < inst['y'] + sp['height']):
+                continue
             bpp = 4 if 0 <= sp['clut'] < 16 else 8
             page = 384 + (sp['texX'] // 256) * (128 if bpp == 8 else 64)
             for k, tim in enumerate(tims):
@@ -102,6 +114,8 @@ def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False):
                     row = sp['clut'] + 468 - cy
                     clut = cl[row * cw:(row + 1) * cw] if 0 <= row < ch else cl[:cw]
                 rq = dwmap.Requant([dwmap.bgr555_to_rgb(c) for c in clut], clut)
+                if opaque:
+                    rq.skip = {i for i, c in enumerate(clut) if c == 0}
                 stride = tim.w * 2
                 for sy in range(sp['height']):
                     for sx in range(sp['width']):
@@ -112,7 +126,7 @@ def sprite_paste(m, t, new, mask, x0, y0, *, palette_alpha=False):
                         o = pix + v * stride + (u if bpp == 8 else u // 2)
                         old = raw[o] if bpp == 8 else (raw[o] >> (4 * (u & 1))) & 15
                         transparent = clut[old] == 0 if palette_alpha else old == 0
-                        if transparent:
+                        if transparent and not opaque:
                             continue                              # transparent: the background shows
                         val = rq(*new.getpixel((X, Y)))
                         if bpp == 8:
@@ -140,6 +154,9 @@ def places(sign, extracted):
     copies = {f'audit-{k}': [(c['map'], c['box']) for c in v['copies']] for k, v in audit.items()}
     boxes = {j[0]: (j[1], j[2]) for j in JOBS}
     boxes.update(EXTRA)
+    if sign in SPRITE_JOBS:
+        job = SPRITE_JOBS[sign]
+        return [(job['map'], job['box'])]
     if sign in copies:
         return copies[sign]
     if sign in boxes:
@@ -189,6 +206,24 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
                 cw, ch, cut = cutout.load(f'{lang}/{sign}', base)
                 new = [p[:3] for p in cut]
                 inside = [p[3] for p in cut]
+                if sign in SPRITE_JOBS:
+                    if lang == 'ja':
+                        mapcopy(lang, canonical_map)
+                        sprites_changed.add((lang, canonical_map))
+                        continue  # Keep the original Japanese takeover artwork.
+                    # A replacement message belongs only to its sprite frame,
+                    # never to the background or the normal sign frame. Fill
+                    # the crop, including formerly transparent pixels: the
+                    # localized DRILL word must not show through the new name.
+                    job = SPRITE_JOBS[sign]
+                    mp = job['map']
+                    t = maps[mp][1]
+                    new = [p[:3] if p[3] else base[i] for i, p in enumerate(cut)]
+                    if sprite_paste(mapcopy(lang, mp), t, Pixels(cw, ch, new),
+                                    Pixels(cw, ch, [255] * (cw * ch)), *job['box'][:2],
+                                    frames=job['frames'], opaque=True):
+                        sprites_changed.add((lang, mp))
+                    continue
                 for mp, box in places(sign, extracted):
                     orig = disc_crop(extracted, mp, box, maps)
                     key = (lang, mp)
@@ -208,10 +243,12 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
                                               for y in range(h)], mode='RGBA')
                     dwmap.bg_paste(m, t, p, x0, y0)
                     # TRAI00 uses opaque green at index 0 and transparent 255.
-                    # Opt in only for this revised Spanish sign; retain every
-                    # other accepted sign's historical sprite pixels.
+                    # MAYO11's normal text belongs only to frame 5. Pasting it
+                    # into the covering tree or additive lamp glow redraws
+                    # DRILL in front of the takeover, even with frame 5 hidden.
                     if sprite_paste(mapcopy(lang, mp), t, Pixels(w, h, new), Pixels(w, h, mask), x0, y0,
-                                    palette_alpha=(lang == 'es' and sign == 'audit-14')):
+                                    palette_alpha=(sign in ('audit-13', 'audit-14')),
+                                    frames=(() if lang == 'ja' else (5,)) if sign == 'audit-13' else None):
                         sprites_changed.add((lang, mp))
         lines = []
         for (lang, mp), t in sorted(edits.items()):
@@ -221,6 +258,7 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
             lines.append(f'{lang} {mp}.TFS')
         for lang, mp in sorted(sprites_changed):
             dest = os.path.join(out, lang, mp + '.MAP')
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             open(dest, 'wb').write(mapcopies[(lang, mp)].build())
             lines.append(f'{lang} {mp}.MAP')
     os.makedirs(out, exist_ok=True)

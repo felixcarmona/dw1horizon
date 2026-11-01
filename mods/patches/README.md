@@ -110,3 +110,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
+
+The localized Ogre Tunnel takeover sign is a map-art change in
+`tools/localize/signs.py` and `content/localized/signs/delta`, with no engine
+patch or resident executable growth. See [game languages](../../docs/mods/language.md).

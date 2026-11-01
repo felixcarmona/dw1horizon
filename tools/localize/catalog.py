@@ -31,6 +31,7 @@ SIGNS = {
  'audit-9': ('RESTAURANT', 'RESTAURANT', 'RISTORANTE', 'レストラン'),
  'audit-10': ('OUTILS', 'WERKZEUG', 'ATTREZZI', 'どうぐ'),
  'audit-13': ('TUNNEL DE LA FOREUSE', 'BOHRTUNNEL', 'TUNNEL DEL TRAPANO', 'ドリルトンネル'),
+ 'mayo11_ogre': ("TUNNEL DE L'OGRE", 'OGERTUNNEL', "TUNNEL DELL'ORCO", 'オーガトンネル'),
  'audit-14': ('GYMNASE / VERT', 'GRÜNES / FITNESSSTUDIO', 'PALESTRA / VERDE', 'グリーン / ジム'),
  'audit-22': ('ATTENTION ! / CHUTES DE PIERRES !', 'VORSICHT! / STEINSCHLAG!', 'ATTENZIONE! / CADUTA MASSI!', '注意！ / らくせき！'),
  'audit-24': ('CACA PUBLIC', 'ÖFFENTLICHES KLO', 'CACCA PUBBLICA', 'みんなのウンチ'),
@@ -99,7 +100,8 @@ CA_SIGNS = {
  'twnb_open':'OBERT','twnb_tool':'EINES','audit-0':'RECEPCIÓ','audit-1':'INSCRIPCIONS','audit-2':'INSCRIPCIONS',
  'audit-3':"SALA D'ESPERA",'audit-4':'JOC DE GEL','audit-5':'CAP AL PÚBLIC',
  'audit-7':"MAGATZEM D'OBJECTES",'audit-8':"MAGATZEM D'OBJECTES",'audit-9':'RESTAURANT','audit-10':'EINES',
- 'audit-13':'TÚNEL DEL TREPANT','audit-14':'GIMNÀS / VERD','audit-22':'ATENCIÓ! / CAIGUDA DE PEDRES!',
+ 'audit-13':'TÚNEL DEL TREPANT', 'mayo11_ogre':"TÚNEL DE L'OGRE",
+ 'audit-14':'GIMNÀS / VERD','audit-22':'ATENCIÓ! / CAIGUDA DE PEDRES!',
  'audit-24':'CACA PÚBLICA','audit-27':'ZONA DE REBUIG','audit-28':'BÉ!!','audit-29':'BÉ!!',
  'audit-30':'MALAMENT','audit-31':'PERILL',
 }
