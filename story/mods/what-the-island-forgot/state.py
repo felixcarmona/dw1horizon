@@ -10,7 +10,7 @@ class Canyon(Quest):
     SETTLED = auto()      # the Motor broken or left, or the chase turned down: the shaft is closed for good
 
 root1 = flag()            # R1: the Motor broken (the canyon sinks, the crack stays open)
-birdramon_gone = flag()   # R1's price: Birdramon fought the tamer at the bridge and left the island
+birdramon_gone = flag()   # legacy departure bit; reserved for old saves, ignored by bridge recruitment
 
 # MasterTyrannomon's post (§3.1f): guided, the secret passage to the Bone Field opens and the slow side loses its keeper
 # (the Brachiomon move on); kept, the passage stays shut for good.

@@ -33,6 +33,8 @@ Three layers:
 6. **Mods compose**: several mods can change the same screen without copying each other's or the base's code.
 7. **Works on a real PlayStation** (2 MB). Validate every shipped feature at that limit;
    an expanded emulator is not a substitute.
+8. **Decisions preserve original content.** Every branch of an extended-story decision must keep the original
+   recruits, services and routes reachable. Changed dialogue and landscapes must retain their progression effects.
 
 ## 3. Key decisions and why
 
