@@ -43,6 +43,14 @@ class CityResidents(unittest.TestCase):
                     placed[name(row['type'])] += 1
         self.assertEqual({n: placed[n] for n in unique if placed[n] != 1}, {})
 
+    def test_recruit_sites_stand_still(self):
+        mod = city.ROOT / 'story/mods/what-the-island-forgot'
+        paths = list((mod / 'arcs/residents').glob('*.py')) + [
+            mod / 'arcs/factory/remodelling.py', mod / 'arcs/vault/statue-room.py', mod / 'arcs/seam/kennel.py']
+        sites = [m[0] for p in paths for m in re.findall(r'\.npc\(Species\.(\w+)[^\n]*(?:\n[^\n]*)?when=not recruited\(Species\.\w+\)()', p.read_text())
+                 if 'still=True' not in p.read_text()]
+        self.assertEqual(sites, [])
+
     def test_scan_decodes_instructions(self):
         source = '.section 5 start\nstart:\n SET_TRIGGER 268\n UNSET_TRIGGER 290\n SET_TRIGGER 33009\n UNSET_TRIGGER 33041\n SET_TRIGGER 312\n SET_TRIGGER 33792\n END_SCRIPT\n .byte 0x19\n'
         script = bytecode.assemble_script(source, 'fixture')[0]

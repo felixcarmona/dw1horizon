@@ -934,6 +934,7 @@ class Program(Ext):
         stats = {k: a[k] for k in ('hp', 'mp', 'off', 'def', 'speed', 'brain', 'bits') if a[k] is not None}
         if a['at']: stats['posX'], stats['posZ'] = a['at']
         if a['range'] is not None: stats['trackingRange'] = a['range']   # the chase range (world units; 0 = waits to be touched)
+        if a['still']: stats['still'] = True                              # a new slot: no path of its template, it stands where it is put
         if a['section'] is not None: stats['section'] = a['section']      # a new slot's talk section (default 5 + slot)
         if a['map'] is not None:                                          # the screen's .MAP is the mod's own file (a new screen)
             # SCREEN_CONTENT is the current build's generated maps. Authored
@@ -1159,4 +1160,4 @@ BUILTINS = {
 }
 PLACE_SPEC = [('species', 'species', REQ), ('screen', 'ints', REQ), ('slot', 'int', REQ), ('at', 'tuple2', None), ('section', 'int', None),
               ('like', 'int', None), ('hp', 'int', None), ('mp', 'int', None), ('off', 'int', None), ('def', 'int', None),
-              ('speed', 'int', None), ('brain', 'int', None), ('bits', 'int', None), ('range', 'int', None), ('map', 'str', None)]
+              ('speed', 'int', None), ('brain', 'int', None), ('bits', 'int', None), ('range', 'int', None), ('still', 'bool', None), ('map', 'str', None)]

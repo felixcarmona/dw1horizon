@@ -4,7 +4,7 @@
 from dw import *
 
 room = screen(Screen.grey_lords_mansion_59)
-wizardmon = room.npc(Species.Wizardmon, at=(0, 300), range=0, when=not recruited(Species.Wizardmon))
+wizardmon = room.npc(Species.Wizardmon, at=(0, 300), range=0, still=True, when=not recruited(Species.Wizardmon))
 
 
 @wizardmon.on_talk

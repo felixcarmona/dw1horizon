@@ -441,6 +441,9 @@ def new_slot_entry(m, screen, slot, dig, stats, ln, like, dwmap, section=None):
     else:
         e = json.loads(json.dumps(tpl))
     x, z = stats['posX'], stats['posZ']
+    if stats.pop('still', None):                        # stands where it is put: the template's path is not copied
+        e['aiSections'] = [0, -1, -1, -1, -1, -1, -1, -1]; e['waypoints'] = [[60, 0, 0]]
+        tpl = None; e['fleeX'], e['fleeZ'] = x, z
     if tpl is not None:
         dwmap.shift_path(e, x - e['posX'], z - e['posZ'])
     else:

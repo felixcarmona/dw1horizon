@@ -1,7 +1,8 @@
 # residents
 
 Each City resident who is the only one of its species on the island has one recruit site. A screen that already has a
-mod file keeps the NPC in that file. The Digimon's City home is named in each file's header.
+mod file keeps the NPC in that file. The Digimon's City home is named in each file's header. Every recruit is
+`still=True`: with a copied path it patrols, and it can walk off the walkable ground (Kotemon did on Ogre Fortress 45).
 
 Eight screens of the first plan (126, 54, 60, 84, 130, 92, 229, 156) read no NPC list from their map, so these sites use
 another screen of the same zone. The Great Canyon Bridge, Toy Town 144 and the Ancient Dino Region 79 have no heap for one

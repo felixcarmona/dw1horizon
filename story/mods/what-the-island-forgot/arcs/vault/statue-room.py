@@ -6,7 +6,7 @@ from dw import *
 from dw.base.ice_sanctuary_97 import sanctuary
 from ...state import root3, vault_kept
 
-solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, when=not recruited(Species.Solarmon))
+solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, still=True, when=not recruited(Species.Solarmon))
 
 
 @solarmon.on_talk

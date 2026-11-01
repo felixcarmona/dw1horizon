@@ -4,7 +4,7 @@ from dw import *
 
 region = screen(Screen.ancient_speedy_region_87)
 triceramon = region.npc(Species.Triceramon, at=(400, -1200), hp=3100, mp=2800, offense=420, defense=240, speed=200, brain=200, bits=1200,
-                        range=0, when=not recruited(Species.Triceramon))
+                        range=0, still=True, when=not recruited(Species.Triceramon))
 
 
 @triceramon.on_talk

@@ -4,7 +4,7 @@ from dw import *
 
 hall = screen(Screen.mt_infinity_222)
 knightmon = hall.npc(Species.Knightmon, at=(-900, 100), hp=4500, mp=5000, offense=720, defense=380, speed=300, brain=300, bits=2000,
-                     range=0, when=not recruited(Species.Knightmon))
+                     range=0, still=True, when=not recruited(Species.Knightmon))
 
 
 @knightmon.on_talk

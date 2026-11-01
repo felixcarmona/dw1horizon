@@ -3,7 +3,7 @@
 from dw import *
 
 savanna = screen(Screen.gear_savanna_78)
-kiwimon = savanna.npc(Species.Kiwimon, at=(-750, 1750), range=0, when=not recruited(Species.Kiwimon))
+kiwimon = savanna.npc(Species.Kiwimon, at=(-750, 1750), range=0, still=True, when=not recruited(Species.Kiwimon))
 
 
 @kiwimon.on_talk

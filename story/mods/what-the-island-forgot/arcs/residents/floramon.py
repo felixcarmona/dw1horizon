@@ -3,7 +3,7 @@
 from dw import *
 
 forest = screen(Screen.native_forest_4)
-floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, when=not recruited(Species.Floramon))
+floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, still=True, when=not recruited(Species.Floramon))
 
 
 @floramon.on_talk

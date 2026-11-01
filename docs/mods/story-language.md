@@ -160,7 +160,8 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   `from dw.base.jijimons_house import house, jijimon` (the stub lists each NPC with its slot, and the screen it stands on
   when the script serves several). `house.npc(Species, at=, behaves_like=, when=)` declares a new NPC, once, with its
   species, position (`at=(x, z)` is required), the NPC whose behaviour (range, stats, path) it copies and the condition
-  under which it is there. **A new NPC takes the screen's next free slot**; two in one file, two files or two mods on one
+  under which it is there. It copies the path of the NPC it behaves like, so it patrols there; `still=True` keeps it where
+  `at=` puts it. **A new NPC takes the screen's next free slot**; two in one file, two files or two mods on one
   screen take them in load order (`python3 tools/dws.py slots SCREEN` shows the first free one; `slot=` may say it, and
   must be that one). Which script section answers when it is talked to is the compiler's: usually 5 + slot; when another
   screen of the same script has an NPC on that section (script 168 serves both arena lobbies: slot 1 is free on 208 and

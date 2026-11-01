@@ -4,7 +4,7 @@ from dw import *
 
 ledge = screen(Screen.mt_panorama_spore_area_233)
 starmon = ledge.npc(Species.Starmon, at=(1000, -1000), hp=1200, mp=2000, offense=300, defense=150, speed=130, brain=100, bits=300,
-                    range=0, when=not recruited(Species.Starmon))
+                    range=0, still=True, when=not recruited(Species.Starmon))
 
 
 @starmon.on_talk

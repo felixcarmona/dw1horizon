@@ -154,7 +154,7 @@ class ScreenRef:
     def npc(self, species: 'Species | None', *, at: tuple[int, int] | None = None, behaves_like: NPC | None = None,
             when: Cond | ClockTest = ..., autotalk: bool = False, hp: int | None = None, mp: int | None = None,
             offense: int | None = None, defense: int | None = None, speed: int | None = None, brain: int | None = None,
-            bits: int | None = None, range: int | None = None, slot: int | None = None) -> NPC:
+            bits: int | None = None, range: int | None = None, still: bool = False, slot: int | None = None) -> NPC:
         """A new NPC of this mod. It takes the screen's next free slot: the new NPCs of a screen fill its free slots in the
         order the files and mods compiled together declare them (`slot=` may say it, and must be that one; `python3
         tools/dws.py slots SCREEN` lists the slots and the heap left for its model). The mod owns it: its `on_talk` handlers

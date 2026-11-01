@@ -4,7 +4,7 @@ from dw import *
 
 field = screen(Screen.freezeland_94)
 mammothmon = field.npc(Species.Mammothmon, at=(0, 450), hp=3600, mp=4000, offense=640, defense=340, speed=250, brain=200, bits=1500,
-                       range=0, when=not recruited(Species.Mammothmon))
+                       range=0, still=True, when=not recruited(Species.Mammothmon))
 
 
 @mammothmon.on_talk

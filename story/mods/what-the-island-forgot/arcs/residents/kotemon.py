@@ -4,7 +4,7 @@ from dw import *
 
 yard = screen(Screen.ogre_fortress_45)
 kotemon = yard.npc(Species.Kotemon, at=(1000, 850), hp=1200, mp=1600, offense=400, defense=210, speed=120, brain=120, bits=300,
-                   range=0, when=not recruited(Species.Kotemon))
+                   range=0, still=True, when=not recruited(Species.Kotemon))
 
 
 @kotemon.on_talk

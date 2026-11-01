@@ -4,7 +4,7 @@ from dw import *
 
 hall = screen(Screen.toy_mansion_147)
 pumpkinmon = hall.npc(Species.Pumpkinmon, at=(-1300, 700), hp=1400, mp=2000, offense=260, defense=130, speed=120, brain=100, bits=300,
-                      range=0, when=not recruited(Species.Pumpkinmon) and clock.hour >= 20)
+                      range=0, still=True, when=not recruited(Species.Pumpkinmon) and clock.hour >= 20)
 
 
 @pumpkinmon.on_talk
