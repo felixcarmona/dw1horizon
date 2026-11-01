@@ -33,6 +33,9 @@ def prepare(tree):
     if tree.exists() and old.get('signature') == signature:
         return
     if tree.exists():
+        # The roster header is generated (tools/city_residents.py), never a user's edit.
+        if (tree / 'src/main/city_residents_extra.h').exists():
+            git('checkout', '--', 'src/main/city_residents_extra.h', cwd=tree)
         # Never reset a user's C edits while refreshing the patch series.
         status = git('status', '--porcelain', '--untracked-files=all', '--ignore-submodules=all', cwd=tree)
         edits = [line for line in status.splitlines() if not (
