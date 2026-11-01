@@ -1,5 +1,6 @@
 {
  "_comment": "Initial machine draft with English-source editorial corrections; broader dialogue review remains pending. See README.md.",
+ "city.join": "{species} ist in die Stadt gezogen!",
  "what-the-island-forgot.bbe10652": "{color 7}Jijimon {color 1}",
  "what-the-island-forgot.559b2a3c": "Töte ihn nicht! Er ist nicht er selbst!",
  "what-the-island-forgot.05a30d4d": "Zurückhalten",
@@ -69,6 +70,8 @@
  "what-the-island-forgot.22049f4e": "Hm... Hier unten ist es gemütlich, weißt du. Feucht, dunkel... Perfekt.",
  "what-the-island-forgot.ca7218ed": "{player} hat alles versucht, um ihn zu überzeugen!",
  "what-the-island-forgot.29527735": "...Schon gut! Du redest aber viel. Bäh, bäh.",
+ "what-the-island-forgot.e9fda10c": "Der Abfluss ist versperrt. Wir müssen die Stadt erst auf einem anderen Weg erreichen.",
+ "what-the-island-forgot.8479f64d": "Die Luke klemmt. Vielleicht muss erst der Weg da oben frei sein.",
  "what-the-island-forgot.77a5df3a": "Dieses Zahnrad. Alte Bauart. Darf ich es einbauen?",
  "what-the-island-forgot.4bcc48ef": "Archiv vollständig. Wird gelesen.",
  "what-the-island-forgot.679d0b37": "Vor hundert Jahren kamen Menschen auf diese Insel.",
@@ -184,6 +187,7 @@
  "what-the-island-forgot.c8a616e9": "Herr M, von mir persönlich befragt: «Ich kann nach Hause.»",
  "what-the-island-forgot.ee70bdc7": "Shell News Sonderausgabe! «Woran die Fabrik sich erinnert!»",
  "what-the-island-forgot.1fc33698": "Andromons Archiv erzählt vom ganzen Krieg. Lest alles darüber!",
+ "what-the-island-forgot.31037e8b": "Dieser Gururumon ist nicht von hier... Sucht er etwa nach mir?",
  "what-the-island-forgot.2987bcdc": "Hihi! Ein Mensch, ein echter Mensch in der File-Stadt! Draußen weiß es noch niemand...",
  "what-the-island-forgot.fb477468": "Soll ich es allen erzählen? Meine Gerüchte kommen suuuper weit.",
  "what-the-island-forgot.78981feb": "Morgen wüsste es die ganze Insel!",
@@ -196,6 +200,7 @@
  "what-the-island-forgot.819632a5": "«Tag 40. Der Boden verändert sich hier. Letztes Jahr tat er das nicht.»",
  "what-the-island-forgot.8986bfdf": "«Tag 41. Die Hälfte der Kisten ist weg. Niemand hörte etwas.»",
  "what-the-island-forgot.148a1185": "«Tag 43. Wir ziehen weiter nach Norden. LAGER 3 liegt unter dem Plateau.»",
+ "what-the-island-forgot.d3ae0dfc": "Der Pfad ist versperrt. Erst müssen wir den Weg zur Savanne öffnen.",
  "what-the-island-forgot.a7ea33ad": "Niemand verlässt diesen Ort mit einem Namen. Sie nicht, du nicht.",
  "what-the-island-forgot.244f3d37": "Ich darf keinen einzigen Fehler machen... und jetzt...",
  "what-the-island-forgot.1728d5d9": "Befehle... Wichtig... Befehle...",
@@ -204,6 +209,7 @@
  "what-the-island-forgot.e4e3bd64": "Ich hatte fast meinen eigenen Namen vergessen.",
  "what-the-island-forgot.70b7d8f6": "Gekomon ist in die Stadt gezogen!",
  "what-the-island-forgot.81490de3": "Befehle. Wichtig. Befehle. Wichtig...",
+ "what-the-island-forgot.6e399796": "Der untere Pfad ist versperrt. Erst müssen wir den Weg durch den Dschungel öffnen.",
  "what-the-island-forgot.697c3d11": "...Ja. Der Mensch hat die Naht erreicht. Klein. Mit einem Digimon.",
  "what-the-island-forgot.b8974907": "Er geht dort, wo der Boden nicht zusammenpasst.",
  "what-the-island-forgot.55c9c165": "...Wie du sagst. Ich beobachte weiter.",
@@ -387,12 +393,9 @@
  "what-the-island-forgot.fe72447b": "Nachts fliege ich über die Hecke und zähle die Lichter der Stadt. Jede Woche mehr.",
  "what-the-island-forgot.d8e9095b": "Kraaah! Die schnellsten Flügel der Uralten Tempo-Region, und du hast mich trotzdem erwischt.",
  "what-the-island-forgot.17c5c6d4": "Ich habe den Brunnen mit meinem eigenen Bohrer gegraben! ...Der Bohrer ist unecht. Das Wasser aber echt.",
- "what-the-island-forgot.778a0b45": "Der Brunnen ist tief und frisch. Die Flüsse bewegen sich zu viel. Ein Brunnen bleibt still, wie ich.",
  "what-the-island-forgot.8eda96d3": "Zzz... Die Steine sind nachmittags warm... Zzz...",
  "what-the-island-forgot.c6a52367": "Der Dschungel war heiß und feucht. Es ist einfach heiß hier. Das nenne ich Urlaub.",
- "what-the-island-forgot.e9fda10c": "Der Abfluss ist versperrt. Wir müssen die Stadt erst auf einem anderen Weg erreichen.",
- "what-the-island-forgot.8479f64d": "Die Luke klemmt. Vielleicht muss erst der Weg da oben frei sein.",
- "what-the-island-forgot.d3ae0dfc": "Der Pfad ist versperrt. Erst müssen wir den Weg zur Savanne öffnen.",
- "what-the-island-forgot.6e399796": "Der untere Pfad ist versperrt. Erst müssen wir den Weg durch den Dschungel öffnen.",
- "what-the-island-forgot.31037e8b": "Dieser Gururumon ist nicht von hier... Sucht er etwa nach mir?"
+ "_source": {
+  "city.join": "{species} joined the city!"
+ }
 }

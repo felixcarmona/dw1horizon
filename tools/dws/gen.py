@@ -451,10 +451,17 @@ class Program(Ext):
             if len(args) != 1 or args[0][1].type != 'int': raise err(n, 'entity() takes an entity number')
             return V('entity', str(args[0][1].val))
         if f == 'text':
-            if len(args) != 1 or args[0][1].type != 'str': raise err(n, 'text() takes a key in quotes: text("s002.sec6.u0")')
+            if len(args) not in (1, 2) or args[0][1].type != 'str': raise err(n, 'text() takes a key and an optional species')
             key = args[0][1].val; r = self.bank.get(key)
             if r is None:
                 msg, hint = self.bank.missing_message(key); raise err(n.args[0][1], msg, hint)
+            if len(args) == 2:
+                if args[1][1].type != 'species' or r[0] != 'wrap' or r[1].count('{species}') != 1:
+                    raise err(n, 'a species text template needs one {species} and a species argument')
+                records = BE.DIGI_DATA
+                sp = args[1][1].val
+                if sp not in records: raise err(n, f'no content species {sp}')
+                r = ('wrap', r[1].replace('{species}', records[sp]['name']))
             self.used_text.add(key)
             return V('text', r, key)
         if f == 'page':

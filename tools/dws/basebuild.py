@@ -592,6 +592,19 @@ def parse_mods(arg):
 
 def build(sources, out, exe='original', lang='en', text=(), lock=None, update_lock=False, profile='original', base=BASE,
           mods=None, refresh=False, log=print, mods_root=MODS, from_py=True, text_source='us', strict=False):
+    from . import recruitment
+    # The font/executable target is shared by original and extended passes.
+    # Only the extended story supplies this mod's sources; --mods none always
+    # selects the original story, even with a developer main source.
+    owner = os.path.join(ROOT, 'story', 'mods', recruitment.MOD)
+    extended = mods != [] and any(os.path.commonpath((owner, os.path.abspath(p))) == owner for p in sources)
+    with recruitment.story(extended):
+        return _build(sources, out, exe, lang, text, lock, update_lock, profile, base,
+                      mods, refresh, log, mods_root, from_py, text_source, strict)
+
+
+def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_lock=False, profile='original', base=BASE,
+          mods=None, refresh=False, log=print, mods_root=MODS, from_py=True, text_source='us', strict=False):
     """story/base (+ overrides of the mods) + `sources` -> DG.SCN at `out`. -> (prog, report, run dir, MAPHEAD path).
     from_py: the base is its Python view (story/base/**/*.py, lowered: the default); False builds it from the generated DWS beside it
     (byte for byte the same, `story-base --check` and test_dws prove it)."""

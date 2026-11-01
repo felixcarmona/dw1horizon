@@ -1,5 +1,6 @@
 {
  "_comment": "Initial machine draft with English-source editorial corrections; broader dialogue review remains pending. See README.md.",
+ "city.join": "{species} s'ha unit a la ciutat!",
  "what-the-island-forgot.bbe10652": "{color 7}Jijimon {color 1}",
  "what-the-island-forgot.559b2a3c": "No el matis! No és ell mateix!",
  "what-the-island-forgot.05a30d4d": "Contenir-se",
@@ -69,6 +70,8 @@
  "what-the-island-forgot.22049f4e": "Mmm... S'està a gust aquí sota, saps? Humit, fosc... Perfecte.",
  "what-the-island-forgot.ca7218ed": "{player} es va esforçar per convèncer-lo!",
  "what-the-island-forgot.29527735": "...Val, val! Quina pallissa dónes. Bleh, bleh.",
+ "what-the-island-forgot.e9fda10c": "El desguàs està tancat. Primer haurem d'arribar a la ciutat per un altre camí.",
+ "what-the-island-forgot.8479f64d": "La trapa no cedeix. Potser primer s'ha d'obrir el camí de dalt.",
  "what-the-island-forgot.77a5df3a": "Aquest engranatge. És del model antic. Permís per instal·lar-lo?",
  "what-the-island-forgot.4bcc48ef": "L'arxiu està complet. Llegint.",
  "what-the-island-forgot.679d0b37": "Fa cent anys, uns humans van arribar a aquesta illa.",
@@ -184,6 +187,7 @@
  "what-the-island-forgot.c8a616e9": "El senyor M, entrevistat per mi en persona: «Puc tornar a casa.»",
  "what-the-island-forgot.ee70bdc7": "Notícies Shell, edició especial! «El que recorda la fàbrica!»",
  "what-the-island-forgot.1fc33698": "L'arxiu d'Andromon explica tota la guerra. Llegeix-ho tot aquí!",
+ "what-the-island-forgot.31037e8b": "Aquest Gururumon no és d'aquí... Em deu estar buscant a mi?",
  "what-the-island-forgot.2987bcdc": "Ji, ji! Un humà, un humà de debò, en Ciutat File! Aquí fora encara no ho sap ningú...",
  "what-the-island-forgot.fb477468": "Vols que li ho expliqui a tots? Els meus rumors arriben súuuper lluny.",
  "what-the-island-forgot.78981feb": "Demà ho sabria tota l'illa!",
@@ -196,6 +200,7 @@
  "what-the-island-forgot.819632a5": "\"Dia 40. Aquí el sòl canvia. L'any passat no ho feia.\"",
  "what-the-island-forgot.8986bfdf": "\"Dia 41. Falten la meitat de les caixes. Ningú va sentir res.\"",
  "what-the-island-forgot.148a1185": "\"Dia 43. Seguim al nord. El CAMPAMENT 3 està sota l'altiplà.\"",
+ "what-the-island-forgot.d3ae0dfc": "El sender està barrat. Primer hem d'obrir el camí cap a la sabana.",
  "what-the-island-forgot.a7ea33ad": "D'aquí ningú surt amb un nom. Ni ells, ni tu.",
  "what-the-island-forgot.244f3d37": "No se'm permet ni un sol error... i ara...",
  "what-the-island-forgot.1728d5d9": "Ordres... Important... Ordres...",
@@ -204,6 +209,7 @@
  "what-the-island-forgot.e4e3bd64": "Gairebé havia oblidat el meu propi nom.",
  "what-the-island-forgot.70b7d8f6": "Gekomon s'ha unit a la ciutat!",
  "what-the-island-forgot.81490de3": "Ordres. Important. Ordres. Important...",
+ "what-the-island-forgot.6e399796": "El sender de baix està barrat. Primer hem d'obrir el pas per la jungla.",
  "what-the-island-forgot.697c3d11": "...Sí. L'humà ha arribat a la Junta. Petit. Amb un Digimon.",
  "what-the-island-forgot.b8974907": "Camina per on el sòl no encaixa.",
  "what-the-island-forgot.55c9c165": "...Com diguis. Continuaré vigilant.",
@@ -387,12 +393,9 @@
  "what-the-island-forgot.fe72447b": "De nit sobrevolo la tanca i compto els llums de la ciutat. Cada setmana n'hi ha més.",
  "what-the-island-forgot.d8e9095b": "Kraaah! Les ales més ràpides de la Regió Speedy, i així i tot em vas enxampar.",
  "what-the-island-forgot.17c5c6d4": "Vaig cavar aquell pou amb el meu trepant! ...El trepant és de mentida. Però l'aigua és de debò.",
- "what-the-island-forgot.778a0b45": "El pou és profund i fresc. Els rius es mouen massa. Un pou es queda quiet, com jo.",
  "what-the-island-forgot.8eda96d3": "Zzz... Les pedres són calentones després del migdia... Zzz...",
  "what-the-island-forgot.c6a52367": "A la jungla hi feia calor i humitat. Aquí només hi fa calor. Jo en dic vacances.",
- "what-the-island-forgot.e9fda10c": "El desguàs està tancat. Primer haurem d'arribar a la ciutat per un altre camí.",
- "what-the-island-forgot.8479f64d": "La trapa no cedeix. Potser primer s'ha d'obrir el camí de dalt.",
- "what-the-island-forgot.d3ae0dfc": "El sender està barrat. Primer hem d'obrir el camí cap a la sabana.",
- "what-the-island-forgot.6e399796": "El sender de baix està barrat. Primer hem d'obrir el pas per la jungla.",
- "what-the-island-forgot.31037e8b": "Aquest Gururumon no és d'aquí... Em deu estar buscant a mi?"
+ "_source": {
+  "city.join": "{species} joined the city!"
+ }
 }

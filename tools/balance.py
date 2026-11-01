@@ -216,7 +216,8 @@ _SMALL_COUNTS = {'cards': 66, 'cardPrices': 5, 'shopMaps': 8, 'arenaMaps': 2, 's
                  'trainingSpots112': 7, 'trainingSpots112b': 7, 'trainingSpots78': 3, 'trainingSpots78b': 3, 'trainingSpots165': 2, 'trainingSpots165b': 2, 'trainingSpots107': 3, 'trainingSpots107b': 3, 'trainingSpots108': 3, 'trainingSpots108b': 3, 'trainingSpots99': 3, 'trainingSpots99b': 3, 'trainingSpots119': 2, 'trainingSpots119b': 2, 'curlingWeights': 4, 'curlingStartTypes': 10, 'curlingRingPoints': 4, 'curlingRings': 4, 'curlingObstacleX': 3}
 TABLES += [(k, f, sym, struct.calcsize(fmt) * _SMALL_COUNTS[k]) for k, f, sym, fmt, _ in SMALL_TABLES]
 ORIGINAL_NAMES = {'SPECIES_BATTLE_MUSIC': 'ENEMY_MUSIC_MAPPING'}       # a table renamed by the mod
-OPTIONAL = {'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
+TABLES += [('cityResidents', 'SLUS_010.32', 'CITY_RESIDENTS', 14)]
+OPTIONAL = {'cityResidents', 'shopMaps', 'arenaMaps', 'defaultInventoryItems', 'defaultInventoryAmounts', 'curlingWeights', 'curlingStartTypes', 'curlingRingPoints', 'curlingRings', 'curlingObstacleX', 'curlingRules', 'fishingRules', 'battleMusic', 'reincarnation', 'newGameTechniques', 'donorEntries', 'donorOrigins', 'donorBones', 'trainingNum', 'trainingLevel', 'trainingBonus', 'trainGain', 'trainRules', 'train2Gain', 'train2Rules', 'train2Num', 'train2Level', 'train2Bonus', 'evolutionTiming', 'evolutionFresh', 'evolutionUltimate', 'evolutionSpecial', 'evolutionRules', 'evolutionItemRules', 'medals', 'tamerLevel', 'evolutionFormula', 'itemEffects', 'economy', 'curlingRules', 'fishingRules', 'battleFormulas', 'clock', 'newGame', 'careRules', 'careOverrides', 'modelScale', 'animatedTexture', 'tournamentRules', 'dailyRules', 'daytime', 'tournamentRemap', 'stdArena', 'vsUnlock', 'training'}   # a build from before they were tables has none
 SPECIES_TABLES = ('para', 'raise', 'itemTakeDistance', 'vlall', 'vball', 'originalTypes', 'trainingAnims',
                   'training2Anims', 'battleMusic', 'reincarnation', 'newGameTechniques')
 # (patch 0087's EFFECT_FALLBACK_SPECIES / _ORIGIN were per-species tables too; patch 0106 replaced them by the DIGI.DAT
@@ -879,6 +880,9 @@ def encode(doc, exe):
         if k in doc and exe.has(k): out[k] = encode_train_gain(k, doc[k])
     if 'medals' in doc and exe.has('medals'): out['medals'] = encode_medals(doc['medals'])
     if 'evolutionRules' in doc and exe.has('evolutionRules'): out['evolutionRules'] = encode_evo_rules(doc['evolutionRules'])
+    if exe.has('cityResidents'):
+        from city_residents import membership_bits
+        out['cityResidents'] = membership_bits()
     for t, b in out.items():
         if len(b) != size(t): raise SystemExit(f'{t}: {len(b)} bytes for a {size(t)}-byte table')
     return out

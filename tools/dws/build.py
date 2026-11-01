@@ -31,9 +31,11 @@ def compile_sources(files, exe='original', lang='en', text=(), lock=None, update
     BE.NPC_SLOTS['max'] = 16 if exe == 'story-state' else 8
     BE.MAPHEAD_LIMIT = BE.MAPHEAD_MAX_GIVEN or BE.MAPHEAD_LIMITS[exe]   # MAPHEAD_SCRIPT_BUFFER of the target executable
     bank = TextBank(lang, text_source); bank.load_defaults(sources=files, extra=text)
+    from . import recruitment
     alloc = Allocator(lock, profile_pool(profile)); b = BE.Backend()
     prog = Program(b, bank, alloc, max_opcode_level={'original': 0, 'mods': 1, 'species': 1, 'story-state': 2}[exe]); prog.profile = profile; prog.exe = exe
     prog.bank_files = bank.files; prog.bank = bank; prog.notes = []
+    recruitment.install(prog)
     files = py_sources(files, prog)
     for f in files:
         try:

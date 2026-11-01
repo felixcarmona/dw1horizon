@@ -771,3 +771,20 @@ The object audit passes 118 allocated relocations per language, including the
 anonymous literals, and verifies that the field roster's captions and callbacks
 remain resident. Keep these measurements tied to this full language layout;
 English-only test builds have a different file table and text padding.
+
+## Roster prosperity (patch 0296)
+
+Extended prosperity reads a 14-byte membership bitset generated from
+`content/tables/city-residents.json` by the existing balance-table build. The
+bitset lives in rodata; the patch adds no BSS. Original-story counting is unchanged.
+A controlled build with identical eight-language banks, padding, file table and
+make options moves `main_BSS_END` from `0x801cf404` to `0x801cf464`: **96 bytes**.
+Heap falls from 183,024 to 182,928 bytes. The actual archive's screen 361 peaks
+at 182,024 bytes and its conservative margin falls from **992 to 896 bytes**;
+all 320 setups fit. These are original-2-MB figures with all imported species
+and all eight languages.
+
+The separate English test disc has 198,272 bytes of heap (198,368 without this
+patch). Its conservative screen 361 check remains 15,488 bytes before and after:
+the budget tool caps extra heap above the original sweep rather than crediting
+it to unmeasured screens. The paired eight-language result is the tighter limit.

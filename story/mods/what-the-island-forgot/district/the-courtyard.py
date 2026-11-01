@@ -1,21 +1,15 @@
-# 358, the Courtyard: the green half of the Works. NiseDrimogemon dug the old well, ModokiBetamon lives by it and
-# J-Mojyamon naps on the stones, each beaten first where it lived (the savanna, the forest rivers, the jungle).
+# 358, the Courtyard: NiseDrimogemon dug the old well and J-Mojyamon naps on the stones.
+# Both were beaten first where they lived, in the savanna and jungle.
 from dw import *
 
 courtyard = new_screen(358, map="build/what-the-island-forgot-maps/screens/BARR02.MAP")
 nisedrimogemon = courtyard.npc(Species.NiseDrimogemon, at=(-1700, 1000), range=0, when=recruited(Species.NiseDrimogemon))
-modokibetamon = courtyard.npc(Species.ModokiBetamon, at=(-2100, 600), range=0, when=recruited(Species.ModokiBetamon))
 jmojyamon = courtyard.npc(Species.JMojyamon, at=(-1700, -2100), range=0, when=recruited(Species.JMojyamon))
 
 
 @nisedrimogemon.on_talk
 def talk():
     say("I dug that well with my own drill! ...It is a fake drill. The water is real, though.")
-
-
-@modokibetamon.on_talk
-def talk():
-    say("The well is deep and cool. Rivers move too much. A well just sits there, like me.")
 
 
 @jmojyamon.on_talk

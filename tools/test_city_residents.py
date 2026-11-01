@@ -16,9 +16,9 @@ class CityResidents(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json')
                    for s in [json.loads(p.read_text())]}
         self.assertEqual([sum(species[r['id']]['level'] == lv for r in rows)
-                          for lv in ('rookie', 'champion', 'ultimate')], [26, 53, 17])
+                          for lv in ('rookie', 'champion', 'ultimate')], [23, 51, 16])
         points = lambda i: 1 if i in (11, 39, 53) else city.LEVELS[species[i]['level']] - 2
-        self.assertEqual(sum(points(r['id']) for r in rows), 180)
+        self.assertEqual(sum(points(r['id']) for r in rows), 170)
         original = [r for r in rows if r['id'] < 59]
         self.assertEqual((len(original), sum(points(r['id']) for r in original)), (50, 100))
         self.assertEqual({r['id'] for r in rows if r['hidden']}, {6, 7, 12})
@@ -34,11 +34,21 @@ class CityResidents(unittest.TestCase):
     def test_missing_or_new_resident_fails(self):
         ids = {r['id'] for r in city.residents()}
         with patch.object(city, 'compiled_recruits', return_value=ids):
-            self.assertEqual(city.verify(['compiled']), 96)
+            self.assertEqual(city.verify(['compiled']), 90)
         for bad in (ids - {110}, ids | {59}):
             with patch.object(city, 'compiled_recruits', return_value=bad):
                 with self.assertRaisesRegex(ValueError, 'disagrees'):
                     city.verify(['compiled'])
+
+    def test_original_pass_ignores_legacy_enemy_flags(self):
+        ids = {r['id'] for r in city.residents() if r['id'] < 59}
+        with patch.object(city, 'compiled_recruits', return_value=ids | {74, 83, 88, 100, 101, 105}):
+            self.assertEqual(city.verify(['original'], original=True), 50)
+            with self.assertRaisesRegex(ValueError, 'disagrees'):
+                city.verify(['original'])
+        with patch.object(city, 'compiled_recruits', return_value=ids - {3}):
+            with self.assertRaisesRegex(ValueError, 'unreachable'):
+                city.verify(['original'], original=True)
 
     def test_out_of_range_listed_id_fails(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -520,7 +520,7 @@ revival screen and NPC presence as data are in [../mods/city-rules.md](../mods/c
 Prosperity is pstat 1 (`0x801BE032`). The scripts raise it with `ADD_TO_PSTAT` (`1F _ 01 value`, capped at 255) at the
 end of each recruitment event and mark the recruit with `SET_TRIGGER 200+type`; the city script and
 `getFileCityTopMap` read those triggers to change the city's scenery and NPCs (recruits appear as placements of the
-TWNA/TWNB screens). `recalculateProsperity` rewrites pstat 1 from the triggers before every save, at game start and on City entry (IDs 3..58 in original story, 3..111 in extended story) ([scripts.md](scripts.md#pstats)).
+TWNA/TWNB screens). `recalculateProsperity` rewrites pstat 1 from the triggers before every save, at game start and on City entry (IDs 3..58 in original story, only the owned City roster in extended story) ([scripts.md](scripts.md#pstats)).
 What each Digimon requires (a battle, an item, a time of day) is in each screen's bytecode, not in C.
 
 Points per screen, from a byte scan of `DG.SCN` for `1F ?? 01 vv` `[inferred; several figures on one screen are
@@ -636,3 +636,12 @@ Unverified: `MapEntry.flags` bit 5 and `MapWarps.spawnY` are never read (spawnY 
 meaning of `followMode` 3/4/5 versus 12/13/14 and of the placement fields `unk1`, `unk2`, `chargeMode` and `flee` (only
 battle or scripts use them); the prosperity table and the triggers per screen come from a byte scan of the bytecode, not
 from running it.
+
+## City recruitment
+
+The extended story has 90 residents worth 170 prosperity points, defined by
+`content/tables/city-residents.json`. A first wild victory recruits an eligible
+species with a jingle and a narrator announcement. Repeated victories, fleeing
+and losing recruit nobody. ModokiBetamon, Dokunemon, Vermilimon, IceDevimon,
+DarkLizardmon and Gururumon stay wild enemies; the Kennel keeper and hunters
+keep their story roles. The original story retains its 50 recruits and 100 points.

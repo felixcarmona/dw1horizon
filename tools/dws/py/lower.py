@@ -1015,6 +1015,8 @@ class Body:
 
     def __init__(self, mod, self_npc, kind):
         self.m = mod; self.self_npc = self_npc; self.kind = kind
+        self.recruit_visible = False
+        self.recruit_battle = False
         self.before = False                 # a handler added before the base's code: a warp ends it (`return` after it)
         self.guard = False                  # a `when=` (the messages say what to write there)
         self.picks = set()                  # names given to pick_item(): `pick = pick_item()`
@@ -1495,12 +1497,59 @@ class Body:
     def block(self, stmts, ind):
         if self.m.mode != 'base': self.one_battle(stmts)
         out = []
-        for s in stmts:
-            try:
-                out += self.stmt(s, ind)
-            except PyError as e:                  # the next statements are still checked (all the errors of a file in one run)
-                if e not in self.m.errors: self.m.errors.append(e)
+        visible, battled = self.recruit_visible, self.recruit_battle
+        try:
+            for index, s in enumerate(stmts):
+                before = self.recruit_visible
+                # A hand-written departure may announce the join after its flag.
+                # Look only along this straight-line path, never across another
+                # recruit, battle, branch or return. Wild helpers always announce.
+                if (isinstance(s, ast.Expr) and isinstance(s.value, ast.Call) and
+                        isinstance(s.value.func, ast.Name) and s.value.func.id == 'recruit'):
+                    for following in stmts[index + 1:]:
+                        if not isinstance(following, ast.Expr) or not isinstance(following.value, ast.Call): break
+                        f = following.value.func
+                        if isinstance(f, ast.Name) and f.id in ('fight', 'recruit', 'warp'): break
+                        if self.departure(following.value):
+                            self.recruit_visible = True
+                            break
+                try:
+                    out += self.stmt(s, ind)
+                except PyError as e:
+                    if e not in self.m.errors: self.m.errors.append(e)
+                self.recruit_visible = before
+                if isinstance(s, ast.Expr) and isinstance(s.value, ast.Call):
+                    f = s.value.func
+                    if isinstance(f, ast.Name) and f.id == 'fight':
+                        self.recruit_battle = True
+                        self.recruit_visible = False
+                    elif self.departure(s.value):
+                        self.recruit_visible = True
+        finally:
+            self.recruit_visible, self.recruit_battle = visible, battled
         return out
+
+    def departure(self, call):
+        f = call.func
+        if isinstance(f, ast.Name) and f.id == 'walk_away': return True
+        if not isinstance(f, ast.Attribute): return False
+        if f.attr == 'walk_away': return True
+        if not (f.attr == 'say' and isinstance(f.value, ast.Name) and f.value.id == 'narrator'):
+            return False
+        from .. import recruitment
+        if not recruitment.ACTIVE.get(): return False
+        def words(node):
+            if isinstance(node, ast.Constant) and isinstance(node.value, str): return node.value
+            if isinstance(node, ast.Name) and node.id in self.m.consts: return words(self.m.consts[node.id])
+            if isinstance(node, ast.Call):
+                if self.is_named(node): return self.m.en_json().get(node.args[0].value, '')
+                return ' '.join(words(arg) for arg in node.args)
+            value = recruitment.english_lines().get(self.m.text_path(node), '')
+            def flatten(v):
+                return v if isinstance(v, str) else ' '.join(flatten(x) for x in v)
+            return flatten(value)
+        return bool(re.search(r'\bjoined the city\b',
+                              ' '.join(words(arg) for arg in call.args), re.I))
 
     def stmt(self, s, ind):
         """One statement; its first line carries ` // @py N` (the source map points at the .py: `py_linemap`)."""
@@ -1878,10 +1927,23 @@ class Body:
             return [f'{I}{self.chest(c, kw)}']
         if name == 'recruitable':
             who = self.ent(c.args[0]); sp = self.val(kw['joins']) if 'joins' in kw else self.own_species(who, c)
-            return [f'{I}say({who}, {self.page_arg(kw["line"])});', f'{I}battle();', f'{I}recruit({sp});']
+            out = [f'{I}say({who}, {self.page_arg(kw["line"])});', f'{I}battle();']
+            from .. import recruitment
+            if not recruitment.ACTIVE.get(): return out + [f'{I}recruit({sp});']
+            return out + (recruitment.announcement(sp, I, won=True)
+                          if int(sp[8:-1]) in recruitment.roster() else [])
         if name == 'join_city': raise self.err(c, 'join_city(...) is now recruit(...) (it pairs with recruited(...))')
         if name == 'recruit':
-            out = [f'{I}recruit({self.val(c.args[0])});']
+            sp = self.val(c.args[0])
+            out = [f'{I}recruit({sp});']
+            from .. import recruitment
+            if recruitment.ACTIVE.get():
+                sid = int(sp[8:-1])
+                if sid in recruitment.roster() and not self.recruit_visible:
+                    out = recruitment.announcement(sp, I, won=self.recruit_battle)
+                elif 0 <= sid < 112 and sid not in recruitment.roster():
+                    if int(BE.DIGI_DATA[sid]['level']) >= 3:
+                        return []
             if 'prosperity' in kw: out.append(f'{I}engine.prosperity += {self.val(kw["prosperity"])};')
             return out
         if name == 'unrecruit': return [f'{I}unrecruit({self.val(c.args[0])});']
