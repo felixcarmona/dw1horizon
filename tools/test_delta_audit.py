@@ -15,6 +15,29 @@ import literal_gate
 
 
 class DeltaAuditTests(unittest.TestCase):
+    def test_overlay_in_a_folder_uses_its_linker_map(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'exe'
+            folder.mkdir()
+            (folder / 'SLUS_010.32.elf.map').write_text(
+                '.MENU           0x80100000     0x40\n'
+                ' .text.menu     0x80100000     0x40 build/us/gcc/src/main/main_menu.o\n')
+            mapped = delta_audit.sections(tmp, dict(authored=['SCN/MENU_REL.BIN'], LANG_OVL=[]))
+        self.assertEqual([(row['output'], row['section'], row['length']) for row in mapped['SCN/MENU_REL.BIN']],
+                         [('MENU_REL.BIN', '.text.menu', 0x40)])
+
+    def test_overlay_in_a_folder_uses_its_elf_relocations(self):
+        import linkerdata
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'exe'
+            folder.mkdir()
+            (folder / 'SLUS_010.32.elf').write_bytes(b'')
+            mapped = {'SCN/MENU_REL.BIN': [dict(offset=0, length=8, section='.rodata.menu', source='src/main/main_menu.c')]}
+            target = bytes.fromhex('0000008000000000')
+            with patch.object(linkerdata, 'relocations', return_value={'.MENU': [[0, 'R_MIPS_32', 0x80000000, 0]]}):
+                words = linkerdata.words(tmp, mapped, {'SCN/MENU_REL.BIN': target}, dict(LANG_OVL=[]))
+        self.assertEqual(words, {'SCN/MENU_REL.BIN': [[0, 'R_MIPS_32', 0x80000000, 0]]})
+
     def test_composite_source_witnesses_name_the_actual_player_file(self):
         delta = dict(source='MAIN', diff=[0, 6], control=[[0, 0, 1], [6, 0, 0]])
         self.assertEqual(delta_audit.unchanged_witnesses(delta, bytes(6), b'BCDEFG', b'ABCDEFG',
