@@ -496,7 +496,7 @@ prove a successful gait repair.
 
 `tools/models/field_animations/pace.py`, with the manifest
 `content/models/imports/pace.json`, is the gait retime that note asks for. It covers
-the 38 imported partners that stayed under walk 15 or run 35. Twenty wrap their
+the 38 imported partners that stayed under walk 15 or run 35. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty wrap their
 existing recipe through `base_generator`; eighteen had none and only have this pass.
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at

@@ -6,6 +6,7 @@ does the same for the imported species that fall behind: a pinned slot is rebuil
 from one of the model's own looping field clips, played over a new number of ticks,
 with an even forward travel. Every other program, the mesh and the skeleton stay
 exact. The preceding field recipe, where present, still owns the performance.
+A row's after_generator runs on the paced model for a species whose carriage needs its own layer.
 
 A retimed foot sweeps the same path in less time, so cadence and travel are chosen
 together: the build refuses a clip that leaves the speed range, slips more than its
@@ -240,6 +241,10 @@ def build(data, skeleton):
     changed = sorted(int(slot) for slot in profile['slots'])
     assert changed_programs(old, actual) == changed
     storage = motionstorage.require(result, len(skeleton))
+    following = None
+    if profile.get('after_generator'):
+        result, following = importlib.import_module(profile['after_generator']).build(result, skeleton)
+        storage = following['storage']
     return result, dict(species=sid, source_sha256=digest, output_sha256=hashlib.sha256(result).hexdigest(),
-                        preceding_recipe=previous, checks=checks, storage=storage, changed_slots=changed,
+                        preceding_recipe=previous, following_recipe=following, checks=checks, storage=storage, changed_slots=changed,
                         mesh_skeleton_other_slots_exact=True)
