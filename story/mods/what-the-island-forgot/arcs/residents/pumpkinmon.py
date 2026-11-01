@@ -1,5 +1,5 @@
 # The Toy Mansion's hall 147, at night only (Toy Town 144 has no heap for a fourth model): Pumpkinmon wants a game. A fight at
-# Toy Town's strength. Its home is the Item Shop (city/item-shop.py).
+# Toy Town's strength. Its home is the Scrap Office (district/scrap-office.py).
 from dw import *
 
 hall = screen(Screen.toy_mansion_147)
