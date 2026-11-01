@@ -90,6 +90,19 @@ class Run:
     def hold(self, button, frames):
         self.e.press(button, frames)
 
+    def observe(self):
+        """Log the order of the join jingle (playSound 8,11) and the narrator box (showTextbox 255)."""
+        a = self.e.A
+        self.e.run('lua', f"""
+JE={{}}
+PCSX.addBreakpoint({a('playSound')},'Exec',4,'je1',function() local r=PCSX.getRegisters().GPR.n; if r.a0==8 and r.a1==11 then JE[#JE+1]='join jingle' end end)
+PCSX.addBreakpoint({a('showTextbox')},'Exec',4,'je2',function() local r=PCSX.getRegisters().GPR.n; if r.a1==255 then JE[#JE+1]='narrator box' end end)
+PCSX.addBreakpoint({a('setTrigger')},'Exec',4,'je3',function() local r=PCSX.getRegisters().GPR.n; if r.a0==235 then JE[#JE+1]='Shellmon recruited' end end)
+return 'ok'""")
+
+    def events(self):
+        return self.e.run('lua', "return table.concat(JE, '; ')").strip()
+
     def battle_fixture(self):
         e = self.e; a = e.A
         data = Path(self.a.exe).with_name('BTL_REL.BIN').read_bytes()
@@ -115,6 +128,7 @@ def engine(r):
     e = r.e; a = r.a
     r.flag(717, True); r.flag(718, False)
     assert e.warp(300), 'screen 300 did not load'; e.wait(2)
+    r.observe()
     r.battle_fixture()
     # The tunnel tiles are row tz 47 (z 300..400), tx 72..75 (x 2200..2600).
     r.place(2400, 150); r.shot('01-before-tunnel'); r.note(step='before', **r.state())
@@ -129,16 +143,17 @@ def engine(r):
         if s['op'] == 0x10 and not decided:      # the Motor question
             time.sleep(.8); r.shot('04-motor-question'); r.note(step='motor question', **s)
             e.press('CONFIRM', 6); decided = True; t1 = time.monotonic()
-            while time.monotonic() - t1 < 40:    # photograph the join, through the white fade
+            while time.monotonic() - t1 < 150:   # photograph the join, through the white fade
                 r.shot(f'05-break-{shots:02d}'); shots += 1
                 if r.flag(718) and r.control(): break
-                time.sleep(.4)
+                if r.state()['op'] == 0x1a: e.press('CONFIRM', 6)
+                time.sleep(.3)
             break
         if seen_gate and walked_back is None and s['op'] == 0x1a:
             pass
         e.press('CONFIRM', 6); time.sleep(.5)
     assert decided, 'never reached the Motor question'
-    r.note(step='after break', canyon_settled=r.flag(718), chasing=r.flag(717), root1=r.flag(719),
+    r.note(step='after break', events=r.events(), canyon_settled=r.flag(718), chasing=r.flag(717), root1=r.flag(719),
            shellmon=r.flag(235), shots=shots, **r.state())
     assert r.flag(718) and r.flag(719) and r.flag(235), 'Break did not settle'
     for _ in range(30):

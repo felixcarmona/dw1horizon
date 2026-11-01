@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """The Arena Lobby spar with Fugamon absent (recruit trigger 289 clear, Hyogamon's 272 set, hour 10) on original 2 MB
-RAM: talk to Hyogamon, spar, win (the foe's HP is held at 1), walk out by the exit tile and require File City with
+RAM: talk to Hyogamon, spar, win (the foe's HP is held at 1), walk out by the door tile (step trigger 1) and require File City with
 control. Unguarded, the story's leave() on the absent Fugamon freed an undefined entity (free3 called from removeEntity).
 
   xvfb-run -a python3 tools/dev/playtest/lobby_spar.py DISC --exe EXE --card CARD [--out DIR] [--port N]
@@ -45,7 +45,7 @@ def main():
         assert won, 'no control back in the lobby after the spar: ' + str(r.state())
         r.note(step='after spar', **r.state()); r.shot('24-after-spar')
         ram = e.ram(); off = e.A('MAP_COLLISION_DATA') & 0x1fffff; col = ram[off:off + 10000]
-        idx = next(i for i, v in enumerate(col) if 110 <= v <= 119)
+        idx = next(i for i, v in enumerate(col) if v == 52)      # step trigger 1: the lobby's door (script 52)
         r.place((idx % 100 - 50) * 100 + 50, (50 - idx // 100) * 100 - 50)
         t0 = time.monotonic()
         while time.monotonic() - t0 < 120:
