@@ -114,7 +114,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0303 | Ignore the script command that unloads a Digimon which is not placed (a `.leave()` on an NPC the map never spawned freed an undefined entity and hung later loads) | +96 resident bytes (`scriptUnloadEntity` 0x34 → 0x94 bytes); eight-language full build: heap 184,368 bytes, 320 story setups fit, screen 361 margin 2,336 bytes |
 | 0306 | Keep the whole partner species past 255 in scripts: `STORE_DIGIMON_TYPE` stores 0xFF past 254, the attribute gates and `{digimon N}` read the partner back, the Sukamon backup keeps its species in saved register w15. Fixes VioletElecmon at the mansion gate and partners reverting to another species. |
 | 0307 | Cheats: the lifetime editor stops at 1 hour, and a confirmed *Die of old age* row sets the lifetime to 0 so the natural death runs at once | Eight-language build: heap 186,992 bytes, screen 361 margin 4,960, heapcheck passes; MENU 54,164 bytes, 396 spare below EVL |
-| 0308 | Read ENDI again in `start_ending`: the game-clear save's MENU_REL fills 27 sectors, 0x2E0 bytes into ENDI. Link asserts count whole sectors | Main-executable cost measured after the paired build |
+| 0308 | Read ENDI again in `start_ending`: the game-clear save's MENU_REL fills 27 sectors, 0x2E0 bytes into ENDI. Link asserts count whole sectors | 32 B of main; heap 185,968 B, screen 207 keeps 1,248 B |
 
 Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
