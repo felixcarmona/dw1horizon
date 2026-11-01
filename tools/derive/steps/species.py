@@ -260,6 +260,7 @@ def check(ctx):
            'EVL_SHARD_SCRATCH_SIZE': hex(s['shard_scratch']), 'SHARD_SCRATCH_WARN': '1' if s['shard_warn'] else None}
     ctx.run('tools/species.py', ['--content', ctx.path('species'), 'lint', '--files', '--quiet'], env=env)
     ctx.run('tools/species.py', ['--content', ctx.path('species'), 'check', ctx.path('DIGI.DAT')], env=env)
+    ctx.run('tools/scriptclips.py', [ctx.path('DIGI.DAT'), '--content', ctx.path('species'), '--out', ctx.path('derived', 'script-clips.json')])
 
 
 # ------------------------------------------------------------------ the pins

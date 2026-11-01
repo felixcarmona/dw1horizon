@@ -108,6 +108,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0297 | Status screen: the divider moves to the middle, each care row has its number in a box beside the bar, the repeated discipline field goes and the care mistakes take its place; happiness is shown as 0..100 here and on the evolution card (rules keep -100..100); only with NEW STATUS BARS on | +337 bytes of code in `game_menu`; 320 story setups pass, screen 361 keeps 3,216 B on the eight-language image |
 | 0298 | Keep an active condition walk from restarting at pending transitions after removing 0290 | Resident and full-disc memory measurements are recorded in reference/memory.md |
 | 0299 | Stop training x5 for natural evolution only when the tick's shared target picker finds a target; leave Fresh timer resets in the tick | +336 resident bytes: 0x801ceb2c → 0x801cec7c, aligned heap 185,296 → 184,960 bytes (controlled eight-language text padding and full file table, original 2 MB target); shared ladder saves 80 bytes over duplication; all 320 actual-archive setups fit, screen 361 margin 2,928 bytes. |
+| 0300 | Complete exact half-turns by choosing counterclockwise on equal rotation distances; applies to scripted tamer, partner and NPC turns | −16 resident bytes: 0x801cb3cc → 0x801cb3bc in controlled EN builds; heap +16 to 199,488 bytes; 320 story setups fit, screen 361 margin 15,488 bytes |
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
