@@ -355,6 +355,10 @@ Gatomon uses 15/10/35 units per tick, 6/8/2-tick gait periods and
 0.375/0.5/0.25 duty within its existing 48-tick programs. Tick/thirds floor
 maxima are −1.314/−2.337/−4.165 units.
 
+Salamon uses 15/10/35 units per tick, 4/10/4-tick gait periods and
+1.6/2/0.8-tick contacts within 16/20/16-tick programs. Tick/thirds floor
+maxima are −1.198/−0.243/+0.453 units.
+
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
 frames before cycles of different lengths are compared, and covering armour against the part it covers is an expected
