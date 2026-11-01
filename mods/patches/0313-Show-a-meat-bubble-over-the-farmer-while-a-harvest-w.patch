@@ -1,0 +1,174 @@
+From d8222f234646254957c92f6a57836fc59b049c96 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 22:00:09 +0000
+Subject: [PATCH] Show a meat bubble over the farmer while a harvest waits
+
+---
+ src/main/bubble.c | 113 ++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 84 insertions(+), 29 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index ba3d671..78a07dc 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -4,6 +4,7 @@
+ #include <dw/btl.h> /* MOD (care menu): ACTIVE_ORDERING_TABLE for the X badge */
+ #include <dw/bubble.h>
+ #include <dw/params.h>
++#include <dw/script.h>
+ #include <dw/world_object.h>
+ #include <dw/math.h>
+ 
+@@ -587,7 +588,8 @@ int32_t MOD_STATUS_BUBBLES = 1;
+ 
+ /* conditions in a fixed order: hungry, poopy, sleepy, tired, sick, injured */
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+-static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
++static const uint8_t RING_ICON[7] = { 1, 2, 4, 9, 10, 11, 1 };
++#define RING_FARM	6	/* RING_ICON's meat, standing still: the farm's bubble */
+ 
+ int32_t MOD_RING_CLOCK = 1;
+ int32_t MOD_RING_T = -1;	/* ticks into the running step, -1 = at rest */
+@@ -697,8 +699,8 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ 	}
+ 	/* icon pivots are 18 texels under the circle's centre (in the icon's
+ 	 * own scale, so that it stays centred) */
+-	drawConditionIcon(icon, MOD_RING_CLOCK, cx, cy + ((18 * kk) >> 12),
+-			  depth, s);
++	drawConditionIcon(icon, j == RING_FARM ? 0 : MOD_RING_CLOCK, cx,
++			  cy + ((18 * kk) >> 12), depth, s);
+ 	bg->h = 26;
+ 	bg->my = 13;
+ 	renderSprite(bg, cx, cy, depth, s, s);
+@@ -836,17 +838,92 @@ static int32_t ringAnyBubble(void)
+ 	return 0;
+ }
+ 
++/* where the row goes over an entity whose anchor height is base: 0 = not drawn */
++static int32_t ringPlace(Entity *entity, int32_t base, DVECTOR *screen,
++			 int32_t *depth, uint32_t *scale)
++{
++	SVECTOR pos;
++	int32_t value;
++	int32_t top;
++
++	pos.vx = entity->posData->location.vx;
++	pos.vz = entity->posData->location.vz;
++	pos.vy = base +
++		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
++	*depth = worldPosToScreenPos(&pos, screen);
++	if (*depth <= 0) {
++		return 0;
++	}
++
++	if (entity->isOnScreen != 0) {
++		top = (60 * ((*scale * VIEWPORT_DISTANCE) / *depth)) >> 12;
++		if ((screen->vy + DRAWING_OFFSET_Y) < top) {
++			screen->vy = -DRAWING_OFFSET_Y + top;
++		}
++		value = (*depth >> 4) - 20;
++		if (value < 36) {
++			value = 36;
++		}
++		*scale = ((int32_t)*scale * value) / (*depth >> 4);
++		*depth = value << 4;
++	}
++
++	return (*depth > 0x200) && (*depth < 0x10000);
++}
++
++/*
++ * MOD (farm bubble): over the meat farmer, a still bubble with the meat while a harvest waits. The upper city's
++ * twelve layouts (168-179) always talk through NPC slot 6, script 207's section 11, so the test here is that
++ * section's: a day has passed since the last harvest (p31), or this is the first visit to Tanemon, who gives Meat
++ * at once; Palmon and Vegiemon have no such first gift. A full stack keeps the bubble, as the harvest is still
++ * there. Nothing is drawn while a script runs: the bubble would hang over the farmer's own dialogue.
++ */
++#define FARM_FIRST_SCREEN	168
++#define FARM_LAST_SCREEN	179
++#define FARM_ENTITY		(6 + 2)	/* NPC slot 6 in ENTITY_TABLE */
++#define FARM_TRIGGER_EXPLAINED	74
++#define FARM_TRIGGER_VEGIEMON	225
++#define FARM_TRIGGER_PALMON	246
++#define FARM_PSTAT_DAYS		31
++
++static void renderFarmBubble(void)
++{
++	Entity *entity = ENTITY_TABLE[FARM_ENTITY];
++	DVECTOR screen;
++	int32_t depth;
++	uint32_t scale = 0x6000;
++
++	if (CURRENT_SCREEN < FARM_FIRST_SCREEN || CURRENT_SCREEN > FARM_LAST_SCREEN ||
++	    IS_SCRIPT_PAUSED != 1 || entity == NULL || entity->isOnMap == 0 ||
++	    entity->isOnScreen == 0) {
++		return;
++	}
++	if (readPStat(FARM_PSTAT_DAYS) < 1 &&
++	    (isTriggerSet(FARM_TRIGGER_EXPLAINED) || isTriggerSet(FARM_TRIGGER_VEGIEMON) ||
++	     isTriggerSet(FARM_TRIGGER_PALMON))) {
++		return;
++	}
++	if (ringPlace(entity, -DIGI_PARA(entity->type).height + 20 - 65 + entity->posData->location.vy,
++		      &screen, &depth, &scale)) {
++		int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
++
++		drawRingBubble(RING_FARM, screen.vx, screen.vy - ((18 * k) >> 12), depth, scale,
++			       RING_SIZE, 256, k);
++	}
++}
++
+ void renderConditionRingObject(int32_t instanceId)
+ {
+ 	Entity *entity = ENTITY_TABLE[1];
+ 	SVECTOR pos;
+ 	DVECTOR screen;
+ 	int32_t depth;
+-	int32_t value;
+-	int32_t top;
+ 	int32_t base;
+ 	uint32_t scale = 0x6000;
+ 
++	if ((IS_IN_MENU != 1) && (GAME_STATE == 0)) {
++		renderFarmBubble();
++	}
+ 	if ((MOD_STATUS_BUBBLES == 0) || (IS_IN_MENU == 1) || (GAME_STATE != 0) ||
+ 	    ((PARTNER_STATE != 1) && (PARTNER_STATE != 0xa)) ||
+ 	    (entity == NULL) || (ringAnyBubble() == 0 && MOD_RING_BADGE == 0)) {
+@@ -865,31 +942,9 @@ void renderConditionRingObject(int32_t instanceId)
+ 	pos.vy = base;
+ 	worldPosToScreenPos(&pos, &screen);
+ 	MOD_RING_SHOWN[1] = (screen.vx & 0xFFFF) | (screen.vy << 16);
+-	pos.vy = base +
+-		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
+-	depth = worldPosToScreenPos(&pos, &screen);
+-	if (depth <= 0) {
+-		return;
+-	}
+-
+-	if (entity->isOnScreen != 0) {
+-		top = (60 * ((scale * VIEWPORT_DISTANCE) / depth)) >> 12;
+-		if ((screen.vy + DRAWING_OFFSET_Y) < top) {
+-			screen.vy = -DRAWING_OFFSET_Y + top;
+-		}
+-		value = (depth >> 4) - 20;
+-		if (value < 36) {
+-			value = 36;
+-		}
+-		scale = ((int32_t)scale * value) / (depth >> 4);
+-		depth = value << 4;
++	if (ringPlace(entity, base, &screen, &depth, &scale)) {
++		renderConditionRing(screen.vx, screen.vy, depth, scale);
+ 	}
+-
+-	if ((depth <= 0x200) || (depth >= 0x10000)) {
+-		return;
+-	}
+-
+-	renderConditionRing(screen.vx, screen.vy, depth, scale);
+ }
+ 
+ void tickConditionRingObject(int32_t instanceId)
+-- 
+2.55.0
+
