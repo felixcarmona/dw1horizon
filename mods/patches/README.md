@@ -113,6 +113,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0302 | Finish partner walks within one root-travel step; bound blocked or stopped arrival waits to 600 logic ticks | +512 resident bytes including a 16-byte watchdog: 0x801cb3cc → 0x801cb5cc; English test-disc heap 199,472 → 198,960 bytes; screen 361 margin stays positive at 15,488 bytes (conservative cap) |
 | 0303 | Ignore the script command that unloads a Digimon which is not placed (a `.leave()` on an NPC the map never spawned freed an undefined entity and hung later loads) | +96 resident bytes (`scriptUnloadEntity` 0x34 → 0x94 bytes); eight-language full build: heap 184,368 bytes, 320 story setups fit, screen 361 margin 2,336 bytes |
 | 0306 | Keep the whole partner species past 255 in scripts: `STORE_DIGIMON_TYPE` stores 0xFF past 254, the attribute gates and `{digimon N}` read the partner back, the Sukamon backup keeps its species in saved register w15. Fixes VioletElecmon at the mansion gate and partners reverting to another species. |
+| 0307 | Cheats: the lifetime editor stops at 1 hour, and a confirmed *Die of old age* row sets the lifetime to 0 so the natural death runs at once | Eight-language build: heap 186,992 bytes, screen 361 margin 4,960, heapcheck passes; MENU 54,164 bytes, 396 spare below EVL |
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.

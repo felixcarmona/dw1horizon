@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Carregar jogo",
  "main.LAB_STR_MAIN_MENU": "Voltar ao menu principal",
  "main.LAB_STR_ASK_SAVE": "Salvar o jogo atual?",
+ "main.LAB_STR_OLD_AGE": "Morrer de velhice",
+ "main.LAB_STR_ASK_OLD_AGE": "Morrer de velhice agora?",
  "main.LAB_STR_ASK_TITLE": "Voltar ao menu principal?",
  "main.LAB_STR_UNSAVED": "Perderá mudanças não salvas.",
  "main.LAB_STR_ASK_LOAD": "Carregar este jogo?",

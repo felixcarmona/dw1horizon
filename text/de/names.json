@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Spiel laden",
  "main.LAB_STR_MAIN_MENU": "Zum Hauptmenü",
  "main.LAB_STR_ASK_SAVE": "Aktuelles Spiel speichern?",
+ "main.LAB_STR_OLD_AGE": "An Altersschwäche sterben",
+ "main.LAB_STR_ASK_OLD_AGE": "Jetzt an Alter sterben lassen?",
  "main.LAB_STR_ASK_TITLE": "Zum Hauptmenü zurückkehren?",
  "main.LAB_STR_UNSAVED": "Ungespeichertes verfällt.",
  "main.LAB_STR_ASK_LOAD": "Diesen Spielstand laden?",

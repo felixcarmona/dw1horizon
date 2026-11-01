@@ -981,6 +981,8 @@
  "main.LAB_STR_LOAD_GAME": "Load game",
  "main.LAB_STR_MAIN_MENU": "Return to main menu",
  "main.LAB_STR_ASK_SAVE": "Save the current game?",
+ "main.LAB_STR_OLD_AGE": "Die of old age",
+ "main.LAB_STR_ASK_OLD_AGE": "Let it die of old age now?",
  "main.LAB_STR_ASK_TITLE": "Return to the main menu?",
  "main.LAB_STR_UNSAVED": "Unsaved changes will be lost.",
  "main.LAB_STR_ASK_LOAD": "Load this game?",
