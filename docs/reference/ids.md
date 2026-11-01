@@ -87,8 +87,8 @@ as literals (`[180]`, `[66]`, `0xB4`, `0x41`) almost everywhere.
 | `PARTICIPANT_TYPES[8]` (STD overlay) | u8 | u16 (0065) | a partner of 300 was truncated to 44 |
 | `REINCARNATE_BABY_TYPE[4]` (DOOA) | i16 | — | |
 | Cup entrant lists (`DATA` blocks in map scripts) | u8 | u8 | 0xFE/0xFF terminate |
-| Pstats (`STORE_DIGIMON_TYPE`, p4 = tournament Digimon, `{digimon N}`) | u8 | u8; wide registers carry more | see Script ids |
-| Opcodes `46` LOAD_DIGIMON, `47` SET_DIGIMON, `79` UNLOAD_DIGIMON | u8 | wide twins `80`–`82` | `3F` STORE_DIGIMON_VALUE reads the type from a pstat |
+| Pstats (`STORE_DIGIMON_TYPE`, p4 = tournament Digimon, `{digimon N}`) | u8 | u8; a partner past 254 is stored as 0xFF and read back whole (0306); wide registers carry more | see Script ids |
+| Opcodes `46` LOAD_DIGIMON, `47` SET_DIGIMON, `79` UNLOAD_DIGIMON | u8 | wide twins `80`–`82` | `3F` STORE_DIGIMON_VALUE takes the species from a pstat (0306 reads a partner past 254 back whole) |
 | `loadNPCModel`, `scriptSetDigimon`, `unloadDigimonModel` | u8 params | `DigimonId` (0017), one prototype in `model.h` | the original had a u8 definition and an `int32_t` prototype |
 | u8 locals holding the partner's type (`isPartnerBaby`, `startTournament`, `tournamentCheckFair`/`Eligible`, tournament registration, `getSpeakerName`) | u8 | whole type (0017) | a type above 255 no longer matches its low byte |
 | `EfeTechBoneOffset.type` (EFE files) | i16 | — | |
@@ -375,7 +375,7 @@ The save copies the first 0x17C bytes: 212 + 33 + 100 + the first **35 pstats**.
   these ranges use the bitsets described under Species. Original usage and compiler reservations are described in
   [usage diagnostics and reservations](../mods/scripts.md#free-triggers-and-pstats).
 - **Pstats** are u8 values with a u8 index and stay so: widening them would change every `SET_PSTAT`/`IF pN` and the
-  saved bytes. Wide ids go through the **wide registers** instead: w0–w15 are saved (save tag `WREGS`), w16–w63 are
+  saved bytes. Wide ids go through the **wide registers** instead: w0–w15 are saved (save tag `WREGS`; w15 is the Sukamon backup), w16–w63 are
   scratch, zeroed at boot. `CALL_ROUTINE 0` (choose an item) also leaves the item in w62 (0xFFFF = none) next to p254.
 
 ## Script ids
@@ -405,8 +405,14 @@ bits 0–5; the rest fall through. The mod uses 0x26 `item16`, 0x27 `wreg`, 0x28
 an id is above 255, so original instructions that carry 0xFF round-trip. Operand layouts and examples:
 [../mods/scripts.md](../mods/scripts.md) ("Wide opcodes"); the compiler that emits them: [compiler.md](compiler.md).
 
-Not widened: `STORE_DIGIMON_VALUE` (type from a pstat) and the text escapes `{digimon N}`, `{move N}`, `{item N}`,
-`{bgm N}`, `{cup N}`, which read a u8 pstat. Control codes 0x1D–0x1F appear in no original text (they fall into the
+A pstat can never hold a species past 255. Patch 0306 makes `STORE_DIGIMON_TYPE` store a partner past 254 as 0xFF, so a
+narrow test cannot match another species by its low byte, and `STORE_DIGIMON_VALUE` and `{digimon N}` turn that 0xFF back
+into the partner. Engine code uses `storePartnerSpecies` and `pstatSpecies`, never `writePStat` and `readPStat`, for a
+species (`tools/test_partner_species.py`). The Sukamon backup (p5) also keeps the species in saved register w15; a save
+from before 0306 has w15 = 0 and falls back to the pstat. The exception is p4, the tournament registration, which
+`tournament.c` compares with the partner's low byte.
+
+Not widened: the text escapes `{move N}`, `{item N}`, `{bgm N}`, `{cup N}`, which read a u8 pstat. Control codes 0x1D–0x1F appear in no original text (they fall into the
 glyph branch of `showTextbox`).
 
 Other script-level ids:

@@ -112,6 +112,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0301 | Complete exact half-turns by choosing counterclockwise on equal rotation distances; applies to scripted tamer, partner and NPC turns | −16 resident bytes: 0x801cb3cc → 0x801cb3bc in controlled EN builds; heap +16 to 199,488 bytes; 320 story setups fit, screen 361 margin 15,488 bytes |
 | 0302 | Finish partner walks within one root-travel step; bound blocked or stopped arrival waits to 600 logic ticks | +512 resident bytes including a 16-byte watchdog: 0x801cb3cc → 0x801cb5cc; English test-disc heap 199,472 → 198,960 bytes; screen 361 margin stays positive at 15,488 bytes (conservative cap) |
 | 0303 | Ignore the script command that unloads a Digimon which is not placed (a `.leave()` on an NPC the map never spawned freed an undefined entity and hung later loads) | +96 resident bytes (`scriptUnloadEntity` 0x34 → 0x94 bytes); eight-language full build: heap 184,368 bytes, 320 story setups fit, screen 361 margin 2,336 bytes |
+| 0306 | Keep the whole partner species past 255 in scripts: `STORE_DIGIMON_TYPE` stores 0xFF past 254, the attribute gates and `{digimon N}` read the partner back, the Sukamon backup keeps its species in saved register w15. Fixes VioletElecmon at the mansion gate and partners reverting to another species. |
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
