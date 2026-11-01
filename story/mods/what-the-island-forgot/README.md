@@ -61,10 +61,12 @@ night on the same screen cannot announce a hunter that was never spawned. No
 resident code or new model allocation is added; spawning reuses the loaded model
 and a normal NPC instance.
 
-File City has 90 residents worth 170 prosperity points, owned by
+File City has 89 residents worth 169 prosperity points, owned by
 `content/tables/city-residents.json`. First wild victories and silent scripted
 recruits announce their arrival with a jingle and a narrator line, using the
 `city.join` template in each language. Repeated victories, fleeing and losing
 recruit nobody. ModokiBetamon, Dokunemon, Vermilimon, IceDevimon, DarkLizardmon
 and Gururumon remain enemies; the Kennel keeper and hunters keep their roles.
-Older saves may retain their flags, but those flags add no prosperity.
+Older saves may retain their flags, but those flags add no prosperity. Otamamon
+stays in Geko Swamp: its defeat flag serves the Misty Trees story and contributes
+no City entry or prosperity.

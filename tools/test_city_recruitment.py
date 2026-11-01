@@ -86,6 +86,11 @@ class Recruitment(unittest.TestCase):
                     prog = build.compile_sources([str(path)], 'mods', lang=lang, text_source='ours')
                     self.assertIn(recruitment.KEY, prog.used_text)
 
+    def test_otamamon_keeps_the_swamp_story_flag(self):
+        source = self.lowered('geko-swamp')
+        self.assertIn('recruit(species("Otamamon"));', source)
+        self.assertNotIn(recruitment.KEY, source[source.index('on talk(otamamon)'):])
+
     def test_membership_is_the_roster(self):
         bits = membership_bits()
         self.assertEqual(len(bits), 14)
