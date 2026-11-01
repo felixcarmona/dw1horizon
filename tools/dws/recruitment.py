@@ -70,7 +70,7 @@ def announcement(species, indent, won=False):
             f'{indent}}}']
 
 
-# SET_TRIGGER / UNSET_TRIGGER / IF already carry u16 operands. Patch 0303
+# SET_TRIGGER / UNSET_TRIGGER / IF already carry u16 operands. Patch 0304
 # redirects this otherwise unused range to the saved species recruit bits.
 RECRUIT_BIT_BASE = 0x8000
 SPECIES_LIMIT = 1024

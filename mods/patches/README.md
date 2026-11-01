@@ -115,7 +115,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0306 | Keep the whole partner species past 255 in scripts: `STORE_DIGIMON_TYPE` stores 0xFF past 254, the attribute gates and `{digimon N}` read the partner back, the Sukamon backup keeps its species in saved register w15. Fixes VioletElecmon at the mansion gate and partners reverting to another species. |
 | 0307 | Cheats: the lifetime editor stops at 1 hour, and a confirmed *Die of old age* row sets the lifetime to 0 so the natural death runs at once | Eight-language build: heap 186,992 bytes, screen 361 margin 4,960, heapcheck passes; MENU 54,164 bytes, 396 spare below EVL |
 
-Patch 0303 lets scripts set, clear and test recruited bits for species 112..1023
+Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
 the 14-byte low-ID membership table and an exact-sized generated u16 high-ID list;
 the current roster adds no list entries. `tools.city_residents --c-extra-header TREE`

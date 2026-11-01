@@ -40,7 +40,7 @@ must match the roster exactly; original passes must match its IDs below 59.
 Otamamon (species 109, trigger 309) records the Geko Swamp victory for Misty Trees; it is
 excluded from the resident check, City page and prosperity. Its raw story recruit
 write remains intact. Legacy original-story writes above 58 do not make residents.
-Patch 0303 supports imported residents. IDs 0..111
+Patch 0304 supports imported residents. IDs 0..111
 keep trigger 200+id; IDs 112..1023 use existing saved recruit bits, addressed by
 `SET_TRIGGER`, `UNSET_TRIGGER` and `IF trigger` operands 0x8000+id. Ordinary
 triggers 312+ retain their meanings. `recruit`, `unrecruit`, `recruited`,

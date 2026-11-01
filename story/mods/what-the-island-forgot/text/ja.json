@@ -448,6 +448,8 @@
  "what-the-island-forgot.76b55b45": "寒さはボクを忘れたけど、あかりは忘れなかった。大きなバッテリーに充電して、",
  "what-the-island-forgot.f781f09c": "作業場の明かりが全部つくようにしてるんだ。",
  "what-the-island-forgot.9353f1ee": "失われたものは、みなファイルになる。余った物を売り、人の余り物を買うがいい。",
+ "what-the-island-forgot.e92890be": "データモンが失われたものをしまい、私がそれを声に出して読む。",
+ "what-the-island-forgot.42964069": "館ではページが白くなった。ここでは文字が消えない。",
  "what-the-island-forgot.1d2b0ec6": "この庭の石は、全部自分で置いたんだ。",
  "what-the-island-forgot.55955972": "トンネルでは礼も言われなかった。ここではみんながその上を歩く。",
  "what-the-island-forgot.a6dc5bed": "...いい岩だ。いい街だ。",
@@ -458,7 +460,5 @@
  "what-the-island-forgot.2af647ac": "この古いいどはずっと深い。ちょっと調べてるだけさ。",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.e92890be": "データモンが失われたものをしまい、私がそれを声に出して読む。",
- "what-the-island-forgot.42964069": "館ではページが白くなった。ここでは文字が消えない。"
+ }
 }

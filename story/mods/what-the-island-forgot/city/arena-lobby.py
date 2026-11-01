@@ -15,9 +15,9 @@ myotismon208 = lobby208.npc(Species.Myotismon, at=(0, 400), behaves_like=greymon
 def talk():
     say("A thousand swings at the Ogre Fortress, and you still beat me.", "So I teach here now, and I wait for a tournament day.")
     if ask(yes="Let's spar", no="Not now"):
-        greymon208.leave()
         greymon208.leave()                # it always stands here; leave() needs an NPC that was spawned
         if fight(kotemon208) == "won":
+            say("Good! Now one more thousand. Come back whenever you want another round.")
         else:
             say("Your guard dropped. Come back stronger.")
 

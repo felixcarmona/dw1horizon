@@ -448,6 +448,8 @@
  "what-the-island-forgot.76b55b45": "Il freddo mi ha dimenticato, le luci no. Tengo carica la grande batteria",
  "what-the-island-forgot.f781f09c": "così ogni lampada delle Officine resta accesa.",
  "what-the-island-forgot.9353f1ee": "Tutto ciò che si perde finisce in un archivio. Vendimi i tuoi doppioni, compra quelli degli altri.",
+ "what-the-island-forgot.e92890be": "Datamon archivia ciò che si perde e io leggo gli archivi ad alta voce.",
+ "what-the-island-forgot.42964069": "Nella Villa le pagine restavano bianche. Qui le parole restano.",
  "what-the-island-forgot.1d2b0ec6": "Ho posato io ogni pietra di questo cortile.",
  "what-the-island-forgot.55955972": "Nei tunnel nessuno tornava a ringraziarmi. Qui ci camminate tutti sopra.",
  "what-the-island-forgot.a6dc5bed": "...Buona roccia. Buona città.",
@@ -458,7 +460,5 @@
  "what-the-island-forgot.2af647ac": "Questo vecchio pozzo scende parecchio. Sto solo controllando.",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.e92890be": "Datamon archivia ciò che si perde e io leggo gli archivi ad alta voce.",
- "what-the-island-forgot.42964069": "Nella Villa le pagine restavano bianche. Qui le parole restano."
+ }
 }
