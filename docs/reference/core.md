@@ -109,7 +109,7 @@ executable's data).
        calls `setImmortalHour`; then `addClock`.
      - 2: as 1, but movie 2 (`ED2.STR`) plays first.
    - `recalculatePPandArena` (US only): rewrites pstat 1 (prosperity) from the recruit triggers (see
-     [scripts.md](scripts.md#pstats)) and, if pstat 3 >= 0x17, clears triggers 0x25-0x27. The prosperity helper counts IDs 3..58 in original story and 3..111 in extended story; City entry calls only that helper.
+     [scripts.md](scripts.md#pstats)) and, if pstat 3 >= 0x17, clears triggers 0x25-0x27. The prosperity helper counts IDs 3..58 in original story and only the owned City roster in extended story; City entry calls only that helper.
    - **Game**: `while (MAIN_STATE != 3) gameLoop();`.
    - **End**: `cleanupGame` (removes objects 0xFA0/0xFA8/0xFA6/0xFB9/0xFA2/0xFB5, entities and models), `playMovie(3)`
      (`EDR.STR`, the only movie START cannot skip) and back to the title.

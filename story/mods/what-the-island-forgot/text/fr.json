@@ -1,5 +1,6 @@
 {
  "_comment": "Initial machine draft with English-source editorial corrections; broader dialogue review remains pending. See README.md.",
+ "city.join": "{species} a rejoint la ville !",
  "what-the-island-forgot.bbe10652": "{color 7}Jijimon {color 1}",
  "what-the-island-forgot.559b2a3c": "Ne le tue pas ! Il n'est pas dans son état normal !",
  "what-the-island-forgot.05a30d4d": "Se retenir",
@@ -69,6 +70,8 @@
  "what-the-island-forgot.22049f4e": "Hum... On est bien ici, tu sais. Humide, sombre... Parfait.",
  "what-the-island-forgot.ca7218ed": "{player} a tout fait pour le convaincre !",
  "what-the-island-forgot.29527735": "...Bon, bon ! Tu parles trop. Beurk, beurk.",
+ "what-the-island-forgot.e9fda10c": "Le drain est fermé. Il faudra d'abord entrer en ville par un autre chemin.",
+ "what-the-island-forgot.8479f64d": "La trappe résiste. Il faut peut-être d'abord ouvrir la route, là-haut.",
  "what-the-island-forgot.77a5df3a": "Cet engrenage. Il est de l'ancien modèle. Autorisation de l'installer ?",
  "what-the-island-forgot.4bcc48ef": "Les archives sont complètes. Lecture.",
  "what-the-island-forgot.679d0b37": "Il y a cent ans, des humains sont venus sur cette île.",
@@ -184,6 +187,7 @@
  "what-the-island-forgot.c8a616e9": "M. M, interrogé par mes soins : « Je peux rentrer chez moi. »",
  "what-the-island-forgot.ee70bdc7": "Édition spéciale de Shell News ! « Les souvenirs de l'usine ! »",
  "what-the-island-forgot.1fc33698": "Les archives d'Andromon racontent toute la guerre. Lisez notre article !",
+ "what-the-island-forgot.31037e8b": "Ce Gururumon n'est pas du coin... Est-ce qu'il me cherche ?",
  "what-the-island-forgot.2987bcdc": "Hé hé ! Un humain, un vrai, dans la Ville File ! Personne au-dehors ne le sait encore...",
  "what-the-island-forgot.fb477468": "Tu veux que je le dise à tout le monde ? Mes rumeurs vont trèèès loin.",
  "what-the-island-forgot.78981feb": "Demain, toute l'île le saurait !",
@@ -196,6 +200,7 @@
  "what-the-island-forgot.819632a5": "« Jour 40. Le sol change ici. Ce n'était pas le cas l'an dernier. »",
  "what-the-island-forgot.8986bfdf": "« Jour 41. La moitié des caisses a disparu. Personne n'a rien entendu. »",
  "what-the-island-forgot.148a1185": "« Jour 43. Nous continuons vers le nord. Le CAMP 3 est sous le plateau. »",
+ "what-the-island-forgot.d3ae0dfc": "Le sentier est bloqué. Il faut d'abord ouvrir la route vers la savane.",
  "what-the-island-forgot.a7ea33ad": "Personne ne quitte ce lieu avec un nom. Ni eux, ni toi.",
  "what-the-island-forgot.244f3d37": "Je n'ai droit à aucune erreur... et maintenant...",
  "what-the-island-forgot.1728d5d9": "Les ordres... Importants... Les ordres...",
@@ -204,6 +209,7 @@
  "what-the-island-forgot.e4e3bd64": "J'avais presque oublié mon nom.",
  "what-the-island-forgot.70b7d8f6": "Gekomon a rejoint la ville !",
  "what-the-island-forgot.81490de3": "Les ordres. Importants. Les ordres. Importants...",
+ "what-the-island-forgot.6e399796": "Le sentier du bas est bloqué. Il faut d'abord ouvrir le passage par la jungle.",
  "what-the-island-forgot.697c3d11": "...Oui. L'humain a atteint la Jointure. Petit. Avec un Digimon.",
  "what-the-island-forgot.b8974907": "Il marche là où les sols ne concordent pas.",
  "what-the-island-forgot.55c9c165": "...À tes ordres. Je continue à surveiller.",
@@ -387,12 +393,9 @@
  "what-the-island-forgot.fe72447b": "La nuit, je survole la haie et compte les lumières de la ville. Chaque semaine, il y en a plus.",
  "what-the-island-forgot.d8e9095b": "Kraaah ! Les ailes les plus rapides de la Région rapide antique, et tu m'as quand même attrapé.",
  "what-the-island-forgot.17c5c6d4": "J'ai creusé ce puits avec ma propre foreuse ! ...C'est une fausse foreuse. Mais l'eau est vraie.",
- "what-the-island-forgot.778a0b45": "Le puits est profond et frais. Les rivières se déplacent trop. Un puits reste toujours, comme moi.",
  "what-the-island-forgot.8eda96d3": "Zzz... Les pierres sont chaudes l'après-midi... Zzz...",
  "what-the-island-forgot.c6a52367": "La jungle était chaude et humide. Il fait chaud ici. C'est ce que j'appelle des vacances.",
- "what-the-island-forgot.e9fda10c": "Le drain est fermé. Il faudra d'abord entrer en ville par un autre chemin.",
- "what-the-island-forgot.8479f64d": "La trappe résiste. Il faut peut-être d'abord ouvrir la route, là-haut.",
- "what-the-island-forgot.d3ae0dfc": "Le sentier est bloqué. Il faut d'abord ouvrir la route vers la savane.",
- "what-the-island-forgot.6e399796": "Le sentier du bas est bloqué. Il faut d'abord ouvrir le passage par la jungle.",
- "what-the-island-forgot.31037e8b": "Ce Gururumon n'est pas du coin... Est-ce qu'il me cherche ?"
+ "_source": {
+  "city.join": "{species} joined the city!"
+ }
 }

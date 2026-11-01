@@ -280,12 +280,17 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   being talked to opens the game's buy/sell menu with these items, in its own box), `roll = random.roll(2)` then
   `if roll == 0:` (a draw, kept until the next; `random.chance(p)` for a percentage), `call(Routine.x, arg=)`; the writer types the
   "Received ..." narrator line. Three ways a Digimon joins the city: `recruitable(npc, line=)` is the game's wild
-  recruit (a line, a battle, the flag: what the views print). For a base wild NPC,
+  recruit. In the extended pass it says the line and fights, then recruits only
+  on a first win by a roster species: a jingle and narrator announcement follow
+  the completed battle. Repeated wins, fleeing and losing add nothing. An unlisted
+  species fights without a recruit flag. The original pass keeps its original bytes. For a base wild NPC,
   check its balanced `content/maps` slot before supplying `joins=`; the variable
   name and original disc placement can differ from the species fought. City
-  roster verification checks the compiled flags across all story passes; `if fight(x) == "won":` then `send_to_city(line=)` is a
-  story's (the departure scene: it walks off, the jingle, the narrator's line); `recruit(species)` only sets the flag
-  (for a scene written by hand). Reusable pieces are plain `def`s: inlined with parameters; without them, compiled once
+  roster verification checks each compiled story pass separately; `if fight(x) == "won":` then `send_to_city(line=)` is a
+  story's (the departure scene: it walks off, the jingle, the narrator's line); `recruit(species)` sets the flag; in the extended pass a silent bare recruit
+  gets the same one-time announcement (and a win check after a battle). Existing
+  explicit join narration and departures retain their own scene. The compiler expands
+  `city.join` from the mod’s text bank using the game’s species name. Reusable pieces are plain `def`s: inlined with parameters; without them, compiled once
   when the def always ends the handler (a warp or `dws("return;")` last), inlined where it is called otherwise, so the
   code after the call runs (a `return` inside such a def ends the whole handler);
   a def that speaks as the NPC being talked to (`def closed(): say("Closed.")`, a `say` without a speaker) is inlined

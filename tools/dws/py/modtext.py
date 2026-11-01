@@ -63,6 +63,11 @@ def load_banks(prog, mods, texts):
         try: en = json.load(open(en_path, encoding='utf-8')) if os.path.exists(en_path) else {}
         except ValueError as e: prog.errors.append(DwsError(f'cannot read {rel(en_path)}: {e}', None)); continue
         names = PL.named_keys(en, mod)
+        from .. import recruitment
+        if mod == recruitment.MOD and recruitment.ACTIVE.get():
+            t['used'].add(recruitment.LINE)
+            info.setdefault(recruitment.KEY, {'path': en_path, 'line': 1, 'col': 1,
+                                               'handler': 'extended recruitment'})
         from .textsync import mod_sources
         whole = set(map(os.path.abspath, mod_sources(mod, os.path.dirname(mdir)))) <= t['files']
         if whole:
@@ -95,6 +100,11 @@ def load_banks(prog, mods, texts):
                 done.add(key); continue
             bad = False
             for row in flat(v):
+                if key == recruitment.KEY and recruitment.ACTIVE.get():
+                    if row.count('{species}') != 1:
+                        prog.errors.append(DwsError(f'{lang}.json, {k}: expected exactly one {{species}}', pos(i, p)))
+                        bad = True
+                    row = row.replace('{species}', '')
                 errs, _ = PL.font_problems(row)
                 for msg, hint in errs + [(e, None) for e in PL.escape_problems(row)]:
                     prog.errors.append(DwsError(f'{lang}.json, {k}: {msg}', pos(i, p), hint)); bad = True

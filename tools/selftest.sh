@@ -66,7 +66,7 @@ run starter-quiz      $PY tools/starter_quiz.py
 run starter-quiz-tests $PY tools/test_starter_quiz.py
 run world-gates $PY tools/world_audit.py
 run world-gates-tests $PY -W ignore tools/test_world_audit.py
-run city-residents $PY -m unittest tools.test_city_residents
+run city-residents $PY -W ignore::ResourceWarning -m unittest tools.test_city_residents tools.test_city_recruitment
 if [ -f "$DERIVED/DIGI.DAT" ]; then
     run city-compiled $PY -m tools.city_residents $(find "$DERIVED" -name DG.SCN -o -name MAPHEAD.SCN)
 else

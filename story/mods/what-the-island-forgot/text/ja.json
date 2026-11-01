@@ -1,5 +1,6 @@
 {
  "_comment": "Initial machine draft with English-source editorial corrections; broader dialogue review remains pending. See README.md.",
+ "city.join": "{species}が街にやってきた！",
  "what-the-island-forgot.bbe10652": "{color 7}ジジモン {color 1}",
  "what-the-island-forgot.559b2a3c": "殺してはいかん！正気ではないんじゃ！",
  "what-the-island-forgot.05a30d4d": "手加減する",
@@ -69,6 +70,8 @@
  "what-the-island-forgot.22049f4e": "うーん... ここは居心地がいいんだよ。じめじめして、暗くて... さいこうだ。",
  "what-the-island-forgot.ca7218ed": "{player}は、いっしょうけんめい説得した！",
  "what-the-island-forgot.29527735": "...わかった、わかった！ よくしゃべるやつだな。べろ、べろ。",
+ "what-the-island-forgot.e9fda10c": "水路は閉ざされてる。先に別の道で町に行かないと。",
+ "what-the-island-forgot.8479f64d": "ハッチが開かない。先に上の道を通れるようにしないと。",
  "what-the-island-forgot.77a5df3a": "そのはぐるま。旧式の物だな。取りつけてもよいか？",
  "what-the-island-forgot.4bcc48ef": "記録庫が完成した。読み出す。",
  "what-the-island-forgot.679d0b37": "百年前、人間がこの島に来た。",
@@ -184,6 +187,7 @@
  "what-the-island-forgot.c8a616e9": "このぼくがM氏を取材したよ。「家に帰れる」とのことだ。",
  "what-the-island-forgot.ee70bdc7": "シェルニュース特別号！「工場が覚えていること！」",
  "what-the-island-forgot.1fc33698": "アンドロモンの記録庫に、戦争のすべてがある。くわしくはこちら！",
+ "what-the-island-forgot.31037e8b": "あのグルルモン、この辺じゃ見かけないな... ぼくを探してるのかな？",
  "what-the-island-forgot.2987bcdc": "えへへ！はじまりの街に人間がいる。本物の人間だよ！外の連中はまだ誰も知らない...",
  "what-the-island-forgot.fb477468": "みんなに知らせてあげようか？ぼくのうわさは、すごーく遠くまで届くよ。",
  "what-the-island-forgot.78981feb": "明日には島中が知ってるだろうね！",
@@ -196,6 +200,7 @@
  "what-the-island-forgot.819632a5": "「40日目。ここの地面が変化している。去年はこんなことはなかった」",
  "what-the-island-forgot.8986bfdf": "「41日目。木箱が半分なくなった。誰も何も聞いていない」",
  "what-the-island-forgot.148a1185": "「43日目。さらに北へ進む。キャンプ3は台地の下だ」",
+ "what-the-island-forgot.d3ae0dfc": "道がふさがってる。先にサバンナへの道を開かないと。",
  "what-the-island-forgot.a7ea33ad": "ここを出る時、名前は残らない。あいつらも、おまえもだ。",
  "what-the-island-forgot.244f3d37": "一つのミスも許されぬというのに...今や...",
  "what-the-island-forgot.1728d5d9": "めいれい...重要...めいれい...",
@@ -204,6 +209,7 @@
  "what-the-island-forgot.e4e3bd64": "自分の名前まで忘れそうだった。",
  "what-the-island-forgot.70b7d8f6": "ゲコモンが街にやってきた！",
  "what-the-island-forgot.81490de3": "めいれい。重要。めいれい。重要...",
+ "what-the-island-forgot.6e399796": "下の道はふさがってる。先にジャングルを通る道を開かないと。",
  "what-the-island-forgot.697c3d11": "...はい。人間がつなぎ目に来ました。小さいです。デジモンを連れています。",
  "what-the-island-forgot.b8974907": "地面がかみ合わない場所を歩いています。",
  "what-the-island-forgot.55c9c165": "...おおせのままに。見張りを続けます。",
@@ -387,12 +393,9 @@
  "what-the-island-forgot.fe72447b": "夜は生けがきを飛びこえて、町の明かりを数える。毎週増えているよ。",
  "what-the-island-forgot.d8e9095b": "カーッ！スピーディー地域で一番速い翼なのに、つかまっちまった。",
  "what-the-island-forgot.17c5c6d4": "あのいどは自分のドリルで掘ったんだ！...ドリルは作り物だけど、水は本物だよ。",
- "what-the-island-forgot.778a0b45": "いどは深くて冷たい。川は動きすぎる。いどは動かずにいる。ぼくと同じだ。",
  "what-the-island-forgot.8eda96d3": "ぐう...昼すぎの石は温かい...ぐう...",
  "what-the-island-forgot.c6a52367": "ジャングルは暑くて湿っていた。ここは暑いだけだ。休暇みたいなものさ。",
- "what-the-island-forgot.e9fda10c": "水路は閉ざされてる。先に別の道で町に行かないと。",
- "what-the-island-forgot.8479f64d": "ハッチが開かない。先に上の道を通れるようにしないと。",
- "what-the-island-forgot.d3ae0dfc": "道がふさがってる。先にサバンナへの道を開かないと。",
- "what-the-island-forgot.6e399796": "下の道はふさがってる。先にジャングルを通る道を開かないと。",
- "what-the-island-forgot.31037e8b": "あのグルルモン、この辺じゃ見かけないな... ぼくを探してるのかな？"
+ "_source": {
+  "city.join": "{species} joined the city!"
+ }
 }

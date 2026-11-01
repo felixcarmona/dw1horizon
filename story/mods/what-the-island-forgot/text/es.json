@@ -1,5 +1,6 @@
 {
  "_about": "the Spanish (Spain) translation of what-the-island-forgot, from text/en.json by the same keys (docs/mods/translating.md, \"A mod's translation\"); voices and terms: text/es/voices.md, text/es/glossary.toml.",
+ "city.join": "¡{species} se ha unido a la ciudad!",
  "what-the-island-forgot.bbe10652": "{color 7}Jijimon {color 1}",
  "what-the-island-forgot.559b2a3c": "¡No lo mates! ¡No es él mismo!",
  "what-the-island-forgot.05a30d4d": "Contenerse",
@@ -69,6 +70,8 @@
  "what-the-island-forgot.22049f4e": "Mmm... Se está a gusto aquí abajo, ¿sabes? Húmedo, oscuro... Perfecto.",
  "what-the-island-forgot.ca7218ed": "¡{player} se esforzó por convencerlo!",
  "what-the-island-forgot.29527735": "...¡Vale, vale! Qué paliza das. Bleh, bleh.",
+ "what-the-island-forgot.e9fda10c": "El desagüe está sellado. Tendremos que llegar a la ciudad por otro camino.",
+ "what-the-island-forgot.8479f64d": "La trampilla no cede. Quizá primero tenga que abrirse el camino de arriba.",
  "what-the-island-forgot.77a5df3a": "Ese engranaje. Es de la fabricación antigua. ¿Me permite instalarlo?",
  "what-the-island-forgot.4bcc48ef": "El archivo está completo. Leyendo.",
  "what-the-island-forgot.679d0b37": "Hace cien años, unos humanos llegaron a esta isla.",
@@ -184,6 +187,7 @@
  "what-the-island-forgot.c8a616e9": "El señor M, entrevistado por mí en persona: «Puedo volver a casa.»",
  "what-the-island-forgot.ee70bdc7": "¡Noticias Shell, edición especial! «¡Lo que recuerda la fábrica!»",
  "what-the-island-forgot.1fc33698": "El archivo de Andromon cuenta la guerra entera. ¡Léelo todo aquí!",
+ "what-the-island-forgot.31037e8b": "Ese Gururumon no es de por aquí... ¿Me estará buscando a mí?",
  "what-the-island-forgot.2987bcdc": "¡Ji, ji! ¡Un humano, un humano de verdad, en Ciudad File! Ahí fuera aún no lo sabe nadie...",
  "what-the-island-forgot.fb477468": "¿Quieres que se lo cuente a todos? Mis rumores llegan súuuper lejos.",
  "what-the-island-forgot.78981feb": "¡Mañana lo sabría toda la isla!",
@@ -196,6 +200,7 @@
  "what-the-island-forgot.819632a5": "\"Día 40. Aquí el suelo cambia. El año pasado no lo hacía.\"",
  "what-the-island-forgot.8986bfdf": "\"Día 41. Faltan la mitad de las cajas. Nadie oyó nada.\"",
  "what-the-island-forgot.148a1185": "\"Día 43. Seguimos al norte. El CAMPAMENTO 3 está bajo la meseta.\"",
+ "what-the-island-forgot.d3ae0dfc": "El sendero está bloqueado. Primero habrá que abrir el camino a la Sabana Gear.",
  "what-the-island-forgot.a7ea33ad": "De aquí nadie sale con un nombre. Ni ellos, ni tú.",
  "what-the-island-forgot.244f3d37": "No se me permite ni un solo error... y ahora...",
  "what-the-island-forgot.1728d5d9": "Órdenes... Importante... Órdenes...",
@@ -204,6 +209,7 @@
  "what-the-island-forgot.e4e3bd64": "Casi había olvidado mi propio nombre.",
  "what-the-island-forgot.70b7d8f6": "¡Gekomon se ha unido a la ciudad!",
  "what-the-island-forgot.81490de3": "Órdenes. Importante. Órdenes. Importante...",
+ "what-the-island-forgot.6e399796": "El sendero de abajo está bloqueado. Primero debemos abrir el camino por la Selva Tropical.",
  "what-the-island-forgot.697c3d11": "...Sí. El humano ha llegado a la Veta. Pequeño. Con un Digimon.",
  "what-the-island-forgot.b8974907": "Camina por donde el suelo no encaja.",
  "what-the-island-forgot.55c9c165": "...Como digas. Seguiré vigilando.",
@@ -387,12 +393,9 @@
  "what-the-island-forgot.fe72447b": "De noche sobrevuelo el seto y cuento las luces de la ciudad. Cada semana hay más.",
  "what-the-island-forgot.d8e9095b": "¡Kraaah! Las alas más rápidas de la Zona Rápida Prehistórica, y aun así me pillaste.",
  "what-the-island-forgot.17c5c6d4": "¡Este pozo lo cavé con mi taladro! ...Es de mentira. El agua sí es de verdad.",
- "what-the-island-forgot.778a0b45": "El pozo es hondo y fresco. Los ríos se mueven demasiado. Un pozo se queda quieto, como yo.",
  "what-the-island-forgot.8eda96d3": "Zzz... las piedras están calentitas después del mediodía... zzz...",
  "what-the-island-forgot.c6a52367": "La jungla era caliente y húmeda. Aquí solo es caliente. A eso lo llamo vacaciones.",
- "what-the-island-forgot.e9fda10c": "El desagüe está sellado. Tendremos que llegar a la ciudad por otro camino.",
- "what-the-island-forgot.8479f64d": "La trampilla no cede. Quizá primero tenga que abrirse el camino de arriba.",
- "what-the-island-forgot.d3ae0dfc": "El sendero está bloqueado. Primero habrá que abrir el camino a la Sabana Gear.",
- "what-the-island-forgot.6e399796": "El sendero de abajo está bloqueado. Primero debemos abrir el camino por la Selva Tropical.",
- "what-the-island-forgot.31037e8b": "Ese Gururumon no es de por aquí... ¿Me estará buscando a mí?"
+ "_source": {
+  "city.join": "{species} joined the city!"
+ }
 }

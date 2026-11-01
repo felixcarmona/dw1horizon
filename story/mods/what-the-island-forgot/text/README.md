@@ -9,3 +9,10 @@ and handler, and who speaks. The build reads the words from the sources; a trans
 `text sync` lowers the files like the build does, so it needs the story's new screens: run it with
 `SCREEN_CONTENT=build/<name>-maps/screens DWS_MAPS=$PWD/build/<name>-maps/retouch` (the output of `build.sh` step 1),
 or it stops at "screen N has no step trigger".
+
+`city.join` is the named recruitment template used by the extended compiler for
+wild wins and silent bare recruits. Every language must keep exactly one
+`{species}` placeholder. The ordinary `text(key, species)` compiler expansion
+inserts the name from `content/species`, shared with the game’s displayed names.
+It is wrapped and checked like any other line; no expanded per-species strings
+are stored in these banks. `dws text sync` preserves this named entry.

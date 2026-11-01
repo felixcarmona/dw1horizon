@@ -1,0 +1,50 @@
+From 25d55100d8efebbbe4ab0e14cfc6b0234660ed17 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 07:22:27 +0000
+Subject: [PATCH] Count prosperity from the owned city roster
+
+---
+ src/main/main.c        | 5 ++++-
+ src/main/mod_species.c | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index c03d142..117ae28 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4000,6 +4000,8 @@ void initializeLoadedMap(void)
+ }
+ 
+ #if VERSION_EQUAL_OR_NEWER(US)
++extern const uint8_t CITY_RESIDENTS[14]; /* generated from the owned roster by the balance build */
++
+ void recalculateProsperity(void)
+ {
+ 	uint8_t pp;
+@@ -4008,7 +4010,8 @@ void recalculateProsperity(void)
+ 	pp = 0;
+ 	/* Original story counts only ids 3..58, including after a Continue changes stories. */
+ 	for (i = 3; i < (MOD_OPT_STORY ? NUM_RECRUITABLE_DIGIMON : 59); i++) {
+-		if ((DIGI_PARA(i).level >= 3) && (isDigimonRecruited(i) != 0)) {
++		if ((!MOD_OPT_STORY || (CITY_RESIDENTS[i >> 3] & (1 << (i & 7)))) &&
++		    (DIGI_PARA(i).level >= 3) && (isDigimonRecruited(i) != 0)) {
+ 			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
+ 				pp++;
+ 			} else {
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index e7fb2cc..9a42483 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -30,6 +30,9 @@ int32_t SPECIES_COUNT;
+ int32_t SPECIES_RECORD_READS;
+ uint8_t SPECIES_RAISED_BITS[NUM_DIGIMON / 8];
+ uint8_t SPECIES_RECRUITED_BITS[NUM_DIGIMON / 8];
++/* Written from content/tables/city-residents.json by the balance build. */
++const uint8_t CITY_RESIDENTS[14] = {0};
++
+ static int32_t SPECIES_RECORDS_SECTOR;
+ /* MOD (record originals): the originals carried by their DIGI.DAT record (species.h) */
+ static uint8_t SPECIES_RECORD_ORIGINALS[SPECIES_RECORD_ORIGINALS_BYTES];
+-- 
+2.55.0
+

@@ -50,15 +50,25 @@ def compiled_recruits(path):
     return ids
 
 
-def verify(paths):
-    expected = {r['id'] for r in residents()}
+def membership_bits():
+    """The executable's 112 roster bits, generated only from the owned JSON."""
+    data = bytearray(14)
+    for row in residents():
+        data[row['id'] // 8] |= 1 << (row['id'] % 8)
+    return bytes(data)
+
+
+def verify(paths, original=False):
+    """One pass (DG + MAPHEAD): original high flags are unrelated legacy writes."""
+    expected = {r['id'] for r in residents() if not original or r['id'] < 59}
     species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json')
                for s in [json.loads(p.read_text())]}
     actual = set()
     for path in paths:
-        actual.update(i for i in compiled_recruits(path) if species[i]['level'] in LEVELS)
+        actual.update(i for i in compiled_recruits(path)
+                      if (not original or i < 59) and species[i]['level'] in LEVELS)
     if expected != actual:
-        raise ValueError(f'City roster disagrees with compiled stories: '
+        raise ValueError(f'City roster disagrees with {"original" if original else "extended"} compiled story: '
                          f'unreachable {sorted(expected - actual)}, unlisted {sorted(actual - expected)}')
     return len(expected)
 
@@ -87,8 +97,14 @@ def verify_archive(data):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('stories', nargs='+', type=Path, help='compiled DG.SCN or MAPHEAD.SCN')
+    parser.add_argument('--original', action='store_true', help='check the original story (ids below 59)')
     args = parser.parse_args()
-    print(f'City roster: {verify(args.stories)} residents match {len(args.stories)} compiled stories')
+    groups = {}
+    for path in args.stories:
+        groups.setdefault(path.parent, []).append(path)
+    for folder, paths in groups.items():
+        original = args.original or 'base' in folder.parts
+        print(f'City roster: {verify(paths, original)} residents match {folder} ({"original" if original else "extended"})')
 
 
 if __name__ == '__main__':

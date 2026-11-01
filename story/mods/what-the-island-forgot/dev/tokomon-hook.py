@@ -15,7 +15,6 @@ def talk():
     recruit(Species.MoriShellmon)
     recruit(Species.Saberdramon)
     recruit(Species.NiseDrimogemon)
-    recruit(Species.ModokiBetamon)
     recruit(Species.JMojyamon)
     recruit(Species.Guardromon)
     recruit(Species.Tankmon)

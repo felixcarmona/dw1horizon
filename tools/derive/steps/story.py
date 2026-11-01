@@ -271,7 +271,7 @@ def units(ctx):
                                                       f'{os.path.basename(ctx.out)}-{lang}-{v.replace("/", "-") or "ext"}')
             first = False
             base = v.startswith('base')
-            inputs = (['story/base', 'tools', 'extracted/SCN', 'extracted/MAP', 'content/screens', 'text/us',
+            inputs = (['story/base', 'tools', 'extracted/SCN', 'extracted/MAP', 'content/screens', 'content/species', 'content/tables/city-residents.json', 'text/us',
                        f'text/{text}'] + ([s.main] if s.main else []) + ([] if base else ['story/mods'] + s.extra) +
                       [f'step:maps ({p})' for p in s.screens] + ([] if base or not s.maps else [f'step:retouch ({s.maps})']))
             outs = [os.path.relpath(os.path.join(d, f), ctx.out) for f in ('DG.SCN', 'MAPHEAD.SCN', 'dws.log')]
@@ -295,8 +295,10 @@ def finish(ctx):
     from tools.city_residents import verify
     # Enumerate the build's passes, not one hand-picked mod or language. This
     # runs after cache restores too, on the actual compiled stories on the disc.
-    stories = [os.path.join(ctx.out, u.outputs[0]) for u in units(ctx)]
-    verify(stories + [os.path.join(os.path.dirname(p), 'MAPHEAD.SCN') for p in stories])
+    for unit in units(ctx):
+        path = os.path.join(ctx.out, unit.outputs[0])
+        original = unit.name.split(' ', 1)[1].startswith('base') or s.mods == 'none'
+        verify([path, os.path.join(os.path.dirname(path), 'MAPHEAD.SCN')], original=original)
     copy_maps(ctx, s)
     if s.lang_on:
         with open(ctx.path('lang-es-story.log'), 'w') as f:
