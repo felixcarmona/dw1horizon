@@ -471,7 +471,7 @@ costs 10-14 lines per pass.
 
 ## Curling (0292)
 
-The KAR overlay draws its HUD on every pass. The arrow pulse and ready timer
+The KAR overlay draws its HUD on every pass. Its yes/no and hint prompts still draw from the tick, so `KAR_replayTickPrims` repeats them at the start of each extra pass, in the first pass's OT order. The arrow pulse and ready timer
 advance in `KAR_tick` only; the arrow keeps the original pre-physics origin and
 interpolates its displayed direction. A late tick records stone positions after
 physics and evaluates held stones from the nominal hand matrix. Rendering uses
