@@ -503,7 +503,7 @@ in KAR. Tile replacement is deferred until all CPU geometry preparation is
 complete, before submitting the new ordering table. This overlaps preparation
 with the previous GPU draw: a row crossing previously waited about 155 scanlines
 in tick-side VRAM readback. The native row uploader defers while the tamer is
-in curling. Camera targets, movement and tile destinations remain unchanged.
+in curling. The forced whole-window upload of `handleTileUpdate` is skipped too (patch 0295): moving the aim camera reread three CD rows per step, 9 ticks/s with stalls of about 0.7 s. Camera targets, movement and tile destinations remain unchanged.
 
 The intro samples tick/render cost after three cold setup ticks, allows half
 a render of headroom for the HUD/previews that appear later, and chooses a cadence for the entire match:
