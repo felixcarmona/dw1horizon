@@ -54,7 +54,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0172 | timed field battles |
 | 0181-0182 | the NEW DIGIMON option and the vanilla swap of saves |
 | 0183, 0190-0191, 0195, 0203 | language: English / Spanish, map signs, the name keyboard (`docs/mods/translating.md`) |
-| 0184-0189, 0196-0197, 0200, 0204 | quality of life: battle x2, evolution skip, training block |
+| 0184-0189, 0196-0197, 0200, 0204, 0299 | quality of life: battle x2, evolution skip, training block |
 | 0199 | the EXTENDED STORY option |
 | 0202, 0207 | optional partner name |
 | 0212 | the DIFFICULTY option |
@@ -108,6 +108,17 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0297 | Status screen: the divider moves to the middle, each care row has its number in a box beside the bar, the repeated discipline field goes and the care mistakes take its place; happiness is shown as 0..100 here and on the evolution card (rules keep -100..100); only with NEW STATUS BARS on | +337 bytes of code in `game_menu`; 320 story setups pass, screen 361 keeps 3,216 B on the eight-language image |
 | 0298 | Keep an active condition walk from restarting at pending transitions after removing 0290 | Resident and full-disc memory measurements are recorded in reference/memory.md |
 | 0299 | Restore the chart detail layout; Square opens a modal requirements table with full translated labels, fixed 12-pixel rows, ten-row scrolling, dimmed background and active cancel prompt; borrow and release the existing text rows | −1,684 resident bytes from the pre-popup core: main_BSS_END 0x801cea6c → 0x801ce3d8. Round two adds 700 resident bytes over 0x801ce11c; aligned eight-language heap 187,872 → 187,168 bytes, screen 361 margin 5,840 → 5,136; all 320 setups fit. Four primitive/number helpers move 800 bytes out of MENU; chartAppend stays there for its readiness-string relocation. MENU 54,512 → 54,000 bytes, 560 spare below EVL. |
+| 0300 | Stop training x5 for natural evolution only when the tick's shared target picker finds a target; leave Fresh timer resets in the tick | +336 resident bytes: 0x801ceb2c → 0x801cec7c, aligned heap 185,296 → 184,960 bytes (controlled eight-language text padding and full file table, original 2 MB target); shared ladder saves 80 bytes over duplication; all 320 actual-archive setups fit, screen 361 margin 2,928 bytes. |
+| 0301 | Complete exact half-turns by choosing counterclockwise on equal rotation distances; applies to scripted tamer, partner and NPC turns | −16 resident bytes: 0x801cb3cc → 0x801cb3bc in controlled EN builds; heap +16 to 199,488 bytes; 320 story setups fit, screen 361 margin 15,488 bytes |
+| 0302 | Finish partner walks within one root-travel step; bound blocked or stopped arrival waits to 600 logic ticks | +512 resident bytes including a 16-byte watchdog: 0x801cb3cc → 0x801cb5cc; English test-disc heap 199,472 → 198,960 bytes; screen 361 margin stays positive at 15,488 bytes (conservative cap) |
+| 0303 | Ignore the script command that unloads a Digimon which is not placed (a `.leave()` on an NPC the map never spawned freed an undefined entity and hung later loads) | +96 resident bytes (`scriptUnloadEntity` 0x34 → 0x94 bytes); eight-language full build: heap 184,368 bytes, 320 story setups fit, screen 361 margin 2,336 bytes |
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
+
+The localized Ogre Tunnel takeover sign is a map-art change in
+`tools/localize/signs.py` and `content/localized/signs/delta`, with no engine
+patch or resident executable growth. See [game languages](../../docs/mods/language.md).
+Whamon's timed return at the city dock is a story-only fix, using the existing
+spawn instruction; it adds no engine patch or resident executable bytes. See the
+[shore story notes](../../story/mods/what-the-island-forgot/arcs/shore/README.md).

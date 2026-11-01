@@ -6,7 +6,9 @@ from ...state import memories, m12_shore, memory_news
 
 shore = new_screen(309, map="build/what-the-island-forgot-maps/screens/SHOR01.MAP")
 chest_shore = flag()
-whamon = shore.npc(Species.Whamon, at=(750, -650), range=0, autotalk=False)
+# The big sea model (the dock's), standing in the water off the beach: an NPC blocks a box of its radius (400) + 100 around
+# it, so it sits well clear of the arrival and leaves the whole beach, the chest and the wreck reachable.
+whamon = shore.npc(Species.Whamon146, at=(1150, -450), range=0, autotalk=False)
 
 @shore.on_enter
 def the_wreck():

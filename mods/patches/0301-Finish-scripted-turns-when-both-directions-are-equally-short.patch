@@ -1,0 +1,40 @@
+From cb944379adf0663d0da820c499fd4a8be83ebac7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 11:01:14 +0000
+Subject: [PATCH] Finish scripted turns when both directions are equally short
+
+An exact half-turn gives two distances of 2048. The strict comparisons
+choose neither direction, leaving a scripted face command and its entity
+wait pending forever. Choose counterclockwise on the tie for every actor;
+keep the existing shortest-turn behavior for unequal distances.
+---
+ src/main/overworld.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/overworld.c b/src/main/overworld.c
+index 12495c06..122caebb 100644
+--- a/src/main/overworld.c
++++ b/src/main/overworld.c
+@@ -1565,8 +1565,9 @@ int32_t rotateEntity(SVECTOR *rotation, int16_t *targetAngle, int16_t *ccDiff,
+ 	target = *targetAngle;
+ 	cc = *ccDiff;
+ 	cw = *cwDiff;
++	/* MOD: choose a direction for an exact half-turn, too. */
+ 	if (rotation->vy < target) {
+-		if (cc < cw) {
++		if (cc <= cw) {
+ 			rotation->vy -= speed;
+ 			if ((target - 4096) > rotation->vy) {
+ 				rotation->vy = target;
+@@ -1580,7 +1581,7 @@ int32_t rotateEntity(SVECTOR *rotation, int16_t *targetAngle, int16_t *ccDiff,
+ 			}
+ 		}
+ 	} else if (target < rotation->vy) {
+-		if (cc < cw) {
++		if (cc <= cw) {
+ 			rotation->vy -= speed;
+ 			if (rotation->vy < target) {
+ 				rotation->vy = target;
+-- 
+2.55.0
+

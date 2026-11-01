@@ -1,4 +1,4 @@
-# 366, the top of the Great Canyon with Birdramon's nest fallen in (R1; maps/nest-fallen.py). The elevator works as on
+# 366, the top of the Great Canyon with Birdramon's nest fallen in (R1; maps/nest-fallen.py). It stays fallen after recruitment. The elevator works as on
 # 129 (its use trigger 1: up and down the canyon, the game's own menu by its keys); the first time, the tamer sees it.
 from dw import *
 from dw.text import text

@@ -27,7 +27,9 @@ def placements():
     # A twin shares its partner's name and is what the field actually spawns.
     records = [json.loads(path.read_text()) for path in (ROOT / 'content/species').glob('*.json')]
     for d in sorted(records, key=lambda d: '_npc_original' in d):
-        species[''.join(c for c in d['name'] if c.isalnum()).lower()] = d['model']['radius']
+        key = ''.join(c for c in d['name'] if c.isalnum()).lower()
+        species[key] = d['model']['radius']
+        species[f"{key}{d['id']}"] = d['model']['radius']      # the enum's id-suffixed twin names (Species.Whamon146)
     screens = []
     for path in sorted(MOD.rglob('*.py')):
         tree = ast.parse(path.read_text())

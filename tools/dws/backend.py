@@ -408,7 +408,7 @@ def check_model_heap(body, dig, screen, ln):
 
 def set_moves(e, dig, ln):
     nmoves = len(DIGI_DATA[dig]['moves'].split()) if DIGI_DATA.get(dig, {}).get('moves') else 0
-    if not nmoves: raise BackendError(f'that Digimon has no techniques (cannot fight)', ln)
+    # An NPC-only species (a twin such as the big Whamon, id 146) has no techniques: placed, it can talk but not fight.
     for k in range(3):                                      # animation ids 0x2E + index into its technique list
         e[f'move{k}'] = 0x2E + k if k < nmoves else 255
     e['move3'] = 255

@@ -21,6 +21,15 @@ def lookout_talk():
 def guard_talk():
     band()
 
+# The way on to the tunnel is a row of step tiles: while the band still holds the room, crossing it brings the tamer back.
+@room.on_step(0, when=Canyon.CHASING)
+def stop_at_the_tunnel():
+    tamer.face(lookout)
+    lookout.face(tamer)
+    lookout.say("Hey, kid! Nobody walks out of here!")
+    tamer.walk(450, -950, camera=True)   # inside a tile: a target on a tile edge (x 400, z -1000) is never reached
+    band()
+
 def band():
     tamer.face(lookout)
     lookout.face(tamer)
@@ -68,6 +77,7 @@ def the_motor():
         tamer.say("Whoa... It's so quiet.", "The way we came is caved in. We'll have to go out through the tunnel.")
     else:
         tamer.say("Better leave it alone. Who knows what'd happen up there.")
+        tamer.say("The fortress's other lift still goes up to the canyon top.")
     advance(Canyon.SETTLED)
     # Keep the gear in view during the scene, then replace the camera walk's retained follow offset.
     camera.on(tamer, speed=10)

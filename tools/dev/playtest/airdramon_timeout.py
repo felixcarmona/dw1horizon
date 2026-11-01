@@ -22,8 +22,8 @@ from tools.dev import memory_card as mcd
 from tools.dev.game_state import PARTNER_PARA_FIELDS
 
 
-def native_card(source, target):
-    """Keep the corpus immutable; use native Agumon and English in a test copy."""
+def native_card(source, target, *, tamer_position=(410, 0, -1474), partner_type=3):
+    """Keep the corpus immutable; use English and a healthy partner (native Agumon by default)."""
     shutil.copyfile(source,target)
     card=mcd.Card(target);name='BASLUS-01032DMR0';data=bytearray(card.read(name))
     options=bytes([0,0,30,0,0,0,1,0,0,1,0,0])
@@ -31,7 +31,7 @@ def native_card(source, target):
     size=0x2000 if len(data)>=0x6000 else 0x1000
     for i,base in enumerate((0x200,0x1100)):
         payload=bytearray(data[base:base+0xf00])
-        struct.pack_into('<i',payload,0x1b8,3)
+        struct.pack_into('<i',payload,0x1b8,partner_type)
         payload[0x1bc:0x1cc]=bytes([1])+bytes(15)
         payload[0x27c:0x280]=bytes([0x2e,255,255,0x35])
         struct.pack_into('<4h',payload,0x280,9000,9000,9000,9000)
@@ -47,7 +47,7 @@ def native_card(source, target):
             at+=struct.calcsize('<'+fmt)
         struct.pack_into('<HH4h',payload,0x1cc,10*1200,10*1200,1,1,10,0)
         payload[0x49a:0x49e]=bytes([168,218,2,0])
-        struct.pack_into('<3i',payload,4,410,0,-1474)
+        struct.pack_into('<3i',payload,4,*tamer_position)
         struct.pack_into('<3i',payload,20,50,0,-1950)
         payload[0x467:0x47b]=b'TEST'+bytes(16)
         payload[0x49e:0x4da]=bytes(60)
@@ -60,7 +60,7 @@ def native_card(source, target):
         data[base:base+0xf00]=payload
         off=0x2000+i*size;head=bytearray(data[off:off+size])
         struct.pack_into('<I',head,8,checksum)
-        replacements={1:struct.pack('<hh',168,218),3:struct.pack('<i',3),9:options}
+        replacements={1:struct.pack('<hh',168,218),3:struct.pack('<i',partner_type),9:options}
         records=[(tag,replacements.get(tag,value)) for tag,value in mcd.parse_records(head)]
         data[off:off+size]=mcd.build_extension(head,records,size)
     card.write(name,0,data)

@@ -55,6 +55,9 @@ bone count, radius, height and voice. `model.from` and `texture.from` read the
 unmodified player-disc extraction, before any output CHDAT replacement. The MMD
 is archived byte for byte. No models or textures are committed.
 
+A species with no techniques (these twins, and the big Whamon, id 146) can be placed by a story on a new screen as a
+talk-only NPC: its three technique slots are written as 255, so it never fights. Do not `fight()` it.
+
 They have no `partner`, techniques or evolution. All selections include them,
 including `SPECIES=all` and reduced builds. They are absent from the chart, lab
 partner list, site guide, portraits and DWS species names. Scripts, maps and

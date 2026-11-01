@@ -87,6 +87,73 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   `startAnimation` returns on an empty entry and the code waiting for `animFrame >= frameCount` waits on the previous
   clip.
 
+### Scripted movement and turns
+
+`walk` starts slot 2; `run` and `walk_away` start slot 4. Movement completion
+starts idle slot 0. `face` and `turn` do not start a partner clip:
+`tickScriptedMovement` calls `tickLookAtEntity` / `tickEntitySetRotation`, and
+`WAIT_FOR_ENTITY` resumes only after the movement record becomes inactive
+(type 255). A visible dialogue box can therefore remain while a turn is pending.
+
+Patch 0301 lets `rotateEntity` choose counterclockwise when both directions are
+exactly 2048 angle units. Previously both strict comparisons rejected that tie,
+so an actor facing exactly away from its target stayed still forever. This
+applies to tamers, partners and NPCs, independently of species or animation slot.
+At Birdramon's nest (screen 129, script 124, section 51), starting on the
+step-0 tile at `(-192, -350)` reproduces the report with Apemon 227. After
+"Hmmm.", `tamer.face(partner)` leaves the tamer at `(607, -299)`, heading 2106,
+with the partner at `(571, -698)`: the target heading is 58. Both turn distances
+are 2048. The interpreter stays on `WAIT_FOR_ENTITY` (0x4A), actor index 0,
+waiting for the tamer's movement type to become 255. The partner's turn has
+already finished; the tamer's slot 16 is at frame 51 of 51. This is a rotation
+tie, rather than the empty-slot-4 failure fixed for MasterTyrannomon.
+
+The Apemon model pin is identical on v0.0.2 and the main baseline (model SHA-1
+`93cc58ec7b03efbb75f9f1cbd53fa07e67bfafe3`); that comparison needs no second gait model.
+The host regression exercises all 16,777,216 pairs of 12-bit headings with the
+script turn speed of 512 units per tick:
+
+```sh
+python3 tools/dev/playtest/rotation_host.py
+```
+
+The emulator regression boots a private test card with Apemon initialized by
+the game, then triggers the original scene from that tile. It requires the
+battle, recruitment, all later partner turns and walking, field control and a
+return visit to finish. The opponent's HP is set to zero after battle entry.
+Use `--partner 3` for the native Agumon control; `--baseline` instead asserts
+the pre-fix hang. Checkpoints are tied to disc and executable hashes.
+
+```sh
+python3 tools/dev/playtest/birdramon_nest.py build/dev-everything.cue \
+  --exe build/dev-everything/exe/SLUS_010.32 --port 40129
+```
+
+Controlled English builds with the same `MOD_VERSION=v0.0.2` reduce
+`rotateEntity` from 196 to 180 bytes and `main_BSS_END` from `0x801cb3cc` to
+`0x801cb3bc`. The aligned heap grows from 199,472 to 199,488 bytes. No BSS or
+allocation is added. All 320 story setups fit; the conservative story check
+keeps a 15,488-byte minimum on screen 361 in both builds (it does not credit
+heap growth above its reference).
+
+The everything build also runs `tools/scriptclips.py` after assembling
+`DIGI.DAT`. It checks all 35 partner script slots, resolves native partner-only
+and replacement files from the generated species definitions, and follows cold
+entries into their actual data. An empty, absent or zero-duration required clip
+fails the build. `face` has no clip dependency; this gate addresses the separate
+empty-animation failure class.
+
+The [per-species audit](../data/partner-script-clips.csv) records all 283 partners
+of the tested everything build, with hashes of their resident model bytes:
+none has a missing script slot. Regenerate the full durations report and snapshot
+from a built disc's inputs with:
+
+```sh
+python3 tools/scriptclips.py build/dev-everything/DIGI.DAT \
+  --out build/script-clips.json --csv docs/data/partner-script-clips.csv
+python3 -m unittest tools.test_scriptclips
+```
+
 ### Speeds
 
 The tamer walks at 20 units per tick and runs at 50. Measured native partners walk at
