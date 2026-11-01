@@ -1,7 +1,8 @@
 """Thundermon's short one-link rolling boots and carried boxing guard.
 
-The original96 idle and20 poor gesture remain intact. Field movement keeps
-its16/20/20 clocks with two/two/four short strides. Rigid oversized boots
+The original 96 idle and 20 poor gesture remain intact. Field movement keeps
+its 16/20/20 clocks with four/four/five short strides at 20/10/35
+units per tick and 0.5/0.4/0.25 stance duty. Rigid oversized boots
 roll while the body follows stance height; each short leg keeps its source
 length. Glove counterrotation retains the native guard orientation, with
 raised shoulder carries clearing the boots and keeping the eyes visible.
@@ -20,7 +21,7 @@ from tools.models.field_animations.gliding import _forward
 from tools.models.field_animations.war_greymon import rotation, set_rotation, align
 from motiondiscidentity import changed_programs
 SOURCE = '0b6b17dc39c23e6483a6a012385585890ce152fd6dbbb78f6a669ba4fcccfc68'
-OUTPUT = '2224d42ca69ef50f660edcabf15e51e71dee0c93ce1b92ee584afe64d2d82285'
+OUTPUT = '46c46a6af2b7b50729dde10827abbd6f334f2fb17cb28c20c886c2f0cad7b7f0'
 PARENTS = [-1, 0, 1, 1, 3, 4, 1, 6, 7, 1, 9, 1, 11]
 
 def _parse(data, sk):
@@ -46,10 +47,10 @@ def _author(old, sk):
     for slot in [2, 3, 4]:
         sourcefs = animsheet.slot_frames(old, n, slot)[0]
         duration = len(sourcefs) - 1
-        cycles = {2: 2, 3: 2, 4: 4}[slot]
+        cycles = {2: 4, 3: 4, 4: 5}[slot]
         period = duration / cycles
-        contact = period * (0.4 if slot == 4 else 0.5)
-        speed = {2: 9, 3: 7, 4: 21}[slot]
+        contact = period * ({2: 0.5, 3: 0.4, 4: 0.25}[slot])
+        speed = {2: 20, 3: 10, 4: 35}[slot]
         heel = {2: -15, 3: -10, 4: -15}[slot]
         toe = {2: 2, 3: 1, 4: 2}[slot]
         frames = []

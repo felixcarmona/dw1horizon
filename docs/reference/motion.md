@@ -359,6 +359,10 @@ Salamon uses 15/10/35 units per tick, 4/10/4-tick gait periods and
 1.6/2/0.8-tick contacts within 16/20/16-tick programs. Tick/thirds floor
 maxima are −1.198/−0.243/+0.453 units.
 
+Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
+0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor
+maxima are −4.587/−5.849/−3.654 units; run slip reaches 123.75% mean.
+
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
 frames before cycles of different lengths are compared, and covering armour against the part it covers is an expected
