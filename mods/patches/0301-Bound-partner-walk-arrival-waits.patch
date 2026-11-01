@@ -1,0 +1,81 @@
+From 74d6fdfb23111e62cd8563c99db74c65ff774c74 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 11:05:18 +0000
+Subject: [PATCH] Bound partner walk arrival waits
+
+---
+ src/main/tamer.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index ca653e1..993f6b7 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -975,6 +975,51 @@ void startAnimationTamer(animId)
+ 	startAnimation(&TAMER_ENTITY.entity, animId);
+ }
+ 
++/* MOD (partner walk): an exact target tile can be skipped even by a normal
++ * step near its edge. Finish within one root-travel step, and bound waits for
++ * stopped clips or blocked paths. Only the partner owns this small watchdog;
++ * NPC and tamer walks retain their original arrival rules. */
++extern int32_t MOD_FPS_TICKS;
++static struct {
++	uint32_t lastTick;
++	int16_t x, z, screen;
++	uint16_t ticks;
++	uint8_t target;
++} partnerWalk;
++
++static int32_t modPartnerWalkArrived(Entity *e, VECTOR *to, uint8_t target, int8_t camera)
++{
++	int32_t reach;
++	uint32_t tick;
++
++	tick = (uint32_t)MOD_FPS_TICKS;
++	if (partnerWalk.ticks == 0 ||
++	    (tick - partnerWalk.lastTick > 1) ||
++	    partnerWalk.screen != CURRENT_SCREEN || partnerWalk.target != target ||
++	    (target == 0xff && (partnerWalk.x != to->vx || partnerWalk.z != to->vz))) {
++		partnerWalk.ticks = 0;
++		partnerWalk.x = to->vx;
++		partnerWalk.z = to->vz;
++		partnerWalk.screen = CURRENT_SCREEN;
++		partnerWalk.target = target;
++	}
++	if (partnerWalk.ticks == 0 || tick != partnerWalk.lastTick) {
++		partnerWalk.ticks++;
++	}
++	partnerWalk.lastTick = tick;
++	reach = abs(e->anim.momentum->delta[8]) + abs(e->anim.momentum->subValue[8]);
++	reach = reach * abs(e->posData->scale.vz) / 4096 + 1;
++	if ((target == 0xff && abs(to->vx - e->posData->location.vx) <= reach &&
++	     abs(to->vz - e->posData->location.vz) <= reach) || partnerWalk.ticks >= 600) {
++		if (camera == 1) {
++			moveCameraByDiff(&e->posData->location, to);
++		}
++		setEntityPosition(1, to->vx, to->vy, to->vz);
++		return 1;
++	}
++	return 0;
++}
++
+ // clang-format off
+ int32_t tickEntityWalkTo(scriptId, targetId, x, z, useCamera)
+ 	uint8_t scriptId;
+@@ -1030,7 +1075,11 @@ int32_t tickEntityWalkTo(scriptId, targetId, x, z, useCamera)
+ 		col = entityCheckCollision(0, e, 0, 0);
+ 	}
+ 
+-	if (((fromTileX == toTileX) && (fromTileY == toTileY)) || ((col != -1) && (col < 9))) {
++	if (((fromTileX == toTileX) && (fromTileY == toTileY)) || ((col != -1) && (col < 9)) ||
++	    (scriptId == 1 && modPartnerWalkArrived(e, &to, targetId, useCamera))) {
++		if (scriptId == 1) {
++			partnerWalk.ticks = 0;
++		}
+ 		PREVIOUS_CAMERA_POS_INITIALIZED = 0;
+ 
+ 		if (scriptId >= 2) {
+-- 
+2.55.0
+

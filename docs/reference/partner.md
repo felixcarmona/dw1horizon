@@ -35,6 +35,50 @@ minus penalties for unhappiness), after 12 h of sickness or when it loses a batt
 | `utils2.c`, `script_value.c`, `script_common.c` | `hasMove`/`learnMove`/`unlearnMove`, `STATS_LIMIT_ARRAY`, `hasDigimonRaised` (trigger `0x200+id`) |
 | `include/dw/params.h`, `partner.h`, `evl.h`, `entity.h` | `PartnerPara`, `RaiseData`, `EvoRequirements`/`EvoStatsGains`/`EvolutionPath`, `Stats`/`PartnerEntity` |
 
+## Field arrival waits
+
+`tickPartnerToilet` walks to the toilet row's first point, then its second point,
+plays slot 10, and walks back to the first point before releasing the script.
+These three legs use `tickEntityWalkTo`, as do scripted partner walks and their
+arrival waits. The original completion test requires the current and target
+100-unit tiles to match. A target near a tile edge can be crossed in one step
+without entering that tile, leaving the partner turning back and forth forever.
+`tickMomentum` rebuilds the root matrix before applying travel: this is an arrival
+test problem, rather than a gradual turn-rate problem.
+
+Partner walks also finish within one root-travel step of a fixed target. That
+step includes the clip's fractional travel allowance and root scale; completion
+places both the position and its fixed-point animation accumulator at the target.
+A walk that still cannot arrive completes after 600 consecutive logic ticks
+(30 seconds at the normal 20 Hz logic rate), placing the partner at its current
+target and allowing the state or script to continue. Camera walks include this
+final displacement. A different destination, screen or a gap in polling starts a
+fresh deadline. Repeated polls in the same logic tick do not consume extra time.
+The watchdog uses 16 resident bytes and makes no heap allocation. Tamer and NPC
+arrival rules retain their existing behavior.
+
+Normal following in `partnerTickWalking` uses tamer distance and the waypoint /
+collision machinery; it does not wait on `tickEntityWalkTo`. The toilet's scripted
+state does not call that normal collision machinery, so the partner's radius
+against the doorway crates or a wandering NPC does not explain the measured
+two-position oscillation.
+
+The regression tools are `tools/dev/playtest/partner_walk.py` (original-2-MB
+emulator, frame traces, varied starts, real toilet script and scripted-arrival
+fixture) and `tools/dev/playtest/partner_walk_host.py` (actual arrival C, all
+partner records and all ten toilet coordinate rows, 30 starts each, plus deadline
+and reset cases). The host sweep models root translation and quantized facing;
+it does not emulate collisions, clip rotation/scale channels or whole scenes.
+The extended story currently adds no nonzero toilet IDs to its new screens.
+
+The controlled English smoke build adds 512 resident bytes, including the
+16-byte watchdog: `main_BSS_END` moves from `0x801cb3cc` to `0x801cb5cc`, and
+initialized heap falls from 199,472 to 198,960 bytes. The build's conservative
+screen-361 budget remains positive: peak 182,024 bytes, margin 15,488 bytes.
+It caps credited heap above the reference sweep, so that unchanged margin
+does not imply a zero heap cost. These are English test-disc measurements,
+not an eight-language rebuild.
+
 ## State in memory
 
 There is no `PARTNER_STATS` symbol: the stats are inside `PARTNER_ENTITY` (+0x38).
