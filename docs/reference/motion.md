@@ -351,6 +351,10 @@ Apemon retains 43/20/20-tick walk/condition/run programs, with 4/2/3 gait cycles
 0.4/0.5/0.25 duty and 20/14/35 units per tick. Full recipe generation passes;
 mesh floor maxima at ticks and thirds are −0.146/−1.595/+0.711 units.
 
+Gatomon uses 15/10/35 units per tick, 6/8/2-tick gait periods and
+0.375/0.5/0.25 duty within its existing 48-tick programs. Tick/thirds floor
+maxima are −1.314/−2.337/−4.165 units.
+
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
 frames before cycles of different lengths are compared, and covering armour against the part it covers is an expected

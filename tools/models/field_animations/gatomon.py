@@ -3,6 +3,8 @@
 The rig has a single segment from hip to paw. Stance height follows that
 fixed-length sphere; a lifted paw swings slightly outward rather than
 stretching its leg. Native grooming and distinct poor-idle timing remain.
+Walk/condition/run travel 15/10/35 units per tick with 6/8/2-tick gait
+periods and 0.375/0.5/0.25 duty inside the existing 48-tick programs.
 Moving gloves carry forward, the gaze settles and the tail/ears respond.
 """
 import copy
@@ -35,7 +37,7 @@ def _author(old, sk):
     for slot in [0,1,2,3,4]:
      source,_,events=animsheet.slot_frames(old,n,slot);original_period=len(source)-1
      duration=original_period if slot in [0,1] else 48
-     period={0:83,1:16,2:8,3:12,4:6}[slot]; speed={0:0,1:0,2:7,3:4,4:13}[slot]
+     period={0:83,1:16,2:6,3:8,4:2}[slot]; speed={0:0,1:0,2:15,3:10,4:35}[slot]
      lift={0:0,1:0,2:6,3:4,4:8}[slot];poses=[];plans=[];hist={};err=[];corrections=[]
      for t in range(duration+1):
       phase=(t%period)/period;theta=2*math.pi*phase
@@ -61,7 +63,7 @@ def _author(old, sk):
        for hip,hand in [(5,6),(7,8)]:set_rotation(f,hand,w[hip,:3,:3].T@rotation([-20,0,0])@w[hand,:3,:3],hist)
       f[2][7]=0;w=world(f);targets=[];requirements=[]
       for side,(hip,foot) in enumerate([(9,10),(11,12)]):
-       sign=1 if side==0 else -1;h=w[hip,:3,3];ph=((t+side*period/2)%period);contact=period/2;stance=slot in [0,1] or ph<=contact
+       sign=1 if side==0 else -1;h=w[hip,:3,3];ph=((t+side*period/2)%period);contact=period*{0:.5,1:.5,2:.375,3:.5,4:.25}[slot];stance=slot in [0,1] or ph<=contact
        if slot in [0,1]:z=8;up=4;pitch=0
        elif stance:z=8-speed*contact/2+speed*ph;up=4;pitch=0
        else:
