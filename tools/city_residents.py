@@ -103,6 +103,8 @@ def main():
     for path in args.stories:
         groups.setdefault(path.parent, []).append(path)
     for folder, paths in groups.items():
+        if len(paths) < 2:  # a pass is DG + MAPHEAD: a lone file is a build's intermediate, not a story
+            continue
         original = args.original or 'base' in folder.parts
         print(f'City roster: {verify(paths, original)} residents match {folder} ({"original" if original else "extended"})')
 
