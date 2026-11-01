@@ -21,6 +21,15 @@ def lookout_talk():
 def guard_talk():
     band()
 
+# The way on to the tunnel is a row of step tiles: while the band still holds the room, crossing it brings the tamer back.
+@room.on_step(0, when=Canyon.CHASING)
+def stop_at_the_tunnel():
+    tamer.face(lookout)
+    lookout.face(tamer)
+    lookout.say("Hey, kid! Nobody walks out of here!")
+    tamer.walk(400, -1000, camera=True)
+    band()
+
 def band():
     tamer.face(lookout)
     lookout.face(tamer)

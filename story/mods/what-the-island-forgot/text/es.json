@@ -15,6 +15,7 @@
  "what-the-island-forgot.13be9cef": "Puede ser. Pero mi casa ya no está.",
  "what-the-island-forgot.b07899e2": "Je... Nada mal, chaval.",
  "what-the-island-forgot.e34a7a00": "Sigo enfadado. Pero te llevaré. Trabajaré en la ciudad.",
+ "what-the-island-forgot.2e55c2d4": "¡Eh, chaval! ¡De aquí no sale nadie!",
  "what-the-island-forgot.38dd62e2": "¡Es ese crío otra vez! ¡El jefe dijo que aquí no baja nadie!",
  "what-the-island-forgot.69c9095d": "¿Dónde está Ogremon?",
  "what-the-island-forgot.553c9e20": "¡Se ha largao! Por el túnel viejo, hacia el mar. Y nosotros no nos movemos.",
@@ -35,6 +36,7 @@
  "what-the-island-forgot.aba911b5": "¡Hala...! Qué silencio.",
  "what-the-island-forgot.59725925": "El camino por el que vinimos se ha hundido. Tendremos que salir por el túnel.",
  "what-the-island-forgot.b9643355": "Mejor no tocarlo. Quién sabe qué pasaría ahí arriba.",
+ "what-the-island-forgot.c18d02ce": "El otro ascensor de la fortaleza aún sube a lo alto del cañón.",
  "what-the-island-forgot.a969b1c9": "El otro botón sigue encendido... Por ahí se fue Ogremon. Hacia abajo.",
  "what-the-island-forgot.9515e23d": "Si no vamos ya, cortarán el cable.",
  "what-the-island-forgot.e1f9c1a5": "¡A por él!",
@@ -396,6 +398,5 @@
  "what-the-island-forgot.c6a52367": "La jungla era caliente y húmeda. Aquí solo es caliente. A eso lo llamo vacaciones.",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.c18d02ce": "El otro ascensor de la fortaleza aún sube a lo alto del cañón."
+ }
 }

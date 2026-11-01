@@ -15,6 +15,7 @@
  "what-the-island-forgot.13be9cef": "Talvez. Minha casa se foi da mesma forma.",
  "what-the-island-forgot.b07899e2": "Nada mal, garoto.",
  "what-the-island-forgot.e34a7a00": "Ainda estou bravo. Mas vou te levar. Vou trabalhar na cidade.",
+ "what-the-island-forgot.2e55c2d4": "Ei, garoto! Ninguém sai daqui!",
  "what-the-island-forgot.38dd62e2": "É aquele garoto de novo! O chefe disse que ninguém vem aqui!",
  "what-the-island-forgot.69c9095d": "Onde está Ogremon?",
  "what-the-island-forgot.553c9e20": "Foi embora! Pelo túnel velho, para o mar. E a gente não sai daqui.",
@@ -35,6 +36,7 @@
  "what-the-island-forgot.aba911b5": "Está tão quieto.",
  "what-the-island-forgot.59725925": "O caminho por onde viemos desabou. Temos que sair pelo túnel.",
  "what-the-island-forgot.b9643355": "Melhor deixar isso para lá. Quem sabe o que aconteceria lá em cima.",
+ "what-the-island-forgot.c18d02ce": "O outro elevador da fortaleza ainda leva ao topo do cânion.",
  "what-the-island-forgot.a969b1c9": "O outro botão ainda está aceso... Ogremon foi por ali. Para baixo.",
  "what-the-island-forgot.9515e23d": "Se não formos agora, cortarão o cabo.",
  "what-the-island-forgot.e1f9c1a5": "Atrás dele!",
@@ -396,6 +398,5 @@
  "what-the-island-forgot.c6a52367": "A selva era quente e úmida. Aqui só faz calor. Para mim, são férias.",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.c18d02ce": "O outro elevador da fortaleza ainda leva ao topo do cânion."
+ }
 }

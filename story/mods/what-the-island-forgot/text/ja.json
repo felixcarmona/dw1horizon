@@ -15,6 +15,7 @@
  "what-the-island-forgot.13be9cef": "そうかもしれん。だが、家がなくなったことには変わりない。",
  "what-the-island-forgot.b07899e2": "ふっ...やるな、坊主。",
  "what-the-island-forgot.e34a7a00": "まだ怒ってるぞ。でも、お前を運んでやる。街で働くさ。",
+ "what-the-island-forgot.2e55c2d4": "おい、ガキ！ここから出すわけにはいかねえ！",
  "what-the-island-forgot.38dd62e2": "またあのガキだ！ここには誰も通すなと親分に言われてるんだ！",
  "what-the-island-forgot.69c9095d": "オーガモンはどこだ？",
  "what-the-island-forgot.553c9e20": "行っちまった！古いトンネルから海へな。だが、オレたちはどかねえぞ。",
@@ -35,6 +36,7 @@
  "what-the-island-forgot.aba911b5": "うわ...すごく静かだ。",
  "what-the-island-forgot.59725925": "来た道がくずれてふさがっている。トンネルから出るしかない。",
  "what-the-island-forgot.b9643355": "さわらないほうがいいね。上で何が起こるかわからない。",
+ "what-the-island-forgot.c18d02ce": "トリデのもう一つのリフトなら、まだ谷の上まで行けるね。",
  "what-the-island-forgot.a969b1c9": "もう一つのボタンは、まだ光ってる...オーガモンはこっちだ。下に行ったんだ。",
  "what-the-island-forgot.9515e23d": "今行かないと、ケーブルを切られるぞ。",
  "what-the-island-forgot.e1f9c1a5": "追いかけよう！",
@@ -396,6 +398,5 @@
  "what-the-island-forgot.c6a52367": "ジャングルは暑くて湿っていた。ここは暑いだけだ。休暇みたいなものさ。",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.c18d02ce": "トリデのもう一つのリフトなら、まだ谷の上まで行けるね。"
+ }
 }

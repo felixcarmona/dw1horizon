@@ -15,6 +15,7 @@
  "what-the-island-forgot.13be9cef": "Potser. Però casa meva ja no hi és.",
  "what-the-island-forgot.b07899e2": "He... Gens malament, xaval.",
  "what-the-island-forgot.e34a7a00": "Encara estic enfadat. Però et portaré. Treballaré a la ciutat.",
+ "what-the-island-forgot.2e55c2d4": "Ei, nano! D'aquí no surt ningú!",
  "what-the-island-forgot.38dd62e2": "És aquesta criatura una altra vegada! El cap va dir que aquí no baixa ningú!",
  "what-the-island-forgot.69c9095d": "On està Ogremon?",
  "what-the-island-forgot.553c9e20": "Ha marxat! Pel túnel vell, cap al mar. I nosaltres no ens movem.",
@@ -35,6 +36,7 @@
  "what-the-island-forgot.aba911b5": "Hala...! Quin silenci.",
  "what-the-island-forgot.59725925": "El camí pel qual vam venir s'ha enfonsat. Haurem de sortir pel túnel.",
  "what-the-island-forgot.b9643355": "Val més no tocar-ho. Qui sap què passaria allà dalt.",
+ "what-the-island-forgot.c18d02ce": "L'altre ascensor de la fortalesa encara puja al capdamunt del canyó.",
  "what-the-island-forgot.a969b1c9": "L'altre botó continua encès... Ogremon ha anat per allà. Cap avall.",
  "what-the-island-forgot.9515e23d": "Si no anem ja, tallaran el cable.",
  "what-the-island-forgot.e1f9c1a5": "Per ell!",
@@ -396,6 +398,5 @@
  "what-the-island-forgot.c6a52367": "A la jungla hi feia calor i humitat. Aquí només hi fa calor. Jo en dic vacances.",
  "_source": {
   "city.join": "{species} joined the city!"
- },
- "what-the-island-forgot.c18d02ce": "L'altre ascensor de la fortalesa encara puja al capdamunt del canyó."
+ }
 }
