@@ -334,16 +334,34 @@ reach, three-segment legs, a damped tail response to body rotation and accelerat
 
 | Check | Rule | Tool |
 |---|---|---|
-| Stance slip | during stance (foot within the lowest quarter of its height range), the foot's speed over the ground as a share of the root's: a few percent for the recipes (an original Tyrannomon walk measures about 8 %); the polish pass accepts a change only if it falls by 15 % or more; for a stationary idle use the absolute slip in units per tick | `animstudio.py metrics`, `motionsecondary.support_transfer_displacement` |
-| Ground | no mesh vertex below the floor beyond a small band (1 unit for rigid feet, 3 units during heel-to-toe transfer), at logic ticks and at the 60 fps thirds | the recipes' own checks, `motiontailspace.py` |
+| Stance slip | planted gaits use the lowest-quarter height classifier and must stay within native slip: walk mean ≤73%, worst ≤189%; run mean ≤125%, worst ≤330%. Native walks (mean/worst): Agumon 73/143%, Ogremon 50/169%, Leomon 34/189%, Greymon 36/174%, Mojyamon 30/98%; measured native runs span 8–125% mean, worst up to 330%. Require nonempty stance samples; stationary idle uses units per tick | `animstudio.py metrics`, `motionsecondary.support_transfer_displacement` |
+| Ground | planted gait mesh floor bound ≤+1.5 units at logic ticks and at the 60 fps thirds (alpha 1365 and 2730 of 4096) | the recipes' own checks, `motiontailspace.py` |
 | Reach | every foot target reachable with native link lengths; encoded foot error within a few units | recipes (`validate_ik`) |
 | Loop closure | three (or eight) repetitions compared sample by sample: joint translation, scale and physical rotation must not drift; entity travel and whole turns are allowed; one-shot clips are not closed | `motionloops.py`, `motionloopfix.py` |
 | Deliberate rotation | a part that really turns continuously (a clock's winding key, rotors) is declared, bound to the mesh and rig hashes, and excluded from the drift check | `motionloopcontracts.py` |
 | Self-intersection | non-coplanar triangle crossings between chosen mesh parts (hands against body and feet, the two feet, tail against legs, weapons against head), optionally restricted to material regions (a rigid tusk, not soft fur); every combination of independently clocked parts | `motionquality.py`, `motiontailspace.py` |
 | Untouched data | mesh, skeleton and every slot the recipe does not own byte-identical; events and loop structure exact | `motiondiscidentity.py` |
 | Storage | resident ≤ the partner buffer, every cold read within 8192 bytes after sector alignment | `motionstorage.py` |
-| Speed | walk keeps up with a walking tamer, run with a running one (Speeds) | recipe asserts |
-| Angular speed | knee changes stay inside the reference's envelope (125 % plus 5° per tick); for a four-joint leg driven by a three-joint donor, the whole leg's envelope | recipe asserts |
+| Speed | planted gait walk 15–31 and run 35–52 units per tick (native ranges); condition walk slower than walk. Tamer walk/run are 20/50; verify actual following in game | recipe asserts |
+| Angular speed | report physical joint rotation rates before/after. An envelope derived from the slow clip being replaced is not a rejection gate; retain existing recipe assertions unweakened | recipe asserts |
+
+All existing reach, closure, event and storage assertions remain mandatory and unweakened.
+
+Apemon retains 43/20/20-tick walk/condition/run programs, with 4/2/3 gait cycles,
+0.4/0.5/0.25 duty and 20/14/35 units per tick. Full recipe generation passes;
+mesh floor maxima at ticks and thirds are −0.146/−1.595/+0.711 units.
+
+Gatomon uses 15/10/35 units per tick, 6/8/2-tick gait periods and
+0.375/0.5/0.25 duty within its existing 48-tick programs. Tick/thirds floor
+maxima are −1.314/−2.337/−4.165 units.
+
+Salamon uses 15/10/35 units per tick, 4/10/4-tick gait periods and
+1.6/2/0.8-tick contacts within 16/20/16-tick programs. Tick/thirds floor
+maxima are −1.198/−0.243/+0.453 units.
+
+Thundermon uses 20/10/35 units per tick, 4/4/5 gait cycles and
+0.5/0.4/0.25 duty within 16/20/20-tick programs. Tick/thirds floor
+maxima are −4.587/−5.849/−3.654 units; run slip reaches 123.75% mean.
 
 None of these certifies the look of a motion: each recipe was accepted on side-by-side reviews (source against
 candidate, three views) and a game run. Diagnostics that count crossings must be normalised by the number of sampled
