@@ -102,4 +102,4 @@ bone_field_visited = flag()
 
 # Shared first sighting of either rumour hunter in Native Forest or Gear Savanna.
 hunter_noticed = flag()
-HUNTER_PRESENT_PSTAT = 120  # unsaved arrival witness, reset on either hunter screen
+HUNTER_PRESENT_PSTAT = 120  # unsaved night-model witness, reset on either hunter screen

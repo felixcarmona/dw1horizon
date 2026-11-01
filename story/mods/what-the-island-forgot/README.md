@@ -47,11 +47,16 @@ connections or regenerating their step-trigger tiles.
 
 The rumour hunters in Native Forest (screen 2) and Gear Savanna (70) receive one
 short tamer line per save, shared through `hunter_noticed`. The line runs on
-nearby floor step tiles (0 and 1 respectively), after the night hunter is loaded;
+nearby floor step tiles (0 and 1 respectively), after the night hunter model is loaded;
 `on_enter` runs during the arrival transition. `maps/hunter_sightings.py` marks only
 ordinary floor within 800 units of the unchanged spawn points, preserving walls,
-exits and other triggers. The tamer keeps control after closing the line. Both
+exits and other triggers. Before that first sighting, the night actor waits
+off-map with its model loaded.
+The step spawns it at the original position just before the line, preventing
+patrol drift from separating the speaker from the hunter. Later arrivals use
+the original presence rule. The tamer keeps control after closing the line. Both
 handlers require the rumours to have spread and the clock to be 20:00–04:59.
-The unsaved p120 records the arrival's hunter presence, so waiting from day to
+The unsaved p120 records the arrival's loaded night model, so waiting from day to
 night on the same screen cannot announce a hunter that was never spawned. No
-engine code or heap allocation is added.
+resident code or new model allocation is added; spawning reuses the loaded model
+and a normal NPC instance.

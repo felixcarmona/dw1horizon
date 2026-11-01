@@ -5,7 +5,6 @@ Native Forest's south-path recipe calls mark_sighting on its map. This recipe
 independently builds Gear Savanna, keeping parallel map builds independent.
 """
 from pathlib import Path
-import shutil
 import sys
 from mapbase import extracted, dwmap, check_arrivals
 
@@ -37,7 +36,6 @@ def main(out):
     mark_sighting(m, name)
     check_arrivals(m, name)
     (out / (name + '.MAP')).write_bytes(m.build())
-    shutil.copyfile(extracted(name) + '.TFS', out / (name + '.TFS'))
 
 
 if __name__ == '__main__':

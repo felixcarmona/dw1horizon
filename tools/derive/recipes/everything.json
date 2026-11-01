@@ -679,8 +679,7 @@
     ],
     "step": "retouch",
     "writes": [
-     "retouch/GIAS01.MAP",
-     "retouch/GIAS01.TFS"
+     "retouch/GIAS01.MAP"
     ]
    },
    {

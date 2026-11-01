@@ -49,9 +49,14 @@ class HunterFirstSighting(unittest.TestCase):
             def set(self, n): self.value = n
             def __eq__(self, n): return self.value == n
         seen, byte, lines = Flag(), Byte(), []
+        removed, spawned = [], []
         env = dict(clock=SimpleNamespace(hour=hour), rumours_spread=spread,
                    hunter_noticed=seen, tamer=SimpleNamespace(say=lines.append),
-                   HUNTER_PRESENT_PSTAT=120, pstat=lambda n: byte)
+                   HUNTER_PRESENT_PSTAT=120, pstat=lambda n: byte,
+                   hunter=SimpleNamespace(leave=lambda: removed.append(True)),
+                   Species=SimpleNamespace(Gururumon=105),
+                   spawn=lambda species, **kw: spawned.append((species, kw['slot'])),
+                   removed=removed, spawned=spawned)
         return env, lines
 
     def run_handler(self, handler, func, env):
@@ -74,6 +79,9 @@ class HunterFirstSighting(unittest.TestCase):
                         self.assertEqual(lines, ["That Gururumon isn't from around here... Is it looking for me?"]
                                          if spread and night else [])
                         self.assertEqual(bool(env['hunter_noticed']), spread and night)
+                        self.assertEqual(env['removed'], [True] if spread and night else [])
+                        self.assertEqual(env['spawned'], [(105, 5 if 'forest' in first else 6)]
+                                         if spread and night else [])
 
     def test_waiting_until_night_does_not_invent_a_hunter(self):
         for name, handler in self.handlers().items():
@@ -84,6 +92,19 @@ class HunterFirstSighting(unittest.TestCase):
             with self.subTest(source=name):
                 self.assertEqual(lines, [])
                 self.assertFalse(env['hunter_noticed'])
+                self.assertEqual(env['removed'], [])
+                self.assertEqual(env['spawned'], [])
+
+    def test_seen_arrival_keeps_the_existing_hunter(self):
+        for name, handler in self.handlers().items():
+            env, lines = self.environment(22, True)
+            env['hunter_noticed'].set()
+            self.run_handler(handler, 'remember_hunter', env)
+            self.run_handler(handler, 'first_sighting', env)
+            with self.subTest(source=name):
+                self.assertEqual(lines, [])
+                self.assertEqual(env['removed'], [])
+                self.assertEqual(env['spawned'], [])
 
 
 if __name__ == '__main__': unittest.main()
