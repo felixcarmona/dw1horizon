@@ -361,7 +361,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldglide.py` | MetalSeadramon 211, Shakkoumon 214, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon's leg rotations restored from its native floating cycle; Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
-| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance |
+| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance; Silphymon's walks also carry the upper body (pelvis bob, lean, torso counter-turn, arms against the legs) with strides as long as its boots |
 | `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Salamon 221, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
 | `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that holds its footprint at each landing |
@@ -409,7 +409,7 @@ reach, three-segment legs, a damped tail response to body rotation and accelerat
 | Self-intersection | non-coplanar triangle crossings between chosen mesh parts (hands against body and feet, the two feet, tail against legs, weapons against head), optionally restricted to material regions (a rigid tusk, not soft fur); every combination of independently clocked parts | `motionquality.py`, `motiontailspace.py` |
 | Untouched data | mesh, skeleton and every slot the recipe does not own byte-identical; events and loop structure exact | `motiondiscidentity.py` |
 | Storage | resident ≤ the partner buffer, every cold read within 8192 bytes after sector alignment | `motionstorage.py` |
-| Speed | planted gait walk 15–31 and run 35–52 units per tick (native ranges); condition walk slower than walk. Tamer walk/run are 20/50; verify actual following in game | recipe asserts |
+| Speed | planted gait walk 15–31 and run 35–52 units per tick (native ranges; `pace.py` applies the floors, the species already over a ceiling stay as they are); condition walk slower than walk. Tamer walk/run are 20/50; verify actual following in game | recipe asserts |
 | Angular speed | report physical joint rotation rates before/after. An envelope derived from the slow clip being replaced is not a rejection gate; retain existing recipe assertions unweakened | recipe asserts |
 
 All existing reach, closure, event and storage assertions remain mandatory and unweakened.
@@ -491,3 +491,40 @@ retime needs separate contact and thirds checks: resampling can cut across the
 floor even when all original tick poses were supported, and re-encoding may
 exceed a model's storage budget. Source pins and speed thresholds alone do not
 prove a successful gait repair.
+
+### Field pace pass
+
+`tools/models/field_animations/pace.py`, with the manifest
+`content/models/imports/pace.json`, is the gait retime that note asks for. It covers
+the 38 imported partners that stayed under walk 15 or run 35. Twenty wrap their
+existing recipe through `base_generator`; eighteen had none and only have this pass.
+
+The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
+2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.
+Each manifest row names, per slot, a source clip, a loop length and a speed. Cycle
+counts come from the feet's dominant height harmonic. With the same source and
+length, the poses stay exact and only the root travel changes. Otherwise the clip is
+resampled at the engine's fixed alpha, with even travel and events moved in
+proportion.
+
+Resampling a foot arc less often cuts the chord through the ground, so the pass
+raises the root's children by a smooth cyclic bump. It cannot use the root: root
+translation is relative, so a loop-wide offset of it is lost in the encoded clip.
+
+The build refuses a row that leaves its speed floor, exceeds the row's slip limit,
+sinks the mesh past the source at ticks or thirds, drifts over nine loops, changes
+another program or leaves the storage budget. Slip limits for walks are 125 % mean
+and 250 % worst, the upper range measured on the 34 native partners sampled
+(walk mean 22-125 %; the five species in the table above are the low end); hovering
+and hopping species read 100 % by construction.
+
+Metrics do not certify the look: check the front view, because a body that bows
+hides the face. Slot 3 of an import is often a tired walk with the head down, so a
+walk's source is the species' own slot 2 wherever it passes. Gomamon, Shurimon and
+Gizamon use slot 3 (the same carriage). Mushroomon's slot 2 has almost no stride, so
+its row takes only the legs from slot 3: `posture` plays every bone above the legs
+from slot 2 and solves each hip to keep its world rotation. Its `loose` block adds acting
+over the stride: arms oppose their legs, elbows arrive late, the torso turns against
+the hips and rolls over the supporting foot. Tapirmon's slot 2 is a
+bound with a one-tick stance, which the slip classifier cannot read, so its row
+keeps the poses exact and carries a wider limit.

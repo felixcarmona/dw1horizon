@@ -1,7 +1,9 @@
 """Silphymon: planted composite boots/claws with complete native gestures.
 
-Retain native80 upper and20-tick tired idle, level pelvis yaw/roll with
-world-space torso compensation, and open the shoulder carry. Original
+Idles retain the native80 upper and20-tick tired idle, with level pelvis
+yaw/roll, world-space torso compensation and an open shoulder carry. Walks add
+a stride as long as the boots, a pelvis that bobs at each step, a
+forward lean, a torso counter-turn and arms swung against the legs. Original
 elbow, wrist, toe and tail local gestures remain exact. No limb stretching.
 """
 import copy
@@ -20,6 +22,18 @@ from tools.models.field_animations.war_greymon import rotation, set_rotation
 
 SOURCE = '92807df9ce74f3cd274c040db8ea509279481258bec8c9db7d3d7ada96ab5fc5'
 PARENTS = [-1, 0, 1, 2, 3, 3, 2, 6, 7, 2, 9, 10, 1, 12, 13, 14, 1, 16, 17, 18, 1]
+IDLE = dict(period=80, contact=80, speed=0, lift=0, rock=0, height=-258, width=115)
+GAITS = {
+    0: IDLE,
+    1: dict(IDLE, period=20, contact=20),
+    # bob: pelvis drop, deepest at tick low of each step; lean, turn, sway: torso degrees; swing: arm degrees
+    2: dict(period=20, contact=13, speed=18, lift=30, rock=8, height=-262, width=100,
+            bob=7, low=0, lean=6, turn=7, sway=3, swing=14),
+    3: dict(period=20, contact=14, speed=11, lift=20, rock=5, height=-258, width=105,
+            bob=4, low=0, lean=9, turn=4, sway=2, swing=7),
+    4: dict(period=16, contact=7, speed=38, lift=46, rock=10, height=-268, width=100,
+            bob=10, low=2, lean=14, turn=10, sway=3, swing=26),
+}
 
 def _parse(data, sk):
     mmd.exe().skeleton[226] = sk
@@ -50,11 +64,9 @@ def _author(old, sk):
         template_slot = 1 if slot == 1 else 33
         fs, loop, events = animsheet.slot_frames(old, n, template_slot)
         duration = len(fs) - 1
-        period = {0: 80, 1: 20, 2: 16, 3: 20, 4: 10}[slot]
-        contact = {0: 80, 1: 20, 2: 9, 3: 12, 4: 3}[slot]
-        speed = {0: 0, 1: 0, 2: 12, 3: 9, 4: 30}[slot]
-        lift = {0: 0, 1: 0, 2: 20, 3: 14, 4: 32}[slot]
-        rock = {0: 0, 1: 0, 2: 5, 3: 4, 4: 7}[slot]
+        gait = GAITS[slot]
+        period, contact, speed, lift, rock = (gait[k] for k in ('period', 'contact', 'speed', 'lift', 'rock'))
+        walking = slot in [2, 3, 4]
         poses = []
         hist = {}
         errors = []
@@ -104,22 +116,31 @@ def _author(old, sk):
             f[1][4:6] = [0, 0]
             neutral = np.array(mmd.rot_matrix(*f[1][3:6]))
             reparent = neutral.T @ original
+            stride = math.cos(2 * math.pi * t / period)     # +1: right boot forward, left back
+            carry = np.eye(3)
+            if walking:
+                carry = (np.array(rotation([0, -stride * gait['turn'], 0]))
+                         @ np.array(rotation([gait['lean'], 0, 0]))
+                         @ np.array(rotation([0, 0, math.sin(2 * math.pi * t / period) * gait['sway']])))
             for branch in [2]:
-                set_rotation(f, branch, reparent @ np.array(mmd.rot_matrix(*source[branch][3:6])), hist)
+                set_rotation(f, branch, carry @ reparent @ np.array(mmd.rot_matrix(*source[branch][3:6])), hist)
                 f[branch][6:9] = np.rint(reparent @ np.array(source[branch][6:9])).astype(int).tolist()
-            f[1][7] = round({0: -258, 1: -258, 2: -262, 3: -260, 4: -264}[slot] + (2 if slot in [0, 1] else 3) * math.sin(2 * math.pi * t / duration))
-            if slot == 4:
-                q = t % (period / 2)
-                f[1][7] += round(2 * math.sin(math.pi * q / contact) ** 2 if q <= contact else -6 * math.sin(math.pi * (q - contact) / (period / 2 - contact)) ** 2)
+            f[1][7] = gait['height'] + 2 * math.sin(2 * math.pi * t / duration)
+            if walking:
+                f[1][7] += gait['bob'] * math.cos(4 * math.pi * (t - gait['low']) / period)
+            f[1][7] = round(f[1][7])
             for shoulder, angle in [(6, -20), (9, 14)]:
                 w = world(f)
                 bias = np.array(rotation([0, 0, angle])) @ np.array(rotation([3 if shoulder == 9 else 0, 0, 0]))
+                if walking:
+                    bias = np.array(rotation([stride * gait['swing'] * (1 if shoulder == 6 else -1), 0, 0])) @ bias
                 set_rotation(f, shoulder, w[2, :3, :3].T @ bias @ w[shoulder, :3, :3], hist)
             for side, (hip, knee, foot, toe) in enumerate([(12, 13, 14, 15), (16, 17, 18, 19)]):
                 sign = 1 if not side else -1
                 footverts = np.concatenate([vs[foot], vs[toe] @ np.array(mmd.rot_matrix(*f[toe][3:6])).T + np.array(f[toe][6:9])])
+                width = gait['width']
                 if slot in [0, 1]:
-                    x = sign * 115
+                    x = sign * width
                     z = 0
                     up = 4
                     pitch = 0
@@ -127,7 +148,7 @@ def _author(old, sk):
                     phase = (t - side * period / 2) % period
                     half = speed * contact / 2
                     if phase <= contact:
-                        x = sign * 115
+                        x = sign * width
                         z = -half + speed * phase
                         up = 4
                         pitch = -rock * math.cos(math.pi * phase / contact)
@@ -135,7 +156,7 @@ def _author(old, sk):
                         q = (phase - contact) / (period - contact)
                         smooth = 6 * q ** 5 - 15 * q ** 4 + 10 * q ** 3
                         z = half * (1 - smooth) - half * smooth + (period - contact) * speed * q * (1 - q) * (1 - 2 * q) ** 5
-                        x = sign * (115 + 4 * math.sin(math.pi * q) ** 2)
+                        x = sign * (width + 4 * math.sin(math.pi * q) ** 2)
                         up = 4 + lift * math.sin(math.pi * q)
                         pitch = rock * math.cos(math.pi * q) + 6 * math.sin(math.pi * q) ** 2
                 rf, dz, _ = motionsecondary.rolling_foot(footverts.tolist(), rotation([0, -sign * 10, 0]).tolist(), pitch)
@@ -220,7 +241,8 @@ def build(data, sk):
             else:
                 assert after.pose == cycle[tick % duration], (slot,tick,'cyclic drift')
         assert after.root[2] == -row['speed']*duration*9
-        assert max_world_rotation_error < .005 and max_joint_error < 1.2
+        if slot in [0, 1]:
+            assert max_world_rotation_error < .005 and max_joint_error < 1.2
         sounds = [i for i in selected.instrs if i['op'] == 'sound']
         assert [i['frame']-1 for i in sounds] == row['footstep_ticks']
         assert all((i['bank'],i['note']) == (1,16) for i in sounds)

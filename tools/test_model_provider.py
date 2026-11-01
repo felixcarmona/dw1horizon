@@ -29,12 +29,20 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 175)
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 70)
+        self.assertEqual(len(selected), 88)
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        # The field pace pass wraps the recipe that came before it; species without one have no other generator.
+        paced = json.load(open('content/models/imports/pace.json'))
+        for sid, row in paced.items():
+            self.assertEqual(assignments[sid][0], 'tools.models.field_animations.pace')
+            if row['base_generator']:
+                assignments[sid] = (row['base_generator'], assignments[sid][1])
+            else:
+                del assignments[sid]
         for sid, name in (('315', '315-taomon-equipment'), ('332', '332-roachmon-equipment'),
                           ('335', '335-megagargomon-equipment'), ('351', '351-kotemon-field')):
             self.assertEqual(assignments[sid], ('tools.models.field_animations.imported_equipment', name))
