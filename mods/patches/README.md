@@ -141,4 +141,6 @@ spawn instruction; it adds no engine patch or resident executable bytes. See the
 
 Patches 0309-0312 answer a tester's v0.0.3 report: the City tab reads each cell's level from its packed roster id instead of a species record (0309), the version stamps stay inside the visible rows (0310), play time shows two-digit minutes (0311) and the care menu runs before map interaction (0312). Together they lower `main_BSS_END` by 16 bytes.
 
-Patch 0315 draws a still meat bubble over the meat farmer (NPC slot 6 of screens 168-179) while a harvest waits: p31 >= 1, or the first visit to Tanemon. It reuses the status bubble's sprites, so it needs no new art, and it hides while a script runs. Heap cost: 704 B. Proof: real talk with Palmon on an original-2-MB boot.
+Patch 0315 draws a still meat bubble over the meat farmer (NPC slot 6 of screens 168-179) while a harvest waits: p31 >= 1, or the first visit to Tanemon. It reuses the status bubble's sprites, so it needs no new art, and it hides while a script runs. Proof: real talk with Palmon on an original-2-MB boot.
+
+Patch 0316 slims patch 0315 from 704 B to 496 B of heap: two sprite calls with the whole bubble sprite, no second caller of the row's drawing code, whose inlining that caller would stop. Eight-language build: heap 184,768 B, screen 207 keeps 48 B.

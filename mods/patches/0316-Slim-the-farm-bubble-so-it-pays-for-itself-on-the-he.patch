@@ -1,0 +1,173 @@
+From fb3a609ab6be0423e7de6a277a0995c212eb7978 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 22:50:50 +0000
+Subject: [PATCH] Slim the farm bubble so it pays for itself on the heap
+
+---
+ src/main/bubble.c | 101 +++++++++++++++++++++++-----------------------
+ 1 file changed, 50 insertions(+), 51 deletions(-)
+
+diff --git a/src/main/bubble.c b/src/main/bubble.c
+index 78a07dc..0758499 100644
+--- a/src/main/bubble.c
++++ b/src/main/bubble.c
+@@ -588,8 +588,7 @@ int32_t MOD_STATUS_BUBBLES = 1;
+ 
+ /* conditions in a fixed order: hungry, poopy, sleepy, tired, sick, injured */
+ static const uint8_t RING_BIT[6] = { 0x04, 0x08, 0x01, 0x02, 0x40, 0x20 };
+-static const uint8_t RING_ICON[7] = { 1, 2, 4, 9, 10, 11, 1 };
+-#define RING_FARM	6	/* RING_ICON's meat, standing still: the farm's bubble */
++static const uint8_t RING_ICON[6] = { 1, 2, 4, 9, 10, 11 };
+ 
+ int32_t MOD_RING_CLOCK = 1;
+ int32_t MOD_RING_T = -1;	/* ticks into the running step, -1 = at rest */
+@@ -699,8 +698,8 @@ static void drawRingBubble(int32_t j, int32_t cx, int32_t cy, int32_t depth,
+ 	}
+ 	/* icon pivots are 18 texels under the circle's centre (in the icon's
+ 	 * own scale, so that it stays centred) */
+-	drawConditionIcon(icon, j == RING_FARM ? 0 : MOD_RING_CLOCK, cx,
+-			  cy + ((18 * kk) >> 12), depth, s);
++	drawConditionIcon(icon, MOD_RING_CLOCK, cx, cy + ((18 * kk) >> 12),
++			  depth, s);
+ 	bg->h = 26;
+ 	bg->my = 13;
+ 	renderSprite(bg, cx, cy, depth, s, s);
+@@ -838,39 +837,6 @@ static int32_t ringAnyBubble(void)
+ 	return 0;
+ }
+ 
+-/* where the row goes over an entity whose anchor height is base: 0 = not drawn */
+-static int32_t ringPlace(Entity *entity, int32_t base, DVECTOR *screen,
+-			 int32_t *depth, uint32_t *scale)
+-{
+-	SVECTOR pos;
+-	int32_t value;
+-	int32_t top;
+-
+-	pos.vx = entity->posData->location.vx;
+-	pos.vz = entity->posData->location.vz;
+-	pos.vy = base +
+-		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
+-	*depth = worldPosToScreenPos(&pos, screen);
+-	if (*depth <= 0) {
+-		return 0;
+-	}
+-
+-	if (entity->isOnScreen != 0) {
+-		top = (60 * ((*scale * VIEWPORT_DISTANCE) / *depth)) >> 12;
+-		if ((screen->vy + DRAWING_OFFSET_Y) < top) {
+-			screen->vy = -DRAWING_OFFSET_Y + top;
+-		}
+-		value = (*depth >> 4) - 20;
+-		if (value < 36) {
+-			value = 36;
+-		}
+-		*scale = ((int32_t)*scale * value) / (*depth >> 4);
+-		*depth = value << 4;
+-	}
+-
+-	return (*depth > 0x200) && (*depth < 0x10000);
+-}
+-
+ /*
+  * MOD (farm bubble): over the meat farmer, a still bubble with the meat while a harvest waits. The upper city's
+  * twelve layouts (168-179) always talk through NPC slot 6, script 207's section 11, so the test here is that
+@@ -885,31 +851,40 @@ static int32_t ringPlace(Entity *entity, int32_t base, DVECTOR *screen,
+ #define FARM_TRIGGER_VEGIEMON	225
+ #define FARM_TRIGGER_PALMON	246
+ #define FARM_PSTAT_DAYS		31
++#define FARM_SCALE		((0x6000 * RING_SIZE) >> 8)	/* the size of the partner's bubbles */
+ 
+ static void renderFarmBubble(void)
+ {
+ 	Entity *entity = ENTITY_TABLE[FARM_ENTITY];
++	SVECTOR pos;
+ 	DVECTOR screen;
+ 	int32_t depth;
+-	uint32_t scale = 0x6000;
+ 
+ 	if (CURRENT_SCREEN < FARM_FIRST_SCREEN || CURRENT_SCREEN > FARM_LAST_SCREEN ||
+ 	    IS_SCRIPT_PAUSED != 1 || entity == NULL || entity->isOnMap == 0 ||
+-	    entity->isOnScreen == 0) {
++	    entity->isOnScreen == 0 ||
++	    (readPStat(FARM_PSTAT_DAYS) < 1 &&
++	     (isTriggerSet(FARM_TRIGGER_EXPLAINED) || isTriggerSet(FARM_TRIGGER_VEGIEMON) ||
++	      isTriggerSet(FARM_TRIGGER_PALMON)))) {
+ 		return;
+ 	}
+-	if (readPStat(FARM_PSTAT_DAYS) < 1 &&
+-	    (isTriggerSet(FARM_TRIGGER_EXPLAINED) || isTriggerSet(FARM_TRIGGER_VEGIEMON) ||
+-	     isTriggerSet(FARM_TRIGGER_PALMON))) {
++	pos.vx = entity->posData->location.vx;
++	pos.vz = entity->posData->location.vz;
++	pos.vy = -DIGI_PARA(entity->type).height + 20 - 65 + entity->posData->location.vy +
++		 ((_sin((MOD_RING_CLOCK % 20) * 204) * 12) >> 12);
++	depth = worldPosToScreenPos(&pos, &screen);
++	if ((depth <= 0x200) || (depth >= 0x10000)) {
+ 		return;
+ 	}
+-	if (ringPlace(entity, -DIGI_PARA(entity->type).height + 20 - 65 + entity->posData->location.vy,
+-		      &screen, &depth, &scale)) {
+-		int32_t k = (scale * VIEWPORT_DISTANCE) / depth;
+-
+-		drawRingBubble(RING_FARM, screen.vx, screen.vy - ((18 * k) >> 12), depth, scale,
+-			       RING_SIZE, 256, k);
+-	}
++	/* the partner's hungry icon on its first frame and the whole bubble, tail included. Nearer in the ordering
++	 * table than the map's objects, as the partner's row. Only sprites here: a second caller of the row's drawing
++	 * code stops the compiler inlining it, and that costs 400 B of heap. */
++	CONDITION_SPRITES[0].u = 0x90;
++	CONDITION_SPRITES[0].v = 0x80;
++	CONDITION_SPRITES[0].my = 0x1a;
++	depth -= 0x140;
++	renderSprite(&CONDITION_SPRITES[0], screen.vx, screen.vy, depth, FARM_SCALE, FARM_SCALE);
++	renderSprite(&CONDITION_SPRITES[11], screen.vx, screen.vy, depth, FARM_SCALE, FARM_SCALE);
+ }
+ 
+ void renderConditionRingObject(int32_t instanceId)
+@@ -918,6 +893,8 @@ void renderConditionRingObject(int32_t instanceId)
+ 	SVECTOR pos;
+ 	DVECTOR screen;
+ 	int32_t depth;
++	int32_t value;
++	int32_t top;
+ 	int32_t base;
+ 	uint32_t scale = 0x6000;
+ 
+@@ -942,9 +919,31 @@ void renderConditionRingObject(int32_t instanceId)
+ 	pos.vy = base;
+ 	worldPosToScreenPos(&pos, &screen);
+ 	MOD_RING_SHOWN[1] = (screen.vx & 0xFFFF) | (screen.vy << 16);
+-	if (ringPlace(entity, base, &screen, &depth, &scale)) {
+-		renderConditionRing(screen.vx, screen.vy, depth, scale);
++	pos.vy = base +
++		 ((_sin((((MOD_RING_CLOCK % 20) * 4096 + MOD_RENDER_ALPHA) * 512) / 81920) * 12) >> 12);
++	depth = worldPosToScreenPos(&pos, &screen);
++	if (depth <= 0) {
++		return;
++	}
++
++	if (entity->isOnScreen != 0) {
++		top = (60 * ((scale * VIEWPORT_DISTANCE) / depth)) >> 12;
++		if ((screen.vy + DRAWING_OFFSET_Y) < top) {
++			screen.vy = -DRAWING_OFFSET_Y + top;
++		}
++		value = (depth >> 4) - 20;
++		if (value < 36) {
++			value = 36;
++		}
++		scale = ((int32_t)scale * value) / (depth >> 4);
++		depth = value << 4;
++	}
++
++	if ((depth <= 0x200) || (depth >= 0x10000)) {
++		return;
+ 	}
++
++	renderConditionRing(screen.vx, screen.vy, depth, scale);
+ }
+ 
+ void tickConditionRingObject(int32_t instanceId)
+-- 
+2.55.0
+
