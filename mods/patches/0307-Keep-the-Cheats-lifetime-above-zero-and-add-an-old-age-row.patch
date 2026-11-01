@@ -1,0 +1,120 @@
+From d9feb3b760e836ed7c33b4f7848f2335e17b0f55 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 13:36:52 +0000
+Subject: [PATCH] Keep the Cheats lifetime above zero and add an old-age row
+
+---
+ src/main/mod_lab_menu.inc | 25 ++++++++++++++++---------
+ text/main/mod_lab.yaml    |  6 ++++++
+ 2 files changed, 22 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/mod_lab_menu.inc b/src/main/mod_lab_menu.inc
+index b5ee997..3efe8cc 100644
+--- a/src/main/mod_lab_menu.inc
++++ b/src/main/mod_lab_menu.inc
+@@ -1,7 +1,7 @@
+ /* Private laboratory implementation; included by mod_lab.c. Ten texture rows fit below UV 256; createPauseBox restores its shared last row on return. */
+ #define MOD_LAB_BOX 5
+ #define MOD_LAB_TEXT_Y 0x84
+-#define MOD_LAB_OPTIONS 11
++#define MOD_LAB_OPTIONS 12
+ #define LAB_ROW_SHORTCUTS 6
+ #define MOD_LAB_OPT_EVOLVE 3
+ #define PAD_SELECT 0x100
+@@ -24,7 +24,7 @@ extern UIBoxData UI_BOX_DATA[];
+ extern int32_t IS_SCRIPT_PAUSED;
+ extern int16_t EVOLUTION_TARGET;
+ extern uint8_t HAS_USED_EVOITEM, PAUSE_STATE;
+-extern int32_t HAS_BUTTERFLY, BUTTERFLY_ID, CONDITION_BUBBLE_ID, CONDITION_BUBBLE_TYPE;
++extern int32_t HAS_IMMORTAL_HOUR, HAS_BUTTERFLY, BUTTERFLY_ID, CONDITION_BUBBLE_ID, CONDITION_BUBBLE_TYPE;
+ extern ScreenId TARGET_MAP;
+ extern uint8_t CURRENT_EXIT;
+ void pauseFrame(void);
+@@ -57,7 +57,7 @@ static uint16_t *labChoices; /* points into modLabMenu's stack, valid until the
+ static char *modLabMessage;
+ static char labText[LAB_ROWS][96];
+ static char *const LAB_HOME_TEXT[] = { LAB_STR_ADD_BITS, LAB_STR_SATIATE, LAB_STR_PARAMETERS,
+-    LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_CLOSE };
++    LAB_STR_EVOLVE, LAB_STR_TELEPORT, LAB_STR_HEAL, LAB_STR_SHORTCUTS_OFF, LAB_STR_SAVE_GAME, LAB_STR_LOAD_GAME, LAB_STR_MAIN_MENU, LAB_STR_OLD_AGE, LAB_STR_CLOSE };
+ static char *LAB_STAGES[] = { "", "Baby I", "Baby II", "Rookie", "Champion", "Ultimate", "Mega" };
+ 
+ static char *appendStr(char *dst, const char *src)
+@@ -91,7 +91,7 @@ static const LabField LAB_FIELDS[] = {
+     LAB_P(LAB_STR_BATTLES, battles, 0, 9999, -1, -1),
+     LAB_P(LAB_STR_EVO_HOURS, evoTimer, 0, 32767, -1, -1),
+     LAB_P(LAB_STR_AGE, age, 0, 999, -1, -1),
+-    LAB_P(LAB_STR_LIFETIME, remainingLifetime, 0, 32767, -1, -1),
++    LAB_P(LAB_STR_LIFETIME, remainingLifetime, 1, 32767, -1, -1), /* 0 is death at the next tick: the home row asks first */
+     LAB_P(LAB_STR_VIRUS, virusBar, 0, 100, -1, -1),
+     LAB_P(LAB_STR_TIREDNESS, tiredness, 0, 100, MOD_CARE_LIM_TIRED_MIN, MOD_CARE_LIM_TIRED_MAX),
+     LAB_P(LAB_STR_ENERGY, energyLevel, 0, 32767, -1, -1),
+@@ -177,6 +177,13 @@ static void modLabSatiate(void)
+     if (partnerGetState() == 1) updateConditionAnimation();
+ }
+ 
++/* The next tick runs the natural death; a just-woken partner's protected hour must not delay it. */
++static void modLabOldAge(void)
++{
++    PARTNER_PARA.remainingLifetime = 0;
++    HAS_IMMORTAL_HOUR = 0;
++}
++
+ static int32_t modLabNewSpecies(int32_t type)
+ {
+     return type >= NUM_PARTNER_DIGIMON || !isVanillaSpecies(type);
+@@ -311,7 +318,7 @@ static void modLabDrawText(void)
+         p = appendStr(lines[6], LAB_STR_SIMPLE_STEP); p = labInt(p, labStep); appendStr(p, LAB_STR_STEP_ARROWS);
+         appendStr(lines[7], LAB_STR_SIMPLE_ADJUST);
+     } else if (MOD_LAB_VIEW == LAB_CONFIRM) {
+-        appendStr(lines[1], MOD_LAB_TARGET == 1 ? LAB_STR_ASK_SAVE : LAB_STR_ASK_TITLE);
++        appendStr(lines[1], MOD_LAB_TARGET == 1 ? LAB_STR_ASK_SAVE : MOD_LAB_TARGET == 4 ? LAB_STR_ASK_OLD_AGE : LAB_STR_ASK_TITLE);
+         if (MOD_LAB_TARGET == 3) appendStr(lines[3], LAB_STR_UNSAVED);
+     } else for (row = 0; row < visible; row++) {
+         n = labTop + row;
+@@ -407,7 +414,7 @@ static int32_t modLabPerform(void)
+         modLabMessage = LAB_STR_MSG_NOT_NOW; return 0;
+     }
+     if (labPrevious == LAB_HOME) {
+-        labAction = type;
++        if (type == 4) modLabOldAge(); else labAction = type;
+     } else if (labPrevious == LAB_EVOLVE) {
+         if (!isPartnerModelFit(type)) { modLabMessage = LAB_STR_MSG_TOO_BIG; return 0; }
+         if (type == PARTNER_ENTITY.digimonEntity.entity.type) { modLabMessage = LAB_STR_MSG_ALREADY; return 0; }
+@@ -524,14 +531,14 @@ void modLabMenuLoaded(uint32_t *input, uint32_t *previous)
+                     MOD_OPT_SHORTCUTS = !MOD_OPT_SHORTCUTS;
+                     if (MOD_OPT_SHORTCUTS) modLabMessage = LAB_STR_SHORTCUTS_HELP;
+                     break;
+-                case 7: case 9:
++                case 7: case 9: case 10:
+                     labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+-                    MOD_LAB_TARGET = MOD_LAB_CURSOR == 7 ? 1 : 3;
++                    MOD_LAB_TARGET = MOD_LAB_CURSOR == 7 ? 1 : MOD_LAB_CURSOR == 9 ? 3 : 4;
+                     MOD_LAB_VIEW = LAB_CONFIRM; break;
+                 case 8:
+                     labPrevious = LAB_HOME; labPreviousCursor = MOD_LAB_CURSOR;
+                     MOD_LAB_TARGET = 2; done = modLabPerform(); break;
+-                case 10: done = 1; break;
++                case 11: done = 1; break;
+                 }
+             } else if (MOD_LAB_VIEW == LAB_VALUES) {
+                 labField = MOD_LAB_CURSOR; MOD_LAB_VALUE = modLabClamp(labField, *modLabFieldPtr(labField)); MOD_LAB_VIEW = LAB_NUMBER; labStep = 1;
+diff --git a/text/main/mod_lab.yaml b/text/main/mod_lab.yaml
+index b9d4374..21b5064 100644
+--- a/text/main/mod_lab.yaml
++++ b/text/main/mod_lab.yaml
+@@ -304,6 +304,12 @@ MOD_LAB:
+     LAB_STR_ASK_SAVE:
+       ja: "Save the current game?"
+       en_us: "Save the current game?"
++    LAB_STR_OLD_AGE:
++      ja: "Die of old age"
++      en_us: "Die of old age"
++    LAB_STR_ASK_OLD_AGE:
++      ja: "Let it die of old age now?"
++      en_us: "Let it die of old age now?"
+     LAB_STR_ASK_TITLE:
+       ja: "Return to the main menu?"
+       en_us: "Return to the main menu?"
+-- 
+2.55.0
+

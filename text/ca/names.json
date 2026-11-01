@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Carregar partida",
  "main.LAB_STR_MAIN_MENU": "Tornar al menú principal",
  "main.LAB_STR_ASK_SAVE": "Desar la partida actual?",
+ "main.LAB_STR_OLD_AGE": "Morir de vell",
+ "main.LAB_STR_ASK_OLD_AGE": "Que mori de vell ara?",
  "main.LAB_STR_ASK_TITLE": "Tornar al menú principal?",
  "main.LAB_STR_UNSAVED": "Canvis sense desar: es perden.",
  "main.LAB_STR_ASK_LOAD": "Carregar aquesta partida?",

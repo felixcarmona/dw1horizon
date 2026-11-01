@@ -218,8 +218,8 @@ id when the option returns to ON, without depending on either species’ level.
 CHEATS defaults to OFF. With it on, Select opens the Cheats menu from the field
 pause only. Select does nothing when the menu cannot open; the hint is hidden
 there too. The menu freezes world ticks while editing. It provides money, care
-recovery, parameter editing, evolution, teleportation, healing, native save/load
-and return to title.
+recovery, parameter editing, evolution, teleportation, healing, native save/load,
+return to title and a confirmed old-age death.
 
 The menu's SELECT SHORTCUTS row (`MOD_OPT_SHORTCUTS`) defaults to OFF. Turned on,
 under CHEATS, it adds Select + L1/R1 for partner changes and Select + L2/R2 for
@@ -232,7 +232,10 @@ the screen says so (`LAB_STR_PAUSE_HINT`, `utils2.c`). Keep each translation wit
 restores its pixels when the pause ends.
 
 The parameter editor covers care, evolution timers, age and lifetime, current and
-maximum HP/MP, and combat stats. Left/right adjusts by the displayed amount;
+maximum HP/MP, and combat stats. Its lifetime stops at 1 hour: at 0 the partner dies on the
+next tick, so that only happens through the home row *Die of old age*, which asks
+first, uses the idle guards of the other confirmed actions and counts as a natural
+death for the rebirth bonus (patch 0307). Left/right adjusts by the displayed amount;
 up/down changes that amount. Confirm applies the value and Cancel discards it.
 Stat and care limits are enforced, and lowering maximum HP/MP clamps the current
 value. Evolution rows show species stages; map rows show internal map codes.

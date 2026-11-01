@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Cargar partida",
  "main.LAB_STR_MAIN_MENU": "Volver al menú principal",
  "main.LAB_STR_ASK_SAVE": "¿Guardar la partida actual?",
+ "main.LAB_STR_OLD_AGE": "Morir de viejo",
+ "main.LAB_STR_ASK_OLD_AGE": "¿Que muera de viejo ahora?",
  "main.LAB_STR_ASK_TITLE": "¿Volver al menú principal?",
  "main.LAB_STR_UNSAVED": "Se pierden cambios sin guardar.",
  "main.LAB_STR_ASK_LOAD": "¿Cargar esta partida?",

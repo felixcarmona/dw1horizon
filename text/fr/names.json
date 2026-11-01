@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Charger une partie",
  "main.LAB_STR_MAIN_MENU": "Retour au menu principal",
  "main.LAB_STR_ASK_SAVE": "Sauvegarder la partie ?",
+ "main.LAB_STR_OLD_AGE": "Mourir de vieillesse",
+ "main.LAB_STR_ASK_OLD_AGE": "Mourir de vieillesse maintenant ?",
  "main.LAB_STR_ASK_TITLE": "Retourner au menu principal ?",
  "main.LAB_STR_UNSAVED": "Modifs non sauvées perdues.",
  "main.LAB_STR_ASK_LOAD": "Charger cette partie ?",

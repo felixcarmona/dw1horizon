@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "ロード",
  "main.LAB_STR_MAIN_MENU": "タイトルに戻る",
  "main.LAB_STR_ASK_SAVE": "現在のゲームをセーブしますか？",
+ "main.LAB_STR_OLD_AGE": "じゅみょうを むかえる",
+ "main.LAB_STR_ASK_OLD_AGE": "じゅみょうを むかえますか？",
  "main.LAB_STR_ASK_TITLE": "タイトルに戻りますか？",
  "main.LAB_STR_UNSAVED": "セーブしていない変更は失われます。",
  "main.LAB_STR_ASK_LOAD": "このデータをロードしますか？",

@@ -1062,6 +1062,8 @@
  "main.LAB_STR_LOAD_GAME": "Carica partita",
  "main.LAB_STR_MAIN_MENU": "Torna al menu principale",
  "main.LAB_STR_ASK_SAVE": "Salvare la partita attuale?",
+ "main.LAB_STR_OLD_AGE": "Morire di vecchiaia",
+ "main.LAB_STR_ASK_OLD_AGE": "Morire di vecchiaia ora?",
  "main.LAB_STR_ASK_TITLE": "Tornare al menu principale?",
  "main.LAB_STR_UNSAVED": "Modifiche non salvate: perse.",
  "main.LAB_STR_ASK_LOAD": "Caricare questa partita?",

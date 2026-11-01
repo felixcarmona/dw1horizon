@@ -47,6 +47,7 @@ struct { struct { struct { int type; } entity; Stats stats; } digimonEntity; } P
 struct { int energyCap, poopTimer; } raise = {70, 420};
 #define RAISE_ROW(type) raise
 int care[150], HOUR = 12, MINUTE = 25, HAS_BUTTERFLY = -1, BUTTERFLY_ID;
+int HAS_IMMORTAL_HOUR;
 int CONDITION_BUBBLE_ID = -1, CONDITION_BUBBLE_TYPE, calls;
 int careGet(int slot) { return care[slot]; }
 void setFoodTimer(int type) { PARTNER_PARA.foodLevel = 240; }
@@ -61,7 +62,7 @@ int isVanillaSpecies(int type) { return type <= 65; }
     start = source.index('typedef struct {\n    char *name;')
     end = source.index('\nstatic int16_t *modLabFieldPtr', start)
     code += source[start:end]
-    for name in ('modLabFieldPtr', 'modLabBound', 'modLabClamp', 'modLabSetValue', 'modLabHeal', 'modLabSatiate', 'modLabNewSpecies'):
+    for name in ('modLabFieldPtr', 'modLabBound', 'modLabClamp', 'modLabSetValue', 'modLabHeal', 'modLabSatiate', 'modLabOldAge', 'modLabNewSpecies'):
         code += '\n' + function(source, name)
     code += r'''
 int main(void) {
@@ -74,6 +75,9 @@ int main(void) {
         modLabSetValue(field, -99999); assert(*modLabFieldPtr(field) == lo);
         modLabSetValue(field, 99999); assert(*modLabFieldPtr(field) == hi);
     }
+    modLabSetValue(7, 0); assert(PARTNER_PARA.remainingLifetime == 1); /* zero is the old-age row's, never the editor's */
+    HAS_IMMORTAL_HOUR = 1; modLabOldAge();
+    assert(PARTNER_PARA.remainingLifetime == 0 && HAS_IMMORTAL_HOUR == 0);
     modLabSetValue(0, 87); assert(PARTNER_PARA.discipline == 87);
     modLabSetValue(1, -25); assert(PARTNER_PARA.happiness == -25);
     modLabSetValue(2, 35); assert(PARTNER_PARA.weight == 35);

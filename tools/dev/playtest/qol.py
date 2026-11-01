@@ -147,7 +147,7 @@ def navigation(e, out, step):
     wait_value(e, 'MOD_LAB_ACTIVE', 1)
     press_value(e, 'RIGHT', 'MOD_LAB_CURSOR', step)
     press_value(e, 'LEFT', 'MOD_LAB_CURSOR', 0)
-    results = {'home': dict(rows=11, right=step, left=0)}
+    results = {'home': dict(rows=12, right=step, left=0)}
     for label, home_row, view in [('parameters', 2, 1), ('evolution', 3, 3), ('teleport', 4, 4)]:
         e.poke('MOD_LAB_CURSOR', struct.pack('<i', home_row))
         press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', view)
@@ -204,6 +204,61 @@ def navigation(e, out, step):
     assert e.peek('MOD_LAB_VALUE', 'i') == 59
     results['number_editor'] = dict(start=50, after_left=49, after_up_right=59)
     return results
+
+
+LIFETIME = 'PARTNER_PARA+74'  # game_state.py PARTNER_PARA_FIELDS
+
+
+def old_age(e, out):
+    """The editor stops at 1 hour; only the confirmed row ends the life, as a natural death."""
+    e.poke('MOD_OPT_CHEATS', struct.pack('<i', 1))
+    e.poke('MOD_OPT_BUTTONS', struct.pack('<i', 0))
+    e.gs('set', 'partner.para.remainingLifetime=500')
+    press_value(e, 'START', 'PAUSE_BOX_VISIBLE', 1, 'B')
+    for _ in range(3):
+        e.press('SELECT', 30)
+        for _ in range(20):
+            if e.peek('MOD_LAB_ACTIVE', 'i') == 1:
+                break
+            e.wait(.5)
+        else:
+            continue
+        break
+    wait_value(e, 'MOD_LAB_ACTIVE', 1)
+    e.poke('MOD_LAB_CURSOR', struct.pack('<i', 2))
+    press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', 1)
+    e.poke('MOD_LAB_CURSOR', struct.pack('<i', 7))
+    press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', 2)
+    assert e.peek('MOD_LAB_VALUE', 'i') == 500
+    for _ in range(3):
+        e.press('UP', 8); e.wait(.3)
+    press_value(e, 'LEFT', 'MOD_LAB_VALUE', 1)
+    e.run('shot', str(out / 'lifetime-floor.png'))
+    e.press('LEFT', 8); e.wait(.3)
+    assert e.peek('MOD_LAB_VALUE', 'i') == 1
+    press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', 1)
+    assert e.peek(LIFETIME, 'h') == 1
+    e.poke(LIFETIME, struct.pack('<h', 500))
+    press_value(e, 'CANCEL', 'MOD_LAB_VIEW', 0)
+    e.poke('MOD_LAB_CURSOR', struct.pack('<i', 10))
+    e.press('DOWN', 8); e.wait(.3); e.press('UP', 8); e.wait(.5)
+    assert e.peek('MOD_LAB_CURSOR', 'i') == 10
+    e.run('shot', str(out / 'old-age-row.png'))
+    press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', 5)
+    e.wait(.5); e.run('shot', str(out / 'old-age-confirm.png'))
+    press_value(e, 'CANCEL', 'MOD_LAB_VIEW', 0)
+    assert e.peek('MOD_LAB_CURSOR', 'i') == 10 and e.peek(LIFETIME, 'h') == 500
+    press_value(e, 'CONFIRM', 'MOD_LAB_VIEW', 5)
+    press_value(e, 'CONFIRM', 'MOD_LAB_ACTIVE', 0)
+    for _ in range(40):
+        if e.peek('IS_NATURAL_DEATH', 'i') == 1:
+            break
+        e.wait(.5)
+    assert e.peek('IS_NATURAL_DEATH', 'i') == 1, 'no natural death after the row'
+    for n in range(8):
+        e.wait(5); e.run('shot', str(out / f'old-age-{n}.png'))
+        e.press('CONFIRM', 8)
+    return dict(natural_death=True)
 
 
 def state(e):
@@ -298,7 +353,7 @@ def main():
     p.add_argument('disc'); p.add_argument('--exe', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--boot-state', help='control checkpoint from this exact disc')
-    p.add_argument('--case', choices=('all', 'navigation', 'palmon', 'supercarrot', 'hawk-radish'), default='all')
+    p.add_argument('--case', choices=('all', 'navigation', 'old-age', 'palmon', 'supercarrot', 'hawk-radish'), default='all')
     p.add_argument('--page-step', type=int, choices=(1, 10), default=10)
     p.add_argument('--port', type=int, default=int(os.environ.get('EMU_PORT', 39145)))
     a = p.parse_args(); out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
@@ -328,6 +383,10 @@ def main():
         if a.case in ('all', 'navigation'):
             results['navigation'] = navigation(e, out, a.page_step)
             print('navigation', results['navigation'], flush=True)
+            (out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
+        if a.case == 'old-age':
+            results['old_age'] = old_age(e, out)
+            print('old-age', results['old_age'], flush=True)
             (out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
         for seller, item in [('palmon', 39), ('vegiemon', 41), ('vegiemon', 42)]:
             if a.case not in ('all', {39: 'palmon', 41: 'supercarrot', 42: 'hawk-radish'}[item]):
