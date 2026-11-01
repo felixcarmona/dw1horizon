@@ -16,7 +16,8 @@ def the_passage():
     if ask(yes="Guide me", no="Stay at your post"):
         say("So be it, boy from the analog world. The trail leaves the path in the ferns to the east.", "I will go ahead.")
         post_guided.set()
-        walk_away(650, 1250, looks=2)
+        # The disc's model has no run clip (slot 4): a run never starts and the scene would wait for it forever.
+        walk(650, 1250)
         leave()
     else:
         say("A wise answer. Some doors are better left shut.")
