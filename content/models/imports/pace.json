@@ -416,7 +416,8 @@
      250
     ]
    }
-  }
+  },
+  "after_generator": "tools.models.field_animations.snimon"
  },
  "296": {
   "name": "Grizzlymon",
