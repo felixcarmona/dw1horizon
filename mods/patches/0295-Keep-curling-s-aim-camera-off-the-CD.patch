@@ -1,0 +1,44 @@
+From 95331a5504fdb50a2444d6a415ffb1bf873c775a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 08:08:09 +0000
+Subject: [PATCH] Keep curling's aim camera off the CD
+
+---
+ src/main/map.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/map.c b/src/main/map.c
+index 10cd35a7..87a5d50d 100644
+--- a/src/main/map.c
++++ b/src/main/map.c
+@@ -5080,6 +5080,8 @@ void updateDrawingOffsets(DVECTOR *current, DVECTOR *previous)
+ 	}
+ }
+ 
++extern int8_t TAMER_STATE;
++
+ void handleTileUpdate(int32_t input, int32_t force)
+ {
+ 	if ((((input & 0x1000) != 0) ||
+@@ -5233,7 +5235,8 @@ void handleTileUpdate(int32_t input, int32_t force)
+ 			}
+ 		}
+ 	}
+-	if (force == 1) {
++	/* Curling keeps its window in KAR_flushTiles; this path rereads three rows from the CD. */
++	if (force == 1 && TAMER_STATE != 12) {
+ 		uploadMapTileImages(MAP_TILE_DATA.tiles,
+ 				    MAP_TILE_X + ((long)MAP_TILE_Y * MAP_TILE_DATA.width));
+ 	}
+@@ -5629,8 +5632,6 @@ void setCameraFollowPlayer(void)
+ }
+ 
+ // clang-format off
+-extern int8_t TAMER_STATE;
+-
+ void updateTileRow(bottom)
+ 	int8_t bottom;
+ // clang-format on
+-- 
+2.55.0
+
