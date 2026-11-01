@@ -9,6 +9,11 @@ textures. All eight languages share the same build path.
 - `signs.py` pastes RGBA sign cutouts over the player's map backgrounds. Only the
   changed pixels are committed in `content/localized/signs/delta/`; its index
   records each crop's size and placement.
+  Alternate sprite messages in `SPRITE_JOBS` use the same crop and delta format,
+  but target only their specified frames, including initially hidden instances.
+  The Ogre Tunnel edit fills transparent holes to cover the normal name beneath
+  it; Japanese keeps the original sprite. Full edits use the job name
+  (`mayo11_ogre.png`) under `build/localized-src/signs/<language>/`.
 - `fromjp.py` rebuilds the English menu labels and sign sprites from a Japanese
   base disc. Japanese sign cutouts are in the `fromjp` cutout family.
 - `cutout.py` loads and saves sign cutouts. `sized.py` supports authoring images.

@@ -46,3 +46,27 @@ text coverage, references, Japanese layout and language-patch transitions.
 Localized signs use RGBA cutouts of the changed pixels, and tournament banners
 use RGB deltas against the player’s own banners. These products are committed
 for all eight languages; private authoring images stay in `build/localized-src/`.
+
+Drill Tunnel Entrance also has an alternate sign after the Ogre takeover.
+Its normal sign is `audit-13`; `mayo11_ogre` supplies the takeover wording in
+the same masked-delta pipeline, with the ogre word painted in dull olive green
+and the tunnel word kept bright. Japanese retains the original sprite art.
+The alternate edit targets only MAYO11 sprite frame 6 (TIM 1, rows 96–191),
+including transparent holes that would otherwise expose the background's
+localized Drill lettering. Frame 5 (rows 0–95) keeps the normal sign.
+Both frames use the instance position (0, 152); the background keeps its normal
+name. The normal edit targets only frame 5: the overlapping tree and additive
+lamp glow must retain their original pixels, or they redraw Drill lettering
+over the takeover. Authoring placements and English, Spanish and Portuguese wording live in
+`content/localized/signs/jobs.py`; the other wording is in
+`tools/localize/catalog.py`. `tools/localize/signs.py --make-cutouts` accepts
+the alternate edit at the same 196 × 110 canonical crop as the normal sign.
+
+Run `python3 -m unittest tools.test_signs` with an extracted USA disc to check
+that the takeover covers the old lettering, preserves the other frame and TIM
+palette, and leaves each MAP's byte size unchanged.
+
+Green Gym's foreground sprites use an opaque palette entry 0 and a transparent
+entry 255. All localized copies use the palette's transparency when repainting
+those sprites, as the Spanish copy already did, so the background translation
+and its foreground agree.
