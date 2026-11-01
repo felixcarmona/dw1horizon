@@ -1,9 +1,9 @@
-# File City, Yuramon the rumour-teller (script 162, §3.0): the first talk, the offer to spread the word of the human; and,
-# with the word spread, Greymon's challenge armed at prosperity 10 instead of the game's 15 (libraries/s210).
+# File City, Yuramon the rumour-teller (script 162, §3.0): the first talk and the offer to spread the word of the human.
+# With the word spread, Jijimon's talk arms Greymon's challenge sooner: jijimon-news.py.
 from dw import *
 from dw.names import *
 from dw.base.file_city_168 import city_168, yuramon
-from ...state import greymon_heard_of_tamer, rumours_asked, rumours_spread
+from ...state import greymon_armed_by_old_disc, rumours_asked, rumours_spread
 
 @yuramon.on_talk(when=not rumours_asked)
 def the_word():
@@ -16,9 +16,8 @@ def the_word():
     else:
         say("Okaaay. It'll be our secret, then. Ehehe.")
 
-@city_168.on_enter(when=rumours_spread and not greymon_heard_of_tamer and engine.prosperity >= 10 and not greymon_challenge_ready and not recruited(Species.Greymon))
-def greymon_heard():
-    # Once only. His step tiles ring the door of Jijimon's house, where a defeat wakes the tamer: armed on every entry,
-    # the fight (no escape) would come back each time the tamer steps out. Lost, the game's own way brings him back.
-    greymon_heard_of_tamer.set()
-    greymon_challenge_ready.set()
+@city_168.on_enter(when=greymon_armed_by_old_disc and greymon_challenge_ready)
+def forget_old_challenge():
+    # A save from 0.0.2 may hold him armed on entering the city, for whatever partner: Jijimon's talk arms him again.
+    greymon_armed_by_old_disc.clear()
+    greymon_challenge_ready.clear()
