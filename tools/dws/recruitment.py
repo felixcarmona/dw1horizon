@@ -68,3 +68,15 @@ def announcement(species, indent, won=False):
             f'{indent}    sound(8, 11);',
             f'{indent}    say(narrator, text("{KEY}", {species}));',
             f'{indent}}}']
+
+
+# SET_TRIGGER / UNSET_TRIGGER / IF already carry u16 operands. Patch 0302
+# redirects this otherwise unused range to the saved species recruit bits.
+RECRUIT_BIT_BASE = 0x8000
+SPECIES_LIMIT = 1024
+
+
+def recruit_trigger(species):
+    if not 0 <= species < SPECIES_LIMIT:
+        raise ValueError(f'species {species}: recruit flags exist for types 0-1023')
+    return 200 + species if species < 112 else RECRUIT_BIT_BASE + species

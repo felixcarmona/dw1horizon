@@ -42,6 +42,8 @@ def compile(tree, log, args, cache_dir=None, image=None):
     # The bank and LANG_BUILD are deliberately changed between languages; make
     # regenerates those headers after bank copy, exactly as the original driver.
     from tools.sdk_messages import author
+    from tools.city_residents import write_extra_header
+    write_extra_header(tree)
     author(tree)
     hashes = source_hashes(tree)
     common = key(dict(inputs=[p for p in hashes if p[0] != 'text-bank.json'],

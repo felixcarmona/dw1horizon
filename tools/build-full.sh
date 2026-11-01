@@ -280,6 +280,7 @@ $PY tools/localize/executable/bank.py exe-bank "${TEXT:-us}" --font-glyphs "$FON
 MOD_VERSION=${MOD_VERSION-$($PY tools/version.py game)}
 echo "version: ${MOD_VERSION:-(none)}"
 make_exe() {   # make_exe TREE BANK PAD LOG [LANG]: the executable of TREE with the strings of BANK (padded to PAD's), LANG's tables
+  $PY -m tools.city_residents --c-extra-header "$1"
   $PY tools/sdk_messages.py "$1"
   if [ -n "${DW_BUILD_CACHE:-}" ] || [ "${DW_CLEAN_NATIVE:-0}" = 1 ]; then
     $PY tools/native_build.py "$1" "$2" "$3" "$4" $MAKE_PMM ${FPS:+FPS=$FPS} ${FONT:+FONT=$FONT} \

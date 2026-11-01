@@ -25,7 +25,7 @@ a changed city fits; validate the actual final build at the original 2 MB.
 ## Residents and prosperity
 
 `content/tables/city-residents.json` owns the City page's species IDs and hidden
-flags. Species must be Rookie or higher and have a recruit flag. The current
+flags. Species must be defined IDs below 1024 and Rookie or higher. The current
 roster has 22 Rookies, 51 Champions and 16 Ultimates, worth 169 points. The 50 IDs
 below 59 are worth 100 points. Baby flags are deliberately excluded: several
 represent story state, including the city medal.
@@ -37,7 +37,14 @@ must match the roster exactly; original passes must match its IDs below 59.
 Otamamon (species 109, trigger 309) records the Geko Swamp victory for Misty Trees; it is
 excluded from the resident check, City page and prosperity. Its raw story recruit
 write remains intact. Legacy original-story writes above 58 do not make residents.
-The story compiler already rejects recruit IDs 112 and above; roster validation also rejects them and any total above 255.
+Patch 0302 supports imported residents without changing this roster. IDs 0..111
+keep trigger 200+id; IDs 112..1023 use existing saved recruit bits, addressed by
+`SET_TRIGGER`, `UNSET_TRIGGER` and `IF trigger` operands 0x8000+id. Ordinary
+triggers 312+ retain their meanings. `recruit`, `unrecruit`, `recruited`,
+`send_to_city(species=...)`, automatic join announcements and NPC
+`when=recruited(Species.X)` share that mapping on patched targets. The original
+engine still rejects high IDs. The gate decodes both operand ranges, refuses
+unlisted recruits and missing residents, and rejects roster prosperity above 255.
 Run `python3 -m tools.city_residents PATH/TO/DG.SCN ...` for a standalone check.
 The same gate is in `tools/selftest.sh` when compiled stories are available.
 
@@ -45,8 +52,15 @@ The same gate is in `tools/selftest.sh` when compiled stories are available.
 It runs before the City page is shown; saves and game start still call
 `recalculatePPandArena`, which calls it before its arena work. Original story
 counts only IDs 3..58; extended story counts only roster members. The balance
-build generates the executable’s 14-byte membership bitset from the roster JSON,
-so flags left in older saves cannot add unlisted residents. Continue applies the
+build generates the executable’s 14-byte membership bitset for IDs below 112.
+Before native compilation, `tools.city_residents --c-extra-header TREE` generates
+`src/main/city_residents_extra.h` with an exact-sized u16 list of roster IDs
+112 and above. The build driver and native cache regenerate it before hashing
+compiler inputs. No high-ID storage survives compilation for the current roster;
+20 extra IDs would need 40 bytes of list data, plus the loop's code. There is
+no per-frame scan of all 1024 species. Flags left in older saves cannot add
+unlisted residents. The City tab already reads u16 IDs from DIGI.DAT and calls
+`isDigimonRecruited`, so it needs no change. Continue applies the
 story option before game start recalculates. `city.dws` continues to describe
 the original rule, which `city-verify` compares against the unmodified C.
 Wild recruit scripts do not add points immediately, and some scripted recruits

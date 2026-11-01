@@ -1,0 +1,111 @@
+From d795d9ff373ac3965fb5264e05bff35414566448 Mon Sep 17 00:00:00 2001
+From: Horizon authors <1969778+felixcarmona@users.noreply.github.com>
+Date: Sun, 1 Nov 2026 11:16:58 +0000
+Subject: [PATCH] Support recruited state for high City species
+
+Reuse u16 trigger operands 0x8070..0x83ff for the existing saved recruited bits. Ordinary triggers and raised state retain their meanings. Generate an exact-sized high resident list before native compilation; the legacy roster still uses its 14-byte membership table. The City tab already reads u16 ids through isDigimonRecruited.
+---
+ include/dw/ids.h                |  2 ++
+ src/main/city_residents_extra.h |  3 +++
+ src/main/main.c                 | 22 +++++++++++++++++-----
+ src/main/script_interp.c        | 16 ++++++++--------
+ 4 files changed, 30 insertions(+), 13 deletions(-)
+ create mode 100644 src/main/city_residents_extra.h
+
+diff --git a/include/dw/ids.h b/include/dw/ids.h
+index 0ce5ada..e3f2b5e 100644
+--- a/include/dw/ids.h
++++ b/include/dw/ids.h
+@@ -172,6 +172,8 @@ typedef uint16_t CardId;
+ #define NUM_CARDS		66	/* CARD_DATA, CARD_SPRITE_CLUT, CARD.ALL */
+ 
+ /* Trigger ranges used as per-id bitsets (scripts.md, "Free triggers") */
++/* SET/UNSET_TRIGGER and IF operands for species 112..1023; saved recruit bits. */
++#define TRIGGER_SPECIES_RECRUITED_BASE 0x8000
+ #define TRIGGER_RECRUITED_BASE	200	/* + Digimon type */
+ #define TRIGGER_SHOP_STOCK_BASE	0x180	/* + item id */
+ #define TRIGGER_RAISED_BASE	0x200	/* + Digimon type */
+diff --git a/src/main/city_residents_extra.h b/src/main/city_residents_extra.h
+new file mode 100644
+index 0000000..6726ab5
+--- /dev/null
++++ b/src/main/city_residents_extra.h
+@@ -0,0 +1,3 @@
++/* Generated from content/tables/city-residents.json. */
++#define CITY_RESIDENTS_EXTRA_COUNT 0
++static const uint16_t CITY_RESIDENTS_EXTRA[] = {0};
+diff --git a/src/main/main.c b/src/main/main.c
+index 927b8e1..577a9ef 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -4000,22 +4000,34 @@ void initializeLoadedMap(void)
+ }
+ 
+ #if VERSION_EQUAL_OR_NEWER(US)
++#include "city_residents_extra.h"
+ extern const uint8_t CITY_RESIDENTS[14]; /* generated from the owned roster by the balance build */
+ 
+ void recalculateProsperity(void)
+ {
+ 	uint8_t pp;
+ 	int32_t i;
++	int32_t type;
+ 
+ 	pp = 0;
+ 	/* Original story counts only ids 3..58, including after a Continue changes stories. */
+-	for (i = 3; i < (MOD_OPT_STORY ? NUM_RECRUITABLE_DIGIMON : 59); i++) {
+-		if ((!MOD_OPT_STORY || (CITY_RESIDENTS[i >> 3] & (1 << (i & 7)))) &&
+-		    (DIGI_PARA(i).level >= 3) && (isDigimonRecruited(i) != 0)) {
+-			if ((i == 0xb) || (i == 0x27) || (i == 0x35)) {
++	for (i = 3; i < (MOD_OPT_STORY ? NUM_RECRUITABLE_DIGIMON + CITY_RESIDENTS_EXTRA_COUNT : 59); i++) {
++		type = i;
++#if CITY_RESIDENTS_EXTRA_COUNT
++		if (i >= NUM_RECRUITABLE_DIGIMON) {
++			type = CITY_RESIDENTS_EXTRA[i - NUM_RECRUITABLE_DIGIMON];
++		}
++#endif
++		if ((!MOD_OPT_STORY ||
++#if CITY_RESIDENTS_EXTRA_COUNT
++		     i >= NUM_RECRUITABLE_DIGIMON ||
++#endif
++		     (CITY_RESIDENTS[i >> 3] & (1 << (i & 7)))) &&
++		    (DIGI_PARA(type).level >= 3) && (isDigimonRecruited(type) != 0)) {
++			if ((type == 0xb) || (type == 0x27) || (type == 0x35)) {
+ 				pp++;
+ 			} else {
+-				pp += (uint8_t)(DIGI_PARA(i).level - 2);
++				pp += (uint8_t)(DIGI_PARA(type).level - 2);
+ 			}
+ 		}
+ 	}
+diff --git a/src/main/script_interp.c b/src/main/script_interp.c
+index ab6b08b..e24863f 100644
+--- a/src/main/script_interp.c
++++ b/src/main/script_interp.c
+@@ -2723,15 +2723,15 @@ void getTriggerOffset(trigger, outPtr, outMask)
+ 	uint8_t *outMask;
+ // clang-format on
+ {
+-	uint8_t bit;
+-
+-	bit = trigger % 8;
+-	*outPtr = &SCRIPT_STATE_PTR->triggers[trigger / 8];
+-	*outMask = 1;
+-	while (bit != 0) {
+-		*outMask <<= 1;
+-		bit--;
++	/* The legacy recruited triggers stop at 311. Never alias story flags 312+
++	 * or raised flags: all species 112+ use the existing saved recruit bits. */
++	if ((uint16_t)(trigger - (TRIGGER_SPECIES_RECRUITED_BASE + NUM_RECRUITABLE_DIGIMON)) <
++	    NUM_DIGIMON - NUM_RECRUITABLE_DIGIMON) {
++		*outPtr = &SPECIES_RECRUITED_BITS[(trigger - TRIGGER_SPECIES_RECRUITED_BASE) / 8];
++	} else {
++		*outPtr = &SCRIPT_STATE_PTR->triggers[trigger / 8];
+ 	}
++	*outMask = 1 << (trigger & 7);
+ }
+ 
+ // clang-format off
+-- 
+2.55.0
+

@@ -245,11 +245,11 @@ new-game conversation. Several C systems read recruit flags and so carry story r
 
 | Area | What the C does | Where (`decomp/src`) |
 |---|---|---|
-| Prosperity | pstat 1 rebuilt on every save and at game start from the recruit flags: level - 2 per recruited species of level 3 or more, 1 for Numemon, Sukamon and Nanimon | `recalculateProsperity` (`main.c`), called by `recalculatePPandArena` and City entry; types 3-58 in original story, 3-111 in extended story, same weights. Details: [city data](../mods/city-rules.md#city-data) |
+| Prosperity | pstat 1 rebuilt on every save and at game start from the recruit flags: level - 2 per recruited species of level 3 or more, 1 for Numemon, Sukamon and Nanimon | `recalculateProsperity` (`main.c`), called by `recalculatePPandArena` and City entry; types 3-58 in original story, owned roster IDs below 1024 in extended story, same weights. Details: [city data](../mods/city-rules.md#city-data) |
 | File City top map | 12 variants of the upper city chosen from five recruit flags; used only by the game-clear save | `getFileCityTopMap` (`map.c`), `gameClearSave` |
 | The same choice in script | the Auto Pilot scene repeats the choice with a different "big city" rule (Angemon or Monzaemon or prosperity >= 50); the C needs both | MAPHEAD 1245 |
 | Revival screen | Jijimon's house 205 when Angemon or Monzaemon is recruited or prosperity >= 50, else 218 | `murd.c`, `dooa.c` |
-| Recruitment | no recruit code: scripts set trigger 200 + type and add to p1; C only reads it (prosperity, tournament pools, the city layout, the Kabuterimon / Kuwagamon training bonus, Birdramon's destinations) | many |
+| Recruitment | no recruit code: scripts set trigger 200 + type below 112, or operand 0x8000 + type for saved recruit bits above it (0302), and add to p1; C only reads it (prosperity, tournament pools, the city layout, the Kabuterimon / Kuwagamon training bonus, Birdramon's destinations) | many |
 | Overlay maps | the shop overlay on 8 screens, the arena overlay on 2 | `SHOP_MAPS`, `ARENA_MAPS` (`script_common.c`) |
 | Night lamps | screen 183, objects 0x31-0x32, on from 19:00 | `MAP_LIGHT_UPDATE_DATA` (`utils2.c`) |
 | Cups | cup definitions are `DATA` blocks in the arena scripts (section 10 of script 213: 23 cups x 5 blocks: text, requirement, over-level list, eligible list, rival pool); calendar 30 x 6; registration, reminders (12:00, 20:00, 23:01) and the 3-round bracket are C | `dget.c`, `tournament.c`, `utils2.c` |
@@ -554,6 +554,7 @@ The player-facing behaviour is in [../mods/options.md](../mods/options.md) "EXTE
 | 0120, 0122, 0124 | medals, tournament/daily/daytime rules as data; the three C quirk fixes of section 5 |
 | 0138 | a script whose first line is the tamer's pauses the game (the tamer could walk during the dialogue) |
 | 0161 | prosperity counts every recruitable type, not only 3-58, so a story mod's recruits are worth something to the city |
+| 0302 | reuse SET_TRIGGER, UNSET_TRIGGER and IF operands 0x8070..0x83ff for saved recruited bits; high-ID NPC presence and roster prosperity use the same state, with a generated compact high-ID list |
 | 0165 | a temporary test tool: the screen jump (does nothing with EXTENDED STORY off) |
 | 0199 | the EXTENDED STORY option (section 9) |
 | 0230 | a ground item spot gives its item once a day; the picked spots are saved |

@@ -2,10 +2,13 @@
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+import json
 
 from tools.dws import recruitment
 from tools.dws.py import lower
-from tools.dws import build
+from tools.dws import build, bytecode, backend
+from tools import city_residents as city
 from tools.city_residents import membership_bits, residents
 
 ROOT = recruitment.ROOT
@@ -90,6 +93,94 @@ class Recruitment(unittest.TestCase):
         source = self.lowered('geko-swamp')
         self.assertIn('recruit(species("Otamamon"));', source)
         self.assertNotIn(recruitment.KEY, source[source.index('on talk(otamamon)'):])
+
+    def test_high_species_through_python_and_roster_gate(self):
+        source = """from dw import *
+area = screen(3)
+resident = area.npc(Species.Wizardmon, slot=5, at=(0, 0), when=recruited(Species.Wizardmon))
+@resident.on_talk
+def talk():
+    recruit(Species.Wizardmon)
+    if recruited(Species.Wizardmon):
+        unrecruit(Species.Wizardmon)
+"""
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            path = root / 'story/mods/fixture/src/resident.py'
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+            roster = root / 'roster.json'
+            roster.write_text('[{"id":241,"hidden":false}]')
+            with patch.object(city, 'ROSTER', roster), patch.object(recruitment, 'roster', return_value={241}), recruitment.story(True):
+                prog = build.compile_sources([str(path)], 'species', text_source='ours')
+                code = '\n'.join(prog.b.scripts[4]['events'][0][2])
+                self.assertIn('SET_TRIGGER 33009', code)
+                self.assertIn('UNSET_TRIGGER 33009', code)
+                self.assertIn('IF not trigger 33009', code)  # announcement's first-recruit guard
+                self.assertIn(recruitment.KEY, prog.used_text)
+                rule = prog.b.city['presence'][3]['npcs'][0][3]
+                self.assertEqual(backend.presence_if(rule, 3, 5), 'trigger 33009')
+                script = ('.section 0 setup\n.section 10 start\nsetup:\nIF ' +
+                          backend.presence_if(rule, 3, 5) + ', else hidden\nhidden:\nEND_SCRIPT\nstart:\n' +
+                          code + '\nEND_SCRIPT\n')
+                compiled = root / 'DG.SCN'
+                compiled.write_bytes(bytecode.assemble_script(script, 'high resident')[0])
+                self.assertEqual(city.compiled_recruits(compiled), {241})
+                self.assertEqual(city.verify([compiled]), 1)
+                self.assertEqual(city.membership_bits(), bytes(14))
+                self.assertIn('= {241};', city.extra_header())
+                # An additional imported recruit is still refused by the exact gate.
+                extra = bytecode.assemble_script('.section 0 s\ns:\nSET_TRIGGER 33041\nEND_SCRIPT', 'unlisted')[0]
+                unlisted = root / 'MAPHEAD.SCN'
+                unlisted.write_bytes(extra)
+                with self.assertRaisesRegex(ValueError, r'unlisted \[273\]'):
+                    city.verify([compiled, unlisted])
+
+    def test_high_send_to_city_and_recruit_tests(self):
+        source = """from dw import *
+area = screen(3)
+resident = area.npc(Species.Datamon, slot=5, at=(0, 0), when=not recruited(Species.Datamon))
+@resident.on_talk
+def talk():
+    send_to_city(species=Species.Datamon, line="Going.")
+"""
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'story/mods/fixture/src/resident.py'
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+            prog = build.compile_sources([str(path)], 'species', text_source='ours')
+            code = '\n'.join(prog.b.scripts[4]['events'][0][2])
+            self.assertIn('SET_TRIGGER 33062', code)
+            rule = prog.b.city['presence'][3]['npcs'][0][3]
+            self.assertEqual(backend.presence_if(rule, 3, 5), 'not trigger 33062')
+            with self.assertRaises(build.DwsErrors):
+                build.compile_sources([str(path)], 'original', text_source='ours')
+
+    def test_recruit_operand_boundaries_and_original_bytes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'recruits.dws'
+            for species in (0, 111, 112, 124, 179, 241, 273, 290, 294, 1023):
+                with self.subTest(species=species):
+                    path.write_text(f'script 1 {{ on enter {{ recruit(species({species})); '
+                                    f'if (is_recruited(species({species}))) {{ unrecruit(species({species})); }} }} }}')
+                    prog = build.compile_sources([str(path)], 'species', text_source='ours')
+                    code = '\n'.join(prog.b.scripts[1]['events'][0][2])
+                    operand = 200 + species if species < 112 else 0x8000 + species
+                    self.assertIn(f'SET_TRIGGER {operand}', code)
+                    self.assertIn(f'UNSET_TRIGGER {operand}', code)
+                    if species < 112:
+                        old = build.compile_sources([str(path)], 'original', text_source='ours')
+                        self.assertEqual(prog.b.scripts[1]['events'][0][2], old.b.scripts[1]['events'][0][2])
+                    else:
+                        with self.assertRaises(build.DwsErrors):
+                            build.compile_sources([str(path)], 'original', text_source='ours')
+            for species in (-1, 1024, 65535):
+                for action in ('recruit', 'unrecruit', 'is_recruited'):
+                    with self.subTest(species=species, action=action):
+                        body = f'{action}(species({species}));' if action != 'is_recruited' else f'if (is_recruited(species({species}))) {{ return; }}'
+                        path.write_text('script 1 { on enter { ' + body + ' } }')
+                        with self.assertRaises(build.DwsErrors):
+                            build.compile_sources([str(path)], 'species', text_source='ours')
 
     def test_membership_is_the_roster(self):
         bits = membership_bits()

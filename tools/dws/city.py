@@ -230,7 +230,8 @@ class State:
         return cls.LEVELS
 
     def recruited(self, sp):
-        return (200 + sp) in self.triggers if sp < 0x70 else ('r', sp) in self.triggers
+        from .recruitment import recruit_trigger
+        return recruit_trigger(sp) in self.triggers or ('r', sp) in self.triggers
 
     def pstat(self, n): return self.pstats.get(n, 0)
 
@@ -446,7 +447,11 @@ def parse_city(p, c):
         if t0.kind == 'id' and t0.val in defs: p.i += 1; return ('ref', t0.val)
         if t0.val == 'always': p.i += 1; return ('true',)
         if t0.val == 'never': p.i += 1; return ('false',)
-        if t0.val == 'recruited': p.i += 1; p.expect('('); s = species(); p.expect(')'); return ('trig', 200 + s)
+        if t0.val == 'recruited':
+            from .recruitment import recruit_trigger
+            p.i += 1; p.expect('('); s = species(); p.expect(')')
+            try: return ('trig', recruit_trigger(s))
+            except ValueError as e: raise DwsError(str(e), t0.pos)
         if t0.val == 'trigger': p.i += 1; p.expect('('); n = num(); p.expect(')'); return ('trig', n)
         if t0.val == 'flag':                      # a flag of the program by name (resolved to its trigger by the compiler)
             p.i += 1; p.expect('('); nm = p.ident('a flag name'); p.expect(')'); return ('flag', nm.val, nm.pos)
