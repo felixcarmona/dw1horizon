@@ -131,14 +131,14 @@ return 'installed'
 """)
 
 
-def call_section(e, script, section):
+def call_section(e, script, section, param=0):
     """Enter a real handler at a frame boundary, as the map trigger does."""
     e.run('lua', f"""
 BR_ROUTE={{}}
 BR_ROUTE.bp=PCSX.addBreakpoint({e.A('gameLoop')},'Exec',4,'bird-route',function()
  local r=PCSX.getRegisters()
  if BR_ROUTE.ra then r.GPR.n.ra=BR_ROUTE.ra;BR_ROUTE.bp:remove();return end
- BR_ROUTE.ra=r.GPR.n.ra;r.GPR.n.a0={script};r.GPR.n.a1={section};r.GPR.n.a2=0
+ BR_ROUTE.ra=r.GPR.n.ra;r.GPR.n.a0={script};r.GPR.n.a1={section};r.GPR.n.a2={param}
  r.GPR.n.ra={e.A('gameLoop')};r.pc={e.A('callScriptSection')}
 end)
 """)
@@ -193,8 +193,11 @@ end)""")
             bridge_heap = free_heap(e, bridge_ram)
             assert bridge_heap['free'] > 0
             install(e, 'lost' if case == 'lost' else 'won')
-            e.gs('approach', '2')
-            e.press('CONFIRM', 6)
+            # `approach` stood the tamer inside Birdramon's collision box (and a position poke leaves the camera behind, so
+            # the NPC is off screen and cannot be touched). Enter the real talk handler the way checkMapInteraction does:
+            # TALKED_TO_ENTITY = entity slot 4 (NPC slot 2), callScriptSection(screen, scriptId 7, 1).
+            e.poke('TALKED_TO_ENTITY', bytes([4]))
+            call_section(e, 39, 7, 1)
             deadline = time.monotonic() + 240
             while time.monotonic() < deadline:
                 ram = e.ram(); game = e.peek('GAME_STATE', 'H', ram)
@@ -213,12 +216,13 @@ end)""")
             else: raise AssertionError(f'{case}: fight/scene did not finish')
             results[case].update(bridge_species=bridge_species, bridge_heap=bridge_heap)
             results[case]['events'] = e.run('lua', "return table.concat(BR.events,'\\n')").strip().splitlines()
+            print('result', case, json.dumps(results[case]), flush=True)
             if case != 'lost':
                 assert e.run('lua', 'return BR.jingle').strip() == 'true'
                 assert 'foe type 21' in results[case]['events']
                 assert results[case]['old_flag'] == (case == 'legacy')
                 e.press('CONFIRM', 8); e.wait(2); assert e.in_control()
-                results[case]['reward_prosperity'] = int(e.run('lua', 'return BR.reward').strip())
+                results[case]['reward_prosperity'] = e.ram()[e.A('SCRIPT_STATE') - 0x80000000 + 346]   # the extended pass writes it without writePStat
                 assert results[case]['reward_prosperity'] == (50 if case == 'won' else 12)
                 results[case]['city'] = e.peek('CURRENT_SCREEN', 'h')
                 assert results[case]['city'] == (177 if case == 'won' else 171)
@@ -235,9 +239,14 @@ end)""")
                 e.poke('TALKED_TO_ENTITY', bytes([2]))
                 call_section(e, 167, 81)  # original counter use trigger
                 for _ in range(20):
-                    if e.peek('CURRENT_MENU', 'i') == 10: break
+                    # The menu id differs from the first harness's guess and CONFIRM takes its first row (Great Canyon):
+                    # reaching screen 38 here is the taxi working.
+                    if e.peek('CURRENT_MENU', 'i') == 10 or e.peek('CURRENT_SCREEN', 'h') == 38: break
                     e.press('CONFIRM', 6); e.wait(.5)
-                else: raise AssertionError('Birdra Transport menu did not open')
+                else:
+                    r = e.ram(); print('transport state', {k: e.peek(k, f, r) for k, f in (('CURRENT_SCREEN', 'h'), ('CURRENT_MENU', 'i'), ('ACTIVE_INSTRUCTION', 'B'), ('SCRIPT_SECTION', 'H'), ('IS_SCRIPT_PAUSED', 'i'), ('TAMER_STATE', 'b'))}, flush=True)
+                    e.run('shot', str(out / f'{case}-transport-fail.png'))
+                    raise AssertionError('Birdra Transport menu did not open')
                 e.run('shot', str(out / f'{case}-transport.png'))
                 for _ in range(30):
                     e.press('CONFIRM', 6); e.wait(.5)
