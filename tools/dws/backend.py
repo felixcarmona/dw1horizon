@@ -441,11 +441,15 @@ def new_slot_entry(m, screen, slot, dig, stats, ln, like, dwmap, section=None):
     else:
         e = json.loads(json.dumps(tpl))
     x, z = stats['posX'], stats['posZ']
+    if stats.pop('still', None):                        # stands where it is put: the template's path is not copied
+        e['aiSections'] = [0, -1, -1, -1, -1, -1, -1, -1]; e['waypoints'] = [[60, 0, 0]]
+        tpl = None; e['fleeX'], e['fleeZ'] = x, z
     if tpl is not None:
         dwmap.shift_path(e, x - e['posX'], z - e['posZ'])
     else:
         e['fleeX'], e['fleeZ'] = x, z
-    e.update(type=dig, posX=x, posY=0, posZ=z, scriptId=section if section is not None else 5 + slot)
+    y = next((w['y'] for w in m.warps if w['targetMap'] != -1 and w.get('y')), 0)   # the ground of screens 4, 53 and 163 is not at height 0
+    e.update(type=dig, posX=x, posY=y, posZ=z, scriptId=section if section is not None else 5 + slot)
     set_moves(e, dig, ln)
     for k, v in stats.items():
         if k in ('posX', 'posZ'): continue
@@ -705,7 +709,7 @@ def place_digimon(comp, mh, report):
         for slot, sp, talk, cnd in sc.get('npcs', []):
             if (screen, slot) not in used_rules:
                 report.append(f'note: presence screen {screen} slot {slot}: check-only (the slot is not one this program places)')
-    checked = set()
+    checked = set(); short = []
     for screen, dig, ln in pending:                         # after all of a screen's changes
         if screen in checked: continue
         checked.add(screen)
@@ -730,22 +734,26 @@ def place_digimon(comp, mh, report):
             report.append(f'note: membudget unavailable ({e}); using the rough model check')
             sec = re.search(rf'^sec{screen}:.*?(?=^sec\d+:|\Z)', mh, re.S | re.M)
             if re.search(rf'^\s*SET_DIGIMON\s+{dig},', sec.group(0), re.M):
-                check_model_heap(sec.group(0), dig, screen, ln)
+                try: check_model_heap(sec.group(0), dig, screen, ln)
+                except BackendError as x: short.append((str(x), ln))
             continue
         report.append(f'screen {screen} heap: needs {b["peak"] // 1024} KB of {b["available"] // 1024} KB '
                       f'({"measured" if b["measured"] else "estimated"}), margin {b["margin"] // 1024} KB'
                       + (' (tight: it fits on the worst path the setup can take; play the screen once to see it load)'
                          if 0 <= b['margin'] < 8 * 1024 else ''))
         if b['margin'] < 0:
-            raise BackendError(f'screen {screen} would need {b["peak"] // 1024} KB of heap for its Digimon '
-                             f'({", ".join(b["worst"])}) but only {b["available"] // 1024} KB are free there; '
-                             'the loading screen would hang. Replace other Digimon of that screen, or pick a smaller one or one '
-                             f'already there (its model is loaded once): python3 tools/dws.py slots {screen} lists both', ln)
+            short.append((f'screen {screen} would need {b["peak"] // 1024} KB of heap for its Digimon '
+                          f'({", ".join(b["worst"])}) but only {b["available"] // 1024} KB are free there; '
+                          'the loading screen would hang. Replace other Digimon of that screen, or pick a smaller one or one '
+                          f'already there (its model is loaded once): python3 tools/dws.py slots {screen} lists both', ln))
+            continue
         sec = re.search(rf'^sec{screen}:.*?(?=^sec\d+:|\Z)', mh, re.S | re.M).group(0)
-        models = {int(t) for t in re.findall(r'^\s*LOAD_DIGIMON\s+(\d+)', sec, re.M)}
-        if len(re.findall(r'^\s*LOAD_DIGIMON\s+\d+', sec, re.M)) > NPC_SLOTS['max'] or len(models) > 5:
+        models = {int(t) for t in re.findall(r'^\s*LOAD_DIGIMON(?:16)?\s+(\d+)', sec, re.M)}
+        if len(re.findall(r'^\s*LOAD_DIGIMON(?:16)?\s+\d+', sec, re.M)) > NPC_SLOTS['max'] or len(models) > 5:
             report.append(f'warning: MAPHEAD screen {screen} has {len(models)} distinct models; on one path at most '
                           f'5 (NPC_MODELS) and {NPC_SLOTS["max"]} LOAD_DIGIMON (LOADED_DIGIMON_MODELS) can be used')
+    if short:                                               # every screen that does not fit, not only the first
+        raise BackendError('\n'.join(m for m, _ in short), short[0][1])
     out_dir = os.path.join(getattr(comp, 'run_dir', RUN_ROOT), 'maps')
     for rel, m in maps.items():
         own = inplace_maps.get(rel)                         # a new file name: written back beside its screen file (the build's new-files step adds it)

@@ -367,6 +367,7 @@ def pipeline(a, r):
     with r.step('Story heap check with final executable map'):
         from tools.derive import recipe as recipes
         checkenv = dict(env, **({} if r.dry else recipes.env(recipe, str(build))), DW_HEAP_MAP=str(elfmap),
+                        DW_MODEL_ARCHIVE=str(build / 'DIGI.DAT'), DW_EXE_FACTS=str(build / 'derived/exe-facts.json'),
                         DWS_RELAYOUT='1', SCNASM_PACK_ASCII='1')
         facts = {} if r.dry else json.loads((build / 'derived/exe-facts.json').read_text())
         target = ['--ground-pickup-max', str(facts.get('ground_pickup_max') or 0),

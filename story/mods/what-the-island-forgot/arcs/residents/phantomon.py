@@ -4,7 +4,7 @@ from dw import *
 
 gallery = screen(Screen.grey_lords_mansion_56)
 phantomon = gallery.npc(Species.Phantomon, at=(-500, -400), hp=1500, mp=2800, offense=470, defense=250, speed=130, brain=250, bits=700,
-                        range=0, when=not recruited(Species.Phantomon) and clock.hour >= 20)
+                        range=0, still=True, when=not recruited(Species.Phantomon) and clock.hour >= 20)
 
 
 @phantomon.on_talk

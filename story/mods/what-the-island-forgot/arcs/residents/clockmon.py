@@ -3,7 +3,7 @@
 from dw import *
 
 sewer = screen(Screen.sewer_163)
-clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), range=0, when=not recruited(Species.Clockmon))
+clockmon = sewer.npc(Species.Clockmon, at=(-350, -900), range=0, still=True, when=not recruited(Species.Clockmon))
 
 
 @clockmon.on_talk

@@ -4,7 +4,7 @@ from dw import *
 
 valley = screen(Screen.ancient_speedy_region_85)
 armadillomon = valley.npc(Species.Armadillomon, at=(-600, 800), hp=1800, mp=2000, offense=300, defense=180, speed=150, brain=100, bits=600,
-                          range=0, when=not recruited(Species.Armadillomon))
+                          range=0, still=True, when=not recruited(Species.Armadillomon))
 
 
 @armadillomon.on_talk

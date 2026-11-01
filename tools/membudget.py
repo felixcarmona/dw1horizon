@@ -681,9 +681,9 @@ def setup_paths(text, screen, hour=None):
                 if re.fullmatch(r'p\d+', a[0]) and re.fullmatch(r'-?\d+', a[1]) and a[0] != f'p{hv}':
                     if op == 'SET_PSTAT': known = dict(known, **{a[0]: int(a[1])})
                     elif a[0] in known: known = dict(known, **{a[0]: known[a[0]] + int(a[1])})
-            elif op == 'LOAD_DIGIMON':
+            elif op in ('LOAD_DIGIMON', 'LOAD_DIGIMON16'):
                 loads += (int(arg.split(',')[0]),)
-            elif op == 'SET_DIGIMON':
+            elif op in ('SET_DIGIMON', 'SET_DIGIMON16'):
                 a = [int(x) for x in arg.split(',')]; sets += ((a[0], a[1]),)
             elif op == 'JUMP_TO':
                 pc = labels[arg.strip()]; continue

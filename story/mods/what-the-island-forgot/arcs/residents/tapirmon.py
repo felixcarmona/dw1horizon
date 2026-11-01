@@ -3,7 +3,7 @@
 from dw import *
 
 lake = screen(Screen.dragon_eye_lake_6)
-tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), range=0, when=not recruited(Species.Tapirmon))
+tapirmon = lake.npc(Species.Tapirmon, at=(650, -2000), range=0, still=True, when=not recruited(Species.Tapirmon))
 tapirmon_stirred = flag()
 
 

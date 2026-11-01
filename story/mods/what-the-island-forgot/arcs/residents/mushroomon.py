@@ -4,7 +4,7 @@ from dw import *
 
 area = screen(Screen.mt_panorama_spore_area_21)
 mushroomon = area.npc(Species.Mushroomon, at=(-450, 100), hp=1200, mp=2000, offense=300, defense=150, speed=120, brain=100, bits=300,
-                      range=0, when=not recruited(Species.Mushroomon))
+                      range=0, still=True, when=not recruited(Species.Mushroomon))
 
 
 @mushroomon.on_talk

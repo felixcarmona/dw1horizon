@@ -934,6 +934,7 @@ class Module:
                 args.append(f'at: ({self.int_const(at.elts[0])}, {self.int_const(at.elts[1])})')
             if not d.get('taken') and d['entity'] != 5 + d['slot']: args.append(f'section: {d["entity"]}')    # (Claims.talk_section)
             if 'like_slot' in kw: args.append(f'like: {self.int_const(kw["like_slot"])}')
+            if isinstance(kw.get('still'), ast.Constant) and kw['still'].value is True: args.append('still: true')
             for k, dk in (('hp', 'hp'), ('mp', 'mp'), ('offense', 'off'), ('defense', 'def'), ('speed', 'speed'), ('brain', 'brain'), ('bits', 'bits'), ('range', 'range')):
                 if k in kw: args.append(f'{dk}: {self.int_const(kw[k])}')
             if scr.get('map'): args.append(f'map: "{scr["map"]}"')

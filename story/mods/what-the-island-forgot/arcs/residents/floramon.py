@@ -1,9 +1,9 @@
 # Native Forest 4: Floramon guards a seed that wants patience; a Sweet Nut wakes it (consumed, once). No fight. Its home
-# is the Item Bank (city/item-keeper.py).
+# is the Market Shed (district/market-shed.py).
 from dw import *
 
 forest = screen(Screen.native_forest_4)
-floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, when=not recruited(Species.Floramon))
+floramon = forest.npc(Species.Floramon, at=(2550, 800), range=0, still=True, when=not recruited(Species.Floramon))
 
 
 @floramon.on_talk

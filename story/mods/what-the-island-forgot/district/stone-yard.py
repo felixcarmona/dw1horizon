@@ -3,20 +3,13 @@
 from dw import *
 
 stone_yard = new_screen(357, map="build/what-the-island-forgot-maps/screens/BARR01.MAP")
-# the residents: Digmon by the stairs (the Drill Tunnel), Triceramon on the left with its rock (the Ancient Dino Region), each
-# standing here once beaten where it lived
+# the resident: Digmon by the stairs (the Drill Tunnel), standing here once beaten where it lived
 digmon = stone_yard.npc(Species.Digmon, at=(-1200, -2000), range=0, when=recruited(Species.Digmon))
-triceramon = stone_yard.npc(Species.Triceramon, at=(-1500, -1000), range=0, when=recruited(Species.Triceramon))
 
 
 @digmon.on_talk
 def talk():
     say("Every stone of this yard I set myself.", "In the tunnels nobody came back to thank me. Here you all walk on it.")
-
-
-@triceramon.on_talk
-def talk():
-    say("It goes there.", "...Good rock. Good city.")
 
 
 # The Stone Yard's stairs (its tiles run step 0) go down to the gate in the lower town's hedge (maps/twnb-gate.py: exit 7

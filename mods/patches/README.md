@@ -121,9 +121,9 @@ the 14-byte low-ID membership table and an exact-sized generated u16 high-ID lis
 the current roster has 20 entries, 40 bytes of list data. `tools.city_residents
 --c-extra-header TREE` must run before a native build (the integrated drivers do
 this automatically). The City tab and save format already support these IDs.
-Measured on the eight-language build with 0306: `main_BSS_END` 0x801ce8b0, heap
-185,920 B. The tightest setups are screen 207 with 1,200 B of margin and screen 41
-with 4,136 B. The 20-entry list and roster cost 24 B of main against the same patch
+Measured on the eight-language build: `main_BSS_END` 0x801ce860, heap 186,000 B.
+The tightest setups are screen 207 with 1,280 B of margin and screen 41 with
+4,216 B. The 20-entry list and roster cost 24 B of main against the same patch
 with an empty list.
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.

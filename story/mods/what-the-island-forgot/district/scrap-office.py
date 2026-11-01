@@ -1,10 +1,10 @@
 # 361, the Scrap Office: Datamon, from Factorial Town, buys and sells what the island throws away (the game's buy/sell menu).
-# Wizardmon, from the Grey Lord's Mansion, reads Datamon's files aloud.
+# Pumpkinmon, from the Toy Mansion's nights, sells the hot vegetables nobody else stocks: the Item Shop 216 has no heap for it.
 from dw import *
 
 scrap_office = new_screen(361, map="build/what-the-island-forgot-maps/screens/BARR05.MAP")
 datamon = scrap_office.npc(Species.Datamon, at=(0, -250), range=0, when=recruited(Species.Datamon))
-wizardmon = scrap_office.npc(Species.Wizardmon, at=(450, -650), range=0, when=recruited(Species.Wizardmon))
+pumpkinmon = scrap_office.npc(Species.Pumpkinmon, at=(450, -650), range=0, when=recruited(Species.Pumpkinmon))
 
 
 @datamon.on_talk
@@ -13,6 +13,7 @@ def talk():
     shop(Item.PortPotty, Item.EnemyRepel, Item.EnemyBell, Item.RestPillow, Item.Bandage)
 
 
-@wizardmon.on_talk
+@pumpkinmon.on_talk
 def talk():
-    say("Datamon files what is lost, and I read the files aloud.", "In the Mansion the pages went blank. Here the words stay.")
+    say("Trick or treat? Here it is always treat, if you can pay.", "Hot roots! Your partner will run twice as fast!")
+    shop(Item.Supercarrot, Item.HawkRadish, Item.SpinyGreen)

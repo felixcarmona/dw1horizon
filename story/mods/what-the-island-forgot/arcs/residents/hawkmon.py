@@ -4,7 +4,7 @@
 from dw import *
 
 ledge = screen(Screen.great_canyon_entrance)
-hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), range=0, when=not recruited(Species.Hawkmon))
+hawkmon = ledge.npc(Species.Hawkmon, at=(1200, -450), range=0, still=True, when=not recruited(Species.Hawkmon))
 
 
 @hawkmon.on_talk

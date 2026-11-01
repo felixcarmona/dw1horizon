@@ -4,7 +4,7 @@ from dw import *
 
 tunnel = screen(Screen.drill_tunnel_24)
 digmon = tunnel.npc(Species.Digmon, at=(-1300, 1800), hp=1000, mp=1800, offense=250, defense=130, speed=80, brain=100, bits=300,
-                    range=0, when=not recruited(Species.Digmon))
+                    range=0, still=True, when=not recruited(Species.Digmon))
 
 
 @digmon.on_talk
