@@ -1,8 +1,9 @@
 """Apemon: native hopping idle and planted diagonal knuckle locomotion.
 
-Keep the distinct93/20/43/20/20-tick performances. Preserve upper gestures,
+Keep the distinct 93/20/43/20/20-tick performances. Preserve upper gestures,
 fit the right hip anchor, carry the rigid staff above the limbs, and bound
-running pelvis roll. Four ordinary MMD limb chains support movement.
+running pelvis roll. Walk/condition/run travel 20/14/35 units per tick with four/two/three gait
+cycles and 0.4/0.5/0.25 stance duty. Four ordinary MMD limb chains support movement.
 """
 import copy
 import hashlib
@@ -49,11 +50,11 @@ def _author(old, sk):
         template = 33 if slot == 0 else slot
         fs, loop, events = animsheet.slot_frames(old, n, template)
         duration = len(fs) - 1
-        cycles = {0: 1, 1: 1, 2: 2, 3: 1, 4: 2}[slot]
+        cycles = {0: 1, 1: 1, 2: 4, 3: 2, 4: 3}[slot]
         period = duration / cycles
-        duty = {0: 1, 1: 1, 2: 0.6, 3: 0.65, 4: 0.3}[slot]
+        duty = {0: 1, 1: 1, 2: 0.4, 3: 0.5, 4: 0.25}[slot]
         contact = period * duty
-        speed = {0: 0, 1: 0, 2: 6, 3: 5, 4: 18}[slot]
+        speed = {0: 0, 1: 0, 2: 20, 3: 14, 4: 35}[slot]
         poses = []
         hist = {}
         errors = []

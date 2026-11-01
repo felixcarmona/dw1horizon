@@ -1,0 +1,943 @@
+From 87b2b8febd698043ff49e9503114686b4722fdd3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 11:19:34 +0000
+Subject: [PATCH] Show evolution requirements in a modal chart table
+
+---
+ config/us/overlay.ld     |  41 ++++
+ src/main/game_menu.c     | 458 +++++++++++++++++++++++++--------------
+ text/main/game_menu.yaml |  64 ++++--
+ 3 files changed, 382 insertions(+), 181 deletions(-)
+
+diff --git a/config/us/overlay.ld b/config/us/overlay.ld
+index 3a274196..ad9f2285 100644
+--- a/config/us/overlay.ld
++++ b/config/us/overlay.ld
+@@ -889,6 +889,47 @@ SECTIONS
+ 				.data.MAIN_D_8013468C
+ 			);
+ 			. = ALIGN(., 4);
++            /* Player chart opens MENU before reaching its modal renderer.
++             * The cell writer and primitive/number helpers stay resident to reserve scrolling room below EVL. */
++            BUILD_DIR/src/main/game_menu.c.o(
++                .text.chartCardBuild .text.chartCardBuild.*
++                .text.chartCardRender .text.chartCardRender.*
++                .text.chartCardPrompt .text.chartCardPrompt.*
++                .text.chartAppend .text.chartAppend.*
++                .rodata.CHART_POPUP_AUTOMATIC
++                .rodata.CHART_POPUP_BATTLES
++                .rodata.CHART_POPUP_BONUS_ANY
++                .rodata.CHART_POPUP_BONUS_ONE_OF
++                .rodata.CHART_POPUP_CLOSE
++                .rodata.CHART_POPUP_DISCIPLINE
++                .rodata.CHART_POPUP_EVOLVE
++                .rodata.CHART_POPUP_FROM
++                .rodata.CHART_POPUP_HAPPINESS
++                .rodata.CHART_POPUP_HAVE
++                .rodata.CHART_POPUP_MISTAKES
++                .rodata.CHART_POPUP_MISTAKES_ANY
++                .rodata.CHART_POPUP_NEEDS
++                .rodata.CHART_POPUP_NO
++                .rodata.CHART_POPUP_READY
++                .rodata.CHART_POPUP_SHORT
++                .rodata.CHART_POPUP_STATS
++                .rodata.CHART_POPUP_STATS_ANY
++                .rodata.CHART_POPUP_STAT_BRN
++                .rodata.CHART_POPUP_STAT_DEF
++                .rodata.CHART_POPUP_STAT_HP
++                .rodata.CHART_POPUP_STAT_MP
++                .rodata.CHART_POPUP_STAT_OFF
++                .rodata.CHART_POPUP_STAT_SPD
++                .rodata.CHART_POPUP_TECHS
++                .rodata.CHART_POPUP_TOP
++                .rodata.CHART_POPUP_VERDICT
++                .rodata.CHART_POPUP_VIEW
++                .rodata.CHART_POPUP_WEIGHT
++                .rodata.CHART_POPUP_YES
++                .rodata.CHART_STAT_NAMES
++            );
++            . = ALIGN(., 4);
++
+             /* Lab UI runs synchronously after the resident entry loads MENU.
+              * The roster callbacks and state stay resident. */
+             BUILD_DIR/src/main/mod_lab.c.o(.text.modLabFieldPtr .text.modLabFit .text.modLabBound
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 5cc91aa6..34b4b742 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -190,6 +190,8 @@ static void chartDetailOpen(int32_t id); /* MOD (portraits) */
+ static int32_t chartDetailInput(void);
+ static void chartOverviewInput(int32_t grid); /* MOD (chart) */
+ static void chartBoxXY(int32_t col, int32_t row, int16_t *x, int16_t *y);
++void loadMenuOverlay(void);
++void closeMenuOverlay(void);
+ static void chartCardRelease(void); /* MOD (chart criteria) */
+ static void chartVanillaInput(void); /* MOD (options): NEW DIGIMON off */
+ void renderPlayerInfoView(void);
+@@ -1524,7 +1526,7 @@ LabelCrop EVO_CHART_KEY_CROPS[4] = {
+ #endif
+ };
+ 
+-/* the chart detail's "Tree" (x from the card's shift) and level names (x from dx: each centred at dx - 0x44), rows 0x18
++/* The chart detail's "Tree" and level names (each centred at -0x44), rows 0x18
+  * ("Tree FreshTraining"), 0x24 ("RookieChampion"), 0x3c ("Ultimate"): Árbol, Novato and Perfecto are wider */
+ LabelCrop CHART_TREE_CROP = {
+ #if MOD_LANG_BUILD != MOD_LANG_EN
+@@ -1941,6 +1943,7 @@ void tickTriangleMenu(void)
+ 		PARTNER_ENTITY.digimonEntity.entity.isOnScreen = 1;
+ 		closeUIBoxIfOpen(1);
+ 		if (UI_BOX_DATA[1].frame == 0) {
++			closeMenuOverlay();
+ 			TRIANGLE_MENU_STATE = 0;
+ 		}
+ 	}
+@@ -2527,7 +2530,7 @@ void tickPlayerMenu(void)
+ 					    hasDigimonRaised((uint16_t)CHART_SELECTED_DIGIMON) != 0) {
+ 						chartBoxXY(CHART_SELECTED_COLUMN, CHART_SELECTED_ROW, &boxX, &boxY);
+ 						if (isUIBoxAvailable(2) == 1) {
+-							setRECT(&finalPos, -0x96, -0x59, 0x12c, MOD_OPT_EVO_GUIDE ? 208 : 190);
++							setRECT(&finalPos, -0x96, -0x59, 0x12c, 190);
+ 							startPos.x = boxX - 0x9b;
+ 							startPos.y = boxY - 0x70;
+ 							setWH(&startPos, 10, 10);
+@@ -2716,6 +2719,7 @@ void handleGameMenuSelection(int32_t selection)
+ 		TRIANGLE_MENU_STATE = 3;
+ 		break;
+ 	case 3:
++		loadMenuOverlay();
+ 		TRIANGLE_MENU_STATE = 5;
+ 		break;
+ 	case 4:
+@@ -3902,11 +3906,16 @@ static void chartDetailPlaceCursor(void)
+ 	}
+ }
+ 
++static int8_t CHART_POPUP;
++static int8_t CHART_CARD_SCROLL;
++static int8_t CHART_CARD_COUNT;
++#define CHART_CARD_VISIBLE 10
+ static int16_t CHART_CARD_ID;	/* MOD (chart criteria): the evolution whose card is drawn, -1 none */
+ static int16_t CHART_LIT_FOR;	/* the centre whose lit lines are in CHART_LIT, -1 none */
+ 
+ static void chartDetailOpen(int32_t id)
+ {
++	CHART_POPUP = 0;
+ 	CHART_CARD_ID = CHART_LIT_FOR = -1; /* MOD (chart criteria): the partner may have changed since the last time */
+ 	CHART_DETAIL_ID = id;
+ 	CHART_DETAIL_DEPTH = 0;
+@@ -3936,6 +3945,25 @@ static int32_t chartDetailInput(void)
+ 	int32_t id;
+ 	int32_t side;
+ 
++	/* Modal input is consumed before navigation, confirmation and history. */
++	if (CHART_POPUP) {
++		if (isKeyDown(CANCEL_BUTTON) || isKeyDown(0x80)) {
++			CHART_POPUP = 0;
++			CHART_CARD_ID = -1;
++			playSound(0, 4);
++		}
++		else if ((CHANGED_INPUT & 0x1000) && CHART_CARD_SCROLL > 0) CHART_CARD_SCROLL--;
++		else if ((CHANGED_INPUT & 0x4000) && CHART_CARD_SCROLL + CHART_CARD_VISIBLE < CHART_CARD_COUNT - 1) CHART_CARD_SCROLL++;
++		return 1;
++	}
++	if (MOD_OPT_EVO_GUIDE && CHART_CURSOR_SIDE == 1 && isKeyDown(0x80) &&
++	    chartDetailBox(1, CHART_CURSOR_J, &x, &y) > 0) {
++		CHART_POPUP = 1;
++		CHART_CARD_SCROLL = 0;
++		CHART_CARD_ID = -1;
++		playSound(0, 3);
++		return 1;
++	}
+ 	side = CHART_CURSOR_SIDE;
+ 	if (chartDetailBox(side, CHART_CURSOR_J, &x, &y) == 0) {
+ 		chartDetailPlaceCursor(); /* no box under the cursor (a species without boxes on that side) */
+@@ -4645,25 +4673,25 @@ void renderEvoChartView(void)
+ }
+ 
+ /*
+- * MOD (chart criteria): with the cursor on one of the "to" boxes the detail view shows, in place of the "from" column,
+- * the card of that evolution's requirements: care mistakes, weight, stats (a Rookie: the highest stat) and one bonus,
++ * MOD (chart criteria): with the cursor on one of the "to" boxes the detail view opens
++ * a modal card of that evolution's requirements: care mistakes, weight, stats (a Rookie: the highest stat) and one bonus,
+  * the four evoRequirementsMet scores. In the tree of the partner's own species the card adds the partner's values and a
+  * mark per requirement, and the lines go green to the evolutions whose requirements reach evoPassPoints (special
+  * evolutions, the time each level waits and the preference for species not yet raised are left out), dim to the rest;
+  * other trees keep the original colours. A Baby II reached from a Fresh has no requirements ("Automatic").
+- * The card's text takes the overview's rows of the text area (CHART_CARD_ROW, two lines a row); chartCardRelease
++ * The popup's text takes the overview's rows of the text area (CHART_CARD_ROW, two lines a row); chartCardRelease
+  * gives them back when the detail closes.
+  */
+ #define CHART_CARD_ROW		0x60
+ #define CHART_CARD_LINES	18
+-#define CHART_CARD_VALUE_U	88	/* where a line's value is in its half row */
+-#define CHART_CARD_VERDICT_ROW	(CHART_CARD_ROW + (CHART_CARD_LINES / 2) * 12)
+-#define CHART_CARD_X		20	/* the card, screen pixels */
+-#define CHART_CARD_Y		38
+-#define CHART_CARD_W		128
+-#define CHART_CARD_H		184
+-#define CHART_CARD_SHIFT	139	/* the level and name move right, under the "to" column */
+-#define CHART_CARD_TREE_SHIFT	21	/* and the "Tree" label clears the card */
++#define CHART_CARD_TITLE_ROW (CHART_CARD_ROW + (CHART_CARD_LINES / 2) * 12)
++#define CHART_CARD_VERDICT_ROW (CHART_CARD_TITLE_ROW + 12)
++#define CHART_CARD_FOOTER_ROW (CHART_CARD_VERDICT_ROW + 12)
++#define CHART_CARD_HEADER_ROW (CHART_CARD_FOOTER_ROW + 12)
++#define CHART_CARD_X 18
++#define CHART_CARD_Y 26
++#define CHART_CARD_W 284
++#define CHART_CARD_H 190
+ #define CHART_LIT_EDGE		0x50be28 /* the lines of a met evolution, BGR */
+ #define CHART_LIT_CORE		0xb4ffaa
+ #define CHART_DIM_LINE		0x6a5c48
+@@ -4674,24 +4702,89 @@ void renderEvoChartView(void)
+ extern int32_t MOD_RENDER_PASS;
+ int8_t getNumMasteredMoves(void);
+ 
++/* Packed immutable text cells: only their screen positions change while scrolling. */
++typedef struct {
++	int16_t w;
++	uint8_t u, v;
++} ChartCell;
+ typedef struct {
+-	int8_t color;		/* TEXT_COLORS of the label and of the value */
+-	int8_t valueColor;
+-	int8_t mark;		/* 0 none, 1 met, 2 not met */
+-	int8_t indent;
+-	int16_t labelW;
+-	int16_t valueW;
++	ChartCell label, need, value;
++	int8_t valueColor, mark, indent;
+ } ChartCardLine;
+-
+ static ChartCardLine CHART_CARD[CHART_CARD_LINES];
+-static int8_t CHART_CARD_COUNT;
++static int16_t CHART_PACK_U, CHART_PACK_V;
+ static int8_t CHART_CARD_MINE;		/* the card is of the partner's tree */
+ static int8_t CHART_TEXT_TAKEN;		/* the card wrote over the overview's rows */
+ static int16_t CHART_CARD_VERDICT_W;
+ static int8_t CHART_CARD_VERDICT_COLOR;
++static int16_t CHART_CARD_FOOTER_W;
++static int16_t CHART_PROMPT_W;
++static int16_t CHART_NEEDS_W;
++static int16_t CHART_HAVE_W;
+ static uint8_t CHART_LIT;		/* bit j: the "to" box j's evolution is met */
+-static char *CHART_STAT_NAMES[6] = { CHART_STR_STAT_HP,  CHART_STR_STAT_MP,  CHART_STR_STAT_OFF,
+-				      CHART_STR_STAT_DEF, CHART_STR_STAT_SPD, CHART_STR_STAT_BRN };
++/* Only MENU code reads these immutable translated strings. */
++static const char CHART_POPUP_AUTOMATIC[] __attribute__((section(".rodata.CHART_POPUP_AUTOMATIC"))) = CHART_STR_AUTOMATIC;
++#define CHART_TEXT_AUTOMATIC ((char *)CHART_POPUP_AUTOMATIC)
++static const char CHART_POPUP_BATTLES[] __attribute__((section(".rodata.CHART_POPUP_BATTLES"))) = CHART_STR_BATTLES;
++#define CHART_TEXT_BATTLES ((char *)CHART_POPUP_BATTLES)
++static const char CHART_POPUP_BONUS_ANY[] __attribute__((section(".rodata.CHART_POPUP_BONUS_ANY"))) = CHART_STR_BONUS_ANY;
++#define CHART_TEXT_BONUS_ANY ((char *)CHART_POPUP_BONUS_ANY)
++static const char CHART_POPUP_BONUS_ONE_OF[] __attribute__((section(".rodata.CHART_POPUP_BONUS_ONE_OF"))) = CHART_STR_BONUS_ONE_OF;
++#define CHART_TEXT_BONUS_ONE_OF ((char *)CHART_POPUP_BONUS_ONE_OF)
++static const char CHART_POPUP_CLOSE[] __attribute__((section(".rodata.CHART_POPUP_CLOSE"))) = CHART_STR_CLOSE;
++#define CHART_TEXT_CLOSE ((char *)CHART_POPUP_CLOSE)
++static const char CHART_POPUP_DISCIPLINE[] __attribute__((section(".rodata.CHART_POPUP_DISCIPLINE"))) = CHART_STR_DISCIPLINE;
++#define CHART_TEXT_DISCIPLINE ((char *)CHART_POPUP_DISCIPLINE)
++static const char CHART_POPUP_EVOLVE[] __attribute__((section(".rodata.CHART_POPUP_EVOLVE"))) = CHART_STR_EVOLVE;
++#define CHART_TEXT_EVOLVE ((char *)CHART_POPUP_EVOLVE)
++static const char CHART_POPUP_FROM[] __attribute__((section(".rodata.CHART_POPUP_FROM"))) = CHART_STR_FROM;
++#define CHART_TEXT_FROM ((char *)CHART_POPUP_FROM)
++static const char CHART_POPUP_HAPPINESS[] __attribute__((section(".rodata.CHART_POPUP_HAPPINESS"))) = CHART_STR_HAPPINESS;
++#define CHART_TEXT_HAPPINESS ((char *)CHART_POPUP_HAPPINESS)
++static const char CHART_POPUP_HAVE[] __attribute__((section(".rodata.CHART_POPUP_HAVE"))) = CHART_STR_HAVE;
++#define CHART_TEXT_HAVE ((char *)CHART_POPUP_HAVE)
++static const char CHART_POPUP_MISTAKES[] __attribute__((section(".rodata.CHART_POPUP_MISTAKES"))) = CHART_STR_MISTAKES;
++#define CHART_TEXT_MISTAKES ((char *)CHART_POPUP_MISTAKES)
++static const char CHART_POPUP_MISTAKES_ANY[] __attribute__((section(".rodata.CHART_POPUP_MISTAKES_ANY"))) = CHART_STR_MISTAKES_ANY;
++#define CHART_TEXT_MISTAKES_ANY ((char *)CHART_POPUP_MISTAKES_ANY)
++static const char CHART_POPUP_NEEDS[] __attribute__((section(".rodata.CHART_POPUP_NEEDS"))) = CHART_STR_NEEDS;
++#define CHART_TEXT_NEEDS ((char *)CHART_POPUP_NEEDS)
++static const char CHART_POPUP_NO[] __attribute__((section(".rodata.CHART_POPUP_NO"))) = CHART_STR_NO;
++#define CHART_TEXT_NO ((char *)CHART_POPUP_NO)
++static const char CHART_POPUP_READY[] __attribute__((section(".rodata.CHART_POPUP_READY"))) = CHART_STR_READY;
++#define CHART_TEXT_READY ((char *)CHART_POPUP_READY)
++static const char CHART_POPUP_SHORT[] __attribute__((section(".rodata.CHART_POPUP_SHORT"))) = CHART_STR_SHORT;
++#define CHART_TEXT_SHORT ((char *)CHART_POPUP_SHORT)
++static const char CHART_POPUP_STATS[] __attribute__((section(".rodata.CHART_POPUP_STATS"))) = CHART_STR_STATS;
++#define CHART_TEXT_STATS ((char *)CHART_POPUP_STATS)
++static const char CHART_POPUP_STATS_ANY[] __attribute__((section(".rodata.CHART_POPUP_STATS_ANY"))) = CHART_STR_STATS_ANY;
++#define CHART_TEXT_STATS_ANY ((char *)CHART_POPUP_STATS_ANY)
++static const char CHART_POPUP_STAT_BRN[] __attribute__((section(".rodata.CHART_POPUP_STAT_BRN"))) = CHART_STR_STAT_BRN;
++#define CHART_TEXT_STAT_BRN ((char *)CHART_POPUP_STAT_BRN)
++static const char CHART_POPUP_STAT_DEF[] __attribute__((section(".rodata.CHART_POPUP_STAT_DEF"))) = CHART_STR_STAT_DEF;
++#define CHART_TEXT_STAT_DEF ((char *)CHART_POPUP_STAT_DEF)
++static const char CHART_POPUP_STAT_HP[] __attribute__((section(".rodata.CHART_POPUP_STAT_HP"))) = CHART_STR_STAT_HP;
++#define CHART_TEXT_STAT_HP ((char *)CHART_POPUP_STAT_HP)
++static const char CHART_POPUP_STAT_MP[] __attribute__((section(".rodata.CHART_POPUP_STAT_MP"))) = CHART_STR_STAT_MP;
++#define CHART_TEXT_STAT_MP ((char *)CHART_POPUP_STAT_MP)
++static const char CHART_POPUP_STAT_OFF[] __attribute__((section(".rodata.CHART_POPUP_STAT_OFF"))) = CHART_STR_STAT_OFF;
++#define CHART_TEXT_STAT_OFF ((char *)CHART_POPUP_STAT_OFF)
++static const char CHART_POPUP_STAT_SPD[] __attribute__((section(".rodata.CHART_POPUP_STAT_SPD"))) = CHART_STR_STAT_SPD;
++#define CHART_TEXT_STAT_SPD ((char *)CHART_POPUP_STAT_SPD)
++static const char CHART_POPUP_TECHS[] __attribute__((section(".rodata.CHART_POPUP_TECHS"))) = CHART_STR_TECHS;
++#define CHART_TEXT_TECHS ((char *)CHART_POPUP_TECHS)
++static const char CHART_POPUP_TOP[] __attribute__((section(".rodata.CHART_POPUP_TOP"))) = CHART_STR_TOP;
++#define CHART_TEXT_TOP ((char *)CHART_POPUP_TOP)
++static const char CHART_POPUP_VERDICT[] __attribute__((section(".rodata.CHART_POPUP_VERDICT"))) = CHART_STR_VERDICT;
++#define CHART_TEXT_VERDICT ((char *)CHART_POPUP_VERDICT)
++static const char CHART_POPUP_VIEW[] __attribute__((section(".rodata.CHART_POPUP_VIEW"))) = CHART_STR_VIEW;
++#define CHART_TEXT_VIEW ((char *)CHART_POPUP_VIEW)
++static const char CHART_POPUP_WEIGHT[] __attribute__((section(".rodata.CHART_POPUP_WEIGHT"))) = CHART_STR_WEIGHT;
++#define CHART_TEXT_WEIGHT ((char *)CHART_POPUP_WEIGHT)
++static const char CHART_POPUP_YES[] __attribute__((section(".rodata.CHART_POPUP_YES"))) = CHART_STR_YES;
++#define CHART_TEXT_YES ((char *)CHART_POPUP_YES)
++static char *CHART_STAT_NAMES[6] = { CHART_TEXT_STAT_HP,  CHART_TEXT_STAT_MP,  CHART_TEXT_STAT_OFF,
++				      CHART_TEXT_STAT_DEF, CHART_TEXT_STAT_SPD, CHART_TEXT_STAT_BRN };
+ 
+ static int32_t chartIsPartnerTree(void)
+ {
+@@ -4744,7 +4837,7 @@ static void chartUpdateLit(EvolutionPath *ep)
+ }
+ 
+ /* a number, with its sign */
+-static char *chartNumber(char *p, int32_t n)
++static __attribute__((noinline)) char *chartNumber(char *p, int32_t n)
+ {
+ 	if (n < 0) {
+ 		*p++ = '-';
+@@ -4754,7 +4847,7 @@ static char *chartNumber(char *p, int32_t n)
+ }
+ 
+ /* appends a "<label> <n>+" or "<label> <lo>-<hi>" requirement to `p` */
+-static char *chartRange(char *p, char *label, int32_t lo, int32_t hi)
++static __attribute__((noinline)) char *chartRange(char *p, char *label, int32_t lo, int32_t hi)
+ {
+ 	while (*label != 0) {
+ 		*p++ = *label++;
+@@ -4774,7 +4867,7 @@ static char *chartRange(char *p, char *label, int32_t lo, int32_t hi)
+ #define CHART_NO_VALUE	-32768	/* a line without a number */
+ 
+ /* copies `str` to `p`, returns the end */
+-static char *chartAppend(char *p, char *str)
++static __attribute__((noinline)) char *chartAppend(char *p, char *str)
+ {
+ 	while (*str != 0) {
+ 		*p++ = *str++;
+@@ -4783,54 +4876,56 @@ static char *chartAppend(char *p, char *str)
+ 	return p;
+ }
+ 
+-/* draws one line of the card into the text area: its label, and its value right of it when the tree is the partner's */
+-static void chartCardLine(char *label, int32_t have, int32_t ok, int32_t mark, int32_t indent, char *word)
++/* Pack normal-width strings into the borrowed rows once, before any sprite is submitted.
++ * Fixed title/headers/footer use the rows above CHART_CARD_TITLE_ROW. */
++static ChartCell chartCardText(char *text)
++{
++	ChartCell cell;
++	cell.w = measureStringMode(text, FIT_VANILLA);
++	if (CHART_PACK_U + cell.w > 244) { CHART_PACK_U = 0; CHART_PACK_V += 12; }
++	cell.u = CHART_PACK_U;
++	cell.v = CHART_PACK_V;
++	drawStringMode(text, cell.u, cell.v, FIT_VANILLA);
++	CHART_PACK_U += (cell.w + 7) & ~3;
++	return cell;
++}
++
++static __attribute__((noinline)) void chartCardLine(char *label, int32_t have, int32_t ok, int32_t mark, int32_t indent, char *word)
+ {
+ 	ChartCardLine *l;
+-	char buf[8];
++	char buf[16], name[160];
++	char *split;
+ 	int32_t k;
+-	int32_t u;
+-	int32_t v;
+-	int32_t room;
+-
+-	if (CHART_CARD_COUNT >= CHART_CARD_LINES) {
+-		return;
+-	}
++	if (CHART_CARD_COUNT >= CHART_CARD_LINES) return;
+ 	k = CHART_CARD_COUNT++;
+ 	l = &CHART_CARD[k];
+-	u = (k & 1) * 128;
+-	v = CHART_CARD_ROW + (k >> 1) * 12;
+ 	l->indent = indent;
+ 	l->mark = CHART_CARD_MINE && mark ? (ok ? 1 : 2) : 0;
+-	l->color = CHART_CARD_MINE && !ok ? 9 : 0;
+ 	l->valueColor = ok ? 7 : 6;
+-	l->valueW = 0;
++	l->value.w = l->need.w = 0;
++	strcpy(name, label);
++	split = strrchr(name, ' ');
++	if (k && split && ((split[1] >= '0' && split[1] <= '9') || split[1] == '-')) {
++		*split = 0;
++		l->need = chartCardText(split + 1);
++	}
++	if (k == 0) {
++		l->label.w = drawStringMode(name, 0, CHART_CARD_TITLE_ROW, FIT_VANILLA);
++		l->label.u = 0; l->label.v = CHART_CARD_TITLE_ROW;
++	} else l->label = chartCardText(name);
+ 	if (CHART_CARD_MINE && (word != NULL || have != CHART_NO_VALUE)) {
+-		if (word == NULL) {
+-			chartNumber(buf, have);
+-			word = buf;
+-		}
+-		l->valueW = measureStringMode(word, FIT_VANILLA);
+-	}
+-	/* the label first: a label too long even when fitted spills its cells to the right, over the value's */
+-	room = CHART_CARD_W - 18 - indent - (l->valueW > 0 ? l->valueW + 4 : 0);
+-	l->labelW = drawStringMode(label, u, v, fitStringMode(label, room));
+-	if (l->labelW > room) {
+-		l->labelW = room;
+-	}
+-	if (l->valueW > 0) {
+-		drawString(word, u + CHART_CARD_VALUE_U, v);
++		if (word == NULL) { chartNumber(buf, have); word = buf; }
++		l->value = chartCardText(word);
+ 	}
+ }
+ 
+ /* the card of evolving into `target`: drawn into the text area when the target or the centre changes */
+-static void chartCardBuild(int32_t target)
++static __attribute__((noinline)) void chartCardBuild(int32_t target)
+ {
+ 	EvoRequirements r;
+ 	BaseStats *st;
+ 	RECT rect;
+-	char a[32];
+-	char *p;
++	char a[160];
+ 	int32_t met;
+ 	int32_t isMaxCM;
+ 	int32_t isMaxBattles;
+@@ -4840,13 +4935,15 @@ static void chartCardBuild(int32_t target)
+ 	int32_t need;
+ 	int32_t have;
+ 	int32_t top;
++	int32_t statCount;
+ 	int16_t req[6];
+ 
+-	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_VERDICT_ROW + 12 - CHART_CARD_ROW);
++	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_HEADER_ROW + 12 - CHART_CARD_ROW);
+ 	clearTextSubArea(&rect);
+ 	CHART_TEXT_TAKEN = 1;
+ 	CHART_CARD_COUNT = 0;
+-	CHART_CARD_VERDICT_W = 0;
++	CHART_PACK_U = 0; CHART_PACK_V = CHART_CARD_ROW;
++	CHART_CARD_VERDICT_W = CHART_CARD_FOOTER_W = 0;
+ 	CHART_CARD_MINE = chartIsPartnerTree();
+ 	r = EVO_REQ_ROW(target);
+ 	st = &PARTNER_ENTITY.digimonEntity.stats.base;
+@@ -4854,28 +4951,27 @@ static void chartCardBuild(int32_t target)
+ 	isMaxBattles = r.flags & 1;
+ 	met = CHART_CARD_MINE ? evoRequirementsMet(CHART_DETAIL_ID, target, isMaxCM, isMaxBattles) : 0;
+ 
+-	/* the title: the species, unnamed until raised */
++	/* The title and all wording use the same card text rows. */
+ 	CHART_CARD_MINE = 0;
+-	chartCardLine(hasDigimonRaised((uint16_t)target) != 0 ? (char *)digimonPara(target) : "?????", CHART_NO_VALUE, 1, 0,
+-	              -9, NULL);
+-	CHART_CARD[0].color = 4;
++	sprintf(a, CHART_TEXT_EVOLVE, hasDigimonRaised((uint16_t)target) ? (char *)digimonPara(target) : "?????");
++	chartCardLine(a, CHART_NO_VALUE, 1, 0, 0, NULL);
+ 	CHART_CARD_MINE = chartIsPartnerTree();
+ 	if (chartIsAutomatic(&r)) {
+-		chartCardLine(CHART_STR_AUTOMATIC, CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_TEXT_AUTOMATIC, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 		return;
+ 	}
+ 
+ 	/* care mistakes */
+ 	if (!isMaxCM && r.care <= 0) {
+-		chartCardLine(CHART_STR_MISTAKES_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_TEXT_MISTAKES_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 	} else {
+-		chartRange(a, CHART_STR_MISTAKES, isMaxCM ? 0 : r.care, r.care);
++		chartRange(a, CHART_TEXT_MISTAKES, isMaxCM ? 0 : r.care, r.care);
+ 		chartCardLine(a, PARTNER_PARA.careMistakes, met & EVO_MET_CARE, 1, 0, NULL);
+ 	}
+ 
+ 	/* weight */
+ 	tol = evoAmt(MOD_EVF_SCORE_WEIGHT_TOL);
+-	chartRange(a, CHART_STR_WEIGHT, r.weight - tol, r.weight + tol);
++	chartRange(a, CHART_TEXT_WEIGHT, r.weight - tol, r.weight + tol);
+ 	chartCardLine(a, PARTNER_PARA.weight, met & EVO_MET_WEIGHT, 1, 0, NULL);
+ 
+ 	/* stats: a Rookie's is the highest stat; the others, every stat asked for */
+@@ -4886,19 +4982,17 @@ static void chartCardBuild(int32_t target)
+ 	req[4] = r.speed;
+ 	req[5] = r.brain;
+ 	if (DIGI_PARA(target).level == 3U) {
+-		p = chartAppend(a, CHART_STR_TOP);
+-		for (k = 0; k < 6; k++) {
+-			if (req[k] == 1) {
+-				p = chartAppend(chartAppend(p, " "), CHART_STAT_NAMES[k]);
+-			}
+-		}
+ 		top = CHART_CARD_MINE ? evoPartnerTopStat() : 0;
+-		chartCardLine(a, CHART_NO_VALUE, met & EVO_MET_STATS, 1, 0, CHART_STAT_NAMES[top]);
++		chartCardLine(CHART_TEXT_TOP, CHART_NO_VALUE, met & EVO_MET_STATS, 1, 0, CHART_STAT_NAMES[top]);
++		for (k = 0; k < 6; k++) if (req[k] == 1)
++			chartCardLine(CHART_STAT_NAMES[k], CHART_NO_VALUE, 1, 0, 8, NULL);
+ 	} else {
+ 		div = evoAmt(MOD_EVF_SCORE_HPMP_DIV);
+-		for (k = 0; k < 6 && req[k] < 0; k++) {
+-		}
+-		chartCardLine(k == 6 ? CHART_STR_STATS_ANY : CHART_STR_STATS, CHART_NO_VALUE, (met & EVO_MET_STATS) || k == 6, 1, 0, NULL);
++		statCount = 0;
++		for (k = 0; k < 6; k++) if (req[k] >= 0) statCount++;
++		if (statCount != 1)
++			chartCardLine(statCount == 0 ? CHART_TEXT_STATS_ANY : CHART_TEXT_STATS, CHART_NO_VALUE,
++			              met & EVO_MET_STATS, 1, 0, NULL);
+ 		for (k = 0; k < 6; k++) {
+ 			if (req[k] < 0) {
+ 				continue;
+@@ -4913,65 +5007,65 @@ static void chartCardBuild(int32_t target)
+ 			default: have = st->brain; break;
+ 			}
+ 			chartRange(a, CHART_STAT_NAMES[k], need, need);
+-			chartCardLine(a, have, have >= need, 0, 6, NULL);
++			chartCardLine(a, have, statCount == 1 ? (met & EVO_MET_STATS) : have >= need,
++			              statCount == 1, statCount == 1 ? 0 : 8, NULL);
+ 		}
+ 	}
+ 
+ 	/* the bonus: one of them is enough; one that always holds (a Rookie's battles -2 or techniques 0) makes it "any" */
+ 	if ((r.battles != -1 && !isMaxBattles && r.battles <= 0) || (r.techs != -1 && r.techs <= 0) ||
+ 	    (r.discipline != -1 && r.discipline <= 0)) {
+-		chartCardLine(CHART_STR_BONUS_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
++		chartCardLine(CHART_TEXT_BONUS_ANY, CHART_NO_VALUE, 1, 1, 0, NULL);
+ 	} else {
+-		chartCardLine(CHART_STR_BONUS_ONE_OF, CHART_NO_VALUE, met & EVO_MET_BONUS, 1, 0, NULL);
++		chartCardLine(CHART_TEXT_BONUS_ONE_OF, CHART_NO_VALUE, met & EVO_MET_BONUS, 1, 0, NULL);
+ 		if (r.digimon != -1) {
+-			/* Reserve a row for the live answer, then give the canonical parent
+-			 * name the full card width, as for the title. */
+-			chartCardLine(CHART_STR_FROM, CHART_NO_VALUE, CHART_DETAIL_ID == r.digimon, 0, 6,
+-			              CHART_DETAIL_ID == r.digimon ? CHART_STR_YES : CHART_STR_NO);
+-			chartCardLine(hasDigimonRaised((uint16_t)r.digimon) != 0 ? (char *)digimonPara(r.digimon) : "?????",
+-			              CHART_NO_VALUE, CHART_DETAIL_ID == r.digimon, 0, -9, NULL);
++			sprintf(a, CHART_TEXT_FROM, hasDigimonRaised((uint16_t)r.digimon) ? (char *)digimonPara(r.digimon) : "?????");
++			chartCardLine(a, CHART_NO_VALUE, CHART_DETAIL_ID == r.digimon, 0, 8,
++			              CHART_DETAIL_ID == r.digimon ? CHART_TEXT_YES : CHART_TEXT_NO);
+ 		}
+ 		if (r.discipline != -1) {
+-			chartRange(a, CHART_STR_DISCIPLINE, r.discipline, r.discipline);
+-			chartCardLine(a, PARTNER_PARA.discipline, PARTNER_PARA.discipline >= r.discipline, 0, 6, NULL);
++			chartRange(a, CHART_TEXT_DISCIPLINE, r.discipline, r.discipline);
++			chartCardLine(a, PARTNER_PARA.discipline, PARTNER_PARA.discipline >= r.discipline, 0, 8, NULL);
+ 		}
+ 		if (r.happiness != -1) {
+ 			/* MOD (care numbers): the same 0..100 as the status screen; the rules keep -100..100 */
+-			chartRange(a, CHART_STR_HAPPINESS, HAPPINESS_SHOWN(r.happiness), HAPPINESS_SHOWN(r.happiness));
+-			chartCardLine(a, HAPPINESS_SHOWN(PARTNER_PARA.happiness), PARTNER_PARA.happiness >= r.happiness, 0, 6, NULL);
++			chartRange(a, CHART_TEXT_HAPPINESS, HAPPINESS_SHOWN(r.happiness), HAPPINESS_SHOWN(r.happiness));
++			chartCardLine(a, HAPPINESS_SHOWN(PARTNER_PARA.happiness), PARTNER_PARA.happiness >= r.happiness, 0, 8, NULL);
+ 		}
+ 		if (r.battles != -1) {
+-			chartRange(a, CHART_STR_BATTLES, isMaxBattles ? 0 : r.battles, r.battles);
++			chartRange(a, CHART_TEXT_BATTLES, isMaxBattles ? 0 : r.battles, r.battles);
+ 			chartCardLine(a, PARTNER_PARA.battles,
+-			              isMaxBattles ? PARTNER_PARA.battles <= r.battles : PARTNER_PARA.battles >= r.battles, 0, 6,
++			              isMaxBattles ? PARTNER_PARA.battles <= r.battles : PARTNER_PARA.battles >= r.battles, 0, 8,
+ 			              NULL);
+ 		}
+ 		if (r.techs != -1) {
+-			chartRange(a, CHART_STR_TECHS, r.techs, r.techs);
++			chartRange(a, CHART_TEXT_TECHS, r.techs, r.techs);
+ 			have = getNumMasteredMoves();
+-			chartCardLine(a, have, have >= r.techs, 0, 6, NULL);
++			chartCardLine(a, have, have >= r.techs, 0, 8, NULL);
+ 		}
+ 	}
+ 
+-	/* the verdict under the card: how many of the four, green when they reach the pass points */
++	/* Count the same four marks as the game; the configured score decides readiness. */
+ 	if (CHART_CARD_MINE) {
+ 		k = ((met & EVO_MET_CARE) != 0) + ((met & EVO_MET_WEIGHT) != 0) + ((met & EVO_MET_STATS) != 0) +
+ 		    ((met & EVO_MET_BONUS) != 0);
+-		p = chartDigits(a, k);
+-		p = chartAppend(p, CHART_STR_OF_4);
++		sprintf(a, CHART_TEXT_VERDICT, k, evoPassPoints());
+ 		if (evoRequirementPoints(met) >= evoPassPoints() && isPartnerModelFit(target)) {
+-			chartAppend(p, CHART_STR_READY);
++			chartAppend(a + strlen(a), CHART_TEXT_READY);
+ 			CHART_CARD_VERDICT_COLOR = 7;
+ 		} else {
+ 			CHART_CARD_VERDICT_COLOR = 6;
+ 		}
+-		CHART_CARD_VERDICT_W = measureStringMode(a, FIT_VANILLA);
+-		drawString(a, 0, CHART_CARD_VERDICT_ROW);
++		CHART_CARD_VERDICT_W = drawStringMode(a, 0, CHART_CARD_VERDICT_ROW, FIT_VANILLA);
++		if (k < evoPassPoints()) {
++			sprintf(a, CHART_TEXT_SHORT, evoPassPoints() - k);
++			CHART_CARD_FOOTER_W = drawStringMode(a, 0, CHART_CARD_FOOTER_ROW, FIT_VANILLA);
++		}
+ 	}
+ }
+ 
+ /* a mark at screen (x, y): a tick or a cross */
+-static void chartMark(int32_t x, int32_t y, int32_t yes)
++static __attribute__((noinline)) void chartMark(int32_t x, int32_t y, int32_t yes)
+ {
+ 	int32_t i;
+ 
+@@ -4979,49 +5073,106 @@ static void chartMark(int32_t x, int32_t y, int32_t yes)
+ 	y -= 0x78;
+ 	for (i = 0; i < 2; i++) {
+ 		if (yes) {
+-			drawLine3P(CHART_MARK_YES, x, y + 3 + i, x + 2, y + 5 + i, x + 6, y - 1 + i, 4, 0);
++			drawLine3P(CHART_MARK_YES, x, y + 3 + i, x + 2, y + 5 + i, x + 6, y - 1 + i, 2, 0);
+ 		} else {
+-			drawLine2P(CHART_MARK_NO, x + i, y, x + 5 + i, y + 5, 4, 0);
+-			drawLine2P(CHART_MARK_NO, x + 5 + i, y, x + i, y + 5, 4, 0);
++			drawLine2P(CHART_MARK_NO, x + i, y, x + 5 + i, y + 5, 2, 0);
++			drawLine2P(CHART_MARK_NO, x + 5 + i, y, x + i, y + 5, 2, 0);
+ 		}
+ 	}
+ }
+ 
+-/* the card of the box under the cursor: its text (drawn when it changes) and its marks */
+-static void chartCardRender(int32_t target)
++/* Small pad outlines share the menu's line primitives; Square remains square at 1x. */
++static __attribute__((noinline)) void chartButton(int32_t x, int32_t y, int32_t button)
+ {
+-	ChartCardLine *l;
+-	int32_t k;
+-	int32_t y;
+-	int32_t lh;
++	x -= 160;
++	y -= 120;
++	if (button == 0x80) {
++		drawLine3P(0xc080ff, x, y, x + 8, y, x + 8, y + 8, 2, 0);
++		drawLine3P(0xc080ff, x + 8, y + 8, x, y + 8, x, y, 2, 0);
++	} else if (button == 0x10) {
++		drawLine3P(0x80ff80, x, y + 8, x + 4, y, x + 8, y + 8, 2, 0);
++		drawLine2P(0x80ff80, x, y + 8, x + 8, y + 8, 2, 0);
++	} else {
++		drawLine2P(0xffb080, x, y, x + 8, y + 8, 2, 0);
++		drawLine2P(0xffb080, x + 8, y, x, y + 8, 2, 0);
++	}
++}
++
++static __attribute__((noinline)) void chartCardPrompt(int32_t popup)
++{
++	int32_t x;
++	int32_t u = popup ? (CHART_CARD_FOOTER_W + 7) & ~3 : 0;
++	if (MOD_RENDER_PASS == 0 && CHART_CARD_ID == -1) {
++		CHART_PROMPT_W = drawStringMode(popup ? CHART_TEXT_CLOSE : CHART_TEXT_VIEW, u, CHART_CARD_FOOTER_ROW,
++		                              FIT_VANILLA);
++		CHART_TEXT_TAKEN = 1;
++		if (!popup) CHART_CARD_ID = -2;
++	}
++	x = (popup ? 286 : 294) - CHART_PROMPT_W;
++	renderString(0, x - 160, (popup ? 197 : 205) - 120, CHART_PROMPT_W, 12, u, CHART_CARD_FOOTER_ROW, 2, 1);
++	chartButton(x - 13, popup ? 198 : 206, popup ? CANCEL_BUTTON : 0x80);
++}
+ 
++static void chartCellRender(ChartCell *cell, int32_t x, int32_t y, int32_t color)
++{
++	if (cell->w) renderString(color, x - 160, y - 120, cell->w, 12, cell->u, cell->v, 2, 1);
++}
++
++static void chartCardScrollBar(void)
++{
++	int32_t top = CHART_CARD_SCROLL, count = CHART_CARD_COUNT - 1, i, h, y;
++	if (count <= CHART_CARD_VISIBLE) return;
++	for (i = 0; i < 4; i++) {
++		drawLine2P(top ? 0xffffff : 0x7d6e5a, 126 + i, -44 - i, 132 - i, -44 - i, 2, 0);
++		drawLine2P(top + CHART_CARD_VISIBLE < count ? 0xffffff : 0x7d6e5a,
++		           126 + i, 66 + i, 132 - i, 66 + i, 2, 0);
++	}
++	h = 104 * CHART_CARD_VISIBLE / count;
++	y = 80 + (104 - h) * top / (count - CHART_CARD_VISIBLE);
++	renderBox(128, y - 120, 3, h, 120, 220, 255, 0, 2);
++	renderBox(128, -40, 3, 104, 20, 30, 38, 0, 2);
++}
++
++static __attribute__((noinline)) void chartCardRender(int32_t target)
++{
++	ChartCardLine *l;
++	int32_t k, y;
+ 	if (CHART_CARD_ID != target) {
+-		if (MOD_RENDER_PASS != 0) {
+-			return; /* the text is drawn on the first pass */
+-		}
++		if (MOD_RENDER_PASS != 0) return;
+ 		chartCardBuild(target);
++		CHART_NEEDS_W = drawStringMode(CHART_TEXT_NEEDS, 0, CHART_CARD_HEADER_ROW, FIT_VANILLA);
++		CHART_HAVE_W = drawStringMode(CHART_TEXT_HAVE, 128, CHART_CARD_HEADER_ROW, FIT_VANILLA);
++		chartCardPrompt(1);
+ 		CHART_CARD_ID = target;
+ 	}
+-	/* the line height: 11 (14 lines, WarGreymon's, still fit); the original font's taller letters get 12 when they fit */
+-	lh = CHART_CARD_COUNT > 14 ? 10 : (MOD_FONT != MOD_FONT_NEW && CHART_CARD_COUNT <= 12 ? 12 : 11);
+-	for (k = 0; k < CHART_CARD_COUNT; k++) {
+-		l = &CHART_CARD[k];
+-		y = CHART_CARD_Y + 3 + k * lh;
+-		renderString(l->color, CHART_CARD_X + 14 + l->indent - 0xa0, y - 0x78, l->labelW, 0xc, (k & 1) * 128,
+-		             CHART_CARD_ROW + (k >> 1) * 12, 4, 1);
+-		if (l->valueW > 0) {
+-			renderString(l->valueColor, CHART_CARD_X + CHART_CARD_W - 5 - l->valueW - 0xa0, y - 0x78, l->valueW, 0xc,
+-			             (k & 1) * 128 + CHART_CARD_VALUE_U, CHART_CARD_ROW + (k >> 1) * 12, 4, 1);
+-		}
+-		if (l->mark != 0) {
+-			chartMark(CHART_CARD_X + 5, y + 3, l->mark == 1);
+-		}
+-	}
+-	if (CHART_CARD_VERDICT_W > 0) {
+-		renderString(CHART_CARD_VERDICT_COLOR, CHART_CARD_X + (CHART_CARD_W - CHART_CARD_VERDICT_W) / 2 - 0xa0,
+-		             CHART_CARD_Y + CHART_CARD_H + 3 - 0x78, CHART_CARD_VERDICT_W, 0xc, 0, CHART_CARD_VERDICT_ROW, 4,
+-		             1);
++	chartCellRender(&CHART_CARD[0].label, 160 - CHART_CARD[0].label.w / 2, 30, 4);
++	if (CHART_CARD_VERDICT_W)
++		renderString(CHART_CARD_VERDICT_COLOR, -CHART_CARD_VERDICT_W / 2, 45 - 120,
++		             CHART_CARD_VERDICT_W, 12, 0, CHART_CARD_VERDICT_ROW, 2, 1);
++	if (CHART_CARD_COUNT > 2) {
++		renderString(1, 194 - CHART_NEEDS_W - 160, 59 - 120, CHART_NEEDS_W, 12, 0, CHART_CARD_HEADER_ROW, 2, 1);
++		if (CHART_CARD_MINE)
++			renderString(1, 280 - CHART_HAVE_W - 160, 59 - 120, CHART_HAVE_W, 12, 128, CHART_CARD_HEADER_ROW, 2, 1);
+ 	}
++	for (k = 1 + CHART_CARD_SCROLL; k < CHART_CARD_COUNT && k <= CHART_CARD_SCROLL + CHART_CARD_VISIBLE; k++) {
++		l = &CHART_CARD[k];
++		y = 72 + (k - 1 - CHART_CARD_SCROLL) * 12;
++		chartCellRender(&l->label, 41 + l->indent, y, 0);
++		chartCellRender(&l->need, 194 - l->need.w, y, 0);
++		chartCellRender(&l->value, 280 - l->value.w, y, l->valueColor);
++		if (l->mark) chartMark(30, y + 3, l->mark == 1);
++	}
++	if (CHART_CARD_FOOTER_W)
++		renderString(0, 28 - 160, 197 - 120, CHART_CARD_FOOTER_W, 12, 0, CHART_CARD_FOOTER_ROW, 2, 1);
++	chartCardPrompt(1);
++	chartCardScrollBar();
++	/* LIFO within each bucket: text, inner/outer frames, then fill. */
++	renderBorderBox(19, 27, 281, 187, 0xaa823c, 0xaa823c, 44, 62, 74, 2);
++	renderBorderBox(18, 26, 283, 189, 0xffebaa, 0xffebaa, 44, 62, 74, 2);
++	/* All chart/menu/tabs use OT >=4. OT3 is after the field and before OT2.
++	 * PSX average-black plus a small subtraction approximates 40% brightness. */
++	renderBox(-160, -120, 320, 240, 12, 12, 12, 3, 3);
++	renderBox(-160, -120, 320, 240, 0, 0, 0, 1, 3);
+ }
+ 
+ /* the detail closed: the overview's rows of the text area are drawn again */
+@@ -5029,11 +5180,12 @@ static void chartCardRelease(void)
+ {
+ 	RECT rect;
+ 
++	CHART_POPUP = 0;
+ 	CHART_CARD_ID = -1;
+ 	if (!CHART_TEXT_TAKEN) {
+ 		return;
+ 	}
+-	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_VERDICT_ROW + 12 - CHART_CARD_ROW);
++	setRECT(&rect, 0, CHART_CARD_ROW, 256, CHART_CARD_HEADER_ROW + 12 - CHART_CARD_ROW);
+ 	clearTextSubArea(&rect);
+ 	chartDrawLabels();
+ 	CHART_TEXT_ID = -2;
+@@ -5065,7 +5217,6 @@ void renderEvoChartDetail(void)
+ 	int16_t cy;
+ 	int32_t mine; /* MOD (chart criteria) */
+ 	int32_t cardId;
+-	int32_t dx;
+ 
+ 	clut = EVO_CHART_DETAIL_COLORS;
+ 	MENU_SUB_STATE = 2;
+@@ -5083,13 +5234,13 @@ void renderEvoChartDetail(void)
+ 		}
+ 	}
+ 
+-	/* MOD (chart criteria): the partner's tree lights the met evolutions; a "to" box under the cursor shows its card */
++	/* The partner's tree lights met evolutions; only a "to" box offers the modal. */
+ 	mine = MOD_OPT_EVO_GUIDE && chartIsPartnerTree(); /* OPTIONS' EVOLUTION GUIDE off: the original chart */
+ 	if (mine) {
+ 		chartUpdateLit(ep);
+ 	}
+ 	cardId = MOD_OPT_EVO_GUIDE && CHART_CURSOR_SIDE == 1 ? chartDetailBox(1, CHART_CURSOR_J, &cx, &cy) : 0;
+-	dx = cardId > 0 ? CHART_CARD_SHIFT : 0;
++
+ 
+ 	if ((count1 % 2) == 0) {
+ 		fromLines = CHART_FROM_LINES_EVEN;
+@@ -5111,9 +5262,7 @@ void renderEvoChartDetail(void)
+ 	}
+ 
+ 	for (j = 0; j < fromCount; j++) {
+-		if ((*ep).from[j] > 0 && cardId > 0) {
+-			/* MOD (chart criteria): the card is where the "from" column was */
+-		} else if ((*ep).from[j] > 0 && mine) {
++		if ((*ep).from[j] > 0 && mine) {
+ 			drawLine3P(CHART_FROM_LINE, fromLines->x1, fromLines->y1, fromLines->x2, fromLines->y2, fromLines->x3,
+ 			           fromLines->y3, 4, 0);
+ 			drawLine2P(CHART_FROM_LINE, fromLines->x3, fromLines->y3, fromLines->x4, fromLines->y4, 4, 0);
+@@ -5210,7 +5359,7 @@ void renderEvoChartDetail(void)
+ 
+ 	for (j = 0; j < fromCount; j++) {
+ 		id = (*ep).from[j];
+-		if (id > 0 && cardId <= 0) { /* MOD (chart criteria): not under the card */
++		if (id > 0) {
+ 			/* MOD (portraits): beyond the chart's 61 the icon comes from DIGI.DAT */
+ 			if (id <= NUM_EVO_CHART_DIGIMON && hasDigimonRaised(id & 0xffff) == 1) {
+ 				renderRectPolyFT4(fromSprites->posX, fromSprites->posY,
+@@ -5268,7 +5417,7 @@ void renderEvoChartDetail(void)
+ 	             4);
+ #else
+ 	/* MOD (language): each language's crops (CHART_TREE_CROP, CHART_LEVEL_CROPS) */
+-	renderString(3, (cardId > 0 ? CHART_CARD_TREE_SHIFT : 0) + CHART_TREE_CROP.x, -0x4f, CHART_TREE_CROP.w, 0xc,
++	renderString(3, CHART_TREE_CROP.x, -0x4f, CHART_TREE_CROP.w, 0xc,
+ 	             CHART_TREE_CROP.u, 0x18, 4);
+ 	switch (DIGI_PARA(CHART_DETAIL_ID).level) {
+ 	case 1:
+@@ -5277,11 +5426,11 @@ void renderEvoChartDetail(void)
+ 	case 4:
+ 	case 5:
+ 		i = DIGI_PARA(CHART_DETAIL_ID).level - 1;
+-		renderString(0, dx + CHART_LEVEL_CROPS[i].x, 0x3a, CHART_LEVEL_CROPS[i].w, 0xc, CHART_LEVEL_CROPS[i].u,
++		renderString(0, CHART_LEVEL_CROPS[i].x, 0x3a, CHART_LEVEL_CROPS[i].w, 0xc, CHART_LEVEL_CROPS[i].u,
+ 		             i < 2 ? 0x18 : i < 4 ? 0x24 : 0x3c, 4);
+ 		break;
+ 	case LEVEL_MEGA: /* MOD (mega) */
+-		renderString(0, dx - 0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
++		renderString(0, -0x44 - EVO_CHART_MEGA_WIDTH / 2, 0x3a, EVO_CHART_MEGA_WIDTH, 0xc, 0,
+ 		             EVO_CHART_MEGA_ROW, 4);
+ 		break;
+ 	}
+@@ -5291,11 +5440,11 @@ void renderEvoChartDetail(void)
+ 	 * one (drawn tighter if it must, drawEvoChartStrings) is centred in the level's panel by its width */
+ 	if (measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID), FIT_VANILLA) <= 0x78) {
+ 		len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+-		renderString(0, dx - 0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
++		renderString(0, -0x5c - ((len - 4) * 6), 0x4d, 0x78, 0xc, 0, 0x30, 4);
+ 	} else {
+ 		w = measureStringMode(DIGIMON_NAME(CHART_DETAIL_ID),
+ 				      fitStringMode(DIGIMON_NAME(CHART_DETAIL_ID), CHART_NAME_W));
+-		renderString(0, dx - 0x42 - w / 2, 0x4d, w, 0xc, 0, 0x30, 4);
++		renderString(0, -0x42 - w / 2, 0x4d, w, 0xc, 0, 0x30, 4);
+ 	}
+ #else
+ 	len = strlen(DIGIMON_NAME(CHART_DETAIL_ID)) / 2;
+@@ -5310,20 +5459,13 @@ void renderEvoChartDetail(void)
+ 			renderBorderBox(cx + 0x9f - 2, cy + 0x77 - 2, 0x16, 0x16, 0x1890b8, 0x0c4870, 0x90, 0x84, 0x16, 4);
+ 		}
+ 	}
+-	/* MOD (chart criteria): the card in place of the "from" panel (0); the "Tree" panel (1) and the level and name panels
+-	 * (4, 5) moved right */
+-	if (cardId > 0) {
+-		chartCardRender(cardId);
+-	}
+ 	for (i = 0; i < 6; i++) {
+-		if (i == 0 && cardId > 0) {
+-			renderInsetBox(CHART_CARD_X, CHART_CARD_Y, CHART_CARD_W, CHART_CARD_H, 4);
+-			continue;
+-		}
+-		renderInsetBox(MAIN_D_80124B48[i].posX + (i >= 4 ? dx : (i == 1 && cardId > 0 ? CHART_CARD_TREE_SHIFT : 0)),
+-		               MAIN_D_80124B48[i].posY,
+-		               MAIN_D_80124B48[i].width,
+-		               MAIN_D_80124B48[i].height, 4);
++		renderInsetBox(MAIN_D_80124B48[i].posX, MAIN_D_80124B48[i].posY,
++		               MAIN_D_80124B48[i].width, MAIN_D_80124B48[i].height, 4);
++	}
++	if (cardId > 0) {
++		if (CHART_POPUP) chartCardRender(cardId);
++		else chartCardPrompt(0);
+ 	}
+ }
+ 
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index 18f4a8cb..61f78956 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -260,17 +260,17 @@ CHART_TEXT:
+       ja: "MP"
+       en_us: "MP"
+     CHART_STR_STAT_OFF:
+-      ja: "Off"
+-      en_us: "Off"
++      ja: "Offense"
++      en_us: "Offense"
+     CHART_STR_STAT_DEF:
+-      ja: "Def"
+-      en_us: "Def"
++      ja: "Defense"
++      en_us: "Defense"
+     CHART_STR_STAT_SPD:
+-      ja: "Spd"
+-      en_us: "Spd"
++      ja: "Speed"
++      en_us: "Speed"
+     CHART_STR_STAT_BRN:
+-      ja: "Brn"
+-      en_us: "Brn"
++      ja: "Brains"
++      en_us: "Brains"
+     CHART_STR_AUTOMATIC:
+       ja: "Automatic"
+       en_us: "Automatic"
+@@ -284,23 +284,23 @@ CHART_TEXT:
+       ja: "Weight"
+       en_us: "Weight"
+     CHART_STR_TOP:
+-      ja: "Top"
+-      en_us: "Top"
++      ja: "Highest stat"
++      en_us: "Highest stat"
+     CHART_STR_STATS_ANY:
+-      ja: "Stats any"
+-      en_us: "Stats any"
++      ja: "Any attributes"
++      en_us: "Any attributes"
+     CHART_STR_STATS:
+-      ja: "Stats"
+-      en_us: "Stats"
++      ja: "Attributes"
++      en_us: "Attributes"
+     CHART_STR_BONUS_ANY:
+       ja: "Bonus any"
+       en_us: "Bonus any"
+     CHART_STR_BONUS_ONE_OF:
+-      ja: "Bonus, one of"
+-      en_us: "Bonus, one of"
++      ja: "Extra: any one"
++      en_us: "Extra: any one"
+     CHART_STR_FROM:
+-      ja: "From "
+-      en_us: "From "
++      ja: "From %s"
++      en_us: "From %s"
+     CHART_STR_YES:
+       ja: "yes"
+       en_us: "yes"
+@@ -317,11 +317,8 @@ CHART_TEXT:
+       ja: "Battles"
+       en_us: "Battles"
+     CHART_STR_TECHS:
+-      ja: "Techs"
+-      en_us: "Techs"
+-    CHART_STR_OF_4:
+-      ja: " of 4"
+-      en_us: " of 4"
++      ja: "Techniques"
++      en_us: "Techniques"
+     CHART_STR_READY:
+       ja: "  ready"
+       en_us: "  ready"
+@@ -334,3 +331,24 @@ CHART_TEXT:
+     STATUS_STR_TIRED:
+       en_us: Tired
+       ja: つかれ
++    CHART_STR_VIEW:
++      ja: "View requirements"
++      en_us: "View requirements"
++    CHART_STR_CLOSE:
++      ja: "Close"
++      en_us: "Close"
++    CHART_STR_EVOLVE:
++      ja: "Evolve: %s"
++      en_us: "Evolve: %s"
++    CHART_STR_VERDICT:
++      ja: "Met %d of 4. Need %d."
++      en_us: "Met %d of 4. Need %d."
++    CHART_STR_SHORT:
++      ja: "%d more needed."
++      en_us: "%d more needed."
++    CHART_STR_NEEDS:
++      ja: "Needs"
++      en_us: "Needs"
++    CHART_STR_HAVE:
++      ja: "You have"
++      en_us: "You have"
+-- 
+2.55.0
+

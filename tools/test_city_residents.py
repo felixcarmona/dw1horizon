@@ -16,9 +16,9 @@ class CityResidents(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json')
                    for s in [json.loads(p.read_text())]}
         self.assertEqual([sum(species[r['id']]['level'] == lv for r in rows)
-                          for lv in ('rookie', 'champion', 'ultimate')], [23, 51, 16])
+                          for lv in ('rookie', 'champion', 'ultimate')], [22, 51, 16])
         points = lambda i: 1 if i in (11, 39, 53) else city.LEVELS[species[i]['level']] - 2
-        self.assertEqual(sum(points(r['id']) for r in rows), 170)
+        self.assertEqual(sum(points(r['id']) for r in rows), 169)
         original = [r for r in rows if r['id'] < 59]
         self.assertEqual((len(original), sum(points(r['id']) for r in original)), (50, 100))
         self.assertEqual({r['id'] for r in rows if r['hidden']}, {6, 7, 12})
@@ -34,11 +34,18 @@ class CityResidents(unittest.TestCase):
     def test_missing_or_new_resident_fails(self):
         ids = {r['id'] for r in city.residents()}
         with patch.object(city, 'compiled_recruits', return_value=ids):
-            self.assertEqual(city.verify(['compiled']), 90)
+            self.assertEqual(city.verify(['compiled']), 89)
         for bad in (ids - {110}, ids | {59}):
             with patch.object(city, 'compiled_recruits', return_value=bad):
                 with self.assertRaisesRegex(ValueError, 'disagrees'):
                     city.verify(['compiled'])
+
+    def test_otamamon_is_a_story_flag(self):
+        ids = {r['id'] for r in city.residents()}
+        self.assertNotIn(109, ids)
+        self.assertFalse(city.membership_bits()[109 // 8] & (1 << (109 % 8)))
+        with patch.object(city, 'compiled_recruits', return_value=ids | {109}):
+            self.assertEqual(city.verify(['compiled']), 89)
 
     def test_original_pass_ignores_legacy_enemy_flags(self):
         ids = {r['id'] for r in city.residents() if r['id'] < 59}

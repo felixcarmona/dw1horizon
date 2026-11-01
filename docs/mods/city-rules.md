@@ -26,7 +26,7 @@ a changed city fits; validate the actual final build at the original 2 MB.
 
 `content/tables/city-residents.json` owns the City page's species IDs and hidden
 flags. Species must be Rookie or higher and have a recruit flag. The current
-roster has 23 Rookies, 51 Champions and 16 Ultimates, worth 170 points. The 50 IDs
+roster has 22 Rookies, 51 Champions and 16 Ultimates, worth 169 points. The 50 IDs
 below 59 are worth 100 points. Baby flags are deliberately excluded: several
 represent story state, including the city medal.
 
@@ -34,8 +34,10 @@ represent story state, including the city medal.
 DG.SCN and MAPHEAD.SCN produced by the story derive passes, including base,
 mods, languages and font variants. The build checks each pass separately after cache restores too: extended passes
 must match the roster exactly; original passes must match its IDs below 59.
-Legacy original-story writes above 58 do not make residents. The story compiler already rejects recruit
-IDs 112 and above; roster validation also rejects them and any total above 255.
+Otamamon (species 109, trigger 309) records the Geko Swamp victory for Misty Trees; it is
+excluded from the resident check, City page and prosperity. Its raw story recruit
+write remains intact. Legacy original-story writes above 58 do not make residents.
+The story compiler already rejects recruit IDs 112 and above; roster validation also rejects them and any total above 255.
 Run `python3 -m tools.city_residents PATH/TO/DG.SCN ...` for a standalone check.
 The same gate is in `tools/selftest.sh` when compiled stories are available.
 
@@ -101,4 +103,4 @@ narration alone do not hide a recruitment.
 ModokiBetamon, Dokunemon, Vermilimon, IceDevimon, DarkLizardmon and Gururumon
 are ordinary wild enemies. DarkLizardmon still keeps the Kennel and Gururumon
 still hunt. They have no City page entry and never contribute prosperity. The
-100-point prosperity medal remains reachable (the roster totals 170).
+100-point prosperity medal remains reachable (the roster totals 169).

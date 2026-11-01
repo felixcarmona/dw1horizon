@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Factorial Town with the factory kept shut, at 20:00: the story's on-enter `.leave()` hits NPCs the map's hour rule
 never spawned (screen 155 always has three absent, 154 at night, 153 by day). The unpatched engine freed an undefined
-entity (removeEntity with a null entity, free3(0)) and the load never finished, so no screen could be left; patch 0302
+entity (removeEntity with a null entity, free3(0)) and the load never finished, so no screen could be left; patch 0303
 ignores the unload.
 
   xvfb-run -a python3 tools/dev/playtest/absent_leave.py DISC --exe EXE --card CARD --expect hang|pass

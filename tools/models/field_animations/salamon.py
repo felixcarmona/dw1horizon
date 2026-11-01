@@ -3,6 +3,8 @@
 Keep the native idle and each moving action's facial and ear performance.
 Reviewed fixed joint spacing prevents overlapping fur pieces; the collar keeps
 its native rigid attachment instead of receiving an imported jaw-like cycle.
+Walk/condition/run travel 15/10/35 units per tick with 4/10/4-tick gait
+periods and 1.6/2/0.8-tick contacts; program durations remain 16/20/16.
 """
 import copy
 import hashlib
@@ -43,9 +45,9 @@ def _author(old, sk):
     mean = np.array(native[:-1])[:, 13, 7].mean()
     reports = []
     for slot in [0, 2, 3, 4]:
-        period = {0: 91, 2: 16, 3: 20, 4: 8}[slot]
-        contact = {0: 91, 2: 9, 3: 10, 4: 1.5}[slot]
-        speed = {0: 0, 2: 2, 3: 2, 4: 15}[slot]
+        period = {0: 91, 2: 4, 3: 10, 4: 4}[slot]
+        contact = {0: 91, 2: 1.6, 3: 2, 4: 0.8}[slot]
+        speed = {0: 0, 2: 15, 3: 10, 4: 35}[slot]
         lift = {0: 0, 2: 5, 3: 1.5, 4: 8}[slot]
         rock = {0: 0, 2: 4, 3: 3, 4: 6}[slot]
         if slot:

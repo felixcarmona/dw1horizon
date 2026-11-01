@@ -7,6 +7,8 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 ROSTER = ROOT / 'content/tables/city-residents.json'
+# Geko Swamp sets Otamamon's defeat flag for Misty Trees; it never moves to File City.
+STORY_SPECIES = {109}
 LEVELS = {'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}
 
 
@@ -66,7 +68,7 @@ def verify(paths, original=False):
     actual = set()
     for path in paths:
         actual.update(i for i in compiled_recruits(path)
-                      if (not original or i < 59) and species[i]['level'] in LEVELS)
+                      if i not in STORY_SPECIES and (not original or i < 59) and species[i]['level'] in LEVELS)
     if expected != actual:
         raise ValueError(f'City roster disagrees with {"original" if original else "extended"} compiled story: '
                          f'unreachable {sorted(expected - actual)}, unlisted {sorted(actual - expected)}')

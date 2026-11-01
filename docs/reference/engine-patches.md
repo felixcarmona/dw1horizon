@@ -181,10 +181,27 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   the sheet, including non-partners. Missing icons use luminance CLUTs made on
   entry: zero remains transparent and every nonzero colour remains nonzero.
   City, chart and card transitions reload their shared VRAM on entry.
-- **Evolution requirements** (0176, 0179, 0180): on a "to" box the detail view shows that evolution's requirements;
-  in the partner's own tree it adds the partner's values, met/unmet marks and a points count, and lights the reachable
-  lines. Marks come from `evoRequirementsMet` (`evolution.c`), the same function `calculateRequirementScore` scores with,
-  so the card and the game agree. OPTIONS' EVOLUTION GUIDE turns it off.
+- **Evolution requirements** (0176, 0179, 0180, 0299): the original detail layout keeps its from/to columns and
+  level/name panels. With EVOLUTION GUIDE on, Square on a "to" box opens a centred requirements table; the prompt
+  stays inside the safe area. In the partner's tree the table adds current values, met/unmet marks, a verdict against
+  `evoPassPoints`, and the number of marks still needed. Other trees show requirements alone; a Fresh's Baby II is
+  automatic. Marks still come from `evoRequirementsMet` (`evolution.c`). The partner's reachable lines remain green.
+  Square or the active cancel button closes only the popup; Up/Down scroll one row using menu key repeat,
+  and other input is consumed. The 284×190 panel at (18,26) shows ten 12-pixel rows with fixed title,
+  verdict, columns and footer. Full requirement names use each font's normal spacing. Rows are packed into
+  borrowed text-area cells once on opening; scrolling changes sprite positions and crops, without redrawing text.
+  Only overflowing cards show a right-hand thumb and arrows, with the arrow at either limit dimmed.
+  Reopening resets the scroll. Popup primitives use OT 2, above the full-screen dim at OT 3 and the
+  chart/tabs at OT 4/5. A black average blend followed by a small subtractive pass approximates 40% brightness;
+  closing removes both passes. The panel uses an opaque card fill and two blue border lines. Closing the
+  detail releases the borrowed overview text rows. Text updates run on the first render pass, drawing on every pass.
+  Player menu entry loads MENU for the modal renderer and its read-only strings; the shared cell writer remains resident
+  along with `chartMark`, `chartButton`, `chartRange` and `chartNumber`: moving those four
+  helpers out of MENU frees 800 bytes before adding scrolling. `chartAppend` stays in MENU because the compiler
+  specializes it with a direct reference to the translated readiness string. The translated strings remain in MENU.
+  Menu exit restores curling storage.
+  `tools/lab_storage_check.py` audits the card's storage and all allocated relocations into it for each language.
+  EVOLUTION GUIDE off removes the prompt, popup and guide line colours.
 - **Tournaments** (0068): `startTournament` (`utils2.c`) widens opponents to `uint16_t` and adds DIGI.DAT partner species
   whose level lies in the cup's list (at most half the pool, the player's species excluded; never Megas). An opponent's
   stats depend on the cup and level only (`STD_initializeOpponent`). For registration (`tournamentCheckEligible`,
@@ -288,7 +305,7 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   Brains mark is crossed as it would be). The stats box stays shut during the block (`TRN_MOD_QUIET`) and then opens once
   with the total.
 - **Stopping** (`modTrainStopReason`, resident in `mod_qol.c`), after the session that left, in priority order: the gym's
-  own box open (a technique or new orders), end of life, a real natural evolution target at the due hour (patch 0299),
+  own box open (a technique or new orders), end of life, a real natural evolution target at the due hour (patch 0300),
   hurt or sick, hungry, needing the toilet, sleepy time inside the session, tired (past the gym's `MOD_TR_TIRED_AT`). A
   box under the stats says how many sessions ran and why it stopped (`TRN_BLOCK_*` texts).
   The due-hour window stays `evoTimer >= MOD_EVO_TIMING[level]` below Champion and `==` for Champion/Ultimate;
