@@ -42,19 +42,28 @@ class Run:
         e.poke(off, bytes([(b | (1 << (n % 8))) if v else (b & ~(1 << (n % 8)))]))
 
     def shot(self, label):
-        e = self.e
-        e.api('/api/v1/execution-flow?function=pause'); time.sleep(.3)
-        x = e.api('/api/v1/screen/still'); time.sleep(.2); y = e.api('/api/v1/screen/still')
-        e.api('/api/v1/execution-flow?function=start')
-        assert x == y, 'pause screenshots differ: ' + label
-        (self.out / (label + '.png')).write_bytes(x)
+        """A paused picture: two identical screenshots (retried while a fade or a script frame still runs)."""
+        e = self.e; a = self.out / (label + '.png'); b = self.out / (label + '-paused.png')
+        for attempt in range(6):
+            e.run('pause'); time.sleep(.3)
+            try:
+                e.run('shot', str(a)); time.sleep(.3); e.run('shot', str(b))
+            finally:
+                e.run('resume')
+            same = a.read_bytes() == b.read_bytes(); b.unlink()
+            if same: return
+            time.sleep(1)
+        raise AssertionError('pause screenshots differ: ' + label)
 
     def place(self, x, z):
         e = self.e
-        e.api('/api/v1/execution-flow?function=pause')
-        e.poke('TAMER_POSITION_DATA+0x78', struct.pack('<3i', x, 0, z))
-        e.poke('TAMER_ENTITY+0x10', struct.pack('<3i', x << 15, 0, z << 15))
-        e.api('/api/v1/execution-flow?function=start'); time.sleep(.8)
+        e.run('pause')
+        try:
+            e.poke('TAMER_POSITION_DATA+0x78', struct.pack('<3i', x, 0, z))
+            e.poke('TAMER_ENTITY+0x10', struct.pack('<3i', x << 15, 0, z << 15))
+        finally:
+            e.run('resume')
+        time.sleep(.8)
 
     def pos(self):
         r = self.e.ram()

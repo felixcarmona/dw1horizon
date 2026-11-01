@@ -27,7 +27,7 @@ def stop_at_the_tunnel():
     tamer.face(lookout)
     lookout.face(tamer)
     lookout.say("Hey, kid! Nobody walks out of here!")
-    tamer.walk(400, -1000, camera=True)
+    tamer.walk(450, -950, camera=True)   # inside a tile: a target on a tile edge (x 400, z -1000) is never reached
     band()
 
 def band():

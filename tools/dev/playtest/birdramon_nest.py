@@ -120,6 +120,7 @@ def main():
             e.wait(8)
             assert e.in_control(), 'no field control'
             e.gs('set', 'gametime_running=0')
+            e.poke('MOD_OPT_STORY', struct.pack('<i', 0))   # the unmodified scene: the corpus card has the story on with the Motor broken
             e.gs('trigger', '221', '0')
             result['warp_returned_control'] = e.warp(129)
             e.run('save', str(out / 'before-scene.state'))
