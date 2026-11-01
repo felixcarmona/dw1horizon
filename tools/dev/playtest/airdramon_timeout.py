@@ -297,7 +297,7 @@ end)
         else:
             assert clean,result
         if clean: assert r['timed_out']==(args.case=='hold'),result
-        if clean: assert r['airdramon_killed']==(args.case=='fight'),result
+        if clean: assert not r['airdramon_killed'],result     # held back or beaten, he survives
         result['phase']='complete'
     except BaseException as error:
         result['error']=str(error)

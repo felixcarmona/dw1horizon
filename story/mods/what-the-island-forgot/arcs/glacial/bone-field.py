@@ -1,11 +1,12 @@
 # 306, the Bone Field (§3.1f, §5.7): where the old war ended. MasterTyrannomon, who guided the tamer here, and a
 # Brachiomon, who left the slow meadow, tell what they half remember (fragment M11): the man did not die, he went down.
+# Once it is told MasterTyrannomon goes back to its post (glacial-82.py); this Brachiomon stays and keeps the field.
 from dw import *
 from ...state import post_guided, memories, m11_field, memory_news, bone_field_visited
 
 field = new_screen(306, map="build/what-the-island-forgot-maps/screens/BONE01.MAP")
 chest_bone_field = flag()
-master = field.npc(Species.MasterTyrannomon, at=(900, 1900), range=0, when=post_guided)
+master = field.npc(Species.MasterTyrannomon, at=(900, 1900), range=0, when=post_guided and not m11_field)
 elder = field.npc(Species.Brachiomon, at=(1400, 2400), range=0, when=post_guided)
 
 @field.on_enter
@@ -31,7 +32,7 @@ def how_it_ended():
 
 @master.on_talk
 def keeps_watch():
-    say("My post is this field now. Somebody should remember it.")
+    say("It is told. Now I go back to my post, and the old ones can come home.")
 
 @elder.on_talk(when=m11_field)
 def the_small_one():

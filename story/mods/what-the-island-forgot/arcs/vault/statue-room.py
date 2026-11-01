@@ -4,7 +4,7 @@
 # Solarmon, a sun frozen in the hall (arcs/residents/README.md; its home: district/power-station.py), joins on either answer.
 from dw import *
 from dw.base.ice_sanctuary_97 import sanctuary
-from ...state import root3
+from ...state import root3, vault_kept
 
 solarmon = sanctuary.npc(Species.Solarmon, at=(800, -600), range=0, when=not recruited(Species.Solarmon))
 
@@ -24,6 +24,7 @@ def talk():
 def the_voice_below():
     narrator.say("From under the pedestal, a cold voice:", "\"Deeper... The hearts are kept deeper...\"")
     tamer.say("There's more down there! Let's go, {partner}!")
+    vault_kept.clear()            # the choice at the wall is asked again
     warp(310, entry=0)
 
 @sanctuary.on_step(1, when=root3)

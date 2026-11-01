@@ -1,6 +1,7 @@
 # 300, the Engine Room under the Ogre Fortress (§3.2, §5.2): what is left of Ogremon's band guards the pit he fled by.
 # Beaten, they run; on the crate by the fire is Analogman's first notebook (M5), which only the tamer can read; then the
-# one-time choice: break the Motor (R1: the canyon sinks, Shellmon's rock lets go of him) or leave it.
+# choice: break the Motor (R1: the canyon sinks, Shellmon's rock lets go of him) or leave it. Left, the choice is there
+# again each time the tamer comes back down the lift (fortress-elevator.py).
 from dw import *
 from dw.names import *
 from ...state import Canyon, root1, memories, m5_notebook, memory_news
@@ -8,6 +9,10 @@ from ...state import Canyon, root1, memories, m5_notebook, memory_news
 room = new_screen(300, map="build/what-the-island-forgot-maps/screens/ENGN01.MAP")
 lookout = room.npc(Species.Agumon, at=(150, -900), range=0, when=Canyon.CHASING)
 guard = room.npc(Species.Agumon, at=(800, -1000), range=0, when=Canyon.CHASING)
+
+@room.on_enter(when=Canyon.SETTLED and m5_notebook and not root1)
+def the_motor_again():
+    the_choice()
 
 @room.on_enter
 def enter():
@@ -59,6 +64,9 @@ def the_motor():
     memories.add(1)
     memory_news.set()
     tamer.say("Somebody like me wrote this. Down here, a long time ago...")
+    the_choice()
+
+def the_choice():
     sound(8, 9)
     wait(1000)
     tamer.say("This machine's still running. It's what pushes the ground up!", "The whole canyon's sitting on top of it.")

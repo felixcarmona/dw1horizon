@@ -1,10 +1,11 @@
 # 146, the Robot House (§3.6): the tamer comes back with the gear WaruMonzaemon took. If Andromon has already read the
 # island's history (the archive "partly repairable"), the tamer remembers that a gear of the old make would complete it:
-# give it to the Toys (the game's own scene: Hagurumon comes home, the song, Monzaemon joins) or keep it for Andromon.
+# give it to the Toys (the game's own scene: Hagurumon comes home, the song, Monzaemon joins) or take it to Andromon
+# first: Andromon reads it and the tamer brings it back, and the game's own scene runs then.
 from dw import *
 from dw.names import *
 from dw.base.robot_house import tinmon0
-from ...state import gear_for_andromon
+from ...state import gear_for_andromon, m3_archive
 
 gear_offered = flag()
 
@@ -17,9 +18,9 @@ def whose_gear():
     if ask(yes="It belongs here", no="Keep it for Andromon"):
         return tinmon0.talk()
     say("Oh... You're taking it away? But Hagurumon... Our friend...")
-    tamer.say("Sorry. I think the whole island needs to remember something.")
+    tamer.say("Sorry. I think the whole island needs to remember something.", "I'll bring it back.")
     gear_for_andromon.set()
 
-@tinmon0.on_talk(when=gear_for_andromon and has(Item.Gear))
+@tinmon0.on_talk(when=gear_for_andromon and has(Item.Gear) and not m3_archive)
 def gear_kept():
-    say("Hagurumon would have liked to come home... But if it's for everyone...")
+    say("Hagurumon would like to come home... But if it's for everyone, bring it back after.")

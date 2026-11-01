@@ -5,7 +5,7 @@
 from dw import *
 from dw.text import text
 from dw.base.file_city_236 import city_236, jijimon, greymon, airdramon
-from ...state import root1, root2, root3, memories, key_given, airdramon_killed
+from ...state import root1, root2, root3, memories, key_given
 
 t51 = text.s192.sec51
 
@@ -56,42 +56,3 @@ def what_changed():
         jijimon.say("And the Grey Lord's doors stand open now.")
     if root3:
         jijimon.say("And Mr. M says Freezeland is thawing at the edges.")
-
-@city_236.section(51, when=airdramon_killed)
-def without_airdramon():
-    # the game's own farewell, with nobody where Airdramon stood: Greymon says his goodbye
-    airdramon.leave()
-    call(Routine.load_ending)
-    jijimon.face(tamer)
-    greymon.face(tamer)
-    partner.walk(-340, -2263, wait=False)
-    camera.to(172, -1848, speed=2)
-    camera.arrived()
-    wait(1000)
-    jijimon.say(t51.u0)
-    tamer.say(t51.u1)
-    jijimon.say(t51.u2)
-    narrator.say(t51.u3)
-    greymon.say(t51.u4)
-    tamer.turn(0)
-    wait(1500)
-    tamer.turn(1024)
-    wait(1500)
-    tamer.turn(2048)
-    wait(1500)
-    tamer.turn(3072)
-    wait(1500)
-    tamer.say(t51.u5)
-    jijimon.say(t51.u6)
-    hide_hud()
-    call(Routine.game_clear_save)
-    tamer.face(partner)
-    partner.face(tamer)
-    wait(2000)
-    tamer.say(t51.u7)
-    hide_hud()
-    wait(1500)
-    jijimon.play(32)
-    wait(2000)
-    call(Routine.start_ending)
-    dws("return;")                # the game's own farewell (with Airdramon) must not run after this one

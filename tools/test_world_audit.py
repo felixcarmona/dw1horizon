@@ -102,7 +102,8 @@ class WorldGates(unittest.TestCase):
             ({'post_guided': False, 'bone_field_visited': False}, (305, 306)),
             ({'root3': False, 'recruited(Species.Angemon)': False,
               'engine.game_beaten': False, 'back_dimension_portal': 0}, (310, 311)),
-            ({'root1': False, 'Canyon.OPEN': False, 'Canyon.CHASING': False}, (300, 301, 302, 303)),
+            ({'ogre_fortress_cleared': False, 'root1': False, 'Canyon.OPEN': False, 'Canyon.CHASING': False},
+             (300, 301, 302, 303)),
             ({'mt_infinity_entrance_found': False}, (312, 313)),
             ({'recruited(Species.Digmon)': False, 'trigger(308)': False}, tuple(range(357, 366))),
             ({'recruited(Species.Whamon)': False}, (309,)),
@@ -123,6 +124,8 @@ class WorldGates(unittest.TestCase):
     def test_arcs_remain_reachable_in_order(self):
         cases = [
             ({'ogre_fortress_cleared': True, 'Canyon.CHASING': True}, (300, 301, 302, 303)),
+            ({'ogre_fortress_cleared': True, 'root1': False, 'Canyon.OPEN': False, 'Canyon.CHASING': False},
+             (300, 301, 302, 303)),   # the chase given up or the Motor left: the lift still goes down
             ({'root1': True, 'Canyon.OPEN': False, 'Canyon.CHASING': False}, (300, 301, 302, 303, 366, 367, 368)),
             ({'root2': True}, (307, 308)),
             ({'post_guided': True}, (305, 306)),

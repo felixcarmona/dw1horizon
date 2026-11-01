@@ -220,6 +220,16 @@
       "original_sha256": "050b0ba7da1e5aece537a0f7f51cfbce85f2abc60f39db2cb50eff197672ef00",
       "authored_sha256": "4d714a77c39f3cf4a05b5b0f0fc27d5637e144c0344a45b9beafed406dee40a1",
       "reason": "Award the city medal at any prosperity of at least 100"
+    },
+    "zones/libraries/s208/script.dws": {
+      "original_sha256": "9e5003b1011c948437c95969d93d598ee400ba61afb2f280f4c1ba5ccabf40a3",
+      "authored_sha256": "2f6f3bc72d6de83420ea046686d0b1968c86cc22f4776b18aaafcca1e1a29f96",
+      "reason": "The newspaper no longer takes away a Myotismon who already joined: identical on the original story, needed after Let him rest"
+    },
+    "zones/libraries/s208/script.py": {
+      "original_sha256": "1094c2e93875e1f6d490160c9743a718001824ac42d1f7a39e28977cf5c7033d",
+      "authored_sha256": "f0de4e464bb9611ba4e516ea00ec5ca7334522af27a038968face53efe907221",
+      "reason": "The newspaper no longer takes away a Myotismon who already joined: identical on the original story, needed after Let him rest"
     }
   }
 }

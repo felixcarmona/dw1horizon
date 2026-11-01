@@ -44,6 +44,11 @@ Mineward exits and a legacy escape for saves stranded inside the Seam stay open.
 See [the world audit](../../../docs/mods/world-audit.md) before changing these
 connections or regenerating their step-trigger tiles.
 
+Every decision converges: a branch may change the path, the scene or the timing,
+but no branch closes a recruit, a service, a route or a memory fragment for good.
+The arcs' READMEs say how each one rejoins. Only breaking the Motor stays visible
+for good (the sunken canyon), and only in the landscape.
+
 
 The rumour hunters in Native Forest (screen 2) and Gear Savanna (70) receive one
 short tamer line per save, shared through `hunter_noticed`. The line runs on

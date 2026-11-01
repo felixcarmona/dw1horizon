@@ -441,6 +441,7 @@
     {
       "name": "canyon-declined",
       "state": {
+        "ogre_fortress_cleared": false,
         "root1": false,
         "Canyon.OPEN": false,
         "Canyon.CHASING": false
