@@ -110,3 +110,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
+
+Whamon's timed return at the city dock is a story-only fix, using the existing
+spawn instruction; it adds no engine patch or resident executable bytes. See the
+[shore story notes](../../story/mods/what-the-island-forgot/arcs/shore/README.md).

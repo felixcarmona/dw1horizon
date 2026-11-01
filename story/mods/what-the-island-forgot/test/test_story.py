@@ -59,7 +59,7 @@ class WhamonWait(unittest.TestCase):
         path = Path(__file__).resolve().parents[4] / 'story/mods/what-the-island-forgot/arcs/shore/city-dock.py'
         tree = ast.parse(path.read_text())
         funcs = [copy.deepcopy(n) for n in tree.body if isinstance(n, ast.FunctionDef)
-                 and n.name in ('elapsed_days', 'chasing', 'resting', 'city_ferry_presence')]
+                 and n.name in ('after_him', 'elapsed_days', 'chasing', 'resting', 'city_ferry_presence', 'return_to_dock')]
         sea = ast.parse(path.with_name('sea-ambush.py').read_text())
         funcs += [copy.deepcopy(n) for n in sea.body if isinstance(n, ast.FunctionDef)
                   and n.name in ('factory_ferry_presence', 'factory_ferry_closed')]
@@ -68,10 +68,12 @@ class WhamonWait(unittest.TestCase):
 
     def handlers(self, departure, year):
         def closed(): raise Closed()
-        scratch = {n: Counter() for n in (90, 91, 92)}
+        scratch = {n: Counter() for n in (90, 91, 92, 120)}
         env = dict(clock=SimpleNamespace(day=departure, year=(year-1) % 100),
                    whamon_left_day=Counter(departure), whamon_left_year=Counter(year),
-                   whamon_hurt=Counter(1), away=closed, hurt=closed, pstat=scratch.__getitem__)
+                   whamon_hurt=Counter(1), away=closed, hurt=closed, pstat=scratch.__getitem__,
+                   WHAMON_HIDDEN_PSTAT=120, recruited=lambda species: True,
+                   Species=SimpleNamespace(Whamon=24, Whamon146=146))
         exec(self.code, env)
         return env
 
@@ -153,6 +155,60 @@ class WhamonWait(unittest.TestCase):
             tree = ast.parse((root / name).read_text())
             helpers.append(next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'elapsed_days'))
         self.assertEqual(ast.dump(helpers[0]), ast.dump(helpers[1]))
+
+    def test_return_restores_only_the_removed_instance(self):
+        for handler, days in [('chasing', 5), ('resting', 10)]:
+            for reload in (False, True):
+                for departure in (0, 26, 29):
+                    with self.subTest(handler=handler, reload=reload, departure=departure):
+                        env = self.handlers(departure, 100)
+                        env['recruited'] = lambda species: True
+                        env['Species'] = SimpleNamespace(Whamon=24, Whamon146=146)
+                        env['seadramon_chased'] = Counter(handler == 'chasing')
+                        env['whamon_hurt'].set(handler == 'resting')
+                        present, spawns = [True], []
+                        def leave():
+                            self.assertTrue(present[0], 'removed an absent entity')
+                            present[0] = False
+                        def spawn(species, *, slot):
+                            self.assertFalse(present[0], 'spawned an existing entity')
+                            self.assertEqual((species, slot), (146, 7))
+                            present[0] = True
+                            spawns.append(slot)
+                        env['whamon'] = SimpleNamespace(leave=leave)
+                        env['spawn'] = spawn
+                        env['city_ferry_presence']()
+                        self.assertFalse(present[0])
+                        with self.assertRaises(Closed): env[handler]()
+                        env['clock'].day = (departure + days) % 30
+                        env['clock'].year = (99 + (departure + days) // 30) % 100
+                        if reload:
+                            present[0] = True  # the normal MAPHEAD setup
+                            env['city_ferry_presence']()
+                        env[handler]()
+                        self.assertTrue(present[0])
+                        self.assertEqual(len(spawns), 0 if reload else 1)
+                        env[handler]()
+                        self.assertEqual(len(spawns), 0 if reload else 1, 'repeated trigger spawned twice')
+
+    def test_each_square_layout_has_the_return_slot(self):
+        root = Path(__file__).resolve().parents[4]
+        for screen in range(168, 180):
+            presence = (root / f'story/base/city/presence/s{screen}.dws').read_text()
+            self.assertIn('npc 146 slot 7 when r7;', presence)
+
+    def test_departure_on_this_visit_is_remembered(self):
+        env = self.handlers(4, 43)
+        env['clock'].year = 42
+        env['to_the_dock'] = lambda: None
+        env['seadramon_chased'] = Counter()
+        env['whamon'] = SimpleNamespace(say=lambda *args: None, ask=lambda **kw: True, leave=lambda: None)
+        with self.assertRaises(Closed): env['after_him']()
+        spawned = []
+        env['spawn'] = lambda species, **kw: spawned.append((species, kw['slot']))
+        env['clock'].day = 9
+        env['chasing']()
+        self.assertEqual(spawned, [(146, 7)])
 
     def test_factory_use_tile_cannot_offer_an_invisible_ferry(self):
         for chased, hurt, days in [(0, 0, 0), (1, 0, 5), (0, 1, 10), (1, 1, 10)]:
