@@ -288,7 +288,7 @@ end)""")
                                     e.run('shot', str(out / 'summit-birdramon.png'))
                                     seen_rescue = True
                         if bit(e, 50, ram) and bit(e, 206, ram) and bit(e, 212, ram):
-                            assert not bit(e, 207, ram) and bit(e, 221, ram) and not bit(e, 220, ram)
+                            assert bit(e, 207, ram) and not bit(e, 748, ram) and bit(e, 221, ram) and not bit(e, 220, ram)   # Airdramon joins all the same
                             results[case]['summit_rescued'] = True
                             results[case]['summit_rescue_text_seen'] = seen_rescue
                             break
