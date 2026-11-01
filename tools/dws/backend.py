@@ -746,8 +746,8 @@ def place_digimon(comp, mh, report):
                              'the loading screen would hang. Replace other Digimon of that screen, or pick a smaller one or one '
                              f'already there (its model is loaded once): python3 tools/dws.py slots {screen} lists both', ln)
         sec = re.search(rf'^sec{screen}:.*?(?=^sec\d+:|\Z)', mh, re.S | re.M).group(0)
-        models = {int(t) for t in re.findall(r'^\s*LOAD_DIGIMON\s+(\d+)', sec, re.M)}
-        if len(re.findall(r'^\s*LOAD_DIGIMON\s+\d+', sec, re.M)) > NPC_SLOTS['max'] or len(models) > 5:
+        models = {int(t) for t in re.findall(r'^\s*LOAD_DIGIMON(?:16)?\s+(\d+)', sec, re.M)}
+        if len(re.findall(r'^\s*LOAD_DIGIMON(?:16)?\s+\d+', sec, re.M)) > NPC_SLOTS['max'] or len(models) > 5:
             report.append(f'warning: MAPHEAD screen {screen} has {len(models)} distinct models; on one path at most '
                           f'5 (NPC_MODELS) and {NPC_SLOTS["max"]} LOAD_DIGIMON (LOADED_DIGIMON_MODELS) can be used')
     out_dir = os.path.join(getattr(comp, 'run_dir', RUN_ROOT), 'maps')

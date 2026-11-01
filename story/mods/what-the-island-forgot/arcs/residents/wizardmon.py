@@ -1,6 +1,6 @@
 # Grey Lord's Mansion 59, the dead-end room off the hall (the brief's 54 reads no NPC list): Wizardmon reads a book whose
 # pages have gone blank. It joins once the city has grown (prosperity 20: recruits only add to it, so it is no dead end).
-# Its home is the Scrap Office (district/scrap-office.py).
+# Its home is the Power Station (district/power-station.py).
 from dw import *
 
 room = screen(Screen.grey_lords_mansion_59)

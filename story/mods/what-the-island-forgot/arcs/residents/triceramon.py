@@ -1,5 +1,5 @@
 # Ancient Speedy Region 87, next door to the Ancient Dino Region (79 has no heap for its model): Triceramon pushes a rock. A hard
-# fight, the strength of the Dino Region's Tyrannomon. Its home is the Stone Yard (district/stone-yard.py).
+# fight, the strength of the Dino Region's Tyrannomon. Its home is the Forge (district/forge-workshop.py).
 from dw import *
 
 region = screen(Screen.ancient_speedy_region_87)
