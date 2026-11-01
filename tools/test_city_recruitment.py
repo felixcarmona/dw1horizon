@@ -14,10 +14,15 @@ from tools.city_residents import membership_bits, residents
 ROOT = recruitment.ROOT
 
 
+def former_residents():
+    """The wild-recruit policy needs wild species on the roster; the real roster has none left."""
+    return patch.object(recruitment, 'roster', return_value=recruitment.roster() | {77, 86, 104})
+
+
 class Recruitment(unittest.TestCase):
     def lowered(self, zone, extended=True):
         path = next((ROOT / 'story/base/zones' / zone).glob('*/script.py'))
-        with recruitment.story(extended):
+        with former_residents(), recruitment.story(extended):
             return lower.lower_file(str(path))[1]
 
     def test_wild_needs_first_win(self):
@@ -34,7 +39,7 @@ class Recruitment(unittest.TestCase):
             source = lower.lower_file(str(path))[1]
         self.assertIn('battle();', source)
         self.assertNotIn('recruit(species(101))', source)
-        self.assertIn('!is_recruited(species(90))', source)  # Tekkamon
+        self.assertNotIn('recruit(species(90))', source)  # Tekkamon left the roster
 
     def test_original_helper_unchanged(self):
         source = self.lowered('back-dimension', False)
@@ -49,7 +54,7 @@ class Recruitment(unittest.TestCase):
 
     def test_existing_narrated_departure_keeps_its_scene(self):
         path = ROOT / 'story/base/zones/native-forest/s004-3/script.py'
-        with recruitment.story(True):
+        with former_residents(), recruitment.story(True):
             source = lower.lower_file(str(path))[1]
         # Etemon's authored departure is left alone; Aruraumon's silent shared code isn't.
         self.assertNotIn(f'text("{recruitment.KEY}", species(42))', source)
@@ -57,7 +62,7 @@ class Recruitment(unittest.TestCase):
 
     def test_mod_placed_helper_uses_the_same_policy(self):
         path = ROOT / 'story/mods/examples/src/forest_garurumon.py'
-        with recruitment.story(True):
+        with former_residents(), recruitment.story(True):
             source = lower.lower_file(str(path))[1]
         self.assertIn('engine.result == 1 && !is_recruited(species(77))', source)
         self.assertIn(f'text("{recruitment.KEY}", species(77))', source)
@@ -106,7 +111,7 @@ def talk():
 """
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            path = root / 'story/mods/fixture/src/resident.py'
+            path = root.joinpath('story', 'mods', 'fixture', 'src', 'resident.py')
             path.parent.mkdir(parents=True)
             path.write_text(source)
             roster = root / 'roster.json'
@@ -145,7 +150,7 @@ def talk():
     send_to_city(species=Species.Datamon, line="Going.")
 """
         with tempfile.TemporaryDirectory() as folder:
-            path = Path(folder) / 'story/mods/fixture/src/resident.py'
+            path = Path(folder).joinpath('story', 'mods', 'fixture', 'src', 'resident.py')
             path.parent.mkdir(parents=True)
             path.write_text(source)
             prog = build.compile_sources([str(path)], 'species', text_source='ours')
@@ -186,7 +191,7 @@ def talk():
         bits = membership_bits()
         self.assertEqual(len(bits), 14)
         self.assertEqual({i for i in range(112) if bits[i // 8] & (1 << (i % 8))},
-                         {r['id'] for r in residents()})
+                         {r['id'] for r in residents() if r['id'] < 112})
 
 
 if __name__ == '__main__':

@@ -3,30 +3,20 @@
 from dw import *
 
 stone_yard = new_screen(357, map="build/what-the-island-forgot-maps/screens/BARR01.MAP")
-# the residents: Golemon by the stairs (Mt. Infinity), MoriShellmon on the left (Misty Trees), Saberdramon on the
-# right of the stairs (the Ancient Speedy Region), each standing here once beaten where it lived
-golemon = stone_yard.npc(Species.Golemon, at=(-1200, -2000), range=0, when=recruited(Species.Golemon))
-morishellmon = stone_yard.npc(Species.MoriShellmon, at=(-1500, -1000), range=0, when=recruited(Species.MoriShellmon))
-saberdramon = stone_yard.npc(Species.Saberdramon, at=(1300, -2100), range=0, when=recruited(Species.Saberdramon))
+# the residents: Digmon by the stairs (the Drill Tunnel), Triceramon on the left with its rock (the Ancient Dino Region), each
+# standing here once beaten where it lived
+digmon = stone_yard.npc(Species.Digmon, at=(-1200, -2000), range=0, when=recruited(Species.Digmon))
+triceramon = stone_yard.npc(Species.Triceramon, at=(-1500, -1000), range=0, when=recruited(Species.Triceramon))
 
 
-@golemon.on_talk
+@digmon.on_talk
 def talk():
-    say("Every stone of this yard I set myself.", "Mt. Infinity has too many stones and nobody to set them.")
+    say("Every stone of this yard I set myself.", "In the tunnels nobody came back to thank me. Here you all walk on it.")
 
 
-@morishellmon.on_talk
+@triceramon.on_talk
 def talk():
-    say("Heh heh... this old fella has seen the island forget a lot of things.",
-        "Sit a while. The Works remember better than the forest did.")
-
-
-@saberdramon.on_talk
-def talk():
-    if clock.hour >= 20 or clock.hour < 5:
-        say("At night I fly over the hedge and count the lights of the city. More every week.")
-    else:
-        say("Kraah! The fastest wings in the Speedy Region, and you still caught me.")
+    say("It goes there.", "...Good rock. Good city.")
 
 
 # The Stone Yard's stairs (its tiles run step 0) go down to the gate in the lower town's hedge (maps/twnb-gate.py: exit 7

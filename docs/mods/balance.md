@@ -393,4 +393,4 @@ A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` ro
 
 Placed enemies whose species changed tier retain their previous zone stats and bits through explicit map overrides (45 slots), including the deliberately weaker Gear Savanna Vermilimon. Species defaults now fit their new tier; the area fights retain their established difficulty. General recruited-species tournament brackets include level 6; fixed named cups and story recruit triggers keep their identities.
 
-The extended City roster has 22 Rookies, 51 Champions and 16 Ultimates, worth 169 prosperity points. Only the species in `content/tables/city-residents.json` count, including when loading older saves. The original story’s 50 recruits still total 100 points.
+The extended City roster has 18 Rookies, 34 Champions and 20 Ultimates, worth 143 prosperity points. Only the species in `content/tables/city-residents.json` count, including when loading older saves. The original story’s 50 recruits still total 100 points.

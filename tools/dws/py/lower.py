@@ -999,7 +999,7 @@ class Module:
                                                f'first free one); slots 8-15 need the story-state engine',
                                     'compile with --exe story-state, or put it on a screen with a free slot (python3 tools/dws.py slots SCREEN)'))
             sp = d['species']
-            if sp is not None and sp >= 180 and exe not in ('species', 'story-state'):
+            if sp is not None and sp >= 180 and exe not in ('species', 'story-state') and not BE.IMPORTED_NPCS:
                 out.append(self.err(d['node'], f'Species.{N.enum_members("species").get(sp, sp)} is not one of the original game\'s 180 '
                                                f'species (it is imported: content/species/): it needs the story-state engine',
                                     'compile with --exe story-state (its DIGI.DAT has the imported species), or pick a species of the game'))

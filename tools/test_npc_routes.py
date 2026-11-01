@@ -45,10 +45,9 @@ class NpcRoutes(unittest.TestCase):
         self.assertTrue(any('exit/trigger' in error for error in errors), errors)
 
     def test_accepted_pocket_does_not_exempt_an_interaction(self):
-        s = self.screen(364)
-        # The east pocket is intentionally accepted only while it is empty.
-        # Facing 0 opens from four collision rows below the chest.
-        s['targets'].append(('spawn_chest', 700, 250, 0))
+        s = self.screen(314)
+        # The pocket behind the Goblimon is accepted only while it is empty.
+        s['targets'].append(('spawn_chest', 1900, 1200, 0))
         errors = routes.check_screen(s, routes.authored_geometry(s))
         self.assertTrue(any('spawn_chest' in error and 'cut off' in error for error in errors), errors)
 

@@ -32,7 +32,7 @@ def residents(content=None):
 def compiled_recruits(path):
     # Decode instructions, never search raw bytes: dialogue and dead padding can
     # contain the same bytes. Ordinary flags 312+ have unrelated meanings;
-    # high species use the reserved recruit-bit operands of patch 0302.
+    # high species use the reserved recruit-bit operands of patch 0303.
     from tools.dws import bytecode, basebuild
     data = Path(path).read_bytes()
     # DG entry zero is unused disc residue; getScript(0) reads MAPHEAD instead.

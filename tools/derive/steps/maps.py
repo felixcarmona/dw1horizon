@@ -132,7 +132,7 @@ def finish_step(ctx, step):
         if entry.get('check') == 'story-spawns':
             with open(os.path.join(ctx.root, RECIPE)) as file:
                 sources = json.load(file)['story']['sources']
-            args = ['check-spawns', *sources, '--screen-content', mpath(ctx, 'screens'),
+            args = ['check-spawns', *sources, '--imported-npcs', '--screen-content', mpath(ctx, 'screens'),
                     '--maps', mpath(ctx, 'retouch'),
                     '--json', ctx.path('derived', 'spawn-check.json')]
             for source in entry.get('enforce_sources', []):

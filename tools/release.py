@@ -376,7 +376,7 @@ def pipeline(a, r):
         if r.dry:
             print('Story buffer/font arguments below are placeholders; real run reads final derived/exe-facts.json')
         r.cmd([py, 'tools/dws.py', 'story-build', *recipe['story']['sources'], '--mods', 'all', '--read-only-locks',
-               '--exe', 'mods', '--exe-dir', w / 'build/us/psx/gcc',
+               '--exe', 'mods', '--imported-npcs', '--exe-dir', w / 'build/us/psx/gcc',
                *target, '-o', out / 'story-check/DG.SCN'], checkenv)
     with r.step('Prepare source-derived fixtures for offline selftest'):
         # Original-content regressions resolve these declared paths, independently

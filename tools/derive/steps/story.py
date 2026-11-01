@@ -92,7 +92,7 @@ class Settings:
         """STORY_EXE (:207): text, screens, or stable pickups require the mod executable."""
         if text == 'us' and not self.screens and not self.ground_pickup_max:
             return []
-        return ['--exe', 'mods', '--ground-pickup-max', str(self.ground_pickup_max),
+        return ['--exe', 'mods', '--imported-npcs', '--ground-pickup-max', str(self.ground_pickup_max),
                 '--maphead-max', str(self.mh_max), '--font-glyphs', str(self.glyphs), '--exe-font', font]
 
     def orig(self, text, facts):

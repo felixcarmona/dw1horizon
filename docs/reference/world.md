@@ -639,7 +639,7 @@ from running it.
 
 ## City recruitment
 
-The extended story has 89 residents worth 169 prosperity points, defined by
+The extended story has 72 residents worth 143 prosperity points, defined by
 `content/tables/city-residents.json`. A first wild victory recruits an eligible
 species with a jingle and a narrator announcement. Repeated victories, fleeing
 and losing recruit nobody. ModokiBetamon, Dokunemon, Vermilimon, IceDevimon,

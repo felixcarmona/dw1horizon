@@ -13,6 +13,8 @@ def exe_arg(p):
                    help='target executable: original (default: original, accents stripped), mods (wide ids, '
                         'accents), species (mods + Digimon 180 and up) or story-state (the story-state engine: story flags and 32-bit variables, '
                         'docs/mods/story-state-engine.md)')
+    p.add_argument('--imported-npcs', action='store_true',
+                   help='the disc carries the imported species (DIGI.DAT), so --exe mods may place them as NPCs')
     p.add_argument('--ground-pickup-max', type=int, default=None, metavar='IDS',
                    help='target daily pickup bitset bound (default: target item.h; 0: legacy instructions; derive passes its executable fact)')
     p.add_argument('--maphead-max', type=lambda v: int(v, 0), default=None, metavar='BYTES',
@@ -213,6 +215,7 @@ def main(argv=None):
     B.BE.FONT_NAME_GIVEN = getattr(a, 'exe_font', None)
     if getattr(a, 'exe', 'original') != 'original' and getattr(a, 'ground_pickup_max', None) is None:
         B.BE.GROUND_PICKUP_MAX = B.exe_ground_pickup_max(B.BE.exe_dir(a.exe))
+    B.BE.IMPORTED_NPCS = getattr(a, 'imported_npcs', False)
     if a.cmd == 'check-spawns':
         from .checks import spawns
         a.files = mod_files(a.files)

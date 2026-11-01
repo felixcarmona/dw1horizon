@@ -25,8 +25,11 @@ a changed city fits; validate the actual final build at the original 2 MB.
 ## Residents and prosperity
 
 `content/tables/city-residents.json` owns the City page's species IDs and hidden
-flags. Species must be defined IDs below 1024 and Rookie or higher. The current
-roster has 22 Rookies, 51 Champions and 16 Ultimates, worth 169 points. The 50 IDs
+flags. Species must be defined IDs below 1024 and Rookie or higher. A resident above ID 58 is one
+of a kind: the only one of its species on the island, with its own recruit site
+(`arcs/residents/README.md`). Myotismon and WaruMonzaemon are the two story
+exceptions, and `tools/test_city_residents.py` enforces the rule. The current
+roster has 18 Rookies, 34 Champions and 20 Ultimates, worth 143 points. The 50 IDs
 below 59 are worth 100 points. Baby flags are deliberately excluded: several
 represent story state, including the city medal.
 
@@ -37,7 +40,7 @@ must match the roster exactly; original passes must match its IDs below 59.
 Otamamon (species 109, trigger 309) records the Geko Swamp victory for Misty Trees; it is
 excluded from the resident check, City page and prosperity. Its raw story recruit
 write remains intact. Legacy original-story writes above 58 do not make residents.
-Patch 0302 supports imported residents without changing this roster. IDs 0..111
+Patch 0303 supports imported residents. IDs 0..111
 keep trigger 200+id; IDs 112..1023 use existing saved recruit bits, addressed by
 `SET_TRIGGER`, `UNSET_TRIGGER` and `IF trigger` operands 0x8000+id. Ordinary
 triggers 312+ retain their meanings. `recruit`, `unrecruit`, `recruited`,
@@ -56,8 +59,8 @@ build generates the executable’s 14-byte membership bitset for IDs below 112.
 Before native compilation, `tools.city_residents --c-extra-header TREE` generates
 `src/main/city_residents_extra.h` with an exact-sized u16 list of roster IDs
 112 and above. The build driver and native cache regenerate it before hashing
-compiler inputs. No high-ID storage survives compilation for the current roster;
-20 extra IDs would need 40 bytes of list data, plus the loop's code. There is
+compiler inputs. The current roster's 20 high IDs take 40 bytes of list data,
+plus the loop's code. There is
 no per-frame scan of all 1024 species. Flags left in older saves cannot add
 unlisted residents. The City tab already reads u16 IDs from DIGI.DAT and calls
 `isDigimonRecruited`, so it needs no change. Continue applies the
@@ -117,4 +120,4 @@ narration alone do not hide a recruitment.
 ModokiBetamon, Dokunemon, Vermilimon, IceDevimon, DarkLizardmon and Gururumon
 are ordinary wild enemies. DarkLizardmon still keeps the Kennel and Gururumon
 still hunt. They have no City page entry and never contribute prosperity. The
-100-point prosperity medal remains reachable (the roster totals 169).
+100-point prosperity medal remains reachable (the roster totals 143).

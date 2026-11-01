@@ -1,21 +1,20 @@
-# 358, the Courtyard: NiseDrimogemon dug the old well and J-Mojyamon naps on the stones.
-# Both were beaten first where they lived, in the savanna and jungle.
+# 358, the Courtyard: Clockmon, out of the Sewer, stands by the old well and keeps the Works' real time. Armadillomon, from the
+# Ancient Speedy Region, looks for better things down the well (the Treasure Hunt 209 has no heap for its model).
 from dw import *
 
 courtyard = new_screen(358, map="build/what-the-island-forgot-maps/screens/BARR02.MAP")
-nisedrimogemon = courtyard.npc(Species.NiseDrimogemon, at=(-1700, 1000), range=0, when=recruited(Species.NiseDrimogemon))
-jmojyamon = courtyard.npc(Species.JMojyamon, at=(-1700, -2100), range=0, when=recruited(Species.JMojyamon))
+clockmon = courtyard.npc(Species.Clockmon, at=(-1700, 1000), range=0, when=recruited(Species.Clockmon))
+armadillomon = courtyard.npc(Species.Armadillomon, at=(-1700, -2100), range=0, when=recruited(Species.Armadillomon))
 
 
-@nisedrimogemon.on_talk
+@clockmon.on_talk
 def talk():
-    say("I dug that well with my own drill! ...It is a fake drill. The water is real, though.")
-
-
-@jmojyamon.on_talk
-def talk():
-    if clock.hour >= 12 and clock.hour < 16:
-        say("Zzz... the stones are warm after noon... zzz...")
+    if clock.hour >= 11 and clock.hour <= 13:
+        say("Tick. Tock. Twelve, and this time it is true.")
     else:
-        say("The jungle was hot and wet. Here it is only hot. I call that a holiday.")
+        say("Tick. Tock. It stopped being twelve, and I am so glad.", "A city needs a real clock.")
 
+
+@armadillomon.on_talk
+def talk():
+    say("Treasure! I swear there's treasure somewhere under this city!", "This old well goes down a long way. I'm only checking.")

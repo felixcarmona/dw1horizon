@@ -104,7 +104,7 @@ class WorldGates(unittest.TestCase):
               'engine.game_beaten': False, 'back_dimension_portal': 0}, (310, 311)),
             ({'root1': False, 'Canyon.OPEN': False, 'Canyon.CHASING': False}, (300, 301, 302, 303)),
             ({'mt_infinity_entrance_found': False}, (312, 313)),
-            ({'recruited(Species.Golemon)': False}, tuple(range(357, 366))),
+            ({'recruited(Species.Digmon)': False, 'trigger(308)': False}, tuple(range(357, 366))),
             ({'recruited(Species.Whamon)': False}, (309,)),
         ]
         for state, screens in cases:
@@ -130,7 +130,8 @@ class WorldGates(unittest.TestCase):
             ({'root3': True, 'recruited(Species.Angemon)': False}, (311,)),
             ({'mt_infinity_entrance_found': True, 'root1': False, 'root2': False, 'root3': False}, (312,)),
             ({'mt_infinity_entrance_found': True, 'root1': True, 'root2': True, 'root3': True}, (313,)),
-            ({'recruited(Species.Golemon)': True}, tuple(range(357, 366))),
+            ({'recruited(Species.Digmon)': True}, tuple(range(357, 366))),
+            ({'recruited(Species.Digmon)': False, 'trigger(308)': True}, tuple(range(357, 366))),
             ({'recruited(Species.Whamon)': True, 'seadramon_let_go': True,
               'seadramon_chased': False, 'whamon_hurt': False}, (309,)),
         ]

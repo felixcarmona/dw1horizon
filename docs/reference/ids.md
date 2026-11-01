@@ -59,7 +59,7 @@ The constants of `ids.h` as the series leaves them:
 | `NUM_LEARNABLE_MOVES` | 58 | `MOVE_LEARN_CHANCES`, the technique grid |
 | `NUM_CARDS` | 66 | `CARD_DATA`, `CARD_SPRITE_CLUT`, `CARD.ALL` |
 | `TRIGGER_RECRUITED_BASE` | 200 | + species below 112 |
-| `TRIGGER_SPECIES_RECRUITED_BASE` | 0x8000 | script operand + species 112..1023, redirected to recruited bits (0302) |
+| `TRIGGER_SPECIES_RECRUITED_BASE` | 0x8000 | script operand + species 112..1023, redirected to recruited bits (0303) |
 | `TRIGGER_SHOP_STOCK_BASE` | 0x180 | + item |
 | `TRIGGER_RAISED_BASE` | 0x200 | + species |
 | `LEGACY_ID_NONE` | 0xFF | "none" in the u8 layouts (inventory slots, item bytes) |
@@ -165,13 +165,13 @@ as literals (`[180]`, `[66]`, `0xB4`, `0x41`) almost everywhere.
   recruited trigger to those originals. Within 112..179, only 115, 116, 117,
   119, 120, 121 and 124 have raised triggers (627, 628, 629, 631, 632, 633
   and 636); every other ID there uses raised bits too. Recruit bits persist in save tag
-  `0x0008`. Patch 0302 redirects script trigger operands 0x8070..0x83ff to
+  `0x0008`. Patch 0303 redirects script trigger operands 0x8070..0x83ff to
   these same bits for setting, clearing and testing, leaving ordinary triggers
   (including raised flags) untouched. No new opcode or save tag is needed.
 - **Tournament and VS tables** (0065): reads go through `STD_ROW`/`VS_NAME_ROW` (row 0 is a blank name), the bracket
   draws no portrait outside its table and `stdWinChanceRow` clamps; MasterTyrannomon (124) already read past these
   tables in the original layout.
-- **Prosperity** (0161, 0277, 0296, 0302): `recalculateProsperity` rebuilds pstat 1
+- **Prosperity** (0161, 0277, 0296, 0303): `recalculateProsperity` rebuilds pstat 1
   from owned roster members: a 14-byte membership table below 112 and a generated
   u16 list above it. Original story still counts only types 3..58. Opening the
   City tab, saves and game start refresh the total.
