@@ -95,7 +95,8 @@ def ascii_glyphs(t, font):
     """A source's text with the ASCII characters of the font map (( ) & % / ...) in their full-width form, outside the
     format codes (#C1, %d): gen_text then encodes them as the extra glyphs."""
     parts, codes = FORMAT.split(t), FORMAT.findall(t)
-    fix = lambda p: ''.join(full_width(c) if full_width(c) != c and full_width(c) in font else c for c in p)
+    # A digit stays ASCII: the Japanese subset's ２ is a text glyph of that language, not a form of the font's 2.
+    fix = lambda p: ''.join(full_width(c) if not c.isdigit() and full_width(c) != c and full_width(c) in font else c for c in p)
     return fix(parts[0]) + ''.join(c + fix(p) for c, p in zip(codes, parts[1:]))
 
 

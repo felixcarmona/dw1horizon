@@ -175,6 +175,18 @@ reactions, eating, pooping) of partner species ≥ 180; `species.py check` joins
 this moves about 15 KB per model out of the buffer. Techniques are not cold: an enemy of the same species plays them
 in battle. On a real drive the first eating clip may stall briefly for the seek.
 
+Each read stops the whole game: 0.73 s on an emulated drive for WarGreymon's toilet clip. With RAM above 2 MB (patch 0313,
+an emulator's 8 MB setting) the partner's cold part is read once, after its model loads, into 0x80200000 (32 KB,
+`refreshColdCache` in the partner's normal field tick), and the clips start from there; a clip past those 32 KB reads the
+disc as before. `modProbeRam` tells real RAM from the console's mirror. It runs at boot and writes one word and its mirror;
+with 2 MB the cache stays off and every path is the original's. Nothing may need this RAM: it only removes the wait.
+`tools/dev/playtest/cold_cache.py` counts the reads on a real toilet trip in both modes.
+
+The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
+lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
+300 %, and the panel asks for 8500. The count changes a little with the loop's address, so measure it again if that code
+moves. With both settings found the panel does not appear.
+
 ### MAPHEAD buffer (patches 0004, 0091)
 
 `MAPHEAD.SCN` (every screen's setup section and the sections the C code calls: shopkeepers, the new-game questions,
