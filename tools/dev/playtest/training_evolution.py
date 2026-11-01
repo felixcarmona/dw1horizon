@@ -118,6 +118,17 @@ def prepare(e, base, species, timer, strong):
 
 def block(e, out, label, timer, count, expected_target):
     # The setup reads the same x5 flag as the real menu.
+    # Observe the picker after the session's gains, which can change the winner.
+    e.run('lua', f'''
+      TE_TARGET={{target=-1}}
+      TE_TARGET.bp=PCSX.addBreakpoint({e.A('getNaturalEvolutionTarget')},'Exec',4,'training-target',function()
+        local ret=PCSX.getRegisters().GPR.n.ra
+        TE_TARGET.ret=PCSX.addBreakpoint(ret,'Exec',4,'training-target-return',function()
+          TE_TARGET.target=PCSX.getRegisters().GPR.n.v0
+          TE_TARGET.ret:remove(); TE_TARGET.ret=nil
+        end)
+      end)
+    ''')
     call(e, 'writePStat', 246, 2)
     call(e, 'TRN_setupHpTraining', 112)
     e.run('lua', 'PCSX.resumeEmulator()')
@@ -127,6 +138,11 @@ def block(e, out, label, timer, count, expected_target):
     e.run('pause')
     got = e.peek('PARTNER_PARA+0x56', 'h') - timer
     assert got == count, f'{label}: {got}/5 sessions, expected {count}/5'
+    selected = int(e.run('lua', 'return TE_TARGET.target').strip()) & 0xffffffff
+    e.run('lua', 'TE_TARGET.bp:remove(); if TE_TARGET.ret then TE_TARGET.ret:remove() end')
+    if expected_target != -1:
+        assert selected != 0xffffffff, f'{label}: stop check had no target'
+        expected_target = selected
     shot = out / f'{label}-stats.png'
     e.run('shot', str(shot))
     e.run('shot', str(out / f'{label}-paused.png'))
