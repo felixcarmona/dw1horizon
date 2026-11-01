@@ -479,6 +479,21 @@ tables encode (`MOD_VS_UNLOCK`), stays resident: a reload of the overlay would u
 `SLOT_ACTION_QUESTIONS` stay resident and point into the overlay; only the overlay reads them. `config/us/overlay.ld` names the moved functions one by one, so a new
 function in `main_menu.c` stays resident unless it is added there, which is always safe.
 
+Patch 0293 also moves the laboratory's anonymous translated UI literals,
+`LAB_FIELDS`, `LAB_HOME_TEXT` and 960-byte `labText` redraw cache into MENU.
+The field roster's translated level captions have separate named resident arrays;
+its callbacks, caption buffer, species list and shared state stay resident.
+The resident `modLabMenu` entry drains queued reads, loads MENU, calls the
+synchronous UI and restores the previous overlay only after it returns. The UI
+clears `labText` before drawing or installing its render callback on every entry:
+BIOS initialization does not cover overlay scratch. Its callback is removed
+before a save/load card menu reloads MENU, so no cached row survives that reload.
+The field/home tables are const and the compiler emits them and the literal pool
+as read-only sections. Audit every allocated object relocation into these sections
+with `python3 tools/lab_storage_check.py build/decomp-int`, alongside
+`tools/xref.py classes` and `refs` on the linked ELF. This includes anonymous
+literals that the linked symbol graph cannot name.
+
 A VS battle started from the title's registration screens needs `VS_REL` in the same slot: `modMenuVsBattle`
 (resident) removes the menu objects, reads VS, runs the battle, reads the menu overlay again and adds the objects back,
 returning into the same `tickMainMenu` code. The overlay's strings are per-language like the executable's, with its own
@@ -725,3 +740,34 @@ margin is 15,488 bytes on screen 361. In the original-2-MB emulator, species
 224 on OGRE03 at noon leaves 70,096 bytes free (largest block 68,688), with no
 corruption. These are English test-build figures, distinct from the controlled
 patch-cost comparison above.
+
+## Laboratory storage in MENU (0293)
+
+Two full eight-language builds on the 0288 integration, both with
+`MOD_VERSION=v0.0.2-test` and no `--lang` restriction, measure:
+
+| Measurement | Through 0288 | With this patch |
+|---|---:|---:|
+| `main_BSS_END` | `0x801cf2c0` | `0x801ce918` |
+| Initialized heap | 183,344 B | 185,824 B |
+| MENU image | 47,128 B | 49,600 B |
+| MENU spare below `0x80060000` | 7,432 B | 4,960 B |
+| Screen 361 margin | 1,312 B | 3,792 B |
+
+The resident endpoint falls by 2,472 bytes; heap alignment makes the gain
+**2,480 bytes**. Resident text stays 501,472 bytes. RODATA shrinks by 1,520,
+SDATA grows by eight and BSS shrinks by 960; DATA and SBSS do not change.
+There is no new heap allocation. The old 1,208-byte literal pool includes roster
+captions: separating them leaves 1,136 bytes of UI literals to move, plus the
+320-byte field table, 44-byte home table and 960-byte redraw cache. MENU's
+additional alignment accounts for the rest of its growth.
+
+Every language has the same endpoint and overlay size. General heapcheck passes,
+with 29,472 bytes projected free on OGRE03. All 320 actual-archive story setups
+fit in each language (2,560 checks per build). Screen 361 still peaks at
+182,024 bytes; 185,816 available after allocator overhead leaves 3,792 bytes.
+The archive and all eight languages' story and screen binaries are unchanged.
+The object audit passes 118 allocated relocations per language, including the
+anonymous literals, and verifies that the field roster's captions and callbacks
+remain resident. Keep these measurements tied to this full language layout;
+English-only test builds have a different file table and text padding.
