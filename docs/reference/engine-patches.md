@@ -288,11 +288,27 @@ R2 switches x1 / x2 in every battle: field (BTL), arena and tournaments (STD), V
   Brains mark is crossed as it would be). The stats box stays shut during the block (`TRN_MOD_QUIET`) and then opens once
   with the total.
 - **Stopping** (`modTrainStopReason`, resident in `mod_qol.c`), after the session that left, in priority order: the gym's
-  own box open (a technique or new orders), end of life, due to digivolve (`evoTimer` reached `MOD_EVO_TIMING[level]`),
+  own box open (a technique or new orders), end of life, a real natural evolution target at the due hour (patch 0299),
   hurt or sick, hungry, needing the toilet, sleepy time inside the session, tired (past the gym's `MOD_TR_TIRED_AT`). A
   box under the stats says how many sessions ran and why it stopped (`TRN_BLOCK_*` texts).
+  The due-hour window stays `evoTimer >= MOD_EVO_TIMING[level]` below Champion and `==` for Champion/Ultimate;
+  later Champion/Ultimate field checks still run each hour. Both the stop preview and `tickConditions` use
+  `getNaturalEvolutionTarget` (`evolution.c`), including Rookie's Numemon fallback and the Ultimate pair/path/Mega
+  gates. A Champion with no qualifying target at 144 h, or a Rookie with none from 72 h until the fallback, keeps
+  training. Other stop reasons retain their priority.
+  The target pickers do not roll randomness. Their scoring accumulators (`statTotal/statCount`) are automatic locals,
+  retained across candidates within one call only; the existing scoring behavior is preserved. Species lookups may
+  populate/age their record cache but do not change partner state or the random sequence. The Fresh picker's timer
+  reset now belongs to the tick, so previews leave it alone even when there is no target. Random praise-time special
+  evolutions remain exclusively in the tick and are never previewed.
 - **Space**: the TRN overlay must end below `OVL_TRN_MAX_END` (0x7000 bytes); with the block it is close to that, which
   is why the stop check is resident and `trn_reward.c`'s small variables live in main's `.sbss`.
+
+The emulator regression is `tools/dev/playtest/training_evolution.py DISC --exe EXE` (the balanced executable beside
+its `.elf` and `.elf.map`). It loads actual Apemon/Agumon models, pokes `PARTNER_PARA` and stats to isolate the decision,
+ends the first HP-training animation with triangle, counts the awarded hours and checks the qualified partner really
+evolves after the stats close. It also covers the Numemon fallback, Fresh preview safety and the Ultimate pair
+branch, with care-state and random-call checks around previews.
 
 Patch 0198 is a prerequisite found here: an overlay loaded in the background (`loadDynamicLibrary`, asynchronous) is
 found through `FILE_OFFSET_TABLE` like `readFile`, because `CdSearchFile` only sees the first sector of the root
