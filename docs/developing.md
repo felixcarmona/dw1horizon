@@ -364,6 +364,8 @@ DuckStation settings, in its per-game settings file for the disc's serial (`game
 in its data folder), applied on a clean boot:
 - `[CDROM] ReadSpeedup = 0, SeekSpeedup = 0, LoadImageToRAM = true`: a screen change is mostly CD seeks; loading the
   image to RAM cuts it from about 7 s to 2 s.
+- `Enable 8MB RAM` (Console settings): keeps the partner's rare animations in memory, so they start without stopping the
+  game to read the disc. The title screen says when it does not find this or a CPU overclock near 250 %.
 - CPU overclock (set in the app): the 60 fps build draws more frames than the original console's CPU allows; with the
   emulated CPU at 1x it presents fewer frames than it could.
 - Resolution scale 2x or 3x with a bilinear texture filter; heavier filters cost GPU time with the largest imported

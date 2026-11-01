@@ -1,0 +1,292 @@
+From 68f6a653a08e43ac1e5e17bc4305f562ca9273a3 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 18:27:49 +0000
+Subject: [PATCH] Keep cold clips in 8 MB of RAM and tell players at the title
+
+---
+ include/dw/species.h     |  2 +
+ src/main/main.c          |  4 ++
+ src/main/main_menu.c     | 88 ++++++++++++++++++++++++++++++++++++++++
+ src/main/mod_qol.c       |  2 +-
+ src/main/mod_species.c   | 51 ++++++++++++++++++++++-
+ src/main/partner.c       |  1 +
+ text/main/main_menu.yaml | 18 ++++++++
+ 7 files changed, 163 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 0166f81..4d5978b 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -273,6 +273,8 @@ int32_t getDigimonModelRef(int32_t type, char **file, int32_t *sector, int32_t *
+ #define COLD_ANIM_FLAG		0x80000000
+ #define COLD_ANIM_MAX		0x2000
+ uint8_t *loadColdAnimation(void *entity, uint32_t entry); /* an Entity * */
++int32_t modProbeRam(void);
++void refreshColdCache(void);	/* with 8 MB of RAM the partner's cold part stays in memory (mod_species.c) */
+ int32_t getDigimonTextureRef(int32_t type, char **file, int32_t *sector, int32_t *sectors);
+ /* the evolution paths of a type (EVOLUTION_PATHS covers types 1..62, new
+  * species have their own rows; any other type has none) */
+diff --git a/src/main/main.c b/src/main/main.c
+index 577a9ef..a5704fd 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -154,6 +154,8 @@ void runLandingScreen(void);
+ void runMainMenu(void);
+ void loadMenuOverlay(void);
+ void modBootOptions(void); /* MOD (options) */
++void modNoticeDraw(void); /* MOD (emulator notice, main_menu.c) */
++void modNoticeRender(void);
+ void newGameScene(void);
+ void initializeLoadedMap(void);
+ void recalculatePPandArena(void);
+@@ -3700,6 +3702,7 @@ void runLandingScreen(void)
+ 	SECRET_CODE = -1;
+ #endif
+ 	addObject(0xfa3, 0, NULL, (RenderFunction)renderPressStartToContinue);
++	modNoticeDraw(); /* MOD (emulator notice) */
+ 	modVersionDraw(); /* MOD (version) */
+ 	FADE_OUT_CURRENT = 0;
+ 	fadeFromBlack(0x28);
+@@ -5757,6 +5760,7 @@ void renderPressStartToContinue(void)
+ 	AddPrim(ot + 30, prim++);
+ 	GsSetWorkBase((PACKET *)prim);
+ 	modVersionRender(); /* MOD (version) */
++	modNoticeRender(); /* MOD (emulator notice) */
+ }
+ 
+ /*
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index c7b0257..4961239 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -468,6 +468,7 @@ static int32_t isSaveCopyValid(int32_t copy);
+ static void prepareSaveFile(int32_t fromRam);
+ static void modTitleOptions(void); /* MOD (options) */
+ static void modCardOptions(void);
++void modNoticeProbe(void);
+ static int32_t modHeaderSaveNumber(const uint8_t *header);
+ static int32_t writeSaveFile(void);
+ static long saveFileStart(int32_t write);
+@@ -4946,6 +4947,93 @@ void modBootOptions(void)
+ 	MOD_BOOT_LANGUAGE = modLanguageCount() > 1;
+ 	MOD_BOOT_LANGUAGE_CURSOR = 0;
+ 	modCardOptions();
++	modNoticeProbe();
++}
++
++/*
++ * MOD (emulator notice): the title screen lists the settings the game plays best with when it could not find one of them, each on its own
++ * row from its own check; with both there, nothing shows. RAM: modProbeRam. CPU: the reads of the hblank
++ * counter that fit in MOD_CPU_LINES lines. The counter follows the screen whatever the emulated CPU does, so the count grows with
++ * an overclock: DuckStation 3801 at 100 %, 7389 at 200 %, 9303 at 250 %, 10977 at 300 %. MOD_CPU_SPINS_FAST sits between 200 and 250.
++ */
++#define MOD_CPU_LINES		16
++#define MOD_CPU_SPINS_FAST	8500
++#define MOD_NOTICE_NO_RAM	1
++#define MOD_NOTICE_SLOW_CPU	2
++#define MOD_NOTICE_LEFT		-132 /* the panel, over the top of the logo */
++#define MOD_NOTICE_TOP		12
++#define MOD_NOTICE_WIDTH	264
++#define MOD_NOTICE_HEIGHT	72
++#define MOD_NOTICE_STRS		6
++#define MOD_NOTICE_V(i)		(((i) + ((i) == 5)) * 0xC) /* row 5 of the text area is the version's */
++void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z);
++void renderString(int32_t color, int16_t x, int16_t y, int16_t width, int16_t height, int16_t u, int16_t v, int32_t depth, int32_t shadow);
++
++int32_t MOD_CPU_SPINS;
++static int32_t MOD_NOTICE;
++static uint8_t MOD_NOTICE_W[MOD_NOTICE_STRS];
++static char *MOD_NOTICE_TEXT[MOD_NOTICE_STRS] = {
++	MOD_NOTICE_STR_HEAD1, MOD_NOTICE_STR_HEAD2, MOD_NOTICE_STR_RAM, MOD_NOTICE_STR_CPU, MOD_NOTICE_STR_MISSING, MOD_NOTICE_STR_READY,
++};
++
++void modNoticeProbe(void)
++{
++	volatile uint16_t *lines = (volatile uint16_t *)0x1F801110;
++	uint16_t start = *lines;
++	int32_t spins = 0;
++
++	do {
++		spins++;
++	} while ((uint16_t)(*lines - start) < MOD_CPU_LINES);
++	MOD_CPU_SPINS = spins;
++	MOD_NOTICE = (modProbeRam() ? 0 : MOD_NOTICE_NO_RAM) | (MOD_CPU_SPINS < MOD_CPU_SPINS_FAST ? MOD_NOTICE_SLOW_CPU : 0);
++}
++
++void modNoticeDraw(void)
++{
++	RECT rect;
++	int32_t i;
++	int32_t mode;
++	char *str;
++
++	if (MOD_NOTICE == 0) {
++		return;
++	}
++	setRECT(&rect, 0, 0, 0x100, MOD_NOTICE_V(MOD_NOTICE_STRS));
++	clearTextSubArea(&rect);
++	for (i = 0; i < MOD_NOTICE_STRS; i++) {
++		str = MOD_NOTICE_TEXT[i];
++		mode = fitStringMode(str, 0xFE);
++		drawStringMode(str, 0, MOD_NOTICE_V(i), mode);
++		DrawSync(0);
++		mode = measureStringMode(str, mode) + 1; /* and the shadow */
++		MOD_NOTICE_W[i] = mode < 0xFF ? mode : 0xFF; /* a u of 8 bits */
++	}
++}
++
++static void modNoticeString(int32_t color, int32_t x, int32_t y, int32_t i)
++{
++	renderString(color, x, y - 0x78, MOD_NOTICE_W[i], 0xC, 0, MOD_NOTICE_V(i), 0, 1);
++}
++
++void modNoticeRender(void)
++{
++	int32_t i;
++	int32_t missing;
++
++	if (MOD_NOTICE == 0) {
++		return;
++	}
++	modPlateRect(MOD_NOTICE_LEFT, MOD_NOTICE_TOP - 0x78, MOD_NOTICE_WIDTH, MOD_NOTICE_HEIGHT, 0x46, 0xBE, 0xEB, 2);
++	modPlateRect(MOD_NOTICE_LEFT + 1, MOD_NOTICE_TOP - 0x77, MOD_NOTICE_WIDTH - 2, MOD_NOTICE_HEIGHT - 2, 8, 10, 0x38, 1);
++	modNoticeString(4, -MOD_NOTICE_W[0] / 2, MOD_NOTICE_TOP + 8, 0);
++	modNoticeString(4, -MOD_NOTICE_W[1] / 2, MOD_NOTICE_TOP + 20, 1);
++	for (i = 0; i < 2; i++) {
++		missing = (MOD_NOTICE >> i) & 1;
++		modNoticeString(0, MOD_NOTICE_LEFT + 12, MOD_NOTICE_TOP + 38 + i * 14, 2 + i);
++		modNoticeString(missing ? 6 : 7, MOD_NOTICE_LEFT + MOD_NOTICE_WIDTH - 12 - MOD_NOTICE_W[5 - missing], MOD_NOTICE_TOP + 38 + i * 14,
++				5 - missing);
++	}
+ }
+ 
+ static void prepareSaveFile(int32_t fromRam)
+diff --git a/src/main/mod_qol.c b/src/main/mod_qol.c
+index 1dddd91..10228f7 100644
+--- a/src/main/mod_qol.c
++++ b/src/main/mod_qol.c
+@@ -65,7 +65,7 @@ static const uint8_t MOD_PLATE_GLYPHS[][5] = {
+ };
+ 
+ 
+-static void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
++void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z)
+ {
+ 	POLY_F4 *p;
+ 
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 9a42483..dc38660 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -740,6 +740,50 @@ int32_t getSpeciesPartnersByLevel(int32_t lo, int32_t hi, uint16_t *out, int32_t
+  */
+ uint8_t COLD_ANIM_BUFFER[COLD_ANIM_MAX];
+ 
++/*
++ * MOD (cold animations with 8 MB of RAM): a console has 2 MB, mirrored through the 8 MB window, so a word and the same word 2 MB
++ * up are one. With real RAM there, the partner's cold part stays above 2 MB and its animations start without the disc; a clip
++ * past COLD_CACHE_SECTORS still reads the disc, as everything does with 2 MB (MOD_COLD_CACHE_TYPE -1).
++ */
++#define COLD_CACHE		((uint8_t *)0x80200000)
++#define COLD_CACHE_SECTORS	16
++#define COLD_CACHE_MIN_TYPE	180
++#define RAM_PROBE_VALUE		0x5AA5C33Cu
++
++static uint32_t RAM_PROBE;
++int32_t MOD_COLD_CACHE_TYPE = -1;	/* the species in the cache, 0 none yet, -1 no RAM above 2 MB */
++
++int32_t modProbeRam(void)
++{
++	volatile uint32_t *low = &RAM_PROBE;
++	volatile uint32_t *high = (volatile uint32_t *)((uint8_t *)&RAM_PROBE + 0x200000);
++
++	*low = RAM_PROBE_VALUE;
++	*high = ~RAM_PROBE_VALUE;
++	if (*low != RAM_PROBE_VALUE || *high != ~RAM_PROBE_VALUE) {
++		return 0;
++	}
++	MOD_COLD_CACHE_TYPE = 0;
++	return 1;
++}
++
++/* From the partner's normal field tick: once for each species, while nothing else is reading */
++void refreshColdCache(void)
++{
++	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
++	char *file;
++	int32_t sector;
++	int32_t size;
++
++	if (MOD_COLD_CACHE_TYPE < 0 || MOD_COLD_CACHE_TYPE == type || type < COLD_CACHE_MIN_TYPE || isFileReadQueueBusy()) {
++		return;
++	}
++	MOD_COLD_CACHE_TYPE = type;
++	if (getDigimonModelRef(type, &file, &sector, &size) && file != NULL) {
++		readFileSectors(file, COLD_CACHE, sector + ((size + 0x7FF) >> 11), COLD_CACHE_SECTORS);
++	}
++}
++
+ uint8_t *loadColdAnimation(void *ent, uint32_t entry)
+ {
+ 	Entity *entity = ent;
+@@ -754,11 +798,14 @@ uint8_t *loadColdAnimation(void *ent, uint32_t entry)
+ 	if (entity != (Entity *)&PARTNER_ENTITY.digimonEntity.entity) {
+ 		return NULL;
+ 	}
++	offset = (entry & 0xFFFF) * 4;
++	length = ((entry >> 16) & 0x7FFF) * 4;
++	if (entity->type == MOD_COLD_CACHE_TYPE && offset + length <= COLD_CACHE_SECTORS << 11) {
++		return COLD_CACHE + offset;
++	}
+ 	if (!getDigimonModelRef(entity->type, &file, &sector, &size) || file == NULL) {
+ 		return NULL;
+ 	}
+-	offset = (entry & 0xFFFF) * 4;
+-	length = ((entry >> 16) & 0x7FFF) * 4;
+ 	count = ((offset & 0x7FF) + length + 0x7FF) >> 11;
+ 	if (length == 0 || (count << 11) > COLD_ANIM_MAX) {
+ 		return NULL;
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 0f4def0..0eadc9b 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -211,6 +211,7 @@ void partnerTickOverworld(int32_t instanceId)
+ 	} else {
+ 		switch (PARTNER_STATE) {
+ 		case 1:
++			refreshColdCache(); /* MOD (cold animations) */
+ 			partnerTickNormal();
+ 			break;
+ 		case 3:
+diff --git a/text/main/main_menu.yaml b/text/main/main_menu.yaml
+index 937facf..e475684 100644
+--- a/text/main/main_menu.yaml
++++ b/text/main/main_menu.yaml
+@@ -380,6 +380,24 @@ MOD_OPTIONS:
+     MOD_OPT_STR_NORMAL:
+       ja: "NORMAL"
+       en_us: "NORMAL"
++    MOD_NOTICE_STR_HEAD1:
++      ja: "In an emulator, the game can run smoother"
++      en_us: "In an emulator, the game can run smoother"
++    MOD_NOTICE_STR_HEAD2:
++      ja: "if you turn on these options:"
++      en_us: "if you turn on these options:"
++    MOD_NOTICE_STR_RAM:
++      ja: "8 MB RAM"
++      en_us: "8 MB RAM"
++    MOD_NOTICE_STR_CPU:
++      ja: "CPU overclock at 250%"
++      en_us: "CPU overclock at 250%"
++    MOD_NOTICE_STR_MISSING:
++      ja: "NOT DETECTED"
++      en_us: "NOT DETECTED"
++    MOD_NOTICE_STR_READY:
++      ja: "READY"
++      en_us: "READY"
+     MOD_OPT_STR_QUICK:
+       ja: "QUICK BATTLE START"
+       en_us: "QUICK BATTLE START"
+-- 
+2.55.0
+
