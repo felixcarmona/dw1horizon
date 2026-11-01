@@ -448,7 +448,8 @@ def new_slot_entry(m, screen, slot, dig, stats, ln, like, dwmap, section=None):
         dwmap.shift_path(e, x - e['posX'], z - e['posZ'])
     else:
         e['fleeX'], e['fleeZ'] = x, z
-    e.update(type=dig, posX=x, posY=0, posZ=z, scriptId=section if section is not None else 5 + slot)
+    y = next((w['y'] for w in m.warps if w['targetMap'] != -1 and w.get('y')), 0)   # the ground of screens 4, 53 and 163 is not at height 0
+    e.update(type=dig, posX=x, posY=y, posZ=z, scriptId=section if section is not None else 5 + slot)
     set_moves(e, dig, ln)
     for k, v in stats.items():
         if k in ('posX', 'posZ'): continue
