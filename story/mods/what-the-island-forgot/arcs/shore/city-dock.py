@@ -12,6 +12,9 @@ from dw.base.file_city_168 import city_168, whamon
 from ...state import seadramon_chased, seadramon_let_go, whamon_left_day, whamon_left_year, whamon_hurt
 shore_told = flag()
 city_docks = screen(168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179)
+# Unsaved screen-local scratch, shared with the hunters' witnesses on other screens.
+# Sleeping preserves it; arrivals with a recorded wait reset it after setup.
+WHAMON_HIDDEN_PSTAT = 120
 
 def to_the_dock():
     tamer.run(2594, 630, wait=False)
@@ -32,6 +35,7 @@ def after_him():
         whamon_left_year.set(clock.year)
         whamon_left_year.add(1)
         whamon.leave()
+        pstat(WHAMON_HIDDEN_PSTAT).set(1)
         away()
     else:
         whamon.say("As you wish. But he will remember us.")
@@ -67,19 +71,30 @@ def elapsed_days():
 # layout, using the same non-yielding calculation as the dock's closed-ferry line.
 @city_docks.on_enter(when=recruited(Species.Whamon) and (seadramon_chased or whamon_hurt))
 def city_ferry_presence():
+    pstat(WHAMON_HIDDEN_PSTAT).set(0)
     elapsed_days()
     if whamon_hurt:
         if pstat(91) < 10:
             whamon.leave()
+            pstat(WHAMON_HIDDEN_PSTAT).set(1)
     elif seadramon_chased:
         if pstat(91) < 5:
             whamon.leave()
+            pstat(WHAMON_HIDDEN_PSTAT).set(1)
+
+def return_to_dock():
+    if pstat(WHAMON_HIDDEN_PSTAT) == 1:
+        # Every layout's presence table and MAPHEAD L231 use Whamon146 in slot 7.
+        # leave() frees the instance, but keeps its model loaded. Do not load it again.
+        spawn(Species.Whamon146, slot=7)
+        pstat(WHAMON_HIDDEN_PSTAT).set(0)
 
 @city_168.on_step(4, when=seadramon_chased and not whamon_hurt)
 def chasing():
     elapsed_days()
     if pstat(91) < 5:
         away()
+    return_to_dock()
     whamon_left_day.set(255)
 
 @city_168.on_step(4, when=whamon_hurt)
@@ -87,6 +102,7 @@ def resting():
     elapsed_days()
     if pstat(91) < 10:
         hurt()
+    return_to_dock()
     whamon_hurt.clear()
     whamon_left_day.set(255)
 

@@ -117,3 +117,6 @@ Patch 0298 retains its general condition-walk restart guard, without 224 stride 
 The localized Ogre Tunnel takeover sign is a map-art change in
 `tools/localize/signs.py` and `content/localized/signs/delta`, with no engine
 patch or resident executable growth. See [game languages](../../docs/mods/language.md).
+Whamon's timed return at the city dock is a story-only fix, using the existing
+spawn instruction; it adds no engine patch or resident executable bytes. See the
+[shore story notes](../../story/mods/what-the-island-forgot/arcs/shore/README.md).
