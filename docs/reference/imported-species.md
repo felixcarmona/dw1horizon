@@ -297,6 +297,12 @@ returns on an empty entry, so the previous clip goes on and code waiting for its
 | technique origin for `effects_like` | `checkTechCompatibility`, `efe.c` | error when it would never hit |
 | aura / condition rows: `effects_like` ≤ 128 | `*_AURA_PROJECTILE_TYPES[129]`, `CONDITION_FX_OFFSETS[177]` | error above 128 |
 
+The everything build additionally checks every built partner with
+`tools/scriptclips.py`: all 35 `SCRIPT_SLOTS` must be present and have positive
+duration, including native replacement models and cold clips. This is a build
+error even where the older species lint reports only a warning. The complete
+species list and command dependencies are in [motion.md](motion.md#scripted-movement-and-turns).
+
 MetalGreymon Vaccine (224) uses the native MetalGreymon Virus voice pair:
 `voice: 12` (VBALL animation voice) and `partner.voice: 10` (VLALL care voice).
 VBALL chunk 12 has tones for notes 53, 54 and 55, covering every bank-4 event
