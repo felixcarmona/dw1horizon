@@ -149,7 +149,7 @@ by value; `IF` compares with `== != >= <= > <`. **Only 0-34 are saved**; the res
 | Index | Name (`pstat.h`) | Meaning / values | Source |
 |---|---|---|---|
 | 0 | `PSTAT_TIME_SPEED` | clock speed; **3 = clock stopped by a script**: `scriptPauseGame` writes 3 and keeps the old value in `MAIN_D_80134FE7` to restore at the end; a save writes 0 in its place | l. 2654, `main_menu.c:3999` |
-| 1 | `PSTAT_PROSPERITY_POINTS` | city prosperity. `recalculateProsperity` (at game start, before every save and on City entry) rewrites it: sum of (level - 2) over types 3-58 (original story) or the IDs in `content/tables/city-residents.json` (extended story: 90 residents, 170 points) with trigger 200+type set (Numemon, Sukamon, Nanimon count 1). Scripts add 1-3 when recruiting and test `>= 10/20/25/30/35/40/50` (>= 50 = the large city, 14 scripts and MH 0x4DD) | `main.c:3845`, `murd.c:769` |
+| 1 | `PSTAT_PROSPERITY_POINTS` | city prosperity. `recalculateProsperity` (at game start, before every save and on City entry) rewrites it: sum of (level - 2) over types 3-58 (original story) or the IDs in `content/tables/city-residents.json` (extended story: 89 residents, 169 points) with trigger 200+type set (Numemon, Sukamon, Nanimon count 1). Scripts add 1-3 when recruiting and test `>= 10/20/25/30/35/40/50` (>= 50 = the large city, 14 scripts and MH 0x4DD) | `main.c:3845`, `murd.c:769` |
 | 2 | `PSTAT_TOURNAMENT_DAY` | day of the registered tournament; bit 7 = do not remind again today `[inferred]` (`dailyPStatTrigger` clears it) | `tournament.c:62` |
 | 3 | `PSTAT_TOURNAMENT_ID` | registered cup 0-22 (0xFF none) | `dget.c:463,639` |
 | 4 | `PSTAT_TOURNAMENT_DIGIMON` | partner type at registration (a change voids it) | `tournament.c:54` |

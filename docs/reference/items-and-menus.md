@@ -56,7 +56,7 @@ absent during scripted scenes and battle pause.
 
 City is read-only: prosperity, recruited residents and their points. Missing
 residents are grey; Devimon, Airdramon and MetalGreymonVirus stay unnamed and
-have empty boxes until recruited. Extended story shows 90 residents (170
+have empty boxes until recruited. Extended story shows 89 residents (169
 points maximum); original story shows 50 (100 points). NEW DIGIMON does not
 change this page. Opening it refreshes prosperity using the save's rule.
 
