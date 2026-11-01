@@ -2,6 +2,250 @@
  "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
  "versions": [
   {
+   "version": "0.0.3",
+   "date": "2026-11-01",
+   "en": {
+    "new": [
+     "Twenty new Digimon can join your city. Each one lives in a single place in the world and has its own scene.",
+     "When a Digimon joins your city, a jingle and a message now tell you, the first time only.",
+     "In the evolution chart, Square opens a list of what each requirement needs and what your partner has. EVOLUTION GUIDE off removes it.",
+     "A new Die of old age row in the Cheats menu ends your partner's life naturally, after a confirmation."
+    ],
+    "changed": [
+     "Story decisions no longer cost you a recruit: every choice leads back to the same residents.",
+     "City residents are now one-of-a-kind characters. 37 Digimon that were just repeated wild enemies are no longer residents, and they stay in the world as ordinary enemies.",
+     "On the status screen, each care row shows its number in a box, the repeated discipline field is gone, and happiness reads from 0 to 100.",
+     "Apemon, Gatomon, Salamon and Thundermon walk and run at normal speed, which also makes jobs with them much quicker.",
+     "MetalGreymon Vaccine is now the original MetalGreymon in gold, with its original animations.",
+     "The lifetime value in the Cheats menu now stops at 1 hour, so editing it can no longer kill your partner."
+    ],
+    "fixed": [
+     "Curling runs smoothly: no more lag when moving the camera while aiming, and the score, stones and prompts no longer flicker.",
+     "Partners past the original roster are now read correctly at attribute gates, so VioletElecmon and others are no longer wrongly refused or let in. A partner of this kind that turns into Sukamon also goes back to its own species.",
+     "Training x5 no longer stops for an evolution when your partner has nothing to evolve into.",
+     "Fixed hangs when your partner walks to the toilet or walks in a scene.",
+     "Fixed a hang that blocked every screen around Factorial Town.",
+     "Fixed a hang after a Guide me choice, and a hang in the Arena lobby sparring match.",
+     "Greymon's challenge no longer catches you near Jijimon's door. It starts from Jijimon's talk, only with a Champion or above, and until then it no longer keeps other Digimon away.",
+     "Aruraumon no longer blocks the clinic doorway, and Otamamon no longer counts as a City resident.",
+     "Birdramon joins the city properly, and Whamon is visible again and shows its name in dialogue.",
+     "A night encounter no longer starts with its speaker off screen.",
+     "A story sign that stayed in English is now translated into every language."
+    ],
+    "upgrade": "Saves from v0.0.2 keep working and the four required discs have not changed. Residents who are no longer part of the roster leave your city, and their points stop counting. Emulator save states do not carry over: load your memory-card save on the new disc."
+   },
+   "es": {
+    "new": [
+     "Veinte Digimon nuevos pueden unirse a tu ciudad. Cada uno vive en un solo lugar del mundo y tiene su propia escena.",
+     "Cuando un Digimon se une a tu ciudad, ahora te avisan una melodía y un mensaje, solo la primera vez.",
+     "En la tabla de evolución, Cuadrado abre una lista con lo que pide cada requisito y lo que tiene tu compañero. Si desactivas la guía de evolución, desaparece.",
+     "Una nueva fila Morir de viejo en el menú Cheats termina la vida de tu compañero de forma natural, tras una confirmación."
+    ],
+    "changed": [
+     "Las decisiones de la historia ya no te hacen perder un recluta: todas las opciones llevan a los mismos vecinos.",
+     "Los vecinos de la Ciudad son ahora personajes únicos. 37 Digimon que solo eran enemigos salvajes repetidos dejan de ser vecinos y siguen en el mundo como enemigos normales.",
+     "En la pantalla de estado, cada fila de cuidados muestra su número en un recuadro, desaparece el campo repetido de disciplina y la felicidad va de 0 a 100.",
+     "Apemon, Gatomon, Salamon y Thundermon caminan y corren a velocidad normal, y los trabajos con ellos son mucho más rápidos.",
+     "MetalGreymon Vaccine es ahora el MetalGreymon original en dorado, con sus animaciones originales.",
+     "Las horas de vida del menú Cheats ahora se detienen en 1, así que editarlas ya no puede matar a tu compañero."
+    ],
+    "fixed": [
+     "El curling va fluido: ya no hay tirones al mover la cámara mientras apuntas, y el marcador, las piedras y los avisos ya no parpadean.",
+     "Los compañeros añadidos más allá de la lista original ahora se leen bien en las puertas por atributo, así que VioletElecmon y otros ya no son rechazados o admitidos por error. Si uno de ellos se convierte en Sukamon, también vuelve a su especie.",
+     "El entrenamiento x5 ya no se detiene por una evolución cuando tu compañero no tiene a qué evolucionar.",
+     "Corregidos los cuelgues cuando tu compañero va al baño o camina en una escena.",
+     "Corregido un cuelgue que bloqueaba todas las pantallas alrededor de Pueblo Factorial.",
+     "Corregidos un cuelgue al elegir que te guíen y otro en el combate de entrenamiento del vestíbulo de la Arena.",
+     "El desafío de Greymon ya no te sorprende junto a la puerta de Jijimon. Empieza al hablar con Jijimon, solo con un Campeón o superior, y hasta entonces ya no aleja a otros Digimon.",
+     "Aruraumon ya no bloquea la puerta de la clínica y Otamamon ya no cuenta como vecino de la Ciudad.",
+     "Birdramon se une a la ciudad como debe, y Whamon vuelve a verse y muestra su nombre en el diálogo.",
+     "Un encuentro nocturno ya no empieza con quien habla fuera de la pantalla.",
+     "Un cartel de la historia que seguía en inglés ya está traducido a todos los idiomas."
+    ],
+    "upgrade": "Las partidas de v0.0.2 siguen funcionando y los cuatro discos necesarios no han cambiado. Los vecinos que dejan de formar parte de la lista se van de tu ciudad y sus puntos dejan de contar. Los estados guardados del emulador no son compatibles: carga tu partida de la tarjeta de memoria en el disco nuevo."
+   },
+   "pt-br": {
+    "new": [
+     "Vinte novos Digimon podem se mudar para sua cidade. Cada um vive em um único lugar do mundo e tem sua própria cena.",
+     "Quando um Digimon se muda para sua cidade, agora uma música curta e uma mensagem avisam você, só na primeira vez.",
+     "No quadro de evolução, Quadrado abre uma lista com o que cada requisito pede e o que seu parceiro tem. Com o guia de evolução desligado, ela some.",
+     "A nova linha Morrer de velhice no menu Cheats encerra a vida do parceiro de forma natural, após uma confirmação."
+    ],
+    "changed": [
+     "As decisões da história não fazem mais você perder um recruta: todas as escolhas levam aos mesmos moradores.",
+     "Os moradores da Cidade agora são personagens únicos. 37 Digimon que eram apenas inimigos selvagens repetidos deixam de ser moradores e continuam no mundo como inimigos comuns.",
+     "Na tela de status, cada linha de cuidados mostra seu número em uma caixa, o campo repetido de disciplina saiu e a felicidade vai de 0 a 100.",
+     "Apemon, Gatomon, Salamon e Thundermon andam e correm em velocidade normal, e os trabalhos com eles ficam bem mais rápidos.",
+     "MetalGreymon Vaccine agora é o MetalGreymon original em dourado, com suas animações originais.",
+     "As horas de vida no menu Cheats agora param em 1, então editá-las não pode mais matar seu parceiro."
+    ],
+    "fixed": [
+     "O curling roda suave: não há mais travadas ao mover a câmera enquanto mira, e o placar, as pedras e os avisos não piscam mais.",
+     "Parceiros além da lista original agora são lidos corretamente nos portões por atributo, então VioletElecmon e outros não são mais barrados ou liberados por engano. Se um deles virar Sukamon, também volta à própria espécie.",
+     "O treino x5 não para mais por causa de uma evolução quando o parceiro não tem para o que evoluir.",
+     "Corrigidos travamentos quando o parceiro vai ao banheiro ou anda em uma cena.",
+     "Corrigido um travamento que bloqueava todas as telas ao redor de Cidade das Fábricas.",
+     "Corrigidos um travamento ao escolher ser guiado e outro na luta de treino do saguão da Arena.",
+     "O desafio de Greymon não pega mais você perto da porta de Jijimon. Ele começa na conversa com Jijimon, só com um Campeão ou superior, e até lá não afasta mais outros Digimon.",
+     "Aruraumon não bloqueia mais a porta da clínica, e Otamamon não conta mais como morador da Cidade.",
+     "Birdramon se muda para a cidade corretamente, e Whamon volta a aparecer e mostra seu nome no diálogo.",
+     "Um encontro noturno não começa mais com quem fala fora da tela.",
+     "Uma placa da história que continuava em inglês agora está traduzida para todos os idiomas."
+    ],
+    "upgrade": "As partidas salvas na v0.0.2 continuam funcionando, e os quatro discos necessários não mudaram. Os moradores que saíram da lista deixam sua cidade, e os pontos deles param de contar. Os estados salvos do emulador não são compatíveis: carregue sua partida do cartão de memória no disco novo."
+   },
+   "fr": {
+    "new": [
+     "Vingt nouveaux Digimon peuvent rejoindre ta ville. Chacun vit à un seul endroit du monde et a sa propre scène.",
+     "Quand un Digimon rejoint ta ville, un jingle et un message te préviennent désormais, la première fois seulement.",
+     "Dans le tableau d'évolution, Carré ouvre une liste de ce que demande chaque condition et de ce qu'a ton partenaire. Elle disparaît si le guide d'évolution est désactivé.",
+     "La nouvelle ligne Mourir de vieillesse du menu Cheats met fin à la vie de ton partenaire de façon naturelle, après confirmation."
+    ],
+    "changed": [
+     "Les décisions de l'histoire ne te font plus perdre de recrue : tous les choix mènent aux mêmes habitants.",
+     "Les habitants de la Ville sont désormais des personnages uniques. 37 Digimon qui n'étaient que des ennemis sauvages répétés ne sont plus habitants et restent dans le monde comme ennemis ordinaires.",
+     "Sur l'écran de statut, chaque ligne de soins affiche son nombre dans un cadre, le champ de discipline en double disparaît et le bonheur va de 0 à 100.",
+     "Apemon, Gatomon, Salamon et Thundermon marchent et courent à vitesse normale, ce qui accélère beaucoup les travaux avec eux.",
+     "MetalGreymon Vaccine est désormais le MetalGreymon d'origine en doré, avec ses animations d'origine.",
+     "La durée de vie dans le menu Cheats s'arrête désormais à 1 heure : la modifier ne peut plus tuer ton partenaire."
+    ],
+    "fixed": [
+     "Le curling est fluide : plus de saccades quand tu déplaces la caméra en visant, et le score, les pierres et les invites ne clignotent plus.",
+     "Les partenaires au-delà de la liste d'origine sont désormais bien lus aux portes d'attribut : VioletElecmon et d'autres ne sont plus refusés ou admis à tort. S'ils deviennent Sukamon, ils reviennent aussi à leur espèce.",
+     "L'entraînement x5 ne s'arrête plus pour une évolution quand ton partenaire n'a aucune évolution possible.",
+     "Correction de blocages quand ton partenaire va aux toilettes ou marche dans une scène.",
+     "Correction d'un blocage qui figeait tous les écrans autour de Ville des usines.",
+     "Correction d'un blocage après avoir demandé à être guidé et d'un autre lors du combat d'entraînement dans le hall de l'Arène.",
+     "Le défi de Greymon ne te surprend plus près de la porte de Jijimon. Il commence lors de la discussion avec Jijimon, seulement avec un Champion ou plus, et n'éloigne plus les autres Digimon d'ici là.",
+     "Aruraumon ne bloque plus la porte de la clinique, et Otamamon ne compte plus comme habitant de la Ville.",
+     "Birdramon rejoint la ville comme prévu, et Whamon est de nouveau visible et affiche son nom dans les dialogues.",
+     "Une rencontre nocturne ne commence plus avec son interlocuteur hors de l'écran.",
+     "Un panneau de l'histoire resté en anglais est désormais traduit dans toutes les langues."
+    ],
+    "upgrade": "Les sauvegardes de la v0.0.2 fonctionnent toujours et les quatre disques nécessaires n'ont pas changé. Les habitants retirés de la liste quittent ta ville et leurs points ne comptent plus. Les états de sauvegarde de l'émulateur ne sont pas compatibles : charge ta sauvegarde de carte mémoire sur le nouveau disque."
+   },
+   "de": {
+    "new": [
+     "Zwanzig neue Digimon können in deine Stadt ziehen. Jedes lebt an nur einem Ort der Welt und hat seine eigene Szene.",
+     "Wenn ein Digimon in deine Stadt zieht, melden das jetzt ein Jingle und eine Nachricht, nur beim ersten Mal.",
+     "In der Entwicklungstabelle öffnet Quadrat eine Liste mit dem, was jede Bedingung verlangt und was dein Partner hat. Ist der Entwicklungsführer aus, entfällt sie.",
+     "Die neue Zeile An Altersschwäche sterben im Cheats-Menü beendet das Leben deines Partners auf natürliche Weise, nach einer Bestätigung."
+    ],
+    "changed": [
+     "Entscheidungen in der Geschichte kosten dich keinen Rekruten mehr: Jede Wahl führt zu denselben Bewohnern.",
+     "Die Bewohner der Stadt sind jetzt einzigartige Figuren. 37 Digimon, die nur wiederholte wilde Gegner waren, sind keine Bewohner mehr und bleiben als normale Gegner in der Welt.",
+     "Auf dem Statusbildschirm zeigt jede Pflegezeile ihre Zahl in einem Kästchen, das doppelte Disziplinfeld ist weg, und das Glück reicht von 0 bis 100.",
+     "Apemon, Gatomon, Salamon und Thundermon gehen und rennen in normalem Tempo, wodurch Arbeiten mit ihnen viel schneller gehen.",
+     "MetalGreymon Vaccine ist jetzt das originale MetalGreymon in Gold, mit seinen originalen Animationen.",
+     "Die Lebenszeit im Cheats-Menü stoppt jetzt bei 1 Stunde, sodass das Bearbeiten deinen Partner nicht mehr töten kann."
+    ],
+    "fixed": [
+     "Curling läuft flüssig: kein Ruckeln mehr beim Bewegen der Kamera während des Zielens, und Punktestand, Steine und Hinweise flackern nicht mehr.",
+     "Partner jenseits der Originalliste werden an Attribut-Toren jetzt richtig gelesen, sodass VioletElecmon und andere nicht mehr fälschlich abgewiesen oder eingelassen werden. Wird einer von ihnen zu Sukamon, kehrt er auch zu seiner Art zurück.",
+     "Das x5-Training stoppt nicht mehr wegen einer Entwicklung, wenn dein Partner sich in nichts entwickeln kann.",
+     "Hänger behoben, wenn dein Partner zur Toilette geht oder in einer Szene läuft.",
+     "Hänger behoben, der alle Bildschirme rund um Fabrikstadt blockierte.",
+     "Hänger nach der Bitte um Führung und beim Trainingskampf in der Arena-Lobby behoben.",
+     "Greymons Herausforderung überrascht dich nicht mehr an Jijimons Tür. Sie beginnt im Gespräch mit Jijimon, nur mit einem Champion oder höher, und hält bis dahin keine anderen Digimon mehr fern.",
+     "Aruraumon blockiert nicht mehr die Tür der Klinik, und Otamamon zählt nicht mehr als Bewohner der Stadt.",
+     "Birdramon zieht wie vorgesehen in die Stadt, und Whamon ist wieder sichtbar und zeigt im Dialog seinen Namen.",
+     "Eine nächtliche Begegnung beginnt nicht mehr, während die sprechende Figur außerhalb des Bildschirms ist.",
+     "Ein Schild der Geschichte, das noch auf Englisch war, ist jetzt in alle Sprachen übersetzt."
+    ],
+    "upgrade": "Spielstände aus v0.0.2 funktionieren weiterhin, und die vier benötigten Discs bleiben dieselben. Bewohner, die nicht mehr zur Liste gehören, verlassen deine Stadt, und ihre Punkte zählen nicht mehr. Speicherzustände des Emulators sind nicht kompatibel: Lade auf der neuen Disc deinen Spielstand von der Memory Card."
+   },
+   "it": {
+    "new": [
+     "Venti nuovi Digimon possono trasferirsi nella tua città. Ognuno vive in un solo luogo del mondo e ha la sua scena.",
+     "Quando un Digimon si trasferisce nella tua città, ora te lo segnalano un jingle e un messaggio, solo la prima volta.",
+     "Nella tabella delle evoluzioni, Quadrato apre un elenco di ciò che chiede ogni requisito e di ciò che ha il tuo partner. Sparisce se la guida alle evoluzioni è disattivata.",
+     "La nuova riga Muori di vecchiaia nel menu Cheats pone fine alla vita del partner in modo naturale, dopo una conferma."
+    ],
+    "changed": [
+     "Le decisioni della storia non ti fanno più perdere una recluta: ogni scelta porta agli stessi abitanti.",
+     "Gli abitanti della Città ora sono personaggi unici. 37 Digimon che erano solo nemici selvatici ripetuti non sono più abitanti e restano nel mondo come nemici normali.",
+     "Nella schermata di stato, ogni riga delle cure mostra il suo numero in un riquadro, il campo doppio della disciplina è sparito e la felicità va da 0 a 100.",
+     "Apemon, Gatomon, Salamon e Thundermon camminano e corrono a velocità normale, e i lavori con loro sono molto più rapidi.",
+     "MetalGreymon Vaccine ora è il MetalGreymon originale in oro, con le sue animazioni originali.",
+     "Le ore di vita nel menu Cheats ora si fermano a 1, quindi modificarle non può più uccidere il partner."
+    ],
+    "fixed": [
+     "Il curling è fluido: niente più scatti quando muovi la telecamera mentre miri, e punteggio, pietre e messaggi non sfarfallano più.",
+     "I partner oltre la lista originale ora vengono letti correttamente ai varchi per attributo, quindi VioletElecmon e altri non vengono più respinti o ammessi per errore. Se uno di loro diventa Sukamon, torna anche alla sua specie.",
+     "L'allenamento x5 non si ferma più per un'evoluzione quando il partner non ha nulla in cui evolversi.",
+     "Corretti i blocchi quando il partner va in bagno o cammina in una scena.",
+     "Corretto un blocco che fermava tutte le schermate intorno a Città fabbrica.",
+     "Corretti un blocco dopo aver chiesto una guida e un altro nell'incontro di allenamento nell'atrio dell'Arena.",
+     "La sfida di Greymon non ti sorprende più vicino alla porta di Jijimon. Inizia parlando con Jijimon, solo con un Campione o superiore, e fino ad allora non allontana più gli altri Digimon.",
+     "Aruraumon non blocca più la porta della clinica e Otamamon non conta più come abitante della Città.",
+     "Birdramon si trasferisce in città come previsto, e Whamon è di nuovo visibile e mostra il suo nome nei dialoghi.",
+     "Un incontro notturno non inizia più con chi parla fuori dallo schermo.",
+     "Un cartello della storia rimasto in inglese ora è tradotto in tutte le lingue."
+    ],
+    "upgrade": "I salvataggi della v0.0.2 continuano a funzionare e i quattro dischi necessari non sono cambiati. Gli abitanti usciti dalla lista lasciano la tua città e i loro punti non contano più. Gli stati salvati dell'emulatore non sono compatibili: carica il tuo salvataggio dalla scheda di memoria sul nuovo disco."
+   },
+   "ja": {
+    "new": [
+     "新しいデジモン20体が街に来るようになりました。それぞれ世界の1か所にだけいて、専用のシーンがあります。",
+     "デジモンが街に来たとき、初回だけジングルとメッセージでお知らせします。",
+     "進化チャートで□ボタンを押すと、各条件に必要な値とパートナーの現在の値を一覧で確認できます。進化ガイドがオフのときは表示されません。",
+     "チートメニューに「寿命で死ぬ」を追加しました。確認のあと、パートナーが自然に寿命を迎えます。"
+    ],
+    "changed": [
+     "ストーリーの選択で仲間を失うことはなくなりました。どの選択でも同じ住人が街に来ます。",
+     "街の住人は一人ひとり個性的なキャラクターになりました。野生の敵として繰り返し登場するだけだった37体は住人から外れ、通常の敵として世界に残ります。",
+     "ステータス画面の世話の各項目に数値の枠を追加し、重複していたしつけの欄をなくしました。幸福度は0〜100で表示します。",
+     "Apemon、Gatomon、Salamon、Thundermonが普通の速さで歩いて走るようになり、一緒に行う仕事も大幅に速くなりました。",
+     "MetalGreymon Vaccineが、元のアニメーションを持つ金色のMetalGreymonになりました。",
+     "チートメニューの寿命は1時間で止まるようになり、編集でパートナーが死ぬことはなくなりました。"
+    ],
+    "fixed": [
+     "カーリングが滑らかに動くようになりました。狙いながらカメラを動かしても重くならず、スコア、ストーン、メッセージがちらつかなくなりました。",
+     "元のリストより後のパートナーが属性の門で正しく判定されるようになり、VioletElecmonなどが誤って拒否されたり通されたりしなくなりました。Sukamonになったあとも、元の種族に戻ります。",
+     "進化先がないパートナーの5回トレーニングが、進化のために止まらなくなりました。",
+     "パートナーがトイレに行くときやシーンの中で歩くときのフリーズを修正しました。",
+     "ファクトリアルタウン周辺のすべての画面が止まるフリーズを修正しました。",
+     "案内を頼んだあとのフリーズと、闘技場ロビーの練習試合でのフリーズを修正しました。",
+     "Greymonの挑戦がJijimonの家の前で突然始まらなくなりました。成熟期以上のパートナーでJijimonと話すと始まり、それまで他のデジモンを遠ざけることもありません。",
+     "Aruraumonが診療所の入口をふさがなくなり、Otamamonは街の住人に数えられなくなりました。",
+     "Birdramonが正しく街に来るようになり、Whamonが再び表示され、会話で名前も表示されます。",
+     "夜のイベントが、話し手が画面外にいる状態で始まらなくなりました。",
+     "英語のままだったストーリーの看板を全言語に翻訳しました。"
+    ],
+    "upgrade": "v0.0.2のセーブデータは引き続き使えます。必要な4枚のディスクも変わりません。リストから外れた住人は街を去り、そのポイントも数えられなくなります。エミュレーターのステートセーブは引き継げないため、新しいディスクでメモリーカードのセーブデータをロードしてください。"
+   },
+   "ca": {
+    "new": [
+     "Vint Digimon nous poden unir-se a la teva ciutat. Cadascun viu en un sol lloc del món i té la seva pròpia escena.",
+     "Quan un Digimon s'uneix a la teva ciutat, ara t'ho avisen una melodia i un missatge, només la primera vegada.",
+     "A la taula d'evolució, Quadrat obre una llista amb el que demana cada requisit i el que té el teu company. Si desactives la guia d'evolució, desapareix.",
+     "La nova fila Morir de vell al menú Cheats acaba la vida del teu company de manera natural, després d'una confirmació."
+    ],
+    "changed": [
+     "Les decisions de la història ja no et fan perdre un recluta: totes les opcions porten als mateixos veïns.",
+     "Els veïns de la Ciutat ara són personatges únics. 37 Digimon que només eren enemics salvatges repetits deixen de ser veïns i continuen al món com a enemics normals.",
+     "A la pantalla d'estat, cada fila de cures mostra el seu nombre en un requadre, desapareix el camp repetit de disciplina i la felicitat va de 0 a 100.",
+     "Apemon, Gatomon, Salamon i Thundermon caminen i corren a velocitat normal, i les feines amb ells són molt més ràpides.",
+     "MetalGreymon Vaccine ara és el MetalGreymon original en daurat, amb les seves animacions originals.",
+     "Les hores de vida del menú Cheats ara s'aturen a 1, així que editar-les ja no pot matar el teu company."
+    ],
+    "fixed": [
+     "El curling va fluid: ja no hi ha estrebades en moure la càmera mentre apuntes, i el marcador, les pedres i els avisos ja no parpellegen.",
+     "Els companys més enllà de la llista original ara es llegeixen bé a les portes per atribut, així que VioletElecmon i altres ja no són rebutjats o admesos per error. Si un d'ells es converteix en Sukamon, també torna a la seva espècie.",
+     "L'entrenament x5 ja no s'atura per una evolució quan el teu company no té res a què evolucionar.",
+     "Corregits els penjaments quan el teu company va al lavabo o camina en una escena.",
+     "Corregit un penjament que bloquejava totes les pantalles al voltant de Ciutat de les fàbriques.",
+     "Corregits un penjament en demanar que et guiïn i un altre al combat d'entrenament del vestíbul de l'Arena.",
+     "El repte de Greymon ja no et sorprèn a prop de la porta de Jijimon. Comença en parlar amb Jijimon, només amb un Campió o superior, i fins llavors ja no allunya altres Digimon.",
+     "Aruraumon ja no bloqueja la porta de la clínica i Otamamon ja no compta com a veí de la Ciutat.",
+     "Birdramon s'uneix a la ciutat com cal, i Whamon torna a veure's i mostra el seu nom al diàleg.",
+     "Una trobada nocturna ja no comença amb qui parla fora de la pantalla.",
+     "Un cartell de la història que seguia en anglès ja està traduït a tots els idiomes."
+    ],
+    "upgrade": "Les partides de v0.0.2 continuen funcionant i els quatre discos necessaris no han canviat. Els veïns que surten de la llista marxen de la teva ciutat i els seus punts deixen de comptar. Els estats desats de l'emulador no són compatibles: carrega la partida de la targeta de memòria al disc nou."
+   }
+  },
+  {
    "version": "0.0.2",
    "date": "2026-11-01",
    "en": {
