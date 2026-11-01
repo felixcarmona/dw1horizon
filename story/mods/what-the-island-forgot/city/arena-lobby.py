@@ -7,7 +7,7 @@ from dw import *
 from dw.base.arena_lobby_208 import lobby_208 as lobby208, greymon as greymon208
 from ..state import root2
 
-kotemon208 = lobby208.npc(Species.Kotemon, at=(650, 250), behaves_like=greymon208, when=recruited(Species.Kotemon) and clock.hour < 20)
+kotemon208 = lobby208.npc(Species.Kotemon, at=(650, 250), behaves_like=greymon208, bits=100, when=recruited(Species.Kotemon) and clock.hour < 20)
 myotismon208 = lobby208.npc(Species.Myotismon, at=(0, 400), behaves_like=greymon208, when=root2 and clock.hour >= 20)
 
 
