@@ -450,7 +450,7 @@
   "name": "Ankylomon",
   "bones": 19,
   "skeleton_sha256": "cea7a3e22c39ab816e9e177b9ea13a36e2904554728382b5f77b272eb3df16bd",
-  "source_sha256": "d0cc083f533e4eb2d4a710e550efdea947034e2d5cb1ac1f1a1ff623079bd4fa",
+  "source_sha256": "f3114202393e99a675e229faaa1e9d87593e7608eb806f8b4ae2d22c0813cf7f",
   "base_generator": "tools.models.field_animations.weight_shift",
   "post_source_sha256": "99d5a485e46daaa9f56670791a1bcdd9e6fc4fb0ab38c30f10477340ec445436",
   "slots": {
@@ -506,7 +506,7 @@
   "name": "Gizamon",
   "bones": 16,
   "skeleton_sha256": "e50cbdf42429151641d9d5f2ab2a4b39d064a61510117365d97a0b883fbc915a",
-  "source_sha256": "e189f5659714d038f82eaff820ec7858a8731c26da22992f9d10c0159f5a852e",
+  "source_sha256": "8fab6cd94a4d62fb79f945babbfe1882616f4341614e08914c76240f76b24ec8",
   "base_generator": "tools.models.field_animations.gizamon",
   "post_source_sha256": "a9f92e5e6a20258d1c48c59e67f92cea39a6ac2005873f2842865e09b3ca5377",
   "slots": {
@@ -891,7 +891,7 @@
   "name": "Infermon",
   "bones": 30,
   "skeleton_sha256": "68295a67a97727c5f0e0ee49b1ee5fc538849b1e6cf6beac78d43e6a41c322dc",
-  "source_sha256": "71d49435250c74dad3e7d2a78da8bbde409d0f784829e4f1ba9be3d225b12e69",
+  "source_sha256": "69472e6b75337d6badc746ad61f2093e005432e6e901309d2cd2c44e41f584f6",
   "base_generator": "tools.models.field_animations.infermon",
   "post_source_sha256": "8957e6fef954d0e593bc23c99996e3fa0b1c84370920dc5f4a4cccf3b61ad6f2",
   "slots": {
@@ -950,9 +950,9 @@
   "name": "Dokugumon",
   "bones": 28,
   "skeleton_sha256": "5503e165a2c54422cbbbbaaa983c5e87b5156820089df50143f0465b3f87fd50",
-  "source_sha256": "213fa00c4176b6404033b2ac24cc5367d3e4b7a54aaa9b1e1c42dd6646f08641",
+  "source_sha256": "658c2879d4a5812b32cd2033eae01ca3e238395a5a4c3c464b6647fa96bd67a1",
   "base_generator": null,
-  "post_source_sha256": "213fa00c4176b6404033b2ac24cc5367d3e4b7a54aaa9b1e1c42dd6646f08641",
+  "post_source_sha256": "658c2879d4a5812b32cd2033eae01ca3e238395a5a4c3c464b6647fa96bd67a1",
   "slots": {
    "2": {
     "from": 2,
@@ -1007,7 +1007,7 @@
   "name": "MegaGargomon",
   "bones": 27,
   "skeleton_sha256": "7e432b6bbde2c831b4f41d3041b60ca2b7be8a671371c85d04fa906b20041291",
-  "source_sha256": "28957d557c7850ee1aabc3b8311ab91ca6f379c184298e887d7c07b1a920ddf2",
+  "source_sha256": "538a1dc0e695087b6fa3d6515af1dd11fa8ca37276461bea927085457ed617ff",
   "base_generator": "tools.models.field_animations.imported_equipment",
   "post_source_sha256": "11a91359a5b8115b14873f454798f7e9df0b26d62119527eb4295779794df2ae",
   "slots": {
@@ -1073,9 +1073,9 @@
   "name": "Armageddemon",
   "bones": 27,
   "skeleton_sha256": "ba1457ae2707f2293a8d2664a81636dce90a0c1eb5e74e257843350c41df7641",
-  "source_sha256": "8261f40aba4fb9d25da085060c348179fc6faecc1fc79ee10ada001f37154915",
+  "source_sha256": "b8ce51da741caac623e18068efed2d87d4d1757324b379f07b5052f0437c2ee8",
   "base_generator": null,
-  "post_source_sha256": "8261f40aba4fb9d25da085060c348179fc6faecc1fc79ee10ada001f37154915",
+  "post_source_sha256": "b8ce51da741caac623e18068efed2d87d4d1757324b379f07b5052f0437c2ee8",
   "slots": {
    "4": {
     "from": 4,
