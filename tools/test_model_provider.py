@@ -29,7 +29,7 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 175)
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 71)
+        self.assertEqual(len(selected), 70)
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
@@ -50,7 +50,7 @@ class ModelProvider(unittest.TestCase):
             del assignments[sid]
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         '520fa1214ae8f4a7a0d706407dc3b507f50be270')
+                         'b723a4a362e7194d2729ecac951dde8c271382cb')
 
 
 if __name__ == '__main__':

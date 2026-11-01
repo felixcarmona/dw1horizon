@@ -1,0 +1,26 @@
+From b2eeb5d289a26f50d5674fe488f827eca2f21e79 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 08:00:19 +0000
+Subject: [PATCH] Keep condition walks from restarting at pending transitions
+
+---
+ src/main/partner.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/partner.c b/src/main/partner.c
+index 395b453..553fe08 100644
+--- a/src/main/partner.c
++++ b/src/main/partner.c
+@@ -900,7 +900,8 @@ void partnerTickWalking(void)
+ 			}
+ 		}
+ 		else if (anim->loopCount == 0 ||
+-		         (partnerReviewedWalkCycleEnd(anim) && (PARTNER_PARA.condition & 0x63))) {
++		         (anim->animId == 2 && partnerReviewedWalkCycleEnd(anim) &&
++		          (PARTNER_PARA.condition & 0x63))) {
+ 			setPartnerSlowWalking();
+ 		}
+ 
+-- 
+2.55.0
+

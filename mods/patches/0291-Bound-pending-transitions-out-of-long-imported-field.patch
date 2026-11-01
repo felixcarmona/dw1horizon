@@ -10,10 +10,9 @@ Subject: [PATCH] Bound pending transitions out of long imported field walks
 diff --git a/src/main/partner.c b/src/main/partner.c
 --- a/src/main/partner.c
 +++ b/src/main/partner.c
-@@ -847,6 +847,13 @@
- 		       anim->animFrame >= stride + 2 &&
- 		       (anim->animFrame - 2) % stride == 0;
- 	}
+@@ -836,5 +836,12 @@ static int32_t partnerReviewedWalkCycleEnd(EntityAnim *anim)
+ {
+ 	int32_t type = PARTNER_ENTITY.digimonEntity.entity.type;
 +	/* Other long imported field walks yield to a pending navigation or needs
 +	 * change after 24 logic ticks, reusing animation state: no timer, no allocation. */
 +	if (type >= 180 && type != 189 && type != 201 &&

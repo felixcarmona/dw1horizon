@@ -50,7 +50,6 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'apemon-knuckle-field': ('227', 'tools.models.field_animations.apemon', '227-apemon-knuckle-field'),
     'silphymon-field': ('226', 'tools.models.field_animations.silphymon', '226-silphymon-field'),
     'shurimon-field': ('225', 'tools.models.field_animations.shurimon', '225-shurimon-field'),
-    'metalgreymon-vaccine-field': ('224', 'tools.models.field_animations.metal_greymon', '224-metalgreymon-vaccine-field'),
     'blackgatomon-field': ('222', 'tools.models.field_animations.black_gatomon', '222-blackgatomon-field'),
     'salamon-field': ('221', 'tools.models.field_animations.salamon', '221-salamon-field'),
     'vikemon-field': ('220', 'tools.models.field_animations.vikemon', '220-vikemon-field'),
@@ -143,11 +142,6 @@ def overlay(out, t, recs=None, names=None, s=None):
     generator = __import__(recipe[1], fromlist=['build'])
     s['_path'] = os.path.join(ROOT, 'content/species', name)
     model, proof = generator.build(species_tools.species_model(s)[0], s['model']['skeleton'])
-    if t == '224':
-        from tools.models.field_animations import metal_greymon_care
-        model, care = metal_greymon_care.build(model, s['model']['skeleton'])
-        care['field'] = proof
-        proof = care
     model_path, report = overlay_paths(out, t, e)
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     with open(model_path, 'wb') as f:
