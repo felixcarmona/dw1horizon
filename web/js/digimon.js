@@ -17,6 +17,8 @@ const t = i18n.t;
 // Upper or lower case, spaces and hyphens do not matter: "were garu" finds WereGarurumon.
 const fold = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 const range = (v) => (v.length === 1 ? `${v[0]}+` : v[0] === v[1] ? `${v[0]}` : t('digimon.range', { lo: v[0], hi: v[1] }));
+// the game keeps happiness as -100..100 and shows players 0..100
+const happinessShown = (v) => Math.trunc((v + 100) / 2);
 const links = (ids) => ids.flatMap((id, i) => {
   const a = el('button', 'digi-link', byId.get(id).name);
   a.type = 'button';
@@ -80,7 +82,7 @@ function requirements(x) {
   const b = q.bonus;
   const bonus = !b ? line(t('digimon.bonus'), any) : line(t('digimon.bonusOne'), el('ul', '',
     ...(b.from ? [el('li', '', `${t('digimon.comingFrom')} `, ...links([b.from]))] : []),
-    ...['discipline', 'happiness', 'battles', 'techs'].filter((k) => b[k]).map((k) => el('li', '', `${t(`digimon.${k}`)} ${range(b[k])}`))));
+    ...['discipline', 'happiness', 'battles', 'techs'].filter((k) => b[k]).map((k) => el('li', '', `${t(`digimon.${k}`)} ${range(k === 'happiness' ? b[k].map(happinessShown) : b[k])}`))));
   if (q.after) box.append(el('p', 'digi-after', t('digimon.after', { hours: q.after })));
   box.append(el('dl', '',
     ...line(t('digimon.mistakes'), q.mistakes ? range(q.mistakes) : any),
