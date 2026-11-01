@@ -37,10 +37,11 @@ RAM addresses are those of the original USA executable. The `ITEM_PARA` record l
 
 ## Pause version (patch 0288)
 
-The field START pause shows `MOD_VERSION_TEXT` at (8, 4), in the title's dim
+The field START pause shows `MOD_VERSION_TEXT` at (16, 8), in the title's dim
 `TEXT_COLORS[MOD_VERSION_COLOR]` and drop shadow. The top strip clears all five
 clock frames (their highest y is 20), the digital clock below them, the status
-bars at bottom right, and the Cheats hint at y=206..230. The title keeps (8, 224).
+bars at bottom right, and the Cheats hint at y=206..230. The title draws it at (16, 216). Both stay
+inside the rows 8..231 that emulators and televisions always show (patch 0310).
 Empty `MOD_VERSION` draws nothing; all eight languages use the same 32-byte string.
 See [release versions](../patcher.md#release-versions).
 
@@ -325,7 +326,8 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `ITEM_FUNCTIONS[type]`, `removeOneSelectedItem` (1 unit) and `partnerHandleFoodFeed`
   (`partner.c:486-500`): eating when not hungry costs happiness −3 and discipline −2
   (`partner_impl.c:1622`); the rest is raising.
-- Care menu (our build, patches 0150–0155 and 0158, `mod_feed.c`): on the map, X in front of the partner lists, in the inventory's
+- Care menu (our build, patches 0150–0155, 0158 and 0312, `mod_feed.c`): on the map, X in front of the partner, checked
+  before NPCs and machines, lists, in the inventory's
   layout and most urgent first (the cursor on it), Sleep when it is sleepy and the items for the needs it has,
   nothing else (cures when injured or sick, Port. potty when it needs to go, food only when hungry with its
   favourite first in gold, field HP/MP items when short of the maximum); a second description line warns of a cure

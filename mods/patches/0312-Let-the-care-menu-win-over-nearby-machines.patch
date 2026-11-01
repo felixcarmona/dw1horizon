@@ -1,0 +1,31 @@
+From 39d6352189765e375fd06db8454a55f8efe48bf1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 20:46:32 +0000
+Subject: [PATCH 312/312] Let the care menu win over nearby machines
+
+---
+ src/main/tamer.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/tamer.c b/src/main/tamer.c
+index 993f6b7..b8b4c9b 100644
+--- a/src/main/tamer.c
++++ b/src/main/tamer.c
+@@ -569,10 +569,12 @@ void tamerTickWalkingState(void)
+ 	}
+ 
+ 	checkItemPickup();
+-	checkMapInteraction();
+-	if (modFeedTick()) { /* MOD (feed menu): X in front of the hungry partner, mod_feed.c */
++	/* MOD (feed menu): X in front of the hungry partner, mod_feed.c. Before the map: with the X badge shown,
++	 * X cares for the partner even beside a machine */
++	if (modFeedTick()) {
+ 		return;
+ 	}
++	checkMapInteraction();
+ 	checkMedalConditions();
+ 	checkPendingAwards();
+ 
+-- 
+2.55.0
+

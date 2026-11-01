@@ -121,3 +121,8 @@ ModokiBetamon, Dokunemon, Vermilimon, IceDevimon, DarkLizardmon and Gururumon
 are ordinary wild enemies. DarkLizardmon still keeps the Kennel and Gururumon
 still hunt. They have no City page entry and never contribute prosperity. The
 100-point prosperity medal remains reachable (the roster totals 143).
+
+DIGI.DAT stores each roster cell as id, `level << 12` and 0x8000 when hidden
+(`city_cell`, patch 0309): the City tab colours every box each frame, and the
+20 residents past the 180 resident records would otherwise exceed the 16-slot
+species cache and read the disc on every frame.

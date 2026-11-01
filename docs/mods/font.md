@@ -427,7 +427,8 @@ patch's code.
 ## Japanese glyphs
 
 `tools/font/japanese.txt` holds the renamed Fusion Pixel bitmap subset used by
-the Japanese translation. Source pins and upstream licences are under
+the Japanese translation. Its ○ □ × △ are never used for buttons: the executable's
+text bank leaves those four to their button codes (`tools/localize/executable/bank.py`). Source pins and upstream licences are under
 `tools/font/japanese-license/`; see [THIRD-PARTY.md](../../THIRD-PARTY.md).
 `tools/font/import_japanese.py` imports the pinned BDF and `tools/font/compact.py`
 encodes glyphs without changing their pixels or widths. Japanese text uses

@@ -29,6 +29,9 @@ FORMAT = re.compile(r'#[A-Z]\d*|%[-0-9.]*[a-z]')       # the battle messages' #C
 # gen_text encodes a character by its Shift-JIS code, and the US font draws 81A2 (Shift-JIS △) as × and 817E (Shift-JIS ×)
 # as △ (tools/dws/bytecode/__main__.py, "Text"): a source writes the button it means and the bank gives gen_text the other label
 SJIS_LABELS = str.maketrans('×△', '△×')
+# ...so a button never takes the extra glyph of its name: the Japanese subset's ○ □ × △ are Shift-JIS shapes for Japanese text,
+# a smaller × and the swapped button.
+BUTTONS = '○□×△'
 MAP_NAME, MAP_NAME_WIDTH = 'main.STR_MAP_NAME_', 24
 VERBATIM = ('kar.KAR_D_8005ABB8',                          # curling: two options cropped at 0 and 0x53 px (kar.c)
             # the status, technique and player screens' rows, the Year/Day header and the Yes/No rows: each word starts at
@@ -85,7 +88,7 @@ def full_width(c):
 def font_map(n=None):
     """{char: code} of the first n extra glyphs (all of extra.txt by default); an ASCII one under its full-width form."""
     import fontgen
-    return {full_width(ch): f'{code:04X}' for ch, (code, _w) in list(fontgen.extra_map().items())[:n]}
+    return {full_width(ch): f'{code:04X}' for ch, (code, _w) in list(fontgen.extra_map().items())[:n] if ch not in BUTTONS}
 
 
 def ascii_glyphs(t, font):

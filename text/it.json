@@ -36,8 +36,8 @@
  ],
  "name.quiz.q2.question": [
   "{color 7}Jijimon {color 1}",
-  "Preferisci il giorno o la",
-  "notte?"
+  "Quale momento del giorno",
+  "preferisci?"
  ],
  "name.quiz.q2.answers": [
   "{color 6}{player}{color 1}",

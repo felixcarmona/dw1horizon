@@ -141,6 +141,15 @@ def talk():
                 with self.assertRaisesRegex(ValueError, r'unlisted \[273\]'):
                     city.verify([compiled, unlisted])
 
+    def test_city_cell_packs_level_and_hidden_flag(self):
+        content = {300: {'level': 'ultimate'}, 301: {'level': 'rookie'}}
+        self.assertEqual(city.city_cell({'id': 300, 'hidden': False}, content), 300 | 5 << 12)
+        self.assertEqual(city.city_cell({'id': 301, 'hidden': True}, content), 301 | 3 << 12 | 0x8000)
+
+    def test_buttons_never_take_an_extra_glyph(self):
+        from tools.localize.executable import bank
+        self.assertFalse(set(bank.BUTTONS) & set(bank.font_map()))
+
     def test_high_send_to_city_and_recruit_tests(self):
         source = """from dw import *
 area = screen(3)

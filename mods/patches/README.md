@@ -136,3 +136,5 @@ patch or resident executable growth. See [game languages](../../docs/mods/langua
 Whamon's timed return at the city dock is a story-only fix, using the existing
 spawn instruction; it adds no engine patch or resident executable bytes. See the
 [shore story notes](../../story/mods/what-the-island-forgot/arcs/shore/README.md).
+
+Patches 0309-0312 answer a tester's v0.0.3 report: the City tab reads each cell's level from its packed roster id instead of a species record (0309), the version stamps stay inside the visible rows (0310), play time shows two-digit minutes (0311) and the care menu runs before map interaction (0312). Together they lower `main_BSS_END` by 16 bytes.

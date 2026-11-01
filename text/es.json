@@ -36,8 +36,8 @@
  ],
  "name.quiz.q2.question": [
   "{color 7}Jijimon {color 1}",
-  "¿Qué te gusta más, el día o la",
-  "noche?"
+  "¿Qué momento del día te gusta",
+  "más?"
  ],
  "name.quiz.q2.answers": [
   "{color 6}{player}{color 1}",
