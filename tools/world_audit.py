@@ -209,6 +209,15 @@ class World:
                     for alias in n.names:
                         value = self.exports[n.module].get(alias.name)
                         if value: env[alias.asname or alias.name] = value
+            # An NPC placed on an imported screen (`bridge.npc(...)`) can only be bound now that the import resolved.
+            for n in tree.body:
+                if (isinstance(n, ast.Assign) and isinstance(n.value, ast.Call)
+                        and isinstance(n.value.func, ast.Attribute) and n.value.func.attr == 'npc'):
+                    target = ast.unparse(n.targets[0])
+                    owner = env.get(ast.unparse(n.value.func.value))
+                    if owner and target not in env:
+                        cond = next((ast.unparse(k.value) for k in n.value.keywords if k.arg == 'when'), 'True')
+                        env[target] = (owner[0], 'npc', cond)
 
     def script_edges(self, paths):
         result = []
