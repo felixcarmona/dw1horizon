@@ -1,17 +1,8 @@
-# Jijimon's house (218): ToyAgumon, fallen out of a toy box in Toy Town, plays with Tokomon. And Jijimon counts what the
-# city remembers (story-bible.md §2.6, §3.8): after each memory fragment, the next time the tamer comes home Jijimon says
-# how much the city remembers now (told on entering, so it needs no talk).
+# Jijimon's house (218): Jijimon counts what the city remembers (story-bible.md §2.6, §3.8): after each memory fragment, the
+# next time the tamer comes home Jijimon says how much the city remembers now (told on entering, so it needs no talk).
 from dw import *
-from dw.base.jijimons_house import house, botamon, jijimon
+from dw.base.jijimons_house import house, jijimon
 from ..state import memories, memory_news
-
-toyagumon = house.npc(Species.ToyAgumon, at=(-600, -600), behaves_like=botamon, when=recruited(Species.ToyAgumon))
-
-
-@toyagumon.on_talk
-def talk():
-    say("Click-clack! Tokomon says I am the best toy in the house. I say I am the best Digimon!")
-
 
 @house.on_enter(when=memory_news)
 def what_the_city_remembers():

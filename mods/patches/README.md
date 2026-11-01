@@ -115,6 +115,17 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0306 | Keep the whole partner species past 255 in scripts: `STORE_DIGIMON_TYPE` stores 0xFF past 254, the attribute gates and `{digimon N}` read the partner back, the Sukamon backup keeps its species in saved register w15. Fixes VioletElecmon at the mansion gate and partners reverting to another species. |
 | 0307 | Cheats: the lifetime editor stops at 1 hour, and a confirmed *Die of old age* row sets the lifetime to 0 so the natural death runs at once | Eight-language build: heap 186,992 bytes, screen 361 margin 4,960, heapcheck passes; MENU 54,164 bytes, 396 spare below EVL |
 
+Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
+through reserved operands of the existing trigger instructions. Prosperity keeps
+the 14-byte low-ID membership table and an exact-sized generated u16 high-ID list;
+the current roster has 20 entries, 40 bytes of list data. `tools.city_residents
+--c-extra-header TREE` must run before a native build (the integrated drivers do
+this automatically). The City tab and save format already support these IDs.
+Measured on the eight-language build with 0306: `main_BSS_END` 0x801ce8b0, heap
+185,920 B. The tightest setups are screen 207 with 1,200 B of margin and screen 41
+with 4,136 B. The 20-entry list and roster cost 24 B of main against the same patch
+with an empty list.
+
 Patch 0290 is removed: species 224 now uses the native MetalGreymon field programs.
 Patch 0298 retains its general condition-walk restart guard, without 224 stride rules.
 

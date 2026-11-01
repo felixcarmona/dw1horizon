@@ -1,11 +1,11 @@
-# The Item Shop (216): RedVegiemon, beaten in the jungles, sells the hot vegetables nobody else stocks.
+# The Item Shop (216): Pumpkinmon, from Toy Town's nights, sells the hot vegetables nobody else stocks.
 from dw import *
 from dw.base.item_shop import shop_ as item_shop, punimon
 
-redvegiemon = item_shop.npc(Species.RedVegiemon, at=(-900, -500), behaves_like=punimon, when=recruited(Species.RedVegiemon))
+pumpkinmon = item_shop.npc(Species.Pumpkinmon, at=(-900, -500), behaves_like=punimon, when=recruited(Species.Pumpkinmon))
 
 
-@redvegiemon.on_talk
+@pumpkinmon.on_talk
 def talk():
-    say("Hot, hot, hot! Spicy roots from the jungle. Your partner will run twice as fast!")
+    say("Trick or treat? Here it is always treat, if you can pay.", "Hot roots! Your partner will run twice as fast!")
     shop(Item.Supercarrot, Item.HawkRadish, Item.SpinyGreen)

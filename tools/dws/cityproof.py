@@ -39,7 +39,8 @@ def state_from_args(a):
     for r in a.recruit:
         s = int(r) if r.isdigit() else sp.get(r.lower())
         if s is None: raise DwsError(f'unknown species "{r}"')
-        trig.add(200 + s)
+        from .recruitment import recruit_trigger
+        trig.add(recruit_trigger(s))
     ps = {}
     for x in a.pstat:
         k, v = x.split('='); ps[int(k)] = int(v)

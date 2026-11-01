@@ -308,6 +308,7 @@ def set_screen_dirs(dirs):
 # What a build reads from its caller: the command line takes them from the environment (configure() with nothing given,
 # at import), tools/derive gives each story pass its own (docs/derive.md, finding 6). rule: nothing
 # below reads the environment after configure(); a setting is one of these globals
+IMPORTED_NPCS = False    # --imported-npcs: this disc's DIGI.DAT has the imported species, so --exe mods may place them
 MAPS_DIRS = []           # DWS_MAPS=dir:dir: a mod's retouched maps (new exits, trigger tiles) the story's placements keep
 RELAYOUT = False         # DWS_RELAYOUT=1: the disc is built with --relayout (build-full.sh), so DG.SCN may grow
 PACK_ASCII = False       # SCNASM_PACK_ASCII=1: the texts store letters as one byte (bytecode asm --pack-ascii, patch 0145)

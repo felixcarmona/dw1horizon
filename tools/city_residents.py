@@ -19,8 +19,8 @@ def residents(content=None):
         species.update(content)
     rows = json.loads(ROSTER.read_text())
     ids = [r['id'] for r in rows]
-    if len(set(ids)) != len(ids) or any(not 0 <= i < 112 for i in ids):
-        raise ValueError('City roster: unique ids below 112 required')
+    if len(set(ids)) != len(ids) or any(not 0 <= i < 1024 or i not in species for i in ids):
+        raise ValueError('City roster: unique, defined species ids below 1024 required')
     if any(species[i]['level'] not in LEVELS for i in ids):
         raise ValueError('City roster: residents must be Rookie or higher')
     points = lambda i: 1 if i in (11, 39, 53) else LEVELS[species[i]['level']] - 2
@@ -31,8 +31,8 @@ def residents(content=None):
 
 def compiled_recruits(path):
     # Decode instructions, never search raw bytes: dialogue and dead padding can
-    # contain the same bytes. Flags 312+ have unrelated meanings; the compiler's
-    # b_recruit rejects species 112+ before emitting those ambiguous flag writes.
+    # contain the same bytes. Ordinary flags 312+ have unrelated meanings;
+    # high species use the reserved recruit-bit operands of patch 0304.
     from tools.dws import bytecode, basebuild
     data = Path(path).read_bytes()
     # DG entry zero is unused disc residue; getScript(0) reads MAPHEAD instead.
@@ -49,6 +49,8 @@ def compiled_recruits(path):
                 flag = int(match[1])
                 if 200 <= flag < 312:
                     ids.add(flag - 200)
+                elif 0x8070 <= flag < 0x8400:
+                    ids.add(flag - 0x8000)
     return ids
 
 
@@ -56,8 +58,27 @@ def membership_bits():
     """The executable's 112 roster bits, generated only from the owned JSON."""
     data = bytearray(14)
     for row in residents():
-        data[row['id'] // 8] |= 1 << (row['id'] % 8)
+        if row['id'] < 112:
+            data[row['id'] // 8] |= 1 << (row['id'] % 8)
     return bytes(data)
+
+
+def extra_header():
+    """Exact-sized compiled list; no extra resident storage for the current roster."""
+    ids = sorted(r['id'] for r in residents() if r['id'] >= 112)
+    return ('/* Generated from content/tables/city-residents.json. */\n'
+            f'#define CITY_RESIDENTS_EXTRA_COUNT {len(ids)}\n'
+            'static const uint16_t CITY_RESIDENTS_EXTRA[] = {' +
+            ', '.join(map(str, ids or [0])) + '};\n')
+
+
+def write_extra_header(tree):
+    path = Path(tree) / 'src/main/city_residents_extra.h'
+    # Old patch series need no generated input.
+    if path.exists():
+        data = extra_header()
+        if path.read_text() != data:
+            path.write_text(data)
 
 
 def verify(paths, original=False):
@@ -68,7 +89,7 @@ def verify(paths, original=False):
     actual = set()
     for path in paths:
         actual.update(i for i in compiled_recruits(path)
-                      if i not in STORY_SPECIES and (not original or i < 59) and species[i]['level'] in LEVELS)
+                      if i not in STORY_SPECIES and (not original or i < 59) and (i not in species or species[i]['level'] in LEVELS))
     if expected != actual:
         raise ValueError(f'City roster disagrees with {"original" if original else "extended"} compiled story: '
                          f'unreachable {sorted(expected - actual)}, unlisted {sorted(actual - expected)}')
@@ -98,9 +119,15 @@ def verify_archive(data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('stories', nargs='+', type=Path, help='compiled DG.SCN or MAPHEAD.SCN')
+    parser.add_argument('--c-extra-header', type=Path, help='update a patched compiler tree before building')
+    parser.add_argument('stories', nargs='*', type=Path, help='compiled DG.SCN or MAPHEAD.SCN')
     parser.add_argument('--original', action='store_true', help='check the original story (ids below 59)')
     args = parser.parse_args()
+    if args.c_extra_header:
+        write_extra_header(args.c_extra_header)
+        return
+    if not args.stories:
+        parser.error('provide compiled stories or --c-extra-header')
     groups = {}
     for path in args.stories:
         groups.setdefault(path.parent, []).append(path)

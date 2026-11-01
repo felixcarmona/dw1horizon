@@ -49,7 +49,7 @@ The constants of `ids.h` as the series leaves them:
 | `NUM_PARTNER_DIGIMON` | 66 | `RAISE_DATA` rows of the original, cards; partners are 1..65 |
 | `NUM_EVOLVING_DIGIMON` | 63 | `EVOLUTION_REQS` (by type), raised flags; `EVOLUTION_PATHS` has one row fewer (by type − 1) |
 | `NUM_EVO_CHART_DIGIMON` | 61 | `EVO_CHART_BOXES`, by type − 1 |
-| `NUM_RECRUITABLE_DIGIMON` | 0x70 | recruited flags = trigger 200 + type, types 0..111 |
+| `NUM_RECRUITABLE_DIGIMON` | 0x70 | legacy recruited triggers only: 200 + type, types 0..111; higher types use saved bits |
 | `NUM_ORIGINAL_SCREENS` | 255 | screens with a resident `MAP_ENTRIES` row and MAPHEAD section; what a v1 save byte can name |
 | `NUM_SCREENS` | 1024 | screen id capacity (overridable at build time) |
 | `SCREEN_LEGACY_NONE` | 0xCC | boot value of the current screen (see Screens) |
@@ -58,7 +58,8 @@ The constants of `ids.h` as the series leaves them:
 | `NUM_MOVE_NAMES` | 121 | `MOVE_NAMES`; `drawMoveName` checks this bound |
 | `NUM_LEARNABLE_MOVES` | 58 | `MOVE_LEARN_CHANCES`, the technique grid |
 | `NUM_CARDS` | 66 | `CARD_DATA`, `CARD_SPRITE_CLUT`, `CARD.ALL` |
-| `TRIGGER_RECRUITED_BASE` | 200 | + species |
+| `TRIGGER_RECRUITED_BASE` | 200 | + species below 112 |
+| `TRIGGER_SPECIES_RECRUITED_BASE` | 0x8000 | script operand + species 112..1023, redirected to recruited bits (0304) |
 | `TRIGGER_SHOP_STOCK_BASE` | 0x180 | + item |
 | `TRIGGER_RAISED_BASE` | 0x200 | + species |
 | `LEGACY_ID_NONE` | 0xFF | "none" in the u8 layouts (inventory slots, item bytes) |
@@ -158,12 +159,22 @@ as literals (`[180]`, `[66]`, `0xB4`, `0x41`) almost everywhere.
 - **Raised and recruited flags**: types without a trigger of their own (every id ≥ 180, and originals whose trigger
   is taken, `HAS_RAISED_FLAG`) use two 1024-bit bitsets, `SPECIES_RAISED_BITS` and `SPECIES_RECRUITED_BITS`, saved
   in the save extension. `hasDigimonRaised`, `setDigimonRaised`, `isDigimonRecruited` and `setDigimonRecruited` pick
-  the trigger or the bit.
+  the trigger or the bit. Recruited state always uses trigger 200+id below 112,
+  and `SPECIES_RECRUITED_BITS` for every ID 112..1023, including originals
+  112..179. `HAS_RAISED_FLAG` applies only to raised state; it never grants a
+  recruited trigger to those originals. Within 112..179, only 115, 116, 117,
+  119, 120, 121 and 124 have raised triggers (627, 628, 629, 631, 632, 633
+  and 636); every other ID there uses raised bits too. Recruit bits persist in save tag
+  `0x0008`. Patch 0304 redirects script trigger operands 0x8070..0x83ff to
+  these same bits for setting, clearing and testing, leaving ordinary triggers
+  (including raised flags) untouched. No new opcode or save tag is needed.
 - **Tournament and VS tables** (0065): reads go through `STD_ROW`/`VS_NAME_ROW` (row 0 is a blank name), the bracket
   draws no portrait outside its table and `stdWinChanceRow` clamps; MasterTyrannomon (124) already read past these
   tables in the original layout.
-- **Prosperity** (0161): `recalculatePPandArena` rebuilds pstat 1 from the recruit flags of every type up to
-  `NUM_RECRUITABLE_DIGIMON`; the original loop stopped at 0x3B.
+- **Prosperity** (0161, 0277, 0296, 0304): `recalculateProsperity` rebuilds pstat 1
+  from owned roster members: a 14-byte membership table below 112 and a generated
+  u16 list above it. Original story still counts only types 3..58. Opening the
+  City tab, saves and game start refresh the total.
 - **Record originals** (0084, 0106): an original id can be carried by its `DIGI.DAT` record, see
   [../mods/species.md](../mods/species.md).
 

@@ -512,9 +512,10 @@
       "evidence": "arcs/infinity/devimon-247.py; arcs/infinity/megadramon-254.py"
     },
     {
-      "name": "works-before-golemon",
+      "name": "works-before-digmon",
       "state": {
-        "recruited(Species.Golemon)": false
+        "recruited(Species.Digmon)": false,
+        "trigger(308)": false
       },
       "closed_screens": [
         357,

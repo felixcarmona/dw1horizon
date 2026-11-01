@@ -515,6 +515,7 @@ def atom_text(c):
     if c[0] == 'trig':
         n = c[1]
         if 200 <= n < 312: return f'recruited({city.species_text(n - 200)})'
+        if 0x8070 <= n < 0x8400: return f'recruited({city.species_text(n - 0x8000)})'
         return f'trigger({n})'
     _, var, op, v = c
     name = var.split(':')[0]

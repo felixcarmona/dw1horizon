@@ -338,6 +338,9 @@ class Program(Ext):
         """`flag(name)` in a `city { presence }` condition: the declared flag's trigger (a story flag is 800 + n)."""
         pres = (self.b.city or {}).get('presence') or {}
         def walk(c):
+            if c[0] == 'trig' and 0x8070 <= c[1] < 0x8400:
+                if self.max_opcode_level == 0:
+                    raise DwsError('recruit flags exist for types 0-111 on the original engine')
             if c[0] == 'flag':
                 s = self.syms.get(c[1])
                 if s is None or s.kind != 'flag' or s.count:
@@ -897,15 +900,20 @@ class Program(Ext):
                     f'    {self.wide("SET_DIGIMON", dig, c)} {dig}, {slot}, {1 if a["talks"] else 0}']
         return str(5 + slot)
 
+    def recruit_flag(self, sp, node):
+        from .recruitment import recruit_trigger
+        if not 0 <= sp < 112 and self.max_opcode_level == 0:
+            raise err(node, f'species {sp}: recruit flags exist for types 0-111 (trigger 200+type)')
+        try:
+            return recruit_trigger(sp)
+        except ValueError as e:
+            raise err(node, str(e))
+
     def b_recruit(self, env, c, a):
-        sp = a['species']
-        if not 0 <= sp < 112: raise err(c, f'species {sp}: recruit flags exist for types 0-111 (trigger 200+type)')
-        env.out.append(f'    SET_TRIGGER {200 + sp}')
+        env.out.append(f'    SET_TRIGGER {self.recruit_flag(a["species"], c)}')
 
     def b_unrecruit(self, env, c, a):
-        sp = a['species']
-        if not 0 <= sp < 112: raise err(c, f'species {sp}: recruit flags exist for types 0-111 (trigger 200+type)')
-        env.out.append(f'    UNSET_TRIGGER {200 + sp}')
+        env.out.append(f'    UNSET_TRIGGER {self.recruit_flag(a["species"], c)}')
 
     def b_asm(self, env, c, a):
         for nm, node in c.args:
@@ -1016,8 +1024,9 @@ class Program(Ext):
                 return self.has(a['item'], '>=', 1, neg, t)
             if f == 'is_recruited':
                 a = self.bind(t, [('species', 'species', REQ)], env, 'is_recruited')
-                if not 0 <= a['species'] < 112: raise err(t, 'recruit flags exist for types 0-111')
-                return f'{"not " if neg else ""}trigger {200 + a["species"]}'
+                if not 0 <= a['species'] < 112 and self.max_opcode_level == 0:
+                    raise err(t, 'recruit flags exist for types 0-111')
+                return f'{"not " if neg else ""}trigger {self.recruit_flag(a["species"], t)}'
             if f == 'knows':
                 a = self.bind(t, [('tech', 'tech', REQ)], env, 'knows')
                 if a['tech'] > 255:
