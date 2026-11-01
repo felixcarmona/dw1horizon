@@ -336,7 +336,7 @@ flowchart TD
 | Restaurant | screens 214 / 215 (215 after Giromon, T241); menus through 217:51 (p27 0-2) and 218:51 (p27 3-5) | T58-T61, T64; Tyrannomon T208, Garurumon T222, Frigimon T223 each raise p27 | menu tiers |
 | Item shop | 216, clerk 163:81 (Betamon / Coelamon) | T65-T68, p25, p26; Biyomon T245, Monochromon T247 | stock triggers 384-422 |
 | Secret shop | 217, 177:5 | T70-T73, p24; Numemon, Mojyamon, Mamemon, Devimon | stock |
-| Meat farm | 164:11 / 207:11 | T74, p31 daily | 3 Meat a day; the farmer is Tanemon, Palmon (T246) or Vegiemon (T225) by layout |
+| Meat farm | 164:11 / 207:11 | T74, p31 daily | 3 Meat a day; the farmer is Tanemon, Palmon (T246) or Vegiemon (T225) by layout; patch 0315 draws a meat bubble over it while a harvest waits |
 | Birdramon's flights | 207, 167:81 | T89; destinations need T221, T190, T188, T351, T147, T210 | warps for 1 000-2 500 bits |
 | Mojyamon's trades | Freezeland 128, 129 | T5-T13 (9 items, three groups of three) | T252 Mojyamon (T107-T109 say which one) |
 | Treasure hunt | 209, 169:81 | Drimogemon T238; T90; plans T178 (1 000 bits, 3 days) and T179 (5 000 bits, 10 days) through p30 | a random item |
