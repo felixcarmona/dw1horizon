@@ -1,0 +1,25 @@
+From 07c49a3404fedad9c77ac0fd3cae4650b669d3b9 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 20:46:32 +0000
+Subject: [PATCH 311/312] Show play time minutes with two digits
+
+---
+ src/main/game_menu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 29f7c1a..640288b 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -409,7 +409,7 @@ RECT MAIN_D_801342F0 = { 0, 24, 256, 200 };
+ RECT PLAYER_INFO_TEXT_AREA = { 0, 12, 256, 200 };
+ 
+ #if VERSION_IS(US)
+-char FMT_PLAYTIME[8] = "%d : %d";
++char FMT_PLAYTIME[8] = "%d:%02d"; /* MOD: the minutes keep two digits; the array holds no longer format */
+ #endif
+ 
+ RECT EVO_CHART_TEXT_AREA = { 0, 12, 256, 200 };
+-- 
+2.55.0
+

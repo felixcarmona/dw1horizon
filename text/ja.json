@@ -35,7 +35,7 @@
  ],
  "name.quiz.q2.question": [
   "{color 7}ジジモン{color 1}",
-  "昼と夜、どちらが好きかの？"
+  "一日のうち、いつが好きかの？"
  ],
  "name.quiz.q2.answers": [
   "{color 6}{player}{color 1}",

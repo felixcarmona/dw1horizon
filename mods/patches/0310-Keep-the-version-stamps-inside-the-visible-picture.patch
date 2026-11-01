@@ -1,0 +1,30 @@
+From 0c4825feeed31600bc28862c1bacb29df6eadfc8 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 20:46:32 +0000
+Subject: [PATCH 310/312] Keep the version stamps inside the visible picture
+
+---
+ include/dw/mod_version.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/dw/mod_version.h b/include/dw/mod_version.h
+index 525abd3..8968cad 100644
+--- a/include/dw/mod_version.h
++++ b/include/dw/mod_version.h
+@@ -11,10 +11,10 @@
+  * and restoring this shared row in utils2.c. The sprite is MOD_VERSION_W wide: pixels past the text are clear.
+  */
+ #define MOD_VERSION_ROW		0x3C /* the title menu's rows are 0..0x30 (OPTIONS) */
+-#define MOD_VERSION_LEFT	8
++#define MOD_VERSION_LEFT	16
+ #define MOD_VERSION_W		0xFF /* the whole row (a u of 8 bits) */
+-#define MOD_VERSION_TOP		224
+-#define MOD_VERSION_PAUSE_TOP	4 /* above every clock frame; below, the Cheats hint occupies y=206..230 */
++#define MOD_VERSION_TOP		216
++#define MOD_VERSION_PAUSE_TOP	8 /* above every clock frame; below, the Cheats hint occupies y=206..230 */
+ #define MOD_VERSION_COLOR	8 /* 0x50 grey */
+ 
+ extern char MOD_VERSION_TEXT[32];
+-- 
+2.55.0
+

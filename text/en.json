@@ -36,8 +36,8 @@
  ],
  "name.quiz.q2.question": [
   "{color 7}Jijimon {color 1}",
-  "Do you like day or night",
-  "better?"
+  "What time of day do you like",
+  "best?"
  ],
  "name.quiz.q2.answers": [
   "{color 6}{player}{color 1}",

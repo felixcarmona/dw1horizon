@@ -1304,7 +1304,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     # icons (tools/portraits.py), three to a sector after the blobs: the first is the fallback of a species without one
     icons = [None]
     chart = chart_tabs(allsp, species)
-    from city_residents import residents, verify_archive
+    from city_residents import city_cell, residents, verify_archive
     city = residents(allsp)
     # the originals of the chart past its sheet's 61 (no hand-drawn chart icon): an icon from their model, in their record
     drawn = sorted({t for t, s in species.items() if 'partner' in s} | {t for tab in chart for t in tab if CHART_SHEET < t < NUM_ORIGINAL}
@@ -1344,14 +1344,14 @@ def build(out=OUT, content=None, quiet=False, select=None):
         chart_ref = sector
         blobs.append(cb)
         sector += len(cb) // SECTOR
-    # City uses the chart block layout with one tab. The high id bit marks a
-    # spoiler hidden until recruited; icon order still follows the unflagged ids.
+    # City uses the chart block layout with one tab. A cell packs the id, its level and the
+    # spoiler bit (city_residents.city_cell); icon order still follows the plain ids.
     city_ref = sector
     if any(r['id'] > CHART_SHEET and r['id'] not in icon_of for r in city):
         raise SystemExit('City: every resident past the chart sheet needs a generated icon')
     cb = bytearray(chart_block([[r['id'] for r in city]], icon_of, icons[0]))
     for k, row in enumerate(city):
-        struct.pack_into('<H', cb, 2 + k * 2, row['id'] | (0x8000 if row['hidden'] else 0))
+        struct.pack_into('<H', cb, 2 + k * 2, city_cell(row, allsp))
     blobs.append(bytes(cb))
     sector += len(cb) // SECTOR
     # links with the 62 original species that have evolution paths: the game applies them at boot, in this order

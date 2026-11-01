@@ -29,6 +29,14 @@ def residents(content=None):
     return sorted(rows, key=lambda r: (LEVELS[species[r['id']]['level']], r['id']))
 
 
+def city_cell(row, content=None):
+    """A City roster cell on the disc: id, level << 12 and 0x8000 when hidden. The tab draws every cell in its
+    level's colour each frame: 20 records past the 16-slot species cache would read the disc all the time."""
+    species = {s['id']: s for p in (ROOT / 'content/species').glob('*.json') for s in [json.loads(p.read_text())]}
+    species.update(content or {})
+    return row['id'] | LEVELS[species[row['id']]['level']] << 12 | (0x8000 if row['hidden'] else 0)
+
+
 def compiled_recruits(path):
     # Decode instructions, never search raw bytes: dialogue and dead padding can
     # contain the same bytes. Ordinary flags 312+ have unrelated meanings;
@@ -105,7 +113,7 @@ def verify_archive(data):
     rows = residents()
     count = struct.unpack_from('<H', data, start)[0]
     ids = struct.unpack_from(f'<{count}H', data, start + 2)
-    expected = tuple(r['id'] | (0x8000 if r['hidden'] else 0) for r in rows)
+    expected = tuple(city_cell(r) for r in rows)
     if ids != expected:
         raise ValueError('City block roster differs from owned data')
     for k, row in enumerate(rows):

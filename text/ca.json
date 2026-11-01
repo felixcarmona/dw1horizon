@@ -36,8 +36,8 @@
  ],
  "name.quiz.q2.question": [
   "{color 7}Jijimon {color 1}",
-  "Què t'agrada més, el dia o la",
-  "nit?"
+  "Quin moment del dia t'agrada",
+  "més?"
  ],
  "name.quiz.q2.answers": [
   "{color 6}{player}{color 1}",
