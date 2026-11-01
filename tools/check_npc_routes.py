@@ -231,9 +231,10 @@ def authored_geometry(s):
         folder = 'foreground-depth-a' if 'foreground_depth_a' in modules else 'foreground'
         calls = [n for n in ast.walk(tree) if isinstance(n,ast.Call)
                  and isinstance(n.func,ast.Name) and n.func.id == 'apply_foreground']
-        # A script that passes a variable builds its manifest name itself: no declarative manifest to read.
+        # A script that passes a variable applies one manifest per map file, named after that file.
         literal = calls and isinstance(calls[0].args[1], ast.Constant)
-        manifest = MOD / 'maps' / folder / (calls[0].args[1].value + '.json') if literal else None
+        name = calls[0].args[1].value if literal else Path(s['map']).stem
+        manifest = MOD / 'maps' / folder / (name + '.json') if calls else None
     m = SimpleNamespace(**json.loads(data.read_text()))
     if manifest and manifest.exists():
         cfg = json.loads(manifest.read_text())
