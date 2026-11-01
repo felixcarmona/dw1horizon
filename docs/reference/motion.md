@@ -73,15 +73,10 @@ have, and the lint rule for each: [imported-species.md](imported-species.md), "W
   partner slow to react. Patch 0232 lets the two reviewed 73-frame quadruped walks (Ankylomon 189, Lighdramon 201:
   three 24-tick steps inside one 72-tick acting span) switch at the end of each completed step, and their 73-frame idle
   yield to a walk request at any tick.
-  Patch 0290 applies the same principle to MetalGreymon Vaccine (224): its
-  80-tick native acting span contains five 16-tick walks or four 20-tick
-  condition walks. Pending navigation changes yield at completed strides;
-  its idle can yield immediately. The complete upper-body performance remains
-  on its original clock. Unhappy partners still walk instead of running.
   Patch 0291 bounds the wait for the other imported walks and condition walks (slots 2/3) of at least 40 ticks: a pending
   navigation or needs change may yield after 24 completed logic ticks, and a request arriving later yields at once. That
   is not a stride boundary: the existing four-tick field blend hides the cut. Ordinary following still plays the full loop,
-  189, 201 and 224 keep their step-aligned rules, and no timer or allocation is added.
+  189 and 201 keep their step-aligned rules, and no timer or allocation is added.
 - **Condition idles depend on the idle's length.** Standing near the tamer, `STOP_DISTANCE_TIMER` counts up each tick
   and `updateConditionAnimation` runs when it is greater than `anim->frameCount × EMOTION_ANIM_TIMEOUT`, the timeout a
   random 1..5 drawn when the idle starts. The timer is a signed 8-bit value (it wraps after 127), so with an idle of
@@ -109,12 +104,10 @@ Typical authored values:
 | condition walk (3) | 16-24 | 14-15 |
 | run (4) | 8-12 | 45-52 |
 
-MetalGreymon Vaccine uses 22 / 15 / 52 units per tick in slots 2 / 3 / 4,
-matching WarGreymon 373. Its gait periods are 16 / 20 / 10 ticks, with
-7 / 10 / 3 ticks of support per foot. Native MetalGreymon Virus (12) travels
-25 / 20.833 / 50 units per tick. The former Vaccine speeds, 11 / 8 / 30,
-could neither walk alongside the tamer nor catch a running one. Its technique
-aliases only reference slots 46–61 and cannot redirect field slots.
+MetalGreymon Vaccine (224) uses native MetalGreymon (12) field programs:
+25 / 20.833 / 50 units per tick in slots 2 / 3 / 4. Every decoded field frame,
+root translation, sound and loop is identical. There is no species-specific
+stride transition or generated field overlay for 224.
 
 Scaling a donor's root travel by the size ratio alone (a big import walking with a small donor's legs) leaves a
 catch-up slower than the tamer (13.9 units per tick was measured once, so the partner never caught up); cadence and
@@ -226,144 +219,54 @@ the incoming technique's iframe timer (`BTL_tickHitState`,
 
 ### MetalGreymon Vaccine: donor provenance
 
-Species 224's frozen `RealMetalGreymon.json` import uses Etemon (42), not
-MetalGreymon (12). The reviewed `metal_greymon.py` generator changes only 0-4.
-Consequently, a corrected field walk does not establish correct care animations.
-The following baseline audit describes the **post-delta, post-field-overlay** model before the care repair;
-the import spec's `clips` dictionary alone does not describe its techniques.
+The imports provider builds species 224 from the player's
+`extracted/CHDAT/MMD0/MTGR.MMD` and `CHDAT/ALLTIM.TIM` entry 12, using
+`tools/models/metalgreymon.py`. Extraction precedes imports; derive records
+reads from `extracted/`. Both native inputs are SHA-256 checked. No disc
+model, texture or animation bytes are committed. The registry's `builder`
+selects this generator instead of replaying the DCB model delta.
 
-| Final slots (hexadecimal) | Motion provenance |
+The model has the native 30-bone skeleton, unscaled vertices, radius 280 and
+height 430. Field slots 0–4 and all care, condition, training and battle movement
+programs are native, with no pose edits, retiming or event changes. The
+condition bubble, effect type 12, voices 12/10 and item distance match
+species 12. Offense training selects 0x38 (the unchanged native Megaton Punch
+program from 0x31), with native hit tick 10; this avoids 224's All Range Beam
+assignment at 0x31. Etemon effect remaps and the generated field
+and care passes are removed. Species 189 and 201 retain their stride rules.
+Patch 0298 keeps the general condition-walk restart guard after removing 0290.
+
+The gold palette is applied to rows 0, 1, 2 and 4; wings in row 3 stay native.
+Rows 5, 6 and 7 hold cream claws, brown/gold horn and gold stripes with the
+darkest purple retained. Polygon selections and colours match the approved
+prototype exactly. The TIM retains all 16 CLUT rows and its original pixels.
+The partner upload uses the TIM's CLUT height; verify these rows in live VRAM
+as well as the displayed model.
+
+224 keeps its 14 techniques in their existing order, so saves retain their
+equipped animation-slot meanings and finisher at 0x3B. Matching techniques
+select their own native clips. Four moves without distinct native clips use:
+
+| 224 technique | Native clip |
 |---|---|
-| 00-04 | Reviewed field generator; preserve these programs |
-| 05, 07-0D | Etemon, same-numbered imported programs |
-| 0E-12, 22 | Shared Etemon poor-condition idle (source 01) |
-| 13, 18 | Shared Etemon source 13/18 program |
-| 15-17, 19 | Etemon, same-numbered imported programs |
-| 1B | Delta-adjusted Etemon condition walk; rotations match source 03/1B |
-| 21 | Delta-adjusted DCB native idle |
-| 23 | Etemon walk (source 02/23) |
-| 24 | Delta-adjusted Etemon run; rotations match source 04/24 |
-| 25, 2C | Etemon block and get-up |
-| 28, 29, 2A, 2B | DCB native hit, knockback, victory and faint |
-| 2E, 2F, 32, 33, 35, 37, 3B, 3D | Shared Etemon source 33 technique |
-| 30, 31, 34, 36, 38, 39, 3A, 3C | Shared DCB `anim_02` (imported source 34) |
+| Prominence Beam | Heat Laser (0x2E) |
+| Magma Bomb | Meltdown (0x30) |
+| Counter | Megaton Punch (0x31) |
+| Dynamite Kick (44) | Buster Dive (0x32) |
 
-These rows cover every populated slot. Source-program comparisons exclude
-unconsumed stream tails (`motiondiscidentity.program`). In particular, final
-35 and 3B no longer contain their originally assigned DCB `anim_01` and
-`anim_03`: aliases replace them with Etemon's source 33. The care repair replaces those effective Etemon programs as well. Conversely, replacing every technique outside the spec's
-native slot numbers would overwrite several aliases of DCB `anim_02`.
-
-`animstudio.py bones` identifies the corresponding mesh parts below. DW1's
-seven additional mesh-free helper joints mean that bone numbers cannot simply
-be copied. This is an anatomical correspondence, not approval of a retargeted
-clip or its contact behavior.
-
-| Part | Species 224 bones | DW1 MetalGreymon bones |
-|---|---|---|
-| Torso, neck, metal head, jaw | 1, 2, 3, 4 | 2, 3, 4, 5 |
-| Metal arm, forearm, claw | 5, 6, 7 | 7, 8, 9 |
-| Organic arm, forearm, hand | 8, 9, 10 | 11, 12, 13 |
-| Right and left wings | 11, 12 | 15, 17 |
-| Pelvis | 13 | 18 (translation carrier: 1) |
-| Tail base, middle, tip | 14, 15, 16 | 19, 20, 21 |
-| Right thigh, shin, foot | 17, 18, 19 | 23, 24, 25 |
-| Left thigh, shin, foot | 20, 21, 22 | 27, 28, 29 |
-
-A generated second pass can read the player's
-`extracted/CHDAT/MMD0/MTGR.MMD`: extraction precedes imports and overlays, and
-derive's recorded read roots include `extracted/`. The provider passes the
-post-delta model into its generator. Neither a donor change in a frozen spec
-nor committed disc animation bytes are necessary. Each new clip still needs
-decoded subframe contact checks, loop replay, effect/training timing review and
-the resident/cold storage gates; anatomical correspondence alone proves none
-of these.
-
-#### Generated MetalGreymon care repair
-
-After `metal_greymon.py`, the imports provider runs
-`tools/models/field_animations/metal_greymon_care.py` for species 224 only.
-Its source hash pins the first pass; its donor hash pins the player's extracted
-`CHDAT/MMD0/MTGR.MMD`. Neither frozen import specs nor model deltas change.
-The final species pin includes both passes. The generated report nests the
-unchanged field proof under `field` and records the care pass separately.
-
-The second pass replaces 26 Etemon-derived slots: 05, 07, 08, 0B-13, 16-19,
-22, 25, 2E, 2F, 32, 33, 35, 37, 3B, 3D. The mesh, texture, skeleton,
-reviewed 00-04 and every effective DCB-native program remain exact.
-**Seven Etemon actions remain:** 09 (sleep), 0A (toilet), 15 (fallen pose), 1B (external HP
-training), 23/24 (battle movement), and 2C (get-up). Their candidates failed
-floor/contact checks, so only those slots keep their old programs. In particular,
-1B's root keys and external loop controls and 23/24's old per-loop travel remain
-unchanged; this repair does not claim to fix their skating.
-
-The anatomy map above selects corresponding parts. A rigid shape registration
-then matches each mesh's baked axes and pivot against the native mesh, rather
-than retaining the importer's neck/claw calibration. Registration reads the
-player's vertices, handles their different order, and rejects RMS error over
-1.5 units. Native helper joints are folded into the mapped world transforms;
-the target's local translations carry those different pivots. The head/neck
-follow the native orientation without an additional bow.
-
-Native gestures drive a two-bone solve above fixed care/attack footprints,
-with flat foot orientations and a carrier that can move into reach. Body height is projected from the lowest
-transformed foot vertices after encoding. A bounded integer carrier solve then
-checks every vertex at logic samples and Euler/SRT thirds simultaneously:
-no vertex below the floor by more than 2 units, and the supporting foot no more
-than 4 units above it. The native's long claws sometimes cross the floor too;
-elbow/shoulder and tail clearance corrections bend those branches instead of
-lifting the feet. The finisher needs extra elbow clearance during its wind-up.
-
-All changed slots keep their existing duration, decoded events and non-key
-controls. Stationary native care actions also remove Etemon's entity-translation
-keys: a native eating pose over an inherited shuffle would still skate.
-The seven shared technique aliases use native Pulse Laser (36); slot 3D uses
-native finisher action 3C. Both map native attack tick 26 to existing effect
-sample 15, with separate interpolation before and after the anchor. Original
-sound timestamps remain exact. The current species technique list selects 3B
-as its gameplay finisher; 3D remains an additional model slot. Offense
-training uses untouched DCB slot 3C,
-with its existing `hit_tick` 15. Blocking/eating/refusal still terminate, and
-looping replacements replay eight cycles without pose drift.
-
-The round-2 resident model is 95,242 bytes (limit 100,352); cold data is 28,764 bytes,
-and the largest sector-aligned cold read is 6,144 bytes (limit 8,192). The
-partner buffer therefore stays at its original size. These storage checks and
-the decoded contact/event/loop proofs run inside the generator, before its
-output is accepted. They apply to the 26 replacements, not the seven retained
-legacy clips. Visual and in-game review remain necessary.
-
-The subsequent field-speed repair changes only slots 2–4 relative to that care
-repair. Foot targets and entity travel use the same new speeds; increasing
-root travel alone would skate. Shorter walk support phases keep the longer
-strides inside the native leg reach. The run lowers the carrier by eight units
-and reduces foot roll; an encoded carrier-height solve enforces the same
-2-unit floor limit everywhere and 4-unit supporting-foot limit at ticks and
-interpolation thirds. The run retains its airborne phase (maximum foot
-clearance 15.46 units); flight has no supporting foot. Pulling those swinging
-feet onto the floor would skate. Slip is selected from decoded supporting
-surfaces, independently of the authored phase, so such a regression fails.
-Mean supporting-foot centroid travel is 0.62 / 0.34 / 0.52 units per tick
-(approximately 2.8 / 2.3 / 1.0 percent of root travel). Nine-cycle checks retain
-loop closure, limb lengths, scales, native upper acting and footstep bank/note;
-all other programs, the mesh and skeleton stay exact. The resulting resident
-model is 95,820 bytes (578 more than round 2), still inside the original
-100,352-byte buffer; cold storage and its read limits are unchanged.
-
-The English 2 MB test confirms the engine uses these speeds: during steady
-slot-4 following, partner/tamer displacement measures 52 versus 50 units per
-logic tick (the old model measured approximately 30). On a straight MAYO01
-walk starting 600 units behind, the gap after 2,900 units of tamer travel is
-684 rather than 1,270; the revised walking trace never exceeds 690. Starting
-1,400 units behind a walking tamer plays slot 4 and closes to 744, then walks.
-Player control and the straight path remain uninterrupted in those traces.
+The slot table reads from a snapshot to avoid alias cycles. Each selected
+program, including Giga Scissor Claw from native 0x3C, remains byte-identical
+to its native source. Slots 0–4 are also compared frame by frame in
+`tools/test_native_metalgreymon.py`. The recoloured model is 89,824 bytes,
+with 78,480 resident bytes and 11,352 cold bytes. The largest aligned cold
+read is 4,096 bytes; the fixed 100,352-byte partner buffer is unchanged.
 
 ### 3. The production models and their field recipes
 
 The build's species provider `imports` (`content/models/imports/`: `models.json` and `species.py`) rebuilds the 175 imported
 models from player discs and plain deltas ([../building.md](../building.md)), with their
 reviewed animations. `models.json` maps each species id to its model, an optional texture, `aliases_applied` (the
-species file's `slot_aliases` are already inside the model, so the build drops them) and an optional `field_overlay`.
+species file's `slot_aliases` are already inside the model, so the build drops them) and an optional `field_overlay`. A native `builder` instead generates its model/texture pair during imports.
 
 A **field overlay** is a reviewed recipe that rewrites the field slots of one species, run by derive's `overlays` step
 (one unit per species, [../derive.md](../derive.md)). Its contract:
@@ -391,7 +294,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 | `fieldglide.py` | MetalSeadramon 211, Shakkoumon 214, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
 | `fieldpiedmon.py`, `fieldfairy.py` | Piedmon 245, Lillymon 209 | keep the native float: Piedmon's leg rotations restored from its native floating cycle; Lillymon's shoulders opened in slot 0x21, the performance the experimental runtime layer (above) shows in the field |
-| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldmetalgreymon.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, MetalGreymon (Vaccine) 224, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance |
+| `fieldnative.py`, `fieldseraph.py`, `fieldangel.py`, `fieldvenom.py`, `fieldaero.py`, `fielddevi.py`, `fieldrose.py`, `fieldsylph.py`, `fieldsorcer.py`, `fieldwizard.py`, `fieldvike.py`, `fieldtuskmon.py`, `fieldshadramon.py`, `fieldshuri.py` | MegaKabuterimon 205, Seraphimon 207, MagnaAngemon 206, VenomMyotismon 212, AeroVeedramon 213, Devidramon 216, Rosemon 230, Silphymon 226, Sorcermon 242, Wizardmon 241, Vikemon 220, Tuskmon 253, Shadramon 250, Shurimon 225 | planted strides solved on the native legs (exact link lengths, the whole boot or claw mesh as support) under the native upper-body performance |
 | `fieldboxer.py`, `fieldstar.py`, `fieldsuperstar.py`, `fieldthundermon.py`, `fieldroll.py`, `fieldkoku.py` | BomberNanimon 232, Starmon 243, SuperStarmon 244, Thundermon 252, Togemon 208, Kokuwamon 247 | short one-link legs with rigid oversized boots that roll over their support vertices; body height follows the planted boot |
 | `fieldgatomon.py`, `fieldcat222.py`, `fieldpup.py`, `fieldgizmo.py`, `fieldape.py`, `fieldscarab.py`, `fieldpaddle.py`, `fieldwalrus.py`, `fielddiaboromon.py` | Gatomon 234, BlackGatomon 222, Salamon 221, Gizamon 239, Apemon 227, GranKuwagamon 210, Gomamon 217, Ikkakumon 218, Diaboromon 237 | quadruped and crouched gaits: one-segment limbs pinned through the body carrier instead of stretched, paired bounds, knuckle walks, flipper strokes |
 | `fieldinfermon.py`, `fieldslug.py`, `fieldcandle.py` | Infermon 246, ShellNumemon 231, Candlemon 235 | six legs in alternating tripods; a slug's propulsion clock separate from its face acting (the body slides); a pedestal that holds its footprint at each landing |

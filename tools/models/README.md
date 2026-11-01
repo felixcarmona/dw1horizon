@@ -33,14 +33,14 @@ The frozen model-delta README retains its historical command spellings. Use
 `tools/models/edit.py --help` describes get/put/check/rebase and source-disc
 options. Earlier editor work directories are now `build/imported-model-edit/`.
 
-Species 224 has two generated passes: the existing field recipe, then
-`field_animations/metal_greymon_care.py`. The second reads DW1 MetalGreymon from
-the player's extraction and preserves the frozen import/delta inputs. Its report
-names seven failed actions that retain their old clips; the other 26 replacements
-check mesh registration, events, loop replay, floor/support at thirds, and storage.
-See [motion](../../docs/reference/motion.md#generated-metalgreymon-care-repair)
-for slot provenance and the retained exceptions. Disc-free solver checks run with
-`python3 -m unittest tools.test_metal_greymon_care`.
+Species 224 uses `metalgreymon.py`: native DW1 MTGR.MMD and ALLTIM entry 12,
+recoloured gold at build time. Its native rig, field and care programs are kept;
+technique slots select unchanged native clips while retaining 224's move list
+and save slots. The provider registry selects its `builder` during imports.
+See [motion](../../docs/reference/motion.md#metalgreymon-vaccine-donor-provenance)
+for palette selections, technique routing and storage. Run
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_metalgreymon`.
+
 Measure final field speeds and voice-note coverage with:
 
 ```sh

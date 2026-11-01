@@ -147,6 +147,11 @@ class Provider:
 
     def model(self, species):
         """Return (MMD, TIM); all sources, deltas and results checked by SHA-256."""
+        registry = json.loads((self.repo / 'content/models/imports/models.json').read_text())
+        builder = registry[str(species)].get('builder')
+        if builder:
+            import importlib
+            return importlib.import_module(builder).build(self.repo / 'extracted')
         from tools.models import delta as modeldelta
         result = []
         with source_context(self.games), replay_skeletons():
