@@ -35,7 +35,8 @@ def talk():
     say("Freezeland made my fists hard as ice. You beat them anyway.", "Now I train here, waiting for a tournament day.")
     if ask(yes="Let's spar", no="Not now"):
         greymon208.leave()
-        fugamon208.leave()
+        if recruited(Species.Fugamon):    # leave() on an NPC that was never spawned corrupts the heap (same rule as its presence)
+            fugamon208.leave()
         if fight(hyogamon208) == "won":
             say("Hah! Good. Come back whenever you want another round.")
         else:
