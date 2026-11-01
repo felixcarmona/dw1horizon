@@ -138,3 +138,5 @@ spawn instruction; it adds no engine patch or resident executable bytes. See the
 [shore story notes](../../story/mods/what-the-island-forgot/arcs/shore/README.md).
 
 Patches 0309-0312 answer a tester's v0.0.3 report: the City tab reads each cell's level from its packed roster id instead of a species record (0309), the version stamps stay inside the visible rows (0310), play time shows two-digit minutes (0311) and the care menu runs before map interaction (0312). Together they lower `main_BSS_END` by 16 bytes.
+
+Patch 0313 draws a still meat bubble over the meat farmer (NPC slot 6 of screens 168-179) while a harvest waits: p31 >= 1, or the first visit to Tanemon. It reuses the status bubble's sprites, so it needs no new art, and it hides while a script runs. Heap cost: 704 B. Proof: real talk with Palmon on an original-2-MB boot.
