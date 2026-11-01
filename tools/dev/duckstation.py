@@ -31,7 +31,7 @@ D = os.path.join(R, '.tools/duckstation')
 BIN = os.path.join(D, 'squashfs-root/usr/bin')
 INI = os.path.join(BIN, 'settings.ini')
 RUN = os.path.join(D, 'run.json')
-DISPLAY = ':117'
+DISPLAY = os.environ.get('DS_DISPLAY', ':117')   # DS_DISPLAY=:139: a private X display, so two instances can run side by side
 MAP = os.environ.get('DS_MAP', os.path.join(D, 'disc/full.map'))
 GDB_PORT = int(os.environ.get('DS_GDB_PORT', '2345'))   # DS_GDB_PORT=38201: the stub on another port (set at start)
 KEYS = {'CROSS': 'k', 'CIRCLE': 'l', 'SQUARE': 'j', 'TRIANGLE': 'i', 'START': 'Return', 'SELECT': 'BackSpace',
@@ -65,8 +65,16 @@ class GDB:
         if not reply: return None
         while True:
             m = re.search(rb'\$([^#]*)#..', self.buf)
-            if m: self.buf = self.buf[m.end():]; return m.group(1).decode()
-            self.buf += self.s.recv(65536)
+            if m:
+                self.buf = self.buf[m.end():]
+                self.s.sendall(b'+')  # the stub does not support no-ack mode
+                result = m.group(1).decode()
+                if result.startswith(('S', 'T')) and p not in (b'?', b'c', b's'):
+                    continue  # an asynchronous stop is not a memory/command reply
+                return result
+            chunk = self.s.recv(65536)
+            if not chunk: raise ConnectionError('GDB stub disconnected')
+            self.buf += chunk
 
     def read(self, addr, n):
         out = b''
@@ -188,7 +196,7 @@ def main(a):
         g = GDB(); g.write(sym(a[1]), bytes.fromhex(a[2])); g.close()
     elif a[0] == 'shot' and load_run().get('hq'):
         # the OpenGL window grabs black under Xvfb: DuckStation's own screenshot (F10), at the internal resolution
-        import glob, shutil
+        import shutil
         w = window(); focus(w)
         shots = os.path.join(BIN, 'screenshots')
         before = set(glob.glob(shots + '/*.png'))
