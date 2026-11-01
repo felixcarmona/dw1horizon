@@ -164,7 +164,10 @@ def selftest_fixtures(build):
             if name in copied:
                 continue
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(provider.source(name))
+            # A model made by a builder (224) has no import recipe: this
+            # build's own derived file is the source.
+            built = build / name.removeprefix('build/')
+            target.write_bytes(built.read_bytes() if built.is_file() else provider.source(name))
 
 
 class Run:
