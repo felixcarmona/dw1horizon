@@ -1343,8 +1343,8 @@ class Body:
         return f'{self.operand(c.left.__class__(value=c.left.value, attr="species", ctx=ast.Load()), pre)} in [{", ".join(f"species({t})" for t in ids)}]'
 
     def level_species(self, c, op, r):
-        """The partner species of the levels `partner.level OP Level.X` names: the game's 62 on the original engine; on
-        --exe species / story-state every species of content/species with a `partner` block (the imported partners too)."""
+        """The partner species of the levels `partner.level OP Level.X` names: the game's 62 on the original engine; on any
+        built executable every species of content/species with a `partner` block (the imported partners too)."""
         if not (isinstance(r, ast.Attribute) and isinstance(r.value, ast.Name) and r.value.id == 'Level' and r.attr in self.LEVELS):
             raise self.err(c, 'partner.level is compared with a Level: partner.level == Level.champion',
                            'levels: ' + ', '.join(f'Level.{x}' for x in self.LEVELS))
@@ -1352,7 +1352,7 @@ class Body:
         test = {ast.Eq: lambda v: v == want, ast.NotEq: lambda v: v != want, ast.Lt: lambda v: v < want, ast.LtE: lambda v: v <= want,
                 ast.Gt: lambda v: v > want, ast.GtE: lambda v: v >= want}.get(type(op))
         if test is None: raise self.err(c, 'partner.level is compared with == != < <= > >=')
-        if TARGET['exe'] in WIDE_EXES:
+        if TARGET['exe'] != 'original':
             ids = [t for t, lv in sorted(partner_levels().items()) if test(lv)]
         else:
             rows = BE.DIGI_DATA
@@ -2181,8 +2181,8 @@ _PARTNER_LEVELS = {}
 
 
 def partner_levels():
-    """{species id: level 1-6} of every species of content/species with a `partner` block (what a partner can be on
-    --exe species / story-state)."""
+    """{species id: level 1-6} of every species of content/species with a `partner` block (what a partner can be on a
+    built executable)."""
     if not _PARTNER_LEVELS:
         import glob, json
         num = {'fresh': 1, 'in-training': 2, 'rookie': 3, 'champion': 4, 'ultimate': 5, 'mega': 6}

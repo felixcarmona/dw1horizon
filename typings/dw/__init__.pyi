@@ -111,7 +111,7 @@ class NPC(Entity):
 
 class Level(IntEnum):
     """A species' level: `if partner.level >= Level.champion:` (the partner species of those levels, from content/species: the
-    game's 62 partners on the original engine; on --exe species / story-state every species with a `partner` block, the imported too)."""
+    game's 62 partners on the original engine; on a built executable every species with a `partner` block, the imported too)."""
     fresh = 1
     in_training = 2
     rookie = 3
