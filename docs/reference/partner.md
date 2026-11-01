@@ -90,7 +90,7 @@ There is no `PARTNER_STATS` symbol: the stats are inside `PARTNER_ENTITY` (+0x38
 | `subTiredness` | 0x24 | nothing increments it in US (>= 60 would give tiredness +1) | 0 |
 | `tirednessHungerTimer` | 0x26 | consecutive frames with tiredness >= 50 | |
 | `discipline` | 0x28 | | 0..100, initially 50 |
-| `happiness` | 0x2A | | -100..100, initially 50 |
+| `happiness` | 0x2A | | -100..100, initially 50; players see (value + 100) / 2, 0..100 |
 | `timesBeingSick` / `sicknessTries` | 0x30 / 0x32 | times sick / sickness rolls made | |
 | `areaEffectTimer` | 0x34 | frames on the current map (favoured/hated area) | 0 on map change, cap 28800 |
 | `sicknessTimer` | 0x36 | hours sick; 12 → loses a life | |
@@ -241,7 +241,7 @@ stats -2 % every 300 frames** (minimum 1) until happiness is back to >= 0 or the
 
 ## Tiredness (`tickTirednessMechanics`)
 
-The status screen shows it as a bar when NEW STATUS BARS is on: green below 50, red from 50.
+The status screen shows it as a bar and a number when NEW STATUS BARS is on: green below 50, red from 50.
 
 +5 per battle (`handlePostBattleTiredness`; its factor for MP spent is always 0), +6..10 per training session, +5/h
 sick, +1/h on a hated map, +10 when sleeping sick; falls when sleeping, with items and -2/h on a favoured map.

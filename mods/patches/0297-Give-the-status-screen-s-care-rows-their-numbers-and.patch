@@ -1,0 +1,221 @@
+From 87dc955c0491ac56a786e4bd270cad212011b9de Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 07:21:16 +0000
+Subject: [PATCH] Give the status screen's care rows their numbers and half the
+ width
+
+---
+ src/main/game_menu.c     | 110 ++++++++++++++++++++++++++-------------
+ text/main/game_menu.yaml |   3 --
+ 2 files changed, 73 insertions(+), 40 deletions(-)
+
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 8e7ce1d..5cc91aa 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -79,6 +79,9 @@ typedef struct {
+ 	uint8_t texY;
+ } GameMenuLabel;
+ 
++/* MOD (care numbers): happiness runs -100..100 in the rules; players see it as 0..100, as its bar shows it */
++#define HAPPINESS_SHOWN(h) (((h) + 100) / 2)
++
+ typedef struct {
+ 	int16_t x1;
+ 	int16_t y1;
+@@ -2942,37 +2945,55 @@ static void renderMenuStatusBar(int32_t y, int32_t value, int32_t max, int32_t m
+ }
+ 
+ /* MOD (care numbers): with NEW STATUS BARS the stats view's left block holds four rows instead of three, tiredness third,
+-   and the row of the age and weight adds the care mistakes and the discipline. Off, the screen is the original's.
++   each with its number beside the bar, and the row of the age and weight adds the care mistakes. The divider moves to the
++   middle of the screen to make the room, and ATRIBUTOS keeps all its numbers in the rest. Off, the screen is the original's.
+    The labels are drawn by drawDigimonStatsStrings into a free row of the text area */
+ #define STATS_CARE_TEXT_V   0x54
+-static int16_t STATS_CARE_LABEL_W[3];
+-static char *STATS_CARE_LABELS[3] = { STATUS_STR_TIRED, CHART_STR_MISTAKES, STATUS_STR_DISC };
++#define STATS_PANEL_DX      26
++#define STATS_DIVIDER_X     (-0x1b)
++#define STATS_ATTR_TOP      (-0x12)
++#define STATS_HP_W          0x64
++#define STATS_HP_W_NARROW   78
++#define STATS_MAX_X         0x5f
++#define STATS_MAX_DX        15
++#define STATS_NUM_BOX_X     127
++#define STATS_NUM_BOX_W     30
++static int16_t STATS_CARE_LABEL_W[2];
++static char *STATS_CARE_LABELS[2] = { STATUS_STR_TIRED, CHART_STR_MISTAKES };
++
++/* where an element of the tables goes: their entries differ per language, the panel they lie in does not */
++static int32_t statsPanelX(int32_t x, int32_t y)
++{
++	return MOD_OPT_BARS && x > STATS_DIVIDER_X && y > STATS_ATTR_TOP ? x + STATS_PANEL_DX : x;
++}
+ 
+ /* the left block's rows, in the tables' own entries (the same in every language): once, when the screen opens */
+ static void statsCareLayout(int32_t bars)
+ {
++	int32_t i;
++	int32_t x;
++
+ 	STATS_VIEW_ELEMENTS[17].posY = bars ? 0x30 : 0x31;
+ 	STATS_VIEW_TEXT[1].posY = bars ? 0x3c : 0x40;
+ 	STATS_VIEW_TEXT[2].posY = STATS_VIEW_ELEMENTS[10].posY = STATS_VIEW_ELEMENTS[20].posY = bars ? 0x54 : 0x4f;
+ 	STATS_VIEW_INSETS[4].y = bars ? 170 : 171;
+ 	STATS_VIEW_INSETS[5].y = bars ? 182 : 186;
+ 	STATS_VIEW_INSETS[6].y = bars ? 206 : 201;
++	x = STATS_DIVIDER_X + (bars ? STATS_PANEL_DX : 0);
++	STATS_VIEW_LINES[0].x1 = STATS_VIEW_LINES[0].x2 = STATS_VIEW_LINES[2].x1 = x;
++	STATS_VIEW_LINES[1].x1 = STATS_VIEW_LINES[1].x2 = x + 1;
++	STATS_VIEW_LINES[2].x2 = x + 2;
++	for (i = 7; i < 13; i++) {
++		STATS_VIEW_INSETS[i].x = bars ? 194 + STATS_PANEL_DX : 194;
++	}
++	STATS_VIEW_INSETS[7].w = STATS_VIEW_INSETS[8].w = bars ? STATS_HP_W_NARROW + 4 : STATS_HP_W + 4;
+ }
+ 
+-/* a number in a field like the weight's, its label on the same cyan as the weight's. Sorted: what is drawn later lies under */
+-static void renderStatsCareField(int32_t label, int32_t value)
++/* a row's number in its box beside the bar. Sorted: what is drawn later lies under */
++static void renderStatsCareNumber(int32_t row, int32_t value)
+ {
+-	int32_t w;
+-	int32_t x;
+-	int32_t boxX;
+-
+-	boxX = label * 72 + 124;
+-	w = STATS_CARE_LABEL_W[label];
+-	x = boxX - 0xa0 - w - 3;
+-	renderNumber(0, boxX - 0xa0 + 1, -0x22, 3, value, 5);
+-	renderString(17, x, -0x23, w, 0xc, label << 6, STATS_CARE_TEXT_V, 5, 0);
+-	renderBox(x - 1, -0x22, w + 2, 10, 0x40, 0xe0, 0xff, 0, 5);
+-	renderInsetBox(boxX, 84, 0x1a, 14, 5);
++	renderNumber(0, STATS_NUM_BOX_X + STATS_NUM_BOX_W - 25 - 0xa0, 0x31 + row * 12, 3, value, 5);
++	renderInsetBox(STATS_NUM_BOX_X, 168 + row * 12, STATS_NUM_BOX_W, 12, 5);
+ }
+ 
+ /* the original bar: above the midpoint a fill over its track, below it the fill alone in the track's colours */
+@@ -2996,6 +3017,9 @@ void renderDigimonStatsView(void)
+ 	int16_t k;
+ 	int16_t special;
+ 	int16_t clut;
++	int32_t attrX;
++	int32_t maxX;
++	int32_t hpW;
+ 	uint8_t frame;
+ 
+ 	cluts = STATS_VIEW_ELEMENT_CLUT;
+@@ -3009,11 +3033,11 @@ void renderDigimonStatsView(void)
+ 		renderSeparatorLines(STATS_VIEW_LINES, 6, 5);
+ 		for (j = 0; j < 9; j++) {
+ 			sr = &STATS_VIEW_TEXT[j];
+-			renderString(3, sr->posX, sr->posY + 1, sr->uvWidth, 0xc, sr->uvX, sr->uvY, 5, 1);
++			renderString(3, statsPanelX(sr->posX, sr->posY), sr->posY + 1, sr->uvWidth, 0xc, sr->uvX, sr->uvY, 5, 1);
+ 		}
+ 		for (j = 0; j < 0x15; j++) {
+ 			icon = &STATS_VIEW_ELEMENTS[j];
+-			renderRectPolyFT4(icon->posX, icon->posY, icon->width, icon->height, icon->texX,
++			renderRectPolyFT4(statsPanelX(icon->posX, icon->posY), icon->posY, icon->width, icon->height, icon->texX,
+ 			                  icon->texY + 0x80, 5, GetClut(0x60, cluts.v[j] + 0x1e8), 5, 0);
+ 		}
+ #if !VERSION_IS(US)
+@@ -3027,6 +3051,9 @@ void renderDigimonStatsView(void)
+ 		/* MOD (long names): drawn tighter by drawDigimonStatsStrings when it does not fit */
+ 		renderString(0, -0x6c, -0x32, modStatusNameWidth(DIGIMON_NAME(ENTITY_TABLE[1]->type)), 0xc, 0, 0x48, 5, 0);
+ #endif
++		attrX = 0x23 + (MOD_OPT_BARS ? STATS_PANEL_DX : 0);
++		maxX = STATS_MAX_X + (MOD_OPT_BARS ? STATS_MAX_DX : 0);
++		hpW = MOD_OPT_BARS ? STATS_HP_W_NARROW : STATS_HP_W;
+ 		renderNumber(0, -0x6d, -0x22, 2, PARTNER_PARA.age, 5);
+ #if !VERSION_IS(US)
+ 		renderNumber(0, -0x26, -0x22, 2, PARTNER_PARA.weight, 5);
+@@ -3042,21 +3069,21 @@ void renderDigimonStatsView(void)
+ 		renderNumber(0, 0x23, 0x4e, 4, PARTNER_ENTITY.digimonEntity.stats.base.brain, 5);
+ #else
+ 		renderNumber(0, -0x23, -0x22, 2, PARTNER_PARA.weight, 5);
+-		renderNumber(0, 0x23, 1, 4, PARTNER_ENTITY.digimonEntity.stats.current.currentHP, 5);
+-		renderNumber(0, 0x5f, 1, 4, PARTNER_ENTITY.digimonEntity.stats.base.hp, 5);
+-		renderNumber(0, 0x23, 0x10, 4, PARTNER_ENTITY.digimonEntity.stats.current.currentMP, 5);
+-		renderNumber(0, 0x5f, 0x10, 4, PARTNER_ENTITY.digimonEntity.stats.base.mp, 5);
+-		renderNumber(0, 0x23, 0x1f, 4, PARTNER_ENTITY.digimonEntity.stats.base.off, 5);
+-		renderNumber(0, 0x23, 0x2e, 4, PARTNER_ENTITY.digimonEntity.stats.base.def, 5);
+-		renderNumber(0, 0x23, 0x3d, 4, PARTNER_ENTITY.digimonEntity.stats.base.speed, 5);
+-		renderNumber(0, 0x23, 0x4c, 4, PARTNER_ENTITY.digimonEntity.stats.base.brain, 5);
++		renderNumber(0, attrX, 1, 4, PARTNER_ENTITY.digimonEntity.stats.current.currentHP, 5);
++		renderNumber(0, maxX, 1, 4, PARTNER_ENTITY.digimonEntity.stats.base.hp, 5);
++		renderNumber(0, attrX, 0x10, 4, PARTNER_ENTITY.digimonEntity.stats.current.currentMP, 5);
++		renderNumber(0, maxX, 0x10, 4, PARTNER_ENTITY.digimonEntity.stats.base.mp, 5);
++		renderNumber(0, attrX, 0x1f, 4, PARTNER_ENTITY.digimonEntity.stats.base.off, 5);
++		renderNumber(0, attrX, 0x2e, 4, PARTNER_ENTITY.digimonEntity.stats.base.def, 5);
++		renderNumber(0, attrX, 0x3d, 4, PARTNER_ENTITY.digimonEntity.stats.base.speed, 5);
++		renderNumber(0, attrX, 0x4c, 4, PARTNER_ENTITY.digimonEntity.stats.base.brain, 5);
+ #endif
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.hp, 0x270f, 0x64, 0x24, 0xc);
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.mp, 0x270f, 0x64, 0x24, 0x1b);
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.off, 0x3e7, 0x32, 0x24, 0x2a);
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.def, 0x3e7, 0x32, 0x24, 0x39);
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.speed, 0x3e7, 0x32, 0x24, 0x48);
+-		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.brain, 0x3e7, 0x32, 0x24, 0x57);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.hp, 0x270f, hpW, attrX + 1, 0xc);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.mp, 0x270f, hpW, attrX + 1, 0x1b);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.off, 0x3e7, 0x32, attrX + 1, 0x2a);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.def, 0x3e7, 0x32, attrX + 1, 0x39);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.speed, 0x3e7, 0x32, attrX + 1, 0x48);
++		renderDigimonStatsBar(PARTNER_ENTITY.digimonEntity.stats.base.brain, 0x3e7, 0x32, attrX + 1, 0x57);
+ 		for (i = 0, k = 0; i < 3; i++) {
+ 			special = DIGI_PARA(ENTITY_TABLE[1]->type).special[i];
+ 			if (special != 0xff) {
+@@ -3111,8 +3138,16 @@ void renderDigimonStatsView(void)
+ 			renderString(3, -0x7c, 0x49, STATS_CARE_LABEL_W[0], 0xc, 0, STATS_CARE_TEXT_V, 5, 1);
+ 			renderMenuStatusBar(0x4c, PARTNER_PARA.tiredness, 100, 1);
+ 			renderInsetBox(75, 194, 50, 8, 5);
+-			renderStatsCareField(1, PARTNER_PARA.careMistakes);
+-			renderStatsCareField(2, PARTNER_PARA.discipline);
++			renderStatsCareNumber(0, HAPPINESS_SHOWN(PARTNER_PARA.happiness));
++			renderStatsCareNumber(1, PARTNER_PARA.discipline);
++			renderStatsCareNumber(2, PARTNER_PARA.tiredness);
++			renderStatsCareNumber(3, PARTNER_PARA.virusBar);
++			/* the care mistakes, in a field like the weight's on the same cyan */
++			w = STATS_CARE_LABEL_W[1];
++			renderNumber(0, 268 - 0xa0 + 1, -0x22, 3, PARTNER_PARA.careMistakes, 5);
++			renderString(17, 268 - 0xa0 - w - 3, -0x23, w, 0xc, 1 << 6, STATS_CARE_TEXT_V, 5, 0);
++			renderBox(268 - 0xa0 - w - 4, -0x22, w + 2, 10, 0x40, 0xe0, 0xff, 0, 5);
++			renderInsetBox(268, 84, 0x1a, 14, 5);
+ 		}
+ 		for (j = 0; j < 0xd; j++) {
+ 			r = &STATS_VIEW_INSETS[j];
+@@ -4901,8 +4936,9 @@ static void chartCardBuild(int32_t target)
+ 			chartCardLine(a, PARTNER_PARA.discipline, PARTNER_PARA.discipline >= r.discipline, 0, 6, NULL);
+ 		}
+ 		if (r.happiness != -1) {
+-			chartRange(a, CHART_STR_HAPPINESS, r.happiness, r.happiness);
+-			chartCardLine(a, PARTNER_PARA.happiness, PARTNER_PARA.happiness >= r.happiness, 0, 6, NULL);
++			/* MOD (care numbers): the same 0..100 as the status screen; the rules keep -100..100 */
++			chartRange(a, CHART_STR_HAPPINESS, HAPPINESS_SHOWN(r.happiness), HAPPINESS_SHOWN(r.happiness));
++			chartCardLine(a, HAPPINESS_SHOWN(PARTNER_PARA.happiness), PARTNER_PARA.happiness >= r.happiness, 0, 6, NULL);
+ 		}
+ 		if (r.battles != -1) {
+ 			chartRange(a, CHART_STR_BATTLES, isMaxBattles ? 0 : r.battles, r.battles);
+@@ -5507,7 +5543,7 @@ int32_t drawDigimonStatsStrings(void)
+ 	case 3:
+ 		DRAW_STRING_PIECES(STATUS_VIEW_LABELS[2], 0, 0x18, 0, 0x30, 0x60, 0x90, 0xc0);
+ 		if (MOD_OPT_BARS) { /* MOD (care numbers): the three labels renderDigimonStatsView adds */
+-			for (i = 0; i < 3; i++) {
++			for (i = 0; i < 2; i++) {
+ 				STATS_CARE_LABEL_W[i] = drawStringMode(STATS_CARE_LABELS[i], i << 6, STATS_CARE_TEXT_V,
+ 				                                       fitStringMode(STATS_CARE_LABELS[i], i == 1 ? 0x2c : 0x24));
+ 			}
+diff --git a/text/main/game_menu.yaml b/text/main/game_menu.yaml
+index e5eca56..18f4a8c 100644
+--- a/text/main/game_menu.yaml
++++ b/text/main/game_menu.yaml
+@@ -334,6 +334,3 @@ CHART_TEXT:
+     STATUS_STR_TIRED:
+       en_us: Tired
+       ja: つかれ
+-    STATUS_STR_DISC:
+-      en_us: Disc
+-      ja: しつけ度
+-- 
+2.55.0
+

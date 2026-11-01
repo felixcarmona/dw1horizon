@@ -1061,6 +1061,5 @@
  "main.LAB_STR_ASK_LOAD": "Diesen Spielstand laden?",
  "main.CITY_STR_PROSPERITY": "Wohlstand",
  "main.CITY_STR_RESIDENTS": "Bewohner",
- "main.STATUS_STR_TIRED": "Müde",
- "main.STATUS_STR_DISC": "Disz"
+ "main.STATUS_STR_TIRED": "Müde"
 }
