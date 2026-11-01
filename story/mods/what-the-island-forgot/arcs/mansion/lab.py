@@ -1,7 +1,7 @@
 # 67, the Underground Lab (§3.4): Myotismon's rescue. The game's own talk, then Analogman's second notebook among the
 # bones, which only the tamer can read (fragment M6), and the one-time question: keep SkullGreymon (the original: both
 # join the city, SkullGreymon for the Arena) or let him rest (R2: the bones go back to the basement's rune circle and the
-# Crypt opens and the seven locked doors of the mansion stand open; SkullGreymon never joins).
+# Crypt opens and the seven locked doors of the mansion stand open; SkullGreymon joins later, by itself: city/jijimons-house.py).
 from dw import *
 from dw.text import text
 from dw.names import *

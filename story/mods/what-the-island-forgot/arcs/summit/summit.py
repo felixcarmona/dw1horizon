@@ -17,6 +17,7 @@ t51 = text.s184.sec51
 def nowhere_to_hide():
     the_summit()
 
+# Only a 0.0.2 save still on the way up: see the rescue below.
 @infinity.on_step(0, when=airdramon_killed and not engine.game_beaten and not recruited(Species.Digitamamon))
 def no_airdramon():
     the_summit()
@@ -191,7 +192,23 @@ def the_summit():
     wait(500)
     objects[12].hide()
     wait(1000)
-    if not airdramon_killed:
+    # Nothing sets airdramon_killed now: a 0.0.2 save may still have it on the way up, and then another flier comes if one
+    # can, or Airdramon himself. There is always a rescuer, and the ending below is the same for all of them.
+    if airdramon_killed and (recruited(Species.Birdramon) or recruited(Species.Angemon)):
+        sound(8, 13)
+        wait(1000)
+        if recruited(Species.Birdramon):
+            narrator.say("A shadow of wings comes out of the smoke. Birdramon!")
+            narrator.say(page("{color 7}Birdramon {color 1}", "I carry anything, kid. Climb on."))
+        else:
+            narrator.say("A light comes down through the smoke. Angemon!")
+            narrator.say(page("{color 7}Angemon {color 1}", "Take my hand. Quickly."))
+        fade_to_white(1000)
+        sound(8, 12)
+        wait(1000)
+        sound(8, 14)
+        wait(1000)
+    else:
         load(Species.Airdramon131)
         spawn(Species.Airdramon131, slot=2)
         tamer.face(slot2)
@@ -213,39 +230,13 @@ def the_summit():
         wait(1000)
         sound(8, 12)
         wait(1000)
-    elif recruited(Species.Birdramon) or recruited(Species.Angemon):
-        sound(8, 13)
-        wait(1000)
-        if recruited(Species.Birdramon):
-            narrator.say("A shadow of wings comes out of the smoke. Birdramon!")
-            narrator.say(page("{color 7}Birdramon {color 1}", "I carry anything, kid. Climb on."))
-        else:
-            narrator.say("A light comes down through the smoke. Angemon!")
-            narrator.say(page("{color 7}Angemon {color 1}", "Take my hand. Quickly."))
-        fade_to_white(1000)
-        sound(8, 12)
-        wait(1000)
-        sound(8, 14)
-        wait(1000)
-    else:
-        call(Routine.load_ending)    # start_ending waits for the ending bank this loads (as the game's own farewell)
-        tamer.say("Nobody's coming... Airdramon...")
-        fade_to_white(3000)
-        sound(8, 14)
-        wait(2000)
-        narrator.say(page("", "{player} woke up in a bed.", "His own bed, in his own room."))
-        narrator.say(page("", "The key chain on the desk was dark.", "He could not remember why he was crying."))
-        engine.game_beaten.set()
-        call(Routine.game_clear_save)
-        call(Routine.start_ending)
-        dws("return;")            # ending 4.4: no farewell in the city
     narrator.say(t51.u41)
     narrator.say(t51.u42)
     narrator.say(t51.u43)
     engine.game_beaten.set()
+    airdramon_killed.clear()
     recruit(Species.MetalGreymonVirus)
-    if not airdramon_killed:
-        recruit(Species.Airdramon)
+    recruit(Species.Airdramon)
     recruit(Species.Devimon)
     engine.prosperity.add(7)
     raw.store_random(back_dimension_portal, 2)

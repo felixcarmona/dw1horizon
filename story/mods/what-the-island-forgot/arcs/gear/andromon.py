@@ -1,15 +1,36 @@
 # 157, Factorial Town, Andromon (§3.6): with the old gear the archive is complete, and Andromon reads the whole war aloud
-# (fragment M3, complete: it counts twice).
+# (fragment M3, complete: it counts twice). It only reads the gear, which stays with the tamer for the Robot House. Once
+# the Toys have it, Hagurumon lets Andromon read it. A 0.0.2 save lost the gear here: Andromon gives it back.
 from dw import *
+from dw.names import *
 from dw.base.factorial_town_157 import andromon
 from ...state import gear_for_andromon, m3_archive, m3_stations, memories, memory_news
 
 @andromon.on_talk(when=gear_for_andromon and has(Item.Gear) and not m3_archive)
 def the_whole_war():
-    say("That gear. It is of the old make. Permission to install it?")
-    take(Item.Gear)
+    say("That gear. It is of the old make. Permission to scan it?")
     sound(8, 4)
     wait(1500)
+    read_the_war()
+    say("Scan complete. The gear is yours again. It belongs in the Robot House.")
+
+@andromon.on_talk(when=toy_tale_heard and island_history_read and not m3_archive)
+def hagurumon_lets_it_read():
+    say("Hagurumon of the Robot House sent word. I may scan its old gear.")
+    sound(8, 4)
+    wait(1500)
+    read_the_war()
+
+@andromon.on_talk(when=gear_for_andromon and m3_archive and not has(Item.Gear) and not toy_tale_heard)
+def gives_it_back():
+    say("The old gear. I have kept a full copy. It belongs in the Robot House.")
+    give(Item.Gear)
+    if engine.item_did_not_fit:
+        say("Your bag is full. Make room and come back for it.")
+    else:
+        narrator.say("Received the {item Item.Gear}.")
+
+def read_the_war():
     say("The archive is complete. Reading.")
     say("A hundred years ago, humans came to this island.", "They fought the Digimon for ten years.",
         "The Digimon stood together at the center of the island, and the humans were defeated.")

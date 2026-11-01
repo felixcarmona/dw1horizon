@@ -2,33 +2,37 @@
 # window. Every file of the story imports what it needs from here.
 from dw import *
 
-# The Great Canyon (§3.2). When Ogremon escapes down the elevator the chase is offered; it stays offered (the Shaft's
-# lift may be ridden back up) until the Engine Room is settled, or until the tamer leaves the fortress without it.
+# The Great Canyon (§3.2). When Ogremon escapes down the elevator the chase is offered. Turned down, or the Motor left
+# alone, the elevator goes down again later: only breaking the Motor ends the way down.
 class Canyon(Quest):
     OPEN = auto()         # the fortress not cleared yet, or cleared and the chase not answered
     CHASING = auto()      # "After him!": the way down is open
-    SETTLED = auto()      # the Motor broken or left, or the chase turned down: the shaft is closed for good
+    SETTLED = auto()      # the Motor broken or left, or the chase turned down (the lift offers the way down until R1)
 
 root1 = flag()            # R1: the Motor broken (the canyon sinks, the crack stays open)
 birdramon_gone = flag()   # legacy departure bit; reserved for old saves, ignored by bridge recruitment
 
 # MasterTyrannomon's post (§3.1f): guided, the secret passage to the Bone Field opens and the slow side loses its keeper
-# (the Brachiomon move on); kept, the passage stays shut for good.
+# (the Brachiomon move on, until the keeper comes back from the field having told M11); kept, the passage stays shut for
+# this visit: entering the screen again clears post_kept and the offer comes back.
 post_guided = flag()
 post_kept = flag()
 
 # The collection (§3.4): SkullGreymon kept (the original: to the Arena) or laid to rest (R2: the bones go back to the
-# rune circle, the Crypt under the basement opens, SkullGreymon never joins).
+# rune circle, the Crypt under the basement opens; SkullGreymon walks back to the city by itself and Jijimon tells it, the
+# second time the tamer comes home). Kept, Myotismon can still close the circle later (mansion-55.py).
 root2 = flag()
 
-# The soul (§3.7): at the Wall of Hearts Angemon offers to open it and stay as its door (R3: Angemon leaves the city for
-# good, the island remembers), or comes back to the city (the original; the wall stays frozen).
+# The soul (§3.7): at the Wall of Hearts Angemon offers to open it and stay as its door (R3: the island remembers, Angemon
+# keeps the door for a while and comes back to the city by itself, told by Jijimon), or comes back to the city at once
+# (the original; the wall stays frozen until the tamer goes down to it again).
 root3 = flag()
 vault_kept = flag()
 
-# Mt. Infinity (§3.9): Devimon's shortcut (only with R2) skips the climb from 247 to the Infinity Engine room, and
-# Megadramon with it.
+# Mt. Infinity (§3.9): Devimon's shortcut (only with R2) skips the climb from 247 to the Infinity Engine room. Megadramon
+# stays on its terrace, and Devimon waits in the Engine Room for the fight it did not have on 247.
 shortcut_taken = flag()
+devimon_fought = flag()
 
 # The memory the city keeps (§2.6): one flag per fragment, and their count, which the endings read.
 memories = counter()
@@ -49,13 +53,15 @@ key_given = flag()
 # Something new was remembered since Jijimon last counted (he tells it at the next talk, jijimons-house.py).
 memory_news = flag()
 
-# The gear (§3.6): to the Robot House (the original: the Toys' song, Monzaemon) or to Andromon (the archive complete, M3
-# counted twice: it holds the war; Monzaemon never joins).
+# The gear (§3.6): to the Robot House (the original: the Toys' song, Monzaemon) or first to Andromon, who reads it (the
+# archive complete, M3 counted twice: it holds the war) and leaves it with the tamer for the Robot House. Given to the Toys
+# first, Hagurumon lets Andromon read it later.
 gear_for_andromon = flag()
 m3_archive = flag()       # M3 complete: Andromon reads the whole war from the archive, with the old gear
 
-# Airdramon (§3.9): in the ambush in the city Jijimon shouts not to kill him. Held back, he is healed (the original, AIR);
-# fought to the end, he dies in the square: no Airdramon at the summit, another flier must come, or nobody (ending 4.4).
+# Airdramon (§3.9): in the ambush in the city Jijimon shouts not to kill him; held back or beaten he is carried to
+# Jijimon's house and healed (the original, AIR). 0.0.2 could leave this flag set: nothing sets it now, and the old saves'
+# Airdramon recovers (arcs/summit/old-saves.py; the summit's fallback rescue while it is still set).
 airdramon_killed = flag()
 
 # The kennel of the Seam (design/arc-seam.md, §3.8): H, the named hunter beaten; the Gekomon in its cage goes to the city.
@@ -91,8 +97,8 @@ ambush2_fought = flag()
 ambush3_fought = flag()
 
 # The factory (§3.5): after the town reopens, Andromon asks whether to restart the factory (the original) or put all its
-# power into the archive (M3+: the archive tells where the three stations are; the remodelling machine is off for good,
-# the Geremon and PlatinumSukamon of the town leave).
+# power into the archive (M3+: the archive tells where the three stations are; the remodelling machine is off and the
+# Geremon and PlatinumSukamon of the town leave, until Andromon offers the power back on a later visit).
 factory_asked = flag()
 factory_kept_shut = flag()
 m3_stations = flag()      # M3+: the archive, with all the power, tells of the three stations (counts one)

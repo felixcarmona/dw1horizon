@@ -1,7 +1,8 @@
 # 310, the Vault, the Wall of Hearts (§3.7, §5.5): everything the island has forgotten, frozen in a wall of ice. Angemon
 # can open it, but the one who opens it must stay as its door. "Stay" (R3): the wall melts (fragment M7, and the end
-# of the legend, M4, if Cherrymon has not told it), Angemon leaves the city for good and keeps the door (311); "Come to
-# the city": the original, the wall stays frozen.
+# of the legend, M4, if Cherrymon has not told it), Angemon leaves the city and keeps the door (311) until it comes back by
+# itself (city/jijimons-house.py); "Come to the city": the original, the wall stays frozen and Angemon asks again the next
+# time the tamer comes down (statue-room.py).
 from dw import *
 from ...state import root3, vault_kept, memories, m4_legend, m7_thaw, memory_news
 

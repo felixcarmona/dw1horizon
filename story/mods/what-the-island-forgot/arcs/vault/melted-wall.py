@@ -1,11 +1,12 @@
 # 311, the Vault after "Stay" (R3): the wall is a curtain of water and Angemon keeps the door. The first time, the thaw is
 # told; afterwards Angemon is the Sanctuary's visitable guardian, with the
-# Record Keeper's hints (script 211, section 8: the library Angemon's talk in the city jumps to).
+# Record Keeper's hints (script 211, section 8: the library Angemon's talk in the city jumps to), until the water keeps
+# the door by itself and Angemon goes home (city/jijimons-house.py).
 from dw import *
 from ...state import root3
 
 melted = new_screen(311, map="build/what-the-island-forgot-maps/screens/VALT02.MAP")
-keeper = melted.npc(Species.Angemon, at=(0, 800), range=0, when=root3)
+keeper = melted.npc(Species.Angemon, at=(0, 800), range=0, when=root3 and not recruited(Species.Angemon))
 thaw_told = flag()
 
 @melted.on_enter

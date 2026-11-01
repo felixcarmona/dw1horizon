@@ -59,7 +59,7 @@ def use2():    # section 82
                         set_textbox_size(entity(0), 21, 8);
                         show_textbox(text("s208.sec82.u2"));
                         fadeout_hud(0);
-                        if (!is_recruited(species("SkullGreymon"))) {
+                        if (!is_recruited(species("SkullGreymon")) && !myotismon_joined_city) {
                             unrecruit(species("Myotismon"));
                             myotismon_missing = true;
                         }

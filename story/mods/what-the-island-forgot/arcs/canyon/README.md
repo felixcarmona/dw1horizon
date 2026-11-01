@@ -1,5 +1,11 @@
 # Canyon
 
+Breaking the Motor is the one choice that stays: the sinking canyon, the fallen nest and the stone crossing are its
+visible consequence. Everything else converges. Until the Motor is broken, the fortress elevator (48) offers the way down
+every time: if the chase was given up, the band and the notebook are still there; if the Motor was left, its choice is
+asked again on arriving in the Engine Room. The bridge rumour and elevator routes still work on every branch; the two
+Gabumon who leave Ogremon's cave scene with R1 are extras of that scene, with no recruit or item attached.
+
 After the Ogre Fortress chase, leaving the Motor intact keeps Shellmon's original
 route open. The tamer adds one short reminder, in all eight languages, that the
 fortress's other lift still reaches the canyon top. The chase cable belongs to

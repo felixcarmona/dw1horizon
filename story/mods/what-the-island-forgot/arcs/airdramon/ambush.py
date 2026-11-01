@@ -1,13 +1,12 @@
 # File City, Airdramon's ambush (script 162, step trigger 6, §3.9): the game's own scene, by its keys, with Jijimon's
 # shout before the battle and the one-time choice. "Hold back": a battle of 90 seconds (the engine's time limit, patch
 # 0172) in which the partner must last without beating him; spared, the game's own end (Airdramon is carried to
-# Jijimon's house and healed: AIR). Beaten, or "No choice: fight!": Airdramon fights "even if it costs my life", and
-# does; no Airdramon joins at the summit. The game's own ambush does not run after this one.
+# Jijimon's house and healed: AIR). Beaten, or "No choice: fight!": Airdramon fights "even if it costs my life", falls,
+# and is still breathing: the same end, with one line more. The game's own ambush does not run after this one.
 from dw import *
 from dw.text import text
 from dw.names import *
 from dw.base.file_city_168 import city_168
-from ...state import airdramon_killed
 
 slot5 = entity(10)                # slot 5: the script spawns Airdramon there
 t57 = text.s162.sec57
@@ -55,36 +54,23 @@ def the_ambush():
     partner.face(slot5)
     wait(250)
     fight(slot5, escape=False)            # a lost battle wakes the tamer in Jijimon's house: the ambush comes again
-    # held back and still standing when the time ran out: he is spared; beaten (held back or not), he dies
-    if holding_back and pstat(241) == 1:  # patch 0172: 1 when that battle ended by the time
-        airdramon_killed.clear()
-    else:
-        airdramon_killed.set()
     tamer.face(slot5)
     slot5.face(tamer)
     partner.face(slot5)
     slot5.say(t57.u15)
-    if not airdramon_killed:
-        slot5.play(29)
-        wait(1500)
-        tamer.play(7)
-        wait(250)
-        tamer.say(t57.u16)
-        raw.entity_walk_to_entity(tamer, 1, slot5)
-        raw.entity_walk_to_entity(partner, 1, slot5)
-        wait(2000)
-        airdramon_ambush_fought.set()
-        trigger(355).set()
-        mt_infinity_entrance_found.set()
-        warp(Screen.jijimons_house_206, entry=1, then=60)
-    else:
-        slot5.play(29)
-        wait(2000)
-        narrator.say("Airdramon fell to the ground, and did not get up again.")
-        slot5.leave()
-        narrator.say(page("{color 7}Jijimon {color 1}", "...I'm so sorry, my boy. He was coming to us.", "He just didn't know it."))
-        airdramon_ambush_fought.set()
-        mt_infinity_entrance_found.set()
-        camera.on(tamer, speed=10)
-        camera.arrived()
-        dws("return;")            # the game's own ambush must not run after this one
+    slot5.play(29)
+    wait(1500)
+    # held back and still standing when the time ran out: he is spared; beaten (held back or not), he falls
+    if not holding_back or pstat(241) != 1:   # patch 0172: 1 when that battle ended by the time
+        narrator.say("Airdramon fell to the ground, and did not move.")
+        narrator.say(page("{color 7}Jijimon {color 1}", "...He's still breathing! Quick, my boy!"))
+    tamer.play(7)
+    wait(250)
+    tamer.say(t57.u16)
+    raw.entity_walk_to_entity(tamer, 1, slot5)
+    raw.entity_walk_to_entity(partner, 1, slot5)
+    wait(2000)
+    airdramon_ambush_fought.set()
+    trigger(355).set()
+    mt_infinity_entrance_found.set()
+    warp(Screen.jijimons_house_206, entry=1, then=60)

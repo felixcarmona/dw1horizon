@@ -1,7 +1,8 @@
 # 247, Devimon on Mt. Infinity (script 194, §3.9): with R2 the Grey Lord's bones rest and Devimon's strings were cut
 # before Analogman could pull them. Its scene is another: it pays its debt with a way up inside the mountain, straight
 # to the Infinity Engine room (no Megadramon on that path), or lets the tamer climb. Marking the fight as done keeps the
-# game's own scene from running after this one.
+# game's own scene from running after this one, and lets 247's wild Digimon load; the fight itself waits for the tamer in
+# the Engine Room (infinity-engine.py, infinity-engine-dark.py).
 from dw import *
 from dw.text import text
 from dw.names import *

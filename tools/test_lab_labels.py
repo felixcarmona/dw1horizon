@@ -21,10 +21,6 @@ checks = []
 for ident in range(180):
     expected = species.LEVELS.index(data[ident]['level'])
     raw = rows[ident]['para']['level']
-    # At boot a record original's DIGI.DAT row replaces its resident one (copyRecordOriginal), so the label reads the
-    # file's stage. A zero row stays zero here: it proves modLabStage's fallback for the disc's empty rows.
-    if raw and species.is_record_original(data[ident]):
-        raw = expected
     checks.append(f'para[{ident}].level = {raw}; assert(modLabStage({ident}) == {expected});')
 code = r'''
 #include <stdint.h>
