@@ -68,6 +68,7 @@ def the_motor():
         tamer.say("Whoa... It's so quiet.", "The way we came is caved in. We'll have to go out through the tunnel.")
     else:
         tamer.say("Better leave it alone. Who knows what'd happen up there.")
+        tamer.say("The fortress's other lift still goes up to the canyon top.")
     advance(Canyon.SETTLED)
     # Keep the gear in view during the scene, then replace the camera walk's retained follow offset.
     camera.on(tamer, speed=10)
