@@ -185,7 +185,7 @@ travel are chosen together.
 **Cold animations (patch 0113, `tools/coldsplit.py`).** A partner model in `DIGI.DAT` is cut in two: the resident part
 (the MMD without its rarely played animations) must fit `PARTNER_MODEL_BUFFER` (0x18800 = 100 352 bytes on the console
 layout); each cold slot's table entry is `0x80000000 | (length in words << 16) | offset in words` into the cold part,
-which follows the resident part on disc. When such a slot starts, the engine reads whole sectors into
+which follows the resident part on disc. When such a slot starts, the engine reads whole sectors (blocking outside the world, through the file queue inside it) into
 `COLD_ANIM_BUFFER` (8192 bytes). The read covers `offset % 2048 + length` rounded up to sectors, so a 7880-byte clip that
 starts 1376 bytes into a sector needs 10 240 bytes and does not load (`loadColdAnimation` returns NULL and the partner
 stays in its previous clip). `coldsplit.split` refuses a stream larger than the buffer and starts a large stream on a

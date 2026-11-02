@@ -180,7 +180,12 @@ an emulator's 8 MB setting) the partner's cold part is read once, after its mode
 `refreshColdCache` in the partner's normal field tick), and the clips start from there; a clip past those 32 KB reads the
 disc as before. `modProbeRam` tells real RAM from the console's mirror. It runs at boot and writes one word and its mirror;
 with 2 MB the cache stays off and every path is the original's. Nothing may need this RAM: it only removes the wait.
-`tools/dev/playtest/cold_cache.py` counts the reads on a real toilet trip in both modes.
+With 2 MB in the world (patch 0318) the game no longer stops either: `loadColdAnimation` asks the file queue for the clip and
+the partner holds its pose, with animation off (`animFlag` bit 0) and a frame count of 0x7FFF, so whatever waits for the end of
+the clip keeps waiting. `tickAnimation` starts the clip when the queue is done. A resident clip that starts meanwhile replaces
+it. Outside the world the read still blocks: the fight code reads `animFlag` as "the animation ended".
+
+`tools/dev/playtest/cold_cache.py` counts the reads on a real toilet trip in both modes, and starts every cold clip, also when another one replaces it.
 
 The title screen's panel (`modNoticeProbe`, patch 0313) reads the same probe and counts reads of the hblank counter over 16
 lines, which grow with an emulated CPU overclock: DuckStation gives 3801 at 100 %, 7389 at 200 %, 9303 at 250 % and 10977 at
