@@ -29,9 +29,9 @@ FIRST_NEW_SCRIPT = 222                                    # DG.SCN has entries 0
 MAPHEAD_SCN = os.path.join(ROOT, 'extracted/SCN/MAPHEAD.SCN')
 MODEL_HEAP_BUDGET = 170 * 1024                            # NPC models per screen (see check_model_heap)
 MAPHEAD_LIMIT = 25000                                     # MAPHEAD_SCRIPT_BUFFER of the target (compile_sources sets it)
-# MAPHEAD_SCRIPT_BUFFER per executable: the original 25 000; the mod executables 0x8000 (MAPHEAD_SCRIPT_MAX, patch 0091,
+# MAPHEAD_SCRIPT_BUFFER per executable: the original 25 000; the mod executables 0x6800 (MAPHEAD_SCRIPT_MAX, patches 0091 and 0317,
 # which story-state builds on; docs/reference/memory.md "MAPHEAD buffer"). `story-build --maphead-max` (build-full.sh: the worktree's own) wins.
-MAPHEAD_LIMITS = {'original': 25000, 'mods': 0x8000, 'species': 0x8000, 'story-state': 0x8000}
+MAPHEAD_LIMITS = {'original': 25000, 'mods': 0x6800, 'species': 0x6800, 'story-state': 0x6800}
 GROUND_PICKUP_MAX = 0                                 # explicit target fact; old targets retain their bytes
 MAPHEAD_MAX_GIVEN = None
 W_TYPE = 63                                               # scratch wide register: partner type > 255

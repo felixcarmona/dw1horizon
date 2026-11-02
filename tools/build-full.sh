@@ -189,7 +189,7 @@ if grep -q PARTNER_MMD_MAX_8MB "$W/include/dw/memmap.h" 2>/dev/null; then MAKE_P
 # The story (docs/reference/story-engine.md 11, derive's story step): story/base with every enabled mod's overrides
 # (STORY_MODS=none|a,b to choose), the dev-save script (MAIN_STORY) and EXTRA_STORY on top, in $O; paged for the original
 # font in $O/orig (ORIG); EXTENDED STORY's original story in $O/base (ALT); the Spanish ones in $O/es.
-# MAPHEAD.SCN stays resident in MAPHEAD_SCRIPT_BUFFER: MAPHEAD_SCRIPT_MAX of this executable (0x8000 since patch 0091 / tier-2
+# MAPHEAD.SCN stays resident in MAPHEAD_SCRIPT_BUFFER: MAPHEAD_SCRIPT_MAX of this executable (0x6800 since patch 0317 / tier-2
 # 0008; an older tree holds 0x6800)
 MH_MAX=$(sed -n 's/^#define[[:space:]]*MAPHEAD_SCRIPT_MAX[[:space:]]*\(0x[0-9A-Fa-f]*\).*/\1/p' "$W/include/dw/memmap.h" 2>/dev/null)
 MH_MAX=$(( ${MH_MAX:-0x6800} ))

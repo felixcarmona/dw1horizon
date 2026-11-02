@@ -117,7 +117,7 @@ against it.
 | `TAMER_MMD_MAX` | 0xE000 | tamer model buffer |
 | `MAP_SCRIPT_MAX` | 0x4000 | one `DG.SCN` entry (largest original 0x3800) |
 | `SCRIPT_OFFSET_TABLE_SIZE` | 0x800 | `DG.SCN`'s offset table |
-| `MAPHEAD_SCRIPT_MAX` | 0x8000 | resident `MAPHEAD.SCN` |
+| `MAPHEAD_SCRIPT_MAX` | 0x6800 | resident `MAPHEAD.SCN` |
 | `SEQ_BUFFER_SIZE` | 0x8000 | SEQ block of the current music font (0x5800 originally) |
 | `SPU_BANKS_START` / `SPU_REVERB_START` | 0x1010 / 0x7B7C0 | SPU range the sound banks may use |
 
@@ -129,7 +129,7 @@ These are static arrays: they cost heap whether or not they are full.
 |---|---|---|
 | `PARTNER_MODEL_BUFFER` | `PARTNER_MMD_MAX` (0x18800 by default) | the partner's MMD: mesh and resident animations |
 | `TAMER_MODEL_BUFFER` | 0xE000 | `BOYS.MMD` |
-| `MAPHEAD_SCRIPT_BUFFER` | 0x8000 | `MAPHEAD.SCN`, resident from boot |
+| `MAPHEAD_SCRIPT_BUFFER` | 0x6800 | `MAPHEAD.SCN`, resident from boot |
 | `SCRIPT_OFFSET_TABLE` | 0x800 | `DG.SCN`'s offset table |
 | the screen script | 0x4000 | the current `DG.SCN` entry |
 | SEQ buffer | 0x8000 | every track of the current music font |
@@ -195,7 +195,7 @@ Its text is what a translation grows ([../mods/translating.md](../mods/translati
 
 | | original | patch 0004 | patch 0091 |
 |---|---|---|---|
-| `MAPHEAD_SCRIPT_BUFFER` | 0x61A8 (the whole-sector read spills into the next array) | 0x6800 | **0x8000** |
+| `MAPHEAD_SCRIPT_BUFFER` | 0x61A8 (the whole-sector read spills into the next array) | 0x6800 | **0x6800** (0x8000 from patch 0091 to 0317) |
 | `SCRIPT_OFFSET_TABLE` | 0x2000 | 0x2000 | **0x800** |
 | together | | 0x8800 | 0x8800: the bss does not grow |
 
@@ -205,7 +205,7 @@ Where the 6 KB come from: `DG.SCN`'s offset table is its first sector (u32 offse
 resident MAPHEAD). The boot read is now one sector and `scnasm.py` keeps the table in it.
 
 The compiler checks MAPHEAD against the target's buffer (`tools/dws/backend.py` `MAPHEAD_LIMITS`: 25 000 for the
-original executable, 0x8000 for ours; `--maphead-max` overrides). `tools/build-full.sh` reads `MAPHEAD_SCRIPT_MAX` from
+original executable, 0x6800 for ours; `--maphead-max` overrides). `tools/build-full.sh` reads `MAPHEAD_SCRIPT_MAX` from
 the tree it builds, passes it to the story build (keys that do not fit stay in English and are listed) and checks the
 final file. The original's `MAPHEAD.SCN` is 24 686 bytes; a full Spanish one is about 25.7 KB.
 

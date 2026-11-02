@@ -117,6 +117,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0308 | Read ENDI again in `start_ending`: the game-clear save's MENU_REL fills 27 sectors, 0x2E0 bytes into ENDI. Link asserts count whole sectors | 32 B of main; heap 185,968 B, screen 207 keeps 1,248 B |
 | 0313 | With RAM above 2 MB the partner's cold animations stay at 0x80200000 and start without the disc; the title screen shows a panel when 8 MB RAM or a CPU overclock near 250% is missing, one row and one check each, and nothing when both are there | `tools/dev/playtest/cold_cache.py` |
 | 0314 | Move 17 read-only tables and paths that only VS reaches into `VS_REL`, which pays for 0313 | Eight-language build: heap 185,264 B, screen 207 keeps 544 B |
+| 0317 | MAPHEAD buffer 26 KB instead of 32: the eight languages take at most 24,554 bytes | 6,144 B of heap; no change at run time |
 
 Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
