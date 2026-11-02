@@ -146,9 +146,9 @@ the mod's files on top; the accents and the 16 punctuation glyphs need a mod exe
   (○ □ △ ×) **or a colour code**: `{color 6}` draws nothing but takes a unit of the row, so a row of 31 letters with
   `{color 6}×{color 1}` in it is 33 units and runs into the next row. The player's and
   partner's names count as about 8. In a list of pages, a row that does not fit makes the build rewrap the whole value
-  (its page breaks are lost). MAPHEAD keys (`m...`, the questions of a new game, the shops) share one resident buffer: **32 768 bytes**
-  (0x8000) in the mod executables (integration and tier 2, 2 MB and 8 MB alike; patch 0091). The US MAPHEAD is about 24 700 bytes and the Spanish fan text with every key in 25 712, so a translation has
-  about 7 KB to grow; the build prints `MAPHEAD.SCN: N bytes of the executable's 32768 (F free)` and, when it is full, lists
+  (its page breaks are lost). MAPHEAD keys (`m...`, the questions of a new game, the shops) share one resident buffer: **26 624 bytes**
+  (0x6800) in the mod executables (integration and tier 2, 2 MB and 8 MB alike; patch 0091). The US MAPHEAD is about 24 700 bytes and the Spanish fan text with every key in 25 712, so a translation has
+  about 2 KB to grow; the build prints `MAPHEAD.SCN: N bytes of the executable's 26624 (F free)` and, when it is full, lists
   the keys that stayed US. The original executable still holds 25,000; `TEXT` selects text, not the executable target.
   The other keys (`sNNN...`, the scripts of `DG.SCN`) have no total limit: a longer translation makes `DG.SCN` larger
   than the disc's and the build moves the files after it on its own ([container growth](scripts.md#if-dgscn-grows)); each
