@@ -1,0 +1,79 @@
+# Dragomon
+k 100c20
+1 d0d0f8
+2 9090d8
+3 5858a8
+r f03030
+s b84858
+o f0b070
+u b87040
+y f8d840
+w f8f8f8
+idle
+...kkkkkk.....k.
+..k11s1s2k...kok
+.k111sss22k.kook
+.k1s11s122kkoouk
+.k1rr11rr23kkouk
+.k1kr12kr23kouk.
+.k222222233kkkk.
+.k2kwkkwk33k.k..
+..k2krrk33kk....
+.k2k3k3k3k12k...
+.k3k2k2k3k23k...
+..kk3k3kk1y2k...
+...kk11y22y3k...
+...k1223k2233k..
+..k123kk.k1233k.
+kkkkkkk..kkkkkkk
+idle2
+...kkkkkk.......
+..k11s1s2k......
+.k111sss22k..kk.
+.k1s11s122k.kook
+.k1rr11rr23koouk
+.k1kr12kr23kkook
+.k222222233k.kuk
+.k2kwrrwk33k..k.
+..k2krrk33kk....
+.k3k2k3k2k12k...
+..kk3k2k3k23k...
+...k2k3kk1y2k...
+...kk11y22y3k...
+...k1223k2233k..
+..k123kk.k1233k.
+kkkkkkk..kkkkkkk
+atk
+..kkkkkk......k.
+.k11s1s2k....kok
+k111sss22k..kook
+k1s11s122kkkoouk
+k1rr11rr23k.kouk
+k1kr12kr23k.kouk
+k2kkkkkkk3k..kk.
+kkwrrrrrwkk.....
+k3wrrrrrw3k12k..
+kkkkwwwk2k123k..
+k3k2k3k2k2k33k..
+.k3k3k3kk.k.k...
+..kk2k2k1y2k....
+...k1223k233k...
+..k123kk.k1233k.
+.kkkkkk..kkkkkkk
+hurt
+.......kkkkkk...
+..kk..k11s1s2k..
+.kook.k111sss22k
+kooukkk1s11s122k
+kouk..k1kk11kk2k
+kuk...k12222223k
+.k....k2222k333k
+......k2kkkkk33k
+.......k2k3k3kk.
+......k3k2k3k12k
+......k2k3k2k23k
+.......kk3k3k2k.
+........k1y2y3k.
+.......k1223k23k
+......k123kkk123
+....kkkkkk...kkk

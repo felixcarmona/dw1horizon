@@ -1,0 +1,82 @@
+# Creepymon
+k 100a14
+h 686880
+i 383848
+b 48b0f8
+r e02838
+s a01828
+t 681018
+1 f8f8f0
+y f0d048
+p b888d8
+q 7858a0
+g b0a8d8
+f 706c98
+idle
+...kk...kk...kk.
+..khik.khik.kgfk
+..khiikhiikkggfk
+..khiiiiiikkgfgk
+..khibibiik.kgfk
+..khiiiiiik.kgfk
+.krkhiiiikrkkgfk
+.krrk1y1krrskffk
+kpprk1y1krrstkfk
+kpqrk1y1krrstkfk
+kqqkk1y1krrstkk.
+kkkkk1y1krrstk..
+...k11y1krrrstk.
+...kyyyyyyyyyk..
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+idle2
+...kk...kk......
+..khik.khik..kk.
+..khiikhiik.kgfk
+..khiiiiiikkgggk
+..khibibiikkgfgk
+..khiiiiiik.kgfk
+.krkhiiiikrk.kfk
+kprrk1y1krrskfk.
+kpqrk1y1krrstkk.
+kqqkk1y1krrstk..
+kkkkk1y1krrstk..
+...kk1y1krrstk..
+...k11y1krrrstk.
+...kyyyyyyyyyk..
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+atk
+....kk...kk.....
+...khik.khik..k.
+...khiikhiik.kgk
+...khiiiiiikkfgk
+...khkbkbkikkfgk
+...khiiiiiik.kfk
+kkkkkhiiiikrkkfk
+k..kkkk1y1krrsk.
+bkkpprrk1y1krrsk
+bbkqqqkk1y1krrsk
+bkkkkkkk1y1krrsk
+......k1y1krrstk
+......k11y1krrsk
+......kyyyyyyyyk
+......krrk.krrsk
+......kkkk.kkkkk
+hurt
+....kk...kk.....
+...khik.khik.kk.
+...khiikhiik.kgk
+...khiiiiiikkfgk
+...khhkhhkikkfgk
+...khiiiiiik.kfk
+.k.krkhiiikrkkfk
+kpkkrrk1y1krrskk
+kqpkrrk1y1krrstk
+.kkrrrk1y1krrstk
+..krrrk1y1krrstk
+..kkrrk1y1krrstk
+...krrk1y1krrstk
+...kyyyyyyyyyyk.
+....krrsk.krrsk.
+....kkkkk.kkkkk.

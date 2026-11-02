@@ -1,0 +1,77 @@
+# Grizzlymon
+k 180a0e
+1 a0b0f0
+2 5868c8
+3 303c90
+w f8f8f0
+g b8b8c8
+r e82820
+s 981410
+idle
+.....k.kkkk.....
+..k.kwkw2w2kkk..
+.k1kk1w1w2w2222k
+.k11111w2w22233k
+k11wkr1kw222233k
+k11111k2w222233k
+kwwww1k22222333k
+kwwkwwk22krrk33k
+kwwwwk22krwrk33k
+.kggk122krrsk33k
+..kkk1222kkk233k
+...k2223kk22k33k
+..krwrwrkk2k333k
+..krrrrsk.k2k33k
+.kwkwkwk..krwrwk
+.kkkkkkk..kkkkkk
+idle2
+.......kkkk.....
+...kkkkw2w2kkk..
+.kkkw1w1w2w2222k
+.k1k111w2w22233k
+.k11111kw222233k
+k11wkr1k2222233k
+k11111k2w222233k
+kwwww1k22222333k
+kwwkwwk22krrk33k
+krrrrk22krwrk33k
+kwwwwk22krrsk33k
+.kkkk2223kkk233k
+..krwrwrk222k33k
+..krrrrsk.k2k33k
+.kwkwkwk..krwrwk
+.kkkkkkk..kkkkkk
+atk
+.....kkkkk......
+.k.kk1w1w1kkk...
+k1k1111w1w1222k.
+k1111111w122233k
+k11kkr11w122233k
+k11111w12222333k
+kwwwk11k222k333k
+krrkkwk11krrk33k
+krrrrrk11krwrk3k
+kwkwkk112krrsk3k
+.kkkkrwrk222k33k
+kwk.krrsk2223k3k
+krwrwrk.kk22kk3k
+.kkkkk...k2kkrwk
+..........kkrwrk
+...........kkkkk
+hurt
+.........kkkk...
+.....kk.k1w1wkk.
+....k1kk11w1w12k
+....k111111w122k
+...k11kkk1w1223k
+...k111111w1223k
+...kwwwk11k2233k
+...kwkkwk112333k
+....kwwk11kk233k
+.k..kkk1222k233k
+krk.k2222krrk33k
+kwrkk2223krwk3k.
+.krwk223krrsk3k.
+..kkkk3kkkkkk3k.
+...krwrk..krwrwk
+...kkkkk..kkkkkk

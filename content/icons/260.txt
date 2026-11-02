@@ -1,0 +1,77 @@
+# MetalTyrannomon
+k 141216
+1 ececf4
+2 b8b8c4
+3 808090
+4 505060
+r e02828
+s f08098
+b 3880e8
+idle
+...kkkkkk.......
+..k112223kk.....
+.k1122k2233k....
+k1122kbk2334k...
+k12222kk23344k..
+k222223323344k.k
+kk1k1k1kk334kk2k
+.krrrsrk33344k2k
+kk1k1k1k2r34k23k
+.kkkkkkk1r34k23k
+..kk23kk1223k33k
+.k12k4k12r334k3k
+.krkkkk12334k3k.
+.....k233k34kk..
+....k33k.k334k..
+...kkkkk.kkkkkk.
+idle2
+...kkkkkk.......
+..k112223kk....k
+.k1122k2233k.k2k
+k1122kbk2334kk2k
+k12222kk23344k2k
+k222223323344k2k
+kk1k1k1k33344k2k
+kkkkkkkkk3344k3k
+.k1k1k1k2r34k3k.
+..kkkkkk1r34k3k.
+..k23kkk1223k3k.
+.k123kk12r334kk.
+.krkk..k12334k..
+.....k233k34kk..
+.....k33k.k334k.
+....kkkkk.kkkkkk
+atk
+..kkkkkk........
+.k112223kk......
+k1122k2233k.....
+k122kbk2334k...k
+k12222kk3344kk2k
+k1k1k1kk33344k2k
+kkkkkkrk33344k2k
+.krrrrrk3344kk3k
+.krrsrrk2r34k33k
+kk1k1k1k2r34k3k.
+k222222k1r34kk..
+.kkkkkkk1223k...
+..kk23k12r33k...
+.krk..k233k34k..
+.....k33k.k334k.
+....kkkkk.kkkkkk
+hurt
+.....kkkkkk.....
+....k112223kk...
+...k112222233k..
+..k1122kkk2334k.
+..k12222322344k.
+..kk1k1k1k3344k.
+...krrrsrk3344kk
+...kk1k1k2334k2k
+.....kkkk2r34k2k
+...kkk11r334k23k
+..k12k1223r3k33k
+..krkk1233r4k3k.
+...k..k12334kk..
+......k233k34k..
+.....k33k.k334k.
+....kkkkk.kkkkkk

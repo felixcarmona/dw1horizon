@@ -1,0 +1,76 @@
+# Gotsumon
+k 181014
+1 e8e8f0
+2 b8b8c8
+3 888898
+4 5c5c6c
+y f8e020
+r c84038
+idle
+....kk....kk....
+...k11k..k12k...
+..kk122kk1223k..
+..k1113222223k..
+.k1kkk22kkk23k..
+.k1kyyk2kyyk33k.
+.k2kkyk2kkyk33k.
+.k12kk232kk233k.
+..k222k3k2333k..
+..kk2kkkkk33kk..
+.kk12k2222k23kk.
+k1223k1322k3234k
+k2334k2233k3344k
+.kkkkk2334kkkkk.
+..k1223k12334k..
+..kkkkkkkkkkkk..
+idle2
+...kk......kk...
+..k11k....k12k..
+..kk122kk1223k..
+..k1113222223k..
+.k1kkk22kkk23k..
+.k1kyyk2kyyk33k.
+.k2kkyk2kkyk33k.
+.k12kk232kk233k.
+..k222k3k2333k..
+..kk2krrrk33kk..
+.k112kkkkk234k..
+k1223k1322k3344k
+k2334k2233k344k.
+.kkkkk2334kkkk..
+..k1223k12334k..
+..kkkkkkkkkkkk..
+atk
+......kk....kk..
+.....k11k..k12k.
+....kk122kk1223k
+....k1113222223k
+...k1kkk22kkk23k
+...k1kyyk2kyyk3k
+...k2kkyk2kkyk3k
+...k12kk232kk23k
+.....k2kkkkk333k
+.kkkkkkrrrrk3kk.
+k112kk2kkkkk234k
+k12221122223344k
+k223k3k22333k34k
+.kkk.kkk3344kkk.
+...k1223k1233k..
+...kkkkkkkkkkk..
+hurt
+.......kk...kk..
+......k11k.k12k.
+.....kk122k1223k
+....k1112222223k
+....k1122222223k
+...k1kkkk2kkkk3k
+...k22222222233k
+...k22223222333k
+.kk.k2krrrk333k.
+k12k.kkkkk3kkkk.
+k22kk12222k233k.
+.kkk.k2223k334k.
+.....k2333k344k.
+.....kkkkkkkkk..
+....k1223k2334k.
+....kkkkkkkkkkk.

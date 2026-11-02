@@ -1,0 +1,79 @@
+# Gallantmon
+k 180a10
+1 f8f8f0
+2 d0d0d8
+3 9090a0
+r e83020
+s a01818
+y f8d840
+o c89820
+c d86040
+e 3878e0
+idle
+.....kk..kkk....
+....krrkkrrsk...
+....krrrrrrsk...
+....k1r11kkkkkk.
+....k1e1kyyyyook
+....k1k2ky1111yk
+..kkkk22ky1rr2yk
+..krsk12ky1rr2yk
+..kkkk12ky1r12yk
+.kk12krrky1122yk
+k1123k12kcyy22ok
+k123kk12kkkyyok.
+kkk..kk2kk3kccsk
+....k12kk12kkssk
+...kyyokkyyok.kk
+...kkkkkkkkkk...
+idle2
+.....kk..kkk....
+....krrkkrrsk...
+....krrrrrrskkk.
+....k1r11kkyyyok
+....k1e1ky1111yk
+....k1k2ky1rr2yk
+..kkkk22ky1rr2yk
+..krsk12ky1r12yk
+..kkkk12ky1122yk
+.kk12krrkcyy22ok
+k1123k12kkkyyok.
+k233kk12kccckk..
+kkk..kk2kk3kcsk.
+....k12kk12kkssk
+...kyyokkyyok.kk
+...kkkkkkkkkk...
+atk
+....kk..kkk.....
+...krrkkrrsk....
+...krrrrrrsk....
+...k1r11kkkkkkk.
+...k1e1kyyyyyook
+...k1kk2ky1111yk
+..kkkkk2ky1rr2yk
+kkkkkkrsky1rr2yk
+1111222kky1r12yk
+kkkk333rrky112yk
+....kkkk1kcyy2ok
+.....k12kkkyyok.
+....kk2kk3kcck..
+...k12k.k12ksk..
+..kyyok.kyyok.k.
+..kkkkk.kkkkk...
+hurt
+.......kk..kkk..
+......krrkkrrsk.
+......krrrrrrsk.
+......k1r111kkk.
+.....k11kkkkyyok
+.....kk1k2ky111k
+...kkkk22ky1r1yk
+...krsk12ky1r2yk
+..kkkkk12ky122ok
+.k112krrkkyy22ok
+k123kk12kckyyok.
+kkkk.k12kkcckk..
+.....kk2kk3kcck.
+....k12kk12kssk.
+...kyyokkyyok.k.
+...kkkkkkkkkk...

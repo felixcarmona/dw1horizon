@@ -1,0 +1,76 @@
+# MetalEtemon
+k 100e18
+1 fcfcfc
+2 d0d8e0
+3 a0a8b8
+4 707888
+5 485060
+b 70c8f8
+idle
+........kk......
+.......k12k.....
+....kkkk1123k...
+...k111222223k..
+..k11222222334k.
+.kkkkkkk2kkkk4kk
+..kbkkk2kbkk3k2k
+...kkk222kkk34k.
+..k11122223344k.
+..k1kkkkkkk34k..
+..kk1k1k1kk4k...
+.k1122kkkk2334k.
+k1123k1233k3345k
+k234kk2334kk455k
+.kkk.k23k34k.kk.
+....kkkkkkkk....
+idle2
+.........kk.....
+........k12k....
+....kkkkk123k...
+...k111222223k..
+..k11222222334k.
+.kkkkkkk2kkkk4kk
+..kkbkk2kkbk3k2k
+...kkk222kkk34k.
+..k11122223344k.
+..k1kkkkkkk34k..
+..k1111111k4k...
+k1123kkkkk2334k.
+k234k1233kk345k.
+.kkkkk2334k.kkk.
+.....k23k34k....
+....kkkkkkkk....
+atk
+..........kk....
+.........k12k...
+......kkkk1123k.
+.....k111222223k
+....k1122222334k
+...kkkkkkk2kkkkk
+....kbkkk2kbkk4k
+.....kkk222kkk4k
+....k1112222344k
+....k1k1k1k1k34k
+....k55555555k4k
+.kkkkk1k1k1kk34k
+k11223kkkkk2334k
+k2334kk2334k345k
+.kkkk.k34k45kkk.
+......kkkkkkkk..
+hurt
+...........kk...
+..........k12k..
+.......kkkk1123k
+.....kk11222223k
+....k1122222334k
+....k1222222234k
+....kkkkkkk2kk4k
+.....kkkk23kk34k
+....k1112222344k
+....k1kk555kk34k
+.kk..kkkkkkkk4k.
+k12kk12233k34k..
+k23kk12333k345k.
+.kk.k2334kkk45k.
+....kk34k34k.kk.
+....kkkkkkkk....

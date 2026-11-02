@@ -1,0 +1,78 @@
+# Vermilimon
+k 180a0e
+l f09880
+r d84838
+s 982830
+d 682028
+e b02840
+g 70f878
+f 30a050
+t f8c8a0
+idle
+..k.............
+.klk.....k.k....
+.klk..k.kdkdk.k.
+.klsk.kdddfddkk.
+.kltkkdedddedktk
+..kllrrkddfddktk
+.kllrgkkdeddddsk
+kllrrrrkkkkkdssk
+kllllrrrrrrkkssk
+ktllrrrrrrssksk.
+kkkkkkkrrrsssk..
+.kllllkkrsskdsk.
+..kkkkkrskkdssk.
+....krsskkrssk..
+...kttkk.kttsk..
+...kkkkk.kkkkk..
+idle2
+................
+..k......k.k....
+.klk..k.kdkdk...
+.klk..kdddfddk.k
+.klskkdedddedkkk
+.kltkkkddfdddktk
+.kllrrrkdedddssk
+.kllrgkkkkkkdssk
+kllrrrrrrrrkkssk
+kllllrrrrrssksk.
+ktlllkkkrrsssk..
+kkkkkllkrsskdsk.
+..kkkkkrskkdssk.
+...krsskkkrssk..
+..kttkk..kttsk..
+..kkkkk..kkkkk..
+atk
+................
+.......k.k....k.
+.....k.kdkdk.ktk
+....kdkdfdddkktk
+...kkdedddeddksk
+..krrkddfdddddsk
+kkklrrkdddedddsk
+tlllgkrkkkkkkssk
+kkklrrrrrrrkkssk
+.kkkllrrrrssksk.
+.ktttkkkrrsssk..
+.keeeeekrsskdsk.
+..kllllkrkkdssk.
+...kkkkkrsskrssk
+.....krsk.kttsk.
+.....kkkk.kkkkk.
+hurt
+...k............
+..klk...........
+..kltk...k.k....
+...klsk.kdkdk...
+...kllkkdddddk..
+..klrrrkkddfddk.
+..krrkkrkdddedk.
+.kllrrrrkkdddssk
+.kkkkrrrrrkkdssk
+.klllkrrrrssksk.
+..kkkkrrsssskk..
+.....krrsskkdsk.
+.....krskkkdssk.
+.....krssk.krsk.
+....kttkk.kttsk.
+....kkkk..kkkkk.

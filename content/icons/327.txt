@@ -1,0 +1,78 @@
+# Gargoylemon
+k 180a0e
+w f8f8ff
+g d0d8e8
+h 98a4bc
+j 687490
+b 4878f0
+c 2848b0
+y f8d840
+r e83028
+idle
+kkk.........kkk.
+.kgkk.k...kkwwgk
+..kgwkwk.kwwgghk
+..kwwwwwkwgkghkk
+.kwwwwwggkgkghjk
+kwwkrwwghkkhkhjk
+kwwwwwgghkghhjk.
+.kkkkghhkgwhjk..
+kbk.kkkkwwgkkk..
+kcgggkwwgghkyk..
+.kkgwkgghhkyhk..
+...kkkgghhkkk...
+....kwgghjkkkk..
+...kggkkhhkgkbk.
+..kgbck.kgbckkk.
+..kkkkk.kkkkkk..
+idle2
+kkk.............
+.kgkk.k...kkkk..
+..kgwkwk.kwwwgkk
+..kwwwwwkwggghhk
+.kwwwwwggkgkghjk
+kwwkrwwghkkghjk.
+kwwwwwgghkghhk..
+.kkkkkhhkgwhjk..
+.kbkkkkkwwgkk...
+.kcgggkwgghkyk..
+..kkgwkghhkyhk..
+....kkkgghkkk...
+....kwgghjkkkk..
+...kggkkhhkgkbk.
+..kgbck.kgbckkk.
+..kkkkk.kkkkkk..
+atk
+..........kkkk..
+.........kgggk.k
+.....k.kwwggghkk
+...k.kwkwwggghk.
+...kwwwwwkgghjk.
+..kwwwwwggkhjk..
+.kwwkrwwghkhjk..
+kwwwwwgghkghjk..
+kkkkkkghhkwhk...
+kkbbkkkkwwgkk...
+kbbgggwwgghkyk..
+.kkkggwwghkyhk..
+...kkkgghjkkk...
+....kwgghjkk.k..
+...kgbckkkgbckk.
+...kkkkk.kkkkkk.
+hurt
+.......kk......k
+...k..kgk...kkgk
+..kwkkwwk..kgggk
+.kwwwwwwwk.kghk.
+kwwwwwwggk.kghk.
+kwkkwwwghkkgjk..
+kwwwwgghk.kgjk..
+.kkkkghhkkwhk...
+..k.kgggwwgk....
+.kbkkwwgghkk....
+.kcggwwghkykk...
+..kkkgghhkyhk...
+....kwgghjkk....
+...kgbckkkgbck..
+...kkkkk.kkkkk..
+................

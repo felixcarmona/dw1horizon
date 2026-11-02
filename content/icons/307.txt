@@ -1,0 +1,78 @@
+# BlackKingNumemon
+k 180a0e
+1 d8d8e0
+2 989ca8
+3 585c68
+w f8f8f0
+r e02828
+y f8e070
+o c0a040
+s 383840
+idle
+.....kkk........
+....kwwwkk.kyyk.
+.kkkkwrwkykookyk
+kwwwkwwwkokk1kok
+kwrwkkkkk1k12k1k
+kwwwk.k.k12k122k
+.kkk.kk.k12k123k
+..k..k..k122123k
+..kkkkkkk122233k
+.k112223k1o2233k
+k1ssss23k122333k
+k11rr233kk23333k
+k12222333kkkkkk.
+k12222233222333k
+k1222233333333k.
+kkkkkkkkkkkkkkk.
+idle2
+......kkk.......
+.kkk.kwwwk.kyyk.
+kwwwkkwrwkkkookk
+kwrwkkwwwkyk1kyk
+kwwwk.kkkok12kok
+.kkk.k..k1k12k1k
+..k..kk.k12k123k
+..kk.k..k122123k
+.kkkkkkkk122233k
+k11122223k1o233k
+k1s111s23k12333k
+k11ssss33kk3333k
+k12rr2233kkkkkk.
+k12222233222333k
+k1222233333333k.
+kkkkkkkkkkkkkkk.
+atk
+....kkk.........
+...kwwwk.k.kyyk.
+kkkkwrwkkykookyk
+kwwwkwwwkokk1kok
+kwrwkkkkk1k12k1k
+kwwwk.k.k12k122k
+.kkk..kkk12k122k
+..k....kk122123k
+.kkkkkkkkk12233k
+k111122223k1233k
+krrrrrrk23k1333k
+krsrsrrk233kk33k
+krrrrrk22333kkk.
+k1s1s1222233333k
+k1222233333333k.
+kkkkkkkkkkkkkkk.
+hurt
+..........kk...k
+....kkk..kyykkyk
+...kwwwk.kookkok
+.kkkkkkk.kk1k12k
+kwwwkwwwkk12k12k
+kkkkkkkkk12k122k
+kwwwk.k.k12k122k
+.kkk...kk12k123k
+...kkkkkk122233k
+..k112223k22233k
+.k11kk223k22333k
+.k1sss233kk3333k
+.k1rk2233kkkkkk.
+k12222233222333k
+k1222233333333k.
+kkkkkkkkkkkkkkk.

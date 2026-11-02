@@ -1,0 +1,77 @@
+# SnowAgumon
+k 101820
+1 f8fcfc
+2 d0f0f8
+3 a0d4e4
+4 70a8c0
+5 487c98
+b 2860c0
+r e87080
+idle
+....kkkkkkk.....
+..kk11112222kk..
+.k111122222kkk3k
+k111122222k1bk3k
+k1k1122222kbbk3k
+k1122333322kk34k
+kkkkkkkkkk22334k
+.k111222kk23344k
+..kkkkkkk222344k
+...kk22k123344k.
+..k1122k123344k.
+.k11233k122345k.
+k1k1kkk1122345k.
+.k.k.k11223345k.
+.k1k1k1223k2345k
+..kkkkkkkkkkkkkk
+idle2
+....kkkkkkk.....
+..kk11112222kk..
+.k111122222kkk3k
+k111122222k1bk3k
+k1k1122222kbbk3k
+k1122333322kk34k
+kkkkkkkkkk22334k
+.k1k1rrkk23344k.
+.k11122kk222344k
+..kkkkkk123344k.
+..k1122k123344k.
+...k123k122345k.
+..k1k1k1122345k.
+..k.k.k1223345k.
+.k1k1k1223k2345k
+..kkkkkkkkkkkkkk
+atk
+..kkkkkkk.......
+kk11112222kk....
+k1111222222kkk..
+k11122222k1bkkk.
+k1k122222kbbk34k
+k112233322kk234k
+kkkkkkkkkkk2334k
+.krrrrrrrk23344k
+.kr1k1k1kk23344k
+k1111112k123344k
+.kkkkkkkk123445k
+..k1111k122345k.
+.k1k1kkk122345k.
+.......k112345k.
+.....k1k12k2345k
+.....kkkkkkkkkkk
+hurt
+.....kkkkkkk....
+...kk11112222kk.
+..k1111222222kk.
+.k111122222kkk3k
+.k1k1122222233k.
+.k112233332234k.
+.kkkkkkkkk2233k.
+..krrrrkkk2334k.
+..k11122kk2344k.
+...kkkkkk12344k.
+.k1k.k12k12345k.
+..kk1122k122345k
+...kkkkkk122345k
+.....k11223345k.
+....k1k1223k345k
+....kkkkkkkkkkkk

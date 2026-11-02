@@ -1,0 +1,80 @@
+# GrapLeomon
+k 180a0e
+o f88828
+p f8c030
+d b85818
+t f0d8b0
+r e02830
+w f8f8f0
+g c0c0c8
+h 707078
+j 383840
+b 38a0f0
+idle
+.....k.kk.k.....
+...kkokoopkk....
+..kppoopoodok...
+.kkoppoopoddok..
+kpopokbooodddk..
+.kopkttttoddok..
+kopktkttkodddk..
+.kkkwtwtkddok...
+..kkkkwwjjkkkk..
+.kgggkwwjkgggwk.
+khhhhkwjjkhhhhk.
+kgggkgwjwkggggk.
+.kkk.kkjjkkkkk..
+....kgwk.kwgkok.
+...kwggk.kwggkk.
+...kkkkk.kkkkk..
+idle2
+.....k.k..k.....
+...kkokkoopkk...
+..kppoopoodoook.
+.kkoppoopoddkk..
+kpopokbooodddk..
+.kopkttttoddok..
+kopktttttkdddk..
+.kkkkkkkkkddok..
+kggkkkwwjjkkkk..
+khhhhkwwjkgggwk.
+kgggkkwjjkhhhhk.
+.kkkkgwjwkggggk.
+.....kkjjkkkkk..
+....kgwk.kwgk.ok
+...kwggk.kwggkk.
+...kkkkk.kkkkk..
+atk
+.......k.kk.k...
+.....kkokoopkk..
+....kppoopoodok.
+...kkoppoopoddok
+..kpopokbooodddk
+...kopkttttoddok
+..kopkrrrrkodddk
+...kkkwkwkkddok.
+kkkkkkkwwjjkkkk.
+khhghgkwwjkgggwk
+khhghgggwjjkhhhk
+kggkkkkgwjkggggk
+.kk....kkjkkkkk.
+.....kgwk.kwgkok
+....kwggk.kwggk.
+....kkkkk.kkkkk.
+hurt
+.........k.kk.k.
+.......kkokoopk.
+......kppoopoodk
+.....kkoppoopodk
+....kpopkkkooddk
+.....kopkttoodok
+....kopktttkddok
+.....kkkkkkkddk.
+..kkkkkwwjjkkkk.
+.kgggkkwwjkgggk.
+khhhhkkwjjkhhhhk
+kgggk.kgwjwkgggk
+.kkk..kkjjkkkkk.
+.....kgwk.kwgkok
+....kwggk.kwggk.
+....kkkkk.kkkkk.

@@ -1,0 +1,80 @@
+# SkullMeramon
+k 140a18
+c 7890f8
+b 3848c8
+p 6828b0
+g f0f0f8
+h b0b0c0
+i 707080
+r f82818
+t f8d090
+u d09c58
+v 946430
+idle
+......k..k.k.k..
+.....kckkbkbkpk.
+....kccbkbbbkpk.
+...kkkkcbbbbbppk
+..kggghikbbbpppk
+.kggghiiikbbppk.
+.kgrrhirikcbpk..
+.kgkrhikikbbpk..
+.kgggiiiikbppkk.
+.kkigkikkkkkttk.
+kttkkgkhgkuuuvk.
+kttuvkhgkhkuuvvk
+ktuuvkgkhgkuvvvk
+.kkkkgkkkkgkkkk.
+...kkggk.kggkk..
+..kkkkkk.kkkkkk.
+idle2
+.......k..k...k.
+.....kk.kbbk.kpk
+....kckbkbbbkkpk
+...kkkccbbbbbppk
+..kggghikbbbpppk
+.kggghiiikbbbpk.
+.kgrrhirikcbppk.
+.kgkrhikikbbpk..
+.kgggiiiikbpk...
+.kkhkkhkkkkkkkk.
+kttkkgkhgkuuttk.
+kttuvkhgkhkuuuvk
+kuuvvkgkhgkuuvvk
+.kkkkgkkkkgkvvk.
+...kkggk.kggkk..
+..kkkkkk.kkkkkk.
+atk
+.......k..k.k.k.
+......kckkbkbkpk
+.....kccbkbbbkpk
+....kkkkcbbbbbpk
+...kggghikbbbppk
+..kggghiiikbbppk
+..kgrrhirikcbpk.
+..kgkrhikikbbpk.
+..kgggiiiikbppk.
+.kkkkkkkkkkkkttk
+kttttukkhgkuuuvk
+kttuuvkgkhkuuvvk
+kuuvvvkhgkkuvvvk
+.kkkkkkkkgkkkkk.
+....kkggkkggkk..
+...kkkkkkkkkkkk.
+hurt
+.........k.k.k..
+.......kckbkbkpk
+......kccbbbbkpk
+.....kkkkcbbbbpk
+....kggghikbbppk
+...kggghiiikbppk
+...kgkkhkkikcpk.
+...kggghhiikbpk.
+...kgggiiiikpk..
+....kkgkikkkkk..
+..kkkkkkkktttk..
+.kttuvkgkhkuuvk.
+kttuvkkhgkkkuvvk
+kkkkk.kgkhk.kkkk
+.....kggkkggk...
+....kkkkk.kkkkk.

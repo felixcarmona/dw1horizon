@@ -1,0 +1,82 @@
+# Garbagemon
+k 180a0e
+y f8e048
+l f8a8d8
+p f068b8
+n b83888
+b 58a0e0
+g 80d078
+m 48a048
+o 287030
+s d0d0e0
+t 8080a0
+r e03830
+w f8f8f0
+idle
+.......kyk......
+.....kkyyykk....
+....kyyllpyyk...
+...kkllllppkk...
+.kk.kllkkbwpk...
+kstkklppppkkpk..
+kstskkkwkwkwkpk.
+.krtsskkkkkkppk.
+.krrtskwkwkppnk.
+..kkkkkkkkkkkkk.
+..kgggmmmmmmook.
+...kkkkkkkkkkk..
+...kgmkmmkmmok..
+...kgmkmmkmook..
+...kgmkmmkoook..
+...kkkkkkkkkkk..
+idle2
+......kyk.k.....
+.....kkyyyk.....
+....kyyllpyyk...
+.kk.kllllppkk...
+kstkkllkkbwpk...
+kstskkpppkkkpk..
+.krtskkkkkkkkpk.
+.krrtkwkwkwkppk.
+..kkkkkkkkkppnk.
+...kkkkkkkkkkkk.
+..kgggmmmmmmook.
+...kkkkkkkkkkk..
+...kgmkmmkmmok..
+...kgmkmmkmook..
+...kgmkmmkoook..
+...kkkkkkkkkkk..
+atk
+.........kyk....
+.......kkyyykk..
+......kyyllpyyk.
+.....kkllllppkk.
+..kk.kkllkkbwpk.
+.ktskkkpppppkkpk
+yktstskkwkwkwkpk
+yrtsskkkkkkkkppk
+.yrrtskwkwkwppnk
+..kkkkkkkkkkkkk.
+..kgggmmmmmmook.
+...kkkkkkkkkkk..
+...kgmkmmkmmok..
+...kgmkmmkmook..
+...kgmkmmkoook..
+...kkkkkkkkkkk..
+hurt
+................
+.......kyk......
+.....kkyyykk....
+....kyyllpyyk...
+...kkllllppkk...
+...kllkkkkpppk..
+...klpppppkkpk..
+...kkkwkwkpppk..
+krk.kkkkkkppnk..
+kstkkkkkkkkkkkk.
+.kstggmmmmmmook.
+..kskkkkkkkkkk..
+...kgmkmmkmmok..
+...kgmkmmkmook..
+...kgmkmmkoook..
+...kkkkkkkkkkk..

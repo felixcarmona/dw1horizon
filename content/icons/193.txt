@@ -1,0 +1,80 @@
+# Digmon
+k 180e10
+y f8e848
+o e8b420
+d a87818
+p 9860e0
+q 603ca0
+g d0d4e0
+h 787c90
+r f04828
+e 40d880
+w f8f8f0
+idle
+...kk...kk......
+...krk..krk.....
+...kyk..kyk.....
+...kykkkyk......
+..kyyyyyyyok....
+.kyyppyyyoodk...
+.kyekkyypoodk.kk
+.kkkyyyppoodkkgk
+kgggkyyyooddkggk
+.khhkyyoodkkkhk.
+kkggkyppoodkkk..
+kggghkyyooddk...
+.kkhhkyoddkkk...
+...kkyokkkyodk..
+..kyggok.kyggk..
+..khhhhk.khhhhk.
+idle2
+....kk...kk.....
+....krk.krk.....
+....kyk.kyk.....
+...kykkkyk.....k
+..kyyyyyyyok..kg
+.kyyppyyyoodkkgh
+.kyekkyypoodkkgk
+.kkkyyyppoodkkk.
+kgggkyyyooddk...
+.khhkyyoodkkkk..
+.kkkkyppoodkgk..
+kggghkyyooddkk..
+.kkhhkyoddkkk...
+...kkyokkkyodk..
+..kyggok.kyggk..
+..khhhhk.khhhhk.
+atk
+.....kk...kk....
+.....krk..krk...
+.....kyk..kyk...
+.....kykkkyk....
+....kyyyyyyyok..
+...kyyppyyyoodk.
+...kyekkyypoodkk
+...kkkyyyppoodgk
+.kkkgkyyyooddggk
+kgggggkyyoodkhk.
+.kkhhkyppoodkk..
+kkkkkkyyooddk...
+kgggggkyoddkk...
+.kkhhhkkyokkyodk
+...kkkkyggokyggk
+......khhhhkhhhk
+hurt
+........kk...kk.
+........krk.krk.
+.........kyk.kk.
+.......kkkykkyk.
+......kyyyyyyyok
+.....kyyppyyyook
+.....kykkkyypook
+...kk.kkyyyppook
+..kggkkyyyyoodkk
+..khhkyyyoodkkkg
+...kkkkyppoodkgk
+....kggkyyooddkk
+...kgghkyoddkkk.
+...kkkkkyokkyodk
+.....kyggok.kygg
+.....khhhhk.khhh

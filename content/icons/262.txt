@@ -1,0 +1,81 @@
+# Flymon
+k 180a0e
+y f8e030
+o c8a820
+d 887010
+m f850b0
+n c82888
+p 801860
+b 3858c0
+c 203078
+r e03820
+s f89028
+w f8f8f0
+idle
+.k......kkkkk...
+kyk....kmmmnnkkk
+.kyk..kmmsnnknnk
+.kyokkkmnnnknsnk
+kyyyyykmnnknnnpk
+kywkyyokknknnpk.
+kbyyyorkkkkkpkk.
+kcbbkrrrkyykkbk.
+.kkkkrskyyokyobk
+.kyykkkyyookbyok
+.kyokkyyookkyok.
+.kkk.kyokyyokk..
+....kyok.kyok...
+...kyyok.kyyok..
+..kyokok.kyokyk.
+..kkkkkk.kkkkkk.
+idle2
+.k..............
+kyk.....kkkkkkk.
+.kyk..kkmmmnnnnk
+.kyokkmmmsnnnnpk
+kyyyyykmnnknnppk
+kywkyyokknknsnk.
+kbyyyorkkkknnpk.
+kcbbkrrrkyykkkk.
+.kkkkrskyyokyobk
+.kyykkkyyookbyok
+.kyokkyyookkyok.
+.kkk.kyokyyokk..
+....kyok.kyok...
+..kyyok..kyyok..
+.kyokyk..kyokok.
+.kkkkkk..kkkkkk.
+atk
+.......kkkkkkk..
+.k....kmmmmnnnkk
+kyk..kmmmnnnknnk
+.kyk.kmmnnnknnnk
+.kyokkmnnknnnnpk
+kyyyyykkknnnpkk.
+kywkyyorkkkkkk..
+kbyyyorrkyykbbk.
+kcbbkrrskyyokybk
+.kkkkkkyyokkkbyk
+.skkyyyookkbyobk
+ssbbbyyokybyokk.
+.skkkbbyyobbkkk.
+...kkkkkyok.kk..
+.....kyokyok....
+.....kkkkkkk....
+hurt
+....k...........
+...kyk...kkkk...
+...kyk..kmmnnkk.
+...kyykkmmnnknnk
+..kyyyykmnnknnpk
+..kkkyyokkknnpk.
+..kbyyorkkkkkk..
+.kcbbkrrrkyykbk.
+.kkkkrrskyyokybk
+..kyykkkyyokkyok
+...kyok.kyyok.k.
+...kkk.kyokyok..
+......kyok.kyok.
+.....kyok...kyok
+.....kyok...kyok
+.....kkkk...kkkk

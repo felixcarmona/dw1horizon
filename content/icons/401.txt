@@ -1,0 +1,82 @@
+# Pukumon
+k 180c10
+g e8e4d0
+h b8b098
+i 807c68
+b 88a8e8
+c 5878c0
+d 384888
+r f08838
+s b85020
+e e82828
+w f8f8f0
+x d0d0f8
+y f8e040
+idle
+.k.k...k...k..k.
+kgkgk.kgk.kgkkhk
+kgggk.kgkkghkkhk
+kghhkkggggghhhk.
+krrrkkgighggihkk
+ksrskgggggghhhxk
+.kbbkgighggihik.
+.kbckgkkkkghhikk
+.kbckkewekkhihxk
+..kkbkkkkkhhikk.
+..kxxxbbbbbckk..
+..kkxbbbbccck...
+....kbcccckrrk..
+...k.kkkkkrrsk..
+......k.kggghk..
+........kkkkk...
+idle2
+...k..k...k...k.
+.k.k.kgk.kgk.khk
+kgkgkkgkkghkkhk.
+kgggkkggggghhhkk
+kghhkggighggihxk
+krrrkgggggghhhk.
+ksrskgighggihikk
+.kbckgkkkkghhixk
+.kbckkewekkhihk.
+..kkbkkkkkhhikk.
+..kxrxbbbbbckk..
+..kkxbbbbccckk..
+....kbcccckrrsk.
+...k.kkkkkrrsk..
+......k.kggghk..
+........kkkkk...
+atk
+.......k...k..k.
+......kgk.kgkkhk
+....k.kgkkghkkhk
+.kkkk.kggggghhk.
+kghgkkggighggihk
+kgghrkggggghhhxk
+kghhsbgighggihk.
+kghgrbbgkkkghikk
+kkkkkbbkewekhixk
+....kkkkkkkkkkk.
+..kxrrxbbbbcck..
+..kxxxbbbbcck...
+...kkxkbbccckrk.
+.....kkkkkkrrsk.
+.......kggghkk..
+.......kkkkk....
+hurt
+.....k...k...k..
+..k..kgk.kgk.khk
+.kgk.kgkkghkkhk.
+kgggkkggggghhhkk
+kghhkggighggihxk
+kgghkgggggghhhk.
+krrrkgighggihikk
+ksrskgkkgkkghixk
+.kbkkgggggghhik.
+..kbkkkkkkkhikk.
+..kkxxbbbbbckk.k
+...kxbbbbcckkrkr
+....kkcccckrrsk.
+.....k.kkkkrrk..
+........kggghk..
+........kkkkk...

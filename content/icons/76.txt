@@ -1,0 +1,81 @@
+# Tankmon
+k 180e0c
+g b8e860
+h 70b838
+j 387c28
+t f8c050
+u c88028
+r e83820
+w f8f8f0
+a d0d0d8
+b 888c98
+c 505460
+y f8e830
+idle
+........kkkkk...
+.......kggghhk..
+kkkkkkkgghhhhjk.
+kabbbckghhhhjjk.
+kkkkkkkhkkkjjjk.
+......khhyykhjk.
+.....kwkwkkkkkk.
+.....krrrrrtttk.
+.kkk.kwkwkkttutk
+kgghkkkkkttuuuk.
+kghhhjjkkkuuuk..
+kkggghhhhhjjjkk.
+kkkkkkkkkkkkkkkk
+kakbbkakbbkakbbk
+kcackcackcackcak
+.kkkkkkkkkkkkkk.
+idle2
+........kkkkk...
+kkkkkk.kggghhk..
+kabbbckgghhhhjk.
+kkkkkkkghhhhjjk.
+.......hkkkjjjk.
+......khhyykhjk.
+.....kwkwkkkkkk.
+.....krrrrrtttk.
+.kkk.krrrrkttutk
+kgghkkwkwkttuuk.
+kghhhjjkkkuuuk..
+kkggghhhhhjjjkk.
+kkkkkkkkkkkkkkkk
+kbbkakbbkakbbkak
+kackcackcackcack
+.kkkkkkkkkkkkkk.
+atk
+.y.....kkkkk....
+yry...kggghhk...
+ytykkkgghhhhjk..
+ykabbckghhhhjjk.
+ykkkkkkhkkkjjjk.
+.....khhhyykhjk.
+....kwkwkwkkkkk.
+....krrrrrrttuk.
+.kk.krrrrrttutk.
+kghkkwkwkkktuuk.
+kghhjkkkkttuuk..
+kkggghhhhhjjjkk.
+kkkkkkkkkkkkkkkk
+kbbkakbbkakbbkak
+kackcackcackcack
+.kkkkkkkkkkkkkk.
+hurt
+kkk.............
+kabkk....kkkkk..
+.kbbkk..kggghhk.
+..kkbkk.kgghhhjk
+....kkkkghhhhjjk
+.....khkkkhhjjjk
+....khhhhhkhhjjk
+...kwkwkwkkkkkk.
+...krrrrkttttk..
+.kkkkrrkkttutuk.
+kgghkkkkttuuuk..
+kghhhjjkkkuuk...
+kkggghhhhhjjjkk.
+kkkkkkkkkkkkkkkk
+kbkakbbkakbbkakk
+.kkkkkkkkkkkkkk.

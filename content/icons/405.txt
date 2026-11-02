@@ -1,0 +1,81 @@
+# Cannondramon
+k 180a0e
+g e8e8f0
+h a8a8b8
+i 687080
+r e83038
+y f8c870
+o e88c38
+p a85c20
+b 9090f0
+c 5454b8
+s f8e848
+w f8f8f0
+idle
+.kk.............
+khgk....kk......
+.khgk..khgk.....
+..khgk..khgk....
+...khgk..khgk...
+....khgkkkhgkk..
+..kkkkgkhgkbbck.
+.kgggghkkhkcbcck
+kgggrgikhgkhhcck
+kghhhhkyokggihok
+kkrrkkyooghhhoop
+.kkkyyoogihkkoop
+..kyoopkkhkoopkk
+.kgkkpkkgkkkpk.k
+.kggkk.kgk.kggk.
+kkkkkkkkkkkkkkk.
+idle2
+................
+.kk.....kk......
+khgk...khgk.....
+.khgk...khgk....
+..khgk...khgk.kk
+...khgkkkkhgkkbk
+..kkkkhgkhgkbckk
+.kgggghkkhkkcbck
+kgggrgikhgkhhcck
+kghhhhkyokggihok
+kkkkkkyooghhhooo
+.kwkkyyogihkkoop
+..kkyoopkkhkoopk
+.kgkkpkkgkkkpkkk
+.kggkk.kgk.kggk.
+kkkkkkkkkkkkkkk.
+atk
+....kkkkkkkk....
+s.skhggggggghk..
+.srhkkkkkkkkhk..
+s.s.....kkkkhkk.
+...kkkkkhgggghkk
+..srhgggkkkkkbbk
+...skkkkkgkhkbck
+.kgggghkkhkkcbck
+kgggrgikhgkhhcck
+kghhhhkyokggihok
+krrrrkyooghhhoop
+kkkkyyoogihkkoop
+.kkyoopkkhkoopkk
+kgkkpkkgkkkpk.k.
+kggkk.kgk.kggk..
+kkkkkkkkkkkkkk..
+hurt
+..........kk....
+......kk.khgk...
+.....khgk.khgk..
+......khgk.khgk.
+.......khgkkhgk.
+..kkkk..khgkkhk.
+.kggggkkkhgkbck.
+kggkkgikkhkkcbck
+kghhhhikhgkhhcck
+.kkkkkkyokggihok
+.kwkkkyooghhhooo
+..kkkyyoogihkoop
+...kyoopkkhkoopk
+..kgkkpkkgkkkpk.
+.kggkk.kgk.kggk.
+kkkkkkkkkkkkkkk.

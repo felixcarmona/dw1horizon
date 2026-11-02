@@ -1,0 +1,79 @@
+# Suijinmon
+k 180a0e
+r f85068
+s d02848
+t 901830
+g e0e0e8
+h 9c9ca8
+y f8e040
+o b89818
+l b0a048
+n 706830
+idle
+..kkkkkkkkkkkk..
+.kgggghhggghhhk.
+.kgkkghhgkkhhhk.
+.kggghhhggghhhk.
+..kkkkkkkkkkkkk.
+...krrrrrrrsssk.
+..krrgkgrgkgrsk.
+..krrgggrgggssk.
+...krrrrrssstk..
+kkk.kkrrrskkk.kk
+kyk.kyrrrstkkssk
+kyhhkkyhgsssstk.
+kgkkkrrkggttkk..
+.k..krrskhgsk...
+...klnk...klnk..
+...kkkkk..kkkkk.
+idle2
+...kkkkkkkkkkkk.
+..kgggghhggghhhk
+..kgkkghhgkkhhhk
+..kggghhhggghhhk
+..kkkkkkkkkkkkk.
+...krrrrrrrsssk.
+..krrgkgrgkgrsk.
+..krrgggrgggssk.
+...krrrrrssstk.k
+.....kkrrrskkkks
+.kkk.kyrrrsksstk
+kyhhkkkyhgssstk.
+kgyhhkrrkggtkk..
+.kkkkkrskhgsk...
+...klnk...klnk..
+...kkkkk..kkkkk.
+atk
+...kkkkkkkkkkkk.
+..kgggghhggghhhk
+y.kgyyghhgyyhhhk
+.ykggghhhggghhhk
+y..kkkkkkkkkkkkk
+....krrrrrrrsssk
+...krrgygrgygrsk
+...krrgggrgggssk
+.kkkkrrrrrssstk.
+kyykkkkrrrskkk.k
+kgyhhhhyrrstkksk
+kyykkkkyhgsssstk
+.kkk..krrkggttk.
+.....krrskhgsk..
+....klnk...klnk.
+....kkkkk..kkkkk
+hurt
+....kkkkkkkkkkkk
+...kgggghhggghhk
+...kgkkghhgkkhhk
+...kggghhhggghhk
+....kkkkkkkkkkkk
+.....krrrrrrsssk
+....krrkkkrkkksk
+....krrrrrrrrssk
+.....krrrrssstk.
+..kk..kkrrskkk..
+.kyyk.kyrrstkkk.
+.kgyhhkkyhgsstk.
+..kkkkkrrkggtkk.
+.....krrskhgsk..
+....klnk...klnk.
+....kkkkk..kkkkk

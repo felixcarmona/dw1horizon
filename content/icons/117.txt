@@ -1,0 +1,83 @@
+# Jijimon
+k 1c1410
+w f0f0e8
+g c0c0c8
+h 9098a0
+i 687080
+s f0c8a0
+t c89468
+1 e8d890
+2 c8b060
+3 987c38
+l e0d0f8
+m a890d8
+r b03828
+q 682020
+idle
+.kkkk...........
+kqqllk....kkkk..
+kqqlmlk.kkwwwgk.
+.kklmmkkwwwwgggk
+...klmkwwwgwgghk
+...kmmkwwgwwgghk
+..krrrkwgwwgwghk
+.kqrrsskgwwgwghk
+..kqqkkwgwwgwhhk
+...ktkwgkwkgkhgk
+...ktkkk1kgk1kkk
+...ktk1122233sk.
+...ktk1122233tk.
+...ktk12k23k3k..
+...ktkssstkssk..
+...kkkkkkkkkkk..
+idle2
+................
+.kkkk.....kkkk..
+kqqllk..kkwwwgk.
+kqqlmlkkwwwwgggk
+.kklmmkwwgwgwghk
+...klmkwwgwwgghk
+...kmmkwgwwgwghk
+..krrrskgwwgwghk
+.kqrrskwgwwgwhhk
+..kqqkgkwkgkhgkk
+...ktkkk1kgk1kk.
+...ktk11222s33k.
+...ktk1222233tk.
+...ktk12k23k3k..
+...ktkssstksstk.
+...kkkkkkkkkkkk.
+atk
+................
+.........kkkkk..
+.......kkwwwggk.
+......kwwwwgwgik
+......kwwgwgwghk
+.kkkkkkwgwwgwghk
+kqqlllkrrsswghhk
+kqqlmmmrrskgwghk
+.kkmmmkqqkgkghk.
+...kkkkkkk11kkk.
+........k112233k
+.......kk112233k
+......kk1122k3tk
+......k12k23k3k.
+.....kssstksstk.
+.....kkkkkkkkkk.
+hurt
+..kkkk..........
+.kqqllk...kkkk..
+.kqqlmlkkkwwwgk.
+..kklmmkkwwgwghk
+....klmkwwgwgghk
+....kmmkwgwwgghk
+...krrkwgwwgwhk.
+...krrstkwgwghk.
+....kqkkkkgkghk.
+....ktk.k1kkk2k.
+....ktkk112233kk
+....ktk1122233tk
+....ktk1122k3kk.
+....ktk12kk3k...
+....ktkssk.ssk..
+....kkkkkkkkkkk.

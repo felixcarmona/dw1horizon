@@ -1,0 +1,81 @@
+# Tekkamon
+k 180e14
+a c0c0e8
+b 8080b8
+c 505080
+w f8f8f0
+r e83030
+s 982028
+l 98a0f8
+y f0c830
+g e0e0e8
+h 9098a8
+d 404450
+idle
+......kkkkkk....
+....kkaaabbbkk..
+...kaaabkbbbcck.
+..kaabbbkbbbbcck
+..kabkkbbbbkkcck
+..kabkkwkkwkkcck
+..kbbbkkkkkkbcck
+..kbkwkwkwkwkcck
+...kbkkkkkkkcck.
+....kkbbbbcckk..
+....klkkkkkklk..
+.....kllk...klk.
+kkkkkkkrrk.krrrk
+gggghkyrsk.krrsk
+kkkkkkkkkk.kkkkk
+....ddddddddd...
+idle2
+......kkkkkk....
+....kkaaabbbkk..
+...kaaabkbbbcck.
+..kaabbbkbbbbcck
+..kabkkbbbbkkcck
+..kabkkkkkkkkcck
+..kbbbkkkkkkbcck
+..kbkkwkwkwkkcck
+...kbkkkkkkkcck.
+....kkbbbbcckk..
+....klkkkkkkklk.
+kkkkkkkkrk..kllk
+gggghkyrrk.krrrk
+kkkkkkkssk.krrsk
+......kkkk.kkkkk
+.....ddddddd....
+atk
+....kkkkkk......
+..kkaaabbbkk....
+.kaaabkbbbcck...
+kaabbbkbbbbcck..
+kabkkbbbbkkcck..
+kabkkwkkwkkcck..
+kbbbkkkkkkbcck..
+kbkrrrrrrrkcck..
+kbkwkwkwkkkcck..
+.kkkkkkkkkcck...
+..kkbbbbcckk....
+kkkkkkkkkllk.klk
+ggggghkyrrk.krrk
+kkkkkkkkssk.krsk
+.......kkkk.kkkk
+...ddddddddd....
+hurt
+.......kkkkkk...
+.....kkaaabbbkk.
+....kaaabkbbbcck
+...kaabbbkbbbcck
+...kabkkkbbkkkck
+...kabbbbbbbbcck
+...kbbkkkkkkbcck
+...kbkwkwkwkkcck
+....kbkkkkkkcck.
+.....kkbbbcckk..
+.krk.klkkkklk...
+.krrkkk....klk..
+.krsk.....krrrk.
+.kkkkkkkkkkrrsk.
+kgggghkyk.kkkkk.
+kkkkkkkkk.ddd...

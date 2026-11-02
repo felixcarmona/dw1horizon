@@ -1,0 +1,81 @@
+# SkullSatamon
+k 120a10
+h a8a8b4
+i 5c5c6c
+j 34343e
+g 909098
+r f82830
+s a01828
+o f89028
+y f8d848
+b b08850
+c 785030
+w e0e0e8
+idle
+.kk....kkk...kk.
+koyk..khhhk.kgik
+.kok.khhhhhkkgik
+.kbkkhkkhkkhkgik
+.kbkkhkrhkrikgik
+.kbkkhhhkhiikgjk
+.kbk.kikikjkkgjk
+.kbkkrrjrrskkgjk
+kwwwkjrrrsjkrkjk
+kkbkkrrjrrskwkk.
+.kbk.kjjjjkkwwk.
+.kbk.krrkjjkkkk.
+.kbk.krrkwwk....
+.kbk.krskwhk....
+kscskkwhkwhwk...
+kkkkkkkkkkkkk...
+idle2
+.......kkk......
+.kk...khhhk..kk.
+koyk.khhhhhkkgik
+.kokkhkkhkkhkgik
+.kbkkhkrhkrikgik
+.kbkkhhhkhiikgik
+.kbk.kkkkkjkkgik
+.kbkkrrjrrskkgjk
+kwwwkjrrrsjkrkgk
+kkbkkrrjrrskwkjk
+.kbk.kjjjjkkwwk.
+.kbk.krrkjjkkkk.
+.kbk.krrkkwwk...
+.kbkkkrskkwhk...
+kscskwhk.kwhwk..
+kkkkkkkk.kkkkkk.
+atk
+......kkk....kk.
+.....khhhk..kgik
+....khhhhhkkkgik
+....khkkhkkhkgik
+....khkrhkrikgik
+....khhhkhiikgjk
+....kkkkkkjkkgjk
+...kkrrjrrskkgjk
+kkkkkkkjrrsjkrjk
+yokbcbcwwwrskwkk
+oykbcbcwwkjkwwk.
+kkkkkkkkkjjkkkk.
+.....krrkkwwk...
+.....krrk.kwhk..
+....kwhk..kwhwk.
+....kkkk..kkkkk.
+hurt
+........kkk.....
+..kk...khhhk.kk.
+.koyk.khhhhhkgik
+..kok.khhhhhkgik
+..kbk.kkkhkkkkgk
+..kbk.khhhkhikgk
+..kbk.kkkkkkkgjk
+..kbkkrrjrrskgjk
+.kwwwkjrrrsjkkjk
+.kkbkkrrjrrskkk.
+..kbkkkjjjjkwk..
+..kbk.krrkjjkwk.
+..kbk.krrkwwkk..
+..kbk.krskwhk...
+.kscskkwhkwhwk..
+.kkkkkkkkkkkkk..

@@ -1,0 +1,78 @@
+# Quetzalmon
+k 1c1418
+1 f8f8f0
+2 c8c8d0
+3 909098
+g 30c868
+h 187838
+y f0c838
+r e03030
+b 38a8e8
+idle
+......k.....kkk.
+.....k1k...k11k.
+.....k12k.k112k.
+..kkkkk2kk1123k.
+.kgggghk2k1223k.
+k11ghhkkrk2kkk..
+k1bk112kk2rkk...
+k111123k.k12yk..
+.kkk123k..k2r3k.
+..kkkkk...k1y3k.
+....kkkkkkk2r3k.
+...k1y2r1y2r3k..
+..k12r3kkkkkk...
+..k1y2rkkkk.k.k.
+...k2r1y2r3kykyk
+....kkkkkkkkkkk.
+idle2
+.............kk.
+....kk.....kk1k.
+...k11k..kk112k.
+..kkk12kk11223k.
+.kgggghk2k223k..
+k11ghhkkrk2kk...
+k1bk112kk2rkk...
+k1kkk23k.k12yk..
+kk113k3k..k2r3k.
+.kkkkkk...k1y3k.
+....kkkkkkk2r3k.
+...k2r1y2r1y3k..
+..k1y3kkkkkkk.k.
+..k2r1ykkkk.kyk.
+...k1y2r1y2kkyk.
+....kkkkkkkkkkk.
+atk
+............kkk.
+.........kkk11k.
+.......kk11123k.
+..kkkkkkk11223k.
+.kgggghhk1223kk.
+k1gghhkk2y3kk...
+k1bk11kk2y3k....
+kkkk11k.k1r3k...
+.1rrk1k.k2y3k...
+k1113k..k1r3k...
+.kkkk..kk2y3k...
+....kkk1y2r3k...
+...k1y2r1ykkk...
+..k12rkkkkk.k.k.
+...k1y2r3kkykyk.
+....kkkkkkkkkkk.
+hurt
+......kkkkk.....
+.....kggghhk....
+....k11gghhkk...
+....k1kk11k12k..
+....k11112kk22k.
+.....kkk12kk122k
+...k..kkk2rk123k
+..k1k...k1yk223k
+..k12k..k2rkk3k.
+...k2kkkk1yk.kk.
+....kk2r1y3k....
+...k1y2rkkk.....
+...k2rkkkkk.....
+...k1y2r1y3k.k.k
+....kk2r1y3kkkyk
+.....kkkkkkkkkk.

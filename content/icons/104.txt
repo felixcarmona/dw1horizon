@@ -1,0 +1,78 @@
+# BlueMeramon
+k 0e1228
+a a0d4f8
+b 5098ec
+c 2460c0
+d 163c88
+o f89820
+y f8d830
+w f8f8f0
+r e04028
+idle
+..k...k...k.....
+.kak.kak.kbk..k.
+.kaakkaabkbbk.kk
+.kaabbbbbbbck.kk
+kaabbbbbbbcckkbk
+kabkoykbkykokabk
+kabkykkbkkykaabk
+kbbbbbbbbbckabck
+kbkwkwkwkbckabck
+.kkkkkkkkckbbcck
+.kbbkcbbcckbcck.
+kaabkkbbckkbcck.
+kbbkkabbcckkcck.
+.kk.kbbkkcck.k..
+...kaabk.kbck...
+...kkkkk.kkkkk..
+idle2
+....k...k...k...
+..kkak.kak.kbk..
+.kaaakaabkbbck..
+.kaabbbbbbbck.k.
+kaabbbbbbbcckkbk
+kabkoykbkykokabk
+kabkykkbkkykaabk
+kbbbbbbbbbckabck
+kbkkkkkkkbckabck
+.kkwwwwkkckbbcck
+kaakkkkkcckbcck.
+kbbbkcbbckkbcck.
+.kkkkabbcckkcck.
+....kbbkkcck.k..
+...kaabk.kbck...
+...kkkkk.kkkkk..
+atk
+...k...k...k....
+..kak.kak.kbk..k
+..kaakkaabkbbkkk
+..kaabbbbbbbckbk
+.kaabbbbbbbcckck
+.kakkkkbkkkkkabk
+.kaboykbkykoaabk
+.kbbbbbbbbckabck
+kkkkkkkkkbckabck
+krwwwwwkbckkbcck
+kkkkkkkkckbbcck.
+kaaabkbbcckcck..
+kbbbbkkbbckkck..
+.kkkkabbkcck.k..
+...kaabk.kbck...
+...kkkkk.kkkkk..
+hurt
+.....k...k...k..
+....kak.kak.kbk.
+....kaakaabkbbk.
+....kaabbbbbbck.
+...kaabbbbbbcckk
+.k.kakkbkkkkccbk
+kakkkabbbbbbkabk
+kbbkkbkkkkkbkabk
+.kkk.kbbbbbckbck
+..kkkkkbbbckbcck
+.kabckcbbcckcck.
+..kkkkbbcckkck..
+.....kbbbcck.k..
+.....kbbkkcck...
+....kaabk.kbck..
+....kkkkk.kkkkk.

@@ -1,0 +1,81 @@
+# ExTyrannomon
+k 180a0e
+l f890b0
+p e04878
+n a82858
+o 701840
+G 60c860
+H 308838
+w f8f8f0
+y f8e030
+c f0e8c8
+C b8b098
+g 707078
+idle
+....kkkkkkkk....
+..kkllpppppnkk..
+.klppppkppnwwkG.
+.kppppkppnwkwnkG
+kwkwkwkwkwpnnnkG
+kkkkkkkkkkkpnnkG
+kkkykkykkkkpnnkG
+kkkkkkkkkkkpnnk.
+kwkwkwkwkwpnnnk.
+.kkppppppnnnnk..
+gkpkkkkkccpnnnkk
+.gkppkcCcpkpnnok
+gkppnkccCnnknook
+.kkppnkckpnnoook
+..kpnnkkkpnnkkk.
+.kgkgkk.kgkgkk..
+idle2
+................
+....kkkkkkkk.k..
+..kkllpppppnkkG.
+.klppppkppnwwkGG
+.kppppkppnkkwnkG
+kkkkkkkkkkkpnnkG
+kwkwkwkwkwkpnnkG
+kkkkykkykkkpnnk.
+kwkwkwkwkwpnnnk.
+.kkppppppnnnnk..
+.gkkkkkkccpnnnkk
+gkppkkcCcpkpnnok
+.gkpnkccCnnknook
+.kkppnkckpnnoook
+..kpnnkkkpnnkkk.
+.kgkgkk.kgkgkk..
+atk
+...kkkkkkkk.....
+.kkllpppppnkkk..
+klppppkppnwwkGG.
+kppppkppnwkwnkGk
+kwkwkwkwkwpnnnkG
+kkkkkkkkkkkpnnkG
+kkkykkykkkkpnnkG
+kkkkkkkkkkkpnnkk
+kkkkkkkkkkkpnnk.
+kwkwkwkwkkpnnnk.
+.kkkkkkkppnnnk..
+kgggkkcCcpkpnnkk
+kkkkpkccCnnknook
+.gkkppnkckpnnook
+..kpnnkkkpnnkkk.
+.kgkgkk.kgkgkk..
+hurt
+.....kkkkkkkk...
+...kkllpppppnkk.
+..klppppppnkkkkG
+..kpppppppnwwnkG
+..kkkkkkkkkkpnkG
+...kwkwkwkkpnnkG
+....kkkkkkkpnnkG
+.....kkkykkpnnk.
+....kkkkkkkpnnk.
+...kwkwkwkpnnnk.
+gk.kkppppnnnnk..
+.gkkkkkkccpnnnkk
+..kppkcCcpkpnnok
+.kkpnkccCnnknook
+..kpnnkkkpnnkkk.
+.kgkgkk.kgkgkk..

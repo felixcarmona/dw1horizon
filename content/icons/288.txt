@@ -1,0 +1,80 @@
+# Boltmon
+k 140c10
+1 70f0b0
+2 30b878
+3 188050
+g e0e0e8
+i 909098
+n 505058
+r f83020
+s a82810
+u d8b070
+v 805028
+idle
+.....krkrkrk....
+....krrsrrsrk.kk
+...krrrrsrrrkkgk
+...kggggiiiikgik
+...kgkukkuiknkik
+...kguuuuiiknkk.
+...kgkkkkiiknk..
+...kgguuiiikkk..
+..kkkggiikkiik..
+.kk1k11223k112k.
+k1112k11223k123k
+k11223k1223k223k
+k12233k233k2233k
+.kkkkknnnnkkkkk.
+...kgukk.kguk...
+..kkkkkk.kkkkkk.
+idle2
+.....krkrkrk....
+....krrsrrsrk.kk
+...krrrrsrrrkkgk
+...kggggiiiikgik
+...kgkukkuiknkik
+...kguuuuiiknkk.
+...kgkkkkiiknk..
+...kgkrrkiikkk..
+..kkgkkkkikkiik.
+.kkkk11223kk112k
+k111k111223k1123
+k112k11223k1223k
+k122k3333kk2233k
+.kkkknnnnk.kkkk.
+...kgukk.kguk...
+..kkkkkk.kkkkkk.
+atk
+.......krkrkrk..
+......krrsrrsrkk
+.....krrrrsrrrkk
+.....kggggiiiikg
+.....kgkukkuiknk
+.....kguuuuiiknk
+.....kgkkkkiiknk
+.kkk.kgrrrkiikkk
+k111kkgkkkkkkiik
+k1123k11223kk12k
+k1223kk1123k1223
+k1233k11122k2233
+.kkkkk3333kkk33k
+.....knnnnkkkkk.
+....kgukkkkguk..
+...kkkkkkkkkkkk.
+hurt
+........krkrkrk.
+.......krrsrrsrk
+......krrrrsrrrk
+......kggggiiiik
+......kkkgkkkink
+......kguuuuiink
+......kguuuuink.
+......kkkkgiikk.
+.kkk.kkgkkikkkkk
+k111kk112k22k12k
+k112k1122kkk1223
+.kkkk1223k.k2233
+....k3333k..kkkk
+.....knnnk......
+....kgukkguk....
+...kkkkk.kkkkk..

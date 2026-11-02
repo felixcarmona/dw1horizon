@@ -135,7 +135,7 @@ row-sharing behavior. The tournament intro's name tables do not cover all added
 partner types. NPC twins contain their original scene animations, not partner
 combat animations.
 
-## Portraits (0066-0068, 0170, 0176, 0178-0180, 0213, 0219)
+## Portraits (0066-0068, 0170, 0176, 0178-0180, 0213, 0219, 0317)
 
 Where the game draws a Digimon icon:
 
@@ -149,9 +149,10 @@ Where the game draws a Digimon icon:
 Without the patches a species of 180 or more drew nothing in the bracket, another Digimon's tile in VS (the tile index
 wraps) and an empty chart box.
 
-**The icon.** `tools/portraits.py` renders one per species from its model (rest pose, three-quarter view facing left,
-box-filtered to 14x14, quantised to 14 colours plus a dark outline), four frames in a 32x32 tile like the originals:
-idle, idle shifted up a pixel, attack (a pixel forward), hurt. An icon is 0x220 bytes: a 16-colour CLUT and the 32x32
+**The icon.** `content/icons/<id>.txt` holds a species' hand-drawn icon: four frames in a 32x32 tile like the originals
+(idle, idle 2, attack, hurt) and up to 15 colours. `tools/portraits.py` packs it. A species without a drawing falls back
+on a render of its model (rest pose, three-quarter view facing left, box-filtered to 14x14, quantised to 14 colours plus
+a dark outline), with idle, idle shifted up a pixel, attack (a pixel forward) and hurt. An icon is 0x220 bytes: a 16-colour CLUT and the 32x32
 4 bpp image. A species without one draws a fallback icon. `tools/species.py build` stores them in DIGI.DAT, three to a
 sector; `SpeciesRecord.portrait` (0x1C0) and `SpeciesHeader.fallbackPortrait` (0x18) hold `sector | slot << 24`; the
 header sector also lists each partner species' level for the tournament.
@@ -170,8 +171,10 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   cursor: the D-pad moves between the "from" and "to" boxes, confirm opens a raised species, cancel goes back a level.
 - **Chart overview** (0170, 0178, 0213, 0219): every partner species of the build, one tab per level (L1/R1), pages of
   boxes in the level's colour, scrolling. `tools/species.py` writes the list into DIGI.DAT's chart block
-  (`SpeciesHeader.chartSector`: tab counts and ids, then a 16x16 idle frame and CLUT per species, 12 to a sector); a page
-  is read when shown (`chartLoadPage`) into battle-effect VRAM. The tabs fit any font.
+  (`SpeciesHeader.chartSector`: tab counts and ids, then both 16x16 idle frames and the CLUT per species, 7 to a sector); a
+  page is read when shown (`chartLoadPage`) into battle-effect VRAM, each row of first frames with its second frames
+  below it in one texture page. Every box alternates its two frames (0317), the original sheet's pairs too. A
+  scroll or a return from the detail view reloads the shown rows. The tabs fit any font.
 - **City** (0277): the fifth Player tab shares the chart's 14 by 7 grid,
   cursor, scrolling, text rows and icon VRAM. Its separate one-tab block uses a
   sector pointer at header byte `0x38`, between the record-original bitmap and

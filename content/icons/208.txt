@@ -1,0 +1,79 @@
+# Togemon
+k 180a0e
+a d8f858
+g a0e030
+h 60b020
+i 2c7820
+r f05030
+s c03020
+t 801810
+o f8a848
+p c86820
+idle
+.....kk.kk......
+......kookk.....
+.....kkppkkk....
+....kagghghgk...
+...kagaghghgik..
+...kakkghkkgik..
+.kkkakkghkkgikkk
+krrrkagghghgkrrk
+krrsskagkkghkrsk
+ksrrskagkkhgkrsk
+.ksskagghghgikk.
+..kkkagghghgik..
+...kkagghghgikk.
+...kaghkkkghik..
+..kagghk.kghgik.
+..kkkkkk.kkkkkk.
+idle2
+......kk.kk.....
+.....kokkook....
+.....kkppkkk....
+....kagghghgk...
+...kagaghghgik..
+...kakkghkkgik..
+..kkakkghkkgik..
+.krrkagghghgkkkk
+krrrskaghkghkrrk
+krrsskagkkhgkrsk
+ksrsskaggghgkssk
+.kkkkagghghgikk.
+...kkagghghgikk.
+...kaghkkkghik..
+..kagghk.kghgik.
+..kkkkkk.kkkkkk.
+atk
+.......kk.kk....
+........kookk...
+.......kkppkkk..
+......kagghghgk.
+.....kagaghghgik
+.kkk.kakkghkkgik
+krrrkkakkghkkgik
+krrrrkagghghghik
+krrrskagkkkgkkkk
+krrssskgkkkgkrrk
+ksssskagkkkgkrsk
+.kkkkagghghghkk.
+....kkgghghghk..
+...kagghkkkgik..
+..kagghk..kghgik
+..kkkkkk..kkkkkk
+hurt
+.........kk.kk..
+..........kookk.
+.........kkppkkk
+.kkk...kkagghgik
+krrrk.kagaghgigk
+krrsk.kakkkgkkik
+ksrskkkaggghghik
+.kkkkagggkkghkrk
+....kagghkkhkrrk
+.kk.kagghghgksrk
+krskagghghgikkk.
+.kkkkagghghik...
+...kkgghghkk....
+...kaghkkghik...
+..kagghk.kghgik.
+..kkkkkk.kkkkkk.

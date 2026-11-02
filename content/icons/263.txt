@@ -1,0 +1,82 @@
+# Mushroomon
+k 180a0e
+l c088e0
+p 9050b8
+q 603080
+g e0e050
+h a8a830
+f f8f0b8
+e d8d088
+c a89858
+m f878a8
+n d04880
+o 883060
+w f8f8f0
+idle
+.....kkkkkk.....
+...kkllggplkk...
+..kllgppgpppqk..
+.klgppgpppgpqqk.
+.klgppggpgpgpqk.
+kllpgppppggpqqqk
+kppgpppppppppqqk
+.kkkkkkkkkkkkkk.
+...kfffffffek...
+.kkkfkffkfeekkk.
+kmmnkfkffkfeknnk
+kmnnkffffffeknok
+.kkokfwwkeecknk.
+...kkeeeeeckkk..
+..kmmnkkkmnnk...
+.kkkkkkkkkkkkkk.
+idle2
+.....kkkkkk.....
+...kkllggplkk...
+..kllgppgpppqk..
+.klgppgpppgpqqk.
+.klgppggpgpgpqk.
+kllpgppppggpqqqk
+kppgpppppppppqqk
+.kkkkkkkkkkkkkk.
+kkkkfffffffekkk.
+kmnkfkffkfeeknnk
+kmnnkfkffkfeknok
+.kokkffffffekok.
+..kkkffkkeeckk..
+...kkeeeeeckk...
+..kmmnkkkmnnk...
+.kkkkkkkkkkkkkk.
+atk
+......kkkkkk....
+....kkllggplkk..
+...kllgppgpppqk.
+..klgppgpppgpqqk
+..klgppggpgpgpqk
+.kllpgppppggpqqk
+.kppgppppppppqqk
+..kkkkkkkkkkkkk.
+.kkkkkffffffek..
+kmmnkkfkffkfek..
+kmmnnkfkffkfeknk
+kmnnnnkffffeknok
+.kkkkkkfwwkeekk.
+.....kkeeeeck...
+....kmmnkkkmnnk.
+...kkkkkkkkkkkk.
+hurt
+.......kkkkkk...
+.....kkllggplkk.
+....kllgppgpppk.
+...klgppgpppgpqk
+kk.klgppggpgpgqk
+kmkkllpgppppggqk
+kmnkppgpppppppqk
+.kmkkkkkkkkkkkk.
+..kkkkffffefkkk.
+...kkkkfkkkeknnk
+....kfffffeeknnk
+....kffkkkeekok.
+.....keffeeck.k.
+...kkkkeeckkk...
+...kmnnkkkmnnk..
+...kkkkkk.kkkkk.

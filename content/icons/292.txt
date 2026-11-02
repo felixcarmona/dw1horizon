@@ -1,0 +1,79 @@
+# Deltamon
+k 100c18
+1 68b0f8
+2 2460d8
+3 103090
+g e0e0e8
+h a0a0a8
+c f8f0c8
+d c8b070
+r f83040
+w f8f8f8
+idle
+...kkkkkkkk.k...
+..k11111222kk...
+.k1111k1r222k2k.
+.kww11122222kk..
+.kkkkkkk2222k.kk
+.kwkwkkr2222kkck
+..kkkkrr222kkcdk
+...k3wwwk22kccdk
+kkkkkkwwwkkkcddk
+khggghkwwkccccdk
+kgggkkkwwkckcddk
+krrrrkkwwkccccdk
+kwkwkkwwkkwkwkdk
+.kkkkk22k22kkkk.
+....k223k223k...
+...kkkkkkkkkkk..
+idle2
+...kkkkkkkk.k...
+..k11111222kk...
+.k1111k1r222k2k.
+.kww11122222kk.k
+.kkkkkkk2222k.kk
+..kkkkkr2222kkck
+.kwkwkrr222kkccd
+..kkkwwwk22kccdk
+...k3kwwwkkkcddk
+kkkkkkwwwkccccdk
+khggghkwwkckcddk
+kgggkkkwwkccccdk
+krrrkkwwkkwkwkdk
+.kkkkk22k22kkkk.
+....k223k223k...
+...kkkkkkkkkkk..
+atk
+..kkkkkkkk.k....
+.k11111222kk....
+k1111k1r222k2k..
+kww11122222kk.kk
+kkkkkkk2222k.kck
+.krrrrrkk22kkcdk
+kwkwkkkrr22kccdk
+.kkkkkrrk2kkcddk
+kkkkkkkkkwkkccdk
+khggggkwwkkccccd
+kgggggkkwwkckcdk
+krrrrrrrkwkccccd
+kwkwkwkkwwkwkwkd
+kkkkkkk.22k2kkkk
+.......k23k223k.
+......kkkkkkkkk.
+hurt
+.......kkkkkkkk.
+.....kk11111222k
+....k11111kkk22k
+....kww11112222k
+....kkkkkkk2222k
+......kkkkk222k.
+.......k3k222kk.
+...kkkkkwwwk3kk.
+..khgggkkwwkkck.
+..kkhggkkwwkcdck
+..kkkkkhkwwkcdk.
+..krrrrkkww3kkk.
+..kwwkwkkkwk3k..
+...kkkkk22k22kk.
+......k223k223k.
+.....kkkkkkkkkk.

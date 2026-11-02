@@ -1,0 +1,80 @@
+# Cyclonemon
+k 180c10
+n 5c4048
+m 947878
+h d8d8e0
+i 8c8c98
+y f8e848
+o e0ac18
+d 986c10
+r f83848
+s a81830
+b 48a8f8
+idle
+........k.......
+.......khk......
+....kkkkhkkkk...
+...kmmmnnnkyyk..
+..kmmmnnnnkyyokk
+.kmmnbbnnnkyyook
+kmmnnnnnnkyyyodk
+.kkkkkkkyyoooodk
+..krkrkkyoyyoodk
+...kkkkyyyookodk
+..kyyyoookkydodk
+.kyyoodkkyyyoodk
+.krkkk.kyyookhkk
+krrk...kyookkhik
+krrsrkkkook.khik
+.kkkkkkkkkk.kkkk
+idle2
+........k.......
+.......khk......
+....kkkkhkkkk...
+...kmmmnnnkyyk..
+..kmmmnnnnkyyokk
+.kmmnbbnnnkyyook
+kmmnnnnnnkyyyodk
+kkkkkkkkyyoooodk
+.kkrkrkkyoyyoodk
+.krkkrkyyyookodk
+..kkkkooookkdodk
+.kyyyyokkyyyoodk
+kyyokk.kyyookkhk
+krkk...kyookkhik
+krrrkkkkook.khhk
+.krsrkkkkkk.kkkk
+atk
+.........k......
+........khk.....
+...kkkkkkhkkkk..
+.kkmmmnnnnkyyk..
+kmmmnnbbnnkyyokk
+kmmnnnnnnkyyyook
+kmmnkkkkkkyyyodk
+.kkkrkrkkyyoodk.
+..krrrrrkyoyodk.
+.kkkkkkkyyyookdk
+ksrkyyyooookkodk
+krrkkkyooyyyyodk
+ksrrkk.kyyookkdk
+krrk...kyookkhkk
+.krk...kookkihik
+.kkk...kkkkkkkkk
+hurt
+...........k....
+..........khk...
+........kkkhkk..
+.......kmmnnnkk.
+......kmmnnnnnk.
+.....kmnkkknnnk.
+.....kkkkkkkkkk.
+..kkk.kkyyyyoodk
+.kyyykyyyoooodk.
+.kyyoooookyoodk.
+krkkooooyyyoodk.
+ksk.kkkyyookoodk
+krrk..kyook.kook
+krrsk.kook..kikk
+.krrskkook.khhik
+..kkkkkkkk..kkkk

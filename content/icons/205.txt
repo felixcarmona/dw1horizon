@@ -1,0 +1,81 @@
+# MegaKabuterimon
+k 180a0e
+r e83058
+s b02040
+t 781830
+d 481028
+g 58e8b8
+h 20a080
+p 8870e0
+q 4838a0
+w e8e8c8
+v a8a880
+y f8e030
+idle
+........kkkk....
+.kkk...kgghhk...
+kppqk..kgghhhkk.
+kqkkrk.kkhhktttk
+.kkkrkkrrrrstddk
+...krrkyrkyrtddk
+..krrrrrrrrstddk
+..krskwkwksstddk
+.krsk.kkkkrstddk
+.kpqk.kwvwksttdk
+.kpk.krkvkrsttdk
+..k.krrkvwrrstdk
+...krrskkrrsstdk
+..krskk.krskkkdk
+.kpqpk.kpqpk..kk
+.kkkkk.kkkkkk...
+idle2
+........kkkk....
+...kk..kgghhk...
+.kkppk.kgghhhkk.
+kppqkk.kkhhktttk
+kqkkrkkrrrrstddk
+.kkrrrkyrkyrtddk
+..krrrrrrrrstddk
+..krskkkkkksstdk
+.krsk.kwkwrstddk
+.kpqk.kkkkksttdk
+.kpk.krwvwrsttdk
+..k.krrkvwrrstdk
+...krrskkrrsstdk
+..krskk.krskkkdk
+.kpqpk.kpqpk..kk
+.kkkkk.kkkkkk...
+atk
+.......kkkk.....
+.kk...kgghhk....
+kppk..kgghhhkk..
+kqkrk.kkhhktttk.
+.kkrkkrrrrstddkk
+kpkrrrkyrkyrtddk
+kppkrrrrrrrrstdk
+kqkrrskkkkkkstdk
+.kkrskrrrrrrstdk
+..kk..kkwkwksttk
+.....krkkkkksttk
+....krrwvwkrstdk
+...krrkkvwrrstdk
+..krskkkkrsskkdk
+.kpqpk.kpqpk..kk
+.kkkkk.kkkkkk...
+hurt
+..........kkkk..
+..kk.....kgghhk.
+.kppk....kgghhhk
+kpqkk...kkkhhktk
+kqkrkkkkrrrrstdk
+.kkrrrrkkrkkrtdk
+...krrrrrrrrstdk
+....krrskkkkstdk
+...krsk.kwkwstdk
+...kpqk.kkkkstdk
+...kpk.kwvwksttk
+....k.krkvwrstdk
+.....krrkkrrstdk
+....krskk.krskkk
+...kpqpk.kpqpk..
+...kkkkk.kkkkkk.

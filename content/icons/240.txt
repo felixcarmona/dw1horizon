@@ -1,0 +1,76 @@
+# Gesomon
+k 180e14
+w f8f8f0
+g d8d8e0
+h a0a0b0
+d 585868
+r e83038
+s 981828
+idle
+.......kk.......
+......kwgk......
+.....kwwggk.....
+....kwwdkggk....
+...kwwkddkggk...
+..kwwwgkkgghhk..
+.kwwwwwggghhhhk.
+kkkkkwwkkggkkkkk
+.kwk.kkrrkk.kgk.
+kwk.kwkrskhk.kgk
+kwk.kwkrskhk.kdk
+kwk.kgwkkghk.kdk
+kdk.kkwggkkk.k.k
+kwgkkwkgkgkgkkgk
+.kkgkwkgkdkgkgk.
+...kkkkkkkkkkk..
+idle2
+.......kk.......
+......kwgk......
+.....kwwggk.....
+....kwwdkggk....
+...kwwkddkggk...
+..kwwwgkkgghhk..
+.kwwwwwggghhhhk.
+kkkkkwwkkggkkkkk
+kdk..kkrrkk..kdk
+kwk.kwkrskhk.kgk
+kwk.kwkrskhk.kgk
+.kwkkgwkkghkkgk.
+..kwkkwggkkkgk..
+..kkwkgkgkgkkk..
+.kwkkwkgkdkgkgk.
+.kkkkkkkkkkkkkk.
+atk
+.........kk.....
+........kwgk....
+.......kwwggk...
+......kwwdkggk..
+.....kwwkddkggk.
+....kwwwgkkgghhk
+...kwwwwwggghhhk
+..kkkkwwwkkggkkk
+kkkgwwkkkrrkkk..
+kdgwwkkrrrrskhk.
+kdkkkkkrrrsskhk.
+kk.....kwrskghk.
+.......kkkkkgkk.
+......kgkgkgkgk.
+.....kgkdkgkdkgk
+.....kkkkkkkkkkk
+hurt
+...........kk...
+.........kkwgk..
+.......kkwwggk..
+.....kkwwdkggk..
+...kkwwwkddgghk.
+..kwwwwgkkgghhk.
+.kkkkwwwggghhhk.
+..kwkkkwwkkkkkkk
+.kwk..kkkkk.kgk.
+.kk..kwgkkhk.kgk
+k...kwkwrskhk.kd
+kdkkkgwkrkghk.kk
+kwgwkkwggghk....
+.kkgkwkgkgkgk...
+...kkwkgkdkgkgk.
+....kkkkkkkkkkk.

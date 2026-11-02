@@ -1,0 +1,80 @@
+# Silphymon
+k 18101c
+1 e8e8f0
+2 b0b0c8
+3 707090
+r f03838
+s a82028
+l c0a0f0
+m 8060b8
+f e8e0f0
+h b0a8c8
+b 3878e8
+idle
+...k.......k....
+...klk.....klk..
+...kllkkkkkmlk..
+..kkrrrrrrrsskk.
+..krrrrrrrrrssk.
+..kkkkkkkkkkkkk.
+..kfbkfffbkfhk..
+..kffffkkffhhk..
+...kkfffffhkk...
+.kkkk11122kkkk..
+k1122k1122k2233k
+k1k2kk1223kk3k3k
+kkkk.krrssk.kkkk
+...krrrrrrssk...
+...kllkkkkmmk...
+...kkkk..kkkk...
+idle2
+...........k....
+.kk........klk..
+.kllkkkkkk.mlk..
+..kkrrrrrrrkkkk.
+..krrrrrrrrrssk.
+..kkkkkkkkkkkkk.
+..kfbkfffbkfhk..
+..kffffffffhhk..
+...kkfkkkfhkk...
+.kkkk11122kkkkk.
+k1122k1122kk233k
+k1k2kk1223k2223k
+kkkk.krrssk3k3k.
+...krrrrrrssk...
+...kllkkkkmmk...
+...kkkk..kkkk...
+atk
+.k.......k......
+.klk.....klk....
+.kllkkkkkmlk....
+kkrrrrrrrsskk...
+krrrrrrrrrssk...
+kkkkkkkkkkkkk...
+kbkkfffbkfhk.kk.
+kffffkkkffhkk22k
+kkfkrrrkfhkk1k3k
+.kkkkkkkhkk113k.
+k11kkk1122k22k..
+kkkkkk1223kk3k..
+.....krrsskk.k..
+...krrrrrrssk...
+...kllkkkkmmk...
+...kkkk..kkkk...
+hurt
+.....k.......k..
+.....klk.....klk
+.....kllkkkkkmlk
+....kkrrrrrrrssk
+....krrrrrrrrrsk
+...kkkkkkkkkkkkk
+...kfkkkfkkkfhk.
+...kffffffffhhk.
+....kkfkkkfhkk..
+..kkkk11122kk...
+.k1122k1122k33k.
+.k1k2kk1223kk3k.
+.kkk..krrssk.k..
+.....krrrrssk...
+...kllkkk.kmmk..
+...kkkk...kkkk..

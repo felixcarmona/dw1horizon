@@ -1,0 +1,81 @@
+# Beelzemon
+k 100c14
+1 9088d8
+2 5850a8
+3 343070
+y f0e080
+o a88840
+r f02828
+w f0f0f0
+g a8a8b0
+h 707078
+d 44444c
+b 90c0e0
+idle
+......kkkk.kk...
+....kk1122kyyk..
+...k11122233yyk.
+...k1rwk22222yyk
+...k12k222rwk3kk
+....kk33333kyyk.
+.kwwkkbbgkkwwwk.
+kwggwkkkkkwwgggk
+kggkkdhddkkrrkk.
+kgwk.kdhdk.krgk.
+kgwkkdhhddkkgwk.
+kwhkkddkddkkwhk.
+kggkkhrkddkkggk.
+kwkwkddkddkwkwk.
+....kwgkkwgk....
+...kkkkkkkkkk...
+idle2
+......kkkk.k....
+....kk1122kyk...
+...k11122233yyk.
+kk.k1rwk22222yyk
+kwkk12k222rwk3kk
+kwgkkk33333kkkk.
+kggkkkbbgkkwwwk.
+kgwwkkkkkkwwgggk
+.kkkkdhddkkkrrk.
+...kkdhdk.kgwkrk
+....kdhhddkkgwk.
+...kkddkddkkwhk.
+...kghrkddkkggk.
+...kkddkddkwkwk.
+....kwgkkwgk....
+...kkkkkkkkkk...
+atk
+........kkkk.k..
+......kk1122kyk.
+.....k11122233yk
+.....k1rwk22222k
+.....k12k222rwkk
+......kk33333kkk
+kkkkkkkkbbgkkwwk
+ywgghhkkkkkwwggk
+ywgghhkgwkddkkkk
+kkkkkkkkgwddkrrk
+.....kkggkddkgwk
+......kkkddkddkk
+......kddkkkddk.
+.....kddk..kddk.
+....kwwgk..kwwgk
+....kkkkk..kkkkk
+hurt
+........kkkk.kk.
+......kk1122kyyk
+.....k1112223yyk
+.....k1kkk2222kk
+.....k122222kkk.
+......kk33333kk.
+.kwk.kkbkbkkwwk.
+kggwkkkkkkkwwggk
+kgkkkdhddkkkkrrk
+kkk.kdhdk.k.kgwk
+....kdhhdk..kgkk
+...kkddkddk.kkk.
+...kghrkddk.....
+...kkddkddk.....
+....kwgkkwgk....
+...kkkkkkkkkk...

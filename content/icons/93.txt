@@ -1,0 +1,80 @@
+# Muchomon
+k 180e0c
+l f86050
+r e02828
+s a01420
+m f8f0b0
+n e8c868
+y f8d820
+o c89018
+p f0a890
+h 707890
+g a8a8c0
+idle
+.........kk..kkk
+.....kkkkrmkkmnk
+....kllrrrkrrkk.
+...kllrrrrrsk...
+...krykrrrrrsk..
+.kkkrkyrrrrrsk..
+kppyykrrrrrrssk.
+.kkykrrrrrrssk..
+..krmmnrrrrsrsk.
+..kmrrmmrrsrssk.
+.krmmmrrmnsrssk.
+.kmrrmmnrrmssssk
+.kmmnrrmmnmssssk
+..kkmmnnmmnsskk.
+..khgkkkkkkhgkk.
+...kkk....kkkk..
+idle2
+................
+.....kkkk.....kk
+....kllrrkkkkmnk
+...kllrrrrrmrkk.
+...krykrrrrrsk..
+.kkkrkyrrrrrsssk
+kppyykrrrrrrsssk
+kyyykrrrrrrsssk.
+.kkkkmmnrrrsrsk.
+..kmrrmmrrsrssk.
+.krmmmrrmnsrssk.
+.kmrrmmnrrmssssk
+.kmmnrrmmnmssssk
+..kkmmnnmmnsskk.
+..khgkkkkkkhgkk.
+...kkk....kkkk..
+atk
+...........kk.kk
+......kkkkkrmkmk
+....kkllrrrrkkkk
+...kllrrrrrrssk.
+..krykrrrrrrrsk.
+kkkrkyrrrrrrrsk.
+kpppyykrrrrrsssk
+kkkyyykrrrrssssk
+...kkkkmnrrsrssk
+...krmmmrrsrsssk
+..kmrrmmnrsrssk.
+..kmmnrrmmrsssk.
+...kmmnnmmnssk..
+....kkkkkkkkkk..
+...khgkk.khgkk..
+...kkkk..kkkk...
+hurt
+.......kkkk.....
+......krrmk.kkk.
+.....kllrrrkkmnk
+....kllrrrrrkkk.
+...kppkkkrrrrsk.
+...kyyykrrrrrsk.
+....kkkrrrrrsk..
+.....krrrrrrssk.
+....krmmnrrrsrsk
+....kmrrmmrrsrsk
+...krmmmrrmsrssk
+...kmrrmmnrrsssk
+...kmmnrrmmssssk
+....kkmmnnmnskk.
+....khgkkkkhgkk.
+.....kkk...kkk..

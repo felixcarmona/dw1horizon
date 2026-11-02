@@ -1,0 +1,78 @@
+# Machinedramon
+k 141418
+1 f0f0f4
+2 c0c4cc
+3 8c909c
+4 5c606c
+r e02828
+w f8e8e8
+s 901818
+y f0c030
+idle
+.....kkkkkkk....
+....k1112222kkk.
+....k122333332kk
+....kk22333kk12k
+..kkk1kkkkk.k34k
+..k11222k23k.kk.
+.k1122r2k2233kk.
+.k12233kkk12334k
+k123kkrrkk12234k
+k12kwkwkk122334k
+k1k.kkkk1223344k
+.k..k1233k23344k
+...k12234k2344kk
+..k1234k.k2344k.
+.k1123kk.k1234k.
+kkkkkkk.kkkkkk..
+idle2
+...........kkkk.
+.....kkkkkkk12k.
+....k1112222k3k.
+....k1223333kkk.
+..kkk1k2333k....
+..k11222k23k....
+.k1122r2k2233kk.
+.k12233kkk12334k
+k123kkkkkk12234k
+k12krrrkk122334k
+k1kkwkwk1223344k
+.k.kkkk3k23344kk
+...k12234k2344k.
+..k1234k.k2344k.
+.k1123kk.k1234k.
+kkkkkkk.kkkkkk..
+atk
+................
+kkk..kkkkkkkkk..
+yyrkk1112223k...
+kyyk1233333kkk..
+kkkkkkkk223k23k.
+...kk12kkkk.kkk.
+..k1122233k23kk.
+.k1122rr23k1233k
+k12223s3kk12234k
+kkkkkkkkk122334k
+k1k1krrrk23344kk
+.k.kkw2wk2334k4k
+...kkkk2k334k.k.
+..k123k2k344k...
+.k1233kk123k34k.
+kkkkkkk.kkkkkkk.
+hurt
+......kkkkk.....
+....kk11222k....
+...k1122223k.y..
+..k1122k2233ky..
+..k12kkk2333k...
+.k1222223k3kkk..
+.kkkkkkkk23k34k.
+.k1k.ks2k12234k.
+..k.kkkkk122344k
+......k11223344k
+...kkk1223344kkk
+..k1122k2k34k12k
+.k1233kk3k4k1k.k
+.k233k.k2k4kk...
+k123k..k123k....
+kkkkk..kkkkkk...

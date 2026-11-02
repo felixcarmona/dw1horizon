@@ -1,0 +1,77 @@
+# Guardromon
+k 180e0c
+a f0d8a8
+b c89860
+c 907040
+w f0f0f8
+g b0b4c0
+h 686c80
+r f03030
+idle
+.....k.k.kkkk...
+...kkkkkkaabbk..
+..kaaaaabbbbckk.
+.kaabbbbbbbcckgk
+.kkkkkkkkbbcckgk
+.khrhhrhkkbcckhk
+.kwggggkrkbcckk.
+.kwkgkgkkbbcck..
+..kkkkkkkkkkcck.
+kwwgkaabbrbcckgk
+kwggkabbbbbckwgk
+kggkkbbbbcckwggk
+.kkk.kkkkkk.kkkk
+...kbck..kbck...
+..kgggk.kgggk...
+..kkkkk.kkkkk...
+idle2
+.......k.kkkk...
+...kkkkkkaabbk..
+..kaaaaabbbbckk.
+.kaabbbbbbbcckgk
+.kkkkkkkkbbcckgk
+.khhrhhrkkbcckhk
+.kwggggkkkbcckk.
+.kwkgkgkkbbcck..
+kwwkkkkkkkkkcck.
+kwwgkaabbrbcckgk
+kggkkabbbbbcckwk
+.kkkkbbbbcckwggk
+.....kkkkkk.kkkk
+..kbck....kbck..
+.kgggk...kgggk..
+.kkkkk...kkkkk..
+atk
+......k.k.kkkk..
+....kkkkkkaabbk.
+...kaaaaabbbbckk
+..kaabbbbbbbcckk
+..kkkkkkkkbbcckk
+..khrhhrhkkbcck.
+..kwggggkrkbcck.
+..kwkgkgkkbbcck.
+.kkkkkkkkkkkcck.
+kwwwgkkkkkkrbckk
+kwwggggaabbbckgk
+kwggkkkkbbbckwgk
+.kkk.kkkkkkkkggk
+.....kbck.kbckkk
+....kgggkkgggk..
+....kkkkkkkkkk..
+hurt
+.......k.k.kkkk.
+.....kkkkkkaabbk
+....kaaaaabbbbck
+...kaabbbbbbbcck
+...kkkkkkkkbbcck
+...khhhhhhkkbcck
+...kwggggkkkbcck
+...kwgkkgkkbbcck
+....kkkkkkkkkcck
+.kkkkaabbbbcck..
+kwwgkabbbbbcckk.
+kwggkbbbbcckwgk.
+.kkkkkkkkkkkggk.
+....kbck..kbckk.
+...kgggk.kgggk..
+...kkkkk.kkkkk..

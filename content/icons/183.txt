@@ -1,0 +1,80 @@
+# Wormmon
+k 121c10
+1 d0f068
+2 90d038
+3 509020
+w f8f8f0
+b 58b0f0
+p 8060c0
+q 503888
+n f83888
+m a01860
+c f8b8c0
+idle
+..kk.....kk.....
+.k22k...k22k....
+.k2k.kkkk2k.....
+..kkk1111kk.....
+...k11n1n11k....
+..k1111n1112k...
+.k11kwb111kwb12k
+.k11kbk111kbk12k
+kc111ppp111c122k
+.k11ppqqp11223k.
+..kkpqqqpk233kk.
+..knkkkkkk33kkk.
+.knnk1223kk122nk
+.kkkk1223kk1223k
+..knk2233kn2233k
+..kkkkkkkkkkkkk.
+idle2
+.kk......kk.....
+k22k....k22k....
+k2k..kkkk2k.....
+.kkkk1111kk.....
+...k11n1n11k....
+..k1111n1112k...
+.k11kwb111kwb12k
+.k11kbk111kbk12k
+kc111ppp111c122k
+.k111ppqp11223k.
+..kkkpqqkk233kkk
+.knnkkkkkk33kk2k
+.kkkk1223kk1223n
+..knk1223kk1223k
+..knk2233kn233kk
+..kkkkkkkkkkkkk.
+atk
+.....kk....kk...
+....k22k..k22k..
+....k2k.kkk2k...
+.....kkk1111kk..
+......k1n1n11k..
+.....k111n1112k.
+....k1kwb11kwb2k
+....k1kbk11kbk2k
+w.wk11111111c12k
+.wkppppp11122k..
+wwkpqqqqpk22k...
+.wkpqmmqpk33kk..
+w.kkpppkkk33kkk.
+..knk1223kk122nk
+..knk2233kn2233k
+..kkkkkkkkkkkkk.
+hurt
+...........kk...
+..kk......k22k..
+.k22k.kkkk2k....
+.k2k.k1111kk....
+..kkk11n1n11k...
+...k1111n1112k..
+..k1kkk111kkk12k
+..k11111111122k.
+.kc111111pp1c22k
+..k11111pqqp23k.
+...kkk11kppk3kk.
+..knkkkkkkkk3kk.
+.knnk1223kk122nk
+.kkkk1223kk1223k
+..knk2233kn2233k
+..kkkkkkkkkkkkk.

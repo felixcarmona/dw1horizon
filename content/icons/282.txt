@@ -1,0 +1,80 @@
+# Kiwimon
+k 180c10
+g f8f8f8
+h b8b8c8
+i 808090
+c 70e050
+e 289038
+1 c08850
+2 885430
+3 583018
+v 685858
+r e02850
+idle
+.......k.kk.k...
+.....kkkkcekcek.
+...kkgggkcceckek
+..kggggghkccekk.
+..kggkghhk12ekk.
+..kgkckhhi1122k.
+.kkgghhhk11223k.
+kggghhkk111122k.
+.kkhhk.k112223k.
+...kk..k122233k.
+........kk233k..
+........kvk.kvk.
+.......kvk.kvk..
+.......kvk.kvk..
+.....krkkrkkrkr.
+.....kkkkkkkkkkk
+idle2
+........k.kk.k..
+.....kkkkekcek..
+...kkgggkcecekk.
+..kggggghkccekk.
+..kggkghhk12ekk.
+..kgkckhhi1122k.
+..kgghhhk112233k
+.kgghkkk111223k.
+kgghk..k122233k.
+.kkk...k122233k.
+........kk233k..
+........kvk.kvk.
+.......kvk.kvk..
+......kvk...kvk.
+.....krkkrkkrkr.
+.....kkkkkkkkkkk
+atk
+.........k.kk.k.
+.......kkkcekcek
+.....kkgggkcceck
+....kggggghkcekk
+....kggkghhk12ek
+kkkkkgkckhhi112k
+kgggggghhhk1122k
+kkkkhhhhhk11223k
+....kkkkk1122233
+.......k122233k.
+........kk233k..
+.......kvkkvk...
+......kvk.kvk...
+.....kvk.kvk....
+...krkkrkkrkr...
+...kkkkkkkkkkkk.
+hurt
+...........kk.k.
+.........kcekcek
+.......kkkcceckk
+......kggkkcekk.
+.....kggggkk2ek.
+....kkkggghi12k.
+...kghhkggh1122k
+..kghhk.ghk1223k
+.kghk...kk11223k
+.kkk.....k12233k
+.........kk233k.
+.........kvkvk..
+........kvk.kvk.
+........kvk.kvk.
+......krkrkkrkr.
+......kkkkkkkkkk

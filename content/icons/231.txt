@@ -1,0 +1,80 @@
+# ShellNumemon
+k 180e14
+g c8f070
+h 90d848
+i 58a030
+s f8e8c0
+t e8b880
+u b88050
+p a070d8
+w f8f8f0
+r d02028
+x b8b8c0
+idle
+.kkk.kkk..kkkk..
+kwwxkwwxk.kssttk
+kwrwkwrwkkstttuk
+kwwxkwwxkstuuutk
+.kkk.kkkstutptuk
+..khkhkkstutuptk
+..kgghkkptuuutpk
+..kggghhkpttttpk
+.kgkkkkkhkpttuk.
+.kkwkwkwkhkpttk.
+.kkwkwkwkhkpuuk.
+.kgkkkkkhkuuuuk.
+.kghhhhhhikuukk.
+kgghhhhhiiikkk..
+khhhhiiiiiiiiik.
+.kkkkkkkkkkkkkk.
+idle2
+.kkk..kkk.kkkk..
+kwwxk.kwwxkksttk
+kwrwk.kwrwkstttk
+kwwxkkkwwxkuuutk
+.kkk...kkkstptuk
+..khkkhkstutuptk
+..kgghkkptuuutpk
+..kggghhkpttttpk
+.kgkkkkkhkpttuk.
+.kkwkwkwkhkpttk.
+.kkkkkkkkhkpuuk.
+.kgkwkwkhkuuuuk.
+.kghkkkkhikuukk.
+kgghhhhhiiikkk..
+khhhhiiiiiiiiik.
+.kkkkkkkkkkkkkk.
+atk
+.kkk...kkk.kkkk.
+kwwwk.kwwwkkstuk
+krwwk.krwwkstptk
+kwwwk.kwwwkstupk
+.kkk...kkkksukuk
+..khk..khkksukpk
+..kggkkkghkstupk
+.kggkwkwkghksttk
+kggkkkkkkkhkstuk
+kgkrrrrrrkhkstuk
+kgkrrrrrrkhkuuuk
+kgkkkkkkkkhhkuuk
+kggkwkwkwkhiikkk
+khgkkkkkkkhiiiik
+khhhhhhiiiiiiik.
+.kkkkkkkkkkkkkk.
+hurt
+........kkkkk...
+......kksttuukk.
+.....kssttpttuuk
+.kkk..kkkukkptuk
+kwwwk.kwwwkuktuk
+kkkkkkkkkkkpktpk
+kwwwkkwwwkstuupk
+.kkhk.kkkkstttuk
+...khkkgghkstuuk
+..kkgggghhhkuuuk
+.kgkkkkkkkhhkuuk
+.kgwkwkwkwkhkkkk
+.kgkkkkkkkhhiik.
+..kggghhhhiiiik.
+..khhhhiiiiiiik.
+...kkkkkkkkkkkk.

@@ -1,0 +1,79 @@
+# WaruSeadramon
+k 120e14
+a b8b8c4
+b 80808c
+c 50505c
+h f4e8b8
+i c8b878
+r e83848
+s a81c30
+y e8b830
+w f8f8f0
+idle
+kkk.............
+khhhkkk...k..k..
+.kkiihhkkkykkyk.
+...kkkaaakyykyyk
+..kkaaabbbkyyyk.
+.kaaabkykbbkkkrk
+kaaabbbkbbbckrrk
+kabbbbbbbbcckrk.
+kkwkwkwkkkcckrrk
+.krrrrrrkbbckrsk
+.kwkwkkkkbcckrk.
+..kkkkkkabckrrrk
+...krkkaabckrsk.
+..krskaabbckrk..
+..kkkabbbcckrrk.
+....kkkkkkkkkkk.
+idle2
+.kkk............
+.khhhkkk...k..k.
+..kkiihhkkkykkyk
+...kkkaaakyykyyk
+..kkaaabbbkyyyk.
+.kaaabkykbbkkrrk
+kaaabbbkbbbckrk.
+kabbbbbbbbcckrrk
+kkkkkkkkkkcckrsk
+.kwkwkwkkbbckrk.
+.kkkkkkkkbcckrrk
+....kkkkabckrsk.
+...krkkaabckrrrk
+..krskaabbckrsk.
+..kkkabbbcckrk..
+....kkkkkkkkkk..
+atk
+kkkk............
+khhhhkk...k..k..
+.kkkiihkkkykkyk.
+....kkaaakyykyyk
+..kkaaabbbkyyyk.
+.kaaabkykbbkkkrk
+kaabbbbbbbbckrrk
+kkkkkkkbbbcckrk.
+kwkwkwrkkbcckrrk
+.krrrrrrrkcckrsk
+..krrrssrkbckrk.
+.kwkwkwrkkbckrrk
+.kkkkkkkaabckrsk
+...kkaabbckrrk..
+..kabbbbcckrsk..
+..kkkkkkkkkkkk..
+hurt
+..............k.
+...kkk....k..kyk
+...khhhkk.kykkyk
+....kkihhkkyyyk.
+.....kkaaaakyyk.
+....kaaabbbbkkrk
+...kaakkkbbbckrk
+...kabbbbbbcckrk
+...kkkwkwkkcckrk
+....kkrrrkbbckrk
+....kkkkkkbcckrk
+.......kkabbckrk
+.....krkaabckrsk
+....krskabbckrk.
+....kkkabbcckrk.
+......kkkkkkkkk.

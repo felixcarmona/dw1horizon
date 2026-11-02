@@ -119,9 +119,9 @@ def verify_archive(data):
     for k, row in enumerate(rows):
         if row['id'] <= 61:
             continue
-        offset = start + (1 + k // 12) * 2048 + k % 12 * 160
-        icon = data[offset:offset + 160]
-        if len(icon) != 160 or not any(icon[32:]) or not any(icon[2:32]):
+        offset = start + (1 + k // 7) * 2048 + k % 7 * 288
+        icon = data[offset:offset + 288]
+        if len(icon) != 288 or not any(icon[32:]) or not any(icon[2:32]):
             raise ValueError(f'City icon missing for species {row["id"]}')
 
 

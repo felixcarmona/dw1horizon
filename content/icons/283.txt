@@ -1,0 +1,80 @@
+# Syakomon
+k 1c0814
+1 f878c0
+2 e03090
+3 a01860
+n 383040
+y f8e878
+o b89048
+c a8f050
+e 48a030
+w f8f8d8
+p 682048
+idle
+......kk...kk...
+.....kcek.kcck..
+......keekcekk..
+....kkkk2keekk..
+..kk112222223kk.
+.k11nnnn2nnnn23k
+k11nyyynnyyyn23k
+k12nykynnykyn23k
+k12nyyynnyyyn33k
+kk22nn222nn2333k
+kcw2222222333wkk
+kcckw222223wkcck
+.kccckwkwkwkccck
+.kk2kwkkkkwk2kk.
+..k112222333kk..
+...kkkkkkkkkk...
+idle2
+.......kk...kk..
+......kek..kcck.
+......kceekcekk.
+....kkkk2keekk..
+..kk112222223kk.
+.k11nnnn2nnnn23k
+k11nyyynnyyyn23k
+k12nyykynyykn23k
+k12nyyynnyyyn33k
+kk22nn222nn2333k
+kpw2222222333wkk
+kppkw222223wkppk
+kcpckwkwkwkcpcek
+.kcccccccccceek.
+.kk2kwkkkkwk2kk.
+...kkkkkkkkkk...
+atk
+.....kk...kk....
+....kcek.kcck...
+.....keekcekk...
+...kkkk2keekk...
+.kk112222223kk..
+k11nnnn2nnnn23k.
+k1nyyynnyyyn23kk
+k2nykynnykyn233k
+k2nyyynnyyyn333k
+kw22nn22nn22333k
+kwkw2222223w333k
+.kkkwkwkwkwk333k
+.kpppppppppk33k.
+.kcccccceeekkk..
+kwkwkwkwkwk3k...
+.kkkkkkkkkkk....
+hurt
+................
+........kk..kk..
+.......kcek.kck.
+........keekcek.
+.....kkkk2keekk.
+...kk112222223kk
+..k11nnnn2nnnn3k
+..k1nnnnnnnnnn3k
+..k1kkkknkkkkn3k
+..k2nnnnnnnnnn3k
+..kw222222223w3k
+..kkwkwkwkwkwk3k
+...kkkkkkkkkkkk.
+...k11222233kk..
+....k222233k....
+.....kkkkkkk....

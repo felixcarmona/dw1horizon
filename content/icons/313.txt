@@ -1,0 +1,80 @@
+# Bulbmon
+k 181008
+1 f8e888
+2 e0b840
+3 b08020
+4 785010
+g 38c868
+r f03030
+s a0a2ac
+t e0e0e8
+u 686a78
+h 403840
+idle
+....kkkkkkkk....
+...k12222234k...
+....kkkkkkkk....
+.....krhhrk.....
+....kkkkkkkk....
+...k11111222k...
+.kkk1gggg22g2kk.
+krhk1g11g2232krk
+khrk1g1gg2233khk
+krhk1gggg2233krk
+khrk122222333khk
+ktsukk22333kktsk
+ktsuk.k344k.ktsk
+ktsukkkkkkkkktsk
+k233kktsktskk23k
+kkkkkkkkkkkkkkkk
+idle2
+................
+....kkkkkkkk....
+...k12222234k...
+....kkkkkkkk....
+....kkrrhhkk....
+...k11111222k...
+.kkk1gggg22g2kk.
+khrk1g11g2232khk
+krhk1g1gg2233krk
+khrk1gggg2233khk
+krhk122222333krk
+ktsukk22333kktsk
+ktsuk.k344k.ktsk
+ktsukkkkkkkkktsk
+k233kktsktskk23k
+kkkkkkkkkkkkkkkk
+atk
+...kkkkkkkk.....
+..k12222234k....
+...kkkkkkkk.....
+....krrrrk......
+kkkk.kkkkkkkk...
+ktsukk11111222k.
+ktsurhkgggg223kk
+kkkkkkkg11g2232k
+....k1kg1gg2233k
+....k1kgggg2233k
+....k122222333k.
+.....k22233344kk
+......k3344kktsk
+....kkkkkkkktsuk
+...ktskktsk.k23k
+...kkkkkkkk.kkkk
+hurt
+........kkkkkkk.
+.......k1222234k
+........kkkkkkk.
+.kk..khuuhk.....
+ktsk.kkkkkkkk.kk
+ktsuk11111222krk
+kkrk1gggg22g2ktk
+.krk1g11g2232khk
+.khk1g1gg2233krk
+..kk1gggg2233khk
+...k122222333ktk
+....k22333kkkkkk
+.....k3344k.....
+.....kkkkkkk....
+.....ktsktsk....
+.....kkkkkkk....

@@ -1,0 +1,79 @@
+# KingEtemon
+k 180a0e
+y f8e848
+o e0b020
+d a87818
+r e02020
+s 981410
+l f86848
+w f8f8f0
+b 3868e8
+c 1c3898
+idle
+.....kkkkk......
+...kkrrlrrkk....
+..krrllrrrrsk...
+..krrrrrrrssk...
+...kkyyyyoykk...
+...kywrwrrok....
+..kkyydyyook.kk.
+.kyyyokkkkoyyksk
+kyyookbbbkoookrk
+.kkkkbwbbbckkrsk
+...kbbbbbcckrrsk
+...kkwrwkkyokrsk
+..krskyyokyokrsk
+..kwwkyokyokwwwk
+...kkbbkkbbkkkk.
+...kkkkkkkkkk...
+idle2
+.....kkkk.......
+...kkrrlrrkkk...
+..krrllrrrrrsk..
+..krrrrrrrssk...
+...kkyyyyoykk...
+...kywrwrrok....
+..kkyyyyyook..k.
+.kyyyokkkkoyykkk
+kyyookkdkkoookrk
+.kkkkbbbbbckkrsk
+...kbwbbbcckrrsk
+...kkwrwkkyokrsk
+.krrskyyokyokrsk
+.kwwwkyokyokwwwk
+..kwwkkbbkkbbkkk
+...kkkkkkkkkkkk.
+atk
+.......kkkkk....
+.....kkrrlrrkk..
+....krrllrrrrsk.
+....krrrrrrrssk.
+.....kkyyyyoykk.
+.....kywrwrrok..
+....kkyykkyook..
+...kyyokrrkoykkk
+kkkkyyokkkoooksk
+kbbkkkkkkbkkkrsk
+kbwbbbbbbcckrrsk
+kbbkkkkkbcckrrsk
+.kk.kkwrwkyokrsk
+....kyyokyokrrsk
+....kbbkkbbkwwwk
+....kkkkkkkkkkkk
+hurt
+.........kkkkk..
+.......kkrrlrrk.
+......krrllrrrsk
+......krrrrrssk.
+.......kkyyoykk.
+.kk...kkkkkkok..
+kbbk.kyyyyyoksk.
+kbwbkkyddyookrk.
+.kbbkyokkkoykrsk
+..kkkkyyyoookrsk
+.....kbbbcckkrsk
+....kkwrwkkyokrk
+....kyyokyyokrsk
+...kyokkyok.kwwk
+...kbbkkbbkkkkk.
+...kkkk.kkkk....

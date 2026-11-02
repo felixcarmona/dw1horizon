@@ -1,0 +1,81 @@
+# KingSukamon
+k 1c1408
+1 f8f0a0
+2 f0d030
+3 c09818
+4 805c10
+s e0e0e0
+t 989898
+r d83020
+w f8f8f8
+p f09088
+q c05050
+m 601818
+idle
+k.k.k......kk...
+sksksk....k1k...
+ssssstkk.k12k...
+.s2s2kstskk23kk.
+.k123ktsttsttk..
+..k23k1wwk1wwk..
+..kkk.krwkkrwk..
+......k2222233k.
+....kkk1111223k.
+...k1kkkkkkkkk3k
+...k1kwkwkwkwk3k
+...k2kmmmmmmmk3k
+...k2kmppqmmmk3k
+...k3kmppqqmmk3k
+....k33kwkwkk3k.
+.....kkkkkkkkk..
+idle2
+.k.k.k.....kk...
+kskskskk..k1k...
+.ssssstkk.k12k..
+.k2s2kstskk23kk.
+..k123ktsttsttk.
+...k23k1wwk1wwk.
+...kkk.kwrkkwrk.
+......k2222233k.
+....kkk1111223k.
+...k1kwkwkwkwk3k
+...k1kmmmmmmmk3k
+...k2kmppmmmmk3k
+...k2kmppqmmmk3k
+...k3kmppqqmmk3k
+....k33kwkwkk3k.
+.....kkkkkkkkk..
+atk
+..........kk....
+.........k1k....
+.....kkk.k12k...
+....kstskk23kk..
+....ktsttsttk...
+....k1wwk1wwk...
+...kkrwkkrwkk...
+.kkk1kkkkk233k..
+k1kkkwkwkwk233k.
+k2kmmmmmmmmkk3k.
+k2kmmppppqqppk3k
+k3kmmmppppqqqpk.
+k3kmmmmmmmmkk3k.
+.kkkkwkwkwkk33k.
+..k33333333333k.
+...kkkkkkkkkkk..
+hurt
+.......kk.......
+.k.k..k1k.......
+ksksk.k12k.kk...
+.sss.kkk23ktk...
+.k2kstsktkststk.
+..kkktsttsstk...
+....kkkkkkkkkk..
+....k11211112k..
+....kk1kkkk23k..
+...k12k333k123k.
+...k12kmmmk123k.
+...k23kkkkk233k.
+...k23wkwkwk33k.
+...k3kkkkkkkk3k.
+....k33333333k..
+.....kkkkkkkk...

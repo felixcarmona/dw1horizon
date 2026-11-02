@@ -1,0 +1,79 @@
+# MarineAngemon
+k 281018
+1 fce0e8
+2 f8a8c0
+3 d87898
+g 30d068
+h 188040
+y f8d850
+o b88820
+r e82848
+s a81838
+idle
+......kk........
+.....k12k...kk..
+.....k2kkkkk22k.
+....k112222k.kk.
+...k11122222k...
+...k1gh22gh2k...
+kk.k1gg22gg3k.kk
+k1kk1gh22gh3kk2k
+k12k11222233k22k
+k122k11kk233k23k
+.k12kkyoyoykk2k.
+..kk.k12rr3k.kk.
+.....k1rrs3k....
+......k2s3k.....
+.......k233kkk..
+........kkkkk...
+idle2
+......kk........
+.....k12k..kk...
+.....k2kkkk22kk.
+kk..k112222k..kk
+k1kk11122222kk2k
+k12k1gh22gh2k22k
+k11k1gg22gg3k12k
+.k1k1gh22gh3k2k.
+..kk11222233kk..
+....k11kk233k...
+....kkyoyoykk...
+.....k12rr3k....
+.....k1rrs3k....
+......k2s3k.....
+......kk33k.....
+.....kkkkk......
+atk
+.....kk.........
+....k12k...kk...
+....k2kkkkk22k..
+...k112222k.kk..
+..k11122222k..kk
+..k1gh22gh2k.k2k
+..k1gg22gg3kk22k
+..k1gh22gh3k222k
+...k11krrk33k22k
+.k.k.k1kkkk3k2k.
+krkrk.kyoyoykk..
+krrrk..k12rr3k..
+.krk...k1rrs3k..
+..k.....k2s3k...
+.........k33kk..
+..........kkkk..
+hurt
+.........kk.....
+........k12k....
+........k2kkkk..
+......k112222k..
+.....k11122222k.
+.....k12222223k.
+.....k1kk22kk3k.
+...kkk12222233k.
+..k12kk1kk2233k.
+.k122k1122233k..
+k1223kkyoyoykkk.
+kkkkk..k12rr3k2k
+.......k1rrs3k2k
+........k2s3k.k.
+.........k33k...
+..........kk....

@@ -1,0 +1,77 @@
+# Otamamon
+k 160e24
+a b8a0f8
+b 8460e4
+c 5a3cb4
+d 3c2488
+w f8f8f0
+g b8b8c4
+r d83040
+idle
+.....kkkkkk.....
+...kkaaabbbkk...
+..kaaaabbbbbbk.k
+.kaaabbbbbbbbkgk
+.kaabbkkkkbbbkgk
+kaabbkwwwwkbbckk
+kabbbkwkkwkbbcck
+kabbbkwkkwkbbcck
+kabbbkwwwgkbccck
+kabbbbkkkkbbcck.
+kbkkkkkkkkkbcck.
+.kbgbgbbbbbccck.
+.kkbbbbbbcccckk.
+kbbckkkkkkkkbcck
+kwkwk.....kwkwk.
+kkkkk.....kkkkk.
+idle2
+.....kkkkkk...k.
+...kkaaabbbkk.kk
+..kaaaabbbbbbkgk
+.kaaabbbbbbbbkgk
+.kaabbkkkkbbbkkk
+kaabbkkkkkkbbcck
+kabbbkwkkwkbbcck
+kabbbkwkkwkbbcck
+kabbbkwwwgkbccck
+kabbbbkkkkbbcck.
+kbbkkkkkkkbbcck.
+.kkkrrrrkbbccck.
+kwkkkkkkkbccckk.
+kbbcbbbbcckkbcck
+.kbckkkkkkk.kwkk
+..kkk.......kkk.
+atk
+....kkkkkk......
+..kkaaabbbkk..k.
+.kaaaabbbbbbk.kk
+kaaabbbkkkkbbkgk
+kaabbkkwwwgkbkgk
+kabbbkwkkwwkbbkk
+kabbbkwkkgkbbcck
+kbkkkkkkkkkkbcck
+kkwkgkwkgkwkbcck
+.krrrrrrrrrkccck
+.krdrrrrrdrkccck
+kkwkgkwkgkwkcck.
+kbkkkkkkkkkbcck.
+kwkbbbbcccckkkk.
+kwkkkkkkkkkbck..
+kkk.......kkkk..
+hurt
+.......kkkkkk...
+.....kkaaabbbkk.
+....kaaaabbbbbbk
+...kaaabbbbbbbck
+.k.kaabkbbbkbbck
+kwkkabbbkbkbbbck
+kbbkabbbbkbbbcck
+.kkkabbbkbkbbcck
+...kabbkbbbkbcck
+...kabbbbbbbccck
+...kbkkbkkbkcck.
+....kbkbbkbcck..
+...kkkbbbcccck..
+..kbbkkkkkkkkbk.
+..kwkwk..kwkwkk.
+..kkkkk..kkkkk..

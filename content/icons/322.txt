@@ -1,0 +1,78 @@
+# Kyukimon
+k 180c14
+1 f8e8e8
+p f0b0b8
+q c88090
+b 8090f8
+c 5060d8
+d 3038a0
+r e84030
+g d8d8e0
+idle
+...k...kk.......
+..kpk.kbbk..kkk.
+..kp1kbbcckkbbck
+..k11kbbcckbbcdk
+.k11k1bcdkkbcdk.
+k111kp1bcdkkcdk.
+kr1111p1dk.kcdk.
+kkkk11p1kkkbcdk.
+.kgk1111p1kbcdk.
+kgkk1rp11p1kcdk.
+kgk1rr1p11pkdk..
+kgkkk111p1pkk...
+.kk.k1rkkp1k....
+...k1p1k.k1pk...
+..kp11k..kp1k...
+..kkkkk.kkkkkk..
+idle2
+...k...kk...kk..
+..kpk.kbbk.kbbk.
+..kp1kbbcckbbcdk
+..k11kbbcck.kcdk
+.k11k1bcdk..kcdk
+k111kp1bcdk.kcdk
+kr1111p1dk.kbcdk
+kkkk11p1kkkbcdk.
+.kkk1111p1kbcdk.
+kggk1rp11p1kcdk.
+kgk1rr1p11pkdk..
+kkkkk111p1pkk...
+....k1rkkp1k....
+...k1p1k.k1pk...
+..kp11k..kp1k...
+..kkkkk.kkkkkk..
+atk
+....k...kk......
+...kpk.kbbk.kkk.
+...kp1kbbcckkbck
+...k11kbbcckbcdk
+..k11k1bcdkkbcdk
+.k111kp1bcdkkcdk
+.kr1111p1dkkcdk.
+.kkkk11p1kkbcdk.
+kggggk11p1kcdk..
+kkkgkk1rp1pkdk..
+...kk1rr1p11pk..
+.....k111p1pkk..
+....k1rkkkp1k...
+...k1p1k..k1pk..
+..kp11k...kp1k..
+..kkkkk...kkkkk.
+hurt
+.....k...kk.....
+....kpk.kbbk..k.
+....kp1kbbcckkbk
+....k11kbbcckbck
+...kkk1kkbcdkcdk
+..k1111p1bcdkcdk
+..kk1111p1dkcdk.
+...kk11p1kkbcdk.
+..kg111p1kbcdk..
+.kgkrp11p1kcdk..
+.kgk1r1p11kdk...
+.kk.k11p1pkk....
+....k1rkkp1k....
+...k1p1k.k1pk...
+..kp11k..kp1k...
+..kkkkk.kkkkkk..

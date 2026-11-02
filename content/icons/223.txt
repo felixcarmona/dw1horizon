@@ -1,0 +1,80 @@
+# LadyDevimon
+k 140e18
+1 c0c0d0
+2 9090a8
+3 5c5c78
+s f8f0f0
+t b0c8e0
+u 505064
+l 787890
+v 343444
+r f83030
+h b01828
+idle
+....kkkkkk..k.k.
+...k112222kk3k3k
+..k11222223k3k3k
+..k12222233kr3rk
+.k12kkkkkk3kk33k
+.k2krsssrsk3kk3k
+k22ksssstk23k3k.
+k23kksstkk33k3k.
+k23ksskkttk3kkk.
+k3klluuuuvvk1k..
+.kkkuuuuvvkk2k..
+k12kkruuvkk23k..
+k23k.kllvk.k3k..
+.kk.klvkluvk.kk.
+...krrk.krrk....
+...kkkk.kkkk....
+idle2
+....kkkkkk......
+...k112222k.k.k.
+..k11222223k3k3k
+..k12222233k3k3k
+.k12kkkkkk3kr3rk
+.k2krsssrsk3k33k
+k22kssrstk23kk3k
+k23kksstkk33k3k.
+k23ksskkttk3kkk.
+k3klluuuuvvk1k..
+k2kkuuuuvvkk2k..
+k3k2kruuvkk23k..
+.kk3kkllvk.k3k..
+.kkkklvkluvk.kk.
+...krrk.krrk....
+...kkkk.kkkk....
+atk
+.kkk..kkkkkk....
+k3k3kk112222k...
+kr3rkk1222223k..
+k333kk12222233k.
+.k3k12kkkkkk3k.k
+.k3kk2krsssrsk3k
+..k3k2kssssstk3k
+...k33kksstkk3k.
+....kk3ksskkttk.
+......klluuuuvk.
+......kkuuuuvvk.
+.....k2kkruuvk1k
+.....k3k.kllvk2k
+.....kk.klvkluvk
+.......krrk.krrk
+.......kkkk.kkkk
+hurt
+...........k.k..
+.....kkkkkk.3k3k
+....k112222k3k3k
+...k11222223krrk
+...k12222233k3k.
+..k12kkkkkk3k3k.
+..k2kssssssk3k..
+.k22kkkstkkk3k..
+.k23kssskk33k...
+.k23ksskkttk3k..
+.k3klluuuuvvkk..
+..kkkuuuuvvk1k..
+.k2kkkruuvkk2k..
+.k3k.kllvk.k3k..
+..kkkrrkkrrk.k..
+....kkkk.kkkk...

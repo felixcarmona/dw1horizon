@@ -41,6 +41,15 @@ read the player's discs as described in [building](docs/building.md). Package
 literal-data limits are documented in the
 [patcher guide](docs/patcher.md#what-the-release-still-carries-that-is-not-ours).
 
+## Menu icons
+
+The 16x16 Digimon icons in `content/icons/` were drawn by hand for this project, pixel by pixel, as text files. They
+hold no pixels or image data taken from any game, toy or website. Their pose and proportions were drawn while looking
+at each species' published designs, including sprites of Bandai's V-Pet toys and the models of the source games, so the
+icons resemble those designs on purpose. The characters themselves belong to Bandai. See the note at the top of the
+[README](README.md). The icons are covered by this repository's licence only as far as our own work goes; that gives
+no rights over the characters.
+
 ## Japanese bitmap font
 
 `tools/font/japanese.txt` is the renamed **Digimon World Japanese subset**, derived

@@ -1,0 +1,79 @@
+# Gekomon
+k 102010
+a a8f068
+b 50c840
+c 208838
+y f8e040
+o c8a020
+w f8f8f8
+x c0c8d4
+r e03030
+p f070a8
+idle
+.kkk.kkkkkk.....
+kwwwkwwkyyyyk...
+kwrxkwrxkooyyk..
+kwwkaawkkkkoyk..
+.kkaabbbbbkkoyk.
+kaabbbbbbbckoyk.
+kbkbbbbbbcckoyk.
+kkkkkkkkkkkoyk..
+.krrrpprkkkyyk..
+..kkkkkbckyyok..
+...kbbkwwxkkk...
+..kbbkwwwxkbk...
+..kbck.kxkkbbk..
+.kbbk..kbk.kcbk.
+.kbk..kbck..kbk.
+kkkkk.kkkkk.kkkk
+idle2
+.kkk.kkkkk......
+kwwwkwwkyyyk....
+kxrwkxrwkoyykk..
+kwwkaawkkkooyk..
+.kkaabbbbbkkoyk.
+kaabbbbbbbckoyk.
+kbkbbbbbbcckoyk.
+kkkkkkkkkkkoyk..
+.kpprrkkkkkyyk..
+..kkkkkbckyyok..
+...kbbkwwxkkk.k.
+..kbbkwwwxkbkkbk
+..kbckkkxkkbbcck
+.kbbk.kbk.kcbk..
+.kbk..kbck.kk...
+kkkkk.kkkkk.....
+atk
+..kkk.kkkkkk....
+.kwwwkwwkyyyyk..
+.kwrxkwrxkooyyk.
+.kwwkaawkkkkoyk.
+..kkaabbbbbkkoyk
+.kaabbbbbbbckoyk
+.kbkbbbbbbcckoyk
+kkkkkkkkkkkkoyk.
+pppprrrrrrkyyyk.
+pppkrrrrrkyyok..
+kkkkkkkkbkkkk...
+...kbbkwwxkkk...
+..kbbkwwwxkbk...
+..kbck.kxkkbbk..
+.kbk...kbck.kbk.
+kkkkk.kkkkk.kkkk
+hurt
+......kkk.kkkkk.
+.....kwwkkwwkyyk
+.....kkwkkkwkkoy
+.....kwkwkwkkkoy
+.....kkkkkkkk.ko
+....kaabbbbbckoy
+....kbkbbbbcckoy
+....kkkkkkkkkoyk
+.....kkrrrkkkyyk
+......kkkkbckyok
+......kbkwwkkkk.
+.....kbkwwxkbk..
+.....kbkkxkkbbk.
+....kbk.kbk.kcbk
+....kbk.kbk..kbk
+...kkkkkkkkk.kkk

@@ -1,0 +1,79 @@
+# BomberNanimon
+k 180e14
+d 9090a0
+e 606070
+f 404850
+r f83830
+s c02028
+t 801018
+y f8e030
+o f89028
+w f8f8f0
+idle
+.........oy.....
+........kk......
+.....kkkkkkk....
+....kdddeeeekk.k
+...kddeeeeeefkok
+...kdeeeeeeffkyk
+..kkkkkkkkkkkkok
+..krwwyrrrrrskk.
+..kkssssyskkskf.
+.kkkkeeeeeeffffk
+krrrrkkrrrrrkffk
+krrssrkrrssskffk
+kssssk.kkkkkkfk.
+.kkkk.kkfk.kfk..
+....krrrkkrrrk..
+....kkkkkkkkkkk.
+idle2
+........oyo.....
+.........kk.....
+.....kkkkkkk...k
+....kdddeeeek.ko
+...kddeeeeeefkyk
+...kdeeeeeeffkok
+..kkkkkkkkkkkkk.
+..krwwyrrrrrskk.
+.kkkssssyskkskf.
+krrrkeeeeeeffffk
+krrssrkkkrrrkffk
+kssssrkrrrsskffk
+.kkkkk.krrsskfk.
+.....kkkkkkkfk..
+....krrrkkrrrk..
+....kkkkkkkkkkk.
+atk
+...........oy...
+..........kk....
+.......kkkkkkk..
+......kdddeeeek.
+.....kddeeeeeefk
+.....kdeeeeeeffk
+....kkkkkkkkkkkk
+.kkkkrwwyrrrrrsk
+krrrrkkssssyskfk
+krrrsrkeeeeffffk
+krrssrkkkkkeeffk
+krssssrkrrrrkfk.
+.kkkkkkkrrssskk.
+.......kkkkkfk..
+.....krrrkkrrrk.
+....kkkkkkkkkkk.
+hurt
+...oy...........
+....kk..........
+......kkkkkkk...
+.....kdddeeeek..
+....kddeeeeeefk.
+....kkkkkkkkkfk.
+...krwwrrrrsskkk
+...kkkkkkkkkkfok
+.kk.kdkkkeekffk.
+krrk.kkeeeefffk.
+krrskkrrkeeffk..
+kssrrrrrrkkkkk..
+.kkkssssrk.kfk..
+...kkkkkk..kfk..
+.....kfk.krrrk..
+....krrrk.kkkkk.

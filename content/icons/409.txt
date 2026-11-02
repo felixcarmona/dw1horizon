@@ -1,0 +1,79 @@
+# Kyubimon
+k 180a0e
+y f8e050
+o f0b030
+p c88018
+i 7868e0
+j 3830a0
+w f8f8f0
+g c8c8d0
+r e83830
+b 38a8f8
+idle
+........k...kk..
+.......kik.kijk.
+.......kijkkijkk
+........kyokyokj
+.k..k...kyoyokij
+kyk.kyk.kkyoookj
+kyokyok.krkyopkk
+kyyyyyokwrwkopij
+kybkyyowrwgkpokj
+kkyyyyoggrwkppk.
+kwkkyokrrwgoppkk
+.kkwkkwwrwgpokij
+...kyygwgkyppkjk
+...kyokkkkyopk..
+..kwwkk.kkwwk...
+..kkkk...kkkk...
+idle2
+.....k.....kk...
+....kik...kijkk.
+....kijk.kkijkij
+.....kyokyokykjk
+.k..k.kyoyoykkk.
+kyk.kyk.kyooyokj
+kyokyok.krkyopij
+kyyyyyokwrwkopjk
+kybkyyowrwgkpok.
+kkyyyyoggrwkppkk
+kwkkyokrrwgoppij
+.kkkkkwwrwgpokjk
+..kkwygwgkyppkk.
+...kyokkkkyopk..
+..kwwkk.kkwwk...
+..kkkk...kkkk...
+atk
+.........kk.....
+........kijk.kk.
+.........kykkijk
+..k..k...kyokykk
+.kyk.kyk.kyoykij
+kyokyyok.kkoookj
+kybkyyyokrkyopkk
+kyyyyyoowrwkopij
+kkkkkyowrwgkpokj
+krwrkoggrwkppk..
+.kkkyokrrwgoppkk
+....kkwwrwgpokij
+.....kygwgkyppjk
+.....kyokkkkyopk
+....kwwkk.kkwwk.
+....kkkk...kkkk.
+hurt
+...k.....kk.....
+..kik...kijk....
+..kijk.kkijkkk..
+...kyokkyokykijk
+....kyoyokkyokjk
+.k...kyoyoyokkk.
+kyk.kykkkyooookj
+kyokyokrkkyopkij
+kyyyyyokwrwkopjk
+kkkkyyowrwgkpok.
+kyyyyoggrwkppkk.
+.kkkyokrrwgoppk.
+...kwwrwgpokkij.
+...kyygwgkyppkk.
+...kyokkkkyopk..
+...kkkk...kkkk..

@@ -1,0 +1,80 @@
+# Apemon
+k 180e0c
+y f8f070
+g f0c030
+o b88018
+b 98c0f8
+c 6088d8
+d 3c5ca8
+r e05030
+w f0f0e8
+u a8a8b0
+e 30a848
+idle
+...k..k..k...kk.
+..kyk.kyk.k.kwwk
+.kkyykyyykgkkwuk
+.kyyyyyyyyggkuk.
+kyybbbbbbbygrk..
+kygbekbbekbggok.
+kygbbbbbbbcggk.k
+kgkbbbkkbcrgokyk
+.kybkkkkkcggkgyk
+kyyykbbbcggrkgok
+kygyykkkkgggkok.
+kbbkgyrggoogkk..
+kbbckggggoookok.
+kcckkgggkooockk.
+.kkkbcckkbcck...
+...kkkkkkkkkk...
+idle2
+....k..k..k.....
+..kyk.kyk.k..kk.
+.kkyykyyykgkkwwk
+.kyyyyyyyyggkwuk
+kyybbbbbbbygkuk.
+kygbekbbekbgrk..
+kygbbbbbbbcggokk
+kgkbbbkkbcrgokyk
+.kybkrrrkcggkgyk
+kyyykkkkcggrkgok
+kygyybbkkgggkok.
+kbbkgyrggoogkk..
+kbbckggggoookok.
+kcckkgggkooockk.
+.kkkbcckkbcck...
+...kkkkkkkkkk...
+atk
+...kk...........
+..kbbk.k..k..k.k
+.kbbckkyk.kyk.kw
+.kcckkyykyyykgkk
+..kkkyyyyyyyyggk
+...kyybbbbbbbygr
+...kygbekbbekbgg
+...kygbbbbbbbcgg
+...kgkbkkkkkccgk
+..kyybkrrrrkcgrk
+..kygykkkkkkggk.
+..kyyggygoogggk.
+...kbbggggooook.
+...kbbkgggkoook.
+...kcckkbcckkk..
+...kkkkkkkkkk...
+hurt
+................
+....k..k..k..kk.
+...kyk.kyk.kkwwk
+..kkyykyyykgkuk.
+..kyyyyyyyyggkk.
+.kyybbbbbbbyggk.
+.kygkkkbkkkbggk.
+.kygbbbbbbbcgok.
+.kgkbbkkkkccgk.k
+..kybbbbbbcgkkgk
+.kyykkkkkcggrkok
+.kygyygggggggkk.
+kbbggggggoogok..
+kcckkggggooook..
+.kkkbcckkbcck...
+...kkkkkkkkkk...

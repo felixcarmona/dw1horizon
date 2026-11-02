@@ -1,0 +1,78 @@
+# Dolphmon
+k 180e14
+a 9898e8
+b 6868c8
+c 484898
+s 88c8f8
+w f8f8f0
+x c0c0c8
+g 40d060
+r d04050
+idle
+.......kkk......
+........kak.....
+.......kabbk.k..
+......kabbbkkak.
+.....kkasbbsbbk.
+....kaasbbsbbkk.
+...kaaabsbbsbbk.
+..kaabbbbbbbsbck
+..kabkgkbbbbbcck
+.kaabkkbbbbccck.
+.kabbbbbccwwck.k
+kwrrrkbcwwwwkkak
+kwwkkkrwwxxkkcbk
+kwwwwwwwxxk.kcck
+.kxwwxxxkk..kk..
+..kkkkkk........
+idle2
+......kkk.......
+.......kak......
+......kabbk..kk.
+......kabbbk.kak
+.....kkasbbskkak
+....kaasbbsbbbck
+...kaaabsbbsbck.
+..kaabbbbbbbsck.
+..kabkgkbbbbcck.
+.kaabkkbbbbccck.
+.kabbbbbccwwcck.
+kkkkkkbcwwwwkck.
+krrrrkrwwxxk.kk.
+kwkwwwwwxxk.....
+.kxwwxxxkk......
+..kkkkkk........
+atk
+.........kkk....
+..........kak...
+.........kabbk..
+........kabbbk.k
+......kkasbbskak
+....kkaasbbsbbbk
+..kkaaabsbbsbcck
+.kaaabkgkbbbcck.
+kaabbbkkbbbccck.
+kwkkkkkkbcccwk..
+kwkwkwkrkbwwwk..
+kkrrrrrrkwwxxk.k
+kkkkrrrrwwxxkkck
+kwkwkkwwwxkkcbck
+.kkwwxxxkk..kk..
+...kkkkk........
+hurt
+...kkk..........
+..kwwxk...kkk...
+.kwwxxakkkaak...
+.krrkaaabbbbk...
+.kkkaabsbbsbbk..
+..kabkkkbsbbsbk.
+..kabbbbbbsbbbk.
+...kbbbbbbbbsbck
+...kwwbbbbbbbcck
+....kwwwcbbbcck.
+.....kxwwwccck..
+......kkkxxkkk..
+.........kkkkck.
+...........kbck.
+...........kcck.
+...........kkkk.

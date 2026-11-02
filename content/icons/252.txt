@@ -1,0 +1,80 @@
+# Thundermon
+k 14101c
+1 7898e8
+2 3858c0
+3 203480
+y f8e070
+o d0a040
+g f0f0f0
+h b0b0c0
+i 787888
+r e83030
+s 982828
+idle
+..........kk....
+.........kyk....
+........kyok....
+......kkyyyokk..
+....k111kyok23k.
+...k1112kyk223k.
+...k1122kk2233k.
+..k1grg222grg3k.
+.kkkk2222223kkk.
+kgghhk22223kghhk
+kgohok22333kgohk
+kghhik33333kghik
+.kkkkrkkkkrkkkk.
+..ksrsk..ksrsk..
+.kghhik..kghhik.
+.kkkkkk..kkkkkk.
+idle2
+...........kk...
+..........kyk...
+.........kyok...
+......kkkyyokk..
+....k111kyok23k.
+...k1112kyk223k.
+..kk1122kk2233k.
+.kggkgrg22grgkhk
+kgghk2222222khhk
+kgohk2222223kohk
+kghik2223333kgik
+.kkkkk33333kkkk.
+...kkrkkkkrkk...
+..ksrsk..ksrsk..
+.kghhik..kghhik.
+.kkkkkk..kkkkkk.
+atk
+.........kk.....
+........kyk.....
+.......kyok.....
+.....kkyyyokk...
+...k111kyok23k..
+..k1112kyk223k..
+..k1122kk2233k..
+.k1grg222grg3k..
+kkkkkk2222223kk.
+kggghhkh22223khk
+kgoghokh22333kik
+kghhhikk33333kk.
+.kkkkkkrkkkkrk..
+......ksrsk.ksrk
+.....kghhik.kghk
+.....kkkkkk.kkkk
+hurt
+............kk..
+...........kyk..
+..........kyok..
+.......kkkyyokk.
+......k11kyok23k
+.....k112kyk223k
+.kkkkk112kk2233k
+kghhik1kkk2kkk3k
+kghhik122222233k
+.kkkkk22222333k.
+.....k2233333kgk
+......k33333kghk
+.......kkkkkkhik
+......ksrskrsk..
+.....kghhkghhk..
+.....kkkkkkkkk..

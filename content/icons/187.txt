@@ -1,0 +1,80 @@
+# Stingmon
+k 100c10
+1 90b070
+2 587848
+3 34483a
+g c8ccd8
+h 787c90
+w f0f4f8
+v a8b8d8
+r f83028
+s a01c28
+y f8d030
+idle
+....kkkkk...k...
+...k11122k.k1k..
+..k1111223kk1k..
+..k11kk123k.k...
+.k11krrk23k.....
+.k11krwk23k.....
+.k111kk223k.kkk.
+..kk2233kkkkwwvk
+.kgkk223kvwwvvk.
+kggkk1223kvvkk..
+kgghk2233kkwwvk.
+khhkk2k33kkvvk..
+.kkk11kk23kkk...
+...k12k.k23k....
+..kggk..kggk....
+..khhk..khhkk...
+idle2
+.....kkkkk....k.
+....k11122k..k1k
+..kk1111223kk1k.
+..k11kk123k..k..
+.k11krrk23k.....
+.k11krwk23k..kkk
+.k111kk23k.kkwvk
+..kk2233kkkwwwvk
+.kgkk223kvwwvvk.
+kggkk1223kwvvk..
+kgghk2233kkvvk..
+khhkk2k33kkkk...
+.kkk11kk23kk....
+...k12k.k233k...
+..kggk..kggk....
+..khhk..khhkk...
+atk
+......kkkkk...k.
+.....k11122k.k1k
+....k1111223kk1k
+....k11kk123k.k.
+...k11krrk23k...
+...k11krwk23k...
+...k111kk23k.kkk
+kkkkkk2233kkkwwk
+wwwggkk223kvwwvk
+kvvgghkk223kvvk.
+.kkkhhkk2233kvk.
+...kkkk2k33kkk..
+.....kk1k23k....
+....k12kk233k...
+...kggk..kggk...
+...khhk..khhkk..
+hurt
+..........kkkkk.
+...k.....k11122k
+..k1kk.kk111122k
+...k1kk1yy1k223k
+....k.k1kkkkk23k
+.....k111111223k
+.....k111112k2k.
+.kkkkkk2212kkkk.
+kwwvvkgkk223kk..
+.kwwvkgghk23kgk.
+..kvvkkggk223khk
+...kkkkhhk233kk.
+.....kkkk1k23k..
+.....k12k.k23k..
+....kggk...kggk.
+....khhk...khhk.

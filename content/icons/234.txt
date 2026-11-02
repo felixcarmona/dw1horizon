@@ -1,0 +1,81 @@
+# Gatomon
+k 1a1214
+1 f8f8f0
+2 d0d0c4
+3 989888
+b 38a0f8
+p a878e0
+q 684898
+n f0a8b0
+y f8e830
+o b89818
+r d04820
+g 707078
+idle
+kkk.......kkk.k.
+kppkk...kkppkkpk
+.kqp1kkk1npqkkpk
+..k1111111n1kkyk
+.k11111111112k3k
+k111kb111kb12k2k
+k111kb111kb22k2k
+k111111k11222k2k
+.k1111k1k1223k2k
+..kk11112233kk2k
+.kkkkk123kkkkk2k
+kyyyok12kyyyok2k
+kyrrok23kyrrok2k
+kyyook23kyyook2k
+kgkgkk33kgkgkkk.
+kkkkkkkkkkkkkkk.
+idle2
+.kk........kk...
+.kpkk....kkpkkkk
+.kqp1kkkk1nqkppk
+..k1111111n1kkqk
+.k11111111112kyk
+k111kb111kb12k3k
+k111kb111kb22k2k
+k111111k11222k2k
+.k111kkkk1223k2k
+..kk11kk2233kk2k
+.kkkkk123kyyyok2
+kyyyok12kyrrokk.
+kyrrok23kyyook2k
+kyyook23kgkgkk2k
+kgkgkk332kkkk22k
+kkkkkkkkkkkkkkk.
+atk
+..kkk......kkk..
+..kppkk..kkppk.k
+..kqp1kk1npqkkpk
+...k11111n11kkyk
+..k111111112kk2k
+.kk1kkk11kkk2k2k
+kyyyk1b111b22k2k
+kyrrk1b111b22k2k
+kyoogk1k1k122k2k
+kgkkk111kk222kk.
+.k..kk111223kk..
+...kyyyok2223k..
+...kyrrok223k...
+...kyyook233k...
+...kgkgkk33k....
+...kkkkkkkkk....
+hurt
+.kkk......kkk...
+.kppkk..kkppk...
+..kqp1kk1npqk.kk
+...k111111n1kkpk
+..k1111111112kyk
+.k11kk111kk12k2k
+.k11111111122k2k
+.kk1111kkk1222kk
+kyyk111kqk222k..
+kyrrk1kkk2233k..
+kyyok.k12233k...
+kgkk..kyyyok....
+.k...kyrrok2k...
+.....kyyook2k...
+.....kgkgkk3k...
+.....kkkkkkkkk..

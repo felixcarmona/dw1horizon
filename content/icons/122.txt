@@ -1,0 +1,79 @@
+# Hagurumon
+k 141408
+1 e8e880
+2 c0c048
+3 888c28
+4 5c6018
+g e0e0e0
+h a8a8ac
+i 707074
+j 484850
+y f8e820
+idle
+......kkkk......
+..kk..k12k..kk..
+.k11kkk122kk23k.
+.k122kkkkkk334k.
+..k1kggghhhk4k..
+.kk2kghkkkhik3kk
+k12kgkkyyykhik4k
+k12kgkkykykhik4k
+k22kghkyyykhik4k
+.kk2kghkkkhik3kk
+..k2kgghhiik34k.
+.kkkk223344kkkk.
+kghikk2344kkghik
+kikjk.kkkk.kikjk
+kijik......kijik
+.kkk........kkk.
+idle2
+........kkkk....
+.kk.....k12k.kk.
+k12kkkkk122kk3k.
+.k122kkkkkk334k.
+..k1kggghhhk4k..
+.kk2kghkkkhik3k.
+k12kgkkyyykhik4k
+k12kgkkkyykhik4k
+k22kghkyyykhik4k
+.kk2kghkkkhik3kk
+.k12kgghhiikk34k
+.kkkk223344kkkk.
+kkhkkk2344kkkhkk
+kikik.kkkk.kikik
+kkjkk......kkjkk
+.kkk........kkk.
+atk
+........kkkk....
+.....kk.k12k.kk.
+....k11kk122k23k
+....k12kkkkkk34k
+.....k1kgggghk4k
+.kkk.kkkkkkhik3k
+kghik2kkyyykik4k
+kikjk2kkykykik4k
+kijik2kkyyykik4k
+.kkk.k2kghhhik3k
+.....kk2kgiik34k
+....kkkk22kk3kk.
+..kghikkk44kghik
+..kikjk.kk.kikjk
+..kijik....kijik
+...kkk......kkk.
+hurt
+........kkkk....
+...kk...k12k.kk.
+..k12kkkk122k23k
+..k122kkkkkk34k.
+...k1kggghhhk4k.
+..kk2kghhhhhik3k
+.k12kgghhhhhik4k
+.k12kgkkkkkhik4k
+.k22kgghhhhhik4k
+..kk2kghhhkhik3k
+...k2kgghkiik4k.
+..kkkk22kkk33kk.
+.kkkkk2344kkkkk.
+kghikkkkkkkkghik
+kikjk......kikjk
+.kkk........kkk.

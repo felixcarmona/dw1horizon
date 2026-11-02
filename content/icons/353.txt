@@ -1,0 +1,80 @@
+# Bearmon
+k 180a0e
+b 60a8f8
+c 2870d0
+d 184890
+1 d0a890
+2 a07868
+3 705048
+w f8f8f0
+g c0c0c8
+r e82830
+e 98a8f8
+idle
+....kkkkkkk.....
+...kbbbbcccck...
+..kbbrbccccddk..
+..kbcccccccdddk.
+..kkkkkkkkkkkkkk
+..k11111112k33k.
+.k111ek1112k23k.
+.k111ek11rr2k3k.
+kkkww11111223k..
+kwwwww1112233k..
+.kwkkww222333k..
+..kkkkkkkkkkkk..
+.kbbkwwgk2bck3k.
+kbcdkwwgkbcdk3k.
+k11kkwggk11k223k
+.kkkkkkkkkkkkkk.
+idle2
+....kkkkkkk.....
+...kbbbbcccck...
+..kbbrbccccddk..
+..kbcccccccdddk.
+..kkkkkkkkkkkkkk
+..k11111112kk...
+.k111ek1112k33k.
+.k111ek11rr2k23k
+kkkww11111223kk.
+kwwrrww112233k..
+.kkwwwk222333k..
+.kkkkkkkkkkkkkk.
+kbbckwwgk21bck3k
+kcdckwwgk2cdkk3k
+.kkkkwggk11kk23k
+..kkkkkkkkkkkkk.
+atk
+.....kkkkkkk....
+....kbbbbcccck..
+...kbbrbccccddk.
+...kbcccccccdddk
+...kkkkkkkkkkkkk
+...k11111112k33k
+..k1kkk1112k23k.
+..k11ek11rr2k3k.
+.kkkww1111223k..
+.kwrrrww12233k..
+kkkkkkkkkk33k...
+kbbbccccdkk3k...
+kw1bcccddkwk33k.
+kk1dddddkwgk23k.
+.kkkkkkkkk1kk23k
+.......kkkkkkkkk
+hurt
+......kkkkkkk...
+.....kbbbbcccck.
+....kbbrbccccddk
+....kbcccccccddk
+.kk.kkkkkkkkkkkk
+kbbk.k1111122k3k
+kcdk.k1kkk1123k.
+.kkkkk1111rr23k.
+...kkkww11123k..
+...kwrwww2233k..
+....kkkkk233k...
+...kwwwgkk22kk..
+...kwwgk2bcdk3k.
+...kwggk2cdk233k
+...k11kk22kk223k
+...kkkkkkkkkkkkk

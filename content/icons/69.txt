@@ -1,0 +1,78 @@
+# Flarerizamon
+k 180c08
+1 e8e8f0
+2 b0b4c0
+3 787c8c
+4 4c5060
+y f8f070
+o f8b820
+f f87818
+r d84010
+idle
+...k....k.......
+..kok..kok......
+..kfk..kfok.k...
+..krk.kkrfk.kok.
+...k11122kkfkfok
+..k11222223kffok
+.k1122oyk23krfok
+k11222kkk233krfk
+k1k22222333krfk.
+kkk3333344kfrrfk
+.k1k1kyyofkfrfkk
+.k1122kyofrfrrfk
+..k334kofrrfrrk.
+...kkkfrrkrfrk..
+..kffrfk.kofrfk.
+..kkkkkk.kkkkkk.
+idle2
+....k....k......
+...kok..kok.k...
+..kfok..kfk.kok.
+..krk.kkrfkkfok.
+...k11122kkrkfok
+..k11222223kfoyk
+.k1122oyk23kfork
+k11222kkk233kfok
+k1k22222333krfk.
+kkk3333344krfrfk
+.k1k1kyyofkrfkk.
+.kk11kyofrfkfrfk
+..k334kofrrfrfk.
+...kkkfrrkfrrk..
+..kfrrfk.kfrofk.
+..kkkkkk.kkkkkk.
+atk
+.....k....k.....
+....kok..kok.k..
+....kfk..kfok.kk
+....krk.kkrfkkok
+.....k11122kkfok
+....k11222223kfk
+...k1122oyk23kfk
+..k11222kkk233kk
+..k1k22222333kfk
+..kk3333344krffk
+.kyokkkkkkk.kfrk
+kyyoffoyyokkrfrk
+.kkyofoyyk12kfrk
+...kkkkkk223kfrk
+....kofrk34krfok
+....kkkkkkkkkkkk
+hurt
+.....k....k.....
+....kok..kok....
+....kfk..kfok.k.
+....krk.kkrfkkok
+.kk..k11122kkfok
+k11kk1122223kffk
+k11111222kkk3krk
+.kkk2222233krfk.
+..k33kkkk44kfrfk
+...kkyyofkkfrfk.
+....kkoffrfrfk..
+.....krfrrfrk...
+.....kfrrkrfk...
+....kfrk.krfk...
+...kffrk.kofrk..
+...kkkkk.kkkkk..

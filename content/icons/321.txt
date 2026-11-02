@@ -1,0 +1,78 @@
+# Knightmon
+k 141014
+1 f0f0f4
+2 c0c0cc
+3 7c7c8c
+y f8d840
+o c89820
+r f02828
+b 4050e8
+c 2830a0
+idle
+.....kkkkk...kk.
+....k111223kkyok
+...k11112223kyok
+...kkkkkkkk3kyok
+kk.k1b1k1223kyok
+kyk.kk2k2kkkkkok
+kyok112r22k1223k
+.koyk1rrr23k233k
+..kyok2r233kk3k.
+...kyokbbbbk12k.
+...k12kbbcck22k.
+...kkkkbb22kkkk.
+....kbckk12k....
+....k12kk123k...
+...k1123k1223k..
+...kkkkkkkkkkk..
+idle2
+.....kkkkk......
+....k111223k.kk.
+...k11112223kyok
+...kkkkkkkk3kyok
+ky.k1b1k1223kyok
+kyokkk2k2k2kkkok
+.koyk12r22k1223k
+..kyok1rrr3k233k
+...kyok2r23kk3k.
+...k12kbbbbk12k.
+...kkkkbbcck22k.
+....kbkbb22kkkk.
+....kbckk12k....
+...k12kkk123k...
+..k1123kk1223k..
+..kkkkkkkkkkkkk.
+atk
+....kkkkk...kkk.
+...k111223k.kyok
+..k11112223kkyok
+..kkkkkkkk3kkyok
+..k1b1k1223kyyok
+..kkk2k2k2kkkkk.
+..kk12r22k1223k.
+kkkkk1rrr23k233k
+yoyoyo2r233kk3k.
+kkkkk12bbbbk12k.
+.....kkbbcck22k.
+......kbb22kkkk.
+.....kbckk12k...
+....k12k.k123k..
+...k1123.k1223k.
+...kkkkk.kkkkkk.
+hurt
+.......kkkkk....
+......k11122k.kk
+.....k11112223kk
+.....kkkkkkkk3ok
+.....k111k1223kk
+.....kk2k2k2kkk.
+ky...k12r22k123k
+kyok.k1rrr23k23k
+.koykk2r233k.kk.
+..kyokbbbbk12k..
+..k12kbbcck22k..
+..kkkkbb22kkkk..
+....kbckk12k....
+....k12kk123k...
+...k1123k1223k..
+...kkkkkkkkkkk..

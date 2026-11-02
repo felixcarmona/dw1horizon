@@ -1,0 +1,80 @@
+# Zanbamon
+k 180a0e
+y f8e050
+o e0a820
+p a07010
+r f04830
+s b82818
+e 48e898
+g e8e8f0
+n 484858
+m 787888
+b 38a8f8
+idle
+.......kk..kk...
+......kyk.kyok..
+......kyokyok...
+.......kyyok....
+.....kkkkkkkkkk.
+.....kyyyoooyook
+......kkrkkrokkk
+.......kreerkrsk
+....k.kggrrskrsk
+...kykkrrsgskrk.
+..kyyykkrsskskk.
+.kyyrroykkkkk...
+.kkkyyoyynnnnok.
+.kyyokkyonnnmok.
+kyokk.kook.kook.
+kkk..kkkkk.kkkk.
+idle2
+......kk...kk...
+......kyk.kyok..
+......kyokyok...
+.......kyyok....
+.....kkkkkkkkkk.
+.....kyyyoooyook
+......kkrkkrokkk
+.......kreerkkrk
+....k.kggrrskrsk
+...kykkrrsgskrsk
+..kyyykkrsskrsk.
+.kyrrooykkkkkkk.
+.kkkyyyoynnnnok.
+..kyyokkyonnmokk
+.kyokkkook.kook.
+.kkkkkkkkkkkkkk.
+atk
+........kk..kk..
+.......kyk.kyok.
+.......kyokyok..
+........kyyok...
+......kkkkkkkkkk
+......kyyyoooyoo
+.......kkrkkroks
+........kreerkrs
+.kkk...kggrrskrs
+kgggkkkkrsgskrk.
+.kkkrrskkrsskk..
+..kkkyykkkkkkk..
+kyyyorryynnnnok.
+..kkkyyoonnnmok.
+...kook.kook.kok
+...kkkk.kkkkkkkk
+hurt
+..........kk..kk
+.........kyk.kyk
+.........kyokyok
+....k.....kyyok.
+...kyk..kkkkkkkk
+..kyyk..kyyyooyk
+..kyyyk..kkkkkok
+.kyyrrk..krrrkrk
+kyyorykkkggrskrs
+.kkyyyokrrsgsksk
+...kyyoykkrskkk.
+...kkyyokkkkk...
+...kyookyonnnok.
+...kyokkyonnmok.
+..kook..kook.kok
+..kkkk..kkkkkkkk

@@ -1,0 +1,79 @@
+# Flamedramon
+k 180c10
+r f04830
+s b02828
+t 701c20
+o f89830
+y f8e040
+b 3888e8
+c 1c50a8
+w f8f8f0
+g b0b8c8
+idle
+.kk......k......
+.kwk....kyk..kk.
+.kwgk..krrk.kbk.
+..kwgkkrrrskbbk.
+..kwgrryyrsskk..
+..krrykkrsskyk..
+.krrkwbkrsssk...
+.kwwrrrrrssk....
+kwwwgkkrsskk....
+.kkkkywykoskk..k
+..kbkwwkyosk.kbk
+..kbkywkoosskbbk
+..kggkyoorskbbk.
+...kkrsskosskk..
+..kgkysk.krsk...
+..kwgggk.kggggk.
+idle2
+..kk.....k......
+..kwk...kyk.....
+..kwgk.krrk..kk.
+...kwgkrrrskkbbk
+..kkwrryyrsskkk.
+..krrykkrsskyk..
+.krrkwbkrsssk...
+.kwwrrrrrssk....
+kkkkkkkrsskk....
+kwwwgkykoskk....
+.kkkkwwkyosk...k
+..kbkywkoosk.kbk
+..kbkkyoorkkkbbk
+..kggkrskosskbk.
+...kkysk.krskk..
+..kwgggk.kggggk.
+atk
+.....kk....k....
+....kwk...kyk...
+...kwgk..krrk.kk
+..kwgkkkrrrskbbk
+.kwgkrryyrsskkk.
+kwgkrykkrsskyk..
+kgkrkwbkrsssk...
+.kwwrrrrrssk....
+kwwwgkkrsskkkk..
+.kkkkkkykoskbbk.
+kyokywwkyoskbk..
+kggkkkkoossk.k..
+kkgkkyoorsk..kk.
+.kk.krsskosskkbk
+...kgyk..krskbk.
+...kwggk.kggggk.
+hurt
+...........k....
+..........kyk.kk
+.....kkk.krrkkbk
+....kggwkrrrskbk
+....kkkkrrrrskk.
+...kwgrryyrsk...
+...kkkrkkkrrk...
+...krrkkkkrsskyk
+..krrrrrrrrssk..
+..kwwwkkrssskk.k
+..kwkkywykosk.kb
+...kkkwwkyosk.kb
+...kbkywkoosskbb
+...kggkyoorkkbk.
+....krskkoskk...
+...kgggk..kgggk.

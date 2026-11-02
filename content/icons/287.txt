@@ -1,0 +1,81 @@
+# Tapirmon
+k 180c14
+g e8e8f0
+h a8a8b0
+i 707078
+y f8d840
+1 f09850
+2 b06028
+3 703818
+p b080f0
+q 6c44b8
+b 48a8f8
+w f8f8f0
+idle
+....k......k....
+...kqk....kqk...
+..kkkkkkkkkkkk..
+..kgggyyghk11kk.
+.kggghyhhkb2112k
+kggghhykkkb2111k
+kgghhhykwk22211k
+kghhhhkkkk22221k
+kghhkhhk222223k.
+kghkwkhk2p2233kk
+.kkkkkkppqqqk33k
+.kw.kqppqqyqkiik
+...kqpqqkqqyqkhk
+..kppqkkkppqkihk
+..kwwkk.kkwwkkk.
+..kkkk...kkkkk..
+idle2
+...k........k...
+..kqk......kqk..
+..kkkkkkkkkkkk..
+..kgggyyghk11kk.
+.kggghyhhkb2112k
+kggghhykkkb2111k
+kgghhhyhwk22211k
+kghhhkkkkk22221k
+kgkkkhhk222223k.
+kkwkkhkk2p2233kk
+.kkkkkkppqqqk3ik
+.kw.kqppqqyqkihk
+...kqpqqkqqyqkik
+..kppqkkkppqkkk.
+...kwwkk.kkwwk..
+...kkkk..kkkkk..
+atk
+.....k......k...
+....kqk....kqk..
+...kkkkkkkkkkkk.
+.kkgggyyghk11kk.
+kgggghyhhkb2112k
+kgghhhykkkb21112
+kghhhhykwk22211k
+kkkkkkkkkk22221k
+wkkkkkk22222223k
+kwwkppk2222233k.
+kkkkkkppqqqkk33k
+...kqppqqqyqkiik
+..kqpqqkqqyqkhik
+.kppqk.kkppqkkhk
+.kwwk...kkwwk.k.
+.kkkk...kkkkkk..
+hurt
+.......k......k.
+......kqk....kqk
+.....kkkkkkkkkkk
+....kgggyyghk11k
+...kggghyhhk2212
+..kgghhhykkkkk11
+..kgghhhyhhkk221
+...kghhkkkkkk21k
+....kkkk.k22223k
+.........kppp3k.
+......kkppqqqkkk
+.....kqppqqyqkik
+....kqpqkqqyqkhk
+...kppqk.kppqkhk
+...kwwk...kwwkk.
+...kkkk...kkkkk.

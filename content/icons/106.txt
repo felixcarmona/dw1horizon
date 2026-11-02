@@ -1,0 +1,78 @@
+# Saberdramon
+k 120c10
+a 98989c
+b 62626e
+c 40404a
+t f4cca4
+u c49c6c
+w f8f8f0
+o f89820
+r d83030
+idle
+..kk.k....kkkkkk
+...kakk.kkaaaabk
+...kbbkkaaabbbbk
+..kabbbkabbbbcck
+.kabbbbkkabbcbck
+kabkokbbkabkbkck
+kabbbkbbbkkbkbck
+ktttkbbbbbkkkkk.
+kttwwkbbbbbkk...
+ktkwkrkbbbcck...
+.kkkk.kbbcck....
+...kkkkkkkk.....
+...kuuk.kutk....
+..kttuk.kttuk...
+.ktkwkwktkwkwk..
+.kkkkkkkkkkkkk..
+idle2
+k...k.........kk
+kk.kak...kkkkaak
+.kkkbbkkkaaabbbk
+..kabbbkabbbbcck
+.kabbbbkabbcbbck
+kabkokbbkabkbkck
+kabbbkbbbkkbkkck
+ktttkbbbbbkkk.k.
+kttwwkbbbbbkk...
+kkkkkrkbbbcck...
+.kwkk.kbbcck....
+...kkkkkkkk.....
+...kuuk.kutk....
+..kttuk..kuk....
+.ktkwkwkkttuk...
+.kkkkkkkkkkkkk..
+atk
+.kk.k....kkkkkkk
+..kakk.kkaaaabbk
+..kbbkkaaabbbbk.
+.kabbbkabbbbcck.
+kabbbbkkabbcbck.
+abkokbbkabkbkck.
+bbbkkbbbkkbkbck.
+ttkkbbbbbkkkkk..
+ttwkbbbbbbkk....
+kkkkkbbbbcck....
+krrrrkbbcck.....
+twwkkkkkkk......
+kkk.kuuk.kutk...
+...kttuk.kttuk..
+..ktkwkwktkwkwk.
+..kkkkkkkkkkkkk.
+hurt
+.......kk.k.....
+.....kkkkak..kkk
+....kaakbbkkkaak
+....kabbbbbkabck
+...kabbbbbbkkabk
+..kabkkkbbbkabck
+..kabbbbbbkkkbck
+..ktttkbbbbbkck.
+..kttwwkbbbbbkk.
+..kkkkkkbbbbck..
+.....k.kbbbck...
+.....kkkkkkk....
+....kuuk.kutk...
+...kttuk.kttuk..
+..ktkwkwktkwkwk.
+..kkkkkkkkkkkkk.

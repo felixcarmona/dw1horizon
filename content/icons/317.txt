@@ -1,0 +1,82 @@
+# Fujinmon
+k 101410
+g 58d848
+h 30a038
+i 186820
+l a8e878
+m 68b050
+y f8e048
+1 e8e8f0
+2 a8a8b4
+3 6c6c7c
+b c8b868
+c 807038
+e f03030
+idle
+........kkkkk...
+......kklmmmmk..
+....k.kmlkkkmlk.
+...kyk.kk...klmk
+..kggyk.....kmk.
+..kgegghk..kkk..
+.kkkkgghkkkkkkk.
+k11212kyyh1k123k
+k33233kghhkkk23k
+.kkk12kyyhkk123k
+...k23kghik.k23k
+..kbckkghik.kbck
+.kbck.kghkhikkck
+.kck..kghkhik.kk
+..k..kgghkkhgk..
+.....kkkkkkkkk..
+idle2
+................
+.......kkkkkk...
+....k.kmlmmmlk..
+...kyk.kkkkkmlk.
+..kggyk.....kmk.
+..kgegghk...kk..
+.kkkkgghkkkkkkk.
+k11212kyyh1k123k
+k33233kghhkkk23k
+.kkk12kyyhkk123k
+...k12kghikkk23k
+...k23kghik.k12k
+..kbckkghkhikbck
+.kbck.kghkhikkck
+.kkk.kgghkkhgkk.
+.....kkkkkkkkk..
+atk
+........kkkkk...
+......kklmmmmk..
+......kmlkkkmlk.
+...k...kk...klmk
+..kyk........kmk
+.kgyyk.......kk.
+.kgekkhk.kkkkk..
+kkkkkgghkk123k..
+yb11212kyh1k23k.
+ybk3233kyhk323k.
+kkkkkkkghik.kkk.
+.....kghkhik....
+....kghk.khik...
+...kghk...khk...
+..kgghk...kggk..
+..kkkkk...kkkk..
+hurt
+.........kkkk...
+.......kklmmmk..
+.....k.kmlkkmlk.
+....kyk..kk.kmk.
+...kgyyk....kmk.
+...kkkkghk..kk..
+...kggghk.......
+.kkkkgghkkkkkkk.
+k1212kyyh1k1223k
+k3323kghhkkk233k
+.kkkkkyyhk.k123k
+...kbkghik.kbck.
+...kckghkhk.kck.
+....kkghkhik.kk.
+....kgghkkhgk...
+....kkkkkkkkk...

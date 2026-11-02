@@ -1,0 +1,81 @@
+# DarkTyrannomon
+k 180a0e
+g b0b0c0
+h 787884
+i 505058
+r f02830
+R a01820
+G 60d858
+H 309038
+s e0e0e8
+t 909098
+b 40a8f8
+w f8f8f0
+idle
+...kkkkkkk......
+.kkgggghhhkkGk..
+kgghhkbhhhikGHk.
+kgrrhhhhrhiikkk.
+kghhhhhhhrhikGk.
+kwkwkkkkhhhikGHk
+.kkkkhhhhhiikkk.
+...kkkkkhhiikGk.
+.kkkgghhhhiikGHk
+sttkkkghhiiikiik
+.kkkgkghhhhikkik
+...kkghhiiikkiik
+...kghkkhhkiik.k
+...khik.khik.k..
+..kstsk.kststk..
+..kkkkk.kkkkkk..
+idle2
+...kkkkkkk..k...
+.kkgggghhhk.kGk.
+kgghhkbhhhikkGHk
+kgrrhhhhrhiikkk.
+kghhhhhhhrhikGk.
+kkkkkkkkhhhikGHk
+kwkwrkkkhhiikkkk
+.kkkkwkkhhiikGk.
+sttkkkkhhhiikGHk
+.kkkgghhhhiikkkk
+...kgkghhhhikiik
+...kkghhiiikiikk
+...kghkkhhkiik.k
+...khik.khik.k..
+..kstsk.kststk..
+..kkkkk.kkkkkk..
+atk
+................
+...kkkkkkkk.kGk.
+.kkgggghhhhkkGHk
+kgghhkbhhhhikkk.
+kgrrhhhhrhhikGk.
+kkkkkkkkhhhiikGk
+kwkwkkkkkhhiikHk
+krrrrkkkkhhirkkk
+kkwkwkkkkhhiik..
+.kkkkkkhhhiikGk.
+.....kkkhhhiikkk
+.kkkggghhrhiiikk
+sstttkgghhiikiik
+.kkkkkkhhiikkkik
+...kstkkkstk.kk.
+...kkkk.kkkkk...
+hurt
+.....kkkkkkk..k.
+...kkgggghhhkkGk
+..kgghhkkhhhikHk
+..kgrrhhhhrhikkk
+..kghhhhhhhrikGk
+..kkkkkkhhhhikGk
+...kwkwkhhhiikkk
+....kkkkhhiiikk.
+...kkkgghhhiikGk
+..kttkkghhiiikkk
+..ksk.kghhrhikik
+...k.kghhiiikkik
+....kghkkhhkiikk
+....khik.khik.k.
+...kstsk.kststk.
+...kkkkk.kkkkkk.

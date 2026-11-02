@@ -1,0 +1,81 @@
+# Psychemon
+k 180e0c
+p f870a8
+q c03870
+w f0f0f8
+a c0c0d0
+b 8c8ca4
+v 7038a0
+g 70d858
+j 289838
+y f8f070
+l a8d848
+e 682030
+idle
+.....kp.........
+.....kpk.....kk.
+.....kqpk..kkaak
+....kkqpkkkaakk.
+...kwwkwwwaabk..
+..kwwkkwwawvak..
+.kwwwkewwvawbk..
+kbkwwwkwawvabk..
+kkkwwwwabvabbk..
+.kwkwkwkkbavbk.k
+..kqqqqqppabbkbk
+.kkqkwkwkpvabkak
+kjkpkylykabbkbak
+kgjkyllylkvabak.
+kjgkkylykjjabk..
+kkkkkkkkkkkkkk..
+idle2
+.....kp.........
+.....kpk........
+.....kqpk..kkk..
+....kkqpkkkaaakk
+...kwwkwwwaabbk.
+..kwwkkwwawvak..
+.kwwwkewwvawbk..
+kbkwwwkwawvabk..
+kkkkkkwabvabbk.k
+.kpppkkkkbavbkbk
+..kwkwqqppabbkak
+.kkqkkkkkpvabkak
+kjkpkylykabbkak.
+kgjkyllylkvabk..
+kjgkkylykjjabk..
+kkkkkkkkkkkkkk..
+atk
+....kp..........
+....kpk.......k.
+....kqpk...kkkak
+...kkqpkkkkaakk.
+..kwwkwwwwaabk..
+.kwwkkwwwawvak..
+kwwwkewwvawabk..
+kbkwwwkwawvabk..
+kkkkkkkwabvabk..
+pkeqqqkkkbavbk.k
+ppkqqqkkkkabbkbk
+pkwkwkkqqpvabkak
+kkkkkkkkkabbkbak
+kgjkyllylkvabak.
+kjgkkylykjjabk..
+kkkkkkkkkkkkkk..
+hurt
+........kp......
+.........kpk....
+.kk......kqpk...
+.kakk...kkqpk...
+..kaaakkwwwwkk..
+...kbaawwkwwwk..
+....kbawkkkwwwk.
+...kvawwwwwkbkk.
+....kbbawwwwkkk.
+...kvabkkkkkk...
+kkk.kbaqqqkqk...
+kbakkvapqqqkk...
+.kabkabkylykpk..
+..kkvabkyllyk...
+...kbabkqylqkk..
+...kkkkkkkkkkkk.

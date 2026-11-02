@@ -1,0 +1,80 @@
+# Roachmon
+k 180a0e
+a c88c58
+b 986438
+c 684024
+d 402818
+s f0c898
+t c89868
+e f02020
+w f8f8f8
+g 686878
+h 404050
+idle
+.cc..cc.........
+c..cc..cc.......
+...c...c.kkkkk..
+..c....kkaabbbk.
+...kkkkkkaabbcck
+..ksssskkabbbcck
+.ksesestkabbccdk
+.ksssstkkabccddk
+.kwkwkwkabbccdck
+..kkkkkkabccdkdk
+kkk.kbkabbcdcdk.
+kbbkkbbkabcdcdk.
+kbbcbckkkbcddk..
+.kkkk.kgkkkkgk..
+.....kgghkkgghk.
+.....kkkkkkkkkkk
+idle2
+..cc..cc........
+.c..cc..cc......
+c...c...c.kkkk..
+...c....kkaabbk.
+...kkkkkkaabbcck
+..ksssskkabbbcck
+.ksesestkabbccdk
+.ksssstkkabccddk
+.kkkkkkkabbccdck
+.kwkwkkkabccdkdk
+..kkkbkabbcdcdk.
+kkkkkbbkabcdcdk.
+kbbkbckkkbcddk..
+kbbkk.kgkkkkgk..
+.kk..kgghkkgghk.
+.....kkkkkkkkkkk
+atk
+....cc.cc.......
+...c..c..c......
+..c..c...kkkkk..
+.c...c.kkaabbbk.
+.....kkkkaabbcck
+..kkkkkkkabbbcck
+.ksssskkabbbccdk
+kseseestkabccdck
+ksssssttkabccddk
+kwkwkwkkabccdkdk
+kkkkkkkabbcdcdk.
+kbbkkbbbabcdcdk.
+kbsbbbbkkbcddk..
+.kkkkkkgkkkkgk..
+.....kgghkkgghk.
+.....kkkkkkkkkkk
+hurt
+.......cc..cc...
+......c..cc..c..
+.....c...c...c..
+....kkkkc...c...
+...kaabbkkkkk...
+..kaabbckssssk..
+.kaabbbckkskkstk
+.kaabccdkssssstk
+.kabbccdkkwkwkk.
+.kbbccddkkkkkk..
+..kbccdkkbbk....
+..kkbcddkbbk....
+kbbkkbcdkkk.....
+kbbk.kgkkkkgk...
+.kk.kgghkkgghk..
+....kkkkkkkkkkk.

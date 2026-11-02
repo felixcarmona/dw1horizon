@@ -1,0 +1,83 @@
+# Minotarumon
+k 180a0e
+a e8a868
+b c87838
+c 985020
+d 683010
+h e8e8f0
+i 9098a8
+y f8d830
+w f8f8f0
+e e82818
+g 98b048
+s f0f0f8
+t a0a8b8
+u 586070
+idle
+kk..........kk..
+khk...kkk...kik.
+kik..kbbbkk..kik
+khikkbbbcckkkkik
+.kihaabbcciiik..
+..kkaaebbcckkkk.
+.kaaaabbbckbbbk.
+kaaaaabbckbbbcdk
+kyakkkkkkkbbccdk
+kyykwkwkwkbbcdk.
+.kkkkkkkkcbccdk.
+..kkccbbbcbcdkkk
+...kbcccbckkstuk
+...kgggkgggkstuk
+..kcbbdkcbbdkkk.
+..kkkkkkkkkkk...
+idle2
+.kk..........kk.
+.khk..kkk....kik
+.kik.kbbbkk...kk
+.khikbbbcckkkkik
+..kihaabcciiik..
+...kkaebbcckkkk.
+.kaaaabbbckbbbk.
+kaaaaabbckbbbcdk
+kaaaaabbkkbbccdk
+kyakkkkkkkbbcdk.
+kyykwkwkkcbcdkkk
+.kkkkkkcbbbckstk
+...kbcccbckkstuk
+...kgggkgggkstuk
+..kcbbdkcbbdkuk.
+..kkkkkkkkkkkkk.
+atk
+....kk........kk
+....khk..kkk..ki
+....kik.kbbkkk.k
+...kkhikbbcckik.
+.kk.k.kihbbciik.
+kstkkk.kkaebcck.
+kstuk.kaaabbckbk
+kstukkaaaaabckbk
+.kkbbkyakkkkkbbk
+.kbbakyykwkwkcdk
+.kkbbkkkkkkkbcdk
+...kkkkkkcbbcdk.
+.....kcbbbcbkk..
+.....kgggkgggk..
+....kcbbdkcbbdk.
+....kkkkkkkkkkk.
+hurt
+.....kk.......k.
+....khk..kkk.kik
+....kik.kbbbkkik
+....khikbbbcckik
+.....kihbbcciik.
+......kkaaabcck.
+.....kaaabbbbck.
+....kkaakkaacdk.
+....kykkkkkkbdk.
+.....kkwwwkbbdk.
+......kkkkbccdk.
+....kbbbbbccdkk.
+...kbkcbbccdkstk
+...kkkgggkkkstuk
+...kcbbdkcbbkuk.
+...kkkkkkkkkkk..

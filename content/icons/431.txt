@@ -1,0 +1,79 @@
+# Kurisarimon
+k 141020
+a c0ccf8
+b 8898d8
+c 5868a8
+y f8f0c8
+o c0b080
+r f03030
+s a01818
+t 7078a0
+e f8d820
+idle
+..........k.....
+.........kak....
+..kk....kaabk...
+..krk..kaaabkk..
+...ksrkaabbbyok.
+....kkrraabbckk.
+.kk..kerabbbbk.k
+kyokktkkaybbckky
+.kkttkaaboybktto
+..k..kaabbbcckkk
+.kyok.kaybcckt.k
+kyo.kttkabcokky.
+.kk...kkbcyok.kk
+......kkbyokkyok
+.......kyok..kk.
+.......kkk......
+idle2
+..........k.....
+.........kak....
+.kk.....kaabk...
+.krrk..kaaabkk..
+..kskkkaabbbyok.
+...ksrraabbckk.k
+..k..kerabbbbkky
+.kyok.kkaybbcktt
+kyokttkaboybkkkk
+.kk..kaabbbcck.k
+..k...kaybcckkyo
+.kyokttkabcokt.k
+kyo...kkbcyok.k.
+.kk...kkbyokkk..
+.......kyokkyok.
+.......kkk..kk..
+atk
+............k...
+...........kak..
+...kk.....kaabk.
+y.k.rk...kaaabk.
+oytttkk.kaabbbyk
+kk...ksraabbbcok
+.....kerabbbbkkk
+yotttkkaybbckt..
+kk...kaaboybktk.
+.....kaabbbcck.k
+yottttkkaybckttk
+kk.......kabckky
+.........kkbcyok
+.........kkbyokk
+..........kyok..
+..........kkk...
+hurt
+.............k..
+.....k......kak.
+....kyk....kaabk
+...kyo.k..kaaabk
+...kk.ktkkaabbbk
+.......tkaabbcok
+..kyok.kkkkkbbkk
+.kyotttkaabbbkk.
+..kk..kaaaybckt.
+....kkaabbbyokt.
+.kyottkaaybcokky
+kyo...kkabccckyo
+.kk....kkbcyok.k
+.......kkbyok...
+........kyok....
+........kkk.....

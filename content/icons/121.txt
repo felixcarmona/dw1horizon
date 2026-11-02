@@ -1,0 +1,78 @@
+# Cherrymon
+k 141008
+1 c8d080
+2 8ca048
+3 5c7428
+4 3c5018
+b c09060
+c 8c6438
+d 5c4024
+w f8f8f0
+idle
+....kkkkkkkk....
+..kk1122121kkk..
+.k112222122133k.
+k11212222122233k
+k12222322223233k
+k22223223323334k
+.kk3233k334343k.
+..kkkk4kk4kkkk..
+....kbbccdk.....
+..kkkbbccdkkk.k.
+.kbbkwkbwkcdkkdk
+kbckkwkbwkcdcdkk
+.kk.kbcccccdkk..
+...kkbkwkwkdk...
+..kbcbckkkcdckk.
+kkkkkkkkkkkkkkk.
+idle2
+....kkkkkkkkk...
+..kk11221211kkk.
+.k1121222122133k
+k12122221222233k
+k22223222232333k
+.k2232323323334k
+..kk3433k43434k.
+...kkk4kkk4kkk..
+....kbbccdk.....
+k..kkbbccdk.kk.k
+kbkbkwkbwkkcdkdk
+.kckkwkbwkcdkkk.
+..k.kbcccccdk...
+...kkbkkkkkdk...
+..kbcbckwkcdckk.
+kkkkkkkkkkkkkkk.
+atk
+................
+....kkkkkkkk....
+..kk1122121kkk..
+.k112222122133k.
+k11212222122233k
+k12222322223233k
+k22223223323334k
+.kk3233k334343k.
+..kkkkk4k4kkkk..
+k.k.k...kbbcdk..
+kbkbk.kkbwkwcdk.
+.kbckkbbbwkwcdk.
+k.kbbbckbcccdkk.
+.kkkkkkkbkkkdk..
+.....kbcbcwwcdk.
+....kkkkkkkkkkk.
+hurt
+......kkkkkkkk..
+....kk1122121kk.
+..k112222122133k
+.k1121222212233k
+.k2222322223234k
+..k32232332343k.
+...kkkk4kkkkkk..
+.....k4kbckk....
+k.k..kbbccdk.k.k
+.kbk.kkkbkkk.kk.
+..kbkkbcbcdkkdk.
+...kkkbkkkcdk...
+.....kbkwkcdk...
+.....kbccccdk...
+...kkbckkkcdkk..
+..kkkkkkkkkkkkk.

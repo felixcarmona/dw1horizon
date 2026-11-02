@@ -1,0 +1,82 @@
+# Taomon
+k 1a1018
+1 f8f4e0
+2 e0d8b8
+3 b0a888
+y f8d040
+o d8a020
+j 484050
+p b098e0
+q 7058a8
+r e03838
+e 3878e0
+b b89850
+w f8f8f8
+idle
+......kkk.......
+.....kjjjk......
+...kkk1j1kkk....
+..k1k1yyy1k1k...
+..k1kyeyyok1k...
+..k1kyyyook2k...
+.kkkkkyokkkk....
+kbk11111r122k...
+kbk1121rr1223k..
+kbk12k1r12k23k.k
+kbk12k1r12k2kkyk
+kbkkkkppqqkkkoyk
+kbk..kppqqkkyoyk
+kwwk.kpkqqkyo1k.
+kwwk.kpkkqk11k..
+.kk..kkkkkkkk...
+idle2
+......kkk.......
+.....kjjjk......
+...kkk1j1kkk....
+..k1k1yyy1k1k...
+..k1kyeyyok1k...
+..k1kyyyook2k...
+.kkkkkyokkkk..k.
+kbkk1111r122kkyk
+kbk11211rr122kyk
+kbk121k1r1223kok
+kbk21k1r1223kkyk
+kbkkkkppqqkkkoyk
+kbk..kppqqkkkyok
+kwwk.kpkqqkk1k..
+kwwk.kpkkqkkk...
+.kk..kkkkkkk....
+atk
+.........kkk....
+........kjjjk...
+......kkk1j1kkk.
+.....k1k1yyy1k1k
+.....k1kyekyok1k
+.....k1kyyyook2k
+kk..kkkkkkyokkkk
+kwkkk1111r12kkk.
+kwwbbbbk1rr1223k
+kwkkkkkk1r112k3k
+kk..kppk1r112k.k
+....kkkppqqkkkyk
+....kppkqqqkkoyk
+...kppk.kqqkyo1k
+...kpk...kqk11k.
+...kkk...kkkkk..
+hurt
+.........kkk....
+........kjjjk...
+......kkk1j1kkk.
+.....k1k1yyy1k1k
+.....k1kkkkook1k
+.....k1kyykok2k.
+.....kkkkyokkkk.
+...kk1111r122k..
+..kbk121rr1223k.
+..kbk2k1r12k23k.
+.kbk2k1r12k2k.k.
+.kbkkkppqqkkkkyk
+kbk..kppqqkkyoyk
+kwk.kpkqqkkyo1k.
+kwwk.kpkkqk11k..
+.kk..kkkkkkkk...

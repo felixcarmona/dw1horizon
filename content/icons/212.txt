@@ -1,0 +1,82 @@
+# VenomMyotismon
+k 180a0e
+y f8e878
+o e0b840
+r f04030
+s c02820
+t 801810
+w f8f8f0
+f d0c8f0
+e 9088b8
+b 686458
+c 484840
+n 787880
+m 505058
+idle
+..k...k.....kk..
+.kok.kok...krk..
+.ktkkktk..krnk..
+..kyyyyok.krnnk.
+.kyrwrwyokrnmnk.
+.kyywwwyokrnmmnk
+.kyokkkyokrnmmnk
+..kossrokkrrnmmk
+..krrrrssktrnmmk
+.krrsrrrssktrnmk
+krrrkrsstskktrmk
+krrskrrsstk.ktrk
+ksstkssttk...kkk
+.kkkkbbckck.....
+..kfffeekffek...
+..kkkkkkkkkkk...
+idle2
+..k...k.........
+.kok.kok....kk..
+.ktkkktk...krk..
+..kyyyyok.krnk..
+.kyrwrwyokrnnnk.
+.kyywwwyokrnmnnk
+.kyokkkyokrnmmnk
+.krosrrokkrrnmmk
+kkrrrrssktrnmmnk
+krrrrrrrssktrnmk
+krrskrsstskktrmk
+ksstkrrsstk.ktrk
+.kkkkssttk...kkk
+....kbbckck.....
+..kfffeekffek...
+..kkkkkkkkkkk...
+atk
+....k...k.....kk
+...kok.kok...krk
+...ktkkktk..krnk
+....kyyyyok.krnn
+...kyrwrwyokrnmn
+...kyrkrkyokrnmn
+.kkkyokkkyokrnmn
+krrkkossrokkrrnm
+krrrrrrrsssktrnm
+krrrrrrrrssktrnk
+krsskkkkssstkkkk
+.kkk...kssttk...
+.......kbbckck..
+......kbbcckcck.
+.....kfffeekffek
+.....kkkkkkkkkkk
+hurt
+.......k...k.kk.
+......kok.kokrk.
+......ktkkktknrk
+.......kyyyyoknk
+......kykkkkyokk
+......kyywwwyokk
+......kyokkkyokk
+.kk....kossrokrk
+krsk..krrrrssknk
+krrrk.krrrrsskrk
+.krrskrrsstskkk.
+..kkkkrrsstk....
+.....kssttk.....
+.....kbbckck....
+...kfffeekffek..
+...kkkkkkkkkkk..

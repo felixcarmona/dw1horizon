@@ -1,0 +1,80 @@
+# WaruMonzaemon
+k 140e0c
+1 b8a894
+2 8c7c6c
+3 64564a
+4 443830
+c e8dcc4
+d b8a488
+r e83020
+s a01810
+g e8e8f0
+h 9098a8
+idle
+..kkk.....kkk...
+.k122kkkkk223k..
+.k2c1122222c3k..
+..k11222222233k.
+.k11kk22222kk33k
+.k1krk2222krk33k
+.k112cccc22233k.
+.k12cckkkcd233k.
+..k2cdkrkd233k..
+.ksrrrrrrrrsksrk
+.k2kk4d4d432k23k
+kgkgk4d4d433k23k
+kgkgk4444433k3k.
+khkhk2333334kkk.
+...k2233k3344k..
+...kkkkkkkkkkk..
+idle2
+.kkk.......kkk..
+k122kkkkkkk223k.
+k2c1122222222c3k
+..k11222222233k.
+.k11kk22222kk33k
+.k1krk2222krk33k
+.k112cccc22233k.
+.k12cckkkcd233k.
+..kk2ckrrkc3ksrk
+.ksrrrrrrrrskkk.
+kgkgk4d4d432k23k
+kgkgk4d4d433k23k
+khkhk4444433k3k.
+.kkkk2333334kkk.
+...k2233k3344k..
+...kkkkkkkkkkk..
+atk
+....kkk.....kkk.
+...k122kkkkk223k
+...k2c1122222c3k
+....k1122222233k
+...k11kk2222kk3k
+...k1krk222krk3k
+...k112cccc2233k
+...k12kkkkkd233k
+....k2krrrk233k.
+kgggk.ksrrrrrskk
+.kkggkk4d4d4323k
+kggggk4d4d433k3k
+.kgghk4444433kk.
+kgggkk233334k...
+.kkk.k2233k3344k
+.....kkkkkkkkkkk
+hurt
+....kkk.....kkk.
+...k122kkkkk223k
+...k2c1122222c3k
+....k1122222233k
+...k11222222233k
+...k1kkk222kkk3k
+...k12cccc22233k
+...k2cckkkcd233k
+....k2ckrkc233k.
+...ksrrrrrrrskk.
+.kg.k4d4d4323k..
+kgkgk4d4d4333k..
+.kkk.k4444334k..
+.....k233334k...
+....k2233k3344k.
+....kkkkkkkkkkk.

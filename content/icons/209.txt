@@ -1,0 +1,79 @@
+# Lillymon
+k 180a0e
+p f8a8d0
+q e870b0
+r a84078
+s f8d4a8
+t d8a070
+g 40d060
+h 189840
+y f8e040
+o c0a020
+idle
+......kyk.......
+..k..kpkykqk..k.
+.kgk.kppkpqk.kgk
+.kghkpppqpqqkkgk
+kgghkppqqqqrkghk
+kghhkkpkkkqkkghk
+kghkkskssktkkghk
+.kkksskssktttkk.
+kgghksssssttkggk
+kghhkkssttkkghhk
+.kgkkkgkkgkkkghk
+..k.kpppqqrk.kk.
+...kpppqqqrrk...
+...kkkpkkqkkk...
+....kgokkgok....
+....kkkk.kkkk...
+idle2
+.......kyk......
+.....kpkykqk....
+.k...kppkpqk..k.
+kgkkkpppqpqqkkgk
+kghgkppqqqqrkggk
+kghhkkpkkkqkkghk
+.kghkskssktkghk.
+.kkksskssktttkk.
+..kkksssssttkkk.
+.kgghkssttkgghk.
+kgghkkgkkgkkkghk
+.kkkkpppqqrkkkk.
+...kpppqqqrrk...
+...kkkpkkqkkk...
+....kgokkgok....
+....kkkk.kkkk...
+atk
+.....kyk........
+....kpkykqk...k.
+.k..kppkpqk..kgk
+kgk.kpppqpqqkkgk
+kghkppqqqqrk.kgk
+.kk.kkpkkkqkkghk
+.kskssssstkkkghk
+ksskskssktstkkk.
+.kkksskrksttkggk
+..k.kksssttkghhk
+.kgkkkgkkgkkkghk
+..kkkpppqqrkk.k.
+....kpppqqqrrk..
+.....kkpkkqkkk..
+......kgokkgok..
+......kkkk.kkkk.
+hurt
+.........kyk....
+.......kpkykqk..
+.k.....kppkpqk.k
+kgk...kpppqpqkgk
+kghk..kpqqqqrkgk
+kghk.kkpkkkqkkgk
+.kghkkssssstkgk.
+.kkkskkkskkkkkk.
+kgghksssssttk...
+.kghkkssttkkghk.
+..kk.kkkgkkkghk.
+...k.kpppqqrkk..
+...kpppqqqrrk...
+...kkkpkkqkkk...
+....kgokkgok....
+....kkkk.kkkk...

@@ -1,0 +1,79 @@
+# Clockmon
+k 180c10
+r f83828
+s b02018
+w f8f8f0
+h b8b8c0
+i 707078
+y f8d850
+o b88830
+u a07040
+b 58e070
+idle
+......kk...kkk..
+.....krrkkkyoyk.
+....krrrrskkokk.
+....krrrrrsk.k..
+....krbkrssk....
+....krrwwssk.k..
+kkkkkkkkkkkk.yk.
+kuuurruuuurrukk.
+kkkkkkyyyyokkhik
+....kywwwwwykhik
+...kywwiwwwoykik
+kkkkkwwwkrwokkkk
+khhikwwkwwwokhik
+kiiokkwwwokkkik.
+.kk.kyok.kyok...
+...kkkkk.kkkkk..
+idle2
+......kk...kkk..
+.....krrkkkyoyk.
+....krrrrskkokk.
+....krrrrrsk.k..
+....krbkrssk....
+....krrwwssk.kyk
+.kkkkkkkkkkk..k.
+kuuuuuuuuuuukk..
+kurrkkyyyyorrk.k
+kkkkkywwwwwykhik
+...kywwwiwwoykik
+.kkkkwwwkwwokkkk
+khhikwwrkwwokhik
+kiiokkwwwokkkik.
+.kk.kyok.kyok...
+...kkkkk.kkkkk..
+atk
+.......kk...kkk.
+......krrkkkyoyk
+.....krrrrskkokk
+.....krrrrrsk.k.
+.....krbkrssk...
+.....krrwwssk...
+kkkkkrrkkkrrkk..
+kuuuurruuurrukk.
+kuuuukkkyyokkhik
+kkkkkywwwwwykhik
+kkk.kywiwwwoykik
+khikkwwwkrwokkkk
+khhhikwkwwwokhik
+kkkkkkkkwwokkik.
+....kyok.kyok...
+...kkkkk.kkkkk..
+hurt
+........kk...kkk
+.......krrkkkyok
+......krrrrskkok
+......krrrrrsk.k
+......krrkkssk..
+......krrrrssk..
+...kkkkrrkrrkk..
+..kuuukkkkkkkkk.
+..kuuuuuuuuuuuk.
+..kkkkyyyyokkhik
+....kywkwwwykhik
+...kywwwkrwoykik
+..kkkkwwiwwokkkk
+.khikkkwwwkkkhik
+.kkkkyok.kyokkk.
+.....kkkkk.kkkkk

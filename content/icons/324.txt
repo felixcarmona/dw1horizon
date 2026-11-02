@@ -1,0 +1,77 @@
+# Maildramon
+k 180a0e
+a f8e870
+b e0b828
+c a07810
+s f0f0f8
+t b0b0c0
+u 707084
+e e02818
+idle
+k....k.......kk.
+kak.kak.....kabk
+.kakkak...kkaabk
+.kaaabbk.kaabbck
+kaaaabbbkkabbbck
+kkekkbbckabbbck.
+kssttkckkabbcck.
+.kkkkstkkabcck..
+....kuukkbbckk.k
+....kstkstttkkak
+...kbbsttttuukbk
+...kbestttuuuck.
+...kstukkkuuk...
+..kstuk..ktuk...
+.kabbbk.kabbbk..
+.kkkkkk.kkkkkkk.
+idle2
+k....k..........
+kak.kak......kk.
+.kakkak....kkabk
+.kaaabbk..kaabbk
+kaaaabbbkkaabbck
+kkekkbbckabbbbck
+kkkkkkckkabbcck.
+kssttkstkabcck.k
+.kkkkuukkbbckkak
+....kstkstttkkbk
+...kbbsttttuukk.
+...kbestttuuuk..
+...kstukkkuuk...
+..ktuuk..ktuk...
+.kabbbk.kabbbk..
+.kkkkkk.kkkkkkk.
+atk
+.............kk.
+............kabk
+...........kaabk
+..........kaabbk
+.........kabbbck
+....kkk.kabbbck.
+kkkkaaakkabbcck.
+kaaaaaabbstbck.k
+.kkkaaabstkkk.ka
+...kekkbstttkkbk
+...kkstttttuukk.
+....kbestuuuk...
+...kstukkuuuk...
+..kstuk..kttuk..
+.kabbbk..kabbbk.
+.kkkkkk..kkkkkk.
+hurt
+...k.k..........
+..kak.k.........
+.kaaakak..k.....
+kaaaaabk.kak....
+kkkaaabbkabk....
+.kksabbkaabk..kk
+.kkktsckabbk.kak
+...kkttkbbck.kbk
+.....kstkkkkkkk.
+....kbsttttuk...
+....kbesttuuuk..
+.....ktuuuuuk...
+...kktuk.ktuk...
+..ktuuk...ktuk..
+.kabbk....kabbk.
+.kkkkk....kkkkk.

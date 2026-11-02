@@ -1,0 +1,79 @@
+# Sorcermon
+k 180e14
+w f8f8f8
+g c8c8d0
+h 8888a0
+b 505058
+l a8e8f0
+m 60b8d0
+t e0c080
+u a08840
+f f8e8a8
+idle
+..........kk....
+.........kwk....
+........kwgk....
+.......kwwgk....
+.......kbbbbk...
+....kkkwwggkkkk.
+..kkgggggggghhhk
+.kl.kkkkkkkkkkk.
+kmlk.kfbkffuk...
+.kmlkkffffukgk..
+.klkgkkkkkkgghk.
+.kktkglmmkkttkhk
+..kutklmmktuukhk
+..k.kklkmukkkhk.
+...kkukkkkukk...
+...kuukk.kuuuk..
+idle2
+.........kk.....
+.........kwk....
+........kwgk....
+.......kwwgk....
+.......kbbbbk...
+...kkkwwggkkkk..
+.kkgggggggghhhk.
+kl.kkkkkkkkkkkk.
+kmlk.kfbkffuk...
+.kmlkkffffukgk..
+..klgkkkkkkgghk.
+.kktkglmmkkttkhk
+..kkkklmmktuukhk
+...kkklkmukkkhk.
+..kkukk...kukk..
+..kuukk...kuuuk.
+atk
+...........kk...
+..........kwk...
+.........kwgk...
+........kwwgk...
+........kbbbbk..
+.....kkkwwggkkkk
+...kkgggggggghhk
+.....kkkkkkkkkkk
+l.l...kfbkffuk..
+.lkkmk.kffffukgk
+lmkllkkkkkkkgghk
+kllmmktttkmmkkhk
+.kkkkkuutkmmmkhk
+.l.l.kkkkmukkkk.
+.....kukk.kukk..
+....kuukk.kuuuk.
+hurt
+.............kk.
+...........kkwk.
+.........kkwgbk.
+.......kkwwgkk..
+......kkbbbbk...
+...kkkkwwggkkkk.
+.kkgggggggggghhk
+..kkkkkkkkkkkkk.
+.....kfkkffuk...
+kk..kkffffukgk..
+kmkkgkkkkkkgghk.
+.kkkkklmmmkkghk.
+k.kmkkllmmkkkhk.
+kmlk.kkukmukkk..
+.kk...kkukuk....
+....kuukkkuuuk..

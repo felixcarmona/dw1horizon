@@ -1,0 +1,78 @@
+# Gomamon
+k 14101c
+1 fcfcf8
+2 d8d8e8
+3 a8a8c0
+4 6c6888
+p b078c8
+r f05830
+s a82c18
+n 58d880
+idle
+.....k.k.k......
+...kkrkrkrkkk...
+..k1rrsrsrr1ppk.
+..k1prrrrpk111pk
+.k1111kkk11kskk.
+.k111knkk12kssk.
+.k111knnk12pksk.
+k11111kk122pkk..
+k1111111122k....
+k1244141223k..kk
+.kk111122k2kk12k
+...kkkk1p2233k2k
+..k11k122p22333k
+.k1122k22p2p233k
+k11223k12223k33k
+k4k4kkkkkkkk4k4k
+idle2
+....k.k.k.k.....
+...kkrkrkrkkk...
+..k1rrsrsrr1kk..
+..k1prrrrpk11kk.
+.k1111kkk11kppk.
+.k111knkk12kssk.
+.k111knnk12pksk.
+k11111kk122pkk..
+k1111111122k....
+k1kkkkkk223k....
+.k44p4kk22kk..kk
+..kkkkk1p223kk2k
+..k11k122p22kk2k
+.k1122k22p2p232k
+k11223k12223k33k
+k4k4kkkkkkkk4k4k
+atk
+...k.k.k........
+.kkrkrkrkkk.....
+k1rrsrsrr1ppk...
+k1prrrrpk111pk..
+k1111kkkk1kskk.k
+k111knkk12kssk2k
+k111knnk12pkkk2k
+k11111kk22pk.k2k
+kkkkkk1122k.k22k
+k4444kk1223kk2k.
+k1k1k1k12p223k..
+.kkkkk1p22p233k.
+.kk11k122p22233k
+k1122k22p2k2333k
+k4k4kk2223kk33kk
+.kkkkkkkkkkkkkkk
+hurt
+.......k.k.k....
+.....kkrkrkrkkk.
+....k1rrsrsrr1pk
+...k1prrrrpk111k
+..k1111kkk1kskk.
+..k111111k2kssk.
+.k111111122pksk.
+k1kkkk11223pkk..
+.k444k11223k....
+..kkkk12233k..kk
+...k1k2233pkkk2k
+..k12kk23p2k12k.
+..kkk.k22p222kk.
+.....k1122p233k.
+....kk22k2223k3k
+...kkkkkkkkkkkkk

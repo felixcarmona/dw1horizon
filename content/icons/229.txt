@@ -1,0 +1,79 @@
+# Phantomon
+k 14100c
+r f03838
+s b82028
+q 701820
+b 48e8f8
+g d0d0e0
+h 9898b0
+i 606078
+y f8e868
+o d8a830
+idle
+.kkkkkkkk.......
+kyyyyyyyok......
+kykkkkkkykkk....
+kyk..krrrrrrk...
+kok.krrrrrrssk..
+kyk.krrrrrsssqk.
+kyokrrkkkkksqqk.
+kokkrkbkkbkkqqqk
+kggkrkkkkkkkqsqk
+kohkkggghhhkkqk.
+kkkkgggrgghhikk.
+kok.kgghhhhiik..
+kyk.kgghkhhkik..
+kok.kggkhhkhik..
+kyk.khk.khk.ik..
+kkk..k...k..k...
+idle2
+.kkkkkkkk.......
+kyyyyyyyok......
+kykkkkkkykkk....
+kyk.kkrrrrrrk...
+kok.krrrrrrssk..
+kyk.krrrrrsssqk.
+kyokrrkkkkksqqk.
+kokkrkkkkkkkqqqk
+kggkrkbkkbkkqsqk
+kohkkkkkkkkkkqk.
+kkkkgggrgghhikk.
+kok.kgghhhhiik..
+kyk.kggkkhhkik..
+kok.khkhhkhhik..
+kyk..k.khk.kik..
+kkk.....k...k...
+atk
+..............k.
+kkkkkkk.....kkrk
+yyyyyyokkkkkrrrs
+kkkkkkkoykrrrrrs
+.....kkkoyrrrsss
+.........kyosssq
+....krrkkkkkyoqq
+....krkbkkbkkyoq
+.kkkkrkkkkkkkkyo
+kgghkkggghhhkkqk
+kggggggrgghhhikk
+.kkkkkgghhhhiik.
+....kggghhkhik..
+....kggkhhkhik..
+....khk.khk.ik..
+.....k...k..k...
+hurt
+.......kkkkkk...
+kk....krrrrrrk..
+kok..krrrrrrssk.
+.kyk.krrrrsssqk.
+..kyok...ksqqk.k
+...kokrkkkkkqqqk
+....kyokkkkkqsqk
+.kggkkykkkkkkqk.
+..khkkkkkkkkkqk.
+...kkgggrgghhkk.
+....kgghhhhiikk.
+....kkgghhhiik..
+.....kgghkhhkik.
+.....kggkhhkhik.
+.....khk.khk.ik.
+......k...k..k..

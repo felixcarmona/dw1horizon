@@ -1,0 +1,77 @@
+# Gazimon
+k 1c1020
+1 e8dcf8
+2 b8a4e0
+3 8068b0
+r f83030
+w f8f8f8
+n 484058
+p f08898
+idle
+......k....kk...
+.....k1k..k11kk.
+.....k12kk1223k.
+.....k123k12kk..
+...kkk1212kk....
+..k11111223k...k
+.k111rk1223k..k2
+k1k11kk1233k.k2k
+k1111112233kk22k
+.kwkwkk2333k1k2k
+..kkkk2kk33k3kk.
+...k12k1k233k...
+..k123k12k3k....
+..k23k.k23k.....
+.knnk..knnkk....
+.kkkk..kkkkk....
+idle2
+.....k.....kk...
+....k1k...k11kk.
+....k12k.k1223k.
+....k123kk12kk..
+...kkk1212kk.kk.
+..k11111223k.k2k
+.k111rk1223k..k.
+k1k11kk1233kkk2k
+k1111112233k22k.
+.kpkpkk2333k1kk.
+.kwkwk2kk33k3k..
+..kkk12k1k23k...
+..k123k12k3k....
+..k23k.k23k.....
+.knnk..knnkk....
+.kkkk..kkkkk....
+atk
+................
+........k....kk.
+.......k1k..k11k
+.......k12kk1223
+.....kkk1212kkkk
+...kk1111223k..k
+..k1111rk1223k.k
+.k11k11kk1233kk2
+k1kkkk111233k22k
+kwkwkwk22333k1k.
+kpppppk233k3k3k.
+kwkwkwkk233k.k..
+.kkkkkk2k23k....
+....kn123k12k...
+...knnk23kk2nk..
+...kkkk.kkkkkk..
+hurt
+.............kk.
+.......k....k1k.
+......k1kk.k12k.
+......k12k.k23k.
+.......k123k2k..
+.....kkk1212k.k.
+....k1111223kk2k
+...k11k1k1233k2k
+...k1k1k1233kk2k
+...k11111233k1k.
+....kk1k23kkk3k.
+.....kkk2333kk..
+....k12k1k23k...
+...k123k12k3k...
+..knnk..knnkk...
+..kkkk..kkkkk...

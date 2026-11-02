@@ -1,0 +1,79 @@
+# Tentomon
+k 1a0c10
+a f88080
+r e03038
+s a01828
+g 80f8a0
+h 28c050
+y f8e030
+o c09820
+m c8c8d0
+n 787880
+idle
+..kkk.kkk.......
+.kyyk.kyyk.kkkk.
+.kyk.kyokkkaarrk
+..kykkokkaaarrrk
+.karrrrkaarrrrsk
+karkkkkkarrkkrsk
+krkgghhkrrknnksk
+krkghhhkrrknmksk
+krkhhhkrrrrkkssk
+.kskkkrksrrrrssk
+..kssskyykssssk.
+.kmkkkyyookkkmk.
+kmnrrkoyyokrrknk
+knkrskoookkrskk.
+.kkmkk.kkmkkmkk.
+...kkk...kkk.kk.
+idle2
+.kkk...kkk......
+kyyk..kyyk..kkk.
+kyk..kyok.kkaark
+.kyk.kok.kaaarrk
+.karrrrkkaarrrsk
+karkkkkkarrrrrsk
+krkgghhkrrkkrssk
+krkghhhkrrknnksk
+krkhhhkrrrknmksk
+.kskkkrksrrkkssk
+..kssskyykssssk.
+.kmkkkyyookkkmk.
+.kmnrkoyyokrrknk
+..knrkoookkrskk.
+.kkmkk.kkmkk.kk.
+...kkk...kkk....
+atk
+.....kkk.kkk....
+....kyyk.kyyk.kk
+....kyk.kyokkkak
+.....kykkokkaark
+.....karrrkaarrk
+....karkkkkarrsk
+kk..krkgghkrrnsk
+kmk.krkghhkrrksk
+kmnkkrkhhkrrrssk
+.kmnkkkkkkrrrssk
+..kmnrrkyyksssk.
+...kkrskyookkmk.
+.....kkoyyokrkmk
+......koookrsknk
+.....kkmkkmkkkk.
+.....kkkkkkkk...
+hurt
+.......kkk......
+.kk..kkyyk.kkk..
+kmnk.kyk.kyokkak
+.kmk..kyk.kokkrk
+..kmkkarrrkaarrk
+....karkkkkarrsk
+....krkhhhkrrnsk
+....krkkkkkrrksk
+....krkhhkrrrssk
+.....kskkkrssssk
+......kkkykyysk.
+....kmkkyoook.kk
+....kmnkoyyokrkk
+....knrkoookrskk
+.....kmkk.kkmkk.
+.....kkk...kkk..

@@ -1,0 +1,81 @@
+# Garudamon
+k 180a0e
+r f83828
+s c82010
+t 801008
+h f89080
+y f8e040
+o e0a018
+w f8f8f0
+g c8c8d0
+b 3898f8
+c f08030
+e 182838
+idle
+....kwk.........
+....kbk...kk....
+...kkkkk.khrk...
+..kbcbcbkkhrrk..
+.krrkwrrrkhrrsk.
+kyyrrrrrskhrrssk
+kkyokrrskhhrrssk
+.kkwwkkrskhrsstk
+.kywkrrrskrsskyk
+kyykrrwrsrkskyok
+kyyokrwrsskykyok
+.kkkkrwsskykyokk
+....krrsskyokok.
+...krsk.ksrkkk..
+...kyok.kyok....
+..kkkkk.kkkkk...
+idle2
+.....kwk...kk...
+.....kbk..khrk..
+...kkkkk.khhrrk.
+..kbcbcbkkhrrrsk
+.krrkwrrrkhrrssk
+kyyrrrrrskhrrsst
+kkyokrrskhhrsstk
+.kkwwkkrskhrssyk
+.kkkkrrrskrsskok
+kyyokrwrsrksyok.
+kyyokrwrsskyokk.
+.kkkkrwsskyokk..
+....krrsskkok...
+...krsk.ksrkk...
+...kyok.kyok....
+..kkkkk.kkkkk...
+atk
+......kwk.......
+......kbk...kk..
+.....kkkkk.khrk.
+....kbcbcbkkhrrk
+...krrkwrrrkhrrs
+..kyyrrrrrskhrrs
+..kkyokrrskhhrrs
+kkkkkwwkkrskhrst
+kyyykkkrrrskrssk
+kyyyyyrrwrsrkkyk
+kyyookkrwrsskyok
+.kkk..krwsskykok
+......krrsskyok.
+.....krsk.ksrkk.
+.....kyok.kyok..
+....kkkkk.kkkkk.
+hurt
+........kwk.....
+.......kkbkkkk..
+......kbcbkhrrk.
+.....kbcbcbkrrsk
+.....krrkkrkhrsk
+.....kkyyrrkhrss
+.kk...kkyorkhrsk
+kyyk...kkwkhhrsk
+kyyokkkrrrkhsstk
+.kkyyrrrwrskrsyk
+...kkkkrwrskskok
+.....kkrwsskyokk
+......krrsskokk.
+.....krsk.ksrk..
+.....kyok.kyok..
+....kkkkk.kkkkk.

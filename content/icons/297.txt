@@ -1,0 +1,81 @@
+# Marsmon
+k 180a0e
+1 e8e8f8
+2 a8a8d0
+3 6868a0
+r e83028
+s a01418
+t f8c8a0
+g c0c0c8
+h 707078
+o d08030
+y f8d820
+c 484058
+idle
+......k....kk...
+.....krk..k11k..
+....kkrkkk111k..
+...ko111111kkok.
+..koo1krk11k2ook
+..ko11tttk22oook
+..kook.ttk22ook.
+.kkkrrkkrrrkkkk.
+kgghkrrrrrskghhk
+kgggkryysrskgghk
+kghhk.k222k.kghk
+.kkk.k11233k.kkk
+....k112k233kcck
+....k12k.k23kcck
+...krrk...krrkk.
+...kkkk...kkkkk.
+idle2
+......k....kk...
+.....krk..k11k..
+....kkrkkk111k..
+...ko111111kkok.
+..koo1krk11k2ook
+..ko11kktk22oook
+..kook.ttk22ook.
+..kkkrrkrrrkkkk.
+.kkkkrrrrrsk.kk.
+kgghkryysrskghhk
+kgggkkk22kkkgghk
+kghhkk11233kkghk
+.kkkk112k233kkk.
+....k12k.k23kcck
+...krrk...krrkk.
+...kkkk...kkkkk.
+atk
+.........k...kk.
+........krk.k11k
+.......kkrkk111k
+......ko111111kk
+.....koo1krk1k2o
+.....ko11tttk22o
+.....kook.ttk2ok
+kkkk.kkkrrkkrrkk
+gghhkkkrrrrrkk..
+ggggggrrrrrrskhk
+gghhkkkryysrskgk
+kkkk...k222k.kgk
+......k11233k.kk
+.....k112k233k..
+....krrk...krrk.
+....kkkk...kkkk.
+hurt
+...........k..kk
+..........krkk1k
+.....kkkkkkrk11k
+....koo111111kok
+...koo111111k2ok
+...kok1kkk1k22ok
+...kok11tttk2ook
+...kk.kkk.tk2kk.
+...kkkrrkkrrrk..
+..kgghkrrrrrskk.
+..kgggkrrysrkghk
+..kghhkk22kkgghk
+...kkkk11233kghk
+.....k112k233kk.
+....krrk...krrk.
+....kkkk...kkkk.

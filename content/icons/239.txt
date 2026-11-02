@@ -1,0 +1,81 @@
+# Gizamon
+k 180e14
+y f8f068
+z e8c838
+x b89020
+b b87038
+c 884818
+d 603010
+g c0c0c0
+h 808080
+e 50a0f0
+w f8f8f0
+r e04040
+idle
+........k.......
+.......kgk.k....
+.......kgkkgk.k.
+......kghkghkkgk
+....kkbbbbkkkkhk
+...kbbbcccccckk.
+..kbbccdcccdcck.
+.kyyykbccdccccdk
+kyyekkbcccdcccdk
+kyyyykkkccccddk.
+kzyyyyyyykkdddk.
+kkkkkkzzzzzzzk..
+kwzwzkyyyzzkzxk.
+.kkkkyzzkkzxkzxk
+.kzxkkkzxkkzxkk.
+.kgkgk.kgkgkgkk.
+idle2
+.......k...k....
+.......kgkkgk.k.
+......kghkkgkkgk
+......kghkghkkhk
+....kkbbbbkkkkhk
+...kbbbcccccckk.
+..kbbccdcccdcck.
+.kyyykbccdccccdk
+kyykekbcccdcccdk
+kyyyykkkccccddk.
+kzyyyyyyykkdddk.
+kkkkkkkkzzzzzk..
+krrrrkyyzzkzxk..
+.kkkkyzzkkzxkzxk
+..kzxkkzxkkzxkk.
+..kgkg.kgkgkgkk.
+atk
+..........k.....
+.........kgk.k..
+.........kgkkgk.
+........kghkghkk
+......kkbbbbkkhk
+.....kbbbcccccck
+.kkkkbbccdcccdck
+kyyekkkbcccdcddk
+kyyyyykkbccccddk
+kzkwkwkkkccddk..
+kkkkkkkkzzkkkk..
+krrrrrrkyyzzxk..
+kkwkwkkkyzzzxk..
+.kkkkkkkzzxkzxk.
+......kzxkkzxkk.
+......kgkgkgkk..
+hurt
+...........k....
+..........kgk.k.
+.........kgkkgk.
+..kk....kghkghkk
+.kyyk.kkbbbbkkhk
+kyykkkbbbcccccck
+kyyyykbccdcccdck
+kzzyykbcdccccdck
+kkkkkkkccccddk..
+kwzwzkkkccddk...
+.kkkyyyykkdddk..
+...kyyyyzzzzzk..
+...kkyzzkkzxzxk.
+...kzxkk..kzxkzk
+...kkkk...kkkkkk
+..kgkg...kgkgkk.

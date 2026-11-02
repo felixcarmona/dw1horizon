@@ -1,0 +1,80 @@
+# Halsemon
+k 180e10
+w f8f8f0
+g c8d0e0
+h 8890a8
+r e83030
+s a82030
+t 601428
+y f8e870
+o d0a030
+n f888a0
+b 40a0f0
+idle
+.....kkkkk......
+...kkwwwwgkkkkk.
+..kwwwwwgggghhhk
+.kwwwggggghhkkk.
+kwwkkkkkhkkkrrrk
+kkbwwgkkrrrrsssk
+kyyywwkrrrssstk.
+.kkyywrrrsssttk.
+..kkrrrssstkk...
+...krrrssssttk..
+..krrrssssstttk.
+..ksstkkkkkstkk.
+..kyyoyk.kyyyok.
+.kyyoyyk.kyoyok.
+.kyoyok...kyoyk.
+.knkknk...knkkk.
+idle2
+.....kkkkk...kk.
+...kkwwwwgkkkhhk
+..kwwwwwggggghk.
+.kwwwggggghhhkk.
+kwwkkkkkhkkkkrrk
+kkbwwgkkrrrrsssk
+kyyywwkrrrssstk.
+kkkkkkrrrsssttk.
+kyyokrrrssstkk..
+.kkkkrrrssssttk.
+..krrrssssstttk.
+..ksstkkkkkstkk.
+.kyyoyk..kyyyok.
+.kyoyyk..kyoyok.
+..kyoyk...kyoyk.
+..knkknk..knkkk.
+atk
+...kkkkk........
+.kkwwwwgkkkkkk..
+kwwwwwgggghhhhk.
+wwwggggghhkkkkk.
+kwkkkkkhkkkrrrrk
+kbwwgkkrrrrsssk.
+yyywwkrrrrssstk.
+kkkyywrrrsssttk.
+kyyyrrssssstttk.
+..kkrrrrsssstttk
+kyyoyrrrsssskkk.
+knyyokkkkkstkkk.
+.kkkk...kyyoyk..
+.........kyoyyk.
+..........kyoyok
+..........knkknk
+hurt
+........kkkkk...
+......kkwwwwgkkk
+.....kwwwwwgggkh
+....kwwwggggghkk
+...kkkkkkhkkkrrk
+...kkkwwgkkrrrrk
+...kyywwkrrrsssk
+....kkkkrrrssstk
+....kyyrrrsssttk
+.....kkkrrrssttk
+....krrrssssstkk
+....ksstkkkkstk.
+...kyyoyk.kyyyok
+..kyyoyyk.kyoyok
+..kyoyok...kyoyk
+..knkknk...knkkk

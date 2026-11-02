@@ -1129,7 +1129,7 @@ HEADER = '<4sHHHHIIIII'          # magic, version, record size, count, first rec
 # the evolution chart's block (include/dw/species.h "chart"): its tabs, the levels each one shows, and its icons
 CHART_TABS = [('fresh', 'in-training'), ('rookie',), ('champion',), ('ultimate',), ('mega',)]
 CHART_SHEET = 61                 # types 1..61 have the chart sheet's hand-drawn icon (NUM_EVO_CHART_DIGIMON)
-CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0xA0, 12   # a 16-colour CLUT and a 16x16 4 bpp image
+CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0x120, 7   # a 16-colour CLUT and two 16x16 4 bpp images
 HEADER_LEVELS = 0x40             # the header sector: the level of each partner species (one byte, partner list order)
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
@@ -1223,7 +1223,7 @@ def chart_tabs(allsp, species):
 
 def chart_block(tabs, icon_of, fallback):
     """The chart block of DIGI.DAT (include/dw/species.h SpeciesChart): a sector with the count of each tab and the ids,
-    tab after tab, then the icons in the same order, CHART_ICONS_PER_SECTOR to a sector: the 16x16 idle frame of each
+    tab after tab, then the icons in the same order, CHART_ICONS_PER_SECTOR to a sector: the two 16x16 idle frames of each
     one's icon and its CLUT (the species of the chart sheet keep theirs: a blank slot)."""
     ids = [t for tab in tabs for t in tab]
     head = bytearray(SECTOR)
@@ -1236,8 +1236,9 @@ def chart_block(tabs, icon_of, fallback):
         if ic is None: continue
         o = (k // CHART_ICONS_PER_SECTOR) * SECTOR + (k % CHART_ICONS_PER_SECTOR) * CHART_ICON_SIZE
         icons[o:o + 0x20] = ic[:0x20]
-        for y in range(16):                       # frame 0: the top-left 16x16 of the 32x32 tile (16 bytes a row)
+        for y in range(16):                       # the top two 16x16 frames of the 32x32 tile (16 bytes a row)
             icons[o + 0x20 + y * 8:o + 0x28 + y * 8] = ic[0x20 + y * 16:0x28 + y * 16]
+            icons[o + 0xA0 + y * 8:o + 0xA8 + y * 8] = ic[0x28 + y * 16:0x30 + y * 16]
     return bytes(head) + bytes(icons)
 
 

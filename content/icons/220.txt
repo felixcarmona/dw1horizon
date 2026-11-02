@@ -1,0 +1,82 @@
+# Vikemon
+k 14101c
+1 d0d8f0
+2 98a0c0
+3 606888
+w f8f8f8
+n a8a8b0
+m 686870
+g 78b850
+y f8e070
+h 4c8038
+b 3888f0
+r e03820
+s a02010
+idle
+...k......k..kk.
+..knk....knkknnk
+..kkkkkkkkkkkmmk
+.k11111112kkkmkk
+k1bk1111bk22k.k.
+k11111kk1122kkkk
+kwwwkkkkww2kgyyk
+kwwwwwwwk2kyggyk
+kkwwwwwk22kyggyk
+.kkwwwk223kgyyhk
+..kkkk1122kkkkk.
+.k12krrrrr233k..
+k1223krrskk233k.
+k233kkrsskk333k.
+kwwkkkrskkkkwwk.
+kkkkkkkkkkkkkkk.
+idle2
+...k......k.....
+..knk....knk.kk.
+..kkkkkkkkkkknnk
+.k11111112kkkmmk
+k1bk1111bk22kmkk
+k11111kk1122kkk.
+kwwkrrrkww2kkkkk
+kwwwkkkwwk2kgyyk
+kkwwwwwk22kyggyk
+.kkwwwk223kyggyk
+..kkkk1122kgyyhk
+.k12krrrrr23kkk.
+k1223krrskk233k.
+k233kkrsskk333k.
+kwwkkkrskkkkwwk.
+kkkkkkkkkkkkkkk.
+atk
+kk.....k......k.
+knnk..knk....knk
+kmmkkkkkkkkkkkkk
+kkmkkk11111112kk
+...kbk1111bk2k2k
+.....k11kk1122kk
+....k1kkkkkw22kg
+....kwkrrrkk2kyg
+....kwwkkkwk2kyg
+....kkwwwwk23kgy
+.....k1kkk22kkkk
+....k12krrrr233k
+...k1223krrskk3k
+...k233kkrsskk3k
+...kwwkkkrskkwwk
+...kkkkkkkkkkkkk
+hurt
+.............kk.
+...k......k.knnk
+..knk....knkkmmk
+..kkkkkkkkkkkkmk
+..k11111112k.kkk
+.k1kkk11kk22kk..
+.k1111111122kyyk
+.kwwwkkkww2kgggk
+.kwwwwwwk2kyggyk
+..kwwwwk223kyyhk
+...kkkk11223kkk.
+..k12krrrr233k..
+.k1223krrskk233k
+.k233kkrssk.k33k
+.kwwkkkrsk..kwwk
+.kkkkkkkkkkkkkkk

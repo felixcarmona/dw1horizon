@@ -1,0 +1,79 @@
+# Baihumon
+k 180a0e
+w f8f8f0
+g c8d0e0
+h 8898b0
+b 5868d8
+B 3038a0
+c 202860
+y f8d848
+o b89020
+r f03828
+idle
+.k........kk...k
+kbk......kyyk.kh
+.kbkkkkk.kook.kg
+.kbbbBgwk.kk.kgk
+kbrbbBgwwkkk.kk.
+kbbbBgwwwggkyok.
+kkbBggwwwgggkokk
+kwkwkgwwwgggkgk.
+.kkkkwwwgggghhk.
+.kgkkggwgggghhk.
+.kggggggghhhhhk.
+.kbbkggkkkbbkhk.
+.kbwkkkkkbwbkhk.
+.kbBk...kbBbkk..
+.kggwk..kggwk...
+.kkkkk..kkkkk...
+idle2
+.k........kk....
+kbk......kyyk...
+.kbkkkkk.kook.kk
+.kbbbBgwk.kk.kgh
+kbrbbBgwwkkk.kgk
+kbbbBgwwwggkyokk
+kkkkkgwwwgggkok.
+kwkwkkwwwgggkgk.
+.kwkwkwwgggghhk.
+.kkkkggwgggghhk.
+..kgggggghhhhhk.
+.kbbkggkkkbbkhk.
+.kbwkkkkkbwbkhk.
+.kBbk...kbBbkk..
+kggwk...kggwk...
+kkkkk...kkkkk...
+atk
+...k.......kk...
+..kbk.....kyyk.k
+...kbkkkkkkook.k
+...kbbbBgwk.k.kg
+..kbrbbBgwwkk.kg
+..kbbbBgwwwgkyok
+..kkkkkgwwwggkok
+..kwkwkkwwwggkkk
+.kkrrrkkwwgggghk
+..kkwkwkwgggghhk
+kkkkkkkwgggghhhk
+kggwwkgggghhhhhk
+kkbBkkkkkkbbbkhk
+...kk...kkbwbkkk
+.......kggwbk...
+.......kkkkkk...
+hurt
+.........kk.....
+..k.....kyyk....
+.kbk....kook..kk
+..kbkkkkkkk..kgk
+..kbbbBgwgk..kgh
+.kbbbBgwwwk.kk.k
+.kbkkbgwwwkkyok.
+.kkbBggwwwggkok.
+...kbkkgwgggkgk.
+...kkkgwwgggghk.
+..kwwgggggghhhk.
+..kggggghhhhhhk.
+..kbbkgkkkbbkhk.
+..kbwkk..kbwbkk.
+.kggwk..kggwk...
+.kkkkk..kkkkk...

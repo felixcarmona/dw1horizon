@@ -1,0 +1,77 @@
+# ChaosLord
+k 180c10
+r f83838
+s c01820
+d 781018
+g e8e8f0
+h a0a0a8
+i 606068
+y f8e040
+idle
+.........kkkkkk.
+.......kkihihihk
+......khgihihihk
+.....kkkkkkihkkk
+....krrkihihk...
+...krrssrkkkk...
+..kryrrssrrssk..
+.krrkrssrrrsssk.
+kgkrrrssrrkkssk.
+.ggkkkssrkkiikk.
+kghk.kkkkihiihk.
+.k.k.khk.krrik..
+.....gk..ksrk...
+....khgk.ghk....
+....ghk..hgk....
+...kkkkkkkkkk...
+idle2
+.........kkkk...
+.......kkihihkk.
+.....kkhgihihihk
+....kkkkkihihihk
+....krrkihihkkkk
+...krrssrkkkk...
+..kryrrssrrssk..
+.krrkrssrrrsssk.
+.kkrrrssrrkkssk.
+kggkkkssrkkiikk.
+kghgkkkkkihiihk.
+.k.k.kgk.krrik..
+....kghk..ksrk..
+....ghk..kghk...
+...ghk...hgk....
+...kkkkkkkkkk...
+atk
+...........kkkkk
+.........kkihihi
+........khgihihi
+.......kkkkkkihi
+.....kkrrkihihkk
+....krrrssrkkkk.
+...kryrrrssrrsk.
+kkkrrkrssrrrsssk
+kggkrrrssrrkkssk
+kgggkkkssrkkiikk
+kggkkkkkkkihiihk
+kkk..kkhkkrrkik.
+.....khk..ksrk..
+....khgk..ghk...
+...kghk..hgk....
+...kkkkkkkkkkk..
+hurt
+..........kkkkk.
+........kkihihik
+.......khgihihik
+......kkkkkkihhk
+.....krrkihihkk.
+....krrssrkkkk..
+....krrkkrrssk..
+...krrrssrrsssk.
+...kkrrrrrkkssk.
+...kggkkssrkiikk
+..kghk.kkkihiihk
+...k...khk.krrk.
+.......gk..ksrk.
+......khgk.ghk..
+......ghk..hgk..
+.....kkkkkkkkk..

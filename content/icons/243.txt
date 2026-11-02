@@ -1,0 +1,78 @@
+# Starmon
+k 180e14
+w f8f8f8
+g d0d0e0
+h 9898b0
+p 9070e8
+q 6448c0
+r 403090
+o f8a820
+b 3080f0
+idle
+.......kk....kkk
+......kwgk..kook
+......kwgk.kokk.
+.....kwoogkkk...
+.kkkkkwoogkkkkk.
+kwwwwwwwggggghhk
+.kwwbkwwgkbghhk.
+..kwwkkkkkghhk..
+.kkkwkkkkkghkkk.
+kppkkwwgghhkkqqk
+kpqkkwwkkghkkqrk
+.kkkwwk..kghkkk.
+..kkwk....kgkk..
+.kppqk....kpqqk.
+kppqqk...kppqrk.
+kkkkkk...kkkkkk.
+idle2
+.......kk.......
+......kwgk...kk.
+......kwgk..kook
+.....kwoogk.kokk
+.kkkkkwoogkkkkk.
+kwwwwwwwggggghhk
+.kwwbkwwgkbghhk.
+kkkwwkkkkkghhk..
+kppkwkkkkkghkkk.
+kpqkkwwgghhkkqqk
+.kkkkwwkkghkkqrk
+...kwwk..kghkkk.
+..kkwk....kgkk..
+.kppqk....kpqqk.
+kppqqk...kppqrk.
+kkkkkk...kkkkkk.
+atk
+..........kk....
+.........kwgk...
+.........kwgk.kk
+........kwoogkok
+....kkkkkwoogkkk
+...kwwwwwwwggggk
+....kwwbkwgkbghk
+.kkk.kwwkkkkghk.
+kppqkkkwkkkkgkk.
+kpppqqkkwggghkqk
+kppqqrkkwwgghkrk
+.kkkkk.kwwkghkk.
+.......kwk.kgk..
+......kppk.kpqk.
+.....kppqk.kpqqk
+.....kkkkk.kkkkk
+hurt
+..........kk....
+.........kwgk...
+.kkk....kwoggk.k
+kppqk...kwoogkok
+kpqrkkkkwwgggkk.
+.kkkwwwwwwggggkk
+...kkwkkkwkkghhk
+....kwwwkkkgghk.
+.....kkkkkkghk..
+....kwwgghhkkkk.
+....kwwkkghkqqrk
+...kwwk.kghkqrrk
+...kgk...kgkkkk.
+..kppk...kpqk...
+.kppqk...kpqqk..
+.kkkkk...kkkkk..

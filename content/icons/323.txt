@@ -1,0 +1,77 @@
+# Lynxmon
+k 180c08
+y f8d840
+o f09828
+n c86018
+1 f8f8f0
+2 b8b8c0
+b 4868f8
+e 30c060
+idle
+...k.k.k.....k..
+..kykykyk...kyk.
+.kyyyyyook..kok.
+.koyyboonok.koyk
+koyeyoyoonk.koyk
+kyyyyoyonkk.kook
+kkykkyonokkkkonk
+k1k1kkonoyyoonk.
+.kkkknooyyoyonk.
+...koonoyoonnk..
+..koonkkkkonnk..
+..kyok...kyonok.
+.koyok...koyok..
+.koyk...koyok...
+k1k1k...k1k1k...
+kkkkk...kkkkk...
+idle2
+...k.k.k......k.
+..kykykyk....kyk
+.kyyyyyook...kok
+.koyyboonok..kok
+koyeyoyoonk.koyk
+kyyyyoyonkk.kook
+kkykkyonokkkkonk
+k1kkkkonoyyoonk.
+.k1k.nooyyoyonk.
+...koonoyoonnk..
+..koonkkkkonnk..
+..kyok..kyonok..
+.koyok..koyok...
+..koyk.koyok....
+k1k1k...k1k1k...
+kkkkk...kkkkk...
+atk
+....k.k.k....k..
+...kykykyk..kyk.
+..kyyyyyook.kok.
+.koyyboonok.koyk
+koyekoyoonk.koyk
+kyyyyoyonkkkkook
+kkkkkkonokyyoonk
+k1k1..konoyyoonk
+kkkkkkkooyyoyonk
+...k1kknoyoonnk.
+...kkkoonkkonnk.
+.....kyok..kyonk
+....koyok.koyok.
+...koyk..koyok..
+..k1k1k.k1k1k...
+..kkkkk.kkkkk...
+hurt
+......k.k.k...k.
+.....kykykyk.kyk
+....kyyyyyookkok
+....koyyboonokok
+...koykkoyoonkok
+...kyyyyoyonkook
+...kkykoyonokonk
+....k1k1konoyonk
+....kkkkknooyonk
+.....koonoyoonnk
+....koonkkkkonnk
+...kyok...kyonk.
+..koyok..koyok..
+.koyk...koyok...
+k1k1k...k1k1k...
+kkkkk...kkkkk...

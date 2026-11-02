@@ -1,0 +1,81 @@
+# BlackWarGreymon
+k 100c10
+g f0f0f8
+h b8b8c8
+i 707888
+a a0a4b0
+b 686c78
+c 40424c
+y f8e048
+o b89018
+v 7038a0
+w f8f8f0
+r e83020
+idle
+....kgk.kk..k...
+...kgk.kgghkok..
+...khkkgggghkk..
+....kggggghhhk..
+.kkgggkrghhhikk.
+kggghkkkkhhikaok
+.khhiikvvkkkaabk
+..kkkkbccbkaabck
+.kabkygkgbkabcck
+kaabkoygobkabcck
+kabckkbccbkkbcck
+.kk.kacbbckkbck.
+...kacokkcbkkk..
+...kbck..kbck...
+..kwgwk.kwgwgk..
+..kkkkk.kkkkkk..
+idle2
+...kgk..........
+...kgk.kkk..k...
+...khkkgggkkok..
+....kggggghkk...
+.kkgggkrghhhkkk.
+kggghkkkkhhikaok
+.khhiikvvkkaaabk
+.kkkkkbccbkaabck
+kaakbbgkgbkabcck
+kabckoygobkabck.
+.kkkkkbccbkkkck.
+....kacbbckk.kk.
+...kacokkcbk....
+...kbck..kbck...
+..kwgwk.kwgwgk..
+..kkkkk.kkkkkk..
+atk
+......kgk.kk..k.
+.....kgk.kgghkok
+.....khkkgggghkk
+......kggggghhhk
+...kkgggkrghhhik
+..kggghkkkkhhikk
+...khhiikvvkkaok
+.kw.kkkkbccbkabk
+kwgkkaabkkgbkbck
+.kgaaabbbgobkbck
+kwgkbbcckccbkbck
+.kw.kkkkkcbkabck
+.......kackkbcck
+.......kbck.kbck
+......kwgwkkwgwk
+......kkkkkkkkkk
+hurt
+.......kgk..kk..
+.kk...kgk.kgghkk
+kabk..khkkgggkok
+kbck...kggggghkk
+.kkk..kgggkkghhk
+....kkgghkkkhhik
+.....khhiikvkkak
+......kkkkbcbkab
+....kkabgkgbkabk
+...kaaboygobkbck
+...kabckkbcbkbck
+....kkkacbbkbck.
+.....kacokkcbkk.
+.....kbck..kbck.
+....kwgwk.kwgwgk
+....kkkkk.kkkkkk

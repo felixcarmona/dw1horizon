@@ -1,0 +1,77 @@
+# Armageddemon
+k 140c18
+a b898e0
+b 7c64a8
+c 4c3c70
+g d0c8d8
+r f03030
+e 48f080
+w f8f8f0
+idle
+............kkk.
+...........kabbk
+.......kkk..kkbk
+....kkkaabkk.kbk
+.k.kaaabbbcbkkbk
+kbkaabbkkbbcckbk
+.kbabkaakkbcbbck
+.kaaakbbaakbcck.
+kaarkekbbbbkkk..
+kbaaakabcbakbak.
+kbbbbkabkbbkbck.
+.kwkwkbkkbkkbbk.
+.kkwkkbkkbkkkbck
+..kkkbckbckkbck.
+..kbbk.kbk.kbck.
+..kkkk.kkk.kkkk.
+idle2
+...........kkk..
+..........kaabk.
+.......kkk.kkbk.
+....kkkaabkkkbk.
+...kaaabbbcbbbk.
+.kkaabbkkbbcckbk
+kbkabkaakkbcbbck
+.kaaakbbaakbcck.
+kaarkekbbbbkkk..
+kbaaakabcbakbak.
+kkkkkkabkbbkbck.
+krwkwrbkkbkkbbk.
+.kkwkkbkkbkkkbck
+..kkkbckkbckbck.
+..kbbkkkbbkkbbk.
+..kkkk.kkk.kkkk.
+atk
+.............kkk
+............kabk
+..........k..kbk
+.......kkkbk.kbk
+....kkkaabbkkbck
+...kaaabbbcbckbk
+..kaabbkkbbcbbck
+.kaaakaakkbcbck.
+kaarkekbaakkkk..
+kbaaakbbbbkbak..
+kbbbbbkbcbkbck..
+kkkkkkkkbbkbbk..
+krwkwrkbkkkkbck.
+.kkwkkbckbkkbck.
+..kkkbk.kbkkbck.
+..kkkk..kkkkkkk.
+hurt
+.......kkk......
+......kaabk.....
+.......kkbbk....
+.......kkkbk....
+......kkaakbk...
+....kkaabbbkbk..
+...kaabbkkbcbk..
+.k.kaakaakkbcbk.
+kbkkabkbbaakcck.
+.kbkkkkbbbbkkkk.
+.kaarkkbcbakbak.
+.kbaaakbkbbkbck.
+.kbbbbkkkbkkbbk.
+..kkwkbkkbkkkbck
+...kkbckkbk.kbck
+.....kkk.kkkkkkk

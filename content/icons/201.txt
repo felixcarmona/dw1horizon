@@ -1,0 +1,80 @@
+# Lighdramon
+k 180a0e
+l 8890a8
+n 505468
+m 383a4c
+b 40a8f0
+c 2068b0
+y f8e040
+o c09820
+r f02830
+w f0f0f0
+v a8a8b0
+idle
+..k.....k.k.....
+.kyk..kklklk.k..
+.kyok.klnnklklk.
+.kyookllnnnknkk.
+.koyllnnykmmkkbk
+klnnrwlyokmmkbck
+klnnnnnnokmmmkkk
+kwkwkwnkbbkmmmmk
+.klllnkrbcknmmk.
+..kkkkbcknnmmmk.
+..klnmkkknnnmmk.
+..klnmkllnkkmmk.
+..klnk.klnk.kmk.
+..klmk..kmk.kmk.
+.kwvwk.kwvwkwvk.
+.kkkkk.kkkkkkkk.
+idle2
+..k.......k.....
+.kyk...kklk.k...
+.kyok.klnnklk...
+.kyookllnnnknkk.
+.koyllnnykmmkbck
+klnnrwlyokmmkcbk
+klnnnnnnokmmmkkk
+klllllnkbbkmmmmk
+.kwkwkkrbcknmmk.
+..kkkkbcknnmmmk.
+..klnmkkknnnmmk.
+..klnmkllnkkmmk.
+.klnmkkklnk.kmk.
+.klmk...kmk.kmk.
+.kwvwk.kwvwkwvk.
+.kkkkk.kkkkkkkk.
+atk
+..........k.k...
+...k.....klklk.k
+..kyk...klnnklkk
+..kyokkkllnnnknk
+.kyyolllnnmmkkbk
+.koylnnnnykmmkck
+klnnrwlnyokkmmmk
+klnnnnnnokbbmmmk
+kwkwkwwkbbcnnmmk
+krrrrrwkrkcnmmk.
+kwkwkwkknnnnmmk.
+.kkkkkknnnmkkmk.
+.....klnmkkk.kk.
+....klmmk.klmk..
+...kwvwk.kwvwk..
+...kkkkk.kkkkk..
+hurt
+......k.k.......
+...k.klklk.k....
+..kyk.klnnklk...
+..kyokllnnnkkk..
+..koyllnnykmkbk.
+.klnnkkyokmmkck.
+.klnnnnnokmmmkk.
+.klllnnkbbkmmmk.
+..kwkwkkrcknmmk.
+...kkkkbcknmmk..
+...klnmkkknnmk.k
+...klnkllnkkmkbk
+...klnkknmk.kmck
+...klmk.kmk.kmk.
+..kwvwk.kwvkwvk.
+..kkkkk.kkkkkkk.

@@ -1,0 +1,83 @@
+# WereGarurumon
+k 120e1c
+1 f0f0fc
+2 c8c4f0
+3 9088d8
+4 5048b8
+b 40a0e8
+c 2870c0
+n c88040
+m 885028
+g 687080
+h 98a0b0
+e f03820
+p f87090
+r f04060
+idle
+.....k...k......
+....k4k.k4k.kk..
+....k34kk34kk4k.
+...k122322334k..
+..k11kk2223344k.
+.k1111ek123344k.
+k1111111122334k.
+kkk11121122kkkk.
+.k1k1k1k2k2knnk.
+..kkkkkkk2knnnmk
+..k11kbb1bkmmmgk
+.kpkpkb11bkkgghk
+..kkkkbbcck.khgk
+....k12k.k12k.k.
+...krr1k.krr2k..
+...kkkkk.kkkkk..
+idle2
+....k....k...k..
+...k4k..k4k.k4k.
+....k34kk34kk4k.
+...k122322334k..
+..k11kk2223344k.
+.k1111ek123344k.
+k1111111122334k.
+kkk11121122kkkk.
+.kkkkkk2k22knnk.
+.k1k1kkkk2knnnmk
+.k1p1kbb1bkmmmgk
+..kpkkb11bkkgghk
+...kkkbbcck.khgk
+....k12k.k21k.k.
+...krr1k.k2rrk..
+...kkkkk.kkkkk..
+atk
+.......k...k....
+......k4k.k4k.k.
+......k34kk34k4k
+.....k122322334k
+....k11kk223344k
+...k1111ek12344k
+..k111111112344k
+.kkk111111kk234k
+..kkkkkkkknnnmk.
+.krrrrrrk2knnmk.
+..k1k1k1kbbkmmgk
+kp111111kb1bkkgk
+kpkkkkkkbbcck.k.
+.k....k12k.k12k.
+.....krr1k.krr2k
+.....kkkkk.kkkkk
+hurt
+........k...k...
+.......k4k.k4k..
+..kk...k34k34kk.
+.k1kk..k1223234k
+.k111111222334k.
+..kkk11kkk23344k
+..k1k111112334k.
+...kkk11112234k.
+..kk.kkk2222knnk
+.kppk..kb1bknnmk
+..k1kkkkb1bkmmgk
+...kk11kbbckkggk
+.....kkkbcck.khk
+.......k12kk12k.
+.....krr1k.k2rrk
+.....kkkkk.kkkkk

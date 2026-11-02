@@ -1,0 +1,81 @@
+# MasterTyrannomon
+k 0c0c10
+1 90a0b0
+2 606878
+3 383c4c
+w f8f8f8
+g c8c8d0
+h 9090a0
+b 40b8e8
+r e02020
+s 901818
+l 50c040
+m 287020
+idle
+....kkkkkkk.....
+..kk1122222k.kl.
+.k1122bb2233klmk
+k11222bk2233kkk.
+k12222233333k...
+k2233kkk3333k..k
+.kkkwkwksrr3k.k2
+.krrrrrrrrk33kk2
+..kwkwkwkk133k23
+..kkkkkkgg233k3k
+.kgkk233gggh33k.
+kggkg23wwgghs3k.
+.kk.k1kgwggh33k.
+...k233gghh233k.
+..kg233kkkk2k3k.
+.kgkkkkk.kgkkkk.
+idle2
+....kkkkkkk.....
+..kk1122222k..kl
+.k1122bb2233kklm
+k11222bk2233k.kk
+k12222233333k...
+kwkwkkkk3333k.k.
+krrrrrrrsrr3kk2k
+krrrrrrrkk33k.k2
+.kkwkwkwk1233kk3
+...kkkkkkgg33k3k
+...kk233gggh33k.
+..kgkg3wwgghs3k.
+.kggk1kgwggh33k.
+..kk233gghh233k.
+..kg233kkkk2k3k.
+.kgkkkkk.kgkkkk.
+atk
+................
+...kkkkkkkk.....
+.kk1122222kk.kl.
+k1122bb2233kklmk
+k1222bk2233k.kk.
+k222233333k...k.
+k233kkk333k..k2k
+kwkwkwkk33k1kk3k
+krrrrrrk1233k3k.
+krrrrrrrk233kk..
+kwkwkwkkgg233k..
+.kkkkkkggwh33k..
+...kgk3ggghs3k..
+..kggk23gh233k..
+...kk.k33kk23k..
+....kgkkk.kgkkk.
+hurt
+......kkkkkkk...
+....kk1122222k..
+...k112222233k..
+..k11kkk22333k..
+..k122222233kk..
+..kwkwkkk333k.kl
+..krrrrrr3k.klmk
+..kkkwkwks3kkkk.
+...k.kkkk33k.k..
+.kgk.kgg133k.k2k
+kggkkgggh23kk23k
+.kk.kgwwgh233k3k
+....kgwgghs33k..
+....k33ghh23k...
+...kg33kkk23k...
+..kgkkkk.kgkkkk.

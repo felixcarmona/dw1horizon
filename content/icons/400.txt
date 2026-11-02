@@ -1,0 +1,82 @@
+# Apocalymon
+k 180a14
+a 8888f8
+b 5050d8
+c 282890
+y f8e848
+o e0a820
+p a87008
+g e8e8f0
+h 9090a0
+t 78b8c8
+u 487890
+v 686878
+r e82828
+idle
+......kkkkk.....
+.....kvvvvvkkk..
+..k...ktrkkrrrk.
+kggk.kkutkk.kk..
+kgbhkkyyyyokkggk
+.khhkaaaybbbkbhk
+.kkkaaabybbbckhk
+..kaaaabybbbbck.
+..kaabbbybbbcck.
+..kyybbbybbcoyk.
+...kyyoybycoyk..
+k.kkkyyoyyoykkkk
+gkhhkkyooykk.kgg
+bgk...kyopk..kbg
+gk.....kok...gkg
+.......kpk....k.
+idle2
+......kkkkk.....
+.....kvvvvvkkkk.
+......ktrkkrrrrk
+.k...kkutkk.kk.k
+kgk.kkyyyyokk.kg
+gbgkkaaaybbbkhbg
+kghhaaabybbbckgk
+.kkaaaabybbbbhk.
+..kaabbbybbbcck.
+..kyybbbybbcoyk.
+...kyyoybycoyk..
+..kkkyyoyyoykk..
+.kgkhkyooykhhkk.
+kgbgk.kyopk.kgbg
+.kgk...kok..kbgk
+.......kpk...gk.
+atk
+.k....kkkkk.....
+kgk..kvvvvvkkk..
+gbgk..krrkkrrrk.
+kgkhhhkutkk.kk..
+.k.kkkyyyyokk.k.
+.k..kaaaybbbkkgk
+kgkkaaabybbbckhk
+gbghhaabybbbbhk.
+kgkkaabbybbbcck.
+.k.kyybbybbcoyk.
+...kyyoybycoyk..
+..kkkyyoyyoykk..
+.k.hhkkyooykhhk.
+kgkkk.kyopk.kkgk
+gbghh..kok..kgbg
+kgk....kpk...kgk
+hurt
+.......kkkkk....
+......kvvvvvkkk.
+.......kkkkrrrrk
+.k....kkutk.kkk.
+kgk.kkkyyyyokk..
+gbghkaaaybbbkk.k
+kgkhaaabybbbck.g
+.k.kaaabybbbbhkg
+..kaabbbybbbcckg
+..kyybbbybbcoyk.
+...kyyoybycoyk..
+..kkkyyoyyoykk..
+.kgkkkyooykk.k..
+kgbghkkyopk.kgk.
+.kgk...kok.kgbg.
+.......kpk..kgk.

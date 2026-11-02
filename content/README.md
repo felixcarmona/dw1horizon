@@ -14,6 +14,7 @@ Game data we author, as opposed to code (`tools/`), story (`story/`) and engine 
 | `modeldelta/` | authored model edits as plain copy/add deltas applied after source-disc conversion |
 | `record-originals/` | replay specifications and deltas for edited original species; the player's discs supply the models and textures |
 | `localized/` | sign cutouts and tournament banner deltas for eight languages, reconstructed over the player's textures at build time |
+| `icons/` | our 16x16 menu icons, one text file per species id (`tools/portraits.py` `load_drawn`): a palette and four frames (idle, idle 2, attack, hurt), drawn by hand; see [THIRD-PARTY.md](../THIRD-PARTY.md) |
 | `sound/house-theme/` | our own song and instruments for FAALL.VHB's font 34 (Jijimon's house): `canon.mid` (Pachelbel's ground, public domain), `pad.wav` and `bell.wav` (synthesized); made by `tools/dws/audio_sources.py`, committed so the bank does not depend on the machine's floating point (`tools/derive` sound step; `--checks` says when the generator no longer makes them) |
 
 **Policy.** Numeric gameplay data (species, techniques, items, tables, maps and screens) is committed as JSON. Models,

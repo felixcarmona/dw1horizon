@@ -1,0 +1,76 @@
+# Devidramon
+k 140c14
+1 7c7498
+2 544c68
+3 342c48
+r f83030
+s a01828
+w f0f0e8
+idle
+...k.......k..kk
+...kk...k.k2kk2k
+...k1k.k2kk23k2k
+..kk11kk22k2232k
+.k1111122k22233k
+k1r1r11122k2233k
+k11r1r1122k23k3k
+k1111111k2kk3kkk
+kkkkkk122k3kkk..
+kwkwk1122k33k...
+.kkk1k1223kk.k..
+...k11k2233k.k3k
+..k12kk2233kk3k.
+..k1k.k2k333k3k.
+.k1skkrrsk33kk..
+.kkkkkkkkkkkk...
+idle2
+...k............
+...kk.........kk
+...k1k...k..kk2k
+..kk11k.k2kk223k
+.k111112k2222233
+k1r1r11122k2233k
+k11r1r1122k23kkk
+k1111111k2k33k..
+kkkkkk122k3kk...
+krrrrk1122k33k..
+kwkwk1k1223kk...
+.kkkk1k2233kk.k.
+...k12kk2233k3k.
+..k1k.k2k3333k..
+.k1skkrrsk33k...
+.kkkkkkkkkkk....
+atk
+......k.......kk
+......kk..k..k2k
+......k1kk2kk23k
+....kk111k22k223
+..kk1111122k2233
+.k1r1r11122k233k
+k111r1r1122k33k.
+kkkkkkk122kk3k..
+krrrrrk12k233k..
+kwkwkwk122k33k..
+.kkkkk1122kkk...
+....k1k2233k.k..
+..kksk22k233kk3k
+.krskk2k.kk333k.
+.kkk.krsk..kkk..
+.....kkkk.......
+hurt
+............kk..
+...k.......k23k.
+...kk.....k2233k
+...k1kk..k22233k
+..k1111kkk2233k.
+.k1kkkk12kk23k..
+.k111111k2k33k..
+.kkkkk112k33k...
+..kwk1122k3kk...
+...kk1123kkk.k..
+....k1122k...k3k
+....k1k2233kkk3k
+...k12kk2233k3k.
+...k1k.k2k33kk..
+..k1skkrrsk.....
+..kkkkkkkkk.....

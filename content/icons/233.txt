@@ -1,0 +1,79 @@
+# RedOtamamon
+k 180e14
+r e87040
+s d04020
+t 882010
+w f8f8f0
+p f8d0c8
+c d09088
+o e89848
+n a85820
+x b8b8c0
+idle
+.....kkkkkk.....
+...kkrrrrsskk...
+..krrrrrsssssk..
+.krrrkkkkkssstk.
+.krrkwwwwwksstkk
+krrrkwwkkwksstkp
+krrrkwwkkwksstkp
+krrrkwwwwxksttkc
+krssskkkkksstttk
+kkwkkkwkkkwkkktk
+ksskkkkkkkkkstk.
+kssssssssssttk..
+.ktsssssstttk...
+kkkktttttkkkokk.
+koonkkkkkkokoonk
+kwkwk....kwkwkwk
+idle2
+.....kkkkkk.....
+...kkrrrrsskk...
+..krrrrrsssssk..
+.krrrkkkkkssstk.
+.krrkwwwwwksstk.
+krrrkwkkwwksstkk
+krrrkwkkwwksstkp
+krrrkwwwwxksttkp
+krssskkkkksstkkc
+kkwkkkwkkkwkkktk
+krkrrrrrrrrrkstk
+kkkkwkkkwkkkstk.
+kssssssssssttk..
+.koonkttttkoonk.
+koonkkkkkkkoonk.
+kwkwk....kwkwkwk
+atk
+....kkkkkk......
+..kkrrrrsskk....
+.krrrkkkkkssk...
+krrrkwwwwwksskkk
+krrrkwkkwwksstkp
+krrrkwkkwwksstkp
+krsskwwwwxksttkc
+kkkkkkkkkkssttkk
+kwkwkwkwkkkkstk.
+kkkkkkkkkkkkstk.
+kttssttssttkstk.
+kkkkkkkkkkkkstk.
+kwkwkwkwkkkstk..
+kskkkkkkkkstk...
+.kssssssttkokk..
+..kkkkkkkkkwkwk.
+hurt
+.......kkkkkk...
+.....kkrrrrsskk.
+....krrrrrsssssk
+...krrrrrrsssstk
+...krrkkkkkksstk
+..krrrkwwwwkkstk
+..krrrrkkkkrsstk
+..krrrrrrrrssttk
+.kokkrsskkkssttk
+.kokrkkkrrkkstk.
+..kkkkkwkkkkstk.
+..kssssssssttkkk
+...ktsssstttkokk
+....kkkkkkkkoonk
+.........kokkwkk
+........kwkw....
