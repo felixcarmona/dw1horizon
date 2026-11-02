@@ -1,0 +1,41 @@
+From f047147ea2f32e80ddb1e8b1d404f29257760d50 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Mon, 2 Nov 2026 01:01:51 +0000
+Subject: [PATCH] Keep the title panel's columns apart with any font
+
+---
+ src/main/main_menu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 49612393..78307f22 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4960,11 +4960,13 @@ void modBootOptions(void)
+ #define MOD_CPU_SPINS_FAST	8500
+ #define MOD_NOTICE_NO_RAM	1
+ #define MOD_NOTICE_SLOW_CPU	2
+-#define MOD_NOTICE_LEFT		-132 /* the panel, over the top of the logo */
++#define MOD_NOTICE_LEFT		-148 /* the panel, over the top of the logo */
+ #define MOD_NOTICE_TOP		12
+-#define MOD_NOTICE_WIDTH	264
++#define MOD_NOTICE_WIDTH	296
+ #define MOD_NOTICE_HEIGHT	72
+ #define MOD_NOTICE_STRS		6
++#define MOD_NOTICE_NAME_W	0x96 /* the two columns of a row, with any font */
++#define MOD_NOTICE_STATE_W	0x78
+ #define MOD_NOTICE_V(i)		(((i) + ((i) == 5)) * 0xC) /* row 5 of the text area is the version's */
+ void modPlateRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, int32_t g, int32_t b, int32_t z);
+ void renderString(int32_t color, int16_t x, int16_t y, int16_t width, int16_t height, int16_t u, int16_t v, int32_t depth, int32_t shadow);
+@@ -5003,7 +5005,7 @@ void modNoticeDraw(void)
+ 	clearTextSubArea(&rect);
+ 	for (i = 0; i < MOD_NOTICE_STRS; i++) {
+ 		str = MOD_NOTICE_TEXT[i];
+-		mode = fitStringMode(str, 0xFE);
++		mode = fitStringMode(str, i < 2 ? 0xFE : i < 4 ? MOD_NOTICE_NAME_W : MOD_NOTICE_STATE_W);
+ 		drawStringMode(str, 0, MOD_NOTICE_V(i), mode);
+ 		DrawSync(0);
+ 		mode = measureStringMode(str, mode) + 1; /* and the shadow */
+-- 
+2.55.0
+
