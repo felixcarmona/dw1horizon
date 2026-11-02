@@ -1,0 +1,81 @@
+# Raidenmon
+k 180a0e
+a c8e8b0
+b 90c078
+c 588848
+d 305828
+y f0e870
+z b09828
+g c8c8d0
+h 808890
+j 505868
+e f02818
+s 98a058
+idle
+.....kkkk.kkkk..
+....kaaabkaaabk.
+....kayzbkayzbk.
+....kbzzckbzzck.
+....kkkkkkkkkkhk
+...kbbaacbbcckhk
+..kaaabcbbccddkk
+.kgggkkbccbdcdk.
+khhhkekbbbccdck.
+kjjjkggkkcbcdck.
+.kkkgggkyykcckk.
+kkgkgkkyzzkcdk.k
+...kkbkkzkcckkck
+.kjjkkkkkkkkkkk.
+kjhjhjhjhjhjhjk.
+.kkkkkkkkkkkkkk.
+idle2
+................
+.....kkkk.kkkk..
+....kaaabkaaabk.
+....kayzbkayzbk.
+....kbzzckbzzchk
+...kkkkkkkkkkkhk
+..kaabbaacbbckkk
+.kaggkkbccbdcdk.
+khhhkekbbbccdck.
+kjjjkggkkcbcdck.
+.kkkgggkyykcckk.
+.kk.gkkyzzkcdkkk
+kgkkkbkkzkcckkck
+.kjkkkkkkkkkkkk.
+kjhjhjhjhjhjhjk.
+.kkkkkkkkkkkkkk.
+atk
+......kkkk.kkkk.
+.....kaaabkaaabk
+.....kayzbkayzbk
+.....kbzzckbzzck
+.....kkkkkkkkkkh
+....kbbaacbbcckh
+...kaaabcbbccddk
+kkkkgkkbccbdcdk.
+yghhhkekbbccdck.
+kkjjjkggkcbcdck.
+.kkkkgggkyykcck.
+...kgkkkyzzkcdk.
+...kkbkkkzkcckk.
+.kjjkkkkkkkkkkk.
+kjhjhjhjhjhjhjk.
+.kkkkkkkkkkkkkk.
+hurt
+...kkkk.kkkk....
+..kaaabkaaabk...
+..kbbbbkbbbbk...
+..kbbbckbbbck...
+...kkkkkkkkkkk..
+...kbbaacbbcck..
+..kaaabcbbccddk.
+..kaakkbccbdcdk.
+.kkkkkkkbbccdck.
+kggkkgkkkcbcdck.
+khhkkgggkkkcckk.
+kjjkgkyyzkkcdk.k
+.kkkkbkzkkcckkck
+.kjjkkkkkkkkkkk.
+kjhjhjhjhjhjhjk.
+.kkkkkkkkkkkkkk.

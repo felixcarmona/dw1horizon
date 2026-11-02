@@ -1,0 +1,82 @@
+# Tinmon
+k 18181c
+1 f8f8f8
+2 d0d0d8
+3 a0a0ac
+4 6c6c78
+r f02020
+s a01010
+p f06080
+b 80c8f0
+y f0e040
+o b0a020
+g 40a060
+u 4060d0
+idle
+...kkkkkkkkk....
+...k11122233k...
+...k1pprrrs3kk..
+...k12222333kyyk
+...k1bbbb233kyok
+...k2k1k1k33kkkk
+...k2k1k1k34k4.k
+..kkkkkkkkkkkk4k
+.kkk1122233kk34k
+krrkyyo22yyrrk4k
+krkkyyo22yrk.k4k
+krrk11gug2rrk34k
+.kkk2guyg33kk34k
+...k22ggg33k3kk.
+...k4k4kk4k4k...
+...kkkkkkkkkkk..
+idle2
+...kkkkkkkkk....
+...k11122233k...
+...k1pprrrs3k...
+...k12222333kk.k
+...k1bbbb233kyyk
+...k2k1k1k33kyok
+...k2k4k4k34kkkk
+..kkkkkkkkkkkk4k
+kkkk1122233kk34k
+krrrkyo22yyrrk4k
+.kkrkyo22yrrk4k.
+...kk1gug2krrk4k
+...k12guyg33kkk.
+...k22ggg33k3k..
+...k4k4kk4k4k...
+...kkkkkkkkkkk..
+atk
+.....kkkkkkkkk..
+.....k11122233k.
+.....k1rrrrrs3k.
+.....k12222333k.
+.....k1bbbb23kkk
+.....k2kkkkk3kyk
+.....k2k444k3kok
+.kkk.kkkkkkkkkkk
+krrrkkk1122233k.
+krkkrrkkyy222k..
+krk.kkrrkyo2yyk.
+krrrkk.k11gug23k
+.kkk...k12guyg3k
+.......k22ggg33k
+.......k4k4k4k4k
+.......kkkkkkkkk
+hurt
+.......kkkkkkkk.
+....y.k1112223k.
+....y.k1kkkkk3k.
+...y..k1222233k.
+......k1bbbb23k.
+......kkkkkkkkk.
+.....k4k4k4k44k.
+...kkkkkkkkkkk..
+.krk1122233kkk..
+krrkyy222yyk3k..
+k.kkkyo22yokrk..
+krrk11gug2krrk..
+.kkk2guyg33kkk..
+...k22ggg33k....
+...k4k4k4k4k....
+...kkkkkkkkk....

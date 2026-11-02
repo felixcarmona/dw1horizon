@@ -1,0 +1,82 @@
+# Blossomon
+k 180a0e
+v c090f0
+u 9050d8
+x 6030a0
+y f8f048
+o d0b020
+c 201408
+g 58c048
+h 308030
+t 208878
+r f03828
+w f8f8f0
+b 40a8f8
+idle
+...kkkkkk..kkk..
+..kvvuuuukktttk.
+.kvvuuuuxkkttk..
+kvukkkkkkxkkttk.
+kvkyyyyyokxkkkk.
+kuykbyybyokxkkrk
+kuyyyyyyyokxkrcr
+kuykkckkkkkxkkrk
+kuyykckckyoxkgk.
+.kuyyyyyokxkgk..
+.kkuuxxxkkkgk.k.
+krkkkgghkkgkkrk.
+rcrkhkghhkkkrcrk
+krkgkhghhhgkkrk.
+..kkgghhghhkk...
+.kkkkkkkkkkkkk..
+idle2
+...kkkkkk...kkk.
+..kvvuuuukkktttk
+.kvvuuuuxkkkttk.
+kvukkkkkkxkttkk.
+kvkyyyyyokxkkk.k
+kuykbyybyokxk.kr
+kuyyyyyyyokxkkrc
+kuykckkkckkxkgkr
+kuyykkckkyoxkgk.
+.kuyyyyyokxkgk..
+.kkuuxxxkkkgkk..
+..kkkgghkkgkkrk.
+krkhkkghhkkkrcrk
+rcrgkhghhhgkkrk.
+krkkgghhghhkk...
+.kkkkkkkkkkkkk..
+atk
+.....kkkkkk..kkk
+....kvvuuuukktkk
+...kvvuuuuxkkttk
+..kvukkkkkkxkkkk
+..kvkyyyyyokxk.k
+..kuykbyybyokk..
+.krkyyyyyyyokxk.
+krcrgkkkkkkkkxk.
+.krkkkkkkkkkkxk.
+..kkkkckkckyoxk.
+...kuyyyyyokxk..
+...kkuuxxxkkk.k.
+.....kkgghkkkrk.
+....khkghhkkrcrk
+...kgkhghhhgkrk.
+..kkkkkkkkkkkkk.
+hurt
+.......kkkkkk...
+.....kvvuuuukkkk
+....kvvuuuuxkttk
+...kvukkkkkkxkkk
+...kvkyyyyyokxk.
+...kuyyyyyyyokxk
+...kuykkykkyokxk
+...kuyyyyyyyokxk
+...kuyyykkyyoxk.
+....kuyyyyyokxk.
+....kkuuxxxkkkk.
+.k...kkkgghkk...
+krk.kgkghhkkkrk.
+.kkkgkhghhhgrcrk
+...kkgghhghhkrk.
+...kkkkkkkkkkkk.

@@ -1,0 +1,83 @@
+# ShogunGekomon
+k 1c0c0c
+1 f87060
+2 d83830
+3 9c2018
+c f8f4c0
+d e0d080
+e b0a850
+g 50b040
+h 287820
+w f8f8f8
+p b050d8
+q 683090
+y f8d030
+o b07818
+idle
+....kkkk........
+...kpppqk...kkk.
+...kpqqqk..kyyyk
+...kkk2kkk.kyook
+..k1wwkwwkkkyok.
+..k1kwkkwk22kok.
+.k1112222223kkk.
+.kkwkkkkkkwk33k.
+.k222222222233k.
+.kgghgghgghgghk.
+kk1kccccddkk2kk.
+k12kccccddek23k.
+k23kcdcddeek3k..
+.kkkcddddeekk...
+.k11kdeeeek22k..
+kkkkkkkkkkkkkkk.
+idle2
+.......kkkk.....
+....kkkpppqk..k.
+...kpppqqqk..kyk
+...kkk2kkk..kyyk
+..k1wwkwwkkkyook
+..k1wkkwkk22kok.
+.k1112222223kkk.
+.kkkkkkkkkkk33k.
+.kwkk3333kwk33k.
+.kgghgghgghgghk.
+k1kkccccddkk22k.
+kk2kccccddek22k.
+.kkkcdcddeekkk..
+..kkcddddeek....
+.k11kdeeeek22k..
+kkkkkkkkkkkkkkk.
+atk
+.....kkkk.......
+....kpppqk..kkk.
+....kpqqqk.kyyyk
+....kk2kkk.kyook
+...k1kkkkkkkyok.
+..k1wwkwwk22kok.
+kkk1wkkwk2223kk.
+kykkkkkkkkkk33k.
+kyoky3y33ykk33k.
+kkkk33333kkk3k..
+..kgghgghgghgk..
+.k1kccccddkk2k..
+k12kccccddek23k.
+k23kcddddeek3k..
+.kk1kdeeeek22k..
+kkkkkkkkkkkkkkk.
+hurt
+.......kkkk.....
+......kpppqk....
+......kpqqqk.kkk
+......kkkkk.kyok
+.....kkk2kkkkyok
+....k1kkkkkk2kok
+....k1wwkwwk22kk
+...k111222223kk.
+...kk1kkkkkk33k.
+...k22kkkkk233k.
+..kgghgghgghgk..
+kkk1kccccddk1kk.
+k1kkkccccddk1k..
+kk..kcdddeekk...
+...k11kdeeek2k..
+...kkkkkkkkkkkk.

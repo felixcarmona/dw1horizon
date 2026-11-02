@@ -1,0 +1,77 @@
+# Icemon
+k 141820
+a d4ecf8
+b 94bcdc
+c 5c84b0
+d 3c5c88
+y f8e028
+o c09818
+w f8f8f0
+idle
+..kkk.....kkk...
+.kaabk...kabbk..
+.kabbbkkkabbbck.
+kaaabbdabbbdbck.
+kakkkkkakkkkkck.
+kkyyykakyyykbck.
+kkykokakykokbck.
+kkyyokakyyokcck.
+kabkkkaakkkkcck.
+.kabkkkkkkbcck..
+..kkkbbbbbckk...
+.kaakaabbckbbk..
+kaabkkabbkkbcck.
+kbcckkabkckkcck.
+.kkkkaabkbckkk..
+....kkkkkkkkk...
+idle2
+.kkk.......kkk..
+.kaabk....kabbk.
+.kabbbkkkkabbck.
+kaaabbdabbbdbck.
+kakkkkkakkkkkck.
+kkyyykakyyykbck.
+kkkkokakkkokbck.
+kkyyokakyyokcck.
+kabkkkaakkkkcck.
+.kabkwkwkkbcck..
+kkkkkbbbbbckkkk.
+kaabkaabbckbbck.
+kbcckkabbkkkkk..
+.kkk.kabkck.....
+...kkaabkbck....
+...kkkkkkkkkk...
+atk
+....kkk.....kkk.
+...kaabk...kabbk
+...kabbbkkkabbck
+..kaaabbdabbdbck
+..kakkkkkkkkkkck
+..kkyyyykbyyyyck
+..kkkkkokbkkkokk
+kkkkkabkbbkkkck.
+kaabkkkkkkkkbck.
+kaabbbbkbbbbcck.
+kabcckkaabbbckk.
+.kkkkkkaabbbkbck
+.....kaakbbkkcck
+.....kkkabkkkkk.
+....kaabkbcck...
+....kkkkkkkkk...
+hurt
+.......kkk....kk
+......kaabk..kbk
+......kabbbkkabk
+.....kaaabbbdbck
+.....kakkkkkkkck
+.kk..kkbbbkbbbck
+kabkkkkkkbkbkkck
+kabckkbbkkkkbbck
+.kkk..kbkkkkkck.
+..kkk.kkabbbckkk
+.kabckkkkkkkkbck
+.kbbkaabbbckcck.
+..kkkkabbkk.kk..
+.....kabkcck....
+....kaabkbcck...
+....kkkkkkkkkk..

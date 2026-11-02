@@ -1,0 +1,80 @@
+# Dokugumon
+k 180a0e
+w f8f8f0
+1 c8c8d0
+2 787880
+3 484850
+y f8d830
+o c08818
+r e82820
+s 981410
+g 40c850
+p 7858b8
+idle
+.......kkkkk....
+.....kkwwwwwkk..
+....k1wwwwwww1k.
+...k1wkkwwkkw12k
+...k1wkkwwkkw12k
+...k11wwkwww123k
+.k.k211wkkk12r3k
+kyk.krrwkwk233sk
+kykkrrk21112333k
+.kyyyyrk2223333k
+.kgkyyokk3k33y3k
+.kyyygokrkk3k33k
+.kkssskkrk.krkk.
+.ksrrsk.kr.krk..
+krkkrk.krk.krok.
+kk.kk..kk..kkkk.
+idle2
+.......kkkk.....
+.....kkwwwwkk...
+....k1wwwwwwwkk.
+...k1wkkwwkkw12k
+...k1wkkwwkkw12k
+.k.k11wwkwww123k
+kyk.211wkkk12r3k
+kykkrrrwkwk233sk
+.kkrrrk21112333k
+.kyyyyrk2223333k
+.kgkyyokk3k33y3k
+.kyyygokrkk3k33k
+.kkrrrkkrk.krkk.
+krkkrk.krk.krk..
+.k.krk.krk.krok.
+...kk..kk..kkkk.
+atk
+.........kkkkk..
+.......kkwwwwwkk
+......k1wwwwwww1
+.....k1wkkwwkkw1
+.k...k1wkkwwkkw2
+kyk..k11wwkww123
+kyyk.k211kkk12r3
+.kyykkk22kwk233s
+..kyrrkk21112333
+.kyggyrrk2223333
+kyggkyrkk3k33y3k
+kyyyyokkrkk3k33k
+krkkkkrkrk.krkk.
+.krrrrkrk..krk..
+..kkkkkk...krok.
+............kkk.
+hurt
+...........kkk..
+.........kkwwwkk
+.......kkwwwwwwk
+......k1wkkwwkk1
+.....k1wkkwwkkw2
+.....k11wwkww123
+.k...k211kkk1r33
+kyk...k22wkw233k
+kyyk.kk21112333k
+.kyyrrk2223333k.
+..kkkkrk3k3k33k.
+..kkkyrkk3k3k3k.
+..kyyyokrk.krk..
+..ksrrskkrk.krk.
+.krkrkkrk..krok.
+.kk.kk.kk...kkk.

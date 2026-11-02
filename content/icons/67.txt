@@ -1,0 +1,80 @@
+# Yanmamon
+k 181008
+1 f8f0a0
+2 f8d030
+3 d09818
+4 906010
+g 90f878
+h 30c040
+i 187828
+w f0f0e0
+x a8a890
+r e03030
+idle
+kkk.............
+kwxkk.......kkk.
+.kwwxkk...kkxwwk
+..kkwwxk.kxwwxk.
+....kkwxkxwxkk..
+.....kkxkxkk....
+...kkkkkkkkkkkk.
+..k22kgghk1223kk
+.k1222kghk2k3k3k
+.k2222kkk23k4k4k
+..krrkk222k3344k
+..kk.k2k3k3k.kk.
+....k2kk3k3k....
+...k3k.k3k.k3k..
+..k3k..k4k..k4k.
+..kk....k....k..
+idle2
+................
+.............kkk
+kkk.......kkkxwk
+kwxkkk..kkxxwwk.
+.kkwwxkkkxwwkk..
+.....kkxkxkk....
+...kkkkkkkkkkkk.
+..k22kgghk1223kk
+.k1222kghk2k3k3k
+.k2222kkk23k4k4k
+..krrkk222k3344k
+..kk.k2k3k3k.kk.
+....k2kk3kk3k...
+...k3k..k3kk3k..
+...k3k..k4k.k4k.
+...kk....k...k..
+atk
+..kk.........kk.
+..kwkk.....kkwxk
+...kwxkk.kkxwwk.
+....kkwxkxwxkkkk
+......kkkxkkk23k
+....kkkkkkk1234k
+...k22kggk1223k.
+..k222kghk12k4k.
+..k2222kk23k4k..
+.krrrkk222k3k...
+.k1k1kk2k3k3k...
+..kkkk2kk3k3k...
+...k2k..k3kk3k..
+..k2k...k3k.k3k.
+.k3k....k4k..k4k
+.kk......k....k.
+hurt
+.............kkk
+..........kkkxwk
+.......kkkxxwwk.
+..kkkkkxwwxkkk..
+..kxwwxkkkkk....
+...kkkkkkkkkkk..
+....k22kkkk1223k
+...k1222kik2k3kk
+...k2222kk23k4kk
+....krkkk222k34k
+....kk.k2k3k3kk.
+......k2kk3k3k..
+.....k2k.k3kk3k.
+.....k3k.k3k.k3k
+....k3k..k4k..kk
+....kk....k.....

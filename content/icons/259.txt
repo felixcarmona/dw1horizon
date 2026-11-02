@@ -1,0 +1,79 @@
+# Okuwamon
+k 180e14
+1 dcdce8
+2 a8a8b8
+3 707080
+4 484858
+r e82820
+s a01c18
+b b0e0f8
+c 6ca8d0
+m f058a8
+idle
+..kkk....kkk....
+.k3rrk..krr3k.kk
+k34kk....kk43kbk
+k34k.kkkk.k43kbk
+.k34k1111k34kbck
+..kk1222233kkbck
+.k1rr22rr3kkkk..
+.k12r22r33k2223k
+.k1kkkkk33k2233k
+..kmmmmk3k22r33k
+.kkkkkkkk22r334k
+k122kk22222334k.
+krskkk4s2s44k...
+.kk..k34kk43k...
+....k33k..k33k..
+...kkkkk.kkkkkk.
+idle2
+...kkk..kkk.....
+..k3rrkkrr3k..kk
+.k34kk..kk43kkbk
+.k34k.kk.k43kbbk
+..k34k11k34kbbck
+..kk1222233kbcck
+.k1rr22rr3kkbck.
+.k12r22r33k2223k
+.k1kkkkk33k2233k
+..k1mmmk3k22r33k
+k12kkkkkk22r334k
+krskkk22222334k.
+.kk..k4s2s44k...
+.....k34kk43k...
+....k33k..k33k..
+...kkkkk.kkkkkk.
+atk
+...........kkk..
+.........kkbbbk.
+.kkkkk..kbbbbck.
+krr334kkkkkbcck.
+.kkk343k1223kkk.
+....kk1222233k..
+...k1rr22rr33k..
+...k12r22r33k23k
+.kk4k1mmmk33k23k
+krr34kmmmk3k22rk
+.kkkkkkkkk22r33k
+...k122kk22r334k
+...krskkk22334k.
+....kk..k34k34k.
+.......k33kk33k.
+......kkkkkkkkkk
+hurt
+......kkk...kkk.
+.....k3rk...kr3k
+.....k34k..k43k.
+......k34kk43k.k
+.....k1122223kbk
+.....k1222233kbk
+....k1kkk2kkk3kk
+....k122222233k.
+.....k1mmm233kkk
+..kkkkkkkkkk223k
+.k122kk222r2334k
+.krskkk22r2334k.
+..kk..k4s2s44k..
+......k34kk43k..
+.....k33k.k33k..
+....kkkkk.kkkkk.

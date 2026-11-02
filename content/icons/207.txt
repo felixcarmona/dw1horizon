@@ -1,0 +1,81 @@
+# Seraphimon
+k 180a0e
+c f8f0c0
+d d8d090
+e a0a068
+w f0f0f8
+s c0c0d8
+t 8888a8
+u 585878
+y f8d840
+o c09828
+b 4080e0
+r e04020
+idle
+.kk...kkkk...kk.
+kcdkkwwystkkkcdk
+kcdkwwyyystkkcdk
+.kcdkwwystkkcdek
+kccdkwkkkstkcdek
+kcdkkwsssutkkdek
+.kkwwskkkktsskk.
+kcdkwsskbbkstukk
+kcdkkwskyykstkdk
+.kk.kwskyokstkk.
+...kwstkyrokutk.
+....kkkyrookkk..
+....kwskyokstk..
+....kstkyokutk..
+...kwstkkkkstuk.
+...kkkkk.kkkkkk.
+idle2
+.kk...kkkk......
+kcdkkwwystk..kk.
+.kcdkwyyystkkcdk
+kccdkwwystkkkcdk
+kcdkkwkkkstkcdek
+.kkkkwsssutkcdek
+..kwwskkkktsskk.
+kcckwsskbbkstukk
+kcdkwwskbbkstkdk
+.kkkwstkyykutkk.
+...kkkkyrokkkk..
+....kwskyrokkk..
+....kstkyokstk..
+....kwskyokutk..
+...kwstkkkkstuk.
+...kkkkk.kkkkkk.
+atk
+.....kkkk....kk.
+....kwwystkkkcdk
+...kwwyyystkkcdk
+....kwwystkkcdek
+.k..kwkkkstkcdek
+ykk.kwsssutkkdek
+yykwwskkkktsskk.
+wwwwsskbbkstukk.
+yykkkkskyykstkdk
+ykk...kyokstkkk.
+.....kyrokutk...
+.....kkyrookkk..
+.....kwskyokstk.
+.....kstkyokutk.
+....kwstkkkkstuk
+....kkkkk.kkkkkk
+hurt
+.......kkkk...k.
+.kk...kwystk.kdk
+kcdk.kwwyystkkdk
+kcdkkwwyyystkcdk
+.kcdkkwwystkcdek
+kccdkwkkkkstkdek
+kcdkkwsssutkkkk.
+.kkwwskkkktsskk.
+..kwsskbbkstuk..
+..kkwskyykstkk..
+...kwskyokstk...
+...kstkyrokutk..
+....kkkyrookkk..
+....kwskyokstk..
+...kwstkkkkstuk.
+...kkkkk.kkkkkk.

@@ -1,0 +1,78 @@
+# WarGrowlmon
+k 180a0e
+r f86048
+s d82830
+t 901820
+w f8f8f8
+g c8c8d0
+h 888898
+j 505064
+y f8d830
+idle
+............kkk.
+..........kkwwgk
+...kkk...kwwghkk
+..krrrggkwwghkwk
+.krrrrrrkghkkwgk
+kryrkrrskkkwwghk
+krrrrrskrkwwghkk
+kkwkwkkrrkghkk..
+kwkkkgkrrskkrrk.
+.kkgwkwwrsstkrrk
+.kgwhjkwwsstkkrk
+kgwhhjkwrsstk.kk
+kkkkkkkrsstk....
+....krrkkstk....
+...krstk.krsk...
+...kkkkk.kkkkk..
+idle2
+...........kkk..
+.........kkwwgk.
+...kkk..kwwghkkk
+..krrrggkwghkwwk
+.krrrrrrkhkkwgkk
+kryrkrrskkkwwgk.
+krrrrrskrkwwghk.
+kkkkkkkrrkghkk..
+kwkwkgkrrskkrrk.
+.kkkkgwwrsstkrrk
+..kgwkwwsstkrrk.
+.kgwhjkwrsstkkk.
+kgwhhjkrsstk....
+kkkkkkkrrkstk...
+...krstk.krsk...
+...kkkkk.kkkkk..
+atk
+.............kkk
+...........kkwwk
+....kkkkkkkwwghk
+...krrrggkwwghkk
+..krrrrrrkghkkwk
+.kryrkrrskkkwwgk
+.krrrrrskrkwghkk
+.kkkkkkkrrkhkk..
+kwkwkkkkrrskkrrk
+.kk..kwwwrsstkrk
+kwwggggwwsstkkrk
+kghhhhjjwsstk.k.
+.kkkkkkkrsstk...
+.....krrkkstk...
+....krstk.krsk..
+....kkkkk.kkkkk.
+hurt
+.......kkk......
+.....kkwwgk.....
+.....kwwghk..kk.
+...kkkkghkk.kwgk
+..krrrrgkk.kwghk
+.krrrrrrskkwghk.
+.krkkrrrsskghkk.
+.krrrrrrskkkkk..
+.kkrrrrskrrskrk.
+...kkkkkrsstkrk.
+....kgwkwwsstkk.
+...kgwhjkwsstk..
+...kkkkkkrstk...
+....krrkkstk....
+...krstk.krsk...
+...kkkkk.kkkkk..

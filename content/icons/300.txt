@@ -1,0 +1,78 @@
+# SlashAngemon
+k 180a14
+1 f0f0f8
+2 b8bcd0
+3 7c8098
+4 4c5064
+b 40b8f0
+c 1870c0
+t f0c8a0
+y e8b830
+idle
+..kk.....kkkk...
+.kbbk...k1112kk.
+..kbkkk.k122k12k
+.kb1112kk22k122k
+.k112112kk2k23k.
+k1kk1t12k2k223kk
+k1k.kct2k2k23k2k
+.k.k.kk2kk2k2k3k
+.k1kkbk1k23k3k2k
+.k12kbb1yk23k23k
+..k12kbbk2k3k23k
+..k12kbck2k2k23k
+...k1kbcck3k3k3k
+...kkkbcck.k.k3k
+....kybcyk...kk.
+....kkkkkk......
+idle2
+..kk....kkkk....
+.kbbk..k11122kk.
+..kbkkkk122k112k
+.kb1112kk22k122k
+.k112112kk2k23k.
+k1kk1t12k2k223kk
+k1k.kct2k2k23k2k
+.k.k.kk2kk2k2k3k
+kk1kkbk1k23k3k2k
+k12kkbb1yk23k23k
+.k12.kbbk2k3k3k.
+.k12kbcck2k2k3k.
+..k1kkbcck3k3kk.
+..kkkkbcck.k.k..
+....kybcyk......
+....kkkkkk......
+atk
+.........kkkk...
+k.......k1112kk.
+kk...kk.k122k12k
+.kk.kbbkkk2k122k
+k1kkkbk1kk2k23k.
+.k1kb1112k2k23kk
+..kk112112kk232k
+...k1kk1t12k23k.
+...k1k.tt2k2k3k.
+....kkk2kkk3k3k.
+...kk22kbk23k3k.
+..k1kkbbbk2k3k..
+.k12kkbck2k3k...
+.k1k.kbcck3k....
+.kk..kybcyk.....
+.....kkkkkk.....
+hurt
+............kkkk
+.....kk....k112k
+....kbbkk..k12k2
+....kk1112kk2k2k
+.....k11212kk23k
+....k1kkkk2k223k
+....k1k12t2kk23k
+.....k.kktk22k3k
+...k..k.kkk2k23k
+..k1k.kbk1kk3k3k
+..k12k.bb1yk3k3k
+...k12kbbk3k3k3k
+....k1kbck2k3k.k
+.....kkbck3k.k..
+.....kybcyk.....
+.....kkkkkk.....

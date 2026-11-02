@@ -1,0 +1,82 @@
+# Hyogamon
+k 101420
+1 a8d0e8
+2 78a4c0
+3 50789c
+4 345470
+w f8f8fc
+h c8c8d0
+i 90e8f8
+j 40a8f0
+r f03848
+s a81828
+b 484858
+y f8e848
+idle
+...k.k.k.k......
+..kikkwkhkhk....
+..kjkwwhwhhhk...
+...k1kwhwhhhk...
+..k112k112223k..
+.k112kyk12233kk.
+k112222223333k..
+kkwkwkwk22334k..
+.krrrrrrsk334kk.
+.krrssrssk33444k
+.kwkwkwkk233444k
+.kk.kkk11233k34k
+kiikk11k2333k34k
+kijjkkkbbbbbkk4k
+.kjk..k123k123k.
+..k...kkkkkkkkk.
+idle2
+....k.k.k.k.....
+..kikkkwkhkhk...
+..kjkwwhwhhhk...
+...k1kwhwhhhk...
+..k112k112223k..
+.k112kyk12233kk.
+k112222223333k..
+kkwkwkwk22334k..
+.krrssrrsk334kk.
+.kwkwkwkk334444k
+..kkkkkkk233444k
+kiik.kkk1233k34k
+kijjk1k12333k34k
+.kjkk.kbbbbbkk4k
+..k...k123k123k.
+......kkkkkkkkk.
+atk
+.k.....k.k.k.k..
+kik...kikkwkhkhk
+kijk..kjkwwhwhhk
+.kjik..k1kwhwhhk
+..kjkk112k11223k
+...kk112kyk1233k
+...kk1122222233k
+...kkwkwkwk2233k
+...krrrrrrrk234k
+...krrssrssk344k
+....kwkwkwkk344k
+...k1kkkkk1233k.
+..k12kk1223k34k.
+...kk.kbbbbkk4k.
+......k123k123k.
+......kkkkkkkkk.
+hurt
+.....k.k.k.k....
+....kikkwkhkhk..
+....kjkwwhwhhhk.
+.....k1kwhwhhhk.
+...k112k112223k.
+..k11kkk12233kk.
+.k11222222333k..
+.kkwkwkwk2233k..
+..krrssssk334k..
+.kkkwkwkkk3344k.
+kiik.kkk1233k34k
+kjjk.k122333k34k
+.kk..kkbbbbbkk4k
+......k123k123k.
+......k12kk12k..
+......kkkkkkkk..

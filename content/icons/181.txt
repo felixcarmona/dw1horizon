@@ -1,0 +1,81 @@
+# Puppetmon
+k 180e0c
+r e82818
+s 981008
+t e8d098
+u b88c58
+v 7c5c38
+y f8d820
+b 38a0e8
+c 1860a0
+g d0d0d8
+h 808088
+w f8f8f0
+idle
+......kkkk...kk.
+.....krrrrk.kyyk
+....krrrrrrk.kk.
+...krryyrrrskkk.
+..krryrrrrrssk..
+..kkkkkkkkkkkkkk
+kkkktwrktukgyghk
+kgggghttuukgghhk
+kkkkkkttuuvkghyk
+....ktuuvvk..kkk
+..kwwkkbybkkwuk.
+.kwwwkubbbukwwk.
+..kkkkbbcbbkkkk.
+.....kbckcck....
+...kttuk.ktuvk..
+...kkkkk.kkkkkk.
+idle2
+......kkkk......
+.....krrrrk.kk..
+....krrrrrrkkyk.
+...krryyrrrskkkk
+..krryrrrrrsskgk
+..kkkkkkkkkkkgyk
+...ktwrktukkhghk
+kkkkkhttuukghhgk
+kgggghttuuvkkkkk
+kkkkkktuuvvk.kuk
+...kwkkbybkkwuk.
+..kwwwkbbbukwwk.
+..kkkkbbcbbkkkk.
+.....kbckcck....
+...kttuk.ktuvk..
+...kkkkk.kkkkkk.
+atk
+.......kkkk...k.
+......krrrrkkkyk
+.....krrrrrrk.k.
+....krryyrrrsk..
+...krryrrrrrssk.
+.kkkkkkkkkkkkkk.
+kggykkktwrktukk.
+kghgggkghttuuvk.
+kgyhgkkkkttuuvk.
+kgggkuwwkkkvvk..
+.kkkkuuwwkbybk..
+.....kkkkkbbbk..
+........kbbcbbk.
+.......kuckkcbk.
+......kttuk.kuvk
+......kkkkk.kkkk
+hurt
+.........kkkk...
+.kk.....krrrrk..
+k.gk...krrrrrrkk
+.kggk.krryyrrrsk
+..kgkkrryrrrrsk.
+...kgkkkkkkkkkkk
+....kkttkkkuukk.
+.....ktttttuvk..
+.....kktuuvvk...
+..kwwkkkkkkkwwk.
+.kwwwkubbbukwwwk
+..kkkkbybbbkkkk.
+.....kbbcbbk....
+.....kbckcck....
+....kttuk.ktuk..
+....kkkkkkkkkk..

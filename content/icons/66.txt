@@ -1,0 +1,83 @@
+# Myotismon
+k 140a14
+y f8e040
+o c89820
+r f03828
+s b81c18
+t 982018
+u 701420
+w f8f8f8
+g b8c0d0
+p 9860d0
+q 643898
+e 40c8f8
+G 40b060
+f f0c8b0
+idle
+.k....kkkk....k.
+krk..kyyyyk..krk
+krrkkyyyyoykkrsk
+.krrkrrrrrrskrsk
+.krskwekrrrskstk
+..krkrrrrrsskstk
+..krskffkkfkkttk
+...krkkkkkkrtkk.
+..kkpGppqqkksstk
+.kppkGppqqksttuk
+.kppqkGpqqksttuk
+.kGGkGppqqksttuk
+kwwgkpqqkqksttuk
+kwkgkpqkqqkksuk.
+k.k.kGGkGGk.kuk.
+....kkkkkkk..kk.
+idle2
+k.....kkkk.....k
+krk..kyyyyk..krk
+krrkkyyyyoykkrsk
+.krrkrrrrrrskrsk
+.krskwekrrrskstk
+..krkrrrrrsskstk
+..krskfkfkfkkttk
+...krkkkkkkrtkk.
+.kkkkpGppqqkkstk
+kwwpkGppqqksttuk
+kwgpkGppqqksttuk
+.kkkkGppqqkssttk
+....kpqqkqksttuk
+....kpqkqqkstuk.
+....kGGkGGkkuk..
+....kkkkkkk.kk..
+atk
+.k....kkkk....kk
+krk..kyyyyk.kkrk
+krrkkyyyyoykrstk
+.krrkrrrrrrskstk
+.krskkwekrrskttk
+..krkrrrrrsskttk
+..krkfkkkfkkkttk
+...kkkfrfkrtkttk
+kggwkkppGpqkkstk
+kwwgkpppGpqqkstk
+kkkkkkkkGpqqkstk
+......kGppqksuk.
+......kpqkqqkstk
+.....kpqkkqqkkk.
+.....kGGk.kGGk..
+.....kkkk.kkkk..
+hurt
+..k....kkkk...k.
+.krk..kyyyyk.krk
+.krrkkyyyyoykrsk
+..krrkrrrrrrskrk
+..krskrkkkrrskrk
+...krkrrrrrssktk
+...krkfkkkfkkktk
+....krkfffkrtkkk
+...kkkkkkkkkkstk
+.kwkppGppqqkstk.
+.kgkqGppqqkstuk.
+..kkkkGpqqkstuk.
+.....kpqqkqkstk.
+.....kpqkkqqkkk.
+....kGGk..kGGk..
+....kkkk..kkkk..

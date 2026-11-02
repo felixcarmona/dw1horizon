@@ -1,0 +1,81 @@
+# BlackGatomon
+k 140e14
+1 6c6c78
+2 4c4c58
+3 343440
+y f8d830
+p b080e8
+q 7050a8
+n e89098
+b 4888f0
+c 2858b0
+r d83030
+w c8c8d0
+idle
+.kkk.......kkk..
+.kppkk...kkppk.k
+..kqp1kkk1nqkkpk
+...k1111111n1kqk
+..k111111112kkkk
+.k11ky1111ky2k2k
+.k11ky1111ky3k2k
+.k1111kk1122k32k
+..k111rr1223k3k.
+...kk11122kk.k3k
+..kkkk1122kkkk3k
+.kbbbck12kbbbck.
+.kbrrck23kbrrck.
+.kbbcck23kbbcck.
+.kwkwkk33kwkwkk.
+.kkkkkkkkkkkkk..
+idle2
+..kk.......kk.kk
+..kpkk...kkpkkpk
+..kqp1kkkk1nqkqk
+...k1111111n1kk.
+..k111111112kkkk
+.k11ky1111ky2k2k
+.k11ky1111ky3k3k
+.k1111kk1122k32k
+..k11kkkk223k3k.
+...kk11122kk.k3k
+.kbbbck122kkkk3k
+.kbrrck12kbbbck.
+.kbbcck23kbrrck.
+.kwkwkk23kbbcck.
+.kkkkk133kwkwkk.
+.....kkkkkkkkk..
+atk
+...kkk......kkk.
+...kppkk..kkppk.
+...kqp1kk1npqk.k
+....k11111n11kkp
+...k111111112kkq
+..kk1kkk11kkk2k2
+kbbbk1yk11yk2k3k
+kbrrck1y111y2k3k
+kbbcck1k1k122k3k
+kwkwk111kk222kk.
+kkkkkk11223kk...
+....kbbbck233k..
+....kbrrck223k..
+....kbbcck233k..
+....kwkwkk33k...
+....kkkkkkkkk...
+hurt
+................
+.kkk......kkk...
+.kppkk..kkppk.kk
+..kqp1kk1npqkkpk
+...k111111n1k.kq
+..k1111111112kk2
+.k11kk111kk12k3k
+.k11111111122k3k
+.kk1111kkk122kk.
+kbbk111krk222k..
+kbrck1kkk2233k..
+kbbck.k12233k...
+kwkk..kbbbck....
+.k...kbrrck2k...
+.....kwkwkk3k...
+.....kkkkkkkkk..

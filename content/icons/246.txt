@@ -1,0 +1,80 @@
+# Infermon
+k 180e14
+r f04838
+s b82028
+t 781018
+w f8f8f0
+g c8c8d0
+b 7080c8
+c 4c5898
+y e8d060
+o b09030
+e 50e050
+idle
+...kk.......kk..
+..kbck..k..kbck.
+.kbcck.kyk.kcbck
+.kbckkkrokkkkbck
+.kbkkrrwwrrskkck
+kbckrrwwrrssskck
+kbckrrrrwwssskck
+kbkrkkkrwwsstkck
+kbkrrkkkkkstkkck
+kckkrwwwgkk..kck
+kckkwewrgkbk.kck
+kbk.kwwwgkbk.kck
+kbk.kgkgkkbk.kbk
+kck.kkkk.kbk.kbk
+krk.krk..krk.krk
+krk.krk..krk.krk
+idle2
+...kk.......kk..
+..kbck.....kbck.
+.kbcck..k..kcbck
+.kbck.kyk.kkkbck
+.kbckkrokkkskkck
+kbckrrrwwrrsskck
+kbckrrwwrrssskck
+kbckrrrrwwsstkck
+kbkkkkkkrwwstkck
+kckkrkkkkkkkkkck
+kckkrwwwgkbk.kck
+kbkkwewrgkbk.kck
+kbk.kwwwgkbk.kbk
+kck.kgkgkkbk.kbk
+krk.kkkk.krk.krk
+krk.krk..krk.krk
+atk
+.......kk....kk.
+......kbck..kbck
+.....kbcckk.kcck
+.....kbckykkkkbk
+....kbckrrorskck
+....kbkrrwwrsskk
+...kbckrrrwwsskk
+.rk.kkkkkrwwstkk
+.krkwwgkkkkstkck
+..kwewwgrkkkkkck
+kkwwwwgkrk.kbkck
+krrrrkkkk..kbkck
+kwkwkgk....kbkck
+.kkkkk.kbk.kbkbk
+.......krk.krkrk
+.......krk.krkrk
+hurt
+................
+...kk...k...kk..
+..kbck.kyk.kbck.
+.kbcck.kok.kcbck
+.kbkkrrrrrrskkck
+kbckrwwrrsssskck
+kbckrrrwwrssskck
+kbkrkkkrwwsstkck
+kbkrkkkkkkkkkkck
+kckkwwwgkk..kbck
+kkkkkkkkgk...kck
+kbkkwwwgk.kbkkbk
+krk.kkkk.kbk.kbk
+krk..kbk.kbk.kbk
+.k..krk...krkrk.
+....krk...krkrk.

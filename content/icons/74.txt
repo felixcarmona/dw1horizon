@@ -1,0 +1,78 @@
+# Dokunemon
+k 141008
+1 c8f070
+2 88d840
+3 50a028
+4 306818
+y f8e880
+o d0b040
+p e850d0
+q 98208c
+idle
+...k.......kk...
+..k3k.....k3k...
+..k2k.....k3k...
+...k2k...k3k....
+...k2k..k3k.....
+..kk22kk33kk....
+.k1122222334k...
+.k12kkkk2334k...
+.kkkykkkkk34k...
+kppkk1222334k...
+kpqqpk223344k...
+.kqqkkkkkk4k..k.
+..kkyyokk34k.kpk
+.kpkkkkk3k34kkqk
+..kkyookk3k2k34k
+...kkkkkkkkkkkk.
+idle2
+....k.......kk..
+...k3k.....k3k..
+..k2k.....k3k...
+..k2k.....k3k...
+...k2k...k3k....
+..kk22kk33kk....
+.k1122222334k...
+.k12kkkk2334k...
+.kkkykkkkk34k...
+kppkk1222334k...
+kkkkpk223344k...
+.kpqkkkkkk4k...k
+..kkyyokk34kkkpk
+.kpkkkkk3k34k3qk
+..kkyookk3k2k34k
+...kkkkkkkkkkkk.
+atk
+.....k.......kk.
+....k3k.....k3k.
+.....k3k...k3k..
+.....k2k..k3k...
+...kkk2kkk3kk...
+..k1122222334k..
+..k12kkkk2334k..
+..kkkykkkkk34k..
+.kppkk1222334k.k
+kppqqk22334kkkpk
+kqppqkkkkkk4k4qk
+kppqkyyokk34k34k
+.kkkkyookk3k334k
+.k.kyyookk3k2k3k
+.p.kkyookk3k2k3k
+...kkkkkkkkkkkk.
+hurt
+......k......kk.
+.....k3k....k3k.
+.....k2k....k3k.
+......k2k..k3k..
+......k2k.k3k...
+.....kk22k33kk..
+....k1122222334k
+....k1kkkkk2334k
+....k2222222334k
+....kkkk1222334k
+...kppkk223344k.
+...kqqkkkkk34k..
+....kkyyok34kkk.
+....kyyook3kk3pk
+...kkyookk3k23qk
+...kkkkkkkkkkkk.

@@ -1,0 +1,79 @@
+# Plesiomon
+k 180a0e
+w f8f8f0
+c f0e8c8
+d c8bc90
+e 908868
+o f88830
+O f8c060
+b 88b8f0
+B 5880c8
+g 30b078
+idle
+...kkkk.k.......
+.kkwwwkkOk.k....
+kwwwwkgkkkOk....
+kccwwwwcdkkk....
+.kkkcccddk......
+...kkkwcdk...kk.
+.....kwcdk..kwk.
+.....kwcdk.kkck.
+.....kwcckkokkck
+....kwwwcdkOkdck
+...kwwwwwcdkkcdk
+..kwwbwwwbcddcek
+..kwBwwwBwccdek.
+.kkwwkkkwwkkkk..
+kbwkk...kbwk....
+kkkk....kkkk....
+idle2
+...kkkk..k......
+.kkwwwkkkOk.k...
+kwwwwkgkkkkOk...
+kkkcwwwcdkkk....
+..kkkccddk...k..
+....kkwcdk..kwk.
+.....kwcdk..kck.
+.....kwcdk.kkck.
+.....kwcckkokdck
+....kwwwcdkOkdck
+...kwwwwwcdkkcdk
+..kwwbwwwbcddcek
+..kwBwwwBwccdek.
+.kkwwkkkwwkkkk..
+.kbwk..kbwk.....
+.kkkk..kkkk.....
+atk
+................
+..kkkkkk.k......
+.kwwwwwkkOk.k...
+kwwwkgwwkkkOk...
+kccwwwwwcdkkk...
+kkkkkkkkwcdk.kk.
+bbkkkkwkkwcdkkwk
+.bkkkkk.kwcdkkck
+.........kwcdkck
+.......kwwwcdkck
+.....kwwwwwcdkck
+....kwwbwwwbcdek
+....kwBwwwBwcdek
+...kkwwkkkwwkkk.
+..kbwkk...kbwk..
+..kkkk....kkkk..
+hurt
+......kkkk.k....
+....kkwwwwkOk.k.
+...kwwwwkkkkkOk.
+...kccwwwwcdkkk.
+....kkkcccddk...
+......kkwcdk..kk
+.......kwcdk.kwk
+......kwcdk.kkck
+.....kwcckkokkck
+....kwwwcdkOkdck
+...kwwwwwcdkkcdk
+..kwwbwwwbcddcek
+..kwBwwwBwccdek.
+.kkwwkkkwwkkkk..
+kbwkk...kbwk....
+kkkk....kkkk....

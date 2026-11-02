@@ -1,0 +1,81 @@
+# Gryphonmon
+k 180a0e
+1 d8d8f8
+2 9098e0
+3 5850a8
+w f8f8f0
+g c0b8b0
+y f8e050
+o e0a828
+d a07018
+b b07848
+c 704028
+r e02828
+idle
+...kkkk....kkk..
+..k1112k..kbbbkk
+.k11122k.kbbcccc
+k1112k2kkbbcrckk
+k11k3r22kbbcrck.
+k1k.k322kbbcrck.
+k2k.kwwk3kbcck..
+.k.kwwwwkkkkkk..
+...kgwwyyoyokkk.
+....kwykyyokoyok
+.....kyyoyoookyk
+....kyykkyoodkok
+...kyok..kkoodkk
+...kok....kook..
+..k1k1k..kok.kk.
+..kkkkk.k1k1k...
+idle2
+..........kkkkk.
+...kkkk..kbbbbbk
+..k1112k.kbbcccc
+.k11122kkbbcrckk
+k1112k2kkbbcrck.
+k11k3r22kbbcrck.
+k1k.k322kkbcck..
+k2k.kwwk3kkkkk..
+.kkkwwwwkyoyokk.
+.rk.kgwwyyokoyok
+....kkykyyoookyk
+....kyykkyoodkk.
+...kyok..kkoodk.
+...kok....kook..
+..k1k1k..kok.kk.
+..kkkkk.k1k1k...
+atk
+.....kkkk.......
+...kk1112k...kkk
+..k111122k.kkbbk
+.k1111k222kkbbcc
+k111k3r222kbbcrc
+k11kkk222kbbcrck
+k1krrkwk3kbcrck.
+k1k.kwwwkkbcck..
+.k..kgwwwyokkkk.
+.....kwwyyoyookk
+....kkgyykyoodok
+..kyok.kyyoodkyk
+.kyok...kkoodkok
+k1k1k.....kook.k
+.kkk.....kok....
+........k1k1k...
+hurt
+.......kkkk..kkk
+.....kk11122kbbk
+....k1111k22kbcc
+...k1112kkk2kbcr
+...k112k222kbbcr
+...k1k.k322kbbck
+...kk.kwwwkkbcck
+.....kgwwwyokkkk
+.....kwwyyoyokk.
+.....kwykyooooyk
+....kyykkyyoodok
+...kyok..kkoodkk
+...kok....kook..
+...k1k1k..kok...
+...kkkkk.k1k1k..
+........kkkkk...

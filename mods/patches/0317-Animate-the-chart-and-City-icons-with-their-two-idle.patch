@@ -1,0 +1,77 @@
+From 6363822eebf6e3d2a611bbbb17aa7fd535d0ceb0 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Sun, 1 Nov 2026 23:08:56 +0000
+Subject: [PATCH] Animate the chart and City icons with their two idle frames
+
+The chart block now holds both idle frames of each icon, seven to a sector. The second frames sit below the first ones in the same texture page, and every box alternates them, faster under the cursor. The hand-drawn pairs of the original sheet alternate the same way.
+---
+ include/dw/species.h |  6 +++---
+ src/main/game_menu.c | 11 ++++++++---
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 4d5978b..769433d 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -221,12 +221,12 @@ void loadSpeciesPortrait(int32_t type, int32_t x, int32_t y, int32_t rows, int32
+  * MOD (chart): the evolution chart's block, written by tools/species.py (chart_tabs, chart_block). Its first sector
+  * holds the number of species of each tab (CHART_TABS: Fresh and In-Training, Rookie, Champion, Ultimate, Mega) and
+  * their ids, tab after tab, in the chart's order; the sectors after it the icons in the same order,
+- * SPECIES_CHART_ICONS_PER_SECTOR to a sector: a 16-colour CLUT and the 16x16 4 bpp idle frame (blank for the species
++ * SPECIES_CHART_ICONS_PER_SECTOR to a sector: a 16-colour CLUT and the two 16x16 4 bpp idle frames (blank for the species
+  * of the chart sheet, which keep their hand-drawn icon).
+  */
+ #define SPECIES_CHART_TABS		5
+-#define SPECIES_CHART_ICON_SIZE		0xA0
+-#define SPECIES_CHART_ICONS_PER_SECTOR	12
++#define SPECIES_CHART_ICON_SIZE		0x120
++#define SPECIES_CHART_ICONS_PER_SECTOR	7
+ /* the sector `k` of the chart block (0: the counts and ids, 1.. the icons) read into the species sector buffer, which
+  * the next read of DIGI.DAT reuses; NULL when the file has no chart block */
+ /* City sector pointer at header byte 0x38; zero in archives without City. */
+diff --git a/src/main/game_menu.c b/src/main/game_menu.c
+index 640288b..e6d4bb4 100644
+--- a/src/main/game_menu.c
++++ b/src/main/game_menu.c
+@@ -4055,6 +4055,7 @@ void recalculateProsperity(void);
+ #define CHART_ICON_X		576	/* the page's icons: 16 a row, 4 halfwords each */
+ #define CHART_ICON_Y		288
+ #define CHART_ICON_TPAGE	((CHART_ICON_Y / 256) * 16 + CHART_ICON_X / 64)
++#define CHART_ICON2_Y		400	/* the second idle frames, below the first ones in the same texture page */
+ #define CHART_CLUT_X		640	/* their CLUTs: 4 a row */
+ #define CHART_CLUT_Y		288
+ #define CHART_LABEL_ROW		0x60	/* text area rows: the tab names, the name under the cursor, the counters */
+@@ -4221,6 +4222,8 @@ static void chartLoadPage(int32_t row)
+ 		}
+ 		setRECT(&rect, CHART_ICON_X + (slot % 16) * 4, CHART_ICON_Y + (slot / 16) * 16, 4, 16);
+ 		LoadImage(&rect, (u_long *)(s + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE + 0x20));
++		setRECT(&rect, CHART_ICON_X + (slot % 16) * 4, CHART_ICON2_Y + (slot / 16) * 16, 4, 16);
++		LoadImage(&rect, (u_long *)(s + (g % SPECIES_CHART_ICONS_PER_SECTOR) * SPECIES_CHART_ICON_SIZE + 0xA0));
+ 	}
+ 	DrawSync(0);
+ }
+@@ -4590,7 +4593,9 @@ void renderEvoChartView(void)
+ 				continue;
+ 			}
+ 			chartBoxXY(k % CHART_COLS, k / CHART_COLS, &bx, &by);
+-			shift = (id == CHART_SELECTED_DIGIMON) && (1 < MENU_STATE) && ((PLAYTIME_FRAMES % 10) < 5);
++			/* two idle frames: a quarter of a second each under the cursor, half a second elsewhere, out of step */
++			shift = ((id == CHART_SELECTED_DIGIMON) && (1 < MENU_STATE)) ? ((PLAYTIME_FRAMES % 10) < 5)
++			                                                             : (((PLAYTIME_FRAMES + k * 3) % 20) < 10);
+ 			slot = chartSlot(k);
+ 			if (id <= NUM_EVO_CHART_DIGIMON) {
+ 				renderRectPolyFT4(bx - 0xa0, by - 0x78, 0x10, 0x10,
+@@ -4599,8 +4604,8 @@ void renderEvoChartView(void)
+ 				                  ? GetClut(CHART_CLUT_X + (slot % 4) * 16, CHART_CLUT_Y + slot / 4)
+ 				                  : cluts.m[EVO_CHART_BOXES[id - 1].clut], 5, 0);
+ 			} else {
+-				renderRectPolyFT4(bx - 0xa0, by - 0x78 - shift, 0x10, 0x10, (slot % 16) * 16,
+-				                  CHART_ICON_Y - 256 + (slot / 16) * 16, CHART_ICON_TPAGE,
++				renderRectPolyFT4(bx - 0xa0, by - 0x78, 0x10, 0x10, (slot % 16) * 16,
++				                  (shift ? CHART_ICON2_Y : CHART_ICON_Y) - 256 + (slot / 16) * 16, CHART_ICON_TPAGE,
+ 				                  GetClut(CHART_CLUT_X + (slot % 4) * 16, CHART_CLUT_Y + slot / 4), 5, 0);
+ 			}
+ 		}
+-- 
+2.55.0
+

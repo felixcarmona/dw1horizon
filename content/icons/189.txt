@@ -1,0 +1,80 @@
+# Ankylomon
+k 180e08
+y f8e860
+o e8b828
+d b08018
+e 785410
+g d0d0d8
+h 808494
+n 484c5c
+p 7860c0
+q 483890
+b 40d088
+idle
+....k...k...k.k.
+...kgk.kgk.knkhk
+...khkkkhkkknhnk
+..kkyyoyyook.knk
+..kyyokyoooddkk.
+.kkkkkyokoodddk.
+kyyyyokyooeddekk
+kykkyokoodeddekk
+kybkyokyoodedek.
+kyyyoodkoodddek.
+kggkkkkkoddeekk.
+.kkkqpkkkkkkkqk.
+..kqpkyodk.kyodk
+..kyoodk...kyodk
+.kyyoddk..kyyodk
+.kkkkkkk..kkkkkk
+idle2
+....k...k.......
+...kgk.kgk...kk.
+...khkkkhkk.khnk
+..kkyyoyyook.knk
+..kyyokyoooddenk
+.kkkkkyokoodddkk
+kyyyyokyooeddekk
+kykkyokoodeddekk
+kybkyokyoodedek.
+kyyyoodkoodddek.
+kkkkkkkkoddeekk.
+kggookkkkkkkkqk.
+.kkkkkyodk.kyodk
+..kyoodk..kyoddk
+.kyyoddk.kyyoddk
+.kkkkkkk..kkkkkk
+atk
+..k...k.........
+.kgk.kgk.......k
+.khkkkhkk...k.kh
+kkyyoyyook..khkn
+kyyokyoooddkkkhk
+kkkkkyokoodddkkk
+yyyokyookddekk..
+kkyokoodkddekk..
+bkyokyoodedek...
+yyoodkoodddekk..
+ggkkkkkoddeekk..
+kkkkooyykkkkkqk.
+gkggkyyoodkkyodk
+kkkkkkkkkkkkyodk
+.........kyyoddk
+.........kkkkkkk
+hurt
+......k...k....k
+.....kgk.kgk..kh
+.....khkkkhkk.kn
+....kkyyoyyookkk
+....kyyokyoooddk
+..kkkkkkyoeooddk
+.kyyyyyokyooddek
+.kyyyyokoodedekk
+kkkkkyokyoodeekk
+.kkkyoodkoodddek
+.kgkkkkkkoddeekk
+..kk.kqkkkkkkkqk
+....kqkyodk.kyod
+....kyoodk..kyod
+...kyyoddk.kyyod
+...kkkkkkk.kkkkk

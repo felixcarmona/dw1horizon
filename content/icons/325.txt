@@ -1,0 +1,82 @@
+# Musyamon
+k 180a0e
+r f85838
+s d02820
+t 901410
+y f8e850
+z d0a020
+b 6888f8
+c 3050c0
+o b8b068
+p 807840
+w f8f8ff
+g 98a0b8
+e f8f8f0
+idle
+.....kyykkyk....
+....kyyyyzzk....
+...kkkyyzkkk.kk.
+..krrrrssssk.kbk
+.krrkekrrsstkbbk
+.krrrrrsssskkbck
+k.krkkkkrskkbbck
+wk.krwwrskrrkbck
+gwk.kkkkssrskcck
+kgwk.krkssstkck.
+.kgwkrrkkkskkck.
+..kkrrskoopkkk..
+...kkkkoopopk...
+.....koopkppk...
+....kbcck.kbck..
+....kkkkk.kkkkk.
+idle2
+.....kyykkyk....
+....kyyyyzzk.kk.
+...kkkyyzkkkkbbk
+..krrrrssssk.kck
+.krrkekrrsstkbbk
+.krrrrrsssskbbck
+.kkkkkkkrskkkbck
+.krwwwkrskrrkcck
+k.kkkksssrrskck.
+wk..krrkssstkk..
+gwkkrrskkkskk...
+kgwkrskoopkk....
+.kkkkkkoopopk...
+.....koopkppk...
+....kbcck.kbck..
+....kkkkk.kkkkk.
+atk
+........kyykkyk.
+.......kyyyyzzk.
+......kkkyyzkkk.
+.....krrrrsssskk
+....krrkekrrstkb
+....krrrrrssskbb
+.kk..kkkkkkrskbc
+kwwkk.krwwksskkc
+kgwwwkkkkkssrkkc
+.kkgwwkrrrsrrskk
+...kkggrrsssstk.
+.....kkkkkskkkk.
+.......koopopk..
+......koopkkppk.
+.....kbcck.kbck.
+.....kkkkk.kkkkk
+hurt
+.......kyk.kyk..
+......kyyykyzk..
+.....kkkyyyzkk..
+....krrrrrsssk..
+...krrrrrrrsstk.
+...krkkrkkrsstk.
+...krrrrrrrsskk.
+....krkkkkrskbk.
+.w...kkrrkkkbbk.
+kgk..krrsssrkbck
+.kwk.krsrrrskbck
+..kgkkrkssstkck.
+...kkrrkoopkck..
+....kkkoopopkk..
+....kbcckkbcck..
+....kkkkk.kkkkk.

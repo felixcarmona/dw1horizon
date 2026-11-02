@@ -1,0 +1,78 @@
+# Salamon
+k 1a1214
+1 f8f8e8
+2 e0d8b8
+3 b8a880
+b 3868e0
+n f8b0b0
+y f8d840
+o c89820
+r d04848
+idle
+.....kkkkkk.....
+...kk111111kk...
+..k1111111112k..
+.k1k11111111k2k.
+k11k1kk11kk1k22k
+k11k1bk11bk1k22k
+k11k1bk11bk2k23k
+k12kn111k11n2k3k
+k22k111k1k122k3k
+.kkk11111122kkk.
+...kkyyyyookk...
+..k11k1112k23k..
+..k11k1122k33k..
+..k112k223k33k..
+..k122k33kk33k..
+..kkkkkkkkkkkk..
+idle2
+.....kkkkkk.....
+...kk111111kk...
+.kkk11111112kkk.
+k11k1111111k222k
+k11k1kk11kk1k23k
+k1kk1bk11bk1kk3k
+.k.k1bk11bk2k.k.
+...kn111k11n2k..
+...k111kkk122k..
+...kk1111122kk..
+...kkyyyyookk...
+..k11k1112k23k..
+..k11k1122k33k..
+..k112k223k33k..
+..k122k33kk33k..
+..kkkkkkkkkkkk..
+atk
+....kkkkkkk.....
+..kk1111111kkkk.
+.k11111111k1222k
+k1111111112k2223
+k1kk111kk12k233k
+k1bk111bk22k3kk.
+k1bk111bk22kk...
+k11111k11122k...
+kkkkkkkk1122k...
+krrrrrk11223k...
+.kkkkk11123kk...
+....kyyyyookk...
+...k111k122k33k.
+..k1112kk233k3k.
+.k1122k.kk33k3k.
+.kkkkkk..kkkkkk.
+hurt
+................
+..........kkkkk.
+.......kkk1111k.
+.kkk..k111111122
+k111kk1111111k22
+k112k1kkk1kkk1k2
+k22k11111111k12k
+.kkk1k111111k2kk
+...k11kkk112kk..
+...kk11k1122k...
+.....kkyyyookk..
+....k11k1112k3k.
+....k11k1223k3k.
+....k12kk233k33k
+...k12k.kk33kk3k
+...kkkkk.kkkkkkk

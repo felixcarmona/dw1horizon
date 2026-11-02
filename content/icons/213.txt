@@ -1,0 +1,81 @@
+# AeroVeedramon
+k 180a0e
+a 90c0f0
+b 5088d0
+c 3060a0
+w f8f8f8
+v d8d0c0
+u a09880
+r e82040
+m a81838
+n 701028
+g c8c8d0
+e 8890a0
+idle
+.............kbk
+.......k....kbrk
+......kgk..kbrrk
+..k...kgk.kbrrmk
+.kgk.kkkkkbrrmnk
+.kgkkaabbkrrmmk.
+kgekaabrrbkrmkkk
+kwwwwwbkrbckkbck
+kwwwwwwwkbbcbbck
+kkkkkkkwwkbbcck.
+.kvvvvkwwvkbbck.
+..kkkkvwvvvkbbk.
+.kwwkvvvvvuukk..
+kwvkkvvvkvuuk...
+kkk.kwvwkkwvwk..
+....kkkkk.kkkkk.
+idle2
+................
+.......k......kk
+......kgk...kkbk
+..k...kgk.kkbbrk
+.kgk.kkkkkbrrrmk
+.kgkkaabbkrrrmnk
+kgekaabrrbkrmnkk
+kwwwwwbkrbckkkbk
+kwwwwwwwkbbcbbck
+kvvkkkkwwkbbcck.
+.kkkkkkwwvkbbck.
+.kvvvkvwvvvkbbk.
+.kwwkvvvvvuukk..
+kwvkkvvvkvuuk...
+kkk.kwvwkkwvwk..
+....kkkkk.kkkkk.
+atk
+............kbk.
+......k....kbrk.
+.....kgk..kbrrk.
+.k...kgk.kbrrmk.
+kgk.kkkkkbrrmnk.
+gkkaabbkrrrmmkkk
+ekaabrrrbkrmkbck
+wwwwwbkrbckkbbck
+kkkkkkwkbbcbbck.
+krrrrkkwwkbbck..
+kwkwkkwwvkbbck..
+.kkkkvwvvvkbbk..
+.kwwkvvvvvuukk..
+kwvkkvvvkvuuk...
+kkk.kwvwkkwvwk..
+....kkkkk.kkkkk.
+hurt
+.......kkkk....k
+...kk.kbbrrkk.kb
+.....krrrrmmkkbr
+...k...kkkrrmbrk
+..kgk.kkkkrrmrmk
+..kgkkaabbkrmmk.
+.kgekaakkbkmmkkk
+.kwwwwbbbbckkbck
+.kwwwwwwkbbcbbck
+.kvvkkkkkkbbcck.
+..kkkkwwwvkbbck.
+...kkvwvvvkbbk..
+..kwwkvvvvuukk..
+.kwvkkvvkvuuk...
+.kkk.kwvwkkwvwk.
+.....kkkkk.kkkkk

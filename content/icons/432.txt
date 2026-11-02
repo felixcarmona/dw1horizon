@@ -1,0 +1,84 @@
+# Bastemon
+k 180a0e
+r f09080
+s d06058
+t 903838
+g c8c0c0
+w f8f8f0
+l c8b0f8
+m 8870c8
+y f8e870
+o d8c040
+p 907818
+n 686070
+q 403848
+h f040a0
+f e8b898
+idle
+...k......kk....
+..kgk....kgwk...
+..kgwk.kkkwwk...
+..kgrrrrrrgwk...
+..krrrrrrrrrrk..
+.krrsssrrrrrssk.
+.krfffffksrrsstk
+.krfkyfkykrrsstk
+..kllllkrrrsstk.
+.kkkmmkfkrsstk..
+knqkkfkknqsstk..
+khnqkyyyyknqkk..
+.kkkyoyypyknqk.k
+...kyypyyoykhkok
+...kyyokyoopkkqk
+..khhkk.khhkkkk.
+idle2
+...kk.....kk....
+..kgwk...kgwk...
+...kgwkkkkwwk...
+..kgrrrrrrgwk...
+..krrrrrrrrrrk..
+.krrsssrrrrrssk.
+.krfffffksrrsstk
+.krfkyfkykrrssk.
+..kllllkrrrsstk.
+.kkkmmkfkrrsstk.
+kqnkkfkkknqsstk.
+khqkkyyyyknqkkk.
+khkkyoyypyknqkok
+...kyypyyoykhkqk
+...kyyokyoopkkk.
+..khhkk.khhkk...
+atk
+.....k......kk..
+....kgk....kgwk.
+....kgwk.kkkwwk.
+....kgrrrrrrgwk.
+....krrrrrrrrrrk
+...krrsssrrrrrss
+...krfffffksrrss
+...krfkyfkykrrss
+....kllllkrrrsst
+.kkkkkmmkfkrsstk
+khhnnqqkfkknqstk
+khkkkkkkyyyyknkk
+.....kyoyypyknqk
+....kyypyyoykhkk
+....kyyokyoopkkq
+...khhkk.khhkkkk
+hurt
+......k.....kk..
+.....kgk...kgwk.
+.....kgwkkkkwwk.
+.....kgrrrrrrgwk
+.....krrrrrrrrrk
+....krrsssrrrrsk
+....krffffksrrst
+....krkkfkkkrrst
+.....kllllkrrsst
+...k.kkmmkfkrstk
+..kqk.kkfkknqstk
+..knqkkyyyyknqk.
+...knqkoyypyknqk
+....kkypyyoykhkk
+...kyyokyoopkkqk
+..khhkk.khhkkkk.

@@ -1,0 +1,79 @@
+# Tuskmon
+k 140e08
+g a0d848
+h 60a830
+i 387820
+a 908898
+b 585460
+r e02828
+c f0e8b0
+m e05088
+y f8e038
+idle
+...kkkkkkkk.....
+..kaabrrbaakk...
+.kaabrrbaabbak..
+.kbbkkkkkkkrrbk.
+.krrk.kck.k.kbbk
+.kbbkkgcgkgk.kkk
+..kkggmgghhghhck
+.kgyykgmhhhhihhk
+kggkkggmhhmhiihk
+kggggghhhhhiiick
+kkckckchhhhiiiik
+krrrrrkkhiikkiik
+.kkkkkchhkkkchk.
+.....khhik.khik.
+....kciick.kcick
+....kkkkkk.kkkkk
+idle2
+....kkkkkkkk....
+...kaaabrrbakk..
+..kaabaabrrbbak.
+.kbrrkkkkkkkbbrk
+.kbbk..kck.k.kbk
+.krbkkgcgkgk..kk
+..kkggmgghhghhck
+.kgyykgmhhhhihhk
+kggkkggmhhmhiihk
+kggggghhhhhiiick
+kkkkkkkhhhhiiiik
+.kckckchhiikkiik
+..kkkkchhkkkchk.
+...khhik...khik.
+..kciick...kcick
+..kkkkkk...kkkkk
+atk
+.....kkkkkkkk...
+....kaabrrbaakk.
+...kaabrrbaabbak
+...kbbkkkkkkkkrk
+...krrkkkck.k.kk
+...kbbggkcgkgkk.
+..kkkgmgghhghhck
+.kgyykgmhhhhihhk
+kggkkggmhhmhiihk
+kggkkkkhhhhiiick
+kcckrrrkhhiiiiik
+krrrrrrkhiiikiik
+kckcckkchhkkchk.
+.kkkk.khhik.khik
+.....kciick.kcik
+.....kkkkkk.kkkk
+hurt
+......kkkkkkkk..
+.....kaabrrbaakk
+....kaabrrbaabak
+....kbbkkkkkkkkk
+....krrk.k.k....
+...kkbbkkckck...
+..kggggggcgcgkk.
+.kgkkkgmhhhhhhck
+.kgggggmhhmhiihk
+.kkcgggghhhhiiik
+..krkkkghhiiiiik
+...kk.kghhiikiik
+.....kchhkkkchk.
+.....khhik.khik.
+....kciick.kcick
+....kkkkkk.kkkkk

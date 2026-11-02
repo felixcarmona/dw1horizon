@@ -1,0 +1,81 @@
+# Armadillomon
+k 1c1008
+1 f8e848
+2 e8b020
+3 a87410
+u f0d070
+s c89038
+t 8c5c18
+r f06028
+g 38c878
+w f8f8f0
+c b0a8a0
+b 3840a8
+idle
+.....kkkkkkk....
+...kkuuutssskk..
+..kuuuutsssstsk.
+.kuuuutsssstsstk
+.kuuutssstsstttk
+.k..kutsstsstttk
+k1kk1kkkkstsstk.
+k1k1r112kkstttk.
+.k1rrr123ktttkk.
+kk1kk1123kkwwbk.
+k11gk1223kwwbbk.
+k1111122kkkkkk1k
+.kkkk223kk12k12k
+..k12k3kk12k1k3k
+..k1k1k.k1k3kkk.
+..kckck.kckck...
+idle2
+.....kkkkkkk....
+...kkuuutssskk..
+..kuuuutsssstsk.
+.kuuuutsssstsstk
+.kuuutssstsstttk
+kk.kkutsstsstttk
+k1k11kkkkstsstk.
+.k11r112kkstttk.
+kk1rrr123ktttkk.
+k11kk1123kkwwbk.
+k11gk1223kwwbbkk
+kkkkk122kkkkk1k.
+krrrk223kk12kk1k
+.kkkk3kkk12k1k3k
+..k12k1k.k1k3kk.
+..kckck.kckck...
+atk
+....kkkkkkk.....
+..kkuuutsssskk.k
+.kuuuutssstsstk1
+kuuuutsssstssttk
+kuuutssstsstttk.
+kkkuutsstsstttk.
+k1kk1kkkkstsstk.
+k1k1r112kkstttk.
+.k1rrr123ktttk..
+kk1kk1123kkwwbk.
+k1kgk1223kwwbbk.
+k1rrkk22kkkkkkk.
+kkwkk223kk12k2k.
+.kkk.k3kk12k1k3k
+.....k1k.k1k3kk.
+.....kck.kckck..
+hurt
+.......kkkkkkk..
+.....kkuuutssskk
+....kuuuutsssstk
+...kuuuutsssstsk
+.k.kuuutssstsstk
+k1kk.kkutsstsstk
+k11kk1kkkkstsstk
+.k1k1r112kkstttk
+..k1rrr123ktttkk
+.kkkkkk1123kkwwk
+.k11111223kwwbbk
+.k111rr22kkkkkkk
+..kkkkk223k12k1k
+...k12k3kk12k3k.
+...k1k1k.k1k1k..
+...kckck.kckck..

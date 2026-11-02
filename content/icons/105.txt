@@ -1,0 +1,78 @@
+# Gururumon
+k 14121c
+a e4e4ec
+b c0c0cc
+c 8c8c9c
+d 404050
+n 4c4c90
+r c83040
+e 4870d0
+w f8f8f0
+idle
+...kk.kk......k.
+...kakkak....kbk
+...kabkabk...kdk
+..kkabkabkk..kbk
+..kaabbbbddk.kdk
+.kkaddkkbbbkkkbk
+kddaaakebdbbaabk
+kdaaaabbbdkabdck
+kkkkkkkbbdkadbck
+.kwkwrkkabdbdcck
+..kkkkkbabdbcdck
+....kaabdkkkbdck
+...kabdk...kbbck
+...kabck..kbcck.
+..knnnk..knnkkn.
+..kkkkk..kkkkkk.
+idle2
+.......kk.....k.
+...kk.kak...kkbk
+...kakkabk..kdk.
+...kabkabkk.kbk.
+..kkabbbbdk..kdk
+..kaabbbbddkkkbk
+.kkaddkkbbbbaabk
+kddaaakebdkabdck
+kdaaaabbbdkadbck
+kkkkkkkbbdbdbcck
+.kwrkrkkabdbcdck
+..kkkkkkdkkkbdck
+...kabdk...kbbck
+..kabck...kbcck.
+..knnnk..knnkkn.
+..kkkkk..kkkkkk.
+atk
+..kk.kk.......k.
+..kakkak.....kbk
+..kabkabk...kkdk
+.kkabkabkk.kaabk
+.kaabbbbddkaabck
+kkaddkkbbbbbbdck
+ddaaakebdbbdbcck
+daaaabbbdkabdcck
+kkkkkkkkaabdbck.
+.wkwkrrkabdbcck.
+..krrrrkbabdcdck
+.kwkwkkkdbdkkbck
+.kkkkkabdk..kbck
+...kabck...kbcck
+..knnnk...knnkkn
+..kkkkk...kkkkkk
+hurt
+.......kk.kk....
+.......kakkak...
+.......kabkabk.k
+......kkabkabkkb
+....kkbbbbddk.kd
+...kaabddbbbkkkb
+..kaakdkbbbbaabk
+..kdaabbdbbadbck
+..kaaaakdkabdcck
+...kkkkkkaabdbck
+....kwrwkabdbdck
+.....kkkkbabcdck
+......kabdkkkbdk
+.....kabck.kbbck
+....knnnk.knnkk.
+....kkkkk.kkkkk.

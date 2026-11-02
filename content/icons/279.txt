@@ -1,0 +1,78 @@
+# MarineDevimon
+k 0c0c20
+1 80a0e8
+2 3c60c0
+3 203888
+r f82838
+a d0e8f8
+b 80b0e0
+w f8f8f8
+y f8d840
+idle
+.......kk.......
+......k12k......
+..kk.kk122kk.kk.
+.kaak1122233kbak
+kabk112222233kak
+kakk1r2222r33kak
+kak.k1rr2rr33kbk
+kak.kk2wkw23kkbk
+kbk.k2krrrk3kkbk
+kbkk122kkk233kbk
+kwakk23yy23kkkwk
+kwwk.k23y2k.kwak
+.kk.k122k233k.k.
+...kba2k2kbbk...
+..kkbakk.kkabkk.
+.kkkkkkk.kkkkkkk
+idle2
+.......kk.......
+......k12k...kk.
+.kk..kk122kkkbak
+kaakk1122233kkak
+kabk112222233kbk
+kakk1r2222r33kbk
+kwk.k1rr2rr33kbk
+kwwkkk2wkw23kkbk
+.kk.k2krrrk3k.bk
+.....k2kkk33kkwk
+...kkk23yy2kkkwk
+..kbkk23y2k..kk.
+..kak122k233k...
+...kba2k2kbbk...
+..kkbakk.kkabkk.
+.kkkkkkk.kkkkkkk
+atk
+.kk.....kk......
+kwwk...k12k.....
+kawak.kk122kk...
+.kbak1122233k.k.
+..kak12222233kak
+..kkr1r222r33kak
+...kk1rr2rr3kkbk
+.kkkk2kkkkk3k.bk
+kbakkkwkkkwkk.bk
+kak..krrrrrk2kbk
+kak.kkkwkwk33kbk
+kwk.k2k3yy3k2kwk
+kwwkkk23y2kkkkwk
+.kkk122k2333k.k.
+..kkbakkkkkabkk.
+.kkkkkkk.kkkkkkk
+hurt
+.........kk.....
+........k12k....
+...kk.kk122kk...
+..kwak1122233k..
+.kakk112222233k.
+.kak.k1kk2kk33k.
+.kbk.k12222233kk
+kak...k2kkk3kkbk
+kbk..kk22333k.ak
+kbkkk123k33k2kak
+kwk.kk23y33kkkbk
+kwwk..k3yy3k.kwk
+.kk..kk3y2kk.kkk
+....k12k3k23k...
+...kbakk.kkabkk.
+.kkkkkkk.kkkkkkk

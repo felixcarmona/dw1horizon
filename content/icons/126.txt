@@ -1,0 +1,79 @@
+# Brachiomon
+k 18140c
+1 f0ecc8
+2 c8c498
+3 949070
+4 66624c
+b 78a8d0
+c 487098
+g d8d8c8
+h 908c80
+r c03020
+idle
+...kk...........
+..kghkk.........
+.k1gh22k........
+k111kk33k.......
+k11kgk33k.......
+krkrkk33k.......
+.kkkk133k.......
+....k12b4k......
+....k12b4k...kk.
+....k123bk...k3k
+....k123c3kk.k4k
+....k1222333bk4k
+...k122b23cb34k.
+...k222b33cb34k.
+...k12k3k12k44k.
+...kkkk.kkkk.kk.
+idle2
+...kk...........
+..kghkk.........
+.k1gh22k........
+k111kk33k.....k.
+k11kgk33k....k3k
+kkkkkk33k....k4k
+krrrk133k....k4k
+.kkkk2b4k...k34k
+....k12b4k..k34k
+....k123bk.k344k
+....k123c3kk344k
+....k1222333b44k
+...k122b23cb34k.
+...k222b33cb34k.
+...k12k3k12k44k.
+...kkkk.kkkkkkk.
+atk
+................
+................
+........kkkkk...
+...kk..k122b3k.k
+..kghkk12b233k3k
+.kkghh112b23c34k
+k1112kkk223c34k.
+k1112kgk3233b3k.
+k12kkkkk3k123cbk
+kkkkkkkk.k122b3k
+krrrrrk..k12234k
+kgkgkk...k12334k
+.kkk....k122344k
+........k12k34k.
+.......k123k44k.
+.......kkkkkkkk.
+hurt
+........kk......
+.......kghk.....
+.....kkghhk.....
+....k1122kk.....
+...k111223k.....
+...k1kkk23k.....
+...krkrk33k.....
+....kkk133k.....
+......k12b4k.kk.
+......k12b4k.k4k
+.....k123b4kkk4k
+.....k123c33k34k
+....k12222b3344k
+....k122b23cb34k
+....k12k3k12k4k.
+....kkkk.kkkkkk.

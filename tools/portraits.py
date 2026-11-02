@@ -12,7 +12,8 @@ and 32x32 pixels at 4 bpp (0x200 bytes, 16 bytes per row, low nibble first as in
   (0,0) idle, (16,0) idle shifted one pixel up (the highlighted box of the chart, the second idle frame),
   (0,16) attack (leans forward), (16,16) hurt (flashed). The top 32x16 strip is the chart's pair.
 
-The icon is the front view of the species' rest pose (animation slot 0, first tick) with its texture,
+A species with a drawing in content/icons/ uses it: its four frames were drawn by hand, as text (`load_drawn`).
+Any other species falls back on the front view of its rest pose (animation slot 0, first tick) with its texture,
 rendered at 4x, box-filtered to the 14x14 inside a one-pixel outline, quantized to 14 colours.
 
 Usage (from the repository root):
@@ -42,7 +43,7 @@ sys.path.insert(0, HERE)
 
 ICON_SIZE = 0x220            # CLUT 0x20 + 4bpp 32x32 0x200
 ICONS_PER_SECTOR = 3         # DIGI.DAT packs them 3 to a 2048-byte sector
-VERSION = 4                  # renderer version: part of the cache key
+VERSION = 5                  # renderer version: part of the cache key
 CACHE = os.environ.get('DW_PORTRAITS_CACHE') or os.path.join(ROOT, 'build', 'portraits-cache')   # (a player's build: tools/derive's species step puts it in its output folder)
 OUTLINE = (24, 20, 40)
 SIZE = 112                   # render size: 8x the 14x14 inside the outline
@@ -241,10 +242,57 @@ def fallback_icon():
     return _pack(cols, [f0, _shift(f0, 0, -1), _shift(f0, 1, 0), _shift(f0, 0, 1)])
 
 
+# ---------------------------------------------------------------- hand-drawn icons
+DRAWN = os.path.join(ROOT, 'content', 'icons')
+DRAWN_FRAMES = ('idle', 'idle2', 'atk', 'hurt')
+
+
+def load_drawn(text):
+    """(colours, frames) of a content/icons file: a `# Name` line, one `CHAR RRGGBB` line per colour, then each frame's
+    name and its 16 rows of 16 characters ('.' is transparent)."""
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    pal, i = {}, 1
+    while lines[i] not in DRAWN_FRAMES:
+        ch, rgb = lines[i].split()
+        pal[ch] = tuple(int(rgb[k:k + 2], 16) for k in (0, 2, 4))
+        i += 1
+    frames = {}
+    for k in range(i, len(lines), 17):
+        frames[lines[k]] = lines[k + 1:k + 17]
+    if set(frames) != set(DRAWN_FRAMES) or len(pal) > 15:
+        raise ValueError(f'{lines[0]}: needs {DRAWN_FRAMES} and at most 15 colours')
+    return pal, frames
+
+
+def drawn_icon(text):
+    """Icon bytes (ICON_SIZE) of a content/icons file; the frames keep the tile's order."""
+    pal, frames = load_drawn(text)
+    order = list(pal)
+    colors = [0] + [_c15(pal[c]) for c in order]
+    colors += [0x8000] * (16 - len(colors))
+    index = {c: i + 1 for i, c in enumerate(order)}
+    index['.'] = 0
+    grids = []
+    for name in DRAWN_FRAMES:
+        rows = frames[name]
+        if len(rows) != 16 or any(len(r) != 16 for r in rows):
+            raise ValueError(f'frame {name}: needs 16 rows of 16 characters')
+        grids.append([[index[c] for c in r] for r in rows])
+    return _pack(colors, grids)
+
+
+def drawn_text(t):
+    p = os.path.join(DRAWN, f'{t}.txt')
+    return open(p, encoding='ascii').read() if os.path.exists(p) else None
+
+
 # ---------------------------------------------------------------- species
 def species_icon(s, use_cache=True, yaw=None, pitch=None):
     """The icon of a species definition (content JSON dict with '_path'). Cached by the model's and the
     texture's bytes."""
+    text = drawn_text(s['id'])
+    if text is not None:
+        return drawn_icon(text)
     import species
     import mmd
     model, mpath = species.species_model(s)

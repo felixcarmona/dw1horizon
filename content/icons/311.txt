@@ -1,0 +1,77 @@
+# Arukenimon
+k 180a10
+1 f8f4f4
+2 c8c8d4
+r f03838
+s b01c30
+b 4858e8
+c 2830a0
+y f8e040
+idle
+..k.......k.....
+.kyk.....kyk....
+.krk.kkk.krk....
+..krk111krk.....
+...k111112kk....
+..k11rrrr122k...
+..k1rkrkrr12k...
+.k12rkkkrs22k.k.
+k112kkrrskkkkkrk
+k1kk1krrrrrsk1rk
+kr1kk1bbbbcsk1rk
+k1rkkrrrrrrskr1k
+k11kk1kssssk1k1k
+krrk.k1kkkkk1krk
+k1k..krk..krkk1k
+kkk..kkk..kkkkkk
+idle2
+..k.......k.....
+.kyk.....kyk....
+.krk.kkk.krk....
+..krk111krk.....
+...k111112kk....
+.kk11rrrr122k...
+k12krkrkrr12k...
+k11krrrrrs22k.k.
+.k12kkrrskkkkkrk
+.kk1kkrrrrrsk1rk
+kr1k1bbbbbcsk1rk
+k1rkkrrrrrrskr1k
+kk1kk1kssssk1k1k
+krrkk1kkkkkkrkrk
+krk.krk..krkk1kk
+kkk.kkk..kkkkkk.
+atk
+....k.......k...
+...kyk.....kyk..
+...krk.kkk.krk..
+....krk111krk...
+.....k111112kk..
+....k11rrrr122k.
+....k1rkrrkr12k.
+kkk.k12kkkkk22k.
+k1kkkk2r11rs2kk.
+k1111k2kkkkkkkrk
+.kkkkkrrrrrsk1rk
+...kkbbbbbcsk1rk
+..k1krrrrrrskr1k
+..k1k1kssssk1k1k
+..krk1kkkkk1krk.
+..kkkkk..kkkkkk.
+hurt
+....k.......k...
+...kyk.....kyk..
+...krk.kkk.krk..
+....krk111krk...
+.....k111112kk..
+....k11rrrr122k.
+....k1kkrkkr12k.
+....k12rrkrr2k..
+..kkk12krrskk...
+.k1k1kkrrrrskkk.
+k12kk1bbbbcskrk.
+k1k.kkrrrrrsk1rk
+krk.k1kssssk1r1k
+krkkk1kkkkkk1krk
+kkk.krk..krkkrkk
+....kkk..kkk.kk.

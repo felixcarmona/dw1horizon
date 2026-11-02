@@ -1,0 +1,81 @@
+# Sakuyamon
+k 180e14
+y f8d838
+o e0a020
+n a06818
+j 383048
+l 585070
+p a890e0
+q 6c54a8
+b a0e0f8
+c 58a8d8
+e f03030
+w f8f4e8
+idle
+.kyk......k.k...
+ky.yk....kyky...
+kyoyk...kyyoyk..
+.kyk...kyyyyook.
+kyyyk..kywyoook.
+.kyk...kyeyoook.
+.kykkkkkkyyookkk
+.kokljjkyookyyok
+.kykkkkkjjkyyonk
+.kyk..kljjkknkbk
+.kok..kloojkkcbk
+.kyk..kppqqkkcbk
+.kok..kppkqqkbck
+.kyk..kpqkkqkkk.
+.kok.kyykkyyk...
+.kkk.kkkkkkkk...
+idle2
+.kyk.......k....
+ky.yk....kkyk...
+kyoyk...kyyoyk..
+.kyk...kyyyyook.
+kyyyk..kywyoook.
+.kyk...kyeyoook.
+.kyk...kkyyokkkk
+.kokkkkljkkyyyok
+.kykljjkkkyyyonk
+.kykkkkkljkknkbk
+.kok..kljjkkcbck
+.kyk..kloojkkcbk
+.kok..kppqqkkbck
+.kyk..kpkkqkkkk.
+.kok.kyykkyyk...
+.kkk.kkkkkkkk...
+atk
+................
+................
+.........kk.k...
+.........kyk.k..
+.......kkyywyk..
+.......kyyyook..
+kkkkkkkkyeyookkk
+yooyyookljkyyyok
+wykkkkkkljkyyonk
+yyk...kkljkknkbk
+kk....kljjkkckbk
+......kloojkkcbk
+.....kppqqkkkbck
+....kppkkqqkkkk.
+...kyyk...kyyk..
+...kkkk...kkkk..
+hurt
+.kyk........k.k.
+ky.yk......kyky.
+kyoyk.....kyyoyk
+.kyk.....kyyyyok
+kyyyk....kkkkook
+.kyk.....kyyoook
+.kyk......kyookk
+..kyk...kkkkyyok
+..kokkkkljjkyonk
+..kykljjjkkknkbk
+..kokkkkljkkcbk.
+...kyk.kloojkcbk
+...kok.kppqqkbck
+...kyk.kpkkqkkk.
+...kokkyyk.kyyk.
+...kkkkkkk.kkkk.

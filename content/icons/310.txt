@@ -1,0 +1,80 @@
+# Assaultmon
+k 141014
+1 d8d8e0
+2 a0a2ac
+3 60646e
+r f83870
+s a81848
+o e0d868
+p a0a038
+w f8f8f0
+e f02020
+y f8e830
+idle
+.....kkkkk...kk.
+....krrrrrk.kopk
+...krrrrrsskkppk
+...krr1111skk12k
+...k11e1122k123k
+...k1kk3k22k123k
+...kk3333kk223k.
+kkkkkk1122k1kkk.
+k1k2k2k1oo2k23k.
+k3k3k3k2poo3k3k.
+kkkkkkk22pp3kkk.
+...kkk3333kkkk..
+...k112kk1223k..
+...k123kk1233k..
+..kwkwkkkwkwkwk.
+..kkkkkkkkkkkkk.
+idle2
+.....kkkkk......
+....krrrrrk..kk.
+...krrrrrsskkopk
+...krr1111skkppk
+...k11e1122k12k.
+...k1kk3k22k123k
+...kk3333kk123k.
+....kk1122kkkk..
+kkkkkk1oo2k23k..
+k1k2k2k2poo3k3k.
+k3k3k3k2pp3kkk..
+kkkkkkk3333kkk..
+...k112kk1223k..
+...k123kk1233k..
+..kwkwkkkwkwkwk.
+..kkkkkkkkkkkkk.
+atk
+....kkkkk.......
+...krrrrrk......
+..krrrrrssk..kk.
+..krrkk11sk.kopk
+..k11e1122kkkppk
+..k1kkkk22k123k.
+..kk3333kk1223k.
+kkkkkkkk1122kkk.
+yk1k2k2k1oo23k..
+yyk3k3k3k2poo3k.
+ykkkkkkkk22pp3k.
+.....kk2333kkk..
+....k112k1223k..
+...k123kk1233k..
+..kwkwkkkwkwkwk.
+..kkkkkkkkkkkkk.
+hurt
+.......kkkkk....
+......krrrrrk...
+.....krrrrrssk..
+.....krr1111sk..
+.....k11kkk22kk.
+.....k1k3k3k12k.
+.....kk3333k123k
+...kkk1122kkk2k.
+..k11k1oo2k23k..
+.k123k2poo3k3k..
+k1k3kk2pp3kkk...
+kkk...k2333kk...
+.....k112k1223k.
+....k123kk1233k.
+...kwkwkkkwkwkwk
+...kkkkkkkkkkkkk

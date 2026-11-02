@@ -1,0 +1,82 @@
+# Mammothmon
+k 180a0e
+s b0b0c8
+t 7c7c98
+u 505068
+c f8f0c8
+C c8b888
+f d8c060
+g a08838
+h 685820
+w e0d8e0
+v a098a8
+y f8d830
+r e03030
+idle
+..........kkkk..
+...kkkkkkkwwwvk.
+..ksssstukwwvvk.
+.ksstttttkwvvkk.
+.kstkytttkkvkffk
+.kstttttukffggfk
+kckstttukffgfgfk
+kCckstukfgfggghk
+.kCksttkfggfgghk
+..kkstukrkgfgghk
+...kstukfgghghhk
+...kstkkfggfgghk
+...kstkkfgkkgghk
+...kstuukfgkkghk
+...kkstukfgkkhhk
+....kkkkkkkkkkk.
+idle2
+..........kkkk..
+...kkkkkkkwwwvk.
+..ksssstukwwvvk.
+.ksstttttkwvvkk.
+.kstkytttkkvkffk
+.kstttttukkkfffk
+kckstttukffgfgfk
+kCckstukfgfggghk
+.kCkstkkfggfgghk
+.kkstukrkgfgghhk
+.kstukkkfgghghhk
+kstuk.kfggfgghhk
+kstk..kfgkkgghhk
+kstkk.kfgkkgghhk
+.kstuk.kfgkkhhhk
+..kkkk.kkkkkkkk.
+atk
+.kk.......kkkk..
+kstk.kkkkkwwwvk.
+kstuksssstkwvvk.
+.kstksttttukvkk.
+.kstttkyttukffk.
+..kstttttukffgfk
+.kckstttukfgfgfk
+kCCCkktukfgfgghk
+kkkkrrkkkfggfghk
+...kkrkfgfgfghhk
+....kkkfggghghhk
+.....kfggfggghhk
+.....kfgkkgfgghk
+.....kfgkkkfghhk
+.....kfhk.kfhhk.
+.....kkkk.kkkkk.
+hurt
+.........kkkk...
+....kkkkkkwwvk..
+...kssssukwwvvk.
+.kkstttttkwvvk..
+kstkkkkttkkvkffk
+.kstttttukffgfgk
+..kCkttukfgfgfgk
+...kCkukfggfgghk
+....kkstkfggfghk
+....ksskrkgfgghk
+.....kkkkfgghghk
+........kfggfghk
+.......kfgkkgghk
+.......kfgkkfghk
+.......kfhk.khhk
+.......kkkk.kkkk

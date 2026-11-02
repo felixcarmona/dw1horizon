@@ -1,0 +1,81 @@
+# Pharaohmon
+s a01818
+k 180e0a
+1 f8f8f0
+2 d0d0d8
+3 a0a0b0
+y f8d838
+o e0a018
+n a06810
+r e83020
+p e038e0
+q 901098
+e 30c0e8
+idle
+......kkkk......
+.....kyyyok.....
+....kyoyyonk....
+.kkkkyeyyokkkkk.
+k1111kyyok11122k
+.kk111kkk1222kk.
+.kyykk1yyo1kkyok
+kyyokrrrrrrskyok
+kppok1yyoo22kppk
+kyyok11yo222kyok
+kyyok11yo222kyok
+.kkk11pyq222kkk.
+...k11ppq2223k..
+..kyyyyyoooooonk
+.kyokyyokyyokyok
+kkkkkkkkkkkkkkkk
+idle2
+......kkkk......
+.....kyyyok.....
+....kyoyyonk....
+kkkkkyeyyokkkkkk
+k1111kyyok111222
+.kk111kkk1222kkk
+..kkkk1yyo1kkkk.
+.kyykrrrrrrskyok
+kyyok1yyoo22kyok
+kppok11yo222kppk
+kyyok11yo222kyok
+.kk111pyq2222kk.
+..k111ppq22233k.
+..kyyyyyoooooonk
+.kyokyyokyyokyok
+kkkkkkkkkkkkkkkk
+atk
+.....kkkk.......
+....kyyyok......
+...kyoyyonk.....
+kkkkkykyyokkkkk.
+kyok1yeyyok1222k
+kyyok1kkk1222kk.
+kppoykk1yo1kkyok
+.kkkkkrrrrrskyok
+....kk1yyo22kppk
+.....k1yyo22kyok
+.....k11yo22kyok
+.....k11pyq2kkk.
+.....k11ppq23k..
+....kyyyyooooonk
+...kyokyyokyyyok
+...kkkkkkkkkkkkk
+hurt
+.......kkkk.....
+......kyyyok....
+.....kyoyyonk...
+..kkkkykkyokkkk.
+.k1111kyyok1122k
+..kk111kkk122kk.
+.kyyokk1yo1kkyok
+.kppokrrrrrskyok
+kyyokk1yyo22kppk
+.kkk.k1yyo22kyok
+.....k11yo22kkk.
+.....k11pyq2k...
+....k11ppq223k..
+..kyyyyyoooooonk
+.kyokyyokyyokyok
+kkkkkkkkkkkkkkkk

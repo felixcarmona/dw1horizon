@@ -1,0 +1,79 @@
+# Diaboromon
+k 180e14
+p b888c0
+q 785088
+r f03830
+s b02028
+o b8b048
+l 888830
+d 585818
+y d8b030
+g 40e070
+idle
+.......k..k.....
+.....kkrk.rk.k..
+......krkkrkkrk.
+...kkkkrskskrsk.
+..kppppqqqqqqqqk
+.kpppqqyqqqqqqk.
+.kkqqqqqyyqqqkk.
+..kqqgkqkyqqkk..
+..kqqqqkkoyllk..
+..kkkkkololldk..
+..koolk.kollldk.
+.kollk..koldkldk
+krrlk..kkrrkkrrk
+krkrrk.krrrkrrrk
+kskksk.krksrksrk
+k..k...kk.kk.k.k
+idle2
+.......k...k....
+.....kkrk..rk.k.
+.....kkrkk.rkkrk
+...kkkkrskkskrsk
+..kppppqqqqqqqqk
+.kpppqqqyqqqqqk.
+.kkqqqqqqyyqqkk.
+.kqqgkqkkyqqkk..
+.kqqqqqkkoyllk..
+..kkkkkkololldk.
+...koolkkollldk.
+.kkollk.koldkldk
+krrrlk.kkrrkkrrk
+krkrrk.krrrkrrrk
+kskksk.krksrksrk
+k..k...kk.kk.k.k
+atk
+...........k..k.
+.........kkrk.rk
+..........krkkrk
+.......kkkkrskrk
+......kppppqqqqk
+k..k.kpppqqyqqqk
+rk.rkkkqqqqqyyqk
+krrk.kqqgkqqkyyk
+krrrkkqrrrrkkoyk
+kskrrllkykkollk.
+.k.kolllkkolldk.
+...kkkkkkkolllk.
+.......kkolkkldk
+.....kkrrlk.krrk
+.....krrrkkkrrrk
+.....krkkrkkrkrk
+hurt
+.........k..k...
+.......kkrk.rkk.
+........krkkrkrk
+.....kkkkrskrsk.
+....kppppqqqqqqk
+...kpppqqyqqqqqk
+...kkqqqqqyyqqkk
+...kqkkkqkyqqk..
+...kqqqqkkoyllk.
+.k.kkkkkkololdk.
+krkkolk.kollldk.
+.krrlk..koldkldk
+..kkk..kkrrkkrrk
+.......krrrkkrrk
+.......krksrkrsk
+.......kk.kk.k.k

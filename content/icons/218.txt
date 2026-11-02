@@ -1,0 +1,81 @@
+# Ikkakumon
+k 0c0818
+1 f8f8f8
+2 d0d8d8
+3 9aa8a8
+4 606c70
+h 382024
+i 907880
+b 2880f0
+t f0d8a0
+u c0a060
+r e02030
+s 6c2828
+idle
+.kk.............
+.kihk...........
+..kihk..kkk.....
+...kihkk1122kkk.
+..k1k1k11122k22k
+.k1111k1k1223kk.
+.k4bk44kbk223k..
+k11114111123kk..
+.ktkkkktk1323k..
+.ktk444tk12233k.
+.ktk121tk132333k
+.kuk121uk12233k.
+..kk1221kk23233k
+..k11223k132333k
+.krrrskkkrrrskrk
+kkkkkkkkkkkkkkkk
+idle2
+.kk.............
+.kihk...........
+..kihk...kk.....
+...kihkk11122kk.
+..k1k1k111122k2k
+.k1k11k1k1223kk.
+.k4bk44kbk2233k.
+k11114111123kk..
+kkkkkkkkk1223k..
+ktk444ktk12233k.
+ktk4r4ktk122333k
+.kuk1kuk1122333k
+..kkkkkk1122333k
+..k11223k122333k
+.krrrskkkrrrskrk
+kkkkkkkkkkkkkkkk
+atk
+kk..............
+kihkk...........
+.kihhk...kkk....
+..kihhkk11122k..
+...kk1k1111223k.
+..k1k1k1k12233k.
+.k11kbkkbk12233k
+.k1114141112233k
+kktkkkkkktk1233k
+ktkk4r44ktk1233k
+ktk444444tk12333
+kuk11211kuk12k33
+.kkkk11kkkk123k3
+.....k223k1233kk
+....krrrsk.krrsk
+....kkkkkk.kkkkk
+hurt
+................
+.........kk.....
+.......kkihk....
+..kkkkk1kihk....
+.k1111111kihk...
+.k11k11k111kk...
+k1111kk111223k..
+k1kkk411112233k.
+k1k441k1122233k.
+.ktk11tk1222333k
+.ktk11tk1222333k
+.kuk121uk122333k
+..kk1221kk22333k
+..k11223k122333k
+.krrrskkkrrrskrk
+kkkkkkkkkkkkkkkk

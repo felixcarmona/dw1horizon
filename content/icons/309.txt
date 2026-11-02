@@ -1,0 +1,79 @@
+# Antylamon
+k 180a0e
+1 f8e8e4
+2 e8b8c0
+3 b88898
+b d0a088
+c a87058
+d 784838
+r e82830
+s 981820
+y f0d880
+idle
+kk...........kk.
+kbck.......kcdk.
+.kbck.....kcdk..
+..kbck111kcdk...
+...kk1111122kk..
+..k1111111222k..
+..k11k11k1122k..
+..k11k11k1222k..
+..k111r11123k...
+...kk11112kkk...
+..kkkrrrrrskk...
+.kbcksrrrskcdk..
+.kbck11123kcdk..
+kbcyk12k23kydck.
+kbkdkk2kk3kkdkck
+kkkkkkkkkkkkkkkk
+idle2
+................
+.kkk........kkk.
+kbcckk....kkcdck
+kkkbck111kcdkkk.
+...kk1111122kk..
+..k1111111222k..
+..k11k11k1122k..
+..k11k11k1222k..
+..k11kr11123k...
+...kk1r112kkk...
+..kkkrrrrrskk...
+kbckksrrrskkcdk.
+kbcyk11123kydck.
+kcbdk12k23kcdck.
+.kbkkk2k23kkdk..
+kkkkkkkkkkkkkkkk
+atk
+...kk......kkk..
+..kbbk....kbcck.
+..kbcck..kbcdk..
+...kbcckkkcdk...
+....kk111122kk..
+...k111111222k..
+...k1kk11kk22k..
+kk..k1kkk1223k..
+kbkkkk1k1223kk..
+kcdbckkrrrskcdk.
+kbcdbcbrrskcdck.
+.kkkkkk1122kcdck
+.....k11223kydck
+....k12kk23kcdk.
+...kk2kk.k3kkck.
+...kkkk..kkkkkk.
+hurt
+..........kkk...
+.kk......kbcck..
+kbck....kbcdk...
+kbcck..kbcdk....
+.kbcckkkcdk.kk..
+..kk1111222kk...
+.k1111111122k...
+.k1kk1kk1222k...
+..k11kkk1223k...
+.kkkrrrrskkk....
+kbcksrrskcdk....
+kbcyk1122kydk...
+.kbck122kkcdk...
+..kdk12k3kcdck..
+..kkkk2kk3kkcdk.
+..kkkkkkkkkkkkk.

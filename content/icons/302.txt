@@ -1,0 +1,79 @@
+# HiAndromon
+k 120810
+1 b0b0c0
+2 707080
+3 404050
+r e82820
+s a01418
+b 3870f0
+c 1c3ca0
+y f8c020
+w c8e8f8
+idle
+.....kkkkk......
+....kk1y2kk.....
+...k1wwww3k.....
+..kkk22223kkkk..
+.kbbk3222kkrrsk.
+.kbcckk1kkkrssk.
+.kkkk1r2r3kkkkk.
+k12k.k1223k.k12k
+k123kk2r23kk123k
+k123k.k33k.k123k
+k123k1kkk12k123k
+k3kkk123k123kk3k
+.kk.k123k123k.k.
+....k33k.k33k...
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+idle2
+.....kkkkk......
+....kk1y2kk.....
+...k1wwww3k.....
+...kk22223kk....
+.kkbk3222kkrrkk.
+.kbbkk1kkkrrssk.
+.kbcck1r2r3krsk.
+.kkkk1223kkkkk..
+.kkk.k2r23k.kkk.
+k12kk.k33k.kk12k
+k123k1kkk12k123k
+k3kkk123k123kk3k
+.kk.k123k123k.k.
+....k33k.k33k...
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+atk
+.......kkkkk....
+......kk1y2kk...
+.....k1wwww3k...
+....kkk22223kkk.
+...kbbk3222krrsk
+...kbcckk1kkrssk
+...kkkk1r2rkkkkk
+.kkkkkkk1223kk1k
+k1122221k2r23k12
+krs11233k1k33123
+.kkkkkkk1k23k123
+......kk123k1k3k
+.....k123k123kk.
+....k33k.k33k...
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+hurt
+........kkkkk...
+.......kk1kk2k..
+......k1kkkk3k..
+....kkkk2223kkk.
+...kbbk3222krrsk
+...kbcckk1kkrssk
+.k.kkkk1r2r3kkkk
+k1k...k1223k.k1k
+k12kk.kr2kk.k12k
+k123kk133k.k123k
+.k23k1kkk12k123k
+..kkk123k123k3k.
+....k123k123kk..
+....k33k.k33k...
+...krrsk.krrsk..
+...kkkkk.kkkkk..

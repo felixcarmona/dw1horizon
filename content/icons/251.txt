@@ -1,0 +1,78 @@
+# Solarmon
+k 201008
+1 f8f088
+2 f0d038
+3 c09818
+o f8b820
+p e87810
+y f8e878
+r f05820
+s b03010
+idle
+.....kk..kk.....
+..kkk11kk12kkk..
+..k11kkkkkk23k..
+.k11kyoooopk3k..
+kk1kyookkoopk3kk
+k12kookyrkopk23k
+.k2kookrskopk3k.
+k12koookkoopk23k
+k11kpoooooppk3k.
+.k2kpkpkpkppk3k.
+..k12kppppk233k.
+k.k.k22kk22k.k.k
+krkrkkkkkkkkrkrk
+krrkrk....krkrrk
+krrrsk....krrrsk
+kkrkk......kkrkk
+idle2
+...kk..kk..kk...
+..k12kk11kk23k..
+..k11kkkkkk23k..
+kk11kyoooopk33kk
+k12kyookkoopk23k
+.k2kookrykopk3k.
+kk2kookyrkopk3kk
+k12koookkoopk23k
+.k1kpoooooppk3k.
+.k2kkpkpkpkpk3k.
+..k12kppppk233k.
+.k.kk22kk22kk.k.
+kkrkkkkkkkkkkrkk
+krkrrk....krrkrk
+krrrsk....krrrsk
+krkrk......krkrk
+atk
+....kk..kk......
+.kkk11kk12kkk...
+.k11kkkkkk23k...
+k11kyoooopk3k...
+k1kyookkoopk3kk.
+k2kook1ykopk23k.
+k2kookyokopk3k..
+k1koookkoopk3k..
+k1kpkkkkkkpk3kk.
+.kkkrsrsrskk3kk.
+..k12kkkkk233k..
+...kk22kk22kk...
+..k.k.kkkk.k.k..
+.krkrk...krkrk..
+.krrsk...krrsk..
+.kkrkk...kkrkk..
+hurt
+......kk..kk....
+...kkk11kk12kkk.
+...k11kkkkkk23k.
+..k11kyoooopk3k.
+.kk1kyoooooopk3k
+.k12kooooooopk3k
+.k12kokkkkoopk3k
+.k12kooooooppk3k
+..k1kpooooppk3k.
+..k2kkpkpkppk3k.
+...k12kppppk33k.
+..k.kk22kk33kk..
+.krkk.kkkk.kk.k.
+krrkrk....krkrk.
+krrrsk....krrsk.
+.kkkk.....kkrkk.

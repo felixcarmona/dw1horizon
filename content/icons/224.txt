@@ -1,0 +1,81 @@
+# MetalGreymonVaccine
+k 180e10
+s f0f0f8
+t b8b8c8
+u 787888
+y f8e050
+g e0a828
+o a87020
+p b078f0
+q 7048b8
+b 3878f0
+r e04040
+w f8f8e8
+idle
+....k.kk....k.k.
+...kskrk...kpkpk
+..ksstkkkk.kppqk
+.ksssttuurkpppqk
+kssbkttuuukppqqk
+kttkkttuukkppqk.
+kkkkkkkkkgkkpqkk
+kwkwkyyygktukpqk
+.kkkyyygkstukqk.
+..kkyykkstuukk..
+kyygkyggkstuk.kk
+kggkyyggokkk.kgk
+.kkyyggookggkgok
+..kyggkoogggook.
+..kwwkkwwoookk..
+..kkkk.kkkkk....
+idle2
+....k.kk........
+...kskrk....k.k.
+..ksstkkkk.kpkpk
+.ksssttuurkppqqk
+kssbkttuuukpppqk
+kttkkttuukkppqk.
+kkkkkkkkkgkkpqkk
+krrrrkyygktukpqk
+kwkwkyyygkstukk.
+.kkkyyykkstuukk.
+..kkyyggkstuk...
+.kkyggggokkk.kk.
+kyygkgookggkkgok
+kggkgkoogggook..
+.kkwwkkwwoookk..
+..kkkk.kkkkk....
+atk
+......k.kk....k.
+.....kskrk...kpk
+....ksstkkkk.kpp
+...ksssttuurkkpp
+..kssbkttuuukppq
+.kssskttuuukppqk
+kttkkkkttukkpqk.
+kkkkkkkkkkgkkqk.
+krrrrrrrkygkk.k.
+kwkwkwkkyygkstk.
+.kkkkkyyygkstuk.
+.....kyggkkstuk.
+.kkkyyggok.kkk.k
+kyygkggookggkkgk
+.kk..kwoooogggok
+.....kkwwkkkkkk.
+hurt
+.............k.k
+......k.kk..kpkp
+.....kskrk..kppk
+....ksstkkkkkpqk
+...ksssttuurkpqk
+..ksstkttuuukqqk
+..kkkkkttuukkqk.
+.ktttttkgkkkqk..
+.kkkkkkyygktk...
+...kkyyygkstuk..
+...kyykkstuukk..
+kyygkyggkstuk.kk
+kggkyyggokkk.kgk
+.kkkyggook.gkgok
+..kwwkkwwoookok.
+..kkkk.kkkkkk...

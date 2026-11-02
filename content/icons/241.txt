@@ -1,0 +1,78 @@
+# Wizardmon
+k 180e14
+p a890e8
+q 7860c0
+r 504090
+y f8e870
+o d8b030
+d 987c20
+e e03030
+w f8f8f0
+idle
+..........kk....
+.........kpk....
+........kpqk....
+.......kpqqrk...
+.......kkkkkk...
+....kkkpqqqqkkk.
+..kkppqqqqqqqrrk
+.k.kkkkkkkkkkkk.
+kykk.kyekyyok...
+kyyk.kyyyyokqk..
+.kokqkkkkkkrqqk.
+.kkyykpqqkkyykrk
+..kyokqqrkyookrk
+..k.kkykdokkkrk.
+...kkdkkkkdkk...
+...kookk.koodk..
+idle2
+...........kk...
+..........kpk...
+.........kpqk...
+.......kkpqrk...
+.......kkkkkk...
+...kkkpqqqqkkk..
+.kkppqqqqqqqrrk.
+kk.kkkkkkkkkkkk.
+kyk..kyekyyok...
+kyykkkyyyyokqk..
+.kykqkkkkkkrqqk.
+.kkyykpqqkkyykrk
+..kyokqqrkyookrk
+..kkkkykdokkkrk.
+..kkdkk...kdkk..
+..kookk...koodk.
+atk
+............kk..
+...........kpk..
+..........kpqk..
+.........kpqqrk.
+.........kkkkkk.
+......kkkpqqqqkk
+....kkppqqqqqqrk
+.....kkkkkkkkkkk
+k.k.k.kyekyyok..
+.kyk...kyyyyokk.
+kyykkkkkkkkkrqqk
+kyyookyyookpqrrk
+.kkkkkyyokqqqrk.
+.k.k.kkkkdokkrk.
+.....kdkk.kkdkk.
+....kookk..koodk
+hurt
+.............kk.
+...........kkpk.
+.........kkpqrk.
+.......kkpqqrk..
+......kkkkkkk...
+...kkkkpqqqqkkk.
+.kkppqqqqqqqqrrk
+..kkkkkkkkkkkkk.
+.....kykkyyok...
+kk..kkyyyyokqk..
+kykkqkkkkkkrqqk.
+.kkkkkpqqqrkqrk.
+k.kykkqqqrkkkrk.
+kyok.kkykdokkk..
+.kk...kkdkdk....
+....kookkkoodk..

@@ -1,0 +1,83 @@
+# Kimeramon
+k 180e14
+1 c0c4c8
+2 848c94
+3 505a64
+w f8f8f0
+g b8c0d8
+r f04428
+s a01c20
+o f89030
+y f8d848
+p d0c0f0
+q 9080b8
+n f88098
+e f8e030
+idle
+...kkk.......kk.
+..k111kkk...kwwk
+.k11222rrk.kwwwk
+k111ek2rrkkwwwgk
+k11kk23rskwwwggk
+k1111223kkwwggk.
+kwkwkk23krkggkk.
+krrrrk3kyokkkrrk
+k2222k3kyosrrssk
+.kkkkkyyoosssskk
+.k11kkkyosskkk..
+k112k.kppqqk....
+k12k..kppkqqk...
+knkn.kppkkqqqk..
+kkk.kppk..kqqqk.
+...knnk...knnnk.
+idle2
+...kkk..........
+..k111kkk.......
+.k11222rrk...kkk
+k111ek2rrk..kwwk
+k11kk23rskkkwwwk
+k1111223kkwwwwgk
+kkkkkk23kkwwwggk
+kwkwkk3kyokggkkk
+krrrrk3kyosrkrrk
+k2222kyyoosrrssk
+.kkkkkkyoossssk.
+.k112kkppqqkkkk.
+k112k.kppkqqk...
+knkn.kppkkqqqk..
+kkk.kppk..kqqqk.
+...knnk...knnnk.
+atk
+.....kkk......kk
+....k111kkk..kwk
+...k11222rrkkwwk
+..k111ek2rkkwwgk
+..k11kk23rkwwwgk
+.k1111223kkwwgk.
+kkwkwkk23krkgkk.
+k.kkkkkk3kokkrrk
+oyokrrrrk3yosrsk
+kookk222k3yossk.
+.kk.kkkkkyooskk.
+kk1111kkkkkkk...
+knk1122kppqqk...
+kkkkkkkppkqqqk..
+.....kppk.kqqqk.
+.....knnk..knnnk
+hurt
+........kkk..kk.
+.......k111kkwwk
+kk....k11222kwwk
+kwk.kk1kkk123kwk
+kwwkrk1111123kk.
+kwgkrsk1kkk123kk
+.kwwkrk1wkw123k.
+.kkgk.kkkkkk3kk.
+..kkrrkyyokkkrk.
+.krsskyyoosrsk..
+.kkkkkkyyosskk..
+....k112kkkkk...
+....kk12kqqk....
+....k1kpkqqqk...
+..kkppk..kqqqk..
+..knnk...knnnk..

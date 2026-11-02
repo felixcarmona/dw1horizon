@@ -1,0 +1,80 @@
+# MetalSeadramon
+k 180a0e
+y f8e058
+o e0b030
+d a07820
+e 685018
+g d0d0d8
+h 8c8c9c
+n 606070
+m 34343c
+r f02828
+s f07050
+idle
+kk..............
+kghk....kk.kk...
+kgghk..knnknnkk.
+.kgyokkknmnmkyyk
+..kyyyoyynmkyook
+.kyyyrkyookyookk
+kyyyyoooookkkk..
+kkkkkkooddk.....
+.ksskkkoodk..kk.
+..kkkkkoodk.kyk.
+....kygoodkkkyok
+....kyogkkk.kyok
+...kyodgkkkkyodk
+...kyoodggyyodk.
+....kkyooodddkk.
+......kkkkkkk...
+idle2
+kk..............
+kghk.....kk.kk..
+kgghk...knnknnk.
+.kgyokkkknmnkyyk
+..kyyyoyynmnkyok
+.kyyyrkyookyyook
+kyyyyoooookkkkk.
+kkkkkkooddk.....
+ksskkkkoodk.....
+.kkkkkkoodk..kk.
+....kygoodk.kyok
+...kkyogkkkkyodk
+..kyokogkkkkyok.
+..kyoodggyyyodk.
+...kkyooodddkk..
+.....kkkkkkkk...
+atk
+................
+kk.........kk.k.
+ghk.......knnknk
+ggyk...kkknmnmkk
+kgyokkkyoynmkyyk
+.kyyyoyyyokkyook
+kyyyrkyooookyokk
+yyyyoooooodkkk..
+kkkkkkooodk.....
+kssssskkoodk.kk.
+kkkkkkk.oodkkyok
+.......kyoddkyok
+....kkkgoodkkyok
+...kyoodggoyyodk
+....kkyooodddkk.
+......kkkkkkk...
+hurt
+....kk..........
+....kghk..kk.kk.
+....kgghkknnknnk
+.....kgyokknmnmk
+......kyyyoynmkk
+.....kyykkoookyk
+....kyyyyoooookk
+....kkkkooddk.ok
+.....kskkoodkkyk
+......kkkoodkyok
+.....kygoodkkyok
+.....kyogkkkyodk
+....kyodgkkkyodk
+....kyoodggyyodk
+.....kkyooodkk..
+.......kkkkk....

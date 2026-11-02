@@ -1,0 +1,81 @@
+# Imperialdramon
+k 100c10
+1 f8f8f0
+2 c8c4b8
+n 707490
+m 44465c
+r f04030
+s a02020
+y f8e070
+o d0a030
+b 90c0f0
+c 4878b0
+l 2c2e44
+idle
+.....kk.......kk
+....krrk....kkrk
+.....ksrk..krrk.
+...k..ksrkkrssk.
+..k1k..ksrrskkk.
+..k1k.kkkrskbbbk
+.k12kk11kkkkkkbk
+.k1211122knnnkkc
+kyk1kr12knnmmmkk
+kyyy1k12knmmmmlk
+.kkkrrkkknmyymlk
+.kyrrrkmmmmmoylk
+.kkkyykmnmmoomyk
+..kmmnmmoykmmyyk
+.knmmmmoyknmmmlk
+yykyykyykkyyyyyk
+idle2
+.............kk.
+.....kk.....krrk
+....krrk...krrk.
+...k.ksrk.krssk.
+..k1k.ksrkrskkk.
+..k1k.kkkrskkbbk
+.k12kk11kkkkkkbk
+.k1211122knnnkbk
+kyk1kr12knnmmmkc
+kyyy1k12knmmmlkk
+.kkkkkkkknmyymlk
+.krrrrkmmmmmoylk
+.kyyyykmnmmoomyk
+..kkkkmmoykmmyyk
+.knmmmmoyknmmmlk
+yykyykyykkyyyyyk
+atk
+...kk.........kk
+..krrk......kkrk
+...ksrk....krrk.
+.k..ksrk..krssk.
+k1k..ksrkkrskkk.
+k1k.kkkrskbbbk..
+12kk11kkkkkkbk..
+211122knnnnkkck.
+k1kr12knnmmmkk..
+yy1k12knmmmmlk..
+kkkkkkknmyymlk..
+y.krrkkkmmmoylk.
+yykrrrkmnmoomyk.
+kkkyyykmmoykmyyk
+...kmmnmoyknmmlk
+..yykyykyykkyyyk
+hurt
+........kk....k.
+.......krrk..krk
+........ksrkkrsk
+.....k...ksrrskk
+....k1k.kkrskkbk
+....k1kk11kkkkbb
+...k12k1122kkkkc
+...k12k1122nnkk.
+..kyk1kkk12nnmmk
+..kyyy11112nmmlk
+...kkkkkk12nmmlk
+....kyyyykkmyylk
+.....kkkkmmmoymk
+.....kmnmmoomyyk
+...knmmmmoyknmlk
+..yykyykyykyyyyk

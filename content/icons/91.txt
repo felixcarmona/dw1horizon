@@ -1,0 +1,81 @@
+# MoriShellmon
+k 180e0c
+a 80d8b0
+b 40a088
+c 207060
+t d0a880
+u a07850
+v 684c38
+g c0e860
+h 70a838
+r e05060
+w f8f8f0
+y f8e030
+idle
+...........k....
+..........kak...
+..k.k.....kabk..
+.kgkgk...kkkbck.
+..kghk...kabkkck
+..kkhkk.kaabbcck
+.ktttuukkkkkbcck
+ktyktuuvkabbkkck
+ktttttuuvkaabbck
+ktkkkkkuvkkkkbck
+kkwkwkkuvkaabcck
+.krrrrkuvkkabbck
+..kkkkkuukkkkkck
+...ktuuvkabbcck.
+..ktuk.kkkkkktuk
+..kkkk.....kkkkk
+idle2
+...........k....
+..........kak...
+..........kabk..
+..kkk....kkkbck.
+.kgggk...kabkkck
+..kkhkk.kaabbcck
+.ktttuukkkkkbcck
+ktyktuuvkabbkkck
+ktttttuuvkaabbck
+ktttttuuvkkkkbck
+kkkkkkkuvkaabcck
+.kwkwkkuvkkabbck
+..kkkkkuukkkkkck
+..ktuuuvkabbcck.
+.ktuk..kkkkkktuk
+.kkkk......kkkkk
+atk
+............k...
+...........kak..
+.k.k.k.....kabk.
+.kgkgk....kkkbck
+..kghk....kabkkk
+.kkkhkk..kaabbck
+.kttuuuk.kkkkbck
+ktykuuuvkkabbkck
+ktttttuuvkaabbck
+kkkkkkkuvkkkkbck
+kwkwkwkuvkaabcck
+krrrrrkuvkkabbck
+krrrrkkuukkkkkck
+kwkwkktuvkabbcck
+.kkk.ktuk.kkktuk
+....kkkkk..kkkkk
+hurt
+.............k..
+............kak.
+...........kabk.
+...k.k...kkkbck.
+..kgkgk..kabkkck
+...kghk.kaabbcck
+...kkhkkkkkkbcck
+..ktttuukabbkkck
+.kkkttuuvkaabbck
+.ktttttuvkkkkbck
+.kkkkkkuvkaabcck
+...krkkuvkkabbck
+...kkkkuukkkkkck
+....ktuvkabbcck.
+...ktuk.kkkkktuk
+...kkkk....kkkkk

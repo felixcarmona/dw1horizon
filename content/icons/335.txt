@@ -1,0 +1,81 @@
+# MegaGargomon
+k 180a0e
+a a8f060
+b 60d030
+c 309818
+d 186010
+y f8f050
+z c8b020
+s 888898
+t 505868
+u 303440
+r e03030
+w f8f8f0
+idle
+..kkkkkkkkkkkk..
+.kaabrbbbbrbcck.
+..kkkkabckkkkk..
+.kkkkkwwwkkkkkk.
+kyyzkakwkkckyyzk
+kyzzkabbbckkyzzk
+kzzzkabbcckkzzzk
+.kkkkkaabkkkkkk.
+.kstkabbcckstuk.
+ktsukbkkckktsuuk
+kttukabbcckttuuk
+.kkkkbbkbckkkkk.
+...kabckkbcck...
+...kbbck.kbck...
+..kaabck.kbbcck.
+..kkkkkk.kkkkkk.
+idle2
+..kkkkkkkkkkkk..
+.kaabrbbbbrbcck.
+..kkkkabckkkkk..
+.kkkkkwkwkkkkkk.
+kyyzkkkwkkkkyyzk
+kyzzkabbbckkyzzk
+kzzzkabbcckkzzzk
+.kkkkkaabkkkkkk.
+ktsukabbckkstuuk
+kttukbkkckktsuuk
+.kkkkabbcckttuk.
+...kbbkbckkkkk..
+...kabckkbcck...
+..kkbbck.kbcck..
+..kaabck.kbbcck.
+..kkkkkk.kkkkkk.
+atk
+.kkkkkkkkkkkk...
+kaabrbbbbrbcck..
+.kkkkabckkkkk...
+kkkkkwwwkkkkkkk.
+wwyzkkwkkckyyzk.
+wyyzkabbbckkyzk.
+yyzzkabbcckkzzk.
+.kkkkkabbkkkkkk.
+kkkkkabbcckstuk.
+stuuubkkckktsuk.
+ttuuuabbcckttuk.
+kkkkkbkbckkkkk..
+..kabckkbcck....
+..kbbck.kbck....
+.kaabck.kbbcck..
+.kkkkkk.kkkkkk..
+hurt
+.kkkkkkkkkkkk...
+kaabrbbbbrbcck..
+.kkkkabckkkkk.k.
+kkkkkwkwkkkkkkk.
+yyzkkkkkkkckyyzk
+yzzkabbbbckkyzzk
+kkkkkabbcckkzzzk
+.kkkkkaabkkkkkk.
+..kstkabbcckstuk
+.ktsukbkkcktsuuk
+.kttukabbckttuuk
+..kkkkbbkbckkkk.
+....kabckkbcck..
+....kbbck.kbck..
+...kaabck.kbbcck
+...kkkkkk.kkkkkk

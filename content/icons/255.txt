@@ -1,0 +1,79 @@
+# Valkyrimon
+k 181420
+1 f8f8f8
+2 c0c8d8
+3 8088a0
+y f8e058
+o d8a028
+p a07018
+b 3880e0
+c 205098
+r e84820
+idle
+........kk..kk..
+......kk11kk11k.
+....kk1111111k..
+...k112221123kk.
+..k12222333k....
+.kyyykrk23kbbbk.
+kyyoykyy3kbbbcck
+.kkkkyoyokbbcck.
+...k1kkkkkkbckk.
+..k12kyyyyokkk1k
+.k12kyppppok112k
+.kkkkkyppok1223k
+...k2kkyokk3krk.
+....kk2kk2k.k.k.
+....k23k.k23k...
+...kyyok.kyyok..
+idle2
+.........kk.kkk.
+......kkk11k11k.
+....kk1111111k..
+...k112221123kk.
+..k12222333k....
+.kyyykrk23kbbbk.
+kyyoykyy3kbbbcck
+.kkkkyoyokbbcck.
+..kk1kkkkkkbckkk
+.k12kyyyyokkk11k
+.k1kyppppok1122k
+..kkkyppok12233k
+.....kyokkk3krk.
+....k2kk2k..k.k.
+....k23k.k23k...
+...kyyok.kyyok..
+atk
+.......kk..kk...
+.....kk11kk11k..
+...kk1111111k...
+..k112221123kk..
+.k12222333k.....
+kyyykrk23kbbbk..
+kyoykyy3kbbbcck.
+.kkkkkyoyokbbcck
+kkkkkkkkkkbbcck.
+kyyyok112kkckk..
+kyppok1122kk11k.
+kyppok2233k1123k
+kyyokk3kk2k3krk.
+.kkk.kk2k23k.k..
+.....k23k.k23k..
+....kyyok.kyyok.
+hurt
+.........kk.kk..
+.......kk11k11k.
+.....kk111111k..
+....k112221123k.
+...k12222333k...
+..kyyyk2k23kbbk.
+.kyyoykyy3kbbbck
+..kkkkyoyokbbcck
+...kk1kkkkkkbck.
+..k12kkyyyyokk1k
+..kk..kyppok112k
+......kyppok123k
+......kyyokk3krk
+.....k2kk2k.k.k.
+.....k23k.k23k..
+....kyyok.kyyok.

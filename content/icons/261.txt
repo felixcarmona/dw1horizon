@@ -1,0 +1,77 @@
+# Tortomon
+k 1c1208
+1 f8f0a8
+2 f0d038
+3 c89c20
+4 886410
+w f8f8f0
+b 3090f0
+r e83820
+idle
+..........k.....
+.....k...k1k....
+....k1k..k12k...
+....k12kk1123k.k
+...k1123k1223k1k
+..kk1234k12234kk
+.k12k12kk23344k.
+k1222k123k12344k
+k1bk2k2334k2344k
+k1222k2344k3444k
+k2krrkkkkkkkkkkk
+.kkkkk122223334k
+....k233kkkk233k
+....k233k..k234k
+...k1w23k.k1w2k.
+...kkkkkk.kkkkk.
+idle2
+..........k.....
+.....k...k1k....
+....k1k..k12k..k
+....k12kk1123k1k
+...k1123k1223k2k
+..kk1234k12234kk
+.kkkk12kk23344k.
+k1222k123k12344k
+k1222k2334k2344k
+k1bk2k2344k3444k
+k1222kkkkkkkkkkk
+k2222k122223334k
+.kkkkk33kkkk233k
+.....k33k..k234k
+....k1w23k.k1w2k
+....kkkkkk.kkkkk
+atk
+...........k....
+......k...k1k...
+.....k1k..k12k..
+.....k12kk1123kk
+....k1123k12234k
+..kkk1234k12234k
+.k122k12kk23344k
+k12222k23k12344k
+k1bk22k334k2344k
+k12222k344k3444k
+kkkkkkkkkkkkkkkk
+krrrrkk12223334k
+k222k..k233kk23k
+.kkk...k233k.k3k
+......k1w23kk1wk
+......kkkkkkkkkk
+hurt
+...........k....
+......k...k1k...
+.....k1k..k12k..
+.....k12kk1123kk
+....k1123k12234k
+...kk1234k12234k
+..k12k12kk23344k
+.k1222k123k1234k
+.k1kkkk2334k234k
+.k1222k2344k344k
+.k2krkkkkkkkkkkk
+..kkkkk1222334k.
+.....k233kk233k.
+.....k23k..k34k.
+....k1w2k.k1w2k.
+....kkkkk.kkkkk.

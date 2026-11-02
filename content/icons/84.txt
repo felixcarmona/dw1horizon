@@ -1,0 +1,83 @@
+# ToyAgumon
+k 180e0c
+l f87860
+r e83020
+s a81818
+m f8f8a0
+y f8e030
+o c89818
+n 68e070
+g 28b040
+j 187830
+b 3868f0
+c 2038a0
+a e8e8f0
+h 9098a8
+idle
+...kk.kk.kk.....
+..klrklrkrskkk..
+..klaaarrrrssk..
+..krakarrrrssk..
+..kraaarrrrssk..
+kkykkykkkkkrsk..
+kmmmyyyyyyokrsk.
+kyyyyyyyoookrsk.
+kkkkkkkkkkkkssk.
+.knggggjjjkkkk..
+..kkkkkkkkbkyyk.
+.kaahkbbbcbkyok.
+kaaahkgggjkyyook
+.kkkkkggjkkaahk.
+...krlkkjkkaahk.
+...kkkkkkkkkkkk.
+idle2
+...kk.kk.kk.....
+..klrklrkrskkk..
+..klaaarrrrssk..
+..krakarrrrssk..
+..kraaarrrrssk..
+kkykkykkkkkrsk..
+kmmmyyyyyyokrsk.
+kyyyyoookkkkrsk.
+kkkkkkkkgjkkssk.
+.kngggjkkbbkkk..
+.kaahkbbbcbkyyk.
+kaaaahbbcckyyok.
+.kaahkgggjkyook.
+.kkkkkggjkkaahk.
+...krlkjkkaaahk.
+...kkkkkkkkkkkk.
+atk
+..kk.kk.kk......
+.klrklrkrskkk...
+.klaaarrrrssk...
+.krakarrrrssk...
+.kraaarrrrssk...
+kkykkykkkkrsk...
+kmmyyyyyyokrsk..
+kkkkkkkkkkkrsk..
+.krrrrrkkrrssk..
+kkkkkkkkkkkssk..
+kmngggjjjjkkkkk.
+kkkkkkkkkbkyyyk.
+kaaahbbbbcbkyook
+kaaahkggjkkyyook
+kkkkkkggjkkaaahk
+.....kkkkkkkkkkk
+hurt
+.....kk.kk.kk...
+....klrklrkrskk.
+....klrrrrrrrsk.
+...kkrkkkrrrssk.
+..kkrrrrrrrrssk.
+.kkykkykkkkrsk..
+kmmyyyyyyokrssk.
+kyyyyyyoookrsk..
+.kkkkkkkkkkkssk.
+..kngggjjjkkkk..
+.kkkkkkkkkbkyyk.
+kaahkbbbbcbkyok.
+kaaahkgggjkyyok.
+.kkkkkggjkkaahk.
+....krlkjkkaahk.
+....kkkkkkkkkkk.

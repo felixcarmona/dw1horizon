@@ -1,0 +1,79 @@
+# Shadramon
+k 200a08
+r f03820
+s a82014
+y f8e840
+o f8a020
+l d08850
+b a05430
+c 683020
+p f868a8
+g 68e040
+idle
+....k.........k.
+...krk.kk....krk
+...krkk..k..kryk
+..kkryrkkk.krryk
+.kyorryrrk.kryok
+.kygkoorsskryyok
+kppkoorrsskkryok
+.kkkrrrssk.kryrk
+..kkklbbckkkryk.
+..kbbkllbbcckrk.
+.kbcckllbbcckk..
+kssk.klbyccyk...
+.kk..kbbokkock..
+....klyosk.kyock
+...klbyssk.klysk
+...kkkkkkk.kkkkk
+idle2
+....k...........
+...krk.kkk......
+...krkk...k.....
+..kkryrkkk..kkk.
+.kyorryrrk.kryyk
+.kygkoorsskryoyk
+kppkoorrsskkryok
+.kkkrrrsskkryoyk
+.kbkklbbckkkrryk
+.kbbkllbbcckkryk
+kssbkllbbcckkrk.
+.kkkkklbyccyk.k.
+.....kbbokkock..
+....klyosk.kyock
+...klbyssk.klysk
+...kkkkkkk.kkkkk
+atk
+...k.........k..
+..krk.kk....krk.
+..krkk..k..kryk.
+.kkryrkkk.krryk.
+kyorryrrk.kryoyk
+kygkoorsskkryyok
+kppkoorrsskryyok
+.kkkkrrssk.kryrk
+kkk..kkkkbbkkrk.
+kssbbbbbllbcckk.
+kskkkbbbllbbcck.
+kk...kkyblbccyk.
+.....kbbokkkock.
+...klyosk...kyok
+..klbyssk..klysk
+..kkkkkkk..kkkkk
+hurt
+......k.........
+.....krk.kk.....
+.....krkk..k....
+....kkryrkkkk...
+...kyorryrrssk..
+...kkkkoorsssk..
+..kppkoorrssk.k.
+...kkkrrrssk.krk
+.k.kkkkkkkkkkryk
+kskbbkllbbcckrok
+kskkbkllbbcckryk
+.k..kklbycyckyrk
+.....kbbokkock.k
+....klyosk.kyock
+...klbyssk.klysk
+...kkkkkkk.kkkkk

@@ -1,0 +1,77 @@
+# Veedramon
+k 180a0e
+a 90c0f0
+b 5088d0
+c 3060a0
+w f8f8f8
+v c8c8d8
+u 9098a8
+r e82830
+idle
+.........k...kk.
+........kvk.kvvk
+..k.....kvkkvuk.
+.kvk...kukkvuk..
+.kuk.kkaabkkk...
+kvukkaabbbbck...
+kwwwwwabrrbck...
+kwwwwwwwkrbbck..
+kkkkkkkwwkbbck..
+.kvvvvkwwkbbcckk
+..kkkkvwwkbbcckb
+.kwwkkvwvkbbcbbk
+kwvkkvvkkbbcckk.
+.kk.kwvkkbbck...
+...kbbckkbbbck..
+...kkkkkkkkkkk..
+idle2
+.........k...kk.
+........kvk.kvvk
+..k.....kvkkvuk.
+.kvk...kukkvuk..
+.kuk.kkaabkkk...
+kvukkaabbbbck...
+kwwwwwabrrbck..k
+kwwwwwwwkrbbck.k
+kvvkkkkkwkbbckbk
+.kkkkkkwwkbbcbck
+.kvvvvkwwkbbcbck
+kkkwwkkwvkbbckk.
+kvvvkvvwkbbck...
+..kkkwvkkbbck...
+...kbbckkbbbck..
+...kkkkkkkkkkk..
+atk
+.......k...kk...
+......kvk.kvvk..
+.k....kvkkvuk...
+kvk..kukkvuk....
+kuk.kkaabkkk....
+ukkaabbbbck...kk
+wwwwabrrrbck..kb
+kkkkkkakrbbck.kc
+krrrrrkkkbbbckbk
+kwkwkkwwwkbbcck.
+.kkkkwwvkbbbcck.
+kwwvkwwvvkbbcbk.
+kkvvkkwwvkbcck..
+.kkk.kwvkbbck...
+....kbbckkbbbck.
+....kkkkkkkkkkk.
+hurt
+..............k.
+...........kkkvk
+.....kkkkkkkvvk.
+...kkaaaabbkkk..
+..kaaabkkkbcck..
+.kwwaabbbkbcck..
+.kwwwwwwkkbbk...
+kvvkkkkkkbbbck..
+.kkvvkkkwkbbbck.
+..kwwvwvvkbbcck.
+...kkwwvvkbbcbbk
+...kwwvvkbbcck.k
+...kwwvkkbbck...
+....kwvkkbbck...
+...kbbckkbbbck..
+...kkkkkkkkkkk..

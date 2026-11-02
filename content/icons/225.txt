@@ -1,0 +1,80 @@
+# Shurimon
+k 141008
+s f8f8f0
+t c0c0b0
+u 888878
+g 90d040
+h 60a830
+j 387020
+r e83828
+q a01810
+b 6888d0
+c 384880
+idle
+.......krrrk....
+...k..krrrqk.k..
+...kbkkkkkk.kbk.
+...kbkssstkkbck.
+....kskkkkkukck.
+.kkkksrskkrtkkkk
+kggghkssttkhhjjk
+kgghhhkttkhhhjjk
+.kghhkkstukkhjjk
+bkgkkstttuukkjk.
+kbbkkkttuukkbbk.
+.kcck.kssk.kcck.
+..kk.kggkhjk.kk.
+.....kghkhjk....
+....kgggkhhjk...
+....kkkkkkkkk...
+idle2
+........krrrk...
+...k..krrrqkk...
+...kbkkkkkk..k..
+...kbkssstkkkbk.
+....kskkkkkukck.
+....ksrskkrtkk..
+.kkkkkssttkkkkkk
+kggghkkttkkhhjjk
+kgghhkstukkhhjjk
+.kgkkstttuukkjk.
+bkkk.kttuuk.kkbk
+kbbk.kkssk..kbbk
+.kck.kggkhjkkck.
+..k..kghkhjk.k..
+....kgggkhhjk...
+....kkkkkkkkk...
+atk
+.........krrrk..
+.....k..krrrqk.k
+.....kbkkkkkk.kb
+.....kbkssstkkbc
+......kskkkkkukc
+...kkkksrskkrtkk
+bbkgghhkssttkhhj
+bbbkghhhkttkhhhj
+kcbbkkkkkstukkhj
+.kccbkstttuukkjk
+..kkkkkttuukkbbk
+.......kssk.kcck
+......kggkhjk.kk
+.....kghkk.hjk..
+....kgggk.khhjk.
+....kkkkk.kkkkk.
+hurt
+...............k
+.....k.....krrrk
+.....kbk..krrrqk
+.....kbkkkkkkkkk
+......kssstkkbbk
+.....kskkkkkukck
+.....ksssssutkk.
+..kkkkkssttkkkkk
+.kggghkkttkkhjjk
+kgghhkkstukkhhjk
+kghkkstttuukkhjk
+.kk.kbkttuukkbbk
+...kbbkkssk.kbck
+...kck.ggkhjkkk.
+.....kgggkhhjk..
+.....kkkkkkkkk..

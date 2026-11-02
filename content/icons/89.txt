@@ -1,0 +1,82 @@
+# Fugamon
+k 180e0c
+b e8a860
+c b87030
+d 804820
+w e8e8f0
+h a8a8b8
+r e03828
+e 801828
+y f8d830
+o a88020
+a e8e0b0
+u a89868
+i 40a0f0
+idle
+.....kkkkkkk....
+....kwwwwhwhkk..
+...kbwwhwwhhhhk.
+..kbckkkwwhhhhk.
+.kkbbikbbhhkkdk.
+kbbbbbbbbcckcdk.
+kwkwkwkkkkccdkk.
+.krrrrrrkccdkkyk
+.keerrrrkccdkyok
+.kkwkwkwkcddkoyk
+kak.kkkkkccdkyok
+kuakkkbcbccdkdck
+.kuaaabbkkkkkcdk
+..kkkkkyoyoyokk.
+....kcdkkkkcdk..
+...kkkkk.kkkkkk.
+idle2
+.....kkkkkkkk...
+....kwwwhwwhhkk.
+...kbwwwwhwhhhhk
+..kbckkkwwhhhhk.
+.kkbbikbbhhkkdk.
+kbbbbbbbbcckcdk.
+kwkwkwkkkkccdkk.
+.krrrrrrkccdkkyk
+.kkkkkkkkccdkyok
+...kkkkkkccdkyok
+.kkk.kbcbccdkdck
+kaaukbbbbcdkkcdk
+kaauuubbkkkkkcdk
+..kkkkkyoyoyokk.
+....kcdkkkkcdk..
+...kkkkk.kkkkkk.
+atk
+....kkkkkkk.....
+...kwwwwhwhkk...
+..kbwwhwwhhhhk..
+.kbckkkwwhhhhk..
+kkbbikbbhhkkdk..
+kbbbbbbbcckcdk..
+kwkwkwkkkkccdk..
+.krrrrrkccdkkkyk
+.kerrrrkccdkyoyk
+kkkwkwkkkcdkoyok
+auaakkbbbcdkkkk.
+uaaaabbbbcdkdck.
+kkkkkkkkkkkkcdk.
+.....kyoyoyokkk.
+.....kcdkkcdk...
+....kkkkk.kkkkk.
+hurt
+.......kkkkkkk..
+.....kkwwwwhwhk.
+....kbcwwhwwhhhk
+...kbckkwwwhhhhk
+..kbbbbkkbbhhkkk
+..kkkkbbbbbcckdk
+.kbbbbbbbbcccdk.
+.kkkkkkkkkkcddk.
+..kwrrrkkkcdkkyk
+...kkkkkkccdkyok
+.k.kbbbbbccdkoyk
+kakkkbcbbccdkdck
+kuakkkkkkkkkkcdk
+.kuaakyoyoyokkk.
+..kkkkcdkkcdk...
+....kkkkk.kkkkk.

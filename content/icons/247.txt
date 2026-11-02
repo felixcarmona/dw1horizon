@@ -1,0 +1,77 @@
+# Kokuwamon
+k 14101c
+1 c8ccdc
+2 888ca4
+3 54586c
+4 383c50
+r f02818
+o f8a028
+y f8e850
+idle
+......kk.kk.....
+.....k1kk32k....
+....k112k322k...
+...k1122k2233k..
+...k112222233k..
+..k12kkk22kkk3k.
+..k1krok2krok3k.
+..k12kkk22kkk3k.
+...k122222333k..
+.kkk.kkk233kkk..
+k12kkk2k1223k23k
+.kk1223k1233k33k
+k12kkkkk1233k43k
+.kk..k12kk23kkk.
+...k112k.k1123k.
+...kkkkk.kkkkkk.
+idle2
+......kk.kk.....
+.....k1kk32k....
+....k112k322k...
+...k1122k2233k..
+...k112222233k..
+kkk12kkk22kkk3k.
+k1k1koyk2koyk3k.
+k2k12kkk22kkk3k.
+.kk2kk122233k...
+..k233kk2233kkk.
+...kk33k1223k23k
+....kkkk1233k33k
+.....k11233k343k
+.....k12kk23kkk.
+...k112k.k1123k.
+...kkkkk.kkkkkk.
+atk
+.....kk.kk......
+....k1kk32k.....
+...k112k322k....
+..k1122k2233k...
+..k112222233k...
+.k12kkk22kkk3k..
+.k1koyk2koyk3k..
+.k12kkk22kkk3k..
+kkkk122222333k..
+k1k.kkkk2233kkk.
+.k1kk1233k223k3k
+k1kk2333kk233k3k
+kkk.kkkk.k2343k.
+.......k12k.k3k.
+......k112k.k12k
+......kkkkk.kkkk
+hurt
+.......kk.kk....
+......k1kk32k...
+.....k112k322k..
+....k1122k2233k.
+....k112222233k.
+...k1222222233k.
+...k1kkk2kkk33k.
+...k1223222333k.
+.kk.k12222333k..
+k12kkkkkkkkkkk..
+k1k33k1223k23k..
+.kkkkk1233k233k.
+.....k1233k343k.
+......kkk23kkkk.
+.....k112k1123k.
+.....kkkkkkkkkk.

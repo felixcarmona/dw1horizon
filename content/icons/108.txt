@@ -1,0 +1,75 @@
+# Golemon
+k 0c180c
+g 80f880
+h 38b848
+d 1c6028
+e 124020
+w f0fff0
+idle
+....kkkkkkkk....
+...kgggggghhk...
+...kgwdgdwhek...
+...kgddgddhek...
+...kgggggghhk...
+..kkkkkkkkkkkk..
+..kggggggghhhk..
+.kkgddgddgdekk..
+kgkgddgddgdekhk.
+kggkgggggghkhhek
+kdgkgddgddekehek
+.kkkgddgddekkkk.
+...kkkkkkkkkk...
+...kkgkkkkhkk...
+..kggggghhhhhk..
+..kkkkkkkkkkkk..
+idle2
+....kkkkkkkk....
+...kgggggghhk...
+...kdwgdwghek...
+...kddgddgdek...
+...kgggggghhk...
+.kkkkkkkkkkkkkk.
+kggkgggggghhkhhk
+kdgkgddgddeekhek
+.kkkgddgddeekkk.
+...kgggggghhk...
+...kgddgddek....
+...kgddgddek....
+...kkkkkkkkkk...
+...kkhkkkkgkk...
+..kghhhhgggghk..
+..kkkkkkkkkkkk..
+atk
+.....kkkkkkkk...
+....kgggggghhk..
+....kkkkgkkkkk..
+....kgwdgdwhek..
+....kgggggghhk..
+...kkkkkkkkkkkk.
+kkkkkggggggghhk.
+kggkkkgddgdeekkk
+kggggkgddgdekhek
+kdgdgkggghhhkhhk
+kggkkkgddgdeekk.
+kkkk.kgddgdeek..
+....kkkkkkkkkk..
+.....kkgkkhkk...
+...kggggghhhhk..
+...kkkkkkkkkkkk.
+hurt
+.kk...kkkkkkkk..
+kggk.kgggggghhk.
+kdggkkkgkkgkkhk.
+.kggkkgddgddhek.
+..kggkgggggghhk.
+...kggkkkkkkkkkk
+....kkgggggghhhk
+...kkgddgddgdekk
+...kkgddgddgdkhk
+.....kgggggghkhk
+.....kgddgddekkk
+.....kgddgddek..
+.....kkkkkkkkk..
+......kgkkhkk...
+....kggggghhhhk.
+....kkkkkkkkkkk.

@@ -1,0 +1,83 @@
+# Angewomon
+k 140e14
+h d8d8e0
+i 989aa4
+j 54545c
+s ffd8b8
+t d89c78
+r e04060
+y f8e880
+o c0a838
+w f8f8ff
+l d0d8f0
+m 98a8d0
+p e8a8d8
+q a86098
+idle
+....kkkkk..k.k..
+...khhiiikklkwk.
+..khhkiiijkwlk..
+..khkkkijjkklk..
+..kiikijjjkyyqpk
+...kkkkkkkkyyoqk
+....kssstkyyokk.
+....kssstkyyokqk
+....ksrskwwlkkpk
+..kkykkkywlwlmkk
+.ksskwwwlmwlmlmk
+.ktk.kwwlmlwlmk.
+.kk.kwwllmwlmlmk
+kppkkwlmlmwlmk..
+kqpk.kwmk.kkqppk
+kkkk.kkkk..kkkkk
+idle2
+....kkkkk..k.k..
+...khhiiikklkwk.
+..khhkiiijkwlk..
+..khkkkijjkyklk.
+..kiikijjjkyyqpk
+...kkkkkkkkyyoqk
+....kssstkyyookk
+....kssstkkyyokk
+....ksrskwwlmlmk
+.kkkykkkywlwlmk.
+ksskwwwwlmwlmlk.
+kkk.kwwlmlwlmlmk
+....kwwllmwlmk..
+kppkkwlmlmwlmk..
+kqpk.kwmk.kkqppk
+kkkk.kkkk..kkkkk
+atk
+.....kkkkk..k.k.
+....khhiiikklkwk
+...khhkiiijkwlk.
+...khkkkijjkklk.
+...kiikijjjkyyqk
+....kkkkkkkkyyok
+.k...kssstkyyokk
+kwk..kssstkyyokk
+kwkkkksrskwwlkkk
+kywwwwssssskwlmk
+kwkkkkkkwwlkwlmk
+kwk...kwwlmkwllk
+.k...kwwlmkwlmmk
+....kwwlmkwwlmmk
+....kqkwmk.kqppk
+....kkkkkk.kkkkk
+hurt
+......kkkkk...k.
+.....khhiiikkklk
+....khhkiiijkwlk
+....khkkkijjkklk
+...kkkkkkkiijkyk
+...kssskkkkkkyyk
+...kskkstkyyyok.
+....ksstkkyyokqk
+.....kttkwwlkkkk
+..kkkkkkkwlwlmk.
+.ksskwwwwkwwlmk.
+.kkk.kwwlmkwlmk.
+.....kwwlmkwllmk
+....kwwlmkwwlmmk
+....kqkwmk.kqppk
+....kkkkkk.kkkkk

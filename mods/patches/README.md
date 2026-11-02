@@ -144,3 +144,5 @@ Patches 0309-0312 answer a tester's v0.0.3 report: the City tab reads each cell'
 Patch 0315 draws a still meat bubble over the meat farmer (NPC slot 6 of screens 168-179) while a harvest waits: p31 >= 1, or the first visit to Tanemon. It reuses the status bubble's sprites, so it needs no new art, and it hides while a script runs. Proof: real talk with Palmon on an original-2-MB boot.
 
 Patch 0316 slims patch 0315 from 704 B to 496 B of heap: two sprite calls with the whole bubble sprite, no second caller of the row's drawing code, whose inlining that caller would stop. Eight-language build: heap 184,768 B, screen 207 keeps 48 B.
+
+Patch 0317 keeps both idle frames of every icon in the chart block and alternates them in the chart and City grids.

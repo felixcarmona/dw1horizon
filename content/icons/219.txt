@@ -1,0 +1,84 @@
+# Zudomon
+k 1a100c
+o f8a830
+p e07818
+q a84808
+b 98b0d8
+c 6880a8
+d 485880
+g 68b068
+h 387848
+w f8f0e0
+u c8b890
+e 3878e8
+m 9898a8
+n 505060
+r d83830
+idle
+.kk.............
+.kwk.....kk.kk..
+..kwk.kkkgkkguk.
+...kwkooopkgghk.
+..kkooooooopkuhk
+.kooekooooopkghk
+.koeekoooppqkghk
+koooooooppqqkuhk
+kkwkkkkkkqqkbkhk
+kwkkwrrrkkkbbkhk
+kwkkwkbbbbbbckhk
+.kukkbbbbbcckhk.
+kmmkubbbbcccckk.
+kmnnkkbbccdkok..
+knnnkupkkkupqk..
+kkkkkkkkkkkkkkk.
+idle2
+.kk.......kk.kk.
+.kwk.....kgkkguk
+..kwk.kkkgggghhk
+...kwkooopkgghkk
+..kkooooooopkuhk
+.kooekooooopkghk
+.koekkoooppqkghk
+koooooooppqqkuhk
+kkwkkrrrkqqkbkhk
+kwkkwrrkkkkbbkhk
+kwkkwkbbbbcbckhk
+.kukkbbbbbcckhk.
+.kkkubbbbcccckk.
+kmmkkkbbccdkopk.
+kmnnkupkkkupqok.
+kkkkkkkkkkkkkkk.
+atk
+..kkkk..........
+.kmmnnk.........
+kmmnnnk.kk...k..
+.kkkbkkwkkkkkgk.
+...kbkoowkopkgk.
+...kkooooowkgghk
+..koooooooopkghk
+.kooekooooppkghk
+.koeekoooppqkghk
+kooooooppqqqkhhk
+kwkkkkkkkqqkbkhk
+kwrrrrrkkkkbbkhk
+.kwkkbbbbcbbckk.
+..k.kkbbcccdkok.
+...kupkkkkkkpok.
+...kkkkk.kkkupqk
+hurt
+................
+.........kkkkk..
+..kk.....kgggk..
+..kwk..kkkgghk..
+...kwkkoookghhk.
+...kkoooooopkhk.
+..koooooooppkhk.
+..kkkkoooppqkhk.
+.kooooooppqqkhk.
+kwkkkrkkkqqkbkk.
+kwkkkkkbbkkbbk..
+.kk.kbbbbbcbck..
+.kmkkbbbbcccck..
+kmmmkkbbcccdkok.
+knnnkkupkkkupqk.
+kkkkkkkkkkkkkkk.

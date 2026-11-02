@@ -1,0 +1,78 @@
+# Scorpiomon
+k 180a0e
+l e8d090
+m c0a058
+d 886c30
+e 584418
+r d83820
+b 40a8f8
+c 383840
+s c8c8d8
+idle
+.....kkkkkk.....
+...kkmmlmmdkk.k.
+..kssdkkkkmmdkck
+..kskk....kmdkk.
+...k..k.k..kmdk.
+.....ksk.k.kmdk.
+.....kskkskkmdk.
+...kkkskkskkmdk.
+..kllmlmmlmkmdk.
+.klmkbmmmmdkmdk.
+.kmmmmrmmmdkmdk.
+kkkkkmmmdmdmdk..
+kllmmkkkkkkkdk..
+.kkkmk.kdkkdkkk.
+kllmmk.kdkkdkdk.
+kkkkkk.kkkkkkkk.
+idle2
+................
+....kkkkkkk...k.
+..kkmmlmmdmkkkck
+.kssdkkkkkmmdkk.
+.kskk.k.k..kmdk.
+..k..ksk.k.kmdk.
+.....kskkskkmdk.
+...kkkskkskkmdk.
+..kllmlmmlmkmdk.
+.klmkbmmmmdkmdk.
+.kmmmmrmmmdkmdk.
+..kkkmmmdmdmdk..
+.kkkkkkkkkkkdk..
+kllmmmk.kdkkdkk.
+.kkkmmk.kdkkkdk.
+..kkkkk.kkkkkkk.
+atk
+................
+.kk..kkkkkkk..k.
+kssmkkmmlmmdkkck
+kskkmdkkkkmmmdk.
+.k..kk..k.k.kmdk
+......ksksk.kmdk
+......ksksk.kmdk
+.....kkkkkkkkmdk
+....kllmlmmlmkdk
+...klmkbmmmmdkmk
+...kmmmmrmmmdkmk
+kkkkkkmmmdmdmdk.
+kllmmmmkkkkkkdk.
+.kkkkkmk.kdkkkk.
+kllmmmmk.kdkkdk.
+kkkkkkkk.kkkkkk.
+hurt
+..........kkkk.k
+.........kmmlkkk
+.kk.....kmdkmdkk
+kllk...kssk.kmdk
+.kmk...kk...kmdk
+kllmk....k..kmdk
+.kkkk...ksk.kmdk
+.....k..ksk.kmdk
+....kskkkkkkkmdk
+...kkkkmlmmlkmdk
+..kmkkmmmmmdkdmk
+..kmmrmmmmdkdmk.
+...kkmmmkmdkdk..
+.....kkkkkkkkkk.
+......kdkkdkkdk.
+......kkkkkkkkk.

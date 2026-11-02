@@ -1,0 +1,80 @@
+# MaloMyotismon
+k 100c18
+a 68a8f8
+b 3070e0
+c 184898
+t a0c8c8
+u 68989c
+v 406468
+p f89090
+r e83030
+y f8e048
+s 90e8f8
+idle
+.......k.k......
+kkkk..kbkbk.kk..
+kaabkkkbkbkkbbkk
+kaaabbkkbkkbbbcc
+kkaabbkbbbkbbcck
+.kkaabkrbkkbcck.
+..kkkkkbbckkkk..
+..kukkbbybbkkuk.
+.kttkbbkkkcckuvk
+.ktvktuurrvvkuvk
+.ktvkktuuvkkkvvk
+.ktk.kttkvvk.kvk
+kpkk.kbkkkck.kpk
+.kk.kttk.kuvk.kk
+...kttuk.ktuvk..
+...kkkkk.kkkkkk.
+idle2
+.......k.k......
+.......b.b......
+kkkk..kbkbk.kkkk
+kaaakkkbkbkkbbck
+kkaabbkkbkkbbcck
+.kaaabkbbbkbcck.
+..kkkkkrbkkkkk..
+..kukkbbybbkkuk.
+.kttkbbkkkcckuvk
+.ktvktuurrvvkuvk
+.ktvkktuuvkkkvvk
+.ktk.kttkvvkkvk.
+.kpk.kbkkkckkpk.
+..kk.kttk.kuvkk.
+...kttuk.ktuvk..
+...kkkkk.kkkkkk.
+atk
+.....k.k........
+kkk.kbkbk.kk....
+kaabkkbkbkkbbkk.
+kaaabkkbkkbbbcck
+kkaabkbbbkbbcck.
+.kkkbkrbkkbcck..
+.p.kkkbbbkkkk...
+pkkuukbybbkkuk..
+.pkttkkkkcckuvk.
+ktttuuurrvvkuvk.
+.kkkkktuuvkkvvk.
+.....kttkvvkkvk.
+.....kbkkkckkpk.
+....kttk.kuvkk..
+...kttuk.ktuvk..
+...kkkkk.kkkkkk.
+hurt
+.........k.k....
+..kkk...kbkbk.kk
+.kaabk.kkbkbkkbb
+kkaaabbkkkbkkbbc
+.kkaabbkbbbkbbck
+...kkaabkkkbkck.
+....kkkkbbckkk..
+....kukbbybbkuk.
+...kttkbkkkcckuk
+...ktvtuurrvvkvk
+...ktvkktuuvkkvk
+...ktk.kttkvvkpk
+...kpk.kbkkkckk.
+....k.kttk.kuvk.
+.....kttuk.ktuvk
+.....kkkkk.kkkkk

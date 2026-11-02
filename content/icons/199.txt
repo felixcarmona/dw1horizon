@@ -1,0 +1,83 @@
+# Paildramon
+k 180a0e
+r f04028
+s b02018
+t f8a070
+y f8e030
+b 5090f0
+c 2858c0
+d 183078
+g 40b868
+h 207048
+w f0f0f0
+v a8a8b8
+n 687088
+m 383c50
+idle
+.....kk.........
+....ktk...kkkk..
+...ktrkk.kbbckkk
+..ktrrrskbbcvwwk
+.ktrkkyskbcvwwvk
+ktrrrrrskkcvvwk.
+kkkkkkrskkkcvkk.
+.kwwrssskbbkkk..
+..kkkkkkbggckmk.
+kmnnnmkgghkmnnk.
+kmmmmmkgghkmmmk.
+kwkwkkggghkkkmk.
+kwkwkbbbcckkwkwk
+.k.kkbcckcckwkwk
+...kvwvck.kvwk.k
+...kkkkkk.kkkkk.
+idle2
+.....kk...kkk...
+....ktk..kbbkkkk
+...ktrkkkbbcvwwk
+..ktrrrskbbcvwk.
+.ktrkkyskbcvvwk.
+ktrrrrrskkbcvwk.
+kkkkkkrskkkbvk..
+.kwwrssskbbkkk..
+..kkkkkkbggckmk.
+kkmnnmkgghckmnk.
+kmnnmmkgghkmmmk.
+kmmmmkkggghkkmk.
+kwkwkkbbbcckwkwk
+kwkwkbcckcckwkwk
+.k.kvwvck.kvwk.k
+...kkkkkk.kkkkk.
+atk
+......kk........
+.....ktk...kkkk.
+....ktrkk.kbbckk
+...ktrrrskbbcvwk
+..ktrkkyskbcvwwk
+.ktrrrrrskkcvwk.
+ykkkkrrskkkbkk..
+ywk.kwrsskbbkk..
+ywkkkkkkkbggckk.
+yykmnnmmkgghkmk.
+wymnnnmmmkghkmk.
+yykmmmmmkgghkkk.
+ykkkkkkkkbcckck.
+.......kbcckkck.
+......kvwvck.kvk
+......kkkkkk.kkk
+hurt
+...........kk...
+.kkk.......ktk..
+kbckk.....ktrk..
+kvwbck...ktrrrk.
+.kwvck.kktkkkrsk
+..kkbbkrrrrrrrrk
+...kbbckrssssssk
+..kkgggkkwkwkkk.
+.kmngghkkkmmnk..
+.kmmgghbbkmmnk..
+.kkmgghcckkmmk..
+.kwkkbbcckkkwk..
+.kwk.kbckck.kwk.
+..k.kbcck.kcdk..
+...kvwvck.kvwvk.
+...kkkkkk.kkkkk.

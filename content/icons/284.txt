@@ -1,0 +1,77 @@
+# Crabmon
+k 0c0c20
+1 80b0ec
+2 3c6cc4
+3 204084
+r f83850
+s a82038
+e 50e878
+w f0f8f8
+idle
+..kkkkkk........
+.k1111rk........
+k1122kkk.....kk.
+k12kkwrk...kk1rk
+k122211k..k12kk.
+.k22233k..k1k1rk
+..kk223k..k22kk.
+...k233k..k23k..
+...krrkkkkrrk...
+..k1111111222k..
+.k11ke11ke2223k.
+kr1111111222233k
+k2211kkkkk2333rk
+k22222222233333k
+k2kk2kkkk2kk3k3k
+kkkkkkkkkkkkkkkk
+idle2
+.kkkkkk.........
+k1111rk......kk.
+k12kkkk....kk1rk
+k12k.......k1kkk
+k122kkwrk..k12k.
+.k222211k..k1k1k
+..kk2233k.k22kk.
+...k233kk.k23k..
+...krrkkkkrrk...
+..k1111111222k..
+.k11kk11kk2223k.
+kr11ke11ke22233k
+k221kkkkkk2333rk
+k22222222233333k
+k2kk2kkkk2kk3k3k
+kkkkkkkkkkkkkkkk
+atk
+................
+.kkkkkkk.....kk.
+k11111rkk..kk1rk
+kkkkkkkk2k.k1kkk
+.......k2k.k12k.
+kkkkkkkk22k.k2k.
+k1111rk222k.k2k.
+.kkkkkk233k.k3k.
+...krrkkkkrrkk..
+..k1111111222k..
+.k1ke11ke22223k.
+kr11rrrrrr22233k
+k2211kkkkk2333rk
+k22222222233333k
+k2kk2kkkk2kk3k3k
+kkkkkkkkkkkkkkkk
+hurt
+................
+................
+...kkkkk........
+..k1111kk....kk.
+.k12kkk2k..kk1rk
+.k1k..k2k.k1kkk.
+.k22k.k2k.k12k..
+..kk..k3k..k3k..
+...krrkkkkrrk...
+..k1111111222k..
+.k1kkk1kkk2223k.
+kr1111111222233k
+k221rrrrr22333rk
+k22222222233333k
+k2kk2kkkk2kk3k3k
+kkkkkkkkkkkkkkkk

@@ -1,0 +1,78 @@
+# Magnadramon
+k 180c18
+1 f8c8f8
+2 e890e8
+3 b860c8
+4 804090
+h 382030
+r e83050
+w f8f8f0
+e 40d060
+idle
+....kkkkkkkkkk..
+...khrhhrhhrhhk.
+..k11khrhhrkkk1k
+.k1111kkkkk1k12k
+k11e1k1112kk122k
+k1111112223k122k
+kkkkk11223kk223k
+krrrrk1223k2kk3k
+kwkwk12234k2k.kk
+.kkk1223k34kk...
+...k1kk1234k..kk
+..k12kk1234k.k3k
+..kk2k12234kkk34
+.k12kk12k34444k.
+.k1wkk1wk4kkkk..
+.kkkkkkkkkkk....
+idle2
+....kkkkkkkkk...
+...khrhhrhhrhkk.
+..k11khrhhrkk11k
+.k1111kkkkk1k122
+k11e1k1112kk1223
+k1111112223k1233
+kkkkk11223kk23kk
+kwkwk11223k23k..
+.kkkk12234k3k...
+...k11223kk4k...
+...k1kk1234k..kk
+..k12kk1234k.k3k
+..kk2k12234kkk34
+.k12kk12k34444k.
+.k1wkk1wk4kkk...
+.kkkkkkkkkk.....
+atk
+......kkkkkkkkk.
+.....khrhhrhhrhk
+...kk11khrhhrkkk
+..k11111kkkkk1k2
+.k11e1k1112kk122
+k111111112223k23
+kkkkkkk11223kk3k
+krrrrrrk1223k3k.
+krrrrrrk2234kk..
+kwkwkwk12234k...
+.kkkkk12234k..kk
+...kkk1234k..k3k
+..k12k12234kkk34
+.k1wkk12k34444k.
+..kk.k1wk4kkkk..
+.....kkkkk......
+hurt
+.......kkkkkkk..
+.....kkhrhhrhhk.
+...kkhrhhrhkkkk.
+..k11khrhrkk1k2k
+.k1111kkkkk1k22k
+.k1kkk11122kkk3k
+.k111111223k123k
+.kkkkk11223k223k
+..kkk11234k33kk.
+....k1k2234kk...
+....k1k1234k..kk
+...k12kk1234kk3k
+...kk2k12234k34k
+..k12kk12k3444k.
+..k1wkk1wk4kkk..
+..kkkkkkkkkk....

@@ -1,0 +1,81 @@
+# Kotemon
+k 180a0e
+a 80b8f8
+b 3878e0
+c 2048a0
+g f0f0f8
+h c0c0d0
+i 8888a0
+y f8e040
+z f0e0b8
+t c0a878
+u 887040
+r e03028
+idle
+.kk.........kk..
+kzkk.kkkkk.kgk..
+kzuk.kbbbkkgik..
+.kzukkaabbbkkk..
+.kzukkkkkkkkbck.
+..kzkkgkgkgkbck.
+..kzkkykgkykbck.
+...kzkkkgkkkcck.
+...kzukgkgkkck..
+...kkkkkkkkkkk..
+..kghkgghhikbk..
+.kgggkkrkhkkbck.
+kaggkbakzkkkkkk.
+kbbck.kkkk.kgh.k
+kaabkkbbkkbbcik.
+.kkkkkkkkkkkkkk.
+idle2
+..kk........kk..
+.kzk.kkkkk.kgk..
+.kzuukbbbkkgik..
+..kzukaabbbkkk..
+..kzukkkkkkkbck.
+...kzkgkgkgkbck.
+...kzkkkgkkkbck.
+...kzkykgkykcck.
+...kzkkkkkkkck..
+...kkkgkgkkkkk..
+..kghkkkkkhibk..
+.kgggkkrkhkkbck.
+kaggkbakzkkkkkk.
+kbbck.kkkk.kgh.k
+kaabkkbbkkbbcik.
+.kkkkkkkkkkkkkk.
+atk
+.....kkkkk.kk...
+.kk..kbbbkkgk...
+kzkk.kaabbbgik..
+kzzkkkkkkkkkkk..
+.kuukkgkgkgkbck.
+.kzzkkykgkykbck.
+..kuukgkgkgkbck.
+kk.kzzkkkkkkcck.
+kzzkkuukkkkkck..
+kzttuzuukkkkkk..
+.kkkkkzzukhikbk.
+.kgggkkrkhkkbck.
+kaggkbakzkkkkkk.
+kbbck.kkkk.kgh.k
+kaabkkbbkkbbcik.
+.kkkkkkkkkkkkkk.
+hurt
+.......kk.....kk
+.kk...kzuk...kgk
+kzkk...kzuk.kgik
+kzuk.kkkkzuk.kk.
+.kzkkbbbkkzuk...
+.kzkaabbbkkzuk..
+..kkkkkkkkkkzuk.
+...kgkgkgkbckzuk
+...kkkkgkkbck.kk
+...kgkgkgkcck...
+....kkkkkkkk....
+...kghgghhikbk..
+..kgggkkrkkbck..
+.kaggkbakzkkkkk.
+.kbbckkkkk.kghk.
+.kkkkkbbkkkkkkk.

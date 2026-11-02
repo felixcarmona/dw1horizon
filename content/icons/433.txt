@@ -1,0 +1,77 @@
+# Guilmon
+k 180a0e
+1 dc6450
+2 ac3c38
+3 7a2830
+4 581c28
+w f0f0ec
+g a8a4a8
+y f8d820
+idle
+.......kk....kk.
+......kkkk..k1k.
+....kk1112kk12k.
+..kk11112kkkk2kk
+.k1111112yky233k
+k1k111122yy2k3kk
+k1111112222233k.
+kkwkwkwkkkk233kk
+.k32222222223k..
+..kk33333333k...
+.....kwwkk22k.kk
+...kk1wkwk22kk1k
+..kwk2wkwk24122k
+...k.k2wwg2k4kk.
+...kw12k.kw123k.
+...kkkkk.kkkkkk.
+idle2
+.......kk...kk..
+......kkkk.k1k..
+....kk1112kk12k.
+..kk11112kkkk2kk
+.k1111112yky233k
+k1k111122yy2k3kk
+k1111112222233k.
+kkkkkkkkkkk233kk
+kwkwk4444k2333k.
+.kkkwkwkk2233k..
+.k1k.kwwk222k...
+.kw2kwkwk22kk...
+..kk2wkwk22412kk
+.....k2wg2k4kkk.
+...kw12k.kw123k.
+...kkkkk.kkkkkk.
+atk
+.......kk...kk..
+.....kkkkk.k1k..
+...kk1112kk12kk.
+.kk11112kkkk123k
+k111112yky2233k.
+k1k1122yy22k33kk
+k1111222222333k.
+kkwkwkkkkk2233k.
+kkkkkkkkkk2333k.
+k44yy444kk22kk..
+kwkwkwkk2wk22k..
+.kkkkkk2wwk22kkk
+...kw1kwkwk224k1
+...kk2kwwg22k1kk
+....kw123kkw123k
+....kkkkkkkkkkkk
+hurt
+.....kk.....kk..
+.....kkk...k1k..
+.....k11kkk12k..
+..kkk1112kk12k..
+.k1111111112233k
+k1k1111kkk1223k.
+k11111k111233kk.
+kkk2222222233k..
+kkwkkkkkk2233kkk
+.kkkkk33k333k1k.
+...k.kwwk22kk1k.
+...kk1wkwk2223k.
+..kwk2wkwk2kkk..
+..kk.k2wg22k....
+...kw12k.kw123k.
+...kkkkk.kkkkkk.

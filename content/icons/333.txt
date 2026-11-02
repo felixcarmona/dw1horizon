@@ -1,0 +1,81 @@
+# Raijinmon
+k 180a0e
+a f8f0c8
+b d8d098
+c a8a060
+d 707038
+e b07848
+f 704828
+r e82818
+y f8d830
+g d0d0d8
+h 808090
+w 60d0f8
+idle
+..kkkkk.kkkkk...
+.kaaabckaaabck..
+.kaeefckaeefck..
+kkbfffddbfffckk.
+kaacdddgdddaabk.
+kaeefkgwgkaeefk.
+kbfffkkkkkbfffk.
+.kddkaarabkddkk.
+..kkkaabbbkkk...
+.kgkkabrbckkhgk.
+kghkkkkkkkkkgh.k
+khgk.kabbck.kgyk
+.kk.kaackbbk.kyk
+....kabkkkbck.ky
+...kaabk.kbbck.k
+...kkkkk.kkkkkk.
+idle2
+..kkkkk.kkkkk...
+.kaaabckaaabck..
+.kaeefckaeefck..
+kkbfffddbfffckk.
+kaacdddgdddaabk.
+kaeefkgkgkaeefk.
+kbfffkkkkkbfffk.
+.kddkaarabkddkk.
+.kkkkaabbbkkkkk.
+kgkkkabrbckkkhgk
+khgkkkkkkkkkkgh.
+.kk..kabbck..kgk
+....kaackbbk.kyk
+...kaabkkkbbkkyk
+...kkkkk.kkbbkk.
+.........kkkkkk.
+atk
+....kkkkk.kkkkk.
+...kaaabckaaabck
+...kaeefckaeefck
+..kkbfffddbfffck
+..kaacdddgdddaab
+..kaeefkgwgkaeef
+..kbfffkkkkkbfff
+...kddkaarabkddk
+.kkkkkkaabbbkkk.
+khghgggkabrbckhk
+kggkkkkkkkkkkkgh
+.kk.....kabbckkg
+.......kaackbbk.
+......kabkkkbck.
+.....kaabk.kbbk.
+.....kkkkk.kkkkk
+hurt
+.kkkkk.kkkkk....
+kaaabckaaabck...
+kaekkckaekkck...
+kbbbbckbbbbckk..
+.kcddddkkdddabk.
+.kaekkkkkkaekkk.
+.kbbbkggkkbbbbk.
+..kkkaaakkkkk...
+..kgkaarabkkhk..
+.kghkkabbbckkgh.
+.khgkkkabbckkkgk
+..kk.kaackbbkkyk
+....kaabkkbbk.ky
+...kaabk.kbbck.k
+...kkkkk.kkkkkk.
+................

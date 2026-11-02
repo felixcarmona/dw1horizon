@@ -1,0 +1,79 @@
+# IceLeomon
+k 14121c
+1 fcfcfc
+2 d8d8e8
+3 a8a8c8
+4 787898
+5 505070
+d 585868
+e 383848
+y f8e020
+b 40b0f0
+idle
+....k.k.k.k.....
+...k3k3k3k4k....
+..k3343434344k..
+.k334111122445k.
+k3341kk12kk2445k
+k3341ky12ky2445k
+k334111kk222445k
+.k3411kkk22445k.
+.k344111224455k.
+..k44bkbkbk455k.
+.k23k11223k34kk.
+.kedk12k23keddk.
+k123kdedkedk234k
+.kkk.kdekdek.kk.
+...k1123k2334k..
+...kkkkkkkkkkk..
+idle2
+...k.k.k.k.k....
+..k3k3k3k3k4k...
+..k3343434344k..
+.k334111122445k.
+k3341kk12kk2445k
+k3341ky12ky2445k
+k334111kk222445k
+.k341kkkkkk2445k
+.k3441keeek4455k
+..k44bkbkbk455k.
+.kedk11223k34kk.
+.kedk12k23keddk.
+.k12kdedkedk23k.
+..kk.kdekdek.kk.
+...k1123k2334k..
+...kkkkkkkkkkk..
+atk
+.....k.k.k.k....
+....k3k3k3k4k...
+...k3343434344k.
+..k334111122445k
+.k3341kk12kk245k
+.k3341ky12ky245k
+.k334111kk22245k
+..k341kkkkkk245k
+..k341keeeek445k
+...k44kkkkkk455k
+kkkkkk4bkbkbk45k
+k1123edk1123k45k
+k1234edk2233kk5k
+.kkkkkkkdedkdek.
+.....k1123k2334k
+.....kkkkkkkkkkk
+hurt
+......k.k.k.k...
+.....k3k3k3k4k..
+....k3343434344k
+...k33411112245k
+..k334111122245k
+..k3341kkk2kk45k
+..k33411kk22245k
+...k341kkkkk245k
+...k3441keek445k
+.kk.k44bkbkbk45k
+k12dk.k1223kkkk.
+k34edkk2k34kedk.
+.kkkkkdedkedk4k.
+.....kdekdek.k..
+....k1123k2334k.
+....kkkkkkkkkkk.

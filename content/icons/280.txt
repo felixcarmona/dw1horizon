@@ -1,0 +1,80 @@
+# Pumpkinmon
+k 1c0e08
+1 f8b048
+2 e87c18
+3 a84c10
+y f8f040
+g 60c858
+e 308038
+w f8f8e8
+x c8c8a8
+n 505058
+m a8a8b0
+idle
+....kkkkkkkk....
+...knnnmmmnnk.kk
+...knnnnnnnnkkmk
+...kk1k22k2kk.k.
+..k1121122122k..
+.k1kkk222kkk23k.
+.k1kyk222kyk23k.
+.k11k22k22k233k.
+.k1kk2kyk2kk33k.
+.k22kkkkkkk333k.
+..kk3333333kk...
+.kkkggggggekk...
+kwwkkeeeekxxkgk.
+kwxxkwwwwxxkkgek
+.kkkkwwxkxxk.kk.
+...kkkkkkkkkk...
+idle2
+.....kkkkkkkk...
+....knnnmmmnnk.k
+....knnnnnnnnkmk
+...kk1k22k2kkkk.
+..k1121122122k..
+.k1kkk222kkk23k.
+.k1kyk222kyk23k.
+.k11k22k22k233k.
+.k1kkkkkkkkk33k.
+.k22kykykyk333k.
+..kk3kkkkk3kk.k.
+kkkkggggggekkkgk
+kwwkkeeeekxxkkek
+kwxkkwwwwxxk.kk.
+.kk..wwxkxxk....
+...kkkkkkkkkk...
+atk
+..kkkkkkkk......
+.knnnmmmnnk.kk..
+.knnnnnnnnkkmk..
+.kk1k22k2kk.k...
+k1121122122k....
+1kkk222kkk23k...
+1kyk222kyk23k.k.
+11k22k22k233kkgk
+1kkkkkkkkk33keg.
+1kyykkyykk33kkek
+k2kkkkkkk333k.k.
+.kk3333333kkk...
+.kkgggggekxxk...
+kwwkeeekwxxk....
+kkxkwwwxkkxkk...
+...kkkkkk.kkkk..
+hurt
+.........kkkkkkk
+........knnmmmnk
+.........kkkkkkk
+......kk1k22kk..
+.....k112112212k
+....k1kk222kk23k
+....k1222222223k
+....k11kk22kk33k
+....k1222k22233k
+....k22kkkkk333k
+.....kk33333kkk.
+...k.kkggggekk..
+..kwkkeeeekxxkk.
+..kxkwwwwwxxkxk.
+...k.kwwxkxkkk..
+....kkkkkkkkkk..

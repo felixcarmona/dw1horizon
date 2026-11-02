@@ -1,0 +1,78 @@
+# Veemon
+k 140c1c
+1 68c8f8
+2 2890e8
+3 1458a8
+w f8f8f0
+g b8c4d0
+y f8d820
+r e83028
+c d8c090
+idle
+....kkkkk.......
+...k11111k...kk.
+..k11y1y12kkk22k
+.k1111y11222223k
+.k111kk1kk2223k.
+k111krkkrk2kkk..
+k111krwkrw23k...
+kwwww1k1k2223k..
+kwkkwwww22233k..
+.kkkkwwk2333k...
+..kk1kwwkk3k....
+.k112kwwk23k.kk.
+.k223kwgk23kk2k.
+..kkkwwgk233k3k.
+..k12kkk2k3kkk..
+..kcckk.kcck....
+idle2
+.....kkkk.......
+....k1111k....k.
+..kk1y1y12kkkk2k
+.k1111y1122223k.
+.k111kk1kk2223kk
+k111krkkrk2kkk..
+k111krwkrw23k...
+kwwww1k1k2223k..
+kwwwwwww22233k..
+kkkkkkwk2333k...
+.kwwwkkkkk3k....
+kk11kkwwk23k..k.
+k123kkwwk23k.k2k
+.kk2kwggk233k3k.
+..k12kkk2k3kkk..
+..kcckk.kcck....
+atk
+.......kkkkk....
+......k11111k..k
+.....k11y1y12kk2
+....k1111y11222k
+....k111kk1kk23k
+...k111krkkrk2k.
+...k111krwkrw2k.
+.kkkwwww1k1k23k.
+k11kkkwwwww223k.
+k121kkkkkkk23k..
+k1211122kwwk3k..
+.kkkk22kwwk23k..
+....kkkwwgk233kk
+....k12kgk22k3k.
+...k122kkk22kk..
+...kcckk..kcck..
+hurt
+...........kk...
+...kkkkk..k2k...
+..k11111kk22k...
+.k11y1y122223k..
+.k111y112223kk..
+k111kkk1kkk2k...
+k11kkk1kkk123k..
+k111111111223k..
+kwwwkkkk1k223k..
+kwwkrrrkw2223k..
+.kkkkkkkk233k.k.
+...k1kwwk23k.k2k
+..k12kwwk233k3k.
+..k2kwwgk233kk..
+.k12kkkk22kk....
+.kcck...kcck....

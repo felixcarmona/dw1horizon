@@ -1,0 +1,78 @@
+# Ebidramon
+k 200a0e
+1 f88468
+2 e83020
+3 a01420
+t f0d0a0
+u b88c58
+m e04898
+n 901860
+y f8d820
+idle
+...mm.....mmm...
+..m..mkkkk...m..
+.m..kk1212kk..m.
+...k111212222k..
+..k11y12k12233k.
+.k111112k212233k
+kttttk22kk21233k
+kuuk.k22ttk1233k
+.kk.k12tuuk1233k
+k12kk122kuk1233k
+k1k.k122kkk3333k
+k12k.k2k..k1233k
+.k12kk2k..k1233k
+..k112k...kk33k.
+...kk....kmmnnk.
+........kmmnkmnk
+idle2
+..mm.......mmm..
+.m..mmkkkk....m.
+m...kk1212kk...m
+...k111212222k..
+..k11y12k12233k.
+.k111112k212233k
+kttttk22kk21233k
+kkkkkk22ttk1233k
+kuuuk122tuuk233k
+.kk.k122kuk1233k
+.kk.k122kkkk233k
+k12k.k2k..k1233k
+k1k.kk2k..k1233k
+k12k.kk...kk33k.
+.k12k....kmmnnk.
+..kk.....kmnkmnk
+atk
+....mm...mmm....
+...m..mkkkk.m...
+..m..kk1212kk...
+....k111212222k.
+...k11y12k12233k
+..k111112k21223k
+.kttttk2kk21233k
+.kk.kkk2ttk1233k
+kk...k2tuuk1233k
+k12kk122kuk1233k
+k1k1212kkkkk233k
+k1k.kkk..k11233k
+k12k.....k1233k.
+.k12k....kk33kk.
+..kk.....kmmnnk.
+........kmmnkmnk
+hurt
+.......mm..mmm..
+......m..m....m.
+.....m..kkkkk...
+.......k121212kk
+.....kk11122122k
+....k1kk112k1233
+....k11k12k21233
+...kttttk2k1233k
+...kkkkk2kk1233k
+.k1kk.k2ttk1233k
+k12k.k122uk1233k
+k1k..k12kkk1233k
+.k12kkk2k.kk233k
+..kk1k2k...kk3k.
+...kkk....kmmnk.
+.........kmmnkmk

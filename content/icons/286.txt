@@ -1,0 +1,84 @@
+# Deramon
+k 081408
+1 34b868
+2 148848
+3 0c5c2c
+f f898b8
+c 88a0e8
+d 4c68c4
+e 2c4488
+y f8d840
+o b08820
+r e82030
+s 901828
+w e8ecf4
+l b4bccc
+m 8088a0
+idle
+......kkkkkkk...
+...kkk1122221kk.
+..k11k1222f233k.
+.kkykykyk222f33k
+.k1yyyyok2f2233k
+.kkkkkkkk222f23k
+..kcwwrdk2f2233k
+kyyykcddek2f233k
+.koookdeek222f3k
+..kkkrrkrrk2233k
+...krsrkrsrk233k
+..kwwwllklwk323k
+..kwwwlllkwk333k
+..kwwwllmkmk33k.
+..kwrrk..kwrrkk.
+..kkkkkk.kkkkkk.
+idle2
+......kkkkkkk...
+...kkk1222211kk.
+..k11k12f2233k..
+.kkykykyk2f2233k
+.k1yyyyok222f33k
+.kkkkkkkk2f2223k
+..kcwwrdk2223f3k
+kyyykcddek22f33k
+kkkkkddeek2f233k
+.koookkkkk22233k
+..kkkrrkrrk2f33k
+...krsrkrsrk233k
+..kwwwllklwk323k
+..kwwwllmkmk33k.
+..kwrrk..kwrrkk.
+..kkkkkk.kkkkkk.
+atk
+.......kkkkkkk..
+....kkk1122221k.
+...k11k1222f23k.
+..kkykykyk222f3k
+..k1yyyyok2f223k
+..kkkkkkkkk222fk
+...kcwwrkkdk2f3k
+kyyyyyykddk2233k
+kooooookdek2f23k
+.kkkkkkkrrkk223k
+ff.kkrkkrsrk233k
+.f..kwwwlkwk33k.
+...kwwwlllkk33k.
+...kwwllmk.k3k..
+..kwrrk.kwrrk...
+..kkkkk.kkkkkk..
+hurt
+........kkkkkkk.
+.....kkk1122221k
+....k11k1222f2k.
+.kk.kykykyk222k.
+kyyk.kyyyyok2f3k
+kook.kkkkkkk2233
+.kkkkcdddk2f233k
+.koocdkkdk222f3k
+..kkkdddek2f233k
+...kkkrkrrk2233k
+...krsrkrsrk233k
+..kwwwllklwk323k
+..kwwwlllkwk33k.
+..kwwwllmkmkkk..
+..kwrrk..kwrrk..
+..kkkkkk.kkkkkk.

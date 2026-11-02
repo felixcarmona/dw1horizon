@@ -1,0 +1,79 @@
+# Gigadramon
+k 140e1c
+1 c8c8d8
+2 9090a8
+3 646478
+4 444458
+p c8a8f0
+q 9070c8
+r 604898
+y f8d820
+m e03030
+idle
+...k.......kk...
+...kk.....k1k...
+..k1k....k12k...
+..k12kkkk12kkkkk
+.k11222223k1123k
+k112ky22333kkkkk
+k122222333pk123k
+kk23333k3pppkkkk
+.kkkkkkppqkk123k
+...k12kpqqkkkkkk
+...k123kqk1233k.
+..k1233kqrk123k.
+.k1233kkrk123k..
+k1233k.krkk23k..
+k33kk..krk.k3k..
+kkk.....kk..k...
+idle2
+...k.......kk...
+...kk.....k1k...
+..k1k....k12kkkk
+..k12kkkk12k123k
+.k11222223kkkkkk
+k112ky22333k123k
+k122222333pkkkkk
+kk23333k3ppk123k
+.k1k1kkppqkkkkkk
+..kkk2kpqqk.....
+..k1233kqk123k..
+.k12333kqrk233k.
+.k233kkrkk1233k.
+k233k.krk.k234k.
+kkkk...krk.k3k..
+........kk.kk...
+atk
+.....k.......kk.
+.....kk.....k1k.
+....k1k....k12k.
+....k12kkkk12kkk
+...k11222223k12k
+..k112ky22333kkk
+..k122222333pk1k
+..kk1k1k33ppkkkk
+..kmmmmkpppqk12k
+...kk1k1kpqqkkkk
+..kkkkkkkqrkkk..
+kk1122233kk123k.
+..kk23344kqk23k.
+....kkkk.krk3k..
+.........krkk...
+..........kk....
+hurt
+......k......kk.
+......kk....k1k.
+.....k1k...k12k.
+.....k12kkk12k..
+....k11222223k..
+...k12kkk2333k..
+...k22222333pk..
+...kk3333k3ppkkk
+..kkkkkkk3pqk23k
+.k123k..kpqqk23k
+.k233k.kqrkkkkk.
+..k34kkkqrk123k.
+...kkk.krkk233k.
+.......krk.k34k.
+......krk...kk..
+......kk........

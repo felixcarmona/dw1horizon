@@ -1,0 +1,77 @@
+# IceDevimon
+k 0c1a22
+a c0f4f4
+b 68c4cc
+c 348494
+d 205468
+w f0f8f8
+p d840e8
+r 8828a0
+idle
+.k......k...kkkk
+kak.kkk.kk.kaabk
+kabkaabkabkaabck
+.kkaabbbbkkabcbk
+..kabbbbcckabcbk
+..kwkpkwpkkabcbk
+..kwwwwwwkkabkbk
+...kwkwkkkkabkck
+..kkkkkkbbkakbkk
+kkabbkpbbcbkakck
+kaakkbbbcckkkbk.
+kbk.kbbcckk.kck.
+.kk.kkbbkk...kk.
+....kabkck..kk..
+...kaabkbck.....
+...kkkkkkkkk....
+idle2
+..k......k....kk
+.kak.kk.kk..kkak
+kabkkaabkabkaabk
+.kkaabbbbkkabbck
+..kabbbbcckabcbk
+..kwkpkwpkkabcbk
+..kwwwwwwkkabkbk
+...kwwwkkkkabkck
+...kkkkkbbkakbkk
+.kkabbpbbcbkakck
+kaabkbbbcckkkbk.
+kbbkkbbcckk.kk..
+.kk.kkbbkk......
+....kabkck......
+...kaabkbck.....
+...kkkkkkkkk....
+atk
+...k......k..kkk
+..kak.kkk.kkkaak
+..kabkaabkabkabk
+...kkaabbbbkkabk
+....kabbbbcckabk
+...kwkpkwpkckabk
+...kwkkkkkkckabc
+kk.kwrwrkkkkaacb
+kakkkkkkbbkabcbk
+kabbbbkpbbcbkabk
+kbbkkkbbbcckkabk
+.kk...kbbcckkabk
+.....kkkbbkk.kbk
+....kabkck...k.k
+...kaabkbck.....
+...kkkkkkkkk....
+hurt
+.....k......k...
+....kak.kkk.kk..
+....kabkaabkabk.
+.....kkaabbbbkk.
+...k..kabbbbcck.
+..kak.kwwkwwwkck
+..kbk.kkkwkkkkck
+...kk.kwwwwwkck.
+....kkkkwkwkkk.k
+.....kkabbbbkkak
+.....kabpbbcbkbk
+......kbbbcckabk
+.......kkbbkabck
+......kabkckkbk.
+.....kaabkbck.k.
+.....kkkkkkkkk..

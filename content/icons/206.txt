@@ -1,0 +1,79 @@
+# MagnaAngemon
+k 180a0e
+p b890f0
+q 7848c0
+r 503888
+w f8f8f0
+g d0d0c8
+h 9898a0
+y f8d830
+o c09820
+s e8c8a8
+idle
+.......kk.......
+......kpqk......
+.....kgpqhk.....
+.kk.kggpqhhk.kk.
+kwwkkgppqqhkkwgk
+kwwwkgppqqhkwwgk
+kkwgwkgkkhkkwwkk
+.kwwgksssskwwgk.
+.kkwkkkkkkkkwkk.
+..kwkyyoooykkhk.
+.kpqkkyoyoykgkk.
+kpqkwkyyookkwgk.
+kqkkkkghhkk.kk..
+kk...kghkghk....
+....kwgkkwgk....
+....kkkk.kkkk...
+idle2
+.......kk.......
+......kpqk......
+.....kgpqhk.....
+....kggpqhhk....
+.kk.kgppqqhkk.k.
+kwwkkgppqqhkwkgk
+kwwwkkgkkhkkwwgk
+kwwgwksssskwwwgk
+.kwwgkkkkkkkwgk.
+.kwkkyyoooykkhk.
+.kpqkkyoyoykgkk.
+kpqkwkyyookkwgk.
+kqkkkkghhkk.kk..
+kk...kghkghk....
+....kwgkkwgk....
+....kkkk.kkkk...
+atk
+.........kk.....
+.k......kpqk....
+kpk....kgpqhk...
+kpqk..kggpqhhk.k
+.kpqk.kgppqqhkkg
+..kpqkkgppqqhkwg
+...kpkkkgkkhkkwk
+...kwwkssssskwgk
+....kwkkkkkkkwgk
+.....kkyyoooykhk
+......kyoyoykgk.
+.....kkyyookkwgk
+....kkghhkkk.kk.
+....kghkghk.....
+...kwgkkwgk.....
+...kkkk.kkkk....
+hurt
+.........kk.....
+........kpqk....
+.......kgpqhk.k.
+.kk...kggpqhhkgk
+kwwk..kgppqqhkgk
+kwwwk.kkkkkkkkwk
+.kwwgkgsskssgwgk
+..kwgkkkkkkkwwgk
+...kkkyyoooykgk.
+.kqkkkyoyoykkk..
+kpqkwkyyookkgk..
+kqk.kkghhkk.kk..
+.k...kghkghk....
+....kwgkkkwgk...
+....kwgk..kwgk..
+....kkkk..kkkk..

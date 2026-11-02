@@ -1,0 +1,79 @@
+# Datamon
+k 180a14
+1 e0e0ff
+2 a8a8f0
+3 7070c8
+g 9098a8
+h 585c68
+j 34343c
+r e82820
+s 982020
+y f8d020
+idle
+.....kkkkkk.....
+....k112223k....
+...k11222233k...
+...k12222233k...
+...k12222333k...
+...k22223333k...
+...kkkkkkkkkk...
+kk.kggghhhjjk.kk
+kgkkrgrghhgjkkgk
+kgjkhhgghhjjkgjk
+.kkjkhggjjjkjkk.
+kgjk.khhjjk.kgjk
+kjk.kjkkkjjk.kjk
+k..kghk.khjk...k
+..krrsk.krrsk...
+..kkkkk.kkkkk...
+idle2
+.....kkkkkk.....
+....k121223k....
+...k12122233k...
+...k12122233k...
+...k21222333k...
+...k22223333k...
+kk.kkkkkkkkkk.kk
+kgkkggghhhjjkkgk
+kgjkrgrghhgjkgjk
+.kkjhhgghhjjkjk.
+..kkkhggjjjkkk..
+.kgjkkhhjjkkgjk.
+.kjk.kkkkkk.kjk.
+..k.kghk.khjk.k.
+..krrsk.krrsk...
+..kkkkk.kkkkk...
+atk
+.......kkkkkk...
+......k112223k..
+.....k11222233k.
+.....k12222233k.
+.....k12222333k.
+.....k22223333k.
+.....kkkkkkkkkk.
+.kk.kgggghhhjkkk
+krrkkrgrghhgjjgk
+kyrggggggghhjkgk
+krrkkhhgghhjkjgk
+.kk..khggjjjkkk.
+....kjkkkkjjk...
+...kghk..khjk...
+...krrsk.krrsk..
+...kkkkk.kkkkk..
+hurt
+.......kkkkkk...
+......k112223k..
+.....k11222233k.
+.....k12k22233k.
+.....k122k2333k.
+.....k2k223333k.
+.k...kkkkkkkkkk.
+kgk.kggghhhjjk.k
+kgjkkkgkghhjkkgk
+.kjkhhgghhjjkgjk
+..kkjkhggjjkjkk.
+...kkkhhjjkkgjk.
+....kjkkkkjkkjk.
+...kghk.kkhjk...
+...krrsk.krrsk..
+...kkkkk.kkkkk..

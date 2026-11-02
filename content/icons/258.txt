@@ -1,0 +1,80 @@
+# SaberLeomon
+k 1c1008
+1 fcf4b0
+2 f8e068
+3 e8b030
+o f08020
+r c84818
+g e8e8f0
+h 9898a8
+b 3070e0
+a 505058
+d c08020
+idle
+..............k.
+....k.k.k....krk
+...k1k1k1k...krk
+..k1121212k..kok
+.k1122o2o21k.kok
+k1kk22o2o212kkok
+k2b212o2o212233k
+k2222k2o2o2133dk
+k1111k1o2o2233dk
+kgkgrk2o1o23d33k
+kgkgkk2o2o3333dk
+kgkgk2k2k2k33dk.
+.k.k.kk33kkk3dk.
+.....k3dk..k3dk.
+....k3ak...k3ak.
+....kkkk...kkkk.
+idle2
+............kk..
+....k.k.k...krk.
+...k1k1k1k..krk.
+..k1121212k.kok.
+.k1122o2o21kkok.
+k1kk22o2o212kok.
+k2b212o2o212233k
+k2222k2o2o2133dk
+kkkkkk1o2o2233dk
+kgrrrk2o1o23d33k
+kgkgkk2o2o3333dk
+kgkgk2k2k2k33dk.
+.k.k.kk33kk3dkk.
+....k3dk.k3dk...
+...k3ak.k3ak....
+...kkkk.kkkk....
+atk
+............kk..
+...k.k.k...krk..
+..k1k1k1k..krk..
+.k1121212kkkok..
+k1122o2o212kkkkk
+k1kk2o2o2122133k
+k2b212o2o212233k
+k2222k2o2o2133dk
+kkkkkk1o2o2233dk
+krrrrk2o1o23d33k
+krrrrk2o2o3333dk
+kkkkkk2k2k233dk.
+kgkgk.kk33k3dk..
+kgkgk.k33k.k33k.
+kgkgk.k3ak.k3ak.
+.k.k..kkkk.kkkk.
+hurt
+................
+......k.k.k.....
+.....k1k1k1k....
+....k1121212k...
+...k1122o2o21k..
+...k2222o2o2123k
+...k2kk2o2o2123k
+...k2222k2o2o3dk
+..kk1111k1o2o3dk
+.kgkkrrk2o2o33dk
+.kgk.kkk2o2333dk
+.kgk...k3o3333kk
+..k...kk33kk3dkk
+.....k3dk.k3dkok
+....k3ak.k3ak.kk
+....kkkk.kkkk...

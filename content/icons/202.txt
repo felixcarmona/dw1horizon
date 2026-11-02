@@ -1,0 +1,82 @@
+# Submarimon
+k 180a0e
+1 e8f4fc
+a b0d8f8
+b 78b0e8
+c 4078c0
+h e0e0e8
+i a0a0b0
+j 646478
+y f8e830
+o e0a018
+n f09840
+m a85820
+e 40e088
+idle
+...........kk...
+..........khk...
+.....kkkkkkhik..
+....kka1abkhik..
+...kaa1abbckjk..
+...kaaabbcckkkk.
+..kkkkbcckyykhk.
+...kkkhhhhyookik
+.kkijkekhiyyokik
+kiijikhhiiyoojjk
+.kkijkhhiinnkojk
+...kkkiijnnmkkk.
+.....kkjnnmkkhk.
+..khkk.kkmkkhik.
+.khik...k.khiik.
+kkkk.....kkkkkk.
+idle2
+............kk..
+...........khk..
+.....kkkkkkkhik.
+....kka1abkkhik.
+...kaa1abbckkjk.
+...kaaabbcckkkkk
+..kkkkbcckyyykhk
+...kkkhhhhyokkik
+.kkjikekhiyyokjk
+kjjikkhhiiyoojk.
+.kkjikhhiinkoojk
+...kkkiijnnmkkkk
+.....kkjnnmk.kk.
+...khkk.kmkkhik.
+..khik...k.khiik
+.kkkk.....kkkkkk
+atk
+..........kk....
+.........khk....
+....kkkkkkhik...
+...kka1abkhik...
+..kaa1abbckjk.k.
+..kaaabbcckkkkhk
+.kkkkbcckyyykhik
+k.kkkhhhhyookikk
+ikjikekhiyyokjjk
+iijikhhiiyoojjk.
+ikjikhhiinnkoojk
+k.kkkiijnnmkkkk.
+....kkjnnmk.khk.
+...khkk.kkmkkhik
+..khik....kkhiik
+..kkkk....kkkkkk
+hurt
+.............kk.
+............khk.
+.......kkkkkkhik
+.....kkaa1bkkhjk
+....kaa1abbckjk.
+...kaaabbbcckkk.
+...kkkbbcckyykhk
+..kkhhkkhhhyokik
+.kjkkkkkhiyyojjk
+kijihhhhiiyoojk.
+.kkjihhiinnkojk.
+...kkkiijnnmkkk.
+.....kkjnnmk.kk.
+...khkk.kmkkhik.
+..khik...k.khiik
+.kkkk.....kkkkkk

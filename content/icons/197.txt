@@ -1,0 +1,78 @@
+# Magnamon
+k 201408
+1 f8f0a0
+2 f0d040
+3 c09820
+4 806410
+b 4088f0
+c 2050b0
+r f03030
+w f8f8f0
+idle
+.....k....k.....
+....k1k..k2k....
+.k..k12kk22k..k.
+k1kk1122233kkk2k
+k11k12kkkk3kk23k
+.k12kkrrkk3k233k
+..k1k22223k233k.
+k111kk223kk233k.
+k2233kbbbkk2333k
+.kkkbbk22bbkk3k.
+.kbbckk23kkbbck.
+.kbckk1223kkbck.
+..kkk122kk23kk..
+...k123kk2233k..
+..k1223k..k233k.
+..kkkkkk..kkkkkk
+idle2
+.....k.....k....
+....k1k...k2k...
+....k12kkk22k.k.
+.kkk1122233kkk2k
+k11k12kkkk3k233k
+k112kkrrkk3k233k
+.kk1k22223k233k.
+k111kk223kk33kk.
+k2233kbbbkk233k.
+.kkkbbk22bbk33k.
+..kbckk23kkbbck.
+..kbkk1223kkbck.
+..kkk122kk23kk..
+...k123kk2233k..
+..k1223k..k233k.
+..kkkkkk..kkkkkk
+atk
+...k....k.......
+..k1k..k2k......
+..k12kk22k..k...
+.k1122233kkk2k..
+.k12kkkk3kk23k..
+k.kkrrkk3k233k..
+wk1k22223k233k..
+kk11kk223kk233k.
+.kbbkbbbbkk2333k
+kbcckk22bbkk33k.
+kcckkk23kkbbck..
+.kk.k1223kkbck..
+...kk122kk23kk..
+..k123kkk2233k..
+.k1223k...k233k.
+.kkkkkk...kkkkkk
+hurt
+.......k....k...
+......k1k..k2k.k
+...k..k12kk22kk2
+..k1kk1122233k23
+..k11k1222233k23
+...kk2kkkkkkk233
+....kk1222223k3k
+..k11k12k223k3k.
+..k2233kkk3kk33k
+...kkkbbbbbk233k
+...kbbk22kbbk3k.
+..kbckk23kkbcck.
+..kkkk1223kkbck.
+....k1223k.k23k.
+...k1223k.k2233k
+...kkkkkk.kkkkkk

@@ -1,0 +1,81 @@
+# Hookmon
+k 180a0e
+r e82820
+s a01418
+l f87050
+y f8e040
+o c89820
+b 3058d8
+c 1c3090
+w f8f8f0
+g d0d0d8
+h 808088
+d 483830
+idle
+.....kkkkkk.....
+...kklllrrskk...
+..kllrwwrrrssk..
+.kyllrwwrrsssyk.
+.kkyyyyyyyykkkk.
+....kwkwkkkk....
+.kkk.krrrrk.....
+kyyykbkrylrk.kk.
+kyk.kbbkrrrkbbck
+kyyk.kkrylrkcckk
+.kyyyokrrrrskhgk
+..kkkk.krylskhgk
+......krrrrskhgk
+.....kwwkwwkghhk
+.....kddkddkgghk
+....kkkkkkkkkkkk
+idle2
+.....kkkkkk.....
+...kklllrrskk...
+..kllrwwrrrssk..
+.kyllrwwrrsssyk.
+.kkyyyyyyyykkkk.
+....kkkkkkkk....
+.kkk.kwkrrk.....
+kyyykkrrrrrk.kk.
+kyk.kbbkylrkbbck
+kyk..kbkrrrkcckk
+kyyyokrylrrskhgk
+.kkkkkrrrrrskhgk
+......krylrskhgk
+.....kwwkwwkghhk
+.....kddkddkgghk
+....kkkkkkkkkkkk
+atk
+.......kkkkkk...
+.....kklllrrskk.
+....kllrwwrrrssk
+...kyllrwwrrsssk
+...kkyyyyyyykkkk
+kk....kwkwkkk...
+yyk...krrrrk....
+.kyk.kbkylrk.kk.
+.kyykbbbkrrkbbck
+.kykkkkbkylrkcck
+yyk...krrrrskkhk
+kk....krylrskghk
+.....krrrrrsghhk
+....kwwk.kwwkggk
+....kddk.kddkkkk
+...kkkkk.kkkkk..
+hurt
+........kkkkkk..
+......kklllrrskk
+.....kllrwwrrrsk
+....kyllrwwrrssk
+....kkyyyyyyyykk
+kyyyk..kkkkkkkk.
+kyk...kkrrk.....
+kyyk.kbbkrrk.kk.
+.kyyokkbkylrkbbk
+..kkk.krrrrkkcck
+.....kkrylrskhgk
+......krrrrskhgk
+.....krylrskghhk
+.....kwwkwwkgghk
+....kddkkddkkkkk
+....kkkkkkkkk...

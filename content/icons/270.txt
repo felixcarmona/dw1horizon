@@ -1,0 +1,82 @@
+# PrinceMamemon
+k 180a0e
+y f8e040
+o c89818
+a e0d080
+b b8a858
+c 807038
+r e83828
+R a02018
+d 681018
+u 5068d0
+w f8f8f0
+g b0b0c0
+n 383848
+idle
+.....kykykyk.kk.
+.....kyryyyk.kRk
+.....kkkkkkkkrRk
+....kaaaabbbkRRk
+...kaaaabbbbbkRk
+..kaakkaakkbbkRk
+..kakwkaawkbckRk
+..kaaaaaabbbckRk
+..kaaakkabbcckRk
+...kbbbbbbcckRRk
+.kkkkkkkkkkukRdk
+kwwkukrrrkukRRdk
+kwgkkkrRRkkkRddk
+.kk..krRRkkkddRk
+...knnnknnnnnkdk
+...kkkkkkkkkkkkk
+idle2
+.....kykykyk....
+.....kyryyyk.kk.
+.....kkkkkkkkkRk
+....kaaaabbbkRRk
+...kaaaabbbbbkRk
+..kaakkaakkbbkRk
+..kawkkaakwbckRk
+..kaaaaaabbbckRk
+..kaakkkkbbcckRk
+.kkkbbbbbbcckRRk
+kwwkkkkkkkkukRdk
+kwgkukrrrkukRdRk
+.kkkkkrRRkkkRRdk
+.....krRRkkRddRk
+..knnnnk.knnnkdk
+..kkkkkkkkkkkkkk
+atk
+...kykykyk......
+...kyryyyk...kk.
+...kkkkkkkkk.kRk
+..kaaaabbbbkkRRk
+.kaaaabbbbbbkRRk
+kaakkaakkbbbkRdk
+kakwkaawkbcbkRdk
+kaaaaaabbbcckRdk
+kaakkkkbbbcckRdk
+.kbbbbbbbcckkRRk
+kkkkkkkkkkkuukRk
+kwwwkuuuukrrkkdk
+kwgwkkkkkrrRkRdk
+.kkkk...krRRkkRk
+......knnnnknnnk
+......kkkkkkkkkk
+hurt
+.......kykykyk..
+.......kyyyyyk..
+.......kkkkkkkk.
+......kaaaabbbkk
+kkk..kaaaabbbbbk
+kwwkkkaaaaaaabbk
+kwgkkakkkakkkbck
+.kkk.kaaaaabbbck
+....kaaakkabbcck
+.....kbbkkbbcckk
+.....kkkkkkkkukk
+.....kukrrrkukRk
+.....kkkrRRkkkRk
+.......krRRkkdRk
+.....knnnknnnnkk
+.....kkkkkkkkkkk

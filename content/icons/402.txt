@@ -1,0 +1,79 @@
+# NeoCrimson
+k 120c10
+a a8a8b4
+b 646470
+c 3c3c48
+r f83038
+s a81820
+t 581018
+w f8f8f0
+g c8c8d0
+y f8d040
+idle
+....kkkkkk...k..
+...kwcwcwbk.krk.
+..kaacwcwbbkkrk.
+.kaaaabbbcckbbkr
+.kayyaccckkacbbk
+.kkkrkkkkkabccbk
+krkkscbbckabbbbk
+krsscbbcckbaabck
+.kskkcrcckkbcbck
+.kgkkcsckrkabcck
+kg.kwgwgwkkbacbk
+k..kgwkwgkkbccck
+...krskksrkkbbbk
+..krrskkrrskkkk.
+..kssk.krssk....
+.kkkkk.kkkkkkk..
+idle2
+....kkkkkk....k.
+...kwcwcwbk..krk
+..kaacwcwbbkkkrk
+.kaaaabbbcckbbkk
+.kayyaccckkacbbk
+.kkkrkkkkkabccbk
+krkkscbbckabbbbk
+krsscbbcckbaabck
+.kskkcrcckkbcbck
+..kkkcsckrkabcck
+.kg.wgwgwkkbacbk
+kg.kgwkwgkkbccck
+k..krskksrkabcck
+..krrskkrrskbbk.
+..kssk.krssk.kk.
+.kkkkk.kkkkkkk..
+atk
+..kkkkkk......k.
+.kwcwcwbk....krk
+kaacwcwbbkkkkkrk
+kaaaabbbcckbbkkk
+kayyaccckkabbbbk
+kkkrkkkkkkkacbbk
+rrskbaccckkbabck
+kkkcbbcckkcbcbbk
+..kkcrckkakbbcck
+...kcsckkkkabbk.
+..kwgwgkbckkkk..
+.kgwkwgwk.kkkk..
+...krskksrk.....
+..krrskkrrsk....
+..kssk.krssk....
+.kkkkk.kkkkkkk..
+hurt
+........kkkkkk..
+..k....kwcwcwbk.
+.krk..kaacwcwbkk
+.krkk.kaaaaccbkr
+..kkrkkakkaccckk
+.....krkkkkkabck
+....krrskbackabk
+....krsscbcckbck
+.....kskkcrckabk
+.....kgkkcsckabk
+....kg.kwgwgkbck
+....k..kgwkwgkbk
+.......krskksrkk
+......krrskkrrsk
+......kssk.krssk
+.....kkkkk.kkkkk

@@ -1,0 +1,82 @@
+# Nefertimon
+k 180a0e
+y f8e050
+o d0a828
+d 907018
+1 f8f8f0
+2 c8d0d0
+3 90989c
+f c8d8c8
+g 88a098
+e 3890e0
+r d83828
+p a870e8
+q 6c40a0
+idle
+...kkkkkk...kpkk
+..kyyryyok..kppk
+.kyokkkkkok.kqk.
+.kykfffffkkk1kk.
+kyokekefgok11k1k
+kyokfffgook111kk
+koykffggok1k1k1k
+.kooykkook11k1k.
+..kyyokk1122k.k.
+.kyyk1kk112223kk
+.kyok11k1112233k
+.kyok12k112k233k
+.kyyk12kyyok233k
+kyyok33kyook.kkk
+kryrok.kryrok...
+kkkkkk.kkkkkk...
+idle2
+...kkkkkk..kpkk.
+..kyyryyok.kppk.
+.kyokkkkkokkqk..
+.kykfffffkk1kk.k
+kyokekefgok11k1k
+kyokfffgook11k1k
+koykffggok11111k
+.kooykkook1122k.
+..kyyokk11223k..
+..kkk1kk112223kk
+.kyok11k1112233k
+.kyok12k112k233k
+.kyyk12kyyok233k
+.kyok33kyook.kkk
+kryrok.kryrok...
+kkkkkk.kkkkkk...
+atk
+.........kk.kpkk
+...kkkkkkk1kkppk
+..kyyryyok11kqk.
+.kyokkkkkok12k.k
+.kykfffffok11k1k
+kyokekefgok111kk
+kyokrrrfgok1k1k.
+koykrrrgokk1122k
+.kooykkook11223k
+..kkyyokk111223k
+...kkkkk1112233k
+.kyyok112k112k3k
+kyyook12kyyokk3k
+kyoyok33kyook.kk
+kkkkkkkkkryrok..
+.........kkkkkk.
+hurt
+.....kkkkkk..kpk
+....kyyryyok.kpk
+...kyokkkkkokkqk
+...kykfffffk.k2k
+..kyokkfkkgokkkk
+..kyokfffgok1k1k
+..koykffgok111kk
+...kooykok11k1k.
+....kyyokk1122k.
+...kyokk111223k.
+...kyok1112233k.
+....kkk112k233k.
+...kk1k12kyyokk.
+..kyyok33kyook..
+..kryrok.kryrok.
+..kkkkkk.kkkkkk.

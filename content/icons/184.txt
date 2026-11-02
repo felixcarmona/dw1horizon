@@ -1,0 +1,80 @@
+# Hawkmon
+k 180e10
+w f8f8f0
+g c8ccd8
+h 8890a0
+n 505860
+y f8d030
+o c89018
+r f03030
+s b01420
+t 701020
+b 40a0f0
+idle
+........kk......
+.......krsk.....
+......krryk.....
+...kkkkryk......
+..kwwwwkkwkkk...
+.kwwwwwwwwwggk..
+.kwwwwwwwwwwggk.
+knhhnnnnnnnnnnk.
+knnnnnnhnnnhnnk.
+.kkbbkwwwwwwggk.
+.kwkbkrrwwwwggk.
+kyyyywwwrwwggk..
+kyyyyyywwggkkrk.
+kooyyykrrrrtrrk.
+.kkkkrrssrsktk..
+...kyokkkyok.kk.
+idle2
+.........kk.....
+.......kkrsk....
+......krrryk....
+...kkkkrykk.....
+..kwwwwkkwkkk...
+.kwwwwwwwwwggk..
+.kwwwwwwwwwwggk.
+knhhnnnnnnnnnnk.
+knnnnnnhnnnhnnk.
+.kkbbkwwwwwwggk.
+.kwkbkrrwwwwggkk
+kyyyywwwrwwggkrk
+kkkkkkywwggkrrsk
+kyyookrrrrsrrtk.
+.kkkkrrssrtkkk..
+...kyokkkyok....
+atk
+.....kk.........
+....krrk...kk...
+....kryk.kkrrk..
+..kkkkykkwwkrrk.
+.kwwwwwwwwwwkrrk
+kwwwwwwwwwggkrsk
+kwwwwwwwwwwggkrk
+hhhnnnnnnnnnnnk.
+nnnnnnhnnnhnnk..
+kkbbkwwwwwggk...
+kwkbkrrwwwggk...
+yyyyykkrwggk.kk.
+yyyyyyykkkkrrrk.
+ooyyyk.krrrtrk..
+kkkkk.krrssktk..
+.....kyokkkyok..
+hurt
+............kk..
+...........krsk.
+..........krryk.
+.....kkkkkkrykk.
+....kwwwwwwkkwk.
+...kwwwwwwwwggk.
+...kwwwwwwwwwggk
+..knhhnnnnnnnnnk
+kkknnnnnhnnnhnnk
+kyykkkkkwwwwgggk
+kyyyyykrrwwwwgk.
+kooyyykwwrwggk..
+.kkkkkkwwggkkrk.
+..krrkrrrrsrtk..
+.krsskrssrkktk..
+..kyok..kyok.kk.

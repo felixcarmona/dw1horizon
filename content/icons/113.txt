@@ -1,0 +1,76 @@
+# Meteormon
+k 1c1410
+1 e8dcc0
+2 c0b08c
+3 907e60
+4 66563f
+y f8e028
+o c88c10
+idle
+...kk....kk.....
+..k12k..k12k....
+..k123kk1223k...
+.k1223k122234k..
+.k112222112334k.
+.k1kkk23kkkkk4k.
+.kyyok2kyyyok4k.
+.kykok3kykook4k.
+.k12kk33kkkk34k.
+..k4k4k4k4k44k..
+.kkkkkkkkkkkkkk.
+k122kk1223kk123k
+k1233k1234k1234k
+k2344kk34kk2344k
+.kkkk123k234kkk.
+....kkkkkkkkk...
+idle2
+...kk....kk.....
+..k12k..k12k....
+..k123kk1223k...
+.k1223k122234k..
+.k112222112334k.
+.k1kkk23kkkkk4k.
+.kyyok2kyyyok4k.
+.kkyok3kkyook4k.
+.k12kk33kkkk34k.
+.kkkkkkkkkkkk4k.
+k12kk4k44k4kkk3k
+k1233kkkkkkk234k
+k2344k1234k2344k
+.kkkkk1234kkkkk.
+...k23kkkk34k...
+..kkkkk..kkkkk..
+atk
+................
+..kk....kk......
+.k12k..k12k.....
+.k123kk1223k....
+k1223k122234k...
+k112222112334k..
+kkkkkk23kkkk34k.
+kyyyk2kyyyok34k.
+kkyok3kkyokk34k.
+k12kk33kkkk334k.
+kooooooook3344k.
+kkkkkkkkkkk44k..
+k11222k12234k34k
+k12233k12334k34k
+k23344kk3344kkk.
+.kkkkkkkkkkkk...
+hurt
+....kk....kk....
+...k12k..k12k...
+...k123kk1223k..
+..k1223k122234k.
+..k112222112334k
+..k1kkk23kkkk34k
+..k12233122334k.
+..kkkkkkkkkk34k.
+..k4k44444kk34k.
+k12kkkkkkkk444k.
+k233k.kkkkkkkk..
+.kkk.k1233kkk...
+.....k1234k23k..
+......k34k1234k.
+....k12k1234kk..
+....kkkkkkkk....

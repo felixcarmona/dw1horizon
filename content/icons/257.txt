@@ -1,0 +1,82 @@
+# Triceramon
+k 0e1410
+t 68b0a0
+u 3c8478
+v 245850
+r e83828
+s f8f8e8
+c f0e8b0
+d c0b870
+e 807840
+o 7c9038
+p 4c6424
+q 2c3c18
+b 30d8f0
+idle
+....k....kkkk...
+...krk.kkttuuk..
+...ksk.kttuuuvk.
+...krkkttkuuvvvk
+.k..ktttukuuuvvk
+krk.kttuukuvuvvk
+ksrkttbkuuuuvvvk
+.krttuuuuuuvvvk.
+.kttukkkkuuvvvk.
+.kukrrsskvvkkk..
+..kkkkkkkopppk..
+.....kcccopopqk.
+...ksskcddkopqqk
+...kkkcdddekoqk.
+..kopkkkkkkopqkk
+..kkkkk...kkkkkk
+idle2
+.........kkkkk..
+....k..kkttuuvk.
+...krk.kttuuuvvk
+...kskkttkuuvvvk
+...krkttukuuuvvk
+.k..kttuukuvuvvk
+krkkttbkuuuuvvvk
+ksrttuuuuuuvvvk.
+.krtukkkkuuvvvk.
+.kttkrrrskvvkkk.
+.kukkkkkkkopppk.
+..kk.kcccopopqk.
+...ksskcddkopqqk
+....kkcdddekoqkk
+..kopkkkkkkopqk.
+..kkkkk...kkkkk.
+atk
+.........kkkk...
+.......kkttuuk..
+......kttuuuvvk.
+.....kttkuuvvvvk
+kkkk.kttukuuuvvk
+ksrrkttuukuvuvvk
+.kkrtttbkuuuvvvk
+krkttuuuuuuuvvk.
+ksttukkkkuuvvvk.
+.kukrrrrrkvkkk..
+..kkssrsskkopppk
+....kkkkkccopopk
+...ksskcccdkopqk
+...kkkcdddekoqk.
+..kopkkkkkkopqkk
+..kkkkk...kkkkkk
+hurt
+......k...kkkk..
+.....krk.kttuuk.
+.....kskkttuuuvk
+.....krkttkuuvvk
+...k.kttukuuuvvk
+..krkkttuukuvuvk
+..ksrttkkkuuuvvk
+...krtuuuuuuvvk.
+...kttukkkuuvvk.
+...kukkrskvvkkk.
+....kkkkkkopppk.
+.....kcccopopqk.
+..ksskccddkopqqk
+..kkkkcdddekoqk.
+...kopkkkkkopqkk
+...kkkkk..kkkkkk

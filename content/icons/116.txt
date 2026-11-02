@@ -1,0 +1,81 @@
+# Analogman
+k 1c1614
+g e0dcd4
+h a8a49c
+i 706c68
+s f8d0a8
+t c89878
+1 d8e4e4
+2 a8b8b8
+3 708084
+w f8f8f8
+b 887858
+c 3c3428
+idle
+.....kkkkkk.....
+...kkggggghkk...
+..kggghhhhhhik..
+..kgghssssshik..
+.kgghsssssshhik.
+.kghkwkskwkshik.
+.kghsstssttiik..
+..kksiiiisttkk..
+...kssssttkk....
+..kkk1wkw1kkk...
+.k12k1wkw22kbbk.
+.k123k1k123kbcck
+.kst3k123k3kbcck
+..kkkk12k23kkkk.
+...k12kk23k.....
+..kkkkkkkkkk....
+idle2
+.....kkkkkk.....
+...kkggggghkk...
+..kggghhhhhhik..
+..kgghssssshik..
+.kgghsssssshhik.
+.kghkwkskwkshik.
+.kghsstssttiik..
+..kksiiiisttkk..
+..kstsssttkk....
+.kstkk1wkw1kkkk.
+.k12k11wkw22kbbk
+.k123k1k123kbcck
+..k23k123k3kbcck
+...kkk12k23kkkkk
+...k12kk23k.....
+..kkkkkkkkkk....
+atk
+......kkkkkk....
+....kkggggghkk..
+...kggghhhhhhik.
+...kgghssssshik.
+..kgghkkkssshhik
+..kghkwkskwkshik
+..kghsstssttiik.
+...kkskkksttkk..
+kkkkk.kssttkk...
+kbbbkkkk1wkkk...
+kbcckst1wkw22k..
+kbcckkk1wkw223k.
+kkkkk..k1k1233k.
+.....k12kk23kkk.
+....k12k..k23k..
+...kkkkk.kkkkkk.
+hurt
+........kkkkkk..
+......kkggggghk.
+.....kggghhhhhik
+.....kgghsssssik
+....kgghsssshhik
+....kghkkkskkhik
+....kghssstssiik
+.....kkskkksttk.
+......kssstkkk..
+.kk..kkk1wk2kbbk
+kstkk11k1wk23kck
+.kk12kkk1k123kkk
+...kkk.k123k3k..
+......k12kk23k..
+.....k12k.k23k..
+....kkkkk.kkkkk.

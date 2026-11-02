@@ -1,0 +1,78 @@
+# Soulmon
+k 16101a
+h 787888
+i 50505e
+j 343440
+r e83838
+s a81c24
+w f8f8f0
+x d4d4cc
+y a4a49c
+idle
+..........kkkk..
+.......kkkhhik..
+......khhiikk...
+.....khhiijjk...
+.....krrrrsrk...
+..kkkkrrrssskkk.
+.khhhiiiiiiijjjk
+..kkkkkkkkkkkkk.
+...kwwwwwwxxk...
+...kwkwwkxxxk...
+..kwwwwwwwxxxk..
+.kxkkkkkkkkxxxk.
+kwxkrwrwrwkxxyk.
+kxkkkkkkkkkxyyyk
+.kkwxkwxykxykyk.
+...kk.kk.kk.kk..
+idle2
+.............kk.
+.......kkkkkkhk.
+......khhhiikk..
+.....khhiijjk...
+.....krrrrsrk...
+..kkkkrrrssskkk.
+.khhhiiiiiiijjjk
+..kkkkkkkkkkkkk.
+...kwwwwwwxxk...
+...kwkwwkxxxk...
+kk.kwwwwwwxxxkkk
+kxkkkkkkkkkkxxyk
+kwxkrwrwrwkxxyk.
+.kkkkkkkkkkxyk..
+..kwxykxykwxyk..
+...kk.kk.kk.kk..
+atk
+.......kkkk.....
+.....kkhhik.....
+....khhiijk.....
+...khhiijjjk....
+...krrrrsrrk....
+kkkkrrrssskkkkk.
+hhhiiiiiiiijjjjk
+kkkkkkkkkkkkkkk.
+..kwwwwwwwxxxk..
+.kwkwwkwxxxxk...
+kkkkkkkkkkkxxk..
+kwrwrwrwrwkxxxk.
+.krrrssrrrkxxyk.
+kwrwrwrwrwkxyyk.
+kkkkkkkkkkxyyk..
+...kkk.kk.kk.kk.
+hurt
+.......kkkk.....
+.......khhikk...
+........khiijk..
+.......khhiijk..
+......krrrssrk..
+.....kkrrssskkkk
+...kkhiiiiiijjjk
+....kkkkkkkkkkk.
+..kk.kkwkkxxxk..
+.kwxkwwwwwxxxxk.
+..kkkwkkkkxxxyk.
+....kwkrrkxxyyk.
+....kwwkkxxxyyk.
+....kxwwxxyyyk..
+....kwykwykxyk..
+.....kk.kk.kk...

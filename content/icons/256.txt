@@ -1,0 +1,79 @@
+# VioletElecmon
+k 14101c
+1 a8a0c8
+2 7870a0
+3 504870
+y f8e838
+o c8a818
+p f8a0c0
+m d03878
+c a0e8f8
+d 4898d0
+idle
+.........k......
+.k...k..kyk.kk..
+kyk.kyk.kykkyk..
+kpykkpykkyokyokk
+kppkkppkyokyokyk
+.kpyykpk3yoy2yok
+..k1211223y2yok.
+.k1ppp2232yy23yk
+k11pkp2223y2yy3k
+k11ppp2222y2233k
+k2222222322y33yk
+.k33k22y233y33k.
+..kkk2233y333k..
+...k33kk3kk33k..
+..kcdck.kcdck...
+..kkkkk.kkkkk...
+idle2
+...........k....
+......k...kyk.k.
+.k...kyk.kykkyk.
+kyk.kpyk.kyokyok
+kpykkppkkyokyokk
+.kpyykpk3yoy2yok
+..k1211223y2yok.
+.k1ppp2232yy23yk
+k11pkp2223y2yy3k
+k11ppp2222y2233k
+kkkk2222322y33yk
+.kmkk22y233y33k.
+..kkk2233y333k..
+...k33kk3kk33k..
+..kcdck.kdcdk...
+..kkkkk.kkkkk...
+atk
+........k..k....
+.......kyk.kyk.k
+......kyokkyokyk
+...kkkkyoyyoyyok
+..kppyykyo2yyook
+.kkkkkpk2y22yyok
+.k12112322y2yok.
+k1ppp2232yy23yk.
+k1pkp2223y2yy3k.
+k1ppp2222y2233k.
+kkkkk222322y33k.
+kmmk.k2y233y3k..
+kkkk..kk3y33k...
+.....k33kk33k...
+....kcdckcdck...
+....kkkkkkkkk...
+hurt
+................
+..........k.....
+.....k...kyk.k..
+....kyk.kyokkyk.
+...kpykkyokyokk.
+...kppkkyoyyoyok
+..kpyyk23yoy2yok
+..k11k222322yy3k
+.k1kkk223y2yy33k
+.k1111222322y33k
+.k222222322y33k.
+..kkkkk22y233k..
+....k2233y33k...
+....k3kk3kk33k..
+...kcdck.kcdck..
+...kkkkk.kkkkk..

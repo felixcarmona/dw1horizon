@@ -1,0 +1,80 @@
+# MetalGarurumon
+k 140c20
+1 b8b8f8
+2 7878e0
+3 4840a8
+y f8d830
+o b89018
+r f83030
+n f85098
+m a82868
+w f8f8f0
+c 50c8f0
+idle
+...k.k.....k...k
+..k1k2k...kyk.kk
+.k112k2k.kyokkyk
+k1111222kkyokyok
+k1krr122kkokyok.
+k11k11123k1kok..
+kwwwww223k11k...
+.kwkwk233k112k..
+.kkkkkk33k1122kk
+..kk2k233ky1223k
+...k12k3kyo2233k
+...k12kkko1k233k
+...k22k.k12k233k
+..k222k.k12kk33k
+..knnnk.knnkknnk
+..kmmmk.kmmkkmmk
+idle2
+.k...k......k...
+k1k.k2k....kyk.k
+k12k2k....kyok.k
+k1111222kkkyokyk
+k1krr122kkyokyok
+k11k11123kokyok.
+kwwwww223k11ok..
+kkkkkk233k112k..
+kwkwkkk33k1122kk
+.kkkk2k33ky1223k
+...k12k3kyo2233k
+...k12kkko1k233k
+...k22k.k12k233k
+..k222k.k12kk33k
+..knnnk.knnkknnk
+..kmmmk.kmmkkmmk
+atk
+.....k.k.....k.k
+...kk1k2k...kykk
+..k112k2k..kyoyk
+.k1111222kkkyoyk
+.k1krr122kyokyok
+.k11k11123kokok.
+kkkkkk1123k1kk..
+kcckkkk223k11k..
+ccck.kkkk3k1122k
+kcckkwkwkk3k12kk
+.kkkkkkkk23y223k
+.....k1223yo233k
+...kk12k3ko1k23k
+..k122kkk12kk33k
+..knnk..knnk.knk
+..kmmk..kmmk.kmk
+hurt
+.......k.k....k.
+......k1k2k..kyk
+.....k112k2kkyok
+...kk111122kyoky
+..k111kkkk2kokyk
+..kkk111112kokk.
+.k1111kk1223k...
+.kkkkkk1k123k...
+.kwkwk2k3k12kk..
+..kkkk1k33k123k.
+...kk12k3y1223k.
+...k12kkyo2233k.
+...k22k.k12k33k.
+..k222k.k12k33k.
+..knnnk.knnkknnk
+..kmmmk.kmmkkmmk

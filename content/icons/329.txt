@@ -1,0 +1,81 @@
+# Ghoulmon
+k 180a0e
+n 98a0c8
+m 586088
+d 383c5c
+h e0e0e8
+i 8c8c9c
+y f8e848
+z b88818
+o f87828
+r c82818
+q 781818
+w f8f8f8
+idle
+......kk.kk.....
+.....khkkhk..kk.
+...kkkhikhik.kok
+..kdddddddkkkork
+.kddddddddkoorqk
+.knmmzzzmmkoorqk
+knmzyyyzmmdkrqqk
+knmzykyzmdkkorqk
+.knmzzzmmdkoorqk
+.kkmmmmmddkkrqk.
+kwk.kmmmddmkkk..
+kwwkknmmddmmmk..
+.kkmknmdkdmmdmk.
+...kkmmdkkkddk..
+..kwwmdk.kwwdk..
+..kkkkkk.kkkkkk.
+idle2
+.......kk.kk....
+......khkkhk....
+...kkkkhikhik.kk
+..kdddddddkkkkok
+.kddddddddk.koor
+.knmmzzzmmkkoorq
+knmzyyyzmmdkoorq
+knmzykyzmdkkorqk
+.knmzzzmmdkkrqqk
+.kkkmmmmddkkrqk.
+kk.kmmmmddmkkk..
+kwkkknmmddmmk...
+kwwmknmdkdmmmk..
+.kkkkmmdkkddmdk.
+..kwwmdk.kwwdkk.
+..kkkkkk.kkkkkk.
+atk
+.......kk.kk.kk.
+......khkkhkkook
+....kkkkhikhikrk
+...kdddddddkkork
+..kddddddddkoorq
+..knmmzzzmmkoorq
+.knmzyyyzmmdkrqk
+.knmzykyzmdkkorq
+..knmzzzmmdkkrqk
+kkkkmmmmdddkkk..
+kwwwkkmmddmk....
+kwwmmmnmdmmdk...
+.kkkkknmdkdmmk..
+...kkmmdkkkddk..
+..kwwmdk.kwwdk..
+..kkkkkk.kkkkkk.
+hurt
+...kk.kk........
+..khkkhk........
+...khikhikk...kk
+..kkdddddddk.kok
+.kddddddddddkoor
+.knmmmmmmmdkkorq
+.knmkkkkkmddkrqk
+.knmmmmmmdkkorqk
+..knmmmmmdkkrqk.
+...kkkkkddkkkk..
+.kwk.kmmdmk.....
+.kwwkknmddmk....
+..kkmknmdkdmk...
+...kkmmdkkkddk..
+..kwwmdk.kwwdk..
+..kkkkkk.kkkkkk.

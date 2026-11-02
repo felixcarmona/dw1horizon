@@ -1,0 +1,79 @@
+# SuperStarmon
+k 180e14
+y f8f068
+z f0c820
+x b88810
+w f8f8f8
+g c8c8d0
+h 9090a0
+b 40a8f8
+r e83020
+s 606070
+idle
+.......kk....kkk
+......kyzk..krrk
+......kyzk.krkk.
+.....kybbzkkk...
+.kkkkkybbzkkkkk.
+kyyyyyyyzzzzzxxk
+.kyykkkkzkkkkxk.
+..kykskkkkskxk..
+.kkkkkkkzkkkkkk.
+kwgkkyyzzxxkkghk
+kwgkkyykkzxkkghk
+.kkkyyk..kzxkkk.
+..kkyk....kzkk..
+.kwgzk....kwgzk.
+kwwgzk...kwwgzk.
+kkkkkk...kkkkkk.
+idle2
+.......kk.......
+......kyzk...kk.
+......kyzk..krrk
+.....kybbzk.krkk
+.kkkkkybbzkkkkk.
+kyyyyyyyzzzzzxxk
+.kyykkkkzkkkkxk.
+kkkykskkkkskxk..
+kwgkkkkkzkkkkkk.
+kwgkkyyzzxxkkghk
+.kkkkyykkzxkkghk
+...kyyk..kzxkkk.
+..kkyk....kzkk..
+.kwgzk....kwgzk.
+kwwgzk...kwwgzk.
+kkkkkk...kkkkkk.
+atk
+..........kk....
+.........kyzk...
+.........kyzk.kk
+........kybbzkrk
+....kkkkkybbzkkk
+...kyyyyyyyzzzzk
+....kyykkkkzkkxk
+.kkk.kykskkskxk.
+kwwgkkkkkkkkzkk.
+kwwwggkkyzzzxkgk
+kwwggzkkyyzzxkhk
+.kkkkk.kyykzxkk.
+.......kyk.kzk..
+......kwgk.kwgk.
+.....kwwgk.kwwgk
+.....kkkkk.kkkkk
+hurt
+..........kk....
+.........kyzk...
+.kkk....kybzzk.k
+kwwgk...kybbzkrk
+kwghkkkkyyzzzkk.
+.kkkyyyyyyzzzzkk
+...kkkkkkkkkkxxk
+....ksskksskxzk.
+.....kkkkkkzxk..
+....kyyzzxxkkkk.
+....kyykkzxkggwk
+...kyyk.kzxkghgk
+...kzk...kzkkkk.
+..kwgk...kwgk...
+.kwwgk...kwwgk..
+.kkkkk...kkkkk..

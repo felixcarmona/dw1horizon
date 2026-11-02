@@ -1,0 +1,82 @@
+# Omnimon
+k 100c10
+1 f8f8f8
+2 c8ccd8
+3 8890a8
+b b0b0e0
+c 686898
+d 383850
+y f8e030
+o d8a010
+u 906000
+r b02018
+s 601010
+n 30e878
+idle
+..kk....k....kk.
+..kyk..k1k..kyk.
+...kykkk1kkkyk..
+....k1111223k.kk
+...k111kkk23kkyk
+...k11knk233koyk
+.kkkk2kkk33kyyok
+kbbck2223kkyoouk
+kbccck1b1kryyouk
+kbcbck122krkyouk
+.kcckk1k2krrkyok
+.kdkrk1k12krkyuk
+..kkrk12k12krkok
+...ksk12k23kskk.
+...kkyy1kk1yyk..
+...kkkkkkkkkkk..
+idle2
+..kk....k....kk.
+..kyk..k1k..kyk.
+...kykkk1kkkyk..
+....k1111223kkkk
+...k111kkk23kyyk
+...k1knk1233kyok
+kkkkkk2kk33kyouk
+kddcbk223kkyoouk
+kddcck1b1krkyouk
+kkkkkk122krrkyuk
+....kk1k2krrkkok
+...krk1k12krkyuk
+..krrk12k12krkok
+..kssk12k23kskk.
+...kkyy1kk1yyk..
+...kkkkkkkkkkk..
+atk
+...kk....k....kk
+...kyk..k1k..kyk
+....kykkk1kkkykk
+.....k1111223kyk
+....k11kkkk23kok
+....k1knn123kyok
+.kkkkk2kk333kyok
+kyykdcbk2223kyuk
+kyyddccbbk1b1kuk
+kyykdcbk2223kkk.
+.kkkkkk1222krkk.
+......k1k2krrrk.
+.....k12kk12krrk
+....k12k.k123kss
+...kyy1k.k1yykkk
+...kkkkk.kkkkkk.
+hurt
+....kk....k.....
+....kyk..k1k..kk
+.....kykkk1kkkyk
+......k1111223k.
+.....k11111123k.
+.....k1kkk1233k.
+....kk2222233kk.
+.kkkkk222233kkk.
+kbbcbk1b1kryyok.
+kbcckk122krkyouk
+.kdkkk1k2krrkyuk
+..k.k12k12krkyuk
+....k12k12krkkok
+....k12k23kskkk.
+...kkyy1k1yyk...
+...kkkkkkkkkk...

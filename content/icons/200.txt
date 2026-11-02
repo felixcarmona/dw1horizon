@@ -1,0 +1,80 @@
+# Pegasusmon
+k 180a0e
+y f8e868
+o e8bc30
+d a88018
+f f8a040
+g d87020
+h a04c10
+w f8f8f0
+v b8b8b0
+b 3890e0
+r e04028
+idle
+...kkk.....kkkkk
+..kgfok..kkyyyok
+..kkkyokkyyyook.
+.kyyyookkyoodk..
+kyykbook.kyokkk.
+kyoooodkkyookook
+kvvoddk.kyodkdk.
+.kkkddkfkkoodk..
+...kwkfffgkkkk.k
+...kogffffggkkok
+..koogfgggghkdk.
+..kodgkkkkgghk..
+..kyok...kyodk..
+..kyok...kyodk..
+.kyyok..kyyodk..
+.kkkkk..kkkkkk..
+idle2
+...kkk..........
+..kgfok...kkk...
+..kkkyokkkyyokkk
+.kyyyookkyyoooyk
+kyykbook.kyooddk
+kyoooodkkyyookk.
+kvvoddk.kyookk..
+.kkkddkfkkkkk...
+...kwkfffgggkk.k
+...kogffffggkkok
+..koogfgggghkdk.
+..kodgkkkkgghk..
+..kyok...kyodk..
+.kyok....kyodk..
+.kyyok...kyyodk.
+.kkkkk...kkkkkk.
+atk
+..........kkkkk.
+.kkk....kkyyyok.
+kgfok..kyyooodk.
+kkkyokkyoodkkk..
+yyyookkyyokyok..
+ykbook.kyokyodk.
+ooooodkkookood..
+vvoddkfffkkkk.k.
+kkkdkfffgggkkok.
+..kwkffffggghdk.
+..kogfgggghhkk..
+.kodgkkkkkgghk..
+kyook...kyodk...
+kyok...kyodk....
+yyok..kyyok.....
+kkkk..kkkkk.....
+hurt
+.....kkk........
+....kgfok.....kk
+....kkkyok..kkyk
+...kyyyookkyyok.
+..kyyyookkyook..
+..kykkoodkyodk..
+..kvvoodk.kyokk.
+...kkoddkkkyodk.
+....kwkfffkkkk.k
+....kogffffgkkok
+...koogfggghkdk.
+...kodgkkkgghk..
+...kyok..kyodk..
+....kyok..kyok..
+...kyyok.kyyok..
+...kkkkk.kkkkk..

@@ -1,0 +1,78 @@
+# Snimon
+k 180a0e
+g 78e878
+h 30b048
+i 107830
+r f02828
+w f8f8ff
+v c0c8d8
+s c8c8d8
+t 707080
+idle
+.kkkkk.k...k....
+ksssttkrk.krk...
+kskkkttkrrrk..kk
+kk..kttkgrgk.kwk
+....kttgrggrkkwk
+....kttgggghkwvk
+....kggkgwkwkwvk
+....kggkkkkkkwvk
+....kggkgggghkvk
+....kkhggghhhkkk
+.....kkghhhiik..
+....kggghhhiik..
+.....kkghhiik...
+....kgkkkkghik..
+...kghik.kghik..
+...kkkkk.kkkkkk.
+idle2
+.kkkkk.k.k.k....
+ksssttkrkrk...kk
+kskkkttkrrrk.kwv
+kkk.kttkgrgkkwvk
+kk..kttgrggrkwvk
+....kttgggghkwvk
+....kggkkkkkkvkk
+....kggkgwkkkkk.
+....kggkkkgghk..
+....kkhggghhhkkk
+.....kkghhhiik..
+....kggghhhiik..
+.....kkghhiik...
+....kgkkkkghik..
+...kghik.kghik..
+...kkkkk.kkkkkk.
+atk
+.......k...k....
+......krk.krk.kk
+.......krrrk.kwk
+.......kgrgkkwvk
+......kgrggrkwvk
+......kgggghkwvk
+.kkkkkkkkkkkkwvk
+ksssttkgwkkghkvk
+kskkkttkkgggghkk
+kk..kkttkgghhhkk
+......kkgghhhiik
+.....kkkghhhiik.
+.......kkghhik..
+....kgkkkkghik..
+...kghik.kghik..
+...kkkkk.kkkkkk.
+hurt
+..............k.
+.kkkkk...k.k.kwk
+ksssttkk.krrkwvk
+kskkkttkkgrgkwvk
+kk..kttkgggggkvk
+....kttgkkgkkkvk
+....kttggggghkvk
+....kggkkkkgkkkk
+....kggkgggghkk.
+....kkhggghhhik.
+.....kkghhhiik..
+....kggghhhik...
+.....kkghhik....
+....kgkkkkghik..
+...kghik.kghik..
+...kkkkk.kkkkkk.

@@ -1,0 +1,80 @@
+# GranKuwagamon
+k 180a0e
+l 9090a0
+n 5c5c6c
+m 3c3c48
+b e83030
+c a82020
+d 701818
+r f02828
+w f0f0f0
+v a8a8b0
+o f88030
+idle
+kk...........kk.
+kbck........kbck
+.kbck......kbck.
+.kbbck....kbbck.
+..kbck....kbck..
+..kbdck..kbcdk..
+...kbdkkkkbdk...
+..kklnnmmnmmkk..
+.klnnnnmlmmwmk..
+klnrorknmnmmlmk.
+klnnkkklmmmwmmk.
+kkwkwnlmmlmmwmmk
+.kkkkknnmlmwmmmk
+.kllkkmnmkkkkmmk
+.kwvwk.kwvwkwvk.
+.kkkkk.kkkkkkkk.
+idle2
+.k...........kk.
+kbkk........kbck
+.kbck.......kbck
+..kbck.....kbck.
+..kbbck...kbbck.
+...kbdck.kbcdk..
+...kbbdkkkbdk...
+..kklnnmmnmmkk..
+.klnnnnmlmmwmk..
+klnrorknmnmmlmk.
+klnnkkklmmmwmmk.
+klllkknlmmlmwmmk
+kkwkwkknmlmwmmmk
+.kllkkmnmkkkkmmk
+.kwvwk.kwvwkwvk.
+.kkkkk.kkkkkkkk.
+atk
+...kk......kk...
+...kbk....kbck..
+..kbck...kbck...
+.kbck...kbck....
+kbck....kbbk..k.
+kbkkk..kbcdkkmmk
+.kkkbkkkbdkmmmmk
+...kbdkklnnmmmmk
+..kklnnnnmlmwmmk
+.klnnnnmlmmmlmmk
+klnrorknmnmmwmmk
+klnnkkklmmwmmmk.
+kwkwkwnlmmlmmmk.
+krrrkkknnmlkkkk.
+kwkwk.kwvwkwvk..
+.kkk..kkkkkkkk..
+hurt
+..kk.........kk.
+.kbck.......kbck
+..kbck.....kbdk.
+..kbbck...kbdk..
+...kbck..kbcdk..
+...kbdkkkkbdk...
+....kkllnmmkkk..
+...kllnnnnmlmmk.
+..klnnkknnmnwmmk
+..klnnnnnmlmmmmk
+..klllkknlmmwmmk
+..kkkkkknmlmwmmk
+...kllkkmnmkkmmk
+...kllk.kmnk.kk.
+..kwvwk.kwvwkwvk
+..kkkkk.kkkkkkkk

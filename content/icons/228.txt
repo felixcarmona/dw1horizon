@@ -1,0 +1,82 @@
+# Baronmon
+k 180c0c
+r f03838
+s b02028
+b 3888e0
+y f8d848
+w f8f8f0
+u b0b0b8
+g 40b880
+h 208058
+n c88840
+o 885428
+c f07830
+t f89080
+idle
+...k.k.k.k.k.kk.
+..kwkwkwkwkwkwwk
+..kttyryryrrkwuk
+..kbbbrrbbbskwwk
+..kbykrrbykskuuk
+..krrrrkrrrsskwk
+..kyyyyyyyyskuk.
+...ksrrrrssk.k..
+.kkkkkkkkkkkkk..
+kcnnkggggghkonok
+kcnnkgyyyhhkonok
+kcnkkggghhhkkok.
+kcnk.kgghhk.kook
+.kk.kgghhhk.kok.
+...knnkk.knok.k.
+...kkkk.kkkkk...
+idle2
+....k.k.k.k.k.kk
+...kwkwkwkwkwkwk
+..kttyryryrrkwuk
+..kbbbrrbbbskuwk
+..kbykrrbykskuuk
+..krrrrkrrrsskwk
+..kyyyyyyyyskuk.
+...kskkkkssk.k..
+.kkkkrrrrkkkkk..
+kcnnkkkkkkhkonok
+kcnnkgyyyhhkonok
+kcnkkggghhhkkok.
+.kcnkkgghhk.kok.
+..kkkgghhhk..k..
+...knnkk.knok...
+...kkkk.kkkkk...
+atk
+kk...k.k.k.k.k.k
+nkk.kwkwkwkwkwkw
+nnokkttyryryrrkw
+kkoo.kbbbrrbbbsk
+..kkokbykrrbyksk
+...kkrrrrkrrrssk
+....kyyyyyyyyskk
+....kkkkkkkkkk..
+....krrrrrrk.k..
+.....kkkkkkkk...
+....kggggghkonok
+....kgyyyhhkonok
+....kggghhhkkok.
+.....kgghhk.kok.
+....kgghhhk..k..
+...knnkk.knok...
+hurt
+..........k.k.kw
+......k.kwkwkkww
+.....kkwkkkkkkwu
+....kttyryryrrkw
+....krrrrrrrrskw
+....kkkkrrkkkksk
+....krrrrkrrrssk
+....kyyyyyyyyskk
+.....ksrrrrssk..
+..kkkkkkkkkkkk..
+.kcnnkggggghkonk
+.kcnkkgyyyhhkonk
+.kcnk.kgghhhkok.
+..kk.kgghhhk.k..
+....knnkk.knok..
+....kkkk.kkkkk..

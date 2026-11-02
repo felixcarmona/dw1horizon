@@ -1,0 +1,78 @@
+# ExVeemon
+k 140c18
+1 60b0f0
+2 2878c8
+3 184890
+w f8f8f0
+g b8c0d0
+y f8d830
+r e83028
+c d8c090
+idle
+kk......kkkk....
+kwk...kk1111k.k.
+kwgk.k111y1y2k2k
+.kwgk1111y12222k
+.kggk1kkk1222kk.
+.k111krrk1223kkk
+k1111krwk123kggk
+kwwwwww11223kwgk
+.kkkkkkk2233kwwk
+.k1kwwwkk33kwwgk
+k12kwwgkk3kkggk.
+k122kwgk2k23kkk.
+.kkkkk22223kk.kk
+...k12kk233k3k2k
+..k112k.k222k3k.
+..kcck..kcck.kk.
+idle2
+.kk.....kkkk....
+.kwk..kk1111k...
+.kwgk.k11y1y2kkk
+..kwgk111y1222k.
+..kggk1kk1222kkk
+.k111krrk1223kwk
+k1111krwk123kwwk
+kwwwwww11223kwgk
+kkkkkkkk2233kwwk
+kwwwwwgkk33kgggk
+k12kwwgkk3kkkkk.
+k122kwgk2k23k...
+.kkkkk22223kk..k
+...k12kk233kkk2k
+..k112k.k2223k..
+..kcck..kcck.kk.
+atk
+...kk.....kkkk..
+...kwk..kk1111k.
+...kwgk.k11y1y2k
+....kwgk1111y122
+....kggk1kkk1222
+....k111krrk1223
+...k1111krwk123k
+...kwwwwww11223k
+kkkkkkkkkkk2233k
+k11211kwwwkk33kg
+k12221kwwgkk3kkg
+.kkkkk2kwgk2k23k
+.....kkk2222k3kk
+.....k12kk233k3k
+....k112k.k222k.
+....kcck..kcck..
+hurt
+..........kkkk.k
+.......kkk1111k2
+.....kk111y1y222
+...kkwwk111y1222
+.kkwwgkk11kkk222
+..kkkk11kkk1123k
+....k1111111123k
+....kwwwwkk1123k
+....kkkkk1k2233k
+...k1kwwwkkk33kg
+..k12kwwgkk3kkgg
+..k122kwgk2k23kk
+...kkkkk22223k.k
+.....k12k233k3k.
+....k112kk222k..
+....kcck.kcck...

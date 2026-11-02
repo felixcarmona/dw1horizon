@@ -1,0 +1,81 @@
+# Geremon
+k 180e0c
+a f8f8f0
+b c0c0d0
+r e03030
+m f8f878
+y e8d028
+o a89018
+u 806830
+e 901830
+d c83848
+p e070a0
+q 984870
+idle
+...kkk..kkk.....
+..kaaakkaaak....
+..krkakkrkak....
+..kaabkkaabk....
+...kkk..kkk.....
+...kmk..kyk.....
+...kmykkkyokk...
+..kmyyyyyyyyok..
+.kmykkkkkkkyyok.
+.kykaaaaaaakyuok
+kyykddddeeeekyok
+kykdeeeeeeeekyuk
+kkqqeeeeaaaakyok
+kppqqqkkkkkkyook
+kpppqkmyyyyoouok
+kkkkkkkkkkkkkkkk
+idle2
+.........kkk....
+...kkk..kaaak...
+..kaaak.krkak...
+..krkak.kaabk...
+..kaabk..kkk....
+...kkk..kyk.....
+...kmykkkyokk...
+..kmyyyyyyyyok..
+.kmykkkkkkkyyok.
+.kykaaaaaaakyuok
+kyykddddeeeekyok
+kykdeeeeeeeekyuk
+kkeeeeeeaaaakyok
+kkkqqqkkkkkkyook
+.kqqqkmyyyyoouok
+kkkkkkkkkkkkkkkk
+atk
+.kkk..kkk.......
+kaaakkaaak......
+krkakkrkak......
+kaabkkaabk......
+.kkk..kkk.......
+..kmk.kyk.......
+..kmykkyokkk....
+.kmyyyyyyyyokk..
+.kykkkkkkkkkyok.
+.kykaaaaaaaakyok
+kppkdddddeeeekyk
+pqqppdeeeeeeekuk
+kqppppqeeeeeekyk
+.kkkkkqkaaaaakok
+...kmyykkkkkkyok
+...kkkkkkkkkkkkk
+hurt
+.....kkk..kkk...
+....kbbbkkbbbk..
+....kkkkkkkkkk..
+....kaabkkaabk..
+.....kkk..kkk...
+......kmk..kyk..
+.....kkmykkkyokk
+....kmyyyyyyyyok
+...kmyyyyyyyyook
+...kykkkkkkkkyok
+..kyykeaaaaekyok
+..kyykdeeeeekyok
+.kyyykkqqppkyook
+.kyyyyykkkkyoook
+kmyyyyyyyyooouok
+kkkkkkkkkkkkkkkk

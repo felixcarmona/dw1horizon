@@ -1,0 +1,80 @@
+# Aquilamon
+k 180c0c
+r f05050
+s c02c40
+t 781c28
+w f8f8f0
+g c0c8c8
+h 988868
+i 584830
+y f8c830
+o c08820
+b 48a0e8
+idle
+..kk.........kk.
+.krrk.kk...kkwwk
+.krrskyk.kkrrwk.
+..kwrkkykrrrrwwk
+...krwwkrrssrrk.
+..kiwwwgkrsssrwk
+.kihkwkbgkssrrk.
+kihkwkbwgkksrwwk
+kik.kwwwgkrsskk.
+kikkyyywgkrrsk..
+.kikkyokkrrrssk.
+.kiik.krrrsssk..
+..kikkrrssstk...
+...k.krrsskk....
+....kyyokyyok...
+...kyokkkyokk...
+idle2
+..........kk....
+..kk..kk.kwwkkk.
+.krrkkyk.krrwwk.
+.krrskkykrrrrrk.
+..kwrwwkrrssrk..
+..kiwwwgkrsssrk.
+.kihkwkbgkssrrk.
+kihkwkbwgkksrrk.
+kik.kwwwgkrsswwk
+kik.yyywgkrrskwk
+kikkkkkkkrrrssk.
+.kikyyokkrrsssk.
+..kikkrrssstk...
+...k.krrsskk....
+....kyyokyyok...
+...kyokkkyokk...
+atk
+...kk..........k
+..krrkkk....kkwk
+..krrskyk.kkrrwk
+...kwrkkykrrrrwk
+..kiirwwkrrssrk.
+.kihkwwwgkrsssrk
+.kikwwkbwgkssrrk
+.kikkwkbwgkksrwk
+kikkkwwwwgkrssk.
+kikyyyyywgkrrsk.
+kkyyyokkkkrrrsk.
+.kkkk.krrrrsssk.
+...krrrrsssstk..
+..kyokrrsskk....
+..kkkkyyokyyok..
+.....kyokkkyok..
+hurt
+............kk..
+.kk.......kkwwk.
+krrk.kkkkkrrwk..
+krsskkyyokkrrrk.
+.kkwkwkkkrrssrk.
+...kwwwggkrsssrk
+..kiwwwwggkssrrk
+.kihwkkkwgkksrk.
+kihkkwwwwgkrsswk
+kik.yyywgkrrskk.
+kik.kyokkrrrssk.
+.kikkkkrrrsssk..
+..kikkrrssstk...
+...k.krrsskk....
+...kyyok.kyyok..
+..kyokk..kyokk..

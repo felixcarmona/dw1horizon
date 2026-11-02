@@ -1,0 +1,78 @@
+# Tsukaimon
+k 180e24
+a 7c70d8
+b 5048a8
+c 342c74
+w f0f0f8
+x c4c4d4
+y 9090a8
+o f08830
+r d83040
+idle
+...kkk...kkkkkkk
+..kaabkkkaaaabbk
+.kaabbkaaabbbkk.
+.kabbkkabbcbk...
+.kabk.kabckk....
+..kkkkkbck...kk.
+..kaaaabbbkkkbk.
+.kaabbbbbbbbbbk.
+kaakkkkbbbbbbck.
+kabkwokbbbbbcck.
+kabkokkbbbbccck.
+kwwwkkxbbcccxxk.
+kwkwwwwwxxxxxyk.
+kwwwwwwwwxxxyyk.
+.kkxykkxxykkxyk.
+..kkkk.kkkk.kkk.
+idle2
+..........kkkkkk
+.kkkk...kkaaabbk
+kaabbk.kaaabbbk.
+kabbkk.kabbcbkk.
+.kbkk.kabcckk...
+..kkkkabck...kkk
+..kaaaabbbkkkcbk
+.kaabbbbbbbbbbk.
+kaakkkkbbbbbbck.
+kabkwokbbbbbcck.
+kabkokkbbbbccck.
+kwwwkkxbbcccxxk.
+kwwkwwwwxxxxxyk.
+kwwwwwwwwxxxyyk.
+.kxykxykkxykxyk.
+..kkkkk..kkkkk..
+atk
+................
+.......kkkkkkkkk
+.....kkaaaabbkk.
+....kaabbbkkk...
+...kkabckk......
+.kkaaabbbkk..kk.
+kaabbbbbbbbkkbk.
+kabkkkkbbbbbbck.
+kabkwokbbbbbcck.
+kkkkkkkbbbbcccck
+kwkwkrkbbcccxxk.
+.krrrrkxxxxxxyk.
+.krrrrkwxxxxyyk.
+kwkwkkwwwwxxyk..
+.kkkkxxxykkxyk..
+...kkkkkk..kkk..
+hurt
+.....kk.........
+...kkaakkkkkkkk.
+..kaabbkaaabbbk.
+...kkkkabbckkk..
+.....kkabkk.....
+...kkaaabbbkkkk.
+..kaabbbbbbbbkbk
+.kaabbbbbbbbbbck
+.kabkbkbbbbbccck
+.kabbkbbbbbbccck
+.kabkbbbbbbcccxk
+.kwwwwkxxxccxxyk
+.kkwkwkwwxxxxyk.
+..kwwwwwxxxxyyk.
+...kkxykxxykxyk.
+....kkk.kkk.kkk.

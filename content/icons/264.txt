@@ -1,0 +1,78 @@
+# Raremon
+k 180a0e
+l d0d0f8
+m 9898e0
+d 6868b0
+e 484880
+g 909098
+r e82030
+w f8f8f0
+t f07878
+idle
+.....kkkkkk.....
+...kkllllmmkk...
+..klkkklkkkmmk..
+..klkrwkkrwkmdk.
+.kllkkkmkkkmmdk.
+kwkllmmmmmmmdmdk
+.kkkwkwkwmmmmddk
+..ktttttkmmmdddk
+.kkkwkwkkmmmdkdk
+kllkkkkmmmmdmddk
+klmmkmmmmmdmddek
+kklmmkmmdmmddmek
+.kmllkmdmmddmdek
+kwklmmmdmmdmddek
+kwkwkwkkwkwkkkkk
+kkkkkkk.kkkkk...
+idle2
+.....kkkkkk.....
+...kkllllmmkk...
+..klkkklkkkmmk..
+..klkwrkkwrkmdk.
+.kllkkkmkkkmmdk.
+kwkllmmmmmmmdmdk
+.kkkkwkwkmmmmddk
+..ktwtwtkmmmdddk
+.kkkkkkkkmmmdkdk
+.klkkkkmmmmdmddk
+kllmkmmmmmdmddek
+klmmkkmmdmmddmek
+kmllkmmdmmddmdek
+kwklmmmdmmdmddek
+kkwkwkkwkwkwkkkk
+.kkkkkk.kkkkk...
+atk
+....kkkkkk......
+..kkllllmmkk....
+.klkkklkkkmmk...
+.klkrwkkrwkmdk..
+kllkkkmkkkmmmdk.
+kwkllmmmmmmmdmdk
+kkwkwkwkwmmmmddk
+kkttttttkmmmdddk
+ktttkkttkmmmdmdk
+kkttttkmmmmdmddk
+.kkwkwkmmmmdmddk
+kk.kkkmmmdmddmek
+klkllkmmdmmddmek
+kwklmmmdmmdmddek
+kwkwkwkkwkwkkkkk
+kkkkkkk.kkkkk...
+hurt
+.......kkkkkk...
+.....kkllllmmkk.
+....klllllllmmmk
+....kkkklkkkkmdk
+...kllllmlllmmdk
+...kwkmmkkkkmmdk
+....kkmkttkkmddk
+.kk...kkttkkmddk
+kllk..kkkkmmdkdk
+.kmlkkkmmmmdmddk
+.klmmmmmmmdmdddk
+..kmmlmmdmmddmek
+.kmlmmmdmmddmdek
+kwlmmmdmmdmdddek
+kwkwkwkkwkwkkkkk
+kkkkkkk.kkkkk...

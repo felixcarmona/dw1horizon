@@ -1,0 +1,79 @@
+# Renamon
+k 140c08
+1 fff088
+2 f8c830
+3 d89010
+4 a06008
+w f8f8f0
+g b0b0b8
+p 8868c8
+q 483878
+b 70d8f8
+idle
+.....kk...kk....
+.....kwk.kwk....
+.....kgkkk1gk...
+....k11211123k..
+...k1111kkk123k.
+..k1112kkbk223k.
+.k111222223333k.
+kk222222kkk33kk.
+..kkkkkwwwwkk...
+...kppkwwgkpqkk.
+..kppqk2w2kqk23k
+..kpqk12k2kkk123
+...kkk12k23k123k
+....kwwkkwgk2wwk
+...kwwgkwwwgkwwk
+...kkkkkkkkkkkkk
+idle2
+.....kk.....kk..
+.....kwk..kkwk..
+.....kgkkk1gk...
+....k11211123k..
+...k1111kkk123k.
+..k1112kkbk223k.
+.k111222223333k.
+kk222222kkk33kk.
+..kkkkkwwwwkk.kk
+.k11kpkwwgkpkkwk
+.kkkppk2w2kqk1wk
+..kqqk12k2kpqk2k
+...kkk12k23kkk2k
+....kwwkkwgkk...
+...kwwgkwwwgk...
+...kkkkkkkkkk...
+atk
+......kk...kk...
+......kwk.kwk.k.
+......kgkkk1gkwk
+.....k1121112kwk
+....k1111kkkk1wk
+...k1112kkbk2k1k
+..k11122222333k.
+.kk2222kkkkk3kk.
+.kkkkkkkwwwkk...
+k1k1kppkwwgkkk..
+k1111ppqkw2k23k.
+.kkkkkkkk22k123k
+.....kwwk23kk12k
+....kwwgkkwwkkkk
+...kwwgk.kwwgk..
+...kkkkk.kkkkk..
+hurt
+.......kk...kk..
+.......kwk.kwk..
+.......kgkkk1gk.
+....kkk1121123k.
+..kk1111kkk1233k
+.k111122222233k.
+..kk222233333kk.
+....kkk33kkkk...
+..kkkkkwwwkk....
+.k1kppkwwgkpk.kk
+.k1kppk2w2kqkk3k
+..kkpqk12k2kqk2k
+...kkk12k23kkk2k
+....kwwkkwgkk...
+...kwwgkwwwgk...
+...kkkkkkkkkk...

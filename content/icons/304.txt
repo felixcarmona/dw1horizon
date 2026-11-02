@@ -1,0 +1,81 @@
+# Divermon
+k 180a14
+w f0f8f8
+1 b0d4f0
+2 3884e8
+3 1c48a8
+r e02828
+n f8a0b8
+m c86088
+g 30d870
+c 90b0c8
+y f8c020
+h 687078
+idle
+.......kkk......
+.k....kwcck.....
+kyk...kwcck..kk.
+kyk.kkkwcckkk1k.
+khkkrr222rrk211k
+khkrwwrrrw1rk21k
+khkwgkwwgk11rkkk
+khknnnnnnnnk2k1k
+khknwkwkwknk22kk
+khkknnnnnnk2222k
+k222k1w1w1r222k.
+khk2k1w11r222k1k
+khkkkww11r22k1k.
+khk.k1rrrr22k1k.
+khk.k3kk22k3kk..
+kkk.kyyk.kyyk...
+idle2
+.k.....kkk......
+kyk...kwcck.....
+kyk...kwcck.kk..
+khk.kkkwcckk11k.
+khkkrr222rrk11k.
+khkrwwrrrw1rk1k.
+khkwgkwwgk11rkkk
+khknnnnnnnnk2k1k
+khkkkkkkkkkk22kk
+khknrrrrrrnk222k
+k222knnnnnk2222k
+khk2k1w1w1r222k.
+khkkkww11r22kk1k
+khk.k1rrrr22k1k.
+khk.k3kk22k3kk..
+kkk.kyyk.kyyk...
+atk
+........kkk.....
+.......kwcck....
+.......kwcck.kk.
+.....kkkwcckkk1k
+....krr222rrk11k
+...krwwrrrw1rk1k
+...kwgkwwgk11rkk
+...knnnnnnnnk21k
+...knkkkkkknk22k
+kk.knrrrrrnk2kkk
+kykkknnnnnk2222k
+hhhh222kw1r222k.
+kykkkkkw1r22kk1k
+kk...k1rrrr2k1k.
+.....k3kk22k3k..
+.....kyyk.kyyk..
+hurt
+.........kkk....
+........kwcck...
+........kwcck.k.
+.k....kkkwcckk1k
+kyk..krr222rrk1k
+.kyk.kwrrrw1rk1k
+..khkwkkwkk11rkk
+..khknnnnnnnnk1k
+...khknwkwknk22k
+...kh2knnnnk222k
+...k222kw1r2222k
+....kkkw1r222kk.
+.....k11r222k1k.
+.....k1rrrr2k1k.
+.....k3kk22k3k..
+.....kyyk.kyyk..

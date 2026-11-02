@@ -1,0 +1,82 @@
+# Floramon
+k 180a0e
+r f03848
+s c81830
+t 881020
+y f8e860
+o c8b838
+g a8d870
+h 68a048
+c f0f0b8
+v b088e0
+u 7848b8
+w f8f8f0
+b 40a8f8
+idle
+.....kkkkkk.....
+...kkrrrrsskk...
+..krrrsrrsssskk.
+..krrsrrrssstsk.
+..krrsrrssstktk.
+.kyykwbksssksktk
+kyyyokksstkstkk.
+.kooyysstkkkk...
+..kkkkcckkk.....
+.kkvvkcckhkkvkk.
+kvwwvkccokkwwuvk
+kuvkkcccokkkuuvk
+.kk.kkccokk.kkk.
+...kgkkkokhk....
+..kgghkkghhk....
+.kkkkkk.kkkkkk..
+idle2
+.....kkkkkk.....
+...kkrrrrsskk...
+..krrrsrrsssskk.
+..krrsrrrssstsk.
+..krrsrrssstktk.
+.kyykwbksssksktk
+kyyyokksstkstkk.
+.kooyysstkkkk.k.
+.kkkkkcckkk..kvk
+kvwvkkcckhk.kwvk
+kuvkkkccokkkwuk.
+.kk..kccokhkkkk.
+...kkkccokk.....
+...kgkkkokhk....
+.kgghk.kkghhk...
+.kkkkk..kkkkkk..
+atk
+.......kkkkkk...
+.....kkrrrrsskk.
+....krrrsrrssssk
+....krrsrrrsssk.
+....krrsrrsstktk
+...kyykwbksskskk
+..kyyyokksstkkk.
+...kooyysstkkk..
+.kkkkkkkcckkk...
+kvvwwwkccckhkkk.
+kuvwvvkcccokvuk.
+.kkkkkkcccokkkk.
+......kccokhk...
+.....kgkkkokhk..
+....kgghkkghhk..
+...kkkkkk.kkkkk.
+hurt
+.......kkkkkk...
+.....kkrrrrsskk.
+....krrrsrrsssk.
+...krrsrrrsstsk.
+...krrsrrssstkk.
+..kyykkkksssktk.
+.kyyyokkstkstkk.
+..kooyysstkkk...
+.kk.kkcckkk.....
+kvwkkkcckhk.kkk.
+kuvvkccokkkkwvvk
+.kkkkkccokkkkuvk
+.....kccok..kkk.
+....kgkkokhk....
+...kgghkkghhk...
+..kkkkkk.kkkkkk.

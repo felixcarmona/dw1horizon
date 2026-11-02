@@ -1,0 +1,80 @@
+# Shakkoumon
+k 1a1218
+s f0f0f8
+t c0c0d0
+u 8888a0
+r e83030
+q a01820
+y f8e060
+o d8a030
+p 987028
+w f8f8f8
+e b8c8e8
+idle
+.....kyk........
+....kyyok.......
+.....kok.....kk.
+...kkkkkkkk.kwwk
+..kssssstttkwwek
+.ksssssstttukwek
+ksrrrrssrrrrukek
+krqkkqrrqkkqrkkk
+ksrrrrssrrrrukwk
+ksssssstttuuukek
+.ktsstttuuuukkk.
+.ktkkkkkkkkkk...
+ktuksstyttukuk..
+kuukyyoyyopkuuk.
+.kkkoykkkopkkk..
+...kkkk.kkkk....
+idle2
+.....kyk........
+....kyyok.......
+.....kok........
+...kkkkkkkk.....
+..kssssstttk.kk.
+.ksssssstttukwwk
+ksrrrrssrrrrkwwe
+kryyyyrryyyyrkek
+ksrrrrssrrrrukwk
+ksssssstttuuukek
+.ktsstttuuuukwek
+.ktkkkkkkkkkkkk.
+ktuksstyttukuk..
+.kkkyyoyyopkuk..
+...koykkkopkkk..
+...kkkk.kkkk....
+atk
+.......kyk......
+......kyyok.....
+.......kok......
+.....kkkkkkkk.kk
+....kssssstttkwk
+...ksssssstttukk
+y.ksrrrrssrrrruk
+yykryyyyrryyyyrk
+y.ksrrrrssrrrruk
+...ksssssstttuuk
+.kktksstttuuuuk.
+kstkkkkkkkkkkk..
+kttksstttuukuk..
+.kkkyyoyyopkuuk.
+...koykkkopkkk..
+...kkkk.kkkk....
+hurt
+.........kyk....
+........kyyok...
+.........kok....
+.....kkkkkkkk.kk
+....kssssstttkwk
+...ksssssstttkek
+..ksssssssstttkk
+..krkkkkrrkkkkrk
+..ksssssstttuuuk
+..ksssssttuuuuk.
+...ktsstttuukk..
+.kk.kkkkkkkkkkk.
+.ktkksstttuuk.tk
+..kkyyoyyopkkukk
+...koykkkopk.k..
+...kkkk.kkkk....

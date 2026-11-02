@@ -1,0 +1,79 @@
+# Octomon
+k 1c0c10
+1 e8c088
+2 b88c50
+3 7c5830
+r f84838
+s b82020
+y f8e040
+o c89820
+g f0f0f8
+h 9898a8
+idle
+......k.k.k.....
+.k...kykykyk....
+kgk..kyyoyyk.k..
+kgkkrkk1112kkkrk
+kgkrsk1111222ksk
+khkkk11112223kk.
+.yk.k11222233k..
+.kk.k1kkkkk33k..
+.kkrk2kykyk33kk.
+krrskkkkkkkk3ksk
+krskk2222333kkrk
+.kkrsskk3kksrrsk
+.krrskrskrskrssk
+krrskkrsksrkkrrk
+krsk.krskkrsk.kk
+kkk..kkkk.kkk...
+idle2
+......k.k.k.....
+kk...kykykyk....
+kgk..kyyoyyk.k..
+.kgkrkk1112kkkrk
+.kgksk1111222krk
+.khkk11112223ksk
+..yk.k1222233kk.
+..kkk1kkkkk33k..
+.kkrk2kykyk33kk.
+krrskkkkkkkk3ksk
+kskkk2222333kkrk
+.krrsskk3kksrrk.
+krskrrskrskrssk.
+krk.krskrsrkkrrk
+kk.krrskkrrk.krk
+...kkkk.kkkk.kkk
+atk
+.......k.k.k....
+......kykykyk...
+......kyyoyyk.k.
+....krkk1112kkrk
+....ksk1111222ks
+.....kk1112223kk
+.....k1122233k..
+.....k1kkkkk3kk.
+kkkkkk2kykyk3ksk
+kggggykkkkkk3ksk
+kkhhhkr22333kkrk
+...kkrskk3kkrrsk
+...krrskrskrsssk
+..krskkrsksrkrrk
+..krsk.krskrskkk
+..kkk..kkkkkkk..
+hurt
+.........k.k.k..
+........kykykyk.
+........kyyoyyk.
+......krkk1112kk
+.....krsk1111222
+......kk1112223k
+.....k11222233k.
+.....k1kkkkk33k.
+.....k1hhkhh33k.
+.....k2kkkkk33k.
+....kkk222333kk.
+k...krskk3kkrsk.
+ghkkkrrkrskrrrsk
+.kgk.krskrskrrk.
+..khkrsk.krskkk.
+...kkkkk.kkkk...

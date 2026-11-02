@@ -1,0 +1,77 @@
+# Woodmon
+k 180a0e
+l e0c878
+m b09848
+d 786028
+e 504018
+b 40b0f8
+w f8f8f0
+c 201408
+idle
+...k.kk.kk.k....
+..klkllkmlkmk...
+..klmlmlmlmmk.k.
+.k.kmlmmlmmdk.kk
+klkkmlmmmmmdkkmk
+kmlkmkkmkkmdkmdk
+kmmkmbkmbkmdkmdk
+.kmmlmmmmmmdmdk.
+..kklkmkmkkddk..
+...kmkkkkkmdk...
+...kmmkkmmddkk..
+..klmmmmmddkldk.
+.klmdkmdkdkkmdek
+.kmdkkmdkkddkmek
+kldk.kmdk.kddkk.
+kkkk.kkkk.kkkk..
+idle2
+...k.kk.kk.k....
+..klkllkmlkmk...
+..klmlmlmlmmkk.k
+...kmlmmlmmdkmkk
+.kkkmlmmmmmdkmdk
+klmkmkkmkkmdkmdk
+kmmkmbkmbkmdkkk.
+.kkkmmmmmmmdmk..
+..kmlkmkmkkddk..
+...kmkkkkkmdk...
+...kmmkkmmddkk..
+...klmmmmddkldk.
+..kmdkmdkdkkmdek
+.kmdkkmdkkddkmek
+kldk.kmdk.kddkk.
+kkkk.kkkk.kkkk..
+atk
+.....k.kk.kk.k..
+....klkllkmlkmk.
+....klmlmlmlmmkk
+.kk..kmlmmlmmdkk
+klmk.kmlmmmmmdkk
+kmlmkkmkkmkkmdmk
+kmmlmkmbkmbkmdmk
+.kmmmmmmmmmmdkmk
+..kkkkmkkkkkmkdk
+....kkkkkkkkkkdk
+....kmwkwkwkdkek
+....kmkkkkkkdkk.
+....klmmmmddkk..
+...kmdkmdkdkk...
+..kmdkkmdkkddk..
+..kkkk.kkkk.kkk.
+hurt
+....k.kk.kk.k...
+...klkllkmlkmk..
+...klmlmlmlmmk.k
+kk..kmlmmlmmdkkk
+kmk.kmlmmmmmdkmk
+.kmkkkkkkkkmdkdk
+..kmkmmmmmmmdkk.
+...kkmmkkmmmdk..
+....kmkkkkmddk..
+....kmkmmkmdk...
+....kmmkkmmddkk.
+...klmmmmmddkldk
+...kmdkmdkdkkmek
+..kmdkkmdkkddkek
+.kldk.kmdk.kddk.
+.kkkk.kkkk.kkkk.
