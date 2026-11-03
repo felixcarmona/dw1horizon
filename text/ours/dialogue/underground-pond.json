@@ -16,12 +16,12 @@
  "s029.sec51.u1": "Oh, good work out there. Here's your pay.",
  "s029.sec51.u2": [
   [
-   "Got 500 Bits for the job!"
+   "Got 1000 Bits for the job!"
   ],
   [
-   "HP went up 50!",
-   "Offense went up 5!",
-   "Defense went up 5!"
+   "HP went up 100!",
+   "Offense went up 10!",
+   "Defense went up 10!"
   ]
  ],
  "s029.sec51.u3": "Dump the dirt outside the tunnel.",
@@ -52,7 +52,7 @@
  ],
  "s029.sec51.u13": "Oh, what is it?",
  "s029.sec51.u14": "There's the dirt yours truly dug out. Carry it outside the tunnel and dump it.",
- "s029.sec51.u15": "It's pretty hard work, so I'll make it a paying job. 500 Bits for every round trip.",
+ "s029.sec51.u15": "It's pretty hard work, so I'll make it a paying job. 1000 Bits for every round trip.",
  "s029.sec51.u16": "The digging goes faster, I get paid... and it's training too... This could be good...!",
  "s029.sec51.u17": [
   [

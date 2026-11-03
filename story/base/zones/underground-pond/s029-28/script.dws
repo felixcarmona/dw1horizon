@@ -75,6 +75,7 @@ script 29 {
             engine.arg = 0;
             call_routine(routine("dirt_cart_model"));
             call_routine(routine("dirt_pile_shrink"));
+            call_routine(routine("dirt_pile_shrink"));
         }
     }
 
@@ -99,13 +100,13 @@ script 29 {
             say(drimogemon, text("s029.sec51.u1"));
             engine.arg = 2;
             call_routine(routine("dirt_cart_model"));
-            give_bits(500);
-            add_stat(0, 5);
-            add_stat(1, 5);
-            add_stat(4, 50);
-            add_stat(8, 10);
+            give_bits(1000);
+            add_stat(0, 10);
+            add_stat(1, 10);
+            add_stat(4, 100);
+            add_stat(8, 20);
             say(narrator, text("s029.sec51.u2"));
-            underground_pond_dig_work += 1;
+            underground_pond_dig_work += 2;
             drill_tunnel_progress = 1;
             entity_set_rotation(drimogemon, 1900);
             await drimogemon;

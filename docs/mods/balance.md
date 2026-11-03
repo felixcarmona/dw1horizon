@@ -301,6 +301,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Restaurants (`libraries/s217`, `s218`) | 300-9000 bits, 1-5 points | 400-1500 bits, 8-42 points, 35 energy | a meal was not worth buying. DV chips still give more points a bit, at a lifetime cost |
 | Digitamamon's roll | one in three each | 30 / 30 / 40 %, all stats | a late recruit's meal should please |
 | Drimogemon's plans | 3 days 1000 bits, 10 days 5000 bits | 1 day 2000 bits, 3 days 5000 bits, new tables; with Gabumon 5 % roll another item | the price is what stops a daily profit: the 1000 bits a day table would sell for 1545 |
+| Underground Pond dirt hauling (`underground-pond/s029-28`, `file-city/s162`) | 10 round trips, each 500 bits, Off and Def +5, HP +50, tiredness +10 | 5 round trips, each 1000 bits, Off and Def +10, HP +100, tiredness +20; the pile shrinks two steps a trip, a box carried home counts as a trip | the same totals (5000 bits once, the tunnel's work done) in half the walking; the five-day wait still finishes it |
 | Death evolutions (`libraries/s212`) | 10 % | 30 %; Devimon stays at 50 % | a player should see them without resetting |
 | Evolution items (patch 0323) | no gains, lifetime or tamer level | as any evolution | they are rare, they should not punish |
 | Evolution rows `techs` | a bonus for 21-49 techniques | gone; Gigadramon asks 100 battles instead | the bonus could stand in for the stats, so a raised partner took another route |

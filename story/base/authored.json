@@ -310,6 +310,26 @@
       "original_sha256": "0498dd17f4c08525eeb24e046e595a8fe873e26ea80f79a6dbcaec0b181c4baa",
       "authored_sha256": "1a294f913373c77c953f6517c3d2b9fcc7d165f169d5d534450df814a9e87ade",
       "reason": "Restaurant meals worth their price; Digitamamon's best roll at 40 percent; DWS synchronized with the authored Python source"
+    },
+    "zones/underground-pond/s029-28/script.py": {
+      "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
+      "authored_sha256": "b159f541fca39f32a8d05fce1ece262b10e2215d6d9c9906a531fbf9468543ca",
+      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's"
+    },
+    "zones/underground-pond/s029-28/script.dws": {
+      "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
+      "authored_sha256": "8286486bec3594fe298b4e4035a51d043566ac699e56cc112eca96240f97742c",
+      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's; DWS synchronized with the authored Python source"
+    },
+    "zones/file-city/s162-168-169-170/script.py": {
+      "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
+      "authored_sha256": "9c9f834286834528daba63b48a039788474ab447eae45545046c172fc2db452f",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips"
+    },
+    "zones/file-city/s162-168-169-170/script.dws": {
+      "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
+      "authored_sha256": "3c7db3232820eec7d3e25233d1b636a5d546eaec5bf2898b18d499331d013716",
+      "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; DWS synchronized with the authored Python source"
     }
   }
 }
