@@ -79,3 +79,32 @@ Every species needs `content/icons/<id>.txt`: a 16x16 icon drawn by hand in four
 upper left, facing left, standing on the bottom row; a baby fills the box like the native babies do, not like a
 Rookie. The in-game model is the colour authority. Without an icon the menus fall back to a render of the model, which
 reads badly.
+
+## 8. Place it in the evolution tree
+
+The topology is `content/tables/evolution-tree.json` (`children` by name, `routes` by id; `tools/evo_tree.py --write`
+writes the species files, `tools/test_evo_tree.py` and `tools/evo_check.py` guard it). Rules: canon line first, then
+family and a shared specialty; the disc's own routes stay and keep winning their canonical state; parent order names the
+primary parent (`requirements.digimon`). A canon In-Training among the hand-made babies replaces a native stand-in as
+the primary parent, and the stand-in link goes when the child stays reachable with NEW DIGIMON on (with it off, no
+import is raised).
+
+Decisions (2026-11-03, the eight eggs):
+
+| Rookie | parents before | parents now | why |
+|---|---|---|---|
+| Gomamon | Tsunomon, Bukamon | Bukamon | canon Bukamon line |
+| Salamon | Tokomon, Nyaromon | Nyaromon | canon Nyaromon line |
+| Kokuwamon | Tsunomon, Motimon | Motimon | machine family, shares Mech |
+| Syakomon, Crabmon | Tsunomon | Bukamon | aquatic family, share Ice and Battle |
+| Gizamon | Tsunomon, Bukamon | Bukamon, Tsunomon | aquatic family first |
+| Floramon | Tanemon, Motimon, Yokomon | Yokomon, Tanemon | Yokomon's plant line; Motimon shares no specialty |
+| Mushroomon | Tanemon | Tanemon, Yokomon | Yokomon's plant line, shares Nature |
+| Hagurumon | Tokomon | Tokomon, Motimon | machine family, shares Mech |
+| Bearmon | Tsunomon, Bukamon | Tsunomon, Nyaromon | beast family, shares Battle; Bukamon is aquatic |
+| Hawkmon | Tokomon, Nyaromon, Yokomon | Tokomon, Yokomon | bird family |
+| Dokunemon | Tanemon, Yokomon | Tanemon | insect, no Yokomon canon |
+
+So Motimon raises Tentomon, Kokuwamon, Wormmon, Hagurumon; Bukamon Gomamon, Otamamon, Gizamon, Syakomon, Crabmon;
+Nyaromon Salamon, Tsukaimon, DemiDevimon, Bearmon; Yokomon Biyomon, Floramon, Hawkmon, Mushroomon. Tentomon ← Tanemon
+and Biyomon ← Tokomon stay the primary routes (disc routes). Tsunomon keeps seven Rookies, Tokomon ten.
