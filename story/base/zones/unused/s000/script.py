@@ -1743,8 +1743,8 @@ def sec136():    # section 136
     engine.music_mode.set(1)
     music(16)
     if curling_opponent == 1:
-        load(Species.MetalGreymonVirus149)
-        spawn(Species.MetalGreymonVirus149, slot=1)
+        load(Species.MetalMamemon149)
+        spawn(Species.MetalMamemon149, slot=1)
         return
     if curling_match_pending == 1:
         load(Species.Penguinmon)
@@ -1967,8 +1967,8 @@ def sec153():    # section 153
     music(22)
     roll = random.roll(99)
     if roll <= 2 and not recruited(Species.MetalMamemon):
-        load(Species.MetalGreymonVirus149)
-        spawn(Species.MetalGreymonVirus149, slot=4, autotalk=True)
+        load(Species.MetalMamemon149)
+        spawn(Species.MetalMamemon149, slot=4, autotalk=True)
         return
     if clock.hour >= 7 and clock.hour < 19:
         load(Species.Guardromon)
@@ -3050,8 +3050,8 @@ def sec235():    # section 235
     engine.music_mode.set(0)
     music(28)
     if curling_opponent == 1:
-        load(Species.MetalGreymonVirus149)
-        spawn(Species.MetalGreymonVirus149, slot=1)
+        load(Species.MetalMamemon149)
+        spawn(Species.MetalMamemon149, slot=1)
         return
     if curling_opponent == 0:
         load(Species.Penguinmon176)
@@ -3060,8 +3060,8 @@ def sec235():    # section 235
     roll = random.roll(7)
     if recruited(Species.MetalMamemon) and roll <= 0:
         curling_opponent.set(1)
-        load(Species.MetalGreymonVirus149)
-        spawn(Species.MetalGreymonVirus149, slot=1)
+        load(Species.MetalMamemon149)
+        spawn(Species.MetalMamemon149, slot=1)
         return
     if recruited(Species.Penguinmon):
         curling_opponent.set(0)

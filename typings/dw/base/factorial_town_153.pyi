@@ -7,4 +7,4 @@ guardromon0: NPC    # slot 0, Guardromon
 guardromon1: NPC    # slot 1, Guardromon
 geremon2: NPC    # slot 2, Geremon
 geremon3: NPC    # slot 3, Geremon
-metalgreymonvirus: NPC    # slot 4, MetalGreymonVirus149
+metalmamemon: NPC    # slot 4, MetalMamemon149
