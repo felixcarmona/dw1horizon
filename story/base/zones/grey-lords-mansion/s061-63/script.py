@@ -9,6 +9,13 @@ mansion = screen(Screen.grey_lords_mansion_63)
 t52 = text.s061.sec52
 t82 = text.s061.sec82
 
+def use_up_the_key():    # Horizon: the Mansion Key is used up once every locked door of the mansion stands open
+    if (has(Item.MansionKey) and mansion_door_unlocked.s52_s55_exit4 and mansion_door_unlocked.s52_s55_exit5
+            and mansion_door_unlocked.s57_s58 and mansion_door_unlocked.s53_s63 and mansion_door_unlocked.s52_s59
+            and mansion_door_unlocked.s53_s64 and mansion_door_unlocked.s53_s232):
+        narrator.say(text.qol.mansion_key_used_up)
+        take(Item.MansionKey)
+
 @mansion.on_enter
 def enter():    # section 254
     spawn_chest(Item.Medicine, at=(-503, -2215), opened=trigger(656), facing=3072)
@@ -36,6 +43,7 @@ def use2():    # section 82
         sound(8, 3)
         tamer.say(t82.u2)
         mansion_door_unlocked.s53_s63.set()
+        use_up_the_key()
     swing_door(0)
     sound(8, 1)
     wait(500)

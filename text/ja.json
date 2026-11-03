@@ -1,5 +1,9 @@
 {
  "qol.training_x5": "ふつうのトレーニング x5",
+ "qol.mansion_key_used_up": [
+  "やしきのドアは、すべて開いた。",
+  "もう{color 6}やしきのカギ{color 1}はいらない。"
+ ],
  "name.ask_partner": [
   "{color 7}ジジモン {color 1}",
   "デジモンになまえを",

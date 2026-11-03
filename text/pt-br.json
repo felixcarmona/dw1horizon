@@ -1,5 +1,6 @@
 {
  "qol.training_x5": "Treino normal x5",
+ "qol.mansion_key_used_up": "Todas as portas da mansão estão abertas. Não precisa mais da {color 6}Chave da mansão{color 1}.",
  "name.ask_partner": [
   "{color 7}Jijimon {color 1}",
   "Quer dar um nome",

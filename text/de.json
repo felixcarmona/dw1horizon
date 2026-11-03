@@ -1,5 +1,6 @@
 {
  "qol.training_x5": "Normales Training x5",
+ "qol.mansion_key_used_up": "Alle Türen der Villa sind jetzt offen. Du brauchst den {color 6}Villaschlüssel{color 1} nicht mehr.",
  "name.ask_partner": [
   "{color 7}Jijimon {color 1}",
   "Willst du deinem Digimon",

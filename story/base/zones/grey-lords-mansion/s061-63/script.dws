@@ -34,6 +34,10 @@ script 61 {
             sound(8, 3);
             say(tamer, text("s061.sec82.u2"));
             mansion_door_unlocked.s53_s63 = true;
+            if (has(item("Mansion key")) >= 1 && mansion_door_unlocked.s52_s55_exit4 && mansion_door_unlocked.s52_s55_exit5 && mansion_door_unlocked.s57_s58 && mansion_door_unlocked.s53_s63 && mansion_door_unlocked.s52_s59 && mansion_door_unlocked.s53_s64 && mansion_door_unlocked.s53_s232) {    // Horizon: the Mansion Key is used up once every locked door stands open
+                say(narrator, text("qol.mansion_key_used_up"));
+                remove_item(item("Mansion key"), 1);
+            }
         }
         rotate_3d_object(0, 0, 1);
         sound(8, 1);
@@ -70,5 +74,12 @@ script 61 {
         }
         say(tamer, text("s061.sec52.u3"));
         return;
+    }
+
+    shared use_up_the_key {    // Horizon: the Python def, inlined where it is called
+        if (has(item("Mansion key")) >= 1 && mansion_door_unlocked.s52_s55_exit4 && mansion_door_unlocked.s52_s55_exit5 && mansion_door_unlocked.s57_s58 && mansion_door_unlocked.s53_s63 && mansion_door_unlocked.s52_s59 && mansion_door_unlocked.s53_s64 && mansion_door_unlocked.s53_s232) {    // Horizon: the Mansion Key is used up once every locked door stands open
+            say(narrator, text("qol.mansion_key_used_up"));
+            remove_item(item("Mansion key"), 1);
+        }
     }
 }

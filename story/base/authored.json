@@ -340,6 +340,56 @@
       "original_sha256": "10335941cab7c9041d037b0e3d70296b083b72805cd2ac1cdc6e34e1dc654a63",
       "authored_sha256": "f6546f23e12388d0cc56e88efd34865802b7fdedba32a081f0f64f843ce702df",
       "reason": "Kunemon's item menu offers only food (patch 0331); DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s051-52/script.py": {
+      "original_sha256": "a512b9eb5131e44c5d9f6814bbec741256024f8017cd4c4f4160a7d5c7315f67",
+      "authored_sha256": "38e5e7bcb3f12d40bba5b1db677ca406c3755691aee06ca9ee5300b0f2cfbfa0",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile"
+    },
+    "zones/grey-lords-mansion/s051-52/script.dws": {
+      "original_sha256": "1cba7ae91f50e0f583e1f716a75225c2ea04b95aaa59964457b17c868bcd00ae",
+      "authored_sha256": "f4b6ec8c012546f35354a5297742382c7f2ad7315b8957c10b359285ce053272",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); an older save still holding it loses it on the hall's arrival tile; DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s052-53/script.py": {
+      "original_sha256": "094bd7271a8fcdc1e36d90be6a81f8107b2e024a1f0e74ea9cba17fe6e779d7f",
+      "authored_sha256": "9a77f42f81bfb29020e965ddf7b1ef61878ad3c863479350ad93e16e01518abd",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
+    },
+    "zones/grey-lords-mansion/s052-53/script.dws": {
+      "original_sha256": "fde35d0859c32c16201472c9d57f133970c9182595cec47f92dfd64632d73b70",
+      "authored_sha256": "ed89cf0150ecfe8e99267f3cfffbc8869171bb41f2b2c4c0dff8a9a1542c2117",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s054-55/script.py": {
+      "original_sha256": "5f1982066ed1cb2617dbf725829dd9cc32461a96427d405989f1a9a0cfe6596f",
+      "authored_sha256": "bab6cb037b26492b2eaf7bb035316777891af7301eacd7b8efdc48706ab849ac",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
+    },
+    "zones/grey-lords-mansion/s054-55/script.dws": {
+      "original_sha256": "59895f0f6d18b7b1289a95c2da0249c90e3c34a3541396e6ea943625b6d7eb56",
+      "authored_sha256": "cd69603900174ead2c1efe204d8157a2b78ebb9cdac512137c02a990d984302d",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s056-57/script.py": {
+      "original_sha256": "f832c4e4eb15678603e3cd7af8ddd79609a302d2a022a0b36ff13a47b1e0d02b",
+      "authored_sha256": "5b5ec91527435e41cd3e8f6a53e087b6a269d8e9d4d1f6cc6fb108f75ffb17cc",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
+    },
+    "zones/grey-lords-mansion/s056-57/script.dws": {
+      "original_sha256": "97f957349acf8308cd829ff6370acbf29dcceb3d2552fe51fb36570bec6ca727",
+      "authored_sha256": "9dd3cb8b9f94c337d8c073f358e4c7573517a5b97c43235e9da694a2b3e66c5c",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
+    },
+    "zones/grey-lords-mansion/s061-63/script.py": {
+      "original_sha256": "6d4b654ff25a840053865fea20ab870590f9932b38b272de9e3bb12f5bfd26c8",
+      "authored_sha256": "a02827c821e500a78906723f0b08e76f93a650e14f35a39d566859f09448bb9c",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up)"
+    },
+    "zones/grey-lords-mansion/s061-63/script.dws": {
+      "original_sha256": "cf7a4756cc00f5670de09f87d05f61a040e0c478f54ea8e2fd755d986376c7fd",
+      "authored_sha256": "fedb1f2179247142e2a0d6b7604472f660d19ade6993b743e564afac40340fdf",
+      "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
     }
   }
 }

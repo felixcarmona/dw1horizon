@@ -15,6 +15,10 @@ script 52 {
             sound(8, 3);
             say(narrator, text("s052.sec82.u0"));
             mansion_door_unlocked.s53_s64 = true;
+            if (has(item("Mansion key")) >= 1 && mansion_door_unlocked.s52_s55_exit4 && mansion_door_unlocked.s52_s55_exit5 && mansion_door_unlocked.s57_s58 && mansion_door_unlocked.s53_s63 && mansion_door_unlocked.s52_s59 && mansion_door_unlocked.s53_s64 && mansion_door_unlocked.s53_s232) {    // Horizon: the Mansion Key is used up once every locked door stands open
+                say(narrator, text("qol.mansion_key_used_up"));
+                remove_item(item("Mansion key"), 1);
+            }
         } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s53_s64) {
             entity_set_rotation(tamer, 3072);
             sound(8, 2);
@@ -52,6 +56,10 @@ script 52 {
             sound(8, 3);
             say(narrator, text("s052.sec81.u0"));
             mansion_door_unlocked.s53_s232 = true;
+            if (has(item("Mansion key")) >= 1 && mansion_door_unlocked.s52_s55_exit4 && mansion_door_unlocked.s52_s55_exit5 && mansion_door_unlocked.s57_s58 && mansion_door_unlocked.s53_s63 && mansion_door_unlocked.s52_s59 && mansion_door_unlocked.s53_s64 && mansion_door_unlocked.s53_s232) {    // Horizon: the Mansion Key is used up once every locked door stands open
+                say(narrator, text("qol.mansion_key_used_up"));
+                remove_item(item("Mansion key"), 1);
+            }
         } else if (has(item("Mansion key")) < 1 && !mansion_door_unlocked.s53_s232) {
             entity_set_rotation(tamer, 3072);
             sound(8, 2);
@@ -65,6 +73,13 @@ script 52 {
         wait(10);
         walk(tamer, 2000, 550);
         warp_to(232, 0, 255);
+    }
+
+    shared use_up_the_key {    // Horizon: the Python def, inlined where it is called
+        if (has(item("Mansion key")) >= 1 && mansion_door_unlocked.s52_s55_exit4 && mansion_door_unlocked.s52_s55_exit5 && mansion_door_unlocked.s57_s58 && mansion_door_unlocked.s53_s63 && mansion_door_unlocked.s52_s59 && mansion_door_unlocked.s53_s64 && mansion_door_unlocked.s53_s232) {    // Horizon: the Mansion Key is used up once every locked door stands open
+            say(narrator, text("qol.mansion_key_used_up"));
+            remove_item(item("Mansion key"), 1);
+        }
     }
 
     shared sec81_dup4 {    // a dead copy of section 81

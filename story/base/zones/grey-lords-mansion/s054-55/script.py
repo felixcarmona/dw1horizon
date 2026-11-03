@@ -14,6 +14,13 @@ t81 = text.s054.sec81
 t82 = text.s054.sec82
 t83 = text.s054.sec83
 
+def use_up_the_key():    # Horizon: the Mansion Key is used up once every locked door of the mansion stands open
+    if (has(Item.MansionKey) and mansion_door_unlocked.s52_s55_exit4 and mansion_door_unlocked.s52_s55_exit5
+            and mansion_door_unlocked.s57_s58 and mansion_door_unlocked.s53_s63 and mansion_door_unlocked.s52_s59
+            and mansion_door_unlocked.s53_s64 and mansion_door_unlocked.s53_s232):
+        narrator.say(text.qol.mansion_key_used_up)
+        take(Item.MansionKey)
+
 @mansion.on_enter
 def enter():    # section 254
     if mansion_key_found:
@@ -56,6 +63,7 @@ def use2():    # section 82
         sound(8, 3)
         narrator.say(t82.u0)
         mansion_door_unlocked.s52_s55_exit4.set()
+        use_up_the_key()
     elif not has(Item.MansionKey) and not mansion_door_unlocked.s52_s55_exit4:
         tamer.turn(2954)
         sound(8, 2)
@@ -84,6 +92,7 @@ def use3():    # section 83
         sound(8, 3)
         narrator.say(t83.u0)
         mansion_door_unlocked.s52_s55_exit5.set()
+        use_up_the_key()
     elif not has(Item.MansionKey) and not mansion_door_unlocked.s52_s55_exit5:
         tamer.turn(2954)
         sound(8, 2)
