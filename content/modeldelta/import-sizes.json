@@ -525,9 +525,9 @@
       "source": "build/batch12/SkullSatamon.MMD",
       "source_sha256": "83af1b3d1782afb57b07b95d367827d16c9716dfc498d9de665f161b709e52e1",
       "bones": 25,
-      "scale": 1.3085256285359539,
+      "scale": 0.9786918804326138,
       "target": "build/sizes-out/models/SkullSatamon.MMD",
-      "sha256": "2bd8db23e42499f89d64e325fc30c82d429d77ec0170fe65ccd25e5497c5e65e",
+      "sha256": "9281142986dc04738bd3b66df0d66965e02fe29ff4b740f6726017cfe11c048c",
       "legacy_source_sha256": "4fc69a5d7d6b0a26eb40c12cbe0c7662cbba254bcdfa8a9cf972c49c96bcf115",
       "legacy_sha256": "5f579b52fdbc14a18b12d62ccf814d83629a6b92dba59caf6a3b6a6e39beeb45"
     },
