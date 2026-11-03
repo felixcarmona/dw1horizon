@@ -262,7 +262,7 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   "no"); `choose(...)` with `match` for more options or other names, with the cancel case explicit. The item menu:
   `pick = pick_item()`, then `if pick == Item.Medicine:` (or `pick in (Item.Meat, Item.Steak)`), `pick is Picked.EMPTY`,
   `pick is Picked.CANCELLED`, and `take_picked()` takes what was given. `pick_item(food=True)` lets only the food be
-  chosen (the care menu's food, the other rows greyed; `Picked.EMPTY` when there is none; patch 0330).
+  chosen (the care menu's food, the other rows greyed; `Picked.EMPTY` when there is none; patch 0331).
 - **Quests.** `class Q(Quest)` with stages; conditions `Q.X`, `Q.before(Q.X)`, `Q.reached(Q.X)`; `advance(Q.X)`.
   `match Q.stage:` with a `case` per stage.
 - **Flags.** `flag()` gives a named flag, `counter()` a small saved number, from the mod's reserved range: a mod that has

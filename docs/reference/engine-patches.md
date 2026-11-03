@@ -440,7 +440,7 @@ axis in the documented order. It maps the element/attribute/temperament cell to 
 `modNewGameStarter` resolves p254 to a uint16 species id for creation and both default-name paths.
 The packed table adds 224 bytes; the linked main executable grows by 832 bytes (`main_BSS_END` 0x801ca0b8 → 0x801ca3f8, series through 0272 → 0273, same EN bank).
 New-game technique exceptions remain the two authored rows; every other starter learns and equips what evolving
-into it teaches (patch 0331, the `EVL_applyEvolution` rule: the weakest technique of its main element in the
+into it teaches (patch 0332, the `EVL_applyEvolution` rule: the weakest technique of its main element in the
 `evolutionFormula.learn` slots), or `DIGI_PARA(type).moves[0]` when it has none of its element. `modInitializeStarterTechniques` runs only in main's new-game branch, after
 `initializePartner`. Neither Continue branch teaches a technique: `loadSavegame` has already restored the
 learned bits before `initializePartner`, and `initializeLoadedMap` restores the equipped slots afterward.

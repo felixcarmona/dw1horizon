@@ -2032,7 +2032,7 @@ class Body:
             food = kw.pop('food', None)
             if c.args or kw or (food is not None and not (isinstance(food, ast.Constant) and isinstance(food.value, bool))):
                 raise self.err(c, 'pick_item() or pick_item(food=True): the item menu, with only the food selectable')
-            # food=True: p254 = 254 asks the engine's menu for food only (patch 0330); the pick overwrites it
+            # food=True: p254 = 254 asks the engine's menu for food only (patch 0331); the pick overwrites it
             return [f'{I}engine.picker_mode = true;'] + ([f'{I}engine.arg = 254;'] if food is not None and food.value else []) + \
                 [f'{I}call_routine(routine("choose_item"));']
         if name == 'shop': return self.shop(c, kw, I)

@@ -108,7 +108,7 @@ def result(data, answers, new_digimon=True):
 
 
 def opening_technique(para, powers, learn=None):
-    """Match modInitializeStarterTechniques (patch 0331) for a starter without an authored row: what evolving into it
+    """Match modInitializeStarterTechniques (patch 0332) for a starter without an authored row: what evolving into it
     teaches (EVL_applyEvolution), the weakest technique of its main element in the learn.moveBase/window slots (the
     first one found, a power 0 one only when it comes first). None: the first list entry, when it is learnable.
     Returns (technique, slot)."""

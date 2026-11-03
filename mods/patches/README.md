@@ -54,7 +54,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0172 | timed field battles |
 | 0181-0182 | the NEW DIGIMON option and the vanilla swap of saves |
 | 0183, 0190-0191, 0195, 0203, 0329 | language: English / Spanish, map signs, the name keyboard (`docs/mods/translating.md`) |
-| 0184-0189, 0196-0197, 0200, 0204, 0299, 0330 | quality of life: battle x2, evolution skip, training block, food-only item menus |
+| 0184-0189, 0196-0197, 0200, 0204, 0299, 0331 | quality of life: battle x2, evolution skip, training block, food-only item menus |
 | 0199 | the EXTENDED STORY option |
 | 0202, 0207 | optional partner name |
 | 0212 | the DIFFICULTY option |
@@ -126,8 +126,8 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0325 | The merit shop asks how many cards to trade or items to buy in the amount box, and its list stays open between trades. Purchases stop at what the stack holds, trades at the merit cap | Eight-language build: heap 190,160 B |
 | 0326 | A reborn partner is drawn at full size. The big-partner fit in the world kept the last partner's measured height for Botamon, Punimon, Poyomon and Tsunomon, whose one mesh bone measures 0 px, so they stayed at half size outside menus after a death | no bytes |
 | 0327 | A battle's reward text (a drop, an injury, a learned technique) types on its own instead of waiting for a button that nothing asked for; a press still skips a row's wait | BTL overlay only |
-| 0330 | A script's item menu can ask for food only (`pick_item(food=True)`: p254 = 254 before `choose_item`): the rows that are not food by the care menu's test (`ITEM_FUNCTIONS == handleFood`) are greyed as the undroppable ones are. Kunemon's Bed uses it | +96 B of main (`main_BSS_END` 0x801c9a70 → 0x801c9ad0 in an English build); heapcheck passes |
-| 0331 | A quiz starter opens with what evolving into it teaches (the weakest technique of its main element, the evolution formula's `learn` slots), not its first list entry: Gotsumon and Hagurumon no longer start with Megaton Punch | +224 bytes of main (`main_BSS_END` 0x801ca2cc → 0x801ca3ac, same bank); eight-language build: heap 189,936 B, tightest screen OGRE03 keeps 33,584 B |
+| 0331 | A script's item menu can ask for food only (`pick_item(food=True)`: p254 = 254 before `choose_item`): the rows that are not food by the care menu's test (`ITEM_FUNCTIONS == handleFood`) are greyed as the undroppable ones are. Kunemon's Bed uses it | +96 B of main (`main_BSS_END` 0x801c9a70 → 0x801c9ad0 in an English build); heapcheck passes |
+| 0332 | A quiz starter opens with what evolving into it teaches (the weakest technique of its main element, the evolution formula's `learn` slots), not its first list entry: Gotsumon and Hagurumon no longer start with Megaton Punch | +224 bytes of main (`main_BSS_END` 0x801ca2cc → 0x801ca3ac, same bank); eight-language build: heap 189,936 B, tightest screen OGRE03 keeps 33,584 B |
 
 Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
