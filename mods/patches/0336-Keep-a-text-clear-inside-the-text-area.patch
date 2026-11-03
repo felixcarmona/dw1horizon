@@ -1,0 +1,29 @@
+From 0a2ecfd0688736840b6ec169c27f9e59bb53d77f Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 3 Nov 2026 20:55:32 +0000
+Subject: [PATCH] Keep a text clear inside the text area
+
+clearTextSubArea cleared from the pen to the end of the width asked, which can end past the 256-pixel row: after buying at the File City shop a clear of 183 pixels from x 168 zeroed VRAM x 768 to 790 on rows 0 to 11 of the text area, where the background's sprite textures live, and a black 46 by 12 rectangle stayed on the screen at that sprite's place until the next screen. The width is cut at the row's end.
+---
+ src/main/font.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/main/font.c b/src/main/font.c
+index cd56ce9d..2288e07e 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1445,6 +1445,11 @@ void clearTextSubArea(RECT *rect)
+ 	if (rect->w == TEXT_ROW_VRAM_W - 1) {
+ 		rect->w = TEXT_ROW_VRAM_W; /* widths 252-255 mean the whole row */
+ 	}
++	/* a clear that starts at the pen may reach past the row's end (a tab to the price column, a long padding): the VRAM
++	 * right of the text area (x 768 and up) holds a background's textures, which the zeroes would erase */
++	if (rect->x + rect->w > TEXT_VRAM_X + TEXT_ROW_VRAM_W) {
++		rect->w = TEXT_VRAM_X + TEXT_ROW_VRAM_W - rect->x;
++	}
+ 	if (rect->w == TEXT_ROW_VRAM_W && rect->x == TEXT_VRAM_X) {
+ 		ClearImage(rect, 0, 0, 0);
+ 	} else if (rect->w > 0) {
+-- 
+2.55.0
+
