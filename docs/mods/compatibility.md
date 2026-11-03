@@ -16,6 +16,7 @@ take the tools, the patches and the story from the same commit. Mixing commits i
 | v0.0.1 | `83f99c5` | 0001-0270 | version 4, tagged | `original` |
 | v0.0.2 | `83f99c5` | 0001-0291 | version 4, tagged | `original` |
 | v0.0.3 | `83f99c5` | 0001-0308 | version 4, tagged | `original` |
+| v0.0.4 | `83f99c5` | 0001-0325 | version 4, tagged | `original` |
 
 Add a row for each release. A save from an earlier release loads in a later one; the
 release packaging checks this against a corpus of cards ([save-format.md](../reference/save-format.md)).

@@ -70,6 +70,8 @@ case "${1:-}" in
     [ "${DW1H_PUBLISH:-}" = 1 ] || { echo "publishing needs DW1H_PUBLISH=1" >&2; exit 1; }
     W=build/engine-tree
     git -C "$W" tag -f "horizon-$2" horizon >/dev/null
-    git -C "$W" push --force-with-lease "$3" horizon "horizon-$2" ;;
+    # A fresh build has no remote-tracking branch, so a bare lease is always stale: lease on the tip the remote has now.
+    old=$(git -C "$W" ls-remote "$3" refs/heads/horizon | cut -f1)
+    git -C "$W" push --force-with-lease="horizon:$old" "$3" horizon "horizon-$2" ;;
   *) sed -n 2,9p "$0" >&2; exit 1 ;;
 esac
