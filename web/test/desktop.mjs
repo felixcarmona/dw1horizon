@@ -99,7 +99,8 @@ const shot = async (p, name, { open = false, context = false } = {}) => {
   }, context);
   const pad = 20;
   const vw = await p.evaluate(() => document.documentElement.clientWidth);
-  const x = Math.max(0, box.x - pad), clip = { x, y: Math.max(0, box.y - pad), width: Math.min(vw - x, box.width + 2 * pad), height: box.height + 2 * pad };
+  const x = Math.max(0, box.x - pad), top = context ? pad : 10;   // (the privacy card's shadow ends just above the section)
+  const clip = { x, y: Math.max(0, box.y - top), width: Math.min(vw - x, box.width + 2 * pad), height: box.height + top + pad };
   await p.screenshot({ path: path.join(shots, name), clip, captureBeyondViewport: true });
   console.log(`shot ${name}`);
 };
