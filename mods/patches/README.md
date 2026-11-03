@@ -126,6 +126,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0325 | The merit shop asks how many cards to trade or items to buy in the amount box, and its list stays open between trades. Purchases stop at what the stack holds, trades at the merit cap | Eight-language build: heap 190,160 B |
 | 0326 | A reborn partner is drawn at full size. The big-partner fit in the world kept the last partner's measured height for Botamon, Punimon, Poyomon and Tsunomon, whose one mesh bone measures 0 px, so they stayed at half size outside menus after a death | no bytes |
 | 0327 | A battle's reward text (a drop, an injury, a learned technique) types on its own instead of waiting for a button that nothing asked for; a press still skips a row's wait | BTL overlay only |
+| 0330 | A quiz starter opens with what evolving into it teaches (the weakest technique of its main element, the evolution formula's `learn` slots), not its first list entry: Gotsumon and Hagurumon no longer start with Megaton Punch | +224 bytes of main (`main_BSS_END` 0x801ca2cc → 0x801ca3ac, same bank); eight-language build: heap 189,936 B, tightest screen OGRE03 keeps 33,584 B |
 
 Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
