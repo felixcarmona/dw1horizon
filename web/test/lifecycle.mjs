@@ -28,6 +28,11 @@ try {
     };
     const dir = async () => root.getDirectoryHandle('horizon-build', { create: true });
     const exists = async (name) => { try { await (await dir()).getFileHandle(name); return true; } catch { return false; } };
+    // the discs the page keeps for next time (js/remember.js): a sibling folder no build or tidy may touch
+    const kept = async () => {
+      try { return await (await (await (await root.getDirectoryHandle('horizon-discs')).getDirectoryHandle('us')).getFileHandle('kept.bin')).getFile().then((f) => f.text()); } catch { return null; }
+    };
+    await put(await (await root.getDirectoryHandle('horizon-discs', { create: true })).getDirectoryHandle('us', { create: true }), 'kept.bin', 'kept disc');
     const plan = { paths: [], packs: [], files: [], dirs: [], extract: [], source_discs: [],
       pyodide: { files: [] }, out: 'out', manifest: 'out/manifest.json', write_est: 1,
       release: { holes_bytes: 0, outputs: { us: { size: 4 } }, version: 'fixture' },
@@ -80,6 +85,7 @@ try {
       check(await exists('done.json'), 'completion marker is at OPFS root');
       await tidyStorage();
       check(await exists('image.bin'), 'page-load cleanup preserves completed image');
+      check(await kept() === 'kept disc', 'a build and the page-load cleanup leave the kept discs alone');
 
       let releaseFetch;
       gate = new Promise((r) => { releaseFetch = r; });
@@ -107,12 +113,14 @@ try {
       const again = new TinyBuild({ us: new File([], 'fixture.bin') }, { workers: 1 });
       await again.run();
       check(again.state.phase === 'done', 'a new build finishes after worker cancellation');
+      check(await kept() === 'kept disc', 'cancelled and failed builds leave the kept discs alone');
 
       const other = await browserLockProbe();
       check(other, 'a second build refuses an occupied Web Lock');
     } finally {
       window.fetch = fetch0;
       await root.removeEntry('horizon-build', { recursive: true }).catch(() => {});
+      await root.removeEntry('horizon-discs', { recursive: true }).catch(() => {});
       const cache = await caches.open('horizon-engine');
       for (const req of await cache.keys()) if (req.url.includes('/lifecycle-fixture/')) await cache.delete(req);
     }

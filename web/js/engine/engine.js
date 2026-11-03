@@ -62,9 +62,11 @@ export function workerCount() {
   const mem = navigator.deviceMemory;
   if (mem) n = Math.min(n, mem <= 4 ? 2 : Math.floor((mem - 2) / 0.5));
   else n = Math.min(n, 4);
-  if (/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) n = Math.min(n, mem >= 8 ? 2 : 1);
+  if (isMobile()) n = Math.min(n, mem >= 8 ? 2 : 1);
   return Math.max(1, n);
 }
+// A phone or a tablet: little memory for the build, so nothing is copied for next time either (js/remember.js).
+export const isMobile = () => /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
 
 async function json(url) {
   const r = await fetch(url, { cache: 'no-cache' });
@@ -118,8 +120,9 @@ async function dropOldEngines(version) {
   if (c) for (const req of await c.keys()) if (!req.url.includes(`/engine/${version}/`)) await c.delete(req);
 }
 
-// Runs fn(true) holding the build lock, fn(false) when another tab holds it (no Web Locks: fn(true)).
-function withLock(fn) {
+// Runs fn(true) holding the build lock, fn(false) when another tab holds it (no Web Locks: fn(true)). The page's
+// remembered discs (js/remember.js) copy and delete under it too, so a copy never races a build in any tab.
+export function withLock(fn) {
   if (!navigator.locks) return fn(true);
   return navigator.locks.request(LOCK, { ifAvailable: true }, (lock) => fn(!!lock));
 }
@@ -148,6 +151,14 @@ export async function tidyStorage() {
       try { await dir.removeEntry(name, { recursive: true }); } catch { /* in use */ }
     }
   });
+}
+
+// The room a build needs in this browser's storage: the tree (twice the holes), the largest image, 256 MB for the rest.
+const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 2 ** 28;
+// The same for the page before a build (js/remember.js keeps that much free when it copies discs); without an engine
+// here, about what the current release needs.
+export async function buildRoom() {
+  try { return roomFor((await loadPlan()).plan); } catch { return 1.6 * 2 ** 30; }
 }
 
 async function opfsRoot() {
@@ -360,10 +371,11 @@ export class Build {
     this.checkStopped();
     try { await (await navigator.storage.getDirectory()).removeEntry(OPFS_DIR, { recursive: true }); } catch { /* none */ }
     this.checkStopped();
-    // room: the tree (~0.5 GB), the image and the engine's files
+    // room: the tree (~0.5 GB), the image and the engine's files. The discs the page keeps for next time
+    // (OPFS horizon-discs, js/remember.js) are already in `usage` and are read in place: they need nothing more.
     try {
       const est = await navigator.storage.estimate();
-      const need = 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 2 ** 28;
+      const need = roomFor(plan);
       if (est.quota && est.quota - est.usage < need) throw new EngineError('engine.noSpace', { mb: Math.ceil(need / 2 ** 20) });
     } catch (e) { if (e instanceof EngineError) throw e; }
     this.checkStopped();
