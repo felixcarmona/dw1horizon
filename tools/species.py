@@ -114,7 +114,7 @@ SPECIES_CSV = os.path.join(ROOT, 'docs', 'data', 'species.csv')
 # the USA executable, read only by `disc-tables` (decomp/config/us/symbols.txt)
 SYM = dict(NAMES=0x80133B44, SKELETONS=0x8011CE60)
 
-FLAG_DEFINED, FLAG_PARTNER, FLAG_COND_FX, FLAG_EFFECT_DEFAULT = 1, 2, 4, 8
+FLAG_DEFINED, FLAG_PARTNER, FLAG_COND_FX, FLAG_EFFECT_DEFAULT, FLAG_SHOTS_FROM_DEFAULT = 1, 2, 4, 8, 16
 MAX_EFFECT_ORIGINS = 8
 ANY_OFFSET = -0x8000
 TEX_ALLTIM, TEX_ARCHIVE = 0, 1
@@ -488,7 +488,7 @@ def stats_json(v):
 # ------------------------------------------------------------------ the file format: dict <-> JSON
 KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
-             'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'wild', 'sizing', 'size', 'needs_ram_mb',
+             'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
 REQUIRED = ['id', 'name', 'level', 'attribute', 'specialties', 'techniques', 'model', 'voice', 'battle_music']
 MODEL_KEYS = ['name', 'bones', 'file', 'partner_file', 'from', 'radius', 'height', 'skeleton', 'slot_aliases']
@@ -536,6 +536,9 @@ def table_rows(s):
     if fb is not None and not (isinstance(fb, list) and len(fb) == 4 and all(isinstance(v, int) for v in fb)):
         raise SystemExit(f'{w}.effect_origin_fallback: [bone, x, y, z]')
     rows['effectFallback'] = list(fb) if fb is not None else None
+    always = s.get('effect_origin_fallback_always', False)
+    if not isinstance(always, bool) or (always and fb is None):
+        raise SystemExit(f'{w}.effect_origin_fallback_always: true or false, and only with an effect_origin_fallback')
     return rows
 
 
@@ -954,6 +957,8 @@ def species_record(s):
         if not 0 <= r['effectDefault'][0] < len(r['bones']):
             raise SystemExit(f'{w}: effect origin default bone {r["effectDefault"][0]} is not a bone')
         r['flags'] |= FLAG_EFFECT_DEFAULT
+        if s.get('effect_origin_fallback_always'):            # the entity-point techniques start there too (efe.c)
+            r['flags'] |= FLAG_SHOTS_FROM_DEFAULT
     if (t >= NUM_ORIGINAL or is_record_original(s)) and 'partner' in s and len([m for m in para['moves'] if m != 0xFF]) == 0:
         raise SystemExit(f'{w}: no techniques: it could not fight')
     return r
@@ -1847,7 +1852,7 @@ def technique_origin(s, m, radius=None):
     O = originals(); rad = radius if radius is not None else int(s['model'].get('radius', 150))
     main = max(efe_tables().get(m, [[]]), key=len)
     on_entity = [r for r in main if r[1] == 0 and r[0] < NUM_ORIGINAL]
-    if on_entity and len(on_entity) >= len(main) - len(on_entity):
+    if on_entity and len(on_entity) >= len(main) - len(on_entity) and not s.get('effect_origin_fallback_always'):
         return 'entity'
     return 'default'
 _VBALL_KEYS = {}

@@ -898,7 +898,7 @@ def level_medians(level):
 # takes the import's value instead. Paths are keys of the file, dotted for nested ones.
 PRESERVED = ['name', 'level', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'battle_music',
              'model.file', 'model.slot_aliases', 'model.radius', 'model.height', 'size', 'sizing', 'needs_ram_mb', 'partner.training', 'partner.training2',
-             'evolution.from', 'evolution.to', 'evolution.requirements', 'evolution.gains', 'effect_origin_fallback']
+             'evolution.from', 'evolution.to', 'evolution.requirements', 'evolution.gains', 'effect_origin_fallback', 'effect_origin_fallback_always']
 RETIRED_PATH = os.path.join(ROOT, 'content', 'imports', 'retired.json')
 
 

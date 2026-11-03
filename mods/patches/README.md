@@ -34,7 +34,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0051-0062, 0064, 0079 | the merged features: imported species in `DIGI.DAT` and save v2, new partners, the Mega level, stat caps, memory reclaim (streamed backgrounds, trimmed NPC models), sound limits |
 | 0066-0068, 0170, 0176, 0178-0180, 0213, 0219 | species portraits, cup lists and the evolution chart (detail view, requirements card, scrolling) |
 | 0069-0077, 0155-0156 | status bubbles over the partner |
-| 0078, 0083-0084, 0087, 0106, 0116 | camera for big partners, technique effect origins, record originals (`docs/mods/species.md`) |
+| 0078, 0083-0084, 0087, 0106, 0116, 0335 | camera for big partners, technique effect origins, record originals (`docs/mods/species.md`) |
 | 0081, 0110-0111, 0117-0123, 0125-0128, 0130-0137, 0139-0143, 0229, 0235 | game rules as data: species tables, evolution, medals, tamer level, care, clock, new game, items, economy, training, battle, fishing and curling, written by `tools/balance.py` from `content/` (`docs/reference/balance.md`) |
 | 0090, 0138, 0145 | text sources: the text bank by key (`tools/textsrc/`) and script text storage |
 | 0091-0093, 0096, 0114-0115, 0129 | saves: extensions, robustness, tagged records (v4), content absent from the build dropped on load |
