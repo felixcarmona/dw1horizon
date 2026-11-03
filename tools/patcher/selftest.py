@@ -47,11 +47,11 @@ def say(text):
             f.write(text + '\n')
 
 
-def child(argv, cwd=None, stdin=None, timeout=120):
+def child(argv, cwd=None, stdin=None, timeout=120, flags=0):
     env = dict(os.environ, PYTHONUTF8='1', PYTHONUNBUFFERED='1', PYTHONDONTWRITEBYTECODE='1')
     try:
         r = subprocess.run([sys.executable, *argv], cwd=cwd, env=env, input=stdin, stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, timeout=timeout)
+                           stderr=subprocess.STDOUT, timeout=timeout, creationflags=flags)
     except subprocess.TimeoutExpired as e:
         raise AssertionError(f'no answer in {timeout} s; its output: {(e.output or b"").decode("utf-8", "replace")}')
     return r.returncode, r.stdout.decode('utf-8', 'replace')
@@ -200,7 +200,8 @@ def main(argv):
                 for flags in (0, subprocess.CREATE_NEW_PROCESS_GROUP):
                     try:
                         code, out = child(['-c', gate, 'tools.derive', 'build', '--out',
-                                           os.path.join(root, 'build', 'plain')], cwd=root, stdin=b'1', timeout=90)
+                                           os.path.join(root, 'build', 'plain')], cwd=root, stdin=b'1', timeout=90,
+                                          flags=flags)
                     except AssertionError as e:
                         code, out = None, str(e)
                     say(f'    gated -c without a job object (flags {flags}): exit {code}: ' + ' '.join(out.split()))
