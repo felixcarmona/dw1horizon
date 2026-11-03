@@ -68,6 +68,50 @@ The project's site: a static page with no backend. The patcher runs in the visit
   `data/discs.json` lists and `tools/derive/importers/discs.py` reads). Their checked files are imported locally, then
   our per-model deltas make the imported models; the release carries no raw imported models.
 
+## Remembered discs
+
+A returning player builds a new release without giving the four discs again (`js/remember.js`, `js/app.js`
+"remembered discs", `js/keep-worker.js`). Each accepted disc is remembered in one of two ways:
+
+- A handle, no copy: where the browser gives file handles (Chromium on a computer). `#add-button` opens
+  `showOpenFilePicker({multiple: true})` (the hidden `<input>` elsewhere), and a drop asks every item for
+  `getAsFileSystemHandle()` in the drop event itself. The handle is kept as soon as the disc is accepted.
+- A copy in this browser, only when the player ticks "Keep these discs in this browser for next time (about X GB)",
+  shown with the real size under the drop zone whenever an accepted disc has no handle to its image: Firefox, Safari,
+  anything without handles, and a disc that came out of an archive, ECM or PBP (the converted image is kept; its
+  handle would mean unpacking it again). Ticking it asks for persistent storage (`navigator.storage.persist()`), checks
+  that the copies and a build after them fit (`storage.estimate()` against the copies plus `buildRoom()`), then copies
+  one disc after another in a worker (8 MB slices through a sync access handle: never a whole image in memory, and
+  Safari has no `createWritable` on the page). The choice is remembered (`horizon.keepDiscs` in localStorage) and
+  applies to discs added later. Not offered on phones and tablets (`isMobile()`, the engine's low-memory test).
+
+Storage, apart from the build's: IndexedDB `horizon`, store `discs`, one record per game: `{game, kind ('handle' or
+'copy'), release, via, name, size, lastModified, image: {crc32, sha1, size}, converted, handle, savedAt}`; the copies in
+OPFS `horizon-discs/<game>/<the file's name>` (the build's `horizon-build` is emptied by every build and by
+`tidyStorage`, never this folder; `web/test/lifecycle.mjs` checks). Copies and deletions in `horizon-discs` hold the
+build's Web Lock (`withLock`): a copy never races a build in this or another tab (it waits, and says so, while another
+tab builds; "Build my disc" stops a copy in this tab and it starts again after the build). What no record names (a
+copy cut short by a closed tab, a deletion that had to wait) goes at the next tidy: page load, after a build. The
+engine's free-space check needs no change: the copies are already in `usage` and the build reads them in place.
+
+Next visit: a copy whose size is the record's goes straight into its slot; a handle the browser still allows
+(`queryPermission`: granted) too; one that needs permission again shows its slot as remembered (the cover dimmed,
+↺) and one button, "Use my discs from last time", asks for each (`requestPermission`, one after another in that
+click; a browser that counts one prompt per click leaves the rest waiting and the button stays). A disc reused this
+way is not hashed again when its file is the one checked (name, size and date: `sameFile`) and `data/discs.json` still
+accepts its release with that checksum; one checked by files (`via: 'files'`) has those files read again (a later
+release may check more). The build still checks its source files and the image it writes. A handle whose file
+changed, or an archive, is checked again as if just added. Otherwise that slot is empty again with one line why, the
+others stay: the file gone (`NotFoundError`), permission refused, the copy cleared or cut short, the release no longer
+accepted, unreadable; its record and copy are forgotten. A new disc for a game replaces what was remembered for it;
+the slot's × forgets it; "Forget them" forgets all (records, copies, the option). Without IndexedDB or OPFS (private
+windows, storage blocked), with storage full or evicted, everything falls back silently to giving the discs each time.
+
+`node web/test/remember.mjs URL [SHOTS]` tests it in Chromium with fake handles (the native picker cannot be driven,
+and a synthetic drop gives none): `test.handles` in localStorage switches them on before the page's scripts, the
+fakes give `stored()` for IndexedDB and `self.testHandles.revive` makes them again (the only test hook in
+`js/remember.js`). Copies use the real OPFS. The scenarios are listed at the top of the file.
+
 ## The engine
 
 `js/engine/engine.js` (the page's side) and `js/engine/worker.js` (a module Web Worker, one Pyodide each) run a
