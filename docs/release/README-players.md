@@ -12,7 +12,8 @@ There are three ways to make the disc, all with the same four discs and the same
 
 ## The desktop app
 
-1. From the release page on GitHub, download `Horizon-Patcher-Windows.zip` or `Horizon-Patcher-macOS.zip` (one app
+1. From [dw1horizon.com](https://dw1horizon.com) ("Prefer an app?", under the browser builder) or the release page
+   on GitHub, download `Horizon-Patcher-Windows.zip` or `Horizon-Patcher-macOS.zip` (one app
    for Apple silicon and Intel Macs) and unzip it. On Windows keep the whole `Horizon Patcher` folder together and
    open `Horizon Patcher.exe` in it.
 2. Add your four discs: "Add discs..." takes several files at once and puts each in its game's place, or use

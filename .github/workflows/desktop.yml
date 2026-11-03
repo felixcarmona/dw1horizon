@@ -115,6 +115,8 @@ jobs:
 
   macos:
     runs-on: macos-15
+    outputs:
+      notarized: ${{ steps.zip.outputs.notarized }}
     env:
       HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' && secrets.ASC_KEY_P8 != '' }}
       # python.org's universal2 installer: one app for Apple silicon and Intel Macs, with its own Tcl/Tk.
@@ -206,7 +208,11 @@ jobs:
           spctl --assess --type execute --verbose=2 "$APP"
           rm "$RUNNER_TEMP/AuthKey.p8"
       - name: Zip
-        run: ditto -c -k --keepParent "build/desktop/dist/Horizon Patcher.app" Horizon-Patcher-macOS.zip
+        id: zip
+        run: |
+          ditto -c -k --keepParent "build/desktop/dist/Horizon Patcher.app" Horizon-Patcher-macOS.zip
+          # (the step above stops the job unless the app was signed, notarized and stapled)
+          echo "notarized=$([ -n "$SIGN_ID" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - name: Remove the signing keychain
         if: always() && env.SIGN_ID != ''
         run: security delete-keychain "$RUNNER_TEMP/signing.keychain-db" || true
@@ -241,9 +247,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write   # to start release.yml again, so the site offers the apps
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
+      NOTARIZED: ${{ needs.macos.outputs.notarized }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -258,3 +267,31 @@ jobs:
             sleep 20
           done
           gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip --clobber
+      - name: Describe the apps for the site
+        # horizon-desktop.json goes up after the zips it describes: release.yml offers the apps on dw1horizon.com only
+        # when it finds this file, and checks both zips against it (tools/release_pages.py desktop_apps).
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          def app(name, **extra):
+              data = open(f'apps/{name}', 'rb').read()
+              return dict(name=name, size=len(data), sha256=hashlib.sha256(data).hexdigest(), **extra)
+          json.dump({'tag': os.environ['RELEASE_TAG'], 'run': os.environ['RUN_URL'],
+                     'windows': app('Horizon-Patcher-Windows.zip', signed=False),   # SignPath: not yet
+                     'macos': app('Horizon-Patcher-macOS.zip', notarized=os.environ['NOTARIZED'] == 'true')},
+                    open('horizon-desktop.json', 'w'), indent=2)
+          PY
+          cat horizon-desktop.json
+          gh release upload "$RELEASE_TAG" horizon-desktop.json --clobber
+      - name: Deploy the site again, now with the apps
+        # Only for the release the site serves or is about to serve (the latest, or a draft whose release.yml run is
+        # still going): a manual run for an older tag must not put an older engine on the site. The rerun waits for a
+        # running release.yml (its concurrency group) and takes the page from main, as a page-only redeploy does.
+        run: |
+          latest=$(gh api "repos/$GH_REPO/releases/latest" --jq .tag_name 2>/dev/null || true)
+          draft=$(gh release view "$RELEASE_TAG" --json isDraft --jq .isDraft)
+          if [ "$latest" = "$RELEASE_TAG" ] || [ "$draft" = true ]; then
+            gh workflow run release.yml --ref "${{ github.event.repository.default_branch }}" -f tag="$RELEASE_TAG"
+          else
+            echo "::notice::$RELEASE_TAG is not the latest release ($latest): the site is left as it is."
+          fi

@@ -94,7 +94,9 @@ patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`
 
 `tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows and macOS by
 `.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip` and
-`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel). Players need no Python. The players'
+`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel). The workflow then attaches
+`horizon-desktop.json` (their sizes, SHA-256 and signing) and redeploys the site, which offers them from then on
+(web/README.md, "The desktop app downloads"). Players need no Python. The players'
 side is in [release/README-players.md](release/README-players.md#the-desktop-app).
 
 - **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`

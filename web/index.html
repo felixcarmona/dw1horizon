@@ -134,6 +134,20 @@
             <details class="build-log"><summary data-i18n="build.details"></summary><pre id="build-log" translate="no"></pre></details>
           </div>
         </div>
+        <!-- The desktop patcher, Horizon Patcher (js/desktop.js): only when the served release ships it
+             (engine/current.json desktop). The visitor's system first; the first start's warnings per system. -->
+        <aside id="desktop" class="desktop" aria-labelledby="desktop-title" hidden>
+          <h3 id="desktop-title" data-i18n="desktop.title"></h3>
+          <p class="desktop-lead" data-i18n="desktop.lead"></p>
+          <p id="desktop-phone" class="desktop-note" data-i18n="desktop.phone" hidden></p>
+          <div id="desktop-buttons" class="desktop-buttons"></div>
+          <p id="desktop-linux" class="desktop-note" hidden></p>
+          <div id="desktop-help" class="desktop-help"></div>
+          <details class="desktop-os desktop-why">
+            <summary data-i18n="desktop.safeTitle"></summary>
+            <div id="desktop-why-body"></div>
+          </details>
+        </aside>
       </section>
 
       <section id="features" class="features">

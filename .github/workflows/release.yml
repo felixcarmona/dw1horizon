@@ -55,6 +55,12 @@ jobs:
               echo 'Prepare the verified package and engine locally and upload them to a draft release; see docs/release/releasing.md.' >&2
               exit 1
             }
+          # The desktop apps (desktop.yml attaches them and horizon-desktop.json last, usually after this run, then
+          # starts this workflow again): the page offers them only when they are all here and match.
+          gh release download "$RELEASE_TAG" --dir build/pages-input/desktop --pattern horizon-desktop.json \
+            && gh release download "$RELEASE_TAG" --dir build/pages-input/desktop \
+                 --pattern Horizon-Patcher-Windows.zip --pattern Horizon-Patcher-macOS.zip \
+            || { echo '::notice::No desktop apps on this release yet: the page does not offer them.'; rm -rf build/pages-input/desktop; }
       - name: Check the publication boundary
         run: python3 tools/release_pages_test.py
       - name: Validate identity and integrity; build the static site
@@ -101,6 +107,7 @@ jobs:
             sleep 1
           done
           node web/test/langs.mjs http://127.0.0.1:8765/
+          node web/test/desktop.mjs http://127.0.0.1:8765/
       - uses: actions/upload-artifact@v4
         with:
           name: release-metadata

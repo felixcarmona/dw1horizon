@@ -83,7 +83,74 @@ class PublicationTests(unittest.TestCase):
                 pages.build(SimpleNamespace(tag='v1.2.3', inputs=inputs, out=out))
             lookup.assert_called_once_with('1.2.3')
             self.assertEqual((inputs / 'release-notes.md').read_text(), pages.release_notes(self.info, entry))
-            self.assertEqual(json.loads((out / 'engine/current.json').read_text())['release_tag'], 'v1.2.3')
+            cur = json.loads((out / 'engine/current.json').read_text())
+            self.assertEqual(cur['release_tag'], 'v1.2.3')
+            self.assertNotIn('desktop', cur)
+
+    def desktop_inputs(self, folder, tag='v1.2.3', **changes):
+        """horizon-desktop.json and the two zips, as desktop.yml attaches them (synthetic bytes)."""
+        folder.mkdir(parents=True, exist_ok=True)
+        info = {'tag': tag, 'run': 'https://github.com/owner/repo/actions/runs/123'}
+        for os_name, name in pages.DESKTOP.items():
+            data = f'synthetic {os_name} app'.encode()
+            (folder / name).write_bytes(data)
+            info[os_name] = dict(name=name, size=len(data), sha256=pages.digest(data),
+                                 **({'signed': False} if os_name == 'windows' else {'notarized': True}))
+        info.update(changes)
+        (folder / 'horizon-desktop.json').write_text(json.dumps(info))
+        return info
+
+    def test_desktop_apps(self):
+        package = {'dwpatch.py': b'VERSION = 1\nGUI_API = 1\n'}
+        with tempfile.TemporaryDirectory() as td:
+            folder = Path(td) / 'desktop'
+            # no apps on the release (v0.0.4 and earlier, or desktop.yml not done yet): nothing offered
+            self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.3'))
+            info = self.desktop_inputs(folder)
+            apps = pages.desktop_apps(folder, package, 'v1.2.3')
+            self.assertEqual(apps['windows'], info['windows'])
+            self.assertEqual(apps['macos'], info['macos'])
+            self.assertEqual(apps['run'], info['run'])
+            # a package whose dwpatch predates the app's interface: the app would refuse it
+            self.assertIsNone(pages.desktop_apps(folder, {'dwpatch.py': b'VERSION = 1\n'}, 'v1.2.3'))
+            # another tag's description
+            self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.4'))
+            # a zip missing or different from the description
+            (folder / pages.DESKTOP['macos']).write_bytes(b'another build')
+            self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.3'))
+            (folder / pages.DESKTOP['macos']).unlink()
+            self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.3'))
+            for changes in ({'windows': None}, {'run': 'https://example.com/x'}, {'run': 5},
+                            {'macos': dict(info['macos'], name='other.zip')},
+                            {'macos': dict(info['macos'], notarized='yes')}):
+                with self.subTest(changes=changes):
+                    self.desktop_inputs(folder, **changes)
+                    self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.3'))
+            (folder / 'horizon-desktop.json').write_text('not json')
+            self.assertIsNone(pages.desktop_apps(folder, package, 'v1.2.3'))
+
+    def test_build_records_the_desktop_apps(self):
+        package, engine = fixture(self.info)
+        package['dwpatch.py'] = b'GUI_API = 1\n'
+        with tempfile.TemporaryDirectory() as td:
+            inputs = Path(td) / 'inputs'
+            inputs.mkdir()
+            pages.write_archive(inputs / pages.PACKAGE, package)
+            pages.write_archive(inputs / pages.ENGINE, engine)
+            (inputs / 'horizon-checksums.json').write_text(json.dumps({
+                kind: {name: pages.digest(data) for name, data in entries.items()}
+                for kind, entries in [('package', package), ('engine', engine)]}))
+            info = self.desktop_inputs(inputs / 'desktop')
+            out = Path(td) / 'site'
+            with patch.object(pages.release, 'identity', return_value=self.info), \
+                    patch.object(pages, 'changelog_entry', return_value=dict(new=[], changed=[], fixed=[])), \
+                    patch.object(pages, 'page', side_effect=lambda dest: dest.mkdir()):
+                pages.build(SimpleNamespace(tag='v1.2.3', inputs=inputs, out=out))
+            cur = json.loads((out / 'engine/current.json').read_text())
+            self.assertEqual(cur['desktop']['windows']['sha256'], info['windows']['sha256'])
+            self.assertTrue(cur['desktop']['macos']['notarized'])
+            # the zips themselves are not part of the site
+            self.assertFalse(any(p.suffix == '.zip' for p in out.rglob('*')))
 
     def test_identity_and_pack_corruption(self):
         package, engine = fixture(self.info)
