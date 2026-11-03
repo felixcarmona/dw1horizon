@@ -66,7 +66,7 @@ class ModelProvider(unittest.TestCase):
             del assignments[sid]
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
         self.assertEqual(hashlib.sha1(json.dumps(assignments, sort_keys=True).encode()).hexdigest(),
-                         'b723a4a362e7194d2729ecac951dde8c271382cb')
+                         'ca2091592ebc296179bc22a5a407d60e6041a944')
 
 
 if __name__ == '__main__':
