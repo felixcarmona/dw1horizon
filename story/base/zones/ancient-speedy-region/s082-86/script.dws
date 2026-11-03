@@ -80,8 +80,9 @@ script 82 {
         say(meteormon, text("s082.sec5.u19"));
         animate(meteormon, 30);
         wait(10);
+        // Horizon: the walk is started once (see script.py: a second start after it ended can never end)
+        entity_move_to(meteormon, 1, -1050, 40, 0);
         loop {
-            entity_move_to(meteormon, 1, -1050, 40, 0);
             unless (glances < 3) break;
             glances += 1;
             wait(1s);
