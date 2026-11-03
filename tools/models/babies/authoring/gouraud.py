@@ -85,7 +85,8 @@ def render(name, yaw_deg, pitch_deg, size):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('out'); ap.add_argument('names', nargs='+')
     ap.add_argument('--size', type=int, default=300); a = ap.parse_args()
-    from PIL import Image
+    import cv2
     views = [(0, 8), (40, 14), (90, 8), (25, 40)]
     rows = [np.concatenate([render(n, y, p, a.size) for y, p in views], 1) for n in a.names]
-    Image.fromarray(np.concatenate(rows, 0)).save(a.out); print(a.out)
+    img = np.ascontiguousarray(np.concatenate(rows, 0))
+    cv2.imwrite(a.out, cv2.cvtColor(img, cv2.COLOR_RGBA2BGRA if img.shape[2] == 4 else cv2.COLOR_RGB2BGR)); print(a.out)
