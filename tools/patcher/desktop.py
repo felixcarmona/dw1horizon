@@ -666,7 +666,10 @@ def python_shim(argv=None):
             if len(argv) < 2:
                 return 2
             sys.argv = ['-c'] + argv[2:]
-            sys.path.insert(0, '')
+            # CPython puts '' (the current folder) first; the folder itself here: PyInstaller sets
+            # multiprocessing.process.ORIGINAL_DIR to None, and a spawned worker would get None for that entry
+            # (seen on Windows: derive's workers hung under the -c gate).
+            sys.path.insert(0, os.getcwd())
             main = types.ModuleType('__main__')
             main.__builtins__ = __builtins__
             sys.modules['__main__'] = main
