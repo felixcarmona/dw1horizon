@@ -80,10 +80,11 @@ def talk():    # section 5
     say(t5.u19)
     play(30)
     wait(500)
-    while True:
-        raw.entity_move_to(meteormon, 1, -1050, 40, 0)
-        if glances >= 3:
-            break
+    # Horizon: the walk is started once. The original started it again at every glance, and a start that comes after
+    # the walk has ended works out its step from where Meteormon then stands: under 40 units short of the point on an
+    # axis the step is 0, the walk never ends and "await" waits for ever (the game froze here "sometimes").
+    raw.entity_move_to(meteormon, 1, -1050, 40, 0)
+    while glances < 3:
         glances.add(1)
         wait(1000)
         sound(8, 5)
