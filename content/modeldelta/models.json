@@ -4984,9 +4984,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/405-Cannondramon.MMD.mdelta",
-        "delta_sha256": "6aa17be95c4f8f847d5acc962c4c3423140a64d6d4f3c92c683f4bcb34dc1f5e",
-        "sha256": "5daf136fa0e42bd33be1cfd448eccb76b06c0acecebcaccb6ca0fc73d42a19d9",
-        "size": 103868
+        "delta_sha256": "b73b3392292d8d44ee5aefd56b369f0c56c738868d7188981e7dd9185c712a97",
+        "sha256": "97552fedc0222ecac5715925f2376cfe9ec8848a1aab926398cf88482303d229",
+        "size": 107512
       },
       "tim": {
         "sources": [
