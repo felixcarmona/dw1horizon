@@ -4,6 +4,11 @@
 The native upper performance and airborne run remain. Correct the source's
 sliding walk/tired steps, and adjust just the run landings and one recovery
 pose. The existing segmented tabard clears knees and floor without a new rig.
+
+The victory (0x2A) is the card game's clip cut from a stretch where the angel
+already hovers about 1450 units up, so in battle it left the screen from the
+first tick. Its carrier height is lowered by that constant: it starts at the
+battle idle's height and rises about 300, as HolyAngemon's does.
 """
 import copy
 import hashlib
@@ -315,8 +320,60 @@ def _right_wrist(old, sk):
     new.anims.table[slot] = len(new.anims.anims) - 1
     return new
 
+VICTORY = 0x2A
+
+
+def _mesh_low(model, sk, frame, vertices):
+    pose = copy.deepcopy(frame)
+    pose[0] = [4096]*3 + [0]*6
+    world = np.array(mmd.bone_matrices(model, pose))
+    return max(float((points @ world[bone, :3, :3].T + world[bone, :3, 3])[:, 1].max())
+               for bone, points in vertices.items())
+
+
+def _grounded_victory(old, sk):
+    """The victory clip moved down by one constant on the carrier's height (bone 1, channel 7): its first tick at the
+    battle idle's height. Every other channel, the timing and the sounds stay."""
+    n = len(sk)
+    new = copy.deepcopy(old)
+    idle = animsheet.slot_frames(old, n, 0x21)[0][0][1][7]
+    fs, loop, _ = animsheet.slot_frames(old, n, VICTORY)
+    offset = idle - fs[0][1][7]
+    assert 1300 < offset < 1600, offset
+    poses = copy.deepcopy(fs)
+    for f in poses:
+        f[1][7] += offset
+    new.anims.anims.append(replace_channels(old.anims.anims[old.anims.table[VICTORY]], poses, loop, n, {(1, 7)}))
+    new.anims.table[VICTORY] = len(new.anims.anims) - 1
+    return new, dict(slot=VICTORY, carrier_offset=offset)
+
+
+def _verify_victory(original, actual, sk):
+    """Only the carrier height of 0x2A moved, by one constant; the first tick touches the ground like the idle and the
+    whole clip stays within 500 units of it (it used to start about 1450 up)."""
+    before, _, before_events = animsheet.slot_frames(original, 31, VICTORY)
+    after, _, after_events = animsheet.slot_frames(actual, 31, VICTORY)
+    assert len(before) == len(after) == 54 and before_events == after_events
+    offsets = set()
+    for b, a in zip(before, after):
+        for bone in range(31):
+            for channel in range(9):
+                if (bone, channel) == (1, 7):
+                    offsets.add(a[1][7] - b[1][7])
+                else:
+                    assert a[bone][channel] == b[bone][channel], (bone, channel)
+    assert len(offsets) == 1, offsets
+    vertices = {b: np.array(actual.tmd.obj_verts(obj))[:, :3] for b, (obj, _) in enumerate(sk) if obj >= 0}
+    idle_low = _mesh_low(actual, sk, animsheet.slot_frames(actual, 31, 0x21)[0][0], vertices)
+    lows = [_mesh_low(actual, sk, f, vertices) for f in after]
+    rise = max(idle_low - y for y in lows)
+    assert abs(lows[0] - idle_low) < 40 and rise < 500, (idle_low, lows[0], rise)
+    return dict(slot=VICTORY, carrier_offset=offsets.pop(), first_tick_vs_idle_low=lows[0] - idle_low,
+                max_rise_over_idle=rise)
+
+
 def _verify(original, actual, sk):
-    assert changed_programs(original, actual) == [2, 3, 4]
+    assert changed_programs(original, actual) == [2, 3, 4, VICTORY]
     assert original.tmd.build() == actual.tmd.build()
     checks = []
     vertices = {b: np.array(actual.tmd.obj_verts(obj))[:, :3]
@@ -394,16 +451,19 @@ def build(data, sk):
     running, run_checks = _native_run(_parse(_pack(walking), sk), sk)
     guarded, clearance_checks = _guard_and_hem(_parse(_pack(running), sk), sk)
     clothed = _parse(_pack(_tabard_and_sound(_parse(_pack(guarded), sk), sk)), sk)
-    result = _pack(_right_wrist(clothed, sk))
+    wrists = _pack(_right_wrist(clothed, sk))
+    victory, victory_change = _grounded_victory(_parse(wrists, sk), sk)
+    result = _pack(victory)
     actual = _parse(result, sk)
     checks = _verify(original, actual, sk)
+    victory_check = dict(victory_change, **_verify_victory(original, actual, sk))
     storage = motionstorage.audit(result, 31)
     assert storage['fits'], storage
     return result, dict(species=207, source_sha256=SOURCE,
-                        output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=[2, 3, 4],
-                        mesh_skeleton_idle_private_care_battle_exact=True,
+                        output_sha256=hashlib.sha256(result).hexdigest(), changed_slots=[2, 3, 4, VICTORY],
+                        mesh_skeleton_idle_private_care_exact=True, battle_exact_but_victory_height=True,
                         other_channels_and_root_exact_eight_cycles=True,
                         native_run_flight_retained_with_one_recovery_clearance=True,
                         original_footstep_sample_retimed=True, walk_checks=walk_checks,
                         run_checks=run_checks, clearance_checks=clearance_checks,
-                        decoded_checks=checks, storage=storage)
+                        decoded_checks=checks, victory_check=victory_check, storage=storage)
