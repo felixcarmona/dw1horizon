@@ -43,10 +43,19 @@ def placements(data):
     return {(r['screen'], *r['tile']): tuple(r['at']) for r in data['spots'] if 'at' in r}
 
 
+def switched_off(data):
+    """{(screen, script x, script y)}: spots a row marks "off": the shared script's spawn is not copied to that screen (its ID
+    stays reserved)."""
+    return {(r['screen'], *r['tile']) for r in data['spots'] if r.get('off')}
+
+
 def emitted(data):
-    """{screen: [(id, (x, y))]}: every registered spot where it lies on its screen (its "at", else its tile)."""
+    """{screen: [(id, (x, y))]}: every registered spot that is not "off", where it lies on its screen (its "at", else its
+    tile)."""
     out = {}
     for r in data['spots']:
+        if r.get('off'):
+            continue
         out.setdefault(r['screen'], []).append((r['id'], tuple(r.get('at', r['tile']))))
     return out
 
@@ -81,9 +90,10 @@ def script_screens(maphead):
     return {sid: sorted(screens) for sid, screens in scripts.items()}
 
 
-def rewrite_text(text, screens, spots, places=None):
+def rewrite_text(text, screens, spots, places=None, off=()):
     """SPAWN_ITEM x, y -> one SPAWN_ITEM_DAILY per screen running the script, with the spot's stable ID, at the tile the
-    registry places it on that screen (places: placements(); a shared script's tile can be rock on another screen)."""
+    registry places it on that screen (places: placements(); a shared script's tile can be rock on another screen). A spot
+    in off (switched_off()) is left out on that screen."""
     places = places or {}
     out = []
     for line in text.splitlines():
@@ -95,6 +105,8 @@ def rewrite_text(text, screens, spots, places=None):
                 key = (screen, int(m[3]), int(m[4]))
                 if key not in spots:
                     raise ValueError(f'ground pickup {key} has no stable ID; append it to content/ground-items.json')
+                if key in off:
+                    continue
                 x, y = places.get(key, (int(m[3]), int(m[4])))
                 out.append(f'{m[1]}SPAWN_ITEM_DAILY {m[2]}, {x}, {y}, {spots[key]}, {screen}{m[5]}')
             continue
@@ -126,7 +138,7 @@ def rewrite(work, maphead, limit, registry=REGISTRY):
         # if a later guarded setup selects them. The registry also pins that original mapping.
         if not screens:
             screens = data['script_screens'].get(str(sid), [])
-        updated = rewrite_text(text, screens, spots, placements(data))
+        updated = rewrite_text(text, screens, spots, placements(data), switched_off(data))
         count += updated.count('SPAWN_ITEM_DAILY ')
         path.write_text(updated)
     return f'ground pickups: {count} spawns use stable IDs; {len(spots)}/{limit} locations registered'
