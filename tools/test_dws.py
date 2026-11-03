@@ -1775,7 +1775,7 @@ class PythonMods(unittest.TestCase):
         self.assertIn('on talk(guest) replace {', t)
         self.assertIn('if (!Visit_b0 && !Visit_b1) {', t)
         self.assertIn('} else if (!Visit_b0 && Visit_b1) {', t)
-        self.assertIn('join_city_camera(guest, species(110), 8, 11, text("m-a.', t)
+        self.assertIn('join_city_camera(guest, species(110), 8, 12, text("m-a.', t)     # region 12: its jingle is 12
         t = self.lowered(forest)
         self.assertIn('on enter {', t)
         self.assertNotIn('on enter replace', t)
@@ -1784,6 +1784,31 @@ class PythonMods(unittest.TestCase):
         self.assertIn('script new for screen 239 empty {', t)
         self.assertRegex(t, r'battle\(foes: \[opponent\]\);\s+if \(!won\) \{')
         self.assertIn('pub flag Visit_b0 = 12000;', self.lowered(quest))
+
+    def test_city_jingle_is_the_screen_regions(self):
+        # bank 8 holds the map region's effects: sound 11 is a splash at Dragon Eye Lake (region 13, the jingle copied in
+        # as 14 by the sound step), the jingle is 17 in Beetle Land's region 14; an explicit sound= stays as written
+        _, (lake, beetle, named) = self.mod({
+            'lake.py': 'from dw import *\nlake = screen(Screen.dragon_eye_lake_6)\n'
+                       'tapir = lake.npc(Species.Tapirmon, at=(650, -2000))\n'
+                       '@tapir.on_talk\ndef talk():\n    send_to_city(line="Joined")\n',
+            'beetle.py': 'from dw import *\nland = screen(108)\nkiwi = land.npc(Species.Kiwimon, at=(0, 0))\n'
+                         '@kiwi.on_talk\ndef talk():\n    send_to_city(line="Joined")\n',
+            'named.py': 'from dw import *\nlake = screen(Screen.dragon_eye_lake_6)\n'
+                        'tapir = lake.npc(Species.Tapirmon, at=(750, -2000))\n'
+                        '@tapir.on_talk\ndef talk():\n    send_to_city(line="Joined", sound=(8, 3))\n',
+        })
+        self.assertIn('join_city_camera(tapir, species(287), 8, 14, ', self.lowered(lake))
+        self.assertIn('join_city_camera(kiwi, species(282), 8, 17, ', self.lowered(beetle))
+        self.assertIn('join_city_camera(tapir, species(287), 8, 3, ', self.lowered(named))
+        from dws import audio, backend as BE
+        effects = audio.jingle_effects()
+        self.assertEqual(set(audio.load(audio.DEFAULT_MANIFEST)['jingle']['effects']), {str(r) for r in effects})
+        used = {f & 0x1F for f in BE.DISC_MAP_FLAGS.values()}
+        self.assertEqual(sorted(used - set(effects)), [], 'every map region of the disc has a city jingle')
+        copy = [c for c in audio.bank_commands('output', 'scratch') if c[0] == 'copy-effect']
+        self.assertEqual(len(copy), 1)
+        self.assertEqual(copy[0][1:4], ['output/ESALL.VHB', '0', '11'])
 
     def test_guards_ownership_and_errors(self):
         head = 'from dw import *\nfrom dw.base.jijimons_house import jijimon\n'

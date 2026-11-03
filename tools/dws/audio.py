@@ -27,6 +27,11 @@ def rewrite_maphead(src, out, manifest):
 DEFAULT_MANIFEST = ROOT / 'story/core/audio.json'
 
 
+def jingle_effects(manifest=DEFAULT_MANIFEST):
+    """{map sound region: the number of the city jingle in its bank 8} (the sound step puts it in every region listed)."""
+    return {int(r): n for r, n in load(manifest)['jingle']['effects'].items()}
+
+
 def bank_names(manifest=DEFAULT_MANIFEST):
     spec = load(manifest)['banks']
     return (*spec['indexed'], spec['music'])
@@ -41,7 +46,11 @@ def bank_commands(out, scratch, manifest=DEFAULT_MANIFEST):
     bank = spec['music'] + '.VHB'
     final, first, second = str(out / bank), str(scratch / (spec['music'] + '-fonts.VHB')), str(scratch / (spec['music'] + '-pad.VHB'))
     instruments = hex(spec['instruments_font'])
+    jingle = load(manifest)['jingle']
+    src, effect = jingle['from']
+    esall = str(out / 'ESALL.VHB')
     return ([['index', name, '-o', str(out / (name + '.VHB'))] for name in spec['indexed']] + [
+        ['copy-effect', esall, str(src), str(effect), *[f'{r}={n}' for r, n in jingle['effects'].items()], '-o', esall],
         ['add-font', song, '--instruments', instruments, '-o', final, '--loop'],
         ['add-font', song, '--instruments', instruments, '--prog-map', spec['program_map'], '--vhb', final,
          '-o', first, '--loop'],
