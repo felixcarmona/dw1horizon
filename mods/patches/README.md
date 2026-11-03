@@ -53,7 +53,7 @@ glyph is appended to `tools/font/extra.txt` (`font_extra.h` is its own file, whi
 | 0171 | STR movie playback timing |
 | 0172 | timed field battles |
 | 0181-0182 | the NEW DIGIMON option and the vanilla swap of saves |
-| 0183, 0190-0191, 0195, 0203, 0329 | language: English / Spanish, map signs, the name keyboard (`docs/mods/translating.md`) |
+| 0183, 0190-0191, 0195, 0203, 0329-0330 | language: English / Spanish, map signs, the name keyboard (`docs/mods/translating.md`) |
 | 0184-0189, 0196-0197, 0200, 0204, 0299 | quality of life: battle x2, evolution skip, training block |
 | 0199 | the EXTENDED STORY option |
 | 0202, 0207 | optional partner name |
