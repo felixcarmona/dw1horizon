@@ -255,7 +255,7 @@ class App:
             text = t(key, version=self.package['version'], date=self.package['date'])
             if self.package.get('source') == 'file' and not self.package.get('verified'):
                 text += '\n' + t('app.packageUnverified')
-        elif self.latest and desktop.PACKAGE_ASSET in self.latest['assets']:
+        elif self.latest and (self.latest['assets'].get(desktop.PACKAGE_ASSET) or {}).get('size'):
             mb = (self.latest['assets'][desktop.PACKAGE_ASSET].get('size') or 0) // 2 ** 20
             text = t('app.packageNone', version=self.latest['version'], mb=mb)
         else:
@@ -267,7 +267,7 @@ class App:
         if getattr(self, 'latest_error', None) and not self.latest:
             text += '\n' + t('app.offline', error=self.latest_error)
         self.pkg_label.configure(text=text)
-        self.pkg_download.configure(text=t('app.download') if (newer or not self.latest) else t('app.checkUpdates'))
+        self.pkg_download.configure(text=t('app.download') if (newer or not self.package) else t('app.checkUpdates'))
         self.pkg_download.state(['!disabled'] if idle else ['disabled'])
         # the output folder
         out = self.output_folder()
@@ -586,7 +586,10 @@ class App:
             result = dw.apply_disc(self.slots['us']['image'], desktop.source_disc_args(self.slots), output=out,
                                    release=package['folder'])
         except BaseException as e:
-            self.events.put(('failed', e, getattr(e, 'log', None), isinstance(e, getattr(dw, 'Stopped', ()))))
+            kind = 'stopped' if isinstance(e, dw.Stopped) else 'patch' if isinstance(e, dw.PatchError) else 'other'
+            if kind == 'other':
+                sys.stderr.write(traceback.format_exc())
+            self.events.put(('failed', e, getattr(e, 'log', None), kind))
             return
         finally:
             self.patcher = None
@@ -598,13 +601,11 @@ class App:
                              style='Ok.TLabel')
         self._finish_buttons(os.path.dirname(result['cue']), result.get('log'))
 
-    def _on_failed(self, e, log, stopped):
-        if stopped:
+    def _on_failed(self, e, log, kind):
+        if kind == 'stopped':
             text = self.t('app.stopped')
-        elif isinstance(e, Exception) and type(e).__name__ == 'PatchError' or hasattr(e, 'log') and not \
-                isinstance(e, OSError):
-            text = self.t('app.failed', message=str(e)) if type(e).__name__ == 'PatchError' else \
-                self.t('app.unexpected', error=f'{type(e).__name__}: {e}')
+        elif kind == 'patch':                       # (dwpatch's own message for the player, in English)
+            text = self.t('app.failed', message=str(e))
         else:
             text = self._message(e)
         self.progress['value'] = 0
@@ -676,7 +677,7 @@ def main():
     app.set_icon()
     app.__init__(root, config)
     root.protocol('WM_DELETE_WINDOW', app.close)
-    root.minsize(640, 560)
+    root.minsize(680, 700)
     root.mainloop()
     return 0
 

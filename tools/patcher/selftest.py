@@ -146,7 +146,8 @@ def main(argv):
     work = tempfile.mkdtemp(prefix='horizon-selftest-')
     ok = True
     try:
-        say(f'Horizon Patcher self-test: Python {sys.version.split()[0]} on {sys.platform}, '
+        import platform
+        say(f'Horizon Patcher self-test: Python {sys.version.split()[0]} on {sys.platform} {platform.machine()}, '
             f'frozen={bool(getattr(sys, "frozen", False))}, utf8_mode={sys.flags.utf8_mode}, {sys.executable}')
 
         def utf8():

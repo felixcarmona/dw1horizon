@@ -246,6 +246,25 @@ class Packages(unittest.TestCase):
         self.assertGreater(desktop.version_key('v0.0.10'), desktop.version_key('0.0.9'))
         self.assertLess(desktop.version_key('junk'), desktop.version_key('0.0.1'))
 
+    def test_latest_release_without_the_api(self):
+        import urllib.error
+
+        class Page:
+            def __enter__(self): return self
+            def __exit__(self, *a): pass
+            def geturl(self): return 'https://github.com/o/r/releases/tag/v1.2.3'
+
+        def fake(url, *a, **k):
+            if 'api.github.com' in url:
+                raise urllib.error.HTTPError(url, 403, 'rate limit exceeded', {}, None)
+            self.assertEqual(url, 'https://github.com/o/r/releases/latest')
+            return Page()
+        with patch.object(desktop, '_open', fake):
+            r = desktop.latest_release('o/r')
+        self.assertEqual(r['version'], '1.2.3')
+        self.assertEqual(r['assets']['horizon-package.tar.gz']['url'],
+                         'https://github.com/o/r/releases/download/v1.2.3/horizon-package.tar.gz')
+
     def test_load_patcher_requires_the_interface(self):
         new, old = self.dir / 'new', self.dir / 'old'
         for folder, code in ((new, PACKAGE['dwpatch.py']), (old, b'X = 1\n')):

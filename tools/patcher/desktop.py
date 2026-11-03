@@ -355,10 +355,27 @@ def _open(url, accept=None, timeout=30):
 
 
 def latest_release(repo=None):
-    """{tag, version, name, published, assets: {name: {url, size, digest}}} of the latest published release."""
-    with _open(f'https://api.github.com/repos/{repo or repository()}/releases/latest', 'application/vnd.github+json') as r:
-        data = json.load(r)
-    return release_info(data)
+    """{tag, version, name, published, assets: {name: {url, size, digest}}} of the latest published release: GitHub's
+    API; when it refuses (its limit for computers without an account: 60 requests an hour per address), the
+    release page's own redirect, which gives the tag and the download addresses but no sizes or digests (the
+    package's files are still checked against horizon-checksums.json)."""
+    import urllib.error
+    repo = repo or repository()
+    try:
+        with _open(f'https://api.github.com/repos/{repo}/releases/latest', 'application/vnd.github+json') as r:
+            return release_info(json.load(r))
+    except urllib.error.HTTPError as e:
+        if e.code not in (403, 429):
+            raise
+    with _open(f'https://github.com/{repo}/releases/latest') as r:
+        final = r.geturl()
+    m = re.search(r'/releases/tag/([^/?#]+)$', final)
+    if not m:
+        raise Problem('app.noPackage', tag='latest')
+    tag = urllib.request.unquote(m[1])
+    return dict(tag=tag, version=tag.lstrip('v'), name=tag, published=None, assets={
+        name: dict(url=f'https://github.com/{repo}/releases/download/{tag}/{name}', size=None, digest=None)
+        for name in (PACKAGE_ASSET, CHECKSUMS_ASSET)})
 
 
 def release_info(data):
