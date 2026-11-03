@@ -12,13 +12,13 @@
   "model": {
     "file": "build/imported-models/473.MMD",
     "radius": 90,
-    "height": 210,
+    "height": 180,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 4], [4, 2], [5, 6], [6, 7]]
   },
   "texture": {"file": "build/imported-models/473.TIM", "entry": 0},
   "voice": 1,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -33, -25, 1],
+  "condition_bubble": [0, 5, -25, 1],
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
   "partner": {
     "voice": 0,

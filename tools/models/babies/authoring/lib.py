@@ -4,7 +4,8 @@ A DW1 donor's MMD + texture page from extracted/, edited by one script per baby,
 Each script writes build/babies-authoring/<Name>.MMD/.TIM (BABIES_OUT overrides); store an approved pair with
 `python3 -m tools.models.babies encode ID MMD TIM` (the build replays those deltas, never these scripts):
 
-  .venv/bin/python tools/models/babies/authoring/pabumon.py
+  .venv/bin/python tools/models/babies/authoring/pabumon.py         # every baby, then:
+  .venv/bin/python tools/models/babies/authoring/shrink.py build/babies-authoring
   python3 -m tools.models.babies encode 470 build/babies-authoring/Pabumon.MMD build/babies-authoring/Pabumon.TIM
 """
 import os, sys, subprocess, struct, math

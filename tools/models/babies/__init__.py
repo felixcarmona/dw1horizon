@@ -13,7 +13,8 @@ result by SHA-256.
   python3 -m tools.models.babies encode-dir DIR        # the same for every <Name>.MMD/.TIM pair found in DIR
 
 Re-porting a redrawn baby: replace its authoring/<name>.py (paths through authoring/lib.py), run it (it writes
-build/babies-authoring/<Name>.MMD/.TIM), `encode` or `encode-dir` that folder, then a developer build
+build/babies-authoring/<Name>.MMD/.TIM), then authoring/shrink.py on that folder (the size review scales Nyokimon,
+Nyaromon and Yokomon down after their scripts), `encode` or `encode-dir` the folder, then a developer build
 (`python3 -m tools.dev build`) rewrites tools/derive/recipes/species-pins.json; commit the script, the deltas,
 babies.json and the pins. Re-measure model.height in the species file if the silhouette changed.
 """
