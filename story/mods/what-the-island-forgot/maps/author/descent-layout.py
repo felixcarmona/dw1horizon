@@ -59,6 +59,7 @@ WALL_TILES = [
     (39, 32), (40, 32),                                        # upper switchback's rock tip
     (36, 53), (36, 54),                                        # middle switchback's rock tip
     (60, 64), (61, 64), (62, 64), (61, 65), (62, 65), (62, 66),  # rock face inside the lower-right turn
+    (58, 50), (59, 50), (60, 50), (61, 49), (54, 51),            # underside and tip of the middle rock finger: the floor starts one tile lower
 ]
 # the pale rock shelf under the steps is drawn over the character: a foreground piece, its depth
 # at its lower edge, so whoever comes down the steps passes behind it
