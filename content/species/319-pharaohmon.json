@@ -13,8 +13,8 @@
   "effects_like": 40,
   "model": {
     "file": "build/sizes-out/models/Pharaohmon.MMD",
-    "radius": 203,
-    "height": 813,
+    "radius": 150,
+    "height": 599,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 1], [5, 1], [6, 6], [7, 1], [8, 8], [9, 9], [10, 1],
                  [11, 11], [12, 12], [13, 13], [14, 14], [15, 11], [16, 16], [17, 11], [18, 18],
                  [19, 19], [20, 20]],
@@ -24,9 +24,9 @@
   "texture": {"file": "build/batch12/Pharaohmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -172, -18, 5],
-  "effect_origins": [[7, "any", 0, 0, 15, -21, 364, -76], [10, "any", 0, 0, 4, 117, -91, -15],
-                     [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 156, 343, -112]],
+  "condition_bubble": [0, -127, -13, 5],
+  "effect_origins": [[7, "any", 0, 0, 15, -15, 268, -56], [10, "any", 0, 0, 4, 86, -67, -11],
+                     [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 115, 252, -82]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw3",
@@ -35,6 +35,7 @@
     "base_scale": 0.306,
     "natural": {"height": 1634.1, "half_width": 571.5, "half_depth": 418.9}
   },
+  "size": {"height": 599},
   "partner": {
     "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],

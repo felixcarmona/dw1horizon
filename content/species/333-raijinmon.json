@@ -13,8 +13,8 @@
   "effects_like": 40,
   "model": {
     "file": "build/sizes-out/models/Raijinmon.MMD",
-    "radius": 216,
-    "height": 658,
+    "radius": 185,
+    "height": 562,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 2], [4, 4], [5, 5], [6, 6], [7, 4], [8, 8], [9, 9], [10, 1],
                  [11, 11], [12, 12], [13, 13], [14, 14], [15, 11], [16, 16], [17, 17], [18, 18],
                  [19, 11], [20, 20], [21, 21], [22, 22]],
@@ -24,9 +24,9 @@
   "texture": {"file": "build/batch13/Raijinmon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -140, 8, 4],
-  "effect_origins": [[7, "any", 0, 0, 10, -43, 452, 163], [10, "any", 0, 0, 7, 80, -80, -43],
-                     [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 50, 307, 66]],
+  "condition_bubble": [0, -120, 7, 4],
+  "effect_origins": [[7, "any", 0, 0, 10, -37, 386, 139], [10, "any", 0, 0, 7, 68, -68, -37],
+                     [1, "any", 0, 0, 16, 0, 0, 0], [6, "any", 0, 0, 10, 43, 262, 56]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw3",
@@ -35,6 +35,7 @@
     "base_scale": 0.2273,
     "natural": {"height": 2199.2, "half_width": 803.2, "half_depth": 1203.9}
   },
+  "size": {"height": 562},
   "partner": {
     "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],

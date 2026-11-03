@@ -13,8 +13,8 @@
   "effects_like": 48,
   "model": {
     "file": "build/sizes-out/models/Marsmon.MMD",
-    "radius": 177,
-    "height": 627,
+    "radius": 156,
+    "height": 555,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 1], [5, 5], [6, 6], [7, 1], [8, 1], [9, 9], [10, 10],
                  [11, 1], [12, 12], [13, 13], [14, 14], [15, 15], [16, 12], [17, 17], [18, 18],
                  [19, 19]],
@@ -24,7 +24,7 @@
   "texture": {"file": "build/batch10/Marsmon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -118, 36, 9],
+  "condition_bubble": [0, -104, 32, 9],
   "effect_origins": [[7, 0, 0, 0, 4, 0, 0, 0], [10, 0, 0, 0, 7, 0, 0, 0], [18, 0, 0, 0, 19, 0, 0, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "sizing": {
@@ -34,6 +34,7 @@
     "base_scale": 0.6964,
     "natural": {"height": 718.3, "half_width": 239.4, "half_depth": 337.1}
   },
+  "size": {"height": 555},
   "partner": {
     "voice": 3,
     "hunger_hours": [2, 6, 11, 16, 21],

@@ -13,8 +13,8 @@
   "effects_like": 48,
   "model": {
     "file": "build/sizes-out/models/Boltmon.MMD",
-    "radius": 144,
-    "height": 577,
+    "radius": 136,
+    "height": 544,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 1], [3, 3], [4, 4], [5, 1], [6, 6], [7, 7], [8, 1], [9, 1], [10, 10],
                  [11, 11], [12, 1], [13, 13], [14, 14], [15, 1]],
     "slot_aliases": [[54, 50], [55, 51], [56, 51], [57, 50], [58, 50], [59, 50], [60, 50], [61, 46], [62, 48],
@@ -24,8 +24,8 @@
   "texture": {"file": "build/batch9/Boltmon.TIM", "entry": 0},
   "voice": 42,
   "battle_music": "normal-battle",
-  "condition_bubble": [-48, -86, 56, 16],
-  "effect_origins": [[7, 0, 0, 0, 12, 0, 0, 0], [10, 0, 0, 0, 15, 0, 0, 0], [18, 0, 0, 0, 8, -16, 67, -27]],
+  "condition_bubble": [-45, -81, 53, 16],
+  "effect_origins": [[7, 0, 0, 0, 12, 0, 0, 0], [10, 0, 0, 0, 15, 0, 0, 0], [18, 0, 0, 0, 8, -15, 63, -25]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw2",
@@ -34,6 +34,7 @@
     "base_scale": 1.0,
     "natural": {"height": 465.1, "half_width": 183.3, "half_depth": 124.3}
   },
+  "size": {"height": 544},
   "partner": {
     "voice": 3,
     "hunger_hours": [2, 6, 11, 16, 21],
