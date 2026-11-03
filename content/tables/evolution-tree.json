@@ -599,7 +599,7 @@
     "Dinohyumon": {"parents": ["Gazimon", "Armadillomon"], "reason": "Canon main line, then family and shared specialty."},
     "Antylamon": {"parents": ["Unimon", "Lighdramon"], "reason": "Canon main line, then family and shared specialty."},
     "Assaultmon": {
-      "parents": ["Tankmon", "Guardromon", "Hookmon", "Snatchmon"],
+      "parents": ["Tankmon", "Guardromon", "Hookmon", "Vemmon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Arukenimon": {
@@ -635,7 +635,7 @@
     },
     "Growlmon": {"parents": ["Guilmon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
     "Knightmon": {
-      "parents": ["Snatchmon", "Dinohyumon", "Musyamon", "Shurimon"],
+      "parents": ["Vemmon", "Dinohyumon", "Musyamon", "Shurimon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Kyukimon": {
@@ -660,7 +660,7 @@
       "parents": ["Gotsumon", "Gazimon", "Psychemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Snatchmon": {"parents": ["Hagurumon", "Kokuwamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Vemmon": {"parents": ["Hagurumon", "Kokuwamon"], "reason": "Canon main line, then family and shared specialty."},
     "Roachmon": {"parents": ["Tentomon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
     "Raijinmon": {
       "parents": ["Silphymon", "Kyukimon"],

@@ -140,7 +140,7 @@ class GuardTests(unittest.TestCase):
         other = sp[sibling]['evolution']['requirements']
         for stat in T.ALL:
             target[stat] = other[stat]
-        table = {'children': {'Assaultmon': {'parents': ['Snatchmon']}}}
+        table = {'children': {'Assaultmon': {'parents': ['Vemmon']}}}
         errors, _, _ = practical_errors(sp, self.kids, table)
         self.assertTrue(any('identical sibling picker average' in error for error in errors))
 
@@ -149,11 +149,11 @@ class GuardTests(unittest.TestCase):
         self.assertIn('Koromon: 0 rookie', self.errors(lambda s, k: k[p].clear()))
 
     def test_mega_shortcut(self):
-        p, c = self.names['Snatchmon'], self.names['Apocalymon']
+        p, c = self.names['Vemmon'], self.names['Apocalymon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
 
     def test_imperialdramon_shortcut(self):
-        p, c = self.names['Snatchmon'], self.names['Imperialdramon']
+        p, c = self.names['Vemmon'], self.names['Imperialdramon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
 
     def test_primary_mega_parent(self):

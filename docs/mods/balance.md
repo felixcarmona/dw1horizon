@@ -388,9 +388,9 @@ Every partner Rookie has at least four distinct Champion targets in the final tr
 | Gomamon | Submarimon, Ikkakumon, Dolphmon, Gesomon, Tylomon, Octomon |
 | Gotsumon | Guardromon, Golemon, Tortomon, Gargoylemon, Minotarumon, Monochromon |
 | Guilmon | Flamedramon, Veedramon, Tuskmon, Growlmon |
-| Hagurumon | Tankmon, Guardromon, Hookmon, Snatchmon, Clockmon |
+| Hagurumon | Tankmon, Guardromon, Hookmon, Vemmon, Clockmon |
 | Hawkmon | Saberdramon, Aquilamon, Halsemon, Shurimon, Quetzalmon |
-| Kokuwamon | Thundermon, Flymon, Snatchmon, Clockmon, Guardromon |
+| Kokuwamon | Thundermon, Flymon, Vemmon, Clockmon, Guardromon |
 | Kotemon | Flamedramon, Apemon, Baronmon, Tuskmon, DarkTyrannomon, Musyamon |
 | Kunemon | Bakemon, Kabuterimon, Kuwagamon, Vegiemon, Flymon |
 | Monmon | Golemon, Apemon, Hookmon, Raremon, Musyamon, Ninjamon |
