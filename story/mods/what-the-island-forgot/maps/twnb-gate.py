@@ -35,9 +35,9 @@ def inside(poly, u, v):
 
 def one(name, out, alpha):
     src = extracted(name)
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, name + '.TFS'),
-        '--paste', GATE_PNG, str(GATE_AT[0]), str(GATE_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, name + '.TFS'),
+            '--paste', GATE_PNG, str(GATE_AT[0]), str(GATE_AT[1])])
+    cam = Cam(m)
     # the hedge's foreground pieces that cover the passage (more than a sliver of it)
     X, Y = GATE_AT; H, W = len(alpha), len(alpha[0]); hidden = []
     for k in dwmap.covering_instances(m, X, Y, X + W, Y + H):

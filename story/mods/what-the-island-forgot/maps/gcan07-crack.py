@@ -28,10 +28,10 @@ def main(out, screens):
     os.makedirs(out, exist_ok=True); os.makedirs(screens, exist_ok=True)
     src = extracted('GCAN07')
     # the open crack's background: the crack over the player's own TFS (the palette is kept: unchanged pixels keep their index)
-    bg([src + '.MAP', src + '.TFS', os.path.join(screens, 'GCAN27.TFS'),
-        '--paste', CRACK_PNG, str(CRACK_AT[0]), str(CRACK_AT[1])])
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(screens, 'GCAN27.TFS'),
+            '--paste', CRACK_PNG, str(CRACK_AT[0]), str(CRACK_AT[1])])
     # the map: the crack's tiles are a step trigger; exit 1 is the arrival from the Descent
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    cam = Cam(m)
     (cx, cy), (rx, ry) = CRACK_TILES; col = list(m.collision); n = 0
     for tx, tz, u, v in cam.tiles():
         if col[tz * 100 + tx] != 0 or u is None: continue

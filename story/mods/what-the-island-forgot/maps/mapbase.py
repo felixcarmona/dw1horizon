@@ -56,13 +56,20 @@ def import_png(base_name, png, out_tfs, new_palette=True):
 
 def bg(argv):
     """`dwmap.py bg ARGV...` (a retouch of the player's background, the palette kept) in this process; its report is
-    kept quiet as when it ran as a command, and shown only when it fails."""
+    kept quiet as when it ran as a command, and shown only when it fails. Returns the map (ARGV[0]) with its cut-outs
+    over the retouch refreshed from the new background (`bg --map-out`, written next to the TFS): build the screen's
+    .MAP from it, never from the disc's, or the cut-outs keep drawing the old picture over the new one."""
+    argv = [str(a) for a in argv]
+    map_out = argv[2][:-4] + '.MAP'
     buf = io.StringIO()
     try:
         with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(buf):
-            dwmap.bg_main([str(a) for a in argv])
+            dwmap.bg_main(argv + ['--map-out', map_out])
     except SystemExit as e:
         if e.code not in (None, 0): sys.exit(buf.getvalue() + str(e.code))
+    if 'shares texels' in buf.getvalue(): sys.exit(buf.getvalue() + 'a cut-out shared by two placements cannot show both')
+    with open(map_out, 'rb') as f:
+        return dwmap.MapFile(f.read())
 
 
 class Cam:

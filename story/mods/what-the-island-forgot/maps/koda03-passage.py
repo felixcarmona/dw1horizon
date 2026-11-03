@@ -27,9 +27,9 @@ STEP = 1                                                # the mouth's step trigg
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('KODA03')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'KODA03.TFS'),
-        '--paste', MOUTH_PNG, str(MOUTH_AT[0]), str(MOUTH_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'KODA03.TFS'),
+            '--paste', MOUTH_PNG, str(MOUTH_AT[0]), str(MOUTH_AT[1])])
+    cam = Cam(m)
     col = list(m.collision)
     for tx, tz in MOUTH_TILES: col[tz * 100 + tx] = 51 + STEP
     m.collision = col

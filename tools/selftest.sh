@@ -128,6 +128,7 @@ run map-reach-policies $PY tools/test_reach_policies.py
 run developer-contracts $PY tools/test_dev_contracts.py
 run presented-frame-video $PY tools/test_presented_frames.py
 run gallery-foregrounds $PY tools/test_gallery_foregrounds.py
+run retouch-cutouts $PY tools/test_retouch_cutouts.py
 run image-raster      $PY -m unittest tools.test_image
 run sign-sprites      $PY -m unittest tools.test_signs
 run image-dependencies $PY -m unittest tools.test_no_pillow

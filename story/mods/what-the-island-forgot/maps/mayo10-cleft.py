@@ -25,9 +25,9 @@ TARGET = (316, 0)                                       # the Lake Terrace's ste
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('MAYO10')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'MAYO10.TFS'),
-        '--paste', CLEFT_PNG, str(CLEFT_AT[0]), str(CLEFT_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'MAYO10.TFS'),
+            '--paste', CLEFT_PNG, str(CLEFT_AT[0]), str(CLEFT_AT[1])])
+    cam = Cam(m)
     col = list(m.collision); exit_tiles = []; spawn = None; best = None
     for tx, tz, u, v in cam.tiles():
         if u is None: continue

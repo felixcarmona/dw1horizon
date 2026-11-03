@@ -84,3 +84,7 @@ Contents:
 - `wall-of-hearts.png`
 - `watchtower.png`
 - `workshop-gallery.png`
+
+## Provenance notes
+
+- `dgha01-pass.png`: the notch in the cliff of Overdell's western clearing. Made with Nano Banana Pro (gemini-3-pro-image-preview) as an edit of a 5x enlargement of the cliff's foot (160x200 pixels of the player's own DGHA01 background at 0,240, with the previous notch in it). The sand pocket was repainted to match the clearing's sand (second iteration of two); only the pocket's pixels (feathered) replace the earlier piece, the rocks are unchanged. The generated image is not kept; the piece is laid over the player's background at build time.

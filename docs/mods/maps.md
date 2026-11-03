@@ -113,14 +113,26 @@ nInstances × { frames[8], times[8], x, y, flag }                            19 
   0x14–0x22 at random (snow, `overworld.c:330`); fog on 115–119, 121, 163, 220
   (`renderMapOverlays`, `overworld.c:436`).
 
-A background retouch must also update overlapping foreground cutouts. Coela Point
-(`MAYO05`, screen 5) adds stairs to the TFS, beneath the original cliff sprite.
-Its recipe copies the changed background indices into the existing cliff TIM so
-that the donor cliff does not hide the entrance up to a rectangular sprite edge.
-The copy keeps existing transparent texels, testing all three CLUTs: index 1 is
-transparent by day but coloured at dusk and night. It changes no palette, sprite
-geometry or VRAM allocation. The beach turning grey-green at night is the
-original TFS palette, shared by the background and cutouts.
+A background retouch must also update overlapping foreground cutouts: they are copies of the background's pixels
+drawn over the characters, so a cut-out left alone keeps drawing the old picture over the new one (Overdell's notch,
+DGHA01, 2026-11-03: the old boulder sat over the new pocket in rectangles). `dwmap.py bg` does it: after its edits, every
+texel of a shown instance's frames (definitions with `clut −1`) over a changed background pixel takes the new index,
+so the piece keeps its outline and depth and shows the new art (`refresh_cutouts`); `--map-out` writes that map, and
+`mapbase.bg` returns it, so a recipe builds its `.MAP` from it, never from the disc's. Holes stay holes: a texel is a
+hole when every CLUT gives it colour `0x0000`, or `0x8000` under the semi-transparency modes 1–3, where black with
+the bit adds or takes nothing (DGHA01, GCAN01, GCAN10, MAYO10 and GOMI02 key their cut-outs with index 255 = `0x8000`
+by day and `0x0000` later; the game shows no black). A new pixel that would be a hole becomes the nearest drawn colour.
+Index 1 of MAYO05 (transparent by day, coloured at dusk and night) is not a hole and is refreshed. A texel shared by
+two placements over different pixels, or one a semi-transparent piece would blend, fails the recipe. No palette,
+sprite geometry or VRAM allocation changes. Check the depth of a refreshed piece against the walkable tiles behind
+its anchor (a character there is drawn under the new art). The beach turning grey-green at night is the original
+TFS palette, shared by the background and cutouts.
+
+A paste is drawn in daylight, but its indices are also shown by the evening and night CLUTs. `bg --paste` picks each
+pixel's index by its day colour and by what the screen's own evening and night palettes make of that day colour
+(`RequantTimes`, among the indices the background already uses), so the retouch darkens with the screen; picking by the
+day colour alone gave Overdell's notch a warm brown pocket in grey-violet sand at night and lit up the Tyrannomon trail
+mouth (KODA03).
 
 ### Entity section (all `s16`)
 
@@ -219,7 +231,7 @@ the new size against the original.
 | `info X.MAP` | short summary |
 | `dump X.MAP x.json` / `build x.json X.MAP` | the whole `.MAP` as editable JSON (collision as 100 hex rows, TIMs in base64) |
 | `export X.MAP DIR` | `-background-day/evening/night.png` (indexed), `-overlay.png`, `-collision.png` (100×100 indexed: index = tile value), `-collision-x4.png`, `-timN-*.png`, `X.json` |
-| `import-png X.MAP X.TFS background.png new.TFS [--new-palette]` | whole background PNG → TFS. Indexed with the same palette: copies the indices; RGB: unchanged pixels keep their index, the rest get the closest day colour. `--new-palette`: new 255-colour palette, evening/night derived |
+| `import-png X.MAP X.TFS background.png new.TFS [--new-palette]` | whole background PNG → TFS. Indexed with the same palette: copies the indices; RGB: unchanged pixels keep their index, the rest get the closest day colour. `--new-palette`: new 255-colour palette; evening and night apply the donor's own day → evening/night colour maps (`time_of_day_model`: a gain per channel after a loss of saturation, fitted over the colours its picture uses; it carries the originals' warm evening and grey, desaturated night, where a gain alone left new nights bright and saturated; a grey donor such as FRZL03 or KODA08 cannot show how colours fade, so its saturation leans on the originals' typical 0.85 evening and 0.55 night) |
 | `collision-import X.MAP collision.png new.MAP` | painted grid (100×100 indexed PNG) → `.MAP` |
 | `set-tiles X.MAP new.MAP TX0 TZ0 TX1 TZ1 VALUE` | fills a rectangle of tiles (same as `edit --paint`) |
 | `map-entry NAME N8 N4 FLAGS DOORS TOILET LABEL` | the 16 bytes of a `MAP_ENTRIES` row (to poke into RAM) |

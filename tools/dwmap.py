@@ -22,7 +22,8 @@ explains what to do when the sector count changes; recipes: docs/mods/maps.md):
                                                    (V = free|wall|exit:K|toilet|step:N|press:N|number; `edit -h`)
   dwmap.py bg NAME.MAP NAME.TFS OUT.TFS [--paste PNG X Y] [--text X Y TEXT] [--fill X0 Y0 X1 Y1 RGB]
              [--fill-tiles TX0 TZ0 TX1 TZ1 RGB] [--scale N --color RGB --box RGB --at-world] [--overlay OUT.png]
-                                                   background region edits keeping the palette
+             [--map-out OUT.MAP]                   background region edits keeping the palette; the cut-outs over
+                                                   them take the new pixels (written with --map-out)
   dwmap.py overlay NAME.MAP OUT.png [--tfs F] [--clut 0|1|2] [--no-collision] [--no-grid]
                                                    see a (edited) map without the emulator; the grid labels the world
                                                    coordinates every 500 (what npc(..., at=(x, z)) is written in)
@@ -632,6 +633,50 @@ def median_cut(hist, n=256):
     return out + [(0, 0, 0)] * (n - len(out))
 
 
+TYPICAL_SATURATION = {1: 0.85, 2: 0.55}     # the originals' evening and night (median over colourful screens)
+
+
+def time_of_day_model(t, m=None):
+    """How a background's evening and night CLUTs follow its day CLUT: per CLUT k ≥ 1 a gain per channel applied after
+    a loss of saturation, out_c = g_c · (Y + s · (c − Y)) with Y the grey of the colour, fitted by least squares over
+    the palette entries the picture uses (weighted by the square root of their pixel count). Unlike a gain alone it
+    carries the originals' grey, desaturated nights. A grey donor (FRZL03, KODA04, KODA08) cannot show how colours
+    fade, so its saturation is drawn towards the originals' typical one in proportion to how little colour it has.
+    Returns [None, (g, s), ...]; None where it cannot be fitted."""
+    W, H, idx = t.image_indices(m)
+    cnt = [0] * 256
+    for r in idx:
+        for v in r: cnt[v] += 1
+    day = t.palette_rgb(0); out = [None]
+    use = [i for i in range(256) if cnt[i] and t.cluts[0][i] & 0x7fff]
+    if not use: return [None] * len(t.cluts)
+    grey = [sum(day[i]) / 3 for i in range(256)]
+    chroma = sum(cnt[i] * sum(abs(c - grey[i]) for c in day[i]) / 3 for i in use) / sum(cnt[i] for i in use)
+    trust = chroma ** 2 / (chroma ** 2 + 12 ** 2)
+    def fit(other, sat):
+        g = []
+        for ch in range(3):
+            num = den = 0.0
+            for i in use:
+                w = math.sqrt(cnt[i]); x = grey[i] + sat * (day[i][ch] - grey[i])
+                num += w * x * other[i][ch]; den += w * x * x
+            g.append(num / den if den else 1.0)
+        err = sum(math.sqrt(cnt[i]) * sum((other[i][ch] - g[ch] * (grey[i] + sat * (day[i][ch] - grey[i]))) ** 2
+                                          for ch in range(3)) for i in use)
+        return err, g
+    for k in range(1, len(t.cluts)):
+        other = t.palette_rgb(k)
+        sat = min((fit(other, step / 50)[0], step / 50) for step in range(0, 61))[1]      # 0 … 1.2
+        sat = trust * sat + (1 - trust) * TYPICAL_SATURATION.get(k, 0.55)
+        out.append((fit(other, sat)[1], sat))
+    return out
+
+
+def apply_model(M, c):
+    g, sat = M; y = sum(c) / 3
+    return tuple(max(0, min(255, int(round(g[ch] * (y + sat * (c[ch] - y)))))) for ch in range(3))
+
+
 def import_png(map_path, tfs_path, png_path, out_path, new_palette=False):
     m = MapFile(open(map_path, 'rb').read()); t = TfsFile(open(tfs_path, 'rb').read())
     W, H, orig = t.image_indices(m)
@@ -639,28 +684,26 @@ def import_png(map_path, tfs_path, png_path, out_path, new_palette=False):
     if (w, h) != (W, H):
         raise SystemExit(f'the PNG is {w}×{h} and the background {W}×{H}')
     if new_palette:
-        # new 256-colour palette for the day; evening and night are derived from the mean per-channel
-        # ratio of the original CLUTs (or 1/0.7/0.7 and 0.5 like the updateTimeOfDay lights)
+        # new 256-colour palette for the day; evening and night follow the original's own day -> evening/night
+        # colour maps (time_of_day_model), or 1/0.7/0.7 and 0.5 like the updateTimeOfDay lights
         if mode == 'P': rows = [bytearray(b for v in r for b in pal[v]) for r in rows]
         hist = {}
         for r in rows:
             for i in range(0, len(r), 3):
                 k = (r[i] & 0xF8, r[i + 1] & 0xF8, r[i + 2] & 0xF8); hist[k] = hist.get(k, 0) + 1
         day = median_cut(hist, 255) ; day = [(0, 0, 0)] + day[:255]   # index 0 = reserved black
-        ratios = []; ncl_orig = len(t.cluts)
-        for k in (1, 2):
-            if k < len(t.cluts):
-                num = [0, 0, 0]; den = [0, 0, 0]
-                for a, b in zip(t.palette_rgb(0), t.palette_rgb(k)):
-                    for c in range(3): num[c] += b[c]; den[c] += a[c]
-                ratios.append([num[c] / den[c] if den[c] else 1 for c in range(3)])
-            else:
-                ratios.append([1, .7, .7] if k == 1 else [.5, .5, .5])
+        model = time_of_day_model(t, m); ncl_orig = len(t.cluts)
         def enc(c, stp_black=True):
             v = rgb_to_bgr555(*c)
             return v if v else 0x8000 if stp_black else 0     # opaque black (0x0000 is transparent)
-        t.cluts = [[enc(c) for c in day]] + [[enc(tuple(min(255, int(c[i] * r[i])) for i in range(3))) for c in day]
-                                              for r in ratios]
+        later = []
+        for k in (1, 2):
+            M = model[k] if k < len(model) else None
+            if M is None:
+                r = [1, .7, .7] if k == 1 else [.5, .5, .5]; later.append([tuple(min(255, int(c[i] * r[i])) for i in range(3)) for c in day])
+            else:
+                later.append([apply_model(M, c) for c in day])
+        t.cluts = [[enc(c) for c in day]] + [[enc(c) for c in p] for p in later]
         if ncl_orig == 1: t.cluts = t.cluts[:1]       # interiors (flags & 0x40): a single palette
         for c in t.cluts: c[0] = 0
         target = [bgr555_to_rgb(c) for c in t.cluts[0]]; mode = 'RGB'; pref = None
@@ -1071,6 +1114,35 @@ class Requant:
         return v
 
 
+class RequantTimes(Requant):
+    """Nearest colour for a picture drawn in daylight over a background with evening and night CLUTs: the index whose
+    day colour is near the pixel AND whose evening and night colours are near what the background's own palettes make
+    of that day colour (time_of_day_model), among the indices the background uses, so a retouch darkens and loses colour at night like the screen around it
+    instead of following whatever day twin the index happens to be. Day counts twice."""
+    def __init__(self, t, m=None):
+        super().__init__(t.palette_rgb(0), t.cluts[0])
+        used = set()
+        for _, px in t.tiles: used.update(px)
+        self.skip |= set(range(256)) - used            # only colours the screen already shows (others may be reserved)
+        self.models = [M for M in time_of_day_model(t, m)[1:]]
+        self.pals = [t.palette_rgb(k) for k in range(1, len(t.cluts))]
+
+    def __call__(self, r, g, b):
+        k = (r, g, b); v = self.cache.get(k)
+        if v is None:
+            targets = [(2, (r, g, b), self.pal)] + [(1, apply_model(M, (r, g, b)), p)
+                                                    for M, p in zip(self.models, self.pals) if M is not None]
+            best = None
+            for i in range(len(self.pal)):
+                if i in self.skip: continue
+                dd = 0
+                for w, (tr, tg, tb), p in targets:
+                    pr, pg, pb = p[i]; dd += w * ((pr - tr) ** 2 * 3 + (pg - tg) ** 2 * 4 + (pb - tb) ** 2 * 2)
+                if best is None or dd < best: best, v = dd, i
+            self.cache[k] = v
+        return v
+
+
 def tfs_put_pixels(m, t, pixels):
     """pixels: iterable of (x, y, index) in full-background coordinates → written into the TFS tiles."""
     pos, _, _ = t.layout(m); where = {p: k for k, p in enumerate(pos)}; n = 0
@@ -1082,23 +1154,93 @@ def tfs_put_pixels(m, t, pixels):
 
 
 def covering_instances(m, x0, y0, x1, y1):
-    """Sprite instances whose first frame overlaps the background rectangle (they are drawn on top)."""
+    """Sprite instances with a frame that overlaps the background rectangle (they are drawn on top)."""
     out = []
     for i, inst in enumerate(m.instances):
-        fr = [f for f in inst['frames'] if f >= 0]
-        if not fr or fr[0] >= len(m.sprites) or inst['flag'] == 1 or inst['flag'] & 0x80: continue
-        sp = m.sprites[fr[0]]
-        if inst['x'] < x1 and x0 < inst['x'] + sp['width'] and inst['y'] < y1 and y0 < inst['y'] + sp['height']:
-            out.append(i)
+        if inst['flag'] == 1 or inst['flag'] & 0x80: continue
+        for f in {f for f in inst['frames'] if 0 <= f < len(m.sprites)}:
+            sp = m.sprites[f]
+            if inst['x'] < x1 and x0 < inst['x'] + sp['width'] and inst['y'] < y1 and y0 < inst['y'] + sp['height']:
+                out.append(i); break
     return out
+
+
+def cutout_holes(t, mode=1):
+    """Palette indices that a cut-out of the background (definition clut −1) never draws, in every CLUT: colour 0x0000,
+    and 0x8000 (black with the semi-transparency bit) under the additive and subtractive modes 1–3 (`transparency`),
+    where it adds or takes nothing. DGHA01, GCAN01, GOMI02 and MAYO10 key their cut-outs with index 255 that way:
+    0x8000 by day, 0x0000 at evening and night, and the game shows no black by day."""
+    def hole(c): return c == 0 or (c == 0x8000 and mode in (1, 2, 3))
+    return {i for i in range(256) if all(hole(c[i]) for c in t.cluts)}
+
+
+def _sprite_texels(m):
+    """{(page column, row): (TIM k, byte offset in the TIM)} for every 8 bpp TIM of the map's sprite pages
+    (texX counts 8 bpp texels from VRAM x 384; loadMapObjects)."""
+    where = {}
+    for k, raw in enumerate(m.tims):
+        tim = TIM(raw)
+        if tim.bpp != 8: continue
+        start = tim.size - len(tim.pixels)
+        for y in range(tim.h):
+            for x in range(tim.w * 2):
+                where[((tim.x - 384) * 2 + x, tim.y + y)] = (k, start + y * tim.w * 2 + x)
+    return where
+
+
+def refresh_cutouts(m, before, after):
+    """A retouched background (TFS `before` → `after`) also changes the map's cut-outs drawn over the characters:
+    every texel of a shown instance's frames (clut −1, the background's own palette) that stands on a changed
+    background pixel takes the new pixel's index, so the piece keeps its outline and depth and shows the new art.
+    Holes stay holes; a new index that would be a hole (black of the retouch) becomes the nearest opaque colour.
+    Returns ({instance: texels changed}, conflicts): a texel shared by placements over different pixels keeps the
+    first value, and one that a semi-transparent piece would blend with the characters behind it, are reported."""
+    _, _, a = before.image_indices(m); W, H, b = after.image_indices(m)
+    pal = after.palette_rgb(0); holes = {}; opaque = {}
+    def solid(v, mode):
+        if v not in holes[mode]: return v
+        if (v, mode) not in opaque:
+            r, g, bb = pal[v]
+            opaque[v, mode] = min((i for i in range(256) if i not in holes[mode]),
+                                  key=lambda i: (pal[i][0] - r) ** 2 * 3 + (pal[i][1] - g) ** 2 * 4 + (pal[i][2] - bb) ** 2 * 2)
+        return opaque[v, mode]
+    def blends(v, mode):              # a colour with the semi-transparency bit is mixed with what is behind it
+        return mode in (1, 2, 3) and any(c[v] & 0x8000 and c[v] & 0x7fff for c in after.cluts)
+    where = _sprite_texels(m); raws = {k: bytearray(r) for k, r in enumerate(m.tims)}
+    want = {}; report = {}; conflicts = []
+    for i, inst in enumerate(m.instances):
+        if inst['flag'] == 1 or inst['flag'] & 0x80: continue
+        for f in sorted({f for f in inst['frames'] if 0 <= f < len(m.sprites)}):
+            sp = m.sprites[f]
+            if sp['clut'] != -1: continue
+            mode = sp['transparency']
+            if mode not in holes: holes[mode] = cutout_holes(before, mode)
+            for dy in range(sp['height']):
+                for dx in range(sp['width']):
+                    X, Y = inst['x'] + dx, inst['y'] + dy
+                    loc = where.get((sp['texX'] + dx, sp['texY'] + dy))
+                    if loc is None or not (0 <= X < W and 0 <= Y < H): continue
+                    k, off = loc; v = m.tims[k][off]                      # the texel as the disc has it
+                    if a[Y][X] == b[Y][X] or v in holes[mode]:
+                        if loc in want and want[loc] != v: conflicts.append((i, f, X, Y))
+                        want.setdefault(loc, v); continue
+                    nv = solid(b[Y][X], mode)
+                    if blends(nv, mode): conflicts.append((i, f, X, Y))
+                    if loc in want:
+                        if want[loc] != nv: conflicts.append((i, f, X, Y))
+                        continue
+                    want[loc] = nv
+                    if nv != v: raws[k][off] = nv; report[i] = report.get(i, 0) + 1
+    for k, r in raws.items(): m.tims[k] = bytes(r)
+    return report, conflicts
 
 
 def bg_paste(m, t, png_path, X, Y):
     """Pastes a PNG (RGB, RGBA: alpha < 128 is skipped, or indexed with this palette) at background
-    pixel (X, Y), requantized to the day palette (evening/night follow by index)."""
+    pixel (X, Y), requantized to the day palette and, with evening/night CLUTs, to what they make of it (RequantTimes)."""
     w, h, mode, rows, pal = png_read(png_path, alpha=True)
     W, H = m.width * 128, m.height * 128
-    rq = Requant(t.palette_rgb(0), t.cluts[0]); out = []
+    rq = RequantTimes(t, m) if len(t.cluts) > 1 else Requant(t.palette_rgb(0), t.cluts[0]); out = []
     same = mode == 'P' and pal and [tuple(c) for c in pal[:256]] == [tuple(c) for c in t.palette_rgb(0)[:len(pal)]]
     for yy in range(h):
         r = rows[yy]
@@ -1606,6 +1748,9 @@ def bg_main(argv):
     ap.add_argument('--box', help='colour of a box behind --text (e.g. 40,30,20)')
     ap.add_argument('--at-world', action='store_true', help='X Y of --text/--paste are world x z (ground point → pixel; centred)')
     ap.add_argument('--overlay', metavar='OUT.png')
+    ap.add_argument('--map-out', metavar='OUT.MAP', help='the map with its cut-outs (sprite pixels drawn over the '
+                    'characters) refreshed from the retouched background: without it a cut-out over the retouch keeps '
+                    'showing the old picture')
     a = ap.parse_args(argv)
     m = MapFile(open(a.map, 'rb').read()); t = TfsFile(open(a.tfs, 'rb').read())
     basis = camera_basis(m)
@@ -1625,10 +1770,18 @@ def bg_main(argv):
         elif op == 'fill_tiles':
             n, box = bg_fill_tiles(m, t, *(int(c) for c in v[:4]), parse_color(v[4]))
         cov = covering_instances(m, *box)
-        print(f'{op}: {n} pixels in {box[0]},{box[1]}-{box[2]},{box[3]}' +
-              (f'; sprite instances {cov} are drawn over that area (hide them with edit --instance I hide)' if cov else ''))
+        print(f'{op}: {n} pixels in {box[0]},{box[1]}-{box[2]},{box[3]}' + (f'; under sprite instances {cov}' if cov else ''))
     if not a.ops: ap.error('no operation given')
+    before = TfsFile(open(a.tfs, 'rb').read())
+    report, conflicts = refresh_cutouts(m, before, t)
+    if report:
+        print('cut-outs refreshed from the retouched background (instance: texels): ' +
+              ', '.join(f'I{i}: {n}' for i, n in sorted(report.items())) +
+              ('' if a.map_out else '; their new pixels are only written with --map-out OUT.MAP'))
+    for i, f, X, Y in conflicts[:10]:
+        print(f'warning: instance I{i} frame {f} at pixel {X},{Y} shares texels with another placement or blends; the first kept')
     data = t.build(); open(a.out, 'wb').write(data); size_report(a.out, data, (original_file(a.map) or a.map)[:-4] + '.TFS')
+    if a.map_out: open(a.map_out, 'wb').write(m.build())
     if a.overlay:
         W, H, img = render_overlay(m, t, collision=False); png_write(a.overlay, W, H, img, mode='RGB'); print(a.overlay)
 
