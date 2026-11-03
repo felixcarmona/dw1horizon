@@ -61,6 +61,14 @@ class RegionalFontTests(unittest.TestCase):
         self.assertIn(index, evidence['missing'])
         self.assertEqual(glyphs[codes.index(0x8140)*24:codes.index(0x8140)*24+24], b'\xff'*22+b'\x04\0')
 
+    def test_japanese_lowercase_codes_are_symbols_so_authored_letters_replace_them(self):
+        raw = bytearray(fixture())
+        struct.pack_into('<3H', raw, 6 + 12 * 2, 0x8281, 0x8285, 0x8142)   # symbols on the lowercase codes and the full stop
+        for key, expected_missing in (('jp1', True), ('eu', False)):
+            glyphs, codes, evidence = fontcopy.regional_glyphs(bytes(raw), key, fontgen)
+            for code in (0x8281, 0x8285, 0x8142):
+                self.assertEqual(codes.index(code) in evidence['missing'], expected_missing)
+
     def test_european_table_length_comes_from_its_sentinel(self):
         # 187 codes and two bytes of padding: the glyphs start right after them, not 992 codes in.
         raw = fixture(187)

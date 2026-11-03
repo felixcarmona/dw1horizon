@@ -224,6 +224,12 @@ def regional_glyphs(executable, key, fontgen):
     lookup = {}
     for i, code in enumerate(regional[:sentinel]):
         lookup.setdefault(code, i)
+    if key.startswith('jp'):
+        # The Japanese font puts symbols and kana on the full-width lowercase codes (0x8281-0x829a) and a small
+        # circle on the full stop (0x8142), not letters: those come from the authored font, as every other
+        # glyph the player's font lacks.
+        for code in (*range(0x8281, 0x829b), 0x8142):
+            lookup.pop(code, None)
     out, missing = bytearray(), []
     for i, code in enumerate(codes):
         source_code = {0x81a2: 0x817e, 0x817e: 0x81a2}.get(code, code)
