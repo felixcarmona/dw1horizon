@@ -332,12 +332,30 @@ def main(argv):
                 app.tk, app.root = tk, root
                 app.set_icon()
                 app.__init__(root, desktop.Config())
+                long_disc = dict(path='Digimon World 2003 (E) [SLES-03936] (a very long folder copy).cue',
+                                 image='x.bin', release='dw2003', how='files', size=1, mtime_ns=1)
+                problems = []
                 for lang in g.LANGS:
                     app.lang_var.set(g.LANGS[lang]); app._language()
-                    root.update()
+                    app.slots = {g2: dict(long_disc, release=g2) for g2 in ('us', 'dcb', 'dw2')}
+                    app.notes = {'dw2003': ('app.changed', dict(path='C:/Users/Someone/Games/Digimon World 3 (USA).cue'))}
+                    app.package = dict(version='0.0.9', date='2030-01-01', source='file', verified=False,
+                                       name='file-x', folder='x')
+                    app.latest = dict(version='0.1.0', tag='v0.1.0', assets={})
+                    app._refresh()
+                    app.stage.configure(text=app.t('app.packageOld', version='0.0.4'))
+                    for _ in range(4):
+                        root.update(); time.sleep(0.05)
+                    problems += [f'{lang}: {c}' for c in g.clipped(root)]
+                    root.geometry(f'{app.min_width}x{root.winfo_reqheight()}')     # (the narrowest it may be)
+                    for _ in range(4):
+                        root.update(); time.sleep(0.05)
+                    problems += [f'{lang}, narrowest: {c}' for c in g.clipped(root)]
+                    root.geometry('')
                     missing = [k for k in json.load(open(desktop.resource('tools', 'patcher', 'app', 'i18n.json'),
                                                          encoding='utf-8'))['en'] if app.t(k) == k]
                     assert not missing, (lang, missing)
+                assert not problems, 'cut: ' + '; '.join(problems)
                 root.destroy()
                 return f'{len(g.LANGS)} languages'
             ok &= check('the window', gui)

@@ -168,7 +168,7 @@ and job object, or the POSIX process group) on a stand-in derive that spawns wor
 `--download` (or `--package DIR`) every standard-library module the package's Python files import, `info`, `check`
 and `apply_disc` refusing a file that is not a disc with the player's message, and the package's real tools/derive
 starting in this Python and stopping at its first missing disc file (not at a missing module); with `--gui` the
-window in all eight languages. CI runs it on the frozen Windows app (as a windowed program, with no console), on the
+window in all eight languages, filled with long texts and file names, at its natural and its narrowest size, with no text or button cut (`gui.clipped`). CI runs it on the frozen Windows app (as a windowed program, with no console), on the
 frozen macOS app natively and, when the runner has Rosetta, its Intel half, and from source on Linux.
 
 `desktop.yml` runs on pull requests that touch the patcher (artifacts only), on a pushed `v*` tag, and by hand with

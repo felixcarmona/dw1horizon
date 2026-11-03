@@ -39,8 +39,17 @@ import desktop  # noqa: E402
 
 LANGS = dict(en='English', es='Español', **{'pt-br': 'Português (Brasil)'}, fr='Français', de='Deutsch',
              it='Italiano', ja='日本語', ca='Català')
+WRAP_LEAST = 240                     # the narrowest a wrapped text gets (pixels); its grid column is never narrower
 PHASES = dict(check='app.phase.check', tools='now.start', read='now.extract', holes='now.check', write='now.write',
               result='app.phase.result')
+
+
+def short_name(name, most=46):
+    """A file name that fits the slot: the middle left out of a long one (its start and extension stay)."""
+    if len(name) <= most:
+        return name
+    keep = most - 1
+    return name[:keep - keep // 3] + '…' + name[-(keep // 3):]
 
 
 # ---------------------------------------------------------------- strings
@@ -155,8 +164,8 @@ class App:
         if getattr(self, 'icon', None) is not None:
             ttk.Label(head, image=self.icon_small).grid(row=0, column=0, rowspan=2, padx=(0, 12))
         ttk.Label(head, text='Digimon World: Horizon', style='Title.TLabel').grid(row=0, column=1, sticky='w')
-        ttk.Label(head, text=t('app.lead'), style='Muted.TLabel', wraplength=600).grid(row=1, column=1, columnspan=2,
-                                                                                       sticky='w')
+        self._wrap(ttk.Label(head, text=t('app.lead'), style='Muted.TLabel')).grid(row=1, column=1, columnspan=2,
+                                                                                    sticky='ew')
         self.lang_var = tk.StringVar(value=LANGS[self.t.lang])
         lang = ttk.Combobox(head, textvariable=self.lang_var, values=list(LANGS.values()), state='readonly', width=18)
         lang.grid(row=0, column=2, sticky='ne')
@@ -164,7 +173,7 @@ class App:
 
         discs = ttk.LabelFrame(outer, text=t('slot.listLabel'), padding=(12, 8))
         discs.grid(row=1, column=0, sticky='ew', pady=(16, 0))
-        discs.columnconfigure(1, weight=1)
+        discs.columnconfigure(1, weight=1, minsize=WRAP_LEAST + 24)    # (the wrapped status, with its padx)
         counts = {d['id']: d.get('species') for d in desktop.registry()['discs']}
         self.slot_widgets = {}
         for i, game in enumerate(desktop.GAMES):
@@ -172,8 +181,8 @@ class App:
             name.grid(row=2 * i, column=0, sticky='w', pady=(6 if i else 0, 0))
             purpose = t('slot.purpose.us') if game == 'us' else t('slot.purpose.source', n=counts.get(game) or '')
             ttk.Label(discs, text=purpose, style='Muted.TLabel').grid(row=2 * i + 1, column=0, sticky='nw')
-            status = ttk.Label(discs, text='', wraplength=380, justify='left')
-            status.grid(row=2 * i, column=1, rowspan=2, sticky='w', padx=12)
+            status = self._wrap(ttk.Label(discs, text='', justify='left'))
+            status.grid(row=2 * i, column=1, rowspan=2, sticky='ew', padx=12)
             buttons = ttk.Frame(discs)
             buttons.grid(row=2 * i, column=2, rowspan=2, sticky='e')
             choose = ttk.Button(buttons, text=t('app.choose'), command=lambda g=game: self._choose(g))
@@ -183,15 +192,17 @@ class App:
             self.slot_widgets[game] = (status, choose, remove)
         add = ttk.Frame(discs)
         add.grid(row=8, column=0, columnspan=3, sticky='ew', pady=(12, 0))
+        add.columnconfigure(1, weight=1, minsize=WRAP_LEAST + 20)
         self.add_button = ttk.Button(add, text=t('app.add'), command=self._add)
         self.add_button.grid(row=0, column=0, sticky='w')
-        ttk.Label(add, text=t('app.formats'), style='Muted.TLabel').grid(row=0, column=1, sticky='w', padx=10)
+        self._wrap(ttk.Label(add, text=t('app.formats'), style='Muted.TLabel')).grid(row=0, column=1, sticky='ew',
+                                                                                     padx=10)
 
         pkg = ttk.LabelFrame(outer, text=t('app.package'), padding=(12, 8))
         pkg.grid(row=2, column=0, sticky='ew', pady=(12, 0))
         pkg.columnconfigure(0, weight=1)
-        self.pkg_label = ttk.Label(pkg, text='', wraplength=640, justify='left')
-        self.pkg_label.grid(row=0, column=0, columnspan=3, sticky='w')
+        self.pkg_label = self._wrap(ttk.Label(pkg, text='', justify='left'))
+        self.pkg_label.grid(row=0, column=0, columnspan=3, sticky='ew')
         self.pkg_download = ttk.Button(pkg, text=t('app.download'), command=self._download)
         self.pkg_download.grid(row=1, column=1, padx=(8, 0), pady=(8, 0))
         self.pkg_file = ttk.Button(pkg, text=t('app.useFile'), command=self._use_file)
@@ -207,20 +218,50 @@ class App:
 
         run = ttk.Frame(outer)
         run.grid(row=4, column=0, sticky='ew', pady=(16, 0))
-        run.columnconfigure(1, weight=1)
+        run.columnconfigure(1, weight=1, minsize=WRAP_LEAST + 24)
         self.build_button = ttk.Button(run, text=t('patch.button'), style='Build.TButton', command=self._build_disc)
         self.build_button.grid(row=0, column=0, rowspan=2, sticky='w')
-        self.why_label = ttk.Label(run, text='', style='Muted.TLabel', wraplength=420, justify='left')
-        self.why_label.grid(row=0, column=1, sticky='w', padx=12)
+        self.why_label = self._wrap(ttk.Label(run, text='', style='Muted.TLabel', justify='left'))
+        self.why_label.grid(row=0, column=1, sticky='ew', padx=12)
         self.progress = ttk.Progressbar(run, maximum=1000, mode='determinate')
         self.progress.grid(row=1, column=1, sticky='ew', padx=12)
         self.stop_button = ttk.Button(run, text=t('app.cancel'), command=self._stop)
         self.stop_button.grid(row=0, column=2, rowspan=2)
-        self.stage = ttk.Label(outer, text='', wraplength=640, justify='left')
-        self.stage.grid(row=5, column=0, sticky='w', pady=(8, 0))
+        self.stage = self._wrap(ttk.Label(outer, text='', justify='left'))
+        self.stage.grid(row=5, column=0, sticky='ew', pady=(8, 0))
         self.finish = ttk.Frame(outer)
         self.finish.grid(row=6, column=0, sticky='w', pady=(8, 0))
         self._refresh()
+        self.root.update_idletasks()
+        # The narrowest the window may be: what the buttons and names need with the texts wrapped at their least.
+        self.min_width = max(self.root.winfo_reqwidth(), 640)
+        self.root.geometry('')                               # (back to the natural size after a language change)
+        self._fit()
+
+    def _wrap(self, label, least=None):
+        """A label whose text wraps at the width it is given (grid sticky 'ew' in a column with weight)."""
+        least = least or WRAP_LEAST
+        label.configure(wraplength=least)
+
+        def resize(event):
+            width = max(least, event.width - 2)
+            if abs(int(str(label.cget('wraplength')) or 0) - width) > 2:
+                label.configure(wraplength=width)
+                self._fit()
+        label.bind('<Configure>', resize)
+        return label
+
+    def _fit(self):
+        """Never smaller than the content: the window grows when wrapped texts need more lines."""
+        if getattr(self, '_fit_pending', False):
+            return
+        self._fit_pending = True
+
+        def fit():
+            self._fit_pending = False
+            self.root.update_idletasks()
+            self.root.minsize(getattr(self, 'min_width', 640), self.root.winfo_reqheight())
+        self.root.after_idle(fit)
 
     def set_icon(self):
         """The window's icon: tools/patcher/app/make_icons.py's drawing of web/favicon.svg."""
@@ -243,7 +284,7 @@ class App:
                 status.configure(text=t('disc.checking', pct=int(self.checking[game] * 100)), style='TLabel')
             elif r:
                 words = t('release.' + r['release'])
-                text = f'✓ {t("disc.ok")} · {words}\n{os.path.basename(r["path"])}'
+                text = f'✓ {t("disc.ok")} · {words}\n{short_name(os.path.basename(r["path"]))}'
                 if r.get('how') == 'files':
                     text += '\n' + t('app.filesOnly')
                 status.configure(text=text, style='Ok.TLabel')
@@ -650,6 +691,30 @@ class App:
         self.root.destroy()
 
 
+def clipped(root):
+    """[widget description] of every shown text or button narrower or shorter than it asks to be, or reaching out
+    of its parent or the window: what the self-test checks in every language."""
+    out = []
+    rw, rh = root.winfo_width(), root.winfo_height()
+
+    def walk(w):
+        for c in w.winfo_children():
+            if not c.winfo_ismapped():
+                continue
+            kind = c.winfo_class()
+            if kind in ('TLabel', 'TButton', 'Label', 'Button', 'TCombobox'):
+                text = str(c.cget('text')) if kind != 'TCombobox' else ''
+                what = f'{kind} {text[:40]!r}'
+                if c.winfo_width() + 1 < c.winfo_reqwidth() or c.winfo_height() + 1 < c.winfo_reqheight():
+                    out.append(f'{what}: {c.winfo_width()}x{c.winfo_height()} < {c.winfo_reqwidth()}x{c.winfo_reqheight()}')
+                x, y = c.winfo_rootx() - root.winfo_rootx(), c.winfo_rooty() - root.winfo_rooty()
+                if x + c.winfo_width() > rw + 1 or y + c.winfo_height() > rh + 1:
+                    out.append(f'{what}: out of the window')
+            walk(c)
+    walk(root)
+    return out
+
+
 # ---------------------------------------------------------------- start
 def quiet_streams():
     """A windowed app has no console: sys.stdout/stderr may be None. stderr goes to app.log in the settings
@@ -686,7 +751,7 @@ def main():
     app.set_icon()
     app.__init__(root, config)
     root.protocol('WM_DELETE_WINDOW', app.close)
-    root.minsize(680, 700)
+    root.geometry(f'{max(760, app.min_width)}x{root.winfo_reqheight()}')
     root.mainloop()
     return 0
 
