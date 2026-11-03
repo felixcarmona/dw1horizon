@@ -246,7 +246,7 @@
     "Tsukaimon": {"parents": ["Tokomon", "Nyaromon"], "reason": "Canon main line, then family and shared specialty."},
     "IceDevimon": {"parents": ["DemiDevimon"], "reason": "Canon main line, then family and shared specialty."},
     "BlueMeramon": {
-      "parents": ["Flarerizamon", "Meramon", "Shadramon"],
+      "parents": ["Flarerizamon", "Meramon", "Shadramon", "Birdramon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Gururumon": {
@@ -361,7 +361,7 @@
     },
     "VenomMyotismon": {"parents": ["Myotismon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
     "AeroVeedramon": {
-      "parents": ["Veedramon", "ExVeemon", "Flamedramon", "Maildramon"],
+      "parents": ["Veedramon", "ExVeemon", "Flamedramon", "Maildramon", "Airdramon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Shakkoumon": {"parents": ["Ankylomon"], "reason": "Canon main line, then family and shared specialty."},
@@ -539,7 +539,7 @@
     "Syakomon": {"parents": ["Bukamon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
     "Crabmon": {"parents": ["Bukamon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
     "Gazimon": {"parents": ["Tanemon"], "reason": "Canon main line, then family and shared specialty."},
-    "Deramon": {"parents": ["Kiwimon", "Woodmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Deramon": {"parents": ["Kiwimon", "Woodmon", "Kokatorimon"], "reason": "Canon main line, then family and shared specialty."},
     "Tapirmon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
     "Boltmon": {
       "parents": ["Pumpkinmon", "Mummymon"],
@@ -848,6 +848,7 @@
     "KingSukamon": "Special King of Sukamon form; laboratory only."
   },
   "specialty_exceptions": [{"parent": "Otamamon", "child": "Geremon", "reason": "Retained canon route explicitly permitted despite no shared specialty; Geremon retains its original filth specialty."}],
+  "canon_levels": "2026-11-03: Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon take their canon level, Mega (the identity sheet's Level (canon)). With OPTIONS' NEW DIGIMON off the game gives every original its disc level back (species.py level_swaps, patch 0335). The disc routes from Champions to Phoenixmon and HerculesKabuterimon stay, the one accepted Champion -> Mega exception; Red Ruby and Beetlepearl keep their original Champion rule like those routes; MetalEtemon comes only from Etemon (an Ultimate), and Metalbanana asks for an Ultimate. Phoenixmon's Champion parents Airdramon, Birdramon and Kokatorimon had no second Ultimate left, so each gained one: Airdramon -> AeroVeedramon (canon, shares air and fire), Birdramon -> BlueMeramon (fire family, shares fire), Kokatorimon -> Deramon (bird line, shares battle).",
   "version": 2,
   "sheet_megas": [
     59,
@@ -987,7 +988,7 @@
     "4": {"from": [44], "to": [10, 24, 35, 49, 238]},
     "5": {"from": [3], "to": [12, 26, 182, 224]},
     "6": {"from": [236, 96], "to": [26, 54, 66]},
-    "7": {"from": [45], "to": [54, 59]},
+    "7": {"from": [45], "to": [54, 59, 213]},
     "8": {"from": [3, 17, 31], "to": [12, 54, 124, 260, 266]},
     "9": {"from": [3, 233], "to": [12, 40, 277, 104]},
     "10": {"from": [4], "to": [54, 61, 64, 112]},
@@ -1001,7 +1002,7 @@
     "18": {"from": [16], "to": [48, 20, 37, 50, 252]},
     "19": {"from": [45, 32, 111], "to": [60, 27, 205]},
     "20": {"from": [31, 18], "to": [40, 59, 206]},
-    "21": {"from": [3, 45], "to": [59, 460]},
+    "21": {"from": [3, 45], "to": [59, 460, 104]},
     "22": {"from": [17, 57], "to": [26, 61, 62]},
     "23": {"from": [57, 71], "to": [27, 13, 267]},
     "24": {"from": [46, 4, 57], "to": [61, 13, 119, 112]},
@@ -1030,7 +1031,7 @@
     "47": {"from": [3, 17, 68], "to": [12, 27, 113, 126, 257, 88]},
     "48": {"from": [31, 18, 353], "to": [40, 13, 306, 63]},
     "49": {"from": [46, 4, 283, 284], "to": [61, 291]},
-    "50": {"from": [18, 45], "to": [59, 55]},
+    "50": {"from": [18, 45], "to": [59, 55, 286]},
     "51": {"from": [32, 46], "to": [60, 55, 259]},
     "52": {"from": [57], "to": [26, 13, 267]},
     "53": {"from": [], "to": [56, 42]},
@@ -1069,7 +1070,7 @@
     "94": {"from": [283, 71], "to": [275, 279]},
     "96": {"from": [30, 476], "to": [85, 107, 216, 241, 6]},
     "100": {"from": [236], "to": [229, 279]},
-    "104": {"from": [69, 9, 250], "to": []},
+    "104": {"from": [69, 9, 250, 21], "to": []},
     "105": {"from": [285, 353, 71, 82], "to": [62, 306]},
     "106": {"from": [184, 45], "to": [66, 460]},
     "107": {"from": [96, 93], "to": [66, 229]},
@@ -1120,7 +1121,7 @@
     "210": {"from": [259], "to": []},
     "211": {"from": [61], "to": []},
     "212": {"from": [66], "to": []},
-    "213": {"from": [203, 194, 195, 324], "to": [192]},
+    "213": {"from": [203, 194, 195, 324, 7], "to": [192]},
     "214": {"from": [189], "to": [319]},
     "215": {"from": [190], "to": []},
     "216": {"from": [236, 96], "to": [66, 223, 314]},
@@ -1193,7 +1194,7 @@
     "283": {"from": [475], "to": [305, 278, 49, 94, 35]},
     "284": {"from": [475], "to": [305, 49, 35, 254, 240]},
     "285": {"from": [44], "to": [105, 308, 327, 330, 296]},
-    "286": {"from": [282, 272], "to": []},
+    "286": {"from": [282, 272, 50], "to": []},
     "287": {"from": [30], "to": [241, 37, 227, 188]},
     "288": {"from": [280, 334], "to": []},
     "289": {"from": [294, 310], "to": []},

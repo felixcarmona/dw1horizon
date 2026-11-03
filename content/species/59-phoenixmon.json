@@ -1,7 +1,7 @@
 {
   "id": 59,
   "name": "Phoenixmon",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla": true,
   "attribute": "vaccine",
   "specialties": ["air", "fire", null],

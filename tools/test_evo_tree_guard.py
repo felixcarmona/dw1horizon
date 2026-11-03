@@ -35,10 +35,11 @@ class GuardTests(unittest.TestCase):
             sp[c]['evolution']['requirements']['digimon'] = p
         self.assertIn('parent bonus names a removed route', self.errors(stale_bonus))
 
-    def test_native_story_level_is_preserved(self):
-        c = self.names['Jijimon']
-        self.assertIn('disc/story Mega must remain Ultimate',
-                      self.errors(lambda s, k: s[c].update(level='mega')))
+    def test_disc_and_story_megas_are_mega(self):
+        for name in ('Phoenixmon', 'Jijimon'):
+            c = self.names[name]
+            self.assertIn('sheet Mega must be level 6',
+                          self.errors(lambda s, k: s[c].update(level='ultimate')))
 
     def test_mega_cannot_have_a_mega_parent(self):
         p, c = self.names['MetalGarurumon'], self.names['Omnimon']
@@ -76,15 +77,17 @@ class GuardTests(unittest.TestCase):
         self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))
 
     def test_import_cannot_evolve_at_the_same_level(self):
-        p, c = self.names['MegaKabuterimon'], self.names['HerculesKabuterimon']
+        p, c = self.names['MegaKabuterimon'], self.names['Zudomon']
         self.assertIn('evolution level step must be +1', self.errors(lambda s, k: k[p].append(c)))
 
     def test_native_step_exception_cannot_be_reused_by_an_import(self):
         def imported_copy(sp, kids):
-            sp[999] = copy.deepcopy(sp[self.names['Etemon']])
+            sp[999] = copy.deepcopy(sp[self.names['Kabuterimon']])
             sp[999]['id'] = 999
-            kids[999] = [self.names['MetalEtemon']]
-        self.assertIn('evolution level step must be +1', self.errors(imported_copy))
+            kids[999] = [self.names['HerculesKabuterimon']]
+        errors = self.errors(imported_copy)
+        self.assertIn('evolution level step must be +1', errors)
+        self.assertIn('Champion parent of a canon Mega', errors)
 
     def test_vanilla_swap_cannot_change_level(self):
         c = self.names['Tapirmon']

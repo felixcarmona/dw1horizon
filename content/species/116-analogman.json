@@ -1,7 +1,7 @@
 {
   "id": 116,
   "name": "Analogman",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["mech", "air", null],
