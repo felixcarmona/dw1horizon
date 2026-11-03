@@ -12,9 +12,9 @@
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 40,
   "model": {
-    "file": "build/sizes-out/models/Daemon.MMD",
-    "radius": 175,
-    "height": 662,
+    "file": "build/sizes-out/models/Creepymon.MMD",
+    "radius": 149,
+    "height": 563,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 1], [6, 1], [7, 1], [8, 8], [9, 9], [10, 10],
                  [11, 1], [12, 1], [13, 13], [14, 14], [15, 15], [16, 13], [17, 17], [18, 18]],
     "slot_aliases": [[46, 56], [47, 56], [48, 52], [49, 52], [50, 56], [51, 52], [53, 52], [54, 52], [55, 52],
@@ -23,9 +23,9 @@
   "texture": {"file": "build/batch11/Daemon.TIM", "entry": 0},
   "voice": 36,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -140, -15, 7],
-  "effect_origins": [[7, "any", 0, 0, 5, -126, 273, -42], [10, "any", 0, 0, 10, 32, -117, 19],
-                     [1, "any", 0, 0, 13, 0, 0, 0], [6, "any", 0, 0, 4, -77, 276, -143]],
+  "condition_bubble": [0, -119, -13, 7],
+  "effect_origins": [[7, "any", 0, 0, 5, -107, 232, -36], [10, "any", 0, 0, 10, 27, -100, 16],
+                     [1, "any", 0, 0, 13, 0, 0, 0], [6, "any", 0, 0, 4, -65, 235, -122]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw3",
@@ -34,6 +34,7 @@
     "base_scale": 0.618,
     "natural": {"height": 809.0, "half_width": 356.0, "half_depth": 234.6}
   },
+  "size": {"height": 563},
   "partner": {
     "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],

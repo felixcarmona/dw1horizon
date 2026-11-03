@@ -14,8 +14,8 @@ import motionstorage
 from tools.models.field_animations.channels import coalesce, replace_channels
 from motiondiscidentity import changed_programs
 
-SOURCE = 'e18c13a71d9c83ea4e5bdd10795eb22836c33166df5cf6b5145cd80d222ea869'
-OUTPUT = '9f996ef648965a5f1fc0966de0af86c0cfd03c14ab407e258e80a372ce182e98'
+SOURCE = '9fdfb466b16e05421e62f059493c9c552dd7faeb3073c5525ea930c2e948d7b8'
+OUTPUT = 'ba19353476ffe4b98721d9520f7b230812b963ddd6967dfb1bd36fc8c2b45702'
 PARENTS = [-1, 0, 1, 2, 2, 4, 5, 6, 2, 8, 9, 10, 2, 12,
            13, 2, 15, 16, 2, 18, 1, 20, 21, 1, 23, 24, 1, 1]
 CHANNELS = {(bone, channel) for bone in range(20, 26) for channel in (3, 4, 5)}

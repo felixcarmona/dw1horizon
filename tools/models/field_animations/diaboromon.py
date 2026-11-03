@@ -18,7 +18,7 @@ import motionstorage
 from tools.models.field_animations.gliding import _forward
 from tools.models.field_animations.war_greymon import rotation, set_rotation
 from motiondiscidentity import changed_programs
-SOURCE = '1b4979e641c58df07dd19f861aaff8989e36be8a654fa299b0411faa2c0dde34'
+SOURCE = 'e79c84236b31965ce7c37fafce912afec76b765ab05e0eee3f7dd16153fbfc11'
 PARENTS = [-1, 14, 1, 2, 3, 4, 1, 6, 7, 8, 1, 10, 11, 12, 15, 0, 15, 16, 17, 18, 15, 20, 21, 22]
 
 def replace_channels(original, samples, loop, nb, channels, tolerance=2):
