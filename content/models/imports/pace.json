@@ -479,9 +479,9 @@
   "name": "Gryphonmon",
   "bones": 25,
   "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092",
-  "source_sha256": "075039db407d792e0644efdd9ab1904cc7f91e26904755029341eb68bf2b9f55",
+  "source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
   "base_generator": null,
-  "post_source_sha256": "075039db407d792e0644efdd9ab1904cc7f91e26904755029341eb68bf2b9f55",
+  "post_source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
   "slots": {
    "2": {
     "from": 2,
