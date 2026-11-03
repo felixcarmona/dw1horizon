@@ -62,10 +62,14 @@
   "shortcut_taken": 737,
   "tapirmon_stirred": 779,
   "thaw_told": 734,
+  "tuskmon_met": 781,
   "vault_kept": 731,
   "whamon_hurt": 753
  },
  "vars": {
+  "deal_day": 12,
+  "deal_item": 13,
+  "deal_step": 14,
   "memories": 9,
   "whamon_left_day": 10,
   "whamon_left_year": 11

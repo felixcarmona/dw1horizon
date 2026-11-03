@@ -283,7 +283,8 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   `spawn_item(item, at=(x, z))` (an item on the ground, picked up in passing; world units like every position),
   `objects[n].show()/hide()/animate(k)`, `spawn_chest(item, at=(x, z), opened=a_flag)` (in `on_enter`; the flag is set when
   the chest is taken and keeps it open; `facing=` 0, 1024, 2048 or 3072), `shop(Item.A, Item.B)` (in `on_talk`: the NPC
-  being talked to opens the game's buy/sell menu with these items, in its own box), `roll = random.roll(2)` then
+  being talked to opens the game's buy/sell menu with these items, in its own box; `keeper.shop(...)` from any handler,
+  such as a counter's use tile), `roll = random.roll(2)` then
   `if roll == 0:` (a draw, kept until the next; `random.chance(p)` for a percentage), `call(Routine.x, arg=)`; the writer types the
   "Received ..." narrator line. Three ways a Digimon joins the city: `recruitable(npc, line=)` is the game's wild
   recruit. In the extended pass it says the line and fights, then recruits only

@@ -48,3 +48,10 @@ It checks the join announcement, the prosperity-50 city arrival, a paid flight,
 the fallen nest, Birdramon's summit rescue without Airdramon or Angemon, a legacy
 departure flag, and Birdramon waiting after a loss. It seeds battle HP and saved
 flags; the game executes the actual fights, rewards and route handlers.
+
+Once Monochromon has moved to File City, his cousin Tuskmon keeps the Monochrome Shop (49) open
+(`monochrome-shop.py`): never before the recruit, never a recruit himself. Talked to across the counter, he
+runs a normal shop for canyon travellers and a deal of the day: one item worth 2000 bits (Large MP,
+Omnipotent, Health Shoe or Digicatfish) at 2500. Two haggles at most (60 %, then 40 %) bring it to 2150 and
+1800; a lost haggle angers him and closes the deal until the next day. The lowest price stays above the
+1000 the item sells for. A full bag or too few bits take nothing.

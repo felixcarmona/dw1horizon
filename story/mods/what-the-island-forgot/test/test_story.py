@@ -234,5 +234,119 @@ class WhamonWait(unittest.TestCase):
                             self.assertFalse(lines)
 
 
+class Byte(Counter):
+    """An engine pstat: 0-255, saturating (REDUCE_PSTAT stops at 0)."""
+    def add(self, value): self.value = min(255, self.value + value)
+    def sub(self, value): self.value = max(0, self.value - value)
+
+
+class TuskmonDeal(unittest.TestCase):
+    """The Monochrome Shop's deal of the day (arcs/canyon/monochrome-shop.py), run on its own Python with the engine mocked."""
+    PATH = Path(__file__).resolve().parents[1] / 'arcs/canyon/monochrome-shop.py'
+
+    @classmethod
+    def setUpClass(cls):
+        tree = ast.parse(cls.PATH.read_text())
+        keep = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name not in ('talk', 'counter', 'conversation')
+                or isinstance(n, ast.Assign) and all(isinstance(t, ast.Name) and t.id.isupper() for t in n.targets)]
+        for fn in keep:
+            if isinstance(fn, ast.FunctionDef): fn.decorator_list = []
+        cls.code = compile(ast.Module(body=keep, type_ignores=[]), str(cls.PATH), 'exec')
+        cls.tree = tree
+
+    def env(self, day=0, stored_day=0, step=0, item=6, bits=5000, roll=0, chance=True, bag_full=False):
+        said, given, taken, menu, bubbles = [], [], [], [], []
+        npc = SimpleNamespace(say=lambda *a: said.append(a[0]),
+                              choose=lambda **o: menu.append(sorted(o)) or menu_pick[0],
+                              ask=lambda **o: menu.append(sorted(o)) or menu_pick[0] == 'buy')
+        menu_pick = ['leave']
+        items = SimpleNamespace(LargeMP=6, Omnipotent=9, HealthShoe=37, Digicatfish=66)
+        pstats = {n: Byte() for n in (88, 89, 93, 247, 248)}
+        env = dict(clock=SimpleNamespace(day=day), deal_day=Counter(stored_day), deal_item=Counter(item),
+                   deal_step=Counter(step), pstat=pstats.__getitem__,
+                   random=SimpleNamespace(roll=lambda n: roll, chance=lambda p: chance),
+                   tuskmon=npc, narrator=npc, Item=items, bits=bits, trigger=lambda n: bag_full,
+                   give=lambda what: given.append(what), take=lambda bits: taken.append(bits),
+                   call=lambda r: bubbles.append((pstats[247].value, pstats[248].value)), wait=lambda ms: None, Routine=SimpleNamespace(monochromon_mood_bubble=28),
+                   dws=self.ends)
+        exec(self.code, env)
+        deal = env['deal']
+        def run():                  # dws("return;") ends the whole talk, as the shared block does in the game
+            try: deal()
+            except Closed: pass
+        env['deal'] = run
+        return env, SimpleNamespace(said=said, given=given, taken=taken, menu=menu, pick=menu_pick, bubbles=bubbles)
+
+    @staticmethod
+    def ends(code):
+        assert code == 'return;', code
+        raise Closed()
+
+    def test_today_is_the_stored_day_only(self):
+        for stored in range(32):
+            for day in range(30):
+                env, _ = self.env(day=day, stored_day=stored)
+                env['deal_is_today']()
+                with self.subTest(stored=stored, day=day):
+                    self.assertEqual(env["pstat"](88).value, int(stored == day + 1))
+
+    def test_a_new_day_rolls_a_new_deal(self):
+        for roll, item in enumerate((6, 9, 37, 66)):
+            env, out = self.env(day=7, stored_day=3, step=4, roll=roll)
+            env['deal']()
+            self.assertEqual((env['deal_day'].value, env['deal_step'].value, env['deal_item'].value), (8, 0, item))
+            self.assertEqual(env['pstat'](93).value, item)          # {item 93} names it
+        env, out = self.env(day=7, stored_day=8, step=4, item=9)    # the same day: kept, and sold
+        env['deal']()
+        self.assertEqual((env['deal_step'].value, env['deal_item'].value, out.menu), (4, 9, []))
+
+    def test_haggle_wins_twice_then_only_buy_or_leave(self):
+        env, out = self.env(day=0, stored_day=1)
+        out.pick[0] = 'haggle'
+        env['deal'](); env['deal']()
+        self.assertEqual(env['deal_step'].value, 2)
+        env['deal']()
+        self.assertEqual(out.menu[-1], ['no', 'yes'])              # no third haggle
+        self.assertEqual(env['deal_step'].value, 2)
+
+    def test_a_lost_haggle_closes_the_deal_until_tomorrow(self):
+        for step in (0, 1):
+            env, out = self.env(day=0, stored_day=1, step=step, chance=False)
+            out.pick[0] = 'haggle'
+            env['deal']()
+            self.assertEqual(env['deal_step'].value, 3)
+            self.assertEqual(out.bubbles, [(10, 3), (10, 5)])            # the angry face over Tuskmon, then taken away
+            out.menu.clear(); env['deal']()
+            self.assertEqual((out.menu, out.taken), ([], []))
+            out.pick[0] = 'leave'; env['clock'].day = 1; env['deal']()
+            self.assertEqual(env['deal_step'].value, 0)
+
+    def test_buying_pays_the_current_price(self):
+        for step, price in ((0, 2500), (1, 2150), (2, 1800)):
+            env, out = self.env(day=0, stored_day=1, step=step, item=37)
+            out.pick[0] = 'buy'
+            env['deal']()
+            self.assertEqual((out.taken, out.given, env['deal_step'].value), ([price], [37], 4))
+
+    def test_no_bits_or_no_room_takes_nothing(self):
+        for kw in (dict(bits=2499), dict(bag_full=True)):
+            env, out = self.env(day=0, stored_day=1, **kw)
+            out.pick[0] = 'buy'
+            env['deal']()
+            self.assertEqual((out.taken, env['deal_step'].value), ([], 0), kw)
+
+    def test_prices_stay_above_what_the_items_sell_for(self):
+        import json
+        root = Path(__file__).resolve().parents[4]
+        items = {json.loads(p.read_text())['id']: json.loads(p.read_text()) for p in (root / 'content/items').glob('*.json')}
+        sell = json.loads((root / 'content/tables/economy.json').read_text())['economy']['shop']['sellPercent']
+        prices = [k.value.value for n in ast.walk(self.tree) if isinstance(n, ast.Call)
+                  and isinstance(n.func, ast.Name) and n.func.id == 'take' for k in n.keywords if k.arg == 'bits']
+        self.assertEqual(sorted(prices), [1800, 2150, 2500])
+        for item in (6, 9, 37, 66):
+            self.assertEqual(items[item]['value'], 2000)
+            self.assertGreater(min(prices), items[item]['value'] * sell // 100)
+
+
 if __name__ == '__main__':
     unittest.main()

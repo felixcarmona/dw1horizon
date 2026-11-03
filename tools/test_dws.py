@@ -2139,6 +2139,13 @@ class PythonMods(unittest.TestCase):
         root, (p,) = self.mod({'a.py': head.replace('@m.on_talk\ndef talk():', '@transport.on_enter(when=trigger(5))\ndef e():')
                                        + '    shop(Item.Meat)\n'})
         self.assertIn('opened by the NPC being talked to', errors_of_py(p))
+        # a keeper behind a counter: `m.shop(...)` from a use tile, the named NPC as the owner
+        root, (p,) = self.mod({'a.py': head.replace('@m.on_talk\ndef talk():', '@transport.on_enter(when=trigger(5))\ndef e():')
+                                       + '    m.shop(Item.Meat)\n'})
+        self.assertEqual(errors_of_py(p), '')
+        self.assertIn('engine.arg = 7;\n            call_routine(routine("shop"));', self.lowered(p))
+        root, (p,) = self.mod({'a.py': head + '    tamer.shop(Item.Meat)\n'})
+        self.assertIn('a shop is opened by an NPC of the screen', errors_of_py(p))
 
     def test_third_review_at(self):
         """dws-python-intuitiveness-3.md 4: the wall error and `dws slots` give the box of the walkable tiles and the overlay
