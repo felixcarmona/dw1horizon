@@ -12,7 +12,7 @@
     },
     "Airdramon": {"parents": ["Biyomon"], "reason": "Canon main line, then family and shared specialty.", "disc": true},
     "Tyrannomon": {
-      "parents": ["Agumon", "Gabumon", "Patamon"],
+      "parents": ["Agumon", "Gabumon", "Patamon", "Vemmon"],
       "reason": "Canon main line, then family and shared specialty.",
       "disc": true
     },
@@ -221,7 +221,7 @@
     "SnowAgumon": {"parents": ["Tsunomon"], "reason": "Canon main line, then family and shared specialty."},
     "Hyogamon": {"parents": ["SnowAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
     "Dokunemon": {"parents": ["Tanemon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
-    "Tankmon": {"parents": ["Hagurumon", "ToyAgumon"], "reason": "Canon main line, then family and shared specialty."},
+    "Tankmon": {"parents": ["Hagurumon", "ToyAgumon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
     "Goblimon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
     "Psychemon": {"parents": ["Tokomon"], "reason": "Canon main line, then family and shared specialty."},
     "ToyAgumon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
@@ -407,7 +407,7 @@
       "chain": true
     },
     "ShellNumemon": {"parents": ["ToyAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
-    "BomberNanimon": {"parents": ["Solarmon"], "reason": "Canon main line, then family and shared specialty."},
+    "BomberNanimon": {"parents": ["Solarmon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
     "RedOtamamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
     "Gatomon": {"parents": ["Salamon", "Renamon"], "reason": "Canon main line, then family and shared specialty."},
     "Candlemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
@@ -574,7 +574,7 @@
       "chain": true
     },
     "Dokugumon": {"parents": ["Dokunemon", "Wormmon"], "reason": "Canon main line, then family and shared specialty."},
-    "Hookmon": {"parents": ["Hagurumon", "Monmon"], "reason": "Canon main line, then family and shared specialty."},
+    "Hookmon": {"parents": ["Hagurumon", "Monmon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
     "SlashAngemon": {
       "parents": ["MagnaAngemon", "Knightmon"],
       "reason": "Canon main line, then family and shared specialty.",
@@ -599,7 +599,7 @@
     "Dinohyumon": {"parents": ["Gazimon", "Armadillomon"], "reason": "Canon main line, then family and shared specialty."},
     "Antylamon": {"parents": ["Unimon", "Lighdramon"], "reason": "Canon main line, then family and shared specialty."},
     "Assaultmon": {
-      "parents": ["Tankmon", "Guardromon", "Hookmon", "Vemmon"],
+      "parents": ["Tankmon", "Guardromon", "Hookmon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Arukenimon": {
@@ -635,7 +635,7 @@
     },
     "Growlmon": {"parents": ["Guilmon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
     "Knightmon": {
-      "parents": ["Vemmon", "Dinohyumon", "Musyamon", "Shurimon"],
+      "parents": ["Dinohyumon", "Musyamon", "Shurimon"],
       "reason": "Canon main line, then family and shared specialty."
     },
     "Kyukimon": {
@@ -660,7 +660,10 @@
       "parents": ["Gotsumon", "Gazimon", "Psychemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "Vemmon": {"parents": ["Hagurumon", "Kokuwamon"], "reason": "Canon main line, then family and shared specialty."},
+    "Vemmon": {
+      "parents": ["Motimon"],
+      "reason": "Canon Rookie (Child). Canon Bowmon is not in the game: Motimon's machine line (shares mech). Children: canon Tyrannomon, then stand-ins for its canon Snatchmon (Hookmon, a grabbing hook), Destromon (Tankmon, an armoured war machine) and Damemon (BomberNanimon, the comic no-good line); all share battle."
+    },
     "Roachmon": {"parents": ["Tentomon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
     "Raijinmon": {
       "parents": ["Silphymon", "Kyukimon"],
@@ -933,6 +936,7 @@
     "324": "champion",
     "325": "champion",
     "328": "champion",
+    "331": "rookie",
     "181": "mega",
     "191": "mega",
     "192": "mega",
@@ -989,7 +993,7 @@
     "5": {"from": [3], "to": [12, 26, 182, 224]},
     "6": {"from": [236, 96], "to": [26, 54, 66]},
     "7": {"from": [45], "to": [54, 59, 213]},
-    "8": {"from": [3, 17, 31], "to": [12, 54, 124, 260, 266]},
+    "8": {"from": [3, 17, 31, 331], "to": [12, 54, 124, 260, 266]},
     "9": {"from": [3, 233], "to": [12, 40, 277, 104]},
     "10": {"from": [4], "to": [54, 61, 64, 112]},
     "11": {"from": [], "to": [14, 120]},
@@ -1055,7 +1059,7 @@
     "71": {"from": [16], "to": [72, 105, 218, 305, 94, 23]},
     "72": {"from": [71, 239], "to": [219, 267]},
     "74": {"from": [44], "to": [262, 298, 332, 431]},
-    "76": {"from": [122, 84], "to": [294, 310]},
+    "76": {"from": [122, 84, 331], "to": [294, 310]},
     "80": {"from": [2], "to": [89, 253, 69, 264, 281, 34]},
     "82": {"from": [30], "to": [189, 201, 330, 105]},
     "84": {"from": [2], "to": [76, 193, 243, 265, 292, 231]},
@@ -1086,7 +1090,7 @@
     "119": {"from": [24, 110], "to": []},
     "120": {"from": [39, 11], "to": []},
     "121": {"from": [25, 282, 272, 91], "to": [181]},
-    "122": {"from": [30, 474], "to": [76, 92, 299, 331, 290]},
+    "122": {"from": [30, 474], "to": [76, 92, 299, 290]},
     "123": {"from": [91, 25], "to": []},
     "124": {"from": [8, 281], "to": [297]},
     "126": {"from": [47, 189, 38], "to": []},
@@ -1140,7 +1144,7 @@
     "229": {"from": [37, 100, 242, 107], "to": [400, 406]},
     "230": {"from": [209, 274], "to": []},
     "231": {"from": [84, 239], "to": [269, 42]},
-    "232": {"from": [251], "to": [113, 294]},
+    "232": {"from": [251, 331], "to": [113, 294]},
     "233": {"from": [2], "to": [250, 320, 324, 69, 9]},
     "234": {"from": [221, 354], "to": [190, 223, 226, 432]},
     "235": {"from": [2], "to": [228, 241, 250, 69, 323]},
@@ -1155,7 +1159,7 @@
     "244": {"from": [243], "to": []},
     "245": {"from": [280, 223], "to": []},
     "246": {"from": [92, 299, 431], "to": [237, 407]},
-    "247": {"from": [474], "to": [252, 262, 331, 290, 92]},
+    "247": {"from": [474], "to": [252, 262, 290, 92]},
     "248": {"from": [190, 219], "to": []},
     "249": {"from": [93, 184], "to": [54, 460]},
     "250": {"from": [235, 233], "to": [277, 104]},
@@ -1207,7 +1211,7 @@
     "296": {"from": [353, 285], "to": [306, 63]},
     "297": {"from": [306, 124, 88], "to": []},
     "298": {"from": [74, 183], "to": [311, 334]},
-    "299": {"from": [122, 352], "to": [246, 310]},
+    "299": {"from": [122, 352, 331], "to": [246, 310]},
     "300": {"from": [206, 321], "to": []},
     "302": {"from": [40], "to": []},
     "303": {"from": [42], "to": []},
@@ -1217,7 +1221,7 @@
     "307": {"from": [269, 42], "to": []},
     "308": {"from": [285, 185], "to": [321, 306]},
     "309": {"from": [33, 201], "to": []},
-    "310": {"from": [76, 92, 299, 331], "to": [289, 335, 405]},
+    "310": {"from": [76, 92, 299], "to": [289, 335, 405]},
     "311": {"from": [298, 431, 332, 67, 328], "to": []},
     "312": {"from": [314, 277], "to": []},
     "313": {"from": [290, 92], "to": [405]},
@@ -1228,7 +1232,7 @@
     "318": {"from": [326], "to": []},
     "319": {"from": [334, 432, 214], "to": []},
     "320": {"from": [433, 233], "to": [260, 326]},
-    "321": {"from": [331, 308, 325, 225], "to": [300, 430]},
+    "321": {"from": [308, 325, 225], "to": [300, 430]},
     "322": {"from": [225, 409, 252, 325, 328], "to": [317, 333]},
     "323": {"from": [251, 235], "to": [306, 63]},
     "324": {"from": [180, 233], "to": [213, 197]},
@@ -1238,7 +1242,7 @@
     "328": {"from": [263, 111, 183, 273], "to": [311, 322]},
     "329": {"from": [41, 334, 54], "to": []},
     "330": {"from": [68, 285, 82], "to": [257, 334]},
-    "331": {"from": [122, 247], "to": [310, 321]},
+    "331": {"from": [474], "to": [8, 299, 76, 232]},
     "332": {"from": [111, 74], "to": [269, 311]},
     "333": {"from": [226, 322], "to": []},
     "334": {"from": [241, 37, 298, 327, 330], "to": [288, 319, 329]},
@@ -1269,7 +1273,7 @@
     "471": {"from": [], "to": [475]},
     "472": {"from": [], "to": [476]},
     "473": {"from": [], "to": [477]},
-    "474": {"from": [470], "to": [111, 247, 183, 122]},
+    "474": {"from": [470], "to": [111, 247, 183, 122, 331]},
     "475": {"from": [471], "to": [217, 109, 239, 283, 284]},
     "476": {"from": [472], "to": [221, 96, 236, 353]},
     "477": {"from": [473], "to": [45, 273, 184, 263]}
