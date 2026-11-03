@@ -22,7 +22,8 @@ explains what to do when the sector count changes; recipes: docs/mods/maps.md):
                                                    (V = free|wall|exit:K|toilet|step:N|press:N|number; `edit -h`)
   dwmap.py bg NAME.MAP NAME.TFS OUT.TFS [--paste PNG X Y] [--text X Y TEXT] [--fill X0 Y0 X1 Y1 RGB]
              [--fill-tiles TX0 TZ0 TX1 TZ1 RGB] [--scale N --color RGB --box RGB --at-world] [--overlay OUT.png]
-                                                   background region edits keeping the palette
+             [--map-out OUT.MAP]                   background region edits keeping the palette; the cut-outs over
+                                                   them take the new pixels (written with --map-out)
   dwmap.py overlay NAME.MAP OUT.png [--tfs F] [--clut 0|1|2] [--no-collision] [--no-grid]
                                                    see a (edited) map without the emulator; the grid labels the world
                                                    coordinates every 500 (what npc(..., at=(x, z)) is written in)
@@ -1082,15 +1083,85 @@ def tfs_put_pixels(m, t, pixels):
 
 
 def covering_instances(m, x0, y0, x1, y1):
-    """Sprite instances whose first frame overlaps the background rectangle (they are drawn on top)."""
+    """Sprite instances with a frame that overlaps the background rectangle (they are drawn on top)."""
     out = []
     for i, inst in enumerate(m.instances):
-        fr = [f for f in inst['frames'] if f >= 0]
-        if not fr or fr[0] >= len(m.sprites) or inst['flag'] == 1 or inst['flag'] & 0x80: continue
-        sp = m.sprites[fr[0]]
-        if inst['x'] < x1 and x0 < inst['x'] + sp['width'] and inst['y'] < y1 and y0 < inst['y'] + sp['height']:
-            out.append(i)
+        if inst['flag'] == 1 or inst['flag'] & 0x80: continue
+        for f in {f for f in inst['frames'] if 0 <= f < len(m.sprites)}:
+            sp = m.sprites[f]
+            if inst['x'] < x1 and x0 < inst['x'] + sp['width'] and inst['y'] < y1 and y0 < inst['y'] + sp['height']:
+                out.append(i); break
     return out
+
+
+def cutout_holes(t, mode=1):
+    """Palette indices that a cut-out of the background (definition clut −1) never draws, in every CLUT: colour 0x0000,
+    and 0x8000 (black with the semi-transparency bit) under the additive and subtractive modes 1–3 (`transparency`),
+    where it adds or takes nothing. DGHA01, GCAN01, GOMI02 and MAYO10 key their cut-outs with index 255 that way:
+    0x8000 by day, 0x0000 at evening and night, and the game shows no black by day."""
+    def hole(c): return c == 0 or (c == 0x8000 and mode in (1, 2, 3))
+    return {i for i in range(256) if all(hole(c[i]) for c in t.cluts)}
+
+
+def _sprite_texels(m):
+    """{(page column, row): (TIM k, byte offset in the TIM)} for every 8 bpp TIM of the map's sprite pages
+    (texX counts 8 bpp texels from VRAM x 384; loadMapObjects)."""
+    where = {}
+    for k, raw in enumerate(m.tims):
+        tim = TIM(raw)
+        if tim.bpp != 8: continue
+        start = tim.size - len(tim.pixels)
+        for y in range(tim.h):
+            for x in range(tim.w * 2):
+                where[((tim.x - 384) * 2 + x, tim.y + y)] = (k, start + y * tim.w * 2 + x)
+    return where
+
+
+def refresh_cutouts(m, before, after):
+    """A retouched background (TFS `before` → `after`) also changes the map's cut-outs drawn over the characters:
+    every texel of a shown instance's frames (clut −1, the background's own palette) that stands on a changed
+    background pixel takes the new pixel's index, so the piece keeps its outline and depth and shows the new art.
+    Holes stay holes; a new index that would be a hole (black of the retouch) becomes the nearest opaque colour.
+    Returns ({instance: texels changed}, conflicts): a texel shared by placements over different pixels keeps the
+    first value, and one that a semi-transparent piece would blend with the characters behind it, are reported."""
+    _, _, a = before.image_indices(m); W, H, b = after.image_indices(m)
+    pal = after.palette_rgb(0); holes = {}; opaque = {}
+    def solid(v, mode):
+        if v not in holes[mode]: return v
+        if (v, mode) not in opaque:
+            r, g, bb = pal[v]
+            opaque[v, mode] = min((i for i in range(256) if i not in holes[mode]),
+                                  key=lambda i: (pal[i][0] - r) ** 2 * 3 + (pal[i][1] - g) ** 2 * 4 + (pal[i][2] - bb) ** 2 * 2)
+        return opaque[v, mode]
+    def blends(v, mode):              # a colour with the semi-transparency bit is mixed with what is behind it
+        return mode in (1, 2, 3) and any(c[v] & 0x8000 and c[v] & 0x7fff for c in after.cluts)
+    where = _sprite_texels(m); raws = {k: bytearray(r) for k, r in enumerate(m.tims)}
+    want = {}; report = {}; conflicts = []
+    for i, inst in enumerate(m.instances):
+        if inst['flag'] == 1 or inst['flag'] & 0x80: continue
+        for f in sorted({f for f in inst['frames'] if 0 <= f < len(m.sprites)}):
+            sp = m.sprites[f]
+            if sp['clut'] != -1: continue
+            mode = sp['transparency']
+            if mode not in holes: holes[mode] = cutout_holes(before, mode)
+            for dy in range(sp['height']):
+                for dx in range(sp['width']):
+                    X, Y = inst['x'] + dx, inst['y'] + dy
+                    loc = where.get((sp['texX'] + dx, sp['texY'] + dy))
+                    if loc is None or not (0 <= X < W and 0 <= Y < H): continue
+                    k, off = loc; v = m.tims[k][off]                      # the texel as the disc has it
+                    if a[Y][X] == b[Y][X] or v in holes[mode]:
+                        if loc in want and want[loc] != v: conflicts.append((i, f, X, Y))
+                        want.setdefault(loc, v); continue
+                    nv = solid(b[Y][X], mode)
+                    if blends(nv, mode): conflicts.append((i, f, X, Y))
+                    if loc in want:
+                        if want[loc] != nv: conflicts.append((i, f, X, Y))
+                        continue
+                    want[loc] = nv
+                    if nv != v: raws[k][off] = nv; report[i] = report.get(i, 0) + 1
+    for k, r in raws.items(): m.tims[k] = bytes(r)
+    return report, conflicts
 
 
 def bg_paste(m, t, png_path, X, Y):
@@ -1606,6 +1677,9 @@ def bg_main(argv):
     ap.add_argument('--box', help='colour of a box behind --text (e.g. 40,30,20)')
     ap.add_argument('--at-world', action='store_true', help='X Y of --text/--paste are world x z (ground point → pixel; centred)')
     ap.add_argument('--overlay', metavar='OUT.png')
+    ap.add_argument('--map-out', metavar='OUT.MAP', help='the map with its cut-outs (sprite pixels drawn over the '
+                    'characters) refreshed from the retouched background: without it a cut-out over the retouch keeps '
+                    'showing the old picture')
     a = ap.parse_args(argv)
     m = MapFile(open(a.map, 'rb').read()); t = TfsFile(open(a.tfs, 'rb').read())
     basis = camera_basis(m)
@@ -1625,10 +1699,18 @@ def bg_main(argv):
         elif op == 'fill_tiles':
             n, box = bg_fill_tiles(m, t, *(int(c) for c in v[:4]), parse_color(v[4]))
         cov = covering_instances(m, *box)
-        print(f'{op}: {n} pixels in {box[0]},{box[1]}-{box[2]},{box[3]}' +
-              (f'; sprite instances {cov} are drawn over that area (hide them with edit --instance I hide)' if cov else ''))
+        print(f'{op}: {n} pixels in {box[0]},{box[1]}-{box[2]},{box[3]}' + (f'; under sprite instances {cov}' if cov else ''))
     if not a.ops: ap.error('no operation given')
+    before = TfsFile(open(a.tfs, 'rb').read())
+    report, conflicts = refresh_cutouts(m, before, t)
+    if report:
+        print('cut-outs refreshed from the retouched background (instance: texels): ' +
+              ', '.join(f'I{i}: {n}' for i, n in sorted(report.items())) +
+              ('' if a.map_out else '; their new pixels are only written with --map-out OUT.MAP'))
+    for i, f, X, Y in conflicts[:10]:
+        print(f'warning: instance I{i} frame {f} at pixel {X},{Y} shares texels with another placement or blends; the first kept')
     data = t.build(); open(a.out, 'wb').write(data); size_report(a.out, data, (original_file(a.map) or a.map)[:-4] + '.TFS')
+    if a.map_out: open(a.map_out, 'wb').write(m.build())
     if a.overlay:
         W, H, img = render_overlay(m, t, collision=False); png_write(a.overlay, W, H, img, mode='RGB'); print(a.overlay)
 

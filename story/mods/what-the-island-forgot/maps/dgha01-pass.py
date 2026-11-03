@@ -29,9 +29,9 @@ CANYON_WARP, CANYON_STEP = 2, 0                        # the way to the canyon e
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('DGHA01')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'DGHA01.TFS'),
-        '--paste', PASS_PNG, str(PASS_AT[0]), str(PASS_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'DGHA01.TFS'),
+            '--paste', PASS_PNG, str(PASS_AT[0]), str(PASS_AT[1])])
+    cam = Cam(m)
     col = list(m.collision); exit_tiles = []; spawn = None; best = None
     for tx, tz, u, v in cam.tiles():
         if u is None: continue

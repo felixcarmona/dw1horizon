@@ -26,10 +26,10 @@ def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('LEOM01')
     # the background: the walkway over the player's own TFS (the palette is kept: unchanged pixels keep their index)
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'LEOM01.TFS'),
-        '--paste', WALKWAY_PNG, str(WALKWAY_AT[0]), str(WALKWAY_AT[1])])
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'LEOM01.TFS'),
+            '--paste', WALKWAY_PNG, str(WALKWAY_AT[0]), str(WALKWAY_AT[1])])
     # the map: exit 1 leads to the chamber; the walkway's tiles and the edge beside it trigger it
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    cam = Cam(m)
     x0, y0, x1, y1 = WALKWAY_BOX; col = list(m.collision); n = 0
     for tx, tz, u, v in cam.tiles():
         if u is None: continue

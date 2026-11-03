@@ -23,9 +23,9 @@ def main(out):
     src = extracted('GOMI02')
     # our cut-out (gomi02-pit.png, with transparency: a Nano Banana edit of a 4x enlargement of this spot, cut out and feathered) laid over the
     # player's own background at build time; nothing of the game's background is in this folder
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'GOMI02.TFS'),
-        '--paste', os.path.join(MOD, 'art', 'gomi02-pit.png'), '440', '80'])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'GOMI02.TFS'),
+            '--paste', os.path.join(MOD, 'art', 'gomi02-pit.png'), '440', '80'])
+    cam = Cam(m)
     col = list(m.collision)
     for tx, tz in EXIT_TILES: col[tz * 100 + tx] = 110 + WARP
     m.collision = col

@@ -27,9 +27,8 @@ BRIDGE_AT = (270, 10)                                   # top-left of the pictur
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('GCAN01')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'GCAN21.TFS'),
-        '--paste', BRIDGE_PNG, str(BRIDGE_AT[0]), str(BRIDGE_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read())
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'GCAN21.TFS'),
+            '--paste', BRIDGE_PNG, str(BRIDGE_AT[0]), str(BRIDGE_AT[1])])
     from district_foreground import apply
     apply(m, 'stone-bridge', os.path.join(out, 'GCAN21.TFS'))
     open(os.path.join(out, 'GCAN21.MAP'), 'wb').write(m.build())

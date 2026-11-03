@@ -22,50 +22,12 @@ ROTATION = 1024                                         # facing +X: onto the be
 TARGET = (314, 1)                                       # the Root Clearing's south-east path
 
 
-def refresh_stair_foreground(m, original_tfs, stair_tfs):
-    """Keep the donor cliff's cutout in sync with the existing stair composite.
-
-    The TFS paste alone leaves the original cliff drawn over the stairs until
-    its rectangular sprite ends at (232, 255). Copy only changed background
-    indices into that sprite, retaining its depth and existing transparent texels.
-    """
-    with open(original_tfs, 'rb') as f:
-        original = dwmap.TfsFile(f.read())
-    with open(stair_tfs, 'rb') as f:
-        stairs = dwmap.TfsFile(f.read())
-    _, _, before = original.image_indices(m)
-    _, _, after = stairs.image_indices(m)
-    inst = m.instances[0]
-    sp = m.sprites[inst['frames'][0]]
-    tim = dwmap.TIM(m.tims[0])
-    assert (tim.bpp, tim.x, tim.y, sp['texX'], sp['texY'], sp['clut']) == (8, 384, 0, 0, 0, -1)
-    pixels = bytearray(tim.pixels)
-    changed = 0
-    for y in range(sp['height']):
-        for x in range(sp['width']):
-            bx, by = inst['x'] + x, inst['y'] + y
-            p = y * tim.w * 2 + x
-            # Index 1 is transparent by day but coloured at dusk/night; only a
-            # texel transparent in every CLUT belongs to the donor's mask.
-            if before[by][bx] != after[by][bx] and any(c[pixels[p]] != 0 for c in original.cluts):
-                pixels[p] = after[by][bx]
-                changed += 1
-    raw = bytearray(m.tims[0])
-    start = tim.size - len(pixels)
-    raw[start:start + len(pixels)] = pixels
-    m.tims[0] = bytes(raw)
-    return changed
-
-
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('MAYO05')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'MAYO05.TFS'),
-        '--paste', PATH_PNG, str(PATH_AT[0]), str(PATH_AT[1])])
-    with open(src + '.MAP', 'rb') as f:
-        m = dwmap.MapFile(f.read())
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'MAYO05.TFS'),
+            '--paste', PATH_PNG, str(PATH_AT[0]), str(PATH_AT[1])])        # the cliff's cut-out takes the steps too
     cam = Cam(m)
-    refreshed = refresh_stair_foreground(m, src + '.TFS', os.path.join(out, 'MAYO05.TFS'))
     col = list(m.collision)
     for tx, tz in EXIT_TILES: col[tz * 100 + tx] = 111
     m.collision = col
@@ -78,7 +40,7 @@ def main(out):
     if (sx, sz) not in R: sys.exit('the arrival from the clearing is not reachable')
     if not any((tx * 100 - 4950 + dx, 4950 - tz * 100 + dz) in R for tx, tz in EXIT_TILES for dx in (-50, 0, 50) for dz in (-50, 0, 50)):
         sys.exit('the steps are not reachable')
-    print(f'MAYO05: steps exit tiles {len(EXIT_TILES)}, spawn px {cam.pixel(sx, sz)}, reach {len(R)}, foreground texels {refreshed}')
+    print(f'MAYO05: steps exit tiles {len(EXIT_TILES)}, spawn px {cam.pixel(sx, sz)}, reach {len(R)}')
 
 
 if __name__ == '__main__':

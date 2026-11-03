@@ -32,9 +32,9 @@ def inside(poly, u, v):
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('GCAN10')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'NEST02.TFS'),
-        '--paste', NEST_PNG, str(NEST_AT[0]), str(NEST_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'NEST02.TFS'),
+            '--paste', NEST_PNG, str(NEST_AT[0]), str(NEST_AT[1])])
+    cam = Cam(m)
     w, h, mode, rows, _ = dwmap.png_read(NEST_PNG, alpha=True)
     alpha = [[r[4 * x + 3] > 127 for x in range(w)] for r in rows]
     X, Y = NEST_AT; hidden = []

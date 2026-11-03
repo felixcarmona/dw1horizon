@@ -26,9 +26,9 @@ TARGET = (310, 0)                                       # the Wall of Hearts
 def main(out):
     os.makedirs(out, exist_ok=True)
     src = extracted('ICSA08')
-    bg([src + '.MAP', src + '.TFS', os.path.join(out, 'ICSA08.TFS'),
-        '--paste', GATEWAY_PNG, str(GATEWAY_AT[0]), str(GATEWAY_AT[1])])
-    m = dwmap.MapFile(open(src + '.MAP', 'rb').read()); cam = Cam(m)
+    m = bg([src + '.MAP', src + '.TFS', os.path.join(out, 'ICSA08.TFS'),
+            '--paste', GATEWAY_PNG, str(GATEWAY_AT[0]), str(GATEWAY_AT[1])])
+    cam = Cam(m)
     col = list(m.collision)
     for tx, tz in GATEWAY_TILES: col[tz * 100 + tx] = 111
     m.collision = col

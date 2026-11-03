@@ -113,14 +113,20 @@ nInstances × { frames[8], times[8], x, y, flag }                            19 
   0x14–0x22 at random (snow, `overworld.c:330`); fog on 115–119, 121, 163, 220
   (`renderMapOverlays`, `overworld.c:436`).
 
-A background retouch must also update overlapping foreground cutouts. Coela Point
-(`MAYO05`, screen 5) adds stairs to the TFS, beneath the original cliff sprite.
-Its recipe copies the changed background indices into the existing cliff TIM so
-that the donor cliff does not hide the entrance up to a rectangular sprite edge.
-The copy keeps existing transparent texels, testing all three CLUTs: index 1 is
-transparent by day but coloured at dusk and night. It changes no palette, sprite
-geometry or VRAM allocation. The beach turning grey-green at night is the
-original TFS palette, shared by the background and cutouts.
+A background retouch must also update overlapping foreground cutouts: they are copies of the background's pixels
+drawn over the characters, so a cut-out left alone keeps drawing the old picture over the new one (Overdell's notch,
+DGHA01, 2026-11-03: the old boulder sat over the new pocket in rectangles). `dwmap.py bg` does it: after its edits, every
+texel of a shown instance's frames (definitions with `clut −1`) over a changed background pixel takes the new index,
+so the piece keeps its outline and depth and shows the new art (`refresh_cutouts`); `--map-out` writes that map, and
+`mapbase.bg` returns it, so a recipe builds its `.MAP` from it, never from the disc's. Holes stay holes: a texel is a
+hole when every CLUT gives it colour `0x0000`, or `0x8000` under the semi-transparency modes 1–3, where black with
+the bit adds or takes nothing (DGHA01, GCAN01, GCAN10, MAYO10 and GOMI02 key their cut-outs with index 255 = `0x8000`
+by day and `0x0000` later; the game shows no black). A new pixel that would be a hole becomes the nearest drawn colour.
+Index 1 of MAYO05 (transparent by day, coloured at dusk and night) is not a hole and is refreshed. A texel shared by
+two placements over different pixels, or one a semi-transparent piece would blend, fails the recipe. No palette,
+sprite geometry or VRAM allocation changes. Check the depth of a refreshed piece against the walkable tiles behind
+its anchor (a character there is drawn under the new art). The beach turning grey-green at night is the original
+TFS palette, shared by the background and cutouts.
 
 ### Entity section (all `s16`)
 
