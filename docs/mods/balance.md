@@ -271,6 +271,7 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
 | Ground items (patch 0230) | rolled again on every entry | a spot gives its item once a day | Amida Forest's road gave about 1260 bits an entry |
+| New screens' ground items (`content/ground-items.json` `"off"`) | — | 3 of the 7 mushrooms of Native Forest's script they share, on reachable floor | all 7 on 34 screens was about 240 free daily pickups |
 | Battle bits (patch 0235, `economy.json` `battle.bitsPercent`) | the enemies' bits | 150 % | money earned by playing: a fight paid one or two days of upkeep, and nothing was worth saving for |
 | Chips for bits (`secret-item-shop/s177`, Devimon's hours) | merit only (800) | the six chips at 9999 each too | a sink worth saving for on the original story too (a chip sells for 4999: no loop) |
 | Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all (Mojyamon's Digianchovy -> Meat: 25 -> 15, still under its input) |
@@ -302,6 +303,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 | Digitamamon's roll | one in three each | 30 / 30 / 40 %, all stats | a late recruit's meal should please |
 | Drimogemon's plans | 3 days 1000 bits, 10 days 5000 bits | 1 day 2000 bits, 3 days 5000 bits, new tables; with Gabumon 5 % roll another item | the price is what stops a daily profit: the 1000 bits a day table would sell for 1545 |
 | Underground Pond dirt hauling (`underground-pond/s029-28`, `file-city/s162`) | 10 round trips, each 500 bits, Off and Def +5, HP +50, tiredness +10 | 5 round trips, each 1000 bits, Off and Def +10, HP +100, tiredness +20; the pile shrinks two steps a trip, a box carried home counts as a trip | the same totals (5000 bits once, the tunnel's work done) in half the walking; the five-day wait still finishes it |
+| Poison Claw (`content/techniques/37-poison-claw.json`) | 17 MP (51 shown) | 22 (66 shown) | 44 partners can learn it (10 on the disc), and its poison takes 1-3 % of the foe's max HP every 5 s: cheap enough to spam on every boss |
 | Death evolutions (`libraries/s212`) | 10 % | 30 %; Devimon stays at 50 % | a player should see them without resetting |
 | Evolution items (patch 0323) | no gains, lifetime or tamer level | as any evolution | they are rare, they should not punish |
 | Evolution rows `techs` | a bonus for 21-49 techniques | gone; Gigadramon asks 100 battles instead | the bonus could stand in for the stats, so a raised partner took another route |

@@ -3,7 +3,7 @@
   "name": "Poison Claw",
   "element": "nature",
   "power": 62,
-  "mpCost": 17,
+  "mpCost": 22,
   "distance": 0,
   "range": 1,
   "accuracy": 60,
