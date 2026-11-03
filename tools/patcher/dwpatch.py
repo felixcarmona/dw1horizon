@@ -46,6 +46,23 @@ class PatchError(Exception):
     pass
 
 
+class Stopped(PatchError):
+    """The player stopped the build (CANCEL was set)."""
+
+
+# ---------------------------------------------------------------- the desktop app's interface (tools/patcher/gui.py)
+# The app loads this file from the release package it downloaded and calls apply_disc() on a thread: status() is the
+# progress; setting CANCEL (a threading.Event) stops the build at the next progress tick or derive output line (the
+# derive processes are killed and nothing is written). The command line never sets CANCEL.
+GUI_API = 1
+CANCEL = None
+
+
+def _check_cancel():
+    if CANCEL is not None and CANCEL.is_set():
+        raise Stopped('stopped.')
+
+
 # ---------------------------------------------------------------- small helpers
 SCREEN = None                    # apply's screen while it runs (Screen): say() and Progress go through it
 
@@ -71,6 +88,7 @@ class Progress:
         self.what, self.total, self.last, self.t0 = what, max(1, total), -1, time.time()
 
     def __call__(self, done):
+        _check_cancel()
         if SCREEN is not None and not SCREEN.verbose:
             SCREEN.part(done / self.total)
             return
@@ -137,6 +155,7 @@ class Screen:
 
     def write_raw(self, text):
         """Output of a tool the patcher runs (derive): to the log, and with --verbose to the screen."""
+        _check_cancel()
         with self.lock:
             if self.logf:
                 self.logf.write(text); self.logf.flush()
@@ -155,6 +174,7 @@ class Screen:
 
     def start(self, key):
         """Phase `key` begins: the current one and any before `key` not started (skipped) count as done."""
+        _check_cancel()
         with self.lock:
             now = time.time()
             if self.cur is not None:
@@ -184,6 +204,7 @@ class Screen:
                 self.frac, self.measured = 1.0, True
 
     def part(self, f):
+        _check_cancel()
         with self.lock:
             self.frac, self.measured = max(0.0, min(1.0, f)), True
             self._draw()
@@ -209,6 +230,15 @@ class Screen:
         if self.cur is None:
             return 0.0
         return min(1.0, (self.done_w + self.weight[self.cur] * self.frac_now(now)) / self.total)
+
+    def state(self, now=None):
+        """{fraction 0..1, phase (its key or None), words, elapsed and left (seconds)}: what the bar shows."""
+        with self.lock:
+            now = now or time.time()
+            f = self.fraction(now)
+            left = max(0.0, (1 - f) * self.total * self._rate(now, current=True)) if self.cur else 0.0
+            return dict(fraction=f, phase=self.cur, words=self.words.get(self.cur, 'starting'),
+                        elapsed=now - self.t0, left=left, closed=self.closed)
 
     def line(self, now=None):
         now = now or time.time()
@@ -1137,7 +1167,9 @@ def _derive_lines(process, job):
             if not stopped and code is not None and code != 0:
                 _stop_derive(process, job); stopped = True
             try: item = pending.get(timeout=.1)
-            except queue.Empty: continue
+            except queue.Empty:
+                _check_cancel()                            # (a long silent step can still be stopped)
+                continue
             if item is None: break
             if isinstance(item, BaseException): raise item
             yield item
@@ -1385,9 +1417,10 @@ def cmd_apply3(a, rel, m):
         open(log, 'w').close()
     except OSError as e:
         raise PatchError(f'cannot write in {out_dir} ({e.strerror}): choose another folder with -o FOLDER.')
-    if not a.verbose:
+    quiet = getattr(a, 'quiet', False)                   # (the desktop app: nothing on stdout)
+    if not a.verbose and not quiet:
         print(f'{release_line(m)}, {vname}: patching {os.path.basename(src)}', flush=True)
-    SCREEN = Screen(apply_phases(m, v), log, verbose=a.verbose)
+    SCREEN = Screen(apply_phases(m, v), log, verbose=a.verbose, out=_Null() if quiet else None)
     say(f'{release_line(m)} - {vname}: {v["description"]}')
     say(f'release {m["version"]} ({m["commit"]}), Python {sys.version.split()[0]} on {sys.platform}, '
         f'{os.cpu_count()} CPUs; the log: {log}')
@@ -1432,9 +1465,10 @@ def cmd_apply3(a, rel, m):
     SCREEN.done()
     say(f'\nDone. Load this file in your emulator:\n  {cue}\n(and keep {os.path.basename(out_bin)} next to it)')
     SCREEN.close(); SCREEN = None
-    if not a.verbose:
+    if not a.verbose and not quiet:
         print(f'\nDone. Load this file in your emulator:\n  {cue}\n(and keep {os.path.basename(out_bin)} next to it; '
               f'what was done is in {os.path.basename(log)})', flush=True)
+    return dict(cue=cue, bin=out_bin, log=log, base=key, sha1=sha)
 
 
 def read_patch_file(rel_dir, v):
@@ -1970,6 +2004,46 @@ def _stop(msg):
         print(f'\n{msg}', flush=True)
     print(f'\nWhat was done, step by step, is in this file:\n  {sc.log_path}', flush=True)
     return 1
+
+
+class _Null:
+    """A screen stream that shows nothing (the desktop app draws its own)."""
+    def write(self, text): return len(text)
+    def flush(self): pass
+    def isatty(self): return False
+
+
+def status():
+    """The running apply's progress (Screen.state()), or None when no apply runs. Safe from another thread."""
+    sc = SCREEN
+    return sc.state() if sc is not None else None
+
+
+def apply_disc(disc, source_discs, output=None, release=None):
+    """apply as the command line runs it, for a program that calls it (the desktop app): disc, its .cue or .bin;
+    source_discs {game: image}; output the folder (default: "patched" next to the disc); release the package folder
+    (default: this file's). Prints nothing. -> {cue, bin, log, base, sha1}. Raises PatchError (Stopped when CANCEL
+    was set) with the player's message, or the unexpected exception; either way its `log` attribute names the log
+    when one was started (the traceback of an unexpected one is in it)."""
+    global SCREEN
+    a = argparse.Namespace(disc=disc, output=output, variant=None, release=release, verbose=False, quiet=True,
+                           source_disc=[f'{game}={path}' for game, path in sorted(source_discs.items())])
+    try:
+        return cmd_apply(a)
+    except BaseException as e:
+        sc, SCREEN = SCREEN, None
+        if sc is not None:
+            e.log = sc.log_path
+            if not isinstance(e, PatchError):
+                import traceback
+                with sc.lock:
+                    if sc.logf: sc.logf.write(traceback.format_exc())
+            sc.done(ok=False)
+            sc.log(f'\nERROR: {e}' if not isinstance(e, Stopped) else '\nstopped.')
+            sc.close()
+        raise
+    finally:
+        SCREEN = None
 
 
 if __name__ == '__main__':

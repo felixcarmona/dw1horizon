@@ -1,0 +1,260 @@
+name: Desktop patchers
+
+# The Windows and macOS apps (tools/patcher/gui.py, frozen by tools/patcher/app/build.py), built from source here and
+# tested headless (gui.py --self-test: the app as Python, spawned workers, dwpatch's derive launch, the latest
+# release's package downloaded and checked, the window). Pull requests and manual runs only keep artifacts; a release
+# tag (pushed, or given to a manual run) also attaches the zips to that tag's GitHub Release. No disc is used.
+
+on:
+  pull_request:
+    paths:
+      - 'tools/patcher/**'
+      - 'tools/isowriter.py'
+      - 'tools/test_desktop_patcher.py'
+      - 'web/i18n/**'
+      - 'web/data/discs.json'
+      - '.github/workflows/desktop.yml'
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing vMAJOR.MINOR.PATCH tag: build it and attach the apps to its release (empty: artifacts only)'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: desktop-${{ github.ref }}-${{ inputs.tag || '' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.tag || '' }}
+  PYINSTALLER: pyinstaller==6.22.3 pyinstaller-hooks-contrib==2026.9
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Check out the release tag
+        if: env.RELEASE_TAG != ''
+        shell: bash
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Unit tests
+        working-directory: tools
+        # (not test_patcher_paths here: its folder names end in a space, which Windows does not allow)
+        run: python -m unittest test_desktop_patcher -v
+      - name: Build
+        shell: bash
+        run: |
+          python -m pip install --disable-pip-version-check $PYINSTALLER
+          python tools/patcher/app/build.py ${RELEASE_TAG:+--version "$RELEASE_TAG"}
+      - name: Self-test the frozen app (no console, no discs)
+        shell: bash
+        run: |
+          python - <<'EOF'
+          import os, subprocess, sys
+          sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+          exe = r'build\desktop\dist\Horizon Patcher\Horizon Patcher.exe'
+          # The windowed program as a child with pipes, as dwpatch starts it.
+          r = subprocess.run([exe, '-c', 'import sys; print("child", sys.argv[1:], sys.flags.utf8_mode)', 'a b'],
+                             capture_output=True, timeout=120)
+          print('child:', r.returncode, r.stdout, r.stderr)
+          code = 1
+          try:
+              code = subprocess.run([exe, '--self-test', '--download', '--gui', '--report', 'selftest.txt'],
+                                    timeout=1200).returncode
+          except subprocess.TimeoutExpired:
+              print('the self-test did not finish in 20 minutes')
+          finally:
+              if os.path.exists('selftest.txt'):
+                  print(open('selftest.txt', encoding='utf-8').read())
+          sys.exit(code or (r.returncode != 0))
+          EOF
+      - name: Version information
+        shell: pwsh
+        run: |
+          $info = (Get-Item 'build\desktop\dist\Horizon Patcher\Horizon Patcher.exe').VersionInfo
+          $info | Format-List ProductName, ProductVersion, FileVersion, CompanyName, FileDescription
+          if ($info.ProductName -ne 'Digimon World: Horizon Patcher') { exit 1 }
+      - name: Zip
+        shell: pwsh
+        run: Compress-Archive -Path 'build\desktop\dist\Horizon Patcher' -DestinationPath Horizon-Patcher-Windows.zip
+      # The unsigned build, as an artifact a signing service can take (see docs/release/releasing.md, "Code
+      # signing"). Once the project is accepted by SignPath, a step goes here:
+      # - uses: signpath/github-action-submit-signing-request@v1
+      #   with:
+      #     api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #     organization-id: ...
+      #     project-slug: ...
+      #     signing-policy-slug: release-signing
+      #     github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+      #     wait-for-completion: true
+      #     output-artifact-directory: signed
+      # and the release upload takes the signed zip instead.
+      - uses: actions/upload-artifact@v4
+        id: unsigned
+        with:
+          name: Horizon-Patcher-Windows
+          path: Horizon-Patcher-Windows.zip
+          if-no-files-found: error
+
+  macos:
+    runs-on: macos-15
+    env:
+      HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' && secrets.ASC_KEY_P8 != '' }}
+      # python.org's universal2 installer: one app for Apple silicon and Intel Macs, with its own Tcl/Tk.
+      PY_VERSION: 3.13.17
+      PY_SHA256: 3053592af66128269efab37fe7851a4894920b27c442aeec99ce4d34d17c07e3
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: false
+          persist-credentials: false
+      - name: Check out the release tag
+        if: env.RELEASE_TAG != ''
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          git checkout --detach "refs/tags/$RELEASE_TAG"
+      - name: Install python.org Python (universal2)
+        run: |
+          curl -sSfLo python.pkg "https://www.python.org/ftp/python/$PY_VERSION/python-$PY_VERSION-macos11.pkg"
+          echo "$PY_SHA256  python.pkg" | shasum -a 256 -c -
+          sudo installer -pkg python.pkg -target /
+          PY=/Library/Frameworks/Python.framework/Versions/${PY_VERSION%.*}/bin/python3
+          "$PY" -m venv "$RUNNER_TEMP/venv"
+          echo "$RUNNER_TEMP/venv/bin" >> "$GITHUB_PATH"
+      - name: Unit tests
+        working-directory: tools
+        run: python -m unittest test_desktop_patcher test_patcher_paths -v
+      - name: Signing keychain (only with the owner's secrets; skipped otherwise)
+        if: env.HAS_CERT == 'true' && github.event_name != 'pull_request'
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+        run: |
+          KC="$RUNNER_TEMP/signing.keychain-db"; KC_PW="$(uuidgen)"
+          echo "$MACOS_CERT_P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security create-keychain -p "$KC_PW" "$KC"
+          security set-keychain-settings -lut 21600 "$KC"
+          security unlock-keychain -p "$KC_PW" "$KC"
+          security import "$RUNNER_TEMP/cert.p12" -k "$KC" -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KC_PW" "$KC" > /dev/null
+          security list-keychains -d user -s "$KC" $(security list-keychains -d user | tr -d '"')
+          rm "$RUNNER_TEMP/cert.p12"
+          ID=$(security find-identity -v -p codesigning "$KC" | sed -nE 's/.*"(Developer ID Application: [^"]+)".*/\1/p' | head -1)
+          [ -n "$ID" ] || { echo 'No Developer ID Application identity in MACOS_CERT_P12'; exit 1; }
+          echo "SIGN_ID=$ID" >> "$GITHUB_ENV"
+      - name: Build
+        run: |
+          python -m pip install --disable-pip-version-check $PYINSTALLER certifi==2026.10.23
+          if [ -z "$SIGN_ID" ]; then
+            echo '::warning::No signing secrets (MACOS_CERT_P12, ASC_KEY_P8...) or a pull request: the macOS app is NOT signed or notarized; Gatekeeper will warn players.'
+          fi
+          python tools/patcher/app/build.py --universal2 ${RELEASE_TAG:+--version "$RELEASE_TAG"} \
+            ${SIGN_ID:+--codesign-identity "$SIGN_ID" --entitlements tools/patcher/app/entitlements.plist}
+          lipo -archs "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher"
+      - name: Self-test the frozen app (Apple silicon)
+        run: |
+          "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher" --self-test --download --gui --report selftest.txt
+      - name: Self-test the frozen app (Intel, under Rosetta)
+        run: |
+          if arch -x86_64 /usr/bin/true 2>/dev/null; then
+            arch -x86_64 "build/desktop/dist/Horizon Patcher.app/Contents/MacOS/Horizon Patcher" --self-test --download --report selftest-x86_64.txt
+          else
+            echo '::warning::Rosetta is not installed on this runner: the Intel half was built but not run.'
+          fi
+      - name: Verify the signature, notarize and staple
+        if: env.SIGN_ID != ''
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          APP="build/desktop/dist/Horizon Patcher.app"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          codesign -dvvv "$APP" 2>&1 | grep -E 'flags=.*runtime' || { echo 'hardened runtime missing'; exit 1; }
+          codesign -dvvv "$APP" 2>&1 | grep -q '^Timestamp=' || { echo 'secure timestamp missing'; exit 1; }
+          printf '%s' "$ASC_KEY_P8" > "$RUNNER_TEMP/AuthKey.p8"
+          ditto -c -k --keepParent "$APP" "$RUNNER_TEMP/notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" --key "$RUNNER_TEMP/AuthKey.p8" \
+            --key-id "$ASC_KEY_ID" --issuer "$ASC_ISSUER_ID" --wait --timeout 1h --output-format json \
+            | tee "$RUNNER_TEMP/notary.json"
+          status=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["status"])' "$RUNNER_TEMP/notary.json")
+          if [ "$status" != Accepted ]; then
+            id=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["id"])' "$RUNNER_TEMP/notary.json")
+            xcrun notarytool log "$id" --key "$RUNNER_TEMP/AuthKey.p8" --key-id "$ASC_KEY_ID" --issuer "$ASC_ISSUER_ID"
+            exit 1
+          fi
+          xcrun stapler staple "$APP"
+          xcrun stapler validate "$APP"
+          spctl --assess --type execute --verbose=2 "$APP"
+          rm "$RUNNER_TEMP/AuthKey.p8"
+      - name: Zip
+        run: ditto -c -k --keepParent "build/desktop/dist/Horizon Patcher.app" Horizon-Patcher-macOS.zip
+      - name: Remove the signing keychain
+        if: always() && env.SIGN_ID != ''
+        run: security delete-keychain "$RUNNER_TEMP/signing.keychain-db" || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Horizon-Patcher-macOS
+          path: Horizon-Patcher-macOS.zip
+          if-no-files-found: error
+
+  linux-source:
+    # Not shipped: the window and the self-test from source, as a developer runs them (python3 tools/patcher/gui.py).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+      - name: Unit tests and the self-test from source
+        run: |
+          sudo apt-get install -y -qq xvfb > /dev/null
+          (cd tools && python -m unittest test_desktop_patcher test_patcher_paths -v)
+          xvfb-run -a python tools/patcher/gui.py --self-test --download --gui
+          # A short screen (a small laptop): the window scrolls instead of cutting anything.
+          xvfb-run -a -s '-screen 0 1024x600x24' python tools/patcher/gui.py --self-test --gui
+
+  attach:
+    # Only for a release tag; pull requests and manual runs without a tag stop at the artifacts above.
+    needs: [windows, macos]
+    if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch' && inputs.tag != '')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: apps
+          merge-multiple: true
+      - name: Attach the apps to the release
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          # The release is drafted before its tag is pushed (docs/release/releasing.md); wait a little if not yet.
+          for i in $(seq 1 30); do
+            gh release view "$RELEASE_TAG" > /dev/null 2>&1 && break
+            sleep 20
+          done
+          gh release upload "$RELEASE_TAG" apps/Horizon-Patcher-Windows.zip apps/Horizon-Patcher-macOS.zip --clobber

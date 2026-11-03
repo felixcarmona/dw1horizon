@@ -90,6 +90,96 @@ rebuilds every hole byte for byte, writes the patch and the audit, and applies t
 the build reads into it, runs `python3 -m tools.derive build --recipe everything`, checks every hole and streams the
 patched disc. The browser runs the same jobs in Pyodide workers (`web/README.md`).
 
+## The desktop app
+
+`tools/patcher/gui.py` is the same apply with a window: Horizon Patcher, built for Windows and macOS by
+`.github/workflows/desktop.yml` and attached to each release as `Horizon-Patcher-Windows.zip` and
+`Horizon-Patcher-macOS.zip` (one universal2 app for Apple silicon and Intel). Players need no Python. The players'
+side is in [release/README-players.md](release/README-players.md#the-desktop-app).
+
+- **Same code path.** The app downloads the release package, checks it, and loads the package's own `dwpatch.py`
+  (with its `isowriter.py` and `fontcopy.py`) from the package folder: the apply is the command line's, from the same
+  release. dwpatch's interface for it (`GUI_API = 1`): `apply_disc(disc, {game: image}, output, release)` runs
+  `apply` without printing and raises `PatchError` with the player's message (its `log` attribute names the log);
+  `status()` is the progress bar's state (`Screen.state()`: fraction, phase, elapsed, the estimate of the time left);
+  setting `CANCEL` (a `threading.Event`) raises `Stopped` at the next progress tick or derive output line, and in the
+  0.1 s poll of a silent derive step, so derive's processes are killed and nothing is written. The command line never
+  sets it. A package whose dwpatch has no `GUI_API` (packages made before it) is refused with a message.
+- **Discs.** Four slots, as on the web page, from `web/data/discs.json`: a file goes to its game's slot by its
+  SYSTEM.CNF boot file, whatever slot it was given to ("Add discs..." takes several). Digimon World must be its redump
+  dump (SHA-1); a source game that is not the redump dump (another rip, a 2048-byte `.iso`) is taken and its files
+  are checked by the build, as on the command line. Unusable files get the page's own explanations (`why.*`,
+  `works.*`). `.cue` files are resolved to their `.bin` for all four (the importers read images). Archives, ECM, PBP
+  and CHD are not read here (the browser builder reads the first three); the app says so. No drag and drop (Tk has
+  none without an extension).
+- **Settings** (`settings.json`): Windows `%APPDATA%\Horizon Patcher`, macOS `~/Library/Application Support/Horizon
+  Patcher`, Linux `~/.config/horizon-patcher`. The discs are remembered by path, size, modification time and
+  SHA-1; on the next start a disc that moved or changed empties its slot with the reason. Packages are kept in
+  `%LOCALAPPDATA%\Horizon Patcher\packages` (macOS: the same folder as the settings; Linux `~/.cache/horizon-patcher`),
+  the newest two. `HORIZON_PATCHER_HOME` moves both (tests). `app.log` there has the app's own errors.
+- **The package.** Nothing goes to the network until the player presses Download, "Check for a new release" or
+  Build. Then the app asks GitHub for the latest release of the repository it was built from (`build-info.json`,
+  written by the build from `GITHUB_REPOSITORY`), downloads `horizon-checksums.json` and `horizon-package.tar.gz`,
+  checks the archive's SHA-256 against the asset digest GitHub reports, then unpacks it file by file: only regular
+  files and folders, no path out of the folder, every file's SHA-256 equal to `horizon-checksums.json` `package`,
+  nothing missing or extra, else nothing is kept. Build downloads a newer release first; offline, the package already
+  there is used. "Use a package file..." takes a `horizon-package.tar.gz` (checked against a
+  `horizon-checksums.json` next to it when there is one, else the package is used as the player gave it: dwpatch
+  still checks the patch and every file it builds). TLS uses the system's certificates; a frozen macOS Python has no
+  OpenSSL certificate folder, so the app uses the certifi bundle frozen into it (a build-time dependency only), else
+  `/etc/ssl/cert.pem`.
+- **The window.** Every longer text wraps at the width it gets, the window never gets narrower than its buttons
+  and names need, and on a screen too short for it the content scrolls (the scroll bar shows only then). tkinter/ttk
+  with the platform's theme (Windows: per-monitor DPI awareness for sharp text), the icon
+  drawn from `web/favicon.svg` by `tools/patcher/app/make_icons.py` (PNG, ICO and ICNS, standard library only). The
+  eight languages: the page's strings (`web/i18n/<lang>.json`) where they fit, the app's own in
+  `tools/patcher/app/i18n.json`; the system's language first, then the menu's choice is remembered. The build shows
+  derive's step in the page's words, the percentage, the time so far and left, Stop, and at the end "Open the folder"
+  and "Open the log". The free space of the temporary folder (the build tree, about 700 MB; 2 GB asked) and of the
+  output folder (1 GB) is checked before the build starts.
+
+### The frozen app is its own Python
+
+dwpatch starts `sys.executable` as Python: `-m tools.derive ...` (macOS, Linux), `-c GATE tools.derive ...` with
+one byte on stdin (Windows: the job object gate), and `TOOL.py ...` (the Japanese disc's localize tool); derive
+then starts its workers with multiprocessing's spawn on Windows and macOS. In the frozen app `sys.executable` is the
+app, so `gui.py` calls `multiprocessing.freeze_support()` first (a spawned worker runs there and exits) and then
+`desktop.python_shim()`, which runs those three forms as CPython would (`sys.argv`, `sys.path[0]`, `__main__`,
+the exit code) before any window is made. The whole standard library is frozen in (the package's bundle imports what
+it needs at run time), the app runs in UTF-8 mode (`-X utf8`, as dwpatch asks of derive with `PYTHONUTF8`), and it
+is a folder rather than one file: every derive process and worker is the app again, and a one-file app would unpack
+itself to a temporary folder each time. For `-c` the shim puts the current folder's path first in `sys.path`, not
+`''` as CPython does: PyInstaller sets `multiprocessing.process.ORIGINAL_DIR` to None, which multiprocessing puts in a
+spawned worker's `sys.path` in place of `''`, and derive's workers under the Windows gate hung (found by the CI
+self-test). `HORIZON_TRACE=FILE` makes every start of the app (the window, derive, each worker) write a line there.
+
+### Building and testing it
+
+```sh
+python3 tools/patcher/gui.py                         # from a checkout: Python 3.10+ with tkinter (also Linux)
+python3 tools/patcher/gui.py --self-test --download  # the CI checks, from source
+python3 -m pip install pyinstaller                   # in a virtual environment: not a repository dependency
+python3 tools/patcher/app/build.py                   # -> build/desktop/dist/ (macOS: --universal2)
+"build/desktop/dist/Horizon Patcher/Horizon Patcher" --self-test --download --gui
+(cd tools && python3 -m unittest test_desktop_patcher)
+```
+
+`--self-test` (tools/patcher/selftest.py) needs no disc and no window unless `--gui`: UTF-8 mode; the app as Python
+in its three forms, `-m` and `-c` running a module that spawns workers, from a folder with spaces; `dwpatch.derive_run` (the Windows gate
+and job object, or the POSIX process group) on a stand-in derive that spawns workers; the TLS store; with
+`--download` (or `--package DIR`) every standard-library module the package's Python files import, `info`, `check`
+and `apply_disc` refusing a file that is not a disc with the player's message, and the package's real tools/derive
+starting in this Python and stopping at its first missing disc file (not at a missing module); with `--gui` the
+window in all eight languages, filled with long texts and file names, at its natural and its narrowest size, with no text or button cut (`gui.clipped`). CI runs it on the frozen Windows app (as a windowed program, with no console), on the
+frozen macOS app natively and, when the runner has Rosetta, its Intel half, and from source on Linux.
+
+`desktop.yml` runs on pull requests that touch the patcher (artifacts only), on a pushed `v*` tag, and by hand with
+an optional existing tag. With a tag, the `attach` job uploads both zips to that tag's release (drafted before the
+tag is pushed, see [releasing](release/releasing.md)); without one nothing is published. It needs no disc and no
+secret; the macOS job signs and notarizes only when the owner's signing secrets exist and the run is not a pull
+request, and otherwise builds an unsigned app with a warning in the log. Signing:
+[releasing](release/releasing.md#code-signing).
+
 ## What the release still carries that is not ours
 
 Models, textures, localized signs and tournament banners are rebuilt from the
