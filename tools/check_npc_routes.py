@@ -31,6 +31,8 @@ def placements():
         species[key] = d['model']['radius']
         species[f"{key}{d['id']}"] = d['model']['radius']      # the enum's id-suffixed twin names (Species.Whamon146)
     screens = []
+    from dws import pickups
+    places = pickups.placements(pickups.load_registry()[0])
     for path in sorted(MOD.rglob('*.py')):
         tree = ast.parse(path.read_text())
         names = {}
@@ -85,6 +87,9 @@ def placements():
                                  and isinstance(n.func,ast.Name) and n.func.id == 'spawn_item'):
                         kw = {k.arg:k.value for k in call.keywords}
                         x,z = ast.literal_eval(kw['at'])
+                        # The build moves a shared script's spot to the tile the registry places it on this screen.
+                        tile = places.get((record['screen'], *reach.model_tile(x, z)))
+                        if tile: x, z = (tile[0]-50)*100+50, (50-tile[1])*100-50
                         record['targets'].append(('spawn_item',x,z,0))
     return screens
 

@@ -78,6 +78,27 @@ class RegistryTests(unittest.TestCase):
             self.assertIn(', 0, 17\n', target.read_text())
             self.assertIn(', 1, 314\n', target.read_text())
 
+    def test_placed_spot_keeps_its_id_and_moves_on_its_screen_only(self):
+        from dws.pickups import placements
+        data = dict(spots=[dict(id=0, screen=0, tile=[30, 79]), dict(id=7, screen=314, tile=[30, 79], at=[37, 61])])
+        got = rewrite_text('    SPAWN_ITEM 1, 30, 79\n', [0, 314], {(0, 30, 79): 0, (314, 30, 79): 7}, placements(data))
+        self.assertEqual(got, '    SPAWN_ITEM_DAILY 1, 30, 79, 0, 0\n    SPAWN_ITEM_DAILY 1, 37, 61, 7, 314\n')
+
+    def test_registry_places_new_screen_spots_on_distinct_tiles(self):
+        from dws.pickups import emitted
+        data, _ = load_registry()
+        moved = [r for r in data['spots'] if 'at' in r]
+        self.assertTrue(moved and all(r['screen'] >= 300 for r in moved))
+        for screen, spots in emitted(data).items():
+            self.assertEqual(len({t for _, t in spots}), len(spots), screen)
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / 'bad.json'
+            for spots, error in (([dict(id=0, screen=314, tile=[30, 79], at=[49, 46]), dict(id=1, screen=314, tile=[49, 46])],
+                                  'one tile'), ([dict(id=0, screen=314, tile=[30, 79], at=[100, 46])], 'invalid')):
+                p.write_text(json.dumps(dict(format=1, spots=spots)))
+                with self.assertRaisesRegex(ValueError, error):
+                    load_registry(p)
+
     def test_duplicate_registry_entries_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp) / 'bad.json'
