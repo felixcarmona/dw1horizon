@@ -6,7 +6,7 @@ byte; its mesh, UVs and texture page are our own. The authoring scripts in
 a plain MD3 delta per file against the donor's model and ALLTIM entry, read from
 the player's own extraction: the standard library only, so the browser patcher
 runs it too. `content/modeldelta/babies.json` pins every source, delta and
-result by SHA-256.
+result by SHA-256. How the models were made, as a recipe for the next ones: docs/mods/hand-made-species.md.
 
   python3 -m tools.models.babies check                 # replay all eight from extracted/
   python3 -m tools.models.babies encode ID MMD TIM     # store a new authored pair as deltas + pins

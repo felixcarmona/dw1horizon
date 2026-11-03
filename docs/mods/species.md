@@ -284,7 +284,8 @@ Choose an unused id within `NUM_DIGIMON` before adding a record; the imported
 species already occupy many ids above 179. `tools/species.py add --help` describes
 copying a base record and setting numeric fields. Keep the complete species JSON
 as source. For imported model edits use [model deltas](../../content/modeldelta/README.md),
-not a committed converted model.
+not a committed converted model. A species no source game has is drawn by hand on a DW1
+donor's rig: [hand-made species](hand-made-species.md) describes the method.
 
 The everything build selects all species through its V61 provider. Check a changed
 record with `species.py lint` and rebuild through [building](../building.md), which
