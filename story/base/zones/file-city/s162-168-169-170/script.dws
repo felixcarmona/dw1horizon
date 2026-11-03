@@ -37,7 +37,7 @@ script 162 {
         call_routine(routine("save_clock_speed"));
         tamerless_battle = false;
         if (drill_tunnel_progress >= 3) {
-            underground_pond_dig_work += 1;
+            underground_pond_dig_work += 2;
         }
         if (drill_tunnel_progress >= 1) {
             drill_tunnel_progress = 1;

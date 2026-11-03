@@ -68,6 +68,7 @@ def use1():    # section 81
         drill_tunnel_progress.set(3)
         call(Routine.dirt_cart_model, arg=0)
         call(Routine.dirt_pile_shrink)
+        call(Routine.dirt_pile_shrink)    # Horizon: five trips, each worth two of the disc's ten
 
 @drimogemon.on_talk
 def talk():    # section 5
@@ -87,13 +88,13 @@ def L8():    # shared code (the disc's label L8)
     if drill_tunnel_progress == 4:
         drimogemon.say(t51.u1)
         call(Routine.dirt_cart_model, arg=2)
-        give(bits=500)
-        partner.add(offense=5)
-        partner.add(defense=5)
-        partner.add(max_hp=50)
-        partner.add(tiredness=10)
+        give(bits=1000)
+        partner.add(offense=10)
+        partner.add(defense=10)
+        partner.add(max_hp=100)
+        partner.add(tiredness=20)
         narrator.say(t51.u2)
-        underground_pond_dig_work.add(1)
+        underground_pond_dig_work.add(2)
         drill_tunnel_progress.set(1)
         drimogemon.turn(1900)
         drimogemon.arrived()

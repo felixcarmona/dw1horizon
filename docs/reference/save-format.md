@@ -250,4 +250,6 @@ copying it into the corpus, and refuses to overwrite an existing release.
 Patch 0265 assigns stable IDs from `content/ground-items.json` and remembers them
 in a 128-byte daily bitset. Save tag `0x000C` preserves this bitset; older saves
 remain readable. The bitset covers all 499 authored pickup locations, including
-266 in the extended story, without evicting earlier pickups on a busy day.
+266 in the extended story, without evicting earlier pickups on a busy day. A row's optional `at` is the tile the spawn really
+lies on that screen when it is not the script's own (a script shared with an original screen); its ID and key stay the
+script's tile, so moving a spot never changes a save.

@@ -59,13 +59,13 @@ def english_lines():
     return lines
 
 
-def announcement(species, indent, won=False):
+def announcement(species, indent, won=False, sound=('8', '11')):
     guard = f'!is_recruited({species})'
     if won:
         guard = f'engine.result == 1 && {guard}'
     return [f'{indent}if ({guard}) {{',
             f'{indent}    recruit({species});',
-            f'{indent}    sound(8, 11);',
+            f'{indent}    sound({sound[0]}, {sound[1]});',
             f'{indent}    say(narrator, text("{KEY}", {species}));',
             f'{indent}}}']
 

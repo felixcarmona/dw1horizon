@@ -1941,7 +1941,7 @@ class Body:
             return [f'{I}walk_away({W()}, {self.val(c.args[0])}, {self.val(c.args[1])}{extra});']
         if name == 'send_to_city':
             w = W(); sp = self.val(kw['species']) if 'species' in kw else self.own_species(w, c)
-            snd = kw.get('sound'); b, n = (self.val(snd.elts[0]), self.val(snd.elts[1])) if isinstance(snd, ast.Tuple) else ('8', '11')
+            snd = kw.get('sound'); b, n = (self.val(snd.elts[0]), self.val(snd.elts[1])) if isinstance(snd, ast.Tuple) else self.jingle(c)
             cam = not (isinstance(kw.get('camera'), ast.Constant) and kw['camera'].value is False)
             pros = f', prosperity: {self.val(kw["prosperity"])}' if 'prosperity' in kw else ''
             return [f'{I}{"join_city_camera" if cam else "join_city"}({w}, {sp}, {b}, {n}, {self.page_arg(kw["line"])}{pros});']
@@ -1965,7 +1965,7 @@ class Body:
             out = [f'{I}say({who}, {self.page_arg(kw["line"])});', f'{I}battle();']
             from .. import recruitment
             if not recruitment.ACTIVE.get(): return out + [f'{I}recruit({sp});']
-            return out + (recruitment.announcement(sp, I, won=True)
+            return out + (recruitment.announcement(sp, I, won=True, sound=self.jingle(c))
                           if int(sp[8:-1]) in recruitment.roster() else [])
         if name == 'join_city': raise self.err(c, 'join_city(...) is now recruit(...) (it pairs with recruited(...))')
         if name == 'recruit':
@@ -1975,7 +1975,7 @@ class Body:
             if recruitment.ACTIVE.get():
                 sid = int(sp[8:-1])
                 if sid in recruitment.roster() and not self.recruit_visible:
-                    out = recruitment.announcement(sp, I, won=self.recruit_battle)
+                    out = recruitment.announcement(sp, I, won=self.recruit_battle, sound=self.jingle(c))
                 elif 0 <= sid < 112 and sid not in recruitment.roster():
                     if int(BE.DIGI_DATA[sid]['level']) >= 3:
                         return []
@@ -2028,7 +2028,13 @@ class Body:
             return [f'{I}{q}_b{j} = {"true" if v >> j & 1 else "false"};' for j in range(m.quests[q]['bits'])]
         if name == 'spawn_item': return [f'{I}{self.ground_item(c, kw)}']
         if name == 'swing_door': return [f'{I}rotate_3d_object({m.int_const(c.args[0])}, 0, 1);']
-        if name == 'pick_item': return [f'{I}engine.picker_mode = true;', f'{I}call_routine(routine("choose_item"));']
+        if name == 'pick_item':
+            food = kw.pop('food', None)
+            if c.args or kw or (food is not None and not (isinstance(food, ast.Constant) and isinstance(food.value, bool))):
+                raise self.err(c, 'pick_item() or pick_item(food=True): the item menu, with only the food selectable')
+            # food=True: p254 = 254 asks the engine's menu for food only (patch 0331); the pick overwrites it
+            return [f'{I}engine.picker_mode = true;'] + ([f'{I}engine.arg = 254;'] if food is not None and food.value else []) + \
+                [f'{I}call_routine(routine("choose_item"));']
         if name == 'shop': return self.shop(c, kw, I)
         if name == 'take_picked':
             every = isinstance(kw.get('all'), ast.Constant) and kw['all'].value is True
@@ -2111,6 +2117,22 @@ class Body:
 
     def is_entity(self, r):
         return isinstance(r, ast.Name) and (r.id in self.m.npcs or r.id in ('tamer', 'partner', 'narrator'))
+
+    def jingle(self, node):
+        """(bank, n) of the city jingle on this file's screens: bank 8 holds the map region's effects and each region numbers
+        the jingle its own way (story/core/audio.json; the originals' recruit scenes play their region's number). Screens of
+        regions with different numbers, or no screen: sound 11 (the jingle of regions 0, 4 and 11)."""
+        from .. import audio
+        ids = {i for v in self.m.screens.values() for i in v['ids']}
+        ids |= {d['screen_id'] for d in self.m.npcs.values() if d.get('screen') is None and d.get('screen_id') is not None}
+        regions = {f & 0x1F for f in (BE.MAP_FLAGS.get(i, BE.DISC_MAP_FLAGS.get(i)) for i in ids) if f is not None}
+        effects = audio.jingle_effects()
+        missing = sorted(r for r in regions if r not in effects)
+        if missing:
+            raise self.err(node, f'map sound region {missing[0]} has no city jingle (story/core/audio.json)',
+                           'name the sound: sound=(8, n), or add the region to the jingle\'s "effects"')
+        numbers = {effects[r] for r in regions}
+        return ('8', str(numbers.pop())) if len(numbers) == 1 else ('8', '11')
 
     def own_species(self, who, node):
         d = self.m.npcs.get(who)

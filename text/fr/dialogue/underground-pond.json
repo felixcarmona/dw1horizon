@@ -21,9 +21,9 @@
  ],
  "s029.sec51.u2": [
   [
-   "500 Bits gagnés pour le travail",
-   "! HP +50 ! Attaque +5 !",
-   "Défense +5 !"
+   "1000 Bits gagnés pour le travail",
+   "! HP +100 ! Attaque +10 !",
+   "Défense +10 !"
   ]
  ],
  "s029.sec51.u3": [
@@ -111,7 +111,7 @@
  "s029.sec51.u15": [
   [
    "C'est un travail pénible, alors",
-   "je te paierai. 500 Bits pour",
+   "je te paierai. 1000 Bits pour",
    "chaque aller-retour."
   ]
  ],

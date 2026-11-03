@@ -325,6 +325,10 @@
     "step": "retouch"
    },
    {
+    "check": "pickups",
+    "step": "maps"
+   },
+   {
     "script": "maps/root-clearing.py",
     "args": [
      "{screens}"

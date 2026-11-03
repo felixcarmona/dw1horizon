@@ -176,3 +176,15 @@ tamer can never move again: every 50-unit step in 32 directions is refused by th
 strip on screen 361. Both checks reject them, so a new screen with a trap fails its recipe: block the tile in the
 screen's data or manifest. Recipes check after their foreground manifest is applied. Retouches of original screens
 pass `traps=False`; the original screens keep their own dead corners.
+
+`check_pickups(map, items, chests)` rejects a pickup the player has to hunt for. The engine picks up a ground item,
+and opens a chest, when the tamer's tile is within one of the pickup's tile both ways (`tamer.c checkItemPickup`,
+`checkChestCollision`); a chest's tile is four tiles in front of it and the chest blocks 4x4 tiles
+(`map_object.c spawnChest`). An item must lie on plain floor, its own tile must give the walk from the arrivals at
+least 50 lattice points and its 3x3 window at least 300 (three tiles of room); a chest's opening window the same 300.
+`check_pickups.py` runs it on every new screen: the ground spots of `content/ground-items.json` where they lie there
+(a row's `at`, see below) and the literal `spawn_item` / `spawn_chest` calls of the story files that make a new screen.
+Derive's maps step runs it on the built maps (recipe check `pickups`), the selftest on the committed map data
+(`--authored`, no disc). The new screens without a story script of their own run Native Forest's script 1: its
+ground items keep screen 0's tiles in the script, and each new screen's copy gets an `at` tile in the registry, on floor
+the player reaches, clear of exits, arrivals and foreground cut-outs.

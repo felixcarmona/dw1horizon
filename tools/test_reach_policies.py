@@ -105,6 +105,72 @@ class ReachPolicies(unittest.TestCase):
         self.assertIn('arrival 1: unreachable from arrival 0', MAP.check_arrivals(m))
 
 
+class PickupReach(unittest.TestCase):
+    """tamer.c checkItemPickup / checkChestCollision: the tamer's tile within one of the pickup's, both ways."""
+    def test_engine_tile_of_a_position(self):
+        self.assertEqual([MAP.model_tile(v, 0)[0] for v in (-101, -100, -1, 0, 99, 100)], [48, 48, 49, 50, 50, 51])
+        self.assertEqual([MAP.model_tile(0, v)[1] for v in (-101, -100, -1, 0, 1, 100)], [51, 51, 50, 50, 49, 48])
+
+    def test_open_floor_passes(self):
+        self.assertEqual(MAP.check_pickups(scene(), [('mushroom', (50, 49))]), [])
+
+    def test_item_in_rock_fails_even_beside_the_floor(self):
+        # Screen 314's spot 237: the item's own tile was rock, picked up from three tiles of the floor beside it.
+        m = scene()
+        m.collision[49 * 100 + 56] = 128
+        errors = MAP.check_pickups(m, [('rock', (56, 49)), ('exit', (50, 49))])
+        self.assertEqual(errors, ['rock: item at tile 56,49 lies on collision 128, not plain floor'])
+        m.collision[49 * 100 + 50] = 112
+        self.assertIn('exit: item at tile 50,49 lies on collision 112, not plain floor', MAP.check_pickups(m, [('exit', (50, 49))]))
+
+    def test_one_tile_notch_and_unreachable_island_fail(self):
+        # A free tile the body box cannot enter (a notch one tile wide) and floor no walk reaches.
+        m = scene()
+        m.collision[49 * 100 + 56] = 0
+        for tx in range(60, 66):
+            for tz in range(44, 55):
+                m.collision[tz * 100 + tx] = 0
+        errors = MAP.check_pickups(m, [('notch', (56, 49)), ('island', (62, 49))])
+        self.assertEqual(len(errors), 2)
+        self.assertRegex(errors[0], r'notch: item at tile 56,49 is picked up from \d+ reachable points \(0 on its own tile')
+        self.assertIn('island: item at tile 62,49 is picked up from 0 reachable points', errors[1])
+
+    def test_screen_entered_by_script_seeds_from_its_spawn(self):
+        self.assertEqual(MAP.check_pickups(scene(used=False, x=10), [('ferry', (50, 49))]), [])
+
+    def test_chest_opens_four_tiles_in_front_with_its_own_block(self):
+        # spawnChest blocks tiles 48-51 x 44-47 for a chest at tile (50, 46); facing 0 opens from (50, 50).
+        self.assertEqual(MAP.check_pickups(scene(), chests=[('south', (0, 300), 0)]), [])
+        errors = MAP.check_pickups(scene(), chests=[('north', (0, 300), 2048)])
+        self.assertEqual(errors, ['north: chest at 0,300 opens from tile 50,42: 0 reachable points there (at least 300)'])
+        self.assertIn('no opening tile', MAP.check_pickups(scene(), chests=[('odd', (0, 300), 512)])[0])
+
+
+class PickupGate(unittest.TestCase):
+    """tools/maps/check_pickups.py: the registry's spots where they lie, and a new screen's story pickups."""
+    def test_registry_spots_and_story_pickups(self):
+        import json, sys, tempfile
+        sys.path.insert(0, str(ROOT / 'tools' / 'maps'))
+        import check_pickups as C
+        with tempfile.TemporaryDirectory() as tmp:
+            registry, story = Path(tmp) / 'spots.json', Path(tmp) / 'room.py'
+            registry.write_text(json.dumps(dict(format=1, spots=[
+                dict(id=0, screen=0, tile=[56, 49]),                        # an original screen: not ours to check
+                dict(id=1, screen=314, tile=[56, 49], at=[50, 49]),         # placed on the floor
+                dict(id=2, screen=314, tile=[49, 40])])))                   # the script's tile: rock here
+            story.write_text('room = new_screen(314, map="ROOM.MAP")\n@room.on_enter\ndef enter():\n'
+                             '    spawn_item(Item.Meat, at=(-150, -250))\n'
+                             '    spawn_chest(Item.Meat, at=(0, 300), opened=f, facing=2048)\n')
+            maps = {314: ('ROOM', scene)}
+            count, errors = C.run(maps, [str(story)], registry)
+            self.assertEqual(count, 4)
+            self.assertEqual(len(errors), 2)
+            self.assertIn('ROOM: screen 314 ground spot 2: item at tile 49,40 lies on collision 128', errors[0])
+            self.assertIn('room.py:5 spawn_chest: chest at 0,300 opens from tile 50,42', errors[1])
+            count, errors = C.run({}, [str(story)], registry)
+            self.assertIn('screen 314: ground spots registered but no map to check them on', errors)
+
+
 class RecipeArrivalPolicy(unittest.TestCase):
     def test_recipe_policy_keeps_height_and_connectivity_out_of_validation(self):
         m = scene(y=100)

@@ -18,6 +18,7 @@ def load_registry(path=REGISTRY, limit=1024):
         raise ValueError('unknown ground pickup registry format')
     spots = {}
     ids = set()
+    placed = set()
     for row in data['spots']:
         key = (row['screen'], *row['tile'])
         ident = row['id']
@@ -25,11 +26,29 @@ def load_registry(path=REGISTRY, limit=1024):
             raise ValueError(f'duplicate ground pickup ID or location: {row}')
         if not 0 <= ident < limit:
             raise ValueError(f'ground pickup ID {ident} exceeds target bitset bound {limit}')
-        if not (0 <= row['screen'] <= 32767 and all(0 <= t <= 99 for t in row['tile'])):
+        tile = row.get('at', row['tile'])
+        if not (0 <= row['screen'] <= 32767 and all(0 <= t <= 99 for t in row['tile'])
+                and len(tile) == 2 and all(isinstance(t, int) and 0 <= t <= 99 for t in tile)):
             raise ValueError(f'invalid ground pickup location: {row}')
+        if (row['screen'], *tile) in placed:
+            raise ValueError(f'two ground pickups lie on one tile: {row}')
         spots[key] = ident
         ids.add(ident)
+        placed.add((row['screen'], *tile))
     return data, spots
+
+
+def placements(data):
+    """{(screen, script x, script y): (x, y)}: the tile a spawn really lies on, where a row's "at" moves it."""
+    return {(r['screen'], *r['tile']): tuple(r['at']) for r in data['spots'] if 'at' in r}
+
+
+def emitted(data):
+    """{screen: [(id, (x, y))]}: every registered spot where it lies on its screen (its "at", else its tile)."""
+    out = {}
+    for r in data['spots']:
+        out.setdefault(r['screen'], []).append((r['id'], tuple(r.get('at', r['tile']))))
+    return out
 
 
 def script_screens(maphead):
@@ -62,7 +81,10 @@ def script_screens(maphead):
     return {sid: sorted(screens) for sid, screens in scripts.items()}
 
 
-def rewrite_text(text, screens, spots):
+def rewrite_text(text, screens, spots, places=None):
+    """SPAWN_ITEM x, y -> one SPAWN_ITEM_DAILY per screen running the script, with the spot's stable ID, at the tile the
+    registry places it on that screen (places: placements(); a shared script's tile can be rock on another screen)."""
+    places = places or {}
     out = []
     for line in text.splitlines():
         m = SPAWN.fullmatch(line)
@@ -73,7 +95,8 @@ def rewrite_text(text, screens, spots):
                 key = (screen, int(m[3]), int(m[4]))
                 if key not in spots:
                     raise ValueError(f'ground pickup {key} has no stable ID; append it to content/ground-items.json')
-                out.append(f'{m[1]}SPAWN_ITEM_DAILY {m[2]}, {m[3]}, {m[4]}, {spots[key]}, {screen}{m[5]}')
+                x, y = places.get(key, (int(m[3]), int(m[4])))
+                out.append(f'{m[1]}SPAWN_ITEM_DAILY {m[2]}, {x}, {y}, {spots[key]}, {screen}{m[5]}')
             continue
         elif re.match(r'\s*SPAWN_ITEM(?:16)?\b', line):
             raise ValueError(f'cannot assign a ground pickup ID to: {line.strip()}')
@@ -103,7 +126,7 @@ def rewrite(work, maphead, limit, registry=REGISTRY):
         # if a later guarded setup selects them. The registry also pins that original mapping.
         if not screens:
             screens = data['script_screens'].get(str(sid), [])
-        updated = rewrite_text(text, screens, spots)
+        updated = rewrite_text(text, screens, spots, placements(data))
         count += updated.count('SPAWN_ITEM_DAILY ')
         path.write_text(updated)
     return f'ground pickups: {count} spawns use stable IDs; {len(spots)}/{limit} locations registered'

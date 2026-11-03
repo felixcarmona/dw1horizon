@@ -107,6 +107,25 @@ def result(data, answers, new_digimon=True):
     return data['quiz']['cells' if new_digimon else 'vanillaCells'][cell]
 
 
+def opening_technique(para, powers, learn=None):
+    """Match modInitializeStarterTechniques (patch 0332) for a starter without an authored row: what evolving into it
+    teaches (EVL_applyEvolution), the weakest technique of its main element in the learn.moveBase/window slots (the
+    first one found, a power 0 one only when it comes first). None: the first list entry, when it is learnable.
+    Returns (technique, slot)."""
+    if learn is None:
+        learn = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionFormula']['learn']
+    special = para['special'][0]
+    base = learn['moveBase'][special] if special <= 6 else -1
+    best = slot = None
+    for i, move in enumerate(para['moves'][:16]):
+        if base >= 0 and base <= move <= base + learn['window'] and (
+                best is None or (powers[best] > powers[move] and powers[move] != 0)):
+            best, slot = move, i
+    if best is None:
+        return (para['moves'][0], 0) if para['moves'][0] < 0x3a else None
+    return best, slot
+
+
 def check(data):
     validate(data)
     restored = unpack(pack(data))

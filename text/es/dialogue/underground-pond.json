@@ -16,12 +16,12 @@
  "s029.sec51.u1": "Oh, buen trabajo. Aquí tienes tu paga.",
  "s029.sec51.u2": [
   [
-   "¡Has ganado 500 Bits!"
+   "¡Has ganado 1000 Bits!"
   ],
   [
-   "¡Los HP suben 50!",
-   "¡El Ataque sube 5!",
-   "¡La Defensa sube 5!"
+   "¡Los HP suben 100!",
+   "¡El Ataque sube 10!",
+   "¡La Defensa sube 10!"
   ]
  ],
  "s029.sec51.u3": "Tira la tierra fuera del túnel.",
@@ -52,7 +52,7 @@
  ],
  "s029.sec51.u13": "Ah, ¿de qué se trata?",
  "s029.sec51.u14": "Ahí está la tierra que ha cavao un servidor. Llévala fuera del túnel y tírala.",
- "s029.sec51.u15": "Es un trabajo bastante duro, así que te lo pagaré. 500 Bits por cada viaje de ida y vuelta.",
+ "s029.sec51.u15": "Es un trabajo bastante duro, así que te lo pagaré. 1000 Bits por cada viaje de ida y vuelta.",
  "s029.sec51.u16": "La excavación va más rápido, me pagan... y encima es entrenamiento... ¡Esto puede estar bien...!",
  "s029.sec51.u17": [
   [

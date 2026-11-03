@@ -261,7 +261,8 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   (the keywords are bound by name, in any order; both are required, cancel counts as "no"; `if not ask(...):` tests
   "no"); `choose(...)` with `match` for more options or other names, with the cancel case explicit. The item menu:
   `pick = pick_item()`, then `if pick == Item.Medicine:` (or `pick in (Item.Meat, Item.Steak)`), `pick is Picked.EMPTY`,
-  `pick is Picked.CANCELLED`, and `take_picked()` takes what was given.
+  `pick is Picked.CANCELLED`, and `take_picked()` takes what was given. `pick_item(food=True)` lets only the food be
+  chosen (the care menu's food, the other rows greyed; `Picked.EMPTY` when there is none; patch 0331).
 - **Quests.** `class Q(Quest)` with stages; conditions `Q.X`, `Q.before(Q.X)`, `Q.reached(Q.X)`; `advance(Q.X)`.
   `match Q.stage:` with a `case` per stage.
 - **Flags.** `flag()` gives a named flag, `counter()` a small saved number, from the mod's reserved range: a mod that has
@@ -278,7 +279,7 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   `escape=False` needs the foes named: `fight(hunter, escape=False)`),
   `recruit(species, prosperity=)` (the flag `recruited(species)` tests), `unrecruit(species)` (clears it),
   `send_to_city(line=, ...)` (the departure scene), `recruitable(npc, line=)`, `walk`, `face`, `play(anim)`, `wait`,
-  `camera.on`, `sound(bank, n)` (`sound.jingle()` for 8, 11), `warp(screen, entry=)`, `leave`, `spawn`,
+  `camera.on`, `sound(bank, n)` (`sound.jingle()` for 8, 11, the jingle on regions 0, 4 and 11 only), `warp(screen, entry=)`, `leave`, `spawn`,
   `spawn_item(item, at=(x, z))` (an item on the ground, picked up in passing; world units like every position),
   `objects[n].show()/hide()/animate(k)`, `spawn_chest(item, at=(x, z), opened=a_flag)` (in `on_enter`; the flag is set when
   the chest is taken and keeps it open; `facing=` 0, 1024, 2048 or 3072), `shop(Item.A, Item.B)` (in `on_talk`: the NPC

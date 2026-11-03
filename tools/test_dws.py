@@ -1657,7 +1657,7 @@ class PythonView(unittest.TestCase):
         self.assertNotIn('"I', v)                                                               # keys, never the game's words
         v = self.view(2)
         self.assertIn('@kunemon.on_talk(scene=True)', v); self.assertNotIn('dws(', v)            # Kunemon reads as Python (review §d)
-        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item()\n        if pick is Picked.EMPTY:\n',
+        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item(food=True)\n        if pick is Picked.EMPTY:\n',   # reviewed food-only menu (patch 0331)
                      '        elif pick is Picked.CANCELLED:\n            pass\n        elif pick in (Item.Meat, Item.GiantMeat,',
                      'take_picked()\n', 'walk_away(1219, 984, looks=3)', '    say(t6.u9)\n'):
             self.assertIn(want, v)
@@ -1775,7 +1775,7 @@ class PythonMods(unittest.TestCase):
         self.assertIn('on talk(guest) replace {', t)
         self.assertIn('if (!Visit_b0 && !Visit_b1) {', t)
         self.assertIn('} else if (!Visit_b0 && Visit_b1) {', t)
-        self.assertIn('join_city_camera(guest, species(110), 8, 11, text("m-a.', t)
+        self.assertIn('join_city_camera(guest, species(110), 8, 12, text("m-a.', t)     # region 12: its jingle is 12
         t = self.lowered(forest)
         self.assertIn('on enter {', t)
         self.assertNotIn('on enter replace', t)
@@ -1784,6 +1784,33 @@ class PythonMods(unittest.TestCase):
         self.assertIn('script new for screen 239 empty {', t)
         self.assertRegex(t, r'battle\(foes: \[opponent\]\);\s+if \(!won\) \{')
         self.assertIn('pub flag Visit_b0 = 12000;', self.lowered(quest))
+
+    def test_city_jingle_is_the_screen_regions(self):
+        # bank 8 holds the map region's effects: sound 11 is a splash at Dragon Eye Lake (region 13, the jingle copied in
+        # as 14 by the sound step), the jingle is 17 in Beetle Land's region 14; an explicit sound= stays as written
+        _, (lake, beetle, named) = self.mod({
+            'lake.py': 'from dw import *\nlake = screen(Screen.dragon_eye_lake_6)\n'
+                       'tapir = lake.npc(Species.Tapirmon, at=(650, -2000))\n'
+                       '@tapir.on_talk\ndef talk():\n    send_to_city(line="Joined")\n',
+            'beetle.py': 'from dw import *\nland = screen(108)\nkiwi = land.npc(Species.Kiwimon, at=(0, 0))\n'
+                         '@kiwi.on_talk\ndef talk():\n    send_to_city(line="Joined")\n',
+            'named.py': 'from dw import *\nlake = screen(Screen.dragon_eye_lake_6)\n'
+                        'tapir = lake.npc(Species.Tapirmon, at=(750, -2000))\n'
+                        '@tapir.on_talk\ndef talk():\n    send_to_city(line="Joined", sound=(8, 3))\n',
+        })
+        self.assertIn('join_city_camera(tapir, species(287), 8, 14, ', self.lowered(lake))
+        self.assertIn('join_city_camera(kiwi, species(282), 8, 17, ', self.lowered(beetle))
+        self.assertIn('join_city_camera(tapir, species(287), 8, 3, ', self.lowered(named))
+        from dws import audio, backend as BE
+        effects = audio.jingle_effects()
+        self.assertEqual(set(audio.load(audio.DEFAULT_MANIFEST)['jingle']['effects']), {str(r) for r in effects})
+        used = {f & 0x1F for f in BE.DISC_MAP_FLAGS.values()}
+        for folder in [_DevPath(ROOT, 'content/screens'), *_DevPath(ROOT, 'story/mods').glob('*/screens')]:
+            used |= {json.loads(f.read_text()).get('sound_bank', 0) & 0x1F for f in folder.glob('*.json')}
+        self.assertEqual(sorted(used - set(effects)), [], 'every map region of the disc has a city jingle')
+        copy = [c for c in audio.bank_commands('output', 'scratch') if c[0] == 'copy-effect']
+        self.assertEqual(len(copy), 1)
+        self.assertEqual(copy[0][1:4], ['output/ESALL.VHB', '0', '11'])
 
     def test_guards_ownership_and_errors(self):
         head = 'from dw import *\nfrom dw.base.jijimons_house import jijimon\n'
@@ -2352,6 +2379,19 @@ class PythonMods(unittest.TestCase):
         e = self.check_cli('check', p).stderr
         self.assertIn('a.py:3:1: error: var "m_a.other" pinned to 21, which is not in the free range', e)
         self.assertIn("a mod's [save] range in its mod.toml must be inside the free numbers", e)
+
+    def test_pick_item_food(self):
+        """pick_item(food=True) asks the engine's item menu for food only (patch 0331): p254 = 254 just before choose_item;
+        anything but a bool keyword is refused."""
+        head = 'from dw import *\nfrom dw.base.green_gym import koromon\ndone = flag()\n@koromon.on_talk(when=not done)\ndef t():\n'
+        root, (p,) = self.mod({'a.py': head + '    pick = pick_item(food=True)\n    if pick == Item.Meat:\n        take_picked()\n'})
+        t = self.lowered(p)
+        self.assertRegex(t, r'engine\.picker_mode = true;\n +engine\.arg = 254;\n +call_routine\(routine\("choose_item"\)\);')
+        self.assertEqual(errors_of_py(p), '')
+        root, (p,) = self.mod({'a.py': head + '    pick_item()\n'})
+        self.assertNotIn('engine.arg = 254;', self.lowered(p))
+        root, (p,) = self.mod({'a.py': head + '    pick_item(food=1)\n'})
+        self.assertIn('pick_item() or pick_item(food=True)', errors_of_py(p))
 
     def test_fourth_review_forms(self):
         """dws-python-intuitiveness-4.md 5-7: `match fight(x)` with a case per outcome is one battle; two tests of fight(x) in a

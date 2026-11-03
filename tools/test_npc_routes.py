@@ -20,11 +20,15 @@ class NpcRoutes(unittest.TestCase):
             self.assertFalse(any(1 in state and 2 in state for state in states))
 
     def test_inherited_pickups_only_on_placement_only_screens(self):
-        self.assertIn(('spawn_item', -50, 350, 0), self.screen(319)['targets'])
+        # Native Forest's (-50, 350), tile 49,46, where content/ground-items.json places it on 319: tile 47,45.
+        self.assertIn(('spawn_item', -250, 450, 0), self.screen(319)['targets'])
         self.assertFalse(self.screen(364)['targets'])  # owned resident script
 
     def test_stationary_npc_cannot_claim_wild_pickup_exception(self):
         s = self.screen(354)
+        _, x, z, _ = s['npcs'][0]
+        s['targets'].append(('spawn_item', x, z, 0))  # a pickup under Gururumon: fine while it is a wild fight
+        self.assertEqual(routes.check_screen(s, routes.authored_geometry(s)), [])
         s['wild'][0] = False  # Gururumon becomes a persistent body
         errors = routes.check_screen(s, routes.authored_geometry(s))
         self.assertTrue(any('spawn_item' in error for error in errors), errors)
