@@ -3,8 +3,8 @@
     Horizon Patcher --self-test [--package DIR | --download] [--gui] [--report FILE]
 
 1. this Python (frozen or not, UTF-8 mode);
-2. the app as Python: `-c CODE` (argv, UTF-8 output), `-m MODULE` whose module spawns multiprocessing workers (what
-   tools/derive does on Windows and macOS), `SCRIPT.py`;
+2. the app as Python: `-c CODE` (argv, UTF-8 output), `-m MODULE` and `-c` running a module (dwpatch's Windows
+   gate) whose module spawns multiprocessing workers (what tools/derive does on Windows and macOS), `SCRIPT.py`;
 3. dwpatch.derive_run itself on a stand-in tools/derive (its Windows gate and job object, or its POSIX process
    group): the stand-in spawns workers and writes a manifest;
 4. TLS: a certificate store that is not empty;
@@ -178,6 +178,13 @@ def main(argv):
             return out.strip().splitlines()[-1]
         ok &= check('python -m, spawning workers', m_module)
 
+        def c_module():
+            # (dwpatch's Windows gate: -c, then runpy; a spawned worker hung here when sys.path had '' in it)
+            code, out = child(['-c', 'import runpy; runpy.run_module("hpst", run_name="__main__", alter_sys=True)'],
+                              cwd=os.path.dirname(pkg), stdin=b'1')
+            assert code == 0 and 'spawned' in out, (code, out)
+        ok &= check('python -c running a module, spawning workers', c_module)
+
         def script():
             path = os.path.join(work, 'spaced folder', 'tool script.py')
             open(path, 'w').write('import sys; print("script", sys.argv[1:])')
@@ -194,35 +201,6 @@ def main(argv):
             open(os.path.join(d, 'work.py'), 'w').write(WORKER)
             open(os.path.join(d, '__main__.py'), 'w').write(DERIVE)
             json.dump({'environment': {'NAME': 'standin'}}, open(os.path.join(d, 'recipes', 'standin.json'), 'w'))
-            if os.name == 'nt':                     # (the same launch without dwpatch's job object: which part fails)
-                trace = os.path.join(work, 'trace.txt')
-                os.environ['HORIZON_TRACE'] = trace
-                hp = os.path.dirname(pkg)
-                for label, argv, stdin in (('-c run_module', ['-c', 'import runpy; runpy.run_module("hpst", run_name="__main__", alter_sys=True)'], None),
-                                           ('-c run_module, stdin', ['-c', 'import runpy; runpy.run_module("hpst", run_name="__main__", alter_sys=True)'], b'1'),
-                                           ('-m, stdin', ['-m', 'hpst'], b'1')):
-                    try:
-                        code, out = child(argv, cwd=hp, stdin=stdin, timeout=90)
-                    except AssertionError as e:
-                        code, out = None, str(e)
-                    say(f'    {label}: exit {code}: ' + ' '.join(out.split())[:300])
-                    if os.path.exists(trace):
-                        say('      trace: ' + ' | '.join(open(trace, encoding='utf-8').read().splitlines()))
-                        os.remove(trace)
-                gate = ('import sys,runpy; sys.stdin.buffer.read(1) == b"1" or sys.exit(1); sys.argv=sys.argv[1:]; '
-                        'runpy.run_module("tools.derive",run_name="__main__",alter_sys=True)')
-                for flags in (0, subprocess.CREATE_NEW_PROCESS_GROUP):
-                    try:
-                        code, out = child(['-c', gate, 'tools.derive', 'build', '--out',
-                                           os.path.join(root, 'build', 'plain')], cwd=root, stdin=b'1', timeout=90,
-                                          flags=flags)
-                    except AssertionError as e:
-                        code, out = None, str(e)
-                    say(f'    gated -c without a job object (flags {flags}): exit {code}: ' + ' '.join(out.split()))
-                    if os.path.exists(trace):
-                        say('      trace: ' + ' | '.join(open(trace, encoding='utf-8').read().splitlines()))
-                        os.remove(trace)
-                os.environ.pop('HORIZON_TRACE', None)
             buf = io.StringIO()
             saved = sys.stdout
             sys.stdout = buf

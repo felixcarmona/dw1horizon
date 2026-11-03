@@ -146,7 +146,10 @@ app, so `gui.py` calls `multiprocessing.freeze_support()` first (a spawned worke
 the exit code) before any window is made. The whole standard library is frozen in (the package's bundle imports what
 it needs at run time), the app runs in UTF-8 mode (`-X utf8`, as dwpatch asks of derive with `PYTHONUTF8`), and it
 is a folder rather than one file: every derive process and worker is the app again, and a one-file app would unpack
-itself to a temporary folder each time.
+itself to a temporary folder each time. For `-c` the shim puts the current folder's path first in `sys.path`, not
+`''` as CPython does: PyInstaller sets `multiprocessing.process.ORIGINAL_DIR` to None, which multiprocessing puts in a
+spawned worker's `sys.path` in place of `''`, and derive's workers under the Windows gate hung (found by the CI
+self-test). `HORIZON_TRACE=FILE` makes every start of the app (the window, derive, each worker) write a line there.
 
 ### Building and testing it
 
@@ -160,7 +163,7 @@ python3 tools/patcher/app/build.py                   # -> build/desktop/dist/ (m
 ```
 
 `--self-test` (tools/patcher/selftest.py) needs no disc and no window unless `--gui`: UTF-8 mode; the app as Python
-in its three forms, the `-m` one spawning workers from a folder with spaces; `dwpatch.derive_run` (the Windows gate
+in its three forms, `-m` and `-c` running a module that spawns workers, from a folder with spaces; `dwpatch.derive_run` (the Windows gate
 and job object, or the POSIX process group) on a stand-in derive that spawns workers; the TLS store; with
 `--download` (or `--package DIR`) every standard-library module the package's Python files import, `info`, `check`
 and `apply_disc` refusing a file that is not a disc with the player's message, and the package's real tools/derive
