@@ -2,6 +2,322 @@
  "_doc": "Releases, newest first. Each version has a date and text in every page language: new, changed and fixed bullet lists, plus an optional upgrade line in all languages. Empty groups are hidden.",
  "versions": [
   {
+   "version": "0.0.5",
+   "date": "2026-11-03",
+   "en": {
+    "new": [
+     "Eight new baby Digimon: Pabumon, Pichimon, YukimiBotamon and Nyokimon, then Motimon, Bukamon, Nyaromon and Yokomon, each on the way to its partner from the anime. With NEW DIGIMON on, rebirth offers eight eggs.",
+     "Once Monochromon has joined the city, his cousin Tuskmon keeps the shop open, with a deal of the day you can haggle over.",
+     "The gym's and the battle's tallies show which button skips them.",
+     "On a computer, the web builder can remember your discs, so the next version does not ask for them again.",
+     "Horizon Patcher, a desktop app for Windows and macOS, makes the disc without a browser. The site offers it once it is ready for the release."
+    ],
+    "changed": [
+     "With NEW DIGIMON on, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon are Mega, and every Champion has two Ultimates to evolve into. With it off, every original Digimon has its original level.",
+     "Imported Megas taller than DW1's own are brought down to about Machinedramon's size, and SkullSatamon and Knightmon to the size of DW1's big Ultimates.",
+     "Nefertimon gets a real feline walk and run, with its front paws on the ground and inside its gauntlets.",
+     "The Mansion Key is used up once all seven doors are open, so it no longer takes a bag slot.",
+     "Starters from Jijimon's quiz begin with the technique that evolving into them teaches, so Gotsumon no longer starts with Megaton Punch.",
+     "Each new area has three daily mushrooms, all on floor you can reach, and Poison Claw costs more MP.",
+     "Kunemon's item menu offers only food, and Drimogemon's dirt job takes 5 trips worth double instead of 10.",
+     "Retouched backgrounds keep their evening and night colours, and the new outdoor areas have softer evenings and nights like the original ones.",
+     "Portuguese calls File Island Ilha Arquivo and File City Cidade Arquivo.",
+     "A disc the builders recognise but cannot use yet now names the releases that work instead."
+    ],
+    "fixed": [
+     "Buying at the File City stall no longer leaves a black rectangle on the screen.",
+     "The game no longer freezes at times after the Meteormon fight, a bug of the original game.",
+     "The Gabumon ambush in Ogre Fortress can no longer freeze the game: Kotemon now appears in the yard only after the fortress has fallen.",
+     "A fight that drops an item no longer stops at \"Pa\" waiting for a button.",
+     "Menus show the right letters and numbers on European and Japanese base discs.",
+     "A reborn Botamon, Punimon, Poyomon or Tsunomon is no longer tiny in the field.",
+     "Seraphimon's victory stays on screen instead of flying off the top.",
+     "Minotarumon, Raremon, PrinceMamemon and nine other imports sleep without flipping over or sinking into the floor.",
+     "You can no longer walk onto a rock in the new canyon screens, or get stuck behind a chair or in similar spots on the new screens.",
+     "On retouched screens, pieces of the old picture no longer draw over the new art.",
+     "Long dialogues keep the speaker's name in every language and font, Japanese text has no stray spaces, and the name keyboard's labels read right in every language.",
+     "The title screen's Yes/No box is translated as soon as you change the language.",
+     "Floramon and a few others name the right item, and the MetalMamemon in Factorial Town has his own name.",
+     "Snimon and Suijinmon eat five meals a day and no longer starve down to a weight of 1.",
+     "Digimon leaving for the city play their area's jingle instead of a stray sound, and Tapirmon runs off instead of vanishing."
+    ],
+    "upgrade": "Saves from earlier versions keep working. The discs you need have not changed, and the web builder can now remember them for the next version."
+   },
+   "es": {
+    "new": [
+     "Ocho nuevos Digimon bebé: Pabumon, Pichimon, YukimiBotamon y Nyokimon, y después Motimon, Bukamon, Nyaromon y Yokomon, cada uno camino de su compañero del anime. Con NEW DIGIMON activado, el renacimiento ofrece ocho huevos.",
+     "Cuando Monochromon se ha unido a la ciudad, su primo Tuskmon mantiene la tienda abierta, con una oferta del día que se puede regatear.",
+     "Los recuentos del gimnasio y del combate indican qué botón los salta.",
+     "En un ordenador, el creador web puede recordar tus discos, así que la siguiente versión no te los vuelve a pedir.",
+     "Horizon Patcher, una aplicación de escritorio para Windows y macOS, crea el disco sin navegador. La web la ofrece en cuanto está lista para la versión."
+    ],
+    "changed": [
+     "Con NEW DIGIMON activado, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman y Jijimon son Mega, y cada Campeón tiene dos Perfectos a los que evolucionar. Desactivado, cada Digimon original tiene su nivel original.",
+     "Los Mega importados más altos que los de DW1 bajan a más o menos el tamaño de Machinedramon, y SkullSatamon y Knightmon al tamaño de los Perfectos grandes de DW1.",
+     "Nefertimon estrena un paso y una carrera felinos de verdad, con las patas delanteras en el suelo y dentro de sus guanteletes.",
+     "La Llave de mansión se gasta cuando las siete puertas están abiertas, así que ya no ocupa un hueco de la bolsa.",
+     "Los compañeros iniciales del test de Jijimon empiezan con la técnica que enseña evolucionar en ellos, así que Gotsumon ya no empieza con Puño Megatón.",
+     "Cada zona nueva tiene tres setas diarias, todas en suelo al que se puede llegar, y Garra Venenosa cuesta más PM.",
+     "El menú de objetos de Kunemon solo ofrece comida, y el trabajo de tierra de Drimogemon pide 5 viajes que valen el doble en vez de 10.",
+     "Los fondos retocados conservan sus colores de tarde y de noche, y las zonas exteriores nuevas tienen tardes y noches más suaves, como las originales.",
+     "En portugués, la isla y la ciudad se llaman ahora Ilha Arquivo y Cidade Arquivo.",
+     "Un disco que los creadores reconocen pero aún no pueden usar indica ahora qué versiones sirven en su lugar."
+    ],
+    "fixed": [
+     "Comprar en el puesto de Ciudad File ya no deja un rectángulo negro en la pantalla.",
+     "El juego ya no se congela a veces después del combate contra Meteormon, un fallo del juego original.",
+     "La emboscada de los Gabumon en la Fortaleza del Ogro ya no puede congelar el juego: Kotemon aparece en el patio solo cuando la fortaleza ha caído.",
+     "Un combate que suelta un objeto ya no se queda en \"Pa\" esperando un botón.",
+     "Los menús muestran las letras y los números correctos con discos base europeos y japoneses.",
+     "Un Botamon, Punimon, Poyomon o Tsunomon recién renacido ya no se ve diminuto en el campo.",
+     "La victoria de Seraphimon se queda en pantalla en vez de salir volando por arriba.",
+     "Minotarumon, Raremon, PrinceMamemon y otros nueve importados duermen sin darse la vuelta ni hundirse en el suelo.",
+     "Ya no se puede caminar sobre una roca de las nuevas pantallas del cañón, ni quedarse atascado detrás de una silla o en sitios parecidos de las pantallas nuevas.",
+     "En las pantallas retocadas, ya no se dibujan trozos de la imagen antigua sobre el dibujo nuevo.",
+     "Los diálogos largos conservan el nombre de quien habla en todos los idiomas y fuentes, el texto japonés no tiene espacios sueltos y las etiquetas del teclado de nombres se leen bien en todos los idiomas.",
+     "El cuadro Sí/No de la pantalla de título se traduce en cuanto cambias el idioma.",
+     "Floramon y algunos más nombran el objeto correcto, y el MetalMamemon de Ciudad Factorial tiene su propio nombre.",
+     "Snimon y Suijinmon comen cinco veces al día y ya no adelgazan hasta un peso de 1.",
+     "Los Digimon que se van a la ciudad tocan la melodía de su zona en vez de un sonido cualquiera, y Tapirmon se marcha corriendo en vez de desaparecer."
+    ],
+    "upgrade": "Las partidas de versiones anteriores siguen funcionando. Los discos necesarios no han cambiado, y el creador web ahora puede recordarlos para la siguiente versión."
+   },
+   "pt-br": {
+    "new": [
+     "Oito novos Digimon bebês: Pabumon, Pichimon, YukimiBotamon e Nyokimon, e depois Motimon, Bukamon, Nyaromon e Yokomon, cada um a caminho do seu parceiro do anime. Com NEW DIGIMON ligado, o renascimento oferece oito ovos.",
+     "Depois que Monochromon se junta à cidade, seu primo Tuskmon mantém a loja aberta, com uma oferta do dia que dá para pechinchar.",
+     "As contagens da academia e da batalha mostram qual botão as pula.",
+     "No computador, o criador web pode lembrar seus discos, então a próxima versão não pede eles de novo.",
+     "Horizon Patcher, um aplicativo para Windows e macOS, cria o disco sem navegador. O site oferece o aplicativo assim que ele fica pronto para a versão."
+    ],
+    "changed": [
+     "Com NEW DIGIMON ligado, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman e Jijimon são Mega, e todo Campeão tem dois Perfeitos para evoluir. Desligado, cada Digimon original tem seu nível original.",
+     "Os Mega importados mais altos que os de DW1 ficam mais ou menos do tamanho de Machinedramon, e SkullSatamon e Knightmon do tamanho dos Perfeitos grandes de DW1.",
+     "Nefertimon ganha um andar e uma corrida felinos de verdade, com as patas da frente no chão e dentro das manoplas.",
+     "A Chave da mansão é gasta quando as sete portas estão abertas, então não ocupa mais um espaço na bolsa.",
+     "Os parceiros iniciais do teste de Jijimon começam com a técnica que evoluir neles ensina, então Gotsumon não começa mais com Soco Megaton.",
+     "Cada área nova tem três cogumelos por dia, todos em chão que dá para alcançar, e Garra Venenosa custa mais MP.",
+     "O menu de itens de Kunemon só oferece comida, e o trabalho de terra de Drimogemon pede 5 viagens que valem o dobro em vez de 10.",
+     "Os cenários retocados mantêm suas cores de tarde e de noite, e as novas áreas ao ar livre têm tardes e noites mais suaves, como as originais.",
+     "Em português, a Ilha File agora se chama Ilha Arquivo, e a cidade, Cidade Arquivo.",
+     "Um disco que os criadores reconhecem mas ainda não podem usar agora mostra quais versões servem no lugar dele."
+    ],
+    "fixed": [
+     "Comprar na barraca da Cidade Arquivo não deixa mais um retângulo preto na tela.",
+     "O jogo não trava mais às vezes depois da batalha contra Meteormon, um bug do jogo original.",
+     "A emboscada dos Gabumon na Fortaleza dos Ogros não pode mais travar o jogo: Kotemon agora aparece no pátio só depois que a fortaleza cai.",
+     "Uma batalha que deixa um item não para mais em \"Pa\" esperando um botão.",
+     "Os menus mostram as letras e os números certos com discos base europeus e japoneses.",
+     "Um Botamon, Punimon, Poyomon ou Tsunomon recém-renascido não fica mais minúsculo no campo.",
+     "A vitória de Seraphimon fica na tela em vez de sair voando por cima.",
+     "Minotarumon, Raremon, PrinceMamemon e outros nove importados dormem sem virar nem afundar no chão.",
+     "Não dá mais para andar sobre uma rocha das novas telas do cânion, nem ficar preso atrás de uma cadeira ou em lugares parecidos das telas novas.",
+     "Nas telas retocadas, pedaços da imagem antiga não aparecem mais por cima da arte nova.",
+     "Diálogos longos mantêm o nome de quem fala em todos os idiomas e fontes, o texto japonês não tem espaços soltos e os rótulos do teclado de nomes aparecem certos em todos os idiomas.",
+     "A caixa Sim/Não da tela de título é traduzida assim que você muda o idioma.",
+     "Floramon e alguns outros dizem o item certo, e o MetalMamemon da Cidade das Fábricas tem seu próprio nome.",
+     "Snimon e Suijinmon comem cinco vezes por dia e não emagrecem mais até peso 1.",
+     "Os Digimon que vão para a cidade tocam a música da sua área em vez de um som qualquer, e Tapirmon sai correndo em vez de sumir."
+    ],
+    "upgrade": "Os saves de versões anteriores continuam funcionando. Os discos necessários não mudaram, e o criador web agora pode lembrá-los para a próxima versão."
+   },
+   "fr": {
+    "new": [
+     "Huit nouveaux Digimon bébés : Pabumon, Pichimon, YukimiBotamon et Nyokimon, puis Motimon, Bukamon, Nyaromon et Yokomon, chacun en route vers son partenaire de l'anime. Avec NEW DIGIMON activé, la renaissance propose huit œufs.",
+     "Une fois que Monochromon a rejoint la ville, son cousin Tuskmon garde la boutique ouverte, avec une offre du jour à marchander.",
+     "Les décomptes de la salle de sport et du combat indiquent quel bouton les passe.",
+     "Sur un ordinateur, le créateur web peut se souvenir de tes disques, et la version suivante ne te les redemande pas.",
+     "Horizon Patcher, une application pour Windows et macOS, crée le disque sans navigateur. Le site la propose dès qu'elle est prête pour la version."
+    ],
+    "changed": [
+     "Avec NEW DIGIMON activé, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman et Jijimon sont Méga, et chaque Champion a deux Ultimes vers lesquels évoluer. Désactivé, chaque Digimon original retrouve son niveau d'origine.",
+     "Les Méga importés plus grands que ceux de DW1 sont ramenés à peu près à la taille de Machinedramon, et SkullSatamon et Knightmon à celle des grands Ultimes de DW1.",
+     "Nefertimon a enfin une vraie marche et une vraie course de félin, les pattes avant au sol et dans ses gantelets.",
+     "La Clé du manoir est consommée quand les sept portes sont ouvertes, et ne prend plus de place dans le sac.",
+     "Les partenaires de départ du quiz de Jijimon commencent avec la technique qu'apprend l'évolution vers eux : Gotsumon ne commence plus avec Punch mégatonne.",
+     "Chaque nouvelle zone a trois champignons par jour, tous sur un sol accessible, et Griffe poison coûte plus de PM.",
+     "Le menu d'objets de Kunemon ne propose que de la nourriture, et le travail de terre de Drimogemon demande 5 trajets qui valent double au lieu de 10.",
+     "Les décors retouchés gardent leurs couleurs du soir et de la nuit, et les nouvelles zones extérieures ont des soirs et des nuits plus doux, comme les originales.",
+     "En portugais, l'île et la ville s'appellent maintenant Ilha Arquivo et Cidade Arquivo.",
+     "Un disque que les créateurs reconnaissent mais ne peuvent pas encore utiliser indique maintenant quelles versions conviennent à sa place."
+    ],
+    "fixed": [
+     "Acheter à l'étal de Ville File ne laisse plus de rectangle noir à l'écran.",
+     "Le jeu ne se fige plus parfois après le combat contre Meteormon, un bug du jeu original.",
+     "L'embuscade des Gabumon dans la Forteresse des ogres ne peut plus figer le jeu : Kotemon n'apparaît dans la cour qu'après la chute de la forteresse.",
+     "Un combat qui laisse un objet ne s'arrête plus sur « Pa » en attendant un bouton.",
+     "Les menus affichent les bonnes lettres et les bons chiffres avec les disques de base européens et japonais.",
+     "Un Botamon, Punimon, Poyomon ou Tsunomon qui vient de renaître n'est plus minuscule sur le terrain.",
+     "La victoire de Seraphimon reste à l'écran au lieu de s'envoler par le haut.",
+     "Minotarumon, Raremon, PrinceMamemon et neuf autres importés dorment sans se retourner ni s'enfoncer dans le sol.",
+     "On ne peut plus marcher sur un rocher des nouveaux écrans du canyon, ni rester coincé derrière une chaise ou à des endroits semblables des nouveaux écrans.",
+     "Sur les écrans retouchés, des morceaux de l'ancienne image ne s'affichent plus par-dessus le nouveau décor.",
+     "Les longs dialogues gardent le nom de celui qui parle dans toutes les langues et polices, le texte japonais n'a plus d'espaces parasites et les libellés du clavier de nom s'affichent bien dans toutes les langues.",
+     "La boîte Oui/Non de l'écran titre est traduite dès que tu changes de langue.",
+     "Floramon et quelques autres nomment le bon objet, et le MetalMamemon de Ville des usines a son propre nom.",
+     "Snimon et Suijinmon mangent cinq fois par jour et ne maigrissent plus jusqu'à un poids de 1.",
+     "Les Digimon qui partent pour la ville jouent le jingle de leur zone au lieu d'un son au hasard, et Tapirmon s'en va en courant au lieu de disparaître."
+    ],
+    "upgrade": "Les sauvegardes des versions précédentes fonctionnent toujours. Les disques nécessaires n'ont pas changé, et le créateur web peut maintenant s'en souvenir pour la version suivante."
+   },
+   "de": {
+    "new": [
+     "Acht neue Baby-Digimon: Pabumon, Pichimon, YukimiBotamon und Nyokimon, danach Motimon, Bukamon, Nyaromon und Yokomon, jedes auf dem Weg zu seinem Partner aus dem Anime. Mit NEW DIGIMON bietet die Wiedergeburt acht Eier.",
+     "Sobald Monochromon der Stadt beigetreten ist, hält sein Cousin Tuskmon den Laden offen, mit einem Angebot des Tages, um das man feilschen kann.",
+     "Die Auszählungen im Fitnessstudio und nach dem Kampf zeigen, welche Taste sie überspringt.",
+     "Am Computer kann sich der Web-Builder deine Discs merken, damit die nächste Version nicht erneut nach ihnen fragt.",
+     "Horizon Patcher, eine Desktop-App für Windows und macOS, erstellt die Disc ohne Browser. Die Website bietet sie an, sobald sie für die Version bereit ist."
+    ],
+    "changed": [
+     "Mit NEW DIGIMON sind Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman und Jijimon Mega, und jeder Champion kann sich in zwei Ultra digitieren. Ohne die Option hat jedes Original-Digimon seine ursprüngliche Stufe.",
+     "Importierte Megas, die größer sind als die von DW1, schrumpfen auf etwa die Größe von Machinedramon, SkullSatamon und Knightmon auf die der großen Ultra von DW1.",
+     "Nefertimon bekommt einen echten Katzengang und -lauf, mit den Vorderpfoten auf dem Boden und in den Panzerhandschuhen.",
+     "Der Villaschlüssel wird verbraucht, sobald alle sieben Türen offen sind, und belegt keinen Taschenplatz mehr.",
+     "Startpartner aus Jijimons Quiz beginnen mit der Technik, die eine Digitation zu ihnen lehrt: Gotsumon startet nicht mehr mit Hau den Lukas.",
+     "Jedes neue Gebiet hat drei tägliche Pilze, alle auf erreichbarem Boden, und Giftkralle kostet mehr MP.",
+     "Kunemons Itemmenü bietet nur Essen an, und Drimogemons Erdarbeit braucht 5 Gänge mit doppeltem Wert statt 10.",
+     "Überarbeitete Hintergründe behalten ihre Abend- und Nachtfarben, und die neuen Außengebiete haben sanftere Abende und Nächte wie die Originale.",
+     "Auf Portugiesisch heißen Insel und Stadt jetzt Ilha Arquivo und Cidade Arquivo.",
+     "Eine Disc, die die Builder erkennen, aber noch nicht nutzen können, nennt jetzt die Versionen, die stattdessen funktionieren."
+    ],
+    "fixed": [
+     "Ein Kauf am Stand in File-Stadt hinterlässt kein schwarzes Rechteck mehr auf dem Bildschirm.",
+     "Das Spiel friert nach dem Kampf gegen Meteormon nicht mehr manchmal ein, ein Fehler des Originalspiels.",
+     "Der Hinterhalt der Gabumon in der Ogerfestung kann das Spiel nicht mehr einfrieren: Kotemon erscheint erst im Hof, wenn die Festung gefallen ist.",
+     "Ein Kampf, der ein Item fallen lässt, bleibt nicht mehr bei „Pa“ stehen und wartet auf eine Taste.",
+     "Menüs zeigen mit europäischen und japanischen Basis-Discs die richtigen Buchstaben und Zahlen.",
+     "Ein wiedergeborenes Botamon, Punimon, Poyomon oder Tsunomon ist im Feld nicht mehr winzig.",
+     "Seraphimons Sieg bleibt im Bild, statt oben hinauszufliegen.",
+     "Minotarumon, Raremon, PrinceMamemon und neun weitere Importe schlafen, ohne sich zu überschlagen oder im Boden zu versinken.",
+     "Man kann nicht mehr auf einen Felsen in den neuen Canyon-Bildschirmen laufen oder hinter einem Stuhl und an ähnlichen Stellen der neuen Bildschirme stecken bleiben.",
+     "Auf überarbeiteten Bildschirmen werden keine Stücke des alten Bildes mehr über die neue Grafik gezeichnet.",
+     "Lange Dialoge behalten den Namen des Sprechers in allen Sprachen und Schriften, japanischer Text hat keine verirrten Leerzeichen mehr, und die Beschriftungen der Namenstastatur stimmen in allen Sprachen.",
+     "Das Ja/Nein-Feld des Titelbildschirms ist übersetzt, sobald du die Sprache wechselst.",
+     "Floramon und ein paar andere nennen das richtige Item, und das MetalMamemon in der Fabrikstadt hat seinen eigenen Namen.",
+     "Snimon und Suijinmon essen fünfmal am Tag und hungern sich nicht mehr auf Gewicht 1 herunter.",
+     "Digimon, die in die Stadt gehen, spielen den Jingle ihres Gebiets statt eines falschen Geräuschs, und Tapirmon läuft davon, statt zu verschwinden."
+    ],
+    "upgrade": "Spielstände früherer Versionen funktionieren weiter. Die benötigten Discs haben sich nicht geändert, und der Web-Builder kann sie sich jetzt für die nächste Version merken."
+   },
+   "it": {
+    "new": [
+     "Otto nuovi Digimon cuccioli: Pabumon, Pichimon, YukimiBotamon e Nyokimon, poi Motimon, Bukamon, Nyaromon e Yokomon, ognuno sulla strada verso il suo partner dell'anime. Con NEW DIGIMON attivo, la rinascita offre otto uova.",
+     "Quando Monochromon si è unito alla città, suo cugino Tuskmon tiene aperto il negozio, con un'offerta del giorno da contrattare.",
+     "I conteggi della palestra e della battaglia indicano quale tasto li salta.",
+     "Su un computer, il creatore web può ricordare i tuoi dischi, così la versione successiva non te li chiede di nuovo.",
+     "Horizon Patcher, un'app per Windows e macOS, crea il disco senza browser. Il sito la offre appena è pronta per la versione."
+    ],
+    "changed": [
+     "Con NEW DIGIMON attivo, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman e Jijimon sono Mega, e ogni Campione ha due Evoluti in cui digievolvere. Disattivato, ogni Digimon originale ha il suo livello originale.",
+     "I Mega importati più alti di quelli di DW1 scendono più o meno alla taglia di Machinedramon, e SkullSatamon e Knightmon a quella dei grandi Evoluti di DW1.",
+     "Nefertimon ha finalmente una vera camminata e corsa feline, con le zampe anteriori a terra e dentro i guanti.",
+     "La Chiave villa si consuma quando tutte e sette le porte sono aperte, e non occupa più un posto nella borsa.",
+     "I partner iniziali del quiz di Jijimon partono con la tecnica che insegna digievolvere in loro: Gotsumon non parte più con Pugno Megatone.",
+     "Ogni nuova zona ha tre funghi al giorno, tutti su terreno raggiungibile, e Artiglio Velenoso costa più MP.",
+     "Il menu oggetti di Kunemon offre solo cibo, e il lavoro di terra di Drimogemon chiede 5 viaggi che valgono il doppio invece di 10.",
+     "Gli sfondi ritoccati mantengono i colori della sera e della notte, e le nuove zone all'aperto hanno sere e notti più morbide, come quelle originali.",
+     "In portoghese, l'isola e la città si chiamano ora Ilha Arquivo e Cidade Arquivo.",
+     "Un disco che i creatori riconoscono ma non possono ancora usare ora indica quali versioni vanno bene al suo posto."
+    ],
+    "fixed": [
+     "Comprare alla bancarella di Città File non lascia più un rettangolo nero sullo schermo.",
+     "Il gioco non si blocca più a volte dopo la battaglia contro Meteormon, un bug del gioco originale.",
+     "L'imboscata dei Gabumon nella Fortezza degli orchi non può più bloccare il gioco: Kotemon compare nel cortile solo dopo la caduta della fortezza.",
+     "Una battaglia che lascia un oggetto non si ferma più su \"Pa\" in attesa di un tasto.",
+     "I menu mostrano le lettere e i numeri giusti con i dischi base europei e giapponesi.",
+     "Un Botamon, Punimon, Poyomon o Tsunomon appena rinato non è più minuscolo sul campo.",
+     "La vittoria di Seraphimon resta sullo schermo invece di volare via dall'alto.",
+     "Minotarumon, Raremon, PrinceMamemon e altri nove importati dormono senza ribaltarsi né sprofondare nel terreno.",
+     "Non si può più camminare su una roccia delle nuove schermate del canyon, né restare bloccati dietro una sedia o in punti simili delle nuove schermate.",
+     "Nelle schermate ritoccate, pezzi della vecchia immagine non si disegnano più sopra la nuova grafica.",
+     "I dialoghi lunghi mantengono il nome di chi parla in tutte le lingue e i font, il testo giapponese non ha spazi di troppo e le etichette della tastiera del nome si leggono bene in tutte le lingue.",
+     "Il riquadro Sì/No della schermata del titolo è tradotto appena cambi lingua.",
+     "Floramon e qualcun altro nominano l'oggetto giusto, e il MetalMamemon di Città fabbrica ha il suo nome.",
+     "Snimon e Suijinmon mangiano cinque volte al giorno e non dimagriscono più fino a peso 1.",
+     "I Digimon che partono per la città suonano il jingle della loro zona invece di un suono a caso, e Tapirmon se ne va correndo invece di sparire."
+    ],
+    "upgrade": "I salvataggi delle versioni precedenti continuano a funzionare. I dischi necessari non sono cambiati, e il creatore web ora può ricordarli per la versione successiva."
+   },
+   "ja": {
+    "new": [
+     "新しい幼年期デジモン8体：パブモン、ピチモン、ユキミボタモン、ニョキモン、そしてモチモン、プカモン、ニャロモン、ピョコモン。それぞれアニメのパートナーへと進化します。NEW DIGIMONがオンなら、転生で8個のタマゴから選べます。",
+     "モノクロモンが街の仲間になると、いとこのタスクモンが店を続けます。値切れる日替わりの特売もあります。",
+     "ジムとバトルの集計に、スキップするボタンが表示されます。",
+     "パソコンでは、Webビルダーがディスクを覚えておけるので、次のバージョンでもう一度ディスクを用意する必要がありません。",
+     "WindowsとmacOS用のデスクトップアプリ「Horizon Patcher」で、ブラウザなしでディスクを作れます。リリース用の準備ができしだいサイトで配布します。"
+    ],
+    "changed": [
+     "NEW DIGIMONがオンのとき、ホウオウモン、ヘラクルカブテリモン、メタルエテモン、ムゲンドラモン、アナログマン、ジジモンは究極体になり、どの成熟期にも進化先の完全体が2体あります。オフのときは、元のデジモンはすべて元のレベルです。",
+     "DW1のデジモンより大きい移植の究極体はムゲンドラモンくらいの大きさに、スカルサタモンとナイトモンはDW1の大きな完全体くらいに小さくなりました。",
+     "ネフェルティモンが本物のネコ科らしく歩き、走るようになりました。前足は地面につき、ガントレットに収まります。",
+     "やしきのカギは7つのドアがすべて開くとなくなり、バッグの枠を使わなくなりました。",
+     "ジジモンのクイズで選ぶ最初のパートナーは、そのデジモンへの進化で覚える技から始まります。ゴツモンがメガトンパンチで始まることはなくなりました。",
+     "新しいエリアにはそれぞれ毎日3つのキノコが、すべて歩いて取れる場所に生えます。ポイズンクローの消費MPが増えました。",
+     "クネモンのアイテムメニューは食べ物だけになり、ドリモゲモンの土運びは10回ではなく2倍の価値の5回になりました。",
+     "描き直した背景も夕方と夜の色が合うようになり、新しい屋外エリアの夕方と夜は元のエリアのように落ち着いた色になりました。",
+     "ポルトガル語では、島と街の名前がIlha ArquivoとCidade Arquivoになりました。",
+     "ビルダーが認識できてもまだ使えないディスクには、代わりに使えるリリースが表示されます。"
+    ],
+    "fixed": [
+     "はじまりの街の露店で買い物をしても、画面に黒い四角が残らなくなりました。",
+     "メテオモンとのバトルのあとに、ときどきフリーズする問題を修正しました。元のゲームのバグです。",
+     "オーガトリデでのガブモンの待ち伏せでゲームがフリーズしなくなりました。コテモンは、オーガトリデが落ちてから中庭に現れます。",
+     "アイテムを落とすバトルのあと、「Pa」で止まってボタンを待つことがなくなりました。",
+     "ヨーロッパ版と日本版のベースディスクでも、メニューの文字と数字が正しく表示されます。",
+     "転生したボタモン、プニモン、ポヨモン、ツノモンがフィールドで小さくならなくなりました。",
+     "セラフィモンの勝利シーンが、画面の上に飛び出さず画面内に収まります。",
+     "ミノタルモン、レアモン、プリンスマメモンなど12体の移植デジモンが、ひっくり返ったり地面に沈んだりせずに眠ります。",
+     "新しい渓谷の画面で岩の上を歩けなくなり、新しい画面のイスの裏などで動けなくなることもなくなりました。",
+     "描き直した画面で、古い絵の一部が新しい絵の上に表示されなくなりました。",
+     "長い会話でも、すべての言語とフォントで話し手の名前が残ります。日本語の文中の余分なスペースをなくし、名前入力のキーボードの表示もすべての言語で正しくなりました。",
+     "タイトル画面のはい/いいえは、言語を変えるとすぐに翻訳されます。",
+     "フローラモンなどが正しいアイテム名を言うようになり、ファクトリアルタウンのメタルマメモンも正しい名前になりました。",
+     "スナイモンとスイジンモンは1日5回食事をするようになり、体重が1まで減らなくなりました。",
+     "街へ行くデジモンが、ちがう効果音ではなくそのエリアのジングルを鳴らし、バクモンは消えずに走り去ります。"
+    ],
+    "upgrade": "以前のバージョンのセーブデータはそのまま使えます。必要なディスクは変わっていません。Webビルダーは次のバージョンのためにディスクを覚えておけるようになりました。"
+   },
+   "ca": {
+    "new": [
+     "Vuit Digimon nadons nous: Pabumon, Pichimon, YukimiBotamon i Nyokimon, i després Motimon, Bukamon, Nyaromon i Yokomon, cadascun camí del seu company de l'anime. Amb NEW DIGIMON activat, el renaixement ofereix vuit ous.",
+     "Quan Monochromon s'ha unit a la ciutat, el seu cosí Tuskmon manté la botiga oberta, amb una oferta del dia que es pot regatejar.",
+     "Els recomptes del gimnàs i del combat indiquen quin botó els salta.",
+     "En un ordinador, el creador web pot recordar els teus discos, i la versió següent no te'ls torna a demanar.",
+     "Horizon Patcher, una aplicació d'escriptori per a Windows i macOS, crea el disc sense navegador. El web l'ofereix tan bon punt està a punt per a la versió."
+    ],
+    "changed": [
+     "Amb NEW DIGIMON activat, Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman i Jijimon són Mega, i cada Campió té dos Perfectes als quals evolucionar. Desactivat, cada Digimon original té el seu nivell original.",
+     "Els Mega importats més alts que els de DW1 baixen a més o menys la mida de Machinedramon, i SkullSatamon i Knightmon a la dels Perfectes grans de DW1.",
+     "Nefertimon estrena un pas i una carrera felins de debò, amb les potes del davant a terra i dins dels guantellets.",
+     "La Clau de mansió es gasta quan les set portes són obertes, i ja no ocupa un lloc de la bossa.",
+     "Els companys inicials del test de Jijimon comencen amb la tècnica que ensenya evolucionar-hi, i Gotsumon ja no comença amb Puny megató.",
+     "Cada zona nova té tres bolets diaris, tots en terra on es pot arribar, i Urpa verinosa costa més PM.",
+     "El menú d'objectes de Kunemon només ofereix menjar, i la feina de terra de Drimogemon demana 5 viatges que valen el doble en lloc de 10.",
+     "Els fons retocats conserven els colors del vespre i de la nit, i les zones exteriors noves tenen vespres i nits més suaus, com les originals.",
+     "En portuguès, l'illa i la ciutat es diuen ara Ilha Arquivo i Cidade Arquivo.",
+     "Un disc que els creadors reconeixen però encara no poden fer servir ara indica quines versions serveixen en el seu lloc."
+    ],
+    "fixed": [
+     "Comprar a la parada de Ciutat File ja no deixa un rectangle negre a la pantalla.",
+     "El joc ja no es congela de vegades després del combat contra Meteormon, un error del joc original.",
+     "L'emboscada dels Gabumon a la Fortalesa dels ogres ja no pot congelar el joc: Kotemon apareix al pati només quan la fortalesa ha caigut.",
+     "Un combat que deixa anar un objecte ja no es queda a \"Pa\" esperant un botó.",
+     "Els menús mostren les lletres i els números correctes amb discos base europeus i japonesos.",
+     "Un Botamon, Punimon, Poyomon o Tsunomon acabat de renéixer ja no es veu minúscul al camp.",
+     "La victòria de Seraphimon es queda a la pantalla en lloc de sortir volant per dalt.",
+     "Minotarumon, Raremon, PrinceMamemon i nou importats més dormen sense capgirar-se ni enfonsar-se a terra.",
+     "Ja no es pot caminar per sobre d'una roca de les pantalles noves del canyó, ni quedar-se encallat darrere d'una cadira o en llocs semblants de les pantalles noves.",
+     "A les pantalles retocades, ja no es dibuixen trossos de la imatge antiga per sobre del dibuix nou.",
+     "Els diàlegs llargs conserven el nom de qui parla en tots els idiomes i fonts, el text japonès no té espais solts i les etiquetes del teclat de noms es llegeixen bé en tots els idiomes.",
+     "El quadre Sí/No de la pantalla de títol es tradueix tan bon punt canvies l'idioma.",
+     "Floramon i uns quants més anomenen l'objecte correcte, i el MetalMamemon de Ciutat de les fàbriques té el seu propi nom.",
+     "Snimon i Suijinmon mengen cinc cops al dia i ja no s'aprimen fins a un pes d'1.",
+     "Els Digimon que se'n van a la ciutat toquen la melodia de la seva zona en lloc d'un so qualsevol, i Tapirmon se'n va corrent en lloc de desaparèixer."
+    ],
+    "upgrade": "Les partides de versions anteriors continuen funcionant. Els discos necessaris no han canviat, i el creador web ara els pot recordar per a la versió següent."
+   }
+  },
+  {
    "version": "0.0.4",
    "date": "2026-11-02",
    "en": {
