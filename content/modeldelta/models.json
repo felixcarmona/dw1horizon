@@ -1069,9 +1069,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/217-Gomamon.MMD.mdelta",
-        "delta_sha256": "9933513e9ed5ad2ba25d4d4d934e9eeee5f4f5efe50322cdb3e6da68c36ec2f0",
-        "sha256": "c9f7ce4211bb231299e066ceb421d3753778b998e667b50272095834618fc51e",
-        "size": 108184
+        "delta_sha256": "d14dc0df161918cee08c97cc770d3c1a88c131cdcef8cfeed6fe59cd5492ab82",
+        "sha256": "9a490964c53ca4d939fe9cd604dc6c57f992affd64fcf584c70dd1af8b9602fd",
+        "size": 108198
       },
       "tim": {
         "sources": [

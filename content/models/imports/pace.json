@@ -144,9 +144,9 @@
   "name": "Gomamon",
   "bones": 22,
   "skeleton_sha256": "e8e8ec0c39a47e811fcd6317dc2f6c78be2ed6be1e2d9ed987aafddb384439f3",
-  "source_sha256": "c9f7ce4211bb231299e066ceb421d3753778b998e667b50272095834618fc51e",
+  "source_sha256": "9a490964c53ca4d939fe9cd604dc6c57f992affd64fcf584c70dd1af8b9602fd",
   "base_generator": "tools.models.field_animations.gomamon",
-  "post_source_sha256": "ea681b4af33bfb9f816425095568759deb71804e12351f27e281a2647c8adf6c",
+  "post_source_sha256": "df2491e07f727898b4a6c7341333b2205d5d15a0f881570b7bf07a6fb018d135",
   "slots": {
    "2": {
     "from": 3,
