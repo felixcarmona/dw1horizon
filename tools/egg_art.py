@@ -20,7 +20,7 @@ TAMA.TIM is a 4-bit 256x80 texture with 16 CLUT rows (VRAM 128,488): the 3D eggs
   rows (index 1 the shell, 2-5 the pattern), 6-13 the icon's shell shading, 14 and 15 the outline;
 - YukimiBotamon's zigzags on the 3D egg: the egg borrows group 1 (the wave egg), whose skin maps v 0-47 twice down
   the egg and u 0-95 once round it, so one zigzag band at v 17-30 shows as two. Its texels take indices the original
-  row 489 never read (14 over the shell, 9, 13, 8 and 15 over the wave's 2-5); row 489 gets those indices with the
+  row 489 never read (15 over the shell, 7, 13, 8 and 9 over the wave's 2-5); row 489 gets those indices with the
   colours they cover, so the original egg looks as before, and the YukimiBotamon row shows them dark.
 
 Only pixel indices of empty texels, empty CLUT rows and unused entries of row 489 change: the file keeps its header
@@ -46,7 +46,10 @@ EGGS = [
 ]
 ZIGZAG_GROUP_ROW = 489        # the wave egg's row (group 1), which YukimiBotamon borrows
 # the YukimiBotamon zigzag over the shell (index 1) and over the wave's indices 2-5
-ZIG_OVER = {1: 14, 2: 9, 3: 13, 4: 8, 5: 15}
+# Never index 14 (0x8000, black with the semi-transparency bit): the egg box draws its sprites semi-transparent
+# (additive), so an STP texel shows what is behind it; 15 (0x0421) and the dark greys are opaque.
+ZIG_OVER = {1: 15, 2: 7, 3: 13, 4: 8, 5: 9}
+ZIG_ICON = 15
 
 
 def rgb15(rgb):
@@ -131,7 +134,7 @@ def fill_pattern(ic, order):
 
 
 def zigzag(ic, order, rows, amp, period, width):
-    """black zigzags (index 14) across the shell, centred on the given icon rows"""
+    """near-black zigzags (ZIG_ICON, opaque) across the shell, centred on the given icon rows"""
     shell = set(order)
     out = [line[:] for line in ic]
     for cy in rows:
@@ -140,7 +143,7 @@ def zigzag(ic, order, rows, amp, period, width):
             c = cy + amp - (4 * amp * t) // period if t < period // 2 else cy - amp + (4 * amp * (t - period // 2)) // period
             for y in range(c, c + width):
                 if 0 <= y < 32 and out[y][x] in shell:
-                    out[y][x] = 14
+                    out[y][x] = ZIG_ICON
     return out
 
 

@@ -51,5 +51,31 @@ class EggArt(unittest.TestCase):
             self.assertGreater(len(icon), 5)
 
 
+    def test_drawn_texels_are_opaque(self):
+        """a texel meant to be seen never reads colour 0 (transparent), and the zigzags never 0x8000-style colours:
+        the egg box draws its sprites semi-transparent (additive), where a texel with the STP bit shows the background"""
+        E = self.E
+        for k in range(4):
+            row = self.new.row(E.NEW_ROW + k)
+            for y in range(32):
+                for x in range(E.ICON_W):
+                    i = self.new.px(E.ICON_U + E.ICON_W * k + x, E.ICON_V + y)
+                    if i:
+                        self.assertNotEqual(row[i], 0, (k, x, y, i))
+        yuki = self.new.row(E.NEW_ROW + 2)
+        zig = {E.ZIG_ICON} | set(E.ZIG_OVER.values())
+        for i in zig:
+            self.assertTrue(yuki[i] and not yuki[i] & 0x8000, (i, hex(yuki[i])))
+        icon = {self.new.px(E.ICON_U + E.ICON_W * 2 + x, E.ICON_V + y) for x in range(E.ICON_W) for y in range(32)}
+        self.assertIn(E.ZIG_ICON, icon)
+        skin = {self.new.px(u, v) for u in range(96) for v in range(48)}
+        self.assertTrue(set(E.ZIG_OVER.values()) & skin)
+        for v in range(48):                      # every skin texel the YukimiBotamon egg can show is opaque
+            for u in range(96):
+                i = self.new.px(u, v)
+                if i:
+                    self.assertNotEqual(yuki[i], 0, (u, v, i))
+
+
 if __name__ == '__main__':
     unittest.main()
