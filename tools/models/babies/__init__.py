@@ -10,6 +10,12 @@ result by SHA-256.
 
   python3 -m tools.models.babies check                 # replay all eight from extracted/
   python3 -m tools.models.babies encode ID MMD TIM     # store a new authored pair as deltas + pins
+  python3 -m tools.models.babies encode-dir DIR        # the same for every <Name>.MMD/.TIM pair found in DIR
+
+Re-porting a redrawn baby: replace its authoring/<name>.py (paths through authoring/lib.py), run it (it writes
+build/babies-authoring/<Name>.MMD/.TIM), `encode` or `encode-dir` that folder, then a developer build
+(`python3 -m tools.dev build`) rewrites tools/derive/recipes/species-pins.json; commit the script, the deltas,
+babies.json and the pins. Re-measure model.height in the species file if the silhouette changed.
 """
 import hashlib
 import json
@@ -88,6 +94,14 @@ def main(argv):
         for species, record in sorted(records().items()):
             model, texture = build_species(species, ROOT / 'extracted')
             print(f'{species} {record["name"]}: MMD {len(model)} B, TIM {len(texture)} B, SHA-256 verified')
+        return 0
+    if argv[:1] == ['encode-dir'] and len(argv) == 2:
+        folder = Path(argv[1])
+        for species, record in sorted(records().items()):
+            mmd_path, tim_path = folder / (record['name'] + '.MMD'), folder / (record['name'] + '.TIM')
+            if mmd_path.exists() and tim_path.exists():
+                encode(species, mmd_path.read_bytes(), tim_path.read_bytes(), ROOT / 'extracted')
+                print(f'{species} {record["name"]}: deltas and pins written to {MANIFEST}')
         return 0
     if argv[:1] == ['encode'] and len(argv) == 4:
         record = encode(int(argv[1]), Path(argv[2]).read_bytes(), Path(argv[3]).read_bytes(), ROOT / 'extracted')
