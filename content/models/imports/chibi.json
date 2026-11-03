@@ -32,7 +32,7 @@
   "source_sha256": "0224b26e5970794ebdb5511826d5622fdb79c526c5ad5cc441ad56f1aaddb76b",
   "skeleton_sha256": "0a89550a85960fc8a2e0d8cff7833fbd3c8e5345d1530b2e33f2898b19146db9",
   "base_generator": "tools.models.field_animations.seraphimon",
-  "post_source_sha256": "115907cf5d7870803d93463e227242963f9aacc89bff8c4792d12d54d4c89b23",
+  "post_source_sha256": "a28f060111235ce49019b0a6a387f76375994432d2444444852947bb5ada1b3d",
   "height": 656,
   "fit": {"6": 0.82, "5": 0.82, "4": 0.82, "3": 0.82, "14": 0.9},
   "factors": {"head": 1.584, "hand": 1.188, "foot": 1.0, "leg_axial": 0.702, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.203},
