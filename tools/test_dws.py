@@ -1805,6 +1805,8 @@ class PythonMods(unittest.TestCase):
         effects = audio.jingle_effects()
         self.assertEqual(set(audio.load(audio.DEFAULT_MANIFEST)['jingle']['effects']), {str(r) for r in effects})
         used = {f & 0x1F for f in BE.DISC_MAP_FLAGS.values()}
+        for folder in [_DevPath(ROOT, 'content/screens'), *_DevPath(ROOT, 'story/mods').glob('*/screens')]:
+            used |= {json.loads(f.read_text()).get('sound_bank', 0) & 0x1F for f in folder.glob('*.json')}
         self.assertEqual(sorted(used - set(effects)), [], 'every map region of the disc has a city jingle')
         copy = [c for c in audio.bank_commands('output', 'scratch') if c[0] == 'copy-effect']
         self.assertEqual(len(copy), 1)
