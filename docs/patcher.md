@@ -56,8 +56,19 @@ The USA output remains unchanged.
 World 2003 Europe and World 3 Japan supply the same 57 recipe model files,
 including meshes, animation tracks and textures. Japan needs checksum verification;
 its verifier and inventory are bundled even when recording with Europe. USA World 3
-remains identifiable but unsupported. Its historical normalization payload is
-excluded from this public source tree and from player bundles.
+remains identifiable but unsupported. 15 of its 57 recipe models differ from the
+PAL files. For seven of them (BK-KingNumemon, Bulbmon, Minotarumon, Monmon,
+Mummymon, Pharaohmon, Suijinmon) the converter does not read what differs: their
+imports match the pins when built from the USA files unchanged (checked
+2026-11-03). The other eight are different models, with other meshes, other
+animation keys or another bone order, and seven of them are shipped species:
+Antylamon, Chrysalimon, Ebidramon, Growlmon, Kyubimon, MaloMyotismon and Renamon
+(Galacticmon is not shipped). Their PAL sections are not anywhere on the USA
+disc, so the pinned models cannot be rebuilt from it without shipping PAL bytes,
+and the old normalization payload that did ship them is not published.
+Supporting the USA release needs imports of its own for those seven species, our
+edit deltas carried over to them, and a second set of output checksums for each
+base.
 
 ## Checks
 

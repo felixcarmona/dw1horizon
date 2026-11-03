@@ -143,8 +143,14 @@ SOURCE_VARIANTS = [
     dict(game='dw2', id='dw2-jp', title='DigimonWorld 2 (Japan)', serial='SLPS-02844', boot='SLPS_028.44',
          redump='http://redump.org/disc/14276/', size=508918704, crc32='28e75fd5',
          sha1='d50dd1a95228deb4d928ed88b3f1386af1c0e64b', supported=True),   # recipe files as USA's (dw2release.py)
-    # USA World 3 needs literal PAL model data in its historical normalization recipe.
-    # Keep it identifiable but unsupported on the publication build path.
+    # USA World 3 is recognised but not supported. 15 of the 57 recipe models differ from the PAL files. For 7
+    # (BK-KingNumemon, Bulbmon, Minotarumon, Monmon, Mummymon, Pharaohmon, Suijinmon) the converter does not read what
+    # differs: their imports come out with the pinned SHA-256 from the USA files as they are (2026-11-03). The other 8
+    # are different models (other meshes, animation keys, bone order); 7 are shipped species (Antylamon, Chrysalimon,
+    # Ebidramon, Growlmon, Kyubimon, MaloMyotismon, Renamon; Galacticmon is not). Their PAL sections are nowhere on
+    # the USA disc, so the pinned models can only be made from it by shipping PAL bytes, which we do not. Supporting
+    # it means USA imports of their own for those 7, our edit deltas carried over to them, and a second set of output
+    # checksums per base (docs/patcher.md).
     dict(game='dw2003', id='dw3-us', title='Digimon World 3 (USA)', serial='SLUS-01436', boot='SLUS_014.36',
          redump='http://redump.org/disc/632/', size=647526768, crc32='e3d73a16',
          sha1='f0b022f9be53cbce14640abd8f01beaadcb35208', supported=False, soon=True),
