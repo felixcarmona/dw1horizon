@@ -536,8 +536,12 @@ the game's proportions, or that would gain too little to be worth a resident byt
 
 `tools/models/field_animations/pace.py`, with the manifest
 `content/models/imports/pace.json`, is the gait retime that note asks for. It covers
-the 38 imported partners that stayed under walk 15 or run 35. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty wrap their
-existing recipe through `base_generator`; eighteen had none and only have this pass.
+the 38 imported partners that stayed under walk 15 or run 35. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty-one wrap their
+existing recipe through `base_generator`; seventeen had none and only have this pass. Nefertimon's
+`nefertimon.py` is one of the twenty-one: it writes the walk, run and standing idle from the paws up (stance and
+swing per leg, a rotary gallop and a lateral-sequence walk, two-bone solves in the idle's bend planes, the gauntlet
+kept seated) and rewrites each clip where it is stored, so the battle aliases (0x1B, 0x21, 0x23, 0x24) play it too;
+this pass then only derives its condition walk from that walk.
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
 2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.
