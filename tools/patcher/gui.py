@@ -153,10 +153,22 @@ class App:
         for w in self.root.winfo_children():
             w.destroy()
         self.root.title(t('app.title'))
-        outer = ttk.Frame(self.root, padding=18)
-        outer.grid(sticky='nsew')
+        # Everything in a frame on a canvas: on a screen too short for the window (a small laptop at 150 %), it
+        # scrolls instead of being cut. The scroll bar shows only then.
+        bg = ttk.Style(self.root).lookup('TFrame', 'background') or self.root.cget('background')
+        self.canvas = tk.Canvas(self.root, highlightthickness=0, borderwidth=0, background=bg)
+        self.vbar = ttk.Scrollbar(self.root, orient='vertical', command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=self.vbar.set)
+        self.canvas.grid(row=0, column=0, sticky='nsew')
         self.root.columnconfigure(0, weight=1); self.root.rowconfigure(0, weight=1)
+        outer = self.outer = ttk.Frame(self.canvas, padding=18)
         outer.columnconfigure(0, weight=1)
+        item = self.canvas.create_window(0, 0, window=outer, anchor='nw')
+        self.canvas.bind('<Configure>', lambda e: (self.canvas.itemconfigure(item, width=e.width), self._fit()))
+        outer.bind('<Configure>', lambda e: self._fit())
+        self.root.bind_all('<MouseWheel>', self._wheel)
+        self.root.bind_all('<Button-4>', lambda e: self._wheel(e, -1))
+        self.root.bind_all('<Button-5>', lambda e: self._wheel(e, 1))
 
         head = ttk.Frame(outer)
         head.grid(row=0, column=0, sticky='ew')
@@ -234,7 +246,8 @@ class App:
         self._refresh()
         self.root.update_idletasks()
         # The narrowest the window may be: what the buttons and names need with the texts wrapped at their least.
-        self.min_width = max(self.root.winfo_reqwidth(), 640)
+        self.min_width = max(outer.winfo_reqwidth(), 640)
+        self.canvas.configure(width=max(760, self.min_width))
         self.root.geometry('')                               # (back to the natural size after a language change)
         self._fit()
 
@@ -244,7 +257,7 @@ class App:
         label.configure(wraplength=least)
 
         def resize(event):
-            width = max(least, event.width - 2)
+            width = max(least, event.width - 8)          # (the label's own padding)
             if abs(int(str(label.cget('wraplength')) or 0) - width) > 2:
                 label.configure(wraplength=width)
                 self._fit()
@@ -259,9 +272,29 @@ class App:
 
         def fit():
             self._fit_pending = False
+            if not self.outer.winfo_exists():
+                return
             self.root.update_idletasks()
-            self.root.minsize(getattr(self, 'min_width', 640), self.root.winfo_reqheight())
+            need = self.outer.winfo_reqheight()
+            room = self.root.winfo_screenheight() - 120          # (the title bar, the task bar or the menu bar)
+            if int(self.canvas.cget('height')) != min(need, room):
+                self.canvas.configure(height=min(need, room))
+            self.canvas.configure(scrollregion=(0, 0, 0, need))
+            if need > self.canvas.winfo_height() + 1:
+                self.vbar.grid(row=0, column=1, sticky='ns')
+            else:
+                self.vbar.grid_remove()
+                self.canvas.yview_moveto(0)
+            self.root.minsize(getattr(self, 'min_width', 640) + 20, min(need, 320))
         self.root.after_idle(fit)
+
+    def _wheel(self, event, step=None):
+        if self.vbar.winfo_ismapped():
+            if step is None:
+                step = -1 if event.delta > 0 else 1
+                if sys.platform != 'darwin' and abs(event.delta) >= 120:
+                    step *= abs(event.delta) // 120
+            self.canvas.yview_scroll(step, 'units')
 
     def set_icon(self):
         """The window's icon: tools/patcher/app/make_icons.py's drawing of web/favicon.svg."""
@@ -695,7 +728,9 @@ def clipped(root):
     """[widget description] of every shown text or button narrower or shorter than it asks to be, or reaching out
     of its parent or the window: what the self-test checks in every language."""
     out = []
-    rw, rh = root.winfo_width(), root.winfo_height()
+    rw = root.winfo_width()
+    area = next((c for c in root.winfo_children() if c.winfo_class() == 'Canvas'), root)
+    rh = area.winfo_height()
 
     def walk(w):
         for c in w.winfo_children():
@@ -708,8 +743,12 @@ def clipped(root):
                 if c.winfo_width() + 1 < c.winfo_reqwidth() or c.winfo_height() + 1 < c.winfo_reqheight():
                     out.append(f'{what}: {c.winfo_width()}x{c.winfo_height()} < {c.winfo_reqwidth()}x{c.winfo_reqheight()}')
                 x, y = c.winfo_rootx() - root.winfo_rootx(), c.winfo_rooty() - root.winfo_rooty()
-                if x + c.winfo_width() > rw + 1 or y + c.winfo_height() > rh + 1:
+                if x + c.winfo_width() > rw + 1:
                     out.append(f'{what}: out of the window')
+                content = c.winfo_rooty() - area.winfo_rooty() + int(area.canvasy(0)) if area is not root else y
+                if content + c.winfo_height() > int(area.cget('scrollregion').split()[-1] if area is not root
+                                                    else rh) + 1:
+                    out.append(f'{what}: below the content')
             walk(c)
     walk(root)
     return out
@@ -751,7 +790,6 @@ def main():
     app.set_icon()
     app.__init__(root, config)
     root.protocol('WM_DELETE_WINDOW', app.close)
-    root.geometry(f'{max(760, app.min_width)}x{root.winfo_reqheight()}')
     root.mainloop()
     return 0
 

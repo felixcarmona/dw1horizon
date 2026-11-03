@@ -128,7 +128,9 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
   still checks the patch and every file it builds). TLS uses the system's certificates; a frozen macOS Python has no
   OpenSSL certificate folder, so the app uses the certifi bundle frozen into it (a build-time dependency only), else
   `/etc/ssl/cert.pem`.
-- **The window.** tkinter/ttk with the platform's theme (Windows: per-monitor DPI awareness for sharp text), the icon
+- **The window.** Every longer text wraps at the width it gets, the window never gets narrower than its buttons
+  and names need, and on a screen too short for it the content scrolls (the scroll bar shows only then). tkinter/ttk
+  with the platform's theme (Windows: per-monitor DPI awareness for sharp text), the icon
   drawn from `web/favicon.svg` by `tools/patcher/app/make_icons.py` (PNG, ICO and ICNS, standard library only). The
   eight languages: the page's strings (`web/i18n/<lang>.json`) where they fit, the app's own in
   `tools/patcher/app/i18n.json`; the system's language first, then the menu's choice is remembered. The build shows

@@ -231,6 +231,8 @@ jobs:
           sudo apt-get install -y -qq xvfb > /dev/null
           (cd tools && python -m unittest test_desktop_patcher test_patcher_paths -v)
           xvfb-run -a python tools/patcher/gui.py --self-test --download --gui
+          # A short screen (a small laptop): the window scrolls instead of cutting anything.
+          xvfb-run -a -s '-screen 0 1024x600x24' python tools/patcher/gui.py --self-test --gui
 
   attach:
     # Only for a release tag; pull requests and manual runs without a tag stop at the artifacts above.
