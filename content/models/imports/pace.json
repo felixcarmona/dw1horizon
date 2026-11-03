@@ -144,9 +144,9 @@
   "name": "Gomamon",
   "bones": 22,
   "skeleton_sha256": "e8e8ec0c39a47e811fcd6317dc2f6c78be2ed6be1e2d9ed987aafddb384439f3",
-  "source_sha256": "c9f7ce4211bb231299e066ceb421d3753778b998e667b50272095834618fc51e",
+  "source_sha256": "9a490964c53ca4d939fe9cd604dc6c57f992affd64fcf584c70dd1af8b9602fd",
   "base_generator": "tools.models.field_animations.gomamon",
-  "post_source_sha256": "ea681b4af33bfb9f816425095568759deb71804e12351f27e281a2647c8adf6c",
+  "post_source_sha256": "df2491e07f727898b4a6c7341333b2205d5d15a0f881570b7bf07a6fb018d135",
   "slots": {
    "2": {
     "from": 3,
@@ -479,9 +479,9 @@
   "name": "Gryphonmon",
   "bones": 25,
   "skeleton_sha256": "a050c8a9103125e682194f0561764d7d75b286ac8c0c7a7d712fdc55736d9092",
-  "source_sha256": "075039db407d792e0644efdd9ab1904cc7f91e26904755029341eb68bf2b9f55",
+  "source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
   "base_generator": null,
-  "post_source_sha256": "075039db407d792e0644efdd9ab1904cc7f91e26904755029341eb68bf2b9f55",
+  "post_source_sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
   "slots": {
    "2": {
     "from": 2,
