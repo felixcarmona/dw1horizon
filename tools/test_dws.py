@@ -1657,7 +1657,7 @@ class PythonView(unittest.TestCase):
         self.assertNotIn('"I', v)                                                               # keys, never the game's words
         v = self.view(2)
         self.assertIn('@kunemon.on_talk(scene=True)', v); self.assertNotIn('dws(', v)            # Kunemon reads as Python (review §d)
-        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item()\n        if pick is Picked.EMPTY:\n',
+        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item(food=True)\n        if pick is Picked.EMPTY:\n',   # reviewed food-only menu (patch 0330)
                      '        elif pick is Picked.CANCELLED:\n            pass\n        elif pick in (Item.Meat, Item.GiantMeat,',
                      'take_picked()\n', 'walk_away(1219, 984, looks=3)', '    say(t6.u9)\n'):
             self.assertIn(want, v)
