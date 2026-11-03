@@ -3984,13 +3984,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/SkullSatamon.MMD",
-            "sha256": "2bd8db23e42499f89d64e325fc30c82d429d77ec0170fe65ccd25e5497c5e65e",
+            "sha256": "9281142986dc04738bd3b66df0d66965e02fe29ff4b740f6726017cfe11c048c",
             "size": 97628
           }
         ],
         "delta": "content/modeldelta/deltas/314-SkullSatamon.MMD.mdelta",
-        "delta_sha256": "26ba6dc40be6ee31c9e516d8c9f742b9a9bcc3388fe7898e05a8c77afdf57c06",
-        "sha256": "77b106e137346581d0b144bee74bfcf66e8521ead6701758fd58e54a0404d696",
+        "delta_sha256": "a9f249606687c17958a84c4776afdaa96d4c9acd011cae98dc655658bc648c7a",
+        "sha256": "6f7f96bcb29a4a0a46ed15ef8c2117fb553b6b07af88f494c0a5c6d279b500f5",
         "size": 106140
       },
       "tim": {
