@@ -4474,9 +4474,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/330-Minotarumon.MMD.mdelta",
-        "delta_sha256": "09a3a6eeecff90ca1afa3803548d820efa7da246ab43c57832abc499afad7add",
-        "sha256": "a46d375d9fb544f39db5c9ec59e0501515fffd43661ea221528ada009a6a5787",
-        "size": 104532
+        "delta_sha256": "14f0e882826d62e4414c8bdc383fd67847f2f25105398264ea065f6e500d9f9d",
+        "sha256": "332f1c2fbae7b32ac530bed5c9ee4fac053fdff298cb72a0249db46f067459d5",
+        "size": 104144
       },
       "tim": {
         "sources": [
