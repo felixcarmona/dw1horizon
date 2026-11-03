@@ -128,6 +128,12 @@ sprite geometry or VRAM allocation changes. Check the depth of a refreshed piece
 its anchor (a character there is drawn under the new art). The beach turning grey-green at night is the original
 TFS palette, shared by the background and cutouts.
 
+A paste is drawn in daylight, but its indices are also shown by the evening and night CLUTs. `bg --paste` picks each
+pixel's index by its day colour and by what the screen's own evening and night palettes make of that day colour
+(`RequantTimes`, among the indices the background already uses), so the retouch darkens with the screen; picking by the
+day colour alone gave Overdell's notch a warm brown pocket in grey-violet sand at night and lit up the Tyrannomon trail
+mouth (KODA03).
+
 ### Entity section (all `s16`)
 
 ```
@@ -225,7 +231,7 @@ the new size against the original.
 | `info X.MAP` | short summary |
 | `dump X.MAP x.json` / `build x.json X.MAP` | the whole `.MAP` as editable JSON (collision as 100 hex rows, TIMs in base64) |
 | `export X.MAP DIR` | `-background-day/evening/night.png` (indexed), `-overlay.png`, `-collision.png` (100×100 indexed: index = tile value), `-collision-x4.png`, `-timN-*.png`, `X.json` |
-| `import-png X.MAP X.TFS background.png new.TFS [--new-palette]` | whole background PNG → TFS. Indexed with the same palette: copies the indices; RGB: unchanged pixels keep their index, the rest get the closest day colour. `--new-palette`: new 255-colour palette, evening/night derived |
+| `import-png X.MAP X.TFS background.png new.TFS [--new-palette]` | whole background PNG → TFS. Indexed with the same palette: copies the indices; RGB: unchanged pixels keep their index, the rest get the closest day colour. `--new-palette`: new 255-colour palette; evening and night apply the donor's own day → evening/night colour maps (`time_of_day_model`: a gain per channel after a loss of saturation, fitted over the colours its picture uses; it carries the originals' warm evening and grey, desaturated night, where a gain alone left new nights bright and saturated; a grey donor such as FRZL03 or KODA08 cannot show how colours fade, so its saturation leans on the originals' typical 0.85 evening and 0.55 night) |
 | `collision-import X.MAP collision.png new.MAP` | painted grid (100×100 indexed PNG) → `.MAP` |
 | `set-tiles X.MAP new.MAP TX0 TZ0 TX1 TZ1 VALUE` | fills a rectangle of tiles (same as `edit --paint`) |
 | `map-entry NAME N8 N4 FLAGS DOORS TOILET LABEL` | the 16 bytes of a `MAP_ENTRIES` row (to poke into RAM) |

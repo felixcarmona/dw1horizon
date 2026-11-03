@@ -74,5 +74,19 @@ class RefreshCutouts(unittest.TestCase):
         self.assertNotIn(255, dwmap.cutout_holes(self.after, 4))  # opaque: 0x8000 is drawn black
 
 
+class TimeOfDayModel(unittest.TestCase):
+    def test_a_grey_night_is_learned_from_the_palettes(self):
+        day = [dwmap.rgb_to_bgr555((i * 37) % 256, (i * 91) % 256, (i * 53) % 256) or 0x8000 for i in range(256)]
+        def night(c):                                     # half as bright, half the saturation, a blue cast
+            r, g, b = dwmap.bgr555_to_rgb(c); y = (r + g + b) / 3
+            return dwmap.rgb_to_bgr555(*(int(min(255, (0.5 * v + 0.5 * y) * 0.5 + k)) for v, k in ((r, 0), (g, 0), (b, 20))))
+        t = background([day, [night(c) for c in day]], bytes(range(256)) * 64)
+        m = dwmap.MapFile.__new__(dwmap.MapFile); m.width = m.height = 1; m.tiles = [0]
+        M = dwmap.time_of_day_model(t, m)[1]
+        for c in ((200, 120, 40), (30, 200, 90)):
+            want = dwmap.bgr555_to_rgb(night(dwmap.rgb_to_bgr555(*c)))
+            for a, b in zip(dwmap.apply_model(M, c), want): self.assertLess(abs(a - b), 12, (c, want))
+
+
 if __name__ == '__main__':
     unittest.main()
