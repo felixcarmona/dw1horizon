@@ -49,7 +49,7 @@ def talk():    # section 6
     play(29)
     say(t6.u0)
     if ask(yes=t6.m0.o0, no=t6.m0.o1):
-        pick = pick_item()
+        pick = pick_item(food=True)
         if pick is Picked.EMPTY:
             tamer.say(t6.u1)
         elif pick is Picked.CANCELLED:

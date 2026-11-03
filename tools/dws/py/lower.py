@@ -2028,7 +2028,13 @@ class Body:
             return [f'{I}{q}_b{j} = {"true" if v >> j & 1 else "false"};' for j in range(m.quests[q]['bits'])]
         if name == 'spawn_item': return [f'{I}{self.ground_item(c, kw)}']
         if name == 'swing_door': return [f'{I}rotate_3d_object({m.int_const(c.args[0])}, 0, 1);']
-        if name == 'pick_item': return [f'{I}engine.picker_mode = true;', f'{I}call_routine(routine("choose_item"));']
+        if name == 'pick_item':
+            food = kw.pop('food', None)
+            if c.args or kw or (food is not None and not (isinstance(food, ast.Constant) and isinstance(food.value, bool))):
+                raise self.err(c, 'pick_item() or pick_item(food=True): the item menu, with only the food selectable')
+            # food=True: p254 = 254 asks the engine's menu for food only (patch 0330); the pick overwrites it
+            return [f'{I}engine.picker_mode = true;'] + ([f'{I}engine.arg = 254;'] if food is not None and food.value else []) + \
+                [f'{I}call_routine(routine("choose_item"));']
         if name == 'shop': return self.shop(c, kw, I)
         if name == 'take_picked':
             every = isinstance(kw.get('all'), ast.Constant) and kw['all'].value is True

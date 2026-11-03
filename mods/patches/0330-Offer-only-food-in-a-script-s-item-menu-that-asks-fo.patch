@@ -1,0 +1,46 @@
+From aa0f95f134209a0dc43e7b036660683b819c0144 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 3 Nov 2026 09:24:59 +0000
+Subject: [PATCH] Offer only food in a script's item menu that asks for food
+
+A script that sets p254 to 254 before choose_item (the story language's
+pick_item(food=True)) gets the item menu with only the food selectable, the
+care menu's test (ITEM_FUNCTIONS == handleFood); the other rows are greyed
+as the undroppable ones are. Kunemon's Bed asks for it. The pick or the
+empty answer overwrites p254, so the request lasts one menu, and the shop's
+sell list never filters.
+---
+ src/main/script_common.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index 8449784..b026711 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -756,17 +756,22 @@ int32_t shopFillSellItemList(void)
+ 	int32_t result;
+ 	uint8_t type;
+ 	uint8_t amount;
++	int32_t food;
+ 
+ 	result = 0;
+ 	buf = ITEM_MENU_RIGHT->buf;
+ 	ITEM_MENU_RIGHT->itemCount = 0;
++	/* MOD (food picker): choose_item with p254 = 254 first (pick_item(food=True)) offers only food, the care menu's
++	 * test (ITEM_FUNCTIONS == handleFood); the other rows are greyed as the undroppable ones are. The pick or the
++	 * empty answer overwrites p254, so the request lasts one menu; the shop's sell list (routine 8) never filters. */
++	food = SCRIPT_PARAM_1 == 0 && readPStat(0xfe) == 0xfe;
+ 
+ 	for (i = 0; i < INVENTORY.size; i++) {
+ 		type = INVENTORY.types.array[i];
+ 		amount = INVENTORY.amounts.array[i];
+ 
+ 		if (type != 0xff) {
+-			if (ITEM_PARA[type].droppable != 0) {
++			if (ITEM_PARA[type].droppable != 0 && (!food || ITEM_FUNCTIONS[type] == (ItemFunction)handleFood)) {
+ 				amount |= 0x80;
+ 				result = 1;
+ 			}
+-- 
+2.55.0
+

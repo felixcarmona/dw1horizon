@@ -1657,7 +1657,7 @@ class PythonView(unittest.TestCase):
         self.assertNotIn('"I', v)                                                               # keys, never the game's words
         v = self.view(2)
         self.assertIn('@kunemon.on_talk(scene=True)', v); self.assertNotIn('dws(', v)            # Kunemon reads as Python (review §d)
-        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item()\n        if pick is Picked.EMPTY:\n',
+        for want in ('    if ask(yes=t6.m0.o0, no=t6.m0.o1):\n        pick = pick_item(food=True)\n        if pick is Picked.EMPTY:\n',   # reviewed food-only menu (patch 0330)
                      '        elif pick is Picked.CANCELLED:\n            pass\n        elif pick in (Item.Meat, Item.GiantMeat,',
                      'take_picked()\n', 'walk_away(1219, 984, looks=3)', '    say(t6.u9)\n'):
             self.assertIn(want, v)
@@ -2379,6 +2379,19 @@ class PythonMods(unittest.TestCase):
         e = self.check_cli('check', p).stderr
         self.assertIn('a.py:3:1: error: var "m_a.other" pinned to 21, which is not in the free range', e)
         self.assertIn("a mod's [save] range in its mod.toml must be inside the free numbers", e)
+
+    def test_pick_item_food(self):
+        """pick_item(food=True) asks the engine's item menu for food only (patch 0330): p254 = 254 just before choose_item;
+        anything but a bool keyword is refused."""
+        head = 'from dw import *\nfrom dw.base.green_gym import koromon\ndone = flag()\n@koromon.on_talk(when=not done)\ndef t():\n'
+        root, (p,) = self.mod({'a.py': head + '    pick = pick_item(food=True)\n    if pick == Item.Meat:\n        take_picked()\n'})
+        t = self.lowered(p)
+        self.assertRegex(t, r'engine\.picker_mode = true;\n +engine\.arg = 254;\n +call_routine\(routine\("choose_item"\)\);')
+        self.assertEqual(errors_of_py(p), '')
+        root, (p,) = self.mod({'a.py': head + '    pick_item()\n'})
+        self.assertNotIn('engine.arg = 254;', self.lowered(p))
+        root, (p,) = self.mod({'a.py': head + '    pick_item(food=1)\n'})
+        self.assertIn('pick_item() or pick_item(food=True)', errors_of_py(p))
 
     def test_fourth_review_forms(self):
         """dws-python-intuitiveness-4.md 5-7: `match fight(x)` with a case per outcome is one battle; two tests of fight(x) in a

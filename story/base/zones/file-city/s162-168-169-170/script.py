@@ -54,7 +54,7 @@ def enter():    # section 254
     call(Routine.save_clock_speed, arg=0)
     tamerless_battle.clear()
     if drill_tunnel_progress >= 3:
-        underground_pond_dig_work.add(1)
+        underground_pond_dig_work.add(2)
     if drill_tunnel_progress >= 1:
         drill_tunnel_progress.set(1)
     if clock.day != 14:

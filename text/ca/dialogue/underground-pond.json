@@ -18,11 +18,11 @@
  ],
  "s029.sec51.u2": [
   [
-   "Has guanyat 500 Bits!"
+   "Has guanyat 1000 Bits!"
   ],
   [
-   "Els HP pugen 50! L'Atac puja",
-   "5! La Defensa puja 5!"
+   "Els HP pugen 100! L'Atac puja",
+   "10! La Defensa puja 10!"
   ]
  ],
  "s029.sec51.u3": [
@@ -101,7 +101,7 @@
  "s029.sec51.u15": [
   [
    "És un treball bastant dur, així",
-   "que t'ho pagaré. 500 Bits per",
+   "que t'ho pagaré. 1000 Bits per",
    "cada viatge d'anada i volta."
   ]
  ],
