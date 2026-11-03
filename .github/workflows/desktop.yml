@@ -67,11 +67,22 @@ jobs:
         shell: bash
         run: |
           python - <<'EOF'
-          import subprocess, sys
+          import os, subprocess, sys
           exe = r'build\desktop\dist\Horizon Patcher\Horizon Patcher.exe'
-          r = subprocess.run([exe, '--self-test', '--download', '--gui', '--report', 'selftest.txt'], timeout=1800)
-          print(open('selftest.txt', encoding='utf-8').read())
-          sys.exit(r.returncode)
+          # The windowed program as a child with pipes, as dwpatch starts it.
+          r = subprocess.run([exe, '-c', 'import sys; print("child", sys.argv[1:], sys.flags.utf8_mode)', 'a b'],
+                             capture_output=True, timeout=120)
+          print('child:', r.returncode, r.stdout, r.stderr)
+          code = 1
+          try:
+              code = subprocess.run([exe, '--self-test', '--download', '--gui', '--report', 'selftest.txt'],
+                                    timeout=1200).returncode
+          except subprocess.TimeoutExpired:
+              print('the self-test did not finish in 20 minutes')
+          finally:
+              if os.path.exists('selftest.txt'):
+                  print(open('selftest.txt', encoding='utf-8').read())
+          sys.exit(code or (r.returncode != 0))
           EOF
       - name: Version information
         shell: pwsh

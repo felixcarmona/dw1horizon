@@ -116,7 +116,7 @@ a = Analysis([{os.path.join(ROOT, 'tools', 'patcher', 'gui.py')!r}],
              noarchive=False)
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [('X utf8=1', None, 'OPTION')], exclude_binaries=True, name={NAME!r},
-          console=False, icon={icon!r}, version={vfile if os.name == 'nt' else None!r},
+          console=False, disable_windowed_traceback=True, icon={icon!r}, version={vfile if os.name == 'nt' else None!r},
           target_arch={('universal2' if a.universal2 else None)!r},
           codesign_identity={a.codesign_identity!r}, entitlements_file={a.entitlements!r},
           upx=False)

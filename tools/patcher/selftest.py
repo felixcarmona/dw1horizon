@@ -47,10 +47,13 @@ def say(text):
             f.write(text + '\n')
 
 
-def child(argv, cwd=None, stdin=None, timeout=300):
+def child(argv, cwd=None, stdin=None, timeout=120):
     env = dict(os.environ, PYTHONUTF8='1', PYTHONUNBUFFERED='1', PYTHONDONTWRITEBYTECODE='1')
-    r = subprocess.run([sys.executable, *argv], cwd=cwd, env=env, input=stdin, stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT, timeout=timeout)
+    try:
+        r = subprocess.run([sys.executable, *argv], cwd=cwd, env=env, input=stdin, stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT, timeout=timeout)
+    except subprocess.TimeoutExpired as e:
+        raise AssertionError(f'no answer in {timeout} s; its output: {(e.output or b"").decode("utf-8", "replace")}')
     return r.returncode, r.stdout.decode('utf-8', 'replace')
 
 
@@ -190,11 +193,17 @@ def main(argv):
             buf = io.StringIO()
             saved = sys.stdout
             sys.stdout = buf
+            import threading
+            app_dwpatch.CANCEL = threading.Event()               # (a hang becomes a failure, its processes killed)
+            timer = threading.Timer(180, app_dwpatch.CANCEL.set)
+            timer.start()
             try:
                 man, out = app_dwpatch.derive_run(root, 'standin', os.path.join(root, 'facts.json'), jobs=2,
                                                   log=os.path.join(work, 'derive.log'))
             finally:
                 sys.stdout = saved
+                timer.cancel()
+                app_dwpatch.CANCEL = None
             log = open(os.path.join(work, 'derive.log'), encoding='utf-8').read()
             assert 'workers [0, 1]' in log and man['files'] == {}, log
             return ' '.join(log.split())[:120]

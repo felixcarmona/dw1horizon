@@ -683,4 +683,8 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception:                   # (a windowed app has no console: the traceback goes to app.log)
+        traceback.print_exc()
+        sys.exit(1)
