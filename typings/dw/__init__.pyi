@@ -755,6 +755,14 @@ class Species(IntEnum):
     Guilmon = 433
     Garudamon = 460
     Omnimon = 461
+    Pabumon = 470
+    Pichimon = 471
+    YukimiBotamon = 472
+    Nyokimon = 473
+    Motimon = 474
+    Bukamon = 475
+    Nyaromon = 476
+    Yokomon = 477
 
 class Item(IntEnum):
     """Items (docs/data/items.csv). In a line, "Received a {item Item.Meat}." writes the name the inventory shows (US, ours or a translation): typed by hand it would not follow a rename."""
