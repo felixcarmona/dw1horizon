@@ -1,0 +1,129 @@
+From 7fe0f92cf3504aea9823d06a491cbadbc59976f7 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 3 Nov 2026 09:18:44 +0000
+Subject: [PATCH] Lay out the name keyboard's labels from the words of the
+ language shown
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The name keyboard draws its title, page keys, Back and OK from one text
+row cut into pieces. The cut offsets and crop widths were fixed numbers
+made for the Spanish words, and every other language used them too: in
+Portuguese "Nome" took the A and B of the first page key, and the rest
+of the row slid along ("NomeAB", "CÁÑ", "Ap", "agarOK"). The pieces
+and crops are now measured from the words when the keyboard opens.
+---
+ src/shop/script_menu.c | 68 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 65 insertions(+), 3 deletions(-)
+
+diff --git a/src/shop/script_menu.c b/src/shop/script_menu.c
+index 9db98a0..9f523f2 100644
+--- a/src/shop/script_menu.c
++++ b/src/shop/script_menu.c
+@@ -19,6 +19,7 @@
+ #include <dw/ui.h>
+ #include <dw/lang.h>
+ #include <dw/version.h>
++#include <dw/sjis.h>
+ #include <text/shop/script_menu.h>
+ 
+ typedef struct {
+@@ -523,8 +524,8 @@ char **NAMING_CHAR_PAGES[6] = {
+ static char *NAMING_PAGE_LABELS[NAMING_PAGES] = { "ABC", "\xF0\x4C\xF0\x56\xF0\x57", "!?\xF0\x65" };
+ 
+ /* MOD (language): the labels' crops (x, y, width; each starts where the one before ended in the label row): the title,
+- * the three page keys, Back and OK. The Spanish words do not fit 12-pixel cells, so their row is laid out in pieces
+- * (NAMING_LABEL_PIECES) */
++ * the three page keys, Back and OK. The other languages' words do not fit 12-pixel cells, so their row is laid out in
++ * pieces (NAMING_LABEL_PIECES), and layoutNamingLabels sets these widths from the words of the language shown */
+ int16_t NAMING_CTRL_BOXES[18] = {
+ #if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0x000e, 0x0006, 0x0034, 0x000e, 0x0022, 0x0024, 0x000e, 0x0030,
+@@ -538,7 +539,8 @@ int16_t NAMING_CTRL_BOXES[18] = {
+ };
+ 
+ /* MOD (language): the label row ("Name" "ABC" "ÁÑÇ" "!?#" "Back" "OK") in pieces at these offsets in the original's
+- * cells, or (PIECES_END first) in the keyboard's 12-pixel cells as the US drew it */
++ * cells (layoutNamingLabels: where each word starts), or (PIECES_END first) in the keyboard's 12-pixel cells as the US
++ * drew it */
+ uint16_t NAMING_LABEL_PIECES[7] = {
+ #if MOD_LANG_BUILD != MOD_LANG_EN
+ 	0, 0x34, 0x58, 0x7c, 0x94, 0xc8, PIECES_END,
+@@ -2794,6 +2796,65 @@ void showNewGameSelection(int32_t textId, uint16_t nextState)
+ 	SCRIPT_TEXTBOX_MODE = 2;
+ }
+ 
++#if FONT_SWITCH
++/* MOD (language): the original cells of a label's first `n` bytes as drawString2Pieces counts them (a space: the cell of
++ * the glyph before it, `*space`) */
++static int32_t namingLabelCells(const char *s, int32_t n, int32_t *space)
++{
++	const char *end;
++	int32_t cells;
++	uint16_t glyph;
++	uint8_t ch;
++
++	end = s + n;
++	cells = 0;
++	while (s < end && *s != '\0') {
++		ch = *s++;
++		if (isAsciiEncoded((char *)&ch) != 0) {
++			glyph = swapShortBytes(ch == '\'' ? 0x8175 : ch == '"' ? 0x8176 : convertAsciiToJis(ch));
++		} else {
++			glyph = ch + ((uint8_t)*s++ << 8);
++		}
++		if (glyph != 0x4081) {
++			*space = glyphCell(glyph);
++		}
++		cells += *space;
++	}
++	return cells;
++}
++
++/*
++ * MOD (language): the label row's pieces and crops from the words of the language shown. fillNamingMenuStrings writes
++ * the title, the three page keys and NAMING_BUTTONS (Back's word, then "OK") into one row; each word starts where the
++ * one before ended in the original's cells, so its piece starts there and its crop is as wide as its cells. Fixed
++ * offsets made for one language's words cut another's in the wrong places ("NomeAB", "agarOK").
++ */
++static void layoutNamingLabels(void)
++{
++	int32_t cells[6];
++	int32_t space;
++	int32_t back;
++	int32_t pos;
++	int32_t k;
++
++	space = 0xc;
++	back = strlen(NAMING_BUTTONS);
++	back = back >= 2 ? back - 2 : back;
++	cells[0] = namingLabelCells(NAMING_TITLE, 0x40, &space);
++	for (k = 0; k < NAMING_PAGES; k++) {
++		cells[k + 1] = namingLabelCells(NAMING_PAGE_LABELS[k], 0x40, &space);
++	}
++	cells[4] = namingLabelCells(NAMING_BUTTONS, back, &space);
++	cells[5] = namingLabelCells(NAMING_BUTTONS + back, 0x40, &space);
++	pos = 0;
++	for (k = 0; k < 6; k++) {
++		NAMING_LABEL_PIECES[k] = pos & ~3;
++		NAMING_CTRL_BOXES[k * 3 + 2] = cells[k];
++		pos += cells[k];
++	}
++}
++#endif
++
+ void setupNameSelectorBox(void)
+ {
+ 	int32_t i;
+@@ -2823,6 +2884,7 @@ void setupNameSelectorBox(void)
+ #if FONT_SWITCH
+ 	/* MOD (language): the label row in pieces when the language's words are wider than its cells */
+ 	if (NAMING_LABEL_PIECES[0] != PIECES_END) {
++		layoutNamingLabels();
+ 		textboxRowPieces(1, 0, NAMING_LABEL_PIECES);
+ 	}
+ #endif
+-- 
+2.55.0
+

@@ -45,7 +45,8 @@
         <img class="psx" src="media/psx.webp" alt="" width="1280" height="579" loading="lazy">
         <!-- The four discs, one slot each (made from data/discs.json by js/app.js): the cover in grey until its disc
              is added, the game and what it is for, the check's progress over the cover, then the check and ×. The
-             release and checksums under Details. -->
+             release and checksums under Details. A disc from last time waiting for the browser's permission:
+             "remembered", its cover dimmed. -->
         <ul id="slots" class="slots" data-i18n-attr="aria-label:slot.listLabel"></ul>
         <ul id="jobs" class="jobs" aria-live="polite"></ul>
         <!-- The drop zone: one button (click, Enter, or drop files on it or anywhere on the page). The icon is our
@@ -60,6 +61,24 @@
           <span class="drop-hint" data-i18n="add.hint"></span>
         </button>
         <input id="add-input" class="file" type="file" multiple tabindex="-1" aria-hidden="true">
+        <!-- The discs remembered for next time (js/app.js "remembered discs"): the click that lets the browser open
+             them again, the option to keep copies in this browser, what is kept and "Forget them", why a disc from
+             last time is not here. Hidden while there is nothing to say. -->
+        <div id="remember" class="remember" aria-live="polite" hidden>
+          <p id="remember-ask" class="remember-ask" hidden>
+            <span id="remember-ask-text"></span>
+            <button id="remember-use" class="button primary small" type="button" data-i18n="remember.use"></button>
+          </p>
+          <label id="remember-keep-row" class="remember-keep" hidden>
+            <input id="remember-keep" type="checkbox"> <span id="remember-keep-text"></span>
+          </label>
+          <p id="remember-line" class="remember-line" hidden></p>
+          <p id="remember-status" class="remember-status" hidden>
+            <span id="remember-status-text"></span>
+            <button id="remember-forget" class="link-button" type="button" data-i18n="remember.forget"></button>
+          </p>
+          <ul id="remember-notes" class="remember-notes"></ul>
+        </div>
         <details class="sums" hidden>
           <summary data-i18n="slot.details"></summary>
           <div class="sums-scroll">

@@ -5,7 +5,8 @@ import { setupDigimon, labels as digimonLabels } from './digimon.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
 import { FLAGS } from './flags.js';
-import { Build, missingSupport, tidyStorage } from './engine/engine.js';
+import { Build, missingSupport, tidyStorage, buildRoom } from './engine/engine.js';
+import { store, revive } from './remember.js';
 
 // The links (the hero's Discord and GitHub buttons, the privacy note's code link): change them here.
 const LINKS = {
@@ -84,9 +85,11 @@ let discs, features;   // features: content/features.json as it is (js/features.
 // .iso, another rip). The last usable disc of a game wins. Files that cannot be used are listed in one dialog per drop.
 //
 // games: id -> {id, disc (data/discs.json discs[]: the game's main release; species: how many Digimon come from it),
-//               el: its slot (<li>), cur: entry | null (the disc in use), pending: entry | null (being checked)}
+//               el: its slot (<li>), cur: entry | null (the disc in use), pending: entry | null (being checked),
+//               remembered: {rec, handle} | null (a disc from last time waiting for the browser's permission)}
 // entry: {file, expect (the release it is checked against), via ('files' or null), got: {crc32, sha1, size}, pct,
-//         worker, batch}
+//         worker, batch, from: {handle, converted} (where the file came from: remembered discs),
+//         store: 'handle' | 'copy' | null (how it is remembered for next time)}
 const games = new Map();
 const GAME_NAMES = { us: 'Digimon World', dcb: 'Digimon Digital Card Battle', dw2: 'Digimon World 2',
                      dw2003: 'Digimon World 3 / 2003' };
@@ -156,25 +159,27 @@ function hash(entry, onDone) {
 // A disc of game `g` to check: it becomes the game's pending disc. Several of one game in the same drop are checked one
 // after another (the last usable one wins); one given while another drop's disc of that game is being checked is
 // refused (said in the dialog).
-function startCheck(g, file, cands, info, batch) {
+function startCheck(g, file, cands, info, batch, from = {}) {
   const same = (f) => sameFile(g.cur?.file, f) || sameFile(g.pending?.file, f) || g.queue.some((q) => sameFile(q.file, f));
   if (same(file)) return;                                                               // the same disc again: nothing
   if (g.pending && g.pending.batch !== batch) {
     problem(batch, file, 'why.stillChecking', { other: g.pending.file.name, game: gameName(g.id) });
     return;
   }
-  if (g.pending) { hold(batch); g.queue.push({ file, cands, info, batch }); return; }
+  if (g.pending) { hold(batch); g.queue.push({ file, cands, info, batch, from }); return; }
   const sizeMatch = cands.filter((c) => c.release.size === file.size);
   const entry = { file, expect: (sizeMatch[0] || cands.find((c) => c.supported) || cands[0]).release, via: null,
-                  got: { size: file.size }, pct: 0, worker: null, batch, ended: false };
+                  got: { size: file.size }, pct: 0, worker: null, batch, ended: false, from, store: null };
   g.pending = entry;
+  g.remembered = null;
+  dropNote(g.id);
   hold(batch);
   renderAll();
   const done = () => {
     if (g.pending === entry) g.pending = null;
     end(entry);
     const next = g.queue.shift();
-    if (next) { startCheck(g, next.file, next.cands, next.info, next.batch); release(next.batch); }
+    if (next) { startCheck(g, next.file, next.cands, next.info, next.batch, next.from); release(next.batch); }
     renderAll();
   };
   const accept = (via) => {
@@ -182,6 +187,7 @@ function startCheck(g, file, cands, info, batch) {
     entry.via = via;
     g.cur = entry;
     if (g.id === 'us' && !building) { last = null; $('#build-done').dataset.ready = ''; }
+    remembered(g, entry);
     done();
   };
   const reject = (key, vars = {}) => {
@@ -242,6 +248,20 @@ function cancel(entry) {
   end(entry);
 }
 
+// × on a slot: its disc out (a check stopped), forgotten for next time too.
+function remove(id) {
+  const g = games.get(id);
+  for (const q of g.queue.splice(0)) release(q.batch);
+  if (g.pending) { const p = g.pending; g.pending = null; cancel(p); }
+  g.cur = null;
+  g.remembered = null;
+  notes.delete(id);
+  forget([id]);
+  if (id === 'us' && !building) last = null;
+  renderAll();
+  $('#add-button').focus();      // (the slot has nothing to focus now)
+}
+
 // ---------------------------------------------------------------- archives, ECM, PBP: turned into images first
 
 const JOB_ERROR = { encrypted: 'why.encrypted', parts: 'why.parts', open: 'why.archiveBroken',
@@ -287,8 +307,9 @@ function groups(files) {
   return out;
 }
 
-// [{file, info}] of the images and cue sheets in `files` (one archive's parts, or one file), unpacking as needed
-async function expand(files, batch, depth = 0) {
+// [{file, info, from}] of the images and cue sheets in `files` (one archive's parts, or one file), unpacking as
+// needed. from: {handle (the file's, when the browser gave one: one file, not a split archive), converted}
+async function expand(files, batch, depth = 0, from = { handle: null, converted: false }) {
   const file = files[0];
   let info;
   try {
@@ -307,7 +328,7 @@ async function expand(files, batch, depth = 0) {
     j.end();
     if (r.error) { problem(batch, file, JOB_ERROR[r.error] || 'why.archiveError', { error: r.error }); return []; }
     const out = [];
-    for (const f of r.files) out.push(...await expand([f], batch, depth + 1));
+    for (const f of r.files) out.push(...await expand([f], batch, depth + 1, { ...from, converted: true }));
     // an archive with nothing this page can use: one line for it (not one per file inside)
     if (!out.length && !batch.problems.some((p) => r.files.some((f) => f.name === p.name))) problem(batch, file, 'why.emptyArchive');
     return out;
@@ -320,7 +341,7 @@ async function expand(files, batch, depth = 0) {
                               (p) => j.set('status.decoding', { format, pct: Math.floor(p * 100) }));
     j.end();
     if (r.error) { problem(batch, file, JOB_ERROR[r.error] || 'why.unreadable', { error: r.error }); return []; }
-    return expand([r.file], batch, depth + 1);
+    return expand([r.file], batch, depth + 1, { ...from, converted: true });
   }
   if (info.kind === 'chd') { problem(batch, file, 'why.chd'); return []; }
   if (info.kind === 'unsupported') {
@@ -328,18 +349,23 @@ async function expand(files, batch, depth = 0) {
     problem(batch, file, /\(track\s*\d+\)/i.test(file.name) ? 'why.track' : 'why.notImage');
     return [];
   }
-  return [{ file, info }];
+  return [{ file, info, from }];
 }
 
-// Files given to the page (chosen or dropped): each to the game it is.
-async function handleFiles(files) {
+// Files given to the page (chosen or dropped): each to the game it is. items: File, or {file, handle} when the
+// browser gave a handle to it (remembered for next time without a copy).
+async function handleFiles(items) {
   const batch = newBatch();
   hold(batch);
   try {
+    const list = items.map((x) => (x instanceof Blob ? { file: x, handle: null } : x));
+    const handleOf = new Map(list.map((x) => [x.file, x.handle]));
     const found = [];
-    for (const grp of groups(files)) found.push(...await expand(grp, batch));
+    for (const grp of groups(list.map((x) => x.file))) {
+      found.push(...await expand(grp, batch, 0, { handle: grp.length === 1 ? handleOf.get(grp[0]) || null : null, converted: false }));
+    }
     const images = found.filter((x) => x.info.kind === 'image').map((x) => x.file.name.toLowerCase());
-    for (const { file, info } of found) {
+    for (const { file, info, from } of found) {
       if (info.kind === 'cue') {
         if (!info.files.some((name) => images.includes(name.toLowerCase()))) problem(batch, file, 'why.cueOnly', { file: info.files[0] || '.bin' });
         continue;
@@ -355,7 +381,7 @@ async function handleFiles(files) {
         problem(batch, file, 'why.unsupported', { release: `${gameName(g.id)} · ${releaseWords(cands[0].release)}` }, g.id);
         continue;
       }
-      startCheck(g, file, cands, info, batch);
+      startCheck(g, file, cands, info, batch, from);
     }
   } finally {
     renderAll();
@@ -412,8 +438,10 @@ function buildSlots() {
     check.setAttribute('role', 'img');
     const art = el('div', { className: 'slot-art' }, cover('cover-grey'), cover('cover-colour'), pct, check);
     showBoxart(g.id, art).catch(() => {});
+    const x = el('button', { type: 'button', className: 'disc-remove', textContent: '×' });
+    x.addEventListener('click', () => remove(g.id));
     li.append(art, el('div', { className: 'slot-text' }, el('b', { className: 'slot-name', textContent: gameName(g.id) }),
-                      el('small', { className: 'slot-purpose' })));
+                      el('small', { className: 'slot-purpose' })), x);
     g.el = li;
     items.push(li);
   }
@@ -427,9 +455,11 @@ function renderSlots() {
     const li = g.el;
     const busy = !!g.pending;
     const e = g.pending || g.cur;
-    const state = !e ? 'empty' : busy ? 'busy' : 'ready';
+    // remembered: a disc from last time the browser has to allow again ("Use my discs from last time")
+    const state = !e ? (g.remembered ? 'remembered' : 'empty') : busy ? 'busy' : 'ready';
     li.dataset.state = state;
-    li.dataset.release = e ? e.expect.id : '';
+    li.dataset.release = e ? e.expect.id : g.remembered ? g.remembered.rec.release : '';
+    li.dataset.store = (!busy && e?.store) || '';
     const pct = state === 'ready' ? 100 : busy ? e.pct : 0;
     const art = $('.slot-art', li);
     art.style.setProperty('--p', `${pct}%`);
@@ -441,11 +471,16 @@ function renderSlots() {
     pctEl.hidden = !busy;
     if (busy) pctEl.textContent = `${pct} %`;
     const check = $('.slot-check', li);
-    check.hidden = state !== 'ready';
-    check.setAttribute('aria-label', t('disc.ok'));
+    check.hidden = state !== 'ready' && state !== 'remembered';
+    check.textContent = state === 'remembered' ? '↺' : '✓';
+    check.setAttribute('aria-label', t(state === 'remembered' ? 'slot.remembered' : 'disc.ok'));
     $('.slot-purpose', li).textContent = g.id === 'us' ? t('slot.purpose.us') : t('slot.purpose.source', { n: g.disc.species });
+    const x = $('.disc-remove', li);
+    x.hidden = state === 'empty';
+    x.setAttribute('aria-label', t('disc.remove', { title: gameName(g.id) }));
   }
   renderSums();
+  renderRemember();
 }
 
 // Under "Details": the expected and computed checksums of every disc added.
@@ -475,9 +510,23 @@ function renderSums() {
   $('.sums').hidden = !rows.length;
 }
 
+// The file chooser: the browser's own picker where it has one (Chromium on a computer), which gives handles: the
+// discs are then remembered for next time without a copy. Elsewhere the <input>.
 function setupAdd() {
   const input = $('#add-input');
-  $('#add-button').addEventListener('click', () => input.click());
+  $('#add-button').addEventListener('click', async () => {
+    if (typeof window.showOpenFilePicker !== 'function') { input.click(); return; }
+    let handles;
+    try {
+      handles = await window.showOpenFilePicker({ multiple: true, id: 'horizon-discs' });
+    } catch (e) {
+      if (e?.name !== 'AbortError') input.click();      // (a picker this page may not use: the plain chooser)
+      return;
+    }
+    const items = [];
+    for (const handle of handles) { try { items.push({ file: await handle.getFile(), handle }); } catch { /* gone already */ } }
+    if (items.length) handleFiles(items);
+  });
   input.addEventListener('change', () => { const f = [...input.files]; input.value = ''; if (f.length) handleFiles(f); });
   const veil = $('#drop-veil');
   const zone = $('#add-button');
@@ -492,8 +541,312 @@ function setupAdd() {
     e.preventDefault();
     depth = 0;
     lit(false);
-    handleFiles([...e.dataTransfer.files]);
+    // handles where the browser gives them (Chromium): asked for every item now, before any await (the items are
+    // only readable during the event)
+    const items = [...e.dataTransfer.items].filter((i) => i.kind === 'file');
+    const files = items.map((i) => i.getAsFile());
+    if (!items.length || typeof items[0].getAsFileSystemHandle !== 'function' || files.some((f) => !f)) {
+      handleFiles([...e.dataTransfer.files]);
+      return;
+    }
+    const handles = items.map((i) => { try { return i.getAsFileSystemHandle().catch(() => null); } catch { return null; } });
+    Promise.all(handles).then((hs) => handleFiles(files.map((file, i) => ({ file, handle: hs[i]?.kind === 'file' ? hs[i] : null }))));
   });
+}
+
+// ---------------------------------------------------------------- remembered discs
+//
+// A returning player builds the new release without giving the discs again (js/remember.js keeps the records and
+// the copies; web/README.md "Remembered discs"). Two ways, per disc:
+//  - a handle (Chromium on a computer: the picker or a drop gives one): kept as soon as the disc is accepted, no copy.
+//    Next time it may need the browser's permission again: one click on "Use my discs from last time".
+//  - a copy in this browser's storage, only if the player asks for it (the option under the drop zone, with its
+//    size): any browser with OPFS, not on phones and tablets. Also for a disc that came out of an archive, ECM or PBP
+//    (its image is kept: a handle to an archive means unpacking it again).
+// What was remembered is trusted only while the file is the one checked (name, size, date: sameFile) and this
+// release still accepts that release; then it is not hashed again (the build still checks its files and the disc
+// it writes). Anything else: that slot is empty again with one line saying why, the others stay.
+
+const saved = new Map();     // game -> its record (IndexedDB's, as this page last wrote or read it)
+const notes = new Map();     // game -> [key, vars]: why its disc from last time is not here
+const KEEP = 'horizon.keepDiscs';
+// supported: this browser can keep copies; on: the player asked for them; job: the copy running (game, pct);
+// waiting: another tab builds or copies; note: [key, vars] of the last failure
+// paused: "Build my disc" was pressed (no copy may take the lock before the build does)
+const keep = { supported: false, on: false, job: null, game: null, pct: 0, waiting: false, note: null, pumping: false,
+               paused: false };
+const gb = (n) => new Intl.NumberFormat(i18n.lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n / 2 ** 30);
+const keptBytes = () => [...saved.values()].filter((r) => r.kind === 'copy').reduce((a, r) => a + r.size, 0);
+function setKeep(on) {
+  keep.on = on;
+  try { if (on) localStorage.setItem(KEEP, '1'); else localStorage.removeItem(KEEP); } catch { /* not kept */ }
+}
+function dropNote(id) { notes.delete(id); }
+
+// The release a record was accepted as, if this page still accepts it: {release, supported} or null
+function releaseOf(rec) {
+  const all = [...discs.discs.map((d) => ({ release: d, game: d.id, supported: true })),
+               ...discs.variants.map((v) => ({ release: v, game: v.game, supported: v.supported !== false }))];
+  const c = all.find((x) => x.release.id === rec.release && x.game === rec.game);
+  if (!c || !c.supported) return null;
+  if (rec.via === 'files') return discs.files[c.release.id] ? c : null;
+  return c.release.sha1 && c.release.sha1 === rec.image?.sha1 && (!c.release.crc32 || c.release.crc32 === rec.image.crc32) ? c : null;
+}
+
+const recordOf = (g, entry, extra) => ({
+  game: g.id, release: entry.expect.id, via: entry.via || null, converted: false,
+  image: { crc32: entry.got.crc32 || null, sha1: entry.got.sha1 || null, size: entry.file.size }, ...extra,
+});
+
+// A disc was accepted: its handle is remembered (if the browser gave one); otherwise what was remembered for its game
+// is forgotten (a new disc replaces it) and, with the option on, it is copied.
+async function remembered(g, entry) {
+  entry.storing = true;
+  try {
+    if (keep.game === g.id) await stopCopy();
+    const h = entry.from?.handle;
+    if (h) {
+      let file = entry.file;
+      if (entry.from.converted) { try { file = await h.getFile(); } catch { file = null; } }   // (the archive's own)
+      const rec = file && recordOf(g, entry, { kind: 'handle', handle: h, converted: !!entry.from.converted,
+                                               name: file.name, size: file.size, lastModified: file.lastModified });
+      if (rec && g.cur === entry && await store.put(rec)) {
+        saved.set(g.id, rec);
+        entry.store = 'handle';
+        await store.removeCopies([g.id]);
+        return;
+      }
+    }
+    if (g.cur !== entry) return;
+    saved.delete(g.id);
+    await store.del(g.id);
+    await store.removeCopies([g.id]);
+  } finally {
+    entry.storing = false;
+    renderSlots();
+    pumpCopies();
+  }
+}
+
+// Forget these games' discs (null: all): their records and copies.
+async function forget(ids = null) {
+  if (keep.job && (!ids || ids.includes(keep.game))) await stopCopy();
+  for (const id of ids || [...saved.keys()]) { saved.delete(id); await store.del(id); }
+  if (!ids) await store.clear();
+  await store.removeCopies(ids);
+  renderRemember();
+}
+
+// A disc from last time that cannot be used: its slot empty, one line why, forgotten.
+async function drop(g, key) {
+  g.remembered = null;
+  notes.set(g.id, [key, { game: gameName(g.id) }]);
+  await forget([g.id]);
+  renderAll();
+}
+
+// The page loads: the discs from last time into their slots (copies and handles the browser still allows), the
+// ones waiting for permission shown as such.
+async function restore() {
+  keep.supported = await store.canCopy();
+  try { keep.on = keep.supported && localStorage.getItem(KEEP) === '1'; } catch { keep.on = false; }
+  for (const rec of await store.all()) {
+    const g = games.get(rec.game);
+    if (!g) { await store.del(rec.game); continue; }
+    if (g.cur || g.pending) continue;                // a disc given meanwhile: it replaced this one
+    saved.set(g.id, rec);
+    if (!releaseOf(rec)) { await drop(g, 'remember.retired'); continue; }
+    if (rec.kind === 'copy') {
+      const file = await store.copyOf(rec);
+      if (file) adopt(g, rec, file, null); else await drop(g, 'remember.evicted');
+      continue;
+    }
+    const h = revive(rec.handle);
+    if (!h) { await drop(g, 'remember.unreadable'); continue; }
+    let perm = 'prompt';
+    try { perm = await h.queryPermission({ mode: 'read' }); } catch { /* asked on the click */ }
+    if (perm === 'granted') await openHandle(g, rec, h);
+    else if (perm === 'denied') await drop(g, 'remember.denied');
+    else { g.remembered = { rec, handle: h }; renderAll(); }
+  }
+  renderAll();
+  await store.tidy();
+  pumpCopies();
+}
+
+// A remembered handle the browser allows: the same file as last time goes into its slot unhashed; a file that
+// changed (or an archive, converted again) is checked as if just added, and remembered again once usable.
+async function openHandle(g, rec, h) {
+  g.remembered = null;
+  let file;
+  try {
+    file = await h.getFile();
+  } catch (e) {
+    const key = e?.name === 'NotFoundError' ? 'remember.gone'
+      : e?.name === 'NotAllowedError' || e?.name === 'SecurityError' ? 'remember.denied' : 'remember.unreadable';
+    return drop(g, key);
+  }
+  if (g.cur || g.pending) return;
+  if (rec.converted || !sameFile(rec, file)) {
+    saved.delete(g.id);
+    await store.del(g.id);
+    handleFiles([{ file, handle: h }]);
+    return;
+  }
+  adopt(g, rec, file, h);
+}
+
+// A disc from last time into its slot as checked (its checksums from the record). One checked by the files the
+// import reads has them read again: a later release may check more files.
+function adopt(g, rec, file, handle) {
+  if (g.cur || g.pending) return;
+  const { release: expect } = releaseOf(rec);
+  const entry = { file, expect, via: rec.via, got: { ...rec.image }, pct: 100, worker: null, batch: null, ended: true,
+                  from: { handle, converted: false }, store: rec.kind };
+  g.remembered = null;
+  if (rec.via !== 'files') { g.cur = entry; renderAll(); return; }
+  Object.assign(entry, { pct: 0, byFiles: true });
+  g.pending = entry;
+  renderAll();
+  checkFiles(file, discs.files[expect.id], (p) => { entry.pct = Math.floor(p * 100); renderSlots(); })
+    .then((res) => (res.bad.length + res.missing.length ? 'remember.retired' : null), () => 'remember.unreadable')
+    .then((why) => {
+      if (g.pending !== entry) return;
+      g.pending = null;
+      if (why) drop(g, why); else { g.cur = entry; renderAll(); }
+    });
+}
+
+// "Use my discs from last time": the browser's permission for each, one after another in this click. A browser
+// that allows one prompt per click leaves the rest waiting, and the button stays for them.
+async function useRemembered() {
+  for (const g of games.values()) {
+    const r = g.remembered;
+    if (!r) continue;
+    let perm;
+    try { perm = await r.handle.requestPermission({ mode: 'read' }); } catch { break; }
+    if (perm === 'granted') await openHandle(g, r.rec, r.handle);
+    else if (perm === 'denied') await drop(g, 'remember.denied');
+    else break;                                      // (the prompt closed: the rest wait)
+  }
+  renderAll();
+}
+
+// A disc to copy: accepted, not being checked or remembered, not a copy already, not a handle to the image itself.
+const wanted = (g) => g.cur && !g.pending && !g.cur.storing && g.cur.store !== 'copy'
+  && !(g.cur.store === 'handle' && !g.cur.from?.converted);
+
+// The copies the player asked for, one after another, when no build runs (here or in another tab: the lock). Room is
+// checked first: the copies and a build after them must fit, or nothing is copied.
+async function pumpCopies() {
+  if (!keep.on || keep.job || keep.pumping || building || keep.paused) return;
+  keep.pumping = true;
+  let again = false;
+  try {
+    const want = [...games.values()].filter(wanted);
+    if (!want.length) { keep.waiting = false; return; }
+    const need = want.reduce((a, g) => a + g.cur.file.size, 0);
+    const free = await store.free();
+    if (free != null && free < need + await buildRoom()) {
+      keep.note = ['remember.noRoom', { gb: gb(need) }];
+      setKeep(false);
+      return;
+    }
+    if (!keep.on || building || keep.paused) return;
+    const g = want[0], entry = g.cur;
+    if (!wanted(g)) return;
+    keep.game = g.id;
+    keep.pct = 0;
+    keep.job = store.copy(g.id, entry.file, (p) => { keep.pct = Math.floor(p * 100); renderRemember(); });
+    renderRemember();
+    const out = await keep.job.done;
+    keep.job = null;
+    keep.game = null;
+    keep.waiting = !!out.busy;
+    if (out.busy) { setTimeout(pumpCopies, 3000); return; }
+    if (out.stopped) return;                         // (a build, a forget: copied later if still wanted)
+    again = true;
+    if (out.error) {
+      console.warn('keeping', g.id, out.error);
+      keep.note = out.quota ? ['remember.noRoom', { gb: gb(need) }] : ['remember.failed', {}];
+      setKeep(false);
+      return;
+    }
+    const rec = recordOf(g, entry, { kind: 'copy', name: entry.file.name, size: entry.file.size });
+    const file = await store.copyOf(rec);
+    if (!file || g.cur !== entry || !keep.on || !await store.put({ ...rec, lastModified: file.lastModified })) {
+      await store.removeCopies([g.id]);              // (replaced, removed or turned off meanwhile)
+    } else {
+      saved.set(g.id, { ...rec, lastModified: file.lastModified });
+      entry.store = 'copy';
+      entry.file = file;                             // (an archive's image no longer held in memory)
+    }
+  } finally {
+    keep.pumping = false;
+    renderSlots();
+  }
+  if (again) pumpCopies();                          // the next disc
+}
+
+async function stopCopy() {
+  const job = keep.job;
+  if (!job) return;
+  job.stop();
+  await job.done.catch(() => {});
+}
+
+function setupRemember() {
+  $('#remember-use').addEventListener('click', useRemembered);
+  $('#remember-forget').addEventListener('click', async () => {
+    await forget(null);
+    setKeep(false);
+    notes.clear();
+    for (const g of games.values()) {
+      g.remembered = null;
+      if (g.cur?.store === 'copy') g.cur = null;     // (its file is gone)
+      else if (g.cur) g.cur.store = null;
+    }
+    renderAll();
+  });
+  $('#remember-keep').addEventListener('change', async (e) => {
+    if (e.target.checked) {
+      store.persist();                               // (asked during the click: Firefox shows its prompt)
+      keep.note = null;
+      setKeep(true);
+      pumpCopies();
+    } else {
+      setKeep(false);
+      const ids = [...saved.values()].filter((r) => r.kind === 'copy').map((r) => r.game);
+      await stopCopy();
+      await forget(ids);
+      for (const g of games.values()) if (g.cur?.store === 'copy') g.cur = null;
+    }
+    renderAll();
+  });
+}
+
+function renderRemember() {
+  const t = i18n.t;
+  const waiting = [...games.values()].filter((g) => g.remembered && !g.cur && !g.pending);
+  $('#remember-ask').hidden = !waiting.length;
+  $('#remember-ask-text').textContent = t('remember.ask', { list: listOf(waiting.map((g) => gameName(g.id))) });
+  const want = keep.supported ? [...games.values()].filter(wanted) : [];
+  const kept = keptBytes();
+  const row = $('#remember-keep-row');
+  row.hidden = !keep.supported || !(keep.on ? kept || want.length || keep.job : want.length);
+  $('#remember-keep').checked = keep.on;
+  $('#remember-keep').disabled = !!building;
+  $('#remember-keep-text').textContent = t('remember.keep', { gb: gb(kept + want.reduce((a, g) => a + g.cur.file.size, 0)) });
+  const line = $('#remember-line');
+  line.textContent = keep.job ? t('remember.copying', { game: gameName(keep.game), pct: keep.pct })
+    : keep.waiting ? t('remember.otherTab') : keep.note ? t(keep.note[0], keep.note[1]) : '';
+  line.hidden = !line.textContent;
+  const status = $('#remember-status');
+  status.hidden = !saved.size || !!keep.job;
+  $('#remember-status-text').textContent = t(kept ? 'remember.keptCopies' : 'remember.kept', { gb: gb(kept) });
+  $('#remember-forget').disabled = !!building;
+  $('#remember-notes').replaceChildren(...[...notes.values()].map(([k, v]) => el('li', { textContent: t(k, v) })));
+  $('#remember').hidden = $('#remember-ask').hidden && row.hidden && line.hidden && status.hidden && !notes.size;
 }
 
 // ---------------------------------------------------------------- the patch button
@@ -528,6 +881,10 @@ function renderPatch() {
 
 async function patch() {
   if (building || !patchState()[1]) return;
+  keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
+  keep.waiting = false;
+  await stopCopy();
+  if (building || !patchState()[1]) { keep.paused = false; pumpCopies(); return; }
   $('#build-done').dataset.ready = '';
   const q = new URLSearchParams(location.search);
   const opts = { onState: (st) => { last = st; renderBuild(); } };
@@ -555,7 +912,9 @@ async function patch() {
   } finally {
     clearInterval(tick);
     building = null;
+    keep.paused = false;
     renderAll();
+    store.tidy().then(pumpCopies);
     if (TEST) { window.RESULTS = { ...last, result: last.result && { ...last.result, bin: undefined, cue: undefined } }; document.title = 'DONE'; }
   }
 }
@@ -623,6 +982,8 @@ function renderBuild() {
   err.hidden = st.phase !== 'error';
   if (st.error) {
     err.textContent = t(st.error.key, st.error.vars);
+    const kept = keptBytes();
+    if (st.error.key === 'engine.noSpace' && kept) err.append(' ', t('remember.freeSpace', { gb: gb(kept) }));
     supportHelp(err, st.error.key);
     if (st.error.detail) errorDetails(err, st.error.detail, true);
     if (st.error.key !== 'build.cancelled') err.append(copyReport(st));
@@ -682,7 +1043,7 @@ async function start() {
   ]);
   await i18n.init();
   indexReleases();
-  for (const d of discs.discs) games.set(d.id, { id: d.id, disc: d, el: null, cur: null, pending: null, queue: [] });
+  for (const d of discs.discs) games.set(d.id, { id: d.id, disc: d, el: null, cur: null, pending: null, queue: [], remembered: null });
   buildSlots();
   $('#link-discord').href = LINKS.discord;
   $('#link-github').href = LINKS.github;
@@ -703,11 +1064,13 @@ async function start() {
   menu.addEventListener('change', async () => { await i18n.set(menu.value); patching = null; renderAll(); });
   setupAdd();
   setupDialog();
+  setupRemember();
   renderAll();
   setupChangelog(currentRelease).catch(() => { $('#changelog').hidden = true; });
   setupMaps().catch(() => { $('#maps').hidden = true; });
   setupDigimon().catch(() => { $('#digimon').hidden = true; });
   tidyStorage().catch(() => {});   // what a stopped or crashed build left, the old engines
+  restore().catch((e) => console.warn('remembered discs:', e));
 }
 
 start();

@@ -41,6 +41,9 @@ if (process.env.APP_SOURCE) {
     ? r.respond({ contentType: 'text/javascript', body: fs.readFileSync(process.env.APP_SOURCE, 'utf8') }) : r.continue());
 }
 p.on('pageerror', (e) => console.log('[pageerror]', e.message));
+// the drop zone's own picker (showOpenFilePicker) cannot be driven: the <input> it falls back to, as in Firefox
+// (the picker and the remembered discs: web/test/remember.mjs)
+await p.evaluateOnNewDocument(() => { window.showOpenFilePicker = undefined; });
 let failed = 0;
 const ok = (cond, what) => { console.log(`${cond ? 'ok  ' : 'FAIL'} ${what}`); if (!cond) failed++; };
 const add = async (...files) => { await (await p.$('#add-input')).uploadFile(...files); await new Promise((r) => setTimeout(r, 300)); };
