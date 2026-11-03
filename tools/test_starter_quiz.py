@@ -88,6 +88,31 @@ class QuizTest(unittest.TestCase):
             record = S.species_record(records[starter])
             self.assertIn(record['para']['moves'][0], range(58), starter)
 
+    def test_opening_techniques_match_evolution(self):
+        # A quiz starter opens with what evolving into it teaches; Agumon's and Gabumon's authored rows are that too.
+        # No starter opens with more than a native Rookie learns on evolving (Betamon's Winter Blast, 120), or than the
+        # weakest technique of its element (mech: Metal Sprinter, 150).
+        import species as S
+        records = S.load_content()
+        techs = {int(t['id']): t for t in (json.loads(p.read_text()) for p in (Q.ROOT / 'content/techniques').glob('*.json'))}
+        powers = {i: t['power'] for i, t in techs.items()}
+        disc = json.loads((Q.ROOT / 'content/tables/disc-species.json').read_text())['species']
+        native = [Q.opening_technique(r['para'], powers) for r in disc if r['raise'] and r['para']['level'] == 3]
+        ceiling = max(powers[t] for t, _ in native)
+        for starter in Q.load()['starters']:
+            s = records[starter]
+            para = S.species_record(s)['para']
+            tech, slot = Q.opening_technique(para, powers)
+            with self.subTest(starter=s['name']):
+                self.assertLess(tech, 58)
+                self.assertEqual(para['moves'][slot], tech)
+                weakest = min(t['power'] for i, t in techs.items() if i < 58 and t['power'] and t['element'] == techs[tech]['element'])
+                self.assertLessEqual(powers[tech], max(ceiling, weakest), techs[tech]['name'])
+                if 'new_game_technique' in s:
+                    self.assertEqual(techs[tech]['name'], s['new_game_technique'])
+        gotsumon = Q.opening_technique(S.species_record(records[68])['para'], powers)
+        self.assertEqual(techs[gotsumon[0]]['name'], 'Sonic Jab')
+
     def test_text_table_keeps_legacy_entries(self):
         legacy = (Q.ROOT / 'story/base/maphead/global-1238.dws').read_text()
         expanded = (Q.ROOT / 'story/new-game-quiz.dws').read_text()

@@ -127,6 +127,7 @@ Patch 0272 puts the Select + L1/R1/L2/R2 shortcuts behind a row of the Cheats me
 | 0326 | A reborn partner is drawn at full size. The big-partner fit in the world kept the last partner's measured height for Botamon, Punimon, Poyomon and Tsunomon, whose one mesh bone measures 0 px, so they stayed at half size outside menus after a death | no bytes |
 | 0327 | A battle's reward text (a drop, an injury, a learned technique) types on its own instead of waiting for a button that nothing asked for; a press still skips a row's wait | BTL overlay only |
 | 0330 | A script's item menu can ask for food only (`pick_item(food=True)`: p254 = 254 before `choose_item`): the rows that are not food by the care menu's test (`ITEM_FUNCTIONS == handleFood`) are greyed as the undroppable ones are. Kunemon's Bed uses it | +96 B of main (`main_BSS_END` 0x801c9a70 → 0x801c9ad0 in an English build); heapcheck passes |
+| 0331 | A quiz starter opens with what evolving into it teaches (the weakest technique of its main element, the evolution formula's `learn` slots), not its first list entry: Gotsumon and Hagurumon no longer start with Megaton Punch | +224 bytes of main (`main_BSS_END` 0x801ca2cc → 0x801ca3ac, same bank); eight-language build: heap 189,936 B, tightest screen OGRE03 keeps 33,584 B |
 
 Patch 0304 lets scripts set, clear and test recruited bits for species 112..1023
 through reserved operands of the existing trigger instructions. Prosperity keeps
