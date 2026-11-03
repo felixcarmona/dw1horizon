@@ -45,6 +45,6 @@ for t in ids:
     with species_tools():
         m, x = Provider('/games', work).model(t)
     print(json.dumps(dict(id=t, mmd=hashlib.sha256(m).hexdigest(), tim=hashlib.sha256(x).hexdigest())), flush=True)
-    shutil.rmtree(work)
+    shutil.rmtree(work, ignore_errors=True)   # a builder (224, the babies) makes no work folder
 print(f'{len(ids)} species verified in Pyodide', flush=True)
 `);
