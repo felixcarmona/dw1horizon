@@ -99,6 +99,17 @@ class RegistryTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, error):
                     load_registry(p)
 
+    def test_spots_switched_off_are_left_out_on_their_screen(self):
+        from dws.pickups import emitted, switched_off
+        data, spots = load_registry()
+        off = switched_off(data)
+        self.assertTrue(off and all(s >= 300 for s, _, _ in off))
+        for screen, kept in emitted(data).items():
+            if screen >= 300:
+                self.assertEqual(len(kept), 3, screen)           # 3 of Native Forest's 7 mushrooms on a new screen
+        got = rewrite_text('    SPAWN_ITEM 1, 30, 79\n', [0, 314], spots, off=off)
+        self.assertEqual(got, '    SPAWN_ITEM_DAILY 1, 30, 79, 0, 0\n')
+
     def test_duplicate_registry_entries_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp) / 'bad.json'
