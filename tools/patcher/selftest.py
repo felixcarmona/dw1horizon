@@ -259,6 +259,22 @@ def main(argv):
 
             dw = load_any(package)
 
+            def siblings():
+                # (the package's writer and font copier, not copies frozen into the app: the same code path)
+                import importlib
+                folder = os.path.normcase(os.path.realpath(package))
+                found = []
+                for name in ('isowriter', 'fontcopy'):
+                    if not os.path.exists(os.path.join(package, name + '.py')):
+                        continue
+                    sys.modules.pop(name, None)
+                    f = os.path.normcase(os.path.realpath(importlib.import_module(name).__file__))
+                    assert f.startswith(folder + os.sep), f'{name} came from {f}'
+                    found.append(name)
+                assert hasattr(dw._iw(), 'Image')
+                return ', '.join(found) + ' from the package'
+            ok &= check('the package\'s own isowriter and fontcopy', siblings)
+
             def info():
                 buf = io.StringIO(); saved = sys.stdout; sys.stdout = buf
                 try:
