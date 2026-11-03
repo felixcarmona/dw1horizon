@@ -11,4 +11,4 @@ sources = ["early-game.py", "arcs/*/*.py", "district/*.py", "city/*.py"]
 [save]
 namespace = "wtif"
 flags = "717-786"                           # the original engine's free flags (717-799); save.lock keeps the numbers
-vars = "9-11"                               # saved counters (the memory the city keeps)
+vars = "9-14"                               # saved counters (the memory the city keeps; 12-14 Tuskmon's deal of the day)

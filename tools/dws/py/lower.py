@@ -1945,6 +1945,7 @@ class Body:
             cam = not (isinstance(kw.get('camera'), ast.Constant) and kw['camera'].value is False)
             pros = f', prosperity: {self.val(kw["prosperity"])}' if 'prosperity' in kw else ''
             return [f'{I}{"join_city_camera" if cam else "join_city"}({w}, {sp}, {b}, {n}, {self.page_arg(kw["line"])}{pros});']
+        if name == 'shop': return self.shop(c, kw, I)          # keeper.shop(...): that NPC's shop, from any handler
         if isinstance(f, ast.Attribute): raise self.err(c, f'unknown verb "{name}"')
         # module functions
         if name == 'load': return [f'{I}load_digimon({self.val(c.args[0])});']
@@ -2047,19 +2048,26 @@ class Body:
     SHOP_STOCK = 384                              # trigger 0x180 + item id: the items the shop sells (openShop, script_common.c)
 
     def shop(self, c, kw, I):
-        """`shop(Item.A, Item.B)`: the NPC being talked to opens its shop with these items. The game's own form: the stock
-        triggers set, picker mode off (buy, not sell), the routine with the owner's entity in engine.arg (whose box the
-        menu's lines are in, and which keeper's lines: SHOPKEEP_DIGIMON_TYPES, the default keeper's otherwise), the
-        triggers cleared."""
-        if self.self_npc is None:
-            raise self.err(c, '`shop(...)` is opened by the NPC being talked to: it goes in an on_talk handler')
+        """`shop(Item.A, Item.B)`: the NPC being talked to opens its shop with these items; `keeper.shop(...)`: that NPC
+        opens it, from any handler (a counter's use tile). The game's own form: the stock triggers set, picker mode off
+        (buy, not sell), the routine with the owner's entity in engine.arg (whose box the menu's lines are in, and which
+        keeper's lines: SHOPKEEP_DIGIMON_TYPES, the default keeper's otherwise), the triggers cleared."""
+        owner = self.self_npc
+        if isinstance(c.func, ast.Attribute):
+            recv = c.func.value
+            if not (isinstance(recv, ast.Name) and recv.id in self.m.npcs and self.m.npcs[recv.id].get('entity') is not None):
+                raise self.err(c, '`npc.shop(...)`: a shop is opened by an NPC of the screen')
+            owner = recv.id
+        if owner is None:
+            raise self.err(c, '`shop(...)` is opened by the NPC being talked to: it goes in an on_talk handler',
+                           'or name the keeper: keeper.shop(Item.A, ...) (a counter\'s use tile)')
         if kw or not c.args: raise self.err(c, 'shop(Item.A, Item.B, ...): the items it sells')
         ids = [self.m.enum_id('item', a) for a in c.args]
         bad = next((a for k, a in enumerate(c.args) if not 0 <= ids[k] < 128), None)
         if bad is not None: raise self.err(bad, 'a shop sells the items 0-127 (Item.X)')
         dup = next((a for k, a in enumerate(c.args) if ids[k] in ids[:k]), None)
         if dup is not None: raise self.err(dup, 'this item is already in the shop')
-        ent = self.m.npcs[self.self_npc]['entity']
+        ent = self.m.npcs[owner]['entity']
         tag = re.sub(r'\W', '_', os.path.splitext(os.path.basename(self.m.path))[0])     # (one name per file: two files' shops may share an item)
         for i in ids: self.m.aliases_dws.add(f'alias flag py_stock_{tag}_{i} = {self.SHOP_STOCK + i};')     # (the game's own triggers, named)
         return [f'{I}py_stock_{tag}_{i} = true;' for i in ids] + \

@@ -108,6 +108,9 @@ class NPC(Entity):
     @overload
     def on_talk(self, *, when: Cond = ..., scene: bool = False) -> Callable[[_F], _F]: ...
     def talk(self) -> None: """Its talk handler (`return tokomon.talk()`: go on there)."""
+    def shop(self, *items: 'Item') -> None:
+        """This NPC opens its shop with these items, from any handler: a keeper behind a counter, talked to from the
+        counter's use tile (`@shop_.on_use(1, ...)`). In `on_talk`, `shop(...)` alone is the NPC being talked to."""
 
 class Level(IntEnum):
     """A species' level: `if partner.level >= Level.champion:` (the partner species of those levels, from content/species: the
