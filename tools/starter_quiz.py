@@ -23,7 +23,7 @@ RECOLOURS = {
 
 
 # These new rookies have Baby II routes but no quiz slot in the fixed 35-row table.
-EVOLUTION_ONLY = {263: 'Mushroomon', 283: 'Syakomon'}
+EVOLUTION_ONLY = {263: 'Mushroomon', 283: 'Syakomon', 331: 'Vemmon'}
 
 def load():
     return json.loads((ROOT / 'content/tables/new-game.json').read_text())['newGame']
