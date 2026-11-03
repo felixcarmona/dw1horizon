@@ -35,10 +35,11 @@ Animation timing: the DW2003 export assumes 30 fps (its playback rate was not
 measured); `--fps` changes it.
 
 Releases: the recipes (content/imports/specs) are made from the PAL disc. The disc read is $DW3_DISC
-(default $DW3_ROOT/disc, the PAL one); its boot file tells the release. Digimon World 3 (USA) keeps
-the models in AAA/DAT/MODEL/ and differs in a few of them: tools/dw3release.py patches those into
-the PAL files before they are read, so every recipe gives the same Digimon from any release (the
-Japanese one has every recipe model as the PAL disc does: no patch, only the checksums).
+(default $DW3_ROOT/disc, the PAL one); its boot file tells the release. The Japanese release has every
+recipe model as the PAL disc does. Digimon World 3 (USA) keeps the models in AAA/DAT/MODEL/ and has
+other files for 15 of them: they are read as they are, with Renamon's bones put back in the PAL order
+(tools/dw3release.py), and the species that still come out different are pinned on their own
+(content/modeldelta/variants/dw3-us.json).
 
 The bundled player converter uses only the Python standard library.
 """
@@ -88,15 +89,16 @@ def model_path(name):
 
 
 def read_model(name):
-    """The parsed model of `name` from the disc in disc_dir(); another release's file is first patched into the
-    PAL one the recipes are made from (tools/dw3release.py)."""
+    """The parsed model of `name` from the disc in disc_dir(). Another release's file is checked against its list
+    and, when its bones come in another order, read with them in the PAL order the recipes use
+    (tools/dw3release.py); nothing else of it is changed."""
     dw3 = _dw3()
     data = open(model_path(name), 'rb').read()
     rel = release()[0]
-    if rel != 'pal':
-        import dw3release
-        data = dw3release.to_pal(rel, name, data)
-    return dw3.model.parse_model(data, name)
+    if rel == 'pal':
+        return dw3.model.parse_model(data, name)
+    import dw3release
+    return dw3release.reorder(rel, name, dw3.model.parse_model(dw3release.checked(rel, name, data), name))
 
 
 def _c15_rgb(c):

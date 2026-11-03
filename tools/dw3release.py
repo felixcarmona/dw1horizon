@@ -1,31 +1,27 @@
 #!/usr/bin/env python3
-"""Other releases of Digimon World 2003's battle models, turned into the PAL files the import recipes are made from.
+"""Other releases of Digimon World 2003's battle models: which files the import recipes read on each disc.
 
-The recipes (content/imports/specs, the ones with "dw3") and everything built on them were made from
-the PAL disc, SLES-03936. Digimon World 3 (USA), SLUS-01436, keeps the same models in AAA/DAT/MODEL/, and 15 of
-the 57 the recipes use differ from the PAL files (meshes, animation tracks, bone order, the events section;
-docs/patcher.md, "Regional disc inputs"). Instead of recipes per release, each of
-those files is patched into the PAL file before anything reads it: the import then sees the same bytes from either
-disc and builds the same Digimon. tools/dw3mmd.py applies it when its disc is not the PAL one. The Japanese
-release (SLPS-03446) has every recipe model as the PAL disc does: its file holds only the checksums.
+The recipes (content/imports/specs, the ones with "dw3") were made from the PAL disc, SLES-03936. Every other release
+is read as it is: nothing of one release's models is ever stored to turn it into another's.
+
+- Japan (SLPS-03446) has every recipe model as the PAL disc does: its file holds only the checksums.
+- USA (SLUS-01436) keeps the models in AAA/DAT/MODEL/. 15 of the 57 recipe models are other files there. Its list
+  holds their own SHA-1 (`own`) and, for a model whose bones come in another order (Renamon), that order
+  (`bone_order`: for each PAL bone, 1-based, the USA bone it is). The model is read with its bones put back in the
+  PAL order, so every recipe's bone map stays valid; the order is our data, worked out from both discs' tracks.
+  Eight of the 15 still differ after that (other meshes or animation keys): they give USA imports of their own,
+  pinned separately and finished with our edits carried onto them (content/modeldelta/variants/dw3-us.json,
+  tools/models/variants.py).
 
   dw3release.py make RELEASE     needs both discs ($DW3_ROOT/disc, the PAL one, and $DW3_DISC, the release's);
                                  writes content/imports/releases/dw3-RELEASE.json
-  dw3release.py check RELEASE    every model the recipes use, read from $DW3_DISC through the patch, must equal
-                                 the PAL file (by SHA-1); needs only the release's disc
-
-A patch rebuilds the PAL file region by region, in file order (the offset table, then each section):
-  {"copy": [offset, length], "what": ...}   bytes the release's file already has, at that offset
-  {"data": "hex", "what": ...}              bytes it does not have: PAL model data, kept to what differs
-"what" names the region: offset table, bone N mesh, bone N track, texture, hierarchy, animations, section N.
-The file also lists the SHA-1 of every recipe model, so a model the release has unchanged is checked too.
+  dw3release.py check RELEASE    every model the recipes use, read from $DW3_DISC, must be the release's file
+                                 (by SHA-1); needs only the release's disc
 """
-import difflib
 import glob
 import hashlib
 import json
 import os
-import struct
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -51,100 +47,50 @@ def recipe_models():
     return out
 
 
-def patch_path(rel):
+def list_path(rel):
     return os.path.join(OUT_DIR, f'dw3-{rel}.json')
 
 
-# ------------------------------------------------------------------ making a patch
+# ------------------------------------------------------------------ making a list
 
-def regions(data):
-    """(start, end, section index or None) of the offset table and every section, in file order. A section runs
-    to the next larger non-zero offset (dw3_extra's slicing); empty slots (offset 0) have no region."""
-    n = struct.unpack_from('<I', data, 0)[0] // 4
-    offs = struct.unpack_from(f'<{n}I', data, 0)
-    starts = sorted({o for o in offs if o})
-    out = [(0, starts[0], None)]
-    for k, o in enumerate(starts):
-        end = starts[k + 1] if k + 1 < len(starts) else len(data)
-        out.append((o, end, offs.index(o)))
-    return out
-
-
-def labels(data):
-    """{section index: what it is}, from the hierarchy (dw3.model.find_hierarchy) and the usual first section."""
+def _parse(data, code):
     sys.path.insert(0, DW3_ROOT)
-    sys.path.insert(0, HERE)
     import dw3_extra
     import dw3.model
-    secs = dw3_extra.sections_of(data)
-    out = {0: 'animations'}
-    try:
-        hi, tex, entries = dw3.model.find_hierarchy(secs)
-    except ValueError:
-        return out
-    out[hi], out[tex] = 'hierarchy', 'texture'
-    for k, (_, mesh, track) in enumerate(entries, 1):
-        out[mesh] = f'bone {k} mesh'
-        if track:
-            out[track] = f'bone {k} track'
-    return out
+    dw3_extra.patch()
+    return dw3.model.parse_model(data, code)
 
 
-def make_ops(pal, rel):
-    """Ops that rebuild `pal` from `rel`."""
-    what = labels(pal)
-    rel_regions = {i: (a, b) for a, b, i in regions(rel)}
-    ops = []
-
-    def copy(o, n, w):
-        if ops and 'copy' in ops[-1] and ops[-1]['what'] == w and sum(ops[-1]['copy']) == o:
-            ops[-1]['copy'][1] += n
+def bone_order(pal, rel, code):
+    """For each PAL bone (1-based) the release's bone with the same animation tracks, when the two files hold the
+    same bones in another order; None when the order is the same or the tracks do not pair one to one."""
+    mp, mr = _parse(pal, code), _parse(rel, code)
+    if len(mp.bones) != len(mr.bones):
+        return None
+    key = lambda b: (repr(b.translation), repr(b.rotation), repr(b.scale))
+    order = []
+    for b in mp.bones:
+        same = [r.index for r in mr.bones if key(r) == key(b)]
+        if b.index in same:
+            order.append(b.index)
+        elif len(same) == 1:
+            order.append(same[0])
         else:
-            ops.append({'copy': [o, n], 'what': w})
-
-    def data(b, w):
-        if ops and 'data' in ops[-1] and ops[-1]['what'] == w:
-            ops[-1]['data'] += b.hex()
-        else:
-            ops.append({'data': b.hex(), 'what': w})
-
-    for a, b, i in regions(pal):
-        w = 'offset table' if i is None else what.get(i, f'section {i}')
-        seg = pal[a:b]
-        same = rel.find(seg) if seg else -1
-        ra, rb = rel_regions.get(i, (0, 0)) if i is not None else (0, regions(rel)[0][1])
-        if seg and rel[ra:rb] == seg:
-            copy(ra, len(seg), w)
-        elif seg and same >= 0:
-            copy(same, len(seg), w)
-        else:
-            # rule: diff against the release's section of the same index; only the bytes it lacks travel
-            sm = difflib.SequenceMatcher(None, rel[ra:rb], seg, autojunk=False)
-            for op, i1, i2, j1, j2 in sm.get_opcodes():
-                if op == 'equal':
-                    copy(ra + i1, i2 - i1, w)
-                elif j2 > j1:
-                    data(seg[j1:j2], w)
-    return ops
-
-
-def apply_ops(ops, rel):
-    out = bytearray()
-    for op in ops:
-        if 'copy' in op:
-            o, n = op['copy']
-            out += rel[o:o + n]
-        else:
-            out += bytes.fromhex(op['data'])
-    return bytes(out)
+            return None
+    if order == list(range(1, len(order) + 1)) or sorted(order) != list(range(1, len(order) + 1)):
+        return None
+    back = {r: p for p, r in enumerate(order, 1)}
+    for b in mp.bones:                          # the hierarchy must be the same once renumbered
+        parent = mr.bones[order[b.index - 1] - 1].parent
+        if (back[parent] if parent else 0) != b.parent:
+            return None
+    return order
 
 
 def cmd_make(rel, rel_models):
-    if rel == 'us':
-        raise SystemExit('US normalization would store PAL game bytes; use the European World 2003 disc')
     models = recipe_models()
-    out = dict(release=rel, note='tools/dw3release.py make: do not edit by hand', recipes={}, patches={})
-    data_bytes = 0
+    out = dict(release=rel, note='tools/dw3release.py make: do not edit by hand', recipes={})
+    own, orders = {}, {}
     for code, name in sorted(models.items(), key=lambda kv: kv[1]):
         pal = open(os.path.join(PAL_MODELS, code + '.BIN'), 'rb').read()
         rp = os.path.join(rel_models, code + '.BIN')
@@ -154,56 +100,79 @@ def cmd_make(rel, rel_models):
         out['recipes'][code] = sha1(pal)
         if r == pal:
             continue
-        ops = make_ops(pal, r)
-        if apply_ops(ops, r) != pal:
-            raise SystemExit(f'{code} ({name}): the patch does not rebuild the PAL file')
-        n = sum(len(o['data']) // 2 for o in ops if 'data' in o)
-        data_bytes += n
-        out['patches'][code] = dict(name=name, from_sha1=sha1(r), ops=ops)
-        print(f'{name:16} {code}: {len(ops)} ops, {n} bytes of PAL data '
-              f'({", ".join(sorted({o["what"] for o in ops if "data" in o}))})')
+        own[code] = sha1(r)
+        order = bone_order(pal, r, code)
+        if order:
+            orders[code] = order
+        print(f'{name:16} {code}: own file' + (f', bones in another order {order}' if order else ''))
+    if own:
+        out['own'] = own
+    if orders:
+        out['bone_order'] = orders
     os.makedirs(OUT_DIR, exist_ok=True)
-    with open(patch_path(rel), 'w') as f:
+    with open(list_path(rel), 'w') as f:
         json.dump(out, f, indent=1)
         f.write('\n')
-    print(f'{patch_path(rel)}: {len(out["patches"])} of {len(models)} recipe models patched, '
-          f'{data_bytes} bytes of PAL data')
+    print(f'{list_path(rel)}: {len(models)} recipe models, {len(own)} own files, {len(orders)} reordered')
 
 
-# ------------------------------------------------------------------ using a patch
+# ------------------------------------------------------------------ reading a release's file
 
 _loaded = {}
 
 
-def to_pal(rel, code, data):
-    """`data`, the release's file of model `code`, as the PAL file the recipes are made from. Models no recipe
-    uses come back as they are."""
+def release_list(rel):
     if rel not in _loaded:
-        p = patch_path(rel)
+        p = list_path(rel)
         if not os.path.exists(p):
-            raise SystemExit(f'dw3release: no patch for the {rel} release ({p})')
+            raise SystemExit(f'dw3release: no list for the {rel} release ({p})')
         _loaded[rel] = json.load(open(p))
-    pt = _loaded[rel]
-    if pt.get('supported') is False:
-        raise SystemExit('US World 3 normalization is not published; use the European World 2003 disc')
+    return _loaded[rel]
+
+
+def checked(rel, code, data):
+    """`data`, the release's file of model `code`, checked against the release's list (models no recipe uses come
+    back unchecked)."""
+    pt = release_list(rel)
     if code not in pt['recipes']:
         return data
-    if code in pt['patches']:
-        entry = pt['patches'][code]
-        if sha1(data) != entry['from_sha1']:
-            raise SystemExit(f'dw3release: {code} on this disc is not the {rel} release\'s file')
-        data = apply_ops(entry['ops'], data)
-    if sha1(data) != pt['recipes'][code]:
-        raise SystemExit(f'dw3release: {code} from the {rel} release did not come out as the PAL file')
+    want = pt.get('own', {}).get(code, pt['recipes'][code])
+    if sha1(data) != want:
+        raise SystemExit(f'dw3release: {code} on this disc is not the {rel} release\'s file')
     return data
 
 
+def reorder(rel, code, model):
+    """The parsed `model` with its bones in the PAL order (the list's bone_order), renumbered with their parents."""
+    order = release_list(rel).get('bone_order', {}).get(code)
+    if not order:
+        return model
+    if sorted(order) != list(range(1, len(model.bones) + 1)):
+        raise SystemExit(f'dw3release: {code}: the bone order does not fit the model')
+    back = {r: p for p, r in enumerate(order, 1)}
+    bones = []
+    for p, r in enumerate(order, 1):
+        b = model.bones[r - 1]
+        b.index, b.parent = p, (back[b.parent] if b.parent else 0)
+        bones.append(b)
+    for b in bones:
+        if b.parent >= b.index:
+            raise SystemExit(f'dw3release: {code}: a bone would come before its parent')
+    model.bones = bones
+    return model
+
+
+def variant(rel):
+    """The source variant id of a release whose imports are pinned on their own ('dw3-us'), or None."""
+    return f'dw3-{rel}' if release_list(rel).get('own') else None
+
+
 def cmd_check(rel, rel_models):
-    pt = json.load(open(patch_path(rel)))
+    pt = release_list(rel)
     for code in sorted(pt['recipes']):
-        to_pal(rel, code, open(os.path.join(rel_models, code + '.BIN'), 'rb').read())
-    print(f'{rel}: all {len(pt["recipes"])} recipe models come out as the PAL files '
-          f'({len(pt["patches"])} through the patch)')
+        checked(rel, code, open(os.path.join(rel_models, code + '.BIN'), 'rb').read())
+    print(f'{rel}: all {len(pt["recipes"])} recipe models are the release\'s files '
+          f'({len(pt.get("own", {}))} its own, {len(pt.get("bone_order", {}))} with bones reordered)')
 
 
 def main(argv):

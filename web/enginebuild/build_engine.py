@@ -126,7 +126,55 @@ def record(tree, out_json):
 OTHER_RELEASES = {'tools/dcb2mmd.py': ['tools/dcbrelease.py', 'content/imports/releases/dcb-eu.json',
                                        'content/imports/releases/dcb-jp.json'],
                   'tools/dw2mmd.py': ['tools/dw2release.py', 'content/imports/releases/dw2-jp.json'],
-                  'tools/dw3mmd.py': ['tools/dw3release.py', 'content/imports/releases/dw3-jp.json']}
+                  'tools/dw3mmd.py': ['tools/dw3release.py', 'content/imports/releases/dw3-jp.json',
+                                      'content/imports/releases/dw3-us.json']}
+
+
+# Where another release of a source game keeps the same files (the record only sees the reference release's paths):
+# a job that reads the first also gets the second when it was extracted (a missing tree input is skipped).
+SOURCE_PATH_ALIASES = {'build/everything/source-games/dw2003/disc/AAA/DAT/FIGHT/MODEL/':
+                       ['build/everything/source-games/dw2003/disc/AAA/DAT/MODEL/']}     # World 3 USA (dw3mmd.RELEASES)
+
+
+# A source variant's imports (World 3 USA): its pins and carried deltas, read by these steps only with that disc (the
+# record, made with the reference discs, never opens them; their importer modules are loaded before it starts).
+VARIANT_INPUTS = {'steps': ('imports', 'overlays', 'species'),
+                  'files': ('content/modeldelta/variants/', 'content/modeldelta/deltas/dw3-us/',
+                            'content/imports/releases/dw3-us.json')}
+
+
+def add_variant_inputs(plan):
+    """Adds the bundle's VARIANT_INPUTS files to the `bundle` inputs of the jobs of those steps."""
+    paths = plan['paths']
+    index = {p: i for i, p in enumerate(paths)}
+    wanted = [f[0] for f in plan['files'] if f[0].startswith(VARIANT_INPUTS['files'])]
+    for name in wanted:
+        if name not in index:
+            index[name] = len(paths)
+            paths.append(name)
+    for job in plan['jobs']:
+        if job['step'] in VARIANT_INPUTS['steps']:
+            job['bundle'] += [index[n] for n in wanted if index[n] not in job['bundle']]
+    return plan
+
+
+def alias_source_paths(plan):
+    """Adds SOURCE_PATH_ALIASES' paths to the plan's jobs (their `tree` inputs, by index into `paths`)."""
+    paths = plan['paths']
+    index = {p: i for i, p in enumerate(paths)}
+    for job in plan['jobs']:
+        more = []
+        for i in job['tree']:
+            for prefix, others in SOURCE_PATH_ALIASES.items():
+                if paths[i].startswith(prefix):
+                    for other in others:
+                        q = other + paths[i][len(prefix):]
+                        if q not in index:
+                            index[q] = len(paths)
+                            paths.append(q)
+                        more.append(index[q])
+        job['tree'] += [i for i in more if i not in job['tree']]
+    return plan
 
 
 def plan_jobs(recs, bundle_files):
@@ -488,6 +536,8 @@ def main():
                     extract=m['extract'], extract_inputs=ex_data, source_discs=m.get('source_discs', []), write_est=WRITE_EST,
                     packs=packs, files=index, dirs=dirs, paths=paths, steps=steps, jobs=jobs,
                     manifest=MANIFEST, out='build/everything')
+        alias_source_paths(plan)
+        add_variant_inputs(plan)
         text = json.dumps(plan, separators=(',', ':'))
         version = hashlib.sha1(text.encode() + b''.join(p['sha1'].encode() for p in packs)).hexdigest()[:12]
         open(os.path.join(stage, 'plan.json'), 'w').write(text)

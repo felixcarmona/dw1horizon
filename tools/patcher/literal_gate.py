@@ -162,8 +162,9 @@ def mapping_chunks(release):
                     if entry.get('how') not in known_modes:
                         raise GateFailure(f'{path}: new mapping mode requires literal audit support')
             if isinstance(mapping, dict) and 'recipes' in mapping and 'patches' in mapping:
-                if any('ops' not in entry for entry in mapping['patches'].values()):
-                    raise GateFailure(f'{path}: new import mapping encoding requires literal audit support')
+                # (source releases are read as they are: a list that rebuilds one release's files from another's
+                # would carry that release's game data)
+                raise GateFailure(f'{path}: a source release list with patches: not publishable')
             visit(mapping, str(path.relative_to(release)), '')
     return chunks
 
@@ -257,9 +258,15 @@ def check(chunks, sources, original_findings, output, canonical_mappings=(), inp
     return report
 
 
+def output_keys_complete(outputs, manifest):
+    """Every base has its output checksum, and with each source variant too ("<base>+<variant>"); nothing else."""
+    want = set(manifest['bases']) | {f'{b}+{v}' for b in manifest['bases'] for v in manifest.get('source_variants') or {}}
+    return set(outputs) == want
+
+
 def canonical_mapping_matches(release, sources, usa_path):
     """Verify known mapping provenance even for fragments below the seed size."""
-    if not any((release / 'bases').glob('*.json')) and not (release / 'bundle/content/imports/releases/dw3-us.json').exists():
+    if not any((release / 'bases').glob('*.json')):
         return []
     bases = {'us': sources['images'].index(str(Path(usa_path).resolve()))}
     with tempfile.TemporaryDirectory(prefix='literal-mappings-') as temp:
@@ -329,7 +336,7 @@ def check_release(release, manifest, base_paths, source_discs, build_dirs, *, pl
         raise GateFailure('codecopy.audit_literals is required: refusing an unchecked package')
     if (manifest.get('provisional_audit_only') or manifest.get('format') != 3
             or not manifest.get('bases') or not manifest.get('variants')
-            or any(set(v.get('outputs', {})) != set(manifest['bases']) or 'holes' not in v
+            or any(not output_keys_complete(v.get('outputs', {}), manifest) or 'holes' not in v
                    for v in manifest['variants'].values())
             or any(not (release/name).is_file() for name in ('dwpatch.py', 'isowriter.py'))):
         raise GateFailure('publication gate requires a complete final manifest and shipped runtime files')

@@ -71,7 +71,7 @@ class Image:
 RELEASES = {
     'dcb': {'SLUS_013.28': 'dcb', 'SLES_039.00': 'dcb-eu', 'SLPS_031.01': 'dcb-jp'},
     'dw2': {'SLUS_011.93': 'dw2', 'SLPS_028.44': 'dw2-jp'},
-    'dw2003': {'SLES_039.36': 'dw2003', 'SLPS_034.46': 'dw3-jp'},
+    'dw2003': {'SLES_039.36': 'dw2003', 'SLPS_034.46': 'dw3-jp', 'SLUS_014.36': 'dw3-us'},
 }
 
 

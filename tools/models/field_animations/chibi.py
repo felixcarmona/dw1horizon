@@ -633,8 +633,9 @@ def reshape(data, skeleton, sid, row):
 def build(data, skeleton):
     """The reviewed overlay of a pinned species (the manifest's row) over the recipe before it."""
     rows = json.loads(MANIFEST.read_text())
+    from tools.models.field_animations.reviewed import reviewed
     digest = hashlib.sha256(data).hexdigest()
-    matches = [(int(sid), row) for sid, row in rows.items() if row['source_sha256'] == digest]
+    matches = [(int(sid), row) for sid, row in rows.items() if row['source_sha256'] == reviewed(digest)]
     if len(matches) != 1:
         raise ValueError('Chibi proportions require an individually pinned source')
     sid, row = matches[0]
@@ -643,7 +644,7 @@ def build(data, skeleton):
     previous = None
     if row.get('base_generator'):
         data, previous = importlib.import_module(row['base_generator']).build(data, skeleton)
-    if hashlib.sha256(data).hexdigest() != row['post_source_sha256']:
+    if reviewed(hashlib.sha256(data).hexdigest()) != row['post_source_sha256']:
         raise ValueError('Chibi proportions: the preceding recipe differs from the reviewed input')
     result, report, scales, k = reshape(data, skeleton, sid, row)
     record = json.loads(next((ROOT / 'content/species').glob(f'{sid}-*.json')).read_text())

@@ -1,6 +1,6 @@
 {
  "release": "us",
- "note": "US normalization needs PAL game bytes and is excluded; use the European World 2003 disc.",
+ "note": "tools/dw3release.py make: do not edit by hand",
  "recipes": {
   "M360ANTR": "583c581f8b29a9ba3854696b623dffe2fc27c0a7",
   "M382ARMG": "98cb5445f18975fcef7c4c2120c2edbfa16b06b9",
@@ -60,67 +60,46 @@
   "M368MGRW": "2f35c19ebbc7fe138833c4056883a569de54eabd",
   "M337ZAMB": "23bcf2fd0e5cf1ee2891225b0705541d63200286"
  },
- "patches": {
-  "M360ANTR": {
-   "name": "Antylamon",
-   "from_sha1": "af9b8554898333a74b5de9f58e14dd53e1bda6f4"
-  },
-  "M446BKNM": {
-   "name": "BK-KingNumemon",
-   "from_sha1": "d8d2caeea6713b40394148f3f2498961951f91bf"
-  },
-  "M436VALV": {
-   "name": "Bulbmon",
-   "from_sha1": "6b70e7360f1caffee52fdaf80fc8d6a7bd69e56f"
-  },
-  "M175KRSR": {
-   "name": "Chrysalimon",
-   "from_sha1": "13c840bded7dfa63fc99de9959ade7c79d9b9f3e"
-  },
-  "M165EBDR": {
-   "name": "Ebidramon",
-   "from_sha1": "edacf0b0f414ab77f3df81e35927fc6d1e33b5ca"
-  },
-  "M442RGN1": {
-   "name": "Galacticmon",
-   "from_sha1": "13905e6badb95e0c68dc265895debb65075e0dcc"
-  },
-  "M367GRAW": {
-   "name": "Growlmon",
-   "from_sha1": "815f0ff46fcd15ca87c4e32328ca6d0ca8d000c2"
-  },
-  "M374KYBI": {
-   "name": "Kyubimon",
-   "from_sha1": "37f011e44142147a3ea613c489f2de0053c601d6"
-  },
-  "M378BVND": {
-   "name": "MaloMyotismon",
-   "from_sha1": "b562d4af9d86b5474b731ba27e0e73ab612a8605"
-  },
-  "M172MTAR": {
-   "name": "Minotarumon",
-   "from_sha1": "39a445885826837104dd29951ce660f2e360e819"
-  },
-  "M384KOET": {
-   "name": "Monmon",
-   "from_sha1": "83e489d9c7819341e20f59777188bf7fb2cfedae"
-  },
-  "M364MUMY": {
-   "name": "Mummymon",
-   "from_sha1": "6c3b19bf6f9cd9601d7a8467a7097e665156d377"
-  },
-  "M358PHAR": {
-   "name": "Pharaohmon",
-   "from_sha1": "01e3b75ba0ed4776777b5c50a16a4dd83dbeb1e7"
-  },
-  "M373RENA": {
-   "name": "Renamon",
-   "from_sha1": "e730612fae92ff94a85bdc96ed101bc841b9e1ca"
-  },
-  "M440SIJN": {
-   "name": "Suijinmon",
-   "from_sha1": "6a1606ea838d4095327588a0427ec7f36d643f82"
-  }
+ "own": {
+  "M360ANTR": "af9b8554898333a74b5de9f58e14dd53e1bda6f4",
+  "M446BKNM": "d8d2caeea6713b40394148f3f2498961951f91bf",
+  "M436VALV": "6b70e7360f1caffee52fdaf80fc8d6a7bd69e56f",
+  "M175KRSR": "13c840bded7dfa63fc99de9959ade7c79d9b9f3e",
+  "M165EBDR": "edacf0b0f414ab77f3df81e35927fc6d1e33b5ca",
+  "M442RGN1": "13905e6badb95e0c68dc265895debb65075e0dcc",
+  "M367GRAW": "815f0ff46fcd15ca87c4e32328ca6d0ca8d000c2",
+  "M374KYBI": "37f011e44142147a3ea613c489f2de0053c601d6",
+  "M378BVND": "b562d4af9d86b5474b731ba27e0e73ab612a8605",
+  "M172MTAR": "39a445885826837104dd29951ce660f2e360e819",
+  "M384KOET": "83e489d9c7819341e20f59777188bf7fb2cfedae",
+  "M364MUMY": "6c3b19bf6f9cd9601d7a8467a7097e665156d377",
+  "M358PHAR": "01e3b75ba0ed4776777b5c50a16a4dd83dbeb1e7",
+  "M373RENA": "e730612fae92ff94a85bdc96ed101bc841b9e1ca",
+  "M440SIJN": "6a1606ea838d4095327588a0427ec7f36d643f82"
  },
- "supported": false
+ "bone_order": {
+  "M373RENA": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12,
+   13,
+   14,
+   21,
+   18,
+   19,
+   20,
+   15,
+   16,
+   17
+  ]
+ }
 }

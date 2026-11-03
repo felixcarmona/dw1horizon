@@ -91,12 +91,7 @@
    "size": 647526768,
    "crc32": "e3d73a16",
    "sha1": "f0b022f9be53cbce14640abd8f01beaadcb35208",
-   "supported": false,
-   "soon": true,
-   "instead": [
-    "Digimon World 2003 (Europe)",
-    "DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)"
-   ]
+   "supported": true
   },
   {
    "game": "dw2003",

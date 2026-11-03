@@ -49,18 +49,55 @@ def source_context(games):
         sys.modules.update(previous)
 
 
+VARIANTS = 'content/modeldelta/variants'
+
+
+def source_variant(games, repo=None):
+    """The source variant of the player's discs in `games` (a derive build's source-games): the release id of a
+    source disc whose imports are pinned on their own (content/modeldelta/variants/<id>.json, today 'dw3-us':
+    Digimon World 3 USA), or None. Told by the disc's boot file, as the extraction told it."""
+    from .discs import RELEASES
+    for game, releases in sorted(RELEASES.items()):
+        cnf = Path(games) / game / 'disc' / 'SYSTEM.CNF'
+        if not cnf.is_file():
+            continue
+        boot = cnf.read_bytes().decode('latin-1').split('cdrom:')[1].lstrip('\\').split(';')[0].strip().upper()
+        rel = releases.get(boot)
+        if rel and (Path(repo or runner.ROOT) / VARIANTS / f'{rel}.json').is_file():
+            return rel
+    return None
+
+
+def variant_record(variant, repo=None):
+    """content/modeldelta/variants/<variant>.json, or an empty record (no variant)."""
+    if not variant:
+        return dict(sources={}, sizes={}, models={})
+    return json.loads((Path(repo or runner.ROOT) / VARIANTS / f'{variant}.json').read_text())
+
+
 class Provider:
-    """One species' sources, verified before applying its delta. Each unit owns its workspace."""
+    """One species' sources, verified before applying its delta. Each unit owns its workspace.
+
+    A source variant (source_variant: the player's World 3 is the USA release) replaces the pins of the importer
+    outputs that come out otherwise from its files, and the species records made from them (their own delta: our edit
+    carried onto that release's model, tools/models/carry.py); everything else is the same recipe."""
 
     def __init__(self, games, work, repo=None):
         self.repo = Path(repo or runner.ROOT)
         self.games, self.work = Path(games), Path(work)
         self.base = self.repo / 'content/modeldelta'
+        self.variant = source_variant(self.games, self.repo)
+        own = variant_record(self.variant, self.repo)
         self.models = {r['id']: r for r in json.loads((self.base / 'models.json').read_text())['models']}
+        for sid, kinds in own['models'].items():
+            self.models[int(sid)] = dict(self.models[int(sid)], **kinds)
         self.sizes = {r['target']: r for r in json.loads((self.base / 'import-sizes.json').read_text())['files']}
+        for target, pins in own['sizes'].items():
+            self.sizes[target] = dict(self.sizes[target], **pins)
         self.source_pins = {s['path']: s['sha256'] for model in self.models.values()
                             for kind in ('mmd', 'tim') for s in model[kind]['sources']}
         self.source_pins.update({r['source']: r['source_sha256'] for r in self.sizes.values()})
+        self.source_pins.update(own['sources'])
         self.batches = {}
         for recipe in json.loads((self.base / 'import-batches.json').read_text())['recipes']:
             for ext in ('MMD', 'TIM'):

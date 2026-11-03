@@ -87,7 +87,7 @@ See the source repository's patcher guide for the audit's scope and remaining li
 ## What you need
 
 1. Your Digimon World `.bin` and `.cue` (see above), plus your **Digital Card Battle**, **Digimon World 2** and
-   **European Digimon World 2003 or Japanese World 3** image (USA World 3 is unsupported).
+   **Digimon World 2003 (Europe) or Digimon World 3 (USA or Japan)** image.
    See the [generated supported-release matrix](../data/source-releases.md). The imported Digimon are generated from these images on your computer.
 2. **Python 3.10 or newer** (tested with 3.10, 3.11, 3.12 and 3.14).
    Install it from [python.org](https://www.python.org/downloads/) or your operating

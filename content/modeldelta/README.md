@@ -12,6 +12,14 @@ source data. `import-batches.json` pins the frozen converter specs;
 `import-sizes.json` records geometry scaling. The other manifests record source
 provenance and reproducibility checks.
 
+## Other releases of a source disc
+
+`variants/<release>.json` (today `dw3-us`, Digimon World 3 USA) replaces the records of the species whose import comes
+out otherwise from that release: its importer outputs' pins, a delta in `deltas/<release>/` (our edit carried onto
+that release's model by `tools/models/carry.py`), and the `reviewed_as` inputs of their field overlays. After changing
+one of those species here (`put`, `rebase`), run `tools/models/variants.py make dw3-us --games US --reference-games
+PAL` and `check`; `tools/test_model_variants.py` fails until then.
+
 ## Editing an animation
 
 Prepare the three source discs once, as described in

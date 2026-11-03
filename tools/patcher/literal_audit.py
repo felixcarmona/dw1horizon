@@ -195,26 +195,6 @@ def mapping_literals(release, output, sources, bases):
                     inspect(str(path.relative_to(release)), q, entry['ops'], data, usa_path, q)
     finally:
         usa.f.close()
-    patches = release / 'bundle/content/imports/releases/dw3-us.json'
-    if patches.exists():
-        import discs as catalog
-        from derive.importers.discs import Image as SourceImage
-        expected = next(d['sha1'] for d in catalog.SOURCE_DISCS if d['id'] == 'dw2003')
-        path = next((n for n, sha in sources['sha1'].items() if sha == expected), None)
-        if path is None:
-            raise ValueError('DW3 Europe is required to verify the USA normalization mapping data')
-        image = SourceImage(path)
-        try:
-            files = image.index()
-            mapping = json.loads(patches.read_text())
-            for code, entry in mapping.get('patches', {}).items():
-                q = next(q for q in files if q.endswith('/' + code + '.BIN'))
-                data = image.read(*files[q])
-                if hashlib.sha1(data).hexdigest() != mapping['recipes'][code]:
-                    raise ValueError('DW3 canonical model does not match its recorded source')
-                inspect(str(patches.relative_to(release)), code + '.BIN', entry['ops'], data, path, q)
-        finally:
-            image.file.close()
     write_json(output / 'mapping-literals.json', rows)
     write_json(output / 'mapping-literal-totals.json', totals)
     return totals

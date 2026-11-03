@@ -92,6 +92,9 @@ def extract(rel, disc, key, put, work, progress=None, source_discs=None):
     """The `extract` files of the release from the player's disc (by USA path) to put(path, bytes)."""
     P = dwpatch(rel)
     m = manifest(rel)
+    missing_variant = P.unrecorded_variant(m, rel, source_discs)
+    if missing_variant:
+        raise P.PatchError(f'this release was made without the checksums for {missing_variant}')
     base = base_disc(rel, disc, key, work, source_discs)
     saved = P.subprocess.run
     P.subprocess.run = run_tool                      # (the localize tool: in this process)
@@ -106,17 +109,27 @@ def extract(rel, disc, key, put, work, progress=None, source_discs=None):
     return base
 
 
-def check_holes(rel, key, read):
-    """[disc path] of the holes whose bytes (read(disc path) -> bytes) are not the release's for this base."""
+def pin(rel, key, source_discs=None):
+    """The pin key of this base with these source discs: "<base>+<variant>" when a source disc is a source variant
+    of the release (World 3 USA: dwpatch.source_variant), else the base."""
+    P = dwpatch(rel)
+    return P.pin_key(key, P.source_variant(manifest(rel), source_discs))
+
+
+def check_holes(rel, key, read, source_discs=None):
+    """[disc path] of the holes whose bytes (read(disc path) -> bytes) are not the release's for this base (and these
+    source discs)."""
+    P = dwpatch(rel)
     m = manifest(rel)
     v = m['variants'][m['default']]
+    pk = pin(rel, key, source_discs)
     bad = []
     for h in v['holes']:
         try:
             b = read(h['file'])
         except (OSError, KeyError):
             b = None
-        if b is None or hashlib.sha1(b).hexdigest() != h.get('sha1_by_base', {}).get(key, h['sha1']):
+        if b is None or hashlib.sha1(b).hexdigest() != P.pinned_for(h.get('sha1_by_base'), pk, h['sha1']):
             bad.append(h['file'])
     return bad
 
@@ -130,6 +143,7 @@ def write_disc(rel, disc, key, holes, out, work, localized=None, source_discs=No
     v = m['variants'][m['default']]
     p = P.read_payload3(P.read_patch_file(rel, v))
     base = base_disc(rel, disc, key, work, source_discs)
+    base.pin = pin(rel, key, source_discs)
     if localized:
         base._loc = localized
     by_id = {h['id']: holes[h['file']] for h in v['holes']}
@@ -139,5 +153,5 @@ def write_disc(rel, disc, key, holes, out, work, localized=None, source_discs=No
         sha, pl = P.build_disc3(p, base, by_id, out, None, progress=False)
     finally:
         P.subprocess.run = saved
-    want = v['outputs'].get(key, {}).get('sha1')
+    want = v['outputs'].get(base.pin, {}).get('sha1')
     return sha, want, pl.total * 2352

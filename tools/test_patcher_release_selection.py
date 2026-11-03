@@ -2,6 +2,7 @@
 import contextlib
 import io
 import json
+import sys
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -11,18 +12,30 @@ from unittest.mock import patch
 from tools.patcher import dwpatch as D
 
 
+RETIRED = dict(game='dw2003', id='dw3-xx', title='A retired release', boot='SLXX_000.00', supported=False)
+RETIRED_LIST = 'content/imports/releases/' + RETIRED['id'] + '.json'     # (no such file: a stand-in)
+
+
+def retired_catalog():
+    """tools/discs.py with one unsupported source release (none is today: World 3 USA was the last)."""
+    sys.path.insert(0, str(Path(D.REPO) / 'tools'))
+    import discs
+    return patch.object(discs, 'SOURCE_VARIANTS', discs.SOURCE_VARIANTS + [RETIRED])
+
+
 class ReleaseSelection(unittest.TestCase):
-    def test_bundle_omits_only_unsupported_source_normalization(self):
+    def test_bundle_omits_only_unsupported_source_lists(self):
         files = {name: name for name in (
+            RETIRED_LIST,
             'content/imports/releases/dw3-us.json',
             'content/imports/releases/dw3-jp.json',
             'content/imports/releases/dw2-jp.json',
             'content/imports/releases/dcb-us.json',
             'tools/dw3release.py')}
-        result = D.publication_bundle_files(files)
-        self.assertEqual(set(files) - set(result),
-                         {'content/imports/releases/dw3-us.json'})
-        self.assertEqual(len(files), 5)
+        with retired_catalog():
+            result = D.publication_bundle_files(files)
+        self.assertEqual(set(files) - set(result), {RETIRED_LIST})
+        self.assertIn('content/imports/releases/dw3-us.json', result)    # World 3 USA: supported, its list ships
 
     def test_release_frontend_copies_the_repositories_actual_notices(self):
         with tempfile.TemporaryDirectory() as td:
@@ -40,7 +53,7 @@ class ReleaseSelection(unittest.TestCase):
     def test_bundle_records_and_emits_without_the_retired_recipe(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
-            names = ['content/imports/releases/dw3-us.json',
+            names = [RETIRED_LIST,
                      'content/imports/releases/dw3-jp.json', 'tools/languages.py',
                      'tools/discs.py', 'tools/dw3release.py']
             for name in names:
@@ -57,7 +70,7 @@ class ReleaseSelection(unittest.TestCase):
 
             listings = [SimpleNamespace(stdout='\n'.join(names)), SimpleNamespace(stdout='')]
             usa = SimpleNamespace(files={}, read=lambda name: self.fail(name))
-            with patch.object(D, 'REPO', str(root)), \
+            with retired_catalog(), patch.object(D, 'REPO', str(root)), \
                     patch.object(D.subprocess, 'run', side_effect=listings), \
                     patch.object(D, 'derive_run', side_effect=record), \
                     patch.object(D, 'derive_files', return_value={}), \
