@@ -246,6 +246,37 @@ section { padding-top: 120px; }
 .patch-row { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 30px; text-align: center; }
 .patch-status { margin: 0; max-width: 34em; color: var(--muted); font-size: 15px; }
 
+/* ------------------------------------------------------------ the desktop app (js/desktop.js) */
+
+/* "Prefer an app?": a quiet card under the browser patcher; the visitor's system's button dark, the other outlined. */
+.desktop { max-width: 40em; margin: 40px auto 0; padding: 26px 26px 18px; text-align: center; background: #fff;
+           border: 1px solid var(--line); border-radius: 22px; }
+.desktop h3 { font-size: 21px; letter-spacing: -.02em; }
+.desktop-lead { margin: 6px auto 0; max-width: 32em; color: var(--ink-2); font-size: 14.5px; }
+.desktop-note { margin: 12px auto 0; max-width: 32em; color: var(--muted); font-size: 14px; }
+.desktop-note a, .desktop-os a { color: var(--ink); font-weight: 600; text-decoration: underline; }
+.desktop-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+.desktop-buttons .button { min-width: 230px; }
+.button.outline { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #d9d3e3; }
+.button.outline:hover { box-shadow: inset 0 0 0 1.5px var(--ink-2); }
+.desktop-help { margin-top: 16px; }
+.desktop-os { margin: 0 auto; text-align: left; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--ink-2); }
+.desktop-os summary { cursor: pointer; padding: 11px 2px; font-weight: 600; color: var(--ink); list-style-position: inside; }
+.desktop-os summary:hover { color: var(--sun); }
+.desktop-os ol { margin: 0 0 10px; padding-left: 22px; }
+.desktop-os li { padding: 2px 0; }
+.desktop-os p { margin: 0 0 10px; }
+.desktop-sums { list-style: none; padding: 0; margin: 0 0 10px; }
+.desktop-sums li { padding: 3px 0; }
+.desktop-sums b { display: block; font-size: 13px; color: var(--ink); }
+.desktop-sums code { font: 12px/1.4 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+/* a phone: the apps are for computers; one line says so */
+.desktop[data-os="phone"] :is(.desktop-buttons, .desktop-help, .desktop-why) { display: none; }
+@media (max-width: 560px) {
+  .desktop { padding: 20px 16px 12px; }
+  .desktop-buttons .button { min-width: 0; width: 100%; }
+}
+
 /* ------------------------------------------------------------ the build */
 
 .build {

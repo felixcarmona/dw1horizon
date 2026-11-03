@@ -209,6 +209,46 @@ def release_notes(info, entry):
             + f"Source commit: {info['commit']}.\n")
 
 
+DESKTOP = {'windows': 'Horizon-Patcher-Windows.zip', 'macos': 'Horizon-Patcher-macOS.zip'}
+
+
+def desktop_apps(folder, package, tag):
+    """The desktop apps the page may offer (engine/current.json `desktop`), or None.
+
+    desktop.yml attaches the two zips to the tag's release and then horizon-desktop.json (their sizes and SHA-256,
+    whether they are signed); release.yml downloads the three into inputs/desktop/ when they are there. The page links
+    to the release's own assets, so they are offered only when every zip is present and matches, and only when the
+    package's dwpatch has the interface the app needs (GUI_API: older packages are refused by the app). Anything
+    else leaves them out with a warning, never the deployment."""
+    path = folder / 'horizon-desktop.json'
+    if not path.is_file():
+        return None
+    try:
+        info = json.loads(path.read_text())
+        require(info.get('tag') == tag, f"desktop apps are for {info.get('tag')}, not {tag}")
+        require(re.search(rb'^GUI_API = 1$', package.get('dwpatch.py', b''), re.M),
+                "the package's dwpatch has no GUI_API = 1: the desktop app would refuse it")
+        run = info.get('run')
+        require(run is None or re.fullmatch(r'https://github\.com/[\w.-]+/[\w.-]+/actions/runs/\d+', run),
+                f'unexpected run URL: {run}')
+        apps = {}
+        for os_name, name in DESKTOP.items():
+            app = info.get(os_name) or {}
+            require(app.get('name') == name, f'desktop app for {os_name} must be {name}')
+            zip_path = folder / name
+            require(zip_path.is_file(), f'{name} is not on the release')
+            data = zip_path.read_bytes()
+            require(app.get('size') == len(data) and app.get('sha256') == digest(data),
+                    f'{name} differs from horizon-desktop.json')
+            flag = 'signed' if os_name == 'windows' else 'notarized'
+            require(isinstance(app.get(flag), bool), f'{os_name}: {flag} must be true or false')
+            apps[os_name] = {'name': name, 'size': len(data), 'sha256': app['sha256'], flag: app[flag]}
+        return dict(apps, **({'run': run} if run else {}))
+    except (ValueError, AttributeError, TypeError) as e:   # (json.JSONDecodeError is a ValueError)
+        print(f'::warning::the page does not offer the desktop apps: {e}')
+        return None
+
+
 def build(a):
     info = release.identity(a.tag)
     entry = changelog_entry(info['version'])
@@ -226,6 +266,9 @@ def build(a):
         p.write_bytes(data)
     # Add tag as metadata without mutating the immutable engine folder or package.
     cur['release_tag'] = a.tag
+    desktop = desktop_apps(a.inputs / 'desktop', package, a.tag)
+    if desktop:
+        cur['desktop'] = desktop
     (a.out / 'engine/current.json').write_text(json.dumps(cur) + '\n')
     total = sum(p.stat().st_size for p in a.out.rglob('*') if p.is_file())
     require(total < LIMIT, 'site exceeds Pages budget')

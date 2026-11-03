@@ -68,6 +68,28 @@ The project's site: a static page with no backend. The patcher runs in the visit
   `data/discs.json` lists and `tools/derive/importers/discs.py` reads). Their checked files are imported locally, then
   our per-model deltas make the imported models; the release carries no raw imported models.
 
+## The desktop app downloads
+
+"Prefer an app?" (`js/desktop.js`, `#desktop` at the end of the patcher section) offers Horizon Patcher, the desktop
+patcher (docs/patcher.md "The desktop app"), for Windows and macOS. It links to the served release's own assets,
+`https://github.com/<repo>/releases/download/<release_tag>/Horizon-Patcher-<Windows|macOS>.zip` (the repository from
+the `source-repository` meta), with the release and the size on each button, the first start's SmartScreen and
+Gatekeeper steps per system (collapsed), and "Why it is safe" (built by GitHub Actions from the tag: the build's run,
+the code signing policy, both SHA-256).
+
+It shows only when `engine/current.json` has `desktop`, so it never links to a missing file: `desktop.yml` attaches
+the two zips to the tag's release, then `horizon-desktop.json` (name, size and SHA-256 of each, whether the Windows
+app is signed and the macOS app notarized, the run's URL), then starts `release.yml` again for that tag when it is the
+latest release or still a draft. `release.yml` downloads the three when they are there and `tools/release_pages.py`
+(`desktop_apps`) writes `desktop` only when both zips match the description and the package's dwpatch has
+`GUI_API = 1` (the app refuses older packages); otherwise the page goes out without it (v0.0.4 and earlier, or the
+first deployment of a release, before the apps are built). The zips are not copied to the site.
+
+The visitor's system (user agent) comes first and highlighted; Linux gets both outlined and a line pointing to the
+browser builder and `dwpatch.py`; phones and tablets get one line that the apps are for computers. Once the macOS app
+is notarized (`notarized: true`) its Gatekeeper steps become one line; the "not signed yet" note stays while either
+app is unsigned. `node web/test/desktop.mjs URL [SHOTS]` checks it with fixtures for `current.json` (no discs).
+
 ## Remembered discs
 
 A returning player builds a new release without giving the four discs again (`js/remember.js`, `js/app.js`
