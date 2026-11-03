@@ -1,7 +1,7 @@
 {
   "id": 115,
   "name": "Machinedramon",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "virus",
   "specialties": ["mech", "air", "battle"],

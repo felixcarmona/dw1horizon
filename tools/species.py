@@ -1133,6 +1133,9 @@ CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0x120, 7   # a 16-colour CLUT and two 
 HEADER_LEVELS = 0x40             # the header sector: the level of each partner species (one byte, partner list order)
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
+# the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per original whose file gives it
+# another level than the disc's (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
+HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
@@ -1401,6 +1404,9 @@ def build(out=OUT, content=None, quiet=False, select=None):
         if t < NUM_ORIGINAL: hdr[HEADER_RECORD_ORIGINALS + t // 8] |= 1 << (t % 8)
     for t, x in allsp.items():                            # the original game's partners (OPTIONS' NEW DIGIMON)
         if x.get('vanilla'): hdr[HEADER_VANILLA + t // 8] |= 1 << (t % 8)
+    swaps = level_swaps(allsp)                            # the original levels with NEW DIGIMON off
+    hdr[HEADER_LEVEL_OFF] = len(swaps)
+    for i, row in enumerate(swaps): hdr[HEADER_LEVEL_OFF + 1 + 3 * i:HEADER_LEVEL_OFF + 4 + 3 * i] = bytes(row)
     plist = bytearray(SECTOR); struct.pack_into('<HH', plist, 0, len(partners), first_mega)
     for i, t in enumerate(partners): struct.pack_into('<H', plist, 4 + 2 * i, t)
     llist = bytearray(SECTOR); struct.pack_into('<HH', llist, 0, len(links), 0)
@@ -1414,6 +1420,21 @@ def build(out=OUT, content=None, quiet=False, select=None):
     open(out, 'wb').write(data)
     if not quiet: print(f'{os.path.relpath(out, ROOT)}: {count} ids ({len(species)} carried species, {len(partners)} partners, '
                         f'{len(links)} links with the originals), {len(data)} bytes')
+    return out
+
+
+def level_swaps(allsp):
+    """[(id, level with NEW DIGIMON on, level with it off)] of the originals whose file gives them another level than the
+    disc's: off is the disc's level, or with none on the disc (0, a story character) the file's, never past Ultimate (the
+    original game has no Mega)."""
+    O = originals(); out = []
+    for t in range(1, NUM_ORIGINAL):
+        s = allsp.get(t)
+        if not s or s.get('level') not in LEVELS: continue
+        on = LEVELS.index(s['level']); disc = O.rec[t]['para']['level']
+        off = disc if 1 <= disc <= 5 else min(on, 5)
+        if on and off != on: out.append((t, on, off))
+    if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} originals with another level than the disc: room for {LEVEL_SWAP_MAX}')
     return out
 
 

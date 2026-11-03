@@ -1,7 +1,7 @@
 {
   "id": 60,
   "name": "HerculesKabuterimon",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla": true,
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],

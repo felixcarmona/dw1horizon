@@ -208,6 +208,8 @@ and the vanilla one); loaded with the row on and the partner still that vanilla 
 recruited flags are never cleared: with the row off the chart only hides the new species. A New Game with the row off gets one of
 the nine original rookies from Jijimon's quiz (`quiz.vanillaCells`, [balance.md](balance.md)), so no swap is needed.
 
+Levels follow the row too (patch 0335): an original whose species file gives it another level than the disc (the canon Megas Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman, Jijimon; the tier pass's IceLeomon, Yanmamon, Flarerizamon, Vermilimon, Icemon, BlueMeramon, Meteormon, KingSukamon) has its disc level with the row off, so the original game has no Mega; `vanilla_as` and the evolution guard count a vanilla species at that level.
+
 After changing a species’ tier, clear its old `vanilla_as` and regenerate with `tools/vanilla_as.py --write`.
 The evolution guard rejects a fallback of another level, except Mega → Ultimate because the original game has no Mega.
 Saved partner ids remain valid; Continue reads the current mapping. Existing swap tags restore their recorded original

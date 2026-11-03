@@ -20,6 +20,8 @@ def choose(allsp):
     part = {t: s for t, s in allsp.items() if 'partner' in s and s['level'] in LEVELS}
     van = {t for t, s in part.items() if s.get('vanilla')}
     lv = {t: LEVELS.index(s['level']) for t, s in part.items()}
+    for t, _, off in species.level_swaps(allsp):         # a vanilla species counts at its level with NEW DIGIMON off
+        if t in van: lv[t] = off - 1
     parents = collections.defaultdict(set)
     children = collections.defaultdict(list)
     for t, s in part.items():

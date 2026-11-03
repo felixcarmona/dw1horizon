@@ -1,7 +1,7 @@
 {
   "id": 117,
   "name": "Jijimon",
-  "level": "ultimate",
+  "level": "mega",
   "vanilla_as": 12,
   "attribute": "vaccine",
   "specialties": ["battle", null, null],

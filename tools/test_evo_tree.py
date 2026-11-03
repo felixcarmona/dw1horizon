@@ -32,17 +32,18 @@ def check(sp, kids, table):
     for entry in table['specialty_exceptions']:
         if (entry['parent'], entry['child']) not in allowed_specialties or not entry.get('reason'):
             errors.append('specialty exception must be a documented permitted canon route')
+    # the level a vanilla species has with NEW DIGIMON off (Phoenixmon and HerculesKabuterimon are Ultimates there)
+    off = {t: T.S.LEVELS[o] for t, _, o in T.S.level_swaps(sp)}
     for t, s in sp.items():
         if 'vanilla_as' in s:
             target = sp.get(s['vanilla_as'], {})
             level = 'ultimate' if s['level'] == 'mega' else s['level']
-            if target.get('level') != level or not target.get('vanilla'):
+            if off.get(s['vanilla_as'], target.get('level')) != level or not target.get('vanilla'):
                 errors.append(f'{s["name"]}: vanilla_as must name a vanilla {level}')
+    # Disc and story species too (2026-11-03): NEW DIGIMON off gives them their disc level back at run time.
     for t in table['sheet_megas']:
-        if t >= T.S.NUM_ORIGINAL and sp[t]['level'] != 'mega':
+        if sp[t]['level'] != 'mega':
             errors.append(f'{sp[t]["name"]}: sheet Mega must be level 6')
-        if t < T.S.NUM_ORIGINAL and sp[t]['level'] != 'ultimate':
-            errors.append(f'{sp[t]["name"]}: disc/story Mega must remain Ultimate')
     incoming = {}
     for p, children in kids.items():
         if sp[p]['level'] != 'in-training' and len(set(children)) > 6:
@@ -90,10 +91,8 @@ def check(sp, kids, table):
         for c in children:
             parent, child = sp[p], sp[c]
             pair = parent['name'], child['name']
-            # Etemon -> MetalEtemon is an established mod continuation,
-            # explicitly retained by the tier review, not an original disc row.
-            step_exception = (p, c) == (42, 65) or (
-                (p, c) in original_routes and child['name'] in ('Phoenixmon', 'HerculesKabuterimon'))
+            # The disc's own Champion routes to Phoenixmon and HerculesKabuterimon (Megas) are the one exception.
+            step_exception = (p, c) in original_routes and child['name'] in ('Phoenixmon', 'HerculesKabuterimon')
             if T.LEVEL_NO.get(child['level'], 0) != T.LEVEL_NO.get(parent['level'], 0) + 1 and not step_exception:
                 errors.append(f'{pair[0]} -> {pair[1]}: evolution level step must be +1')
             if (p, c) not in original_routes and not (set(parent['specialties']) - {None}) & (set(child['specialties']) - {None}) and pair not in exceptions:
