@@ -19,7 +19,10 @@ Usage:
                                            encodes a WAV to SPU ADPCM and replaces sample N (the
                                            tones that use it get the new root/loop), or adds it
                                            as a new tone of program P (a new program if P = ps)
-  sound.py index FILE [-o OUT.VHB]         the chunk index of FAALL/VBALL/VLALL/ESALL; with -o writes the
+  sound.py copy-effect FILE CHUNK N DST=M [...] -o OUT.VHB
+                                           sound effect N of CHUNK (ESALL: a map region) copied as it is, sample and
+                                           tone, into chunk DST as its effect M (the city jingle: story/core/audio.json)
+  sound.py index FILE [-o OUT.VHB]       the chunk index of FAALL/VBALL/VLALL/ESALL; with -o writes the
                                            file in the indexed layout (index sector + packed chunks, any
                                            size and count) that the soundlimits executable reads
   sound.py add-font IN.mid [IN2.mid ...] --instruments FONT -o OUT.VHB [--vhb FAALL.VHB] [--loop]
@@ -1146,6 +1149,48 @@ def parse_note(s):
         return n + 12 * (int(r) + 1)
 
 
+def effect_tone(v, n):
+    """The tone that playSound(bank, n) starts in a VAB of effects (banks 0/1/8: program n / 16, key 60 + n % 16)."""
+    return next((t for t in v.tones_of(n // 16) if t['min'] <= 60 + n % 16 <= t['max']), None)
+
+
+def cmd_copy_effect(name, src, n, targets, out):
+    """Sound effect `n` of chunk `src` copied, sample bytes and tone as they are, into other chunks of the same file as
+    their effect id `m` (`DST=M`): a chunk that already plays that sample keeps it (its id must then be `m`)."""
+    f = VhbFile(resolve(name)); sv = f.chunks[src].vab
+    st = effect_tone(sv, n)
+    if st is None:
+        raise SoundError(f'{f.kind} chunk {src} has no sound effect {n}')
+    vag = sv.vags[st['vag'] - 1]
+    for dst, m in targets:
+        c = f.chunks[dst]; v = c.vab
+        have = [k for k in range(16 * len(v.tones)) if (t := effect_tone(v, k)) and v.vags[t['vag'] - 1] == vag]
+        if have:
+            if m not in have:
+                raise SoundError(f'chunk {dst} already plays that sample as effect {have[0]}, not {m}')
+            print(f'chunk {dst}: effect {m} already plays it'); continue
+        if effect_tone(v, m) is not None:
+            raise SoundError(f'chunk {dst} already has an effect {m}')
+        if v.extra:
+            raise SoundError(f'chunk {dst} keeps bytes after a size-0 sample (sound.md § 1.2): appending would shift them')
+        b = v.program_block(m // 16)
+        if b is None:
+            raise SoundError(f'chunk {dst} has no program {m // 16} for effect {m}')
+        slot = next((k for k, t in enumerate(v.tones[b]) if not t['vag']), None)
+        if slot is None:
+            raise SoundError(f'chunk {dst}: program {m // 16} already has 16 tones')
+        v.touched = True
+        v.vags.append(vag)
+        v.tones[b][slot] = dict(st, min=60 + m % 16, max=60 + m % 16, prog=m // 16, vag=len(v.vags))
+        v.progs[m // 16]['tones'] += 1
+        errs = check_chunk(f.kind, dst, c, indexed=f.indexed)
+        if errs:
+            raise SoundError('; '.join(errs))
+        print(f'chunk {dst}: effect {m} = chunk {src} effect {n} ({len(vag)} bytes ADPCM), body {len(v.vb()):#x}/'
+              f'{FILES[f.kind]["slot"]:#x}')
+    open(out, 'wb').write(f.build())
+
+
 def cmd_import_wav(name, idx, wavp, out, vagno, program, keys, root, rate, loop, volume):
     f = VhbFile(resolve(name)); c = f.chunks[idx]; v = c.vab
     pcm, wrate, wloop, wroot = read_wav(wavp)
@@ -1498,6 +1543,8 @@ def main():
     a = sp.add_parser('import-midi'); a.add_argument('font', type=lambda s: int(s, 0)); a.add_argument('track', type=int)
     a.add_argument('midi'); a.add_argument('-o', '--out', required=True); a.add_argument('--vhb')
     a.add_argument('--loop', action='store_true'); a.add_argument('--prog-map', default='')
+    a = sp.add_parser('copy-effect'); a.add_argument('file'); a.add_argument('chunk', type=lambda s: int(s, 0))
+    a.add_argument('effect', type=lambda s: int(s, 0)); a.add_argument('to', nargs='+'); a.add_argument('-o', '--out', required=True)
     a = sp.add_parser('import-wav'); a.add_argument('file'); a.add_argument('chunk', type=lambda s: int(s, 0))
     a.add_argument('wav'); a.add_argument('-o', '--out', required=True)
     g = a.add_mutually_exclusive_group(required=True); g.add_argument('--vag', type=int); g.add_argument('--program', type=int)
@@ -1527,6 +1574,8 @@ def main():
         elif o.cmd == 'import-midi':
             pm = dict(tuple(int(x) for x in kv.split('=')) for kv in o.prog_map.split(',') if kv)
             cmd_import_midi(o.font, o.track, o.midi, o.out, o.vhb, o.loop, pm)
+        elif o.cmd == 'copy-effect':
+            cmd_copy_effect(o.file, o.chunk, o.effect, [tuple(int(x, 0) for x in t.split('=')) for t in o.to], o.out)
         elif o.cmd == 'import-wav':
             cmd_import_wav(o.file, o.chunk, o.wav, o.out, o.vag, o.program, o.keys, o.root, o.rate, o.loop, o.volume)
         elif o.cmd == 'add-font':

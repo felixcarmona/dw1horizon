@@ -444,7 +444,8 @@ details are in `tools/dws/bytecode/__init__.py` and [the interpreter reference](
 - **The walk-away loop.** 56 loops in 47 scripts walk an NPC off while the tamer and partner look back N times, counted in
   p101.
 - **The recruit scene.** The 47 "joins the city" endings share one shape: the NPC walks off with the look-back loop, is
-  unloaded, the jingle plays (sound 8, 11), the narrator announces it, the camera returns to the tamer, then trigger
+  unloaded, the jingle plays (bank 8 is the map region's effects: sound 11 in regions 0, 4 and 11, each region its own
+  number, story/core/audio.json), the narrator announces it, the camera returns to the tamer, then trigger
   200 + type is set and p1 raised.
 - **The food test.** An item-giving talk sets trigger 3, calls routine 0, tests trigger 3 (no menu: nothing to give),
   p254 == 255 (cancelled), then p254 against lists of item ids, and removes one with routine 0x0C (Kunemon, 2:6).

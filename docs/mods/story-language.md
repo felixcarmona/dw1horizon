@@ -278,7 +278,7 @@ an `IF`'s clauses left to right: `flowcmp` compares one node per clause.)
   `escape=False` needs the foes named: `fight(hunter, escape=False)`),
   `recruit(species, prosperity=)` (the flag `recruited(species)` tests), `unrecruit(species)` (clears it),
   `send_to_city(line=, ...)` (the departure scene), `recruitable(npc, line=)`, `walk`, `face`, `play(anim)`, `wait`,
-  `camera.on`, `sound(bank, n)` (`sound.jingle()` for 8, 11), `warp(screen, entry=)`, `leave`, `spawn`,
+  `camera.on`, `sound(bank, n)` (`sound.jingle()` for 8, 11, the jingle on regions 0, 4 and 11 only), `warp(screen, entry=)`, `leave`, `spawn`,
   `spawn_item(item, at=(x, z))` (an item on the ground, picked up in passing; world units like every position),
   `objects[n].show()/hide()/animate(k)`, `spawn_chest(item, at=(x, z), opened=a_flag)` (in `on_enter`; the flag is set when
   the chest is taken and keeps it open; `facing=` 0, 1024, 2048 or 3072), `shop(Item.A, Item.B)` (in `on_talk`: the NPC

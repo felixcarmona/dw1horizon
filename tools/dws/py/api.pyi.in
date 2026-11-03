@@ -219,7 +219,9 @@ def unrecruit(species: 'Species') -> None:
     """Clears the species' recruit flag (`recruited(species)` becomes false); the city's prosperity is not touched."""
 def send_to_city(*, line: Page, species: 'Species | None' = None, sound: tuple[int, int] = (8, 11), prosperity: int = 1,
                  camera: bool = True) -> None:
-    """The NPC being talked to leaves for File City: gone, a jingle, `line` by the narrator, it joins the city."""
+    """The NPC being talked to leaves for File City: gone, a jingle, `line` by the narrator, it joins the city. Without
+    `sound=` the jingle is the one of the screen's map sound region (bank 8 holds the region's effects and numbers it its
+    own way: story/core/audio.json); walk it off first (`walk_away(x, z)`), as the game's recruits leave."""
 def walk_away(x: int, z: int, *, looks: int = 3, pause: int = 1000) -> None:
     """The NPC being talked to runs off to (x, z); the tamer and partner glance after it `looks` times, `pause` ms apart."""
 def walk(x: int, z: int, *, camera: bool = False, wait: bool = True) -> None:
@@ -234,7 +236,9 @@ def leave() -> None: """The NPC being talked to is gone from the screen."""
 def wait(ms: int) -> None: """Wait `ms` milliseconds, in steps of 50 (the game counts 20 ticks a second). Every time is in ms."""
 class _Sound:
     def __call__(self, bank: int, n: int) -> None: """A sound effect by bank and number: `sound(8, 2)`."""
-    def jingle(self) -> None: """The short jingle of a Digimon leaving for File City (bank 8, sound 11; also played at other happy moments)."""
+    def jingle(self) -> None:
+        """Sound 11 of bank 8: the jingle of a Digimon leaving for File City on the screens of map sound regions 0, 4 and 11
+        (bank 8 holds the region's effects; elsewhere 11 is another sound: send_to_city plays the region's own jingle)."""
 sound: _Sound
 def music(n: int) -> None:
     """Change the background music to track `n` (the number the game's scripts use; the tracks have no names here yet:
