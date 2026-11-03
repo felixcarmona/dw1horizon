@@ -1,10 +1,13 @@
-# Ogre Fortress 45, the gate yard (the brief's 130 reads no NPC list): Kotemon trains alone. A fight at the fortress's
-# strength, with no running away. Its home is the Arena lobby (city/arena-lobby.py).
+# Ogre Fortress 45, the gate yard (the brief's 130 reads no NPC list): Kotemon trains alone once the fortress has fallen. A fight at
+# the fortress's strength, with no running away. Its home is the Arena lobby (city/arena-lobby.py).
+# Only after ogre_fortress_cleared: until then the screen is the Gabumon ambush (MAPHEAD 45 places the three Gabumon only while
+# the fortress stands), and Kotemon's 87 KB model next to three Gabumon left 38 KB of heap with a big partner, and a fourth
+# Digimon the battle start has to send away. The two never load together.
 from dw import *
 
 yard = screen(Screen.ogre_fortress_45)
 kotemon = yard.npc(Species.Kotemon, at=(1000, 850), hp=1200, mp=1600, offense=400, defense=210, speed=120, brain=120, bits=300,
-                   range=0, still=True, when=not recruited(Species.Kotemon))
+                   range=0, still=True, when=ogre_fortress_cleared and not recruited(Species.Kotemon))
 
 
 @kotemon.on_talk

@@ -18,7 +18,7 @@ more model, so Hawkmon, Pumpkinmon and Triceramon moved too.
 | `hawkmon.py` | Hawkmon | Great Canyon Entrance 36 | A yes to the lookout question. |
 | `kiwimon.py` | Kiwimon | Gear Savanna 78 | Gives up a Meat. |
 | `knightmon.py` | Knightmon | Mt. Infinity 222 | The hardest fight. |
-| `kotemon.py` | Kotemon | Ogre Fortress 45 | Fight, no escape. |
+| `kotemon.py` | Kotemon | Ogre Fortress 45 | Fight, no escape; only once the fortress has fallen. |
 | `mammothmon.py` | Mammothmon | Freezeland 94 | End-game fight. |
 | `mushroomon.py` | Mushroomon | Mt. Panorama Spore Area 21 | Fight. |
 | `phantomon.py` | Phantomon | Grey Lord's Mansion 56 | Fight, from 20:00. |
