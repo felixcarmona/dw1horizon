@@ -579,9 +579,9 @@
       "source": "build/batch12/Knightmon.MMD",
       "source_sha256": "f0ebeddc73b3d6172133df19a592ce2fac74a58d4b850b041124acd3041ba6b8",
       "bones": 27,
-      "scale": 1.387076681852601,
+      "scale": 1.10225012237732,
       "target": "build/sizes-out/models/Knightmon.MMD",
-      "sha256": "5f4f01fe45d19834aef49f9835ec65fe1186136c78fe2d3529eaf257ec762861"
+      "sha256": "c77cd9402a61751148e31aad6180c9c307710a0c20cad51cbb4e7d66eb4ab313"
     },
     {
       "source": "build/batch12/Kyukimon.MMD",
