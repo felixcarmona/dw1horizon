@@ -12,7 +12,7 @@ Supply one supported release of each of the four games.
 | Digimon World (Germany) | SLES-03434 | Yes |
 | Digimon World (Spain) | SLES-03436 | Yes |
 | Digimon World (Italy) | SLES-03437 | Yes |
-| DigimonWorld (Japan) | SLPS-01797 | No |
+| DigimonWorld (Japan) (first pressing) | SLPS-01797 | No |
 | DigimonWorld (Japan) (Rev 1) | SLPS-01797 | Yes |
 | Digimon Digital Card Battle (USA) | SLUS-01328 | Yes |
 | Digimon World 2 (USA) | SLUS-01193 | Yes |
@@ -23,5 +23,8 @@ Supply one supported release of each of the four games.
 | Digimon World 3 (USA) | SLUS-01436 | No |
 | DigimonWorld 3: Aratanaru Bouken no Tobira (Japan) | SLPS-03446 | Yes |
 
-USA World 3 is excluded: its historical normalization recipe contains literal PAL game bytes.
-Use European World 2003 or Japanese World 3 instead.
+What the patchers say for a release they recognise but cannot use (`unsupported()`; the reasons are in
+[patcher.md](../patcher.md)):
+
+- DigimonWorld (Japan) (first pressing) (SLPS-01797): DigimonWorld (Japan) (first pressing) isn't supported yet. Use Digimon World (USA), Digimon World (Europe), Digimon World (France), Digimon World (Germany), Digimon World (Spain), Digimon World (Italy) or DigimonWorld (Japan) (Rev 1) instead. Support is coming in a future version.
+- Digimon World 3 (USA) (SLUS-01436): Digimon World 3 (USA) isn't supported yet. Use Digimon World 2003 (Europe) or DigimonWorld 3: Aratanaru Bouken no Tobira (Japan) instead. Support is coming in a future version.

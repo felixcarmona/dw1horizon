@@ -467,8 +467,11 @@ class App:
         if 'game_release' in params:
             g, rid = params.pop('game_release')
             params['game'] = f'{desktop.GAME_NAMES[g]} ({self.t("release." + rid)})'
+        if isinstance(params.get('instead'), list):
+            names = params['instead']
+            params['instead'] = names[0] if len(names) == 1 else f'{", ".join(names[:-1])} {self.t("why.or")} {names[-1]}'
         text = self.t(e.key, **params)
-        if e.game and e.key.startswith('why.'):
+        if e.game and e.key.startswith('why.') and e.key not in ('why.notYet', 'why.useInstead'):
             text += '\n' + self.t('works.' + e.game)
         return text
 

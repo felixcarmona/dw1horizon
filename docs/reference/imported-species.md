@@ -89,7 +89,7 @@ bytes ([../patcher.md](../patcher.md); the discs are identified by `tools/discs.
 |---|---|---|
 | `tools/dcbrelease.py` | DCB USA | Europe: every F.DRV model byte-identical; Japan (*Digital Card Arena*): every recipe model identical. The PAK records are unpacked by a plain-Python port of the game's own routine, proven equal to it, so no executable is run |
 | `tools/dw2release.py` | DW2 USA | Japan: every recipe file identical (checksums only) |
-| `tools/dw3release.py` | DW2003 PAL | Japan: recipe files checked by checksum. US World 3 normalization is excluded from the published recipes because it would carry PAL game bytes; use a supported World 2003 disc. |
+| `tools/dw3release.py` | DW2003 PAL | Japan: recipe files checked by checksum. US World 3 is not supported: 7 shipped species have other meshes or animations on that disc, and rebuilding the PAL models from it would mean shipping PAL bytes ([patcher.md](../patcher.md)). Use World 2003 Europe or World 3 Japan. |
 
 `make RELEASE` writes a release's list (SHA-1 of each recipe file), `check RELEASE` verifies a disc against it.
 

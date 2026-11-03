@@ -71,9 +71,9 @@ DW1_RELEASES = [
     # FILE_OFFSET_TABLE bytes pointing at them and the localized files and their copies; tested in an emulator,
     # JAPANESE CONTROLS on by default, patch 0241). The first pressing differs further (5 models, the effects file,
     # 11 maps), so it is recognised but not a base (basedisc.py).
-    dict(game='us', id='dw1-jp', title='DigimonWorld (Japan)', serial='SLPS-01797', boot='SLPS_017.97',
+    dict(game='us', id='dw1-jp', title='DigimonWorld (Japan) (first pressing)', serial='SLPS-01797', boot='SLPS_017.97',
          redump='http://redump.org/disc/55488/', size=381160416, crc32='e93fd3d3',
-         sha1='abd99d1b09abe18d0ae3668d2f5087ef8e6e2960', supported=False),
+         sha1='abd99d1b09abe18d0ae3668d2f5087ef8e6e2960', supported=False, soon=True),
     dict(game='us', id='dw1-jp1', title='DigimonWorld (Japan) (Rev 1)', serial='SLPS-01797', boot='SLPS_017.97',
          redump='http://redump.org/disc/37502/', size=381162768, crc32='8dcabdbf',
          sha1='1d10389deee8c9849136623785c256071f2f9473', supported=True),
@@ -143,15 +143,71 @@ SOURCE_VARIANTS = [
     dict(game='dw2', id='dw2-jp', title='DigimonWorld 2 (Japan)', serial='SLPS-02844', boot='SLPS_028.44',
          redump='http://redump.org/disc/14276/', size=508918704, crc32='28e75fd5',
          sha1='d50dd1a95228deb4d928ed88b3f1386af1c0e64b', supported=True),   # recipe files as USA's (dw2release.py)
-    # USA World 3 needs literal PAL model data in its historical normalization recipe.
-    # Keep it identifiable but unsupported on the publication build path.
+    # USA World 3 is recognised but not supported. 15 of the 57 recipe models differ from the PAL files. For 7
+    # (BK-KingNumemon, Bulbmon, Minotarumon, Monmon, Mummymon, Pharaohmon, Suijinmon) the converter does not read what
+    # differs: their imports come out with the pinned SHA-256 from the USA files as they are (2026-11-03). The other 8
+    # are different models (other meshes, animation keys, bone order); 7 are shipped species (Antylamon, Chrysalimon,
+    # Ebidramon, Growlmon, Kyubimon, MaloMyotismon, Renamon; Galacticmon is not). Their PAL sections are nowhere on
+    # the USA disc, so the pinned models can only be made from it by shipping PAL bytes, which we do not. Supporting
+    # it means USA imports of their own for those 7, our edit deltas carried over to them, and a second set of output
+    # checksums per base (docs/patcher.md).
     dict(game='dw2003', id='dw3-us', title='Digimon World 3 (USA)', serial='SLUS-01436', boot='SLUS_014.36',
          redump='http://redump.org/disc/632/', size=647526768, crc32='e3d73a16',
-         sha1='f0b022f9be53cbce14640abd8f01beaadcb35208', supported=False),
+         sha1='f0b022f9be53cbce14640abd8f01beaadcb35208', supported=False, soon=True),
     dict(game='dw2003', id='dw3-jp', title='DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)', serial='SLPS-03446',
          boot='SLPS_034.46', redump='http://redump.org/disc/19096/', size=690951744, crc32='b46f4f43',
          sha1='8594fb44f601da64087a8996ffd89ab26abb11ea', supported=True),   # recipe models as PAL's (dw3release.py)
 ]
+# Releases the patchers recognise but cannot use, and what they say: "<title> isn't supported yet. Use <instead>
+# instead. Support is coming in a future version." The list is every entry above with supported=False (soon=True: its
+# support is planned, the message promises it), plus the reprints with no dump; the alternatives are the supported
+# releases of the same slot. When a release becomes supported its message goes away by itself.
+NO_DUMP = [dict(game='us', id='jp-best', title='DigimonWorld (Japan, PlayStation the Best)', serial='SLPS-91712',
+                boot='SLPS_917.12')]
+
+
+def instead(release):
+    """Titles of the supported releases that can be used instead of `release` (one of its game's slot)."""
+    game = release['game']
+    if game == 'us':
+        pool = [DISCS[0]] + DW1_RELEASES
+    else:
+        pool = [d for d in SOURCE_DISCS if d['id'] == game] + [v for v in SOURCE_VARIANTS if v['game'] == game]
+    return [d['title'] for d in pool if d.get('supported', True)]
+
+
+def unsupported():
+    """The recognised releases no patcher accepts, each with 'instead' (titles) and 'soon'."""
+    return [dict(d, instead=instead(d), soon=bool(d.get('soon')))
+            for d in DW1_RELEASES + SOURCE_VARIANTS + NO_DUMP if not d.get('supported', True)]
+
+
+def or_list(items):
+    return items[0] if len(items) == 1 else ', '.join(items[:-1]) + ' or ' + items[-1]
+
+
+def notice(release):
+    """The English message for an unsupported release (the web and desktop patchers say it in every language:
+    why.notYet / why.useInstead)."""
+    text = f"{release['title']} isn't supported yet. " if release.get('soon') else f"{release['title']} can't be used. "
+    text += f"Use {or_list(instead(release))} instead."
+    return text + (' Support is coming in a future version.' if release.get('soon') else '')
+
+
+def unsupported_match(boot, size=None, sha1=None):
+    """The unsupported release a disc is, by its boot file and, where releases share one, its size or SHA-1; None
+    when it is not one (or could be a supported one)."""
+    same = [d for d in DW1_RELEASES + SOURCE_VARIANTS + NO_DUMP + [DISCS[0]] + SOURCE_DISCS if d.get('boot') == boot]
+    if sha1:
+        hit = [d for d in same if d.get('sha1') == sha1]
+        same = hit or same
+    if size is not None and len(same) > 1:
+        same = [d for d in same if d.get('size') == size] or same
+    if same and all(not d.get('supported', True) for d in same):
+        return same[0]
+    return None
+
+
 BOOT = ('SLUS_010.32', 'SLPS_017.97')
 KEY_FILES = BOOT + ('SCN/DG.SCN', 'SCN/MAPHEAD.SCN')
 
@@ -310,13 +366,14 @@ def web_json(out, recipe_path=None):
         'discs': [dict(pick(us, 'id', 'title', 'serial', 'redump', 'size', 'crc32', 'sha1'), boot='SLUS_010.32')]
                  + [dict(pick(d, 'id', 'title', 'serial', 'boot', 'redump', 'size', 'crc32', 'sha1'), species=counts[d['id']])
                     for d in SOURCE_DISCS],
-        'variants': SOURCE_VARIANTS + DW1_RELEASES,
+        'variants': [dict(d, instead=instead(d)) if not d.get('supported', True) else d
+                     for d in SOURCE_VARIANTS + DW1_RELEASES],
         'files': release_files(),
         'other': [dict(pick(d, 'id', 'title', 'serial', 'size', 'sha1'), boot=d['serial'].replace('-', '_')[:8] + '.'
                        + d['serial'][-2:]) for d in DISCS if d['id'] != 'us']
                  # versions with no registered dump: recognised by their boot file only
-                 + [dict(id='jp-best', title='DigimonWorld (Japan, PlayStation the Best)', serial='SLPS-91712',
-                         boot='SLPS_917.12')],
+                 + [dict(pick(d, 'id', 'title', 'serial', 'boot'), supported=False, instead=instead(d))
+                    for d in NO_DUMP],
         'languages': release_languages(recipe_path),
     }
     os.makedirs(os.path.dirname(out) or '.', exist_ok=True)
@@ -333,8 +390,10 @@ def source_matrix():
             '| Game / release | Serial | Supported |', '|---|---|---|']
     for d in [DISCS[0], *DW1_RELEASES, *SOURCE_DISCS, *SOURCE_VARIANTS]:
         rows.append(f"| {d['title']} | {d['serial']} | {'Yes' if d.get('supported', True) else 'No'} |")
-    rows += ['', 'USA World 3 is excluded: its historical normalization recipe contains literal PAL game bytes.',
-             'Use European World 2003 or Japanese World 3 instead.', '']
+    rows += ['', 'What the patchers say for a release they recognise but cannot use (`unsupported()`; the reasons are in',
+             '[patcher.md](../patcher.md)):', '']
+    rows += [f"- {d['title']} ({d['serial']}): {notice(d)}" for d in unsupported()]
+    rows.append('')
     return '\n'.join(rows)
 
 

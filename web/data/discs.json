@@ -91,7 +91,12 @@
    "size": 647526768,
    "crc32": "e3d73a16",
    "sha1": "f0b022f9be53cbce14640abd8f01beaadcb35208",
-   "supported": false
+   "supported": false,
+   "soon": true,
+   "instead": [
+    "Digimon World 2003 (Europe)",
+    "DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)"
+   ]
   },
   {
    "game": "dw2003",
@@ -168,14 +173,24 @@
   {
    "game": "us",
    "id": "dw1-jp",
-   "title": "DigimonWorld (Japan)",
+   "title": "DigimonWorld (Japan) (first pressing)",
    "serial": "SLPS-01797",
    "boot": "SLPS_017.97",
    "redump": "http://redump.org/disc/55488/",
    "size": 381160416,
    "crc32": "e93fd3d3",
    "sha1": "abd99d1b09abe18d0ae3668d2f5087ef8e6e2960",
-   "supported": false
+   "supported": false,
+   "soon": true,
+   "instead": [
+    "Digimon World (USA)",
+    "Digimon World (Europe)",
+    "Digimon World (France)",
+    "Digimon World (Germany)",
+    "Digimon World (Spain)",
+    "Digimon World (Italy)",
+    "DigimonWorld (Japan) (Rev 1)"
+   ]
   },
   {
    "game": "us",
@@ -1276,7 +1291,17 @@
    "id": "jp-best",
    "title": "DigimonWorld (Japan, PlayStation the Best)",
    "serial": "SLPS-91712",
-   "boot": "SLPS_917.12"
+   "boot": "SLPS_917.12",
+   "supported": false,
+   "instead": [
+    "Digimon World (USA)",
+    "Digimon World (Europe)",
+    "Digimon World (France)",
+    "Digimon World (Germany)",
+    "Digimon World (Spain)",
+    "Digimon World (Italy)",
+    "DigimonWorld (Japan) (Rev 1)"
+   ]
   }
  ],
  "languages": [
