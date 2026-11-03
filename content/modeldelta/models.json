@@ -1009,9 +1009,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/215-Magnadramon.MMD.mdelta",
-        "delta_sha256": "6f90095748d96047aebb64556d62d2d799441377963e9a6637663aedbe03fa75",
-        "sha256": "27704f4248b35285e71c23bdf54d12cfe15a988bf8c17eab070f182aa7de1add",
-        "size": 93236
+        "delta_sha256": "84644737d4e06cba0a586bf19ed634765a3ae9f750d39d001b365543e82d6545",
+        "sha256": "d82681caa461bdd4074be20b48e11a855e1529b340f8c1004155cd8444c66ba9",
+        "size": 93032
       },
       "tim": {
         "sources": [
