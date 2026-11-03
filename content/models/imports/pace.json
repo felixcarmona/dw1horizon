@@ -1095,7 +1095,7 @@
   "skeleton_sha256": "f3939397c46dfe31ba957af2274f0f60cc5fc429e63c3657240828589c38f6ed",
   "source_sha256": "2b77a30040762b109ed6c079bfe33a055df6feed6afa91fca312cd2946ed0c70",
   "base_generator": "tools.models.field_animations.nefertimon",
-  "post_source_sha256": "9212a363db156eb202c954fbe88ce7e077c6ec51993ca640b8c71b5eb45320b4",
+  "post_source_sha256": "a37e7a075f3cd2f32838ed27a1ab83c65b07687891f1122c23468f18acb95725",
   "slots": {
    "3": {
     "from": 2,

@@ -42,23 +42,23 @@ DEG = 4096 / 360
 # (upper, lower, paw, side (+1 right), front)
 LEGS = {'RF': (4, 5, 6, 1, True), 'LF': (7, 8, 9, -1, True), 'RH': (11, 12, 13, 1, False), 'LH': (14, 15, 16, -1, False)}
 MIRROR = {'LF': 'RF', 'LH': 'RH'}
-POLE = {True: [0.6, -0.4, 1], False: [0.7, 0.7, -1]}   # elbow / knee side of the shoulder-paw line (y down, z back)
+POLE = {True: [0.6, -0.4, 1], False: [0.3, 0.3, -1]}   # elbow / knee side of the shoulder-paw line (y down, z back)
 
 # One row per field clip: cycle ticks, speed (units per tick), the touchdown phase and duty factor of each leg,
 # paw lift, body bob and pitch, how far the heel peels, and the paw's curl in swing.
 GAITS = {
     4: dict(name='run', ticks=15, speed=41,
             touchdown={'LH': 0.0, 'RH': 0.1, 'RF': 0.42, 'LF': 0.54},
-            duty={'LH': 0.27, 'RH': 0.27, 'RF': 0.28, 'LF': 0.28},
-            lift={'front': 42, 'hind': 38}, curl={'front': 45, 'hind': 50}, peel={'front': 40, 'hind': 30},
-            reach={'front': 0, 'hind': 8}, height=62, chest_up=6, bob=9, pitch=6, flex=8, slip=0.18, head=0.6,
-            wing=10, tail=9),
+            duty={'LH': 0.36, 'RH': 0.36, 'RF': 0.36, 'LF': 0.36},
+            lift={'front': 40, 'hind': 34}, curl={'front': 45, 'hind': 50}, peel={'front': 40, 'hind': 40},
+            reach={'front': 5, 'hind': 45}, out={'front': 55, 'hind': 10}, snap=True,
+            height=28, tilt=0, chest_up=-4, neck=6, bob=8, pitch=6, flex=8, slip=0.1, head=0.6, wing=10, tail=9),
     2: dict(name='walk', ticks=16, speed=18,
             touchdown={'LH': 0.0, 'LF': 0.25, 'RH': 0.5, 'RF': 0.75},
-            duty={'LH': 0.6, 'RH': 0.6, 'RF': 0.62, 'LF': 0.62},
-            lift={'front': 34, 'hind': 26}, curl={'front': 35, 'hind': 35}, peel={'front': 30, 'hind': 12},
-            reach={'front': 0, 'hind': -12}, height=56, chest_up=6, bob=2.5, pitch=1.2, flex=1.5, slip=0.15, head=0.5,
-            wing=2, tail=5),
+            duty={'LH': 0.62, 'RH': 0.62, 'RF': 0.62, 'LF': 0.62},
+            lift={'front': 30, 'hind': 32}, curl={'front': 35, 'hind': 30}, peel={'front': 30, 'hind': 20},
+            reach={'front': 5, 'hind': 30}, out={'front': 30, 'hind': 5}, snap=False,
+            height=22, tilt=0, chest_up=-2, neck=4, bob=2.5, pitch=1.2, flex=1.5, slip=0.1, head=0.5, wing=2, tail=5),
 }
 
 
@@ -203,10 +203,14 @@ class Rig:
         h = math.sqrt(max(0.0, la * la - along * along))
         elbow = add(shoulder, add(scale(unit(d), along), scale(pole, h)))
         wr = add(shoulder, d)
-        n0 = cross(sub(e0, shoulder), sub(w0, e0))
-        n1 = cross(sub(elbow, shoulder), sub(wr, elbow))
-        ru = mul(mul(frame(sub(elbow, shoulder), n1), tr(frame(sub(e0, shoulder), n0))), ru0)
-        rl = mul(mul(frame(sub(wr, elbow), n1), tr(frame(sub(w0, e0), n0))), rl0)
+        if front:   # the gauntlet keeps its roll in the bend plane
+            n0 = cross(sub(e0, shoulder), sub(w0, e0))
+            n1 = cross(sub(elbow, shoulder), sub(wr, elbow))
+            ru = mul(mul(frame(sub(elbow, shoulder), n1), tr(frame(sub(e0, shoulder), n0))), ru0)
+            rl = mul(mul(frame(sub(wr, elbow), n1), tr(frame(sub(w0, e0), n0))), rl0)
+        else:       # the hind leg only swings from its reference: no twist about the thigh or the shin
+            ru = mul(turn_to(sub(e0, shoulder), sub(elbow, shoulder)), ru0)
+            rl = mul(turn_to(mv(mul(ru, ref[1]), b), sub(wr, elbow)), mul(ru, ref[1]))
         set_rot(pose, up, mul(tr(parent), ru), hist)
         set_rot(pose, lo, mul(tr(ru), rl), hist)
         return rl, dist - reach
@@ -222,6 +226,16 @@ def pitch_of(m):
     return math.degrees(math.atan2(fwd[1], -fwd[2]))
 
 
+def turn_to(a, b):
+    """Shortest rotation taking direction a to direction b."""
+    a, b = unit(a), unit(b)
+    v = cross(a, b)
+    c = dot(a, b)
+    k = [[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]]
+    kk = mul(k, k)
+    return [[(1 if i == j else 0) + k[i][j] + kk[i][j] / (1 + c) for j in range(3)] for i in range(3)]
+
+
 def set_rot(pose, b, m, hist):
     angle = mmd.matrix_euler(m, hist.get(b))
     hist[b] = angle
@@ -231,6 +245,7 @@ def set_rot(pose, b, m, hist):
 # ------------------------------------------------------------------ walk and run
 SOLE = {True: [0, 44, -70], False: [0, 43, -62]}     # the point of the sole a paw rolls about (paw bone space)
 REACH = {True: -62, False: -30}   # the sole pivot's place ahead of the shoulder / hip at mid-stance
+FOLD = {True: 60, False: 70}   # closest a swinging wrist / hock comes to its shoulder / hip
 CLEAR = 1.5              # a standing sole is held this high: a paw rolling on its toes dips between ticks
 HIND_TOE = 35            # the hind foot stands on its toes, heel up (degrees), like a cat's
 GAUNTLET = (-28, 100)    # how far a front paw may bend from its forearm (from the idle's bend) and stay seated
@@ -288,11 +303,11 @@ def body(rig, cfg, phase, pose, hist):
         roll = 2.0 * math.sin(2 * math.pi * (phase - 0.05))
         yaw = 2.5 * math.sin(2 * math.pi * (phase - 0.3))
     pose[PELVIS][7] = rest[PELVIS][7] - cfg['height'] - bob
-    set_rot(pose, PELVIS, rot([rest[PELVIS][3] / DEG + pitch - flex, yaw, roll]), hist)
+    set_rot(pose, PELVIS, rot([rest[PELVIS][3] / DEG + cfg['tilt'] + pitch - flex, yaw, roll]), hist)
     base = mmd.rot_matrix(*rest[CHEST][3:6])
     set_rot(pose, CHEST, mul(base, rot([2 * flex - cfg['chest_up'], -yaw * 1.4, -roll * 0.6])), hist)
     head = cfg['head']   # the head keeps most of its gaze while the chest pitches
-    pose[NECK][3] = rest[NECK][3] - round(head * 0.5 * (pitch + flex) * DEG)
+    pose[NECK][3] = rest[NECK][3] - round((head * 0.5 * (pitch + flex) - cfg['neck']) * DEG)
     pose[HEAD][3] = rest[HEAD][3] - round(head * 0.5 * (pitch + flex) * DEG + (1.5 if run else 1) * wave(phase, 0.1, 2) * DEG)
     pose[HEAD][4] = rest[HEAD][4] + round(yaw * 0.8 * DEG)
     for b, sign in zip(WINGS, (1, -1)):
@@ -342,6 +357,15 @@ def gait(rig, cfg):
         pose[PELVIS][7] += drop
         return pose
 
+    def folded(pose, name, wrist):
+        """A swinging wrist (hock) kept FOLD away from its shoulder (hip): a leg folded tighter than that flips its
+        knee over."""
+        W = rig.world(pose)
+        root = [W[LEGS[name][0]][i][3] for i in range(3)]
+        d = sub(wrist, root)
+        least = FOLD[LEGS[name][4]]
+        return wrist if norm(d) >= least else add(root, scale(unit(d), least))
+
     def place(t, drop, hist):
         """The pose of tick t with the body lowered by drop; how far a standing leg stays out of reach.
         A swinging wrist (hock) flies on an arc from where the paw lifted to where it lands, the paw curling under the
@@ -359,13 +383,14 @@ def gait(rig, cfg):
             base = 0 if front else HIND_TOE
             lift_off = standing(rig, name, tracks[name], centres[name] + stride / 2, rot([base + cfg['peel'][key], 0, 0]))
             landing = standing(rig, name, tracks[name], centres[name] - stride / 2, rot([base, 0, 0]))
-            k = minimum_jerk(s)
+            k = minimum_jerk(s) if cfg['snap'] else smooth(s)
             flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
+            flight[2] -= cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
             flight[1] -= cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
             pitch, curl, follow = swing_paw(cfg, name, s)
             world = rot([pitch, 0, 0])
             for _ in range(4):  # the paw hangs from its forearm, curled; it never brushes the floor
-                wrist = [flight[0], min(flight[1], -CLEAR - rig.lowest(paw, world, [0, 0, 0])), flight[2]]
+                wrist = folded(pose, name, [flight[0], min(flight[1], -CLEAR - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
                 forearm, _ = rig.solve(pose, name, wrist, hist)
                 target = rot([pitch, 0, 0])
                 if follow > 0:
@@ -380,7 +405,7 @@ def gait(rig, cfg):
                 world = target
                 if settled:
                     break
-            wrist = [flight[0], min(flight[1], -CLEAR - rig.lowest(paw, world, [0, 0, 0])), flight[2]]
+            wrist = folded(pose, name, [flight[0], min(flight[1], -CLEAR - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
             forearm, _ = rig.solve(pose, name, wrist, hist)
             set_rot(pose, paw, mul(tr(forearm), world), hist)
         return pose, short
@@ -414,12 +439,14 @@ def gait(rig, cfg):
 # ------------------------------------------------------------------ idle
 IDLE_LIFT = dict(leg='LF', start=0.42, end=0.66, height=14, curl=30, back=6)   # one forepaw lifted and set again
 IDLE_SHIFT = dict(sway=3, roll=1.5)
+IDLE_RAISE = 7    # the idle stands this much higher than the imported crouch, to meet the walk and run
 IDLE_BEND = 60     # the most a lifted forepaw curls from its standing bend
 
 
 def idle(rig):
-    """The imported idle with its forelegs standing: each wrist stays where tick 0 has it (the left paw lifted and set
-    down once), the elbows following the breathing body; the weight drifts a little towards the standing paw."""
+    """The imported idle, its body raised a little, with its legs standing: each fore wrist stays where tick 0 has it
+    (the left paw lifted and set down once), the hind paws where the imported idle puts them, the elbows and knees
+    following the breathing body; the weight drifts a little towards the standing paw."""
     source = rig.idle
     ticks = len(source) - 1
     still = [list(v) for v in source[0]]
@@ -438,6 +465,21 @@ def idle(rig):
         # weight towards the right paw while the left one is up, a slow drift otherwise
         pose[PELVIS][6] += round(IDLE_SHIFT['sway'] * (math.sin(2 * math.pi * phase) * 0.4 + up))
         pose[CHEST][5] += round(IDLE_SHIFT['roll'] * (math.sin(2 * math.pi * (phase - 0.1)) * 0.4 + up) * DEG)
+        # the hind paws stand where the imported idle has them, under a body raised a little towards the walk
+        donor = [list(v) for v in source[t]]
+        donor[0] = [4096, 4096, 4096] + donor[0][3:6] + [0, 0, 0]
+        Wd = rig.world(donor)
+        pose[PELVIS][7] -= IDLE_RAISE
+        for name in ('RH', 'LH'):
+            upper, lower, paw = LEGS[name][:3]
+            cur = [list(v) for v in pose]
+            cur[0] = donor[0]
+            W = rig.world(cur)
+            knee = sub([W[lower][i][3] for i in range(3)], [W[upper][i][3] for i in range(3)])
+            hock, out = rig.solve(pose, name, [Wd[paw][i][3] for i in range(3)], hist, pole=knee,
+                                  ref=[mmd.rot_matrix(*source[t][b][3:6]) for b in (upper, lower, paw)])
+            set_rot(pose, paw, mul(tr(hock), [r[:3] for r in Wd[paw][:3]]), hist)
+            worst['stretch'] = max(worst['stretch'], out)
         cur = [list(v) for v in pose]
         cur[0] = [4096, 4096, 4096] + cur[0][3:6] + [0, 0, 0]
         W = rig.world(cur)
