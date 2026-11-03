@@ -1,5 +1,5 @@
 // Actual Pyodide model replay (standard library only); no imported oracle reads or external Python packages.
-// node web/test/imports.mjs EXTRACTED_GAMES [SPECIES_ID ...] (default: all 175)
+// node web/test/imports.mjs EXTRACTED_GAMES [SPECIES_ID ...] (default: all 175 and the hand-made babies)
 import { loadPyodide } from '../../build/pyodide-314.0.7/pyodide.mjs';
 import { lstatSync, readdirSync, readlinkSync, realpathSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -38,7 +38,8 @@ sys.addaudithook(forbid_oracle)
 runner.set_strict(True)
 crmath.install()
 records = json.load(open('/repo/content/modeldelta/models.json'))['models']
-ids = json.loads(SELECTED) or [r['id'] for r in records]
+builders = [int(t) for t, e in json.load(open('/repo/content/models/imports/models.json')).items() if e.get('builder')]
+ids = json.loads(SELECTED) or [r['id'] for r in records] + [t for t in builders if t not in {r['id'] for r in records}]
 for t in ids:
     work = f'/tmp/imported_models-import-test/{t}'
     with species_tools():

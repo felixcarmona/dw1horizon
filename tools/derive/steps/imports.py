@@ -1,4 +1,4 @@
-"""The player's source discs + plain deltas -> the 175 imported base models."""
+"""The player's source discs + plain deltas -> the 175 imported base models and the hand-made babies."""
 import contextlib
 import io
 import json
@@ -15,10 +15,15 @@ FACTS = False
 
 
 def ids(ctx):
+    """The 175 source-game imports, then the species whose registry entry names a builder of their own (the hand-made
+    babies: native DW1 donors and plain deltas, tools/models/babies)."""
     if 'imports' not in providers(ctx.env):
         return []
     with open(os.path.join(runner.ROOT, 'content/modeldelta/models.json')) as f:
-        return [r['id'] for r in json.load(f)['models']]
+        out = [r['id'] for r in json.load(f)['models']]
+    with open(os.path.join(runner.ROOT, 'content/models/imports/models.json')) as f:
+        out += [int(t) for t, e in json.load(f).items() if e.get('builder') and int(t) not in out]
+    return out
 
 
 def make_model(out, species):
