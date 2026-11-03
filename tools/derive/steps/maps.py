@@ -91,7 +91,7 @@ def step_units(ctx, step):
     out = []
     for e in entries(ctx, step):
         if 'check' in e:
-            if e['check'] != 'story-spawns':
+            if e['check'] not in ('story-spawns', 'pickups'):
                 raise runner.StepError(f'unknown map check: {e["check"]}')
             continue
         script = f'{mod}/{e["script"]}'
@@ -138,6 +138,12 @@ def finish_step(ctx, step):
             for source in entry.get('enforce_sources', []):
                 args += ['--enforce-source', f'{recipe(ctx)["mod"]}/{source}']
             ctx.run('tools/dws.py', args, env={'DWS_LOWERED': ctx.path('spawn-check-lowered')})
+        elif entry.get('check') == 'pickups' and not runner.strict():
+            # every item and chest of a new screen within comfortable reach; the collision and the spots are ours, the
+            # same on every disc, so the browser's build (strict) leaves it to the developer builds and the selftest
+            with open(os.path.join(ctx.root, RECIPE)) as file:
+                sources = json.load(file)['story']['sources']
+            ctx.run('tools/maps/check_pickups.py', ['--screens', mpath(ctx, 'screens'), *sources])
 
 
 

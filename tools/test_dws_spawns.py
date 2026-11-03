@@ -64,6 +64,24 @@ class Spawns(unittest.TestCase):
             self.assertEqual(args[args.index('--maps') + 1], str(Path(tmp + '-maps') / 'retouch'))
             self.assertIn('story/mods/MOD/early-game.py', args)
 
+    def test_pickup_check_runs_on_the_built_new_screens(self):
+        from tools.derive.steps import maps
+        root = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as tmp:
+            ctx = SimpleNamespace(root=str(root), out=tmp, run=Mock(),
+                                  path=lambda *parts: str(Path(tmp).joinpath(*parts)))
+            with patch.object(maps, 'step_outputs', return_value=[]), \
+                 patch.object(maps, 'entries', return_value=[dict(check='pickups')]), \
+                 patch.object(maps, 'recipe', return_value={'mod': 'story/mods/MOD'}):
+                self.assertEqual(maps.step_units(ctx, 'maps'), [])
+                maps.finish_step(ctx, 'maps')
+            script, args = ctx.run.call_args.args
+            self.assertEqual(script, 'tools/maps/check_pickups.py')
+            self.assertEqual(args[:2], ['--screens', str(Path(tmp + '-maps') / 'screens')])
+            self.assertIn('story/mods/what-the-island-forgot/early-game.py', args)
+        recipe = (root / 'tools/derive/recipes/everything.json').read_text()
+        self.assertIn('"check": "pickups"', recipe)
+
     def test_suggested_keyword_after_trailing_comma_is_valid_python(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'story.py'

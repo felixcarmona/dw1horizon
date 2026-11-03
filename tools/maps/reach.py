@@ -121,6 +121,75 @@ def trap_tiles(m, reached=None):
     return out
 
 
+def model_tile(x, z):
+    """map_collision.c getModelTile: the tile the engine says a position stands on (z = 0 is row 50, not 49)."""
+    return tdiv(x) + 50 - (1 if x < 0 else 0), 50 - tdiv(z) - (1 if z > 0 else 0)
+
+
+PICKUP_TILE_MIN = 50      # lattice points (10 units apart, 100 to a tile) the item's own tile must give the tamer
+PICKUP_WINDOW_MIN = 300   # ... and the whole 3x3 window: three tiles of standing room, not one spot
+CHEST_FRONT = {0: (0, 4), 2048: (0, -4), 1024: (-4, 0), 3072: (4, 0)}   # map_object.c spawnChest: the opening tile
+
+
+def walk_area(m):
+    """The positions a walk from the used arrivals visits; a screen entered only by a script (no used warp: the Drowned
+    Shore's ferry) seeds from every authored spawn coordinate instead."""
+    return reach(m) or from_spawn_coordinates(m)
+
+
+def pickup_room(m, tile, reached=None):
+    """(points on the tile, points in its 3x3 window): how much of where the tamer really walks picks up an item lying
+    on tile (tamer.c checkItemPickup and checkChestCollision: the tamer's tile within one of it, both ways)."""
+    if reached is None: reached = walk_area(m)
+    on = near = 0
+    for x, z in reached:
+        tx, tz = model_tile(x, z)
+        if abs(tx - tile[0]) <= 1 and abs(tz - tile[1]) <= 1:
+            near += 1; on += (tx, tz) == tuple(tile)
+    return on, near
+
+
+def with_chest(m, tile):
+    """The map as the engine has it once a chest stands on tile: spawnChest's setImpassableSquare(tile, 2) blocks the
+    4x4 tiles from tile - 2 to tile + 1."""
+    out = type('ChestMap', (), {})()
+    out.collision = list(m.collision); out.warps = m.warps
+    for tz in range(tile[1] - 2, tile[1] + 2):
+        for tx in range(tile[0] - 2, tile[0] + 2):
+            if 0 <= tx < 100 and 0 <= tz < 100: out.collision[tz * 100 + tx] = 0x80
+    return out
+
+
+def check_pickups(m, items=(), chests=()):
+    """A pickup the player has to hunt for, a pixel-perfect spot, is a failure. items: [(label, (tileX, tileY))] of
+    ground items (SPAWN_ITEM tiles); chests: [(label, (x, z), facing)] (SPAWN_CHEST position and rotation). An item
+    must lie on plain floor (0: not rock, not an exit or a trigger) and both its own tile and its 3x3 window must give
+    the walk from the arrivals room to stand (PICKUP_TILE_MIN, PICKUP_WINDOW_MIN); a chest's opening tile, four tiles
+    in front of it, the same with the chest's own block in the way. -> error strings."""
+    errors = []
+    reached = walk_area(m) if items else None
+    for label, tile in items:
+        tx, tz = tile
+        if not (0 <= tx < 100 and 0 <= tz < 100) or m.collision[tz * 100 + tx] != 0:
+            v = m.collision[tz * 100 + tx] if 0 <= tx < 100 and 0 <= tz < 100 else 'outside'
+            errors.append(f'{label}: item at tile {tx},{tz} lies on collision {v}, not plain floor'); continue
+        on, near = pickup_room(m, tile, reached)
+        if on < PICKUP_TILE_MIN or near < PICKUP_WINDOW_MIN:
+            errors.append(f'{label}: item at tile {tx},{tz} is picked up from {near} reachable points ({on} on its own '
+                          f'tile; at least {PICKUP_WINDOW_MIN} and {PICKUP_TILE_MIN})')
+    for label, (x, z), facing in chests:
+        if facing not in CHEST_FRONT:
+            errors.append(f'{label}: chest facing {facing} has no opening tile (0, 1024, 2048 or 3072)'); continue
+        tile = model_tile(x, z)
+        front = (tile[0] + CHEST_FRONT[facing][0], tile[1] + CHEST_FRONT[facing][1])
+        cm = with_chest(m, tile)
+        on, near = pickup_room(cm, front, walk_area(cm))
+        if near < PICKUP_WINDOW_MIN:
+            errors.append(f'{label}: chest at {x},{z} opens from tile {front[0]},{front[1]}: {near} reachable points '
+                          f'there (at least {PICKUP_WINDOW_MIN})')
+    return errors
+
+
 def check_recipe_arrivals(m, name='', traps=True):
     """Every used warp's spawn stands on a free tile and no tile within one step of it carries that warp's own exit
     value: an arrival on (or beside) its own exit tiles bounces straight back, and `reachable` cannot see it (it seeds

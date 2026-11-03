@@ -76,8 +76,10 @@ run heap-tables       $PY tools/test_heap_tables.py                      # compa
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
 run npc-route-mutations $PY tools/test_npc_routes.py
+run pickup-reach      $PY tools/maps/check_pickups.py --authored         # every item and chest of a new screen within comfortable reach
 if [ -d "${DERIVED}-maps/screens" ]; then
     run npc-routes-built $PY tools/check_npc_routes.py --maps "${DERIVED}-maps/screens"
+    run pickup-reach-built $PY tools/maps/check_pickups.py --screens "${DERIVED}-maps/screens"
 fi
 run npc-staging       $PY tools/test_npc_staging.py                     # actual model routes and transient allocation peaks
 run web-i18n node web/test/i18n.mjs
