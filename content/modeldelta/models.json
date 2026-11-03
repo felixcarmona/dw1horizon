@@ -2684,9 +2684,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/270-PrinceMamemon.MMD.mdelta",
-        "delta_sha256": "006f93e6692ab39908954740ea7faedf1a18b0e8602b6b0f206f398c172ef399",
-        "sha256": "6b58964b4c5152315d7377b16323a4dd1d680953a862546f93af97d404a00e3f",
-        "size": 94152
+        "delta_sha256": "1212f237c27538cac66be6839f85ca5b828e073f9f7a2c2bec0b94a5d63f56bb",
+        "sha256": "ef85002613f59fb79131065f3eb4779887415da4500ea636fbad2e9dfb159a35",
+        "size": 93728
       },
       "tim": {
         "sources": [
