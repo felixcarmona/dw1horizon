@@ -180,14 +180,20 @@ def pad_tables(tables):
 def regional_glyphs(executable, key, fontgen):
     """Read a regional font by its code table; absent characters use authored b.
 
-    Western/Japanese retail fonts use 992 codes and eleven packed row words,
-    with an implicit twelve-pixel advance. The USA font uses 79 explicit-width
-    records. Button code semantics differ: 817E is cross outside the USA.
-    No USA glyph, checksum or bitmap is needed for another region.
+    Western/Japanese retail fonts have a code table ended by a zero sentinel
+    (992 entries in Japan, 187 in the European releases), padded to four bytes
+    and followed by one glyph of eleven packed row words per entry, with no
+    width. Every glyph takes the USA advance from original-metrics.json, the
+    one the build measured all text with: a regional twelve-pixel advance
+    pushes every label past the box the build sized for it. The USA font uses
+    79 explicit-width records. Button code semantics differ: 817E is cross
+    outside the USA. No USA glyph, checksum or bitmap is needed for another
+    region.
     """
     import json
     from pathlib import Path
-    codes = json.loads(Path(fontgen.ORIGINAL_METRICS).read_text())['codes']
+    metrics = json.loads(Path(fontgen.ORIGINAL_METRICS).read_text())
+    codes, cells = metrics['codes'], metrics['cells']
     authored = fontgen.load_font_txt(fontgen.FONT_B)
     if key == 'us':
         code_data = struct.pack('<79H', *codes)
@@ -207,13 +213,16 @@ def regional_glyphs(executable, key, fontgen):
     offset = executable.find(signature)
     if offset < 0 or executable.find(signature, offset + 1) >= 0:
         raise ValueError('regional font code table is missing or ambiguous')
-    start = offset + 992 * 2
-    if start + 992 * 22 > len(executable):
-        raise ValueError('regional font glyph table is truncated')
+    if offset + 992 * 2 > len(executable):
+        raise ValueError('regional font code table is truncated')
     regional = struct.unpack_from('<992H', executable, offset)
-    # The final code is a mutable lookup sentinel, never a source glyph.
+    # The final code is a mutable lookup sentinel (zero on the disc), never a source glyph.
+    sentinel = regional.index(0) if 0 in regional else 991
+    start = offset + ((sentinel + 1) * 2 + 3) // 4 * 4
+    if start + (sentinel + 1) * 22 > len(executable):
+        raise ValueError('regional font glyph table is truncated')
     lookup = {}
-    for i, code in enumerate(regional[:-1]):
+    for i, code in enumerate(regional[:sentinel]):
         lookup.setdefault(code, i)
     out, missing = bytearray(), []
     for i, code in enumerate(codes):
@@ -221,18 +230,22 @@ def regional_glyphs(executable, key, fontgen):
         if source_code in lookup:
             pos = start + lookup[source_code] * 22
             out.extend(executable[pos:pos + 22])
-            out.extend(struct.pack('<H', 12))
         else:
             char = fontgen.code_char(code)
             if char == ' ':
-                width, rows = 4, ['.' * 12] * 11
+                rows = ['.' * 12] * 11
             elif char in authored:
-                width, rows = authored[char]
-                width = 12  # original mode places regional glyphs in full cells
+                rows = authored[char][1]
             else:
                 raise ValueError(f'no authored fallback for {code:04X}')
-            out.extend(struct.pack('<12H', *(fontgen.row_word(row) for row in rows), width))
+            out.extend(struct.pack('<11H', *(fontgen.row_word(row) for row in rows)))
             missing.append(i)
+        out.extend(struct.pack('<H', cells[i]))
+    # The digits read from the disc must be ten distinct inked glyphs: a misplaced glyph table gives accents or blanks.
+    digits = [bytes(out[i * 24:i * 24 + 22]) for i, code in enumerate(codes)
+              if 0x824f <= code <= 0x8258 and i not in missing]
+    if any(d == b'\xff' * 22 for d in digits) or len(set(digits)) != len(digits):
+        raise ValueError('regional font digits are blank or repeated: the glyph table is not where it was expected')
     return bytes(out), codes, dict(code_offset=offset, glyph_offset=start, missing=missing)
 
 

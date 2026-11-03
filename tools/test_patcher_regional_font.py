@@ -15,13 +15,16 @@ import fontcopy
 from tools import fontgen
 
 
-def fixture():
+def fixture(count=992):
+    """A Japanese-shaped font (992 entries); count=187 gives the European releases' shape."""
     codes = [0x8141, 0x8142, 0x8145, 0x8146, 0x8148, 0x8149, 0x8158, 0x815b]
-    # Deliberately different button glyphs; last entry is a mutable sentinel.
+    # Deliberately different button glyphs; last entry is a mutable sentinel (zero on the disc).
     codes += [0x817e, 0x81a2, 0x8260]
-    codes += [0] * (992 - len(codes))
-    rows = [struct.pack('<11H', *([0xffff ^ (i << 4)] * 11)) for i in range(992)]
-    return b'prefix' + struct.pack('<992H', *codes) + b''.join(rows)
+    codes += [0x8890 + i for i in range(count - 1 - len(codes))] + [0]
+    table = struct.pack(f'<{count}H', *codes)
+    table += bytes(-len(table) % 4)
+    rows = [struct.pack('<11H', *([0xffff ^ (i << 4)] * 11)) for i in range(count)]
+    return b'prefix' + table + b''.join(rows)
 
 
 def decode(tables, index):
@@ -57,6 +60,28 @@ class RegionalFontTests(unittest.TestCase):
         self.assertEqual(glyphs[index*24:index*24+22], struct.pack('<11H', *(fontgen.row_word(r) for r in rows)))
         self.assertIn(index, evidence['missing'])
         self.assertEqual(glyphs[codes.index(0x8140)*24:codes.index(0x8140)*24+24], b'\xff'*22+b'\x04\0')
+
+    def test_european_table_length_comes_from_its_sentinel(self):
+        # 187 codes and two bytes of padding: the glyphs start right after them, not 992 codes in.
+        raw = fixture(187)
+        glyphs, codes, evidence = fontcopy.regional_glyphs(raw, 'it', fontgen)
+        start = 6 + 187 * 2 + 2
+        self.assertEqual(evidence['glyph_offset'], start)
+        got = glyphs[codes.index(0x8260)*24:codes.index(0x8260)*24+22]
+        self.assertEqual(got, raw[start+10*22:start+11*22])
+
+    def test_every_glyph_keeps_the_usa_advance(self):
+        # The build measures and fits every text with these advances; a 12-pixel cell overflows the boxes.
+        cells = json.loads(Path(fontgen.ORIGINAL_METRICS).read_text())['cells']
+        for raw in (fixture(), fixture(187)):
+            glyphs, _, _ = fontcopy.regional_glyphs(raw, 'eu', fontgen)
+            self.assertEqual([struct.unpack_from('<H', glyphs, i*24+22)[0] for i in range(79)], cells)
+
+    def test_misplaced_digits_fail_closed(self):
+        codes = [0x8141, 0x8142, 0x8145, 0x8146, 0x8148, 0x8149, 0x8158, 0x815b, 0x824f, 0x8250, 0]
+        raw = b'prefix' + struct.pack('<11H', *codes) + bytes(2) + b'\xff' * 22 * 11 + bytes(2000)
+        with self.assertRaisesRegex(ValueError, 'digits'):
+            fontcopy.regional_glyphs(raw, 'eu', fontgen)
 
     def test_all_original_glyphs_roundtrip_through_native_decoder(self):
         raw = fixture()
