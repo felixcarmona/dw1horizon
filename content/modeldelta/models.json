@@ -4194,13 +4194,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Knightmon.MMD",
-            "sha256": "5f4f01fe45d19834aef49f9835ec65fe1186136c78fe2d3529eaf257ec762861",
+            "sha256": "c77cd9402a61751148e31aad6180c9c307710a0c20cad51cbb4e7d66eb4ab313",
             "size": 100348
           }
         ],
         "delta": "content/modeldelta/deltas/321-Knightmon.MMD.mdelta",
-        "delta_sha256": "b3d282486c89e3cbde31bed633a0ffa5942fb219c59f232710e9e7e6a5d989e9",
-        "sha256": "50c767106a6ab44b09722a0aa52d2465c5d404f1b267137312a3d7fa59d71973",
+        "delta_sha256": "5209d39d8f16ee9e59eeb49ebd708210013d177679e508cfa60e37e1c42ef118",
+        "sha256": "019b3e6643639935ead1a16a6dada99a7dd30d5bb2a217abd8ceb0b8723089b2",
         "size": 104404
       },
       "tim": {
