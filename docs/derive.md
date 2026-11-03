@@ -35,7 +35,7 @@ texture a species provider hands over. The four player discs supply the game inp
 | maps, retouch | the story mod's new screens and the retouched originals (`story/mods/*/maps`) |
 | balance | the maps' wild Digimon from `content/maps` |
 | storycopies | the copies of the map files the extended story changes (the original story keeps its own) |
-| signs, localize, title | the translated map signs, the translated textures, the title screen's HORIZON |
+| signs, localize, title | the translated map signs, the translated textures, the title screen's HORIZON and the rebirth scene's four new eggs (`tools/egg_art.py`) |
 | plan | which files the disc replaces or adds, their names and the executable's file tables |
 
 A step is a module of `tools/derive/steps/` with its outputs, its build and its checks. Steps made of units (the

@@ -96,25 +96,38 @@ def shell_order(tim):
 
 
 def fill_pattern(ic, order):
-    """the spots (indices 2-5) replaced by the shell's shading around them, spreading inwards row by row"""
+    """the spots (indices 2-5) replaced by the shell's shading under them: a quadratic surface fitted to the shading
+    order of the rest of the shell (least squares), rounded to the nearest grey"""
     rank = {i: r for r, i in enumerate(order)}
-    val = [[rank.get(v) for v in line] for line in ic]
-    holes = [(x, y) for y in range(32) for x in range(32) if 2 <= ic[y][x] <= 5]
-    while holes:
-        left, done = [], {}
-        for x, y in holes:
-            near = [val[y + dy][x + dx] for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
-                    if 0 <= x + dx < 32 and 0 <= y + dy < 32 and val[y + dy][x + dx] is not None]
-            if near:
-                done[(x, y)] = round(sum(near) / len(near))
-            else:
-                left.append((x, y))
-        if not done:
-            sys.exit(f'{PATH}: an icon pattern with no shell around it')
-        for (x, y), r in done.items():
-            val[y][x] = r
-        holes = left
-    return [[order[val[y][x]] if 2 <= ic[y][x] <= 5 else ic[y][x] for x in range(32)] for y in range(32)]
+    terms = lambda x, y: (1.0, x, y, x * x, y * y, x * y)
+    n = 6
+    ata = [[0.0] * n for _ in range(n)]
+    atb = [0.0] * n
+    for y in range(32):
+        for x in range(32):
+            r = rank.get(ic[y][x])
+            if r is None:
+                continue
+            t = terms(x / 32, y / 32)
+            for i in range(n):
+                atb[i] += t[i] * r
+                for j in range(n):
+                    ata[i][j] += t[i] * t[j]
+    for c in range(n):                       # Gauss-Jordan on the normal equations
+        piv = max(range(c, n), key=lambda r: abs(ata[r][c]))
+        ata[c], ata[piv] = ata[piv], ata[c]
+        atb[c], atb[piv] = atb[piv], atb[c]
+        for r in range(n):
+            if r != c:
+                f = ata[r][c] / ata[c][c]
+                ata[r] = [a - f * b for a, b in zip(ata[r], ata[c])]
+                atb[r] -= f * atb[c]
+    coef = [atb[i] / ata[i][i] for i in range(n)]
+
+    def shade(x, y):
+        v = sum(c * t for c, t in zip(coef, terms(x / 32, y / 32)))
+        return order[max(0, min(len(order) - 1, round(v)))]
+    return [[shade(x, y) if 2 <= ic[y][x] <= 5 else ic[y][x] for x in range(32)] for y in range(32)]
 
 
 def zigzag(ic, order, rows, amp, period, width):
@@ -149,7 +162,7 @@ def palette(tim, shell_rgb, pattern_rgb, order):
 def zigzag_skin(tim):
     """YukimiBotamon's band on the wave egg's skin: u 0-95, a zigzag of 6 teeth round the egg centred on v 24"""
     row = tim.row(ZIGZAG_GROUP_ROW)
-    if any(row[i] for i in ZIG_OVER.values() if i not in (15,)) or row[15] not in (0, 0x0421):
+    if any(row[i] for i in ZIG_OVER.values() if i != 15) or row[15] not in (0, 0x0421):   # (15: the outline grey)
         sys.exit(f'{PATH}: row {ZIGZAG_GROUP_ROW} already uses the indices the zigzag needs')
     for src, dst in ZIG_OVER.items():
         row[dst] = row[src]
