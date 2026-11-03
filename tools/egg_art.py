@@ -3,7 +3,7 @@
 
   egg_art.py OUTDIR [--extracted DIR]          OUTDIR/ETCDAT/TAMA.TIM
 
-When the partner dies the player picks one of the eggs (doo2.c, dooa.c; patch 0333). The original four stay as they
+When the partner dies the player picks one of the eggs (doo2.c, dooa.c; patch 0334). The original four stay as they
 are; the four new ones hatch the hand-made Fresh babies and wear their official Digi-Egg colours (wikimon's Digitama
 artwork): Pabumon plain green, Pichimon plain cyan, YukimiBotamon silver with two black zigzags, Nyokimon red with
 peach spots.
@@ -16,7 +16,7 @@ TAMA.TIM is a 4-bit 256x80 texture with 16 CLUT rows (VRAM 128,488): the 3D eggs
   v 40: Pabumon's and Pichimon's are the spotted icon with its spots filled in from the shell's shading around them,
   Nyokimon's the spotted icon, YukimiBotamon's the plain one with two zigzags;
 - one CLUT row per new egg, 497-500, read by its icon and by its 3D egg (the scene copies it over the row of the
-  3D egg it borrows, 488 + group, at the hatch: patch 0333). Indices 1-5 are the 3D skin's colours as in the original
+  3D egg it borrows, 488 + group, at the hatch: patch 0334). Indices 1-5 are the 3D skin's colours as in the original
   rows (index 1 the shell, 2-5 the pattern), 6-13 the icon's shell shading, 14 and 15 the outline;
 - YukimiBotamon's zigzags on the 3D egg: the egg borrows group 1 (the wave egg), whose skin maps v 0-47 twice down
   the egg and u 0-95 once round it, so one zigzag band at v 17-30 shows as two. Its texels take indices the original

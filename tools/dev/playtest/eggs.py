@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prove the rebirth scene's eight eggs (patch 0333) on an original-2-MB disc.
+"""Prove the rebirth scene's eight eggs (patch 0334) on an original-2-MB disc.
 
 Boots the release corpus card, ends the partner's life as the Cheats' Die of old age row does (lifetime 0, no
 immortal hour), confirms the death dialogue up to the egg box and saves a state there. From it, per case: walks the
