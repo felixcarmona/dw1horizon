@@ -257,6 +257,11 @@ section { padding-top: 120px; }
 .desktop-note a, .desktop-os a { color: var(--ink); font-weight: 600; text-decoration: underline; }
 .desktop-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
 .desktop-buttons .button { min-width: 230px; }
+/* The system's mark left of the two lines (the label and "v0.0.5 · 16 MB"). */
+.desktop-buttons .button.has-icon { flex-direction: row; gap: 14px; padding-inline: 28px 34px; }
+.desktop-icon { flex: none; width: 24px; height: 24px; }
+.desktop-icon-macos { width: 23px; height: 26px; margin-top: -3px; }
+.desktop-label { display: flex; flex-direction: column; align-items: center; gap: 1px; }
 .button.outline { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #d9d3e3; }
 .button.outline:hover { box-shadow: inset 0 0 0 1.5px var(--ink-2); }
 .desktop-help { margin-top: 16px; }
