@@ -1,15 +1,19 @@
-"""Tokomon (type 30) -> Nyaromon, round 2: geometry rebuilt from scratch on the donor's skeleton.
+"""Tokomon (type 30) -> Nyaromon, round 3: geometry rebuilt from scratch on the donor's skeleton.
 
 Parts -> bones (the donor's animations are untouched):
-  object 0 (bone 2, the body)  : the wide rounded cat head AND the whole tail (static relative to the head: the
-                                 feet bones swing 50 deg in the walk hop, which flailed round 1's tail)
-  objects 1 / 3 (bones 3 / 5)  : the ears, one wedge each; the inner ear is painted on the front faces
-  objects 2 / 4 (ear tips), 5-8 (feet): collapsed to a point (one degenerate triangle each)
+  object 0 (bone 2, the body)  : the rounded cat head AND the whole tail (static relative to the head: every free
+                                 bone of the donor swings 50 deg in the walk hop, which flailed round 1's tail)
+                                 and the ears, a thick cone each (8-vertex elliptical base, mid ring, apex), rigid
+                                 with the head: on the ear bones they left the head in the donor's big flop slots
+  objects 1-8 (ear segments, feet): collapsed to a point (one degenerate triangle each)
+Size: "a little smaller than Koromon" (DA sheet): head 166 wide x 122 tall x 140 deep (Koromon's body is 178 x 137).
 Texture: face on the mirrored 72x48 block (u=0 is the centre line) with its three animation frames
 (0,48) = restore, (72,0) = half-open mouth, (144,0) = wide-open mouth; body / ears / tail strips on the free part of
 the page.  Every CLUT row is painted with its own <=16 colours so tex_import keeps them exact.
 Conventions found in the donor: y negative is UP, the model faces -z, x>0 is the viewer's right in the front view,
 face winding cross(v1-v0, v2-v0) points INWARD (opposite to the outward normal), normals 4.12 outward.
+Trap: a collapsed object's degenerate triangle must not carry UV (0,0): palette_map would hand that face texel to
+the body row and the face draws it with its own row (a red dot on the forehead in round 2).
 """
 from lib import *
 import math
@@ -20,12 +24,12 @@ m = b.m; tmd = m.tmd
 # ---------------------------------------------------------------- palette (5-bit exact values)
 def q(c): return tuple(int(v) >> 3 << 3 for v in c)
 
-Y0 = q((248, 220, 88)); Y1 = q((255, 240, 150)); Y2 = q((232, 186, 60)); Y3 = q((210, 150, 48))
-INK = q((24, 16, 16)); WHITE = q((255, 255, 255)); SOFT = q((255, 232, 232))
-I0 = q((120, 32, 24)); I1 = q((196, 72, 36)); I2 = q((232, 128, 64)); PUP = q((40, 14, 14))
-M0 = q((128, 32, 44)); M1 = q((236, 120, 132))
-O0 = q((232, 168, 64)); O1 = q((244, 196, 92)); O2 = q((184, 120, 40))
-P0 = q((150, 136, 214)); P1 = q((190, 180, 240)); P2 = q((104, 88, 176)); P3 = q((72, 56, 136))
+Y0 = q((248, 232, 80)); Y1 = q((255, 248, 160)); Y2 = q((216, 184, 48))       # lemon, highlight, shade
+YI = q((232, 208, 64)); YO = q((168, 136, 40))                                 # inner ear: one step darker + rim
+INK = q((24, 16, 16)); WHITE = q((255, 255, 255))
+I0 = q((144, 32, 32)); I1 = q((192, 64, 48)); PUP = q((40, 10, 14))             # iris dark red, lower iris, pupil
+M0 = q((200, 80, 112)); M1 = q((240, 160, 176))                                # inner mouth, pink
+PB = q((152, 128, 216)); PD = q((104, 88, 176)); PT = q((184, 168, 232)); PT2 = q((144, 128, 200))   # bands, shade, lavender tip
 ROW_FACE, ROW_BODY, ROW_TAIL, ROW_SPRITE = 0, 1, 2, 15
 CBA = lambda row: (488 + row) << 6
 
@@ -62,20 +66,6 @@ class Part:
         return out
 
 
-def smooth_normals(part, vids):
-    """Per-vertex normals from the faces already added that use only these vertices (area weighted, outward by
-    construction of the faces' order being irrelevant: we orient each face normal along the stored face normal)."""
-    acc = {v: np.zeros(3) for v in vids}
-    for f_vids, f_nids, _, _ in part.f:
-        a, b_, c = part.v[f_vids[0]], part.v[f_vids[1]], part.v[f_vids[2]]
-        n = np.cross(b_ - a, c - a)
-        if n @ sum(part.n[k] for k in f_nids) > 0: n = -n       # should not happen: faces are oriented inward-cross
-        n = -n                                                    # inward cross -> outward
-        for v in f_vids:
-            if v in acc: acc[v] += n
-    return acc
-
-
 def install(oi, part):
     ob = tmd.objects[oi]
     ob._v = [(int(round(p[0])), int(round(p[1])), int(round(p[2])), 0) for p in part.v]
@@ -83,9 +73,18 @@ def install(oi, part):
     ob.prims = part.prims()
 
 
+# ---------------------------------------------------------------- texture layout (page 256x128)
+FACE = (0, 0, 72, 48)                       # live block; frames at (0,48) (72,0) (144,0)
+BODY = (80, 50, 32, 32)                     # plain body swatch
+EARF = (120, 50, 32, 44)                    # ear front (inner ear painted)
+EARB = (160, 50, 24, 44)                    # ear back
+TAIL = (76, 100, 136, 24)                   # u along the tail, v around (v=100 is the top side)
+SW = (BODY[0] + 8, BODY[1] + 8)             # a plain body texel
+
+
 def point_object(oi):
     p = Part(); p.vert((0, 0, 0)); p.norm((0, -1, 0))
-    p.f.append(([0, 0, 0], [0, 0, 0], [(BODY[0] + 8, BODY[1] + 8)] * 3, ROW_BODY))   # never (0,0): palette_map would hand that face texel to the body row
+    p.f.append(([0, 0, 0], [0, 0, 0], [SW] * 3, ROW_BODY))
     install(oi, p)
 
 
@@ -97,33 +96,24 @@ def repack():
     tmd.verts, tmd.norms = verts, norms
 
 
-# ---------------------------------------------------------------- texture layout (page 256x128)
-FACE = (0, 0, 72, 48)                       # live block; frames at (0,48) (72,0) (144,0)
-BODY = (80, 50, 32, 32)                     # plain body swatch
-EARF = (120, 50, 32, 44)                    # ear front (inner ear painted)
-EARB = (160, 50, 24, 44)                    # ear back
-TAIL = (76, 100, 136, 24)                   # u along the tail, v around (v=100 is the top side)
-FACE_Y0, FACE_Y1 = -116.0, -22.0            # the band of the head the face block covers (ring to ring)
-FU = lambda x: min(71.0, 0.71 * abs(x))
-FV = lambda y: min(47.0, max(0.0, 48.0 * (y - FACE_Y0) / (FACE_Y1 - FACE_Y0)))
-
-# ---------------------------------------------------------------- head: superellipsoid, wider than tall, flat-ish top
-HA, HC, HY0, HB = 104.0, 90.0, -74.0, 70.0      # x half-width, z half-depth, centre y, y half-height
-HTOP, HBOT = HY0 - HB, HY0 + HB                   # -150 .. -4
+# ---------------------------------------------------------------- head: wide rounded blob, widest just under the eyes
+HA, HC = 83.0, 70.0                             # x half-width, z half-depth (depth 0.85 x width)
+HTOP, HBOT, HYW = -125.0, -3.0, -68.0           # top, floor contact, the widest ring (47 % down)
+HB_UP, HB_DN = HYW - HTOP, HBOT - HYW           # 57 / 65
 
 
 def head_r(y):
-    """Horizontal radius factor (0..1) of the head at height y."""
-    t = (HY0 - y) / HB
-    e = 2.05 if t > 0 else 2.2                                    # a little boxier than an ellipse
+    """Horizontal radius factor (0..1) of the head at height y: a dome above the widest ring, a flatter bowl below."""
+    if y < HYW: t, e = (HYW - y) / HB_UP, 2.0
+    else: t, e = (y - HYW) / HB_DN, 2.3
     t = min(1.0, abs(t))
     return (1 - t ** e) ** (1 / e)
 
 
 def head_surface_y(x, z):
-    """Top surface height of the head above (x, z) (the y where the ring radius reaches that point)."""
+    """Top surface height of the head above (x, z)."""
     rr = math.hypot(x / HA, z / HC)
-    lo, hi = HTOP, HY0
+    lo, hi = HTOP, HYW
     for _ in range(40):
         mid = (lo + hi) / 2
         if head_r(mid) < rr: lo = mid
@@ -132,7 +122,10 @@ def head_surface_y(x, z):
 
 
 NAZ = 14
-RING_Y = [-139, -129, -116, -100, -84, -66, -48, -34, -22, -12]
+RING_Y = [-121, -113, -102, -88, -74, -60, -46, -32, -20, -10]
+FACE_Y0, FACE_Y1 = -113.0, -10.0                # the band of the head the face block covers (ring to ring)
+FU = lambda x: min(71.0, 71.0 * abs(x) / HA)
+FV = lambda y: min(47.0, max(0.0, 48.0 * (y - FACE_Y0) / (FACE_Y1 - FACE_Y0)))
 head = Part()
 top = head.vert((0, HTOP, 0)); bot = head.vert((0, HBOT, 0))
 rings = []
@@ -140,9 +133,10 @@ for y in RING_Y:
     r = head_r(y); ring = []
     for k in range(NAZ):
         az = 2 * math.pi * k / NAZ
-        ring.append(head.vert((HA * r * math.sin(az), y, -HC * r * math.cos(az))))
+        x, z = HA * r * math.sin(az), -HC * r * math.cos(az)
+        chin = max(0.0, 1 - abs(y + 24) / 20.0) * max(0.0, math.cos(az))      # a touch of chin under the mouth
+        ring.append(head.vert((x, y, z - 5.0 * chin)))
     rings.append(ring)
-# normals: analytic-ish, from the local gradient of the superellipsoid (finite differences on the radius)
 hn = {}
 for v in range(len(head.v)):
     x, y, z = head.v[v]
@@ -161,10 +155,10 @@ def head_uv(x, y, z, front):
     return (BODY[0] + 1 + 29 * (0.5 + 0.5 * math.sin(math.atan2(x, -z))), BODY[1] + 1 + 29 * (y - HTOP) / (HBOT - HTOP))
 
 
-def ring_face(vids, row_front_ok=True):
+def ring_face(vids):
     pts = [head.v[v] for v in vids]
     c = sum(pts) / len(pts)
-    front = (c[2] < -1) and FACE_Y0 - 1 <= c[1] <= FACE_Y1 + 1 and all(FACE_Y0 - 0.5 <= p[1] <= FACE_Y1 + 0.5 for p in pts)
+    front = (c[2] < -1) and all(FACE_Y0 - 0.5 <= p[1] <= FACE_Y1 + 0.5 for p in pts)
     uvs = [head_uv(*p, front) for p in pts]
     head.face(vids, [hn[v] for v in vids], uvs, ROW_FACE if front else ROW_BODY)
 
@@ -176,17 +170,17 @@ for k in range(NAZ):
         ring_face([rings[i][k], rings[i][k2], rings[i + 1][k], rings[i + 1][k2]])
     ring_face([bot, rings[-1][k2], rings[-1][k]])
 
-# ---------------------------------------------------------------- tail (part of the head object): tube on a spline
+# ---------------------------------------------------------------- tail (part of the head object): thin tube on an S
 TAIL_PTS = np.array([
-    (28, -96, 44),     # inside the head
-    (84, -108, 84),    # leaving the back-right of the head at eye height
-    (128, -132, 116),
-    (162, -136, 136),
-    (186, -106, 138),
-    (188, -62, 126),
-    (168, -30, 108),
-    (136, -18, 92),
-    (108, -18, 80),    # the bulb
+    (12, -40, 30),     # inside the lower back of the head
+    (36, -46, 62),     # leaving the lower back, slightly to the right
+    (56, -62, 88),     # rising
+    (72, -98, 102),
+    (86, -132, 100),   # over the top
+    (108, -138, 88),
+    (124, -110, 72),   # coming down
+    (128, -72, 58),
+    (118, -36, 48),    # the lavender tip hovers off the floor
 ], float)
 
 
@@ -203,13 +197,14 @@ def catmull(P, n):
 dense = catmull(TAIL_PTS, 40)
 seg = np.linalg.norm(np.diff(dense, axis=0), axis=1); arc = np.concatenate([[0], np.cumsum(seg)])
 TAIL_LEN = arc[-1]
-NR, NA = 17, 8
+NR, NA = 13, 8
+TIP_FROM = 0.70                                  # the last 30 % is solid lavender and a little thicker
 
 
 def tail_radius(s):
-    if s < 0.62: return 14.5
-    if s < 0.78: return 14.5 + 4.5 * (s - 0.62) / 0.16
-    return 19.0
+    if s < TIP_FROM - 0.06: return 10.0
+    if s < TIP_FROM + 0.06: return 10.0 + 2.5 * (s - (TIP_FROM - 0.06)) / 0.12
+    return 12.5
 
 
 centres, tangents = [], []
@@ -217,7 +212,6 @@ for i in range(NR):
     s = i / (NR - 1) * 0.985
     j = int(np.searchsorted(arc, s * TAIL_LEN)); j = min(max(j, 1), len(dense) - 2)
     centres.append(dense[j]); t = dense[j + 1] - dense[j - 1]; tangents.append(t / np.linalg.norm(t))
-# parallel-transported frame, N starts pointing up (-y)
 N = np.array([0, -1.0, 0]); N -= tangents[0] * (N @ tangents[0]); N /= np.linalg.norm(N)
 frames = []
 for i in range(NR):
@@ -232,7 +226,6 @@ for i in range(NR):
         d = math.cos(th) * Nv + math.sin(th) * Bv
         v = head.vert(centres[i] + r * d); ring.append(v); tail_n[v] = head.norm(d)
     tail_rings.append(ring)
-# rounded cap: two shrinking rings and a pole
 cap_rings = []
 T = tangents[-1]; Nv, Bv = frames[-1]; r_end = tail_radius(1.0); c_end = centres[-1]
 for ang in (38, 68):
@@ -240,8 +233,8 @@ for ang in (38, 68):
     for k in range(NA):
         th = 2 * math.pi * k / NA
         d = math.cos(th) * Nv + math.sin(th) * Bv
-        nrm = math.cos(a) * d + math.sin(a) * T
-        v = head.vert(c_end + r_end * (math.sin(a) * T + math.cos(a) * d)); ring.append(v); tail_n[v] = head.norm(nrm)
+        v = head.vert(c_end + r_end * (math.sin(a) * T + math.cos(a) * d)); ring.append(v)
+        tail_n[v] = head.norm(math.cos(a) * d + math.sin(a) * T)
     cap_rings.append(ring)
 pole = head.vert(c_end + r_end * T); tail_n[pole] = head.norm(T)
 all_rings = tail_rings + cap_rings
@@ -258,55 +251,56 @@ for k in range(NA):
     k2 = (k + 1) % NA
     vids = [last[k], last[k2], pole]
     head.face(vids, [tail_n[v] for v in vids], [(TU(NR + 1), TV(k)), (TU(NR + 1), TV(k + 1)), (TAIL[0] + TAIL[2] - 2, TV(k + 0.5))], ROW_TAIL)
+# ---------------------------------------------------------------- ears: thick cones, rigid on the head (bone 2)
+# (on the ear bones 3 / 5 they left the head in the donor's 77-127 deg flop slots: 9 is the asleep loop)
+EAR_CX, EAR_CZ = 52.0, -14.0            # base centre (world, right ear): the top corner of the head, just forward of the crown
+EAR_AX, EAR_AZ = 26.0, 20.0             # elliptical base: half-width (x), half-depth (z) -> 52 x 40, real volume from every side
+EAR_H, EAR_BURY = 82.0, 12.0            # visible height ~65 % of the head, base sunk into the head
+EAR_TILT, EAR_BACK = 27.0, 10.0         # degrees outward / backward
+EAR_NA, EAR_MID, EAR_MIDR = 8, 0.48, 0.58   # verts around, mid ring height fraction and radius fraction (a little convex)
+
+
+def build_ear(side):
+    p = head                                       # the ear's vertices and faces join the head object (bone 2 = world at rest)
+    ys = head_surface_y(EAR_CX * side, EAR_CZ)
+    tip = np.array([EAR_CX + EAR_H * math.tan(math.radians(EAR_TILT)), ys - EAR_H, EAR_CZ + EAR_H * math.tan(math.radians(EAR_BACK))])
+    base_c = np.array([EAR_CX, ys + EAR_BURY, EAR_CZ])
+    axis = tip - base_c; axis /= np.linalg.norm(axis)
+    alpha = math.atan2(EAR_AX, EAR_H)              # the cone's half angle, for the normals
+    ex, ey, ew, eh = EARF; bx, by, bw, bh = EARB
+    def uv_of(k, hgt):                             # k may be fractional (the tip uses the face's mid angle)
+        th = (k % EAR_NA) * 360.0 / EAR_NA         # 0 = front, 90 = outer side, 180 = back, 270 = inner side
+        v = ey + eh - 1 - (eh - 2) * hgt
+        if th <= 90 or th >= 270:                  # front half -> EARF (inner ear painted there)
+            f = ((th + 90) % 360) / 180.0
+            return (ex + 0.5 + (ew - 1) * f, v)
+        return (bx + 0.5 + (bw - 1) * (th - 90) / 180.0, v)
+    def ring(hgt, rad):
+        c = base_c + (tip - base_c) * hgt; out = []
+        for k in range(EAR_NA):
+            th = 2 * math.pi * k / EAR_NA
+            d = np.array([math.sin(th), 0, -math.cos(th)])
+            pt = c + np.array([EAR_AX * rad * d[0], 0, EAR_AZ * rad * d[2]])
+            if hgt == 0: pt[1] = head_surface_y(pt[0] * side, pt[2]) + EAR_BURY     # the base follows the head's surface
+            n = d * math.cos(alpha) + np.array([0, -1.0, 0]) * math.sin(alpha)
+            n[0] *= side
+            out.append((p.vert(pt * [side, 1, 1]), p.norm(n)))
+        return out
+    r0, r1 = ring(0.0, 1.0), ring(EAR_MID, EAR_MIDR)
+    vt, nt = p.vert(tip * [side, 1, 1]), p.norm(axis * [side, 1, 1])
+    for k in range(EAR_NA):
+        k2 = (k + 1) % EAR_NA
+        kk = k + 1 if k2 else EAR_NA                # the seam vertex at k=0 takes u of 360 on the last face
+        p.face([r0[k][0], r0[kk % EAR_NA][0], r1[k][0], r1[kk % EAR_NA][0]], [r0[k][1], r0[kk % EAR_NA][1], r1[k][1], r1[kk % EAR_NA][1]],
+               [uv_of(k, 0), uv_of(kk, 0), uv_of(k, EAR_MID), uv_of(kk, EAR_MID)], ROW_BODY)
+        p.face([r1[k][0], r1[kk % EAR_NA][0], vt], [r1[k][1], r1[kk % EAR_NA][1], nt],
+               [uv_of(k, EAR_MID), uv_of(kk, EAR_MID), uv_of(k + 0.5, 1.0)], ROW_BODY)
+    return ys
+
+
+ys_ = build_ear(1); build_ear(-1)
 install(0, head)
-
-# ---------------------------------------------------------------- ears: a wedge each on bones 3 / 5
-EAR_JOINT = {1: (26, -114, -67), 3: (-25, -114, -67)}
-EAR_X0, EAR_X1, EAR_Z = 18.0, 88.0, -42.0          # base inner/outer x, base z (world, right ear): near the joint's z so the ear flaps stay rooted
-EAR_TIP = (97.0, -242.0, -34.0)
-EAR_THICK, EAR_BURY, EAR_MID = 9.0, 24.0, 0.5
-
-
-def build_ear(oi, side):
-    J = np.array(EAR_JOINT[oi], float); p = Part()
-    def W(x, y, z): return np.array([x * side, y, z]) - J     # world (right ear) -> bone local, mirrored for the left
-    yb0 = head_surface_y(EAR_X0 * side, EAR_Z) + EAR_BURY
-    yb1 = head_surface_y(EAR_X1 * side, EAR_Z) + EAR_BURY
-    tip = np.array(EAR_TIP)
-    base_c = np.array([(EAR_X0 + EAR_X1) / 2, (yb0 + yb1) / 2, EAR_Z])
-    h = EAR_MID
-    mi = np.array([EAR_X0, yb0, EAR_Z]) * (1 - h) + tip * h; mo = np.array([EAR_X1, yb1, EAR_Z]) * (1 - h) + tip * h
-    mi[0] -= 2; mo[0] += 2                                        # slight bow outward
-    V = {}
-    for name, (x, y, z), dz in (('bif', (EAR_X0, yb0, EAR_Z), -EAR_THICK), ('bof', (EAR_X1, yb1, EAR_Z), -EAR_THICK),
-                                ('bib', (EAR_X0, yb0, EAR_Z), EAR_THICK), ('bob', (EAR_X1, yb1, EAR_Z), EAR_THICK),
-                                ('mif', mi, -EAR_THICK * 0.55), ('mof', mo, -EAR_THICK * 0.55),
-                                ('mib', mi, EAR_THICK * 0.55), ('mob', mo, EAR_THICK * 0.55), ('tip', tip, 0)):
-        V[name] = p.vert(W(x, y, z + dz))
-    # normals: front, back, inner edge, outer edge (world, then mirrored x)
-    front = np.array([0.12 * side, -0.18, -1.0]); back = np.array([-0.05 * side, -0.1, 1.0])
-    ein = np.array([-1.0 * side, -0.3, 0]); eout = np.array([1.0 * side, -0.25, 0])
-    nf, nb, ni, no = p.norm(front), p.norm(back), p.norm(ein), p.norm(eout)
-    # ear-front texture: base (120..151, 93), tip (136, 50)
-    def fuv(fr, hgt):       # fr 0 (inner) .. 1 (outer) across the base, hgt 0 base .. 1 tip
-        u0 = EARF[0] + 0.5 + (EARF[2] - 1) * (0.5 * hgt + fr * (1 - hgt))
-        return (u0, EARF[1] + EARF[3] - 1 - (EARF[3] - 2) * hgt)
-    def buv(fr, hgt):
-        return (EARB[0] + 0.5 + (EARB[2] - 1) * (0.5 * hgt + fr * (1 - hgt)), EARB[1] + EARB[3] - 1 - (EARB[3] - 2) * hgt)
-    p.face([V['bif'], V['bof'], V['mif'], V['mof']], [nf] * 4, [fuv(0, 0), fuv(1, 0), fuv(0, h), fuv(1, h)], ROW_BODY)
-    p.face([V['mif'], V['mof'], V['tip']], [nf] * 3, [fuv(0, h), fuv(1, h), fuv(0.5, 1)], ROW_BODY)
-    p.face([V['bib'], V['bob'], V['mib'], V['mob']], [nb] * 4, [buv(0, 0), buv(1, 0), buv(0, h), buv(1, h)], ROW_BODY)
-    p.face([V['mib'], V['mob'], V['tip']], [nb] * 3, [buv(0, h), buv(1, h), buv(0.5, 1)], ROW_BODY)
-    sw = lambda: (BODY[0] + 8, BODY[1] + 8)
-    p.face([V['bif'], V['bib'], V['mif'], V['mib']], [ni] * 4, [sw()] * 4, ROW_BODY)
-    p.face([V['mif'], V['mib'], V['tip']], [ni] * 3, [sw()] * 3, ROW_BODY)
-    p.face([V['bof'], V['bob'], V['mof'], V['mob']], [no] * 4, [sw()] * 4, ROW_BODY)
-    p.face([V['mof'], V['mob'], V['tip']], [no] * 3, [sw()] * 3, ROW_BODY)
-    install(oi, p)
-
-
-build_ear(1, 1); build_ear(3, -1)
-for oi in (2, 4, 5, 6, 7, 8):
+for oi in (1, 2, 3, 4, 5, 6, 7, 8):
     point_object(oi)
 repack()
 
@@ -319,107 +313,84 @@ def rect(x, y, w, h, col):
     t[y:y + h, x:x + w, :3] = col
 
 
+def quantise_down(big, pal, S):
+    """Majority palette colour per texel of a 4x drawing."""
+    pal = np.array(pal, np.int32)
+    idx = np.argmin(((big[..., None, :].astype(np.int32) - pal[None, None]) ** 2).sum(-1), -1)
+    H, Wd = big.shape[0] // S, big.shape[1] // S
+    out = np.zeros((H, Wd, 3), np.uint8)
+    for y in range(H):
+        for x in range(Wd):
+            out[y, x] = pal[np.bincount(idx[y * S:(y + 1) * S, x * S:(x + 1) * S].ravel()).argmax()]
+    return out
+
+
+# the eye: a dome leaning outward with a pointed outer-bottom corner (DA sheet), in block texels (u outward)
+EYE = [(24, 24), (23, 17), (26, 11), (32, 7), (40, 5.5), (47, 6), (52, 9), (55, 14), (55.5, 20), (53, 25), (47, 28),
+       (38, 28.5), (30, 27)]                    # big, round-topped, friendly (the DA dome read angry)
+MOUTH = [(0, 36.5), (18, 41.5), (33, 34.5)]  # half of the W: centre peak, valley, corner (the corners curl up)
+
+
 def face_block(ox, oy, mouth):
     """One 72x48 half-face frame at (ox, oy). mouth: 'closed' | 'half' | 'wide'."""
-    blk = np.zeros((48, 72, 3), np.uint8); blk[:] = Y0
-    S = 4                                                           # draw at 4x, then take the nearest palette colour
-    big = cv2.resize(blk, None, fx=S, fy=S, interpolation=cv2.INTER_NEAREST)
-    # eye: almond tilted, top point to the outside. centre (x 46, y -94) -> u 32.7, v 15.4
-    cx, cy = 33.0 * S, 14.3 * S                                     # eye centre: x 46, y -88 (41% down the head)
-    w_, h_ = 16.0 * S, 14.0 * S                                     # half sizes: 32 x 28 px = 45 x 55 units
-    ang = -16                                                        # degrees; negative = top leans to +u (outside)
-    def almond(scale, col, dx=0, dy=0):
-        pts = []
-        for i in range(72):
-            a = 2 * math.pi * i / 72
-            up = max(0.0, -math.sin(a)); dn = max(0.0, math.sin(a))
-            px = w_ * scale * math.cos(a) * (1 - 0.62 * up ** 1.3) * (1 - 0.22 * dn ** 2)   # teardrop: pointed top, round bottom
-            py = h_ * scale * math.sin(a)
-            r = math.radians(ang); X = px * math.cos(r) - py * math.sin(r); Y = px * math.sin(r) + py * math.cos(r)
-            pts.append((cx + dx + X, cy + dy + Y))
-        cv2.fillPoly(big, [np.array(pts, np.int32)], col, lineType=cv2.LINE_8)
-    almond(1.0, INK)
-    almond(0.84, I1, -1.3 * S, 0.3 * S)                              # iris shifted inward: the outer rim stays heavy
-    # darker iris at the top / toward the pupil, lighter orange at the bottom-inner
+    S = 4
+    big = np.zeros((48 * S, 72 * S, 3), np.uint8); big[:] = Y0
+    poly = lambda pts: np.array([(u * S, v * S) for u, v in pts], np.int32)
+    cv2.fillPoly(big, [poly(EYE)], INK, lineType=cv2.LINE_8)
+    c = np.array(EYE).mean(0)
+    inner = [(c[0] + (u - c[0]) * 0.87, c[1] + (v - c[1]) * 0.85 + 0.5) for u, v in EYE]     # rim a touch thicker on top
+    cv2.fillPoly(big, [poly(inner)], I0, lineType=cv2.LINE_8)
     yy, xx = np.mgrid[0:48 * S, 0:72 * S]
-    iris = np.all(big == I1, -1)
-    grad = (yy - (cy - h_)) / (2 * h_)
-    big[iris & (grad < 0.30)] = I0
-    big[iris & (grad > 0.78)] = I2
-    # pupil: big dark oval in the upper-middle
-    cv2.ellipse(big, (int(cx + 1.2 * S), int(cy - 2.2 * S)), (int(8.3 * S), int(8.8 * S)), ang, 0, 360, PUP, -1)
-    # highlights: big one upper-outer, small one lower-inner
-    cv2.ellipse(big, (int(cx + 5.0 * S), int(cy - 6.5 * S)), (int(4.2 * S), int(3.4 * S)), ang, 0, 360, WHITE, -1)
-    cv2.circle(big, (int(cx - 4.5 * S), int(cy + 5.5 * S)), int(1.8 * S), WHITE, -1)
-    # mouth
-    if mouth == 'closed':      # half of a 'w': centre peak (u0, v33.6) -> valley (14.2, 43.2) -> corner (28.4, 38.4)
-        pts = np.array([(0, 34.5 * S), (16.0 * S, 44.0 * S), (33.0 * S, 38.8 * S)], np.int32)
-        cv2.polylines(big, [pts], False, INK, int(1.4 * S), lineType=cv2.LINE_8)
-    else:
-        if mouth == 'half': ax, ay, vy = 7.0, 4.5, 39.5
-        else: ax, ay, vy = 12.5, 7.5, 38.5
-        cv2.ellipse(big, (0, int(vy * S)), (int(ax * S), int(ay * S)), 0, 0, 360, M0, -1)
-        cv2.ellipse(big, (0, int((vy + ay * 0.55) * S)), (int(ax * 0.6 * S), int(ay * 0.5 * S)), 0, 0, 360, M1, -1)
-        cv2.ellipse(big, (0, int(vy * S)), (int(ax * S), int(ay * S)), 0, 0, 360, INK, int(1.3 * S))
-    # down-sample by majority of the palette colour per texel
-    pal = np.array([Y0, INK, I0, I1, I2, PUP, WHITE, M0, M1], np.int32)
-    small = np.zeros((48, 72, 3), np.uint8)
-    idx = np.argmin(((big[..., None, :].astype(np.int32) - pal[None, None]) ** 2).sum(-1), -1)
-    for y in range(48):
-        for x in range(72):
-            cell = idx[y * S:(y + 1) * S, x * S:(x + 1) * S].ravel()
-            small[y, x] = pal[np.bincount(cell).argmax()]
-    t[oy:oy + 48, ox:ox + 72, :3] = small
+    big[np.all(big == I0, -1) & (yy > 15.5 * S)] = I1                                       # lower iris lighter
+    cv2.ellipse(big, (int(39 * S), int(18 * S)), (int(5.6 * S), int(5.2 * S)), 0, 0, 360, PUP, -1)
+    cv2.ellipse(big, (int(46 * S), int(11.5 * S)), (int(4.4 * S), int(3.6 * S)), -25, 0, 360, WHITE, -1)
+    cv2.circle(big, (int(32 * S), int(22 * S)), int(1.9 * S), WHITE, -1)
+    # mouth: the W upper lip in every frame (3 texels thick); open frames hang a pink mouth under it, fangs at the corners
+    if mouth != 'closed':
+        d = 2.5 if mouth == 'half' else 5.5
+        lip = MOUTH
+        bottom = [(32, 37), (28, 39.5 + d * 0.5), (20, 41.5 + d), (10, 41.5 + d), (0, 41 + d)]
+        cv2.fillPoly(big, [poly(lip + bottom)], M1, lineType=cv2.LINE_8)
+        if mouth == 'wide':
+            cv2.ellipse(big, (0, int((43 + d * 0.5) * S)), (int(12 * S), int(d * 0.4 * S)), 0, 0, 360, M0, -1)
+        else:
+            cv2.ellipse(big, (0, int((42.5 + d * 0.5) * S)), (int(8 * S), int(d * 0.35 * S)), 0, 0, 360, M0, -1)
+        cv2.polylines(big, [poly(lip + bottom)], True, INK, int(1.2 * S), lineType=cv2.LINE_8)
+        cv2.fillPoly(big, [poly([(28.5, 35.5), (33, 35), (31, 40)])], WHITE, lineType=cv2.LINE_8)
+    cv2.polylines(big, [poly(MOUTH)], False, INK, int(3.0 * S), lineType=cv2.LINE_8)
+    t[oy:oy + 48, ox:ox + 72, :3] = quantise_down(big, [Y0, INK, I0, I1, PUP, WHITE, M0, M1], S)
 
 
 face_block(0, 0, 'closed'); face_block(0, 48, 'closed'); face_block(72, 0, 'half'); face_block(144, 0, 'wide')
 
-# body swatch: plain yellow with a slightly lighter crown
+# body swatch: plain lemon with a lighter crown
 rect(*BODY, Y0)
 t[BODY[1]:BODY[1] + 6, BODY[0]:BODY[0] + BODY[2], :3] = Y1
-# ear front: the inner ear (orange triangle with a dark rim) inside the ear triangle; base (120..151, 93), tip (136, 50)
-rect(*EARF, Y0)
+# ear front: the inner ear, one step darker with a thin rim, inset from the edges and above the buried base
 ex, ey, ew, eh = EARF
-S = 4
 ear = np.zeros((eh, ew, 3), np.uint8); ear[:] = Y0
-tri = np.array([(7, eh - 10), (ew - 8, eh - 10), (ew // 2, 7)], np.int32)
-cv2.fillPoly(ear, [tri], O0, lineType=cv2.LINE_8)
-tri3 = np.array([(11, eh - 13), (ew - 11, eh - 13), (ew // 2 - 1, 17)], np.int32)
-cv2.fillPoly(ear, [tri3], O1, lineType=cv2.LINE_8)
-cv2.polylines(ear, [tri], True, O2, 1, lineType=cv2.LINE_8)
+tri = np.array([(8, eh - 9), (ew - 9, eh - 9), (ew // 2, 6)], np.int32)     # front-centre of the cone (the strip is the front half)
+cv2.fillPoly(ear, [tri], YI, lineType=cv2.LINE_8)
+cv2.polylines(ear, [tri], True, YO, 1, lineType=cv2.LINE_8)
 t[ey:ey + eh, ex:ex + ew, :3] = ear
 rect(*EARB, Y0)
 t[EARB[1]:EARB[1] + EARB[3], EARB[0] + EARB[2] - 6:EARB[0] + EARB[2], :3] = Y2
 
-# tail strip: yellow with purple wedges hanging from the top side, then the solid purple end
+# tail strip: lemon with 3 slanted purple bands of uneven width, then the solid lavender tip
 tx, ty, tw, th = TAIL
-rect(tx, ty, tw, th, Y0)
+S = 4
 strip = np.zeros((th * S, tw * S, 3), np.uint8); strip[:] = Y0
-u_end = int(0.64 * tw * S)
-cv2.rectangle(strip, (u_end, 0), (tw * S, th * S), P0, -1)
-cv2.rectangle(strip, (u_end, 0), (tw * S, int(0.42 * th * S)), P1, -1)
-cv2.rectangle(strip, (u_end, int(0.78 * th * S)), (tw * S, th * S), P2, -1)
-cv2.line(strip, (u_end, 0), (u_end, th * S), P3, int(0.8 * S))
-for fr in (0.11, 0.26, 0.40, 0.53):
-    u = int(fr * tw * S); w2 = int(0.06 * tw * S); d = int(0.62 * th * S)
-    for off, col in ((0, P3), (-1.1 * S, P0)):
-        pts = np.array([(u - w2, 0), (u + w2, 0), (u + w2 * 0.1, d + off * 0)], np.int32)
-        cv2.fillPoly(strip, [pts], col) if col == P3 else None
-    pts = np.array([(u - w2 + 1.0 * S, 0), (u + w2 - 1.0 * S, 0), (u + w2 * 0.05, d - 1.2 * S)], np.int32)
-    cv2.fillPoly(strip, [pts], P0)
-    pts = np.array([(u - w2 + 1.0 * S, 0), (u + w2 * 0.3, 0), (u - w2 * 0.2, d * 0.5)], np.int32)
-    cv2.fillPoly(strip, [pts], P1)
-    # the wedge wraps: mirror a short stub at the bottom edge (v wraps around the tube)
-    pts = np.array([(u - w2, th * S), (u + w2, th * S), (u + w2 * 0.1, th * S - int(0.25 * th * S))], np.int32)
-    cv2.fillPoly(strip, [pts], P3)
-    pts = np.array([(u - w2 + 1.0 * S, th * S), (u + w2 - 1.0 * S, th * S), (u + w2 * 0.05, th * S - int(0.25 * th * S) + 1.2 * S)], np.int32)
-    cv2.fillPoly(strip, [pts], P2)
-pal = np.array([Y0, Y1, Y2, P0, P1, P2, P3], np.int32)
-idx = np.argmin(((strip[..., None, :].astype(np.int32) - pal[None, None]) ** 2).sum(-1), -1)
-for y in range(th):
-    for x in range(tw):
-        t[ty + y, tx + x, :3] = pal[np.bincount(idx[y * S:(y + 1) * S, x * S:(x + 1) * S].ravel()).argmax()]
-t[ty:ty + 2, tx:tx + u_end // S, :3] = Y1                          # a lighter top line along the yellow part
+u_tip = int(TIP_FROM * tw * S)
+cv2.rectangle(strip, (u_tip, 0), (tw * S, th * S), PT, -1)
+cv2.rectangle(strip, (u_tip, int(0.55 * th * S)), (tw * S, th * S), PT2, -1)
+cv2.line(strip, (u_tip, 0), (u_tip, th * S), PD, int(0.9 * S))
+for fr, wd in ((0.12, 7), (0.31, 10), (0.50, 6)):
+    u0 = fr * tw * S; sl = 0.55 * S                                  # slant: u shifts with v (a helical band)
+    pts = np.array([(u0, 0), (u0 + wd * S, 0), (u0 + wd * S + sl * th, th * S), (u0 + sl * th, th * S)], np.int32)
+    cv2.fillPoly(strip, [pts], PB)
+    cv2.line(strip, (int(u0 + wd * S), 0), (int(u0 + wd * S + sl * th), th * S), PD, int(0.8 * S))
+t[ty:ty + th, tx:tx + tw, :3] = quantise_down(strip, [Y0, Y1, Y2, PB, PD, PT, PT2], S)
+t[ty:ty + 2, tx:tx + u_tip // S, :3] = np.where(np.all(t[ty:ty + 2, tx:tx + u_tip // S, :3] == Y0, -1)[..., None], Y1, t[ty:ty + 2, tx:tx + u_tip // S, :3])
 
 # tournament sprite (row 15): four 15x15 frames at (224,96) (240,96) (224,112) (240,112), transparent outside
 SPR = [(224, 96), (240, 96), (224, 112), (240, 112)]
@@ -432,10 +403,8 @@ for fi, (sx, sy) in enumerate(SPR):
         cv2.fillPoly(g, [pts], Y0 + (255,))
     g[9, 4] = I1 + (255,); g[9, 10] = I1 + (255,); g[8, 4] = INK + (255,); g[8, 10] = INK + (255,)
     g[11, 6] = INK + (255,); g[11, 8] = INK + (255,); g[12, 7] = INK + (255,)
-    # tail: a purple hook on the right, two poses
-    if fi % 2 == 0: tl = [(12, 8), (14, 6), (14, 3)]
-    else: tl = [(12, 9), (14, 8), (14, 5)]
-    for (x0, y0) in tl: g[y0, x0] = P0 + (255,)
+    tl = [(12, 8), (14, 6), (14, 3)] if fi % 2 == 0 else [(12, 9), (14, 8), (14, 5)]
+    for (x0, y0) in tl: g[y0, x0] = PB + (255,)
     t[sy:sy + 15, sx:sx + 15] = g
 
 # ---------------------------------------------------------------- save (tex_import, then the sprite row by hand)
@@ -444,8 +413,7 @@ pm = np.array(mmd.palette_map(m, b.tim)).reshape(b.tim.h, b.tim.w)
 for row in sorted(set(pm.flatten().tolist())):
     cols = np.unique(t[pm == row][:, :3] >> 3 << 3, axis=0)
     print('row', row, 'colours', len(cols))
-# sprite: its own palette row 15 (palette_map lumps the corner into row 0; re-index it by hand)
-spal = [Y0, INK, I1, P0, WHITE]
+spal = [Y0, INK, I1, PB, WHITE]
 b.tim.pal[15] = [0] + [mmd.rgba_to_c15(*c) for c in spal] + [0] * 10
 for (sx, sy) in SPR:
     for y in range(15):
@@ -459,6 +427,6 @@ open(mp, 'wb').write(m.build()); open(tp, 'wb').write(b.tim.to_bytes())
 cv2.imwrite(os.path.join(OUT, 'Nyaromon-tex.png'), cv2.resize(cv2.cvtColor(t, cv2.COLOR_RGBA2BGRA), None, fx=3, fy=3, interpolation=cv2.INTER_NEAREST))
 spec = f'{mp}:30:{tp}:0:Nyaromon'
 print(spec)
-print('MMD bytes', os.path.getsize(mp), 'tail length', round(TAIL_LEN))
+print('MMD bytes', os.path.getsize(mp), 'tail length', round(TAIL_LEN), 'ear surface y', round(ys_))
 if __name__ == '__main__' and '--nosheet' not in sys.argv:
     sheet(OUT + '/Nyaromon-sheet.png', [spec], panels='mesh:front,mesh:three,mesh:side')

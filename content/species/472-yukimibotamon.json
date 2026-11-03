@@ -12,12 +12,13 @@
   "model": {
     "file": "build/imported-models/472.MMD",
     "radius": 95,
-    "height": 140,
+    "height": 120,
     "skeleton": [[-1, -1], [-1, 0], [0, 1]]
   },
   "texture": {"file": "build/imported-models/472.TIM", "entry": 0},
   "voice": 1,
   "battle_music": "normal-battle",
+  "condition_bubble": [0, -62, 0, 2],
   "wild": {"hp": 500, "mp": 500, "off": 50, "def": 50, "speed": 50, "brain": 50, "bits": 100},
   "partner": {
     "voice": 0,

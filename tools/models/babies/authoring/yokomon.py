@@ -1,9 +1,14 @@
-"""Tanemon -> Yokomon, round 2: the mesh is rebuilt from scratch on Tanemon's skeleton and animations, the page is
-hand-painted with palettes chosen by hand (no quantiser, indices written straight into the TIM).
+"""Tanemon -> Yokomon, round 5: the mesh is rebuilt from scratch on Tanemon's skeleton and animations, the page is
+hand-painted with palettes chosen by hand (no quantiser, indices written straight into the TIM). Shapes follow the
+encyclopedia art, the Toei model sheet and the New Century render (ref/more/Yokomon): six broad drooping blades
+tilted to face the viewer, a dominant crown of six thick hooked yellow stamens and a tall orange-red curl, eight soft
+root tendrils lying outward on the ground with up-curled tips (octopus style) under a bulb that sits low on them, a
+plain bulb with a faintly darker top. Judge it with kit/gouraud.py (per-vertex lighting like the game).
 
-Bone -> object: 2 = the pink onion bulb (plus one static root nub at the front); 3 = neck + the six yellow stamens +
-the red curl; 4 / 5 = three petals each (right / left), hinged where Tanemon's leaves were (those bones flap about z, so
-every petal extends along +-x and flaps like the leaves did); 6-9 = four root nubs (Tanemon's feet).
+Bone -> object: 2 = the pink onion bulb + four static root tendrils; 3 = neck + six stamen tubes + the red hook + the
+front and back petals; 4 / 5 = two blades each at +-30 degrees from x (those bones flap about z, so a petal must run
+mostly along +-x to lift like the leaves did); 6-9 = four root tendrils on Tanemon's foot bones (they paddle in the
+walk). Petal edges are jagged by texture cut-outs (colour 0).
 
 Traps found: Baby.save() runs tex_import's quantiser (bypassed here); the game culls back faces but animstudio's sheet
 does not, so every primitive is wound from a wanted outward direction and checked with mmd.render(cull=True); bones 4/5
@@ -141,17 +146,17 @@ R_FACE, R_SKIN, R_PETAL, R_STAMEN, R_SPRITE = 0, 1, 2, 3, 15
 SKIN = (0, 48, 64, 96)        # body strip: u 0..63 around (front at 32), v 48 top .. 95 bottom
 NECK = (64, 48, 80, 80)
 PETAL = (96, 48, 144, 112)    # base at the top (v 48), tip at the bottom
-STAM = (160, 48, 168, 96)
-CURL = (168, 48, 176, 96)
-FOOT = (176, 48, 192, 64)
+STAM = (152, 48, 160, 96)     # strip along a stamen tube: olive at the base, yellow, pale at the hook
+CURL = (176, 48, 184, 96)
+FOOT = (184, 48, 200, 64)
 EYE_SRC = {'open': 168, 'angry': 40, 'half': 72, 'happy': 136, 'shut': 104}
 MOUTH_SRC = {'closed': 128, 'slight': 104, 'open': 80, 'wide': 56}
 
 # ------------------------------------------------------------------ geometry
 # bulb (bone 2, world-ish coordinates: ground at y = 0, up = -y, front = -z)
 NSEG = 10
-RINGS = [(-18, 28), (-36, 58), (-58, 79), (-84, 90), (-114, 85), (-138, 68), (-155, 46), (-165, 30)]
-Y_TOP, Y_BOT = -165, -12
+RINGS = [(-7, 44), (-22, 68), (-46, 81), (-70, 87), (-97, 82), (-118, 66), (-142, 29)]   # 174 wide, sits low on the roots
+Y_TOP, Y_BOT = -142, -4
 
 
 def skin_v(y): return int(round(48 + 47 * (y - Y_TOP) / (Y_BOT - Y_TOP)))
@@ -177,7 +182,7 @@ def body_uv(i, k):
 EYE_BANDS = (2, 3)         # rings R2-R3 and R3-R4 carry the eye quads, segments 1 (left) and 9 (right)
 ids, nids, prof = lathe(body, RINGS, NSEG, 72, R_SKIN, body_uv,
                         skip=lambda i, k: (i in EYE_BANDS and k in (1, 9)) or (i == 1 and k == 0),
-                        bottom=Y_BOT, top=-167, capuv=[(32, 95), (32, 48)])
+                        bottom=Y_BOT, top=Y_TOP - 2, capuv=[(32, 95), (32, 48)])
 # eyes: the rect (0,0)-(32,24), u = 0 at the inner edge (towards the nose), v down the face
 for k in (1, 9):
     inner, outer = (1, 2) if k == 1 else (0, 9)      # vertex columns: k=1 spans 108..144 deg, k=9 spans 36..72
@@ -195,145 +200,141 @@ body.quad((ids[2][1], mu, ids[1][1], ml), (nids[2][1], nmu, nids[1][1], nml), [(
 body.quad((mu, ids[2][0], ml, ids[1][0]), (nmu, nids[2][0], nml, nids[1][0]), [(0, 24), (23, 24), (0, 47), (23, 47)], R_FACE)
 
 
-def nub(p, cx, cz, y_bot, y_top, r_bot, r_top, nseg=5):
-    """A root nub: a short lathe at (cx, cz) from y_bot (ground) up to y_top (inside the bulb), capped underneath."""
-    bot, top, nb, nt = [], [], [], []
-    for k in range(nseg):
-        a = 2 * math.pi * k / nseg + math.pi / 2
-        c, s = math.cos(a), -math.sin(a)
-        bot.append(p.vert(cx + r_bot * c, y_bot, cz + r_bot * s)); nb.append(p.norm(c, 0.6, s))
-        top.append(p.vert(cx + r_top * c, y_top, cz + r_top * s)); nt.append(p.norm(c, -0.2, s))
-    cv = p.vert(cx, y_bot + 2, cz); cn = p.norm(0, 1, 0)
-    for k in range(nseg):
-        k1 = (k + 1) % nseg
-        u0, u1 = FOOT[0] + 15 * k // nseg, FOOT[0] + 15 * (k + 1) // nseg
-        p.quad((top[k1], top[k], bot[k1], bot[k]), (nt[k1], nt[k], nb[k1], nb[k]),
-               [(u1, FOOT[1]), (u0, FOOT[1]), (u1, FOOT[3] - 1), (u0, FOOT[3] - 1)], R_SKIN)
-        p.tri((bot[k1], bot[k], cv), (nb[k1], nb[k], cn), [(FOOT[0] + 8, FOOT[3] - 1)] * 3, R_SKIN, want=(0, 1, 0))
+def tendril(p, origin, alpha_deg, r_in=24, r_out=84, r_tip=106, lift=26):
+    """One root: a soft 3-sided tube that starts under the bulb, lies outward along the ground and curls up at the
+    tip (an octopus arm). World points, then moved into the part's bone space by subtracting its origin."""
+    a = math.radians(alpha_deg)
+    d = (math.cos(a), 0.0, -math.sin(a))
+    pts = [(d[0] * r_in - origin[0], -10 - origin[1], d[2] * r_in - origin[2]),
+           (d[0] * r_out - origin[0], -9 - origin[1], d[2] * r_out - origin[2]),
+           (d[0] * r_tip - origin[0], -7 - lift - origin[1], d[2] * r_tip - origin[2])]
+    tube(p, pts, [10.0, 8.5, 0], 3, R_SKIN, (FOOT[0], FOOT[2] - 1), lambda i: FOOT[1] + min(15, 7 * i), tip=True)
 
 
-nub(body, 0, -58, -2, -44, 13, 16)       # the fifth root, static at the front centre
+for alpha in (0, 90, 180, 270):            # static roots between Tanemon's four feet: a ring of eight
+    tendril(body, (0.0, 0.0, 0.0), alpha)
 
-# neck + stamens + curl (bone 3: origin at the bulb top, world y -165; the petal hinges are 62 above)
+# neck + stamens + curl + the front and back petals (bone 3: origin at world y -165, 23 above the bulb's top). The
+# petal hinges (bones 4/5) are 62 above that; the receptacle sits at local -33 (world -198), 29 below the hinges.
 neck = Part()
-NRINGS = [(18, 40), (-6, 29), (-34, 19), (-62, 14)]
+TOP = -45.0
+NRINGS = [(36, 36), (10, 25), (-18, 18), (-45, 14)]
 
 
 def neck_uv(i, k):
     u0, u1 = NECK[0] + 15 * ((k + 1) % 6) // 6, NECK[0] + 15 * k // 6
     if k == 5: u0 = NECK[2] - 1
-    vfn = lambda y: int(round(NECK[1] + (NECK[3] - 1 - NECK[1]) * (y + 62) / 80.0))
+    vfn = lambda y: int(round(NECK[1] + (NECK[3] - 1 - NECK[1]) * (y - TOP) / (36 - TOP)))
     return [(u0, vfn(NRINGS[i + 1][0])), (u1, vfn(NRINGS[i + 1][0])), (u0, vfn(NRINGS[i][0])), (u1, vfn(NRINGS[i][0]))]
 
 
-lathe(neck, NRINGS, 6, 90, R_SKIN, neck_uv, top=-64, capuv=[None, (NECK[0] + 8, NECK[1])])
-
-TOP = -62.0
+lathe(neck, NRINGS, 6, 90, R_SKIN, neck_uv, top=TOP - 2, capuv=[None, (NECK[0] + 8, NECK[1])])
 
 
-def stamen(p, psi_deg, h=86, out=62, r=7.5):
-    """One yellow filament: rises from the receptacle, bows outward and the tip hooks out and down."""
+def stamen(p, psi_deg, h, out, r=8.0):
+    """One thick yellow stamen: a 3-sided tube rising from the receptacle, bending outward over the top and hooking
+    back down and in (a crook). psi from +x towards -z."""
     ps = math.radians(psi_deg)
-    d = (math.cos(ps), 0, -math.sin(ps))
+    d = (math.cos(ps), 0.0, -math.sin(ps))
     pts = [(d[0] * 6, TOP + 2, d[2] * 6),
-           (d[0] * (out * 0.5), TOP - h * 0.9, d[2] * (out * 0.5)),
-           (d[0] * (out * 0.9), TOP - h, d[2] * (out * 0.9)),
-           (d[0] * out, TOP - h * 0.78, d[2] * out)]
-    tube(p, pts, [r, r * 0.95, r * 0.8, 0], 3, R_STAMEN, (STAM[0], STAM[2] - 1), lambda i: STAM[1] + min(47, 16 * i), tip=True)
+           (d[0] * 11, TOP - 0.55 * h, d[2] * 11),
+           (d[0] * out * 0.55, TOP - h, d[2] * out * 0.55),
+           (d[0] * out, TOP - 0.78 * h, d[2] * out),
+           (d[0] * out * 0.88, TOP - 0.5 * h, d[2] * out * 0.88)]
+    tube(p, pts, [r, r, r * 0.95, r * 0.85, 0], 3, R_STAMEN, (STAM[0], STAM[2] - 1), lambda i: STAM[1] + min(47, 12 * i), tip=True)
 
 
-for psi, h, out in ((0, 84, 66), (180, 84, 66), (52, 92, 52), (128, 92, 52), (232, 100, 44), (308, 100, 44)):
+for psi, h, out in ((0, 44, 62), (180, 44, 62), (45, 40, 54), (135, 40, 54), (225, 44, 50), (315, 44, 50)):
     stamen(neck, psi, h, out)
 
 
 def curl(p):
-    """The red-orange fiddlehead: a stem up from the centre, then 1.25 turns inwards in the x/y plane facing the
-    front: up the right side, over the top, down the left and into the middle (as the art draws it)."""
-    C = (-6.0, TOP - 100.0, 0.0)
-    r0, r1, turns = 42.0, 10.0, 1.2
-    pts = [(2, TOP + 2, 0), (4, TOP - 34, 0)]
-    nsp = 9
-    for i in range(nsp + 1):
-        s = i / nsp
-        a = math.radians(90 - 360 * turns * s)
-        r = r0 + (r1 - r0) * s
-        pts.append((C[0] + r * math.cos(a), C[1] + r * math.sin(a), 0.0))
-    radii = [12, 12] + [12 - 5.0 * (i / nsp) for i in range(nsp + 1)]
+    """The orange-red tendril: a tall stem up from the centre, then 300 degrees of hook curling inwards in the x/y
+    plane facing the front (up the left, over the top to the right, down and in: the Toei sheet's '6')."""
+    ZC = -12.0                        # the spiral's plane sits a little forward, in the gap between the front hooks
+    pts = [(2, TOP + 2, -3), (3, -62, -9), (3, -74, ZC)]
+    r0, r1, sweep, nsp = 25.0, 8.5, 300.0, 6
+    C = (3 + r0, -74.0)
+    for i in range(1, nsp + 1):
+        sgm = i / nsp
+        a = math.radians(180 - sweep * sgm)
+        r = r0 + (r1 - r0) * sgm
+        pts.append((C[0] + r * math.cos(a), C[1] - r * math.sin(a), ZC))
+    radii = [9.5, 9.5, 9.5] + [9.5 - 3.5 * (i / nsp) for i in range(1, nsp + 1)]
     radii[-1] = 0
-    tube(p, pts, radii, 4, R_STAMEN, (CURL[0], CURL[2] - 1), lambda i: CURL[1] + min(47, 4 * i), tip=True)
+    tube(p, pts, radii, 4, R_STAMEN, (CURL[0], CURL[2] - 1), lambda i: CURL[1] + min(47, 5 * i), tip=True)
 
 
 curl(neck)
 
 
-def petal(p, hinge_x, phi_deg, L, rise, fall, half_w, cup, tilt):
-    """A drooping lily petal in bone 4/5 space. The base is the stalk top (hinge_x back to the centre); phi from +x
-    towards -z; rise = how much it lifts first, fall = how far the tip droops (positive = down), tilt = the front edge
-    lower than the back edge (so side petals show their top to the viewer). Both sides are emitted."""
+def petal(p, base, phi_deg, L, rise, fall, half_w, cup, tilt, t_rings=(0.36, 0.72)):
+    """A lily petal: base = where it grows from (in the part's bone space); phi from +x towards -z; rise = how much it
+    lifts first, fall = how far the tip droops (positive = down), cup = edges lifted, tilt = the front edge lower
+    than the back edge (turns the face towards the viewer). t_rings: one ring = a kite, two = a waisted blade. Both
+    sides are emitted; the jagged edge is a cut-out in the texture."""
     ph = math.radians(phi_deg)
     d = (math.cos(ph), 0.0, -math.sin(ph))
     s = (math.sin(ph), 0.0, math.cos(ph))
-    base = (-hinge_x, 0.0, 0.0)
 
     def centre(t):
         return (base[0] + d[0] * L * t, base[1] - rise * math.sin(math.pi * t) + fall * t * t, base[2] + d[2] * L * t)
 
-    def width(t): return half_w * math.sin(math.pi * t ** 0.7) ** 0.8     # broad early, long pointed tip
+    def width(t): return half_w * math.sin(math.pi * t ** 0.6) ** 0.7     # broad early, pointed tip
 
     def tangent(t):
         return (d[0] * L, -rise * math.pi * math.cos(math.pi * t) + 2 * fall * t, d[2] * L)
 
-    T_RINGS = (0.30, 0.68)
-    c0 = centre(0.02)
-    vb = p.vert(*c0)
-    n0 = unit(cross(tangent(0.02), s)); n0 = n0 if n0[1] < 0 else (-n0[0], -n0[1], -n0[2])
-    nb_t, nb_b = p.norm(*n0), p.norm(-n0[0], -n0[1], -n0[2])
+    def normals(t):
+        n = unit(cross(tangent(t), s)); n = n if n[1] < 0 else (-n[0], -n[1], -n[2])
+        return p.norm(*n), p.norm(-n[0], -n[1], -n[2])
+
+    vb = p.vert(*centre(0.02)); nb_t, nb_b = normals(0.02)
     rings = []
-    for t in T_RINGS:
-        c = centre(t); w = width(t)
-        lift = cup * (w / half_w)
+    for t in t_rings:
+        c = centre(t); w = width(t); lift = cup * (w / half_w)
         e = []
         for sg in (-1, 1):
             z_edge = c[2] + sg * s[2] * w
             dz = (z_edge - c[2]) / max(w, 1e-6)                 # -1 .. 1, negative = towards the front
-            y = c[1] - lift + tilt * (-dz)
-            e.append(p.vert(c[0] + sg * s[0] * w, y, z_edge))
-        vc = p.vert(c[0], c[1], c[2])
-        n = unit(cross(tangent(t), s)); n = n if n[1] < 0 else (-n[0], -n[1], -n[2])
-        ring_t = [p.norm(*n) for _ in range(3)]; ring_b = [p.norm(-n[0], -n[1], -n[2]) for _ in range(3)]
-        rings.append(((e[0], vc, e[1]), ring_t, ring_b))
-    ct = centre(1.0)
-    vt = p.vert(*ct)
-    n = unit(cross(tangent(1.0), s)); n = n if n[1] < 0 else (-n[0], -n[1], -n[2])
-    nt_t, nt_b = p.norm(*n), p.norm(-n[0], -n[1], -n[2])
+            e.append(p.vert(c[0] + sg * s[0] * w, c[1] - lift + tilt * (-dz), z_edge))
+        vc = p.vert(*c)
+        nt, nbt = normals(t)
+        rings.append(((e[0], vc, e[1]), nt, nbt))
+    vt = p.vert(*centre(1.0)); nt_t, nt_b = normals(1.0)
     u0, uc, u1 = PETAL[0], (PETAL[0] + PETAL[2]) // 2, PETAL[2] - 1
     vv = lambda t: int(round(PETAL[1] + (PETAL[3] - 1 - PETAL[1]) * t))
-    (a0, ac, a1), an_t, an_b = rings[0]
-    (c0_, cc, c1), cn_t, cn_b = rings[1]
-    for sign, nbase, an, cn, ntip in ((1, nb_t, an_t, cn_t, nt_t), (-1, nb_b, an_b, cn_b, nt_b)):
-        want = lambda nid: p.n[nid]
-        p.tri((vb, a0, ac), (nbase, an[0], an[1]), [(uc, vv(0)), (u0, vv(T_RINGS[0])), (uc, vv(T_RINGS[0]))], R_PETAL, want=want(an[1]))
-        p.tri((vb, ac, a1), (nbase, an[1], an[2]), [(uc, vv(0)), (uc, vv(T_RINGS[0])), (u1, vv(T_RINGS[0]))], R_PETAL, want=want(an[1]))
-        p.quad((c0_, cc, a0, ac), (cn[0], cn[1], an[0], an[1]),
-               [(u0, vv(T_RINGS[1])), (uc, vv(T_RINGS[1])), (u0, vv(T_RINGS[0])), (uc, vv(T_RINGS[0]))], R_PETAL, want=want(an[1]))
-        p.quad((cc, c1, ac, a1), (cn[1], cn[2], an[1], an[2]),
-               [(uc, vv(T_RINGS[1])), (u1, vv(T_RINGS[1])), (uc, vv(T_RINGS[0])), (u1, vv(T_RINGS[0]))], R_PETAL, want=want(an[1]))
-        p.tri((c0_, cc, vt), (cn[0], cn[1], ntip), [(u0, vv(T_RINGS[1])), (uc, vv(T_RINGS[1])), (uc, vv(1))], R_PETAL, want=want(cn[1]))
-        p.tri((cc, c1, vt), (cn[1], cn[2], ntip), [(uc, vv(T_RINGS[1])), (u1, vv(T_RINGS[1])), (uc, vv(1))], R_PETAL, want=want(cn[1]))
+    for side in (0, 1):
+        nb = (nb_t, nb_b)[side]; ntip = (nt_t, nt_b)[side]
+        (a0, ac, a1), na = rings[0][0], rings[0][1 + side]
+        p.tri((vb, a0, ac), (nb, na, na), [(uc, vv(0)), (u0, vv(t_rings[0])), (uc, vv(t_rings[0]))], R_PETAL, want=p.n[na])
+        p.tri((vb, ac, a1), (nb, na, na), [(uc, vv(0)), (uc, vv(t_rings[0])), (u1, vv(t_rings[0]))], R_PETAL, want=p.n[na])
+        for i in range(1, len(rings)):
+            (c0_, cc, c1), nc = rings[i][0], rings[i][1 + side]
+            ta, tc = t_rings[i - 1], t_rings[i]
+            p.quad((c0_, cc, a0, ac), (nc, nc, na, na), [(u0, vv(tc)), (uc, vv(tc)), (u0, vv(ta)), (uc, vv(ta))], R_PETAL, want=p.n[na])
+            p.quad((cc, c1, ac, a1), (nc, nc, na, na), [(uc, vv(tc)), (u1, vv(tc)), (uc, vv(ta)), (u1, vv(ta))], R_PETAL, want=p.n[na])
+            (a0, ac, a1), na = (c0_, cc, c1), nc
+        tl = t_rings[-1]
+        p.tri((a0, ac, vt), (na, na, ntip), [(u0, vv(tl)), (uc, vv(tl)), (uc, vv(1))], R_PETAL, want=p.n[na])
+        p.tri((ac, a1, vt), (na, na, ntip), [(uc, vv(tl)), (u1, vv(tl)), (uc, vv(1))], R_PETAL, want=p.n[na])
 
 
 petR, petL = Part(), Part()
-# (phi, length, rise, fall, half width, cup, tilt): side petal long and drooping, front one shorter and lower,
-# back one shorter and rising
-PETALS = [(0, 150, 18, 58, 42, 8, 12), (48, 128, 12, 76, 38, 7, 5), (-48, 122, 12, -44, 36, 7, 0)]
-for phi, L, rise, fall, hw, cup, tilt in PETALS:
-    petal(petR, 22, phi, L, rise, fall, hw, cup, tilt)
-    petal(petL, -21, 180 - phi, L, rise, fall, hw, cup, tilt)
+# Six broad blades at 60 degrees drooping outward and down, their faces tilted towards the viewer; the four leaning
+# sideways flap with Tanemon's leaf bones (they run along +-x, which is what an rz hinge can lift), the front and back
+# ones hang from the neck bone. Kept modest so the stamens and the curl dominate. (phi, L, rise, fall, half w, cup, tilt)
+HINGE_DROP = 17.0                     # the receptacle is this far below the leaf hinges (world -210 vs -227)
+for phi, L, rise, fall, hw, cup, tilt in ((30, 104, 8, 56, 38, 8, 22), (-30, 100, 8, 50, 38, 8, 12)):
+    petal(petR, (-22.0, HINGE_DROP, 0.0), phi, L, rise, fall, hw, cup, tilt)
+    petal(petL, (21.0, HINGE_DROP, 0.0), 180 - phi, L, rise, fall, hw, cup, tilt)
+petal(neck, (0.0, TOP, 0.0), 90, 86, 8, 42, 38, 8, 0)        # front: shorter, so the eating nod keeps the eyes clear
+petal(neck, (0.0, TOP, 0.0), 270, 98, 8, 50, 38, 8, 0)       # back
 
 feet = []
-for bx, bz in ((48, -36), (-48, -36), (47, 43), (-47, 43)):
+for (bx, bz), alpha in (((48, -36), 37), ((-48, -36), 143), ((47, 43), 318), ((-47, 43), 222)):
     f = Part()
-    nub(f, 0, 0, 22, -26, 13, 16)          # bone at world y -24: ground at local +22
+    tendril(f, (float(bx), -24.0, float(bz)), alpha)       # Tanemon's foot bones: these four paddle in the walk
     feet.append(f)
 
 PARTS = [body, neck, petR, petL] + feet
@@ -368,12 +369,12 @@ PAL[R_FACE] = [(0, 0, 0), (248, 184, 208), (248, 200, 216), (248, 208, 224), (24
                (80, 192, 72), (152, 232, 112), (120, 32, 48), (232, 112, 136)]
 FC = {'s1': 1, 's2': 2, 's3': 3, 's4': 4, 's5': 5, 's6': 6, 's7': 7, 'ink': 8, 'white': 9, 'g0': 10, 'g1': 11,
       'g2': 12, 'g3': 13, 'red': 14, 'tongue': 15}
-PAL[R_PETAL] = [(0, 0, 0), (16, 16, 56), (24, 32, 112), (40, 64, 168), (64, 104, 216), (96, 144, 240), (136, 176, 248),
-                (208, 176, 32), (240, 216, 56), (248, 240, 136), (32, 40, 128), (0, 0, 0), (0, 0, 0), (0, 0, 0),
+PAL[R_PETAL] = [None, (16, 24, 80), (24, 56, 160), (48, 112, 216), (96, 152, 240), (144, 184, 240), (184, 208, 248),
+                (208, 176, 32), (240, 216, 56), (248, 240, 136), (32, 80, 192), (0, 0, 0), (0, 0, 0), (0, 0, 0),
                 (0, 0, 0), (0, 0, 0)]
 PC = {'line': 1, 'navy': 2, 'dark': 3, 'blue': 4, 'light': 5, 'pale': 6, 'ydark': 7, 'yellow': 8, 'ylight': 9, 'n2': 10}
-PAL[R_STAMEN] = [(0, 0, 0), (136, 128, 24), (200, 192, 40), (248, 224, 48), (248, 240, 152), (240, 152, 40),
-                 (232, 96, 40), (208, 48, 32), (152, 24, 32), (96, 40, 16), (248, 192, 48), (0, 0, 0), (0, 0, 0),
+PAL[R_STAMEN] = [None, (136, 120, 16), (200, 184, 32), (248, 224, 48), (248, 240, 152), (240, 144, 40),
+                 (232, 80, 32), (208, 48, 32), (152, 24, 32), (104, 40, 16), (248, 200, 48), (0, 0, 0), (0, 0, 0),
                  (0, 0, 0), (0, 0, 0), (0, 0, 0)]
 SC = {'olive2': 1, 'olive': 2, 'yellow': 3, 'ylight': 4, 'orange': 5, 'ored': 6, 'red': 7, 'dred': 8, 'brown': 9, 'oyellow': 10}
 PAL[R_SPRITE] = [None, (248, 208, 224), (216, 128, 168), (24, 16, 24), (80, 192, 72), (56, 88, 200), (24, 32, 104),
@@ -387,73 +388,73 @@ def region(x0, y0, x1, y1, row, fill=0):
 
 # -- body skin strip: gradient top (deep) -> bottom (white), back a shade darker, onion stripes near the top
 region(*SKIN, R_SKIN)
-ramp = [SK['d4'], SK['mid'], SK['m2'], SK['m3'], SK['pale'], SK['p2'], SK['p3'], SK['white'], SK['hi']]
+ramp = [SK['mid'], SK['mid'], SK['m2'], SK['m3'], SK['pale'], SK['p2'], SK['p3'], SK['white'], SK['hi']]
 for v in range(SKIN[1], SKIN[3]):
     t = (v - SKIN[1]) / float(SKIN[3] - 1 - SKIN[1])          # 0 top .. 1 bottom
     for u in range(SKIN[0], SKIN[2]):
         back = abs(u - 32) / 32.0                                 # 0 front .. 1 back
         k = (t ** 0.8) * 8.6 - back * 1.6 + (0.6 if u > 32 else 0.0)
         page[v, u] = ramp[int(max(0, min(8, round(k))))]
-rng = np.random.RandomState(3)
-for u in range(SKIN[0] + 2, SKIN[2], 5):
-    ln = 7 + int(rng.randint(0, 6)) - int(3 * abs(u - 32) / 32)
-    cv2.line(page, (u, SKIN[1]), (u + (1 if u % 2 else -1), SKIN[1] + ln), SK['stripe'] if abs(u - 32) < 24 else SK['stripe2'], 1)
-page[SKIN[1]:SKIN[1] + 2, SKIN[0]:SKIN[2]] = SK['d2']
+cap = [(SKIN[0], SKIN[1])] + [(u, SKIN[1] + (6 if (u // 4) % 2 else 3)) for u in range(SKIN[0], SKIN[2] + 1, 4)] + [(SKIN[2], SKIN[1])]
+cv2.fillPoly(page, [np.array(cap, np.int32)], SK['d3'])          # the onion's darker top, one step deeper pink
+for u, du in ((18, -2), (27, -1), (37, 1), (46, 2)):               # four faint lines converging on the neck
+    cv2.line(page, (u, SKIN[1] + 4), (u + du, SKIN[1] + 13), SK['d4'], 1)
 
 # -- neck strip: pale pink, darker at the top, dark pink converging stripes
 region(*NECK, R_SKIN)
 for v in range(NECK[1], NECK[3]):
     t = (v - NECK[1]) / float(NECK[3] - 1 - NECK[1])         # 0 top .. 1 bottom (bulb)
     page[v, NECK[0]:NECK[2]] = [SK['d4'], SK['mid'], SK['m2'], SK['m3'], SK['pale']][int(t * 4.99)]
-for u in (65, 69, 73, 77):
-    cv2.line(page, (u, NECK[1]), (u + 1, NECK[1] + 20), SK['stripe'], 1)
-    cv2.line(page, (u + 2, NECK[1]), (u + 2, NECK[1] + 9), SK['stripe2'], 1)
+for u in (66, 70, 74, 78):
+    cv2.line(page, (u, NECK[1]), (u, NECK[1] + 7), SK['d3'], 1)
 
-# -- feet: pink nub, darker underneath
+# -- roots: a deeper pink than the bulb so the tendrils read under it, darker towards the tips and along one edge
 region(*FOOT, R_SKIN)
 for v in range(FOOT[1], FOOT[3]):
     t = (v - FOOT[1]) / float(FOOT[3] - 1 - FOOT[1])
-    page[v, FOOT[0]:FOOT[2]] = [SK['pale'], SK['m3'], SK['m2'], SK['mid'], SK['d4'], SK['d3']][int(t * 5.99)]
+    page[v, FOOT[0]:FOOT[2]] = [SK['mid'], SK['d4'], SK['d4'], SK['d3']][int(t * 3.99)]
+page[FOOT[1]:FOOT[3], FOOT[0]:FOOT[0] + 3] = SK['d3']
 
-# -- petal: navy edges, blue body, pale centre, yellow midrib and starburst at the base
+# -- petal: medium blue, lighter towards the midrib, a light-blue rim, the yellow star at the base, and a jagged
+# edge cut out of the outer half (index 0 = transparent)
 region(*PETAL, R_PETAL)
 pw, ph = PETAL[2] - PETAL[0], PETAL[3] - PETAL[1]
 for v in range(PETAL[1], PETAL[3]):
     t = (v - PETAL[1]) / float(ph - 1)
     for u in range(PETAL[0], PETAL[2]):
         e = abs(u - (PETAL[0] + pw / 2.0 - 0.5)) / (pw / 2.0)      # 0 centre .. 1 edge
-        k = 2.8 - 2.4 * e * e * e - 1.0 * t + (0.7 if e < 0.3 and t < 0.55 else 0)
-        page[v, u] = [PC['navy'], PC['dark'], PC['blue'], PC['light'], PC['pale']][int(max(0, min(4, round(k))))]
-cv2.rectangle(page, (PETAL[0], PETAL[1]), (PETAL[2] - 1, PETAL[3] - 1), PC['line'], 1)
-cv2.rectangle(page, (PETAL[0] + 1, PETAL[1] + 1), (PETAL[2] - 2, PETAL[3] - 2), PC['navy'], 1)
-cv2.line(page, (PETAL[0] + 7, PETAL[1] + 36), (PETAL[0] + 3, PETAL[3] - 3), PC['navy'], 2)
-cv2.line(page, (PETAL[2] - 8, PETAL[1] + 36), (PETAL[2] - 4, PETAL[3] - 3), PC['navy'], 2)
-cx, cy = PETAL[0] + pw // 2, PETAL[1] + 11
+        k = 3.2 - 1.6 * e * e - 0.8 * t + (0.6 if t < 0.25 else 0) - (0.9 if t < 0.12 else 0)
+        page[v, u] = [PC['navy'], PC['dark'], PC['blue'], PC['light'], PC['pale']][int(max(1, min(4, round(k))))]
+cv2.rectangle(page, (PETAL[0], PETAL[1]), (PETAL[2] - 1, PETAL[3] - 1), PC['pale'], 2)
+cv2.rectangle(page, (PETAL[0], PETAL[1]), (PETAL[2] - 1, PETAL[3] - 1), PC['n2'], 1)
+teeth = []
+for v in range(PETAL[1] + 28, PETAL[3], 7):                         # notches on both edges, outer half only
+    teeth.append(np.array([(PETAL[0] - 1, v), (PETAL[0] + 5, v + 3), (PETAL[0] - 1, v + 6)], np.int32))
+    teeth.append(np.array([(PETAL[2], v + 3), (PETAL[2] - 6, v + 6), (PETAL[2], v + 9)], np.int32))
+cv2.fillPoly(page, teeth, 0)
+cx, cy = PETAL[0] + pw // 2, PETAL[1] + 12
 star = []
 for i in range(16):
-    a = math.pi * 2 * i / 16; r = 11 if i % 2 == 0 else 5
-    star.append((int(round(cx + r * math.cos(a))), int(round(cy + r * 0.8 * math.sin(a)))))
+    a = math.pi * 2 * i / 16; r = 14 if i % 2 == 0 else 6
+    star.append((int(round(cx + r * math.cos(a))), int(round(cy + r * 0.9 * math.sin(a)))))
 cv2.fillPoly(page, [np.array(star, np.int32)], PC['yellow'])
 cv2.polylines(page, [np.array(star, np.int32)], True, PC['ydark'], 1)
-cv2.line(page, (cx, cy), (cx, PETAL[1] + 40), PC['yellow'], 2)
-cv2.line(page, (cx + 1, cy + 4), (cx + 1, PETAL[1] + 38), PC['ylight'], 1)
-for dx in (-7, 7):
-    cv2.line(page, (cx + dx, cy + 12), (cx + dx * 2, cy + 22), PC['yellow'], 1)
+cv2.line(page, (cx, cy + 10), (cx, PETAL[3] - 20), PC['light'], 1)
 
-# -- stamen strip: olive base -> yellow tip, dark edges
+# -- stamen strip: olive at the base, bright yellow, pale at the hook; a dark edge line
 region(*STAM, R_STAMEN)
 for v in range(STAM[1], STAM[3]):
     t = (v - STAM[1]) / float(STAM[3] - 1 - STAM[1])
     page[v, STAM[0]:STAM[2]] = [SC['olive'], SC['yellow'], SC['yellow'], SC['yellow'], SC['ylight']][int(t * 4.99)]
 page[STAM[1]:STAM[3], STAM[0]] = SC['olive2']
 page[STAM[1] + 6:STAM[3], STAM[0] + 3:STAM[0] + 5] = SC['ylight']
-# -- curl strip: orange-yellow base -> red centre, brown edges
+# -- curl strip: orange-red with a yellow inner edge, deeper red towards the spiral's centre
 region(*CURL, R_STAMEN)
 for v in range(CURL[1], CURL[3]):
     t = (v - CURL[1]) / float(CURL[3] - 1 - CURL[1])
-    page[v, CURL[0]:CURL[2]] = [SC['orange'], SC['ored'], SC['red'], SC['red'], SC['dred']][int(t * 4.99)]
+    page[v, CURL[0]:CURL[2]] = [SC['ored'], SC['ored'], SC['ored'], SC['red'], SC['red']][int(t * 4.99)]
 page[CURL[1]:CURL[3], CURL[0]] = SC['brown']; page[CURL[1]:CURL[3], CURL[2] - 1] = SC['dred']
-page[CURL[1]:CURL[3], CURL[0] + 2] = SC['oyellow']
+page[CURL[1]:CURL[3], CURL[0] + 2:CURL[0] + 4] = SC['oyellow']
 
 
 # -- face: eye frames (32x24) and mouth frames (24x24, mirrored half, u = 0 is the centre line)
@@ -478,9 +479,9 @@ def draw_eye(x0, kind):
         cv2.ellipse(sub_, (cx - 4, cy - 4), (3, 3), 0, 0, 360, FC['white'], -1)  # big glint, upper inner
         cv2.ellipse(sub_, (cx + 4, cy + 6), (2, 1), 0, 0, 360, FC['white'], -1)  # small glint, lower outer
         sub_[cy + 8, cx + 2] = FC['g3']
-        # lashes: short strokes from the rim, upper-inner and lower-outer as in the art
-        for (ax, ay, bx, by) in ((cx - 9, cy - 8, cx - 12, cy - 11), (cx - 6, cy - 11, cx - 7, cy - 14), (cx + 9, cy + 8, cx + 12, cy + 11), (cx + 5, cy + 11, cx + 6, cy + 14)):
-            cv2.line(sub_, (ax, ay), (bx, by), FC['ink'], 1)
+        # three lashes as the Toei sheet draws them: upper-outer, lower-outer, and a short dash below the inner side
+        for (ax, ay, bx, by) in ((cx + 6, cy - 10, cx + 9, cy - 14), (cx + 9, cy + 7, cx + 13, cy + 10), (cx - 4, cy + 11, cx - 5, cy + 15)):
+            cv2.line(sub_, (ax, ay), (bx, by), FC['ink'], 2)
         if kind == 'angry':      # the upper lid slants down towards the nose
             pts = np.array([(cx - 12, cy - 13), (cx + 12, cy - 13), (cx + 12, cy - 9), (cx - 12, cy + 1)], np.int32)
             cv2.fillPoly(sub_, [pts], FC['s4'])
@@ -499,8 +500,8 @@ def draw_mouth(x0, kind):
     sub_ = page[24:48, x0:x0 + 24]
     smile = [(0, 15), (4, 13), (9, 11), (14, 10), (18, 9), (21, 7)]
     if kind == 'closed':
-        cv2.polylines(sub_, [np.array(smile, np.int32)], False, FC['ink'], 2)
-        cv2.line(sub_, (0, 15), (1, 12), FC['ink'], 2)       # the notch at the centre line
+        cv2.polylines(sub_, [np.array(smile, np.int32)], False, FC['ink'], 3)
+        cv2.line(sub_, (0, 15), (2, 11), FC['ink'], 3)       # the notch at the centre line (Tanemon's w)
         return
     open_h = {'slight': 4, 'open': 8, 'wide': 12}[kind]
     upper = [(0, 15 - open_h // 3), (6, 13 - open_h // 3), (12, 11 - open_h // 3), (18, 9 - open_h // 3)]
@@ -556,6 +557,19 @@ if __name__ == '__main__' and '--nosheet' not in sys.argv:
     if '--ticks' in sys.argv:
         for slot, ticks in ((0, (0, 6, 12)), (2, (0, 4, 9, 13)), (5, (10, 25, 40)), (8, (10, 24)), (9, (30,))):
             sheet(OUT + f'/yoko-slot{slot}.png', [f'{mp}:44:{tp}:{slot}:Yokomon'], panels='mesh:front,mesh:three', size=200, ticks=ticks)
+    if '--game' in sys.argv:          # the field camera: above and in front; plus a game-size (x3 nearest) strip
+        import animstudio as A
+        A.VIEWS['game'] = (25, 40); A.VIEWS['game2'] = (115, 40)
+        for slot, tick in ((0, 0), (2, 4), (2, 9), (8, 9)):
+            mod = A.Model(f'{mp}:44:{tp}:{slot}:Yokomon', slot)
+            rows = A.build([mod], ['mesh:game', 'mesh:game2', 'mesh:top', 'mesh:front'], 220)
+            fr = np.asarray(A.frame(rows, tick, 220).convert('RGB'))
+            body_ = fr[18:]
+            small = cv2.resize(body_, (body_.shape[1] // 4, body_.shape[0] // 4), interpolation=cv2.INTER_AREA)
+            small = cv2.resize(small, (small.shape[1] * 3, small.shape[0] * 3), interpolation=cv2.INTER_NEAREST)
+            canvas = np.full((fr.shape[0] + small.shape[0] + 4, fr.shape[1], 3), (20, 22, 26), np.uint8)
+            canvas[:fr.shape[0]] = fr; canvas[fr.shape[0] + 4:, :small.shape[1]] = small
+            cv2.imwrite(OUT + f'/yoko-game-s{slot}-t{tick}.png', cv2.cvtColor(canvas, cv2.COLOR_RGB2BGR))
     if '--cull' in sys.argv:
         import animsheet
         rest, _, _ = animsheet.slot_frames(b.m, 10, 0)

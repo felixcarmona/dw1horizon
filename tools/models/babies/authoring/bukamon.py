@@ -19,9 +19,9 @@ b = Baby('Bukamon', 2)
 PAGE_H, PAGE_W = b.tex.shape[:2]
 
 # ------------------------------------------------------------------ palettes (multiples of 8)
-G = [(48, 48, 56), (80, 80, 92), (104, 104, 116), (128, 128, 140), (152, 152, 164), (176, 176, 188), (200, 200, 208),
-     (224, 224, 232)]                                                     # body greys dark -> light
-BELLY = [(160, 200, 224), (192, 224, 240), (224, 240, 248)]               # pale blue belly
+G = [(56, 48, 56), (88, 80, 92), (112, 104, 116), (136, 128, 140), (160, 152, 164), (184, 176, 188), (208, 200, 208),
+     (232, 224, 232)]                                                     # warm mauve greys dark -> light (#9C9AA3 at G[4])
+BELLY = [(176, 208, 224), (208, 240, 248), (232, 248, 248)]               # pale blue belly (#CFEFF6)
 INK = (16, 16, 24)
 WHITE = (248, 248, 248)
 BLUE = [(16, 32, 96), (24, 64, 160), (48, 112, 216), (104, 176, 248), (168, 216, 248)]
@@ -146,7 +146,7 @@ def loft(mesh, rings, nseg, u0, u1, vs, row, cap_end=None, cap_start=None, phase
             k2 = (k + 1) % nseg
             a, b_ = ids[0][k], ids[0][k2]
             out = (mesh.v[a] + mesh.v[b_] + mesh.v[tip]) / 3 - cs[0]
-            mesh.tri(a, b_, tip, (uu(k), vs[0]), (uu(k + 1), vs[0]), ((uu(k) + uu(k + 1)) / 2, vs[0] - (vs[1] - vs[0]) * 0.5), row, out)
+            mesh.tri(a, b_, tip, (uu(k), vs[0]), (uu(k + 1), vs[0]), ((uu(k) + uu(k + 1)) / 2, vs[0]), row, out)
     return ids
 
 
@@ -166,30 +166,34 @@ NOSE_UV = (56, 104)                         # nose cap centre
 NOSE_R = 7
 
 # ------------------------------------------------------------------ geometry (world units; ground y = 0)
-HEAD_C = np.array([0.0, -150.0, -22.0]); HEAD_R = (62.0, 58.0, 60.0)      # rx, ry, rz
-LATS = [-72, -40, -6, 32, 56, 77]            # latitude rings (deg, + = up); the eye band is -6..32
-LONS = [10, 48, 80, 110, 140, 170, 190, 220, 250, 280, 312, 350]   # wider columns 0 and 10 carry the eyes
-NLON = 12                                    # longitudes at 15 + 30k deg from the front, the eye between 15 and 45
+# Round 3 (critic's list): body on the ground, flat paddle flippers held out to the sides, short blunt muzzle with
+# brow ridges and forward-facing eyes, short plump body with a fluke, one swept plume, ~370 primitives.
+HEAD_C = np.array([0.0, -106.0, -16.0]); HEAD_R = (54.0, 47.0, 50.0)      # rx, ry, rz: a little wider than tall
+LATS = [-70, -38, -4, 30, 54, 76]            # latitude rings (deg, + = up); the eye band is -4..30
+LONS = [8, 44, 80, 110, 140, 170, 190, 220, 250, 280, 316, 352]   # columns 0 and 10 (36 deg) carry the eyes, 16 deg apart
+NLON = 12
+BROW_LONS = {8, 44, 316, 352}                # the eye quads' top corners: pushed out as brow ridges
 
 obj0 = Mesh()
 
 
 def sphere_pt(lat, lon):
     la, lo = math.radians(lat), math.radians(lon)
-    cheek = 1.0 + 0.07 * max(0.0, math.cos(math.radians(lat + 22)) ** 3) * (0.6 + 0.4 * abs(math.sin(lo)))   # fuller cheeks
+    cheek = 1.0 + 0.06 * max(0.0, math.cos(math.radians(lat + 22)) ** 3) * (0.6 + 0.4 * abs(math.sin(lo)))   # fuller cheeks
     flat = 0.94 if lat > 40 else 1.0                                                                       # flatter crown
-    return HEAD_C + np.array([HEAD_R[0] * cheek * math.cos(la) * math.sin(lo), -HEAD_R[1] * flat * math.sin(la),
-                              -HEAD_R[2] * math.cos(la) * math.cos(lo)])
+    face = 1.0 - 0.08 * max(0.0, math.cos(lo)) ** 2 * (1.0 if -12 <= lat <= 42 else 0.4)                  # flatter face
+    brow = 1.10 if (lat == 30 and lon in BROW_LONS) else 1.0
+    return HEAD_C + brow * np.array([HEAD_R[0] * cheek * math.cos(la) * math.sin(lo), -HEAD_R[1] * flat * math.sin(la),
+                                     -HEAD_R[2] * face * math.cos(la) * math.cos(lo)])
 
 
 # -- head sphere
-lon = LONS
-rings = [[obj0.add(sphere_pt(la, lo)) for lo in lon] for la in LATS]
+rings = [[obj0.add(sphere_pt(la, lo)) for lo in LONS] for la in LATS]
 top = obj0.add(sphere_pt(90, 0)); bot = obj0.add(sphere_pt(-90, 0))
 hu = lambda k: HEAD_U[0] + (HEAD_U[1] - HEAD_U[0]) * k / NLON
 hv = lambda i: HEAD_V[1] - (HEAD_V[1] - HEAD_V[0]) * i / (len(LATS) - 1)     # low latitude -> bottom of the strip
-EYE_BAND = (2, 3)                            # ring indices -6 .. 32
-EYE_COLS = {0: 1, 10: -1}                    # column 0 (15..45 deg) = right eye, column 10 (315..345) = left eye
+EYE_BAND = (2, 3)                            # ring indices -4 .. 30
+EYE_COLS = {0: 1, 10: -1}                    # column 0 (8..44 deg) = right eye, column 10 (316..352) = left eye
 ex, ey, ew, eh = EYE_RECT
 for i in range(len(LATS) - 1):
     for k in range(NLON):
@@ -198,9 +202,9 @@ for i in range(len(LATS) - 1):
         out = (obj0.v[a] + obj0.v[b_] + obj0.v[c] + obj0.v[d]) / 4 - HEAD_C
         if i == EYE_BAND[0] and k in EYE_COLS:
             # eye quad: a, b_ = lower ring (k, k2), c, d = upper ring. Frame: u 8..47 inner -> outer, v 0 top .. 31 bottom
-            if EYE_COLS[k] > 0:    # right eye: k (15 deg) is the inner edge
+            if EYE_COLS[k] > 0:    # right eye: k is the inner edge
                 uva, uvb, uvc, uvd = (ex, ey + eh - 1), (ex + ew - 1, ey + eh - 1), (ex + ew - 1, ey), (ex, ey)
-            else:                  # left eye: k2 (-15 deg) is the inner edge
+            else:                  # left eye: k2 is the inner edge
                 uva, uvb, uvc, uvd = (ex + ew - 1, ey + eh - 1), (ex, ey + eh - 1), (ex, ey), (ex + ew - 1, ey)
             obj0.quad(a, b_, c, d, uva, uvb, uvc, uvd, ROW_EYE, out)
         else:
@@ -212,17 +216,15 @@ for k in range(NLON):
     a, b_ = rings[0][k], rings[0][k2]
     obj0.tri(a, b_, bot, (hu(k), hv(0)), (hu(k + 1), hv(0)), ((hu(k) + hu(k + 1)) / 2, HEAD_V[1]), ROW_BODY, (obj0.v[a] + obj0.v[b_]) / 2 + [0, 40, 0] - HEAD_C)
 
-# -- muzzle: loft along -z out of the lower front of the head; the mouth frame on the three lower faces of the last
-# interval, the nose cap at the tip
-MUZ = [((0, -126, -52), 38, 24, (0, 0, -1)), ((0, -125, -82), 36, 23, (0, 0.05, -1)), ((0, -124, -98), 31, 19, (0, 0.1, -1)),
-       ((0, -124, -107), 25, 14, (0, 0.15, -1))]
+# -- muzzle: a loft along -z out of the lower front of the head (round 4: longer, the lip line painted along its sides); the nose
+# bump is the fan at the tip, the mouth quad fills the lower half of the front, a chin triangle below it
+MUZ = [((0, -86, -36), 36, 22, (0, 0, -1)), ((0, -86, -56), 34, 21, (0, 0.05, -1)), ((0, -85, -74), 30, 18, (0, 0.1, -1)),
+       ((0, -85, -88), 24, 14, (0, 0.15, -1))]     # a longer, crocodile-like snout (~0.7 head radii beyond the face)
 NM = 8
 mz = Mesh()
 mids = loft(mz, MUZ, NM, MUZ_U[0], MUZ_U[1], [MUZ_V[1], MUZ_V[0] + 10, MUZ_V[0] + 4, MUZ_V[0]], ROW_BODY, phase=0.0)
-# the front of the muzzle: ring 3 verts at 0 (top), 45, 90 (-x), 135, 180 (bottom), 225, 270 (+x), 315 deg.
-# Upper half: a fan to the nose tip (nose cap texture). Lower half: the mouth quad (2, 3, 5, 6) + a chin triangle.
 r3 = mids[3]
-nose = mz.add((0, -128, -113))
+nose = mz.add((0, -90, -94))
 ang = lambda q: 2 * math.pi * q / NM
 for (k, k2) in [(6, 7), (7, 0), (0, 1), (1, 2)]:
     uva = (NOSE_UV[0] + NOSE_R * math.sin(ang(k)), NOSE_UV[1] - NOSE_R * math.cos(ang(k)))
@@ -233,90 +235,85 @@ mz.quad(r3[6], r3[2], r3[3], r3[5], (mx, my), (mx + mw - 1, my), (mx + mw - 1 - 
 mz.tri(r3[3], r3[4], r3[5], (MUZ_U[0] + 4, MUZ_V[0] + 2), (MUZ_U[0] + 10, MUZ_V[0] + 2), (MUZ_U[0] + 16, MUZ_V[0] + 2), ROW_BODY, (0, 0.6, -0.8))
 obj0.merge(mz)
 
-# -- body and tail: a loft along a curve from under the head, back, then up into the curled tail
-BODY = [((0, -104, -24), 37, 26), ((0, -90, 4), 36, 28), ((0, -78, 34), 32, 25), ((0, -70, 58), 26, 20),
-        ((0, -74, 80), 19, 15), ((0, -90, 96), 14, 12), ((0, -114, 102), 10, 9), ((0, -138, 96), 6, 6)]
-TAIL_TIP = (0, -156, 84)
-CHEST_CAP = (0, -118, -34)
-cs = [np.array(c, float) for c, _, _ in BODY] + [np.array(TAIL_TIP, float)]
+# -- body: short and plump, resting on the ground, tapering into a short tail that rises ~20 deg and ends in a fluke
+BODY = [((0, -44, -30), 36, 27), ((0, -36, -2), 40, 31), ((0, -33, 28), 38, 29), ((0, -35, 52), 30, 24),
+        ((0, -41, 68), 20, 16), ((0, -50, 84), 12, 10)]
+TAIL_END = (0, -56, 94)
+CHEST_CAP = (0, -52, -44)
+cs = [np.array(c, float) for c, _, _ in BODY] + [np.array(TAIL_END, float)]
 brings = []
 for i, (c, rx, ry) in enumerate(BODY):
-    tg = cs[i + 1] - (cs[i - 1] if i > 0 else np.array([0, -140, -40.0]))
+    tg = cs[i + 1] - (cs[i - 1] if i > 0 else np.array([0, -60, -60.0]))
     brings.append((c, rx, ry, tg))
 NB = 10
 bv = [BODY_V[0] + (BODY_V[1] - BODY_V[0]) * i / (len(BODY) - 1) for i in range(len(BODY))]
 bo = Mesh()
-loft(bo, brings, NB, BODY_U[0], BODY_U[1], bv, ROW_BODY, cap_end=TAIL_TIP, cap_start=CHEST_CAP, phase=math.pi / NB, transport=True)
+loft(bo, brings, NB, BODY_U[0], BODY_U[1], bv, ROW_BODY, cap_end=TAIL_END, cap_start=CHEST_CAP, phase=math.pi / NB, transport=True)
+# fluke: a flat bilobed sheet, both sides (own vertices each, opposite winding)
+FL_C, FL_L, FL_R, FL_N = (0, -54, 90), (-18, -58, 111), (18, -58, 111), (0, -57, 103)
+fuv = lambda x, z: (BODY_U[0] + 40 + x * 0.6, BODY_V[1] - 4 - (z - 90) * 0.3)
+for side in (-1, 1):
+    ids_ = [bo.add(p) for p in (FL_C, FL_L, FL_R, FL_N)]
+    bo.tri(ids_[0], ids_[1], ids_[3], fuv(0, 96), fuv(-18, 118), fuv(0, 110), ROW_BODY, (0, side, 0))
+    bo.tri(ids_[0], ids_[3], ids_[2], fuv(0, 96), fuv(0, 110), fuv(18, 118), ROW_BODY, (0, side, 0))
 obj0.merge(bo)
 
-# -- flame: three licks, each a 4-sided loft with two bent mid rings and a pointed tip; UV v runs base -> tip on
-# the flame strip (red at the bottom, yellow at the top)
-FLAME_BASE = np.array([0.0, -204.0, -14.0])
+# -- flame: one plume from the crown: a main lick leaning back ~30 deg and two short side licks, each a 4-sided loft
+# (base ring, bulge ring, tip). UV v runs base (yellow) -> tip (red-orange) on the flame strip.
+FLAME_BASE = np.array([0.0, -150.0, -4.0])
 
 
-def lick(base, tip, w, bend1, bend2):
+def lick(base, tip, w, bend):
     fl = Mesh()
     base, tip = np.asarray(base, float), np.asarray(tip, float)
     d = tip - base
-    r1 = base + d * 0.36 + bend1; r2 = base + d * 0.70 + bend2
-    rings_ = [(base, w, w * 0.7, d), (r1, w * 1.05, w * 0.72, r2 - base), (r2, w * 0.70, w * 0.48, tip - r1)]
-    vs = [FLAME_V[1] - 1, FLAME_V[1] - 20, FLAME_V[1] - 38]
+    r1 = base + d * 0.4 + bend
+    rings_ = [(base, w, w * 0.7, d), (r1, w * 0.95, w * 0.62, tip - base)]
+    vs = [FLAME_V[1] - 1, FLAME_V[1] - 24]
     loft(fl, rings_, 4, FLAME_U[0], FLAME_U[1], vs, ROW_FLAME, cap_end=tip, phase=math.pi / 4,
          uv_cap=((FLAME_U[0] + FLAME_U[1]) / 2, FLAME_V[0] + 1))
     return fl
 
 
-obj0.merge(lick(FLAME_BASE + [2, 6, 0], FLAME_BASE + [24, -80, 22], 24, [2, 0, 4], [16, 0, 14]))
-obj0.merge(lick(FLAME_BASE + [-3, 5, 2], FLAME_BASE + [-22, -60, 6], 16, [-6, 0, 2], [-11, 0, 4]))
-obj0.merge(lick(FLAME_BASE + [2, 5, -5], FLAME_BASE + [7, -44, -20], 13, [2, 0, -4], [4, 0, -8]))
+obj0.merge(lick(FLAME_BASE + [0, 4, 0], FLAME_BASE + [3, -46, 24], 20, [1, 0, 7]))
+obj0.merge(lick(FLAME_BASE + [-4, 4, -2], FLAME_BASE + [-17, -26, 2], 12, [-4, 0, 1]))
+obj0.merge(lick(FLAME_BASE + [4, 4, -3], FLAME_BASE + [12, -24, -8], 11, [3, 0, -3]))
 
 set_object(0, obj0, (0, -69, 0))
 
-# -- flippers on the ear-root bones. Right one built in world coordinates, mirrored for the left.
-FLIP_ROOT = np.array([34.0, -100.0, -30.0])        # inside the chest, 9 right / 9 below / 11 behind the joint
-FLIP_TIP = np.array([74.0, -2.0, -62.0])        # splayed ~22 deg so the poor-condition idle (rz 31 deg inward) barely closes them
-FLIP_N = np.array([0.30, 0.15, -0.94])             # the paddle's flat face looks forward and a little outward
-FLIP_N /= np.linalg.norm(FLIP_N)
-SECT = [(0.0, 22, 8), (0.30, 36, 8), (0.60, 30, 6), (0.85, 16, 3)]   # (t, chord width, thickness)
+# -- flippers: 3D paddles held out to the sides (~40 deg down, ~35 deg forward) on the ear-root bones (pivot
+# (+-25,-109,-41), the root 3 right / 51 below / 19 ahead of it, buried in the flank). Diamond sections: thick at the
+# root, wide in the middle, tapering to a point (the root cap is buried, so none). Right one built in world coordinates.
+FLIP_ROOT = np.array([28.0, -58.0, -22.0])
+FLIP_D = np.array([0.62, 0.64, -0.45]); FLIP_D /= np.linalg.norm(FLIP_D)
+FLIP_LEN = 66.0
+FLIP_N = np.array([0.2, -0.65, -0.73]); FLIP_N -= (FLIP_N @ FLIP_D) * FLIP_D; FLIP_N /= np.linalg.norm(FLIP_N)
+SECT = [(0.0, 16, 12), (0.4, 30, 9), (0.8, 22, 4)]           # (t along, chord width, thickness)
 
 
 def flipper():
     m = Mesh()
-    d = FLIP_TIP - FLIP_ROOT; d /= np.linalg.norm(d)
-    chord = np.cross(d, FLIP_N); chord /= np.linalg.norm(chord)
-    nrm = np.cross(chord, d)
-    rings_ = []
-    for t, w, th in SECT:
-        c = FLIP_ROOT + (FLIP_TIP - FLIP_ROOT) * t
-        c = c + nrm * (6 * math.sin(t * math.pi))                        # slight cup
-        rings_.append((c, w / 2, th / 2, d))
-    # ring_pts: 'up' axis = ry (thickness) -> use nrm as up, so rx = chord
     ids = []
-    for (c, rx, ry, tg) in rings_:
-        pts = ring_pts(c, rx, ry, tg, 4, phase=0.0, up=nrm)
+    for tt, w, th in SECT:
+        c = FLIP_ROOT + FLIP_D * FLIP_LEN * tt
+        pts = ring_pts(c, w / 2, th / 2, FLIP_D, 4, phase=0.0, up=FLIP_N)      # 0 = +normal face, 90 = edge
         ids.append([m.add(p) for p in pts])
-    cs_ = [r[0] for r in rings_]
+    cs_ = [FLIP_ROOT + FLIP_D * FLIP_LEN * tt for tt, _, _ in SECT]
     fu = lambda k: FLIP_U[0] + (FLIP_U[1] - FLIP_U[0]) * k / 4
-    fv = [FLIP_V[0] + (FLIP_V[1] - FLIP_V[0]) * t for t, _, _ in SECT]
-    for i in range(len(rings_) - 1):
+    fv = [FLIP_V[0] + (FLIP_V[1] - FLIP_V[0]) * tt for tt, _, _ in SECT]
+    for i in range(len(SECT) - 1):
         for k in range(4):
             k2 = (k + 1) % 4
             a, b_, c, dd = ids[i][k], ids[i][k2], ids[i + 1][k2], ids[i + 1][k]
             cen = (m.v[a] + m.v[b_] + m.v[c] + m.v[dd]) / 4
             m.quad(a, b_, c, dd, (fu(k), fv[i]), (fu(k + 1), fv[i]), (fu(k + 1), fv[i + 1]), (fu(k), fv[i + 1]), ROW_BODY,
                    cen - (cs_[i] + cs_[i + 1]) / 2)
-    tip = m.add(FLIP_TIP)
+    tip = m.add(FLIP_ROOT + FLIP_D * FLIP_LEN)
     for k in range(4):
         k2 = (k + 1) % 4
         a, b_ = ids[-1][k], ids[-1][k2]
         m.tri(a, b_, tip, (fu(k), fv[-1]), (fu(k + 1), fv[-1]), ((fu(k) + fu(k + 1)) / 2, FLIP_V[1] - 1), ROW_BODY,
-              (m.v[a] + m.v[b_] + m.v[tip]) / 3 - cs_[-1] + d * 4)
-    # root cap (hidden inside the body, closes the prism)
-    rc = m.add(FLIP_ROOT - d * 2)
-    for k in range(4):
-        k2 = (k + 1) % 4
-        a, b_ = ids[0][k], ids[0][k2]
-        m.tri(a, b_, rc, (fu(k), fv[0]), (fu(k + 1), fv[0]), ((fu(k) + fu(k + 1)) / 2, FLIP_V[0]), ROW_BODY, -d)
+              (m.v[a] + m.v[b_] + m.v[tip]) / 3 - cs_[-1] + FLIP_D * 4)
     return m
 
 
@@ -347,38 +344,43 @@ def vgrad(x0, y0, w, h, stops):
         t[ya:yb, x0:x0 + w, :3] = c
 
 
-# head skin: darker on top (back of the head), light at the cheeks and chin
+# head skin: a shade darker at the back of the head, light at the cheeks and chin
 vgrad(HEAD_U[0], HEAD_V[0], HEAD_U[1] - HEAD_U[0], HEAD_V[1] - HEAD_V[0], [G[4], G[4], G[5], G[5], G[5], G[6]])
 hc = lambda k: HEAD_U[0] + (HEAD_U[1] - HEAD_U[0]) * k // NLON
-t[HEAD_V[0]:HEAD_V[1], hc(4):hc(7), :3] = G[3]                       # the back of the head a shade darker
+t[HEAD_V[0]:HEAD_V[1], hc(4):hc(7), :3] = G[3]
 t[HEAD_V[0]:HEAD_V[1], hc(3):hc(4), :3] = G[4]; t[HEAD_V[0]:HEAD_V[1], hc(7):hc(8), :3] = G[4]
-# body: back dark, flanks mid, belly pale blue (bottom columns = angles around the bottom: phase pi/10, k 4..6 of 10)
+# body: back a shade darker, flanks mid; a big pale belly oval over the lower half (columns 2..7 = angles 90..270
+# around the bottom) from the chest to the tail root, with a thin darker rim like the line art
 bw = BODY_U[1] - BODY_U[0]; bh = BODY_V[1] - BODY_V[0]
-vgrad(BODY_U[0], BODY_V[0], bw, bh, [G[4], G[4], G[4], G[5], G[5], G[5], G[6]])
+vgrad(BODY_U[0], BODY_V[0], bw, bh, [G[4], G[4], G[5], G[5], G[5], G[5]])
 col = lambda k: BODY_U[0] + bw * k // NB
-# columns: angle 0 = up; k-th column covers angles (18 + 36k) deg .. the bottom is k = 4 (162..198) with 3, 5 beside it
-for k in (3, 4, 5):
-    c = BELLY[1] if k == 4 else BELLY[0]
-    # chest/belly on rings 0..3 (v 56..~77), the tail's inner curl lighter on rings 5..7
-    t[BODY_V[0]:BODY_V[0] + bh * 3 // 7 + 2, col(k):col(k + 1), :3] = c
-    t[BODY_V[0] + bh * 5 // 7:BODY_V[1], col(k):col(k + 1), :3] = BELLY[2] if k == 4 else BELLY[1]
-# a darker back ridge
 for k in (9, 0):
     t[BODY_V[0]:BODY_V[1], col(k):col(k + 1), :3] = G[3]
-# flippers: outer face mid grey, inner face lighter, edges darker
+belly = np.array([[col(2), BODY_V[0]], [col(8), BODY_V[0]], [col(8) - 2, BODY_V[0] + 18], [col(7), BODY_V[0] + 30],
+                  [col(6), BODY_V[0] + 36], [col(4), BODY_V[0] + 36], [col(3), BODY_V[0] + 30], [col(2) + 2, BODY_V[0] + 18]], np.int32)
+cv2.fillPoly(t, [belly], BELLY[1] + (255,), cv2.LINE_8)
+cv2.polylines(t, [belly], True, G[2] + (255,), 1, cv2.LINE_8)
+t[BODY_V[0]:BODY_V[0] + 2, col(2) + 1:col(8) - 1, :3] = BELLY[1]        # no rim at the chest cap seam
+t[BODY_V[0] + 4:BODY_V[0] + 16, col(4) + 1:col(6) - 1, :3] = BELLY[2]   # lighter centre
+# flippers: mid grey with a darker leading edge and a lighter trailing half
 fw = FLIP_U[1] - FLIP_U[0]
 fill(FLIP_U[0], FLIP_V[0], fw, FLIP_V[1] - FLIP_V[0], G[4])
 fill(FLIP_U[0] + fw // 2, FLIP_V[0], fw // 2, FLIP_V[1] - FLIP_V[0], G[5])
-fill(FLIP_U[0] + fw // 4 - 1, FLIP_V[0], 2, FLIP_V[1] - FLIP_V[0], G[3])
-fill(FLIP_U[0] + 3 * fw // 4 - 1, FLIP_V[0], 2, FLIP_V[1] - FLIP_V[0], G[3])
-# muzzle: light grey, lighter towards the tip; nose cap with a dark nostril mark
+fill(FLIP_U[0], FLIP_V[0], 2, FLIP_V[1] - FLIP_V[0], G[3])
+fill(FLIP_U[1] - 2, FLIP_V[0], 2, FLIP_V[1] - FLIP_V[0], G[3])
+# muzzle: light grey, lighter towards the tip; nose cap with two nostril dots
 fill(MUZ_U[0], MUZ_V[0], MUZ_U[1] - MUZ_U[0], MUZ_V[1] - MUZ_V[0], G[5])
 fill(MUZ_U[0], MUZ_V[0], MUZ_U[1] - MUZ_U[0], 5, G[6])
+for ang_deg in (112, 248):                                           # the lip line along the sides of the snout
+    u = MUZ_U[0] + int(round((MUZ_U[1] - MUZ_U[0]) * ang_deg / 360))
+    t[MUZ_V[0]:MUZ_V[0] + 11, u - 1:u + 1, :3] = INK
 cv2.circle(t, NOSE_UV, NOSE_R + 1, G[6] + (255,), -1, cv2.LINE_8)
-t[NOSE_UV[1] - 4, NOSE_UV[0] - 1:NOSE_UV[0] + 1, :3] = G[2]                      # a small nostril mark
-# flame strip: red at the bottom, yellow at the top
+t[NOSE_UV[1] - 4, NOSE_UV[0] - 3, :3] = G[2]; t[NOSE_UV[1] - 4, NOSE_UV[0] + 2, :3] = G[2]
+# flame strip: yellow core at the base, orange, red-orange tips; the left half (two of the four faces) lighter
 vgrad(FLAME_U[0], FLAME_V[0], FLAME_U[1] - FLAME_U[0], FLAME_V[1] - FLAME_V[0],
-      [FLAME[6], FLAME[5], FLAME[4], FLAME[3], FLAME[3], FLAME[2], FLAME[1], FLAME[0]])
+      [FLAME[1], FLAME[2], FLAME[2], FLAME[3], FLAME[4], FLAME[5], FLAME[6]])
+vgrad(FLAME_U[0], FLAME_V[0], (FLAME_U[1] - FLAME_U[0]) // 2, FLAME_V[1] - FLAME_V[0],
+      [FLAME[2], FLAME[3], FLAME[4], FLAME[5], FLAME[5], FLAME[6], FLAME[6]])
 
 
 # ------------------------------------------------------------------ eye and mouth frames
@@ -392,6 +394,7 @@ def eye(x0, y0, kind):
         # the eye: a tall oval, black outline; iris fills it with a vertical blue gradient; white highlights
         cv2.ellipse(sub, (cx, cy), (14, 15), 0, 0, 360, INK + (255,), -1, cv2.LINE_8)
         cv2.ellipse(sub, (cx, cy + 1), (12, 13), 0, 0, 360, BLUE[1] + (255,), -1, cv2.LINE_8)
+        cv2.ellipse(sub, (cx, cy - 1), (15, 15), 0, 190, 350, INK + (255,), 3, cv2.LINE_8)    # heavy brow / upper lid
         yy, xx = np.mgrid[0:32, 0:40]
         inside = ((xx - cx) / 12.0) ** 2 + ((yy - cy - 1) / 13.0) ** 2 <= 1
         sub[inside & (yy < cy - 5), :3] = BLUE[2]
@@ -429,24 +432,24 @@ def mouth(x0, y0, kind):
     ym = 9
     sub[0:ym + 1, :, :3] = G[6]                     # the upper lip as light as the nose above it
     if kind == 'closed':
-        cv2.line(sub, (3, ym + 1), (36, ym), INK + (255,), 2, cv2.LINE_8)          # a thin, nearly straight mouth line
-        cv2.line(sub, (1, ym - 1), (4, ym + 1), INK + (255,), 1, cv2.LINE_8)
-        cv2.line(sub, (35, ym), (38, ym - 2), INK + (255,), 1, cv2.LINE_8)
-        for fx in (9, 18):                                                         # two fangs rising from the lower jaw
-            cv2.fillPoly(sub, [np.array([[fx - 3, ym + 5], [fx + 3, ym + 5], [fx, ym - 2]], np.int32)], WHITE + (255,), cv2.LINE_8)
-            cv2.polylines(sub, [np.array([[fx - 3, ym + 5], [fx, ym - 2], [fx + 3, ym + 5]], np.int32)], False, INK + (255,), 1, cv2.LINE_8)
+        cv2.line(sub, (2, ym + 1), (37, ym), INK + (255,), 2, cv2.LINE_8)          # the lip line
+        cv2.line(sub, (0, ym - 2), (3, ym + 1), INK + (255,), 2, cv2.LINE_8)
+        cv2.line(sub, (36, ym), (39, ym - 2), INK + (255,), 2, cv2.LINE_8)
+        for fx in (13, 26):                                                        # two fangs at the front of the upper jaw
+            cv2.fillPoly(sub, [np.array([[fx - 3, ym], [fx + 3, ym], [fx, ym + 7]], np.int32)], WHITE + (255,), cv2.LINE_8)
+            cv2.polylines(sub, [np.array([[fx - 3, ym + 1], [fx, ym + 7], [fx + 3, ym + 1]], np.int32)], False, INK + (255,), 1, cv2.LINE_8)
     elif kind == 'half':
-        cv2.ellipse(sub, (19, ym + 1), (14, 4), 0, 0, 180, MOUTH_DARK + (255,), -1, cv2.LINE_8)
-        cv2.ellipse(sub, (19, ym + 1), (14, 4), 0, 0, 180, INK + (255,), 1, cv2.LINE_8)
-        cv2.line(sub, (5, ym + 1), (33, ym + 1), INK + (255,), 1, cv2.LINE_8)
-        for fx in (11, 27):
-            cv2.fillPoly(sub, [np.array([[fx - 2, ym + 5], [fx + 2, ym + 5], [fx, ym + 1]], np.int32)], WHITE + (255,), cv2.LINE_8)
+        cv2.ellipse(sub, (19, ym + 1), (15, 5), 0, 0, 180, MOUTH_DARK + (255,), -1, cv2.LINE_8)
+        cv2.ellipse(sub, (19, ym + 1), (15, 5), 0, 0, 180, INK + (255,), 1, cv2.LINE_8)
+        cv2.line(sub, (4, ym + 1), (34, ym + 1), INK + (255,), 2, cv2.LINE_8)
+        for fx in (13, 26):
+            cv2.fillPoly(sub, [np.array([[fx - 3, ym + 1], [fx + 3, ym + 1], [fx, ym + 6]], np.int32)], WHITE + (255,), cv2.LINE_8)
     elif kind == 'open':
-        cv2.ellipse(sub, (19, ym + 2), (15, 9), 0, 0, 360, MOUTH_DARK + (255,), -1, cv2.LINE_8)
-        cv2.ellipse(sub, (19, ym + 6), (8, 4), 0, 0, 360, TONGUE + (255,), -1, cv2.LINE_8)
-        cv2.ellipse(sub, (19, ym + 2), (15, 9), 0, 0, 360, INK + (255,), 1, cv2.LINE_8)
-        for fx in (10, 28):
-            cv2.fillPoly(sub, [np.array([[fx - 2, ym + 11], [fx + 2, ym + 11], [fx, ym + 6]], np.int32)], WHITE + (255,), cv2.LINE_8)
+        cv2.ellipse(sub, (19, ym + 3), (15, 9), 0, 0, 360, MOUTH_DARK + (255,), -1, cv2.LINE_8)
+        cv2.ellipse(sub, (19, ym + 7), (8, 4), 0, 0, 360, TONGUE + (255,), -1, cv2.LINE_8)
+        cv2.ellipse(sub, (19, ym + 3), (15, 9), 0, 0, 360, INK + (255,), 2, cv2.LINE_8)
+        for fx in (13, 26):
+            cv2.fillPoly(sub, [np.array([[fx - 3, ym - 4], [fx + 3, ym - 4], [fx, ym + 3]], np.int32)], WHITE + (255,), cv2.LINE_8)
     t[y0:y0 + 24, x0:x0 + 40] = sub
 
 
