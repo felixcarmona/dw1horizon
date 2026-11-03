@@ -402,6 +402,19 @@ slots, Puppetmon from DCB with Ogremon's (the club hand drives the hammer hand),
 texture exact, DW2's blink, its tail re-hung under the pelvis) with MetalGreymon's. Parts the donor does not drive
 (tails, extra wings and arms) play the source game's own idle in the looping everyday slots, retimed to whole cycles.
 
+**The hand-made babies 470-477.** Digimon no source game has, drawn on a DW1 baby's rig: Pabumon (on Punimon),
+Pichimon (Koromon), YukimiBotamon (Botamon) and Nyokimon (Yuramon) are Fresh; Motimon (Koromon), Bukamon (Koromon),
+Nyaromon (Tokomon) and Yokomon (Tanemon) are In-Training. Each keeps the donor's skeleton, animation table and every
+animation program byte for byte (`effects_like` is the donor, so Bubble and the condition bubble are native); the mesh,
+UVs and the whole texture page, eye and mouth frames included, are ours. `tools/models/babies/authoring/` holds the
+drawing scripts (NumPy/OpenCV, developer only); the build replays plain MD3 deltas against the player's donor model and
+ALLTIM entry (`content/modeldelta/babies.json` pins sources, deltas and results), through the `builder` of each
+registry entry, so the browser patcher needs no third-party package. A Fresh grows into its In-Training through
+`evolutionFresh` (`content/tables/evolution-rules.json`, eight rows, now full); each In-Training lists its canon Rookie
+first (Tentomon, Gomamon, Salamon, Biyomon), then three Rookies that share a specialty and differ in the picker's
+highest stat. `PYTHONPATH=tools python3 -m unittest tools.test_native_babies` checks the rig, the animation bytes, the
+storage budget and that the deltas' literal bytes are not the donor's.
+
 ## Limits of the imports
 
 - No source game has care animations; DCB and DW2003 have no blink frames (DW2 does), so many imports keep their eyes
