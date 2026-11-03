@@ -138,6 +138,91 @@ engine archives remain on their Releases, not on Pages. The site builder limits
 the site to 900 MiB and each file to less than 100 MiB. No COOP/COEP headers are
 required by the current worker/OPFS implementation.
 
+## The desktop apps
+
+Pushing the tag also runs `.github/workflows/desktop.yml`: it builds Horizon Patcher for Windows and macOS from the
+tag's source, self-tests both (no discs), and its `attach` job uploads `Horizon-Patcher-Windows.zip` and
+`Horizon-Patcher-macOS.zip` to the tag's release, the draft staged above (it waits up to ten minutes for it). It
+does not publish the release or touch Pages; `release.yml` does that and does not wait for the apps. If the apps
+come later or fail, run "Desktop patchers" by hand with the tag: it rebuilds and replaces both zips. The apps take
+the latest release's package themselves, so an older app keeps working with newer releases as long as their
+patcher keeps `GUI_API = 1` ([the patcher guide](../patcher.md#the-desktop-app)).
+
+## Code signing
+
+Unsigned apps open only after a warning (Windows SmartScreen, macOS Gatekeeper); the players' README says how to
+get past it. Signing removes the warning and nothing else changes.
+
+**macOS (Developer ID, outside the App Store).** The macOS job signs every binary of the app with the hardened
+runtime and a secure timestamp (PyInstaller, inside out, then the bundle), with only the entitlement in
+`tools/patcher/app/entitlements.plist`, sends it to Apple's notary service (`xcrun notarytool submit --wait`),
+staples the ticket to the app (`xcrun stapler staple`) and zips the stapled app with `ditto -c -k --keepParent`. It
+does this when these repository secrets exist and the run is not a pull request; without them it builds the app
+unsigned and says so in a warning:
+
+| Secret | What |
+|---|---|
+| `MACOS_CERT_P12` | the Developer ID Application certificate with its private key, a `.p12` file, base64 |
+| `MACOS_CERT_PASSWORD` | the `.p12` file's password |
+| `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8` | an App Store Connect API key for notarytool: its key ID, the issuer ID, the `.p8` file's text |
+
+Making them, once (no Mac needed; OpenSSL on Linux does the key and the certificate request):
+
+1. The private key and the certificate signing request:
+
+   ```sh
+   openssl genrsa -out developer-id.key 2048
+   openssl req -new -key developer-id.key -out developer-id.csr -subj "/emailAddress=YOUR_APPLE_ID_EMAIL/CN=YOUR NAME"
+   ```
+
+   Keep `developer-id.key` private (not in any repository).
+2. At [developer.apple.com](https://developer.apple.com/account/resources/certificates/add) > Certificates > **+**,
+   choose **Developer ID Application** (the Account Holder must do this; choose the G2 Sub-CA if asked), upload
+   `developer-id.csr` and download `developer_id.cer`.
+3. The `.p12` with the certificate, its private key and Apple's intermediate certificate (so the CI keychain can
+   build the chain). `-legacy` makes the older encryption macOS's `security import` reads (OpenSSL 3's default can
+   be refused):
+
+   ```sh
+   curl -sO https://www.apple.com/certificateauthority/DeveloperIDG2CA.cer
+   openssl x509 -inform der -in developer_id.cer -out developer_id.pem
+   openssl x509 -inform der -in DeveloperIDG2CA.cer -out DeveloperIDG2CA.pem
+   openssl pkcs12 -export -legacy -inkey developer-id.key -in developer_id.pem -certfile DeveloperIDG2CA.pem \
+       -name "Developer ID Application" -out developer-id.p12          # asks for the .p12 password
+   base64 -w0 developer-id.p12 > developer-id.p12.b64                    # macOS: base64 -i developer-id.p12
+   ```
+
+   (With OpenSSL 1.1, leave out `-legacy`.)
+4. The API key: [App Store Connect](https://appstoreconnect.apple.com/access/integrations/api) > Users and Access >
+   Integrations > App Store Connect API > **+**, a name, access **Developer**. Download the `.p8` (only once) and note
+   the Key ID and the Issuer ID shown above the list.
+5. The secrets: GitHub > the repository > Settings > Secrets and variables > Actions > **New repository secret**,
+   or with GitHub CLI:
+
+   ```sh
+   gh secret set MACOS_CERT_P12 < developer-id.p12.b64
+   gh secret set MACOS_CERT_PASSWORD                    # type the .p12 password
+   gh secret set ASC_KEY_ID --body KEYID
+   gh secret set ASC_ISSUER_ID --body ISSUER-UUID
+   gh secret set ASC_KEY_P8 < AuthKey_KEYID.p8
+   ```
+
+   Then delete the local copies you do not need. The certificate lasts five years; renewing it means steps 1 to 3
+   and `MACOS_CERT_P12`/`MACOS_CERT_PASSWORD` again.
+
+Check a signed build with "Desktop patchers" run by hand (no tag): the log shows `codesign --verify`, the notary
+status `Accepted` and `spctl` saying `source=Notarized Developer ID`.
+
+**Windows.** The Windows exe carries version information (product "Digimon World: Horizon Patcher", the release's
+version as file and product version, company and description: `tools/patcher/app/build.py`) and is built from the
+tag's source in GitHub Actions, the unsigned zip kept as the workflow artifact `Horizon-Patcher-Windows`. That is
+what [SignPath Foundation](https://signpath.org/)'s free signing for open-source projects asks for; the project's
+[code signing policy](../code-signing-policy.md) is drafted. SignPath signs only projects whose app was already
+released unsigned, so the first releases ship it unsigned. Once the project is accepted, the commented
+`signpath/github-action-submit-signing-request` step in `desktop.yml` is filled in (with the token SignPath gives as a
+repository secret) and the release takes the signed zip; the attribution SignPath requires then goes into the
+policy and the README, worded as SignPath's terms give it.
+
 ## Owner setup, once
 
 1. Publish the reviewed snapshot as a new root with the approved pseudonym and

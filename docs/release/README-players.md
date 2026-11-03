@@ -4,8 +4,48 @@ This mod changes Digimon World (PlayStation). It does **not** include the game: 
 
 The release is the "everything" version: every feature of the mod, the story mod *What the island forgot*, English, Spanish, Brazilian Portuguese, French, German, Italian, Japanese and Catalan, and every new Digimon (the OPTIONS menu chooses).
 
-The browser builder at [dw1horizon.com](https://dw1horizon.com) uses the same four
-discs and needs no Python installation. This page describes the command-line release.
+There are three ways to make the disc, all with the same four discs and the same checks:
+
+- the browser builder at [dw1horizon.com](https://dw1horizon.com): nothing to install;
+- the desktop app, Horizon Patcher, for Windows and macOS: no Python needed (below);
+- the command-line patcher in this package, with Python (from "Bring your own disc" on).
+
+## The desktop app
+
+1. From the release page on GitHub, download `Horizon-Patcher-Windows.zip` or `Horizon-Patcher-macOS.zip` (one app
+   for Apple silicon and Intel Macs) and unzip it. On Windows keep the whole `Horizon Patcher` folder together and
+   open `Horizon Patcher.exe` in it.
+2. Add your four discs: "Add discs..." takes several files at once and puts each in its game's place, or use
+   "Choose..." next to a game. The `.cue` or the `.bin` both work. The app checks each disc as you add it and
+   remembers them for next time (if you move or change a file, it asks for it again).
+3. Press "Build my disc". The first time, the app downloads the latest release from GitHub (about 90 MB) and checks
+   every file of it; then it builds your disc, showing the step, the percentage and about how long is left. Stop
+   stops it and writes nothing. The new disc goes into a `patched` folder next to your Digimon World disc ("Change..."
+   picks another folder); "Open the folder" shows it.
+
+The app only goes on the internet when you press Download, "Check for a new release" or Build, and then only to
+download the release from GitHub. Your discs never leave your computer. No internet? "Use a package file..." takes a
+`horizon-package.tar.gz` downloaded elsewhere (put its `horizon-checksums.json` next to it so the app can check it).
+
+**The first time you open it.** The app is not yet signed with a certificate your system knows, so it warns you
+before the first start:
+
+- Windows: "Windows protected your PC" (SmartScreen). Click **More info**, then **Run anyway**.
+- macOS: "Horizon Patcher cannot be opened because Apple cannot check it" or "is damaged". Right-click (or
+  Control-click) the app, choose **Open**, then **Open** again. On macOS 15 and later that may not offer Open: try to
+  open the app once, then go to **System Settings > Privacy & Security**, scroll down and click **Open Anyway** next to
+  Horizon Patcher, and confirm. If macOS still says the app "is damaged", run `xattr -dr com.apple.quarantine
+  "/path/to/Horizon Patcher.app"` in Terminal.
+
+Releases whose app is signed (and, on macOS, notarized) open without these steps.
+
+The app keeps its settings and the downloaded release in `%APPDATA%\Horizon Patcher` and `%LOCALAPPDATA%\Horizon
+Patcher` on Windows, `~/Library/Application Support/Horizon Patcher` on macOS. It needs the same disk space as
+below (about 2 GB free for the temporary files, 1 GB where the new disc goes) and checks before it starts. If
+something goes wrong it says why in the window (the same messages as in the table at the end) and "Open the log"
+shows the details.
+
+The rest of this page is the command-line release.
 
 ## Language beta
 

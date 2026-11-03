@@ -56,7 +56,8 @@ jobs:
           python-version: '3.13'
       - name: Unit tests
         working-directory: tools
-        run: python -m unittest test_desktop_patcher test_patcher_paths -v
+        # (not test_patcher_paths here: its folder names end in a space, which Windows does not allow)
+        run: python -m unittest test_desktop_patcher -v
       - name: Build
         shell: bash
         run: |
