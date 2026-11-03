@@ -194,6 +194,16 @@ def main(argv):
             open(os.path.join(d, 'work.py'), 'w').write(WORKER)
             open(os.path.join(d, '__main__.py'), 'w').write(DERIVE)
             json.dump({'environment': {'NAME': 'standin'}}, open(os.path.join(d, 'recipes', 'standin.json'), 'w'))
+            if os.name == 'nt':                     # (the same launch without dwpatch's job object: which part fails)
+                gate = ('import sys,runpy; sys.stdin.buffer.read(1) == b"1" or sys.exit(1); sys.argv=sys.argv[1:]; '
+                        'runpy.run_module("tools.derive",run_name="__main__",alter_sys=True)')
+                for flags in (0, subprocess.CREATE_NEW_PROCESS_GROUP):
+                    try:
+                        code, out = child(['-c', gate, 'tools.derive', 'build', '--out',
+                                           os.path.join(root, 'build', 'plain')], cwd=root, stdin=b'1', timeout=90)
+                    except AssertionError as e:
+                        code, out = None, str(e)
+                    say(f'    gated -c without a job object (flags {flags}): exit {code}: ' + ' '.join(out.split()))
             buf = io.StringIO()
             saved = sys.stdout
             sys.stdout = buf

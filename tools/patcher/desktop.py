@@ -657,6 +657,8 @@ def python_shim(argv=None):
         if s is not None and os.environ.get('PYTHONUTF8') == '1':
             try: s.reconfigure(encoding='utf-8', errors='backslashreplace')
             except (AttributeError, ValueError): pass
+    if sys.stderr is None and sys.stdout is not None:    # (a windowed child: its errors go where its output goes)
+        sys.stderr = sys.stdout
     import runpy
     import types
     try:
