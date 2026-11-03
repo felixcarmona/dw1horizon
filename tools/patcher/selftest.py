@@ -355,7 +355,9 @@ def main(argv):
                     missing = [k for k in json.load(open(desktop.resource('tools', 'patcher', 'app', 'i18n.json'),
                                                          encoding='utf-8'))['en'] if app.t(k) == k]
                     assert not missing, (lang, missing)
-                assert not problems, 'cut: ' + '; '.join(problems)
+                assert not problems, (f'cut (window {root.winfo_width()}x{root.winfo_height()}, asks '
+                                      f'{root.winfo_reqwidth()}x{root.winfo_reqheight()}, screen '
+                                      f'{root.winfo_screenwidth()}x{root.winfo_screenheight()}): ' + '; '.join(problems))
                 root.destroy()
                 return f'{len(g.LANGS)} languages'
             ok &= check('the window', gui)
