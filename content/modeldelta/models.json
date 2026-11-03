@@ -2049,9 +2049,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/249-Quetzalmon.MMD.mdelta",
-        "delta_sha256": "dd1d30d58a8b8efa7b80ac88b72fa1355c13379a813ee876c556323888590903",
-        "sha256": "bd9eab32454109719ed2fca0d6db101d5db2a20b737bb6d73938971df8d50fea",
-        "size": 96216
+        "delta_sha256": "ce54ecfa3bf0b01f6eb059eb3533829cfd827af923efcd9d4aab0351f2fd195e",
+        "sha256": "b7f5c4e585512ef636fdc88d79c41b76120564f85a49f0c2879ecc08efe3f033",
+        "size": 96210
       },
       "tim": {
         "sources": [
