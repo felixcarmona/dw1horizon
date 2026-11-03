@@ -71,8 +71,11 @@ def run(count):
     for n in range(count):
         mine, theirs = ctx.Pipe()
         p = ctx.Process(target=square, args=(theirs,), daemon=True)
+        print(f'worker {n}: starting', flush=True)
         p.start(); theirs.close()
+        print(f'worker {n}: started, pid {p.pid}', flush=True)
         mine.send(n)
+        if not mine.poll(60): raise SystemExit(f'worker {n}: no answer in 60 s (alive: {p.is_alive()}, exit code {p.exitcode})')
         out.append(mine.recv()); p.join(30)
         if p.exitcode != 0: raise SystemExit(f'worker exit code {p.exitcode}')
     return out
@@ -90,6 +93,7 @@ print('spawned', json.dumps(dict(squares=squares, argv=sys.argv[1:], utf8=sys.fl
 
 DERIVE = '''
 import json, os, sys
+print('derive stand-in: started', sys.argv[1:3], flush=True)
 from tools.derive import work
 squares = [r[0] for r in work.run(2)]
 print('derive stand-in: workers', squares, flush=True)
@@ -200,6 +204,10 @@ def main(argv):
             try:
                 man, out = app_dwpatch.derive_run(root, 'standin', os.path.join(root, 'facts.json'), jobs=2,
                                                   log=os.path.join(work, 'derive.log'))
+            except BaseException:
+                path = os.path.join(work, 'derive.log')
+                say('    its output: ' + (open(path, encoding='utf-8').read() if os.path.exists(path) else '(none)'))
+                raise
             finally:
                 sys.stdout = saved
                 timer.cancel()
