@@ -572,7 +572,9 @@ const notes = new Map();     // game -> [key, vars]: why its disc from last time
 const KEEP = 'horizon.keepDiscs';
 // supported: this browser can keep copies; on: the player asked for them; job: the copy running (game, pct);
 // waiting: another tab builds or copies; note: [key, vars] of the last failure
-const keep = { supported: false, on: false, job: null, game: null, pct: 0, waiting: false, note: null, pumping: false };
+// paused: "Build my disc" was pressed (no copy may take the lock before the build does)
+const keep = { supported: false, on: false, job: null, game: null, pct: 0, waiting: false, note: null, pumping: false,
+               paused: false };
 const gb = (n) => new Intl.NumberFormat(i18n.lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n / 2 ** 30);
 const keptBytes = () => [...saved.values()].filter((r) => r.kind === 'copy').reduce((a, r) => a + r.size, 0);
 function setKeep(on) {
@@ -737,7 +739,7 @@ const wanted = (g) => g.cur && !g.pending && !g.cur.storing && g.cur.store !== '
 // The copies the player asked for, one after another, when no build runs (here or in another tab: the lock). Room is
 // checked first: the copies and a build after them must fit, or nothing is copied.
 async function pumpCopies() {
-  if (!keep.on || keep.job || keep.pumping || building) return;
+  if (!keep.on || keep.job || keep.pumping || building || keep.paused) return;
   keep.pumping = true;
   let again = false;
   try {
@@ -750,7 +752,7 @@ async function pumpCopies() {
       setKeep(false);
       return;
     }
-    if (!keep.on || building) return;
+    if (!keep.on || building || keep.paused) return;
     const g = want[0], entry = g.cur;
     if (!wanted(g)) return;
     keep.game = g.id;
@@ -879,8 +881,10 @@ function renderPatch() {
 
 async function patch() {
   if (building || !patchState()[1]) return;
-  await stopCopy();                                  // (the build needs the lock a copy holds: copied again after)
-  if (building || !patchState()[1]) return;
+  keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
+  keep.waiting = false;
+  await stopCopy();
+  if (building || !patchState()[1]) { keep.paused = false; pumpCopies(); return; }
   $('#build-done').dataset.ready = '';
   const q = new URLSearchParams(location.search);
   const opts = { onState: (st) => { last = st; renderBuild(); } };
@@ -908,6 +912,7 @@ async function patch() {
   } finally {
     clearInterval(tick);
     building = null;
+    keep.paused = false;
     renderAll();
     store.tidy().then(pumpCopies);
     if (TEST) { window.RESULTS = { ...last, result: last.result && { ...last.result, bin: undefined, cue: undefined } }; document.title = 'DONE'; }

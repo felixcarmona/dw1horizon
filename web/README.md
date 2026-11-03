@@ -81,8 +81,8 @@ A returning player builds a new release without giving the four discs again (`js
   anything without handles, and a disc that came out of an archive, ECM or PBP (the converted image is kept; its
   handle would mean unpacking it again). Ticking it asks for persistent storage (`navigator.storage.persist()`), checks
   that the copies and a build after them fit (`storage.estimate()` against the copies plus `buildRoom()`), then copies
-  one disc after another in a worker (8 MB slices through a sync access handle: never a whole image in memory, and
-  Safari has no `createWritable` on the page). The choice is remembered (`horizon.keepDiscs` in localStorage) and
+  one disc after another in a worker (8 MB slices through a sync access handle: never a whole image in memory, the
+  page stays responsive, and it works wherever the build's own OPFS writes do). The choice is remembered (`horizon.keepDiscs` in localStorage) and
   applies to discs added later. Not offered on phones and tablets (`isMobile()`, the engine's low-memory test).
 
 Storage, apart from the build's: IndexedDB `horizon`, store `discs`, one record per game: `{game, kind ('handle' or

@@ -1,6 +1,6 @@
 // A disc image copied into this browser's private storage (OPFS horizon-discs/<game>/<name>) for the next visit
 // (js/remember.js), off the main thread: File.slice in 8 MB pieces through a synchronous access handle, so a 700 MB
-// image never sits in memory whole and every browser with OPFS can do it (Safari has no createWritable on the page).
+// image never sits in memory whole, the page stays responsive, and it works wherever the build itself does.
 // The game's folder is emptied first: one disc per game.
 //   in:  {file, game}
 //   out: {progress: 0..1} ... then {size} or {error, quota}
