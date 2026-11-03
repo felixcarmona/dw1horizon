@@ -224,9 +224,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/188-Aquilamon.MMD.mdelta",
-        "delta_sha256": "8729c10ecbaef3b718d672f44ae1347d29b0f74d76412f8e678589134673a2a5",
-        "sha256": "162176088c02f48c5fcafa5fc7efb3c9e0149bde98636b0395635de92d322bc4",
-        "size": 98984
+        "delta_sha256": "9cfda0a078c146309bcae344b51cbc0248cbbd1cda375ca2a094615b8fc93757",
+        "sha256": "7547a8e95f4a2bec61b96a8e9f2b754c421e40fd2a9e6b1621460dec1efca086",
+        "size": 99308
       },
       "tim": {
         "sources": [
