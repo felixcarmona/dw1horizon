@@ -19,6 +19,7 @@
   "voice": 2,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -49, 0, 2],
+  "effect_origins": [[2, 0, 40, -123, 2, 0, 43, -116]],
   "wild": {"hp": 9000, "mp": 2000, "off": 200, "def": 100, "speed": 100, "brain": 100, "bits": 100},
   "partner": {
     "voice": 0,
