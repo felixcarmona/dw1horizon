@@ -63,6 +63,27 @@ def player_strip_problems(key, value):
     return errors
 
 
+# The name keyboard's label row (script_menu.c layoutNamingLabels): the title and Back's word, each at most as wide in
+# original cells as the column left of the keys; Back's word is followed by OK.
+NAMING_LABELS = {'shop.MAIN_D_801345F8': False, 'shop.MAIN_D_80134600': True}
+NAMING_LABEL_CELLS = 64
+
+
+def naming_label_problems(key, value):
+    from tools.fontgen import metrics
+    if key not in NAMING_LABELS:
+        return []
+    if NAMING_LABELS[key]:
+        if not value.endswith('OK'):
+            return ['the name keyboard\'s Back word must be followed by OK (one string: "<Back>OK")']
+        value = value[:-2]
+    cells = metrics('original')
+    width = sum(cells.get(c, cells['?']) for c in value)
+    if width > NAMING_LABEL_CELLS:
+        return [f'name keyboard label {value!r} is {width} original cells, wider than its column ({NAMING_LABEL_CELLS})']
+    return []
+
+
 # Fixed original-cell crops from game_menu.c; C spaces advance four pixels.
 PACKED_UI = {'main.MAIN_D_801238A0': [[0, 60], [60, 64]],
  'main.MAIN_D_801238B0': [[24, 72, 120, 156, 180, 204], [36, 48, 36, 24, 24, 48]],
@@ -321,6 +342,8 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                 for why in packed_ui_problems(key, value):
                                     issue(language, font, path, key, why)
                                 for why in player_strip_problems(key, value):
+                                    issue(language, font, path, key, why)
+                                for why in naming_label_problems(key, value):
                                     issue(language, font, path, key, why)
                             # Fixed cell strips are consumed piece by piece. The
                             # QOL hint uses fitStringMode; TECH_VIEW_LABELS[9]
