@@ -979,9 +979,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/214-Shakkoumon.MMD.mdelta",
-        "delta_sha256": "03ec7df7298608f31cd4980d405aeac7e6c59fb4a6c940c0527091b0bf9696c2",
-        "sha256": "8f19f0d472ccf9d6950e0688924344eefe7e68c3e1dc69d82f7bdc11c0840a35",
-        "size": 106196
+        "delta_sha256": "7e9b92fa297924758c8a977c2e6905144e685dde4a5572d49f8922386fd20eeb",
+        "sha256": "4aea6f423ea456b6897b917e7b7a639422b27aa7394960609ec3a861f2f8d020",
+        "size": 106216
       },
       "tim": {
         "sources": [
