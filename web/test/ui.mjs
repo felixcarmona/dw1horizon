@@ -23,6 +23,7 @@ const fx = fs.mkdtempSync(path.join(BUILD, 'ui-fixtures-'));
 const fake = (name, data) => { const p = path.join(fx, name); fs.writeFileSync(p, data); return p; };
 const BAD = [
   `${DW}/DigimonWorld (Japan).bin`,                                    // first pressing: unsupported
+  `${I}/digimon-world-2003/Digimon World 3 (USA).bin`,                 // unsupported source release
   `${DW}/fan-patches/Digimon World (France).bin`,                      // modified dump
   `${DW}/fan-translations/DigimonWorld (Spanish v1.21).bin`,           // fan translation
   fake('Lonely.cue', 'FILE "Lonely.bin" BINARY\r\n  TRACK 01 MODE2/2352\r\n    INDEX 01 00:00:00\r\n'),
@@ -167,6 +168,12 @@ for (const lang of shots ? ['en', 'es'] : ['en']) {
   const items = await p.$$eval('#problems-list li', (els) => els.map((e) => e.innerText.replace(/\s+/g, ' ').trim()));
   console.log(items.map((x) => `    ${x}`).join('\n'));
   ok(items.length === BAD.length - 1, `${lang}: one dialog, ${items.length} files listed (${BAD.length - 1} expected; the disc added twice ignored)`);
+  // a known release that cannot be used names what can be used instead (data/discs.json `instead`), and nothing more
+  const known = (name) => items.find((x) => x.startsWith(name)) || '';
+  ok(/Digimon World 2003 \(Europe\).*DigimonWorld 3: Aratanaru/.test(known('Digimon World 3 (USA).bin')),
+     `${lang}: World 3 (USA) names the two World 3 / 2003 releases that work`);
+  ok(/DigimonWorld \(Japan\) \(Rev 1\)/.test(known('DigimonWorld (Japan).bin')) && !/redump/.test(known('DigimonWorld (Japan).bin')),
+     `${lang}: the first pressing names the Digimon World releases that work`);
   ok((await slot('us')).release === 'dw1-es', `${lang}: the Spanish disc stayed`);
   ok(await p.evaluate(() => document.activeElement?.id === 'problems-close'), `${lang}: the dialog's button has the focus`);
   await shot(lang, 'incompatible'); await shot(lang, 'incompatible', true);

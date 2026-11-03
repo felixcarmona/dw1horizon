@@ -61,13 +61,17 @@ class Images(unittest.TestCase):
         cases = [('dw1.bin', image('SLUS_010.32'), 'why.badDump'),        # Digimon World, not the redump dump
                  ('dw1.iso', image('SLUS_010.32', 2048), 'why.isoDw1'),
                  ('other.bin', image('SCUS_944.26'), 'why.otherGame'),
-                 ('best.bin', image('SLPS_917.12'), 'why.unsupported'),  # PlayStation the Best: no supported release
-                 ('w3us.bin', image('SLUS_014.36'), 'why.unsupported'),
+                 ('best.bin', image('SLPS_917.12'), 'why.useInstead'),   # PlayStation the Best: no supported release
+                 ('w3us.bin', image('SLUS_014.36'), 'why.notYet'),
                  ('junk.bin', b'\1' * 5000, 'why.notImage')]
         for name, data, key in cases:
             with self.subTest(name=name), self.assertRaises(desktop.Problem) as e:
                 desktop.identify(self.write(name, data))
             self.assertEqual(e.exception.key, key)
+        with self.assertRaises(desktop.Problem) as e:
+            desktop.identify(self.write('w3us.bin', image('SLUS_014.36')))
+        self.assertEqual(e.exception.params, dict(release='Digimon World 3 (USA)', instead=[
+            'Digimon World 2003 (Europe)', 'DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)']))
         for name, key in (('x.chd', 'why.chd'), ('x.7z', 'app.archive'), ('x.part2.rar', 'app.archive'),
                           ('x.ecm', 'app.convert'), ('x.pbp', 'app.convert')):
             with self.subTest(name=name), self.assertRaises(desktop.Problem) as e:

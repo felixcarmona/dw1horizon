@@ -102,6 +102,15 @@ const releaseWords = (r) => i18n.t(`release.${r.id}`);
 const FAN_NAME = /fan|transl|traduc|\btrad\b|spanish|espa[nñ]ol|espan|english|french|german|italian|portugu|undub|hack|patch(ed)?\b|\bv\d+(\.\d+)+/i;
 const sameFile = (a, b) => a && b && a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
 
+// A release this page knows but cannot use: its message names the supported releases of its slot (data/discs.json
+// `instead`, tools/discs.py unsupported()); `soon` says its support is planned. [key, vars] for problem()/reject().
+const NAMES_INSTEAD = new Set(['why.notYet', 'why.useInstead']);
+function notUsable(r, game) {
+  if (!r.instead || !r.instead.length) return ['why.unsupported', { release: `${gameName(game)} · ${releaseWords(r)}` }];
+  const instead = new Intl.ListFormat(i18n.lang, { type: 'disjunction' }).format(r.instead);
+  return [r.soon ? 'why.notYet' : 'why.useInstead', { release: r.title, instead }];
+}
+
 // Every release this page knows by its boot file: [{release, game, supported}]
 let byBoot;
 function indexReleases() {
@@ -230,7 +239,7 @@ function startCheck(g, file, cands, info, batch, from = {}) {
     Object.assign(entry.got, data);
     const m = matching(cands, data);
     if (m && /-fan$/.test(m.release.id)) return reject('why.fanTranslation');
-    if (m && !m.supported) return reject('why.unsupported', { release: `${gameName(g.id)} · ${releaseWords(m.release)}` });
+    if (m && !m.supported) return reject(...notUsable(m.release, g.id));
     if (m) { entry.expect = m.release; return accept(null); }
     byFiles('why.badDump');
   });
@@ -379,7 +388,7 @@ async function handleFiles(items) {
       const g = games.get(cands[0].game);
       // a release with no checksum (PlayStation the Best): not usable whatever its bytes
       if (cands.every((c) => !c.supported && !c.release.sha1)) {
-        problem(batch, file, 'why.unsupported', { release: `${gameName(g.id)} · ${releaseWords(cands[0].release)}` }, g.id);
+        problem(batch, file, ...notUsable(cands[0].release, g.id), g.id);
         continue;
       }
       startCheck(g, file, cands, info, batch, from);
@@ -403,7 +412,8 @@ function showProblems(list) {
     const li = el('li', {}, el('b', { className: 'problem-file', textContent: p.name }),
                   el('span', { className: 'problem-why', textContent: i18n.t(p.key, p.vars) }));
     li.dataset.key = key;
-    if (p.game) li.append(el('span', { className: 'problem-works', textContent: i18n.t(`works.${p.game}`) }));
+    // (a known release's message already names what works instead)
+    if (p.game && !NAMES_INSTEAD.has(p.key)) li.append(el('span', { className: 'problem-works', textContent: i18n.t(`works.${p.game}`) }));
     ul.append(li);
   }
   if (!ul.children.length) return;

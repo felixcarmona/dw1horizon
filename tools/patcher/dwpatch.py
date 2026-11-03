@@ -599,8 +599,35 @@ BASES = {
     'jp1': dict(title='DigimonWorld (Japan) (Rev 1)', serial='SLPS-01797', boot='SLPS_017.97', size=381162768,
                 crc32='8dcabdbf', sha1='1d10389deee8c9849136623785c256071f2f9473', redump='http://redump.org/disc/37502/'),
 }
-NOT_A_BASE = {381160416: 'DigimonWorld (Japan), the first pressing of SLPS-01797: five models, the effects file and '
-                         'eleven maps differ from the other releases, so it cannot be a base. The Rev 1 disc can'}
+
+
+def unsupported_notice(boot, size=None):
+    """The message for a release the patchers know but cannot use (tools/discs.py unsupported(): it names the
+    supported releases of its slot), or None. discs.py comes with the release (bundle/tools) or the repository."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    for d in (os.path.join(here, 'bundle', 'tools'), os.path.join(REPO, 'tools')):
+        if os.path.isfile(os.path.join(d, 'discs.py')):
+            sys.path.insert(0, d)
+            try:
+                import discs
+                m = discs.unsupported_match(boot, size) if hasattr(discs, 'unsupported_match') else None
+                return discs.notice(m) if m else None
+            finally:
+                sys.path.remove(d)
+    return None
+
+
+def check_source_discs(source_discs):
+    """Stop at once, with its message, on a source disc of a release that cannot be used."""
+    for s in source_discs or []:
+        try:
+            path = resolve_bin(s.split('=', 1)[1])
+            boot, size = boot_name(path), os.path.getsize(path)
+        except (OSError, PatchError, struct.error, IndexError, ValueError):
+            continue                                   # (the import's own checks say what is wrong with it)
+        notice = unsupported_notice(boot, size)
+        if notice:
+            raise PatchError(f'{os.path.basename(path)}: {notice}')
 GOOD = ('same', 'renamed', 'patch')            # a base gives the USA bytes themselves
 WHOLE = GOOD + ('own', 'localize')             # a base gives its own version of the file
 
@@ -624,8 +651,10 @@ def identify_base(path, bases):
     if size % RAW and size % DATA == 0:
         raise PatchError(f'{os.path.basename(path)} is a 2048-byte-per-sector ISO ({size} bytes). The patch needs '
                          f'the raw image (.bin, 2352 bytes per sector, MODE2/2352 in the .cue) of one of: {names}.')
-    if boot and boot == 'SLPS_017.97' and size in NOT_A_BASE:
-        raise PatchError(f'{os.path.basename(path)} is {NOT_A_BASE[size]} ({", ".join(sorted(bases))}).')
+    if boot and not any(b['boot'] == boot and b['size'] == size for b in bases.values()):
+        notice = unsupported_notice(boot, size)
+        if notice:
+            raise PatchError(f'{os.path.basename(path)}: {notice}')
     cands = {k: b for k, b in bases.items() if b['boot'] == boot}
     if boot and not cands:
         what = OTHER_VERSIONS.get(boot) or next((b['title'] for b in BASES.values() if b['boot'] == boot),
@@ -1427,6 +1456,7 @@ def cmd_apply3(a, rel, m):
     say('1. Checking the disc (' + ', '.join(b['title'] for b in m['bases'].values()) + ')')
     SCREEN.start('check')
     key, src, _ = identify_base(a.disc, m['bases'])
+    check_source_discs(getattr(a, 'source_disc', None))
     say(f'   ok: the clean redump disc of {m["bases"][key]["title"]}.')
     p = read_payload3(read_patch_file(rel, v))
     work = tempfile.mkdtemp(prefix='dwpatch-')

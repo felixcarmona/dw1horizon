@@ -194,6 +194,15 @@ class Problem(Exception):
         self.key, self.game, self.params = key, game, params
 
 
+def not_usable(game, entry):
+    """The Problem of a release this app knows but cannot use: it names the supported releases of its slot
+    (discs.json 'instead', tools/discs.py unsupported()); 'soon' says its support is planned."""
+    if entry.get('instead'):
+        return Problem('why.notYet' if entry.get('soon') else 'why.useInstead', game, release=entry['title'],
+                       instead=list(entry['instead']))
+    return Problem('why.unsupported', game, release=(game, entry['id']))
+
+
 def cue_image(path):
     """The .bin a .cue names (it must name exactly one, and it must exist)."""
     with open(path, 'rb') as f:
@@ -291,7 +300,7 @@ def identify(path, progress=None, cancel=None):
         raise Problem('why.isoDw1', game)
     supported = [c for c in cands if c[3]]
     if not supported:
-        raise Problem('why.unsupported', game, release=(game, cands[0][1]))
+        raise not_usable(game, cands[0][2])
     sized = [c for c in cands if c[2].get('size') == size]
     sha1 = sha1_file(image, progress, cancel)
     hit = next((c for c in cands if c[2].get('sha1') == sha1), None)
@@ -300,7 +309,7 @@ def identify(path, progress=None, cancel=None):
         if not hit[3]:
             if hit[1] == 'es-fan':
                 raise Problem('why.fanTranslation', game)
-            raise Problem('why.unsupported', game, release=(game, hit[1]))
+            raise not_usable(game, hit[2])
         return dict(result, release=hit[1], how='redump')
     if game == 'us':
         raise Problem('why.badDump', game, game_release=(game, (sized or supported)[0][1]))

@@ -117,7 +117,8 @@ def extract(game, path):
         supported = {d['id'] for d in catalog.SOURCE_DISCS + catalog.SOURCE_VARIANTS
                      if d.get('supported', True)}
         if release not in supported:
-            raise ValueError(f'{game}: unsupported source disc {boot}')
+            known = catalog.unsupported_match(boot)
+            raise ValueError(f'{game}: ' + (catalog.notice(known) if known else f'unsupported source disc {boot}'))
         pins = catalog.release_files()[release]
         yield f'{game}/disc/SYSTEM.CNF', cnf
         for name, sha in pins.items():
