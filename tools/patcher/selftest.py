@@ -195,6 +195,20 @@ def main(argv):
             open(os.path.join(d, '__main__.py'), 'w').write(DERIVE)
             json.dump({'environment': {'NAME': 'standin'}}, open(os.path.join(d, 'recipes', 'standin.json'), 'w'))
             if os.name == 'nt':                     # (the same launch without dwpatch's job object: which part fails)
+                trace = os.path.join(work, 'trace.txt')
+                os.environ['HORIZON_TRACE'] = trace
+                hp = os.path.dirname(pkg)
+                for label, argv, stdin in (('-c run_module', ['-c', 'import runpy; runpy.run_module("hpst", run_name="__main__", alter_sys=True)'], None),
+                                           ('-c run_module, stdin', ['-c', 'import runpy; runpy.run_module("hpst", run_name="__main__", alter_sys=True)'], b'1'),
+                                           ('-m, stdin', ['-m', 'hpst'], b'1')):
+                    try:
+                        code, out = child(argv, cwd=hp, stdin=stdin, timeout=90)
+                    except AssertionError as e:
+                        code, out = None, str(e)
+                    say(f'    {label}: exit {code}: ' + ' '.join(out.split())[:300])
+                    if os.path.exists(trace):
+                        say('      trace: ' + ' | '.join(open(trace, encoding='utf-8').read().splitlines()))
+                        os.remove(trace)
                 gate = ('import sys,runpy; sys.stdin.buffer.read(1) == b"1" or sys.exit(1); sys.argv=sys.argv[1:]; '
                         'runpy.run_module("tools.derive",run_name="__main__",alter_sys=True)')
                 for flags in (0, subprocess.CREATE_NEW_PROCESS_GROUP):
@@ -205,6 +219,10 @@ def main(argv):
                     except AssertionError as e:
                         code, out = None, str(e)
                     say(f'    gated -c without a job object (flags {flags}): exit {code}: ' + ' '.join(out.split()))
+                    if os.path.exists(trace):
+                        say('      trace: ' + ' | '.join(open(trace, encoding='utf-8').read().splitlines()))
+                        os.remove(trace)
+                os.environ.pop('HORIZON_TRACE', None)
             buf = io.StringIO()
             saved = sys.stdout
             sys.stdout = buf

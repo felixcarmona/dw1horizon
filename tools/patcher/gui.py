@@ -11,8 +11,17 @@ import multiprocessing
 import os
 import sys
 
+def _trace(what):
+    """HORIZON_TRACE=FILE: each start of the app (the window, derive, its workers) writes a line there."""
+    if os.environ.get('HORIZON_TRACE'):
+        with open(os.environ['HORIZON_TRACE'], 'a', encoding='utf-8') as f:
+            f.write(f'{os.getpid()} {what} {sys.argv[1:4]!r}\n')
+
+
 if __name__ == '__main__':
+    _trace('start')
     multiprocessing.freeze_support()                     # (a frozen spawn child runs its work and exits here)
+    _trace('past freeze_support')
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import desktop as _desktop
     _code = _desktop.python_shim()
