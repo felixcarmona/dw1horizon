@@ -16,4 +16,5 @@ def asleep():
 @tapirmon.on_talk
 def awake():
     say("Mmf? Who's there? Oh. You dream of a big city. I sell those.")
+    walk_away(2050, -2050, looks=3)         # off to the east exit along the shore (the inside of a free tile), as Kunemon
     send_to_city(line="Tapirmon joined the city!", species=Species.Tapirmon)
