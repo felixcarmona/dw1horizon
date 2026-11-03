@@ -9,7 +9,7 @@ guardromon0 = town.npc(Species.Guardromon, slot=0)
 guardromon1 = town.npc(Species.Guardromon, slot=1)
 geremon2 = town.npc(Species.Geremon, slot=2)
 geremon3 = town.npc(Species.Geremon, slot=3)
-metalgreymonvirus = town.npc(Species.MetalGreymonVirus149, slot=4)
+metalmamemon = town.npc(Species.MetalMamemon149, slot=4)
 t5 = text.s147.sec5
 t6 = text.s147.sec6
 t7 = text.s147.sec7
@@ -42,14 +42,14 @@ def talk():    # section 7
 def talk():    # section 8
     recruitable(geremon3, line=t8.u0)
 
-@metalgreymonvirus.on_talk
+@metalmamemon.on_talk
 def talk():    # section 9
     say(t9.u0)
     if ask(yes=t9.m0.o0, no=t9.m0.o1):
-        fight(metalgreymonvirus, escape=False)
-        tamer.face(metalgreymonvirus)
+        fight(metalmamemon, escape=False)
+        tamer.face(metalmamemon)
         face(tamer)
-        partner.face(metalgreymonvirus)
+        partner.face(metalmamemon)
         tamer.arrived()
         say(t9.u1)
         walk_away(-3120, 1836, looks=3)

@@ -7,8 +7,8 @@
       "reason": "Optional partner naming text table entries (patch 0207); DWS synchronized with hooks.py"
     },
     "maphead/hooks.py": {
-      "original_sha256": "2e5e2a4e824514a871a429059d5036162121f320bfe94f345b4614c5eb530741",
-      "authored_sha256": "4c60c5accf149c4496ac650cda13c8cb7b80ce52720c490d658fe0094d724c16",
+      "original_sha256": "4bfb261b42580f9928c7706e08108958b68d4ca058fe83a043d2a55be0b1b145",
+      "authored_sha256": "d4a37cc6582c2af7e678475de0f43338a0f81ec5ca453d72ade88203a1eb83c5",
       "reason": "Optional partner naming text table entries (patch 0207)"
     },
     "zones/beetle-land/s103-107/script.dws": {

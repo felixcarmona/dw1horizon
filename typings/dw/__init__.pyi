@@ -487,8 +487,8 @@ class Species(IntEnum):
     """Another Vegiemon of the game's species table (id 147; Species.Vegiemon is id 25): the same name, another entry (its model, stats and techniques may differ)."""
     SkullGreymon148 = 148
     """Another SkullGreymon of the game's species table (id 148; Species.SkullGreymon is id 26): the same name, another entry (its model, stats and techniques may differ)."""
-    MetalGreymonVirus149 = 149
-    """Another MetalGreymonVirus of the game's species table (id 149; Species.MetalGreymonVirus is id 12): the same name, another entry (its model, stats and techniques may differ). Formerly MetalGreymon (renamed; content/species)."""
+    MetalMamemon149 = 149
+    """Another MetalMamemon of the game's species table (id 149; Species.MetalMamemon is id 27): the same name, another entry (its model, stats and techniques may differ). Formerly MetalGreymon (renamed; content/species)."""
     Vademon150 = 150
     """Another Vademon of the game's species table (id 150; Species.Vademon is id 28): the same name, another entry (its model, stats and techniques may differ)."""
     Patamon151 = 151
