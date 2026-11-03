@@ -309,13 +309,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/MetalGarurumon.MMD",
-            "sha256": "54fd9aa6ca3963e17703758cc376e15804b50b2f8d9cd32e599adea2740b20ec",
+            "sha256": "2aeba5258e810a3eabe161dfe988849ec7b232eea16d025f773b4c2f520c733e",
             "size": 93636
           }
         ],
         "delta": "content/modeldelta/deltas/191-MetalGarurumon.MMD.mdelta",
-        "delta_sha256": "1fbc2471741fca9cb1c41fe1777d0b28680071d612bea4fd0cc0c0eb63fb3a7e",
-        "sha256": "1d90b34ecbd9ac0fa80cc98613b1e43fe1738c096662aaf9504668d6e43cce6c",
+        "delta_sha256": "0863ec7cc790bf160e660a540e1c830ad1ff237b42f470f422d75addf015b44c",
+        "sha256": "cc773504bfa236d44a54e0eee78c24e83b2416ea182f3aa47ae04ba8fa3c42f2",
         "size": 97044
       },
       "tim": {
@@ -339,13 +339,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Imperialdramon.MMD",
-            "sha256": "e9596e6df273746757f068f7b82d4ae5bd4c175807362ced632d3e569c8285bd",
+            "sha256": "5d733b78dedf9f4e730797a24e135858abc634bd6e14ab2f907767f87ce4ad73",
             "size": 98176
           }
         ],
         "delta": "content/modeldelta/deltas/192-Imperialdramon.MMD.mdelta",
-        "delta_sha256": "97083e19c856e1a68679714a90001ec37b1d99fa16bf63af1624f3158678fcdd",
-        "sha256": "818a2a23666f08b1dcb37e5005eb0f439c507ba7ed46f12a227e68fd07a1c16c",
+        "delta_sha256": "e63bfdce96a45eb13b6e78a6af6f440b46e2626e3f1717663cd2ee91d43cdb52",
+        "sha256": "e4627631344c66e91434f2688eafbd8d3aa7a71a65a2166ecc6ae720dcba588f",
         "size": 98320
       },
       "tim": {
@@ -884,13 +884,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/MetalSeadramon.MMD",
-            "sha256": "3bb98cb693c8eaf7a65999dbd08f1422587a93da6e426754b02a1b67a73684bb",
+            "sha256": "4dde852a7f5d1bda920688b747404b0b154e1dc9e61ac280c8c0adb6001b9ce6",
             "size": 88864
           }
         ],
         "delta": "content/modeldelta/deltas/211-MetalSeadramon.MMD.mdelta",
-        "delta_sha256": "9022beb851a1c7d7e14254fd27f98d6e0754204ca9e31d44fdc4c65b28486b05",
-        "sha256": "10a3edac4524e2cd8a05b169b61502d5e767a1ace7e798a436cb8efb4ed95eba",
+        "delta_sha256": "e9a877674866ab90519d3fca9d20d99ae2bbf6a1332668876ad86097399c73e4",
+        "sha256": "c9d3d5a73dca0ff9f77e60b8ef31be97bd226a1ed65bfb78072b00994ea2dd37",
         "size": 95236
       },
       "tim": {
@@ -1004,13 +1004,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Magnadramon.MMD",
-            "sha256": "c3c1fffa9a15755bd9152bda0b5da44e968ef3a7c6ac0775a9eda107431abf84",
+            "sha256": "9ecb9d07b098ded47121dcdd767bc5138ca27c9cf62f7827d4af684d0957bd24",
             "size": 83362
           }
         ],
         "delta": "content/modeldelta/deltas/215-Magnadramon.MMD.mdelta",
-        "delta_sha256": "84644737d4e06cba0a586bf19ed634765a3ae9f750d39d001b365543e82d6545",
-        "sha256": "d82681caa461bdd4074be20b48e11a855e1529b340f8c1004155cd8444c66ba9",
+        "delta_sha256": "7af7724338f741936ad9f6884e1a8d90cbc51772e27557d22e85e3db8ea9a447",
+        "sha256": "bcaf7becb397ef6246073a73e1dd3c6c51b60a6545ecce9062ab628538d682f9",
         "size": 93032
       },
       "tim": {
@@ -1674,13 +1674,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Diaboromon.MMD",
-            "sha256": "87a7b62c7cdb5ccf8e53e88fcc2bb3e8e0aa3edd7b4cf5a9d2885e4ec06e7cfd",
+            "sha256": "e8dfe2dd8d3ae220e430a300c149514694e1c9f11ff7f21b25ecbca0ea4e75fa",
             "size": 98474
           }
         ],
         "delta": "content/modeldelta/deltas/237-Diaboromon.MMD.mdelta",
-        "delta_sha256": "1308fcd3f546e7c38ff628d81794f326cab7e3249e93877580a3f30dea805ce8",
-        "sha256": "1b4979e641c58df07dd19f861aaff8989e36be8a654fa299b0411faa2c0dde34",
+        "delta_sha256": "d436b8bd5fdfda3515f4925c7a882b52bd8f3df19f09ffc1ce74c33f93e04664",
+        "sha256": "09c1916bca9b84e811e247a5c48bf4be741b958050531ecda3566dcb1a0c0874",
         "size": 98640
       },
       "tim": {
@@ -1914,13 +1914,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Piedmon.MMD",
-            "sha256": "c047308a699fef9ffb5f2ca0393c3724bb14dd869c3961bb1f599f92cf7af080",
+            "sha256": "499ea5938cc6a5a8b8729d41d017a49a0cb97ecaa4198690cd39513749ac69bd",
             "size": 94280
           }
         ],
         "delta": "content/modeldelta/deltas/245-Piedmon.MMD.mdelta",
-        "delta_sha256": "604263f84274780bb2587b8bb745da9cf503bf3ddc54b4997ec33002fa91f0fc",
-        "sha256": "e18c13a71d9c83ea4e5bdd10795eb22836c33166df5cf6b5145cd80d222ea869",
+        "delta_sha256": "f5f3ea0c702c8a94adb4b79227891ae545bc750b6409ec09c71b970bb034afa1",
+        "sha256": "b7aa8a00978ee2b8f8b72e7f52a2c76fe77143acc17c350a69eb5f066c6f93a0",
         "size": 99048
       },
       "tim": {
@@ -2619,13 +2619,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/SkullMammothmon.MMD",
-            "sha256": "620d3e4e752f7686f365ee0a2953fc5a472ba11f9d23207a3e16347580b79ad5",
+            "sha256": "27b7d103a306969dc275673aefc5bfb37a9e84644aac3921ff68ff71ac4b7b00",
             "size": 98642
           }
         ],
         "delta": "content/modeldelta/deltas/268-SkullMammothmon.MMD.mdelta",
-        "delta_sha256": "a32044ffe379a226b788353165062d1dcc45bb6c5ff7b21c9765fc053946dadc",
-        "sha256": "c4cab3cc4facc70eab813068a02a4cf85457ca0298854e9224385be8597adf54",
+        "delta_sha256": "dda4c1eea3cc4d261dcd8a26c7415ec5b6e141495cd8dbcac082b64d97d5ab2b",
+        "sha256": "800d22ff3903903edcaabc7883b681fb41751884b373f1919b23aedce162ba3e",
         "size": 106628
       },
       "tim": {
@@ -2859,13 +2859,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Baihumon.MMD",
-            "sha256": "99b2d785e8a201cf28997a67e3ac7162df884489c84e4dd192186196c5831ca7",
+            "sha256": "d71a03b82e0272091b19cde871adf9f8e8a07e2aa00556bef0fd273f125256c7",
             "size": 100342
           }
         ],
         "delta": "content/modeldelta/deltas/276-Baihumon.MMD.mdelta",
-        "delta_sha256": "08122a8764adc3b75c2234134c71ce8199a88b87c02d3d6f0fab7c426b5cf888",
-        "sha256": "ec76bffeb7e97078a1f61da9cabd05db2f43f4d36387251efd9ddd3a1e3429ba",
+        "delta_sha256": "5b977beeb6b8128d2e61e0633497c894e2360bd1776f3c5bc44deb0b23bbf62f",
+        "sha256": "3431b2af14651ae38106bc1dff95104218f08819d609baf5f6c5a809fa426d84",
         "size": 110804
       },
       "tim": {
@@ -3249,7 +3249,7 @@
         "sources": [
           {
             "path": "build/sizes-out/models/ChaosLord.MMD",
-            "sha256": "3f5516ceae854a21fc19434fee9b7c8aeabee43b37f03f01334c0cff0ae03073",
+            "sha256": "324e91b9f690c27288a0a3cf2694cac6934dc19b586538e0a13d3de3617d4dce",
             "size": 97212
           },
           {
@@ -3259,8 +3259,8 @@
           }
         ],
         "delta": "content/modeldelta/deltas/289-ChaosLord.MMD.mdelta",
-        "delta_sha256": "2925e1f7095eed4d6c1492c682e3e14a88663d1b08aacf4a488566a41f466f28",
-        "sha256": "d68a30f0b60520d4c9ea1bb78eae75823fa4c14d6ebcaab1eec12513f18d15d7",
+        "delta_sha256": "d9234cdfc9e111ad9f7bdcddd163e0d81f01d6a87629a2e062e339238af051f5",
+        "sha256": "464c443154b1f9ac6d55943f5254ab70cf6e3a21a53ac891ff4ae199386254d0",
         "size": 114652
       },
       "tim": {
@@ -3504,13 +3504,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Marsmon.MMD",
-            "sha256": "853564fdabe73a38f1efcf40473a46c2501110de88c559846600175f58b16960",
+            "sha256": "de44bd86c44634888f2b0728fca23079b0801652418477e6a64b68294f1f62f1",
             "size": 93006
           }
         ],
         "delta": "content/modeldelta/deltas/297-Marsmon.MMD.mdelta",
-        "delta_sha256": "22089679d8968d756f309130070f583111004f6f64bc8b23eb24fb4ad75c17b5",
-        "sha256": "2dc1118f528c54e5db458886b5fef563491b5613ca58dc959ecb6453b790616d",
+        "delta_sha256": "2c9f7f0efee92c4ca8824cfce01fbd4b87f851ec89f417454d5d0a3757615f8e",
+        "sha256": "961e604ac11fe230f3735492dd0391e6c3bb9ddd3d2f00d77dfbb381b3da5c29",
         "size": 100580
       },
       "tim": {
@@ -3624,13 +3624,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/HiAndromon.MMD",
-            "sha256": "c3af668f2802e879132524d9c698c23d0688af5c7b8b0f0b14fbb05a88826700",
+            "sha256": "66ae4e48a1418ce9a2186fa8ff6ba59faaaec7776d01bb37ef4430c6618b8a41",
             "size": 96056
           }
         ],
         "delta": "content/modeldelta/deltas/302-HiAndromon.MMD.mdelta",
-        "delta_sha256": "9406c433f7c60ada34f04edda6c8e00ae80630b54127eee26a27193c6c2c26c2",
-        "sha256": "3fbc58becf031a88a6bbe811e07f87665edec679a1485725b1a35ddddacfbc45",
+        "delta_sha256": "82bd16e36f48e69cbcfdc0dfb68ab5640734182ebb34d0de474a5dfca9682598",
+        "sha256": "b3d71efde26f543d15a5119f2412725a125415e410f33d081145a4d6bb2acaf1",
         "size": 104044
       },
       "tim": {
@@ -3654,13 +3654,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/KingEtemon.MMD",
-            "sha256": "5cd1ffc6b118f828e68b00ed6ab3f598479dd2f5f799af6902fd1dff99f04014",
+            "sha256": "974adbd7ed00176f77ec18fc62514e487bc03e53128caa156a3b16830b709fe0",
             "size": 95020
           }
         ],
         "delta": "content/modeldelta/deltas/303-KingEtemon.MMD.mdelta",
-        "delta_sha256": "d196068d514ed3ef57f1df69312b8a36962a75806cd0da3d5a869fc0e2092046",
-        "sha256": "a148c5a1666249ad509e3770d0ceecd80aee72882137bec4e215cf1f800cc9c8",
+        "delta_sha256": "19d2026aeaafe5724c5e88b36fc05f8278b42b3d2e7f5a2dd0166a2a3b561212",
+        "sha256": "df625598066216bcb555153858a5052134c808f64ced9bdf8f666934d8fdf576",
         "size": 103352
       },
       "tim": {
@@ -3924,13 +3924,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Daemon.MMD",
-            "sha256": "367180a4684b364816d6d69995a5c280103b7bbb7a7db8ce36149b8296832136",
+            "sha256": "5d62e59167bd0cdb71b4230743ce523dbcca835854c75d1dc5f91cadfb701eba",
             "size": 84748
           }
         ],
         "delta": "content/modeldelta/deltas/312-Creepymon.MMD.mdelta",
-        "delta_sha256": "facb1d60e6588c2c5da508d24de084ca1b34ee216cf42c0f54c1f8f1c5469b7f",
-        "sha256": "6c6dec53b1a788e11791eb7c59115fea1c4b35c1ad5f662a93a68ab0f121da4e",
+        "delta_sha256": "fb37f14a8808e462f4af1c8f5c54110b0ef685a00e2960a4d7560e59d6331a71",
+        "sha256": "bfdc7c2ff7f4129d9fd360a23fb49fd049e534b09d03e49e22ec4640c78965fa",
         "size": 84700
       },
       "tim": {
@@ -4044,13 +4044,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Sakuyamon.MMD",
-            "sha256": "bfad51f26a53247ffcdb1feb650528abd6869737f46240d1cc732417b8ace08c",
+            "sha256": "41074227584a415528b589619f74daa17caea7970ec281a96eaf142ab43a4b92",
             "size": 100186
           }
         ],
         "delta": "content/modeldelta/deltas/316-Sakuyamon.MMD.mdelta",
-        "delta_sha256": "4d29d5cea93af61d80b29818f15f5f6fb2ebcd4e0c7eb0545aac83e7222ebd62",
-        "sha256": "1c3f65f47a8f07720acc9b0c76779ec8aed60ae14d32695d4f93f391f71bf359",
+        "delta_sha256": "7a75f2e63209f62db30b47e40c048bf84c787014ec03c11bfc20459a2fc00fe5",
+        "sha256": "ea329a6543ab59bbcf7dec855f795f27d9f6d77151b15ac08f65403269d35c6d",
         "size": 108824
       },
       "tim": {
@@ -4074,13 +4074,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Fujinmon.MMD",
-            "sha256": "9b40888f64b2450573e60e0691e10adc27bb3756915a56030dbf78ae02796d08",
+            "sha256": "04b01423935701d17939a46c5bd0610dc992052d3bcb7697c1c1742d4cfbcaaa",
             "size": 86938
           }
         ],
         "delta": "content/modeldelta/deltas/317-Fujinmon.MMD.mdelta",
-        "delta_sha256": "6eed3f486f8017490cf4f890e91c31bb530bce494f11b0efbf6e2710faf64313",
-        "sha256": "027b2f7fec82c8681645bc6febb4dff9808bfe7e2fc666f1e977db81765ba571",
+        "delta_sha256": "df63d849fe3cfe82452c1ba3df2807c16691210d3e366357e72868c08821d34e",
+        "sha256": "22f448650e8dfe47165c8ff79d26bccf93b4dd0d2af18f77ecd45cdfb5634e43",
         "size": 91264
       },
       "tim": {
@@ -4104,13 +4104,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Gallantmon.MMD",
-            "sha256": "c3da9ad781580688de4fbaeeeb7720bdaa3944d1855c363cc0c881c5d3dcdab2",
+            "sha256": "5e352f31ff60253cd65ea33ad958b0fa7d77bac8732afeaa86de0ada8f8ce550",
             "size": 98560
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.MMD.mdelta",
-        "delta_sha256": "89da93d3d8409cd98b1df5c66d1a47d9334da7e2b674b74918ce9f3dbb177bed",
-        "sha256": "2d70e82822cc9ab98462cf6017d6806a9bcf7264adb3df718a82666d0a4b9813",
+        "delta_sha256": "48ff5a5ea394fdbc0fb0b4c39960ac8849d98500b0b56caf7397b3ce47c16126",
+        "sha256": "34e58830d087db47ce712feb256ed60afcf90a660957d370ed894989d9434e73",
         "size": 106644
       },
       "tim": {
@@ -4134,13 +4134,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Pharaohmon.MMD",
-            "sha256": "5bf1eb7da946e94ef7ff53e9c22d25e647c18d441d0c410d4b630fb26e934dd5",
+            "sha256": "ae624f941c5d1beca14c37525b78e09dbd6fdc47904b82cf31e4c0cc0623909b",
             "size": 88752
           }
         ],
         "delta": "content/modeldelta/deltas/319-Pharaohmon.MMD.mdelta",
-        "delta_sha256": "eecddd425f678cfcae8524cde5e622148e2eecb699354823ab99aefcae186b5a",
-        "sha256": "1050a7a79ea07d4749ba4d7e011c5206743531ef6c864a8aeeb647b14727d62c",
+        "delta_sha256": "9a4ce8c462f77c53976871d68f5f63ceb4265887945cc9d41475a745724319e4",
+        "sha256": "632e773221f22a765285bcf9787a70105ae9e2da6f9039362cbbac0fa5e6e232",
         "size": 96832
       },
       "tim": {
@@ -4559,13 +4559,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Raijinmon.MMD",
-            "sha256": "3ef42bed545cc48f12de1a24db2cea3325da3441724e76dfe3ee22ac5d54998e",
+            "sha256": "c2d9030ff7de952aceed3e9e850c0ce40a78904d25c84dd282ec26d92ba73d49",
             "size": 92084
           }
         ],
         "delta": "content/modeldelta/deltas/333-Raijinmon.MMD.mdelta",
-        "delta_sha256": "28312c747aadbed6762df1b8e55e4982ceeac6306ff946353e165c28f3d8689f",
-        "sha256": "2b0c97b5c09106a40b26ae1b7165d1afb0e22bb9d73f187a1c61aefc33f5f1f9",
+        "delta_sha256": "5be0023a5a7cdf0c041a1fd2cbc610a407faf3116b0199d620d6d4856a57c10f",
+        "sha256": "404f58c774f645bdbcb51c11ddac9830df4c82618207c7642f3f689cd2dcf954",
         "size": 96028
       },
       "tim": {
@@ -4619,13 +4619,13 @@
         "sources": [
           {
             "path": "build/sizes-out/models/MegaGargomon.MMD",
-            "sha256": "aa18e4528e95bdf7db0c553002d8f7f0f70d736399b81314539ff75303dc1fc4",
+            "sha256": "6528738e995963df942057adfd0b19637d5e8f50568681ca03b5748054985eaf",
             "size": 99104
           }
         ],
         "delta": "content/modeldelta/deltas/335-MegaGargomon.MMD.mdelta",
-        "delta_sha256": "a595b0fda2db66836d396db20a2c9936b13f12348415041eaa2cb3b3630badbc",
-        "sha256": "28957d557c7850ee1aabc3b8311ab91ca6f379c184298e887d7c07b1a920ddf2",
+        "delta_sha256": "66f22f1123a5a225c93b2baeeec7558fcfc1a2c9f58306711d2c5d9a7a8dd5b9",
+        "sha256": "8c4bfe3752fc39a1beba45c489fe6092764bfb678f7cc7fb165c5e4b106c9a57",
         "size": 104336
       },
       "tim": {

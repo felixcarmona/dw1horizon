@@ -14,7 +14,7 @@
   "model": {
     "file": "build/sizes-out/models/Baihumon.MMD",
     "radius": 300,
-    "height": 640,
+    "height": 582,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 3], [5, 3], [6, 2], [7, 7], [8, 8], [9, 2], [10, 10],
                  [11, 11], [12, 1], [13, 13], [14, 14], [15, 1], [16, 16], [17, 17], [18, 1],
                  [19, 19], [20, 20], [21, 1], [22, 1], [23, 1], [24, 1], [25, 1], [26, 1]],
@@ -24,8 +24,8 @@
   "texture": {"file": "build/batch8/Baihumon.TIM", "entry": 0},
   "voice": 20,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -109, 42, 3],
-  "effect_origins": [[4, 70, 0, 20, 3, 0, 26, -134], [4, 120, 0, 20, 3, 0, 69, -218]],
+  "condition_bubble": [0, -99, 38, 3],
+  "effect_origins": [[4, 70, 0, 20, 3, 0, 24, -122], [4, 120, 0, 20, 3, 0, 63, -198]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "sizing": {
     "game": "dw2",
@@ -34,6 +34,7 @@
     "base_scale": 1.0,
     "natural": {"height": 400.0, "half_width": 177.2, "half_depth": 371.4}
   },
+  "size": {"height": 582},
   "partner": {
     "voice": 7,
     "hunger_hours": [2, 6, 11, 16, 21],
