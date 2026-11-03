@@ -60,6 +60,7 @@ script 2 {
         choice {
             text("s002.sec6.m0.o0") => {
                 engine.picker_mode = true;
+                engine.arg = 254;
                 call_routine(routine("choose_item"));
                 if (engine.picker_mode) {
                     say(tamer, text("s002.sec6.u1"));

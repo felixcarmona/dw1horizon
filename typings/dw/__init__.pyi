@@ -284,7 +284,9 @@ random: _Random
 class Picked(Enum):
     EMPTY = 0
     CANCELLED = 1
-def pick_item() -> 'Item | Picked': """The item menu: an Item, or Picked.EMPTY (nothing to give) / Picked.CANCELLED."""
+def pick_item(*, food: bool = False) -> 'Item | Picked':
+    """The item menu: an Item, or Picked.EMPTY (nothing to give) / Picked.CANCELLED. `food=True`: only the food can be
+    chosen (the care menu's food; the rest is greyed, patch 0330), Picked.EMPTY when there is none."""
 def take_picked(*, all: bool = False) -> None: """Take the item `pick_item()` gave (one; `all=True`: every one of it)."""
 def shop(*items: 'Item') -> None:
     """The NPC being talked to opens its shop with these items (in `on_talk`): buy and sell, the game's own menu, in this

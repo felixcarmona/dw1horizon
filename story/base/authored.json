@@ -330,6 +330,16 @@
       "original_sha256": "6442e3f406a5cce704b6d4e16592344780cf13fb233d8a07432f836d34dfaad6",
       "authored_sha256": "3c7db3232820eec7d3e25233d1b636a5d546eaec5bf2898b18d499331d013716",
       "reason": "A dirt box carried home counts as one of the five dirt-hauling trips; DWS synchronized with the authored Python source"
+    },
+    "zones/kunemons-bed/s002-1/script.py": {
+      "original_sha256": "67a389b8c6144cc83430c94fbc44748970d717e41be0cbb0033c182418c55a4b",
+      "authored_sha256": "c0eb1a8fc639788a2a4861fdedba7f1c55eb6ee1075934d7c58724d57538939a",
+      "reason": "Kunemon's item menu offers only food (pick_item(food=True), patch 0330)"
+    },
+    "zones/kunemons-bed/s002-1/script.dws": {
+      "original_sha256": "10335941cab7c9041d037b0e3d70296b083b72805cd2ac1cdc6e34e1dc654a63",
+      "authored_sha256": "f6546f23e12388d0cc56e88efd34865802b7fdedba32a081f0f64f843ce702df",
+      "reason": "Kunemon's item menu offers only food (patch 0330); DWS synchronized with the authored Python source"
     }
   }
 }
