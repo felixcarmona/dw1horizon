@@ -26,7 +26,7 @@ class ModelProvider(unittest.TestCase):
     def test_every_reviewed_overlay_keeps_its_species_generator_and_output(self):
         model = provider()
         records = model.records()
-        self.assertEqual(len(records), 175)
+        self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
         self.assertEqual(len(selected), 118)

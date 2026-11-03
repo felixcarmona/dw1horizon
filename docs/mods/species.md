@@ -179,7 +179,7 @@ lists and objects on one line); load → dump is byte-equal (selftest `species-f
 | `texture` | record `texSector` | `{"file": TIM, "entry": N}` or `{"from": id}`, plus `"hue"` (degrees) or `"swap"` (`"bgr"`…) | originals: `ALLTIM.TIM` entry = id; imports: required |
 | `voice` | `DIGIMON_VBALL_SOUND_ID`, record `vballId` | VBALL chunk (short voices: battle, NPC lines) | required |
 | `battle_music` | `SPECIES_BATTLE_MUSIC`, record `battleMusic` (patch 0081) | the font 0x21 track it plays as a wild enemy: `event-battle` `normal-battle` `normal-battle-2` `last-battle` (jukebox names, `BGM_TRACK_NAMES`) | required |
-| `reincarnation_stats` | `REINCARNATION_STATS` (patch 0081) | `{"hp", "mp", "offense", "defense", "speed", "brains"}`: the stats it hatches with from the reincarnation egg (before the inherited share); 4 rows (Botamon, Punimon, Poyomon, Yuramon) | none |
+| `reincarnation_stats` | `REINCARNATION_STATS` (patch 0081) | `{"hp", "mp", "offense", "defense", "speed", "brains"}`: the stats it hatches with from the reincarnation egg (before the inherited share); 4 rows (Botamon, Punimon, Poyomon, Yuramon); the new eggs' babies (patch 0334, ids 470-473) hatch with the row of their `vanilla_as` | none |
 | `new_game_technique` | `NEW_GAME_TECHNIQUES` (patch 0081) | an explicit opening technique from its list (Agumon and Gabumon retain the 2 authored rows); other quiz starters learn and equip what evolving into them teaches, the weakest technique of their main element (`evolutionFormula.learn`, patch 0332) | the weakest technique of its main element |
 | `condition_bubble` | record `conditionFx` | `[x, y, z, bone]`: where the hungry/sleepy bubble hangs | the `effects_like` species' |
 | `effect_origins` | record `effectOrigins` | `[[from bone, x, y, z, to bone, x, y, z], …]`, ≤ 8, x `"any"`: moves the `effects_like` species' effect origins onto its own skeleton (see `tools/mmdport.py`); `from` is an EFE row exactly as the disc has it (never scaled with the model) | none |
@@ -284,7 +284,8 @@ Choose an unused id within `NUM_DIGIMON` before adding a record; the imported
 species already occupy many ids above 179. `tools/species.py add --help` describes
 copying a base record and setting numeric fields. Keep the complete species JSON
 as source. For imported model edits use [model deltas](../../content/modeldelta/README.md),
-not a committed converted model.
+not a committed converted model. A species no source game has is drawn by hand on a DW1
+donor's rig: [hand-made species](hand-made-species.md) describes the method.
 
 The everything build selects all species through its V61 provider. Check a changed
 record with `species.py lint` and rebuild through [building](../building.md), which

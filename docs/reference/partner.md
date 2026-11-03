@@ -98,7 +98,7 @@ There is no `PARTNER_STATS` symbol: the stats are inside `PARTNER_ENTITY` (+0x38
 | `EVOLUTION_ITEM_TARGET` | `0x80127C5C` | 44 x u8, index = item - 0x47 | species given by each evolution item |
 | `MOVE_LEARN_CHANCES` | `0x80125FA4` | 58 x `u8[3]` | % chance to learn each technique (column = specialty position) |
 | `STATS_LIMIT_ARRAY` | `0x80130318` | 22 x i16 | caps for script `SET_STAT`/`ADD_STAT`, index = `SCRIPT_STAT_*` |
-| `REINCARNATE_BABY_TYPE` | `0x80134BAC` | 4 x i16 = {1, 15, 29, 43} | eggs: Botamon, Punimon, Poyomon, Yuramon |
+| `REINCARNATE_BABY_TYPE` | `0x80134BAC` | 4 x i16 = {1, 15, 29, 43} | eggs: Botamon, Punimon, Poyomon, Yuramon (slots 0-3; patch 0334's slots 4-7 hatch 470-473, `eggBabyType`) |
 | `EVOLUTION_TARGET` | `0x80134E50` | i16 | species about to evolve into; -1 none |
 | `HAS_USED_EVOITEM` | `0x80134E52` | u8 | 1 = the evolution in progress comes from an item (no gains) |
 | `PARTNER_STATE` / `PARTNER_SUB_STATE` | `0x80134C5B` / `0x80134C5C` | i8 | partner state / step in it |
@@ -110,7 +110,7 @@ There is no `PARTNER_STATS` symbol: the stats are inside `PARTNER_ENTITY` (+0x38
 | `CURRENT_POOP_ID` / `POOP_TO_EAT` | `0x80134C58` / `0x80134C68` | u8 | next free `WORLD_POOP` slot / pile Numemon or Sukamon is about to eat |
 | `ITEM_TAKE_DISTANCE` | `0x80122D24` | 66 x i8 | distance at which it accepts items (`distance*20+160`) |
 | `EVO_SEQUENCE_DATA` | `0x80154F90` | 0x34 | state of the EVL sequence |
-| `DOOA_REINCARNATION_SEQ` | `0x80087868` (DOOA overlay) | 0x40 | +0x0E `eggSlot` (i16, 0..3), the chosen egg |
+| `DOOA_REINCARNATION_SEQ` | `0x80087868` (DOOA overlay) | 0x40 | +0x0E `eggSlot` (i16, 0..3; 0..7 with patch 0334 and NEW DIGIMON on), the chosen egg |
 
 ### `PartnerPara` (`params.h:36`), base `0x80138460`
 
@@ -561,6 +561,14 @@ reachable if they are added to `EVOLUTION_PATHS`, and 63..65 only through items.
   then routine 4 → state 14 (`partnerTickDying2`) → `DOOA_getSequenceState`: **if `lives == 0` the egg is replaced by
   `rand() % 4`** (death by battle or sickness with no lives left gives a random egg; a natural death keeps the chosen
   one). `DOOA_tickRebirth` calls `reincarnatePartner` with `REINCARNATE_BABY_TYPE[eggSlot]`.
+- **Eight eggs (patch 0334)**: with NEW DIGIMON on the box shows two rows, the original four above Pabumon's,
+  Pichimon's, YukimiBotamon's and Nyokimon's eggs (species 470-473); left/right go through the eight, up/down change
+  rows, and the random egg is `rand() % 8`. The eggs' art is in `ETCDAT/TAMA.TIM` (4-bit, 256x80 at VRAM 576,256, CLUT
+  16 rows at 128,488): the 3D skin at u 0-95 (rows 488-491), the original icons at u 96-223 (rows 492-495), the cursor
+  (row 496); `tools/egg_art.py` adds the new icons at u 136-247, v 40-71 and rows 497-500 from the player's own file.
+  `TAMA.TMD` (24 objects: 4 groups of 6 shell pieces, one geometry with each group's own UVs and row) fills its buffer
+  `DOO2_D_80071EE4` but for 28 bytes, so a new egg borrows a group (`eggModelGroup`) and its row is copied over that
+  group's row; a new baby hatches with the stats of its `vanilla_as` baby.
 - `reincarnatePartner`: `DEATH_STATS = stats`, equipped techniques cleared (`moves[0] = 0x2E`), new entity via
   `initializeReincarnatedPartner`: the baby's base stats (Botamon 90/110/10/11/9/10, Punimon 120/100/16/8/8/6, Poyomon
   100/140/12/6/6/8, Yuramon 100/120/8/8/8/8) **plus `tamerLevel` % of `DEATH_STATS` only if `IS_NATURAL_DEATH == 1`**

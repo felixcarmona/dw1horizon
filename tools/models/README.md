@@ -41,6 +41,12 @@ See [motion](../../docs/reference/motion.md#metalgreymon-vaccine-donor-provenanc
 for palette selections, technique routing and storage. Run
 `PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_metalgreymon`.
 
+Species 470-477 are the hand-made babies (`babies/`): a DW1 donor baby's rig and
+animations with our mesh and texture, replayed from plain deltas
+(`content/modeldelta/babies.json`); `babies/authoring/` holds the drawing scripts.
+Run `python3 -m tools.models.babies check` and
+`PYTHONPATH=tools python3 -W ignore -m unittest tools.test_native_babies`.
+
 Measure final field speeds and voice-note coverage with:
 
 ```sh

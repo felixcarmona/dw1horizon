@@ -1,0 +1,312 @@
+From 2893953809217dda39e1c0b0a41eabb54b8c856b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 3 Nov 2026 18:55:41 +0000
+Subject: [PATCH] Choose among eight eggs when the partner dies: the four
+ originals and the four hand-made Fresh babies
+
+With NEW DIGIMON on, the egg panel shows two rows: the original four eggs (Botamon, Punimon, Poyomon, Yuramon)
+above four new ones that hatch Pabumon, Pichimon, YukimiBotamon and Nyokimon (species 470-473). Left and right go
+through all eight, up and down change rows; the panel is 96 pixels tall instead of 80. With NEW DIGIMON off the
+panel, the cursor and the eggs are the original's. The death that picks an egg at random (no lives left) picks
+among the eggs the panel would show.
+
+The new icons and CLUT rows 497-500 are drawn into the disc's ETCDAT/TAMA.TIM at build time (tools/egg_art.py).
+TAMA.TMD's buffer has 28 bytes to spare, so a new egg is drawn with the 3D model of an original group (Pabumon and
+Pichimon group 2, YukimiBotamon group 1, Nyokimon group 0) and its row is copied over that group's CLUT row when
+the hatch starts; the texture is loaded again at the next death.
+
+REINCARNATION_STATS has rows for the four original babies only, so a new baby hatches with the row of the baby its
+species file names as "vanilla_as", plus the inherited share as for any egg (the typedef moves to partner.h).
+
+All of it is code in the DOO2 and DOOA overlays: no byte of the main executable.
+---
+ include/dw/dooa.h       | 29 ++++++++++++++++++++++
+ include/dw/partner.h    |  8 +++++++
+ src/doo2/doo2.c         | 48 ++++++++++++++++++++++++++++++-------
+ src/dooa/dooa.c         | 53 ++++++++++++++++++++++++++++++++++++-----
+ src/main/partner_impl.c |  5 +---
+ 5 files changed, 125 insertions(+), 18 deletions(-)
+
+diff --git a/include/dw/dooa.h b/include/dw/dooa.h
+index b7fd8f4..5a33fa7 100644
+--- a/include/dw/dooa.h
++++ b/include/dw/dooa.h
+@@ -7,6 +7,7 @@
+ #include <dw/efe.h>
+ #include <dw/entity.h>
+ #include <dw/evl.h>
++#include <dw/mod_options.h>
+ #include <dw/types.h>
+ 
+ typedef struct {
+@@ -59,6 +60,34 @@ extern DooaShardEffect DOOA_SHARD_EFFECT;
+ extern DooaSequence DOOA_REINCARNATION_SEQ;
+ 
+ extern int16_t REINCARNATE_BABY_TYPE[4];
++
++/*
++ * MOD (eight eggs): the egg the player picks when the partner dies. Slots 0-3 are the original eggs and babies
++ * (REINCARNATE_BABY_TYPE, which the main executable also reads); with NEW DIGIMON on, slots 4-7 hatch the hand-made
++ * Fresh babies, species 470-473 in slot order (Pabumon, Pichimon, YukimiBotamon, Nyokimon). Their icons and CLUT rows
++ * 497-500 are drawn into the disc's TAMA.TIM at build time (tools/egg_art.py); a new egg borrows the 3D model of an
++ * original group of TAMA.TMD (the buffer has no room for more objects) and its row is copied over that group's.
++ */
++#define EGG_NEW_FIRST_SPECIES	470
++#define EGG_NEW_CLUT_ROW	497	/* TAMA.TIM's CLUT is at VRAM 128,488: rows 488-491 the 3D groups */
++
++static inline int32_t eggCount(void)
++{
++	return modSpeciesAllowed(EGG_NEW_FIRST_SPECIES) ? 8 : 4;
++}
++
++static inline int32_t eggBabyType(int32_t slot)
++{
++	return slot < 4 ? REINCARNATE_BABY_TYPE[slot] : EGG_NEW_FIRST_SPECIES + slot - 4;
++}
++
++/* the TAMA.TMD group (6 objects) the slot's egg is drawn with: Pabumon and Pichimon the plain-coloured group 2,
++ * YukimiBotamon the wave egg (group 1, whose skin carries the zigzags), Nyokimon the spotted group 0 */
++static inline int32_t eggModelGroup(int32_t slot)
++{
++	return slot < 4 ? slot : (0x0122 >> ((slot - 4) * 4)) & 0xf;
++}
++
+ extern SVECTOR MAIN_D_80134BB4;
+ extern int8_t DOOA_ENTITIES_VISIBLE;
+ 
+diff --git a/include/dw/partner.h b/include/dw/partner.h
+index d034ada..a1e767c 100644
+--- a/include/dw/partner.h
++++ b/include/dw/partner.h
+@@ -64,4 +64,12 @@ int32_t modPartnerNameIsSpecies(int32_t type);
+ void modPartnerNameSetSpecies(int32_t type);
+ void modPartnerNameFollow(int32_t from, int32_t to);
+ 
++/* MOD (species JSON): a Fresh species' hatching stats (partner_impl.c; the DOOA overlay's new eggs read them too) */
++typedef struct {
++	int16_t type;
++	int16_t hp, mp, offense, defense, speed, brains;
++} ReincarnationStats;
++extern ReincarnationStats REINCARNATION_STATS[4];
++void setReincarnateStats(int16_t hp, int16_t mp, int16_t offense, int16_t defense, int16_t speed, int16_t brains);
++
+ #endif
+diff --git a/src/doo2/doo2.c b/src/doo2/doo2.c
+index bc5694a..cc76864 100644
+--- a/src/doo2/doo2.c
++++ b/src/doo2/doo2.c
+@@ -332,22 +332,44 @@ void DOO2_tickEggBox(void)
+ 	seq->sparkleIndex = 0;
+ }
+ 
++/* MOD (eight eggs): where slot i of n eggs sits in the panel: the original row of four, or with eight two rows, the
++ * original eggs above the new ones (the panel is taller then, DOO2_openEggBox) */
++static void eggPlace(int32_t i, int32_t n, int16_t *x, int16_t *y)
++{
++	*x = ((i & 3) * 36) - 54;
++	*y = (n == 4) ? -30 : (i < 4) ? -51 : -13;
++}
++
+ void DOO2_renderEggIcons(void)
+ {
+ 	DooaSequence *panel = &DOOA_REINCARNATION_SEQ;
+ 	int32_t pri = 1;
+ 	Doo2EggIcons icons;
+ 	int32_t i;
++	int32_t n;
+ 
+ 	icons = EGG_ICONS;
+-	for (i = 0; i < 4; i++) {
+-		DOO2_EGG_ICON_SPRITE.x = (i * 36) - 54;
+-		DOO2_EGG_ICON_SPRITE.u = (icons.icon[i] * 32) + 96;
+-		DOO2_EGG_ICON_SPRITE.cy = i + 492;
++	n = eggCount();
++	for (i = 0; i < n; i++) {
++		eggPlace(i, n, &DOO2_EGG_ICON_SPRITE.x, &DOO2_EGG_ICON_SPRITE.y);
++		if (i < 4) {
++			DOO2_EGG_ICON_SPRITE.u = (icons.icon[i] * 32) + 96;
++			DOO2_EGG_ICON_SPRITE.v = 0;
++			DOO2_EGG_ICON_SPRITE.w = 32;
++			DOO2_EGG_ICON_SPRITE.mx = 16;
++			DOO2_EGG_ICON_SPRITE.cy = i + 492;
++		} else {
++			/* the new icons: 28 texels wide (the originals' drawn columns) at u 136, 164, 192, 220, v 40 */
++			DOO2_EGG_ICON_SPRITE.u = ((i - 4) * 28) + 136;
++			DOO2_EGG_ICON_SPRITE.v = 40;
++			DOO2_EGG_ICON_SPRITE.w = 28;
++			DOO2_EGG_ICON_SPRITE.mx = 14;
++			DOO2_EGG_ICON_SPRITE.cy = (i - 4) + EGG_NEW_CLUT_ROW;
++		}
+ 		GsSortSprite(&DOO2_EGG_ICON_SPRITE, ACTIVE_ORDERING_TABLE, pri);
+ 	}
+ 
+-	DOO2_EGG_CURSOR_SPRITE.x = (panel->eggSlot * 36) - 54;
++	eggPlace(panel->eggSlot, n, &DOO2_EGG_CURSOR_SPRITE.x, &DOO2_EGG_CURSOR_SPRITE.y);
+ 	GsSortSprite(&DOO2_EGG_CURSOR_SPRITE, ACTIVE_ORDERING_TABLE, pri);
+ }
+ 
+@@ -723,13 +745,16 @@ void DOO2_openEggBox(void)
+ 	DooaSequence *seq;
+ 	int32_t boxId;
+ 	RECT startPos;
++	RECT panelRect;
+ 
+ 	seq = &DOOA_REINCARNATION_SEQ;
+ 	boxId = 3;
+ 	startPos = MAIN_D_80134B98;
+ 	seq->eggSlot = 0;
+ 	seq->sparkleIndex = -1;
+-	createAnimatedUIBox(boxId, 0, 2, &MAIN_D_80134B90, &startPos,
++	/* MOD (eight eggs): two rows need a taller panel, centred on the same point minus 2 pixels */
++	setRECT(&panelRect, -84, -80, 168, 96);
++	createAnimatedUIBox(boxId, 0, 2, (eggCount() == 8) ? &panelRect : &MAIN_D_80134B90, &startPos,
+ 	                    (TickFunction)DOO2_tickEggBox,
+ 	                    (RenderFunction)DOO2_renderEggIcons);
+ 	stopSound();
+@@ -741,6 +766,7 @@ int32_t DOO2_tickEggInput(void)
+ 	DooaSequence *seq;
+ 	int32_t boxId;
+ 	RECT boxRect;
++	int32_t n;
+ 
+ 	seq = &DOOA_REINCARNATION_SEQ;
+ 	boxId = 3;
+@@ -752,12 +778,18 @@ int32_t DOO2_tickEggInput(void)
+ 	if (UI_BOX_DATA[boxId].state == 0) {
+ 		return 1;
+ 	}
++	/* MOD (eight eggs): left and right go through every egg, up and down change rows */
++	n = eggCount();
+ 	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x2000) {
+-		seq->eggSlot = (seq->eggSlot + 1) % 4;
++		seq->eggSlot = (seq->eggSlot + 1) % n;
+ 		playSound(0, 2);
+ 	}
+ 	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x8000) {
+-		seq->eggSlot = (seq->eggSlot + 3) % 4;
++		seq->eggSlot = (seq->eggSlot + n - 1) % n;
++		playSound(0, 2);
++	}
++	if (n == 8 && ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & 0x5000)) {
++		seq->eggSlot ^= 4;
+ 		playSound(0, 2);
+ 	}
+ 	if ((POLLED_INPUT & ~POLLED_INPUT_PREVIOUS) & CONFIRM_BUTTON) {
+diff --git a/src/dooa/dooa.c b/src/dooa/dooa.c
+index 8c2f55d..6f30512 100644
+--- a/src/dooa/dooa.c
++++ b/src/dooa/dooa.c
+@@ -974,6 +974,33 @@ int32_t DOOA_renderIrisWindow(Entity *entity, int32_t startFrame, long endFrame,
+ 	return visible;
+ }
+ 
++/*
++ * MOD (eight eggs): REINCARNATION_STATS (written from the species files, ids below 180) has no row for a new baby, so
++ * initializeReincarnatedPartner set no stats: it hatches with the row of the original baby its species file names as
++ * "vanilla_as" (Pabumon Punimon's, Pichimon and YukimiBotamon Botamon's, Nyokimon Yuramon's), the inherited share
++ * on top as for any egg.
++ */
++static void eggHatchStats(int32_t type)
++{
++	ReincarnationStats *row;
++	int32_t as;
++	int32_t i;
++
++	as = getSpeciesVanillaAs(type);
++	for (i = 0; i < 4; i++) {
++		if (REINCARNATION_STATS[i].type == type) {
++			return;
++		}
++	}
++	for (i = 0; i < 4; i++) {
++		row = &REINCARNATION_STATS[i];
++		if (row->type == as) {
++			setReincarnateStats(row->hp, row->mp, row->offense, row->defense, row->speed, row->brains);
++			return;
++		}
++	}
++}
++
+ void DOOA_tickRebirth(int32_t instanceId)
+ {
+ 	VECTOR flashPos;
+@@ -1027,8 +1054,8 @@ void DOOA_tickRebirth(int32_t instanceId)
+ 		}
+ 		seq->phase = 0xce;
+ 		DOOA_removeShardEffect();
+-		loadVLALL(REINCARNATE_BABY_TYPE[seq->eggSlot], GENERAL_BUFFER_PTR);
+-		loadMMDAsync(REINCARNATE_BABY_TYPE[seq->eggSlot], 3, DOOA_MMD_BUFFER, &seq->modelData,
++		loadVLALL(eggBabyType(seq->eggSlot), GENERAL_BUFFER_PTR);
++		loadMMDAsync(eggBabyType(seq->eggSlot), 3, DOOA_MMD_BUFFER, &seq->modelData,
+ 		             (uint8_t *)&seq->isModelLoading);
+ 		DOO2_resetShardSets(DOOA_SHARD_BUFFER);
+ 		playSound(8, 6);
+@@ -1057,7 +1084,8 @@ void DOOA_tickRebirth(int32_t instanceId)
+ 			while (seq->isModelLoading != 0) {
+ 				tickFileReadQueue(0);
+ 			}
+-			reincarnatePartner((int32_t)ENTITY_TABLE[1], &PARTNER_ENTITY.digimonEntity.stats, &PARTNER_PARA, REINCARNATE_BABY_TYPE[seq->eggSlot]);
++			reincarnatePartner((int32_t)ENTITY_TABLE[1], &PARTNER_ENTITY.digimonEntity.stats, &PARTNER_PARA, eggBabyType(seq->eggSlot));
++			eggHatchStats(eggBabyType(seq->eggSlot));
+ 			waitForSoundBufferLoading(3);
+ 			entity = (Entity *)&PARTNER_ENTITY;
+ 			seq->entity = entity;
+@@ -1099,7 +1127,7 @@ void DOOA_tickRebirth(int32_t instanceId)
+ 			offset = DOOA_SPARKLE_OFFSET;
+ 			if (DOOA_SPARKLE_BONE_IDS[seq->sparkleIndex] >= 0) {
+ 				shardSet = DOO2_buildShardSet(&offset, (u_long)DOO2_D_80071EE4,
+-				                              DOOA_SPARKLE_BONE_IDS[seq->sparkleIndex] + (seq->eggSlot * 6));
++				                              DOOA_SPARKLE_BONE_IDS[seq->sparkleIndex] + (eggModelGroup(seq->eggSlot) * 6));
+ 				MAIN_D_80135364[DOOA_SPARKLE_BONE_IDS[seq->sparkleIndex]] = -1;
+ 				playSound(8, 7);
+ 			}
+@@ -1137,7 +1165,7 @@ void DOOA_renderRebirth(int32_t instanceId)
+ 	panel = &DOOA_REINCARNATION_SEQ;
+ 	for (i = 0; i < 6; i++) {
+ 		if (MAIN_D_80135364[i] == 0) {
+-			GsLinkObject4((u_long)&DOO2_D_80071EE4[3], &obj, i + (panel->eggSlot * 6));
++			GsLinkObject4((u_long)&DOO2_D_80071EE4[3], &obj, i + (eggModelGroup(panel->eggSlot) * 6));
+ 			obj.attribute = 0;
+ 			GsInitCoordinate2(NULL, &coord);
+ 			obj.coord2 = &coord;
+@@ -1718,7 +1746,20 @@ int32_t DOOA_getSequenceState(unused, isInitialized)
+ 	}
+ 
+ 	if (partner->lives == 0) {
+-		sequence->eggSlot = rand() % 4;
++		sequence->eggSlot = rand() % eggCount(); /* MOD (eight eggs) */
++	}
++	/* MOD (eight eggs): a new egg's CLUT row over the row of the 3D group it borrows, for this scene (the egg
++	 * texture is loaded again at the next death) */
++	if (sequence->eggSlot >= 4) {
++		uint16_t row[16];
++		RECT rect;
++
++		setRECT(&rect, 128, EGG_NEW_CLUT_ROW + sequence->eggSlot - 4, 16, 1);
++		StoreImage(&rect, (u_long *)row);
++		DrawSync(0);
++		setRECT(&rect, 128, 488 + eggModelGroup(sequence->eggSlot), 16, 1);
++		LoadImage(&rect, (u_long *)row);
++		DrawSync(0);
+ 	}
+ 
+ 	addObject(0x80c, instance, DOOA_tickRebirth, DOOA_renderRebirth);
+diff --git a/src/main/partner_impl.c b/src/main/partner_impl.c
+index 927f573..583f04e 100644
+--- a/src/main/partner_impl.c
++++ b/src/main/partner_impl.c
+@@ -289,10 +289,7 @@ SleepPattern SLEEP_PATTERN[8] = {
+  * content/species/*.json ("reincarnation_stats", "new_game_technique") after linking (tools/balance.py build);
+  * unused rows have type -1.
+  */
+-typedef struct {
+-	int16_t type;
+-	int16_t hp, mp, offense, defense, speed, brains;
+-} ReincarnationStats;
++/* (ReincarnationStats: partner.h, which the DOOA overlay reads too) */
+ 
+ typedef struct {
+ 	int16_t type;
+-- 
+2.55.0
+

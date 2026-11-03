@@ -1,0 +1,165 @@
+{
+ "_comment": "Hand-made babies (tools/models/babies): donor DW1 model and ALLTIM entry from the player's extraction, plain MD3 deltas of our mesh and texture, result pins.",
+ "babies": {
+  "470": {
+   "name": "Pabumon",
+   "donor": 15,
+   "bones": 3,
+   "donor_model": "MMD0/PUNI.MMD",
+   "donor_model_sha256": "8ac9858622dcf259aa3af1b5935da02fbd3ca8edba3d2fa24856a30f418d2372",
+   "donor_texture_sha256": "54d185e3354e83659961e4a16fae82fa5d2d2bed04222db521dc780e14605ee3",
+   "mmd": {
+    "delta": "content/modeldelta/babies/470-Pabumon.MMD.mdelta",
+    "delta_sha256": "06cc612c4e6ecaadf13d8c03576fcad517f133493891dd6a5f39701226957a19",
+    "sha256": "c8e8df005a3b074fef2895976618e1f94f210b25d582beae97c9561dac249de3",
+    "size": 27108
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/470-Pabumon.TIM.mdelta",
+    "delta_sha256": "6aba8332a0394ef0bc37653534e99b7a960ad5d9d71e17a008498c6e3782a667",
+    "sha256": "14e24a92db13771e718d7e119e8a1d8b800950f00b04c3c29821758cd4ccaf42",
+    "size": 18432
+   }
+  },
+  "471": {
+   "name": "Pichimon",
+   "donor": 2,
+   "bones": 7,
+   "donor_model": "MMD0/KORO.MMD",
+   "donor_model_sha256": "1c1ae31966e9dfd9ce0cce68d041a94ae4084ec641dd841bddee018a29514cf8",
+   "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
+   "mmd": {
+    "delta": "content/modeldelta/babies/471-Pichimon.MMD.mdelta",
+    "delta_sha256": "4ca4479014dbdd343b45863a7fd7cd8c786f3f54d16d636e5ec04370b83f80c1",
+    "sha256": "9e152c9f2e9a83718365f39da647dce3fd1f376826c42e2efe29d50d3b538776",
+    "size": 43184
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/471-Pichimon.TIM.mdelta",
+    "delta_sha256": "ce49f7dad17d1685a237c0352822a801dd192ec449d7d9b43d07ea9087a5a750",
+    "sha256": "d5c1e73742903f69a3ee6c23af4b82f5923336d85c7faba2d8fe9841fe0822b9",
+    "size": 18432
+   }
+  },
+  "472": {
+   "name": "YukimiBotamon",
+   "donor": 1,
+   "bones": 3,
+   "donor_model": "MMD0/BOTA.MMD",
+   "donor_model_sha256": "30517faf54fcd0fab64ce20ef6d9f79c5043d9eecf634edf57388a52994287c2",
+   "donor_texture_sha256": "b0ad57afaae2242db397e88cf1027cf04210038101977803985621d3bb322a87",
+   "mmd": {
+    "delta": "content/modeldelta/babies/472-YukimiBotamon.MMD.mdelta",
+    "delta_sha256": "f6b7124b4b9fe79715165f06d86b1a64c76b1d9eed5e588736e2ba5deef2408a",
+    "sha256": "ebd2e628f27d4cf510084ee5b8a2cb129f06c53f581e90083e90676526a28614",
+    "size": 25252
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/472-YukimiBotamon.TIM.mdelta",
+    "delta_sha256": "d392bae6a72e831af1674ab42ec30f09c89bd2022579b7d7865ec507e0203e55",
+    "sha256": "1c4260d9d0b4645ca490ea039b92d1ed15b9e24ceaee2c14587dfe94f4b1d84c",
+    "size": 18432
+   }
+  },
+  "473": {
+   "name": "Nyokimon",
+   "donor": 43,
+   "bones": 9,
+   "donor_model": "MMD1/YURA.MMD",
+   "donor_model_sha256": "29a7a688a0a936aef1a484266ea70987b91ac6b570e51ba956da7a147ddf2efa",
+   "donor_texture_sha256": "dd406159410fad2ef5e0996a9ade9221857f4e33e4f03aaacbebe22df7f6c389",
+   "mmd": {
+    "delta": "content/modeldelta/babies/473-Nyokimon.MMD.mdelta",
+    "delta_sha256": "7eb1b37edef8c880369338a796c4cb92d870a89603328574ec9a2e4f9909cf28",
+    "sha256": "299f6e10a7435ba3655b56117dc861302af8712bb3eb383286b2b727903c4398",
+    "size": 31072
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/473-Nyokimon.TIM.mdelta",
+    "delta_sha256": "ef001e625cbde74a003aa33ae6d278685a590088c5a837edac5cd6d3b8272218",
+    "sha256": "2b80a59ad99a2efa403ee1b6ce754f49d2f5bc4c559f5479c75571281c5e722e",
+    "size": 18432
+   }
+  },
+  "474": {
+   "name": "Motimon",
+   "donor": 2,
+   "bones": 7,
+   "donor_model": "MMD0/KORO.MMD",
+   "donor_model_sha256": "1c1ae31966e9dfd9ce0cce68d041a94ae4084ec641dd841bddee018a29514cf8",
+   "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
+   "mmd": {
+    "delta": "content/modeldelta/babies/474-Motimon.MMD.mdelta",
+    "delta_sha256": "09bb5933537d9a8193d6f08187574a618f4a2ce7ee2d1455ff4a3968a7476add",
+    "sha256": "9c138707ab3a9a0efe4ceb3cae78f91e1c5195f73290e5f29930314db82e413c",
+    "size": 33784
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/474-Motimon.TIM.mdelta",
+    "delta_sha256": "68fda053d378bd9baafe3aea1d1a643f407eb60284acecddd7af6d425cd531bd",
+    "sha256": "dd703be8ed45ba8f8f4aa252edfdcba2b0e0531a0379886e1302e6a410e5af5a",
+    "size": 18432
+   }
+  },
+  "475": {
+   "name": "Bukamon",
+   "donor": 2,
+   "bones": 7,
+   "donor_model": "MMD0/KORO.MMD",
+   "donor_model_sha256": "1c1ae31966e9dfd9ce0cce68d041a94ae4084ec641dd841bddee018a29514cf8",
+   "donor_texture_sha256": "360d8fbf34889e08c86c9cba288b93420bcd79d66e4dbc30bba3d929c3ab7f51",
+   "mmd": {
+    "delta": "content/modeldelta/babies/475-Bukamon.MMD.mdelta",
+    "delta_sha256": "b11c1645e5736b6e00cb6aff202a9154be06f162f4e36476c8858ab04de26282",
+    "sha256": "c9ed60d323f60c60ed7749951110809d7d8c3735ad3604a4f17663b52bef2bee",
+    "size": 31556
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/475-Bukamon.TIM.mdelta",
+    "delta_sha256": "d38238be915b7ff4010f5dc279fb5fffad7845b566b1f991fe79f69a970a0b2d",
+    "sha256": "fc98faa615ead87ae7d7ba430ea1a18df5e255e6cbdcfde8d8f295fc775d609d",
+    "size": 18432
+   }
+  },
+  "476": {
+   "name": "Nyaromon",
+   "donor": 30,
+   "bones": 11,
+   "donor_model": "MMD1/TOKO.MMD",
+   "donor_model_sha256": "3a4b4df9ef9a95713dccaec191ebeb5c2ced6df35fba4e4477adb47a5fed0e62",
+   "donor_texture_sha256": "f3a7df731892889bf92ad9ae36a372b3209374e119ad4440f1d38c01438cabaf",
+   "mmd": {
+    "delta": "content/modeldelta/babies/476-Nyaromon.MMD.mdelta",
+    "delta_sha256": "245d7147c635be79ea7acdd7ee3381b2681f0bfb8c3b1875b8115400a69383a4",
+    "sha256": "7d56e7c0c92be8bee26fd9fb93e5c0e0c73ed3a67d70e7a6c9bcdce2034822ef",
+    "size": 38880
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/476-Nyaromon.TIM.mdelta",
+    "delta_sha256": "3f2fc7bd3e6a7bbb2f5e6f00a3b27c39edbd2eab0d78464f464bec715acda6af",
+    "sha256": "d90f79a67124ae84438f0fa0cff3b1dc29102f6e2cf99a24e04e144211701519",
+    "size": 18432
+   }
+  },
+  "477": {
+   "name": "Yokomon",
+   "donor": 44,
+   "bones": 10,
+   "donor_model": "MMD1/TANE.MMD",
+   "donor_model_sha256": "338d41ff45e5a2429046c8d9b768d726fb1a36d278163de535f8fd47da2c1c87",
+   "donor_texture_sha256": "872098f3af8238facbb0de7b79aafb4ce6c98f6a456331295ebddcb5de6be9dd",
+   "mmd": {
+    "delta": "content/modeldelta/babies/477-Yokomon.MMD.mdelta",
+    "delta_sha256": "fba8df1926a5e1343d2bab43972c7a6a273ccd4617edcd71f7aa540ef1947c56",
+    "sha256": "e58da5a884013d77a709486a5e90231e764aacc9104c2516daea694a06383e99",
+    "size": 47168
+   },
+   "tim": {
+    "delta": "content/modeldelta/babies/477-Yokomon.TIM.mdelta",
+    "delta_sha256": "fdec333f610a406347cb9bf0347595e9c9e4c3f07222dcdef11f40f6499b1ad0",
+    "sha256": "ab4ef07c1dded35fa1c78389f95b3e15536ef17176820171c21c76f256645ba6",
+    "size": 18432
+   }
+  }
+ }
+}

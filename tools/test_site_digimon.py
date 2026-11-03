@@ -125,8 +125,8 @@ class Guide(unittest.TestCase):
     def test_new_is_every_species_the_original_game_does_not_raise(self):
         allsp = S.load_content()
         for t, x in self.by.items(): self.assertEqual(x['new'], not allsp[t].get('vanilla'), x['name'])
-        self.assertEqual(sum(x['new'] for x in self.by.values()), 218)
-        self.assertEqual(sum(x['new'] and t >= S.NUM_ORIGINAL for t, x in self.by.items()), 175)
+        self.assertEqual(sum(x['new'] for x in self.by.values()), 226)
+        self.assertEqual(sum(x['new'] and t >= S.NUM_ORIGINAL for t, x in self.by.items()), 183)
 
     def test_technique_names_are_the_games(self):
         for x in self.by.values():

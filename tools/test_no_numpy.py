@@ -15,7 +15,7 @@ class PythonOnly(unittest.TestCase):
     def test_player_modules_import_without_site_packages(self):
         # -I -S also hides NumPy installed in the developer's system Python.
         script = '''
-import importlib, importlib.util, sys
+import importlib, importlib.util, json, sys
 from pathlib import Path
 root = Path(sys.argv[1])
 sys.path[:0] = [str(root)]
@@ -30,8 +30,12 @@ with source_context(root / 'unused-test-sources'):
     for name in ('dcb.model', 'dcb.anim', 'dcb.pose', 'dcb.tim', 'dcb.vram',
                  'dw2.model', 'dw2.gltf', 'dw2.texture', 'dw3.model',
                  'dw3.pose', 'dw3.tim', 'dw3.texture', 'dcb2mmd',
-                 'dw2mmd', 'dw3mmd', 'import_batch', 'rigfix', 'tools.models.delta'):
+                 'dw2mmd', 'dw3mmd', 'import_batch', 'rigfix', 'tools.models.delta', 'mmd', 'motionstorage'):
         importlib.import_module(name)
+# The hand-made babies' builders (their authoring/ scripts are developer-only and never imported by the build).
+for name, entry in json.load(open(root / 'content/models/imports/models.json')).items():
+    if entry.get('builder'):
+        importlib.import_module(entry['builder'])
 assert 'numpy' not in sys.modules
 assert not any(n == 'PIL' or n.startswith('PIL.') for n in sys.modules)
 '''

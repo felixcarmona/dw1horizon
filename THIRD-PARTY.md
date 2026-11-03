@@ -48,6 +48,23 @@ hold no pixels or image data taken from any game, toy or website. The characters
 [README](README.md). The icons are covered by this repository's licence only as far as our own work goes; that gives
 no rights over the characters.
 
+## Hand-made species and eggs
+
+The models of species 470-477 (Pabumon, Pichimon, YukimiBotamon, Nyokimon, Motimon, Bukamon, Nyaromon, Yokomon:
+meshes, UV maps, textures, eye and mouth frames) were made for this project by our own code in
+`tools/models/babies/authoring/`. The repository holds that code and plain deltas; the bytes the deltas add are ours: no
+16-byte run of them occurs in the Digimon World files they apply to (`tools/test_native_babies.py` checks it). Official artwork was looked at as a reference and some
+colours were picked from it; no image from it is in the repository. At build time the deltas are applied to the
+player's own Digimon World disc: each new species reuses, unchanged and without copying it into the repository, the
+skeleton and animations of a Digimon World baby.
+
+The four new eggs are drawn at build time by `tools/egg_art.py` into the player's own egg texture: they reuse the
+disc's egg models and icons, recoloured. Only their palettes (colours picked from official artwork) and the zigzag
+pattern are ours.
+
+The characters themselves belong to Bandai. See the note at the top of the [README](README.md). This work is covered
+by this repository's licence only as far as our own work goes; that gives no rights over the characters.
+
 ## Japanese bitmap font
 
 `tools/font/japanese.txt` is the renamed **Digimon World Japanese subset**, derived
