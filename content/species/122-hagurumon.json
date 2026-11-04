@@ -4,6 +4,7 @@
   "_source": "dw2 M122HAGU (tools/import_batch.py run content/imports/lists/fourteenth-12.json); was species 347 until 2026-10-13, merged into the disc's id 122 (a record original)",
   "level": "rookie",
   "vanilla_as": 31,
+  "off": {"level": "rookie"},
   "attribute": "vaccine",
   "specialties": ["mech", "air", null],
   "techniques": ["Static Elect", "Electric Cloud", "Power Crane", "Metal Sprinter", "Reverse Prog",

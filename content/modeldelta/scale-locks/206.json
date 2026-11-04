@@ -2,8 +2,8 @@
   "species": 206,
   "name": "MagnaAngemon",
   "threshold": 0.02,
-  "source_sha256": "a1cfb1c639ded2e65a8c58423088d216a45be9e770d9a91ae40f3302cf3b7995",
-  "output_sha256": "b16d3e74f5884bbdf2fab50187e44f86a0fd052f8d2f9530a9bbbe56323e7acb",
+  "source_sha256": "f0cd3b2f3d87f20acf7b5e21b539a51399d230d295c4239d4a4dcf8d1e73fb94",
+  "output_sha256": "95db9388c46a072e28ec582734779c1c508fe51faa7a38158af84373d2cbb3d9",
   "preceding_provider": {
     "model": "206-MagnaAngemon.MMD",
     "aliases_applied": true,
@@ -326,116 +326,20 @@
   "affected_slots": [
     40,
     41,
-    42,
     43,
     49,
     50,
     58
-  ],
-  "original_animated_slots": [
-    40,
-    41,
-    42,
-    43,
-    49,
-    50,
-    58
-  ],
-  "original_scale_channels": [
-    [
-      4,
-      "sx",
-      3907,
-      5986
-    ],
-    [
-      4,
-      "sy",
-      3977,
-      6947
-    ],
-    [
-      4,
-      "sz",
-      3907,
-      5986
-    ],
-    [
-      6,
-      "sx",
-      304,
-      5933
-    ],
-    [
-      6,
-      "sy",
-      304,
-      7178
-    ],
-    [
-      6,
-      "sz",
-      304,
-      5933
-    ],
-    [
-      8,
-      "sx",
-      3907,
-      5986
-    ],
-    [
-      8,
-      "sy",
-      3977,
-      6947
-    ],
-    [
-      8,
-      "sz",
-      3907,
-      5986
-    ],
-    [
-      10,
-      "sx",
-      3907,
-      6158
-    ],
-    [
-      10,
-      "sy",
-      3977,
-      6916
-    ],
-    [
-      10,
-      "sz",
-      3907,
-      6158
-    ],
-    [
-      25,
-      "sx",
-      286,
-      4202
-    ],
-    [
-      25,
-      "sy",
-      286,
-      4202
-    ],
-    [
-      25,
-      "sz",
-      286,
-      4202
-    ]
   ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 83238,
+  "resident_bytes": 82658,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 50,
+    "animated": [],
+    "across_slots": []
+  }
 }

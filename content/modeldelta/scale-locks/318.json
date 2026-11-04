@@ -2,8 +2,8 @@
   "species": 318,
   "name": "Gallantmon",
   "threshold": 0.02,
-  "source_sha256": "1637898a3300e1617199c361ed2b280edb291cf94ea4c6e05f1293bcac37b2b0",
-  "output_sha256": "3627a4432718172dae5335754f048a39bea2858fa2f29365900689e726889c24",
+  "source_sha256": "3dce622809b85b396038790dd8f95905d1cec17ddb366a7bad02e6df22652454",
+  "output_sha256": "7d3d38cba774d0c34b113e413ccfeb2072d9b339f1a09cad60c73f42fc7317be",
   "preceding_provider": {
     "model": "318-Gallantmon.MMD",
     "aliases_applied": true,
@@ -66,54 +66,6 @@
       [
         47,
         61
-      ]
-    ],
-    "condition_bubble": [
-      0,
-      -127,
-      -5,
-      8
-    ],
-    "effect_origins": [
-      [
-        7,
-        "any",
-        0,
-        0,
-        21,
-        -55,
-        251,
-        -91
-      ],
-      [
-        10,
-        "any",
-        0,
-        0,
-        13,
-        108,
-        -5,
-        118
-      ],
-      [
-        1,
-        "any",
-        0,
-        0,
-        24,
-        0,
-        0,
-        0
-      ],
-      [
-        6,
-        "any",
-        0,
-        0,
-        4,
-        -34,
-        247,
-        -144
       ]
     ]
   },
@@ -282,30 +234,15 @@
     58,
     60
   ],
-  "original_animated_slots": [],
-  "original_scale_channels": [
-    [
-      6,
-      "sx",
-      4096,
-      4506
-    ],
-    [
-      6,
-      "sy",
-      4096,
-      4506
-    ],
-    [
-      6,
-      "sz",
-      4096,
-      4506
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 86858,
+  "resident_bytes": 89056,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 51,
+    "animated": [],
+    "across_slots": []
+  }
 }

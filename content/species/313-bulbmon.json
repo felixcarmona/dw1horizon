@@ -32,9 +32,9 @@
   },
   "effects_like": 55,
   "model": {
-    "file": "build/batch11/Bulbmon.MMD",
-    "radius": 199,
-    "height": 460,
+    "file": "build/sizes-out/models/Bulbmon.MMD",
+    "radius": 173,
+    "height": 400,
     "skeleton": [
       [
         -1,
@@ -134,12 +134,12 @@
     "file": "build/batch11/Bulbmon.TIM",
     "entry": 0
   },
-  "voice": 49,
+  "voice": 36,
   "battle_music": "normal-battle",
   "condition_bubble": [
     0,
-    -24,
-    9,
+    -21,
+    8,
     1
   ],
   "effect_origins": [
@@ -149,9 +149,9 @@
       0,
       0,
       20,
-      -77,
-      -91,
-      -163
+      -67,
+      -79,
+      -142
     ],
     [
       2,
@@ -160,8 +160,8 @@
       0,
       1,
       0,
-      56,
-      -28
+      49,
+      -24
     ],
     [
       2,
@@ -170,8 +170,8 @@
       0,
       1,
       0,
-      -72,
-      9
+      -63,
+      8
     ],
     [
       2,
@@ -180,8 +180,8 @@
       0,
       1,
       0,
-      -262,
-      9
+      -228,
+      8
     ],
     [
       1,
@@ -190,7 +190,7 @@
       0,
       1,
       0,
-      52,
+      45,
       0
     ],
     [
@@ -199,9 +199,9 @@
       0,
       95,
       1,
-      12,
-      -20,
-      9
+      10,
+      -17,
+      8
     ]
   ],
   "wild": {
@@ -224,8 +224,11 @@
       "half_depth": 936.7
     }
   },
+  "size": {
+    "height": 400
+  },
   "partner": {
-    "voice": 0,
+    "voice": 10,
     "hunger_hours": [
       3,
       8,

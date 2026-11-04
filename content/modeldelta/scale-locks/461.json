@@ -2,8 +2,8 @@
   "species": 461,
   "name": "Omnimon",
   "threshold": 0.02,
-  "source_sha256": "9b8be88e19fa722bbb01b181374094b9c7d14b1f6a689af40b60a35348563779",
-  "output_sha256": "c01b1a0ed732b3016c7e4d79ff9cdcd5a2c786001afb332a733b2decdc89b361",
+  "source_sha256": "2ebc6fb7b16d89300eefdb73754eee37b703ea559d81ba2bf03b65dbe7ce9a84",
+  "output_sha256": "ff2c52cd968d636f3346d187a9886a7c63656fb7a433a30bdaa5c9c96ea8f965",
   "preceding_provider": {
     "model": "461-Omnimon.MMD",
     "aliases_applied": true,
@@ -78,74 +78,6 @@
       [
         47,
         62
-      ]
-    ],
-    "condition_bubble": [
-      -59,
-      -127,
-      60,
-      8
-    ],
-    "effect_origins": [
-      [
-        5,
-        100,
-        30,
-        0,
-        8,
-        -71,
-        -91,
-        -152
-      ],
-      [
-        5,
-        120,
-        -50,
-        0,
-        8,
-        -142,
-        -137,
-        -118
-      ],
-      [
-        5,
-        120,
-        -100,
-        0,
-        8,
-        -179,
-        -164,
-        -86
-      ],
-      [
-        5,
-        65,
-        -30,
-        0,
-        8,
-        -92,
-        -117,
-        -83
-      ],
-      [
-        4,
-        160,
-        -190,
-        0,
-        8,
-        -245,
-        -196,
-        -108
-      ],
-      [
-        1,
-        0,
-        0,
-        0,
-        14,
-        0,
-        0,
-        0
       ]
     ]
   },
@@ -284,72 +216,17 @@
     22
   ],
   "affected_slots": [
-    42,
     43
   ],
-  "original_animated_slots": [
-    42,
-    43
-  ],
-  "original_scale_channels": [
-    [
-      7,
-      "sx",
-      65,
-      4352
-    ],
-    [
-      7,
-      "sy",
-      65,
-      4352
-    ],
-    [
-      7,
-      "sz",
-      65,
-      4352
-    ],
-    [
-      13,
-      "sx",
-      70,
-      4531
-    ],
-    [
-      13,
-      "sy",
-      70,
-      4531
-    ],
-    [
-      13,
-      "sz",
-      70,
-      4531
-    ],
-    [
-      22,
-      "sx",
-      3984,
-      4096
-    ],
-    [
-      22,
-      "sy",
-      3984,
-      4096
-    ],
-    [
-      22,
-      "sz",
-      3984,
-      4096
-    ]
-  ],
-  "grounding_max_under": 0.4,
-  "grounding_max_over": 0.4,
-  "resident_bytes": 80298,
+  "grounding_max_under": 0.2,
+  "grounding_max_over": 0.3,
+  "resident_bytes": 80468,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 52,
+    "animated": [],
+    "across_slots": []
+  }
 }

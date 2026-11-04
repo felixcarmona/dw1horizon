@@ -2,8 +2,8 @@
   "species": 400,
   "name": "Apocalymon",
   "threshold": 0.02,
-  "source_sha256": "31404960eb70b4181d95a908c33dbce8c38fa12de0d7b843638809d850ba7de0",
-  "output_sha256": "e4ee14da44db71334d33e60888d70eac7454accae66f47d35f8ab9e372cb9a3a",
+  "source_sha256": "fc86f4dcad7a29873e65878b184d61d9cb7a3d36aee2141fe46abf6d35bba88c",
+  "output_sha256": "92ba8f04716d962db22f208c220fcea7ca9cbbe2840192f890a80bf6b9c61c05",
   "preceding_provider": {
     "model": "400-Apocalymon.MMD",
     "aliases_applied": true,
@@ -267,7 +267,6 @@
     35,
     36,
     37,
-    42,
     44,
     46,
     47,
@@ -285,161 +284,15 @@
     60,
     62
   ],
-  "original_animated_slots": [
-    42,
-    52,
-    53,
-    54
-  ],
-  "original_scale_channels": [
-    [
-      1,
-      "sx",
-      2457,
-      4096
-    ],
-    [
-      1,
-      "sy",
-      2457,
-      4096
-    ],
-    [
-      1,
-      "sz",
-      2457,
-      4096
-    ],
-    [
-      2,
-      "sx",
-      2044,
-      4096
-    ],
-    [
-      2,
-      "sy",
-      2046,
-      4096
-    ],
-    [
-      2,
-      "sz",
-      2044,
-      4096
-    ],
-    [
-      12,
-      "sx",
-      1986,
-      4341
-    ],
-    [
-      12,
-      "sz",
-      1986,
-      4313
-    ],
-    [
-      15,
-      "sx",
-      2047,
-      4096
-    ],
-    [
-      15,
-      "sy",
-      2047,
-      4096
-    ],
-    [
-      15,
-      "sz",
-      2048,
-      4096
-    ],
-    [
-      18,
-      "sx",
-      2048,
-      4096
-    ],
-    [
-      18,
-      "sy",
-      2047,
-      4096
-    ],
-    [
-      18,
-      "sz",
-      2047,
-      4096
-    ],
-    [
-      21,
-      "sx",
-      2048,
-      4097
-    ],
-    [
-      21,
-      "sy",
-      2047,
-      4096
-    ],
-    [
-      21,
-      "sz",
-      2047,
-      4096
-    ],
-    [
-      22,
-      "sx",
-      3237,
-      20025
-    ],
-    [
-      24,
-      "sx",
-      2048,
-      4096
-    ],
-    [
-      24,
-      "sy",
-      2047,
-      4096
-    ],
-    [
-      24,
-      "sz",
-      2047,
-      4096
-    ],
-    [
-      27,
-      "sx",
-      2047,
-      4096
-    ],
-    [
-      27,
-      "sy",
-      2047,
-      4096
-    ],
-    [
-      27,
-      "sz",
-      2048,
-      4096
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 95466,
+  "resident_bytes": 99362,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 52,
+    "animated": [],
+    "across_slots": []
+  }
 }

@@ -229,37 +229,15 @@
     52,
     60
   ],
-  "original_animated_slots": [
-    0,
-    33,
-    40,
-    41,
-    52,
-    60
-  ],
-  "original_scale_channels": [
-    [
-      2,
-      "sx",
-      3686,
-      4506
-    ],
-    [
-      2,
-      "sy",
-      3686,
-      4506
-    ],
-    [
-      2,
-      "sz",
-      3686,
-      4506
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
   "resident_bytes": 90860,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 52,
+    "animated": [],
+    "across_slots": []
+  }
 }

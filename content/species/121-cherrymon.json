@@ -3,6 +3,7 @@
   "name": "Cherrymon",
   "level": "ultimate",
   "vanilla_as": 55,
+  "off": {"level": "ultimate"},
   "attribute": "vaccine",
   "specialties": ["nature", null, null],
   "techniques": ["Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug", "Charm Perfume",

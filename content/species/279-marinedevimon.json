@@ -33,8 +33,8 @@
   "effects_like": 26,
   "model": {
     "file": "build/sizes-out/models/MarineDevimon.MMD",
-    "radius": 245,
-    "height": 572,
+    "radius": 180,
+    "height": 420,
     "skeleton": [
       [
         -1,
@@ -170,12 +170,12 @@
     "file": "build/batch9/MarineDevimon.TIM",
     "entry": 0
   },
-  "voice": 24,
+  "voice": 6,
   "battle_music": "normal-battle",
   "condition_bubble": [
     0,
-    -176,
-    -128,
+    -129,
+    -94,
     31
   ],
   "effect_origins": [
@@ -186,8 +186,8 @@
       0,
       31,
       0,
-      94,
-      -36
+      69,
+      -26
     ],
     [
       17,
@@ -195,9 +195,9 @@
       0,
       129,
       6,
-      -150,
-      94,
-      -8
+      -110,
+      69,
+      -6
     ],
     [
       2,
@@ -205,9 +205,9 @@
       -100,
       0,
       1,
-      -76,
-      -116,
-      -213
+      -56,
+      -85,
+      -156
     ],
     [
       2,
@@ -240,8 +240,11 @@
       "half_depth": 326.3
     }
   },
+  "size": {
+    "height": 420
+  },
   "partner": {
-    "voice": 2,
+    "voice": 3,
     "hunger_hours": [
       4,
       12,

@@ -154,86 +154,15 @@
   "affected_slots": [
     60
   ],
-  "original_animated_slots": [
-    60
-  ],
-  "original_scale_channels": [
-    [
-      4,
-      "sx",
-      3617,
-      5048
-    ],
-    [
-      4,
-      "sy",
-      3617,
-      5048
-    ],
-    [
-      4,
-      "sz",
-      3617,
-      5048
-    ],
-    [
-      5,
-      "sx",
-      3377,
-      5523
-    ],
-    [
-      5,
-      "sy",
-      3377,
-      5523
-    ],
-    [
-      5,
-      "sz",
-      3377,
-      5523
-    ],
-    [
-      7,
-      "sx",
-      4009,
-      5019
-    ],
-    [
-      7,
-      "sy",
-      4009,
-      5019
-    ],
-    [
-      7,
-      "sz",
-      4009,
-      5019
-    ],
-    [
-      8,
-      "sx",
-      3965,
-      5485
-    ],
-    [
-      8,
-      "sy",
-      3965,
-      5485
-    ],
-    [
-      8,
-      "sz",
-      3965,
-      5485
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.4,
   "resident_bytes": 88358,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 49,
+    "animated": [],
+    "across_slots": []
+  }
 }

@@ -136,52 +136,15 @@
     41,
     43
   ],
-  "original_animated_slots": [
-    40,
-    41,
-    43
-  ],
-  "original_scale_channels": [
-    [
-      2,
-      "sx",
-      3872,
-      5922
-    ],
-    [
-      2,
-      "sy",
-      1678,
-      5922
-    ],
-    [
-      2,
-      "sz",
-      3872,
-      5922
-    ],
-    [
-      14,
-      "sx",
-      3940,
-      5365
-    ],
-    [
-      14,
-      "sy",
-      3940,
-      5365
-    ],
-    [
-      14,
-      "sz",
-      3940,
-      5365
-    ]
-  ],
   "grounding_max_under": 0.4,
   "grounding_max_over": 0.5,
   "resident_bytes": 66490,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 46,
+    "animated": [],
+    "across_slots": []
+  }
 }

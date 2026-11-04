@@ -2,8 +2,8 @@
   "species": 260,
   "name": "MetalTyrannomon",
   "threshold": 0.02,
-  "source_sha256": "ae3e4b6de983785b5b1d1c01eb54c19ae3c5fce4b6715f97dbd712d4f661b6c7",
-  "output_sha256": "0a9d48f8723a593932358d6b9e8feaec2b77788b993642c785ad370d0631cc77",
+  "source_sha256": "c8ff8b2afcb9034715521b48f245512de4a18878a35356dcf87d3c1ab2a172a9",
+  "output_sha256": "80959aa142b83ac7430fe6575e19f91b25e7ce17e19e9f6c731624d1fb4b6f1a",
   "preceding_provider": {
     "model": "260-MetalTyrannomon.MMD",
     "field_overlay": "metaltyrannomon-chibi"
@@ -69,54 +69,6 @@
       [
         51,
         61
-      ]
-    ],
-    "condition_bubble": [
-      0,
-      -113,
-      20,
-      12
-    ],
-    "effect_origins": [
-      [
-        10,
-        270,
-        0,
-        0,
-        17,
-        250,
-        224,
-        332
-      ],
-      [
-        2,
-        0,
-        0,
-        0,
-        12,
-        0,
-        0,
-        0
-      ],
-      [
-        1,
-        0,
-        0,
-        0,
-        2,
-        0,
-        0,
-        0
-      ],
-      [
-        6,
-        45,
-        0,
-        0,
-        22,
-        -36,
-        53,
-        47
       ]
     ]
   },
@@ -298,30 +250,15 @@
     60,
     61
   ],
-  "original_animated_slots": [],
-  "original_scale_channels": [
-    [
-      1,
-      "sx",
-      4096,
-      4914
-    ],
-    [
-      1,
-      "sy",
-      4096,
-      4915
-    ],
-    [
-      1,
-      "sz",
-      4096,
-      4915
-    ]
-  ],
   "grounding_max_under": 3.2,
   "grounding_max_over": 0.5,
-  "resident_bytes": 91758,
+  "resident_bytes": 95620,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 51,
+    "animated": [],
+    "across_slots": []
+  }
 }

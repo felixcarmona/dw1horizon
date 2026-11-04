@@ -79,64 +79,6 @@
         51,
         62
       ]
-    ],
-    "condition_bubble": [
-      0,
-      -204,
-      31,
-      1
-    ],
-    "effect_origins": [
-      [
-        7,
-        60,
-        0,
-        0,
-        14,
-        -23,
-        60,
-        4
-      ],
-      [
-        3,
-        85,
-        -55,
-        0,
-        1,
-        0,
-        -63,
-        -40
-      ],
-      [
-        10,
-        50,
-        -210,
-        0,
-        7,
-        100,
-        34,
-        -206
-      ],
-      [
-        3,
-        80,
-        -20,
-        0,
-        1,
-        0,
-        -99,
-        -54
-      ],
-      [
-        7,
-        0,
-        0,
-        0,
-        14,
-        0,
-        0,
-        0
-      ]
     ]
   },
   "reference_slot": 2,
@@ -313,51 +255,15 @@
     54,
     61
   ],
-  "original_animated_slots": [
-    54,
-    61
-  ],
-  "original_scale_channels": [
-    [
-      9,
-      "sx",
-      0,
-      4096
-    ],
-    [
-      9,
-      "sy",
-      0,
-      6325
-    ],
-    [
-      9,
-      "sz",
-      0,
-      4096
-    ],
-    [
-      17,
-      "sx",
-      0,
-      4096
-    ],
-    [
-      17,
-      "sy",
-      0,
-      6325
-    ],
-    [
-      17,
-      "sz",
-      0,
-      4096
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
   "resident_bytes": 84492,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 52,
+    "animated": [],
+    "across_slots": []
+  }
 }

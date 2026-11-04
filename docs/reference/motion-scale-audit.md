@@ -54,9 +54,14 @@ python3 tools/models/edit.py --from build/everything check ID --species-pins
 PYTHONPATH=tools python3 -m unittest tools.test_scale_lock tools.test_chibi tools.test_motionstorage tools.test_model_provider
 ```
 
+When field recipes change, rebuild their full provider result before baking the
+scale lock again. The retained preceding provider binding identifies the latest
+recipe, including celebrations and species-specific field motion. Regenerate
+the effective skeleton, effect offsets, sizes and voices together.
+
 Every changed species passes source, delta, target and provider pins and the
 100352-byte resident / 8192-byte sector-aligned cold-read limits. There are no C
-or executable-buffer changes. The tightest resident model is Monmon at 99948
+or executable-buffer changes. The tightest resident model is Wizardmon at 100236
 bytes. Each species has its own commit.
 
 | ID | Species corrected | Slots with animated scale before | Resident bytes after |
@@ -66,7 +71,7 @@ bytes. Each species has its own commit.
 | 189 | Ankylomon | 56 | 89582 |
 | 193 | Digmon | 47, 50, 51, 55, 57 | 84456 |
 | 205 | MegaKabuterimon | 42 | 84242 |
-| 206 | MagnaAngemon | 40, 41, 42, 43, 49, 50, 58 | 83238 |
+| 206 | MagnaAngemon | 40, 41, 42, 43, 49, 50, 58 | 82658 |
 | 208 | Togemon | 40, 41, 43 | 66490 |
 | 217 | Gomamon | 42 | 91078 |
 | 219 | Zudomon | 52, 53 | 98586 |
@@ -79,15 +84,15 @@ bytes. Each species has its own commit.
 | 232 | BomberNanimon | 42, 56 | 85110 |
 | 235 | Candlemon | 0, 1, 2, 3, 4, 18, 33, 42, 43 | 73852 |
 | 243 | Starmon | 42, 43 | 82382 |
-| 244 | SuperStarmon | 42, 43 | 76972 |
+| 244 | SuperStarmon | 42, 43 | 77142 |
 | 245 | Piedmon | 42 | 78336 |
 | 246 | Infermon | 33, 40, 41, 43, 56, 57 | 97706 |
 | 248 | MarineAngemon | 33, 34, 35, 36, 40, 41, 42, 43, 47, 48, 53, 58 | 86038 |
-| 250 | Shadramon | 52, 57 | 90264 |
+| 250 | Shadramon | 52, 57 | 91940 |
 | 252 | Thundermon | 40, 41, 43 | 63290 |
 | 253 | Tuskmon | 0, 33, 42 | 83384 |
 | 256 | VioletElecmon | 51, 52, 54 | 72560 |
-| 260 | MetalTyrannomon | Between clips only | 91758 |
+| 260 | MetalTyrannomon | Between clips only | 95620 |
 | 261 | Tortomon | 40, 41, 44 | 72320 |
 | 264 | Raremon | 0, 2, 3, 4, 33, 40, 41, 43, 44, 46, 47, 48, 49, 50, 51, 56, 58, 59 | 84610 |
 | 265 | DarkTyrannomon | 55 | 92030 |
@@ -99,7 +104,7 @@ bytes. Each species has its own commit.
 | 271 | Plesiomon | Between clips only | 95922 |
 | 274 | Blossomon | 0, 1, 18, 33, 44, 51 | 76438 |
 | 278 | Octomon | 43, 44 | 90610 |
-| 279 | MarineDevimon | 47, 51, 53 | 82896 |
+| 279 | MarineDevimon | 47, 51, 53 | 97708 |
 | 280 | Pumpkinmon | 47, 48, 51, 53, 59 | 63378 |
 | 281 | Cyclonemon | Between clips only | 95296 |
 | 283 | Syakomon | 44, 47, 48, 51, 52, 55, 56 | 30038 |
@@ -108,23 +113,23 @@ bytes. Each species has its own commit.
 | 288 | Boltmon | 0, 33 | 84954 |
 | 291 | Dragomon | 47, 49, 50, 52, 59 | 81892 |
 | 292 | Deltamon | 48 | 81250 |
-| 294 | Datamon | 43, 44 | 74092 |
+| 294 | Datamon | 43, 44 | 84058 |
 | 298 | Dokugumon | 0, 33, 40, 41, 52, 60 | 90860 |
 | 300 | SlashAngemon | Between clips only | 83934 |
 | 307 | BlackKingNumemon | 0, 1, 2, 3, 4, 18, 33, 40, 41, 46, 47, 48, 49, 50, 51, 52, 53, 60, 62 | 90728 |
-| 313 | Bulbmon | 53 | 72498 |
-| 317 | Fujinmon | 60 | 75634 |
-| 318 | Gallantmon | Between clips only | 86858 |
+| 313 | Bulbmon | 53 | 79920 |
+| 317 | Fujinmon | 60 | 77140 |
+| 318 | Gallantmon | Between clips only | 89056 |
 | 320 | Growlmon | Between clips only | 84704 |
 | 325 | Musyamon | 43, 44 | 84540 |
 | 332 | Roachmon | 58 | 88828 |
 | 352 | Monmon | 0, 1, 2, 3, 4, 18, 33 | 99948 |
 | 353 | Bearmon | 0, 33, 46, 47, 48, 49, 51, 54, 55 | 74200 |
-| 400 | Apocalymon | 42, 52, 53, 54 | 95466 |
+| 400 | Apocalymon | 42, 52, 53, 54 | 99362 |
 | 401 | Pukumon | 0, 33, 40, 41, 43, 44, 54, 55, 56, 57, 58, 59, 60, 61 | 56510 |
 | 402 | NeoCrimson | Between clips only | 76156 |
 | 403 | Beelzemon | 53, 60 | 99464 |
-| 404 | BlackWarGreymon | Between clips only | 86584 |
+| 404 | BlackWarGreymon | Between clips only | 83986 |
 | 406 | MaloMyotismon | 54, 61 | 84492 |
 | 407 | Armageddemon | 42, 53 | 73070 |
-| 461 | Omnimon | 42, 43 | 80298 |
+| 461 | Omnimon | 42, 43 | 80468 |

@@ -344,3 +344,5 @@ Align-stacked-gym-boxes-and-leave-a-clear-gap.patch
 Keep-a-story-s-homecoming-lines-out-of-the-partner-s.patch
 Select-a-flat-palette-for-each-animation-frame.patch
 Refill-saved-vending-mushroom-stock-at-midnight.patch
+Swap-configured-evolution-targets-with-NEW-DIGIMON.patch
+Restore-explicit-off-evolution-paths-and-requirements.patch

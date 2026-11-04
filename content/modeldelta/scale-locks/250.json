@@ -2,8 +2,8 @@
   "species": 250,
   "name": "Shadramon",
   "threshold": 0.02,
-  "source_sha256": "8a9d386a25287206396b6dc203a7db7b1065a716d4a9c119a46d3b40ef08e565",
-  "output_sha256": "cabe3b90a9af0b85c5208412408029d14f9d07f0e2d01d77ed1d565e61623535",
+  "source_sha256": "6b7c920dde579cfd82cd82c27a8de18c1567b5faa206ea88394ae4c41b34a39a",
+  "output_sha256": "7c07a92fdc3c0d342f35e7d68e881518535f4762fd59ad1c51524c10897ebf8f",
   "preceding_provider": {
     "model": "250-Shadramon.MMD",
     "aliases_applied": true,
@@ -154,81 +154,15 @@
     52,
     57
   ],
-  "original_animated_slots": [
-    52,
-    57
-  ],
-  "original_scale_channels": [
-    [
-      1,
-      "sx",
-      3497,
-      4158
-    ],
-    [
-      1,
-      "sy",
-      3497,
-      4158
-    ],
-    [
-      1,
-      "sz",
-      3497,
-      4158
-    ],
-    [
-      2,
-      "sx",
-      3990,
-      5092
-    ],
-    [
-      2,
-      "sy",
-      3990,
-      5092
-    ],
-    [
-      2,
-      "sz",
-      3990,
-      5092
-    ],
-    [
-      3,
-      "sx",
-      3497,
-      4158
-    ],
-    [
-      3,
-      "sy",
-      3497,
-      4158
-    ],
-    [
-      3,
-      "sz",
-      3497,
-      4158
-    ],
-    [
-      4,
-      "sy",
-      3990,
-      5092
-    ],
-    [
-      6,
-      "sy",
-      3990,
-      5092
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 90264,
+  "resident_bytes": 91940,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 48,
+    "animated": [],
+    "across_slots": []
+  }
 }

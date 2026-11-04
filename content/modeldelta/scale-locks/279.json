@@ -2,11 +2,12 @@
   "species": 279,
   "name": "MarineDevimon",
   "threshold": 0.02,
-  "source_sha256": "f1df776740a30be6eb32a0af6092ac7cb1c5b36b1567ceade5926e200844263d",
-  "output_sha256": "8e9bcbe1cd8499091c529ecaf3afb914f8990bc0689b00782bbecf68af9dc1aa",
+  "source_sha256": "6b31cbe2859ce331f5f36568991524e1ab274cc6c1e90004565c00123c5fb163",
+  "output_sha256": "89a4371a54658531d54542a2b610ef980f3a2cc5323820feae5493b674073202",
   "preceding_provider": {
     "model": "279-MarineDevimon.MMD",
-    "aliases_applied": true
+    "aliases_applied": true,
+    "field_overlay": "marinedevimon-field"
   },
   "effective_record_changes": {
     "model.slot_aliases": [
@@ -89,9 +90,9 @@
       4300
     ],
     [
-      4096,
-      4096,
-      4096
+      4095,
+      4095,
+      4095
     ],
     [
       4095,
@@ -109,34 +110,34 @@
       4095
     ],
     [
+      4095,
+      4095,
+      4095
+    ],
+    [
       4096,
-      4096,
-      4096
+      4095,
+      4095
     ],
     [
       4096,
       4096,
-      4096
+      4095
+    ],
+    [
+      4095,
+      4095,
+      4095
     ],
     [
       4096,
-      4096,
-      4096
+      4095,
+      4095
     ],
     [
-      4096,
-      4096,
-      4096
-    ],
-    [
-      4096,
-      4096,
-      4096
-    ],
-    [
-      4096,
-      4096,
-      4096
+      4095,
+      4095,
+      4095
     ],
     [
       4095,
@@ -240,40 +241,23 @@
     ]
   ],
   "feet": [
+    5,
     8,
-    11,
-    20,
-    23,
-    26,
-    29
+    11
   ],
   "affected_slots": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    7,
     8,
     9,
     10,
     11,
     12,
     13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
     21,
     22,
     23,
     24,
     25,
     27,
-    33,
     34,
     35,
     36,
@@ -300,46 +284,15 @@
     60,
     61
   ],
-  "original_animated_slots": [
-    47,
-    51,
-    53
-  ],
-  "original_scale_channels": [
-    [
-      1,
-      "sx",
-      4096,
-      4301
-    ],
-    [
-      1,
-      "sy",
-      4096,
-      4301
-    ],
-    [
-      1,
-      "sz",
-      4096,
-      4300
-    ],
-    [
-      29,
-      "sy",
-      4007,
-      5104
-    ],
-    [
-      29,
-      "sz",
-      4007,
-      5104
-    ]
-  ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 82896,
+  "resident_bytes": 97708,
   "resident_limit": 100352,
-  "cold_buffer_bytes": 8192
+  "cold_buffer_bytes": 8192,
+  "audit": {
+    "threshold": 0,
+    "occupied_slots": 51,
+    "animated": [],
+    "across_slots": []
+  }
 }
