@@ -77,7 +77,7 @@
  "257": {"model": "257-Triceramon.MMD", "aliases_applied": true},
  "258": {"model": "258-SaberLeomon.MMD", "aliases_applied": true, "texture": "258-SaberLeomon.TIM"},
  "259": {"model": "259-Okuwamon.MMD", "aliases_applied": true},
- "260": {"model": "260-MetalTyrannomon.MMD", "field_overlay": "metaltyrannomon-chibi"},
+ "260": {"model": "260-MetalTyrannomon.MMD", "aliases_applied": true},
  "261": {"model": "261-Tortomon.MMD", "aliases_applied": true, "field_overlay": "tortomon-pace"},
  "262": {"model": "262-Flymon.MMD"},
  "263": {"model": "263-Mushroomon.MMD", "aliases_applied": true, "texture": "263-Mushroomon.TIM", "field_overlay": "mushroomon-pace"},

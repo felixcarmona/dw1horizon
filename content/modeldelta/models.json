@@ -2384,9 +2384,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/260-MetalTyrannomon.MMD.mdelta",
-        "delta_sha256": "cfe03b6f96af126551b8e9f0f8bf1fc10815f9cb636376f6153eed7c1d7d93fb",
-        "sha256": "a95fa4bad902cb7835f443e5eae5f9de93d7fbf0246840631897e7c9dc774898",
-        "size": 99222
+        "delta_sha256": "ea4488c388d24c867f4b8d7bd17c52a714b138870c56ec1ed958403a82887e8b",
+        "sha256": "0a9d48f8723a593932358d6b9e8feaec2b77788b993642c785ad370d0631cc77",
+        "size": 105812
       },
       "tim": {
         "sources": [
