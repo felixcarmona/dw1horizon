@@ -115,7 +115,7 @@
  "295": {"model": "295-Vilemon.MMD", "aliases_applied": true, "field_overlay": "vilemon-pace"},
  "296": {"model": "296-Grizzlymon.MMD", "aliases_applied": true, "field_overlay": "grizzlymon-pace"},
  "297": {"model": "297-Marsmon.MMD", "aliases_applied": true, "field_overlay": "marsmon-chibi"},
- "298": {"model": "298-Dokugumon.MMD", "field_overlay": "dokugumon-pace"},
+ "298": {"model": "298-Dokugumon.MMD", "aliases_applied": true},
  "299": {"model": "299-Hookmon.MMD", "aliases_applied": true, "field_overlay": "hookmon-chibi"},
  "300": {"model": "300-SlashAngemon.MMD", "aliases_applied": true, "field_overlay": "slashangemon-chibi"},
  "302": {"model": "302-HiAndromon.MMD", "aliases_applied": true, "field_overlay": "hiandromon-chibi"},

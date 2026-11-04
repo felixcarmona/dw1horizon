@@ -3539,9 +3539,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/298-Dokugumon.MMD.mdelta",
-        "delta_sha256": "21aa369d6c74064a181ccb9c2fd0485743ca9879c4d11dc2f7f8910103ebe484",
-        "sha256": "213fa00c4176b6404033b2ac24cc5367d3e4b7a54aaa9b1e1c42dd6646f08641",
-        "size": 106176
+        "delta_sha256": "e24915bc56a0b3a6f7e24bc148dad7a475d97f9ec9d42717b50698003bd81663",
+        "sha256": "1517385898636504f5824a052cb308a0b18b2c768b4cd8fe4a0f86b99f1b6c01",
+        "size": 105380
       },
       "tim": {
         "sources": [
