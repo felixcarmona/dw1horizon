@@ -216,5 +216,76 @@
     "body_gain": 1,
     "base_generator": "tools.models.field_animations.magna_angemon",
     "skeleton_sha256": "15a91d9cafb9dadb1fb74075a04e9a1bd26180f4ebb71cf51e39b5f9caffd658"
+  },
+  "461": {
+    "source_sha256": "0ed6eabe9392e1108b5a592d3ad1cb9189cc9641dba495ab067d253d720e65f1",
+    "slots": [
+      42
+    ],
+    "pelvis": 14,
+    "chest": 1,
+    "head": 2,
+    "legs": [
+      [
+        15,
+        16,
+        17
+      ],
+      [
+        19,
+        20,
+        21
+      ]
+    ],
+    "locked": [
+      18,
+      22
+    ],
+    "lower": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "secondary": [
+      [
+        [
+          23,
+          24
+        ],
+        0,
+        3
+      ]
+    ],
+    "delays": {
+      "3": 1.0,
+      "4": 1.8,
+      "5": 2.6,
+      "9": 1.4,
+      "10": 2.2,
+      "11": 3.0,
+      "2": 2.3
+    },
+    "shift": 0.8,
+    "body_gain": 0.65,
+    "base_generator": "tools.models.field_animations.chibi",
+    "no_reverse": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "skeleton_sha256": "fb9a39a8f21e32afcdbc1345483581981d3e697c36373561b88e7c92f3d523e0"
   }
 }
