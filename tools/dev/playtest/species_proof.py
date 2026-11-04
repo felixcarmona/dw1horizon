@@ -62,14 +62,19 @@ def seq(s):
 
 
 def mem(*names):
-    out = {}
-    for line in run(M + ['show'] + list(names)).splitlines():
+    """Values by name. A read that returns nothing is the harness failing (no types for a field, an emulator that is gone),
+    never a game result: it raises, so no check can pass or fail on missing data (2026-11-03: without the build's objects
+    every field read came back empty and the battle checks failed for every species, Kotemon and Vemmon included)."""
+    out, text = {}, run(M + ['show'] + list(names))
+    for line in text.splitlines():
         if ' = ' in line:
             k, v = line.split(' = ', 1)
             try:
                 out[k.strip()] = int(v.split()[0])
             except ValueError:
                 out[k.strip()] = v
+    if names and not out:
+        raise RuntimeError(f'memory_inspector read nothing for {", ".join(names)}: {text.strip()[-300:]}')
     return out
 
 
@@ -139,13 +144,8 @@ def word(ram, address):
 
 
 def static_symbol(name):
-    """A file-local variable: the linker map names it only on its section line, with the address on the next one."""
-    with open(EMU.exe + '.elf.map') as stream:
-        lines = stream.read().splitlines()
-    for k, line in enumerate(lines):
-        if line.strip() == f'.sbss.{name}':
-            return int(lines[k + 1].split()[0], 16)
-    raise KeyError(name)
+    """A file-local variable (`static` in the C): the harness's symbol table reads it from the executable's ELF symbols."""
+    return EMU.A(name)
 
 
 def press(*buttons):
@@ -173,11 +173,12 @@ def lab_evolve(t, out):
     if partner_type() == t: return       # the card's partner already is the species
     open_cheats(3)
     press('CONFIRM')
-    choices, previous = [], -1
-    for _ in range(40):
+    choices, previous, steady = [], -1, 0
+    for _ in range(60):                  # the list fills while the disc reads: done once it holds the species or stops growing
         EMU.wait(1)
         choices = lab_list() if mem('MOD_LAB_VIEW').get('MOD_LAB_VIEW') == 3 else []
-        if choices and len(choices) == previous: break
+        steady = steady + 1 if choices and len(choices) == previous else 0
+        if t in choices or steady >= 4: break
         previous = len(choices)
     if t not in choices:
         press('CANCEL', 'CANCEL', 'START')

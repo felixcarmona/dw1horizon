@@ -96,13 +96,16 @@ class BattleEvidenceGate(unittest.TestCase):
         self.assertIn('back_in_world', proof.battle_failures({**self.PLAYED, 'game_state_after': 1}))
 
 
-class LinkerMap(unittest.TestCase):
-    def test_static_symbols_keep_the_address_on_the_next_line(self):
-        with tempfile.TemporaryDirectory() as directory:
-            exe = Path(directory) / 'game'
-            Path(f'{exe}.elf.map').write_text(' .sbss.labCount\n   0x80134cb0  0x4 mod_lab.c.o\n')
-            with patch.object(proof, 'EMU', type('Emu', (), {'exe': str(exe)})):
-                self.assertEqual(proof.static_symbol('labCount'), 0x80134cb0)
+class HarnessReads(unittest.TestCase):
+    def test_an_empty_read_is_a_harness_error_not_a_failed_check(self):
+        with patch.object(proof, 'run', return_value='dwsyms: build x (explicit)\n.digimonEntity: not a struct\n'):
+            with self.assertRaises(RuntimeError) as raised:
+                proof.mem(proof.ANIM, proof.FRAME)
+        self.assertIn('not a struct', str(raised.exception))
+
+    def test_values_are_read_by_name(self):
+        with patch.object(proof, 'run', return_value='GAME_STATE = 1\nMONEY = 5 (0x5)\n'):
+            self.assertEqual(proof.mem('GAME_STATE', 'MONEY'), {'GAME_STATE': 1, 'MONEY': 5})
 
 
 if __name__ == '__main__':

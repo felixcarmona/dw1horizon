@@ -105,7 +105,13 @@ tools/dev/emulator.py stop
   what the SPU plays, and `record` muxes it into the video.
 - Symbols: `emulator.py`, `game_state.py` and `memory_inspector.py` resolve names for the executable that is running, the original or any
   GCC build (`tools/dev/symbols.py` compares the code in RAM with each known build). `DW_SYMS=NAME` names the build
-  explicitly (`decomp-int`, `disc-wtif`, ...); use it when several builds share the code start.
+  explicitly (`decomp-int`, `disc-wtif`, ...); use it when several builds share the code start. A path to a disc's
+  executable works too (`build/NAME/exe/SLUS_010.32`, with `.elf.map` and `.elf` beside it); the table then also holds the
+  file-local `static` variables (`MOD_BOOT_LANGUAGE`, `labCount`), read from the ELF's symbols. Field names and types come
+  from the objects of `build/decomp-dev` (the tree `tools.dev build` leaves) or the tree the executable's path is in.
+- Presses are held for emulated frames (the emulator's cycle counter), not wall time, so a loaded host does not drop them;
+  `emulator.py shot` takes a black still again. `tools/dev/playtest/boot_check.py DISC.cue EXE` proves a disc boots past the
+  intro movie (START) and the first-start language picker (START) to the title, and Continues from a card into the world.
 - Memory cards are fresh on every `start` unless `--keep-cards` or `--card FILE` is given.
 
 Underneath, `emulator.py` talks to the emulator's web server: `GET /api/v1/screen/still` (PNG), `GET /api/v1/gpu/vram/raw`,
@@ -190,7 +196,7 @@ Helpers: `call_function.py` calls any game function at a frame boundary and prin
 NPC in front and taps X until its script runs; `shopnav.py` drives a shop by the game's own RAM state;
 `raise.py` marks types as raised; `call_tournament.py` starts a tournament from the lobby; `technique_proof.py` and
 `species_proof.py` play every technique and species of a disc unattended (set `DW_SYMS` to the disc's executable and keep
-that build's objects under `build/`: the field names come from them; a species fails unless each check that applies to
+that build's objects under `build/`: the field names come from them, and a read that returns nothing stops the run; a species fails unless each check that applies to
 it passes, its finisher's hit included); `fonttour.py` screenshots every screen that draws text; `battle_stream.py` runs battles in a row on
 one screen (the background stream and the battle camera).
 

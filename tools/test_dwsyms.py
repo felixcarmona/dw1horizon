@@ -97,4 +97,56 @@ class WideIds(unittest.TestCase):
         self.assertFalse(dwsyms.wide_ids('orig'))
 
 
+class FileLocalSymbols(unittest.TestCase):
+    """`static` variables (MOD_BOOT_LANGUAGE, the Cheats menu's labCount) are in the executable's ELF symbols but not on a
+    line of their own in the linker map: the harness must still find them (the first-boot language picker is answered by
+    reading MOD_BOOT_LANGUAGE)."""
+
+    @staticmethod
+    def elf(symbols):
+        """A minimal ELF32-LE with a symbol table: symbols = [(name, value, binding, type)]."""
+        import struct
+        names = b'\0' + b''.join(n.encode() + b'\0' for n, *_ in symbols)
+        offsets, at = [], 1
+        for n, *_ in symbols: offsets.append(at); at += len(n) + 1
+        entries = b'\0' * 16 + b''.join(struct.pack('<IIIBBH', o, v, 4, (b << 4) | t, 0, 1)
+                                        for o, (n, v, b, t) in zip(offsets, symbols))
+        shoff = 0x34 + len(names) + len(entries)
+        head = b'\x7fELF\x01\x01\x01' + b'\0' * 9 + struct.pack('<HHIIIIIHHHHHH', 2, 8, 1, 0, 0, shoff, 0, 0x34, 0, 0, 40, 3, 0)
+        sh = lambda *f: struct.pack('<10I', *f)
+        sections = sh(*[0] * 10) + sh(0, 3, 0, 0, 0x34, len(names), 0, 0, 1, 0) + \
+            sh(0, 2, 0, 0, 0x34 + len(names), len(entries), 1, 1, 4, 16)
+        return head + names + entries + sections
+
+    def test_locals_are_read_and_globals_and_functions_are_not(self):
+        data = self.elf([('MOD_BOOT_LANGUAGE', 0x80135988, 0, 1), ('MAIN_MENU_TICKS', 0x80135000, 1, 1),
+                         ('localFunction', 0x80010000, 0, 2)])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'x.elf'; path.write_bytes(data)
+            self.assertEqual(dwsyms.elf_locals(str(path)), {'MOD_BOOT_LANGUAGE': 0x80135988})
+
+    def test_a_name_two_files_both_make_static_is_left_out(self):
+        data = self.elf([('count', 0x80100000, 0, 1), ('count', 0x80100004, 0, 1), ('ok', 0x80100008, 0, 1)])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'x.elf'; path.write_bytes(data)
+            self.assertEqual(dwsyms.elf_locals(str(path)), {'ok': 0x80100008})
+
+    def test_not_an_elf_or_missing_file_gives_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'x.elf'; path.write_bytes(b'nope')
+            self.assertEqual(dwsyms.elf_locals(str(path)), {})
+            self.assertEqual(dwsyms.elf_locals(str(Path(tmp) / 'missing')), {})
+
+    def test_table_of_an_explicit_executable_holds_its_statics(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = Path(tmp) / 'SLUS_010.32'
+            exe.touch()
+            Path(str(exe) + '.elf').write_bytes(self.elf([('MOD_BOOT_LANGUAGE', 0x80135988, 0, 1),
+                                                          ('MAIN_MENU_TICKS', 0x1, 0, 1)]))
+            Path(str(exe) + '.elf.map').write_text('                0x0000000080134e70                MAIN_MENU_TICKS\n')
+            table = dwsyms.table(dwsyms.explicit_build(str(exe)))
+            self.assertEqual(table['MOD_BOOT_LANGUAGE'], 0x80135988)
+            self.assertEqual(table['MAIN_MENU_TICKS'], 0x80134e70)   # the map's global wins
+
+
 if __name__ == '__main__': unittest.main()

@@ -70,11 +70,52 @@ def api(path, data=None, timeout=15):
     return urllib.request.urlopen(req, timeout=timeout).read()
 
 
+def shot(out, tries=8):
+    """Saves the screen to `out`. The emulator's still is the last frame it presented: it is black while a frame is being
+    drawn and empty right after a load, so a black one is taken again (up to `tries` times, a few frames apart);
+    a screen that really is black (a fade) is saved after the last try, with a note on stderr."""
+    png = b''
+    for k in range(tries):
+        png = api('/api/v1/screen/still')
+        if not png_blank(png): break
+        time.sleep(0.15)
+    else:
+        print(f'shot: {out} is black after {tries} tries', file=sys.stderr)
+    tmp = f'{out}.part'
+    open(tmp, 'wb').write(png); os.replace(tmp, out)
+
+
+def png_blank(png):
+    """True when the PNG is empty or one flat black. Without Pillow nothing is judged blank."""
+    if not png: return True
+    try:
+        import io
+        from PIL import Image
+    except ImportError:
+        return False
+    extrema = Image.open(io.BytesIO(png)).convert('RGB').getextrema()
+    return all(hi == 0 for _, hi in extrema)
+
+
+CYCLES_PER_FRAME = 33868800 // 60                  # the PlayStation's CPU clock over its 60 frames a second
+
+
+def cpu_cycles():
+    """The emulated CPU's cycle counter: emulated time, which a loaded host stretches while wall time does not."""
+    return int(api('/api/v1/lua/eval?code=return%20PCSX.getCPUCycles()').decode().rstrip('ULul'))
+
+
 def press(button, frames=10):
-    """Hold a pad button for N frames (60 per second) and release it."""
+    """Hold a pad button for N emulated frames (60 per second of emulated time) and release it. The hold is timed on the
+    emulator's own cycle counter: a wall-clock hold shrinks to a frame or two on a loaded host and the game drops the press
+    (the harness's flaky menus). A paused emulator never advances it, so the wait ends after a wall-time limit."""
+    frames = int(frames)
     r = api(f'/api/v1/lua/press?button={button}').decode()
     try:
-        time.sleep(int(frames) / 60.0)
+        target = cpu_cycles() + frames * CYCLES_PER_FRAME
+        limit = time.time() + max(3.0, frames / 60.0 * 20)
+        while cpu_cycles() < target and time.time() < limit:
+            time.sleep(0.004)
     finally:
         api(f'/api/v1/lua/release?button={button}')
     return f'{r} {frames}'
@@ -230,7 +271,7 @@ def main():
         if st and alive(st): print('flow', api('/api/v1/execution-flow').decode())
     elif cmd == 'wait': time.sleep(float(rest[0]))
     elif cmd == 'shot':
-        out = rest[0] if rest else os.path.join(ROOT, 'build/shot.png'); open(out, 'wb').write(api('/api/v1/screen/still')); print(out)
+        out = rest[0] if rest else os.path.join(ROOT, 'build/shot.png'); shot(out); print(out)
     elif cmd == 'vram':
         out = rest[0] if rest else os.path.join(ROOT, 'build/vram.bin'); open(out, 'wb').write(api('/api/v1/gpu/vram/raw')); print(out)
     elif cmd == 'peek':
@@ -261,7 +302,7 @@ def main():
             w = step.split(); cmd2 = w[0].upper()
             if cmd2 == 'WAIT': time.sleep(float(w[1]))
             elif cmd2 in BUTTONS: print(press(cmd2, w[1] if len(w) > 1 else 10))
-            elif cmd2 == 'SHOT': open(w[1], 'wb').write(api('/api/v1/screen/still')); print(w[1])
+            elif cmd2 == 'SHOT': shot(w[1]); print(w[1])
             elif cmd2 == 'UNTIL':
                 # until ADDR SIZE VALUE [BUTTON] [MAX]: presses BUTTON (CROSS) every 3 s until RAM equals VALUE
                 a2, n2, val = addr(w[1]), int(w[2]), int(w[3], 0); btn = w[4].upper() if len(w) > 4 else 'CROSS'

@@ -268,8 +268,12 @@ class Emu:
         return n in self.table
 
     def start(self, card):
+        """Starts the disc with `card` as memory card 1, or with a blank card when `card` is None (a first start)."""
         self.run('stop', check=False)
         os.makedirs(self.home, exist_ok=True)
+        if card is None:
+            self.run('start', self.disc)                  # no --keep-cards: the emulator makes new, empty cards
+            return
         shutil.copy(card, os.path.join(self.home, 'memcard1.mcd'))
         self.run('start', self.disc, '--keep-cards')
 
@@ -318,11 +322,33 @@ class Emu:
     def card_out(self):
         return os.path.join(self.home, 'memcard1.mcd')
 
+    def language_picker(self, ram):
+        """True while the first-start language picker owns the title menu (a card with no save of the game: the picker
+        is MOD_BOOT_LANGUAGE, a `static` the harness reads through the executable's ELF symbols). START answers it with
+        the first language, whatever the CONFIRM button of the build is."""
+        return self.has('MOD_BOOT_LANGUAGE') and self.peek('MOD_BOOT_LANGUAGE', 'i', ram) != 0
+
+    def to_title(self, tries=120):
+        """From a fresh start to the title menu: START ends the intro movie (it loops until a button is pressed) and
+        answers the language picker, which is pending (MOD_BOOT_LANGUAGE) from the game's start, under the movie, with
+        MAIN_MENU_TICKS still 0. Returns whether the picker was pending; raises when the title never comes."""
+        picker = False
+        for _ in range(tries):
+            ram = self.ram()
+            menu, ticks = self.peek('CURRENT_MENU', 'i', ram), self.peek('MAIN_MENU_TICKS', 'i', ram)
+            pending = self.language_picker(ram)
+            picker |= pending
+            if menu == 0 and ticks > 3 and not pending:
+                return picker
+            self.press('START', 8)
+            self.wait(2)
+        raise RuntimeError(f'the title menu never came (CURRENT_MENU {menu:#x}, ticks {ticks})')
+
     def continue_game(self):
         """Title -> CONTINUE -> slot 1 -> game 1 -> yes; poll until the game runs
         (CURRENT_MENU -1) or the card is refused (MEMORY_CARD_ERROR); returns the error (0 = loaded)."""
-        # Poll menus: recent bilingual releases may show a language picker before
-        # the title, and header IO can outlast a fixed button sequence under load.
+        # Poll menus: the intro movie loops until a button is pressed (START), and a first start shows the language
+        # picker before the title (START too); header IO can outlast a fixed button sequence under load.
         self.wait(35)
         selected = False
         for _ in range(120):
@@ -335,8 +361,8 @@ class Emu:
                 if not self.in_control(): return 'no control after Continue'
                 return 0
             if menu == 0 and ticks > 3:
-                if self.has('MOD_BOOT_LANGUAGE') and self.peek('MOD_BOOT_LANGUAGE', 'i', ram):
-                    self.press('CONFIRM', 4)
+                if self.language_picker(ram):
+                    self.press('START', 8)
                 else:
                     pos = self.peek('MENU_HIGHLIGHTS', 'b', ram)
                     if pos != 1: self.press('DOWN' if pos == 0 else 'UP', 4)
@@ -346,7 +372,7 @@ class Emu:
             elif selected and menu in (0x14, 0x17, 0x18):
                 self.press('CONFIRM', 4)
             elif not selected:
-                self.press('START', 4)
+                self.press('START', 8)
             self.wait(2)
         return f'the game never started (CURRENT_MENU {menu:#x})'
 

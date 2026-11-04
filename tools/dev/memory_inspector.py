@@ -55,8 +55,11 @@ def obj_glob():
     except SystemExit:                       # no emulator running: the mods build's types
         b = 'mods'
     d = OBJ_DIRS.get(b, f'build/{b}')
-    if not glob.glob(os.path.join(ROOT, d, OBJ_SUB), recursive=True):
-        d = 'build/decomp-mods'
+    if os.path.isabs(b) and '/build/us/psx/gcc/' in b:       # DW_SYMS=<a decomp tree's executable>: that tree's objects
+        d = b.split('/build/us/psx/gcc/')[0]
+    # a disc's own executable (build/NAME/exe/) has no objects: the tree `tools.dev build` leaves (decomp-dev), then the older ones
+    for d in (d, 'build/decomp-dev', 'build/decomp-mods', 'build/decomp-int'):
+        if glob.glob(os.path.join(ROOT, d, OBJ_SUB), recursive=True): break
     return os.path.join(ROOT, d, OBJ_SUB), os.path.basename(d)
 FIND_STATE = os.path.join(ROOT, 'build/mem-find.pickle')
 EMU = os.path.join(ROOT, 'tools/dev/emulator.py')
