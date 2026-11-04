@@ -2019,9 +2019,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/248-MarineAngemon.MMD.mdelta",
-        "delta_sha256": "75c38f717bf78169c00be2d87603a1d96c74437f0508358318269984f11c0f6a",
-        "sha256": "e60dd8493134a126e2f67b0c6933d3abae99267164cbf45b05571577843c0a48",
-        "size": 103820
+        "delta_sha256": "3da081864d94baab7d2773f49d366a707ff465adc17e0237fbf88c80486a03a5",
+        "sha256": "9b329de6a03af00aed9845dc1fd5e2600fcab852e5e05eebbe0a844e000281fd",
+        "size": 100950
       },
       "tim": {
         "sources": [
