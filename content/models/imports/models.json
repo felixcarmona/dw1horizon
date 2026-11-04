@@ -62,7 +62,7 @@
  "242": {"model": "242-Sorcermon.MMD", "aliases_applied": true, "field_overlay": "sorcermon-supported-field"},
  "243": {"model": "243-Starmon.MMD", "aliases_applied": true},
  "244": {"model": "244-SuperStarmon.MMD", "aliases_applied": true},
- "245": {"model": "245-Piedmon.MMD", "aliases_applied": true, "field_overlay": "piedmon-native-float"},
+ "245": {"model": "245-Piedmon.MMD", "aliases_applied": true},
  "246": {"model": "246-Infermon.MMD", "aliases_applied": true},
  "247": {"model": "247-Kokuwamon.MMD", "aliases_applied": true, "field_overlay": "kokuwamon-rolling-boots"},
  "248": {"model": "248-MarineAngemon.MMD", "aliases_applied": true, "texture": "248-MarineAngemon.TIM", "field_overlay": "marineangemon-steady-run"},

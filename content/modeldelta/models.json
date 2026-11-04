@@ -1919,9 +1919,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/245-Piedmon.MMD.mdelta",
-        "delta_sha256": "deb93c7f45c4e35419eba61f2e27aed1fa6cdc77ef21a2209ae91c62d411eae0",
-        "sha256": "9fdfb466b16e05421e62f059493c9c552dd7faeb3073c5525ea930c2e948d7b8",
-        "size": 99048
+        "delta_sha256": "2be750c18267ab1f13ab429262e65d8ad3b37a480ae1c3d14712c4b45822ade4",
+        "sha256": "14672bce0eed5aceef489d4339934a9ba931fd3f0ced5d99cdb734fe65e4dd16",
+        "size": 90272
       },
       "tim": {
         "sources": [
