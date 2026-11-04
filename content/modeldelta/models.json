@@ -1254,9 +1254,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/223-LadyDevimon.MMD.mdelta",
-        "delta_sha256": "008c63f98de9d2ff66388fe98f4f7dc28af00bbf2e5defe23404711e654f4b2e",
-        "sha256": "fdcbd8cb59c140d14803909bf9d562bd06ee3427a165982f89cae79b68b796e2",
-        "size": 99604
+        "delta_sha256": "5b753449109312332c649d0953408e33c6c8c58390fb170ed4abad1368a8f59c",
+        "sha256": "0090d82f08efb0bfde3c8d35fc51dd7b97931f42c007471111ca5de18d752bec",
+        "size": 95992
       },
       "tim": {
         "sources": [
