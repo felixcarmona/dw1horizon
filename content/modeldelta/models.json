@@ -5044,9 +5044,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/407-Armageddemon.MMD.mdelta",
-        "delta_sha256": "e8e635fb16637ccad62c7af93849565a884732e22d3136528def37a7abc85563",
-        "sha256": "8261f40aba4fb9d25da085060c348179fc6faecc1fc79ee10ada001f37154915",
-        "size": 88360
+        "delta_sha256": "eec5b9db1cfd34b85c736e82c22c51e7bf036f1484f2cc1c5f5d69a781c85015",
+        "sha256": "0203002d79de4b438b7060ee95ae41d9fb7d29f945501c34ac4407dc8aefe050",
+        "size": 80532
       },
       "tim": {
         "sources": [
