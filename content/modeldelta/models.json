@@ -5194,9 +5194,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/432-Bastemon.MMD.mdelta",
-        "delta_sha256": "6237c214adb5ecd06c4353467d0a97a3847ce6b36e9e8c0d931e7d1f9e031021",
-        "sha256": "1c6dc946b8e1dbb74034f7e4c0df3d6bd0bbd6c29556d755f505e8fcaf93e89d",
-        "size": 106376
+        "delta_sha256": "153436de50ec561acedc55748448e607d21a2c83cea28544976e2346f6d47fba",
+        "sha256": "13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130",
+        "size": 102042
       },
       "tim": {
         "sources": [

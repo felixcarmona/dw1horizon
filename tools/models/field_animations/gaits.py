@@ -70,7 +70,7 @@ PROFILES.update({
           static_offsets={2:[0,0,-10]},
           leans={2:3,3:8,4:22},
           style='upright armored stride, relaxed claw arms and delayed tail; original idle preserved'),
- 432:dict(source='1c6dc946b8e1dbb74034f7e4c0df3d6bd0bbd6c29556d755f505e8fcaf93e89d',bones=26,carrier=1,pelvis=11,chest=1,head=8,
+ 432:dict(source='13dfccc3ba05cfebd13b35d4bcf4e5a28e86d2c364186b8cd81f34afe0183130',bones=26,carrier=1,pelvis=11,chest=1,head=8,
           legs=[(12,13,14,[14,15],1,0),(16,17,18,[18,19],-1,.5)],arms=[(2,3,-1),(5,6,1)],
           slots=[2,3,4],periods={2:16,3:20,4:10},duties={4:.36},
           lifts={2:16,3:10,4:30},tracks=50,height_bias=-10,sway={2:7,3:5,4:5},bounce={2:3,3:3,4:6},
