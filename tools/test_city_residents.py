@@ -18,11 +18,16 @@ class CityResidents(unittest.TestCase):
         species = {s['id']: s for p in (city.ROOT / 'content/species').glob('*.json')
                    for s in [json.loads(p.read_text())]}
         self.assertEqual([sum(species[r['id']]['level'] == lv for r in rows)
-                          for lv in ('rookie', 'champion', 'ultimate')], [18, 34, 20])
-        points = lambda i: 1 if i in (11, 39, 53) else city.LEVELS[species[i]['level']] - 2
-        self.assertEqual(sum(points(r['id']) for r in rows), 143)
+                          for lv in ('rookie', 'champion', 'ultimate')], [18, 33, 21])
+        def points(i, new_digimon=True):
+            level = species[i]['level']
+            if not new_digimon:
+                level = species[i].get('off', {}).get('level', level)
+            return 1 if i in (11, 39, 53) else city.LEVELS[level] - 2
+        self.assertEqual(sum(points(r['id']) for r in rows), 144)
         original = [r for r in rows if r['id'] < 59]
-        self.assertEqual((len(original), sum(points(r['id']) for r in original)), (50, 100))
+        self.assertEqual((len(original), sum(points(r['id']) for r in original)), (50, 101))
+        self.assertEqual(sum(points(r['id'], new_digimon=False) for r in original), 100)
         self.assertEqual({r['id'] for r in rows if r['hidden']}, {6, 7, 12})
 
     def test_only_the_two_kept_high_residents_can_repeat(self):
