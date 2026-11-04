@@ -1,0 +1,50 @@
+name: Patch series
+
+# The C patch series (mods/patches/README.md): the series file, the patch files and index.md agree, and the whole series
+# applies with git am to the pinned decompilation (the public submodule decomp/; no disc data). A pull request is checked
+# as GitHub would merge it, so two branches whose patches touch the same lines fail here before the merge.
+
+on:
+  pull_request:
+    paths:
+      - 'mods/patches/**'
+      - 'decomp'
+      - '.gitmodules'
+      - '.gitattributes'
+      - 'tools/patch_series.py'
+      - 'tools/test_patch_series.py'
+      - '.github/workflows/patches.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mods/patches/**'
+      - 'decomp'
+      - '.gitmodules'
+      - 'tools/patch_series.py'
+      - 'tools/test_patch_series.py'
+      - '.github/workflows/patches.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: patches-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Unit tests
+        run: python3 tools/test_patch_series.py
+      - name: Apply the whole series to the pinned decompilation
+        run: python3 tools/patch_series.py check --apply

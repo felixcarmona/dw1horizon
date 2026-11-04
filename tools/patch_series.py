@@ -90,13 +90,16 @@ def apply(root=ROOT, decomp=None):
         tree = Path(tmp) / 'decomp'
         subprocess.run(['git', '-C', str(decomp), 'worktree', 'add', '-q', '--detach', str(tree), pin], check=True)
         try:
+            series = paths(root)
             r = subprocess.run(['git', '-C', str(tree), '-c', 'user.name=Horizon authors', '-c', 'user.email=',
-                                'am', '-q', *map(str, paths(root))], capture_output=True, text=True)
+                                'am', '-q', *map(str, series)], capture_output=True, text=True)
             if r.returncode:
                 subprocess.run(['git', '-C', str(tree), 'am', '--abort'], capture_output=True)
                 sys.stderr.write(r.stdout + r.stderr)
-                raise SystemExit('the series does not apply to the pinned decompilation: regenerate the patch that '
-                                 'failed on top of the ones before it (tools/mods.sh prepare int)')
+                m = re.search(r'Patch failed at (\d+)', r.stdout + r.stderr)
+                which = f'{DIR}/{series[int(m.group(1)) - 1].name}' if m else 'the patch that failed'
+                raise SystemExit(f'the series does not apply to the pinned decompilation at {which}: regenerate it on '
+                                 'top of the patches before it (tools/mods.sh prepare int)')
             return subprocess.check_output(['git', '-C', str(tree), 'rev-parse', 'HEAD^{tree}'], text=True).strip()
         finally:
             subprocess.run(['git', '-C', str(decomp), 'worktree', 'remove', '--force', str(tree)], check=True)

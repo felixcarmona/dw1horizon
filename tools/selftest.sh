@@ -52,6 +52,13 @@ else
     skip npc-originals "needs a built disc image and extracted/ (DW_SELFTEST_DERIVE)"
 fi
 run npc-originals-tests "$PY" -W ignore tools/test_npc_originals.py
+run patch-series      $PY tools/patch_series.py check                     # mods/patches/series, the patch files and index.md agree
+run patch-series-tests $PY tools/test_patch_series.py
+if [ -d decomp/src ]; then
+    run patch-series-apply $PY tools/patch_series.py check --apply          # the whole series applies to the pinned decomp
+else
+    skip patch-series-apply "needs decomp/ (git submodule update --init decomp)"
+fi
 run species-format    $PY tools/species.py fmt --check                      # content/species in the canonical layout (docs/mods/species.md)
 run species-lint      $PY tools/species.py lint --quiet                     # what the game cannot handle (docs/mods/species.md)
 if [ -d "$DERIVED/species" ]; then
