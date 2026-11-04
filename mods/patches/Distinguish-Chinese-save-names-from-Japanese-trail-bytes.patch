@@ -1,4 +1,4 @@
-From edf317eeef697699ebe5be4f57fd0471fcf6aeac Mon Sep 17 00:00:00 2001
+From bc2e0f680b9f4d549ff910aa5096c711f95142af Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 4 Nov 2026 22:50:12 +0000
 Subject: [PATCH] Distinguish Chinese save names from Japanese trail bytes
@@ -8,7 +8,7 @@ Subject: [PATCH] Distinguish Chinese save names from Japanese trail bytes
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/src/main/main_menu.c b/src/main/main_menu.c
-index 041dd10..a7e1e7c 100644
+index 041dd10..fa4e33e 100644
 --- a/src/main/main_menu.c
 +++ b/src/main/main_menu.c
 @@ -4492,12 +4492,12 @@ void loadSavegame(SavegamePayload *savegame)
@@ -23,7 +23,7 @@ index 041dd10..a7e1e7c 100644
 -    }
 +    /* Chinese species names can start with a Latin prefix such as V. Stop at
 +     * the first two-byte character; a Japanese trail byte is never a lead. */
-+    for (i = 0; i < 19 && PARTNER_ENTITY.name[i] && isAsciiEncoded(PARTNER_ENTITY.name + i); i++) {}
++    for (i = 0; i < 19 && (uint8_t)(PARTNER_ENTITY.name[i] - 0x20) < 0x5f; i++) {}
 +    if ((uint8_t)(PARTNER_ENTITY.name[i] - 0xA0) < 0x40)
 +        modPartnerNameSetSpecies(SAVED_STATE.partnerType);
 +
