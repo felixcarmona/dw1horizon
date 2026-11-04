@@ -725,7 +725,7 @@ class Species(IntEnum):
     Snimon = 328
     Ghoulmon = 329
     Minotarumon = 330
-    Snatchmon = 331
+    Vemmon = 331
     Roachmon = 332
     """Formerly Gokimon (renamed; content/species)."""
     Raijinmon = 333
