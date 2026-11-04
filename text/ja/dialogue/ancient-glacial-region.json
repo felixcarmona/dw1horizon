@@ -389,5 +389,25 @@
   [
    "ほかの場所で聞いてみたらどうだ？"
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "アイテムを選んでください。",
+ "s078.sec81.vend_more": "次へ",
+ "s078.sec81.vend_back": "戻る",
+ "s078.sec81.vend_leave": "やめる",
+ "s078.sec81.vend_poor": "ビットが足りない。",
+ "s078.sec81.vend_full": "持ち物がいっぱいだ。",
+ "s078.sec81.vend_daily": "珍しいキノコは各１日１個まで。",
+ "s078.sec81.vend_sold": "今日は売り切れ。午前０時に入荷します。",
+ "s078.sec81.vend_bonus": "おまけ！ダブル回復！",
+ "s078.sec81.vend_play_prompt": "１０００ビットで遊びますか？",
+ "s078.sec81.vend_play": "遊ぶ",
+ "s078.sec81.vend_quit": "やめる",
+ "s078.sec81.vend_buy0": "カビ肉 26",
+ "s078.sec81.vend_getMoldyMeat": "カビ肉を手に入れた！",
+ "s078.sec81.vend_buy1": "肉 20",
+ "s078.sec81.vend_getMeat": "肉を手に入れた！",
+ "s078.sec81.vend_buy2": "でっかい肉 300",
+ "s078.sec81.vend_getGiantMeat": "でっかい肉を手に入れた！",
+ "s078.sec81.vend_buy3": "ヒレ肉 1000",
+ "s078.sec81.vend_getSirloin": "ヒレ肉を手に入れた！"
 }

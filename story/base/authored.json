@@ -398,13 +398,13 @@
     },
     "zones/ancient-glacial-region/s078-81/script.py": {
       "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
-      "authored_sha256": "09e73544fc99af3bdf07d96f03f2a92b27d3c5308d5e97877e70d30f8120fc9b",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing"
+      "authored_sha256": "d43aee8f905bec4f4f30f3318c9cc267ab871a7cce46ed1ea2655934249d8799",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS"
     },
     "zones/ancient-glacial-region/s078-81/script.dws": {
       "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
-      "authored_sha256": "58cf6d92a10b44270d65acb9fea303f78696527933bf310700ad34a10e8d75fd",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing; DWS synchronized with the authored Python source"
+      "authored_sha256": "d974c7b1877ab45db4499ef553b4b8d7516a066b6492a9f6a45a648c927bc2d8",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS"
     },
     "zones/toy-mansion/s144-150/script.py": {
       "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",
@@ -415,6 +415,36 @@
       "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
       "authored_sha256": "a8a4bd48490a80e25a2097829c677f56bb85582b48badf63b5436a02b1859f53",
       "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+    },
+    "zones/dragon-eye-lake/s009-8/script.py": {
+      "original_sha256": "3431895936fbfba1892e92e74d9702303fd4d80dd4a48717b2f3471c4c11f4f5",
+      "authored_sha256": "502d59c959f117fd3a1c1aa58ce13a88172778681acfd26b9fdd9ec2fa42f3e9",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/dragon-eye-lake/s009-8/script.dws": {
+      "original_sha256": "df4a48c7d8e1dd8e6445ff8105f265a2cefe4709bbd15fd35e739a7f8f2f3329",
+      "authored_sha256": "7ce6e376a8aa8dae89350a3001037248db663869242742908dfcfc96cb4fa4b2",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/gear-savanna/s071-74/script.py": {
+      "original_sha256": "cd2234ba8d58f096cf540935f574f79a894c154739df91915661d94da00050df",
+      "authored_sha256": "e9a4780e5508a4310f8c9c62f407c31798ee800bc74a3159731bc38bfa7e9f11",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS"
+    },
+    "zones/gear-savanna/s071-74/script.dws": {
+      "original_sha256": "087fad68a86bdf852767c1beb54a33e2a8ed499b84a657397c1f6f85b846db52",
+      "authored_sha256": "8acc072b7c8c0c3fe4c197411447ca2f471ffb55c6a89b51d276c81f0de7e726",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS"
+    },
+    "zones/tropical-jungle/s012-11/script.py": {
+      "original_sha256": "585635567b345d0d2dd1822a53e5119657b5bb0dd32b1d74a84c1f0e97778d19",
+      "authored_sha256": "ab1cf4405c4117d54d17a70649b4ccccb8faa4cf2045e6755591230db55c1dd6",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS"
+    },
+    "zones/tropical-jungle/s012-11/script.dws": {
+      "original_sha256": "3b2904c49763fbb8216662e1797828eac972dde870f5330ba769410386c01768",
+      "authored_sha256": "1f4728e37a0b84cb8bb377f54c4983bb78b96aa1d7df621dff060a0a642c26d9",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS"
     }
   }
 }

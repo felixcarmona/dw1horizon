@@ -446,5 +446,25 @@
    "Esta é uma loja de \"itens",
    "recuperados\", sim, sim."
   ]
- ]
+ ],
+ "s071.sec81.vend_prompt": "Escolha um item.",
+ "s071.sec81.vend_more": "Mais",
+ "s071.sec81.vend_back": "Voltar",
+ "s071.sec81.vend_leave": "Sair",
+ "s071.sec81.vend_poor": "Bits insuficientes.",
+ "s071.sec81.vend_full": "Sua bolsa está cheia.",
+ "s071.sec81.vend_daily": "Um de cada cogumelo raro por dia.",
+ "s071.sec81.vend_sold": "Esgotado hoje. Volte após a meia-noite.",
+ "s071.sec81.vend_bonus": "Bônus! Disquete duplo!",
+ "s071.sec81.vend_play_prompt": "Jogar por 1000 bits?",
+ "s071.sec81.vend_play": "Jogar",
+ "s071.sec81.vend_quit": "Sair",
+ "s071.sec81.vend_buy0": "Cura pequena 118",
+ "s071.sec81.vend_getSmRecovery": "Recebeu Cura pequena!",
+ "s071.sec81.vend_buy1": "Cura média 318",
+ "s071.sec81.vend_getMedRecovery": "Recebeu Cura média!",
+ "s071.sec81.vend_buy2": "Disquete MP 218",
+ "s071.sec81.vend_getMPFloppy": "Recebeu Disquete MP!",
+ "s071.sec81.vend_buy3": "MP médio 500",
+ "s071.sec81.vend_getMediumMP": "Recebeu MP médio!"
 }

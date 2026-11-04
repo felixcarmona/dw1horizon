@@ -262,5 +262,23 @@
    "signifie qu'il ne mordra pas à",
    "l'appât utilisé."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Choisissez un objet.",
+ "s009.sec81.vend_more": "Suite",
+ "s009.sec81.vend_back": "Retour",
+ "s009.sec81.vend_leave": "Partir",
+ "s009.sec81.vend_poor": "Pas assez de bits.",
+ "s009.sec81.vend_full": "Votre sac est plein.",
+ "s009.sec81.vend_daily": "Un de chaque champignon rare par jour.",
+ "s009.sec81.vend_sold": "Épuisé. Revenez après minuit.",
+ "s009.sec81.vend_bonus": "Bonus ! Double soin !",
+ "s009.sec81.vend_play_prompt": "Jouer pour 1000 bits ?",
+ "s009.sec81.vend_play": "Jouer",
+ "s009.sec81.vend_quit": "Partir",
+ "s009.sec81.vend_buy0": "Digichampi 51",
+ "s009.sec81.vend_getDigimushrm": "Vous recevez Digichampi !",
+ "s009.sec81.vend_buy1": "Champi joyeux 1500",
+ "s009.sec81.vend_getHappymushrm": "Vous recevez Champi joyeux !",
+ "s009.sec81.vend_buy2": "Champi de glace 1000",
+ "s009.sec81.vend_getIceMushrm": "Vous recevez Champi de glace !"
 }

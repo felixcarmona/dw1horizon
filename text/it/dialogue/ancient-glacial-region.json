@@ -478,5 +478,25 @@
   [
    "Prova a chiedere altrove."
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "Scegli un oggetto.",
+ "s078.sec81.vend_more": "Altro",
+ "s078.sec81.vend_back": "Indietro",
+ "s078.sec81.vend_leave": "Esci",
+ "s078.sec81.vend_poor": "Bit insufficienti.",
+ "s078.sec81.vend_full": "La borsa è piena.",
+ "s078.sec81.vend_daily": "Uno per tipo di fungo raro al giorno.",
+ "s078.sec81.vend_sold": "Esaurito. Torna dopo mezzanotte.",
+ "s078.sec81.vend_bonus": "Bonus! Cura doppia!",
+ "s078.sec81.vend_play_prompt": "Giocare per 1000 bit?",
+ "s078.sec81.vend_play": "Gioca",
+ "s078.sec81.vend_quit": "Esci",
+ "s078.sec81.vend_buy0": "Carne ammuffita 26",
+ "s078.sec81.vend_getMoldyMeat": "Hai ricevuto Carne ammuffita!",
+ "s078.sec81.vend_buy1": "Carne 20",
+ "s078.sec81.vend_getMeat": "Hai ricevuto Carne!",
+ "s078.sec81.vend_buy2": "Carne gigante 300",
+ "s078.sec81.vend_getGiantMeat": "Hai ricevuto Carne gigante!",
+ "s078.sec81.vend_buy3": "Filetto 1000",
+ "s078.sec81.vend_getSirloin": "Hai ricevuto Filetto!"
 }

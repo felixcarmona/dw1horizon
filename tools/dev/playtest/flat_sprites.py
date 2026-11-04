@@ -85,13 +85,13 @@ def flat_state(who):
 
 
 def slot_sprite(who):
-    """The 9 bytes getFlatSprite keeps for the model slot of `who` (partner or slot 0's Digimon)."""
+    """The 12 bytes getFlatSprite keeps for the model slot of `who` (partner or slot 0's Digimon)."""
     t = P.mem(f'{who}.type')[f'{who}.type']
     kind = 3 if who == PARTNER else 0
     model = call('getEntityModelComponent', t, kind)
     ptr = call('getFlatSprite', model)
     ram = P.EMU.ram()
-    return list(ram[(ptr & 0x1FFFFF):(ptr & 0x1FFFFF) + 9])
+    return list(ram[(ptr & 0x1FFFFF):(ptr & 0x1FFFFF) + 12])
 
 
 def expected_sprite(assets, t):
@@ -103,7 +103,7 @@ def expected_sprite(assets, t):
         data = (assets / 'ALLTIM.TIM').read_bytes()
     tex = data[r['texSector'] * 2048:(r['texSector'] + r['texSectors']) * 2048]
     cells, row = flatsprite.sprite_of(tex)
-    return [c for uv in cells for c in uv] + [row]
+    return [c for uv in cells for c in uv] + list(flatsprite.frame_rows(tex))
 
 
 def replace_wild(t):

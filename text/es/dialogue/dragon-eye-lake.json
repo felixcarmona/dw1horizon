@@ -99,5 +99,23 @@
    "un pez, ese pez no picará con",
    "el cebo que usas ahora."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Elige un objeto.",
+ "s009.sec81.vend_more": "Más",
+ "s009.sec81.vend_back": "Atrás",
+ "s009.sec81.vend_leave": "Salir",
+ "s009.sec81.vend_poor": "No tienes suficientes bits.",
+ "s009.sec81.vend_full": "La bolsa está llena.",
+ "s009.sec81.vend_daily": "Una de cada seta rara al día.",
+ "s009.sec81.vend_sold": "Agotado hoy. Vuelve después de medianoche.",
+ "s009.sec81.vend_bonus": "¡Premio extra! ¡Cura doble!",
+ "s009.sec81.vend_play_prompt": "¿Jugar por 1000 bits?",
+ "s009.sec81.vend_play": "Jugar",
+ "s009.sec81.vend_quit": "Salir",
+ "s009.sec81.vend_buy0": "Digiseta 51",
+ "s009.sec81.vend_getDigimushrm": "¡Has recibido Digiseta!",
+ "s009.sec81.vend_buy1": "Seta feliz 1500",
+ "s009.sec81.vend_getHappymushrm": "¡Has recibido Seta feliz!",
+ "s009.sec81.vend_buy2": "Seta de hielo 1000",
+ "s009.sec81.vend_getIceMushrm": "¡Has recibido Seta de hielo!"
 }

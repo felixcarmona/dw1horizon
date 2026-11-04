@@ -257,5 +257,23 @@
    "un pesce indica che non",
    "abboccherà all'esca attuale."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Scegli un oggetto.",
+ "s009.sec81.vend_more": "Altro",
+ "s009.sec81.vend_back": "Indietro",
+ "s009.sec81.vend_leave": "Esci",
+ "s009.sec81.vend_poor": "Bit insufficienti.",
+ "s009.sec81.vend_full": "La borsa è piena.",
+ "s009.sec81.vend_daily": "Uno per tipo di fungo raro al giorno.",
+ "s009.sec81.vend_sold": "Esaurito. Torna dopo mezzanotte.",
+ "s009.sec81.vend_bonus": "Bonus! Cura doppia!",
+ "s009.sec81.vend_play_prompt": "Giocare per 1000 bit?",
+ "s009.sec81.vend_play": "Gioca",
+ "s009.sec81.vend_quit": "Esci",
+ "s009.sec81.vend_buy0": "Digifungo 51",
+ "s009.sec81.vend_getDigimushrm": "Hai ricevuto Digifungo!",
+ "s009.sec81.vend_buy1": "Fungo felice 1500",
+ "s009.sec81.vend_getHappymushrm": "Hai ricevuto Fungo felice!",
+ "s009.sec81.vend_buy2": "Fungo ghiaccio 1000",
+ "s009.sec81.vend_getIceMushrm": "Hai ricevuto Fungo ghiaccio!"
 }

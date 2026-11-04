@@ -286,5 +286,29 @@
    "な。ケヘヘ！"
   ]
  ],
- "s015.sec51.u23": "ベジーモンが街にやってきた！"
+ "s015.sec51.u23": "ベジーモンが街にやってきた！",
+ "s012.sec81.vend_prompt": "アイテムを選んでください。",
+ "s012.sec81.vend_more": "次へ",
+ "s012.sec81.vend_back": "戻る",
+ "s012.sec81.vend_leave": "やめる",
+ "s012.sec81.vend_poor": "ビットが足りない。",
+ "s012.sec81.vend_full": "持ち物がいっぱいだ。",
+ "s012.sec81.vend_daily": "珍しいキノコは各１日１個まで。",
+ "s012.sec81.vend_sold": "今日は売り切れ。午前０時に入荷します。",
+ "s012.sec81.vend_bonus": "おまけ！ダブル回復！",
+ "s012.sec81.vend_play_prompt": "１０００ビットで遊びますか？返金はできません。持ち物に空きを作ってください。",
+ "s012.sec81.vend_play": "遊ぶ",
+ "s012.sec81.vend_quit": "やめる",
+ "s012.sec81.vend_getSmRecovery": "小回復を手に入れた！",
+ "s012.sec81.vend_getMedRecovery": "中回復を手に入れた！",
+ "s012.sec81.vend_getLrgRecovery": "大回復を手に入れた！",
+ "s012.sec81.vend_getMPFloppy": "MP回復を手に入れた！",
+ "s012.sec81.vend_getMediumMP": "MP中回復を手に入れた！",
+ "s012.sec81.vend_getLargeMP": "MP大回復を手に入れた！",
+ "s012.sec81.vend_getVarious": "マルチ回復を手に入れた！",
+ "s012.sec81.vend_getOmnipotent": "ぜんぶ回復を手に入れた！",
+ "s012.sec81.vend_getRestore": "さいせいを手に入れた！",
+ "s012.sec81.vend_getOffDisk": "こうげきディスクを手に入れた！",
+ "s012.sec81.vend_getDefDisk": "ぼうぎょディスクを手に入れた！",
+ "s012.sec81.vend_getHispeedDsk": "すばやさディスクを手に入れた！"
 }
