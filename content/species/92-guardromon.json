@@ -26,7 +26,7 @@
   "battle_music": "normal-battle",
   "wild": {"hp": 2900, "mp": 3800, "off": 630, "def": 340, "speed": 100, "brain": 50, "bits": 1100},
   "partner": {
-    "voice": 0,
+    "voice": 10,
     "hunger_hours": [3, 8, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 24,

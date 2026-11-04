@@ -613,7 +613,16 @@
         "Vademon": "Canon: Wikimon lists Vademon -> HiAndromon; alien science to machine. Shares mech."
       }
     },
-    "KingEtemon": {"parents": ["Etemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "KingEtemon": {
+      "parents": ["Etemon", "Monzaemon", "Digitamamon"],
+      "reason": "Canon main line, then family and shared specialty. Three parents; each has at most three targets. Keeps the Mega stat thresholds and Etemon bonus, with at most ten care mistakes so both added parents have practical chains. ShogunGekomon and Vademon are canon alternatives but share no specialty with KingEtemon.",
+      "chain": true,
+      "parent_reasons": {
+        "Etemon": "Canon main line: the Etemon family. Shares battle, air and filth; retains the primary-parent bonus.",
+        "Monzaemon": "Canon: Wikimon lists Monzaemon -> King Etemon; both Puppet type. Shares battle and air. Adds a second Mega target alongside Puppetmon.",
+        "Digitamamon": "Canon: Wikimon lists Digitamamon -> King Etemon (Bo-215). Shares air. Adds a second Mega target alongside Plesiomon."
+      }
+    },
     "Divermon": {"parents": ["Octomon", "Gesomon"], "reason": "Canon main line, then family and shared specialty."},
     "Ebidramon": {
       "parents": ["Otamamon", "SnowAgumon", "Syakomon", "Crabmon"],
@@ -1277,7 +1286,7 @@
     "299": {"from": [122, 352, 331], "to": [246, 310]},
     "300": {"from": [206, 321], "to": []},
     "302": {"from": [40, 28], "to": []},
-    "303": {"from": [42], "to": []},
+    "303": {"from": [42, 14, 56], "to": []},
     "304": {"from": [278, 240], "to": [401, 271]},
     "305": {"from": [109, 71, 283, 284], "to": [64, 275]},
     "306": {"from": [48, 296, 323, 105, 308], "to": [258, 276, 297, 430]},

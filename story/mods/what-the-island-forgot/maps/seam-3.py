@@ -11,6 +11,7 @@ camera set here. Its wild Digimon are placed by the story (early-game.py); the c
 """
 import json, os, sys
 from mapbase import base_map, import_png, MOD, check_arrivals
+import toilets
 from foreground_depth_b import apply as apply_foreground
 
 DATA = os.path.join(MOD, 'maps', 'seam-3-data.json')
@@ -23,7 +24,9 @@ def main(out):
     m = base_map('MAYO04B', *d['camera']); m.projection = d['projection']
     m.collision = list(d['collision']); m.warps = d['warps']
     import_png('MAYO04B', ART, os.path.join(out, 'SEAM04.TFS'))
+    m = toilets.paste(m, 'SEAM04', out)
     apply_foreground(m, 'seam-3', os.path.join(out, 'SEAM04.TFS'))
+    toilets.tiles(m, 'SEAM04')
     check_arrivals(m, 'SEAM04')
     open(os.path.join(out, 'SEAM04.MAP'), 'wb').write(m.build())
     print(f'SEAM04: free tiles {m.collision.count(0)}, exits {[(w["targetMap"], w["targetExit"]) for w in m.warps if w["targetMap"] != -1]}')
