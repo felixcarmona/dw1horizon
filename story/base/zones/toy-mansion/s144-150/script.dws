@@ -290,6 +290,7 @@ script 144 {
 
     on talk(clearagumon2) replace {    // section 7
         say(clearagumon2, text("s144.sec7.u0"));
+        battle();
         recruit(species("ClearAgumon"));
         return;
     }

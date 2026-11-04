@@ -12,7 +12,12 @@ python3 tools/models/edit.py --from build/everything check 183 --species-pins
 python3 tools/models/verify_deltas.py verify --sources DIR
 python3 tools/models/audit_origins.py --help
 python3 tools/models/audit_textures.py disc DISC_DIR   # faces sampling noise, palettes or empty texels
+python3 tools/species.py --content BUILD/species flat-audit BUILD/DIGI.DAT BUILD/ALLTIM.TIM   # every flat sprite
+python3 tools/flatsprite.py sheet OUT.png DISC_DIR      # every species' flat frames on one sheet
 ```
+
+`tools/flatsprite.py` gives each texture the frames a flattened Digimon is drawn with (the species' icon in the
+originals' two colours, where the model leaves room); the build runs it for DIGI.DAT and the disc's ALLTIM.TIM.
 
 The editor can extract the three source games with repeated `--source-disc`
 arguments. `--from DERIVE_OUT` reuses their extracted inputs. Its cache lives in
