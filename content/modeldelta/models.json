@@ -4384,9 +4384,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/327-Gargoylemon.MMD.mdelta",
-        "delta_sha256": "dfd4b0e183181b77bf8bd45e0a09954271f415688ea3d1fd3e65baab6ee40a19",
-        "sha256": "38c697c3368c4e2750c71182e80059e2b9d99ff9dcd791f73ef7470f2ae5f1d9",
-        "size": 92836
+        "delta_sha256": "921456a1c855dd536723dac58a82b6a5b4a40213972c160695133848901393c9",
+        "sha256": "acf0fc7229d1c0c8e7fd58d515d61b3ec11e15e32346cce675b6edd7673c161e",
+        "size": 93218
       },
       "tim": {
         "sources": [
