@@ -1,0 +1,628 @@
+From 90687a1113560873a12b98d0d221d83218f34a3b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 23:47:46 +0000
+Subject: [PATCH] Apply species mode moves and finisher scalars from JSON
+ records
+
+---
+ include/dw/species.h   |  4 ++++
+ src/btl/battle_main.c  | 37 +++++++++++++++---------------
+ src/main/mod_species.c | 52 ++++++++++++++++++++++++++++++++++++++++++
+ src/std/std_main.c     | 37 +++++++++++++++---------------
+ src/vs/vs_combat.c     |  3 ++-
+ src/vs/vs_demo.c       |  3 ++-
+ src/vs/vs_main.c       | 31 +++++++++++++------------
+ 7 files changed, 114 insertions(+), 53 deletions(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index a860114..ff6ffd0 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -27,6 +27,7 @@
+ #include <dw/evl.h>
+ #include <dw/ids.h>
+ #include <dw/model.h>
++#include <dw/move.h>
+ #include <dw/params.h>
+ #include <dw/partner.h>
+ #include <dw/types.h>
+@@ -92,6 +93,8 @@ typedef struct {
+  * has no new species to keep out: every species counts as vanilla then.
+  */
+ #define SPECIES_HEADER_VANILLA	0x780
++#define SPECIES_HEADER_BALANCE_OFF 0x4fc
++#define SPECIES_BALANCE_SWAP_MAX 19
+ /*
+  * MOD (canon levels): the originals whose species file gives them another level than the original game's (Phoenixmon,
+  * HerculesKabuterimon, MetalEtemon ... are Mega), at SPECIES_HEADER_LEVEL_OFF of the header sector: a count, then
+@@ -107,6 +110,7 @@ typedef struct {
+ /* Header u32 sector pointer; sector: u16 count, then 102-byte rows. */
+ #define SPECIES_HEADER_EVOLUTION_OFF 0x3c
+ #define SPECIES_EVOLUTION_SWAP_MAX 20
++Move *modSpeciesMove(int32_t type, int32_t move);
+ void modApplySpeciesLevels(void);
+ /* the level the original game gives a species (its NEW DIGIMON off level): the original evolution items keep their rule with it */
+ int32_t modOriginalLevel(int32_t type);
+diff --git a/src/btl/battle_main.c b/src/btl/battle_main.c
+index b1fc102..7ef1cfe 100644
+--- a/src/btl/battle_main.c
++++ b/src/btl/battle_main.c
+@@ -17,6 +17,7 @@
+ #include <dw/mod_present.h>
+ #include <dw/mod_qol.h>
+ #include <dw/move.h>
++#include <dw/species.h>
+ #include <dw/params.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+@@ -1137,7 +1138,7 @@ void BTL_tickChargeState(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 	case 1:
+ 		BTL_maintainTargetDistance(digimon, target, fighter);
+ 		tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= modSpeciesMove(digimon->entity.type, tech)->power)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -2039,7 +2040,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 
+ 	for (i = 0; i < 3; i++) {
+ 		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
+-			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
++			mult[i] = TYPE_FACTORS[modSpeciesMove(attacker->entity.type, move)->special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			mult[i] = BM(NEUTRAL_MULT);
+ 		}
+@@ -2050,7 +2051,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		def = def * BM(GUARD_PCT) / 100; /* MOD (battle as data) */
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+-		dmg = BMD((off + MOVE_DATA[move].power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
++		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+ 		if (diff > BM(DIFF_CLAMP)) {
+@@ -2059,7 +2060,7 @@ int32_t BTL_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		if (diff < -BM(DIFF_CLAMP)) {
+ 			diff = -BM(DIFF_CLAMP);
+ 		}
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * (MOVE_DATA[move].power + BMD(diff * MOVE_DATA[move].power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((mult[0] + mult[1] + mult[2]) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+@@ -2122,7 +2123,7 @@ void BTL_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+ 
+ 	tech = BTL_getAttackTech(attack);
+ 	startAnimation(entity, animId);
+-	createParticleFX(MOVE_DATA[tech].special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
++	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
+ }
+ 
+ void BTL_tickAttackHits(void)
+@@ -2404,7 +2405,7 @@ int32_t BTL_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	mp = MOVE_DATA[tech].mpCost * BM(MP_MULT); /* MOD (battle as data) */
++	mp = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT); /* MOD (battle as data) */
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		mp -= mp * BMBRAIN(PARTNER_ENTITY.digimonEntity.stats.base.brain) / 100;
+ 		if (PARTNER_PARA.condition & 0x60) {
+@@ -2457,7 +2458,7 @@ void BTL_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < modSpeciesMove(digimon->entity.type, tech)->power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -2581,7 +2582,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	BTL_removeMoveEffect(digimon, fighter);
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+-			cost = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++			cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			if (PARTNER_PARA.condition & 0x60) {
+ 				cost += cost * BM(MP_COND_PCT) / 100;
+ 			}
+@@ -2592,7 +2593,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	} else {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+ 			if (FLEE_DISABLED[0] == 0) {
+-				digimon->stats.current.currentMP -= MOVE_DATA[tech].mpCost * BM(MP_MULT);
++				digimon->stats.current.currentMP -= modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			}
+ 		}
+ 		if (tech < 0x3a) {
+@@ -2624,7 +2625,7 @@ void BTL_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+-	fighter->speedBuffer -= MOVE_DATA[tech].power;
++	fighter->speedBuffer -= modSpeciesMove(digimon->entity.type, tech)->power;
+ 	if (fighter->speedBuffer < -BM(SPEED_FLOOR)) {
+ 		fighter->speedBuffer = -BM(SPEED_FLOOR);
+ 	}
+@@ -3157,7 +3158,7 @@ int16_t BTL_getStrongestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].power;
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -3188,7 +3189,7 @@ int16_t BTL_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
++			score[i] = TYPE_FACTORS[modSpeciesMove(digimon->entity.type, tech)->special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -3325,7 +3326,7 @@ int16_t BTL_getCheapestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 		} else {
+ 			score[i] = 1000;
+ 		}
+@@ -3556,7 +3557,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].power;
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 			}
+ 		}
+ 		BTL_sortScoresDescending(values, keys, groups, 3);
+@@ -3584,7 +3585,7 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			}
+ 		}
+ 		BTL_sortScoresAscending(values, keys, groups, 3);
+@@ -3608,10 +3609,10 @@ void BTL_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
++			weights[i] += fighter->buffPrioTimer + BTL_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += BTL_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
++		weights[i] += BTL_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+@@ -3992,7 +3993,7 @@ void BTL_setCommandIconUV(DigimonEntity *digimon, POLY_FT4 *prim, uint8_t index)
+ 	int16_t n;
+ 
+ 	if ((index >= 8U) && (index < 0xcU)) {
+-		eff = MOVE_DATA[entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8])].special;
++		eff = modSpeciesMove(digimon->entity.type, entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8]))->special;
+ 		setUVWH(prim, BTL_SPECIAL_ICON_UVS[eff][0], BTL_SPECIAL_ICON_UVS[eff][1], 0x10, 0xf);
+ 	} else {
+ 		setUVWH(prim, BTL_COMMAND_ICON_UVS[index - 1][0], BTL_COMMAND_ICON_UVS[index - 1][1], 0x10, 0xf);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index f4072e1..b77bcb7 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -67,6 +67,56 @@ static uint8_t SPECIES_LEVEL_SWAP[SPECIES_LEVEL_SWAP_MAX][3];
+ static int32_t SPECIES_LEVEL_SWAPS;
+ static void readSpeciesSector(int32_t sector);
+ 
++/* Only active scalar rows stay resident; both move lists remain in DIGI.DAT. */
++typedef struct {
++	uint16_t type, move, power;
++	uint8_t cost, element;
++} SpeciesMoveBalance;
++static SpeciesMoveBalance SPECIES_MOVE_BALANCE[SPECIES_BALANCE_SWAP_MAX];
++static int32_t SPECIES_MOVE_BALANCES;
++static Move SPECIES_MOVE_COPY;
++
++Move *modSpeciesMove(int32_t type, int32_t move)
++{
++	int32_t i;
++	SpeciesMoveBalance *b;
++	for (i = 0; i < SPECIES_MOVE_BALANCES; i++) {
++		b = &SPECIES_MOVE_BALANCE[i];
++		if (b->type != type || b->move != move) continue;
++		SPECIES_MOVE_COPY = MOVE_DATA[move];
++		SPECIES_MOVE_COPY.power = b->power;
++		SPECIES_MOVE_COPY.mpCost = b->cost;
++		SPECIES_MOVE_COPY.special = b->element;
++		return &SPECIES_MOVE_COPY;
++	}
++	return &MOVE_DATA[move];
++}
++
++static void applySpeciesMoveBalance(int32_t sector)
++{
++	int32_t i, count, type;
++	uint8_t *row;
++	SpeciesMoveBalance *b;
++	SPECIES_MOVE_BALANCES = 0;
++	if (!sector) return;
++	readSpeciesSector(sector);
++	count = *(uint16_t *)SPECIES_SECTOR;
++	if (count > SPECIES_BALANCE_SWAP_MAX) count = SPECIES_BALANCE_SWAP_MAX;
++	for (i = 0; i < count; i++) {
++		row = (uint8_t *)SPECIES_SECTOR + 2 + i * 44;
++		type = row[0] | row[1] << 8;
++		if (type >= NUM_ORIGINAL_DIGIMON) continue;
++		row += 2 + (MOD_OPT_NEW_DIGIMON ? 0 : 21);
++		memcpy(DIGIMON_DATA[type].moves, row, 16);
++		b = &SPECIES_MOVE_BALANCE[SPECIES_MOVE_BALANCES++];
++		b->type = type;
++		b->move = row[16];
++		b->power = row[17] | row[18] << 8;
++		b->cost = row[19];
++		b->element = row[20];
++	}
++}
++
+ void modApplySpeciesLevels(void)
+ {
+ 	int32_t i;
+@@ -91,6 +141,8 @@ void modApplySpeciesLevels(void)
+ 	}
+ 	/* Explicit on/off path and requirement rows live in a separate sector. */
+ 	i = ((uint32_t *)SPECIES_SECTOR)[SPECIES_HEADER_EVOLUTION_OFF / 4];
++	j = ((uint32_t *)SPECIES_SECTOR)[SPECIES_HEADER_BALANCE_OFF / 4];
++	applySpeciesMoveBalance(j);
+ 	if (!i) return;
+ 	readSpeciesSector(i);
+ 	row = (uint16_t *)SPECIES_SECTOR;
+diff --git a/src/std/std_main.c b/src/std/std_main.c
+index d218d52..7febc0b 100644
+--- a/src/std/std_main.c
++++ b/src/std/std_main.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <stdlib.h>
+ #include <string.h>
+ 
+@@ -4788,7 +4789,7 @@ void STD_tickChargeState(DigimonEntity *digimon, DigimonEntity *target, FighterD
+ 	case 1:
+ 		STD_maintainTargetDistance(digimon, target, fighter);
+ 		tech = entityGetTechFromAnim(&digimon->entity, fighter->queuedAnim);
+-		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer >= BM(SPEED_MAX)) || (fighter->speedBuffer >= modSpeciesMove(digimon->entity.type, tech)->power)) {
+ 			fighter->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -5834,7 +5835,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 
+ 	for (i = 0; i < 3; i++) {
+ 		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
+-			mult[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
++			mult[i] = TYPE_FACTORS[modSpeciesMove(attacker->entity.type, move)->special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			mult[i] = BM(NEUTRAL_MULT);
+ 		}
+@@ -5845,7 +5846,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		def = def * BM(GUARD_PCT) / 100; /* MOD (battle as data) */
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+-		dmg = BMD((off + MOVE_DATA[move].power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
++		dmg = BMD((off + modSpeciesMove(attacker->entity.type, move)->power) * (mult[0] + mult[1] + mult[2]), DMG_DIV);
+ 	} else {
+ 		diff = off - def;
+ 		if (diff > BM(DIFF_CLAMP)) {
+@@ -5854,7 +5855,7 @@ int32_t STD_calculateDamage(DigimonEntity *attacker, DigimonEntity *defender, in
+ 		if (diff < -BM(DIFF_CLAMP)) {
+ 			diff = -BM(DIFF_CLAMP);
+ 		}
+-		dmg = BMD((mult[0] + mult[1] + mult[2]) * (MOVE_DATA[move].power + BMD(diff * MOVE_DATA[move].power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((mult[0] + mult[1] + mult[2]) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 	if ((move >= 0x3a) && (move < 0x71)) {
+ 		if ((Entity *)attacker == ENTITY_TABLE[1]) {
+@@ -6039,7 +6040,7 @@ void STD_startHitAnimation(Entity *entity, AttackObject *attack, uint8_t animId)
+ 
+ 	tech = STD_getAttackTech(attack);
+ 	startAnimation(entity, animId);
+-	createParticleFX(MOVE_DATA[tech].special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
++	createParticleFX(modSpeciesMove(ENTITY_TABLE[attack->casterId]->type, tech)->special, 1, &attack->position, entity, MOVE_DATA[tech].iframes + 0x10);
+ }
+ 
+ void STD_tickFrames(int16_t count)
+@@ -6239,7 +6240,7 @@ int32_t STD_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t s
+ 		return 0;
+ 	}
+ 
+-	mp = MOVE_DATA[tech].mpCost * BM(MP_MULT); /* MOD (battle as data) */
++	mp = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT); /* MOD (battle as data) */
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		mp -= mp * BMBRAIN(PARTNER_ENTITY.digimonEntity.stats.base.brain) / 100;
+ 		if (PARTNER_PARA.condition & 0x60) {
+@@ -6430,7 +6431,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].power;
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 			}
+ 		}
+ 		STD_sortScoresDescending(values, keys, groups, 3);
+@@ -6458,7 +6459,7 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			}
+ 		}
+ 		STD_sortScoresAscending(values, keys, groups, 3);
+@@ -6482,10 +6483,10 @@ void STD_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + STD_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
++			weights[i] += fighter->buffPrioTimer + STD_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += STD_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
++		weights[i] += STD_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+@@ -6575,7 +6576,7 @@ void STD_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, in
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < modSpeciesMove(digimon->entity.type, tech)->power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -6718,7 +6719,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 	STD_removeMoveEffect(digimon, fighter);
+ 	if (digimon == (DigimonEntity *)ENTITY_TABLE[1]) {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+-			cost = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++			cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			if (PARTNER_PARA.condition & 0x60) {
+ 				cost += cost / 2;
+ 			}
+@@ -6738,7 +6739,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		}
+ 	} else {
+ 		if (!((tech >= 0x3a) && (tech < 0x71))) {
+-			digimon->stats.current.currentMP -= (int16_t)(MOVE_DATA[tech].mpCost * 3);
++			digimon->stats.current.currentMP -= (int16_t)(modSpeciesMove(digimon->entity.type, tech)->mpCost * 3);
+ 		}
+ 		if (tech < 0x3a) {
+ 			for (i = 0; i < 0xc; i++) {
+@@ -6769,7 +6770,7 @@ void STD_setupMoveExecution(DigimonEntity *digimon, DigimonEntity *target, Fight
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+-	fighter->speedBuffer -= MOVE_DATA[tech].power;
++	fighter->speedBuffer -= modSpeciesMove(digimon->entity.type, tech)->power;
+ 	if (fighter->speedBuffer < -BM(SPEED_FLOOR)) {
+ 		fighter->speedBuffer = -BM(SPEED_FLOOR);
+ 	}
+@@ -7172,7 +7173,7 @@ int16_t STD_getStrongestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].power;
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -7203,7 +7204,7 @@ int16_t STD_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
++			score[i] = TYPE_FACTORS[modSpeciesMove(digimon->entity.type, tech)->special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -7232,7 +7233,7 @@ int16_t STD_getCheapestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 		} else {
+ 			score[i] = 1000;
+ 		}
+@@ -7483,7 +7484,7 @@ void STD_setCommandIconUV(DigimonEntity *digimon, POLY_FT4 *prim, uint8_t index)
+ 	int16_t n;
+ 
+ 	if ((index >= 8U) && (index < 0xcU)) {
+-		eff = MOVE_DATA[entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8])].special;
++		eff = modSpeciesMove(digimon->entity.type, entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8]))->special;
+ 		setUVWH(prim, STD_SPECIAL_ICON_UVS[eff][0], STD_SPECIAL_ICON_UVS[eff][1], 0x10, 0xf);
+ 	} else {
+ 		setUVWH(prim, STD_COMMAND_ICON_UVS[index - 1][0], STD_COMMAND_ICON_UVS[index - 1][1], 0x10, 0xf);
+diff --git a/src/vs/vs_combat.c b/src/vs/vs_combat.c
+index 7cb3385..18f06d0 100644
+--- a/src/vs/vs_combat.c
++++ b/src/vs/vs_combat.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <string.h>
+ 
+ #include <inline_n.h>
+@@ -1727,7 +1728,7 @@ void VS__tickDigimonOnChargeup(DigimonEntity *entity, DigimonEntity *other,
+ 			tech = (int16_t)entityGetTechFromAnim(&entity->entity,
+ 			                                      data->queuedAnim);
+ 			if (data->speedBuffer >= BM(SPEED_MAX) ||
+-			    data->speedBuffer >= MOVE_DATA[tech].power) {
++			    data->speedBuffer >= modSpeciesMove(entity->entity.type, tech)->power) {
+ 				data->flags &= ~FIGHTER_FLAG_ON_CHARGEUP;
+ 			}
+ 			break;
+diff --git a/src/vs/vs_demo.c b/src/vs/vs_demo.c
+index f63a291..1f53659 100644
+--- a/src/vs/vs_demo.c
++++ b/src/vs/vs_demo.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <string.h>
+ 
+ #include <libgs.h>
+@@ -264,7 +265,7 @@ void VS_randomizeDemoFighter(Entity *entity)
+ 		if (tech >= 0x3a && tech < 0x71) {
+ 			continue;
+ 		}
+-		if (stats->base.mp / 10 < MOVE_DATA[tech].mpCost * 3) {
++		if (stats->base.mp / 10 < modSpeciesMove(entity->type, tech)->mpCost * 3) {
+ 			continue;
+ 		}
+ 		if (MOVE_DATA[tech].range == 4 || tech == 0x2d) {
+diff --git a/src/vs/vs_main.c b/src/vs/vs_main.c
+index 5d275f7..a1ad504 100644
+--- a/src/vs/vs_main.c
++++ b/src/vs/vs_main.c
+@@ -1,3 +1,4 @@
++#include <dw/species.h>
+ #include <libetc.h>
+ #include <libgpu.h>
+ #include <libgs.h>
+@@ -348,7 +349,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 
+ 	for (i = 0; i < 3; i++) {
+ 		if (DIGI_PARA(defender->entity.type).special[i] != 0xff) {
+-			eff[i] = TYPE_FACTORS[MOVE_DATA[move].special][DIGI_PARA(defender->entity.type).special[i]];
++			eff[i] = TYPE_FACTORS[modSpeciesMove(attacker->entity.type, move)->special][DIGI_PARA(defender->entity.type).special[i]];
+ 		} else {
+ 			eff[i] = BM(NEUTRAL_MULT);
+ 		}
+@@ -361,7 +362,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 	}
+ 
+ 	if (move >= 0x3a && move < 0x71) {
+-		dmg = BMD((atk + MOVE_DATA[move].power) * (eff[2] + (eff[0] + eff[1])), DMG_DIV);
++		dmg = BMD((atk + modSpeciesMove(attacker->entity.type, move)->power) * (eff[2] + (eff[0] + eff[1])), DMG_DIV);
+ 		if (COMBAT_DATA_PTR->player.finisherChargeup[0] >= BM(CHARGE_FROM)) {
+ 			dmg = BMD(dmg * COMBAT_DATA_PTR->player.finisherChargeup[0], CHARGE_DIV);
+ 		}
+@@ -374,7 +375,7 @@ int32_t VS_rollAttackOutcome(DigimonEntity *attacker, DigimonEntity *defender, i
+ 		if (diff < -BM(DIFF_CLAMP)) {
+ 			diff = -BM(DIFF_CLAMP);
+ 		}
+-		dmg = BMD((eff[2] + (eff[0] + eff[1])) * (MOVE_DATA[move].power + BMD(diff * MOVE_DATA[move].power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
++		dmg = BMD((eff[2] + (eff[0] + eff[1])) * (modSpeciesMove(attacker->entity.type, move)->power + BMD(diff * modSpeciesMove(attacker->entity.type, move)->power, DIFF_DIV)), DMG_DIV) * (randomLimit(BMS(RAND_SPAN)) + BM(RAND_MIN)) / 100;
+ 	}
+ 
+ 	if (dmg <= BM(DMG_MIN) - 1) {
+@@ -718,7 +719,7 @@ int32_t VS_isMoveUsable(DigimonEntity *digimon, FighterData *fighter, int16_t sl
+ 		return 0;
+ 	}
+ 
+-	mp = (int16_t)(MOVE_DATA[tech].mpCost * 3);
++	mp = (int16_t)(modSpeciesMove(digimon->entity.type, tech)->mpCost * 3);
+ 	if (digimon->stats.base.brain >= 700) {
+ 		if (digimon->stats.base.brain == 999) {
+ 			mp -= (int16_t)(mp / 5);
+@@ -776,7 +777,7 @@ void VS_applyChargeRequirement(DigimonEntity *digimon, FighterData *fighter, int
+ 		}
+ 		break;
+ 	case 1:
+-		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < MOVE_DATA[tech].power)) {
++		if ((fighter->speedBuffer < BM(SPEED_MAX)) && (fighter->speedBuffer < modSpeciesMove(digimon->entity.type, tech)->power)) {
+ 			fighter->flags |= FIGHTER_FLAG_ON_CHARGEUP;
+ 		}
+ 		break;
+@@ -922,7 +923,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 	}
+ 
+ 	if (!((tech >= 0x3a) && (tech < 0x71))) {
+-		cost = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++		cost = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 		brain = digimon->stats.base.brain;
+ 		if (brain >= 0x2bc) {
+ 			if (brain == 0x3e7) {
+@@ -954,7 +955,7 @@ void VS_playMoveEffect(DigimonEntity *digimon, DigimonEntity *target, FighterDat
+ 		fighter->buffsRemaining--;
+ 	}
+ 
+-	fighter->speedBuffer -= MOVE_DATA[tech].power;
++	fighter->speedBuffer -= modSpeciesMove(digimon->entity.type, tech)->power;
+ 	if (fighter->speedBuffer < -BM(SPEED_FLOOR)) {
+ 		fighter->speedBuffer = -BM(SPEED_FLOOR);
+ 	}
+@@ -1423,7 +1424,7 @@ int16_t VS_getStrongestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].power;
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -1454,7 +1455,7 @@ int16_t VS_getMostEffectiveMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = TYPE_FACTORS[MOVE_DATA[tech].special][DIGI_PARA(target->type).special[0]];
++			score[i] = TYPE_FACTORS[modSpeciesMove(digimon->entity.type, tech)->special][DIGI_PARA(target->type).special[0]];
+ 		} else {
+ 			score[i] = -1;
+ 		}
+@@ -1483,7 +1484,7 @@ int16_t VS_getCheapestMove(index, flags)
+ 	for (i = 0; i < 3; i++) {
+ 		if (flags[i] == 1) {
+ 			tech = entityGetTechFromAnim(&digimon->entity, moves[i]);
+-			score[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++			score[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 		} else {
+ 			score[i] = 1000;
+ 		}
+@@ -1631,7 +1632,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = -1;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].power;
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->power;
+ 			}
+ 		}
+ 		VS_sortScoresDescending(values, keys, groups, 3);
+@@ -1659,7 +1660,7 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 				values[i] = 10000;
+ 			} else {
+ 				tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+-				values[i] = MOVE_DATA[tech].mpCost * BM(MP_MULT);
++				values[i] = modSpeciesMove(digimon->entity.type, tech)->mpCost * BM(MP_MULT);
+ 			}
+ 		}
+ 		VS_sortScoresAscending(values, keys, groups, 3);
+@@ -1683,10 +1684,10 @@ void VS_selectPartnerMove(DigimonEntity *digimon, FighterData *fighter, int16_t
+ 		}
+ 		tech = entityGetTechFromAnim(&digimon->entity, stats->base.moves[i]);
+ 		if (MOVE_DATA[tech].range == 4) {
+-			weights[i] += fighter->buffPrioTimer + VS_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(digimon->entity.type).special[0]);
++			weights[i] += fighter->buffPrioTimer + VS_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(digimon->entity.type).special[0]);
+ 			continue;
+ 		}
+-		weights[i] += VS_calculateElementBonus(MOVE_DATA[tech].special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
++		weights[i] += VS_calculateElementBonus(modSpeciesMove(digimon->entity.type, tech)->special, DIGI_PARA(ENTITY_TABLE[COMBAT_DATA_PTR->player.entityIds[fighter->targetId]]->type).special[0]);
+ 		if (MOVE_DATA[tech].range != 3) {
+ 			continue;
+ 		}
+@@ -1901,7 +1902,7 @@ void VS_setCommandIconUV(DigimonEntity *digimon, POLY_FT4 *prim, int32_t index)
+ 	int16_t n;
+ 
+ 	if ((index >= 8U) && (index < 0xcU)) {
+-		eff = MOVE_DATA[entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8])].special;
++		eff = modSpeciesMove(digimon->entity.type, entityGetTechFromAnim(&digimon->entity, digimon->stats.base.moves[index - 8]))->special;
+ 		setUVWH(prim, VS_SPECIAL_ICON_UVS[eff][0], VS_SPECIAL_ICON_UVS[eff][1], 0x10, 0xf);
+ 	} else {
+ 		setUVWH(prim, VS_COMMAND_ICON_UVS[index - 1][0], VS_COMMAND_ICON_UVS[index - 1][1], 0x10, 0xf);
+-- 
+2.55.0
+
