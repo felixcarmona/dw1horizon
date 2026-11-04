@@ -679,5 +679,47 @@
     "body_gain": 1,
     "base_generator": "tools.models.field_animations.gliding",
     "skeleton_sha256": "22474e5a3a32baa0dcd6f256130fff4526c6a451db5607b0f07c1727a509032e"
+  },
+  "233": {
+    "source_sha256": "8f56afec7dc4e13c852b2b44c0a7fe485c5b0ffb72e88edd11a0c7cb1fdb80f9",
+    "slots": [
+      42
+    ],
+    "pelvis": 6,
+    "chest": 1,
+    "head": null,
+    "legs": [],
+    "locked": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "lower": [
+      10,
+      11,
+      12,
+      13
+    ],
+    "secondary": [
+      [
+        [
+          7,
+          8,
+          9
+        ],
+        1,
+        4
+      ]
+    ],
+    "delays": {
+      "2": 1.0,
+      "3": 1.8,
+      "4": 1.4,
+      "5": 2.2
+    },
+    "shift": 0,
+    "body_gain": 1,
+    "skeleton_sha256": "2654ab437f2c3cb3fb6f23c050c7fc3931b32920e57f62b2a774509cd5ad322b"
   }
 }

@@ -50,7 +50,7 @@
  "230": {"model": "230-Rosemon.MMD", "aliases_applied": true, "field_overlay": "rosemon-field"},
  "231": {"model": "231-ShellNumemon.MMD", "field_overlay": "shellnumemon-slug-field"},
  "232": {"model": "232-BomberNanimon.MMD", "aliases_applied": true, "field_overlay": "bombernanimon-boxer-field"},
- "233": {"model": "233-RedOtamamon.MMD", "aliases_applied": true},
+ "233": {"model": "233-RedOtamamon.MMD", "aliases_applied": true, "field_overlay": "redotamamon-celebration"},
  "234": {"model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-supported-field"},
  "235": {"model": "235-Candlemon.MMD", "aliases_applied": true, "field_overlay": "candlemon-pedestal-field"},
  "236": {"model": "236-DemiDevimon.MMD", "aliases_applied": true, "texture": "236-DemiDevimon.TIM"},
