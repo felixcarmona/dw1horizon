@@ -1,0 +1,114 @@
+From 963ad2c500f5eb493e09767429a21f6709572ed1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 16:13:24 +0000
+Subject: [PATCH] Align stacked gym boxes and leave a clear gap
+
+Match the stats box width and ten-pixel left text inset for the block results in both gyms and the technique and new orders messages. Leave four pixels below the stats box in both its compact and skip-hint layouts. All boxes remain inside the screen.
+---
+ src/trn/trn_block.h  |  9 +++++----
+ src/trn/trn_reward.c | 18 +++++++++---------
+ 2 files changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index bd553f2..0dca8b1 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -59,10 +59,11 @@ static int8_t TB_box2Dy; /* box 2 under the stats box: lower by the skip hint's
+    boxes) opens that much lower, under it, with its text (TB_box2Dy). TB_box2Y: box 2's y for the gains in
+    STATS_GAINS, by the gym's own check (TB(statGainsAreZero)) */
+ int32_t TB(statGainsAreZero)(void);
++/* Four pixels between the stats box and every lower box, with or without the hint row. */
+ static int32_t TB_box2Y(void)
+ {
+ 	TB_box2Dy = TB(statGainsAreZero)() ? 0 : MOD_COUNT_ROW_H;
+-	return 0x12 + TB_box2Dy;
++	return 0x16 + TB_box2Dy;
+ }
+ 
+ /* from the session's setup (TB(saveTrainingStartTime)), after it read the flag: the menu's x5 row is a normal session
+@@ -90,8 +91,8 @@ static void TB_tickMessage(void)
+ 
+ static void TB_renderMessage(void)
+ {
+-	renderString(0, -78, 24 + TB_box2Dy, 156, 12, 0, 120, 4, 0);
+-	renderString(0, -78, 36 + TB_box2Dy, 156, 12, 0, 132, 4, 0);
++	renderString(0, -84, 28 + TB_box2Dy, 168, 12, 0, 120, 4, 0);
++	renderString(0, -84, 40 + TB_box2Dy, 168, 12, 0, 132, 4, 0);
+ }
+ 
+ /* before the gym's award function */
+@@ -185,7 +186,7 @@ int32_t TB(modBlockNext)(void)
+ 		drawString(TB_doneText, 0, 120);
+ 		drawString(TB_REASONS[TB_reason], 0, 132);
+ 		TB_box1Seen = 0;
+-		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x23, 2, TB_tickMessage, TB_renderMessage);
++		createMenuBox(2, -94, TB_box2Y(), 188, 0x23, 2, TB_tickMessage, TB_renderMessage);
+ 	}
+ 	return 0;
+ }
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 486c0bb..4655c92 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -646,7 +646,7 @@ int32_t c;
+ 	if (shown == 1) {
+ 		setTextColor(1);
+ 		drawString(TRN_D_8008F140, 0, y);
+-		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x30, 2, 0, TRN_renderNewOrdersBox); /* MOD (skip hint) */
++		createMenuBox(2, -94, TB_box2Y(), 188, 0x30, 2, 0, TRN_renderNewOrdersBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 	} else if (TRN_crossedLearnMark(base, total)) { /* MOD (caps): reaching 999 (was total == 999); MOD (training as data): the marks are MOD_TRAIN_RULES' */
+ 		TRN_tryLearnMove(a);
+@@ -804,7 +804,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 
+ void TRN_renderNewOrdersBox(void)
+ {
+-	renderString(0, -78, 24 + TB_box2Dy, 240, 48, 0, 120, 4, 0);
++	renderString(0, -84, 28 + TB_box2Dy, 240, 48, 0, 120, 4, 0);
+ }
+ 
+ int32_t TRN_tryLearnMove(int32_t type)
+@@ -869,7 +869,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+ 		MAIN_D_80135392 = strlen(MOVE_NAMES[move]);
+ #endif
+ 		drawString(TRN_D_8008F19C, 0, 0x84);
+-		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x23, 2, 0, TRN_renderMoveLearnedBox); /* MOD (skip hint) */
++		createMenuBox(2, -94, TB_box2Y(), 188, 0x23, 2, 0, TRN_renderMoveLearnedBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 		return 1;
+ 	}
+@@ -885,8 +885,8 @@ int32_t TRN_tryLearnMove(int32_t type)
+  * which cut the US line ("Spit F" + "w" / "as m"). Both strings were drawn whole into the text area by
+  * TRN_tryLearnMove; MAIN_D_80135392 holds the name's width.
+  */
+-#define LEARNED_TEXT_X	-78
+-#define LEARNED_TEXT_W	156 /* to the box's inner edge, as far right as the text starts left of it */
++#define LEARNED_TEXT_X	-84
++#define LEARNED_TEXT_W	168 /* to the box's inner edge, as far right as the text starts left of it */
+ #define LEARNED_GAP	5   /* from the name's last ink to the text: a blank column and a space */
+ 
+ void TRN_renderMoveLearnedBox(void)
+@@ -894,7 +894,7 @@ void TRN_renderMoveLearnedBox(void)
+ 	int32_t nameW;
+ 	int32_t textW;
+ 
+-	int32_t y = 24 + TB_box2Dy; /* MOD (skip hint) */
++	int32_t y = 28 + TB_box2Dy; /* MOD (skip hint) */
+ 
+ 	nameW = MAIN_D_80135392;
+ 	textW = measureStringMode(TRN_D_8008F19C, FIT_VANILLA);
+@@ -908,8 +908,8 @@ void TRN_renderMoveLearnedBox(void)
+ #else
+ void TRN_renderMoveLearnedBox(void)
+ {
+-	renderString(3, -78, 24 + TB_box2Dy, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
+-	renderString(0, ((MAIN_D_80135392 / 2) * 12) - 78, 24 + TB_box2Dy, 12, 12, 0, 132, 4, 0);
+-	renderString(0, -78, 36 + TB_box2Dy, 48, 12, 12, 132, 4, 0);
++	renderString(3, -84, 28 + TB_box2Dy, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
++	renderString(0, ((MAIN_D_80135392 / 2) * 12) - 84, 28 + TB_box2Dy, 12, 12, 0, 132, 4, 0);
++	renderString(0, -84, 40 + TB_box2Dy, 48, 12, 12, 132, 4, 0);
+ }
+ #endif
+-- 
+2.55.0
+
