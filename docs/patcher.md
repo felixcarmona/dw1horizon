@@ -82,8 +82,12 @@ the variant's records and deltas for the imports, overlays and species jobs (`VA
 (`dwpatch.unrecorded_variant`), and a developer build from the variant never rewrites the reference species pins.
 
 `make-release --source-variant dw2003=IMAGE` records them. tools/derive runs once with that disc in place of the
-European one on the USA disc and on each base whose derived files are its own (the six regional ones), all at once
-(`--variant-jobs`, the CPUs shared). Then one disc is written per base. The publication gate requires an output for
+European one on the USA disc. A base whose derived files are its own (the six regional ones) then gets its reference
+files with the files that run changed put in, when `tools/patcher/variantreuse.py` proves that is what its own run
+would make: the files the variant changed are the same on every base, and the derive steps fed by the source discs
+(`SOURCE_STEPS` and what reads them) never read a file of the base's own (the bundle build's `--record` inputs).
+Otherwise tools/derive runs on each of those bases too, all at once (`--variant-jobs`, the CPUs shared); the log
+says which way and why. Then one disc is written per base. The publication gate requires an output for
 every base with every variant, and refuses a source release list that rebuilds one release's files from another's.
 
 ## Checks
