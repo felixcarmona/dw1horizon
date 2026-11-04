@@ -5,7 +5,10 @@ slots, including aliases, care, conditions and techniques. The threshold is a
 peak-to-peak change greater than 2% of the walk reference scale (at least 4096
 scale units). It checks decoded engine poses, both within each clip and across
 slots. Scale keys encode momentum: inspecting key values as absolute scales gives
-incorrect results.
+incorrect results. Finite programs are decoded to their end, including keys
+beyond the animation preview limit; infinite programs are decoded through their
+first complete loop. A 65,536-tick guard fails explicitly rather than silently
+reporting a partial clip.
 
 Sixty-seven species exceeded the threshold; nine of those only changed scale
 between clips. The corrected models have **zero decoded scale variance across

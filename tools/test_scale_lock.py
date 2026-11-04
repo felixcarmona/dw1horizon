@@ -40,6 +40,14 @@ class ScaleAudit(unittest.TestCase):
         self.assertFalse(r['across_slots'])
         self.assertTrue(measure(model(clip(momentum=1)), [[-1, -1], [0, 0]], 0)['across_slots'])
 
+    def test_late_scale_keys_are_audited_after_the_preview_limit(self):
+        late = clip()
+        late.frame_count = 705
+        late.instrs.insert(-1, dict(op='key', frame=650,
+                                   bones=[dict(bone=1, div=1, vals={'sx': 40})]))
+        r = measure(model(clip(), late), [[-1, -1], [0, 0]])
+        self.assertEqual([v['slot'] for v in r['animated']], [3])
+
     def test_large_feet_use_relative_threshold(self):
         r = measure(model(clip(scale=10240, momentum=40)), [[-1, -1], [0, 0]])
         self.assertFalse(r['across_slots'])

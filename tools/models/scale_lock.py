@@ -35,9 +35,22 @@ def measure(model, skeleton, threshold=THRESHOLD):
         if index is None:
             continue
         if index not in cache:
-            frames, loop, _ = animsheet.slot_frames(model, nb, slot)
-            cache[index] = [(b, c, min(f[b][c] for f in frames), max(f[b][c] for f in frames))
-                            for b in range(nb) for c in range(3)]
+            player = mmd.AnimPlayer(model.anims.anims[index], nb, slot)
+            ranges = {(b, c): [32768, -32768] for b in range(nb) for c in range(3)}
+            for tick in range(65536):
+                if not player.tick(stop_at_infinite_loop=True):
+                    break
+                for b, bone in enumerate(player.pose):
+                    for c in range(3):
+                        span = ranges[b, c]
+                        value = bone[c]
+                        if value < span[0]:
+                            span[0] = value
+                        if value > span[1]:
+                            span[1] = value
+            if player.running:
+                raise ValueError(f'slot {slot}: audit exceeds 65536 decoded ticks')
+            cache[index] = [(b, c, low, high) for (b, c), (low, high) in ranges.items()]
         changed = []
         for b, c, low, high in cache[index]:
             overall.setdefault((b, c), []).extend((low, high))
