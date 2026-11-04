@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch
 
 import balance
+import content
 
 
 class NativeDefaults(unittest.TestCase):
@@ -19,6 +20,20 @@ class NativeDefaults(unittest.TestCase):
         with patch.object(balance, 'native_species_defaults', return_value={}):
             with self.assertRaisesRegex(SystemExit, 'missing resident species'):
                 balance.species_rows(SimpleNamespace(compiled=True))
+
+
+class EmptyDomains(unittest.TestCase):
+    def test_empty_directories_remove_all_rows(self):
+        with patch.object(content, 'load_techniques', return_value=None), \
+             patch.object(content, 'load_items', return_value=None), \
+             patch.object(content, 'load_screens', return_value=None):
+            doc = content.doc()
+        self.assertEqual(len(doc['techniques']), content.NUM_TECHS)
+        self.assertEqual(len(doc['items']), content.NUM_ITEMS)
+        self.assertEqual(len(doc['screens']), content.NUM_SCREENS)
+        self.assertTrue(all(row['power'] == 0 for row in doc['techniques'].values()))
+        self.assertTrue(all(row == content.EMPTY_ITEM for row in doc['items'].values()))
+        self.assertTrue(all(row['fileBytes'] == [0] * 10 for row in doc['screens'].values()))
 
 
 if __name__ == '__main__':

@@ -198,3 +198,5 @@ Player-side item table recipes generate every numeric field from `content/items/
 Player-side aura recipes likewise generate all 129 six-field rows from `content/tables/effects.json`; they never seed equal fields from player records.
 
 Native balance builds start from empty species rows and explicit resident defaults in `content/tables/native-species-fallbacks.json`, then apply owned species and domain JSON. The resident defaults preserve the uncached rows of record species; they include evolution fields as well as partner, model, technique and drop parameters. Missing resident configuration is an error. Executable numeric tables are used only by explicit inspection/import tools, never as the build floor.
+
+Empty technique, item and screen directories remove their complete numeric domains, just as deleting an individual file removes its row. They never reactivate source tables.
