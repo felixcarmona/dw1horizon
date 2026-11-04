@@ -795,5 +795,64 @@
       7
     ],
     "skeleton_sha256": "4ea379540662033b0544bf543cc71b6f6ae2b4b8c58a2b86562e9f252796e155"
+  },
+  "250": {
+    "source_sha256": "eba5bfff162b1bf07da76c3b410195d441e166ec85efac8e3e75be9bbd560e15",
+    "slots": [
+      42
+    ],
+    "pelvis": 1,
+    "chest": 2,
+    "head": 3,
+    "legs": [
+      [
+        8,
+        9,
+        10
+      ],
+      [
+        11,
+        12,
+        13
+      ]
+    ],
+    "locked": [],
+    "lower": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "secondary": [
+      [
+        [
+          14,
+          15
+        ],
+        2,
+        3
+      ],
+      [
+        [
+          16,
+          17
+        ],
+        2,
+        -3
+      ]
+    ],
+    "delays": {
+      "4": 1.0,
+      "5": 1.8,
+      "6": 1.4,
+      "7": 2.2,
+      "3": 2.3
+    },
+    "shift": 0.8,
+    "body_gain": 1,
+    "base_generator": "tools.models.field_animations.pace",
+    "skeleton_sha256": "845ab605073256eb7342daef69c59554cb41ff12f50693d65bedb45fc5b991a3"
   }
 }

@@ -77,7 +77,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'solarmon-steady-hover': ('251', 'tools.models.field_animations.locomotion', '251-solarmon-steady-hover'),
     'thundermon-rolling-boots': ('252', 'tools.models.field_animations.thundermon', '252-thundermon-rolling-boots'),
     'tuskmon-heavy-field': ('253', 'tools.models.field_animations.tuskmon', '253-tuskmon-heavy-field'),
-    'shadramon-supported-field': ('250', 'tools.models.field_animations.pace', '250-shadramon-supported-field'),
+    'shadramon-supported-field': ('250', 'tools.models.field_animations.celebrations', '250-shadramon-supported-field'),
     'marineangemon-steady-run': ('248', 'tools.models.field_animations.gliding', '248-marineangemon-steady-run'),
     'quetzalmon-steady-flight': ('249', 'tools.models.field_animations.gliding', '249-quetzalmon-steady-flight'),
     'kokuwamon-rolling-boots': ('247', 'tools.models.field_animations.pace', '247-kokuwamon-rolling-boots'),
