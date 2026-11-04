@@ -13,7 +13,7 @@ def ground_food():
     if random.chance(2):
         spawn_item(Item.Deluxmushrm, at=(-50, -150))
     if random.chance(25):
-        spawn_item(Item.Digimushrm, at=(350, -50))
+        spawn_item(Item.Digimushrm, at=(350, -250))
     if random.chance(15):
         spawn_item(Item.Digimushrm, at=(1450, -1350))
 
