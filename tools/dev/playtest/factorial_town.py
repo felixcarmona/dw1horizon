@@ -48,7 +48,7 @@ def main():
              'factorial_town_reopened', 'island_history_read', 'factory_asked', 'factory_kept_shut')
     def sample(label):
         ram = e.ram(); assert len(ram) == 0x200000
-        row = dict(label=label, ram_bytes=len(ram), screen=e.peek('CURRENT_SCREEN', 'h', ram), partner=e.peek('PARTNER_ENTITY', 'i', ram),
+        row = dict(label=label, ram_bytes=len(ram), hour=e.peek('HOUR', 'h', ram), minute=e.peek('MINUTE', 'h', ram), screen=e.peek('CURRENT_SCREEN', 'h', ram), partner=e.peek('PARTNER_ENTITY', 'i', ram),
                    flags={k: r.flag(k) for k in flags}, heap=free_heap(e, ram))
         result['samples'].append(row); print(json.dumps(row), flush=True)
     def settle(screen=None, deadline=100):
@@ -98,7 +98,8 @@ end)''')
             assert r.flag('guard_shift_change_heard')
         # Even an old affected save can bypass the guards by re-entering at noon.
         r.go(154); e.gs('set', 'hour=12', 'minute=0'); r.go(155, entry=1)
-        assert r.npc(6) is None and r.npc(7) is None
+        # Unloaded NPC records retain old contents; the live slot owns presence.
+        assert all(e.peek(f'ENTITY_TABLE+{(slot + 2) * 4}', 'I') == 0 for slot in (6, 7)), 'guards still loaded'
         sample('noon-guards-absent'); r.shot('noon-guards-absent')
         # Cross the actual guard positions and map exit using the pad.
         for _ in range(60):
