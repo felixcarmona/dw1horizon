@@ -290,7 +290,7 @@ Requirement tests: `tools/test_evo_tree.py --practical`, `tools/economy_audit.py
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Lifetime, Rookie wait, Champion wait, Numemon fallback | 360, 72, 144, 96 h | 408, 96, 168, 120 h | a day more in each form to reach a target; the time as an Ultimate does not change |
+| Lifetime, Champion wait, Numemon fallback | 360, 144, 96 h | 408, 168, 120 h | a day more as a Champion to reach a target; the Rookie keeps the disc's 72 h wait; the time as an Ultimate does not change |
 | Digiseabass, Chain melon, DV chips (lifetime) | +3, +20, -24 h | +6, +24, -6 h | worth using to stay longer in a form |
 | File City gym base gain | 8 (HP, MP 80) | 10 (100) | less grind; the secondary gains stay |
 | Tiredness of a gym session | HP 10, Off and Def 9, Spd 8, MP 7, Brain 6 | 8 in every gym | no stat is harder to train for its tiredness: about 9 sessions before 70, the same average |

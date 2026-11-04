@@ -253,7 +253,10 @@ def chain_witness(parent, child, kids, reqs, levels, sp):
             path = previous['path'] + [child]
             rules = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())
             timing = rules['evolutionTiming']
-            age, life = 126, 282  # earliest Champion; birth lifetime 408, happiness >=80
+            # The earliest Champion; birth lifetime, happiness >=80.
+            age = sum(timing['hours'][level] for level in ('fresh', 'inTraining', 'rookie'))
+            birth = json.loads((ROOT / 'content/tables/new-game.json').read_text())['newGame']['partnerBirth']['lifetimeHours']
+            life = birth - age
             if 'special_hours' in previous:  # a Champion-timed special into the first Ultimate
                 age += previous['special_hours']
                 life -= previous['special_hours']

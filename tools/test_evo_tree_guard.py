@@ -109,9 +109,9 @@ class GuardTests(unittest.TestCase):
         p = self.sp[c]['evolution']['from'][0]
         witness = T.chain_witness(p, c, self.kids, reqs, levels, self.sp)
         self.assertIsNotNone(witness)
-        self.assertEqual(witness['age_hours'], 414)
-        self.assertEqual(witness['life_before'], 90)
-        self.assertEqual(witness['life_after'], 210)
+        self.assertEqual(witness['age_hours'], 390)
+        self.assertEqual(witness['life_before'], 114)
+        self.assertEqual(witness['life_after'], 234)
 
     def test_ultimate_without_mega(self):
         p = self.names['Piximon']
@@ -134,8 +134,8 @@ class GuardTests(unittest.TestCase):
         p, c = self.names['Vademon'], self.names['HiAndromon']
         witness = T.chain_witness(p, c, self.kids, reqs, levels, self.sp)
         self.assertIsNotNone(witness)
-        self.assertEqual(witness['age_hours'], 126 + 240 + 120)
-        self.assertEqual(witness['life_before'], 282 - 240 + 96 - 120)
+        self.assertEqual(witness['age_hours'], 102 + 240 + 120)
+        self.assertEqual(witness['life_before'], 306 - 240 + 96 - 120)
 
     def test_champion_dead_end(self):
         p = self.names['Baronmon']

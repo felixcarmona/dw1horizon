@@ -4,14 +4,14 @@
     "hours": {
       "fresh": 6,
       "inTraining": 24,
-      "rookie": 96,
+      "rookie": 72,
       "champion": 168,
       "ultimate": 48
     },
     "ultimateAgainHours": 96,
     "megaHours": 120,
     "fallback": {
-      "afterHours": 120,
+      "afterHours": 96,
       "target": 11
     }
   },
