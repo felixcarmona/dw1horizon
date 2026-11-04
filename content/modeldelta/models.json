@@ -1314,9 +1314,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/225-Shurimon.MMD.mdelta",
-        "delta_sha256": "5e5057acc885c6d7a42699b6498fb4eef11a62586003806572e6f50017eab1d6",
-        "sha256": "48260d97ee5cbdc54e76dae549e22bbc36ea6211e3eb455e0212379e355ad3a6",
-        "size": 98032
+        "delta_sha256": "67dc77d95f5b0811388d451731aadc2a20b6b9cc9c8a9e738cbcb1ff8b891f99",
+        "sha256": "6bf0565eccb0cee00e50a24d8f841981fb852049d079a517ce9a739bb6688724",
+        "size": 107456
       },
       "tim": {
         "sources": [

@@ -42,7 +42,7 @@
  "222": {"model": "222-BlackGatomon.MMD", "aliases_applied": true, "field_overlay": "blackgatomon-field"},
  "223": {"model": "223-LadyDevimon.MMD", "aliases_applied": true, "texture": "223-LadyDevimon.TIM"},
  "224": {"model": "224-MetalGreymonVaccine.MMD", "aliases_applied": true, "builder": "tools.models.metalgreymon"},
- "225": {"model": "225-Shurimon.MMD", "aliases_applied": true, "field_overlay": "shurimon-field"},
+ "225": {"model": "225-Shurimon.MMD", "aliases_applied": true},
  "226": {"model": "226-Silphymon.MMD", "aliases_applied": true, "field_overlay": "silphymon-field"},
  "227": {"model": "227-Apemon.MMD", "aliases_applied": true, "field_overlay": "apemon-knuckle-field"},
  "228": {"model": "228-Baronmon.MMD", "aliases_applied": true},
