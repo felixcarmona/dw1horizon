@@ -148,45 +148,10 @@ def item_recipe(obj, data, sources):
             break
     if language is None:
         return None
-    content = fontcopy.item_content(root)
-    numeric = [data[i*32+20:i*32+32] for i in range(128)]
-    found = {}
-    for key, files in sources.items():
-        for path, raw in files.items():
-            stride = 32 if key in ('us', 'jp1') else 12
-            offset = raw.find(numeric[0])
-            while offset >= 0:
-                if offset + 127*stride+12 > len(raw):
-                    break
-                equal_rows = sum(raw[offset+i*stride:offset+i*stride+12] == numeric[i] for i in range(128))
-                if equal_rows >= 120:  # candidate discovery only; every output field is verified below
-                    overrides = []
-                    good = True
-                    for index in range(128):
-                        at = 0
-                        for field, fmt in fontcopy.ITEM_NUMERIC_FIELDS:
-                            size = struct.calcsize('<' + fmt)
-                            old = raw[offset+index*stride+at:offset+index*stride+at+size]
-                            new = numeric[index][at:at+size]
-                            if old != new:
-                                value, = struct.unpack('<' + fmt, new)
-                                if content.get(index, {}).get(field) != value:
-                                    good = False
-                                    break
-                                overrides.append([index, field])
-                            at += size
-                        if not good:
-                            break
-                    if good:
-                        found[key] = [path, offset, stride, hashlib.sha1(raw).hexdigest(), overrides]
-                        break
-                offset = raw.find(numeric[0], offset+1)
-            if key in found:
-                break
-    if len(found) != len(sources):
-        return None
-    return dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='items',
-                language=language, fields=[[0, len(data)]], sources=found)
+    # Every field must agree with owned JSON, even when a disc has the same value.
+    recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='items',
+                  language=language, fields=[[0, len(data)]], sources={})
+    return recipe if fontcopy.item_table(recipe, None, None, root) == data else None
 
 
 
@@ -355,11 +320,10 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
                     raise ValueError('generated aura table differs from current output')
             continue
         if recipe['kind'] == 'items':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
+            sources = {}
             expected = item_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources)
             if pointers or expected != recipe:
-                raise ValueError('item fields lack complete player-record/authored witnesses')
+                raise ValueError('item fields differ from complete owned JSON')
             for key, image in images.items():
                 if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated item table differs from current output')

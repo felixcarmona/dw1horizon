@@ -192,3 +192,5 @@ keep the same record format; the patcher bundles and executes the derive tools,
 which regenerate the City block from owned data and player-disc models. The
 City validator is explicitly included in published bundles even when its import
 was cached; the isolated bundle startup test imports it without repository access.
+
+Player-side item table recipes generate every numeric field from `content/items/*.json` and names from the authored text bank. A deleted item is a zero row. Equal values on a player disc do not provide defaults or select which JSON fields to apply.

@@ -526,28 +526,18 @@ def item_content(root):
 
 def item_table(recipe, key, read_source, tool_root=None):
     from pathlib import Path
-    import hashlib
     root = str(Path(tool_root) if tool_root else Path(__file__).resolve().parents[2])
-    path, offset, stride, digest, overrides = recipe['sources'][key]
-    raw = read_source(path)
-    if (hashlib.sha1(raw).hexdigest() != digest or stride not in (12, 32)
-            or offset < 0 or offset + 127 * stride + 12 > len(raw)):
-        raise ValueError('item table differs from pinned player records')
     bank = authored_bank(root, recipe['language'])
-    numeric = [bytearray(raw[offset + i * stride:offset + i * stride + 12]) for i in range(128)]
-    positions, at = {}, 0
-    for field, fmt in ITEM_NUMERIC_FIELDS:
-        positions[field] = (at, fmt); at += struct.calcsize('<' + fmt)
     content = item_content(root)
-    for index, field in overrides:
-        at, fmt = positions[field]
-        struct.pack_into('<' + fmt, numeric[index], at, content[index][field])
     out = bytearray()
     for index in range(128):
-        name = encode_bank(bank['text'][f'main.ITEM_NAMES.{index}'], bank)
+        row = content.get(index)
+        name = encode_bank(bank['text'][f'main.ITEM_NAMES.{index}'], bank) if row else b''
         if len(name) >= 20:
             raise ValueError('authored item name exceeds its record')
-        out.extend(name.ljust(20, b'\0')); out.extend(numeric[index])
+        out.extend(name.ljust(20, b'\0'))
+        for field, fmt in ITEM_NUMERIC_FIELDS:
+            out.extend(struct.pack('<' + fmt, row[field] if row else 0))
     return bytes(out)
 
 

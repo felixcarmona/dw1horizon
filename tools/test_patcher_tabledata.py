@@ -129,7 +129,7 @@ class AuthoredPayloadTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             tabledata.verify([recipe], [obj], [], b'abc' + b'X' * 20, {'us': None})
 
-    def test_items_witness_numeric_fields_and_generate_only_authored_overrides(self):
+    def test_items_generate_all_numeric_fields_from_owned_json(self):
         import fontcopy
         root = str(Path(__file__).resolve().parents[1])
         bank = fontcopy.authored_bank(root, 'en')
@@ -145,13 +145,23 @@ class AuthoredPayloadTests(unittest.TestCase):
         sources = {'us': {'ORIGINAL': bytes(original)}}
         obj = dict(offset=0, length=4096, section='.data.ITEM_PARA', source='src/main/item.c')
         recipe = tabledata.item_recipe(obj, target, sources)
-        self.assertEqual(recipe['sources']['us'][-1], [[3, 'meritValue']])
+        self.assertEqual(recipe['sources'], {})
         image = types.SimpleNamespace(read=sources['us'].__getitem__)
         tabledata.verify([recipe], [obj], [], target, {'us': image})
-        self.assertEqual(fontcopy.item_table(recipe, 'us', image.read), target)
+        self.assertEqual(fontcopy.item_table(recipe, 'us', lambda _: self.fail('disc data read')), target)
         # Unsupported target numeric data cannot acquire an authored override.
         struct.pack_into('<H', target, 3 * 32 + 24, 65530)
         self.assertIsNone(tabledata.item_recipe(obj, target, sources))
+
+
+    def test_deleted_item_is_empty_without_disc_defaults(self):
+        import fontcopy
+        from unittest.mock import patch
+        root = str(Path(__file__).resolve().parents[1])
+        content = {i: row for i, row in fontcopy.item_content(root).items() if i != 3}
+        with patch.object(fontcopy, 'item_content', return_value=content):
+            data = fontcopy.item_table({'language': 'en'}, 'us', lambda _: self.fail('disc read'), root)
+        self.assertEqual(data[3 * 32:4 * 32], bytes(32))
 
 
 class RegionalLayoutTests(unittest.TestCase):
