@@ -104,7 +104,7 @@
  "284": {"model": "284-Crabmon.MMD"},
  "285": {"model": "285-Gazimon.MMD", "aliases_applied": true, "field_overlay": "gazimon-pace"},
  "286": {"model": "286-Deramon.MMD", "aliases_applied": true},
- "287": {"model": "287-Tapirmon.MMD", "aliases_applied": true, "field_overlay": "tapirmon-pace"},
+ "287": {"model": "287-Tapirmon.MMD", "aliases_applied": true},
  "288": {"model": "288-Boltmon.MMD", "aliases_applied": true, "field_overlay": "boltmon-chibi"},
  "289": {"model": "289-ChaosLord.MMD"},
  "290": {"model": "290-Clockmon.MMD", "aliases_applied": true},
