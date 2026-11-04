@@ -5284,9 +5284,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/461-Omnimon.MMD.mdelta",
-        "delta_sha256": "6de031480c835a30c3840165c825b1cf01eb201a1ae47de75445a76e35682c29",
-        "sha256": "7d0bdcdbc5c758535753676dbe8c50edaced855466f8e4bd0a7abf2eb14930f7",
-        "size": 104104
+        "delta_sha256": "759f256aed6458fde3f645d5f9b92dacf3198c167f5bb06d3b566f7f192d1b47",
+        "sha256": "c01b1a0ed732b3016c7e4d79ff9cdcd5a2c786001afb332a733b2decdc89b361",
+        "size": 91182
       },
       "tim": {
         "sources": [

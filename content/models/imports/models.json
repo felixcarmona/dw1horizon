@@ -173,7 +173,7 @@
  "432": {"model": "432-Bastemon.MMD", "aliases_applied": true, "field_overlay": "bastemon-field"},
  "433": {"model": "433-Guilmon.MMD", "aliases_applied": true},
  "460": {"model": "460-Garudamon.MMD", "aliases_applied": true},
- "461": {"model": "461-Omnimon.MMD", "aliases_applied": true, "field_overlay": "omnimon-field"},
+ "461": {"model": "461-Omnimon.MMD", "aliases_applied": true},
  "470": {"model": "470-Pabumon.MMD", "aliases_applied": true, "builder": "tools.models.babies.pabumon"},
  "471": {"model": "471-Pichimon.MMD", "aliases_applied": true, "builder": "tools.models.babies.pichimon"},
  "472": {"model": "472-YukimiBotamon.MMD", "aliases_applied": true, "builder": "tools.models.babies.yukimibotamon"},
