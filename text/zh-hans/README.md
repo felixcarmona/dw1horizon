@@ -2,7 +2,8 @@
 
 This is an incomplete translation draft, not a selectable game language yet.
 The current draft covers both starter quizzes, Native Forest, Jijimon's house
-and shared merchant, card, trade, travel and tournament text. It follows
+File City, the early routes and training/fishing services, Gear Savanna, Mt. Panorama,
+and the ancient regions, plus shared merchant, card, trade, travel and tournament text. It follows
 `text/ours`, cross-checked against both original Japanese
 extractions and the scripts in `story/base`. An independent second pass corrected
 meaning, character voice and explicit row fit. Native-speaker approval and in-game
@@ -68,3 +69,16 @@ resources, desktop/browser replay and save-option gates are not implemented by
 this authoring prototype. They need measured nonpositive `main_BSS_END`/heap
 changes, full nine-language builds and both 2 MB and 8 MB gameplay tests before
 Chinese is added to the public language registry.
+
+## Native review questions
+
+- Confirm localized baby Digimon speech: 啵 for Punimon, and 师虎/师父 for
+  Ninjamon's playful lisp. Preserve each character's readable voice.
+- Check 奖励挑战 for Bonus Try and the gym's six stat explanations in their scenes.
+- Check 冰川区 and 疾速区 against the English region names and Japanese time effects.
+- Review the card merchant's 对对 tic, Meteormon's rustic 俺 and Nanimon's punchline.
+- Confirm authored items/techniques and the explicitly provisional species terms
+  in the glossary. Their reference pages establish identity, not official Chinese spelling.
+
+No native approval is claimed. Local review evidence records each key's English
+checksum, Japanese availability, scene caller and changes from the initial draft.
