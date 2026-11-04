@@ -28,7 +28,7 @@ PROFILES={
           legs=[(5,6,7,[7,8],-1,0),(9,10,11,[11,12],1,.5)],
           arms=[(18,19,-1),(20,21,1)],wings=[(14,1),(17,-1)],front=4,sides=[(13,5,-1),(3,9,1)],
           tracks=70,height_bias=-8,front_out=16,front_follow=.92,style='heavy armored stride'),
- 461:dict(source='7d0bdcdbc5c758535753676dbe8c50edaced855466f8e4bd0a7abf2eb14930f7',bones=25,
+ 461:dict(source='0ed6eabe9392e1108b5a592d3ad1cb9189cc9641dba495ab067d253d720e65f1',bones=25,
           carrier=14,pelvis=14,chest=1,head=2,
           legs=[(15,16,17,[17,18],1,0),(19,20,21,[21,22],-1,.5)],
           arms=[(3,4,1),(9,10,-1)],cape=[23,24],
