@@ -2078,6 +2078,19 @@ class PythonMods(unittest.TestCase):
         r = subprocess.run([sys.executable, os.path.join(ROOT, 'tools/dws.py'), 'slots', '3'], capture_output=True, text=True)
         self.assertRegex(r.stdout, r'heap \(measured, as `check` tests it.*\): \d+ KB free now on the original engine')
 
+    def test_death_screens_enter_waits_for_a_homecoming(self):
+        """The partner's death and lost lives load Jijimon's house (218, 205) behind their scenes: an enter handler a mod
+        adds there runs only when engine.death_map_entry is 0 (a real homecoming); other screens get no such test."""
+        for base, name in (('jijimons_house', 'house'), ('jijimons_house_205', 'house')):
+            root, (p,) = self.mod({'a.py': f'from dw import *\nfrom dw.base.{base} import {name}, jijimon\nnews = flag()\n'
+                                          f'@{name}.on_enter(when=news)\ndef told():\n    jijimon.say("x")\n    news.clear()\n'})
+            self.assertIn('if (news && engine.death_map_entry == 0) {', self.lowered(p))
+            self.assertEqual(errors_of_py(p), '')
+        root, (p,) = self.mod({'a.py': 'from dw import *\nfrom dw.base.centar_clinic import clinic\nnews = flag()\n'
+                                      '@clinic.on_enter(when=news)\ndef told():\n    news.clear()\n'})
+        self.assertIn('if (news) {', self.lowered(p))
+        self.assertNotIn('death_map_entry', self.lowered(p))
+
     def test_third_review_chests(self):
         """dws-python-intuitiveness-3.md 1: spawn_chest(item, at=, opened=a flag of the mod, facing=); the old six numbers are
         an error naming the new form (no traceback)."""

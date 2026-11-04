@@ -20,8 +20,8 @@ class NpcRoutes(unittest.TestCase):
             self.assertFalse(any(1 in state and 2 in state for state in states))
 
     def test_inherited_pickups_only_on_placement_only_screens(self):
-        # Native Forest's (-50, 350), tile 49,46, where content/ground-items.json places it on 319: tile 47,45.
-        self.assertIn(('spawn_item', -250, 450, 0), self.screen(319)['targets'])
+        # Native Forest's (-50, 350), tile 49,46, now lies on screen 319's floor at tile 37,39.
+        self.assertIn(('spawn_item', -1250, 1050, 0), self.screen(319)['targets'])
         self.assertFalse(self.screen(364)['targets'])  # owned resident script
 
     def test_stationary_npc_cannot_claim_wild_pickup_exception(self):

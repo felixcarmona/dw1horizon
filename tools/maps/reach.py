@@ -128,6 +128,8 @@ def model_tile(x, z):
 
 PICKUP_TILE_MIN = 50      # lattice points (10 units apart, 100 to a tile) the item's own tile must give the tamer
 PICKUP_WINDOW_MIN = 300   # ... and the whole 3x3 window: three tiles of standing room, not one spot
+PICKUP_BACK_ROWS = 4      # free floor rows an item needs behind it (toward the screen's top): its sprite and bubble are drawn above
+                          # its tile, so nearer a wall than this the item looks stuck on the wall (336's mushrooms, 2026-11)
 CHEST_FRONT = {0: (0, 4), 2048: (0, -4), 1024: (-4, 0), 3072: (4, 0)}   # map_object.c spawnChest: the opening tile
 
 
@@ -177,6 +179,14 @@ def check_pickups(m, items=(), chests=()):
         if on < PICKUP_TILE_MIN or near < PICKUP_WINDOW_MIN:
             errors.append(f'{label}: item at tile {tx},{tz} is picked up from {near} reachable points ({on} on its own '
                           f'tile; at least {PICKUP_WINDOW_MIN} and {PICKUP_TILE_MIN})')
+        else:
+            rows = 0
+            while rows < PICKUP_BACK_ROWS and tz - 1 - rows >= 0 and all(m.collision[(tz - 1 - rows) * 100 + tx + a] == 0
+                                                                       for a in (-1, 0, 1) if 0 <= tx + a < 100):
+                rows += 1
+            if rows < PICKUP_BACK_ROWS:
+                errors.append(f'{label}: item at tile {tx},{tz} has {rows} free rows behind it (it needs {PICKUP_BACK_ROWS}: '
+                              f'its sprite would hang on the wall)'); continue
     for label, (x, z), facing in chests:
         if facing not in CHEST_FRONT:
             errors.append(f'{label}: chest facing {facing} has no opening tile (0, 1024, 2048 or 3072)'); continue
