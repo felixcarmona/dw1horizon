@@ -36,7 +36,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'kyukimon-chibi': ('322', 'tools.models.field_animations.chibi', '322-kyukimon-chibi'),
     'knightmon-chibi': ('321', 'tools.models.field_animations.celebrations', '321-knightmon-chibi'),
     'growlmon-chibi': ('320', 'tools.models.field_animations.chibi', '320-growlmon-chibi'),
-    'pharaohmon-chibi': ('319', 'tools.models.field_animations.chibi', '319-pharaohmon-chibi'),
+    'pharaohmon-chibi': ('319', 'tools.models.field_animations.celebrations', '319-pharaohmon-chibi'),
     'fujinmon-chibi': ('317', 'tools.models.field_animations.celebrations', '317-fujinmon-chibi'),
     'sakuyamon-chibi': ('316', 'tools.models.field_animations.chibi', '316-sakuyamon-chibi'),
     'skullsatamon-chibi': ('314', 'tools.models.field_animations.chibi', '314-skullsatamon-chibi'),
