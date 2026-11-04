@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import desktop  # noqa: E402
 
 LANGS = dict(en='English', es='Español', **{'pt-br': 'Português (Brasil)'}, fr='Français', de='Deutsch',
-             it='Italiano', ja='日本語', ca='Català')
+             it='Italiano', ja='日本語', ca='Català', **{'zh-hans':'简体中文'})
 WRAP_LEAST = 240                     # the narrowest a wrapped text gets (pixels); its grid column is never narrower
 PHASES = dict(check='app.phase.check', tools='now.start', read='now.extract', holes='now.check', write='now.write',
               result='app.phase.result')
@@ -77,7 +77,7 @@ class Strings:
 
 
 def system_language():
-    """The system's language among the eight, else English."""
+    """The system's language among the supported languages, else English."""
     names = []
     for var in ('LC_ALL', 'LC_MESSAGES', 'LANG', 'LANGUAGE'):
         if os.environ.get(var):
@@ -98,6 +98,8 @@ def system_language():
         pass
     for n in names:
         n = n.lower().replace('_', '-').split('.')[0]
+        if n.startswith('zh'):
+            return 'zh-hans'
         if n.startswith('pt-br') or n == 'pt':
             return 'pt-br'
         if n[:2] in LANGS and n[:2] != 'pt':
