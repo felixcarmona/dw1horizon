@@ -127,6 +127,10 @@ class TextBank:
             raise ValueError(f'TEXT={source}: no text/{source}/ (a text source is a folder text/<name>/ with dialogue.json or '
                              f'dialogue/*.json by the keys of the US story, as text/ours/; the discs\' are us, jp, jp-rev1, es-fan: '
                              f'`dws extract-text DISC`)' + (f'; here: {", ".join(have)}' if have else ''))
+        if source == 'zh-hans' or lang == 'zh-hans':
+            from tools.chinese import configure_compiler
+            from . import backend as BE
+            configure_compiler(BE)
         self.lang = lang; self.data = {}; self.files = []; self.original_loaded = False
         self.source = source; self.from_source = set(); self.unfit = {}; self.untranslated = set()
         self.rewrapped = set()                             # keys whose pages had a row too wide for the target: wrapped again
@@ -191,7 +195,7 @@ class TextBank:
                 if CJK.search(json.dumps(v, ensure_ascii=False)):
                     from . import backend as BE
                     absent = set(CJK.findall(json.dumps(v, ensure_ascii=False))) - BE.FONT['chars']
-                    if absent and src == 'ja':
+                    if absent and src in ('ja', 'zh-hans'):
                         raise ValueError(f'{p}: {k}: Japanese glyphs missing: {"".join(sorted(absent))}')
                     if absent:
                         self.untranslated.add(k)

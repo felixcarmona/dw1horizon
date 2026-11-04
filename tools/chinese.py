@@ -79,6 +79,10 @@ def displayed(root=ROOT):
 
 def repertoire(root=ROOT):
     text = ''.join(ESCAPE.sub('', s) for s in displayed(root))
+    glossary = read_json(root / 'text' / LANGUAGE / 'glossary.json')
+    for group in ('species', 'items', 'techniques'):
+        text += ''.join(row['zh'] for row in glossary.get(group, {}).values())
+    text += ''.join(glossary.get('provisional', {}).values())
     # Button glyphs are handled by the game's established button codes.
     return sorted(set(unicodedata.normalize('NFC', text + PUNCTUATION)) - set(ASCII + '\n\r\t○□△×'))
 
@@ -118,7 +122,7 @@ def encode(text, chars):
     return bytes(out)
 
 
-def row_metrics(row, glyphs):
+def row_metrics(row, glyphs, packed=True):
     """Conservative dynamic names match the existing compiler's 80px/16B bound."""
     pixels, size = 0, 0
     for token in TOKENS.findall(row):
@@ -137,13 +141,13 @@ def row_metrics(row, glyphs):
                     size += 2
                 elif char in glyphs:
                     pixels += glyphs[char][0]
-                    size += 1 if char in ASCII else 2
+                    size += 1 if packed and char in ASCII else 2
                 else:
                     raise ValueError(f'no font metrics for {char!r}')
     return pixels, size
 
 
-def wrap(text, glyphs, rows_per_page=3):
+def wrap(text, glyphs, rows_per_page=3, packed=True):
     """Chinese kinsoku, with atomic references, words, ellipses and dashes.
 
     This is an authoring preview. The engine's C walkers do not yet implement
@@ -154,13 +158,14 @@ def wrap(text, glyphs, rows_per_page=3):
     tokens = TOKENS.findall(text)
     rows = []
     def visible(parts):
-        return ''.join(t for t in parts if not ESCAPE.fullmatch(t)).strip()
+        return ''.join('' if t.startswith('{color ') else '名' if ESCAPE.fullmatch(t) else t
+                       for t in parts).strip()
     while tokens:
         candidates = []
         limit = 228 if len(rows) % rows_per_page == rows_per_page - 1 else 240
         for end in range(1, len(tokens) + 1):
             candidate = ''.join(tokens[:end]).strip()
-            px, size = row_metrics(candidate, glyphs)
+            px, size = row_metrics(candidate, glyphs, packed)
             if px > limit or size > 62:
                 break
             left, right = visible(tokens[:end]), visible(tokens[end:])
@@ -271,7 +276,7 @@ def audit(root=ROOT):
             text = ''.join(target_strings)
             if unicodedata.normalize('NFC', text) != text:
                 report['errors'].append(where + ': text is not NFC')
-            if any(not s.strip() for s in target_strings) and any(s.strip() for s in strings(original[key])):
+            if sum(not s.strip() for s in target_strings) > sum(not s.strip() for s in strings(original[key])):
                 report['errors'].append(where + ': blank translated row')
             # Preserve the exact controls, multiplicity and order. Explicit source
             # pages can be translated without losing a substitution or a color reset.
@@ -331,7 +336,7 @@ def audit_layout(root=ROOT):
                         limit = 228 if i == rows - 1 else 240
                         if pixels > limit or size > 62:
                             raise ValueError(f'explicit row {i + 1}: {pixels}px/{size}B exceeds {limit}px/62B')
-                        literal = ESCAPE.sub('', row).strip()
+                        literal = re.sub(r'\{color [^}]+\}', '', row).strip()
                         first_body = 1 if page and header_row(page[0]) else 0
                         # An utterance may deliberately begin with hesitation.
                         # Kinsoku prohibits a break before it within that utterance.
@@ -428,6 +433,38 @@ def main(argv=None):
                    'codes': {c: f'{code:04X}' for c, code in encoding(chars).items()}})
         print(f'{len(chars)} extended glyphs + {len(ASCII)} ASCII, {len(data)} bytes')
     return 0
+
+
+
+
+_FONT_METRICS_CACHE = None
+
+
+def font_glyphs():
+    global _FONT_METRICS_CACHE
+    path = ROOT / FONT_PATH
+    stamp = (path.stat().st_mtime_ns, path.stat().st_size)
+    if _FONT_METRICS_CACHE is None or _FONT_METRICS_CACHE[0] != stamp:
+        _FONT_METRICS_CACHE = (stamp, read_json(path)['glyphs'])
+    return _FONT_METRICS_CACHE[1]
+
+
+def configure_compiler(backend=None):
+    """Select the Chinese-only encoding for one compiler invocation."""
+    if backend is None:
+        from dws import backend
+    bytecode = backend.bytecode
+    glyphs = font_glyphs()
+    codes = encoding(repertoire())
+    # ASCII not in the packed dialogue alphabet needs its established SJIS code.
+    special_codes = (0x8140,0x8149,0x8168,0x8194,0x8190,0x8193,0x8195,0x8166,
+                     0x8169,0x816A,0x8196,0x817B,0x8143,0x817C,0x8142,0x815E,
+                     0x8146,0x8147,0x8171,0x8181,0x8172,0x8148,0x8197,
+                     0x816D,0x815F,0x816E,0x814F,0x8151,0x8165,0x816F,0x8162,0x8170,0x8150)
+    special_chars = ''.join(chr(i) for i in (*range(32,48),*range(58,65),*range(91,97),*range(123,127)))
+    bytecode.CHINESE_CODES = {**codes, **{c:n for c,n in zip(special_chars,special_codes) if c not in bytecode.CHAR2SJIS}}
+    bytecode.CHINESE_REVERSE = {code:char for char,code in bytecode.CHINESE_CODES.items()}
+    backend.FONT.update(chinese=True, name='b', extra=True, chars=frozenset(glyphs) | set('○□△×'))
 
 
 if __name__ == '__main__':

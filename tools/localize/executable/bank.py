@@ -132,7 +132,13 @@ def fit_keeping_codes(tb, k, v):
 def exe_bank(source, glyphs=None, exe_font='original'):
     """-> (bank dict, [(key, why it stays the build's)]). glyphs: how many extra glyphs the executable has (None: all);
     exe_font: its font (original, a, b: docs/mods/font.md "Fonts"), which measures the item names."""
-    font = font_map(glyphs)
+    chinese = source == 'zh-hans'
+    if chinese:
+        from tools.chinese import encoding, repertoire, row_metrics, font_glyphs
+        font = {char: f'{code:04X}' for char, code in encoding(repertoire()).items()}
+        exe_font = 'b'
+    else:
+        font = font_map(glyphs)
     if source == 'us': return {'font': font, 'text': {}}, []
     p = os.path.join(ROOT, 'text', source, 'names.json')
     if not os.path.exists(p):
@@ -145,6 +151,9 @@ def exe_bank(source, glyphs=None, exe_font='original'):
     BE.FONT.update({'extra': True, 'glyphs': n, 'chars': frozenset(BE.EXTRA_ORDER[:n]), 'of': f'--font-glyphs {n}',
                     'name': exe_font})
     tb = TextBank('en', 'us')
+    if chinese:
+        from tools.chinese import configure_compiler
+        configure_compiler(BE)
     src = json.load(open(p, encoding='utf-8'))
     if source not in ('us', 'ours', 'jp', 'jp-rev1', 'es-fan'):      # a language of ours (text/es/): what it lacks stays our English
         po = os.path.join(ROOT, 'text', 'ours', 'names.json')
@@ -153,7 +162,7 @@ def exe_bank(source, glyphs=None, exe_font='original'):
     out, kept = {}, []
     for k, v in src.items():
         if k.startswith('_') or not isinstance(v, str): continue
-        if k.startswith(KEEP): kept.append((k, 'species names come from content/species')); continue
+        if k.startswith(KEEP) and not chinese: kept.append((k, 'species names come from content/species')); continue
         if CJK.search(v) and set(CJK.findall(v)) - BE.FONT['chars']:
             kept.append((k, 'Japanese characters missing from the target font')); continue
         if k in codes and codes[k] != FORMAT.findall(v):
@@ -161,12 +170,14 @@ def exe_bank(source, glyphs=None, exe_font='original'):
         if k.startswith(MAP_NAME): t = centre_map_name(tb.fit(k, v))
         elif k in VERBATIM: t = fit_verbatim(tb, k, v)
         else: t = fit_keeping_codes(tb, k, v)
-        t = ascii_glyphs(t, font).translate(SJIS_LABELS)
+        t = (t if chinese else ascii_glyphs(t, font)).translate(SJIS_LABELS)
         size = next((n for pre, n in SIZES.items() if k.startswith(pre)), None)
         if size is not None and encoded_len(t, font) > size - 1:
             kept.append((k, f'{encoded_len(t, font)} bytes; the record holds {size - 1}')); continue
-        if k.startswith(ITEM_NAME) and list_width(v, exe_font) > ITEM_LIST_W:
-            kept.append((k, f'{list_width(v, exe_font)} px even condensed; the item lists draw {ITEM_LIST_W}')); continue
+        if k.startswith(ITEM_NAME):
+            pixels = row_metrics(v, font_glyphs())[0] if chinese else list_width(v, exe_font)
+            if pixels > ITEM_LIST_W:
+                kept.append((k, f'{pixels} px; the item lists draw {ITEM_LIST_W}')); continue
         out[k] = t
     if tb.unfit: kept.append(('(characters)', 'dropped, no glyph: ' + ' '.join(sorted(tb.unfit))))
     return {'font': font, 'text': out}, kept

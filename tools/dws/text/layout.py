@@ -14,6 +14,9 @@ def text_px(s, font):
     is fontgen.SPACE_WIDTH px on the mod executable and as wide as the glyph before it on
     the original (that is how its drawString2 advances). Fonts a and b: their own advances (a space 4) and font b's
     kerning (fontgen.kern)."""
+    if font.get('chinese'):
+        from tools.chinese import row_metrics, font_glyphs
+        return row_metrics(s, font_glyphs())[0]
     s = re.sub(r'\{color \d+\}', '', s)               # a colour change draws nothing (bytecode.line_metrics)
     if (font['name'] in ('a', 'b')):
         adv = fontgen.metrics(font['name']); names = len(re.findall(r'\{[^}]*\}', s))
@@ -144,6 +147,9 @@ def break_rows(text, ok):
 
 def wrap(text, lines_per_page, font, packed=True):
     """Split a text into pages of lines that fit in the text box (`packed`: box 0; False for UNPACKED_KEYS)."""
+    if font.get('chinese'):
+        from tools.chinese import wrap as chinese_wrap, font_glyphs
+        return chinese_wrap(text, font_glyphs(), lines_per_page, packed)
     if re.search('[\u3040-\u30ff\u3400-\u9fff]', text):
         # Japanese has no word spaces. Keep references atomic and break between
         # glyphs; do not insert spaces into the translated prose.
