@@ -154,6 +154,19 @@ class AuthoredPayloadTests(unittest.TestCase):
         self.assertIsNone(tabledata.item_recipe(obj, target, sources))
 
 
+    def test_aura_rows_are_owned_even_when_disc_values_match(self):
+        import fontcopy
+        root = Path(__file__).resolve().parents[1]
+        rows = __import__('json').loads((root / 'content/tables/effects.json').read_text())['auraTypes']
+        fields = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
+        target = b''.join(struct.pack('<6h', *(row[k] for k in fields)) for row in rows)
+        obj = dict(offset=0, length=len(target), section='.data.BTL_AURA_PROJECTILE_TYPES', source='src/btl/battle.c')
+        recipe = tabledata.aura_recipe(obj, target, {})
+        self.assertEqual(recipe['sources'], {})
+        self.assertEqual(fontcopy.aura_table(recipe, 'us', lambda _: self.fail('disc read')), target)
+        tabledata.verify([recipe], [obj], [], target, {'us': None})
+        self.assertIsNone(tabledata.aura_recipe(obj, b'\xff' * len(target), {}))
+
     def test_deleted_item_is_empty_without_disc_defaults(self):
         import fontcopy
         from unittest.mock import patch

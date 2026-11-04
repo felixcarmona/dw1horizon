@@ -158,38 +158,9 @@ def item_recipe(obj, data, sources):
 def aura_recipe(obj, data, sources):
     if not obj['section'].endswith('_AURA_PROJECTILE_TYPES') or len(data) != 129 * 12:
         return None
-    import json
-    authored = json.loads((Path(__file__).resolve().parents[2] / 'content/tables/effects.json').read_text())['auraTypes']
-    names = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
-    found = {}
-    for key, files in sources.items():
-        for path, raw in files.items():
-            at = raw.find(data[:12])
-            while at >= 0 and at + len(data) <= len(raw):
-                if sum(raw[at+i:at+i+12] == data[i:i+12] for i in range(0, len(data), 12)) >= 120:
-                    overrides, good = [], True
-                    for i in range(129):
-                        for j, name in enumerate(names):
-                            before, = struct.unpack_from('<h', raw, at + i*12 + j*2)
-                            after, = struct.unpack_from('<h', data, i*12 + j*2)
-                            if before != after:
-                                if authored[i][name] != after:
-                                    good = False
-                                    break
-                                overrides.append([i, name])
-                        if not good:
-                            break
-                    if good:
-                        found[key] = [path, at, hashlib.sha1(raw).hexdigest(), overrides]
-                        break
-                at = raw.find(data[:12], at + 1)
-            if key in found:
-                break
-    if len(found) != len(sources):
-        return None
-    return dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='aura',
-                fields=[[0, len(data)]], sources=found)
-
+    recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='aura',
+                  fields=[[0, len(data)]], sources={})
+    return recipe if fontcopy.aura_table(recipe, None, None) == data else None
 
 
 def zero_words(obj, words, data):
@@ -311,10 +282,9 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
                     raise ValueError('regional header differs from the player record')
             continue
         if recipe['kind'] == 'aura':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
+            sources = {}
             if pointers or aura_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources) != recipe:
-                raise ValueError('aura fields lack complete player-record/authored witnesses')
+                raise ValueError('aura fields differ from complete owned JSON')
             for key, image in images.items():
                 if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated aura table differs from current output')

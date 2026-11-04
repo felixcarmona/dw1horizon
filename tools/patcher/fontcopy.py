@@ -542,20 +542,14 @@ def item_table(recipe, key, read_source, tool_root=None):
 
 
 def aura_table(recipe, key, read_source, tool_root=None):
-    import hashlib
     import json
     from pathlib import Path
     root = Path(tool_root) if tool_root else Path(__file__).resolve().parents[2]
-    path, offset, digest, overrides = recipe['sources'][key]
-    source = read_source(path)
-    if hashlib.sha1(source).hexdigest() != digest or offset < 0 or offset + 129 * 12 > len(source):
-        raise ValueError('aura table differs from pinned player records')
-    out = bytearray(source[offset:offset + 129 * 12])
     authored = json.loads((root / 'content/tables/effects.json').read_text())['auraTypes']
+    if len(authored) != 129:
+        raise ValueError('auraTypes requires 129 explicit JSON rows')
     fields = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
-    for row, field in overrides:
-        struct.pack_into('<h', out, row * 12 + fields.index(field) * 2, authored[row][field])
-    return bytes(out)
+    return b''.join(struct.pack('<6h', *(row[field] for field in fields)) for row in authored)
 
 
 def ui_table(recipe, key, read_source):

@@ -194,3 +194,5 @@ City validator is explicitly included in published bundles even when its import
 was cached; the isolated bundle startup test imports it without repository access.
 
 Player-side item table recipes generate every numeric field from `content/items/*.json` and names from the authored text bank. A deleted item is a zero row. Equal values on a player disc do not provide defaults or select which JSON fields to apply.
+
+Player-side aura recipes likewise generate all 129 six-field rows from `content/tables/effects.json`; they never seed equal fields from player records.
