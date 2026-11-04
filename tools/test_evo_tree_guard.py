@@ -113,6 +113,30 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(witness['life_before'], 90)
         self.assertEqual(witness['life_after'], 210)
 
+    def test_ultimate_without_mega(self):
+        p = self.names['Piximon']
+        self.assertIn('Piximon: Ultimate without a Mega route', self.errors(lambda s, k: k[p].clear()))
+
+    def test_every_raisable_ultimate_has_a_mega_route(self):
+        missing = [e for e in check(self.sp, self.kids, self.table) if 'without a Mega route' in e]
+        self.assertEqual(missing, [])
+        for name in ('Vademon', 'KingSukamon', 'WaruMonzaemon', 'Gigadramon'):
+            self.assertIn('ultimate', self.sp[self.names[name]]['level'])
+
+    def test_ultimate_rule_must_match_the_engine_table(self):
+        table = copy.deepcopy(self.table)
+        table['ultimate_rules'] = [r for r in table['ultimate_rules'] if r['from'] != 'WaruMonzaemon']
+        errors = '\n'.join(check(self.sp, self.kids, table))
+        self.assertIn('ultimate_rules must match evolution-rules.json evolutionUltimate', errors)
+
+    def test_special_ultimate_chain_uses_its_champion_wait(self):
+        _, reqs, levels = T.model(self.sp)
+        p, c = self.names['Vademon'], self.names['HiAndromon']
+        witness = T.chain_witness(p, c, self.kids, reqs, levels, self.sp)
+        self.assertIsNotNone(witness)
+        self.assertEqual(witness['age_hours'], 126 + 240 + 120)
+        self.assertEqual(witness['life_before'], 282 - 240 + 96 - 120)
+
     def test_champion_dead_end(self):
         p = self.names['Baronmon']
         self.assertIn('Baronmon: 0 ultimate', self.errors(lambda s, k: k[p].clear()))
