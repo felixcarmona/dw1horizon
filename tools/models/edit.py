@@ -208,8 +208,11 @@ def import_records():
 
 
 def provider_pin(species, model, tim):
-    """Hash the final provider files, including field overlays and battle repairs."""
+    """Hash the final provider files, including native builders, field overlays and battle repairs."""
     sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
+    builder = import_records()[str(species)].get('builder')
+    if builder:
+        model, tim = importlib.import_module(builder).build(ROOT / 'extracted')
     with tempfile.TemporaryDirectory(prefix='imported_model_edit-') as tmp:
         base = Path(tmp) / 'imported-models'
         base.mkdir()
