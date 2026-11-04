@@ -86,15 +86,35 @@ def shot(out, tries=8):
 
 
 def png_blank(png):
-    """True when the PNG is empty or one flat black. Without Pillow nothing is judged blank."""
+    """True when the PNG is empty or one flat black (colour channels all 0; alpha ignored). Pure Python:
+    8-bit, non-interlaced PNGs as the emulator writes them; anything else is not judged blank."""
     if not png: return True
-    try:
-        import io
-        from PIL import Image
-    except ImportError:
-        return False
-    extrema = Image.open(io.BytesIO(png)).convert('RGB').getextrema()
-    return all(hi == 0 for _, hi in extrema)
+    import struct, zlib
+    if png[:8] != b'\x89PNG\r\n\x1a\n': return False
+    p, idat, hdr = 8, b'', None
+    while p + 8 <= len(png):
+        n, t = struct.unpack_from('>I4s', png, p); body = png[p + 8:p + 8 + n]; p += 12 + n
+        if t == b'IHDR': hdr = struct.unpack('>IIBBBBB', body)
+        elif t == b'IDAT': idat += body
+    if not hdr: return False
+    w, h, depth, ctype, _, _, interlace = hdr
+    bpp = {0: 1, 2: 3, 4: 2, 6: 4}.get(ctype)
+    if depth != 8 or interlace or not bpp: return False
+    colour = {0: 1, 2: 3, 4: 1, 6: 3}[ctype]
+    raw = zlib.decompress(idat); stride = w * bpp; prev = bytearray(stride); o = 0
+    for _ in range(h):
+        f = raw[o]; cur = bytearray(raw[o + 1:o + 1 + stride]); o += 1 + stride
+        for i in range(stride):
+            a = cur[i - bpp] if i >= bpp else 0; b = prev[i]; c = prev[i - bpp] if i >= bpp else 0
+            if f == 1: cur[i] = (cur[i] + a) & 255
+            elif f == 2: cur[i] = (cur[i] + b) & 255
+            elif f == 3: cur[i] = (cur[i] + (a + b) // 2) & 255
+            elif f == 4:
+                pa, pb, pc = abs(b - c), abs(a - c), abs(a + b - 2 * c)
+                cur[i] = (cur[i] + (a if pa <= pb and pa <= pc else b if pb <= pc else c)) & 255
+        if any(cur[x + k] for x in range(0, stride, bpp) for k in range(colour)): return False
+        prev = cur
+    return True
 
 
 CYCLES_PER_FRAME = 33868800 // 60                  # the PlayStation's CPU clock over its 60 frames a second
