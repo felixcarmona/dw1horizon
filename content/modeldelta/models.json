@@ -3989,9 +3989,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/314-SkullSatamon.MMD.mdelta",
-        "delta_sha256": "a9f249606687c17958a84c4776afdaa96d4c9acd011cae98dc655658bc648c7a",
-        "sha256": "6f7f96bcb29a4a0a46ed15ef8c2117fb553b6b07af88f494c0a5c6d279b500f5",
-        "size": 106140
+        "delta_sha256": "0b170f5481f5285afae516c35fc9d69bbf892f475ed33c796578cc1500ba898d",
+        "sha256": "afb39893faf31487d0a808bdc6d6c05a8989e2aa9dd890c3bf39d185362927fc",
+        "size": 106508
       },
       "tim": {
         "sources": [
