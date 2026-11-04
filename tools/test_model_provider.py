@@ -2,6 +2,7 @@
 import hashlib
 import json
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -29,9 +30,20 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
+        self.assertEqual(len(selected), 71)
+        # Scale-locked deltas retain the final reviewed field performance. Their
+        # provenance keeps the preceding generator binding available to authors.
+        for path in Path('content/modeldelta/scale-locks').glob('*.json'):
+            proof = json.loads(path.read_text())
+            sid = str(proof['species'])
+            self.assertTrue(records[sid]['aliases_applied'])
+            self.assertNotIn('field_overlay', records[sid])
+            preceding = proof['preceding_provider'].get('field_overlay')
+            if preceding:
+                self.assertNotIn(sid, selected)
+                selected[sid] = model.OVERLAYS[preceding]
         self.assertEqual(len(selected), 118)
-        self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
-                         set(model.OVERLAYS))
+        self.assertEqual({entry for entry in model.OVERLAYS.values()}, set(selected.values()))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
