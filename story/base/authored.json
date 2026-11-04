@@ -425,6 +425,16 @@
       "original_sha256": "df4a48c7d8e1dd8e6445ff8105f265a2cefe4709bbd15fd35e739a7f8f2f3329",
       "authored_sha256": "7ce6e376a8aa8dae89350a3001037248db663869242742908dfcfc96cb4fa4b2",
       "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/gear-savanna/s071-74/script.py": {
+      "original_sha256": "cd2234ba8d58f096cf540935f574f79a894c154739df91915661d94da00050df",
+      "authored_sha256": "e9a4780e5508a4310f8c9c62f407c31798ee800bc74a3159731bc38bfa7e9f11",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS"
+    },
+    "zones/gear-savanna/s071-74/script.dws": {
+      "original_sha256": "087fad68a86bdf852767c1beb54a33e2a8ed499b84a657397c1f6f85b846db52",
+      "authored_sha256": "8acc072b7c8c0c3fe4c197411447ca2f471ffb55c6a89b51d276c81f0de7e726",
+      "reason": "Horizon vending machine on screen 74; synchronized Python and DWS"
     }
   }
 }

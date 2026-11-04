@@ -441,3 +441,9 @@ and continuing retains stock; rolling back to a save before buying has the same 
 The former 200-bit surprise machine on Ancient Glacial Region screen 81 (sometimes described as Ancient Dino Region)
 now sells unlimited Moldy Meat **26**, Meat **20**, Giant Meat **300**, and Sirloin **1000**. Moldy Meat must rise from
 10 to 26 because it sells for 25. The others' best exits are 15, 250 and 750; Giant Meat -> Auto Pilot pays less.
+
+Gear Savanna screen 74 sells Small Recovery **118**, Medium Recovery **318**, MP Floppy **218**, and Medium MP **500**.
+Its separate MP Station (use 2) is unchanged. Each successful purchase has the original **9%** chance of one bonus
+Double Floppy. The bonus sells for 750, adding **67.5** to every purchase's expected exit: the four totals are
+117.5, 317.5, 217.5 and 467.5. The proposed 70/300/200 prices therefore rise to the smallest safe whole-bit prices.
+A bonus that does not fit is lost; it never becomes an S.Speed Disk. Normal bag-space failures cost nothing.
