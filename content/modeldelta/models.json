@@ -4169,9 +4169,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/320-Growlmon.MMD.mdelta",
-        "delta_sha256": "e4b7ed87dbfcae9d0840af05dfd05d1129fd7e33beb05c846c73f0fe09913614",
-        "sha256": "8e8c7a10ad32d8b79b2199a3339e53d9111efb3340eadb94ee307501fd397bd5",
-        "size": 102120
+        "delta_sha256": "e5fb3f948102e5923b2b5cfebefc1672b1c611dda7144f5e273f5c2459d04663",
+        "sha256": "a407d8adc1f47dab2ffcebd03d6ee568d85930c55bfeb0aa8a7c774b0e764142",
+        "size": 102934
       },
       "tim": {
         "sources": [
