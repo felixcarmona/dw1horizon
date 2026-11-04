@@ -180,9 +180,12 @@
       "disc": true
     },
     "HerculesKabuterimon": {
-      "parents": ["Kabuterimon", "Kuwagamon", "Shellmon"],
+      "parents": ["Kabuterimon", "Kuwagamon", "Shellmon", "MegaKabuterimon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "disc": true
+      "disc": true,
+      "parent_reasons": {
+        "MegaKabuterimon": "Canon main line: Atlur Kabuterimon -> Herakle Kabuterimon (Adventure 02); the Kabuterimon family. Shares nature and fire. It keeps the disc's row, which the disc's Champion routes also use; reaching it through an Ultimate is later than those routes, not a shortcut."
+      }
     },
     "MegaSeadramon": {
       "parents": ["Seadramon", "Whamon", "Shellmon", "Coelamon", "Garurumon"],
@@ -290,9 +293,13 @@
     },
     "Veemon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
     "Puppetmon": {
-      "parents": ["Cherrymon", "Pumpkinmon"],
+      "parents": ["Cherrymon", "Pumpkinmon", "Monzaemon", "Tinmon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Monzaemon": "Canon: Wikimon lists Monzaemon -> Pinocchimon; both Puppet type. Shares battle.",
+        "Tinmon": "No canon Mega shares a specialty (Wikimon gives only Boltmon). Family: a toy, like the Puppet-type Puppetmon, the Mega of its parent Vegiemon's plant line (Cherrymon). Shares nature."
+      }
     },
     "Kimeramon": {
       "parents": ["Greymon", "Deltamon", "Tuskmon"],
@@ -402,9 +409,12 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Rosemon": {
-      "parents": ["Lillymon", "Blossomon"],
+      "parents": ["Lillymon", "Blossomon", "Piximon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Piximon": "Canon: Wikimon lists Piccolomon -> Rosemon; the fairy family, data. Shares nature and air."
+      }
     },
     "ShellNumemon": {"parents": ["ToyAgumon", "Gizamon"], "reason": "Canon main line, then family and shared specialty."},
     "BomberNanimon": {"parents": ["Solarmon", "Vemmon"], "reason": "Canon main line, then family and shared specialty."},
@@ -500,11 +510,20 @@
       "parents": ["Sukamon", "Geremon", "Roachmon", "Raremon", "ShellNumemon"],
       "reason": "Canon main line, then family and shared specialty."
     },
-    "PrinceMamemon": {"parents": ["Mamemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
-    "Plesiomon": {
-      "parents": ["Zudomon", "MegaSeadramon", "Divermon"],
+    "PrinceMamemon": {
+      "parents": ["Mamemon", "MetalMamemon", "SuperStarmon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "MetalMamemon": "Canon: Wikimon lists Metal Mamemon -> PrinceMamemon; the Mamemon family, data. Shares battle and mech.",
+        "SuperStarmon": "Canon: Wikimon lists Superstarmon -> PrinceMamemon; data. Shares battle."
+      }
+    },
+    "Plesiomon": {
+      "parents": ["Zudomon", "MegaSeadramon", "Divermon", "Digitamamon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true,
+      "parent_reasons": {"Digitamamon": "Canon: Wikimon lists Digitamamon -> Plesiomon; data. Shares ice and air."}
     },
     "Woodmon": {
       "parents": ["Floramon", "Tentomon", "Mushroomon"],
@@ -517,9 +536,12 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Baihumon": {
-      "parents": ["GrapLeomon", "IceLeomon"],
+      "parents": ["GrapLeomon", "IceLeomon", "Antylamon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Antylamon": "Canon: Wikimon lists Andiramon -> Baihumon; a Deva to a Holy Beast Sovereign. Shares battle."
+      }
     },
     "SkullMeramon": {
       "parents": ["Meramon", "Shadramon", "Baronmon", "Fugamon"],
@@ -558,9 +580,12 @@
     },
     "Deltamon": {"parents": ["ToyAgumon"], "reason": "Canon main line, then family and shared specialty."},
     "Gryphonmon": {
-      "parents": ["Garudamon", "Silphymon"],
+      "parents": ["Garudamon", "Silphymon", "Deramon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Deramon": "Canon: Wikimon lists Delumon -> Gryphonmon; bird to winged beast, data. Shares battle."
+      }
     },
     "Datamon": {
       "parents": ["Guardromon", "Tankmon", "BomberNanimon", "Clockmon"],
@@ -580,7 +605,14 @@
       "reason": "Canon main line, then family and shared specialty.",
       "chain": true
     },
-    "HiAndromon": {"parents": ["Andromon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
+    "HiAndromon": {
+      "parents": ["Andromon", "Vademon"],
+      "reason": "Canon main line, then family and shared specialty.",
+      "chain": true,
+      "parent_reasons": {
+        "Vademon": "Canon: Wikimon lists Vademon -> HiAndromon; alien science to machine. Shares mech."
+      }
+    },
     "KingEtemon": {"parents": ["Etemon"], "reason": "Canon main line, then family and shared specialty.", "chain": true},
     "Divermon": {"parents": ["Octomon", "Gesomon"], "reason": "Canon main line, then family and shared specialty."},
     "Ebidramon": {
@@ -607,9 +639,12 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Creepymon": {
-      "parents": ["SkullSatamon", "SkullMeramon"],
+      "parents": ["SkullSatamon", "SkullMeramon", "BlueMeramon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "BlueMeramon": "Canon: Wikimon lists Blue Meramon -> Creepymon; the Meramon flame line already ends there through SkullMeramon. Shares fire."
+      }
     },
     "Bulbmon": {"parents": ["Clockmon", "Guardromon"], "reason": "Canon main line, then family and shared specialty."},
     "SkullSatamon": {
@@ -629,9 +664,12 @@
       "chain": true
     },
     "Pharaohmon": {
-      "parents": ["Mummymon", "Bastemon", "Shakkoumon"],
+      "parents": ["Mummymon", "Bastemon", "Shakkoumon", "Scorpiomon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Scorpiomon": "Canon: Wikimon lists Scorpiomon -> Pharaohmon; the desert scorpion of Pharaohmon's Egyptian theme. Shares nature and battle. Machinedramon, its main line, is not used, as for Kimeramon; GranKuwagamon's row asks for exactly 10 care mistakes, which a second parent without its bonus cannot meet."
+      }
     },
     "Growlmon": {"parents": ["Guilmon", "RedOtamamon"], "reason": "Canon main line, then family and shared specialty."},
     "Knightmon": {
@@ -652,9 +690,12 @@
       "reason": "Canon main line, then family and shared specialty."
     },
     "Ghoulmon": {
-      "parents": ["Giromon", "Mummymon", "Megadramon"],
+      "parents": ["Giromon", "Mummymon", "Megadramon", "Kimeramon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Kimeramon": "Canon: Wikimon lists Chimairamon -> Ghoulmon; data. Shares battle. Machinedramon, its main line, is not used: the disc row passes on care, weight and discipline alone and would shadow every sibling."
+      }
     },
     "Minotarumon": {
       "parents": ["Gotsumon", "Gazimon", "Psychemon"],
@@ -689,9 +730,13 @@
     "Bearmon": {"parents": ["Tsunomon", "Nyaromon"], "reason": "Canon In-Training among the hand-made babies (474-477) first, then family and shared specialty."},
     "Renamon": {"parents": ["Koromon"], "reason": "Canon main line, then family and shared specialty."},
     "WarGreymon": {
-      "parents": ["MetalGreymonVirus", "MetalGreymonVaccine"],
+      "parents": ["MetalGreymonVirus", "MetalGreymonVaccine", "ExTyrannomon", "Triceramon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "ExTyrannomon": "Canon: Wikimon lists Ex-Tyranomon -> WarGreymon; the Tyrannomon/Greymon dinosaur family, vaccine. Shares fire and battle.",
+        "Triceramon": "Canon: Wikimon lists Triceramon -> WarGreymon; the dinosaur family. Shares battle."
+      }
     },
     "Apocalymon": {
       "parents": ["Phantomon", "Datamon"],
@@ -719,14 +764,20 @@
       "chain": true
     },
     "Cannondramon": {
-      "parents": ["Assaultmon", "MetalTyrannomon", "Bulbmon"],
+      "parents": ["Assaultmon", "MetalTyrannomon", "Bulbmon", "Brachiomon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Brachiomon": "Canon: Wikimon lists Brachimon -> Cannondramon; dinosaur to dragon, data. Shares fire."
+      }
     },
     "MaloMyotismon": {
-      "parents": ["Myotismon", "Phantomon"],
+      "parents": ["Myotismon", "Phantomon", "Arukenimon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Arukenimon": "Canon: Wikimon lists Archnemon -> BelialVamdemon, the master she serves in Adventure 02. Virus; shares battle."
+      }
     },
     "Armageddemon": {
       "parents": ["Infermon", "Datamon"],
@@ -740,9 +791,12 @@
     },
     "Kyubimon": {"parents": ["Renamon"], "reason": "Canon main line, then family and shared specialty."},
     "Zanbamon": {
-      "parents": ["Knightmon", "GrapLeomon"],
+      "parents": ["Knightmon", "GrapLeomon", "Tekkamon"],
       "reason": "Canon main line, then family and shared specialty.",
-      "chain": true
+      "chain": true,
+      "parent_reasons": {
+        "Tekkamon": "Canon: Wikimon lists Tekkamon -> Zanbamon; armoured warrior, virus. Shares battle."
+      }
     },
     "Kurisarimon": {"parents": ["Wormmon", "Dokunemon"], "reason": "Canon main line, then family and shared specialty."},
     "Bastemon": {"parents": ["Gatomon", "BlackGatomon"], "reason": "Canon main line, then family and shared specialty."},
@@ -850,6 +904,15 @@
     "Jijimon": "Story character; laboratory only.",
     "KingSukamon": "Special King of Sukamon form; laboratory only."
   },
+  "ultimate_rules_reason": "Every raisable Ultimate has a Mega route with NEW DIGIMON on (the owner, 2026-11-04). A native without a path row reaches its Mega through these evolution-rules.json evolutionUltimate pairs instead of a from/to link; test_evo_tree checks both match.",
+  "ultimate_rules": [
+    {"from": "Megadramon", "to": "Machinedramon", "reason": "The original game's timed special (canon main line), from 48 hours."},
+    {"from": "Gigadramon", "to": "Machinedramon", "reason": "The original game's timed special (canon main line), from 48 hours; Gigadramon (64) has no path row, so this is its Mega route."},
+    {"from": "Meteormon", "to": "Boltmon", "reason": "Canon: Wikimon lists Insekimon -> Boltmon; data. Shares battle. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."},
+    {"from": "ShogunGekomon", "to": "Vikemon", "reason": "Canon: Wikimon lists Tonosama Gekomon -> Vikemon; aquatic, data. Shares ice. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."},
+    {"from": "WaruMonzaemon", "to": "Piedmon", "reason": "Canon: Wikimon lists Waru Monzaemon -> Piemon; dark toy to clown, virus. Shares battle and air. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."},
+    {"from": "KingSukamon", "to": "BlackKingNumemon", "reason": "Family: the Numemon/Sukamon filth line's Mega (KingSukamon comes from Numemon and Sukamon). Shares filth. Wikimon's KingEtemon asks for 10+ care mistakes, which the practical check refuses, and MetalEtemon is an original species the rule would also give with NEW DIGIMON off. Its id has no path row (an original 63..179 without a record), so the route is an evolutionUltimate pair; an imported Mega waits the Mega hours."}
+  ],
   "specialty_exceptions": [{"parent": "Otamamon", "child": "Geremon", "reason": "Retained canon route explicitly permitted despite no shared specialty; Geremon retains its original filth specialty."}],
   "canon_levels": "2026-11-03: Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Analogman and Jijimon take their canon level, Mega (the identity sheet's Level (canon)). With OPTIONS' NEW DIGIMON off the game gives every original its disc level back (species.py level_swaps, patch 0335). The disc routes from Champions to Phoenixmon and HerculesKabuterimon stay, the one accepted Champion -> Mega exception; Red Ruby and Beetlepearl keep their original Champion rule like those routes; MetalEtemon comes only from Etemon (an Ultimate), and Metalbanana asks for an Ultimate. Phoenixmon's Champion parents Airdramon, Birdramon and Kokatorimon had no second Ultimate left, so each gained one: Airdramon -> AeroVeedramon (canon, shares air and fire), Birdramon -> BlueMeramon (fire family, shares fire), Kokatorimon -> Deramon (bird line, shares battle).",
   "version": 2,
@@ -999,7 +1062,7 @@
     "11": {"from": [], "to": [14, 120]},
     "12": {"from": [5, 9, 47, 38, 8], "to": [373, 404, 461]},
     "13": {"from": [48, 58, 24, 23, 52], "to": [270]},
-    "14": {"from": [11], "to": []},
+    "14": {"from": [11], "to": [181]},
     "15": {"from": [], "to": [16]},
     "16": {"from": [15], "to": [18, 57, 71, 93, 239, 256, 353]},
     "17": {"from": [2], "to": [36, 47, 38, 8, 34, 22]},
@@ -1012,8 +1075,8 @@
     "24": {"from": [46, 4, 57], "to": [61, 13, 119, 112]},
     "25": {"from": [32, 46, 263, 273], "to": [55, 121, 123, 209]},
     "26": {"from": [5, 6, 37, 22, 52], "to": [404]},
-    "27": {"from": [47, 19, 58, 23], "to": []},
-    "28": {"from": [], "to": []},
+    "27": {"from": [47, 19, 58, 23], "to": [270]},
+    "28": {"from": [], "to": [302]},
     "29": {"from": [], "to": [30]},
     "30": {"from": [29], "to": [31, 45, 68, 82, 96, 122, 184, 236, 352, 287]},
     "31": {"from": [30], "to": [38, 8, 34, 48, 20, 33]},
@@ -1040,12 +1103,12 @@
     "52": {"from": [57], "to": [26, 13, 267]},
     "53": {"from": [], "to": [56, 42]},
     "54": {"from": [8, 6, 7, 10, 249], "to": [329]},
-    "55": {"from": [50, 51, 25, 58, 262], "to": []},
-    "56": {"from": [53], "to": []},
+    "55": {"from": [50, 51, 25, 58, 262], "to": [230]},
+    "56": {"from": [53], "to": [271]},
     "57": {"from": [16], "to": [24, 35, 22, 23, 52, 242]},
     "58": {"from": [46, 352], "to": [55, 27, 13]},
     "59": {"from": [21, 20, 7, 50, 33], "to": []},
-    "60": {"from": [19, 51, 35], "to": []},
+    "60": {"from": [19, 51, 35, 205], "to": []},
     "61": {"from": [10, 24, 35, 49, 22], "to": [211, 271, 408]},
     "62": {"from": [22, 227, 105], "to": [191]},
     "63": {"from": [323, 48, 296], "to": [258, 276]},
@@ -1067,14 +1130,14 @@
     "87": {"from": [109], "to": [269, 42]},
     "88": {"from": [69, 281, 228, 47], "to": [402, 297]},
     "89": {"from": [80], "to": [314, 277]},
-    "90": {"from": [92, 33, 108], "to": []},
+    "90": {"from": [92, 33, 108], "to": [430]},
     "91": {"from": [109, 273], "to": [123, 121]},
     "92": {"from": [122, 68, 251, 247], "to": [90, 246, 294, 310, 313]},
     "93": {"from": [16], "to": [107, 188, 242, 249]},
     "94": {"from": [283, 71], "to": [275, 279]},
     "96": {"from": [30, 476], "to": [85, 107, 216, 241, 6]},
     "100": {"from": [236], "to": [229, 279]},
-    "104": {"from": [69, 9, 250, 21], "to": []},
+    "104": {"from": [69, 9, 250, 21], "to": [312]},
     "105": {"from": [285, 353, 71, 82], "to": [62, 306]},
     "106": {"from": [184, 45], "to": [66, 460]},
     "107": {"from": [96, 93], "to": [66, 229]},
@@ -1091,12 +1154,12 @@
     "120": {"from": [39, 11], "to": []},
     "121": {"from": [25, 282, 272, 91], "to": [181]},
     "122": {"from": [30, 474], "to": [76, 92, 299, 290]},
-    "123": {"from": [91, 25], "to": []},
+    "123": {"from": [91, 25], "to": [181]},
     "124": {"from": [8, 281], "to": [297]},
-    "126": {"from": [47, 189, 38], "to": []},
+    "126": {"from": [47, 189, 38], "to": [405]},
     "180": {"from": [2], "to": [194, 195, 201, 203, 324]},
-    "181": {"from": [121, 280], "to": []},
-    "182": {"from": [5, 292, 253], "to": []},
+    "181": {"from": [121, 280, 14, 123], "to": []},
+    "182": {"from": [5, 292, 253], "to": [329]},
     "183": {"from": [44, 474], "to": [187, 225, 298, 431, 328, 67]},
     "184": {"from": [30, 477], "to": [106, 188, 196, 225, 249]},
     "185": {"from": [44], "to": [189, 193, 202, 261, 308]},
@@ -1117,7 +1180,7 @@
     "201": {"from": [180, 256, 82], "to": [309, 197]},
     "202": {"from": [185, 217], "to": [112, 219]},
     "203": {"from": [180, 433], "to": [213, 224]},
-    "205": {"from": [19], "to": []},
+    "205": {"from": [19], "to": [60]},
     "206": {"from": [20, 200, 85], "to": [207, 300]},
     "207": {"from": [206], "to": []},
     "208": {"from": [46], "to": [209, 274]},
@@ -1142,7 +1205,7 @@
     "227": {"from": [352, 351, 287], "to": [42, 62]},
     "228": {"from": [351, 235, 354], "to": [88, 277]},
     "229": {"from": [37, 100, 242, 107], "to": [400, 406]},
-    "230": {"from": [209, 274], "to": []},
+    "230": {"from": [209, 274, 55], "to": []},
     "231": {"from": [84, 239], "to": [269, 42]},
     "232": {"from": [251, 331], "to": [113, 294]},
     "233": {"from": [2], "to": [250, 320, 324, 69, 9]},
@@ -1156,7 +1219,7 @@
     "241": {"from": [235, 96, 354, 287], "to": [280, 334]},
     "242": {"from": [93, 57], "to": [229, 315]},
     "243": {"from": [84, 251], "to": [113, 244]},
-    "244": {"from": [243], "to": []},
+    "244": {"from": [243], "to": [270]},
     "245": {"from": [280, 223], "to": []},
     "246": {"from": [92, 299, 431], "to": [237, 407]},
     "247": {"from": [474], "to": [252, 262, 290, 92]},
@@ -1169,7 +1232,7 @@
     "254": {"from": [239, 217, 284], "to": [64, 112]},
     "255": {"from": [226, 190], "to": []},
     "256": {"from": [16], "to": [188, 200, 201, 252]},
-    "257": {"from": [47, 189, 193, 330, 261], "to": []},
+    "257": {"from": [47, 189, 193, 330, 261], "to": [373]},
     "258": {"from": [306, 63], "to": []},
     "259": {"from": [51, 193, 262, 187, 67], "to": [210]},
     "260": {"from": [265, 8, 320, 69], "to": [405]},
@@ -1178,17 +1241,17 @@
     "263": {"from": [44, 477], "to": [272, 282, 328, 25]},
     "264": {"from": [80, 352], "to": [269, 70]},
     "265": {"from": [84, 351], "to": [260, 266]},
-    "266": {"from": [8, 253, 265, 292], "to": []},
+    "266": {"from": [8, 253, 265, 292], "to": [373]},
     "267": {"from": [52, 23, 108, 72, 218], "to": [268]},
     "268": {"from": [267], "to": []},
     "269": {"from": [39, 87, 332, 264, 231], "to": [307]},
-    "270": {"from": [13], "to": []},
-    "271": {"from": [219, 61, 304], "to": []},
+    "270": {"from": [13, 27, 244], "to": []},
+    "271": {"from": [219, 61, 304, 56], "to": []},
     "272": {"from": [273, 111, 263], "to": [121, 280, 286]},
     "273": {"from": [477, 44], "to": [91, 272, 282, 328, 25]},
     "274": {"from": [208, 282], "to": [230]},
-    "275": {"from": [305, 35, 110, 94], "to": []},
-    "276": {"from": [306, 63], "to": []},
+    "275": {"from": [305, 35, 110, 94], "to": [319]},
+    "276": {"from": [306, 63, 309], "to": []},
     "277": {"from": [9, 250, 228, 89], "to": [312, 402]},
     "278": {"from": [239, 217, 283], "to": [279, 291, 304]},
     "279": {"from": [240, 278, 100, 94], "to": [401]},
@@ -1198,14 +1261,14 @@
     "283": {"from": [475], "to": [305, 278, 49, 94, 35]},
     "284": {"from": [475], "to": [305, 49, 35, 254, 240]},
     "285": {"from": [44], "to": [105, 308, 327, 330, 296]},
-    "286": {"from": [282, 272, 50], "to": []},
+    "286": {"from": [282, 272, 50], "to": [293]},
     "287": {"from": [30], "to": [241, 37, 227, 188]},
     "288": {"from": [280, 334], "to": []},
     "289": {"from": [294, 310], "to": []},
     "290": {"from": [122, 247], "to": [294, 313]},
     "291": {"from": [278, 49, 240], "to": [401]},
     "292": {"from": [84], "to": [266, 182]},
-    "293": {"from": [460, 226], "to": []},
+    "293": {"from": [460, 226, 286], "to": []},
     "294": {"from": [92, 76, 232, 290], "to": [289, 400, 407]},
     "295": {"from": [236], "to": [223, 314]},
     "296": {"from": [353, 285], "to": [306, 63]},
@@ -1213,24 +1276,24 @@
     "298": {"from": [74, 183], "to": [311, 334]},
     "299": {"from": [122, 352, 331], "to": [246, 310]},
     "300": {"from": [206, 321], "to": []},
-    "302": {"from": [40], "to": []},
+    "302": {"from": [40, 28], "to": []},
     "303": {"from": [42], "to": []},
     "304": {"from": [278, 240], "to": [401, 271]},
     "305": {"from": [109, 71, 283, 284], "to": [64, 275]},
     "306": {"from": [48, 296, 323, 105, 308], "to": [258, 276, 297, 430]},
     "307": {"from": [269, 42], "to": []},
     "308": {"from": [285, 185], "to": [321, 306]},
-    "309": {"from": [33, 201], "to": []},
+    "309": {"from": [33, 201], "to": [276]},
     "310": {"from": [76, 92, 299], "to": [289, 335, 405]},
-    "311": {"from": [298, 431, 332, 67, 328], "to": []},
-    "312": {"from": [314, 277], "to": []},
+    "311": {"from": [298, 431, 332, 67, 328], "to": [406]},
+    "312": {"from": [314, 277, 104], "to": []},
     "313": {"from": [290, 92], "to": [405]},
     "314": {"from": [295, 216, 327, 89], "to": [312, 403]},
     "315": {"from": [409, 242], "to": [316]},
     "316": {"from": [315], "to": []},
     "317": {"from": [226, 322], "to": []},
     "318": {"from": [326], "to": []},
-    "319": {"from": [334, 432, 214], "to": []},
+    "319": {"from": [334, 432, 214, 275], "to": []},
     "320": {"from": [433, 233], "to": [260, 326]},
     "321": {"from": [308, 325, 225], "to": [300, 430]},
     "322": {"from": [225, 409, 252, 325, 328], "to": [317, 333]},
@@ -1240,7 +1303,7 @@
     "326": {"from": [320], "to": [318]},
     "327": {"from": [285, 68], "to": [314, 334]},
     "328": {"from": [263, 111, 183, 273], "to": [311, 322]},
-    "329": {"from": [41, 334, 54], "to": []},
+    "329": {"from": [41, 334, 54, 182], "to": []},
     "330": {"from": [68, 285, 82], "to": [257, 334]},
     "331": {"from": [474], "to": [8, 299, 76, 232]},
     "332": {"from": [111, 74], "to": [269, 311]},
@@ -1252,18 +1315,18 @@
     "352": {"from": [30], "to": [108, 227, 299, 264, 325, 58]},
     "353": {"from": [16, 476], "to": [105, 108, 218, 296, 48]},
     "354": {"from": [2], "to": [228, 234, 241, 409]},
-    "373": {"from": [12, 224], "to": []},
+    "373": {"from": [12, 224, 266, 257], "to": []},
     "400": {"from": [229, 294], "to": []},
     "401": {"from": [291, 279, 304], "to": []},
     "402": {"from": [277, 88], "to": []},
     "403": {"from": [314, 223], "to": []},
     "404": {"from": [12, 26], "to": []},
-    "405": {"from": [310, 260, 313], "to": []},
-    "406": {"from": [66, 229], "to": []},
+    "405": {"from": [310, 260, 313, 126], "to": []},
+    "406": {"from": [66, 229, 311], "to": []},
     "407": {"from": [246, 294], "to": []},
     "408": {"from": [61, 112], "to": []},
     "409": {"from": [354], "to": [315, 322]},
-    "430": {"from": [321, 306], "to": []},
+    "430": {"from": [321, 306, 90], "to": []},
     "431": {"from": [183, 74], "to": [246, 311]},
     "432": {"from": [234, 222], "to": [319]},
     "433": {"from": [2], "to": [195, 203, 253, 320]},

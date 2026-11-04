@@ -16,6 +16,16 @@ def disc_routes():
             for c in (row.get('evoPaths') or {}).get('to', []) if c > 0}
 
 
+def ultimate_rules(sp, table):
+    """The (from, to) ids of the documented Ultimate rules, or None when they differ from evolutionUltimate."""
+    names = {s['name']: t for t, s in sorted(sp.items(), reverse=True) if 'partner' in s}
+    rows = json.loads((T.ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionUltimate']
+    pairs = [(names[r['from']], names[r['to']]) for r in table.get('ultimate_rules', [])]
+    if sorted(pairs) != sorted((r['from'], r['to']) for r in rows) or not all(r.get('reason') for r in table.get('ultimate_rules', [])):
+        return None
+    return pairs
+
+
 def check(sp, kids, table):
     names = {s['name']: t for t, s in sorted(sp.items(), reverse=True) if 'partner' in s}
     natural = set()
@@ -70,6 +80,22 @@ def check(sp, kids, table):
         actual = sum(sp[c]['level'] == target_level for c in set(kids.get(p, [])))
         if actual < count:
             errors.append(f'{sp[p]["name"]}: {actual} {target_level} targets; needs {count}')
+    # The owner, 2026-11-04: every raisable Ultimate has a Mega route with NEW DIGIMON on: a Mega child,
+    # or (an original 63..179 with no path row) an evolutionUltimate pair listed in ultimate_rules.
+    rules = ultimate_rules(sp, table)
+    if rules is None:
+        errors.append('ultimate_rules must match evolution-rules.json evolutionUltimate')
+        rules = []
+    for p, c in rules:
+        if sp[p]['level'] != 'ultimate' or sp[c]['level'] != 'mega':
+            errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: an Ultimate rule must lead an Ultimate to a Mega')
+        if not (set(sp[p]['specialties']) - {None}) & (set(sp[c]['specialties']) - {None}):
+            errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: no shared specialty')
+    rule_megas = {p for p, _ in rules}
+    for p in sorted(checked):
+        if sp[p]['level'] == 'ultimate' and p not in rule_megas and \
+                not any(sp[c]['level'] == 'mega' for c in set(kids.get(p, []))):
+            errors.append(f'{sp[p]["name"]}: Ultimate without a Mega route')
     for p, c in sorted(original_routes):
         if c not in kids.get(p, []):
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: original disc route removed')
@@ -143,6 +169,14 @@ def practical_errors(sp, kids, table):
             chains += 1
             if not T.chain_witness(p, c, kids, reqs, levels, sp):
                 errors.append(f'{sp[p]["name"]} -> {name}: no practical chain')
+    # An Ultimate rule into an imported Mega scores like a single path after the Mega hours.
+    for p, c in ultimate_rules(sp, table) or []:
+        if sp[c]['name'] in preserved:
+            continue
+        chains += 1
+        arrival = T.arrival_witness(p, kids, reqs, levels, sp)
+        if not arrival or not T.practical(p, c, {**kids, p: [c]}, reqs, levels, sp, arrival['stats'], 60):
+            errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: no practical Ultimate rule')
     return errors, checked, chains
 
 

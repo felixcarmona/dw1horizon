@@ -199,6 +199,17 @@ def after_evolution(s, stats):
     return tuple(result)
 
 
+def special_champion_hours(target):
+    """The Champion evoTimer of a praise rule that turns any Champion into `target`, or None."""
+    rules = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())
+    for r in rules.get('evolutionRules', []):
+        if r.get('target') == target and r.get('level') == 4 and 'from' not in r:
+            for stat, op, value in r['when']:
+                if stat == 'evoTimer' and op in ('>=', '=='):
+                    return value
+    return None
+
+
 def arrival_witness(target, kids, reqs, levels, sp, visited=()):
     """Find a real chain into an Ultimate."""
     if target in visited:
@@ -208,6 +219,13 @@ def arrival_witness(target, kids, reqs, levels, sp, visited=()):
     # than applying after_evolution()'s blend, so it cannot supply that witness.
     restore = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())['evolutionFormula']['scale']['restoreFrom']
     parents.sort(key=lambda p: not any(levels[q] == 3 and p in cs for q, cs in kids.items()))
+    if not parents and levels[target] == 5:
+        hours = special_champion_hours(target)
+        if hours is not None:
+            # Vademon: any Champion praised after `hours` becomes it. The witness is an
+            # untrained Champion (1500 HP/MP, 150 others), the least it can arrive with.
+            return dict(stats=after_evolution(sp[target], (150,) * 6), path=[target], witnesses=[],
+                        special_hours=hours)
     for p in parents:
         if p == restore:
             continue
@@ -236,6 +254,12 @@ def chain_witness(parent, child, kids, reqs, levels, sp):
             rules = json.loads((ROOT / 'content/tables/evolution-rules.json').read_text())
             timing = rules['evolutionTiming']
             age, life = 126, 282  # earliest Champion; birth lifetime 408, happiness >=80
+            if 'special_hours' in previous:  # a Champion-timed special into the first Ultimate
+                age += previous['special_hours']
+                life -= previous['special_hours']
+                if life <= 0:
+                    return None
+                life += rules['evolutionFormula']['lifetime']['ultimate']
             for p, c in zip(path, path[1:]):
                 wait = timing['hours']['champion'] if levels[p] == 4 else timing['megaHours'] if levels[c] == 6 else timing['ultimateAgainHours']
                 age += wait
