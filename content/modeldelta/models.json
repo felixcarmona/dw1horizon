@@ -4894,9 +4894,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/402-NeoCrimson.MMD.mdelta",
-        "delta_sha256": "1a2c7d0947f423e7d0ba027e03c0de5383581a18241048d2a7d7cf7372fdc7c3",
-        "sha256": "e55106782d2b89544fb011091b605d1fb7c90bd5753a22ad4252fc1a3f5d1587",
-        "size": 98760
+        "delta_sha256": "0dfe59ec5593fe6bf3d53467eb928751954f1fe2733347b3da05d3b8fec7e399",
+        "sha256": "04afa859573b6f7569174326bdc65e4d349ac882e7be79065346b55d44102a4e",
+        "size": 93994
       },
       "tim": {
         "sources": [
