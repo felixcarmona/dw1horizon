@@ -464,3 +464,29 @@ conversions consuming vending items. The merit shop buys cards and sells items: 
 cost, not an additional cash-out. Card sales, card-to-merit and card NPC trades remain covered by the card audit.
 Regression cases deliberately restore unsafe prices, remove the daily write, inflate a trade-chain exit, lower
 the slot price, and introduce selective full-bag refunds; each must fail.
+
+## 6.4 Level changes in both NEW DIGIMON modes
+
+Level changes own complete targets, technique slots and finisher scalars in the species JSON. On values are `evolution.gains`, `techniques` and `finisher`; the explicit `off` block owns the other mode. No balancing value is inferred from player data. `content/tables/species-mode-balance.json` freezes the pre-change measurements and fit bands so changing the affected species cannot silently expand their own limits. Stored finisher MP cost 40 means 120 MP charged.
+
+The measurements include all raisable peers on, and the native raisable pool off. A moved native's missing old off targets are measured from committed original-species JSON, never an executable. Raw finisher ranges expose borrowed-technique outliers: on Rookies 85–172, Champions 100–260, Ultimates 100–260, Megas 170–777; off Rookies 85–101, Champions 100–196, Ultimates 170–260. No Mega is raisable off. The 777-power boss Infinity Cannon is not a normal Mega peer. Ordinary native Rookie finishers give 85–101; ordinary Champions give 130–196, with 100 for filth exceptions. Native Ultimate finishers cluster around 200–260; 196–260 accommodates the lower edge used by imported Ultimates. Imported Mega finishers reuse native ids and range 180–260; moved Megas use their upper 250–260 band rather than inheriting a Champion's 170 or the boss's 777. All measured costs are 40. Elements express the species' actual attack identity, not an ordering by level.
+
+| Fit level | HP / MP targets | Other four targets | Finisher power | Stored cost |
+| --- | --- | --- | --- | --- |
+| Rookie | 450–1000 | 45–100 | 85–101 | 40 |
+| Champion | 1000–2500 | 100–250 | 100–196 | 40 |
+| Ultimate | 3000–9000 | 300–900 | 196–260 | 40 |
+| Mega | 5000–8000 | 500–800 | 250–260 | 40 |
+
+These are fit envelopes from ordinary peers, not an assertion that all existing species are already balanced. In particular, filth zero targets and borrowed finisher ids remain visible in the frozen raw measurements. The six-stat envelopes are broad enough for existing HP/MP and speed/brains specializations; they exclude missing or zero target rows for a moved partner.
+
+| Species | Mega on targets (HP/MP/Off/Def/Speed/Brains) | Ultimate off targets | Finisher on / off; element |
+| --- | --- | --- | --- |
+| Phoenixmon | 7000/7000/600/550/750/750 | 6000/6000/400/400/600/600 | 250 / 213; fire |
+| HerculesKabuterimon | 7500/5500/750/750/600/600 | 5000/5000/500/500/500/500 | 260 / 232; air |
+| MetalEtemon | 7000/7000/800/750/800/700 | 6000/6000/600/600/600/650 | 255 / 222; battle |
+| Machinedramon | 8000/7000/800/800/550/650 | 7000/6000/650/650/400/500 | 260 / 250; mech |
+| Analogman | 5500/7000/550/500/600/800 | 4000/6000/400/400/450/700 | 250 / 210; mech |
+| Jijimon | 6000/6500/600/650/550/800 | 4500/6000/450/500/400/700 | 250 / 220; battle |
+
+Phoenixmon keeps speed/brains and HerculesKabuterimon keeps physical strength. Electro Shocker uses air, the engine's electrical element, rather than its inherited fire tag. MetalEtemon's off targets lose their previous Mega-strength extremes. Machinedramon's partner finisher uses the normal band in both modes while the separate story boss remains its own encounter. Analogman and Jijimon retain brains-focused profiles. Their technique identities and animation slots remain unchanged: existing Ultimates can use the same advanced ordinary techniques, while finisher power is resolved per casting species. A shared id never changes another species' global technique row.
