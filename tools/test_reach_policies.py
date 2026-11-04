@@ -114,6 +114,13 @@ class PickupReach(unittest.TestCase):
     def test_open_floor_passes(self):
         self.assertEqual(MAP.check_pickups(scene(), [('mushroom', (50, 49))]), [])
 
+    def test_item_under_a_wall_fails(self):
+        # The item's sprite and bubble are drawn above its tile: nearer a wall than four rows it hangs on the wall.
+        m = scene()                                   # floor from row 44; the wall is row 43
+        self.assertEqual(MAP.check_pickups(m, [('wall', (50, 48))]), [])
+        errors = MAP.check_pickups(m, [('wall', (50, 47))])
+        self.assertRegex(errors[0], r'wall: item at tile 50,47 has 3 free rows behind it \(it needs 4')
+
     def test_item_in_rock_fails_even_beside_the_floor(self):
         # Screen 314's spot 237: the item's own tile was rock, picked up from three tiles of the floor beside it.
         m = scene()
