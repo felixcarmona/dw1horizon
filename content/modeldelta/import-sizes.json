@@ -349,9 +349,9 @@
       "source": "build/batch9/MarineDevimon.MMD",
       "source_sha256": "7fe3e10007ab8c10138814acbe81460f2601ee9591877dfa88ce579a120fec9c",
       "bones": 32,
-      "scale": 1.2509394070116275,
+      "scale": 0.9185219422113349,
       "target": "build/sizes-out/models/MarineDevimon.MMD",
-      "sha256": "54e7d40e8ce7ed1b5c44d2551e5b95508fd23aca84b1042efb544c0b19d3ef1c"
+      "sha256": "013c99d312c1b529f491cc5024c1363a0ddc306949df1c5c3ec2c3e546e1bee7"
     },
     {
       "source": "build/batch9/Pumpkinmon.MMD",

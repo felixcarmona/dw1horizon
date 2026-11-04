@@ -96,7 +96,7 @@
  "276": {"model": "276-Baihumon.MMD", "aliases_applied": true},
  "277": {"model": "277-SkullMeramon.MMD", "aliases_applied": true, "field_overlay": "skullmeramon-chibi"},
  "278": {"model": "278-Octomon.MMD", "aliases_applied": true},
- "279": {"model": "279-MarineDevimon.MMD", "aliases_applied": true},
+ "279": {"model": "279-MarineDevimon.MMD", "aliases_applied": true, "field_overlay": "marinedevimon-field"},
  "280": {"model": "280-Pumpkinmon.MMD", "aliases_applied": true},
  "281": {"model": "281-Cyclonemon.MMD", "aliases_applied": true},
  "282": {"model": "282-Kiwimon.MMD", "aliases_applied": true},

@@ -29,7 +29,7 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 118)
+        self.assertEqual(len(selected), 120)
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
@@ -64,7 +64,12 @@ class ModelProvider(unittest.TestCase):
         for sid in ('254', '283', '400'):
             self.assertEqual(assignments[sid][0], 'tools.models.field_animations.locomotion')
             del assignments[sid]
-        # All pre-existing bindings outside the four repairs stay pinned.
+        # Species-specific supported clips replace donor motion and the two pace-only passes.
+        for sid, module, name in (('294', 'datamon', 'datamon'), ('313', 'bulbmon', 'bulbmon'),
+                                  ('285', 'gazimon', 'gazimon'), ('279', 'marine_devimon', 'marinedevimon')):
+            self.assertEqual(assignments.pop(sid),
+                             ('tools.models.field_animations.' + module, sid + '-' + name + '-field'))
+        # All pre-existing bindings outside the repairs stay pinned.
         for sid in ('315', '332', '335'):
             del assignments[sid]
         assignments['351'] = ('tools.models.field_animations.articulation', '351-kotemon-field')
