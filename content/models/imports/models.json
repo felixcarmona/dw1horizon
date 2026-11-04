@@ -134,7 +134,7 @@
  "315": {"model": "315-Taomon.MMD", "aliases_applied": true, "field_overlay": "taomon-equipment"},
  "316": {"model": "316-Sakuyamon.MMD", "aliases_applied": true, "field_overlay": "sakuyamon-chibi"},
  "317": {"model": "317-Fujinmon.MMD", "aliases_applied": true},
- "318": {"model": "318-Gallantmon.MMD", "aliases_applied": true, "field_overlay": "gallantmon-chibi"},
+ "318": {"model": "318-Gallantmon.MMD", "aliases_applied": true},
  "319": {"model": "319-Pharaohmon.MMD", "aliases_applied": true, "field_overlay": "pharaohmon-chibi"},
  "320": {"model": "320-Growlmon.MMD", "aliases_applied": true, "field_overlay": "growlmon-chibi"},
  "321": {"model": "321-Knightmon.MMD", "aliases_applied": true, "field_overlay": "knightmon-chibi"},
