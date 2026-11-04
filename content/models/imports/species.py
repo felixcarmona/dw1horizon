@@ -18,13 +18,15 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'marinedevimon-field': ('279', 'tools.models.field_animations.marine_devimon', '279-marinedevimon-field'),
+    'bulbmon-field': ('313', 'tools.models.field_animations.bulbmon', '313-bulbmon-field'),
     'kurisarimon-celebration': ('431', 'tools.models.field_animations.celebrations', '431-kurisarimon-celebration'),
     'zanbamon-celebration': ('430', 'tools.models.field_animations.celebrations', '430-zanbamon-celebration'),
     'raijinmon-celebration': ('333', 'tools.models.field_animations.celebrations', '333-raijinmon-celebration'),
     'arukenimon-celebration': ('311', 'tools.models.field_animations.celebrations', '311-arukenimon-celebration'),
     'clockmon-celebration': ('290', 'tools.models.field_animations.celebrations', '290-clockmon-celebration'),
     'redotamamon-celebration': ('233', 'tools.models.field_animations.celebrations', '233-redotamamon-celebration'),
-    'imperialdramon-celebration': ('192', 'tools.models.field_animations.celebrations', '192-imperialdramon-celebration'),   # field_overlay: (id, generator module, model name)
+    'imperialdramon-celebration': ('192', 'tools.models.field_animations.celebrations', '192-imperialdramon-celebration'),
     'ladydevimon-chibi': ('223', 'tools.models.field_animations.chibi', '223-ladydevimon-chibi'),
     'slashangemon-chibi': ('300', 'tools.models.field_animations.chibi', '300-slashangemon-chibi'),
     'gallantmon-chibi': ('318', 'tools.models.field_animations.celebrations', '318-gallantmon-chibi'),
@@ -65,10 +67,10 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'gryphonmon-pace': ('293', 'tools.models.field_animations.celebrations', '293-gryphonmon-pace'),
     'woodmon-pace': ('272', 'tools.models.field_animations.pace', '272-woodmon-pace'),
     'wormmon-pace': ('183', 'tools.models.field_animations.pace', '183-wormmon-pace'),
-    'datamon-pace': ('294', 'tools.models.field_animations.pace', '294-datamon-pace'),
+    'datamon-field': ('294', 'tools.models.field_animations.datamon', '294-datamon-field'),
     'deramon-pace': ('286', 'tools.models.field_animations.pace', '286-deramon-pace'),
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
-    'gazimon-pace': ('285', 'tools.models.field_animations.pace', '285-gazimon-pace'),
+    'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
     'vilemon-pace': ('295', 'tools.models.field_animations.pace', '295-vilemon-pace'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),

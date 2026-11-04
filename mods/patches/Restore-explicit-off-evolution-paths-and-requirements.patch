@@ -1,0 +1,54 @@
+From 8247fa18b0e6658652008c31b0f8cff5a2679924 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 21:55:15 +0000
+Subject: [PATCH] Restore explicit off evolution paths and requirements
+
+---
+ include/dw/species.h   |  3 +++
+ src/main/mod_species.c | 16 ++++++++++++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 9ed4b5e..a860114 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -104,6 +104,9 @@ typedef struct {
+ /* Header: u16 count, then {u16 id, u16 on[6], u16 off[6]}. */
+ #define SPECIES_HEADER_STATS_OFF 0x580
+ #define SPECIES_STATS_SWAP_MAX 19
++/* Header u32 sector pointer; sector: u16 count, then 102-byte rows. */
++#define SPECIES_HEADER_EVOLUTION_OFF 0x3c
++#define SPECIES_EVOLUTION_SWAP_MAX 20
+ void modApplySpeciesLevels(void);
+ /* the level the original game gives a species (its NEW DIGIMON off level): the original evolution items keep their rule with it */
+ int32_t modOriginalLevel(int32_t type);
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 6c94ba8..f4072e1 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -89,6 +89,22 @@ void modApplySpeciesLevels(void)
+ 		target = &EVOLUTION_STATS_GAINS[row[0]].hp;
+ 		for (k = 0; k < 6; k++) target[k] = row[1 + (MOD_OPT_NEW_DIGIMON ? 0 : 6) + k];
+ 	}
++	/* Explicit on/off path and requirement rows live in a separate sector. */
++	i = ((uint32_t *)SPECIES_SECTOR)[SPECIES_HEADER_EVOLUTION_OFF / 4];
++	if (!i) return;
++	readSpeciesSector(i);
++	row = (uint16_t *)SPECIES_SECTOR;
++	j = *row++;
++	if (j > SPECIES_EVOLUTION_SWAP_MAX) j = SPECIES_EVOLUTION_SWAP_MAX;
++	for (i = 0; i < j; i++, row += 51) {
++		int32_t k;
++		int16_t *path;
++		if (row[0] < 1 || row[0] > 62) continue;
++		path = &EVOLUTION_PATHS[row[0] - 1].from[0];
++		for (k = 0; k < 11; k++) path[k] = row[1 + (MOD_OPT_NEW_DIGIMON ? 0 : 11) + k];
++		target = &EVOLUTION_REQS[row[0]].digimon;
++		for (k = 0; k < 14; k++) target[k] = row[23 + (MOD_OPT_NEW_DIGIMON ? 0 : 14) + k];
++	}
+ }
+ 
+ int32_t modOriginalLevel(int32_t type)
+-- 
+2.55.0
+

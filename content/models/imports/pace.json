@@ -683,34 +683,6 @@
    }
   }
  },
- "294": {
-  "name": "Datamon",
-  "bones": 28,
-  "skeleton_sha256": "89aeccbf3c824d416d37217a5c442d9ea82243d73670f61c1c9da4ab40c918bf",
-  "source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "base_generator": null,
-  "post_source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 24,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 22,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "201": {
   "name": "Lighdramon",
   "bones": 25,
@@ -907,25 +879,6 @@
      360
     ],
     "tol": 2
-   }
-  }
- },
- "285": {
-  "name": "Gazimon",
-  "bones": 24,
-  "skeleton_sha256": "6b870e790f44d14b121a4c7b5f3092cc8e2809f7cb864ed6f4be5aedc9409178",
-  "source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "base_generator": null,
-  "post_source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 20,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
    }
   }
  },

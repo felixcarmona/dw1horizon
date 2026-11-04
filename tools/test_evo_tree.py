@@ -51,6 +51,9 @@ def check(sp, kids, table):
             if off.get(s['vanilla_as'], target.get('level')) != level or not target.get('vanilla'):
                 errors.append(f'{s["name"]}: vanilla_as must name a vanilla {level}')
     # Disc and story species too (2026-11-03): NEW DIGIMON off gives them their disc level back at run time.
+    for t in table.get('canon_ultimates', []):
+        if sp[t]['level'] != 'ultimate':
+            errors.append(f'{sp[t]["name"]}: canon Ultimate must be level 5')
     for t in table['sheet_megas']:
         if sp[t]['level'] != 'mega':
             errors.append(f'{sp[t]["name"]}: sheet Mega must be level 6')
@@ -96,8 +99,14 @@ def check(sp, kids, table):
         if sp[p]['level'] == 'ultimate' and p not in rule_megas and \
                 not any(sp[c]['level'] == 'mega' for c in set(kids.get(p, []))):
             errors.append(f'{sp[p]["name"]}: Ultimate without a Mega route')
+    off_routes = {tuple(pair) for pair in table.get('off_routes', {}).get('pairs', [])}
+    for p, c in off_routes:
+        if (p != 24 and c != 24) or sp[24]['level'] != 'ultimate':
+            errors.append('off_routes: only the Whamon tier change is permitted')
+        if c not in sp[p].get('off', {}).get('evolution', {}).get('to', []):
+            errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: missing explicit off route')
     for p, c in sorted(original_routes):
-        if c not in kids.get(p, []):
+        if c not in kids.get(p, []) and (p, c) not in off_routes:
             errors.append(f'{sp[p]["name"]} -> {sp[c]["name"]}: original disc route removed')
     for t, s in sp.items():
         if 'partner' in s and s['level'] != 'none' and t not in accessible:
