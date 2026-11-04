@@ -2594,9 +2594,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/267-Mammothmon.MMD.mdelta",
-        "delta_sha256": "5b6c8d18bf3f6c8db16f6a98a301aeb2e9fc5baf55f9e9424079f618bd5a47ea",
-        "sha256": "91c039625f330d6c8f5cdd34ca6a8694a1252cdacebebc889c42366364ee4e5d",
-        "size": 102120
+        "delta_sha256": "b0bae5367e9d4a516a022e22319cdc3d07caf8f775533ae28184ec78b891f20c",
+        "sha256": "25c402f0f8ff7cab91d93ce9ec3308d40b360a82f7098ceae5621fae09e52838",
+        "size": 93844
       },
       "tim": {
         "sources": [
