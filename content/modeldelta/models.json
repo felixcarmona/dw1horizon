@@ -3384,9 +3384,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/293-Gryphonmon.MMD.mdelta",
-        "delta_sha256": "7daf41012e0ec54491b00f6ee16caf2cc1247fba06104dffbd04853edd5081ee",
-        "sha256": "12ecc0caa82aece7d2028499c228279d7a6403a625706b18828bebcad2451733",
-        "size": 111248
+        "delta_sha256": "2dce6b620d5d155dc74900e90274c1a98f7f528d2148fc5a31acfd0e37658f98",
+        "sha256": "3a5ffd5e8fa213f759112da5040264e5c039ab0c05e3d9a8f6cda142ecbf89b6",
+        "size": 108544
       },
       "tim": {
         "sources": [
