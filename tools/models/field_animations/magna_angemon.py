@@ -16,7 +16,7 @@ import motionsecondary
 import motionstorage
 from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.war_greymon import rotation, set_rotation
-SOURCE = '6c3a0d4d6c9518614a2eb310039d055710fff9361fceb4e5ea01ee32abf0a7a9'
+SOURCE = 'bf75f5f66ac16f32d302d24dfe6eeb749b2050575ff41b6d7ab8872039eb96a3'
 CHAINS = [(19, 20, 21), (22, 23, 24)]
 PANEL_GROUPS = [[2, 3, 4, 5, 6, 12, 13, 14, 18, 20, 21, 24], [7, 8, 9, 10, 11, 15, 16, 17, 19, 22, 23, 25]]
 PIVOTS = [[-40, 20, -80], [40, 20, -80]]
