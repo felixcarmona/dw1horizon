@@ -6,10 +6,8 @@
 # neighbours.
 from dw import *
 
-# 314, the Root Clearing: two Goblimon from the field next door (MAYO03's).
-clearing = new_screen(314, map="build/what-the-island-forgot-maps/screens/ROOT01.MAP")
-goblin_east = clearing.npc(Species.Goblimon, at=(1642, 935), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300)
-goblin_south = clearing.npc(Species.Goblimon, at=(750, -850), hp=400, mp=800, offense=160, defense=70, speed=50, brain=50, bits=300)
+# 314, the Root Clearing: two Goblimon from the field next door (MAYO03's), in arcs/clearing/root-clearing.py (they
+# have a rare drop of their own).
 
 # 317, the first Iron Hills screen (the Seam Pass, Z1): the savanna's Psychemon always and Shamamon by day (GIAS01's
 # stats), and at night the first hunter, a Gururumon (GCAN09's stats), in Shamamon's place. (The screen file's tims4
