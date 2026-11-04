@@ -398,13 +398,13 @@
     },
     "zones/ancient-glacial-region/s078-81/script.py": {
       "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
-      "authored_sha256": "09e73544fc99af3bdf07d96f03f2a92b27d3c5308d5e97877e70d30f8120fc9b",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing"
+      "authored_sha256": "d43aee8f905bec4f4f30f3318c9cc267ab871a7cce46ed1ea2655934249d8799",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS"
     },
     "zones/ancient-glacial-region/s078-81/script.dws": {
       "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
-      "authored_sha256": "58cf6d92a10b44270d65acb9fea303f78696527933bf310700ad34a10e8d75fd",
-      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing; DWS synchronized with the authored Python source"
+      "authored_sha256": "d974c7b1877ab45db4499ef553b4b8d7516a066b6492a9f6a45a648c927bc2d8",
+      "reason": "Horizon vending machine on screen 81; synchronized Python and DWS"
     },
     "zones/toy-mansion/s144-150/script.py": {
       "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",

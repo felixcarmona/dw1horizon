@@ -437,3 +437,7 @@ Happy and Ice mushrooms each exit at 500. Deluxe mushrooms are not sold. Origina
 the two stock bits, excluded from script allocation; the midnight routine clears them with ground pickups.
 There is no new resident state. Buying consumes stock only after the item fits and payment succeeds. Saving
 and continuing retains stock; rolling back to a save before buying has the same limits as ground pickups.
+
+The former 200-bit surprise machine on Ancient Glacial Region screen 81 (sometimes described as Ancient Dino Region)
+now sells unlimited Moldy Meat **26**, Meat **20**, Giant Meat **300**, and Sirloin **1000**. Moldy Meat must rise from
+10 to 26 because it sells for 25. The others' best exits are 15, 250 and 750; Giant Meat -> Auto Pilot pays less.
