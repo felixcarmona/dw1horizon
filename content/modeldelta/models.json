@@ -2199,9 +2199,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/254-Tylomon.MMD.mdelta",
-        "delta_sha256": "d35adc6e06d172ee396542c7e0d4e8735fa1a04dbc1da3e249c8a6446d56e64c",
-        "sha256": "ad339a618eb3914b090dad47dbb15274725d7e0d6a73acd8628c33d25971bfd3",
-        "size": 76740
+        "delta_sha256": "32f45b001b94dd1a697f638be4e8843827e0f3ce020a1f3525c2a7b528d6812c",
+        "sha256": "37ea84f657d1ba815408a5637ca638916260e241373daf95d7c418eb9d36c444",
+        "size": 75326
       },
       "tim": {
         "sources": [
