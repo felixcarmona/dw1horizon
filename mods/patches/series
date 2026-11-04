@@ -345,3 +345,4 @@ Keep-a-story-s-homecoming-lines-out-of-the-partner-s.patch
 Share-filename-hashing-across-file-and-language-lookups.patch
 Load-selected-Chinese-resources-and-bitmap-glyphs-in-extra-RAM.patch
 Pack-unchanged-language-flags-and-preserve-complete-saved-name-glyphs.patch
+Distinguish-Chinese-save-names-from-Japanese-trail-bytes.patch

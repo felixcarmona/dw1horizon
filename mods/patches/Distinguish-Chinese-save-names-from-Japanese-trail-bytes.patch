@@ -1,0 +1,35 @@
+From edf317eeef697699ebe5be4f57fd0471fcf6aeac Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 22:50:12 +0000
+Subject: [PATCH] Distinguish Chinese save names from Japanese trail bytes
+
+---
+ src/main/main_menu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 041dd10..a7e1e7c 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -4492,12 +4492,12 @@ void loadSavegame(SavegamePayload *savegame)
+ 	memcpy(PARTNER_ENTITY.name, savegame->digimonName, 0x14);
+     /* The Latin naming keyboard cannot emit Chinese glyph bytes. Restore an automatic
+      * species name in the selected language, including a Chinese save loaded on 2 MB. */
+-    for (i = 0; i < 20 && PARTNER_ENTITY.name[i]; i++) {
+-        if ((uint8_t)(PARTNER_ENTITY.name[i] - 0xA0) < 0x40) {
+-            modPartnerNameSetSpecies(SAVED_STATE.partnerType);
+-            break;
+-        }
+-    }
++    /* Chinese species names can start with a Latin prefix such as V. Stop at
++     * the first two-byte character; a Japanese trail byte is never a lead. */
++    for (i = 0; i < 19 && PARTNER_ENTITY.name[i] && isAsciiEncoded(PARTNER_ENTITY.name + i); i++) {}
++    if ((uint8_t)(PARTNER_ENTITY.name[i] - 0xA0) < 0x40)
++        modPartnerNameSetSpecies(SAVED_STATE.partnerType);
++
+ 	TAMER_ENTITY.tamerLevel = savegame->tamerLevel;
+ 	TAMER_ENTITY.raisedCount = savegame->raisedCount;
+ 	MONEY = savegame->money;
+-- 
+2.55.0
+

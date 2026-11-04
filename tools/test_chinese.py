@@ -22,6 +22,14 @@ class ChineseFontTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 zh.code_to_index(bad)
 
+    def test_append_only_codebook_keeps_existing_codes(self):
+        chars = zh.repertoire()
+        needed = zh.used_repertoire()
+        self.assertTrue(set(needed) <= set(chars))
+        book = zh.read_json(zh.ROOT / 'tools/font/chinese-codes.json')
+        self.assertEqual(chars, book['characters'])
+        self.assertEqual(zh.encode('亚古兽', chars), zh.encode('亚古兽', chars + ['𠮷']))
+
     def test_encoding_preserves_latin_digits_and_never_substitutes_missing_glyphs(self):
         self.assertEqual(zh.encode('亚A0古', ['亚', '古']), bytes.fromhex('A0404130A041'))
         with self.assertRaisesRegex(ValueError, 'no Chinese glyph'):
@@ -122,6 +130,60 @@ class ChineseContainerTests(unittest.TestCase):
         broken = bytearray(data);broken[resources.FONT_OFFSET+40] ^= 1
         with self.assertRaisesRegex(ValueError, 'checksum'):
             resources.validate(broken)
+
+    def test_component_replay_rebuilds_regional_geometry_and_rejects_alias_changes(self):
+        from tools.patcher import chinese_container as container
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'lang').mkdir()
+            (root / 'lang/one.SCN').write_bytes(b'extended')
+            (root / 'lang/two.SCN').write_bytes(b'original')
+            rows = [dict(name='DG.SCN', story=0, signs=False, source='lang/one.SCN'),
+                    dict(name='DG.SCN', story=1, signs=False, source='lang/two.SCN')]
+            plan = dict(CHINESE_RESOURCES=rows, CHINESE_OVL=[])
+            data = resources.build(b'runtime', self.font, self.patch,
+                [{**r, 'data': (root / r['source']).read_bytes()} for r in rows])
+            recipe, parts = container.components(data, plan, root)
+            self.assertEqual(container.rebuild(recipe, parts), data)
+            parts['@zh/lang/one.SCN'] = b'regional' * 900
+            changed = container.rebuild(recipe, parts)
+            self.assertEqual(resources.validate(changed), 2)
+            self.assertNotEqual(len(changed), len(data))
+            with self.assertRaisesRegex(ValueError, 'alias'):
+                resources.build(b'runtime', self.font, self.patch, [
+                    dict(name='A.SCN', source='same', data=b'A'),
+                    dict(name='B.SCN', source='same', data=b'B')])
+
+    def test_disc_assembler_checks_components_then_omits_virtual_files(self):
+        import hashlib
+        import sys
+        import types
+        from unittest.mock import patch
+        sys.path.insert(0, str(zh.ROOT / 'tools/patcher'))
+        import dwpatch as dw
+        parts = {'@zh/module': b'runtime', '@zh/font': self.font,
+                 '@zh/names': bytes(resources.NAME_COUNT*resources.NAME_SIZE), '@zh/writes': self.patch}
+        recipe = dict(format=1, module='@zh/module', font='@zh/font', names='@zh/names',
+                      patch='@zh/writes', resources=[])
+        blob = bytearray()
+        ops = {}
+        for key, data in parts.items():
+            ops[key] = [['l', len(blob), len(data)]]
+            blob.extend(data)
+        ops['SCN/LANGZH.BIN'] = [['j', 0, 0, resources.PREFIX_SIZE]]
+        payload = dict(files=ops, sources=[], blob=blob, license=[], layout='', chinese=[recipe],
+                       sha1={k:hashlib.sha1(v).hexdigest() for k,v in parts.items()})
+        layout = types.SimpleNamespace(files=lambda: ['SCN/LANGZH.BIN'])
+        writer = types.SimpleNamespace(Layout=lambda _:layout,
+            write=lambda lay, files, out, **kw:(files,None))
+        base = types.SimpleNamespace(key='us')
+        with patch.object(dw, '_iw', return_value=writer):
+            _, files = dw.build_disc3(payload, base, {}, 'unused', progress=False)
+            self.assertEqual(list(files), ['SCN/LANGZH.BIN'])
+            self.assertEqual(resources.validate(files['SCN/LANGZH.BIN']), 0)
+            payload['sha1']['@zh/module'] = 'invalid'
+            with self.assertRaisesRegex(dw.PatchError, '@zh/module'):
+                dw.build_disc3(payload, base, {}, 'unused', progress=False)
 
     def test_bad_routes_writes_and_names_are_refused_before_output(self):
         common = (b'runtime', self.font, self.patch)
