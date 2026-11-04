@@ -2624,9 +2624,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/268-SkullMammothmon.MMD.mdelta",
-        "delta_sha256": "7c97f74fd7640bbc921c6d08bad3bce39bddb66feb794b9cbeeb7ada172039a0",
-        "sha256": "041ae9fde049e0225108ab541c46230eb962da0733e7a64a0c19639c5170e5bf",
-        "size": 106628
+        "delta_sha256": "26c21830dc4cf82e284c6bf931f40fbebdd6fe4c707b98af0db4a3d07ee64010",
+        "sha256": "b3e8c18685a002acb85dc2eaf951b25ebf57ae5887476c2650954560134d57f8",
+        "size": 104100
       },
       "tim": {
         "sources": [
