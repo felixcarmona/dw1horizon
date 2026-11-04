@@ -3929,9 +3929,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/312-Creepymon.MMD.mdelta",
-        "delta_sha256": "bb624ca41cb919f34556644743355d79ad1d0efc355d293091d2095a08f3609c",
-        "sha256": "2de873d2ce3ee12d5975412f8ca50006f33cb7af739c9bedf6e4dd82af6eadb5",
-        "size": 86816
+        "delta_sha256": "653cdf4dc230b114055ebe69a78f1e12b00a5bff02a459a7e5c51513f38f2283",
+        "sha256": "2ae61d4f09301086f019478e553d68c3e5a2a72f5ba570f103fe6d052b18e6f1",
+        "size": 84834
       },
       "tim": {
         "sources": [
