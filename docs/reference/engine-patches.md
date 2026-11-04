@@ -168,8 +168,12 @@ one synchronous sector read), `getSpeciesPartnersByLevel`.
   species' icon over the tile of a type not in this bracket (tiles 62 down of page 1) with CLUT row 8 + slot. Its
   projectile icon is the one of the original it borrows techniques from.
 - **VS.** `VS_choosePortraitTiles` lists up to 12 tiles no registered fighter uses; `VS_portraitFor` assigns a tile and
-  CLUT row (5..16) and loads the icon on first use. `RegisteredDigimon.digimonId` is a byte: a species of 256 or more is
-  registered as the original it is based on.
+  CLUT row (5..16) and loads the icon on first use. `RegisteredDigimon.digimonId` is a byte: a species of 256 or more keeps
+  there the original it is based on, and the species itself in `wideId` (bytes 0x20-0x21 of the record, which the
+  original game never writes), with `wideCheck` (a copy of the byte) and `wideTag` (0xD7). `registeredSpecies()`
+  (`vs.h`) reads it for the save machine's list, the battle mode's lists, portraits, techniques, models and stats; a
+  record without the tag, one an older build registered over again (its byte no longer matches `wideCheck`) or a species
+  this build lacks (`dropAbsentRegistered`) reads the byte.
 - **Chart detail** (0067): icons beyond the chart's 61 are loaded when the view opens or changes
   (`loadChartPortraits`) into the battle-effect VRAM (x 576..703, y 256..271), free outside battle. The view gets a
   cursor: the D-pad moves between the "from" and "to" boxes, confirm opens a raised species, cancel goes back a level.

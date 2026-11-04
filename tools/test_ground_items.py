@@ -106,7 +106,7 @@ class RegistryTests(unittest.TestCase):
         self.assertTrue(off and all(s >= 300 for s, _, _ in off))
         for screen, kept in emitted(data).items():
             if screen >= 300:
-                self.assertEqual(len(kept), 4 if screen == 314 else 3, screen)  # Root Clearing adds a Blue apple
+                self.assertEqual(len(kept), 3, screen)           # 3 of Native Forest's 7 mushrooms on a new screen
         got = rewrite_text('    SPAWN_ITEM 1, 30, 79\n', [0, 314], spots, off=off)
         self.assertEqual(got, '    SPAWN_ITEM_DAILY 1, 30, 79, 0, 0\n')
 

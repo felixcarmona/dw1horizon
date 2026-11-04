@@ -219,7 +219,7 @@ class TextBank:
         us = self.us_pages.get(key, 1)
         if pages <= us: return None
         where = self.source_of(key)
-        if where and not os.path.relpath(where).startswith('..'): where = os.path.relpath(where)
+        if where and not os.path.relpath(where, ROOT).startswith('..'): where = os.path.relpath(where, ROOT)
         return (f'{key} takes {pages} pages{f" in {where}" if where else ""}, and the game shows it '
                 f'{"one page" if us == 1 else f"{us} pages"} (a line of a MAPHEAD table: its code shows each entry as one box, '
                 'getShopkeeperLine / resolveMapHeadEntry): the rest would never be shown')

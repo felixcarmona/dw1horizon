@@ -14,6 +14,7 @@ def talk():
     say("Far off, File City. New roofs every week, and nobody keeping watch over them.")
     if ask(yes="It needs a lookout", no="It's fine as it is"):
         say("A lookout. Yes. I thought nobody would ever say it.")
-        send_to_city(line="Hawkmon joined the city!", species=Species.Hawkmon)
+        walk_away(2150, -450, looks=3)    # runs east across the open ground, as the game's recruits do, then leaves
+        send_to_city(line="Hawkmon joined the city!", species=Species.Hawkmon, camera=False)
     else:
         say("I'll be here. I see everything, remember.")

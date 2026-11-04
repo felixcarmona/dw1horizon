@@ -7,6 +7,7 @@ mode and map screens and takes screenshots into OUTDIR (vs-N.png).
 
   EMU_PORT=38068 tools/dev/playtest/versus_mode.py build/portraits.cue OUTDIR [first-player species] [-- second-player species]
   default first player: 3 183 210 250 100 115 8 45   second player: 17 184 230 5 90 252 66 40
+  A species past 255 is written as the save machine writes it: its stand-in in the byte, itself in wideId.
 """
 
 from pathlib import Path as _DevPath
@@ -66,10 +67,18 @@ else:
 t = dwsyms.table(os.environ.get('DW_BUILD', 'disc-full'))
 ptr = struct.unpack('<I', bytes.fromhex(emu('peek', hex(t['VS__REGISTERED_DIGIMON_BUFFER']), '4').split('\n')[0].split('  ', 1)[1].replace(' ', '')))[0]
 print('buffer at', hex(ptr))
+def stand_in(ty):
+    import glob, json
+    f = glob.glob(os.path.join(ROOT, 'content/species', f'{ty}-*.json'))
+    return json.load(open(f[0])).get('effects_like', 0) if f else 0
 def entry(ty, n):
     e = bytearray(64)
     struct.pack_into('<7h', e, 0, 500 + n * 10, 300, 200 + n, 150, 120, 100, 50)
-    e[28] = ty
+    # a species past 255: the byte keeps the original it is based on, wideId (0x20) the species, with the byte's copy
+    # and the tag 0xD7 (vs.h registeredSpecies); the first technique slot equipped
+    e[28] = ty if ty < 256 else stand_in(ty)
+    e[29:32] = bytes((0x2e, 0xff, 0xff))
+    struct.pack_into('<HBB', e, 32, ty, e[28], 0xD7)
     return bytes(e)
 buf = b''.join(entry(ty, i) for i, ty in enumerate(p1)) + bytes(64 * (40 - len(p1)))
 buf += b''.join(entry(ty, i) for i, ty in enumerate(p2)) + bytes(64 * (40 - len(p2)))
