@@ -91,7 +91,7 @@
  "271": {"model": "271-Plesiomon.MMD", "aliases_applied": true},
  "272": {"model": "272-Woodmon.MMD", "aliases_applied": true, "field_overlay": "woodmon-pace"},
  "273": {"model": "273-Floramon.MMD", "aliases_applied": true, "field_overlay": "floramon-pace"},
- "274": {"model": "274-Blossomon.MMD"},
+ "274": {"model": "274-Blossomon.MMD", "aliases_applied": true},
  "275": {"model": "275-Scorpiomon.MMD", "aliases_applied": true},
  "276": {"model": "276-Baihumon.MMD", "aliases_applied": true},
  "277": {"model": "277-SkullMeramon.MMD", "aliases_applied": true, "field_overlay": "skullmeramon-chibi"},
