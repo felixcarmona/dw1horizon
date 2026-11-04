@@ -1,0 +1,398 @@
+// Placement-only screens keep the donor's enter event and daily pickup IDs.
+// NPC encounters use ordinary battles; the donor's dialogue and exit trigger do not belong here.
+
+script new for screen 318 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 319 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 320 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 321 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 322 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 323 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 324 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 327 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 329 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 330 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 331 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 332 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 333 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 334 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 336 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 337 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 338 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 339 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 340 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 341 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 342 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 343 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 344 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 345 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 346 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 347 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 348 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 349 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 350 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 351 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 352 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 354 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}
+
+script new for screen 355 {
+    section(5) replace { battle(); }
+    section(6) replace { battle(); }
+    section(7) replace { battle(); }
+    section(8) replace { battle(); }
+    section(9) replace { battle(); }
+    section(10) replace { battle(); }
+    section(11) replace { battle(); }
+    section(12) replace { battle(); }
+    section(51) replace {}
+}

@@ -38,6 +38,7 @@
   "mod": "story/mods/what-the-island-forgot",
   "sources": [
    "story/mods/what-the-island-forgot/early-game.py",
+   "story/mods/what-the-island-forgot/arcs/works/wild-screens.dws",
    "story/mods/what-the-island-forgot/arcs/airdramon/ambush.py",
    "story/mods/what-the-island-forgot/arcs/canyon/birdramon-nest.py",
    "story/mods/what-the-island-forgot/arcs/canyon/birdramon.py",
