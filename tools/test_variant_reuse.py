@@ -114,6 +114,69 @@ class Reuse(unittest.TestCase):
             self.assertIsNone(V.differing_inputs(os.path.join(td, 'us'), roots, ['A/MISSING.BIN']))
 
 
+class RecordSourceVariants(unittest.TestCase):
+    """dwpatch.record_source_variants' two ways: the USA run reused, or derive on every regional base."""
+    def run_it(self, verdict):
+        import argparse
+        from unittest.mock import patch
+        import dwpatch as dw
+        calls = []
+        holes = [dict(id=0, file='DIGI.DAT'), dict(id=1, file='ETCNA/T.TIM')]
+        base_holes = {'us': {0: b'digi', 1: b'usa'}, 'eu': {0: b'digi', 1: b'europe'}}
+        with tempfile.TemporaryDirectory() as td:
+            def derive_holes(out, m, v, bd, work, jobs=None, source_discs=None):
+                calls.append((bd.key, jobs))
+                got = {}
+                for h in holes:
+                    data = b'w3 digi' if h['id'] == 0 else base_holes[bd.key][1]
+                    got[h['file']] = os.path.join(td, f'{bd.key}-{h["id"]}')
+                    with open(got[h['file']], 'wb') as f:
+                        f.write(data)
+                return got
+
+            class Disc:
+                def __init__(self, key, *a, **k):
+                    self.key = key
+
+            def build_disc3(p3, bd, hb, ob, expect):
+                with open(ob, 'wb') as f:
+                    f.write(b''.join(hb[h['id']] for h in holes))
+                return f'sha-{bd.pin}-{hb[0].decode()}-{hb[1].decode()}', None
+
+            a = argparse.Namespace(source_variant=['dw2003=W3.bin'], source_disc=['dcb=a', 'dw2=b', 'dw2003=c'],
+                                   variant_jobs=7, keep_outputs=None)
+            m = dict(extract=[], timings={})
+            outputs = {}
+            with patch.object(dw, 'variant_of_image', return_value=('dw3-us', 'SLUS_014.36')), \
+                    patch.object(dw, 'derive_holes', derive_holes), patch.object(dw, 'BaseDisc', Disc), \
+                    patch.object(dw, 'build_disc3', build_disc3), \
+                    patch.object(dw, 'regional_derive', lambda mp, ex: True), \
+                    patch.object(dw, 'say', lambda *x: None), \
+                    patch.object(V, 'reuse', return_value=verdict), \
+                    patch.object(V, 'differing_inputs', return_value=set()), \
+                    patch.object(V, 'step_graph', return_value={}), \
+                    patch.object(dw, 'derived_manifest', return_value=os.path.join(td, 'manifest.json')):
+                with open(os.path.join(td, 'manifest.json'), 'w') as f:
+                    f.write('{"steps": {}, "files": {}}')
+                sv = dw.record_source_variants(a, m, td, td, 'everything', dict(recipe='everything'), holes,
+                                               base_holes, {'us': 'us.bin', 'eu': 'eu.bin'}, {}, None, outputs)
+        return sv, calls, outputs, holes
+
+    def test_fallback_runs_every_regional_base(self):
+        sv, calls, outputs, holes = self.run_it((None, 'x'))
+        self.assertEqual(sv, {'dw3-us': dict(game='dw2003', boot='SLUS_014.36')})
+        self.assertEqual([k for k, _ in calls], ['us', 'eu'])
+        self.assertEqual(outputs['eu+dw3-us']['sha1'], 'sha-eu+dw3-us-w3 digi-europe')
+        self.assertEqual(set(holes[0]['sha1_by_base']), {'us+dw3-us', 'eu+dw3-us'})
+        self.assertNotIn('sha1_by_base', holes[1])
+
+    def test_reused_runs_only_the_usa_disc(self):
+        reused = {'us': {0: b'w3 digi', 1: b'usa'}, 'eu': {0: b'w3 digi', 1: b'europe'}}
+        sv, calls, outputs, holes = self.run_it((reused, None))
+        self.assertEqual([k for k, _ in calls], ['us'])
+        self.assertEqual(outputs['eu+dw3-us']['sha1'], 'sha-eu+dw3-us-w3 digi-europe')
+
+
 class TheRealSteps(unittest.TestCase):
     def test_graph_is_derives_own(self):
         from tools.derive import steps as S
