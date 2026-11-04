@@ -34,7 +34,7 @@
  "214": {"model": "214-Shakkoumon.MMD", "aliases_applied": true, "field_overlay": "shakkoumon-glide"},
  "215": {"model": "215-Magnadramon.MMD", "aliases_applied": true, "field_overlay": "magnadramon-glide"},
  "216": {"model": "216-Devidramon.MMD", "aliases_applied": true, "field_overlay": "devidramon-field"},
- "217": {"model": "217-Gomamon.MMD", "aliases_applied": true, "field_overlay": "gomamon-field"},
+ "217": {"model": "217-Gomamon.MMD", "aliases_applied": true},
  "218": {"model": "218-Ikkakumon.MMD", "aliases_applied": true, "field_overlay": "ikkakumon-field"},
  "219": {"model": "219-Zudomon.MMD", "aliases_applied": true, "field_overlay": "zudomon-field"},
  "220": {"model": "220-Vikemon.MMD", "aliases_applied": true, "field_overlay": "vikemon-field"},
