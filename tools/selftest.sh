@@ -79,6 +79,12 @@ if [ -f "$DERIVED/DIGI.DAT" ]; then
 else
     skip city-compiled "needs compiled stories (DW_SELFTEST_DERIVE)"
 fi
+run flat-sprites      $PY -W ignore::ResourceWarning tools/test_flatsprite.py   # the pictures flattened Digimon turn into (tools/flatsprite.py)
+if [ -f "$DERIVED/DIGI.DAT" ] && [ -f "$DERIVED/ALLTIM.TIM" ]; then
+    run flat-sprites-built $PY tools/species.py --content "$DERIVED/species" flat-audit "$DERIVED/DIGI.DAT" "$DERIVED/ALLTIM.TIM"
+else
+    skip flat-sprites-built "needs a generated build (DW_SELFTEST_DERIVE)"
+fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state
@@ -150,7 +156,7 @@ run image-dependencies $PY -m unittest tools.test_no_pillow
 run numeric-replay    $PY -m unittest tools.test_arraymath tools.test_dcbplayer tools.test_texel
 run patcher-python-only $PY -m unittest tools.test_no_numpy
 run partner-species   $PY -W ignore -m unittest tools.test_partner_species
-run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns
+run dws-resource-tests $PY -W ignore -m unittest tools.test_dws_variants tools.test_dws_resources tools.test_dws_text_profiles tools.test_dws_bytecode tools.test_dws_text_sources tools.test_dws_story_testing tools.test_dws_spawns tools.test_dws_battle_moves
 run partner-models $PY -W ignore -m unittest tools.test_partner_model_generators
 run model-meshes $PY -W ignore tools/test_meshcheck.py                    # no see-through model (Cherrymon's closed back)
 run model-apis $PY -W ignore -m unittest tools.test_model_provider tools.test_modeldelta tools.test_imported_model_edit tools.test_recordoriginals

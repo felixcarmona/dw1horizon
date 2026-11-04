@@ -228,6 +228,24 @@ def species_file(out, t, recs=None, names=None, generate=False):
         s['model']['file'] = model_path
         s['model'].pop('slot_aliases', None)
         s.pop('_path', None)
+    # Battle reach is applied after all field size passes: their global model
+    # scaling would otherwise shorten the native dash again.
+    if 'Buster Dive' in (s.get('techniques') or []):
+        import species as species_tools
+        from tools.models import buster_dive
+        from pathlib import Path
+        s['_path'] = os.path.join(ROOT, 'content/species', name)
+        model, proof = buster_dive.apply(species_tools.species_model(s)[0], s)
+        if proof is not None:
+            generated = Path(os.path.abspath(out) + '-models')
+            generated.mkdir(parents=True, exist_ok=True)
+            (generated / f'{t}-buster-dive-report.json').write_text(json.dumps(proof, indent=2) + '\n')
+            if proof['applied']:
+                model_path = generated / f'{t}-buster-dive.MMD'
+                model_path.write_bytes(model)
+                s['model']['file'] = str(model_path)
+                s['model'].pop('slot_aliases', None)
+        s.pop('_path', None)
     return name, s
 
 

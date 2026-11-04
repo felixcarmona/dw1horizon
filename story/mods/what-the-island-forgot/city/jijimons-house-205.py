@@ -7,6 +7,9 @@ from ..state import memories, memory_news, root2, root3
 # Later, of their own will: SkullGreymon after "Let him rest" (R2) and Angemon after "Open it and stay" (R3) come back to the
 # city and Jijimon tells it. Those choices set memory_news, told at the first homecoming below, so this is the next one. A
 # 0.0.2 save that lost them recovers here too.
+#
+# The compiler guards this house's enter handlers with engine.death_map_entry: death and lost-life recovery load the
+# house with a dying or surviving partner. Lifetime and lives alone cannot identify recovery with lives still left.
 @house.on_enter(when=root2 and not recruited(Species.SkullGreymon) and not memory_news)
 def the_bones_came_back():
     jijimon.say("Mm, mm... SkullGreymon walked into the square last night, all by himself.",

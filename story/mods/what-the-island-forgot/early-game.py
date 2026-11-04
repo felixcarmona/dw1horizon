@@ -9,73 +9,76 @@ from dw import *
 # 314, the Root Clearing: two Goblimon from the field next door (MAYO03's), in arcs/clearing/root-clearing.py (they
 # have a rare drop of their own).
 
-# 317, the first Iron Hills screen (the Seam Pass, Z1): the savanna's Psychemon always and Shamamon by day (GIAS01's
-# stats), and at night the first hunter, a Gururumon (GCAN09's stats), in Shamamon's place. (The screen file's tims4
-# must match the donor's map: a wrong count made the engine read a TIM that is not there and the player arrived with no
-# position, 2026-10-21.)
+# The three long areas of the north-east (the Iron Hills, the Seam, the Overdell Pass) are late ground: their wild
+# Digimon are Ultimates and strong Champions, with stats between Factorial Town's and Mount Infinity's and the pay of the
+# original wild Digimon of the same offense. Every screen keeps three species (one always, one by day, one by night;
+# three models is the heap's limit here) and the spots of the roster they replaced, which meet the arrival rule.
+
+# 317, the first Iron Hills screen (the Seam Pass, Z1): the buried machinery's roster: Assaultmon always, Tankmon by
+# day, Guardromon by night. (The screen file's tims4 must match the donor's map: a wrong count made the engine read a
+# TIM that is not there and the player arrived with no position, 2026-10-21.)
 # Screen 317 and its northern road gate: arcs/seam/iron-hills-gate.py.
 
-# 318, the second Iron Hills screen: the same roster as 317 (Psychemon always, Shamamon by day, Gururumon by night).
+# 318, the second Iron Hills screen: the same roster as 317 (Assaultmon always, Tankmon by day, Guardromon by night),
+# and the area's toilet at the foot of the west slope (maps/toilets.py).
 hills2 = new_screen(318, map="build/what-the-island-forgot-maps/screens/IRON02.MAP")
-hills2_psychemon = hills2.npc(Species.Psychemon, at=(-350, -350), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-hills2_shamamon = hills2.npc(Species.Shamamon, at=(350, -450), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills2_gururumon = hills2.npc(Species.Gururumon, at=(950, -550), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                              autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+hills2_assaultmon = hills2.npc(Species.Assaultmon, at=(-350, -350), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800)
+hills2_tankmon = hills2.npc(Species.Tankmon, at=(350, -450), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+hills2_guardromon = hills2.npc(Species.Guardromon, at=(950, -550), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300,
+                               autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 319, the third Iron Hills screen (the zigzag climb): the same roster, one per leg, with a short chase range (400): the
 # legs lie one above the other and a chase across the terrace face starts a battle the two cannot fight (2026-10-21).
 # Stand beside the turns rather than sealing either leg with the starting body footprint.
 hills3 = new_screen(319, map="build/what-the-island-forgot-maps/screens/IRON03.MAP")
-hills3_psychemon = hills3.npc(Species.Psychemon, at=(-250, 250), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300, range=400)
-hills3_shamamon = hills3.npc(Species.Shamamon, at=(650, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300, range=400,
-                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills3_gururumon = hills3.npc(Species.Gururumon, at=(250, 2450), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400, range=400,
-                              autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+hills3_assaultmon = hills3.npc(Species.Assaultmon, at=(-250, 250), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800, range=400)
+hills3_tankmon = hills3.npc(Species.Tankmon, at=(650, -950), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400, range=400,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+hills3_guardromon = hills3.npc(Species.Guardromon, at=(250, 2450), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300, range=400,
+                               autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 320, the fourth Iron Hills screen (the ridge): the same roster, spread over the plateau.
 hills4 = new_screen(320, map="build/what-the-island-forgot-maps/screens/IRON04.MAP")
-hills4_psychemon = hills4.npc(Species.Psychemon, at=(-27, 1269), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-hills4_shamamon = hills4.npc(Species.Shamamon, at=(-550, -750), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills4_gururumon = hills4.npc(Species.Gururumon, at=(950, -850), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                              autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+hills4_assaultmon = hills4.npc(Species.Assaultmon, at=(-27, 1269), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800)
+hills4_tankmon = hills4.npc(Species.Tankmon, at=(-550, -750), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+hills4_guardromon = hills4.npc(Species.Guardromon, at=(950, -850), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300,
+                               autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# 321, the fifth Iron Hills screen (the far slope): the same roster; the Gururumon stands by the grey blocks at night.
+# 321, the fifth Iron Hills screen (the far slope): the same roster; the Guardromon stands by the grey blocks at night.
 hills5 = new_screen(321, map="build/what-the-island-forgot-maps/screens/IRON05.MAP")
-hills5_psychemon = hills5.npc(Species.Psychemon, at=(106, 1269), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-hills5_shamamon = hills5.npc(Species.Shamamon, at=(-432, -1063), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                             autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-hills5_gururumon = hills5.npc(Species.Gururumon, at=(350, -650), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                              autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+hills5_assaultmon = hills5.npc(Species.Assaultmon, at=(106, 1269), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800)
+hills5_tankmon = hills5.npc(Species.Tankmon, at=(-432, -1063), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+hills5_guardromon = hills5.npc(Species.Guardromon, at=(350, -650), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300,
+                               autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# 322, the Brink (the last Iron Hills screen): the same roster; the Gururumon stands by the crack at night.
+# 322, the Brink (the last Iron Hills screen): the same roster; the Guardromon stands by the crack at night.
 brink = new_screen(322, map="build/what-the-island-forgot-maps/screens/IRON06.MAP")
-brink_psychemon = brink.npc(Species.Psychemon, at=(-528, 699), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-brink_shamamon = brink.npc(Species.Shamamon, at=(350, -1150), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                           autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-brink_gururumon = brink.npc(Species.Gururumon, at=(750, -1650), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+brink_assaultmon = brink.npc(Species.Assaultmon, at=(-528, 699), hp=3800, mp=3600, offense=560, defense=330, speed=260, brain=250, bits=1800)
+brink_tankmon = brink.npc(Species.Tankmon, at=(350, -1150), hp=4000, mp=2300, offense=530, defense=280, speed=120, brain=50, bits=1400,
+                          autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+brink_guardromon = brink.npc(Species.Guardromon, at=(750, -1650), hp=3200, mp=3800, offense=600, defense=340, speed=120, brain=80, bits=1300,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# Zone 2, the Seam: Analogman's hunters use it as their road. The roster is zone 1's (Psychemon always, Shamamon by day,
-# Gururumon by night), the three species whose fights were seen to end. The bible's hunters (DarkLizardmon by day, the
-# Overdell stats) can take Shamamon's place after one test fight: the 2026-10-21 crashes blamed on it were the executable
-# (patch 0160, the background stream reopening during a fight), not the species. (A fourth species per screen put the heap
-# at 253 of 192 KB: three models per screen is the limit of this roster.)
+# Zone 2, the Seam: Analogman's hunters use it as their road, through the cold of the old weld: IceLeomon always,
+# Sorcermon by day, IceDevimon by night. (A fourth species per screen put the heap at 253 of 192 KB: three models per
+# screen is the limit.)
 seam1 = new_screen(323, map="build/what-the-island-forgot-maps/screens/SEAM01.MAP")
-seam1_psychemon = seam1.npc(Species.Psychemon, at=(-50, 250), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-seam1_shamamon = seam1.npc(Species.Shamamon, at=(1090, -1138), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                 autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-seam1_gururumon = seam1.npc(Species.Gururumon, at=(750, -1350), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+seam1_iceleomon = seam1.npc(Species.IceLeomon, at=(-50, 250), hp=4200, mp=4000, offense=600, defense=360, speed=300, brain=280, bits=2000)
+seam1_sorcermon = seam1.npc(Species.Sorcermon, at=(1090, -1138), hp=3200, mp=4800, offense=560, defense=280, speed=280, brain=300, bits=1500,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+seam1_icedevimon = seam1.npc(Species.IceDevimon, at=(750, -1350), hp=3900, mp=4600, offense=620, defense=360, speed=200, brain=150, bits=1500,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 324, the ice shelf: the same roster as 323.
 seam2 = new_screen(324, map="build/what-the-island-forgot-maps/screens/SEAM02.MAP")
-seam2_psychemon = seam2.npc(Species.Psychemon, at=(-550, 450), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-seam2_shamamon = seam2.npc(Species.Shamamon, at=(1050, -1150), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                 autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-seam2_gururumon = seam2.npc(Species.Gururumon, at=(650, -550), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+seam2_iceleomon = seam2.npc(Species.IceLeomon, at=(-550, 450), hp=4200, mp=4000, offense=600, defense=360, speed=300, brain=280, bits=2000)
+seam2_sorcermon = seam2.npc(Species.Sorcermon, at=(1050, -1150), hp=3200, mp=4800, offense=560, defense=280, speed=280, brain=300, bits=1500,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+seam2_icedevimon = seam2.npc(Species.IceDevimon, at=(650, -550), hp=3900, mp=4600, offense=620, defense=360, speed=200, brain=150, bits=1500,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 325, the kennel: its own file (arcs/seam/kennel.py), the named hunter's scripted fight.
 
@@ -83,60 +86,60 @@ seam2_gururumon = seam2.npc(Species.Gururumon, at=(650, -550), hp=1200, mp=2700,
 
 # 327, the gallery: the Seam's roster.
 seam4 = new_screen(327, map="build/what-the-island-forgot-maps/screens/SEAM05.MAP")
-seam4_psychemon = seam4.npc(Species.Psychemon, at=(50, 650), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-seam4_shamamon = seam4.npc(Species.Shamamon, at=(-950, -1150), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                 autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-seam4_gururumon = seam4.npc(Species.Gururumon, at=(-950, -750), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+seam4_iceleomon = seam4.npc(Species.IceLeomon, at=(50, 650), hp=4200, mp=4000, offense=600, defense=360, speed=300, brain=280, bits=2000)
+seam4_sorcermon = seam4.npc(Species.Sorcermon, at=(-950, -1150), hp=3200, mp=4800, offense=560, defense=280, speed=280, brain=300, bits=1500,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+seam4_icedevimon = seam4.npc(Species.IceDevimon, at=(-950, -750), hp=3900, mp=4600, offense=620, defense=360, speed=200, brain=150, bits=1500,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# 329, the great weld: the Seam's roster, the Gururumon by night on the orange side.
+# 329, the great weld: the Seam's roster, the IceDevimon by night on the orange side.
 seam5 = new_screen(329, map="build/what-the-island-forgot-maps/screens/SEAM07.MAP")
-seam5_psychemon = seam5.npc(Species.Psychemon, at=(-650, -650), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300)
-seam5_shamamon = seam5.npc(Species.Shamamon, at=(1090, 202), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                 autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-seam5_gururumon = seam5.npc(Species.Gururumon, at=(750, 450), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400,
-                            autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+seam5_iceleomon = seam5.npc(Species.IceLeomon, at=(-650, -650), hp=4200, mp=4000, offense=600, defense=360, speed=300, brain=280, bits=2000)
+seam5_sorcermon = seam5.npc(Species.Sorcermon, at=(1090, 202), hp=3200, mp=4800, offense=560, defense=280, speed=280, brain=300, bits=1500,
+                            autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+seam5_icedevimon = seam5.npc(Species.IceDevimon, at=(750, 450), hp=3900, mp=4600, offense=620, defense=360, speed=200, brain=150, bits=1500,
+                             autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# Zone 3, the way down to Overdell: the same trio for now (Gururumon always, Psychemon by day, Shamamon by night). Overdell's
-# own roster (DGHA01's stats: DarkLizardmon always, Bakemon by day) goes in after one test fight each (see zone 2).
+# Zone 3, the way down to Overdell, the island's graveyard: SkullSatamon always, Gargoylemon by day, WereGarurumon by
+# night.
 descent1 = new_screen(330, map="build/what-the-island-forgot-maps/screens/OVPS01.MAP")
-descent1_gururumon = descent1.npc(Species.Gururumon, at=(-150, 450), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent1_psychemon = descent1.npc(Species.Psychemon, at=(-1050, -1450), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent1_shamamon = descent1.npc(Species.Shamamon, at=(-650, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent1_skullsatamon = descent1.npc(Species.SkullSatamon, at=(-150, 450), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent1_gargoylemon = descent1.npc(Species.Gargoylemon, at=(-1050, -1450), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent1_weregarurumon = descent1.npc(Species.WereGarurumon, at=(-650, -950), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
-# 331, the dry riverbed: Overdell's roster.
+# 331, the dry riverbed: Overdell's roster, and the area's toilet against the east rock pillar (maps/toilets.py).
 descent2 = new_screen(331, map="build/what-the-island-forgot-maps/screens/OVPS02.MAP")
-descent2_gururumon = descent2.npc(Species.Gururumon, at=(-50, 150), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent2_psychemon = descent2.npc(Species.Psychemon, at=(-50, -750), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent2_shamamon = descent2.npc(Species.Shamamon, at=(-650, -650), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent2_skullsatamon = descent2.npc(Species.SkullSatamon, at=(-50, 150), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent2_gargoylemon = descent2.npc(Species.Gargoylemon, at=(-50, -750), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent2_weregarurumon = descent2.npc(Species.WereGarurumon, at=(-650, -650), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 332, the terraces: Overdell's roster.
 descent3 = new_screen(332, map="build/what-the-island-forgot-maps/screens/OVPS03.MAP")
-descent3_gururumon = descent3.npc(Species.Gururumon, at=(0, 500), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent3_psychemon = descent3.npc(Species.Psychemon, at=(-1050, -1150), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent3_shamamon = descent3.npc(Species.Shamamon, at=(-650, -650), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent3_skullsatamon = descent3.npc(Species.SkullSatamon, at=(0, 500), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent3_gargoylemon = descent3.npc(Species.Gargoylemon, at=(-1050, -1150), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent3_weregarurumon = descent3.npc(Species.WereGarurumon, at=(-650, -650), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 333, the narrows: Overdell's roster.
 descent4 = new_screen(333, map="build/what-the-island-forgot-maps/screens/OVPS04.MAP")
-descent4_gururumon = descent4.npc(Species.Gururumon, at=(50, 300), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent4_psychemon = descent4.npc(Species.Psychemon, at=(-1050, -1150), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent4_shamamon = descent4.npc(Species.Shamamon, at=(-550, -650), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent4_skullsatamon = descent4.npc(Species.SkullSatamon, at=(50, 300), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent4_gargoylemon = descent4.npc(Species.Gargoylemon, at=(-1050, -1150), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent4_weregarurumon = descent4.npc(Species.WereGarurumon, at=(-550, -650), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 334, the standing stones: Overdell's roster.
 descent5 = new_screen(334, map="build/what-the-island-forgot-maps/screens/OVPS05.MAP")
-descent5_gururumon = descent5.npc(Species.Gururumon, at=(72, 405), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent5_psychemon = descent5.npc(Species.Psychemon, at=(-656, -716), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent5_shamamon = descent5.npc(Species.Shamamon, at=(1050, -1250), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent5_skullsatamon = descent5.npc(Species.SkullSatamon, at=(72, 405), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent5_gargoylemon = descent5.npc(Species.Gargoylemon, at=(-656, -716), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent5_weregarurumon = descent5.npc(Species.WereGarurumon, at=(1050, -1250), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 # 335, the last descent: Overdell's roster; three arrivals (the top, Overdell below, the ossuary's cave) leave no spot
 # a full tracking range away, so the ranges are shorter (tools/dws.py check-spawns).

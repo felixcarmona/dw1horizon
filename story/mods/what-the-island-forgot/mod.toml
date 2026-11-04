@@ -5,8 +5,8 @@ authors = ["Digimon World: Horizon authors"]
 requires = ["base >= 1.0"]
 load_after = []
 conflicts = []
-# the story's Python files (what build.sh compiles; `dws text sync` reads the lines from these)
-sources = ["early-game.py", "arcs/*/*.py", "district/*.py", "city/*.py"]
+# Story sources: Python handlers and placement-only script copies.
+sources = ["early-game.py", "arcs/works/wild-screens.dws", "arcs/*/*.py", "district/*.py", "city/*.py"]
 
 [save]
 namespace = "wtif"

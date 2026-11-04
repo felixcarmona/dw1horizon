@@ -56,7 +56,7 @@ game state ([ram-map.md](ram-map.md) has the RAM side).
 | 0x4DA | i8 x 7 | previous tile X/Y, waypoint current/count, start tile X/Y, waypoint active |
 | 0x4E1 | u8[0x1B] | unused (0x4E4..0x4FB is where the version word goes, below) |
 | 0x4FC | i32 | checksum |
-| 0x500 | `RegisteredDigimon[40]` (0x40 each) | Digimon registered for VS mode: stats, name, species (u8), techniques |
+| 0x500 | `RegisteredDigimon[40]` (0x40 each) | Digimon registered for VS mode: stats, name, species (u8), techniques; bytes 0x20-0x23 of a record (unused by the original game) hold the species past 255 (see below) |
 
 ### Checksum
 
@@ -110,7 +110,7 @@ An extension counts only when magic, its own checksum and its copy of the v1 che
 | 0x0002 | i16[n] inventory item ids, -1 = empty | 0129 (16-bit items: 0018) |
 | 0x0003 | i32 partner species | 0129 |
 | 0x0004 | u16[n] script registers w0.. (w0..w15 are saved, the rest are scratch) | 0129 |
-| 0x0005 | i16[n] species of the VS-mode registered Digimon (kept for reading tools) | 0129 |
+| 0x0005 | i16[n] species of the VS-mode registered Digimon (kept for reading tools; the whole species since `Register-a-species-past-255-for-battle-mode-as-itsel.patch`) | 0129 |
 | 0x0006 | i16[n] screens of the poop piles, -1 = none; authoritative since screens beyond 255 (a pile on screen 255+ is 0xFF in the v1 bytes) | 0129, 0146 |
 | 0x0007 | bit array: species raised | 0129 |
 | 0x0008 | bit array: species recruited | 0129 |
@@ -167,7 +167,15 @@ the extension's records are authoritative. Original ids keep their numbers in th
   empty row. After `loadSaveCopy`, `dropAbsentSaveContent` turns a partner of an absent species into the first
   reincarnation baby that exists (stats and name kept; equipped techniques and learned bits cleared, since they were
   the old species'), removes absent items from the bag, unequips absent techniques and clears their learned bits.
-  `dropAbsentRegistered` does the same for the VS registrations and the item keeper's stock.
+  `dropAbsentRegistered` does the same for the VS registrations and the item keeper's stock; a registration whose
+  `wideId` names a species the build lacks fights as the original kept in its byte.
+- **Registrations past species 255.** The save machine writes a species of 256 or more as the original it is based on
+  in the record's byte (`getOriginalType`, the species file's `effects_like`) and as itself in `wideId` (record bytes
+  0x20-0x21) with `wideCheck` (0x22, a copy of the byte) and `wideTag` (0x23, 0xD7). The original game and older builds
+  read the byte; a build with `registeredSpecies()` reads `wideId` when the tag and the copy match, so a slot an older
+  build registers over again is read by its new byte. A record written before this field (v0.0.5 and earlier) has
+  only the stand-in and keeps it until the partner is registered again. The battle mode reads records as they were
+  registered, whatever NEW DIGIMON says: with it off the partner is already its vanilla counterpart when it registers.
 - **NEW DIGIMON off (patch 0182).** A partner of a new species becomes its species file's vanilla counterpart (stats,
   care and age kept; techniques re-slotted, else its first learned one; its own finisher), and record 0x000A remembers
   the swap. Raised and recruited flags stay. See [../mods/species.md](../mods/species.md) and

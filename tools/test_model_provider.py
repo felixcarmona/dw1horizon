@@ -2,6 +2,7 @@
 import hashlib
 import json
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -11,6 +12,26 @@ from tools.derive.steps.overlays import imported_models as provider
 
 
 class ModelProvider(unittest.TestCase):
+    def test_editor_pins_final_provider_output_without_a_field_overlay(self):
+        from tools.models import edit
+
+        self.assertNotIn('field_overlay', edit.import_records()['182'])
+
+        def generate(out, sid, generate):
+            base = Path(module.BASE_MODELS)
+            model = Path(out).with_suffix('.MMD')
+            texture = base / f'{sid}.TIM'
+            model.write_bytes((base / f'{sid}.MMD').read_bytes() + b'dash repair')
+            return 'model.json', {'model': {'file': str(model)}, 'texture': {'file': str(texture)}}
+
+        module = SimpleNamespace(species_file=generate)
+        spec = SimpleNamespace(loader=SimpleNamespace(exec_module=Mock()))
+        with patch.object(edit.importlib.util, 'spec_from_file_location', return_value=spec), \
+                patch.object(edit.importlib.util, 'module_from_spec', return_value=module):
+            actual = edit.provider_pin(182, b'base model', b'texture')
+        self.assertEqual(actual, [hashlib.sha1(b'base modeldash repair').hexdigest(),
+                                  hashlib.sha1(b'texture').hexdigest()])
+
     def test_generated_base_folder_is_forwarded_to_the_imported_provider(self):
         make = Mock(return_value={'183': ('/model.MMD', '/model.TIM')})
         module = SimpleNamespace(make=make)

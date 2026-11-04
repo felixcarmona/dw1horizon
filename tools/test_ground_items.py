@@ -118,6 +118,20 @@ class RegistryTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'duplicate'):
                 load_registry(p)
 
+    def test_borrowed_and_authored_coordinates_keep_the_same_id(self):
+        spots = {(314, 39, 43): 236}
+        places = {(314, 39, 43): (49, 51)}
+        expected = '    SPAWN_ITEM_DAILY 25, 49, 51, 236, 314\n'
+        for tile in ('39, 43', '49, 51'):
+            with self.subTest(tile=tile):
+                self.assertEqual(rewrite_text(f'    SPAWN_ITEM 25, {tile}\n', [314], spots, places), expected)
+
+    def test_relocated_disabled_spot_stays_disabled(self):
+        key = (314, 30, 79)
+        self.assertEqual(rewrite_text('SPAWN_ITEM 24, 37, 61\n', [314], {key: 233},
+                                      {key: (37, 61)}, {key}), '\n')
+
+
 
 def function(source, name):
     start = re.search(r'^(?:static )?(?:void|int32_t) ' + name + r'\([^;]*?\)[^\n]*\n\{', source, re.M)

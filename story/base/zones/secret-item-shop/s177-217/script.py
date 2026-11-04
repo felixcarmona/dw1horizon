@@ -78,9 +78,7 @@ def talk():    # section 5
         return
     if secret_shop_keeper != 3:
         return
-    # ours (economy, docs/mods/balance.md 6.1): the six chips for bits too, at their price (9999), something worth saving for
-    shop(Item.DVChipA, Item.DVChipD, Item.DVChipE, Item.OffChip, Item.DefChip, Item.BrainChip, Item.QuickChip, Item.HPChip,
-         Item.MPChip)
+    shop(Item.DVChipA, Item.DVChipD, Item.DVChipE)
 
 # the section table, in the order of the original header
 sections(254, 51, 6, 5)

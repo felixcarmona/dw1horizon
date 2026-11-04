@@ -27,13 +27,13 @@
         ]
       ],
       "at": [
-        134,
-        209
+        133,
+        208
       ],
       "png": "357-guard-door.png",
       "size": [
-        25,
-        67
+        27,
+        76
       ],
       "sam": [
         {
@@ -68,14 +68,14 @@
             ]
           ],
           "scores": [
-            0.4737192988395691,
-            0.8990609645843506,
-            0.8982195854187012
+            0.6121602058410645,
+            0.9225295782089233,
+            0.9261294603347778
           ],
-          "best": 1
+          "best": 2
         }
       ],
-      "mask_sha256": "23d5c2a43cb11be54af4c1294c7a8680532c80ac54d6f700c8fe27754f1df3f4",
+      "mask_sha256": "c95a6353d92621d16d725c81ff293726bbf7dd4fd351446f5698624cb2430f71",
       "min_component": 3,
       "fill_holes_max_area": 0
     },
@@ -87,12 +87,12 @@
       ],
       "block": [],
       "at": [
-        125,
-        196
+        120,
+        195
       ],
       "png": "357-guard-lintel.png",
       "size": [
-        58,
+        66,
         9
       ],
       "sam": [
@@ -128,14 +128,14 @@
             ]
           ],
           "scores": [
-            0.7056161165237427,
-            0.7825567722320557,
-            0.7289712429046631
+            0.8951495289802551,
+            0.9209951162338257,
+            0.918006420135498
           ],
           "best": 1
         }
       ],
-      "mask_sha256": "8c75d185e4828c21f8717df69873de94d261b49dd0d40444032f4cfe2c3bdcdb",
+      "mask_sha256": "5329ec0bcd73f01e5b02740234c6551cdd3018f23e9be46ae543ae2ed44dd76f",
       "min_component": 3,
       "fill_holes_max_area": 0
     },
@@ -147,13 +147,13 @@
       ],
       "block": [],
       "at": [
-        604,
-        195
+        602,
+        190
       ],
       "png": "357-shed-lintel.png",
       "size": [
-        49,
-        9
+        52,
+        14
       ],
       "sam": [
         {
@@ -188,14 +188,14 @@
             ]
           ],
           "scores": [
-            0.5244011282920837,
-            0.6029653549194336,
-            0.5613462924957275
+            0.7322723865509033,
+            0.7804027795791626,
+            0.7926579713821411
           ],
-          "best": 1
+          "best": 2
         }
       ],
-      "mask_sha256": "9e6c7ee95a57996620fc5e4f2c332f59f8f72ae3f198148aa69a8415bd9ecd15",
+      "mask_sha256": "7c277b0e34f29198945a750918de1e5c1df097eff1e151075043627a77efc87c",
       "min_component": 3,
       "fill_holes_max_area": 0
     },
@@ -208,72 +208,252 @@
       "block": [],
       "at": [
         0,
-        422
+        423
       ],
       "png": "357-near-left-canopy.png",
       "size": [
-        204,
-        217
+        206,
+        216
       ],
       "sam": [
         {
           "box": [
             0,
-            419,
-            202,
-            639
+            428,
+            225,
+            640
           ],
           "positive": [
             [
-              0,
-              639
+              15,
+              575
             ],
             [
-              0,
-              552
+              115,
+              603
             ],
             [
-              45,
-              584
+              175,
+              626
             ],
             [
-              124,
-              586
-            ],
-            [
-              83,
-              624
-            ],
-            [
-              149,
-              635
+              30,
+              485
             ]
           ],
           "negative": [
             [
-              0,
-              419
+              120,
+              485
             ],
             [
-              202,
-              419
+              225,
+              560
             ],
             [
-              202,
+              225,
               639
+            ],
+            [
+              0,
+              420
             ]
           ],
           "scores": [
-            0.941847026348114,
-            0.9875658750534058,
-            0.9776382446289062
+            0.9871554970741272,
+            1.0015323162078857,
+            0.976722240447998
           ],
           "best": 1
         }
       ],
-      "mask_sha256": "e528b469608f42a2e5832e8cdcd4e1b7746a1e9e57d11b4880dc780629e28b0f",
+      "mask_sha256": "818b7ce72ec03dd8e493875a3ae65146f79ef1db32a43a215297a715f7bfe5e5",
       "min_component": 3,
       "fill_holes_max_area": 0
+    },
+    {
+      "name": "battery-door",
+      "depth_px": [
+        305,
+        265
+      ],
+      "block": [],
+      "png": "357-battery-door.png",
+      "sam": [
+        {
+          "box": [
+            286,
+            155,
+            318,
+            271
+          ],
+          "positive": [
+            [
+              299,
+              193
+            ],
+            [
+              304,
+              241
+            ]
+          ],
+          "negative": [
+            [
+              318,
+              205
+            ],
+            [
+              285,
+              174
+            ],
+            [
+              314,
+              265
+            ]
+          ],
+          "scores": [
+            0.9508659839630127,
+            0.932758092880249,
+            0.894128680229187
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 3,
+      "fill_holes_max_area": 0,
+      "at": [
+        291,
+        160
+      ],
+      "size": [
+        20,
+        85
+      ],
+      "mask_sha256": "1bee4ce1bfedd7cc0ef43e16958cf3b3715d8bc00073682d64cac7e6abb66b2b"
+    },
+    {
+      "name": "north-stair-left-wall",
+      "depth_px": [
+        383,
+        286
+      ],
+      "block": [],
+      "png": "357-north-stair-left-wall.png",
+      "sam": [
+        {
+          "box": [
+            374,
+            0,
+            396,
+            288
+          ],
+          "positive": [
+            [
+              383,
+              35
+            ],
+            [
+              383,
+              140
+            ],
+            [
+              384,
+              250
+            ]
+          ],
+          "negative": [
+            [
+              398,
+              140
+            ],
+            [
+              369,
+              140
+            ]
+          ],
+          "scores": [
+            0.9711802005767822,
+            0.9782540798187256,
+            0.9763332605361938
+          ],
+          "best": 1
+        }
+      ],
+      "min_component": 3,
+      "fill_holes_max_area": 0,
+      "at": [
+        376,
+        7
+      ],
+      "size": [
+        23,
+        280
+      ],
+      "mask_sha256": "b1376734942dfde90a0c513b205faa3dcb3f87f837fbe7f55012056d724a93f9"
+    },
+    {
+      "name": "north-stair-right-wall",
+      "depth_px": [
+        546,
+        286
+      ],
+      "block": [],
+      "png": "357-north-stair-right-wall.png",
+      "sam": [
+        {
+          "box": [
+            500,
+            0,
+            558,
+            288
+          ],
+          "positive": [
+            [
+              512,
+              70
+            ],
+            [
+              522,
+              180
+            ],
+            [
+              539,
+              266
+            ]
+          ],
+          "negative": [
+            [
+              500,
+              180
+            ],
+            [
+              548,
+              155
+            ],
+            [
+              560,
+              280
+            ]
+          ],
+          "scores": [
+            0.9753767251968384,
+            0.9709603786468506,
+            0.9178348779678345
+          ],
+          "best": 0
+        }
+      ],
+      "min_component": 3,
+      "fill_holes_max_area": 0,
+      "at": [
+        508,
+        7
+      ],
+      "size": [
+        50,
+        280
+      ],
+      "mask_sha256": "20759d7bcaaa14ea24b1747b2c588aae9d2b1eb2fb84dc01323e2d0804a152f4"
     }
   ],
   "source": "the-stone-yard.png",
@@ -281,16 +461,61 @@
     0,
     0
   ],
-  "audit": "Buildings, tank, fenced scrap and planters back onto the blocked cliff edge. Cut the open guard-house leaf and both doorway lintels. Block the leaf's occupied tiles, not the whole doorway. Cut the foreground left canopy at a depth in front of the reachable yard. Existing building footprints remain blocked. Tile review: restore 0 floor tiles behind foreground silhouettes; block 3 occupied tiles. Every changed tile is listed below with its previous value and reason. The near canopy follows the actual leaf edge; blue-grey floor between the fronds is transparent. Silhouettes replaced with full-resolution SAM ViT-H object masks; see sam_source and per-piece prompts.",
+  "audit": "North descent from lower town, blocked building footprints and planters, generous connected plaza and three door approaches. Foreground door leaves, lintels, stair parapets and near canopy are segmented again from the edited art. Collision edits identify occupied door tiles.",
   "collision_tiles": [
+    {
+      "tile": [
+        43,
+        37
+      ],
+      "was": 113,
+      "value": 128,
+      "reason": "battery-door"
+    },
+    {
+      "tile": [
+        43,
+        38
+      ],
+      "was": 113,
+      "value": 128,
+      "reason": "battery-door"
+    },
+    {
+      "tile": [
+        43,
+        39
+      ],
+      "was": 113,
+      "value": 128,
+      "reason": "battery-door"
+    },
+    {
+      "tile": [
+        43,
+        40
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "battery-door"
+    },
+    {
+      "tile": [
+        50,
+        41
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
     {
       "tile": [
         30,
         42
       ],
       "was": 112,
-      "reason": "guard-door",
-      "value": 128
+      "value": 128,
+      "reason": "guard-door"
     },
     {
       "tile": [
@@ -298,8 +523,35 @@
         42
       ],
       "was": 112,
-      "reason": "guard-door",
-      "value": 128
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        32,
+        42
+      ],
+      "was": 112,
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        50,
+        42
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        30,
+        43
+      ],
+      "was": 112,
+      "value": 128,
+      "reason": "guard-door"
     },
     {
       "tile": [
@@ -307,20 +559,146 @@
         43
       ],
       "was": 112,
-      "reason": "guard-door",
-      "value": 128
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        32,
+        43
+      ],
+      "was": 112,
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        50,
+        43
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        62,
+        43
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-right-wall"
+    },
+    {
+      "tile": [
+        31,
+        44
+      ],
+      "was": 112,
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        32,
+        44
+      ],
+      "was": 112,
+      "value": 128,
+      "reason": "guard-door"
+    },
+    {
+      "tile": [
+        49,
+        44
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        50,
+        44
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        61,
+        44
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-right-wall"
+    },
+    {
+      "tile": [
+        62,
+        44
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-right-wall"
+    },
+    {
+      "tile": [
+        49,
+        45
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        50,
+        45
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-left-wall"
+    },
+    {
+      "tile": [
+        61,
+        45
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-right-wall"
+    },
+    {
+      "tile": [
+        62,
+        45
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "north-stair-right-wall"
+    },
+    {
+      "tile": [
+        42,
+        40
+      ],
+      "was": 0,
+      "value": 128,
+      "reason": "battery-door trapped corner"
     }
   ],
   "sam_source": {
-    "path": "story/mods/what-the-island-forgot/design/prompts/the-stone-yard/raw-the-stone-yard.jpg",
+    "path": "build/map-fixes/stone-yard-edit-2.png",
     "repo_relative": true,
     "crop": [
-      46,
       0,
-      2258,
-      1856
+      0,
+      2400,
+      1792
     ],
-    "sha1": "9c2baecbcf975ee9e7e5f16b07f14fc25b8e6277",
+    "sha1": "0775ce33bf7a2da7cc096cedf9e9491719fea5ab",
     "model": "SAM ViT-H (sam_vit_h_4b8939.pth)"
   }
 }
