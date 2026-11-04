@@ -45,7 +45,7 @@
     "from": [122, 84, 331],
     "to": [294, 310],
     "requirements": {
-      "digimon": 122,
+      "digimon": -1,
       "hp": -1,
       "mp": 100,
       "offense": 100,
@@ -54,7 +54,7 @@
       "brain": -1,
       "care": 3,
       "weight": 30,
-      "discipline": -1,
+      "discipline": 90,
       "happiness": -1,
       "battles": -1,
       "techs": -1,
