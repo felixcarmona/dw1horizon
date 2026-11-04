@@ -63,7 +63,7 @@ def build(module, font, patch, resources, names=None, ui=None, english_names=Non
     for resource in sorted(resources, key=lambda r:(r['name'],r.get('story',0))):
         name, story, data = resource['name'], resource.get('story',0), resource['data']
         if story not in (0,1) or not data:
-            raise ValueError('invalid Chinese resource story/size')
+            raise ValueError('invalid Chinese resource story mode or size')
         hashed = key(name)
         if not hashed or (hashed in hashes and hashes[hashed] != name):
             raise ValueError('Chinese resource filename hash collision')
