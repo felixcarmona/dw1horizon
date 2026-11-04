@@ -93,13 +93,16 @@ PROFILES.update({
           native_aux=[3,15,16,17,20,21,22,23,24],aux_translation={17:[-28,0,0],22:[28,0,0]},
           arm_spread=20,native_head=True,gaze_pitch=1,support_blend=.45,macro_floor=True,encoding_tol=2,
           style='compact armored stride, native head/hand/armor acting'),
- 403:dict(source='d2de28df42d0b31422e04d03da0b1519114b404001f2085a48e35ff73488c980',bones=31,
+ 403:dict(source='a1a77d1a90d3a93bb2847c5becbfd6bdf5fbbac77616adef76570e3b79955b3e',bones=31,
           carrier=1,pelvis=2,chest=1,head=28,
           legs=[(3,4,5,[5,6],1,0),(8,9,10,[10,11],-1,.5)],arms=[(16,17,1),(20,21,-1)],
-          slots=[2,3,4],periods={2:14,3:24,4:8},lifts={2:24,3:16,4:48},tracks=48,height_bias=-6,encoding_tol=3,
-          native_aux=[12,13,14,15,18,22,23,24,25,26,27,29,30],native_head=True,gaze_pitch=-2,steady_arm=-1,support_blend=.4,
+          slots=[2,3,4],periods={2:18,3:24,4:12},macro_periods={2:36,3:48},lifts={2:40,3:22,4:80},
+          leans={2:10,3:12,4:30},gaze_pitch_by_slot={2:4,4:16},bounce={2:8,3:5,4:14},
+          arm_amplitudes={2:24,3:12,4:34},tracks=48,height_bias=-6,encoding_tol=3,
+          native_aux=[12,13,14,15,18,22,23,24,25,26,27,29,30],native_head=True,gaze_pitch=-2,support_blend=.4,
+          steady_arm=-1,steady_arm_amp=.5,steady_arm_bends={2:20,3:15,4:35},
           run_arm_spread={1:25},arm_spread_by_slot={3:{1:25}},
-          style='steady gun arm, natural support and native wings/tail/wrist acting; original idle preserved'),
+          style='leaning stride, swinging free arm and the cannon carried low; native wings/tail/wrist acting; original idle preserved'),
 })
 
 SLOTS=[0,2,3,4]
@@ -190,7 +193,7 @@ def build(data,sk):
                 set_rotation(p,pelvis,pelvis_r,hist);set_rotation(p,chest,pelvis_r.T@chest_r,hist)
             if cfg.get('native_head'):
                 reference_world=np.array(mmd.bone_matrices(old,reference))[cfg['head'],:3,:3]
-                desired=reference_world@native_world_head.T@rotation([cfg.get('gaze_pitch',2),0,0])
+                desired=reference_world@native_world_head.T@rotation([cfg.get('gaze_pitch_by_slot',{}).get(slot,cfg.get('gaze_pitch',2)),0,0])
                 parent=np.array(mmd.bone_matrices(old,p))[sk[cfg['head']][1],:3,:3]
                 set_rotation(p,cfg['head'],parent.T@desired,hist)
             else:set_rotation(p,cfg['head'],rotation([-chest_pitch*.7,-chest_yaw*.7,.4*math.sin(theta-.6)]),hist)
@@ -200,14 +203,15 @@ def build(data,sk):
                 amp=cfg.get('arm_amplitudes',{}).get(slot,1.2 if idle else 23 if running else 13 if tired else 19)
                 bend=cfg.get('arm_bends',{}).get(slot,62 if running else 40)
                 if sid==461:amp*=.65 if left else .85;bend+=8 if left else 0
-                if cfg.get('steady_arm')==sign:amp*=.6;bend+=20
+                steady=cfg.get('steady_arm')==sign;base=cfg.get('arm_base',-8)
+                if steady:amp*=cfg.get('steady_arm_amp',.6);bend=cfg.get('steady_arm_bends',{}).get(slot,bend+20);base=cfg.get('steady_arm_base',base)
                 if running and cfg.get('trailing_run'):
                     p[shoulder][3:6]=[round((40+4*phase)*4096/360),0,round(spread*5*4096/360)]
                     p[elbow][3:6]=[round((-15+3*lag)*4096/360),0,round(spread*4*4096/360)]
                 else:
                     arm_spread=cfg.get('run_arm_spread',{}).get(sign,cfg.get('arm_spread',12))if running else cfg.get('arm_spread',12)
                     arm_spread=cfg.get('arm_spread_by_slot',{}).get(slot,{}).get(sign,arm_spread)
-                    p[shoulder][3:6]=[round((cfg.get('arm_base',-8)+amp*phase)*4096/360),0,round(spread*arm_spread*4096/360)]
+                    p[shoulder][3:6]=[round((base+amp*phase)*4096/360),0,round(spread*arm_spread*4096/360)]
                     p[elbow][3:6]=[round((-bend+(2 if idle else 8)*lag)*4096/360),0,round(spread*12*4096/360)]
             for b,sign in cfg.get('wings',[]):
                 p[b][3:6]=[round((26+.7*math.sin(theta-.9))*4096/360),round(-sign*14*4096/360),0]
