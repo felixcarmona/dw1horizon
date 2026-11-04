@@ -343,3 +343,4 @@ Draw-flattened-Digimon-with-the-flat-frames-their-te.patch
 Align-stacked-gym-boxes-and-leave-a-clear-gap.patch
 Keep-a-story-s-homecoming-lines-out-of-the-partner-s.patch
 Share-filename-hashing-across-file-and-language-lookups.patch
+Load-selected-Chinese-resources-and-bitmap-glyphs-in-extra-RAM.patch
