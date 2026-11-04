@@ -456,3 +456,11 @@ Payment happens before the draw, with an explicit no-refund warning: filling the
 cannot give free rerolls until a valuable prize fits. Make space before playing; a prize that does not fit is lost.
 All four machines use at most three menu rows, with More/Back paging and the game's normal cancel control.
 Their prompts, choices and rewards are authored in all eight languages, using each language's item names.
+
+`tools/economy_audit.py` exercises every vending menu purchase and all 100 random rolls from the actual Python
+handlers. It values all payouts through the Mojyamon fixed-point trade graph, rejects resale and expected-value
+loops (including the Gear Savanna bonus), checks failed purchases and daily stock, and rejects unreviewed script
+conversions consuming vending items. The merit shop buys cards and sells items: an item's meritValue is a purchase
+cost, not an additional cash-out. Card sales, card-to-merit and card NPC trades remain covered by the card audit.
+Regression cases deliberately restore unsafe prices, remove the daily write, inflate a trade-chain exit, lower
+the slot price, and introduce selective full-bag refunds; each must fail.

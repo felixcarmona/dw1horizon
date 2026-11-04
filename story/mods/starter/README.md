@@ -51,9 +51,9 @@ recipe and compiles the mod, so it cannot rot.
 
 ## Save numbers
 
-`mod.toml` reserves flags 790-799. The original engine has 83 free flags, 717-799, and two mods have reserved all of
-them: `what-the-island-forgot` 717-786 and `examples` 780-799. So no free range exists, and numbers from 800 need the
-story-state engine, which `dws disc` cannot build alone. 790-799 stays clear of the shipped story and overlaps only the
+`mod.toml` reserves flags 790-797. The Horizon original-engine profile has 81 free flags, 717-797, and two mods have reserved all of
+them: `what-the-island-forgot` 717-786 and `examples` 780-797. So no free range exists, and numbers from 800 need the
+story-state engine, which `dws disc` cannot build alone. 790-797 stays clear of the shipped story and overlaps only the
 part of the examples' range they do not use (`examples/save.lock` stops at 785). The examples never go on a disc with
 this mod. The mod uses two flags, for the two bits of `LostMedal`, and no saved counter.
 
