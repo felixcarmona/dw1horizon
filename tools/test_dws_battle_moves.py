@@ -1,10 +1,12 @@
 """Battle-ready moves for story NPCs copied from noncombat map entries."""
 import json
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import dwmap
 from dws import backend
 
