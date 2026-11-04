@@ -5014,9 +5014,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/406-MaloMyotismon.MMD.mdelta",
-        "delta_sha256": "0fbd7e887df0c1375433ccbbf7e47ed9c7de3ef239e1b82ce193823b9dd30a41",
-        "sha256": "2f359f41168a571515864ff66e5be65fd785bbe1834cbed84b5b229cc5cd734a",
-        "size": 98364
+        "delta_sha256": "0e42f9c066cf198490335170c058238e3b013ab7467c71bc4f82f2da7d50c38c",
+        "sha256": "658cac3266b5ff0e1bf63482f864306a7a71e66e0d0ee12c39a5f68293dc770d",
+        "size": 100094
       },
       "tim": {
         "sources": [

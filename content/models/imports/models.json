@@ -164,7 +164,7 @@
  "403": {"model": "403-Beelzemon.MMD", "aliases_applied": true},
  "404": {"model": "404-BlackWarGreymon.MMD", "aliases_applied": true},
  "405": {"model": "405-Cannondramon.MMD", "aliases_applied": true},
- "406": {"model": "406-MaloMyotismon.MMD", "aliases_applied": true, "field_overlay": "malomyotismon-chibi"},
+ "406": {"model": "406-MaloMyotismon.MMD", "aliases_applied": true},
  "407": {"model": "407-Armageddemon.MMD", "aliases_applied": true},
  "408": {"model": "408-Suijinmon.MMD", "aliases_applied": true},
  "409": {"model": "409-Kyubimon.MMD", "aliases_applied": true, "texture": "409-Kyubimon.TIM"},
