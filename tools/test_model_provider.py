@@ -2,6 +2,7 @@
 import hashlib
 import json
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -11,6 +12,26 @@ from tools.derive.steps.overlays import imported_models as provider
 
 
 class ModelProvider(unittest.TestCase):
+    def test_editor_pins_final_provider_output_without_a_field_overlay(self):
+        from tools.models import edit
+
+        self.assertNotIn('field_overlay', edit.import_records()['182'])
+
+        def generate(out, sid, generate):
+            base = Path(module.BASE_MODELS)
+            model = Path(out).with_suffix('.MMD')
+            texture = base / f'{sid}.TIM'
+            model.write_bytes((base / f'{sid}.MMD').read_bytes() + b'dash repair')
+            return 'model.json', {'model': {'file': str(model)}, 'texture': {'file': str(texture)}}
+
+        module = SimpleNamespace(species_file=generate)
+        spec = SimpleNamespace(loader=SimpleNamespace(exec_module=Mock()))
+        with patch.object(edit.importlib.util, 'spec_from_file_location', return_value=spec), \
+                patch.object(edit.importlib.util, 'module_from_spec', return_value=module):
+            actual = edit.provider_pin(182, b'base model', b'texture')
+        self.assertEqual(actual, [hashlib.sha1(b'base modeldash repair').hexdigest(),
+                                  hashlib.sha1(b'texture').hexdigest()])
+
     def test_generated_base_folder_is_forwarded_to_the_imported_provider(self):
         make = Mock(return_value={'183': ('/model.MMD', '/model.TIM')})
         module = SimpleNamespace(make=make)
@@ -29,12 +50,21 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 120)
+        celebrations = json.load(open('content/models/imports/celebrations.json'))
+        self.assertEqual(len(selected), 120 + sum(not r.get('base_generator') for r in celebrations.values()))
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        # Celebration curves run after the final proportions. Unwrap them to
+        # keep guarding all the original field recipes and output names.
+        for sid, row in celebrations.items():
+            self.assertEqual(assignments[sid][0], 'tools.models.field_animations.celebrations')
+            if row.get('base_generator'):
+                assignments[sid] = (row['base_generator'], assignments[sid][1])
+            else:
+                del assignments[sid]
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():
