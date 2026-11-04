@@ -28,7 +28,6 @@
   "condition_bubble": [0, -96, 9, 6],
   "effect_origins": [[7, 0, 0, 0, 4, 0, 0, 0], [10, 0, 0, 0, 10, 0, 0, 0], [18, 0, 0, 0, 16, 0, 0, 0]],
   "wild": {"hp": 3120, "mp": 2890, "off": 385, "def": 340, "speed": 295, "brain": 295, "bits": 1500},
-  "size": {"height": 490},
   "sizing": {
     "game": "dw3",
     "level": 5,
@@ -36,6 +35,7 @@
     "base_scale": 0.2383,
     "natural": {"height": 2101.0, "half_width": 761.4, "half_depth": 689.9}
   },
+  "size": {"height": 490},
   "partner": {
     "voice": 3,
     "hunger_hours": [2, 6, 11, 16, 21],

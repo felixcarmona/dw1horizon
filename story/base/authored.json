@@ -390,6 +390,16 @@
       "original_sha256": "cf7a4756cc00f5670de09f87d05f61a040e0c478f54ea8e2fd755d986376c7fd",
       "authored_sha256": "fedb1f2179247142e2a0d6b7604472f660d19ade6993b743e564afac40340fdf",
       "reason": "The Mansion Key is used up, with a narrator line, once every locked door of the mansion stands open (qol.mansion_key_used_up); DWS synchronized with the authored Python source"
+    },
+    "zones/ancient-speedy-region/s082-86/script.py": {
+      "original_sha256": "c9b734406e2f7018f668d073962fac3ee05c359d9cbfe27216d1737a5a95a1d4",
+      "authored_sha256": "620d577d7822df3d9ee7c5218786d17b3e8a35e09cf62dbaad834e489aa62769",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait"
+    },
+    "zones/ancient-speedy-region/s082-86/script.dws": {
+      "original_sha256": "61b22d964af09d2c5f6c07d27bf154a41c9c2a0d5bc534af1542478132cb88b4",
+      "authored_sha256": "3de91e9b709a77b7aaf784c9257146ea7ab72f44ca02bd4d7542fdde8a700952",
+      "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source"
     }
   }
 }

@@ -28,7 +28,7 @@ class Recruitment(unittest.TestCase):
     def test_wild_needs_first_win(self):
         source = self.lowered('back-dimension')
         self.assertIn('engine.result == 1 && !is_recruited(species(104))', source)
-        self.assertIn('sound(8, 11);', source)
+        self.assertIn('sound(8, 0);', source)    # the Back Dimension's region (17) numbers the jingle 0 (story/core/audio.json)
         self.assertIn(f'text("{recruitment.KEY}", species(104))', source)
         self.assertLess(source.index('battle();'), source.index('engine.result == 1'))
         self.assertNotIn('walk_away', source)
