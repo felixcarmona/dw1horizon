@@ -39,6 +39,9 @@ Usage:
                                     build/dcb, build/dw2 pointed to M
   species.py [--content DIR] disc-files
                                     the build-disc.py --file/--add arguments of the originals' replaced models
+  species.py [--content DIR] flat-audit DIGI.DAT ALLTIM.TIM
+                                    every species of a build has the picture it turns into while flattened
+                                    (tools/flatsprite.py); exit 1 if one lacks it
   species.py lint [--files] [--quiet]
                                     what the game cannot handle (errors) or probably not meant (warnings), with the
                                     file, field, value and why; build-full.sh runs it
@@ -852,6 +855,19 @@ def species_texture(s):
     return tim.to_bytes()
 
 
+def flat_texture(s, model, nbones, tex):
+    """(texture, model, how) with the species' flat sprite, the picture it turns into while flattened
+    (tools/flatsprite.py): its own if the texture has one, else its icon in two colours where the model leaves room
+    (the model changes only when some of its UV islands had to move to make that room)."""
+    import flatsprite
+    icon, _ = flatsprite.art(s)
+    try:
+        tex, model, _, _, how = flatsprite.stamp(tex, model, nbones, flatsprite.mono(icon))
+    except flatsprite.NoRoom as e:
+        raise SystemExit(f'{s["_path"]}: no room for the flat sprite: {e}')
+    return tex, model, how
+
+
 def resident_model(s, r, model):
     """(resident part, cold part) of a partner species' model: the whole model and nothing cold unless COLD=1 (and "cold": false opts out)."""
     if COLD and s['id'] >= NUM_ORIGINAL and r['flags'] & FLAG_PARTNER and s.get('cold', True):   # (the original ids carried by a record keep their file)
@@ -1309,6 +1325,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     for t in sorted(species):
         s = species[t]; r = species_record(s)
         model, mpath = species_model(s); tex = species_texture(s)
+        tex, model, flat = flat_texture(s, model, len(r['bones']), tex)     # (a model whose UV islands made room changes)
         whole = model
         model, cold = resident_model(s, r, model)           # COLD=1: the part the partner buffer holds, and the part read when needed
         if int(s.get('needs_ram_mb', 2)) > 2 and len(model) <= 0x18800:
@@ -1328,7 +1345,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
         blobs.append(model + b'\0' * (-len(model) % SECTOR) + cold + b'\0' * (-len(cold) % SECTOR)); blobs.append(tex)
         recs[t] = r
         if not quiet: print(f'{t:3d} {s["name"]:20s} model {os.path.relpath(mpath, ROOT)} ({len(model)} B), '
-                            f'texture, {"partner" if r["flags"] & FLAG_PARTNER else "not a partner"}')
+                            f'texture (flat sprite: {flat}), {"partner" if r["flags"] & FLAG_PARTNER else "not a partner"}')
     if shard_bad and SHARD_SCRATCH_WARN:   # an executable from before the bigger scratch: it skips those pieces
         print('warning: ' + '\nwarning: '.join(shard_bad) + '\n(this executable sheds no shards for the pieces past it)')
     elif shard_bad:
@@ -1576,6 +1593,83 @@ def disc_files(content=None):
         if 'partner_file' in m:
             out.append(('--add', os.path.basename(m['partner_file']), m['partner_file']))
     return out
+
+
+def build_alltim(out, content=None):
+    """CHDAT/ALLTIM.TIM of the disc with a flat sprite for each original that is on screen with its disc texture and
+    has none (tools/flatsprite.py: Analogman, Jijimon, Market Manager, ShogunGekomon and DemiMeramon draw nothing while
+    flat): the player's own file, those entries completed. Room is measured on every model the game draws with that
+    texture: the disc's (or its replacement, disc_files) and the partner-only file. Returns {id: how} of the changed
+    entries."""
+    import flatsprite
+    import mmd
+    data = bytearray(open(ALLTIM, 'rb').read())
+    O = originals()
+    done = {}
+    for t, s in sorted(load_content(content).items()):
+        if t >= NUM_ORIGINAL: break
+        if t == 0 or is_record_original(s): continue      # the tamer never fights; a record original's is in DIGI.DAT
+        tex = bytes(data[t * TEX_SIZE:(t + 1) * TEX_SIZE])
+        if not flatsprite.check(tex): continue
+        nb = len(O.rec[t]['bones'])
+        models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
+                                          if 'partner_file' in s['model'] else [])
+        icon, _ = flatsprite.art(s)
+        tex, _, _, _, how = flatsprite.stamp(tex, models, nb, flatsprite.mono(icon))
+        data[t * TEX_SIZE:(t + 1) * TEX_SIZE] = tex
+        done[t] = how
+    with open(out, 'wb') as f:
+        f.write(data)
+    return done
+
+
+def flat_audit(digi, alltim, content=None):
+    """{id: (how, [problems])} of the flat sprite of every species of a build (DIGI.DAT, the CHDAT/ALLTIM.TIM it goes
+    with, its species folder): the texture the game loads for it and the model it draws. The frames of a texture DIGI.DAT
+    carries, and frames moved away from the originals' corner, are checked against every texel the model uses (the
+    model in DIGI.DAT: `flatsprite.make_room` may have moved some of its UV islands)."""
+    import flatsprite
+    d, _, recs = read_archive(digi)
+    by_id = {r['id']: r for r in recs if r}
+    adata = open(alltim, 'rb').read()
+    out = {}
+    for t, s in sorted(load_content(content).items()):
+        if t == 0 or t not in by_id:
+            continue
+        r = by_id[t]
+        src = d if r['texFile'] == TEX_ARCHIVE and (t >= NUM_ORIGINAL or is_record_original(s)) else adata
+        sec = r['texSector'] if src is d else t * (TEX_SIZE // SECTOR)
+        tex = src[sec * SECTOR:sec * SECTOR + TEX_SIZE]
+        cells, row = flatsprite.sprite_of(tex)
+        moved = cells != flatsprite.NATIVE or row != flatsprite.ROW
+        deep = moved or src is d                    # the disc's own textures: only their frames are looked at
+        models = None
+        if deep and src is d:                       # the model DIGI.DAT carries, its cold part joined back
+            import coldsplit
+            model = d[r['modelSector'] * SECTOR:r['modelSector'] * SECTOR + r['modelSize']]
+            if coldsplit.is_split(model):
+                c0 = r['modelSector'] + -(-r['modelSize'] // SECTOR)
+                model = coldsplit.join(model, d[c0 * SECTOR:c0 * SECTOR + coldsplit.cold_length(model)],
+                                       len(r['bones']), coldsplit.table_length(model))
+            models = [model]
+        elif deep:
+            models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
+                                              if 'partner_file' in s['model'] else [])
+        out[t] = ('moved' if moved else 'native', flatsprite.check(tex, models, len(r['bones'])))
+    return out
+
+
+def cmd_flat_audit(a):
+    """Every species has a flat sprite (tools/flatsprite.py): exit 1 if one lacks it."""
+    rep = flat_audit(a.digi, a.alltim, a.content)
+    bad = {t: p for t, (_, p) in rep.items() if p}
+    for t, p in sorted(bad.items()):
+        print(f'{t}: ' + '; '.join(p))
+    kinds = collections.Counter(h for h, _ in rep.values())
+    print(f'flat sprites: {len(rep)} species, ' + ', '.join(f'{k} {v}' for k, v in sorted(kinds.items()))
+          + f'; {len(bad)} without one')
+    if bad:
+        raise SystemExit(1)
 
 
 def cmd_disc_files(a):
@@ -2349,6 +2443,8 @@ def main():
     p = sub.add_parser('select'); p.add_argument('sel'); p.add_argument('-o', required=True); p.add_argument('--models')
     p.set_defaults(f=cmd_select)
     p = sub.add_parser('disc-files'); p.set_defaults(f=cmd_disc_files)
+    p = sub.add_parser('flat-audit', help='every species of a build has a flat sprite (tools/flatsprite.py)')
+    p.add_argument('digi'); p.add_argument('alltim'); p.set_defaults(f=cmd_flat_audit)
     p = sub.add_parser('lint'); p.add_argument('--files', action='store_true', help='also check that model/texture files exist')
     p.add_argument('--quiet', action='store_true', help='errors only'); p.set_defaults(f=cmd_lint)
     a = ap.parse_args(); a.f(a)
