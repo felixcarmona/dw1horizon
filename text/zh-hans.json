@@ -1,5 +1,5 @@
 {
- "qol.training_x5": "普通训练×5",
+ "qol.training_x5": "普通训练x5",
  "qol.mansion_key_used_up": "宅邸里的门都打开了。已经不需要{color 6}宅邸钥匙{color 1}了。",
  "name.ask_partner": ["{color 7}公公兽{color 1}", "要给你的数码宝贝取个名字吗？"],
  "name.ask_partner_choice": ["{color 6}{player}{color 1}", "要", "不要"],

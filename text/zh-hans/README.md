@@ -1,8 +1,9 @@
 # Simplified Chinese authoring
 
 This is an incomplete translation draft, not a selectable game language yet.
-The current draft covers the expanded starter quiz, Native Forest and Jijimon's
-house. It follows `text/ours`, cross-checked against both original Japanese
+The current draft covers both starter quizzes, Native Forest, Jijimon's house
+and shared merchant, card, trade, travel and tournament text. It follows
+`text/ours`, cross-checked against both original Japanese
 extractions and the scripts in `story/base`. An independent second pass corrected
 meaning, character voice and explicit row fit. Native-speaker approval and in-game
 review are still required.
