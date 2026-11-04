@@ -25,7 +25,7 @@
  "205": {"model": "205-MegaKabuterimon.MMD", "aliases_applied": true},
  "206": {"model": "206-MagnaAngemon.MMD", "aliases_applied": true},
  "207": {"model": "207-Seraphimon.MMD", "aliases_applied": true, "field_overlay": "seraphimon-field"},
- "208": {"model": "208-Togemon.MMD", "aliases_applied": true, "field_overlay": "togemon-field"},
+ "208": {"model": "208-Togemon.MMD", "aliases_applied": true},
  "209": {"model": "209-Lillymon.MMD", "aliases_applied": true, "texture": "209-Lillymon.TIM", "field_overlay": "lillymon-native-flight"},
  "210": {"model": "210-GranKuwagamon.MMD", "aliases_applied": true, "field_overlay": "grankuwagamon-field"},
  "211": {"model": "211-MetalSeadramon.MMD", "aliases_applied": true, "field_overlay": "metalseadramon-glide"},

@@ -794,9 +794,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/208-Togemon.MMD.mdelta",
-        "delta_sha256": "5a51b4883b5167234907d0e2af3b6730d8793430ec9c273870c22d68acb907bb",
-        "sha256": "ce4e7b0017bcc00350e6fc1832440524ccf51c92e0edfb2a57e1f34101e2846b",
-        "size": 91684
+        "delta_sha256": "c931e8e3077bc71cff16a7cf1c4112b0e64f9988a6dfd67158ef73ec2f93109e",
+        "sha256": "d50416a7df356de5f974c7370631949f607690cfe6cb1b141ae61bbf8a0a37cf",
+        "size": 80426
       },
       "tim": {
         "sources": [
