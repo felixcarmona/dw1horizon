@@ -30,15 +30,16 @@ glyph").
 
 A patch has no number: its file is `<name>.patch`, the name being its commit subject as `git format-patch` writes it,
 and its place is its line in `series`. `tools/mods.sh save` does both: it exports each new commit of the working copy,
-drops the number `format-patch` puts in front, refuses a name that is already taken (reword the commit's subject), and
-appends the name to `series`. By hand, in the working copy: `git format-patch -N -1 HEAD`, set the file's second line
-to `From: Horizon authors <>` as in the other patches, move it here without its number, and append its name to `series`.
-
-Then add the patch's row at the end of [index.md](index.md), with the **was** column empty:
+drops the number `format-patch` puts in front, refuses a name that is already taken (reword the commit's subject),
+appends the name to `series` and a row to the end of [index.md](index.md) with the subject as its text. Rewrite that
+row: what the patch does and what it costs the main executable; the **was** column stays empty.
 
 ```
 | `<name>.patch` |  | what it does | main executable cost |
 ```
+
+By hand, in the working copy: `git format-patch -N -1 HEAD`, set the file's second line to `From: Horizon authors <>`
+as in the other patches, move it here without its number, and append its name to `series` and its row to `index.md`.
 
 Refer to a patch by its name, not its position: positions move when the branches merge.
 

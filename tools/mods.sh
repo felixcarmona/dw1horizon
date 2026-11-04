@@ -12,8 +12,8 @@
 #                                      override them. The disc has the original's data files; tools/build-full.sh
 #                                      makes the full disc
 #   tools/mods.sh save [mods|int]  exports the commits made in the working copy after `prepare` as new
-#                                      patches (<subject>.patch, no number) and appends their names to
-#                                      mods/patches/series
+#                                      patches (<subject>.patch, no number), appends their names to
+#                                      mods/patches/series and their rows to mods/patches/index.md
 #
 # Flow: prepare -> edit in build/decomp-int/src -> git commit there -> save -> build.
 # The series is linear: a change to an old patch is a new patch on top (history stays readable).
@@ -61,6 +61,7 @@ case "${1:-build}" in
   save)
     # format-patch numbers its files; the name in the series is the rest (the commit subject), and the order is the
     # series file's, so two branches never take the same number. A name already taken stops before anything is written.
+    # Each patch also gets its row at the end of index.md, with the subject as its text: say there what it does and costs.
     T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
     git -C "$W" format-patch -q -N -o "$T" "series-$BR".."$BR"
     NEW=()
@@ -72,9 +73,13 @@ case "${1:-build}" in
       fi
       NEW+=("$n")
     done
+    mapfile -t SUBJECTS < <(git -C "$W" log --reverse --format=%s "series-$BR".."$BR")
+    i=0
     for f in "$T"/*.patch; do
       n=$(basename "$f" | sed 's/^[0-9]*-//')
       mv "$f" "$SAVE_DIR/$n" && echo "$n" >> "$SAVE_DIR/series"
+      printf '| `%s` |  | %s |  |\n' "$n" "${SUBJECTS[$i]//|//}" >> "$SAVE_DIR/index.md"
+      i=$((i + 1))
     done
     git -C "$W" tag -f "series-$BR" >/dev/null
     python3 tools/patch_series.py check
