@@ -202,3 +202,5 @@ Native balance builds start from empty species rows and explicit resident defaul
 Empty technique, item and screen directories remove their complete numeric domains, just as deleting an individual file removes its row. They never reactivate source tables.
 
 An empty `content/maps` directory removes all parsed Digimon lists. Source map geometry remains an asset input; a missing placement file never preserves source enemies. The malformed, never-read `YAKA22` asset remains an explicit opaque exception.
+
+Story builds require the committed `story/base` sources. Missing sources fail the build; they never trigger an implicit lift of player-disc scripts. Explicit `dws story-base` and `--refresh` remain disc-import authoring operations. A deleted script within an existing base compiles to an empty script.

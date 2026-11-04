@@ -50,5 +50,25 @@ class EmptyMaps(unittest.TestCase):
             self.assertEqual(content.build_map('FOREST01', b'geometry and enemies'), (0, []))
 
 
+class OwnedStory(unittest.TestCase):
+    def test_missing_story_never_imports_disc(self):
+        from dws import basebuild as story
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(story, 'ensure_base', side_effect=AssertionError('disc import')):
+            with self.assertRaisesRegex(story.DwsError, 'missing owned story source'):
+                story._build([], str(Path(directory) / 'DG.SCN'), base=str(Path(directory) / 'missing'))
+
+    def test_ready_story_does_not_refresh(self):
+        from dws import basebuild as story
+        with patch.object(story, 'ensure_base', side_effect=AssertionError('disc import')):
+            story.require_base()
+
+    def test_explicit_refresh_remains_an_authoring_operation(self):
+        from dws import basebuild as story
+        with patch.object(story, 'ensure_base') as imported:
+            story.require_base(refresh=True, log=None)
+            imported.assert_called_once_with(story.BASE, refresh=True, log=None)
+
+
 if __name__ == '__main__':
     unittest.main()
