@@ -1124,26 +1124,26 @@
         "sources": [
           {
             "path": "build/sizes-out/models/Zudomon.MMD",
-            "sha256": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89",
+            "sha256": "ecc5394a3e90672ac8a07f165f83ada19fbceda4c60e0ab4744375dbecea80cc",
             "size": 98872
           }
         ],
         "delta": "content/modeldelta/deltas/219-Zudomon.MMD.mdelta",
-        "delta_sha256": "631ce8b064cdce5a30439dc240998d6835d0aea157cf380b9f6f4b2c9c505349",
-        "sha256": "f39e1523a9f478e892830ba74a558aee4c15409dd375d2047d799735293af080",
+        "delta_sha256": "2864d80dc9d7b18dcafb34230330f8ad74394a4cdc8f67702c6d15958fb80281",
+        "sha256": "5dd5642d5b041eff795d35fb9e01152e765139693c161a288c92d09bbffa6abc",
         "size": 105236
       },
       "tim": {
         "sources": [
           {
             "path": "build/batch4/Zudomon.TIM",
-            "sha256": "93b465599e11aeca94a5ebd07d530704605dae30f80ddb7f797dea098d3db804",
+            "sha256": "a72a11d5724edb061c3db672c53f5374898e864aff9f503ea6d0b2168b94c375",
             "size": 18432
           }
         ],
         "delta": "content/modeldelta/deltas/219-Zudomon.TIM.mdelta",
-        "delta_sha256": "10bd6cc1e19df3588813850ee40bb076c53dbe4a01fd63e2c6499248731eb693",
-        "sha256": "93b465599e11aeca94a5ebd07d530704605dae30f80ddb7f797dea098d3db804",
+        "delta_sha256": "93ff99b1f1e584f8790182ef0c6c7d99b081cb6063a49ad6409f13f6d6534ef9",
+        "sha256": "a72a11d5724edb061c3db672c53f5374898e864aff9f503ea6d0b2168b94c375",
         "size": 18432
       }
     },

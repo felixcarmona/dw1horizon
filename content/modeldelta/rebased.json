@@ -189,6 +189,20 @@
       "kind": "TIM",
       "previous_bytes": 76,
       "bytes": 1007
+    },
+    {
+      "id": 219,
+      "name": "Zudomon",
+      "kind": "MMD",
+      "previous_bytes": 1977,
+      "bytes": 2020
+    },
+    {
+      "id": 219,
+      "name": "Zudomon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 286
     }
   ]
 }

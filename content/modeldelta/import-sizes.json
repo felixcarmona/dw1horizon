@@ -115,11 +115,11 @@
     },
     {
       "source": "build/batch4/Zudomon.MMD",
-      "source_sha256": "c220b35c67a1d4b4747670db6d6a3cc051883500e930348d35e95c7774a3e5f7",
+      "source_sha256": "572633a6780e6f0e13931824e7998209831a52b2c00c425395af9d0802c467d7",
       "bones": 22,
       "scale": 1.1995638249631584,
       "target": "build/sizes-out/models/Zudomon.MMD",
-      "sha256": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89"
+      "sha256": "ecc5394a3e90672ac8a07f165f83ada19fbceda4c60e0ab4744375dbecea80cc"
     },
     {
       "source": "build/batch4/Vikemon.MMD",

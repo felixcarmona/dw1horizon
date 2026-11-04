@@ -752,9 +752,9 @@
   "name": "Zudomon",
   "bones": 22,
   "skeleton_sha256": "90c4662501b5dd22e94c2a06f31362dd0af6e969af5204f383ee5980f1f729ae",
-  "source_sha256": "f39e1523a9f478e892830ba74a558aee4c15409dd375d2047d799735293af080",
+  "source_sha256": "5dd5642d5b041eff795d35fb9e01152e765139693c161a288c92d09bbffa6abc",
   "base_generator": "tools.models.field_animations.zudomon",
-  "post_source_sha256": "5d6c6090e736e17550d9afcde9fae26d1f4d44630fee92e8a3559867b77ba1c0",
+  "post_source_sha256": "762ec5445e7a1e5e2092f5dd4e16b35287a8c24680bbcd69c18cb98003cfb9fa",
   "slots": {
    "2": {
     "from": 2,
