@@ -18,6 +18,7 @@ import subprocess
 def sections(build, plan):
     build = Path(build)
     paths = {'SLUS_010.32': ('en', 'SLUS_010.32')}
+    paths['@zh/module'] = ('zh-hans', 'ZH_REL.BIN')
     for value in plan.get('LANG_OVL', []):
         lang, source, target = value.split(':')
         paths['SCN/' + target] = (lang, source)

@@ -32,7 +32,7 @@ from fontcopy import table_layout as layout, table_tail as tail
 @lru_cache(maxsize=4)
 def authored_texts(root):
     result = {}
-    for language in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):
+    for language in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
         bank = fontcopy.authored_bank(root, language)
         for key, text in bank['text'].items():
             data = fontcopy.encode_bank(text, bank)
@@ -45,6 +45,8 @@ def authored_recipe(obj, data, tool_root=None, words=()):
     root = str(Path(tool_root) if tool_root else Path(__file__).resolve().parents[2])
     name = obj['section'].split('.')[-1]
     choices = []
+    if name in ('MOD_FLAG_PALETTE', 'MOD_FLAG_OFFSET', 'MOD_FLAG_RUNS'):
+        choices = [('language_flags', [name.removeprefix('MOD_FLAG_').lower()])]
     if name == 'SOUND_INDEX_FILES' and obj['source'] == 'src/main/sound.c':
         pointers, payload = fields(obj, words)
         if (len(data) == 48 and [p-obj['offset'] for p in pointers] ==
@@ -69,7 +71,7 @@ def authored_recipe(obj, data, tool_root=None, words=()):
     elif obj['section'] == '.rodata.drawMainMenuStrings.str1.4' and len(data) == 26:
         choices = [('menu_picker', [])]
     elif name == 'ITEM_MENU_LABELS':
-        choices = [('inventory_labels', [lang]) for lang in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')]
+        choices = [('inventory_labels', [lang]) for lang in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')]
     elif name == 'VS_VERSUS_TEXT_PIECES' and len(data) == 294:
         for english in (True, False):
             piece = fontcopy.semantic_table('versus_mode', [english])
@@ -118,7 +120,7 @@ def authored_recipe(obj, data, tool_root=None, words=()):
             return dict(offset=obj['offset'], size=obj['length'], section=obj['section'],
                         kind='semantic', fields=[[at, len(pitch)]], generator='pitch', params=[])
     elif name.endswith('_BATTLE_START_TEXT_POSITIONS'):
-        choices = [('banner', [language]) for language in ('es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')]
+        choices = [('banner', [language]) for language in ('es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans')]
     elif name == 'CHAR_MAPPING_SPECIAL':
         choices = [('sjis', [])]
     elif name == 'SAVEGAME_ID_LABEL':
@@ -139,7 +141,7 @@ def item_recipe(obj, data, sources):
         return None
     root = str(Path(__file__).resolve().parents[2])
     language = None
-    for lang in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca'):
+    for lang in ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca', 'zh-hans'):
         bank = fontcopy.authored_bank(root, lang)
         if all(f'main.ITEM_NAMES.{i}' in bank['text'] and
                fontcopy.encode_bank(bank['text'][f'main.ITEM_NAMES.{i}'], bank).ljust(20, b'\0') == data[i*32:i*32+20]

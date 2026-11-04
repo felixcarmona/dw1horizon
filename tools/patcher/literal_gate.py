@@ -77,8 +77,13 @@ def outside_source_chunks(payload, variant, source_sizes):
 def validate_blob(payload):
     """Dead blob data is a publication error, even if it is never reconstructed."""
     for ops in list(payload['files'].values()) + [payload['license']]:
-        if any(op[0] not in {'s', 'c', 'r', 'l', 'h', 'o', 'b', 'f'} for op in ops):
+        if any(op[0] not in {'s', 'c', 'r', 'l', 'h', 'o', 'b', 'f', 'j'} for op in ops):
             raise GateFailure('new payload opcode requires explicit literal audit support')
+    for recipe in payload.get('chinese', []):
+        refs = [recipe[key] for key in ('module', 'font', 'names', 'patch')]
+        refs += [row['file'] for row in recipe['resources']]
+        if recipe.get('format') != 1 or any(ref not in payload['files'] for ref in refs):
+            raise GateFailure('Chinese container references an unchecked component')
     spans = [(r['blob_offset'], r['length']) for r in audit.literal_runs(payload)]
     for entry in payload.get('deltas', []):
         audit.dw.linker_word_bytes(entry)
