@@ -8,15 +8,17 @@ Cherrymon (type 121, JURE.MMD) is an NPC: 26 bones on a skeleton no other model 
 only three animation slots (0 idle, 0x1D and 0x1E, used by its Misty Trees scripts).
 This script builds the partner model:
 
-  - the mesh and every bone offset scaled by SCALE (Cherrymon is 1000 high, twice the
-    biggest partner; at 0.55 it is 550, a bit under MasterTyrannomon's 590);
+  - the mesh closed (`back.py`: the NPC was only ever seen from the front, so its trunk had no
+    back, and its prongs and leaves one side), then it and every bone offset scaled by SCALE
+    (Cherrymon is 1000 high, twice the biggest partner; at 0.55 it is 550, a bit under
+    MasterTyrannomon's 590);
   - slots 0x1D/0x1E: the NPC's own animations, replayed tick by tick and re-encoded
     with their translations scaled (for the partner animation set);
   - every slot a partner uses (the union over the 64 partner models: 0-5, 7-0x13,
     0x15-0x19, 0x1B, 0x21-0x25, 0x28-0x2C) plus 0x2E-0x36 (eight Earth techniques
     and Bit Bomb): authored here as per-tick poses (`clips.py`) and encoded with
-    mmd.encode_anim; the technique arm swings come from Vegiemon's vines through
-    tools/retarget.py.
+    mmd.encode_anim (key tolerance CLIP_TOL); the technique arm swings come from Vegiemon's
+    vines through tools/retarget.py.
 
 Usage (from the repository root):
   python3 content/models/cherrymon/make-model.py [OUT.MMD] [--pad]
@@ -32,6 +34,7 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 sys.path.insert(0, HERE)
 import mmd  # noqa: E402
+import back  # noqa: E402
 import clips  # noqa: E402
 
 TYPE = 121
@@ -39,6 +42,8 @@ SCALE = 0.55
 MESH = os.path.join(ROOT, 'extracted/CHDAT/MMD4/JURE.MMD')
 PARTNER_MODEL_BUFFER = 0x18800
 NPC_SLOTS = (0x1D, 0x1E)
+# the authored clips' key tolerance (1/4096 turn, model units): 2 leaves room in the buffer for the faces back.py adds
+CLIP_TOL = 2
 
 
 def play(anim, nb, slot):
@@ -94,11 +99,12 @@ def build(out_path, pad=False):
     rig = clips.Rig(rest)
     for slot, clip in clips.partner_clips(rig).items():
         smp, ls, ev = clip.samples()
-        put(slot, mmd.encode_anim(smp, nb, ls, ev, tol=1))
+        put(slot, mmd.encode_anim(smp, nb, ls, ev, tol=CLIP_TOL))
 
     missing = [s for s in clips.REQUIRED_SLOTS if sec.table[s] is None]
     assert not missing, f'slots without animation: {[hex(s) for s in missing]}'
 
+    added = back.close(src.tmd)
     scale_mesh(src)
     out = mmd.MMD()
     out.tmd, out.anims = src.tmd, sec
@@ -112,7 +118,7 @@ def build(out_path, pad=False):
         data += bytes(PARTNER_MODEL_BUFFER - len(data))
     open(out_path, 'wb').write(data)
     used = sum(x is not None for x in sec.table)
-    print(f'{out_path}: JURE mesh x{SCALE}, {len(sec.anims)} animations in {used} slots, '
+    print(f'{out_path}: JURE mesh x{SCALE} closed with {added} faces, {len(sec.anims)} animations in {used} slots, '
           f'{size} bytes (PARTNER_MODEL_BUFFER {PARTNER_MODEL_BUFFER}){" padded" if pad else ""}')
     return out_path
 

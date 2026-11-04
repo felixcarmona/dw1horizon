@@ -14,7 +14,7 @@ REFERENCE = {
     'ICEM-partner.MMD': 'be9c02b800de9eaf820fd8d9bf00807c37faaf59',
     'INSE-partner.MMD': '2ae7ece99d20d857105be8aae4c080b8ee1531f9',
     'JIJP.MMD': '91f3959e873a7962272bf742ce23b700465d4799',
-    'JURE-partner.MMD': '306e6b341aaca91f44b6b2e55e50327b86c9e88a',
+    'JURE-partner.MMD': '8b048ac68ad45ed78e45cc21b17c1c11b42df949',
     'MUGP.MMD': '60f9890791fcd3d3309d4daabd718a2810e14119',
     'SCUD-partner.MMD': '38048e8649f7d6725706722e5646857f1fc576ea',
     'TIRS-partner.MMD': 'd0a29f7e7c70c9d290995c9c7bdb8051654929eb',

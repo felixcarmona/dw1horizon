@@ -10,8 +10,9 @@ and model bytes independent of the source directory layout.
 | WaruMonzaemon, Myotismon, ShogunGekomon | each species' `make-model.py`; `tools/models/partners/rig.py`; `tech-origins.py` audits technique effects |
 | Machinedramon, Jijimon, Analogman | `machinedramon.py`, `jijimon.py`, `analogman.py`; `tools/models/partners/boss.py` |
 
-MasterTyrannomon and Cherrymon retain their dedicated model folders. Generators
-read models and animations from the player's extracted USA disc. Their output
+MasterTyrannomon and Cherrymon retain their dedicated model folders. Cherrymon's
+generator also closes the NPC's mesh, which has no back (`content/models/cherrymon/back.py`).
+Generators read models and animations from the player's extracted USA disc. Their output
 must fit the original 2 MB target's partner buffer. Machinedramon, Jijimon and Analogman keep separate partner files. Field NPCs
 for types 119–124 and 126 use internal records 462–468, whose MMDs and textures
 come directly from the unmodified disc. These records preserve native size,
