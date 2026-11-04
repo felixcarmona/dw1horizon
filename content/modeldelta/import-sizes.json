@@ -682,6 +682,14 @@
       "scale": 1.2853470437017993,
       "target": "build/sizes-out/models/Cannondramon.MMD",
       "sha256": "1c0879babe3ffc04d0547827468fbe0fb7067f7415773efaf6b229febde51229"
+    },
+    {
+      "source": "build/batch3/Devidramon.MMD",
+      "source_sha256": "e99f879ca28fc7478f28028d947b6bcd9bb8085993f822d7bbea6c7c896bb5a9",
+      "bones": 29,
+      "scale": 0.8479701681485705,
+      "target": "build/sizes-out/models/Devidramon.MMD",
+      "sha256": "6b19a7167b6878f65ed4c2f30599f18a516f8153bff13d3cd6356abf34b24f08"
     }
   ]
 }

@@ -292,9 +292,9 @@
   "name": "Devidramon",
   "bones": 29,
   "skeleton_sha256": "ce1c542a1791db8fcae17ed8ecd8a3646e9f4016584d11c2fe2c59e57b70edcd",
-  "source_sha256": "175aef45b792ae1707ee37e49f7eddfb1ad7e4be01945d6b26e1b9a28a5d51f6",
+  "source_sha256": "8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c",
   "base_generator": "tools.models.field_animations.devidramon",
-  "post_source_sha256": "f7eac8ac5d227990091ad2334fcc7c02af528686c544b0d60977aa5350495f2b",
+  "post_source_sha256": "df7c523f70aa536996e1b2bb70fa2bdb01446e8e1f10d72190ea011d58fc2321",
   "slots": {
    "2": {
     "from": 2,

@@ -1033,14 +1033,14 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/batch3/Devidramon.MMD",
-            "sha256": "e99f879ca28fc7478f28028d947b6bcd9bb8085993f822d7bbea6c7c896bb5a9",
+            "path": "build/sizes-out/models/Devidramon.MMD",
+            "sha256": "6b19a7167b6878f65ed4c2f30599f18a516f8153bff13d3cd6356abf34b24f08",
             "size": 96714
           }
         ],
         "delta": "content/modeldelta/deltas/216-Devidramon.MMD.mdelta",
-        "delta_sha256": "78d34798a62f6828e17778e507a1c805ab926742d785986327759a41fbab3e00",
-        "sha256": "175aef45b792ae1707ee37e49f7eddfb1ad7e4be01945d6b26e1b9a28a5d51f6",
+        "delta_sha256": "a2bb4812da2f49a8f28cc6eed4ea58de58811aa219d0c4b2eb9eb52b4550cf55",
+        "sha256": "8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c",
         "size": 102940
       },
       "tim": {
