@@ -1037,9 +1037,9 @@
   "name": "Shadramon",
   "bones": 18,
   "skeleton_sha256": "845ab605073256eb7342daef69c59554cb41ff12f50693d65bedb45fc5b991a3",
-  "source_sha256": "1dd2fc111ba172a36df3491b15708e994e9dcac794be15372e173424e3bc645a",
+  "source_sha256": "eba5bfff162b1bf07da76c3b410195d441e166ec85efac8e3e75be9bbd560e15",
   "base_generator": "tools.models.field_animations.shadramon",
-  "post_source_sha256": "51e128a2423e5a6aa1b72a3dff24805951918b142b84c6be04c7a18cd1a6be4b",
+  "post_source_sha256": "9ae6ca9dd37256d7d32efcfe32ebf1003f03ee36d89b987485c9c47d380c9057",
   "slots": {
    "4": {
     "from": 4,
