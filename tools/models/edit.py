@@ -208,12 +208,8 @@ def import_records():
 
 
 def provider_pin(species, model, tim):
-    """[SHA-1 of the model the species file names, SHA-1 of its texture], as derive's species step pins them: the base
-    model, or for the 65 field overlays the overlay made on top of it (tools/models/field_animations/*.py, in a temporary folder)."""
+    """Hash the final provider files, including field overlays and battle repairs."""
     sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
-    record = import_records()[str(species)]
-    if not record.get('field_overlay'):
-        return [sha1(model), sha1(tim)]
     with tempfile.TemporaryDirectory(prefix='imported_model_edit-') as tmp:
         base = Path(tmp) / 'imported-models'
         base.mkdir()

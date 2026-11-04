@@ -7,7 +7,7 @@
   "day_night": true,
   "reads_digimon": true,
   "doors": 0,
-  "toilet": 0,
+  "toilet": {"x1": 1150, "z1": 1850, "x2": 1150, "z2": 2150},
   "caption": "The Seam",
   "concave": false,
   "maphead": {
