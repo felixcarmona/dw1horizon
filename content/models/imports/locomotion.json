@@ -12,10 +12,10 @@
   },
   "251": {
     "name": "Solarmon",
-    "source_sha256": "fea01758a0e16af9d699bd4a47ee5a07d60996176ae817a8e3912a0b0446f59e",
+    "source_sha256": "c41ea9f94379effbe9f821a3ec2717d59724349ca2ffbabad81667a1d457c732",
     "bones": 5,
     "base_generator": "tools.models.field_animations.gliding",
-    "post_source_sha256": "9dc120b009aa6c86d9f024ac3a9aaabfed355d3d2039ea9a38e6e6fee75bc5e7",
+    "post_source_sha256": "b4f0b8e52b7628be080555c83f99af613f9682aa8a902940f28807627b9d358a",
     "speeds": {
       "4": 35
     },
