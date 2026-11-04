@@ -263,8 +263,9 @@ def talk():    # section 6
 
 @clearagumon2.on_talk
 def talk():    # section 7
-    say(t7.u0)
-    recruit(Species.ClearAgumon)
+    # Resolve the touch encounter as a battle, like the other two guards. A plain
+    # dialogue leaves the chasing guard in contact and immediately starts it again.
+    recruitable(clearagumon2, line=t7.u0)
     return
 
 # the section table, in the order of the original header
