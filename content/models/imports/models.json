@@ -4,7 +4,7 @@
  "182": {"model": "182-Kimeramon.MMD", "aliases_applied": true, "texture": "182-Kimeramon.TIM"},
  "183": {"model": "183-Wormmon.MMD", "aliases_applied": true},
  "184": {"model": "184-Hawkmon.MMD", "aliases_applied": true},
- "185": {"model": "185-Armadillomon.MMD", "aliases_applied": true, "texture": "185-Armadillomon.TIM", "field_overlay": "armadillomon-pace"},
+ "185": {"model": "185-Armadillomon.MMD", "aliases_applied": true, "texture": "185-Armadillomon.TIM"},
  "187": {"model": "187-Stingmon.MMD", "aliases_applied": true, "field_overlay": "stingmon-field"},
  "188": {"model": "188-Aquilamon.MMD", "aliases_applied": true, "texture": "188-Aquilamon.TIM"},
  "189": {"model": "189-Ankylomon.MMD", "field_overlay": "ankylomon-field"},
