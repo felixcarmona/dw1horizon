@@ -4109,9 +4109,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/318-Gallantmon.MMD.mdelta",
-        "delta_sha256": "d394aeb9b4024d0deef7319ad064b8c7ac929161e3d0d2a2d1d9dcc60c0bccca",
-        "sha256": "27f9c72d437de92bc933666e18134c4554706bc6d096e9d9a6c48ce4c08a8bb0",
-        "size": 106644
+        "delta_sha256": "01795b0745e572632c2cd5f0be9d78b47abc496f79a1ead7544792c3c63e0d53",
+        "sha256": "ddee10e047e01185b5356215bac1a19a893c3112ee6cdb52446024ec6a4f9273",
+        "size": 107066
       },
       "tim": {
         "sources": [
