@@ -141,7 +141,7 @@
  "322": {"model": "322-Kyukimon.MMD", "field_overlay": "kyukimon-chibi"},
  "323": {"model": "323-Lynxmon.MMD", "aliases_applied": true},
  "324": {"model": "324-Maildramon.MMD", "aliases_applied": true, "field_overlay": "maildramon-chibi"},
- "325": {"model": "325-Musyamon.MMD", "aliases_applied": true, "field_overlay": "musyamon-chibi"},
+ "325": {"model": "325-Musyamon.MMD", "aliases_applied": true},
  "326": {"model": "326-WarGrowlmon.MMD", "aliases_applied": true, "field_overlay": "wargrowlmon-chibi"},
  "327": {"model": "327-Gargoylemon.MMD", "aliases_applied": true, "field_overlay": "gargoylemon-chibi"},
  "328": {"model": "328-Snimon.MMD", "aliases_applied": true, "field_overlay": "snimon-pace"},
