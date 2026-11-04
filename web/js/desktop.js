@@ -22,6 +22,8 @@ const icon = (id) => {
   return svg;
 };
 let data = null;   // {cur, repo}
+// The apps are offered on this page (for a computer: phones get only a line about them).
+export const hasDesktop = () => !!data && visitorOS() !== 'phone';
 
 // The visitor's system from the user agent ("Windows NT", "Macintosh"; an iPad that says Macintosh has touch).
 export function visitorOS(ua = navigator.userAgent, touch = navigator.maxTouchPoints || 0) {

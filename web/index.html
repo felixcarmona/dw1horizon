@@ -95,6 +95,8 @@
             <small id="release" class="release" hidden></small>
           </button>
           <div id="patch-status" class="patch-status" role="status" aria-live="polite"></div>
+          <!-- Before a build: no room in this browser, a private window, a phone (js/app.js renderWarning) -->
+          <div id="patch-warning" class="patch-warning" role="status" hidden></div>
         </div>
         <!-- What the page promises about the player's discs; the link goes to the code that does the work. -->
         <aside class="privacy">
@@ -119,6 +121,7 @@
             <ol id="build-steps" class="build-steps"></ol>
             <ul id="build-workers" class="build-workers"></ul>
           </div>
+          <p id="build-slow" class="build-slow" hidden></p>
           <div id="build-error" class="build-error" role="alert" hidden></div>
           <div id="build-done" class="build-done" hidden>
             <div class="build-links">

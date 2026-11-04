@@ -57,6 +57,7 @@ console.log(`disc checked in ${((tb - t0) / 1000).toFixed(1)} s; building`);
 await p.click('#patch-button');
 let lastLine = '';
 let lastF = 0;
+let peakUsage = 0;   // this origin's storage at its fullest (storage.estimate().usage: real even where the quota is not)
 const prog = setInterval(async () => {
   try {
     const s = await p.evaluate(() => `${document.querySelector('#build-phase')?.textContent} | ${document.querySelector('#build-time')?.textContent}`);
@@ -64,6 +65,7 @@ const prog = setInterval(async () => {
     const f = await p.evaluate(() => Number(getComputedStyle(document.querySelector('#build-progress')).getPropertyValue('--f')));
     if (f < lastF - 1e-9) console.log(`BAR WENT BACK ${lastF} -> ${f}`);
     lastF = f;
+    peakUsage = Math.max(peakUsage, await p.evaluate(async () => (await navigator.storage.estimate()).usage || 0));
     if (s !== lastLine) { lastLine = s; console.log(`${((Date.now() - tb) / 1000).toFixed(0)} s  ${s}`); }
   } catch {}
 }, 5000);
@@ -88,7 +90,7 @@ const r = await p.evaluate(async () => {
 clearInterval(iv); sample();
 console.log(JSON.stringify({ ...r, log: undefined }, null, 1));
 console.log(r.log.join('\n'));
-console.log(`wall (build button to DONE) ${wall.toFixed(1)} s; peak RSS of the browser's processes ${(peak / 1024).toFixed(0)} MB`);
+console.log(`wall (build button to DONE) ${wall.toFixed(1)} s; peak RSS of the browser's processes ${(peak / 1024).toFixed(0)} MB; peak storage ${(peakUsage / 2 ** 30).toFixed(2)} GB`);
 console.log(`browser CPU ${[...cpuByPid.values()].reduce((a, b) => a + b, 0)} s; load average start ${startLoad.toFixed(1)}, peak ${maxLoad.toFixed(1)}, end ${loadavg()[0].toFixed(1)}`);
 await b.close();
 process.exit(r.phase === 'done' ? 0 : 1);

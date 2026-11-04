@@ -137,6 +137,7 @@ export async function tidyStorage() {
       await dropOldEngines(cur.version);
     } catch { /* no engine here, or offline: the cache stays as it is */ }
     if (!navigator.storage || !navigator.storage.getDirectory) return;
+    try { await (await navigator.storage.getDirectory()).removeEntry('horizon-room', { recursive: true }); } catch { /* none */ }
     let dir;
     try { dir = await (await navigator.storage.getDirectory()).getDirectoryHandle(OPFS_DIR); } catch { return; }
     let keepImage = false;
@@ -153,12 +154,58 @@ export async function tidyStorage() {
   });
 }
 
-// The room a build needs in this browser's storage: the tree (twice the holes), the largest image, 256 MB for the rest.
-const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 2 ** 28;
+// The room a build needs in this browser's storage: the tree (twice the holes), the largest image, 1.25 GB for the rest
+// (the engine in the Cache API, versions of tree files still read by a running job). Measured 2026-11-04 (0.0.4, USA,
+// web/test/run.mjs "peak storage"): 2.63 GB at the fullest, this gives 3.03 GB.
+const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 1.25 * 2 ** 30;
 // The same for the page before a build (js/remember.js keeps that much free when it copies discs); without an engine
 // here, about what the current release needs.
 export async function buildRoom() {
-  try { return roomFor((await loadPlan()).plan); } catch { return 1.6 * 2 ** 30; }
+  try { return roomFor((await loadPlan()).plan); } catch { return 3 * 2 ** 30; }
+}
+
+// Is there room for `need` bytes more in this browser's storage? {need, reason: null (it fits, as far as the browser
+// says) | 'quota' (it does not) | 'blocked' (the page may not store files: a private window in Firefox, site data
+// blocked) | 'unkept' (storage held in memory, a private or incognito window: it may not fit), free (bytes, when the
+// browser's estimate is to be believed), msg}. storage.estimate() first: Firefox and Safari report their real
+// quota; Chromium reports a fixed one (usage + 10 GB, in private windows too), so the storage is asked as well
+// (js/engine/room-worker.js). `ask`: the bytes the probe asks for, when not `need` (tests).
+export async function checkRoom(need, ask = need) {
+  const out = { need, reason: null, free: null, msg: '' };
+  if (!navigator.storage || !navigator.storage.getDirectory) return out;      // (missingSupport says it)
+  try {
+    const est = await navigator.storage.estimate();
+    if (est.quota) out.free = est.quota - est.usage;
+    if (out.free != null && out.free < ask) return { ...out, reason: 'quota', msg: `estimate: ${est.usage} used of ${est.quota}` };
+  } catch { /* no estimate: the probe says */ }
+  if (typeof Worker === 'undefined') return out;
+  const r = await new Promise((res) => {
+    let w;
+    try { w = new Worker(new URL('./room-worker.js', import.meta.url)); } catch (e) { res({ reason: 'error', msg: String(e) }); return; }
+    const end = (m) => { clearTimeout(late); w.terminate(); res(m); };
+    const late = setTimeout(() => end({ reason: 'error', msg: 'no answer' }), 20000);
+    w.onmessage = ({ data }) => end(data);
+    w.onerror = (e) => { e.preventDefault(); end({ reason: 'error', msg: e.message || 'the worker did not load' }); };
+    w.postMessage({ bytes: ask });
+  });
+  // (a probe that could not run says nothing: the build finds out)
+  if (r.reason && r.reason !== 'error') return { ...out, reason: r.reason, msg: r.msg };
+  if (r.reason) out.msg = r.msg;
+  return out;
+}
+
+// What kind of failure an error's text is: 'storage' (the browser's storage is full: QuotaExceededError, a disk with
+// no room), 'blocked' (storage not allowed), 'memory', 'network' or null.
+const STORAGE = /QuotaExceededError|exceed(s|ed)? (its|the) (storage )?quota|quota (has been|was) exceeded|No space (available|left)|NS_ERROR_FILE_NO_DEVICE_SPACE|disk is full|not enough space/i;
+const BLOCKED = /SecurityError|The operation is insecure|NS_ERROR_DOM_SECURITY_ERR/;
+const NETWORK = /Failed to fetch|NetworkError|Load failed|network error|ERR_INTERNET_DISCONNECTED|ERR_NETWORK_CHANGED/i;
+export function failureKind(text) {
+  text = String(text || '');
+  if (STORAGE.test(text)) return 'storage';
+  if (BLOCKED.test(text)) return 'blocked';
+  if (MEMORY.test(text)) return 'memory';
+  if (NETWORK.test(text)) return 'network';
+  return null;
 }
 
 async function opfsRoot() {
@@ -217,6 +264,9 @@ export class Build {
     this.stopped = false;
     this.slots = [];                           // the build workers: {id, w, busy, job, ready, load, dead}
     this.oomTest = null;                       // (tests: a job name whose first run fails as out of memory)
+    this.quotaTest = null;                     // (tests: a job name, or 'first', that fails as the storage being full)
+    this.roomTest = 0;                         // (tests: the bytes the room check asks for instead of the build's)
+    this.need = 0;                             // the room the build needs (bytes), once the plan is read
     this.recycleMB = RECYCLE_MB;
   }
 
@@ -299,9 +349,9 @@ export class Build {
         return await this._run();
       } catch (e) {
         this.cancel();
-        const err = e instanceof EngineError ? e : new EngineError('engine.failed', {}, String(e && e.stack || e));
+        const err = this.explain(e instanceof EngineError ? e : new EngineError('engine.failed', {}, String(e && e.stack || e)));
         this.state.phase = 'error';
-        this.state.error = { key: err.key, vars: err.vars, detail: err.detail };
+        this.state.error = { key: err.key, vars: err.vars, detail: err.detail, kind: err.kind };
         this.emit();
         // what the build left goes now (the image of the last build went when this one started)
         try { await (await navigator.storage.getDirectory()).removeEntry(OPFS_DIR, { recursive: true }); } catch { /* */ }
@@ -311,6 +361,24 @@ export class Build {
       }
     });
     return r;
+  }
+
+  // An error in the player's words: whatever step it came from, a full storage, storage not allowed, a lost
+  // connection or a lack of memory says so; the original text stays in its detail. kind: what the page suggests
+  // (js/app.js FIXES): 'storage', 'blocked', 'memory', 'network', or null.
+  explain(err) {
+    const KEEP = new Set(['build.cancelled', 'engine.otherTab', 'engine.noWasm', 'engine.noOpfs', 'engine.noStreams',
+                          'engine.sourceDiffers', 'engine.holesDiffer', 'engine.imageDiffers', 'engine.notDeployed']);
+    const OWN = { 'engine.noSpace': 'storage', 'engine.quota': 'storage', 'engine.storageBlocked': 'blocked',
+                  'engine.outOfMemory': 'memory', 'engine.workerFailed': 'memory', 'engine.download': 'network' };
+    const vars = { ...err.vars, bytes: err.vars.bytes || this.need || 0 };
+    if (OWN[err.key]) return Object.assign(new EngineError(err.key, vars, err.detail), { kind: OWN[err.key] });
+    if (KEEP.has(err.key)) return Object.assign(err, { kind: null });
+    const kind = failureKind(`${err.detail}\n${err.message}`);
+    const key = { storage: 'engine.quota', blocked: 'engine.storageBlocked', network: 'engine.network',
+                  memory: 'engine.outOfMemory' }[kind] || err.key;
+    if (key === 'engine.outOfMemory') vars.job ||= this.state.now?.[0] || '';
+    return Object.assign(new EngineError(key, vars, err.detail), { kind });
   }
 
   // A build worker: Pyodide, the code pack. onMsg(slot, message) gets its messages once it is ready.
@@ -373,12 +441,14 @@ export class Build {
     this.checkStopped();
     // room: the tree (~0.5 GB), the image and the engine's files. The discs the page keeps for next time
     // (OPFS horizon-discs, js/remember.js) are already in `usage` and are read in place: they need nothing more.
-    try {
-      const est = await navigator.storage.estimate();
-      const need = roomFor(plan);
-      if (est.quota && est.quota - est.usage < need) throw new EngineError('engine.noSpace', { mb: Math.ceil(need / 2 ** 20) });
-    } catch (e) { if (e instanceof EngineError) throw e; }
+    // Asked before anything is downloaded or built (checkRoom: the browser's estimate, then the storage itself).
+    this.need = roomFor(plan);
+    const room = await checkRoom(this.need, this.roomTest || this.need);
     this.checkStopped();
+    this.log(`room: ${(this.need / 2 ** 30).toFixed(2)} GB needed; ${room.reason || 'ok'}${room.free != null ? `, browser estimate ${(room.free / 2 ** 30).toFixed(1)} GB free` : ''}${room.msg ? ` (${room.msg})` : ''}`);
+    if (room.reason === 'quota') throw new EngineError('engine.noSpace', { bytes: this.need }, `room: ${room.msg}`);
+    if (room.reason === 'blocked') throw new EngineError('engine.storageBlocked', {}, room.msg);
+    st.room = room.reason;                 // 'unkept': a private window, most likely; the build tries anyway
 
     // 1. the engine's files
     st.phase = 'download';
@@ -578,7 +648,13 @@ export class Build {
         slot.dead = true; slot.w.terminate();
         this.slots.splice(this.slots.indexOf(slot), 1);
         j.memoryFailures = (j.memoryFailures || 0) + 1;
-        const why = String(msg).split('\n').filter((l) => MEMORY.test(l)).pop() || String(msg).split('\n').filter(Boolean).pop();
+        const why = String(msg).split('\n').filter((l) => MEMORY.test(l) || STORAGE.test(l)).pop() || String(msg).split('\n').filter(Boolean).pop();
+        // the browser's storage is full: another worker would only fail the same way
+        if (STORAGE.test(String(msg))) {
+          this.log(`w${slot.id} ${j.name}: no room left in this browser's storage (${(why || '').trim()})`);
+          fail(new EngineError('engine.quota', { job: j.name, bytes: this.need }, msg));
+          return;
+        }
         this.log(`w${slot.id} ${j.name}: ${memory ? 'out of memory' : 'failed'} (${(why || '').trim()}); ${this.slots.length} workers go on`);
         if (j.memoryFailures >= 3) { fail(new EngineError(memory ? 'engine.outOfMemory' : 'engine.jobFailed', { job: j.name }, msg)); return; }
         if (!this.slots.length) setTimeout(() => { if (!this.stopped) startFresh(slot.id); }, SETTLE_MS);
@@ -646,8 +722,9 @@ export class Build {
           pump();
         });
         const oom = this.oomTest && j.name === this.oomTest && !j.memoryFailures;
+        const quota = !!this.quotaTest && (this.quotaTest === 'first' || j.name === this.quotaTest);
         slot.w.postMessage({ kind: 'job', job: { argv: j.argv, lists: j.lists, absent: j.absent, mkdirs: j.mkdirs }, inputs,
-                             token: `j${j.id}`, oom });
+                             token: `j${j.id}`, oom, quota });
       };
       pump();
       }));
