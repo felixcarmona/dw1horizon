@@ -113,6 +113,12 @@ elif [ -f build/decomp-int/build/us/psx/gcc/SLUS_010.32.elf ]; then
 else
     skip balance-int "needs a balanced executable (DW_SELFTEST_DERIVE)"
 fi
+run evolution-chart-tests $PY tools/test_evo_chart.py
+if [ -f "$DERIVED/DIGI.DAT" ] && [ -f "$DERIVED/exe/SLUS_010.32.elf" ] && [ "$DISC" = 1 ]; then
+    run evolution-chart $PY tools/evo_chart.py "$DERIVED/DIGI.DAT" "$DERIVED/exe"   # every evolution route has its chart boxes
+else
+    skip evolution-chart "needs a built DIGI.DAT and executable (DW_SELFTEST_DERIVE)"
+fi
 disc dwtables          sh -c 'rm -rf "$2/tables" && "$1" tools/dwtables.py extracted/SLUS_010.32 "$2/tables" >/dev/null && for f in "$2"/tables/*.csv; do [ -f "docs/data/$(basename "$f")" ] || continue; cmp -s "$f" "docs/data/$(basename "$f")" || { echo "differs: $f"; exit 1; }; done' sh "$PY" "$OUT"
 disc dws-tests         $PY -W ignore tools/test_dws.py
 disc dws-safety        $PY -W ignore tools/test_dws_safety.py

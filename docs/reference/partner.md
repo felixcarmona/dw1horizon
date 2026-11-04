@@ -441,6 +441,8 @@ The picker model uses attainable unupgraded File City training states: at most 8
 
 `tools/test_evo_tree.py` guards topology, specialties, special-only roots and wild-only recolours in the self-test. `tools/evo_check.py` checks the built graph and exits with failure for an unreachable picker route or a lost disc canonical state.
 
+The chart's detail view (patch 0340) draws every route the pickers can take: the path row's slots, a Baby II's extra Rookies, the `evolutionFresh` and `evolutionUltimate` pairs both ways, and, for an original 63..179 without a path row, the parents DIGI.DAT's chart block lists. The "to" side pages six boxes at a time. `tools/evo_chart.py DIGI.DAT EXE_DIR` compares those boxes with the built pickers and the sources (self-test `evolution-chart`; `--old` audits the chart before 0340, `--show NAME` prints one species' lists).
+
 Species data, requirements and links are edited as described in [../mods/species.md](../mods/species.md).
 
 ### Virus form and reverting
