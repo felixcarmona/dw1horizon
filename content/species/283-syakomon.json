@@ -19,7 +19,7 @@
                      [49, 57]]
   },
   "texture": {"file": "build/batch9/Shakomon.TIM", "entry": 0},
-  "voice": 22,
+  "voice": 4,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -142, -34, 3],
   "effect_origins": [[2, 60, 0, 10, 3, 0, 15, -37], [2, -70, 0, 210, 3, 0, -142, -34], [1, 0, 0, 0, 1, 0, 12, -104],
@@ -33,7 +33,7 @@
     "natural": {"height": 268.2, "half_width": 119.0, "half_depth": 154.7}
   },
   "partner": {
-    "voice": 5,
+    "voice": 1,
     "hunger_hours": [2, 6, 10, 14, 18, 21],
     "energy_max": 40,
     "energy_fed": 25,

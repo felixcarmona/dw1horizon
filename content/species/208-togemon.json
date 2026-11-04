@@ -19,7 +19,7 @@
     "slot_aliases": [[48, 55], [50, 54], [51, 54], [52, 46], [53, 46], [54, 47], [55, 47], [56, 47], [47, 46]]
   },
   "texture": {"file": "build/batch3/Togemon.TIM", "entry": 0},
-  "voice": 21,
+  "voice": 23,
   "battle_music": "normal-battle",
   "condition_bubble": [19, -121, 24, 2],
   "effect_origins": [[3, 30, -100, 0, 2, -19, -51, -88], [12, -67, 0, 1, 1, 7, -66, 5],
@@ -33,7 +33,7 @@
     "natural": {"height": 390.5, "half_width": 165.7, "half_depth": 191.7}
   },
   "partner": {
-    "voice": 3,
+    "voice": 14,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 42,

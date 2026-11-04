@@ -19,7 +19,7 @@
                      [47, 55]]
   },
   "texture": {"file": "build/batch6/Solarmon.TIM", "entry": 0},
-  "voice": 35,
+  "voice": 37,
   "battle_music": "normal-battle",
   "condition_bubble": [-50, -81, 68, 2],
   "effect_origins": [[14, 50, 50, 0, 1, 0, 27, 3], [12, 35, -20, 0, 4, -26, 23, -51],
@@ -33,7 +33,7 @@
     "natural": {"height": 195.8, "half_width": 157.5, "half_depth": 70.0}
   },
   "partner": {
-    "voice": 6,
+    "voice": 1,
     "hunger_hours": [0, 3, 6, 9, 12, 15, 18, 21],
     "energy_max": 80,
     "energy_fed": 35,

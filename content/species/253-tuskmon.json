@@ -20,7 +20,7 @@
     "slot_aliases": [[48, 47], [50, 46], [51, 46], [52, 49], [53, 54], [55, 54], [54, 49], [49, 47], [56, 47]]
   },
   "texture": {"file": "build/batch7/Tuskmon.TIM", "entry": 0},
-  "voice": 45,
+  "voice": 8,
   "battle_music": "normal-battle",
   "condition_bubble": [3, -67, -37, 21],
   "effect_origins": [[1, 0, 0, 0, 1, 3, 14, -64], [3, 100, -25, 0, 21, -9, 47, -72]],
@@ -33,7 +33,7 @@
     "natural": {"height": 375.9, "half_width": 227.2, "half_depth": 448.2}
   },
   "partner": {
-    "voice": 8,
+    "voice": 2,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 43,

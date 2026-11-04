@@ -23,7 +23,7 @@
                      [52, 62]]
   },
   "texture": {"file": "build/batch12/SkullSatamon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 6,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -96, 9, 6],
   "effect_origins": [[7, 0, 0, 0, 4, 0, 0, 0], [10, 0, 0, 0, 10, 0, 0, 0], [18, 0, 0, 0, 16, 0, 0, 0]],

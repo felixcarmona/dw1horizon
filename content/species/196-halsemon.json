@@ -21,7 +21,7 @@
                      [58, 56], [56, 52], [52, 58]]
   },
   "texture": {"file": "build/batch2/Halsemon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 19,
   "battle_music": "normal-battle",
   "condition_bubble": [12, -63, 24, 4],
   "effect_origins": [[4, 70, 0, 20, 4, 7, 17, -78], [4, 120, 0, 20, 4, 8, 43, -127]],
@@ -34,7 +34,7 @@
     "natural": {"height": 377.2, "half_width": 305.0, "half_depth": 322.0}
   },
   "partner": {
-    "voice": 7,
+    "voice": 4,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,

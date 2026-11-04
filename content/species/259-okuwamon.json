@@ -22,7 +22,7 @@
                      [56, 52], [52, 51], [60, 50], [61, 54], [54, 51], [51, 50], [50, 61]]
   },
   "texture": {"file": "build/batch7/Okuwamon.TIM", "entry": 0},
-  "voice": 45,
+  "voice": 54,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -107, -61, 3],
   "effect_origins": [[1, 0, 0, 0, 2, 0, 0, 0], [3, 100, -25, 0, 3, 0, 77, -115]],

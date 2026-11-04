@@ -19,7 +19,7 @@
     "slot_aliases": [[51, 48], [52, 50], [50, 48], [53, 55], [55, 49], [49, 47], [56, 47]]
   },
   "texture": {"file": "build/batch6/Starmon.TIM", "entry": 0},
-  "voice": 8,
+  "voice": 9,
   "battle_music": "normal-battle",
   "condition_bubble": [-16, -128, -12, 1],
   "effect_origins": [[3, 100, -45, 0, 1, -43, -25, -89], [4, 0, 0, 0, 1, -29, -48, -55]],
@@ -32,7 +32,7 @@
     "natural": {"height": 347.5, "half_width": 247.7, "half_depth": 275.7}
   },
   "partner": {
-    "voice": 2,
+    "voice": 11,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 55,

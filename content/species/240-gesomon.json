@@ -22,7 +22,7 @@
                      [57, 54], [54, 52]]
   },
   "texture": {"file": "build/batch5/Gesomon.TIM", "entry": 0},
-  "voice": 24,
+  "voice": 31,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -313, -164, 1],
   "effect_origins": [[4, -70, 70, 0, 1, 0, -93, -130], [17, 118, 0, 129, 21, -37, 76, -110],
@@ -36,7 +36,7 @@
     "natural": {"height": 613.0, "half_width": 492.2, "half_depth": 289.5}
   },
   "partner": {
-    "voice": 2,
+    "voice": 6,
     "hunger_hours": [4, 12, 20],
     "energy_max": 80,
     "energy_fed": 30,

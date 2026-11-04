@@ -23,7 +23,7 @@
                      [58, 54], [59, 49], [60, 49], [61, 46], [46, 54], [54, 49]]
   },
   "texture": {"file": "build/batch3/Magnadramon.TIM", "entry": 0},
-  "voice": 22,
+  "voice": 7,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -67, -149, 1],
   "effect_origins": [[2, 60, 0, 10, 1, 0, 229, -8], [2, -70, 0, 210, 1, 0, -67, -149], [1, 0, 0, 0, 1, 0, 179, 51],
@@ -38,7 +38,7 @@
   },
   "size": {"height": 559},
   "partner": {
-    "voice": 5,
+    "voice": 4,
     "hunger_hours": [2, 6, 10, 14, 18, 21],
     "energy_max": 80,
     "energy_fed": 40,

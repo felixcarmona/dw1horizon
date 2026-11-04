@@ -20,7 +20,7 @@
                      [52, 46], [46, 59]]
   },
   "texture": {"file": "build/batch4/Apemon.TIM", "entry": 0},
-  "voice": 54,
+  "voice": 46,
   "battle_music": "normal-battle",
   "condition_bubble": [7, -171, -61, 1],
   "effect_origins": [[3, 130, -10, 0, 1, 6, -87, -154], [3, 130, -50, 0, 1, 7, -57, -154],
@@ -35,7 +35,7 @@
     "natural": {"height": 371.2, "half_width": 249.8, "half_depth": 156.5}
   },
   "partner": {
-    "voice": 8,
+    "voice": 3,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,

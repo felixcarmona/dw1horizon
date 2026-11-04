@@ -22,7 +22,7 @@
                      [58, 48], [59, 48], [60, 46], [46, 48], [61, 57], [57, 48], [48, 61]]
   },
   "texture": {"file": "build/batch8/Garbagemon.TIM", "entry": 0},
-  "voice": 49,
+  "voice": 35,
   "battle_music": "normal-battle",
   "condition_bubble": [-1, -59, 0, 1],
   "effect_origins": [[11, 213, 0, 0, 14, 1, 147, -58], [2, -5, -40, 0, 1, 0, 4, -30], [2, 130, 0, 0, 1, -1, -96, 0],
@@ -37,7 +37,7 @@
     "natural": {"height": 266.0, "half_width": 142.3, "half_depth": 146.9}
   },
   "partner": {
-    "voice": 0,
+    "voice": 6,
     "hunger_hours": [3, 8, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 24,

@@ -20,7 +20,7 @@
                      [46, 56], [60, 56], [56, 51], [51, 60]]
   },
   "texture": {"file": "build/batch6/Quetzalmon.TIM", "entry": 0},
-  "voice": 48,
+  "voice": 7,
   "battle_music": "normal-battle",
   "condition_bubble": [33, -146, -56, 5],
   "effect_origins": [[4, 90, 0, 0, 5, 30, -55, -88], [8, 330, 0, 0, 8, 178, 269, -2],
@@ -34,7 +34,7 @@
     "natural": {"height": 558.5, "half_width": 266.0, "half_depth": 344.7}
   },
   "partner": {
-    "voice": 2,
+    "voice": 4,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 45,

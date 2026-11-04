@@ -20,7 +20,7 @@
                      [58, 50], [50, 47], [47, 58]]
   },
   "texture": {"file": "build/batch9/Kiwimon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 44,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -68, 2, 1],
   "effect_origins": [[7, 0, 0, 0, 7, 43, 47, -16], [10, 0, 0, 0, 3, -43, 47, -16], [18, 0, 0, 0, 10, 0, 0, 0]],
@@ -33,7 +33,7 @@
     "natural": {"height": 345.5, "half_width": 119.0, "half_depth": 251.2}
   },
   "partner": {
-    "voice": 3,
+    "voice": 4,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 33,

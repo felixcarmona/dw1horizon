@@ -22,7 +22,7 @@
                      [52, 46]]
   },
   "texture": {"file": "build/batch13/Snimon.TIM", "entry": 0},
-  "voice": 24,
+  "voice": 57,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -178, -104, 22],
   "effect_origins": [[4, -70, 70, 0, 22, 0, 85, -42], [17, 118, 0, 129, 3, -27, 99, -134],
@@ -36,7 +36,7 @@
     "natural": {"height": 832.2, "half_width": 514.4, "half_depth": 585.5}
   },
   "partner": {
-    "voice": 2,
+    "voice": 8,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,

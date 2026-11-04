@@ -22,7 +22,7 @@
                      [59, 51], [60, 55], [61, 50], [50, 55], [62, 54], [54, 51], [51, 62]]
   },
   "texture": {"file": "build/batch4/Vikemon.TIM", "entry": 0},
-  "voice": 45,
+  "voice": 46,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -98, -69, 20],
   "effect_origins": [[1, 0, 0, 0, 1, 0, 0, 0], [3, 100, -25, 0, 20, 0, 86, -105]],
@@ -36,7 +36,7 @@
   },
   "size": {"height": 551},
   "partner": {
-    "voice": 8,
+    "voice": 3,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 40,

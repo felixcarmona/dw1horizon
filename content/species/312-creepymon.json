@@ -21,7 +21,7 @@
                      [57, 52], [58, 56], [59, 52], [60, 52], [61, 56], [56, 52]]
   },
   "texture": {"file": "build/batch11/Daemon.TIM", "entry": 0},
-  "voice": 36,
+  "voice": 6,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -119, -13, 7],
   "effect_origins": [[7, "any", 0, 0, 5, -107, 232, -36], [10, "any", 0, 0, 10, 27, -100, 16],
@@ -36,7 +36,7 @@
   },
   "size": {"height": 563},
   "partner": {
-    "voice": 10,
+    "voice": 3,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,

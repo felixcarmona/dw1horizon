@@ -22,7 +22,7 @@
                      [56, 52], [59, 57], [60, 57], [57, 52], [61, 58], [58, 52], [52, 61]]
   },
   "texture": {"file": "build/batch10/Nanomon.TIM", "entry": 0},
-  "voice": 24,
+  "voice": 25,
   "battle_music": "normal-battle",
   "condition_bubble": [143, -74, -166, 2],
   "effect_origins": [[4, -70, 70, 0, 2, 19, 5, -78], [17, 118, 0, 129, 11, -70, 15, -78],
@@ -36,7 +36,7 @@
     "natural": {"height": 255.0, "half_width": 188.3, "half_depth": 221.8}
   },
   "partner": {
-    "voice": 2,
+    "voice": 0,
     "hunger_hours": [4, 12, 20],
     "energy_max": 80,
     "energy_fed": 30,

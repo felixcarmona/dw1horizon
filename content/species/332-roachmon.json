@@ -23,7 +23,7 @@
                      [56, 47]]
   },
   "texture": {"file": "build/batch13/Gokimon.TIM", "entry": 0},
-  "voice": 5,
+  "voice": 57,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -72, -34, 27],
   "effect_origins": [[5, 100, 30, 0, 28, 0, 85, -65], [5, 120, -50, 0, 28, 0, 30, -130],
@@ -38,7 +38,7 @@
     "natural": {"height": 844.0, "half_width": 332.7, "half_depth": 415.0}
   },
   "partner": {
-    "voice": 2,
+    "voice": 8,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,

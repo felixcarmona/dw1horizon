@@ -20,7 +20,7 @@
                      [59, 55], [55, 50], [50, 49], [60, 49], [61, 57], [57, 49], [49, 61]]
   },
   "texture": {"file": "build/batch9/Deramon.TIM", "entry": 0},
-  "voice": 12,
+  "voice": 44,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -53, -137, 5],
   "effect_origins": [[4, 260, 30, 0, 5, 0, 72, -205], [9, 0, 75, 50, 6, 49, -22, -95],
@@ -35,7 +35,7 @@
     "natural": {"height": 333.0, "half_width": 169.0, "half_depth": 323.3}
   },
   "partner": {
-    "voice": 10,
+    "voice": 4,
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 80,
     "energy_fed": 45,

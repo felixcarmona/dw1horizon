@@ -21,7 +21,7 @@
                      [49, 58]]
   },
   "texture": {"file": "build/batch9/Bakumon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 27,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -54, -98, 1],
   "effect_origins": [[4, 70, 0, 20, 1, 0, 2, -139], [4, 120, 0, 20, 1, 0, 22, -160]],
@@ -34,7 +34,7 @@
     "natural": {"height": 200.7, "half_width": 107.0, "half_depth": 242.6}
   },
   "partner": {
-    "voice": 7,
+    "voice": 1,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 40,
     "energy_fed": 20,

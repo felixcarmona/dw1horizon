@@ -20,7 +20,7 @@
                      [51, 47], [47, 58]]
   },
   "texture": {"file": "build/batch/Ankylomon.TIM", "entry": 0},
-  "voice": 34,
+  "voice": 41,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -133, -67, 2],
   "effect_origins": [[3, 30, 0, -70, 2, 0, 15, -106]],

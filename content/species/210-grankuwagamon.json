@@ -22,7 +22,7 @@
                      [61, 51], [62, 54], [54, 52], [52, 51], [51, 56], [56, 47], [47, 62]]
   },
   "texture": {"file": "build/batch3/GranKuwagamon.TIM", "entry": 0},
-  "voice": 41,
+  "voice": 54,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -162, -42, 3],
   "effect_origins": [[4, 0, 80, -100, 3, 0, 16, -66], [4, 0, 80, -280, 3, 0, 20, -295],
@@ -36,7 +36,7 @@
     "natural": {"height": 665.5, "half_width": 454.2, "half_depth": 492.2}
   },
   "partner": {
-    "voice": 7,
+    "voice": 8,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 40,

@@ -20,7 +20,7 @@
                      [48, 55], [58, 55], [55, 53], [53, 58]]
   },
   "texture": {"file": "build/batch10/Grizzlymon.TIM", "entry": 0},
-  "voice": 31,
+  "voice": 46,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -152, -11, 2],
   "effect_origins": [[4, 55, -50, 0, 2, -1, 26, -73], [1, 0, 0, 0, 1, 0, 161, -43],
@@ -34,7 +34,7 @@
     "natural": {"height": 435.1, "half_width": 253.7, "half_depth": 320.2}
   },
   "partner": {
-    "voice": 6,
+    "voice": 3,
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 80,
     "energy_fed": 50,

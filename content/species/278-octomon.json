@@ -21,7 +21,7 @@
                      [51, 55]]
   },
   "texture": {"file": "build/batch9/Octomon.TIM", "entry": 0},
-  "voice": 17,
+  "voice": 31,
   "battle_music": "normal-battle",
   "condition_bubble": [-4, -70, -64, 23],
   "effect_origins": [[3, 125, -10, 0, 23, 8, 41, -95], [7, 100, -120, 0, 13, 12, 106, -74],
@@ -36,7 +36,7 @@
     "natural": {"height": 429.1, "half_width": 245.3, "half_depth": 303.2}
   },
   "partner": {
-    "voice": 8,
+    "voice": 6,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,

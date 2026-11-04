@@ -21,7 +21,7 @@
                      [55, 54], [58, 54], [54, 52], [52, 58]]
   },
   "texture": {"file": "build/batch9/Cyclonemon.TIM", "entry": 0},
-  "voice": 43,
+  "voice": 8,
   "battle_music": "normal-battle",
   "condition_bubble": [-9, -74, -32, 9],
   "effect_origins": [[4, 0, 50, -80, 10, -16, 47, -85], [14, 0, 0, 170, 20, 9, 95, 149], [1, 0, 0, 0, 1, 0, 0, 0]],
@@ -34,7 +34,7 @@
     "natural": {"height": 347.7, "half_width": 183.2, "half_depth": 268.9}
   },
   "partner": {
-    "voice": 5,
+    "voice": 2,
     "hunger_hours": [4, 8, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,

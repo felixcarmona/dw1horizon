@@ -22,7 +22,7 @@
                      [47, 48]]
   },
   "texture": {"file": "build/batch4/Shurimon.TIM", "entry": 0},
-  "voice": 44,
+  "voice": 52,
   "battle_music": "normal-battle",
   "condition_bubble": [-21, -122, -26, 2],
   "effect_origins": [[1, 0, 0, 0, 16, 0, 0, 0], [4, 145, 0, 40, 2, -7, -15, -122], [4, 60, 0, 10, 2, -2, -1, -50]],
@@ -35,7 +35,7 @@
     "natural": {"height": 344.0, "half_width": 191.6, "half_depth": 203.8}
   },
   "partner": {
-    "voice": 4,
+    "voice": 0,
     "hunger_hours": [3, 8, 13, 18, 23],
     "energy_max": 80,
     "energy_fed": 40,

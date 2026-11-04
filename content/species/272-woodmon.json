@@ -21,7 +21,7 @@
                      [54, 52], [52, 46], [46, 58]]
   },
   "texture": {"file": "build/batch8/Woodmon.TIM", "entry": 0},
-  "voice": 34,
+  "voice": 23,
   "battle_music": "normal-battle",
   "condition_bubble": [-92, -149, -6, 6],
   "effect_origins": [[3, 30, 0, -70, 6, -74, -2, -39]],
@@ -34,7 +34,7 @@
     "natural": {"height": 292.0, "half_width": 240.5, "half_depth": 117.9}
   },
   "partner": {
-    "voice": 7,
+    "voice": 14,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 60,

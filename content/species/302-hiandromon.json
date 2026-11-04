@@ -22,7 +22,7 @@
                      [58, 51], [59, 46], [60, 50], [61, 46], [46, 51], [51, 50]]
   },
   "texture": {"file": "build/batch11/HiAndromon.TIM", "entry": 0},
-  "voice": 42,
+  "voice": 36,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -113, 14, 1],
   "effect_origins": [[7, 0, 0, 0, 6, 0, 0, 0], [10, 0, 0, 0, 12, 0, 0, 0], [18, 0, 0, 0, 21, 0, 0, 0]],
@@ -36,7 +36,7 @@
   },
   "size": {"height": 580},
   "partner": {
-    "voice": 3,
+    "voice": 10,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,
