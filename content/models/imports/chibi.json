@@ -9,10 +9,10 @@
   "groups": {"0": "carrier", "1": "chest", "2": "chest", "3": "head", "4": "headpart", "5": "headpart", "6": "other", "7": "other", "8": "other", "9": "tail", "10": "other", "11": "other", "12": "other", "13": "tail", "14": "tail", "15": "other", "16": "tail", "17": "other", "18": "other", "19": "other", "20": "other", "21": "carrier", "22": "thigh", "23": "shin", "24": "foot", "25": "thigh", "26": "shin", "27": "foot"}
  },
  "190": {
-  "source_sha256": "b57233063c512508b7a2fbb487e7a35bc8d166859cec4fdbef6246c85f5f731f",
+  "source_sha256": "29f7ad7b0f12c90ac0129564b1c779fa042c0451d1545cca1af53fdec893f3b1",
   "skeleton_sha256": "3291206a5dbc08aeb7ede901978e33139da3c6f13b5c756e6941bb01806888c1",
   "base_generator": "tools.models.field_animations.secondary_motion",
-  "post_source_sha256": "b9ba559be61a02a80e52fe205f3b026ba151ac9eaabc5335dd69527f8987389d",
+  "post_source_sha256": "58aaeddc6e466505898e12d07d50b6c5b94744f390680ddd6b2c788428047a41",
   "height": 564,
   "fit": {"20": 0.82, "19": 0.82, "22": 0.82, "21": 0.672, "14": 0.82, "18": 0.82},
   "factors": {"head": 1.153, "hand": 1.35, "foot": 1.4, "leg_axial": 0.809, "leg_radial": 1.229, "arm_radial": 1.5, "torso": 1.0},
