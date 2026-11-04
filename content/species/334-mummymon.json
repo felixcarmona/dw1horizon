@@ -5,10 +5,10 @@
   "level": "ultimate",
   "vanilla_as": 26,
   "attribute": "virus",
-  "specialties": ["battle", "air", null],
+  "specialties": ["battle", "mech", "air"],
   "techniques": ["Megaton Punch", "Buster Dive", "Counter", "Dynamite Kick (44)", "Tremar", "Sonic Jab",
-                 "Muscle Charge", "War Cry", "Megalo Spark", "Hurricane", "Thunder Justice",
-                 "Spinning Shot", "Confused Storm", "Death Claw"],
+                 "Muscle Charge", "War Cry", "Pulse Laser", "All Range Beam", "Delete Program",
+                 "DG Dimension", "Power Crane", "Dark Shot"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
   "model": {
