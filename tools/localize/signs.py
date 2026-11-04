@@ -17,7 +17,7 @@ fill transparent pixels so the background's normal wording cannot bleed through.
 mod's retouch, the story compiler's map with its Digimon): the sign is pasted into SRC. Which pixels are the sign's is
 still decided on the disc's own background, the one the edits were made from, so a retouch beside the sign is kept.
 
-No Pillow (stage 9, the owner's decision of 2026-10-26: the player's build has none): the cut-outs are read with
+No Pillow (stage 9: the player's build has none): the cut-outs are read with
 dwmap.png_read; the difference mask, its one-pixel growth (Pillow's MaxFilter(3)) and the paste are plain Python.
 
 --make-cutouts (the developer) reads private full edits and sized copies from

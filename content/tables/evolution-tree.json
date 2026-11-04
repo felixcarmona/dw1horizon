@@ -904,7 +904,7 @@
     "Jijimon": "Story character; laboratory only.",
     "KingSukamon": "Special King of Sukamon form; laboratory only."
   },
-  "ultimate_rules_reason": "Every raisable Ultimate has a Mega route with NEW DIGIMON on (the owner, 2026-11-04). A native without a path row reaches its Mega through these evolution-rules.json evolutionUltimate pairs instead of a from/to link; test_evo_tree checks both match.",
+  "ultimate_rules_reason": "Every raisable Ultimate has a Mega route with NEW DIGIMON on. A native without a path row reaches its Mega through these evolution-rules.json evolutionUltimate pairs instead of a from/to link; test_evo_tree checks both match.",
   "ultimate_rules": [
     {"from": "Megadramon", "to": "Machinedramon", "reason": "The original game's timed special (canon main line), from 48 hours."},
     {"from": "Gigadramon", "to": "Machinedramon", "reason": "The original game's timed special (canon main line), from 48 hours; Gigadramon (64) has no path row, so this is its Mega route."},
