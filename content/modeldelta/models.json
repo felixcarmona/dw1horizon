@@ -1859,9 +1859,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/243-Starmon.MMD.mdelta",
-        "delta_sha256": "f942ea7fd7e1679eb82a54b8e35c4f8c3ba88b90b6bb64e93e0e8328bf4a0af8",
-        "sha256": "d74966aca46a331cf921a6f6f356f24fb6921d8008c1f1c985bab048367a03c1",
-        "size": 106376
+        "delta_sha256": "e0fa88f1aac6b4c5583f5e43a23fafac81097b349a0e75faaf37509fe19d2034",
+        "sha256": "6354c084fdd320feb40681a01f97fd21b18c79147a722831044aa8f3b08e4f40",
+        "size": 96306
       },
       "tim": {
         "sources": [

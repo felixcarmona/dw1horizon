@@ -60,7 +60,7 @@
  "240": {"model": "240-Gesomon.MMD", "aliases_applied": true, "field_overlay": "gesomon-steady-run"},
  "241": {"model": "241-Wizardmon.MMD", "aliases_applied": true, "field_overlay": "wizardmon-supported-field"},
  "242": {"model": "242-Sorcermon.MMD", "aliases_applied": true, "field_overlay": "sorcermon-supported-field"},
- "243": {"model": "243-Starmon.MMD", "aliases_applied": true, "field_overlay": "starmon-boxer-field"},
+ "243": {"model": "243-Starmon.MMD", "aliases_applied": true},
  "244": {"model": "244-SuperStarmon.MMD", "aliases_applied": true, "field_overlay": "superstarmon-supported-field"},
  "245": {"model": "245-Piedmon.MMD", "aliases_applied": true, "field_overlay": "piedmon-native-float"},
  "246": {"model": "246-Infermon.MMD", "aliases_applied": true},
