@@ -4564,9 +4564,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/333-Raijinmon.MMD.mdelta",
-        "delta_sha256": "ee5b398d9525cd5d35094bd38aeb66eeb87f804a96436c3516d3b503ae59140e",
-        "sha256": "a9b45694f105c477c592f697ddba2a005d14a976bf3518854c6b8cd261a30864",
-        "size": 96028
+        "delta_sha256": "d9432fb82f76f5fa3d0def92119065c9a143295538ad0078103503c61322dc14",
+        "sha256": "4515e19e20eec03764581af19a87620728634e6595cb1bda3f619d8bbea03133",
+        "size": 93284
       },
       "tim": {
         "sources": [
