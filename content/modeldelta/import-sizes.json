@@ -451,11 +451,11 @@
     },
     {
       "source": "build/batch11/HiAndromon.MMD",
-      "source_sha256": "493fd9ded170738172826eec68d856b9a1b730482283c2a0f7b11463485f6090",
+      "source_sha256": "bc13549c91e817a44c0e6c2d02bc48c187423a2edddd538cffbb33430ba757ce",
       "bones": 26,
       "scale": 1.1600663557955515,
       "target": "build/sizes-out/models/HiAndromon.MMD",
-      "sha256": "e0063fc28d189b586c0c171660bc4ef62e99320c86132ca310f765f8494bcf0a"
+      "sha256": "3f69b06cc2bdfbc59ebeffbf95ea5a7ad3f7e0aa391f0922b0d8b27df935bb42"
     },
     {
       "source": "build/batch11/KingEtemon.MMD",
