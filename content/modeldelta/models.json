@@ -254,9 +254,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/189-Ankylomon.MMD.mdelta",
-        "delta_sha256": "dd5727a958a7f099efe6631a74b94d608ecf9079c8fa3ebbe21d7b06db0821c2",
-        "sha256": "d0cc083f533e4eb2d4a710e550efdea947034e2d5cb1ac1f1a1ff623079bd4fa",
-        "size": 104974
+        "delta_sha256": "70f1f10e3d313e25a683b45f191dcec9afc789efb74feaed1c3c301f471fd3f4",
+        "sha256": "d2ff04b10d4951092c7279ede9374e8d1cebbb5a10333705471bd5e506694d81",
+        "size": 101848
       },
       "tim": {
         "sources": [

@@ -7,7 +7,7 @@
  "185": {"model": "185-Armadillomon.MMD", "aliases_applied": true, "texture": "185-Armadillomon.TIM"},
  "187": {"model": "187-Stingmon.MMD", "aliases_applied": true, "field_overlay": "stingmon-field"},
  "188": {"model": "188-Aquilamon.MMD", "aliases_applied": true, "texture": "188-Aquilamon.TIM"},
- "189": {"model": "189-Ankylomon.MMD", "field_overlay": "ankylomon-field"},
+ "189": {"model": "189-Ankylomon.MMD", "aliases_applied": true},
  "190": {"model": "190-Angewomon.MMD", "aliases_applied": true, "field_overlay": "angewomon-field"},
  "191": {"model": "191-MetalGarurumon.MMD", "aliases_applied": true, "field_overlay": "metalgarurumon-pace"},
  "192": {"model": "192-Imperialdramon.MMD", "aliases_applied": true},
