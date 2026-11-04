@@ -1,5 +1,6 @@
 """Rejected model edits must leave the author's deltas and pins intact (temporary fixtures only)."""
 import contextlib
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -7,10 +8,30 @@ import tempfile
 from types import SimpleNamespace
 import unittest
 import sys
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.models import edit as v
+
+
+class ProviderPins(unittest.TestCase):
+    def test_battle_repair_is_pinned_without_a_field_overlay(self):
+        def species_file(out, sid, generate):
+            base = Path(out).parent / 'imported-models'
+            self.assertEqual((base / f'{sid}.MMD').read_bytes(), b'base model')
+            final = Path(out).parent / 'battle.MMD'
+            final.write_bytes(b'final battle model')
+            return 'species.json', {'model': {'file': str(final)},
+                                    'texture': {'file': str(base / f'{sid}.TIM')}}
+
+        module = SimpleNamespace(species_file=species_file)
+        spec = SimpleNamespace(loader=SimpleNamespace(exec_module=Mock()))
+        with patch.object(v.importlib.util, 'spec_from_file_location', return_value=spec), \
+                patch.object(v.importlib.util, 'module_from_spec', return_value=module), \
+                patch.object(v, 'import_records', return_value={'289': {}}):
+            actual = v.provider_pin(289, b'base model', b'texture')
+        self.assertEqual(actual, [hashlib.sha1(b'final battle model').hexdigest(),
+                                  hashlib.sha1(b'texture').hexdigest()])
 
 
 class Put(unittest.TestCase):
