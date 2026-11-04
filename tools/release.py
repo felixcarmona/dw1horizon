@@ -208,6 +208,39 @@ class Run:
             # Also reap browsers left behind by a failed browser runner.
             stop_group(p)
 
+    def cmds(self, runs, env=None, cwd=ROOT):
+        """Commands at once: runs {name: (argv, log file)}; each one's output goes to its log. Waits for all; when
+        one fails the others are stopped and the failure raised (with its log's last lines)."""
+        if env:
+            print('Environment: ' + shlex.join(f'{k}={env[k]}' for k in
+                  ('W', 'NAME', 'DW_HEAP_MAP', 'DERIVE_JOBS', 'RECORDS', 'ISOS', 'RELEASE', 'ENGINE', 'ENGINE_WORK') if k in env))
+        for name, (argv, log) in runs.items():
+            print(f'{shlex.join(map(str, argv))}  > {log}', flush=True)
+        if self.dry:
+            return
+        procs = {}
+        try:
+            for name, (argv, log) in runs.items():
+                with open(log, 'w') as f:
+                    procs[name] = subprocess.Popen(list(map(str, argv)), cwd=cwd, env=env, stdout=f,
+                                                   stderr=subprocess.STDOUT, start_new_session=True)
+            pending = dict(procs)
+            while pending:
+                for name, p in list(pending.items()):
+                    if p.poll() is None:
+                        continue
+                    del pending[name]
+                    tail = Path(runs[name][1]).read_text(errors='replace').splitlines()[-15:]
+                    print(f'  {name}: exit {p.returncode}', flush=True)
+                    if p.returncode:
+                        print('\n'.join(tail), flush=True)
+                        raise RuntimeError(f'command exited {p.returncode}: {shlex.join(map(str, runs[name][0]))}')
+                if pending:
+                    time.sleep(1)
+        finally:
+            for p in procs.values():
+                stop_group(p)
+
     def summary(self, result):
         data = dict(result=result, seconds=round(time.monotonic() - self.started, 2),
                     steps=self.times, sha1=self.sums)
@@ -420,28 +453,36 @@ def pipeline(a, r):
             for k, output in manifest['variants'][manifest['default']]['outputs'].items():
                 r.sums['output-' + k] = output['sha1']
     with r.step('Standalone package apply (USA, Japan Rev 1, Europe with World 3 USA)'):
-        for base, vid in (('us', None), ('jp1', None), ('eu', 'dw3-us')):
+        # Run the shipped reader outside the checkout, without developer imports.
+        standalone_env = dict(env)
+        for name in ('PYTHONPATH', 'PYTHONHOME'):
+            standalone_env.pop(name, None)
+        standalone_env.update(PYTHONNOUSERSITE='1', VIRTUAL_ENV=str(player_env),
+                              PATH=str(player_py.parent) + os.pathsep + standalone_env.get('PATH', ''))
+        applies = (('us', None), ('jp1', None), ('eu', 'dw3-us'))
+        # The three run at once, the CPUs shared (-X cpu_count: apply gives tools/derive --jobs os.cpu_count(); the
+        # bytes do not depend on it). Each one's screen goes to standalone-KEY.log.
+        share = max(1, (os.cpu_count() or 1) // len(applies))
+        runs = {}
+        for base, vid in applies:
             key = base + ('+' + vid if vid else '')
             dest = out / ('standalone-' + key)
             used = dict(sources, **({variants[vid][0]: variants[vid][1]} if vid else {}))
-            # Run the shipped reader outside the checkout, without developer imports.
-            standalone_env = dict(env)
-            for key in ('PYTHONPATH', 'PYTHONHOME'):
-                standalone_env.pop(key, None)
-            standalone_env.update(PYTHONNOUSERSITE='1', VIRTUAL_ENV=str(player_env),
-                                  PATH=str(player_py.parent) + os.pathsep + standalone_env.get('PATH', ''))
-            cmd = [player_py, '-B', '-E', '-S', package / 'dwpatch.py', 'apply', bases[base], '-o', dest]
+            cmd = [player_py, '-B', '-E', '-S', '-X', f'cpu_count={share}', package / 'dwpatch.py', 'apply',
+                   bases[base], '-o', dest]
             for game, path in used.items():
                 cmd += ['--source-disc', f'{game}={path}']
-            r.cmd(cmd, standalone_env, cwd=out)
-            if not r.dry:
+            runs[key] = (cmd, out / f'standalone-{key}.log')
+        r.cmds(runs, standalone_env, cwd=out)
+        if not r.dry:
+            for key in runs:
+                dest = out / ('standalone-' + key)
                 images = list(dest.glob('*.bin'))
                 expected = manifest['variants'][manifest['default']]['outputs'][key]['sha1']
                 if len(images) != 1 or sha1(images[0]) != expected:
                     raise RuntimeError(f'{key}: standalone image differs from package manifest')
                 r.sums['standalone-' + key] = expected
                 shutil.rmtree(dest)
-        if not r.dry:
             shutil.rmtree(player_env)
     if a.record_save:
         with r.step('Record this release save in a private corpus copy'):

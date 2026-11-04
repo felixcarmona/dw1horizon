@@ -97,6 +97,7 @@ run derive-sum        $PY tools/test_pysum.py                             # tool
 run derive-units      $PY tools/test_derive_units.py                      # a unit that fails stops the step at once, no worker left (fork, spawn)
 run patcher-release $PY -m unittest tools.test_patcher_release_selection
 run model-variants  $PY tools/test_model_variants.py                     # World 3 USA: the edit carry, its records, the pin keys
+run variant-reuse   $PY tools/test_variant_reuse.py                      # make-release reuses the USA World 3 run only when provably the same
 run patcher-publication $PY -m unittest tools.test_patcher_codecopy tools.test_patcher_datacopy tools.test_patcher_buffers tools.test_patcher_headermeta tools.test_patcher_literals tools.test_literal_gate tools.test_delta_audit tools.test_changed_build_proof
 run build-cache       $PY -m unittest tools.test_build_cache tools.test_compiler_cache tools.test_derive_cache tools.test_native_build
 run patcher-bundle    $PY tools/test_patchbundle.py                       # eager imports survive the recorded release bundle

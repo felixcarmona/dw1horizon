@@ -192,5 +192,30 @@ class ReleaseTests(unittest.TestCase):
                     release.main(['--reuse-package', td])
 
 
+
+class ParallelCommands(unittest.TestCase):
+    def test_all_run_at_once_with_their_logs(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            runs = {k: (['sh', '-c', f'sleep 1; echo {k}'], td / f'{k}.log') for k in ('a', 'b', 'c')}
+            r = release.Run(False, td)
+            with contextlib.redirect_stdout(io.StringIO()):
+                start = release.time.monotonic()
+                r.cmds(runs)
+                self.assertLess(release.time.monotonic() - start, 2.9)
+            for k in runs:
+                self.assertEqual((td / f'{k}.log').read_text().strip(), k)
+
+    def test_a_failure_stops_the_others(self):
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            runs = {'slow': (['sh', '-c', f'sleep 30; touch {td}/late'], td / 'slow.log'),
+                    'bad': (['sh', '-c', 'echo broken; exit 3'], td / 'bad.log')}
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), self.assertRaises(RuntimeError):
+                release.Run(False, td).cmds(runs)
+            self.assertIn('broken', out.getvalue())
+            self.assertFalse((td / 'late').exists())
+
 if __name__ == '__main__':
     unittest.main()

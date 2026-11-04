@@ -1761,27 +1761,33 @@ def variant_of_image(game, image):
     return hit[0]['id'], boot
 
 
+def derived_manifest(root, recipe):
+    """The derived/manifest.json of tools/derive's build of `recipe` in the tree `root` (derive_run's out)."""
+    with open(os.path.join(root, 'tools', 'derive', 'recipes', f'{recipe}.json')) as source:
+        name = json.load(source)['environment']['NAME']
+    return os.path.join(root, 'build', name, 'derived', 'manifest.json')
+
+
 def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs):
-    """For each --source-variant GAME=IMAGE: tools/derive with that disc in place of the reference one, on every
-    base whose derived files are its own (a regional base) and once on the USA disc for the others (they read the
-    USA bytes, as the reference pass does). Records each derived file that comes out otherwise as
-    sha1_by_base["<base>+<variant>"] and the patched disc's SHA-1 as outputs["<base>+<variant>"]. The derive runs
-    go in parallel (--variant-jobs at once, the CPUs shared between them). -> manifest source_variants."""
+    """For each --source-variant GAME=IMAGE: tools/derive with that disc in place of the reference one, once on the
+    USA disc; then on every base whose derived files are its own (a regional base) unless variantreuse.reuse() proves
+    that base's files are its reference ones with the USA run's changes put in (the steps the source discs feed and
+    the steps the base's own files feed do not meet). Those runs go in parallel (--variant-jobs at once, the CPUs
+    shared between them). The other bases read the USA bytes, as the reference pass does. Records each derived file
+    that comes out otherwise as sha1_by_base["<base>+<variant>"] and the patched disc's SHA-1 as
+    outputs["<base>+<variant>"]. -> manifest source_variants."""
     import concurrent.futures
+    import variantreuse
     sv = {}
+    regional = [k for k in base_paths if k != 'us' and regional_derive(mappings.get(k), m['extract'])]
     for spec in a.source_variant:
         game, image = spec.split('=', 1)
         vid, boot = variant_of_image(game, image)
         sv[vid] = dict(game=game, boot=boot)
         sources = [s for s in a.source_disc if s.split('=', 1)[0] != game] + [f'{game}={image}']
-        runs = ['us'] + [k for k in base_paths if k != 'us' and regional_derive(mappings.get(k), m['extract'])]
-        width = max(1, min(getattr(a, 'variant_jobs', None) or 2, len(runs)))
-        jobs = max(1, (os.cpu_count() or 1) // width)
-        say(f'  source variant {vid} ({game}: {os.path.basename(image)}): tools/derive on {", ".join(runs)}, '
-            f'{width} at once, --jobs {jobs} each')
         t0 = time.time()
 
-        def derive_one(key):
+        def derive_one(key, jobs):
             bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, vid, key),
                           source_discs=sources)
             os.makedirs(os.path.join(work, vid, key), exist_ok=True)
@@ -1789,13 +1795,36 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
                                source_discs=sources)
             return key, {hh['id']: open(got[hh['file']], 'rb').read() for hh in holes}
 
-        with concurrent.futures.ThreadPoolExecutor(width) as pool:
-            made = dict(pool.map(derive_one, runs))
+        say(f'  source variant {vid} ({game}: {os.path.basename(image)}): tools/derive on us')
+        made = dict([derive_one('us', os.cpu_count() or 1)])
+        reused, why = None, 'no regional base'
+        if regional:
+            try:
+                with open(derived_manifest(os.path.join(work, vid, 'us', 'derive', 'root'), local['recipe'])) as f:
+                    vman = json.load(f)
+                with open(derived_manifest(os.path.join(work, 'cand'), local['recipe'])) as f:
+                    recorded = json.load(f)
+                differing = variantreuse.differing_inputs(
+                    os.path.join(work, 'verify'), {k: os.path.join(work, k, 'derive', 'root') for k in regional},
+                    m['extract'])
+                graph = variantreuse.step_graph(os.path.join(out, 'bundle', 'tools', 'derive'))
+                reused, why = variantreuse.reuse(holes, base_holes, made['us'], vman, recorded, graph, differing)
+            except (OSError, ValueError, KeyError) as e:
+                reused, why = None, f'cannot check ({e})'
+        if reused is not None:
+            say(f'    {", ".join(regional)}: the reference files with the USA run\'s changes (the source discs\' '
+                f'steps and the bases\' own files do not meet)')
+        elif regional:
+            width = max(1, min(getattr(a, 'variant_jobs', None) or 2, len(regional)))
+            jobs = max(1, (os.cpu_count() or 1) // width)
+            say(f'    {why}: tools/derive on {", ".join(regional)}, {width} at once, --jobs {jobs} each')
+            with concurrent.futures.ThreadPoolExecutor(width) as pool:
+                made.update(pool.map(lambda k: derive_one(k, jobs), regional))
         m.setdefault('timings', {}).setdefault('source_variants', {})[vid] = round(time.time() - t0)
         say(f'    derive: {time.time() - t0:.0f} s')
         for key in base_paths:
             pk = pin_key(key, vid)
-            vb = made[key] if key in made else made['us']
+            vb = reused[key] if reused is not None else made[key] if key in made else made['us']
             hb = dict(base_holes[key]); nb = 0
             for hh in holes:
                 b = vb[hh['id']]
@@ -2152,7 +2181,7 @@ def main(argv=None):
     p.add_argument('--source-variant', action='append', metavar='GAME=IMAGE',
                    help='another release of a source game whose imports differ (dw2003=World 3 USA): every base\'s '
                    'checksums with it too (pin key "<base>+<release>")')
-    p.add_argument('--variant-jobs', type=int, default=2, help='--source-variant derive runs at once (default 2)')
+    p.add_argument('--variant-jobs', type=int, default=2, help='--source-variant derive runs at once on the regional bases, when the USA run cannot be reused (default 2)')
     p.add_argument('--save-check-emu', action='store_true', help='also load every published release\'s save on the '
                    'first variant\'s disc in the emulator (tools/dev/saves/releases.py emu; the file check always runs)')
     a = ap.parse_args(argv)
