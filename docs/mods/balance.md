@@ -490,3 +490,16 @@ These are fit envelopes from ordinary peers, not an assertion that all existing 
 | Jijimon | 6000/6500/600/650/550/800 | 4500/6000/450/500/400/700 | 250 / 220; battle |
 
 Phoenixmon keeps speed/brains and HerculesKabuterimon keeps physical strength. Electro Shocker uses air, the engine's electrical element, rather than its inherited fire tag. MetalEtemon's off targets lose their previous Mega-strength extremes. Machinedramon's partner finisher uses the normal band in both modes while the separate story boss remains its own encounter. Analogman and Jijimon retain brains-focused profiles. Their technique identities and animation slots remain unchanged: existing Ultimates can use the same advanced ordinary techniques, while finisher power is resolved per casting species. A shared id never changes another species' global technique row.
+
+| Other moved species | Levels on / off | Off targets (HP/MP/Off/Def/Speed/Brains) | Finisher power on / off; element |
+| --- | --- | --- | --- |
+| IceLeomon | Ultimate / Champion | 2500/1500/250/200/200/150 | 230 / 170; battle |
+| Yanmamon | Champion / Rookie | 750/750/75/75/100/75 | 167 / 92; air |
+| Flarerizamon | Champion / Rookie | 1000/750/100/75/75/75 | 155 / 90; fire |
+| Vermilimon | Ultimate / Champion | 2500/2000/200/250/100/150 | 225 / 160; fire |
+| Icemon | Champion / Rookie | 750/1000/75/100/50/100 | 157 / 94; ice |
+| BlueMeramon | Ultimate / Champion | 2000/2500/200/150/150/200 | 220 / 162; ice |
+| Meteormon | Ultimate / Rookie | 1000/750/100/100/50/50 | 230 / 90; fire |
+| KingSukamon | Ultimate / Champion | 2500/1500/150/250/100/150 | 200 / 150; filth |
+
+Their existing on targets already fit their new levels and remain. Rookie off lists explicitly disable ordinary damage techniques above 120 power with null slots; weaker attacks and support techniques keep their existing slots. Champion/Ultimate lists retain their established breadth, which ordinary peers also have. Meteormon and Flarerizamon deliberately share Fireball's animation/effects but have different on power. KingSukamon's stronger Ultimate filth finisher does not alter Sukamon's global Party Time row. The option's existing raisability restrictions still apply to these native enemies made partners.

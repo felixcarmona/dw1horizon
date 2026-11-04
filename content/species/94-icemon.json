@@ -3,11 +3,17 @@
   "name": "Icemon",
   "level": "champion",
   "vanilla_as": 48,
-  "off": {"level": "rookie"},
+  "off": {
+    "level": "rookie",
+    "stats": {"hp": 750, "mp": 1000, "offense": 75, "defense": 100, "speed": 50, "brains": 100},
+    "finisher": {"power": 94, "mpCost": 40, "element": "ice"},
+    "techniques": [null, null, null, null, null, null, "Winter Blast", "Muscle Charge", "Subzero Ice Punch"]
+  },
   "attribute": "vaccine",
   "specialties": ["ice", null, "battle"],
   "techniques": ["Megaton Punch", "Giga Freeze", "Ice Needle", "Tremar", "Buster Dive", "Ice Statue",
                  "Winter Blast", "Muscle Charge", "Subzero Ice Punch"],
+  "finisher": {"power": 157, "mpCost": 40, "element": "ice"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 94,
   "model": {

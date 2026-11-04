@@ -3,11 +3,19 @@
   "name": "IceLeomon",
   "level": "ultimate",
   "vanilla": true,
-  "off": {"level": "champion"},
+  "off": {
+    "level": "champion",
+    "stats": {"hp": 2500, "mp": 1500, "offense": 250, "defense": 200, "speed": 200, "brains": 150},
+    "finisher": {"power": 170, "mpCost": 40, "element": "battle"},
+    "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar",
+                   "War Cry", "Muscle Charge", "Static Elect", "Megalo Spark",
+                   "Fist of the Beast King"]
+  },
   "attribute": "data",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King"],
+  "finisher": {"power": 230, "mpCost": 40, "element": "battle"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
   "model": {

@@ -4,11 +4,18 @@
   "_source": "dw1 Vermilimon type 88, native model and texture (tools/import_batch.py run content/imports/lists/seventeenth-12.json); was species 364 until 2026-10-13, merged into the disc's id 88 (a record original)",
   "level": "ultimate",
   "vanilla_as": 12,
-  "off": {"level": "champion"},
+  "off": {
+    "level": "champion",
+    "stats": {"hp": 2500, "mp": 2000, "offense": 200, "defense": 250, "speed": 100, "brains": 150},
+    "finisher": {"power": 160, "mpCost": 40, "element": "fire"},
+    "techniques": ["Prominence Beam", "Heat Laser", "Red Inferno", "Meltdown", "Megaton Punch", "Counter", "Tremar",
+                   "Spit Fire", "Fire Tower", "Muscle Charge", "Volcanic Strike"]
+  },
   "attribute": "vaccine",
   "specialties": ["fire", "battle", null],
   "techniques": ["Prominence Beam", "Heat Laser", "Red Inferno", "Meltdown", "Megaton Punch", "Counter", "Tremar",
                  "Spit Fire", "Fire Tower", "Muscle Charge", "Volcanic Strike"],
+  "finisher": {"power": 225, "mpCost": 40, "element": "fire"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {

@@ -4,11 +4,18 @@
   "_source": "dw1 BlueMeramon type 104, native model and texture (tools/import_batch.py run content/imports/lists/eighteenth-6.json); was species 369 until 2026-10-13, merged into the disc's id 104 (a record original)",
   "level": "ultimate",
   "vanilla_as": 12,
-  "off": {"level": "champion"},
+  "off": {
+    "level": "champion",
+    "stats": {"hp": 2000, "mp": 2500, "offense": 200, "defense": 150, "speed": 150, "brains": 200},
+    "finisher": {"power": 162, "mpCost": 40, "element": "ice"},
+    "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",
+                   "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast"]
+  },
   "attribute": "vaccine",
   "specialties": ["ice", "fire", null],
   "techniques": ["Fire Tower", "Prominence Beam", "Red Inferno", "Tear Drop", "Spit Fire", "Giga Freeze",
                  "Ice Needle", "Ice Statue", "Heat Laser", "Magma Bomb", "Ice Blast"],
+  "finisher": {"power": 220, "mpCost": 40, "element": "ice"},
   "drop": {"item": "sm.recovery", "percent": 30},
   "effects_like": 9,
   "model": {
