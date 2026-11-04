@@ -23,7 +23,7 @@ from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, align, set_rotation
 
 PROFILES={
- 404:dict(source='a356b6ba345710ced8e66d49e7f1192e008c849b517360c9e16ccb0e7aead249',bones=24,
+ 404:dict(source='c56fedf796622aecbd88bd6898e86707256d039457f253f89c6aa21cd4129c03',bones=24,
           carrier=1,pelvis=2,chest=1,head=15,
           legs=[(5,6,7,[7,8],-1,0),(9,10,11,[11,12],1,.5)],
           arms=[(18,19,-1),(20,21,1)],wings=[(14,1),(17,-1)],front=4,sides=[(13,5,-1),(3,9,1)],
