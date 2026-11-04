@@ -133,6 +133,20 @@
       "kind": "MMD",
       "previous_bytes": 338,
       "bytes": 5017
+    },
+    {
+      "id": 336,
+      "name": "Raidenmon",
+      "kind": "MMD",
+      "previous_bytes": 337,
+      "bytes": 948
+    },
+    {
+      "id": 336,
+      "name": "Raidenmon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 1070
     }
   ]
 }

@@ -669,11 +669,11 @@
     },
     {
       "source": "build/batch13/Raidenmon.MMD",
-      "source_sha256": "a32d4cd6c4670ca12ff3636dfd796a4e569810d51d42688714fb7d6b2698ac28",
+      "source_sha256": "5998d01390b3c23381f394e096f40f37d59091120ef91c88d1a02892053667a4",
       "bones": 24,
       "scale": 1.6679278981456473,
       "target": "build/sizes-out/models/Raidenmon.MMD",
-      "sha256": "aa88bc4fc671ead839a68d87bde1d6d1ee8d62ad4ec00607bb376090e25fae96"
+      "sha256": "798c7a965c07ff6ee71f3c22bed98339a7be2183ff9d473f9ce962c831503af8"
     }
   ]
 }
