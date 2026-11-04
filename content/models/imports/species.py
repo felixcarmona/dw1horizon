@@ -83,7 +83,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'kokuwamon-rolling-boots': ('247', 'tools.models.field_animations.pace', '247-kokuwamon-rolling-boots'),
     'infermon-tripod-field': ('246', 'tools.models.field_animations.pace', '246-infermon-tripod-field'),
     'piedmon-native-float': ('245', 'tools.models.field_animations.chibi', '245-piedmon-native-float'),
-    'superstarmon-supported-field': ('244', 'tools.models.field_animations.super_starmon', '244-superstarmon-supported-field'),
+    'superstarmon-supported-field': ('244', 'tools.models.field_animations.celebrations', '244-superstarmon-supported-field'),
     'starmon-boxer-field': ('243', 'tools.models.field_animations.pace', '243-starmon-boxer-field'),
     'sorcermon-supported-field': ('242', 'tools.models.field_animations.pace', '242-sorcermon-supported-field'),
     'wizardmon-supported-field': ('241', 'tools.models.field_animations.pace', '241-wizardmon-supported-field'),

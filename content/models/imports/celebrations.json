@@ -721,5 +721,79 @@
     "shift": 0,
     "body_gain": 1,
     "skeleton_sha256": "2654ab437f2c3cb3fb6f23c050c7fc3931b32920e57f62b2a774509cd5ad322b"
+  },
+  "244": {
+    "source_sha256": "97adae24ba8c103eca938853111e488d9c2ae73e5dcbbac35076df693be7f6b5",
+    "slots": [
+      42
+    ],
+    "pelvis": 1,
+    "chest": 1,
+    "head": 26,
+    "legs": [
+      [
+        8,
+        9,
+        10
+      ],
+      [
+        12,
+        13,
+        14
+      ]
+    ],
+    "locked": [
+      11,
+      15
+    ],
+    "lower": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "secondary": [
+      [
+        [
+          16,
+          17
+        ],
+        0,
+        2
+      ],
+      [
+        [
+          18,
+          19
+        ],
+        0,
+        2
+      ]
+    ],
+    "delays": {
+      "2": 1.0,
+      "3": 1.8,
+      "4": 2.6,
+      "5": 1.4,
+      "6": 2.2,
+      "7": 3.0,
+      "26": 2.3
+    },
+    "shift": 0.8,
+    "body_gain": 1,
+    "base_generator": "tools.models.field_animations.super_starmon",
+    "no_reverse": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "skeleton_sha256": "4ea379540662033b0544bf543cc71b6f6ae2b4b8c58a2b86562e9f252796e155"
   }
 }
