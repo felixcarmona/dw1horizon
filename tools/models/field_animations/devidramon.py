@@ -17,7 +17,10 @@ from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.aero_veedramon import _forward, _steps
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation
-SOURCE = '175aef45b792ae1707ee37e49f7eddfb1ad7e4be01945d6b26e1b9a28a5d51f6'
+SOURCE = '8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c'
+# The source is the 460-tall prowl's model brought down to 390 (content/modeldelta/import-sizes.json): the
+# body heights, foot tracks and lifts below were measured at 460 and shrink with it.
+SCALE = 390 / 459.92
 
 def _parse(data, sk):
     mmd.exe().skeleton[216] = sk
@@ -44,7 +47,7 @@ def _author(old, sk):
         period = {0: 72, 2: 24, 3: 24, 4: 10}[slot]
         contact = {0: 72, 2: 14, 3: 14, 4: 3}[slot]
         speed = {0: 0, 2: 9, 3: 7, 4: 30}[slot]
-        lift = {0: 0, 2: 16, 3: 13, 4: 25}[slot]
+        lift = {0: 0, 2: 16, 3: 13, 4: 25}[slot] * SCALE
         rock = {0: 0, 2: 6, 3: 5, 4: 8}[slot]
         poses = []
         hist = {}
@@ -106,19 +109,19 @@ def _author(old, sk):
                 f[15][7] -= math.ceil(max(0, bottom + 2))
             else:
                 q = t % (period / 2)
-                f[15][7] = round({2: -96, 3: -94, 4: -96}[slot] + (2 * math.sin(2 * math.pi * t / (period / 2)) if slot != 4 else 2 * math.sin(math.pi * q / contact) ** 2 if q <= contact else -8 * math.sin(math.pi * (q - contact) / (period / 2 - contact)) ** 2))
+                f[15][7] = round({2: -96, 3: -94, 4: -96}[slot] * SCALE + (2 * math.sin(2 * math.pi * t / (period / 2)) if slot != 4 else 2 * math.sin(math.pi * q / contact) ** 2 if q <= contact else -8 * math.sin(math.pi * (q - contact) / (period / 2 - contact)) ** 2))
                 for side, (hip, knee, foot) in enumerate(chains):
                     offset = side * period / 2
                     start = math.floor((t - offset) / period) * period + offset
                     phase = t - start
                     half = speed * contact / 2
-                    center = -20
+                    center = -20 * SCALE
                     sign = 1 if side == 0 else -1
                     if phase <= contact:
                         z = center - half + speed * phase
                         up = 3
                         pitch = -rock * math.cos(math.pi * phase / contact)
-                        x = sign * 48
+                        x = sign * 48 * SCALE
                     else:
                         q = (phase - contact) / (period - contact)
                         span = period - contact
@@ -127,7 +130,7 @@ def _author(old, sk):
                         z = (2 * q ** 3 - 3 * q * q + 1) * a + (q ** 3 - 2 * q * q + q) * span * speed + (-2 * q ** 3 + 3 * q * q) * b + (q ** 3 - q * q) * span * speed
                         up = 3 + lift * math.sin(math.pi * q)
                         pitch = rock * math.cos(math.pi * q) + 8 * math.sin(math.pi * q) ** 2
-                        x = sign * (48 + 4 * math.sin(math.pi * q) ** 2)
+                        x = sign * (48 + 4 * math.sin(math.pi * q) ** 2) * SCALE
                     rf, dz, _ = motionsecondary.rolling_foot(vs[foot].tolist(), rotation([0, -sign * 8, 0]).tolist(), pitch)
                     solveleg(f, hip, knee, foot, x, z + dz, np.array(rf), up)
             if slot:

@@ -18,8 +18,6 @@ PROFILES = {
               style='supple guarded arms and delayed antennae; original torso, travel and legs retained'),
     190: dict(source='b57233063c512508b7a2fbb487e7a35bc8d166859cec4fdbef6246c85f5f731f', bones=31, slots=[2,4], feet=[26,29], channels=set(range(11,19)),
               style='coherent restrained feather fan instead of a single twisting feather; original body, arms, ribbons and legs retained'),
-    191: dict(source='40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef', bones=23, slots=[3], feet=[8,12,18,21], channels={2,3},
-              neck_lift=65, head_lift=60, style='less folded tired head with native jaw acting; original mechanical quadruped body, paws, wings and tail retained'),
     199: dict(source='780e2a0ead735377c1c9470546dbeb07db6e83489cdb2fd85e2d7f733b58c071', bones=31, slots=[2,3,4], feet=[14,17], channels={8,11,27,28},
               style='delayed wrists and segmented tail; original body, gait, cannons and wing acting retained'),
 }
@@ -60,12 +58,6 @@ def build(data, sk):
                         base=fs[0][bone] if bone==14 else source[bone]
                         r=np.array(mmd.rot_matrix(*base[3:6]))
                         set_rotation(p,bone,r@rotation([1.5*math.sin(t-.35*i),side*(2.5+i*.5)*math.sin(t-.4-.25*i),side*1.2*math.cos(t-.2*i)]),hist)
-            elif sid == 191:
-                original=np.array(mmd.bone_matrices(old,source))
-                neck_parent=np.array(mmd.bone_matrices(old,p))[sk[2][1],:3,:3]
-                set_rotation(p,2,neck_parent.T@rotation([-cfg['neck_lift'],0,0])@original[2,:3,:3],hist)
-                parent=np.array(mmd.bone_matrices(old,p))[sk[3][1],:3,:3]
-                set_rotation(p,3,parent.T@rotation([-cfg['head_lift'],0,0])@original[3,:3,:3],hist)
             else:
                 for bone,sign in [(8,-1),(11,1)]:add(bone,[sign*2*math.sin(t-.9),0,sign*.8*math.cos(t-.7)])
                 for bone,amp,delay in [(27,2.5,.6),(28,4,1.0)]:add(bone,[amp*.4*math.sin(t-delay-.2),amp*math.sin(t-delay),0])

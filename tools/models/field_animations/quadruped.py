@@ -1,0 +1,443 @@
+"""A four-legged walk and run written from the paws up, for an imported quadruped's own rig.
+
+The species modules (metal_garurumon.py, armadillomon.py) give the rig (pelvis, chest, head, the three bones of each
+leg, tail and loose parts), the paws' soles and where they stand, and one row per field clip: cycle ticks, speed, the
+touchdown phase and duty factor of each leg, paw lift, body bob and pitch. This module writes the clips the way
+nefertimon.py writes Nefertimon's:
+
+- Each leg has a stance and a swing per cycle. In stance the sole stands on the floor and stays put in the world
+  while the body passes over it (the speed and the stance length make the stride); in its last part the heel peels
+  and the paw rolls onto its toes. In swing the leg lifts, the paw curls back, reaches forward and flattens again
+  just before it lands.
+- Every target is a point in the world: a paw's place on the floor, a wrist (hock) over it. Two-bone solves on the
+  model's own link lengths reach it, in the bend plane of the reference leg's standing pose (elbows back, knees
+  forward). The left legs' reference is the right legs' standing pose mirrored in the world (the meshes and offsets
+  of the two sides mirror exactly), so an imported idle that stands with one leg back does not twist the other.
+- The pelvis and chest bob and pitch with the footfalls, the head steadies against them, the tail and loose parts
+  follow a few ticks late.
+
+Each clip is rewritten where it is stored, so its battle aliases play it too. Footsteps keep the species' own
+sound (bank and note) and land on touchdowns; the clip keeps the eye state (texture events) its source opens with.
+The build refuses another source, a mesh point under the floor at a tick or a 60 fps third, a sole that slides in
+stance, an open loop, a speed outside the native range, another changed program or the storage budget.
+"""
+import copy
+import hashlib
+import math
+
+import animsheet
+import mmd
+import motionstorage
+from motiondiscidentity import changed_programs
+
+DEG = 4096 / 360
+SPEED_RANGE = {2: (15, 31), 4: (35, 52)}    # the native partners' field speeds (units per tick)
+FLOOR = 3            # a mesh point may dip this far under the floor at a tick or a 60 fps third (rounding)
+STANCE_SLIP = 0.35   # a standing sole may slide this fraction of the body's travel (natives: 0.1-0.8)
+MIRROR = {'LF': 'RF', 'LH': 'RH'}
+
+
+# ------------------------------------------------------------------ small linear algebra (lists, no numpy)
+def mul(a, b):
+    return [[sum(a[i][k] * b[k][j] for k in range(3)) for j in range(3)] for i in range(3)]
+
+
+def tr(a):
+    return [list(r) for r in zip(*a)]
+
+
+def mv(a, v):
+    return [sum(a[i][k] * v[k] for k in range(3)) for i in range(3)]
+
+
+def add(a, b):
+    return [x + y for x, y in zip(a, b)]
+
+
+def sub(a, b):
+    return [x - y for x, y in zip(a, b)]
+
+
+def scale(a, k):
+    return [x * k for x in a]
+
+
+def dot(a, b):
+    return sum(x * y for x, y in zip(a, b))
+
+
+def cross(a, b):
+    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+
+
+def norm(a):
+    return math.sqrt(dot(a, a))
+
+
+def unit(a):
+    n = norm(a)
+    return [x / n for x in a]
+
+
+def rot(deg):
+    return mmd.rot_matrix(*[d * DEG for d in deg])
+
+
+def frame(u, n):
+    """Columns: u, n (made orthogonal to u), u x n."""
+    u = unit(u)
+    n = unit(sub(n, scale(u, dot(n, u))))
+    w = cross(u, n)
+    return [[u[i], n[i], w[i]] for i in range(3)]
+
+
+def smooth(u):
+    u = max(0.0, min(1.0, u))
+    return u * u * (3 - 2 * u)
+
+
+def minimum_jerk(v):
+    v = max(0.0, min(1.0, v))
+    return v * v * v * (10 - 15 * v + 6 * v * v)
+
+
+def wave(phase, delay=0.0, rate=1):
+    return math.cos(2 * math.pi * rate * (phase - delay))
+
+
+def set_rot(pose, b, m, hist):
+    angle = mmd.matrix_euler(m, hist.get(b))
+    hist[b] = angle
+    pose[b][3:6] = [round(x) for x in angle]
+
+
+MIRROR_X = [[-1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+
+# ------------------------------------------------------------------ the rig
+class Rig:
+    def __init__(self, model, skeleton, profile):
+        self.m = model
+        self.sk = skeleton
+        self.p = profile
+        self.n = len(skeleton)
+        self.idle = animsheet.slot_frames(model, self.n, 0)[0]
+        self.rest = [list(v) for v in self.idle[0]]
+        self.verts = {b: [v[:3] for v in model.tmd.obj_verts(o)] for b, (o, _) in enumerate(skeleton) if o >= 0}
+        still = [list(v) for v in self.rest]
+        still[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, 0]
+        W = self.world(still)
+        self.still = W
+        # Reference bend planes: each right leg's standing pose; the left legs take it mirrored in the world.
+        self.ref = {}
+        for name, (up, lo, paw, side, front) in profile['legs'].items():
+            src = profile['legs'][MIRROR.get(name, name)]
+            worlds = [[r[:3] for r in W[b][:3]] for b in src[:3]]
+            if name in MIRROR:
+                worlds = [mul(mul(MIRROR_X, w), MIRROR_X) for w in worlds]
+            parent = [r[:3] for r in W[skeleton[up][1]][:3]]
+            self.ref[name] = [mul(tr(parent), worlds[0]), mul(tr(worlds[0]), worlds[1]), mul(tr(worlds[1]), worlds[2])]
+
+    def world(self, pose):
+        p = [list(v) for v in pose]
+        p[0] = [4096, 4096, 4096] + p[0][3:6] + [0, 0, 0]
+        return mmd.bone_matrices(self.m, p)
+
+    def lowest(self, b, rot_, origin):
+        """Lowest point (largest y) of bone b's mesh at a world rotation and origin."""
+        return max(origin[1] + dot(rot_[1], v) for v in self.verts[b])
+
+    def solve(self, pose, name, wrist, hist):
+        """Two-bone solve of a leg for its wrist (hock) position in the reference leg's bend plane; returns the lower
+        bone's world rotation and how far the target was out of reach."""
+        up, lo, paw, side, front = self.p['legs'][name]
+        W = self.world(pose)
+        parent = [r[:3] for r in W[self.sk[up][1]][:3]]
+        shoulder = [W[up][i][3] for i in range(3)]
+        a = [pose[lo][6], pose[lo][7], pose[lo][8]]
+        b = [pose[paw][6], pose[paw][7], pose[paw][8]]
+        ref = self.ref[name]
+        ru0 = mul(parent, ref[0])
+        rl0 = mul(ru0, ref[1])
+        e0 = add(shoulder, mv(ru0, a))
+        w0 = add(e0, mv(rl0, b))
+        la, lb = norm(a), norm(b)
+        d = sub(wrist, shoulder)
+        dist = norm(d)
+        reach = max(abs(la - lb) + 2, min(la + lb - 2, dist))
+        d = scale(unit(d), reach)
+        pole = self.p['pole'][front]
+        pole = mv(parent, [pole[0] * side] + list(pole[1:]))
+        pole = unit(sub(pole, scale(unit(d), dot(pole, unit(d)))))
+        along = (la * la - lb * lb + reach * reach) / (2 * reach)
+        h = math.sqrt(max(0.0, la * la - along * along))
+        elbow = add(shoulder, add(scale(unit(d), along), scale(pole, h)))
+        wr = add(shoulder, d)
+        n0 = cross(sub(e0, shoulder), sub(w0, e0))
+        n1 = cross(sub(elbow, shoulder), sub(wr, elbow))
+        if norm(n0) < 1e-6 or norm(n1) < 1e-6:     # a straight limb: swing it without twist
+            ru = mul(turn_to(sub(e0, shoulder), sub(elbow, shoulder)), ru0)
+            rl = mul(turn_to(mv(mul(ru, ref[1]), b), sub(wr, elbow)), mul(ru, ref[1]))
+        else:                                       # the bend plane carries the limb's roll
+            ru = mul(mul(frame(sub(elbow, shoulder), n1), tr(frame(sub(e0, shoulder), n0))), ru0)
+            rl = mul(mul(frame(sub(wr, elbow), n1), tr(frame(sub(w0, e0), n0))), rl0)
+        set_rot(pose, up, mul(tr(parent), ru), hist)
+        set_rot(pose, lo, mul(tr(ru), rl), hist)
+        return rl, dist - reach
+
+
+def turn_to(a, b):
+    """Shortest rotation taking direction a to direction b."""
+    a, b = unit(a), unit(b)
+    v = cross(a, b)
+    c = dot(a, b)
+    k = [[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]]
+    kk = mul(k, k)
+    return [[(1 if i == j else 0) + k[i][j] + kk[i][j] / (1 + c) for j in range(3)] for i in range(3)]
+
+
+# ------------------------------------------------------------------ walk and run
+def leg_phase(cfg, name, phase):
+    u = (phase - cfg['touchdown'][name]) % 1.0
+    duty = cfg['duty'][name]
+    return (True, u / duty) if u < duty else (False, (u - duty) / (1 - duty))
+
+
+def standing(rig, name, track, z, world):
+    """The wrist (hock) of a paw whose sole pivot stands at z on the floor, at a world rotation."""
+    paw, front = rig.p['legs'][name][2], rig.p['legs'][name][4]
+    wrist = sub([track, 0.0, z], mv(world, rig.p['sole'][front]))
+    wrist[1] = -rig.p['clear'] - rig.lowest(paw, world, [0, 0, 0])
+    return wrist
+
+
+def swing_pitch(cfg, front, s):
+    """A swinging paw's world pitch at swing fraction s: rolled on from the lift-off, curled under the leg on the way,
+    flat again to land."""
+    key = 'front' if front else 'hind'
+    peel = cfg['peel'][key]
+    curl = cfg['curl'][key] * math.sin(math.pi * min(1.0, s / 0.8)) if s < 0.8 else 0.0
+    return peel * (1 - smooth(s / 0.4)) + curl * (1 - smooth((s - 0.55) / 0.3)) - 3 * smooth((s - 0.7) / 0.25)
+
+
+def body(rig, cfg, phase, pose, hist):
+    """Pelvis height and pitch, spine flex, steady head, late tail and loose parts."""
+    p, rest = rig.p, rig.rest
+    pelvis, chest = p['pelvis'], p['chest']
+    if cfg['kind'] == 'gallop':   # high in the gathered flight, low between the hind and fore stances
+        bob = cfg['bob'] * (math.cos(2 * math.pi * (phase - cfg.get('high', 0.9))) + 0.3 * math.cos(4 * math.pi * (phase - 0.2)))
+        flex = cfg['flex'] * wave(phase, 0.95)
+        pitch = cfg['pitch'] * math.sin(2 * math.pi * (phase - 0.35))
+        roll = cfg['roll'] * math.sin(2 * math.pi * (phase - 0.2))
+        yaw = cfg['yaw'] * math.sin(2 * math.pi * (phase - 0.5))
+        rate = 1
+    else:                          # two dips a cycle, the weight passing from side to side
+        bob = cfg['bob'] * math.cos(4 * math.pi * (phase - cfg.get('high', 0.12)))
+        flex = cfg['flex'] * math.cos(4 * math.pi * (phase - 0.3))
+        pitch = cfg['pitch'] * math.cos(4 * math.pi * (phase - 0.2))
+        roll = cfg['roll'] * math.sin(2 * math.pi * (phase - 0.05))
+        yaw = cfg['yaw'] * math.sin(2 * math.pi * (phase - 0.3))
+        rate = 2
+    pose[pelvis][7] = rest[pelvis][7] - cfg['height'] - bob
+    set_rot(pose, pelvis, mul(mmd.rot_matrix(*rest[pelvis][3:6]), rot([cfg['tilt'] + pitch - flex, yaw, roll])), hist)
+    set_rot(pose, chest, mul(mmd.rot_matrix(*rest[chest][3:6]), rot([2 * flex - cfg['chest_up'], -yaw * 1.4, -roll * 0.6])), hist)
+    steady = cfg['head']   # the head keeps most of its gaze while the body pitches
+    if p.get('neck') is not None:
+        pose[p['neck']][3] = rest[p['neck']][3] - round((steady * 0.5 * (pitch + flex) - cfg['neck']) * DEG)
+    pose[p['head']][3] = rest[p['head']][3] - round((steady * 0.5 * (pitch + flex) + cfg['nod'] * wave(phase, 0.1, 2)) * DEG)
+    pose[p['head']][4] = rest[p['head']][4] + round(yaw * 0.8 * DEG)
+    for k, b in enumerate(p['tail']):
+        lag = 0.08 * (k + 1)
+        pose[b][3] = rest[b][3] + round(cfg['tail'] * (0.5 + 0.2 * k) * wave(phase, 0.9 + lag, rate) * DEG)
+        pose[b][4] = rest[b][4] + round(cfg['tail'] * 0.6 * math.sin(2 * math.pi * (phase - 0.3 - lag)) * DEG)
+    for b, sign in p.get('loose', ()):
+        pose[b][3] = rest[b][3] + round(cfg['loose'] * wave(phase, 0.15, rate) * DEG)
+        pose[b][5] = rest[b][5] + round(sign * 0.5 * cfg['loose'] * wave(phase, 0.25, 1) * DEG)
+
+
+def gait(rig, cfg):
+    p = rig.p
+    ticks, speed = cfg['ticks'], cfg['speed']
+    rest = rig.rest
+    W = rig.still
+    centres, tracks = {}, {}
+    for name, (up, lo, paw, side, front) in p['legs'].items():
+        key = 'front' if front else 'hind'
+        ref = p['legs'][MIRROR.get(name, name)]
+        centres[name] = W[up][2][3] + p['reach'][key] + cfg['reach'][key]
+        tracks[name] = side * (abs(W[ref[2]][0][3]) + cfg.get('track', {}).get(key, 0))
+    worst = dict(stretch=0.0)
+
+    def stride(name):
+        return speed * ticks * cfg['duty'][name] * (1 - cfg['slip'])
+
+    def stand(pose, name, s, hist):
+        up, lo, paw, side, front = p['legs'][name]
+        key = 'front' if front else 'hind'
+        z = centres[name] - stride(name) / 2 + stride(name) * s
+        world = rot([cfg['peel'][key] * smooth((s - 0.55) / 0.45), 0, 0])
+        lower, out = rig.solve(pose, name, standing(rig, name, tracks[name], z, world), hist)
+        set_rot(pose, paw, mul(tr(lower), world), hist)
+        return out
+
+    def body_at(phase, drop, hist):
+        pose = [list(v) for v in rest]
+        pose[0] = [4096, 4096, 4096, 0, 0, 0, 0, 0, -round(speed * phase * ticks)]
+        body(rig, cfg, phase, pose, hist)
+        pose[p['pelvis']][7] += drop
+        return pose
+
+    def folded(pose, name, wrist):
+        """A swinging wrist (hock) kept a little away from its shoulder (hip), so the knee does not flip."""
+        Wp = rig.world(pose)
+        root = [Wp[p['legs'][name][0]][i][3] for i in range(3)]
+        d = sub(wrist, root)
+        least = p['fold'][p['legs'][name][4]]
+        return wrist if norm(d) >= least else add(root, scale(unit(d), least))
+
+    def place(t, drop, hist):
+        phase = t / ticks
+        pose = body_at(phase, drop, hist)
+        short = 0.0
+        for name, (up, lo, paw, side, front) in p['legs'].items():
+            stance, s = leg_phase(cfg, name, phase)
+            if stance:
+                short = max(short, stand(pose, name, s, hist))
+                continue
+            key = 'front' if front else 'hind'
+            lift_off = standing(rig, name, tracks[name], centres[name] + stride(name) / 2, rot([cfg['peel'][key], 0, 0]))
+            landing = standing(rig, name, tracks[name], centres[name] - stride(name) / 2, rot([0, 0, 0]))
+            k = minimum_jerk(s) if cfg['snap'] else smooth(s)
+            flight = [lift_off[i] + (landing[i] - lift_off[i]) * (k if i == 2 else s) for i in range(3)]
+            flight[2] -= cfg['out'][key] * 6.75 * s * s * (1 - s)    # reaches past the landing, then settles onto it
+            flight[1] -= cfg['lift'][key] * math.sin(math.pi * min(1.0, s ** 0.8))
+            world = rot([swing_pitch(cfg, front, s), 0, 0])
+            wrist = folded(pose, name, [flight[0], min(flight[1], -p['clear'] - rig.lowest(paw, world, [0, 0, 0])), flight[2]])
+            lower, _ = rig.solve(pose, name, wrist, hist)
+            set_rot(pose, paw, mul(tr(lower), world), hist)
+        return pose, short
+
+    # a standing leg that cannot reach brings the body down to it, along a smooth cyclic dip
+    need = [0.0] * ticks
+
+    def dip(phase):
+        x = phase * ticks
+        return max(n - 0.6 * min(abs(x - j), ticks - abs(x - j)) ** 2 for j, n in enumerate(need))
+    for _ in range(8):
+        shorts = [place(t, dip(t / ticks), {})[1] for t in range(ticks)]
+        if max(shorts) < 0.5:
+            break
+        need = [n + s + (1 if s >= 0.5 else 0) for n, s in zip(need, shorts)]
+    hist = {}
+    drop = [dip(t / ticks) for t in range(ticks)]
+    frames = [place(t, drop[t], hist)[0] for t in range(ticks)]
+    worst['stretch'] = max(shorts)
+    worst['drop'] = max(drop)
+    closing = [list(v) for v in frames[0]]
+    closing[0][8] = -round(speed * ticks)
+    frames.append(closing)
+    return frames, worst
+
+
+def _played(animation, n, slot, ticks):
+    player = mmd.AnimPlayer(animation, n, slot)
+    played = []
+    for _ in range(ticks * 9 + 1):
+        assert player.tick()
+        pose = [list(v) for v in player.pose]
+        pose[0][6:9] = list(player.root)
+        played.append(pose)
+    return played, player.events
+
+
+def _floor(rig, frames):
+    """Lowest mesh point of each tick and its 60 fps thirds, over the floor at 0 (y grows downwards)."""
+    from motiontailspace import interpolate_pose
+    worst = -1e9
+    for t in range(len(frames) - 1):
+        for alpha in (0, 1365, 2730):
+            pose = interpolate_pose(frames[t], frames[t + 1], alpha)
+            height = pose[0][7]
+            W = rig.world(pose)
+            for b in rig.verts:
+                worst = max(worst, rig.lowest(b, [r[:3] for r in W[b][:3]], [W[b][i][3] for i in range(3)]) + height)
+    return worst
+
+
+def _stance_slip(rig, cfg, frames):
+    """Per paw: how far its sole pivot moves over the ground while the leg stands, as a fraction of the body's travel."""
+    ticks = cfg['ticks']
+    out = {}
+    for name, (up, lo, paw, side, front) in rig.p['legs'].items():
+        moved, travel = 0.0, 0.0
+        for t in range(ticks):
+            if not (leg_phase(cfg, name, t / ticks)[0] and leg_phase(cfg, name, (t + 1) / ticks)[0]):
+                continue
+            here = []
+            for pose in (frames[t], frames[t + 1]):
+                W = rig.world(pose)
+                point = add([W[paw][i][3] for i in range(3)], mv([r[:3] for r in W[paw][:3]], rig.p['sole'][front]))
+                here.append(point[2] + pose[0][8])
+            moved += abs(here[1] - here[0])
+            travel += abs(frames[t + 1][0][8] - frames[t][0][8])
+        out[name] = round(moved / travel, 3) if travel else 0.0
+    return out
+
+
+def build(data, skeleton, profile):
+    """The profile's field clips written into the model -> (bytes, report)."""
+    sid = profile['species']
+    if hashlib.sha256(data).hexdigest() != profile['source']:
+        raise ValueError(f'{profile["name"]}\'s gait requires the reviewed source')
+    if [b[1] for b in skeleton] != profile['parents']:
+        raise ValueError(f'{profile["name"]} rig differs')
+    n = len(skeleton)
+    mmd.exe().skeleton[sid] = skeleton
+    mmd.exe().bone_count[sid] = n
+    old = mmd.MMD.parse(data, n)
+    old.type = sid
+    new = copy.deepcopy(old)
+    rig = Rig(old, skeleton, profile)
+    checks, changed = [], set()
+    for slot, cfg in sorted(profile['gaits'].items()):
+        frames, worst = gait(rig, cfg)
+        ticks = cfg['ticks']
+        source_events = animsheet.slot_frames(old, n, slot)[2]
+        sound = next((dict(e) for _, kind, e in source_events if kind == 'sound'), dict(op='sound', bank=1, note=13))
+        events = [(t, kind, e) for t, kind, e in source_events if kind == 'tex' and t == 0]
+        for name in cfg['steps']:
+            tick = round(cfg['touchdown'][name] * ticks) % ticks
+            events.append((tick, 'sound', dict(sound, frame=tick + 1)))
+        events.sort(key=lambda e: e[0])
+        frames = [[[round(x) for x in bone] for bone in pose] for pose in frames]
+        animation = mmd.encode_anim(frames, n, loop_sample=0, events=events, tol=1)
+        index = old.anims.table[slot]
+        new.anims.anims[index] = animation          # in place: the slot's aliases play it too
+        changed |= {s for s, i in enumerate(old.anims.table) if i == index}
+        played, played_events = _played(animation, n, slot, ticks)
+        for tick in range(ticks, ticks * 9 + 1, ticks):
+            assert all(abs(a - b) <= 2 for bone, other in zip(played[0][1:], played[tick][1:]) for a, b in zip(bone, other)), \
+                (slot, tick, 'loop drift')
+        loop = played[:ticks + 1]
+        speed = abs(loop[-1][0][8] - loop[0][0][8]) / ticks
+        floor = _floor(rig, loop)
+        assert floor <= FLOOR, (slot, 'under the floor', floor)
+        low, high = SPEED_RANGE[slot]
+        assert low <= speed <= high and abs(speed - cfg['speed']) <= 0.5, (slot, speed)
+        slips = _stance_slip(rig, cfg, loop)
+        assert max(slips.values()) <= STANCE_SLIP, (slot, slips)
+        sounds = sorted({k for k, kind, _ in played_events if kind == 'sound' and k < ticks})
+        assert len(sounds) == len(cfg['steps']), (slot, sounds)
+        checks.append(dict(slot=slot, gait=cfg['name'], ticks=ticks, units_per_tick=round(speed, 2),
+                           lowest_point=round(floor, 1), touchdown=cfg['touchdown'], duty=cfg['duty'], stance_slip=slips,
+                           body_drop=round(worst['drop'], 1), unreached=round(worst['stretch'], 2), sound_ticks=sounds,
+                           stream_bytes=len(animation.build()),
+                           aliases=sorted(s for s, i in enumerate(old.anims.table) if i == index)))
+    result = new.build()
+    actual = mmd.MMD.parse(result, n)
+    assert old.tmd.build() == actual.tmd.build()
+    assert changed_programs(old, actual) == sorted(changed), (changed_programs(old, actual), sorted(changed))
+    storage = motionstorage.require(result, n)
+    return result, dict(species=sid, source_sha256=profile['source'], output_sha256=hashlib.sha256(result).hexdigest(),
+                        changed_slots=sorted(changed), checks=checks, storage=storage, mesh_exact=True,
+                        other_programs_exact=True)

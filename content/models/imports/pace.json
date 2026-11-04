@@ -108,34 +108,16 @@
   "bones": 23,
   "skeleton_sha256": "f40851011a5f00c3d0c04683fe89f2398de21b91641873bd8b0d517a3e6b1b3a",
   "source_sha256": "f94cdab3f149ae6b1ed7f31a7c4a146c308ea133472e76c93018d251e422adca",
-  "base_generator": null,
-  "post_source_sha256": "f94cdab3f149ae6b1ed7f31a7c4a146c308ea133472e76c93018d251e422adca",
+  "base_generator": "tools.models.field_animations.armadillomon",
+  "post_source_sha256": "ad67ff179c9570aee5b24737b5fff3ba4bc062393602205cef8cf412e9d22ed9",
   "slots": {
-   "2": {
+   "3": {
     "from": 2,
     "ticks": 14,
-    "speed": 20,
+    "speed": 12,
     "slip": [
      125,
      250
-    ]
-   },
-   "3": {
-    "from": 2,
-    "ticks": 21,
-    "speed": 13.3,
-    "slip": [
-     190,
-     360
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 8,
-    "speed": 35,
-    "slip": [
-     190,
-     360
     ]
    }
   }
@@ -292,9 +274,9 @@
   "name": "Devidramon",
   "bones": 29,
   "skeleton_sha256": "ce1c542a1791db8fcae17ed8ecd8a3646e9f4016584d11c2fe2c59e57b70edcd",
-  "source_sha256": "175aef45b792ae1707ee37e49f7eddfb1ad7e4be01945d6b26e1b9a28a5d51f6",
+  "source_sha256": "8a02d368ec11fb19ccbf57db20b11368d0670a87ae23b53f9e060b8d9db2868c",
   "base_generator": "tools.models.field_animations.devidramon",
-  "post_source_sha256": "f7eac8ac5d227990091ad2334fcc7c02af528686c544b0d60977aa5350495f2b",
+  "post_source_sha256": "df7c523f70aa536996e1b2bb70fa2bdb01446e8e1f10d72190ea011d58fc2321",
   "slots": {
    "2": {
     "from": 2,
@@ -1101,6 +1083,25 @@
     "from": 2,
     "ticks": 24,
     "speed": 12,
+    "slip": [
+     125,
+     250
+    ]
+   }
+  }
+ },
+ "191": {
+  "name": "MetalGarurumon",
+  "bones": 23,
+  "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
+  "source_sha256": "40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef",
+  "base_generator": "tools.models.field_animations.metal_garurumon",
+  "post_source_sha256": "dd7dab39356fca18a40b4ec6d33c647ce6ac23939acdc4838f90edb4160fd1e7",
+  "slots": {
+   "3": {
+    "from": 2,
+    "ticks": 27,
+    "speed": 14.7,
     "slip": [
      125,
      250

@@ -356,7 +356,7 @@ A **field overlay** is a reviewed recipe that rewrites the field slots of one sp
 |---|---|---|
 | `fieldacting.py` | Veemon 180, Magnamon 197, Veedramon 203, Renamon 354, Beelzemon 403, BlackWarGreymon 404, Bastemon 432, ExVeemon 194, Flamedramon 195, Omnimon 461 | per-species biped profiles (an explicit bone map: carrier, pelvis, chest, head, legs, arms, capes, wings): support-foot paths synchronized with root travel, weight shift towards the supporting leg, torso counter-rotation, delayed arms; native head, wing, tail and equipment acting kept; idle kept |
 | `fieldarticulation.py` | Puppetmon 181, Kotemon 351 | upper-body acting over the original root and leg programs (wrists counter the swing so a weapon keeps its orientation) |
-| `fieldsecondary.py` | Stingmon 187, Angewomon 190, MetalGarurumon 191, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
+| `fieldsecondary.py` | Stingmon 187, Angewomon 190, Paildramon 199 | small delayed secondary motion (arms, feathers, tail tips) with root and leg channels exact |
 | `fieldweight.py` | Ankylomon 189, Lighdramon 201 | step-synchronized body roll, yaw and pitch around the existing paw paths |
 | `fieldglide.py` | MetalSeadramon 211, Shakkoumon 214, Magnadramon 215, Gesomon 240, MarineAngemon 248, Quetzalmon 249, Solarmon 251 | replaces only the root's forward momentum with one steady key per loop (same net travel), removing forward bursts; every pose channel exact |
 | `fieldphantom.py`, `fielddolphin.py`, `fieldzudo.py` | Phantomon 229, Dolphmon 238, Zudomon 219 | restore the native performance clock that the retargeted field clips had squeezed |
@@ -536,12 +536,22 @@ the game's proportions, or that would gain too little to be worth a resident byt
 
 `tools/models/field_animations/pace.py`, with the manifest
 `content/models/imports/pace.json`, is the gait retime that note asks for. It covers
-the 38 imported partners that stayed under walk 15 or run 35. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty-one wrap their
-existing recipe through `base_generator`; seventeen had none and only have this pass. Nefertimon's
-`nefertimon.py` is one of the twenty-one: it writes the walk, run and standing idle from the paws up (stance and
+the 38 imported partners that stayed under walk 15 or run 35, and MetalGarurumon, whose gait was rewritten. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty-three wrap their
+existing recipe through `base_generator`; sixteen had none and only have this pass. Nefertimon's
+`nefertimon.py` is one of them: it writes the walk, run and standing idle from the paws up (stance and
 swing per leg, a rotary gallop and a lateral-sequence walk, two-bone solves in the idle's bend planes, the gauntlet
 kept seated) and rewrites each clip where it is stored, so the battle aliases (0x1B, 0x21, 0x23, 0x24) play it too;
 this pass then only derives its condition walk from that walk.
+
+`quadruped.py` is the same method as a library for other four-legged rigs, driven by a species profile (the three
+bones of each leg, the soles, where the paws stand, one row per clip with cadence, speed, touchdown phases, duty, lift
+and body motion). Every target is a world point; the left legs' bend planes are the right legs' standing pose
+mirrored in the world, so an import whose idle stands with one leg back does not twist the other. Footsteps keep the
+species' own sound and land on touchdowns. MetalGarurumon (`metal_garurumon.py`, 191) walks in a lateral sequence
+(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported. Armadillomon
+(`armadillomon.py`, 185) has legs of about 80 units under a shell whose rim stands on the floor, so its body cannot
+drop to lengthen a stride: it walks in a quick lateral sequence (9 ticks at 18) and runs in a trot with a short
+flight (8 ticks at 35).
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
 2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.
