@@ -3,6 +3,7 @@
   "name": "Meteormon",
   "level": "ultimate",
   "vanilla_as": 12,
+  "off": {"level": "rookie"},
   "attribute": "data",
   "specialties": ["fire", "battle", null],
   "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire", "Heat Laser",
@@ -47,6 +48,5 @@
       "flags": 16
     },
     "gains": {"hp": 5500, "mp": 4500, "offense": 650, "defense": 550, "speed": 350, "brains": 400}
-  },
-  "off": {"level": "rookie"}
+  }
 }

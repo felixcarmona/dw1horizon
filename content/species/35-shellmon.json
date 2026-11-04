@@ -3,6 +3,10 @@
   "name": "Shellmon",
   "level": "champion",
   "vanilla": true,
+  "off": {
+    "level": "champion",
+    "evolution": {"from": [4, 57, 284, 283, -1], "to": [60, 61, 275, -1, -1, -1]}
+  },
   "attribute": "data",
   "specialties": ["ice", null, "air"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [4, 57, 284, 283, -1],
-    "to": [60, 61, -1, -1, -1, -1],
+    "to": [60, 61, 24, -1, -1, -1],
     "requirements": {
       "digimon": 4,
       "hp": 100,

@@ -3,6 +3,7 @@
   "name": "MasterTyrannomon",
   "level": "ultimate",
   "vanilla_as": 12,
+  "off": {"level": "ultimate"},
   "attribute": "data",
   "specialties": ["battle", null, "fire"],
   "techniques": ["Spit Fire", "Prominence Beam", "Red Inferno", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch",

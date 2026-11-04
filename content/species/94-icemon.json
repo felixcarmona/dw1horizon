@@ -3,6 +3,7 @@
   "name": "Icemon",
   "level": "champion",
   "vanilla_as": 48,
+  "off": {"level": "rookie"},
   "attribute": "vaccine",
   "specialties": ["ice", null, "battle"],
   "techniques": ["Megaton Punch", "Giga Freeze", "Ice Needle", "Tremar", "Buster Dive", "Ice Statue",
@@ -60,6 +61,5 @@
     "gains": {"hp": 1500, "mp": 2000, "offense": 150, "defense": 150, "speed": 150, "brains": 200},
     "from": [283, 71],
     "to": [275, 279]
-  },
-  "off": {"level": "rookie"}
+  }
 }

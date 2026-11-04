@@ -66,6 +66,7 @@ if [ -d "$DERIVED/species" ]; then
 else
     skip species-lint-tests "needs generated species (DW_SELFTEST_DERIVE)"
 fi
+run species-off       $PY -W ignore tools/test_species_off.py              # JSON-only level, stats and path overrides
 run fi-info-clock     $PY tools/test_fi_info.py
 disc evolution-tree   $PY tools/test_evo_tree.py --practical
 disc evolution-tree-guard $PY -W ignore::ResourceWarning tools/test_evo_tree_guard.py

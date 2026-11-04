@@ -754,18 +754,31 @@ def validate(s):
         raise SystemExit(f'{p}: vanilla_as: the id of the vanilla species a new partner becomes (tools/vanilla_as.py)')
     off = s.get('off')
     if off is not None:
-        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats'}
+        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats', 'evolution'}
                 or off.get('level') not in LEVELS[1:6]):
             raise SystemExit(f'{p}: off: an original species override with level fresh..ultimate and optional stats')
+        if 'stats' in off and not set(STAT_KEYS) <= set(s.get('evolution', {}).get('gains', {})):
+            raise SystemExit(f'{p}: off.stats: on evolution.gains must supply all six target stats')
         if 'stats' in off and (not isinstance(off['stats'], dict) or set(off['stats']) != set(STAT_KEYS)
                 or any(type(v) is not int or not 0 <= v <= (9999 if k in ('hp', 'mp') else 999)
                        for k, v in off['stats'].items())):
             raise SystemExit(f'{p}: off.stats: all six target stats, hp/mp 0..9999, others 0..999')
+    if off is not None and 'evolution' in off:
+        e = off['evolution']
+        if (not 1 <= t <= 62 or not isinstance(e, dict) or set(e) - {'from', 'to', 'requirements'}
+                or any(not isinstance(e.get(k), list) or len(e[k]) != n
+                       or any(type(v) is not int or not -1 <= v < NUM_DIGIMON for v in e[k])
+                       for k, n in [('from', 5), ('to', 6)])):
+            raise SystemExit(f'{p}: off.evolution: resident ids 1..62, five from and six to ids')
+        if 'requirements' in e and (not isinstance(e['requirements'], dict)
+                or set(e['requirements']) != set(REQ_KEYS)
+                or any(type(v) is not int or not -32768 <= v <= 32767 for v in e['requirements'].values())
+                or not -128 <= e['requirements']['flags'] <= 127):
+            raise SystemExit(f'{p}: off.evolution.requirements: complete requirement row')
     if t < NUM_ORIGINAL and s.get('level') in LEVELS:
         with open(os.path.join(ROOT, 'content/tables/original-species-levels.json')) as f:
             baseline = json.load(f)['levels'][str(t)]
-        original_level = baseline if baseline != 'none' else LEVELS[min(LEVELS.index(s['level']), 5)]
-        if s['level'] != original_level and off is None:
+        if s['level'] != baseline and off is None:
             raise SystemExit(f'{p}: off: required when level differs from the committed original level')
     if ((s.get('evolution') or {}).get('requirements') or {}).get('digimon') == s['id']:
         raise SystemExit(f'{p}: evolution.requirements.digimon: the species itself (the bonus needs a parent, or -1)')
@@ -1172,6 +1185,7 @@ HEADER_VANILLA = 0x780           # the header sector: a bit per species the orig
 # the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per explicit JSON override (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
 HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
 HEADER_STATS_OFF, STATS_SWAP_MAX = 0x580, 19
+HEADER_EVOLUTION_OFF, EVOLUTION_SWAP_MAX = 0x3c, 20
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
@@ -1459,9 +1473,17 @@ def build(out=OUT, content=None, quiet=False, select=None):
     if len(partners) > MAX_PARTNERS: raise SystemExit(f'{len(partners)} partner species: at most {MAX_PARTNERS}')
     if len(links) > MAX_LINKS: raise SystemExit(f'{len(links)} evolution links with the original species: at most {MAX_LINKS}')
     first_mega = next((t for t in partners if recs[t]['para']['level'] == 6), 0)
+    evolution_rows = evolution_swaps(allsp, paths)
+    evolution_ref = 0
+    if evolution_rows:
+        evolution_ref = sector
+        block = struct.pack('<H', len(evolution_rows)) + b''.join(evolution_rows)
+        blobs.append(block.ljust(SECTOR, b'\0'))
+        sector += 1
     hdr = bytearray(SECTOR)
     struct.pack_into(HEADER, hdr, 0, b'DIGI', VERSION, RECORD_SIZE, count, 0, first_records, sector, 1, fallback_ref, chart_ref)
     struct.pack_into('<I', hdr, HEADER_CITY, city_ref)
+    struct.pack_into('<I', hdr, HEADER_EVOLUTION_OFF, evolution_ref)
     for i, t in enumerate(partners): hdr[HEADER_LEVELS + i] = recs[t]['para']['level']
     for t in species:                                     # the record originals (include/dw/species.h)
         if t < NUM_ORIGINAL: hdr[HEADER_RECORD_ORIGINALS + t // 8] |= 1 << (t % 8)
@@ -1492,7 +1514,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
 def level_swaps(allsp):
     """Explicit JSON level overrides; neither values nor membership come from a disc."""
     out = [(t, LEVELS.index(s['level']), LEVELS.index(s['off']['level']))
-           for t, s in sorted(allsp.items()) if 'off' in s]
+           for t, s in sorted(allsp.items()) if 'off' in s and s['level'] != s['off']['level']]
     if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} off overrides: room for {LEVEL_SWAP_MAX}')
     return out
 
@@ -1502,6 +1524,22 @@ def stats_swaps(allsp):
     rows = [(t, *(s['evolution']['gains'][k] for k in STAT_KEYS), *(s['off']['stats'][k] for k in STAT_KEYS))
             for t, s in sorted(allsp.items()) if 'stats' in s.get('off', {})]
     if len(rows) > STATS_SWAP_MAX: raise SystemExit(f'{len(rows)} off stats overrides: room for {STATS_SWAP_MAX}')
+    return rows
+
+
+def evolution_swaps(allsp, paths):
+    """One sector of explicit JSON on/off path and requirement rows (102 bytes each)."""
+    rows = []
+    for t, s in sorted(allsp.items()):
+        off = s.get('off', {}).get('evolution')
+        if off is None: continue
+        on = paths[t]
+        req = s['evolution']['requirements']
+        row = struct.pack('<H22h', t, *on['from'], *on['to'], *off['from'], *off['to'])
+        for r in (req, off.get('requirements', req)):
+            row += struct.pack('<13hbB', *(r[k] for k in REQ_KEYS), 0)
+        rows.append(row)
+    if len(rows) > EVOLUTION_SWAP_MAX: raise SystemExit(f'{len(rows)} off evolution overrides: room for {EVOLUTION_SWAP_MAX}')
     return rows
 
 

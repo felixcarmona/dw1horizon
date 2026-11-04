@@ -1,5 +1,5 @@
 {
-  "description": "Original species levels used only to lint explicit NEW DIGIMON off configuration; none is capped at Ultimate for story species.",
+  "description": "Original species levels used only to lint explicit NEW DIGIMON off configuration; none means the original has no gameplay tier.",
   "levels": {
     "0": "none",
     "1": "fresh",

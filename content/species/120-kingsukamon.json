@@ -3,6 +3,7 @@
   "name": "KingSukamon",
   "level": "ultimate",
   "vanilla_as": 42,
+  "off": {"level": "champion"},
   "attribute": "virus",
   "specialties": ["filth", null, null],
   "techniques": ["Horizontal Kick (55)", "Odor Spray", "Poop Spd Toss", "Big Poop Toss", "Poop Rnd Toss",
@@ -48,6 +49,5 @@
     },
     "gains": {"hp": 5000, "mp": 4000, "offense": 500, "defense": 550, "speed": 300, "brains": 400}
   },
-  "_former_name": "King of Sukamon",
-  "off": {"level": "champion"}
+  "_former_name": "King of Sukamon"
 }

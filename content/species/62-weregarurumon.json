@@ -4,6 +4,7 @@
   "_source": "dcb 139 (card WereGarurumon) (tools/import_batch.py run content/imports/lists/second-12.json); was species 204 until 2026-10-13, merged into the disc's id 62 (a record original)",
   "level": "ultimate",
   "vanilla": true,
+  "off": {"level": "ultimate"},
   "attribute": "vaccine",
   "specialties": ["battle", "fire", "ice"],
   "techniques": ["Megaton Punch", "Dynamite Kick (44)", "Counter", "Buster Dive", "Tremar", "Sonic Jab",
