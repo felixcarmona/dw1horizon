@@ -417,6 +417,22 @@
       },
       "drop": {"item": "sm.recovery", "percent": 10}
     },
+    "331": {
+      "level": "rookie",
+      "training_type": "even",
+      "peers": [3, 31, 57],
+      "gains": {"hp": 500, "mp": 500, "offense": 100, "defense": 50, "speed": 50, "brains": 100},
+      "wild": {"hp": 1100, "mp": 2300, "off": 390, "def": 190, "speed": 80, "brain": 150, "bits": 400},
+      "raise": {
+        "energy_max": 40,
+        "energy_fed": 20,
+        "energy_per_hour": 5,
+        "poop_timer_10min": 24,
+        "poop_size": 8,
+        "birth_weight": 15
+      },
+      "drop": {"item": "sm.recovery", "percent": 10}
+    },
     "181": {
       "level": "mega",
       "training_type": "offense-speed",

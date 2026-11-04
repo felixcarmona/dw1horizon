@@ -108,3 +108,9 @@ Decisions (2026-11-03, the eight eggs):
 So Motimon raises Tentomon, Kokuwamon, Wormmon, Hagurumon; Bukamon Gomamon, Otamamon, Gizamon, Syakomon, Crabmon;
 Nyaromon Salamon, Tsukaimon, DemiDevimon, Bearmon; Yokomon Biyomon, Floramon, Hawkmon, Mushroomon. Tentomon ← Tanemon
 and Biyomon ← Tokomon stay the primary routes (disc routes). Tsunomon keeps seven Rookies, Tokomon ten.
+
+2026-11-04: Vemmon (331, imported as a Champion under the wrong name Snatchmon) takes its canon level, Rookie. Its canon
+In-Training, Bowmon, is not in the game, so it joins Motimon's machine line (shares Mech): Motimon raises five Rookies.
+Its four Champions are canon Tyrannomon and stand-ins for its other canon forms: Hookmon for Snatchmon (a grabbing
+hook), Tankmon for Destromon (an armoured war machine), BomberNanimon for Damemon (the comic no-good line); all share
+Battle. Hagurumon and Kokuwamon keep four Champions each; Assaultmon and Knightmon keep three Champion parents.

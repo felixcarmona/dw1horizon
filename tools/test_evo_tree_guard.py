@@ -135,12 +135,12 @@ class GuardTests(unittest.TestCase):
 
     def test_identical_picker_average(self):
         sp = copy.deepcopy(self.sp)
-        c, sibling = self.names['Assaultmon'], self.names['Knightmon']
+        c, sibling = self.names['Assaultmon'], self.names['Datamon']
         target = sp[c]['evolution']['requirements']
         other = sp[sibling]['evolution']['requirements']
         for stat in T.ALL:
             target[stat] = other[stat]
-        table = {'children': {'Assaultmon': {'parents': ['Vemmon']}}}
+        table = {'children': {'Assaultmon': {'parents': ['Tankmon']}}}
         errors, _, _ = practical_errors(sp, self.kids, table)
         self.assertTrue(any('identical sibling picker average' in error for error in errors))
 
@@ -149,11 +149,11 @@ class GuardTests(unittest.TestCase):
         self.assertIn('Koromon: 0 rookie', self.errors(lambda s, k: k[p].clear()))
 
     def test_mega_shortcut(self):
-        p, c = self.names['Vemmon'], self.names['Apocalymon']
+        p, c = self.names['Hookmon'], self.names['Apocalymon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
 
     def test_imperialdramon_shortcut(self):
-        p, c = self.names['Vemmon'], self.names['Imperialdramon']
+        p, c = self.names['Hookmon'], self.names['Imperialdramon']
         self.assertIn('Champion parent of a canon Mega', self.errors(lambda s, k: k[p].append(c)))
 
     def test_primary_mega_parent(self):
