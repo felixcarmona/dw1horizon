@@ -15,6 +15,9 @@ pub group engine {
     pub alias var foe3 = 253;
     pub alias var arg = 254;               // argument of CALL_ROUTINE; the chosen item after choose_item
     pub alias var result = 255;            // result of a battle or tournament (won = 1, lost = 255, fled = 0)
+    // Vending stock uses the last two original saved bits; dailyPStatTrigger clears them at midnight.
+    pub alias flag vending_happy_sold = 798;
+    pub alias flag vending_ice_sold = 799;
     pub alias flag item_did_not_fit = 0;
     pub alias flag no_escape = 1;
     pub alias flag picker_mode = 3;        // item picker: sell/discard mode

@@ -423,3 +423,44 @@ A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` ro
 Placed enemies whose species changed tier retain their previous zone stats and bits through explicit map overrides (45 slots), including the deliberately weaker Gear Savanna Vermilimon. Species defaults now fit their new tier; the area fights retain their established difficulty. General recruited-species tournament brackets include level 6; fixed named cups and story recruit triggers keep their identities.
 
 The extended City roster has 18 Rookies, 34 Champions and 20 Ultimates, worth 143 prosperity points. Only the species in `content/tables/city-residents.json` count, including when loading older saves. The original story’s 50 recruits still total 100 points.
+
+## 6.3 Vending machines
+
+All listed prices are in bits. Item values use the best repeatable conversion exit, including Mojyamon chains.
+
+| Machine | Stock | Rule |
+|---|---|---|
+| Dragon Eye Lake, screen 8 | Digimushroom **51**; Happy mushroom **1500**; Ice mushroom **1000** | Digimushrooms unlimited; one of each rare mushroom per day, refilled at midnight |
+
+Digimushrooms must cost 51 rather than 20: their shop sale and Mojyamon -> Small Recovery exit both pay 50.
+Happy and Ice mushrooms each exit at 500. Deluxe mushrooms are not sold. Original saved triggers 798/799 hold
+the two stock bits, excluded from script allocation; the midnight routine clears them with ground pickups.
+There is no new resident state. Buying consumes stock only after the item fits and payment succeeds. Saving
+and continuing retains stock; rolling back to a save before buying has the same limits as ground pickups.
+
+The former 200-bit surprise machine on Ancient Glacial Region screen 81 (sometimes described as Ancient Dino Region)
+now sells unlimited Moldy Meat **26**, Meat **20**, Giant Meat **300**, and Sirloin **1000**. Moldy Meat must rise from
+10 to 26 because it sells for 25. The others' best exits are 15, 250 and 750; Giant Meat -> Auto Pilot pays less.
+
+Gear Savanna screen 74 sells Small Recovery **118**, Medium Recovery **318**, MP Floppy **218**, and Medium MP **500**.
+Its separate MP Station (use 2) is unchanged. Each successful purchase has the original **9%** chance of one bonus
+Double Floppy. The bonus sells for 750, adding **67.5** to every purchase's expected exit: the four totals are
+117.5, 317.5, 217.5 and 467.5. The proposed 70/300/200 prices therefore rise to the smallest safe whole-bit prices.
+A bonus that does not fit is lost; it never becomes an S.Speed Disk. Normal bag-space failures cost nothing.
+
+Tropical Jungle does have a machine: the MP Station on screen 11. It now hosts the **1000-bit** prize draw; Gear
+Savanna retains its MP Station. Each play gives Small/Medium/Large Recovery, MP Floppy/Medium/Large MP, Various
+or Omnipotent at **10% each**, or Restore/Offense Disk/Defense Disk/HiSpeed Disk at **5% each**. There is no additional
+bonus. All 100 random outcomes pay an item; the expected best conversion exit is **487.5 bits** per play.
+Payment happens before the draw, with an explicit no-refund warning: filling the bag to reject common prizes
+cannot give free rerolls until a valuable prize fits. Make space before playing; a prize that does not fit is lost.
+All four machines use at most three menu rows, with More/Back paging and the game's normal cancel control.
+Their prompts, choices and rewards are authored in all eight languages, using each language's item names.
+
+`tools/economy_audit.py` exercises every vending menu purchase and all 100 random rolls from the actual Python
+handlers. It values all payouts through the Mojyamon fixed-point trade graph, rejects resale and expected-value
+loops (including the Gear Savanna bonus), checks failed purchases and daily stock, and rejects unreviewed script
+conversions consuming vending items. The merit shop buys cards and sells items: an item's meritValue is a purchase
+cost, not an additional cash-out. Card sales, card-to-merit and card NPC trades remain covered by the card audit.
+Regression cases deliberately restore unsafe prices, remove the daily write, inflate a trade-chain exit, lower
+the slot price, and introduce selective full-bag refunds; each must fail.

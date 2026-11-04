@@ -1,87 +1,160 @@
-// Readable form of script 12 of DG.SCN, made by `dws decompile --readable`. Every event below was compiled and proven equivalent to the
-// original section (control-flow bisimulation, tools/dws/flowcmp.py); sections that cannot be an event stay in the port form.
-// Text is by key (text/us/dialogue.json), never the game's own words.
+import "../../../../core/engine.dws";
+import "../../../../core/scene.dws";
+import "../../../../core/recruit.dws";
 import "../../../names.dws";
 script 12 {
     npc aruraumon0 = 5;
     npc aruraumon1 = 6;
     npc tsukaimon2 = 7;
     npc tsukaimon3 = 8;
-
-    // the section table, in the order of the original header
     sections 254, 81, 53, 5, 6, 7, 8;
-
-    on enter replace {    // section 254
+    on enter replace {    // enter
         store_random(random_roll, 99);
         if (random_roll <= 9) {
-            spawn_item(item("Digimushrm"), 55, 43);
+            spawn_item(item(44), 55, 43);
         }
         store_random(random_roll, 99);
         if (random_roll <= 4) {
-            spawn_item(item("Digimushrm"), 68, 46);
+            spawn_item(item(44), 68, 46);
         }
     }
-
-    on use(1) replace {    // section 81
-        say(narrator, text("s012.sec81.u0"));
-        entity_set_rotation(tamer, 2048);
-        say(tamer, text("s012.sec81.u1"));
+    on use(1) replace {    // use1
+        rotate(tamer, 2048);
+        say(narrator, text("s012.sec81.vend_play_prompt"));
         choice {
-            text("s012.sec81.m0.o0") => {
-                if (bits >= 200) {
-                    add_stat(7, 100);
-                    take_bits(200);
-                    say(narrator, text("s012.sec81.u2"));
-                } else {
-                    say(tamer, text("s012.sec81.u3"));
-                    return;
-                }
+            text("s012.sec81.vend_play") => {}
+            text("s012.sec81.vend_quit") or cancel => {
                 return;
             }
-            text("s012.sec81.m0.o1") => {
-                if (bits >= 1800) {
-                    add_stat(7, 1000);
-                    take_bits(1800);
-                    say(narrator, text("s012.sec81.u4"));
-                } else {
-                    say(tamer, text("s012.sec81.u5"));
-                    return;
-                }
-                return;
-            }
-            text("s012.sec81.m0.o2") => {}
         }
-        say(tamer, text("s012.sec81.u6"));
+        if (bits < 1000) {
+            say(narrator, text("s012.sec81.vend_poor"));
+            return;
+        }
+        take_bits(1000);
+        store_random(random_roll, 99);
+        if (random_roll < 10) {
+            give(item(0));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getSmRecovery"));
+            return;
+        } else if (random_roll < 20) {
+            give(item(1));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getMedRecovery"));
+            return;
+        } else if (random_roll < 30) {
+            give(item(2));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getLrgRecovery"));
+            return;
+        } else if (random_roll < 40) {
+            give(item(4));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getMPFloppy"));
+            return;
+        } else if (random_roll < 50) {
+            give(item(5));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getMediumMP"));
+            return;
+        } else if (random_roll < 60) {
+            give(item(6));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getLargeMP"));
+            return;
+        } else if (random_roll < 70) {
+            give(item(8));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getVarious"));
+            return;
+        } else if (random_roll < 80) {
+            give(item(9));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getOmnipotent"));
+            return;
+        } else if (random_roll < 85) {
+            give(item(11));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getRestore"));
+            return;
+        } else if (random_roll < 90) {
+            give(item(15));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getOffDisk"));
+            return;
+        } else if (random_roll < 95) {
+            give(item(16));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getDefDisk"));
+            return;
+        } else if (random_roll < 100) {
+            give(item(17));
+            if (engine.item_did_not_fit) {
+                say(narrator, text("s012.sec81.vend_full"));
+                return;
+            }
+            say(narrator, text("s012.sec81.vend_getHispeedDsk"));
+            return;
+        }
     }
-
-    on step(2) replace {    // section 53
+    on step(2) replace {    // step2
         unless (!eastern_bridge_seen) return;
         say(tamer, text("s012.sec53.u0"));
         eastern_bridge_seen = true;
     }
-
-    on talk(aruraumon0) replace {    // section 5
+    on talk(aruraumon0) replace {    // talk
         say(aruraumon0, text("s012.sec5.u0"));
         battle();
-        recruit(species("Aruraumon"));
+        recruit(species(86));
     }
-
-    on talk(aruraumon1) replace {    // section 6
+    on talk(aruraumon1) replace {    // talk
         say(aruraumon1, text("s012.sec6.u0"));
         battle();
-        recruit(species("Aruraumon"));
+        recruit(species(86));
     }
-
-    on talk(tsukaimon2) replace {    // section 7
+    on talk(tsukaimon2) replace {    // talk
         say(tsukaimon2, text("s012.sec7.u0"));
         battle();
-        recruit(species("Tsukaimon"));
+        recruit(species(96));
     }
-
-    on talk(tsukaimon3) replace {    // section 8
+    on talk(tsukaimon3) replace {    // talk
         say(tsukaimon3, text("s012.sec8.u0"));
         battle();
-        recruit(species("Tsukaimon"));
+        recruit(species(96));
         return;
     }
 }

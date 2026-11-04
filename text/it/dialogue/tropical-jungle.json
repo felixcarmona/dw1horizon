@@ -306,5 +306,29 @@
    "stufo di starmene qui. Keh eh!"
   ]
  ],
- "s015.sec51.u23": "Vegiemon si è unito alla città!"
+ "s015.sec51.u23": "Vegiemon si è unito alla città!",
+ "s012.sec81.vend_prompt": "Scegli un oggetto.",
+ "s012.sec81.vend_more": "Altro",
+ "s012.sec81.vend_back": "Indietro",
+ "s012.sec81.vend_leave": "Esci",
+ "s012.sec81.vend_poor": "Bit insufficienti.",
+ "s012.sec81.vend_full": "La borsa è piena.",
+ "s012.sec81.vend_daily": "Uno per tipo di fungo raro al giorno.",
+ "s012.sec81.vend_sold": "Esaurito. Torna dopo mezzanotte.",
+ "s012.sec81.vend_bonus": "Bonus! Cura doppia!",
+ "s012.sec81.vend_play_prompt": "Giocare per 1000 bit? Nessun rimborso. Libera spazio nella borsa.",
+ "s012.sec81.vend_play": "Gioca",
+ "s012.sec81.vend_quit": "Esci",
+ "s012.sec81.vend_getSmRecovery": "Hai ricevuto Cura piccola!",
+ "s012.sec81.vend_getMedRecovery": "Hai ricevuto Cura media!",
+ "s012.sec81.vend_getLrgRecovery": "Hai ricevuto Cura grande!",
+ "s012.sec81.vend_getMPFloppy": "Hai ricevuto Cura MP!",
+ "s012.sec81.vend_getMediumMP": "Hai ricevuto Cura MP media!",
+ "s012.sec81.vend_getLargeMP": "Hai ricevuto Cura MP grande!",
+ "s012.sec81.vend_getVarious": "Hai ricevuto Multicura!",
+ "s012.sec81.vend_getOmnipotent": "Hai ricevuto Cura totale!",
+ "s012.sec81.vend_getRestore": "Hai ricevuto Rigeneratore!",
+ "s012.sec81.vend_getOffDisk": "Hai ricevuto Disco Attacco!",
+ "s012.sec81.vend_getDefDisk": "Hai ricevuto Disco Difesa!",
+ "s012.sec81.vend_getHispeedDsk": "Hai ricevuto Disco Velocità!"
 }

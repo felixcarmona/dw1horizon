@@ -1737,6 +1737,8 @@ class _engine:
     foe3: Var    # var 253
     arg: Var    # var 254: argument of CALL_ROUTINE; the chosen item after choose_item
     result: Var    # var 255: result of a battle or tournament (won = 1, lost = 255, fled = 0)
+    vending_happy_sold: Flag    # flag 798
+    vending_ice_sold: Flag    # flag 799
     item_did_not_fit: Flag    # flag 0
     no_escape: Flag    # flag 1
     picker_mode: Flag    # flag 3: item picker: sell/discard mode

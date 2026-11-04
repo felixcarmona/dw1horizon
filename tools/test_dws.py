@@ -2038,7 +2038,7 @@ class PythonMods(unittest.TestCase):
             self.assertEqual(PL.free_range('vars', 3), '7-9')
             manifest = os.path.join(mod, 'mod.toml')
             open(manifest, 'w').write('[save]\nflags = "717-794"\nvars = "7-13"\n')
-            self.assertEqual(PL.free_range('flags'), '795-799')
+            self.assertEqual(PL.free_range('flags'), '795-796')
             self.assertEqual(PL.free_range('vars', 3), '14-15')
             open(manifest, 'w').write('[save]\nflags = "717-799"\nvars = "7-15"\n')
             self.assertIsNone(PL.free_range('flags'))

@@ -20,42 +20,61 @@ def enter():    # section 254
 
 @lake.on_use(1)
 def use1():    # section 81
-    narrator.say(t81.u0)
     tamer.turn(2048)
-    wait(250)
-    tamer.say(t81.u1)
-    match choose(a=t81.m0.o0, b=t81.m0.o1, c=t81.m0.o2):
-        case "a":
-            if bits >= 300:
-                take(bits=300)
-                narrator.say(t81.u4)
-                give(Item.Meat)
-                if engine.item_did_not_fit:
-                    if has(Item.Meat, 99):
-                        return
-                    tamer.say(t81.u5)
-                    pick_item()
-                    take_picked(all=True)
-                    give(Item.Meat)
-                return
-            tamer.say(t81.u2)
-            return
-        case "b":
-            if bits >= 600:
-                take(bits=600)
-                narrator.say(t81.u6)
+    narrator.say(t81.vend_daily)
+    while True:
+        narrator.say(t81.vend_prompt)
+        match choose(a=t81.vend_buy0, b=t81.vend_buy1, more=t81.vend_more):
+            case "a":
+                if bits < 51:
+                    narrator.say(t81.vend_poor)
+                    return
                 give(Item.Digimushrm)
                 if engine.item_did_not_fit:
-                    if has(Item.Digimushrm, 99):
-                        return
-                    tamer.say(t81.u7)
-                    pick_item()
-                    take_picked(all=True)
-                    give(Item.Digimushrm)
+                    narrator.say(t81.vend_full)
+                    return
+                take(bits=51)
+                narrator.say(t81.vend_getDigimushrm)
                 return
-            tamer.say(t81.u3)
-            return
-    return
+            case "b":
+                if engine.vending_happy_sold:
+                    narrator.say(t81.vend_sold)
+                    return
+                if bits < 1500:
+                    narrator.say(t81.vend_poor)
+                    return
+                give(Item.Happymushrm)
+                if engine.item_did_not_fit:
+                    narrator.say(t81.vend_full)
+                    return
+                take(bits=1500)
+                engine.vending_happy_sold.set()
+                narrator.say(t81.vend_getHappymushrm)
+                return
+            case "more":
+                narrator.say(t81.vend_prompt)
+                match choose(a=t81.vend_buy2, back=t81.vend_back, leave=t81.vend_leave):
+                    case "a":
+                        if engine.vending_ice_sold:
+                            narrator.say(t81.vend_sold)
+                            return
+                        if bits < 1000:
+                            narrator.say(t81.vend_poor)
+                            return
+                        give(Item.IceMushrm)
+                        if engine.item_did_not_fit:
+                            narrator.say(t81.vend_full)
+                            return
+                        take(bits=1000)
+                        engine.vending_ice_sold.set()
+                        narrator.say(t81.vend_getIceMushrm)
+                        return
+                    case "back":
+                        pass
+                    case _:
+                        return
+            case _:
+                return
 
 @lake.on_use(2)
 def use2():    # section 82
