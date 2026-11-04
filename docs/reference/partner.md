@@ -14,7 +14,7 @@ given. `int16` values are little-endian. `[inferred]` marks deductions.
 The partner lives in two blocks: `PARTNER_ENTITY` (species, stats, learned techniques, name, lives) and `PARTNER_PARA`
 (raising values). Every frame `partnerTick` → `tickConditions` advances hunger, sleep, tiredness, sickness, unhappiness
 and death with counters on `CURRENT_FRAME` (20 frames = 1 game minute, 1200 = 1 hour) and then evaluates evolution
-(`evoTimer` >= 6/24/96/168 h by level (72 and 144 on the disc), scored against `EVOLUTION_REQS`). The partner dies at lifetime 0 (408 h at birth,
+(`evoTimer` >= 6/24/72/168 h by level (144 on the disc), scored against `EVOLUTION_REQS`). The partner dies at lifetime 0 (408 h at birth,
 minus penalties for unhappiness), after 12 h of sickness or when it loses a battle with its last life; the egg inherits
 `tamerLevel` % of the stats only after a natural death.
 
@@ -356,8 +356,8 @@ Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost 
 |---|---|---|
 | 1 Fresh | `evoTimer >= 6` | `getFreshEvolutionTarget`: fixed (Botamon→Koromon, Punimon→Tsunomon, Poyomon→Tokomon, Yuramon→Tanemon) |
 | 2 In-Training | `evoTimer >= 24` | `getInTrainingEvolutionTarget`: best score >= 3; ties → first in the `to` list (patch 0111 adds up to 12 extra Rookie targets per In-Training, `getEvolutionExtraTargets`) |
-| 3 Rookie | `evoTimer >= 72` | `getRookieEvolutionTarget`; if none reaches 3 and `evoTimer >= 96` → Numemon (11) |
-| 4 Champion | `evoTimer >= 144` | `getChampionEvolutionTarget`; nothing if none qualifies |
+| 3 Rookie | `evoTimer >= 72` | `getRookieEvolutionTarget`; if none reaches 3 and `evoTimer >= 120` (96 on the disc) → Numemon (11) |
+| 4 Champion | `evoTimer >= 168` (144 on the disc) | `getChampionEvolutionTarget`; nothing if none qualifies |
 | 4 Champion | `evoTimer == 360` | `handleSpecialEvolutions(3)` |
 | 5 Ultimate (mod) | `evoTimer >= 96` | the Mega patch (0058) evaluates the Ultimate's paths: another Ultimate, or a Mega (level 6) once `evoTimer >= 120`; the `evolutionUltimate` pairs score their single target first: Megadramon/Gigadramon → Machinedramon from 48 h, a pair into an imported Mega (WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) from 120 h (patch 0339) |
 
@@ -435,7 +435,7 @@ The species added by the mod join the same pickers; the disc's own routes are un
 
 `tools/evo_tree.py --write` applies the committed topology, tier changes and frozen peer balance rows. Canon main lines come first, then family and shared specialty. Six carried children also replace a removed-parent bonus with their first surviving parent (ShellNumemon, BomberNanimon, Shadramon, Dragomon, Kurisarimon and Bastemon). Record children carry their parents; a disc child without its own paths is linked through the record parent's `evolution.to`. Devimon now also has ordinary Rookie parents: its previously disabled requirement row is replaced with a normal Champion row. Its original special transformation remains.
 
-A well-kept chain reaches Champion at age 126 h, Ultimate after 168 more hours (age 294 h), then Mega after another 120 h (age 414 h). Birth lifetime 408 plus the Ultimate bonus 96 leaves 90 h immediately before the Mega, which adds 120 h. Happiness must stay at least 80, without sickness or other extra lifetime loss. An Ultimate-to-Ultimate transition preserves the evolution timer and adds no lifetime; only reaching Ultimate from another level grants its 96 h. All 48 imported Megas use the real level-6 rule; Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Jijimon and Analogman retain level Ultimate.
+A well-kept chain reaches Champion at age 102 h, Ultimate after 168 more hours (age 270 h), then Mega after another 120 h (age 390 h). Birth lifetime 408 plus the Ultimate bonus 96 leaves 114 h immediately before the Mega, which adds 120 h. Happiness must stay at least 80, without sickness or other extra lifetime loss. An Ultimate-to-Ultimate transition preserves the evolution timer and adds no lifetime; only reaching Ultimate from another level grants its 96 h. All 48 imported Megas use the real level-6 rule; Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Jijimon and Analogman retain level Ultimate.
 
 The picker model uses attainable unupgraded File City training states: at most 84 sessions during the Champion's 168 h and 60 during the Ultimate's 120 h, reserving sleep, food and rest. Natural evolution gains feed the second stage. Every Ultimate parent is checked, including secondary parents without the `digimon` bonus. Added Ultimate siblings use distinct stat-average formulas so the first listed cannot win every overlap. Original disc ties remain; Mamemon can use happiness 90 rather than Piximon's 95, and some native routes need deliberate care mistakes. No evolution asks for a number of learned techniques any more; Gigadramon's old 35 became 100 battles. Arrival witnesses prefer ordinary Champion routes and exclude Sukamon’s backup-stat restoration from the ordinary gains formula. The model follows the production picker’s retained accumulator: a qualifying loser leaves its divided stat total and count for the next qualifying candidate. These are conditional stat, picker and lifetime witnesses, not a complete care simulation.
 
