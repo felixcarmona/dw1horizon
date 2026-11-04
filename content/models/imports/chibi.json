@@ -280,10 +280,10 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "shoulder", "3": "arm", "4": "hand", "5": "arm", "6": "head", "7": "headpart", "8": "headpart", "9": "headpart", "10": "headpart", "11": "headpart", "12": "shoulder", "13": "arm", "14": "hand", "15": "arm", "16": "cloth", "17": "tail", "18": "tail", "19": "pelvis", "20": "thigh", "21": "shin", "22": "foot", "23": "footpart", "24": "thigh", "25": "shin", "26": "foot", "27": "footpart"}
  },
  "319": {
-  "source_sha256": "632e773221f22a765285bcf9787a70105ae9e2da6f9039362cbbac0fa5e6e232",
+  "source_sha256": "69964f03939d1ac6ab89cc9a62125dbfa61aa216eae22599cf15426195630ae1",
   "skeleton_sha256": "1fc7a09421cdfac633a571840516712546ac127a3aaa9b736ac8806c4d84fbb9",
   "base_generator": null,
-  "post_source_sha256": "632e773221f22a765285bcf9787a70105ae9e2da6f9039362cbbac0fa5e6e232",
+  "post_source_sha256": "69964f03939d1ac6ab89cc9a62125dbfa61aa216eae22599cf15426195630ae1",
   "height": 599,
   "fit": {"7": 0.605, "6": 0.605, "17": 0.9, "16": 0.9},
   "rest_slots": [21],
