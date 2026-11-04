@@ -347,3 +347,4 @@ Load-selected-Chinese-resources-and-bitmap-glyphs-in-extra-RAM.patch
 Pack-unchanged-language-flags-and-preserve-complete-saved-name-glyphs.patch
 Distinguish-Chinese-save-names-from-Japanese-trail-bytes.patch
 Render-Chinese-battle-mode-names-and-techniques-from-a-resident-compact-font.patch
+Share-card-title-writing-and-keep-Chinese-saves-readable-on-2-MB.patch
