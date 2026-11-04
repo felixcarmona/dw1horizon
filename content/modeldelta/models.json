@@ -4978,14 +4978,14 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/meshfix2-out/Cannondramon.MMD",
-            "sha256": "8abee5b76a633a04cfe65277e2556067f48a98b6a09087a46c49fabf5ff682a4",
+            "path": "build/sizes-out/models/Cannondramon.MMD",
+            "sha256": "1c0879babe3ffc04d0547827468fbe0fb7067f7415773efaf6b229febde51229",
             "size": 99408
           }
         ],
         "delta": "content/modeldelta/deltas/405-Cannondramon.MMD.mdelta",
-        "delta_sha256": "b73b3392292d8d44ee5aefd56b369f0c56c738868d7188981e7dd9185c712a97",
-        "sha256": "97552fedc0222ecac5715925f2376cfe9ec8848a1aab926398cf88482303d229",
+        "delta_sha256": "ea982098efde823c98a95094b5de61304e3e3c522f64da737d74aa122e455811",
+        "sha256": "724bdbc535c75ce14d614f19807659dac069b057c5395e9377a02befd7e31cb1",
         "size": 107512
       },
       "tim": {

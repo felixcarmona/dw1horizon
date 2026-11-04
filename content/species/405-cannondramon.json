@@ -12,9 +12,9 @@
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 22,
   "model": {
-    "file": "build/meshfix2-out/Cannondramon.MMD",
-    "radius": 252,
-    "height": 350,
+    "file": "build/sizes-out/models/Cannondramon.MMD",
+    "radius": 300,
+    "height": 450,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 2], [6, 6], [7, 7], [8, 8], [9, 2], [10, 10],
                  [11, 11], [12, 12], [13, 1], [14, 1], [15, 15], [16, 16], [17, 17], [18, 18],
                  [19, 1], [20, 20], [21, 1], [22, 22], [23, 1], [24, 24], [25, 25], [26, 26],
@@ -25,9 +25,17 @@
   "texture": {"file": "build/meshfix2-out/Cannondramon.TIM", "entry": 0},
   "voice": 48,
   "battle_music": "normal-battle",
-  "condition_bubble": [1, -33, -55, 16],
-  "effect_origins": [[4, 70, 0, 20, 16, -1, 74, 1], [4, 120, 0, 20, 16, -2, 123, 16]],
+  "condition_bubble": [1, -42, -71, 16],
+  "effect_origins": [[4, 70, 0, 20, 16, -1, 95, 1], [4, 120, 0, 20, 16, -3, 158, 21]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+  "sizing": {
+    "game": "dw3",
+    "level": 5,
+    "base_model": "build/meshfix2-out/Cannondramon.MMD",
+    "base_scale": 1.0,
+    "natural": {"height": 350.1, "half_width": 138.8, "half_depth": 419.0}
+  },
+  "size": {"height": 450},
   "partner": {
     "voice": 2,
     "hunger_hours": [2, 6, 11, 16, 21],
