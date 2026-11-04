@@ -245,6 +245,15 @@ section { padding-top: 120px; }
 .privacy a { color: #1d6a42; font-weight: 700; text-decoration: underline; }
 .patch-row { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 30px; text-align: center; }
 .patch-status { margin: 0; max-width: 34em; color: var(--muted); font-size: 15px; }
+/* before a build: no room, a private window, a phone (js/app.js renderWarning) */
+.patch-warning { max-width: 36em; padding: 12px 16px; border-radius: 14px; background: var(--amber-bg); color: #8a4b0a;
+                 font-size: 14.5px; text-align: left; }
+.patch-warning[hidden] { display: none; }
+.patch-warning p { margin: 0; font-weight: 600; }
+/* what to do about a failure: under the error, and under a warning */
+.fixes { margin: 8px 0 0; padding-left: 20px; color: var(--ink-2); }
+.fixes li { padding: 2px 0; }
+.fixes a { color: inherit; font-weight: 600; text-decoration: underline; }
 
 /* ------------------------------------------------------------ the desktop app (js/desktop.js) */
 
@@ -307,6 +316,8 @@ section { padding-top: 120px; }
 .build-workers { list-style: none; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2px 16px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .build-workers li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .build-workers li[data-state="busy"] { color: var(--ink-2); }
+.build-slow { margin: 10px 0 0; color: #8a4b0a; font-size: 14px; }
+.build-slow a { color: inherit; font-weight: 600; text-decoration: underline; }
 .build-error { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--red-bg); color: var(--red); font-size: 14.5px; }
 .build-copy { display: block; margin-top: 10px; padding: 6px 12px; border: 1px solid currentColor; border-radius: 10px; background: none; color: inherit; font: inherit; font-size: 13px; cursor: pointer; }
 .build-error pre { margin: 8px 0 0; max-height: 220px; overflow: auto; white-space: pre-wrap; font-size: 11.5px; color: var(--ink-2); }

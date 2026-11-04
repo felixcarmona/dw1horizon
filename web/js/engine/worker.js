@@ -289,6 +289,7 @@ json.dumps([str(code), buf.getvalue()[-6000:]])
     return;
   }
   // what the job changed in the tree, to OPFS
+  if (m.quota) throw new DOMException('test: the operation failed because it would cause the application to exceed its storage quota (?quota)', 'QuotaExceededError');
   const written = [], removed = [];
   for (const [p, kind] of touched) {
     if (!p.startsWith(ROOT + '/') || p.includes('/__pycache__/') || p.startsWith(REL)) continue;

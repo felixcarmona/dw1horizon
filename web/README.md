@@ -175,6 +175,27 @@ engine versions go and, in OPFS, everything but a finished image (image.bin whos
 tree of a crashed build, a half-written image. One build at a time across tabs (Web Locks, `horizon-build`; the
 page-load tidy skips while another tab builds). Nothing of this is shown to the player.
 
+Room: a build needs about 2 GB in this browser's storage (`roomFor`: twice the holes, the largest image, 256 MB).
+`storage.estimate()` cannot say whether it is there: Chromium reports a fixed quota (its usage + 10 GB, the
+StaticStorageQuota feature, private windows included), while the real one can be far smaller (an incognito window
+keeps OPFS in memory, with a quota that is a fraction of the computer's memory, and one file stops growing at
+2000 MiB) or the disk can be nearly full. So `checkRoom` (`js/engine/engine.js`) asks the estimate first (Firefox and Safari report their real
+quota) and then the storage itself (`js/engine/room-worker.js`: an OPFS file made the build's size with a sync
+access handle's `truncate`, then removed; Chromium refuses it with QuotaExceededError when it does not fit, and in
+an incognito window the file does not keep its length). The page asks once the four discs are ready and warns under
+the button (`patch.lowSpace`, `patch.private`, `engine.storageBlocked`; on phones `patch.phone`), the button stays;
+the build asks again before downloading anything and stops with `engine.noSpace` (or `engine.storageBlocked`).
+
+Errors: `Build.explain` turns any failure into the player's words by its text: a full storage
+(QuotaExceededError and the like) is `engine.quota`, storage not allowed `engine.storageBlocked`, a lost connection
+`engine.network`, memory `engine.outOfMemory`; the original text stays under Details. A job whose output cannot be
+written stops the build at once (another worker would fail the same way). Under the message the page lists what to
+do for that kind (`fix.*`: leave the private window, free N GB, the desktop apps when the release ships them, the
+64-bit Firefox on Windows...). The error's Details and the build's log open by themselves, so a screenshot carries
+them, and the error's Details include the browser line. `web/test/errors.mjs URL DISC [SHOTS]` tests the warnings
+and both stops (`?room=` makes the room check ask for that many bytes, `?quota=first|JOB` makes a job's output
+fail as a full storage).
+
 ### Workers
 
 `workerCount()` in `js/engine/engine.js`: `min(cores - 1, 6)`; with `navigator.deviceMemory` (Chromium only: GB,

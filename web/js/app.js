@@ -2,11 +2,11 @@ import { setupChangelog, renderChangelog } from './changelog.js';
 import { renderFeatureList } from './features.js';
 import { setupMaps, labels as mapLabels } from './maps.js';
 import { setupDigimon, labels as digimonLabels } from './digimon.js';
-import { setupDesktop, renderDesktop } from './desktop.js';
+import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js';
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
 import { FLAGS } from './flags.js';
-import { Build, missingSupport, tidyStorage, buildRoom } from './engine/engine.js';
+import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile } from './engine/engine.js';
 import { store, revive } from './remember.js';
 
 // The links (the hero's Discord and GitHub buttons, the privacy note's code link): change them here.
@@ -52,16 +52,20 @@ const SUPPORT_DETAILS = {
   'engine.noOpfs': 'OPFS / synchronous private file storage is unavailable.',
   'engine.noStreams': 'DecompressionStream (deflate-raw) is unavailable.',
 };
-function errorDetails(node, detail, open = false) {
+// Open by default: a screenshot of an error then shows what went wrong without a click.
+function errorDetails(node, detail, open = true) {
   // (translate="no": the error text is what a report needs, as it was)
   node.append(el('details', { open }, el('summary', { textContent: i18n.t('slot.details') }),
                  el('pre', { textContent: detail, translate: false })));
 }
-// What a player pastes when a build fails: the message, the error's own text and the build's log.
+// A build's error in the player's words ({gb}: the room the build needs, in this page's language).
+const errorText = (error) => i18n.t(error.key, { ...error.vars, gb: gb(error.vars?.bytes || 0) });
+// What a player pastes when a build fails: the message, what to do, the error's own text and the build's log.
 function copyReport(st) {
   const button = el('button', { type: 'button', className: 'build-copy', textContent: i18n.t('build.copyReport') });
   button.addEventListener('click', async () => {
-    const text = [i18n.t(st.error.key, st.error.vars), st.error.detail, st.log.join('\n')].filter(Boolean).join('\n\n');
+    const text = [errorText(st.error), fixes(st.error.kind, st.error.vars?.bytes).map((f) => `- ${f.text}`).join('\n'),
+                  st.error.detail, st.log.join('\n')].filter(Boolean).join('\n\n');
     try { await navigator.clipboard.writeText(text); button.textContent = i18n.t('build.copied'); } catch { /* the log stays on the page */ }
   });
   return button;
@@ -71,6 +75,46 @@ function supportHelp(node, key) {
   node.append(' ', el('a', { href: `${LINKS.github}/blob/main/docs/release/README-players.md`,
                            textContent: i18n.t('engine.playerGuide') }));
   errorDetails(node, SUPPORT_DETAILS[key]);
+}
+
+// What the player can do about a kind of failure (engine.js explain: 'storage', 'blocked', 'memory', 'network', or
+// null for anything else), most likely first: [{text, href}] (href: the desktop apps, when this page offers them).
+// bytes: the room the build needs.
+function fixes(kind, bytes = 0) {
+  const t = i18n.t;
+  const out = [];
+  const add = (key, vars) => out.push({ text: t(key, vars) });
+  const elsewhere = () => {
+    if (hasDesktop()) out.push({ text: t('fix.desktop'), href: '#desktop' });
+    else add(isMobile() ? 'fix.computer' : 'fix.otherBrowser');
+  };
+  const room = { gb: gb(bytes || 2 * 2 ** 30) };
+  if (kind === 'storage') {
+    add('fix.private');
+    add('fix.freeDisk', room);
+    const kept = keptBytes();
+    if (kept) add('remember.freeSpace', { gb: gb(kept) });
+    elsewhere();
+  } else if (kind === 'private') {
+    elsewhere();                                     // (the warning itself says to open a normal window)
+  } else if (kind === 'blocked') {
+    add('fix.private');
+    add('fix.siteData');
+    elsewhere();
+  } else if (kind === 'memory') {
+    // (the message itself says to close other tabs and programs)
+    if (/Firefox/.test(navigator.userAgent) && visitorOS() === 'windows') add('fix.firefox64');
+    elsewhere();
+  } else if (kind === 'network') {
+    add('fix.connection');
+  } else {
+    add('fix.retry');
+  }
+  return out;
+}
+function fixList(kind, bytes) {
+  return el('ul', { className: 'fixes' }, ...fixes(kind, bytes).map((f) => el('li', {},
+    f.href ? el('a', { href: f.href, textContent: f.text }) : f.text)));
 }
 const currentRelease = fetch(new URL('../engine/current.json', import.meta.url))
   .then((r) => r.ok ? r.json() : null).catch(() => null);
@@ -887,11 +931,46 @@ function renderPatch() {
   btn.disabled = !ready;
   $('#patch-status').textContent = i18n.t(patching && ready ? patching : key, vars);
   supportHelp($('#patch-status'), key);
+  renderWarning(ready);
   renderBuild();
+}
+
+// Before a build: is there room for it in this browser? Asked once the four discs are ready (js/engine/engine.js
+// checkRoom; it makes a file of the build's size for a moment, so not for every visitor), and said under the button
+// with what to do. The button stays: the browser may be wrong, and the build asks again before it starts.
+let room = null;          // {need, reason, free} of the last check
+let roomAsked = false;
+async function askRoom() {
+  if (roomAsked) return;
+  roomAsked = true;
+  try {
+    const need = await buildRoom();
+    const q = new URLSearchParams(location.search);
+    room = await checkRoom(need, TEST && Number(q.get('room')) || need);
+  } catch { room = null; }
+  renderPatch();
+}
+function renderWarning(ready) {
+  const box = $('#patch-warning');
+  const t = i18n.t;
+  let line = null, kind = null;
+  if (ready && !building) {
+    if (!roomAsked) askRoom();
+    const vars = { gb: gb(room?.need || 0) };
+    if (room?.reason === 'quota') [line, kind] = [t('patch.lowSpace', vars), 'storage'];
+    else if (room?.reason === 'unkept') [line, kind] = [t('patch.private', vars), 'private'];
+    else if (room?.reason === 'blocked') [line, kind] = [t('engine.storageBlocked'), 'blocked'];
+    else if (isMobile()) [line, kind] = [t('patch.phone'), 'phone'];
+  }
+  box.hidden = !line;
+  if (!line) { box.replaceChildren(); return; }
+  box.dataset.kind = kind;
+  box.replaceChildren(el('p', { textContent: line }), ...(kind === 'phone' ? [] : [fixList(kind, room?.need)]));
 }
 
 async function patch() {
   if (building || !patchState()[1]) return;
+  store.persist();                                   // (asked during the click: storage the browser should not evict)
   keep.paused = true;                                // (the build needs the lock a copy holds: copied again after)
   keep.waiting = false;
   await stopCopy();
@@ -905,6 +984,8 @@ async function patch() {
   building = new Build({ us: games.get('us').cur.file, sources: Object.fromEntries(others.map((g) => [g.id, g.cur.file])),
                          titles: Object.fromEntries(others.map((g) => [g.id, g.cur.expect.title])) }, opts);
   if (TEST && q.get('oom')) building.oomTest = q.get('oom');
+  if (TEST && q.get('quota')) building.quotaTest = q.get('quota');
+  if (TEST && q.get('room')) building.roomTest = Number(q.get('room'));
   if (TEST && q.get('recycle')) building.recycleMB = Number(q.get('recycle'));
   building.keepTree = TEST && q.has('keep');
   building.shuffle = TEST ? Number(q.get('shuffle')) || 0 : 0;
@@ -992,14 +1073,25 @@ function renderBuild() {
   const err = $('#build-error');
   err.hidden = st.phase !== 'error';
   if (st.error) {
-    err.textContent = t(st.error.key, st.error.vars);
-    const kept = keptBytes();
-    if (st.error.key === 'engine.noSpace' && kept) err.append(' ', t('remember.freeSpace', { gb: gb(kept) }));
+    err.textContent = errorText(st.error);
     supportHelp(err, st.error.key);
-    if (st.error.detail) errorDetails(err, st.error.detail, true);
+    const own = !['build.cancelled', 'engine.otherTab'].includes(st.error.key) && !SUPPORT_DETAILS[st.error.key];
+    if (own) err.append(fixList(st.error.kind, st.error.vars?.bytes));
+    // the error's own text and the browser line (the log's first: browser, cores, memory, workers), open
+    if (st.error.detail) errorDetails(err, [st.error.detail, st.log[0]].filter(Boolean).join('\n\n'));
     if (st.error.key !== 'build.cancelled') err.append(copyReport(st));
   }
   $('#build-log').textContent = st.log.join('\n');
+  // the build's log open once the build stops on an error, at its last lines (the player may close it again)
+  if (st.phase === 'error' && !st.logShown) {
+    st.logShown = true;
+    $('.build-log').open = true;
+    $('#build-log').scrollTop = $('#build-log').scrollHeight;
+  }
+  // a device this slow (a phone): a computer does it in minutes
+  const slow = $('#build-slow');
+  slow.hidden = !busy || !(st.eta > 3600 && st.elapsed > 60);
+  if (!slow.hidden) slow.replaceChildren(t('build.slow'), ' ', ...(hasDesktop() ? [el('a', { href: '#desktop', textContent: t('fix.desktop') })] : []));
   const done = $('#build-done');
   done.hidden = st.phase !== 'done';
   if (st.phase === 'done' && st.result && !done.dataset.ready) {
