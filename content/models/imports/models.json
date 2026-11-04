@@ -169,7 +169,7 @@
  "408": {"model": "408-Suijinmon.MMD", "aliases_applied": true},
  "409": {"model": "409-Kyubimon.MMD", "aliases_applied": true, "texture": "409-Kyubimon.TIM"},
  "430": {"model": "430-Zanbamon.MMD", "aliases_applied": true, "field_overlay": "zanbamon-celebration"},
- "431": {"model": "431-Kurisarimon.MMD"},
+ "431": {"model": "431-Kurisarimon.MMD", "field_overlay": "kurisarimon-celebration"},
  "432": {"model": "432-Bastemon.MMD", "aliases_applied": true, "field_overlay": "bastemon-field"},
  "433": {"model": "433-Guilmon.MMD", "aliases_applied": true},
  "460": {"model": "460-Garudamon.MMD", "aliases_applied": true},
