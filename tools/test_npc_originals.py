@@ -58,7 +58,7 @@ class NpcOriginalsTest(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which('cc'), 'needs a host C compiler')
     def test_engine_mapping_in_both_directions(self):
-        patch = next(Path(S.ROOT).glob('mods/patches/0281-*.patch')).read_text()
+        patch = next(Path(S.ROOT).glob('mods/patches/Restore-disc-models-and-rows-for-field-NPC-partners.patch')).read_text()
         added = '\n'.join(line[1:] for line in patch.splitlines() if line.startswith('+') and not line.startswith('+++'))
         function = added[added.index('int32_t npcSpeciesType(int32_t type, int32_t reverse)\n{'):]
         function = function[:function.index('\n}') + 2]
@@ -77,7 +77,7 @@ class NpcOriginalsTest(unittest.TestCase):
             subprocess.run([str(binary)], check=True)
 
     def test_engine_table_matches_content(self):
-        patch = next(Path(S.ROOT).glob('mods/patches/0281-*.patch'))
+        patch = next(Path(S.ROOT).glob('mods/patches/Restore-disc-models-and-rows-for-field-NPC-partners.patch'))
         pairs = {int(a): int(b) for a, b in re.findall(r'\{(1\d\d), (46\d)\}', patch.read_text())}
         self.assertEqual(pairs, PAIRS)
         self.assertEqual({s['_npc_original']: t for t, s in S.load_content().items()
