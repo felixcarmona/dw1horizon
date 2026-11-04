@@ -158,7 +158,7 @@
  "353": {"model": "353-Bearmon.MMD", "aliases_applied": true},
  "354": {"model": "354-Renamon.MMD", "aliases_applied": true, "field_overlay": "renamon-field"},
  "373": {"model": "373-WarGreymon.MMD", "aliases_applied": true, "texture": "373-WarGreymon.TIM", "field_overlay": "wargreymon-field"},
- "400": {"model": "400-Apocalymon.MMD", "aliases_applied": true, "field_overlay": "apocalymon-native-range"},
+ "400": {"model": "400-Apocalymon.MMD", "aliases_applied": true},
  "401": {"model": "401-Pukumon.MMD", "aliases_applied": true},
  "402": {"model": "402-NeoCrimson.MMD", "aliases_applied": true, "field_overlay": "neocrimson-chibi"},
  "403": {"model": "403-Beelzemon.MMD", "field_overlay": "beelzemon-field"},
