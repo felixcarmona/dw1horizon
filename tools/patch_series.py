@@ -4,15 +4,18 @@ per line. Every tool that applies or reads the patches takes the order from here
 
   python3 tools/patch_series.py list [core|all]   the patch paths in order (relative to the checkout); core = the
                                                   patches before the first merge patch (tools/mods.sh prepare mods)
-  python3 tools/patch_series.py check             the series file and the patch files agree (no disc, no decomp)
+  python3 tools/patch_series.py check             the series file, the patch files and index.md's rows agree (no
+                                                  disc, no decomp)
   python3 tools/patch_series.py check --apply     also applies the whole series to the pinned decompilation in a
                                                   temporary worktree (needs the decomp/ submodule, no disc data)
 
-The series file is plain: no blank lines, no comments, every line ends with a newline. It is merged with git's union
-driver (.gitattributes), so two branches that each append a patch both keep their line; `check --apply` then shows
-whether the two patches still apply one after the other.
+The series file is plain: no blank lines, no comments, every line ends with a newline. It and index.md (one table row
+per patch, in the series order) are merged with git's union driver (.gitattributes), so two branches that each append a
+patch both keep their lines; `check` catches what a union merge can leave wrong (a name twice, two versions of one
+row), and `--apply` whether the two patches still apply one after the other.
 """
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -21,6 +24,8 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 DIR = 'mods/patches'
 SERIES = DIR + '/series'
+INDEX = DIR + '/index.md'
+ROW = re.compile(r'^\| `([^`]+)` \|')
 
 
 def names(root=ROOT):
@@ -60,6 +65,19 @@ def problems(root=ROOT):
     for p in sorted((root / DIR).glob('*.patch')):
         if p.name not in seen:
             errs.append(f'{DIR}/{p.name}: not in {SERIES} (append its name there)')
+    rows = [m.group(1) for m in map(ROW.match, (root / INDEX).read_text(encoding='utf-8').splitlines()) if m]
+    listed = text.splitlines()
+    for name in sorted(set(rows)):
+        if rows.count(name) > 1:
+            errs.append(f'{INDEX}: {rows.count(name)} rows for {name} (keep one)')
+    for name in listed:
+        if name not in rows:
+            errs.append(f'{INDEX}: no row for {name} (add it at the end)')
+    for name in rows:
+        if name not in listed:
+            errs.append(f'{INDEX}: a row for {name}, which is not in {SERIES}')
+    if not errs and rows != listed:
+        errs.append(f'{INDEX}: the rows are not in the order of {SERIES}')
     return errs
 
 
