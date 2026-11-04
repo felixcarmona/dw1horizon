@@ -704,9 +704,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/205-MegaKabuterimon.MMD.mdelta",
-        "delta_sha256": "8ee1bf33f101116932814f532c76c68e2248b3015541cca282471db5bea56d93",
-        "sha256": "6a38b5781b4efdda461095f801f96f5d04854c6614f2ea5b241cfb3964b9fc78",
-        "size": 100064
+        "delta_sha256": "e322111f28aef46d09aa5f9357af9f87d25a585783a94cad779199845cc9567f",
+        "sha256": "e87b7018b50beeb4d1e42e9dd278ad2ba1893042ecffb27e34a35799fd10e338",
+        "size": 102898
       },
       "tim": {
         "sources": [

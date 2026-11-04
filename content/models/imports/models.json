@@ -22,7 +22,7 @@
  "201": {"model": "201-Lighdramon.MMD", "aliases_applied": true, "field_overlay": "lighdramon-field"},
  "202": {"model": "202-Submarimon.MMD", "aliases_applied": true},
  "203": {"model": "203-Veedramon.MMD", "aliases_applied": true, "field_overlay": "veedramon-field"},
- "205": {"model": "205-MegaKabuterimon.MMD", "aliases_applied": true, "field_overlay": "megakabuterimon-field"},
+ "205": {"model": "205-MegaKabuterimon.MMD", "aliases_applied": true},
  "206": {"model": "206-MagnaAngemon.MMD", "aliases_applied": true, "field_overlay": "magnaangemon-field"},
  "207": {"model": "207-Seraphimon.MMD", "aliases_applied": true, "field_overlay": "seraphimon-field"},
  "208": {"model": "208-Togemon.MMD", "aliases_applied": true, "field_overlay": "togemon-field"},
