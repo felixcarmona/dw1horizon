@@ -69,10 +69,12 @@ class PressTests(unittest.TestCase):
 
 class ShotTests(unittest.TestCase):
     def png(self, rgb):
-        import io
-        from PIL import Image
-        buffer = io.BytesIO(); Image.new('RGB', (4, 4), rgb).save(buffer, 'PNG')
-        return buffer.getvalue()
+        import struct, zlib
+        def chunk(kind, body):
+            return struct.pack('>I', len(body)) + kind + body + struct.pack('>I', zlib.crc32(kind + body))
+        rows = b''.join(b'\x00' + bytes(rgb) * 4 for _ in range(4))
+        return (b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', 4, 4, 8, 2, 0, 0, 0))
+                + chunk(b'IDAT', zlib.compress(rows)) + chunk(b'IEND', b''))
 
     def test_a_black_still_is_taken_again(self):
         import tempfile, os

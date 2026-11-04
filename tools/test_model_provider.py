@@ -54,6 +54,9 @@ class ModelProvider(unittest.TestCase):
         for sid, name in (('315', '315-taomon-equipment'), ('332', '332-roachmon-equipment'),
                           ('335', '335-megagargomon-equipment'), ('351', '351-kotemon-field')):
             self.assertEqual(assignments[sid], ('tools.models.field_animations.imported_equipment', name))
+        # Beelzemon's own gait module replaces its earlier gaits profile under the same overlay.
+        self.assertEqual(assignments['403'][0], 'tools.models.field_animations.beelzemon')
+        assignments['403'] = ('tools.models.field_animations.gaits', assignments['403'][1])
         # Reviewed footless post-passes wrap these original generators.
         for sid, module in (('231', 'shell_numemon'), ('251', 'gliding')):
             self.assertEqual(assignments[sid][0], 'tools.models.field_animations.locomotion')

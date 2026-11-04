@@ -26,9 +26,9 @@
   "voice": 42,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -96, -20, 28],
+  "effect_origins": [[7, 0, 0, 0, 18, 0, 0, 0], [10, 0, 0, 0, 21, -22, 92, 68], [18, 0, 0, 0, 6, 0, 0, 0]],
   "effect_origin_fallback": [22, 0, 130, 0],
   "effect_origin_fallback_always": true,
-  "effect_origins": [[7, 0, 0, 0, 18, 0, 0, 0], [10, 0, 0, 0, 21, -22, 92, 68], [18, 0, 0, 0, 6, 0, 0, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 3,
