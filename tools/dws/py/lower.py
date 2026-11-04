@@ -29,6 +29,10 @@ TARGET = {'exe': 'original'}                           # the executable of the r
 WIDE_EXES = ('species', 'story-state')                       # the executables whose partner can be a species past 255 (DIGI.DAT)
 
 
+# Jijimon's house (218, and 205 once the city has grown): the screens the partner's death and lost lives load
+# (dooa.c, murd.c: DEATH_MAP_TARGET 0xda / 0xcd)
+DEATH_SCREENS = {205, 218}
+
 class PyError(DwsError):
     pass
 
@@ -900,6 +904,11 @@ class Module:
                 raise self.err(h.when, 'when=True: a guard that always holds', own_hint)
             b = Body(self, h.arg if h.kind == 'talk' else None, h.kind); b.before = True; b.handler = h.fn.name
             pre = []; c = self.guard_cond(h, pre)
+            if h.kind == 'enter' and DEATH_SCREENS & set(self.screens.get(h.target, {}).get('ids') or ()):
+                # the partner's death and lost lives load this screen behind their scenes, and that load runs its enter
+                # code: an added line waits for a real homecoming (engine.death_map_entry, checkShopMap in C). Last: IF
+                # evaluates left to right without grouping, so `guard && test` holds whatever `guard` is made of
+                c = f'{c} && engine.death_map_entry == 0'
             body = (['engine.cutscene = true;'] if h.scene else []) + [l[8:] if l.startswith('        ') else l for l in b.block(h.fn.body, 2)]
             if h.kind == 'talk' and not (body and body[-1].strip().split('    //')[0] == 'return;'): body.append('return;')    # (a warp ends with one)
             out += [f'        if ({c}) {{    // @py {h.node.lineno}'] + ['            ' + l if l else '' for l in body] + ['        }']
