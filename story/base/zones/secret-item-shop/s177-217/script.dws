@@ -8,12 +8,6 @@ alias flag py_stock_script_18 = 402;
 alias flag py_stock_script_19 = 403;
 alias flag py_stock_script_20 = 404;
 alias flag py_stock_script_21 = 405;
-alias flag py_stock_script_23 = 407;
-alias flag py_stock_script_24 = 408;
-alias flag py_stock_script_25 = 409;
-alias flag py_stock_script_26 = 410;
-alias flag py_stock_script_27 = 411;
-alias flag py_stock_script_28 = 412;
 alias flag py_stock_script_29 = 413;
 alias flag py_stock_script_30 = 414;
 alias flag py_stock_script_31 = 415;
@@ -21,14 +15,6 @@ alias flag py_stock_script_34 = 418;
 alias flag py_stock_script_35 = 419;
 alias flag py_stock_script_36 = 420;
 alias flag py_stock_script_37 = 421;
-// Horizon's extra chips use the shop's existing stock bits; no saved state is allocated.
-group shop_stock {
-    alias flag def_chip = 408;
-    alias flag brain_chip = 409;
-    alias flag quick_chip = 410;
-    alias flag hp_chip = 411;
-    alias flag mp_chip = 412;
-}
 script 177 {
     npc keeper = 5;
     npc ninjamon = 6;
@@ -128,23 +114,11 @@ script 177 {
         py_stock_script_29 = true;
         py_stock_script_30 = true;
         py_stock_script_31 = true;
-        py_stock_script_23 = true;
-        py_stock_script_24 = true;
-        py_stock_script_25 = true;
-        py_stock_script_26 = true;
-        py_stock_script_27 = true;
-        py_stock_script_28 = true;
         engine.picker_mode = false;
         engine.arg = 5;
         call_routine(routine("shop"));
         py_stock_script_29 = false;
         py_stock_script_30 = false;
         py_stock_script_31 = false;
-        py_stock_script_23 = false;
-        py_stock_script_24 = false;
-        py_stock_script_25 = false;
-        py_stock_script_26 = false;
-        py_stock_script_27 = false;
-        py_stock_script_28 = false;
     }
 }
