@@ -481,7 +481,9 @@ def read_copy(self, path, offset, length):
             if at <= offset and offset + length <= at + len(known):
                 return known[offset - at:offset - at + length]
     return disc_copy(self, path, offset, length)
-P.BaseDisc.read_copy = read_copy
+# Older packages predate the shared reader fix; keep their browser compatibility path.
+if not hasattr(P, 'USA_LICENSE'):
+    P.BaseDisc.read_copy = read_copy
 
 class Hole(iw.Source):
     """A hole's file in OPFS, read when it is used."""
