@@ -1,0 +1,8 @@
+{
+  "source": "https://github.com/TakWolf/fusion-pixel-font/releases/tag/2026.10.25",
+  "font": "fusion-pixel-12px-monospaced-zh_hans.bdf",
+  "sha256": "bdb520006cddacccc1d3f780d5fab79007a4d6d1f3559d04665e652af4cdf50f",
+  "archive_sha256": "d8788cf5ffd6a2dabec397c33c878261195fb9146cdb67d8afd418fe73db15bd",
+  "renamed_subset": "Horizon Simplified Chinese subset",
+  "license": "SIL-OFL-1.1"
+}
