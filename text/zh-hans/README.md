@@ -3,7 +3,7 @@
 This is an incomplete translation draft, not a selectable game language yet.
 The current draft covers both starter quizzes, Native Forest, Jijimon's house
 File City, the early routes and training/fishing services, Gear Savanna, Mt. Panorama,
-and the ancient regions, plus shared merchant, card, trade, travel and tournament text. It follows
+the ice regions, Misty Trees and Beetle Land, plus shared merchant, card, trade, travel and tournament text. It follows
 `text/ours`, cross-checked against both original Japanese
 extractions and the scripts in `story/base`. An independent second pass corrected
 meaning, character voice and explicit row fit. Native-speaker approval and in-game
@@ -78,6 +78,8 @@ Chinese is added to the public language registry.
 - Check 冰川区 and 疾速区 against the English region names and Japanese time effects.
 - Check the ghost’s 呜呜 voice, Drimogemon’s song cadence, 祠堂 for the shrine
   and 恶鬼模式 for Ogre Mode.
+- Check 音量山庄 for Volume Villa, 酷寒杯 for Cool Cup, the ruler’s 余 register,
+  Angemon’s mock-archaic voice and the sixteen-worm early-bird idiom.
 - Review the card merchant's 对对 tic, Meteormon's rustic 俺 and Nanimon's punchline.
 - Confirm authored items/techniques and the explicitly provisional species terms
   in the glossary. Their reference pages establish identity, not official Chinese spelling.
