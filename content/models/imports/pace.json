@@ -108,34 +108,16 @@
   "bones": 23,
   "skeleton_sha256": "f40851011a5f00c3d0c04683fe89f2398de21b91641873bd8b0d517a3e6b1b3a",
   "source_sha256": "f94cdab3f149ae6b1ed7f31a7c4a146c308ea133472e76c93018d251e422adca",
-  "base_generator": null,
-  "post_source_sha256": "f94cdab3f149ae6b1ed7f31a7c4a146c308ea133472e76c93018d251e422adca",
+  "base_generator": "tools.models.field_animations.armadillomon",
+  "post_source_sha256": "ad67ff179c9570aee5b24737b5fff3ba4bc062393602205cef8cf412e9d22ed9",
   "slots": {
-   "2": {
+   "3": {
     "from": 2,
     "ticks": 14,
-    "speed": 20,
+    "speed": 12,
     "slip": [
      125,
      250
-    ]
-   },
-   "3": {
-    "from": 2,
-    "ticks": 21,
-    "speed": 13.3,
-    "slip": [
-     190,
-     360
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 8,
-    "speed": 35,
-    "slip": [
-     190,
-     360
     ]
    }
   }

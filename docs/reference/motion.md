@@ -536,8 +536,8 @@ the game's proportions, or that would gain too little to be worth a resident byt
 
 `tools/models/field_animations/pace.py`, with the manifest
 `content/models/imports/pace.json`, is the gait retime that note asks for. It covers
-the 38 imported partners that stayed under walk 15 or run 35, and MetalGarurumon, whose gait was rewritten. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty-two wrap their
-existing recipe through `base_generator`; seventeen had none and only have this pass. Nefertimon's
+the 38 imported partners that stayed under walk 15 or run 35, and MetalGarurumon, whose gait was rewritten. A row's `after_generator` runs after it: Snimon's `snimon.py` lowers the blades and ties torso, head, tail, wings and arms to the steps. Twenty-three wrap their
+existing recipe through `base_generator`; sixteen had none and only have this pass. Nefertimon's
 `nefertimon.py` is one of them: it writes the walk, run and standing idle from the paws up (stance and
 swing per leg, a rotary gallop and a lateral-sequence walk, two-bone solves in the idle's bend planes, the gauntlet
 kept seated) and rewrites each clip where it is stored, so the battle aliases (0x1B, 0x21, 0x23, 0x24) play it too;
@@ -548,7 +548,10 @@ bones of each leg, the soles, where the paws stand, one row per clip with cadenc
 and body motion). Every target is a world point; the left legs' bend planes are the right legs' standing pose
 mirrored in the world, so an import whose idle stands with one leg back does not twist the other. Footsteps keep the
 species' own sound and land on touchdowns. MetalGarurumon (`metal_garurumon.py`, 191) walks in a lateral sequence
-(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported.
+(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported. Armadillomon
+(`armadillomon.py`, 185) has legs of about 80 units under a shell whose rim stands on the floor, so its body cannot
+drop to lengthen a stride: it walks in a quick lateral sequence (9 ticks at 18) and runs in a trot with a short
+flight (8 ticks at 35).
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
 2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.
