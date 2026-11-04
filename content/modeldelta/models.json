@@ -3414,9 +3414,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/294-Datamon.MMD.mdelta",
-        "delta_sha256": "fbf7a32064a9e58ac2322e4f663ec0a989978240d65c98fd9c635a8606caa6aa",
-        "sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-        "size": 93316
+        "delta_sha256": "1303ee9baba160b1833447653a01810704b9c020e5b79b819c5090900d7f82df",
+        "sha256": "436b3e88f5c49672e12f5c8059483657d45ec7af940fa1943734979208e27cbf",
+        "size": 86754
       },
       "tim": {
         "sources": [
