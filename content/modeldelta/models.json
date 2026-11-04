@@ -4199,9 +4199,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/321-Knightmon.MMD.mdelta",
-        "delta_sha256": "5209d39d8f16ee9e59eeb49ebd708210013d177679e508cfa60e37e1c42ef118",
-        "sha256": "019b3e6643639935ead1a16a6dada99a7dd30d5bb2a217abd8ceb0b8723089b2",
-        "size": 104404
+        "delta_sha256": "02e34e6d53214e72d08708a1095926af631b86684c2c5231844cb5f45d459699",
+        "sha256": "ac05713fe8a31cf679c32eef192fc593cfe428ee915662e010383a64492de63d",
+        "size": 104450
       },
       "tim": {
         "sources": [
