@@ -5,9 +5,9 @@
   "level": "champion",
   "vanilla_as": 5,
   "attribute": "data",
-  "specialties": ["fire", "battle", null],
-  "techniques": ["Spit Fire", "Red Inferno", "Megaton Punch", "Buster Dive", "Prominence Beam", "Heat Laser",
-                 "Fire Tower", "Magma Bomb", "Muscle Charge", "War Cry", "Volcanic Strike"],
+  "specialties": ["fire", "mech", null],
+  "techniques": ["Spit Fire", "Fire Tower", "Magma Bomb", "Heat Laser", "Red Inferno", "Prominence Beam",
+                 "Pulse Laser", "Delete Program", "Volcanic Strike"],
   "drop": {"item": "lrg.recovery", "percent": 20},
   "effects_like": 76,
   "model": {
@@ -18,7 +18,7 @@
     "height": 450,
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 2], [3, 4], [4, 5], [5, 4], [6, 7], [7, 4], [8, 9], [-1, 2],
                  [9, 11], [10, 11], [-1, 2], [11, 14], [12, 14]],
-    "slot_aliases": [[50, 46], [51, 47], [52, 46], [53, 46], [54, 49], [55, 49], [56, 46]]
+    "slot_aliases": [[49, 47], [50, 47], [52, 47], [53, 47], [47, 46], [48, 46], [51, 46], [54, 46]]
   },
   "texture": {"from": 76},
   "voice": 61,
