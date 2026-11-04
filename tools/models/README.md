@@ -11,6 +11,7 @@ python3 tools/models/edit.py get 183
 python3 tools/models/edit.py --from build/everything check 183 --species-pins
 python3 tools/models/verify_deltas.py verify --sources DIR
 python3 tools/models/audit_origins.py --help
+python3 tools/models/audit_textures.py disc DISC_DIR   # faces sampling noise, palettes or empty texels
 ```
 
 The editor can extract the three source games with repeated `--source-disc`
