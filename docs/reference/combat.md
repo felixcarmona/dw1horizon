@@ -187,7 +187,7 @@ STD overlay: `STD_OPPONENT_BASE_STATS` `0x800799B4`, `STD_WIN_CHANCES`
 | 0x04 | i16 | `power` | power; also how much `speedBuffer` drops when using it (`:2580`) |
 | 0x06 | u8 | `mpCost` | cost ÷ 3 (the game multiplies by 3 everywhere, `:2346,2527`; the menu too, `game_menu.c:2353`) |
 | 0x07 | u8 | `iframes` | invulnerability/stun ticks of the target hit (`:2157`) and duration of the particles |
-| 0x08 | u8 | `range` | 1 melee, 2 projectile, 3 area (AI bonus with ≥ 2 enemies), 4 self buff |
+| 0x08 | u8 | `range` | 1 melee, 2 ranged (including animation-driven dashes), 3 area (AI bonus with ≥ 2 enemies), 4 self buff |
 | 0x09 | u8 | `special` | element: 0 Fire, 1 Battle, 2 Air, 3 **Nature**, 4 **Ice**, 5 Mech, 6 Filth (255 none) |
 | 0x0A | u8 | `status` | 1 poison, 2 confusion, 3 stun, 4 flatten (`:3163-3194`) |
 | 0x0B | u8 | `accuracy` | base accuracy (%) |
@@ -277,7 +277,7 @@ flattened Digimon (`0x79`):
 | 44 | Dynamite Kick | Battle | melee | 193 | 99 (33) | 62 | 0 | stun 3 | 1 | — |  |
 | 45 | Counter | Battle | melee | 285 | 165 (55) | 100 | 0 | confusion 10 | 1 | — | counterattack: rival Def ×0.3; the AI never picks it |
 | 46 | Megaton Punch | Battle | melee | 320 | 186 (62) | 70 | 0 | stun 9 | 1 | — |  |
-| 47 | Buster Dive | Battle | ranged | 500 | 258 (86) | 80 | 600 | confusion 14 | 1 | — |  |
+| 47 | Buster Dive | Battle | ranged | 500 | 258 (86) | 80 | 600 | confusion 14 | 1 | — | [Animated dash](../mods/buster-dive.md), not a free-moving projectile |
 | 48 | Dynamite Kick | Battle | melee | 255 | 99 (33) | 90 | 0 | — | 1 | — |  |
 | 49 | Odor Spray | Filth | ranged | 88 | 75 (25) | 37 | 100 | stun 10 | 1 | — |  |
 | 50 | Poop Spd Toss | Filth | ranged | 122 | 96 (32) | 40 | 700 | poison 11 | 1 | — |  |

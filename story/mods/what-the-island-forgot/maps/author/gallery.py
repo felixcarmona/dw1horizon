@@ -16,6 +16,7 @@ The design, in world units (z up the screen, the look-at point at the centre):
   "polys":  [{"pts": [[x, z], ...], "role": ...}]                                                                  any shape
   "exits":  [{"warp": k, "edge": "S"|"N"|"W"|"E", "at": v, "half": w, "target": [map, exit]}]                      a band to the edge
             or {"warp": k, "box_px": [x0, y0, x1, y1], "spawn_px": [u, v], "face_px": [u, v], "target": [map, exit]}  a mouth in the picture
+            "rotation": N on either overrides the generated arrival heading (0–4095).
             "step": N on either: the tiles run the screen's on_step(N) (tile 51 + N) instead of leaving by themselves, for an
             exit whose destination the story decides (File City's lower town has 24 screens); the warp keeps its arrival
   "sticks": [[x, z], ...]                                                                                           scale posts
@@ -184,7 +185,7 @@ class Screen:
         m.collision = col
         for e in exits:
             x, z = e['spawn_world']
-            m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': cam.arrival_rotation((x, z), e['face_world']),
+            m.warps[e['warp']].update({'x': x, 'y': 0, 'z': z, 'rotation': e.get('rotation', cam.arrival_rotation((x, z), e['face_world'])),
                                        'targetMap': e['target'][0], 'targetExit': e['target'][1]})
         for e in exits:
             if 'step' not in e:
