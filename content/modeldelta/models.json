@@ -3779,9 +3779,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/307-BlackKingNumemon.MMD.mdelta",
-        "delta_sha256": "f5465c4f298af067e03dfbad3067e15827092fb7e306176d196fa6e59eaa2124",
-        "sha256": "f87947d3e10f08608c5fa0c3a9cecbaf4f3716e97c091e88fb22682c9a24c476",
-        "size": 106592
+        "delta_sha256": "af4a09c4a802e958e2c181081be32ac76705155f380b5e99ccce01bb1bcba347",
+        "sha256": "608e1ce8ffd194e7b666f661b1b48d5732654935e282a0a831eb50df7480ebf5",
+        "size": 109496
       },
       "tim": {
         "sources": [
