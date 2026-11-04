@@ -441,6 +441,27 @@ model data. `tools/models/edit.py get` creates an editable model from disc repla
 `put` validates an edit and writes our plain delta. Use its `check` command before
 building the integrated disc. See the model-delta guide for source-disc arguments.
 
+**Closed meshes: `tools/models/meshcheck.py`.** The engine culls back faces (libgs' `GsTMDfast`
+routines skip a face whose screen winding is reversed and ignore the TMD double-sided flag), so a
+model the original game only showed from one side is see-through from the other: Cherrymon's
+`JURE.MMD` has no back. The check renders a species' final model from the front, back, sides and
+top and from eight directions 30° above, and measures the share of the silhouette where nothing is
+drawn. It also lists open edges, faces lit against their own normals, parts far from the rest of
+the body and pieces that leave the body during an animation (DW1's own models float eyes, gears
+and flames, and techniques throw parts: read those against the natives).
+
+```sh
+python3 tools/models/meshcheck.py extract build/dev-everything/DIGI.DAT build/meshes   # every species' final model
+python3 tools/models/meshcheck.py audit build/meshes --jobs 8 --out build/meshes.json --sheets build/mesh-sheets
+python3 tools/test_meshcheck.py
+```
+
+To close a mesh, add the faces in the model's generator (`content/models/cherrymon/back.py`):
+wound like the rest (DW1 stores a face's normal opposite to cross(v1 − v0, v2 − v0)), in the
+object of the bone that carries the piece, textured from regions the model already uses, with
+the vertices and normals of each object kept in one run. A one-sided card (a leaf, a blade) needs
+its faces again with reversed winding.
+
 Original-model generators live in `content/models/`. A generator reads the
 player's original model and records our edits as source code or specifications.
 The derive models step runs these generators. Add or change a generator through
