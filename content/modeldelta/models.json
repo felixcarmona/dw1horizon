@@ -4234,9 +4234,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/322-Kyukimon.MMD.mdelta",
-        "delta_sha256": "1e976c6798e3287f3a6530acd05f9c45da8869fc28d77ec5f19483b7781bc0f2",
-        "sha256": "8a0613cf9518c6400ff9449b39ba17475be3d6c4eb74f6295c68764541ca837a",
-        "size": 119634
+        "delta_sha256": "9ae18897b4bab1f18a720dac6a120ef285c2751314cc8cb0ae2597ad00507ad2",
+        "sha256": "42e608237b9d2734a2426e5d2170fff93db3a7938d5c25fc43d9cef3fd5c5b2c",
+        "size": 119046
       },
       "tim": {
         "sources": [
