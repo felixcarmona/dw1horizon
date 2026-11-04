@@ -143,13 +143,8 @@
     },
     "zones/secret-item-shop/s177-217/script.dws": {
       "original_sha256": "f121346af89e298ddc44b22e0bb6b90965660a42aca7f9f8613a092d45225713",
-      "authored_sha256": "d1c67bc1e40735ec815de32bafbaf71fa9f60b07cd6078c49bcb5c37b7cc8076",
-      "reason": "Horizon secret shop also sells stat chips; retain named chip stock aliases for the existing shop bits"
-    },
-    "zones/secret-item-shop/s177-217/script.py": {
-      "original_sha256": "8efffb9eab3557117986a81c4cd57ce04d9409a09073d6beb5e28c1c2467e78f",
-      "authored_sha256": "2e54de3d71f603271c847b64eb8bf2c2cc658d30d4984ab2274b80cc0d04eb33",
-      "reason": "Horizon secret shop also sells stat chips"
+      "authored_sha256": "15a5b4b204fc8aeddd180f94140807f80de6134ef38de1416496d690b395703d",
+      "reason": "Devimon sells only Devil Chips; DWS synchronized with the authored Python source"
     },
     "zones/trash-mountain/s159-165/script.dws": {
       "original_sha256": "e1e2dfa0ee0306a58af8ae9e980f177b4478c2e7c0df2e2500166d40073e5223",
