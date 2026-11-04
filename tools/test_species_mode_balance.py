@@ -1,4 +1,5 @@
 """Mode payload layout and the production shared-id finisher lookup."""
+import copy
 import ctypes
 from pathlib import Path
 import shutil
@@ -24,6 +25,67 @@ class ModeBalance(unittest.TestCase):
         self.assertEqual(row[23:26], bytes([255, 255, 90]))
         self.assertEqual(struct.unpack_from('<BHBB', row, 18), (90, 210, 40, 4))
         self.assertEqual(struct.unpack_from('<BHBB', row, 39), (90, 150, 40, 4))
+
+    def test_level_moved_species_require_every_mode_balance_field(self):
+        original = S.load_content()[59]
+        for path in [('finisher',), ('off', 'finisher'), ('off', 'stats'), ('off', 'techniques'),
+                     ('evolution', 'gains', 'hp')]:
+            s = copy.deepcopy(original)
+            parent = s
+            for key in path[:-1]: parent = parent[key]
+            del parent[path[-1]]
+            with self.subTest(path=path), self.assertRaises(SystemExit):
+                S.validate(s)
+
+    def test_boss_power_cannot_leak_into_a_moved_partner(self):
+        s = copy.deepcopy(S.load_content()[115])
+        s['finisher']['power'] = 777
+        with self.assertRaisesRegex(SystemExit, 'outside mega band'):
+            S.validate(s)
+
+    def test_production_sector_reader_applies_all_species_in_both_modes(self):
+        source = Path(S.ROOT, 'build/decomp-int/src/main/mod_species.c')
+        if not source.exists() or not shutil.which('cc'):
+            self.skipTest('needs a prepared engine and host C compiler')
+        text = source.read_text()
+        first = text.index('Move *modSpeciesMove(')
+        last = text.index('\nvoid modApplySpeciesLevels', first)
+        production = text[first:last]
+        sp = S.load_content()
+        rows = S.balance_swaps(sp)
+        payload = struct.pack('<H', len(rows)) + b''.join(rows)
+        move = Path(S.ROOT, 'build/decomp-int/include/dw/move.h').read_text()
+        move = move[move.index('typedef struct'):move.index('extern Move')]
+        checks = []
+        for mode in (0, 1):
+            checks.append(f'MOD_OPT_NEW_DIGIMON={mode}; applySpeciesMoveBalance(1);')
+            for t, species in sp.items():
+                if 'finisher' not in species.get('off', {}): continue
+                block = species if mode else species['off']
+                moves = S.techniques_from_json(block['techniques'], 'test')
+                fin = next(m for m in reversed(moves) if 58 <= m <= 112)
+                f = block['finisher']
+                checks.extend(f'if(DIGIMON_DATA[{t}].moves[{j}]!={value}) return 1;'
+                              for j, value in enumerate(moves))
+                for key, value in [('power', f['power']), ('mpCost', f['mpCost']),
+                                   ('special', S.ELEMENTS.index(f['element']))]:
+                    checks.append(f'if(modSpeciesMove({t},{fin})->{key}!={value}) return 2;')
+        with tempfile.TemporaryDirectory() as directory:
+            code = Path(directory, 'reader.c')
+            code.write_text('#include <stdint.h>\n#include <string.h>\n' + move +
+                '#define SPECIES_BALANCE_SWAP_MAX 19\n#define NUM_ORIGINAL_DIGIMON 180\n' +
+                'typedef struct {uint16_t type,move,power;uint8_t cost,element;} SpeciesMoveBalance;\n' +
+                'static SpeciesMoveBalance SPECIES_MOVE_BALANCE[19];\n' +
+                'static int32_t SPECIES_MOVE_BALANCES,MOD_OPT_NEW_DIGIMON;\n' +
+                'static Move SPECIES_MOVE_COPY; Move MOVE_DATA[122];\n' +
+                'static struct {uint8_t moves[16];} DIGIMON_DATA[180];\n' +
+                'static uint32_t SPECIES_SECTOR[512];\n' +
+                'static const uint8_t payload[]={' + ','.join(map(str, payload)) + '};\n' +
+                'static void readSpeciesSector(int32_t s){memcpy(SPECIES_SECTOR,payload,sizeof(payload));}\n' +
+                production + '\nint main(void){' + ''.join(checks) + 'return 0;}\n')
+            binary = Path(directory, 'reader')
+            subprocess.run(['cc', '-Wall', '-Werror', str(code), '-o', str(binary)], check=True, capture_output=True)
+            subprocess.run([str(binary)], check=True)
 
     def test_production_lookup_does_not_change_another_species_or_shared_table(self):
         source = Path(S.ROOT, 'build/decomp-int/src/main/mod_species.c')

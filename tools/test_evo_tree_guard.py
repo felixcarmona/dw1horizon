@@ -117,6 +117,23 @@ class GuardTests(unittest.TestCase):
                               ('Tyrannomon', 'MasterTyrannomon')]:
             self.assertIn(self.names[child], self.sp[self.names[parent]]['evolution']['to'])
 
+    def test_dolphmon_inherits_champion_whamon_without_changing_off_routes(self):
+        s = self.sp[238]
+        self.assertEqual(set(s['evolution']['from']), {217, 46, 4, 57})
+        self.assertEqual(s['evolution']['requirements'], self.sp[24]['off']['evolution']['requirements'])
+        self.assertEqual(s['specialties'], ['ice', 'air', None])
+        self.assertIn('Blasting Spout', s['techniques'])
+        champion_ice = {'Tear Drop', 'Giga Freeze', 'Ice Needle', 'Water Blit',
+                        'Ice Statue', 'Winter Blast', 'Aurora Freeze', 'Aqua Magic'}
+        self.assertTrue(champion_ice <= set(s['techniques']))
+        for p in (217, 46, 4, 57):
+            self.assertIn(238, self.kids[p])
+            self.assertLessEqual(len(self.kids[p]), 6)
+        for p in (46, 4, 57):
+            self.assertIn(24, self.sp[p]['off']['evolution']['to'])
+            # Legacy reverse links may remain, but the off picker excludes non-vanilla targets.
+            self.assertFalse(self.sp[238].get('vanilla'))
+
     def test_original_battle_specialties_are_preserved(self):
         for t in (7, 11, 24, 27, 35, 53, 87):
             self.assertEqual(self.sp[t]['specialties'], T.S.disc_file(t)['specialties'])

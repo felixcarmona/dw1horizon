@@ -799,6 +799,22 @@ def validate(s):
             baseline = json.load(f)['levels'][str(t)]
         if s['level'] != baseline and off is None:
             raise SystemExit(f'{p}: off: required when level differs from the committed original level')
+    if off and off['level'] != s['level']:
+        with open(os.path.join(ROOT, 'content/tables/species-mode-balance.json')) as f:
+            bands = json.load(f)['bands']
+        for mode, block, stats in [('on', s, s.get('evolution', {}).get('gains')),
+                                   ('off', off, off.get('stats'))]:
+            if (not isinstance(stats, dict) or not set(STAT_KEYS) <= set(stats)
+                    or not isinstance(block.get('techniques'), list) or 'finisher' not in block):
+                raise SystemExit(f'{p}.{mode}: complete mode balancing requires six targets, techniques and finisher')
+            band = bands[block['level']]
+            for key in STAT_KEYS:
+                lo, hi = band['targets'][key]
+                if type(stats[key]) is not int or not lo <= stats[key] <= hi:
+                    raise SystemExit(f'{p}.{mode}.stats.{key}: {stats[key]} outside {block["level"]} band {lo}..{hi}')
+            for key, limits in [('power', band['finisher_power']), ('mpCost', band['finisher_mpCost'])]:
+                if not limits[0] <= block['finisher'][key] <= limits[1]:
+                    raise SystemExit(f'{p}.{mode}.finisher.{key}: outside {block["level"]} band {limits}')
     if ((s.get('evolution') or {}).get('requirements') or {}).get('digimon') == s['id']:
         raise SystemExit(f'{p}: evolution.requirements.digimon: the species itself (the bonus needs a parent, or -1)')
     para_from_json(s, p)
