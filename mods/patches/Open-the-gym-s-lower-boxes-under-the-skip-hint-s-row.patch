@@ -1,0 +1,200 @@
+From 523a9534cfc981738b45f24ec9d9b2eb69e62fe1 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 14:43:44 +0000
+Subject: [PATCH] Open the gym's lower boxes under the skip hint's row
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The gym's stats box grows by a row for "Press × to skip" while a gain counts (patch "Show how to skip the gym's and the battle's tallies"), and the box under it, which opened at the stats box's old bottom edge, covered that row: the training block's result box ("Trained 1 of 5 sessions. / It is hungry.") in both gym sets (TRN and TRN2), and in TRN the technique and new orders boxes of a session. Box 2 now opens 17 pixels lower when the stats box has the row (TB_box2Y in src/trn/trn_block.h, by the gym's own check of the gains, statGainsAreZero), and its text moves with it; the boxes end inside the screen (the lowest, new orders, at y 83 of 120). To keep TRN in its slot, the stats box's two checks for a counting gain use statGainsAreZero too: TRN 0x6fc8 of 0x7000 bytes, TRN2 0x5954. The one new byte (TB_box2Dy, in main's .sbss with the block's other small variables) takes alignment padding: main_BSS_END and the heap are unchanged.
+---
+ src/trn/trn_block.h  | 18 +++++++++++++++---
+ src/trn/trn_hud.c    | 14 +++++---------
+ src/trn/trn_reward.c | 20 +++++++++++---------
+ src/trn2/trn2_hud.c  | 14 +++++---------
+ 4 files changed, 36 insertions(+), 30 deletions(-)
+
+diff --git a/src/trn/trn_block.h b/src/trn/trn_block.h
+index a5e8fd9..bd553f2 100644
+--- a/src/trn/trn_block.h
++++ b/src/trn/trn_block.h
+@@ -52,6 +52,18 @@ static int8_t TB_box2Before; /* box 2 was open when the block began */
+ static int16_t TB_pre[6];
+ static int16_t TB_sum[6];
+ static char TB_doneText[64];
++static int8_t TB_box2Dy; /* box 2 under the stats box: lower by the skip hint's row when the box has one */
++
++/* MOD (skip hint, patch "Show how to skip the gym's and the battle's tallies"): the stats box grows by a row
++   (MOD_COUNT_ROW_H) when a gain counts, so box 2 (the block's box, and in TRN the gym's technique and new orders
++   boxes) opens that much lower, under it, with its text (TB_box2Dy). TB_box2Y: box 2's y for the gains in
++   STATS_GAINS, by the gym's own check (TB(statGainsAreZero)) */
++int32_t TB(statGainsAreZero)(void);
++static int32_t TB_box2Y(void)
++{
++	TB_box2Dy = TB(statGainsAreZero)() ? 0 : MOD_COUNT_ROW_H;
++	return 0x12 + TB_box2Dy;
++}
+ 
+ /* from the session's setup (TB(saveTrainingStartTime)), after it read the flag: the menu's x5 row is a normal session
+    in a block (not a block's next hour, which arms again) */
+@@ -78,8 +90,8 @@ static void TB_tickMessage(void)
+ 
+ static void TB_renderMessage(void)
+ {
+-	renderString(0, -78, 24, 156, 12, 0, 120, 4, 0);
+-	renderString(0, -78, 36, 156, 12, 0, 132, 4, 0);
++	renderString(0, -78, 24 + TB_box2Dy, 156, 12, 0, 120, 4, 0);
++	renderString(0, -78, 36 + TB_box2Dy, 156, 12, 0, 132, 4, 0);
+ }
+ 
+ /* before the gym's award function */
+@@ -173,7 +185,7 @@ int32_t TB(modBlockNext)(void)
+ 		drawString(TB_doneText, 0, 120);
+ 		drawString(TB_REASONS[TB_reason], 0, 132);
+ 		TB_box1Seen = 0;
+-		createMenuBox(2, -0x58, 0x12, 0xb0, 0x23, 2, TB_tickMessage, TB_renderMessage);
++		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x23, 2, TB_tickMessage, TB_renderMessage);
+ 	}
+ 	return 0;
+ }
+diff --git a/src/trn/trn_hud.c b/src/trn/trn_hud.c
+index 1cff83c..fb18236 100644
+--- a/src/trn/trn_hud.c
++++ b/src/trn/trn_hud.c
+@@ -24,6 +24,7 @@ extern GsOT *ACTIVE_ORDERING_TABLE;
+ extern char MAIN_D_80124C0C[];
+ extern char MAIN_D_80124C54[];
+ 
++int32_t TRN_statGainsAreZero(void); /* MOD (skip hint) */
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+ void renderNumber(int32_t a, int32_t x, int32_t y, int32_t digits, int32_t value, int32_t layer);
+ void setEntityTextDigit(POLY_FT4 *poly, int32_t x, int32_t y);
+@@ -187,12 +188,9 @@ void TRN_modOpenStatsBox(void)
+ 
+ 	setRECT(&finalPos, -94, -78, 188, 96);
+ 	/* MOD (skip hint, patch 0333): a row at the bottom for "Press × to skip" while the gains count */
+-	for (i = 0; i < 6; i++) {
+-		if (STATS_GAINS[i] != 0) {
+-			finalPos.h += MOD_COUNT_ROW_H;
+-			modCountHintDraw();
+-			break;
+-		}
++	if (!TRN_statGainsAreZero()) {
++		finalPos.h += MOD_COUNT_ROW_H;
++		modCountHintDraw();
+ 	}
+ 
+ 	getEntityScreenPos(ENTITY_TABLE[1], 1, &screenPos);
+@@ -290,9 +288,7 @@ void TRN_renderPostTrainingStatsBox(int16_t depth)
+ 	drawLine2P(0xfad990, box->x + 122, box->y + 2, box->x + 122, y, 6 - depth, 0);
+ 	drawLine2P(0x20202, box->x + 123, box->y + 2, box->x + 123, y, 6 - depth, 0);
+ 	if (box->h > 96) {
+-		for (i = 0; i < 6 && STATS_GAINS[i] == 0; i++) {
+-		}
+-		modCountHintRow(box->x, box->w, box->y + 91, i < 6, 6 - depth);
++		modCountHintRow(box->x, box->w, box->y + 91, !TRN_statGainsAreZero(), 6 - depth);
+ 	}
+ 
+ 	for (i = 0; i < 6; i++) {
+diff --git a/src/trn/trn_reward.c b/src/trn/trn_reward.c
+index 53ed703..486c0bb 100644
+--- a/src/trn/trn_reward.c
++++ b/src/trn/trn_reward.c
+@@ -646,7 +646,7 @@ int32_t c;
+ 	if (shown == 1) {
+ 		setTextColor(1);
+ 		drawString(TRN_D_8008F140, 0, y);
+-		createMenuBox(2, -0x58, 0x12, 0xb0, 0x30, 2, 0, TRN_renderNewOrdersBox);
++		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x30, 2, 0, TRN_renderNewOrdersBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 	} else if (TRN_crossedLearnMark(base, total)) { /* MOD (caps): reaching 999 (was total == 999); MOD (training as data): the marks are MOD_TRAIN_RULES' */
+ 		TRN_tryLearnMove(a);
+@@ -804,7 +804,7 @@ void TRN_advanceTrainingTime(int16_t tiredGain, int16_t energyLoss, int16_t happ
+ 
+ void TRN_renderNewOrdersBox(void)
+ {
+-	renderString(0, -78, 24, 240, 48, 0, 120, 4, 0);
++	renderString(0, -78, 24 + TB_box2Dy, 240, 48, 0, 120, 4, 0);
+ }
+ 
+ int32_t TRN_tryLearnMove(int32_t type)
+@@ -869,7 +869,7 @@ int32_t TRN_tryLearnMove(int32_t type)
+ 		MAIN_D_80135392 = strlen(MOVE_NAMES[move]);
+ #endif
+ 		drawString(TRN_D_8008F19C, 0, 0x84);
+-		createMenuBox(2, -0x58, 0x12, 0xb0, 0x23, 2, 0, TRN_renderMoveLearnedBox);
++		createMenuBox(2, -0x58, TB_box2Y(), 0xb0, 0x23, 2, 0, TRN_renderMoveLearnedBox); /* MOD (skip hint) */
+ 		MAIN_D_80135388 = 1;
+ 		return 1;
+ 	}
+@@ -894,20 +894,22 @@ void TRN_renderMoveLearnedBox(void)
+ 	int32_t nameW;
+ 	int32_t textW;
+ 
++	int32_t y = 24 + TB_box2Dy; /* MOD (skip hint) */
++
+ 	nameW = MAIN_D_80135392;
+ 	textW = measureStringMode(TRN_D_8008F19C, FIT_VANILLA);
+-	renderString(3, LEARNED_TEXT_X, 24, nameW + 1, 12, 0, 120, 4, 0);
++	renderString(3, LEARNED_TEXT_X, y, nameW + 1, 12, 0, 120, 4, 0);
+ 	if (nameW + LEARNED_GAP + textW <= LEARNED_TEXT_W) {
+-		renderString(0, LEARNED_TEXT_X + nameW + LEARNED_GAP, 24, textW + 1, 12, 0, 132, 4, 0);
++		renderString(0, LEARNED_TEXT_X + nameW + LEARNED_GAP, y, textW + 1, 12, 0, 132, 4, 0);
+ 	} else {
+-		renderString(0, LEARNED_TEXT_X, 36, textW + 1, 12, 0, 132, 4, 0);
++		renderString(0, LEARNED_TEXT_X, y + 12, textW + 1, 12, 0, 132, 4, 0);
+ 	}
+ }
+ #else
+ void TRN_renderMoveLearnedBox(void)
+ {
+-	renderString(3, -78, 24, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
+-	renderString(0, ((MAIN_D_80135392 / 2) * 12) - 78, 24, 12, 12, 0, 132, 4, 0);
+-	renderString(0, -78, 36, 48, 12, 12, 132, 4, 0);
++	renderString(3, -78, 24 + TB_box2Dy, (MAIN_D_80135392 / 2) * 12, 12, 0, 120, 4, 0);
++	renderString(0, ((MAIN_D_80135392 / 2) * 12) - 78, 24 + TB_box2Dy, 12, 12, 0, 132, 4, 0);
++	renderString(0, -78, 36 + TB_box2Dy, 48, 12, 12, 132, 4, 0);
+ }
+ #endif
+diff --git a/src/trn2/trn2_hud.c b/src/trn2/trn2_hud.c
+index 8225a17..c0511fc 100644
+--- a/src/trn2/trn2_hud.c
++++ b/src/trn2/trn2_hud.c
+@@ -30,6 +30,7 @@ extern char MAIN_D_80124C54[];
+ extern GsOT *ACTIVE_ORDERING_TABLE;
+ 
+ uint8_t getItemCount(ItemId type);
++int32_t TRN2_statGainsAreZero(void); /* MOD (skip hint) */
+ void worldPosToScreenPos(TrainingSpot *item, SVECTOR *out);
+ void renderNumber(int32_t a, int32_t x, int32_t y, int32_t digits, int32_t value, int32_t layer);
+ void renderString(int32_t a, int32_t b, int32_t c, int32_t d, int32_t e, int32_t f, int32_t g, int32_t h, int32_t i);
+@@ -350,12 +351,9 @@ void TRN2_modOpenStatsBox(void)
+ 
+ 	setRECT(&finalPos, -94, -78, 188, 96);
+ 	/* MOD (skip hint, patch 0333): a row at the bottom for "Press × to skip" while the gains count */
+-	for (i = 0; i < 6; i++) {
+-		if (STATS_GAINS[i] != 0) {
+-			finalPos.h += MOD_COUNT_ROW_H;
+-			modCountHintDraw();
+-			break;
+-		}
++	if (!TRN2_statGainsAreZero()) {
++		finalPos.h += MOD_COUNT_ROW_H;
++		modCountHintDraw();
+ 	}
+ 
+ 	getEntityScreenPos(ENTITY_TABLE[1], 1, &screenPos);
+@@ -453,9 +451,7 @@ void TRN2_renderPostTrainingStatsBox(int16_t depth)
+ 	drawLine2P(0xfad990, box->x + 122, box->y + 2, box->x + 122, y, 6 - depth, 0);
+ 	drawLine2P(0x20202, box->x + 123, box->y + 2, box->x + 123, y, 6 - depth, 0);
+ 	if (box->h > 96) {
+-		for (i = 0; i < 6 && STATS_GAINS[i] == 0; i++) {
+-		}
+-		modCountHintRow(box->x, box->w, box->y + 91, i < 6, 6 - depth);
++		modCountHintRow(box->x, box->w, box->y + 91, !TRN2_statGainsAreZero(), 6 - depth);
+ 	}
+ 
+ 	for (i = 0; i < 6; i++) {
+-- 
+2.55.0
+
