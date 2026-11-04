@@ -194,23 +194,19 @@ class RegionalLayoutTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             tabledata.verify([recipe], [obj], words, target, images, {'us': target, 'eu': target})
 
-    def test_ui_coordinates_require_the_original_code_reference(self):
+    def test_ui_coordinates_come_only_from_json(self):
         import fontcopy
-        raw = bytearray(256)
-        struct.pack_into('<II', raw, 0, 0x3c028009, 0x24420040)
-        for i in range(9):
-            struct.pack_into('<hhhBB', raw, 64+i*8, i-100, i*10, 20, 0, 0)
-        recipe = dict(ui='STATS_VIEW_TEXT', size=72,
-            sources={'eu': ['BOOT', 64, 72, hashlib.sha1(raw).hexdigest(), [0, 4]]})
-        got = fontcopy.ui_table(recipe, 'eu', lambda _: raw)
-        for i in range(9):
-            self.assertEqual(got[i*8:i*8+4], raw[64+i*8:64+i*8+4])
-        self.assertEqual(struct.unpack_from('<hBB', got, 4), (48, 72, 48))
-        self.assertEqual(struct.unpack_from('<hBB', got, 60), (0, 0, 48))
-        struct.pack_into('<I', raw, 4, 0x24420044)
-        recipe['sources']['eu'][3] = hashlib.sha1(raw).hexdigest()
-        with self.assertRaisesRegex(ValueError, 'address reference'):
-            fontcopy.ui_table(recipe, 'eu', lambda _: raw)
+        profiles = __import__('json').loads(Path('tools/patcher/ui-sources.json').read_text())['objects']
+        for name, profile in profiles.items():
+            recipe = dict(ui=name, size=profile['length'], sources={})
+            for key, values in profile['values'].items():
+                got = fontcopy.ui_table(recipe, key, lambda _: self.fail('disc coordinate read'))
+                self.assertEqual(len(got), recipe['size'])
+                self.assertEqual(got[:4], struct.pack('<hh', *values[:2]))
+            with self.assertRaises(KeyError):
+                fontcopy.ui_table(recipe, 'unknown')
+        recipe = dict(ui='STATS_VIEW_TEXT', size=72, sources={})
+        self.assertEqual(struct.unpack_from('<hBB', fontcopy.ui_table(recipe, 'eu'), 4), (48, 72, 48))
 
     def test_zeros_do_not_supply_nonzero_adjacent_payload(self):
         fixture = TableDataTests()

@@ -337,7 +337,7 @@ def table_tail(recipes, key, read_source, tool_root=None):
                     raise ValueError('invalid generated zero word')
                 data[inner:inner + 4] = bytes(4)
         elif kind == 'ui':
-            data = ui_table(recipe, key, read_source)
+            data = ui_table(recipe, key, read_source, tool_root)
         elif kind == 'aura':
             data = aura_table(recipe, key, read_source, tool_root)
         elif kind == 'items':
@@ -552,27 +552,14 @@ def aura_table(recipe, key, read_source, tool_root=None):
     return b''.join(struct.pack('<6h', *(row[field] for field in fields)) for row in authored)
 
 
-def ui_table(recipe, key, read_source):
-    """Player panel positions, with crops for our authored text-drawing contract.
-
-    The source's original instruction pair identifies the complete semantic
-    table. Coordinates are never assembled from unrelated short byte values.
-    """
-    import hashlib
-    path, offset, size, digest, references = recipe['sources'][key]
-    raw = read_source(path)
-    if hashlib.sha1(raw).hexdigest() != digest or offset < 0 or offset + size > len(raw):
-        raise ValueError('UI table differs from its pinned player file')
-    high, low = references
-    if not (0 <= high <= len(raw)-4 and 0 <= low <= len(raw)-4):
-        raise ValueError('UI table reference outside player code')
-    hi, = struct.unpack_from('<I', raw, high); lo, = struct.unpack_from('<I', raw, low)
-    register = (hi >> 16) & 31
-    address = ((hi & 65535) << 16) + ((lo & 65535) - 65536 if lo & 32768 else lo & 65535)
-    if (hi >> 26 != 15 or lo >> 26 != 9 or (lo >> 21) & 31 != register
-            or (lo >> 16) & 31 != register or address != 0x80090000 + offset):
-        raise ValueError('UI table lacks its original address reference')
-    source = raw[offset:offset + size]
+def ui_table(recipe, key, read_source=None, tool_root=None):
+    """Regional menu geometry from explicit JSON, with authored text crops."""
+    from pathlib import Path
+    import json
+    root = Path(tool_root) if tool_root else Path(__file__).resolve().parents[2]
+    profiles = json.loads((root / 'tools/patcher/ui-sources.json').read_text())['objects']
+    values = profiles[recipe['ui']]['values'][key]
+    source = struct.pack('<' + 'h' * len(values), *values)
     name = recipe['ui']
     if name in ('MOVES_VIEW_SPRITES', 'AMOUNT_BOX_LAYOUT'):
         return source

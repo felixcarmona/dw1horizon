@@ -261,14 +261,12 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
             raise ValueError('table recipe lacks a current natural data object')
         pointers, payload = fields(obj, words)
         if recipe['kind'] == 'ui':
-            sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
-                       for key, image in images.items()}
-            if pointers or ui_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources) != recipe:
-                raise ValueError('UI table lacks reviewed player code/record witnesses')
-            for key, image in images.items():
+            if pointers or ui_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], {}) != recipe:
+                raise ValueError('UI table differs from its reviewed JSON layout')
+            for key in images:
                 actual = (regional_targets or {}).get(key, target)
-                if tail([recipe], key, image.read) != actual[obj['offset']:obj['offset'] + obj['length']]:
-                    raise ValueError('regional UI fields differ from player coordinates/authored crops')
+                if tail([recipe], key, None) != actual[obj['offset']:obj['offset'] + obj['length']]:
+                    raise ValueError('regional UI fields differ from authored JSON/crops')
             continue
         if recipe['kind'] == 'regional_header':
             sources = {key: {recipe['sources'][key][0]: image.read(recipe['sources'][key][0])}
@@ -285,8 +283,8 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
             sources = {}
             if pointers or aura_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources) != recipe:
                 raise ValueError('aura fields differ from complete owned JSON')
-            for key, image in images.items():
-                if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
+            for key in images:
+                if tail([recipe], key, None) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated aura table differs from current output')
             continue
         if recipe['kind'] == 'items':
@@ -294,8 +292,8 @@ def verify(recipes, objects, words, target, images, regional_targets=None):
             expected = item_recipe(obj, target[obj['offset']:obj['offset'] + obj['length']], sources)
             if pointers or expected != recipe:
                 raise ValueError('item fields differ from complete owned JSON')
-            for key, image in images.items():
-                if tail([recipe], key, image.read) != target[obj['offset']:obj['offset'] + obj['length']]:
+            for key in images:
+                if tail([recipe], key, None) != target[obj['offset']:obj['offset'] + obj['length']]:
                     raise ValueError('generated item table differs from current output')
             continue
         if recipe['kind'] == 'semantic':
@@ -361,17 +359,8 @@ def ui_recipe(obj, data, sources):
     profile = profiles[name]
     if obj['length'] != profile['length'] or obj['source'] not in ('src/main/game_menu.c', 'src/main/script_common.c'):
         raise ValueError('regional UI data no longer has its reviewed native type')
-    found = {}
-    for key, files in sources.items():
-        original = profile['sources'][key]
-        path = original['file']
-        if path not in files:
-            return None
-        found[key] = [path, original['offset'], original['copy_length'],
-                      hashlib.sha1(files[path]).hexdigest(), original['refs']]
     recipe = dict(offset=obj['offset'], size=obj['length'], section=obj['section'], kind='ui',
-                  ui=name, fields=[[0, len(data)]], sources=found)
-    # The USA layout is retained; other bases supply their own panel positions.
-    if 'us' in sources and fontcopy.ui_table(recipe, 'us', sources['us'].__getitem__) != data:
+                  ui=name, fields=[[0, len(data)]], sources={})
+    if fontcopy.ui_table(recipe, 'us') != data:
         raise ValueError('native USA UI crops differ from the authored drawing contract')
     return recipe

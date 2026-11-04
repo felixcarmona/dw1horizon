@@ -204,3 +204,5 @@ Empty technique, item and screen directories remove their complete numeric domai
 An empty `content/maps` directory removes all parsed Digimon lists. Source map geometry remains an asset input; a missing placement file never preserves source enemies. The malformed, never-read `YAKA22` asset remains an explicit opaque exception.
 
 Story builds require the committed `story/base` sources. Missing sources fail the build; they never trigger an implicit lift of player-disc scripts. Explicit `dws story-base` and `--refresh` remain disc-import authoring operations. A deleted script within an existing base compiles to an empty script.
+
+Regional menu positions are explicit signed 16-bit layout fields in `tools/patcher/ui-sources.json` (`objects.*.values`, keyed by base region). Player-side recipes use those values plus authored text crops. `sources` records import provenance; it never supplies runtime defaults. An unknown region is an error.
