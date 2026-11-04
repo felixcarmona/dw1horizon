@@ -16,7 +16,8 @@ custom names survive language changes.
 The renamed Fusion Pixel subsets and their upstream notices are in
 `tools/font/chinese*.json` and `tools/font/chinese-license/`; see
 [third-party terms](../../THIRD-PARTY.md). Dialogue uses 12px glyphs, keeping all
-twelve bitmap rows. Compact baked labels use the designed 8px glyphs. The 12px
+twelve bitmap rows. Compact labels and battle-mode lists use the designed 8px glyphs; both fonts
+load together when Chinese is chosen. The 12px
 font's blank-space advance is four pixels to match the game's packed text and
 original cell grid; glyph pixels are not cropped or resampled.
 

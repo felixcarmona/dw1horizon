@@ -82,6 +82,7 @@ def validate_blob(payload):
     for recipe in payload.get('chinese', []):
         refs = [recipe[key] for key in ('module', 'font', 'names', 'patch')]
         refs += [row['file'] for row in recipe['resources']]
+        refs += [recipe[key] for key in ('compact', 'english_names') if key in recipe]
         if recipe.get('format') != 1 or any(ref not in payload['files'] for ref in refs):
             raise GateFailure('Chinese container references an unchecked component')
     spans = [(r['blob_offset'], r['length']) for r in audit.literal_runs(payload)]

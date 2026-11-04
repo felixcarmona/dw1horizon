@@ -96,3 +96,8 @@ Chinese selection preserves player names and custom partner nicknames.
 The standard nine-language build must retain every 2 MB heap gate. Font and
 container generation uses committed licensed pixels and authored translations;
 see [Chinese sources](../../text/zh-hans/README.md).
+
+Chinese battle registrations keep a Latin species-name fallback in the fixed save
+record. The 8 MB runtime displays the official Chinese name from its extra-RAM
+name pool, while custom Latin nicknames remain unchanged. Battle-mode lists use
+a compact font atlas in text rows 128–215, separate from command text and digits.
