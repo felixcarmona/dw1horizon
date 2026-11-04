@@ -237,8 +237,18 @@ Consequences:
   makes sense with the palette of the faces that use it.
 - Row 15 is used by the flat *sprite* (`renderFlatDigimon`,
   `model.c:2722-2774`: `clut + 0x3C0`, four 15×15 frames at u 0xE0/0xF0,
-  v 0x60/0x70 of the texture), which the tournament shows instead of the
-  model.
+  v 0x60/0x70 of the texture: idle, idle 2, attack, hurt), which the game
+  draws instead of the model while a Digimon is flattened. The originals'
+  frames are a two-colour drawing of the standing Digimon (outline 0x0421,
+  fill 0x7FFF). The build gives every other texture its frames
+  (`tools/flatsprite.py`: the species' icon in those two colours, moved to
+  free texels when the model uses that corner, in another row of the model's
+  own CLUT when its faces use row 15) and writes where they are after the TIM
+  (`FLT1`, patch `Draw-flattened-Digimon-with-the-flat-frames-their-te`).
+  When a model fills its page, a few of its UV islands are copied texel
+  for texel to free texels and their UVs moved with them, which leaves
+  room for the frames and draws the model the same.
+  `species.py flat-audit` fails a build where one species has none.
 - Texture animations (code 3) copy rectangles of the texture itself: the
   alternative frames (closed eyes, etc.) have to stay in the same place, or
   the instructions must be changed too.
