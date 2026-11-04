@@ -112,7 +112,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'venommyotismon-field': ('212', 'tools.models.field_animations.venom_myotismon', '212-venommyotismon-field'),
     'metalseadramon-glide': ('211', 'tools.models.field_animations.gliding', '211-metalseadramon-glide'),
     'grankuwagamon-field': ('210', 'tools.models.field_animations.gran_kuwagamon', '210-grankuwagamon-field'),
-    'lillymon-native-flight': ('209', 'tools.models.field_animations.chibi', '209-lillymon-native-flight'),
+    'lillymon-native-flight': ('209', 'tools.models.field_animations.celebrations', '209-lillymon-native-flight'),
     'togemon-field': ('208', 'tools.models.field_animations.togemon', '208-togemon-field'),
     'seraphimon-field': ('207', 'tools.models.field_animations.chibi', '207-seraphimon-field'),
     'magnaangemon-field': ('206', 'tools.models.field_animations.celebrations', '206-magnaangemon-field'),
