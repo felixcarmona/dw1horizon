@@ -175,7 +175,8 @@ engine versions go and, in OPFS, everything but a finished image (image.bin whos
 tree of a crashed build, a half-written image. One build at a time across tabs (Web Locks, `horizon-build`; the
 page-load tidy skips while another tab builds). Nothing of this is shown to the player.
 
-Room: a build needs about 2 GB in this browser's storage (`roomFor`: twice the holes, the largest image, 256 MB).
+Room: a build needs about 3 GB in this browser's storage (`roomFor`: twice the holes, the largest image, 1.25 GB;
+measured at its fullest: 2.63 GB, `web/test/run.mjs` prints it as "peak storage").
 `storage.estimate()` cannot say whether it is there: Chromium reports a fixed quota (its usage + 10 GB, the
 StaticStorageQuota feature, private windows included), while the real one can be far smaller (an incognito window
 keeps OPFS in memory, with a quota that is a fraction of the computer's memory, and one file stops growing at

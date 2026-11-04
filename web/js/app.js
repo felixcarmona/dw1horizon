@@ -6,7 +6,7 @@ import { setupDesktop, renderDesktop, hasDesktop, visitorOS } from './desktop.js
 import { inspect, checkFiles, partOf } from './disc.js';
 import { i18n, LANGS, NAMES, tag } from './i18n.js';
 import { FLAGS } from './flags.js';
-import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile } from './engine/engine.js';
+import { Build, missingSupport, tidyStorage, buildRoom, checkRoom, isMobile, withLock } from './engine/engine.js';
 import { store, revive } from './remember.js';
 
 // The links (the hero's Discord and GitHub buttons, the privacy note's code link): change them here.
@@ -88,7 +88,7 @@ function fixes(kind, bytes = 0) {
     if (hasDesktop()) out.push({ text: t('fix.desktop'), href: '#desktop' });
     else add(isMobile() ? 'fix.computer' : 'fix.otherBrowser');
   };
-  const room = { gb: gb(bytes || 2 * 2 ** 30) };
+  const room = { gb: gb(bytes || 3 * 2 ** 30) };
   if (kind === 'storage') {
     add('fix.private');
     add('fix.freeDisk', room);
@@ -946,7 +946,8 @@ async function askRoom() {
   try {
     const need = await buildRoom();
     const q = new URLSearchParams(location.search);
-    room = await checkRoom(need, TEST && Number(q.get('room')) || need);
+    // (under the build lock, as copies and builds are: not while another tab builds; no warning then)
+    room = await withLock((free) => (free ? checkRoom(need, TEST && Number(q.get('room')) || need) : null));
   } catch { room = null; }
   renderPatch();
 }

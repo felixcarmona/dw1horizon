@@ -154,12 +154,14 @@ export async function tidyStorage() {
   });
 }
 
-// The room a build needs in this browser's storage: the tree (twice the holes), the largest image, 256 MB for the rest.
-const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 2 ** 28;
+// The room a build needs in this browser's storage: the tree (twice the holes), the largest image, 1.25 GB for the rest
+// (the engine in the Cache API, versions of tree files still read by a running job). Measured 2026-11-04 (0.0.4, USA,
+// web/test/run.mjs "peak storage"): 2.63 GB at the fullest, this gives 3.03 GB.
+const roomFor = (plan) => 2 * plan.release.holes_bytes + Math.max(...Object.values(plan.release.outputs).map((o) => o.size)) + 1.25 * 2 ** 30;
 // The same for the page before a build (js/remember.js keeps that much free when it copies discs); without an engine
 // here, about what the current release needs.
 export async function buildRoom() {
-  try { return roomFor((await loadPlan()).plan); } catch { return 2 * 2 ** 30; }
+  try { return roomFor((await loadPlan()).plan); } catch { return 3 * 2 ** 30; }
 }
 
 // Is there room for `need` bytes more in this browser's storage? {need, reason: null (it fits, as far as the browser
