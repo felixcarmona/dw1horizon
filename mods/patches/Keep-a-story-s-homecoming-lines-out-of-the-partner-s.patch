@@ -1,0 +1,64 @@
+From 5ee7484dafa27bf047d6a0208ada7f84234ef708 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 15:40:37 +0000
+Subject: [PATCH] Keep a story's homecoming lines out of the partner's death
+ scene
+
+The death of the partner, or a lost life, loads Jijimon's house (218, or 205 once the city has grown) behind the death
+and rebirth scenes, and that load runs the screen's enter code. A story line added there for the next homecoming
+(SkullGreymon or Angemon back in the city, what the city remembers) then played over the dying partner, with its
+recruit message, before the egg choice.
+
+The death's MAPHEAD section (1246) sets trigger 41 and the load of the death map consumes it in checkShopMap (the shop
+library must not be loaded over the death overlays). Now that load also writes 1 into pstat 124 (PSTAT_DEATH_MAP_ENTRY),
+and every other map load writes 0. The pstat is not saved and no script of the game reads it; the story compiler tests
+it before a story's enter code on the two death screens.
+---
+ include/dw/pstat.h       | 4 ++++
+ src/main/script_common.c | 5 +++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/include/dw/pstat.h b/include/dw/pstat.h
+index 3c4faba..8c9edb5 100644
+--- a/include/dw/pstat.h
++++ b/include/dw/pstat.h
+@@ -268,5 +268,9 @@
+    out with both sides standing the battle ends and PSTAT_BATTLE_TIMED_OUT reads 1 (both are not saved) */
+ #define PSTAT_BATTLE_TIMED_OUT		PSTAT_241
+ #define PSTAT_BATTLE_TIME_LIMIT		PSTAT_242
++/* MOD (death map entry): 1 while the screen was loaded by the partner's death or lost life (Jijimon's house, 218 or 205,
++   where the death and rebirth scenes play), 0 after any other load; checkShopMap writes it on every map load (not saved).
++   A story's enter code on those screens tests it, so that it waits for a real homecoming */
++#define PSTAT_DEATH_MAP_ENTRY		PSTAT_124
+ 
+ #endif
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index b026711..b26db56 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -16,6 +16,7 @@
+ #include <dw/map.h>
+ #include <dw/math.h>
+ #include <dw/params.h>
++#include <dw/pstat.h>
+ #include <dw/script.h>
+ #include <dw/sound.h>
+ #include <dw/species.h>
+@@ -3144,10 +3145,14 @@ void checkShopMap(mapId)
+ 	uint8_t local;
+ 	int32_t i;
+ 
++	/* MOD (death map entry): trigger 41 is set by the death's MAPHEAD section (1246) and consumed by the load of the
++	   death map: the screen's enter code can tell that load from a homecoming (PSTAT_DEATH_MAP_ENTRY, pstat.h) */
+ 	if (isTriggerSet(0x29) == 1) {
+ 		unsetTrigger(0x29);
++		writePStat(PSTAT_DEATH_MAP_ENTRY, 1);
+ 		return;
+ 	}
++	writePStat(PSTAT_DEATH_MAP_ENTRY, 0);
+ 	for (i = 0; i < 8; i++) {
+ 		if (mapId == SHOP_MAPS[i]) {
+ 			loadDynamicLibrary(SHOP_REL, &local, 0, 0, 0);
+-- 
+2.55.0
+
