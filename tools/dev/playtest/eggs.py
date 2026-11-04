@@ -7,7 +7,7 @@ cursor (left/right through every egg, up/down between the rows), hatches the cho
 species back once control returns in the world (keeping the name at Jijimon's prompt): the case fails unless it is the
 egg's baby. --video records the first case's box and hatch.
 
---partner SPECIES evolves the partner first (a dying Mega); --trigger N sets a story flag before the death. With
+--partner SPECIES evolves the partner if needed (a dying Mega); --trigger N sets a story flag before the death. With
 --homecoming SPECIES (and the flag that makes a story's Jijimon's-house line recruit it, such as root2 727 for
 SkullGreymon 26), the line must not run during the death (the species is still not recruited when control returns)
 and must run at the next entry to the house.
@@ -93,6 +93,8 @@ def choose(e, target, count):
 
 def evolve(e, species):
     """the partner becomes `species` through the game's own evolution (the model loader runs as for any evolution)"""
+    if e.peek('PARTNER_ENTITY', 'i') == species:
+        return species       # the corpus already has this Mega; avoid an artificial evolution into the same species
     e.run('pause')
     e.poke('EVOLUTION_TARGET', struct.pack('<h', species))
     e.poke('HAS_USED_EVOITEM', b'\1')
@@ -156,8 +158,9 @@ def main():
     p.add_argument('--video')
     p.add_argument('--box-state', help='start from this state at the open egg box')
     p.add_argument('--vanilla', action='store_true', help='NEW DIGIMON off: four eggs')
+    p.add_argument('--prosperity', type=int, help='set pstat 1 before death (60 selects house 205)')
     p.add_argument('--partner', type=int,
-                   help='first evolve the partner into this species (the dying Mega of a player report)')
+                   help='use this partner species, evolving only if it differs (the dying Mega of a player report)')
     p.add_argument('--trigger', type=int, action='append', default=[],
                    help='set this trigger before the death (a story scene pending on entering the house, for one)')
     p.add_argument('--homecoming', type=int,
@@ -188,6 +191,9 @@ def main():
                 results['evolved_to'] = evolve(e, a.partner)
             for n in a.trigger:
                 e.gs('trigger', str(n), '1')
+            if a.prosperity is not None:
+                e.gs('pstat', '1', str(a.prosperity))
+            results['ram_bytes'] = len(e.ram())
             results['partner_before'] = e.peek('PARTNER_ENTITY', 'I')
             # Cheats' Die of old age (patch 0307): lifetime 0 and no immortal hour; the natural death runs at once
             e.gs('set', 'partner.para.remainingLifetime=0')
@@ -197,7 +203,11 @@ def main():
                     break
                 e.wait(.5)
             results['natural_death'] = e.peek('IS_NATURAL_DEATH', 'i') == 1
+            assert results['natural_death'], 'old-age death did not start'
             results['confirms_to_box'] = reach_box(e, out)
+            results['death_screen'] = e.peek('CURRENT_SCREEN', 'h')
+            if a.prosperity is not None and a.prosperity >= 50:
+                assert results['death_screen'] == 205, results['death_screen']
             e.wait(1)
             e.run('save', str(out / 'box.state'))
             e.run('shot', str(out / 'box.png'))
@@ -232,10 +242,13 @@ def main():
                 assert not case['recruited_after_death'], f'the homecoming line ran during the death ({a.homecoming} recruited)'
                 if i == 0:                  # the next entry to the house is a homecoming: the line runs there
                     screen = e.peek('CURRENT_SCREEN', 'h')
-                    assert e.warp(screen), f'screen {screen} did not load again'
+                    # A pending homecoming owns the tamer until its dialogue ends, so warp's control poll can time out.
+                    e.warp(screen)
                     assert to_control(e), 'no control after the homecoming'
+                    assert e.peek('CURRENT_SCREEN', 'h') == screen, f'screen {screen} did not load again'
                     e.run('shot', str(out / 'homecoming.png'))
                     results['recruited_at_homecoming'] = recruited(e, a.homecoming)
+                    (out / 'result.json').write_text(json.dumps(results, indent=2) + '\n')
                     assert results['recruited_at_homecoming'], 'the homecoming line did not run at the next entry'
         # the random egg: no lives left, DOOA_getSequenceState replaces the choice by rand() % eggCount()
         picks = []

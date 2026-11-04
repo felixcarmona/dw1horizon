@@ -211,6 +211,12 @@ The C code reads literal trigger and pstat numbers in many places: triggers 0-4,
 364-382, 384-511, 512-574, 650-716 and pstats 0, 1, 2-4, 5, 6, 28-31, 121-122, 124, 200, 243-255. These numbers are the contract
 between the engine and the story; a story must not repurpose them.
 
+Jijimon's house enter handlers use the death-map marker rather than partner lifetime and lives. Old age sets lifetime
+to zero; a final battle defeat sets lives and lifetime to zero. Sickness and battle defeat with lives remaining also
+load the house, but both values can still be positive. All four paths run MAPHEAD section 1246, set trigger 41 and
+load the death map through `checkShopMap`, so the marker covers recovery as well as reincarnation. A normal entry
+clears it and lets pending homecoming news run.
+
 Gotchas of the original engine:
 
 - Pstats 35-255 are zeroed only at boot. Loading a save from the title without switching the console off keeps them, so
