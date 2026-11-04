@@ -2714,9 +2714,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/271-Plesiomon.MMD.mdelta",
-        "delta_sha256": "cb7392254e31913b2fff70a17b881e553333c5b1c5c04519e5dfd57fa420dc5b",
-        "sha256": "2853ad5a76e4196965b24fafc75a51818bb40083d0b340babc775070b7a555bf",
-        "size": 105438
+        "delta_sha256": "3f128f6600a3de3514bf2648717c115bb21553de683d32444485c377c93be6eb",
+        "sha256": "dab75d0b531f76e1c212a8411a013c98e3f3f924ae27bcfbec54526a44f9b33b",
+        "size": 114106
       },
       "tim": {
         "sources": [
