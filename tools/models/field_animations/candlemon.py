@@ -1,8 +1,8 @@
-"""Candlemon's supported pedestal landings and smooth airborne travel.
+"""Candlemon's hovering walk, condition walk and run.
 
 Retain every original upper-body/flame channel, root controller, sound and
-clock. Only the pedestal's pitch and Y/Z carrier change: the base holds its
-footprint at landing, then carries the unchanged performance to the next.
+clock. Only the pedestal's pitch and Y/Z carrier change: it floats clear of the
+ground on a steady forward line, bobbing and swaying gently, like Bakemon.
 """
 import copy
 import hashlib
@@ -18,6 +18,10 @@ from motiondiscidentity import changed_programs
 SOURCE = '1d1a0b35c46d2c264611331be412b3d881925bd32a99154bec3cba1c55565c05'
 PARENTS = [-1, 9, 1, 1, 3, 4, 1, 6, 7, 10, 11, 0]
 CHANNELS = {(11, 3), (11, 7), (11, 8)}
+HOVER = {2: 26, 3: 18, 4: 34}      # clearance under the pedestal, by slot
+BOB = {2: 6, 3: 4, 4: 8}            # height of the bob
+LEAN = {2: 60, 3: 20, 4: 130}       # steady forward lean, 1/4096 turn
+SWAY = {2: 35, 3: 25, 4: 45}        # pitch sway with the bob
 
 
 def _author(old, sk):
@@ -44,29 +48,23 @@ def _author(old, sk):
             return (cycle * net + frames[index][0][8] * (1 - fraction)
                     + frames[index + 1][0][8] * fraction)
 
+        # The candle floats: the pedestal rides a steady forward line (the loop's net travel, no stepping), bobs once
+        # per old hop period and sways a little around a lean that grows with the speed.
         authored, plan = [], []
+        rest_pitch = frames[0][11][3]
         for t, source in enumerate(frames):
+            phase = 2 * math.pi * ((t - landing) % period) / period
+            bob = math.sin(phase)
+            clearance = HOVER[slot] + BOB[slot] * bob
             pose = copy.deepcopy(source)
-            phase = (t - landing) % period
-            start = t - phase
-            anchor = root_at(start + contact / 2)
-            if phase <= contact:
-                world_z, up, angle = anchor, 0, 0
-            else:
-                u = (phase - contact) / (period - contact)
-                smooth = 6 * u ** 5 - 15 * u ** 4 + 10 * u ** 3
-                world_z = anchor + hop_net * smooth
-                up = height * (4 * u * (1 - u)) ** 2
-                angle = .75 * source[11][3] * math.sin(math.pi * u) ** 2
-            pose[11][3] = round(angle)
+            pose[11][3] = round(rest_pitch + LEAN[slot] + SWAY[slot] * math.cos(phase))
             rotation = np.array(mmd.rot_matrix(*pose[11][3:6]))
             bottom = float((vertices @ rotation.T)[:, 1].max())
-            pose[11][7] = round(-5 - up - bottom)
-            pose[11][8] = round(world_z - source[0][8])
+            pose[11][7] = round(-clearance - bottom)
+            world_z = net * t / duration
+            pose[11][8] = round(world_z - root_at(t) + source[11][8])
             authored.append(pose)
-            plan.append(dict(t=t, phase=phase, hop_start=start,
-                             stance=phase <= contact, world_anchor_z=anchor,
-                             planned_world_base_z=world_z, clearance=5 + up,
+            plan.append(dict(t=t, clearance=round(clearance, 1), world_base_z=round(world_z, 1),
                              pitch_degrees=pose[11][3] * 360 / 4096))
         authored[-1][11] = copy.deepcopy(authored[0][11])
         original = old.anims.anims[old.anims.table[slot]]
