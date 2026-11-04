@@ -79,6 +79,12 @@ if [ -f "$DERIVED/DIGI.DAT" ]; then
 else
     skip city-compiled "needs compiled stories (DW_SELFTEST_DERIVE)"
 fi
+run flat-sprites      $PY -W ignore::ResourceWarning tools/test_flatsprite.py   # the pictures flattened Digimon turn into (tools/flatsprite.py)
+if [ -f "$DERIVED/DIGI.DAT" ] && [ -f "$DERIVED/ALLTIM.TIM" ]; then
+    run flat-sprites-built $PY tools/species.py --content "$DERIVED/species" flat-audit "$DERIVED/DIGI.DAT" "$DERIVED/ALLTIM.TIM"
+else
+    skip flat-sprites-built "needs a generated build (DW_SELFTEST_DERIVE)"
+fi
 run heap-tables       $PY tools/test_heap_tables.py                      # compact sector/size records remain lossless
 run npc-footprints   $PY tools/test_reach_policies.py
 run npc-routes       $PY tools/check_npc_routes.py                     # every authored new-screen visibility state

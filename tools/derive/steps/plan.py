@@ -188,6 +188,7 @@ def make(ctx):
             (P.file if opt == '--file' else P.add)(dest, S.resolve_path(x))
     for x in ('ETCNA/TITLE256.TIM', 'ETCNA/TITLE2.TIM', 'ETCDAT/TAMA.TIM'):
         P.file(x, O('title', x))
+    P.file('CHDAT/ALLTIM.TIM', O('ALLTIM.TIM'))     # the originals' flat sprites (species step)
     for x in ctx.env.get('EXTRA_FILES', '').split():
         P.file(*x.split('=', 1))
     with ST.tools(ctx.root, ctx):
