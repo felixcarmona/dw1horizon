@@ -154,7 +154,7 @@
  "335": {"model": "335-MegaGargomon.MMD", "field_overlay": "megagargomon-equipment"},
  "336": {"model": "336-Raidenmon.MMD", "aliases_applied": true},
  "351": {"model": "351-Kotemon.MMD", "aliases_applied": true, "field_overlay": "kotemon-field"},
- "352": {"model": "352-Monmon.MMD", "field_overlay": "monmon-upperbody"},
+ "352": {"model": "352-Monmon.MMD", "aliases_applied": true},
  "353": {"model": "353-Bearmon.MMD"},
  "354": {"model": "354-Renamon.MMD", "aliases_applied": true, "field_overlay": "renamon-field"},
  "373": {"model": "373-WarGreymon.MMD", "aliases_applied": true, "texture": "373-WarGreymon.TIM", "field_overlay": "wargreymon-field"},
