@@ -62,7 +62,7 @@ OVERLAYS = {
     'datamon-field': ('294', 'tools.models.field_animations.datamon', '294-datamon-field'),
     'deramon-pace': ('286', 'tools.models.field_animations.pace', '286-deramon-pace'),
     'garbagemon-pace': ('269', 'tools.models.field_animations.pace', '269-garbagemon-pace'),
-    'gazimon-pace': ('285', 'tools.models.field_animations.pace', '285-gazimon-pace'),
+    'gazimon-field': ('285', 'tools.models.field_animations.gazimon', '285-gazimon-field'),
     'dokugumon-pace': ('298', 'tools.models.field_animations.pace', '298-dokugumon-pace'),
     'vilemon-pace': ('295', 'tools.models.field_animations.pace', '295-vilemon-pace'),
     'armageddemon-pace': ('407', 'tools.models.field_animations.pace', '407-armageddemon-pace'),

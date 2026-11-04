@@ -882,25 +882,6 @@
    }
   }
  },
- "285": {
-  "name": "Gazimon",
-  "bones": 24,
-  "skeleton_sha256": "6b870e790f44d14b121a4c7b5f3092cc8e2809f7cb864ed6f4be5aedc9409178",
-  "source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "base_generator": null,
-  "post_source_sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 20,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   }
-  }
- },
  "298": {
   "name": "Dokugumon",
   "bones": 28,

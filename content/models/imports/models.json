@@ -102,7 +102,7 @@
  "282": {"model": "282-Kiwimon.MMD", "aliases_applied": true},
  "283": {"model": "283-Syakomon.MMD", "aliases_applied": true, "field_overlay": "syakomon-native-range"},
  "284": {"model": "284-Crabmon.MMD"},
- "285": {"model": "285-Gazimon.MMD", "aliases_applied": true, "field_overlay": "gazimon-pace"},
+ "285": {"model": "285-Gazimon.MMD", "aliases_applied": true, "field_overlay": "gazimon-field"},
  "286": {"model": "286-Deramon.MMD", "aliases_applied": true, "field_overlay": "deramon-pace"},
  "287": {"model": "287-Tapirmon.MMD", "aliases_applied": true, "field_overlay": "tapirmon-pace"},
  "288": {"model": "288-Boltmon.MMD", "aliases_applied": true, "field_overlay": "boltmon-chibi"},

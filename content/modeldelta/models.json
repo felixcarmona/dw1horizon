@@ -3128,14 +3128,14 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/batch9/Gazimon.MMD",
-            "sha256": "0c3c298b505af1c35cebc4dbbaf6f784312e0db031cfeb8916a4f2406cc3a32a",
+            "path": "build/sizes-out/models/Gazimon.MMD",
+            "sha256": "dcb1df1f725d80e0323c0e2b879116151b79a66c1102e48a5173d4184a772899",
             "size": 99572
           }
         ],
         "delta": "content/modeldelta/deltas/285-Gazimon.MMD.mdelta",
-        "delta_sha256": "ca94188b587d6aa51efa93e4916830043a244f1990ed2ea1eeeddd4fe1e09eae",
-        "sha256": "b7e8f53534161056d0c3560b15ece5f1c878a14a0f23d4be5382b08d40d7ee31",
+        "delta_sha256": "b014467199739c4bcfa2f61d5ae9b2b9e57598f2fe23a955364809b0b3ed262a",
+        "sha256": "5db8be4f5a11f34ec2f2e0a9dd4647e82d47045a40c14932c8a62c6a25e678f3",
         "size": 103452
       },
       "tim": {

@@ -44,6 +44,11 @@ def build(data, skeleton, profile):
     for slot, cfg in profile['slots'].items():
         ticks, speed = cfg['ticks'], cfg['speed']
         looping = cfg.get('loop', True)
+        if slot in (0, 1):
+            assert ticks + 1 <= 25, 'field idle must keep every needs-timer draw reachable'
+        if slot in (2, 3, 4):
+            low, high = {2: (15, 31), 3: (10, 21), 4: (35, 52)}[slot]
+            assert low <= speed <= high, (sid, slot, 'native pace', speed)
         legs = [(up, lo, foot, cfg.get('phases', {}).get(foot, phase))
                 for up, lo, foot, phase in profile['legs']]
         frames, errors = [], []
