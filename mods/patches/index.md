@@ -108,7 +108,7 @@ messages say "patch 0167": find that number here. Patches added later have none;
 | `Memory-code-that-only-an-overlay-calls-moves-into-it.patch` | 0098 | memory: code moved into overlays, cold animations (`tools/coldsplit.py`), stack size, compact file tables, the menu overlay |  |
 | `Font-b-our-font-drawn-in-the-game-s-style-is-the-def.patch` | 0099 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
 | `Packed-rows-with-a-font-placed-to-the-pixel-a-dialog.patch` | 0100 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
-| `Font-b-the-capital-A-as-the-owner-approved-it-in-the.patch` | 0101 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
+| `Font-b-the-capital-A-with-a-squared-top-and-the-acce.patch` | 0101 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
 | `Font-the-save-prompt-s-Yes-No-rows-in-the-original-s.patch` | 0102 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
 | `Font-b-kerning-the-pairs-of-the-approved-mockup.patch` | 0103 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
 | `Font-the-map-caption-centred-by-its-measured-width.patch` | 0104 | the font: extra glyphs, glyphs placed to the pixel, font b, kerning, long names, packed rows (`docs/mods/font.md`) |  |
