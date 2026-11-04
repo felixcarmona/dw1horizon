@@ -7,11 +7,11 @@ from dw import *
 from dw.names import *
 
 descent6 = new_screen(335, map="build/what-the-island-forgot-maps/screens/OVPS06.MAP")
-descent6_gururumon = descent6.npc(Species.Gururumon, at=(450, 1250), hp=1200, mp=2700, offense=400, defense=190, speed=240, brain=200, bits=400)
-descent6_psychemon = descent6.npc(Species.Psychemon, at=(450, 1900), hp=900, mp=2300, offense=340, defense=200, speed=240, brain=200, bits=300,
-                     autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
-descent6_shamamon = descent6.npc(Species.Shamamon, at=(-1150, -950), hp=1000, mp=2100, offense=360, defense=180, speed=100, brain=50, bits=300,
-                    autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
+descent6_skullsatamon = descent6.npc(Species.SkullSatamon, at=(450, 1250), hp=4500, mp=4200, offense=640, defense=360, speed=320, brain=300, bits=2200)
+descent6_gargoylemon = descent6.npc(Species.Gargoylemon, at=(450, 1900), hp=3600, mp=3600, offense=580, defense=320, speed=300, brain=200, bits=1600,
+                                    autotalk=True, when=clock.hour >= 5 and clock.hour < 20)
+descent6_weregarurumon = descent6.npc(Species.WereGarurumon, at=(-1150, -950), hp=4400, mp=4000, offense=660, defense=350, speed=340, brain=300, bits=2200,
+                                      autotalk=True, when=clock.hour >= 20 or clock.hour < 5)
 
 @descent6.on_step(0, when=not native_forest_rockslide_cleared or invisible_bridge_crossed or eastern_bridge_seen or coela_point_crossing_done or (engine.game_beaten and back_dimension_portal == 2))
 def down_to_overdell():
