@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Authored shop DWS and Python views must implement the same behavior."""
 import os
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -17,6 +18,22 @@ class AuthoredShops(unittest.TestCase):
 
     def test_monochromon_views_have_the_same_reward_and_halfway_branches(self):
         self.check_views(49)
+
+    def test_vending_views_have_the_same_transactions(self):
+        for script in (9, 12, 71, 78):
+            with self.subTest(script=script):
+                self.check_views(script)
+
+    def test_us_text_keeps_disc_values_and_loads_new_vending_keys(self):
+        from dws.textbank import TextBank
+        from dws.textx import BANK
+        bank = TextBank(source='us')
+        bank.load_defaults()
+        with open(BANK) as f:
+            for key, value in json.load(f).items():
+                if not key.startswith('_'):
+                    self.assertEqual(value, bank.data[key], key)
+        self.assertEqual('Choose an item.', bank.data['s009.sec81.vend_prompt'])
 
     def check_views(self, script):
         with tempfile.TemporaryDirectory(prefix='authored-shop-') as folder:

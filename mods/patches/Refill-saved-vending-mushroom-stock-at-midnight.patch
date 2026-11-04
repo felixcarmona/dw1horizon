@@ -1,0 +1,26 @@
+From c7436e23a1893ad3b6fa413dc4458f5f4e100b46 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 19:07:36 +0000
+Subject: [PATCH] Refill saved vending mushroom stock at midnight
+
+---
+ src/main/script_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index b26db56..c3179ec 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -1411,6 +1411,9 @@ void dailyPStatTrigger(void)
+ 	 * (The original compared the new card with the slot it was filling, so a card could repeat; it is compared with the earlier ones now.) */
+ 	st = SCRIPT_STATE_PTR;
+ 	modForgetGroundPicked(); /* MOD (ground items a day) */
++	/* Vending stock shares the original saved trigger array, with no new resident state. */
++	unsetTrigger(798); /* Happy mushroom */
++	unsetTrigger(799); /* Ice mushroom */
+ 	for (i = 0; i < 6; i++) {
+ 		st->smth[i] = 0xff;
+ 	}
+-- 
+2.55.0
+

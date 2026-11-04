@@ -1,0 +1,65 @@
+From a78dfe1b60526c9db9da1d2f7800d2b67a7ebc07 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 19:27:06 +0000
+Subject: [PATCH] Select a flat palette for each animation frame
+
+---
+ src/main/mod_species.c | 8 ++++----
+ src/main/model.c       | 5 +++--
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/mod_species.c b/src/main/mod_species.c
+index 542a067..dc479df 100644
+--- a/src/main/mod_species.c
++++ b/src/main/mod_species.c
+@@ -946,12 +946,12 @@ int32_t npcSpeciesType(int32_t type, int32_t reverse)
+ /*
+  * MOD (flat sprites): a flattened Digimon is drawn as one of four 16x16 frames of its own texture
+  * (renderFlatDigimon: idle, idle 2, attack, hurt). The originals keep them at u 0xE0/0xF0, v 0x60/0x70 with CLUT
+- * row 15; a texture the build made (tools/flatsprite.py) ends, after the TIM, with "FLT1", the (u, v) of each frame
+- * and their CLUT row. Kept per texture slot (its CLUT column: 0 the tamer, 1 the partner, 2..6 the NPC slots) when
++ * row 15; a texture the build made (tools/flatsprite.py) ends, after the TIM, with "FLT2", the (u, v) of each frame
++ * and their four CLUT rows. Kept per texture slot (its CLUT column: 0 the tamer, 1 the partner, 2..6 the NPC slots) when
+  * the texture is uploaded.
+  */
+ static uint32_t FLAT_SPRITES[7][3];
+-static const uint32_t FLAT_SPRITE_NATIVE[3] = { 0x60F060E0, 0x70F070E0, 15 };
++static const uint32_t FLAT_SPRITE_NATIVE[3] = { 0x60F060E0, 0x70F070E0, 0x0F0F0F0F };
+ 
+ uint8_t *getFlatSprite(ModelComponent *model)
+ {
+@@ -976,7 +976,7 @@ void loadFlatSprite(void *textureData, ModelComponent *model)
+ 	p = (uint8_t *)tim + 8 + tim[2]; /* past the CLUT block (a model texture has one), then the pixel block */
+ 	p += *(uint32_t *)p;
+ 	src = FLAT_SPRITE_NATIVE;
+-	if (p + 16 <= (uint8_t *)tim + 0x4800 && *(uint32_t *)p == 0x31544C46) { /* "FLT1" */
++	if (p + 16 <= (uint8_t *)tim + 0x4800 && *(uint32_t *)p == 0x32544C46) { /* "FLT2" */
+ 		src = (uint32_t *)p + 1;
+ 	}
+ 	dst[0] = src[0];
+diff --git a/src/main/model.c b/src/main/model.c
+index ec967eb..000e2bf 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -2754,7 +2754,6 @@ void renderFlatDigimon(Entity *entity)
+ 	prim = (POLY_FT4 *)GsGetWorkBase();
+ 	SetPolyFT4(prim);
+ 	setRGB0(prim, 0x80, 0x80, 0x80);
+-	prim->clut = model->clutPage + (sprite[8] << 6);
+ 	prim->tpage = model->pixelPage;
+ 	/* MOD (fps): the blink advances on the first render pass of a tick only;
+ 	 * it happens before drawing, so the other passes draw the same frame */
+@@ -2764,7 +2763,9 @@ void renderFlatDigimon(Entity *entity)
+ 		}
+ 		++entity->flatTimer;
+ 	}
+-	sprite += (entity->flatSprite & 3) * 2; /* idle, idle 2, attack, hurt */
++	i = entity->flatSprite & 3; /* idle, idle 2, attack, hurt */
++	prim->clut = model->clutPage + (sprite[8 + i] << 6);
++	sprite += i * 2;
+ 	setUVWH(prim, sprite[0], model->pixelOffsetY + sprite[1], 0xF, 0xF);
+ 	height = DIGI_PARA(entity->type).height;
+ 	half = height / 2;
+-- 
+2.55.0
+

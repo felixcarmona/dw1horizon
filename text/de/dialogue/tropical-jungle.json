@@ -320,5 +320,29 @@
    "herumzuhängen. Kehe!"
   ]
  ],
- "s015.sec51.u23": "Vegiemon ist in die Stadt gezogen!"
+ "s015.sec51.u23": "Vegiemon ist in die Stadt gezogen!",
+ "s012.sec81.vend_prompt": "Wähle einen Gegenstand.",
+ "s012.sec81.vend_more": "Mehr",
+ "s012.sec81.vend_back": "Zurück",
+ "s012.sec81.vend_leave": "Gehen",
+ "s012.sec81.vend_poor": "Nicht genug Bits.",
+ "s012.sec81.vend_full": "Deine Tasche ist voll.",
+ "s012.sec81.vend_daily": "Jeden seltenen Pilz einmal pro Tag.",
+ "s012.sec81.vend_sold": "Heute ausverkauft. Komm nach Mitternacht.",
+ "s012.sec81.vend_bonus": "Bonus! Doppelheilung!",
+ "s012.sec81.vend_play_prompt": "Für 1000 Bits spielen? Keine Erstattung. Mach zuerst Platz in der Tasche.",
+ "s012.sec81.vend_play": "Spielen",
+ "s012.sec81.vend_quit": "Gehen",
+ "s012.sec81.vend_getSmRecovery": "Kleine Heilung erhalten!",
+ "s012.sec81.vend_getMedRecovery": "Mittlere Heilung erhalten!",
+ "s012.sec81.vend_getLrgRecovery": "Große Heilung erhalten!",
+ "s012.sec81.vend_getMPFloppy": "MP-Heilung erhalten!",
+ "s012.sec81.vend_getMediumMP": "MP-Heilung M erhalten!",
+ "s012.sec81.vend_getLargeMP": "MP-Heilung L erhalten!",
+ "s012.sec81.vend_getVarious": "Mehrfachheilung erhalten!",
+ "s012.sec81.vend_getOmnipotent": "Allheilung erhalten!",
+ "s012.sec81.vend_getRestore": "Regenerator erhalten!",
+ "s012.sec81.vend_getOffDisk": "Angriffsdisk erhalten!",
+ "s012.sec81.vend_getDefDisk": "Abwehrdisk erhalten!",
+ "s012.sec81.vend_getHispeedDsk": "Tempodisk erhalten!"
 }

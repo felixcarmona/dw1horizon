@@ -7,12 +7,14 @@ way out (a shop's sell price, merit at the merit shop's best rate, Mojyamon, the
 
   - every Mojyamon trade: what it gives is worth no more than what it takes (so neither a chain of trades nor a trade fed
     by bought, fished or picked-up items is worth more than selling the input);
+  - vending prices, bonus payouts and slot odds, taken from the actual story handlers, including chained trades;
   - a card pack, the item shop's card machine and each card of the daily card shop cost more than what they give back.
 
 Daily-limited gains (the daily card shop: 6 cards a day, one copy each) are reported, not failed.
     tools/economy_audit.py            the report; exit 1 when an unlimited loop gains
 """
 import json, sys
+from vending_audit import check_vending, conversion_changes
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -64,6 +66,10 @@ def main():
         if not ok:
             fails.append(f'Mojyamon {name(g)} -> {name(t)} (+{worth[t] - sell(g)} a unit, 99 a talk)')
 
+    vending_fails, sold = check_vending(worth, {i: name(i) for i in items})
+    fails.extend(vending_fails)
+    fails.extend(conversion_changes(sold))
+
     # cards: the best way out of each, then what a draw of a rarity is worth on average
     cards = cards_t['cards']
     prices = cards_t['cardPrices']
@@ -82,7 +88,7 @@ def main():
         v = sum(copies[c] * cworth[c] for c in cworth)
         set_cards, item = CLEARAGUMON            # the sets the draws make, each worth the item over its three cards
         sets = min(copies[c] for c in set_cards)
-        v += sets * max(0, sell(item) - sum(cworth[c] for c in set_cards))
+        v += sets * max(0, worth[item] - sum(cworth[c] for c in set_cards))
         return v
     cuts = econ['cardPack']['rarityBelow']
     pack_odds = [cuts[0]] + [cuts[k] - cuts[k - 1] for k in range(1, 4)] + [100 - cuts[3]]

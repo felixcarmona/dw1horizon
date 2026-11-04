@@ -208,8 +208,7 @@ def import_records():
 
 
 def provider_pin(species, model, tim):
-    """[SHA-1 of the model the species file names, SHA-1 of its texture], as derive's species step pins them: the base
-    model after field overlays and final technique repairs, in a temporary folder."""
+    """Hash the final provider files, including native builders, field overlays and battle repairs."""
     sha1 = lambda b: hashlib.sha1(b).hexdigest()  # noqa: E731
     builder = import_records()[str(species)].get('builder')
     if builder:

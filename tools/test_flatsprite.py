@@ -3,7 +3,7 @@
 
   tools/test_flatsprite.py
 
-Asset-free: the span rasteriser against tools/models/audit_textures.py's, the two-colour recolouring, the placement
+Asset-free: the span rasteriser against tools/models/audit_textures.py's, the silhouette conversion, the placement
 on synthetic texel maps. With extracted/: Agumon's model and texture (its own frames are kept), the same texture
 without them, with a face over the originals' corner, with a face in row 15, with islands over the whole page (moved,
 every face reading what it read); Cherrymon's small texture completed; the disc's own species.
@@ -43,11 +43,98 @@ class Pure(unittest.TestCase):
             uv = [(rnd.randint(0, k), rnd.randint(0, min(k, 127))) for _ in range(n)]
             self.assertEqual(F.texels(uv), A.texels(uv, 256, 256), uv)
 
-    def test_mono_keeps_two_colours(self):
-        out = F.mono(icon((0x0421, 0x7FFF, 0x2108, 0x6318)))
-        pal = struct.unpack_from('<16H', out, 0)
-        self.assertEqual(pal[:5], (0, F.OUTLINE, F.FILL, F.OUTLINE, F.FILL))
-        self.assertEqual(out[32:], icon((0x0421, 0x7FFF, 0x2108, 0x6318))[32:])
+    def test_mono_silhouette_ignores_body_shading(self):
+        # All-dark and all-light bodies have the same white interior and outline.
+        dark = F.mono(icon((0x0421, 0x2108, 0x2108)))
+        light = F.mono(icon((0x0421, 0x7FFF, 0x7FFF)))
+        self.assertEqual(dark, light)
+        self.assertEqual(struct.unpack_from('<16H', dark), (0, F.OUTLINE, F.FILL) + (0,) * 13)
+        frames = self.unpack_icon(dark)
+        self.assertEqual(frames[0][1][1], 1)
+        self.assertEqual(frames[0][7][7], 2)
+        self.assertEqual(frames[0][0][0], 0)
+
+    @staticmethod
+    def unpack_icon(blob):
+        return [[[(blob[32 + ((f >> 1) * 16 + y) * 16 + ((f & 1) * 16 + x) // 2] >> (4 * (x & 1))) & 15
+                   for x in range(16)] for y in range(16)] for f in range(4)]
+
+    def test_mono_fits_visible_area_and_animates_static_art(self):
+        import portraits
+        still = [[2] * 16 for _ in range(16)]
+        blob = portraits._pack([0, F.OUTLINE, F.FILL] + [0] * 13, [still] * 4)
+        frames = self.unpack_icon(F.mono(blob))
+        self.assertEqual(len({tuple(map(tuple, fr)) for fr in frames}), 4)
+        for fr in frames:
+            self.assertFalse(any(fr[15]))
+            self.assertFalse(any(row[15] for row in fr))
+            for y in range(15):
+                for x in range(15):
+                    if fr[y][x] and any(not (0 <= x + dx < 15 and 0 <= y + dy < 15) or not fr[y + dy][x + dx]
+                                        for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))):
+                        self.assertEqual(fr[y][x], 1)
+
+    def test_mono_retains_a_strong_eye_without_shading(self):
+        import portraits
+        fr = [[0] * 16 for _ in range(16)]
+        for y in range(2, 14):
+            for x in range(2, 14):
+                fr[y][x] = 2
+        fr[5][6] = 1
+        blob = portraits._pack([0, F.OUTLINE, F.FILL] + [0] * 13, [fr] * 4)
+        out = self.unpack_icon(F.mono(blob))[0]
+        self.assertEqual(out[6][5], 1)  # common bounds centred and bottom-aligned
+        self.assertEqual(out[7][5], 2)
+
+    def test_colour_frames_are_not_preserved_as_native(self):
+        rows = [[0] * 16 for _ in range(16)]
+        rows[F.ROW][:3] = [0, F.OUTLINE, 0x03E0]
+        idx = bytearray(F.W * F.H)
+        for u, v in F.NATIVE:
+            idx[(v + 1) * F.W + u + 1] = 2
+        idx[(F.NATIVE[0][1] + 2) * F.W + F.NATIVE[0][0] + 2] = 1
+        rows[F.ROW][3] = 0x001F
+        idx[(F.NATIVE[0][1] + 3) * F.W + F.NATIVE[0][0] + 3] = 3
+        tex = F.build_tim(rows, 0, 0, idx, 0, 0)
+        self.assertTrue(any('3 opaque colours' in p for p in F.check(tex)))
+        idx[(F.NATIVE[0][1] + 3) * F.W + F.NATIVE[0][0] + 3] = 0
+        use = F.Use([])
+        self.assertFalse(F.native_sprite_ok(rows, idx, (use, use), set()))
+        rows[F.ROW][2] = F.FILL
+        self.assertTrue(F.native_sprite_ok(rows, idx, (use, use), set()))
+        rows[F.ROW][1:3] = [0x8000, 0xFFFF]
+        self.assertTrue(F.native_sprite_ok(rows, idx, (use, use), set()))
+
+    def test_drawn_animations_have_four_visible_two_colour_poses(self):
+        import portraits
+        for path in sorted((ROOT / 'content/icons').glob('*.txt')):
+            with self.subTest(icon=path.stem):
+                blob = F.mono(portraits.drawn_icon(path.read_text()))
+                frames = self.unpack_icon(blob)
+                self.assertEqual(len({tuple(map(tuple, fr)) for fr in frames}), 4)
+                for fr in frames:
+                    self.assertTrue(any(c for row in fr for c in row))
+                    self.assertFalse(any(fr[15]))
+                    self.assertFalse(any(row[15] for row in fr))
+                    self.assertLessEqual({c for row in fr for c in row}, {0, 1, 2})
+
+    def test_shared_cells_decode_every_pose_without_extra_texels(self):
+        for cells in (((10, 10), (40, 10), (10, 10), (40, 10)), ((10, 10),) * 4):
+            with self.subTest(cells=cells):
+                blob = F.mono(icon())
+                rows = [[0] * 16 for _ in range(16)]
+                idx = bytearray(F.W * F.H)
+                pose_rows = F.palette_frames(blob, cells, rows, idx, {0, 1})
+                tex = F.build_tim(rows, 0, 0, idx, 0, 0) + F.MAGIC + bytes(c for uv in cells for c in uv) + bytes(pose_rows)
+                frames = F.frames_of(tex)
+                self.assertEqual(len({tuple(tuple(r[:15]) for r in fr[:15]) for fr in frames}), 4)
+                self.assertEqual(F.check(tex), [])
+                self.assertFalse(set(pose_rows) & {0, 1})
+                if len(set(cells)) == 2:
+                    source = self.unpack_icon(blob)
+                    self.assertEqual([[[0 if c == 0 else F.OUTLINE if c == 1 else F.FILL for c in r[:15]]
+                                       for r in fr[:15]] for fr in source],
+                                     [[r[:15] for r in fr[:15]] for fr in frames])
 
     def test_place_prefers_the_originals_corner(self):
         free = F.Use([])
@@ -60,12 +147,27 @@ class Pure(unittest.TestCase):
         for u, v in cells:
             self.assertTrue(11 <= u and u + F.CELL <= 49 and 21 <= v and v + F.CELL <= 59, cells)
 
+    def test_placement_does_not_wrap_the_gpu_uv_endpoint(self):
+        for x0, y0, fits in ((240, 112, True), (241, 113, False)):
+            marks = [(x, y) for y in range(F.H) for x in range(F.W)
+                     if not (x0 <= x < x0 + F.CELL and y0 <= y < y0 + F.CELL)]
+            use = F.Use(marks, 0)
+            if fits:
+                for u, v in F.place((use, use)):
+                    self.assertLess(u + F.CELL, F.W)
+                    self.assertLess(v + F.CELL, F.H)
+            else:
+                with self.assertRaises(F.NoRoom):
+                    F.place((use, use))
+
     def test_place_shares_cells_when_short(self):
         holes = [(5, 5), (100, 70)]       # two 17x17 holes only: a 15x15 cell and its margin each
         marks = [(x, y) for x in range(256) for y in range(128)
                  if not any(hx <= x < hx + 17 and hy <= y < hy + 17 for hx, hy in holes)]
         cells = F.place((F.Use(marks), F.Use(marks, 0)))
         self.assertEqual(sorted(set(cells)), sorted((x + 1, y + 1) for x, y in holes))
+        reserved = F.place((F.Use(marks), F.Use(marks, 0)), keep=((101, 71),))
+        self.assertEqual(reserved[0], (101, 71))
         self.assertEqual(cells[0], cells[2])                    # attack shares idle's cell
         with self.assertRaises(F.NoRoom):
             full = [(x, y) for x in range(256) for y in range(128)]
@@ -118,11 +220,11 @@ class Agumon(unittest.TestCase):
             d1, d2 = p1.decode(), p2.decode()
             dx, dy = d2['uv'][0][0] - d1['uv'][0][0], d2['uv'][0][1] - d1['uv'][0][1]
             self.assertEqual([(u + dx, v + dy) for u, v in d1['uv']], d2['uv'])
-            r = A.row_of(d1['cba'])
+            r, r2 = A.row_of(d1['cba']), A.row_of(d2['cba'])
             for x, y in F.texels(d1['uv']):
                 for X, Y in ((x + ex, y + ey) for ex in (-1, 0, 1) for ey in (-1, 0, 1)):
                     if 0 <= X < 256 and 0 <= Y < 128 and 0 <= X + dx < 256 and 0 <= Y + dy < 128:
-                        self.assertEqual(ro[r][io[Y * 256 + X]], rn[r][inn[(Y + dy) * 256 + X + dx]])
+                        self.assertEqual(ro[r][io[Y * 256 + X]], rn[r2][inn[(Y + dy) * 256 + X + dx]])
 
     def test_own_frames_kept(self):
         out, model, cells, row, how = F.stamp(self.tex, self.model, self.nb, F.mono(icon()))
@@ -178,6 +280,35 @@ class Agumon(unittest.TestCase):
         self.assertEqual(F.check(out, moved, self.nb), [])
         self.same_texels(model, tex, moved, out)
         self.assertEqual(self.mmd.MMD.parse(moved, self.nb).build(), moved)
+        # Reserve every existing frame while making another window. Relocation
+        # must not trade one free frame for another, including overlapping sources.
+        kept_model, kept_idx = F.make_room(moved, self.nb, F.parse_tim(out)[3], keep=cells)
+        uses = F.model_use(kept_model, self.nb)[0]
+        for u, v in cells:
+            self.assertTrue(uses[0].free(u, v, F.CELL, F.CELL))
+        rows, cx, cy, _, px, py, _ = F.parse_tim(out)
+        kept_tex = F.build_tim(rows, cx, cy, kept_idx, px, py)
+        self.same_texels(moved, out, kept_model, kept_tex)
+
+    def test_palette_compaction_preserves_every_sampled_colour(self):
+        model = self.with_faces([([(2, 2), (8, 2), (2, 8)], 0),
+                                 ([(22, 2), (28, 2), (22, 8)], 1)], keep=False)
+        parsed = self.mmd.MMD.parse(model, self.nb)
+        for animation in parsed.anims.anims:
+            if animation:
+                animation.instrs = [ins for ins in animation.instrs if ins['op'] != 'tex']
+        model = parsed.build()
+        rows, cx, cy, idx, px, py, _ = F.parse_tim(self.tex)
+        rows[0] = [F.OUTLINE, F.FILL] + [0] * 14
+        rows[1] = [F.FILL, F.OUTLINE] + [0] * 14
+        for y in range(10):
+            for x in range(30):
+                idx[y * F.W + x] = x & 1
+        tex = F.build_tim(rows, cx, cy, idx, px, py)
+        merged, pixels = F.merge_palette(model, self.nb, rows, idx)
+        self.assertEqual(len(F.model_use(merged, self.nb)[1]), 1)
+        self.same_texels(model, tex, merged, F.build_tim(rows, cx, cy, pixels, px, py))
+        self.assertEqual(len(model), len(merged))
 
     def test_small_texture_completed(self):
         import species
