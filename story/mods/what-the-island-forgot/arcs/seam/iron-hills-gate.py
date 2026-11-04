@@ -19,3 +19,20 @@ def down_to_the_savanna():
 def the_old_road_first():
     tamer.say("The trail's blocked. We should open the road to the savanna first.")
     tamer.walk(119, -1750, camera=True)
+
+
+# Screens with scene handlers have empty default talk sections; wild encounters need their own handlers.
+@hills1_assaultmon.on_talk
+def fight_assaultmon():
+    say("Grrr!")
+    fight()
+
+@hills1_tankmon.on_talk
+def fight_tankmon():
+    say("Grrr!")
+    fight()
+
+@hills1_guardromon.on_talk
+def fight_guardromon():
+    say("Grrr!")
+    fight()

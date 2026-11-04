@@ -21,3 +21,20 @@ def the_camp_notebook():
         tamer.say("\"Day 40. The ground changes here. It did not, last year.\"")
         tamer.say("\"Day 41. Half the crates gone. Nobody heard a thing.\"", "\"Day 43. We go on north. CAMP 3 is under the plateau.\"")
         camp_read.set()
+
+
+# Screens with scene handlers have empty default talk sections; wild encounters need their own handlers.
+@seam3_iceleomon.on_talk
+def fight_iceleomon():
+    say("Grrr!")
+    fight()
+
+@seam3_sorcermon.on_talk
+def fight_sorcermon():
+    say("Grrr!")
+    fight()
+
+@seam3_icedevimon.on_talk
+def fight_icedevimon():
+    say("Grrr!")
+    fight()

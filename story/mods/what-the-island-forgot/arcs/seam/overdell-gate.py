@@ -21,3 +21,20 @@ def down_to_overdell():
 def the_jungle_road_first():
     tamer.say("The lower trail is blocked. We need to open the way through the jungle first.")
     tamer.walk(112, -2150, camera=True)
+
+
+# Screens with scene handlers have empty default talk sections; wild encounters need their own handlers.
+@descent6_skullsatamon.on_talk
+def fight_skullsatamon():
+    say("Grrr!")
+    fight()
+
+@descent6_gargoylemon.on_talk
+def fight_gargoylemon():
+    say("Grrr!")
+    fight()
+
+@descent6_weregarurumon.on_talk
+def fight_weregarurumon():
+    say("Grrr!")
+    fight()
