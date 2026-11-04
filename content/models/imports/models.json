@@ -161,7 +161,7 @@
  "400": {"model": "400-Apocalymon.MMD", "aliases_applied": true},
  "401": {"model": "401-Pukumon.MMD", "aliases_applied": true},
  "402": {"model": "402-NeoCrimson.MMD", "aliases_applied": true},
- "403": {"model": "403-Beelzemon.MMD", "field_overlay": "beelzemon-field"},
+ "403": {"model": "403-Beelzemon.MMD", "aliases_applied": true},
  "404": {"model": "404-BlackWarGreymon.MMD", "aliases_applied": true, "field_overlay": "blackwargreymon-field"},
  "405": {"model": "405-Cannondramon.MMD", "aliases_applied": true},
  "406": {"model": "406-MaloMyotismon.MMD", "aliases_applied": true, "field_overlay": "malomyotismon-chibi"},
