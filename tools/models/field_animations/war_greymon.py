@@ -24,6 +24,12 @@ from motiondiscidentity import changed_programs
 
 SOURCE='67d6d20e00fb34a60e88dd28ad4c171de1e5d21d805603158c8ca7326ec4b51b'
 SLOTS=[0,2,3,4]
+# The care, condition and gesture clips come from Greymon's retargeting: his short arms fold against the chest and, on
+# WarGreymon's long arms, read as stiff, tucked ones. Their arms are rewritten to hang as in the field idle; the clip's
+# own arm movement is kept at a fraction. Slot 0x22 (tired battle idle) shares the clip of slot 1.
+CARE=[1,5,7,8,9,10,11,12,13,14,15,16,17,18,19,0x22]
+CHANGED=sorted(SLOTS+CARE)
+ARM_KEEP=.6;ARM_LIMIT=[30,18,18]
 
 
 def rotation(degrees):
@@ -50,6 +56,31 @@ def trajectory(u,stride,lift,duty):
     return z,lift*math.sin(math.pi*v)**2
 
 
+def natural_arms(model,nb,sk):
+    """Shoulders (6, 8) and elbows (7, 9) of the CARE clips: the field idle's hanging pose plus the clip's own movement
+    (its deviation from its mean, scaled and limited); everything else in each clip is kept as it was."""
+    import footfix,retarget
+    footfix.unroll_loops(model,CARE)
+    done=set()
+    for slot in CARE:
+        index=model.anims.table[slot]
+        if index is None or index in done:continue
+        done.add(index);anim=model.anims.anims[index]
+        player=mmd.AnimPlayer(anim,nb,slot);poses=[]
+        while player.tick(stop_at_infinite_loop=True):poses.append([list(v)for v in player.pose])
+        for shoulder,elbow,sign in [(6,7,1),(8,9,-1)]:
+            for bone,base in [(shoulder,[-8,0,sign*12]),(elbow,[-38,0,sign*10])]:
+                mean=[sum(p[bone][3+k]for p in poses)/len(poses)for k in range(3)]
+                def target(tick,pose,world,bone=bone,base=base,mean=mean):
+                    units=[]
+                    for k in range(3):
+                        limit=ARM_LIMIT[k]*4096/360
+                        deviation=max(-limit,min(limit,ARM_KEEP*(pose[bone][3+k]-mean[k])))
+                        units.append(base[k]*4096/360+deviation)
+                    return retarget.m3mul(world[sk[bone][1]],mmd.rot_matrix(*units))
+                footfix.rewrite_bone(anim,nb,sk,slot,bone,target,1)
+
+
 def build(data,sk):
     if hashlib.sha256(data).hexdigest()!=SOURCE:raise ValueError('WarGreymon field recipe requires the reviewed ImportedModels model, with aliases already applied')
     nb=len(sk);assert nb==21
@@ -62,12 +93,12 @@ def build(data,sk):
     for slot in SLOTS:
         fs,loop,events=animsheet.slot_frames(old,nb,slot);assert loop==0
         idle=slot==0;tired=slot==3;running=slot==4
-        period=(len(fs)-1) if idle else 10 if running else 20 if tired else 16
-        speed=0 if idle else 52 if running else 15 if tired else 22
-        lift=0 if idle else 60 if running else 18 if tired else 28
+        period=(len(fs)-1) if idle else 12 if running else 20 if tired else 22
+        speed=0 if idle else 45 if running else 15 if tired else 19
+        lift=0 if idle else 56 if running else 18 if tired else 30
         duty=.42 if running else .64 if tired else .56
         stride=speed*period*duty/2
-        height=220 if idle else 192 if running else 205 if tired else 212
+        height=220 if idle else 190 if running else 205 if tired else 196
         contact=0
         event_data=next((instruction for _,kind,instruction in events if kind=='sound'),None)
         gait_events=[] if idle or event_data is None else [(tick,'sound',dict(event_data,frame=tick+1))for tick in [0,period//2]]
@@ -79,17 +110,17 @@ def build(data,sk):
             bounce=2*math.cos(theta-.2) if idle else (9 if running else 5 if tired else 6)*math.cos(2*theta-(.9 if running else .25))+1.5*math.cos(4*theta-.5)
             p[1][6:9]=[round(-sway),round(-height+bounce),16]
             p[1][3:6]=[0,round((.5 if idle else -3 if tired else -4)*math.cos(theta)*4096/360),round((.5 if idle else 2.5)*wave*4096/360)]
-            lean=2 if idle else 10 if running else 9 if tired else 4
+            lean=2 if idle else 13 if running else 9 if tired else 6
             chest_pitch=lean+(1 if idle else 1.7)*math.sin(2*theta-.65)
-            chest_yaw=(1 if idle else 5 if tired else 7)*math.cos(theta-.12)
+            chest_yaw=(1 if idle else 5 if tired else 10)*math.cos(theta-.12)
             p[2][3:6]=[round(chest_pitch*4096/360),round(chest_yaw*4096/360),round(-(.25 if idle else 1.5)*math.sin(theta-.35)*4096/360)]
             p[3][3:6]=[round(-chest_pitch*.30*4096/360),0,0]
             p[4][3:6]=[round((-chest_pitch*.45+.6*math.sin(2*theta-1.1))*4096/360),round(-chest_yaw*.4*4096/360),0]
             for shoulder,elbow,sign in [(6,7,1),(8,9,-1)]:
                 armwave=math.cos(theta-.18)*sign;lag=math.cos(theta-.80)*sign
-                amp=1.5 if idle else 24 if running else 14 if tired else 22
+                amp=1.5 if idle else 56 if running else 18 if tired else 34
                 p[shoulder][3:6]=[round((-8+(1.2 if sign==1 else -1.2)+amp*armwave)*4096/360),0,round(sign*12*4096/360)]
-                p[elbow][3:6]=[round((-(65 if running else 38)+(2 if idle else 8)*lag)*4096/360),0,round(sign*(14 if running else 10)*4096/360)]
+                p[elbow][3:6]=[round((-(65 if running else 38)+(2 if idle else 18 if running else 8 if tired else 16)*lag)*4096/360),0,round(sign*(14 if running else 10)*4096/360)]
             # These are hinged back-armor plates, not flapping feathered wings.
             for b,sign in [(19,1),(20,-1)]:p[b][3:6]=[round((26+.6*math.sin(theta-.9))*4096/360),round(sign*22*4096/360),round(sign*20*4096/360)]
             for hip,knee,foot,sign,phase in [(10,11,12,-1,0),(13,14,15,1,.5)]:
@@ -131,13 +162,14 @@ def build(data,sk):
                 assert player.pose[b][:3]==bind[b][:3]
                 if b not in [1,16]:assert player.pose[b][6:9]==bind[b][6:9]
         report.append(dict(slot=slot,frames=period+1,loop=loop,stride=stride,lift=lift,duty=duty,hip_height=height,root_units_per_tick=speed,unreachable_targets=clamps,footfall_samples=[]if idle else[0,period//2],stance_foot_speed_matches_root=True))
+    natural_arms(new,nb,sk)
     import motioncyclelayer
     for anim in new.anims.anims:anim.tail=b''
     new.anims.anims,new.anims.table=motioncyclelayer.share_identical_streams(new.anims.anims,new.anims.table)
     result=new.build();parsed=mmd.MMD.parse(result,nb)
-    assert changed_programs(old,parsed)==SLOTS and old.tmd.build()==parsed.tmd.build()
+    assert changed_programs(old,parsed)==CHANGED and old.tmd.build()==parsed.tmd.build()
     storage=motionstorage.audit(result,nb);assert storage['fits'],storage
-    return result,dict(species=373,recipe='wargreymon-field',generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),source_sha256=SOURCE,output_sha256=hashlib.sha256(result).hexdigest(),changed_slots=SLOTS,mesh_exact=True,all_other_programs_exact=True,checks=report,storage=storage)
+    return result,dict(species=373,recipe='wargreymon-field',generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),source_sha256=SOURCE,output_sha256=hashlib.sha256(result).hexdigest(),changed_slots=CHANGED,arms_rewritten_in=CARE,mesh_exact=True,all_other_programs_exact=True,checks=report,storage=storage)
 
 
 def patch_archive(data,model,skel):
@@ -152,7 +184,7 @@ def patch_archive(data,model,skel):
     old_cold_len=max(((v&0xffff)*4+((v>>16)&0x7fff)*4 for v in coldsplit.entries(resident).values()),default=0)
     candidate=mmd.MMD.parse(model,nb)
     before=mmd.MMD.parse(coldsplit.join(resident,data[cold_start:cold_start+old_cold_len],nb,len(candidate.anims.table)),nb)
-    assert changed_programs(before,candidate)==SLOTS
+    assert changed_programs(before,candidate)==CHANGED
     assert before.tmd.build()==candidate.tmd.build()
     new_resident,new_cold=coldsplit.split(model,nb)
     assert len(new_resident)<=0x18800
