@@ -14,6 +14,8 @@ def clean_air():
 
 @numemon0.on_talk(when=root2)
 def feeling_fine():
+    # The original guard and Andromon inquiry still follows this conversation.
+    sewer_numemon_met.set()
     say("Bleh, bleh. Nice and quiet down here today.", "Somethin' was supposed to leak down here, but it never did.")
 
 @numemon1.on_talk(when=root2 and not recruited(Species.Numemon), scene=True)
