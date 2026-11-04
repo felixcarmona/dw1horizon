@@ -34,7 +34,14 @@ def names(root=ROOT):
 
 
 def paths(root=ROOT, core=False):
-    """The patch files of the series, in order; core: only those before the first merge patch."""
+    """The patch files of the series, in order; core: only those before the first merge patch. A patch file that the
+    series does not list stops it: the directory listing used to be the series, and a patch kept from that time (a
+    branch rebased over the rename) would otherwise be left out of the build without a word."""
+    listed = set(names(root))
+    stray = sorted(p.name for p in (Path(root) / DIR).glob('*.patch') if p.name not in listed)
+    if stray:
+        raise SystemExit('\n'.join(f'{DIR}/{n}: not in {SERIES} (append its name there, without a number: '
+                                    f'mods/patches/README.md "Adding a patch")' for n in stray))
     out = []
     for name in names(root):
         if core and 'Merge-branch' in name:

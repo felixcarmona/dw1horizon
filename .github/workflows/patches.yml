@@ -20,6 +20,7 @@ on:
       - 'mods/patches/**'
       - 'decomp'
       - '.gitmodules'
+      - '.gitattributes'
       - 'tools/patch_series.py'
       - 'tools/test_patch_series.py'
       - '.github/workflows/patches.yml'

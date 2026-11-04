@@ -41,6 +41,12 @@ class SeriesTest(unittest.TestCase):
                      '2 rows for b.patch', 'no row for c.patch'):
             self.assertIn(want, errs)
 
+    def test_an_unlisted_patch_stops_the_build(self):
+        root = self.tree('a.patch\n', ['a.patch', '0340-Old-numbered.patch'], ['a.patch'])
+        with self.assertRaises(SystemExit) as e:
+            S.paths(root)
+        self.assertIn('0340-Old-numbered.patch: not in', str(e.exception))
+
     def test_rows_out_of_order(self):
         root = self.tree('a.patch\nb.patch\n', ['a.patch', 'b.patch'], ['b.patch', 'a.patch'])
         self.assertEqual(len(S.problems(root)), 1)

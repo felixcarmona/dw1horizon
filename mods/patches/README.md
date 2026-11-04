@@ -43,6 +43,10 @@ as in the other patches, move it here without its number, and append its name to
 
 Refer to a patch by its name, not its position: positions move when the branches merge.
 
+A branch that still has a numbered patch from before the files lost their numbers (`NNNN-<name>.patch`): after
+rebasing it, `git mv` the file to `<name>.patch` and append it to `series` and `index.md`. The tools that apply the
+series stop at a patch file that `series` does not list.
+
 ## Merging branches
 
 `series` and `index.md` merge with git's `union` driver (`.gitattributes`): two branches that each append a patch keep
