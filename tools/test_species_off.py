@@ -16,6 +16,13 @@ class OffTests(unittest.TestCase):
         self.assertIn((59, 6, 5), swaps)
         self.assertEqual(len(swaps), sum('off' in s for s in self.sp.values()))
 
+    def test_stats_are_explicit_and_ordered(self):
+        with patch.object(S, 'originals', side_effect=AssertionError('disc read')):
+            rows = S.stats_swaps(self.sp)
+        self.assertEqual(len(rows), 6)
+        for row in rows:
+            self.assertEqual(row[1:7], row[7:13])
+
     def test_missing_override_is_rejected(self):
         s = copy.deepcopy(self.sp[59])
         del s['off']

@@ -3,6 +3,10 @@
   "name": "HerculesKabuterimon",
   "level": "mega",
   "vanilla": true,
+  "off": {
+    "level": "ultimate",
+    "stats": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500}
+  },
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],
   "techniques": ["Prominence Beam", "Red Inferno", "Megaton Punch", "Counter", "Buster Dive", "Muscle Charge",
@@ -50,6 +54,5 @@
     },
     "gains": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500}
   },
-  "_former_name": "H-Kabuterimon",
-  "off": {"level": "ultimate"}
+  "_former_name": "H-Kabuterimon"
 }

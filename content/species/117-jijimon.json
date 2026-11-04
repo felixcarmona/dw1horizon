@@ -3,6 +3,10 @@
   "name": "Jijimon",
   "level": "mega",
   "vanilla_as": 12,
+  "off": {
+    "level": "ultimate",
+    "stats": {"hp": 4000, "mp": 6000, "offense": 450, "defense": 500, "speed": 300, "brains": 800}
+  },
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
   "techniques": ["Tremar", "War Cry", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Buster Dive",
@@ -47,6 +51,5 @@
       "flags": 0
     },
     "gains": {"hp": 4000, "mp": 6000, "offense": 450, "defense": 500, "speed": 300, "brains": 800}
-  },
-  "off": {"level": "ultimate"}
+  }
 }

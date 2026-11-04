@@ -1171,6 +1171,7 @@ HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
 # the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per explicit JSON override (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
 HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
+HEADER_STATS_OFF, STATS_SWAP_MAX = 0x580, 19
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
 INDEX_SECTORS = 2                # the partner list and the evolution links (include/dw/species.h)
@@ -1469,6 +1470,9 @@ def build(out=OUT, content=None, quiet=False, select=None):
     swaps = level_swaps(allsp)                            # the original levels with NEW DIGIMON off
     hdr[HEADER_LEVEL_OFF] = len(swaps)
     for i, row in enumerate(swaps): hdr[HEADER_LEVEL_OFF + 1 + 3 * i:HEADER_LEVEL_OFF + 4 + 3 * i] = bytes(row)
+    stats = stats_swaps(allsp)
+    struct.pack_into('<H', hdr, HEADER_STATS_OFF, len(stats))
+    for i, row in enumerate(stats): struct.pack_into('<13H', hdr, HEADER_STATS_OFF + 2 + 26 * i, *row)
     plist = bytearray(SECTOR); struct.pack_into('<HH', plist, 0, len(partners), first_mega)
     for i, t in enumerate(partners): struct.pack_into('<H', plist, 4 + 2 * i, t)
     llist = bytearray(SECTOR); struct.pack_into('<HH', llist, 0, len(links), 0)
@@ -1491,6 +1495,14 @@ def level_swaps(allsp):
            for t, s in sorted(allsp.items()) if 'off' in s]
     if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} off overrides: room for {LEVEL_SWAP_MAX}')
     return out
+
+
+def stats_swaps(allsp):
+    """Header rows: id, six on targets, six explicit off targets. No inferred values."""
+    rows = [(t, *(s['evolution']['gains'][k] for k in STAT_KEYS), *(s['off']['stats'][k] for k in STAT_KEYS))
+            for t, s in sorted(allsp.items()) if 'stats' in s.get('off', {})]
+    if len(rows) > STATS_SWAP_MAX: raise SystemExit(f'{len(rows)} off stats overrides: room for {STATS_SWAP_MAX}')
+    return rows
 
 
 def max_partner_model(content=None, select=None):

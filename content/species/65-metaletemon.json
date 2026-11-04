@@ -3,6 +3,10 @@
   "name": "MetalEtemon",
   "level": "mega",
   "vanilla": true,
+  "off": {
+    "level": "ultimate",
+    "stats": {"hp": 6000, "mp": 7500, "offense": 900, "defense": 700, "speed": 900, "brains": 750}
+  },
   "attribute": "vaccine",
   "specialties": ["battle", "air", "filth"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
@@ -48,6 +52,5 @@
       "flags": 16
     },
     "gains": {"hp": 6000, "mp": 7500, "offense": 900, "defense": 700, "speed": 900, "brains": 750}
-  },
-  "off": {"level": "ultimate"}
+  }
 }
