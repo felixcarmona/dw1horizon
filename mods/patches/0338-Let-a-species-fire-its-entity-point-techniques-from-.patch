@@ -1,0 +1,54 @@
+From 37c3f9025c9ba199f0472c6206f037270b86ddcb Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Tue, 3 Nov 2026 22:06:57 +0000
+Subject: [PATCH] Let a species fire its entity-point techniques from its own
+ launch point
+
+SPECIES_FLAG_SHOTS_FROM_DEFAULT (record flag 0x10, tools/species.py
+"effect_origin_fallback_always"): a technique whose EFE table has no row for
+the species' effects type and whose rows are mostly entity points starts from
+the record's effectDefault too, instead of the entity point of the species
+closest in radius. Beelzemon fires Dark Shot, DG Dimension and Reverse Prog
+from its cannon.
+---
+ include/dw/species.h | 1 +
+ src/main/efe.c       | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/include/dw/species.h b/include/dw/species.h
+index 26a14ca..3d8e1d5 100644
+--- a/include/dw/species.h
++++ b/include/dw/species.h
+@@ -44,6 +44,7 @@
+ #define SPECIES_FLAG_PARTNER	0x02	/* the partner block is valid: it can be a partner */
+ #define SPECIES_FLAG_COND_FX	0x04	/* conditionFx replaces CONDITION_FX_OFFSETS[originalType] */
+ #define SPECIES_FLAG_EFFECT_DEFAULT 0x08 /* effectDefault: a technique without an origin row still has one (efe.c) */
++#define SPECIES_FLAG_SHOTS_FROM_DEFAULT 0x10 /* with EFFECT_DEFAULT: an entity-point technique starts there too (efe.c) */
+ 
+ #define SPECIES_EFFECT_ORIGINS	8
+ #define SPECIES_ANY_OFFSET	(-0x8000)	/* EffectOrigin.from[1]: any offset of that bone */
+diff --git a/src/main/efe.c b/src/main/efe.c
+index 13a17cd..017b212 100644
+--- a/src/main/efe.c
++++ b/src/main/efe.c
+@@ -1467,6 +1467,8 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 	 * breath from the mouth, a shot from a hand) it starts from the record's effectDefault, its own launch
+ 	 * point (tools/species.py "effect_origin_fallback"). A species without a record, which is every disc
+ 	 * species not carried by one, never gets here with an origin: its effects are exactly the original's.
++	 * SPECIES_FLAG_SHOTS_FROM_DEFAULT sends the entity-point case to effectDefault as well: a species that fires
++	 * everything from one weapon (Beelzemon's cannon) instead of from where the donor's body stood.
+ 	 */
+ 	rec = getSpeciesRecord(EFE_SCRIPT_CONTEXT->sourceEntity->type);
+ 	if (rec == NULL || !(rec->flags & SPECIES_FLAG_EFFECT_DEFAULT)) {
+@@ -1493,7 +1495,7 @@ EfeBoneOffset *getModDonorTechBoneOffset(int32_t type, EfeTechBoneOffset *table)
+ 	}
+ 	out = &ring[next];
+ 	next = (next + 1) & 7;
+-	if (row != NULL && onEntity >= onBone) {
++	if (row != NULL && onEntity >= onBone && !(rec->flags & SPECIES_FLAG_SHOTS_FROM_DEFAULT)) {
+ 		*out = *row;
+ 	} else {
+ 		out->boneId = rec->effectDefault[0];
+-- 
+2.55.0
+

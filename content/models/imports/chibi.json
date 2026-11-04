@@ -430,10 +430,10 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "thigh", "3": "shin", "4": "foot", "5": "thigh", "6": "shin", "7": "foot", "8": "other", "9": "tail", "10": "other", "11": "arm", "12": "hand", "13": "neck", "14": "head", "15": "arm", "16": "hand", "17": "arm", "18": "hand", "19": "arm", "20": "hand", "21": "arm", "22": "arm", "23": "hand", "24": "cloth", "25": "cloth", "26": "cloth", "27": "cloth", "28": "other", "29": "other", "30": "other", "31": "cloth", "32": "other", "33": "other"}
  },
  "403": {
-  "source_sha256": "d2de28df42d0b31422e04d03da0b1519114b404001f2085a48e35ff73488c980",
+  "source_sha256": "a1a77d1a90d3a93bb2847c5becbfd6bdf5fbbac77616adef76570e3b79955b3e",
   "skeleton_sha256": "0554ecd9119fc094b358c3246880c6ce6c7915ee4098d684f22bb6b89652432f",
-  "base_generator": "tools.models.field_animations.gaits",
-  "post_source_sha256": "d7d261bcb366f2438633c6e9c90698f82163ba69303f80650b2d3477b03bc26c",
+  "base_generator": "tools.models.field_animations.beelzemon",
+  "post_source_sha256": "d14b778d79aba7d4cf9d99fba42d62a6c7623640338948207730eb7d0dbf1f5e",
   "height": 500,
   "key_tolerance": 2.0,
   "fit": {"22": 0.82, "21": 0.672, "20": 0.672, "15": 0.82, "14": 0.82, "13": 0.82, "12": 0.82, "23": 0.82},
