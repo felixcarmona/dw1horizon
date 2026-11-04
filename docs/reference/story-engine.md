@@ -196,7 +196,9 @@ Trigger ranges as the scripts and the C code use them:
 
 Pstats with a role: 1 prosperity, 2-4 tournament registration, 16-19 area counters, 21 Dimensional Key Chains found,
 24-27 shop states, 28-31 daily counters, 32-36 per-NPC dialogue counters (all saved); unsaved: 100-113 random, loop and date
-scratch, 243-255 the command registers. The rumour hunter handlers use unsaved
+scratch, 124 `engine.death_map_entry` (1 while Jijimon's house, 218 or 205, was loaded by the partner's death or a lost
+life: `checkShopMap` writes it on every map load; the story compiler tests it before the enter handlers mods add to
+those two screens, so a homecoming line does not play over the death scene), 243-255 the command registers. The rumour hunter handlers use unsaved
 p120 as a loaded-night-model witness on screens 2 and 70 only, resetting it on every eligible
 arrival. Neither base script nor engine code uses p120. This prevents a first-sighting
 line after a day arrival that never loaded the night hunter. Before its first
@@ -206,7 +208,7 @@ Map exit unloads every `LOADED_DIGIMON_MODELS` entry even if its actor was
 removed, so an unseen staged hunter cannot leak its model across arrivals.
 
 The C code reads literal trigger and pstat numbers in many places: triggers 0-4, 15-36, 37-41, 44, 45-50, 200-312,
-364-382, 384-511, 512-574, 650-716 and pstats 0, 1, 2-4, 5, 6, 28-31, 121-122, 200, 243-255. These numbers are the contract
+364-382, 384-511, 512-574, 650-716 and pstats 0, 1, 2-4, 5, 6, 28-31, 121-122, 124, 200, 243-255. These numbers are the contract
 between the engine and the story; a story must not repurpose them.
 
 Gotchas of the original engine:
