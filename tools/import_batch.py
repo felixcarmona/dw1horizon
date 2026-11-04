@@ -7,7 +7,8 @@ Each entry of a list (JSON) names a source model; for every one this tool:
  1. loads it (tools/dcb2mmd.py: Digimon Digital Card Battle; tools/dw3mmd.py: DW2003) and
     takes its first idle frame as the rest pose (the card game's modelling pose is not
     always a standing pose);
- 2. fixes budgets by rule: palettes merged down to 15 (row 15 stays the flat sprite's), the
+ 2. fixes budgets by rule: palettes merged down to 15 (row 15 stays the flat sprite's; texels are re-indexed
+    so merges keep the colours, see merge_palettes), the
     model scaled when it is taller or wider than any DW1 partner of its level, animation
     tolerance raised until the MMD fits PARTNER_MODEL_BUFFER (0x18800), then layered idle
     motion dropped, then source-game technique clips dropped; or reported as hand work;
@@ -132,8 +133,9 @@ def load_source(entry, log=print, card_metadata=True):
         # angles (8, 15, 25, 40 degrees) until it fits; a spec records the angle it needed
         # Only the mesh angle varies between candidates. Decode the source,
         # texture and every animation once, then try each angle on fresh bones.
+        # rule: the palettes are merged later (merge_palettes, after the page is repacked), not in the loader
         raw = dw3mmd.load(entry['model'], scale=float(entry.get('scale', dw3mmd.UNIT_SCALE)),
-                          quad_angle=0, normal_angle=0, log=log)
+                          quad_angle=0, normal_angle=0, log=log, maxp=64)
         for qa in ([entry['quad_angle']] if entry.get('quad_angle') else (8.0, 15.0, 25.0, 40.0)):
             m = copy.copy(raw)
             m.bones = copy.deepcopy(raw.bones)
@@ -260,28 +262,46 @@ def dcb_mappings():
 
 
 # ------------------------------------------------------------------ model edits (rules)
+ROW_15_MERGE_ERROR = 10.0  # mean colour error per texel (0..255) above which the merge down to 15 is not made
+
+
 def merge_palettes(model, maxp=15, log=print):
-    """Merges the least used palettes into the closest ones (dw3mmd.merge_palettes) until
-    `maxp` remain. Returns the number merged."""
+    """Merges palettes until `maxp` remain (dw2mmd.merge_palettes): the cheapest pair first, and
+    a texel only the merged palette reads is re-indexed into the other palette (its free entries
+    take the missing colours), so a merge is exact while the colours fit. Returns the number merged.
+
+    rule: merging the least used palette into the closest one without re-indexing (the earlier
+    rule) repainted faces whose palette had no close match: the same indices read through another
+    palette (Raidenmon's gold medallions came out green and speckled). When even this merge costs
+    more than ROW_15_MERGE_ERROR to reach 15, the model keeps 16 rows (row 15 is also the
+    flattened sprite's)."""
     if len(model.pals) <= maxp:
         return 0
-    import dw3mmd
-    by_pal = {}
-    for b in model.bones:
-        for p in b['prims']:
-            if p['uvs']:
-                by_pal.setdefault(p['row'], []).append(p)
-    pals = {k: model.pals[k] for k in range(len(model.pals))}
-    idx = model.idx
-    remap = dw3mmd.merge_palettes(by_pal, pals, lambda pr: [idx[v * 256 + u] for u, v in dw3mmd._face_pixels(pr)
-                                                            if 0 <= u < 256 and 0 <= v < 128], maxp, log)
-    final = sorted(set(remap.values()))
-    for b in model.bones:
-        for p in b['prims']:
-            if p['uvs']:
-                p['row'] = final.index(remap[p['row']])
+    import dw2mmd
+    import numeric as np
+
+    def run(target):
+        idx = np.frombuffer(bytes(model.idx), dtype=np.uint8).reshape(128, 256)
+        pals = {k: list(model.pals[k]) for k in range(len(model.pals))}
+        prims = [p for b in model.bones for p in b['prims'] if p['uvs']]
+        rows = [p['row'] for p in prims]
+        lines = []
+        report = dw2mmd.merge_palettes(idx, [[(int(u), int(v)) for u, v in p['uvs']] for p in prims], rows, pals,
+                                       target, lines.append)
+        return idx, pals, prims, rows, lines, report
+    idx, pals, prims, rows, lines, report = run(maxp)
+    if maxp == 15 and report and report[-1][3] > ROW_15_MERGE_ERROR:
+        last = lines[-1]
+        idx, pals, prims, rows, lines, report = run(16)
+        lines.append(f'{last}: not made (over {ROW_15_MERGE_ERROR:g}), row 15 kept')
+    for line in lines:
+        log(line)
+    final = sorted(pals)
+    for p, r in zip(prims, rows):
+        p['row'] = final.index(r)
     n = len(model.pals) - len(final)
     model.pals = [pals[c] for c in final]
+    model.idx = bytearray(idx.tobytes())
     return n
 
 
