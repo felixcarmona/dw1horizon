@@ -18,6 +18,7 @@ import importlib.util, json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '../../..'))
 OVERLAYS = {   # field_overlay: (id, generator module, model name)
+    'imperialdramon-celebration': ('192', 'tools.models.field_animations.celebrations', '192-imperialdramon-celebration'),   # field_overlay: (id, generator module, model name)
     'ladydevimon-chibi': ('223', 'tools.models.field_animations.chibi', '223-ladydevimon-chibi'),
     'slashangemon-chibi': ('300', 'tools.models.field_animations.chibi', '300-slashangemon-chibi'),
     'gallantmon-chibi': ('318', 'tools.models.field_animations.celebrations', '318-gallantmon-chibi'),
