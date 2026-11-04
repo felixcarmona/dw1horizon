@@ -1250,6 +1250,29 @@ def chart_block(tabs, icon_of, fallback):
     return bytes(head) + bytes(icons)
 
 
+def chart_parents(block, tabs, paths, extra, recs, partners):
+    """The chart block with, after the tab ids, the parents of the chart's species that have no evolution path row (an
+    original 63..179 without a record: getEvolutionPath gives them none, so the chart has no "from" slots to read): a
+    count, then {child, parent} pairs (include/dw/species.h, the chart block; game_menu.c chartBuildLists). A parent is
+    a species whose "to" row (the originals' after the boot links, the records') or Baby II extra list holds the child."""
+    ids = [t for tab in tabs for t in tab]
+    rows = {o: p['to'] for o, p in paths.items()}
+    rows.update({t: recs[t]['evoPaths']['to'] for t in partners if t >= 63})
+    pairs = []
+    for c in ids:
+        if c < 63 or c in partners: continue
+        pairs += [(c, o) for o in sorted(rows) if c in rows[o]]
+        pairs += [(c, o) for o in sorted(extra) if c in extra[o] and (c, o) not in pairs]
+    at = 2 * (len(tabs) + len(ids))
+    if at + 2 + 4 * len(pairs) > SECTOR:
+        raise SystemExit(f'chart: {len(ids)} species and {len(pairs)} parents without a path row do not fit its first sector')
+    block = bytearray(block)
+    struct.pack_into('<H', block, at, len(pairs))
+    for k, pc in enumerate(pairs):
+        struct.pack_into('<HH', block, at + 2 + 4 * k, *pc)
+    return bytes(block)
+
+
 def build(out=OUT, content=None, quiet=False, select=None):
     O = originals()
     allsp = load_content(content)
@@ -1351,6 +1374,7 @@ def build(out=OUT, content=None, quiet=False, select=None):
     if any(chart):
         cb = chart_block(chart, icon_of, icons[0])
         chart_ref = sector
+        chart_blob = len(blobs)
         blobs.append(cb)
         sector += len(cb) // SECTOR
     # City uses the chart block layout with one tab. A cell packs the id, its level and the
@@ -1398,6 +1422,8 @@ def build(out=OUT, content=None, quiet=False, select=None):
                 lst[lst.index(-1)] = t
                 links.append((o, t | flag))
     partners = [t for t in range(count) if (t >= NUM_ORIGINAL or t in species) and recs[t] and recs[t]['flags'] & FLAG_PARTNER]
+    if chart_ref:
+        blobs[chart_blob] = chart_parents(blobs[chart_blob], chart, paths, extra, recs, partners)
     if len(partners) > MAX_PARTNERS: raise SystemExit(f'{len(partners)} partner species: at most {MAX_PARTNERS}')
     if len(links) > MAX_LINKS: raise SystemExit(f'{len(links)} evolution links with the original species: at most {MAX_LINKS}')
     first_mega = next((t for t in partners if recs[t]['para']['level'] == 6), 0)
