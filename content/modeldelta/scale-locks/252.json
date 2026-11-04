@@ -1,0 +1,175 @@
+{
+  "species": 252,
+  "name": "Thundermon",
+  "threshold": 0.02,
+  "source_sha256": "46c46a6af2b7b50729dde10827abbd6f334f2fb17cb28c20c886c2f0cad7b7f0",
+  "output_sha256": "ac3701cdf3096a1ab5374c34f8235093fd35024e8de5b962c373b9fa97bdef60",
+  "preceding_provider": {
+    "model": "252-Thundermon.MMD",
+    "aliases_applied": true,
+    "field_overlay": "thundermon-rolling-boots"
+  },
+  "effective_record_changes": {
+    "model.slot_aliases": [
+      [
+        50,
+        49
+      ],
+      [
+        51,
+        49
+      ],
+      [
+        52,
+        46
+      ],
+      [
+        53,
+        47
+      ],
+      [
+        54,
+        47
+      ],
+      [
+        47,
+        49
+      ],
+      [
+        55,
+        46
+      ],
+      [
+        56,
+        49
+      ],
+      [
+        57,
+        46
+      ],
+      [
+        46,
+        49
+      ],
+      [
+        58,
+        49
+      ],
+      [
+        49,
+        48
+      ],
+      [
+        48,
+        58
+      ]
+    ]
+  },
+  "reference_slot": 2,
+  "scales": [
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ]
+  ],
+  "feet": [
+    10,
+    12
+  ],
+  "affected_slots": [
+    40,
+    41,
+    43
+  ],
+  "original_animated_slots": [
+    40,
+    41,
+    43
+  ],
+  "original_scale_channels": [
+    [
+      2,
+      "sx",
+      2567,
+      4184
+    ],
+    [
+      2,
+      "sy",
+      2567,
+      4184
+    ],
+    [
+      2,
+      "sz",
+      2567,
+      4184
+    ]
+  ],
+  "grounding_max_under": 0.5,
+  "grounding_max_over": 0.5,
+  "resident_bytes": 63290,
+  "resident_limit": 100352,
+  "cold_buffer_bytes": 8192
+}
