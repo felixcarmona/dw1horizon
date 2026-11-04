@@ -87,8 +87,9 @@ the same bytes, because story passes that write shared maps preserve recorded or
 ## Executable and hardware
 
 `decomp/` references [jype0/dw_decomp](https://github.com/jype0/dw_decomp), pinned
-to commit 83f99c5. `tools/mods.sh prepare int` applies our patches in order with
-`git am`; assembly and game files are regenerated from your disc. The standard
+to commit 83f99c5. `tools/mods.sh prepare int` applies our patches with `git am`, in
+the order of `mods/patches/series` ([the patch series](../mods/patches/README.md));
+assembly and game files are regenerated from your disc. The standard
 build targets the original PlayStation's 2 MB of RAM.
 
 The executable is compiled for each language with a shared address layout.

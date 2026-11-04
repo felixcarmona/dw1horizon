@@ -161,4 +161,4 @@ stays under `build/`.
 | `tools/localize/executable/bank.py` | `text-bank.json` for the executable |
 | `tools/dws/text/review.py` | `text review` |
 | `tools/dws/textbank.py` | the story build's banks, source order and fitting |
-| `mods/patches/0090-*.patch` | `gen_text.py` with a bank and the `F0xx` glyphs; the mod's strings keyed |
+| `mods/patches/Text-sources-gen_text.py-takes-a-text-bank-by-key-an.patch` | `gen_text.py` with a bank and the `F0xx` glyphs; the mod's strings keyed |

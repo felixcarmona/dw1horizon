@@ -300,7 +300,7 @@ Prerequisites are the normal native developer setup ([building.md](building.md))
 `.tools/mkpsxiso`, the Python dependencies listed in the build guide, the `dw-build` Docker image, and a decomp repository with
 generated `asm/`, `build/us/psx/generated/` and `external/psyq_headers/`. `DECOMP_REPO` defaults to this checkout's
 `decomp/`; it is read as a seed. The command creates its **own detached decomp worktree**, at the parent repo's pinned
-gitlink commit, applies every `mods/patches/*.patch` in order, and copies the generated inputs. It never prepares,
+gitlink commit, applies every patch of `mods/patches/series` in that order, and copies the generated inputs. It never prepares,
 resets or builds the shared decomp checkout. Browser prerequisites are those of `web/test/suite.sh` (Chromium and
 puppeteer-core); deployment needs the existing nginx destination permissions. `web/build-engine.sh` continues to
 use its shared Pyodide download cache; the pipeline sets `ENGINE_WORK` to `OUT/engine-work` for private scratch

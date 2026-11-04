@@ -227,7 +227,7 @@ configurations for the JP, JP Rev 1 and EU versions. What is useful in it:
 A matching build needs the original CodeWarrior compiler, which is not distributed. Our build compiles the same
 sources with **GCC** instead: the result is a different binary (smaller code, other variable addresses) that boots
 and plays the same. A handful of patches fix what the original layout hid (buffer sizes, null checks, overruns;
-patches 0001–0004, 0022, 0094 in `mods/patches/`). Because addresses move, RAM addresses in these docs are those of
+patches 0001–0004, 0022, 0094 in [`mods/patches/index.md`](../../mods/patches/index.md)). Because addresses move, RAM addresses in these docs are those of
 the original USA executable; for a GCC build, look the symbol up in the build's map (`tools/dwsyms.py`,
 `tools/xref.py`). Every addition to the executable shrinks the heap above the bss: see [memory.md](memory.md).
 
