@@ -4,6 +4,7 @@
   "_source": "dw2 M123BRIK (tools/import_batch.py run content/imports/lists/fourteenth-12.json); was species 348 until 2026-10-13, merged into the disc's id 123 (a record original)",
   "level": "ultimate",
   "vanilla_as": 55,
+  "off": {"level": "ultimate"},
   "attribute": "vaccine",
   "specialties": ["ice", "nature", null],
   "techniques": ["Poison Claw", "Charm Perfume", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",

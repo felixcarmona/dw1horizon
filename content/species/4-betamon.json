@@ -3,6 +3,10 @@
   "name": "Betamon",
   "level": "rookie",
   "vanilla": true,
+  "off": {
+    "level": "rookie",
+    "evolution": {"from": [44, -1, -1, -1, -1], "to": [10, 24, 35, 49, 238, -1]}
+  },
   "attribute": "virus",
   "specialties": ["ice", null, "air"],
   "techniques": ["Static Elect", "Electric Cloud", "Giga Freeze", "Ice Needle", "Water Blit", "Winter Blast",
@@ -30,7 +34,7 @@
   },
   "evolution": {
     "from": [44, -1, -1, -1, -1],
-    "to": [10, 24, 35, 49, -1, -1],
+    "to": [10, 35, 49, -1, -1, -1],
     "requirements": {
       "digimon": 44,
       "hp": 1,

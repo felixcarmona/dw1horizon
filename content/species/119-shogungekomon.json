@@ -3,6 +3,7 @@
   "name": "ShogunGekomon",
   "level": "ultimate",
   "vanilla_as": 61,
+  "off": {"level": "ultimate"},
   "attribute": "data",
   "specialties": ["ice", null, null],
   "techniques": ["Tear Drop", "Giga Freeze", "Water Blit", "Winter Blast", "Ice Needle", "Ice Statue",

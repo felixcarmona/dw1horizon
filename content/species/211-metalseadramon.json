@@ -55,7 +55,7 @@
     "training": {"animation": 61, "hit_tick": 15}
   },
   "evolution": {
-    "from": [61],
+    "from": [61, 24],
     "to": [],
     "requirements": {
       "digimon": 61,

@@ -3,6 +3,10 @@
   "name": "Machinedramon",
   "level": "mega",
   "vanilla_as": 12,
+  "off": {
+    "level": "ultimate",
+    "stats": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 750, "speed": 600, "brains": 650}
+  },
   "attribute": "virus",
   "specialties": ["mech", "air", "battle"],
   "techniques": ["Megaton Punch", "Megalo Spark", "Thunder Justice", "Aurora Freeze", "All Range Beam",
