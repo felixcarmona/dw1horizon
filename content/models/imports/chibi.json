@@ -414,7 +414,7 @@
   "source_sha256": "67d6d20e00fb34a60e88dd28ad4c171de1e5d21d805603158c8ca7326ec4b51b",
   "skeleton_sha256": "b8d196eefa7f3b3eea4307ca03757b2637669353134361722fdbf6cb006bfa78",
   "base_generator": "tools.models.field_animations.war_greymon",
-  "post_source_sha256": "6b1147a3e315934e3592ac85c33680e819c3657c28d51406f6f6fc7bb205c4ca",
+  "post_source_sha256": "ae50cd1d71c8369419ca58b1ad3cb70587897278b4e6b9b1256366b51351007c",
   "height": 457,
   "factors": {"head": 1.491, "hand": 1.0, "foot": 1.0, "leg_axial": 0.812, "leg_radial": 1.0, "arm_radial": 1.0, "torso": 1.25},
   "groups": {"0": "carrier", "1": "carrier", "2": "chest", "3": "chest", "4": "head", "5": "headpart", "6": "arm", "7": "hand", "8": "arm", "9": "hand", "10": "thigh", "11": "shin", "12": "foot", "13": "thigh", "14": "shin", "15": "foot", "16": "cloth", "17": "wing", "18": "wing", "19": "wing", "20": "wing"}
