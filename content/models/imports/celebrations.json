@@ -854,5 +854,26 @@
     "body_gain": 1,
     "base_generator": "tools.models.field_animations.pace",
     "skeleton_sha256": "845ab605073256eb7342daef69c59554cb41ff12f50693d65bedb45fc5b991a3"
+  },
+  "251": {
+    "source_sha256": "c41ea9f94379effbe9f821a3ec2717d59724349ca2ffbabad81667a1d457c732",
+    "slots": [
+      42
+    ],
+    "pelvis": 1,
+    "chest": 1,
+    "head": null,
+    "legs": [],
+    "locked": [],
+    "lower": [],
+    "secondary": [],
+    "delays": {
+      "3": 1.0,
+      "4": 1.4
+    },
+    "shift": 0,
+    "body_gain": 1,
+    "base_generator": "tools.models.field_animations.locomotion",
+    "skeleton_sha256": "9a372d6cb1443e7530220bba1d71aba4e87e9d03ace4c353f08d676703c4eba4"
   }
 }

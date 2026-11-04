@@ -74,7 +74,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'taomon-equipment': ('315', 'tools.models.field_animations.chibi', '315-taomon-equipment'),
     'roachmon-equipment': ('332', 'tools.models.field_animations.chibi', '332-roachmon-equipment'),
     'megagargomon-equipment': ('335', 'tools.models.field_animations.chibi', '335-megagargomon-equipment'),
-    'solarmon-steady-hover': ('251', 'tools.models.field_animations.locomotion', '251-solarmon-steady-hover'),
+    'solarmon-steady-hover': ('251', 'tools.models.field_animations.celebrations', '251-solarmon-steady-hover'),
     'thundermon-rolling-boots': ('252', 'tools.models.field_animations.thundermon', '252-thundermon-rolling-boots'),
     'tuskmon-heavy-field': ('253', 'tools.models.field_animations.tuskmon', '253-tuskmon-heavy-field'),
     'shadramon-supported-field': ('250', 'tools.models.field_animations.celebrations', '250-shadramon-supported-field'),
