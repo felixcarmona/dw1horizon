@@ -15,7 +15,7 @@ import motionstorage
 from tools.models.field_animations.articulation import replace_channels
 from motiondiscidentity import changed_programs
 
-SOURCE = '1d1a0b35c46d2c264611331be412b3d881925bd32a99154bec3cba1c55565c05'
+SOURCE = 'db473f38e2e667564c00677b526725895aa13e528f2a72686bb06ea4cf5a3834'
 PARENTS = [-1, 9, 1, 1, 3, 4, 1, 6, 7, 10, 11, 0]
 CHANNELS = {(11, 3), (11, 7), (11, 8)}
 HOVER = {2: 26, 3: 18, 4: 34}      # clearance under the pedestal, by slot
