@@ -13,7 +13,7 @@ import motionstorage
 from tools.models.field_animations.gliding import _forward
 from motiondiscidentity import changed_programs
 
-SOURCE = '3905f16c9ccc1c08d373884671ea430e1191e0df6acb35093c9548b61d670396'
+SOURCE = '3b434ff7925e87bf112c4cc3fe8fea5b2d8ae9101d3a6f4cb19d7c9071db2372'
 PARENTS = [-1, 0, 1, 2, 1, 1, 1, 6, 7, 8, 9]
 LIFT = 36
 PERIOD = 72
