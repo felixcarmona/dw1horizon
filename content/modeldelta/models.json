@@ -829,9 +829,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/209-Lillymon.MMD.mdelta",
-        "delta_sha256": "da75c2ded37788703e7da858e46a3d0654bef8939a1e8bfc9d5d54e0383bd1fc",
-        "sha256": "80085c00c157740c0c03c3899fff4010fda7c41d7e69d202df4a2f0e5005e177",
-        "size": 97748
+        "delta_sha256": "a2453f23533db63b65baa9a61b5e3625ea3832816dd35af04e99e06f14015556",
+        "sha256": "1076d804c861f905f58a3d4ea9ca290ebe4e29725ec2dab10f962e9810c28c4a",
+        "size": 97084
       },
       "tim": {
         "sources": [

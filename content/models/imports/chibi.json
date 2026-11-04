@@ -39,10 +39,10 @@
   "groups": {"0": "carrier", "1": "carrier", "2": "head", "3": "shoulder", "4": "arm", "5": "arm", "6": "hand", "7": "shoulder", "8": "arm", "9": "arm", "10": "hand", "11": "wing", "12": "wing", "13": "wing", "14": "wing", "15": "wing", "16": "wing", "17": "wing", "18": "wing", "19": "wing", "20": "wing", "21": "cloth", "22": "cloth", "23": "cloth", "24": "cloth", "25": "thigh", "26": "shin", "27": "foot", "28": "thigh", "29": "shin", "30": "foot"}
  },
  "209": {
-  "source_sha256": "80085c00c157740c0c03c3899fff4010fda7c41d7e69d202df4a2f0e5005e177",
+  "source_sha256": "1076d804c861f905f58a3d4ea9ca290ebe4e29725ec2dab10f962e9810c28c4a",
   "skeleton_sha256": "42a8851b774a9b329b59556cabc9ea546f3e204eed3ca9d4235cc8ea289c0d37",
   "base_generator": "tools.models.field_animations.lillymon",
-  "post_source_sha256": "34f7b33daf4f22751c4a045dbfbc52c7fe6a58c3adc5912fe3fcdcfd0df4d5d3",
+  "post_source_sha256": "3009ae7e9ae7cf55c483672435b700c6ed5410df0ef1cfeee98c34d86d6441e1",
   "height": 552,
   "factors": {"head": 1.9, "hand": 1.35, "foot": 1.4, "leg_axial": 0.697, "leg_radial": 1.6, "arm_radial": 1.0, "torso": 1.25},
   "groups": {"0": "carrier", "1": "carrier", "2": "chest", "3": "chest", "4": "cloth", "5": "cloth", "6": "shoulder", "7": "arm", "8": "hand", "9": "shoulder", "10": "arm", "11": "hand", "12": "thigh", "13": "shin", "14": "foot", "15": "thigh", "16": "shin", "17": "foot", "18": "wing", "19": "wing", "20": "wing", "21": "wing", "22": "head"}
