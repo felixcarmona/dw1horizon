@@ -47,10 +47,10 @@
   },
   "400": {
     "name": "Apocalymon",
-    "source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "source_sha256": "a666c36b699b2ffa26a02e1b6135603ef46416695b5a16baa607c1de166ddfe8",
     "bones": 31,
     "base_generator": null,
-    "post_source_sha256": "2874d80f6291ab46a028663f289e5ac9f7cc2b0d6dae8b599b0691db7948f017",
+    "post_source_sha256": "a666c36b699b2ffa26a02e1b6135603ef46416695b5a16baa607c1de166ddfe8",
     "speeds": {
       "2": 15,
       "3": 13
