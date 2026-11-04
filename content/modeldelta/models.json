@@ -5134,9 +5134,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/430-Zanbamon.MMD.mdelta",
-        "delta_sha256": "c3c05121525ea3aee4302fcdabaa755761b6e28d5f99a7b547be6df1d940a422",
-        "sha256": "dd42db97357172815620dc90ea2bd13363a40194455582666d1bd2fff263ae03",
-        "size": 98970
+        "delta_sha256": "290195d332a7ada5e4a6d9abfa89e1bc26f9412f0ba01df846ddbd994c3d1a01",
+        "sha256": "80946dd007609eaebf48bf727a825927d53e8f4206f232d493a82dd0956a96bf",
+        "size": 97802
       },
       "tim": {
         "sources": [
