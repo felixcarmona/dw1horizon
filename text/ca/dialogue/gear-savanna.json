@@ -946,5 +946,25 @@
    "Això és una botiga d'«objectes",
    "recuperats», sí, sí."
   ]
- ]
+ ],
+ "s071.sec81.vend_prompt": "Tria un objecte.",
+ "s071.sec81.vend_more": "Més",
+ "s071.sec81.vend_back": "Enrere",
+ "s071.sec81.vend_leave": "Sortir",
+ "s071.sec81.vend_poor": "No tens prou bits.",
+ "s071.sec81.vend_full": "La bossa és plena.",
+ "s071.sec81.vend_daily": "Un de cada bolet rar al dia.",
+ "s071.sec81.vend_sold": "Esgotat avui. Torna després de mitjanit.",
+ "s071.sec81.vend_bonus": "Premi extra! Cura doble!",
+ "s071.sec81.vend_play_prompt": "Vols jugar per 1000 bits?",
+ "s071.sec81.vend_play": "Jugar",
+ "s071.sec81.vend_quit": "Sortir",
+ "s071.sec81.vend_buy0": "Cura petita 118",
+ "s071.sec81.vend_getSmRecovery": "Has rebut Cura petita!",
+ "s071.sec81.vend_buy1": "Cura mitjana 318",
+ "s071.sec81.vend_getMedRecovery": "Has rebut Cura mitjana!",
+ "s071.sec81.vend_buy2": "Cura MP 218",
+ "s071.sec81.vend_getMPFloppy": "Has rebut Cura MP!",
+ "s071.sec81.vend_buy3": "Cura MP mitjana 500",
+ "s071.sec81.vend_getMediumMP": "Has rebut Cura MP mitjana!"
 }

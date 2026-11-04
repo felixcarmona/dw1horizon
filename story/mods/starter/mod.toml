@@ -8,4 +8,4 @@ conflicts = []
 
 [save]
 namespace = "starter"
-flags = "790-799"                          # README.md, "Save numbers", says why this range
+flags = "790-797"                          # README.md, "Save numbers", says why this range

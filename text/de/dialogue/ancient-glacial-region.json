@@ -496,5 +496,25 @@
   [
    "Frag vielleicht woanders nach."
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "Wähle einen Gegenstand.",
+ "s078.sec81.vend_more": "Mehr",
+ "s078.sec81.vend_back": "Zurück",
+ "s078.sec81.vend_leave": "Gehen",
+ "s078.sec81.vend_poor": "Nicht genug Bits.",
+ "s078.sec81.vend_full": "Deine Tasche ist voll.",
+ "s078.sec81.vend_daily": "Jeden seltenen Pilz einmal pro Tag.",
+ "s078.sec81.vend_sold": "Heute ausverkauft. Komm nach Mitternacht.",
+ "s078.sec81.vend_bonus": "Bonus! Doppelheilung!",
+ "s078.sec81.vend_play_prompt": "Für 1000 Bits spielen?",
+ "s078.sec81.vend_play": "Spielen",
+ "s078.sec81.vend_quit": "Gehen",
+ "s078.sec81.vend_buy0": "Schimmelfleisch 26",
+ "s078.sec81.vend_getMoldyMeat": "Schimmelfleisch erhalten!",
+ "s078.sec81.vend_buy1": "Fleisch 20",
+ "s078.sec81.vend_getMeat": "Fleisch erhalten!",
+ "s078.sec81.vend_buy2": "Riesenfleisch 300",
+ "s078.sec81.vend_getGiantMeat": "Riesenfleisch erhalten!",
+ "s078.sec81.vend_buy3": "Filetstück 1000",
+ "s078.sec81.vend_getSirloin": "Filetstück erhalten!"
 }

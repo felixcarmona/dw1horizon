@@ -259,5 +259,23 @@
    "peix no picarà amb l'esquer que",
    "fas servir ara."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Tria un objecte.",
+ "s009.sec81.vend_more": "Més",
+ "s009.sec81.vend_back": "Enrere",
+ "s009.sec81.vend_leave": "Sortir",
+ "s009.sec81.vend_poor": "No tens prou bits.",
+ "s009.sec81.vend_full": "La bossa és plena.",
+ "s009.sec81.vend_daily": "Un de cada bolet rar al dia.",
+ "s009.sec81.vend_sold": "Esgotat avui. Torna després de mitjanit.",
+ "s009.sec81.vend_bonus": "Premi extra! Cura doble!",
+ "s009.sec81.vend_play_prompt": "Vols jugar per 1000 bits?",
+ "s009.sec81.vend_play": "Jugar",
+ "s009.sec81.vend_quit": "Sortir",
+ "s009.sec81.vend_buy0": "Digibolet 51",
+ "s009.sec81.vend_getDigimushrm": "Has rebut Digibolet!",
+ "s009.sec81.vend_buy1": "Bolet feliç 1500",
+ "s009.sec81.vend_getHappymushrm": "Has rebut Bolet feliç!",
+ "s009.sec81.vend_buy2": "Bolet de gel 1000",
+ "s009.sec81.vend_getIceMushrm": "Has rebut Bolet de gel!"
 }

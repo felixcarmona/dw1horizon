@@ -62,49 +62,83 @@ def talk():    # section 10
 
 @savanna.on_use(1)
 def use1():    # section 81
-    narrator.say(t81.u0)
     tamer.turn(1536)
-    tamer.say(t81.u1)
-    match choose(a=t81.m0.o0, b=t81.m0.o1, c=t81.m0.o2):
-        case "a":
-            if bits >= 200:
+    while True:
+        narrator.say(t81.vend_prompt)
+        match choose(a=t81.vend_buy0, b=t81.vend_buy1, more=t81.vend_more):
+            case "a":
+                if bits < 118:
+                    narrator.say(t81.vend_poor)
+                    return
                 give(Item.SmRecovery)
                 if engine.item_did_not_fit:
-                    tamer.say(t81.u4)
+                    narrator.say(t81.vend_full)
                     return
-                narrator.say(t81.u5)
-                take(bits=200)
-                raw.store_random(prize_roll, 99)
-                if prize_roll >= 9:
-                    return
-            else:
-                tamer.say(t81.u2)
+                take(bits=118)
+                narrator.say(t81.vend_getSmRecovery)
+                roll = random.roll(99)
+                if roll < 9:
+                    give(Item.DoubleFlop)
+                    if not engine.item_did_not_fit:
+                        narrator.say(t81.vend_bonus)
                 return
-        case "b":
-            if bits >= 500:
-                give(Item.PortPotty)
+            case "b":
+                if bits < 318:
+                    narrator.say(t81.vend_poor)
+                    return
+                give(Item.MedRecovery)
                 if engine.item_did_not_fit:
-                    tamer.say(t81.u6)
+                    narrator.say(t81.vend_full)
                     return
-                narrator.say(t81.u7)
-                take(bits=500)
-                raw.store_random(prize_roll, 99)
-                if prize_roll >= 9:
-                    return
-            else:
-                tamer.say(t81.u3)
+                take(bits=318)
+                narrator.say(t81.vend_getMedRecovery)
+                roll = random.roll(99)
+                if roll < 9:
+                    give(Item.DoubleFlop)
+                    if not engine.item_did_not_fit:
+                        narrator.say(t81.vend_bonus)
                 return
-        case "c" | _:
-            return
-    tamer.say(t81.u8)
-    narrator.say(t81.u9)
-    give(Item.DoubleFlop)
-    if engine.item_did_not_fit:
-        engine.picker_mode.set()
-        tamer.say(t81.u10)
-        call(Routine.choose_item)
-        take_picked(all=True)
-        give(Item.SSpeedDisk)
+            case "more":
+                narrator.say(t81.vend_prompt)
+                match choose(a=t81.vend_buy2, b=t81.vend_buy3, back=t81.vend_back):
+                    case "a":
+                        if bits < 218:
+                            narrator.say(t81.vend_poor)
+                            return
+                        give(Item.MPFloppy)
+                        if engine.item_did_not_fit:
+                            narrator.say(t81.vend_full)
+                            return
+                        take(bits=218)
+                        narrator.say(t81.vend_getMPFloppy)
+                        roll = random.roll(99)
+                        if roll < 9:
+                            give(Item.DoubleFlop)
+                            if not engine.item_did_not_fit:
+                                narrator.say(t81.vend_bonus)
+                        return
+                    case "b":
+                        if bits < 500:
+                            narrator.say(t81.vend_poor)
+                            return
+                        give(Item.MediumMP)
+                        if engine.item_did_not_fit:
+                            narrator.say(t81.vend_full)
+                            return
+                        take(bits=500)
+                        narrator.say(t81.vend_getMediumMP)
+                        roll = random.roll(99)
+                        if roll < 9:
+                            give(Item.DoubleFlop)
+                            if not engine.item_did_not_fit:
+                                narrator.say(t81.vend_bonus)
+                        return
+                    case "back":
+                        pass
+                    case _:
+                        return
+            case _:
+                return
 
 @savanna.on_use(2)
 def use2():    # section 82

@@ -143,5 +143,23 @@
    "de um peixe, ele não morderá a",
    "isca que você está usando."
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "Escolha um item.",
+ "s009.sec81.vend_more": "Mais",
+ "s009.sec81.vend_back": "Voltar",
+ "s009.sec81.vend_leave": "Sair",
+ "s009.sec81.vend_poor": "Bits insuficientes.",
+ "s009.sec81.vend_full": "Sua bolsa está cheia.",
+ "s009.sec81.vend_daily": "Um de cada cogumelo raro por dia.",
+ "s009.sec81.vend_sold": "Esgotado hoje. Volte após a meia-noite.",
+ "s009.sec81.vend_bonus": "Bônus! Disquete duplo!",
+ "s009.sec81.vend_play_prompt": "Jogar por 1000 bits?",
+ "s009.sec81.vend_play": "Jogar",
+ "s009.sec81.vend_quit": "Sair",
+ "s009.sec81.vend_buy0": "Digicogumelo 51",
+ "s009.sec81.vend_getDigimushrm": "Recebeu Digicogumelo!",
+ "s009.sec81.vend_buy1": "Cogumelo feliz 1500",
+ "s009.sec81.vend_getHappymushrm": "Recebeu Cogumelo feliz!",
+ "s009.sec81.vend_buy2": "Cogumelo gelado 1000",
+ "s009.sec81.vend_getIceMushrm": "Recebeu Cogumelo gelado!"
 }

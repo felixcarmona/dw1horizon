@@ -163,6 +163,10 @@ class TextBank:
         if self.source not in SOURCES: self.load_source('ours')    # a language of ours (text/es/): what it lacks stays our English
         elif self.source not in ('us', 'ours'): self.load_source('ours', fallback=True)   # a disc's source: what it lacks is ours, listed
         if self.source != 'us': self.load_source(self.source)
+        else:
+            # Horizon adds dialogue keys that have no original-disc text. Preserve
+            # every US value while supplying those additions from authored English.
+            self.load_source('ours', fallback=True, missing_only=True)
         p = os.path.join(ROOT, 'text', f'{self.lang}.json')
         if os.path.exists(p): self.load(p)
         for s in sources:
@@ -170,7 +174,7 @@ class TextBank:
             if os.path.exists(side): self.load(side)
         for e in extra: self.load(e)
 
-    def load_source(self, src, fallback=False):
+    def load_source(self, src, fallback=False, missing_only=False):
         """text/<src>/: dialogue.json (and, for ours, dialogue/*.json): the keys of the US story; `x.<src>.` keys (what the
         US structure has no place for) are not loaded. Values are fitted to the game's font (`fit`). fallback: the keys are not
         the chosen source's (`missing_in_source` lists those the source does not replace)."""
@@ -187,6 +191,7 @@ class TextBank:
             data = json.load(open(p, encoding='utf-8'))
             for k, v in data.items():
                 if k.startswith(('_', 'x.')) or v in ('', [], None): continue
+                if missing_only and k in self.data: continue
                 self.check_value(p, k, v)
                 if CJK.search(json.dumps(v, ensure_ascii=False)):
                     from . import backend as BE

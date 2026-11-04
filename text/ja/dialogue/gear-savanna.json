@@ -878,5 +878,25 @@
   [
    "ここは「ひろった商品」の店だよ、うんうん。"
   ]
- ]
+ ],
+ "s071.sec81.vend_prompt": "アイテムを選んでください。",
+ "s071.sec81.vend_more": "次へ",
+ "s071.sec81.vend_back": "戻る",
+ "s071.sec81.vend_leave": "やめる",
+ "s071.sec81.vend_poor": "ビットが足りない。",
+ "s071.sec81.vend_full": "持ち物がいっぱいだ。",
+ "s071.sec81.vend_daily": "珍しいキノコは各１日１個まで。",
+ "s071.sec81.vend_sold": "今日は売り切れ。午前０時に入荷します。",
+ "s071.sec81.vend_bonus": "おまけ！ダブル回復！",
+ "s071.sec81.vend_play_prompt": "１０００ビットで遊びますか？",
+ "s071.sec81.vend_play": "遊ぶ",
+ "s071.sec81.vend_quit": "やめる",
+ "s071.sec81.vend_buy0": "小回復 118",
+ "s071.sec81.vend_getSmRecovery": "小回復を手に入れた！",
+ "s071.sec81.vend_buy1": "中回復 318",
+ "s071.sec81.vend_getMedRecovery": "中回復を手に入れた！",
+ "s071.sec81.vend_buy2": "MP回復 218",
+ "s071.sec81.vend_getMPFloppy": "MP回復を手に入れた！",
+ "s071.sec81.vend_buy3": "MP中回復 500",
+ "s071.sec81.vend_getMediumMP": "MP中回復を手に入れた！"
 }

@@ -430,5 +430,25 @@
    "Prova de preguntar en una",
    "altra part."
   ]
- ]
+ ],
+ "s078.sec81.vend_prompt": "Tria un objecte.",
+ "s078.sec81.vend_more": "Més",
+ "s078.sec81.vend_back": "Enrere",
+ "s078.sec81.vend_leave": "Sortir",
+ "s078.sec81.vend_poor": "No tens prou bits.",
+ "s078.sec81.vend_full": "La bossa és plena.",
+ "s078.sec81.vend_daily": "Un de cada bolet rar al dia.",
+ "s078.sec81.vend_sold": "Esgotat avui. Torna després de mitjanit.",
+ "s078.sec81.vend_bonus": "Premi extra! Cura doble!",
+ "s078.sec81.vend_play_prompt": "Vols jugar per 1000 bits?",
+ "s078.sec81.vend_play": "Jugar",
+ "s078.sec81.vend_quit": "Sortir",
+ "s078.sec81.vend_buy0": "Carn florida 26",
+ "s078.sec81.vend_getMoldyMeat": "Has rebut Carn florida!",
+ "s078.sec81.vend_buy1": "Carn 20",
+ "s078.sec81.vend_getMeat": "Has rebut Carn!",
+ "s078.sec81.vend_buy2": "Carn gegant 300",
+ "s078.sec81.vend_getGiantMeat": "Has rebut Carn gegant!",
+ "s078.sec81.vend_buy3": "Rellom 1000",
+ "s078.sec81.vend_getSirloin": "Has rebut Rellom!"
 }
