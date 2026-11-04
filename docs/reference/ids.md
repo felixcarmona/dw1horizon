@@ -81,7 +81,7 @@ as literals (`[180]`, `[66]`, `0xB4`, `0x41`) almost everywhere.
 | `LOADED_DIGIMON_MODELS` (0x801BE7EC) | i32[8] | — | the NPC model slots of a screen |
 | `ORIGINAL_DIGIMON_TYPES` (0x8012A84C) | i16[180] | — | the type whose technique effects a species uses |
 | `EVOLUTION_PATHS.from[5]` / `to[6]` (0x8012B66C) | **s8** | `DigimonId` (0016) | −1 = empty, one entry −2; s8 capped ids at 127 |
-| `RegisteredDigimon.digimonId` (VS registrations, 40 slots, saved) | u8 | u8 | a species ≥ 256 registers as the original it is based on |
+| `RegisteredDigimon.digimonId` (VS registrations, 40 slots, saved) | u8 | u8, plus `wideId` (u16) in the record's unused bytes | the byte keeps a species ≥ 256 as the original it is based on (what the original game and older builds read); `registeredSpecies()` reads `wideId` when its tag and its copy of the byte match |
 | `CARD_DATA[66].digimonId` (0x8012FFD8) | u8 | u8 | |
 | `EVOLUTION_ITEM_TARGET[44]` (0x80127C5C) | u8 | u8 | aliased, see Items |
 | `BABY_IDS[8]`, `SHOPKEEP_DIGIMON_TYPES[11]` | u8 | u8 | content lists |
