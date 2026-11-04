@@ -144,5 +144,77 @@
         40
       ]
     }
+  },
+  "206": {
+    "source_sha256": "bf75f5f66ac16f32d302d24dfe6eeb749b2050575ff41b6d7ab8872039eb96a3",
+    "slots": [
+      42
+    ],
+    "pelvis": 18,
+    "chest": 1,
+    "head": 2,
+    "legs": [
+      [
+        19,
+        20,
+        21
+      ],
+      [
+        22,
+        23,
+        24
+      ]
+    ],
+    "locked": [],
+    "lower": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "secondary": [
+      [
+        [
+          3,
+          4,
+          6
+        ],
+        2,
+        3
+      ],
+      [
+        [
+          7,
+          8,
+          10
+        ],
+        2,
+        -3
+      ],
+      [
+        [
+          11,
+          26,
+          27
+        ],
+        0,
+        2
+      ]
+    ],
+    "delays": {
+      "12": 1.0,
+      "13": 1.8,
+      "14": 2.6,
+      "15": 1.4,
+      "16": 2.2,
+      "17": 3.0,
+      "2": 2.3
+    },
+    "shift": 0.8,
+    "body_gain": 1,
+    "base_generator": "tools.models.field_animations.magna_angemon",
+    "skeleton_sha256": "15a91d9cafb9dadb1fb74075a04e9a1bd26180f4ebb71cf51e39b5f9caffd658"
   }
 }

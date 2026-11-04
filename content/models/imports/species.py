@@ -114,7 +114,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'lillymon-native-flight': ('209', 'tools.models.field_animations.chibi', '209-lillymon-native-flight'),
     'togemon-field': ('208', 'tools.models.field_animations.togemon', '208-togemon-field'),
     'seraphimon-field': ('207', 'tools.models.field_animations.chibi', '207-seraphimon-field'),
-    'magnaangemon-field': ('206', 'tools.models.field_animations.magna_angemon', '206-magnaangemon-field'),
+    'magnaangemon-field': ('206', 'tools.models.field_animations.celebrations', '206-magnaangemon-field'),
     'megakabuterimon-field': ('205', 'tools.models.field_animations.mega_kabuterimon', '205-megakabuterimon-field'),
     'veedramon-field': ('203', 'tools.models.field_animations.gaits', '203-veedramon-field'),
     'monmon-upperbody': ('352', 'tools.models.field_animations.monmon', '352-monmon-upperbody'),
