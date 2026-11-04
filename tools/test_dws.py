@@ -187,7 +187,7 @@ class BackendUnits(unittest.TestCase):
         self.assertEqual(sorted(bytecode.PACK_BYTE2CODE), sorted(ord(c) for c in fontgen.PACKED))
         self.assertEqual(bytecode.pack_units(bytes.fromhex('815f819b82f0')), bytes.fromhex('815f819b82f0'))      # backslash, a button: two bytes
         # the C side: the same twelve punctuation codes and characters, in the same order, as the code that expands them
-        series = sorted(glob.glob(os.path.join(ROOT, 'mods/patches/0100-*.patch')))
+        series = sorted(glob.glob(os.path.join(ROOT, 'mods/patches/Packed-rows-with-a-font-placed-to-the-pixel-a-dialog.patch')))
         if series:
             with open(series[0], encoding='utf-8') as f: src = re.sub(r'(?m)^[+ ]', '', f.read())     # the patch's lines without their diff mark
             codes = [int(x, 16) for x in re.search(r'PACKED_CODES\[\] = \{([^}]*)\}', src).group(1).replace('\n', ' ').split(',') if x.strip()]

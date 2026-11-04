@@ -21,6 +21,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
         'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse')
 
@@ -361,7 +362,7 @@ def pipeline(a, r):
     with r.step('Private decomp worktree, pinned base and full patch series'):
         r.cmd(['git', '-C', seed, 'worktree', 'add', '--detach', w, pin])
         r.cmd(['git', '-C', w, '-c', 'user.name=Horizon authors', '-c', 'user.email=',
-               'am', *sorted((ROOT / 'mods/patches').glob('*.patch'))])
+               'am', *patch_series.paths(ROOT)])
         if not r.dry:
             for rel in ('asm', 'build/us/psx/generated', 'external/psyq_headers'):
                 shutil.copytree(seed / rel, w / rel, dirs_exist_ok=True,

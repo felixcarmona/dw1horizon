@@ -2,7 +2,8 @@
 
 How the C patch series (`mods/patches/`, applied to the decompilation by `tools/mods.sh prepare int`) hooks into the
 engine, grouped by feature: what each feature changes, which functions it hooks and which limits it keeps. Patch
-numbers refer to `mods/patches/NNNN-*.patch`; several features were developed apart and arrive in the series as one
+numbers are the numbers the files had until 2026-11-04 (`mods/patches/index.md` gives each one's file, column
+**was**); later patches are named by file. Several features were developed apart and arrive in the series as one
 merge patch. Functions and files are those of the patched `decomp/src/`.
 
 Features with their own page elsewhere: OPTIONS ([../mods/options.md](../mods/options.md)), fonts

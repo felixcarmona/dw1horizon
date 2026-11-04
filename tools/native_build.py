@@ -11,6 +11,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.build_cache import Cache, Capture, digest, key
+from tools import patch_series
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -124,7 +125,7 @@ def main():
         cache = Cache(cache_dir, tree)
         identity = dict(kind='native', tree=str(tree), inputs=source_hashes(tree), args=a.make_args,
                         image=image, pin=subprocess.check_output(['git', 'rev-parse', 'HEAD:decomp'], cwd=ROOT, text=True).strip(),
-                        patches=[[p.name, digest(p)] for p in sorted((ROOT / 'mods/patches').glob('*.patch'))],
+                        patches=[[p.name, digest(p)] for p in patch_series.paths(ROOT)],
                         driver=digest(__file__), object_driver=digest(ROOT / 'tools/compiler_cache.py'), cache_code=digest(ROOT / 'tools/build_cache.py'))
         hit = cache.restore(identity) is not None
     if hit:

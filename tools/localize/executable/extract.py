@@ -253,7 +253,9 @@ def own_keys():
     """{key: English} of the project's own executable text: the yaml entries the mod patch series adds (mods/patches,
     e.g. 0090's main.LAB_STR_*, shop.STR_IN_HAND), read from the patches (the one source of the build)."""
     out = {}
-    for p in sorted(glob.glob(os.path.join(ROOT, 'mods', 'patches', '*.patch'))):
+    patches = os.path.join(ROOT, 'mods', 'patches')
+    for name in open(os.path.join(patches, 'series'), encoding='utf-8').read().splitlines():   # tools/patch_series.py
+        p = os.path.join(patches, name)
         d = None; sym = None
         for line in open(p, encoding='utf-8', errors='replace'):
             m = re.match(r'diff --git a/text/(\w+)/\w+\.yaml ', line)

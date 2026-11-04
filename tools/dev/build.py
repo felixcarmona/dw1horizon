@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from tools.build_cache import Cache, Capture, digest, key
 from tools.derive import recipe
+from tools import patch_series
 
 
 def run(cmd, env=None):
@@ -26,7 +27,7 @@ def git(*args, cwd=ROOT):
 
 def prepare(tree):
     pin = git('rev-parse', 'HEAD:decomp')
-    patches = sorted((ROOT / 'mods/patches').glob('*.patch'))
+    patches = patch_series.paths(ROOT)
     signature = key([pin, [(p.name, digest(p)) for p in patches]])
     stamp = ROOT / 'build/dev-decomp.json'
     old = json.loads(stamp.read_text()) if stamp.exists() else {}

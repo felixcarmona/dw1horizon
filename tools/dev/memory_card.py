@@ -26,7 +26,7 @@ import sys as _dev_sys
 _DEV_ROOT = str(next(p for p in _DevPath(__file__).resolve().parents if (p / "tools").is_dir()))
 _dev_sys.path.insert(0, _DEV_ROOT)
 _dev_sys.path.insert(0, str(_DevPath(_DEV_ROOT) / "tools"))
-import argparse, glob, os, re, struct, sys
+import argparse, os, re, struct, sys
 
 BLOCK = 0x2000
 FRAME = 0x80
@@ -105,7 +105,7 @@ class Card:
 
 
 # the records of a v4/v5 extension (include/dw/save_tags.h, docs/reference/save-format.md): u16 tag, u16 length, data; tag 0 ends.
-# The registry is the header as the tracked patch series leaves it (mods/patches/*.patch, every "-/+#define SAVE_TAG_" line in
+# The registry is the header as the tracked patch series leaves it (mods/patches/series in order, every "-/+#define SAVE_TAG_" line in
 # order), so it is the source's and not whatever build/decomp-* happens to hold; MCD_TAGS=HEADER (or `--tags HEADER`) reads a
 # save_tags.h instead.
 ROOT = _DEV_ROOT
@@ -131,13 +131,13 @@ def tags_from_header(path):
 def tags_from_patches(root=ROOT):
     """{tag: name} of include/dw/save_tags.h after the patch series (mods/patches) in order."""
     d = {}
-    for series in ('mods/patches',):
-        for f in sorted(glob.glob(os.path.join(root, series, '*.patch'))):
-            for line in open(f, errors='replace'):
-                m = _DEFINE.match(line[1:]) if line[:1] in '+-' else None
-                if not m: continue
-                if line[0] == '-': d.pop(m.group(1), None)
-                else: d[m.group(1)] = m.group(2)
+    patches = os.path.join(root, 'mods', 'patches')
+    for name in open(os.path.join(patches, 'series'), encoding='utf-8').read().splitlines():   # tools/patch_series.py
+        for line in open(os.path.join(patches, name), errors='replace'):
+            m = _DEFINE.match(line[1:]) if line[:1] in '+-' else None
+            if not m: continue
+            if line[0] == '-': d.pop(m.group(1), None)
+            else: d[m.group(1)] = m.group(2)
     return _registry(d)
 
 

@@ -26,7 +26,7 @@ machine; `tools/dev/saves/capture_save.sh` and `tools/dev/playtest/species_proof
 Outputs are `build/dev-everything.bin` and `.cue`. `--name NAME` selects another
 output name. `build/NAME-timings.json` records stage seconds and the image SHA-1.
 The command creates a private, detached, patched decomp worktree under
-`build/decomp-dev`, using the checkout's gitlink and `mods/patches`. It copies
+`build/decomp-dev`, using the checkout's gitlink and `mods/patches/series`. It copies
 regenerated assembly, linker sources and SDK headers from the local decomp seed.
 A changed patch series refreshes this private tree; local tracked C edits must be
 committed/exported before a refresh, and untracked sources preserved. The old

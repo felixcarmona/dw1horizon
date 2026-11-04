@@ -294,7 +294,8 @@ Each glyph is 48 bytes of the executable with FONT_SWITCH (font b's table and th
    appending to `extra.txt` alone does not extend a production executable.
    Keep the original glyphs disc-sourced and update both the original-style and
    new-font tables, their counts and the runtime lookup bounds. Export engine
-   changes as a new patch at the end of the series using `tools/mods.sh save`.
+   changes as a new patch at the end of the series using `tools/mods.sh save`
+   (it appends the patch to `mods/patches/series`; add its row to `mods/patches/index.md`).
 4. Rebuild the affected executables and verify the new glyph in both fonts and
    in dialogue, names and menus. `scnasm.py` and the DWS back end read `extra.txt`
    for the character → code mapping and widths, and each target's build for its
