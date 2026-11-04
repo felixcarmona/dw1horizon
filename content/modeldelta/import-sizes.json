@@ -115,11 +115,11 @@
     },
     {
       "source": "build/batch4/Zudomon.MMD",
-      "source_sha256": "c220b35c67a1d4b4747670db6d6a3cc051883500e930348d35e95c7774a3e5f7",
+      "source_sha256": "572633a6780e6f0e13931824e7998209831a52b2c00c425395af9d0802c467d7",
       "bones": 22,
       "scale": 1.1995638249631584,
       "target": "build/sizes-out/models/Zudomon.MMD",
-      "sha256": "e3d9efe73df81aafa40e616c66d3194755761e3da629239121082d24ad8b5e89"
+      "sha256": "ecc5394a3e90672ac8a07f165f83ada19fbceda4c60e0ab4744375dbecea80cc"
     },
     {
       "source": "build/batch4/Vikemon.MMD",
@@ -451,11 +451,11 @@
     },
     {
       "source": "build/batch11/HiAndromon.MMD",
-      "source_sha256": "493fd9ded170738172826eec68d856b9a1b730482283c2a0f7b11463485f6090",
+      "source_sha256": "bc13549c91e817a44c0e6c2d02bc48c187423a2edddd538cffbb33430ba757ce",
       "bones": 26,
       "scale": 1.1600663557955515,
       "target": "build/sizes-out/models/HiAndromon.MMD",
-      "sha256": "e0063fc28d189b586c0c171660bc4ef62e99320c86132ca310f765f8494bcf0a"
+      "sha256": "3f69b06cc2bdfbc59ebeffbf95ea5a7ad3f7e0aa391f0922b0d8b27df935bb42"
     },
     {
       "source": "build/batch11/KingEtemon.MMD",
@@ -669,11 +669,11 @@
     },
     {
       "source": "build/batch13/Raidenmon.MMD",
-      "source_sha256": "a32d4cd6c4670ca12ff3636dfd796a4e569810d51d42688714fb7d6b2698ac28",
+      "source_sha256": "5998d01390b3c23381f394e096f40f37d59091120ef91c88d1a02892053667a4",
       "bones": 24,
       "scale": 1.6679278981456473,
       "target": "build/sizes-out/models/Raidenmon.MMD",
-      "sha256": "aa88bc4fc671ead839a68d87bde1d6d1ee8d62ad4ec00607bb376090e25fae96"
+      "sha256": "798c7a965c07ff6ee71f3c22bed98339a7be2183ff9d473f9ce962c831503af8"
     }
   ]
 }

@@ -8,6 +8,9 @@ curves of the feet, several models side by side (the donor's own walk next to th
   animstudio.py metrics MODEL [MODEL ...] [--slot 2]   foot slip over the ground in stance, foot lift, root speed
   animstudio.py bones MODEL                 the hierarchy: parent, rest position, side, mesh part (extent, vertices)
 
+--cull draws only the faces turned to the camera, as the game does (RotNclip): without it the two sides of a thin plate
+(WarGreymon's shield) fight in the z-buffer and show as dots, and a missing back is hidden by the inner faces.
+
 MODEL is  FILE.MMD:TYPE[:TEXTURE[:SLOT[:LABEL]]]  where TEXTURE is a single-model .TIM (an import's NeoCrimson.TIM) or absent (the
 disc's ALLTIM entry of TYPE: the original Digimon). One row of panels per model, the same slot for all (--slot, or
 FILE:TYPE:TEX:SLOT as a fourth field).
@@ -180,6 +183,8 @@ class FastMesh:
 
 
 class Panel:
+    cull = False                # --cull: draw only front faces, as the game does
+
     def __init__(self, mod, kind, view, size):
         self.mod, self.kind, self.view, self.size = mod, kind, view, size
         yaw, pitch = VIEWS[view] if kind != 'gait' else (0, 0)
@@ -246,14 +251,20 @@ class Panel:
         e1, e2 = cam[:, 1] - cam[:, 0], cam[:, 2] - cam[:, 0]
         nrm = np.cross(e1, e2); nl = np.linalg.norm(nrm, axis=1); nl[nl == 0] = 1
         shade = (0.55 + 0.45 * np.abs(nrm[:, 2] / nl)).astype(np.float32)
-        P = np.ascontiguousarray(A.reshape(-1, 9), np.float32)
-        zb = np.full(S * S, 1e30, np.float32); out = np.zeros(S * S * 3, np.uint8); hit = np.zeros(S * S, np.uint8)
         tex = F.tex if self.kind != 'parts' else np.zeros_like(F.tex)
         flat = F.flat if self.kind != 'parts' else F.bcol[F.bone]
+        uvs, rows = F.uv, F.row
+        if self.cull:          # the game's RotNclip: a face is drawn only when its screen winding is counter-clockwise
+            area = ux * vy - uy * vx
+            keep = area < 0 if self.view == 'top' else area > 0
+            A, shade, tex, flat, uvs, rows = A[keep], shade[keep], tex[keep], flat[keep], uvs[keep], rows[keep]
+        P = np.ascontiguousarray(A.reshape(-1, 9), np.float32)
+        zb = np.full(S * S, 1e30, np.float32); out = np.zeros(S * S * 3, np.uint8); hit = np.zeros(S * S, np.uint8)
+        uvs, rows, shade = np.ascontiguousarray(uvs), np.ascontiguousarray(rows), np.ascontiguousarray(shade)
         import ctypes as C
         ptr = lambda a, t: a.ctypes.data_as(C.POINTER(t))
-        _raster_lib().raster(C.c_int(len(F.tri)), ptr(P, C.c_float), ptr(F.uv, C.c_int), ptr(F.row, C.c_int), ptr(shade, C.c_float),
-                             ptr(np.ascontiguousarray(flat), C.c_ubyte), ptr(tex, C.c_ubyte), ptr(mod.pal, C.c_ubyte), C.c_int(mod.pal.shape[0]),
+        _raster_lib().raster(C.c_int(len(A)), ptr(P, C.c_float), ptr(uvs, C.c_int), ptr(rows, C.c_int), ptr(shade, C.c_float),
+                             ptr(np.ascontiguousarray(flat), C.c_ubyte), ptr(np.ascontiguousarray(tex), C.c_ubyte), ptr(mod.pal, C.c_ubyte), C.c_int(mod.pal.shape[0]),
                              ptr(mod.idx, C.c_ubyte), C.c_int(mod.tim.w), C.c_int(mod.tim.h), C.c_int(S), C.c_int(S), ptr(zb, C.c_float),
                              ptr(out, C.c_ubyte), ptr(hit, C.c_ubyte))
         base = np.asarray(img, np.float32).reshape(-1, 3)
@@ -394,7 +405,9 @@ def main():
     ap.add_argument('--speed', type=float, default=1.0)
     ap.add_argument('--size', type=int, default=360)
     ap.add_argument('--ticks', type=int, nargs='*')
+    ap.add_argument('--cull', action='store_true', help='draw only the faces that face the camera, as the game does')
     a = ap.parse_args()
+    Panel.cull = a.cull
     if a.cmd == 'metrics':
         a.models = ([a.out] if a.out else []) + a.models; return cmd_metrics(a)
     if a.cmd == 'bones':                       # bones MODEL: the out argument is the model

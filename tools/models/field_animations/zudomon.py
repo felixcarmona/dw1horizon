@@ -17,7 +17,7 @@ from tools.models.field_animations.articulation import replace_channels
 from tools.models.field_animations.aero_veedramon import _forward
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation
-SOURCE = 'f39e1523a9f478e892830ba74a558aee4c15409dd375d2047d799735293af080'
+SOURCE = '5dd5642d5b041eff795d35fb9e01152e765139693c161a288c92d09bbffa6abc'
 
 def _parse(data, sk):
     mmd.exe().skeleton[219] = sk

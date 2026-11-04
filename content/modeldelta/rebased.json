@@ -133,6 +133,90 @@
       "kind": "MMD",
       "previous_bytes": 338,
       "bytes": 5017
+    },
+    {
+      "id": 336,
+      "name": "Raidenmon",
+      "kind": "MMD",
+      "previous_bytes": 337,
+      "bytes": 948
+    },
+    {
+      "id": 336,
+      "name": "Raidenmon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 1070
+    },
+    {
+      "id": 313,
+      "name": "Bulbmon",
+      "kind": "MMD",
+      "previous_bytes": 2213,
+      "bytes": 2297
+    },
+    {
+      "id": 313,
+      "name": "Bulbmon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 671
+    },
+    {
+      "id": 353,
+      "name": "Bearmon",
+      "kind": "MMD",
+      "previous_bytes": 4792,
+      "bytes": 5039
+    },
+    {
+      "id": 353,
+      "name": "Bearmon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 394
+    },
+    {
+      "id": 188,
+      "name": "Aquilamon",
+      "kind": "MMD",
+      "previous_bytes": 22251,
+      "bytes": 22529
+    },
+    {
+      "id": 188,
+      "name": "Aquilamon",
+      "kind": "TIM",
+      "previous_bytes": 76,
+      "bytes": 1007
+    },
+    {
+      "id": 219,
+      "name": "Zudomon",
+      "kind": "MMD",
+      "previous_bytes": 1977,
+      "bytes": 2020
+    },
+    {
+      "id": 219,
+      "name": "Zudomon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 286
+    },
+    {
+      "id": 302,
+      "name": "HiAndromon",
+      "kind": "MMD",
+      "previous_bytes": 6106,
+      "bytes": 6587
+    },
+    {
+      "id": 302,
+      "name": "HiAndromon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 724
     }
   ]
 }

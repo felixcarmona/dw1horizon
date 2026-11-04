@@ -152,7 +152,9 @@ DW2's or a light edit of it, at DW1 units.
 
 **Fits** (lossy limits: going over means removing geometry or merging palettes): primitives ≤ 713, vertices ≤ 706, ≤ 172
 per piece (identical positions counted once), bones ≤ 34 with the entity, palettes ≤ 15 (16 accepted with a note: row 15
-is the flat sprite's). The texture is a separate, lossless check: DCB's TIM must lie in 256×128; DW2's page is repacked;
+is the flat sprite's). The batch import merges palettes over 15 as DW2's converter does, re-indexing the texels only the
+merged palette reads, so the merged faces keep their colours; a model keeps 16 when the merge down to 15 would still
+change them by more than 10/255 per texel (`import_batch.merge_palettes`). The texture is a separate, lossless check: DCB's TIM must lie in 256×128; DW2's page is repacked;
 DW2003's UVs must be in rows 0-127 or be repacked (`dw3mmd.repack_page`, which also shrinks UV islands when the used texels
 do not fit).
 
