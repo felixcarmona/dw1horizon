@@ -1,0 +1,48 @@
+From 5a6c58572ac4ca16fb96ad9fbeca74bb51180e8a Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 13:28:54 +0000
+Subject: [PATCH] Keep the blend states of imported animations off the heap
+ while models load
+
+---
+ src/main/model.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/main/model.c b/src/main/model.c
+index bd98c94..4b44199 100644
+--- a/src/main/model.c
++++ b/src/main/model.c
+@@ -45,6 +45,14 @@ void loadDigimonTexture(int32_t digiType, char *path,
+                         ModelComponent *component);
+ ModelComponent *loadMMD(int32_t digiType, int32_t modelType);
+ void uploadModelTexture(void *textureData, ModelComponent *component);
++/*
++ * MOD (imported field animation transitions): the blend states come from the heap the screen's models load into, and
++ * the heap gate does not count them. A screen load starts animations between its model loads (the partner's arrival,
++ * each imported NPC's first pose), so on the tightest screens the states took the bytes the last model needed, and
++ * the loading card stayed forever (Birdra Transport 207 with an imported partner and Hawkmon). Every model and entity
++ * allocation drops the states first; a blend in progress ends at once and the next motion starts a new one.
++ */
++void modSmoothMapReset(void);
+ 
+ void renderFlatDigimon(Entity *entity);
+ void renderDigimon(/* int32_t instanceId */);
+@@ -2823,6 +2831,7 @@ void initializeDigimonObject(int32_t type, int32_t instanceId,
+ 		entity->anim.momentum = PARTNER_MOMENTUM_DATA;
+ 		break;
+ 	case 0:
++		modSmoothMapReset(); /* MOD (imported field animation transitions): never live while models load */
+ 		entity->posData = malloc3(boneCount * sizeof(PositionData));
+ 		entity->anim.momentum = malloc3(boneCount * sizeof(MomentumData));
+ 		break;
+@@ -3359,6 +3368,7 @@ void loadDigimonTexture(int32_t digiType, char *path,
+ 	/* MOD (species): ALLTIM.TIM entry `type`, or the new species' texture in DIGI.DAT */
+ 	getDigimonTextureRef(digiType, &file, &sector, &sectors);
+ 
++	modSmoothMapReset(); /* MOD (imported field animation transitions): the first heap use of every model load */
+ 	buffer = malloc3(0x4800);
+ 
+ 	readFileSectors(file, buffer, sector, sectors);
+-- 
+2.55.0
+
