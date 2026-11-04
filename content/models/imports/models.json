@@ -70,7 +70,7 @@
  "250": {"model": "250-Shadramon.MMD", "aliases_applied": true},
  "251": {"model": "251-Solarmon.MMD", "aliases_applied": true, "field_overlay": "solarmon-steady-hover"},
  "252": {"model": "252-Thundermon.MMD", "aliases_applied": true},
- "253": {"model": "253-Tuskmon.MMD", "field_overlay": "tuskmon-heavy-field"},
+ "253": {"model": "253-Tuskmon.MMD", "aliases_applied": true},
  "254": {"model": "254-Tylomon.MMD", "aliases_applied": true, "field_overlay": "tylomon-native-range"},
  "255": {"model": "255-Valkyrimon.MMD", "aliases_applied": true},
  "256": {"model": "256-VioletElecmon.MMD", "aliases_applied": true},

@@ -2169,9 +2169,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/253-Tuskmon.MMD.mdelta",
-        "delta_sha256": "c1a391f08e5cbfdb338cf3ab3bd124932ea9b54616383906f028251ef4bffb20",
-        "sha256": "7dc62da01dfc6c7b9545d61e120004920a6447037445643e50d1dd9d55b6c4a7",
-        "size": 103562
+        "delta_sha256": "f3664b797321577a01f90300bd332e3d5413b56cae279b0baf37eb26fa45a5d3",
+        "sha256": "774d0043a9f0436718ab5a205dc76b3f17cdea10edf112dbf508dcd728f37212",
+        "size": 93940
       },
       "tim": {
         "sources": [
