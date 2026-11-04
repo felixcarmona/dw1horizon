@@ -1649,9 +1649,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/236-DemiDevimon.MMD.mdelta",
-        "delta_sha256": "070460077ffeda7668dbbc7de28ba57d7d06e518e2653c9ccf63550758b5e986",
-        "sha256": "2968be00a178cc08f1c0e126a4f54bb1a3d514bdaf0856a629ea824a46167abe",
-        "size": 134416
+        "delta_sha256": "cebb34d04fd1a707ed3404b96c15fe7e5b9bbdab0818d022422d30fab5474ab5",
+        "sha256": "5f96fd2e3126ae122925fcecfb0ac40185cba744c066cab7b18c988104988f7a",
+        "size": 130840
       },
       "tim": {
         "sources": [
