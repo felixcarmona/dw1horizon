@@ -26,7 +26,7 @@ def enter():    # section 254
     if roll <= 14:
         spawn_item(Item.Digimushrm, at=(-2450, -1450))
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(3450, 50))
     spawn_chest(Item.MedRecovery, at=(3545, 855), opened=trigger(696), facing=1024)
     spawn_chest(Item.MediumMP, at=(3545, 455), opened=trigger(697), facing=1024)

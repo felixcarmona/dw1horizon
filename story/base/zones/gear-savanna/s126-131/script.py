@@ -18,7 +18,7 @@ def enter():    # section 254
     if roll <= 16:
         spawn_item(Item.Digimushrm, at=(-50, -2050))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(-2450, -1850))
 
 @savanna.on_use(1)

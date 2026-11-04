@@ -18,7 +18,7 @@ t8 = text.s021.sec8
 @panorama.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 6:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(250, 2350))
     roll = random.roll(99)
     if roll <= 14:

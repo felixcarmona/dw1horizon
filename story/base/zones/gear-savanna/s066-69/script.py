@@ -21,10 +21,10 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(1550, -1750))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Happymushrm, at=(750, 50))
     roll = random.roll(99)
-    if roll <= 0:
+    if roll <= 2:
         spawn_item(Item.PowerIce, at=(-1750, -3850))
 
 @shimaunimon0.on_talk

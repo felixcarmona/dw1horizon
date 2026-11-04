@@ -18,7 +18,7 @@ t8 = text.s085.sec8
 @freezeland.on_enter
 def enter():    # section 254
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-850, 50))
     roll = random.roll(99)
     if roll <= 11:

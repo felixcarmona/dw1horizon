@@ -20,7 +20,7 @@ script 76 {
             spawn_item(item("Digimushrm"), 34, 56);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 37, 43);
         }
         engine.arg = 2;

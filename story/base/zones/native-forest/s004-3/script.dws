@@ -16,7 +16,7 @@ script 4 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Blue apple"), 44, 31);
         }
         store_random(random_roll, 99);

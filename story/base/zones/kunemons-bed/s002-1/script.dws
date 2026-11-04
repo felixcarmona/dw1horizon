@@ -21,7 +21,7 @@ script 2 {
             spawn_item(item("Digimushrm"), 46, 45);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 60, 59);
         }
         if (!is_recruited(species("Kunemon"))) {

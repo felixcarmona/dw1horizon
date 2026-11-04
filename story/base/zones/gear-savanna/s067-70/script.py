@@ -24,13 +24,13 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(-950, -3450))
     roll = random.roll(99)
-    if roll <= 5:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(1850, -2250))
     roll = random.roll(99)
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(-1050, -950))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.SweetNut, at=(1750, 2550))
 
 @psychemon0.on_talk

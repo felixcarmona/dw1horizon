@@ -17,11 +17,11 @@ script 66 {
             spawn_item(item("Digimushrm"), 65, 67);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 57, 49);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 0) {
+        if (random_roll <= 2) {
             spawn_item(item("Power Ice"), 32, 88);
         }
     }

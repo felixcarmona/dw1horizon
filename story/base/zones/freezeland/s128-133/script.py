@@ -17,7 +17,7 @@ def enter():    # section 254
     if roll <= 17:
         spawn_item(Item.Digimushrm, at=(-350, -1150))
     roll = random.roll(99)
-    if roll <= 0:
+    if roll <= 2:
         spawn_item(Item.SageFruit, at=(1050, -350))
     if mojyamon_traded.set2_row1 or mojyamon_traded.set2_row2 or mojyamon_traded.set2_row3:
         mojyamon0.play(29)

@@ -29,7 +29,7 @@ script 189 {
             spawn_item(item("Digimushrm"), 63, 55);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 56, 65);
         }
         if (!is_recruited(species("Unimon")) && centar_clinic_intro_seen) {
