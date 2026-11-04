@@ -123,7 +123,7 @@ Analogman (116) and Jijimon (117). Their data now lives in their species files
   height ratio and other bones through an explicit map. Since patch 0116 the table is data (`MOD_DONOR_ENTRIES`,
   `MOD_DONOR_ORIGINS`, `MOD_DONOR_BONES`, written by `tools/balance.py` from `content/tables/effect-donors.json`).
   A species carried by its DIGI.DAT record gets a default origin for every technique (patch 0106).
-  Its record flag 0x10 (patch 0335, species file `effect_origin_fallback_always`) sends the techniques whose table is
+  Its record flag 0x10 (patch 0338, species file `effect_origin_fallback_always`) sends the techniques whose table is
   mostly entity points to that default too: Beelzemon fires them from its cannon. 20 bytes of code
   (`getModDonorTechBoneOffset` 1016 → 1036).
 - **Raised flags.** Original partners use trigger 0x200 + type as their raised flag. Where that trigger already has
