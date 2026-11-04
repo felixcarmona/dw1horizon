@@ -2,7 +2,7 @@
  "180": {"model": "180-Veemon.MMD", "aliases_applied": true, "texture": "180-Veemon.TIM", "field_overlay": "veemon-field"},
  "181": {"model": "181-Puppetmon.MMD", "aliases_applied": true, "texture": "181-Puppetmon.TIM", "field_overlay": "puppetmon-field"},
  "182": {"model": "182-Kimeramon.MMD", "aliases_applied": true, "texture": "182-Kimeramon.TIM"},
- "183": {"model": "183-Wormmon.MMD", "aliases_applied": true, "field_overlay": "wormmon-pace"},
+ "183": {"model": "183-Wormmon.MMD", "aliases_applied": true},
  "184": {"model": "184-Hawkmon.MMD", "aliases_applied": true},
  "185": {"model": "185-Armadillomon.MMD", "aliases_applied": true, "texture": "185-Armadillomon.TIM", "field_overlay": "armadillomon-pace"},
  "187": {"model": "187-Stingmon.MMD", "aliases_applied": true, "field_overlay": "stingmon-field"},
