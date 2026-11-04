@@ -273,7 +273,7 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | Ground items (patch 0230) | rolled again on every entry | a spot gives its item once a day | Amida Forest's road gave about 1260 bits an entry |
 | New screens' ground items (`content/ground-items.json` `"off"`) | — | 3 of the 7 mushrooms of Native Forest's script they share, on reachable floor | all 7 on 34 screens was about 240 free daily pickups |
 | Battle bits (patch 0235, `economy.json` `battle.bitsPercent`) | the enemies' bits | 150 % | money earned by playing: a fight paid one or two days of upkeep, and nothing was worth saving for |
-| Chips for bits (`secret-item-shop/s177`, Devimon's hours) | merit only (800) | the six chips at 9999 each too | a sink worth saving for on the original story too (a chip sells for 4999: no loop) |
+| Secret shop chips (`secret-item-shop/s177`, Devimon's hours) | DVChipA / D / E only | DVChipA / D / E only; plain chips stay at 800 merit in the merit shop and in chests | selling the six plain chips beside the Devil Chips undermined them; the merit shop keeps the plain chips |
 | Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all (Mojyamon's Digianchovy -> Meat: 25 -> 15, still under its input) |
 | New game start kit (`file-city/s193-238` section 55, after the intro wipes the debug save) | 0 bits, no items | 20 Meat, 1000 bits | the first days had only the farm's 3 Meat a day; once per game, no loop |
 | Meat farm big harvest (`libraries/s207`, `file-city/s164-204` section 11) | 1 day in 10 | 1 day in 4 | 5 instead of 3 Meat / Giant Meat / Sirloin; a day's share, no loop |
