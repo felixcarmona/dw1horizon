@@ -273,10 +273,12 @@ def main(argv=None):
             raise ValueError('Chinese overlay changes code/layout: ' + original)
         (root / 'lang' / target).write_bytes(translated)
     path = root / 'lang/LANGZH.BIN'
-    font = zh.build_font(zh.read_json(zh.ROOT / zh.FONT_PATH), zh.repertoire())
+    assets = {key: (root / source).read_bytes() for key, source in plan['CHINESE_ASSETS'].items()}
+    font = assets['@zh/font']
     module = (root / 'exe-zh-hans/ZH_REL.BIN').read_bytes()
     entries = [{**r, 'data':(root / r['source']).read_bytes()} for r in plan['CHINESE_RESOURCES']]
-    path.write_bytes(build(module, font, path.read_bytes(), entries, names, english_names=latin_species_names(root / 'species')))
+    path.write_bytes(build(module, font, path.read_bytes(), entries, assets['@zh/names'],
+                          assets['@zh/compact-font'], assets['@zh/english-names']))
     print(f'Chinese container: {len(entries)} routes, {len(font)} font bytes, {path.stat().st_size} bytes')
 
 

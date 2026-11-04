@@ -251,6 +251,19 @@ def build(ctx):
                 P.chinese_resources[(name,1)] = dict(row, story=1)
         plan['CHINESE_RESOURCES'] = list(P.chinese_resources.values())
         plan['CHINESE_OVL'] = P.chinese_overlays
+        from tools import chinese as zh
+        from tools import chinese_resources as zr
+        assets = {'font': zh.build_font(zh.read_json(zh.ROOT / zh.FONT_PATH), zh.repertoire()),
+                  'compact-font': zr.compact_font(),
+                  'names': zr.species_names(ctx.path('species')),
+                  'english-names': zr.latin_species_names(ctx.path('species'))}
+        plan['CHINESE_ASSETS'] = {}
+        for name, data in assets.items():
+            source = 'lang/zh-' + name + '.bin'
+            with open(ctx.path(source), 'wb') as stream:
+                stream.write(data)
+            plan['CHINESE_ASSETS']['@zh/' + name] = source
+
     with open(ctx.path('derived', 'plan.json'), 'w') as fh:
         json.dump(plan, fh, indent=1)
         fh.write('\n')
@@ -302,5 +315,6 @@ def outputs(ctx):
     overlays = {target for spec in plan.get('CHINESE_OVL', []) for _, target in [spec.split(':')]}
     out += [(source, '@zh/' + source) for source in sorted({r['source'] for r in plan.get('CHINESE_RESOURCES', [])})
             if os.path.basename(source) not in overlays]
+    out += [(source, dest) for dest, source in plan.get('CHINESE_ASSETS', {}).items()]
     return out + [(os.path.join('derived', n), None) for n in ('disc.txt', 'plan.env', 'plan.json')] + \
         [('newfiles.txt', None)]
