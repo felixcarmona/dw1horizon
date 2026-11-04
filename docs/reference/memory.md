@@ -360,7 +360,8 @@ tiles about to enter the window.
   sectors.
 - **Invalidation**: a load whose target overlaps 0x80010000–0x80035000, and every battle, empty the ring. The game's
   own `readMapTFS` calls (map load, battle won, evolution, death, jukebox, script op 0x24, Toy Town's background swap)
-  now only reread the header and reopen the ring.
+  now only reread the header and reopen the ring. The battle exit, the jukebox and the ring's own reopening keep the
+  header of the same file (patch 0337: its palettes are resident) and read nothing.
 - **Reopening is world-only** (patches 0160, 0206): `ringMayReopen` lets `tfsLoadTile`, `tfsTilePixels` and
   `tfsStageRow` reopen an invalid ring only while `GAME_STATE` is 0 and the read queue holds no request. In a battle the
   load area belongs to the EFE engine (its slot table sits at `GENERAL_BUFFER`); a reopen there wrote the TFS header over

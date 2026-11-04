@@ -353,7 +353,7 @@ rule.
   half size, its picture read from `CARD.ALL` into the end of `TEXTURE_BUFFER` (the start holds the list's arrays) and
   VRAM (576, 256). Cards are added up to `cards.maxCopies`.
 
-## Quick battle start (0233-0234, 0236, 0238-0239)
+## Quick battle start (0233-0234, 0236, 0238-0239, 0337)
 
 With OPTIONS' QUICK BATTLE START on (`MOD_OPT_QUICK_BATTLE`, `mod_options.c`), a wild or scripted field battle starts in the
 tick it is triggered: HUD and fighters at once, the battle music about 0.3 s later. Tournaments and VS keep their intros;
@@ -387,6 +387,19 @@ disc: each file queue request advanced one step per 20 Hz tick.
   first second cleans up like the original.
 
 Techniques are ready within about a second of contact when `BTL_REL` was read ahead.
+
+- **The way back** (0337): after a won fight the field's music font goes through the queue as well (`modResumeFieldMusic`,
+  `sound_async.c`), and `readMapTFS` reopens the same map without reading the `.TFS` header again (`MOD_TFS_SAME_MAP`; its
+  palettes are in `MOD_TFS_CLUTS`). The original read both before the world ran again: 1.0 s with the picture still in
+  PCSX-Redux. Until the font is in, the ring leaves the slots under its staging unused, and `playMusic`, the next
+  `modPlayMusicAsync` and any synchronous read over the staging wait for it (`modFieldMusicWait`), so a script's music
+  right after a fight or a screen change still comes after the field's font, as in the original. A field font that is
+  already playing is left to `playBGM`; with the option OFF only the header read is skipped. The ring's prefetch then waits
+  for the `BTL_REL` read ahead to be queued (`tfsStreamHoldPrefetch`, at most 90 vsyncs), and the read ahead is not queued
+  while a background tile is being read: queueing waits for that read (`tfsStreamCheckTarget`), and the first tile after
+  the font seeks across the disc (0.7 s with the picture still). Measured over ten fights with the same walk, the stand
+  still at the return went from 1.0 s to 0.07 s, and the longest one in the next seconds (tiles missed by the camera's
+  first band, which the original has too) from 0.92 s to 0.50 s on average.
 
 ## Optional partner name (0202, 0207)
 
