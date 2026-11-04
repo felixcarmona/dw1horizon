@@ -61,5 +61,6 @@
     "from": [323, 48, 296],
     "to": [258, 276]
   },
-  "_former_name": "Panjyamon"
+  "_former_name": "Panjyamon",
+  "off": {"level": "champion"}
 }

@@ -47,5 +47,6 @@
       "flags": 0
     },
     "gains": {"hp": 4000, "mp": 6000, "offense": 450, "defense": 500, "speed": 300, "brains": 800}
-  }
+  },
+  "off": {"level": "ultimate"}
 }

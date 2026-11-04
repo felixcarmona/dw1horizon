@@ -62,5 +62,6 @@
       "flags": 16
     },
     "gains": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500}
-  }
+  },
+  "off": {"level": "champion"}
 }

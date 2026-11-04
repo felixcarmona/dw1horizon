@@ -489,7 +489,7 @@ def stats_json(v):
 
 
 # ------------------------------------------------------------------ the file format: dict <-> JSON
-KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
+KEY_ORDER = ['id', 'name', '_source', 'level', 'vanilla', 'vanilla_as', 'off', 'attribute', 'specialties', 'techniques', 'drop', 'effects_like', 'model',
              'texture', 'voice', 'battle_music', 'reincarnation_stats', 'new_game_technique', 'status_screen_position',
              'partner_voice', 'item_distance', 'training', 'condition_bubble', 'effect_origins', 'effect_origin_fallback', 'effect_origin_fallback_always', 'wild', 'sizing', 'size', 'needs_ram_mb',
              'partner', 'care', 'evolution']
@@ -752,6 +752,21 @@ def validate(s):
         raise SystemExit(f'{p}: vanilla: true, for a species the original game raises (left out otherwise)')
     if 'vanilla_as' in s and (s.get('vanilla') or 'partner' not in s or not isinstance(s['vanilla_as'], int)):
         raise SystemExit(f'{p}: vanilla_as: the id of the vanilla species a new partner becomes (tools/vanilla_as.py)')
+    off = s.get('off')
+    if off is not None:
+        if (t >= NUM_ORIGINAL or not isinstance(off, dict) or set(off) - {'level', 'stats'}
+                or off.get('level') not in LEVELS[1:6]):
+            raise SystemExit(f'{p}: off: an original species override with level fresh..ultimate and optional stats')
+        if 'stats' in off and (not isinstance(off['stats'], dict) or set(off['stats']) != set(STAT_KEYS)
+                or any(type(v) is not int or not 0 <= v <= (9999 if k in ('hp', 'mp') else 999)
+                       for k, v in off['stats'].items())):
+            raise SystemExit(f'{p}: off.stats: all six target stats, hp/mp 0..9999, others 0..999')
+    if t < NUM_ORIGINAL and s.get('level') in LEVELS:
+        with open(os.path.join(ROOT, 'content/tables/original-species-levels.json')) as f:
+            baseline = json.load(f)['levels'][str(t)]
+        original_level = baseline if baseline != 'none' else LEVELS[min(LEVELS.index(s['level']), 5)]
+        if s['level'] != original_level and off is None:
+            raise SystemExit(f'{p}: off: required when level differs from the committed original level')
     if ((s.get('evolution') or {}).get('requirements') or {}).get('digimon') == s['id']:
         raise SystemExit(f'{p}: evolution.requirements.digimon: the species itself (the bonus needs a parent, or -1)')
     para_from_json(s, p)
@@ -1154,8 +1169,7 @@ CHART_ICON_SIZE, CHART_ICONS_PER_SECTOR = 0x120, 7   # a 16-colour CLUT and two 
 HEADER_LEVELS = 0x40             # the header sector: the level of each partner species (one byte, partner list order)
 HEADER_RECORD_ORIGINALS = 0x20   # the header sector: a bit per original carried by its record (23 bytes)
 HEADER_VANILLA = 0x780           # the header sector: a bit per species the original game raises ("vanilla": NEW DIGIMON off)
-# the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per original whose file gives it
-# another level than the disc's (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
+# the header sector: a count, then {id, level with NEW DIGIMON on, level with it off} per explicit JSON override (include/dw/species.h SPECIES_HEADER_LEVEL_OFF; modApplySpeciesLevels)
 HEADER_LEVEL_OFF, LEVEL_SWAP_MAX = 0x500, 32
 VERSION = 2
 HEADER_CITY = 0x38             # optional sector pointer; record format and existing header offsets stay v2
@@ -1472,17 +1486,10 @@ def build(out=OUT, content=None, quiet=False, select=None):
 
 
 def level_swaps(allsp):
-    """[(id, level with NEW DIGIMON on, level with it off)] of the originals whose file gives them another level than the
-    disc's: off is the disc's level, or with none on the disc (0, a story character) the file's, never past Ultimate (the
-    original game has no Mega)."""
-    O = originals(); out = []
-    for t in range(1, NUM_ORIGINAL):
-        s = allsp.get(t)
-        if not s or s.get('level') not in LEVELS: continue
-        on = LEVELS.index(s['level']); disc = O.rec[t]['para']['level']
-        off = disc if 1 <= disc <= 5 else min(on, 5)
-        if on and off != on: out.append((t, on, off))
-    if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} originals with another level than the disc: room for {LEVEL_SWAP_MAX}')
+    """Explicit JSON level overrides; neither values nor membership come from a disc."""
+    out = [(t, LEVELS.index(s['level']), LEVELS.index(s['off']['level']))
+           for t, s in sorted(allsp.items()) if 'off' in s]
+    if len(out) > LEVEL_SWAP_MAX: raise SystemExit(f'{len(out)} off overrides: room for {LEVEL_SWAP_MAX}')
     return out
 
 

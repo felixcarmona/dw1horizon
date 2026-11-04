@@ -63,5 +63,6 @@
       "flags": 0
     },
     "gains": {"hp": 2000, "mp": 1500, "offense": 150, "defense": 150, "speed": 150, "brains": 150}
-  }
+  },
+  "off": {"level": "rookie"}
 }
