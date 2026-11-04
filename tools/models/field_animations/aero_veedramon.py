@@ -17,7 +17,7 @@ from tools.models.field_animations.articulation import replace_channels
 from motiondiscidentity import changed_programs
 from tools.models.field_animations.war_greymon import rotation, set_rotation
 
-SOURCE = '8e59a86ad5546db71470e54f4e0818083d021c5a7d81a72fd7666928a6d0289a'
+SOURCE = '537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2'
 CHAINS = [(12, 13, 14), (15, 16, 17)]
 
 def _forward(animation, distance, period):

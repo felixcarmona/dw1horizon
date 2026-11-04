@@ -949,9 +949,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/213-AeroVeedramon.MMD.mdelta",
-        "delta_sha256": "cb110b16aa2ef80213b71063d7db51a2fea74ac58527dfa4d003404d2863424c",
-        "sha256": "8e59a86ad5546db71470e54f4e0818083d021c5a7d81a72fd7666928a6d0289a",
-        "size": 109004
+        "delta_sha256": "3a7e503b1f16c8cf848c0bf60eb528b71e5b62604bea5605dab795a679eb8c26",
+        "sha256": "537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2",
+        "size": 108254
       },
       "tim": {
         "sources": [

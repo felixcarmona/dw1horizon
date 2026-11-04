@@ -971,9 +971,9 @@
   "name": "AeroVeedramon",
   "bones": 25,
   "skeleton_sha256": "d7203687becc62c085a7912abb829f28ad16776549dd6f23988286e247d2f8cc",
-  "source_sha256": "8e59a86ad5546db71470e54f4e0818083d021c5a7d81a72fd7666928a6d0289a",
+  "source_sha256": "537ddcde347903c488812ebf8137fe8772001c78f341d96e634f9d0986ebb8f2",
   "base_generator": "tools.models.field_animations.aero_veedramon",
-  "post_source_sha256": "a989099816cc4fde8261c6ea9300bb3a1bf6507b46537e34d38ea80bdfaee81f",
+  "post_source_sha256": "cec6ebd5bd45874ce829f89377d7a0df079d13752357cbaa7054d66b1fcb5f8a",
   "slots": {
    "2": {
     "from": 2,
