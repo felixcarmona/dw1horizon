@@ -413,6 +413,11 @@ def set_moves(e, dig, ln):
     for k in range(3):                                      # animation ids 0x2E + index into its technique list
         e[f'move{k}'] = 0x2E + k if k < nmoves else 255
     e['move3'] = 255
+    # A noncombat template (for example Unimon in MIHA05) has zero priorities.
+    # Assigning techniques alone leaves its replacement unable to choose an attack.
+    if nmoves and not any(e.get(f'prio{k}', 0) for k in range(min(3, nmoves))):
+        for k, priority in enumerate((40, 30, 30, 0)):
+            e[f'prio{k}'] = priority if e[f'move{k}'] != 255 else 0
 
 
 def new_slot_entry(m, screen, slot, dig, stats, ln, like, dwmap, section=None):

@@ -7,7 +7,7 @@
   "day_night": true,
   "reads_digimon": true,
   "doors": 0,
-  "toilet": 0,
+  "toilet": {"x1": -1250, "z1": 850, "x2": -1350, "z2": 1250},
   "caption": "Iron Hills",
   "concave": false,
   "maphead": {

@@ -69,7 +69,7 @@ fixture) and `tools/dev/playtest/partner_walk_host.py` (actual arrival C, all
 partner records and all ten toilet coordinate rows, 30 starts each, plus deadline
 and reset cases). The host sweep models root translation and quantized facing;
 it does not emulate collisions, clip rotation/scale channels or whole scenes.
-The extended story currently adds no nonzero toilet IDs to its new screens.
+Three screens of the extended story have toilets of their own (318, 326 and 331: `story/mods/what-the-island-forgot/maps/toilets.py`); their walk points are in the screen records, not in `TOILET_DATA`.
 
 The controlled English smoke build adds 512 resident bytes, including the
 16-byte watchdog: `main_BSS_END` moves from `0x801cb3cc` to `0x801cb5cc`, and
@@ -438,6 +438,8 @@ The species added by the mod join the same pickers; the disc's own routes are un
 A well-kept chain reaches Champion at age 102 h, Ultimate after 168 more hours (age 270 h), then Mega after another 120 h (age 390 h). Birth lifetime 408 plus the Ultimate bonus 96 leaves 114 h immediately before the Mega, which adds 120 h. Happiness must stay at least 80, without sickness or other extra lifetime loss. An Ultimate-to-Ultimate transition preserves the evolution timer and adds no lifetime; only reaching Ultimate from another level grants its 96 h. All 48 imported Megas use the real level-6 rule; Phoenixmon, HerculesKabuterimon, MetalEtemon, Machinedramon, Jijimon and Analogman retain level Ultimate.
 
 The picker model uses attainable unupgraded File City training states: at most 84 sessions during the Champion's 168 h and 60 during the Ultimate's 120 h, reserving sleep, food and rest. Natural evolution gains feed the second stage. Every Ultimate parent is checked, including secondary parents without the `digimon` bonus. Added Ultimate siblings use distinct stat-average formulas so the first listed cannot win every overlap. Original disc ties remain; Mamemon can use happiness 90 rather than Piximon's 95, and some native routes need deliberate care mistakes. No evolution asks for a number of learned techniques any more; Gigadramon's old 35 became 100 battles. Arrival witnesses prefer ordinary Champion routes and exclude Sukamon’s backup-stat restoration from the ordinary gains formula. The model follows the production picker’s retained accumulator: a qualifying loser leaves its divided stat total and count for the next qualifying candidate. These are conditional stat, picker and lifetime witnesses, not a complete care simulation.
+
+KingEtemon (303, Mega, Virus) evolves from Etemon, Monzaemon and Digitamamon. Etemon keeps the primary-parent bonus; Monzaemon shares battle and air, and Digitamamon shares air. These [canon parents](https://wikimon.net/King_Etemon) leave Monzaemon and Digitamamon with two Mega targets each. ShogunGekomon and Vademon are also canon candidates, but share none of KingEtemon's specialties and are excluded. KingEtemon keeps its Mega stat thresholds and weight: 5000 HP, 500 speed, 400 brains and weight 40. Its care band is at most 10 mistakes so the added parents have practical chains (the normal scoring and weight tolerance apply). Practical chain checks cover every included parent.
 
 `tools/test_evo_tree.py` guards topology, specialties, special-only roots and wild-only recolours in the self-test. `tools/evo_check.py` checks the built graph and exits with failure for an unreachable picker route or a lost disc canonical state.
 
