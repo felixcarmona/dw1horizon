@@ -123,6 +123,23 @@ class ChineseLayoutTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'duplicate key'):
                 zh.read_json(path)
 
+    def test_review_uses_original_name_banks_for_executable_names(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            key = 'main.ITEM_NAMES.0'
+            for path, value in (
+                    ('text/ours/names.json', 'Food'),
+                    ('text/zh-hans/names.json', '食物'),
+                    ('text/jp/names.json', '<original & name>'),
+                    ('text/jp/dialogue.json', 'wrong dialogue bank')):
+                zh.write_json(root / path, {key: value})
+            output = root / 'review.html'
+            zh.review(output, root)
+            text = output.read_text()
+            self.assertIn('&lt;original &amp; name&gt;', text)
+            self.assertIn('食物', text)
+            self.assertNotIn('wrong dialogue bank', text)
+
 
 if __name__ == '__main__':
     unittest.main()

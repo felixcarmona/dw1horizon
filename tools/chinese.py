@@ -348,8 +348,10 @@ def review(destination, root=ROOT):
     """Local parallel text; never distribute extracted Japanese in the repository."""
     japanese = {}
     for name in ('jp', 'jp-rev1'):
-        path = root / 'text' / name / 'dialogue.json'
-        japanese[name] = read_json(path) if path.exists() else {}
+        japanese[name] = {}
+        for kind in ('dialogue', 'names'):
+            path = root / 'text' / name / (kind + '.json')
+            japanese[name][kind] = read_json(path) if path.exists() else {}
     columns = ['Key / scene', 'English', 'Japanese', 'Japanese Rev 1', 'Simplified Chinese', 'ES / PT / FR / DE / IT']
     rows = []
     def cell(value):
@@ -358,6 +360,7 @@ def review(destination, root=ROOT):
         if not target.exists():
             continue
         original, translated = read_json(source), read_json(target)
+        kind = 'names' if source.name == 'names.json' else 'dialogue'
         context = []
         for lang in ('es', 'pt-br', 'fr', 'de', 'it'):
             relative = source.relative_to(root).as_posix()
@@ -369,7 +372,7 @@ def review(destination, root=ROOT):
                 continue
             other = '\n\n'.join(lang + ': ' + '\n'.join(strings(bank[key])) for lang, bank in context if key in bank)
             values = [str(source.relative_to(root)) + '\n' + key, original.get(key, ''),
-                      japanese['jp'].get(key, ''), japanese['jp-rev1'].get(key, ''), value, other]
+                      japanese['jp'][kind].get(key, ''), japanese['jp-rev1'][kind].get(key, ''), value, other]
             rows.append('<tr>' + ''.join(cell(v) for v in values) + '</tr>')
     path = Path(destination)
     path.parent.mkdir(parents=True, exist_ok=True)
