@@ -405,6 +405,16 @@
       "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
       "authored_sha256": "58cf6d92a10b44270d65acb9fea303f78696527933bf310700ad34a10e8d75fd",
       "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing; DWS synchronized with the authored Python source"
+    },
+    "zones/toy-mansion/s144-150/script.py": {
+      "original_sha256": "e2b156c42d9300edb6b3847da6c78387d6fa2a859380dd25524e4a8d39cf6b95",
+      "authored_sha256": "2b1b187c782b910b5fa76fdd69631eeb6550fc93f0f7bed388b102daa6214a2e",
+      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+    },
+    "zones/toy-mansion/s144-150/script.dws": {
+      "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
+      "authored_sha256": "a8a4bd48490a80e25a2097829c677f56bb85582b48badf63b5436a02b1859f53",
+      "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
     }
   }
 }
