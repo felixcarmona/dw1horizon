@@ -174,11 +174,11 @@ def lab_evolve(t, out):
     open_cheats(3)
     press('CONFIRM')
     choices, previous, steady = [], -1, 0
-    for _ in range(60):                  # the list fills while the disc reads: done once it holds the species or stops growing
-        EMU.wait(1)
+    for _ in range(60):                  # the list fills while the disc reads: done once it stops growing (the menu puts
+        EMU.wait(1)                      # its cursor back when the fill ends, so a species found early must wait too)
         choices = lab_list() if mem('MOD_LAB_VIEW').get('MOD_LAB_VIEW') == 3 else []
         steady = steady + 1 if choices and len(choices) == previous else 0
-        if t in choices or steady >= 4: break
+        if steady >= 3: break
         previous = len(choices)
     if t not in choices:
         press('CANCEL', 'CANCEL', 'START')
