@@ -11,7 +11,7 @@ import os
 from tools.localize.catalog import LANGUAGES, UI, word
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BATTLE = dict(fr='COMBAT!', de='KAMPF!', it='LOTTA!', ja='バトル!', ca='COMBAT!')
+BATTLE = dict(fr='COMBAT!', de='KAMPF!', it='LOTTA!', ja='バトル!', ca='COMBAT!', **{'zh-hans':'战斗！'})
 
 
 @lru_cache(None)
@@ -25,15 +25,24 @@ def glyphs():
 
 
 def mask(text, maxw, maxh, preserve=False):
-    table = glyphs()
-    rows = [[] for _ in range(11)]
+    chinese = any('\u3400' <= char <= '\u9fff' for char in text)
+    if chinese:
+        from tools.chinese import read_json
+        data = read_json(os.path.join(ROOT, 'tools/font/chinese-ui.json' if maxh < 12 else 'tools/font/chinese.json'))['glyphs']
+        table = {char:[''.join('#' if not (bits & (0x8000 >> x)) else '.' for x in range(row[0]))
+                       for bits in row[1:]] for char,row in data.items()}
+    else:
+        table = glyphs()
+    height = len(next(iter(table.values())))
+    rows = [[] for _ in range(height)]
     for char in text:
         if char == ' ':
-            cell = ['....'] * 11
+            cell = ['....'] * height
         else:
             cell = table[char]
-            width = max((row.rfind('#') + 1 for row in cell), default=1)
-            cell = [row[:max(1, width)] + '.' for row in cell]
+            if not chinese:
+                width = max((row.rfind('#') + 1 for row in cell), default=1)
+                cell = [row[:max(1, width)] + '.' for row in cell]
         for out, row in zip(rows, cell):
             out.extend(c == '#' for c in row)
     if not rows[0]:
@@ -66,6 +75,10 @@ def apply(files, language, work):
     if language not in LANGUAGES:
         return
     from tools.localize.build import tim_entries, put_indices
+    if language == 'zh-hans':
+        for (code,path),data in list(files.items()):
+            if code == 'en' and path.startswith('STDDAT/GRADE/'):
+                files.setdefault((language,path),bytearray(data))
     col = LANGUAGES.index(language)
     grids = {}
 
@@ -142,23 +155,54 @@ def apply(files, language, work):
                     ('DIGITALMONSTER-KOLOSSEUM','OFFENES TURNIER','KLASSE '),
                     ('COLOSSEO DIGITALMONSTER','TORNEO APERTO','CATEGORIA '),
                     ('デジタルモンスター コロシアム','オープンたいかい','ランク '),
-                    ('COLISEU DIGITALMONSTER','TORNEIG OBERT','CATEGORIA ')][col]
+                    ('COLISEU DIGITALMONSTER','TORNEIG OBERT','CATEGORIA '),
+                    ('数码宝贝竞技场','公开赛','等级 ')][col]
         draw(path,(0,64,256,14),captions[0],white,0,grey)
         draw(path,(0,78,256,15),captions[1],white,0,grey)
         draw(path,(0,93,256,27),captions[2]+letter,white,0,grey)
 
-    push = ('APPUYEZ','DRÜCKEN','PREMI','おす','PREM')[col]
-    finish = ('FINI!','FINALE!','FINALE!','ひっさつ!','FINAL!')[col]
+    push = ('APPUYEZ','DRÜCKEN','PREMI','おす','PREM','按下')[col]
+    finish = ('FINI!','FINALE!','FINALE!','ひっさつ!','FINAL!','必杀！')[col]
     for path, entry in [('ETCDAT/BI_IN.TIM',0), ('ETCDAT/ETCTIM.BIN',0)]:
         draw(path,(139,8,31,9),push,10,0,1,entry)
         draw(path,(0,29,46,15),finish,12,0,10,entry,lambda y: 11 if y >= 12 else 14 if y >= 10 else 12)
-    draw('ETCHI/LIFE.TIM',(48,0,64,24),('VIE','LEBEN','VITA','のこり','VIDA')[col],7,0,8)
-    draw('ETCNA/TITLE256.TIM',(0,240,129,11),('Appuyez sur START','START drücken','Premi START','START をおして','Prem START')[col],0,255,91)
-    draw('STDDAT/STDTIM.BIN',(0,8,144,24),('TEMPS ÉCOULÉ!','ZEIT UM!','TEMPO!','じかんぎれ!','TEMPS!')[col],1,0,15,2)
-    draw('STDDAT/TAISEN2.TIM',(48,0,79,14),('MODE VS','VS-MODUS','MODO VS','VS モード','MODE VS')[col],1,15,14)
-    draw('STDDAT/TAISEN_F.TIM',(120,0,124,13),('MODE COMBAT','KAMPFMODUS','MODO LOTTA','バトルモード','MODE COMBAT')[col],5,15,1)
-    draw('STDDAT/TAISEN_F.TIM',(120,14,124,13),('CHOISIR UNE ARÈNE','ARENA WÄHLEN','SCEGLI ARENA','ステージせんたく','TRIA ESCENARI')[col],5,15,1)
-    draw('STDDAT/TAISEN_F.TIM',(0,248,51,8),('COMBAT','KAMPF','LOTTA','バトル','COMBAT')[col],3,0,1)
+    draw('ETCHI/LIFE.TIM',(48,0,64,24),('VIE','LEBEN','VITA','のこり','VIDA','生命')[col],7,0,8)
+    draw('ETCNA/TITLE256.TIM',(0,240,129,11),('Appuyez sur START','START drücken','Premi START','START をおして','Prem START','按START键')[col],0,255,91)
+    draw('STDDAT/STDTIM.BIN',(0,8,144,24),('TEMPS ÉCOULÉ!','ZEIT UM!','TEMPO!','じかんぎれ!','TEMPS!','时间到！')[col],1,0,15,2)
+    draw('STDDAT/TAISEN2.TIM',(48,0,79,14),('MODE VS','VS-MODUS','MODO VS','VS モード','MODE VS','对战模式')[col],1,15,14)
+    draw('STDDAT/TAISEN_F.TIM',(120,0,124,13),('MODE COMBAT','KAMPFMODUS','MODO LOTTA','バトルモード','MODE COMBAT','战斗模式')[col],5,15,1)
+    draw('STDDAT/TAISEN_F.TIM',(120,14,124,13),('CHOISIR UNE ARÈNE','ARENA WÄHLEN','SCEGLI ARENA','ステージせんたく','TRIA ESCENARI','选择场地')[col],5,15,1)
+    draw('STDDAT/TAISEN_F.TIM',(0,248,51,8),('COMBAT','KAMPF','LOTTA','バトル','COMBAT','战斗')[col],3,0,1)
+    if language == 'zh-hans':
+        from tools.localize.chinese_catalog import CUPS, CAPTIONS
+        from tools.chinese import wrap, read_json
+        caption_font = read_json(os.path.join(ROOT,'tools/font/chinese.json'))['glyphs']
+        for name in [*CUPS, *('GRADE'+rank for rank in 'ABCDRS')]:
+            path = 'STDDAT/GRADE/'+name+'.TIM'
+            w,h,px = grid(path)
+            _,_,_,_,palette = tim_rgb(bytes(files[language,path]))
+            def nearest(rgb):
+                return min(range(1,len(palette)),key=lambda i:sum((a-b)**2 for a,b in zip(
+                    ((palette[i]&31)*8,((palette[i]>>5)&31)*8,((palette[i]>>10)&31)*8),rgb)))
+            white,gold,blue = nearest((248,248,248)),nearest((248,216,56)),nearest((24,72,136))
+            # A deterministic pixel-lettered notice needs no redistributed logo art.
+            background = next((i for i,value in enumerate(palette) if value == 0),nearest((0,0,24)))
+            px[:] = [background]*len(px)
+            for y in (4,h-5):
+                for x in range(8,w-8):px[y*w+x]=blue
+            for x in (8,w-9):
+                for y in range(4,h-4):px[y*w+x]=blue
+            title = CAPTIONS[2]+name[-1] if name.startswith('GRADE') else ''.join(CUPS[name][:2])
+            bitmap = mask(title, (w-24)//3, 12,preserve=True)
+            bw,bh = len(bitmap[0]),len(bitmap)
+            left,top=(w-bw*3)//2,22
+            for y,row in enumerate(bitmap):
+                for x,on in enumerate(row):
+                    if not on:continue
+                    for dy in range(3):
+                        for dx in range(3):px[(top+y*3+dy)*w+left+x*3+dx]=gold
+            lines = [CAPTIONS[0],CAPTIONS[1]] if name.startswith('GRADE') else [row for page in wrap(CUPS[name][2],caption_font,4) for row in page]
+            for i,line in enumerate(lines):draw(path,(12,76+i*16,w-24,16),line,white,background,preserve=True,padding=1)
     for (path, entry), (w,h,px) in grids.items():
         put_indices(files[language,path],entry,px)
     json.dump(battle_banner(language),open(os.path.join(work,'battle-banner-es.json'),'w'),ensure_ascii=False)

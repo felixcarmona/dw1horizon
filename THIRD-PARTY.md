@@ -96,6 +96,14 @@ the component notices for Ark Pixel, Cubic 11 and Galmuri, are retained in
 `tools/font/chinese-license/`. Redistribution and embedding are permitted under
 those terms. The full upstream font and any game-disc font are not bundled.
 
+`tools/font/chinese-ui.json` is the renamed **Horizon Simplified Chinese compact
+subset**, from the same release's 8px monospaced Simplified Chinese BDF. It is
+used for baked labels whose existing cells have seven ink rows. Its source and
+archive checksums are in `tools/font/chinese-license/ui-source.json`. Additional
+component notices for Miseki Bitmap, Boutique Bitmap 7x7 and Misaki are retained
+under `upstream/`; Misaki permits use, modification and redistribution. Dialogue
+continues to use the full 12px font. Both subsets are generated offline.
+
 ## Bundled source-game readers
 
 `tools/derive/importers/vendor/{dcb,dw2,dw3}` contains our readers from the

@@ -17,6 +17,7 @@ import json, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 # record sizes of the embedded tables (tools/localize/executable/extract.py EMBEDDED): the text and its NUL must fit
 SIZES = {'main.ITEM_NAMES.': 20, 'main.ITEM_MENU_LABELS.': 8, 'main.STAT_LABELS.': 12}
@@ -147,6 +148,7 @@ def exe_bank(source, glyphs=None, exe_font='original'):
         raise SystemExit(f'TEXT={source}: {os.path.relpath(p, ROOT)} does not exist: python3 tools/dws.py extract-text YOUR-DISC')
     from dws import backend as BE
     from dws.textbank import TextBank, CJK
+    BE.set_font('original')
     n = len(BE.EXTRA_ORDER) if glyphs is None else min(glyphs, len(BE.EXTRA_ORDER))
     BE.FONT.update({'extra': True, 'glyphs': n, 'chars': frozenset(BE.EXTRA_ORDER[:n]), 'of': f'--font-glyphs {n}',
                     'name': exe_font})
@@ -167,8 +169,12 @@ def exe_bank(source, glyphs=None, exe_font='original'):
             kept.append((k, 'Japanese characters missing from the target font')); continue
         if k in codes and codes[k] != FORMAT.findall(v):
             kept.append((k, 'its format codes differ from the US executable\'s (' + ' '.join(codes[k]) + ')')); continue
-        if k.startswith(MAP_NAME): t = centre_map_name(tb.fit(k, v))
-        elif k in VERBATIM: t = fit_verbatim(tb, k, v)
+        if k.startswith(MAP_NAME): t = tb.fit(k,v).strip() if chinese else centre_map_name(tb.fit(k, v))
+        elif k in VERBATIM:
+            if chinese:
+                from tools.localize.executable.chinese_layout import align
+                v = align(k,v)
+            t = fit_verbatim(tb, k, v)
         else: t = fit_keeping_codes(tb, k, v)
         t = (t if chinese else ascii_glyphs(t, font)).translate(SJIS_LABELS)
         size = next((n for pre, n in SIZES.items() if k.startswith(pre)), None)
@@ -180,7 +186,9 @@ def exe_bank(source, glyphs=None, exe_font='original'):
                 kept.append((k, f'{pixels} px; the item lists draw {ITEM_LIST_W}')); continue
         out[k] = t
     if tb.unfit: kept.append(('(characters)', 'dropped, no glyph: ' + ' '.join(sorted(tb.unfit))))
-    return {'font': font, 'text': out}, kept
+    bank = {'font': font, 'text': out}
+    if chinese:bank['encoding'] = 'dwzh-1'
+    return bank, kept
 
 
 def main(argv):

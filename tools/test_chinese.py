@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 from tools import chinese as zh
+from tools import chinese_resources as resources
 
 
 class ChineseFontTests(unittest.TestCase):
@@ -94,6 +95,49 @@ class ChineseLayoutTests(unittest.TestCase):
         digits = [tuple(self.glyphs[c][1:]) for c in '0123456789']
         self.assertEqual(len(set(digits)), 10)
         self.assertTrue(all(any(row != 65535 for row in digit) for digit in digits))
+
+    def test_unpacked_rows_reserve_their_terminator_unit(self):
+        text = 'A ' * 30
+        pages = zh.wrap(text, self.glyphs, packed=False)
+        for row in pages[0]:
+            self.assertLessEqual(zh.row_metrics(row, self.glyphs, packed=False)[1], 62)
+
+
+class ChineseContainerTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.font = zh.build_font(zh.read_json(zh.ROOT / zh.FONT_PATH), zh.repertoire())
+        cls.patch = b'DWLP' + struct.pack('<I', 1) + struct.pack('<II', 0x80100000, 4) + b'text'
+
+    def test_resources_share_sectors_but_keep_story_and_sign_routes(self):
+        data = resources.build(b'runtime', self.font, self.patch, [
+            dict(name='DG.SCN', story=0, data=b'extended'),
+            dict(name='DG.SCN', story=1, data=b'original'),
+            dict(name='FI_INFO.TIM', signs=True, data=b'extended')])
+        self.assertEqual(resources.validate(data), 3)
+        records = [resources.ENTRY.unpack_from(data, resources.DIRECTORY_OFFSET+i*16) for i in range(3)]
+        self.assertEqual(records[0][2], records[2][2])
+        self.assertNotEqual(records[0][2], records[1][2])
+        self.assertEqual(records[2][1], 2)
+        broken = bytearray(data);broken[resources.FONT_OFFSET+40] ^= 1
+        with self.assertRaisesRegex(ValueError, 'checksum'):
+            resources.validate(broken)
+
+    def test_bad_routes_writes_and_names_are_refused_before_output(self):
+        common = (b'runtime', self.font, self.patch)
+        row = dict(name='DG.SCN', data=b'data')
+        with self.assertRaisesRegex(ValueError, 'duplicate'):
+            resources.build(*common, [row, row])
+        patch = b'DWLP' + struct.pack('<I', 1) + struct.pack('<II', 0x801fffff, 4) + b'bad!'
+        with self.assertRaisesRegex(ValueError, 'outside resident'):
+            resources.build(b'runtime', self.font, patch, [])
+        names = bytearray(resources.NAME_COUNT*resources.NAME_SIZE)
+        names[:20] = b'A'*20
+        with self.assertRaisesRegex(ValueError, 'terminator'):
+            resources.build(*common, [], names)
+        names[:20] = b'A'*18+b'\xa0\0'
+        with self.assertRaisesRegex(ValueError, 'splits'):
+            resources.validate_names(names)
 
     def test_draft_preserves_controls_and_fits_its_authoring_boxes(self):
         report = zh.audit()

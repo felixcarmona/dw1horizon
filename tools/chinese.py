@@ -30,6 +30,7 @@ NO_START = frozenset('，。、；：？！）》〉」』】〕］｝”’％�
 NO_END = frozenset('（《〈「『【〔［｛“‘([{')
 TOKENS = re.compile(r'\{[^{}]+\}|#[A-Z]\d*|%[-+0-9.]*[a-zA-Z]|[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*|……|——|.')
 SOURCE_SHA256 = 'bdb520006cddacccc1d3f780d5fab79007a4d6d1f3559d04665e652af4cdf50f'
+UI_SOURCE_SHA256 = '31f654b8348f0d531d0aafe37364edd708eee7e4c6388ec700f77b5f6bf1b43c'
 
 
 def read_json(path):
@@ -77,14 +78,30 @@ def displayed(root=ROOT):
                     yield from strings(value)
 
 
-def repertoire(root=ROOT):
+def used_repertoire(root=ROOT):
     text = ''.join(ESCAPE.sub('', s) for s in displayed(root))
     glossary = read_json(root / 'text' / LANGUAGE / 'glossary.json')
     for group in ('species', 'items', 'techniques'):
         text += ''.join(row['zh'] for row in glossary.get(group, {}).values())
     text += ''.join(glossary.get('provisional', {}).values())
+    from tools.localize.chinese_catalog import texts
+    text += ''.join(texts())
     # Button glyphs are handled by the game's established button codes.
     return sorted(set(unicodedata.normalize('NFC', text + PUNCTUATION)) - set(ASCII + '\n\r\t○□△×'))
+
+
+def repertoire(root=ROOT):
+    needed = used_repertoire(root)
+    path = root / 'tools/font/chinese-codes.json'
+    if not path.exists():
+        return needed
+    chars = read_json(path)['characters']
+    if len(chars) != len(set(chars)) or any(len(c) != 1 or c in ASCII for c in chars):
+        raise ValueError('invalid append-only Chinese character codebook')
+    missing = set(needed) - set(chars)
+    if missing:
+        raise ValueError('Chinese codebook needs font import for: ' + ''.join(sorted(missing)))
+    return chars
 
 
 def index_to_code(index):
@@ -130,8 +147,18 @@ def row_metrics(row, glyphs, packed=True):
             if token.startswith('{color '):
                 size += 2
             elif token.startswith('{'):
-                pixels += 80
-                size += 16
+                if token == '{partner}' or token.startswith('{digimon '):
+                    pixels += 114
+                    size += 20
+                elif token.startswith('{item '):
+                    pixels += 72
+                    size += 12
+                elif token.startswith('{move '):
+                    pixels += 96
+                    size += 16
+                else:
+                    pixels += 80
+                    size += 16
             else:
                 raise ValueError('executable format controls are not dialogue: ' + token)
         else:
@@ -181,8 +208,8 @@ def wrap(text, glyphs, rows_per_page=3, packed=True):
     return [rows[i:i + rows_per_page] for i in range(0, len(rows), rows_per_page)] or [['']]
 
 
-def parse_bdf(path, wanted):
-    """Copy exact pixels onto a 12x12 cell; refuse clipping and absent glyphs."""
+def parse_bdf(path, wanted, height=12):
+    """Copy exact pixels onto a square cell; refuse clipping and absent glyphs."""
     text = Path(path).read_text(encoding='utf-8')
     ascent = int(re.search(r'^FONT_ASCENT (\d+)$', text, re.M)[1])
     out = {}
@@ -194,9 +221,9 @@ def parse_bdf(path, wanted):
         advance = int(re.search(r'^DWIDTH (\d+) ', block, re.M)[1])
         w, h, x, y = map(int, re.search(r'^BBX (-?\d+) (-?\d+) (-?\d+) (-?\d+)$', block, re.M).groups())
         rows = block.split('BITMAP\n', 1)[1].split('ENDCHAR', 1)[0].split()
-        if len(rows) != h or not 0 < advance <= CELL or char in out:
+        if len(rows) != h or not 0 < advance <= height or char in out:
             raise ValueError(f'invalid BDF record for {char!r}')
-        canvas = [0xFFFF] * CELL
+        canvas = [0xFFFF] * height
         for row, data in enumerate(rows):
             bits = int(data, 16)
             if len(data) != ((w + 7) // 8) * 2:
@@ -204,7 +231,7 @@ def parse_bdf(path, wanted):
             for column in range(w):
                 if bits & (1 << (((w + 7) // 8) * 8 - column - 1)):
                     xx, yy = x + column, ascent - y - h + row
-                    if not 0 <= xx < CELL or not 0 <= yy < CELL:
+                    if not 0 <= xx < height or not 0 <= yy < height:
                         raise ValueError(f'BDF pixels would be clipped: {char!r}')
                     canvas[yy] &= ~(0x8000 >> xx)
         out[char] = [advance, *canvas]
@@ -256,10 +283,18 @@ def validate_font(data):
 
 
 def audit(root=ROOT):
+    from tools.dws.text.profiles import packed_key
     report = {'translated': 0, 'expected': 0, 'missing': [], 'errors': []}
     glossary = read_json(root / 'text' / LANGUAGE / 'glossary.json')
     for source, target in banks(root):
         original = {k: v for k, v in read_json(source).items() if not k.startswith('_')}
+        if source.name == 'names.json':
+            # Existing localized banks also translate the defaults left implicit
+            # by the English bank (packed UI labels and option/training strings).
+            # Use their established inventory/control signatures, never their prose.
+            defaults = root / 'text/ja/names.json'
+            if defaults.exists():
+                original = {**{k:v for k,v in read_json(defaults).items() if not k.startswith('_')}, **original}
         translated = read_json(target) if target.exists() else {}
         report['expected'] += len(original)
         for key in original.keys() - translated.keys():
@@ -276,7 +311,8 @@ def audit(root=ROOT):
             text = ''.join(target_strings)
             if unicodedata.normalize('NFC', text) != text:
                 report['errors'].append(where + ': text is not NFC')
-            if sum(not s.strip() for s in target_strings) > sum(not s.strip() for s in strings(original[key])):
+            if ((not text.strip() and any(s.strip() for s in strings(original[key]))) or (packed_key(key) and
+                    sum(not s.strip() for s in target_strings) > sum(not s.strip() for s in strings(original[key])))):
                 report['errors'].append(where + ': blank translated row')
             # Preserve the exact controls, multiplicity and order. Explicit source
             # pages can be translated without losing a substitution or a color reset.
@@ -294,7 +330,8 @@ def audit(root=ROOT):
             for name in glossary['species']:
                 if re.search(r'(?<![A-Za-z])' + re.escape(name) + r'(?![A-Za-z])', literal):
                     report['errors'].append(where + ': untranslated species ' + name)
-            if not CJK.search(literal) and re.search(r'[A-Za-z]{3}', literal) and literal != 'START':
+            autonym = re.fullmatch(r'main\.MOD_OPT_STR_(?:ENGLISH|SPANISH|PORTUGUESE|FRENCH|GERMAN|ITALIAN|JAPANESE|CATALAN|20|60)', key)
+            if not autonym and not CJK.search(literal) and re.search(r'[A-Za-z]{3}', literal) and literal != 'START':
                 report['errors'].append(where + ': untranslated Latin prose')
     report['missing'].sort()
     report['errors'].sort()
@@ -304,13 +341,15 @@ def audit(root=ROOT):
 
 def audit_layout(root=ROOT):
     """Check explicit pages and preview automatic wrapping with the exact subset."""
-    from tools.dws.text.profiles import header_row, named_keys
+    from tools.dws.text.profiles import header_row, named_keys, packed_key, sized_boxes
     glyphs = read_json(root / FONT_PATH)['glyphs']
     named = named_keys(root)
+    custom = sized_boxes(root)
     errors = []
-    for _, target in banks(root):
+    for source, target in banks(root):
         if not target.exists() or target.name == 'names.json':
             continue
+        original = read_json(source)
         for key, value in read_json(target).items():
             if key.startswith('_'):
                 continue
@@ -327,13 +366,20 @@ def audit_layout(root=ROOT):
                 pages = [value] if all(isinstance(v, str) for v in value) else value
                 for page in pages:
                     rows = 3 if key in named else 4
-                    if page and header_row(page[0]):
+                    packed = packed_key(key)
+                    if not packed:
+                        old = original[key]
+                        old_pages = [old] if all(isinstance(v, str) for v in old) else old
+                        rows = max(map(len, old_pages))
+                    if key in custom:rows = custom[key][1]
+                    if key not in custom and page and header_row(page[0]):
                         rows = 4
                     if len(page) > rows:
                         raise ValueError(f'explicit page has {len(page)} rows, maximum {rows}')
                     for i, row in enumerate(page):
-                        pixels, size = row_metrics(row, glyphs)
-                        limit = 228 if i == rows - 1 else 240
+                        pixels, size = row_metrics(row, glyphs, packed)
+                        limit = 228 if packed and i == rows - 1 else 240
+                        if key in custom:limit = min(limit,custom[key][0])
                         if pixels > limit or size > 62:
                             raise ValueError(f'explicit row {i + 1}: {pixels}px/{size}B exceeds {limit}px/62B')
                         literal = re.sub(r'\{color [^}]+\}', '', row).strip()
@@ -398,6 +444,8 @@ def main(argv=None):
     rv.add_argument('output', type=Path)
     imp = commands.add_parser('import-font')
     imp.add_argument('bdf', type=Path)
+    ui = commands.add_parser('import-ui-font')
+    ui.add_argument('bdf', type=Path)
     font = commands.add_parser('font')
     font.add_argument('output', type=Path)
     a = parser.parse_args(argv)
@@ -414,13 +462,21 @@ def main(argv=None):
         return bool(result['errors'] or (result['missing'] and not a.draft))
     if a.command == 'review':
         review(a.output)
-    elif a.command == 'import-font':
+    elif a.command in ('import-font', 'import-ui-font'):
+        compact = a.command == 'import-ui-font'
         digest = hashlib.sha256(a.bdf.read_bytes()).hexdigest()
-        if digest != SOURCE_SHA256:
+        if digest != (UI_SOURCE_SHA256 if compact else SOURCE_SHA256):
             parser.error('BDF SHA-256 differs from the pinned licensed Simplified Chinese font')
-        glyphs = parse_bdf(a.bdf, set(ASCII + ''.join(repertoire())))
-        write_json(ROOT / FONT_PATH, {'_license': 'SIL-OFL-1.1; see chinese-license/',
-                   '_name': 'Horizon Simplified Chinese subset', '_source_sha256': digest, 'glyphs': glyphs})
+        codebook = ROOT / 'tools/font/chinese-codes.json'
+        chars = read_json(codebook)['characters'] if codebook.exists() else []
+        chars += sorted(set(used_repertoire()) - set(chars))
+        write_json(codebook, {'_format': 'Append-only DWZH-1 glyph order; never remove or reorder.', 'characters': chars})
+        glyphs = parse_bdf(a.bdf, set(ASCII + ''.join(chars)), 8 if compact else 12)
+        if not compact:glyphs[' '][0] = 4  # Match the game's packed-space and fixed-cell grid.
+        write_json(ROOT / ('tools/font/chinese-ui.json' if compact else FONT_PATH),
+                   {'_license': 'SIL-OFL-1.1; see chinese-license/',
+                   '_name': 'Horizon Simplified Chinese compact subset' if compact else 'Horizon Simplified Chinese subset',
+                   '_source_sha256': digest, 'glyphs': glyphs})
         print(f'{len(glyphs)} exact bitmap glyphs')
     elif a.command == 'font':
         chars = repertoire()
