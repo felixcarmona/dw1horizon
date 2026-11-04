@@ -674,6 +674,14 @@
       "scale": 1.6679278981456473,
       "target": "build/sizes-out/models/Raidenmon.MMD",
       "sha256": "798c7a965c07ff6ee71f3c22bed98339a7be2183ff9d473f9ce962c831503af8"
+    },
+    {
+      "source": "build/meshfix2-out/Cannondramon.MMD",
+      "source_sha256": "8abee5b76a633a04cfe65277e2556067f48a98b6a09087a46c49fabf5ff682a4",
+      "bones": 32,
+      "scale": 1.2853470437017993,
+      "target": "build/sizes-out/models/Cannondramon.MMD",
+      "sha256": "1c0879babe3ffc04d0547827468fbe0fb7067f7415773efaf6b229febde51229"
     }
   ]
 }
