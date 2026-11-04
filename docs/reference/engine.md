@@ -252,7 +252,8 @@ and starts animation 0. `renderDigimon` (`2867-2929`): per bone
 `GsGetLws` + `GsSortObject4(…, 2, <1 KB fast RAM at 0x1F800000>)`; wireframe (`renderWireframed`)
 during digivolution; `renderFlatDigimon` (`2722-2774`) replaces the model
 with a 15×15 *sprite* taken from its own texture (u 0xE0/0xF0, v
-offset+0x60/0x70) when `flatSprite ≠ −1`.
+offset+0x60/0x70) when `flatSprite ≠ −1`; with the flat-sprite patch, from
+where the texture's `FLT1` trailer says (`getFlatSprite`, `mod_species.c`).
 
 **Animation format** (as `anim.c` reads it; the full format with examples is in [../mods/models.md](../mods/models.md) §2.2): the MMD's table is `u32`
 offsets per *slot* (0 = does not exist), relative to the table itself. Each
