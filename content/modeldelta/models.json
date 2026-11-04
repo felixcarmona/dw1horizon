@@ -2654,9 +2654,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/269-Garbagemon.MMD.mdelta",
-        "delta_sha256": "9851269eabada9aa12180435ec0bcd28f51df34c111f6daab23bc93bb3fc6067",
-        "sha256": "93aad88df6c0fe1f8a3411b0e6b3326121013ab62ced0c3419f8c06f7609ccea",
-        "size": 92104
+        "delta_sha256": "0085ae2d96ff65cb024037de7ef147d46724f6a30c4689ee2b15e5eb9737ed1b",
+        "sha256": "3e062e65970fc7674ea86aebb60c79a12ed5181656fd41ff7aa3ee2eb5b52a7f",
+        "size": 96638
       },
       "tim": {
         "sources": [
