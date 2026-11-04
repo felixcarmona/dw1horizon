@@ -132,7 +132,7 @@ OVERLAYS = {   # field_overlay: (id, generator module, model name)
     'exveemon-field': ('194', 'tools.models.field_animations.gaits', '194-exveemon-field'),
     'flamedramon-field': ('195', 'tools.models.field_animations.gaits', '195-flamedramon-field'),
     'stingmon-field': ('187', 'tools.models.field_animations.chibi', '187-stingmon-field'),
-    'angewomon-field': ('190', 'tools.models.field_animations.chibi', '190-angewomon-field'),
+    'angewomon-field': ('190', 'tools.models.field_animations.celebrations', '190-angewomon-field'),
     'paildramon-field': ('199', 'tools.models.field_animations.chibi', '199-paildramon-field'),
     'ankylomon-field': ('189', 'tools.models.field_animations.pace', '189-ankylomon-field'),
     'lighdramon-field': ('201', 'tools.models.field_animations.pace', '201-lighdramon-field'),
