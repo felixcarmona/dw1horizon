@@ -16,7 +16,7 @@ PROFILES = {
     187: dict(source='f37cb5a299e02d001e064fd86f36503ba83d8b82779a8998302df79c19603c5b', bones=28, slots=[2], feet=[24,27],
               channels={b for b in [3,4,5,6,7,8,13,14,16,17,18,20]},
               style='supple guarded arms and delayed antennae; original torso, travel and legs retained'),
-    190: dict(source='b57233063c512508b7a2fbb487e7a35bc8d166859cec4fdbef6246c85f5f731f', bones=31, slots=[2,4], feet=[26,29], channels=set(range(11,19)),
+    190: dict(source='29f7ad7b0f12c90ac0129564b1c779fa042c0451d1545cca1af53fdec893f3b1', bones=31, slots=[2,4], feet=[26,29], channels=set(range(11,19)),
               style='coherent restrained feather fan instead of a single twisting feather; original body, arms, ribbons and legs retained'),
     199: dict(source='780e2a0ead735377c1c9470546dbeb07db6e83489cdb2fd85e2d7f733b58c071', bones=31, slots=[2,3,4], feet=[14,17], channels={8,11,27,28},
               style='delayed wrists and segmented tail; original body, gait, cannons and wing acting retained'),
