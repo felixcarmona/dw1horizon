@@ -22,7 +22,7 @@ build() {
   git -C "$W" checkout -q -B horizon "$BASE"
   git -C "$W" config user.name "$NAME"
   git -C "$W" config user.email "$EMAIL"
-  git -C "$W" am -q "$ROOT"/mods/patches/*.patch
+  git -C "$W" am -q $(python3 tools/patch_series.py list | sed "s#^#$ROOT/#")
   NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   FILTER_BRANCH_SQUELCH_WARNING=1 git -C "$W" filter-branch -f --env-filter "
     export GIT_AUTHOR_NAME='$NAME' GIT_AUTHOR_EMAIL='$EMAIL' GIT_COMMITTER_NAME='$NAME' GIT_COMMITTER_EMAIL='$EMAIL'

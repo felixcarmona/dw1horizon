@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# C mods on top of the decompilation: ONE patch series, mods/patches/NNNN-*.patch (see its README.md).
+# C mods on top of the decompilation: ONE patch series, the files mods/patches/<name>.patch in the order of
+# mods/patches/series (tools/patch_series.py; see mods/patches/README.md).
 #
 #   tools/mods.sh prepare [mods|int|tier2]  creates/updates a working copy of the decompilation with the series applied
 #                                      mods (default): build/decomp-mods, branch "mods" = the pinned decomp + the core
@@ -11,7 +12,8 @@
 #                                      override them. The disc has the original's data files; tools/build-full.sh
 #                                      makes the full disc
 #   tools/mods.sh save [mods|int]  exports the commits made in the working copy after `prepare` as new
-#                                      patches at the end of the series
+#                                      patches (<subject>.patch, no number) and appends their names to
+#                                      mods/patches/series
 #
 # Flow: prepare -> edit in build/decomp-int/src -> git commit there -> save -> build.
 # The series is linear: a change to an old patch is a new patch on top (history stays readable).
@@ -24,10 +26,10 @@ case "${2:-mods}" in
   *) echo "usage: $0 [prepare|build|save] [mods|int]" >&2; exit 1 ;;
 esac
 SAVE_DIR=mods/patches
-series() {   # the patches of the working copy: the core ones (up to the first merge) or all
+series() {   # the patches of the working copy, in the series order: the core ones (up to the first merge) or all
   case "$BR" in
-    mods) ls mods/patches/*.patch | sed '/Merge-branch/,$d' ;;
-    *) ls mods/patches/*.patch ;;
+    mods) python3 tools/patch_series.py list core ;;
+    *) python3 tools/patch_series.py list all ;;
   esac
 }
 case "${1:-build}" in
@@ -57,9 +59,25 @@ case "${1:-build}" in
     # them move and FILE_OFFSET_TABLE is rewritten from the linker map (docs/mods/scripts.md "If DG.SCN grows")
     python3 tools/build-disc.py "$NAME" --from "$W/build/us/psx/gcc" --relayout | tail -1 ;;
   save)
-    N=$(ls $SAVE_DIR/*.patch | wc -l)
-    git -C "$W" format-patch -q -o "$ROOT/$SAVE_DIR" --start-number $((N + 1)) "series-$BR".."$BR"
+    # format-patch numbers its files; the name in the series is the rest (the commit subject), and the order is the
+    # series file's, so two branches never take the same number. A name already taken stops before anything is written.
+    T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
+    git -C "$W" format-patch -q -N -o "$T" "series-$BR".."$BR"
+    NEW=()
+    for f in "$T"/*.patch; do
+      [ -e "$f" ] || { echo "no new commits in $W since series-$BR" >&2; exit 1; }
+      n=$(basename "$f" | sed 's/^[0-9]*-//')
+      if [ -e "$SAVE_DIR/$n" ] || printf '%s\n' "${NEW[@]}" | grep -qxF "$n"; then
+        echo "$SAVE_DIR/$n is taken: reword that commit's subject in $W and save again" >&2; exit 1
+      fi
+      NEW+=("$n")
+    done
+    for f in "$T"/*.patch; do
+      n=$(basename "$f" | sed 's/^[0-9]*-//')
+      mv "$f" "$SAVE_DIR/$n" && echo "$n" >> "$SAVE_DIR/series"
+    done
     git -C "$W" tag -f "series-$BR" >/dev/null
-    ls $SAVE_DIR | tail -3 ;;
+    python3 tools/patch_series.py check
+    tail -n "${#NEW[@]}" "$SAVE_DIR/series" ;;
   *) echo "usage: $0 [prepare|build|save] [mods|int]" >&2; exit 1 ;;
 esac
