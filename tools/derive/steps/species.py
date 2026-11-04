@@ -122,12 +122,17 @@ def pinned(ctx, provider, ids=None):
     got = provider.provide_models(ctx)
     allpins = json.load(open(os.path.join(runner.ROOT, PINS)))
     pins = allpins.setdefault(provider.name, {})
+    # a source variant (the player's World 3 is the USA release: importers.source_variant) has the pins of the species
+    # it makes otherwise in "<provider>@<variant>" (tools/models/variants.py writes them); the rest are the same
+    from ..importers import source_variant
+    variant = source_variant(ctx.path('source-games')) if provider.name == 'imports' else None
+    own = allpins.get(f'{provider.name}@{variant}', {}) if variant else {}
     missing, other, out = [], [], {}
     for t, files in sorted(got.items()):
         if ids is not None and t not in ids:
             continue
         sums = []
-        for f, want in zip(files, pins.get(str(t)) or [None, None]):
+        for f, want in zip(files, own.get(str(t)) or pins.get(str(t)) or [None, None]):
             if f is None:
                 sums.append(None)
                 continue
@@ -140,9 +145,16 @@ def pinned(ctx, provider, ids=None):
                 other.append(f'{t}: {os.path.relpath(f, runner.ROOT)} is {h}, pinned {want}')
             sums.append(h)
         out[t] = (files[0], files[1], tuple(sums))
-        if not missing and pins.get(str(t)) != list(sums):
-            pins[str(t)] = list(sums)
+        mine = own if str(t) in own else pins
+        if not missing and mine.get(str(t)) != list(sums):
+            mine[str(t)] = list(sums)
     # (a developer build: build-full.sh's --write-locks; the patcher's and the browser's are not)
+    if other and variant and not runner.strict():
+        # (a developer build from a source variant must not rewrite the reference pins: a species that differs on that
+        # release gets its own pins from tools/models/variants.py make)
+        raise SystemExit(f'species provider {provider.name}: built from {variant}, other bytes than pinned:\n  '
+                         + '\n  '.join(other) + f'\nrerun tools/models/variants.py make {variant} (or build with the '
+                         'reference source discs)')
     if other and not missing and getattr(ctx, 'developer', True) and not runner.strict():   # the pins follow what it made
         allpins[provider.name] = dict(sorted(pins.items(), key=lambda kv: int(kv[0])))
         _write_pins(allpins)
@@ -268,7 +280,11 @@ def pin(out):
     """Writes recipes/species-pins.json from the files the providers hand over now (imported models made into OUT)."""
     class Ctx:
         def path(self, *p): return os.path.join(out, *p)
-    pins = {}
+    from ..importers import source_variant
+    if source_variant(os.path.join(out, 'source-games')):
+        raise SystemExit('species pin: OUT was built from a source variant (World 3 USA); pin from the reference '
+                         'discs (the variant\'s pins: tools/models/variants.py make)')
+    pins = json.load(open(os.path.join(runner.ROOT, PINS)))
     with species_tools() as S, contextlib.redirect_stdout(io.StringIO()):
         for cls in (ImportedModels, RecordOriginals):
             got = cls(S).provide_models(Ctx(), generate=True)

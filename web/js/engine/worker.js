@@ -509,7 +509,7 @@ def check_read(p):
     b = holes[p].read()
     checked_one()
     return b
-bad = glue.check_holes(REL_DIR, KEY, check_read)
+bad = glue.check_holes(REL_DIR, KEY, check_read, SOURCE_DISCS)
 if bad:
     res = {'bad': bad}
 else:

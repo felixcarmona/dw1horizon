@@ -628,6 +628,65 @@ def check_source_discs(source_discs):
         notice = unsupported_notice(boot, size)
         if notice:
             raise PatchError(f'{os.path.basename(path)}: {notice}')
+def source_variant(m, source_discs):
+    """The source variant of the player's source discs, or None. A release lists in its manifest `source_variants`
+    {id: {game, boot}} the source discs that give imports of their own (Digimon World 3 USA: tools/models/variants.py);
+    the derived files and the patched disc made with one have their own checksums, kept under the pin key
+    "<base>+<id>" (pin_key)."""
+    given = dict(s.split('=', 1) for s in source_discs or [] if '=' in s)
+    for vid, v in sorted((m.get('source_variants') or {}).items()):
+        if v['game'] not in given:
+            continue
+        try:
+            boot = boot_name(resolve_bin(given[v['game']]))
+        except (OSError, PatchError, struct.error, IndexError, ValueError):
+            continue
+        if boot == v['boot']:
+            return vid
+    return None
+
+
+def unrecorded_variant(m, rel, source_discs):
+    """A source disc of a release whose imports are pinned on their own (the bundle has
+    content/modeldelta/variants/<id>.json) that this package was not made with (no manifest source_variants entry):
+    its title, else None. The build would run and its files come out different, so apply stops first."""
+    given = dict(s.split('=', 1) for s in source_discs or [] if '=' in s)
+    folder = os.path.join(rel, 'bundle', 'content', 'modeldelta', 'variants')
+    tools = os.path.join(rel, 'bundle', 'tools')
+    if not os.path.isdir(folder) or not os.path.isfile(os.path.join(tools, 'discs.py')):
+        return None
+    sys.path.insert(0, tools)
+    try:
+        import discs
+        known = {d['boot']: d for d in discs.SOURCE_VARIANTS}
+    finally:
+        sys.path.remove(tools)
+    for game, image in sorted(given.items()):
+        try:
+            d = known.get(boot_name(resolve_bin(image)))
+        except (OSError, PatchError, struct.error, IndexError, ValueError):
+            continue
+        if d and d['game'] == game and os.path.isfile(os.path.join(folder, d['id'] + '.json')) \
+                and d['id'] not in (m.get('source_variants') or {}):
+            return d['title']
+    return None
+
+
+def pin_key(base_key, variant=None):
+    """The key of a base disc's checksums when the source discs are `variant` (None: the reference ones)."""
+    return f'{base_key}+{variant}' if variant else base_key
+
+
+def pinned_for(table, key, default):
+    """table[key] for a pin key "<base>+<variant>": its own entry if it has one, else the base's, else `default` (a
+    file the variant does not change has the base's checksum)."""
+    if not table:
+        return default
+    if key in table:
+        return table[key]
+    return table.get(key.split('+', 1)[0], default)
+
+
 GOOD = ('same', 'renamed', 'patch')            # a base gives the USA bytes themselves
 WHOLE = GOOD + ('own', 'localize')             # a base gives its own version of the file
 
@@ -711,6 +770,7 @@ class BaseDisc:
         self.trace = None                                # make-release: records the files the localize tool opens
         self.source_discs = dict(s.split('=', 1) for s in source_discs or [])
         self._copy_images = {}
+        self.pin = key                                   # the pin key of its checksums (pin_key; set by apply)
 
     def how(self, p):
         if self.map is None: return 'same' if p in self.img.files or p == 'license_data.dat' else 'missing'
@@ -1050,7 +1110,11 @@ def build_disc3(p, base, holes, out_bin, expect_sha1=None, progress=True):
             # on a base whose own files the build reads, the Japanese one, it may differ from the USA-based file)
             whole_hole = len(ops) == 1 and ops[0][0] == 'h' and ops[0][2] == 0 and ops[0][1] in holes
             b = holes[ops[0][1]] if whole_hole else assemble(ops)
-            if not whole_hole and hashlib.sha1(b).hexdigest() != p.get('sha1_by_base', {}).get(base.key, {}).get(path, p['sha1'][path]): bad.append(path)
+            if not whole_hole:
+                pins = p.get('sha1_by_base', {})
+                want = pins.get(getattr(base, 'pin', base.key), {}).get(path) or pins.get(base.key, {}).get(path) \
+                    or p['sha1'][path]
+                if hashlib.sha1(b).hexdigest() != want: bad.append(path)
             files[path] = b
     lic = assemble(p['license'])
     if bad:
@@ -1096,7 +1160,8 @@ def local_holes3(m, v, base, rel, work, a):
         q = files.get(h['file'])
         b = open(q, 'rb').read() if q and os.path.exists(q) else b''
         # (a base whose own files the build reads differently, the Japanese one's localized images: its own SHA-1)
-        if hashlib.sha1(b).hexdigest() != h.get('sha1_by_base', {}).get(base.key, h['sha1']): bad.append(h['file'])
+        if hashlib.sha1(b).hexdigest() != pinned_for(h.get('sha1_by_base'), getattr(base, 'pin', base.key), h['sha1']):
+            bad.append(h['file'])
         holes[h['id']] = b
     if bad:
         raise PatchError('these files came out different from the release: ' + ', '.join(bad) + '. Nothing was written.')
@@ -1457,6 +1522,10 @@ def cmd_apply3(a, rel, m):
     SCREEN.start('check')
     key, src, _ = identify_base(a.disc, m['bases'])
     check_source_discs(getattr(a, 'source_disc', None))
+    missing_variant = unrecorded_variant(m, rel, getattr(a, 'source_disc', None))
+    if missing_variant:
+        raise PatchError(f'this release was made without the checksums for {missing_variant}: use another release of '
+                         'that game, or a newer release of Horizon.')
     say(f'   ok: the clean redump disc of {m["bases"][key]["title"]}.')
     p = read_payload3(read_patch_file(rel, v))
     work = tempfile.mkdtemp(prefix='dwpatch-')
@@ -1466,6 +1535,10 @@ def cmd_apply3(a, rel, m):
         mapping = json.load(open(os.path.join(rel, mp), encoding='utf-8')) if mp else None
         base = BaseDisc(key, src, mapping, tool_root=os.path.join(rel, 'bundle'), work=work,
                         source_discs=getattr(a, 'source_disc', None))
+        variant = source_variant(m, getattr(a, 'source_disc', None))
+        base.pin = pin_key(key, variant)
+        if variant:
+            say(f'   source discs: {variant} (imports of its own, checked against their own checksums)')
         say('2. Building the modded files from your disc')
         if v['local'].get('builder') != 'derive':
             SCREEN.start('build')
@@ -1473,7 +1546,7 @@ def cmd_apply3(a, rel, m):
         say(f'   ok: {len(holes)} files, all identical to the release.')
         say('3. Patching')
         SCREEN.start('write')
-        expect = v['outputs'].get(key, {}).get('sha1')
+        expect = v['outputs'].get(base.pin, {}).get('sha1')      # (exactly this base and these sources)
         fd, partial = tempfile.mkstemp(prefix='dwpatch-', suffix='.part', dir=out_dir)
         os.close(fd)
         sha, _ = build_disc3(p, base, holes, partial, expect)
@@ -1668,8 +1741,79 @@ def cmd_make_release(a):
     games = [s.split('=', 1)[0] for s in (a.source_disc or [])]
     if len(games) != 3 or set(games) != {'dcb', 'dw2', 'dw2003'}:
         raise PatchError('the everything release needs --source-disc for dcb, dw2 and dw2003, once each.')
+    for spec in getattr(a, 'source_variant', None) or []:
+        if '=' not in spec or spec.split('=', 1)[0] not in games or not spec.split('=', 1)[1]:
+            raise PatchError('--source-variant requires GAME=IMAGE for one of the source games.')
     save_check(a)
     return cmd_make_release3(a)
+
+
+def variant_of_image(game, image):
+    """The source variant id of a source disc image (tools/discs.py's release id whose imports are pinned on their
+    own: content/modeldelta/variants/<id>.json) and its boot file."""
+    sys.path.insert(0, os.path.join(REPO, 'tools'))
+    import discs
+    boot = boot_name(resolve_bin(image))
+    hit = [d for d in discs.SOURCE_VARIANTS if d['boot'] == boot and d['game'] == game and d.get('supported', True)]
+    if len(hit) != 1 or not os.path.isfile(os.path.join(REPO, 'content', 'modeldelta', 'variants', hit[0]['id'] + '.json')):
+        raise PatchError(f'--source-variant {game}={image}: boots {boot}, not a supported source variant '
+                         '(content/modeldelta/variants/)')
+    return hit[0]['id'], boot
+
+
+def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs):
+    """For each --source-variant GAME=IMAGE: tools/derive with that disc in place of the reference one, on every
+    base whose derived files are its own (a regional base) and once on the USA disc for the others (they read the
+    USA bytes, as the reference pass does). Records each derived file that comes out otherwise as
+    sha1_by_base["<base>+<variant>"] and the patched disc's SHA-1 as outputs["<base>+<variant>"]. The derive runs
+    go in parallel (--variant-jobs at once, the CPUs shared between them). -> manifest source_variants."""
+    import concurrent.futures
+    sv = {}
+    for spec in a.source_variant:
+        game, image = spec.split('=', 1)
+        vid, boot = variant_of_image(game, image)
+        sv[vid] = dict(game=game, boot=boot)
+        sources = [s for s in a.source_disc if s.split('=', 1)[0] != game] + [f'{game}={image}']
+        runs = ['us'] + [k for k in base_paths if k != 'us' and regional_derive(mappings.get(k), m['extract'])]
+        width = max(1, min(getattr(a, 'variant_jobs', None) or 2, len(runs)))
+        jobs = max(1, (os.cpu_count() or 1) // width)
+        say(f'  source variant {vid} ({game}: {os.path.basename(image)}): tools/derive on {", ".join(runs)}, '
+            f'{width} at once, --jobs {jobs} each')
+        t0 = time.time()
+
+        def derive_one(key):
+            bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, vid, key),
+                          source_discs=sources)
+            os.makedirs(os.path.join(work, vid, key), exist_ok=True)
+            got = derive_holes(out, m, dict(local=local), bd, os.path.join(work, vid, key, 'derive'), jobs=jobs,
+                               source_discs=sources)
+            return key, {hh['id']: open(got[hh['file']], 'rb').read() for hh in holes}
+
+        with concurrent.futures.ThreadPoolExecutor(width) as pool:
+            made = dict(pool.map(derive_one, runs))
+        m.setdefault('timings', {}).setdefault('source_variants', {})[vid] = round(time.time() - t0)
+        say(f'    derive: {time.time() - t0:.0f} s')
+        for key in base_paths:
+            pk = pin_key(key, vid)
+            vb = made[key] if key in made else made['us']
+            hb = dict(base_holes[key]); nb = 0
+            for hh in holes:
+                b = vb[hh['id']]
+                if b != base_holes[key][hh['id']]:
+                    hh.setdefault('sha1_by_base', {})[pk] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
+            bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, vid, key),
+                          source_discs=sources)
+            bd.pin = pk
+            ob = os.path.join(work, f'{name}-{pk}.bin')
+            sha, _ = build_disc3(p3, bd, hb, ob, None)
+            outputs[pk] = dict(sha1=sha, size=os.path.getsize(ob))
+            say(f'    {pk}: {nb} of {len(holes)} derived files differ, {sha}')
+            if a.keep_outputs:
+                os.makedirs(a.keep_outputs, exist_ok=True)
+                shutil.move(ob, os.path.join(a.keep_outputs, f'{name}-{pk}.bin'))
+            else:
+                os.remove(ob)
+    return sv
 
 
 def release_notices(out):
@@ -1858,6 +2002,7 @@ def cmd_make_release3(a):
             th = file_hashes(target, 'hashing the target')
             p3 = read_payload3(blob)
             outputs = {}
+            base_holes = {}                                 # {base: its derived files' bytes}: the variants differ from them
             for key in base_paths:
                 say(f'  applying to {BASES[key]["title"]}')
                 bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, key),
@@ -1879,6 +2024,7 @@ def cmd_make_release3(a):
                         if b != hole_bytes[hh['id']]:
                             hh.setdefault('sha1_by_base', {})[key] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
                     say(f'    {nb} of {len(holes)} derived files differ on {key}')
+                base_holes[key] = hb
                 tw = time.time()
                 sha, _ = build_disc3(p3, bd, hb, ob, th['sha1'] if key == 'us' else None)
                 if key == 'us' and m.get('timings', {}).get('apply'):
@@ -1899,6 +2045,9 @@ def cmd_make_release3(a):
                     shutil.move(ob, os.path.join(a.keep_outputs, f'{name}-{key}.bin'))
                 else:
                     os.remove(ob)
+            if getattr(a, 'source_variant', None):
+                m['source_variants'] = record_source_variants(
+                    a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs)
             m['variants'][name] = dict(description=DESCRIPTIONS.get(name, name), patch=fn, patch_size=len(blob),
                                        patch_sha1=hashlib.sha1(blob).hexdigest(), local=local,
                                        output=dict(name=f'{a.title} ({name})'), outputs=outputs,
@@ -2000,6 +2149,10 @@ def main(argv=None):
     p.add_argument('--holes', choices=('derive',), default='derive',
                    help='build derived files from the four player discs with tools/derive')
     p.add_argument('--keep-outputs', help='keep the per-base patched discs in this folder')
+    p.add_argument('--source-variant', action='append', metavar='GAME=IMAGE',
+                   help='another release of a source game whose imports differ (dw2003=World 3 USA): every base\'s '
+                   'checksums with it too (pin key "<base>+<release>")')
+    p.add_argument('--variant-jobs', type=int, default=2, help='--source-variant derive runs at once (default 2)')
     p.add_argument('--save-check-emu', action='store_true', help='also load every published release\'s save on the '
                    'first variant\'s disc in the emulator (tools/dev/saves/releases.py emu; the file check always runs)')
     a = ap.parse_args(argv)

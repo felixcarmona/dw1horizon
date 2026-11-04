@@ -55,20 +55,36 @@ The USA output remains unchanged.
 
 World 2003 Europe and World 3 Japan supply the same 57 recipe model files,
 including meshes, animation tracks and textures. Japan needs checksum verification;
-its verifier and inventory are bundled even when recording with Europe. USA World 3
-remains identifiable but unsupported. 15 of its 57 recipe models differ from the
-PAL files. For seven of them (BK-KingNumemon, Bulbmon, Minotarumon, Monmon,
-Mummymon, Pharaohmon, Suijinmon) the converter does not read what differs: their
-imports match the pins when built from the USA files unchanged (checked
-2026-11-03). The other eight are different models, with other meshes, other
-animation keys or another bone order, and seven of them are shipped species:
-Antylamon, Chrysalimon, Ebidramon, Growlmon, Kyubimon, MaloMyotismon and Renamon
-(Galacticmon is not shipped). Their PAL sections are not anywhere on the USA
-disc, so the pinned models cannot be rebuilt from it without shipping PAL bytes,
-and the old normalization payload that did ship them is not published.
-Supporting the USA release needs imports of its own for those seven species, our
-edit deltas carried over to them, and a second set of output checksums for each
-base.
+its verifier and inventory are bundled even when recording with Europe.
+
+World 3 USA is a source variant. 15 of its 57 recipe model files are its own; they are read as they are
+(`tools/dw3release.py`: their SHA-1 in `content/imports/releases/dw3-us.json`, and for Renamon, whose bones come in
+another order, that order, so every recipe's bone map stays valid). Seven species still come out as other models
+(other meshes on a few bones, or other animation keys): Antylamon, Chrysalimon, Ebidramon, Growlmon, Kyubimon,
+MaloMyotismon and Renamon. They are made from the USA models, and our edits are carried onto them by
+`tools/models/carry.py` (untouched parts from the USA import, our edited parts kept where both releases agree, the
+two mesh repairs on Kyubimon and MaloMyotismon found again by their geometry). Their deltas and pins live in
+`content/modeldelta/variants/dw3-us.json`, `content/modeldelta/deltas/dw3-us/` and the `imports@dw3-us` section of
+the species pins (made by `tools/models/variants.py make dw3-us`, checked by `check`). Each carried delta adds the
+same bytes as the European one (our edits) and none of the European models' data. The field overlays run on them
+with their reviewed parameters (`reviewed_as`). Nothing of either disc is stored.
+
+So with World 3 USA the derived files that hold those species (DIGI.DAT among them) and the patched disc have their
+own checksums. The manifest names the variant in `source_variants` (`{"dw3-us": {"game": "dw2003", "boot":
+"SLUS_014.36"}}`), and every checksum keyed by base also exists under the pin key `"<base>+dw3-us"`. `outputs` has one
+for every base. A hole's `sha1_by_base` has one only where the file differs, and a lookup falls back to the base's,
+then to the default (`dwpatch.pinned_for`). The patchers pick the key from the World 3 disc's boot file
+(`dwpatch.source_variant`): the command line, the desktop app (the same `apply`) and the browser
+(`web/enginebuild/glue.py pin`). The browser engine's plan is recorded with the reference discs, so
+`build_engine.py` adds what a World 3 USA build reads besides: its model files' own paths (`SOURCE_PATH_ALIASES`) and
+the variant's records and deltas for the imports, overlays and species jobs (`VARIANT_INPUTS`). A package without `source_variants` (made before 0.0.5) never matches it, and
+`tools/discs.py` stops such a disc there. A newer package made without `--source-variant` stops it before building
+(`dwpatch.unrecorded_variant`), and a developer build from the variant never rewrites the reference species pins.
+
+`make-release --source-variant dw2003=IMAGE` records them. tools/derive runs once with that disc in place of the
+European one on the USA disc and on each base whose derived files are its own (the six regional ones), all at once
+(`--variant-jobs`, the CPUs shared). Then one disc is written per base. The publication gate requires an output for
+every base with every variant, and refuses a source release list that rebuilds one release's files from another's.
 
 ## Checks
 
@@ -205,8 +221,7 @@ out-of-source differences, and independently audits reconstructed data. Retained
 regional mappings and unavailable source tables can still block publication. Read
 the exact package's `literal-gate.json` and reconstructed-data report; a diagnostic
 build that exits with a refusal is not publishable. The later audit sections
-explain the evidence and limits. Clean omits the unsupported historical USA World 3
-normalization payload; inventories from private snapshots cannot substitute for an
+explain the evidence and limits. Inventories from private snapshots cannot substitute for an
 audit of this tree's actual package.
 
 ## Release save compatibility
@@ -301,11 +316,12 @@ Input paths come from environment variables (all accept absolute paths or `~`):
 | `DCB_IMAGE` | `$SOURCE_ISOS/digital-card-battle/Digimon Digital Card Battle (USA).bin` |
 | `DW2_IMAGE` | `$SOURCE_ISOS/digimon-world-2/Digimon World 2 (USA).bin` |
 | `DW3_IMAGE` | `$SOURCE_ISOS/digimon-world-2003/Digimon World 2003 (E) [SLES-03936].bin` |
+| `DW3_US_IMAGE` | `$SOURCE_ISOS/digimon-world-2003/Digimon World 3 (USA).bin` (the source variant: `make-release --source-variant`) |
 
 The sequence is: clean tree/tag and file save gate; fast unit regressions; input SHA-1 inventory; private C patch
 replay; source-disc extraction; the recipe's everything build with original **2 MB** settings; `heapcheck.py` and
 the story compiler's heap check using the final executable map; offline `tools/selftest.sh`; `make-release` with
-all seven bases and three source discs (its file save gate always runs); standalone shipped-patcher applies for USA and Japan Rev 1, checked against the manifest; engine build into a new candidate folder;
+all seven bases and three source discs, and the seven again with World 3 USA (its file save gate always runs); standalone shipped-patcher applies for USA, Japan Rev 1 and Europe with World 3 USA, checked against the manifest; engine build into a new candidate folder;
 the browser suite's USA runner served locally with that candidate, requiring both success and an independent OPFS
 SHA-1 matching the package manifest; package-only tarball; unchanged checkout/version check. `--deploy` additionally runs `web/deploy.sh`; it is off by default.
 Offline selftests run with the original tool defaults, with disc recipe settings cleared from their environment.

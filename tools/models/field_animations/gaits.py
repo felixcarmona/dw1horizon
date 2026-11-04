@@ -124,7 +124,8 @@ def rotation_gain(delta,gain):
 
 
 def build(data,sk):
-    digest=hashlib.sha256(data).hexdigest();matches=[(sid,p)for sid,p in PROFILES.items()if p['source']==digest]
+    from tools.models.field_animations.reviewed import reviewed
+    digest=hashlib.sha256(data).hexdigest();matches=[(sid,p)for sid,p in PROFILES.items()if p['source']==reviewed(digest)]
     if len(matches)!=1:raise ValueError('No reviewed field-acting profile for this effective source model')
     sid,cfg=matches[0];n=len(sk);assert n==cfg['bones'];mmd.exe().skeleton[sid]=sk;mmd.exe().bone_count[sid]=n
     old=mmd.MMD.parse(data,n);old.type=sid;new=copy.deepcopy(old)

@@ -66,7 +66,9 @@ The project's site: a static page with no backend. The patcher runs in the visit
   release's seven bases: USA, Europe, France, Germany, Spain, Italy, Japan Rev 1; the redump dump) and the three games
   the imported species come from (Digimon Digital Card Battle, Digimon World 2, Digimon World 3 / 2003: any release
   `data/discs.json` lists and `tools/derive/importers/discs.py` reads). Their checked files are imported locally, then
-  our per-model deltas make the imported models; the release carries no raw imported models.
+  our per-model deltas make the imported models; the release carries no raw imported models. With World 3 (USA) seven
+  species are made from its own models (docs/patcher.md): the built files and the image are checked against the
+  manifest's `"<base>+dw3-us"` checksums (`glue.pin`, picked from the World 3 disc's boot file).
 
 ## The desktop app downloads
 

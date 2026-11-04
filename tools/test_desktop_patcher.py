@@ -62,14 +62,20 @@ class Images(unittest.TestCase):
                  ('dw1.iso', image('SLUS_010.32', 2048), 'why.isoDw1'),
                  ('other.bin', image('SCUS_944.26'), 'why.otherGame'),
                  ('best.bin', image('SLPS_917.12'), 'why.useInstead'),   # PlayStation the Best: no supported release
-                 ('w3us.bin', image('SLUS_014.36'), 'why.notYet'),
                  ('junk.bin', b'\1' * 5000, 'why.notImage')]
         for name, data, key in cases:
             with self.subTest(name=name), self.assertRaises(desktop.Problem) as e:
                 desktop.identify(self.write(name, data))
             self.assertEqual(e.exception.key, key)
-        with self.assertRaises(desktop.Problem) as e:
+        # a known release whose support is planned (none today: World 3 USA was the last, so a registry that says
+        # so stands in) names the releases that work
+        reg = json.loads(json.dumps(desktop.registry()))
+        w3us = next(d for d in reg['variants'] if d['id'] == 'dw3-us')
+        w3us.update(supported=False, soon=True, instead=['Digimon World 2003 (Europe)',
+                                                         'DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)'])
+        with patch.object(desktop, '_REGISTRY', reg), self.assertRaises(desktop.Problem) as e:
             desktop.identify(self.write('w3us.bin', image('SLUS_014.36')))
+        self.assertEqual(e.exception.key, 'why.notYet')
         self.assertEqual(e.exception.params, dict(release='Digimon World 3 (USA)', instead=[
             'Digimon World 2003 (Europe)', 'DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)']))
         for name, key in (('x.chd', 'why.chd'), ('x.7z', 'app.archive'), ('x.part2.rar', 'app.archive'),
@@ -81,6 +87,10 @@ class Images(unittest.TestCase):
     def test_source_disc_not_redump_is_checked_by_files(self):
         r = desktop.identify(self.write('dcb.iso', image('SLUS_013.28', 2048)))
         self.assertEqual((r['game'], r['release'], r['how']), ('dcb', 'dcb', 'files'))
+
+    def test_world_3_usa_is_a_source(self):
+        r = desktop.identify(self.write('w3us.bin', image('SLUS_014.36')))
+        self.assertEqual((r['game'], r['release']), ('dw2003', 'dw3-us'))
 
     def test_redump_match_and_cue(self):
         data = image('SLUS_011.93', extra=b'world two')

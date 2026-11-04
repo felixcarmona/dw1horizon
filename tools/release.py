@@ -296,6 +296,10 @@ def pipeline(a, r):
                    ('dcb', 'DCB_IMAGE', 'digital-card-battle/Digimon Digital Card Battle (USA).bin'),
                    ('dw2', 'DW2_IMAGE', 'digimon-world-2/Digimon World 2 (USA).bin'),
                    ('dw2003', 'DW3_IMAGE', 'digimon-world-2003/Digimon World 2003 (E) [SLES-03936].bin'))}
+    # source discs of another release whose imports differ (content/modeldelta/variants/): every base's checksums
+    # with them too, "<base>+<release>" in the manifest
+    variants = {'dw3-us': ('dw2003', Path(os.environ.get('DW3_US_IMAGE', src / 'digimon-world-2003/Digimon World 3 (USA).bin'))
+                           .expanduser().resolve())}
     out = r.out
     package, engine = out / 'package', out / 'engine'
     player_env = out / 'player-python'
@@ -325,7 +329,7 @@ def pipeline(a, r):
                 raise RuntimeError(f'output must be a new folder: {out}')
             if build.exists() or Path(str(build) + '.bin').exists():
                 raise RuntimeError(f'native build name already exists: {build}; choose another --out basename')
-            for p in (*bases.values(), *sources.values(), ROOT / 'extracted/SLUS_010.32',
+            for p in (*bases.values(), *sources.values(), *(v[1] for v in variants.values()), ROOT / 'extracted/SLUS_010.32',
                       ROOT / '.tools/mkpsxiso/build/mkpsxiso', ROOT / 'build/digimonworld.xml', seed / 'asm',
                       ROOT / 'decomp/config/us/symbols.txt',
                       seed / 'build/us/psx/generated', seed / 'external/psyq_headers'):
@@ -342,6 +346,11 @@ def pipeline(a, r):
             for k, path in {**bases, **sources}.items():
                 if r.sums[f'input-{k}: {path}'] != expected[k]:
                     raise RuntimeError(f'{k}: input SHA-1 differs from registered source: {path}')
+            from discs import SOURCE_VARIANTS
+            for vid, (game, path) in variants.items():
+                r.sums[f'input-{vid}: {path}'] = sha1(path)
+                if r.sums[f'input-{vid}: {path}'] != next(d['sha1'] for d in SOURCE_VARIANTS if d['id'] == vid):
+                    raise RuntimeError(f'{vid}: input SHA-1 differs from registered source: {path}')
             for rel, expected_sha in DISCS[0]['files'].items():
                 if sha1(ROOT / 'extracted' / rel) != expected_sha:
                     raise RuntimeError(f'extracted/{rel} is not from the USA source disc')
@@ -399,6 +408,9 @@ def pipeline(a, r):
                 cmd += ['--base', f'{k}={p}']
         for k, p in sources.items():
             cmd += ['--source-disc', f'{k}={p}']
+        for game, p in variants.values():
+            cmd += ['--source-variant', f'{game}={p}']
+        cmd += ['--variant-jobs', str(len(bases))]
         if a.save_check_emu:
             cmd += ['--save-check-emu']
         r.cmd(cmd, env)
@@ -406,9 +418,11 @@ def pipeline(a, r):
             manifest = json.loads((package / 'manifest.json').read_text())
             for k, output in manifest['variants'][manifest['default']]['outputs'].items():
                 r.sums['output-' + k] = output['sha1']
-    with r.step('Standalone package apply (USA and Japan Rev 1)'):
-        for base in ('us', 'jp1'):
-            dest = out / ('standalone-' + base)
+    with r.step('Standalone package apply (USA, Japan Rev 1, Europe with World 3 USA)'):
+        for base, vid in (('us', None), ('jp1', None), ('eu', 'dw3-us')):
+            key = base + ('+' + vid if vid else '')
+            dest = out / ('standalone-' + key)
+            used = dict(sources, **({variants[vid][0]: variants[vid][1]} if vid else {}))
             # Run the shipped reader outside the checkout, without developer imports.
             standalone_env = dict(env)
             for key in ('PYTHONPATH', 'PYTHONHOME'):
@@ -416,15 +430,15 @@ def pipeline(a, r):
             standalone_env.update(PYTHONNOUSERSITE='1', VIRTUAL_ENV=str(player_env),
                                   PATH=str(player_py.parent) + os.pathsep + standalone_env.get('PATH', ''))
             cmd = [player_py, '-B', '-E', '-S', package / 'dwpatch.py', 'apply', bases[base], '-o', dest]
-            for key, path in sources.items():
-                cmd += ['--source-disc', f'{key}={path}']
+            for game, path in used.items():
+                cmd += ['--source-disc', f'{game}={path}']
             r.cmd(cmd, standalone_env, cwd=out)
             if not r.dry:
                 images = list(dest.glob('*.bin'))
-                expected = manifest['variants'][manifest['default']]['outputs'][base]['sha1']
+                expected = manifest['variants'][manifest['default']]['outputs'][key]['sha1']
                 if len(images) != 1 or sha1(images[0]) != expected:
-                    raise RuntimeError(f'{base}: standalone image differs from package manifest')
-                r.sums['standalone-' + base] = expected
+                    raise RuntimeError(f'{key}: standalone image differs from package manifest')
+                r.sums['standalone-' + key] = expected
                 shutil.rmtree(dest)
         if not r.dry:
             shutil.rmtree(player_env)

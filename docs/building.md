@@ -31,9 +31,11 @@ through `tools/release.py` keep the from-zero path.
 - Your Digital Card Battle, Digimon World 2 and Digimon World 2003 discs for the
   imported species. `tools/discs.py` identifies supported releases. Source readers
   accept raw 2352-byte or cooked 2048-byte images and verify the files used.
-  Use European World 2003 or Japanese World 3; USA World 3 is unsupported.
-  See the [supported-release matrix](data/source-releases.md). The examples below
-  use European World 2003.
+  European World 2003, Japanese World 3 and USA World 3 all work; with USA World 3
+  seven imported species are made from its own models, so the image has other
+  checksums ([patcher.md](patcher.md)). See the
+  [supported-release matrix](data/source-releases.md). The examples below use
+  European World 2003, the release the recipes are made from.
 
 ## Steps
 

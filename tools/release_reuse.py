@@ -324,8 +324,9 @@ def publication(package, build, bases, sources):
 def validate_manifest(manifest):
     if (manifest.get('format') != 3 or manifest.get('default') != 'everything' or
             set(manifest.get('variants', {})) != {'everything'} or set(manifest.get('bases', {})) != BASES or
-            set(manifest['variants']['everything']['outputs']) != BASES):
-        raise RuntimeError('reuse requires the complete seven-base everything package')
+            set(manifest['variants']['everything']['outputs']) !=
+            BASES | {dw.pin_key(b, v) for b in BASES for v in manifest.get('source_variants') or {}}):
+        raise RuntimeError('reuse requires the complete seven-base everything package (with every source variant)')
 
 
 def prepare(a, r, info):
@@ -379,7 +380,7 @@ def prepare(a, r, info):
             try:
                 stamp(image.read(EXE), offset, manifest['version'], manifest['version'])
                 for hole in manifest['variants']['everything']['holes']:
-                    require_equal(digest(image.read(hole['file'])), hole.get('sha1_by_base', {}).get(key, hole['sha1']), key + ' hole')
+                    require_equal(digest(image.read(hole['file'])), dw.pinned_for(hole.get('sha1_by_base'), key, hole['sha1']), key + ' hole')
             finally:
                 image.f.close()
             outputs[key] = dict(path=str(path), **pin)

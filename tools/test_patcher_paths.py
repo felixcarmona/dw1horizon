@@ -70,7 +70,7 @@ class Paths(unittest.TestCase):
                                 ('apply_phases', lambda *a: []), ('release_line', lambda *a: 'test'),
                                 ('identify_base', lambda *a: ('us', str(source), {})),
                                 ('read_patch_file', lambda *a: b''), ('read_payload3', lambda *a: {}),
-                                ('BaseDisc', lambda *a, **k: None), ('local_holes3', lambda *a: {})):
+                                ('BaseDisc', lambda *a, **k: types.SimpleNamespace()), ('local_holes3', lambda *a: {})):
                 stack.enter_context(patch.object(dw, name, value))
 
             def interrupted(p, base, holes, path, expect):

@@ -129,7 +129,8 @@ def species_counts():
 
 # Other releases of the source games (redump, 2026-10-25). Each needs its own reading of the disc (the DCB
 # unpacker runs the game's routine at addresses of its executable; DW3's AAA archive may be laid out otherwise)
-# and is supported once its models come out equal to the ones the version above gives (dw3-us: tools/dw3release.py).
+# and is supported once its models come out equal to the ones the version above gives, or once the species that differ
+# have imports of their own (dw3-us: tools/dw3release.py, content/modeldelta/variants/).
 # game: the SOURCE_DISCS id it stands in for.
 SOURCE_VARIANTS = [
     dict(game='dcb', id='dcb-eu', title='Digimon Digital Card Battle (Europe)', serial='SLES-03900', boot='SLES_039.00',
@@ -143,17 +144,14 @@ SOURCE_VARIANTS = [
     dict(game='dw2', id='dw2-jp', title='DigimonWorld 2 (Japan)', serial='SLPS-02844', boot='SLPS_028.44',
          redump='http://redump.org/disc/14276/', size=508918704, crc32='28e75fd5',
          sha1='d50dd1a95228deb4d928ed88b3f1386af1c0e64b', supported=True),   # recipe files as USA's (dw2release.py)
-    # USA World 3 is recognised but not supported. 15 of the 57 recipe models differ from the PAL files. For 7
-    # (BK-KingNumemon, Bulbmon, Minotarumon, Monmon, Mummymon, Pharaohmon, Suijinmon) the converter does not read what
-    # differs: their imports come out with the pinned SHA-256 from the USA files as they are (2026-11-03). The other 8
-    # are different models (other meshes, animation keys, bone order); 7 are shipped species (Antylamon, Chrysalimon,
-    # Ebidramon, Growlmon, Kyubimon, MaloMyotismon, Renamon; Galacticmon is not). Their PAL sections are nowhere on
-    # the USA disc, so the pinned models can only be made from it by shipping PAL bytes, which we do not. Supporting
-    # it means USA imports of their own for those 7, our edit deltas carried over to them, and a second set of output
-    # checksums per base (docs/patcher.md).
+    # USA World 3: its own files for 15 of the 57 recipe models (tools/dw3release.py; Renamon's bones read back in the
+    # PAL order). 8 of them still come out as other imports (other meshes or animation keys): Antylamon, Chrysalimon,
+    # Ebidramon, Growlmon, Kyubimon, MaloMyotismon, Renamon are made from the USA models with our edits carried onto
+    # them (content/modeldelta/variants/dw3-us.json, tools/models/variants.py); the patched disc has checksums of its
+    # own with it ("<base>+dw3-us", docs/patcher.md).
     dict(game='dw2003', id='dw3-us', title='Digimon World 3 (USA)', serial='SLUS-01436', boot='SLUS_014.36',
          redump='http://redump.org/disc/632/', size=647526768, crc32='e3d73a16',
-         sha1='f0b022f9be53cbce14640abd8f01beaadcb35208', supported=False, soon=True),
+         sha1='f0b022f9be53cbce14640abd8f01beaadcb35208', supported=True),   # its own imports (variants/dw3-us.json)
     dict(game='dw2003', id='dw3-jp', title='DigimonWorld 3: Aratanaru Bouken no Tobira (Japan)', serial='SLPS-03446',
          boot='SLPS_034.46', redump='http://redump.org/disc/19096/', size=690951744, crc32='b46f4f43',
          sha1='8594fb44f601da64087a8996ffd89ab26abb11ea', supported=True),   # recipe models as PAL's (dw3release.py)
@@ -305,8 +303,7 @@ def release_files():
     """{disc or release id: {path on the disc: SHA-1}} of the files the import converters read, so the web page can
     check an image whose whole-image checksum cannot match redump (a 2048-byte .iso, a PBP, another rip) by the
     files that matter. From content/imports/releases/*.json (tools/dw2release.py, dw3release.py):
-    dw3-*: 'recipes' {model code: PAL SHA-1} and, for patched releases, 'patches' {code: {from_sha1}} (the release's
-    own file before the patch); dw2-*: 'recipes' {code: {path under AAA/4.AAA/MODEL: SHA-1}}, equal to the USA files.
+    dw3-*: 'recipes' {model code: PAL SHA-1} and, for a release with other files, 'own' {code: its SHA-1}; dw2-*: 'recipes' {code: {path under AAA/4.AAA/MODEL: SHA-1}}, equal to the USA files.
     Any other <game>-<release>.json (a DCB list, later) is used as it is when it has 'files' {path on the disc:
     SHA-1}. Ids: the release that the recipes are made from is the SOURCE_DISCS id (dcb, dw2, dw2003), the others
     the SOURCE_VARIANTS id (dcb-eu, dw2-jp, dw3-us...)."""
@@ -320,9 +317,8 @@ def release_files():
         if game == 'dw3':
             pal_dir, own_dir = 'AAA/DAT/FIGHT/MODEL', {'us': 'AAA/DAT/MODEL'}.get(rel, 'AAA/DAT/FIGHT/MODEL')
             out['dw2003'] = {f'{pal_dir}/{c}.BIN': h for c, h in sorted(j['recipes'].items())}
-            patches = j.get('patches', {})
-            out[f'dw3-{rel}'] = {f'{own_dir}/{c}.BIN': patches[c]['from_sha1'] if c in patches else h
-                                 for c, h in sorted(j['recipes'].items())}
+            own = j.get('own', {})
+            out[f'dw3-{rel}'] = {f'{own_dir}/{c}.BIN': own.get(c, h) for c, h in sorted(j['recipes'].items())}
         elif game == 'dw2':
             files = {f'AAA/4.AAA/MODEL/{f}': h for c in sorted(j['recipes']) for f, h in sorted(j['recipes'][c].items())}
             out['dw2'] = files                  # the check made them equal to the USA disc's
