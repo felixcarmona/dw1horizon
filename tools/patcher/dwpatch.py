@@ -2042,6 +2042,7 @@ def cmd_make_release3(a):
                                                plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'))
             if chinese_spec:
                 p['chinese'] = [chinese_spec]
+                datas['SCN/LANGZH.BIN'] = T.read('SCN/LANGZH.BIN')
                 p['files']['SCN/LANGZH.BIN'] = [['j', 0, 0, len(T.read('SCN/LANGZH.BIN'))]]
             json.dump(delta_report, open(os.path.join(out, name + '-binary-deltas.json'), 'w'), indent=2)
             audit_txt.append(f'binary deltas: {len(delta_report["files"])} files; raw extras per base: ' +

@@ -12,7 +12,10 @@ def metadata(plan):
     result = dict(plan)
     result['LANG_OVL'] = list(plan.get('LANG_OVL', [])) + [
         'zh-hans:' + spec for spec in plan.get('CHINESE_OVL', [])]
-    result['authored'] = list(plan.get('authored', [])) + ['@zh/module']
+    result['authored'] = list(plan.get('authored', []))
+    if plan.get('CHINESE_RESOURCES'):
+        result['authored'] += ['@zh/module', '@zh/font', '@zh/names', '@zh/writes']
+        result['authored'] += ['SCN/' + spec.split(':')[1] for spec in plan['CHINESE_OVL']]
     return result
 
 
