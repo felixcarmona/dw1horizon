@@ -49,7 +49,7 @@
  "229": {"model": "229-Phantomon.MMD", "aliases_applied": true},
  "230": {"model": "230-Rosemon.MMD", "aliases_applied": true, "field_overlay": "rosemon-field"},
  "231": {"model": "231-ShellNumemon.MMD", "aliases_applied": true},
- "232": {"model": "232-BomberNanimon.MMD", "aliases_applied": true, "field_overlay": "bombernanimon-boxer-field"},
+ "232": {"model": "232-BomberNanimon.MMD", "aliases_applied": true},
  "233": {"model": "233-RedOtamamon.MMD", "aliases_applied": true},
  "234": {"model": "234-Gatomon.MMD", "aliases_applied": true, "field_overlay": "gatomon-supported-field"},
  "235": {"model": "235-Candlemon.MMD", "aliases_applied": true, "field_overlay": "candlemon-pedestal-field"},

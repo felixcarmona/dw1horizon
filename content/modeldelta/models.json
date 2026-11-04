@@ -1524,9 +1524,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/232-BomberNanimon.MMD.mdelta",
-        "delta_sha256": "326e8f8d15f71287fc93ac457df6bb11b5cfff523a7fd73afb633358dcbcd4c0",
-        "sha256": "7fd9c5df4f4375200c88068b32e5e3a0a69a3c8dcf71d11a21b5e2013d39beb1",
-        "size": 89900
+        "delta_sha256": "2d1ff8da46fb4f434edb364a5e3fc9f3e650b581f05a9e418c5bf93871c07c1b",
+        "sha256": "f8800c939ad4c329c81c9c3331ba72b3c62ca7f0ef576b9d6fcfdb2f12da5d98",
+        "size": 99810
       },
       "tim": {
         "sources": [
