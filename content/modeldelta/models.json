@@ -3289,9 +3289,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/290-Clockmon.MMD.mdelta",
-        "delta_sha256": "d793fdfc8cfe730393aa4769a32f83a69e8777c9de5c6652108a34688242b3e1",
-        "sha256": "f9120e6fcd3476ecbe41b26584050e4da49b4bf8a503ae15d753758456d248d8",
-        "size": 89920
+        "delta_sha256": "9eae846b4153ce109e41c5b187790104dbda809ff6044c90d847a6eb98118024",
+        "sha256": "16e13680d7c920b13b3fc02b0792bf844cf2e856453fc634cebe63398c1aa0c6",
+        "size": 87322
       },
       "tim": {
         "sources": [
