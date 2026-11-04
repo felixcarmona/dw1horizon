@@ -690,6 +690,14 @@
       "scale": 0.8479701681485705,
       "target": "build/sizes-out/models/Devidramon.MMD",
       "sha256": "6b19a7167b6878f65ed4c2f30599f18a516f8153bff13d3cd6356abf34b24f08"
+    },
+    {
+      "source": "build/batch11/Bulbmon.MMD",
+      "source_sha256": "8a659280d5f1c769310dad25210b226c4c1c8d448c47224843421b4d123695ac",
+      "bones": 23,
+      "scale": 0.8695652173913043,
+      "target": "build/sizes-out/models/Bulbmon.MMD",
+      "sha256": "e881db25c4d80f911dc0fe3d089f62995e377024c704b5a271044757f0c89b2a"
     }
   ]
 }

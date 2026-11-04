@@ -3953,14 +3953,14 @@
       "mmd": {
         "sources": [
           {
-            "path": "build/batch11/Bulbmon.MMD",
-            "sha256": "8a659280d5f1c769310dad25210b226c4c1c8d448c47224843421b4d123695ac",
+            "path": "build/sizes-out/models/Bulbmon.MMD",
+            "sha256": "e881db25c4d80f911dc0fe3d089f62995e377024c704b5a271044757f0c89b2a",
             "size": 76218
           }
         ],
         "delta": "content/modeldelta/deltas/313-Bulbmon.MMD.mdelta",
-        "delta_sha256": "8e431f918fd7b6e2ae28d7f384735e84457dd573e149f50ae8756a5c2e429fdf",
-        "sha256": "1b14f2d53a5676c3a0d7bff0b4bb4303bcee12a457f5d959e235b74d91860e33",
+        "delta_sha256": "f64a68af9cded59dfaaaa76e4a3acd4d447e5b051af42a068768193187eaecc9",
+        "sha256": "15ff90ea4768e59c44208b985e3ad95049e7e55ce4de8810c1371705863451c4",
         "size": 80168
       },
       "tim": {
