@@ -9,33 +9,29 @@ from ..state import memories, memory_news, root2, root3
 # city and Jijimon tells it. Those choices set memory_news, told at the first homecoming below, so this is the next one. A
 # 0.0.2 save that lost them recovers here too.
 #
-# Not while the partner is dying: the death scene (old age, sickness) loads this house behind the dissolving partner and
-# runs this enter code there, so the news came out over the place where the partner died. It waits for the next time
-# the tamer walks in.
+# The compiler guards this house's enter handlers with engine.death_map_entry: death and lost-life recovery load the
+# house with a dying or surviving partner. Lifetime and lives alone cannot identify recovery with lives still left.
 @house.on_enter(when=root2 and not recruited(Species.SkullGreymon) and not memory_news)
 def the_bones_came_back():
-    if partner.lifetime > 0 and partner.lives > 0:
-        jijimon.say("Mm, mm... SkullGreymon walked into the square last night, all by himself.",
-                    "He had his rest, Myotismon says. Nobody called him. He went straight to the Arena.")
-        recruit(Species.SkullGreymon, prosperity=3)
+    jijimon.say("Mm, mm... SkullGreymon walked into the square last night, all by himself.",
+                "He had his rest, Myotismon says. Nobody called him. He went straight to the Arena.")
+    recruit(Species.SkullGreymon, prosperity=3)
 
 @house.on_enter(when=root3 and not recruited(Species.Angemon) and not memory_news)
 def angemon_came_home():
-    if partner.lifetime > 0 and partner.lives > 0:
-        jijimon.say("Mm, mm... Angemon came back this morning, my boy.",
-                    "The ice has all run down, he says. A wall of water needs no door.")
-        recruit(Species.Angemon, prosperity=3)
+    jijimon.say("Mm, mm... Angemon came back this morning, my boy.",
+                "The ice has all run down, he says. A wall of water needs no door.")
+    recruit(Species.Angemon, prosperity=3)
 
 @house.on_enter(when=memory_news)
 def what_the_city_remembers():
-    if partner.lifetime > 0 and partner.lives > 0:
-        jijimon.say("Mm, mm... Something came back to me just now, my boy. Something old.")
-        if memories == 1:
-            jijimon.say("The city remembers one thing it had forgotten.")
-        elif memories <= 3:
-            jijimon.say("The city remembers a few of the things it had forgotten. Keep going.")
-        elif memories <= 5:
-            jijimon.say("The city remembers many things it had forgotten now.", "The old ones talk about it in the square.")
-        else:
-            jijimon.say("So much is coming back... Ho ho. I haven't felt this clear-headed in eighty years.")
-        memory_news.clear()
+    jijimon.say("Mm, mm... Something came back to me just now, my boy. Something old.")
+    if memories == 1:
+        jijimon.say("The city remembers one thing it had forgotten.")
+    elif memories <= 3:
+        jijimon.say("The city remembers a few of the things it had forgotten. Keep going.")
+    elif memories <= 5:
+        jijimon.say("The city remembers many things it had forgotten now.", "The old ones talk about it in the square.")
+    else:
+        jijimon.say("So much is coming back... Ho ho. I haven't felt this clear-headed in eighty years.")
+    memory_news.clear()
