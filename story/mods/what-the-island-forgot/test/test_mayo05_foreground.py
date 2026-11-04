@@ -52,7 +52,9 @@ class CoelaForeground(unittest.TestCase):
     def test_only_the_painted_cliff_texels_change(self):
         self.assertEqual(self.after.sprites, self.before.sprites)
         self.assertEqual(self.after.instances, self.before.instances)
-        self.assertEqual(self.after.tims[1:], self.before.tims[1:])
+        # The other textures may change only where a cut-out is refreshed over the retouched background
+        # (dwmap.py bg, checked by tools/test_retouch_cutouts.py); their layout stays the disc's.
+        self.assertEqual([len(t) for t in self.after.tims[1:]], [len(t) for t in self.before.tims[1:]])
         self.assertEqual(self.tfs.cluts, self.original.cluts)
         a = dwmap.TIM(self.before.tims[0])
         b = dwmap.TIM(self.after.tims[0])
@@ -63,10 +65,10 @@ class CoelaForeground(unittest.TestCase):
         for p, (v, w) in enumerate(zip(a.pixels, b.pixels)):
             if v == w:
                 continue
-            count += 1
             x, y = p % (a.w * 2), p // (a.w * 2)
-            self.assertLess(x, self.before.sprites[0]['width'])
-            self.assertLess(y, self.before.sprites[0]['height'])
+            if x >= self.before.sprites[0]['width'] or y >= self.before.sprites[0]['height']:
+                continue    # another cut-out's texels, refreshed over the retouch (tools/test_retouch_cutouts.py)
+            count += 1
             self.assertNotEqual(old[y][128 + x], new[y][128 + x])
             self.assertTrue(any(c[v] != 0 for c in self.original.cluts))
         self.assertGreater(count, 0)
