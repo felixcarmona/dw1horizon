@@ -7,7 +7,7 @@ Writes $O/lang-tex/{en,es}/<disc path>, lang-tex/files.txt ("<lang> <disc path>"
 lang-tex/battle-banner-es.json. An en file replaces the disc's (its disc path); an es file becomes a Spanish copy
 named by the LE numbering (plan P), so it has none here. Only with LANGS naming es (build-full.sh's LANG_ON).
 
-No Pillow (the owner's decision of 2026-10-26: the player's build, in the browser too, has none): the
+No Pillow (the player's build, in the browser too, has none): the
 tournament banners' art is the player's own banner plus our delta at the size it is used at
 (content/localized/tournament/delta, tools/localize/build.py banner_art: nothing of the banner in the repository) and
 quantized by tools/mediancut.py (Pillow's MEDIANCUT ported: the same bytes); the recipes write no previews in a build

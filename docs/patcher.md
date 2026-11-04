@@ -428,7 +428,7 @@ An exact match confined to another regional disc cannot become a copy from a dis
 ranges remain class c and must be reported explicitly. Do not disguise their contents as XOR fix-ups. Before
 publication, compare every assembled file (including the rewritten executable table and license) against the
 unrefined package on every supported base, check disc hashes with the actual writer, and exercise standalone
-Python 3.10 without NumPy/Pillow and the browser writer. Remaining b/c/d ranges and the separate mapping-data inventory require the owner's decision or
+Python 3.10 without NumPy/Pillow and the browser writer. Remaining b/c/d ranges and the separate mapping-data inventory need a decision or
 further work. This pass does not change any game bytes.
 
 ## 14. Mandatory literal gate and changed-build proof
