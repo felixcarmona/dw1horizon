@@ -119,6 +119,7 @@ Contents:
 - `the-stair-data.json`
 - `the-stone-yard-data.json`
 - `the-workshop-data.json`
+- `toilets.py`
 - `trop03-way.py`
 - `tunn04-stairs.py`
 - `twnb-gate.py`

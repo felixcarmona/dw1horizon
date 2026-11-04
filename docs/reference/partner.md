@@ -69,7 +69,7 @@ fixture) and `tools/dev/playtest/partner_walk_host.py` (actual arrival C, all
 partner records and all ten toilet coordinate rows, 30 starts each, plus deadline
 and reset cases). The host sweep models root translation and quantized facing;
 it does not emulate collisions, clip rotation/scale channels or whole scenes.
-The extended story currently adds no nonzero toilet IDs to its new screens.
+Three screens of the extended story have toilets of their own (318, 326 and 331: `story/mods/what-the-island-forgot/maps/toilets.py`); their walk points are in the screen records, not in `TOILET_DATA`.
 
 The controlled English smoke build adds 512 resident bytes, including the
 16-byte watchdog: `main_BSS_END` moves from `0x801cb3cc` to `0x801cb5cc`, and
