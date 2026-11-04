@@ -229,5 +229,23 @@
    "出ている時は、今のエサでは食いつかない",
    "ぞ。"
   ]
- ]
+ ],
+ "s009.sec81.vend_prompt": "アイテムを選んでください。",
+ "s009.sec81.vend_more": "次へ",
+ "s009.sec81.vend_back": "戻る",
+ "s009.sec81.vend_leave": "やめる",
+ "s009.sec81.vend_poor": "ビットが足りない。",
+ "s009.sec81.vend_full": "持ち物がいっぱいだ。",
+ "s009.sec81.vend_daily": "珍しいキノコは各１日１個まで。",
+ "s009.sec81.vend_sold": "今日は売り切れ。午前０時に入荷します。",
+ "s009.sec81.vend_bonus": "おまけ！ダブル回復！",
+ "s009.sec81.vend_play_prompt": "１０００ビットで遊びますか？",
+ "s009.sec81.vend_play": "遊ぶ",
+ "s009.sec81.vend_quit": "やめる",
+ "s009.sec81.vend_buy0": "デジキノコ 51",
+ "s009.sec81.vend_getDigimushrm": "デジキノコを手に入れた！",
+ "s009.sec81.vend_buy1": "しあわせキノコ 1500",
+ "s009.sec81.vend_getHappymushrm": "しあわせキノコを手に入れた！",
+ "s009.sec81.vend_buy2": "こおりキノコ 1000",
+ "s009.sec81.vend_getIceMushrm": "こおりキノコを手に入れた！"
 }

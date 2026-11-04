@@ -423,3 +423,17 @@ A record original inside ids 1–62 still uses the resident `EVOLUTION_PATHS` ro
 Placed enemies whose species changed tier retain their previous zone stats and bits through explicit map overrides (45 slots), including the deliberately weaker Gear Savanna Vermilimon. Species defaults now fit their new tier; the area fights retain their established difficulty. General recruited-species tournament brackets include level 6; fixed named cups and story recruit triggers keep their identities.
 
 The extended City roster has 18 Rookies, 34 Champions and 20 Ultimates, worth 143 prosperity points. Only the species in `content/tables/city-residents.json` count, including when loading older saves. The original story’s 50 recruits still total 100 points.
+
+## 6.3 Vending machines
+
+All listed prices are in bits. Item values use the best repeatable conversion exit, including Mojyamon chains.
+
+| Machine | Stock | Rule |
+|---|---|---|
+| Dragon Eye Lake, screen 8 | Digimushroom **51**; Happy mushroom **1500**; Ice mushroom **1000** | Digimushrooms unlimited; one of each rare mushroom per day, refilled at midnight |
+
+Digimushrooms must cost 51 rather than 20: their shop sale and Mojyamon -> Small Recovery exit both pay 50.
+Happy and Ice mushrooms each exit at 500. Deluxe mushrooms are not sold. Original saved triggers 798/799 hold
+the two stock bits, excluded from script allocation; the midnight routine clears them with ground pickups.
+There is no new resident state. Buying consumes stock only after the item fits and payment succeeds. Saving
+and continuing retains stock; rolling back to a save before buying has the same limits as ground pickups.

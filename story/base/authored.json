@@ -415,6 +415,16 @@
       "original_sha256": "568687c2bfe39a7cb3c84bcb70ce520e905d26ceaab582faa9bcfc535482a051",
       "authored_sha256": "a8a4bd48490a80e25a2097829c677f56bb85582b48badf63b5436a02b1859f53",
       "reason": "The left ClearAgumon resolves its touch encounter with a battle like the other guards; dialogue alone immediately restarts while the guard remains in contact"
+    },
+    "zones/dragon-eye-lake/s009-8/script.py": {
+      "original_sha256": "3431895936fbfba1892e92e74d9702303fd4d80dd4a48717b2f3471c4c11f4f5",
+      "authored_sha256": "502d59c959f117fd3a1c1aa58ce13a88172778681acfd26b9fdd9ec2fa42f3e9",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
+    },
+    "zones/dragon-eye-lake/s009-8/script.dws": {
+      "original_sha256": "df4a48c7d8e1dd8e6445ff8105f265a2cefe4709bbd15fd35e739a7f8f2f3329",
+      "authored_sha256": "7ce6e376a8aa8dae89350a3001037248db663869242742908dfcfc96cb4fa4b2",
+      "reason": "Horizon vending machine on screen 8; synchronized Python and DWS"
     }
   }
 }
