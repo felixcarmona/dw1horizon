@@ -149,7 +149,7 @@
  "330": {"model": "330-Minotarumon.MMD", "aliases_applied": true},
  "331": {"model": "331-Snatchmon.MMD", "aliases_applied": true, "field_overlay": "snatchmon-chibi"},
  "332": {"model": "332-Roachmon.MMD", "aliases_applied": true, "field_overlay": "roachmon-equipment"},
- "333": {"model": "333-Raijinmon.MMD", "aliases_applied": true},
+ "333": {"model": "333-Raijinmon.MMD", "aliases_applied": true, "field_overlay": "raijinmon-celebration"},
  "334": {"model": "334-Mummymon.MMD", "aliases_applied": true, "field_overlay": "mummymon-chibi"},
  "335": {"model": "335-MegaGargomon.MMD", "field_overlay": "megagargomon-equipment"},
  "336": {"model": "336-Raidenmon.MMD", "aliases_applied": true},
