@@ -356,7 +356,7 @@ Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost 
 |---|---|---|
 | 1 Fresh | `evoTimer >= 6` | `getFreshEvolutionTarget`: fixed (Botamon→Koromon, Punimon→Tsunomon, Poyomon→Tokomon, Yuramon→Tanemon) |
 | 2 In-Training | `evoTimer >= 24` | `getInTrainingEvolutionTarget`: best score >= 3; ties → first in the `to` list (patch 0111 adds up to 12 extra Rookie targets per In-Training, `getEvolutionExtraTargets`) |
-| 3 Rookie | `evoTimer >= 72` | `getRookieEvolutionTarget`; if none reaches 3 and `evoTimer >= 120` (96 on the disc) → Numemon (11) |
+| 3 Rookie | `evoTimer >= 72` | `getRookieEvolutionTarget`; if none reaches 3 and `evoTimer >= 96`, as on the disc, → Numemon (11) |
 | 4 Champion | `evoTimer >= 168` (144 on the disc) | `getChampionEvolutionTarget`; nothing if none qualifies |
 | 4 Champion | `evoTimer == 360` | `handleSpecialEvolutions(3)` |
 | 5 Ultimate (mod) | `evoTimer >= 96` | the Mega patch (0058) evaluates the Ultimate's paths: another Ultimate, or a Mega (level 6) once `evoTimer >= 120`; the `evolutionUltimate` pairs score their single target first: Megadramon/Gigadramon → Machinedramon from 48 h, a pair into an imported Mega (WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) from 120 h (patch 0339) |

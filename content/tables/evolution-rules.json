@@ -11,7 +11,7 @@
     "ultimateAgainHours": 96,
     "megaHours": 120,
     "fallback": {
-      "afterHours": 120,
+      "afterHours": 96,
       "target": 11
     }
   },
