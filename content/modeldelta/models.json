@@ -1554,9 +1554,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/233-RedOtamamon.MMD.mdelta",
-        "delta_sha256": "ac739ab2f30f3a97e45e60cc8b280f51f232b6b7730f9b35a699a83bc435c762",
-        "sha256": "639c3a17694b39d8591a306428c31e840feb7116c2c1f32bcdf113d4e18804ee",
-        "size": 62456
+        "delta_sha256": "26a1f852467ca2c0a0425bfad9fd664aff22426dfdfc4c99368833ee728eaab4",
+        "sha256": "8f56afec7dc4e13c852b2b44c0a7fe485c5b0ffb72e88edd11a0c7cb1fdb80f9",
+        "size": 60214
       },
       "tim": {
         "sources": [
