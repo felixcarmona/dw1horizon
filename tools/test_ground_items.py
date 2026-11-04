@@ -106,7 +106,7 @@ class RegistryTests(unittest.TestCase):
         self.assertTrue(off and all(s >= 300 for s, _, _ in off))
         for screen, kept in emitted(data).items():
             if screen >= 300:
-                self.assertEqual(len(kept), 3, screen)           # 3 of Native Forest's 7 mushrooms on a new screen
+                self.assertEqual(len(kept), 4 if screen == 314 else 3, screen)  # Root Clearing adds a Blue apple
         got = rewrite_text('    SPAWN_ITEM 1, 30, 79\n', [0, 314], spots, off=off)
         self.assertEqual(got, '    SPAWN_ITEM_DAILY 1, 30, 79, 0, 0\n')
 
@@ -117,6 +117,20 @@ class RegistryTests(unittest.TestCase):
             p.write_text(json.dumps(dict(format=1, spots=[row, row])))
             with self.assertRaisesRegex(ValueError, 'duplicate'):
                 load_registry(p)
+
+    def test_borrowed_and_authored_coordinates_keep_the_same_id(self):
+        spots = {(314, 39, 43): 236}
+        places = {(314, 39, 43): (49, 51)}
+        expected = '    SPAWN_ITEM_DAILY 25, 49, 51, 236, 314\n'
+        for tile in ('39, 43', '49, 51'):
+            with self.subTest(tile=tile):
+                self.assertEqual(rewrite_text(f'    SPAWN_ITEM 25, {tile}\n', [314], spots, places), expected)
+
+    def test_relocated_disabled_spot_stays_disabled(self):
+        key = (314, 30, 79)
+        self.assertEqual(rewrite_text('SPAWN_ITEM 24, 37, 61\n', [314], {key: 233},
+                                      {key: (37, 61)}, {key}), '\n')
+
 
 
 def function(source, name):

@@ -95,6 +95,7 @@ def rewrite_text(text, screens, spots, places=None, off=()):
     registry places it on that screen (places: placements(); a shared script's tile can be rock on another screen). A spot
     in off (switched_off()) is left out on that screen."""
     places = places or {}
+    authored = {(key[0], *at): key for key, at in places.items()}
     out = []
     for line in text.splitlines():
         m = SPAWN.fullmatch(line)
@@ -103,6 +104,10 @@ def rewrite_text(text, screens, spots, places=None, off=()):
                 raise ValueError('ground pickup script has no authored screen')
             for screen in sorted(screens):
                 key = (screen, int(m[3]), int(m[4]))
+                # A screen's own handler may name the relocated floor tile directly.
+                # Borrowed scripts still use the original registry key.
+                if key not in spots:
+                    key = authored.get(key, key)
                 if key not in spots:
                     raise ValueError(f'ground pickup {key} has no stable ID; append it to content/ground-items.json')
                 if key in off:
