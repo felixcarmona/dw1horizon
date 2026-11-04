@@ -147,6 +147,20 @@
       "kind": "TIM",
       "previous_bytes": 60,
       "bytes": 1070
+    },
+    {
+      "id": 313,
+      "name": "Bulbmon",
+      "kind": "MMD",
+      "previous_bytes": 2213,
+      "bytes": 2297
+    },
+    {
+      "id": 313,
+      "name": "Bulbmon",
+      "kind": "TIM",
+      "previous_bytes": 60,
+      "bytes": 671
     }
   ]
 }
