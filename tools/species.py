@@ -799,6 +799,9 @@ def validate(s):
             baseline = json.load(f)['levels'][str(t)]
         if s['level'] != baseline and off is None:
             raise SystemExit(f'{p}: off: required when level differs from the committed original level')
+    if 'finisher' in s or 'finisher' in (off or {}):
+        if t >= NUM_ORIGINAL or off is None or 'finisher' not in s or 'finisher' not in off:
+            raise SystemExit(f'{p}.finisher: paired on/off finisher blocks are required for a native species')
     if off and off['level'] != s['level']:
         with open(os.path.join(ROOT, 'content/tables/species-mode-balance.json')) as f:
             bands = json.load(f)['bands']
@@ -812,6 +815,13 @@ def validate(s):
                 lo, hi = band['targets'][key]
                 if type(stats[key]) is not int or not lo <= stats[key] <= hi:
                     raise SystemExit(f'{p}.{mode}.stats.{key}: {stats[key]} outside {block["level"]} band {lo}..{hi}')
+            from content import load_techniques
+            technique_rows = load_techniques() or {}
+            for move in techniques_from_json(block['techniques'], p):
+                if move >= FINISHER_FIRST: continue
+                row = technique_rows.get(move)
+                if row is None or not band['ordinary_power'][0] <= row['power'] <= band['ordinary_power'][1]:
+                    raise SystemExit(f'{p}.{mode}.techniques: ordinary move {move} outside {block["level"]} power band')
             for key, limits in [('power', band['finisher_power']), ('mpCost', band['finisher_mpCost'])]:
                 if not limits[0] <= block['finisher'][key] <= limits[1]:
                     raise SystemExit(f'{p}.{mode}.finisher.{key}: outside {block["level"]} band {limits}')

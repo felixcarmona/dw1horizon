@@ -43,6 +43,21 @@ class ModeBalance(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, 'outside mega band'):
             S.validate(s)
 
+    def test_unpaired_finisher_data_cannot_be_silently_ignored(self):
+        s = copy.deepcopy(S.load_content()[5])
+        s['finisher'] = dict(power=170, mpCost=40, element='fire')
+        with self.assertRaisesRegex(SystemExit, 'paired on/off finisher blocks'):
+            S.validate(s)
+
+    def test_rookie_off_ordinary_moves_use_measured_peer_limits(self):
+        import content
+        s = copy.deepcopy(S.load_content()[67])
+        rows = content.load_techniques()
+        rows[S.id_of('techs', 'Wind Cutter', 'test')]['power'] = 501
+        with patch.object(content, 'load_techniques', return_value=rows):
+            with self.assertRaisesRegex(SystemExit, 'off.techniques: ordinary move'):
+                S.validate(s)
+
     def test_production_sector_reader_applies_all_species_in_both_modes(self):
         source = Path(S.ROOT, 'build/decomp-int/src/main/mod_species.c')
         if not source.exists() or not shutil.which('cc'):

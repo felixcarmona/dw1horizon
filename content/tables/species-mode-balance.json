@@ -419,7 +419,8 @@
         "brains": [45, 100]
       },
       "finisher_power": [85, 101],
-      "finisher_mpCost": [40, 40]
+      "finisher_mpCost": [40, 40],
+      "ordinary_power": [0, 500]
     },
     "champion": {
       "targets": {
@@ -431,7 +432,8 @@
         "brains": [100, 250]
       },
       "finisher_power": [100, 196],
-      "finisher_mpCost": [40, 40]
+      "finisher_mpCost": [40, 40],
+      "ordinary_power": [0, 586]
     },
     "ultimate": {
       "targets": {
@@ -443,7 +445,8 @@
         "brains": [300, 900]
       },
       "finisher_power": [196, 260],
-      "finisher_mpCost": [40, 40]
+      "finisher_mpCost": [40, 40],
+      "ordinary_power": [0, 722]
     },
     "mega": {
       "targets": {
@@ -455,7 +458,8 @@
         "brains": [500, 800]
       },
       "finisher_power": [250, 260],
-      "finisher_mpCost": [40, 40]
+      "finisher_mpCost": [40, 40],
+      "ordinary_power": [0, 722]
     }
   }
 }

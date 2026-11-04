@@ -8,7 +8,8 @@
     "level": "rookie",
     "stats": {"hp": 750, "mp": 750, "offense": 75, "defense": 75, "speed": 100, "brains": 75},
     "finisher": {"power": 92, "mpCost": 40, "element": "air"},
-    "techniques": ["Electric Cloud", null, null, null, "Insect Plague", "Static Elect", "Mass Morph", "Solar Ray"]
+    "techniques": ["Electric Cloud", "Wind Cutter", "Spinning Shot", "Danger Sting", "Insect Plague",
+                   "Static Elect", "Mass Morph", "Solar Ray"]
   },
   "attribute": "virus",
   "specialties": ["air", "nature", null],

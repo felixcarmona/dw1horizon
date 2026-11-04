@@ -7,7 +7,8 @@
     "level": "rookie",
     "stats": {"hp": 1000, "mp": 750, "offense": 100, "defense": 100, "speed": 50, "brains": 50},
     "finisher": {"power": 90, "mpCost": 40, "element": "fire"},
-    "techniques": [null, null, null, null, null, "Spit Fire", "Heat Laser", null, null, "Fireball"]
+    "techniques": ["Magma Bomb", "Meltdown", "Megaton Punch", "Tremar", "Buster Dive", "Spit Fire", "Heat Laser",
+                   "Red Inferno", "Prominence Beam", "Fireball"]
   },
   "attribute": "data",
   "specialties": ["fire", "battle", null],
