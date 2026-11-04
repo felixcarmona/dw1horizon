@@ -24,6 +24,32 @@ ORIG_EXE = os.path.join(ROOT, 'extracted/SLUS_010.32')
 _cache = {}
 
 
+def elf_locals(path):
+    """{name: address} of the file-local (`static`) data symbols of an ELF32 little-endian executable, read from its
+    symbol table: the linker map names a global on a line of its own, but a static only on its section line. A name
+    that two files both declare static is ambiguous and left out."""
+    import struct
+    try:
+        with open(path, 'rb') as stream: data = stream.read()
+    except OSError: return {}
+    if data[:4] != b'\x7fELF' or data[4] != 1 or data[5] != 1: return {}
+    shoff, = struct.unpack_from('<I', data, 0x20)
+    shentsize, shnum = struct.unpack_from('<HH', data, 0x2E)
+    sections = [struct.unpack_from('<10I', data, shoff + k * shentsize) for k in range(shnum)]
+    out, ambiguous = {}, set()
+    for _, kind, _, _, off, size, link, _, _, entsize in sections:
+        if kind != 2 or not entsize: continue                 # SHT_SYMTAB
+        strtab = sections[link]
+        for k in range(size // entsize):
+            name_off, value, _, info, _, _ = struct.unpack_from('<IIIBBH', data, off + k * entsize)
+            if info >> 4 != 0 or info & 15 != 1 or not name_off: continue   # STB_LOCAL, STT_OBJECT
+            end = data.index(b'\0', strtab[4] + name_off)
+            name = data[strtab[4] + name_off:end].decode('ascii', 'replace')
+            if name in out and out[name] != value: ambiguous.add(name)
+            out[name] = value
+    return {k: v for k, v in out.items() if k not in ambiguous}
+
+
 def table(build):
     if build in _cache: return _cache[build]
     t = {}
@@ -31,6 +57,8 @@ def table(build):
         for line in open(CANDIDATES[build][1]):
             m = re.match(r'\s+(0x[0-9a-f]+)\s+([A-Za-z_][A-Za-z0-9_]*)\s*$', line)
             if m: t[m.group(2)] = int(m.group(1), 16)
+        for name, value in elf_locals(CANDIDATES[build][1][:-len('.map')]).items():
+            t.setdefault(name, value)                          # statics (MOD_BOOT_LANGUAGE, labCount, ...)
     else:
         for line in open(SYMS):
             m = re.match(r'([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(0x[0-9A-Fa-f]+);', line)
