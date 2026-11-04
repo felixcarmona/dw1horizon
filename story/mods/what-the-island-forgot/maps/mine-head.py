@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The Mine Head (screen 337, files MINE01): the first screen of the Galleries arc, the head of the human mine under the
 Drill Tunnel: a wide cavern where four galleries meet, a rail turntable, the shaft pit with its wrecked lift cage, the
-entry gallery from the Old Gallery's rock fall (315) at the bottom edge, the north (338), west (341) and east (344)
+entry gallery from the Old Gallery's rock fall (315) at the bottom edge (a flight of steps down into the hall), the north (338), west (341) and east (344)
 galleries at the other edges. A wide screen (896x640). Our art (art/mine-head.png, Nano Banana Pro with the Drill
 Tunnel's eye, 6500, at 42 degrees down, projection 1081) and our map data (mine-head-data.json, made by
 author/mine-head-layout.py); the structure of the map (tile layout, 1 TIM, the Drill Tunnel's lights, no day/night) is

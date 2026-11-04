@@ -34,8 +34,10 @@ BLOCKED = {
     'crates-left': [(65, 325), (165, 325), (165, 485), (65, 485)],
     'rope-left': [(145, 418), (218, 418), (218, 475), (145, 475)],
     'rope-top': [(195, 200), (250, 200), (250, 236), (195, 236)],
-    'lantern-post': [(295, 440), (347, 440), (347, 578), (295, 578)],
-    'pick': [(598, 556), (662, 556), (662, 606), (598, 606)],
+    'lantern-post': [(295, 425), (352, 425), (352, 585), (330, 640), (285, 640), (285, 585), (295, 585)],     # the post, and the stair's left posts below it
+    'lantern': [(350, 462), (392, 462), (392, 545), (350, 545)],                                # the hanging lantern beside the post
+    'pick': [(640, 478), (708, 478), (708, 572), (648, 572)],
+    'stair-posts-right': [(574, 470), (612, 470), (645, 545), (672, 584), (672, 640), (622, 640), (600, 575), (574, 520)],   # the posts along the stair's right edge
     'crate-right': [(735, 415), (802, 415), (802, 487), (735, 487)],
     'top-post': [(440, 40), (476, 40), (476, 112), (440, 112)],
 }
@@ -71,6 +73,9 @@ def main(out):
                                    'targetMap': e['target'][0], 'targetExit': e['target'][1]})
     for e in EXITS:
         trim_exit(m, e['warp'], e['spawn_world'], cam.world(*e['face_px']))
+    for _ in range(5):                                  # dead pockets nothing walks into: blocking them takes no floor away
+        for tx, tz in reach.trap_tiles(m): col[tz * 100 + tx] = 0x80
+        if not reach.trap_tiles(m): break
     check_arrivals(m, 'MINE01')
     R = reach.from_spawn_coordinates(m, starts=[EXITS[0]['spawn_world']])
     for e in EXITS:

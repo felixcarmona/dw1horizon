@@ -49,18 +49,19 @@ def main():
         predictor.set_image(np.array(Image.open(full).convert('RGB')))
         art = Image.open(root / 'art' / (manifest.stem + '.png')).convert('RGBA')
         scale, top = source['scale'], source['top']
+        sx, sy = scale if isinstance(scale, list) else (scale, scale)     # a picture resized to the screen's size keeps two scales
         placements = []
         for piece in data['pieces']:
             prompt = piece['segmentation']
             positive, negative = prompt['positive'], prompt['negative']
-            points = np.array([[x * scale, y * scale + top] for x, y in positive + negative])
+            points = np.array([[x * sx, y * sy + top] for x, y in positive + negative])
             labels = np.array([1] * len(positive) + [0] * len(negative))
-            box = np.array(prompt['box'], dtype=float) * scale
+            box = np.array(prompt['box'], dtype=float) * [sx, sy, sx, sy]
             box[[1, 3]] += top
             masks, scores, _ = predictor.predict(point_coords=points, point_labels=labels,
                                                  box=box, multimask_output=True)
             best = int(np.argmax(scores))
-            mask = masks[best][top:top + round(art.height * scale)].astype(np.float32)
+            mask = masks[best][top:top + round(art.height * sy)].astype(np.float32)
             mask = (cv2.resize(mask, art.size, interpolation=cv2.INTER_AREA) > .5).astype(np.uint8)
             count, components, stats, _ = cv2.connectedComponentsWithStats(mask)
             for i in range(1, count):

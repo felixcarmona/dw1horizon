@@ -566,7 +566,7 @@
   {"id": 361, "screen": 337, "tile": [35, 88], "at": [53, 63], "off": true},
   {"id": 362, "screen": 337, "tile": [39, 43]},
   {"id": 363, "screen": 337, "tile": [49, 46]},
-  {"id": 364, "screen": 337, "tile": [68, 84], "at": [58, 64]},
+  {"id": 364, "screen": 337, "tile": [68, 84], "at": [55, 64]},
   {"id": 365, "screen": 337, "tile": [78, 31], "at": [68, 47], "off": true},
   {"id": 366, "screen": 338, "tile": [30, 79], "at": [42, 70], "off": true},
   {"id": 367, "screen": 338, "tile": [31, 85], "at": [40, 66], "off": true},
