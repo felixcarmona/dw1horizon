@@ -2414,9 +2414,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/261-Tortomon.MMD.mdelta",
-        "delta_sha256": "d53ffdffec072f1d83033ed734f546d608e9aea1d74c9d064044ea699b77a905",
-        "sha256": "ef0640249c94ce78812d9e6ac991e46ec9612fa0d69a629ec474452723f5d85c",
-        "size": 80604
+        "delta_sha256": "a1b47e7b1ff5872de620cb684fdd90c36a96038c818f3f141284bb7a7a9ab7c1",
+        "sha256": "251b1b7cd1550525b69892e8860c27c6edc262662fe0590d7a23a925db628a1c",
+        "size": 86226
       },
       "tim": {
         "sources": [
