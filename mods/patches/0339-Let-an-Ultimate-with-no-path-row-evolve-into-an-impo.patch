@@ -1,0 +1,43 @@
+From 8226ba3ce194acda265ab8afe511dde74dc7af18 Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 08:04:58 +0000
+Subject: [PATCH] Let an Ultimate with no path row evolve into an imported Mega
+ after the Mega hours
+
+The original game's Megadramon/Gigadramon -> Machinedramon pairs keep
+their 48 hours. A pair into an imported Mega (WaruMonzaemon, Meteormon,
+ShogunGekomon and KingSukamon, whose ids have no path row) waits
+MOD_EVO_MEGA hours, the same as a Mega reached through a path.
+---
+ src/main/evolution.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/main/evolution.c b/src/main/evolution.c
+index 5db834c..98266ad 100644
+--- a/src/main/evolution.c
++++ b/src/main/evolution.c
+@@ -1369,6 +1369,8 @@ void reincarnatePartner(unused, stats, partner, digimonId)
+  * and Gigadramon, from 48 hours after their own evolution, evolve into
+  * Machinedramon when its requirements (EVOLUTION_REQS) score 3 points, like
+  * a Champion's targets. Returns -1 otherwise (and for every other type).
++ * The pairs also give an Ultimate with no path row (an original 63..179
++ * without a record) its Mega; an imported Mega waits MOD_EVO_MEGA hours.
+  */
+ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ {
+@@ -1382,6 +1384,12 @@ int16_t getModUltimateEvolutionTarget(int32_t currentDigimon)
+ 		if (MOD_EVO_ULTIMATE[i][0] != currentDigimon || target < 0 || !modSpeciesAllowed(target)) {
+ 			continue;
+ 		}
++		/* MOD (ultimate to mega): an imported Mega waits the Mega hours, like a path's;
++		   the original Machinedramon keeps its 48 hours */
++		if (DIGI_PARA(target).level == LEVEL_MEGA && !isVanillaSpecies(target) &&
++		    PARTNER_PARA.evoTimer < MOD_EVO_TIMING[MOD_EVO_MEGA]) {
++			continue;
++		}
+ 		reqs = &EVO_REQ_ROW(target);
+ 		if (calculateRequirementScore(currentDigimon, target, (reqs->flags & 0x10) >> 4, reqs->flags & 1, -1) >= evoPassPoints()) {
+ 			return target;
+-- 
+2.55.0
+
