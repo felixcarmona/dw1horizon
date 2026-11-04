@@ -421,9 +421,9 @@
       "source": "build/batch10/Nanomon.MMD",
       "source_sha256": "d63aaab72db40142c76bb24e5c3eb46d9b9f1a256ce9a7c715235a32cf7696b9",
       "bones": 28,
-      "scale": 1.35,
+      "scale": 0.9418604651162792,
       "target": "build/sizes-out/models/Nanomon.MMD",
-      "sha256": "05b511d837396d973a0bc316010fa71223b757e8a182e3b87ac683d0896d15a1"
+      "sha256": "466c7d0cb860ded9fb356d6ddc09c52f66279fc224dd9fbb33dfaddbb97b755f"
     },
     {
       "source": "build/batch10/Grizzlymon.MMD",

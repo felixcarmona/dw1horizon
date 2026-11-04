@@ -683,34 +683,6 @@
    }
   }
  },
- "294": {
-  "name": "Datamon",
-  "bones": 28,
-  "skeleton_sha256": "89aeccbf3c824d416d37217a5c442d9ea82243d73670f61c1c9da4ab40c918bf",
-  "source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "base_generator": null,
-  "post_source_sha256": "a0c00af16587cf2e0a3ca629d9bc13ae3a9f5cc3c1e647457974b63f574df604",
-  "slots": {
-   "2": {
-    "from": 2,
-    "ticks": 24,
-    "speed": 20,
-    "slip": [
-     125,
-     250
-    ]
-   },
-   "4": {
-    "from": 4,
-    "ticks": 22,
-    "speed": 38,
-    "slip": [
-     190,
-     360
-    ]
-   }
-  }
- },
  "201": {
   "name": "Lighdramon",
   "bones": 25,
