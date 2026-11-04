@@ -144,9 +144,10 @@ def apply(files, language, work):
                  entry, preserve=True, padding=1)
 
     if language == 'zh-hans':
+        from tools.localize.chinese_catalog import SMALL
         # The partner icon retains its original cell; its Chinese label fits it.
         for path, entry in [('ETCDAT/FI_INFO.TIM', 0), ('ETCDAT/ETCTIM.BIN', 4)]:
-            draw(path, (80, 27, 28, 7), '搭档', 15, 0, 1,
+            draw(path, (80, 27, 28, 7), SMALL['partner'], 15, 0, 1,
                  entry, preserve=True, padding=1)
 
     # The four open-tournament captions sit below the AI-generated logo band.

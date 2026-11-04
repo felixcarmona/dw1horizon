@@ -28,7 +28,7 @@ CUPS = {
 }
 CAPTIONS = ('数码宝贝竞技场', '公开赛', '等级 ')
 BATTLE = '战斗！'
-SMALL = dict(push='按下', finish='必杀！', life='生命', start='按START键', time='时间到！', vs='对战模式',
+SMALL = dict(partner='搭档', push='按下', finish='必杀！', life='生命', start='按START键', time='时间到！', vs='对战模式',
              battle='战斗模式', arena='选择场地', fight='战斗')
 
 
