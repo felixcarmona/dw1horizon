@@ -37,7 +37,7 @@
  "217": {"model": "217-Gomamon.MMD", "aliases_applied": true},
  "218": {"model": "218-Ikkakumon.MMD", "aliases_applied": true, "field_overlay": "ikkakumon-field"},
  "219": {"model": "219-Zudomon.MMD", "aliases_applied": true},
- "220": {"model": "220-Vikemon.MMD", "aliases_applied": true, "field_overlay": "vikemon-field"},
+ "220": {"model": "220-Vikemon.MMD", "aliases_applied": true},
  "221": {"model": "221-Salamon.MMD", "aliases_applied": true, "field_overlay": "salamon-field"},
  "222": {"model": "222-BlackGatomon.MMD", "aliases_applied": true, "field_overlay": "blackgatomon-field"},
  "223": {"model": "223-LadyDevimon.MMD", "aliases_applied": true, "texture": "223-LadyDevimon.TIM", "field_overlay": "ladydevimon-chibi"},
