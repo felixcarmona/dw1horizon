@@ -76,6 +76,8 @@ Chinese is added to the public language registry.
   Ninjamon's playful lisp. Preserve each character's readable voice.
 - Check 奖励挑战 for Bonus Try and the gym's six stat explanations in their scenes.
 - Check 冰川区 and 疾速区 against the English region names and Japanese time effects.
+- Check the ghost’s 呜呜 voice, Drimogemon’s song cadence, 祠堂 for the shrine
+  and 恶鬼模式 for Ogre Mode.
 - Review the card merchant's 对对 tic, Meteormon's rustic 俺 and Nanimon's punchline.
 - Confirm authored items/techniques and the explicitly provisional species terms
   in the glossary. Their reference pages establish identity, not official Chinese spelling.
