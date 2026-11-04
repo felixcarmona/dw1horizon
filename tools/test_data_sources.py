@@ -5,6 +5,8 @@ from unittest.mock import patch
 
 import balance
 import content
+import tempfile
+from pathlib import Path
 
 
 class NativeDefaults(unittest.TestCase):
@@ -34,6 +36,18 @@ class EmptyDomains(unittest.TestCase):
         self.assertTrue(all(row['power'] == 0 for row in doc['techniques'].values()))
         self.assertTrue(all(row == content.EMPTY_ITEM for row in doc['items'].values()))
         self.assertTrue(all(row['fileBytes'] == [0] * 10 for row in doc['screens'].values()))
+
+
+class EmptyMaps(unittest.TestCase):
+    def test_empty_directory_clears_source_enemies(self):
+        # The malformed, never-read map exception remains outside the gameplay parser.
+        fake = SimpleNamespace(digimon=[{'type': 24}], digimon_count=1)
+        fake.build = lambda: (fake.digimon_count, fake.digimon)
+        with tempfile.TemporaryDirectory() as directory, \
+             patch.object(content, 'MAPS_DIR', directory), \
+             patch('dwmap.MapFile', return_value=fake):
+            self.assertEqual(content.load_maps(), {})
+            self.assertEqual(content.build_map('FOREST01', b'geometry and enemies'), (0, []))
 
 
 if __name__ == '__main__':

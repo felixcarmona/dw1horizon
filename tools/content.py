@@ -530,9 +530,8 @@ def json_to_slot(i, o, wild, ids, where):
 
 
 def load_maps():
-    """{NAME: file dict} of content/maps (None when the folder has no file: the disc's lists)."""
+    """{NAME: file dict} of content/maps; an empty directory removes every placed Digimon."""
     files = sorted(glob.glob(os.path.join(MAPS_DIR, '*.json')))
-    if not files: return None
     return {os.path.basename(p)[:-5]: dict(json.load(open(p), object_pairs_hook=collections.OrderedDict), _path=p) for p in files}
 
 
@@ -551,7 +550,7 @@ def build_map(name, data, maps=None):
     """The .MAP NAME (its disc bytes `data`) with its Digimon list from content/maps (none without a file). -> bytes"""
     import dwmap
     maps = load_maps() if maps is None else maps
-    if maps is None or name in NEVER_READ: return data
+    if name in NEVER_READ: return data
     m = dwmap.MapFile(data); c = _map_ctx()
     x = maps.get(name)
     slots = x['digimon'] if x else []
