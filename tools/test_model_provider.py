@@ -29,12 +29,21 @@ class ModelProvider(unittest.TestCase):
         self.assertEqual(len(records), 183)  # the 175 source-game imports and the eight hand-made babies
         selected = {t: model.OVERLAYS[e['field_overlay']]
                     for t, e in records.items() if e.get('field_overlay')}
-        self.assertEqual(len(selected), 118)
+        celebrations = json.load(open('content/models/imports/celebrations.json'))
+        self.assertEqual(len(selected), 118 + sum(not r.get('base_generator') for r in celebrations.values()))
         self.assertEqual({e['field_overlay'] for e in records.values() if e.get('field_overlay')},
                          set(model.OVERLAYS))
         for species, (bound_species, _, _) in selected.items():
             self.assertEqual(species, bound_species)
         assignments = {t: entry[1:] for t, entry in selected.items()}
+        # Celebration curves run after the final proportions. Unwrap them to
+        # keep guarding all the original field recipes and output names.
+        for sid, row in celebrations.items():
+            self.assertEqual(assignments[sid][0], 'tools.models.field_animations.celebrations')
+            if row.get('base_generator'):
+                assignments[sid] = (row['base_generator'], assignments[sid][1])
+            else:
+                del assignments[sid]
         # The chibi proportions wrap the recipe that came before them; species without one have no other generator.
         chibi = json.load(open('content/models/imports/chibi.json'))
         for sid, row in chibi.items():
