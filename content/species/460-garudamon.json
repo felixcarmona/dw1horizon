@@ -22,7 +22,7 @@
                      [52, 56], [60, 53], [53, 56], [56, 54], [61, 57], [57, 54], [54, 61]]
   },
   "texture": {"file": "build/fitfix/Garudamon.TIM", "entry": 0},
-  "voice": 5,
+  "voice": 19,
   "battle_music": "normal-battle",
   "condition_bubble": [43, -74, -143, 26],
   "effect_origins": [[5, 100, 30, 0, 10, 18, -41, 107], [5, 120, -50, 0, 10, 96, 6, 108],
@@ -30,7 +30,7 @@
                      [4, 160, -190, 0, 26, 87, 67, -356], [1, 0, 0, 0, 1, 0, 0, 0]],
   "wild": {"hp": 2910, "mp": 3100, "off": 405, "def": 345, "speed": 305, "brain": 310, "bits": 1500},
   "partner": {
-    "voice": 2,
+    "voice": 4,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,

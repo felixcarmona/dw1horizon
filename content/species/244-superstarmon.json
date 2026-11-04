@@ -22,7 +22,7 @@
                      [47, 49], [49, 51], [59, 51], [60, 46], [46, 51]]
   },
   "texture": {"file": "build/batch6/SuperStarmon.TIM", "entry": 0},
-  "voice": 48,
+  "voice": 18,
   "battle_music": "normal-battle",
   "condition_bubble": [-52, -139, -61, 26],
   "effect_origins": [[4, 90, 0, 0, 26, -66, -15, -89], [8, 330, 0, 0, 9, -79, 5, -324],
@@ -36,7 +36,7 @@
     "natural": {"height": 521.0, "half_width": 372.2, "half_depth": 413.4}
   },
   "partner": {
-    "voice": 2,
+    "voice": 11,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
     "energy_max": 80,
     "energy_fed": 45,

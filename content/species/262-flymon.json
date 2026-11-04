@@ -22,7 +22,7 @@
                      [57, 49], [49, 51]]
   },
   "texture": {"file": "build/batch7/Flymon.TIM", "entry": 0},
-  "voice": 29,
+  "voice": 57,
   "battle_music": "normal-battle",
   "condition_bubble": [46, -215, -242, 1],
   "effect_origins": [[5, 0, 10, -100, 1, 15, -76, -233], [2, 0, 0, 0, 1, 0, 0, 0],
@@ -36,7 +36,7 @@
     "natural": {"height": 493.9, "half_width": 301.4, "half_depth": 319.5}
   },
   "partner": {
-    "voice": 9,
+    "voice": 8,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,

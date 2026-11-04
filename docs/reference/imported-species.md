@@ -309,6 +309,18 @@ VBALL chunk 12 has tones for notes 53, 54 and 55, covering every bank-4 event
 in its final model, including the native care/attack clips. Field slots 2–4
 use bank 1, note 12 for footsteps; these are independent of the species voice.
 
+### Choosing an import's voice
+
+An import borrows the voice pair of one DW1 species: `voice` is that species' VBALL chunk (battle and field
+cries) and `partner.voice` its VLALL chunk (care voices). Pick the DW1 species closest in body type, size and
+character (a beetle borrows HerculesKabuterimon or Yanmamon, a ghost Bakemon, a holy humanoid Angemon, a small
+Rookie a Rookie's), not the animation donor's voice by default. `partner.voice` follows the borrowed species:
+Fresh and In-Training use 0, Rookies 1 (as the disc's Rookies), the others the VLALL group of the species whose
+VBALL they use. A voice costs no heap: the chunk is read by id into the partner's or an enemy's SPU bank, and no
+disc chunk is larger than its bank. Every VBALL chunk has notes 53-55 except 17 (Kabuterimon) and 45
+(Kuwagamon), which have 53, 54 and 56: a model whose clips play note 55 is silent with those two
+(`species.py lint --files` warns).
+
 A gym clip on a slot the model leaves empty plays nothing: an import uses one of its own attack clips (a melee clip
 when it has one, else the closest-range attack of 15-50 ticks), with the hit tick at half the clip, at least 6.
 

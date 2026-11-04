@@ -22,7 +22,7 @@
                      [57, 49], [58, 53], [59, 49], [60, 49]]
   },
   "texture": {"file": "build/batch6/MarineAngemon.TIM", "entry": 0},
-  "voice": 26,
+  "voice": 49,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -185, 65, 3],
   "effect_origins": [[10, 40, -60, 0, 5, -69, 44, -23], [4, 50, -120, 0, 25, 0, -66, -139],
@@ -38,7 +38,7 @@
     "natural": {"height": 349.9, "half_width": 226.2, "half_depth": 153.7}
   },
   "partner": {
-    "voice": 10,
+    "voice": 0,
     "hunger_hours": [4, 9, 14, 18, 23],
     "energy_max": 80,
     "energy_fed": 35,

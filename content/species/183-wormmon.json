@@ -20,7 +20,7 @@
     "slot_aliases": [[47, 51], [48, 50], [50, 49], [52, 51], [53, 49], [54, 46], [46, 49], [49, 55]]
   },
   "texture": {"file": "build/batch/Wormmon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 28,
   "battle_music": "normal-battle",
   "condition_bubble": [-22, -24, -101, 2],
   "effect_origins": [[4, 70, 0, 20, 2, -37, 49, -37], [4, 120, 0, 20, 2, -43, 85, -17]],
@@ -33,7 +33,7 @@
     "natural": {"height": 284.6, "half_width": 181.7, "half_depth": 185.2}
   },
   "partner": {
-    "voice": 7,
+    "voice": 1,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,

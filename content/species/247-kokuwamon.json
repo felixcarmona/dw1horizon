@@ -22,7 +22,7 @@
                      [49, 58]]
   },
   "texture": {"file": "build/batch6/Kokuwamon.TIM", "entry": 0},
-  "voice": 30,
+  "voice": 68,
   "battle_music": "normal-battle",
   "condition_bubble": [-10, -27, 6, 4],
   "effect_origins": [[7, 60, 0, 0, 19, -26, 28, 2], [3, 85, -55, 0, 4, 21, 58, -17],
@@ -37,7 +37,7 @@
     "natural": {"height": 281.2, "half_width": 146.8, "half_depth": 118.1}
   },
   "partner": {
-    "voice": 3,
+    "voice": 1,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 48,

@@ -20,13 +20,13 @@
     "slot_aliases": [[49, 48], [50, 54], [51, 54], [52, 54], [53, 47]]
   },
   "texture": {"file": "build/guilmon/Guilmon.TIM", "entry": 0},
-  "voice": 8,
+  "voice": 3,
   "battle_music": "normal-battle",
   "condition_bubble": [-4, -101, -15, 6],
   "effect_origins": [[3, 100, -45, 0, 6, -1, -2, -85], [4, 0, 0, 0, 7, 0, 0, 0]],
   "wild": {"hp": 610, "mp": 600, "off": 120, "def": 95, "speed": 110, "brain": 80, "bits": 200},
   "partner": {
-    "voice": 2,
+    "voice": 1,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 55,

@@ -21,7 +21,7 @@
                      [58, 48], [59, 48], [60, 48], [61, 46], [46, 55], [55, 48]]
   },
   "texture": {"file": "build/batch3/MetalSeadramon.TIM", "entry": 0},
-  "voice": 19,
+  "voice": 55,
   "battle_music": "normal-battle",
   "condition_bubble": [-4, -24, -77, 6],
   "effect_origins": [[4, 0, -20, -130, 6, -1, 109, -98], [4, 0, -10, -85, 6, 0, 72, -61],
@@ -38,7 +38,7 @@
   },
   "size": {"height": 557},
   "partner": {
-    "voice": 4,
+    "voice": 5,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 40,

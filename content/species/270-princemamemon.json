@@ -22,7 +22,7 @@
                      [58, 46], [59, 46], [60, 46], [61, 46], [62, 47], [47, 46], [46, 62]]
   },
   "texture": {"file": "build/batch8/PrinceMamemon.TIM", "entry": 0},
-  "voice": 47,
+  "voice": 13,
   "battle_music": "normal-battle",
   "condition_bubble": [-8, -151, 40, 2],
   "effect_origins": [[19, 60, 80, 0, 18, 22, 108, -139], [2, -50, 14, 0, 2, -3, 116, 31],
@@ -37,7 +37,7 @@
     "natural": {"height": 356.2, "half_width": 231.7, "half_depth": 182.2}
   },
   "partner": {
-    "voice": 3,
+    "voice": 0,
     "hunger_hours": [1, 5, 9, 13, 17, 21],
     "energy_max": 80,
     "energy_fed": 45,

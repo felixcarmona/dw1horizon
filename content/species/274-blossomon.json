@@ -22,7 +22,7 @@
                      [59, 53], [60, 53], [53, 56], [56, 52], [52, 60]]
   },
   "texture": {"file": "build/batch8/Blossomon.TIM", "entry": 0},
-  "voice": 17,
+  "voice": 40,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -51, -46, 8],
   "effect_origins": [[3, 125, -10, 0, 8, 0, 30, -69], [7, 100, -120, 0, 13, 30, -21, -137],
@@ -37,7 +37,7 @@
     "natural": {"height": 310.0, "half_width": 240.3, "half_depth": 146.0}
   },
   "partner": {
-    "voice": 8,
+    "voice": 1,
     "hunger_hours": [2, 7, 12, 17, 21],
     "energy_max": 80,
     "energy_fed": 40,

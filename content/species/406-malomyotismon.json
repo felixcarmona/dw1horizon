@@ -24,7 +24,7 @@
                      [51, 62]]
   },
   "texture": {"file": "build/meshfix2-out/MaloMyotismon.TIM", "entry": 0},
-  "voice": 30,
+  "voice": 56,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -204, 31, 1],
   "effect_origins": [[7, 60, 0, 0, 14, -23, 60, 4], [3, 85, -55, 0, 1, 0, -63, -40],

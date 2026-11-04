@@ -23,7 +23,7 @@
                      [47, 62]]
   },
   "texture": {"file": "build/batch/Imperialdramon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 48,
   "battle_music": "normal-battle",
   "condition_bubble": [-13, -142, -299, 5],
   "effect_origins": [[4, 70, 0, 20, 5, -55, 39, -389], [4, 120, 0, 20, 5, -71, 109, -441]],
@@ -37,7 +37,7 @@
   },
   "size": {"height": 600},
   "partner": {
-    "voice": 7,
+    "voice": 2,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 45,

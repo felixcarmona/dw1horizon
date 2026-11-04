@@ -22,7 +22,7 @@
                      [57, 49], [59, 50], [50, 49]]
   },
   "texture": {"file": "build/batch7/Triceramon.TIM", "entry": 0},
-  "voice": 12,
+  "voice": 41,
   "battle_music": "normal-battle",
   "condition_bubble": [-17, -40, -91, 4],
   "effect_origins": [[4, 260, 30, 0, 4, -5, 174, -183], [9, 0, 75, 50, 7, 36, 19, 70],
@@ -37,7 +37,7 @@
     "natural": {"height": 423.8, "half_width": 264.5, "half_depth": 334.6}
   },
   "partner": {
-    "voice": 10,
+    "voice": 7,
     "hunger_hours": [0, 4, 8, 12, 16, 20],
     "energy_max": 80,
     "energy_fed": 45,

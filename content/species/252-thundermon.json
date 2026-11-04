@@ -20,7 +20,7 @@
                      [46, 49], [58, 49], [49, 48], [48, 58]]
   },
   "texture": {"file": "build/batch6/Thundermon.TIM", "entry": 0},
-  "voice": 45,
+  "voice": 16,
   "battle_music": "normal-battle",
   "condition_bubble": [-10, -40, -27, 2],
   "effect_origins": [[1, 0, 0, 0, 1, 0, 0, 0], [3, 100, -25, 0, 2, -20, 36, -38]],

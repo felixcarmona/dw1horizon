@@ -20,7 +20,7 @@
     "slot_aliases": [[46, 49], [47, 51], [48, 51], [50, 49], [52, 51], [53, 49], [54, 49], [49, 51]]
   },
   "texture": {"file": "build/batch9/Gazimon.TIM", "entry": 0},
-  "voice": 20,
+  "voice": 16,
   "battle_music": "normal-battle",
   "condition_bubble": [0, -58, -3, 4],
   "effect_origins": [[4, 70, 0, 20, 4, -2, 39, -56], [4, 120, 0, 20, 4, -3, 75, -85]],
@@ -33,7 +33,7 @@
     "natural": {"height": 332.0, "half_width": 219.1, "half_depth": 362.8}
   },
   "partner": {
-    "voice": 7,
+    "voice": 1,
     "hunger_hours": [2, 6, 11, 16, 21],
     "energy_max": 80,
     "energy_fed": 35,
