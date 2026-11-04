@@ -312,5 +312,29 @@
    "aquí. Ke, je!"
   ]
  ],
- "s015.sec51.u23": "Vegiemon s'ha unit a la ciutat!"
+ "s015.sec51.u23": "Vegiemon s'ha unit a la ciutat!",
+ "s012.sec81.vend_prompt": "Tria un objecte.",
+ "s012.sec81.vend_more": "Més",
+ "s012.sec81.vend_back": "Enrere",
+ "s012.sec81.vend_leave": "Sortir",
+ "s012.sec81.vend_poor": "No tens prou bits.",
+ "s012.sec81.vend_full": "La bossa és plena.",
+ "s012.sec81.vend_daily": "Un de cada bolet rar al dia.",
+ "s012.sec81.vend_sold": "Esgotat avui. Torna després de mitjanit.",
+ "s012.sec81.vend_bonus": "Premi extra! Cura doble!",
+ "s012.sec81.vend_play_prompt": "Vols jugar per 1000 bits? Sense devolucions. Fes lloc a la bossa.",
+ "s012.sec81.vend_play": "Jugar",
+ "s012.sec81.vend_quit": "Sortir",
+ "s012.sec81.vend_getSmRecovery": "Has rebut Cura petita!",
+ "s012.sec81.vend_getMedRecovery": "Has rebut Cura mitjana!",
+ "s012.sec81.vend_getLrgRecovery": "Has rebut Cura gran!",
+ "s012.sec81.vend_getMPFloppy": "Has rebut Cura MP!",
+ "s012.sec81.vend_getMediumMP": "Has rebut Cura MP mitjana!",
+ "s012.sec81.vend_getLargeMP": "Has rebut Cura MP gran!",
+ "s012.sec81.vend_getVarious": "Has rebut Cura variada!",
+ "s012.sec81.vend_getOmnipotent": "Has rebut Cura omnipotent!",
+ "s012.sec81.vend_getRestore": "Has rebut Regenerador!",
+ "s012.sec81.vend_getOffDisk": "Has rebut Disc Atac!",
+ "s012.sec81.vend_getDefDisk": "Has rebut Disc Defensa!",
+ "s012.sec81.vend_getHispeedDsk": "Has rebut Disc Veloç!"
 }

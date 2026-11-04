@@ -447,3 +447,12 @@ Its separate MP Station (use 2) is unchanged. Each successful purchase has the o
 Double Floppy. The bonus sells for 750, adding **67.5** to every purchase's expected exit: the four totals are
 117.5, 317.5, 217.5 and 467.5. The proposed 70/300/200 prices therefore rise to the smallest safe whole-bit prices.
 A bonus that does not fit is lost; it never becomes an S.Speed Disk. Normal bag-space failures cost nothing.
+
+Tropical Jungle does have a machine: the MP Station on screen 11. It now hosts the **1000-bit** prize draw; Gear
+Savanna retains its MP Station. Each play gives Small/Medium/Large Recovery, MP Floppy/Medium/Large MP, Various
+or Omnipotent at **10% each**, or Restore/Offense Disk/Defense Disk/HiSpeed Disk at **5% each**. There is no additional
+bonus. All 100 random outcomes pay an item; the expected best conversion exit is **487.5 bits** per play.
+Payment happens before the draw, with an explicit no-refund warning: filling the bag to reject common prizes
+cannot give free rerolls until a valuable prize fits. Make space before playing; a prize that does not fit is lost.
+All four machines use at most three menu rows, with More/Back paging and the game's normal cancel control.
+Their prompts, choices and rewards are authored in all eight languages, using each language's item names.

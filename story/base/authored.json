@@ -435,6 +435,16 @@
       "original_sha256": "087fad68a86bdf852767c1beb54a33e2a8ed499b84a657397c1f6f85b846db52",
       "authored_sha256": "8acc072b7c8c0c3fe4c197411447ca2f471ffb55c6a89b51d276c81f0de7e726",
       "reason": "Horizon vending machine on screen 74; synchronized Python and DWS"
+    },
+    "zones/tropical-jungle/s012-11/script.py": {
+      "original_sha256": "585635567b345d0d2dd1822a53e5119657b5bb0dd32b1d74a84c1f0e97778d19",
+      "authored_sha256": "ab1cf4405c4117d54d17a70649b4ccccb8faa4cf2045e6755591230db55c1dd6",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS"
+    },
+    "zones/tropical-jungle/s012-11/script.dws": {
+      "original_sha256": "3b2904c49763fbb8216662e1797828eac972dde870f5330ba769410386c01768",
+      "authored_sha256": "1f4728e37a0b84cb8bb377f54c4983bb78b96aa1d7df621dff060a0a642c26d9",
+      "reason": "Horizon vending machine on screen 11; synchronized Python and DWS"
     }
   }
 }
