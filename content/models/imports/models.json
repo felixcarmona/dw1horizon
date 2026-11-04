@@ -127,7 +127,7 @@
  "308": {"model": "308-Dinohyumon.MMD", "aliases_applied": true, "field_overlay": "dinohyumon-chibi"},
  "309": {"model": "309-Antylamon.MMD", "field_overlay": "antylamon-chibi"},
  "310": {"model": "310-Assaultmon.MMD", "aliases_applied": true, "field_overlay": "assaultmon-chibi"},
- "311": {"model": "311-Arukenimon.MMD", "aliases_applied": true},
+ "311": {"model": "311-Arukenimon.MMD", "aliases_applied": true, "field_overlay": "arukenimon-celebration"},
  "312": {"model": "312-Creepymon.MMD", "aliases_applied": true, "field_overlay": "creepymon-chibi"},
  "313": {"model": "313-Bulbmon.MMD", "aliases_applied": true},
  "314": {"model": "314-SkullSatamon.MMD", "aliases_applied": true, "field_overlay": "skullsatamon-chibi"},
