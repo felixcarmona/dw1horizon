@@ -157,6 +157,7 @@ script 78 {
                                     set_dialog_owner(narrator);
                                     take_bits(200);
                                     say(narrator, text("s078.sec81.u9"));
+                                    give_item(item("MP Floppy"), 1);
                                     if (engine.item_did_not_fit) {
                                         say(tamer, text("s078.sec81.u10"));
                                         engine.picker_mode = true;

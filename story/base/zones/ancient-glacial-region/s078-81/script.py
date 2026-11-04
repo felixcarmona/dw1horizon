@@ -140,6 +140,9 @@ def use1():    # section 81
                             raw.set_dialog_owner(narrator)
                             take(bits=200)
                             narrator.say(t81.u9)
+                            # Horizon: the original gave the MP Floppy only when the bag was full; with room it took the
+                            # 200 bits, said "An MP Floppy came out!" and gave nothing.
+                            give(Item.MPFloppy)
                             if engine.item_did_not_fit:
                                 tamer.say(t81.u10)
                                 pick_item()

@@ -400,6 +400,16 @@
       "original_sha256": "61b22d964af09d2c5f6c07d27bf154a41c9c2a0d5bc534af1542478132cb88b4",
       "authored_sha256": "3de91e9b709a77b7aaf784c9257146ea7ab72f44ca02bd4d7542fdde8a700952",
       "reason": "Meteormon's walk-away starts once: the original restarted it at every glance, and a restart a few units short of the point gave a zero step and an endless wait; DWS synchronized with the authored Python source"
+    },
+    "zones/ancient-glacial-region/s078-81/script.py": {
+      "original_sha256": "c4a24365f2e84358edb1b7b1880e4643d119287d06586d5296e0dc3c501ace01",
+      "authored_sha256": "09e73544fc99af3bdf07d96f03f2a92b27d3c5308d5e97877e70d30f8120fc9b",
+      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing"
+    },
+    "zones/ancient-glacial-region/s078-81/script.dws": {
+      "original_sha256": "a90ad42f9207f87bcd8b17515b331ef9475c3b1836c9766b55c922d5a804bff2",
+      "authored_sha256": "58cf6d92a10b44270d65acb9fea303f78696527933bf310700ad34a10e8d75fd",
+      "reason": "The vending machine's MP Floppy prize is given; the original gave it only when the bag was full and otherwise took 200 bits for nothing; DWS synchronized with the authored Python source"
     }
   }
 }
