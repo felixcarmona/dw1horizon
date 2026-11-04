@@ -1,4 +1,4 @@
-From 300aec0971c9e2f72bc8dab4b4862634a4befec0 Mon Sep 17 00:00:00 2001
+From 0a42639e95a4a6e68061119430d4bb6047dabe0d Mon Sep 17 00:00:00 2001
 From: Horizon authors <>
 Date: Wed, 4 Nov 2026 15:19:20 +0000
 Subject: [PATCH] Draw flattened Digimon with the flat frames their texture
@@ -13,8 +13,8 @@ renderFlatDigimon draws from there. A texture without the trailer keeps the orig
 ---
  include/dw/species.h   |  4 ++++
  src/main/mod_species.c | 41 +++++++++++++++++++++++++++++++++++++++++
- src/main/model.c       | 11 ++++++-----
- 3 files changed, 51 insertions(+), 5 deletions(-)
+ src/main/model.c       | 12 +++++++-----
+ 3 files changed, 52 insertions(+), 5 deletions(-)
 
 diff --git a/include/dw/species.h b/include/dw/species.h
 index 057f6dd..dfefc5e 100644
@@ -81,7 +81,7 @@ index 4afa588..542a067 100644
 +	dst[2] = src[2];
 +}
 diff --git a/src/main/model.c b/src/main/model.c
-index 4b44199..809ddf6 100644
+index 4b44199..ec967eb 100644
 --- a/src/main/model.c
 +++ b/src/main/model.c
 @@ -2738,6 +2738,7 @@ void initializePosData(PositionData *posData)
@@ -126,6 +126,14 @@ index 4b44199..809ddf6 100644
  
  	DrawSync(0);
  }
+@@ -3932,6 +3933,7 @@ ModelComponent *applyMMD(int32_t digimonType, int32_t entityType,
+ 		setRECT(&rect, img.cx, img.cy, img.cw, img.ch);
+ 		LoadImage(&rect, img.clut);
+ 	}
++	loadFlatSprite(modelData->imagePtr, m); /* MOD (flat sprites): evolution and Continue upload here too */
+ 	memcpy(m->mmdPtr, modelData->modelPtr, modelData->modelSize);
+ 	m->modelPtr = (TMDModel *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[0]);
+ 	m->animTablePtr = (long *)((char *)m->mmdPtr + ((long *)m->mmdPtr)[1]);
 -- 
 2.55.0
 

@@ -480,14 +480,14 @@ def sheet(out, disc, ids=None, zoom=4):
     for t, name, model, tim in disc_models(disc, set(ids or ())):
         tiles.append((t, name, frames_of(tim)))
     cols = 8
-    cw, chh = 32 * zoom + 8, 32 * zoom + 8
+    cw, chh = max(32 * zoom + 8, 160), 32 * zoom + 32
     Wd, Hd = cols * cw, -(-len(tiles) // cols) * chh
     px = bytearray(b'\x18\x18\x18\xff' * (Wd * Hd))
     for k, (t, name, fr) in enumerate(tiles):
         ox, oy = (k % cols) * cw + 4, (k // cols) * chh + 4
         for f in range(4):
-            for y in range(16):
-                for x in range(16):
+            for y in range(CELL):
+                for x in range(CELL):
                     c = fr[f][y][x]
                     rgb = (((c & 31) << 3), ((c >> 5 & 31) << 3), ((c >> 10 & 31) << 3), 255) if c else (70, 70, 70, 255)
                     for zy in range(zoom):
@@ -495,7 +495,12 @@ def sheet(out, disc, ids=None, zoom=4):
                             X = ox + ((f & 1) * 16 + x) * zoom + zx
                             Y = oy + ((f >> 1) * 16 + y) * zoom + zy
                             px[(Y * Wd + X) * 4:(Y * Wd + X) * 4 + 4] = bytes(rgb)
-    image.frombytes('RGBA', (Wd, Hd), bytes(px)).save(out)
+    im = image.frombytes('RGBA', (Wd, Hd), bytes(px))
+    draw = image.ImageDraw.Draw(im)
+    for k, (t, name, _) in enumerate(tiles):
+        draw.text(((k % cols) * cw + 4, (k // cols) * chh + 32 * zoom + 7),
+                  f'{t} {name}', fill=(240, 240, 240, 255))
+    im.save(out)
     return [t for t, _, _ in tiles]
 
 
