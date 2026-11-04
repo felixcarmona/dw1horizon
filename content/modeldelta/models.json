@@ -1129,9 +1129,9 @@
           }
         ],
         "delta": "content/modeldelta/deltas/219-Zudomon.MMD.mdelta",
-        "delta_sha256": "2864d80dc9d7b18dcafb34230330f8ad74394a4cdc8f67702c6d15958fb80281",
-        "sha256": "5dd5642d5b041eff795d35fb9e01152e765139693c161a288c92d09bbffa6abc",
-        "size": 105236
+        "delta_sha256": "1fe4781188f6bc46ab3a2f29e3e9dcfa235a477fa30a6a9d30b30dd666a5a068",
+        "sha256": "d6c5ea075c6132cb86a89848f695a2b608851a5ea9fd70e3c9f16124ce4d5ed6",
+        "size": 113372
       },
       "tim": {
         "sources": [
