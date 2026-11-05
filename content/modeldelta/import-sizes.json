@@ -706,6 +706,14 @@
       "scale": 0.8125,
       "target": "build/sizes-out/models/Gazimon.MMD",
       "sha256": "dcb1df1f725d80e0323c0e2b879116151b79a66c1102e48a5173d4184a772899"
+    },
+    {
+      "source": "build/rigfix/Chrysalimon.MMD",
+      "source_sha256": "be7c37758eaf5a4242f26310ce32c16d8a972dd8286e07d5591cf404a1fbefc7",
+      "bones": 34,
+      "scale": 0.7843137254901961,
+      "target": "build/sizes-out/models/Chrysalimon.MMD",
+      "sha256": "0625aa414146bae505decaffcf4fd6103dfb067f240c263055404d95807dcaf7"
     }
   ]
 }
