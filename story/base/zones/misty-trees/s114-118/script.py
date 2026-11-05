@@ -26,7 +26,7 @@ def enter():    # section 254
     if roll <= 15:
         spawn_item(Item.Digimushrm, at=(-450, -850))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Digimushrm, at=(-3550, 4350))
 
 @goblimon.on_talk

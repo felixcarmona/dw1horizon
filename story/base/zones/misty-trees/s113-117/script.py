@@ -36,7 +36,7 @@ def enter():    # section 254
     if roll <= 12:
         spawn_item(Item.Digimushrm, at=(650, -1350))
     roll = random.roll(99)
-    if roll <= 2:
+    if roll <= 7:
         spawn_item(Item.Digipine, at=(650, -3350))
 
 @goblimon1.on_talk

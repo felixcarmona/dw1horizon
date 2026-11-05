@@ -22,7 +22,7 @@ script 114 {
             spawn_item(item("Digimushrm"), 45, 58);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 14, 6);
         }
     }

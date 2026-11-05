@@ -16,7 +16,7 @@ script 73 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 39, 59);
         }
         store_random(random_roll, 99);
@@ -28,7 +28,7 @@ script 73 {
             spawn_item(item("Digimushrm"), 40, 24);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 6) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 61, 35);
         }
         clear_trigger(338);

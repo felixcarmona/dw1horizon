@@ -15,15 +15,15 @@ script 40 {
             spawn_item(item("Digimushrm"), 76, 78);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 31, 68);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 6) {
+        if (random_roll <= 7) {
             spawn_item(item("Pricklypear"), 66, 68);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 22, 75);
         }
         rotate_3d_object(0, 0, 1);

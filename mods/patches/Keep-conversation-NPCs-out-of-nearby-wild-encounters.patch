@@ -1,0 +1,29 @@
+From 21f548dc623f8605e49a5f38699df2288be127fa Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 20:58:05 +0000
+Subject: [PATCH] Keep conversation NPCs out of nearby wild encounters
+
+---
+ src/main/btl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/main/btl.c b/src/main/btl.c
+index 0e36369..99ddcff 100644
+--- a/src/main/btl.c
++++ b/src/main/btl.c
+@@ -277,6 +277,12 @@ int32_t handleBattleStart(id)
+ 			NPC_ENTITIES[i - 2].digimonEntity.entity.isOnMap = 0;
+ 			continue;
+ 		}
++		/* Conversation NPCs fight only when their script names them. Nearby
++		 * wild encounters must not pull them into an unrelated battle. */
++		if (NPC_ENTITIES[i - 2].autotalk == 0) {
++			setFleeBubble(i, 1);
++			continue;
++		}
+ 		if (count == 3) {
+ 			setFleeBubble(i, 1);
+ 			continue;
+-- 
+2.55.0
+

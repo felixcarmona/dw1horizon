@@ -5,31 +5,11 @@
   "level": "ultimate",
   "vanilla_as": 12,
   "attribute": "virus",
-  "specialties": [
-    "mech",
-    "battle",
-    null
-  ],
-  "techniques": [
-    "Pulse Laser",
-    "Metal Sprinter",
-    "DG Dimension",
-    "All Range Beam",
-    "Delete Program",
-    "Reverse Prog",
-    "Power Crane",
-    "Full Potential",
-    "Megaton Punch",
-    "Buster Dive",
-    "Counter",
-    "Dynamite Kick (44)",
-    "Tremar",
-    "Deadly Bomb"
-  ],
-  "drop": {
-    "item": "sm.recovery",
-    "percent": 10
-  },
+  "specialties": ["mech", "nature", null],
+  "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
+                 "Reverse Prog", "Power Crane", "Full Potential", "Poison Claw", "Poison Powder",
+                 "Bug", "Insect Plague", "Mass Morph", "Deadly Bomb"],
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 47,
   "model": {
     "file": "build/sizes-out/models/Infermon.MMD",

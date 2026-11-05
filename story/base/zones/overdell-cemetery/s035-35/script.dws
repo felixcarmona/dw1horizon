@@ -26,11 +26,11 @@ script 35 {
             spawn_item(item("Digimushrm"), 24, 44);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 4) {
+        if (random_roll <= 7) {
             spawn_item(item("Super veggy"), 36, 24);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 79, 6);
         }
         if (mansion_fridge_memo_found && !myotismon_freed) {

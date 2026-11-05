@@ -14,7 +14,7 @@ script 126 {
             spawn_item(item(44), 49, 70);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item(69), 25, 68);
         }
     }

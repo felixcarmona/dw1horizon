@@ -47,17 +47,17 @@ def enter():    # section 254
     elif roll <= 29:
         spawn_item(Item.MoldyMeat, at=(50, 1550))
     roll = random.roll(99)
-    if roll <= 1:
+    if roll <= 7:
         spawn_item(Item.OrangeBana, at=(-50, 3150))
-    elif roll <= 9:
+    elif roll <= 19:
         spawn_item(Item.Happymushrm, at=(-50, 3150))
-    elif roll <= 29:
+    elif roll <= 39:
         spawn_item(Item.AutoPilot, at=(-50, 3150))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.OmniDisk, at=(1550, 2750))
         return
-    if roll <= 29:
+    if roll <= 32:
         spawn_item(Item.MediumMP, at=(1550, 2750))
 
 @forest.on_step(0)

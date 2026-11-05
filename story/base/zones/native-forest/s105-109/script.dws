@@ -24,7 +24,7 @@ script 105 {
             set_obj_visibility(23, 0);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 61, 64);
         }
         store_random(random_roll, 99);

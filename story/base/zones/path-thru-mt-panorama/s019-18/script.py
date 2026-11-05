@@ -32,7 +32,7 @@ def enter():    # section 254
     if roll <= 9:
         spawn_item(Item.Digimushrm, at=(1050, -2250))
     roll = random.roll(99)
-    if roll <= 3:
+    if roll <= 7:
         spawn_item(Item.BigBerry, at=(750, -450))
     native_forest_rockslide_cleared.set()
     native_forest_rockslide_cleared_seen.set()

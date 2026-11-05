@@ -25,11 +25,11 @@ script 13 {
             spawn_item(item("Digimushrm"), 56, 61);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 5) {
+        if (random_roll <= 7) {
             spawn_item(item("Digimushrm"), 87, 67);
         }
         store_random(random_roll, 99);
-        if (random_roll <= 2) {
+        if (random_roll <= 7) {
             spawn_item(item("Orange bana"), 21, 57);
         }
     }

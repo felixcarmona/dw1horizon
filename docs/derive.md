@@ -28,7 +28,7 @@ texture a species provider hands over. The four player discs supply the game inp
 | models | the partner and NPC models made from the disc's own models (`content/models/*`) |
 | imports, record_originals | source-disc model replay and our deltas, before species assembly |
 | overlays | the imported species' field animations, one unit per species |
-| species | DIGI.DAT: every species of `content/species`, with the imported provider's models and the record originals; CHDAT/ALLTIM.TIM with the flat sprites the disc's NPC-only originals lack (`tools/flatsprite.py`) |
+| species | DIGI.DAT: every species of `content/species`, with the imported provider's models and the record originals; CHDAT/ALLTIM.TIM with authored flat sprites for missing or untrusted native field-enemy frames (`tools/flatsprite.py`) |
 | sound | the sound banks with our music and instruments (`content/sound`) |
 | story | DG.SCN, MAPHEAD.SCN and their copies: per language, per font, and the original story beside the extended one |
 | screens | SCRN.DAT: the screens 255 and up |

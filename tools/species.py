@@ -883,14 +883,29 @@ def species_texture(s):
     return tim.to_bytes()
 
 
+def needs_authored_flat(s):
+    """Native field-enemy textures can have monochrome noise in the flat corner.
+
+    The original partner block ends at NUM_PARTNER; the field enemies end at 111.
+    Use an available authored icon for their borrowed pages rather than a palette heuristic;
+    retain the original art when no authored replacement exists.
+    """
+    source = (s.get('texture') or {'from': s['id']}).get('from')
+    import flatsprite
+    return source is not None and NUM_PARTNER <= source < 112 and (
+        os.path.isfile(os.path.join(ROOT, 'content', 'icons', f'{source}.txt')) or
+        source in flatsprite.FLAT_ICON_ALIASES)
+
+
 def flat_texture(s, model, nbones, tex):
     """(texture, model, how) with the species' flat sprite, the picture it turns into while flattened
-    (tools/flatsprite.py): its own if the texture has one, else its icon in two colours where the model leaves room
+    (tools/flatsprite.py): trusted native frames, else its authored icon in two colours where the model leaves room
     (the model changes only when some of its UV islands had to move to make that room)."""
     import flatsprite
     icon, _ = flatsprite.art(s)
     try:
-        tex, model, _, _, how = flatsprite.stamp(tex, model, nbones, flatsprite.mono(icon))
+        tex, model, _, _, how = flatsprite.stamp(tex, model, nbones, flatsprite.mono(icon),
+                                                 keep_native=not needs_authored_flat(s))
     except flatsprite.NoRoom as e:
         raise SystemExit(f'{s["_path"]}: no room for the flat sprite: {e}')
     return tex, model, how
@@ -1654,8 +1669,7 @@ def disc_files(content=None):
 
 def build_alltim(out, content=None):
     """CHDAT/ALLTIM.TIM of the disc with a flat sprite for each original that is on screen with its disc texture and
-    has none (tools/flatsprite.py: Analogman, Jijimon, Market Manager, ShogunGekomon and DemiMeramon draw nothing while
-    flat): the player's own file, those entries completed. Room is measured on every model the game draws with that
+    needs authored art (empty frames or untrusted native field-enemy patterns): the player's own file, those entries completed. Room is measured on every model the game draws with that
     texture: the disc's (or its replacement, disc_files) and the partner-only file. Returns {id: how} of the changed
     entries."""
     import flatsprite
@@ -1667,12 +1681,13 @@ def build_alltim(out, content=None):
         if t >= NUM_ORIGINAL: break
         if t == 0 or is_record_original(s): continue      # the tamer never fights; a record original's is in DIGI.DAT
         tex = bytes(data[t * TEX_SIZE:(t + 1) * TEX_SIZE])
-        if not flatsprite.check(tex): continue
+        if not needs_authored_flat(s) and not flatsprite.check(tex): continue
         nb = len(O.rec[t]['bones'])
         models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
                                           if 'partner_file' in s['model'] else [])
         icon, _ = flatsprite.art(s)
-        tex, _, _, _, how = flatsprite.stamp(tex, models, nb, flatsprite.mono(icon))
+        tex, _, _, _, how = flatsprite.stamp(tex, models, nb, flatsprite.mono(icon),
+                                            keep_native=not needs_authored_flat(s))
         data[t * TEX_SIZE:(t + 1) * TEX_SIZE] = tex
         done[t] = how
     with open(out, 'wb') as f:
@@ -1712,7 +1727,12 @@ def flat_audit(digi, alltim, content=None):
         elif deep:
             models = [species_model(s)[0]] + ([open(resolve_path(s['model']['partner_file']), 'rb').read()]
                                               if 'partner_file' in s['model'] else [])
-        out[t] = ('moved' if moved else 'native', flatsprite.check(tex, models, len(r['bones'])))
+        problems = flatsprite.check(tex, models, len(r['bones']))
+        if needs_authored_flat(s):
+            icon, _ = flatsprite.art(s)
+            if not flatsprite.matches_art(tex, flatsprite.mono(icon)):
+                problems.append('native field texture does not contain the authored flat silhouettes')
+        out[t] = ('moved' if moved else 'native', problems)
     return out
 
 

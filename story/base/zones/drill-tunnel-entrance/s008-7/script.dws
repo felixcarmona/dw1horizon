@@ -10,7 +10,7 @@ script 8 {
 
     on enter replace {    // section 254
         store_random(random_roll, 99);
-        if (random_roll <= 1) {
+        if (random_roll <= 7) {
             spawn_item(item("Happymushrm"), 22, 69);
         }
     }

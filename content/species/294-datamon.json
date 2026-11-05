@@ -5,31 +5,11 @@
   "level": "ultimate",
   "vanilla_as": 12,
   "attribute": "virus",
-  "specialties": [
-    "mech",
-    "battle",
-    null
-  ],
-  "techniques": [
-    "Delete Program",
-    "Reverse Prog",
-    "DG Dimension",
-    "All Range Beam",
-    "Pulse Laser",
-    "Power Crane",
-    "Metal Sprinter",
-    "Full Potential",
-    "Counter",
-    "Buster Dive",
-    "Megaton Punch",
-    "Dynamite Kick (44)",
-    "Tremar",
-    "Smiley Bomb"
-  ],
-  "drop": {
-    "item": "sm.recovery",
-    "percent": 10
-  },
+  "specialties": ["mech", "air", "fire"],
+  "techniques": ["Pulse Laser", "Metal Sprinter", "DG Dimension", "All Range Beam", "Delete Program",
+                 "Reverse Prog", "Power Crane", "Full Potential", "Electric Cloud", "Megalo Spark",
+                 "Static Elect", "Prominence Beam", "Heat Laser", "Smiley Bomb"],
+  "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 26,
   "model": {
     "file": "build/sizes-out/models/Nanomon.MMD",

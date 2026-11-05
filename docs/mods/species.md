@@ -353,3 +353,18 @@ Off target stats are stored at header offset `0x580`: a little-endian u16 count,
 A tier change can also declare `off.evolution` for resident species 1..62: exactly five `from` and six `to` ids (`-1` pads unused slots), and an optional complete `requirements` row in the usual species format. All routes and requirements are JSON data. Header offset `0x3c` points to an optional sector with a u16 row count and up to 20 rows: u16 id, eleven signed on path ids, eleven signed off path ids, the 28-byte on requirements, then the 28-byte off requirements. The runtime rereads that sector on option changes; no path cache is retained. `off.level` may equal the on level for species that only need path restoration.
 
 Whamon (24) uses the [official Ultimate form](https://digimon.net/reference_en/detail.php?directory_name=whamon). Its on targets are HP 6000, MP 4500, offense 400, defense 550, speed 450 and brains 500. Its native Ice arsenal (including Aurora Freeze and Winter Blast), Nature control techniques and finisher remain. Seadramon, Shellmon and Ikkakumon lead into it; Plesiomon, MetalSeadramon and Vikemon continue the aquatic family. Explicit off data restores Champion targets 2500/1500/100/150/100/200, requirements and the Palmon/Betamon/Penguinmon routes. The three Rookies retain five/four/five Champion choices on. Giant story Whamon (146) is unchanged.
+
+## Machine-line identities
+
+Assaultmon keeps Machine/Battle and its existing armed moveset. Datamon uses
+Machine/Air/Fire: its eight Machine moves are joined by Electric Cloud, Megalo
+Spark, Static Elect, Prominence Beam and Heat Laser. Infermon uses Machine/Plant,
+continuing Kurisarimon's specialties, with poison, Bug, Insect Plague and Mass
+Morph alongside its Machine moves. Diaboromon uses Machine/Plant/Battle, adding
+Megaton Punch, Buster Dive and Counter to the Machine and poison/Bug core.
+
+The finishers remain Genoside Attack (215 power), Smiley Bomb (225), Deadly Bomb
+(260) and Dark Shot (200), respectively. The first three are in the native
+Ultimate finisher range; Diaboromon keeps its existing Mega finisher, also used
+by other imported Megas. These identities preserve every evolution edge's
+shared specialty and use the existing technique animation slots.

@@ -24,7 +24,7 @@ def enter():    # section 254
     if roll <= 14:
         spawn_item(Item.Digimushrm, at=(-2250, -4350))
     roll = random.roll(99)
-    if roll <= 4:
+    if roll <= 7:
         spawn_item(Item.Pricklypear, at=(-1450, -1750))
 
 @gotsumon.on_talk
