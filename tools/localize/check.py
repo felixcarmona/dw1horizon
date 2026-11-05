@@ -20,14 +20,14 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'tools')]
 from dws import backend as BE
-from dws.text.profiles import NAMED_PAGE_ROWS, header_row, maphead_page_too_tall, merged_name_rows, named_keys
+from dws.text.profiles import NAMED_PAGE_ROWS, header_row, maphead_page_too_tall, merged_name_rows, named_keys, narrator_keys
 from dws.textbank import TextBank
 from dws.text.jaspace import kinsoku_problems, problems as ja_space_problems
 from dws.py.lower import escape_problems, font_problems, literal_escapes, resolve_escapes
 from tools.localize.executable.bank import exe_bank, FORMAT, encoded_len, list_width, VERBATIM
 from tools.fontgen import text_width
 
-LANGUAGES = ('en', 'es', 'pt-br', 'fr', 'de', 'it', 'ja', 'ca')
+from tools.languages import CODES as LANGUAGES
 FONTS = ('b', 'original')
 REFERENCE = re.compile(r'\{[^{}]+\}|[○□△×]')
 HEADER = re.compile(r'^\{color [67]\}.*?\{color 1\}[.!?]*$')
@@ -45,15 +45,35 @@ PLAYER_STRIPS = {
 }
 
 
-def player_strip_problems(key, value):
+def c_cells(language):
     from tools.fontgen import metrics
+    if language == 'zh-hans':
+        from tools.localize.executable.chinese_layout import cell_width
+        from tools.chinese import font_glyphs
+        return {c: cell_width(c) for c in font_glyphs()} | {c: 12 for c in '○□△×'}
+    return metrics('original')
+
+
+@functools.lru_cache(None)
+def c_glyphs(language):
+    if language != 'zh-hans':
+        return original_c_glyphs()
+    from tools.chinese import font_glyphs
+    cells = c_cells(language)
+    glyphs = {c: (cells[c], [''.join('.' if bits & (1 << (15-i)) else '#'
+                                       for i in range(12)) for bits in data[1:]])
+              for c, data in font_glyphs().items()}
+    return glyphs | {c: original_c_glyphs()[c] for c in '○□△×'}
+
+
+def player_strip_problems(key, value, language="en"):
     if key not in PLAYER_STRIPS:
         return []
     offsets, widths = PLAYER_STRIPS[key]
     words = list(re.finditer(r'\S+', value))
     if len(words) != len(offsets):
         return ['packed player row has the wrong number of labels']
-    cells = metrics('original')
+    cells = c_cells(language)
     width = lambda text: sum(cells.get(c, cells['?']) for c in text)
     errors = []
     for match, offset, crop in zip(words, offsets, widths):
@@ -69,15 +89,14 @@ NAMING_LABELS = {'shop.MAIN_D_801345F8': False, 'shop.MAIN_D_80134600': True}
 NAMING_LABEL_CELLS = 64
 
 
-def naming_label_problems(key, value):
-    from tools.fontgen import metrics
+def naming_label_problems(key, value, language="en"):
     if key not in NAMING_LABELS:
         return []
     if NAMING_LABELS[key]:
         if not value.endswith('OK'):
             return ['the name keyboard\'s Back word must be followed by OK (one string: "<Back>OK")']
         value = value[:-2]
-    cells = metrics('original')
+    cells = c_cells(language)
     width = sum(cells.get(c, cells['?']) for c in value)
     if width > NAMING_LABEL_CELLS:
         return [f'name keyboard label {value!r} is {width} original cells, wider than its column ({NAMING_LABEL_CELLS})']
@@ -106,12 +125,19 @@ def original_c_glyphs():
     return by_char(codes, *font_tables('original', (codes, base)))
 
 
-def packed_ui_slices(key, value):
+def packed_ui_crops(key, language):
+    if language == 'zh-hans' and key == 'main.MAIN_D_80123AE4':
+        # CHART_TREE_ROW_PIECES and CHART_LEVEL_CROPS, game_menu.c.
+        return (0, 40, 88, 204), (40, 48, 60, 40)
+    return PACKED_UI[key]
+
+
+def packed_ui_slices(key, value, language="en"):
     """The characters assigned to each original-cell piece (font.c pieceOf)."""
     if key not in PACKED_UI:
         return []
-    offsets, _ = PACKED_UI[key]
-    glyphs = original_c_glyphs()
+    offsets, _ = packed_ui_crops(key, language)
+    glyphs = c_glyphs(language)
     groups = [''] * len(offsets)
     pos = 0
     for char in value:
@@ -121,11 +147,11 @@ def packed_ui_slices(key, value):
     return [part.strip() for part in groups]
 
 
-def packed_ui_problems(key, value):
+def packed_ui_problems(key, value, language="en"):
     if key not in PACKED_UI:
         return []
-    offsets, widths = PACKED_UI[key]
-    glyphs = original_c_glyphs()
+    offsets, widths = packed_ui_crops(key, language)
+    glyphs = c_glyphs(language)
     pos = 0
     errors = []
     for char in value:
@@ -142,16 +168,29 @@ def packed_ui_problems(key, value):
     return errors
 
 
-def battle_mp_problems(names, font):
+def ui_width(value, font, language):
+    if language == 'zh-hans':
+        from tools.chinese import row_metrics, font_glyphs
+        return row_metrics(value, font_glyphs())[0]
+    return text_width(value, font)
+
+
+def battle_width(value, font, language):
+    if language == 'zh-hans':
+        return ui_width(value, font, language)
     from tools.fontgen import metrics
+    advances = metrics(font)
+    return sum(advances.get(c, advances['?']) for c in value)
+
+
+def battle_mp_problems(names, font, language="en"):
     keys = ['btl.BTL_STR_MP_CONSUMPTION_BONUS', 'btl.BTL_STR_REDUCED_BY',
             'btl.BTL_STR_MP_BONUS_PERCENT']
     if not all(k in names for k in keys):
         return []
     text = names[keys[0]] + names[keys[1]] + '20' + names[keys[2]]
-    advances = metrics(font)
     return ['composed MP bonus exceeds the battle end-box 156-px crop'] if any(
-        sum(advances.get(c, advances['?']) for c in re.sub(r'#C[0-9]', '', row)) > 156
+        battle_width(re.sub(r'#C[0-9]', '', row), font, language) > 156
         for row in re.split(r'#[RW]', text)) else []
 
 
@@ -235,13 +274,88 @@ def name_rows(key, value, bank):
     return [f[0][0] for f in fitted if not isinstance(f, str)]
 
 
-def rendered_pages(key, value, bank):
+def rendered_pages(key, value, bank, row_limit=3):
     # The base game's source loader reflows wide explicit rows. Mod banks are
     # loaded verbatim, so do not hide a mod's overflow by running the fitter.
     value = bank.fit(key, value)
     if isinstance(value, str):
-        return [[value]] if CHOICE.search(key) else BE.wrap(value, 3, BE.packed_key(key))
+        return [[value]] if CHOICE.search(key) else BE.wrap(value, row_limit, BE.packed_key(key))
     return pages(value)
+
+
+def dialogue_layout(key, value, bank, boxes, named, is_mod=False, where='', narrated=()):
+    """The page rows actually emitted, with the active box's physical capacity."""
+    limit = boxes.get(key, (240, 4))[1]
+    if is_mod:
+        limit = 4 if 'narrator' in where else 3
+        rendered = BE.wrap(value, limit) if isinstance(value, str) else pages(value)
+    else:
+        if key in named and key not in boxes:
+            limit = NAMED_PAGE_ROWS
+        # show_textbox of string keys uses three rows in the compiler. Explicit
+        # narrator/custom pages can use the full capacity of their active box.
+        rendered = rendered_pages(key, value, bank, 4 if key in narrated else 3)
+    physical = [[part for row in page for part in re.split(r'\{br\}', row, flags=re.I)]
+                for page in rendered]
+    return physical, limit
+
+
+def page_problems(key, rendered, limit):
+    if TABLE.match(key) or CHOICE.search(key):
+        return []
+    problems = []
+    for index, page in enumerate(rendered, 1):
+        capacity = min(limit, NAMED_PAGE_ROWS) if maphead_page_too_tall(key, page) else limit
+        if len(page) > capacity:
+            problems.append(f'page {index}: {len(page)} rows in a {capacity}-row box')
+    return problems
+
+
+def audit_pages(languages=LANGUAGES, fonts=FONTS, root=ROOT):
+    """Audit every dialogue bank's emitted pages, separately from UI/name widths.
+
+    Include English mod fallbacks, both font-specific script banks, physical
+    row escapes and MAPHEAD's indexed entries. Counts make coverage reviewable.
+    """
+    errors, counts = [], {}
+    boxes, named, narrated = custom_boxes(root), named_keys(root), narrator_keys(root)
+    previous = dict(BE.FONT)
+    try:
+        for language in languages:
+            for font in fonts:
+                BE.FONT.update(extra=True, glyphs=len(BE.EXTRA_ORDER), chars=frozenset(BE.EXTRA_ORDER), name=font)
+                bank = TextBank(language, 'ours' if language == 'en' else language)
+                checked = collections.Counter()
+                for source, path, executable in bank_pairs(language, root):
+                    if executable or not source.exists():
+                        continue
+                    if not path.exists() and 'mods' in path.parts:
+                        path = source
+                    if not path.exists():
+                        errors.append(dict(language=language, font=font, file=str(path.relative_to(root)),
+                                           key='(bank)', why='translation bank missing'))
+                        continue
+                    english, data = json.loads(source.read_text()), json.loads(path.read_text())
+                    for key, value in data.items():
+                        if key.startswith(('_', 'x.')) or TABLE.match(key) or CHOICE.search(key):
+                            continue
+                        rendered, limit = dialogue_layout(key, value, bank, boxes, named,
+                                                         'mods' in path.parts, english.get('_where', {}).get(key, ''), narrated)
+                        checked['entries'] += 1
+                        checked['pages'] += len(rendered)
+                        checked['rows'] += sum(map(len, rendered))
+                        problems = page_problems(key, rendered, limit)
+                        over = bank.single_page_overflow(key, len(rendered))
+                        if over:
+                            problems.append(over)
+                        for why in problems:
+                            errors.append(dict(language=language, font=font, file=str(path.relative_to(root)),
+                                               key=key, why=why))
+                counts[language + ':' + font] = dict(checked)
+    finally:
+        BE.FONT.clear()
+        BE.FONT.update(previous)
+    return dict(errors=errors, coverage=counts)
 
 
 def expand_references(row, names, species, cards, cache=None):
@@ -284,6 +398,7 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
     errors, notes, widest, counts = [], [], {}, collections.Counter()
     boxes = custom_boxes(root)
     named = named_keys(root)
+    narrated = narrator_keys(root)
     species = {int(p.name.split('-')[0]): json.loads(p.read_text())['name']
                for p in (root / 'content/species').glob('*.json')}
     card_file = root / 'content/tables/cards.json'
@@ -314,19 +429,33 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                 pairs.append((source, path, executable, english, data))
             names = next((data for _, _, exe, _, data in pairs if exe), {})
             for font in fonts:
-                BE.FONT.update(extra=True, glyphs=len(BE.EXTRA_ORDER), chars=frozenset(BE.EXTRA_ORDER), name=font)
-                bank = TextBank(language, 'ours' if language == 'en' else language)
                 rows = []
                 substitutions = {}
+                built, kept = (exe_bank('ours' if language == 'en' else language, exe_font=font)
+                               if root == ROOT else ({'text': {}}, []))
+                BE.FONT.clear()
+                BE.FONT.update(previous)
+                BE.FONT.update(extra=True, glyphs=len(BE.EXTRA_ORDER), chars=frozenset(BE.EXTRA_ORDER), name=font, chinese=False)
+                bank = TextBank(language, 'ours' if language == 'en' else language)
                 for source, path, executable, english, data in pairs:
                     is_mod = 'mods' in path.parts
                     for key, value in data.items():
                         if key.startswith(('_', 'x.')):
                             continue
                         counts[language + ':' + font] += 1
+                        if executable and language == 'zh-hans':
+                            value = built['text'].get(key, value).translate(str.maketrans('×△', '△×'))
                         if key in english:
                             for why in control_problems(english[key], value, executable):
                                 issue(language, font, path, key, why)
+                        if is_mod and key == 'city.join':
+                            # text(key, species) substitutes before wrapping, never a runtime escape.
+                            from tools.dws.recruitment import species_name, roster
+                            if not isinstance(value, str) or value.count('{species}') != 1:
+                                issue(language, font, path, key, 'recruitment template needs exactly one {species}')
+                                continue
+                            witness = max((species_name(sp, language) for sp in roster()), key=BE.text_px)
+                            value = value.replace('{species}', witness)
                         if language == 'ja' and not executable:
                             for why in ja_space_problems(key, value):
                                 issue(language, font, path, key, why)
@@ -339,41 +468,39 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                     issue(language, font, path, key, why)
                         if executable:
                             if language != 'en':
-                                for why in packed_ui_problems(key, value):
+                                for why in packed_ui_problems(key, value, language):
                                     issue(language, font, path, key, why)
-                                for why in player_strip_problems(key, value):
+                                for why in player_strip_problems(key, value, language):
                                     issue(language, font, path, key, why)
-                                for why in naming_label_problems(key, value):
+                                for why in naming_label_problems(key, value, language):
                                     issue(language, font, path, key, why)
                             # Fixed cell strips are consumed piece by piece. The
                             # QOL hint uses fitStringMode; TECH_VIEW_LABELS[9]
                             # (801239F4) is unused. Other literal C strings must
                             # at least fit the global text area; narrower crops
                             # are checked below and in the emulator matrix.
-                            if key not in VERBATIM and key not in ('main.MAIN_D_801239F4', 'main.QOL_STR_SKIP_EVOLUTION') and not FORMAT.search(value) and text_width(value, font) > 244:
+                            if key not in VERBATIM and key not in ('main.MAIN_D_801239F4', 'main.QOL_STR_SKIP_EVOLUTION') and not FORMAT.search(value) and (list_width(value, font) if key in ('main.MOD_NOTICE_STR_HEAD1', 'main.MOD_NOTICE_STR_HEAD2') and language != 'zh-hans' else ui_width(value, font, language)) > 244:
                                 issue(language, font, path, key, 'literal UI text exceeds the 244-px drawing area')
                             if key == 'btl.BTL_STR_MP_CONSUMPTION_BONUS':
-                                for why in battle_mp_problems(data, font):
+                                for why in battle_mp_problems(data, font, language):
                                     issue(language, font, path, key, why)
                             if key.startswith('btl.BTL_STR_') and ('#R' in value or '#W' in value):
                                 # End-box fragments use explicit row controls; C spaces
                                 # have the original 4-pixel cell, not dialogue's 8.
-                                from tools.fontgen import metrics
-                                advances = metrics(font)
                                 for line in re.split(r'#[RW]', value):
                                     line = re.sub(r'#C[0-9]', '', line)
-                                    if sum(advances.get(c, advances['?']) for c in line) > 156:
+                                    if battle_width(line, font, language) > 156:
                                         issue(language, font, path, key, 'battle end-box fragment exceeds its 156-px crop')
-                            if key == 'main.MAIN_D_80122D68' and text_width(value, font) > 240:
+                            if key == 'main.MAIN_D_80122D68' and ui_width(value, font, language) > 240:
                                 issue(language, font, path, key, 'bag-full pickup message exceeds its 240-px crop')
-                            if key.startswith('main.ITEM_DESCS.') and text_width(value, font) > 244:
+                            if key.startswith('main.ITEM_DESCS.') and ui_width(value, font, language) > 244:
                                 issue(language, font, path, key, 'item effect description exceeds 244 px')
-                            if key.startswith('main.MAIN_D_80131') and text_width(value, font) > 244:
+                            if key.startswith('main.MAIN_D_80131') and ui_width(value, font, language) > 244:
                                 issue(language, font, path, key, 'save/title message exceeds 244 px')
-                            if key in ('main.MAIN_D_8013103C', 'main.MAIN_D_8013104C', 'main.MAIN_D_8013105C') and text_width(value, font) > 144:
+                            if key in ('main.MAIN_D_8013103C', 'main.MAIN_D_8013104C', 'main.MAIN_D_8013105C') and ui_width(value, font, language) > 144:
                                 issue(language, font, path, key, 'slot confirmation title exceeds its 144-px crop')
                             if key in ('main.MAIN_D_80131008', 'main.MAIN_D_80131014',
-                                       'main.MAIN_D_80131024', 'main.MAIN_D_80131030') and list_width(value, font) > 164:
+                                       'main.MAIN_D_80131024', 'main.MAIN_D_80131030') and (ui_width(value, font, language) if language == 'zh-hans' else list_width(value, font)) > 164:
                                 issue(language, font, path, key, 'title menu exceeds its 164-px text crop')
                             continue
                         if is_mod:
@@ -384,7 +511,7 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                                 line_count = 4 if 'narrator' in where else 3
                                 rendered = BE.wrap(value, line_count) if isinstance(value, str) else pages(value)
                         else:
-                            rendered = rendered_pages(key, value, bank)
+                            rendered = rendered_pages(key, value, bank, 4 if key in narrated else 3)
                             for row in merged_name_rows([] if key in named else name_rows(key, value, bank), rendered):
                                 issue(language, font, path, key, f'a speaker\'s name row is not its own first row: {row}')
                             if language == 'ja':
@@ -393,13 +520,12 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                         over = bank.single_page_overflow(key, len(rendered))
                         if over:
                             issue(language, font, path, key, over)
+                        physical, limit = dialogue_layout(key, value, bank, boxes, named, is_mod,
+                                                         str(english.get('_where', {}).get(key, '')), narrated)
+                        for why in page_problems(key, physical, limit):
+                            issue(language, font, path, key, why)
                         for page in rendered:
                             max_rows = boxes.get(key, (240, 4))[1]
-                            if len(page) > max_rows and not TABLE.match(key):
-                                issue(language, font, path, key, f'{len(page)} rows in a {max_rows}-row page')
-                            if key in named and key not in boxes and len(page) > NAMED_PAGE_ROWS or \
-                                    maphead_page_too_tall(key, page):
-                                issue(language, font, path, key, f'{len(page)} rows under a speaker\'s name, {NAMED_PAGE_ROWS} fit')
                             for i, row in enumerate(page):
                                 packed = BE.packed_key(key)
                                 pixels = BE.text_px(row)
@@ -418,7 +544,6 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
                 # exe_bank uses repository paths and verifies embedded byte sizes,
                 # format codes, glyph support and condensed item names.
                 if root == ROOT:
-                    built, kept = exe_bank('ours' if language == 'en' else language, exe_font=font)
                     for key, value in built['text'].items():
                         if key.startswith('main.ITEM_DESCS.') and encoded_len(value, built['font']) > 62:
                             issue(language, font, root / 'text' / ('ours' if language == 'en' else language) / 'names.json', key, 'item description exceeds the 64-byte textbox row including terminators')
@@ -434,16 +559,22 @@ def audit(languages=LANGUAGES, fonts=FONTS, root=ROOT):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--json', type=pathlib.Path)
+    parser.add_argument('--pages-only', action='store_true', help='all dialogue page heights and indexed-page counts')
     args = parser.parse_args()
-    result = audit()
+    result = audit_pages() if args.pages_only else audit()
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
         args.json.write_text(json.dumps(result, ensure_ascii=False, indent=1) + '\n')
-    for note in result['notes']:
+    for note in result.get('notes', []):
         print('{language} {file}: {why}'.format(**note))
     for error in result['errors']:
         print('{language}/{font} {file}:{key}: {why}'.format(**error))
-    print(f"{sum(result['entries'].values())} entries checked; {len(result['errors'])} errors")
+    if args.pages_only:
+        for pair, count in result['coverage'].items():
+            print(f"{pair}: {count['entries']} dialogue entries, {count['pages']} pages, {count['rows']} rows")
+    else:
+        print(f"{sum(result['entries'].values())} entries checked; {len(result['errors'])} errors")
+    print(f"{len(result['errors'])} errors")
     return bool(result['errors'])
 
 

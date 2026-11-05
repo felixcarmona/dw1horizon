@@ -1,12 +1,25 @@
 # Game languages
 
 The runtime language selector supports English, Spanish, Brazilian Portuguese,
-French, German, Italian, Japanese and Catalan. Text, executable strings, signs and
+French, German, Italian, Japanese, Catalan and Simplified Chinese. Chinese requires 8 MB RAM;
+the other eight languages support an original 2 MB console. The picker shows
+Chinese with its flag and 中文 label in two columns. Selecting it without
+extra RAM opens a localized error popup and preserves the current language. Text,
+executable strings, signs and
 other translated textures switch together. A first-boot picker shows native names
-and procedural flags; saved options skip it. OPTIONS can change the language later.
+and procedural flags; saved options skip it. OPTIONS keeps its single cycling
+language row and uses the same native name and RAM rejection popup.
+The picker heading follows the entry under the cursor: LANGUAGE, IDIOMA,
+IDIOMA, LANGUE, SPRACHE, LINGUA, 言語, IDIOMA and 语言. All headings are
+prepared in unused text-page rows when the picker opens; moving the cursor does
+not switch the current language or read from disc. The Japanese and Chinese
+headings use 96 bytes of licensed glyph rows, alongside the 48-byte 中文 name.
+These small tables and the title-only picker helpers load in EVL's spare tail
+when the title opens, including on 2 MB hardware. They consume no resident heap.
+OPTIONS uses the matching word in its current language.
 
 Our English translation is in `text/ours`; the other translations are in
-`text/{es,pt-br,fr,de,it,ja,ca}`. `text/<language>.json` supplies common mod text,
+`text/{es,pt-br,fr,de,it,ja,ca,zh-hans}`. `text/<language>.json` supplies common mod text,
 and each story mod can provide its own `text/<language>.json`. Text is keyed to
 script locations rather than copied into the story's code. Review records and
 translation process notes are excluded from the published tree.
@@ -14,7 +27,7 @@ translation process notes are excluded from the published tree.
 ## Building
 
 ```sh
-SPECIES=all SPECIES_PROVIDER=imports TEXT=ours LANGS=en,es,pt-br,fr,de,it,ja,ca \
+SPECIES=all SPECIES_PROVIDER=imports TEXT=ours LANGS=en,es,pt-br,fr,de,it,ja,ca,zh-hans \
   LANG_BASE=en DERIVE_JOBS=1 W=$PWD/build/decomp-int NAME=everything \
   DW_HEAP_MAP=/nonexistent story/mods/what-the-island-forgot/build.sh
 ```
@@ -31,7 +44,7 @@ build if two languages' copies of an overlay differ in code rather than only in 
 
 The builder compiles each language with a common address layout and makes
 `LANGEN.BIN`, `LANGES.BIN`, `LANGPT.BIN`, `LANGFR.BIN`, `LANGDE.BIN`, `LANGIT.BIN`,
-`LANGJA.BIN` and `LANGCA.BIN`. Only selected languages are included. The original
+`LANGJA.BIN`, `LANGCA.BIN` and `LANGZH.BIN`. Only selected languages are included. The original
 and extended stories each have font-specific text copies. Japanese wrapping
 breaks between glyphs and preserves references without inserting word spaces.
 
@@ -50,7 +63,7 @@ text coverage, references, Japanese layout and language-patch transitions.
 
 Localized signs use RGBA cutouts of the changed pixels, and tournament banners
 use RGB deltas against the player’s own banners. These products are committed
-for all eight languages; private authoring images stay in `build/localized-src/`.
+for the first eight languages; private authoring images stay in `build/localized-src/`.
 
 Drill Tunnel Entrance also has an alternate sign after the Ogre takeover.
 Its normal sign is `audit-13`; `mayo11_ogre` supplies the takeover wording in
@@ -75,3 +88,27 @@ Green Gym's foreground sprites use an opaque palette entry 0 and a transparent
 entry 255. All localized copies use the palette's transparency when repainting
 those sprites, as the Spanish copy already did, so the background translation
 and its foreground agree.
+
+## Chinese extra RAM
+
+`LANGZH.BIN` is a container with one resident sector-table entry. Its runtime,
+font, route directory and species-name work buffers load above 2 MB only when
+Chinese is selected on an 8 MB console. Script and texture resources remain in
+the container, read through the normal file paths. The complete font stays in
+RAM throughout play. Normal language switches restore the resident language data.
+
+`tools/chinese_resources.py` validates the prefix checksum, font, write bounds and
+resource routes before packaging. The Chinese compiler keeps references atomic,
+uses Chinese punctuation rules, and checks explicit custom windows against their
+script dimensions. Packed UI rows are aligned to the existing crop boundaries by
+`tools/localize/executable/chinese_layout.py`. Naming uses the Latin keyboard.
+Chinese selection preserves player names and custom partner nicknames.
+
+The standard nine-language build must retain every 2 MB heap gate. Font and
+container generation uses committed licensed pixels and authored translations;
+see [Chinese sources](../../text/zh-hans/README.md).
+
+Chinese battle registrations keep a Latin species-name fallback in the fixed save
+record. The 8 MB runtime displays the official Chinese name from its extra-RAM
+name pool, while custom Latin nicknames remain unchanged. Battle-mode lists use
+a compact font atlas in text rows 128–215, separate from command text and digits.

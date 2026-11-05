@@ -761,36 +761,20 @@
    "Laisse tomber"
   ]
  ],
- "m1238.u8": [
-  [
-   "Je collectionne quelque chose.",
-   "Si tu en as, je te les échange",
-   "avec plaisir."
-  ]
- ],
+ "m1238.u8": "Échanges quotidiens. Nage. Dolph : une seule fois.",
  "m1238.u9": [
   [
    "Que vas-tu me donner ?"
   ]
  ],
- "m1238.u10": [
-  [
-   "J'échange quand tu veux, alors",
-   "ramènes-en !"
-  ]
- ],
+ "m1238.u10": "L'offre de Nage. Dolph est unique par aventure.",
  "m1238.u11": [
   [
    "Tu veux vraiment me donner",
    "{item 249} ?"
   ]
  ],
- "m1238.u12": [
-  [
-   "Bien sûr",
-   "Non, je le garde"
-  ]
- ],
+ "m1238.u12": "J'ai déjà fait cet échange aujourd'hui. Reviens demain !",
  "m1238.u13": [
   [
    "Merci beaucoup !"

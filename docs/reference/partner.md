@@ -215,7 +215,7 @@ new frame and no `FADE_PROTECTION`: in menus, battles, fishing and cutscenes not
 - Feeding (`partnerHandleFoodFeed`): the item has already added its energy (x1.4 and +2 happiness for the favourite,
   capped at `energyCap`). If it was hungry and now has enough energy: happiness +5, discipline +1, hunger cleared, next
   meal scheduled. Food (items 0x26..0x46, 0x79, 0x7A) given when not hungry: happiness -3, discipline -2.
-- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7C except 0x79/0x7A, and items 0x21..0x25; evolution
+- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7B except 0x79/0x7A, and items 0x21..0x25; evolution
   items for the wrong level; items 0x00..0x20 are refused if `rand(100) < 110 - (discipline + rand(10) + 10)`
   (discipline 100 never, 50 about 45 %, 0 almost always), then `ITEM_SCOLD_FLAG = 1`; when not hungry the favourite
   food is refused 20 % of the time.
@@ -400,6 +400,20 @@ Items 0x47..0x72 → `EVOLUTION_ITEM_TARGET[item-0x47]` only if `level(target) -
 Gigadramon (0x40), Noble Mane (0x7E, Rookie only) → Panjyamon (0x3F), Metalbanana (0x7F) → MetalEtemon (0x41); 0x7D and
 0x7F are only accepted by a Champion. Patch 0323: an item evolves like any other evolution, with the stat gains, the lifetime and the tamer level chance.
 
+North Star (92) targets Whamon (24). With NEW DIGIMON on Whamon is an Ultimate, so North Star requires a
+Champion; with off Whamon is a Champion and the item requires a Rookie. The native-item stage helper uses the
+current target stage, retaining the established legacy exception for native items whose targets became Mega.
+Both eligibility and application use that same helper. The USA refusal path reads `EVOLUTION_ITEM_TARGET`
+directly rather than a palette-relative alias. The arena cup-14 reward and all nine North Star descriptions
+remain Whamon's.
+
+Dolph Fin (124, the unused AS Decoder slot) is a separate evolution item with value 5000. The fourth existing
+`MOD_EVO_ITEMS` row maps it to Dolphmon (238) with partnerLevel 3 (Rookie). Its handler and refusal paths include
+0x7C alongside the original 0x7D..0x7F custom items. The common rule lookup rejects unavailable imports, so NEW
+DIGIMON off refuses Dolph Fin without consuming it. Wrong stages refuse it. The group-3 exchange for Small
+Recovery is once per save, with permanent history flag 13; no item or rule table grows. The fridge key at 123 is
+unchanged. Dolph Fin's nine localized names fit 11 characters and its descriptions name Dolphmon.
+
 ### Stats on evolving (`EVL_applyEvolution`, `evl.c:1282`)
 
 With `EVOLUTION_STATS_GAINS[target]`, per stat: if the current value >= the gain → `+gain/10`; otherwise →
@@ -440,6 +454,8 @@ A well-kept chain reaches Champion at age 102 h, Ultimate after 168 more hours (
 The picker model uses attainable unupgraded File City training states: at most 84 sessions during the Champion's 168 h and 60 during the Ultimate's 120 h, reserving sleep, food and rest. Natural evolution gains feed the second stage. Every Ultimate parent is checked, including secondary parents without the `digimon` bonus. Added Ultimate siblings use distinct stat-average formulas so the first listed cannot win every overlap. Original disc ties remain; Mamemon can use happiness 90 rather than Piximon's 95, and some native routes need deliberate care mistakes. No evolution asks for a number of learned techniques any more; Gigadramon's old 35 became 100 battles. Arrival witnesses prefer ordinary Champion routes and exclude Sukamon’s backup-stat restoration from the ordinary gains formula. The model follows the production picker’s retained accumulator: a qualifying loser leaves its divided stat total and count for the next qualifying candidate. These are conditional stat, picker and lifetime witnesses, not a complete care simulation.
 
 KingEtemon (303, Mega, Virus) evolves from Etemon, Monzaemon and Digitamamon. Etemon keeps the primary-parent bonus; Monzaemon shares battle and air, and Digitamamon shares air. These [canon parents](https://wikimon.net/King_Etemon) leave Monzaemon and Digitamamon with two Mega targets each. ShogunGekomon and Vademon are also canon candidates, but share none of KingEtemon's specialties and are excluded. KingEtemon keeps its Mega stat thresholds and weight: 5000 HP, 500 speed, 400 brains and weight 40. Its care band is at most 10 mistakes so the added parents have practical chains (the normal scoring and weight tolerance apply). Practical chain checks cover every included parent.
+
+IceLeomon (63) keeps Battle/Air and adds Ice in its third specialty slot. Ice Needle and Winter Blast are learnable with NEW DIGIMON on; its existing moves, Fist of the Beast King and all evolution links remain. The added attacks reuse the Static Elect and Megalo Spark clips, leaving every existing attack slot intact.
 
 `tools/test_evo_tree.py` guards topology, specialties, special-only roots and wild-only recolours in the self-test. `tools/evo_check.py` checks the built graph and exits with failure for an unreachable picker route or a lost disc canonical state.
 

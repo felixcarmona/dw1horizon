@@ -80,3 +80,20 @@ def recruit_trigger(species):
     if not 0 <= species < SPECIES_LIMIT:
         raise ValueError(f'species {species}: recruit flags exist for types 0-1023')
     return 200 + species if species < 112 else RECRUIT_BIT_BASE + species
+
+
+def species_name(ident, language):
+    """Use the same authored species terms as the Chinese runtime name pool."""
+    from . import backend as BE
+    name = BE.DIGI_DATA[ident]['name']
+    if language != 'zh-hans' or not name:
+        return name
+    glossary = json.loads((ROOT / 'text/zh-hans/glossary.json').read_text())
+    terms = {k: v['zh'] for k, v in glossary['species'].items()}
+    terms.update(glossary.get('provisional', {}))
+    term = terms.get(name, glossary.get('terms', {}).get(name))
+    if isinstance(term, dict):
+        term = term['zh']
+    if term is None:
+        raise ValueError('missing Chinese species term: ' + name)
+    return term

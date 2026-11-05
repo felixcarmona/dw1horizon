@@ -446,19 +446,11 @@
   "Eu sei",
   "Deixa pra lá"
  ],
- "m1238.u8": [
-  [
-   "Estou juntando umas coisas. Se",
-   "você tiver, quero trocar!"
-  ]
- ],
+ "m1238.u8": "Cada troca: uma por dia. Barb. Dolph: só uma vez.",
  "m1238.u9": "O que vai me dar?",
- "m1238.u10": "Trocarei a qualquer momento, então continue com eles!",
+ "m1238.u10": "A oferta de Barb. Dolph é só uma vez por aventura.",
  "m1238.u11": "Você realmente me daria {item 249}?",
- "m1238.u12": [
-  "Claro",
-  "Não, vou ficar com ele"
- ],
+ "m1238.u12": "Já fiz essa troca hoje. Volte amanhã!",
  "m1238.u13": "Muito obrigado!",
  "m1238.u14": "Você tem muitos itens.",
  "m1238.u15": [

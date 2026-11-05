@@ -1049,7 +1049,7 @@
   "skeleton_sha256": "9f02557f6d97eff22598f695be6b093f33e128c0574ba35b2871a8df4854a0a4",
   "source_sha256": "40dc5354af4b00f3d2991db08be5b6835aa0fef8e40f258d6b76285116945aef",
   "base_generator": "tools.models.field_animations.metal_garurumon",
-  "post_source_sha256": "dd7dab39356fca18a40b4ec6d33c647ce6ac23939acdc4838f90edb4160fd1e7",
+  "post_source_sha256": "7fe4b09f9ad553743c632d9763a4ceb4a0fe4925eda56e8aae7eb0cb43d20a72",
   "slots": {
    "3": {
     "from": 2,
@@ -1058,6 +1058,43 @@
     "slip": [
      125,
      250
+    ]
+   }
+  }
+ },
+ "258": {
+  "name": "SaberLeomon",
+  "bones": 23,
+  "skeleton_sha256": "41b8ccc7ac9915b88fa8b1da83746e0c1f20525c9e2b381cafcbc5b87837bece",
+  "source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "base_generator": null,
+  "post_source_sha256": "e54e2abb913e4de5a02522218531a2202210a65ab45ab470ffae090f74ae6574",
+  "slots": {
+   "2": {
+    "from": 2,
+    "ticks": 32,
+    "speed": 22.5,
+    "slip": [
+     55,
+     125
+    ]
+   },
+   "3": {
+    "from": 3,
+    "ticks": 32,
+    "speed": 15,
+    "slip": [
+     55,
+     125
+    ]
+   },
+   "4": {
+    "from": 4,
+    "ticks": 42,
+    "speed": 40,
+    "slip": [
+     55,
+     125
     ]
    }
   }

@@ -57,7 +57,7 @@ def repage(lang):
         for key,value in list(data.items()):
             if key.startswith('_'):
                 continue
-            if key in ('m1238.u7','m1238.u12','s000.sec1238.u7','s000.sec1238.u12'):
+            if key in ('m1238.u7','s000.sec1238.u7'):
                 data[key] = [value] if all(isinstance(v,str) for v in value) else value
                 continue
             text = flat(value)

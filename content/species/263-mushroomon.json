@@ -7,7 +7,7 @@
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Poison Powder", "Mass Morph", "Insect Plague", "Poison Claw", "Sonic Jab", "Muscle Charge",
-                 "War Cry", "Drill Spin"],
+                 "War Cry", "Drill Spin", "Charm Perfume"],
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 52,
   "model": {

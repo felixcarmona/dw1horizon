@@ -527,7 +527,17 @@ over the floor (Creepymon's sinks 48 units): the height of the record stays. `re
 names clips that land on the lowest vertex throughout, because the shorter legs bring a
 kneeling body, or a staff held to the ground, to the floor with the feet still on it.
 
-48 of the 175 imported partners carry a row. The rest stay as they were: quadrupeds, whose
+44 of the 175 imported partners carry a row, including authoring profiles for models
+already baked into constant-scale deltas. Stingmon 187, Angewomon 190, Rosemon 230
+and Piedmon 245 use their proportions before chibi reshaping. Seraphimon 207,
+Taomon 315 and Renamon 354 retain 30 % of the reshape; WarGreymon 373 and
+BlackWarGreymon 404 retain 50 %. Each multiplier, including limb fit and trim,
+uses `1 + strength * (full - 1)`; target height interpolates from the preceding
+recipe's idle height. Celebration overlays remain after the proportions pass.
+Piedmon and BlackWarGreymon are rebaked with constant bone scales, carrying
+attachment offsets through the same proportions exactly once.
+
+The other imports stay as they were: quadrupeds, whose
 heads are already large and whose four legs the single rule does not cover; forms with no
 humanoid legs (fish, serpents, blobs, plants, machines, insects); and bipeds already at
 the game's proportions, or that would gain too little to be worth a resident byte.
@@ -548,10 +558,45 @@ bones of each leg, the soles, where the paws stand, one row per clip with cadenc
 and body motion). Every target is a world point; the left legs' bend planes are the right legs' standing pose
 mirrored in the world, so an import whose idle stands with one leg back does not twist the other. Footsteps keep the
 species' own sound and land on touchdowns. MetalGarurumon (`metal_garurumon.py`, 191) walks in a lateral sequence
-(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported. Armadillomon
+(18 ticks at 22 units per tick) and gallops (14 at 50). Its idle plants mirrored paws in the same neutral stance,
+with chest expansion and delayed neck and tail motion over the imported acting.
+`metal_garurumon_stop.py` adds eight resident braking programs: four entry phases
+each for walk (6, 0x14, 0x1A, 0x1C) and run (0x1D-0x20). The field idle selector
+chooses the nearest quarter-cycle, then returns to idle when that program ends.
+Each closes the paws in two overlapping beats, brakes root travel over eight
+ticks and settles by tick 12. The 88-unit walk stop and 200-unit run stop use the
+same travel curve for the root and world-space sole targets. Footstep sounds
+land with the paws. Collision checks continue during braking; renewed following
+can interrupt it. Poor-condition walk/idle selection and other species retain
+their existing behavior. The decoded programs check floor clearance at 60 fps,
+settled sole drift and resident/cold storage after the pace overlay. Armadillomon
 (`armadillomon.py`, 185) has legs of about 80 units under a shell whose rim stands on the floor, so its body cannot
 drop to lengthen a stride: it walks in a quick lateral sequence (9 ticks at 18) and runs in a trot with a short
 flight (8 ticks at 35).
+
+Gallantmon's faint (0x2B) and shared recovery (0x2C/0x15) are authored by
+`tools/models/repair_gallantmon_fall.py` and stored as a plain model delta. The knees give way before a backward
+fall onto the shield side. Both boot anchors stay planted during compression. Impact remains at tick
+30, followed by a small rebound and settle through tick 36. Head and arms follow
+one to three ticks late; the shield rolls flat, and the plume trails the impact.
+The cape's three panels lag behind the shoulder and fan beside the body.
+Shoulder armour supports the landed pose; the cape cannot become its support.
+`tools/models/gallantmon_contacts.py MODEL.MMD REPORT.json` checks that contact,
+boot anchors, and nonadjacent cape/body surface crossings at 60 fps. Recovery rolls toward the knees, loads the shield
+arm, reaches a low crouch at tick 17, then extends through ticks 22 and 27 to a
+balanced stand at tick 30. The lance stays clear of the supporting pose.
+The joining poses match; durations, sound events and unrelated programs stay exact.
+
+The timing study uses native Andromon (36-tick faint, impact at 30, 30-tick
+recovery) and MetalGreymon (20-tick faint/recovery, impact at 15). The quadruped
+study uses Garurumon (18-tick idle, 16-tick walk, 14-tick run) and Monochromon
+(47-tick idle, 24-tick walk, 20-tick run). Native field stopping normally finishes
+a locomotion loop before selecting idle; the braking programs add deceleration
+and closing steps for this rig. Culled front, side and three-quarter comparisons
+and decoded contact measurements are reviewed together: numbers alone do not
+certify the acting.
+Both clips are checked against the floor at ticks and 60 fps interpolation points, and against the resident and
+cold-animation storage limits.
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
 2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.

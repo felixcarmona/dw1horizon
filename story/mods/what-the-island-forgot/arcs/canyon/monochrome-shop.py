@@ -84,7 +84,7 @@ def buy():
             else:
                 take(bits=1800)
             deal_step.set(4)
-            narrator.say("Received {item 93}.")
+            narrator.say(t("shop.deal.received"))
             tuskmon.say("Pleasure doing business. Same time tomorrow.")
     dws("return;")
 
@@ -125,11 +125,11 @@ def deal():
         tuskmon.say("No deal for you today. Tomorrow, maybe.")
     else:
         if deal_step == 0:
-            tuskmon.say("Today's deal: {item 93}. Not easy to find around here. 2500 bits.")
+            tuskmon.say(t("shop.deal.offer"))
         elif deal_step == 1:
-            tuskmon.say("{item 93} for 2150 bits. Take it or leave it.")
+            tuskmon.say(t("shop.deal.first-price"))
         else:
-            tuskmon.say("{item 93} for 1800 bits. Not one bit less.")
+            tuskmon.say(t("shop.deal.last-price"))
         if deal_step == 2:
             if tuskmon.ask(yes="Buy it", no="Leave it"):
                 buy()

@@ -488,6 +488,8 @@ def main():
         rel_files = {'manifest.json', v['patch'], 'dwpatch.py', 'isowriter.py'}
         if os.path.isfile(os.path.join(rel, 'fontcopy.py')):
             rel_files.add('fontcopy.py')
+        if os.path.isfile(os.path.join(rel, 'chinese_container.py')):
+            rel_files.add('chinese_container.py')
         rel_files |= {b['mapping'] for b in m['bases'].values() if b.get('mapping')}
         for f in sorted(rel_files):
             files[f'.release/{f}'] = os.path.join(rel, f); code.add(f'.release/{f}')

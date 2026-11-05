@@ -89,10 +89,15 @@ class Recruitment(unittest.TestCase):
             path = Path(folder) / 'join.dws'
             path.write_text('import "' + str(ROOT / 'story/core/recruit.dws') + '";\n'
                             'script 3 { on enter { say(narrator, text("' + recruitment.KEY + '", species(104))); } }\n')
-            for lang in ('en', 'es', 'ca', 'de', 'fr', 'it', 'ja', 'pt-br'):
+            for lang in ('en', 'es', 'ca', 'de', 'fr', 'it', 'ja', 'pt-br', 'zh-hans'):
                 with self.subTest(lang=lang), recruitment.story(True):
                     prog = build.compile_sources([str(path)], 'mods', lang=lang, text_source='ours')
                     self.assertIn(recruitment.KEY, prog.used_text)
+                    if lang == 'zh-hans':
+                        code = str(prog.b.scripts)
+                        self.assertIn(recruitment.species_name(104, lang), code)
+                        self.assertNotIn('{species}', code)
+                        self.assertNotIn('BlueMeramon', code)
 
     def test_otamamon_keeps_the_swamp_story_flag(self):
         source = self.lowered('geko-swamp')

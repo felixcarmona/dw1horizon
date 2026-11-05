@@ -1,0 +1,8 @@
+{
+  "source": "https://github.com/TakWolf/fusion-pixel-font/releases/tag/2026.10.25",
+  "font": "fusion-pixel-8px-monospaced-zh_hans.bdf",
+  "sha256": "31f654b8348f0d531d0aafe37364edd708eee7e4c6388ec700f77b5f6bf1b43c",
+  "archive_sha256": "9bf82cfe4c73accca0a894b28e55b1bdbd2f98ee9e9045d5b6549a632df7f264",
+  "renamed_subset": "Horizon Simplified Chinese compact subset",
+  "license": "SIL-OFL-1.1; additional notices in upstream/misaki/misaki.txt"
+}
