@@ -101,6 +101,22 @@ dialogue rows by hand when a longer name exceeds the font's row limits below. Ch
 font and font b: the multilingual build compiles both layouts. Keep the full place name in music labels;
 shorten the `Tema de...` framing or use `(n.)` for the night variant when necessary.
 
+Each translated language has a `text/<language>/places.json` glossary covering
+map captions and the named areas mentioned in dialogue. It records the existing
+majority spelling, with established native Spanish and Japanese captions taking
+precedence, and the caption breaking ties. `accepted` lists grammatical and
+abbreviated forms; `avoid` records competing names found in the translation.
+Generic references such as "the shop" do not need a proper name.
+
+`python3 -m tools.localize.check --json build/text-audit.json` checks these names
+throughout dialogue, executable labels and story mods, including names split
+across authored rows. It reports known aliases, untranslated English names and
+translated lines that lose a named location from the English source. Document a
+valid inflection or short form in the glossary rather than adding a line-specific
+exception. When adding a location, add its glossary entry in every language.
+The same audit checks the curling menu's two fixed crops in both fonts: its
+second option starts at original cell 84, regardless of the first label's length.
+
 Display names and identifiers are separate: renaming an item in `names.json` changes what the player reads, never the
 `Item.X` a story file uses. A mod's line that names an item writes
 `{item Item.Digimushrm}` (or `{item 44}`): the name the inventory shows, whatever the text source.
