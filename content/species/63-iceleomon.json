@@ -3,6 +3,7 @@
   "name": "IceLeomon",
   "level": "ultimate",
   "vanilla": true,
+  "off": {"level": "champion"},
   "attribute": "data",
   "specialties": ["battle", "air", null],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",

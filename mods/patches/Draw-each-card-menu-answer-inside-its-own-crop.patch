@@ -1,0 +1,231 @@
+From d90990e6b571b0b4b27f1b3a99fc4c565996710b Mon Sep 17 00:00:00 2001
+From: Horizon authors <>
+Date: Wed, 4 Nov 2026 20:58:05 +0000
+Subject: [PATCH] Keep translated Yes and No answers whole in their crops
+
+---
+ include/dw/mod_font.h     | 12 +++++++-----
+ src/main/font.c           | 31 +++++++++++++++++++++++++------
+ src/main/main_menu.c      | 28 +++++++++-------------------
+ src/main/script_common.c  |  2 +-
+ src/main/script_textbox.c |  2 +-
+ 5 files changed, 43 insertions(+), 32 deletions(-)
+
+diff --git a/include/dw/mod_font.h b/include/dw/mod_font.h
+index ba296fd..ce851b7 100644
+--- a/include/dw/mod_font.h
++++ b/include/dw/mod_font.h
+@@ -52,11 +52,13 @@ extern uint8_t TEXTBOX_CELLS;
+  * a C string whose row a screen copies in pieces (the crops' offsets in pixels from x: 0, then each next crop's srcX - x;
+  * PIECE_CENTRE marks a piece centred in its original span, PIECE_LEFT one that starts as far into its crop as the row's
+  * first piece, for crops shown one under the other such as Yes / No): each piece drawn with the font's spacing (font.c
+- * drawStringPieces); the original font draws it as drawString
++ * drawStringPieces); PIECE_WORDS assigns whitespace-separated answers to successive crops
++ * instead of cutting by cell advances. The original font also uses that layout.
+  */
+ #define PIECE_CENTRE 0x8000
+ #define PIECE_LEFT   0x4000
+-#define PIECE_FLAGS  (PIECE_CENTRE | PIECE_LEFT)
++#define PIECE_WORDS  0x2000 /* whitespace-separated answers, independent of translated cell widths */
++#define PIECE_FLAGS  (PIECE_CENTRE | PIECE_LEFT | PIECE_WORDS)
+ #define PIECES_END   0xffff
+ #if FONT_SWITCH
+ void drawStringPieces(char *str, int32_t x, int32_t y, const uint16_t *pieces);
+@@ -65,7 +67,7 @@ extern const uint8_t *PIECE_COLORS; /* MOD (language): each glyph's colour for d
+ #define DRAW_STRING_PIECES(str, x, y, ...)                                         \
+ 	do {                                                                       \
+ 		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
+-		if (FONT_PROPORTIONAL) {                                           \
++		if (FONT_PROPORTIONAL || (PIECES_[0] & PIECE_WORDS)) {                \
+ 			drawStringPieces(str, x, y, PIECES_);                      \
+ 		} else {                                                           \
+ 			drawString(str, x, y);                                     \
+@@ -74,7 +76,7 @@ extern const uint8_t *PIECE_COLORS; /* MOD (language): each glyph's colour for d
+ /* the same with the crops' offsets in a table (PIECES_END at its end): a language's own (dw/lang.h) */
+ #define DRAW_STRING_PIECES_AT(str, x, y, pieces)                                   \
+ 	do {                                                                       \
+-		if (FONT_PROPORTIONAL) {                                           \
++		if (FONT_PROPORTIONAL || ((pieces)[0] & PIECE_WORDS)) {               \
+ 			drawStringPieces(str, x, y, pieces);                       \
+ 		} else {                                                           \
+ 			drawString(str, x, y);                                     \
+@@ -106,7 +108,7 @@ void textboxRowPieces(int32_t boxId, int32_t row, const uint16_t *pieces);
+ #define TEXTBOX_ROW_PIECES(boxId, row, ...)                                        \
+ 	do {                                                                       \
+ 		static const uint16_t PIECES_[] = { __VA_ARGS__, PIECES_END };       \
+-		if (FONT_PROPORTIONAL) {                                           \
++		if (FONT_PROPORTIONAL || (PIECES_[0] & PIECE_WORDS)) {                \
+ 			textboxRowPieces(boxId, row, PIECES_);                     \
+ 		} else {                                                           \
+ 			TEXTBOX_IN_CELLS(boxId);                                   \
+diff --git a/src/main/font.c b/src/main/font.c
+index 2288e07..75603b5 100644
+--- a/src/main/font.c
++++ b/src/main/font.c
+@@ -1673,7 +1673,8 @@ static int32_t pieceOf(const uint16_t *pieces, int32_t cell)
+  * centred in the span its original cells took (PIECE_CENTRE), or starting as far into its crop as the row's first piece
+  * (PIECE_LEFT). A piece's leading spaces only move its start. `glyphs`: drawGlyph's codes, `cells`: each one's original
+  * advance; `pieces`: the crops' offsets in pixels from x, ascending, the first 0, ending with PIECES_END
+- * (DRAW_STRING_PIECES, TEXTBOX_ROW_PIECES, dw/mod_font.h).
++ * PIECE_WORDS assigns each whole whitespace-separated answer to the next crop, so translated
++ * advances cannot split a word between crops (DRAW_STRING_PIECES, TEXTBOX_ROW_PIECES, dw/mod_font.h).
+  */
+ const uint8_t *PIECE_COLORS; /* MOD (language): each glyph's colour (setTextColor) for drawGlyphPieces, or NULL */
+ 
+@@ -1692,21 +1693,39 @@ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, in
+ 	int32_t w;
+ 	int32_t ink;
+ 	int32_t span;
++	int32_t words;
++	int32_t nextPiece;
+ 
++	words = pieces[0] & PIECE_WORDS;
++	nextPiece = -1;
+ 	pos = 0;
+ 	pen = 0;
+ 	piece = -1;
+ 	lead = -1;
+ 	for (i = 0; i < n; i++) {
+ 		cp = glyphs[i];
+-		if (pieceOf(pieces, pos & ~3) != piece) {
++		if (words) {
++			if (cp == 0x4081) {
++				continue;
++			}
++			if (i == 0 || glyphs[i - 1] == 0x4081) {
++				nextPiece++;
++				if (pieces[nextPiece] == PIECES_END) {
++					break;
++				}
++				pos = pieces[nextPiece] & ~PIECE_FLAGS;
++			}
++		} else {
++			nextPiece = pieceOf(pieces, pos & ~3);
++		}
++		if (nextPiece != piece) {
+ 			if (cp == 0x4081) {
+ 				pos += cells[i]; /* a piece's leading space: it starts further */
+ 				continue;
+ 			}
+-			piece = pieceOf(pieces, pos & ~3);
++			piece = nextPiece;
+ 			start = pieces[piece] & ~PIECE_FLAGS;
+-			pen = pos + (cells[i] - glyphWidth(cp) + 1) / 2; /* the first glyph where the cells put it (its ink centred) */
++			pen = pos + (cells[i] - (FONT_PROPORTIONAL ? glyphWidth(cp) : cells[i]) + 1) / 2; /* the first glyph where the cells put it (its ink centred) */
+ 			if ((pieces[piece] & PIECE_CENTRE) != 0) {
+ 				/* the piece's width as this font draws it (to its last ink) and the span of its original cells */
+ 				w = 0;
+@@ -1714,12 +1733,12 @@ void drawGlyphPieces(const uint16_t *glyphs, const uint8_t *cells, int32_t n, in
+ 				span = 0;
+ 				prev = 0;
+ 				p2 = pos;
+-				for (j = i; j < n && pieceOf(pieces, p2 & ~3) == piece; j++) {
++				for (j = i; j < n && (words ? glyphs[j] != 0x4081 : pieceOf(pieces, p2 & ~3) == piece); j++) {
+ #ifdef FONT_KERN
+ 					w += kernOf(prev, swapShortBytes(glyphs[j]));
+ 					prev = swapShortBytes(glyphs[j]);
+ #endif
+-					w += glyphWidth(glyphs[j]);
++					w += FONT_PROPORTIONAL ? glyphWidth(glyphs[j]) : cells[j];
+ 					p2 += cells[j];
+ 					if (glyphs[j] != 0x4081) {
+ 						ink = w - 1;
+diff --git a/src/main/main_menu.c b/src/main/main_menu.c
+index 1a6dec7..465350d 100644
+--- a/src/main/main_menu.c
++++ b/src/main/main_menu.c
+@@ -44,24 +44,14 @@ void modMenuVsBattle(int32_t trial); /* MOD (menu overlay) */
+ #define NO_TEXT_U 0xc
+ #define NO_TEXT_W 0x24
+ #else
+-int16_t YES_NO_CROPS[3] = {
+-#if MOD_LANG_BUILD == MOD_LANG_PT_BR
+-    0x24, 0x24, 0x24,
+-#else
+-    0x1c, 0x1c, 0x1c,
+-#endif
+-};
+-#define YES_TEXT_W YES_NO_CROPS[0]
+-#define NO_TEXT_U YES_NO_CROPS[1]
+-#define NO_TEXT_W YES_NO_CROPS[2]
++/* Each answer owns a separate 48-pixel crop, in every language and font. */
++#define YES_TEXT_W 0x30
++#define NO_TEXT_U 0x30
++#define NO_TEXT_W 0x30
+ #endif
+ 
+ uint16_t YES_NO_PIECES[3] = {
+-#if MOD_LANG_BUILD == MOD_LANG_PT_BR
+-    0, 0x24 | PIECE_LEFT, PIECES_END,
+-#else
+-    0, 0x1c | PIECE_LEFT, PIECES_END,
+-#endif
++	PIECE_WORDS, 0x30 | PIECE_LEFT, PIECES_END,
+ };
+ 
+ #if VERSION_IS(JP_TRIAL) || VERSION_IS(JP_BOMBOM)
+@@ -2182,7 +2172,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801312E4, 0, 0x30);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 7:
+ 		/* MOD (language): the title of slot 2 drawn whole (the original drew a "2" at the x of the US title's "1") */
+@@ -2270,7 +2260,7 @@ void drawMainMenuStrings(int32_t menu)
+ 			drawString(MEMORY_CARD_ERROR_MESSAGES[MEMORY_CARD_ERROR], 0, 0x30);
+ 			DrawSync(0);
+ 		}
+-		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 13:
+ 		drawString(SLOT_ACTION_TITLES[5], 0, 0);
+@@ -2282,7 +2272,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		modDrawSlot2(MAIN_D_8013141C, 0, 0x24, VS_PLAYER_INDEX == 1);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0xF0, YES_NO_PIECES);
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0xF0, YES_NO_PIECES);
+ 		break;
+ 	case 14:
+ 		drawString(SLOT_ACTION_TITLES[6], 0, 0);
+@@ -2396,7 +2386,7 @@ void drawMainMenuStrings(int32_t menu)
+ 		DrawSync(0);
+ 		drawString(MAIN_D_801315EC, 0, 0x18);
+ 		DrawSync(0);
+-		DRAW_STRING_PIECES_AT(STR_YES_NO, 0, 0x24, YES_NO_PIECES); /* MOD (font): cut into Yes and No */
++		DRAW_STRING_PIECES_AT(STR_YES_NO_SPACED, 0, 0x24, YES_NO_PIECES); /* MOD (font): cut into Yes and No */
+ 		break;
+ 	}
+ #endif
+diff --git a/src/main/script_common.c b/src/main/script_common.c
+index c3179ec..a5b7cf1 100644
+--- a/src/main/script_common.c
++++ b/src/main/script_common.c
+@@ -2129,7 +2129,7 @@ int32_t createSingleCardShopMenu(RECT *origin)
+ 	createTextbox(3, flags, &rect, origin, tickSingleCardShop, renderSingleCardShop);
+ 	/* MOD (font): the answers are cut at fixed offsets (CONFIRM_BOX_LAYOUT): Yes and No each centred in its crop's
+ 	 * original span, in the font's own spacing */
+-	TEXTBOX_ROW_PIECES(3, 1, 0 | PIECE_CENTRE, 0x24 | PIECE_CENTRE);
++	TEXTBOX_ROW_PIECES(3, 1, PIECE_WORDS | PIECE_CENTRE, 0x24 | PIECE_CENTRE);
+ 	registerTextbox(3, ITEM_MENU_SUB_TEXTBOX_LINE, 2, 0, 0);
+ 	showMapHeadTextbox(0, 0xff, 3, 0x4d8);
+ 	SHOP_AMOUNT = 0;
+diff --git a/src/main/script_textbox.c b/src/main/script_textbox.c
+index 55c92a2..a0be67c 100644
+--- a/src/main/script_textbox.c
++++ b/src/main/script_textbox.c
+@@ -189,7 +189,7 @@ int32_t drawTextboxStrings(boxId, flag)
+ 		/* MOD (language): the row on either page (a box that flips writes its back page's rows after its front's) */
+ 		cellsRow = boxId + 1 == TEXTBOX_PIECES_BOX &&
+ 		           (box->vramRows != 0 ? box->writeRow % box->vramRows : box->writeRow) == TEXTBOX_PIECES_ROW;
+-		DRAW2_PIECES = FONT_PROPORTIONAL && cellsRow ? TEXTBOX_PIECES : NULL;
++		DRAW2_PIECES = cellsRow && (FONT_PROPORTIONAL || (TEXTBOX_PIECES[0] & PIECE_WORDS)) ? TEXTBOX_PIECES : NULL;
+ 		/* MOD (language): with the original font that row is drawn in the original's cells, never in the name
+ 		 * keyboard's 12-pixel ones (its labels, NAMING_LABEL_PIECES) */
+ 		cellsRow = cellsRow && !FONT_PROPORTIONAL;
+-- 
+2.55.0
+

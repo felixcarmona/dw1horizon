@@ -1222,7 +1222,7 @@ class CityRules(unittest.TestCase):
         rev = lambda *rec, p1=0: self.city.top_map_of(spec['revival'], St(triggers={200 + r for r in rec}, pstats={1: p1}))
         self.assertEqual(rev(), 218); self.assertEqual(rev(20), 205); self.assertEqual(rev(14), 205); self.assertEqual(rev(p1=50), 205); self.assertEqual(rev(p1=49), 218)
         lv = St.levels()
-        self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={200 + s for s in range(3, 0x3b)})), 100)   # the 47 recruits add exactly 100
+        self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={200 + s for s in range(3, 0x3b)})), 101)   # current levels include Ultimate Whamon
         self.assertEqual(self.city.prosperity_of(spec['prosperity'], St(triggers={211, 239, 253})), 3)                 # Numemon, Sukamon, Nanimon: 1 each
         self.assertEqual(spec['start']['bits'], 50000); self.assertEqual(spec['start']['lives'], 3); self.assertEqual(len(spec['start']['inventory']), 30)
 

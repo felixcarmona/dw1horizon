@@ -3,6 +3,10 @@
   "name": "Analogman",
   "level": "mega",
   "vanilla_as": 12,
+  "off": {
+    "level": "ultimate",
+    "stats": {"hp": 3500, "mp": 7000, "offense": 400, "defense": 350, "speed": 450, "brains": 900}
+  },
   "attribute": "virus",
   "specialties": ["mech", "air", null],
   "techniques": ["Static Elect", "Megalo Spark", "Delete Program", "Pulse Laser", "Reverse Prog", "DG Dimension",

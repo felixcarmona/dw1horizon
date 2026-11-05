@@ -582,3 +582,34 @@ over the stride: arms oppose their legs, elbows arrive late, the torso turns aga
 the hips and rolls over the supporting foot. Tapirmon's slot 2 is a
 bound with a one-tick stance, which the slip classifier cannot read, so its row
 keeps the poses exact and carries a wider limit.
+
+## WereGarurumon field motion
+
+WereGarurumon (record 62) uses native Leomon's idle, ready, walk,
+condition walk and run in slots 0–4. The old Garurumon-derived field gait
+carried a quadruped's crouch and bounding leg motion onto the biped rig.
+The replacement keeps Leomon's chest, shoulder, head and tail acting,
+calibrates the relaxed reference pose, and solves the legs to follow its
+foot paths with WereGarurumon's own limb lengths. Heel and toe roll remain;
+a small eased clearance correction also checks the interpolated thirds
+between logical ticks.
+
+`tools/models/field_animations/weregarurumon.py` is the offline authoring
+recipe. It requires the pinned pre-edit record-original model and native
+`LEOM.MMD`; the normal build replays the plain model delta. Author a candidate
+with `--source BEFORE.MMD --out AFTER.MMD --report REPORT.json`, then store it
+with `tools/models/edit.py put 62 AFTER.MMD` and verify with
+`tools/models/edit.py check 62 --species-pins` (provide source discs or
+`--from` as described in the model tools README).
+
+The mesh, texture, rig and consumed programs outside slots 0–4 are unchanged.
+The record height is 709 units to cover the upright idle for culling and bubbles.
+The status view is pulled back along its original camera ray so the upright
+head and feet fit below the profile panel.
+Forward travel matches Leomon: walk 22.5 and run 50 units per tick. Studio
+stance slip is approximately 29–34% in walk and 8% in run, comparable to
+Leomon; the previous walk measured 146–197%. These figures supplement visual
+comparison in culled front, three-quarter and side views. The encoded model
+has 100,084 authored bytes and 100,100 resident bytes after slot aliases,
+without cold splitting, below the original 2 MB partner buffer's 100,352-byte
+capacity.
