@@ -52,8 +52,8 @@ class ProofEmu(Emu):
             self.run('lua', 'if not QOL_PAD.done then QOL_PAD.listener:remove() end; QOL_PAD.listener=nil')
 
 
-def test_card(out):
-    """Private corpus copy with English and US controls selected."""
+def test_card(out, language=0):
+    """Private corpus copy with the requested language and US controls selected."""
     path = out / 'english.mcd'
     shutil.copyfile(ROOT / 'tools/dev/saves/corpus/20261027-d2796814.mcd', path)
     card = memory_card.Card(path)
@@ -68,14 +68,14 @@ def test_card(out):
             if tag == 9:
                 options = bytearray(value)
                 for i in (0, 7):
-                    options[i] = 0
+                    options[i] = language if i == 7 else 0
                 value = bytes(options)
             records.append((tag, value))
         card.write(name, offset, memory_card.build_extension(head, records, size))
     if data[0x50] == ord('O'):
         header = bytearray(data[0x54:0x60])
         for i in (0, 7):
-            header[i] = 0
+            header[i] = language if i == 7 else 0
         card.write(name, 0x54, header)
     return str(path)
 
