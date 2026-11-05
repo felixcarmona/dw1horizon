@@ -558,10 +558,18 @@ bones of each leg, the soles, where the paws stand, one row per clip with cadenc
 and body motion). Every target is a world point; the left legs' bend planes are the right legs' standing pose
 mirrored in the world, so an import whose idle stands with one leg back does not twist the other. Footsteps keep the
 species' own sound and land on touchdowns. MetalGarurumon (`metal_garurumon.py`, 191) walks in a lateral sequence
-(18 ticks at 22 units per tick) and gallops (14 at 50); its idle stays as imported. Armadillomon
+(18 ticks at 22 units per tick) and gallops (14 at 50). Its idle plants mirrored paws in the same neutral stance,
+while retaining the imported body breathing, head, blades and tail motion. Armadillomon
 (`armadillomon.py`, 185) has legs of about 80 units under a shell whose rim stands on the floor, so its body cannot
 drop to lengthen a stride: it walks in a quick lateral sequence (9 ticks at 18) and runs in a trot with a short
 flight (8 ticks at 35).
+
+Gallantmon's faint (0x2B) and shared recovery (0x2C/0x15) are authored by
+`tools/models/repair_gallantmon_fall.py` and stored as a plain model delta. The knees give way before a backward
+fall, the shield rolls flat, and the cape and helmet plume trail the impact and settle. Recovery rolls through a
+crouch before standing. The joining poses match; durations, sound events and unrelated programs stay exact.
+Both clips are checked against the floor at ticks and 60 fps interpolation points, and against the resident and
+cold-animation storage limits.
 
 The game's own species set the rule: slot 3 is the walk played 1.5 times slower at
 2/3 of the speed, with gait cycles of 14-24 ticks for a walk and 12-20 for a run.
