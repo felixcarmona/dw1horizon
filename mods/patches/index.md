@@ -369,3 +369,5 @@ limit. The Chinese module is 61256 B and resides above 2 MB. PCSX-Redux tests
 cover Chinese new game, dialogue, menus, ordinary battle and memory-card
 save/load at 8 MB, plus the disabled Chinese entry and the same save in English
 at 2 MB. Physical hardware validation remains outstanding.
+
+| `Render-empty-Chinese-battle-move-slots-with-the-resident-font.patch` | — | Chinese empty technique slots use the resident 未装备 label; other languages keep the original label path. | Chinese module and VS overlay only; final build rechecks the unchanged main/MENU footprint. |

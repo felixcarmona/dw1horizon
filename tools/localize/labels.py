@@ -181,6 +181,15 @@ def apply(files, language, work):
     draw('STDDAT/TAISEN_F.TIM',(120,14,124,13),('CHOISIR UNE ARÈNE','ARENA WÄHLEN','SCEGLI ARENA','ステージせんたく','TRIA ESCENARI','选择场地')[col],5,15,1)
     draw('STDDAT/TAISEN_F.TIM',(0,248,51,8),('COMBAT','KAMPF','LOTTA','バトル','COMBAT','战斗')[col],3,0,1)
     if language == 'zh-hans':
+        from tools.localize.chinese_catalog import SMALL, VS_ARENAS
+        # The mode sprites sample the three baked captions above their numerals.
+        for u in (0, 52, 104):
+            draw('STDDAT/TAISEN_F.TIM', (u,232,52,9), SMALL['fight'], 3, 15, 1,
+                 preserve=True, padding=1)
+        for (u,v,w), lines in zip(((120,52,52),(120,28,52),(172,28,48)), VS_ARENAS):
+            for row, text in enumerate(lines):
+                draw('STDDAT/TAISEN_F.TIM', (u,v+row*12,w,12), text, 3, 15, 1,
+                     preserve=True, padding=1)
         from tools.localize.chinese_catalog import CUPS, CAPTIONS
         from tools.chinese import wrap, read_json
         caption_font = read_json(os.path.join(ROOT,'tools/font/chinese.json'))['glyphs']
