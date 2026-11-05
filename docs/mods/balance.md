@@ -442,6 +442,12 @@ allows one retry, after reducing the maximum by ten points. An overshoot of
 thirty points, or any second overshoot, ends the visit without a sale. Offers,
 purchases and departures have no additional random rolls or Rethink loop.
 
+The engine's ordinary selection window renders four rows; custom-sized text
+windows have no selection handler. The menu therefore uses existing translated
+Raise / Keep / Lower strings. Raise opens +10/+20/+30 and another Raise entry
+for +40/+50; Lower opens −30/−20/−10. Selecting Keep immediately offers list
+price. All nine prices remain available with no random offer draw.
+
 Arrival bubbles hint at the budget. Goblimon shows annoyed at +30, happy at
 +50, and either face with equal probability at +40. Gotsumon's lower half
 (0/+10) shows annoyed 75 % of the time; the upper half (+20/+30) shows happy

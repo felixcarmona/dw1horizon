@@ -26,6 +26,7 @@ class LiteralVM:
         self.p = Counter(dict(values)); self.rolls = iter(rolls); self.offers = iter(offers)
         self.lines = [x.strip() for x in source.splitlines() if x.strip()]
         self.labels = {x[:-1]: i for i,x in enumerate(self.lines) if x.endswith(':')}
+        self.pending = None
         self.profit = 0; self.text = []; self.faces = []; self.menus = 0
 
     def run(self):
@@ -53,8 +54,17 @@ class LiteralVM:
             if line.startswith('set_selection('):
                 labels=line[14:line.index('text(')].rstrip(', ').split(', ')
                 self.menus+=1
-                offer=next(self.offers)
-                if offer is not None: pc=self.labels[labels[offer+3]]
+                if self.pending is None:
+                    self.pending=next(self.offers)
+                offer=self.pending
+                if offer is not None:
+                    target=f'offer_{offer+3}'
+                    if target in labels:
+                        pc=self.labels[target]; self.pending=None
+                    elif offer < 0:
+                        pc=self.labels[next(l for l in labels if l.startswith('lower_'))]
+                    else:
+                        pc=self.labels[next(l for l in labels if l.startswith('raise_'))]
                 continue
             m=re.fullmatch(r'show_textbox\(text\("([^"]+)"\)\);',line)
             if m: self.text.append(m[1]); continue

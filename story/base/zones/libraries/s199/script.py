@@ -61,22 +61,57 @@ def step0():    # section 51
         request_3:
         price_menu:
         set_dialog_owner(255);
-        set_textbox_size(0, 16, 9);
-        unless (p116 == 0) goto menu_1;
-        set_selection(offer_0, offer_1, offer_2, offer_3, offer_4, offer_5, offer_6, offer_7, offer_8, text("s199.sec51.m9.o0"), text("s199.sec51.m8.o0"), text("s199.sec51.m7.o0"), text("s199.sec51.m6.o0"), text("s199.sec51.m5.o0"), text("s199.sec51.m4.o0"), text("s199.sec51.m3.o0"), text("s199.sec51.m2.o0"), text("s199.sec51.m1.o0"));
+        unless (p116 == 0) goto price_item_1;
+        set_selection(raise_0, offer_3, lower_0, text("s199.sec51.m0.o0"), text("s199.sec51.m0.o1"), text("s199.sec51.m0.o2"));
         end_selection();
         goto price_menu;
-        menu_1:
-        unless (p116 == 1) goto menu_2;
-        set_selection(offer_0, offer_1, offer_2, offer_3, offer_4, offer_5, offer_6, offer_7, offer_8, text("s199.sec51.m19.o0"), text("s199.sec51.m18.o0"), text("s199.sec51.m17.o0"), text("s199.sec51.m16.o0"), text("s199.sec51.m15.o0"), text("s199.sec51.m14.o0"), text("s199.sec51.m13.o0"), text("s199.sec51.m12.o0"), text("s199.sec51.m11.o0"));
+        price_item_1:
+        unless (p116 == 1) goto price_item_2;
+        set_selection(raise_1, offer_3, lower_1, text("s199.sec51.m10.o0"), text("s199.sec51.m10.o1"), text("s199.sec51.m10.o2"));
         end_selection();
         goto price_menu;
-        menu_2:
-        unless (p116 == 2) goto menu_3;
-        set_selection(offer_0, offer_1, offer_2, offer_3, offer_4, offer_5, offer_6, offer_7, offer_8, text("s199.sec51.m29.o0"), text("s199.sec51.m28.o0"), text("s199.sec51.m27.o0"), text("s199.sec51.m26.o0"), text("s199.sec51.m25.o0"), text("s199.sec51.m24.o0"), text("s199.sec51.m23.o0"), text("s199.sec51.m22.o0"), text("s199.sec51.m21.o0"));
+        price_item_2:
+        unless (p116 == 2) goto price_item_3;
+        set_selection(raise_2, offer_3, lower_2, text("s199.sec51.m20.o0"), text("s199.sec51.m20.o1"), text("s199.sec51.m20.o2"));
         end_selection();
         goto price_menu;
-        menu_3:
+        price_item_3:
+        goto price_menu;
+        raise_0:
+        set_selection(offer_4, offer_5, offer_6, raise_more_0, text("s199.sec51.m5.o0"), text("s199.sec51.m4.o0"), text("s199.sec51.m3.o0"), text("s199.sec51.m0.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_0:
+        set_selection(offer_7, offer_8, text("s199.sec51.m2.o0"), text("s199.sec51.m1.o0"));
+        end_selection();
+        goto price_menu;
+        lower_0:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m9.o0"), text("s199.sec51.m8.o0"), text("s199.sec51.m7.o0"));
+        end_selection();
+        goto price_menu;
+        raise_1:
+        set_selection(offer_4, offer_5, offer_6, raise_more_1, text("s199.sec51.m15.o0"), text("s199.sec51.m14.o0"), text("s199.sec51.m13.o0"), text("s199.sec51.m10.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_1:
+        set_selection(offer_7, offer_8, text("s199.sec51.m12.o0"), text("s199.sec51.m11.o0"));
+        end_selection();
+        goto price_menu;
+        lower_1:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m19.o0"), text("s199.sec51.m18.o0"), text("s199.sec51.m17.o0"));
+        end_selection();
+        goto price_menu;
+        raise_2:
+        set_selection(offer_4, offer_5, offer_6, raise_more_2, text("s199.sec51.m25.o0"), text("s199.sec51.m24.o0"), text("s199.sec51.m23.o0"), text("s199.sec51.m20.o0"));
+        end_selection();
+        goto price_menu;
+        raise_more_2:
+        set_selection(offer_7, offer_8, text("s199.sec51.m22.o0"), text("s199.sec51.m21.o0"));
+        end_selection();
+        goto price_menu;
+        lower_2:
+        set_selection(offer_0, offer_1, offer_2, text("s199.sec51.m29.o0"), text("s199.sec51.m28.o0"), text("s199.sec51.m27.o0"));
+        end_selection();
         goto price_menu;
         offer_0:
         p117 = 0;
