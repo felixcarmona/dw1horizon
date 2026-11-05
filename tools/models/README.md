@@ -102,3 +102,12 @@ The `vilemon` pass after field pace transfers native Ogremon's shoulder and
 elbow motion over each 15-tick stride; every other program, including the run,
 remains exact. `VILEMON_MODEL=MODEL PYTHONPATH=tools python3 -m unittest
  tools.test_vilemon_walk` checks the complete provider layer against its input.
+
+Zudomon's reviewed model is uniformly resized to 85% with `resize.py`, including
+mesh vertices and translation tracks in every clip. Its radius, height and
+bone-local effect/bubble offsets use the same factor. Rotation, visibility,
+timing, sounds and technique assignments remain unchanged. The resize is stored
+through `edit.py put`, so no later field generator can restore the larger size.
+`tools.test_zudomon_size` compares decoded acting and world-space mesh points
+across all clips, including the hammer, with the before/after models supplied
+as `ZUDOMON_BEFORE` and `ZUDOMON_AFTER`.
