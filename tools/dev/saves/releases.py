@@ -39,7 +39,8 @@ from tools.dev import memory_card as mcd  # noqa: E402
 
 CORPUS = os.path.join(T, 'corpus')
 SAVE = 'BASLUS-01032DMR0'
-JIJIMON = 218                         # Jijimon's house: the save NPC is placed-Digimon slot 0
+JIJIMON = 218                         # Jijimon's house
+SAVE_MACHINE = (-650, -550)          # use trigger 5, in front of the machine
 # the v1 payload (main_menu.c SavegamePayload): scriptState[0x17C] ends where the inventory starts (0x40C)
 P_SCRIPT = 0x40C - 0x17C
 P_BANK, P_CARDS, P_TRIGGERS, P_PSTATS = P_SCRIPT + 84, P_SCRIPT + 212, P_SCRIPT + 245, P_SCRIPT + 345
@@ -402,17 +403,23 @@ class Emu:
         return False
 
     def save_at_jijimon(self, at_confirm=None, register=False):
-        """Talk to Jijimon (slot 0 of screen 218) and save to slot 1. `at_confirm(emu)` runs at the last confirm (pokes
+        """Use the house's save machine and save to slot 1. `at_confirm(emu)` runs at the last confirm (pokes
         that the file must carry: the screen of another place). With `register`, the battle registration prompt (menu
         0x3E) is answered yes. Returns the menu sequence seen."""
-        self.gs('approach', '0')
-        self.wait(1); self.press('CONFIRM', 4); self.wait(3)
         seen = []
-        for _ in range(12):
-            m = self.peek('CURRENT_MENU', 'i')
-            seen.append(m)
-            if m in (0x45, 0x3E): break
-            self.press('CANCEL' if m == 0x3C and not register else 'CONFIRM', 4); self.wait(2)
+        for _ in range(4):
+            if not self.in_control():
+                raise RuntimeError('no control before using the save machine')
+            self.gs('move', *(str(n) for n in SAVE_MACHINE))
+            self.wait(1)
+            for _ in range(30):
+                m = self.peek('CURRENT_MENU', 'i')
+                if not seen or m != seen[-1]: seen.append(m)
+                if m in (0x45, 0x3E): break
+                self.press('CANCEL' if m == 0x3C and not register else 'CONFIRM', 4); self.wait(2)
+                if self.peek('CURRENT_MENU', 'i') == -1 and self.peek('TAMER_STATE', 'b') == 0:
+                    break           # the first use explains the machine; use it again
+            if seen and seen[-1] in (0x45, 0x3E): break
         if not seen or seen[-1] not in (0x45, 0x3E):
             raise RuntimeError(f'never reached the save confirmation: {seen}')
         if at_confirm: at_confirm(self)
@@ -502,9 +509,11 @@ def check_emu(emu, js, card, locks, rows, keep):
         here = (got['screen'], got['previousScreen'], emu.raw('TAMER_POSITION_DATA+0x78', 12, emu.ram()))
         if not emu.in_control():
             rows.append((False, 'save again', 'no control in the world after the Continue')); return
-        if not emu.warp(JIJIMON):
+        arrived = emu.warp(JIJIMON)
+        if not arrived and emu.peek('CURRENT_SCREEN', 'h') != JIJIMON:
             rows.append((False, 'save again', f'the warp to Jijimon\'s house ({JIJIMON}) did not arrive')); return
-        emu.in_control()
+        if not emu.in_control():
+            rows.append((False, 'save again', 'no control after the house arrival dialogue')); return
 
         def put_back(e):
             e.poke('CURRENT_SCREEN', struct.pack('<h', here[0])); e.poke('PREVIOUS_SCREEN', struct.pack('<h', here[1]))

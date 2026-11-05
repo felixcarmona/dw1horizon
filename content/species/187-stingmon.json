@@ -7,7 +7,8 @@
   "attribute": "virus",
   "specialties": ["nature", "battle", null],
   "techniques": ["Danger Sting", "Poison Claw", "Mass Morph", "Insect Plague", "Poison Powder", "Charm Perfume",
-                 "Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Death Claw"],
+                 "Sonic Jab", "Dynamite Kick (44)", "Muscle Charge", "War Cry", "Death Claw", "Bug",
+                 "Megaton Punch"],
   "drop": {"item": "Medium MP", "percent": 30},
   "effects_like": 6,
   "model": {
