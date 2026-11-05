@@ -71,8 +71,17 @@ def ensure_text(lang='en', log=print):
 
 def base_ready(base=BASE):
     """story/base is owned source (published, edited, a deleted script is a script the game does not
-    have): it is made from a disc only when the folder does not exist, or by an explicit `dws story-base --refresh`."""
+    have). Importing it from a disc requires the explicit `dws story-base` authoring command or --refresh."""
     return os.path.isdir(base) and any(os.path.exists(os.path.join(base, g)) for g in GENERATED)
+
+
+def require_base(base=BASE, refresh=False, log=print):
+    """Product builds require owned story data; only an explicit refresh imports a disc."""
+    if refresh:
+        ensure_base(base, refresh=True, log=log)
+    elif not base_ready(base):
+        raise DwsError(f'{rel(base)}: missing owned story source; restore it from version control '
+                       '(explicit disc imports use `dws story-base`)', None)
 
 
 def ensure_base(base=BASE, refresh=False, log=print, check=False):
@@ -611,7 +620,7 @@ def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_l
     from_py: the base is its Python view (story/base/**/*.py, lowered: the default); False builds it from the generated DWS beside it
     (byte for byte the same, `story-base --check` and test_dws prove it)."""
     report = []
-    ensure_base(base, refresh, log=log)
+    require_base(base, refresh, log=log)
     from .py import naming as N
     if os.path.abspath(base) != os.path.abspath(N.BASE): N.use_base(os.path.abspath(base))   # (what mods import: this base)
     work = os.path.join(os.path.dirname(os.path.abspath(out)), 'story')

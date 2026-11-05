@@ -22,7 +22,9 @@ class OffTests(unittest.TestCase):
         self.assertGreaterEqual(len(rows), 6)
         for row in rows:
             if row[0] in (59, 60, 65, 115, 116, 117):
-                self.assertEqual(row[1:7], row[7:13])
+                self.assertEqual(row[1:7], tuple(self.sp[row[0]]['evolution']['gains'][k] for k in S.STAT_KEYS))
+                self.assertEqual(row[7:13], tuple(self.sp[row[0]]['off']['stats'][k] for k in S.STAT_KEYS))
+                self.assertNotEqual(row[1:7], row[7:13])
 
     def test_whamon_off_is_original_champion(self):
         s = self.sp[24]

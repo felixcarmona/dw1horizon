@@ -361,6 +361,7 @@ def plan():
                              'Insect Plague', 'Poison Powder', 'Sweet Breath']
     # A record child owns its reverse list; a resident child is reached through
     # its parent's forward list. Only resident 1..62 have native path rows.
+    ordered_native = set(table.get('resident_target_order', []))
     for key, route in table['routes'].items():
         t = int(key); s = sp[t]
         ev = s.setdefault('evolution', {})
@@ -371,7 +372,7 @@ def plan():
             # Native record children must remain here on subset discs too.
             # A carried child's reverse row adds no duplicate link. Selection
             # drops absent record children before balance writes native rows.
-            native = [c for c in route['to'] if c < S.NUM_ORIGINAL]
+            native = [c for c in route['to'] if c < S.NUM_ORIGINAL or t in ordered_native]
             ev['to'] = native + [-1] * (6-len(native))
         elif route['to']:
             problems.append(f'{s["name"]}: non-record species has no resident path row')

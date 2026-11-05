@@ -5,13 +5,18 @@
   "vanilla": true,
   "off": {
     "level": "ultimate",
-    "stats": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500}
+    "stats": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500},
+    "finisher": {"power": 232, "mpCost": 40, "element": "air"},
+    "techniques": ["Prominence Beam", "Red Inferno", "Megaton Punch", "Counter", "Buster Dive", "Muscle Charge",
+                   "Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug",
+                   "Charm Perfume", "Poison Powder", "Mass Morph", "Electro Shocker"]
   },
   "attribute": "data",
   "specialties": ["nature", "battle", "fire"],
   "techniques": ["Prominence Beam", "Red Inferno", "Megaton Punch", "Counter", "Buster Dive", "Muscle Charge",
                  "Poison Claw", "Danger Sting", "Green Trap", "Insect Plague", "Bug",
                  "Charm Perfume", "Poison Powder", "Mass Morph", "Electro Shocker"],
+  "finisher": {"power": 260, "mpCost": 40, "element": "air"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "HKAB", "bones": 26, "radius": 250, "height": 440},
   "voice": 54,
@@ -52,7 +57,7 @@
       "techs": -1,
       "flags": 17
     },
-    "gains": {"hp": 5000, "mp": 5000, "offense": 500, "defense": 500, "speed": 500, "brains": 500}
+    "gains": {"hp": 7500, "mp": 5500, "offense": 750, "defense": 750, "speed": 600, "brains": 600}
   },
   "_former_name": "H-Kabuterimon"
 }

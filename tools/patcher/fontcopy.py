@@ -337,7 +337,7 @@ def table_tail(recipes, key, read_source, tool_root=None):
                     raise ValueError('invalid generated zero word')
                 data[inner:inner + 4] = bytes(4)
         elif kind == 'ui':
-            data = ui_table(recipe, key, read_source)
+            data = ui_table(recipe, key, read_source, tool_root)
         elif kind == 'aura':
             data = aura_table(recipe, key, read_source, tool_root)
         elif kind == 'items':
@@ -531,69 +531,40 @@ def item_content(root):
 
 def item_table(recipe, key, read_source, tool_root=None):
     from pathlib import Path
-    import hashlib
     root = str(Path(tool_root) if tool_root else Path(__file__).resolve().parents[2])
-    path, offset, stride, digest, overrides = recipe['sources'][key]
-    raw = read_source(path)
-    if (hashlib.sha1(raw).hexdigest() != digest or stride not in (12, 32)
-            or offset < 0 or offset + 127 * stride + 12 > len(raw)):
-        raise ValueError('item table differs from pinned player records')
     bank = authored_bank(root, recipe['language'])
-    numeric = [bytearray(raw[offset + i * stride:offset + i * stride + 12]) for i in range(128)]
-    positions, at = {}, 0
-    for field, fmt in ITEM_NUMERIC_FIELDS:
-        positions[field] = (at, fmt); at += struct.calcsize('<' + fmt)
     content = item_content(root)
-    for index, field in overrides:
-        at, fmt = positions[field]
-        struct.pack_into('<' + fmt, numeric[index], at, content[index][field])
     out = bytearray()
     for index in range(128):
-        name = encode_bank(bank['text'][f'main.ITEM_NAMES.{index}'], bank)
+        row = content.get(index)
+        name = encode_bank(bank['text'][f'main.ITEM_NAMES.{index}'], bank) if row else b''
         if len(name) >= 20:
             raise ValueError('authored item name exceeds its record')
-        out.extend(name.ljust(20, b'\0')); out.extend(numeric[index])
+        out.extend(name.ljust(20, b'\0'))
+        for field, fmt in ITEM_NUMERIC_FIELDS:
+            out.extend(struct.pack('<' + fmt, row[field] if row else 0))
     return bytes(out)
 
 
 def aura_table(recipe, key, read_source, tool_root=None):
-    import hashlib
     import json
     from pathlib import Path
     root = Path(tool_root) if tool_root else Path(__file__).resolve().parents[2]
-    path, offset, digest, overrides = recipe['sources'][key]
-    source = read_source(path)
-    if hashlib.sha1(source).hexdigest() != digest or offset < 0 or offset + 129 * 12 > len(source):
-        raise ValueError('aura table differs from pinned player records')
-    out = bytearray(source[offset:offset + 129 * 12])
     authored = json.loads((root / 'content/tables/effects.json').read_text())['auraTypes']
+    if len(authored) != 129:
+        raise ValueError('auraTypes requires 129 explicit JSON rows')
     fields = ('type', 'unk2', 'unk4', 'unk6', 'unk8', 'u')
-    for row, field in overrides:
-        struct.pack_into('<h', out, row * 12 + fields.index(field) * 2, authored[row][field])
-    return bytes(out)
+    return b''.join(struct.pack('<6h', *(row[field] for field in fields)) for row in authored)
 
 
-def ui_table(recipe, key, read_source):
-    """Player panel positions, with crops for our authored text-drawing contract.
-
-    The source's original instruction pair identifies the complete semantic
-    table. Coordinates are never assembled from unrelated short byte values.
-    """
-    import hashlib
-    path, offset, size, digest, references = recipe['sources'][key]
-    raw = read_source(path)
-    if hashlib.sha1(raw).hexdigest() != digest or offset < 0 or offset + size > len(raw):
-        raise ValueError('UI table differs from its pinned player file')
-    high, low = references
-    if not (0 <= high <= len(raw)-4 and 0 <= low <= len(raw)-4):
-        raise ValueError('UI table reference outside player code')
-    hi, = struct.unpack_from('<I', raw, high); lo, = struct.unpack_from('<I', raw, low)
-    register = (hi >> 16) & 31
-    address = ((hi & 65535) << 16) + ((lo & 65535) - 65536 if lo & 32768 else lo & 65535)
-    if (hi >> 26 != 15 or lo >> 26 != 9 or (lo >> 21) & 31 != register
-            or (lo >> 16) & 31 != register or address != 0x80090000 + offset):
-        raise ValueError('UI table lacks its original address reference')
-    source = raw[offset:offset + size]
+def ui_table(recipe, key, read_source=None, tool_root=None):
+    """Regional menu geometry from explicit JSON, with authored text crops."""
+    from pathlib import Path
+    import json
+    root = Path(tool_root) if tool_root else Path(__file__).resolve().parents[2]
+    profiles = json.loads((root / 'tools/patcher/ui-sources.json').read_text())['objects']
+    values = profiles[recipe['ui']]['values'][key]
+    source = struct.pack('<' + 'h' * len(values), *values)
     name = recipe['ui']
     if name in ('MOVES_VIEW_SPRITES', 'AMOUNT_BOX_LAYOUT'):
         return source

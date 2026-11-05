@@ -5,12 +5,16 @@
   "vanilla_as": 12,
   "off": {
     "level": "ultimate",
-    "stats": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 750, "speed": 600, "brains": 650}
+    "stats": {"hp": 7000, "mp": 6000, "offense": 650, "defense": 650, "speed": 400, "brains": 500},
+    "finisher": {"power": 250, "mpCost": 40, "element": "mech"},
+    "techniques": ["Megaton Punch", "Megalo Spark", "Thunder Justice", "Aurora Freeze", "All Range Beam",
+                   "Full Potential", "Infinity Cannon"]
   },
   "attribute": "virus",
   "specialties": ["mech", "air", "battle"],
   "techniques": ["Megaton Punch", "Megalo Spark", "Thunder Justice", "Aurora Freeze", "All Range Beam",
                  "Full Potential", "Infinity Cannon"],
+  "finisher": {"power": 260, "mpCost": 40, "element": "mech"},
   "drop": {"item": "Chain melon", "percent": 0},
   "model": {"name": "MUGE", "bones": 32, "partner_file": "build/models/MUGP.MMD", "radius": 400, "height": 600},
   "voice": 48,
@@ -50,6 +54,6 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 750, "speed": 600, "brains": 650}
+    "gains": {"hp": 8000, "mp": 7000, "offense": 800, "defense": 800, "speed": 550, "brains": 650}
   }
 }

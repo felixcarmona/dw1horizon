@@ -25,12 +25,16 @@
         "flags": 16
       }
     },
-    "stats": {"hp": 2500, "mp": 1500, "offense": 100, "defense": 150, "speed": 100, "brains": 200}
+    "stats": {"hp": 2500, "mp": 1500, "offense": 100, "defense": 150, "speed": 100, "brains": 200},
+    "finisher": {"power": 150, "mpCost": 40, "element": "ice"},
+    "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
+                   "Ice Statue", "Winter Blast", "Aurora Freeze", "Aqua Magic", "Blasting Spout"]
   },
   "attribute": "vaccine",
   "specialties": ["ice", null, "nature"],
   "techniques": ["Charm Perfume", "Poison Powder", "Tear Drop", "Giga Freeze", "Ice Needle", "Water Blit",
                  "Ice Statue", "Winter Blast", "Aurora Freeze", "Aqua Magic", "Blasting Spout"],
+  "finisher": {"power": 210, "mpCost": 40, "element": "ice"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "HOEE", "bones": 12, "radius": 200, "height": 400},
   "voice": 22,
