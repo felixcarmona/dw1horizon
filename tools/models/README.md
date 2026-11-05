@@ -73,6 +73,15 @@ BINDING_MODELS=build/imported-model-edit/edit PYTHONPATH=tools \
 Use `tools/models/edit.py get 236` to populate that folder first. Provider
 checks (`check 236 --species-pins`) also regenerate and verify the final rig.
 
+Angewomon (190) uses the same binding path with Angemon's complete native
+partner rig. Her height/radius metadata matches Angemon (400/150), and the
+rest mesh is approximately 416 units tall including the helmet ornaments.
+The mesh retains its own bow, hair, feather fans and imported texture.
+Angemon supplies distinct care and condition programs as well as locomotion;
+the native Myotismon model lacks several of these partner programs. The
+provider's final Buster Dive reach pass remains active. Run `get 190` too
+before the binding tests, and `check 190 236 --species-pins` for both outputs.
+
 Measure final field speeds and voice-note coverage with:
 
 ```sh

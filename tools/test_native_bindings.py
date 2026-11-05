@@ -18,7 +18,7 @@ class NativeBindings(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cases = []
-        source = Path(os.environ.get('BINDING_MODELS', 'build/angels/source'))
+        source = Path(os.environ.get('BINDING_MODELS', 'build/imported-model-edit/edit'))
         for sid, recipe in json.loads(binding.MANIFEST.read_text()).items():
             files = list(source.glob(f'{sid}-*.MMD')) or list(source.glob(f'{sid}.MMD'))
             if not files or not (Path(mmd.EXTRACTED)/recipe['model']).exists():
@@ -75,6 +75,26 @@ class NativeBindings(unittest.TestCase):
         for recipe, record, _, _, _, _ in self.cases:
             with self.assertRaises(ValueError):
                 binding.bind(b'changed', record['model']['skeleton'], recipe)
+
+    def test_angewomon_feather_fans_extend_on_both_sides(self):
+        for recipe, _, _, proof, model, _ in self.cases:
+            if recipe['species'] != 190:
+                continue
+            rig = proof['generated_skeleton']
+            mmd.exe().add_type(600, rig)
+            model.type = 600
+            pose = animsheet.slot_frames(model, len(rig), 0)[0][0]
+            pose[0] = [4096]*3 + [0]*6
+            world = mmd.bone_matrices(model, pose)
+            def xs(bones):
+                return [sum(world[b][0][i]*v[i] for i in range(3))+world[b][0][3]
+                        for b in bones if rig[b][0] >= 0
+                        for v in model.tmd.obj_verts(rig[b][0])]
+            left, right = xs((12, 13, 16, 17)), xs((10, 11, 14, 15))
+            self.assertLess(max(left), 0)
+            self.assertGreater(min(right), 0)
+            self.assertGreater(-min(left)/max(right), .8)
+            self.assertLess(-min(left)/max(right), 1.2)
 
 
 if __name__ == '__main__':
