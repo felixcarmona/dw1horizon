@@ -165,7 +165,7 @@ side is in [release/README-players.md](release/README-players.md#the-desktop-app
   and names need, and on a screen too short for it the content scrolls (the scroll bar shows only then). tkinter/ttk
   with the platform's theme (Windows: per-monitor DPI awareness for sharp text), the icon
   drawn from `web/favicon.svg` by `tools/patcher/app/make_icons.py` (PNG, ICO and ICNS, standard library only). The
-  eight languages: the page's strings (`web/i18n/<lang>.json`) where they fit, the app's own in
+  nine languages: the page's strings (`web/i18n/<lang>.json`) where they fit, the app's own in
   `tools/patcher/app/i18n.json`; the system's language first, then the menu's choice is remembered. The build shows
   derive's step in the page's words, the percentage, the time so far and left, Stop, and at the end "Open the folder"
   and "Open the log". The free space of the temporary folder (the build tree, about 700 MB; 2 GB asked) and of the
@@ -203,7 +203,7 @@ and job object, or the POSIX process group) on a stand-in derive that spawns wor
 `--download` (or `--package DIR`) every standard-library module the package's Python files import, `info`, `check`
 and `apply_disc` refusing a file that is not a disc with the player's message, and the package's real tools/derive
 starting in this Python and stopping at its first missing disc file (not at a missing module); with `--gui` the
-window in all eight languages, filled with long texts and file names, at its natural and its narrowest size, with no text or button cut (`gui.clipped`). CI runs it on the frozen Windows app (as a windowed program, with no console), on the
+window in all nine languages, filled with long texts and file names, at its natural and its narrowest size, with no text or button cut (`gui.clipped`). CI runs it on the frozen Windows app (as a windowed program, with no console), on the
 frozen macOS app natively and, when the runner has Rosetta, its Intel half, and from source on Linux.
 
 `desktop.yml` runs on pull requests that touch the patcher (artifacts only), on a pushed `v*` tag, and by hand with
@@ -263,7 +263,7 @@ Only HEAD and the tags count, not uncommitted changes: one commit builds one dis
   grey (patch 0257; `tools/build-full.sh` gives `tools/version.py game` to the executable's make as `MOD_VERSION`, a
   fixed 32-byte array, so a new version changes those bytes of `SLUS_010.32` only). Field START pause also shows the
   same string at (16, 8), above the clock, with the same grey and shadow (patch 0288). Empty `MOD_VERSION` draws
-  nothing in either place; all eight languages share the string. The executable is authored: the
+  nothing in either place; all nine languages share the string. The executable is authored: the
   package carries it and apply checks its SHA-1 like every other file, on every base;
 - **the package**: make-release writes `version` and `date` into `manifest.json` (`--version` still overrides the
   version, never the date); apply's first line and `info` print `TITLE VERSION (DATE)`;

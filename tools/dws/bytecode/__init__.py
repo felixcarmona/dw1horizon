@@ -198,6 +198,8 @@ CHARWIDTH = dict(zip(_GLYPH_CHARS, _WIDTHS))
 # `--font-glyphs N` the ones past the first N (an executable built before they were added).
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import fontgen
+CHINESE_CODES = {}
+CHINESE_REVERSE = {}
 EXTRA_CHAR2SJIS = {}
 for _ch, (_code, _w) in fontgen.extra_map().items():
     EXTRA_CHAR2SJIS[_ch] = _code; SJIS2CHAR[_code] = _ch; CHARWIDTH[_ch] = _w
@@ -275,8 +277,8 @@ def decode_text(b, p):
             cur.append({'"': '\\"', '\\': '\\\\', '{': '\\{'}.get(ch, ch))
             p += 1; continue
         code = (c << 8) | a
-        if code in SJIS2CHAR:
-            ch = SJIS2CHAR[code]
+        if code in CHINESE_REVERSE or code in SJIS2CHAR:
+            ch = CHINESE_REVERSE.get(code, SJIS2CHAR.get(code))
             cur.append({'"': '\\"', '\\': '\\\\', '{': '\\{'}.get(ch, ch))
         elif c >= 0x81:
             cur.append('{sjis %04x}' % code)
@@ -331,6 +333,8 @@ def text_units(s, where, opts, warn):
                     v = 0
                 cur += bytes([c, v & 0xFF]); continue
             raise BytecodeError(f'{where}: unknown escape {{{tok[0]}}}')
+        if ch in CHINESE_CODES:
+            cur += struct.pack('>H', CHINESE_CODES[ch]); i += 1; continue
         if ch in CHAR2SJIS:
             cur += struct.pack('>H', CHAR2SJIS[ch]); i += 1; continue
         if ch in EXTRA_CHAR2SJIS:
@@ -376,7 +380,12 @@ def line_metrics_pixel(line, font):
     """(bytes in a packed row, pixels, start of the last glyph) of an encoded line for a font placed to the pixel (a, b):
     showTextbox writes a letter, digit, space or . , : ; ? ! ' " + - = as one byte; drawString2 moves by each glyph's
     advance (fontgen.metrics) and font b's kerning."""
-    adv = fontgen.metrics(font); kern = fontgen.kern(font)
+    if CHINESE_CODES:
+        from tools.chinese import font_glyphs
+        adv = {c: row[0] for c, row in font_glyphs().items()}
+        kern = {}
+    else:
+        adv = fontgen.metrics(font); kern = fontgen.kern(font)
     n = px = 0; p = 0; last = 0; prev = None
     while p < len(line):
         c = line[p]
@@ -385,7 +394,7 @@ def line_metrics_pixel(line, font):
         if c in (0x01, 0x02, 0x0C, 0x0E, 0x0F):
             n += 2; p += 2; prev = prev if c in (0x01, 0x02) else None; continue
         code = (c << 8) | (line[p + 1] if p + 1 < len(line) else 0)
-        ch = SJIS2CHAR.get(code)
+        ch = CHINESE_REVERSE.get(code, SJIS2CHAR.get(code))
         n += 1 if ch in fontgen.PACKED else 2
         px += kern.get((prev, ch), 0); prev = ch      # font b's kerning (drawGlyph: a glyph right after the previous)
         last = px; px += adv.get(ch, 12) if ch else 12

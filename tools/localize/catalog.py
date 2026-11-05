@@ -136,3 +136,14 @@ CUPS = {key: values + (CA_CUPS[key],) for key, values in CUPS.items()}
 UI = {key: values + (CA_UI[key],) for key, values in UI.items()}
 LANGUAGES += ('ca',)
 LANGUAGE_NAMES['ca'] = 'CATALÀ'
+
+# Simplified Chinese uses the same texture inventory and preserves earlier indices.
+from tools.localize import chinese_catalog as ZH
+assert set(ZH.UI) == set(UI)
+assert set(ZH.SIGNS) == set(SIGNS)
+assert set(ZH.CUPS) == set(CUPS)
+SIGNS = {key: values + (ZH.SIGNS[key],) for key, values in SIGNS.items()}
+CUPS = {key: values + (ZH.CUPS[key],) for key, values in CUPS.items()}
+UI = {key: values + (ZH.UI[key],) for key, values in UI.items()}
+LANGUAGES += ('zh-hans',)
+LANGUAGE_NAMES['zh-hans'] = '简体中文'

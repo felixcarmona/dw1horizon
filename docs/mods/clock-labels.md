@@ -31,7 +31,7 @@ u128..159 rows48..63 and u160..191 rows32..63. The former claim that the
 32×16 cell is the sleeping creature's second animation frame.
 
 Patch 0274 changes only sprite-table values, with no new runtime storage.
-All translated languages use these cell origins (inclusive U and TIM row):
+The compact translated labels use these cell origins (inclusive U and TIM row):
 
 | Label key | U | Row | Height |
 |---|---:|---:|---:|
@@ -62,3 +62,16 @@ The build checks label/clock and label/label overlap and compares all five
 clock frames with the input in both texture copies after the final label pass.
 The selftest includes synthetic corruption of each frame and rejection of the
 former (128,32) label cell.
+
+## Chinese labels
+
+Chinese uses native 12px glyphs in 24×13 cells, with white ink and dark shadows,
+from seven unused SYSTEM_W cells. `tools/localize/systemw.py` records their exact
+coordinates and validates them against existing localized crops. FI_INFO's date
+digits and five clock frames are preserved.
+
+The Chinese crop table centers each label under its 20px icon, with three clear
+pixels above and four before the next icon row. The label text includes 状态 in
+place of the original DIGIMON word. Other languages retain their existing atlas,
+palette and crop positions. `tools/test_systemw.py` checks the native glyph
+strokes, original cell transparency and geometry.

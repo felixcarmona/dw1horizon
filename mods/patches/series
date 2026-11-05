@@ -342,6 +342,15 @@ Register-a-species-past-255-for-battle-mode-as-itsel.patch
 Draw-flattened-Digimon-with-the-flat-frames-their-te.patch
 Align-stacked-gym-boxes-and-leave-a-clear-gap.patch
 Keep-a-story-s-homecoming-lines-out-of-the-partner-s.patch
+Share-filename-hashing-across-file-and-language-lookups.patch
+Load-selected-Chinese-resources-and-bitmap-glyphs-in-extra-RAM.patch
+Pack-unchanged-language-flags-and-preserve-complete-saved-name-glyphs.patch
+Distinguish-Chinese-save-names-from-Japanese-trail-bytes.patch
+Render-Chinese-battle-mode-names-and-techniques-from-a-resident-compact-font.patch
+Share-card-title-writing-and-keep-Chinese-saves-readable-on-2-MB.patch
+Keep-the-resident-Chinese-font-fixed-in-the-options-menu.patch
+Keep-compact-glyph-quads-inside-the-texture-page-edge.patch
+Render-empty-Chinese-battle-move-slots-with-the-resident-font.patch
 Select-a-flat-palette-for-each-animation-frame.patch
 Refill-saved-vending-mushroom-stock-at-midnight.patch
 Draw-each-card-menu-answer-inside-its-own-crop.patch
@@ -353,6 +362,9 @@ Apply-species-mode-moves-and-finisher-scalars.patch
 Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
+Show-Chinese-in-a-two-column-language-picker.patch
+Localize-picker-headings-and-enlarge-Chinese-icon-labels.patch
 Finish-scripted-moves-with-a-rounded-zero-step.patch
 Keep-item-bank-column-clears-within-their-text-slot.patch
 wait-for-quick-battle-effects-before-melee.patch
+Load-picker-storage-with-the-title-overlays.patch

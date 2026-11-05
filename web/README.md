@@ -44,7 +44,7 @@ The project's site: a static page with no backend. The patcher runs in the visit
     `content/imports/releases/`; a `<game>-<release>.json` with a `files` map is picked up as it is).
 - `data/discs.json`: the expected discs, their other releases and the files to check cooked images by. Generated, do not edit: `python3 tools/discs.py web-json web/data/discs.json`
   (`DISCS` + `SOURCE_DISCS` in `tools/discs.py`).
-- `i18n/<lang>.json`: every string of the page in its eight languages (en, es, pt-br, fr, de, it, ja, ca: the game's
+- `i18n/<lang>.json`: every string of the page in its nine languages (en, es, pt-br, fr, de, it, ja, ca, zh-hans: the game's
   own, `js/i18n.js` LANGS), every file with en.json's keys (`node web/test/i18n.mjs` checks keys and placeholders; a
   missing string falls back to English). The first visit follows the browser's languages, the choice in the bar's
   menu (each language by its own name, `NAMES`) is remembered. Japanese uses the system's Japanese font (`--font`).

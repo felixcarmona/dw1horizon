@@ -1087,5 +1087,9 @@
  "main.LAB_STR_ASK_LOAD": "Charger cette partie ?",
  "main.CITY_STR_PROSPERITY": "Prospérité",
  "main.CITY_STR_RESIDENTS": "Résidents",
- "main.STATUS_STR_TIRED": "Fatig."
+ "main.STATUS_STR_TIRED": "Fatig.",
+ "main.MOD_OPT_STR_CHINESE_RAM_0": "Le chinois nécessite",
+ "main.MOD_OPT_STR_CHINESE_RAM_1": "8 Mo de RAM. Activez",
+ "main.MOD_OPT_STR_CHINESE_RAM_2": "8 Mo dans les options",
+ "main.MOD_OPT_STR_CHINESE_RAM_3": "de votre émulateur."
 }
