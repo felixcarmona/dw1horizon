@@ -297,12 +297,9 @@
  ],
  "m1238.u8": "I'm collectin' somethin'. If ya got any, I'd sure like to trade fer 'em.",
  "m1238.u9": "What're ya gonna give me?",
- "m1238.u10": "I'll trade any time, so keep 'em comin'!",
+ "m1238.u10": "Each trade once a day. Come back tomorrow!",
  "m1238.u11": "You'd really give me {item 249}?",
- "m1238.u12": [
-  "Sure",
-  "No, I'll keep it"
- ],
+ "m1238.u12": "I've made that trade today. Come back tomorrow!",
  "m1238.u13": "Much obliged!",
  "m1238.u14": "You've got too many items.",
  "m1238.u15": [

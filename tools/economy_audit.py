@@ -64,7 +64,7 @@ def main():
         ok = worth[t] <= sell(g)
         print(f'  {"ok  " if ok else "GAIN"} {name(g)} -> {name(t)}: {sell(g)} -> {worth[t]}')
         if not ok:
-            fails.append(f'Mojyamon {name(g)} -> {name(t)} (+{worth[t] - sell(g)} a unit, 99 a talk)')
+            fails.append(f'Mojyamon {name(g)} -> {name(t)} (+{worth[t] - sell(g)} per exchange)')
 
     vending_fails, sold = check_vending(worth, {i: name(i) for i in items})
     fails.extend(vending_fails)

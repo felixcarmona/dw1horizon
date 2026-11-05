@@ -771,24 +771,14 @@
    "Was wirst du mir geben?"
   ]
  ],
- "s000.sec1238.u10": [
-  [
-   "Ich tausche jederzeit. Bring",
-   "also mehr mit!"
-  ]
- ],
+ "s000.sec1238.u10": "Jeder Tausch einmal am Tag. Komm morgen wieder!",
  "s000.sec1238.u11": [
   [
    "Du gibst mir wirklich",
    "{item 249}?"
   ]
  ],
- "s000.sec1238.u12": [
-  [
-   "Klar",
-   "Nein, ich behalte es"
-  ]
- ],
+ "s000.sec1238.u12": "Heute schon getauscht. Komm morgen wieder!",
  "s000.sec1238.u13": [
   [
    "Vielen Dank!"

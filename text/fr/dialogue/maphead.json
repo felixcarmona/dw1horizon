@@ -773,24 +773,14 @@
    "Que vas-tu me donner ?"
   ]
  ],
- "m1238.u10": [
-  [
-   "J'échange quand tu veux, alors",
-   "ramènes-en !"
-  ]
- ],
+ "m1238.u10": "Chaque échange, une fois par jour. Reviens demain !",
  "m1238.u11": [
   [
    "Tu veux vraiment me donner",
    "{item 249} ?"
   ]
  ],
- "m1238.u12": [
-  [
-   "Bien sûr",
-   "Non, je le garde"
-  ]
- ],
+ "m1238.u12": "J'ai déjà fait cet échange aujourd'hui. Reviens demain !",
  "m1238.u13": [
   [
    "Merci beaucoup !"

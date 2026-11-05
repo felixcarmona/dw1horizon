@@ -297,12 +297,9 @@
  ],
  "s000.sec1238.u8": "Ando juntando una cosa. Si tienes alguna, te la cambio con mucho gusto.",
  "s000.sec1238.u9": "¿Qué me vas a dar?",
- "s000.sec1238.u10": "Cambio cuando quieras, ¡así que tráeme más!",
+ "s000.sec1238.u10": "Cada trueque, una vez al día. ¡Vuelve mañana!",
  "s000.sec1238.u11": "¿De verdad me das {item 249}?",
- "s000.sec1238.u12": [
-  "Claro",
-  "No, me lo quedo"
- ],
+ "s000.sec1238.u12": "Ya hice ese trueque hoy. ¡Vuelve mañana!",
  "s000.sec1238.u13": "¡Muchísimas gracias!",
  "s000.sec1238.u14": "Llevas demasiados objetos.",
  "s000.sec1238.u15": [

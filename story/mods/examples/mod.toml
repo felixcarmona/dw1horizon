@@ -8,5 +8,5 @@ conflicts = []
 
 [save]
 namespace = "examples"
-flags = "780-797"                          # free flags of the original engine (717-797): the examples run on tier 0
+flags = "780-786"                          # free flags of the original engine (717-788): the examples run on tier 0
 vars = "7-8"                               # saved counters (the original engine has 7-15 and 20 free)

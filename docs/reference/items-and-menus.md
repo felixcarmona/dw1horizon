@@ -392,7 +392,9 @@ consumed (`partner.c:497`). "Merit N" = bought in the merit shop for N points;
   `MOJYAMON_ITEMS_GIVE→GET`: Digimushrm→med.recovery, Supercarrot→Omnipotent,
   Happymushrm→Hair grower, Giant Meat→Auto Pilot, Black trout→Restore, Hispeed dsk→Medicine,
   Omnipotent→S.Off.disk, med.recovery→S.Def.disk, Digianchovy→S.speed.disk; each one
-  once (triggers 5–13; all nine set 14, `:1727`).
+  once (triggers 5–13; all nine set 14, `:1727`). These original flags record first completion,
+  rather than limiting repeat trades. Horizon's current [trade table](../mods/balance.md#61-the-economy-rule)
+  uses separate saved daily flags 789–797 and caps the amount box at one.
 - Routine 10, `tickBirdraTransport` (`:913`): 6 destinations `{map, exit, trigger, cost}`
   = (38, 1000), (70, 1000), (79, 1500), (93, 2000), (119, 2500), (105, 2500); only
   those whose trigger is set; charges `SHOP_VARIABLE` and jumps to section `0x4E3` of script 0.

@@ -82,8 +82,8 @@
     123,
     124
   ],
-  "mojyamonGives": [44, 41, 69, 39, 65, 17, 9, 1, 62, 0, 0, 0],
-  "mojyamonTakes": [0, 15, 14, 22, 34, 16, 6, 4, 38, 0, 0, 0],
+  "mojyamonGives": [69, 67, 65, 66, 49, 52, 41, 39, 1, 0, 0, 0],
+  "mojyamonTakes": [45, 70, 47, 6, 2, 5, 22, 64, 4, 0, 0, 0],
   "birdraTransport": [
     {"map": 38, "unk1": 9, "trigger": 221, "cost": 1000},
     {"map": 70, "unk1": 9, "trigger": 190, "cost": 1000},

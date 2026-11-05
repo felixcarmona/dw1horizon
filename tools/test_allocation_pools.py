@@ -10,8 +10,8 @@ from tools.dws import alloc
 class AllocationPools(unittest.TestCase):
     def test_original_saved_and_temporary_numbers(self):
         a = alloc.Allocator()
-        # The last two original saved triggers hold the daily vending stock.
-        self.assertEqual(a.pool('flag', 'save').numbers, list(range(717, 798)))
+        # The last eleven saved triggers hold daily trades and vending stock.
+        self.assertEqual(a.pool('flag', 'save').numbers, list(range(717, 789)))
         self.assertEqual(a.pool('var', 'save').numbers, list(range(7, 16)) + [20])
         self.assertEqual(a.pool('var', 'temp').numbers, list(range(45, 94)))
         self.assertEqual(a.engine_number('flag', 'save', 717), 717)

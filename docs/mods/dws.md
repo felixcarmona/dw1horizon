@@ -54,7 +54,7 @@ recipe uses the original allocation pools on the production mod executable.
 ## Example
 
 ```
-flag reward_taken;                 // a free trigger (717-797), allocated by the compiler
+flag reward_taken;                 // a free trigger (717-788), allocated by the compiler
 var visits;                        // a saved pstat (7-15, 20)
 
 script 178 {                       // DG.SCN script 178: Jijimon's house
@@ -92,7 +92,7 @@ Comments `// ...` and `/* ... */`. Statements end in `;`. Names are case-sensiti
 |---|---|
 | `module name;` | namespace prefix of the allocation keys (default: the file name) |
 | `import "lib.dws";` | loads another file first; its `pub` flags, vars, consts and fns become visible |
-| `flag f;` / `flag f = 717;` | bool, one trigger 717-797. With `= N` the number is **pinned** |
+| `flag f;` / `flag f = 717;` | bool, one trigger 717-788. With `= N` the number is **pinned** |
 | `var v;` / `var v = 12;` / `var v: u8;` | u8 saved on the memory card: pstats 7-15, 20 |
 | `persistent`, `session`, `temp`, `screen` before `flag`/`var` | the scope (see "State"): `persistent` is the default; the other three are not saved (pstats 45-93; 94-99 are the compiler's scratch registers) |
 | `flag[16] chests;` / `var[3] n;` | an array: consecutive numbers; `chests[3]` with a constant index (original) |
@@ -114,7 +114,7 @@ Parameter types of `fn`: `int bool ticks text entity item species tech card scre
 
 | Scope | Lives | Original storage | Extended-save storage |
 |---|---|---|---|
-| `persistent` | memory card | triggers 717-797 (81), pstats 7-15, 20 (10, u8) | 16 384 flag bits (trigger 800 + n), 1 024 `i32` (`v0`-`v1023`) |
+| `persistent` | memory card | triggers 717-788 (72), pstats 7-15, 20 (10, u8) | 16 384 flag bits (trigger 800 + n), 1 024 `i32` (`v0`-`v1023`) |
 | `session`, `screen`, `temp` | original: pstats 45-93 | pstats 45-93 | 256 scene `i32` (`s0`-`s255`): not saved, cleared on a screen change and on a load |
 
 The optional extended-save target uses a 3-block save slot; it compiles with `--exe story-state`: a story flag `f` is the trigger 800 + its
@@ -219,7 +219,7 @@ first and the original follows unless you `return`). `after` needs an extended-s
 | `give(item, n=1)`, `take(item, n=1)` | `GIVE_ITEM`, `REMOVE_ITEM` |
 | `give_bits(n)`, `take_bits(n)`, `merit(n)`, `give_card(n)`, `learn(tech)` | money, merit, cards, techniques |
 | `f = true;` / `f = false;`, `v = 3;`, `v += 1;`, `v -= 1;` | triggers and pstats |
-| `set_trigger(n)`, `clear_trigger(n)` | raw triggers (warns outside 717-797) |
+| `set_trigger(n)`, `clear_trigger(n)` | raw triggers (warns outside 717-788) |
 | `music(n)`, `sound(bank, n)`, `warp(screen, exit: 0, section: 255)` | |
 | `wait(30)`, `wait(2s)`, `wait(5 ticks)` | `DELAY` (20 ticks per second) |
 | `battle();` | the NPC of the section fights you |
@@ -349,8 +349,9 @@ and story variants. [Building](../building.md) describes the integrated disc;
 [derive](../derive.md) describes output manifests and ordering. These build paths
 manage script assembly and disc relayout automatically.
 
-Horizon reserves original saved triggers 798 and 799 for daily rare-mushroom vending stock. They are not available
-to mods; midnight clears both. The remaining original allocation pool is 717-797 (81 bits).
+Horizon reserves original saved triggers 789–797 for daily Mojyamon exchanges and 798–799 for daily rare-mushroom
+vending stock. They are not available to mods; day advances clear them. The remaining original allocation pool is
+717-788 (72 bits).
 
 With `TEXT=us`, original dialogue values stay intact; authored English supplies new Horizon keys that the disc
 does not contain, such as vending stock, prices and refusal messages. Other languages use their translated banks.

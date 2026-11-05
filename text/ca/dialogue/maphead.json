@@ -765,24 +765,14 @@
    "Què em donaràs?"
   ]
  ],
- "m1238.u10": [
-  [
-   "Faig canvis quan vulguis, així",
-   "que porta'n més!"
-  ]
- ],
+ "m1238.u10": "Cada intercanvi, un cop al dia. Torna demà!",
  "m1238.u11": [
   [
    "De debò em dónes",
    "{item 249}?"
   ]
  ],
- "m1238.u12": [
-  [
-   "Clar",
-   "No, m'ho quedo"
-  ]
- ],
+ "m1238.u12": "Avui ja he fet aquest intercanvi. Torna demà!",
  "m1238.u13": [
   [
    "Moltíssimes gràcies!"
