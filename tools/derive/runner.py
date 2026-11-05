@@ -47,6 +47,11 @@ _hooked = False
 def _hook(event, args):
     if _recording is None or event != 'open':
         return
+    # Dependency hashing is cache bookkeeping, not a read by the builder.
+    cache_module = sys.modules.get('tools.build_cache')
+    capture = getattr(cache_module, '_ACTIVE', None)
+    if capture is not None and capture.busy:
+        return
     path, mode = args[0], args[1]
     if not isinstance(path, (str, bytes)) or isinstance(path, bytes):
         return

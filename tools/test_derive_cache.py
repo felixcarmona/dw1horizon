@@ -258,11 +258,13 @@ class RecordedSteps(unittest.TestCase):
             root = Path(td)
             source = root / 'source'; source.write_bytes(b'original')
             missing = root / 'optional'
+            stat_only = root / 'stat-only'; stat_only.write_bytes(b'probe only')
             output = root / 'build/everything/result'
             calls = []
             def build(ctx):
                 calls.append(1)
                 data = source.read_bytes()
+                assert stat_only.exists()
                 if missing.exists():
                     data += missing.read_bytes()
                 output.parent.mkdir(parents=True, exist_ok=True)
@@ -282,6 +284,7 @@ class RecordedSteps(unittest.TestCase):
             self.assertEqual(len(calls), 2)
             self.assertEqual(traces[0], traces[1])
             self.assertIn(str(source), traces[1])
+            self.assertTrue(all(str(stat_only) not in trace for trace in traces))
             self.assertFalse(any(str(root / 'cache') in p for trace in traces for p in trace))
 
 

@@ -186,13 +186,16 @@ def build(a, out=None, quiet=False):
     if facts is not None:
         m['facts'] = facts
     total = time.perf_counter()
+    record_cached = bool(a.record and os.environ.get('DW_RECORD_CACHE') and not a.strict)
+    if record_cached:
+        # Instrumentation is not a dependency of the player's replay.
+        from .cache import record_step
     for mod in mods:
         ctx.lines, ctx.inputs = [], set()
         t0 = time.perf_counter()
         try:
             with ctx.calling():      # (with --record: what the step's own code opens, besides its scripts and units)
-                if a.record and os.environ.get('DW_RECORD_CACHE') and not a.strict:
-                    from .cache import record_step
+                if record_cached:
                     record_step(ctx, mod, os.environ['DW_RECORD_CACHE'])
                 elif os.environ.get('DW_BUILD_CACHE') and not a.strict:
                     from .cache import build_step
