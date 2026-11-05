@@ -56,6 +56,7 @@ class Stopped(PatchError):
 # derive processes are killed and nothing is written). The command line never sets CANCEL.
 GUI_API = 1
 CANCEL = None
+RELEASE_METRICS = None
 
 
 def _check_cancel():
@@ -1287,6 +1288,7 @@ def _derive_lines(process, job):
                 continue
             if item is None: break
             if isinstance(item, BaseException): raise item
+            _check_cancel()
             yield item
     finally:
         # The caller terminates the group on exceptions before closing stdout.
@@ -1294,7 +1296,57 @@ def _derive_lines(process, job):
         if not reader.is_alive(): reader.join()
 
 
-def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_discs=None):
+def release_timing(name, **data):
+    if RELEASE_METRICS is not None:
+        RELEASE_METRICS.record(name, data)
+
+
+def release_derive(root, recipe, facts, cache=None, slot=None, record=False, jobs=None, log=None,
+                   source_discs=None):
+    """Release-only caching; isolated verification and player replay use derive_run directly."""
+    _check_cancel()
+    if not cache:
+        return derive_run(root, recipe, facts, record, jobs, log, source_discs, measure_worker=True)
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+    from tools.derive import release_cache as rc
+    from pathlib import Path
+    started = time.monotonic()
+    hit = False
+    with rc.stage(cache, slot, root) as staged:
+        staged_facts = str(staged / os.path.relpath(facts, root))
+        # The recorded player bundle does not need the developer cache implementation.
+        shutil.copyfile(os.path.join(REPO, 'tools/build_cache.py'), staged / 'tools/build_cache.py')
+        # Stable roots are necessary for the audited step cache's absolute dependencies.
+        env = dict(os.environ, DW_BUILD_CACHE=str(Path(cache).resolve() / 'steps'))
+        for key in ('W', 'DW_PORTRAITS_CACHE', 'EMU_PORT', 'DW_SELFTEST_DERIVE', 'CODEX_TOOL_CALL_ID', 'NAME', 'DERIVE_JOBS'):
+            env.pop(key, None)
+        snapshot = None
+        if record:
+            env.pop('DW_BUILD_CACHE', None)
+            identity_env = {k: v for k, v in env.items() if k not in ('PWD', 'OLDPWD', 'SHLVL', '_')}
+            fingerprint = rc.fingerprint(staged, recipe, source_discs, identity_env)
+            snapshot = Path(cache).resolve() / 'recordings' / fingerprint
+        if snapshot is not None and rc.restore(snapshot, staged):
+            hit = True
+            say('  source-bundle recording: verified cache hit')
+            with open(staged / 'tools/derive/recipes' / (recipe + '.json')) as f:
+                build_name = json.load(f)['environment']['NAME']
+            made = staged / 'build' / build_name
+            with open(made / 'derived/manifest.json') as f:
+                man = json.load(f)
+        else:
+            _check_cancel()
+            man, made = derive_run(str(staged), recipe, staged_facts, record, jobs, log, source_discs,
+                                   release_env=env, measure_worker=True, worker_label=slot)
+            if snapshot is not None:
+                rc.save(snapshot, staged)
+        relative = os.path.relpath(made, staged)
+    release_timing(slot, seconds=round(time.monotonic() - started, 2), recording_cache_hit=hit)
+    return man, os.path.join(root, relative)
+
+
+def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_discs=None, release_env=None, measure_worker=False, worker_label='derive'):
     """tools/derive of `root` builds the recipe into root/build/NAME (the recipe's NAME: the build's own paths, so the
     same bytes) -> (its manifest, the folder). Its output goes to `log` (a file) and, while apply's screen runs, to the
     screen's log, each step's end moving the bar (the step's line, STEP_DONE)."""
@@ -1307,10 +1359,12 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
         argv += ['--source-disc', source]
     # (PYTHONDONTWRITEBYTECODE: every module's source is opened, the record sees it; unbuffered: its lines as they come;
     # UTF-8 mode: the logs' Spanish text on a console whose code page is not UTF-8)
-    env = dict(os.environ, PYTHONDONTWRITEBYTECODE='1', PYTHONUNBUFFERED='1', PYTHONUTF8='1')
+    env = dict(os.environ if release_env is None else release_env,
+               PYTHONDONTWRITEBYTECODE='1', PYTHONUNBUFFERED='1', PYTHONUTF8='1')
     # Packages replay in their private tree, independent of developer caches.
     for name in ('DW_BUILD_CACHE', 'DW_CACHE_DIR', 'DW_CLEAN_NATIVE'):
-        env.pop(name, None)
+        if release_env is None or name != 'DW_BUILD_CACHE':
+            env.pop(name, None)
     t0 = time.time()
     lines = []
     lf = open(log, 'w', encoding='utf-8') if log else None
@@ -1330,14 +1384,23 @@ def derive_run(root, recipe, facts, record=False, jobs=None, log=None, source_di
             p.stdin.write(b'1'); p.stdin.close()
         else:
             p = subprocess.Popen(argv, start_new_session=True, **options)
-        for raw in _derive_lines(p, job):
-            line = raw.decode('utf-8', 'replace').replace('\r\n', '\n')
-            lines.append(line)
-            if lf: lf.write(line)
-            if SCREEN is not None:
-                SCREEN.write_raw(line)
-                mm = STEP_DONE.match(line.rstrip('\n'))
-                if mm: SCREEN.step_done(mm.group(1))
+        from contextlib import nullcontext
+        measurement = nullcontext()
+        if measure_worker:
+            from release_workers import measure
+            def report(data):
+                say('   release worker: ' + json.dumps(data, sort_keys=True))
+                release_timing(worker_label, **data)
+            measurement = measure(p.pid, report)
+        with measurement:
+            for raw in _derive_lines(p, job):
+                line = raw.decode('utf-8', 'replace').replace('\r\n', '\n')
+                lines.append(line)
+                if lf: lf.write(line)
+                if SCREEN is not None:
+                    SCREEN.write_raw(line)
+                    mm = STEP_DONE.match(line.rstrip('\n'))
+                    if mm: SCREEN.step_done(mm.group(1))
         code = p.wait()
         if code: _stop_derive(p, job)
     except BaseException:
@@ -1410,7 +1473,7 @@ def publication_bundle_files(files):
     return {name: path for name, path in files.items() if name not in retired}
 
 
-def make_bundle_derive(usa, work, out, recipe, facts, source_discs=None):
+def make_bundle_derive(usa, work, out, recipe, facts, source_discs=None, cache=None):
     """The bundle of the derive builder: the repository's tracked trees and the recipe's untracked inputs in a clean
     tree with every Form 1 file of the USA disc but the needs-usa ones, derive --record there, and the files it opened
     (+ content/, story/base, tools/derive) -> (bundle files, extract list, the clean build's {disc path: file})."""
@@ -1427,7 +1490,7 @@ def make_bundle_derive(usa, work, out, recipe, facts, source_discs=None):
     say(f'  a clean tree: {len(files)} source/configuration files, {len(extract)} files of the USA disc (not the needs-usa ones)')
     derive_tree(cand, files, extract, usa.read)
     say('  tools/derive there, recording every file it opens (one process)')
-    man, dout = derive_run(cand, recipe, os.path.join(cand, 'exe-facts.json'), record=True,
+    man, dout = release_derive(cand, recipe, os.path.join(cand, 'exe-facts.json'), cache=cache, slot='recording', record=True,
                            log=os.path.join(work, 'derive-cand.log'), source_discs=source_discs)
     opened = {p for s in man['steps'].values() for p in s.get('inputs', [])}
     # Step modules import language selection before recording starts, so the open-file
@@ -1464,7 +1527,7 @@ def regional_derive(mapping, extract):
         mapping['files'].get(q, {}).get('how') == 'own' for q in extract)))
 
 
-def derive_holes(rel, m, v, base, work, jobs=None, source_discs=None):
+def derive_holes(rel, m, v, base, work, jobs=None, source_discs=None, cache=None, slot=None):
     """The derive builder on the player's disc: {disc path: the file made}."""
     root = os.path.join(work, 'root')
     supplied = {s.split('=', 1)[0] for s in source_discs or []}
@@ -1479,7 +1542,7 @@ def derive_holes(rel, m, v, base, work, jobs=None, source_discs=None):
     derive_tree(root, files, m['extract'], lambda q: base.data(q), phase)
     if SCREEN is not None:
         SCREEN.start(next(k for k in SCREEN.keys if k.startswith('step:')))
-    man, out = derive_run(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'), jobs=jobs,
+    man, out = release_derive(root, v['local']['recipe'], os.path.join(root, 'exe-facts.json'), cache=cache, slot=slot, jobs=jobs,
                           source_discs=source_discs)
     return derive_files(man, out)
 
@@ -1765,8 +1828,26 @@ def cmd_make_release(a):
     for spec in getattr(a, 'source_variant', None) or []:
         if '=' not in spec or spec.split('=', 1)[0] not in games or not spec.split('=', 1)[1]:
             raise PatchError('--source-variant requires GAME=IMAGE for one of the source games.')
-    save_check(a)
-    return cmd_make_release3(a)
+    if min(getattr(a, 'base_jobs', 4), getattr(a, 'variant_jobs', 2), getattr(a, 'worker_memory_mib', 6144)) < 1:
+        raise PatchError('worker counts and memory budget must be positive')
+    if getattr(a, 'derive_cache', None):
+        cache = os.path.abspath(a.derive_cache)
+        package = os.path.abspath(a.output)
+        if os.path.commonpath([cache, package]) in (cache, package) or cache == REPO:
+            raise PatchError('--derive-cache and the package must be separate directories')
+    if getattr(a, 'metrics', None) and os.path.commonpath([os.path.abspath(a.output), os.path.abspath(a.metrics)]) == os.path.abspath(a.output):
+        raise PatchError('--metrics must be outside the package directory')
+    global RELEASE_METRICS
+    if getattr(a, 'metrics', None):
+        from release_workers import Metrics
+        RELEASE_METRICS = Metrics(a.metrics)
+    started = time.monotonic()
+    try:
+        save_check(a)
+        return cmd_make_release3(a)
+    finally:
+        release_timing('make-release', seconds=round(time.monotonic() - started, 2))
+        RELEASE_METRICS = None
 
 
 def variant_of_image(game, image):
@@ -1789,7 +1870,31 @@ def derived_manifest(root, recipe):
     return os.path.join(root, 'build', name, 'derived', 'manifest.json')
 
 
-def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs):
+def run_release_tasks(tasks, width):
+    from release_workers import ordered
+    global CANCEL
+    previous = CANCEL
+    event = CANCEL = previous or threading.Event()
+    try:
+        return ordered(tasks, width, event.set)
+    finally:
+        CANCEL = previous
+
+
+def source_variant_derive(a, out, m, local, holes, base_paths, mappings, work, spec, key, jobs):
+    _check_cancel()
+    game, image = spec.split('=', 1)
+    vid, _ = variant_of_image(game, image)
+    sources = [s for s in a.source_disc if s.split('=', 1)[0] != game] + [spec]
+    folder = os.path.join(work, vid, key)
+    bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=folder, source_discs=sources)
+    os.makedirs(folder, exist_ok=True)
+    got = derive_holes(out, m, dict(local=local), bd, os.path.join(folder, 'derive'), jobs=jobs,
+                       source_discs=sources, cache=getattr(a, 'derive_cache', None), slot=vid + '/' + key)
+    return key, {hh['id']: open(got[hh['file']], 'rb').read() for hh in holes}
+
+
+def record_source_variants(a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs, prepared=None):
     """For each --source-variant GAME=IMAGE: tools/derive with that disc in place of the reference one, once on the
     USA disc; then on every base whose derived files are its own (a regional base) unless variantreuse.reuse() proves
     that base's files are its reference ones with the USA run's changes put in (the steps the source discs feed and
@@ -1797,7 +1902,6 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
     shared between them). The other bases read the USA bytes, as the reference pass does. Records each derived file
     that comes out otherwise as sha1_by_base["<base>+<variant>"] and the patched disc's SHA-1 as
     outputs["<base>+<variant>"]. -> manifest source_variants."""
-    import concurrent.futures
     import variantreuse
     sv = {}
     regional = [k for k in base_paths if k != 'us' and regional_derive(mappings.get(k), m['extract'])]
@@ -1809,15 +1913,10 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
         t0 = time.time()
 
         def derive_one(key, jobs):
-            bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, vid, key),
-                          source_discs=sources)
-            os.makedirs(os.path.join(work, vid, key), exist_ok=True)
-            got = derive_holes(out, m, dict(local=local), bd, os.path.join(work, vid, key, 'derive'), jobs=jobs,
-                               source_discs=sources)
-            return key, {hh['id']: open(got[hh['file']], 'rb').read() for hh in holes}
+            return source_variant_derive(a, out, m, local, holes, base_paths, mappings, work, spec, key, jobs)
 
         say(f'  source variant {vid} ({game}: {os.path.basename(image)}): tools/derive on us')
-        made = dict([derive_one('us', os.cpu_count() or 1)])
+        made = dict([prepared[spec] if prepared else derive_one('us', os.cpu_count() or 1)])
         reused, why = None, 'no regional base'
         if regional:
             try:
@@ -1836,33 +1935,47 @@ def record_source_variants(a, m, out, work, name, local, holes, base_holes, base
             say(f'    {", ".join(regional)}: the reference files with the USA run\'s changes (the source discs\' '
                 f'steps and the bases\' own files do not meet)')
         elif regional:
-            width = max(1, min(getattr(a, 'variant_jobs', None) or 2, len(regional)))
+            from release_workers import worker_count
+            width = worker_count(getattr(a, 'variant_jobs', None) or 2, len(regional),
+                                 getattr(a, 'worker_memory_mib', 6144))
             jobs = max(1, (os.cpu_count() or 1) // width)
             say(f'    {why}: tools/derive on {", ".join(regional)}, {width} at once, --jobs {jobs} each')
-            with concurrent.futures.ThreadPoolExecutor(width) as pool:
-                made.update(pool.map(lambda k: derive_one(k, jobs), regional))
+            import functools
+            made.update(run_release_tasks({k: functools.partial(derive_one, k, jobs) for k in regional}, width).values())
         m.setdefault('timings', {}).setdefault('source_variants', {})[vid] = round(time.time() - t0)
         say(f'    derive: {time.time() - t0:.0f} s')
-        for key in base_paths:
+        def reconstruct_variant(key):
+            _check_cancel()
             pk = pin_key(key, vid)
             vb = reused[key] if reused is not None else made[key] if key in made else made['us']
-            hb = dict(base_holes[key]); nb = 0
+            hb = dict(base_holes[key]); nb = 0; pins = {}
             for hh in holes:
                 b = vb[hh['id']]
                 if b != base_holes[key][hh['id']]:
-                    hh.setdefault('sha1_by_base', {})[pk] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
+                    pins[hh['id']] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
             bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, vid, key),
                           source_discs=sources)
             bd.pin = pk
             ob = os.path.join(work, f'{name}-{pk}.bin')
             sha, _ = build_disc3(p3, bd, hb, ob, None)
-            outputs[pk] = dict(sha1=sha, size=os.path.getsize(ob))
+            output = dict(sha1=sha, size=os.path.getsize(ob))
             say(f'    {pk}: {nb} of {len(holes)} derived files differ, {sha}')
             if a.keep_outputs:
                 os.makedirs(a.keep_outputs, exist_ok=True)
                 shutil.move(ob, os.path.join(a.keep_outputs, f'{name}-{pk}.bin'))
             else:
                 os.remove(ob)
+            return pk, pins, output
+
+        import functools
+        from release_workers import worker_count
+        width = worker_count(getattr(a, 'base_jobs', 4), len(base_paths), getattr(a, 'worker_memory_mib', 6144))
+        results = run_release_tasks({key: functools.partial(reconstruct_variant, key) for key in base_paths}, width)
+        for pk, pins, output in results.values():
+            outputs[pk] = output
+            for hh in holes:
+                if hh['id'] in pins:
+                    hh.setdefault('sha1_by_base', {})[pk] = pins[hh['id']]
     return sv
 
 
@@ -1924,9 +2037,10 @@ def cmd_make_release3(a):
         facts = os.path.join(os.path.dirname(os.path.abspath(first)), os.path.basename(first)[:-4], 'derived',
                              'exe-facts.json')
         bundle, extract, cand = make_bundle_derive(usa, work, out, a.recipe, facts,
-                                                  source_discs=getattr(a, 'source_disc', None))
+                                                  source_discs=getattr(a, 'source_disc', None), cache=getattr(a, 'derive_cache', None))
         if getattr(a, 'source_disc', None):
             m['source_discs'] = sorted({s.split('=', 1)[0] for s in a.source_disc})
+        release_timing('bundle-recording', seconds=round(time.time() - t0, 2))
         m['extract'] = extract
         for key, mp in mappings.items():
             bad = [q for q in extract if mp['files'].get(q, {}).get('how') not in WHOLE]
@@ -1943,6 +2057,7 @@ def cmd_make_release3(a):
         vman, vout = derive_run(ver, a.recipe, os.path.join(ver, 'exe-facts.json'), log=os.path.join(work, 'derive-verify.log'),
                                  source_discs=getattr(a, 'source_disc', None))
         t4 = time.time()
+        release_timing('isolated-verification', seconds=round(t4 - t1, 2))
         # apply's progress bar: the time of each of its phases here (the same work as the player's: the bundle
         # copied, the extract files written, derive with --jobs, in the order it ran the steps; write: below)
         apply_t = dict(check=round(t_check, 1), tools=round(t2 - t1, 1), read=round(t3 - t2, 1),
@@ -2055,8 +2170,16 @@ def cmd_make_release3(a):
                 json.dump(dict(payload=data_copies, mappings=mapping_copies, fonts=font_copies, boot=boot_copies), f, indent=2)
             import codecopy
             build_dir = os.path.join(os.path.dirname(os.path.abspath(target)), os.path.basename(target)[:-4])
+            from release_workers import worker_count
+            delta_started = time.monotonic()
             delta_report = codecopy.copy_files(p, build_dir, datas, dict(us=usa, **bases_img), say,
-                                               plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'))
+                                               plan=chinese_container.metadata(dman['plan']) if chinese_spec else dman.get('plan'),
+                                               jobs=worker_count(
+                                                   getattr(a, 'base_jobs', 4), len(base_paths),
+                                                   getattr(a, 'worker_memory_mib', 6144)),
+                                               cache_dir=os.path.join(a.derive_cache, 'deltas')
+                                               if getattr(a, 'derive_cache', None) else None)
+            release_timing('binary-deltas', seconds=round(time.monotonic() - delta_started, 2))
             if chinese_spec:
                 p['chinese'] = [chinese_spec]
                 datas['SCN/LANGZH.BIN'] = T.read('SCN/LANGZH.BIN')
@@ -2073,7 +2196,8 @@ def cmd_make_release3(a):
             p3 = read_payload3(blob)
             outputs = {}
             base_holes = {}                                 # {base: its derived files' bytes}: the variants differ from them
-            for key in base_paths:
+            def reconstruct(key):
+                _check_cancel()
                 say(f'  applying to {BASES[key]["title"]}')
                 bd = BaseDisc(key, base_paths[key], mappings.get(key), tool_root=REPO, work=os.path.join(work, key),
                               source_discs=getattr(a, 'source_disc', None))
@@ -2082,27 +2206,60 @@ def cmd_make_release3(a):
                 ob = os.path.join(work, f'{name}-{key}.bin')
                 t0 = time.time()
                 hb = hole_bytes
+                pins = {}
                 if regional_derive(mappings.get(key), m['extract']):
                     # rule: a base whose files the build reads are not the USA bytes (the Japanese one's images, made
                     # in our words, or Europe's titles) gives other derived files: record their SHA-1 per base
                     say(f'    tools/derive on {key}\'s own files (its regional artwork)')
                     got = derive_holes(out, m, dict(local=local), bd, os.path.join(work, key, 'derive'),
-                                       source_discs=getattr(a, 'source_disc', None))
+                                       source_discs=getattr(a, 'source_disc', None), jobs=share,
+                                       cache=getattr(a, 'derive_cache', None), slot='base/' + key)
                     hb = dict(hole_bytes); nb = 0
                     for hh in holes:
                         b = open(got[hh['file']], 'rb').read()
                         if b != hole_bytes[hh['id']]:
-                            hh.setdefault('sha1_by_base', {})[key] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
+                            pins[hh['id']] = hashlib.sha1(b).hexdigest(); hb[hh['id']] = b; nb += 1
                     say(f'    {nb} of {len(holes)} derived files differ on {key}')
-                base_holes[key] = hb
                 tw = time.time()
                 sha, _ = build_disc3(p3, bd, hb, ob, th['sha1'] if key == 'us' else None)
-                if key == 'us' and m.get('timings', {}).get('apply'):
-                    m['timings']['apply']['write'] = round(time.time() - tw, 1)
-                outputs[key] = dict(sha1=sha, size=os.path.getsize(ob))
+                write_seconds = round(time.time() - tw, 1)
+                output = dict(sha1=sha, size=os.path.getsize(ob))
                 say(f'    {sha} ({time.time() - t0:.0f} s)')
-                if os.path.exists(bd.trace):                 # the localize tool and what it reads go into bundle/
-                    for line in open(bd.trace):
+                if a.keep_outputs:
+                    os.makedirs(a.keep_outputs, exist_ok=True)
+                    shutil.move(ob, os.path.join(a.keep_outputs, f'{name}-{key}.bin'))
+                else:
+                    os.remove(ob)
+                release_timing('reconstruct/' + key, seconds=round(time.time() - t0, 2))
+                return hb, pins, output, write_seconds, bd.trace
+
+            from release_workers import worker_count
+            specs = getattr(a, 'source_variant', None) or []
+            width = worker_count(getattr(a, 'base_jobs', 4), len(base_paths) + len(specs),
+                                 getattr(a, 'worker_memory_mib', 6144))
+            share = max(1, (os.cpu_count() or 1) // width)
+            say(f'  reconstruct: {width} workers, derive --jobs {share} each (including source variants)')
+            import functools
+            tasks = {'variant:' + spec: functools.partial(source_variant_derive, a, out, m, local, holes,
+                                                          base_paths, mappings, work, spec, 'us', share)
+                     for spec in specs}
+            tasks.update({key: functools.partial(reconstruct, key) for key in base_paths})
+            release_timing('worker-budget', workers=width, derive_jobs=share,
+                           memory_mib=getattr(a, 'worker_memory_mib', 6144))
+            reconstruct_started = time.monotonic()
+            results = run_release_tasks(tasks, width)
+            release_timing('reconstruct-all', seconds=round(time.monotonic() - reconstruct_started, 2))
+            # All workers have finished reading the bundle before the controller extends it.
+            for key in base_paths:
+                hb, pins, output, write_seconds, trace = results[key]
+                base_holes[key], outputs[key] = hb, output
+                for hh in holes:
+                    if hh['id'] in pins:
+                        hh.setdefault('sha1_by_base', {})[key] = pins[hh['id']]
+                if key == 'us' and m.get('timings', {}).get('apply'):
+                    m['timings']['apply']['write'] = write_seconds
+                if os.path.exists(trace):                 # the localize tool and what it reads go into bundle/
+                    for line in open(trace):
                         q = line.strip()
                         if not q.startswith(REPO + os.sep) or not os.path.isfile(q) or '__pycache__' in q: continue
                         r = os.path.relpath(q, REPO).replace(os.sep, '/')
@@ -2110,14 +2267,10 @@ def cmd_make_release3(a):
                         os.makedirs(os.path.dirname(os.path.join(out, 'bundle', r)), exist_ok=True)
                         shutil.copyfile(q, os.path.join(out, 'bundle', r))
                         if r not in bundle: bundle.append(r)
-                if a.keep_outputs:
-                    os.makedirs(a.keep_outputs, exist_ok=True)
-                    shutil.move(ob, os.path.join(a.keep_outputs, f'{name}-{key}.bin'))
-                else:
-                    os.remove(ob)
+            prepared = {spec: results['variant:' + spec] for spec in specs}
             if getattr(a, 'source_variant', None):
                 m['source_variants'] = record_source_variants(
-                    a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs)
+                    a, m, out, work, name, local, holes, base_holes, base_paths, mappings, p3, outputs, prepared=prepared)
             m['variants'][name] = dict(description=DESCRIPTIONS.get(name, name), patch=fn, patch_size=len(blob),
                                        patch_sha1=hashlib.sha1(blob).hexdigest(), local=local,
                                        output=dict(name=f'{a.title} ({name})'), outputs=outputs,
@@ -2223,6 +2376,12 @@ def main(argv=None):
     p.add_argument('--source-variant', action='append', metavar='GAME=IMAGE',
                    help='another release of a source game whose imports differ (dw2003=World 3 USA): every base\'s '
                    'checksums with it too (pin key "<base>+<release>")')
+    p.add_argument('--metrics', help='write private phase timings and worker RSS outside the package')
+    p.add_argument('--base-jobs', type=int, default=4,
+                   help='concurrent base reconstructions, including the USA source variant (default 4; 1 for reference)')
+    p.add_argument('--worker-memory-mib', type=int, default=6144,
+                   help='memory allowance per worker; reserve 8 GiB for controller and gates (default 6144)')
+    p.add_argument('--derive-cache', help='private verified release derive cache; isolated verification remains uncached')
     p.add_argument('--variant-jobs', type=int, default=2, help='--source-variant derive runs at once on the regional bases, when the USA run cannot be reused (default 2)')
     p.add_argument('--save-check-emu', action='store_true', help='also load every published release\'s save on the '
                    'first variant\'s disc in the emulator (tools/dev/saves/releases.py emu; the file check always runs)')

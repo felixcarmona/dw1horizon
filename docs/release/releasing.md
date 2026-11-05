@@ -45,6 +45,65 @@ page can be tested now; a copyright-free playable release is not proven here.
 
 ## Before the cut
 
+Use `--quiet-machine` for a timed cut: pause other builds, emulator suites,
+model conversions and release jobs before starting. The flag records that step;
+it does not stop unrelated processes. Start with a new output directory and keep
+all gates enabled:
+
+```sh
+ISOS=/path/to/digimon-world SOURCE_ISOS=/path/to/source-discs \
+  python3 tools/release.py --jobs 8 --base-jobs 4 --save-check-emu \
+  --ending-card /path/to/private-before-final-fight.mcd --quiet-machine \
+  --out build/releases/candidate
+```
+
+This runs the full local cut without tagging, publishing, pushing or deploying.
+For an existing annotated release tag, give the tag as the positional argument.
+The ending card must Continue immediately before the final fight on screen 225;
+keep that fixture private. The ending gate plays the final battle and clear save,
+checks that the ending's executable code matches the disc, then captures five
+minutes of credits. It assists only battle HP. The journey and published-save
+checks use independent emulator ports, starting at `--emu-port-base` (38410 by
+default), and original 2 MB RAM. Inspect the resulting quiz and credits images.
+
+Once the fresh native disc and heap checks pass, packaging overlaps the full
+offline selftest and the emulator gates. Every job must pass before standalone
+replay, engine construction or publication can proceed. Per-job logs and elapsed
+times are retained under the cut directory. Packaging still runs its published-
+save file check; `--save-check-emu` runs the emulator save check as a concurrent
+required job. No gate is removed by this reordering.
+
+`make-release --base-jobs` bounds the base reconstructions and the USA World 3
+source derivation together. Results merge in the original base order. Each derive
+gets a share of the available CPUs. The scheduler also reserves 8 GiB for the
+controller and gates, allowing `--worker-memory-mib` (6144 by default) per worker
+against Linux's available memory; on systems without that reading it uses one
+worker. Worker process-tree peak RSS and phase times go to the private
+`package-timing.json`, outside the player package. Binary deltas run in bounded
+processes and merge in their original file/base order. Web-engine USA and Japan
+recordings run in separate processes, at most two concurrently.
+
+Release caches live in `build/release-derive-cache`, separate from developer and
+player caches. Source recording keys hash every supplied input file, directory
+inventory, recipe, source-disc contents, environment and interpreter/runtime
+sources. Each snapshot file is SHA-256 checked before any restoration. Regional
+steps use the existing audited derive cache in locked stable staging directories:
+each cut starts from fresh inputs, checks recorded reads, absent probes and
+directory listings, and verifies every restored artifact. Code and runtime inputs
+are part of those keys. Changed dependencies rebuild their consumers; conservative
+code fingerprints can rebuild more than the minimum. Binary deltas have separate
+keys for source bytes, target bytes, algorithm and native producer. Cache entries
+are private and must never enter publication archives.
+
+The isolated bundle verification always runs from scratch with only the allowed
+disc files. Output pins, standalone replays, browser verification and the literal
+gate still run. `--no-derive-cache` disables recording, derive and delta caches;
+`--base-jobs 1 --no-derive-cache` supplies the sequential reference. Compare the
+DWP payload and every default/source-variant output pin against a parallel run
+from the same commit, inputs and version. Whole manifests contain measured times
+and therefore need not have identical bytes. A command `--dry-run` only prints a
+plan; byte equality requires executing the actual cut without publication.
+
 Play the disc once: `tools/dev/playtest/journey.py DISC.cue OUTDIR` from a new game to a reload. The checks that need no
 emulator cannot see a story that is missing from a disc: a new game hung on main for a day with every gate green.
 

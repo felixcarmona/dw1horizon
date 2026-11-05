@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools import patch_series  # noqa: E402
 FAST = ('test_version', 'test_savecompat', 'test_pysum', 'test_derive_units',
-        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse')
+        'test_patchbundle', 'test_patcher_reloc', 'test_release', 'test_release_reuse', 'test_release_workers')
 
 
 def git(*args, cwd=ROOT):
@@ -53,7 +53,7 @@ def pack_release(package, archive):
 def stop_group(process):
     """Stop a command and descendants, including a browser left after node fails."""
     try:
-        os.killpg(process.pid, signal.SIGTERM)
+        os.killpg(process.pid, signal.SIGINT)
     except ProcessLookupError:
         pass
     try:
@@ -214,15 +214,19 @@ class Run:
         if env:
             print('Environment: ' + shlex.join(f'{k}={env[k]}' for k in
                   ('W', 'NAME', 'DW_HEAP_MAP', 'DERIVE_JOBS', 'RECORDS', 'ISOS', 'RELEASE', 'ENGINE', 'ENGINE_WORK') if k in env))
-        for name, (argv, log) in runs.items():
+        for name, run in runs.items():
+            argv, log = run[:2]
             print(f'{shlex.join(map(str, argv))}  > {log}', flush=True)
         if self.dry:
             return
-        procs = {}
+        procs, starts = {}, {}
         try:
-            for name, (argv, log) in runs.items():
+            for name, run in runs.items():
+                argv, log = run[:2]
+                command_env = run[2] if len(run) > 2 else env
+                starts[name] = time.monotonic()
                 with open(log, 'w') as f:
-                    procs[name] = subprocess.Popen(list(map(str, argv)), cwd=cwd, env=env, stdout=f,
+                    procs[name] = subprocess.Popen(list(map(str, argv)), cwd=cwd, env=command_env, stdout=f,
                                                    stderr=subprocess.STDOUT, start_new_session=True)
             pending = dict(procs)
             while pending:
@@ -230,6 +234,8 @@ class Run:
                     if p.poll() is None:
                         continue
                     del pending[name]
+                    self.times.append((name, round(time.monotonic() - starts[name], 2),
+                                       'ok' if not p.returncode else 'FAILED'))
                     tail = Path(runs[name][1]).read_text(errors='replace').splitlines()[-15:]
                     print(f'  {name}: exit {p.returncode}', flush=True)
                     if p.returncode:
@@ -303,6 +309,8 @@ def pipeline(a, r):
         print(json.dumps(info))
         if a.publish and not a.tag:
             raise RuntimeError('--publish requires a release tag')
+    if a.quiet_machine:
+        print('Quiet-machine cut: other heavy jobs paused; this command does not stop unrelated processes.', flush=True)
     with r.step('Published saves: mandatory file gate'):
         r.cmd([py, 'tools/dev/saves/releases.py', 'check'])
     with r.step('Fast offline regression tests'):
@@ -430,11 +438,7 @@ def pipeline(a, r):
         # of the everything recipe's model provider and output directory.
         if not r.dry:
             selftest_fixtures(build)
-    with r.step('Toolchain selftest (offline release gate)'):
-        testenv = offline_environment(recipe)
-        testenv['DW_SELFTEST_DERIVE'] = str(build)
-        r.cmd(['tools/selftest.sh'], testenv)
-    with r.step('Package seven bases and three sources; mandatory save gate'):
+    with r.step('Fresh-disc gates and packaging in parallel'):
         cmd = [py, 'tools/patcher/dwpatch.py', 'make-release', '--original', bases['us'],
                '--variant', f'everything={build}.bin', '--title', 'Digimon World Horizon', '-o', package]
         for k, p in bases.items():
@@ -444,10 +448,26 @@ def pipeline(a, r):
             cmd += ['--source-disc', f'{k}={p}']
         for game, p in variants.values():
             cmd += ['--source-variant', f'{game}={p}']
-        cmd += ['--variant-jobs', str(len(bases))]
+        cmd += ['--variant-jobs', str(a.base_jobs), '--base-jobs', str(a.base_jobs),
+                '--worker-memory-mib', str(a.worker_memory_mib), '--metrics', out / 'package-timing.json']
+        if a.derive_cache:
+            cmd += ['--derive-cache', a.derive_cache]
+        testenv = offline_environment(recipe)
+        testenv['DW_SELFTEST_DERIVE'] = str(build)
+        runs = {'selftest': (['tools/selftest.sh'], out / 'selftest.log', testenv),
+                'package': (cmd, out / 'package.log', env)}
+        exe = build / 'exe/SLUS_010.32'
+        cue = Path(str(build) + '.cue')
         if a.save_check_emu:
-            cmd += ['--save-check-emu']
-        r.cmd(cmd, env)
+            runs['published-save'] = ([py, 'tools/dev/saves/releases.py', 'emu', cue, '--exe', exe,
+                                      '--port', str(a.emu_port_base), '--work', out / 'published-save'],
+                                     out / 'published-save.log', env)
+            runs['journey'] = ([py, 'tools/dev/playtest/journey.py', cue, out / 'journey'],
+                               out / 'journey.log', dict(env, EMU_PORT=str(a.emu_port_base + 1), DW_SYMS=str(exe)))
+        if a.ending_card:
+            runs['ending'] = ([py, 'tools/dev/playtest/ending.py', cue, out / 'ending', '--card', a.ending_card],
+                              out / 'ending.log', dict(env, EMU_PORT=str(a.emu_port_base + 2), DW_SYMS=str(exe)))
+        r.cmds(runs)
         if not r.dry:
             manifest = json.loads((package / 'manifest.json').read_text())
             for k, output in manifest['variants'][manifest['default']]['outputs'].items():
@@ -507,6 +527,8 @@ def pipeline(a, r):
             for k, p in bases.items():
                 (alias / (names[k] + '.bin')).symlink_to(p)
         webenv = dict(env, RECORDS=str(records), ISOS=str(alias), ENGINE_WORK=str(out / 'engine-work'),
+                      PYODIDE_CACHE=str(ROOT / 'build/pyodide-314.0.7'),
+                      ENGINE_JOBS=str(min(a.base_jobs, 2)), WORKER_MEMORY_MIB=str(a.worker_memory_mib),
                       DCB_IMAGE=str(sources['dcb']), DW2_IMAGE=str(sources['dw2']),
                       DW3_IMAGE=str(sources['dw2003']))
         r.cmd(['web/build-engine.sh', package, engine], webenv)
@@ -543,6 +565,16 @@ def main(argv=None):
     p.add_argument('--dry-run', action='store_true', help='print commands; no builds, writes or deployment')
     p.add_argument('--preflight-only', action='store_true', help='clean/tag, save file gate and fast tests only')
     p.add_argument('--save-check-emu', action='store_true')
+    p.add_argument('--ending-card', type=Path,
+                   help='private save before the final fight; run ending/credits gate alongside packaging')
+    p.add_argument('--emu-port-base', type=int, default=38410,
+                   help='three private emulator API ports starting here (default 38410)')
+    p.add_argument('--base-jobs', type=int, default=4)
+    p.add_argument('--worker-memory-mib', type=int, default=6144)
+    p.add_argument('--derive-cache', type=Path, default=ROOT / 'build/release-derive-cache')
+    p.add_argument('--no-derive-cache', action='store_true', help='uncached sequential/parallel comparison')
+    p.add_argument('--quiet-machine', action='store_true',
+                   help='record that other heavy jobs have been paused for timing the cut')
     p.add_argument('--record-save', type=Path, metavar='SEED.mcd',
                    help='also run releases.py add into OUT/save-corpus (emulator; owner commits the new pair later)')
     p.add_argument('--skip-browser', action='store_true')
@@ -562,8 +594,15 @@ def main(argv=None):
     p.add_argument('--out', type=Path, default=ROOT / 'build/releases' / dt.datetime.now(
         dt.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
     a = p.parse_args(argv)
-    if a.jobs < 1:
-        p.error('--jobs must be positive')
+    if min(a.jobs, a.base_jobs, a.worker_memory_mib) < 1:
+        p.error('--jobs, --base-jobs and --worker-memory-mib must be positive')
+    if not 1024 <= a.emu_port_base <= 65533:
+        p.error('--emu-port-base must leave three ports between 1024 and 65535')
+    if a.ending_card:
+        a.ending_card = a.ending_card.expanduser().resolve()
+        if not a.ending_card.is_file():
+            p.error('--ending-card does not exist')
+    a.derive_cache = None if a.no_derive_cache else a.derive_cache.expanduser().resolve()
     if a.prepare_reuse and any(getattr(a, 'reuse_' + name) is None for name in
                               ('package', 'outputs', 'build', 'engine', 'bases', 'sources')):
         p.error('--prepare-reuse requires --reuse-{package,outputs,build,engine,bases,sources}')

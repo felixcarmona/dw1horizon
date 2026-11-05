@@ -14,7 +14,7 @@ main=$(dirname "$(git -C "$here" rev-parse --path-format=absolute --git-common-d
 REL=$(cd "${1:-$main/build/web-release}" && pwd)
 OUT=${2:-$main/build/web-engine}
 ISOS=${ISOS:-$here/../build/isos/digimon-world}
-PYO=$main/build/pyodide-314.0.7
+PYO=${PYODIDE_CACHE:-$main/build/pyodide-314.0.7}
 if [ ! -f "$PYO/pyodide.asm.wasm" ]; then
   mkdir -p "$PYO"
   (cd "$PYO" && npm pack pyodide@314.0.7 --silent >/dev/null && tar xzf pyodide-314.0.7.tgz --strip-components=1 && rm pyodide-314.0.7.tgz)
@@ -33,4 +33,5 @@ fi
 python3 "$here/enginebuild/build_engine.py" --release "$REL" --pyodide "$PYO" --out "$OUT" --work "$work" \
   --disc us="$ISOS/Digimon World (USA).bin" --disc jp1="$ISOS/DigimonWorld (Japan) (Rev 1).bin" \
   "${sources[@]}" \
+  --jobs "${ENGINE_JOBS:-2}" --worker-memory-mib "${WORKER_MEMORY_MIB:-6144}" \
   ${RECORDS:+--records "$RECORDS"}

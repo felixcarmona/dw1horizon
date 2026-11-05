@@ -33,6 +33,7 @@ import sys
 import tempfile
 import time
 import zlib
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
@@ -112,9 +113,17 @@ def extract_reads(rel, key, disc, work, source_discs=None):
 
 def record(tree, out_json):
     t0 = time.time()
-    r = subprocess.run([sys.executable, os.path.join(HERE, 'record.py'), tree, out_json], cwd=tree,
-                       env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
-    if r.returncode:
+    from release_workers import measure
+    process = subprocess.Popen([sys.executable, os.path.join(HERE, 'record.py'), tree, out_json], cwd=tree,
+                               env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1'))
+    try:
+        with measure(process.pid, lambda data: say('engine recording worker: ' + json.dumps(data, sort_keys=True))):
+            code = process.wait()
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            process.wait()
+    if code:
         raise SystemExit(f'record.py failed in {tree}')
     say(f'  recorded in {time.time() - t0:.0f} s')
     return json.load(open(out_json))
@@ -399,6 +408,43 @@ def vendor_pyodide(src, dst):
     return lock['info']
 
 
+def record_base(args):
+    """A separate process owns glue's imports, environment and working directory."""
+    rel, spec, work, sources, records = args
+    key, path = spec.split('=', 1)
+    rj = os.path.join(records, f'record-{key}.json') if records else None
+    if rj:
+        try:
+            raw = Path(rj).read_bytes()
+            expected = Path(rj + '.sha256').read_text().strip()
+            if hashlib.sha256(raw).hexdigest() == expected:
+                say(f'{key}: verified record cache hit')
+                return json.loads(raw)
+        except (OSError, ValueError):
+            pass
+    say(f'{key}: a tree and its record')
+    tree = os.path.join(work, f'tree-{key}')
+    make_tree(rel, key, os.path.abspath(path), tree, sources)
+    if sources:
+        argv = [sys.executable, '-m', 'tools.derive', 'sources', '--out', 'build/everything/source-games']
+        for source in sources:
+            game, image = source.split('=', 1)
+            argv += ['--source-disc', game + '=' + os.path.abspath(image)]
+        subprocess.run(argv, cwd=tree, check=True)
+    out_json = os.path.join(work, f'record-{key}.json')
+    result = record(tree, out_json)
+    if rj:
+        os.makedirs(records, exist_ok=True)
+        raw = Path(out_json).read_bytes()
+        temp = rj + '.' + str(os.getpid())
+        Path(temp).write_bytes(raw)
+        os.replace(temp, rj)
+        Path(temp).write_text(hashlib.sha256(raw).hexdigest() + '\n')
+        os.replace(temp, rj + '.sha256')
+    shutil.rmtree(tree, ignore_errors=True)
+    return result
+
+
 # ------------------------------------------------------------------ main
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -410,6 +456,8 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--work', help='temporary trees (about 1 GB per --disc)')
     ap.add_argument('--keep-work', action='store_true')
+    ap.add_argument('--jobs', type=int, default=2, help='concurrent base recordings (memory bounded)')
+    ap.add_argument('--worker-memory-mib', type=int, default=6144)
     ap.add_argument('--records', help='(developers) reuse the records of an earlier run in this folder')
     a = ap.parse_args()
     rel = os.path.abspath(a.release)
@@ -423,31 +471,23 @@ def main():
     work = tempfile.mkdtemp(prefix='webengine-', dir=a.work)
     t0 = time.time()
     try:
-        recs = []
         for spec in a.disc:
             key, path = spec.split('=', 1)
             if key not in m['bases']:
                 raise SystemExit(f'--disc {key}: the release has no base {key}')
-            rj = os.path.join(a.records, f'record-{key}.json') if a.records else None
-            if rj and os.path.exists(rj):
-                say(f'{key}: the record of {rj}')
-                recs.append(json.load(open(rj)))
-                continue
-            say(f'{key}: a tree and its record')
-            tree = os.path.join(work, f'tree-{key}')
-            make_tree(rel, key, os.path.abspath(path), tree, a.source_disc)
-            if m.get('source_discs'):
-                argv = [sys.executable, '-m', 'tools.derive', 'sources', '--out', 'build/everything/source-games']
-                for source in a.source_disc:
-                    game, image = source.split('=', 1)
-                    argv += ['--source-disc', game + '=' + os.path.abspath(image)]
-                subprocess.run(argv, cwd=tree, check=True)
-            out_json = os.path.join(work, f'record-{key}.json')
-            recs.append(record(tree, out_json))
-            if a.records:
-                os.makedirs(a.records, exist_ok=True)
-                shutil.copyfile(out_json, os.path.join(a.records, f'record-{key}.json'))
-            shutil.rmtree(tree, ignore_errors=True)
+        if len({spec.split('=', 1)[0] for spec in a.disc}) != len(a.disc):
+            raise SystemExit('duplicate --disc base')
+        sys.path.insert(0, os.path.join(REPO, 'tools/patcher'))
+        from release_workers import worker_count
+        from concurrent.futures import ProcessPoolExecutor
+        width = worker_count(a.jobs, len(a.disc), a.worker_memory_mib)
+        say(f'base recording: {width} workers')
+        arguments = [(rel, spec, work, a.source_disc, a.records) for spec in a.disc]
+        if width == 1:
+            recs = list(map(record_base, arguments))
+        else:
+            with ProcessPoolExecutor(width) as pool:
+                recs = list(pool.map(record_base, arguments))
         ex_reads = set()
         for spec in a.disc:
             key, path = spec.split('=', 1)
