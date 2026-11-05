@@ -34,8 +34,8 @@
   "effects_like": 54,
   "model": {
     "file": "build/meshfix2-out/Apocalymon.MMD",
-    "radius": 217,
-    "height": 430,
+    "radius": 300,
+    "height": 600,
     "skeleton": [
       [
         -1,
@@ -170,9 +170,9 @@
   "voice": 48,
   "battle_music": "normal-battle",
   "condition_bubble": [
-    -30,
+    -56,
+    -93,
     -50,
-    -27,
     6
   ],
   "effect_origins": [
@@ -182,9 +182,9 @@
       0,
       0,
       6,
-      20,
-      20,
-      -58
+      37,
+      37,
+      -108
     ],
     [
       8,
@@ -192,9 +192,9 @@
       0,
       0,
       21,
-      -17,
-      201,
-      -138
+      -32,
+      373,
+      -256
     ],
     [
       1,
@@ -203,7 +203,7 @@
       0,
       1,
       0,
-      -15,
+      -28,
       0
     ]
   ],
@@ -238,8 +238,8 @@
     "birth_weight": 30,
     "status_screen_position": [
       0,
-      460,
-      -940
+      853,
+      -1743
     ],
     "item_distance": 10,
     "training": {
@@ -277,5 +277,9 @@
       "speed": 700,
       "brains": 700
     }
+  },
+  "size": {
+    "height": 600,
+    "radius": 300
   }
 }

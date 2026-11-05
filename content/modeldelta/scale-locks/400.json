@@ -3,7 +3,7 @@
   "name": "Apocalymon",
   "threshold": 0.02,
   "source_sha256": "fc86f4dcad7a29873e65878b184d61d9cb7a3d36aee2141fe46abf6d35bba88c",
-  "output_sha256": "92ba8f04716d962db22f208c220fcea7ca9cbbe2840192f890a80bf6b9c61c05",
+  "output_sha256": "b24774987c94ca7d65050e895d38fe4c4cfc1a3b3ee9a364ba518f4b383cae94",
   "preceding_provider": {
     "model": "400-Apocalymon.MMD",
     "aliases_applied": true,
@@ -286,7 +286,7 @@
   ],
   "grounding_max_under": 0.5,
   "grounding_max_over": 0.5,
-  "resident_bytes": 99362,
+  "resident_bytes": 99328,
   "resident_limit": 100352,
   "cold_buffer_bytes": 8192,
   "audit": {
@@ -294,5 +294,29 @@
     "occupied_slots": 52,
     "animated": [],
     "across_slots": []
+  },
+  "size_adjustment": {
+    "source_sha256": "92ba8f04716d962db22f208c220fcea7ca9cbbe2840192f890a80bf6b9c61c05",
+    "factor": 1.8542209196047472,
+    "before_extent": [
+      323.58603748678354,
+      216.0432372267373,
+      217.46230402326032
+    ],
+    "after_extent": [
+      599.7996313854017,
+      399.8677814082411,
+      402.7653853106406
+    ],
+    "reference_height": 600,
+    "radius": 300,
+    "root_travel_preserved": true,
+    "events_preserved": true,
+    "rotations_preserved": true,
+    "occupied_slots": 52,
+    "unique_programs": 33,
+    "grounding_key_tolerance": 0.1,
+    "grounding_max_under": 1.1,
+    "grounding_max_over": 1.0
   }
 }
