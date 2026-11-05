@@ -186,9 +186,9 @@ def apply(files, language, work):
         for u in (0, 52, 104):
             draw('STDDAT/TAISEN_F.TIM', (u,232,52,9), SMALL['fight'], 3, 15, 1,
                  preserve=True, padding=1)
-        for (u,v,w), lines in zip(((120,52,52),(120,28,52),(172,28,48)), VS_ARENAS):
+        for (u,v,w,ink), lines in zip(((120,52,52,11),(120,28,52,11),(172,28,48,8)), VS_ARENAS):
             for row, text in enumerate(lines):
-                draw('STDDAT/TAISEN_F.TIM', (u,v+row*12,w,12), text, 3, 15, 1,
+                draw('STDDAT/TAISEN_F.TIM', (u,v+row*12,w,12), text, ink, 15, 1,
                      preserve=True, padding=1)
         from tools.localize.chinese_catalog import CUPS, CAPTIONS
         from tools.chinese import wrap, read_json
