@@ -308,13 +308,13 @@
     },
     "zones/underground-pond/s029-28/script.py": {
       "original_sha256": "d012f770c7de474e1754bf81d227042e738c65a86d439761b2ef41a3a5cafb2b",
-      "authored_sha256": "b159f541fca39f32a8d05fce1ece262b10e2215d6d9c9906a531fbf9468543ca",
-      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's"
+      "authored_sha256": "52d77d000fc3d0e6b3194683df5d8fd75cc00aa15d6f94ac6f06e774fb1da8b6",
+      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel"
     },
     "zones/underground-pond/s029-28/script.dws": {
       "original_sha256": "51689c322ff6158dabcb303b4e53de7e002fcbae337c25f53f952a3190e034b3",
-      "authored_sha256": "8286486bec3594fe298b4e4035a51d043566ac699e56cc112eca96240f97742c",
-      "reason": "Dirt hauling in five round trips, each paying and training twice the disc's; DWS synchronized with the authored Python source"
+      "authored_sha256": "13d6998440680739a619d76471e42ebbc91161d173f5f18c70bbeba2cf921a9c",
+      "reason": "Dirt hauling in five double-reward round trips; return visits omit the dirt pile once saved excavation work opens the tunnel; DWS synchronized with the authored Python source"
     },
     "zones/file-city/s162-168-169-170/script.py": {
       "original_sha256": "0bbadd3ab80f0b29fc9a8511a0d172eccaded4624ad79d88ede165e290429769",
@@ -975,6 +975,11 @@
       "original_sha256": "919d3d395047f8b472adcffcb88724bdd93d1252cbaa37332005ea26c795726a",
       "reason": "Daily ground finds: ordinary food and utility floor 8%, single-stat food 3%; preserve permanent reward exceptions and Amida companion odds",
       "authored_sha256": "01e3fba23507ca10294dd3ec0229ed33f3267ef166c9269f415c826e14f9b0ce"
+    },
+    "zones/underground-pond/s029-28/README.md": {
+      "original_sha256": "afe4ceb7f1fb659a7b7a1ad0cebf3242066198d0f6cbc62df8877f050a3f82b2",
+      "authored_sha256": "0b80b22215630dcc9aa9d5a6475a274c9d5b2f967225ee82cfd4da7fcbc798cf",
+      "reason": "Document the persistent open-tunnel rubble condition and the matching enter-section size"
     }
   }
 }
