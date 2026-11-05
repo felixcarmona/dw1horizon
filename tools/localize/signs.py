@@ -246,9 +246,16 @@ def signs(out, extracted=None, files=None, languages=('en', 'es')):
                     # MAYO11's normal text belongs only to frame 5. Pasting it
                     # into the covering tree or additive lamp glow redraws
                     # DRILL in front of the takeover, even with frame 5 hidden.
+                    frames = None
+                    if sign == 'audit-13':
+                        frames = () if lang == 'ja' else (5,)
+                    elif sign == 'audit-22':
+                        # The collapse reveals hidden frame 7, another copy of
+                        # the warning behind the normal foreground frame 4.
+                        frames = (4, 7)
                     if sprite_paste(mapcopy(lang, mp), t, Pixels(w, h, new), Pixels(w, h, mask), x0, y0,
                                     palette_alpha=(sign in ('audit-13', 'audit-14')),
-                                    frames=(() if lang == 'ja' else (5,)) if sign == 'audit-13' else None):
+                                    frames=frames):
                         sprites_changed.add((lang, mp))
         lines = []
         for (lang, mp), t in sorted(edits.items()):
