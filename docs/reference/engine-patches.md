@@ -451,7 +451,7 @@ Techniques are ready within about a second of contact when `BTL_REL` was read ah
 | 0094 | the MP bonus message soft-locks the battle result box |
 | 0124 | the script's merit reduction set merit to minus the value (always ending at 0); no original script uses it |
 | 0220 | the Status page's happiness label read the wrong texture columns (a stray mark before it, its last letter cut) |
-| 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code (instant wins, entries, prosperity and money by accident); cancel is now refused there |
+| 0231 | a selection with no end-of-selection marker let cancel continue from inside the first option's code, misaligned (23 such selections, 11 already block cancel; the one with a lasting effect is Piximon's Training Manual sale, which overwrote prosperity and the tournament day and cup with the date); cancel is now refused there |
 
 ## Jijimon's starter quiz (0273)
 
