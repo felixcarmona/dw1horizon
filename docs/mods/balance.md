@@ -259,14 +259,20 @@ into Veemon (`EVOLUTION_TARGET=180`):
 
 ## 6.1 The economy rule
 
-No repeatable conversion may turn bits into more bits. Every item and card is valued at its best way out (a shop's
-sell price, merit at the merit shop's best rate, Mojyamon, DemiMeramon, ClearAgumon, the Trash Mountain card swap): a
-Mojyamon trade may not give more than its input sells for, and a card pack or the card machine may not give back more
-than it costs; the daily card shop (6 cards, one copy each) is bounded by itself. The changes that meet it:
+No **uncapped** conversion may turn bits into more bits. Every unlimited item/card conversion is valued at its
+best unlimited exit: shop sale, merit, uncapped trades and NPC card conversions. An uncapped Mojyamon output must
+not exceed the input's sale value; card-pack and machine expected returns must stay below their purchase price.
+
+There is a precise exception for reviewed Mojyamon rows limited to **one item per in-game day**, persisted in the
+save. Those rows may exceed the input's sale value. The five approved daily gain pairs and the separately approved
+**once-per-save** Dolph Fin pair are pinned by row, input, output and limit in `tools/economy_audit.py`'s
+`MOJYAMON_GAIN_EXCEPTIONS`. An unreviewed gain, including a changed profitable pair or missing required cap, fails the audit. Dolph Fin must not be
+classified as daily. Capped edges are excluded from unlimited trade-chain/vending valuations; their finite gains
+are reported separately. The existing daily card shop is likewise bounded by six cards, one copy each.
 
 | What | Disc | Now | Why |
 |---|---|---|---|
-| Mojyamon's outputs (`shops.json` `mojyamonTakes`) | med.recovery, Omnipotent, Hair grower, Auto Pilot, Restore, Medicine, S.Off/S.Def/S.speed disk | sm.recovery, Off. Disk, Medicine, Auto Pilot, Rest pillow, Def. Disk, Large MP, MP Floppy, Meat | each output is worth no more than its input (the trades never had a limit: med.recovery bought for 500 became an S.Def.disk sold for 2000, 99 at a time since patch 0223) |
+| Mojyamon's exchanges (`shops.json`) | unlimited rewards, including Medium Recovery → S.Def.disk | eight daily exchanges and one once-per-save exchange (table below) | explicit bounded gains; amount box caps at 1; Dolph Fin cannot be farmed by delaying recruitment |
 | sup.recovery / Sup.restore merit | 20 / 100 | 60 / 250 | merit sold through them made a 500-bit card pack worth about 1090 bits |
 | Card machine odds (`economy.json` `cardMachine`, in its script `libraries/s219` before patch 0237), rarity 2 / 4 | 7 / 70 % | 5 / 72 % | the cards' own sale price plus DemiMeramon and ClearAgumon gave back 103 bits a 100-bit card (the price is in its text) |
 | Tekkamon's drop (`90-tekkamon.json`) | S.Def.disk 100 % | 15 % | a wild fight of the Back Dimension, about 4900 bits each, without limit |
@@ -274,16 +280,101 @@ than it costs; the daily card shop (6 cards, one copy each) is bounded by itself
 | New screens' ground items (`content/ground-items.json` `"off"`) | — | 3 of the 7 mushrooms of Native Forest's script they share, on reachable floor | all 7 on 34 screens was about 240 free daily pickups |
 | Battle bits (patch 0235, `economy.json` `battle.bitsPercent`) | the enemies' bits | 150 % | money earned by playing: a fight paid one or two days of upkeep, and nothing was worth saving for |
 | Secret shop chips (`secret-item-shop/s177`, Devimon's hours) | DVChipA / D / E only | DVChipA / D / E only; plain chips stay at 800 merit in the merit shop and in chests | selling the six plain chips beside the Devil Chips undermined them; the merit shop keeps the plain chips |
-| Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all (Mojyamon's Digianchovy -> Meat: 25 -> 15, still under its input) |
+| Meat price (`content/items/38-meat.json`) | 50 | 30 | upkeep while training (no fights, no income): a day of food was about 500 bits for Agumon, 1100 for Numemon, 1400 for Tyrannomon; 40 % less for all |
 | New game start kit (`file-city/s193-238` section 55, after the intro wipes the debug save) | 0 bits, no items | 20 Meat, 1000 bits | the first days had only the farm's 3 Meat a day; once per game, no loop |
 | Meat farm big harvest (`libraries/s207`, `file-city/s164-204` section 11) | 1 day in 10 | 1 day in 4 | 5 instead of 3 Meat / Giant Meat / Sirloin; a day's share, no loop |
 | Psychemon / Gururumon wild bits (story mod) | 200 / 200 | 300 / 400 | the pay of the original's wild Digimon of their offense (330-420: about 300) |
 
-Mojyamon's recovery trade is intentional: the original game's Medium Recovery (item 1) -> S.Def.disk (20)
-becomes Medium Recovery (1) -> MP Floppy (4). The item IDs retain their meanings; this is a reward replacement,
-not an item rename. This mapping is already present in v0.0.1. Freezeland scripts 128 and 129 still select the
-same three-row trade groups; the executable reads the player's input from `mojyamonGives` and the reward from
-`mojyamonTakes`. The original recovery purchase (500 bits) -> S.Def.disk sale (2000 bits) allowed unlimited profit.
+The executable reads the player's input from `shops.json`'s `mojyamonGives` and the reward from `mojyamonTakes`.
+Freezeland scripts 128/129 retain three groups. Group 3 alone recruits after all nine historical rows are complete;
+return to it if another group completed the final row. Previously recruited saves keep their departure flags.
+
+| Group | Player gives | Mojyamon gives | Limit | Input sale | Reward sale | Sale-value gain |
+|---|---|---|---|---:|---:|---:|
+| 1 | Happy Mushroom | Ice Mushroom | 1/day | 500 | 500 | 0 |
+| 1 | Digiseabass | Chain Melon | 1/day | 4000 | 2500 | -1500 |
+| 1 | Digisnapper | Digipine | 1/day | 50 | 500 | +450 |
+| 2 | Supercarrot | Large MP | 1/day | 250 | 1000 | +750 |
+| 2 | Hawk Radish | Large Recovery | 1/day | 250 | 500 | +250 |
+| 2 | Blue Apple | Double Floppy | 1/day | 500 | 750 | +250 |
+| 3 | Digimushroom | Auto Pilot | 1/day | 50 | 150 | +100 |
+| 3 | Giant Meat | DigiTrout | 1/day | 250 | 150 | -100 |
+| 3 | Small Recovery | Dolph Fin | **1/save** | 50 | 2500 | +2450, once only |
+
+The five positive daily sale-value exceptions total **1800 bits/day** above selling those inputs directly. Taking
+all eight daily rows, including the two that lose sale value, adds **200 bits/day** over selling all eight inputs.
+These are finite allowances, not unlimited conversion exits. Item 70 (Chain Melon) is displayed as Overripe Melon
+in the English item-name bank. Double Floppy is item 7, not Restore.
+
+Every amount box caps at one. Daily bits 789–796 gate the eight daily rows; the former ninth daily bit 797 stays
+reserved/cleared for compatibility. Dolph Fin checks historical completion flag **13**, which is never cleared
+at midnight. Its first successful exchange sets that flag, even if recruitment is postponed. Cancellation and
+full-bag failures spend neither type of allowance. Saving/loading retains the flags. Existing saves that already
+completed the old ninth row keep it spent rather than resetting recruitment progress.
+
+### Daily gain ceilings
+
+A ceiling means **additional gain**, not the gross sale value of the rewards. With inputs already owned, the
+baseline is selling them directly. Doing all eight rows adds **200 bits/day**; choosing only the five positive
+rows adds at most **1800 bits/day**, or **300 after a 1500-bit Birdramon trip**. Doing all eight after that trip
+loses 1300 relative to selling the inputs. A free pickup or fish still has its sale value as an opportunity cost.
+The audit prints both all-row and positive-row totals. After group 3 recruits, the remaining six rows still add
+200 together, with a positive-row ceiling of 1700 (200 after the trip).
+
+Purchase gains subtract the cheapest actual fixed offers below. Digiseabass has **no shop offer**, so no purely
+shop-funded eight-row calculation exists. Digisnapper is sold at the Cold Store for 100 (90 with a baby).
+
+| Daily input | Cheapest normal / baby purchase | Source | Reward sale |
+|---|---:|---|---:|
+| Happy Mushroom | 1500 / 1500 | Dragon Eye Lake vending, one/day | 500 |
+| Digiseabass | not sold | fishing | 2500 |
+| Digisnapper | 100 / 90 | Cold Store | 500 |
+| Supercarrot | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 1000 |
+| Hawk Radish | 500 / 450 | city stalls; Vegiemon is fixed at 500 | 500 |
+| Blue Apple | 1000 / 900 | Tapirmon's Market Shed | 750 |
+| Digimushroom | 51 / 51 | Dragon Eye Lake vending | 150 |
+| Giant Meat | 300 / 300 | Ancient Glacial Region vending | 150 |
+| **All eight daily rows** | **3951 / 3741**, plus free Digiseabass | | **6050** |
+
+| Gain baseline and choice | Normal | Baby discounts | After 1500 trip, normal / baby |
+|---|---:|---:|---:|
+| Own all inputs: trade all eight instead of selling them | 200 | 200 | -1300 / -1300 |
+| Own inputs: choose only positive sale-value rows | **1800** | **1800** | **300 / 300** |
+| Buy inputs: trade all seven purchasable rows | -401 | -191 | -1901 / -1691 |
+| Buy inputs: choose only profitable purchasable rows | **999** | **1109** | **-501 / -391** |
+| Buy seven inputs + free Digiseabass: all eight cash net | 2099 | 2309 | 599 / 809 |
+| Buy inputs + free Digiseabass: choose positive cash-net rows | 3499 | 3609 | 1999 / 2109 |
+
+The purchase-only ceiling uses Digisnapper → Digipine, Supercarrot → Large MP and Digimushroom → Auto Pilot;
+Hawk Radish → Large Recovery also profits with baby discounts (normal price breaks even). The mixed cash-net
+scenarios add the fished Digiseabass reward while counting no fishing/bait expense. They do **not** count its
+4000-bit sale value as a cost; that trade actually loses 1500 versus selling the fish. Return travel and paid bait
+are excluded. The outputs' gross 6050 is a receipt total, never the incremental daily-gain ceiling. All eight
+owned inputs sell for 5850 before any exchange. Free inputs can come from pickups, fishing, farm stock and drops;
+Supercarrot/Hawk Radish drop from RedVegiemon/Weedmon at 10% each.
+
+Group 2 adds 1250 over selling its three inputs; buying all three nets 250/450. Dolph Fin adds **2450 once per
+save** over selling Small Recovery, or **2400/2410 once-only purchase net** at a 100/90 input price. It never enters
+recurring daily gains.
+
+Tapirmon keeps Hawk Radish and Supercarrot at their global value 500 (450 baby purchase); Vegiemon remains fixed
+at 500. Generic shops read `ITEM_PARA[item].value` for display and charge, and the story `shop(...)` API takes stock
+only. There is no per-shop price override, so a Tapirmon-only 700-bit price is skipped rather than changing global
+values or Vegiemon's prices.
+
+North Star (92) remains **Whamon (24)**'s arena cup-14 reward, with its original descriptions in all eight languages.
+Whamon is an Ultimate with NEW DIGIMON on, so a Champion can use North Star. With the option off Whamon is a
+Champion and a Rookie can use it. The native target-stage reader follows current stages while preserving the
+established native Mega-item exception. No story Whamon (146), tournament reward, merit or North Star value changes.
+
+**Dolph Fin (124)** is a separate 5000-value evolution item, sold for 2500, with meritValue 0. The otherwise-unused
+AS Decoder slot has no stock, drop or story use in this branch or current main; the real fridge key remains item
+123. Its existing AS Decoder sprite uses an existing blue palette. The existing fourth `evolutionItemRules` slot
+maps it to Dolphmon (238) for a Rookie (level 3), and its handler/refusal range now includes 124. NEW DIGIMON off
+refuses the unavailable import without consuming it. No item table, name/description count, icon atlas, custom
+rule array or save field is enlarged. All nine localized names fit 11 characters. Simplified Chinese includes the item name/description and both
+daily/permanent trade-limit messages, with the 鳍 glyph in both fonts; Chinese requires 8 MB. Existing ninth-row completion flag 13 remains spent in old saves,
+including saves that received the earlier North Star reward; no progress is reset or item silently exchanged.
 
 The money analysis behind it: upkeep is about 300-1500 bits a game day, nothing on the story path costs
 bits, and bits bought little power (DV chips about 40 stat points a 1000 bits, restaurants 1-4, the gym 80-100 a day for
@@ -449,7 +540,7 @@ All listed prices are in bits. Item values use the best repeatable conversion ex
 |---|---|---|
 | Dragon Eye Lake, screen 8 | Digimushroom **51**; Happy mushroom **1500**; Ice mushroom **1000** | Digimushrooms unlimited; one of each rare mushroom per day, refilled at midnight |
 
-Digimushrooms must cost 51 rather than 20: their shop sale and Mojyamon -> Small Recovery exit both pay 50.
+Digimushrooms must cost 51 rather than 20: their shop sale pays 50.
 Happy and Ice mushrooms each exit at 500. Deluxe mushrooms are not sold. Original saved triggers 798/799 hold
 the two stock bits, excluded from script allocation; the midnight routine clears them with ground pickups.
 There is no new resident state. Buying consumes stock only after the item fits and payment succeeds. Saving

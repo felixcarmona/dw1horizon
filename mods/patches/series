@@ -362,6 +362,9 @@ Apply-species-mode-moves-and-finisher-scalars.patch
 Show-item-descriptions-while-browsing-shops.patch
 Accept-tally-skip-presses-while-other-pad-buttons-are-held.patch
 Keep-rebirth-species-fallback-resident.patch
+mojyamon-daily-exchanges.patch
+mojyamon-one-time-north-star-and-evolution-targets.patch
+dolph-fin-evolution-item.patch
 Show-Chinese-in-a-two-column-language-picker.patch
 Localize-picker-headings-and-enlarge-Chinese-icon-labels.patch
 Finish-scripted-moves-with-a-rounded-zero-step.patch

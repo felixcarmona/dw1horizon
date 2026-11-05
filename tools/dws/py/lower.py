@@ -107,7 +107,7 @@ class ModLock:
         n = next((k for k in range(lo, hi + 1) if k not in used), None)
         if n is None:
             free = free_range(kind, 3)
-            pool = ('the original engine\'s free flags are 717-799; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
+            pool = ('the original engine\'s free flags are 717-788; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
                     else 'the original engine\'s free saved counters are 7-15 and 20; on the story-state engine, story variables')
             err = PyError(f'the {kind} range {lo}-{hi} of {mod.mod} (mod.toml) is full: save.lock gives its numbers to '
                           + ', '.join(sorted(table, key=table.get)),
@@ -134,7 +134,7 @@ def mod_lock(mod, mod_dir=None):
 
 
 def free_range(kind, size=10):
-    """A range of `size` numbers that no mod of story/mods reserves, in the original engine's pool (flags: triggers 717-799;
+    """A range of `size` numbers that no mod of story/mods reserves, in the original engine's pool (flags: triggers 717-788;
     vars: the saved pstats 7-15) -> "FIRST-LAST" or None. What `mod.toml [save]` is told to add."""
     import glob
     from ..minitoml import load_toml
@@ -833,7 +833,7 @@ class Module:
         rng = free_range(kind, 10 if kind == 'flags' else 3) or 'FIRST-LAST'
         toml = os.path.relpath(lock.toml, ROOT) if lock.toml.startswith(ROOT + os.sep) else lock.toml
         add = f'{kind} = "{rng}"' if lock.has_save else f'[save]\n        {kind} = "{rng}"'
-        pool = ('the original engine\'s free flags are 717-799; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
+        pool = ('the original engine\'s free flags are 717-788; on the story-state engine, story flags such as "12100-12199"' if kind == 'flags'
                 else 'the original engine\'s free saved counters are 7-15 and 20')
         return self.err(node, f'mod {self.mod} reserves no save {kind} in mod.toml: its {what} would get numbers that change with '
                               f'the other mods installed, and a saved game would read the wrong ones',

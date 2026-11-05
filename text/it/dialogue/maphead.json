@@ -752,35 +752,19 @@
    "Lascia stare"
   ]
  ],
- "m1238.u8": [
-  [
-   "Sto collezionando qualcosa. Se",
-   "ne hai, farei volentieri uno",
-   "scambio."
-  ]
- ],
+ "m1238.u8": "Offerte: una al giorno. Pinna Dolph: una per avventura.",
  "m1238.u9": [
   [
    "Cosa mi darai?"
   ]
  ],
- "m1238.u10": [
-  [
-   "Scambio quando vuoi, quindi",
-   "portamene ancora!"
-  ]
- ],
+ "m1238.u10": "La Pinna Dolph è offerta una volta per avventura.",
  "m1238.u11": [
   [
    "Mi dai {item 249}?"
   ]
  ],
- "m1238.u12": [
-  [
-   "Certo",
-   "No, lo tengo"
-  ]
- ],
+ "m1238.u12": "Ho già fatto questo scambio oggi. Torna domani!",
  "m1238.u13": [
   [
    "Grazie mille!"

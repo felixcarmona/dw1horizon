@@ -215,7 +215,7 @@ new frame and no `FADE_PROTECTION`: in menus, battles, fishing and cutscenes not
 - Feeding (`partnerHandleFoodFeed`): the item has already added its energy (x1.4 and +2 happiness for the favourite,
   capped at `energyCap`). If it was hungry and now has enough energy: happiness +5, discipline +1, hunger cleared, next
   meal scheduled. Food (items 0x26..0x46, 0x79, 0x7A) given when not hungry: happiness -3, discipline -2.
-- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7C except 0x79/0x7A, and items 0x21..0x25; evolution
+- Refusals (`partnerWillRefuseItem`): always refuses 0x73..0x7B except 0x79/0x7A, and items 0x21..0x25; evolution
   items for the wrong level; items 0x00..0x20 are refused if `rand(100) < 110 - (discipline + rand(10) + 10)`
   (discipline 100 never, 50 about 45 %, 0 almost always), then `ITEM_SCOLD_FLAG = 1`; when not hungry the favourite
   food is refused 20 % of the time.
@@ -399,6 +399,20 @@ unverified in play). The mod's score sums the four bits of `evoRequirementsMet`,
 Items 0x47..0x72 → `EVOLUTION_ITEM_TARGET[item-0x47]` only if `level(target) - 1 == current level`; Giga Hand (0x7D) →
 Gigadramon (0x40), Noble Mane (0x7E, Rookie only) → Panjyamon (0x3F), Metalbanana (0x7F) → MetalEtemon (0x41); 0x7D and
 0x7F are only accepted by a Champion. Patch 0323: an item evolves like any other evolution, with the stat gains, the lifetime and the tamer level chance.
+
+North Star (92) targets Whamon (24). With NEW DIGIMON on Whamon is an Ultimate, so North Star requires a
+Champion; with off Whamon is a Champion and the item requires a Rookie. The native-item stage helper uses the
+current target stage, retaining the established legacy exception for native items whose targets became Mega.
+Both eligibility and application use that same helper. The USA refusal path reads `EVOLUTION_ITEM_TARGET`
+directly rather than a palette-relative alias. The arena cup-14 reward and all nine North Star descriptions
+remain Whamon's.
+
+Dolph Fin (124, the unused AS Decoder slot) is a separate evolution item with value 5000. The fourth existing
+`MOD_EVO_ITEMS` row maps it to Dolphmon (238) with partnerLevel 3 (Rookie). Its handler and refusal paths include
+0x7C alongside the original 0x7D..0x7F custom items. The common rule lookup rejects unavailable imports, so NEW
+DIGIMON off refuses Dolph Fin without consuming it. Wrong stages refuse it. The group-3 exchange for Small
+Recovery is once per save, with permanent history flag 13; no item or rule table grows. The fridge key at 123 is
+unchanged. Dolph Fin's nine localized names fit 11 characters and its descriptions name Dolphmon.
 
 ### Stats on evolving (`EVL_applyEvolution`, `evl.c:1282`)
 

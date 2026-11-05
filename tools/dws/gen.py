@@ -863,8 +863,8 @@ class Program(Ext):
 
     def trigger_write(self, n, c, env=None):
         if env is not None and env.port: return
-        if not 717 <= n <= 799:
-            self.warn.add(c, f'trigger {n} is used by the game', 'only 717-799 are free for new content (docs/mods/dws.md); name a game trigger with `alias flag`')
+        if not 717 <= n <= 788:
+            self.warn.add(c, f'trigger {n} is used by the game', 'only 717-788 are free for new content (docs/mods/dws.md); name a game trigger with `alias flag`')
 
     def b_walk(self, env, c, a, run=False):
         op = 'ENTITY_WALK_TO_WITH_CAMERA' if a['camera'] else 'ENTITY_WALK_TO'
