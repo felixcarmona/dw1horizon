@@ -527,7 +527,17 @@ over the floor (Creepymon's sinks 48 units): the height of the record stays. `re
 names clips that land on the lowest vertex throughout, because the shorter legs bring a
 kneeling body, or a staff held to the ground, to the floor with the feet still on it.
 
-48 of the 175 imported partners carry a row. The rest stay as they were: quadrupeds, whose
+44 of the 175 imported partners carry a row, including authoring profiles for models
+already baked into constant-scale deltas. Stingmon 187, Angewomon 190, Rosemon 230
+and Piedmon 245 use their proportions before chibi reshaping. Seraphimon 207,
+Taomon 315 and Renamon 354 retain 30 % of the reshape; WarGreymon 373 and
+BlackWarGreymon 404 retain 50 %. Each multiplier, including limb fit and trim,
+uses `1 + strength * (full - 1)`; target height interpolates from the preceding
+recipe's idle height. Celebration overlays remain after the proportions pass.
+Piedmon and BlackWarGreymon are rebaked with constant bone scales, carrying
+attachment offsets through the same proportions exactly once.
+
+The other imports stay as they were: quadrupeds, whose
 heads are already large and whose four legs the single rule does not cover; forms with no
 humanoid legs (fish, serpents, blobs, plants, machines, insects); and bipeds already at
 the game's proportions, or that would gain too little to be worth a resident byte.
