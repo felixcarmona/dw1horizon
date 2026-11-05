@@ -26,7 +26,7 @@ any two builds equivalent section by section (flowcmp over the whole script from
 import glob, hashlib, json, os, re, shutil, sys, tempfile
 from . import backend as BE, build as B, textx
 from .diag import DwsError
-from .text.profiles import NAMED_PAGE_ROWS, tall_pages
+from .text.profiles import textbox_overflows
 from dws import bytecode
 from languages import CODES as LANGUAGES
 
@@ -712,19 +712,19 @@ def _build(sources, out, exe='original', lang='en', text=(), lock=None, update_l
 
 
 def check_named_pages(run, text_source):
-    """Our own text may not have a page taller than a named speaker's box (profiles.NAMED_PAGE_ROWS). A disc's text is
+    """Our own text may not have a page taller than its box. A disc's text is
     what the disc shows: its only such page is a debug line nothing reaches."""
     if text_source != 'ours' and text_source not in LANGUAGES:
         return
     tall = []
     for path in sorted(glob.glob(os.path.join(run, 'scn', 'script_*.scn.txt'))):
         sid = int(os.path.basename(path).split('_')[1].split('.')[0])
-        tall += [f'script {sid}: {len(rows)} rows under owner {owner}: "{rows[NAMED_PAGE_ROWS]}"'
-                 for owner, rows in tall_pages(open(path, encoding='utf-8').read())]
+        tall += [f'script {sid}: {len(rows)} rows in a {limit}-row box: "{rows[limit]}"'
+                 for limit, rows in textbox_overflows(open(path, encoding='utf-8').read(), sid)]
     if tall:
-        raise DwsError(f'text/{text_source}: {len(tall)} pages taller than the box under a speaker\'s name, whose row they would '
-                       f'replace or lose a row to:\n  ' + '\n  '.join(tall[:20]) + (f'\n  ... and {len(tall) - 20} more' if len(tall) > 20 else '') +
-                       f'\nbreak them into pages of 3 rows: python3 tools/dws/text/repage.py {text_source} --named --write', None)
+        raise DwsError(f'text/{text_source}: {len(tall)} pages taller than their dialogue box:\n  ' +
+                       '\n  '.join(tall[:20]) + (f'\n  ... and {len(tall) - 20} more' if len(tall) > 20 else '') +
+                       '\nshorten the page or split it into consecutive pages that fit the active box', None)
 
 
 # ------------------------------------------------------------------------------------------------ equivalence of two builds

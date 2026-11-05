@@ -55,6 +55,14 @@ def named_keys(root):
     return keys
 
 
+def narrator_keys(root):
+    """Direct narrator say() keys wrap to four rows; show_textbox() wraps to three."""
+    return {key for path in (pathlib.Path(root) / 'story/base').rglob('*.dws')
+            for match in STATEMENT.finditer(path.read_text(encoding='utf-8'))
+            if match[1] in ('narrator', '255')
+            for key in re.findall(r'text\("([^"]+)"\)', match[2])}
+
+
 def tall_pages(script):
     """[(owner, rows)] of the pages of a script's assembly text with more rows than the box shows under their speaker.
     The owner is followed in text order within a section; a box of SET_TEXTBOX_SIZE has no name row."""
@@ -77,6 +85,40 @@ def tall_pages(script):
             if len(rows) > NAMED_PAGE_ROWS:
                 tall.append((owner, rows))
     return tall
+
+
+def textbox_overflows(script, script_id=None):
+    """Physical rows exceeding the active box in compiler output.
+
+    Check named, narrator and explicitly sized boxes, including embedded row
+    breaks. Tournament section 10 stores UI arrays using SHOW_TEXTBOX; those
+    entries are data, like selection tables, rather than dialogue pages.
+    """
+    limit = NAMELESS_PAGE_ROWS
+    lines = script.splitlines()
+    sections = {label: int(number) for number, label in
+                re.findall(r'^\.section\s+(\d+)\s+(\w+)', script, re.M)}
+    section = None
+    for i, line in enumerate(lines):
+        words = line.split()
+        if not words:
+            continue
+        if line.strip().removesuffix(':') in sections:
+            section = sections[line.strip().removesuffix(':')]
+        if words[0] == 'SET_DIALOG_OWNER':
+            limit = NAMELESS_PAGE_ROWS if words[1].lower() in ('255', '0xff') else NAMED_PAGE_ROWS
+        elif words[0] == 'SET_TEXTBOX_SIZE':
+            limit = int(line.split(',')[-1], 0)
+        elif words[0] == 'END_SECTION':
+            limit = NAMELESS_PAGE_ROWS
+        elif words[0] == 'SHOW_TEXTBOX' and not (script_id in UNPACKED_SCRIPTS and section == 10):
+            rows = []
+            for row in lines[i + 1:]:
+                if not row.strip().startswith('"'):
+                    break
+                rows.extend(re.split(r'\{br\}', row.strip().strip('"'), flags=re.I))
+            if len(rows) > limit:
+                yield limit, rows
 
 
 def header_row(row):

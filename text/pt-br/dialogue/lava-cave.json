@@ -74,8 +74,12 @@
  "s121.sec5.m0.o1": "Guardar comigo",
  "s121.sec5.u0": [
   [
-   "Oi, oi. Conhece as cartas Digimon? Coleciono",
-   "cartas de Meramon. Traga uma, e eu compro",
+   "Oi, oi. Conhece as cartas",
+   "Digimon?"
+  ],
+  [
+   "Coleciono cartas de Meramon.",
+   "Traga uma, e eu compro",
    "por 1500 Bits!"
   ]
  ],
