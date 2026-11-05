@@ -296,7 +296,8 @@ on talk(b) replace {
             titles = packed_ui_slices(key, names[key], language)
             tabs = packed_ui_slices('main.MAIN_D_801238A0', names['main.MAIN_D_801238A0'], language)
             self.assertEqual(titles[1], '必殺' if language == 'ja' else '必杀' if language == 'zh-hans' else 'Final')
-            self.assertEqual(titles[2], tabs[1], language)
+            tab_title = {'Técn.': 'Técnicas', 'Tecn.': 'Tecniche'}.get(tabs[1], tabs[1])
+            self.assertEqual(titles[2], tab_title, language)
         self.assertEqual(packed_ui_slices('main.MAIN_D_801238A0', '状態         わざ'), ['状態', 'わざ'])
 
     def test_named_english_pages_are_compiled_instead_of_an_inline_snapshot(self):

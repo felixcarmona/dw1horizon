@@ -231,3 +231,10 @@ four pixels before the power column. Original and Classic use the existing
 font-fitting modes when necessary. New retains its own glyphs, so shorten names
 that still exceed the field; keep recognizable localized terms and abbreviations.
 Tab labels must also stay inside the painted tab borders.
+
+The same audit checks all item names against the narrowest shop field (93 pixels;
+inventory and bank lists allow 96), all title/save Yes/No labels (48 pixels), and
+the item/card confirmation answers (36 pixels each). `m1240.u0` is a fixed layout:
+exactly two physical rows, the question followed by the two answers separated by
+a space. Its question must fit 96 pixels, including Original font's script spaces.
+Ordinary dialogue choice rows remain covered by the dialogue/layout check.
