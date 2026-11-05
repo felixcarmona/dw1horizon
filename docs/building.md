@@ -1,6 +1,6 @@
 # Building Horizon from source
 
-The everything disc includes all patches, the extended story, eight languages and
+The everything disc includes all patches, the extended story, nine languages and
 all imported species. A build from the same sources and settings as a release
 must reproduce that release's image SHA-1.
 
@@ -72,7 +72,7 @@ python3 -m tools.derive sources --out build/everything/source-games \
   --source-disc 'dcb=/path/Card Battle.bin' \
   --source-disc 'dw2=/path/World 2.bin' \
   --source-disc 'dw2003=/path/World 2003.bin'
-SPECIES=all SPECIES_PROVIDER=imports TEXT=ours LANGS=en,es,pt-br,fr,de,it,ja,ca \
+SPECIES=all SPECIES_PROVIDER=imports TEXT=ours LANGS=en,es,pt-br,fr,de,it,ja,ca,zh-hans \
   DERIVE_JOBS=1 W=$PWD/build/decomp-int NAME=everything DW_HEAP_MAP=/nonexistent \
   story/mods/what-the-island-forgot/build.sh
 sha1sum build/everything.bin
@@ -91,6 +91,12 @@ to commit 83f99c5. `tools/mods.sh prepare int` applies our patches with `git am`
 the order of `mods/patches/series` ([the patch series](../mods/patches/README.md));
 assembly and game files are regenerated from your disc. The standard
 build targets the original PlayStation's 2 MB of RAM.
+
+Simplified Chinese requires 8 MB and appears disabled on 2 MB hardware. Choosing
+Chinese loads its complete bitmap fonts and language module above 2 MB; the other
+eight languages retain their ordinary 2 MB support. The fonts are generated from
+the committed licensed subsets during the player build. See
+[language support](mods/language.md) for encoding and resource details.
 
 The executable is compiled for each language with a shared address layout.
 Language patches switch strings and translated resources at runtime. The

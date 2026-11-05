@@ -360,3 +360,12 @@ messages say "patch 0167": find that number here. Patches added later have none;
 | `Share-card-title-writing-and-keep-Chinese-saves-readable-on-2-MB.patch` | — | Share the three identical US card-title writers; Chinese writes a Latin species label to the header and localizes it in the slot list. Restore the save-icon data to MENU using the recovered space. | Eight-language main_BSS_END 0x801ce18c (344 B below baseline), heap 187760 B (+352 B), MENU 55140 B (156 B spare), extra-RAM module 61260 B. Non-Chinese writer body proven identical to all three prior copies; final nine-language gates required. |
 | `Keep-the-resident-Chinese-font-fixed-in-the-options-menu.patch` | — | The Chinese font row has one fixed value; other languages retain their three choices. | MENU code only; final nine-language build measures the combined runtime. |
 | `Keep-compact-glyph-quads-inside-the-texture-page-edge.patch` | — | Use 31 compact glyph columns so a quad never wraps its right UV edge at 256. Atlas rows remain 128–215, separate from commands and digits. | Extra-RAM module only; main and MENU unchanged. Final build measures module size. |
+
+Combined Chinese runtime, measured in the full nine-language build:
+`main_BSS_END` 0x801ce1a4, heap 187728 B, 320 B more than the eight-language
+baseline (0x801ce2e4, 187408 B). All 320 actual-archive heap setups pass; the
+tightest screen, 207, keeps 3008 B. MENU is 55156 B, 140 B below its 27-sector
+limit. The Chinese module is 61256 B and resides above 2 MB. PCSX-Redux tests
+cover Chinese new game, dialogue, menus, ordinary battle and memory-card
+save/load at 8 MB, plus the disabled Chinese entry and the same save in English
+at 2 MB. Physical hardware validation remains outstanding.
