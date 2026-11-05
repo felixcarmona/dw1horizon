@@ -41,12 +41,19 @@ def fingerprint(root, recipe, sources, environment):
 def restore(snapshot, root):
     try:
         meta = json.loads((snapshot / 'manifest.json').read_bytes())
-        if key(meta['files']) != meta['sha256']:
+        inventory = {'files': meta['files'], 'directories': meta['directories']}
+        if meta.get('format') != 2 or key(inventory) != meta['sha256']:
             return False
+        for rel in meta['directories']:
+            p = Path(rel)
+            if p.is_absolute() or '..' in p.parts:
+                return False
         for rel, sha in meta['files']:
             p = Path(rel)
             if p.is_absolute() or '..' in p.parts or digest(snapshot / 'tree' / p) != sha:
                 return False
+        for rel in meta['directories']:
+            (root / rel).mkdir(parents=True, exist_ok=True)
         for rel, sha in meta['files']:
             dst = root / rel
             dst.parent.mkdir(parents=True, exist_ok=True)
@@ -64,7 +71,9 @@ def save(snapshot, root):
         sha = digest(source)
         atomic(snapshot / 'tree' / rel, source.read_bytes())
         entries.append([rel, sha])
-    atomic(snapshot / 'manifest.json', encoded(dict(files=entries, sha256=key(entries))))
+    inventory = dict(files=entries, directories=sorted(p.relative_to(root).as_posix()
+                     for p in root.rglob('*') if p.is_dir() and '__pycache__' not in p.parts))
+    atomic(snapshot / 'manifest.json', encoded(dict(format=2, **inventory, sha256=key(inventory))))
 
 
 @contextmanager

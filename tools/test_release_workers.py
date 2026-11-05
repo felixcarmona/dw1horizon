@@ -100,11 +100,14 @@ class RecordingCache(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / 'tree'; root.mkdir()
             (root / 'model').write_bytes(b'correct')
+            (root / 'empty-output').mkdir()
             snapshot = Path(td) / 'snapshot'
             cache.save(snapshot, root)
             (root / 'model').unlink()
+            (root / 'empty-output').rmdir()
             self.assertTrue(cache.restore(snapshot, root))
             self.assertEqual((root / 'model').read_bytes(), b'correct')
+            self.assertTrue((root / 'empty-output').is_dir())
             (snapshot / 'tree/model').write_bytes(b'corrupt')
             self.assertFalse(cache.restore(snapshot, root))
 
