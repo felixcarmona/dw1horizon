@@ -229,7 +229,7 @@ def ensure_dis():
     made before the 2026-10-14 button fix re-encoded × and △ the other way)."""
     if DIS_CACHE != DIS_DEFAULT:                       # (the story build points it at the text it generated: kept as it is)
         if not os.path.exists(os.path.join(DIS_CACHE, 'dg.scn.lst')):
-            dis(DG_SCN, DIS_CACHE)
+            raise BackendError('missing generated story cache index; rebuild the owned story sources')
         return
     stamp = bytecode.source_digest()
     sp = os.path.join(DIS_CACHE, 'bytecode.sha1')
@@ -285,8 +285,30 @@ try:                                                      # every species (tools
 except ImportError:
     _species, DIGI_DATA = None, {}
 EXTRA_SPECIES = {t: r for t, r in DIGI_DATA.items() if t >= 180}   # ids 180+: need --exe species
-DISC_MAP_FILES = {int(r['id']): r['file'] for r in csv.DictReader(open(os.path.join(ROOT, 'docs/data/map_files.csv')))}
-DISC_MAP_FLAGS = {int(r['id']): int(r['flags']) & 0xFF for r in csv.DictReader(open(os.path.join(ROOT, 'docs/data/map_files.csv')))}
+
+
+def native_screen_metadata():
+    """Story-visible native screens, with all names and flags from owned JSON.
+
+    The visibility list preserves the compiler's native screen set independently
+    of the executable's reserved rows. A deleted screen has no compiler entry.
+    """
+    import content
+    with open(os.path.join(ROOT, 'content/tables/story-screens.json')) as f:
+        ids = json.load(f)['nativeScreenIds']
+    if (not isinstance(ids, list) or any(type(i) is not int or not 0 <= i < 255 for i in ids)
+            or len(set(ids)) != len(ids)):
+        raise ValueError('story-screens.json: nativeScreenIds must be unique native screen ids')
+    rows = content.load_screens() or {}
+    visible = {i: rows[i] for i in ids if i in rows}
+    files = {i: x['file'] for i, x in visible.items()}
+    flags = {i: (x.get('sound_bank', 0) & 0x1F) | (0x20 if x.get('flag20') else 0)
+                | (0 if x.get('day_night', True) else 0x40) | (0x80 if x.get('reads_digimon') else 0)
+             for i, x in visible.items()}
+    return files, flags
+
+
+DISC_MAP_FILES, DISC_MAP_FLAGS = native_screen_metadata()
 # the screens >= 255: their files in content/screens (and SCREEN_CONTENT=dir:dir of a mod), tools/screens.py
 import screens as SCR                                     # noqa: E402
 MAP_FILES, MAP_FLAGS = {}, {}                             # the disc's screens and the new ones (set_screen_dirs)

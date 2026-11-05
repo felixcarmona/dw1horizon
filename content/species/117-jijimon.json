@@ -5,12 +5,16 @@
   "vanilla_as": 12,
   "off": {
     "level": "ultimate",
-    "stats": {"hp": 4000, "mp": 6000, "offense": 450, "defense": 500, "speed": 300, "brains": 800}
+    "stats": {"hp": 4500, "mp": 6000, "offense": 450, "defense": 500, "speed": 400, "brains": 700},
+    "finisher": {"power": 220, "mpCost": 40, "element": "battle"},
+    "techniques": ["Tremar", "War Cry", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Buster Dive",
+                   "Pummel Whack"]
   },
   "attribute": "vaccine",
   "specialties": ["battle", null, null],
   "techniques": ["Tremar", "War Cry", "Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Buster Dive",
                  "Pummel Whack"],
+  "finisher": {"power": 250, "mpCost": 40, "element": "battle"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "model": {"name": "JIJI", "bones": 17, "partner_file": "build/models/JIJP.MMD", "radius": 120, "height": 250},
   "voice": 30,
@@ -50,6 +54,6 @@
       "techs": 0,
       "flags": 0
     },
-    "gains": {"hp": 4000, "mp": 6000, "offense": 450, "defense": 500, "speed": 300, "brains": 800}
+    "gains": {"hp": 6000, "mp": 6500, "offense": 600, "defense": 650, "speed": 550, "brains": 800}
   }
 }

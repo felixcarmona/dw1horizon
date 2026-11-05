@@ -5,12 +5,16 @@
   "vanilla_as": 12,
   "off": {
     "level": "ultimate",
-    "stats": {"hp": 3500, "mp": 7000, "offense": 400, "defense": 350, "speed": 450, "brains": 900}
+    "stats": {"hp": 4000, "mp": 6000, "offense": 400, "defense": 400, "speed": 450, "brains": 700},
+    "finisher": {"power": 210, "mpCost": 40, "element": "mech"},
+    "techniques": ["Static Elect", "Megalo Spark", "Delete Program", "Pulse Laser", "Reverse Prog", "DG Dimension",
+                   "Full Potential", "Spiral Sword"]
   },
   "attribute": "virus",
   "specialties": ["mech", "air", null],
   "techniques": ["Static Elect", "Megalo Spark", "Delete Program", "Pulse Laser", "Reverse Prog", "DG Dimension",
                  "Full Potential", "Spiral Sword"],
+  "finisher": {"power": 250, "mpCost": 40, "element": "mech"},
   "drop": {"item": "sm.recovery", "percent": 0},
   "model": {"name": "ANLG", "bones": 18, "partner_file": "build/models/ANLP.MMD", "radius": 100, "height": 350},
   "voice": 36,
@@ -50,6 +54,6 @@
       "techs": 0,
       "flags": 0
     },
-    "gains": {"hp": 3500, "mp": 7000, "offense": 400, "defense": 350, "speed": 450, "brains": 900}
+    "gains": {"hp": 5500, "mp": 7000, "offense": 550, "defense": 500, "speed": 600, "brains": 800}
   }
 }

@@ -5,13 +5,18 @@
   "vanilla": true,
   "off": {
     "level": "ultimate",
-    "stats": {"hp": 6000, "mp": 7500, "offense": 900, "defense": 700, "speed": 900, "brains": 750}
+    "stats": {"hp": 6000, "mp": 6000, "offense": 600, "defense": 600, "speed": 600, "brains": 650},
+    "finisher": {"power": 222, "mpCost": 40, "element": "battle"},
+    "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar",
+                   "War Cry", "Muscle Charge", "Megalo Spark", "Spinning Shot", "Thunder Justice",
+                   "Horizontal Kick (55)", "Ult Poop Hell", "Dark Network & Concert Crush"]
   },
   "attribute": "vaccine",
   "specialties": ["battle", "air", "filth"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
                  "Muscle Charge", "Megalo Spark", "Spinning Shot", "Thunder Justice",
                  "Horizontal Kick (55)", "Ult Poop Hell", "Dark Network & Concert Crush"],
+  "finisher": {"power": 255, "mpCost": 40, "element": "battle"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 42,
   "model": {"name": "MTET", "bones": 27, "radius": 130, "height": 265},
@@ -51,6 +56,6 @@
       "techs": -1,
       "flags": 16
     },
-    "gains": {"hp": 6000, "mp": 7500, "offense": 900, "defense": 700, "speed": 900, "brains": 750}
+    "gains": {"hp": 7000, "mp": 7000, "offense": 800, "defense": 750, "speed": 800, "brains": 700}
   }
 }

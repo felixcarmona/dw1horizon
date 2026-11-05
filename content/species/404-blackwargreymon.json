@@ -22,9 +22,9 @@
   "texture": {"file": "build/meshfix2-out/BlackWarGreymon.TIM", "entry": 0},
   "voice": 5,
   "battle_music": "normal-battle",
-  "condition_bubble": [0, -187, -57, 15],
-  "effect_origins": [[7, "any", 0, 0, 10, -17, 122, -130], [10, "any", 0, 0, 13, 32, -73, 39],
-                     [1, "any", 0, 0, 2, 0, 0, 0], [6, "any", 0, 0, 3, -6, 184, -143]],
+  "condition_bubble": [0, -145, -44, 15],
+  "effect_origins": [[7, "any", 0, 0, 10, -18, 157, -127], [10, "any", 0, 0, 13, 32, -75, 39],
+                     [1, "any", 0, 0, 2, 0, 0, 0], [6, "any", 0, 0, 3, -6, 188, -145]],
   "wild": {"hp": 4158, "mp": 4172, "off": 553, "def": 476, "speed": 413, "brain": 420, "bits": 2100},
   "partner": {
     "voice": 2,

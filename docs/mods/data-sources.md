@@ -192,3 +192,21 @@ keep the same record format; the patcher bundles and executes the derive tools,
 which regenerate the City block from owned data and player-disc models. The
 City validator is explicitly included in published bundles even when its import
 was cached; the isolated bundle startup test imports it without repository access.
+
+Player-side item table recipes generate every numeric field from `content/items/*.json` and names from the authored text bank. A deleted item is a zero row. Equal values on a player disc do not provide defaults or select which JSON fields to apply.
+
+Player-side aura recipes likewise generate all 129 six-field rows from `content/tables/effects.json`; they never seed equal fields from player records.
+
+Native balance builds start from empty species rows and explicit resident defaults in `content/tables/native-species-fallbacks.json`, then apply owned species and domain JSON. The resident defaults preserve the uncached rows of record species; they include evolution fields as well as partner, model, technique and drop parameters. Missing resident configuration is an error. Executable numeric tables are used only by explicit inspection/import tools, never as the build floor.
+
+Empty technique, item and screen directories remove their complete numeric domains, just as deleting an individual file removes its row. They never reactivate source tables.
+
+An empty `content/maps` directory removes all parsed Digimon lists. Source map geometry remains an asset input; a missing placement file never preserves source enemies. The malformed, never-read `YAKA22` asset remains an explicit opaque exception.
+
+Story builds require the committed `story/base` sources. Missing sources fail the build; they never trigger an implicit lift of player-disc scripts. Explicit `dws story-base` and `--refresh` remain disc-import authoring operations. A deleted script within an existing base compiles to an empty script.
+
+Regional menu positions are explicit signed 16-bit layout fields in `tools/patcher/ui-sources.json` (`objects.*.values`, keyed by base region). Player-side recipes use those values plus authored text crops. `sources` records import provenance; it never supplies runtime defaults. An unknown region is an error.
+
+The story compiler reads native screen file names and flags from `content/screens/*.json`. `content/tables/story-screens.json` (`nativeScreenIds`) explicitly selects its visible native IDs, keeping reserved executable rows outside the compiler namespace. Deleted screen rows produce no entry; a missing visibility configuration fails the build. `docs/data/map_files.csv` is inspection metadata and supplies no defaults to the compiler.
+
+The story backend also requires the index of any supplied generated script cache. A missing `dg.scn.lst` fails closed; it never replaces the generated cache with an implicit disc disassembly. The default legacy authoring cache retains its explicit disc-import behavior.
