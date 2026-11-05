@@ -341,23 +341,30 @@ tiles about to enter the window.
   (0x80011000–0x80035000). A tile is 0x4004 bytes in the file and never sector-aligned, so a slot is 0x4800 and the
   pixels start at `slot + offset % 2048`. A small map never gets more slots than its whole TFS would have taken, so
   whatever the game writes just above a small TFS stays safe.
-- **The window logic is the original's**: `handleTileUpdate`, `updateTileColumn/Row` and `uploadMapTileImages` are
-  unchanged; only the `LoadImage` source changes (`tfsLoadTile`). Whole-window uploads (map load, curling, fishing) read
-  each window row, contiguous in the file, in one `CdRead` over the ring.
+- **Window selection retains the original thresholds**: `handleTileUpdate` expresses the original band intervals
+  arithmetically, including their gaps and inclusive endpoints. A host comparison with the preceding implementation
+  checks 8,690,592 cases, including the order and arguments of row, column and whole-window uploads. Whole-window
+  uploads (map load, curling, fishing) read each window row, contiguous in the file, in one `CdRead` over the ring.
 - **Prefetch**: once per tick, while the game's read queue is empty, the tile the window may need soonest is read
   asynchronously, one tile per `CdRead`. "Soonest" is the camera's distance to `handleTileUpdate`'s thresholds (right at
   `cameraX ≥ 128·(wx+1)+10`, left below `128·wx+1`, down at `cameraY ≥ 128·(wy+1)`, up below `128·wy+1`), plus 96 px
   for a side the camera has not moved toward in the last 40 ticks. A ring tile is only given up for one at least 32 px
   nearer. A read only starts once the drive has finished its last command (`CD_sync`) and 3 vsyncs after the previous
   read ended; starting right after a read can stall the tick for two refreshes waiting for the drive.
+- **Walking across a cold band**: the follow camera calculates its next window without uploading it, then checks
+  every incoming tile. Missing tiles take priority in the asynchronous ring and remain protected until the complete
+  band has been uploaded. Field logic, input and animation continue during those reads. The camera uses the spare
+  pixels of its current 4×3 window, holds at its visible edge if necessary, and gradually consumes retained scroll
+  once the tiles arrive, including after the pad is released. Invalid rings, forced uploads and bands larger than
+  a small map's ring retain the synchronous fallback. No additional tile buffer is allocated.
 - **Hysteresis**: the original's is 1 px vertically and 9 px horizontally, so walking back right after a shift needs
   the strip that just left. That strip is copied from VRAM back into the ring as it leaves (`StoreImage` before the
   replacing `LoadImage`) and never waits for the CD. Tiles already in VRAM are evicted first.
 - **CD arbitration**: the read queue does not start a request while a tile read is in flight; `readFile`,
   `readFileSectors` and `readFileSection` wait for it first. A miss (a tile not in the ring when needed) is read
-  synchronously and counted. Since patch 0206 every synchronous reader and every enqueue also waits for the queue's
-  read in flight (`tfsStreamCheckTarget`): a second `CdRead` aborts the first, which would end with only its first
-  sectors.
+  synchronously and counted on the fallback paths. Since patch 0206 every synchronous reader and every enqueue
+  also waits for the queue's read in flight (`tfsStreamCheckTarget`): a second `CdRead` aborts the first, which would
+  end with only its first sectors.
 - **Invalidation**: a load whose target overlaps 0x80010000–0x80035000, and every battle, empty the ring. The game's
   own `readMapTFS` calls (map load, battle won, evolution, death, jukebox, script op 0x24, Toy Town's background swap)
   now only reread the header and reopen the ring. The battle exit, the jukebox and the ring's own reopening keep the
@@ -375,10 +382,33 @@ tiles about to enter the window.
   refusals, row reads, captures).
 
 Results: the resident TFS goes from up to 482 KB to 148 KB, warps are faster (the header is 2 sectors and the window
-rows about 100 sectors instead of the whole file; leaving a battle rereads 2 sectors instead of 482 KB), and the
-per-tick cost while walking across tile boundaries is unchanged. A longest tile read takes 24–30 vsyncs, a window row
-16–18, and a walk across every window boundary of File City with reversals has no misses. The streaming code costs
+rows about 100 sectors instead of the whole file; a won battle reuses the resident header). A longest tile read takes
+24–30 vsyncs, a window row 16–18, and a walk across every window boundary of File City with reversals has no misses. The streaming code costs
 about 5.6 KB of heap. The scripts in `tools/dev/memory/` check the ring and the window against the file.
+
+The camera-band change recovers its code cost by compacting the original interval lookup. In a matched eight-language
+60 fps build, `main_BSS_END` moves from `0x801ceb00` to `0x801ceab4`: 76 fewer resident bytes and 80 more bytes of aligned
+heap (185,408 B). Both heap checks pass; all 320 archive-backed screen setups fit, with 688 B free on screen 207.
+
+Controlled won-battle returns in PCSX-Redux's original-2-MB interpreter measured the following largest gaps between
+field presentations (GPU vsync counts at 60 Hz, 420 field frames per run):
+
+| Screen | Before | Asynchronous camera bands |
+|---|---:|---:|
+| 0, Native Forest | 31 vsyncs / 517 ms | 3 vsyncs / 50 ms |
+| 20, Path Thru Mt Panorama | 64 vsyncs / 1,067 ms | 5 vsyncs / 83 ms |
+| 23, Foot Mt Panorama | 62 vsyncs / 1,033 ms | 3 vsyncs / 50 ms |
+
+Each fixture starts its follow camera four pixels before a native column boundary, wins an ordinary engine battle,
+and applies the same short walks, idle periods and reversal after returning. The camera window, horizontal start
+and inputs match; NPC motion leaves small differences in vertical framing. All runs stay on their initial screen.
+Each baseline return incurs three synchronous tile misses; all three patched returns have zero misses, waits and
+synchronous-read vsyncs. Retained scroll settles to zero. When a band is still cold, only the camera holds at its
+loaded edge while actors continue moving; it then catches up without a tile read blocking the field tick.
+
+A separate two-battle Cherrymon regression starts six pixels from a row boundary. Both battles return successfully;
+the battle window never moves, no reopen is refused or attempted in battle, and no read error occurs. These are
+emulator checks, not physical-console measurements.
 
 **Rule for the load area in the world**: nothing that has to last longer than the load that brought it may be read
 from the load area later. Copy it out when it arrives.
