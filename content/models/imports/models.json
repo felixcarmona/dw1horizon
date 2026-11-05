@@ -75,7 +75,7 @@
  "255": {"model": "255-Valkyrimon.MMD", "aliases_applied": true},
  "256": {"model": "256-VioletElecmon.MMD", "aliases_applied": true},
  "257": {"model": "257-Triceramon.MMD", "aliases_applied": true},
- "258": {"model": "258-SaberLeomon.MMD", "aliases_applied": true, "texture": "258-SaberLeomon.TIM"},
+ "258": {"field_overlay": "saberleomon-pace", "model": "258-SaberLeomon.MMD", "aliases_applied": true, "texture": "258-SaberLeomon.TIM"},
  "259": {"model": "259-Okuwamon.MMD", "aliases_applied": true},
  "260": {"model": "260-MetalTyrannomon.MMD", "aliases_applied": true},
  "261": {"model": "261-Tortomon.MMD", "aliases_applied": true},

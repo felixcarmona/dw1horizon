@@ -12,9 +12,10 @@
                    "Fist of the Beast King"]
   },
   "attribute": "data",
-  "specialties": ["battle", "air", null],
+  "specialties": ["battle", "air", "ice"],
   "techniques": ["Sonic Jab", "Dynamite Kick (44)", "Megaton Punch", "Counter", "Buster Dive", "Tremar", "War Cry",
-                 "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King"],
+                 "Muscle Charge", "Static Elect", "Megalo Spark", "Fist of the Beast King",
+                 "Ice Needle", "Winter Blast"],
   "finisher": {"power": 230, "mpCost": 40, "element": "battle"},
   "drop": {"item": "sm.recovery", "percent": 10},
   "effects_like": 48,
@@ -24,6 +25,7 @@
     "radius": 160,
     "height": 400,
     "file": "build/record-originals/63.MMD",
+    "slot_aliases": [[57, 54], [58, 55]],
     "skeleton": [[-1, -1], [-1, 0], [0, 1], [1, 2], [2, 3], [3, 2], [4, 5], [5, 6], [6, 2], [7, 8], [8, 9], [9, 1],
                  [10, 11], [11, 12], [12, 13], [13, 11], [14, 15], [15, 16], [16, 17], [17, 11],
                  [18, 19], [19, 20], [20, 21]]
