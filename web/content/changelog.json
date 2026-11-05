@@ -12,7 +12,8 @@
     "changed": [
      "With NEW DIGIMON on, every raisable Ultimate has a Mega evolution, Whamon is an Ultimate, and Vemmon is a Rookie. The evolution chart shows every route.",
      "Many imported Digimon have improved walks, runs, sleep and celebration animations, steadier sizes, clearer flat sprites and more fitting voices and techniques.",
-     "Rare daily ground items appear more often."
+     "Rare daily ground items appear more often.",
+     "Apocalymon keeps its giant size through every animation."
     ],
     "fixed": [
      "Fixed battles stalling with flattened enemies, pauses after victory and nearby NPCs joining unintended battles.",
@@ -29,7 +30,8 @@
     "changed": [
      "Con NEW DIGIMON activado, todos los Digimon de nivel Ultimate que puedes criar tienen una evolución Mega, Whamon es Ultimate y Vemmon es Rookie. El árbol muestra todas las rutas.",
      "Muchos Digimon importados mejoran sus animaciones al caminar, correr, dormir y celebrar, mantienen un tamaño estable y tienen mejores imágenes planas, voces y técnicas.",
-     "Los objetos diarios poco comunes del suelo aparecen más a menudo."
+     "Los objetos diarios poco comunes del suelo aparecen más a menudo.",
+     "Apocalymon mantiene su tamaño gigante en todas sus animaciones."
     ],
     "fixed": [
      "Corregidos los combates atascados con enemigos aplastados, las pausas tras ganar y los PNJ cercanos que entraban en combates ajenos.",
@@ -46,7 +48,8 @@
     "changed": [
      "Com NEW DIGIMON ativado, todo Ultimate que você pode criar tem uma evolução Mega, Whamon é Ultimate e Vemmon é Rookie. A árvore mostra todas as rotas.",
      "Muitos Digimon importados têm melhores animações ao andar, correr, dormir e comemorar, tamanhos estáveis, imagens planas mais claras e vozes e técnicas mais adequadas.",
-     "Itens diários raros no chão aparecem com mais frequência."
+     "Itens diários raros no chão aparecem com mais frequência.",
+     "Apocalymon mantém seu tamanho gigante em todas as animações."
     ],
     "fixed": [
      "Corrigidos combates travados com inimigos achatados, pausas após a vitória e NPCs próximos entrando em combates indevidos.",
@@ -63,7 +66,8 @@
     "changed": [
      "Avec NEW DIGIMON activé, chaque Ultimate pouvant être élevé possède une évolution Mega, Whamon est Ultimate et Vemmon est Rookie. L’arbre affiche toutes les voies.",
      "De nombreux Digimon importés ont de meilleures animations de marche, de course, de sommeil et de célébration, une taille stable, des sprites aplatis plus lisibles et des voix et techniques mieux adaptées.",
-     "Les objets quotidiens rares au sol apparaissent plus souvent."
+     "Les objets quotidiens rares au sol apparaissent plus souvent.",
+     "Apocalymon garde sa taille géante dans toutes ses animations."
     ],
     "fixed": [
      "Correction des combats bloqués avec des ennemis aplatis, des pauses après la victoire et des PNJ voisins rejoignant un combat par erreur.",
@@ -80,7 +84,8 @@
     "changed": [
      "Mit aktiviertem NEW DIGIMON hat jedes aufziehbare Ultimate eine Mega-Entwicklung. Whamon ist Ultimate und Vemmon Rookie. Der Entwicklungsbaum zeigt alle Wege.",
      "Viele importierte Digimon haben bessere Geh-, Lauf-, Schlaf- und Jubelanimationen, eine gleichbleibende Größe, klarere flache Sprites sowie passendere Stimmen und Techniken.",
-     "Seltene tägliche Bodenfunde erscheinen häufiger."
+     "Seltene tägliche Bodenfunde erscheinen häufiger.",
+     "Apocalymon behält in jeder Animation seine riesige Größe."
     ],
     "fixed": [
      "Kämpfe mit flachgedrückten Gegnern bleiben nicht mehr hängen. Pausen nach Siegen und ungewollte Kampfeintritte benachbarter NPCs wurden behoben.",
@@ -97,7 +102,8 @@
     "changed": [
      "Con NEW DIGIMON attivo, ogni Ultimate allevabile ha un’evoluzione Mega, Whamon è Ultimate e Vemmon è Rookie. L’albero mostra tutti i percorsi.",
      "Molti Digimon importati hanno animazioni migliori per camminare, correre, dormire e festeggiare, dimensioni stabili, immagini appiattite più chiare e voci e tecniche più adatte.",
-     "Gli oggetti giornalieri rari a terra compaiono più spesso."
+     "Gli oggetti giornalieri rari a terra compaiono più spesso.",
+     "Apocalymon mantiene le sue dimensioni gigantesche in tutte le animazioni."
     ],
     "fixed": [
      "Corretti i combattimenti bloccati con nemici appiattiti, le pause dopo le vittorie e i PNG vicini che si univano agli scontri per errore.",
@@ -114,7 +120,8 @@
     "changed": [
      "NEW DIGIMONがオンのとき、育成可能なすべての完全体に究極体への進化先があります。ホエーモンは完全体、ベムモンは成長期になります。進化図にはすべてのルートを表示します。",
      "多くの追加デジモンの歩行、走行、睡眠、喜びの動作を改善しました。動作中の大きさを安定させ、つぶれた姿の画像、鳴き声、技も見直しました。",
-     "毎日の拾い物で珍しいアイテムが出やすくなりました。"
+     "毎日の拾い物で珍しいアイテムが出やすくなりました。",
+     "アポカリモンはどの動作でも巨大な大きさを保ちます。"
     ],
     "fixed": [
      "つぶれた敵との戦闘停止、勝利後の一時停止、近くの会話相手が意図せず戦闘に参加する問題を修正しました。",
@@ -131,7 +138,8 @@
     "changed": [
      "Amb NEW DIGIMON activat, tots els Digimon de nivell Ultimate que pots criar tenen una evolució Mega, Whamon és Ultimate i Vemmon és Rookie. L’arbre mostra totes les rutes.",
      "Molts Digimon importats milloren les animacions de caminar, córrer, dormir i celebrar, mantenen una mida estable i tenen imatges planes més clares, veus i tècniques més adequades.",
-     "Els objectes diaris poc comuns de terra apareixen més sovint."
+     "Els objectes diaris poc comuns de terra apareixen més sovint.",
+     "Apocalymon manté la seva mida gegant en totes les animacions."
     ],
     "fixed": [
      "Corregits els combats encallats amb enemics aixafats, les pauses després de guanyar i els PNJ propers que entraven en combats aliens.",
