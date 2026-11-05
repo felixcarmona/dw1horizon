@@ -13,8 +13,8 @@
   "effects_like": 54,
   "model": {
     "file": "build/meshfix2-out/Apocalymon.MMD",
-    "radius": 217,
-    "height": 430,
+    "radius": 300,
+    "height": 600,
     "skeleton": [[-1, -1], [0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 3], [6, 6], [7, 7], [8, 3], [9, 9], [10, 10],
                  [11, 3], [12, 12], [13, 13], [14, 1], [15, 15], [16, 16], [17, 1], [18, 18],
                  [19, 19], [20, 1], [21, 21], [22, 22], [23, 1], [24, 24], [25, 25], [26, 1],
@@ -23,9 +23,10 @@
   "texture": {"file": "build/meshfix2-out/Apocalymon.TIM", "entry": 0},
   "voice": 48,
   "battle_music": "normal-battle",
-  "condition_bubble": [-30, -50, -27, 6],
-  "effect_origins": [[4, 90, 0, 0, 6, 20, 20, -58], [8, 330, 0, 0, 21, -17, 201, -138], [1, 0, 0, 0, 1, 0, -15, 0]],
+  "condition_bubble": [-56, -93, -50, 6],
+  "effect_origins": [[4, 90, 0, 0, 6, 37, 37, -108], [8, 330, 0, 0, 21, -32, 373, -256], [1, 0, 0, 0, 1, 0, -28, 0]],
   "wild": {"hp": 4326, "mp": 4214, "off": 581, "def": 476, "speed": 406, "brain": 420, "bits": 2100},
+  "size": {"height": 600, "radius": 300},
   "partner": {
     "voice": 2,
     "hunger_hours": [2, 6, 10, 14, 18, 22],
@@ -39,7 +40,7 @@
     "favored_region": 3,
     "training_type": "even",
     "birth_weight": 30,
-    "status_screen_position": [0, 460, -940],
+    "status_screen_position": [0, 853, -1743],
     "item_distance": 10,
     "training": {"animation": 61, "hit_tick": 10}
   },

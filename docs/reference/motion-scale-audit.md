@@ -42,6 +42,22 @@ Infermon uses Bakemon's battle bank 33 and care bank 0. Battle notes 53, 54 and 
 are all present. Its old Monochromon footstep events now select the native
 Kabuterimon/Kuwagamon footstep (bank 1, note 16), at the same contact ticks.
 
+Apocalymon also uses a 600-unit giant size target. Its previous decoded idle
+height was 323.6 units despite a 430-unit record. A uniform 1.85422 resize brings
+the mesh to 599.8 units after quantization, comparable with Imperialdramon
+(600.3) and native Machinedramon (649.8). This places it among the largest Megas
+without exceeding the 600-unit target. Its record height is 600 and radius is
+300. The resize preserves constant bone scales, all 52 occupied slots (33
+programs), rotations, events and root travel, including the reviewed field pace
+and the updated victory and praise clips.
+Translation-key quantization retains loop totals; the support solver restores
+scaled source clearance to within 1.1 units using a 0.1-unit key tolerance.
+Apocalymon's floating body and source jumps retain their clearance. Bone-attached effect destinations and the
+condition bubble grow with the mesh; effect lookup source coordinates remain
+unchanged. The status camera is pulled back in proportion to the larger model.
+The resize measurements and preceding locked-model hash are recorded in its
+scale-lock provenance.
+
 Audit a full derive output, or an authoring folder containing `ID.MMD` and its
 effective `ID.json` species record:
 
@@ -125,7 +141,7 @@ bytes. Each species has its own commit.
 | 332 | Roachmon | 58 | 88828 |
 | 352 | Monmon | 0, 1, 2, 3, 4, 18, 33 | 99948 |
 | 353 | Bearmon | 0, 33, 46, 47, 48, 49, 51, 54, 55 | 74200 |
-| 400 | Apocalymon | 42, 52, 53, 54 | 99362 |
+| 400 | Apocalymon | 42, 52, 53, 54 | 99328 |
 | 401 | Pukumon | 0, 33, 40, 41, 43, 44, 54, 55, 56, 57, 58, 59, 60, 61 | 56510 |
 | 402 | NeoCrimson | Between clips only | 76156 |
 | 403 | Beelzemon | 53, 60 | 99464 |
