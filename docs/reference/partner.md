@@ -349,7 +349,7 @@ data (patches 0123, 0134).
 
 ### When it is evaluated (`tickConditions`, `partner_impl.c:2068-2119`)
 
-Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost always true), outside the immortal hour,
+Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost always true),
 `PARTNER_STATE == 1` and the tamer free:
 
 | Current level | Condition | Function |
@@ -360,6 +360,11 @@ Every frame with no day/night fade in progress (`isInDaytimeTransition`, almost 
 | 4 Champion | `evoTimer >= 168` (144 on the disc) | `getChampionEvolutionTarget`; nothing if none qualifies |
 | 4 Champion | `evoTimer == 360` | `handleSpecialEvolutions(3)` |
 | 5 Ultimate (mod) | `evoTimer >= 96` | the Mega patch (0058) evaluates the Ultimate's paths: another Ultimate, or a Mega (level 6) once `evoTimer >= 120`; the `evolutionUltimate` pairs score their single target first: Megadramon/Gigadramon → Machinedramon from 48 h, a pair into an imported Mega (WaruMonzaemon, Meteormon, ShogunGekomon, KingSukamon) from 120 h (patch 0339) |
+
+The immortal hour armed by save loading or waking protects against death and sickness escalation, but does not
+block a due evolution. The death and sickness ticks retain their own protection checks. Previously the shared
+early return also suppressed evolution: loading a save or waking deferred it until the next hour even when multiple
+targets qualified. Rookie eligibility still starts at 72 evolution hours; ties keep the existing picker.
 
 A target other than -1 → `tamerSetState(6)`, `partnerSetState(13)`; state 13 runs the EVL sequence and ends in
 `EVL_applyEvolution`. The hours of each level, the specials and the item rules are data in the mod (patches
@@ -653,7 +658,7 @@ Facts that matter when partner RAM is edited from outside (recipes are in [../de
 - Do not write the species id at `PARTNER_ENTITY+0`: the loaded model does not change. A forced evolution writes
   `EVOLUTION_TARGET` and puts the partner in state 13 and the tamer in state 6, which is what `handleEvoItems` does;
   `EVOLUTION_STATS_GAINS[id].target` decides the species actually reached.
-- The immortal hour after sleeping (`HAS_IMMORTAL_HOUR = 1`) blocks death and life loss for that hour.
+- The immortal hour after sleeping or save loading (`HAS_IMMORTAL_HOUR = 1`) blocks death and life loss for that hour; due evolutions are still evaluated.
 - `STATS_LIMIT_ARRAY` only limits scripts; `SET_STAT` id 0x16 (lives) reads past the 22-entry table.
 - `PARTNER_PARA` is saved whole, so any write survives a save.
 
